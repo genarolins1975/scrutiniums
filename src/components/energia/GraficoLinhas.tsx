@@ -210,7 +210,10 @@ export function GraficoLinhas({
 
   const yt = ticks(yMin, yMax);
   const nx = Math.min(largura < 520 ? 4 : 7, n);
-  const xt = n <= 1 ? [0] : Array.from({ length: nx }, (_, k) => Math.round((k / Math.max(nx - 1, 1)) * (n - 1)));
+  const horaDe = (v: string) => Number(v.length > 5 ? v.slice(11, 13) : v.slice(0, 2));
+  const xtHora = formatoX === "hora" ? dados.map((d, i) => (horaDe(String(d[chaveX] ?? "")) % 6 === 0 || i === n - 1 ? i : -1)).filter((i) => i >= 0) : [];
+  // séries horárias: marcas fixas em 00h, 06h, 12h, 18h e na última hora; demais: índices equidistantes
+  const xt = n <= 1 ? [0] : xtHora.length >= 3 ? xtHora : Array.from({ length: nx }, (_, k) => Math.round((k / Math.max(nx - 1, 1)) * (n - 1)));
   // janela curta (menos de 130 dias): rótulos em dia/mês, para não repetir o mesmo mês nas marcas
   const xCurto = formatoX === "data" && dados.length > 1 && (Date.parse(String(dados[dados.length - 1][chaveX])) - Date.parse(String(dados[0][chaveX]))) / 86400000 < 130;
   const rotuloX = (v: string) => (xCurto && v.length >= 10 ? `${v.slice(8, 10)}/${v.slice(5, 7)}` : fmtX(v, formatoX));
@@ -296,7 +299,7 @@ export function GraficoLinhas({
           return (
             <g key={fx.rotulo} pointerEvents="none">
               <rect x={x(i0)} y={T} width={Math.max(1, x(i1) - x(i0))} height={h - T - B} fill="var(--cor-carvao)" opacity={0.035} />
-              <text x={(x(i0) + x(i1)) / 2} y={T + 11} textAnchor="middle" fontSize="10.5" fill="var(--cor-mineral)">
+              <text x={(x(i0) + x(i1)) / 2} y={T + 11} textAnchor="middle" fontSize="10.5" fill="var(--cor-mineral)" className={x(i1) - x(i0) < 62 ? "hidden" : undefined}>
                 {fx.rotulo}
               </text>
             </g>

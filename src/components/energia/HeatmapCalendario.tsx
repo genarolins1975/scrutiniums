@@ -90,7 +90,7 @@ export function HeatmapCalendario({
   return (
     <figure>
       <p className="mb-1 text-xs text-mineral sm:hidden">Role de lado para ver o ano inteiro.</p>
-      <div className="overflow-x-auto">
+      <div className="tabela-scroll">
       <svg viewBox={`0 0 ${w} ${h}`} className="block h-auto w-full min-w-[44rem]" role="img" aria-label={`${titulo}: calendário de calor, de ${dados[0].d} a ${dados[dados.length - 1].d}, em ${unidade}. ${r.maior ? `Maior valor ${fmt(r.maior.v as number, casas)} em ${r.maior.d}; ` : ""}${r.menor ? `menor ${fmt(r.menor.v as number, casas)} em ${r.menor.d}.` : ""}`}>
         {meses.map((m, i) => {
           const proximo = meses[i + 1]?.col ?? nCol;

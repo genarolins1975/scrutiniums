@@ -20,7 +20,15 @@ const ETAPAS: { id: keyof Pick<MiniaturaEnergiaDados, "ear" | "hes" | "fluxoNeSe
 
 export function MiniaturaEnergia({ dados }: { dados: MiniaturaEnergiaDados }) {
   const W = 520;
-  const H = 150;
+  const H = 164;
+  /** subtítulo em até duas linhas (tspan), quebrado no espaço mais próximo do meio */
+  const linhas = (t: string) => {
+    if (t.length <= 15) return [t];
+    const meio = Math.floor(t.length / 2);
+    let corte = -1;
+    for (let i = 0; i < t.length; i++) if (t[i] === " " && (corte < 0 || Math.abs(i - meio) < Math.abs(corte - meio))) corte = i;
+    return corte < 0 ? [t] : [t.slice(0, corte), t.slice(corte + 1)];
+  };
   const Y = 44;
   const xs = ETAPAS.map((_, i) => 52 + i * ((W - 104) / (ETAPAS.length - 1)));
   const caminho = `M${xs[0]},${Y} L${xs[xs.length - 1]},${Y}`;
@@ -51,7 +59,11 @@ export function MiniaturaEnergia({ dados }: { dados: MiniaturaEnergiaDados }) {
                 {v === null ? "sem dado" : e.fmt(v)}
               </text>
               <text x={xs[i]} y={Y + 68} textAnchor="middle" fontSize="10" fill="var(--cor-mineral)">
-                {e.sub}
+                {linhas(e.sub).map((l, k) => (
+                  <tspan key={k} x={xs[i]} dy={k === 0 ? 0 : 12}>
+                    {l}
+                  </tspan>
+                ))}
               </text>
             </g>
           );

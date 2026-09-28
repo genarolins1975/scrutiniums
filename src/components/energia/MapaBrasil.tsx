@@ -132,7 +132,7 @@ export function MapaBrasil({
         const v = f.valor;
         const [a, b] = v === null || v >= 0 ? [fr.a, fr.b] : [fr.b, fr.a];
         const w = v === null ? 2 : 2.5 + 11 * (Math.abs(v) / maxF);
-        const [mx, my] = pontoRotuloArco(a, b, 18);
+        const [mx, my] = pontoRotuloArco(a, b, 26);
         const ponta = pontaArco(a, b);
         const rad = (ponta.angulo * Math.PI) / 180;
         // a seta é um triângulo proporcional à espessura, com a ponta meio traço à frente do fim do arco,

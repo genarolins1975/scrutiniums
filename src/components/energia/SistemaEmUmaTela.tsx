@@ -61,9 +61,9 @@ export function SistemaEmUmaTela({ blocos, chaveUrl = "bloco" }: { blocos: Bloco
                   <IconeSetor tipo={b.icone} tamanho={15} className="text-carvao-muted" />
                   {b.rotulo}
                 </span>
-                <span className="mt-2 font-serif text-[1.65rem] leading-none tabular-nums text-carvao">
+                <span className="mt-2 flex flex-wrap items-baseline gap-x-1.5 font-serif text-[1.65rem] leading-none tabular-nums text-carvao">
                   {b.valor}
-                  {b.unidade && <span className="ml-1 font-sans text-xs text-mineral">{b.unidade}</span>}
+                  {b.unidade && <span className="whitespace-nowrap font-sans text-xs leading-tight text-mineral">{b.unidade}</span>}
                 </span>
                 <span className="mt-2 text-xs leading-snug text-carvao-muted">{b.contexto}</span>
                 {b.sparkline && (
@@ -92,9 +92,9 @@ export function SistemaEmUmaTela({ blocos, chaveUrl = "bloco" }: { blocos: Bloco
                   {atual.rotulo}
                 </p>
                 <p className="mt-2 flex flex-wrap items-center gap-3">
-                  <span className="font-serif text-3xl leading-none tabular-nums text-carvao">
+                  <span className="flex flex-wrap items-baseline gap-x-1.5 font-serif text-3xl leading-none tabular-nums text-carvao">
                     {atual.valor}
-                    {atual.unidade && <span className="ml-1 font-sans text-sm text-mineral">{atual.unidade}</span>}
+                    {atual.unidade && <span className="whitespace-nowrap font-sans text-sm text-mineral">{atual.unidade}</span>}
                   </span>
                   <SeloNatureza natureza={atual.natureza} />
                 </p>

@@ -11,7 +11,7 @@ export function EstadoModelo({ estado, comTexto = false }: { estado: E; comTexto
   const i = INFO[estado];
   return (
     <span className="inline-flex flex-wrap items-center gap-2">
-      <span className={`rotulo border px-1.5 py-0.5 !text-[0.66rem] ${i.cls}`}>
+      <span className={`rotulo border px-1.5 py-0.5 ${i.cls}`}>
         <span className="sr-only">Estado do modelo: </span>
         {i.rotulo}
       </span>

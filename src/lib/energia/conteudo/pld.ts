@@ -30,6 +30,8 @@ export const TIPOS_RELACAO: Record<TipoRelacao, { rotulo: string; definicao: str
 export type NoFormacao = {
   id: string;
   titulo: string;
+  /** Rótulo curto para o nó do diagrama, quando o título não cabe numa caixa estreita. */
+  curto?: string;
   sigla?: string;
   oQueE: string;
   fonteOQueE: string;
@@ -114,6 +116,7 @@ export const NOS_FORMACAO: NoFormacao[] = [
   {
     id: "termicas",
     titulo: "Disponibilidade e custo das térmicas",
+    curto: "Térmicas (CVU)",
     sigla: "CVU",
     oQueE: "O Custo Variável Unitário das térmicas é considerado pelo ONS no Programa Mensal da Operação e usado nos modelos NEWAVE, DECOMP e DESSEM.",
     fonteOQueE: "ONS, CVU das Usinas Térmicas",

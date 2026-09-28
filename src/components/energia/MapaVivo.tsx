@@ -33,7 +33,7 @@ export function MapaVivo({ camadas, chaveUrl = "camada" }: { camadas: CamadaMapa
   const c = camadas.find((x) => x.id === id) ?? camadas[0];
   return (
     <div>
-      <div role="tablist" aria-label="Camada do mapa" className="flex flex-wrap gap-1 border-b border-linha">
+      <div role="tablist" aria-label="Camada do mapa" className="tabela-scroll flex gap-1 whitespace-nowrap border-b border-linha">
         {camadas.map((x) => (
           <button
             key={x.id}

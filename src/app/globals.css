@@ -131,7 +131,7 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 /* Setor Elétrico: sombra nas bordas indica conteúdo além da área visível (some quando não há) */
-.dominio-energia div.tabela-scroll {
+.dominio-energia .tabela-scroll {
   background:
     linear-gradient(to right, var(--cor-superficie) 30%, transparent) left / 2.5rem 100% no-repeat local,
     linear-gradient(to left, var(--cor-superficie) 30%, transparent) right / 2.5rem 100% no-repeat local,

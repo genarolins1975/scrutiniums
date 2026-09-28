@@ -95,7 +95,8 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
         <section className="mt-8 border border-linha bg-superficie p-6">
           <h2 className="font-serif text-xl text-carvao">Capturas integradas (vintages)</h2>
           <p className="mt-1 text-sm text-carvao-muted">Cada arquivo baixado com conteúdo novo é uma vintage imutável; download idêntico a uma vintage existente não gera linha nova. A tabela lista todas as vintages, inclusive as substituídas por captura posterior do mesmo arquivo. Os valores das vintages ficam no histórico do processamento (cache da automação e cópia durável), usado para reconstituir o que se sabia em cada data, e não são publicados no portal.</p>
-          <div className="tabela-scroll mt-4" tabIndex={0} role="region" aria-label="Capturas do conjunto (tabela rolável)">
+          <p className="mt-4 text-xs text-mineral sm:hidden">Role de lado para ver todas as colunas.</p>
+          <div className="tabela-scroll mt-2 sm:mt-4" tabIndex={0} role="region" aria-label="Capturas do conjunto (tabela rolável)">
             <table className="w-full min-w-[50rem] border-collapse text-xs">
               <caption className="sr-only">Todas as capturas integradas, por recurso</caption>
               <thead>

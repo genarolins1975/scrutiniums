@@ -68,7 +68,7 @@ export function BarrasMix({
                       className="flex h-full items-center overflow-hidden first:rounded-l-[3px] last:rounded-r-[3px]"
                       style={{ width: `${p}%`, background: COR_FONTE[f] }}
                     >
-                      {p >= 6 && (
+                      {p >= 8 && (
                         <span className={`px-1.5 text-[0.7rem] font-medium tabular-nums ${TEXTO_SOBRE[f]}`}>
                           {parte(l.mix!, f).toLocaleString("pt-BR", { maximumFractionDigits: 0 })}%
                         </span>

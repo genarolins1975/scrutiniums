@@ -122,9 +122,9 @@ export function CatalogoFiltro({ itens, estados }: { itens: ItemCatalogo[]; esta
               ) : (
                 i.titulo
               )}
-              <span className="ml-2 text-xs text-mineral">{TEMAS[i.tema] ?? i.tema}{i.formatos.length ? ` · ${i.formatos.slice(0, 4).join(", ")}` : ""}</span>
-              {!i.verificado && <span className="ml-2 text-xs text-aviso">metadados a conferir</span>}
-              {i.descontinuado && <span className="ml-2 text-xs text-mineral">descontinuado na fonte</span>}
+              <span className="block text-xs text-mineral sm:ml-2 sm:inline">{TEMAS[i.tema] ?? i.tema}{i.formatos.length ? ` · ${i.formatos.slice(0, 4).join(", ")}` : ""}</span>
+              {!i.verificado && <span className="block text-xs text-aviso sm:ml-2 sm:inline">metadados a conferir</span>}
+              {i.descontinuado && <span className="block text-xs text-mineral sm:ml-2 sm:inline">descontinuado na fonte</span>}
             </span>
             <span className="col-start-2 flex flex-col gap-1 md:col-start-auto" title={`Estado: ${i.estado}`}>
               <span className="flex gap-0.5" aria-hidden="true">

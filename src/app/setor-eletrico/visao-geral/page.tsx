@@ -10,7 +10,8 @@ import { CartoesPld } from "@/components/energia/CartoesPld";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { BarrasMix } from "@/components/energia/BarrasMix";
 import { Sparkline } from "@/components/energia/Sparkline";
-import { intensidadeFaixa } from "@/lib/energia/geo";
+import { NOME_REGIAO, SIGLA_REGIAO, intensidadeFaixa } from "@/lib/energia/geo";
+import { mediaMovel } from "@/lib/energia/series";
 import { MapaVivo, type CamadaMapa } from "@/components/energia/MapaVivo";
 import { SistemaEmUmaTela, type BlocoSistema } from "@/components/energia/SistemaEmUmaTela";
 import { IconeSetor } from "@/components/energia/IconeSetor";
@@ -83,6 +84,11 @@ export default function VisaoGeralEnergia() {
       })
     : [];
   const cargaSerie = integra(carga) ? carga.serie.slice(-365).map((p) => ({ d: p.d, SIN: p.SIN ?? null })) : [];
+  // média móvel de 7 dias, calculada pela plataforma, para a leitura sem o serrilhado semanal; a diária fica na tabela
+  const cargaSerie7 = (() => {
+    const m = mediaMovel(cargaSerie.map((p) => p.SIN));
+    return cargaSerie.map((p, i) => ({ ...p, SIN7: m[i] }));
+  })();
 
   /* ---------- camadas do mapa vivo ---------- */
   const camadas: CamadaMapa[] = [];
@@ -609,15 +615,18 @@ export default function VisaoGeralEnergia() {
               natureza="CALCULADO"
               porQueImporta={<>A <Termo slug="carga">carga</Termo> é o lado da demanda no balanço de energia que o ONS publica por subsistema, ao lado da geração por fonte.</>}
               oQueMudou={<>Em {dataBR(carga.dia_referencia)}, {num(cargaSin.dia, 0)} <Unidade u="MWmed" />. Maior carga diária dos últimos 12 meses: {num(cargaSin.max_12m.valor, 0)} MWmed em {dataBR(cargaSin.max_12m.dia)}.</>}
-              comoInterpretar={<>A comparação anual só é feita quando os dois períodos estão no mesmo regime metodológico do ONS (a estimativa de MMGD entrou na carga em 29/04/2023).</>}
+              comoInterpretar={<>A linha grossa é a média dos 7 dias até cada data, calculada pela plataforma para tirar o serrilhado semanal; a fina é a carga diária. A comparação anual só é feita quando os dois períodos estão no mesmo regime metodológico do ONS (a estimativa de MMGD entrou na carga em 29/04/2023).</>}
               naoConcluir={<>Temperatura, feriados e dias úteis afetam a carga e não são ajustados. Variação de carga não mede atividade econômica por si.</>}
               proveniencia={carga.proveniencia.sin}
             >
               <GraficoLinhas
-                titulo="Carga diária do SIN nos últimos 12 meses"
-                dados={cargaSerie}
+                titulo="Carga do SIN nos últimos 12 meses, média móvel de 7 dias"
+                dados={cargaSerie7}
                 chaveX="d"
-                series={[{ id: "SIN", rotulo: "Carga do SIN", cor: "var(--cor-energia)" }]}
+                series={[
+                  { id: "SIN7", rotulo: "Carga do SIN, média de 7 dias", sigla: "7 dias", cor: "var(--cor-energia)", espessura: 2.2 },
+                  { id: "SIN", rotulo: "Carga diária do SIN", sigla: "diária", cor: "var(--cor-mineral)", espessura: 0.8 },
+                ]}
                 unidade="MWmed"
                 casas={0}
                 ensina={{ texto: "Carga: energia atendida no sistema interligado, em MWmed (energia do dia dividida por 24 horas).", fonte: "ONS", href: "/setor-eletrico/aprenda/carga", hrefRotulo: "Entenda carga" }}
@@ -649,10 +658,14 @@ export default function VisaoGeralEnergia() {
               <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                 {rede.fronteiras.map((f) => {
                   const v = f.fluxo_dia;
-                  const nome = v !== null && v < 0 ? f.nome.split(" → ").reverse().join(" → ") : f.nome;
+                  const [o, d] = v !== null && v < 0 ? [f.para, f.de] : [f.de, f.para];
+                  const nome = `${NOME_REGIAO[o]} → ${NOME_REGIAO[d]}`;
                   return (
-                    <li key={f.par} className="border border-linha p-4">
-                      <p className="rotulo text-mineral">{nome}</p>
+                    <li key={f.par} className="min-w-0 border border-linha p-4">
+                      <p className="rotulo text-mineral" title={nome}>
+                        {SIGLA_REGIAO[o]} → {SIGLA_REGIAO[d]}
+                        <span className="sr-only"> ({nome})</span>
+                      </p>
                       <p className="mt-2 font-serif text-2xl tabular-nums text-carvao">{v === null ? "sem dado" : num(Math.abs(v), 0)}</p>
                       <p className="text-xs text-mineral">MWmed em {dataBR(rede.dia_referencia)}</p>
                       <div className="mt-2">

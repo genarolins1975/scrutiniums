@@ -124,7 +124,8 @@ export default function MetodologiaEnergia() {
           <p className="text-sm">
             <Link href="/setor-eletrico/dados#linhagem" className="text-energia-dark underline underline-offset-4">Mapa de linhagem interativo, com as contagens de cada etapa, na página Dados</Link>
           </p>
-          <pre tabIndex={0} aria-label="Linhagem dos dados, do arquivo da fonte à visualização (rolável)" className="overflow-x-auto border border-linha bg-superficie p-4 font-mono text-xs leading-relaxed text-carvao">{`FONTE (CCEE, ONS, ANEEL)
+          <p className="text-xs text-mineral sm:hidden">Role de lado para ler a linhagem inteira.</p>
+          <pre tabIndex={0} aria-label="Linhagem dos dados, do arquivo da fonte à visualização (rolável)" className="tabela-scroll border border-linha bg-superficie p-4 font-mono text-xs leading-relaxed text-carvao">{`FONTE (CCEE, ONS, ANEEL)
   ↓ captura: arquivo original, sha256, url, capturado_em, publicado_em (metadado da fonte)
 BRONZE: cópia imutável por captura
   ↓ normalização determinística

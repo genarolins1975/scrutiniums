@@ -179,6 +179,39 @@ Segunda avaliação feita por um agente em contexto limpo, sem acesso ao racioc�
 
 Não corrigido, por decisão declarada: desenho de mecanismo sob o infográfico mestre (fica para a integração de geodados), grade dos verbetes em Aprenda (mantida como índice completo), mapa vazio em Empresas, esqueleto de linha do tempo em Regulação, média móvel na seção Carga da Visão geral, abas do mapa em uma linha no celular.
 
-### Segunda rodada
+### Segunda rodada: notas do auditor depois das correções
 
-Preenchida com o resultado da reavaliação.
+| Área | Hier | Est | Clar | Did | Rec | Graf | Mapas | Inter | Nav | Rigor | Audit | Acess | Mobile |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home | 7 | 8 | 7 | 6 | 6 | 6 | n/a | 6 | 7 | 8 | 6 | 7 | 7 |
+| Seletor | 7 | 7 | 7 | 6 | 6 | 6 | n/a | 6 | 7 | 8 | 7 | 7 | 7 |
+| Visão geral | 8 | 8 | 8 | 8 | 9 | 8 | 8 | 8 | 8 | 9 | 9 | 8 | 8 |
+| PLD | 7 | 8 | 8 | 8 | 8 | 7 | 8 | 8 | 7 | 9 | 9 | 8 | 8 |
+| Água e clima | 9 | 8 | 9 | 9 | 8 | 8 | 8 | 7 | 8 | 9 | 9 | 8 | 8 |
+| Geração | 8 | 8 | 8 | 8 | 9 | 8 | 8 | 8 | 8 | 9 | 9 | 8 | 8 |
+| Carga | 8 | 8 | 8 | 8 | 8 | 8 | 7 | 7 | 8 | 9 | 9 | 8 | 7 |
+| Rede | 8 | 8 | 8 | 8 | 8 | 8 | 8 | 7 | 8 | 9 | 9 | 7 | 8 |
+| Mercado | 7 | 7 | 8 | 6 | 6 | n/a | n/a | 4 | 7 | 8 | 8 | 8 | 7 |
+| Empresas | 7 | 7 | 8 | 6 | 6 | n/a | n/a | 4 | 7 | 8 | 8 | 8 | 7 |
+| Expansão | 7 | 7 | 8 | 6 | 6 | n/a | n/a | 4 | 7 | 8 | 8 | 8 | 7 |
+| Regulação | 7 | 7 | 8 | 6 | 6 | n/a | n/a | 4 | 7 | 8 | 8 | 8 | 7 |
+| Aprenda | 8 | 7 | 8 | 8 | 7 | 7 | 7 | 7 | 7 | 9 | 9 | 8 | 8 |
+| Infográfico mestre | 8 | 7 | 8 | 7 | 6 | n/a | n/a | 7 | 8 | 9 | 8 | 8 | 8 |
+| Dados | 8 | 7 | 8 | 7 | 7 | n/a | n/a | 8 | 8 | 9 | 10 | 8 | 8 |
+| Metodologia | 8 | 7 | 8 | 7 | 5 | n/a | n/a | 5 | 8 | 9 | 9 | 8 | 7 |
+
+Leitura do auditor: as três famílias de problemas da primeira rodada (seta invisível, SVGs ilegíveis no celular, rótulos minúsculos e contagens vazias) foram resolvidas; o que restou é de gravidade média ou baixa. Onde as notas do auditor e as de "Depois" na tabela do início divergem, valem as do auditor: são a avaliação externa.
+
+### Corrigido depois da segunda rodada
+
+Os itens objetivos apontados na segunda rodada foram aplicados antes desta publicação: piso de 0,72 rem também em `Conferido`, `SeloNatureza`, `EstadoModelo` e no sha256 do arquivo de previsões; rótulo curto "Térmicas (CVU)" no nó do diagrama de formação (título completo no painel); subtítulos da miniatura da home em duas linhas; controle "mais 3 perguntas" como `details`, clicável e acessível por teclado, no lugar do texto que parecia controle; unidades da faixa "O sistema em uma tela" sem quebra no meio; média móvel de 7 dias também na seção Carga da Visão geral, com a diária na tabela; cartões de fronteira com sigla no título e nome completo para leitor de tela; marcas fixas no eixo das horas (00h, 06h, 12h, 18h e última hora) e rótulo de faixa oculto quando não cabe; rótulos do fluxo mais afastados do arco; abas do mapa e da Rede roláveis numa linha; "Mediana" no lugar de "Mediana da data" nas colunas de reservatório; rótulo interno das barras de mix só a partir de 8%; gradiente de rolagem no calendário de calor, na barra de módulos e na linhagem em texto; nota dos verbetes em preparação em linha própria; separador para leitor de tela no título da microaula; frase "Role de lado" na tabela de capturas; metadados do catálogo em linha própria no celular; âncoras do PLD mais curtas. O site foi reconstruído e recapturado depois disso; as capturas em `avaliacao-visual/` são as finais.
+
+### O que permanece, declarado
+
+* Módulos em integração (Mercado, Empresas, Expansão, Regulação): didática 6 e interatividade 4 por falta de dado integrado; o esquema estrutural e a esteira dizem o que virá, mas não há o que explorar. Só a integração dos conjuntos da CCEE, da ANEEL e da EPE muda isso.
+* Home e seletor: recursos visuais e gráficos em 6 na avaliação externa, porque a miniatura é uma síntese de cinco números e não um gráfico; a escolha é deliberada (a home não tem pergunta espacial nem série própria) e está registrada na seção 1.
+* Infográfico mestre sem desenho de mecanismo sob os botões (rio, reservatório, linha); fica para a integração de geodados.
+* Frases "Hoje" iguais em pares de conceitos irmãos no Aprenda (EAR e capacidade de armazenamento, ENA e MLT, CMO e DECOMP): pedem exemplos próprios no conteúdo conferido, não um ajuste visual.
+* Rótulo "leitura usual do setor" repetido em cada caixa dos esquemas: correto e ruidoso; uma nota única acima do esquema é a alternativa quando o conteúdo tiver mais caixas conferidas do que não conferidas.
+* Ordem dos parágrafos do capítulo 1 do PLD mantida (definição do Mercado de Curto Prazo antes da frase curta em R$/MWh): recomendação do auditor, não erro.
+* Selos OBSERVADO e CALCULADO dentro da frase "Hoje" da microaula quebram o ritmo da linha; uma variante em linha do selo é trabalho do design system, não desta página.

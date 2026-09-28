@@ -14,7 +14,7 @@ export function AbasVisoes({ abas, chaveUrl = "visao", rotulo = "Visão" }: { ab
   const atual = abas.find((a) => a.id === id) ?? abas[0];
   return (
     <div>
-      <div role="tablist" aria-label={rotulo} className="flex flex-wrap gap-1 border-b border-linha">
+      <div role="tablist" aria-label={rotulo} className="tabela-scroll flex gap-1 whitespace-nowrap border-b border-linha">
         {abas.map((a) => (
           <button
             key={a.id}

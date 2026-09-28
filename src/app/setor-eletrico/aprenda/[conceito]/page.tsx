@@ -63,6 +63,7 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
             {c.sigla && (
               <>
                 <span className="mr-3">{c.sigla}</span>
+                <span className="sr-only">: </span>
               </>
             )}
             <span className={c.sigla ? "text-carvao-muted" : ""}>{c.nome}</span>

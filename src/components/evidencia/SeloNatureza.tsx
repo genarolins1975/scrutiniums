@@ -47,7 +47,7 @@ export function SeloNatureza({ natureza, compacto = false }: { natureza: Naturez
   const n = NATUREZAS[natureza];
   return (
     <span
-      className={`rotulo relative inline-flex items-center gap-1.5 whitespace-nowrap border bg-superficie px-1.5 py-0.5 !text-[0.66rem] ${n.borda} ${n.cor}`}
+      className={`rotulo relative inline-flex items-center gap-1.5 whitespace-nowrap border bg-superficie px-1.5 py-0.5 ${n.borda} ${n.cor}`}
       title={`${n.rotulo}: ${n.definicao}`}
     >
       <span aria-hidden="true">{n.glifo}</span>

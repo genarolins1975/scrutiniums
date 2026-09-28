@@ -81,7 +81,7 @@ export function ColunasReservatorio({ itens, dia }: { itens: ItemReservatorio[];
                 </text>
               </svg>
               <dl className="mt-2 grid grid-cols-2 gap-x-2 text-xs">
-                <dt className="text-mineral">Mediana da data</dt>
+                <dt className="text-mineral">Mediana</dt>
                 <dd className="text-right tabular-nums text-carvao">{fmt(it.p50)}</dd>
                 <dt className="text-mineral">Percentil</dt>
                 <dd className="text-right tabular-nums text-carvao">{it.percentil === null ? "–" : it.percentil.toLocaleString("pt-BR", { maximumFractionDigits: 0 })}</dd>

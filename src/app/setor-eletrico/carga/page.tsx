@@ -8,6 +8,7 @@ import { Termo } from "@/components/evidencia/Termo";
 import { Unidade } from "@/components/evidencia/Unidade";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { HeatmapCalendario, resumoHeatmap } from "@/components/energia/HeatmapCalendario";
+import { mediaMovel } from "@/lib/energia/series";
 import { MapaBrasil } from "@/components/energia/MapaBrasil";
 import { MetricaHero } from "@/components/energia/MetricaHero";
 import { IconeSetor } from "@/components/energia/IconeSetor";
@@ -54,13 +55,9 @@ export default function CargaPage() {
   const ultimoAno = c.serie.slice(-365).map((p) => ({ d: p.d, v: p.SIN ?? null }));
   const r = resumoHeatmap(ultimoAno);
   const anoPassado = c.serie.slice(-730, -365);
-  /** Média móvel de 7 dias (calculada pela plataforma) para ler a comparação anual sem o serrilhado semanal. */
-  const media7 = (vals: (number | null)[]) => vals.map((_, i) => {
-    const janela = vals.slice(Math.max(0, i - 6), i + 1).filter((v): v is number => v !== null);
-    return janela.length === 7 ? janela.reduce((a, b) => a + b, 0) / 7 : null;
-  });
-  const atual7 = media7(ultimoAno.map((p) => p.v));
-  const anterior7 = media7(anoPassado.map((p) => p.SIN ?? null));
+  // média móvel de 7 dias (calculada pela plataforma) para ler a comparação anual sem o serrilhado semanal
+  const atual7 = mediaMovel(ultimoAno.map((p) => p.v));
+  const anterior7 = mediaMovel(anoPassado.map((p) => p.SIN ?? null));
   return (
     <>
       <CabecalhoEnergia atual="carga" />

@@ -11,8 +11,9 @@ const ACENTO: Record<Dominio["acento"], { filete: string; texto: string; hover: 
 /**
  * Painel visual de um observatório: a miniatura viva no alto, o nome, a
  * pergunta que o observatório responde e as perguntas que o portal responde:
- * as três primeiras sempre visíveis, as demais ao passar o ponteiro ou focar no
- * desktop e sempre visíveis no celular. A ação fica alinhada ao pé do painel. Um único painel serve à home (com link) e à tela de escolha
+ * as três primeiras sempre visíveis, as demais num controle "mais N perguntas"
+ * no desktop (funciona com toque e teclado) e sempre visíveis no celular. A
+ * ação fica alinhada ao pé do painel. Um único painel serve à home (com link) e à tela de escolha
  * (com o formulário de entrada e as amostras vivas).
  */
 export function PainelObservatorio({
@@ -73,7 +74,7 @@ export function PainelObservatorio({
           </ul>
           {perguntas.length > 3 && (
             <>
-              <ul className="mt-1.5 space-y-1.5 overflow-hidden text-sm leading-snug text-carvao transition-[max-height] duration-300 ease-out lg:max-h-0 lg:group-hover:max-h-60 lg:group-focus-within:max-h-60">
+              <ul className="mt-1.5 space-y-1.5 text-sm leading-snug text-carvao lg:hidden">
                 {perguntas.slice(3).map((p) => (
                   <li key={p.href} className="flex gap-2">
                     <span aria-hidden="true" className={a.texto}>
@@ -85,7 +86,23 @@ export function PainelObservatorio({
                   </li>
                 ))}
               </ul>
-              <p className="rotulo mt-2 hidden text-mineral lg:block lg:group-hover:hidden lg:group-focus-within:hidden">mais {perguntas.length - 3} perguntas ao passar o ponteiro ou focar</p>
+              <details className="hidden lg:block">
+                <summary className="rotulo inline-flex min-h-[44px] cursor-pointer list-none items-center gap-1 text-mineral hover:text-carvao [&::-webkit-details-marker]:hidden">
+                  <span aria-hidden="true">+</span> mais {perguntas.length - 3} perguntas
+                </summary>
+                <ul className="mt-1 space-y-1.5 text-sm leading-snug text-carvao">
+                  {perguntas.slice(3).map((p) => (
+                    <li key={p.href} className="flex gap-2">
+                      <span aria-hidden="true" className={a.texto}>
+                        →
+                      </span>
+                      <Link href={p.href} className="underline decoration-linha underline-offset-4 hover:decoration-current">
+                        {p.texto}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </details>
             </>
           )}
         </div>

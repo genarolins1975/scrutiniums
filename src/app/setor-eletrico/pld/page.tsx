@@ -220,10 +220,10 @@ export default function PldPage() {
               <nav aria-label="Nesta página" className="mt-6 flex flex-wrap gap-x-5 gap-y-1 text-sm">
                 {[
                   ["#o-que-e", "O que é"],
-                  ["#formacao", "De onde vem o preço"],
-                  ["#hoje", "Último dia publicado"],
-                  ["#submercados", "Por que as regiões diferem"],
-                  ["#previsao", "Para onde pode ir"],
+                  ["#formacao", "De onde vem"],
+                  ["#hoje", "Último dia"],
+                  ["#submercados", "Regiões"],
+                  ["#previsao", "Previsão"],
                 ].map(([h, r]) => (
                   <a key={h} href={h} className="inline-flex min-h-[44px] items-center text-energia-dark underline decoration-energia/40 underline-offset-4 hover:text-carvao">
                     {r}

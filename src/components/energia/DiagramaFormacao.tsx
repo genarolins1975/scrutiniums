@@ -70,8 +70,8 @@ export function DiagramaFormacao({ nos }: { nos: NoComEstado[] }) {
       >
         <span className="flex min-w-0 max-w-full items-center gap-2 text-sm font-medium leading-snug text-carvao">
           <IconeSetor tipo={ICONE[id] ?? "sistema"} tamanho={15} className={`shrink-0 ${ativo ? "text-energia-dark" : "text-mineral"}`} />
-          <span className="min-w-0 break-words">{n.titulo}</span>
-          {n.sigla && <span className={`rotulo ${ativo ? "text-carvao-muted" : "text-mineral"}`}>{n.sigla}</span>}
+          <span className="min-w-0">{n.curto ?? n.titulo}</span>
+          {n.sigla && !n.curto && <span className={`rotulo ${ativo ? "text-carvao-muted" : "text-mineral"}`}>{n.sigla}</span>}
         </span>
         <span className={`mt-1 text-xs tabular-nums ${ativo ? "text-carvao-muted" : "text-mineral"}`}>{n.estado?.resumo ?? (n.estado ? "dado integrado" : "ainda não integrado")}</span>
       </button>

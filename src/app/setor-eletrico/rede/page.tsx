@@ -14,6 +14,7 @@ import { MetricaHero } from "@/components/energia/MetricaHero";
 import { IconeSetor } from "@/components/energia/IconeSetor";
 import { TabelaDados } from "@/components/energia/TabelaDados";
 import { Sparkline } from "@/components/energia/Sparkline";
+import { NOME_REGIAO, SIGLA_REGIAO } from "@/lib/energia/geo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold, integra } from "@/lib/energia/gold";
 import { dataBR, num, pct, reais, rotuloRegra } from "@/lib/energia/formato";
@@ -207,10 +208,14 @@ export default function RedePage() {
               <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                 {r.fronteiras.map((f, i) => {
                   const v = f.fluxo_dia;
-                  const nome = v !== null && v < 0 ? f.nome.split(" → ").reverse().join(" → ") : f.nome;
+                  const [o, d] = v !== null && v < 0 ? [f.para, f.de] : [f.de, f.para];
+                  const nome = `${NOME_REGIAO[o]} → ${NOME_REGIAO[d]}`;
                   return (
                     <li key={f.par} className="min-w-0 border border-linha p-4">
-                      <p className="rotulo text-mineral">{nome}</p>
+                      <p className="rotulo text-mineral" title={nome}>
+                        {SIGLA_REGIAO[o]} → {SIGLA_REGIAO[d]}
+                        <span className="sr-only"> ({nome})</span>
+                      </p>
                       <p className="mt-2 font-serif text-2xl tabular-nums text-carvao">{v === null ? "sem dado" : num(Math.abs(v), 0)}</p>
                       <p className="text-xs text-mineral">MWmed no dia · média de 30 dias {f.fluxo_media_30d === null ? "sem dado" : num(Math.abs(f.fluxo_media_30d), 0)}</p>
                       <div className="mt-2">

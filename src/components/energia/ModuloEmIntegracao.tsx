@@ -126,7 +126,7 @@ export function ModuloEmIntegracao({
                         <Link href={`/setor-eletrico/aprenda/${c.slug}`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
                           {v && v.nome !== c.rotulo ? `${c.rotulo}: ${v.nome}` : c.rotulo}
                         </Link>
-                        {v?.estado === "PENDENTE" && <span className="text-mineral"> · verbete em preparação, nome ainda sem conferência na fonte primária</span>}
+                        {v?.estado === "PENDENTE" && <span className="block text-xs text-mineral">verbete em preparação, nome ainda sem conferência na fonte primária</span>}
                       </li>
                     );
                   })}
