@@ -1,38 +1,38 @@
 {
  "dominio": "energia",
  "gold": "meta.json",
- "gerado_em": "2026-09-28T13:25:56Z",
+ "gerado_em": "2026-09-28T13:56:43Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "b5e69d22218c",
+ "versao_codigo": "03bc93a2bd06",
  "disponivel": true,
  "golds": {
   "pld.json": {
    "disponivel": true,
-   "gerado_em": "2026-09-28T13:25:39Z"
+   "gerado_em": "2026-09-28T13:56:25Z"
   },
   "hidrologia.json": {
    "disponivel": true,
-   "gerado_em": "2026-09-28T13:25:40Z"
+   "gerado_em": "2026-09-28T13:56:26Z"
   },
   "carga.json": {
    "disponivel": true,
-   "gerado_em": "2026-09-28T13:25:40Z"
+   "gerado_em": "2026-09-28T13:56:26Z"
   },
   "geracao.json": {
    "disponivel": true,
-   "gerado_em": "2026-09-28T13:25:46Z"
+   "gerado_em": "2026-09-28T13:56:33Z"
   },
   "rede.json": {
    "disponivel": true,
-   "gerado_em": "2026-09-28T13:25:52Z"
+   "gerado_em": "2026-09-28T13:56:39Z"
   },
   "cmo.json": {
    "disponivel": true,
-   "gerado_em": "2026-09-28T13:25:52Z"
+   "gerado_em": "2026-09-28T13:56:39Z"
   },
   "sintese.json": {
    "disponivel": true,
-   "gerado_em": "2026-09-28T13:25:52Z"
+   "gerado_em": "2026-09-28T13:56:39Z"
   }
  },
  "fontes": {
@@ -1967,6 +1967,6 @@
  },
  "regressoes": [],
  "builders_falhos": [],
- "duracao_s": 23.4,
+ "duracao_s": 24.5,
  "coleta_executada": false
 }

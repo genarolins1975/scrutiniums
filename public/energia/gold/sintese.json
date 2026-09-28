@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "sintese.json",
- "gerado_em": "2026-09-28T13:25:52Z",
+ "gerado_em": "2026-09-28T13:56:39Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "b5e69d22218c",
+ "versao_codigo": "03bc93a2bd06",
  "disponivel": true,
  "frases": [
   {
@@ -165,7 +165,7 @@
   {
    "id": "pld_defasagem",
    "titulo": "Série de PLD sem atualização recente",
-   "condicao": "Último dia de PLD integrado mais de 2 dias antes da data de processamento da gold.",
+   "condicao": "Último dia de PLD integrado mais de 2 dias antes da data de processamento dos dados.",
    "ativo": false,
    "evidencia": "Último dia integrado: 28/09/2026, 0 dias antes do processamento de 28/09/2026. A última coleta direta na CCEE foi bem-sucedida.",
    "href": "/setor-eletrico/dados/ccee-pld-horario",

@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "rede.json",
- "gerado_em": "2026-09-28T13:25:52Z",
+ "gerado_em": "2026-09-28T13:56:39Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "b5e69d22218c",
+ "versao_codigo": "03bc93a2bd06",
  "disponivel": true,
  "dia_referencia": "2026-09-26",
  "dia_referencia_liquido": "2026-09-25",
@@ -25,6 +25,7 @@
    "fluxo_dia": -3557.0,
    "programado_dia": -3401.0,
    "fluxo_media_30d": -4095.0,
+   "fluxo_media_30d_anterior": -4166.0,
    "dias_sentido_canonico_30d": 0,
    "diferenca_preco_ultimo_dia_comum": {
     "dia": "2026-09-26",
@@ -41,6 +42,7 @@
    "fluxo_dia": -172.0,
    "programado_dia": -981.0,
    "fluxo_media_30d": 774.0,
+   "fluxo_media_30d_anterior": 1491.0,
    "dias_sentido_canonico_30d": 25,
    "diferenca_preco_ultimo_dia_comum": {
     "dia": "2026-09-26",
@@ -57,6 +59,7 @@
    "fluxo_dia": 3808.0,
    "programado_dia": 3900.0,
    "fluxo_media_30d": 4963.0,
+   "fluxo_media_30d_anterior": 5693.0,
    "dias_sentido_canonico_30d": 30,
    "diferenca_preco_ultimo_dia_comum": {
     "dia": "2026-09-26",
@@ -73,6 +76,7 @@
    "fluxo_dia": 2835.0,
    "programado_dia": 2945.0,
    "fluxo_media_30d": 1404.0,
+   "fluxo_media_30d_anterior": 690.0,
    "dias_sentido_canonico_30d": 28,
    "diferenca_preco_ultimo_dia_comum": {
     "dia": "2026-09-26",
@@ -4158,6 +4162,16 @@
    "amplitude": 6.26
   }
  ],
+ "resumo_amplitude": {
+  "dia": "2026-09-28",
+  "valor": 6.26,
+  "media_30d": 1.92,
+  "media_30d_anterior": 2.86,
+  "maior_30d": {
+   "dia": "2026-09-24",
+   "valor": 10.99
+  }
+ },
  "limites_integrados": false,
  "proveniencia": {
   "fluxo": {
@@ -4179,24 +4193,25 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:04:40.385538",
    "capturado_em": "2026-09-28T09:09:02Z",
-   "validado_em": "2026-09-28T13:25:52Z",
+   "validado_em": "2026-09-28T13:56:39Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-26"
    },
    "transformacoes": [
     "orientação canônica por fronteira com sinal",
-    "média das 24 horas do dia"
+    "média das 24 horas do dia",
+    "média de 30 dias das médias diárias (os 30 dias até o dia de referência e os 30 anteriores), só com os 30 dias completos"
    ],
-   "formula": "fluxo_dia(par) = (1/24) × Σ sinal × intercâmbio_verificado(h)",
+   "formula": "fluxo_dia(par) = (1/24) × Σ sinal × intercâmbio_verificado(h); média_30d = média de fluxo_dia nos 30 dias da janela",
    "snapshot": {
     "id": "intercambio_nacional_ho@2026-09-28T09:09:02Z",
     "sha256": "c59c224c6bdb7afcd4d09b0b18223032386787b2782c8165650ca0f4984a3b5d"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "b5e69d22218c",
+   "versao_codigo": "03bc93a2bd06",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T13:25:48Z",
+    "detectado_em": "2026-09-28T13:56:34Z",
     "total": 0,
     "vintages_comparadas": 6,
     "arquivos": 6,
@@ -4231,7 +4246,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-28T10:55:46Z",
-   "validado_em": "2026-09-28T13:25:52Z",
+   "validado_em": "2026-09-28T13:56:39Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-28"
@@ -4246,9 +4261,9 @@
     "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "b5e69d22218c",
+   "versao_codigo": "03bc93a2bd06",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T13:25:51Z",
+    "detectado_em": "2026-09-28T13:56:38Z",
     "total": 0,
     "vintages_comparadas": 7,
     "arquivos": 6,
@@ -4282,7 +4297,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-28T10:55:46Z",
-   "validado_em": "2026-09-28T13:25:52Z",
+   "validado_em": "2026-09-28T13:56:39Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-28"
@@ -4297,9 +4312,9 @@
     "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "b5e69d22218c",
+   "versao_codigo": "03bc93a2bd06",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T13:25:51Z",
+    "detectado_em": "2026-09-28T13:56:38Z",
     "total": 0,
     "vintages_comparadas": 7,
     "arquivos": 6,
@@ -4334,7 +4349,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:00:43.210439",
    "capturado_em": "2026-09-28T09:08:46Z",
-   "validado_em": "2026-09-28T13:25:52Z",
+   "validado_em": "2026-09-28T13:56:39Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-25"
@@ -4349,9 +4364,9 @@
     "sha256": "be6df6321ee402d7c879e597576ad9a82acba3283f3b9783df4ce8f558e0ae02"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "b5e69d22218c",
+   "versao_codigo": "03bc93a2bd06",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T13:25:51Z",
+    "detectado_em": "2026-09-28T13:56:37Z",
     "total": 0,
     "vintages_comparadas": 6,
     "arquivos": 6,
