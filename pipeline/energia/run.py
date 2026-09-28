@@ -94,7 +94,8 @@ def main(argv):
     for ds in list(ons.DATASETS) + [ccee.DATASET]:
         snap = c.snapshot_de(con, ds)
         fontes[ds] = {"ultima_captura": c.ultima_captura(snap), "snapshot": snap.get("id"),
-                      "snapshot_sha256": snap.get("sha256"), "ultima_tentativa": base.ultima_coleta(con, ds)}
+                      "snapshot_sha256": snap.get("sha256"), "ultima_tentativa": base.ultima_coleta(con, ds),
+                      "capturas": snap.get("capturas", [])}
     meta = {
         **c.cabecalho("meta.json"),
         "golds": {k: {"disponivel": _integro(v), "gerado_em": (v or {}).get("gerado_em")} for k, v in g.items()},

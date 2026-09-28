@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "geracao.json",
- "gerado_em": "2026-09-28T09:11:00Z",
+ "gerado_em": "2026-09-28T09:46:04Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "cfba57a74dc7",
+ "versao_codigo": "7c164df226a7",
  "disponivel": true,
  "dia_referencia": "2026-09-25",
  "fontes": [
@@ -15467,7 +15467,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:00:43.210439",
    "capturado_em": "2026-09-28T09:08:46Z",
-   "validado_em": "2026-09-28T09:11:00Z",
+   "validado_em": "2026-09-28T09:46:04Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-25"
@@ -15482,7 +15482,7 @@
     "sha256": "be6df6321ee402d7c879e597576ad9a82acba3283f3b9783df4ce8f558e0ae02"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "cfba57a74dc7",
+   "versao_codigo": "7c164df226a7",
    "revisoes_conhecidas": [],
    "limitacoes": [
     "A térmica do balanço agrega todas as usinas térmicas despachadas pelo ONS; o conjunto não separa combustível (gás, carvão, óleo, nuclear, biomassa). A separação exige o conjunto Geração por Usina, catalogado e ainda não integrado.",

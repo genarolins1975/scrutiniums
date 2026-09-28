@@ -44,6 +44,6 @@ export const gold = {
 };
 
 /** true quando a gold existe e está íntegra (disponivel === true). */
-export function integra<T extends { disponivel?: boolean }>(g: T | null): g is T {
+export function integra<T extends { disponivel?: boolean }>(g: T | null): g is T & { disponivel: true } {
   return !!g && g.disponivel === true;
 }

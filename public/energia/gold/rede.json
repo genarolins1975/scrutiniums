@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "rede.json",
- "gerado_em": "2026-09-28T09:11:01Z",
+ "gerado_em": "2026-09-28T09:46:06Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "cfba57a74dc7",
+ "versao_codigo": "7c164df226a7",
  "disponivel": true,
  "dia_referencia": "2026-09-26",
  "dia_referencia_liquido": "2026-09-25",
@@ -4161,7 +4161,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-28T09:09:02Z",
-   "validado_em": "2026-09-28T09:11:01Z",
+   "validado_em": "2026-09-28T09:46:06Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-26"
@@ -4176,7 +4176,7 @@
     "sha256": "c59c224c6bdb7afcd4d09b0b18223032386787b2782c8165650ca0f4984a3b5d"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "cfba57a74dc7",
+   "versao_codigo": "7c164df226a7",
    "revisoes_conhecidas": [],
    "limitacoes": [
     "Limites de intercâmbio e restrições elétricas não estão integrados: fluxos altos não significam, por si, rede no limite.",
@@ -4205,7 +4205,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-27T15:44:02Z",
-   "validado_em": "2026-09-28T09:11:01Z",
+   "validado_em": "2026-09-28T09:46:06Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-27"
@@ -4220,7 +4220,7 @@
     "sha256": "2595a8c01260c23f8c38d08de19e4b704b96ed0bcf4d6d34f894eda75164f178"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "cfba57a74dc7",
+   "versao_codigo": "7c164df226a7",
    "revisoes_conhecidas": [],
    "limitacoes": [
     "A série de PLD termina na última captura da CCEE; dias posteriores ficam sem diferença calculada.",

@@ -11,10 +11,10 @@ A família visual é a da Scrutiniums: tipografia, grid, filetes, rótulos em ca
 | `energia` | `#0E6170` | acento do Setor Elétrico (teal sóbrio) | 6,2 / 6,7 / 7,1 |
 | `energia-dark` | `#0A4A56` | hover, foco, texto de destaque | 8,6 / 9,3 / 9,9 |
 | `energia-soft` | `#5E98A3` | marcação não textual (filetes, áreas) | 2,8 / 3,0 / 3,2 (nunca texto) |
-| `energia-fundo` | `#E6EEEE` | faixas de destaque do domínio | fundo |
+| `energia-fundo` | `#E6EEEE` | estado ativo e faixas de destaque do domínio | fundo; texto sobre ele só em `carvao`, `carvao-muted`, `energia` ou `energia-dark` (`mineral` fica em 4,43:1) |
 | `superficie` | `#FFFFFF` | superfícies de painel no Setor Elétrico | fundo |
 
-Regra herdada: nenhum hexadecimal solto em componente. Os tokens entram em `tailwind.config.ts` e em `globals.css` (`--cor-energia*`). O teste `design-tokens-energia.test.ts` confere contraste AA dos tokens de texto.
+Regra herdada: nenhum hexadecimal solto em componente. Os tokens entram em `tailwind.config.ts` e em `globals.css` (`--cor-energia*`). SVG de gráfico usa as variáveis CSS (`var(--cor-mineral)`, `var(--cor-grade)`, `var(--serie-*)`), nunca o hexadecimal. O teste `design-tokens-energia.test.ts` confere contraste AA dos tokens de texto sobre `superficie`, `papel` e `energia-fundo`, a ausência de hexadecimal solto nos componentes do domínio e que `energia-soft` nunca vira cor de texto.
 
 ## Selos de natureza do dado
 
@@ -59,7 +59,7 @@ A obrigatoriedade é de tipo (TypeScript): um painel sem "o que não posso concl
 
 * Um gráfico só entra se responde a uma pergunta escrita no título. Ex.: "Quanta água está chegando ao Sudeste/Centro-Oeste?" com subtítulo `ENA · % da MLT`.
 * Todo gráfico tem unidade, período, fonte, data de referência, tooltip, link de metodologia e download quando pertinente.
-* Séries de fonte com cor e padrão: hidráulica `#1F5F8B`, térmica `#8C3B2E`, eólica `#3F6E5A`, solar `#8A6D2F`; submercados SE/CO `#1A1D21`, S `#1F5F8B`, NE `#8C3B2E`, N `#3F6E5A`, sempre com rótulo direto no fim da linha.
+* Paletas validadas com o verificador de daltonismo da skill de visualização (ordem fixa; separação CVD entre séries adjacentes acima de 8; visão normal acima de 15). A primeira proposta (tons terrosos) falhou no piso de croma e na separação CVD e foi substituída. Fontes, nesta ordem: hidráulica `#256ABF`, térmica `#D95926`, eólica `#199E70`, solar `#C98500` (solar abaixo de 3:1 exige rótulo direto e tabela). Submercados: SE/CO `#4A3AA7`, S `#199E70`, NE `#D95926`, N `#2A78D6`. Sempre com rótulo direto no fim da linha e legenda; texto nunca na cor da série.
 * Ausência é lacuna na linha, nunca zero. Previsão tracejada com faixa; cenário pontilhado.
 
 ## Tipografia e ritmo

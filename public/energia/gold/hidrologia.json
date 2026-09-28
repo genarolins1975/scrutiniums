@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "hidrologia.json",
- "gerado_em": "2026-09-28T09:10:57Z",
+ "gerado_em": "2026-09-28T09:46:01Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "cfba57a74dc7",
+ "versao_codigo": "7c164df226a7",
  "disponivel": true,
  "dia_referencia_ear": "2026-09-26",
  "dia_referencia_ena": "2026-09-26",
@@ -22492,7 +22492,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:01:33.439904",
    "capturado_em": "2026-09-28T09:07:40Z",
-   "validado_em": "2026-09-28T09:10:57Z",
+   "validado_em": "2026-09-28T09:46:01Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-26"
@@ -22504,7 +22504,7 @@
     "sha256": "62286e54eff7ee969f8661d82f2bc6fa74860ea43403d07e027d0a890e0152b0"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "cfba57a74dc7",
+   "versao_codigo": "7c164df226a7",
    "revisoes_conhecidas": [],
    "limitacoes": [
     "O ONS informa que os dados fazem parte de um processo de consistência recorrente e podem ser atualizados após a publicação; revisões entram como novas vintages.",
@@ -22532,7 +22532,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-28T09:07:40Z",
-   "validado_em": "2026-09-28T09:10:57Z",
+   "validado_em": "2026-09-28T09:46:01Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-26"
@@ -22546,7 +22546,7 @@
     "sha256": "62286e54eff7ee969f8661d82f2bc6fa74860ea43403d07e027d0a890e0152b0"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "cfba57a74dc7",
+   "versao_codigo": "7c164df226a7",
    "revisoes_conhecidas": [],
    "limitacoes": [
     "O ONS informa que os dados fazem parte de um processo de consistência recorrente e podem ser atualizados após a publicação; revisões entram como novas vintages.",
@@ -22574,7 +22574,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-28T09:07:40Z",
-   "validado_em": "2026-09-28T09:10:57Z",
+   "validado_em": "2026-09-28T09:46:01Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-26"
@@ -22589,7 +22589,7 @@
     "sha256": "62286e54eff7ee969f8661d82f2bc6fa74860ea43403d07e027d0a890e0152b0"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "cfba57a74dc7",
+   "versao_codigo": "7c164df226a7",
    "revisoes_conhecidas": [],
    "limitacoes": [
     "O ONS informa que os dados fazem parte de um processo de consistência recorrente e podem ser atualizados após a publicação; revisões entram como novas vintages.",
@@ -22617,7 +22617,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:01:54.457065",
    "capturado_em": "2026-09-28T09:08:01Z",
-   "validado_em": "2026-09-28T09:10:57Z",
+   "validado_em": "2026-09-28T09:46:01Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-26"
@@ -22629,7 +22629,7 @@
     "sha256": "004e24fa7127845e626be9c5cceb17bdda797afd5a6ab2fd55705f2d29f65178"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "cfba57a74dc7",
+   "versao_codigo": "7c164df226a7",
    "revisoes_conhecidas": [],
    "limitacoes": [
     "O ONS informa que os dados fazem parte de um processo de consistência recorrente e podem ser atualizados após a publicação; revisões entram como novas vintages.",
@@ -22658,7 +22658,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-28T09:08:01Z",
-   "validado_em": "2026-09-28T09:10:57Z",
+   "validado_em": "2026-09-28T09:46:01Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-26"
@@ -22673,7 +22673,7 @@
     "sha256": "004e24fa7127845e626be9c5cceb17bdda797afd5a6ab2fd55705f2d29f65178"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "cfba57a74dc7",
+   "versao_codigo": "7c164df226a7",
    "revisoes_conhecidas": [],
    "limitacoes": [
     "O ONS informa que os dados fazem parte de um processo de consistência recorrente e podem ser atualizados após a publicação; revisões entram como novas vintages.",

@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "carga.json",
- "gerado_em": "2026-09-28T09:10:57Z",
+ "gerado_em": "2026-09-28T09:46:01Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "cfba57a74dc7",
+ "versao_codigo": "7c164df226a7",
  "disponivel": true,
  "dia_referencia": "2026-09-25",
  "unidade": "MWmed",
@@ -11862,7 +11862,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:00:44.552024",
    "capturado_em": "2026-09-28T09:08:16Z",
-   "validado_em": "2026-09-28T09:10:57Z",
+   "validado_em": "2026-09-28T09:46:01Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-25"
@@ -11874,7 +11874,7 @@
     "sha256": "682cc3ec96e0f40af6920bb618fc756ea0602fea2b45e50dbf1ad01918955c5d"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "cfba57a74dc7",
+   "versao_codigo": "7c164df226a7",
    "revisoes_conhecidas": [],
    "limitacoes": [
     "O ONS mudou o conteúdo da série em 01/03/2021 e em 29/04/2023 (inclusão da estimativa de MMGD); comparações que atravessam essas datas não são homogêneas e não são exibidas como variação.",
@@ -11902,7 +11902,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-28T09:08:16Z",
-   "validado_em": "2026-09-28T09:10:57Z",
+   "validado_em": "2026-09-28T09:46:01Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-25"
@@ -11918,7 +11918,7 @@
     "sha256": "682cc3ec96e0f40af6920bb618fc756ea0602fea2b45e50dbf1ad01918955c5d"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "cfba57a74dc7",
+   "versao_codigo": "7c164df226a7",
    "revisoes_conhecidas": [],
    "limitacoes": [
     "O ONS mudou o conteúdo da série em 01/03/2021 e em 29/04/2023 (inclusão da estimativa de MMGD); comparações que atravessam essas datas não são homogêneas e não são exibidas como variação.",

@@ -28,7 +28,7 @@ export function SwitcherObservatorio({
           ▾
         </span>
       </summary>
-      <div className="absolute left-0 z-40 mt-1 w-72 border border-linha bg-superficie p-2 shadow-[0_8px_24px_rgba(26,29,33,0.12)]">
+      <div className="absolute left-0 z-40 mt-1 hidden w-[min(18rem,calc(100vw-2rem))] border border-linha bg-superficie p-2 shadow-[0_8px_24px_rgba(26,29,33,0.12)] group-open:block">
         <p className="rotulo px-3 pb-1 pt-2 text-mineral">Observatórios</p>
         <ul>
           {DOMINIOS.map((d) => (

@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "pld.json",
- "gerado_em": "2026-09-28T09:10:56Z",
+ "gerado_em": "2026-09-28T09:46:00Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "cfba57a74dc7",
+ "versao_codigo": "7c164df226a7",
  "disponivel": true,
  "unidade": "R$/MWh (nominal)",
  "fuso": "Horário de Brasília (UTC-3, sem horário de verão no período)",
@@ -21143,7 +21143,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-27T15:44:02Z",
-   "validado_em": "2026-09-28T09:10:56Z",
+   "validado_em": "2026-09-28T09:46:00Z",
    "cobertura_historica": {
     "inicio": "2021-01-01T00:00",
     "fim": "2026-09-27T23:00"
@@ -21157,7 +21157,7 @@
     "sha256": "2595a8c01260c23f8c38d08de19e4b704b96ed0bcf4d6d34f894eda75164f178"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "cfba57a74dc7",
+   "versao_codigo": "7c164df226a7",
    "revisoes_conhecidas": [],
    "limitacoes": [
     "Valores nominais em R$/MWh. Os limites regulatórios (mínimo, máximo horário e máximo estrutural) mudam a cada ano e não foram auditados nesta fase; comparações entre anos misturam regimes de limites diferentes.",
@@ -21186,7 +21186,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-27T15:44:02Z",
-   "validado_em": "2026-09-28T09:10:56Z",
+   "validado_em": "2026-09-28T09:46:00Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-27"
@@ -21200,7 +21200,7 @@
     "sha256": "2595a8c01260c23f8c38d08de19e4b704b96ed0bcf4d6d34f894eda75164f178"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "cfba57a74dc7",
+   "versao_codigo": "7c164df226a7",
    "revisoes_conhecidas": [],
    "limitacoes": [
     "Valores nominais em R$/MWh. Os limites regulatórios (mínimo, máximo horário e máximo estrutural) mudam a cada ano e não foram auditados nesta fase; comparações entre anos misturam regimes de limites diferentes.",
@@ -21230,7 +21230,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-27T15:44:02Z",
-   "validado_em": "2026-09-28T09:10:56Z",
+   "validado_em": "2026-09-28T09:46:00Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-27"
@@ -21245,7 +21245,7 @@
     "sha256": "2595a8c01260c23f8c38d08de19e4b704b96ed0bcf4d6d34f894eda75164f178"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "cfba57a74dc7",
+   "versao_codigo": "7c164df226a7",
    "revisoes_conhecidas": [],
    "limitacoes": [
     "Valores nominais em R$/MWh. Os limites regulatórios (mínimo, máximo horário e máximo estrutural) mudam a cada ano e não foram auditados nesta fase; comparações entre anos misturam regimes de limites diferentes.",

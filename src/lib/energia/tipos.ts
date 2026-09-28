@@ -427,6 +427,7 @@ export type MetaGold = Cabecalho & {
     snapshot: string | null;
     snapshot_sha256: string | null;
     ultima_tentativa: { tentado_em: string; ok: boolean; detalhe: string } | null;
+    capturas: { recurso: string; sha256: string; capturado_em: string; publicado_em: string | null; origem: string }[];
   }>;
   regressoes: { gold: string; motivo: string }[];
   builders_falhos: { gold: string; motivo: string }[];

@@ -3,6 +3,9 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { INDICADORES } from "@/lib/dadosPublicos";
 import { ABAS_OBSERVATORIO } from "@/lib/data/observatorioAbas";
+import { MODULOS_ENERGIA } from "@/lib/energia/navegacao";
+import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
+import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
 
 /**
  * Superfície pública indexável: páginas institucionais, indicadores abertos
@@ -61,6 +64,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...ufs.map((u) => rota(`/observatorio/states/${u.uf}`, 0.8, "daily")),
     ...municipios.map((m) => rota(`/observatorio/presenca/${m.cod}`, 0.5, "weekly")),
     rota("/glossario", 0.8, "monthly"),
+    // Observatório Brasileiro do Setor Elétrico (domínio energia)
+    ...MODULOS_ENERGIA.map((m) => rota(m.href, m.integrado ? 0.9 : 0.5, m.integrado ? "daily" : "monthly")),
+    rota("/setor-eletrico/metodologia", 0.7, "monthly"),
+    rota("/setor-eletrico/pld/modelos", 0.6, "weekly"),
+    rota("/setor-eletrico/pld/previsoes", 0.6, "daily"),
+    ...CONCEITOS.filter((c) => c.estado === "CONFERIDO").map((c) => rota(`/setor-eletrico/aprenda/${c.slug}`, 0.6, "monthly")),
+    ...DATASETS_INTEGRADOS.map((d) => rota(`/setor-eletrico/dados/${d.slug}`, 0.5, "weekly")),
     rota("/cadastro", 0.6, "yearly"),
     rota("/entrar", 0.3, "yearly"),
     rota("/privacidade", 0.2, "yearly"),
