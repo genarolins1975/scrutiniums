@@ -123,3 +123,8 @@ dispara o deploy da Vercel. Execução manual pela aba Actions
 (workflow_dispatch), com opção `somente_gold` para reconstruir sem
 coletar. O estado da CI evolui de forma independente do arquivo
 histórico no Mac de origem, que permanece como arquivo-mestre.
+
+## Plataforma de dois observatórios e domínio Energia
+
+O registro `src/lib/dominios.ts` é a fonte única dos observatórios (nome, pergunta, rota, acento, prefixos de telemetria). A telemetria atribui cada seção a um domínio (`obs:` e `credito:` para Crédito, `energia:` para Setor Elétrico) e o painel de administração agrega visitas por domínio. O cookie `scrutiniums_observatorio` guarda só a última escolha feita em `/app/observatorios`; não autentica nada. O Setor Elétrico usa páginas Next estáticas (`force-static`) que leem a gold de `public/energia/gold/` no build; a SPA do Crédito em `public/obs/` segue intacta, com o switcher de observatório acrescentado. Decisões, rotas, design system, dados, auditabilidade e governança de previsão: [docs/observatorios/](./docs/observatorios/README.md).
+

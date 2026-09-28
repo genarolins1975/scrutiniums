@@ -2,6 +2,8 @@
 
 Plataforma **gratuita** de inteligência analítica sobre o crédito e a economia brasileira: o Observatório Brasileiro de Crédito — carteira, inadimplência, instituições, produtos, Pix, bets e fraudes financeiras — com metodologia aberta, dados oficiais e glossário público. A **leitura do Observatório é aberta** — sem cadastro, indexável, compartilhável — para maximizar o uso e o alcance dos painéis. A **área de conta e os painéis personalizados** (`/app`) exigem cadastro — e-mail de contato, telefone verificado por SMS e perfil básico. Sem plano pago, sem cartão. Durante o **acesso antecipado**, a entrada nessa área exige um **código de acesso** (`ACCESS_CODES`, lista separada por vírgulas); quem não tem código fica na **lista de espera** e será contatado quando o produto entrar em produção.
 
+Desde setembro de 2026 a Scrutiniums é uma plataforma de **dois observatórios** sobre a mesma infraestrutura (sessão, telemetria, design system, sitemap): o **Observatório Brasileiro de Crédito** e o **Observatório Brasileiro do Setor Elétrico** (`/setor-eletrico`). Quem entra com conta escolhe o observatório em `/app/observatorios` e troca pelo cabeçalho sem novo login.
+
 ## Stack
 
 - **Next.js 14** (App Router, Server Components) + **TypeScript**
@@ -80,6 +82,18 @@ Gente, rede física e auditoria das instituições financeiras, **exclusivamente
 
 O Observatório Brasileiro de Crédito (SPA em JavaScript puro, 16+ abas) roda embutido na plataforma em **`/observatorio`** e é **público para leitura** — sem cadastro, indexável por buscadores. Os ativos estáticos (HTML, JS, CSS e os JSONs analíticos da camada gold, ~54 MB) vivem em `public/obs/`; o route handler `src/app/observatorio/[[...rota]]/route.ts` serve `public/obs/index.html` para qualquer rota sob `/observatorio`, injetando metadados por aba (title, description, canonical, Open Graph e JSON-LD `Dataset`) a partir do catálogo `src/lib/data/observatorioAbas.ts` — o roteamento fino continua sendo da própria SPA, via History API. A área logada (`/app`) segue protegida pelo `src/middleware.ts`; no rodapé da SPA, o visitante vê "Entrar" e o usuário com sessão vê "Minha conta"/"Sair" (checagem via `GET /api/auth/eu`). A página pública **`/imprensa`** publica os números citáveis dos painéis de bets e fraudes com fonte primária e grau de evidência. Para atualizar os dados no futuro, rode o pipeline do observatório e sincronize a saída `data/gold/` para `public/obs/data/gold/` (e os ativos `index.html`/`app.js`/`styles.css` se a SPA mudar, reaplicando o prefixo `/observatorio` e o `DATA_BASE=/obs/data/gold/`).
 
+## Observatório Brasileiro do Setor Elétrico
+
+Domínio `energia`, em **`/setor-eletrico`**: 12 módulos (Visão geral, PLD, Água e clima, Geração, Carga e consumo, Rede, Mercado, Empresas e ativos, Expansão, Regulação, Aprenda, Dados e metodologia), páginas estáticas geradas no build a partir da gold em `public/energia/gold/` e com CSVs em `public/energia/series/`. O pipeline fica em `pipeline/energia/` (bronze imutável com sha256, silver com vintages append only e consulta `como_estava_em` sem look-ahead, gold com proveniência por indicador) e roda pelo workflow `atualizar-energia.yml`:
+
+```bash
+python3 -m pipeline.energia.run                 # coleta ONS/CCEE e reconstrói a gold
+python3 -m pipeline.energia.run --sem-coleta    # só reconstrói a partir do estado salvo
+python3 -m unittest discover -s pipeline/tests -t .
+```
+
+A previsão do PLD segue governança explícita: modelos com estado (PESQUISA, VALIDAÇÃO, PRODUÇÃO, APOSENTADO) em `pipeline/energia/registro_modelos.json`, arquivo imutável em `pipeline/energia/previsoes/arquivo.jsonl` com sha256 por registro, e previsão principal exibida como indisponível, com motivo, enquanto nenhum modelo está em produção. Arquitetura, catálogo de fontes, modelo de auditabilidade e plano em [docs/observatorios/](./docs/observatorios/README.md).
+
 ## Documentação
 
-As decisões técnicas (banco, autenticação, máquina de estados do onboarding, rate limiting, tokens de design, telemetria sem PII) estão registradas em [ARCHITECTURE.md](./ARCHITECTURE.md).
+As decisões técnicas (banco, autenticação, máquina de estados do onboarding, rate limiting, tokens de design, telemetria sem PII) estão registradas em [ARCHITECTURE.md](./ARCHITECTURE.md). A arquitetura da plataforma de dois observatórios e do domínio Energia está em [docs/observatorios/](./docs/observatorios/README.md).
