@@ -59,7 +59,7 @@ const CCEE_PLD: FonteOficial = {
 const TRECHO_CMO_SEMANAL =
   "Valores do custo, por unidade de energia produzida, para atender ao incremento de uma unidade de carga no SIN, chamado de Custo Marginal de Operação – CMO. Valores para cada semana operativa por subsistema, e por patamar de carga, além da média semanal, estimados pelo modelo Decomp.";
 const TRECHO_CMO_SEMI =
-  "Este CMO é estimado pelo modelo DESSEM para cada barra do sistema em base semi-horária. O CMO do subsistema é obtido pelo média dos CMOs nas barras de cada subsistema, ponderados pelas respectivas cargas.";
+  "Este CMO é estimado pelo modelo DESSEM para cada barra do sistema em base semi-horária. O CMO do subsistema é obtido pelo média dos CMOs nas barras de cada subsistema, ponderados pelas respectivas cargas [...]";
 const TRECHO_EAR =
   "A Energia Armazenada (EAR) representa a energia associada ao volume de água disponível nos reservatórios que pode ser convertido em geração na própria usina e em todas as usinas à jusante na cascata. A grandeza de EAR leva em conta nível verificado nos reservatórios na data de referência. A grandeza de EAR máxima representa a capacidade de armazenamento caso todos os reservatórios do sistema estivessem cheios.";
 const TRECHO_BALANCO =
@@ -75,7 +75,16 @@ const CCEE_MCP: FonteOficial = {
   trecho:
     "Detalhar os valores do Preço de Liquidação das Diferenças do MCP por mês de referência, período de comercialização e submercado. [...] PERIODO_COMERCIALIZACAO: Representa o período de comercialização, equivalente a uma hora [...] BE_POSITIVO: Corresponde ao Balanço Energético positivo do perfil de agente “a” no submercado “s” para o período de comercialização “j” [...] RESULTADO_MCP: Corresponde ao Resultado no Mercado de Curto Prazo do perfil de agente “a”, no submercado “s”, por período de comercialização “j”.",
   parafrase:
-    "Em outras palavras: o PLD é o preço do Mercado de Curto Prazo. Para cada participante (perfil de agente), em cada submercado e em cada hora, a CCEE registra se o balanço de energia ficou positivo ou negativo e qual foi o resultado financeiro nesse mercado.",
+    "Em outras palavras: o PLD é o preço do Mercado de Curto Prazo. A CCEE define, para cada perfil de agente, submercado e hora, o balanço de energia (positivo ou negativo) e o resultado nesse mercado; o conjunto publica esses valores somados por submercado e hora.",
+};
+
+const CCEE_MCP_MENSAL: FonteOficial = {
+  orgao: "CCEE",
+  documento: "Portal de dados abertos, conjunto SUMARIO_MENSAL_COMPRA_VENDA_SUBMERCADO (descrição do recurso), capturado em 28/09/2026",
+  url: "https://dadosabertos.ccee.org.br/dataset/sumario_mensal_compra_venda_submercado",
+  trecho:
+    "Detalhar o balanço energético e resultado do MCP por submercado e por mês de referência. [...] RESULTADO_MCP_VENDA: Corresponde ao Resultado no Mercado de Curto Prazo de venda do perfil de agente “a”, no submercado “s”, por período de comercialização “j” consolidado no mês.",
+  parafrase: "Em outras palavras: no consolidado do mês, a CCEE publica por submercado o resultado de venda e o de compra no Mercado de Curto Prazo.",
 };
 
 export const CONCEITOS: Conceito[] = [
@@ -87,7 +96,7 @@ export const CONCEITOS: Conceito[] = [
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     emUmaFrase:
-      "Preço do Mercado de Curto Prazo, em reais por megawatt-hora, calculado pela CCEE diariamente para cada hora do dia seguinte e para cada submercado, com base no Custo Marginal de Operação e dentro dos limites mínimo e máximos vigentes.",
+      "Preço do Mercado de Curto Prazo, calculado pela CCEE diariamente para cada hora do dia seguinte e para cada submercado, com base no Custo Marginal de Operação e dentro dos limites mínimo e máximos vigentes.",
     porQueImporta:
       "No Mercado de Curto Prazo, a CCEE apura, para cada perfil de agente, submercado e hora, um balanço energético em MWh (positivo ou negativo) e um resultado em R$; o PLD é o preço desse mercado. Tem como base o CMO, que o ONS define como o custo, por unidade de energia produzida, para atender ao incremento de uma unidade de carga no SIN. Como o balanço de cada agente é formado e como o resultado é liquidado está nas Regras de Comercialização da CCEE, cuja conferência documental está pendente nesta fase.",
     comoEMedido:
@@ -106,7 +115,7 @@ export const CONCEITOS: Conceito[] = [
       },
     ],
     limitacoes: [
-      "O PLD não é a tarifa do consumidor atendido pela distribuidora, que é composta pela Tarifa de Energia (TE) e pela Tarifa de Uso do Sistema de Distribuição (TUSD) definidas nos processos tarifários da ANEEL.",
+      "O PLD não é a tarifa do consumidor atendido pela distribuidora: essa conta segue os valores da Tarifa de Energia (TE) e da Tarifa de Uso do Sistema de Distribuição (TUSD), resultantes dos processos tarifários da ANEEL.",
       "Os limites mínimo e máximos mudam a cada ano; comparações longas em valores nominais misturam regimes de limites.",
     ],
     vejaNoPortal: [
@@ -122,13 +131,13 @@ export const CONCEITOS: Conceito[] = [
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     emUmaFrase:
-      "Mercado em que a CCEE apura, para cada perfil de agente, submercado e hora, um balanço de energia em MWh e um resultado financeiro em R$; o PLD é o preço desse mercado.",
+      "Mercado cujo preço é o PLD, segundo a CCEE. Nele, a CCEE define o balanço de energia (MWh) e o resultado (R$) de cada perfil de agente por submercado e hora.",
     porQueImporta:
-      "É onde o PLD é usado: a CCEE publica o PLD como preço do MCP e, por hora e submercado, o balanço positivo e negativo e o resultado de cada perfil de agente nesse mercado.",
+      "É onde o PLD é usado como preço. A CCEE publica, por hora e submercado, os totais de balanço positivo e negativo e o resultado no MCP; no consolidado do mês, o resultado de venda e o de compra.",
     comoEMedido:
-      "Em MWh (balanço) e R$ (resultado), por perfil de agente, submercado e período de comercialização de uma hora, com consolidação mensal, em conjuntos do portal de dados abertos da CCEE ainda não integrados a este observatório.",
+      "Em MWh (balanço) e R$ (resultado), somados por submercado e período de comercialização de uma hora (SUMARIO_BE_HORARIO_SUBMERCADO) e por mês (SUMARIO_MENSAL_COMPRA_VENDA_SUBMERCADO); conjuntos ainda não integrados a este observatório.",
     relacoes: ["pld", "submercado"],
-    fontes: [CCEE_MCP],
+    fontes: [CCEE_MCP, CCEE_MCP_MENSAL],
     limitacoes: [
       "Como o balanço de cada perfil de agente é formado (contratos, geração e consumo medidos) e como o resultado é liquidado está nas Regras de Comercialização da CCEE, não conferidas nesta fase.",
     ],
@@ -161,13 +170,13 @@ export const CONCEITOS: Conceito[] = [
     nome: "Submercado",
     grupo: "Preço",
     estado: "CONFERIDO",
-    conferidoEm: "2026-09-27",
+    conferidoEm: "2026-09-28",
     emUmaFrase:
       "Cada uma das quatro divisões do SIN para as quais a CCEE calcula um PLD próprio: Norte, Nordeste, Sul e Sudeste (esta plataforma usa o rótulo Sudeste/Centro-Oeste para o último).",
     porQueImporta:
       "Os quatro valores de cada hora podem coincidir ou diferir. Por que diferem (limites de transmissão entre regiões, por exemplo) é matéria dos modelos e das regras da CCEE e do ONS, cuja conferência documental está pendente nesta fase: a plataforma mostra a diferença observada e o intercâmbio medido, sem atribuir causa.",
     comoEMedido:
-      "O conjunto PLD_HORARIO traz um valor por hora para cada submercado. Nos dados do ONS as mesmas quatro regiões aparecem como subsistemas (SE, S, NE, N).",
+      "O conjunto PLD_HORARIO traz um valor por hora para cada submercado. Nos conjuntos do ONS usados aqui, o campo de região é o subsistema, identificado por SE, S, NE e N.",
     relacoes: ["pld", "intercambio"],
     fontes: [
       CCEE_PLD,
@@ -311,12 +320,12 @@ export const CONCEITOS: Conceito[] = [
   },
   {
     slug: "geracao-centralizada",
-    nome: "Geração verificada (centralizada)",
+    nome: "Geração verificada",
     grupo: "Operação",
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     emUmaFrase:
-      "Geração das usinas hidráulicas, térmicas, eólicas e fotovoltaicas acompanhadas pelo ONS, verificada hora a hora.",
+      "Geração das usinas hidráulicas, térmicas, eólicas e fotovoltaicas no balanço de energia do ONS, verificada hora a hora por subsistema.",
     porQueImporta: "Mostra, hora a hora e por subsistema, a oferta de energia por fonte ao lado da carga verificada.",
     comoEMedido: "Em MWmed, por hora e por subsistema, no Balanço de Energia nos Subsistemas do ONS.",
     relacoes: ["carga", "geracao-distribuida"],
@@ -325,7 +334,7 @@ export const CONCEITOS: Conceito[] = [
     ],
     limitacoes: [
       "O balanço não separa as térmicas por combustível.",
-      "A descrição do balanço lista a geração das usinas hidráulicas, térmicas, eólicas e fotovoltaicas e não menciona a micro e minigeração distribuída, que aparece como estimativa na série de carga desde 29/04/2023.",
+      "Em 29/04/2023 a solar do balanço dobra de um dia para o outro e a geração passa a igualar a carga, que inclui a estimativa de micro e minigeração distribuída desde essa data: leitura da Scrutiniums a partir do dado, não conferida em documento do ONS. Comparações que atravessam a data não são homogêneas.",
     ],
     vejaNoPortal: [{ rotulo: "Como estamos gerando", href: "/setor-eletrico/geracao" }],
   },

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 /**
@@ -91,5 +91,93 @@ describe("linguagem causal sem rótulo", () => {
     ];
     for (const f of arquivos) for (const re of padroes) expect(ler(f), `${f}: ${re}`).not.toMatch(re);
     expect(ler("public/energia/gold/sintese.json")).not.toMatch(/para a época/);
+  });
+});
+
+describe("auditoria final: regressões", () => {
+  it("comparação anual da geração não atravessa a quebra de regime de 29/04/2023", () => {
+    const g = JSON.parse(ler("public/energia/gold/geracao.json"));
+    expect(g.inicio_regime_atual).toBe("2023-04-29");
+    for (const a of g.comparacao_anual) {
+      for (const j of ["7d", "30d"]) if (a[j]) expect(a[j].inicio >= g.inicio_regime_atual, `${a.ano} ${j}`).toBe(true);
+    }
+    for (const f of ["src/app/setor-eletrico/geracao/page.tsx", "pipeline/energia/gold/geracao.py"]) {
+      expect(ler(f), f).not.toMatch(/não entra nesta conta|não faz parte do balanço|mostra a expansão de eólica e solar/);
+    }
+  });
+
+  it("exemplo de liquidação não opera regra não conferida com número", () => {
+    const t = ler("src/app/setor-eletrico/pld/page.tsx");
+    expect(t).not.toMatch(/\d+\s*MWh\s*[×x]\s*R\$/);
+    expect(t).toMatch(/não mostra valores de liquidação/);
+  });
+
+  it("amplitude entre submercados tem proveniência própria e sai de valores não arredondados", () => {
+    const r = JSON.parse(ler("public/energia/gold/rede.json"));
+    expect(r.proveniencia.amplitude.natureza).toBe("CALCULADO");
+    expect(r.proveniencia.amplitude.formula).toMatch(/max_s .* min_s/);
+    const p = JSON.parse(ler("public/energia/gold/pld.json"));
+    expect(typeof p.amplitude_dia).toBe("number");
+    expect(ler("pipeline/energia/gold/sintese.py")).toContain('pld.get("amplitude_dia")');
+    expect(typeof r.limiar_diferenca_dia).toBe("number");
+    expect(ler("src/app/setor-eletrico/rede/page.tsx")).not.toMatch(/acima de R\$ 1[ ,]/);
+  });
+
+  it("nenhum percentual de ENA ou percentil é rearredondado para zero casas", () => {
+    for (const f of ["pipeline/energia/gold/sintese.py"]) {
+      expect(ler(f), f).not.toMatch(/nbr\([^)]*(pct_mlt_30d|percentil)[^)]*\]?\)?,\s*0\)/);
+    }
+  });
+
+  it("revisões distinguem captura única de recaptura idêntica, e a página do conjunto lista todas as vintages", () => {
+    const p = JSON.parse(ler("public/energia/gold/pld.json"));
+    expect(typeof p.proveniencia.horario.revisoes_conhecidas.recapturas_sem_mudanca).toBe("number");
+    const m = JSON.parse(ler("public/energia/gold/meta.json"));
+    for (const [ds, f] of Object.entries(m.fontes) as [string, { historico: { vigente: boolean }[]; capturas: unknown[] }][]) {
+      expect(f.historico.length, ds).toBeGreaterThanOrEqual(f.capturas.length);
+      expect(f.historico.filter((x) => x.vigente).length, ds).toBe(f.capturas.length);
+    }
+    expect(ler("src/app/setor-eletrico/dados/[dataset]/page.tsx")).toContain("f?.historico");
+    expect(ler("src/components/evidencia/SobreEsteDado.tsx")).toContain("recapturas_sem_mudanca");
+  });
+
+  it("conjuntos usados como entrada de modelo aparecem como UTILIZADO EM MODELO no catálogo", () => {
+    const reg = JSON.parse(ler("pipeline/energia/registro_modelos.json"));
+    const cat = JSON.parse(ler("public/energia/gold/catalogo.json"));
+    const entrada = (id: string) => cat.entradas.find((e: { id: string }) => e.id === id);
+    for (const m of reg.modelos) {
+      if (/EAR/.test(m.dados_treinamento)) expect(entrada("ons:ear-diario-por-subsistema").modelos, m.codigo).toContain(m.codigo);
+      if (/ENA/.test(m.dados_treinamento)) expect(entrada("ons:ena-diario-por-subsistema").modelos, m.codigo).toContain(m.codigo);
+    }
+  });
+
+  it("documentação não afirma no presente o que ainda não está implementado", () => {
+    expect(ler("docs/observatorios/ARQUITETURA_DADOS_ENERGIA.md")).not.toMatch(/Toda feature de modelo e todo backtest usam/);
+    expect(ler("docs/observatorios/PLD_GOVERNANCA_PREVISAO.md")).not.toMatch(/\* Features vêm de/);
+    expect(ler("src/app/setor-eletrico/metodologia/page.tsx")).not.toMatch(/\(bronze e silver\)/);
+    for (const m of JSON.parse(ler("pipeline/energia/registro_modelos.json")).modelos) {
+      expect(m.limitacoes.join(" "), m.codigo).not.toMatch(/não é revisado depois de publicado/);
+    }
+  });
+
+  it("páginas pré-renderizadas não exibem undefined nem NaN (quando o build existe)", () => {
+    const dir = join(raiz, ".next", "server", "app", "setor-eletrico");
+    if (!existsSync(dir)) return;
+    const htmls: string[] = [];
+    const varre = (d: string) => {
+      for (const e of readdirSync(d, { withFileTypes: true })) {
+        const p = join(d, e.name);
+        if (e.isDirectory()) varre(p);
+        else if (e.name.endsWith(".html")) htmls.push(p);
+      }
+    };
+    varre(dir);
+    if (existsSync(join(raiz, ".next", "server", "app", "setor-eletrico.html"))) htmls.push(join(raiz, ".next", "server", "app", "setor-eletrico.html"));
+    for (const h of htmls) {
+      const texto = readFileSync(h, "utf-8").replace(/<script[\s\S]*?<\/script>/g, "").replace(/<[^>]+>/g, " ");
+      expect(texto, h).not.toMatch(/\bundefined\b|\bNaN\b/);
+      // data crua (AAAA-MM, AAAA-MM-DD ou instante ISO) solta no texto; identificadores com "@" ou "_" ficam de fora
+      expect(texto, h).not.toMatch(/(^|[\s(])20\d\d[-/]\d\d([-/]\d\d)?(T[\d:]+Z?)?(?=[\s).,;]|$)/);
+    }
   });
 });

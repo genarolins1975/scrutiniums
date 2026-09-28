@@ -11,7 +11,7 @@ import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { TabelaDados } from "@/components/energia/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold, integra } from "@/lib/energia/gold";
-import { dataBR, pct, rotuloRegra, sinal } from "@/lib/energia/formato";
+import { dataBR, mesAno, pct, rotuloRegra, sinal } from "@/lib/energia/formato";
 import { ROTULO_FAIXA_USUAL, sin } from "@/lib/energia/leituras";
 
 export const dynamic = "force-static";
@@ -173,6 +173,7 @@ export default function AguaPage() {
                 titulo="ENA de 30 dias por subsistema"
                 colunas={["Subsistema", "ENA 30 dias (% MLT)", "10º percentil", "90º percentil", "Percentil"]}
                 linhas={h.subsistemas.map((x) => [x.nome, x.ena.pct_mlt_30d, x.ena.p10_30d, x.ena.p90_30d, x.ena.percentil_30d_mesma_janela])}
+                casas={[null, 1, 1, 1, 1]}
               />
             </PainelEvidencia>
           </Bloco>
@@ -184,7 +185,12 @@ export default function AguaPage() {
               subtitulo="EAR média mensal por subsistema e SIN · % da EAR máxima · desde 2000"
               natureza="CALCULADO"
               porQueImporta={<>O histórico longo mostra ciclos de anos secos e úmidos que uma janela curta não revela.</>}
-              oQueMudou={<>Último mês: {h.mensal_ear.at(-1)?.m.replace("-", "/")} (parcial se o mês não terminou).</>}
+              oQueMudou={<>{(() => {
+                const u = h.mensal_ear.at(-1);
+                if (!u) return "Série mensal sem dado.";
+                const parcial = h.dia_referencia_ear.slice(0, 7) === u.m;
+                return `Último mês da série: ${mesAno(`${u.m}-01`)}${parcial ? `, parcial, com dados até ${dataBR(h.dia_referencia_ear)}` : ""}; EAR média do SIN de ${pct(u.SIN)} da EAR máxima.`;
+              })()}</>}
               comoInterpretar={<>Médias mensais dos valores diários publicados pelo ONS; o SIN é calculado pela soma das EAR sobre a soma das máximas.</>}
               naoConcluir={<>A EAR máxima mudou ao longo do período: percentuais de décadas diferentes não medem o mesmo volume.</>}
               proveniencia={h.proveniencia.ear_mensal ?? h.proveniencia.ear}

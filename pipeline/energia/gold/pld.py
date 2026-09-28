@@ -211,9 +211,9 @@ def construir(con):
 
     # o texto sobre a coleta vem do registro da última tentativa, nunca fixo
     if coleta and coleta.get("ok"):
-        situacao = f"A última tentativa de coleta direta no portal da CCEE ({coleta['tentado_em']}) foi bem-sucedida."
+        situacao = f"A última tentativa de coleta direta no portal da CCEE em {c.carimbo_br(coleta['tentado_em'])} foi bem-sucedida."
     elif coleta:
-        situacao = (f"A última tentativa de coleta direta no portal da CCEE ({coleta['tentado_em']}) falhou "
+        situacao = (f"A última tentativa de coleta direta no portal da CCEE em {c.carimbo_br(coleta['tentado_em'])} falhou "
                     f"({(coleta.get('detalhe') or 'sem detalhe')[:80]}); a série usa a última captura bem-sucedida.")
     else:
         situacao = "A coleta direta no portal da CCEE não foi tentada nesta execução; a série usa a última captura bem-sucedida."
@@ -247,6 +247,15 @@ def construir(con):
         formula="percentil = 100 × (nº de dias com média menor + 0,5 × nº de dias com média igual) ÷ nº de dias",
         limitacoes=limitacoes + ["A distribuição de referência cobre só o período do PLD horário (desde 2021); anos de hidrologia muito diferente pesam na classificação."],
     )
+    prov_mensal = c.proveniencia(
+        indicador="PLD médio mensal por submercado", natureza="CALCULADO", fonte=c.FONTE_CCEE_PLD,
+        unidade="R$/MWh (nominal)", frequencia="mensal", periodo={"inicio": dias_completos[0][:7], "fim": dia_ref[:7]},
+        cobertura={"inicio": dias_completos[0], "fim": dia_ref}, capturado_em=captura, snapshot=snap,
+        transformacoes=["média simples das médias diárias completas do mês", "mês corrente marcado como parcial pelo calendário"],
+        formula="PLD_mês(s) = média de PLD_dia(s, d) para os dias d completos do mês",
+        limitacoes=limitacoes + ["Média de médias diárias: igual à média horária do mês só quando todos os dias têm 24 horas."],
+        download="/energia/series/pld_diario.csv",
+    )
     prov_estatisticas = c.proveniencia(
         indicador="Estatísticas do PLD por período (média, mediana, quartis, extremos, desvio padrão, permanência, diferenças entre submercados)",
         natureza="CALCULADO", fonte=c.FONTE_CCEE_PLD, unidade="R$/MWh (nominal); permanência em % das horas",
@@ -255,7 +264,7 @@ def construir(con):
         transformacoes=["seleção das horas do período", "estatísticas descritivas sobre os valores horários", "quartis com interpolação linear (tipo 7)"],
         formula=("média = Σ PLD_h ÷ n; mediana e quartis tipo 7 dos valores horários; desvio padrão amostral; "
                  "permanência = % das horas abaixo de P25, entre P25 e P75 e acima de P75 da distribuição horária desde 01/01/2021; "
-                 f"diferença entre submercados = % das horas com |PLD_a − PLD_b| > R$ {LIMIAR_DIFERENCA:.2f}/MWh"),
+                 f"diferença entre submercados = % das horas com |PLD_a − PLD_b| > R$ {LIMIAR_DIFERENCA:.2f}/MWh".replace(".", ",")),
         limitacoes=limitacoes + ["Estatísticas descritivas do período; não indicam tendência nem causa."],
         download="/energia/series/pld_horario.csv",
     )
@@ -269,6 +278,7 @@ def construir(con):
         "regras": REGRAS,
         "limiar_diferenca": LIMIAR_DIFERENCA,
         "cartoes": cartoes,
+        "amplitude_dia": c.r(max(diario[sm][dia_ref] for sm in c.ORDEM_SM) - min(diario[sm][dia_ref] for sm in c.ORDEM_SM)),
         "periodos": periodos,
         "curva_horaria": {"dia": dia_ref, "horas": curva},
         "horario_30d": horario_30d,
@@ -278,7 +288,7 @@ def construir(con):
         "quartis_horarios": {sm: {"p25": c.r(quartis_h[sm][0]), "p75": c.r(quartis_h[sm][1])} for sm in c.ORDEM_SM},
         "snapshot": snap,
         "proveniencia": {"horario": prov_horario, "diario": prov_diario, "posicao": prov_posicao,
-                         "estatisticas": prov_estatisticas},
+                         "estatisticas": prov_estatisticas, "mensal": prov_mensal},
         "downloads": [
             {"rotulo": "PLD horário, quatro submercados (CSV)", "url": "/energia/series/pld_horario.csv"},
             {"rotulo": "PLD médio diário, quatro submercados (CSV)", "url": "/energia/series/pld_diario.csv"},

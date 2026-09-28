@@ -176,7 +176,8 @@ Previsões: VINTAGE DA FONTE → FEATURES → VERSÃO DO MODELO → PUBLICAÇÃO
             <li>Limites de intercâmbio, CVU por usina, geração por usina e por motivo de despacho estão catalogados e ainda não integrados.</li>
             <li>Definições de conceitos cujas fontes primárias (CCEE, legislação) não foram acessadas aparecem como verbetes em preparação.</li>
             <li>Valores monetários em R$ nominais.</li>
-            <li>O histórico de vintages (bronze e silver) persiste no cache da automação (GitHub Actions), com cópia durável numa release do repositório; se os dois se perderem, a automação abre um alerta, os dados publicados continuam corretos e só o registro de revisões anteriores se perde.</li>
+            <li>O histórico de vintages persiste no cache da automação (GitHub Actions). O silver (banco com vintages e observações) tem cópia durável numa release do repositório; os arquivos brutos do bronze não têm, mas o sha256 de cada um fica registrado no silver. Se cache e cópia se perderem, a automação abre um alerta, os dados publicados continuam corretos e só o registro de revisões anteriores se perde.</li>
+              <li>Quando a fonte remove uma referência de um arquivo, a remoção não é registrada: a série continua com o último valor publicado para ela. Revisões de valor são registradas.</li>
           </ul>
         </S>
 

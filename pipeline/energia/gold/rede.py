@@ -22,10 +22,14 @@ from pipeline.energia.fontes import ccee, ons  # noqa: E402
 from pipeline.energia.gold import comum as c  # noqa: E402
 
 DS_INT, DS_BAL = "intercambio_nacional_ho", "balanco_energia_subsistema_ho"
+LIMIAR_DIFERENCA_DIA = 1.0  # R$/MWh, sobre o PLD médio diário
 REGRAS = {
     "fluxo": "Fluxo diário = média das 24 horas do intercâmbio verificado entre subsistemas, com sinal: positivo da primeira para a segunda ponta (N→NE, N→SE/CO, NE→SE/CO, S→SE/CO).",
     "liquido": "Intercâmbio líquido do subsistema = média diária do intercâmbio verificado no balanço de energia do ONS; positivo significa exportação.",
-    "diferenca_preco": "Diferença de preço = PLD médio diário da segunda ponta menos o da primeira.",
+    "diferenca_preco": ("Diferença de preço = PLD médio diário da segunda ponta menos o da primeira. Dia com diferença = "
+                        f"diferença acima de R$ {LIMIAR_DIFERENCA_DIA:.2f}/MWh em módulo, contada nos 30 dias que terminam no "
+                        "dia de referência dos fluxos (dias sem PLD integrado ficam fora da contagem).").replace("1.00", "1,00"),
+    "amplitude": "Amplitude diária = maior PLD médio diário entre os quatro submercados menos o menor.",
     "limites": "Limites de intercâmbio não estão integrados; nenhuma afirmação de congestionamento é feita a partir destes dados.",
 }
 
@@ -75,7 +79,7 @@ def construir(con):
             "fluxo_media_30d": c.r(c.media(f30), 0) if len(f30) == 30 else None,
             "dias_sentido_canonico_30d": sum(1 for x in f30 if x > 0),
             "diferenca_preco_ultimo_dia_comum": None if not dif else {"dia": max(dif), "valor": c.r(dif[max(dif)])},
-            "dias_com_diferenca_30d": sum(1 for x in dif30 if abs(x) > 1.0),
+            "dias_com_diferenca_30d": sum(1 for x in dif30 if abs(x) > LIMIAR_DIFERENCA_DIA),
             "n_dias_pld_30d": len(dif30),
         })
 
@@ -144,6 +148,17 @@ def construir(con):
         formula="diferença(par) = PLD_dia(para) − PLD_dia(de)",
         limitacoes=["A série de PLD termina na última captura da CCEE; dias posteriores ficam sem diferença calculada."] + lim[:1],
     )
+    prov_amplitude = c.proveniencia(
+        indicador="Diferença entre o maior e o menor PLD médio diário dos quatro submercados", natureza="CALCULADO",
+        fonte=c.FONTE_CCEE_PLD, unidade="R$/MWh (nominal)", frequencia="diária",
+        periodo={"inicio": spread[0]["d"] if spread else dias_pld[0], "fim": dias_pld[-1]},
+        cobertura={"inicio": dias_pld[0], "fim": dias_pld[-1]},
+        capturado_em=c.ultima_captura(snap_pld), snapshot=snap_pld,
+        transformacoes=["PLD médio diário de cada submercado (média simples das 24 horas)", "máximo menos mínimo entre os quatro submercados"],
+        formula="amplitude(d) = max_s PLD_dia(s, d) − min_s PLD_dia(s, d), s ∈ {SE, S, NE, N}",
+        limitacoes=["Médias diárias: diferenças de poucas horas podem sumir na média.",
+                    "A série de PLD termina na última captura da CCEE."] + lim[:1],
+    )
     prov_saldos = None
     if dia_liq:
         meta_bal = c.meta_ons(DS_BAL)
@@ -165,9 +180,10 @@ def construir(con):
     return {
         **c.cabecalho("rede.json"),
         "dia_referencia": dia_ref, "dia_referencia_liquido": dia_liq, "ultimo_dia_pld": dias_pld[-1] if dias_pld else None,
-        "regras": REGRAS, "fronteiras": fronteiras, "liquido_subsistemas": liq, "balanco_sin": balanco_sin,
+        "regras": REGRAS, "limiar_diferenca_dia": LIMIAR_DIFERENCA_DIA, "fronteiras": fronteiras, "liquido_subsistemas": liq, "balanco_sin": balanco_sin,
         "serie_fluxos": serie, "serie_amplitude_pld": spread,
         "limites_integrados": False,
-        "proveniencia": {"fluxo": prov, "diferenca": prov_spread, **({"saldos": prov_saldos} if prov_saldos else {})}, "fonte_notas": meta.get("notas"),
+        "proveniencia": {"fluxo": prov, "diferenca": prov_spread, "amplitude": prov_amplitude,
+                         **({"saldos": prov_saldos} if prov_saldos else {})}, "fonte_notas": meta.get("notas"),
         "downloads": [{"rotulo": "Intercâmbio diário por fronteira (CSV)", "url": "/energia/series/intercambio_diario.csv"}],
     }

@@ -14,6 +14,8 @@ Fonte: payload do artefato `PLD_PREVISOES_EXPLICADAS v1-previa-r4` (sha256 `5af8
 | Publicação da entrega de pesquisa (G4) | não enviada |
 | Revisão do artefato | pendente; selo "prévia interna" |
 
+**Números de rodada interna no arquivo público.** O arquivo `previsoes.jsonl` é publicado na íntegra, então o validador exige a decisão explícita (`resultados_liberados` verdadeiro ou falso; sem ela, recusa rodar). Com a publicação de resultados retida, rodada interna não pode carregar número. Depois da liberação formal registrada no registro de modelos, rodada interna de modelo em PESQUISA ou VALIDAÇÃO pode carregar número no arquivo, sempre com tipo `RODADA_INTERNA`; nunca vira `PUBLICACAO`. Nesta versão a interface mostra "número retido" para toda rodada interna, liberada ou não; exibir o número como ensaio de pesquisa, nunca como previsão, exige mudança revisada da interface. Valor não finito (NaN, infinito) é barrado em qualquer campo numérico, e faixa rotulada como 80% em qualquer grafia (algarismos, por extenso ou "P10 a P90") exige calibração CALIBRADO.
+
 **Decisão desta fase.** Os resultados numéricos da pesquisa (métricas, coberturas, comparações) **não** são publicados no portal enquanto G4 não for concluída e o dono não liberar. O registro de modelos traz estado, fórmula, dados, limitações declaradas pela pesquisa e ponteiros (caminho e sha256) para os arquivos de resultado; a página de cada modelo diz por que os números estão retidos. A rodada interna de 27/09 aparece como registro operacional (não é publicação) e demonstra o estado "indisponível".
 
 ## Estados do modelo
@@ -67,7 +69,7 @@ A apuração (realizado, erro, métricas) é registrada em `apuracoes`, chaveada
 
 ## Vintages e ausência de look-ahead
 
-* Features vêm de `como_estava_em(serie, cutoff)` do silver com vintages.
+* Features devem vir de `como_estava_em(serie, cutoff)` do silver com vintages. O construtor de features da plataforma ainda não existe; até existir, nenhum modelo roda dentro do pipeline e os cartões declaram que o backtest da pesquisa usou snapshot único.
 * Para o PLD, o valor da hora h do dia D é publicado na véspera; a regra de elegibilidade da pesquisa (cenário `LAT1D`: dado elegível se o período terminou até um dia antes do corte) é mantida e registrada no model card.
 * Revisões posteriores de fonte (ONS declara "consistência recorrente") ficam como vintages novas e não contaminam backtests anteriores.
 

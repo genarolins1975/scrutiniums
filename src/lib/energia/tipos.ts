@@ -42,6 +42,9 @@ export type Proveniencia = {
     total: number;
     vintages_comparadas?: number;
     arquivos?: number;
+    /** Downloads bem-sucedidos que vieram idênticos a uma captura já integrada (não viram vintage). */
+    recapturas_sem_mudanca?: number;
+    ultimo_download_ok?: string | null;
     exemplos: { serie: string; ref: string; valores: number }[];
   } | null;
   limitacoes: string[];
@@ -124,7 +127,7 @@ export type PldGold = Cabecalho & {
   menor_valor_ano: ({ ano: string; ate: string } & PontoSm)[];
   quartis_horarios: Record<Submercado, { p25: number | null; p75: number | null }>;
   snapshot: { id: string | null; sha256: string | null; capturas: unknown[] };
-  proveniencia: { horario: Proveniencia; diario: Proveniencia; posicao: Proveniencia; estatisticas?: Proveniencia };
+  proveniencia: { horario: Proveniencia; diario: Proveniencia; posicao: Proveniencia; estatisticas?: Proveniencia; mensal?: Proveniencia };
   downloads: Download[];
 };
 
@@ -200,7 +203,7 @@ export type CargaGold = Cabecalho & {
   subsistemas: { sm: Regiao; nome: string; natureza: Natureza; dia: number; ult7: CargaComparacao; ult30: CargaComparacao; max_12m: { valor: number; dia: string } }[];
   serie: ({ d: string } & SerieRegiao)[];
   mensal: ({ m: string; dias: number } & SerieRegiao)[];
-  proveniencia: { carga: Proveniencia; sin: Proveniencia };
+  proveniencia: { carga: Proveniencia; sin: Proveniencia; mensal?: Proveniencia };
   fonte_notas: string | null;
   downloads: Download[];
 };
@@ -235,6 +238,8 @@ export type GeracaoGold = Cabecalho & {
   perfil_horario_sin: ({ h: string } & Record<FonteGeracao, number | null>)[];
   serie_sin: ({ d: string } & Record<FonteGeracao, number | null>)[];
   serie_termica_7d?: { d: string; termica_7d: number | null }[];
+  inicio_regime_atual?: string;
+  anos_fora_do_regime?: number[];
   proveniencia: { geracao: Proveniencia; termica_7d?: Proveniencia };
   fonte_notas: string | null;
   downloads: Download[];
@@ -247,6 +252,8 @@ export type RedeGold = Cabecalho & {
   dia_referencia_liquido: string | null;
   ultimo_dia_pld: string | null;
   regras: Record<string, string>;
+  /** R$/MWh: diferença de PLD médio diário acima da qual o dia conta como "com diferença". */
+  limiar_diferenca_dia?: number;
   fronteiras: {
     par: string;
     de: Submercado;
@@ -274,7 +281,7 @@ export type RedeGold = Cabecalho & {
     horas_total: number;
     dias_divergentes: string[];
   } | null;
-  proveniencia: { fluxo: Proveniencia; diferenca: Proveniencia; saldos?: Proveniencia };
+  proveniencia: { fluxo: Proveniencia; diferenca: Proveniencia; amplitude?: Proveniencia; saldos?: Proveniencia };
   fonte_notas: string | null;
   downloads: Download[];
 };
@@ -454,6 +461,8 @@ export type MetaGold = Cabecalho & {
     snapshot_sha256: string | null;
     ultima_tentativa: { tentado_em: string; ok: boolean; detalhe: string } | null;
     capturas: { recurso: string; sha256: string; capturado_em: string; publicado_em: string | null; origem: string }[];
+    recapturas_sem_mudanca?: number | null;
+    historico?: { recurso: string; sha256: string; capturado_em: string; publicado_em: string | null; origem: string; vigente: boolean }[];
   }>;
   regressoes: { gold: string; motivo: string }[];
   builders_falhos: { gold: string; motivo: string }[];

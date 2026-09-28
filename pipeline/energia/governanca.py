@@ -13,6 +13,7 @@ Cada regra corresponde a um item de docs/observatorios/PLD_GOVERNANCA_PREVISAO.m
 """
 import hashlib
 import json
+import math
 import re
 from datetime import datetime, timezone
 
@@ -71,11 +72,13 @@ def valida_registro(rec, modelos_por_codigo):
         v.append(f"{rec.get('forecast_id')}: natureza {rec.get('natureza')} não pode entrar no arquivo de previsões")
     if "CENARIO" in json.dumps(rec, ensure_ascii=False).upper().replace("CENÁRIO", "CENARIO"):
         v.append(f"{rec.get('forecast_id')}: cenário não pode entrar no arquivo de previsões")
-    # faixa rotulada como 80% (em qualquer grafia: "80%", "80 %", "80 por cento") exige
-    # calibração CALIBRADO em qualquer tipo de registro, publicado ou interno
+    # faixa rotulada como 80% (em qualquer grafia: "80%", "80 %", "80 por cento",
+    # "oitenta por cento", "P10 a P90") exige calibração CALIBRADO em qualquer tipo de
+    # registro, publicado ou interno
     q = rec.get("quantis") or {}
     rotulo = str(q.get("rotulo_faixa") or "").lower()
-    if re.search(r"80\s*(%|por\s*cento)", rotulo) and (rec.get("calibracao") or {}).get("status") != "CALIBRADO":
+    if (re.search(r"(80|oitenta)\s*(%|por\s*cento)", rotulo) or re.search(r"p\s*10\s*(a|até|ao|-|–|—)\s*p\s*90", rotulo)) \
+            and (rec.get("calibracao") or {}).get("status") != "CALIBRADO":
         v.append(f"{rec.get('forecast_id')}: faixa rotulada como 80% sem calibração CALIBRADO")
     # nenhum registro, publicado ou interno, pode usar dado capturado depois do corte;
     # sem instante com fuso no corte ou na captura, o look-ahead não é auditável
@@ -95,8 +98,12 @@ def valida_registro(rec, modelos_por_codigo):
             v.append(f"{rec.get('forecast_id')}: indisponível com valor numérico")
         if not rec.get("motivo"):
             v.append(f"{rec.get('forecast_id')}: indisponível sem motivo")
-    if rec.get("status") == "DISPONIVEL" and not isinstance(rec.get("previsao"), (int, float)):
-        v.append(f"{rec.get('forecast_id')}: disponível sem valor numérico")
+    if rec.get("status") == "DISPONIVEL" and not _numero_finito(rec.get("previsao")):
+        v.append(f"{rec.get('forecast_id')}: disponível sem valor numérico finito")
+    # erro nunca vira valor: NaN e infinito não entram em nenhum campo numérico
+    for campo, valor in [("previsao", rec.get("previsao"))] + [(f"quantis.{k}", x) for k, x in q.items() if k != "rotulo_faixa"]:
+        if isinstance(valor, float) and not math.isfinite(valor):
+            v.append(f"{rec.get('forecast_id')}: {campo} não finito")
     if rec.get("tipo") == "PUBLICACAO":
         m = modelos_por_codigo.get(rec.get("modelo"))
         if not m or m.get("estado") != "PRODUCAO" or rec.get("estado_modelo") != "PRODUCAO":
@@ -114,9 +121,18 @@ def valida_registro(rec, modelos_por_codigo):
     return v
 
 
-def valida_arquivo(registros, modelos_por_codigo, resultados_liberados=None):
-    """resultados_liberados=False (publicação de resultados de pesquisa retida): rodada
-    interna não pode carregar número, porque o arquivo é publicado na íntegra."""
+def _numero_finito(x):
+    return isinstance(x, (int, float)) and not isinstance(x, bool) and math.isfinite(x)
+
+
+def valida_arquivo(registros, modelos_por_codigo, *, resultados_liberados):
+    """O arquivo é publicado na íntegra, então a decisão sobre resultados de pesquisa é
+    obrigatória e explícita (docs/observatorios/PLD_GOVERNANCA_PREVISAO.md):
+    resultados_liberados=False: rodada interna não pode carregar número;
+    resultados_liberados=True (liberação formal registrada): rodada interna pode carregar
+    número, sempre com tipo RODADA_INTERNA; nunca vira PUBLICACAO."""
+    if not isinstance(resultados_liberados, bool):
+        raise ValueError("resultados_liberados deve ser True ou False: a decisão sobre números de pesquisa é explícita")
     v = []
     ids = set()
     for rec in registros:

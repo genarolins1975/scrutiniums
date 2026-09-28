@@ -5,6 +5,7 @@ import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { Termo } from "@/components/evidencia/Termo";
+import { Unidade } from "@/components/evidencia/Unidade";
 import { BarrasMix, COR_FONTE, NOME_FONTE, ORDEM_FONTES } from "@/components/energia/BarrasMix";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { TabelaDados } from "@/components/energia/TabelaDados";
@@ -45,8 +46,10 @@ export default function GeracaoPage() {
           titulo="Com que fontes o sistema está atendendo a carga?"
           referencia={<>Balanço de Energia nos Subsistemas (ONS), dia de referência {dataBR(g.dia_referencia)}</>}
         >
-          A <Termo slug="geracao-centralizada">geração verificada</Termo> das usinas hidráulicas, térmicas, eólicas e fotovoltaicas acompanhadas pelo ONS,
-          hora a hora. A micro e minigeração distribuída não entra nesta conta.
+          A <Termo slug="geracao-centralizada">geração verificada</Termo> das usinas hidráulicas, térmicas, eólicas e fotovoltaicas no balanço do ONS,
+          hora a hora, em <Unidade u="MWmed" />. Em 29/04/2023 o balanço muda de regime: a solar dobra de um dia para o outro e a geração passa a
+          igualar a carga, que desde essa data inclui a estimativa de micro e minigeração distribuída (leitura a partir do dado, não conferida em
+          documento do ONS). Por isso as comparações desta página só usam períodos posteriores a essa data.
         </CabecalhoModulo>
         <ModoProfundidade>
           <Bloco id="matriz">
@@ -54,10 +57,16 @@ export default function GeracaoPage() {
               id="mix"
               pergunta={`Hidráulica respondeu por ${pct(sin["7d"]?.participacao.hidraulica)} da geração verificada nos últimos 7 dias`}
               subtitulo="Geração verificada do SIN por fonte · % do total por janela"
-              porQueImporta={<>A composição mostra quanto o atendimento depende da água, do vento, do sol e das térmicas, e como isso mudou frente ao mesmo período de anos anteriores.</>}
-              oQueMudou={<>Nos mesmos 7 dias de {g.comparacao_anual[0]?.ano}, a hidráulica tinha {pct(g.comparacao_anual[0]?.["7d"]?.participacao.hidraulica)} e as térmicas {pct(g.comparacao_anual[0]?.["7d"]?.participacao.termica)}; agora, {pct(sin["7d"]?.participacao.hidraulica)} e {pct(sin["7d"]?.participacao.termica)}.</>}
-              comoInterpretar={<>Cada barra soma 100%. Compare a semana atual com as mesmas semanas de anos anteriores para separar o que é padrão da época do que é diferente neste ano.</>}
-              naoConcluir={<>Hidráulica, eólica e solar somadas não formam a participação renovável: a térmica do balanço inclui biomassa e outras fontes não separadas. Participação não é capacidade instalada.</>}
+              porQueImporta={<>A composição mostra quanto do atendimento veio da água, do vento, do sol e das térmicas no balanço do ONS, comparado com o mesmo período de anos anteriores dentro do mesmo regime do dado.</>}
+              oQueMudou={
+                g.comparacao_anual[0] ? (
+                  <>Nos mesmos 7 dias de {g.comparacao_anual[0].ano}, a hidráulica tinha {pct(g.comparacao_anual[0]["7d"]?.participacao.hidraulica)} e as térmicas {pct(g.comparacao_anual[0]["7d"]?.participacao.termica)}; agora, {pct(sin["7d"]?.participacao.hidraulica)} e {pct(sin["7d"]?.participacao.termica)}.</>
+                ) : (
+                  <>Não há ano anterior com a mesma janela inteira dentro do regime atual do balanço.</>
+                )
+              }
+              comoInterpretar={<>Cada barra soma 100%. Só aparecem anos cuja janela inteira é posterior a 29/04/2023{g.anos_fora_do_regime?.length ? ` (${g.anos_fora_do_regime.join(", ")} ficam de fora por atravessarem ou antecederem a mudança de regime)` : ""}.</>}
+              naoConcluir={<>Hidráulica, eólica e solar somadas não formam a participação renovável: o conjunto não separa a térmica por combustível. Participação não é capacidade instalada.</>}
               proveniencia={g.proveniencia.geracao}
             >
               <BarrasMix
@@ -144,13 +153,22 @@ export default function GeracaoPage() {
               id="trajetoria"
               pergunta="Como cada fonte evoluiu desde 2021?"
               subtitulo="Geração verificada diária do SIN por fonte · MWmed"
-              porQueImporta={<>A trajetória mostra a expansão de eólica e solar e a sazonalidade da hidráulica.</>}
+              porQueImporta={<>A trajetória mostra como cada fonte variou desde 2021. A linha vertical marca 29/04/2023: dali em diante o balanço passa a incluir a geração estimada de micro e minigeração distribuída na solar (leitura a partir do dado), e o salto da solar nessa data não é expansão física.</>}
               oQueMudou={<>Série de {dataBR(g.serie_sin[0].d)} a {dataBR(g.dia_referencia)}.</>}
               comoInterpretar={<>Médias diárias de valores horários; use o cursor para ler cada dia.</>}
               naoConcluir={<>Crescimento de geração não é crescimento de capacidade instalada; a capacidade está em outro conjunto, catalogado.</>}
               proveniencia={g.proveniencia.geracao}
             >
-              <GraficoLinhas titulo="Geração diária por fonte desde 2021" dados={g.serie_sin} chaveX="d" series={series} unidade="MWmed" casas={0} zeroNoEixo />
+              <GraficoLinhas
+                titulo="Geração diária por fonte desde 2021"
+                dados={g.serie_sin}
+                chaveX="d"
+                series={series}
+                unidade="MWmed"
+                casas={0}
+                zeroNoEixo
+                marcos={[{ x: g.inicio_regime_atual ?? "2023-04-29", rotulo: "29/04/2023: mudança de regime" }]}
+              />
             </PainelEvidencia>
           </Bloco>
 

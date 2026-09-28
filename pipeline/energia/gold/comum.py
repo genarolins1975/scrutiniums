@@ -158,6 +158,10 @@ def snapshot_de(con, dataset):
         "capturas": [{"recurso": k, "sha256": ultimo[k]["sha256"], "capturado_em": ultimo[k]["capturado_em"],
                       "publicado_em": ultimo[k]["publicado_em"], "origem": ultimo[k]["origem"]}
                      for k in sorted(ultimo)],
+        # todas as vintages, inclusive as substituídas por captura posterior do mesmo arquivo
+        "historico": [{"recurso": v["recurso"], "sha256": v["sha256"], "capturado_em": v["capturado_em"],
+                       "publicado_em": v["publicado_em"], "origem": v["origem"],
+                       "vigente": v["sha256"] == ultimo[v["recurso"]]["sha256"]} for v in vs],
     }
 
 
@@ -170,14 +174,22 @@ def revisoes_do_dataset(con, dataset, limite=20):
            GROUP BY serie, ref HAVING COUNT(DISTINCT valor) > 1 ORDER BY ref DESC, serie""",
         (dataset,),
     ).fetchall()
-    vint, recursos = con.execute(
-        "SELECT COUNT(*), COUNT(DISTINCT recurso) FROM vintages WHERE dataset=?", (dataset,)
+    vint, recursos, diretas = con.execute(
+        "SELECT COUNT(*), COUNT(DISTINCT recurso), SUM(origem='coleta_direta') FROM vintages WHERE dataset=?",
+        (dataset,),
+    ).fetchone()
+    # download bem-sucedido de arquivo idêntico a uma vintage existente não cria vintage,
+    # mas é uma comparação feita: cada coleta direta ok gera no máximo uma vintage
+    downloads, ultimo = con.execute(
+        "SELECT COUNT(*), MAX(tentado_em) FROM coletas WHERE dataset=? AND ok=1", (dataset,)
     ).fetchone()
     return {
         "detectado_em": base.agora_utc(),
         "total": len(rows),
         "vintages_comparadas": vint,
         "arquivos": recursos,
+        "recapturas_sem_mudanca": max(0, (downloads or 0) - (diretas or 0)),
+        "ultimo_download_ok": ultimo,
         "exemplos": [{"serie": a, "ref": b, "valores": n} for a, b, n in rows[:limite]],
     }
 
@@ -257,6 +269,18 @@ def dia_semana_pt(iso):
 def data_br(iso):
     x = d(iso)
     return f"{x.day:02d}/{x.month:02d}/{x.year}"
+
+
+def carimbo_br(iso_utc):
+    """Instante ISO em UTC ("...Z") → "28/09/2026, 07:55 (Brasília)"; mesmo formato da interface."""
+    from datetime import datetime, timedelta, timezone
+    try:
+        from zoneinfo import ZoneInfo
+        fuso = ZoneInfo("America/Sao_Paulo")
+    except Exception:  # sem base de fusos: Brasília sem horário de verão desde 2019
+        fuso = timezone(timedelta(hours=-3))
+    x = datetime.fromisoformat(iso_utc.replace("Z", "+00:00")).astimezone(fuso)
+    return f"{x.day:02d}/{x.month:02d}/{x.year}, {x.hour:02d}:{x.minute:02d} (Brasília)"
 
 
 MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"]

@@ -39,6 +39,8 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
   const e = cat?.entradas.find((x) => x.id === d?.catalogoId);
   if (!d || !e) notFound();
   const f = meta?.fontes[d.interno];
+  // todas as vintages, inclusive as substituídas; publicações antigas da gold só trazem as vigentes
+  const capturas = f?.historico?.length ? f.historico : (f?.capturas ?? []).map((x) => ({ ...x, vigente: true }));
   return (
     <>
       <CabecalhoEnergia atual="dados" />
@@ -84,30 +86,38 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
 
         <section className="mt-8 border border-linha bg-superficie p-6">
           <h2 className="font-serif text-xl text-carvao">Capturas integradas (vintages)</h2>
-          <p className="mt-1 text-sm text-carvao-muted">Cada arquivo baixado é uma vintage imutável. Uma revisão da fonte vira vintage nova; a anterior continua no histórico do pipeline (cache da automação e cópia durável), usado para reconstituir o que se sabia em cada data. Esse histórico não é publicado no portal.</p>
+          <p className="mt-1 text-sm text-carvao-muted">Cada arquivo baixado com conteúdo novo é uma vintage imutável; download idêntico a uma vintage existente não gera linha nova. A tabela lista todas as vintages, inclusive as substituídas por captura posterior do mesmo arquivo. Os valores das vintages ficam no histórico do pipeline (cache da automação e cópia durável), usado para reconstituir o que se sabia em cada data, e não são publicados no portal.</p>
           <div className="tabela-scroll mt-4" tabIndex={0} role="region" aria-label="Capturas do conjunto (tabela rolável)">
-            <table className="w-full min-w-[44rem] border-collapse text-xs">
-              <caption className="sr-only">Capturas por recurso</caption>
+            <table className="w-full min-w-[50rem] border-collapse text-xs">
+              <caption className="sr-only">Todas as capturas integradas, por recurso</caption>
               <thead>
                 <tr className="text-left text-mineral">
-                  {["Recurso", "Capturado em", "Publicado pela fonte (metadado)", "Origem", "sha256"].map((c) => (
+                  {["Recurso", "Capturado em", "Publicado pela fonte (metadado)", "Origem", "Situação", "sha256"].map((c) => (
                     <th key={c} scope="col" className="border-b border-linha px-2 py-2 font-medium">{c}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {(f?.capturas ?? []).map((cpt) => (
-                  <tr key={cpt.recurso} className="border-b border-linha">
+                {capturas.map((cpt) => (
+                  <tr key={`${cpt.recurso}:${cpt.sha256}`} className="border-b border-linha">
                     <td className="px-2 py-1.5 text-carvao">{cpt.recurso}</td>
                     <td className="px-2 py-1.5 text-carvao">{carimbo(cpt.capturado_em)}</td>
                     <td className="px-2 py-1.5 text-carvao-muted">{dataFonte(cpt.publicado_em)}</td>
                     <td className="px-2 py-1.5 text-carvao-muted">{cpt.origem === "seed" ? "captura primária versionada" : "coleta direta"}</td>
+                    <td className="px-2 py-1.5 text-carvao-muted">{cpt.vigente ? "vigente" : "substituída"}</td>
                     <td className="break-all px-2 py-1.5 font-mono text-[0.68rem] text-mineral">{cpt.sha256}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+          {typeof f?.recapturas_sem_mudanca === "number" && (
+            <p className="mt-3 text-xs text-carvao-muted">
+              {f.recapturas_sem_mudanca === 0
+                ? "Nenhum download posterior de arquivo já integrado foi registrado no log de coletas."
+                : `${f.recapturas_sem_mudanca} ${f.recapturas_sem_mudanca === 1 ? "download posterior veio idêntico" : "downloads posteriores vieram idênticos"} a vintages já integradas (log de coletas); por isso não aparecem como linhas novas.`}
+            </p>
+          )}
         </section>
 
         <section className="mt-8 grid gap-6 md:grid-cols-2">

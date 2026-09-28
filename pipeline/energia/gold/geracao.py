@@ -3,9 +3,13 @@
 Regras publicadas:
 - geração diária por fonte (CALCULADO): média das 24 horas verificadas, em MWmed;
 - participação: geração da fonte ÷ soma de hidráulica, térmica, eólica e solar
-  verificadas (o balanço não inclui a micro e minigeração distribuída);
-- "hidráulica, eólica e solar" não é chamada de participação renovável: a térmica do
-  balanço agrega fontes que o conjunto não separa (inclusive biomassa);
+  verificadas;
+- quebra de regime em 29/04/2023 (leitura a partir do dado, não conferida em documento
+  do ONS): a solar do SIN dobra de um dia para o outro e a geração total passa a
+  igualar a carga, que desde essa data inclui a estimativa de MMGD; comparações de
+  composição só dentro do mesmo regime;
+- "hidráulica, eólica e solar" não é chamada de participação renovável: o conjunto não
+  separa a térmica por combustível;
 - despacho térmico em contexto: participação térmica dos últimos 7 dias comparada à
   distribuição das participações térmicas em janelas móveis de 7 dias nos 365 dias
   anteriores (percentil e mediana).
@@ -23,10 +27,19 @@ DS = "balanco_energia_subsistema_ho"
 FONTES = ("hidraulica", "termica", "eolica", "solar")
 NOME_FONTE = {"hidraulica": "Hidráulica", "termica": "Térmica", "eolica": "Eólica", "solar": "Solar"}
 REGIOES = ("SIN",) + c.ORDEM_SM
+# Quebra de regime do balanço identificada no próprio dado (ver regra "regime").
+INICIO_REGIME_ATUAL = "2023-04-29"
+
 REGRAS = {
     "diaria": "Geração diária por fonte = média das 24 horas verificadas (MWmed). Dias sem as 24 horas não entram.",
-    "participacao": "Participação = geração da fonte ÷ soma da geração verificada hidráulica, térmica, eólica e solar. A micro e minigeração distribuída não faz parte do balanço.",
-    "hes": "Hidráulica, eólica e solar somadas. Não é chamada de participação renovável porque a térmica do balanço agrega fontes que o conjunto não separa, inclusive biomassa.",
+    "participacao": "Participação = geração da fonte ÷ soma da geração verificada hidráulica, térmica, eólica e solar.",
+    "regime": (
+        "Leitura da Scrutiniums a partir do dado, não conferida em documento do ONS: em 29/04/2023 a geração solar do SIN no balanço "
+        "passa de 1.991 para 4.377 MWmed (média diária, de 28 para 29/04/2023) e, desde então, a geração total iguala a carga, que "
+        "inclui a estimativa de micro e minigeração distribuída a partir dessa data. A plataforma trata 29/04/2023 como quebra de "
+        "regime: comparações de composição só são feitas dentro do mesmo regime."
+    ),
+    "hes": "Hidráulica, eólica e solar somadas. Não é chamada de participação renovável porque o conjunto não separa a térmica por combustível.",
     "termica_contexto": "Participação térmica dos últimos 7 dias comparada às participações térmicas de todas as janelas móveis de 7 dias dos 365 dias anteriores: percentil e mediana.",
 }
 
@@ -66,11 +79,16 @@ def construir(con):
 
     # mesmas janelas nos anos anteriores (SIN)
     comparacao_anual = []
+    anos_fora_do_regime = []
     for a in range(int(dia_ref[:4]) - 1, 2020, -1):
         try:
             fa = fim.replace(year=a)
         except ValueError:
             fa = fim.replace(year=a, day=28)
+        # só janelas inteiras dentro do regime atual (a de 30 dias é a mais longa)
+        if min(janela(30, fa)) < INICIO_REGIME_ATUAL:
+            anos_fora_do_regime.append(a)
+            continue
         m7, m30 = mix("SIN", janela(7, fa)), mix("SIN", janela(30, fa))
         if m7 or m30:
             comparacao_anual.append({"ano": a, "7d": m7, "30d": m30})
@@ -83,7 +101,8 @@ def construir(con):
             return None
         mw = {f: c.media([diario[(f, "SIN")][k] for k in ks]) for f in FONTES}
         return 100 * mw["termica"] / sum(mw.values())
-    hist = [part_termica_7d(fim - timedelta(days=i)) for i in range(7, 372)]
+    hist = [part_termica_7d(fim - timedelta(days=i)) for i in range(7, 372)
+            if min(janela(7, fim - timedelta(days=i))) >= INICIO_REGIME_ATUAL]
     hist = [x for x in hist if x is not None]
     atual_term = part_termica_7d(fim)
     termica_ctx = {
@@ -110,8 +129,8 @@ def construir(con):
                      [[k] + [diario[(f, rg)].get(k) for rg in REGIOES for f in FONTES] for k in dias])
     meta = c.meta_ons(DS)
     lim = [
-        "A térmica do balanço agrega todas as usinas térmicas despachadas pelo ONS; o conjunto não separa combustível (gás, carvão, óleo, nuclear, biomassa). A separação exige o conjunto Geração por Usina, catalogado e ainda não integrado.",
-        "A descrição do balanço lista a geração das usinas hidráulicas, térmicas, eólicas e fotovoltaicas e não menciona a micro e minigeração distribuída, que aparece como estimativa na série de carga desde 29/04/2023.",
+        "O balanço não separa a geração térmica por combustível. A separação exige o conjunto Geração por Usina, catalogado e ainda não integrado.",
+        "Quebra de regime em 29/04/2023, identificada no dado e não conferida em documento do ONS: a solar do SIN dobra de um dia para o outro e a geração total passa a igualar a carga, que inclui a estimativa de micro e minigeração distribuída desde essa data; comparações de composição que atravessam a data não são homogêneas.",
         "Dados em processo de consistência recorrente do ONS, sujeitos a revisão.",
     ]
     prov = c.proveniencia(
@@ -141,6 +160,7 @@ def construir(con):
         "dia_referencia": dia_ref, "fontes": [{"id": f, "nome": NOME_FONTE[f]} for f in FONTES],
         "regras": REGRAS, "regioes": regioes, "comparacao_anual": comparacao_anual,
         "termica_contexto": termica_ctx, "serie_termica_7d": serie_termica_7d,
+        "inicio_regime_atual": INICIO_REGIME_ATUAL, "anos_fora_do_regime": anos_fora_do_regime,
         "perfil_horario_sin": perfil, "serie_sin": serie,
         "proveniencia": {"geracao": prov, "termica_7d": prov_termica}, "fonte_notas": meta.get("notas"),
         "downloads": [{"rotulo": "Geração diária por fonte e subsistema (CSV)", "url": "/energia/series/geracao_diaria.csv"}],

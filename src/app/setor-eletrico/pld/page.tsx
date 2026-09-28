@@ -15,7 +15,7 @@ import { IlustracaoDistribuicao } from "@/components/energia/IlustracaoDistribui
 import { TabelaDados } from "@/components/energia/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold, integra } from "@/lib/energia/gold";
-import { carimbo, dataBR, num, pct, reais, rotuloRegra } from "@/lib/energia/formato";
+import { carimbo, dataBR, horaLocal, num, pct, reais, rotuloRegra } from "@/lib/energia/formato";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { NOS_FORMACAO, PLD_NAO_E, TIPOS_RELACAO } from "@/lib/energia/conteudo/pld";
 import { conceito } from "@/lib/energia/conteudo/conceitos";
@@ -182,9 +182,9 @@ export default function PldPage() {
             <div className="grid gap-8 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
               <div>
                 <p className="font-serif text-xl leading-relaxed text-carvao md:text-2xl">
-                  No <Termo slug="mcp">Mercado de Curto Prazo</Termo>, a CCEE apura, para cada participante (perfil de agente), submercado e
-                  hora, um balanço de energia em MWh, positivo ou negativo, e um resultado financeiro em R$, separado em venda e compra. O PLD é
-                  o preço desse mercado.
+                  No <Termo slug="mcp">Mercado de Curto Prazo</Termo>, a CCEE apura o balanço de energia de cada perfil de agente, positivo ou
+                  negativo, por submercado e hora, e o resultado financeiro correspondente. O PLD é o preço desse mercado. A CCEE publica esses
+                  valores somados por submercado e hora e, no consolidado do mês, separa o resultado de venda e o de compra.
                 </p>
                 <p className="mt-3 flex flex-wrap items-center gap-2 text-xs text-mineral">
                   Base: descrições oficiais dos conjuntos PLD_HORARIO_SUBMERCADO, SUMARIO_BE_HORARIO_SUBMERCADO e
@@ -192,16 +192,16 @@ export default function PldPage() {
                 </p>
                 {exemploSe && integra(pld) && (
                   <div className="mt-5 border border-dashed border-mineral bg-papel p-4 text-sm leading-relaxed text-carvao">
-                    <p className="rotulo text-mineral">Exemplo com o preço real; a regra de cálculo ainda não foi conferida</p>
+                    <p className="rotulo text-mineral">Leitura usual do setor sobre um preço real; regra ainda não conferida</p>
                     <p className="mt-2">
                       Na hora mais cara de {dataBR(pld.dia_referencia)} no Sudeste/Centro-Oeste ({exemploSe.quando_max.slice(11, 13)}h), o PLD foi{" "}
-                      {reais(exemploSe.max_hora)}/MWh <SeloNatureza natureza="OBSERVADO" />. Um balanço de 10 MWh naquela hora (quantidade escolhida
-                      só para a conta) valeria 10 × {reais(exemploSe.max_hora)} = {reais(10 * exemploSe.max_hora)}.
+                      {reais(exemploSe.max_hora)}/MWh <SeloNatureza natureza="OBSERVADO" />.
                     </p>
                     <p className="mt-2 text-carvao-muted">
-                      Na leitura usual do setor, quem fecha a hora com balanço negativo compra essa diferença no Mercado de Curto Prazo e quem
-                      fecha com balanço positivo a vende, ao PLD. A regra exata está nas Regras de Comercialização da CCEE, ainda não conferidas
-                      nesta fase.
+                      Na leitura usual do setor, cada MWh de balanço de um perfil de agente naquela hora e submercado seria acertado a esse
+                      preço: quem fechasse a hora com balanço negativo compraria a diferença no Mercado de Curto Prazo, e quem fechasse com
+                      balanço positivo a venderia. A regra exata está nas Regras de Comercialização da CCEE, ainda não conferidas nesta fase; por
+                      isso a plataforma não mostra valores de liquidação.
                     </p>
                   </div>
                 )}
@@ -356,7 +356,8 @@ export default function PldPage() {
                     extraFonte={<>Captura primária de {carimbo(pld.proveniencia.horario.capturado_em)}.</>}
                     complementares={[
                       ...(pld.proveniencia.estatisticas ? [{ rotulo: "Sobre as estatísticas do período", p: pld.proveniencia.estatisticas }] : []),
-                      { rotulo: "Sobre as médias diárias e mensais", p: pld.proveniencia.diario },
+                      { rotulo: "Sobre as médias diárias", p: pld.proveniencia.diario },
+                      ...(pld.proveniencia.mensal ? [{ rotulo: "Sobre as médias mensais", p: pld.proveniencia.mensal }] : []),
                     ]}
                   >
                     <PldPeriodos periodos={periodos(pld)} limiar={pld.limiar_diferenca} />
@@ -387,6 +388,7 @@ export default function PldPage() {
                     titulo="Menor valor horário observado por ano e submercado"
                     colunas={["Ano", "Até", "SE/CO", "Sul", "Nordeste", "Norte"]}
                     linhas={pld.menor_valor_ano.map((m) => [m.ano, dataBR(m.ate), m.SE, m.S, m.NE, m.N])}
+                    casas={[null, null, 2, 2, 2, 2]}
                   />
                   <p className="rotulo mt-6 text-mineral">Downloads</p>
                   <ul className="mt-2 space-y-1 text-sm">
@@ -397,7 +399,7 @@ export default function PldPage() {
                     ))}
                   </ul>
                   <p className="mt-4 text-xs text-mineral [overflow-wrap:anywhere]">
-                    Snapshot {pld.snapshot.id} · sha256 {pld.snapshot.sha256} · série de {pld.primeira_hora.replace("T", " ")} a {pld.ultima_hora.replace("T", " ")}
+                    Snapshot {pld.snapshot.id} · sha256 {pld.snapshot.sha256} · série de {horaLocal(pld.primeira_hora)} a {horaLocal(pld.ultima_hora)} (horário de Brasília)
                   </p>
                 </div>
               </>
@@ -458,7 +460,7 @@ export default function PldPage() {
                     oQueMudou={<>Último dia com PLD: {dataBR(rede.ultimo_dia_pld)}.</>}
                     comoInterpretar={<>Zero significa os quatro submercados com a mesma média diária. A série usa médias diárias; diferenças de poucas horas podem sumir na média.</>}
                     naoConcluir={<>A série não identifica qual fronteira ou linha causou a separação, nem se o limite de transferência foi atingido: os limites não estão integrados. A causa de uma separação não é atribuída.</>}
-                    proveniencia={rede.proveniencia.diferenca}
+                    proveniencia={rede.proveniencia.amplitude ?? rede.proveniencia.diferenca}
                   >
                     <GraficoLinhas
                       titulo="Diferença entre o maior e o menor PLD médio diário"

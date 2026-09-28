@@ -49,6 +49,14 @@ export function PainelEvidencia({
   const nat = natureza ?? r.proveniencia.natureza;
   // um selo por natureza presente no painel (principal e complementares), sem repetir
   const selos = Array.from(new Set<Natureza>([nat, ...complementares.map((c) => c.p.natureza)]));
+  // todas as fontes do painel (principal e complementares), cada uma com a sua data de referência
+  const fontes: { nome: string; ate: string }[] = [];
+  for (const p of [r.proveniencia, ...complementares.map((c) => c.p)]) {
+    const nome = `${p.fonte.orgao}, ${p.fonte.dataset}`;
+    const existente = fontes.find((f) => f.nome === nome);
+    if (!existente) fontes.push({ nome, ate: p.periodo_referencia.fim });
+    else if (p.periodo_referencia.fim > existente.ate) existente.ate = p.periodo_referencia.fim;
+  }
   const Titulo = nivelTitulo === 3 ? "h3" : "h2";
   return (
     <section id={id} aria-labelledby={`${id}-titulo`} data-nivel={nivel} className="scroll-mt-28 border border-linha bg-superficie">
@@ -72,8 +80,10 @@ export function PainelEvidencia({
       </div>
       <footer className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-linha px-5 py-3 md:px-8">
         <p className="text-xs leading-relaxed text-mineral">
-          Fonte: {r.proveniencia.fonte.orgao}, {r.proveniencia.fonte.dataset}. Referência até{" "}
-          {fim(r.proveniencia.periodo_referencia.fim)}. {extraFonte}
+          {fontes.length === 1
+            ? `Fonte: ${fontes[0].nome}. Referência até ${fim(fontes[0].ate)}. `
+            : `Fontes: ${fontes.map((f) => `${f.nome} (referência até ${fim(f.ate)})`).join("; ")}. `}
+          {extraFonte}
         </p>
         <div className="flex flex-wrap items-center gap-4">
           {r.proveniencia.download && (
@@ -100,6 +110,7 @@ export function PainelEvidencia({
 
 function fim(iso: string): string {
   const [a, m, d] = iso.slice(0, 10).split("-");
+  if (d === undefined) return m === undefined ? a : `${m}/${a}`;
   return iso.length > 10 ? `${d}/${m}/${a} ${iso.slice(11, 16)}` : `${d}/${m}/${a}`;
 }
 

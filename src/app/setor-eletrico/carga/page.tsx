@@ -85,7 +85,7 @@ export default function CargaPage() {
               pergunta="Como a carga se distribui entre os subsistemas?"
               subtitulo="Carga diária por subsistema · MWmed · últimos 3 anos"
               porQueImporta={<>O Sudeste/Centro-Oeste concentra a maior parte da carga; comparar as trajetórias regionais mostra onde a carga variou mais.</>}
-              oQueMudou={<>{c.subsistemas.filter((s) => s.sm !== "SIN").map((s) => `${s.nome}: ${s.ult7?.variacao_pct !== null && s.ult7 ? `${sinal(s.ult7.variacao_pct)}% em 7 dias` : "sem comparação"}`).join("; ")}.</>}
+              oQueMudou={<>Média dos últimos 7 dias comparada à dos mesmos dias do ano anterior: {c.subsistemas.filter((s) => s.sm !== "SIN").map((s) => `${s.nome} ${s.ult7?.variacao_pct !== null && s.ult7 ? `${sinal(s.ult7.variacao_pct)}%` : "sem comparação"}`).join("; ")}.</>}
               comoInterpretar={<>Mesma régua para os quatro subsistemas: compare trajetórias, não só níveis.</>}
               naoConcluir={<>Crescimento regional de carga pode refletir mudança de metodologia ou de fronteira de medição; o ONS descreve as mudanças no conjunto de dados.</>}
               proveniencia={c.proveniencia.carga}
@@ -108,7 +108,7 @@ export default function CargaPage() {
               }
               comoInterpretar={<>As linhas verticais marcam as mudanças de conteúdo da série; não compare níveis através delas como se fossem a mesma medida.</>}
               naoConcluir={<>A série anterior a 2021 não inclui geração não despachada nem MMGD; o salto após as quebras não é, por si, aumento de consumo.</>}
-              proveniencia={c.proveniencia.sin}
+              proveniencia={c.proveniencia.mensal ?? c.proveniencia.sin}
             >
               <GraficoLinhas titulo="Carga média mensal do SIN desde 2000" dados={c.mensal} chaveX="m" formatoX="mes" series={[{ id: "SIN", rotulo: "SIN", cor: "var(--cor-energia)" }]} unidade="MWmed" casas={0} marcos={[{ x: "2021-03", rotulo: "mar/21" }, { x: "2023-05", rotulo: "mai/23" }]} />
             </PainelEvidencia>

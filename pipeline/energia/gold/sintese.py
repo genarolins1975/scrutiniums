@@ -89,7 +89,10 @@ def frases(hid, carga, ger, pld):
             })
     if pld and pld.get("disponivel"):
         se = next(x for x in pld["cartoes"] if x["sm"] == "SE")
-        amp = max(x["media_dia"] for x in pld["cartoes"]) - min(x["media_dia"] for x in pld["cartoes"])
+        # amplitude calculada no pipeline do PLD a partir das médias não arredondadas
+        amp = pld.get("amplitude_dia")
+        if amp is None:
+            amp = max(x["media_dia"] for x in pld["cartoes"]) - min(x["media_dia"] for x in pld["cartoes"])
         pos = se["posicao"]
         trechos = [
             _t(f"Em {c.data_br(pld['dia_referencia'])}, o PLD médio do Sudeste/Centro-Oeste foi "),
@@ -127,7 +130,7 @@ def observar(hid, carga, ger, pld, cmo, hoje=None):
         fora_e = [s for s in hid["subsistemas"] if s["sm"] != "SIN" and s["ena"]["faixa_30d"] in ("abaixo", "acima")]
         add("ena_faixa", "Afluência de 30 dias fora da faixa usual",
             "ENA acumulada em 30 dias (% da MLT) abaixo do 10º ou acima do 90º percentil da mesma janela nos anos anteriores.",
-            fora_e, "; ".join(f"{s['nome']}: {nbr(s['ena']['pct_mlt_30d'], 0)}% da MLT ({s['ena']['faixa_30d']} da faixa)" for s in fora_e)
+            fora_e, "; ".join(f"{s['nome']}: {nbr(s['ena']['pct_mlt_30d'], 1)}% da MLT ({s['ena']['faixa_30d']} da faixa)" for s in fora_e)
             or "Todos os subsistemas dentro da faixa usual.", "/setor-eletrico/agua-e-clima#ena")
     if pld and pld.get("disponivel"):
         dif = pld["periodos"]["30d"]["diferenca"]

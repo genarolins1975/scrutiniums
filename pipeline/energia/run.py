@@ -102,7 +102,8 @@ def main(argv):
         snap = c.snapshot_de(con, ds)
         fontes[ds] = {"ultima_captura": c.ultima_captura(snap), "snapshot": snap.get("id"),
                       "snapshot_sha256": snap.get("sha256"), "ultima_tentativa": base.ultima_coleta(con, ds),
-                      "capturas": snap.get("capturas", [])}
+                      "capturas": snap.get("capturas", []), "historico": snap.get("historico", []),
+                      "recapturas_sem_mudanca": (snap.get("revisoes") or {}).get("recapturas_sem_mudanca")}
     meta = {
         **c.cabecalho("meta.json"),
         "golds": {k: {"disponivel": _integro(v), "gerado_em": (v or {}).get("gerado_em")} for k, v in g.items()},

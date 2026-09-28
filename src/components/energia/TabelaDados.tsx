@@ -2,18 +2,27 @@
  * Tabela equivalente de um gráfico (acessibilidade e auditoria): recolhida por
  * padrão, com as últimas linhas e o link para a série completa.
  */
+function formata(v: number, casas: number | null | undefined): string {
+  return typeof casas === "number"
+    ? v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas })
+    : v.toLocaleString("pt-BR", { maximumFractionDigits: 2 });
+}
+
 export function TabelaDados({
   titulo,
   colunas,
   linhas,
   csv,
   limite = 30,
+  casas,
 }: {
   titulo: string;
   colunas: string[];
   linhas: (string | number | null)[][];
   csv?: string;
   limite?: number;
+  /** Casas decimais fixas por coluna numérica (null = até 2 casas); padroniza com o texto da página. */
+  casas?: (number | null)[];
 }) {
   const ult = linhas.slice(-limite);
   return (
@@ -38,7 +47,7 @@ export function TabelaDados({
               <tr key={i} className="odd:bg-papel">
                 {l.map((v, j) => (
                   <td key={j} className="px-2 py-1 text-carvao">
-                    {v === null || v === undefined ? <span className="text-mineral">sem dado</span> : typeof v === "number" ? v.toLocaleString("pt-BR", { maximumFractionDigits: 2 }) : v}
+                    {v === null || v === undefined ? <span className="text-mineral">sem dado</span> : typeof v === "number" ? formata(v, casas?.[j]) : v}
                   </td>
                 ))}
               </tr>

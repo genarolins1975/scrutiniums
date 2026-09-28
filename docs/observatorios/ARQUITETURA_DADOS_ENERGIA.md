@@ -24,7 +24,8 @@ observacoes(dataset, serie, ref, valor, vintage_id, PRIMARY KEY(dataset, serie, 
 ```
 
 * Uma observação só ganha nova linha quando o valor muda em relação à última vintage: revisões ficam registradas, nunca sobrescritas.
-* `como_estava_em(serie, T)` devolve, para cada `ref`, o valor da vintage mais recente com `capturado_em ≤ T`. Toda feature de modelo e todo backtest usam essa consulta.
+* `como_estava_em(serie, T)` devolve, para cada `ref`, o valor da vintage mais recente com `capturado_em ≤ T`. Toda feature de modelo e todo backtest da plataforma devem usar essa consulta. Nesta versão ainda não existe construtor de features nem backtest dentro da plataforma (os cartões de modelo declaram backtest da pesquisa em snapshot único); a consulta está implementada e testada em `base.py` e `pipeline/tests`.
+* Limitação conhecida: quando a fonte **remove** uma referência de um arquivo (a linha deixa de existir ou fica vazia), nada é registrado e a série vigente continua devolvendo o último valor publicado para ela. Revisão de valor é registrada; remoção, não. Encaminhamento: tabela de remoções por vintage, considerada em `como_estava_em`.
 * Valor ausente não gera linha. `NULL` não vira zero em nenhuma etapa.
 
 ## Datas distinguidas
@@ -70,7 +71,7 @@ Todo arquivo gold do domínio tem `dominio: "energia"`, `gerado_em`, `versao_pip
 
 ## Riscos operacionais registrados na auditoria
 
-* Persistência do histórico: bronze e silver (`data/energia`) vivem no cache do GitHub Actions, fora do git. Se o cache expirar, a gold publicada continua correta, mas o registro de vintages e revisões anteriores se perde e a detecção de revisões recomeça do zero. Encaminhamento: armazenamento durável (bucket versionado ou release com o banco SQLite compactado) a decidir pelo responsável pela plataforma.
+* Persistência do histórico: bronze e silver (`data/energia`) vivem no cache do GitHub Actions, fora do git. Só o silver (banco SQLite com vintages e observações, `energia-silver.db.gz`) tem cópia durável, na release `energia-estado` do repositório, restaurada quando o cache falta; os arquivos brutos do bronze não têm cópia durável, mas o sha256 de cada um fica registrado no silver. Se cache e release se perderem, a automação abre um alerta; a gold publicada continua correta, mas o registro de vintages e revisões anteriores se perde e a detecção de revisões recomeça do zero. Encaminhamento: confirmar a release como armazenamento definitivo ou migrar para bucket versionado, a decidir pelo responsável pela plataforma.
 * Coleta da CCEE: o portal recusou a coleta automatizada (HTTP 403) na manhã de 28/09/2026 e a aceitou horas depois. A coleta é tentada em cada execução; o resultado da última tentativa entra em `meta.json` e nos textos de limitação, sem frase fixa.
 * Horizonte de publicação: implementado em `pipeline/energia/validacoes.py`; referência além do horizonte recusa a gold e mantém a anterior no ar.
 

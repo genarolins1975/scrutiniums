@@ -109,7 +109,7 @@ class GovernancaTest(unittest.TestCase):
         return rec
 
     def test_arquivo_versionado_conforme(self):
-        self.assertEqual(g.valida_arquivo(self.arquivo, self.modelos), [])
+        self.assertEqual(g.valida_arquivo(self.arquivo, self.modelos, resultados_liberados=False), [])
         self.assertEqual(len(self.arquivo), 28)
         self.assertTrue(all(r["previsao"] is None and r["status"] == "INDISPONIVEL" for r in self.arquivo))
 
@@ -153,7 +153,7 @@ class GovernancaTest(unittest.TestCase):
     def test_alteracao_silenciosa_detectada(self):
         novo = copy.deepcopy(self.arquivo)
         novo[3]["motivo"] = "OUTRO"  # sem recalcular o hash
-        self.assertTrue(any("sha256" in x for x in g.valida_arquivo(novo, self.modelos)))
+        self.assertTrue(any("sha256" in x for x in g.valida_arquivo(novo, self.modelos, resultados_liberados=False)))
         novo[3]["sha256"] = g.hash_registro(novo[3])  # mesmo recalculando, o append only acusa
         self.assertTrue(any("alterado" in x for x in g.valida_append_only(self.arquivo, novo)))
         self.assertTrue(any("removido" in x for x in g.valida_append_only(self.arquivo, novo[1:])))
@@ -298,8 +298,21 @@ class GovernancaEndurecidaTest(unittest.TestCase):
 
     def test_rodada_interna_com_numero_barrada_com_resultados_retidos(self):
         r = self._rec()
-        self.assertEqual(g.valida_arquivo([r], {}), [])
+        self.assertEqual(g.valida_arquivo([r], {}, resultados_liberados=True), [])
         self.assertTrue(any("retida" in x for x in g.valida_arquivo([r], {}, resultados_liberados=False)))
+        # a decisão é explícita: sem ela, o validador recusa rodar
+        with self.assertRaises(ValueError):
+            g.valida_arquivo([r], {}, resultados_liberados=None)
+
+    def test_valor_nao_finito_e_rotulo_por_extenso_barrados(self):
+        for ruim in (float("nan"), float("inf")):
+            v = g.valida_registro(self._rec(previsao=ruim), {})
+            self.assertTrue(any("finito" in x for x in v), v)
+        for rotulo in ("faixa de oitenta por cento", "Faixa P10 a P90", "p10–p90"):
+            v = g.valida_registro(self._rec(quantis={"rotulo_faixa": rotulo, "p10": 1.0, "p90": 2.0}), {})
+            self.assertTrue(any("80%" in x for x in v), (rotulo, v))
+        v = g.valida_registro(self._rec(quantis={"rotulo_faixa": "faixa", "p10": float("nan")}), {})
+        self.assertTrue(any("quantis.p10 não finito" in x for x in v), v)
 
     def test_feature_sem_captura_e_corte_sem_fuso_barrados(self):
         mods = {"C1": {"estado": "PRODUCAO"}}

@@ -40,6 +40,8 @@ const MESES_LONGOS = ["janeiro", "fevereiro", "março", "abril", "maio", "junho"
 export function dataBR(iso: string | null | undefined): string {
   if (!iso) return AUSENTE;
   const [a, m, d] = iso.slice(0, 10).split("-");
+  // período mensal (AAAA-MM) vira mm/aaaa; nunca "undefined"
+  if (d === undefined) return m === undefined ? a : `${m}/${a}`;
   return `${d}/${m}/${a}`;
 }
 

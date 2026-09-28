@@ -27,9 +27,9 @@ AQUI = os.path.dirname(os.path.abspath(__file__))
 INTEGRADOS = {
     ("CCEE", "pld_horario"): {"estado": "UTILIZADO EM MODELO", "golds": ["pld.json", "rede.json", "sintese.json"],
                               "modelos": ["B0", "C1", "C2-P", "C2-H"], "slug": "ccee-pld-horario"},
-    ("ONS", "ear-diario-por-subsistema"): {"estado": "UTILIZADO EM INDICADOR", "golds": ["hidrologia.json", "sintese.json"],
+    ("ONS", "ear-diario-por-subsistema"): {"estado": "UTILIZADO EM MODELO", "golds": ["hidrologia.json", "sintese.json"], "modelos": ["C2-H"],
                                            "slug": "ons-ear-subsistema"},
-    ("ONS", "ena-diario-por-subsistema"): {"estado": "UTILIZADO EM INDICADOR", "golds": ["hidrologia.json", "sintese.json"],
+    ("ONS", "ena-diario-por-subsistema"): {"estado": "UTILIZADO EM MODELO", "golds": ["hidrologia.json", "sintese.json"], "modelos": ["C2-H"],
                                            "slug": "ons-ena-subsistema"},
     ("ONS", "carga-energia"): {"estado": "UTILIZADO EM INDICADOR", "golds": ["carga.json", "sintese.json"],
                                "slug": "ons-carga-diaria"},
@@ -44,6 +44,9 @@ QUEBRAS = {
     ("ONS", "carga-energia"): [
         {"data": "2021-03-01", "descricao": "Passa a incluir a previsão de geração de usinas não despachadas pelo ONS."},
         {"data": "2023-04-29", "descricao": "Passa a incorporar o valor estimado da micro e minigeração distribuída (MMGD)."},
+    ],
+    ("ONS", "balanco-energia-subsistema"): [
+        {"data": "2023-04-29", "descricao": "Leitura da Scrutiniums a partir do dado, não declarada na descrição do conjunto: a solar do SIN dobra de um dia para o outro e a geração total passa a igualar a carga, que inclui a estimativa de MMGD desde essa data."},
     ],
 }
 TEMAS = [

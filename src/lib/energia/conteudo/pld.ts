@@ -98,7 +98,7 @@ export const NOS_FORMACAO: NoFormacao[] = [
   {
     id: "renovaveis",
     titulo: "Eólica, solar e outras fontes",
-    oQueE: "Geração verificada das usinas eólicas e fotovoltaicas acompanhadas pelo ONS, hora a hora.",
+    oQueE: "Geração eólica e fotovoltaica verificada no balanço de energia do ONS, hora a hora.",
     fonteOQueE: "ONS, Balanço de Energia nos Subsistemas",
     conferenciaOQueE: "CONFERIDO",
     relacaoSaida: {
@@ -214,7 +214,7 @@ export const PLD_NAO_E: { titulo: string; porque: string; base: string; conferen
   {
     titulo: "Não é simplesmente o preço da última usina",
     porque:
-      "O PLD tem como base o CMO, resultado dos modelos computacionais oficiais (NEWAVE, DECOMP e DESSEM). Na descrição usual do setor, ainda não conferida em documento primário nesta fase, esses modelos ponderam usar a água agora ou guardá-la, de modo que o custo marginal incorpora um valor futuro da água, e não apenas o custo da usina mais cara acionada naquela hora.",
+      "O PLD tem como base o CMO e é calculado com os modelos computacionais NEWAVE, DECOMP e DESSEM, segundo a CCEE; o ONS publica o CMO estimado pelo DECOMP e pelo DESSEM. Na descrição usual do setor, ainda não conferida em documento primário nesta fase, esses modelos ponderam usar a água agora ou guardá-la, de modo que o custo marginal incorpora um valor futuro da água, e não apenas o custo da usina mais cara acionada naquela hora.",
     base: "CCEE, descrição oficial do PLD; mecanismo do valor da água com conferência documental pendente",
     conferencia: "PENDENTE",
   },
@@ -228,7 +228,7 @@ export const PLD_NAO_E: { titulo: string; porque: string; base: string; conferen
   {
     titulo: "Não é uma previsão meteorológica",
     porque:
-      "O PLD é calculado para cada hora do dia seguinte com base no CMO. Não é uma estimativa de chuva nem de afluência; a ENA publicada pelo ONS é que mede, em energia, as vazões naturais já verificadas.",
+      "O PLD é calculado para cada hora do dia seguinte com base no CMO. Não é uma estimativa de chuva nem de afluência; a ENA publicada pelo ONS é calculada a partir das vazões naturais aos reservatórios.",
     base: "CCEE, descrição oficial do PLD; ONS, ENA Diário por Subsistema",
     conferencia: "CONFERIDO",
   },

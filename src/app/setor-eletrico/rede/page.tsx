@@ -74,7 +74,10 @@ export default function RedePage() {
               comoInterpretar={<>A seta aponta o sentido do fluxo médio do dia; a espessura é proporcional ao volume. As caixas trazem o PLD médio do último dia disponível.</>}
               naoConcluir={<>Sem os limites de transferência, fluxo alto não prova congestionamento, e a página não identifica qual linha ou equipamento restringiu a transferência.</>}
               proveniencia={r.proveniencia.fluxo}
-              complementares={integra(pld) ? [{ rotulo: "Sobre o PLD médio", p: pld.proveniencia.diario }] : []}
+              complementares={[
+                ...(integra(pld) ? [{ rotulo: "Sobre o PLD médio", p: pld.proveniencia.diario }] : []),
+                { rotulo: "Sobre a diferença de preço por fronteira", p: r.proveniencia.diferenca },
+              ]}
             >
               {integra(pld) ? (
                 <MapaSubmercados
@@ -88,7 +91,7 @@ export default function RedePage() {
               )}
               <TabelaDados
                 titulo="Intercâmbio por fronteira"
-                colunas={["Fronteira", "Fluxo do dia", "Programado do dia", "Média 30 dias", "Dias com diferença de PLD acima de R$ 1 (30 dias)"]}
+                colunas={["Fronteira", "Fluxo do dia (MWmed)", "Programado do dia (MWmed)", "Média 30 dias (MWmed)", `Dias com diferença de PLD médio acima de ${reais(r.limiar_diferenca_dia ?? 1, 2)}/MWh (30 dias até ${dataBR(r.dia_referencia)})`]}
                 linhas={r.fronteiras.map((f) => [f.nome, f.fluxo_dia, f.programado_dia, f.fluxo_media_30d, `${f.dias_com_diferenca_30d} de ${f.n_dias_pld_30d}`])}
               />
             </PainelEvidencia>
@@ -104,7 +107,7 @@ export default function RedePage() {
               comoInterpretar={
                 <>
                   {r.balanco_sin
-                    ? `Em ${dataBR(r.balanco_sin.dia)}, a soma dos quatro saldos foi ${num(r.balanco_sin.soma_saldos, 0)} MWmed e o intercâmbio do SIN no mesmo balanço, ${num(r.balanco_sin.intercambio_sin, 0)} MWmed. Nos 365 dias até essa data, o intercâmbio do SIN foi diferente de zero em ${r.balanco_sin.dias_sin_nao_nulo_365} dias; nesses dias, os saldos não somam zero. `
+                    ? `Em ${dataBR(r.balanco_sin.dia)}, a soma dos quatro saldos foi ${num(r.balanco_sin.soma_saldos, 0)} MWmed e o intercâmbio do SIN no mesmo balanço, ${num(r.balanco_sin.intercambio_sin, 0)} MWmed. Nos 365 dias até essa data, a média diária do intercâmbio do SIN passou de 1 MWmed em módulo em ${r.balanco_sin.dias_sin_nao_nulo_365} dias; nesses dias, os saldos não somam zero. `
                     : ""}
                   O dia do balanço pode diferir do dia dos fluxos por fronteira, porque são conjuntos distintos.
                 </>
@@ -146,7 +149,7 @@ export default function RedePage() {
               oQueMudou={<>Maior diferença da série: {reais(Math.max(...r.serie_amplitude_pld.map((a) => a.amplitude)))}/MWh.</>}
               comoInterpretar={<>Zero significa médias diárias iguais nos quatro submercados; diferenças de poucas horas podem sumir na média diária.</>}
               naoConcluir={<>A série não diz qual fronteira causou a separação.</>}
-              proveniencia={r.proveniencia.diferenca}
+              proveniencia={r.proveniencia.amplitude ?? r.proveniencia.diferenca}
             >
               <GraficoLinhas
                 titulo="Diferença diária entre o maior e o menor PLD"

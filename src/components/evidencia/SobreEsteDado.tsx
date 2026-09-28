@@ -15,6 +15,7 @@ function dataHora(iso: string | null | undefined): string {
   const temHora = iso.length > 10;
   if (!temHora) {
     const [a, m, d] = iso.split("-");
+    if (d === undefined) return m === undefined ? a : `${m}/${a}`;
     return `${d}/${m}/${a}`;
   }
   if (!iso.endsWith("Z") && !iso.includes("+") && /T\d\d:\d\d$/.test(iso)) {
@@ -43,6 +44,24 @@ function Linha({ rotulo, children }: { rotulo: string; children: React.ReactNode
       <dd className="text-sm leading-relaxed text-carvao">{children}</dd>
     </div>
   );
+}
+
+/** Texto de "nenhuma revisão", distinguindo arquivo capturado uma vez de arquivo recapturado sem mudança. */
+function textoSemRevisao(rev: NonNullable<Proveniencia["revisoes_conhecidas"]>): string {
+  const quando = `verificado em ${dataHora(rev.detectado_em)}`;
+  const recap = rev.recapturas_sem_mudanca ?? 0;
+  const identicos =
+    recap > 0
+      ? `${recap} ${recap === 1 ? "download posterior veio idêntico" : "downloads posteriores vieram idênticos"} a arquivos já integrados${
+          rev.ultimo_download_ok ? ` (último download em ${dataHora(rev.ultimo_download_ok)})` : ""
+        }; arquivo idêntico não gera captura nova.`
+      : "";
+  const umaPorArquivo = rev.vintages_comparadas !== undefined && rev.arquivos !== undefined && rev.vintages_comparadas <= rev.arquivos;
+  if (umaPorArquivo && recap === 0)
+    return `Ainda não é possível detectar revisões: há uma única captura de cada um dos ${rev.arquivos} arquivos integrados (${quando}). A detecção começa na segunda captura de um arquivo.`;
+  if (umaPorArquivo)
+    return `Nenhuma revisão detectada (${quando}): cada um dos ${rev.arquivos} arquivos integrados tem uma captura, e ${identicos}`;
+  return `Nenhuma revisão detectada entre ${rev.vintages_comparadas ?? "as"} capturas distintas de ${rev.arquivos ?? "todos os"} arquivos integrados (${quando}).${identicos ? ` Além disso, ${identicos}` : ""}`;
 }
 
 export function SobreEsteDado({ p, rotulo = "Sobre este dado" }: { p: Proveniencia; rotulo?: string }) {
@@ -142,11 +161,7 @@ export function SobreEsteDado({ p, rotulo = "Sobre este dado" }: { p: Provenienc
                 {!rev ? (
                   "Detecção de revisões não disponível para este indicador."
                 ) : rev.total === 0 ? (
-                  rev.vintages_comparadas !== undefined && rev.arquivos !== undefined && rev.vintages_comparadas <= rev.arquivos ? (
-                    `Ainda não é possível detectar revisões: há uma única captura de cada um dos ${rev.arquivos} arquivos integrados (verificado em ${dataHora(rev.detectado_em)}). A detecção começa na segunda captura de um arquivo.`
-                  ) : (
-                    `Nenhuma revisão detectada entre ${rev.vintages_comparadas ?? "as"} capturas de ${rev.arquivos ?? "todos os"} arquivos integrados (verificado em ${dataHora(rev.detectado_em)}).`
-                  )
+                  textoSemRevisao(rev)
                 ) : (
                   <>
                     {rev.total.toLocaleString("pt-BR")} observações com valor revisado pela fonte entre as vintages integradas (verificado em{" "}

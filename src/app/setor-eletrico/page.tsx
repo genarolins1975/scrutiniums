@@ -139,8 +139,8 @@ export default function VisaoGeralEnergia() {
               subtitulo="PLD médio diário · R$/MWh nominais"
               porQueImporta={
                 <>
-                  O <Termo slug="pld">PLD</Termo> é o preço do <Termo slug="mcp">Mercado de Curto Prazo</Termo>, em que a CCEE apura, por hora e
-                  submercado, o balanço de energia e o resultado financeiro de cada participante. O que isso significa, e o que o PLD não é, está no{" "}
+                  O <Termo slug="pld">PLD</Termo> é o preço do <Termo slug="mcp">Mercado de Curto Prazo</Termo>, em que a CCEE apura o balanço de
+                  energia e o resultado de cada perfil de agente, por hora e submercado. O que isso significa, e o que o PLD não é, está no{" "}
                   <a href="/setor-eletrico/pld#o-que-e" className="text-energia-dark underline underline-offset-4">capítulo 1 do PLD</a>.
                 </>
               }
@@ -148,6 +148,10 @@ export default function VisaoGeralEnergia() {
               comoInterpretar={<>A posição usa o percentil da média diária entre todas as médias diárias desde 01/01/2021, em valores nominais. Faixa baixa abaixo do 25º percentil, alta acima do 75º.</>}
               naoConcluir={<>O PLD não é a tarifa do consumidor e não é previsão. Comparações com anos anteriores misturam limites regulatórios diferentes, que não foram auditados nesta fase.</>}
               proveniencia={pld.proveniencia.diario}
+              complementares={[
+                { rotulo: "Sobre a posição histórica", p: pld.proveniencia.posicao },
+                ...(pld.proveniencia.estatisticas ? [{ rotulo: "Sobre as horas com diferença de preço", p: pld.proveniencia.estatisticas }] : []),
+              ]}
             >
               <CartoesPld pld={pld} />
             </PainelEvidencia>
@@ -214,7 +218,7 @@ export default function VisaoGeralEnergia() {
               porQueImporta={<>A composição mostra de onde vem a energia que atende a carga e quanto o sistema recorre às térmicas, as usinas cujo <Termo slug="cvu">Custo Variável Unitário</Termo> entra na programação da operação.</>}
               oQueMudou={<>Térmicas com {pct(ger.termica_contexto.participacao_7d)} nos últimos 7 dias, contra mediana de {pct(ger.termica_contexto.mediana_365d)} nos 12 meses anteriores (percentil {num(ger.termica_contexto.percentil, 1)}).</>}
               comoInterpretar={<>Cada barra soma 100% da geração verificada na janela. Compare a semana atual com a mesma semana dos anos anteriores para separar sazonalidade de mudança.</>}
-              naoConcluir={<>&quot;Hidráulica, eólica e solar&quot; não é a participação renovável: a térmica do balanço inclui biomassa e outras fontes que o conjunto não separa. A descrição do balanço não menciona a micro e minigeração distribuída, que aparece como estimativa na série de carga desde 29/04/2023.</>}
+              naoConcluir={<>&quot;Hidráulica, eólica e solar&quot; não é a participação renovável: o conjunto não separa a térmica por combustível. Os anos comparados são só os posteriores a 29/04/2023, quando o balanço muda de regime (leitura a partir do dado).</>}
               proveniencia={ger.proveniencia.geracao}
               complementares={ger.proveniencia.termica_7d ? [{ rotulo: "Sobre a participação térmica de 7 dias", p: ger.proveniencia.termica_7d }] : []}
             >
@@ -306,8 +310,9 @@ export default function VisaoGeralEnergia() {
           {integra(sintese) ? (
             <div className="border border-linha bg-superficie">
               <p className="border-b border-linha px-6 py-4 text-sm text-carvao-muted">
-                Regras explícitas avaliadas sobre os dados mais recentes. {sintese.observar.filter((o) => o.ativo).length} de{" "}
-                {sintese.observar.length} estão ativas. Nenhuma é previsão: cada uma descreve uma condição medida.
+                Regras explícitas avaliadas sobre os dados mais recentes. {sintese.observar.filter((o) => o.ativo && o.tipo !== "evento").length} de{" "}
+                {sintese.observar.filter((o) => o.tipo !== "evento").length} regras estão ativas{sintese.observar.some((o) => o.tipo === "evento") ? ", e a lista inclui eventos conhecidos, como a publicação semanal do CMO" : ""}.
+                Nenhum item é previsão: cada um descreve uma condição medida ou um evento publicado.
               </p>
               <ul>
                 {sintese.observar.map((o) => (

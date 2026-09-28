@@ -120,12 +120,21 @@ def construir(con):
         formula="variação = média(últimos n dias) ÷ média(mesmos n dias do ano anterior) − 1",
         limitacoes=lim + ["Temperatura, dias úteis e feriados afetam a carga e não são ajustados."],
     )
+    prov_mensal = c.proveniencia(
+        indicador="Carga média mensal do SIN e dos subsistemas", natureza="CALCULADO",
+        fonte=c.fonte_ons("carga-energia", DS, "Carga de Energia Diária"),
+        unidade="MWmed", frequencia="mensal", periodo={"inicio": dias[0][:7], "fim": dia_ref[:7]},
+        cobertura={"inicio": dias[0], "fim": dia_ref}, capturado_em=c.ultima_captura(snap), snapshot=snap,
+        transformacoes=["média aritmética dos valores diários do mês", "SIN: soma dos quatro subsistemas em cada dia"],
+        formula="carga_mensal(s, m) = média de carga(s, d) para os dias d do mês m com dado; o mês corrente é parcial",
+        limitacoes=lim + ["Médias de meses em regimes metodológicos diferentes não são comparáveis diretamente."],
+    )
     return {
         **c.cabecalho("carga.json"),
         "dia_referencia": dia_ref, "unidade": "MWmed",
         "regras": REGRAS, "regimes": REGIMES,
         "subsistemas": subs, "serie": serie, "mensal": serie_mensal,
-        "proveniencia": {"carga": prov, "sin": prov_sin},
+        "proveniencia": {"carga": prov, "sin": prov_sin, "mensal": prov_mensal},
         "fonte_notas": meta.get("notas"),
         "downloads": [{"rotulo": "Carga diária por subsistema e SIN (CSV)", "url": "/energia/series/carga_diaria.csv"}],
     }
