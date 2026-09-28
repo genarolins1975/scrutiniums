@@ -26,7 +26,7 @@ export function SecaoMetodo() {
     <section aria-labelledby="metodo-titulo" className="bg-marfim">
       <div className="mx-auto max-w-page px-6 py-20 md:py-28">
         <div id="metodo-titulo">
-          <SectionHeading number="02" label="Método" title="Como o conhecimento é produzido" />
+          <SectionHeading number="01" label="Método" title="Como o conhecimento é produzido" />
         </div>
         <ol className="grid gap-12 md:grid-cols-3 md:gap-10">
           {PASSOS.map((passo) => (

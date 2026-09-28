@@ -21,6 +21,21 @@
   --cor-linha: #d8d2c6;
   --cor-erro: #8c3b2e;
   --cor-sucesso: #4f6b4e;
+  --cor-energia: #0e6170;
+  --cor-energia-dark: #0a4a56;
+  --cor-energia-soft: #5e98a3;
+  --cor-energia-fundo: #e6eeee;
+  --cor-superficie: #ffffff;
+
+  /* Séries do domínio Energia: fontes e submercados (sempre com rótulo direto) */
+  --serie-hidraulica: #1f5f8b;
+  --serie-termica: #8c3b2e;
+  --serie-eolica: #3f6e5a;
+  --serie-solar: #8a6d2f;
+  --serie-sm-se: #1a1d21;
+  --serie-sm-s: #1f5f8b;
+  --serie-sm-ne: #8c3b2e;
+  --serie-sm-n: #3f6e5a;
 
   /* Paleta categórica dos gráficos: bronze só como destaque */
   --serie-1: #1a1d21;

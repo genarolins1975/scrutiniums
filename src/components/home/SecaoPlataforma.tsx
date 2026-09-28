@@ -2,51 +2,49 @@ import { BotaoLink } from "@/components/home/BotaoLink";
 
 const CONTEUDOS = [
   {
-    titulo: "Panorama do Crédito por estado",
+    titulo: "Natureza de cada número",
     descricao:
-      "Mapa e perfis do SCR: carteira, inadimplência arrastada, renda, ocupação e produto em cada UF, com alertas de deterioração por regras publicadas.",
+      "Observado, calculado, estimado, previsto ou cenário: o selo acompanha o valor e as categorias nunca se confundem.",
   },
   {
-    titulo: "Taxas de juros por instituição",
+    titulo: "Proveniência até a fonte primária",
     descricao:
-      "20 modalidades PF e PJ, cerca de 200 instituições: ranking completo, dispersão, quem é persistentemente mais barato e a carteira associada.",
+      "Órgão, conjunto de dados, período de referência, momento da captura, transformação, fórmula e versão de cada indicador.",
   },
   {
-    titulo: "Comparador de instituições",
+    titulo: "Regras publicadas",
     descricao:
-      "Visão executiva de 2 a 10 bancos e cooperativas (IF.data), com grupo comparável por segmento prudencial e sentido econômico declarado em cada métrica.",
+      "Classificações como alto, baixo ou fora do padrão só existem com regra estatística declarada ao lado do número.",
   },
   {
-    titulo: "Sinais antecedentes e alertas",
-    descricao:
-      "Subíndices de estresse decompostos, alertas com persistência mínima e relatório diário automático, tudo com regra publicada.",
+    titulo: "Ausência declarada",
+    descricao: "Dado que falta aparece como lacuna com motivo. Nunca como zero, nunca estimado em silêncio.",
   },
   {
-    titulo: "Riscos emergentes: bets e fraudes",
+    titulo: "Previsões com estado e arquivo",
     descricao:
-      "Apostas e golpes digitais versus crédito das famílias, com hierarquia de evidência A a E e a honestidade de dizer o que ainda é hipótese.",
+      "Modelo em pesquisa não vira previsão oficial, e o que foi publicado fica registrado com versão, dados e data.",
   },
   {
-    titulo: "Mercado & valor dos bancos listados",
-    descricao:
-      "Retorno total com proventos reinvestidos, drawdown, valuation e resultados das companhias financeiras da B3.",
+    titulo: "Séries para download e citação",
+    descricao: "CSV das séries com fonte e data de referência, para verificar, reproduzir e citar.",
   },
   {
-    titulo: "Glossário e metodologia abertos",
-    descricao: "Definições e métodos acessíveis a qualquer pessoa, sem cadastro.",
+    titulo: "Glossário e base de conhecimento",
+    descricao: "Definições com fonte oficial, abertas a qualquer pessoa, sem cadastro.",
   },
 ];
 
 /**
- * Momento de manifesto: a frase de transparência em serifa grande
- * sobre carvão, seguida do que existe dentro da plataforma em lista
- * editorial com filetes — sem cartões.
+ * Momento de manifesto: a frase de transparência em serifa grande sobre
+ * carvão, seguida do sistema de evidências que os dois observatórios
+ * compartilham, em lista editorial com filetes, sem cartões.
  */
 export function SecaoPlataforma() {
   return (
     <section id="plataforma" aria-labelledby="plataforma-titulo" className="bg-carvao text-marfim">
       <div className="mx-auto max-w-page px-6 py-24 md:py-32">
-        <p className="rotulo text-mineral-soft">Dentro da plataforma</p>
+        <p className="rotulo text-mineral-soft">O que os dois observatórios compartilham</p>
         <h2
           id="plataforma-titulo"
           className="mt-7 max-w-5xl font-serif text-[clamp(1.9rem,4.5vw,3.4rem)] leading-[1.12] text-marfim"
@@ -55,7 +53,7 @@ export function SecaoPlataforma() {
           <span className="text-bronze-soft">declarados em cada análise.</span>
         </h2>
         <p className="mt-8 max-w-prose2 leading-relaxed text-mineral-soft">
-          É o compromisso que sustenta tudo o que existe do outro lado do cadastro.
+          O mesmo sistema de evidências vale para o Crédito e para o Setor Elétrico.
         </p>
 
         <ul className="mt-16 border-t border-linha-escura">

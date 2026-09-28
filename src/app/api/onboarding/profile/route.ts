@@ -78,5 +78,5 @@ export async function POST(req: Request) {
   await trackEvent("profile_completed", user.id);
   await trackEvent("onboarding_completed", user.id);
 
-  return NextResponse.json({ ok: true, next: "/observatorio" });
+  return NextResponse.json({ ok: true, next: "/app/observatorios" });
 }

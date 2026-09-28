@@ -219,7 +219,7 @@ describe("painéis sintéticos aposentados", () => {
 
   it("as rotas antigas redirecionam para o painel real equivalente", () => {
     const config = readFileSync(join(raiz, "next.config.mjs"), "utf-8");
-    expect(config).toContain('source: "/app", destination: "/observatorio"');
+    expect(config).toContain('source: "/app", destination: "/app/observatorios"');
     expect(config).toContain('source: "/app/atividade", destination: "/observatorio/credit"');
     expect(config).toContain('source: "/app/risco", destination: "/observatorio/sectors"');
     expect(config).toContain('source: "/app/regulatorio", destination: "/observatorio/alerts"');

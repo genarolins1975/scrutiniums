@@ -1,6 +1,7 @@
 import { and, desc, eq, gt, gte, isNull, sql } from "drizzle-orm";
 import { getDb, schema } from "./db";
 import { VIEW_EVENT_PREFIX } from "./telemetry";
+import { dominioDaSecao, type DominioId } from "./dominios";
 import type { OnboardingStatus } from "./schema";
 
 /**
@@ -29,6 +30,8 @@ export function diaLocal(date: Date): string {
 export type PontoDiario = { dia: string; rotulo: string; valor: number };
 export type SecaoRanking = {
   secao: string;
+  /** Observatório (domínio) da seção; "plataforma" para conta e escolha. */
+  dominio: DominioId | "plataforma";
   visitas30d: number;
   usuarios30d: number;
   visitasTotal: number;
@@ -73,6 +76,8 @@ export type AdminStats = {
     visitas30d: number;
   };
   visitasPorDia: PontoDiario[];
+  /** Visitas dos últimos 30 dias por observatório. */
+  visitasPorDominio: Record<DominioId | "plataforma", number>;
   sessoesPorDia: PontoDiario[];
   ranking: SecaoRanking[];
   funil: EtapaFunil[];
@@ -217,9 +222,12 @@ export async function getAdminStats(agora = new Date()): Promise<AdminStats> {
     porSecao.set(secao, atual);
     if (e.userId && e.createdAt >= corte7d) ativos7d.add(e.userId);
   }
+  const visitasPorDominio: Record<DominioId | "plataforma", number> = { credito: 0, energia: 0, plataforma: 0 };
+  for (const e of visitas30dRows) visitasPorDominio[dominioDaSecao(e.name.slice(VIEW_EVENT_PREFIX.length))]++;
   const ranking: SecaoRanking[] = Array.from(porSecao.entries())
     .map(([secao, v]) => ({
       secao,
+      dominio: dominioDaSecao(secao),
       visitas30d: v.visitas,
       usuarios30d: v.usuarios.size,
       visitasTotal: totalNome(`${VIEW_EVENT_PREFIX}${secao}`),
@@ -249,6 +257,7 @@ export async function getAdminStats(agora = new Date()): Promise<AdminStats> {
       visitas30d: visitas30dRows.length,
     },
     visitasPorDia: serieDiaria(janela, visitas30dRows.map((e) => e.createdAt)),
+    visitasPorDominio,
     sessoesPorDia: serieDiaria(janela, sessoes30d.map((s) => s.createdAt)),
     ranking,
     funil,

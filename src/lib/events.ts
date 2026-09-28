@@ -17,7 +17,10 @@ export type ProductEventName =
   | "boletim_optout"
   | "onboarding_completed"
   | "verification_failed"
-  | "onboarding_abandoned";
+  | "onboarding_abandoned"
+  // escolha de observatório na tela pós login (domínio, nunca PII)
+  | "observatorio_escolhido:credito"
+  | "observatorio_escolhido:energia";
 
 export async function trackEvent(name: ProductEventName, userId?: string): Promise<void> {
   try {

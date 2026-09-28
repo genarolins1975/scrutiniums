@@ -30,6 +30,24 @@ const config: Config = {
         },
         linha: "#D8D2C6",
         "linha-escura": "#33373D",
+        // Acento do Observatório Brasileiro do Setor Elétrico (teal sóbrio).
+        // DEFAULT e dark passam AA sobre marfim, papel e branco; soft só para
+        // marcação não textual. Ver docs/observatorios/DESIGN_SYSTEM_OBSERVATORIOS.md.
+        energia: {
+          DEFAULT: "#0E6170",
+          dark: "#0A4A56",
+          soft: "#5E98A3",
+          fundo: "#E6EEEE",
+        },
+        superficie: "#FFFFFF",
+        // Selos de natureza do dado (texto AA sobre papel e branco).
+        natureza: {
+          observado: "#1A1D21",
+          calculado: "#4A5158",
+          estimado: "#7A5A12",
+          previsto: "#5B3F8C",
+          cenario: "#6B4F3A",
+        },
         erro: "#8C3B2E",
         sucesso: "#4F6B4E",
         aviso: "#8A6D2F",

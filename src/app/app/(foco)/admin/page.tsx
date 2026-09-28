@@ -131,9 +131,21 @@ export default async function AdminPage() {
               descricaoVazia="Nenhum login no período."
             />
           </div>
+          <dl className="mt-8 grid gap-4 border-t border-linha pt-6 sm:grid-cols-3">
+            {([
+              ["Crédito", stats.visitasPorDominio.credito],
+              ["Setor Elétrico", stats.visitasPorDominio.energia],
+              ["Plataforma (conta e escolha)", stats.visitasPorDominio.plataforma],
+            ] as const).map(([rotulo, valor]) => (
+              <div key={rotulo}>
+                <dt className="rotulo text-mineral">Visitas 30 dias · {rotulo}</dt>
+                <dd className="mt-1 font-serif text-2xl text-carvao">{fmtNumber(valor)}</dd>
+              </div>
+            ))}
+          </dl>
           <p className="mt-6 text-xs text-mineral">
-            Visitas contam aberturas de seção na área logada (Observatório e Painéis), sem qualquer
-            dado pessoal: apenas a seção e o momento. Dias no fuso de Brasília.
+            Visitas contam aberturas de seção por usuários com sessão, nos dois observatórios, sem
+            qualquer dado pessoal: apenas a seção, o domínio e o momento. Dias no fuso de Brasília.
           </p>
         </section>
 

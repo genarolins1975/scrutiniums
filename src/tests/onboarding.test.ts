@@ -223,6 +223,7 @@ describe("onboarding.nextStepPath", () => {
     expect(nextStepPath("PROFILE_PENDING")).toBe("/cadastro/perfil");
     expect(nextStepPath("ACCESS_PENDING")).toBe("/cadastro/acesso");
     expect(nextStepPath("WAITLIST")).toBe("/cadastro/acesso");
-    expect(nextStepPath("COMPLETE")).toBe("/observatorio");
+    // pós login: escolha entre os dois observatórios (plataforma com Crédito e Setor Elétrico)
+    expect(nextStepPath("COMPLETE")).toBe("/app/observatorios");
   });
 });

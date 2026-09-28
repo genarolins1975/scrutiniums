@@ -30,8 +30,8 @@ export function nextStepPath(status: OnboardingStatus): string {
       // Rota legada: promove a COMPLETE e redireciona ao Observatório.
       return "/cadastro/acesso";
     case "COMPLETE":
-      // Destino principal pós-login: o Observatório completo.
-      return "/observatorio";
+      // Destino principal pós-login: a escolha entre os dois observatórios.
+      return "/app/observatorios";
   }
 }
 

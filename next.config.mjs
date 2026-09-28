@@ -28,6 +28,14 @@ const nextConfig = {
   async headers() {
     return [
       {
+        source: "/energia/gold/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400" }],
+      },
+      {
+        source: "/energia/series/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400" }],
+      },
+      {
         source: "/obs/data/gold/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400" }],
       },
@@ -45,7 +53,10 @@ const nextConfig = {
     // (dados de exemplo) e foram substituídas pelos painéis reais do
     // Observatório. As rotas antigas apontam para o equivalente real.
     return [
-      { source: "/app", destination: "/observatorio", permanent: false },
+      // Área logada abre na escolha entre os dois observatórios.
+      { source: "/app", destination: "/app/observatorios", permanent: false },
+      // Atalho simétrico ao /setor-eletrico; a SPA do Crédito segue em /observatorio.
+      { source: "/credito", destination: "/observatorio", permanent: false },
       { source: "/app/atividade", destination: "/observatorio/credit", permanent: true },
       { source: "/app/risco", destination: "/observatorio/sectors", permanent: true },
       { source: "/app/regulatorio", destination: "/observatorio/alerts", permanent: true },

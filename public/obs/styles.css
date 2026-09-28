@@ -1483,3 +1483,36 @@ svg.chart.fs-piso text { font-size: var(--svg-fs); }
   .ph-items > * { max-width: 100%; }
   .src, .viewdesc, .pagehead, .card p { overflow-wrap: anywhere; }
 }
+
+/* ---------- seletor de observatório (plataforma Scrutiniums, 0.107.0) ----------
+   Troca entre Crédito e Setor Elétrico sem novo login. <details> nativo:
+   funciona sem JavaScript, por teclado e toque. */
+.obs-switcher { position: relative; margin: -10px 10px 16px; }
+.obs-switcher summary {
+  list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+  min-height: 36px; font-size: var(--fs-2xs); letter-spacing: var(--tr-caps); text-transform: uppercase;
+  font-weight: var(--fw-bold); color: var(--text-2);
+}
+.obs-switcher summary::-webkit-details-marker { display: none; }
+.obs-switcher summary:hover { color: var(--text); }
+.obs-switcher-plat { color: var(--text-3); font-weight: 400; }
+.obs-switcher-menu {
+  position: absolute; left: 0; z-index: 70; margin-top: 4px; width: 260px; padding: 6px;
+  background: var(--surface); border: 1px solid var(--border); box-shadow: var(--sh-overlay);
+  display: flex; flex-direction: column;
+}
+.obs-switcher-rot { font-size: var(--fs-2xs); letter-spacing: var(--tr-caps); text-transform: uppercase; color: var(--text-3); padding: 6px 10px 2px; }
+.obs-switcher-menu a {
+  display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 6px 10px;
+  color: var(--text); text-decoration: none; font-size: var(--fs-sm); line-height: var(--lh-snug);
+}
+.obs-switcher-menu a:hover { background: var(--bg); }
+.obs-switcher-menu a[aria-current="page"] { font-weight: var(--fw-bold); }
+.obs-switcher-menu .obs-switcher-conta { border-top: 1px solid var(--border); color: var(--text-2); font-size: var(--fs-2xs); letter-spacing: var(--tr-caps); text-transform: uppercase; }
+.obs-dot { width: 8px; height: 8px; flex: none; }
+.obs-dot-credito { background: var(--accent); }
+.obs-dot-energia { background: #0e6170; }
+.sb-collapsed .obs-switcher { display: none; }
+.mobile-obs { margin-left: auto; font-size: var(--fs-2xs); letter-spacing: var(--tr-caps); text-transform: uppercase; color: var(--text-2); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+@media print { .obs-switcher, .mobile-obs { display: none !important; } }

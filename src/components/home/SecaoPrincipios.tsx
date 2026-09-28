@@ -24,7 +24,7 @@ export function SecaoPrincipios() {
     <section aria-labelledby="principios-titulo" className="border-t border-linha bg-papel">
       <div className="mx-auto max-w-page px-6 py-20 md:py-28">
         <div id="principios-titulo">
-          <SectionHeading number="03" label="Princípios" title="Três compromissos" />
+          <SectionHeading number="02" label="Princípios" title="Três compromissos" />
         </div>
         <ul className="border-t border-linha">
           {PRINCIPIOS.map((p) => (
