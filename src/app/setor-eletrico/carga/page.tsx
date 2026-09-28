@@ -5,10 +5,11 @@ import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { Termo } from "@/components/evidencia/Termo";
+import { Unidade } from "@/components/evidencia/Unidade";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold, integra } from "@/lib/energia/gold";
-import { dataBR, num, sinal } from "@/lib/energia/formato";
+import { dataBR, mesAno, num, sinal } from "@/lib/energia/formato";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -19,10 +20,10 @@ export const metadata: Metadata = {
 };
 
 const SERIES = [
-  { id: "SE", rotulo: "Sudeste/Centro-Oeste", cor: "var(--serie-sm-se)" },
-  { id: "S", rotulo: "Sul", cor: "var(--serie-sm-s)" },
-  { id: "NE", rotulo: "Nordeste", cor: "var(--serie-sm-ne)" },
-  { id: "N", rotulo: "Norte", cor: "var(--serie-sm-n)" },
+  { id: "SE", rotulo: "Sudeste/Centro-Oeste", sigla: "SE/CO", cor: "var(--serie-sm-se)" },
+  { id: "S", rotulo: "Sul", sigla: "S", cor: "var(--serie-sm-s)" },
+  { id: "NE", rotulo: "Nordeste", sigla: "NE", cor: "var(--serie-sm-ne)" },
+  { id: "N", rotulo: "Norte", sigla: "N", cor: "var(--serie-sm-n)" },
 ];
 
 export default function CargaPage() {
@@ -31,8 +32,8 @@ export default function CargaPage() {
     return (
       <>
         <CabecalhoEnergia atual="carga" />
-        <main className="mx-auto max-w-page px-6 py-14">
-          <Indisponivel titulo="Carga indisponível" motivo={c?.motivo ?? "A gold de carga não foi gerada nesta publicação."} />
+        <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 py-14">
+          <Indisponivel titulo="Carga indisponível" motivo={c?.motivo ?? "Os dados processados de carga não foram gerados nesta publicação."} />
         </main>
       </>
     );
@@ -46,10 +47,10 @@ export default function CargaPage() {
     <>
       <CabecalhoEnergia atual="carga" />
       <MarcaVisita secao="energia:carga" />
-      <main className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
         <CabecalhoModulo rotulo="Carga e consumo" titulo="Quanto o sistema está consumindo?" referencia={<>Carga de Energia Diária (ONS) até {dataBR(c.dia_referencia)}</>}>
           A <Termo slug="carga">carga</Termo> é a energia atendida no sistema interligado, publicada pelo ONS por subsistema. O ONS mudou o que a série inclui em 2021 e em 2023;
-          as comparações desta página respeitam essas quebras.
+          as comparações desta página respeitam essas quebras. Valores em <Unidade u="MWmed" />.
         </CabecalhoModulo>
         <ModoProfundidade>
           <Bloco id="comparacao">
@@ -64,7 +65,14 @@ export default function CargaPage() {
               natureza="CALCULADO"
               porQueImporta={<>É o lado da demanda no balanço de energia que o ONS publica por subsistema, ao lado da geração por fonte.</>}
               oQueMudou={<>Últimos 30 dias: {sin.ult30?.variacao_pct !== null && sin.ult30 ? `${sinal(sin.ult30.variacao_pct)}% sobre os mesmos dias do ano anterior` : "sem comparação homogênea"}. Maior carga diária em 12 meses: {num(sin.max_12m.valor, 0)} MWmed em {dataBR(sin.max_12m.dia)}.</>}
-              comoInterpretar={<>A comparação anual só é mostrada quando os dois períodos estão no mesmo regime metodológico do ONS (as linhas verticais marcam as mudanças).</>}
+              comoInterpretar={
+                <>
+                  A comparação anual só é mostrada quando os dois períodos estão no mesmo regime metodológico do ONS.{" "}
+                  {c.serie[0] && c.serie[0].d >= "2023-04-29"
+                    ? "Todo o período deste gráfico está no regime atual, em vigor desde 29/04/2023 (inclui a estimativa de MMGD); as mudanças de mar/21 e de 29/04/2023 são anteriores a ele."
+                    : "As linhas verticais marcam as mudanças de regime dentro do período."}
+                </>
+              }
               naoConcluir={<>A carga não é ajustada por temperatura, feriados ou dias úteis; variação de carga não mede, sozinha, atividade econômica. Desde 29/04/2023 a série inclui uma estimativa de MMGD feita pelo ONS com dados meteorológicos previstos.</>}
               proveniencia={c.proveniencia.sin}
             >
@@ -92,7 +100,12 @@ export default function CargaPage() {
               subtitulo="Carga média mensal do SIN · MWmed"
               natureza="CALCULADO"
               porQueImporta={<>O histórico longo mostra crescimento e quedas da carga em escala de décadas.</>}
-              oQueMudou={<>Último mês: {c.mensal.at(-1)?.m.replace("-", "/")} (parcial se o mês não terminou).</>}
+              oQueMudou={
+                <>
+                  Último mês da série: {c.mensal.at(-1) ? mesAno(`${c.mensal.at(-1)!.m}-01`) : "sem dado"}
+                  {c.mensal.at(-1) && c.mensal.at(-1)!.m === c.dia_referencia.slice(0, 7) ? `, parcial até ${dataBR(c.dia_referencia)} (${c.mensal.at(-1)!.dias} dias)` : ", completo"}.
+                </>
+              }
               comoInterpretar={<>As linhas verticais marcam as mudanças de conteúdo da série; não compare níveis através delas como se fossem a mesma medida.</>}
               naoConcluir={<>A série anterior a 2021 não inclui geração não despachada nem MMGD; o salto após as quebras não é, por si, aumento de consumo.</>}
               proveniencia={c.proveniencia.sin}

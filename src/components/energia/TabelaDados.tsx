@@ -18,8 +18,8 @@ export function TabelaDados({
   const ult = linhas.slice(-limite);
   return (
     <details className="mt-4 border-t border-linha pt-3">
-      <summary className="rotulo min-h-[44px] cursor-pointer py-2 text-carvao-muted hover:text-carvao">
-        Ver tabela ({ult.length === linhas.length ? `${linhas.length} linhas` : `últimas ${ult.length} de ${linhas.length} linhas`})
+      <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
+        Resumo em tabela ({ult.length === linhas.length ? `${linhas.length} linhas` : `últimas ${ult.length} de ${linhas.length} linhas`})
       </summary>
       <div className="tabela-scroll mt-2" tabIndex={0} role="region" aria-label={`${titulo} (tabela rolável)`}>
         <table className="w-full min-w-[28rem] border-collapse text-xs tabular-nums">

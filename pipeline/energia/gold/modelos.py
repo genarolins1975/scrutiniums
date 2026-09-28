@@ -22,7 +22,7 @@ ARQUIVO = os.path.join(AQUI, "previsoes", "arquivo.jsonl")
 APURACOES = os.path.join(AQUI, "previsoes", "apuracoes.jsonl")
 
 MOTIVOS = {
-    "NENHUM_MODELO_EM_PRODUCAO": "Nenhum modelo de previsão do PLD está em produção. Os quatro candidatos estão em pesquisa e não podem alimentar a previsão oficial.",
+    "NENHUM_MODELO_EM_PRODUCAO": "Nenhum modelo de previsão do PLD está em produção: os quatro estão em pesquisa, e modelo em pesquisa não pode alimentar a previsão oficial.",
     "SEM_PLD_CAPTURADO_ATE_O_CORTE": "Nenhum PLD do período exigido havia sido capturado até o corte da rodada.",
 }
 
@@ -77,11 +77,11 @@ def construir(anterior=None):
         "motivo": MOTIVOS["NENHUM_MODELO_EM_PRODUCAO"] if not pode else None,
         "ultima_execucao": ultima_interna,
         "informacao_faltante": [
-            "Modelo promovido a PRODUÇÃO pelos gates de validação e produção.",
-            "Conclusão da última etapa de validação da pesquisa (etapa G4) e documentação de uma limitação encontrada na revisão (registro G23-R1).",
-            "Captura do PLD antes do corte de cada rodada (07h00 de Brasília).",
+            "Um modelo aprovado nas etapas de validação e promovido a produção.",
+            "Conclusão da última etapa de validação da pesquisa e documentação de uma limitação encontrada na revisão.",
+            "PLD do período necessário capturado antes do horário de corte de cada rodada (07h00 de Brasília).",
         ],
-        "estado_pipeline": "Registro e arquivo de previsões ativos; nenhuma publicação oficial; agendamento das rodadas não instalado.",
+        "estado_pipeline": "O registro de modelos e o arquivo de previsões estão ativos; não há previsão oficial publicada; as rodadas ainda não são agendadas automaticamente.",
     } if not pode else _atual_com_producao(cod, publicacoes, ultima_interna)
     return {
         **c.cabecalho("previsoes.json"),

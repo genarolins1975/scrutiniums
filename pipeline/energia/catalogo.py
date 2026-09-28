@@ -121,7 +121,7 @@ def construir(brutos):
     with open(seed_pkg, encoding="utf-8") as f:
         entradas.append(_entrada("CCEE", json.load(f)["result"]))
     status["CCEE"] = {"colhido_em": "2026-09-27T15:44:02Z", "conjuntos": 1,
-                      "erro": "Catálogo da CCEE não colhido automaticamente nesta fase; os metadados do PLD_HORARIO vêm da captura versionada de 27/09/2026 (o portal recusou a coleta automatizada com HTTP 403 na manhã de 28/09/2026)."}
+                      "erro": "Catálogo da CCEE não colhido automaticamente nesta fase; os metadados do PLD_HORARIO vêm da captura versionada de 27/09/2026."}
     with open(os.path.join(AQUI, "catalogo_manual.json"), encoding="utf-8") as f:
         for m in json.load(f)["entradas"]:
             entradas.append({**m, "estado": "CATALOGADO", "usado_em": [], "modelos": [], "quebras": [],

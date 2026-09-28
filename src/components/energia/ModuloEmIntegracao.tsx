@@ -19,6 +19,7 @@ export function ModuloEmIntegracao({
   temas,
   orgaos,
   pendencias,
+  destaque,
   conceitos,
 }: {
   atual: string;
@@ -31,6 +32,8 @@ export function ModuloEmIntegracao({
   orgaos?: string[];
   pendencias: string[];
   conceitos?: { slug: string; rotulo: string }[];
+  /** Ligação com conteúdo já publicado em outro módulo. */
+  destaque?: React.ReactNode;
 }) {
   const cat = gold.catalogo();
   const relacionados = (cat?.entradas ?? [])
@@ -41,16 +44,17 @@ export function ModuloEmIntegracao({
     <>
       <CabecalhoEnergia atual={atual} />
       <MarcaVisita secao={secao} />
-      <main className="mx-auto max-w-page px-6 pb-16">
+      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
         <CabecalhoModulo rotulo={`${rotulo} · em integração`} titulo={titulo}>
           {escopo}
         </CabecalhoModulo>
         <div role="status" className="border border-dashed border-mineral bg-papel p-6">
           <p className="rotulo text-carvao">Módulo em integração</p>
           <p className="mt-2 max-w-prose2 text-carvao">
-            Ainda não há dados integrados neste módulo. Por regra da plataforma, nenhum número, gráfico ou exemplo aparece antes de a fonte estar
-            no pipeline com captura, sha256, validação e proveniência.
+            Ainda não há dados integrados neste módulo. Por regra da plataforma, nenhum número, gráfico ou exemplo aparece antes de a fonte ser
+            coletada automaticamente, guardada em cópia original conferível, validada e documentada com a origem de cada valor.
           </p>
+          {destaque && <div className="mt-3 max-w-prose2 text-carvao">{destaque}</div>}
         </div>
         <div className="mt-8 grid gap-6 lg:grid-cols-2">
           <section aria-labelledby="perguntas-h" className="border border-linha bg-superficie p-6">
@@ -83,7 +87,7 @@ export function ModuloEmIntegracao({
         </div>
         <section aria-labelledby="catalogo-h" className="mt-8 border border-linha bg-superficie p-6">
           <h2 id="catalogo-h" className="font-serif text-xl text-carvao">Fontes catalogadas relacionadas</h2>
-          <p className="mt-1 text-sm text-carvao-muted">Registradas no catálogo com metadados da fonte; ainda não integradas ao pipeline.</p>
+          <p className="mt-1 text-sm text-carvao-muted">Registradas no catálogo com os metadados oficiais da fonte; ainda não coletadas pela plataforma.</p>
           {relacionados.length ? (
             <ul className="mt-4 divide-y divide-linha">
               {relacionados.map((e) => (
@@ -93,7 +97,7 @@ export function ModuloEmIntegracao({
                     {e.titulo}
                     {!e.metadados_verificados && <span className="ml-2 text-xs text-aviso">metadados a conferir</span>}
                   </span>
-                  <a href={e.url} target="_blank" rel="noopener noreferrer" className="rotulo text-energia-dark underline underline-offset-4">
+                  <a href={e.url} target="_blank" rel="noopener noreferrer" className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
                     fonte ↗
                   </a>
                 </li>

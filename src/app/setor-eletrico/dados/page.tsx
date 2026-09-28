@@ -16,13 +16,26 @@ export const metadata: Metadata = {
   alternates: { canonical: "/setor-eletrico/dados" },
 };
 
+/** Nome da página em que cada arquivo de dados processados é usado. */
+const PAGINA_DA_GOLD: Record<string, string> = {
+  "pld.json": "PLD",
+  "cmo.json": "PLD (CMO)",
+  "hidrologia.json": "Água e clima",
+  "carga.json": "Carga",
+  "geracao.json": "Geração",
+  "rede.json": "Rede",
+  "sintese.json": "Visão geral",
+  "previsoes.json": "Previsões",
+  "modelos.json": "Modelos",
+};
+
 export default function DadosEnergiaPage() {
   const cat = gold.catalogo();
   if (!cat) {
     return (
       <>
         <CabecalhoEnergia atual="dados" />
-        <main className="mx-auto max-w-page px-6 py-14">
+        <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 py-14">
           <Indisponivel titulo="Catálogo indisponível" motivo="O catálogo não foi gerado nesta publicação." />
         </main>
       </>
@@ -33,9 +46,9 @@ export default function DadosEnergiaPage() {
     <>
       <CabecalhoEnergia atual="dados" />
       <MarcaVisita secao="energia:dados" />
-      <main className="mx-auto max-w-page px-6 pb-16">
+      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
         <CabecalhoModulo rotulo="Dados e metodologia" titulo="Tudo o que é público sobre o setor elétrico, e o que já está integrado">
-          Catalogar é registrar que um conjunto existe, com seus metadados oficiais. Integrar é trazê-lo para o pipeline com captura, sha256,
+          Catalogar é registrar que um conjunto existe, com seus metadados oficiais. Integrar é coletá-lo automaticamente, guardar a cópia original com impressão digital (sha256),
           validação e proveniência. Só conjuntos integrados alimentam números no portal.{" "}
           <Link href="/setor-eletrico/metodologia" className="text-energia-dark underline underline-offset-4">Metodologia</Link>
         </CabecalhoModulo>
@@ -57,21 +70,21 @@ export default function DadosEnergiaPage() {
         <p className="mt-3 text-xs text-mineral">
           Estados cumulativos: um conjunto utilizado em indicador passou por todos os anteriores. Metadados colhidos das APIs oficiais:{" "}
           {Object.entries(cat.portais)
-            .map(([o, p]) => `${o} ${p.conjuntos} conjuntos (${p.colhido_em ? carimbo(p.colhido_em) : "sem coleta"})`)
+            .map(([o, p]) => `${o} ${p.conjuntos} ${p.conjuntos === 1 ? "conjunto" : "conjuntos"} (${p.colhido_em ? carimbo(p.colhido_em) : "sem coleta"})`)
             .join("; ")}
           .
         </p>
         {cat.portais.CCEE?.erro && <p className="mt-1 text-xs text-aviso">CCEE: {cat.portais.CCEE.erro}</p>}
 
         <section aria-labelledby="integrados-h" className="mt-10">
-          <h2 id="integrados-h" className="font-serif text-2xl text-carvao">Integrados ao pipeline</h2>
+          <h2 id="integrados-h" className="font-serif text-2xl text-carvao">Integrados à plataforma</h2>
           <ul className="mt-4 grid gap-3 md:grid-cols-2">
             {integrados.map((e) => (
               <li key={e.id}>
                 <Link href={`/setor-eletrico/dados/${e.slug}`} className="flex h-full flex-col border border-linha bg-superficie p-5 hover:border-energia">
                   <span className="rotulo text-mineral">{e.orgao} · {e.estado}</span>
                   <span className="mt-2 font-serif text-lg text-carvao">{e.titulo}</span>
-                  <span className="mt-1 text-sm text-carvao-muted">Usado em: {e.usado_em.join(", ")}{e.modelos.length ? ` · modelos ${e.modelos.join(", ")}` : ""}</span>
+                  <span className="mt-1 text-sm text-carvao-muted">Usado em: {Array.from(new Set(e.usado_em.map((u) => PAGINA_DA_GOLD[u] ?? u))).join(", ")}{e.modelos.length ? ` · modelos ${e.modelos.join(", ")}` : ""}</span>
                   {e.quebras.length > 0 && <span className="mt-1 text-xs text-aviso">{e.quebras.length} mudanças metodológicas declaradas pela fonte</span>}
                 </Link>
               </li>

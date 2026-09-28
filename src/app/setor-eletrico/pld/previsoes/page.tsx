@@ -22,9 +22,9 @@ export default function PrevisoesPage() {
     <>
       <CabecalhoEnergia atual="pld" />
       <MarcaVisita secao="energia:pld-previsoes" />
-      <main className="mx-auto max-w-page px-6 pb-16">
+      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
         <nav aria-label="Trilha" className="pt-8 text-sm text-mineral">
-          <Link href="/setor-eletrico/pld" className="underline underline-offset-4">PLD</Link> · Histórico de previsões
+          <Link href="/setor-eletrico/pld" className="inline-flex min-h-[44px] items-center underline underline-offset-4">PLD</Link> · Histórico de previsões
         </nav>
         <CabecalhoModulo rotulo="Arquivo imutável" titulo="O que a plataforma registrou, em cada dia">
           Cada previsão, publicada ou de rodada interna, vira um registro permanente com sha256 do conteúdo. Nenhum registro é sobrescrito: uma correção
@@ -47,17 +47,37 @@ export default function PrevisoesPage() {
                 </div>
               ))}
             </dl>
-            {p.rodadas.map((r) => (
-              <p key={r.run_id} className="mt-4 text-sm text-carvao-muted">
-                Rodada interna {r.run_id}: origem {dataBR(r.origem)}, modelo {r.versao_modelo} ({r.estado_modelo.toLowerCase()}), {r.celulas} combinações de horizonte e submercado, {r.com_numero} com número.
-                Não é publicação: modelo em pesquisa não gera previsão oficial.
+            <section className="mt-8 border border-linha bg-superficie p-6">
+              <h2 className="font-serif text-xl text-carvao">Como ler um registro</h2>
+              <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao">
+                Cada rodada tenta prever o PLD médio de 7 períodos futuros em cada um dos 4 submercados: 28 registros por rodada. W1 é a
+                próxima semana completa (de sábado a sábado), W2 a seguinte, até W4; M1 é o próximo mês civil que ainda não começou, até
+                M3. O horário de corte é o limite de informação: nada capturado depois dele pode entrar na previsão.
               </p>
+            </section>
+            {p.rodadas.map((r) => (
+              <section key={r.run_id} className="mt-4 border border-linha bg-superficie p-6">
+                <h2 className="font-serif text-xl text-carvao">Rodada interna de {dataBR(r.origem)}</h2>
+                <p className="mt-2 text-sm leading-relaxed text-carvao">
+                  Modelo {r.modelo} ({r.estado_modelo === "PESQUISA" ? "em pesquisa" : r.estado_modelo.toLowerCase()}). {r.celulas} registros,{" "}
+                  {r.com_numero === 0 ? "nenhum com número" : `${r.com_numero} com número`}
+                  {r.motivos.length ? `, pelo mesmo motivo: ${r.motivos.map((x) => (x === "SEM_PLD_CAPTURADO_ATE_O_CORTE" ? "nenhum PLD do período exigido havia sido capturado até o horário de corte" : x)).join("; ")}` : ""}.
+                  {r.alertas.includes("ATRASADO_APOS_08H") ? " A rodada foi emitida depois do prazo das 08h00." : ""} Não é publicação: modelo em pesquisa
+                  não gera previsão oficial.
+                </p>
+                <p className="mt-2 break-all font-mono text-[0.7rem] text-mineral">identificador da rodada: {r.run_id}</p>
+              </section>
             ))}
             <section className="mt-8 border border-linha bg-superficie p-6">
               <h2 className="font-serif text-xl text-carvao">Consultar por data</h2>
-              <div className="mt-4">
-                <ArquivoPrevisoes registros={p.arquivo} />
-              </div>
+              <details className="mt-3">
+                <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
+                  Ver todos os registros ({p.arquivo.length.toLocaleString("pt-BR")}), com filtro por data
+                </summary>
+                <div className="mt-4">
+                  <ArquivoPrevisoes registros={p.arquivo} />
+                </div>
+              </details>
             </section>
             <section className="mt-8 border border-linha bg-superficie p-6">
               <h2 className="font-serif text-xl text-carvao">Como conferir</h2>

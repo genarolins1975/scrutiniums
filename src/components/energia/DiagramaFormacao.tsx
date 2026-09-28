@@ -39,7 +39,14 @@ export function DiagramaFormacao({ nos }: { nos: NoComEstado[] }) {
     return (
       <button
         type="button"
-        onClick={() => setSel(id)}
+        onClick={() => {
+          setSel(id);
+          // no celular o painel fica abaixo de todo o diagrama: traz para a vista se estiver fora
+          window.requestAnimationFrame(() => {
+            const painel = document.getElementById("formacao-painel");
+            if (painel && painel.getBoundingClientRect().top > window.innerHeight * 0.8) painel.scrollIntoView({ block: "start" });
+          });
+        }}
         aria-pressed={ativo}
         aria-controls="formacao-painel"
         className={`flex min-h-[52px] w-full flex-col items-start justify-center border px-3 py-2 text-left transition-colors ${
@@ -87,10 +94,10 @@ export function DiagramaFormacao({ nos }: { nos: NoComEstado[] }) {
 
       <section id="formacao-painel" aria-live="polite" aria-labelledby="formacao-painel-titulo" className="border border-linha bg-superficie p-5 md:p-6 lg:sticky lg:top-24 lg:self-start">
         <p className="rotulo text-mineral">Etapa selecionada</p>
-        <h4 id="formacao-painel-titulo" className="mt-1 font-serif text-xl text-carvao">
+        <h3 id="formacao-painel-titulo" className="mt-1 font-serif text-xl text-carvao">
           {atual.titulo}
           {atual.sigla ? <span className="ml-2 text-base text-mineral">({atual.sigla})</span> : null}
-        </h4>
+        </h3>
 
         <p className="rotulo mt-4 text-mineral">O que é</p>
         <p className="mt-1 text-sm leading-relaxed text-carvao">{atual.oQueE}</p>
@@ -120,7 +127,7 @@ export function DiagramaFormacao({ nos }: { nos: NoComEstado[] }) {
               )}
               {atual.estado.ref && <span>Referência: {atual.estado.ref}</span>}
               {atual.estado.historico && (
-                <Link href={atual.estado.historico.href} className="text-energia-dark underline underline-offset-4">
+                <Link href={atual.estado.historico.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
                   {atual.estado.historico.rotulo}
                 </Link>
               )}

@@ -19,6 +19,12 @@ export const metadata: Metadata = {
 export default function SetorEletricoLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="dominio-energia flex min-h-screen flex-col bg-papel">
+      <a
+        href="#conteudo"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:inline-flex focus:min-h-[44px] focus:items-center focus:border focus:border-energia focus:bg-superficie focus:px-4 focus:text-sm focus:text-carvao"
+      >
+        Pular para o conteúdo
+      </a>
       <div className="flex-1">{children}</div>
       <RodapeEnergia />
       <Footer />

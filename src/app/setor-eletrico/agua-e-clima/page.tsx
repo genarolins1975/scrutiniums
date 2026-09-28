@@ -6,6 +6,7 @@ import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { Termo } from "@/components/evidencia/Termo";
+import { Unidade } from "@/components/evidencia/Unidade";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { TabelaDados } from "@/components/energia/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
@@ -22,10 +23,10 @@ export const metadata: Metadata = {
 };
 
 const SERIES_SM = [
-  { id: "SE", rotulo: "Sudeste/Centro-Oeste", cor: "var(--serie-sm-se)" },
-  { id: "S", rotulo: "Sul", cor: "var(--serie-sm-s)" },
-  { id: "NE", rotulo: "Nordeste", cor: "var(--serie-sm-ne)" },
-  { id: "N", rotulo: "Norte", cor: "var(--serie-sm-n)" },
+  { id: "SE", rotulo: "Sudeste/Centro-Oeste", sigla: "SE/CO", cor: "var(--serie-sm-se)" },
+  { id: "S", rotulo: "Sul", sigla: "S", cor: "var(--serie-sm-s)" },
+  { id: "NE", rotulo: "Nordeste", sigla: "NE", cor: "var(--serie-sm-ne)" },
+  { id: "N", rotulo: "Norte", sigla: "N", cor: "var(--serie-sm-n)" },
 ];
 
 export default function AguaPage() {
@@ -34,8 +35,8 @@ export default function AguaPage() {
     return (
       <>
         <CabecalhoEnergia atual="agua-e-clima" />
-        <main className="mx-auto max-w-page px-6 py-14">
-          <Indisponivel titulo="Hidrologia indisponível" motivo={h?.motivo ?? "A gold de hidrologia não foi gerada nesta publicação."} />
+        <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 py-14">
+          <Indisponivel titulo="Hidrologia indisponível" motivo={h?.motivo ?? "Os dados processados de hidrologia não foram gerados nesta publicação."} />
         </main>
       </>
     );
@@ -53,7 +54,7 @@ export default function AguaPage() {
     <>
       <CabecalhoEnergia atual="agua-e-clima" />
       <MarcaVisita secao="energia:agua-e-clima" />
-      <main className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
         <CabecalhoModulo
           rotulo="Água e clima"
           titulo="Quanta energia está guardada nos reservatórios, e quanta água está chegando?"
@@ -71,7 +72,7 @@ export default function AguaPage() {
               subtitulo="EAR do SIN · % da EAR máxima · últimos 12 meses e faixa histórica da data"
               natureza="CALCULADO"
               porQueImporta={<>Mostra quanto da capacidade de armazenamento do sistema interligado está ocupado, em energia, segundo a definição do ONS.</>}
-              oQueMudou={<>Em 7 dias, {sinal(s.ear.variacao_7d_pp)} p.p.; em 30 dias, {sinal(s.ear.variacao_30d_pp)} p.p. Desvio frente à mediana da data: {sinal(s.ear.desvio_mediana_pp)} p.p.</>}
+              oQueMudou={<>Em 7 dias, {sinal(s.ear.variacao_7d_pp)} <Unidade u="p.p." />; em 30 dias, {sinal(s.ear.variacao_30d_pp)} p.p. Desvio frente à mediana da data: {sinal(s.ear.desvio_mediana_pp)} p.p.</>}
               comoInterpretar={<>A área sombreada é a faixa do 10º ao 90º percentil do mesmo dia do calendário nos anos completos desde 2001; a linha tracejada é a mediana.</>}
               naoConcluir={<>O agregado do SIN é dominado pelo Sudeste/Centro-Oeste, que concentra a maior capacidade. Um SIN confortável pode esconder um subsistema apertado.</>}
               proveniencia={h.proveniencia.ear_sin}

@@ -21,13 +21,19 @@ export default function ModelosPage() {
     <>
       <CabecalhoEnergia atual="pld" />
       <MarcaVisita secao="energia:pld-modelos" />
-      <main className="mx-auto max-w-page px-6 pb-16">
+      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
         <nav aria-label="Trilha" className="pt-8 text-sm text-mineral">
-          <Link href="/setor-eletrico/pld" className="underline underline-offset-4">PLD</Link> · Modelos
+          <Link href="/setor-eletrico/pld" className="inline-flex min-h-[44px] items-center underline underline-offset-4">PLD</Link> · Modelos
         </nav>
         <CabecalhoModulo rotulo="Registro de modelos" titulo="Modelos de previsão do PLD e seu estado">
-          Todo modelo tem estado explícito. Só um modelo em produção pode alimentar a previsão oficial; hoje{" "}
-          {m && m.em_producao.length ? `está em produção: ${m.em_producao.join(", ")}` : "nenhum está"}.
+          Todo modelo tem estado explícito: pesquisa, validação, produção ou aposentado. Só um modelo em produção pode alimentar a previsão
+          oficial; hoje {m && m.em_producao.length ? `está em produção: ${m.em_producao.join(", ")}` : "nenhum está"}.
+          {m && !m.em_producao.length && (
+            <>
+              {" "}Os quatro estão em pesquisa porque a validação ainda não terminou: os testes retrospectivos estão em revisão e a única rodada
+              interna registrada não tinha o PLD necessário capturado até o horário de corte.
+            </>
+          )}
         </CabecalhoModulo>
         {!m ? (
           <Indisponivel titulo="Registro indisponível" motivo="O registro de modelos não foi gerado nesta publicação." />
@@ -51,9 +57,10 @@ export default function ModelosPage() {
                       <span className="font-serif text-xl text-carvao">{x.codigo} · {x.nome}</span>
                       <EstadoModelo estado={x.estado} />
                     </span>
-                    <span className="mt-1 text-xs text-mineral">{x.versao} · {x.papel}</span>
-                    <span className="mt-3 text-sm leading-relaxed text-carvao-muted">{x.objetivo}</span>
+                    <span className="mt-3 text-sm leading-relaxed text-carvao">{x.resumo ?? x.objetivo}</span>
+                    <span className="mt-2 text-xs text-mineral">{x.papel} · versão {x.versao}</span>
                     <span className="mt-3 text-xs text-mineral">
+                      <span className="text-energia-dark underline underline-offset-4">Ver cartão do modelo</span> ·{" "}
                       {x.limitacoes.length} {x.limitacoes.length === 1 ? "limitação" : "limitações"} e {x.falhas_conhecidas.length} {x.falhas_conhecidas.length === 1 ? "falha conhecida registrada" : "falhas conhecidas registradas"} · {x.usa_hidrologia ? "usa hidrologia" : "só preço passado"}
                     </span>
                   </Link>
@@ -70,9 +77,13 @@ export default function ModelosPage() {
                   </div>
                 ))}
               </dl>
-              <p className="mt-4 text-xs text-mineral">
-                Origem do registro: {m.fonte.artefato} (sha256 <span className="break-all font-mono text-xs">{m.fonte.artefato_sha256}</span>), experimento {m.fonte.experimento}, snapshot {m.fonte.snapshot}. {m.fonte.estado_da_revisao}.
-              </p>
+              <details className="mt-4 text-xs text-mineral">
+                <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center underline underline-offset-4">Origem técnica do registro</summary>
+                <p className="mt-2">
+                  Documento de pesquisa {m.fonte.artefato} (sha256 <span className="break-all font-mono text-xs">{m.fonte.artefato_sha256}</span>),
+                  experimento {m.fonte.experimento}, snapshot de dados {m.fonte.snapshot}. Estado da revisão: {m.fonte.estado_da_revisao}.
+                </p>
+              </details>
             </section>
           </>
         )}

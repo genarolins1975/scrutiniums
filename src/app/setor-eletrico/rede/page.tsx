@@ -5,6 +5,7 @@ import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { Termo } from "@/components/evidencia/Termo";
+import { Unidade } from "@/components/evidencia/Unidade";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { MapaSubmercados } from "@/components/energia/MapaSubmercados";
 import { TabelaDados } from "@/components/energia/TabelaDados";
@@ -20,6 +21,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/setor-eletrico/rede" },
 };
 
+const NOME_CURTO: Record<string, string> = { SE: "o Sudeste/Centro-Oeste", S: "o Sul", NE: "o Nordeste", N: "o Norte" };
+
 export default function RedePage() {
   const r = gold.rede();
   const pld = gold.pld();
@@ -27,8 +30,8 @@ export default function RedePage() {
     return (
       <>
         <CabecalhoEnergia atual="rede" />
-        <main className="mx-auto max-w-page px-6 py-14">
-          <Indisponivel titulo="Dados de rede indisponíveis" motivo={r?.motivo ?? "A gold de rede não foi gerada nesta publicação."} />
+        <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 py-14">
+          <Indisponivel titulo="Dados de rede indisponíveis" motivo={r?.motivo ?? "Os dados processados de rede não foram gerados nesta publicação."} />
         </main>
       </>
     );
@@ -42,10 +45,11 @@ export default function RedePage() {
     <>
       <CabecalhoEnergia atual="rede" />
       <MarcaVisita secao="energia:rede" />
-      <main className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
         <CabecalhoModulo rotulo="Rede" titulo="A rede está limitando o sistema?" referencia={<>Intercâmbios (ONS) até {dataBR(r.dia_referencia)} · PLD (CCEE) até {dataBR(r.ultimo_dia_pld)}</>}>
           Esta página mostra para onde a energia está fluindo entre as regiões e se os preços se separaram. Ela não afirma que a rede atingiu
           limite: os limites de intercâmbio ainda não estão integrados, e essa é a primeira informação que falta para responder à pergunta do título.
+          Fluxos em <Unidade u="MWmed" />.
         </CabecalhoModulo>
         <ModoProfundidade>
           <Bloco>
@@ -54,7 +58,19 @@ export default function RedePage() {
               pergunta={`Fluxos entre subsistemas em ${dataBR(r.dia_referencia)}`}
               subtitulo="Intercâmbio médio verificado por fronteira · MWmed · e PLD médio diário por submercado"
               porQueImporta={<>O <Termo slug="intercambio">intercâmbio</Termo> mostra quais regiões exportam e quais importam energia. Ao lado do PLD, mostra se os <Termo slug="submercado">submercados</Termo> tiveram preço igual ou diferente no mesmo dia; a razão de uma diferença não é identificada aqui.</>}
-              oQueMudou={<>{r.fronteiras.map((f) => `${f.nome}: ${f.dias_sentido_canonico_30d} de 30 dias no sentido ${f.de}→${f.para}`).join("; ")}.</>}
+              oQueMudou={
+                <>
+                  Nos últimos 30 dias:{" "}
+                  {r.fronteiras
+                    .map((f) => {
+                      const [a, b] = [NOME_CURTO[f.de] ?? f.de, NOME_CURTO[f.para] ?? f.para];
+                      const n = f.dias_sentido_canonico_30d;
+                      return n >= 15 ? `${a} enviou energia para ${b} em ${n} de 30 dias` : `${b} enviou energia para ${a} em ${30 - n} de 30 dias`;
+                    })
+                    .join("; ")}
+                  .
+                </>
+              }
               comoInterpretar={<>A seta aponta o sentido do fluxo médio do dia; a espessura é proporcional ao volume. As caixas trazem o PLD médio do último dia disponível.</>}
               naoConcluir={<>Sem os limites de transferência, fluxo alto não prova congestionamento, e a página não identifica qual linha ou equipamento restringiu a transferência.</>}
               proveniencia={r.proveniencia.fluxo}

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { gold } from "@/lib/energia/gold";
 import { carimbo, dataBR } from "@/lib/energia/formato";
-import { DATASETS_INTEGRADOS, datasetPorSlug } from "@/lib/energia/datasets";
+import { COLUNAS_ARQUIVO, DATASETS_INTEGRADOS, datasetPorSlug } from "@/lib/energia/datasets";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 
 export const dynamic = "force-static";
@@ -25,6 +25,13 @@ export function generateMetadata({ params }: { params: { dataset: string } }): M
   };
 }
 
+/** Data do metadado da fonte (ISO em UTC, às vezes sem o "Z") no horário de Brasília. */
+function dataFonte(iso: string | null | undefined): string {
+  if (!iso) return "não informada";
+  const comFuso = /Z$|[+-]\d\d:\d\d$/.test(iso) ? iso : `${iso}Z`;
+  return Number.isNaN(new Date(comFuso).getTime()) ? iso : carimbo(comFuso);
+}
+
 export default function DatasetPage({ params }: { params: { dataset: string } }) {
   const d = datasetPorSlug(params.dataset);
   const cat = gold.catalogo();
@@ -36,9 +43,9 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
     <>
       <CabecalhoEnergia atual="dados" />
       <MarcaVisita secao="energia:dados" />
-      <main className="mx-auto max-w-page px-6 pb-16">
+      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
         <nav aria-label="Trilha" className="pt-8 text-sm text-mineral">
-          <Link href="/setor-eletrico/dados" className="underline underline-offset-4">Dados</Link> · {e.orgao}
+          <Link href="/setor-eletrico/dados" className="inline-flex min-h-[44px] items-center underline underline-offset-4">Dados</Link> · {e.orgao}
         </nav>
         <header className="pb-6 pt-4">
           <p className="rotulo text-mineral">{e.orgao} · {e.estado}</p>
@@ -49,15 +56,15 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
           {[
             ["Página oficial do conjunto", <a key="u" href={e.url} target="_blank" rel="noopener noreferrer" className="break-all text-energia-dark underline underline-offset-4">{e.url} ↗</a>],
             ["Licença", e.licenca ?? "não informada"],
-            ["Última modificação de metadados na fonte", e.modificado_na_fonte ?? "não informada"],
+            ["Última modificação de metadados na fonte", dataFonte(e.modificado_na_fonte)],
             ["Formatos publicados", e.formatos.join(", ") || "não informado"],
-            ["Usado em", e.usado_em.join(", ") + (e.modelos.length ? ` · modelos ${e.modelos.join(", ")}` : "")],
+            ["Usado nas páginas", d.paginas.map((p) => p.rotulo).join(", ") + (e.modelos.length ? ` · modelos ${e.modelos.join(", ")}` : "")],
             ["Última captura", f?.ultima_captura ? carimbo(f.ultima_captura) : "sem captura"],
             ["Snapshot", f?.snapshot ?? "–"],
             ["sha256 do snapshot", <span key="s" className="break-all font-mono text-xs">{f?.snapshot_sha256 ?? "–"}</span>],
             ["Última tentativa de coleta direta", f?.ultima_tentativa ? `${carimbo(f.ultima_tentativa.tentado_em)} · ${f.ultima_tentativa.ok ? "ok" : "falhou"} · ${f.ultima_tentativa.detalhe}` : "não registrada nesta publicação"],
-          ].map(([k, v]) => (
-            <div key={String(k)} className="min-w-0 bg-superficie p-4">
+          ].map(([k, v], i, lista) => (
+            <div key={String(k)} className={`min-w-0 bg-superficie p-4 ${lista.length % 2 === 1 && i === lista.length - 1 ? "md:col-span-2" : ""}`}>
               <dt className="rotulo text-mineral">{k}</dt>
               <dd className="mt-1 text-sm text-carvao [overflow-wrap:anywhere]">{v}</dd>
             </div>
@@ -93,7 +100,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                   <tr key={cpt.recurso} className="border-b border-linha">
                     <td className="px-2 py-1.5 text-carvao">{cpt.recurso}</td>
                     <td className="px-2 py-1.5 text-carvao">{carimbo(cpt.capturado_em)}</td>
-                    <td className="px-2 py-1.5 text-carvao-muted">{cpt.publicado_em ?? "não informado"}</td>
+                    <td className="px-2 py-1.5 text-carvao-muted">{dataFonte(cpt.publicado_em)}</td>
                     <td className="px-2 py-1.5 text-carvao-muted">{cpt.origem === "seed" ? "captura primária versionada" : "coleta direta"}</td>
                     <td className="break-all px-2 py-1.5 font-mono text-[0.68rem] text-mineral">{cpt.sha256}</td>
                   </tr>
@@ -108,7 +115,10 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
             <h2 className="font-serif text-xl text-carvao">Downloads e páginas</h2>
             <ul className="mt-3 space-y-1 text-sm">
               {d.downloads.map((u) => (
-                <li key={u}><a href={u} download className="text-energia-dark underline underline-offset-4">{u.split("/").pop()}</a></li>
+                <li key={u}>
+                  <a href={u} download className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">{u.split("/").pop()}</a>
+                  {COLUNAS_ARQUIVO[u] && <span className="block text-xs leading-relaxed text-carvao-muted">{COLUNAS_ARQUIVO[u]}</span>}
+                </li>
               ))}
               {d.paginas.map((p) => (
                 <li key={p.href}><Link href={p.href} className="text-carvao underline underline-offset-4">{p.rotulo}</Link></li>

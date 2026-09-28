@@ -42,16 +42,36 @@ export default function ModelCard({ params }: { params: { modelo: string } }) {
     <>
       <CabecalhoEnergia atual="pld" />
       <MarcaVisita secao="energia:pld-modelos" />
-      <main className="mx-auto max-w-page px-6 pb-16">
+      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
         <nav aria-label="Trilha" className="pt-8 text-sm text-mineral">
-          <Link href="/setor-eletrico/pld" className="underline underline-offset-4">PLD</Link> ·{" "}
-          <Link href="/setor-eletrico/pld/modelos" className="underline underline-offset-4">Modelos</Link> · {m.codigo}
+          <Link href="/setor-eletrico/pld" className="inline-flex min-h-[44px] items-center underline underline-offset-4">PLD</Link> ·{" "}
+          <Link href="/setor-eletrico/pld/modelos" className="inline-flex min-h-[44px] items-center underline underline-offset-4">Modelos</Link> · {m.codigo}
         </nav>
         <header className="pb-6 pt-4">
-          <p className="rotulo text-mineral">Model card · {m.versao}</p>
+          <p className="rotulo text-mineral">Cartão do modelo · versão {m.versao}</p>
           <h1 className="mt-2 font-serif text-[clamp(2rem,4.4vw,3rem)] leading-tight text-carvao">{m.codigo} · {m.nome}</h1>
           <p className="mt-3"><EstadoModelo estado={m.estado} comTexto /></p>
         </header>
+        <section aria-labelledby="essencial-h" className="mb-8 grid gap-px border border-linha bg-linha md:grid-cols-3">
+          <h2 id="essencial-h" className="sr-only">O essencial</h2>
+          <div className="bg-superficie p-5">
+            <p className="rotulo text-mineral">O que faz</p>
+            <p className="mt-2 text-sm leading-relaxed text-carvao">{m.resumo ?? m.objetivo}</p>
+          </div>
+          <div className="bg-superficie p-5">
+            <p className="rotulo text-mineral">Pode ser usado como previsão oficial?</p>
+            <p className="mt-2 text-sm leading-relaxed text-carvao">
+              {m.estado === "PRODUCAO"
+                ? "Sim: está em produção."
+                : "Não. Está em pesquisa: ainda não passou pelas etapas de validação, e modelo fora de produção não gera previsão oficial."}
+            </p>
+          </div>
+          <div className="bg-superficie p-5">
+            <p className="rotulo text-mineral">Principal limitação</p>
+            <p className="mt-2 text-sm leading-relaxed text-carvao">{m.limitacao_principal ?? m.limitacoes[0]}</p>
+          </div>
+        </section>
+        <h2 className="font-serif text-xl text-carvao">Ficha técnica</h2>
         <dl>
           <L k="Objetivo">{m.objetivo}</L>
           <L k="Papel">{m.papel}</L>
@@ -59,7 +79,7 @@ export default function ModelCard({ params }: { params: { modelo: string } }) {
           <L k="Frequência e horizonte">{reg.definicoes.entregas}</L>
           <L k="Submercados">Sudeste/Centro-Oeste, Sul, Nordeste e Norte</L>
           <L k="Metodologia">{m.metodologia}</L>
-          <L k="Fórmula">{m.formula ? <code className="block whitespace-pre-wrap break-words bg-papel px-2 py-1.5 font-mono text-xs">{m.formula}</code> : "Composição exata no arquivo de configuração listado nas evidências."}</L>
+          <L k="Fórmula">{m.formula ? <code className="block whitespace-pre-wrap break-words bg-papel px-2 py-1.5 font-mono text-xs">{m.formula}</code> : "Não publicada: a composição exata está no arquivo de configuração da pesquisa, identificado nas evidências."}</L>
           <L k="Variáveis de entrada">
             <ul className="list-disc space-y-1 pl-5">{m.features.map((f) => <li key={f}>{f}</li>)}</ul>
           </L>

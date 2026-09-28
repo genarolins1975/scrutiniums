@@ -5,6 +5,7 @@ import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { Termo } from "@/components/evidencia/Termo";
+import { Unidade } from "@/components/evidencia/Unidade";
 import { CartoesPld } from "@/components/energia/CartoesPld";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { BarrasMix } from "@/components/energia/BarrasMix";
@@ -76,7 +77,7 @@ export default function VisaoGeralEnergia() {
     <>
       <CabecalhoEnergia atual="visao-geral" />
       <MarcaVisita secao="energia:visao-geral" />
-      <main className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
         <div className="pb-4 pt-10 md:pt-14">
           <p className="rotulo text-mineral">Visão geral</p>
           <h1 className="mt-3 max-w-4xl font-serif text-[clamp(2rem,4.6vw,3.2rem)] leading-[1.1] text-carvao">
@@ -124,20 +125,26 @@ export default function VisaoGeralEnergia() {
               </p>
             </div>
           ) : (
-            <Indisponivel titulo="Síntese indisponível" motivo="A gold de síntese não foi gerada nesta publicação." />
+            <Indisponivel titulo="Síntese indisponível" motivo="A síntese não foi processada nesta publicação." />
           )}
         </Secao>
 
         {/* Bloco 2 */}
-        <Secao id="preco" numero="2" rotulo="Preço" titulo="Quanto custa a energia, hora a hora, em cada região?" cta={{ href: "/setor-eletrico/pld", texto: "Entender o PLD" }}>
+        <Secao id="preco" numero="2" rotulo="Preço" titulo="Qual é o preço da energia no mercado de curto prazo, hora a hora, em cada região?" cta={{ href: "/setor-eletrico/pld", texto: "Entender o PLD" }}>
           {integra(pld) ? (
             <PainelEvidencia
               nivelTitulo={3}
               id="preco-painel"
               pergunta={`O PLD de ${dataBR(pld.dia_referencia)} nos quatro submercados`}
               subtitulo="PLD médio diário · R$/MWh nominais"
-              porQueImporta={<>O <Termo slug="pld">PLD</Termo> é calculado pela CCEE para cada hora e submercado, com base no custo marginal de operação: o custo de atender uma unidade adicional de carga, segundo o ONS.</>}
-              oQueMudou={<>No Sudeste/Centro-Oeste, {pld.cartoes[0].variacao_dia_anterior ? `${sinal(pld.cartoes[0].variacao_dia_anterior.abs, 2)} R$/MWh sobre o dia anterior` : "sem comparação com o dia anterior"}. Nos últimos 30 dias houve diferença acima de R$ 1/MWh entre submercados em {num(100 * pld.periodos["30d"].diferenca.frac_horas_acima_limiar)}% das horas.</>}
+              porQueImporta={
+                <>
+                  O <Termo slug="pld">PLD</Termo> é o preço do <Termo slug="mcp">Mercado de Curto Prazo</Termo>, em que a CCEE apura, por hora e
+                  submercado, o balanço de energia e o resultado financeiro de cada participante. O que isso significa, e o que o PLD não é, está no{" "}
+                  <a href="/setor-eletrico/pld#o-que-e" className="text-energia-dark underline underline-offset-4">capítulo 1 do PLD</a>.
+                </>
+              }
+              oQueMudou={<>No Sudeste/Centro-Oeste, {pld.cartoes[0].variacao_dia_anterior ? `${sinal(pld.cartoes[0].variacao_dia_anterior.abs, 2)} R$/MWh sobre o dia anterior` : "sem comparação com o dia anterior"}. Nos últimos 30 dias houve diferença acima de {reais(pld.limiar_diferenca)}/MWh entre submercados em {num(100 * pld.periodos["30d"].diferenca.frac_horas_acima_limiar)}% das horas.</>}
               comoInterpretar={<>A posição usa o percentil da média diária entre todas as médias diárias desde 01/01/2021, em valores nominais. Faixa baixa abaixo do 25º percentil, alta acima do 75º.</>}
               naoConcluir={<>O PLD não é a tarifa do consumidor e não é previsão. Comparações com anos anteriores misturam limites regulatórios diferentes, que não foram auditados nesta fase.</>}
               proveniencia={pld.proveniencia.diario}
@@ -145,7 +152,7 @@ export default function VisaoGeralEnergia() {
               <CartoesPld pld={pld} />
             </PainelEvidencia>
           ) : (
-            <Indisponivel titulo="PLD indisponível" motivo={pld?.motivo ?? "A gold do PLD não foi gerada."} />
+            <Indisponivel titulo="PLD indisponível" motivo={pld?.motivo ?? "Os dados processados do PLD não foram gerados."} />
           )}
         </Secao>
 
@@ -159,7 +166,7 @@ export default function VisaoGeralEnergia() {
               subtitulo="EAR do SIN · % da EAR máxima, com faixa histórica do 10º ao 90º percentil"
               natureza="CALCULADO"
               porQueImporta={<>A <Termo slug="ear">EAR</Termo> mede a energia associada à água guardada nos reservatórios; a <Termo slug="ena">ENA</Termo> mede, em energia, as vazões naturais que chegam a eles. As duas definições são do ONS.</>}
-              oQueMudou={<>Em 30 dias, a EAR do SIN variou {sinal(hidSin.ear.variacao_30d_pp)} p.p. A ENA acumulada em 30 dias está em {pct(hidSin.ena.pct_mlt_30d, 1)} da MLT{hidSin.ena.faixa_30d ? `, ${ROTULO_FAIXA_USUAL[hidSin.ena.faixa_30d]}` : ""}.{hid.desvio_principal ? ` Maior desvio frente à mediana da data: ${hid.desvio_principal.nome} (${sinal(hid.desvio_principal.desvio_pp)} p.p.).` : ""}</>}
+              oQueMudou={<>Em 30 dias, a EAR do SIN variou {sinal(hidSin.ear.variacao_30d_pp)} <Unidade u="p.p." />. A ENA acumulada em 30 dias está em {pct(hidSin.ena.pct_mlt_30d, 1)} da MLT{hidSin.ena.faixa_30d ? `, ${ROTULO_FAIXA_USUAL[hidSin.ena.faixa_30d]}` : ""}.{hid.desvio_principal ? ` Maior desvio frente à mediana da data: ${hid.desvio_principal.nome} (${sinal(hid.desvio_principal.desvio_pp)} p.p.).` : ""}</>}
               comoInterpretar={<>A faixa sombreada mostra, para cada data, onde a EAR esteve em 80% dos anos desde 2001 (10º a 90º percentil). Fora dela, o valor está fora da faixa usual para a data.</>}
               naoConcluir={<>Este painel não relaciona EAR ou ENA ao preço nem calcula quanto da ENA vira armazenamento. A capacidade máxima de armazenamento mudou ao longo do tempo.</>}
               proveniencia={hid.proveniencia.ear_sin}
@@ -192,7 +199,7 @@ export default function VisaoGeralEnergia() {
               </ul>
             </PainelEvidencia>
           ) : (
-            <Indisponivel titulo="Hidrologia indisponível" motivo={hid?.motivo ?? "A gold de hidrologia não foi gerada."} />
+            <Indisponivel titulo="Hidrologia indisponível" motivo={hid?.motivo ?? "Os dados processados de hidrologia não foram gerados."} />
           )}
         </Secao>
 
@@ -222,7 +229,7 @@ export default function VisaoGeralEnergia() {
               />
             </PainelEvidencia>
           ) : (
-            <Indisponivel titulo="Geração indisponível" motivo={ger?.motivo ?? "A gold de geração não foi gerada."} />
+            <Indisponivel titulo="Geração indisponível" motivo={ger?.motivo ?? "Os dados processados de geração não foram gerados."} />
           )}
         </Secao>
 
@@ -240,7 +247,7 @@ export default function VisaoGeralEnergia() {
               subtitulo="Carga de energia diária do SIN · MWmed"
               natureza="CALCULADO"
               porQueImporta={<>A <Termo slug="carga">carga</Termo> é o lado da demanda no balanço de energia que o ONS publica por subsistema, ao lado da geração por fonte.</>}
-              oQueMudou={<>Em {dataBR(carga.dia_referencia)}, {num(cargaSin.dia, 0)} MWmed. Maior carga diária dos últimos 12 meses: {num(cargaSin.max_12m.valor, 0)} MWmed em {dataBR(cargaSin.max_12m.dia)}.</>}
+              oQueMudou={<>Em {dataBR(carga.dia_referencia)}, {num(cargaSin.dia, 0)} <Unidade u="MWmed" />. Maior carga diária dos últimos 12 meses: {num(cargaSin.max_12m.valor, 0)} MWmed em {dataBR(cargaSin.max_12m.dia)}.</>}
               comoInterpretar={<>A comparação anual só é feita quando os dois períodos estão no mesmo regime metodológico do ONS (a estimativa de MMGD entrou na carga em 29/04/2023).</>}
               naoConcluir={<>Temperatura, feriados e dias úteis afetam a carga e não são ajustados. Variação de carga não mede atividade econômica por si.</>}
               proveniencia={carga.proveniencia.sin}
@@ -255,7 +262,7 @@ export default function VisaoGeralEnergia() {
               />
             </PainelEvidencia>
           ) : (
-            <Indisponivel titulo="Carga indisponível" motivo={carga?.motivo ?? "A gold de carga não foi gerada."} />
+            <Indisponivel titulo="Carga indisponível" motivo={carga?.motivo ?? "Os dados processados de carga não foram gerados."} />
           )}
         </Secao>
 
@@ -290,7 +297,7 @@ export default function VisaoGeralEnergia() {
               />
             </PainelEvidencia>
           ) : (
-            <Indisponivel titulo="Rede indisponível" motivo={rede?.motivo ?? "A gold de rede não foi gerada."} />
+            <Indisponivel titulo="Rede indisponível" motivo={rede?.motivo ?? "Os dados processados de rede não foram gerados."} />
           )}
         </Secao>
 
@@ -321,7 +328,7 @@ export default function VisaoGeralEnergia() {
               </ul>
             </div>
           ) : (
-            <Indisponivel titulo="Regras indisponíveis" motivo="A gold de síntese não foi gerada." />
+            <Indisponivel titulo="Regras indisponíveis" motivo="A síntese não foi processada." />
           )}
         </Secao>
       </main>

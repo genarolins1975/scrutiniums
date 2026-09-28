@@ -309,6 +309,10 @@ export type Modelo = {
   id: string;
   codigo: string;
   nome: string;
+  /** O que o modelo faz, em uma frase sem jargão. */
+  resumo?: string;
+  /** A limitação mais importante, em linguagem direta. */
+  limitacao_principal?: string;
   versao: string;
   estado: EstadoModelo;
   papel: string;

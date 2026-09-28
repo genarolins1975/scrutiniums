@@ -45,9 +45,9 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
     <>
       <CabecalhoEnergia atual="aprenda" />
       <MarcaVisita secao="energia:aprenda" />
-      <main className="mx-auto max-w-page px-6 pb-16">
+      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
         <nav aria-label="Trilha" className="pt-8 text-sm text-mineral">
-          <Link href="/setor-eletrico/aprenda" className="underline underline-offset-4">Aprenda</Link> · {c.grupo}
+          <Link href="/setor-eletrico/aprenda" className="inline-flex min-h-[44px] items-center underline underline-offset-4">Aprenda</Link> · {c.grupo}
         </nav>
         <header className="pb-6 pt-4">
           <h1 className="font-serif text-[clamp(2rem,4.4vw,3rem)] leading-tight text-carvao">
@@ -132,6 +132,7 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
                     <a href={f.url} target="_blank" rel="noopener noreferrer" className="text-energia-dark underline underline-offset-4">{f.documento}</a>
                   </p>
                   {f.trecho && <blockquote className="mt-2 border-l-2 border-linha pl-4 text-sm text-carvao-muted">“{f.trecho}”</blockquote>}
+                  {f.parafrase && <p className="mt-2 pl-4 text-sm text-carvao">{f.parafrase}</p>}
                 </li>
               ))}
             </ul>

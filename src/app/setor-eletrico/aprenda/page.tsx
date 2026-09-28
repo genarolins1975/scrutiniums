@@ -19,7 +19,7 @@ export default function AprendaPage() {
     <>
       <CabecalhoEnergia atual="aprenda" />
       <MarcaVisita secao="energia:aprenda" />
-      <main className="mx-auto max-w-page px-6 pb-16">
+      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
         <CabecalhoModulo rotulo="Aprenda" titulo="Como funciona o sistema elétrico brasileiro, conceito a conceito">
           Cada verbete diz, em uma frase, o que é; por que importa; como é medido; um exemplo real do sistema; as relações com outros conceitos; a
           fonte oficial; e o que não se pode concluir. {conferidos} de {CONCEITOS.length} verbetes estão conferidos na fonte primária; os demais

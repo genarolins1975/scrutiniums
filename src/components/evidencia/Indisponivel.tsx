@@ -26,7 +26,8 @@ export function Indisponivel({
         {titulo}
       </p>
       <div className="mt-3 max-w-prose2 leading-relaxed text-carvao">{motivo}</div>
-      <dl className="mt-5 grid gap-4 text-sm md:grid-cols-3">
+      {/* itens empilhados: o componente aparece tanto em largura cheia quanto em meia coluna */}
+      <dl className="mt-5 space-y-4 text-sm">
         {ultimaExecucao && (
           <div>
             <dt className="rotulo text-mineral">Última execução</dt>
@@ -47,7 +48,7 @@ export function Indisponivel({
         )}
         {estado && (
           <div>
-            <dt className="rotulo text-mineral">Estado do pipeline</dt>
+            <dt className="rotulo text-mineral">Situação atual</dt>
             <dd className="mt-1 text-carvao-muted">{estado}</dd>
           </div>
         )}

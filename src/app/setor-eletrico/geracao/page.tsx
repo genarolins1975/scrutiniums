@@ -26,8 +26,8 @@ export default function GeracaoPage() {
     return (
       <>
         <CabecalhoEnergia atual="geracao" />
-        <main className="mx-auto max-w-page px-6 py-14">
-          <Indisponivel titulo="Geração indisponível" motivo={g?.motivo ?? "A gold de geração não foi gerada nesta publicação."} />
+        <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 py-14">
+          <Indisponivel titulo="Geração indisponível" motivo={g?.motivo ?? "Os dados processados de geração não foram gerados nesta publicação."} />
         </main>
       </>
     );
@@ -39,7 +39,7 @@ export default function GeracaoPage() {
     <>
       <CabecalhoEnergia atual="geracao" />
       <MarcaVisita secao="energia:geracao" />
-      <main className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
         <CabecalhoModulo
           rotulo="Geração"
           titulo="Com que fontes o sistema está atendendo a carga?"

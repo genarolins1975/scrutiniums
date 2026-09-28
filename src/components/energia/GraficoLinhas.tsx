@@ -12,6 +12,8 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 export type SerieLinha = {
   id: string;
   rotulo: string;
+  /** Rótulo curto (SE/CO, S, NE, N): usado no celular e quando linhas terminam juntas. */
+  sigla?: string;
   cor: string;
   tracejada?: boolean;
   espessura?: number;
@@ -90,7 +92,7 @@ export function GraficoLinhas({
   }, []);
 
   const L = largura < 520 ? 44 : 56;
-  const R = rotulosDiretos ? (largura < 520 ? 70 : 108) : 16;
+  const R = rotulosDiretos ? (largura < 520 ? 92 : 124) : 16;
   const T = 14;
   const B = 30;
   const w = largura;
@@ -163,7 +165,8 @@ export function GraficoLinhas({
     })
     .filter((f): f is { s: SerieLinha; i: number; v: number; yy: number } => !!f)
     .sort((a, b) => a.yy - b.yy);
-  // linhas que terminam no mesmo ponto viram um só rótulo ("3 séries iguais")
+  // linhas que terminam no mesmo ponto viram um só rótulo com as siglas ("SE/CO · NE · N"):
+  // diz quais linhas se encontram no último ponto, sem afirmar que são iguais no resto do período
   const grupos: { itens: typeof finais; yy: number }[] = [];
   for (const f of finais) {
     const g = grupos.at(-1);
@@ -284,12 +287,14 @@ export function GraficoLinhas({
         {rotulosDiretos &&
           finaisVisiveis.map((r) => {
             const f = r.itens[0];
-            const texto = r.itens.length > 1 ? `${r.itens.length} séries iguais` : f.s.rotulo;
+            const curto = (s: SerieLinha) => s.sigla ?? s.rotulo;
+            const texto =
+              r.itens.length > 1 ? r.itens.map((i) => curto(i.s)).join(" · ") : largura < 520 || f.s.rotulo.length > 18 ? curto(f.s) : f.s.rotulo;
             return (
               <g key={f.s.id}>
                 <circle cx={x(f.i)} cy={y(f.v)} r="3.5" fill={f.s.cor} stroke="var(--cor-superficie)" strokeWidth="1.5" />
                 <text x={x(f.i) + 8} y={r.yy + 4} fontSize="11" fill="var(--cor-carvao)">
-                  {texto.length > 14 && largura < 520 ? texto.slice(0, 12) + "…" : texto}
+                  {texto}
                 </text>
               </g>
             );
@@ -352,21 +357,21 @@ export function GraficoLinhas({
       )}
       <details className="mt-3 text-xs" onToggle={(e) => setTabelaAberta((e.currentTarget as HTMLDetailsElement).open)}>
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
-          Ver os dados em tabela ({n.toLocaleString("pt-BR")} {n === 1 ? "linha" : "linhas"})
+          Dados do gráfico em tabela ({n.toLocaleString("pt-BR")} {n === 1 ? "linha" : "linhas"})
         </summary>
         {tabelaAberta && (
           <div className="tabela-scroll mt-2 max-h-80 overflow-y-auto" tabIndex={0} role="region" aria-label={`${titulo}: dados em tabela (rolável)`}>
             <table className="w-full border-collapse tabular-nums">
-              <caption className="sr-only">{titulo}</caption>
+              <caption className="sr-only">{`${titulo}, em ${unidade}`}</caption>
               <thead className="sticky top-0 bg-superficie">
                 <tr className="text-left text-mineral">
                   <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">
                     {formatoX === "hora" ? "Hora" : formatoX === "mes" ? "Mês" : formatoX === "texto" ? "Item" : "Data"}
                   </th>
                   {series.map((s) => (
-                    <th key={s.id} scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{s.rotulo}</th>
+                    <th key={s.id} scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{s.rotulo} ({unidade})</th>
                   ))}
-                  {banda && <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{banda.rotulo}</th>}
+                  {banda && <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{banda.rotulo} ({unidade})</th>}
                 </tr>
               </thead>
               <tbody>

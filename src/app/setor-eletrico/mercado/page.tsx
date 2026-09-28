@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import { ModuloEmIntegracao } from "@/components/energia/ModuloEmIntegracao";
 
@@ -22,10 +23,17 @@ export default function MercadoPage() {
         "Como o GSF se comportou ao longo do tempo, e como a CCEE o define?",
         "Quanto custaram os encargos de serviços do sistema em cada período?",
       ]}
+      destaque={
+        <>
+          O essencial sobre o Mercado de Curto Prazo, onde o PLD é o preço, já está publicado com fonte:{" "}
+          <Link href="/setor-eletrico/pld#o-que-e" className="text-energia-dark underline underline-offset-4">capítulo 1 do PLD</Link> e{" "}
+          <Link href="/setor-eletrico/aprenda/mcp" className="text-energia-dark underline underline-offset-4">verbete MCP</Link>.
+        </>
+      }
       temas={["mercado", "preco", "empresas"]}
       orgaos={["CCEE", "ANEEL"]}
       pendencias={[
-        "Acesso automatizado ao portal de dados abertos da CCEE instável: recusado com HTTP 403 e, horas depois, bem-sucedido para o PLD_HORARIO em 28/09/2026. A integração dos conjuntos de mercado depende de coleta estável e de conferência documental das Regras de Comercialização.",
+        "Acesso automatizado ao portal de dados abertos da CCEE instável: recusado e, horas depois, aceito para o PLD_HORARIO em 28/09/2026. A integração dos conjuntos de mercado depende de coleta estável e de conferência documental das Regras de Comercialização.",
         "Conferência das definições nas Regras de Comercialização da CCEE e na Lei nº 10.848/2004 para os verbetes ACL, ACR, MRE, GSF e ESS.",
       ]}
       conceitos={[

@@ -29,10 +29,10 @@ export type PeriodoPld = {
 };
 
 const SMS = [
-  { id: "SE", rotulo: "Sudeste/Centro-Oeste", cor: "var(--serie-sm-se)" },
-  { id: "S", rotulo: "Sul", cor: "var(--serie-sm-s)" },
-  { id: "NE", rotulo: "Nordeste", cor: "var(--serie-sm-ne)" },
-  { id: "N", rotulo: "Norte", cor: "var(--serie-sm-n)" },
+  { id: "SE", rotulo: "Sudeste/Centro-Oeste", sigla: "SE/CO", cor: "var(--serie-sm-se)" },
+  { id: "S", rotulo: "Sul", sigla: "S", cor: "var(--serie-sm-s)" },
+  { id: "NE", rotulo: "Nordeste", sigla: "NE", cor: "var(--serie-sm-ne)" },
+  { id: "N", rotulo: "Norte", sigla: "N", cor: "var(--serie-sm-n)" },
 ] as const;
 
 const n = (v: number | null | undefined, c = 2) =>
@@ -92,7 +92,7 @@ export function PldPeriodos({ periodos, limiar }: { periodos: PeriodoPld[]; limi
             titulo={`PLD dos quatro submercados, ${at.rotulo.toLowerCase()}`}
             dados={at.serie}
             chaveX="x"
-            series={SMS.map((s) => ({ id: s.id, rotulo: s.rotulo, cor: s.cor }))}
+            series={SMS.map((s) => ({ id: s.id, rotulo: s.rotulo, sigla: s.sigla, cor: s.cor }))}
             unidade="R$/MWh"
             casas={2}
             formatoX={at.formatoX}
@@ -109,8 +109,8 @@ export function PldPeriodos({ periodos, limiar }: { periodos: PeriodoPld[]; limi
             <dt className="rotulo text-mineral">Há diferença entre submercados?</dt>
             <dd className="mt-1 text-sm text-carvao">
               {d.horas_acima_limiar === 0
-                ? `Não: nenhuma hora com diferença acima de R$ ${n(limiar, 0)}/MWh.`
-                : `Sim, em ${d.horas_acima_limiar.toLocaleString("pt-BR")} horas (${p(d.frac_horas_acima_limiar)}). Maior diferença: R$ ${n(d.maior)}/MWh em ${quando(d.quando_maior)}.`}
+                ? `Não: nenhuma hora com diferença acima de R$\u00a0${n(limiar, 0)}/MWh.`
+                : `Sim, em ${d.horas_acima_limiar.toLocaleString("pt-BR")} horas (${p(d.frac_horas_acima_limiar)}). Maior diferença: R$\u00a0${n(d.maior)}/MWh em ${quando(d.quando_maior)}.`}
             </dd>
           </div>
           <div className="bg-superficie p-4">
@@ -123,7 +123,7 @@ export function PldPeriodos({ periodos, limiar }: { periodos: PeriodoPld[]; limi
           <div className="bg-superficie p-4">
             <dt className="rotulo text-mineral">Houve picos?</dt>
             <dd className="mt-1 text-sm text-carvao">
-              Máximo no Sudeste/Centro-Oeste: R$ {n(at.stats.SE.max)}/MWh em {quando(at.stats.SE.quando_max)}.
+              Máximo no Sudeste/Centro-Oeste: R$&nbsp;{n(at.stats.SE.max)}/MWh em {quando(at.stats.SE.quando_max)}.
             </dd>
           </div>
         </dl>
@@ -150,10 +150,10 @@ export function PldPeriodos({ periodos, limiar }: { periodos: PeriodoPld[]; limi
                       <span aria-hidden="true" className="mr-2 inline-block h-2 w-2" style={{ background: s.cor }} />
                       {s.rotulo}
                     </th>
-                    <td className="px-2 py-2 text-carvao">R$ {n(st.media)}</td>
-                    <td className="px-2 py-2 text-carvao">R$ {n(st.min)}</td>
-                    <td className="px-2 py-2 text-carvao">R$ {n(st.max)}</td>
-                    <td className="px-2 py-2 text-carvao">R$ {n(st.desvio_padrao)}</td>
+                    <td className="px-2 py-2 text-carvao">R$&nbsp;{n(st.media)}</td>
+                    <td className="px-2 py-2 text-carvao">R$&nbsp;{n(st.min)}</td>
+                    <td className="px-2 py-2 text-carvao">R$&nbsp;{n(st.max)}</td>
+                    <td className="px-2 py-2 text-carvao">R$&nbsp;{n(st.desvio_padrao)}</td>
                     <td className="px-2 py-2 text-carvao">
                       {p(st.permanencia.baixa)} · {p(st.permanencia.central)} · {p(st.permanencia.alta)}
                     </td>

@@ -82,6 +82,8 @@ function periodos(p: PldGold): PeriodoPld[] {
   ];
 }
 
+const NOME_SM_CMO: Record<string, string> = { SE: "Sudeste/Centro-Oeste", S: "Sul", NE: "Nordeste", N: "Norte" };
+
 export default function PldPage() {
   const pld = gold.pld();
   const hid = gold.hidrologia();
@@ -133,12 +135,21 @@ export default function PldPage() {
   const cmoSerie = integra(cmo) ? cmo.serie.slice(-104).map((s) => ({ x: s.s, SE: s.SE, S: s.S, NE: s.NE, N: s.N })) : [];
   const amplitude = integra(rede) ? rede.serie_amplitude_pld.map((a) => ({ x: a.d, amp: a.amplitude })) : [];
   const ult = prev?.atual?.ultima_execucao;
+  // maior CMO semanal das últimas 12 semanas, para comentar picos visíveis no gráfico
+  const picoCmo = integra(cmo)
+    ? cmo.serie
+        .slice(-12)
+        .flatMap((s) => (["SE", "S", "NE", "N"] as const).map((sm) => ({ s: s.s, sm, v: s[sm] })))
+        .filter((x): x is { s: string; sm: "SE" | "S" | "NE" | "N"; v: number } => typeof x.v === "number")
+        .sort((a, b) => b.v - a.v)[0] ?? null
+    : null;
+  const exemploSe = integra(pld) ? pld.cartoes.find((c) => c.sm === "SE" && c.max_hora !== null) ?? null : null;
 
   return (
     <>
       <CabecalhoEnergia atual="pld" />
       <MarcaVisita secao="energia:pld" />
-      <main className="mx-auto max-w-page px-6">
+      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
         <header className="pb-6 pt-10 md:pt-14">
           <p className="rotulo text-mineral">Preço de Liquidação das Diferenças</p>
           <h1 className="mt-3 font-serif text-[clamp(2.6rem,6vw,4rem)] leading-none text-carvao">PLD</h1>
@@ -171,13 +182,29 @@ export default function PldPage() {
             <div className="grid gap-8 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
               <div>
                 <p className="font-serif text-xl leading-relaxed text-carvao md:text-2xl">
-                  No Mercado de Curto Prazo, a CCEE apura, para cada perfil de agente, submercado e hora, um balanço de energia em MWh, positivo
-                  ou negativo, e um resultado financeiro em R$, separado em venda e compra. O PLD é o preço desse mercado.
+                  No <Termo slug="mcp">Mercado de Curto Prazo</Termo>, a CCEE apura, para cada participante (perfil de agente), submercado e
+                  hora, um balanço de energia em MWh, positivo ou negativo, e um resultado financeiro em R$, separado em venda e compra. O PLD é
+                  o preço desse mercado.
                 </p>
                 <p className="mt-3 flex flex-wrap items-center gap-2 text-xs text-mineral">
                   Base: descrições oficiais dos conjuntos PLD_HORARIO_SUBMERCADO, SUMARIO_BE_HORARIO_SUBMERCADO e
                   SUMARIO_MENSAL_COMPRA_VENDA_SUBMERCADO no portal de dados abertos da CCEE, capturadas em 28/09/2026. <Conferido ok />
                 </p>
+                {exemploSe && integra(pld) && (
+                  <div className="mt-5 border border-dashed border-mineral bg-papel p-4 text-sm leading-relaxed text-carvao">
+                    <p className="rotulo text-mineral">Exemplo com o preço real; a regra de cálculo ainda não foi conferida</p>
+                    <p className="mt-2">
+                      Na hora mais cara de {dataBR(pld.dia_referencia)} no Sudeste/Centro-Oeste ({exemploSe.quando_max.slice(11, 13)}h), o PLD foi{" "}
+                      {reais(exemploSe.max_hora)}/MWh <SeloNatureza natureza="OBSERVADO" />. Um balanço de 10 MWh naquela hora (quantidade escolhida
+                      só para a conta) valeria 10 × {reais(exemploSe.max_hora)} = {reais(10 * exemploSe.max_hora)}.
+                    </p>
+                    <p className="mt-2 text-carvao-muted">
+                      Na leitura usual do setor, quem fecha a hora com balanço negativo compra essa diferença no Mercado de Curto Prazo e quem
+                      fecha com balanço positivo a vende, ao PLD. A regra exata está nas Regras de Comercialização da CCEE, ainda não conferidas
+                      nesta fase.
+                    </p>
+                  </div>
+                )}
                 <p className="mt-6 text-lg leading-relaxed text-carvao">
                   É um valor em R$/MWh que a CCEE calcula todos os dias para cada hora do dia seguinte e para cada um dos quatro{" "}
                   <Termo slug="submercado">submercados</Termo>. O cálculo é feito por modelos computacionais (NEWAVE, DECOMP e
@@ -271,8 +298,13 @@ export default function PldPage() {
                   pergunta="Qual custo marginal o ONS está publicando para cada subsistema?"
                   subtitulo="CMO semanal (modelo DECOMP) · R$/MWh · últimas 104 semanas operativas"
                   porQueImporta={<>O <Termo slug="cmo">CMO</Termo> é a base do PLD, segundo a CCEE. O ONS publica o CMO semanal estimado pelo DECOMP para cada semana operativa, por subsistema e patamar de carga.</>}
-                  oQueMudou={<>Semana de {dataBR(cmo.semana_referencia)}: Sudeste/Centro-Oeste {reais(cmo.ultima_semana[0].semanal)} contra {reais(cmo.ultima_semana[0].semana_anterior)} na semana anterior.</>}
-                  comoInterpretar={<>Compare os subsistemas na mesma semana: valores iguais ou diferentes são saída do modelo DECOMP; a razão de uma diferença não é identificada aqui.</>}
+                  oQueMudou={
+                    <>
+                      Semana de {dataBR(cmo.semana_referencia)}: {cmo.ultima_semana.map((x) => `${x.sm === "SE" ? "SE/CO" : x.sm} ${reais(x.semanal)} (semana anterior ${reais(x.semana_anterior)})`).join("; ")}.
+                      {picoCmo ? ` Maior valor semanal nas últimas 12 semanas: ${reais(picoCmo.v)}/MWh no ${NOME_SM_CMO[picoCmo.sm]}, na semana de ${dataBR(picoCmo.s)}.` : ""}
+                    </>
+                  }
+                  comoInterpretar={<>Compare os subsistemas na mesma semana: valores iguais ou diferentes são saída do modelo DECOMP; a razão de uma diferença não é identificada aqui. A CCEE informa que o PLD horário é calculado com NEWAVE, DECOMP e DESSEM; o CMO semi-horário do DESSEM, também publicado pelo ONS, ainda não está integrado a este painel.</>}
                   naoConcluir={<>CMO semanal não é PLD: o PLD é horário, calculado pela CCEE, e aplica limites mínimo e máximos; os dois podem diferir muito na mesma semana (compare com os cartões do PLD no capítulo 3). O CMO é saída de modelo, não medição.</>}
                   proveniencia={cmo.proveniencia.cmo}
                 >
@@ -281,10 +313,10 @@ export default function PldPage() {
                     dados={cmoSerie}
                     chaveX="x"
                     series={[
-                      { id: "SE", rotulo: "Sudeste/Centro-Oeste", cor: "var(--serie-sm-se)" },
-                      { id: "S", rotulo: "Sul", cor: "var(--serie-sm-s)" },
-                      { id: "NE", rotulo: "Nordeste", cor: "var(--serie-sm-ne)" },
-                      { id: "N", rotulo: "Norte", cor: "var(--serie-sm-n)" },
+                      { id: "SE", rotulo: "Sudeste/Centro-Oeste", sigla: "SE/CO", cor: "var(--serie-sm-se)" },
+                      { id: "S", rotulo: "Sul", sigla: "S", cor: "var(--serie-sm-s)" },
+                      { id: "NE", rotulo: "Nordeste", sigla: "NE", cor: "var(--serie-sm-ne)" },
+                      { id: "N", rotulo: "Norte", sigla: "N", cor: "var(--serie-sm-n)" },
                     ]}
                     unidade="R$/MWh"
                     casas={2}
@@ -299,7 +331,12 @@ export default function PldPage() {
             {integra(pld) ? (
               <>
                 <CartoesPld pld={pld} />
-                <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-mineral">
+                <p className="mt-3 max-w-prose2 text-xs leading-relaxed text-carvao-muted">
+                  <span className="rotulo mr-1 text-mineral">O que não é possível concluir:</span>
+                  a posição no histórico não diz para onde o preço vai, e a faixa horária mostra os extremos de um único dia. Faixa horária:{" "}
+                  valores observados; média, variação e percentil: calculados.
+                </p>
+                <div className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-mineral">
                   <span>Fonte: CCEE, PLD_HORARIO; médias e posição calculadas pela Scrutiniums.</span>
                   <SobreEsteDado p={pld.proveniencia.horario} rotulo="Sobre o PLD horário" />
                   <SobreEsteDado p={pld.proveniencia.diario} rotulo="Sobre a média diária" />
@@ -365,7 +402,7 @@ export default function PldPage() {
                 </div>
               </>
             ) : (
-              <Indisponivel titulo="PLD indisponível" motivo={pld?.motivo ?? "A gold do PLD não foi gerada."} />
+              <Indisponivel titulo="PLD indisponível" motivo={pld?.motivo ?? "Os dados processados do PLD não foram gerados."} />
             )}
           </Capitulo>
 
@@ -381,7 +418,7 @@ export default function PldPage() {
                     diaPreco={dataBR(pld.dia_referencia)}
                   />
                   <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-mineral">
-                    <span>Fonte: CCEE (PLD) e ONS (intercâmbio).</span>
+                    <span>Fonte: CCEE (PLD) e ONS (intercâmbio). O mapa não mostra limites de transferência nem explica diferenças de preço.</span>
                     <SobreEsteDado p={pld.proveniencia.diario} rotulo="Sobre o PLD médio" />
                     <SobreEsteDado p={rede.proveniencia.fluxo} rotulo="Sobre os fluxos" />
                   </div>
@@ -443,7 +480,7 @@ export default function PldPage() {
           {/* 5. Previsão */}
           <Capitulo id="previsao" numero="5" subtitulo="Previsão" titulo="Para onde o PLD pode ir?">
             <p className="max-w-prose2 font-serif text-xl leading-snug text-carvao">Previsão é distribuição de possibilidades, não um único número.</p>
-            <div className="mt-6 grid gap-8 lg:grid-cols-2">
+            <div className="mt-6 grid items-start gap-8 lg:grid-cols-2">
               <IlustracaoDistribuicao />
               <div>
                 {prev && !prev.atual.disponivel ? (
@@ -453,8 +490,9 @@ export default function PldPage() {
                     ultimaExecucao={
                       ult ? (
                         <>
-                          Rodada interna de {dataBR(ult.origem)} (modelo {ult.versao_modelo}, estado {ult.estado_modelo.toLowerCase()}): {ult.celulas} combinações de horizonte e submercado, {ult.com_numero} com número. Motivo:{" "}
-                          {ult.motivos.includes("SEM_PLD_CAPTURADO_ATE_O_CORTE") ? "nenhum PLD do período exigido capturado até o corte" : ult.motivos.join(", ")}.
+                          Rodada interna de {dataBR(ult.origem)}, com o modelo {ult.modelo} ({ult.estado_modelo === "PESQUISA" ? "em pesquisa" : ult.estado_modelo.toLowerCase()}):{" "}
+                          {ult.celulas} previsões tentadas, {ult.com_numero === 0 ? "nenhuma com número" : `${ult.com_numero} com número`}. Motivo:{" "}
+                          {ult.motivos.includes("SEM_PLD_CAPTURADO_ATE_O_CORTE") ? "nenhum PLD do período exigido havia sido capturado até o horário de corte" : ult.motivos.join(", ")}.
                         </>
                       ) : (
                         "Nenhuma rodada registrada."
@@ -464,8 +502,8 @@ export default function PldPage() {
                     estado={prev.atual.estado_pipeline}
                   >
                     <p className="mt-5 flex flex-wrap gap-4 text-sm">
-                      <Link href="/setor-eletrico/pld/modelos" className="text-energia-dark underline underline-offset-4">Registro de modelos</Link>
-                      <Link href="/setor-eletrico/pld/previsoes" className="text-energia-dark underline underline-offset-4">Histórico de previsões ({prev.arquivo.length} registros, {prev.publicacoes} publicações)</Link>
+                      <Link href="/setor-eletrico/pld/modelos" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">Registro de modelos</Link>
+                      <Link href="/setor-eletrico/pld/previsoes" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">Histórico de previsões ({prev.arquivo.length} registros, {prev.publicacoes} publicações)</Link>
                     </p>
                   </Indisponivel>
                 ) : prev && prev.atual.disponivel ? (

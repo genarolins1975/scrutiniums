@@ -86,7 +86,7 @@ export function SobreEsteDado({ p, rotulo = "Sobre este dado" }: { p: Provenienc
               ✕
             </button>
           </header>
-          <div className="flex-1 overflow-y-auto px-6 py-2">
+          <div className="flex-1 overflow-y-auto px-6 py-2" tabIndex={0} role="region" aria-label={`Proveniência: ${p.indicador}`}>
             <dl>
               <Linha rotulo="Natureza">
                 <strong>{n.rotulo}.</strong> {n.definicao}

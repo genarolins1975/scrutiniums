@@ -4,17 +4,18 @@
  * Não há números nem escala: é material didático, marcado como tal.
  */
 export function IlustracaoDistribuicao() {
-  // viewBox estreito: no celular a escala fica perto de 1 e o texto, legível (12 px)
-  const w = 380;
+  // viewBox de 300: no celular (cerca de 310 px úteis) a escala fica perto de 1 e o
+  // texto, com 12 px; no desktop a figura é limitada a 24rem de largura
+  const w = 300;
   const h = 240;
-  const x0 = 16;
-  const xh = 150;
-  const x1 = w - 72;
+  const x0 = 12;
+  const xh = 118;
+  const x1 = w - 66;
   const yc = 128;
   const leque = (a: number) => `M${xh},${yc} L${x1},${yc - a} L${x1},${yc + a * 0.8} Z`;
   return (
     <figure className="border border-dashed border-mineral bg-papel p-4">
-      <svg viewBox={`0 0 ${w} ${h}`} className="block w-full" role="img" aria-label="Ilustração conceitual sem dados: o passado aparece como uma linha única; o futuro aparece como uma mediana com duas faixas de incerteza que se abrem com o horizonte.">
+      <svg viewBox={`0 0 ${w} ${h}`} className="mx-auto block w-full max-w-sm" role="img" aria-label="Ilustração conceitual sem dados: o passado aparece como uma linha única; o futuro aparece como uma mediana com duas faixas de incerteza que se abrem com o horizonte.">
         <line x1={x0} y1={h - 30} x2={x1} y2={h - 30} stroke="var(--cor-mineral-soft)" />
         <line x1={xh} y1={20} x2={xh} y2={h - 30} stroke="var(--cor-mineral)" strokeDasharray="3 3" />
         <text x={xh - 6} y={30} textAnchor="end" fontSize="12" fill="var(--cor-mineral)">realizado</text>

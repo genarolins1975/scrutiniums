@@ -65,8 +65,16 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (modo === "todos" || !rolarPendente.current) return;
     rolarPendente.current = false;
-    const id = window.requestAnimationFrame(() => alvoDoHash()?.scrollIntoView({ block: "start" }));
-    return () => window.cancelAnimationFrame(id);
+    // dois quadros: o primeiro aplica o modo ao layout, o segundo rola sem animação
+    // (uma rolagem suave concorreria com a da âncora nativa e pararia fora do alvo)
+    let id2 = 0;
+    const id1 = window.requestAnimationFrame(() => {
+      id2 = window.requestAnimationFrame(() => alvoDoHash()?.scrollIntoView({ block: "start", behavior: "instant" as ScrollBehavior }));
+    });
+    return () => {
+      window.cancelAnimationFrame(id1);
+      window.cancelAnimationFrame(id2);
+    };
   }, [modo]);
 
   // clique em âncora da própria página para um bloco oculto: sobe o modo e rola

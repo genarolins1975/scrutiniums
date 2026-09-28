@@ -17,6 +17,8 @@ export type FonteOficial = {
   url: string;
   /** Trecho do documento que sustenta a definição, quando aplicável. */
   trecho?: string;
+  /** O mesmo trecho em linguagem direta, sem acrescentar nada que ele não diga. */
+  parafrase?: string;
 };
 
 export type Conceito = {
@@ -50,6 +52,8 @@ const CCEE_PLD: FonteOficial = {
   url: "https://dadosabertos.ccee.org.br/dataset/pld_horario",
   trecho:
     "O Preço de Liquidação das Diferenças (PLD) é calculado pela Câmara de Comercialização de Energia Elétrica (CCEE) diariamente para cada hora do dia seguinte, considerando a aplicação dos limites máximos (horário e estrutural) e mínimo vigentes para cada período de apuração e para cada submercado. Este cálculo é realizado por modelos computacionais (Newave, Decomp e Dessem) e tem como base o Custo Marginal de Operação (CMO).",
+  parafrase:
+    "Em outras palavras: todo dia a CCEE calcula os preços de cada hora do dia seguinte, em cada submercado, com três modelos computacionais, partindo do custo marginal de operação e respeitando um limite mínimo e dois limites máximos.",
 };
 
 const TRECHO_CMO_SEMANAL =
@@ -69,7 +73,9 @@ const CCEE_MCP: FonteOficial = {
     "Portal de dados abertos, conjuntos PLD_HORARIO_SUBMERCADO e SUMARIO_BE_HORARIO_SUBMERCADO (descrição dos recursos), capturados em 28/09/2026",
   url: "https://dadosabertos.ccee.org.br/dataset/sumario_be_horario_submercado",
   trecho:
-    "Detalhar os valores do Preço de Liquidação das Diferenças do MCP por mês de referência, período de comercialização e submercado. [...] BE_POSITIVO: Corresponde ao Balanço Energético positivo do perfil de agente “a” no submercado “s” para o período de comercialização “j” [...] RESULTADO_MCP: Corresponde ao Resultado no Mercado de Curto Prazo do perfil de agente “a”, no submercado “s”, por período de comercialização “j”.",
+    "Detalhar os valores do Preço de Liquidação das Diferenças do MCP por mês de referência, período de comercialização e submercado. [...] PERIODO_COMERCIALIZACAO: Representa o período de comercialização, equivalente a uma hora [...] BE_POSITIVO: Corresponde ao Balanço Energético positivo do perfil de agente “a” no submercado “s” para o período de comercialização “j” [...] RESULTADO_MCP: Corresponde ao Resultado no Mercado de Curto Prazo do perfil de agente “a”, no submercado “s”, por período de comercialização “j”.",
+  parafrase:
+    "Em outras palavras: o PLD é o preço do Mercado de Curto Prazo. Para cada participante (perfil de agente), em cada submercado e em cada hora, a CCEE registra se o balanço de energia ficou positivo ou negativo e qual foi o resultado financeiro nesse mercado.",
 };
 
 export const CONCEITOS: Conceito[] = [
@@ -107,6 +113,26 @@ export const CONCEITOS: Conceito[] = [
       { rotulo: "PLD explicado", href: "/setor-eletrico/pld" },
       { rotulo: "PLD dos quatro submercados no último dia publicado", href: "/setor-eletrico/pld#hoje" },
     ],
+  },
+  {
+    slug: "mcp",
+    sigla: "MCP",
+    nome: "Mercado de Curto Prazo",
+    grupo: "Mercado",
+    estado: "CONFERIDO",
+    conferidoEm: "2026-09-28",
+    emUmaFrase:
+      "Mercado em que a CCEE apura, para cada perfil de agente, submercado e hora, um balanço de energia em MWh e um resultado financeiro em R$; o PLD é o preço desse mercado.",
+    porQueImporta:
+      "É onde o PLD é usado: a CCEE publica o PLD como preço do MCP e, por hora e submercado, o balanço positivo e negativo e o resultado de cada perfil de agente nesse mercado.",
+    comoEMedido:
+      "Em MWh (balanço) e R$ (resultado), por perfil de agente, submercado e período de comercialização de uma hora, com consolidação mensal, em conjuntos do portal de dados abertos da CCEE ainda não integrados a este observatório.",
+    relacoes: ["pld", "submercado"],
+    fontes: [CCEE_MCP],
+    limitacoes: [
+      "Como o balanço de cada perfil de agente é formado (contratos, geração e consumo medidos) e como o resultado é liquidado está nas Regras de Comercialização da CCEE, não conferidas nesta fase.",
+    ],
+    vejaNoPortal: [{ rotulo: "O PLD no Mercado de Curto Prazo", href: "/setor-eletrico/pld#o-que-e" }],
   },
   {
     slug: "cmo",

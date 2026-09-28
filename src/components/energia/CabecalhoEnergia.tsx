@@ -17,13 +17,17 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
         <div className="flex min-w-0 items-center gap-4">
           <Link href="/" aria-label="Scrutiniums: página inicial" className="inline-flex min-h-[44px] items-center gap-2.5">
             <LogoMark size={20} />
-            <span className="font-serif text-base uppercase tracking-wide2 text-carvao">Scrutiniums</span>
+            <span className="hidden font-serif text-base uppercase tracking-wide2 text-carvao sm:inline">Scrutiniums</span>
           </Link>
           <span aria-hidden="true" className="h-5 w-px bg-linha" />
           <SwitcherObservatorio atual="energia" />
         </div>
         <div className="flex items-center gap-5">
-          <Link href="/setor-eletrico/metodologia" className="rotulo hidden min-h-[44px] items-center text-carvao-muted hover:text-energia-dark md:inline-flex">
+          <Link
+            href="/setor-eletrico/metodologia"
+            aria-current={atual === "metodologia" ? "page" : undefined}
+            className="rotulo hidden min-h-[44px] items-center text-carvao-muted hover:text-energia-dark md:inline-flex"
+          >
             Metodologia
           </Link>
           <AcessoConta destino="/setor-eletrico" />

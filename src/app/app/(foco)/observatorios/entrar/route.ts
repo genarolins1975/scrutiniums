@@ -12,22 +12,32 @@ export const runtime = "nodejs";
  * Next faria GET sem clique) e volta à tela de escolha. A rota está sob /app:
  * o middleware exige sessão. POST de outra origem é recusado.
  */
+const HOSTS_CANONICOS = ["scrutiniums.com", "www.scrutiniums.com"];
+
 export async function GET(req: Request) {
   return NextResponse.redirect(new URL("/app/observatorios", req.url));
 }
 
 export async function POST(req: Request) {
   const url = new URL(req.url);
-  // compara com o host que o navegador usou (atrás de proxy, x-forwarded-host)
-  const origem = req.headers.get("origin");
-  const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? url.host;
+  // Origem da requisição (Origin; na falta, Referer) precisa ser um host permitido:
+  // o domínio canônico, o Host da própria requisição e, só com proxy declarado
+  // confiável (Vercel ou TRUST_PROXY=1), o x-forwarded-host. Sem origem: recusa.
+  const permitidos = new Set<string>(HOSTS_CANONICOS);
+  const hostDireto = req.headers.get("host");
+  if (hostDireto) permitidos.add(hostDireto);
+  if (process.env.VERCEL === "1" || process.env.TRUST_PROXY === "1") {
+    const fwd = req.headers.get("x-forwarded-host");
+    if (fwd) permitidos.add(fwd);
+  }
+  const bruto = req.headers.get("origin") ?? req.headers.get("referer");
   let hostOrigem: string | null = null;
   try {
-    hostOrigem = origem ? new URL(origem).host : null;
+    hostOrigem = bruto && bruto !== "null" ? new URL(bruto).host : null;
   } catch {
-    hostOrigem = "invalida";
+    hostOrigem = null;
   }
-  if (hostOrigem && hostOrigem !== host) {
+  if (!hostOrigem || !permitidos.has(hostOrigem)) {
     return new NextResponse("Origem não permitida", { status: 403 });
   }
   let d: FormDataEntryValue | null = null;

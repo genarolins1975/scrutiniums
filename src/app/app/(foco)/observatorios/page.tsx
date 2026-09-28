@@ -77,7 +77,7 @@ export default async function EscolhaObservatorioPage() {
                     {d.nome}
                   </h2>
                   {ultimo === d.id && (
-                    <span className="rotulo shrink-0 border border-linha px-2 py-1 text-mineral">último acessado</span>
+                    <span className="rotulo shrink-0 border border-linha px-2 py-1 text-mineral">sua última escolha aqui</span>
                   )}
                 </div>
                 <p className="mt-4 flex-1 text-sm leading-relaxed text-carvao-muted">{d.descricaoCurta}</p>

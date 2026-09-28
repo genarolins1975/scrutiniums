@@ -3,6 +3,7 @@ import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { NATUREZAS, SeloNatureza } from "@/components/evidencia/SeloNatureza";
+import { LISTA_UNIDADES } from "@/components/evidencia/Unidade";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold } from "@/lib/energia/gold";
 import { carimbo, rotuloRegra } from "@/lib/energia/formato";
@@ -24,6 +25,16 @@ function S({ id, titulo, children }: { id: string; titulo: string; children: Rea
     </section>
   );
 }
+
+const ROTULO_FRASE: Record<string, string> = {
+  reservatorios: "Reservatórios",
+  afluencias: "Afluências",
+  carga: "Carga",
+  termica: "Participação térmica",
+  pld: "PLD",
+  preco: "PLD",
+  descolamento: "Diferença entre submercados",
+};
 
 function Regras({ titulo, regras }: { titulo: string; regras?: Record<string, string> }) {
   if (!regras) return null;
@@ -47,12 +58,13 @@ export default function MetodologiaEnergia() {
   const sintese = gold.sintese();
   return (
     <>
-      <CabecalhoEnergia atual="dados" />
+      <CabecalhoEnergia atual="metodologia" />
       <MarcaVisita secao="energia:metodologia" />
-      <main className="mx-auto max-w-page px-6 pb-16">
+      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
         <CabecalhoModulo rotulo="Metodologia" titulo="Como os números deste observatório são produzidos, e o que eles não dizem">
           Esta página descreve o caminho de cada número: da fonte primária à tela, com as regras que produzem cada classificação.
-          Documentação técnica completa em <code className="font-mono text-sm">docs/observatorios/</code> no repositório.
+          A documentação técnica completa (arquitetura, catálogo de fontes, auditabilidade e governança de previsão) é mantida no repositório
+          do projeto, junto com o código que produz cada número.
         </CabecalhoModulo>
 
         <S id="natureza" titulo="Taxonomia de natureza do dado">
@@ -71,6 +83,22 @@ export default function MetodologiaEnergia() {
           </p>
         </S>
 
+        <S id="unidades" titulo="Unidades">
+          <p>Convenções de medida usadas neste observatório, com a unidade em que cada fonte publica:</p>
+          <dl className="grid gap-3 md:grid-cols-3">
+            {LISTA_UNIDADES.map((x) => (
+              <div key={x.u} className="border border-linha bg-superficie p-4">
+                <dt className="font-medium text-carvao">{x.u} · {x.nome}</dt>
+                <dd className="mt-1 text-sm text-carvao-muted">{x.dica}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="text-sm text-carvao-muted">
+            Preços em reais por megawatt-hora (R$/MWh), sempre nominais: sem correção pela inflação. A descrição do conjunto de PLD na CCEE registra a
+            unidade apenas como R$; a do CMO semanal, no dicionário do ONS, como R$/MW.
+          </p>
+        </S>
+
         <S id="editorial" titulo="Regra editorial">
           <p>Toda visualização relevante responde, nesta ordem: o que estou vendo, por que importa, o que mudou, como interpretar, o que não é possível concluir e qual é a fonte. A regra é obrigatória no componente de painel: um painel sem esses campos não é construído.</p>
         </S>
@@ -82,7 +110,7 @@ BRONZE: cópia imutável por captura
   ↓ normalização determinística
 SILVER: observações por vintage (append only)
   ↓ regras publicadas
-GOLD: indicadores com proveniência (public/energia/gold)
+GOLD (dados processados): indicadores com proveniência, publicados em /energia/gold
   ↓
 INDICADOR → VISUALIZAÇÃO | MODELO
 
@@ -99,7 +127,7 @@ Previsões: VINTAGE DA FONTE → FEATURES → VERSÃO DO MODELO → PUBLICAÇÃO
         </S>
 
         <S id="classificacao" titulo="Regras de classificação publicadas">
-          <p>Nenhuma classificação (&quot;baixo&quot;, &quot;alto&quot;, &quot;fora da faixa usual&quot;) existe sem regra estatística declarada. As regras em vigor, lidas da própria gold:</p>
+          <p>Nenhuma classificação (&quot;baixo&quot;, &quot;alto&quot;, &quot;fora da faixa usual&quot;) existe sem regra estatística declarada. As regras em vigor, lidas dos próprios dados publicados:</p>
           <div className="grid gap-4 md:grid-cols-2">
             <Regras titulo="PLD" regras={gold.pld()?.regras} />
             <Regras titulo="Hidrologia" regras={gold.hidrologia()?.regras} />
@@ -110,11 +138,11 @@ Previsões: VINTAGE DA FONTE → FEATURES → VERSÃO DO MODELO → PUBLICAÇÃO
         </S>
 
         <S id="sintese" titulo="Frases e alertas da Visão geral">
-          <p>A síntese &quot;o sistema em 60 segundos&quot; e a lista &quot;o que observar&quot; são montadas por regras fixas a partir da gold; nenhum texto é redigido livremente. Cada frase tem sua regra; cada alerta, sua condição.</p>
+          <p>A síntese &quot;o sistema em 60 segundos&quot; e a lista &quot;o que observar&quot; são montadas por regras fixas a partir dos dados processados; nenhum texto é redigido livremente. Cada frase tem sua regra; cada alerta, sua condição.</p>
           {sintese && (
             <ul className="space-y-2 text-sm">
               {sintese.frases.map((f) => (
-                <li key={f.id} className="border border-linha bg-superficie p-3"><strong className="font-medium">{f.id}:</strong> {f.regra}</li>
+                <li key={f.id} className="border border-linha bg-superficie p-3"><strong className="font-medium">{ROTULO_FRASE[f.id] ?? f.id}:</strong> {f.regra}</li>
               ))}
               {sintese.observar.map((o) => (
                 <li key={o.id} className="border border-linha bg-superficie p-3"><strong className="font-medium">{o.titulo}:</strong> {o.condicao}</li>
@@ -148,7 +176,7 @@ Previsões: VINTAGE DA FONTE → FEATURES → VERSÃO DO MODELO → PUBLICAÇÃO
             <li>Limites de intercâmbio, CVU por usina, geração por usina e por motivo de despacho estão catalogados e ainda não integrados.</li>
             <li>Definições de conceitos cujas fontes primárias (CCEE, legislação) não foram acessadas aparecem como verbetes em preparação.</li>
             <li>Valores monetários em R$ nominais.</li>
-            <li>O histórico de vintages (bronze e silver) persiste no cache do GitHub Actions; a perda desse cache apagaria o registro de revisões anteriores, embora não a gold publicada.</li>
+            <li>O histórico de vintages (bronze e silver) persiste no cache da automação (GitHub Actions), com cópia durável numa release do repositório; se os dois se perderem, a automação abre um alerta, os dados publicados continuam corretos e só o registro de revisões anteriores se perde.</li>
           </ul>
         </S>
 

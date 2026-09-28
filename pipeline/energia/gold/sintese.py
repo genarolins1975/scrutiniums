@@ -172,5 +172,5 @@ def construir(hid, carga, ger, pld, cmo, hoje=None):
         **c.cabecalho("sintese.json"),
         "frases": frases(hid, carga, ger, pld),
         "observar": observar(hid, carga, ger, pld, cmo, hoje=hoje),
-        "nota": "Frases e alertas montados por regras fixas a partir da gold; nenhum texto é redigido livremente. Cada número leva à evidência.",
+        "nota": "Frases e alertas montados por regras fixas a partir dos dados processados; nenhum texto é redigido livremente. Cada número leva à evidência.",
     }
