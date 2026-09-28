@@ -13,6 +13,9 @@ A família visual é a da Scrutiniums: tipografia, grid, filetes, rótulos em ca
 | `energia-soft` | `#5E98A3` | marcação não textual (filetes, áreas) | 2,8 / 3,0 / 3,2 (nunca texto) |
 | `energia-fundo` | `#E6EEEE` | estado ativo e faixas de destaque do domínio | fundo; texto sobre ele só em `carvao`, `carvao-muted`, `energia` ou `energia-dark` (`mineral` fica em 4,43:1) |
 | `superficie` | `#FFFFFF` | superfícies de painel no Setor Elétrico | fundo |
+| `preco` | `#7A2E4D` | série e tom de mapa do PLD (`--serie-pld`); `preco-soft` e `preco-fundo` para faixa e fundo | 7,9 / 8,5 / 9,0 |
+| `mapa.terra`, `mapa.borda` | `#EDE8DC`, `#C9C2B2` | terreno e divisas do mapa esquemático (`--cor-mapa-terra`, `--cor-mapa-borda`) | fundo; nunca texto |
+| `--serie-nuclear`, `--serie-biomassa` | `#6B4C9A`, `#4F7A2E` | reservados para a desagregação futura da térmica | só marcação |
 
 Regra herdada: nenhum hexadecimal solto em componente. Os tokens entram em `tailwind.config.ts` e em `globals.css` (`--cor-energia*`). SVG de gráfico usa as variáveis CSS (`var(--cor-mineral)`, `var(--cor-grade)`, `var(--serie-*)`), nunca o hexadecimal. O teste `design-tokens-energia.test.ts` confere contraste AA dos tokens de texto sobre `superficie`, `papel` e `energia-fundo`, a ausência de hexadecimal solto nos componentes do domínio e que `energia-soft` nunca vira cor de texto.
 
@@ -55,6 +58,12 @@ A obrigatoriedade é de tipo (TypeScript): um painel sem "o que não posso concl
 | `ModoProfundidade` | alternância Entender, Analisar, Auditar sobre a mesma página |
 | `Termo` | sigla com dica curta e link para o verbete completo |
 
+## Gramática visual do Setor Elétrico
+
+Quando usar mapa, Sankey, fan chart, heatmap, small multiples, infográfico e os demais tipos, com interações, cores, tooltip e celular por tipo, está em [DESIGN_VISUAL_GRAMMAR_ENERGIA.md](./DESIGN_VISUAL_GRAMMAR_ENERGIA.md). A avaliação página a página, com capturas antes e depois e notas em treze dimensões, está em [AVALIACAO_VISUAL_ENERGIA.md](./AVALIACAO_VISUAL_ENERGIA.md).
+
+Componentes visuais do domínio (`src/components/energia`): `MetricaHero`, `Sparkline`, `IconeSetor`, `MapaBrasil`, `MapaVivo`, `SistemaEmUmaTela`, `LinhaDoDia`, `DiagramaFormacao`, `FanChart`, `PrevisaoPld`, `ExplicadorIncerteza`, `MaquinaDoTempo`, `ColunasReservatorio`, `SankeyFontes`, `EvolucaoMatriz`, `HeatmapCalendario`, `AbasVisoes`, `EsquemaConceitual`, `MapaConceitual`, `InfograficoSistema`, `VisualConceito`, `LinhagemDados`, `PipelineEstados`, `CatalogoFiltro`. Na home: `PainelObservatorio`, `MiniaturaEnergia`, `MiniaturaCredito`, alimentados por `src/lib/amostras.ts` com dado real e data de referência.
+
 ## Gráficos
 
 * Um gráfico só entra se responde a uma pergunta escrita no título. Ex.: "Quanta água está chegando ao Sudeste/Centro-Oeste?" com subtítulo `ENA · % da MLT`.
@@ -72,4 +81,4 @@ WCAG 2.2 AA: contraste de texto 4,5:1, alvos de toque de 44 px, foco visível na
 
 ## Mobile
 
-Narrativa preservada em coluna única; cartões de submercado em grade 2×2; tabelas viram listas de definição; nenhuma rolagem horizontal fora do Data Explorer; drawer de proveniência em tela cheia.
+Narrativa preservada em coluna única; cartões de submercado em grade 2×2; tabelas viram listas de definição; mapas escondem os chips e mostram a lista de regiões; Sankey vira barras de mix; grades de etapas quebram em duas colunas; nenhuma rolagem horizontal em página alguma (a captura de auditoria mede o estouro em 390 px e exige zero); drawer de proveniência em tela cheia.

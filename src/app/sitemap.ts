@@ -80,6 +80,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     rota("/setor-eletrico/pld/modelos", 0.6, "weekly"),
     ...modelosEnergia.map((m) => rota(`/setor-eletrico/pld/modelos/${m}`, 0.5, "weekly")),
     rota("/setor-eletrico/pld/previsoes", 0.6, "daily"),
+    rota("/setor-eletrico/aprenda/como-funciona", 0.7, "monthly"),
     ...CONCEITOS.filter((c) => c.estado === "CONFERIDO").map((c) => rota(`/setor-eletrico/aprenda/${c.slug}`, 0.6, "monthly")),
     ...DATASETS_INTEGRADOS.map((d) => rota(`/setor-eletrico/dados/${d.slug}`, 0.5, "weekly")),
     rota("/cadastro", 0.6, "yearly"),

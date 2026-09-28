@@ -6,9 +6,23 @@ import type { NoFormacao } from "@/lib/energia/conteudo/pld";
 import { TIPOS_RELACAO } from "@/lib/energia/conteudo/pld";
 import type { Natureza } from "@/lib/energia/tipos";
 import { NATUREZAS } from "@/components/evidencia/SeloNatureza";
+import { IconeSetor, type TipoIcone } from "@/components/energia/IconeSetor";
 
-export type EstadoNo = { texto: string; natureza?: Natureza; ref?: string; historico?: { rotulo: string; href: string } } | null;
+export type EstadoNo = { texto: string; natureza?: Natureza; ref?: string; historico?: { rotulo: string; href: string }; resumo?: string } | null;
 export type NoComEstado = NoFormacao & { estado: EstadoNo };
+
+const ICONE: Record<string, TipoIcone> = {
+  afluencias: "clima",
+  reservatorios: "agua",
+  carga: "carga",
+  renovaveis: "eolica",
+  termicas: "termica",
+  rede: "rede",
+  otimizacao: "modelo",
+  cmo: "sistema",
+  limites: "regulacao",
+  pld: "preco",
+};
 
 function Conferencia({ estado }: { estado: "CONFERIDO" | "PENDENTE" | undefined }) {
   if (!estado) return null;
@@ -20,12 +34,14 @@ function Conferencia({ estado }: { estado: "CONFERIDO" | "PENDENTE" | undefined 
 }
 
 /**
- * De onde vem o preço: diagrama interativo da formação do PLD. Cada nó é um
- * botão; o painel explica a variável, mostra o estado atual (quando o dado está
- * integrado), a fonte, o tipo de relação com o próximo passo e o módulo.
- * Relações têm tipo explícito: relação física, informação usada pelos modelos,
- * resultado dos modelos, regra regulatória. Nenhuma seta afirma causalidade
- * estatística.
+ * De onde vem o preço: o infográfico da formação do PLD. Uma espinha vertical,
+ * do clima ao preço: afluências, reservatórios e valor da água; a linha das
+ * condições do sistema (carga, renováveis, térmicas, rede); os modelos
+ * oficiais; o CMO; as regras e limites; o PLD. Cada nó é um botão com o estado
+ * atual em uma linha; o painel ao lado explica a variável, mostra o dado, a
+ * fonte, o tipo de relação com o passo seguinte e o caminho para o módulo.
+ * Cada seta declara o tipo de relação e se foi conferida em documento
+ * primário: nenhuma afirma causalidade estatística.
  */
 export function DiagramaFormacao({ nos }: { nos: NoComEstado[] }) {
   const [sel, setSel] = useState("reservatorios");
@@ -41,7 +57,6 @@ export function DiagramaFormacao({ nos }: { nos: NoComEstado[] }) {
         type="button"
         onClick={() => {
           setSel(id);
-          // no celular o painel fica abaixo de todo o diagrama: traz para a vista se estiver fora
           window.requestAnimationFrame(() => {
             const painel = document.getElementById("formacao-painel");
             if (painel && painel.getBoundingClientRect().top > window.innerHeight * 0.8) painel.scrollIntoView({ block: "start" });
@@ -49,34 +64,44 @@ export function DiagramaFormacao({ nos }: { nos: NoComEstado[] }) {
         }}
         aria-pressed={ativo}
         aria-controls="formacao-painel"
-        className={`flex min-h-[52px] w-full flex-col items-start justify-center border px-3 py-2 text-left transition-colors ${
+        className={`flex min-h-[56px] w-full flex-col justify-center border px-3 py-2 text-left transition-colors ${
           ativo ? "border-energia bg-energia-fundo" : "border-linha bg-superficie hover:border-energia"
-        } ${largo ? "md:items-center md:text-center" : ""}`}
+        } ${largo ? "items-center text-center" : "items-start"}`}
       >
-        <span className="text-sm font-medium leading-snug text-carvao">{n.titulo}</span>
-        {n.sigla && <span className={`rotulo !text-[0.62rem] ${ativo ? "text-carvao-muted" : "text-mineral"}`}>{n.sigla}</span>}
+        <span className="flex items-center gap-2 text-sm font-medium leading-snug text-carvao">
+          <IconeSetor tipo={ICONE[id] ?? "sistema"} tamanho={15} className={ativo ? "text-energia-dark" : "text-mineral"} />
+          {n.titulo}
+          {n.sigla && <span className={`rotulo !text-[0.62rem] ${ativo ? "text-carvao-muted" : "text-mineral"}`}>{n.sigla}</span>}
+        </span>
+        <span className={`mt-1 text-xs tabular-nums ${ativo ? "text-carvao-muted" : "text-mineral"}`}>{n.estado?.resumo ?? (n.estado ? "dado integrado" : "ainda não integrado")}</span>
       </button>
     );
   };
 
-  const seta = (rotulo?: string) => (
-    <div className="flex items-center justify-center gap-2 py-1.5 text-mineral" aria-hidden="true">
-      <span className="text-lg leading-none">↓</span>
-      {rotulo && <span className="rotulo !text-[0.62rem]">{rotulo}</span>}
+  const seta = (rotulo?: string, conferencia?: "CONFERIDO" | "PENDENTE") => (
+    <div className="flex flex-col items-center py-1" aria-hidden="true">
+      <span className="h-4 w-px bg-mineral-soft" />
+      {rotulo && (
+        <span className="rotulo my-0.5 !text-[0.62rem] text-mineral">
+          {rotulo}
+          {conferencia === "PENDENTE" ? " · pendente" : ""}
+        </span>
+      )}
+      <span className="h-3 w-px bg-mineral-soft" />
+      <span className="-mt-1 text-mineral-soft">▼</span>
     </div>
   );
 
   const rel = atual.relacaoSaida;
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
-      <div role="group" aria-label="Etapas da formação do PLD">
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
-          {botao("afluencias")}
-          <span aria-hidden="true" className="text-mineral">→</span>
-          {botao("reservatorios")}
-        </div>
-        <p className="rotulo mt-3 text-center !text-[0.62rem] text-mineral" aria-hidden="true">+ junto com</p>
-        <div className="mt-2 grid grid-cols-2 gap-2 md:grid-cols-4">
+    <div className="grid gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
+      <div role="group" aria-label="Etapas da formação do PLD" className="border border-linha bg-papel p-4 md:p-5">
+        <p className="rotulo mb-3 text-center text-mineral">Clima</p>
+        {botao("afluencias", true)}
+        {seta(TIPOS_RELACAO.relacao_fisica.rotulo, por.afluencias?.relacaoSaida?.conferencia)}
+        {botao("reservatorios", true)}
+        {seta("junto com as condições do sistema")}
+        <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
           {botao("carga")}
           {botao("renovaveis")}
           {botao("termicas")}
@@ -84,19 +109,23 @@ export function DiagramaFormacao({ nos }: { nos: NoComEstado[] }) {
         </div>
         {seta(TIPOS_RELACAO.informacao_modelos.rotulo)}
         {botao("otimizacao", true)}
-        {seta(TIPOS_RELACAO.resultado_modelos.rotulo)}
+        {seta(TIPOS_RELACAO.resultado_modelos.rotulo, por.otimizacao?.relacaoSaida?.conferencia)}
         {botao("cmo", true)}
-        {seta(TIPOS_RELACAO.regra_regulatoria.rotulo)}
+        {seta(TIPOS_RELACAO.regra_regulatoria.rotulo, por.cmo?.relacaoSaida?.conferencia)}
         {botao("limites", true)}
-        {seta()}
+        {seta(undefined, por.limites?.relacaoSaida?.conferencia)}
         {botao("pld", true)}
+        <p className="mt-3 text-center text-[0.7rem] leading-snug text-mineral">
+          A ordem é a das etapas descritas pelas fontes; as setas declaram o tipo de relação e não afirmam causa estatística.
+        </p>
       </div>
 
       <section id="formacao-painel" aria-live="polite" aria-labelledby="formacao-painel-titulo" className="scroll-mt-28 border border-linha bg-superficie p-5 md:p-6 lg:sticky lg:top-24 lg:self-start">
         <p className="rotulo text-mineral">Etapa selecionada</p>
-        <h3 id="formacao-painel-titulo" className="mt-1 font-serif text-xl text-carvao">
+        <h3 id="formacao-painel-titulo" className="mt-1 flex items-center gap-2 font-serif text-xl text-carvao">
+          <IconeSetor tipo={ICONE[atual.id] ?? "sistema"} tamanho={18} className="text-energia-dark" />
           {atual.titulo}
-          {atual.sigla ? <span className="ml-2 text-base text-mineral">({atual.sigla})</span> : null}
+          {atual.sigla ? <span className="text-base text-mineral">({atual.sigla})</span> : null}
         </h3>
 
         <p className="rotulo mt-4 text-mineral">O que é</p>
@@ -118,7 +147,8 @@ export function DiagramaFormacao({ nos }: { nos: NoComEstado[] }) {
         <p className="rotulo mt-4 text-mineral">Estado atual</p>
         {atual.estado ? (
           <div className="mt-1 text-sm leading-relaxed text-carvao">
-            <p>{atual.estado.texto}</p>
+            {atual.estado.resumo && <p className="font-serif text-2xl leading-tight tabular-nums">{atual.estado.resumo}</p>}
+            <p className={atual.estado.resumo ? "mt-1" : ""}>{atual.estado.texto}</p>
             <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-mineral">
               {atual.estado.natureza && (
                 <span>

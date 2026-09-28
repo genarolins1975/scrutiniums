@@ -43,6 +43,21 @@
   --serie-sm-n: #2a78d6;
   --serie-referencia: #8a8578;
 
+  /* Linguagem visual do Setor Elétrico (docs/observatorios/DESIGN_VISUAL_GRAMMAR_ENERGIA.md):
+     cada grandeza tem uma cor com significado fixo em todo o portal.
+     hidráulica = azul, térmica = terracota, eólica = verde, solar = âmbar,
+     preço (PLD) = vinho próprio, rede = teal estrutural do domínio. */
+  --serie-pld: #7a2e4d;
+  --serie-pld-soft: #b0879a;
+  --cor-preco-fundo: #f3e9ed;
+  /* reservadas para quando a fonte separar a térmica por combustível; não usadas ainda */
+  --serie-nuclear: #6b4c9a;
+  --serie-biomassa: #4f7a2e;
+  /* mapa-base: terra, contorno e fundo de água */
+  --cor-mapa-terra: #ede8dc;
+  --cor-mapa-borda: #c9c2b2;
+  --cor-agua-fundo: #e8f0f9;
+
   /* Paleta categórica dos gráficos: bronze só como destaque */
   --serie-1: #1a1d21;
   --serie-2: #878986;
@@ -142,6 +157,47 @@ body {
 .termo:hover .termo-dica,
 .termo:focus-within .termo-dica { display: block !important; }
 .termo.termo-fechada .termo-dica { display: none !important; }
+
+/* Fluxo animado nos mapas: o tracejado corre no sentido do fluxo. A regra
+   global de prefers-reduced-motion acima congela a animação; a direção continua
+   indicada pela seta. */
+@keyframes fluxo-corre {
+  to {
+    stroke-dashoffset: -28;
+  }
+}
+.fluxo-animado {
+  animation: fluxo-corre 1.8s linear infinite;
+}
+.fluxo-animado[data-pausado="true"] {
+  animation-play-state: paused;
+}
+
+/* Miniatura viva da home: uma partícula percorre o caminho água → preço. */
+@keyframes percorre-caminho {
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
+}
+.percorre-caminho {
+  animation: percorre-caminho 9s linear infinite;
+}
+
+/* Realce de entrada dos números-chave (uma vez, curto, sem deslocamento). */
+@keyframes surge {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.surge {
+  animation: surge 0.5s ease-out both;
+}
 
 /* Domínio Energia: algarismos alinhados na serifa (Playfair usa estilo antigo
    por padrão, ruim para ler números de dados). */

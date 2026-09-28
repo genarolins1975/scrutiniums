@@ -118,6 +118,8 @@ export type PldGold = Cabecalho & {
   coleta_direta: { tentado_em: string; ok: boolean; detalhe: string } | null;
   regras: Record<string, string>;
   limiar_diferenca: number;
+  /** Diferença entre o maior e o menor PLD médio diário do dia de referência (R$/MWh). */
+  amplitude_dia: number;
   cartoes: PldCartao[];
   periodos: Record<"hoje" | "7d" | "30d" | "12m" | "historico", PldPeriodo>;
   curva_horaria: { dia: string; horas: ({ h: string } & PontoSm)[] };

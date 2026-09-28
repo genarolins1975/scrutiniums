@@ -3,17 +3,21 @@ import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { CatalogoFiltro } from "@/components/energia/CatalogoFiltro";
+import { LinhagemDados } from "@/components/energia/LinhagemDados";
+import { PipelineEstados } from "@/components/energia/PipelineEstados";
+import { IconeSetor } from "@/components/energia/IconeSetor";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold } from "@/lib/energia/gold";
 import { carimbo } from "@/lib/energia/formato";
 import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
+import { etapasLinhagem } from "@/lib/energia/linhagem";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
-  title: "Dados do setor elétrico: catálogo, integração e downloads",
+  title: "Dados: de onde vêm os números do setor elétrico",
   description:
-    "Catálogo dos dados abertos do setor elétrico (CCEE, ONS, ANEEL e outros) com o estado de integração de cada conjunto, séries para download em CSV e metadados oficiais.",
+    "Mapa de linhagem dos dados (fontes, captura com sha256, histórico de versões, processamento, páginas e modelos), catálogo dos dados abertos do setor elétrico (CCEE, ONS, ANEEL) com o estado de integração de cada conjunto e séries para download em CSV.",
   alternates: { canonical: "/setor-eletrico/dados" },
 };
 
@@ -58,38 +62,45 @@ export default function DadosEnergiaPage() {
       <CabecalhoEnergia atual="dados" />
       <MarcaVisita secao="energia:dados" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
-        <CabecalhoModulo rotulo="Dados e metodologia" titulo="Tudo o que é público sobre o setor elétrico, e o que já está integrado">
-          Catalogar é registrar que um conjunto existe, com seus metadados oficiais. Integrar é coletá-lo automaticamente, guardar a cópia original com impressão digital (sha256),
+        <CabecalhoModulo rotulo="Dados e metodologia" titulo="De onde vêm os números?">
+          O que é público sobre o setor elétrico, e o que já está integrado. Catalogar é registrar que um conjunto existe, com seus metadados oficiais. Integrar é coletá-lo automaticamente, guardar a cópia original com impressão digital (sha256),
           validação e proveniência. Só conjuntos integrados alimentam números no portal.{" "}
           <Link href="/setor-eletrico/metodologia" className="text-energia-dark underline underline-offset-4">Metodologia</Link>
         </CabecalhoModulo>
 
-        <section aria-labelledby="estados-h" className="grid gap-px border border-linha bg-linha sm:grid-cols-3 lg:grid-cols-6">
-          <h2 id="estados-h" className="sr-only">Conjuntos por estado</h2>
-          {cat.estados.map((s, i) => (
-            <div key={s} className="bg-superficie p-4">
-              <p className="rotulo !text-[0.62rem] text-mineral">{s}</p>
-              {/* contagem cumulativa: conjuntos neste estado ou em qualquer estado posterior */}
-              <p className="mt-1 font-serif text-2xl tabular-nums text-carvao">
-                {cat.estados.slice(i).reduce((t, e) => t + (cat.contagem[e] ?? 0), 0).toLocaleString("pt-BR")}
-              </p>
-              <p className="text-[0.7rem] text-mineral">neste estado ou além; exatamente neste: {(cat.contagem[s] ?? 0).toLocaleString("pt-BR")}</p>
-              <p className="mt-1 text-xs leading-snug text-carvao-muted">{cat.definicoes_estado[s]}</p>
-            </div>
-          ))}
+        {/* hero: linhagem */}
+        <section id="linhagem" aria-labelledby="linhagem-h" className="scroll-mt-24">
+          <p className="rotulo flex items-center gap-2 text-mineral">
+            <IconeSetor tipo="dados" tamanho={15} /> Mapa de linhagem
+          </p>
+          <h2 id="linhagem-h" className="mt-2 font-serif text-2xl leading-snug text-carvao md:text-3xl">
+            Da fonte ao portal, etapa a etapa
+          </h2>
+          <p className="mt-2 max-w-prose2 text-sm leading-relaxed text-carvao-muted">Toque em cada etapa para ver o que ela guarda, o que se confere nela e o caminho para a evidência. As contagens são do próprio processamento.</p>
+          <div className="mt-5 border border-linha bg-superficie p-4 md:p-6">
+            <LinhagemDados etapas={etapasLinhagem()} />
+          </div>
         </section>
-        <p className="mt-3 text-xs text-mineral">
-          Estados cumulativos: um conjunto utilizado em indicador passou por todos os anteriores. Metadados colhidos das APIs oficiais:{" "}
-          {Object.entries(cat.portais)
-            .map(([o, p]) => `${o}, ${p.conjuntos} ${p.conjuntos === 1 ? "conjunto" : "conjuntos"}, ${p.colhido_em ? `colhidos em ${carimbo(p.colhido_em)}` : "sem coleta"}`)
-            .join("; ")}
-          .
-        </p>
-        {cat.portais.CCEE?.erro && <p className="mt-1 text-xs text-aviso">CCEE: {cat.portais.CCEE.erro}</p>}
 
-        <section aria-labelledby="integrados-h" className="mt-10">
+        <section aria-labelledby="estados-h" className="mt-12">
+          <h2 id="estados-h" className="font-serif text-2xl text-carvao">
+            A esteira de integração
+          </h2>
+          <p className="mt-1 mb-4 max-w-prose2 text-sm text-carvao-muted">
+            Estados cumulativos: um conjunto utilizado em indicador passou por todos os anteriores. Metadados colhidos das APIs oficiais:{" "}
+            {Object.entries(cat.portais)
+              .map(([o, p]) => `${o}, ${p.conjuntos} ${p.conjuntos === 1 ? "conjunto" : "conjuntos"}, ${p.colhido_em ? `colhidos em ${carimbo(p.colhido_em)}` : "sem coleta"}`)
+              .join("; ")}
+            .
+          </p>
+          <PipelineEstados cat={cat} />
+          {cat.portais.CCEE?.erro && <p className="mt-2 text-xs text-aviso">CCEE: {cat.portais.CCEE.erro}</p>}
+        </section>
+
+        <section aria-labelledby="integrados-h" className="mt-12">
           <h2 id="integrados-h" className="font-serif text-2xl text-carvao">Integrados à plataforma</h2>
-          <ul className="mt-4 grid gap-3 md:grid-cols-2">
+          <p className="mt-1 mb-4 max-w-prose2 text-sm text-carvao-muted">Cada ficha lista as capturas com sha256, as transformações, os downloads em CSV e a forma de citação.</p>
+          <ul className="grid gap-3 md:grid-cols-2">
             {integrados.map((e) => (
               <li key={e.id}>
                 <Link href={`/setor-eletrico/dados/${e.slug}`} className="flex h-full flex-col border border-linha bg-superficie p-5 hover:border-energia">
@@ -106,10 +117,11 @@ export default function DadosEnergiaPage() {
           </ul>
         </section>
 
-        <section aria-labelledby="catalogo-h" className="mt-12">
-          <h2 id="catalogo-h" className="font-serif text-2xl text-carvao">Catálogo completo</h2>
-          <p className="mt-1 mb-4 text-sm text-carvao-muted">{cat.total} conjuntos. Filtre por órgão, tema e estado.</p>
+        <section id="explorer" aria-labelledby="catalogo-h" className="mt-12 scroll-mt-24">
+          <h2 id="catalogo-h" className="font-serif text-2xl text-carvao">Explorador do catálogo</h2>
+          <p className="mt-1 mb-4 max-w-prose2 text-sm text-carvao-muted">{cat.total} conjuntos. Busque, filtre por órgão, tema e estado, e veja em que degrau da esteira cada um está.</p>
           <CatalogoFiltro
+            estados={cat.estados}
             itens={cat.entradas.map((e) => ({
               id: e.id,
               slug: e.slug,
@@ -122,6 +134,7 @@ export default function DadosEnergiaPage() {
               modificado: e.modificado_na_fonte,
               verificado: e.metadados_verificados,
               descontinuado: e.descontinuado,
+              descricao: e.descricao.slice(0, 300),
             }))}
           />
         </section>

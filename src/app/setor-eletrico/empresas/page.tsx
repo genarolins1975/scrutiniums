@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 export default function EmpresasPage() {
   return (
     <ModuloEmIntegracao
+      icone="empresas"
       atual="empresas"
       secao="energia:empresas"
       rotulo="Empresas e ativos"
@@ -28,6 +29,25 @@ export default function EmpresasPage() {
         "Cadastro mestre de entidades com regras documentadas de ligação (CNPJ, CEG, que é o Código Único de Empreendimentos de Geração, código ANEEL, código CVM).",
         "Integração dos conjuntos da ANEEL (SIGA, o Sistema de Informações de Geração da ANEEL; agentes; composição societária; DEC e FEC; tarifas) e das demonstrações da CVM. Nomes das siglas conforme as descrições dos conjuntos no portal de dados abertos da ANEEL.",
       ]}
+      esquema={{
+        titulo: "Do grupo econômico ao ativo físico",
+        linhas: [
+          { nos: [{ rotulo: "Grupo econômico", icone: "empresas", estado: "leitura", descricao: "Controlador; identificado por CNPJ e, quando listado, por código CVM." }] },
+          { setaAntes: "controla", nos: [{ rotulo: "Empresas", icone: "empresas", estado: "leitura", descricao: "Companhias e concessionárias, cada uma com CNPJ e outorgas." }] },
+          {
+            setaAntes: "atuam em",
+            separador: "|",
+            nos: [
+              { rotulo: "Geração", icone: "geracao", estado: "leitura", descricao: "Usinas, identificadas pelo CEG (código de empreendimento) da ANEEL." },
+              { rotulo: "Transmissão", icone: "rede", estado: "leitura", descricao: "Linhas e subestações sob concessão." },
+              { rotulo: "Distribuição", icone: "carga", estado: "leitura", descricao: "Áreas de concessão, com DEC, FEC e tarifas publicados pela ANEEL." },
+              { rotulo: "Comercialização", icone: "mercado", estado: "leitura", descricao: "Agentes registrados na CCEE." },
+            ],
+          },
+          { setaAntes: "possuem", nos: [{ rotulo: "Ativos no mapa", icone: "sistema", estado: "leitura", descricao: "Usinas, linhas e concessões localizadas; entram no mapa-base do observatório quando o cadastro mestre existir." }] },
+        ],
+        nota: "Árvore corporativa esquemática, na leitura usual do setor. Nenhuma ligação entre grupo, empresa e ativo será feita por semelhança de nome: só por identificadores oficiais (CNPJ, CEG, código CVM), com o cadastro mestre documentado. Nenhuma empresa é nomeada antes disso.",
+      }}
     />
   );
 }

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 
 /** Busca sem distinção de acento nem de caixa ("geracao" encontra "Geração"). */
-const semAcento = (t: string) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+const semAcento = (t: string) => t.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
 export type ItemCatalogo = {
   id: string;
@@ -18,7 +18,11 @@ export type ItemCatalogo = {
   modificado: string | null;
   verificado: boolean;
   descontinuado: boolean;
+  descricao?: string;
 };
+
+/** Conjuntos mostrados de saída; o restante abre sob demanda para a página não virar diretório. */
+const LIMITE = 30;
 
 const TEMAS: Record<string, string> = {
   preco: "Preço",
@@ -34,28 +38,41 @@ const TEMAS: Record<string, string> = {
   outros: "Outros",
 };
 
-/** Catálogo filtrável: busca por texto e filtros por órgão, tema e estado, numa só linha. */
-export function CatalogoFiltro({ itens }: { itens: ItemCatalogo[] }) {
+/**
+ * Explorador do catálogo: busca por texto (título e descrição), filtros por
+ * órgão, tema e estado, chips de tema com contagem e a posição de cada conjunto
+ * na esteira de integração (seis degraus). Não é um diretório de arquivos: é o
+ * estado do que a plataforma sabe sobre cada fonte.
+ */
+export function CatalogoFiltro({ itens, estados }: { itens: ItemCatalogo[]; estados: string[] }) {
   const [q, setQ] = useState("");
   const [orgao, setOrgao] = useState("");
   const [tema, setTema] = useState("");
   const [estado, setEstado] = useState("");
+  const [soVerificados, setSoVerificados] = useState(false);
+  const [todos, setTodos] = useState(false);
   const orgaos = useMemo(() => Array.from(new Set(itens.map((i) => i.orgao))).sort(), [itens]);
-  const estados = useMemo(() => Array.from(new Set(itens.map((i) => i.estado))), [itens]);
+  const porTema = useMemo(() => {
+    const m: Record<string, number> = {};
+    for (const i of itens) m[i.tema] = (m[i.tema] ?? 0) + 1;
+    return m;
+  }, [itens]);
   const filtrados = itens.filter(
     (i) =>
       (!orgao || i.orgao === orgao) &&
       (!tema || i.tema === tema) &&
       (!estado || i.estado === estado) &&
-      (!q || semAcento(i.titulo).includes(semAcento(q))),
+      (!soVerificados || i.verificado) &&
+      (!q || semAcento(`${i.titulo} ${i.descricao ?? ""}`).includes(semAcento(q))),
   );
   const sel = "min-h-[44px] border border-linha bg-superficie px-3 text-sm text-carvao";
+  const degrau = (e: string) => Math.max(0, estados.indexOf(e));
   return (
     <div>
       <div className="flex flex-wrap items-end gap-3">
         <label className="flex min-w-[14rem] flex-1 flex-col gap-1 text-xs text-mineral">
-          Buscar
-          <input value={q} onChange={(e) => setQ(e.target.value)} type="search" placeholder="nome do conjunto" className={sel} />
+          Buscar no título e na descrição
+          <input value={q} onChange={(e) => setQ(e.target.value)} type="search" placeholder="ex.: reservatório, tarifa, leilão" className={sel} />
         </label>
         <label className="flex flex-col gap-1 text-xs text-mineral">
           Órgão
@@ -65,26 +82,41 @@ export function CatalogoFiltro({ itens }: { itens: ItemCatalogo[] }) {
           </select>
         </label>
         <label className="flex flex-col gap-1 text-xs text-mineral">
-          Tema
-          <select value={tema} onChange={(e) => setTema(e.target.value)} className={sel}>
-            <option value="">Todos</option>
-            {Object.entries(TEMAS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-          </select>
-        </label>
-        <label className="flex flex-col gap-1 text-xs text-mineral">
           Estado
           <select value={estado} onChange={(e) => setEstado(e.target.value)} className={sel}>
             <option value="">Todos</option>
             {estados.map((s) => <option key={s}>{s}</option>)}
           </select>
         </label>
+        <label className="flex min-h-[44px] items-center gap-2 text-xs text-mineral">
+          <input type="checkbox" checked={soVerificados} onChange={(e) => setSoVerificados(e.target.checked)} className="h-4 w-4 accent-[var(--cor-energia)]" />
+          só metadados verificados na API oficial
+        </label>
       </div>
-      <p className="mt-3 text-xs text-mineral" aria-live="polite">{filtrados.length} de {itens.length} conjuntos</p>
+      <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="Temas">
+        <li>
+          <button type="button" aria-pressed={tema === ""} onClick={() => setTema("")} className={`rotulo min-h-[36px] border px-2.5 !text-[0.62rem] ${tema === "" ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted hover:border-energia"}`}>
+            todos · {itens.length}
+          </button>
+        </li>
+        {Object.entries(TEMAS)
+          .filter(([k]) => porTema[k])
+          .map(([k, v]) => (
+            <li key={k}>
+              <button type="button" aria-pressed={tema === k} onClick={() => setTema(tema === k ? "" : k)} className={`rotulo min-h-[36px] border px-2.5 !text-[0.62rem] ${tema === k ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted hover:border-energia"}`}>
+                {v} · {porTema[k]}
+              </button>
+            </li>
+          ))}
+      </ul>
+      <p className="mt-3 text-xs text-mineral" aria-live="polite">
+        {filtrados.length} de {itens.length} conjuntos
+      </p>
       <ul className="mt-3 divide-y divide-linha border-y border-linha">
-        {filtrados.map((i) => (
-          <li key={i.id} className="grid gap-1 py-3 md:grid-cols-[5.5rem_1fr_11rem_auto] md:items-baseline md:gap-4">
+        {(todos ? filtrados : filtrados.slice(0, LIMITE)).map((i) => (
+          <li key={i.id} className="grid gap-2 py-3 md:grid-cols-[5.5rem_1fr_9rem_auto] md:items-center md:gap-4">
             <span className="rotulo text-mineral">{i.orgao}</span>
-            <span className="text-sm text-carvao">
+            <span className="min-w-0 text-sm text-carvao">
               {i.slug ? (
                 <Link href={`/setor-eletrico/dados/${i.slug}`} className="font-medium underline underline-offset-4">{i.titulo}</Link>
               ) : (
@@ -94,11 +126,23 @@ export function CatalogoFiltro({ itens }: { itens: ItemCatalogo[] }) {
               {!i.verificado && <span className="ml-2 text-xs text-aviso">metadados a conferir</span>}
               {i.descontinuado && <span className="ml-2 text-xs text-mineral">descontinuado na fonte</span>}
             </span>
-            <span className={`rotulo !text-[0.62rem] ${i.estado === "CATALOGADO" ? "text-mineral" : "text-energia-dark"}`}>{i.estado}</span>
+            <span className="flex flex-col gap-1" title={`Estado: ${i.estado}`}>
+              <span className="flex gap-0.5" aria-hidden="true">
+                {estados.map((e, k) => (
+                  <span key={e} className={`h-1.5 flex-1 ${k <= degrau(i.estado) ? "bg-energia" : "bg-linha"}`} />
+                ))}
+              </span>
+              <span className={`rotulo !text-[0.6rem] ${i.estado === "CATALOGADO" ? "text-mineral" : "text-energia-dark"}`}>{i.estado}</span>
+            </span>
             <a href={i.url} target="_blank" rel="noopener noreferrer" className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">fonte ↗</a>
           </li>
         ))}
       </ul>
+      {!todos && filtrados.length > LIMITE && (
+        <button type="button" onClick={() => setTodos(true)} className="rotulo mt-4 inline-flex min-h-[44px] items-center border border-carvao px-4 text-carvao hover:bg-carvao hover:text-marfim">
+          Mostrar os {filtrados.length - LIMITE} restantes
+        </button>
+      )}
     </div>
   );
 }

@@ -31,9 +31,16 @@ export type GraficoLinhasProps = {
   formatoX?: "data" | "hora" | "mes" | "md" | "texto";
   zeroNoEixo?: boolean;
   banda?: { inferior: string; superior: string; rotulo: string; cor?: string };
-  marcos?: { x: string; rotulo: string }[];
+  /** Eventos documentados marcados na série; a descrição aparece na dica ao passar pelo ponto. */
+  marcos?: { x: string; rotulo: string; descricao?: string }[];
   altura?: number;
   rotulosDiretos?: boolean;
+  /** Domínio fixo do eixo Y, para small multiples com a mesma régua. */
+  yDominio?: [number, number];
+  /** Faixas de fundo discretas no eixo X (madrugada, manhã, tarde, noite). */
+  faixasX?: { de: string; ate: string; rotulo: string }[];
+  /** A dica ensina: o que o gráfico mede, a fonte e o caminho para o verbete. */
+  ensina?: { texto: string; fonte?: string; href?: string; hrefRotulo?: string };
 };
 
 const MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
@@ -42,7 +49,7 @@ function fmtX(v: string, f: GraficoLinhasProps["formatoX"], longo = false): stri
   if (!v) return "";
   if (f === "hora") return longo && v.length > 5 ? `${v.slice(8, 10)}/${v.slice(5, 7)} ${v.slice(11, 13)}h` : v.length > 5 ? `${v.slice(11, 13)}h` : `${v.slice(0, 2)}h`;
   if (f === "mes") return `${MESES[Number(v.slice(5, 7)) - 1]}/${v.slice(2, 4)}`;
-  if (f === "md") return `${v.slice(3, 5)}/${v.slice(0, 2)}`;
+  if (f === "md") return longo ? `${v.slice(3, 5)}/${v.slice(0, 2)}` : (MESES[Number(v.slice(0, 2)) - 1] ?? v);
   if (f === "data") return longo ? `${v.slice(8, 10)}/${v.slice(5, 7)}/${v.slice(0, 4)}` : `${MESES[Number(v.slice(5, 7)) - 1]}/${v.slice(2, 4)}`;
   return v;
 }
@@ -77,6 +84,9 @@ export function GraficoLinhas({
   marcos = [],
   altura = 300,
   rotulosDiretos = true,
+  yDominio,
+  faixasX = [],
+  ensina,
 }: GraficoLinhasProps) {
   const uid = useId();
   const [largura, setLargura] = useState(760);
@@ -100,6 +110,7 @@ export function GraficoLinhas({
   const h = altura;
 
   const { yMin, yMax } = useMemo(() => {
+    if (yDominio) return { yMin: yDominio[0], yMax: yDominio[1] };
     const vals: number[] = [];
     for (const d of dados) {
       for (const s of series) {
@@ -119,7 +130,7 @@ export function GraficoLinhas({
     if (zeroNoEixo) mn = Math.min(0, mn);
     const pad = (mx - mn) * 0.06 || 1;
     return { yMin: zeroNoEixo && mn >= 0 ? 0 : mn - pad, yMax: mx + pad };
-  }, [dados, series, banda, zeroNoEixo]);
+  }, [dados, series, banda, zeroNoEixo, yDominio]);
 
   const n = dados.length;
   const x = (i: number) => L + (n <= 1 ? 0 : (i / (n - 1)) * (w - L - R));
@@ -185,7 +196,7 @@ export function GraficoLinhas({
   // marcos só dentro do intervalo exibido; rótulos próximos são desempilhados
   const x0 = String(dados[0]?.[chaveX] ?? "");
   const x1 = String(dados[n - 1]?.[chaveX] ?? "");
-  const marcosVisiveis: { m: { x: string; rotulo: string }; i: number; linha: number }[] = [];
+  const marcosVisiveis: { m: { x: string; rotulo: string; descricao?: string }; i: number; linha: number }[] = [];
   for (const m of marcos) {
     if (!n || m.x < x0 || m.x > x1) continue;
     const i = dados.findIndex((d) => String(d[chaveX]) >= m.x);
@@ -267,6 +278,25 @@ export function GraficoLinhas({
             {fmtX(String(dados[i]?.[chaveX] ?? ""), formatoX)}
           </text>
         ))}
+        {faixasX.map((fx) => {
+          const i0 = dados.findIndex((d) => String(d[chaveX]) >= fx.de);
+          let i1 = -1;
+          for (let k = n - 1; k >= 0; k--) {
+            if (String(dados[k][chaveX]) <= fx.ate) {
+              i1 = k;
+              break;
+            }
+          }
+          if (i0 < 0 || i1 < i0) return null;
+          return (
+            <g key={fx.rotulo} pointerEvents="none">
+              <rect x={x(i0)} y={T} width={Math.max(1, x(i1) - x(i0))} height={h - T - B} fill="var(--cor-carvao)" opacity={0.035} />
+              <text x={(x(i0) + x(i1)) / 2} y={h - B - 6} textAnchor="middle" fontSize="9.5" fill="var(--cor-mineral)">
+                {fx.rotulo}
+              </text>
+            </g>
+          );
+        })}
         {bandaPath && <path d={bandaPath} fill={banda?.cor ?? "color-mix(in srgb, var(--serie-referencia) 22%, transparent)"} stroke="none" />}
         {marcosVisiveis.map(({ m, i, linha }) => (
           <g key={m.x}>
@@ -358,8 +388,31 @@ export function GraficoLinhas({
                 </span>
               </li>
             )}
+            {marcosVisiveis
+              .filter((mv) => mv.i === ativo)
+              .map(({ m }) => (
+                <li key={m.x} className="mt-1 max-w-[16rem] border-t border-linha pt-1 leading-snug text-carvao-muted">
+                  {m.rotulo}
+                  {m.descricao ? `: ${m.descricao}` : ""}
+                </li>
+              ))}
+            {ensina && <li className="mt-1 max-w-[16rem] border-t border-linha pt-1 leading-snug text-mineral">{ensina.texto}</li>}
           </ul>
         </div>
+      )}
+      {ensina && (
+        <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs leading-relaxed text-mineral">
+          <span aria-hidden="true">ⓘ</span>
+          <span>
+            {ensina.texto}
+            {ensina.fonte ? ` Fonte: ${ensina.fonte}.` : ""}
+          </span>
+          {ensina.href && (
+            <a href={ensina.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
+              {ensina.hrefRotulo ?? "Entenda"} <span aria-hidden="true">→</span>
+            </a>
+          )}
+        </p>
       )}
       <details className="mt-3 text-xs" onToggle={(e) => setTabelaAberta((e.currentTarget as HTMLDetailsElement).open)}>
         <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">

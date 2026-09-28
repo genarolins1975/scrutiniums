@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 export default function MercadoPage() {
   return (
     <ModuloEmIntegracao
+      icone="mercado"
       atual="mercado"
       secao="energia:mercado"
       rotulo="Mercado"
@@ -43,6 +44,24 @@ export default function MercadoPage() {
         { slug: "gsf", rotulo: "GSF" },
         { slug: "ess", rotulo: "ESS" },
       ]}
+      esquema={{
+        titulo: "Quem vende, quem compra e onde o PLD entra",
+        linhas: [
+          { nos: [{ rotulo: "Geradores", icone: "geracao", estado: "leitura", descricao: "Usinas que produzem e vendem energia." }] },
+          {
+            setaAntes: "contratam em dois ambientes",
+            separador: "↔",
+            nos: [
+              { rotulo: "ACR", descricao: "Ambiente de Contratação Regulada", estado: "pendente", href: "/setor-eletrico/aprenda/acr" },
+              { rotulo: "CCEE", icone: "preco", descricao: "Calcula o PLD e apura o balanço de cada agente no Mercado de Curto Prazo, por hora e submercado.", estado: "conferido", href: "/setor-eletrico/aprenda/mcp", destaque: true },
+              { rotulo: "ACL", descricao: "Ambiente de Contratação Livre", estado: "pendente", href: "/setor-eletrico/aprenda/acl" },
+            ],
+          },
+          { setaAntes: "entregam a", nos: [{ rotulo: "Distribuidoras", icone: "rede", estado: "leitura", descricao: "Atendem consumidores cativos; a tarifa (TE e TUSD) sai dos processos da ANEEL." }, { rotulo: "Comercializadoras", icone: "mercado", estado: "leitura", descricao: "Vendem energia a consumidores livres." }] },
+          { setaAntes: "atendem", nos: [{ rotulo: "Consumidores", icone: "carga", estado: "leitura", descricao: "Cativos (distribuidora) ou livres (mercado)." }] },
+        ],
+        nota: "Esquema da estrutura de comercialização na leitura usual do setor. Só o papel da CCEE no Mercado de Curto Prazo e a origem da tarifa na ANEEL estão conferidos em fonte primária; ACR e ACL são verbetes em preparação, sem definição publicada. Números de consumo por ambiente, agentes e contratos entram só com os conjuntos da CCEE integrados.",
+      }}
     />
   );
 }

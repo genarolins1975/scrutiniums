@@ -40,6 +40,18 @@ const config: Config = {
           fundo: "#E6EEEE",
         },
         superficie: "#FFFFFF",
+        // Cor própria do preço (PLD): vinho sóbrio, 8,5:1 sobre papel. Só o
+        // PLD usa esta cor; nunca entra como série comum de outra grandeza.
+        preco: {
+          DEFAULT: "#7A2E4D",
+          soft: "#B0879A",
+          fundo: "#F3E9ED",
+        },
+        // Mapa-base do sistema elétrico: terra e contorno (nunca texto).
+        mapa: {
+          terra: "#EDE8DC",
+          borda: "#C9C2B2",
+        },
         // Selos de natureza do dado (texto AA sobre papel e branco).
         natureza: {
           observado: "#1A1D21",

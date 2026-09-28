@@ -92,6 +92,8 @@ python3 -m pipeline.energia.run --sem-coleta    # só reconstrói a partir do es
 python3 -m unittest discover -s pipeline/tests -t .
 ```
 
+Cada página do Setor Elétrico segue uma gramática visual própria ([docs/observatorios/DESIGN_VISUAL_GRAMMAR_ENERGIA.md](./docs/observatorios/DESIGN_VISUAL_GRAMMAR_ENERGIA.md)): pergunta no título, resposta curta com selo de natureza, um visual principal (mapa esquemático por submercado com camadas, Sankey fonte para região, calendário de calor da carga, colunas de reservatório com percentis, linha do dia do PLD, fan chart com horizonte hachurado enquanto não há modelo em produção, infográfico do sistema e mapa de linhagem dos dados), depois decomposição, histórico, comparação e auditoria, com o estado explorável na URL. A avaliação página a página, com capturas antes e depois, está em [AVALIACAO_VISUAL_ENERGIA.md](./docs/observatorios/AVALIACAO_VISUAL_ENERGIA.md).
+
 A previsão do PLD segue governança explícita: modelos com estado (PESQUISA, VALIDAÇÃO, PRODUÇÃO, APOSENTADO) em `pipeline/energia/registro_modelos.json`, arquivo imutável em `pipeline/energia/previsoes/arquivo.jsonl` com sha256 por registro, e previsão principal exibida como indisponível, com motivo, enquanto nenhum modelo está em produção. Arquitetura, catálogo de fontes, modelo de auditabilidade e plano em [docs/observatorios/](./docs/observatorios/README.md).
 
 ## Documentação

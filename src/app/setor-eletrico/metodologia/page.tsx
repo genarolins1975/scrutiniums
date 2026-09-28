@@ -4,6 +4,8 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { NATUREZAS, SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { LISTA_UNIDADES } from "@/components/evidencia/Unidade";
+import { LinhagemDados } from "@/components/energia/LinhagemDados";
+import { etapasLinhagem } from "@/lib/energia/linhagem";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold } from "@/lib/energia/gold";
 import { carimbo, rotuloRegra } from "@/lib/energia/formato";
@@ -11,7 +13,7 @@ import type { Natureza } from "@/lib/energia/tipos";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
-  title: "Metodologia do Observatório do Setor Elétrico",
+  title: "Metodologia: como os números são produzidos, e o que eles não dizem",
   description:
     "Taxonomia de natureza do dado, regra editorial, linhagem das séries, vintages sem look-ahead, regras de classificação publicadas, governança de previsão e limitações do Observatório Brasileiro do Setor Elétrico.",
   alternates: { canonical: "/setor-eletrico/metodologia" },
@@ -110,6 +112,11 @@ export default function MetodologiaEnergia() {
             O processamento tem três camadas, com nomes usuais em engenharia de dados: bronze guarda o arquivo original de cada captura, silver guarda o
             histórico de observações por captura (vintage) e gold reúne os dados processados que as páginas publicam.
           </p>
+          <div className="border border-linha bg-superficie p-4 md:p-5">
+            <LinhagemDados etapas={etapasLinhagem()} />
+          </div>
+          <details className="text-sm">
+            <summary className="rotulo min-h-[44px] cursor-pointer text-carvao-muted">Ver a linhagem em texto</summary>
           <pre tabIndex={0} aria-label="Linhagem dos dados, do arquivo da fonte à visualização (rolável)" className="overflow-x-auto border border-linha bg-superficie p-4 font-mono text-xs leading-relaxed text-carvao">{`FONTE (CCEE, ONS, ANEEL)
   ↓ captura: arquivo original, sha256, url, capturado_em, publicado_em (metadado da fonte)
 BRONZE: cópia imutável por captura
@@ -121,6 +128,7 @@ GOLD (dados processados): indicadores com proveniência, publicados em /energia/
 INDICADOR → VISUALIZAÇÃO | MODELO
 
 Previsões: VINTAGE DA FONTE → VARIÁVEIS DE ENTRADA → VERSÃO DO MODELO → PUBLICAÇÃO → REALIZADO → APURAÇÃO`}</pre>
+          </details>
           <p>
             Cada observação guarda a vintage de onde veio. Uma revisão da fonte (o ONS declara que seus dados passam por consistência recorrente) cria uma vintage
             nova sem apagar a anterior. A consulta &quot;como estava em&quot; devolve o valor conhecido em qualquer instante (com fuso explícito, sem

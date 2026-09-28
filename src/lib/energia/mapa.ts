@@ -18,7 +18,7 @@ export type PaginaMapa = {
 };
 
 export const PAGINAS_MAPA = {
-  "visao-geral": { rotulo: "Visão geral", href: "/setor-eletrico/visao-geral", pergunta: "O que está acontecendo no sistema elétrico brasileiro?", estado: "integrado" },
+  "visao-geral": { rotulo: "Visão geral", href: "/setor-eletrico/visao-geral", pergunta: "Como está o sistema elétrico brasileiro hoje?", estado: "integrado" },
   "agua-e-clima": { rotulo: "Água e clima", href: "/setor-eletrico/agua-e-clima", pergunta: "Quanta energia está guardada nos reservatórios, e quanta água está chegando?", estado: "integrado" },
   geracao: { rotulo: "Geração", href: "/setor-eletrico/geracao", pergunta: "Com que fontes o sistema está atendendo a carga?", estado: "integrado" },
   carga: { rotulo: "Carga", href: "/setor-eletrico/carga", pergunta: "Quanto o sistema está consumindo?", estado: "integrado" },
