@@ -85,9 +85,9 @@ export default function AprendaPage() {
                     <Link href={`/setor-eletrico/aprenda/${c.slug}`} className="group flex h-full flex-col border border-linha bg-superficie p-5 transition-colors hover:border-energia">
                       <span className="flex items-baseline justify-between gap-3">
                         <span className="font-serif text-lg text-carvao">{c.sigla ?? c.nome}</span>
-                        {c.estado === "PENDENTE" && <span className="rotulo !text-[0.62rem] text-aviso">em preparação</span>}
+                        {c.estado === "PENDENTE" && <span className="rotulo text-aviso">em preparação</span>}
                       </span>
-                      {c.sigla && <span className="text-sm text-mineral">{c.nome}</span>}
+                      {c.sigla && c.sigla !== c.nome && <span className="text-sm text-mineral">{c.nome}</span>}
                       <span className="mt-2 text-sm leading-relaxed text-carvao-muted">{c.estado === "CONFERIDO" ? c.emUmaFrase : `Fonte primária a conferir: ${c.fontePlanejada}`}</span>
                       {p?.hoje && <span className="mt-3 border-t border-linha pt-2 text-xs leading-relaxed text-carvao"><span className="rotulo mr-1 text-mineral">Hoje</span>{p.hoje}</span>}
                     </Link>

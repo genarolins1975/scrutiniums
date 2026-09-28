@@ -36,7 +36,7 @@ export function EsquemaConceitual({ titulo, linhas, nota }: { titulo: string; li
             {l.setaAntes !== undefined && (
               <div className="flex flex-col items-center py-1" aria-hidden="true">
                 <span className="h-4 w-px bg-mineral-soft" />
-                {l.setaAntes && <span className="rotulo my-0.5 !text-[0.62rem] text-mineral">{l.setaAntes}</span>}
+                {l.setaAntes && <span className="rotulo my-0.5 text-mineral">{l.setaAntes}</span>}
                 <span className="h-3 w-px bg-mineral-soft" />
                 <span className="-mt-1 text-mineral-soft">▼</span>
               </div>
@@ -51,7 +51,7 @@ export function EsquemaConceitual({ titulo, linhas, nota }: { titulo: string; li
                       {n.rotulo}
                     </span>
                     {n.descricao && <span className="mt-1 block text-xs leading-relaxed text-carvao-muted">{n.descricao}</span>}
-                    {est && <span className={`rotulo mt-2 block !text-[0.62rem] ${est.cls}`}>{est.rotulo}</span>}
+                    {est && <span className={`rotulo mt-2 block ${est.cls}`}>{est.rotulo}</span>}
                   </>
                 );
                 return (

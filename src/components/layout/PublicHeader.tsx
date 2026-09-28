@@ -72,7 +72,7 @@ export function PublicHeaderView({ authenticated = false }: { authenticated?: bo
           </Link>
           <Link
             href={authenticated ? "/app/observatorios" : "/cadastro"}
-            className="rotulo inline-flex min-h-[44px] items-center border border-carvao px-5 text-carvao hover:bg-carvao hover:text-marfim"
+            className="rotulo inline-flex min-h-[44px] items-center whitespace-nowrap border border-carvao px-4 text-carvao hover:bg-carvao hover:text-marfim sm:px-5"
           >
             {authenticated ? "Observatórios" : "Criar acesso"}
           </Link>

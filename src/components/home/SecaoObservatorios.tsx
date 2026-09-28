@@ -2,6 +2,7 @@ import Link from "next/link";
 import { DOMINIOS } from "@/lib/dominios";
 import { PERGUNTAS_CREDITO, PERGUNTAS_ENERGIA, miniaturaCredito, miniaturaEnergia } from "@/lib/amostras";
 import { PainelObservatorio } from "@/components/home/PainelObservatorio";
+import { dataBR, mesAno } from "@/lib/energia/formato";
 import { MiniaturaCredito } from "@/components/home/MiniaturaCredito";
 import { MiniaturaEnergia } from "@/components/home/MiniaturaEnergia";
 
@@ -34,7 +35,7 @@ export function SecaoObservatorios() {
               acao={
                 <>
                   {link(energia.rotaRaiz, energia.cta)}
-                  <span className="text-xs text-mineral">Miniatura com dados reais do ONS e da CCEE, na data de referência de cada fonte.</span>
+                  <span className="text-xs text-mineral">Miniatura com dados reais: ONS até {dataBR(dadosEnergia.datas.ear)}, CCEE em {dataBR(dadosEnergia.datas.pld)}.</span>
                 </>
               }
             />
@@ -48,7 +49,7 @@ export function SecaoObservatorios() {
               acao={
                 <>
                   {link(credito.rotaRaiz, credito.cta)}
-                  <span className="text-xs text-mineral">Miniatura com dados reais do SCR (Banco Central), na data-base publicada.</span>
+                  <span className="text-xs text-mineral">Miniatura com dados reais do SCR (Banco Central){dadosCredito.serieInad.length ? `, data-base ${mesAno(dadosCredito.serieInad[dadosCredito.serieInad.length - 1].p)}` : ""}.</span>
                 </>
               }
             />

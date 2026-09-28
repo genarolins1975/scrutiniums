@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LogoWordmark } from "@/components/ui/Logo";
+import { LogoMark, LogoWordmark } from "@/components/ui/Logo";
 import { SwitcherObservatorio } from "@/components/layout/SwitcherObservatorio";
 
 /**
@@ -16,7 +16,12 @@ export function FocoHeader({ titulo }: { titulo?: string }) {
             aria-label="Scrutiniums: escolher observatório"
             className="inline-flex min-h-[44px] items-center"
           >
-            <LogoWordmark />
+            <span className="sm:hidden">
+              <LogoMark size={24} />
+            </span>
+            <span className="hidden sm:inline">
+              <LogoWordmark />
+            </span>
           </Link>
           {titulo && (
             <span className="rotulo hidden text-mineral sm:inline" aria-hidden="true">

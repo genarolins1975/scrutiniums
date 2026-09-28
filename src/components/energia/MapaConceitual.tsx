@@ -25,7 +25,8 @@ export type DominioConceitual = { id: string; rotulo: string; icone: TipoIcone; 
 export function MapaConceitual({ dominios }: { dominios: DominioConceitual[] }) {
   const ids = dominios.map((d) => d.id);
   const [dom, setDom] = useEstadoUrl<string>("dominio", ids[0], umDe(ids));
-  const [slug, setSlug] = useState<string | null>(null);
+  const primeiro = dominios.find((d) => d.id === dom)?.conceitos.find((c) => c.estado === "CONFERIDO")?.slug ?? null;
+  const [slug, setSlug] = useState<string | null>(primeiro);
   const atual = dominios.find((d) => d.id === dom) ?? dominios[0];
   const conceito = atual.conceitos.find((c) => c.slug === slug) ?? null;
   return (

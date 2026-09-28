@@ -25,9 +25,9 @@ const SMS: { id: Submercado; rotulo: string; sigla: string; cor: string }[] = [
   { id: "N", rotulo: "Norte", sigla: "N", cor: "var(--serie-sm-n)" },
 ];
 const FAIXAS = [
-  { de: "00:00", ate: "05:00", rotulo: "madrugada" },
-  { de: "06:00", ate: "11:00", rotulo: "manhã" },
-  { de: "12:00", ate: "17:00", rotulo: "tarde" },
+  { de: "00:00", ate: "06:00", rotulo: "madrugada" },
+  { de: "06:00", ate: "12:00", rotulo: "manhã" },
+  { de: "12:00", ate: "18:00", rotulo: "tarde" },
   { de: "18:00", ate: "23:00", rotulo: "noite" },
 ];
 const dataBR = (d: string) => `${d.slice(8, 10)}/${d.slice(5, 7)}/${d.slice(0, 4)}`;

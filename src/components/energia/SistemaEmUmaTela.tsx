@@ -71,7 +71,7 @@ export function SistemaEmUmaTela({ blocos, chaveUrl = "bloco" }: { blocos: Bloco
                     <Sparkline valores={b.sparkline} cor={b.cor} referencia={b.referencia} largura={120} altura={26} />
                   </span>
                 )}
-                <span className="rotulo mt-2 !text-[0.62rem] text-energia-dark">{ativo ? "Fechar" : "Abrir"}</span>
+                <span className="rotulo mt-2 text-energia-dark">{ativo ? "Fechar" : "Abrir"}</span>
               </button>
               {i < blocos.length - 1 && (
                 <span aria-hidden="true" className="absolute right-1 top-1/2 hidden -translate-y-1/2 text-lg text-mineral md:block">

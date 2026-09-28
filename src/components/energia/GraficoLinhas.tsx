@@ -68,6 +68,8 @@ function ticks(min: number, max: number, n = 4): number[] {
   const ini = Math.ceil(min / passo) * passo;
   const out: number[] = [];
   for (let v = ini; v <= max + 1e-9; v += passo) out.push(Number(v.toFixed(10)));
+  // amplitude pequena para o passo escolhido: refina até ter ao menos três marcas
+  if (out.length < 3 && n < 16) return ticks(min, max, n * 2);
   return out;
 }
 
@@ -291,7 +293,7 @@ export function GraficoLinhas({
           return (
             <g key={fx.rotulo} pointerEvents="none">
               <rect x={x(i0)} y={T} width={Math.max(1, x(i1) - x(i0))} height={h - T - B} fill="var(--cor-carvao)" opacity={0.035} />
-              <text x={(x(i0) + x(i1)) / 2} y={h - B - 6} textAnchor="middle" fontSize="9.5" fill="var(--cor-mineral)">
+              <text x={(x(i0) + x(i1)) / 2} y={T + 11} textAnchor="middle" fontSize="10.5" fill="var(--cor-mineral)">
                 {fx.rotulo}
               </text>
             </g>

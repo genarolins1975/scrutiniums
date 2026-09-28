@@ -10,9 +10,9 @@ const ACENTO: Record<Dominio["acento"], { filete: string; texto: string; hover: 
 
 /**
  * Painel visual de um observatório: a miniatura viva no alto, o nome, a
- * pergunta que o observatório responde e, ao passar o ponteiro ou o foco (no
- * desktop), as perguntas que o portal responde. No celular as perguntas ficam
- * sempre visíveis. Um único painel serve à home (com link) e à tela de escolha
+ * pergunta que o observatório responde e as perguntas que o portal responde:
+ * as três primeiras sempre visíveis, as demais ao passar o ponteiro ou focar no
+ * desktop e sempre visíveis no celular. A ação fica alinhada ao pé do painel. Um único painel serve à home (com link) e à tela de escolha
  * (com o formulário de entrada e as amostras vivas).
  */
 export function PainelObservatorio({
@@ -57,10 +57,10 @@ export function PainelObservatorio({
           </dl>
         )}
 
-        <div className="mt-5 overflow-hidden transition-[max-height] duration-300 ease-out lg:max-h-0 lg:group-hover:max-h-80 lg:group-focus-within:max-h-80">
+        <div className="mt-5">
           <p className="rotulo text-mineral">Perguntas que este observatório responde</p>
           <ul className="mt-2 space-y-1.5 text-sm leading-snug text-carvao">
-            {perguntas.map((p) => (
+            {perguntas.slice(0, 3).map((p) => (
               <li key={p.href} className="flex gap-2">
                 <span aria-hidden="true" className={a.texto}>
                   →
@@ -71,9 +71,25 @@ export function PainelObservatorio({
               </li>
             ))}
           </ul>
+          {perguntas.length > 3 && (
+            <>
+              <ul className="mt-1.5 space-y-1.5 overflow-hidden text-sm leading-snug text-carvao transition-[max-height] duration-300 ease-out lg:max-h-0 lg:group-hover:max-h-60 lg:group-focus-within:max-h-60">
+                {perguntas.slice(3).map((p) => (
+                  <li key={p.href} className="flex gap-2">
+                    <span aria-hidden="true" className={a.texto}>
+                      →
+                    </span>
+                    <Link href={p.href} className="underline decoration-linha underline-offset-4 hover:decoration-current">
+                      {p.texto}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <p className="rotulo mt-2 hidden text-mineral lg:block lg:group-hover:hidden lg:group-focus-within:hidden">mais {perguntas.length - 3} perguntas ao passar o ponteiro ou focar</p>
+            </>
+          )}
         </div>
-        <p className="rotulo mt-2 hidden text-mineral lg:block lg:group-hover:hidden lg:group-focus-within:hidden">{perguntas.length} perguntas · passe o ponteiro para ver</p>
-        <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-linha pt-5">{acao}</div>
+        <div className="mt-auto flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-linha pt-5">{acao}</div>
       </div>
     </article>
   );

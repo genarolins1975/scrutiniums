@@ -95,7 +95,7 @@ export function CatalogoFiltro({ itens, estados }: { itens: ItemCatalogo[]; esta
       </div>
       <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="Temas">
         <li>
-          <button type="button" aria-pressed={tema === ""} onClick={() => setTema("")} className={`rotulo min-h-[36px] border px-2.5 !text-[0.62rem] ${tema === "" ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted hover:border-energia"}`}>
+          <button type="button" aria-pressed={tema === ""} onClick={() => setTema("")} className={`rotulo min-h-[36px] border px-2.5 ${tema === "" ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted hover:border-energia"}`}>
             todos · {itens.length}
           </button>
         </li>
@@ -103,7 +103,7 @@ export function CatalogoFiltro({ itens, estados }: { itens: ItemCatalogo[]; esta
           .filter(([k]) => porTema[k])
           .map(([k, v]) => (
             <li key={k}>
-              <button type="button" aria-pressed={tema === k} onClick={() => setTema(tema === k ? "" : k)} className={`rotulo min-h-[36px] border px-2.5 !text-[0.62rem] ${tema === k ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted hover:border-energia"}`}>
+              <button type="button" aria-pressed={tema === k} onClick={() => setTema(tema === k ? "" : k)} className={`rotulo min-h-[36px] border px-2.5 ${tema === k ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted hover:border-energia"}`}>
                 {v} · {porTema[k]}
               </button>
             </li>
@@ -114,7 +114,7 @@ export function CatalogoFiltro({ itens, estados }: { itens: ItemCatalogo[]; esta
       </p>
       <ul className="mt-3 divide-y divide-linha border-y border-linha">
         {(todos ? filtrados : filtrados.slice(0, LIMITE)).map((i) => (
-          <li key={i.id} className="grid gap-2 py-3 md:grid-cols-[5.5rem_1fr_9rem_auto] md:items-center md:gap-4">
+          <li key={i.id} className="grid grid-cols-[5.5rem_1fr] gap-x-3 gap-y-1 py-3 md:grid-cols-[5.5rem_1fr_9rem_auto] md:items-center md:gap-4">
             <span className="rotulo text-mineral">{i.orgao}</span>
             <span className="min-w-0 text-sm text-carvao">
               {i.slug ? (
@@ -126,15 +126,15 @@ export function CatalogoFiltro({ itens, estados }: { itens: ItemCatalogo[]; esta
               {!i.verificado && <span className="ml-2 text-xs text-aviso">metadados a conferir</span>}
               {i.descontinuado && <span className="ml-2 text-xs text-mineral">descontinuado na fonte</span>}
             </span>
-            <span className="flex flex-col gap-1" title={`Estado: ${i.estado}`}>
+            <span className="col-start-2 flex flex-col gap-1 md:col-start-auto" title={`Estado: ${i.estado}`}>
               <span className="flex gap-0.5" aria-hidden="true">
                 {estados.map((e, k) => (
                   <span key={e} className={`h-1.5 flex-1 ${k <= degrau(i.estado) ? "bg-energia" : "bg-linha"}`} />
                 ))}
               </span>
-              <span className={`rotulo !text-[0.6rem] ${i.estado === "CATALOGADO" ? "text-mineral" : "text-energia-dark"}`}>{i.estado}</span>
+              <span className={`rotulo ${i.estado === "CATALOGADO" ? "text-mineral" : "text-energia-dark"}`}>{i.estado}</span>
             </span>
-            <a href={i.url} target="_blank" rel="noopener noreferrer" className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">fonte ↗</a>
+            <a href={i.url} target="_blank" rel="noopener noreferrer" className="rotulo col-start-2 inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 md:col-start-auto">fonte ↗</a>
           </li>
         ))}
       </ul>

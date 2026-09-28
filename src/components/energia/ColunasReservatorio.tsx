@@ -65,7 +65,7 @@ export function ColunasReservatorio({ itens, dia }: { itens: ItemReservatorio[];
                   m.v === null ? null : (
                     <g key={m.rotulo}>
                       <line x1={colX - 4} x2={colX + colW + 4} y1={y(m.v)} y2={y(m.v)} stroke="var(--cor-carvao)" strokeWidth={m.rotulo === "mediana" ? 1.6 : 1} strokeDasharray={m.rotulo === "mediana" ? undefined : "3 2"} />
-                      <text x={colX + colW + 7} y={y(m.v) + 3.5} fontSize="9.5" fill="var(--cor-carvao-muted)">
+                      <text x={colX + colW + 7} y={y(m.v) + 3.5} fontSize="11" fill="var(--cor-carvao-muted)">
                         {m.rotulo}
                       </text>
                     </g>
@@ -76,7 +76,7 @@ export function ColunasReservatorio({ itens, dia }: { itens: ItemReservatorio[];
                     {fmt(v, 0)}
                   </text>
                 )}
-                <text x={colX + colW / 2} y={H - 2} fontSize="9" textAnchor="middle" fill="var(--cor-mineral)">
+                <text x={colX + colW / 2} y={H - 2} fontSize="10.5" textAnchor="middle" fill="var(--cor-mineral)">
                   0 a 100% da máxima
                 </text>
               </svg>

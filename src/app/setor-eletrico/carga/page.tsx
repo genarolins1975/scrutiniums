@@ -54,6 +54,13 @@ export default function CargaPage() {
   const ultimoAno = c.serie.slice(-365).map((p) => ({ d: p.d, v: p.SIN ?? null }));
   const r = resumoHeatmap(ultimoAno);
   const anoPassado = c.serie.slice(-730, -365);
+  /** Média móvel de 7 dias (calculada pela plataforma) para ler a comparação anual sem o serrilhado semanal. */
+  const media7 = (vals: (number | null)[]) => vals.map((_, i) => {
+    const janela = vals.slice(Math.max(0, i - 6), i + 1).filter((v): v is number => v !== null);
+    return janela.length === 7 ? janela.reduce((a, b) => a + b, 0) / 7 : null;
+  });
+  const atual7 = media7(ultimoAno.map((p) => p.v));
+  const anterior7 = media7(anoPassado.map((p) => p.SIN ?? null));
   return (
     <>
       <CabecalhoEnergia atual="carga" />
@@ -110,7 +117,7 @@ export default function CargaPage() {
               <div className="text-sm leading-relaxed text-carvao">
                 <p className="rotulo text-mineral">Leitura a partir da série</p>
                 {r.diaMaisAlto && r.diaMaisBaixo && (
-                  <p className="mt-2">
+                  <p className="mt-2 font-serif text-lg leading-snug text-carvao">
                     Nos últimos 12 meses, a carga média por dia da semana foi mais alta às {DIA_LONGO[r.diaMaisAlto]} e mais baixa aos {DIA_LONGO[r.diaMaisBaixo]}: a diferença entre os dois é de{" "}
                     {num((r.mediaPorDia.find((d) => d.dia === r.diaMaisAlto)?.media ?? 0) - (r.mediaPorDia.find((d) => d.dia === r.diaMaisBaixo)?.media ?? 0), 0)} MWmed.
                   </p>
@@ -137,17 +144,17 @@ export default function CargaPage() {
                   ? `Carga do SIN ${num(Math.abs(sin.ult7.variacao_pct ?? 0))}% ${(sin.ult7.variacao_pct ?? 0) >= 0 ? "acima" : "abaixo"} da mesma semana de ${sin.ult7.fim_anterior.slice(0, 4)}`
                   : "Carga do SIN no último ano"
               }
-              subtitulo="Carga diária do SIN · MWmed · últimos 12 meses sobre os 12 meses anteriores, alinhados pelo dia do ano"
+              subtitulo="Carga do SIN · média móvel de 7 dias em MWmed · últimos 12 meses sobre os 12 meses anteriores, alinhados pelo dia do ano"
               natureza="CALCULADO"
               porQueImporta={<>Comparar o ano com o anterior, dia a dia, separa o padrão sazonal (verão mais alto, inverno mais baixo) do que mudou de um ano para o outro.</>}
               oQueMudou={<>Últimos 30 dias: {sin.ult30?.variacao_pct !== null && sin.ult30 ? `${sinal(sin.ult30.variacao_pct)}% sobre os mesmos dias do ano anterior` : "sem comparação homogênea"}. Maior carga diária em 12 meses: {num(sin.max_12m.valor, 0)} MWmed em {dataBR(sin.max_12m.dia)}.</>}
-              comoInterpretar={<>A linha cinza é o mesmo dia do calendário do ano anterior. A comparação anual só é mostrada quando os dois períodos estão no mesmo regime metodológico do ONS, em vigor desde 29/04/2023 (inclui a estimativa de micro e minigeração distribuída, MMGD).</>}
+              comoInterpretar={<>Cada ponto é a média dos 7 dias até aquela data, calculada pela plataforma para tirar o serrilhado semanal; a série diária está na tabela. A linha cinza é o mesmo dia do calendário do ano anterior. A comparação anual só é mostrada quando os dois períodos estão no mesmo regime metodológico do ONS, em vigor desde 29/04/2023 (inclui a estimativa de micro e minigeração distribuída, MMGD).</>}
               naoConcluir={<>A carga não é ajustada por temperatura, feriados ou dias úteis; variação de carga não mede, sozinha, atividade econômica. Desde 29/04/2023 a série inclui uma estimativa de MMGD feita pelo ONS com dados meteorológicos previstos.</>}
               proveniencia={c.proveniencia.sin}
             >
               <GraficoLinhas
-                titulo="Carga diária do SIN: últimos 12 meses e os 12 meses anteriores"
-                dados={ultimoAno.map((p, i) => ({ d: p.d, atual: p.v, anterior: anoPassado[i]?.SIN ?? null }))}
+                titulo="Carga do SIN, média móvel de 7 dias: últimos 12 meses e os 12 meses anteriores"
+                dados={ultimoAno.map((p, i) => ({ d: p.d, atual: atual7[i], anterior: anterior7[i], diario: p.v }))}
                 chaveX="d"
                 series={[
                   { id: "atual", rotulo: "Últimos 12 meses", sigla: "atual", cor: "var(--cor-energia)", espessura: 2.2 },
@@ -165,6 +172,7 @@ export default function CargaPage() {
               id="carga-sm"
               pergunta="Onde o Brasil consome eletricidade?"
               subtitulo="Carga diária por subsistema · MWmed · últimos 12 meses, cada região na sua escala"
+              natureza="CALCULADO"
               porQueImporta={<>O Sudeste/Centro-Oeste concentra a maior parte da carga; ver as quatro regiões lado a lado, cada uma na própria escala, mostra onde a carga variou mais em proporção.</>}
               oQueMudou={<>Média dos últimos 7 dias comparada à dos mesmos dias do ano anterior: {c.subsistemas.filter((s) => s.sm !== "SIN").map((s) => `${s.nome} ${s.ult7?.variacao_pct !== null && s.ult7 ? `${sinal(s.ult7.variacao_pct)}%` : "sem comparação"}`).join("; ")}.</>}
               comoInterpretar={<>Escalas diferentes por painel: compare a forma da trajetória, não a altura. O mapa mostra a parcela de cada região na carga do SIN no dia de referência.</>}

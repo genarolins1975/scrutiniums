@@ -62,7 +62,7 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
           <h1 className="font-serif text-[clamp(2rem,4.4vw,3rem)] leading-tight text-carvao">
             {c.sigla && (
               <>
-                <span className="mr-3">{c.sigla}</span>{" "}
+                <span className="mr-3">{c.sigla}</span>
               </>
             )}
             <span className={c.sigla ? "text-carvao-muted" : ""}>{c.nome}</span>

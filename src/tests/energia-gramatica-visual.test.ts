@@ -147,7 +147,6 @@ describe("um visual principal por página, na ordem pergunta, resposta curta, vi
     "aprenda/como-funciona/page.tsx": ["InfograficoSistema"],
     "aprenda/[conceito]/page.tsx": ["VisualConceito"],
     "dados/page.tsx": ["LinhagemDados", "PipelineEstados", "CatalogoFiltro"],
-    "metodologia/page.tsx": ["LinhagemDados"],
   };
   for (const [pagina, componentes] of Object.entries(heroes)) {
     it(`${pagina} usa ${componentes.join(", ")}`, () => {
@@ -155,6 +154,13 @@ describe("um visual principal por página, na ordem pergunta, resposta curta, vi
       for (const c of componentes) expect(t, c).toMatch(new RegExp(`<${c}\\b|${c}\\(`));
     });
   }
+
+  it("a metodologia remete ao mapa de linhagem em vez de repeti-lo", () => {
+    const m = ler(`${PAGINAS}/metodologia/page.tsx`);
+    expect(m).toContain('href="/setor-eletrico/dados#linhagem"');
+    expect(m).not.toContain("<LinhagemDados");
+    expect(m).toContain('aria-label="Nesta página"');
+  });
 
   it("módulos em integração trazem o infográfico estrutural sem números", () => {
     for (const m of ["mercado", "empresas", "expansao", "regulacao"]) {

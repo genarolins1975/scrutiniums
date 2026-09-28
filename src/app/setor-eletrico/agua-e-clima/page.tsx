@@ -12,6 +12,7 @@ import { TabelaDados } from "@/components/energia/TabelaDados";
 import { MapaVivo, type CamadaMapa } from "@/components/energia/MapaVivo";
 import { ColunasReservatorio, type ItemReservatorio } from "@/components/energia/ColunasReservatorio";
 import { MetricaHero } from "@/components/energia/MetricaHero";
+import { IconeSetor } from "@/components/energia/IconeSetor";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold, integra } from "@/lib/energia/gold";
 import { dataBR, mesAno, num, pct, rotuloRegra, sinal } from "@/lib/energia/formato";
@@ -144,9 +145,8 @@ export default function AguaPage() {
               variacao={`${sinal(s.ear.variacao_30d_pp)} p.p. em 30 dias`}
               sparkline={ultAno.map((p) => p.SIN)}
               referencia={s.ear.mediana_historica}
-              faixa={{ inferior: ultAno.map((p) => p.p10), superior: ultAno.map((p) => p.p90) }}
               cor="var(--serie-hidraulica)"
-              contexto={<>{ROTULO_FAIXA_USUAL[s.ear.faixa ?? "dentro"].replace(/^./, (c) => c.toUpperCase())}: mediana {pct(s.ear.mediana_historica)}, faixa de {pct(s.ear.p10)} a {pct(s.ear.p90)} (percentil {num(s.ear.percentil_na_data, 1)}). A linha mostra os últimos 12 meses sobre a faixa histórica.</>}
+              contexto={<>{ROTULO_FAIXA_USUAL[s.ear.faixa ?? "dentro"].replace(/^./, (c) => c.toUpperCase())}: mediana {pct(s.ear.mediana_historica)}, faixa de {pct(s.ear.p10)} a {pct(s.ear.p90)} (percentil {num(s.ear.percentil_na_data, 1)}). A linha mostra os últimos 12 meses, com a mediana histórica tracejada.</>}
               tamanho="medio"
             />
           </div>
@@ -167,40 +167,9 @@ export default function AguaPage() {
           </div>
         </div>
 
-        {/* hero: mapa hidrológico */}
-        <section id="mapa" aria-labelledby="mapa-h" className="scroll-mt-24 pt-8">
-          <h2 id="mapa-h" className="sr-only">
-            Mapa da água
-          </h2>
-          <div className="border border-linha bg-superficie p-4 md:p-6">
-            <MapaVivo camadas={camadas} />
-          </div>
-          <p className="mt-2 text-xs text-mineral">
-            O mapa mostra os quatro subsistemas do ONS. Bacias, reservatórios individuais e chuva não estão integrados nesta fase: os conjuntos por bacia, por reservatório e por REE estão catalogados em Dados.
-          </p>
-        </section>
-
         <ModoProfundidade>
-          <Bloco id="reservatorios">
-            <PainelEvidencia
-              id="ear-colunas"
-              pergunta="Quanto temos, e quanto normalmente teríamos nesta data?"
-              subtitulo={`EAR por subsistema e SIN · % da EAR máxima · ${dataBR(h.dia_referencia_ear)} contra o padrão histórico da data`}
-              porQueImporta={<>Cada coluna é um reservatório equivalente: a altura é a capacidade máxima, o preenchimento é a EAR do dia, e os traços marcam onde a EAR esteve no mesmo dia do calendário nos anos anteriores. De relance, separa o que é da estação do que é incomum.</>}
-              oQueMudou={<>{h.subsistemas.filter((x) => x.sm !== "SIN").map((x) => `${x.nome}: ${pct(x.ear.valor)} (${sinal(x.ear.variacao_30d_pp)} p.p. em 30 dias)`).join("; ")}.{h.desvio_principal ? ` Maior desvio frente à mediana da data: ${h.desvio_principal.nome} (${sinal(h.desvio_principal.desvio_pp)} p.p.).` : ""}</>}
-              comoInterpretar={<>&quot;Fora da faixa usual&quot; significa abaixo do 10º ou acima do 90º percentil da data. O percentil é a posição do valor de hoje entre os valores do mesmo dia nos anos anteriores.</>}
-              naoConcluir={<>O percentil mede posição histórica, não risco de desabastecimento. A capacidade máxima de cada subsistema mudou ao longo das décadas, e o SIN é dominado pelo Sudeste/Centro-Oeste.</>}
-              proveniencia={h.proveniencia.ear}
-              complementares={[
-                { rotulo: "Sobre a mediana, os percentis e a posição", p: h.proveniencia.padrao },
-                { rotulo: "Sobre a EAR do SIN", p: h.proveniencia.ear_sin },
-              ]}
-            >
-              <ColunasReservatorio itens={itensReservatorio} dia={dataBR(h.dia_referencia_ear)} />
-            </PainelEvidencia>
-          </Bloco>
-
           <Bloco id="ear">
+            <p className="rotulo mb-3 flex items-center gap-2 text-mineral"><IconeSetor tipo="agua" tamanho={15} /> Visual principal</p>
             <PainelEvidencia
               id="ear-sin"
               pergunta={`O ano ${anoAtual} contra a história: onde a EAR do SIN está em relação ao usual de cada dia do calendário`}
@@ -228,6 +197,39 @@ export default function AguaPage() {
                 casas={1}
                 ensina={{ texto: "EAR: energia associada à água guardada nos reservatórios, em % da capacidade máxima de armazenamento.", fonte: "ONS", href: "/setor-eletrico/aprenda/ear", hrefRotulo: "Entenda EAR" }}
               />
+            </PainelEvidencia>
+          </Bloco>
+
+          <Bloco id="mapa">
+            <section aria-labelledby="mapa-h" className="scroll-mt-24">
+              <h2 id="mapa-h" className="sr-only">
+                Mapa da água
+              </h2>
+              <div className="border border-linha bg-superficie p-4 md:p-6">
+                <MapaVivo camadas={camadas} />
+              </div>
+              <p className="mt-2 text-xs text-mineral">
+                Bacias, reservatórios individuais e chuva não estão integrados nesta fase: os conjuntos por bacia, por reservatório e por REE estão catalogados em Dados.
+              </p>
+            </section>
+          </Bloco>
+
+          <Bloco id="reservatorios">
+            <PainelEvidencia
+              id="ear-colunas"
+              pergunta="Quanto temos, e quanto normalmente teríamos nesta data?"
+              subtitulo={`EAR por subsistema e SIN · % da EAR máxima · ${dataBR(h.dia_referencia_ear)} contra o padrão histórico da data`}
+              porQueImporta={<>Cada coluna é um reservatório equivalente: a altura é a capacidade máxima, o preenchimento é a EAR do dia, e os traços marcam onde a EAR esteve no mesmo dia do calendário nos anos anteriores. De relance, separa o que é da estação do que é incomum.</>}
+              oQueMudou={<>{h.subsistemas.filter((x) => x.sm !== "SIN").map((x) => `${x.nome}: ${pct(x.ear.valor)} (${sinal(x.ear.variacao_30d_pp)} p.p. em 30 dias)`).join("; ")}.{h.desvio_principal ? ` Maior desvio frente à mediana da data: ${h.desvio_principal.nome} (${sinal(h.desvio_principal.desvio_pp)} p.p.).` : ""}</>}
+              comoInterpretar={<>&quot;Fora da faixa usual&quot; significa abaixo do 10º ou acima do 90º percentil da data. O percentil é a posição do valor de hoje entre os valores do mesmo dia nos anos anteriores.</>}
+              naoConcluir={<>O percentil mede posição histórica, não risco de desabastecimento. A capacidade máxima de cada subsistema mudou ao longo das décadas, e o SIN é dominado pelo Sudeste/Centro-Oeste.</>}
+              proveniencia={h.proveniencia.ear}
+              complementares={[
+                { rotulo: "Sobre a mediana, os percentis e a posição", p: h.proveniencia.padrao },
+                { rotulo: "Sobre a EAR do SIN", p: h.proveniencia.ear_sin },
+              ]}
+            >
+              <ColunasReservatorio itens={itensReservatorio} dia={dataBR(h.dia_referencia_ear)} />
             </PainelEvidencia>
           </Bloco>
 
@@ -298,7 +300,7 @@ export default function AguaPage() {
           <Bloco id="ena">
             <PainelEvidencia
               id="ena-sm"
-              pergunta={`Quanta água está chegando? No Sudeste/Centro-Oeste, ${pct(se.ena.pct_mlt_30d, 1)} da média de longo termo em 30 dias`}
+              pergunta={`Quanta água está chegando, dia a dia? No Sudeste/Centro-Oeste, ${pct(se.ena.pct_mlt_30d, 1)} da média de longo termo nos últimos 30 dias`}
               subtitulo="ENA bruta por subsistema · % da MLT · últimos 18 meses"
               porQueImporta={<>A ENA expressa em energia as vazões naturais que chegam aos reservatórios; o ONS a indica como insumo de estudos energéticos e da projeção do custo marginal de operação. Acima de 100% da <Termo slug="mlt">MLT</Termo>, a ENA está acima da média de longo termo usada pelo ONS como referência.</>}
               oQueMudou={<>ENA de 30 dias: {h.subsistemas.map((x) => `${x.nome} ${pct(x.ena.pct_mlt_30d, 1)}${x.ena.faixa_30d && x.ena.faixa_30d !== "dentro" ? ` (${x.ena.faixa_30d} da faixa usual)` : ""}`).join("; ")}.</>}

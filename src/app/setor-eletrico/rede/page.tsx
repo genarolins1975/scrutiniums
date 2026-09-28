@@ -13,6 +13,7 @@ import { AbasVisoes } from "@/components/energia/AbasVisoes";
 import { MetricaHero } from "@/components/energia/MetricaHero";
 import { IconeSetor } from "@/components/energia/IconeSetor";
 import { TabelaDados } from "@/components/energia/TabelaDados";
+import { Sparkline } from "@/components/energia/Sparkline";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold, integra } from "@/lib/energia/gold";
 import { dataBR, num, pct, reais, rotuloRegra } from "@/lib/energia/formato";
@@ -203,6 +204,23 @@ export default function RedePage() {
                 { rotulo: "Sobre a diferença de preço por fronteira", p: r.proveniencia.diferenca },
               ]}
             >
+              <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                {r.fronteiras.map((f, i) => {
+                  const v = f.fluxo_dia;
+                  const nome = v !== null && v < 0 ? f.nome.split(" → ").reverse().join(" → ") : f.nome;
+                  return (
+                    <li key={f.par} className="min-w-0 border border-linha p-4">
+                      <p className="rotulo text-mineral">{nome}</p>
+                      <p className="mt-2 font-serif text-2xl tabular-nums text-carvao">{v === null ? "sem dado" : num(Math.abs(v), 0)}</p>
+                      <p className="text-xs text-mineral">MWmed no dia · média de 30 dias {f.fluxo_media_30d === null ? "sem dado" : num(Math.abs(f.fluxo_media_30d), 0)}</p>
+                      <div className="mt-2">
+                        <Sparkline valores={r.serie_fluxos.slice(-90).map((p) => (typeof p[f.par] === "number" ? (p[f.par] as number) : null))} cor={seriesFluxo[i].cor} zeroNoEixo largura={200} altura={36} rotulo={`Intercâmbio ${f.nome} nos últimos 90 dias`} />
+                      </div>
+                      <p className="mt-1 text-xs text-mineral">{f.dias_com_diferenca_30d} de {f.n_dias_pld_30d} dias com PLD diferente entre as pontas</p>
+                    </li>
+                  );
+                })}
+              </ul>
               <TabelaDados
                 titulo="Intercâmbio por fronteira"
                 colunas={["Fronteira", "Fluxo do dia (MWmed)", "Programado do dia (MWmed)", "Média 30 dias (MWmed)", `Dias com diferença de PLD médio acima de ${reais(r.limiar_diferenca_dia ?? 1, 2)}/MWh (30 dias até ${dataBR(r.dia_referencia)})`]}
@@ -252,7 +270,7 @@ export default function RedePage() {
                       <span className="mt-1 font-medium leading-snug text-carvao">{p.t}</span>
                       <span className="mt-2 text-xs italic leading-relaxed text-carvao-muted">{p.esquema}</span>
                       <span className="mt-3 border-t border-linha pt-2 text-sm leading-relaxed text-carvao">{p.dado}</span>
-                      <span className="mt-2 text-xs">{p.ok ? <span className="rotulo !text-[0.62rem] text-carvao-muted">dado integrado</span> : <span className="rotulo !text-[0.62rem] text-aviso">○ dado ausente</span>}</span>
+                      <span className="mt-2 text-xs">{p.ok ? <span className="rotulo text-carvao-muted">dado integrado</span> : <span className="rotulo text-aviso">○ dado ausente</span>}</span>
                       {i < 3 && <span aria-hidden="true" className="absolute -right-3 top-1/2 hidden -translate-y-1/2 text-mineral md:block">→</span>}
                     </li>
                   ))}

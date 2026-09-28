@@ -52,11 +52,13 @@ export default function MercadoPage() {
             setaAntes: "contratam em dois ambientes",
             separador: "↔",
             nos: [
-              { rotulo: "ACR", descricao: "Ambiente de Contratação Regulada", estado: "pendente", href: "/setor-eletrico/aprenda/acr" },
-              { rotulo: "CCEE", icone: "preco", descricao: "Calcula o PLD e apura o balanço de cada agente no Mercado de Curto Prazo, por hora e submercado.", estado: "conferido", href: "/setor-eletrico/aprenda/mcp", destaque: true },
-              { rotulo: "ACL", descricao: "Ambiente de Contratação Livre", estado: "pendente", href: "/setor-eletrico/aprenda/acl" },
+              { rotulo: "ACR", descricao: "Ambiente de Contratação Regulada: contratos das distribuidoras, por leilão.", estado: "pendente", href: "/setor-eletrico/aprenda/acr" },
+              { rotulo: "ACL", descricao: "Ambiente de Contratação Livre: contratos bilaterais entre agentes.", estado: "pendente", href: "/setor-eletrico/aprenda/acl" },
             ],
           },
+          {
+            setaAntes: "as diferenças entre contratado e medido são liquidadas pela",
+            nos: [{ rotulo: "CCEE, no Mercado de Curto Prazo", icone: "preco", descricao: "Calcula o PLD e apura o balanço de cada agente por hora e submercado. Não é um ambiente de contratação: é quem contabiliza o que sobrou ou faltou.", estado: "conferido", href: "/setor-eletrico/aprenda/mcp", destaque: true }] },
           { setaAntes: "entregam a", nos: [{ rotulo: "Distribuidoras", icone: "rede", estado: "leitura", descricao: "Atendem consumidores cativos; a tarifa (TE e TUSD) sai dos processos da ANEEL." }, { rotulo: "Comercializadoras", icone: "mercado", estado: "leitura", descricao: "Vendem energia a consumidores livres." }] },
           { setaAntes: "atendem", nos: [{ rotulo: "Consumidores", icone: "carga", estado: "leitura", descricao: "Cativos (distribuidora) ou livres (mercado)." }] },
         ],

@@ -130,3 +130,29 @@ export function pontoMedioArco(a: LonLat, b: LonLat, curvatura = 0.18): [number,
   const c = controle(a, b, curvatura);
   return [0.25 * c.x1 + 0.5 * c.cx + 0.25 * c.x2, 0.25 * c.y1 + 0.5 * c.cy + 0.25 * c.y2];
 }
+
+/** Ponta do arco (t = 1) com o ângulo da tangente em graus, para desenhar a seta do fluxo. */
+export function pontaArco(a: LonLat, b: LonLat, curvatura = 0.18): { x: number; y: number; angulo: number } {
+  const c = controle(a, b, curvatura);
+  return { x: c.x2, y: c.y2, angulo: (Math.atan2(c.y2 - c.cy, c.x2 - c.cx) * 180) / Math.PI };
+}
+
+/** Ponto do rótulo do fluxo: o meio do arco deslocado para fora da curva, longe da corda e dos chips das regiões. */
+export function pontoRotuloArco(a: LonLat, b: LonLat, afastamento = 16, curvatura = 0.18): [number, number] {
+  const c = controle(a, b, curvatura);
+  const [mx, my] = pontoMedioArco(a, b, curvatura);
+  const dx = mx - (c.x1 + c.x2) / 2;
+  const dy = my - (c.y1 + c.y2) / 2;
+  const n = Math.hypot(dx, dy) || 1;
+  return [mx + (dx / n) * afastamento, my + (dy / n) * afastamento];
+}
+
+/**
+ * Intensidade discreta pela faixa do percentil, a mesma regra publicada das
+ * faixas: baixa (abaixo do 25º), central (25º a 75º) e alta (acima do 75º).
+ * Três tons distinguíveis em vez de uma gradação contínua ilegível.
+ */
+export function intensidadeFaixa(percentil: number | null | undefined): number | null {
+  if (percentil === null || percentil === undefined || !Number.isFinite(percentil)) return null;
+  return percentil < 25 ? 0.12 : percentil > 75 ? 0.95 : 0.5;
+}

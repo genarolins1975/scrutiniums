@@ -119,7 +119,7 @@ Capturas: [índice depois](./avaliacao-visual/aprenda-depois-desktop.jpg), [info
 
 Capturas: [Dados depois](./avaliacao-visual/dados-depois-desktop.jpg), [Metodologia depois](./avaliacao-visual/metodologia-depois-desktop.jpg), com as versões "antes" e de celular na mesma pasta.
 
-**Pergunta principal.** De onde vêm os números? **Hero.** Mapa de linhagem clicável (`LinhagemDados`): fontes, captura, histórico, processados, páginas, modelos, cada etapa com a contagem do próprio processamento, o que ela guarda, o que se confere e o caminho para a evidência. **Explorador.** Esteira de integração com estados cumulativos (`PipelineEstados`), fichas dos conjuntos integrados e explorador do catálogo com busca sem acento, temas com contagem, degraus de integração por conjunto e carga sob demanda das linhas restantes. A metodologia recebeu o mesmo mapa e mantém a versão em texto.
+**Pergunta principal.** De onde vêm os números? **Hero.** Mapa de linhagem clicável (`LinhagemDados`): fontes, captura, histórico, processados, páginas, modelos, cada etapa com a contagem do próprio processamento, o que ela guarda, o que se confere e o caminho para a evidência. **Explorador.** Esteira de integração com estados cumulativos (`PipelineEstados`), fichas dos conjuntos integrados e explorador do catálogo com busca sem acento, temas com contagem, degraus de integração por conjunto e carga sob demanda das linhas restantes. A metodologia remete ao mapa (sem repeti-lo), mantém a versão em texto e ganhou um índice "Nesta página".
 
 ## Testes de regressão
 
@@ -127,4 +127,58 @@ Capturas: [Dados depois](./avaliacao-visual/dados-depois-desktop.jpg), [Metodolo
 
 ## Auditoria independente
 
-Preenchida após a segunda avaliação em contexto limpo, com as correções aplicadas.
+Segunda avaliação feita por um agente em contexto limpo, sem acesso ao raciocínio de implementação, sobre as capturas finais e o código. Duas rodadas: a primeira apontou os defeitos abaixo; as correções foram aplicadas e o site reconstruído; a segunda rodada reavaliou o conjunto.
+
+### Primeira rodada: notas do auditor antes das correções
+
+| Área | Hier | Est | Clar | Did | Rec | Graf | Mapas | Inter | Nav | Rigor | Audit | Acess | Mobile |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Home | 7 | 8 | 7 | 5 | 6 | 5 | n/a | 5 | 7 | 8 | 6 | 6 | 5 |
+| Seletor | 7 | 7 | 7 | 6 | 6 | 5 | n/a | 5 | 7 | 8 | 7 | 6 | 4 |
+| Visão geral | 8 | 8 | 8 | 8 | 8 | 7 | 7 | 8 | 8 | 9 | 9 | 8 | 8 |
+| PLD | 7 | 8 | 7 | 8 | 8 | 6 | 5 | 8 | 7 | 9 | 9 | 8 | 7 |
+| Água e clima | 8 | 8 | 8 | 8 | 8 | 7 | 7 | 7 | 8 | 9 | 9 | 8 | 8 |
+| Geração | 8 | 8 | 8 | 8 | 9 | 8 | 7 | 8 | 8 | 9 | 9 | 8 | 6 |
+| Carga | 8 | 8 | 8 | 7 | 7 | 6 | 7 | 6 | 8 | 9 | 9 | 8 | 5 |
+| Rede | 8 | 8 | 8 | 8 | 7 | 7 | 5 | 7 | 8 | 9 | 9 | 7 | 7 |
+| Mercado | 7 | 7 | 7 | 5 | 5 | n/a | n/a | 3 | 7 | 7 | 8 | 8 | 6 |
+| Empresas | 7 | 7 | 7 | 5 | 5 | n/a | n/a | 3 | 7 | 8 | 8 | 8 | 6 |
+| Expansão | 7 | 7 | 7 | 5 | 5 | n/a | n/a | 3 | 7 | 7 | 8 | 8 | 6 |
+| Regulação | 7 | 7 | 7 | 5 | 5 | n/a | n/a | 3 | 7 | 8 | 8 | 8 | 6 |
+| Aprenda | 7 | 7 | 7 | 7 | 5 | 5 | 6 | 6 | 7 | 9 | 9 | 8 | 7 |
+| Infográfico mestre | 7 | 7 | 7 | 6 | 5 | n/a | n/a | 7 | 7 | 9 | 8 | 8 | 7 |
+| Dados | 8 | 7 | 8 | 7 | 7 | n/a | n/a | 8 | 8 | 9 | 10 | 8 | 6 |
+| Metodologia | 7 | 7 | 8 | 7 | 5 | n/a | n/a | 5 | 7 | 9 | 9 | 8 | 7 |
+
+### Defeitos apontados e correções aplicadas
+
+| Defeito (auditor) | Correção |
+| --- | --- |
+| Seta invisível no mapa de fluxos (marker de 9 px sob traço de até 13,5 px); sentido dependia do tracejado animado, que para com movimento reduzido | Seta desenhada como triângulo proporcional à espessura na ponta do arco; rótulo do fluxo em duas linhas ("NE → SE/CO" e volume), deslocado para fora da curva (`MapaBrasil`, `geo.ts`) |
+| Chip do mapa estourava a caixa quando o subtítulo era longo | Caixa mede valor e subtítulo, com quebra em duas linhas |
+| Camada Preço com quatro tons indistinguíveis (percentis de 52 a 61) | Três tons discretos por faixa (abaixo do 25º, central, acima do 75º), legenda dizendo isso (`intensidadeFaixa`) |
+| Rótulos em caixa alta a 0,62 rem carregando informação | Modificadores removidos; piso de 0,72 rem |
+| SVGs com viewBox fixo ilegíveis no celular (matriz, calendário, miniaturas) | Matriz mede a largura; calendário rola dentro da figura; miniaturas viram listas em HTML abaixo de 640 px |
+| Cabeçalho do seletor sobreposto em 390 px | Só a marca no celular (`FocoHeader`) |
+| Perguntas de cada observatório escondidas no hover, sem equivalente em toque | Três perguntas sempre visíveis; as demais ao passar o ponteiro ou focar no desktop, sempre visíveis no celular; ação alinhada ao pé; datas na legenda |
+| Painel ENA: título do acumulado de 30 dias sobre gráfico diário | Título fiel ao gráfico diário; acumulado mantido no cabeçalho e em "o que mudou" |
+| Fita sazonal era o melhor gráfico e não o visual principal de Água | Passou a ser o visual principal; mapa virou bloco depois das colunas |
+| Esteira com contagens vazias ou infladas pelo PLD nos módulos em integração | Esteira só com conjunto além de catalogado; contagens excluem conjuntos utilizados em outro módulo; "Mostrando 14 de N" |
+| CCEE entre ACR e ACL como se fosse ambiente de contratação | CCEE em linha própria: liquida as diferenças no Mercado de Curto Prazo |
+| Expansão: duas taxonomias na mesma caixa sem distinção | "Natureza prevista do dado" separada do estado de conferência, com nota |
+| Cinco declarações de ausência no capítulo 5 do PLD; 28 células idênticas na máquina do tempo | Uma declaração ao lado do fan chart; "Onde conferir" e "O que aparecerá aqui"; rodada vazia vira frase, tabela sob demanda |
+| Texto "previsão indisponível" extrapolando a hachura estreita no celular | Texto oculto quando a área é estreita; a caixa de estado diz o motivo |
+| Rótulos de faixa colidindo com a linha no piso; faixas com vãos; eixo com duas marcas | Rótulos no alto; faixas contíguas; eixo com pelo menos três marcas |
+| Título de nó vazando no diagrama de formação | Quebra dentro da caixa |
+| Comparação anual da carga serrilhada, leitura do título invisível | Média móvel de 7 dias declarada como calculada; diária na tabela |
+| Painel de fluxos da Rede visualmente vazio | Quatro cartões por fronteira com sparkline; seção Rede da Visão geral também |
+| Mapa conceitual abria sem conceito; microaula com sparkline sem régua; NEWAVE/NEWAVE; espaço duplo no título | Primeiro conceito conferido selecionado; gráfico compacto com eixos, datas e referência; sigla igual ao nome não repete; título corrigido |
+| Infográfico mestre abria na etapa sem dado | Abre na primeira etapa com dado |
+| Linhagem e esteira em seis cartões empilhados no celular; explorador em quatro blocos por linha | Grade de duas colunas no celular (três a partir de sm); linha em duas linhas |
+| Linhagem duplicada em Metodologia; página sem índice | Remete ao mapa em Dados; índice "Nesta página" |
+
+Não corrigido, por decisão declarada: desenho de mecanismo sob o infográfico mestre (fica para a integração de geodados), grade dos verbetes em Aprenda (mantida como índice completo), mapa vazio em Empresas, esqueleto de linha do tempo em Regulação, média móvel na seção Carga da Visão geral, abas do mapa em uma linha no celular.
+
+### Segunda rodada
+
+Preenchida com o resultado da reavaliação.

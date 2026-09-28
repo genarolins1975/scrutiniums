@@ -1,15 +1,15 @@
 "use client";
 
-import { useId, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import type { Submercado } from "@/lib/energia/tipos";
-import { ANCORA, CONTORNO, FRONTEIRAS, NOME_REGIAO, ORDEM_REGIOES, REGIOES, SIGLA_REGIAO, VIEWBOX, arco, caminho, pontoMedioArco, projetar } from "@/lib/energia/geo";
+import { ANCORA, CONTORNO, FRONTEIRAS, NOME_REGIAO, ORDEM_REGIOES, REGIOES, SIGLA_REGIAO, VIEWBOX, arco, caminho, pontaArco, pontoRotuloArco, projetar } from "@/lib/energia/geo";
 
 /**
  * Mapa-base reutilizável do sistema elétrico: o país dividido nos quatro
  * submercados, com uma camada de valores por região (preenchimento com
  * intensidade, número em chip) e, opcionalmente, os fluxos entre as fronteiras
- * monitoradas pelo ONS (espessura = volume, seta e tracejado em movimento =
- * sentido). A região selecionada abre um detalhe. A lista de botões ao lado é
+ * monitoradas pelo ONS (espessura = volume; seta proporcional e rótulo "de → para"
+ * = sentido, com o tracejado em movimento como reforço que para com movimento reduzido). A região selecionada abre um detalhe. A lista de botões ao lado é
  * a versão acessível e a versão de celular do mesmo conteúdo.
  *
  * Geometria esquemática (src/lib/energia/geo.ts): sem escala, sem precisão de
@@ -33,6 +33,16 @@ const NOTA_PADRAO =
 
 function fmt(v: number, casas = 0) {
   return v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
+}
+
+/** Quebra o subtítulo do chip em até duas linhas curtas, no espaço mais próximo do meio. */
+function linhasSub(sub: string | undefined, max = 22): string[] {
+  if (!sub) return [];
+  if (sub.length <= max) return [sub];
+  const meio = Math.floor(sub.length / 2);
+  let corte = -1;
+  for (let i = 0; i < sub.length; i++) if (sub[i] === " " && (corte < 0 || Math.abs(i - meio) < Math.abs(corte - meio))) corte = i;
+  return corte < 0 ? [sub] : [sub.slice(0, corte), sub.slice(corte + 1)];
 }
 
 export function MapaBrasil({
@@ -67,7 +77,6 @@ export function MapaBrasil({
   /** Camada extra desenhada sobre o mapa, em coordenadas do viewBox (use `projetar` de geo.ts). */
   sobreposicao?: ReactNode;
 }) {
-  const uid = useId().replace(/:/g, "");
   const [interno, setInterno] = useState<Submercado | null>(null);
   const sel = selecionado === undefined ? interno : selecionado;
   const escolher = (sm: Submercado | null) => {
@@ -102,11 +111,6 @@ export function MapaBrasil({
       role="img"
       aria-label={`${titulo}. ${resumoValores}.${resumoFluxos ? ` Fluxos: ${resumoFluxos}.` : ""}`}
     >
-      <defs>
-        <marker id={`${uid}-seta`} viewBox="0 0 10 10" refX="7" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto">
-          <path d="M0,0 L10,5 L0,10 z" fill="var(--cor-energia-dark)" />
-        </marker>
-      </defs>
       {ORDEM_REGIOES.map((sm) => (
         <path
           key={sm}
@@ -128,16 +132,32 @@ export function MapaBrasil({
         const v = f.valor;
         const [a, b] = v === null || v >= 0 ? [fr.a, fr.b] : [fr.b, fr.a];
         const w = v === null ? 2 : 2.5 + 11 * (Math.abs(v) / maxF);
-        const [mx, my] = pontoMedioArco(a, b);
+        const [mx, my] = pontoRotuloArco(a, b, 18);
+        const ponta = pontaArco(a, b);
+        const rad = (ponta.angulo * Math.PI) / 180;
+        // a seta é um triângulo proporcional à espessura, com a ponta meio traço à frente do fim do arco,
+        // para cobrir a terminação arredondada; ela carrega o sentido mesmo sem a animação do tracejado
+        const seta = Math.max(9, w * 2);
+        const [oSm, dSm] = v === null || v >= 0 ? [f.de, f.para] : [f.para, f.de];
         return (
           <g key={fr.par} pointerEvents="none">
-            <path d={arco(a, b)} fill="none" stroke="var(--cor-energia)" strokeWidth={w} strokeLinecap="round" opacity={v === null ? 0.25 : 0.85} markerEnd={v === null ? undefined : `url(#${uid}-seta)`} />
+            <path d={arco(a, b)} fill="none" stroke="var(--cor-energia)" strokeWidth={w} strokeLinecap="round" opacity={v === null ? 0.25 : 0.85} />
             {v !== null && animar && (
               <path d={arco(a, b)} fill="none" stroke="var(--cor-superficie)" strokeWidth={Math.max(1, w * 0.3)} strokeDasharray="5 9" strokeLinecap="round" className="fluxo-animado" opacity={0.9} />
             )}
+            {v !== null && (
+              <path
+                d="M0,0 L-1,-0.55 L-1,0.55 Z"
+                transform={`translate(${(ponta.x + Math.cos(rad) * (w / 2)).toFixed(1)},${(ponta.y + Math.sin(rad) * (w / 2)).toFixed(1)}) rotate(${ponta.angulo.toFixed(1)}) scale(${seta.toFixed(1)})`}
+                fill="var(--cor-energia-dark)"
+              />
+            )}
             <g className="hidden sm:block">
-              <rect x={mx - 40} y={my - 9} width={80} height={18} rx={2} fill="var(--cor-superficie)" stroke="var(--cor-linha)" />
-              <text x={mx} y={my + 4} textAnchor="middle" fontSize="10.5" fill="var(--cor-carvao)" className="tabular-nums">
+              <rect x={mx - 42} y={my - 15} width={84} height={30} rx={2} fill="var(--cor-superficie)" stroke="var(--cor-linha)" />
+              <text x={mx} y={my - 3} textAnchor="middle" fontSize="10" fill="var(--cor-mineral)" style={{ letterSpacing: "0.06em" }}>
+                {SIGLA_REGIAO[oSm]} → {SIGLA_REGIAO[dSm]}
+              </text>
+              <text x={mx} y={my + 10} textAnchor="middle" fontSize="11" fontWeight="600" fill="var(--cor-carvao)" className="tabular-nums">
                 {v === null ? "sem dado" : `${fmt(Math.abs(v))} ${unidadeFluxo}`}
               </text>
             </g>
@@ -148,7 +168,10 @@ export function MapaBrasil({
       {ORDEM_REGIOES.map((sm) => {
         const [x, y] = projetar(ANCORA[sm]);
         const v = valores[sm];
-        const largo = v && v.valor.length > 9 ? 124 : 104;
+        const sub = linhasSub(v?.sub);
+        // a caixa mede o maior dos textos que carrega: valor (15 px) e subtítulo (10,5 px, até duas linhas)
+        const largo = v ? Math.max(104, Math.round(v.valor.length * 9 + 24), ...sub.map((l) => Math.round(l.length * 5.9 + 20))) : 104;
+        const alto = 28 + sub.length * 13;
         return (
           <g key={sm} pointerEvents="none">
             <text x={x} y={y - 6} textAnchor="middle" fontSize="18" fontWeight="600" fill="var(--cor-carvao)" style={{ letterSpacing: "0.04em" }}>
@@ -156,15 +179,15 @@ export function MapaBrasil({
             </text>
             {v && (
               <g className="hidden sm:block">
-                <rect x={x - largo / 2} y={y + 4} width={largo} height={v.sub ? 42 : 28} rx={2} fill="var(--cor-superficie)" stroke="var(--cor-carvao)" strokeWidth={0.8} />
+                <rect x={x - largo / 2} y={y + 4} width={largo} height={alto} rx={2} fill="var(--cor-superficie)" stroke="var(--cor-carvao)" strokeWidth={0.8} />
                 <text x={x} y={y + 23} textAnchor="middle" fontSize="15" fontWeight="600" fill="var(--cor-carvao)" className="tabular-nums">
                   {v.valor}
                 </text>
-                {v.sub && (
-                  <text x={x} y={y + 38} textAnchor="middle" fontSize="10" fill="var(--cor-mineral)">
-                    {v.sub}
+                {sub.map((l, k) => (
+                  <text key={k} x={x} y={y + 37 + k * 13} textAnchor="middle" fontSize="10.5" fill="var(--cor-mineral)">
+                    {l}
                   </text>
-                )}
+                ))}
               </g>
             )}
           </g>

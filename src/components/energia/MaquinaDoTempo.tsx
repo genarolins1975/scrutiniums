@@ -29,6 +29,8 @@ export function MaquinaDoTempo({ registros, realizado }: { registros: RegistroPr
   const celulas = vistos.filter((r) => r.run_id === ultimaRodada);
   const porCelula = (h: string, sm: Submercado) => celulas.find((r) => r.horizonte === h && r.submercado === sm);
   const numeroPublico = (r: RegistroPrevisao) => r.previsao !== null && r.tipo === "PUBLICACAO" && r.estado_modelo === "PRODUCAO";
+  // rodada inteira sem número e sem realizado: uma frase diz isso, e a tabela abre sob demanda
+  const todasVazias = celulas.length > 0 && celulas.every((r) => r.previsao === null && r.status === "INDISPONIVEL") && !celulas.some((r) => SMS.some((sm) => realizado[r.entrega.id]?.[sm]?.media != null));
   if (!datas.length) return <p className="text-sm text-mineral">Nenhum registro no arquivo.</p>;
   return (
     <div>
@@ -74,6 +76,13 @@ export function MaquinaDoTempo({ registros, realizado }: { registros: RegistroPr
             Última rodada registrada até essa data: <span className="break-all font-mono text-xs">{ultimaRodada}</span>
             {celulas[0] ? ` · modelo ${celulas[0].modelo} (${celulas[0].estado_modelo.toLowerCase()}) · corte ${new Date(celulas[0].cutoff).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" })}` : ""}
           </p>
+          {todasVazias && (
+            <p className="mt-3 max-w-prose2 text-sm leading-relaxed text-carvao">
+              As {celulas.length} células desta rodada ({HORIZONTES.filter((h) => SMS.some((sm) => porCelula(h, sm))).length} horizontes por {SMS.length} submercados) estão registradas sem número e com status indisponível: o modelo está em pesquisa, e a plataforma registra a ausência, não um valor. Nenhuma entrega tem realizado a comparar.
+            </p>
+          )}
+          <details open={!todasVazias} className="mt-3">
+            <summary className="rotulo min-h-[44px] cursor-pointer text-carvao-muted">{todasVazias ? `Ver as ${celulas.length} células, uma a uma` : "Células da rodada"}</summary>
           <div className="tabela-scroll mt-3" tabIndex={0} role="region" aria-label="Células da rodada por horizonte e submercado (tabela rolável)">
             <table className="w-full min-w-[44rem] border-collapse text-xs">
               <caption className="sr-only">Previsão, realizado e erro por horizonte e submercado</caption>
@@ -130,6 +139,7 @@ export function MaquinaDoTempo({ registros, realizado }: { registros: RegistroPr
               </tbody>
             </table>
           </div>
+          </details>
           <p className="mt-2 text-xs leading-relaxed text-mineral">
             &quot;Número retido&quot;: a rodada interna de modelo fora de produção produziu um valor que não é exibido, por regra de governança. &quot;Sem número&quot;: a rodada não gerou valor (motivo no histórico). O realizado é a média das médias diárias do PLD nos dias da entrega, calculada pela plataforma; o erro é previsão menos realizado e só aparece quando os dois existem e a entrega está completa.
           </p>

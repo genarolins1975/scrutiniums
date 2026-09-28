@@ -5,8 +5,11 @@ import { mesAno } from "@/lib/energia/formato";
  * Miniatura data-driven do Crédito: a curva da inadimplência nacional nos
  * últimos meses e, abaixo, os 27 estados como uma matriz de barras ordenada
  * pela inadimplência. Abstrata na forma, real nos números; sem gold, mostra
- * o vazio com aviso.
+ * o vazio com aviso. No celular o desenho dá lugar a três números em HTML,
+ * para o texto não encolher.
  */
+const pc = (v: number) => `${v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`;
+
 export function MiniaturaCredito({ dados }: { dados: MiniaturaCreditoDados }) {
   const W = 520;
   const H = 190;
@@ -26,30 +29,60 @@ export function MiniaturaCredito({ dados }: { dados: MiniaturaCreditoDados }) {
   const ufMax = ufs.length ? Math.max(...ufs.map((u) => u.inad)) : 1;
   const larguraUf = (W - 48) / Math.max(1, ufs.length);
   const ultimo = s[s.length - 1];
+  const menorUf = ufs[0];
+  const maiorUf = ufs[ufs.length - 1];
+  const descricao = `Inadimplência do crédito no país: ${pc(ultimo.v)} em ${mesAno(ultimo.p)}, série de ${s.length} meses; abaixo, os ${ufs.length} estados ordenados pela inadimplência.`;
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="block h-auto w-full" role="img" aria-label={`Inadimplência do crédito no país: ${ultimo.v.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}% em ${mesAno(ultimo.p)}, série de ${s.length} meses; abaixo, os ${ufs.length} estados ordenados pela inadimplência.`}>
-      <path d={area} fill="var(--cor-bronze)" fillOpacity="0.12" />
-      <path d={linha} fill="none" stroke="var(--cor-bronze)" strokeWidth="2" strokeLinejoin="round" />
-      <circle cx={x(s.length - 1)} cy={y(ultimo.v)} r="3.5" fill="var(--cor-bronze)" stroke="var(--cor-superficie)" strokeWidth="1.5" />
-      <text x={x(s.length - 1) - 6} y={y(ultimo.v) - 8} textAnchor="end" fontSize="13" fontWeight="600" fill="var(--cor-carvao)" className="tabular-nums">
-        {ultimo.v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%
-      </text>
-      <text x={24} y={12} fontSize="10" fill="var(--cor-mineral)" style={{ letterSpacing: "0.08em", textTransform: "uppercase" }}>
-        inadimplência · {mesAno(s[0].p)} a {mesAno(ultimo.p)}
-      </text>
-      {ufs.map((u, i) => {
-        const h = 6 + (u.inad / ufMax) * 40;
-        return (
-          <g key={u.uf}>
-            <rect x={24 + i * larguraUf + 1} y={176 - h} width={Math.max(2, larguraUf - 2)} height={h} fill="var(--cor-bronze)" fillOpacity={0.35 + 0.6 * (u.inad / ufMax)}>
-              <title>{`${u.uf}: ${u.inad.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}%`}</title>
-            </rect>
-          </g>
-        );
-      })}
-      <text x={24} y={H - 2} fontSize="9.5" fill="var(--cor-mineral)">
-        27 estados, da menor à maior inadimplência
-      </text>
-    </svg>
+    <div>
+      <svg viewBox={`0 0 ${W} ${H}`} className="hidden h-auto w-full sm:block" role="img" aria-label={descricao}>
+        <path d={area} fill="var(--cor-bronze)" fillOpacity="0.12" />
+        <path d={linha} fill="none" stroke="var(--cor-bronze)" strokeWidth="2" strokeLinejoin="round" />
+        <circle cx={x(s.length - 1)} cy={y(ultimo.v)} r="3.5" fill="var(--cor-bronze)" stroke="var(--cor-superficie)" strokeWidth="1.5" />
+        <text x={x(s.length - 1) - 6} y={y(ultimo.v) - 8} textAnchor="end" fontSize="13" fontWeight="600" fill="var(--cor-carvao)" className="tabular-nums">
+          {pc(ultimo.v)}
+        </text>
+        <text x={24} y={12} fontSize="10.5" fill="var(--cor-mineral)" style={{ letterSpacing: "0.08em", textTransform: "uppercase" }}>
+          inadimplência · {mesAno(s[0].p)} a {mesAno(ultimo.p)}
+        </text>
+        {ufs.map((u, i) => {
+          const h = 6 + (u.inad / ufMax) * 40;
+          return (
+            <g key={u.uf}>
+              <rect x={24 + i * larguraUf + 1} y={176 - h} width={Math.max(2, larguraUf - 2)} height={h} fill="var(--cor-bronze)" fillOpacity={0.35 + 0.6 * (u.inad / ufMax)}>
+                <title>{`${u.uf}: ${pc(u.inad)}`}</title>
+              </rect>
+            </g>
+          );
+        })}
+        <text x={24} y={H - 2} fontSize="10.5" fill="var(--cor-mineral)">
+          {ufs.length} estados, da menor à maior inadimplência
+        </text>
+      </svg>
+      <dl className="grid grid-cols-2 gap-x-4 gap-y-3 sm:hidden" aria-label={descricao}>
+        <div className="col-span-2">
+          <dt className="rotulo text-mineral">Inadimplência no país · {mesAno(ultimo.p)}</dt>
+          <dd className="font-serif text-2xl leading-tight tabular-nums text-carvao">{pc(ultimo.v)}</dd>
+          <dd className="text-xs text-mineral">
+            de {pc(mn)} a {pc(mx)} entre {mesAno(s[0].p)} e {mesAno(ultimo.p)}
+          </dd>
+        </div>
+        {menorUf && maiorUf && (
+          <>
+            <div>
+              <dt className="rotulo text-mineral">Menor entre os estados</dt>
+              <dd className="font-serif text-lg leading-tight tabular-nums text-carvao">
+                {menorUf.uf} · {pc(menorUf.inad)}
+              </dd>
+            </div>
+            <div>
+              <dt className="rotulo text-mineral">Maior entre os estados</dt>
+              <dd className="font-serif text-lg leading-tight tabular-nums text-carvao">
+                {maiorUf.uf} · {pc(maiorUf.inad)}
+              </dd>
+            </div>
+          </>
+        )}
+      </dl>
+    </div>
   );
 }

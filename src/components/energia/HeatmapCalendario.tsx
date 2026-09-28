@@ -89,7 +89,9 @@ export function HeatmapCalendario({
   const r = resumoHeatmap(dados);
   return (
     <figure>
-      <svg viewBox={`0 0 ${w} ${h}`} className="block h-auto w-full" role="img" aria-label={`${titulo}: calendário de calor, de ${dados[0].d} a ${dados[dados.length - 1].d}, em ${unidade}. ${r.maior ? `Maior valor ${fmt(r.maior.v as number, casas)} em ${r.maior.d}; ` : ""}${r.menor ? `menor ${fmt(r.menor.v as number, casas)} em ${r.menor.d}.` : ""}`}>
+      <p className="mb-1 text-xs text-mineral sm:hidden">Role de lado para ver o ano inteiro.</p>
+      <div className="overflow-x-auto">
+      <svg viewBox={`0 0 ${w} ${h}`} className="block h-auto w-full min-w-[44rem]" role="img" aria-label={`${titulo}: calendário de calor, de ${dados[0].d} a ${dados[dados.length - 1].d}, em ${unidade}. ${r.maior ? `Maior valor ${fmt(r.maior.v as number, casas)} em ${r.maior.d}; ` : ""}${r.menor ? `menor ${fmt(r.menor.v as number, casas)} em ${r.menor.d}.` : ""}`}>
         {meses.map((m, i) => {
           const proximo = meses[i + 1]?.col ?? nCol;
           if (proximo - m.col < 2) return null;
@@ -121,6 +123,7 @@ export function HeatmapCalendario({
           );
         })}
       </svg>
+      </div>
       <figcaption className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-mineral">
         <span className="flex items-center gap-1.5">
           <span aria-hidden="true" className="inline-block h-3 w-3" style={{ background: `color-mix(in srgb, ${cor} 8%, var(--cor-superficie))` }} />

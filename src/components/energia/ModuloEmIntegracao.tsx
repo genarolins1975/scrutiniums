@@ -48,7 +48,10 @@ export function ModuloEmIntegracao({
   const cat = gold.catalogo();
   const relacionadosTodos = (cat?.entradas ?? []).filter((e) => temas.includes(e.tema) && (!orgaos || orgaos.includes(e.orgao)) && !e.descontinuado);
   // só o que ainda não foi integrado: fonte já usada em indicador aparece no próprio módulo
-  const relacionados = relacionadosTodos.filter((e) => !e.estado.startsWith("UTILIZADO")).slice(0, 14);
+  // conjuntos já utilizados em outro módulo (o PLD, por exemplo) não contam como progresso deste módulo
+  const doModulo = relacionadosTodos.filter((e) => !e.estado.startsWith("UTILIZADO"));
+  const emAndamento = doModulo.filter((e) => e.estado !== "CATALOGADO");
+  const relacionados = doModulo.slice(0, 14);
   return (
     <>
       <CabecalhoEnergia atual={atual} />
@@ -69,7 +72,7 @@ export function ModuloEmIntegracao({
             {destaque && <div className="mt-3 max-w-prose2 text-carvao">{destaque}</div>}
           </div>
           <p className="text-sm text-carvao-muted md:max-w-[16rem]">
-            {relacionadosTodos.length} {relacionadosTodos.length === 1 ? "conjunto catalogado neste tema" : "conjuntos catalogados neste tema"}, {relacionadosTodos.filter((e) => e.estado !== "CATALOGADO").length} além de catalogado.
+            {doModulo.length} {doModulo.length === 1 ? "conjunto catalogado neste tema" : "conjuntos catalogados neste tema"}; {emAndamento.length === 0 ? "nenhum em integração ainda" : `${emAndamento.length} além de catalogado`}.
           </p>
         </div>
 
@@ -138,10 +141,14 @@ export function ModuloEmIntegracao({
           <p className="mt-1 max-w-prose2 text-sm text-carvao-muted">
             Registradas no catálogo com os metadados oficiais da fonte. A esteira mostra em que degrau da integração cada conjunto deste tema está; só conjuntos no degrau de uso alimentam números.
           </p>
-          {cat && relacionadosTodos.length > 0 && (
+          {cat && emAndamento.length > 0 ? (
             <div className="mt-4">
-              <PipelineEstados cat={cat} entradas={relacionadosTodos} compacto />
+              <PipelineEstados cat={cat} entradas={doModulo} compacto />
             </div>
+          ) : (
+            <p className="mt-3 text-sm text-carvao">
+              Todos os {doModulo.length} conjuntos deste tema estão no primeiro degrau (catalogado): existência e metadados registrados, sem coleta automática ainda.
+            </p>
           )}
           {relacionados.length ? (
             <ul className="mt-4 divide-y divide-linha border border-linha bg-superficie px-5">
@@ -150,7 +157,7 @@ export function ModuloEmIntegracao({
                   <span className="rotulo text-mineral">{e.orgao}</span>
                   <span className="text-sm text-carvao">
                     {e.titulo}
-                    <span className="ml-2 rotulo !text-[0.62rem] text-mineral">{e.estado}</span>
+                    <span className="ml-2 rotulo text-mineral">{e.estado}</span>
                     {!e.metadados_verificados && <span className="ml-2 text-xs text-aviso">metadados a conferir</span>}
                   </span>
                   <a href={e.url} target="_blank" rel="noopener noreferrer" className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
@@ -162,8 +169,8 @@ export function ModuloEmIntegracao({
           ) : (
             <p className="mt-3 text-sm text-mineral">Nenhuma fonte catalogada neste tema ainda.</p>
           )}
-          <Link href="/setor-eletrico/dados" className="rotulo mt-4 inline-flex min-h-[44px] items-center text-carvao underline underline-offset-4">
-            Catálogo completo →
+          <Link href="/setor-eletrico/dados#explorer" className="rotulo mt-4 inline-flex min-h-[44px] items-center text-carvao underline underline-offset-4">
+            {doModulo.length > relacionados.length ? `Mostrando ${relacionados.length} de ${doModulo.length}: ver todos no catálogo →` : "Catálogo completo →"}
           </Link>
         </section>
       </main>

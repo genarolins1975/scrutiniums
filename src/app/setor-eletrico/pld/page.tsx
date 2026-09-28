@@ -10,6 +10,7 @@ import { Conferido } from "@/components/evidencia/Conferido";
 import { CartoesPld } from "@/components/energia/CartoesPld";
 import { DiagramaFormacao, type NoComEstado } from "@/components/energia/DiagramaFormacao";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
+import { intensidadeFaixa } from "@/lib/energia/geo";
 import { MapaBrasil } from "@/components/energia/MapaBrasil";
 import { MetricaHero } from "@/components/energia/MetricaHero";
 import { LinhaDoDia, type DiaHorario } from "@/components/energia/LinhaDoDia";
@@ -510,7 +511,7 @@ export default function PldPage() {
                     titulo={`PLD médio de ${dataBR(pld.dia_referencia)} e fluxos de ${dataBR(rede.dia_referencia)}`}
                     tom="preco"
                     valores={Object.fromEntries(
-                      pld.cartoes.map((c) => [c.sm, { valor: reais(c.media_dia), sub: "PLD médio do dia", intensidade: c.posicao.percentil !== null ? c.posicao.percentil / 100 : null }]),
+                      pld.cartoes.map((c) => [c.sm, { valor: reais(c.media_dia), sub: c.posicao.percentil !== null ? `faixa ${c.posicao.percentil < 25 ? "baixa" : c.posicao.percentil > 75 ? "alta" : "central"} desde 2021` : "PLD médio do dia", intensidade: intensidadeFaixa(c.posicao.percentil) }]),
                     )}
                     fluxos={rede.fronteiras.map((f) => ({ de: f.de, para: f.para, valor: f.fluxo_dia }))}
                     legenda={`Chips: PLD médio de ${dataBR(pld.dia_referencia)} (R$/MWh); cor da região: posição do dia na distribuição desde 2021. Setas: sentido e fluxo médio verificado entre subsistemas em ${dataBR(rede.dia_referencia)}. Quando os preços divergem, o mapa mostra a diferença; a razão não é atribuída.`}
@@ -665,37 +666,30 @@ export default function PldPage() {
                 </div>
               </div>
               <div>
-                {prev && !prev.atual.disponivel ? (
-                  <Indisponivel titulo="Previsão indisponível" motivo={<>{prev.atual.motivo} A Scrutiniums não publica previsão de modelo em pesquisa ou em validação.</>} faltante={prev.atual.informacao_faltante} estado={prev.atual.estado_pipeline}>
-                    <p className="mt-5 flex flex-wrap gap-4 text-sm">
-                      <Link href="/setor-eletrico/pld/modelos" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">Registro de modelos</Link>
+                <div className="border border-linha bg-superficie p-5">
+                  <p className="rotulo text-mineral">Onde conferir</p>
+                  <p className="mt-2 text-sm leading-relaxed text-carvao">
+                    O estado da previsão está declarado uma vez, ao lado do gráfico. Os registros que o sustentam ficam em duas páginas: o registro de modelos, com o estado e as evidências de cada um, e o histórico de previsões, com cada registro imutável.
+                  </p>
+                  <p className="mt-3 flex flex-wrap gap-4 text-sm">
+                    <Link href="/setor-eletrico/pld/modelos" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">Registro de modelos</Link>
+                    {prev && (
                       <Link href="/setor-eletrico/pld/previsoes" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">Histórico de previsões ({prev.arquivo.length} registros, {prev.publicacoes} publicações)</Link>
-                    </p>
-                  </Indisponivel>
-                ) : prev && prev.atual.disponivel ? (
-                  <div className="border border-linha bg-superficie p-5">
-                    <p className="rotulo text-mineral">Previsão publicada</p>
-                    <p className="mt-2 text-sm leading-relaxed text-carvao">Há publicação do modelo em produção no arquivo imutável. Cada registro traz modelo, versão, corte, quantis e sha256.</p>
-                    <Link href="/setor-eletrico/pld/previsoes" className="mt-3 inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4">Ver no histórico de previsões</Link>
-                  </div>
-                ) : (
-                  <Indisponivel titulo="Previsão indisponível" motivo="O arquivo de previsões não foi gerado nesta publicação." />
-                )}
-                <div className="mt-6 grid gap-4">
-                  <div className="border border-linha bg-superficie p-5">
-                    <h3 className="font-serif text-lg text-carvao">Por que a previsão mudou?</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-carvao-muted">
-                      Sem duas previsões publicadas, não há o que decompor. Quando houver, esta seção mostrará, em barras, quanto cada informação nova (EAR, ENA, carga, renováveis, térmicas, intercâmbio) contribuiu para a mudança entre a previsão anterior e a atual, rotulada como <strong className="font-medium">contribuição do modelo</strong>, e só se a decomposição for tecnicamente justificável para o modelo em produção.
-                    </p>
-                  </div>
-                  <div className="border border-linha bg-superficie p-5">
-                    <h3 className="font-serif text-lg text-carvao">Por que confiar? O modelo tem acertado?</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-carvao-muted">
-                      Ainda não há previsão publicada com realizado para comparar. Os resultados retrospectivos da pesquisa estão{" "}
+                    )}
+                  </p>
+                </div>
+                <div className="mt-6 border border-linha bg-superficie p-5">
+                  <h3 className="font-serif text-lg text-carvao">O que aparecerá aqui quando houver modelo em produção</h3>
+                  <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm leading-relaxed text-carvao-muted">
+                    <li>
+                      <span className="font-medium text-carvao">Por que a previsão mudou.</span> Barras com quanto cada informação nova (EAR, ENA, carga, renováveis, térmicas, intercâmbio) contribuiu para a mudança entre a previsão anterior e a atual, rotuladas como{" "}
+                      <strong className="font-medium">contribuição do modelo</strong>, e só se a decomposição for tecnicamente justificável para o modelo em produção.
+                    </li>
+                    <li>
+                      <span className="font-medium text-carvao">Se o modelo tem acertado.</span> Previsão, realizado e erro por entrega, depois erro típico, cobertura da faixa e comparação com referências simples. Os resultados retrospectivos da pesquisa estão{" "}
                       {mods?.publicacao_resultados.liberada ? "no registro de modelos" : "retidos até a conclusão da revisão da pesquisa e a liberação pelo responsável pela plataforma"}.
-                      Toda avaliação futura começa por previsão, realizado e erro, depois erro típico, depois cobertura da faixa, e só então métricas técnicas contra referências simples.
-                    </p>
-                  </div>
+                    </li>
+                  </ol>
                 </div>
               </div>
             </div>

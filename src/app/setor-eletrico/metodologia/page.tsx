@@ -4,8 +4,6 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { NATUREZAS, SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { LISTA_UNIDADES } from "@/components/evidencia/Unidade";
-import { LinhagemDados } from "@/components/energia/LinhagemDados";
-import { etapasLinhagem } from "@/lib/energia/linhagem";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold } from "@/lib/energia/gold";
 import { carimbo, rotuloRegra } from "@/lib/energia/formato";
@@ -70,6 +68,17 @@ export default function MetodologiaEnergia() {
             repositório público do projeto ↗
           </a>, junto com o código que produz cada número.
         </CabecalhoModulo>
+        <nav aria-label="Nesta página" className="mb-2 mt-2 flex flex-wrap gap-x-5 gap-y-1 text-sm">
+          <a href="#natureza" className="inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-4 hover:text-carvao">Taxonomia de natureza do dado</a>
+          <a href="#unidades" className="inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-4 hover:text-carvao">Unidades</a>
+          <a href="#editorial" className="inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-4 hover:text-carvao">Regra editorial</a>
+          <a href="#linhagem" className="inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-4 hover:text-carvao">Linhagem e vintages</a>
+          <a href="#classificacao" className="inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-4 hover:text-carvao">Regras de classificação publicadas</a>
+          <a href="#sintese" className="inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-4 hover:text-carvao">Frases e alertas da Visão geral</a>
+          <a href="#previsao" className="inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-4 hover:text-carvao">Governança de previsão</a>
+          <a href="#limitacoes" className="inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-4 hover:text-carvao">Limitações gerais desta fase</a>
+          <a href="#versao" className="inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-4 hover:text-carvao">Versão desta publicação</a>
+        </nav>
 
         <S id="natureza" titulo="Taxonomia de natureza do dado">
           <p>Todo número exibido carrega um selo. As categorias nunca se confundem, e a forma do selo muda com a categoria, não só a cor.</p>
@@ -112,11 +121,9 @@ export default function MetodologiaEnergia() {
             O processamento tem três camadas, com nomes usuais em engenharia de dados: bronze guarda o arquivo original de cada captura, silver guarda o
             histórico de observações por captura (vintage) e gold reúne os dados processados que as páginas publicam.
           </p>
-          <div className="border border-linha bg-superficie p-4 md:p-5">
-            <LinhagemDados etapas={etapasLinhagem()} />
-          </div>
-          <details className="text-sm">
-            <summary className="rotulo min-h-[44px] cursor-pointer text-carvao-muted">Ver a linhagem em texto</summary>
+          <p className="text-sm">
+            <Link href="/setor-eletrico/dados#linhagem" className="text-energia-dark underline underline-offset-4">Mapa de linhagem interativo, com as contagens de cada etapa, na página Dados</Link>
+          </p>
           <pre tabIndex={0} aria-label="Linhagem dos dados, do arquivo da fonte à visualização (rolável)" className="overflow-x-auto border border-linha bg-superficie p-4 font-mono text-xs leading-relaxed text-carvao">{`FONTE (CCEE, ONS, ANEEL)
   ↓ captura: arquivo original, sha256, url, capturado_em, publicado_em (metadado da fonte)
 BRONZE: cópia imutável por captura
@@ -128,7 +135,6 @@ GOLD (dados processados): indicadores com proveniência, publicados em /energia/
 INDICADOR → VISUALIZAÇÃO | MODELO
 
 Previsões: VINTAGE DA FONTE → VARIÁVEIS DE ENTRADA → VERSÃO DO MODELO → PUBLICAÇÃO → REALIZADO → APURAÇÃO`}</pre>
-          </details>
           <p>
             Cada observação guarda a vintage de onde veio. Uma revisão da fonte (o ONS declara que seus dados passam por consistência recorrente) cria uma vintage
             nova sem apagar a anterior. A consulta &quot;como estava em&quot; devolve o valor conhecido em qualquer instante (com fuso explícito, sem

@@ -9,6 +9,8 @@ import { Unidade } from "@/components/evidencia/Unidade";
 import { CartoesPld } from "@/components/energia/CartoesPld";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { BarrasMix } from "@/components/energia/BarrasMix";
+import { Sparkline } from "@/components/energia/Sparkline";
+import { intensidadeFaixa } from "@/lib/energia/geo";
 import { MapaVivo, type CamadaMapa } from "@/components/energia/MapaVivo";
 import { SistemaEmUmaTela, type BlocoSistema } from "@/components/energia/SistemaEmUmaTela";
 import { IconeSetor } from "@/components/energia/IconeSetor";
@@ -95,10 +97,10 @@ export default function VisaoGeralEnergia() {
       valores: Object.fromEntries(
         SMS.map((sm) => {
           const c = por[sm];
-          return [sm, c ? { valor: `${reais(c.media_dia)}`, sub: c.posicao.percentil !== null ? `percentil ${num(c.posicao.percentil, 1)} desde 2021` : "R$/MWh", intensidade: c.posicao.percentil !== null ? c.posicao.percentil / 100 : null } : { valor: "sem dado", intensidade: null }];
+          return [sm, c ? { valor: `${reais(c.media_dia)}`, sub: c.posicao.percentil !== null ? `percentil ${num(c.posicao.percentil, 1)} desde 2021` : "R$/MWh", intensidade: intensidadeFaixa(c.posicao.percentil) } : { valor: "sem dado", intensidade: null }];
         }),
       ),
-      legenda: "Cor: posição da média do dia na distribuição das médias diárias do submercado desde 2021 (mais escuro, percentil mais alto). Valores nominais em R$/MWh.",
+      legenda: "Cor: faixa da média do dia entre as médias diárias do submercado desde 2021, em três tons: claro abaixo do 25º percentil, médio entre o 25º e o 75º, escuro acima do 75º. Valores nominais em R$/MWh.",
       referencia: `PLD horário (CCEE), médias calculadas pela Scrutiniums · ${dataBR(pld.dia_referencia)} · diferença entre o maior e o menor submercado no dia: ${reais(pld.amplitude_dia)}/MWh`,
       href: "/setor-eletrico/pld#hoje",
       hrefRotulo: "Ver o PLD hora a hora",
@@ -652,7 +654,11 @@ export default function VisaoGeralEnergia() {
                     <li key={f.par} className="border border-linha p-4">
                       <p className="rotulo text-mineral">{nome}</p>
                       <p className="mt-2 font-serif text-2xl tabular-nums text-carvao">{v === null ? "sem dado" : num(Math.abs(v), 0)}</p>
-                      <p className="text-xs text-mineral">MWmed em {dataBR(rede.dia_referencia)} · {f.dias_com_diferenca_30d} de {f.n_dias_pld_30d} dias com PLD diferente entre as pontas</p>
+                      <p className="text-xs text-mineral">MWmed em {dataBR(rede.dia_referencia)}</p>
+                      <div className="mt-2">
+                        <Sparkline valores={rede.serie_fluxos.slice(-90).map((p) => (typeof p[f.par] === "number" ? (p[f.par] as number) : null))} cor="var(--cor-energia)" zeroNoEixo largura={200} altura={32} rotulo={`Intercâmbio ${f.nome} nos últimos 90 dias`} />
+                      </div>
+                      <p className="mt-1 text-xs text-mineral">{f.dias_com_diferenca_30d} de {f.n_dias_pld_30d} dias com PLD diferente entre as pontas</p>
                     </li>
                   );
                 })}

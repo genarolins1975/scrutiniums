@@ -27,9 +27,9 @@ const ICONE: Record<string, TipoIcone> = {
 function Conferencia({ estado }: { estado: "CONFERIDO" | "PENDENTE" | undefined }) {
   if (!estado) return null;
   return estado === "CONFERIDO" ? (
-    <span className="rotulo !text-[0.62rem] text-sucesso">● conferido na fonte</span>
+    <span className="rotulo text-sucesso">● conferido na fonte</span>
   ) : (
-    <span className="rotulo !text-[0.62rem] text-aviso">○ conferência documental pendente</span>
+    <span className="rotulo text-aviso">○ conferência documental pendente</span>
   );
 }
 
@@ -68,10 +68,10 @@ export function DiagramaFormacao({ nos }: { nos: NoComEstado[] }) {
           ativo ? "border-energia bg-energia-fundo" : "border-linha bg-superficie hover:border-energia"
         } ${largo ? "items-center text-center" : "items-start"}`}
       >
-        <span className="flex items-center gap-2 text-sm font-medium leading-snug text-carvao">
-          <IconeSetor tipo={ICONE[id] ?? "sistema"} tamanho={15} className={ativo ? "text-energia-dark" : "text-mineral"} />
-          {n.titulo}
-          {n.sigla && <span className={`rotulo !text-[0.62rem] ${ativo ? "text-carvao-muted" : "text-mineral"}`}>{n.sigla}</span>}
+        <span className="flex min-w-0 max-w-full items-center gap-2 text-sm font-medium leading-snug text-carvao">
+          <IconeSetor tipo={ICONE[id] ?? "sistema"} tamanho={15} className={`shrink-0 ${ativo ? "text-energia-dark" : "text-mineral"}`} />
+          <span className="min-w-0 break-words">{n.titulo}</span>
+          {n.sigla && <span className={`rotulo ${ativo ? "text-carvao-muted" : "text-mineral"}`}>{n.sigla}</span>}
         </span>
         <span className={`mt-1 text-xs tabular-nums ${ativo ? "text-carvao-muted" : "text-mineral"}`}>{n.estado?.resumo ?? (n.estado ? "dado integrado" : "ainda não integrado")}</span>
       </button>
@@ -82,7 +82,7 @@ export function DiagramaFormacao({ nos }: { nos: NoComEstado[] }) {
     <div className="flex flex-col items-center py-1" aria-hidden="true">
       <span className="h-4 w-px bg-mineral-soft" />
       {rotulo && (
-        <span className="rotulo my-0.5 !text-[0.62rem] text-mineral">
+        <span className="rotulo my-0.5 text-mineral">
           {rotulo}
           {conferencia === "PENDENTE" ? " · pendente" : ""}
         </span>

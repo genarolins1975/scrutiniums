@@ -45,8 +45,17 @@ export function EvolucaoMatriz({ meses, regime }: { meses: MesMatriz[]; regime?:
     };
   }, [tocando, mes, ids, setMes]);
 
-  const W = 760;
-  const H = 300;
+  const [W, setW] = useState(760);
+  const caixa = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = caixa.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver((e) => setW(Math.max(320, Math.round(e[0].contentRect.width))));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  const estreito = W < 480;
+  const H = estreito ? 240 : 300;
   const L = 44;
   const R = 16;
   const T = 14;
@@ -68,7 +77,7 @@ export function EvolucaoMatriz({ meses, regime }: { meses: MesMatriz[]; regime?:
   const anos = Array.from(new Set(ids.map((m) => m.slice(0, 4))));
 
   return (
-    <div>
+    <div ref={caixa}>
       <div className="flex flex-wrap items-center gap-3">
         <button
           type="button"

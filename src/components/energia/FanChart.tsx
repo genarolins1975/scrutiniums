@@ -170,7 +170,7 @@ export function FanChart({
               corte
             </text>
             {!previsao && (
-              <text x={(x(iCorte) + x(n - 1)) / 2} y={(T + h - B) / 2} textAnchor="middle" fontSize="12" fill="var(--cor-carvao)">
+              <text x={(x(iCorte) + x(n - 1)) / 2} y={(T + h - B) / 2} textAnchor="middle" fontSize="12" fill="var(--cor-carvao)" className={x(n - 1) - x(iCorte) < 130 ? "hidden" : undefined}>
                 previsão indisponível
               </text>
             )}

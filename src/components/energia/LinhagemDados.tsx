@@ -29,7 +29,7 @@ export function LinhagemDados({ etapas }: { etapas: EtapaLinhagem[] }) {
   const atual = etapas.find((e) => e.id === sel) ?? etapas[0];
   return (
     <div>
-      <ol className="grid gap-2 md:grid-cols-6" aria-label="Linhagem dos dados">
+      <ol className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-6" aria-label="Linhagem dos dados">
         {etapas.map((e, i) => {
           const ativo = e.id === atual.id;
           return (

@@ -34,15 +34,15 @@ export default function ExpansaoPage() {
           {
             separador: "·",
             nos: [
-              { rotulo: "Existente", icone: "geracao", descricao: "Capacidade em operação comercial hoje. Natureza: observado.", estado: "leitura" },
-              { rotulo: "Em construção", icone: "expansao", descricao: "Obras com outorga e cronograma. Natureza: observado, com atraso medido contra o cronograma.", estado: "leitura" },
-              { rotulo: "Contratado", icone: "mercado", descricao: "Vendido em leilão, ainda sem obra. Natureza: observado no resultado do leilão.", estado: "leitura" },
-              { rotulo: "Planejado", icone: "regulacao", descricao: "Indicado no planejamento decenal (PDE). Natureza: cenário.", estado: "leitura" },
+              { rotulo: "Existente", icone: "geracao", descricao: "Capacidade em operação comercial hoje. Natureza prevista do dado: OBSERVADO (selo ●).", estado: "leitura" },
+              { rotulo: "Em construção", icone: "expansao", descricao: "Obras com outorga e cronograma. Natureza prevista do dado: OBSERVADO, com atraso CALCULADO contra o cronograma.", estado: "leitura" },
+              { rotulo: "Contratado", icone: "mercado", descricao: "Vendido em leilão, ainda sem obra. Natureza prevista do dado: OBSERVADO no resultado do leilão.", estado: "leitura" },
+              { rotulo: "Planejado", icone: "regulacao", descricao: "Indicado no planejamento decenal (PDE). Natureza prevista do dado: CENÁRIO (selo ◇ pontilhado).", estado: "leitura" },
             ],
           },
-          { setaAntes: "e, separado de tudo,", nos: [{ rotulo: "Cenário", icone: "modelo", descricao: "Simulação condicional a hipóteses declaradas. Nunca é previsão nem plano.", estado: "leitura", destaque: true }] },
+          { setaAntes: "e, separado de tudo,", nos: [{ rotulo: "Cenário", icone: "modelo", descricao: "Simulação condicional a hipóteses declaradas. Nunca é previsão nem plano. Natureza prevista do dado: CENÁRIO (selo ◇ pontilhado).", estado: "leitura", destaque: true }] },
         ],
-        nota: "Esquema das categorias que o módulo distinguirá com selo próprio (observado, cenário). O mapa temporal de projetos e o gráfico hoje → contratado → projetos → horizonte entram só com os conjuntos da ANEEL (leilões, RALIE, outorgas) e as publicações da EPE integrados. Nenhum número de capacidade futura é publicado antes disso.",
+        nota: "Esquema das categorias que o módulo distinguirá. Em cada caixa, a natureza prevista do dado (o selo que o número levará) é uma coisa; o estado de conferência da definição (leitura usual do setor, hoje) é outra. O mapa temporal de projetos e o gráfico hoje → contratado → projetos → horizonte entram só com os conjuntos da ANEEL (leilões, RALIE, outorgas) e as publicações da EPE integrados. Nenhum número de capacidade futura é publicado antes disso.",
       }}
     />
   );

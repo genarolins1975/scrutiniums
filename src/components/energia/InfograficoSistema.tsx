@@ -37,7 +37,8 @@ const CONF: Record<EtapaSistema["conferencia"], { rotulo: string; cls: string }>
 
 export function InfograficoSistema({ etapas }: { etapas: EtapaSistema[] }) {
   const ids = etapas.map((e) => e.id);
-  const [sel, setSel] = useEstadoUrl<string>("etapa", ids[0], umDe(ids));
+  const padrao = etapas.find((e) => e.hoje)?.id ?? ids[0];
+  const [sel, setSel] = useEstadoUrl<string>("etapa", padrao, umDe(ids));
   const atual = etapas.find((e) => e.id === sel) ?? etapas[0];
   const botoes = useRef<Record<string, HTMLButtonElement | null>>({});
   const fisica = etapas.filter((e) => e.cadeia === "fisica");
@@ -110,7 +111,7 @@ export function InfograficoSistema({ etapas }: { etapas: EtapaSistema[] }) {
               {atual.rotulo}
             </h3>
             <p className="mt-3 font-serif text-lg leading-relaxed text-carvao">{atual.frase}</p>
-            <p className={`rotulo mt-2 !text-[0.62rem] ${conf.cls}`}>{conf.rotulo}</p>
+            <p className={`rotulo mt-2 ${conf.cls}`}>{conf.rotulo}</p>
             <p className="mt-1 text-xs text-mineral">Fonte: {atual.fonte}</p>
           </div>
           <div className="border-l border-linha pl-5 md:pl-6">
