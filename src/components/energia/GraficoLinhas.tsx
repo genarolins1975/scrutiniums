@@ -211,6 +211,9 @@ export function GraficoLinhas({
   const yt = ticks(yMin, yMax);
   const nx = Math.min(largura < 520 ? 4 : 7, n);
   const xt = n <= 1 ? [0] : Array.from({ length: nx }, (_, k) => Math.round((k / Math.max(nx - 1, 1)) * (n - 1)));
+  // janela curta (menos de 130 dias): rótulos em dia/mês, para não repetir o mesmo mês nas marcas
+  const xCurto = formatoX === "data" && dados.length > 1 && (Date.parse(String(dados[dados.length - 1][chaveX])) - Date.parse(String(dados[0][chaveX]))) / 86400000 < 130;
+  const rotuloX = (v: string) => (xCurto && v.length >= 10 ? `${v.slice(8, 10)}/${v.slice(5, 7)}` : fmtX(v, formatoX));
 
   function mover(ev: React.PointerEvent<SVGRectElement>) {
     const r = (ev.currentTarget as SVGRectElement).getBoundingClientRect();
@@ -277,7 +280,7 @@ export function GraficoLinhas({
         ))}
         {xt.map((i) => (
           <text key={i} x={x(i)} y={h - 8} textAnchor="middle" fontSize="11" fill="var(--cor-mineral)">
-            {fmtX(String(dados[i]?.[chaveX] ?? ""), formatoX)}
+            {rotuloX(String(dados[i]?.[chaveX] ?? ""))}
           </text>
         ))}
         {faixasX.map((fx) => {

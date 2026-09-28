@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
@@ -667,18 +666,6 @@ export default function PldPage() {
               </div>
               <div>
                 <div className="border border-linha bg-superficie p-5">
-                  <p className="rotulo text-mineral">Onde conferir</p>
-                  <p className="mt-2 text-sm leading-relaxed text-carvao">
-                    O estado da previsão está declarado uma vez, ao lado do gráfico. Os registros que o sustentam ficam em duas páginas: o registro de modelos, com o estado e as evidências de cada um, e o histórico de previsões, com cada registro imutável.
-                  </p>
-                  <p className="mt-3 flex flex-wrap gap-4 text-sm">
-                    <Link href="/setor-eletrico/pld/modelos" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">Registro de modelos</Link>
-                    {prev && (
-                      <Link href="/setor-eletrico/pld/previsoes" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">Histórico de previsões ({prev.arquivo.length} registros, {prev.publicacoes} publicações)</Link>
-                    )}
-                  </p>
-                </div>
-                <div className="mt-6 border border-linha bg-superficie p-5">
                   <h3 className="font-serif text-lg text-carvao">O que aparecerá aqui quando houver modelo em produção</h3>
                   <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm leading-relaxed text-carvao-muted">
                     <li>
