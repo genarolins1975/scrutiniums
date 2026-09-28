@@ -195,6 +195,27 @@ class AuditoriaTemporalTest(unittest.TestCase):
         base.grava_observacoes(con, "ds", antiga, [("s", "2026-08-31", 50.0)])
         self.assertEqual(base.como_estava_em(con, "ds", "s", "2026-09-05T00:00:00Z"), [("2026-08-31", 50.0)])
 
+    def test_vintage_intermediaria_fora_de_ordem(self):
+        con = _con()
+        v1, _ = base.registra_vintage(con, "ds", "r", "u", "2026-09-01T00:00:00Z", None, "1" * 64, 1, "teste", None)
+        base.grava_observacoes(con, "ds", v1, [("s", "d", 100.0)])
+        v3, _ = base.registra_vintage(con, "ds", "r", "u", "2026-09-10T00:00:00Z", None, "3" * 64, 1, "teste", None)
+        base.grava_observacoes(con, "ds", v3, [("s", "d", 100.0)])
+        v2, _ = base.registra_vintage(con, "ds", "r", "u", "2026-09-05T00:00:00Z", None, "2" * 64, 1, "teste", None)
+        base.grava_observacoes(con, "ds", v2, [("s", "d", 50.0)])
+        self.assertEqual(base.serie_vigente(con, "ds", "s"), [("d", 100.0)])
+        self.assertEqual(base.como_estava_em(con, "ds", "s", "2026-09-06T00:00:00Z"), [("d", 50.0)])
+        self.assertEqual(base.como_estava_em(con, "ds", "s", "2026-09-02T00:00:00Z"), [("d", 100.0)])
+
+    def test_mesmo_valor_em_ordem_inversa_nao_e_revisao(self):
+        from pipeline.energia.gold import comum as c
+        con = _con()
+        v3, _ = base.registra_vintage(con, "ds", "r", "u", "2026-09-10T00:00:00Z", None, "3" * 64, 1, "teste", None)
+        base.grava_observacoes(con, "ds", v3, [("s", "d", 100.0)])
+        v1, _ = base.registra_vintage(con, "ds", "r", "u", "2026-09-01T00:00:00Z", None, "1" * 64, 1, "teste", None)
+        base.grava_observacoes(con, "ds", v1, [("s", "d", 100.0)])
+        self.assertEqual(c.revisoes_do_dataset(con, "ds")["total"], 0)
+
     def test_duplicata_no_mesmo_arquivo_nao_e_revisao(self):
         con = _con()
         v, _ = base.registra_vintage(con, "ds", "r", "u", "2026-09-01T00:00:00Z", None, "1" * 64, 1, "teste", None)
@@ -274,6 +295,28 @@ class GovernancaEndurecidaTest(unittest.TestCase):
         v = g.valida_registro(r, mods)
         self.assertTrue(any("features_usadas" in x for x in v))
         self.assertTrue(any("PREVISTO" in x for x in v))
+
+    def test_rodada_interna_com_numero_barrada_com_resultados_retidos(self):
+        r = self._rec()
+        self.assertEqual(g.valida_arquivo([r], {}), [])
+        self.assertTrue(any("retida" in x for x in g.valida_arquivo([r], {}, resultados_liberados=False)))
+
+    def test_feature_sem_captura_e_corte_sem_fuso_barrados(self):
+        mods = {"C1": {"estado": "PRODUCAO"}}
+        r = self._rec(tipo="PUBLICACAO", estado_modelo="PRODUCAO", versao_modelo="v", versao_codigo="c", snapshot="s",
+                      emitido_em="2026-09-27T10:30:00Z", natureza="PREVISTO", features_usadas=[{"serie": "pld.SE"}])
+        self.assertTrue(any("sem capturado_em" in x for x in g.valida_registro(r, mods)))
+        r2 = self._rec(cutoff="2026-09-27T10:00:00", features_usadas=[{"serie": "pld.SE", "capturado_em": "2026-09-27T12:00:00Z"}])
+        self.assertTrue(any("cutoff sem fuso" in x for x in g.valida_registro(r2, {})))
+
+    def test_rotulo_de_80_em_outras_grafias(self):
+        for rot in ("faixa de 80 %", "Faixa de 80%", "faixa de 80 por cento"):
+            r = self._rec(quantis={"rotulo_faixa": rot}, calibracao={"status": "DESCALIBRADO"})
+            self.assertTrue(any("80%" in x for x in g.valida_registro(r, {})), rot)
+
+    def test_versao_codigo_marca_arvore_alterada(self):
+        v = base.versao_codigo()
+        self.assertTrue(v is None or v.endswith("+alterado") or len(v) == 12)
 
     def test_cenario_barrado_em_qualquer_campo(self):
         r = self._rec(natureza="CENARIO")

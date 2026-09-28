@@ -77,7 +77,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
 
         <section className="mt-8 border border-linha bg-superficie p-6">
           <h2 className="font-serif text-xl text-carvao">Capturas integradas (vintages)</h2>
-          <p className="mt-1 text-sm text-carvao-muted">Cada arquivo baixado é uma vintage imutável. Uma revisão da fonte vira vintage nova; a anterior continua disponível para reconstituir o que se sabia em cada data.</p>
+          <p className="mt-1 text-sm text-carvao-muted">Cada arquivo baixado é uma vintage imutável. Uma revisão da fonte vira vintage nova; a anterior continua no histórico do pipeline (cache da automação e cópia durável), usado para reconstituir o que se sabia em cada data. Esse histórico não é publicado no portal.</p>
           <div className="tabela-scroll mt-4" tabIndex={0} role="region" aria-label="Capturas do conjunto (tabela rolável)">
             <table className="w-full min-w-[44rem] border-collapse text-xs">
               <caption className="sr-only">Capturas por recurso</caption>

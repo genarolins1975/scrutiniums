@@ -13,6 +13,7 @@ Cada regra corresponde a um item de docs/observatorios/PLD_GOVERNANCA_PREVISAO.m
 """
 import hashlib
 import json
+import re
 from datetime import datetime, timezone
 
 ESTADOS_MODELO = ("PESQUISA", "VALIDACAO", "PRODUCAO", "APOSENTADO")
@@ -70,17 +71,23 @@ def valida_registro(rec, modelos_por_codigo):
         v.append(f"{rec.get('forecast_id')}: natureza {rec.get('natureza')} não pode entrar no arquivo de previsões")
     if "CENARIO" in json.dumps(rec, ensure_ascii=False).upper().replace("CENÁRIO", "CENARIO"):
         v.append(f"{rec.get('forecast_id')}: cenário não pode entrar no arquivo de previsões")
-    # faixa de 80% exige calibração em qualquer tipo de registro, publicado ou interno
+    # faixa rotulada como 80% (em qualquer grafia: "80%", "80 %", "80 por cento") exige
+    # calibração CALIBRADO em qualquer tipo de registro, publicado ou interno
     q = rec.get("quantis") or {}
-    if q.get("rotulo_faixa") == "faixa de 80%" and (rec.get("calibracao") or {}).get("status") != "CALIBRADO":
+    rotulo = str(q.get("rotulo_faixa") or "").lower()
+    if re.search(r"80\s*(%|por\s*cento)", rotulo) and (rec.get("calibracao") or {}).get("status") != "CALIBRADO":
         v.append(f"{rec.get('forecast_id')}: faixa rotulada como 80% sem calibração CALIBRADO")
-    # nenhum registro, publicado ou interno, pode usar dado capturado depois do corte
+    # nenhum registro, publicado ou interno, pode usar dado capturado depois do corte;
+    # sem instante com fuso no corte ou na captura, o look-ahead não é auditável
+    feats = rec.get("features_usadas") or []
     corte = _instante(rec.get("cutoff"))
-    for feat in rec.get("features_usadas") or []:
+    if feats and corte is None:
+        v.append(f"{rec.get('forecast_id')}: cutoff sem fuso em registro com features (look-ahead não auditável)")
+    for feat in feats:
         cap = _instante(feat.get("capturado_em"))
-        if feat.get("capturado_em") and cap is None:
-            v.append(f"{rec.get('forecast_id')}: feature {feat.get('serie')} com capturado_em sem fuso")
-        elif cap and corte and cap > corte:
+        if cap is None:
+            v.append(f"{rec.get('forecast_id')}: feature {feat.get('serie')} sem capturado_em com fuso")
+        elif corte and cap > corte:
             v.append(f"{rec.get('forecast_id')}: feature {feat.get('serie')} capturada depois do cutoff (look-ahead)")
     # ausência nunca vira número
     if rec.get("status") == "INDISPONIVEL":
@@ -107,7 +114,9 @@ def valida_registro(rec, modelos_por_codigo):
     return v
 
 
-def valida_arquivo(registros, modelos_por_codigo):
+def valida_arquivo(registros, modelos_por_codigo, resultados_liberados=None):
+    """resultados_liberados=False (publicação de resultados de pesquisa retida): rodada
+    interna não pode carregar número, porque o arquivo é publicado na íntegra."""
     v = []
     ids = set()
     for rec in registros:
@@ -116,6 +125,8 @@ def valida_arquivo(registros, modelos_por_codigo):
             v.append(f"{fid}: forecast_id duplicado")
         ids.add(fid)
         v.extend(valida_registro(rec, modelos_por_codigo))
+        if resultados_liberados is False and rec.get("tipo") == "RODADA_INTERNA" and rec.get("previsao") is not None:
+            v.append(f"{fid}: rodada interna com número enquanto a publicação de resultados está retida")
         if rec.get("substitui"):
             if rec["substitui"] not in ids:
                 v.append(f"{fid}: substitui registro inexistente ou posterior")

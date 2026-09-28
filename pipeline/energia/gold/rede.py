@@ -30,6 +30,22 @@ REGRAS = {
 }
 
 
+def _milhar(n):
+    return f"{n:,}".replace(",", ".")
+
+
+def _texto_balanco_sin(b):
+    """Frase por regra: compara a soma dos saldos com o intercâmbio do SIN do mesmo balanço."""
+    if not b:
+        return "Soma dos saldos não comparada ao intercâmbio do SIN nesta publicação."
+    div = b["dias_divergentes"]
+    excecao = ("em todas as horas" if not div else
+               f"em todas as horas, exceto {'no dia' if len(div) == 1 else 'nos dias'} {', '.join(c.data_br(x) for x in div)}")
+    return (f"A soma dos quatro saldos é igual ao intercâmbio do SIN publicado no mesmo balanço {excecao} (tolerância de 1 MWmed). "
+            f"Esse intercâmbio do SIN é nulo (até 1 MWmed em módulo) em {_milhar(b['horas_sin_nulo_total'])} de "
+            f"{_milhar(b['horas_total'])} horas desde o início da série e diferente de zero nas demais; por isso os saldos às vezes somam zero e às vezes não.")
+
+
 def construir(con):
     pares = [f"{a}_{b}" for a, b in ons.FRONTEIRAS]
     fluxo = {p: c.agrega_diario(base.serie_vigente(con, DS_INT, f"fluxo.{p}")) for p in pares}
@@ -69,6 +85,29 @@ def construir(con):
     liq = [{"sm": sm, "nome": c.NOME_SUBMERCADO[sm], "dia": c.r(liquido[sm].get(dia_liq), 0) if dia_liq else None,
             "media_30d": c.r(c.media([liquido[sm][k] for k in ult30_liq if k in liquido[sm]]), 0)}
            for sm in c.ORDEM_SM]
+
+    # soma dos saldos contra o intercâmbio do SIN do mesmo balanço: descrita por regra,
+    # a partir do dado, sem afirmação fixa (a soma é zero em parte das horas e não em outras)
+    balanco_sin = None
+    sin_h = dict(base.serie_vigente(con, DS_BAL, "intercambio.SIN"))
+    if dia_liq and sin_h:
+        horas_sm = {sm: dict(base.serie_vigente(con, DS_BAL, f"intercambio.{sm}")) for sm in c.ORDEM_SM}
+        comuns = [h for h in sin_h if all(h in horas_sm[sm] for sm in c.ORDEM_SM)]
+        divergentes = sorted({h[:10] for h in comuns if abs(sum(horas_sm[sm][h] for sm in c.ORDEM_SM) - sin_h[h]) > 1.0})
+        sin_d = c.agrega_diario(sorted(sin_h.items()))
+        ult365 = [(c.d(dia_liq) - timedelta(days=i)).isoformat() for i in range(365)]
+        com_dado = [k for k in ult365 if k in sin_d]
+        soma_dia = sum(liquido[sm][dia_liq] for sm in c.ORDEM_SM if dia_liq in liquido[sm])
+        balanco_sin = {
+            "dia": dia_liq,
+            "soma_saldos": c.r(soma_dia, 0),
+            "intercambio_sin": c.r(sin_d.get(dia_liq), 0),
+            "dias_365": len(com_dado),
+            "dias_sin_nao_nulo_365": sum(1 for k in com_dado if abs(sin_d[k]) > 1.0),
+            "horas_sin_nulo_total": sum(1 for h in comuns if abs(sin_h[h]) <= 1.0),
+            "horas_total": len(comuns),
+            "dias_divergentes": divergentes,
+        }
 
     ini = (fim - timedelta(days=365)).isoformat()
     serie = [{"d": k, **{p: c.r(fluxo[p].get(k), 0) for p in pares}} for k in dias if k >= ini]
@@ -117,7 +156,7 @@ def construir(con):
                             "média de 30 dias das médias diárias"],
             formula="saldo_dia(s) = (1/24) × Σ intercâmbio_balanço(s, h); positivo = subsistema exportador, negativo = importador, conforme o sinal do ONS",
             limitacoes=[
-                "A soma dos quatro saldos coincide, hora a hora, com o intercâmbio do SIN publicado no mesmo balanço, que não é zero; os saldos não se compensam entre si.",
+                _texto_balanco_sin(balanco_sin),
                 "O Balanço de Energia e os Intercâmbios Entre Subsistemas são conjuntos distintos, com datas de referência que podem diferir.",
                 "Dados em processo de consistência recorrente do ONS, sujeitos a revisão.",
             ],
@@ -126,7 +165,7 @@ def construir(con):
     return {
         **c.cabecalho("rede.json"),
         "dia_referencia": dia_ref, "dia_referencia_liquido": dia_liq, "ultimo_dia_pld": dias_pld[-1] if dias_pld else None,
-        "regras": REGRAS, "fronteiras": fronteiras, "liquido_subsistemas": liq,
+        "regras": REGRAS, "fronteiras": fronteiras, "liquido_subsistemas": liq, "balanco_sin": balanco_sin,
         "serie_fluxos": serie, "serie_amplitude_pld": spread,
         "limites_integrados": False,
         "proveniencia": {"fluxo": prov, "diferenca": prov_spread, **({"saldos": prov_saldos} if prov_saldos else {})}, "fonte_notas": meta.get("notas"),

@@ -158,11 +158,15 @@ export default function VisaoGeralEnergia() {
               pergunta={`Reservatórios do SIN com ${pct(hidSin.ear.valor)} da capacidade, ${ROTULO_FAIXA_USUAL[hidSin.ear.faixa ?? "dentro"]}`}
               subtitulo="EAR do SIN · % da EAR máxima, com faixa histórica do 10º ao 90º percentil"
               natureza="CALCULADO"
-              porQueImporta={<>A <Termo slug="ear">EAR</Termo> é o estoque de energia em forma de água. A <Termo slug="ena">ENA</Termo> é o que chega para repor esse estoque. Juntas, dizem quanto o sistema depende de outras fontes nas próximas semanas.</>}
-              oQueMudou={<>Em 30 dias, a EAR do SIN variou {sinal(hidSin.ear.variacao_30d_pp)} p.p. A ENA acumulada em 30 dias está em {pct(hidSin.ena.pct_mlt_30d, 0)} da MLT{hidSin.ena.faixa_30d ? `, ${ROTULO_FAIXA_USUAL[hidSin.ena.faixa_30d]}` : ""}.{hid.desvio_principal ? ` Maior desvio frente à mediana da data: ${hid.desvio_principal.nome} (${sinal(hid.desvio_principal.desvio_pp)} p.p.).` : ""}</>}
-              comoInterpretar={<>A faixa sombreada mostra, para cada data, onde a EAR esteve em 80% dos anos desde 2001 (10º a 90º percentil). Fora dela, a situação é incomum para a época.</>}
-              naoConcluir={<>Reservatório alto não garante preço baixo, e ENA alta em um subsistema não se transfere integralmente aos demais. A capacidade máxima mudou ao longo do tempo.</>}
+              porQueImporta={<>A <Termo slug="ear">EAR</Termo> mede a energia associada à água guardada nos reservatórios; a <Termo slug="ena">ENA</Termo> mede, em energia, as vazões naturais que chegam a eles. As duas definições são do ONS.</>}
+              oQueMudou={<>Em 30 dias, a EAR do SIN variou {sinal(hidSin.ear.variacao_30d_pp)} p.p. A ENA acumulada em 30 dias está em {pct(hidSin.ena.pct_mlt_30d, 1)} da MLT{hidSin.ena.faixa_30d ? `, ${ROTULO_FAIXA_USUAL[hidSin.ena.faixa_30d]}` : ""}.{hid.desvio_principal ? ` Maior desvio frente à mediana da data: ${hid.desvio_principal.nome} (${sinal(hid.desvio_principal.desvio_pp)} p.p.).` : ""}</>}
+              comoInterpretar={<>A faixa sombreada mostra, para cada data, onde a EAR esteve em 80% dos anos desde 2001 (10º a 90º percentil). Fora dela, o valor está fora da faixa usual para a data.</>}
+              naoConcluir={<>Este painel não relaciona EAR ou ENA ao preço nem calcula quanto da ENA vira armazenamento. A capacidade máxima de armazenamento mudou ao longo do tempo.</>}
               proveniencia={hid.proveniencia.ear_sin}
+              complementares={[
+                { rotulo: "Sobre a faixa histórica", p: hid.proveniencia.padrao },
+                { rotulo: "Sobre a ENA de 30 dias", p: hid.proveniencia.ena30 },
+              ]}
             >
               <GraficoLinhas
                 titulo="EAR do SIN nos últimos 12 meses e faixa histórica da data"
@@ -182,7 +186,7 @@ export default function VisaoGeralEnergia() {
                   <li key={s.sm} className="text-sm">
                     <p className="rotulo text-mineral">{s.nome}</p>
                     <p className="mt-1 tabular-nums text-carvao">EAR {pct(s.ear.valor)} · mediana {pct(s.ear.mediana_historica)}</p>
-                    <p className="text-xs text-mineral">ENA 30 dias: {pct(s.ena.pct_mlt_30d, 0)} da MLT {s.ena.faixa_30d && s.ena.faixa_30d !== "dentro" ? `(${s.ena.faixa_30d} da faixa usual)` : ""}</p>
+                    <p className="text-xs text-mineral">ENA 30 dias: {pct(s.ena.pct_mlt_30d, 1)} da MLT {s.ena.faixa_30d && s.ena.faixa_30d !== "dentro" ? `(${s.ena.faixa_30d} da faixa usual)` : ""}</p>
                   </li>
                 ))}
               </ul>
@@ -203,8 +207,9 @@ export default function VisaoGeralEnergia() {
               porQueImporta={<>A composição mostra de onde vem a energia que atende a carga e quanto o sistema recorre às térmicas, as usinas cujo <Termo slug="cvu">Custo Variável Unitário</Termo> entra na programação da operação.</>}
               oQueMudou={<>Térmicas com {pct(ger.termica_contexto.participacao_7d)} nos últimos 7 dias, contra mediana de {pct(ger.termica_contexto.mediana_365d)} nos 12 meses anteriores (percentil {num(ger.termica_contexto.percentil, 1)}).</>}
               comoInterpretar={<>Cada barra soma 100% da geração verificada na janela. Compare a semana atual com a mesma semana dos anos anteriores para separar sazonalidade de mudança.</>}
-              naoConcluir={<>&quot;Hidráulica, eólica e solar&quot; não é a participação renovável: a térmica do balanço inclui biomassa e outras fontes que o conjunto não separa. A micro e minigeração distribuída não está no balanço.</>}
+              naoConcluir={<>&quot;Hidráulica, eólica e solar&quot; não é a participação renovável: a térmica do balanço inclui biomassa e outras fontes que o conjunto não separa. A descrição do balanço não menciona a micro e minigeração distribuída, que aparece como estimativa na série de carga desde 29/04/2023.</>}
               proveniencia={ger.proveniencia.geracao}
+              complementares={ger.proveniencia.termica_7d ? [{ rotulo: "Sobre a participação térmica de 7 dias", p: ger.proveniencia.termica_7d }] : []}
             >
               <BarrasMix
                 linhas={[
@@ -234,7 +239,7 @@ export default function VisaoGeralEnergia() {
               }
               subtitulo="Carga de energia diária do SIN · MWmed"
               natureza="CALCULADO"
-              porQueImporta={<>Mais <Termo slug="carga">carga</Termo> exige mais geração. Picos de consumo pressionam as fontes de custo mais alto.</>}
+              porQueImporta={<>A <Termo slug="carga">carga</Termo> é o lado da demanda no balanço de energia que o ONS publica por subsistema, ao lado da geração por fonte.</>}
               oQueMudou={<>Em {dataBR(carga.dia_referencia)}, {num(cargaSin.dia, 0)} MWmed. Maior carga diária dos últimos 12 meses: {num(cargaSin.max_12m.valor, 0)} MWmed em {dataBR(cargaSin.max_12m.dia)}.</>}
               comoInterpretar={<>A comparação anual só é feita quando os dois períodos estão no mesmo regime metodológico do ONS (a estimativa de MMGD entrou na carga em 29/04/2023).</>}
               naoConcluir={<>Temperatura, feriados e dias úteis afetam a carga e não são ajustados. Variação de carga não mede atividade econômica por si.</>}
@@ -262,11 +267,15 @@ export default function VisaoGeralEnergia() {
               id="rede-painel"
               pergunta="Para onde a energia está fluindo e se os preços se separaram"
               subtitulo="Intercâmbio médio verificado entre subsistemas · MWmed · e PLD médio diário"
-              porQueImporta={<>Quando a transferência entre regiões encontra limite, os <Termo slug="submercado">submercados</Termo> podem ter preços diferentes mesmo com energia sobrando em um deles.</>}
-              oQueMudou={<>Nos últimos 30 dias da série de PLD, {pld.periodos["30d"].diferenca.horas_acima_limiar} horas tiveram diferença de preço acima de R$ 1/MWh entre submercados; maior diferença de {reais(pld.periodos["30d"].diferenca.maior)}/MWh.</>}
-              comoInterpretar={<>Preços iguais nos quatro submercados são compatíveis com transferência sem restrição relevante no cálculo do preço; preços diferentes mostram que os submercados se separaram. O detalhamento da regra está na documentação da CCEE, com conferência pendente nesta fase.</>}
+              porQueImporta={<>Mostra o sentido e o volume dos fluxos entre regiões e, ao lado, se os quatro <Termo slug="submercado">submercados</Termo> tiveram PLD igual ou diferente.</>}
+              oQueMudou={<>Nos últimos 30 dias da série de PLD, {pld.periodos["30d"].diferenca.horas_acima_limiar} horas tiveram diferença de preço acima de {reais(pld.limiar_diferenca)}/MWh entre submercados; maior diferença de {reais(pld.periodos["30d"].diferenca.maior)}/MWh.</>}
+              comoInterpretar={<>Setas: sentido e volume do fluxo médio do dia. Caixas: PLD médio de cada submercado. A diferença de preço é observada, não explicada aqui: a regra de formação do preço por submercado está na documentação da CCEE, com conferência pendente nesta fase.</>}
               naoConcluir={<>Os limites de intercâmbio não estão integrados: fluxo alto não prova rede no limite, e esta página não identifica qual linha restringiu a transferência.</>}
               proveniencia={rede.proveniencia.fluxo}
+              complementares={[
+                { rotulo: "Sobre o PLD médio", p: pld.proveniencia.diario },
+                ...(pld.proveniencia.estatisticas ? [{ rotulo: "Sobre as horas com diferença de preço", p: pld.proveniencia.estatisticas }] : []),
+              ]}
             >
               <MapaSubmercados
                 fluxos={rede.fronteiras.map((f) => ({ de: f.de, para: f.para, fluxo: f.fluxo_dia }))}

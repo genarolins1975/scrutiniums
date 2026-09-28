@@ -79,13 +79,13 @@ export const CONCEITOS: Conceito[] = [
     nome: "Preço de Liquidação das Diferenças",
     grupo: "Preço",
     estado: "CONFERIDO",
-    conferidoEm: "2026-09-27",
+    conferidoEm: "2026-09-28",
     emUmaFrase:
-      "Preço do Mercado de Curto Prazo, em R$/MWh, calculado pela CCEE diariamente para cada hora do dia seguinte e para cada submercado, com base no Custo Marginal de Operação e dentro dos limites mínimo e máximos vigentes.",
+      "Preço do Mercado de Curto Prazo, em reais por megawatt-hora, calculado pela CCEE diariamente para cada hora do dia seguinte e para cada submercado, com base no Custo Marginal de Operação e dentro dos limites mínimo e máximos vigentes.",
     porQueImporta:
       "No Mercado de Curto Prazo, a CCEE apura, para cada perfil de agente, submercado e hora, um balanço energético em MWh (positivo ou negativo) e um resultado em R$; o PLD é o preço desse mercado. Tem como base o CMO, que o ONS define como o custo, por unidade de energia produzida, para atender ao incremento de uma unidade de carga no SIN. Como o balanço de cada agente é formado e como o resultado é liquidado está nas Regras de Comercialização da CCEE, cuja conferência documental está pendente nesta fase.",
     comoEMedido:
-      "Em R$/MWh, por hora e por submercado, publicado pela CCEE no conjunto PLD_HORARIO. Médias diárias, semanais ou mensais são agregações dessas horas.",
+      "Em reais por megawatt-hora (R$/MWh), unidade usual de preço de energia; a descrição do conjunto na CCEE registra a unidade apenas como R$. Um valor por hora e por submercado, no conjunto PLD_HORARIO. Médias diárias, semanais ou mensais são agregações dessas horas.",
     relacoes: ["cmo", "submercado", "newave", "decomp", "dessem"],
     fontes: [
       CCEE_PLD,
@@ -105,7 +105,7 @@ export const CONCEITOS: Conceito[] = [
     ],
     vejaNoPortal: [
       { rotulo: "PLD explicado", href: "/setor-eletrico/pld" },
-      { rotulo: "PLD dos quatro submercados hoje", href: "/setor-eletrico/pld#hoje" },
+      { rotulo: "PLD dos quatro submercados no último dia publicado", href: "/setor-eletrico/pld#hoje" },
     ],
   },
   {
@@ -120,7 +120,7 @@ export const CONCEITOS: Conceito[] = [
     porQueImporta:
       "É a base do PLD, segundo a CCEE. O ONS publica o CMO por semana operativa (estimado pelo modelo DECOMP) e em base semi-horária por barra (estimado pelo modelo DESSEM).",
     comoEMedido:
-      "Em R$/MWh, por subsistema e por patamar de carga (leve, média, pesada) na versão semanal. Na versão semi-horária, o CMO do subsistema é a média dos CMOs das barras ponderada pelas cargas.",
+      "Em reais por unidade de energia (exibido como R$/MWh, como a definição do ONS, \"custo, por unidade de energia produzida\"; o dicionário de dados do ONS registra a unidade da média semanal como R$/MW), por subsistema e por patamar de carga (leve, média, pesada) na versão semanal. Na versão semi-horária, o CMO do subsistema é a média dos CMOs das barras ponderada pelas cargas.",
     relacoes: ["pld", "decomp", "dessem", "carga"],
     fontes: [
       ONS("cmo-semanal", "CMO Semanal", TRECHO_CMO_SEMANAL),
@@ -137,13 +137,21 @@ export const CONCEITOS: Conceito[] = [
     estado: "CONFERIDO",
     conferidoEm: "2026-09-27",
     emUmaFrase:
-      "Cada uma das quatro divisões do sistema interligado (Sudeste/Centro-Oeste, Sul, Nordeste e Norte) para as quais a CCEE calcula um PLD próprio.",
+      "Cada uma das quatro divisões do SIN para as quais a CCEE calcula um PLD próprio: Norte, Nordeste, Sul e Sudeste (esta plataforma usa o rótulo Sudeste/Centro-Oeste para o último).",
     porQueImporta:
       "Os quatro valores de cada hora podem coincidir ou diferir. Por que diferem (limites de transmissão entre regiões, por exemplo) é matéria dos modelos e das regras da CCEE e do ONS, cuja conferência documental está pendente nesta fase: a plataforma mostra a diferença observada e o intercâmbio medido, sem atribuir causa.",
     comoEMedido:
       "O conjunto PLD_HORARIO traz um valor por hora para cada submercado. Nos dados do ONS as mesmas quatro regiões aparecem como subsistemas (SE, S, NE, N).",
     relacoes: ["pld", "intercambio"],
-    fontes: [CCEE_PLD],
+    fontes: [
+      CCEE_PLD,
+      {
+        orgao: "CCEE",
+        documento: "Portal de dados abertos, conjunto PLD_HORARIO_SUBMERCADO (descrição do campo SUBMERCADO), capturado em 28/09/2026",
+        url: "https://dadosabertos.ccee.org.br/dataset/pld_horario_submercado",
+        trecho: "Representa os quatro (4) submercados de atuação no SIN  - Sistema Interligado Nacional correspondentes a Norte (N), Nordeste (NE), Sul (S) e Sudeste (SE).",
+      },
+    ],
     vejaNoPortal: [{ rotulo: "Por que os submercados diferem", href: "/setor-eletrico/pld#submercados" }],
   },
   {
@@ -157,7 +165,7 @@ export const CONCEITOS: Conceito[] = [
       "Custo variável unitário das usinas térmicas considerado pelo ONS no Programa Mensal da Operação e usado nos modelos NEWAVE, DECOMP e DESSEM.",
     porQueImporta:
       "Segundo o ONS, é usado na execução dos modelos NEWAVE, DECOMP e DESSEM, nas decisões de programação e no acompanhamento dos custos da operação.",
-    comoEMedido: "Em R$/MWh, por usina térmica, publicado pelo ONS no conjunto CVU das Usinas Térmicas.",
+    comoEMedido: "Valor por usina térmica, publicado pelo ONS no conjunto CVU das Usinas Térmicas; a unidade será conferida no dicionário de dados quando o conjunto for integrado.",
     relacoes: ["cmo", "newave", "decomp", "dessem"],
     fontes: [
       ONS("cvu-usitermica", "CVU das Usina Térmicas",
@@ -214,7 +222,7 @@ export const CONCEITOS: Conceito[] = [
     porQueImporta:
       "Expressa em energia as vazões naturais que chegam aos reservatórios. O ONS indica que os dados servem de insumo para estudos energéticos e para a projeção do custo marginal de operação.",
     comoEMedido:
-      "ENA bruta: produto das vazões naturais pelas produtividades das usinas a 65% dos volumes úteis. Publicada em MWmed e em percentual da média de longo termo (MLT), por dia.",
+      "ENA bruta: produto das vazões naturais pelas produtividades das usinas a 65% dos volumes úteis. Publicada por dia em energia (colunas terminadas em _mwmed; o dicionário de dados do ONS descreve a unidade como MWmês) e em percentual da média de longo termo (MLT).",
     relacoes: ["ear", "mlt"],
     fontes: [
       ONS("ena-diario-por-subsistema", "ENA Diário por Subsistema",
@@ -233,7 +241,7 @@ export const CONCEITOS: Conceito[] = [
     emUmaFrase: "Média de longo termo: a referência em relação à qual o ONS publica a ENA em percentual.",
     porQueImporta: "Permite ler a ENA de subsistemas de tamanhos diferentes na mesma escala relativa: 100% corresponde ao valor da MLT.",
     comoEMedido:
-      "O ONS publica a ENA bruta e a ENA armazenável em MWmed e em percentual da MLT. O conjunto não informa como a MLT é calculada nem seu período de referência.",
+      "O ONS publica a ENA bruta e a ENA armazenável em energia (colunas terminadas em _mwmed, descritas no dicionário como MWmês) e em percentual da MLT. O conjunto não informa como a MLT é calculada nem seu período de referência.",
     relacoes: ["ena"],
     fontes: [
       {
@@ -291,7 +299,7 @@ export const CONCEITOS: Conceito[] = [
     ],
     limitacoes: [
       "O balanço não separa as térmicas por combustível.",
-      "A micro e minigeração distribuída não está na geração verificada do balanço.",
+      "A descrição do balanço lista a geração das usinas hidráulicas, térmicas, eólicas e fotovoltaicas e não menciona a micro e minigeração distribuída, que aparece como estimativa na série de carga desde 29/04/2023.",
     ],
     vejaNoPortal: [{ rotulo: "Como estamos gerando", href: "/setor-eletrico/geracao" }],
   },
@@ -378,7 +386,7 @@ export const CONCEITOS: Conceito[] = [
     conferidoEm: "2026-09-28",
     emUmaFrase: "Modelo que estima o CMO publicado pelo ONS para cada semana operativa, por subsistema e patamar de carga.",
     porQueImporta: "Segundo o ONS, é o modelo que estima o CMO semanal publicado por subsistema e patamar de carga; a CCEE o cita entre os modelos do cálculo do PLD.",
-    comoEMedido: "Modelo computacional; sua saída publicada é o CMO semanal em R$/MWh.",
+    comoEMedido: "Modelo computacional; sua saída publicada pelo ONS é o CMO semanal por subsistema e patamar de carga.",
     relacoes: ["cmo", "newave", "dessem"],
     fontes: [ONS("cmo-semanal", "CMO Semanal", TRECHO_CMO_SEMANAL), CCEE_PLD],
     vejaNoPortal: [{ rotulo: "CMO semanal", href: "/setor-eletrico/pld#formacao" }],

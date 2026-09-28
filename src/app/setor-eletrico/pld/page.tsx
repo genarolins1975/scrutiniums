@@ -15,7 +15,8 @@ import { IlustracaoDistribuicao } from "@/components/energia/IlustracaoDistribui
 import { TabelaDados } from "@/components/energia/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold, integra } from "@/lib/energia/gold";
-import { carimbo, dataBR, num, reais, rotuloRegra } from "@/lib/energia/formato";
+import { carimbo, dataBR, num, pct, reais, rotuloRegra } from "@/lib/energia/formato";
+import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { NOS_FORMACAO, PLD_NAO_E, TIPOS_RELACAO } from "@/lib/energia/conteudo/pld";
 import { conceito } from "@/lib/energia/conteudo/conceitos";
 import { estadoCarga, estadoEar, estadoEna, estadoPld, estadoRenovaveis, estadoTermicas } from "@/lib/energia/leituras";
@@ -26,7 +27,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "PLD: o preço horário da energia por submercado, explicado",
   description:
-    "O que é o PLD, o que ele não é, de onde vem o preço, o que acontece hoje nos quatro submercados e o estado real da previsão, com fonte, regra e limitação em cada número.",
+    "O que é o PLD, o que ele não é, de onde vem o preço, o que aconteceu no último dia publicado nos quatro submercados e o estado real da previsão, com fonte, regra e limitação em cada número.",
   alternates: { canonical: "/setor-eletrico/pld" },
 };
 
@@ -148,7 +149,7 @@ export default function PldPage() {
             {[
               ["#o-que-e", "O que é"],
               ["#formacao", "De onde vem o preço"],
-              ["#hoje", "O que acontece hoje"],
+              ["#hoje", "Último dia publicado"],
               ["#submercados", "Por que as regiões diferem"],
               ["#previsao", "Para onde pode ir"],
             ].map(([h, r]) => (
@@ -170,7 +171,7 @@ export default function PldPage() {
             <div className="grid gap-8 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
               <div>
                 <p className="font-serif text-xl leading-relaxed text-carvao md:text-2xl">
-                  No Mercado de Curto Prazo, a CCEE apura, para cada agente, submercado e hora, um balanço de energia em MWh, positivo
+                  No Mercado de Curto Prazo, a CCEE apura, para cada perfil de agente, submercado e hora, um balanço de energia em MWh, positivo
                   ou negativo, e um resultado financeiro em R$, separado em venda e compra. O PLD é o preço desse mercado.
                 </p>
                 <p className="mt-3 flex flex-wrap items-center gap-2 text-xs text-mineral">
@@ -187,7 +188,7 @@ export default function PldPage() {
                   Base: descrição oficial da CCEE no portal de dados abertos (conjunto PLD_HORARIO), capturada em 27/09/2026. <Conferido ok />
                 </p>
                 <p className="mt-6 leading-relaxed text-carvao-muted">
-                  Como o balanço de cada agente é formado (contratos, geração e consumo medidos) e como o resultado é liquidado entre
+                  Como o balanço de cada perfil de agente é formado (contratos, geração e consumo medidos) e como o resultado é liquidado entre
                   quem vende e quem compra estão nas Regras de Comercialização da CCEE.
                 </p>
                 <p className="mt-2 flex flex-wrap items-center gap-2 text-xs text-mineral">
@@ -195,11 +196,22 @@ export default function PldPage() {
                 </p>
                 <div className="mt-8 border-l-2 border-energia pl-5">
                   <p className="rotulo text-mineral">A ideia central</p>
-                  <p className="mt-2 leading-relaxed text-carvao">
-                    O sistema brasileiro é <strong className="font-medium">hidrotérmico e intertemporal</strong>. Boa parte da
-                    energia vem de usinas com reservatório, e a água usada hoje não estará disponível amanhã. Por isso a água
-                    guardada tem valor para o futuro, e esse valor pesa na decisão de gerar com água agora ou acionar outras
-                    fontes. O preço sai dessa decisão, não de uma única variável.
+                  {integra(ger) && ger.regioes.find((r) => r.rg === "SIN")?.["12m"] && (
+                    <p className="mt-2 flex flex-wrap items-center gap-2 leading-relaxed text-carvao">
+                      <span>
+                        Nos 12 meses até {dataBR(ger.dia_referencia)}, a geração hidráulica respondeu por{" "}
+                        {pct(ger.regioes.find((r) => r.rg === "SIN")!["12m"]!.participacao.hidraulica)} da geração verificada do SIN
+                        (ONS, Balanço de Energia nos Subsistemas).
+                      </span>
+                      <SeloNatureza natureza="CALCULADO" />
+                    </p>
+                  )}
+                  <p className="mt-3 border border-dashed border-mineral p-3 text-sm leading-relaxed text-carvao-muted">
+                    <span className="rotulo mb-1 block text-mineral">Leitura usual do setor, ainda não conferida em documento primário</span>
+                    O sistema brasileiro é descrito como <strong className="font-medium">hidrotérmico e intertemporal</strong>: parte da
+                    geração hidráulica vem de usinas com reservatório, e a água usada hoje não estará disponível amanhã. Nessa leitura,
+                    a água guardada tem valor para o futuro, esse valor pesa na decisão de gerar com água agora ou acionar outras
+                    fontes, e o preço sai dessa decisão, não de uma única variável.
                   </p>
                   <p className="mt-2 flex flex-wrap items-center gap-2 text-xs text-mineral">
                     Mecanismo do valor da água: <Conferido ok={false} /> (documentação dos modelos não acessada nesta fase)
@@ -389,10 +401,14 @@ export default function PldPage() {
                     <li className="flex flex-wrap items-center gap-2">Definições de PLD por submercado (CCEE) e de intercâmbio (ONS): <Conferido ok /></li>
                     <li className="flex flex-wrap items-center gap-2">Mecanismo de separação por limite de transferência: <Conferido ok={false} /></li>
                   </ul>
-                  <p className="border-l-2 border-energia pl-4 text-sm text-carvao-muted">
-                    Em {dataBR(pld.dia_referencia)}, a diferença entre o maior e o menor PLD médio foi de{" "}
-                    {reais(Math.max(...pld.cartoes.map((c) => c.media_dia)) - Math.min(...pld.cartoes.map((c) => c.media_dia)))}/MWh. Nos
-                    últimos 30 dias, {pld.periodos["30d"].diferenca.horas_acima_limiar} horas tiveram diferença acima de R$ 1/MWh.
+                  <p className="flex flex-wrap items-center gap-2 border-l-2 border-energia pl-4 text-sm text-carvao-muted">
+                    <span>
+                      {rede.serie_amplitude_pld.find((a) => a.d === pld.dia_referencia)
+                        ? <>Em {dataBR(pld.dia_referencia)}, a diferença entre o maior e o menor PLD médio foi de {reais(rede.serie_amplitude_pld.find((a) => a.d === pld.dia_referencia)!.amplitude)}/MWh. </>
+                        : null}
+                      Nos últimos 30 dias, {pld.periodos["30d"].diferenca.horas_acima_limiar} horas tiveram diferença acima de {reais(pld.limiar_diferenca)}/MWh.
+                    </span>
+                    <SeloNatureza natureza="CALCULADO" />
                   </p>
                 </div>
                 <div className="lg:col-span-2" data-nivel="analisar">
@@ -452,6 +468,16 @@ export default function PldPage() {
                       <Link href="/setor-eletrico/pld/previsoes" className="text-energia-dark underline underline-offset-4">Histórico de previsões ({prev.arquivo.length} registros, {prev.publicacoes} publicações)</Link>
                     </p>
                   </Indisponivel>
+                ) : prev && prev.atual.disponivel ? (
+                  <div className="border border-linha bg-superficie p-5">
+                    <p className="rotulo text-mineral">Previsão publicada</p>
+                    <p className="mt-2 text-sm leading-relaxed text-carvao">
+                      Há publicação do modelo em produção no arquivo imutável. Cada registro traz modelo, versão, corte, quantis e sha256.
+                    </p>
+                    <Link href="/setor-eletrico/pld/previsoes" className="mt-3 inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4">
+                      Ver no histórico de previsões
+                    </Link>
+                  </div>
                 ) : (
                   <Indisponivel titulo="Previsão indisponível" motivo="O arquivo de previsões não foi gerado nesta publicação." />
                 )}

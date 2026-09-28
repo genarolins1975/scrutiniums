@@ -58,6 +58,7 @@ export default function RedePage() {
               comoInterpretar={<>A seta aponta o sentido do fluxo médio do dia; a espessura é proporcional ao volume. As caixas trazem o PLD médio do último dia disponível.</>}
               naoConcluir={<>Sem os limites de transferência, fluxo alto não prova congestionamento, e a página não identifica qual linha ou equipamento restringiu a transferência.</>}
               proveniencia={r.proveniencia.fluxo}
+              complementares={integra(pld) ? [{ rotulo: "Sobre o PLD médio", p: pld.proveniencia.diario }] : []}
             >
               {integra(pld) ? (
                 <MapaSubmercados
@@ -84,7 +85,14 @@ export default function RedePage() {
               natureza="CALCULADO"
               porQueImporta={<>O balanço de energia do ONS traz, para cada subsistema, carga, geração por fonte e intercâmbio líquido. Positivo significa exportação líquida no dia; o sinal foi conferido contra os fluxos por fronteira.</>}
               oQueMudou={<>{r.liquido_subsistemas.map((l) => `${l.nome}: ${num(l.dia, 0)} MWmed no dia, média de 30 dias ${num(l.media_30d, 0)}`).join("; ")}.</>}
-              comoInterpretar={<>Os quatro saldos não se compensam: a soma deles coincide, hora a hora, com o intercâmbio do SIN publicado no mesmo balanço, que não é zero. O dia do balanço pode diferir do dia dos fluxos por fronteira, porque são conjuntos distintos.</>}
+              comoInterpretar={
+                <>
+                  {r.balanco_sin
+                    ? `Em ${dataBR(r.balanco_sin.dia)}, a soma dos quatro saldos foi ${num(r.balanco_sin.soma_saldos, 0)} MWmed e o intercâmbio do SIN no mesmo balanço, ${num(r.balanco_sin.intercambio_sin, 0)} MWmed. Nos 365 dias até essa data, o intercâmbio do SIN foi diferente de zero em ${r.balanco_sin.dias_sin_nao_nulo_365} dias; nesses dias, os saldos não somam zero. `
+                    : ""}
+                  O dia do balanço pode diferir do dia dos fluxos por fronteira, porque são conjuntos distintos.
+                </>
+              }
               naoConcluir={<>O saldo não diz por que a região exporta ou importa, nem se as linhas estavam no limite: os limites de intercâmbio não estão integrados.</>}
               proveniencia={r.proveniencia.saldos ?? r.proveniencia.fluxo}
             >

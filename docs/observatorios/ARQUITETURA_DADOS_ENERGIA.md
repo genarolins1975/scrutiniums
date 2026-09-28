@@ -49,7 +49,7 @@ observacoes(dataset, serie, ref, valor, vintage_id, PRIMARY KEY(dataset, serie, 
 | Intercâmbios entre subsistemas | ONS | horária, agregada por dia | `rede.json` |
 | CMO semanal | ONS | semana operativa | `cmo.json` |
 
-**Acesso à CCEE.** O portal de dados abertos e o servidor de download da CCEE respondem 403 ("Acesso bloqueado") a partir do ambiente de construção desta fase (medido em 28/09/2026). A série horária foi integrada a partir das capturas primárias do projeto PLD de 27/09/2026 15:44 UTC, versionadas em `pipeline/energia/seed/ccee_pld_horario/` com sha256 por arquivo e o `package_show` original. O coletor direto (`pipeline/energia/fontes/ccee.py`) tenta a fonte a cada execução; falha vira registro de pane, nunca dado. Conferência cruzada: as 76.032 horas de 2022-11 a 2024-12 coincidem exatamente com o snapshot `snap_bootstrap_20260927T154527Z` do artefato PLD r4.
+**Acesso à CCEE.** O acesso automatizado ao portal de dados abertos da CCEE é instável: respondeu 403 ("Acesso bloqueado") em tentativas manuais na manhã de 28/09/2026 (não registradas no log de coletas) e aceitou a coleta direta do pipeline às 10h55 UTC do mesmo dia (registrada em `coletas` e em `meta.json`). A série de 2021 a 2025 vem das capturas primárias do projeto PLD de 27/09/2026 15:44 UTC, versionadas em `pipeline/energia/seed/ccee_pld_horario/` com sha256 por arquivo e o `package_show` original; o arquivo de 2026 vem da coleta direta de 28/09/2026. O coletor direto (`pipeline/energia/fontes/ccee.py`) tenta a fonte a cada execução; falha vira registro de pane, nunca dado. Conferência cruzada: as 76.032 horas de 2022-11 a 2024-12 coincidem exatamente com o snapshot `snap_bootstrap_20260927T154527Z` do artefato PLD r4.
 
 ## Gold: contrato mínimo
 

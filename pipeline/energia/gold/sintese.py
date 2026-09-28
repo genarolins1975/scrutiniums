@@ -52,9 +52,9 @@ def frases(hid, carga, ger, pld):
                 "id": "afluencias", "ref": n["dia"], "natureza": "CALCULADO", "regra": hid["regras"]["ena_30d"],
                 "trechos": [
                     _t("Nos 30 dias até " + c.data_br(n["dia"]) + ", a energia natural afluente (vazões naturais aos reservatórios, em energia) equivaleu a "),
-                    _t(f"{nbr(n['pct_mlt_30d'], 0)}% da média de longo termo", evidencia="hidrologia.json#SIN.ena.pct_mlt_30d",
+                    _t(f"{nbr(n['pct_mlt_30d'], 1)}% da média de longo termo", evidencia="hidrologia.json#SIN.ena.pct_mlt_30d",
                        href="/setor-eletrico/agua-e-clima#ena"),
-                    _t(" para a época."),
+                    _t("."),
                 ],
             })
     if carga and carga.get("disponivel"):

@@ -81,9 +81,9 @@ export function exemploDe(slug: string): Exemplo {
       return {
         partes: [
           t(`Em ${dataBR(s.ena.dia)}, a ENA bruta do Sul foi `),
-          t(`${pct(s.ena.pct_mlt_dia, 0)} da MLT`, "OBSERVADO"),
+          t(`${pct(s.ena.pct_mlt_dia, 1)} da MLT`, "OBSERVADO"),
           t("; no acumulado de 30 dias (soma da ENA sobre soma da MLT), "),
-          t(pct(s.ena.pct_mlt_30d, 0), "CALCULADO"),
+          t(pct(s.ena.pct_mlt_30d, 1), "CALCULADO"),
           t("."),
         ],
         href: "/setor-eletrico/agua-e-clima#ena",

@@ -1,6 +1,9 @@
 {
  "descricao": "Metadados oficiais (package_show) de conjuntos do Mercado de Curto Prazo no portal de dados abertos da CCEE, usados como fonte primária dos textos sobre o papel do PLD.",
  "capturado_em": "2026-09-28T11:07:09Z",
+ "nota_capturado_em": "Horário em que os arquivos foram gravados. As respostas foram obtidas minutos antes, em 28/09/2026 entre 11h00 e 11h07 UTC; o horário exato de cada requisição não foi registrado.",
+ "canal": "Requisição HTTP GET à API CKAN do portal (package_show?id=...) feita pelo coletor do pipeline (pipeline.common.http_get), a partir do ambiente de construção. O conteúdo foi conferido depois, por outro canal, por auditoria independente.",
+ "transformacao": "Os arquivos NÃO são a resposta bruta: de cada resposta foi mantido só o campo result, envolvido em {\"result\": ...} e reserializado em JSON com chaves ordenadas, indentação de 1 espaço e UTF-8 sem escape. O sha256 é o do arquivo reserializado. Os campos help e success da resposta original não foram guardados.",
  "origem": "https://dadosabertos.ccee.org.br/api/3/action/package_show",
  "licenca": "CC-BY-4.0 (conforme o portal)",
  "arquivos": [

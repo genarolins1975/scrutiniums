@@ -151,12 +151,12 @@ export default function AguaPage() {
           <Bloco id="ena">
             <PainelEvidencia
               id="ena-sm"
-              pergunta={`Quanta água está chegando? No Sudeste/Centro-Oeste, ${pct(se.ena.pct_mlt_30d, 0)} da média de longo termo em 30 dias`}
+              pergunta={`Quanta água está chegando? No Sudeste/Centro-Oeste, ${pct(se.ena.pct_mlt_30d, 1)} da média de longo termo em 30 dias`}
               subtitulo="ENA bruta por subsistema · % da MLT · últimos 18 meses"
               porQueImporta={<>A ENA expressa em energia as vazões naturais que chegam aos reservatórios; o ONS a indica como insumo de estudos energéticos e da projeção do custo marginal de operação. Acima de 100% da <Termo slug="mlt">MLT</Termo>, a ENA está acima da média de longo termo usada pelo ONS como referência.</>}
-              oQueMudou={<>ENA de 30 dias: {h.subsistemas.map((x) => `${x.nome} ${pct(x.ena.pct_mlt_30d, 0)}${x.ena.faixa_30d && x.ena.faixa_30d !== "dentro" ? ` (${x.ena.faixa_30d} da faixa usual)` : ""}`).join("; ")}.</>}
+              oQueMudou={<>ENA de 30 dias: {h.subsistemas.map((x) => `${x.nome} ${pct(x.ena.pct_mlt_30d, 1)}${x.ena.faixa_30d && x.ena.faixa_30d !== "dentro" ? ` (${x.ena.faixa_30d} da faixa usual)` : ""}`).join("; ")}.</>}
               comoInterpretar={<>A série diária oscila muito; o acumulado de 30 dias, calculado como soma da ENA sobre soma da MLT, suaviza. A faixa usual compara com a mesma janela nos anos desde 2001.</>}
-              naoConcluir={<>A ENA mede afluência natural, não armazenamento: quanto dela vira EAR depende de defluências, vertimentos e usos da água, que este painel não mostra. O período de referência da MLT não é informado pelo ONS.</>}
+              naoConcluir={<>A ENA mede afluência natural, não armazenamento: este painel não calcula quanto dela vira EAR (a documentação do ONS sobre o balanço hídrico dos reservatórios não foi conferida nesta fase). O período de referência da MLT não é informado pelo ONS.</>}
               proveniencia={h.proveniencia.ena30}
               complementares={[{ rotulo: "Sobre a ENA diária (gráfico)", p: h.proveniencia.ena }]}
             >

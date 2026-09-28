@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
+import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 
 type StatSm = {
   media: number;
@@ -99,7 +100,11 @@ export function PldPeriodos({ periodos, limiar }: { periodos: PeriodoPld[]; limi
           />
         </div>
 
-        <dl className="mt-6 grid gap-px border border-linha bg-linha md:grid-cols-3">
+        <p className="mt-6 flex flex-wrap items-center gap-2 text-xs text-mineral">
+          Respostas e estatísticas abaixo: calculadas pela Scrutiniums a partir dos valores horários publicados pela CCEE
+          <SeloNatureza natureza="CALCULADO" />
+        </p>
+        <dl className="mt-2 grid gap-px border border-linha bg-linha md:grid-cols-3">
           <div className="bg-superficie p-4">
             <dt className="rotulo text-mineral">Há diferença entre submercados?</dt>
             <dd className="mt-1 text-sm text-carvao">

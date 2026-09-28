@@ -49,6 +49,21 @@ def _hora_local(ref):
     return ref[11:16]
 
 
+def _capturas_por_ano(snap):
+    """"de 27/09/2026 (arquivos 2021 a 2025, seed) e de 28/09/2026 (arquivo 2026, coleta direta)": cada data com seus arquivos."""
+    grupos = {}
+    for cp in snap.get("capturas", []):
+        grupos.setdefault((cp["capturado_em"], cp.get("origem")), []).append(cp["recurso"].rsplit("_", 1)[-1])
+    partes = []
+    for (cap, origem), anos in sorted(grupos.items()):
+        anos = sorted(anos)
+        faixa = anos[0] if len(anos) == 1 else f"{anos[0]} a {anos[-1]}"
+        rotulo = "arquivo" if len(anos) == 1 else "arquivos"
+        via = {"seed": "captura versionada", "coleta_direta": "coleta direta"}.get(origem, origem or "origem não informada")
+        partes.append(f"de {c.data_br(cap)} ({rotulo} {faixa}, {via})")
+    return " e ".join(partes) if partes else "(nenhuma captura registrada)"
+
+
 def mes_parcial(mes, dias_com_media):
     """Mês parcial: menos dias completos do que os dias do calendário daquele mês."""
     return dias_com_media < calendar.monthrange(int(mes[:4]), int(mes[5:7]))[1]
@@ -203,7 +218,7 @@ def construir(con):
     else:
         situacao = "A coleta direta no portal da CCEE não foi tentada nesta execução; a série usa a última captura bem-sucedida."
     limitacoes = LIMITACOES_BASE + [
-        f"Série integrada a partir da captura primária de {c.data_br(captura)} ({captura}); horas publicadas depois dela ainda não estão integradas. {situacao}",
+        f"Série integrada a partir das capturas primárias {_capturas_por_ano(snap)}; horas publicadas depois da última captura ainda não estão integradas. {situacao}",
     ]
     periodo_total = {"inicio": primeira, "fim": ultima}
     prov_horario = c.proveniencia(

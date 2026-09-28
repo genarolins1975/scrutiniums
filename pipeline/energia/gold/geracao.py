@@ -111,7 +111,7 @@ def construir(con):
     meta = c.meta_ons(DS)
     lim = [
         "A térmica do balanço agrega todas as usinas térmicas despachadas pelo ONS; o conjunto não separa combustível (gás, carvão, óleo, nuclear, biomassa). A separação exige o conjunto Geração por Usina, catalogado e ainda não integrado.",
-        "A micro e minigeração distribuída não está na geração verificada do balanço.",
+        "A descrição do balanço lista a geração das usinas hidráulicas, térmicas, eólicas e fotovoltaicas e não menciona a micro e minigeração distribuída, que aparece como estimativa na série de carga desde 29/04/2023.",
         "Dados em processo de consistência recorrente do ONS, sujeitos a revisão.",
     ]
     prov = c.proveniencia(

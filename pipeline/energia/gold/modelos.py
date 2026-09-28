@@ -49,7 +49,8 @@ def construir(anterior=None):
     arquivo = g.le_jsonl(ARQUIVO)
     apuracoes = g.le_jsonl(APURACOES) if os.path.exists(APURACOES) else []
     por_codigo = {m["codigo"]: m for m in registro["modelos"]}
-    violacoes = g.valida_registro_modelos(registro) + g.valida_arquivo(arquivo, por_codigo)
+    liberados = (registro.get("publicacao_resultados") or {}).get("liberada")
+    violacoes = g.valida_registro_modelos(registro) + g.valida_arquivo(arquivo, por_codigo, resultados_liberados=liberados)
     if anterior:
         violacoes += g.valida_append_only(anterior, arquivo)
     if violacoes:

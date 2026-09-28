@@ -60,7 +60,13 @@ def versao_codigo():
     try:
         out = subprocess.run(["git", "-C", RAIZ, "rev-parse", "--short=12", "HEAD"],
                              capture_output=True, text=True, timeout=10)
-        return out.stdout.strip() or None
+        sha = out.stdout.strip() or None
+        # código com alteração não commitada: a gold não corresponde exatamente ao commit
+        # (as próprias saídas do pipeline não contam)
+        suja = subprocess.run(
+            ["git", "-C", RAIZ, "status", "--porcelain", "--", ".", ":(exclude)public/energia", ":(exclude)data"],
+            capture_output=True, text=True, timeout=10).stdout.strip()
+        return f"{sha}+alterado" if sha and suja else sha
     except Exception:
         return None
 
@@ -166,8 +172,19 @@ def grava_observacoes(con, dataset, vintage_id, linhas):
             unicas[(s_, r_)] = v_
     linhas = [(s_, r_, v_) for (s_, r_), v_ in unicas.items()]
     series = sorted({s for s, _, _ in linhas})
-    cap = con.execute("SELECT capturado_em FROM vintages WHERE vintage_id=?", (vintage_id,)).fetchone()
+    cap = con.execute("SELECT capturado_em, recurso FROM vintages WHERE vintage_id=?", (vintage_id,)).fetchone()
     anteriores = _ultimos_valores(con, dataset, series, ate=cap[0] if cap else None)
+    # vintage importada fora de ordem: a captura seguinte do mesmo arquivo pode não ter
+    # linha para uma (série, referência) porque, quando entrou, o valor era igual ao da
+    # anterior. Guardamos o valor que ela representava para restaurá-lo depois.
+    seguinte = None
+    if cap:
+        seguinte = con.execute(
+            """SELECT vintage_id, capturado_em FROM vintages WHERE dataset=? AND recurso=? AND capturado_em > ?
+               ORDER BY capturado_em LIMIT 1""",
+            (dataset, cap[1], cap[0]),
+        ).fetchone()
+    na_seguinte = _ultimos_valores(con, dataset, series, ate=seguinte[1]) if seguinte else {}
     novas, revisoes, lote = 0, 0, []
     for serie, ref, valor in linhas:
         ant = anteriores.get((serie, ref))
@@ -180,6 +197,19 @@ def grava_observacoes(con, dataset, vintage_id, linhas):
         lote.append((dataset, serie, ref, float(valor), vintage_id))
         anteriores[(serie, ref)] = valor
     con.executemany("INSERT OR IGNORE INTO observacoes VALUES(?,?,?,?,?)", lote)
+    if seguinte:
+        restaurar = []
+        for _, serie, ref, valor, _ in lote:
+            antes = na_seguinte.get((serie, ref))
+            if antes is None or abs(antes - valor) <= 1e-9:
+                continue
+            tem = con.execute(
+                "SELECT 1 FROM observacoes WHERE dataset=? AND serie=? AND ref=? AND vintage_id=?",
+                (dataset, serie, ref, seguinte[0]),
+            ).fetchone()
+            if not tem:
+                restaurar.append((dataset, serie, ref, float(antes), seguinte[0]))
+        con.executemany("INSERT OR IGNORE INTO observacoes VALUES(?,?,?,?,?)", restaurar)
     return novas, revisoes
 
 

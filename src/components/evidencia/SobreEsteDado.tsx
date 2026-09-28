@@ -142,7 +142,11 @@ export function SobreEsteDado({ p, rotulo = "Sobre este dado" }: { p: Provenienc
                 {!rev ? (
                   "Detecção de revisões não disponível para este indicador."
                 ) : rev.total === 0 ? (
-                  `Nenhuma revisão detectada entre as vintages integradas (verificado em ${dataHora(rev.detectado_em)}).`
+                  rev.vintages_comparadas !== undefined && rev.arquivos !== undefined && rev.vintages_comparadas <= rev.arquivos ? (
+                    `Ainda não é possível detectar revisões: há uma única captura de cada um dos ${rev.arquivos} arquivos integrados (verificado em ${dataHora(rev.detectado_em)}). A detecção começa na segunda captura de um arquivo.`
+                  ) : (
+                    `Nenhuma revisão detectada entre ${rev.vintages_comparadas ?? "as"} capturas de ${rev.arquivos ?? "todos os"} arquivos integrados (verificado em ${dataHora(rev.detectado_em)}).`
+                  )
                 ) : (
                   <>
                     {rev.total.toLocaleString("pt-BR")} observações com valor revisado pela fonte entre as vintages integradas (verificado em{" "}

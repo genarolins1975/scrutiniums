@@ -138,7 +138,7 @@ Previsões: VINTAGE DA FONTE → FEATURES → VERSÃO DO MODELO → PUBLICAÇÃO
         <S id="limitacoes" titulo="Limitações gerais desta fase">
           <ul className="list-disc space-y-2 pl-5">
             <li>
-              O portal de dados abertos da CCEE recusou a coleta automatizada (HTTP 403) na manhã de 28/09/2026 e a aceitou mais tarde no mesmo dia; o
+              O portal de dados abertos da CCEE recusou requisições automatizadas (HTTP 403) em tentativas manuais na manhã de 28/09/2026, não registradas no log de coletas, e aceitou a coleta direta do pipeline mais tarde no mesmo dia; o
               histórico de 2021 a 2025 vem das capturas primárias de 27/09/2026, versionadas com sha256. A coleta direta é tentada em cada execução agendada do pipeline.{" "}
               {meta?.fontes?.ccee_pld_horario?.ultima_tentativa
                 ? `Última tentativa: ${carimbo(meta.fontes.ccee_pld_horario.ultima_tentativa.tentado_em)}, ${meta.fontes.ccee_pld_horario.ultima_tentativa.ok ? "bem-sucedida" : "sem sucesso"}.`

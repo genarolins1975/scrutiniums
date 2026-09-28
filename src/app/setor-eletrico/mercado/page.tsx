@@ -15,11 +15,11 @@ export default function MercadoPage() {
       secao="energia:mercado"
       rotulo="Mercado"
       titulo="Como a energia é contratada e liquidada?"
-      escopo="Ambientes de contratação livre e regulada, agentes, contratos quando públicos, Mecanismo de Realocação de Energia, fator de ajuste da garantia física (GSF), encargos de serviços do sistema e demais mecanismos da CCEE."
+      escopo="Ambientes de contratação livre e regulada, agentes, contratos quando públicos, Mecanismo de Realocação de Energia (MRE), GSF, encargos de serviços do sistema e demais mecanismos da CCEE."
       perguntas={[
         "Quanto do consumo está no mercado livre e quanto no regulado, e como isso mudou?",
         "Quantos agentes operam em cada categoria?",
-        "Como o GSF se comportou e o que ele representa para os geradores hidrelétricos?",
+        "Como o GSF se comportou ao longo do tempo, e como a CCEE o define?",
         "Quanto custaram os encargos de serviços do sistema em cada período?",
       ]}
       temas={["mercado", "preco", "empresas"]}

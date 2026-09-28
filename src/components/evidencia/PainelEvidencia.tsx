@@ -47,6 +47,8 @@ export function PainelEvidencia({
   nivelTitulo?: 2 | 3;
 }) {
   const nat = natureza ?? r.proveniencia.natureza;
+  // um selo por natureza presente no painel (principal e complementares), sem repetir
+  const selos = Array.from(new Set<Natureza>([nat, ...complementares.map((c) => c.p.natureza)]));
   const Titulo = nivelTitulo === 3 ? "h3" : "h2";
   return (
     <section id={id} aria-labelledby={`${id}-titulo`} data-nivel={nivel} className="scroll-mt-28 border border-linha bg-superficie">
@@ -56,7 +58,9 @@ export function PainelEvidencia({
         </Titulo>
         <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-mineral">
           <span>{r.subtitulo}</span>
-          <SeloNatureza natureza={nat} />
+          {selos.map((n) => (
+            <SeloNatureza key={n} natureza={n} />
+          ))}
         </p>
       </header>
       <div className="px-3 py-5 md:px-6">{children}</div>

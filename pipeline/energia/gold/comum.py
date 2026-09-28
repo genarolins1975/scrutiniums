@@ -133,6 +133,11 @@ FONTE_CCEE_PLD = {
 }
 
 
+# Fontes cuja data de modificação do arquivo não acompanha a atualização do conteúdo:
+# a data existe no metadado, mas exibi-la como "publicado pela fonte" enganaria.
+SEM_DATA_DE_PUBLICACAO_CONFIAVEL = {"ccee_pld_horario"}
+
+
 def snapshot_de(con, dataset):
     """Identificador e sha256 do conjunto de vintages vigentes do dataset: sha256 dos
     sha256 das capturas mais recentes de cada recurso, em ordem de recurso."""
@@ -149,6 +154,7 @@ def snapshot_de(con, dataset):
         "id": f"{dataset}@{caps[-1]}",
         "sha256": h,
         "revisoes": revisoes_do_dataset(con, dataset),
+        "publicacao_confiavel": dataset not in SEM_DATA_DE_PUBLICACAO_CONFIAVEL,
         "capturas": [{"recurso": k, "sha256": ultimo[k]["sha256"], "capturado_em": ultimo[k]["capturado_em"],
                       "publicado_em": ultimo[k]["publicado_em"], "origem": ultimo[k]["origem"]}
                      for k in sorted(ultimo)],
@@ -160,13 +166,18 @@ def revisoes_do_dataset(con, dataset, limite=20):
     entre as vintages integradas. grava_observacoes só grava valor novo ou alterado,
     então cada linha extra de uma mesma (série, referência) é uma revisão da fonte."""
     rows = con.execute(
-        """SELECT serie, ref, COUNT(*) FROM observacoes WHERE dataset=?
-           GROUP BY serie, ref HAVING COUNT(*) > 1 ORDER BY ref DESC, serie""",
+        """SELECT serie, ref, COUNT(DISTINCT valor) FROM observacoes WHERE dataset=?
+           GROUP BY serie, ref HAVING COUNT(DISTINCT valor) > 1 ORDER BY ref DESC, serie""",
         (dataset,),
     ).fetchall()
+    vint, recursos = con.execute(
+        "SELECT COUNT(*), COUNT(DISTINCT recurso) FROM vintages WHERE dataset=?", (dataset,)
+    ).fetchone()
     return {
         "detectado_em": base.agora_utc(),
         "total": len(rows),
+        "vintages_comparadas": vint,
+        "arquivos": recursos,
         "exemplos": [{"serie": a, "ref": b, "valores": n} for a, b, n in rows[:limite]],
     }
 
@@ -189,7 +200,7 @@ def proveniencia(*, indicador, natureza, fonte, unidade, frequencia, periodo, co
     # informa a data de modificação de cada arquivo e as vintages guardam as revisões
     # publicacao_informada=False: a data de modificação da fonte existe mas não
     # acompanha a atualização do conteúdo (caso do PLD na CCEE); não é exibida
-    if publicado_em is None and publicacao_informada:
+    if publicado_em is None and publicacao_informada and snapshot.get("publicacao_confiavel", True):
         publicado_em = publicacao_mais_recente(snapshot)
     if revisoes is None:
         revisoes = snapshot.get("revisoes")

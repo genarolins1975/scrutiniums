@@ -88,7 +88,7 @@ describe("arquivo imutável", () => {
           "reg=json.load(open('pipeline/energia/registro_modelos.json',encoding='utf-8'))",
           "arq=g.le_jsonl('pipeline/energia/previsoes/arquivo.jsonl')",
           "mods={m['codigo']:m for m in reg['modelos']}",
-          "v=g.valida_registro_modelos(reg)+g.valida_arquivo(arq,mods)",
+          "v=g.valida_registro_modelos(reg)+g.valida_arquivo(arq,mods,resultados_liberados=reg['publicacao_resultados']['liberada'])",
           "pub=json.load(open('public/energia/gold/previsoes.json',encoding='utf-8'))['arquivo']",
           "v+=g.valida_append_only(pub,arq)",
           "print(json.dumps(v))",

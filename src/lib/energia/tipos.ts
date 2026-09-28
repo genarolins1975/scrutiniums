@@ -37,7 +37,13 @@ export type Proveniencia = {
   versao_pipeline: string;
   versao_codigo: string | null;
   /** Revisões detectadas entre as vintages integradas; null quando a detecção não se aplica. */
-  revisoes_conhecidas: { detectado_em: string; total: number; exemplos: { serie: string; ref: string; valores: number }[] } | null;
+  revisoes_conhecidas: {
+    detectado_em: string;
+    total: number;
+    vintages_comparadas?: number;
+    arquivos?: number;
+    exemplos: { serie: string; ref: string; valores: number }[];
+  } | null;
   limitacoes: string[];
   download: string | null;
   notas_fonte: string | null;
@@ -258,6 +264,16 @@ export type RedeGold = Cabecalho & {
   serie_fluxos: ({ d: string } & Record<string, number | null | string>)[];
   serie_amplitude_pld: { d: string; amplitude: number }[];
   limites_integrados: boolean;
+  balanco_sin?: {
+    dia: string;
+    soma_saldos: number | null;
+    intercambio_sin: number | null;
+    dias_365: number;
+    dias_sin_nao_nulo_365: number;
+    horas_sin_nulo_total: number;
+    horas_total: number;
+    dias_divergentes: string[];
+  } | null;
   proveniencia: { fluxo: Proveniencia; diferenca: Proveniencia; saldos?: Proveniencia };
   fonte_notas: string | null;
   downloads: Download[];

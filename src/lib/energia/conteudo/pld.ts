@@ -153,7 +153,7 @@ export const NOS_FORMACAO: NoFormacao[] = [
     relacaoSaida: {
       para: "cmo",
       tipo: "resultado_modelos",
-      texto: "O CMO é resultado desses modelos.",
+      texto: "O ONS publica o CMO estimado pelo DECOMP (semanal) e pelo DESSEM (semi-horário).",
       conferencia: "CONFERIDO",
       fonte: "ONS, CMO Semanal (DECOMP) e CMO Semi-Horário (DESSEM)",
     },

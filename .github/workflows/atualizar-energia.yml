@@ -1,9 +1,10 @@
 name: Atualizar dados do Setor Elétrico
 
 # Domínio Energia: coleta ONS (EAR, ENA, carga, balanço, intercâmbio, CMO), tenta a
-# CCEE direta (bloqueada no ambiente de construção em 28/09/2026; o seed versionado
-# com sha256 garante o PLD até a última captura), reconstrói a gold em
-# public/energia e publica. Separado do workflow do Crédito: falha de um domínio
+# CCEE direta (acesso automatizado instável; o seed versionado com sha256 garante o
+# PLD até a última captura), reconstrói a gold em public/energia e publica.
+# O histórico de vintages (silver) fica no cache do Actions e, como cópia durável,
+# num asset da release "energia-estado"; sem os dois, o alerta abre issue. Separado do workflow do Crédito: falha de um domínio
 # não atrasa o outro. O ONS atualiza os conjuntos às 12h e às 19h de Brasília.
 on:
   schedule:
@@ -37,12 +38,41 @@ jobs:
           python-version: "3.12"
 
       - name: Restaurar estado (bronze e silver com vintages)
+        id: restaurar
         uses: actions/cache/restore@v4
         with:
           path: data/energia
           key: energia-estado-${{ github.run_id }}
           restore-keys: |
             energia-estado-
+
+      - name: Restaurar silver da cópia durável (cache ausente)
+        id: duravel
+        if: steps.restaurar.outputs.cache-matched-key == ''
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p data/energia/silver
+          gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "energia-silver.db.gz" --dir /tmp
+          gunzip -c /tmp/energia-silver.db.gz > data/energia/silver/energia.db
+          echo "restaurado=sim" >> "$GITHUB_OUTPUT"
+
+      - name: Alertar perda do histórico de vintages
+        if: steps.restaurar.outputs.cache-matched-key == '' && steps.duravel.outputs.restaurado != 'sim'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          TITULO="Setor Elétrico: histórico de vintages não restaurado"
+          EXISTENTE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
+            --search "\"$TITULO\" in:title" --json number --jq '.[0].number // empty')
+          CORPO="Execução ${RUN_URL}: nem o cache nem a cópia durável estavam disponíveis. A gold será reconstruída, mas as revisões anteriores da fonte não serão detectáveis."
+          if [ -n "$EXISTENTE" ]; then
+            gh issue comment "$EXISTENTE" --repo "$GITHUB_REPOSITORY" --body "$CORPO"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body "$CORPO"
+          fi
 
       - name: Executar pipeline de energia
         id: pipeline
@@ -63,6 +93,18 @@ jobs:
         with:
           path: data/energia
           key: energia-estado-${{ github.run_id }}
+
+      - name: Cópia durável do silver (release energia-estado)
+        if: steps.pipeline.outcome == 'success'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gzip -c data/energia/silver/energia.db > /tmp/energia-silver.db.gz
+          gh release view energia-estado --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || \
+            gh release create energia-estado --repo "$GITHUB_REPOSITORY" --title "Estado do pipeline de energia" \
+              --notes "Cópia durável do silver com vintages (uso interno do pipeline). Não é dado publicado." --prerelease
+          gh release upload energia-estado /tmp/energia-silver.db.gz --repo "$GITHUB_REPOSITORY" --clobber
 
       - name: Alertar regressão
         if: steps.pipeline.outputs.regressoes != ''
