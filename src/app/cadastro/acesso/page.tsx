@@ -21,7 +21,7 @@ export default async function AcessoPage() {
   if (status === "ACCESS_PENDING" || status === "WAITLIST") {
     await updateUser(user.id, { onboardingStatus: "COMPLETE" });
     await trackEvent("onboarding_completed", user.id);
-    redirect("/observatorio");
+    redirect("/app/observatorios");
   }
   redirect(nextStepPath(status));
 }

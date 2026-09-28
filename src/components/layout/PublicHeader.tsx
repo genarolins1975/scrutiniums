@@ -3,20 +3,22 @@ import { cookies } from "next/headers";
 import { LogoWordmark } from "@/components/ui/Logo";
 import { getSessionUser } from "@/lib/session";
 
+// Navegação da plataforma: os dois observatórios primeiro, depois a superfície
+// citável de dados do Crédito. As demais páginas de cada domínio (resumo,
+// metodologia, glossário, aprenda) ficam no rodapé e dentro de cada observatório.
 const NAV = [
-  { href: "/observatorio", label: "Observatório" },
-  { href: "/observatorio-do-credito", label: "O que é" },
-  { href: "/dados", label: "Dados" },
-  { href: "/resumo", label: "Resumo diário" },
-  { href: "/#plataforma", label: "Plataforma" },
-  { href: "/observatorio/methodology", label: "Metodologia e fontes" },
-  { href: "/glossario", label: "Glossário" },
+  { href: "/observatorio-do-credito", label: "Crédito" },
+  { href: "/setor-eletrico", label: "Setor Elétrico" },
+  { href: "/dados", label: "Dados do crédito" },
+  { href: "/#observatorios", label: "Plataforma" },
+  { href: "/#plataforma", label: "Método" },
+  { href: "/imprensa", label: "Imprensa" },
 ];
 
 /**
  * Cabeçalho público com ações de autenticação sensíveis à sessão:
  * visitante vê "Entrar"/"Criar acesso"; usuário com onboarding completo
- * vê "Minha conta"/"Observatório" (caminho de volta à área logada).
+ * vê "Minha conta"/"Observatórios" (caminho de volta à escolha de observatório).
  * A leitura da sessão é server-side (sem fetch no cliente).
  */
 export async function PublicHeader() {
@@ -69,10 +71,10 @@ export function PublicHeaderView({ authenticated = false }: { authenticated?: bo
             {authenticated ? "Minha conta" : "Entrar"}
           </Link>
           <Link
-            href={authenticated ? "/observatorio" : "/cadastro"}
+            href={authenticated ? "/app/observatorios" : "/cadastro"}
             className="rotulo inline-flex min-h-[44px] items-center border border-carvao px-5 text-carvao hover:bg-carvao hover:text-marfim"
           >
-            {authenticated ? "Observatório" : "Criar acesso"}
+            {authenticated ? "Observatórios" : "Criar acesso"}
           </Link>
         </div>
       </div>

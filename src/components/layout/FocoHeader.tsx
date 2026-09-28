@@ -1,19 +1,19 @@
 import Link from "next/link";
 import { LogoWordmark } from "@/components/ui/Logo";
+import { SwitcherObservatorio } from "@/components/layout/SwitcherObservatorio";
 
 /**
- * Cabeçalho mínimo para páginas de foco (Conta, Administração): sem a
- * navegação de painéis, que é irrelevante nesse contexto. Apenas a marca,
- * o caminho de volta ao Observatório e a saída.
+ * Cabeçalho mínimo para páginas de foco (Escolha do observatório, Conta,
+ * Administração): a marca, o seletor de observatório, a conta e a saída.
  */
 export function FocoHeader({ titulo }: { titulo?: string }) {
   return (
     <header className="border-b border-linha bg-marfim">
-      <div className="mx-auto flex max-w-page items-center justify-between gap-6 px-6 py-4">
-        <div className="flex items-center gap-5">
+      <div className="mx-auto flex max-w-page items-center justify-between gap-3 px-4 py-4 sm:gap-6 sm:px-6">
+        <div className="flex min-w-0 items-center gap-5">
           <Link
-            href="/observatorio"
-            aria-label="Scrutiniums — voltar ao Observatório"
+            href="/app/observatorios"
+            aria-label="Scrutiniums: escolher observatório"
             className="inline-flex min-h-[44px] items-center"
           >
             <LogoWordmark />
@@ -24,15 +24,16 @@ export function FocoHeader({ titulo }: { titulo?: string }) {
             </span>
           )}
         </div>
-        <div className="flex items-center gap-6">
+        <div className="flex shrink-0 items-center gap-4 sm:gap-6">
+          <SwitcherObservatorio atual={null} />
           <Link
-            href="/observatorio"
-            className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted hover:text-bronze"
+            href="/app/conta"
+            className="rotulo hidden min-h-[44px] min-w-[44px] items-center justify-center text-carvao-muted hover:text-bronze sm:inline-flex"
           >
-            ← Observatório
+            Conta
           </Link>
           <form action="/api/auth/sair" method="post">
-            <button type="submit" className="rotulo min-h-[44px] text-mineral hover:text-bronze">
+            <button type="submit" className="rotulo min-h-[44px] min-w-[44px] px-1 text-mineral hover:text-bronze">
               Sair
             </button>
           </form>

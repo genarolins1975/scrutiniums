@@ -1,0 +1,169 @@
+{
+ "result": {
+  "author": "CCEE-GAIM",
+  "author_email": "",
+  "creator_user_id": "08bb46ea-324c-47b2-84b7-76a0ebb05a3f",
+  "extras": [
+   {
+    "key": "Frequência de Atualização",
+    "value": "Mensal"
+   },
+   {
+    "key": "Referência de Publicação",
+    "value": "MS+22du"
+   },
+   {
+    "key": "Termo Legal",
+    "value": "O acesso a este site e/ou a utilização de conteúdos, dados e bases de dados nele disponibilizados se sujeita ao aceite dos termos e condições da licença aberta Creative Commons Attribution 4.0 International (CC-BY-4.0), bem como aos Termos de Uso do site e do aplicativo mobile (App) da CCEE (Link - https://www.ccee.org.br/en/web/guest/termos-de-uso). Ao utilizar esses recursos, você concorda em cumprir todos os requisitos dessa licença, que permitem que os reutilizadores distribuam, modifiquem, adaptem e desenvolvam o material sobre os dados, desde que seja atribuído o crédito apropriado ao criador (CCEE) e que sejam informadas as alterações. O Material Licenciado é disponibilizado no \"estado em que se encontra\" e \"como disponível\" apenas para fins informativos, sendo possível a interrupção da disponibilidade do conjunto de dados a qualquer momento e por qualquer motivo, sendo a sua utilização de livre iniciativa, não sendo atribuível qualquer tipo de responsabilização à CCEE por seu uso."
+   }
+  ],
+  "groups": [],
+  "id": "2da9bd51-b91c-4b80-b6b2-5b84054de90e",
+  "isopen": true,
+  "license_id": "CC-BY-4.0",
+  "license_title": "Creative Commons Attribution 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "maintainer": "CCEE-GAIM",
+  "maintainer_email": "",
+  "metadata_created": "2023-06-26T14:40:36.730747",
+  "metadata_modified": "2026-09-01T17:50:16.460480",
+  "name": "pld_horario_submercado",
+  "notes": "Dados de Preços de Liquidação das Diferenças por Submercado, mês de referência e período de comercialização.",
+  "num_resources": 4,
+  "num_tags": 3,
+  "organization": {
+   "approval_status": "approved",
+   "created": "2023-03-02T11:15:44.108398",
+   "description": "O Infomercado é uma organização que agrupa os principais conjuntos de dados referentes ao resultado da contabilização do mercado de energia brasileiro.\r\n\r\nAs partes interessadas poderão acessar conjuntos de dados relacionados aos seguintes assuntos: geração; consumo; MRE; contratos; PLD; e demais temas do Mercado de Curto Prazo - MCP.\r\n\r\nOs conjuntos de dados do informercado, seus recursos e APIs são atualizados periodicamente nesse portal de dados, para o mês de referência relativo à finalização da liquidação do MCP (não são considerados eventos de recontabilização).\r\n\r\nPara consulta ao acervo de dados públicos, a parte interessada poderá consultar o portal da CCEE > dados e análises.",
+   "id": "e898a06e-6d25-486f-ba0e-209f66c975ce",
+   "image_url": "https://www.ccee.org.br/documents/20121/1583681/icon_pda-infomercado.svg/029872ce-13b0-9153-3d63-0501ca687dff?t=1724955920662",
+   "is_organization": true,
+   "name": "infomercado",
+   "state": "active",
+   "title": "Infomercado",
+   "type": "organization"
+  },
+  "owner_org": "e898a06e-6d25-486f-ba0e-209f66c975ce",
+  "private": false,
+  "relationships_as_object": [],
+  "relationships_as_subject": [],
+  "resources": [
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2023-06-26T14:41:03.956665",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os valores do Preço de Liquidação das Diferenças do MCP por mês de referência, período de comercialização e submercado  \n  \n**Campos contidos nesse Dataset:**  \n  \n* **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.  \n* **PERIODO_COMERCIALIZACAO** : Representa o período de comercialização, equivalente a uma hora, dentro do mês e o ano de referência na qual os dados foram utilizados.  \n* **SUBMERCADO** : Representa os quatro (4) submercados de atuação no SIN  - Sistema Interligado Nacional correspondentes a Norte (N), Nordeste (NE), Sul (S) e Sudeste (SE).  \n* **PLD** : Corresponde ao Preço de Liquidação das Diferenças, determinado por submercado “s”, por período de comercialização “j”  (PLDs,j) R$",
+    "format": "CSV",
+    "hash": "",
+    "id": "3bb08fc6-e7c0-4091-80ad-7846e5df6ee4",
+    "last_modified": "2024-02-01T11:24:39.266000",
+    "metadata_modified": "2025-11-21T00:46:24.940385",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "pld_horario_submercado_2023",
+    "package_id": "2da9bd51-b91c-4b80-b6b2-5b84054de90e",
+    "position": 0,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/e-qPA419SneVTnOQ04kEYA/content",
+    "url_type": ""
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2024-03-04T02:04:53.723046",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os valores do Preço de Liquidação das Diferenças do MCP por mês de referência, período de comercialização e submercado  \n  \n**Campos contidos nesse Dataset:**  \n  \n* **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.  \n* **PERIODO_COMERCIALIZACAO** : Representa o período de comercialização, equivalente a uma hora, dentro do mês e o ano de referência na qual os dados foram utilizados.  \n* **SUBMERCADO** : Representa os quatro (4) submercados de atuação no SIN  - Sistema Interligado Nacional correspondentes a Norte (N), Nordeste (NE), Sul (S) e Sudeste (SE).  \n* **PLD** : Corresponde ao Preço de Liquidação das Diferenças, determinado por submercado “s”, por período de comercialização “j”  (PLDs,j) R$",
+    "format": "CSV",
+    "hash": "",
+    "id": "f95004bf-fc09-427b-8cf5-8e802bb020f0",
+    "last_modified": "2025-01-31T20:08:07.744000",
+    "metadata_modified": "2025-01-31T23:08:07.805656",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "pld_horario_submercado_2024",
+    "package_id": "2da9bd51-b91c-4b80-b6b2-5b84054de90e",
+    "position": 1,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/HlhpSDOXS_C0P7cmvJZl5A/content",
+    "url_type": null
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2025-03-05T23:14:26.104016",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os valores do Preço de Liquidação das Diferenças do MCP por mês de referência, período de comercialização e submercado  \n  \n**Campos contidos nesse Dataset:**  \n  \n* **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.  \n* **PERIODO_COMERCIALIZACAO** : Representa o período de comercialização, equivalente a uma hora, dentro do mês e o ano de referência na qual os dados foram utilizados.  \n* **SUBMERCADO** : Representa os quatro (4) submercados de atuação no SIN  - Sistema Interligado Nacional correspondentes a Norte (N), Nordeste (NE), Sul (S) e Sudeste (SE).  \n* **PLD** : Corresponde ao Preço de Liquidação das Diferenças, determinado por submercado “s”, por período de comercialização “j”  (PLDs,j) R$",
+    "format": "CSV",
+    "hash": "",
+    "id": "7267ead9-6039-4ce1-93f3-3471ae33bd98",
+    "last_modified": "2026-02-02T17:41:57.135000",
+    "metadata_modified": "2026-02-02T20:42:25.384656",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "pld_horario_submercado_2025",
+    "package_id": "2da9bd51-b91c-4b80-b6b2-5b84054de90e",
+    "position": 2,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/Cjl9mQwEQVaaMuOBuwRq1Q/content",
+    "url_type": null
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2026-03-04T20:55:25.946856",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os valores do Preço de Liquidação das Diferenças do MCP por mês de referência, período de comercialização e submercado  \n  \n**Campos contidos nesse Dataset:**  \n  \n* **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.  \n* **PERIODO_COMERCIALIZACAO** : Representa o período de comercialização, equivalente a uma hora, dentro do mês e o ano de referência na qual os dados foram utilizados.  \n* **SUBMERCADO** : Representa os quatro (4) submercados de atuação no SIN  - Sistema Interligado Nacional correspondentes a Norte (N), Nordeste (NE), Sul (S) e Sudeste (SE).  \n* **PLD** : Corresponde ao Preço de Liquidação das Diferenças, determinado por submercado “s”, por período de comercialização “j”  (PLDs,j) R$",
+    "format": "CSV",
+    "hash": "",
+    "id": "554cc6f2-9f1e-4163-8a04-573b4aafcbc1",
+    "last_modified": "2026-09-01T14:50:16.347000",
+    "metadata_modified": "2026-09-01T17:50:16.464811",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "pld_horario_submercado_2026",
+    "package_id": "2da9bd51-b91c-4b80-b6b2-5b84054de90e",
+    "position": 3,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/6pVzKbCKRHaGCCjrBbK29A/content",
+    "url_type": null
+   }
+  ],
+  "state": "active",
+  "tags": [
+   {
+    "display_name": "dados gerais",
+    "id": "608eaa47-92c5-460b-a3d0-2069bff3b41d",
+    "name": "dados gerais",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "pld",
+    "id": "2239105d-7137-408a-88b8-5942ad3e51ea",
+    "name": "pld",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "submercado",
+    "id": "50db7f7f-0bf6-4cc4-a097-71902882e375",
+    "name": "submercado",
+    "state": "active",
+    "vocabulary_id": null
+   }
+  ],
+  "title": "PLD_HORARIO_SUBMERCADO",
+  "type": "dataset",
+  "url": "",
+  "version": ""
+ }
+}

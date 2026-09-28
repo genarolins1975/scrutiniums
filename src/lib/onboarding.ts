@@ -30,23 +30,36 @@ export function nextStepPath(status: OnboardingStatus): string {
       // Rota legada: promove a COMPLETE e redireciona ao Observatório.
       return "/cadastro/acesso";
     case "COMPLETE":
-      // Destino principal pós-login: o Observatório completo.
-      return "/observatorio";
+      // Destino principal pós-login: a escolha entre os dois observatórios.
+      return "/app/observatorios";
   }
 }
 
 /**
  * Valida um destino pós-login vindo da query (?de=...): aceita apenas
- * caminho interno absoluto ("/...") — nunca "//host", "\", esquema externo
- * ou rotas de API. Retorna null quando o valor não é seguro.
+ * caminho interno absoluto ("/...") — nunca "//host", "\", esquema externo,
+ * caractere de controle ou espaço (o navegador descarta tabulação e quebra de
+ * linha, e "/\t/host" viraria "//host") ou rotas de API. A conferência final
+ * resolve o caminho contra uma origem fictícia e exige a mesma origem.
+ * Retorna null quando o valor não é seguro.
  */
 export function safeInternalPath(raw: string | null | undefined): string | null {
   if (!raw) return null;
+  if (/[\u0000-\u0020\u007f-\u009f]/.test(raw)) return null;
   if (!raw.startsWith("/")) return null;
   if (raw.startsWith("//")) return null;
   if (raw.includes("\\")) return null;
   if (raw.includes("://")) return null;
   if (raw === "/api" || raw.startsWith("/api/")) return null;
+  const base = "https://interno.invalid";
+  let alvo: URL;
+  try {
+    alvo = new URL(raw, base);
+  } catch {
+    return null;
+  }
+  if (alvo.origin !== base) return null;
+  if (alvo.pathname === "/api" || alvo.pathname.startsWith("/api/")) return null;
   return raw;
 }
 

@@ -21,6 +21,27 @@
   --cor-linha: #d8d2c6;
   --cor-erro: #8c3b2e;
   --cor-sucesso: #4f6b4e;
+  --cor-energia: #0e6170;
+  --cor-energia-dark: #0a4a56;
+  --cor-energia-soft: #5e98a3;
+  --cor-energia-fundo: #e6eeee;
+  --cor-superficie: #ffffff;
+  --cor-grade: #e5e0d5; /* grade de gráfico, recessiva */
+  --cor-previsto: #5b3f8c; /* natureza PREVISTO (selo e ilustração) */
+
+  /* Séries do domínio Energia, validadas por scripts/validate_palette (skill
+     dataviz) sobre superfície clara: ordem fixa, CVD adjacente >= 8, visão
+     normal >= 15. Solar fica abaixo de 3:1 e exige rótulo direto ou tabela.
+     Texto nunca usa a cor da série. */
+  --serie-hidraulica: #256abf;
+  --serie-termica: #d95926;
+  --serie-eolica: #199e70;
+  --serie-solar: #c98500;
+  --serie-sm-se: #4a3aa7;
+  --serie-sm-s: #199e70;
+  --serie-sm-ne: #d95926;
+  --serie-sm-n: #2a78d6;
+  --serie-referencia: #8a8578;
 
   /* Paleta categórica dos gráficos: bronze só como destaque */
   --serie-1: #1a1d21;
@@ -60,6 +81,10 @@ body {
   outline: 2px solid var(--cor-bronze);
   outline-offset: 2px;
 }
+/* no Setor Elétrico o anel de foco usa o acento do domínio */
+.dominio-energia :focus-visible {
+  outline-color: var(--cor-energia);
+}
 
 ::selection {
   background: var(--cor-bronze);
@@ -86,6 +111,40 @@ body {
 
 /* Tabelas largas roláveis sem quebrar o layout no celular */
 .tabela-scroll {
+  position: relative; /* contém descendentes absolutos (textos só para leitor de tela) */
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
+/* Setor Elétrico: sombra nas bordas indica conteúdo além da área visível (some quando não há) */
+.dominio-energia div.tabela-scroll {
+  background:
+    linear-gradient(to right, var(--cor-superficie) 30%, transparent) left / 2.5rem 100% no-repeat local,
+    linear-gradient(to left, var(--cor-superficie) 30%, transparent) right / 2.5rem 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, rgba(26, 29, 33, 0.18), transparent) left / 0.75rem 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, rgba(26, 29, 33, 0.18), transparent) right / 0.75rem 100% no-repeat scroll;
+}
+.tabela-scroll:focus-visible {
+  outline: 2px solid var(--cor-energia);
+  outline-offset: 2px;
+}
+
+/* Profundidade progressiva (ModoProfundidade): mesma página, três níveis. */
+.modo-profundidade[data-modo="entender"] [data-nivel="analisar"],
+.modo-profundidade[data-modo="entender"] [data-nivel="auditar"],
+.modo-profundidade[data-modo="analisar"] [data-nivel="auditar"] {
+  display: none;
+}
+
+/* Dica de verbete (Termo): visível no hover e no foco do teclado. */
+/* display:none fora do hover/foco: posicionada e invisível, a dica ainda ocupava
+   largura e criava rolagem horizontal perto da borda direita. */
+.termo-dica { display: none !important; }
+.termo:hover .termo-dica,
+.termo:focus-within .termo-dica { display: block !important; }
+.termo.termo-fechada .termo-dica { display: none !important; }
+
+/* Domínio Energia: algarismos alinhados na serifa (Playfair usa estilo antigo
+   por padrão, ruim para ler números de dados). */
+.dominio-energia .font-serif { font-variant-numeric: lining-nums; }
+/* hashes, ids e URLs longos nunca empurram a página para o lado no celular */
+.dominio-energia { overflow-wrap: break-word; }

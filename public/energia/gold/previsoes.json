@@ -1,0 +1,1271 @@
+{
+ "dominio": "energia",
+ "gold": "previsoes.json",
+ "gerado_em": "2026-09-28T15:25:51Z",
+ "versao_pipeline": "energia-0.1.0",
+ "versao_codigo": "d1dcbf611ab9",
+ "disponivel": true,
+ "atual": {
+  "disponivel": false,
+  "motivo_codigo": "NENHUM_MODELO_EM_PRODUCAO",
+  "motivo": "Nenhum modelo de previsão do PLD está em produção: os quatro estão em pesquisa, e modelo em pesquisa não pode alimentar a previsão oficial.",
+  "ultima_execucao": {
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "tipo": "RODADA_INTERNA",
+   "origem": "2026-09-27",
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "modelo": "B0",
+   "versao_modelo": "B0-v1",
+   "estado_modelo": "PESQUISA",
+   "celulas": 28,
+   "com_numero": 0,
+   "motivos": [
+    "SEM_PLD_CAPTURADO_ATE_O_CORTE"
+   ],
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ]
+  },
+  "informacao_faltante": [
+   "Um modelo aprovado nas etapas de validação e promovido a produção.",
+   "Conclusão da última etapa de validação da pesquisa e documentação de uma limitação encontrada na revisão.",
+   "PLD do período necessário capturado antes do horário de corte de cada rodada (07h00 de Brasília)."
+  ],
+  "estado_pipeline": "O registro de modelos e o arquivo de previsões estão ativos; não há previsão oficial publicada; as rodadas ainda não são agendadas automaticamente."
+ },
+ "publicacoes": 0,
+ "rodadas": [
+  {
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "tipo": "RODADA_INTERNA",
+   "origem": "2026-09-27",
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "modelo": "B0",
+   "versao_modelo": "B0-v1",
+   "estado_modelo": "PESQUISA",
+   "celulas": 28,
+   "com_numero": 0,
+   "motivos": [
+    "SEM_PLD_CAPTURADO_ATE_O_CORTE"
+   ],
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ]
+  }
+ ],
+ "arquivo": [
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-10-10T03:00:00Z",
+    "id": "W2026-10-03",
+    "inicio": "2026-10-03T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:W1:SE",
+   "fracao_conhecida": 0.0,
+   "frequencia": "W",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "W1",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "c7acd8447e623c2e1ef21f173f42b68a51da1766b69cca66c6fb06b23d593427",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "SE",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-10-10T03:00:00Z",
+    "id": "W2026-10-03",
+    "inicio": "2026-10-03T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:W1:S",
+   "fracao_conhecida": 0.0,
+   "frequencia": "W",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "W1",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "dcee61584b1519f6ab28d97a9e793839c01b8ffb64345984768863b214399fde",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "S",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-10-10T03:00:00Z",
+    "id": "W2026-10-03",
+    "inicio": "2026-10-03T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:W1:NE",
+   "fracao_conhecida": 0.0,
+   "frequencia": "W",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "W1",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "2665de490c9369ab5855f9cd0abeab8b6af5203609387181a0f461bdd5671c84",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "NE",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-10-10T03:00:00Z",
+    "id": "W2026-10-03",
+    "inicio": "2026-10-03T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:W1:N",
+   "fracao_conhecida": 0.0,
+   "frequencia": "W",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "W1",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "1e160cc2aedfafa409c4507188dd4ae7fba67b36aff29620cf0c68a56b8e5c3e",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "N",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-10-17T03:00:00Z",
+    "id": "W2026-10-10",
+    "inicio": "2026-10-10T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:W2:SE",
+   "fracao_conhecida": 0.0,
+   "frequencia": "W",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "W2",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "f065bbe35df2b0124f9ea7cd08e12172d072b9ed8da3b3763bb028d2ceaa86eb",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "SE",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-10-17T03:00:00Z",
+    "id": "W2026-10-10",
+    "inicio": "2026-10-10T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:W2:S",
+   "fracao_conhecida": 0.0,
+   "frequencia": "W",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "W2",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "f183a43f103ea076120559bf6a52cda43ff80266eab7b35e5c4d8abb28da6e5d",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "S",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-10-17T03:00:00Z",
+    "id": "W2026-10-10",
+    "inicio": "2026-10-10T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:W2:NE",
+   "fracao_conhecida": 0.0,
+   "frequencia": "W",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "W2",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "55de1b51e01b10366225098ab1ec1a848a1ebc6a303704ce2f491c3aa4d80115",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "NE",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-10-17T03:00:00Z",
+    "id": "W2026-10-10",
+    "inicio": "2026-10-10T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:W2:N",
+   "fracao_conhecida": 0.0,
+   "frequencia": "W",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "W2",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "937999b44032cc66621fdd54371feb29eb9e0714d5495fe099e32995765e4787",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "N",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-10-24T03:00:00Z",
+    "id": "W2026-10-17",
+    "inicio": "2026-10-17T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:W3:SE",
+   "fracao_conhecida": 0.0,
+   "frequencia": "W",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "W3",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "d0dc7407898bf25c80c1e7353e3b9e403f2a7805739b42bc2c547dbb1dca9afe",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "SE",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-10-24T03:00:00Z",
+    "id": "W2026-10-17",
+    "inicio": "2026-10-17T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:W3:S",
+   "fracao_conhecida": 0.0,
+   "frequencia": "W",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "W3",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "b7da87ddcf91cfe2f5cf00a86d49ac4264122e0366ce27c142cf8cff7300d1f4",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "S",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-10-24T03:00:00Z",
+    "id": "W2026-10-17",
+    "inicio": "2026-10-17T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:W3:NE",
+   "fracao_conhecida": 0.0,
+   "frequencia": "W",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "W3",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "49ea3922ab817751404b55160ef646c834cb9715b8f656d7810a02292efdea6c",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "NE",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-10-24T03:00:00Z",
+    "id": "W2026-10-17",
+    "inicio": "2026-10-17T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:W3:N",
+   "fracao_conhecida": 0.0,
+   "frequencia": "W",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "W3",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "86cbc356b8a34317ba2bd45c862c95e79995caf45452307a40c00fc908080eec",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "N",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-10-31T03:00:00Z",
+    "id": "W2026-10-24",
+    "inicio": "2026-10-24T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:W4:SE",
+   "fracao_conhecida": 0.0,
+   "frequencia": "W",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "W4",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "959e219eeb281f0009906d6ccb5b2dc7b606f73f9ac56c03235b8cc87674a3fc",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "SE",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-10-31T03:00:00Z",
+    "id": "W2026-10-24",
+    "inicio": "2026-10-24T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:W4:S",
+   "fracao_conhecida": 0.0,
+   "frequencia": "W",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "W4",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "5d2f9722f9325e21172e4a76e7024f44d8e529e3e17000392f8196500367a632",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "S",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-10-31T03:00:00Z",
+    "id": "W2026-10-24",
+    "inicio": "2026-10-24T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:W4:NE",
+   "fracao_conhecida": 0.0,
+   "frequencia": "W",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "W4",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "bb87df5fbc90492e679658038424c98e2b67af7ae2398c4875e26cd530ebf97e",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "NE",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-10-31T03:00:00Z",
+    "id": "W2026-10-24",
+    "inicio": "2026-10-24T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:W4:N",
+   "fracao_conhecida": 0.0,
+   "frequencia": "W",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "W4",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "cdd3715133fa4db56d91ec468433584ed9deb53b456ee6273e6a5fcbd236f1e1",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "N",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-11-01T03:00:00Z",
+    "id": "M2026-10",
+    "inicio": "2026-10-01T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:M1:SE",
+   "fracao_conhecida": 0.0,
+   "frequencia": "M",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "M1",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "44ea15426f8a93ddf329c7c4a06889bcde76e911838292ad0638c138d5d4b5ec",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "SE",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-11-01T03:00:00Z",
+    "id": "M2026-10",
+    "inicio": "2026-10-01T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:M1:S",
+   "fracao_conhecida": 0.0,
+   "frequencia": "M",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "M1",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "4999a54ca01179e9c6c76a89e2cb4738c799738cf60b220ac7dfa077aeb1ee2f",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "S",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-11-01T03:00:00Z",
+    "id": "M2026-10",
+    "inicio": "2026-10-01T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:M1:NE",
+   "fracao_conhecida": 0.0,
+   "frequencia": "M",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "M1",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "dd763b5615aa1aadb38154a2ac946a6fad145893b1927c26f558bcc49d4e3596",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "NE",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-11-01T03:00:00Z",
+    "id": "M2026-10",
+    "inicio": "2026-10-01T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:M1:N",
+   "fracao_conhecida": 0.0,
+   "frequencia": "M",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "M1",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "9feb57343d5480407eff7c89e7832702315a59d7602cd675af1b4ffebbc525cf",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "N",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-12-01T03:00:00Z",
+    "id": "M2026-11",
+    "inicio": "2026-11-01T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:M2:SE",
+   "fracao_conhecida": 0.0,
+   "frequencia": "M",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "M2",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "d8012bbbd852252ac38a478ce9434968d1027bb42f1975a739597757872fdc94",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "SE",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-12-01T03:00:00Z",
+    "id": "M2026-11",
+    "inicio": "2026-11-01T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:M2:S",
+   "fracao_conhecida": 0.0,
+   "frequencia": "M",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "M2",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "887144cc1017dd72c1babd4c5703350528f2aba47d41f44f5fb5f87e6754b8df",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "S",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-12-01T03:00:00Z",
+    "id": "M2026-11",
+    "inicio": "2026-11-01T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:M2:NE",
+   "fracao_conhecida": 0.0,
+   "frequencia": "M",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "M2",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "ca5119d271a7deebe39481051366ba92e5057d8e6a8d08972dde60d6d2f59c98",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "NE",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2026-12-01T03:00:00Z",
+    "id": "M2026-11",
+    "inicio": "2026-11-01T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:M2:N",
+   "fracao_conhecida": 0.0,
+   "frequencia": "M",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "M2",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "f131023cfcfb32cfae8db333c701cf597332fbc4809648a2722a048ba89a528c",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "N",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2027-01-01T03:00:00Z",
+    "id": "M2026-12",
+    "inicio": "2026-12-01T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:M3:SE",
+   "fracao_conhecida": 0.0,
+   "frequencia": "M",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "M3",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "0571ead57322d1847b4c8659fa0629a5fd3abaf29445fb377757347af7710956",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "SE",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2027-01-01T03:00:00Z",
+    "id": "M2026-12",
+    "inicio": "2026-12-01T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:M3:S",
+   "fracao_conhecida": 0.0,
+   "frequencia": "M",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "M3",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "46ff2ab79b8d786b7506ff0842fcdcab951e0560a4ff0b1d1e6ca27509b59b6f",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "S",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2027-01-01T03:00:00Z",
+    "id": "M2026-12",
+    "inicio": "2026-12-01T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:M3:NE",
+   "fracao_conhecida": 0.0,
+   "frequencia": "M",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "M3",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "9b7dbfb489ad4938fc4662b883b71a4eccca21acc7f5c018f0e2af9e12531392",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "NE",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  },
+  {
+   "alertas": [
+    "ATRASADO_APOS_08H"
+   ],
+   "calibracao": {
+    "status": "NAO_CALIBRADO_NO_PILOTO"
+   },
+   "cutoff": "2026-09-27T10:00:00Z",
+   "emitido_em": "2026-09-27T19:10:13Z",
+   "entrega": {
+    "fim": "2027-01-01T03:00:00Z",
+    "id": "M2026-12",
+    "inicio": "2026-12-01T03:00:00Z"
+   },
+   "estado_modelo": "PESQUISA",
+   "evidencia": {
+    "classe": "PROSPECTIVO_REGISTRADO",
+    "fonte": "payload do artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (operacional.rodadas_reais)",
+    "sha256_fonte": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+   },
+   "forecast_id": "prosp_2026-09-27_20260927T191013Z:M3:N",
+   "fracao_conhecida": 0.0,
+   "frequencia": "M",
+   "horas_capturadas_ate_corte": 0,
+   "horizonte": "M3",
+   "modelo": "B0",
+   "motivo": "SEM_PLD_CAPTURADO_ATE_O_CORTE",
+   "motivo_correcao": null,
+   "origem": "2026-09-27",
+   "prazo": "2026-09-27T11:00:00Z",
+   "previsao": null,
+   "quantis": null,
+   "registrado_no_portal_em": "2026-09-28",
+   "run_id": "prosp_2026-09-27_20260927T191013Z",
+   "sha256": "921ad4fc7dc94348c6efeb335210c55e0a6e650d8066ab19be48082b95c62742",
+   "snapshot": null,
+   "status": "INDISPONIVEL",
+   "submercado": "N",
+   "substitui": null,
+   "tipo": "RODADA_INTERNA",
+   "versao_codigo": null,
+   "versao_modelo": "B0-v1"
+  }
+ ],
+ "apuracoes": [],
+ "regras": {
+  "estados": "PESQUISA e VALIDAÇÃO nunca alimentam a previsão principal; só PRODUÇÃO.",
+  "imutabilidade": "Cada registro tem uma impressão digital do conteúdo (sha256): qualquer alteração a denuncia. Correção cria um registro novo que aponta para o original e declara o motivo; o original nunca é apagado.",
+  "calibracao": "Faixa P10 a P90 só é chamada de faixa de 80% quando a cobertura empírica fora do ajuste fica entre 75% e 85% com pelo menos 100 casos (regra proposta, a ratificar).",
+  "look_ahead": "Toda variável de entrada precisa ter sido capturada até o horário de corte da previsão."
+ }
+}

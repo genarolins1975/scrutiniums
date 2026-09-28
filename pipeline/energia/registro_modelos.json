@@ -1,0 +1,241 @@
+{
+ "atualizado_em": "2026-09-28",
+ "fonte": {
+  "artefato": "PLD_PREVISOES_EXPLICADAS v1-previa-r4",
+  "artefato_sha256": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d",
+  "gerado_em": "2026-09-28T01:34:26Z",
+  "codigo_pesquisa": "1b6ba3db01c6c51d7328a7add9b3694b8a476579",
+  "experimento": "E2B-C123-v1",
+  "diagnostico": "E2B-DIAG-v2",
+  "snapshot": "snap_bootstrap_20260927T154527Z",
+  "estado_da_revisao": "Quatro primeiras etapas de validação da pesquisa aceitas (etapas G0 a G3); uma limitação encontrada na revisão aguarda documentação (registro G23-R1); a última etapa (G4) não foi enviada; a revisão do documento de origem está pendente",
+  "codigos_internos": {
+   "E2B-C123-v1": "Identificador interno da configuração do experimento de onde vêm C1, C2-P e C2-H.",
+   "E2B-DIAG-v2": "Identificador interno do diagnóstico que acompanha o experimento.",
+   "G0 a G4": "Etapas de validação da pesquisa, da G0 à G4; a G4 é a última e não foi concluída.",
+   "G23-R1": "Registro da limitação encontrada na revisão, ainda não documentada nos relatórios da pesquisa."
+  }
+ },
+ "publicacao_resultados": {
+  "liberada": false,
+  "motivo": "Os resultados dos testes retrospectivos da pesquisa ainda estão em revisão: a última etapa de validação da pesquisa não foi concluída, uma limitação encontrada na revisão ainda não está documentada nos relatórios e o documento de origem é uma prévia interna. Números de desempenho só entram no portal depois da liberação formal pelo responsável pela plataforma.",
+  "condicoes": [
+   "Última etapa de validação da pesquisa concluída e publicada com sha256",
+   "Limitação encontrada na revisão documentada nos relatórios da pesquisa",
+   "Revisão do documento de origem aceita",
+   "Liberação registrada pelo responsável pela plataforma, com data"
+  ]
+ },
+ "definicoes": {
+  "alvo": "PLD médio do período de entrega, por submercado, em R$/MWh nominais",
+  "entregas": "Semanas completas de sábado 00h a sábado 00h (W1 é a próxima semana completa, até W4) e meses civis que ainda não começaram (M1 a M3). São 7 horizontes × 4 submercados = 28 previsões por rodada.",
+  "cenario_de_elegibilidade": "Regra de defasagem LAT1D: um dado só entra como informação se o seu período terminou até 1 dia antes do horário de corte (hipótese fixada pela pesquisa antes dos testes).",
+  "corte_operacional": "07h00 de Brasília (10h00 UTC) do dia de origem; prazo de emissão 08h00 de Brasília",
+  "quantis": "Um quantil é o valor que, segundo o modelo, o preço tem uma probabilidade dada de não superar: o quantil de 10% (P10) é o valor que o preço tem 10% de chance de não superar. A pesquisa usa os níveis de 5, 10, 25, 50, 75, 90 e 95%. A faixa entre P10 e P90 pretende conter o preço em 80% dos casos (cobertura nominal); se contém de fato só se sabe com a calibração, verificada nos testes."
+ },
+ "modelos": [
+  {
+   "id": "b0",
+   "codigo": "B0",
+   "nome": "Persistência",
+   "versao": "B0-v1",
+   "estado": "PESQUISA",
+   "papel": "Referência simples (benchmark) e método do piloto operacional interno",
+   "objetivo": "Prever o PLD médio de cada entrega repetindo a média do último período completo disponível no corte.",
+   "metodologia": "Média das horas do último período completo da mesma frequência elegível sob LAT1D. Quantis empíricos a partir dos resíduos passados quando há pelo menos 24 entregas de resíduos no segmento.",
+   "formula": "B0 = média do PLD horário do último período completo elegível no corte",
+   "features": [
+    "PLD horário do submercado (CCEE)"
+   ],
+   "usa_hidrologia": false,
+   "dados_treinamento": "PLD horário por submercado, snapshot snap_bootstrap_20260927T154527Z",
+   "janela": "Desenvolvimento: origens de 2023 e 2024 com entregas encerradas até 01/01/2025 00h; reserva a partir de 2025 fechada e não aberta",
+   "benchmarks": [],
+   "limitacoes": [
+    "Não usa chuva, reservatórios (EAR) nem vazões (ENA): só preço passado.",
+    "No piloto operacional interno, o B0-v1 não publica faixas de incerteza (quantis), porque elas não foram calibradas no piloto.",
+    "Backtest em pseudo tempo real: a pesquisa usou um único snapshot, capturado em 27/09/2026, com a regra de defasagem LAT1D; não reconstitui o dado como estava em cada origem. Nas capturas do PLD comparadas pela plataforma (27 e 28/09/2026) nenhum valor foi revisado; a CCEE não declara no conjunto se republica valores, e o efeito esperado para o PLD é pequeno."
+   ],
+   "falhas_conhecidas": [
+    "Rodada interna de 27/09/2026: 28 células sem número, porque nenhum PLD do período exigido havia sido capturado até o corte (SEM_PLD_CAPTURADO_ATE_O_CORTE); emissão depois do prazo das 08h00."
+   ],
+   "promovido_em": null,
+   "versao_codigo": "1b6ba3db01c6c51d7328a7add9b3694b8a476579",
+   "snapshot": "snap_bootstrap_20260927T154527Z",
+   "evidencias": [
+    {
+     "descricao": "Usos do B0 por célula e período",
+     "arquivo": "pld_dados/05_previsoes/retrospectivas_exploratorias/E2A-B012-v1/features_e_elegibilidade.parquet",
+     "sha256": "1f3afb2e35639337689f51520700aa7fdaebd37a9a231fc5cc5f4ce731dda7db"
+    },
+    {
+     "descricao": "Conferência: B0 refeito como média das horas do período usado em 1.888 casos, desvio máximo 0,0",
+     "arquivo": "payload do artefato v1-previa-r4 (conferencias)",
+     "sha256": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+    }
+   ],
+   "auditoria": "Revisão feita por um revisor automatizado (agente de IA) que trabalhou sem o histórico de quem conduziu a pesquisa e aceitou as quatro primeiras etapas de validação. Não é auditoria institucional.",
+   "resumo": "Repete o último valor completo: a previsão de cada período é a média do período mais recente já encerrado no corte. Serve de régua: um candidato só vale a pena se errar menos que isso.",
+   "limitacao_principal": "Não usa informação de chuva, reservatórios ou vazões: só o preço passado."
+  },
+  {
+   "id": "c1",
+   "codigo": "C1",
+   "nome": "Mistura fixa",
+   "versao": "C1",
+   "estado": "PESQUISA",
+   "papel": "Candidato",
+   "objetivo": "Combinar referências simples com pesos fixos.",
+   "metodologia": "Mistura com pesos fixos de referências simples. A composição exata (referências e pesos) está no arquivo de configuração da pesquisa, não publicado nesta fase; o caminho do arquivo consta nas evidências.",
+   "formula": null,
+   "features": [
+    "PLD horário do submercado (CCEE)"
+   ],
+   "usa_hidrologia": false,
+   "dados_treinamento": "PLD horário por submercado, snapshot snap_bootstrap_20260927T154527Z",
+   "janela": "Desenvolvimento 2023 e 2024 sob LAT1D; reserva fechada",
+   "benchmarks": [
+    "B0"
+   ],
+   "limitacoes": [
+    "Mensal com poucas entregas pontuadas: nenhum vencedor mensal pode ser declarado.",
+    "Intervalos com cobertura abaixo da nominal nos testes da pesquisa (números retidos até a liberação).",
+    "Backtest em pseudo tempo real: a pesquisa usou um único snapshot, capturado em 27/09/2026, com a regra de defasagem LAT1D; não reconstitui o dado como estava em cada origem. Nas capturas do PLD comparadas pela plataforma (27 e 28/09/2026) nenhum valor foi revisado; a CCEE não declara no conjunto se republica valores, e o efeito esperado para o PLD é pequeno."
+   ],
+   "falhas_conhecidas": [],
+   "promovido_em": null,
+   "versao_codigo": "1b6ba3db01c6c51d7328a7add9b3694b8a476579",
+   "snapshot": "snap_bootstrap_20260927T154527Z",
+   "evidencias": [
+    {
+     "descricao": "Configuração da etapa 2B",
+     "arquivo": "projeto_pld/config/etapa2b_E2B-C123-v1.json",
+     "sha256": "2d1b4933177eb7d1fb61e1b16104a1e7cd8d29514a08a6bb78cec9b0c12320c6"
+    },
+    {
+     "descricao": "Métricas por célula",
+     "arquivo": "pld_dados/05_previsoes/retrospectivas_exploratorias/E2B-C123-v1/metricas_por_celula.parquet",
+     "sha256": "08511202b236446341e8dd09ae66cfabc8b6470d9691992864f9cadc1567b7dd"
+    }
+   ],
+   "auditoria": "Revisão feita por um revisor automatizado (agente de IA) que trabalhou sem o histórico de quem conduziu a pesquisa e aceitou as quatro primeiras etapas de validação. Não é auditoria institucional.",
+   "resumo": "Combina referências simples com pesos fixos. Quais referências e quais pesos estão no arquivo de configuração da pesquisa, ainda não publicado.",
+   "limitacao_principal": "Nos testes da pesquisa, as faixas de incerteza cobriram menos do que prometiam, e no horizonte mensal há poucos casos para comparar modelos."
+  },
+  {
+   "id": "c2-p",
+   "codigo": "C2-P",
+   "nome": "Correção por preços",
+   "versao": "C2-P",
+   "estado": "PESQUISA",
+   "papel": "Candidato",
+   "objetivo": "Corrigir a persistência com informações recentes de preço.",
+   "metodologia": "Parte de B0 e soma correções lineares em variáveis de preço padronizadas pela escala RMS, com coeficiente de B0 fixo em 1, sem intercepto e com penalização (parâmetro λ escolhido em cada origem de ajuste; λ = ZERO desliga a correção). No mensal, exige 24 meses completos de treino e a variável sazonal exige o mesmo mês do ano anterior; por isso só há previsões mensais a partir das origens de 2024.",
+   "formula": "C2 = B0 + Σ_j (x_j / escala_rms_j) · beta_escalado_j; sem intercepto; coeficiente de B0 fixo em 1; λ = ZERO ⇒ todos os beta = 0 ⇒ C2 = B0",
+   "features": [
+    "Média móvel recente − B0",
+    "Mesmo período do ano anterior − B0",
+    "Média dos 7 últimos dias − B0"
+   ],
+   "usa_hidrologia": false,
+   "dados_treinamento": "PLD horário por submercado, snapshot snap_bootstrap_20260927T154527Z",
+   "janela": "Desenvolvimento 2023 e 2024 sob LAT1D; reserva fechada",
+   "benchmarks": [
+    "B0",
+    "C1"
+   ],
+   "limitacoes": [
+    "Na métrica principal da pesquisa, que avalia as faixas de incerteza (perda de quantis), o resultado do C2-P é inconclusivo.",
+    "Os intervalos do C2-P estão descalibrados no suporte comum: a faixa P10 a P90 não pode ser apresentada como faixa de 80%.",
+    "No horizonte mensal, o C2 não tem faixas de incerteza (quantis) e a pesquisa não apontou modelo vencedor nesse horizonte.",
+    "Resultado exploratório: o período 2023 e 2024 já tinha sido examinado antes da definição dos candidatos.",
+    "Backtest em pseudo tempo real: a pesquisa usou um único snapshot, capturado em 27/09/2026, com a regra de defasagem LAT1D; não reconstitui o dado como estava em cada origem. Nas capturas do PLD comparadas pela plataforma (27 e 28/09/2026) nenhum valor foi revisado; a CCEE não declara no conjunto se republica valores, e o efeito esperado para o PLD é pequeno."
+   ],
+   "falhas_conhecidas": [
+    "Achado da revisão da pesquisa: o coeficiente da variável média dos 7 dias − B0 passou de 1 em parte das origens, o que pode amplificar o sinal de preço.",
+    "Achado da revisão da pesquisa: previsões mensais negativas para dezembro de 2024 na origem 30/11/2024, nos quatro submercados."
+   ],
+   "promovido_em": null,
+   "versao_codigo": "1b6ba3db01c6c51d7328a7add9b3694b8a476579",
+   "snapshot": "snap_bootstrap_20260927T154527Z",
+   "evidencias": [
+    {
+     "descricao": "Coeficientes e λ por origem",
+     "arquivo": "pld_dados/05_previsoes/retrospectivas_exploratorias/E2B-C123-v1/coeficientes_e_lambda.parquet",
+     "sha256": "95d244966b09cb4929b839d3cb3d8e9d9595882fd54bc50d963c423dd07ff6af"
+    },
+    {
+     "descricao": "Comparação pareada contra referências",
+     "arquivo": "pld_dados/05_previsoes/retrospectivas_exploratorias/E2B-C123-v1/comparacao_pareada.parquet",
+     "sha256": "dc582cab8d1c3682b83abfd77eea2a6f6276df34ec69d0cea9949d2e4a003da9"
+    },
+    {
+     "descricao": "Erros fora da amostra",
+     "arquivo": "pld_dados/05_previsoes/retrospectivas_exploratorias/E2B-C123-v1/erros_fora_amostra.parquet",
+     "sha256": "9055624ac08644aa0981d747e51ed5725f4aeb09640e7b5c4a1ae85556408446"
+    },
+    {
+     "descricao": "Conferência: C2 refeito como B0 + Σ(x/escala)·β em 3.488 casos, desvio máximo 5,7e-14",
+     "arquivo": "payload do artefato v1-previa-r4 (conferencias)",
+     "sha256": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
+    }
+   ],
+   "auditoria": "Revisão feita por um revisor automatizado (agente de IA) que trabalhou sem o histórico de quem conduziu a pesquisa e aceitou as quatro primeiras etapas de validação; a limitação encontrada na revisão segue pendente de documentação. Não é auditoria institucional.",
+   "resumo": "Parte da persistência (B0) e a corrige com informações recentes de preço.",
+   "limitacao_principal": "As faixas de incerteza não estão calibradas: a faixa do 10º ao 90º percentil não pode ser apresentada como uma faixa de 80%."
+  },
+  {
+   "id": "c2-h",
+   "codigo": "C2-H",
+   "nome": "Correção com hidrologia",
+   "versao": "C2-H",
+   "estado": "PESQUISA",
+   "papel": "Candidato",
+   "objetivo": "Corrigir a persistência com informações de preço e de hidrologia.",
+   "metodologia": "Mesma estrutura do C2-P, com duas variáveis hidrológicas adicionais. No mensal, exige 24 meses completos de treino e a variável sazonal exige o mesmo mês do ano anterior; por isso só há previsões mensais a partir das origens de 2024.",
+   "formula": "C2 = B0 + Σ_j (x_j / escala_rms_j) · beta_escalado_j; sem intercepto; coeficiente de B0 fixo em 1; λ = ZERO ⇒ todos os beta = 0 ⇒ C2 = B0",
+   "features": [
+    "Média móvel recente − B0",
+    "Mesmo período do ano anterior − B0",
+    "Média dos 7 últimos dias − B0",
+    "Variação da EAR em 28 dias (p.p.)",
+    "ENA média de 7 dias (% da MLT) − 100"
+   ],
+   "usa_hidrologia": true,
+   "dados_treinamento": "PLD horário (CCEE) e EAR e ENA (ONS), snapshot snap_bootstrap_20260927T154527Z",
+   "janela": "Desenvolvimento 2023 e 2024 sob LAT1D; reserva fechada",
+   "benchmarks": [
+    "B0",
+    "C2-P"
+   ],
+   "limitacoes": [
+    "Intervalos descalibrados no suporte comum, como no C2-P.",
+    "No horizonte mensal, o modelo não tem faixas de incerteza (quantis) e a pesquisa não apontou modelo vencedor nesse horizonte.",
+    "Resultado exploratório sobre período já examinado.",
+    "Backtest em pseudo tempo real: a pesquisa usou um único snapshot, capturado em 27/09/2026, com a regra de defasagem LAT1D; não reconstitui o dado como estava em cada origem. Nas capturas do PLD comparadas pela plataforma (27 e 28/09/2026) nenhum valor foi revisado; a CCEE não declara no conjunto se republica valores, e o efeito esperado para o PLD é pequeno; para dados hidrológicos do ONS, que passam por consistência recorrente, há risco de look-ahead por revisão."
+   ],
+   "falhas_conhecidas": [
+    "Achado da revisão da pesquisa: coeficiente da variável média dos 7 dias − B0 acima de 1 em parte das origens.",
+    "Achado da revisão da pesquisa: previsões mensais negativas para dezembro de 2024 na origem 30/11/2024."
+   ],
+   "promovido_em": null,
+   "versao_codigo": "1b6ba3db01c6c51d7328a7add9b3694b8a476579",
+   "snapshot": "snap_bootstrap_20260927T154527Z",
+   "evidencias": [
+    {
+     "descricao": "Variáveis e elegibilidade",
+     "arquivo": "pld_dados/05_previsoes/retrospectivas_exploratorias/E2B-C123-v1/features_e_elegibilidade.parquet",
+     "sha256": "ce56b784bb92ac2cab3205183a4f205e4c862838fd068de99f12a6af4b74942d"
+    },
+    {
+     "descricao": "Coeficientes e λ por origem",
+     "arquivo": "pld_dados/05_previsoes/retrospectivas_exploratorias/E2B-C123-v1/coeficientes_e_lambda.parquet",
+     "sha256": "95d244966b09cb4929b839d3cb3d8e9d9595882fd54bc50d963c423dd07ff6af"
+    }
+   ],
+   "auditoria": "Revisão feita por um revisor automatizado (agente de IA) que trabalhou sem o histórico de quem conduziu a pesquisa e aceitou as quatro primeiras etapas de validação; a limitação encontrada na revisão segue pendente de documentação. Não é auditoria institucional.",
+   "resumo": "Parte da persistência (B0) e a corrige com informações de preço e de hidrologia.",
+   "limitacao_principal": "As faixas de incerteza não estão calibradas, e o período usado nos testes já tinha sido examinado antes da definição do modelo (resultado exploratório)."
+  }
+ ]
+}

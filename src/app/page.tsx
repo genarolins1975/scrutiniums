@@ -4,7 +4,7 @@ import { getSessionUser } from "@/lib/session";
 import { PublicHeader } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/home/Hero";
-import { SecaoReune } from "@/components/home/SecaoReune";
+import { SecaoObservatorios } from "@/components/home/SecaoObservatorios";
 import { SecaoMetodo } from "@/components/home/SecaoMetodo";
 import { SecaoPrincipios } from "@/components/home/SecaoPrincipios";
 import { SecaoPlataforma } from "@/components/home/SecaoPlataforma";
@@ -13,21 +13,21 @@ import { SecaoAcesso } from "@/components/home/SecaoAcesso";
 
 export const metadata: Metadata = {
   description:
-    "Da informação dispersa ao conhecimento verificável: bases públicas, registros oficiais e séries setoriais organizados com estatística e método declarado. Plataforma gratuita, com leitura aberta e sem cadastro.",
+    "Da informação dispersa ao conhecimento verificável. Uma plataforma, dois observatórios: Crédito e Setor Elétrico, com bases públicas, registros oficiais e método declarado. Gratuita, com leitura aberta e sem cadastro.",
 };
 
 export default async function HomePage() {
-  // Quem já tem sessão abre o app direto na Visão geral do Observatório:
-  // a página institucional é para quem ainda não entrou.
+  // Quem já tem sessão vai direto à escolha do observatório: a página
+  // institucional é para quem ainda não entrou.
   const user = await getSessionUser();
-  if (user && user.onboardingStatus === "COMPLETE") redirect("/observatorio");
+  if (user && user.onboardingStatus === "COMPLETE") redirect("/app/observatorios");
 
   return (
     <>
       <PublicHeader />
       <main>
         <Hero />
-        <SecaoReune />
+        <SecaoObservatorios />
         <SecaoMetodo />
         <SecaoPrincipios />
         <SecaoPlataforma />

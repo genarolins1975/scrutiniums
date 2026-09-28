@@ -82,7 +82,7 @@ describe("máquina de estados do onboarding", () => {
 
     await updateUser(userId, { onboardingStatus: "COMPLETE" });
     expect((await getUser(userId)).onboardingStatus).toBe("COMPLETE");
-    expect(nextStepPath("COMPLETE")).toBe("/observatorio");
+    expect(nextStepPath("COMPLETE")).toBe("/app/observatorios"); // escolha entre os dois observatórios
   });
 
   it("fluxo simulado completo: usuário COMPLETE tem e-mail e telefone verificados", async () => {
@@ -130,7 +130,7 @@ describe("máquina de estados do onboarding", () => {
     expect(user.phoneE164).toBe(phone);
     expect(user.company).toBe("Empresa Exemplo");
     expect(user.termsAcceptedAt).not.toBeNull();
-    expect(nextStepPath("COMPLETE")).toBe("/observatorio");
+    expect(nextStepPath("COMPLETE")).toBe("/app/observatorios"); // escolha entre os dois observatórios
 
     infoSpy.mockRestore();
   });

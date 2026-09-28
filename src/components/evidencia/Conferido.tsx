@@ -1,0 +1,11 @@
+/**
+ * Marcador de conferência de uma afirmação: conferida na fonte primária (trecho citado)
+ * ou com conferência documental pendente. Usado no PLD e explicado no Mapa do Observatório.
+ */
+export function Conferido({ ok }: { ok: boolean }) {
+  return ok ? (
+    <span className="rotulo !text-[0.62rem] text-sucesso">● conferido na fonte</span>
+  ) : (
+    <span className="rotulo !text-[0.62rem] text-aviso">○ conferência documental pendente</span>
+  );
+}

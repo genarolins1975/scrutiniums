@@ -7,7 +7,7 @@ const PUBLICOS = [
   },
   {
     titulo: "Instituições financeiras e investidores",
-    descricao: "Séries e sinais com critérios auditáveis para crédito e alocação.",
+    descricao: "Séries e sinais com critérios auditáveis para crédito, energia e alocação.",
   },
   {
     titulo: "Empresas e áreas de estratégia",
@@ -17,6 +17,10 @@ const PUBLICOS = [
     titulo: "Pesquisadores, reguladores e jornalistas",
     descricao: "Fontes citáveis e metodologia aberta para investigar e verificar.",
   },
+  {
+    titulo: "Quem quer entender o sistema",
+    descricao: "Explicações que começam pela pergunta e terminam na fonte oficial.",
+  },
 ];
 
 export function SecaoPublicos() {
@@ -24,7 +28,7 @@ export function SecaoPublicos() {
     <section id="publicos" aria-labelledby="publicos-titulo" className="border-t border-linha bg-marfim">
       <div className="mx-auto max-w-page px-6 py-20 md:py-28">
         <div id="publicos-titulo">
-          <SectionHeading number="04" label="Públicos" title="Para quem" />
+          <SectionHeading number="03" label="Públicos" title="Para quem" />
         </div>
         <ol className="border-t border-linha">
           {PUBLICOS.map((publico, i) => (

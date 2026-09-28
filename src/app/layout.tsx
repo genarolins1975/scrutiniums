@@ -40,14 +40,14 @@ export const metadata: Metadata = {
     template: "%s · Scrutiniums",
   },
   description:
-    "Plataforma gratuita que reúne bases públicas, registros oficiais, dados econômicos e modelos analíticos para transformar informação dispersa em conhecimento útil.",
+    "Plataforma gratuita de inteligência analítica baseada em dados verificáveis: o Observatório Brasileiro de Crédito e o Observatório Brasileiro do Setor Elétrico, com bases públicas, registros oficiais e método declarado.",
   openGraph: {
     siteName: "Scrutiniums",
     locale: "pt_BR",
     type: "website",
-    title: "Scrutiniums — Observatório Brasileiro de Crédito",
+    title: "Scrutiniums: Crédito e Setor Elétrico",
     description:
-      "Crédito, inadimplência, taxas de juros por instituição, riscos emergentes e mercado — dados oficiais com metodologia aberta. Gratuito, com leitura aberta e sem cadastro.",
+      "Dois observatórios, a mesma filosofia de evidência: dados oficiais, fonte e data em cada número, metodologia aberta. Gratuito, com leitura aberta e sem cadastro.",
   },
   alternates: { canonical: "/" },
 };

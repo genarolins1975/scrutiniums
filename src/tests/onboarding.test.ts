@@ -214,6 +214,18 @@ describe("onboarding.safeInternalPath (destino pós-login ?de=)", () => {
     expect(safeInternalPath("/x?next=https://evil.example")).toBeNull();
     expect(safeInternalPath("/api/auth/sair")).toBeNull();
   });
+
+  it("rejeita caractere de controle ou espaço que o navegador descartaria (/\\t/host vira //host)", () => {
+    expect(safeInternalPath("/\t/evil.example")).toBeNull();
+    expect(safeInternalPath("/\n/evil.example")).toBeNull();
+    expect(safeInternalPath("/\r/evil.example")).toBeNull();
+    expect(safeInternalPath("/ /evil.example")).toBeNull();
+    expect(safeInternalPath(decodeURIComponent("%2F%09%2Fevil.example"))).toBeNull();
+    expect(safeInternalPath("/\u0000x")).toBeNull();
+    // o destino aceito continua na mesma origem depois de resolvido
+    expect(safeInternalPath("/setor-eletrico/pld?modo=entender#formacao")).toBe("/setor-eletrico/pld?modo=entender#formacao");
+    expect(safeInternalPath("/%2F%2Fevil.example")).toBe("/%2F%2Fevil.example");
+  });
 });
 
 describe("onboarding.nextStepPath", () => {
@@ -223,6 +235,7 @@ describe("onboarding.nextStepPath", () => {
     expect(nextStepPath("PROFILE_PENDING")).toBe("/cadastro/perfil");
     expect(nextStepPath("ACCESS_PENDING")).toBe("/cadastro/acesso");
     expect(nextStepPath("WAITLIST")).toBe("/cadastro/acesso");
-    expect(nextStepPath("COMPLETE")).toBe("/observatorio");
+    // pós login: escolha entre os dois observatórios (plataforma com Crédito e Setor Elétrico)
+    expect(nextStepPath("COMPLETE")).toBe("/app/observatorios");
   });
 });

@@ -1,0 +1,163 @@
+name: Atualizar dados do Setor Elétrico
+
+# Domínio Energia: coleta ONS (EAR, ENA, carga, balanço, intercâmbio, CMO), tenta a
+# CCEE direta (acesso automatizado instável; o seed versionado com sha256 garante o
+# PLD até a última captura), reconstrói a gold em public/energia e publica.
+# O histórico de vintages (silver) fica no cache do Actions e, como cópia durável,
+# num asset da release "energia-estado"; sem os dois, o alerta abre issue. Separado do workflow do Crédito: falha de um domínio
+# não atrasa o outro. O ONS atualiza os conjuntos às 12h e às 19h de Brasília.
+on:
+  schedule:
+    - cron: "40 23 * * *" # 20:40 em São Paulo, depois da atualização das 19h do ONS
+  workflow_dispatch:
+    inputs:
+      sem_coleta:
+        description: "Pular coleta e só reconstruir a gold do estado atual"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: atualizar-energia
+  cancel-in-progress: false
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Restaurar estado (bronze e silver com vintages)
+        id: restaurar
+        uses: actions/cache/restore@v4
+        with:
+          path: data/energia
+          key: energia-estado-${{ github.run_id }}
+          restore-keys: |
+            energia-estado-
+
+      - name: Restaurar silver da cópia durável (cache ausente)
+        id: duravel
+        if: steps.restaurar.outputs.cache-matched-key == ''
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p data/energia/silver
+          gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "energia-silver.db.gz" --dir /tmp
+          gunzip -c /tmp/energia-silver.db.gz > data/energia/silver/energia.db
+          echo "restaurado=sim" >> "$GITHUB_OUTPUT"
+
+      - name: Alertar perda do histórico de vintages
+        if: steps.restaurar.outputs.cache-matched-key == '' && steps.duravel.outputs.restaurado != 'sim'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          TITULO="Setor Elétrico: histórico de vintages não restaurado"
+          EXISTENTE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
+            --search "\"$TITULO\" in:title" --json number --jq '.[0].number // empty')
+          CORPO="Execução ${RUN_URL}: nem o cache nem a cópia durável estavam disponíveis. A gold será reconstruída, mas as revisões anteriores da fonte não serão detectáveis."
+          if [ -n "$EXISTENTE" ]; then
+            gh issue comment "$EXISTENTE" --repo "$GITHUB_REPOSITORY" --body "$CORPO"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body "$CORPO"
+          fi
+
+      - name: Executar pipeline de energia
+        id: pipeline
+        env:
+          SEM_COLETA: ${{ inputs.sem_coleta }}
+        run: |
+          if [ "$SEM_COLETA" = "true" ]; then
+            python3 -u pipeline/energia/run.py --sem-coleta | tee energia.log
+          else
+            python3 -u pipeline/energia/run.py | tee energia.log
+          fi
+          REG=$(grep '^REGRESSOES_ENERGIA=' energia.log | sed 's/^REGRESSOES_ENERGIA=//' || true)
+          echo "regressoes=${REG}" >> "$GITHUB_OUTPUT"
+
+      - name: Guardar estado
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: data/energia
+          key: energia-estado-${{ github.run_id }}
+
+      - name: Cópia durável do silver (release energia-estado)
+        if: steps.pipeline.outcome == 'success'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gzip -c data/energia/silver/energia.db > /tmp/energia-silver.db.gz
+          gh release view energia-estado --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || \
+            gh release create energia-estado --repo "$GITHUB_REPOSITORY" --title "Estado do pipeline de energia" \
+              --notes "Cópia durável do silver com vintages (uso interno do pipeline). Não é dado publicado." --prerelease
+          gh release upload energia-estado /tmp/energia-silver.db.gz --repo "$GITHUB_REPOSITORY" --clobber
+
+      - name: Alertar regressão
+        if: steps.pipeline.outputs.regressoes != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REGS: ${{ steps.pipeline.outputs.regressoes }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          TITULO="Setor Elétrico: gold regrediu, publicação anterior mantida"
+          EXISTENTE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
+            --search "\"$TITULO\" in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTENTE" ]; then
+            gh issue comment "$EXISTENTE" --repo "$GITHUB_REPOSITORY" --body "Nova ocorrência: ${REGS} ${RUN_URL}"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body "Execução ${RUN_URL}: ${REGS}"
+          fi
+
+      - name: Node para os testes
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Testes antes de publicar
+        id: testes
+        continue-on-error: true
+        run: |
+          npm ci
+          node scripts/minify-obs.mjs
+          npx vitest run
+          python3 -m unittest discover -s pipeline/tests -t .
+
+      - name: Reter publicação reprovada
+        if: steps.testes.outcome == 'failure'
+        run: |
+          git checkout -- public/energia
+          git clean -fdq public/energia
+          echo "::error::testes reprovaram a gold de energia; publicação retida"
+
+      - name: Commit e push
+        if: steps.testes.outcome == 'success'
+        run: |
+          git config user.name "pipeline-observatorio[bot]"
+          git config user.email "pipeline@scrutiniums.com"
+          git add public/energia
+          if git diff --cached --quiet; then
+            echo "Sem mudanças nos dados de energia."
+          else
+            git commit -m "Atualiza dados do Setor Elétrico (pipeline automático)"
+            for tentativa in 1 2 3 4; do
+              git pull --rebase origin main && git push && exit 0
+              sleep $((tentativa * 5))
+            done
+            echo "::error::não foi possível publicar após 4 tentativas"
+            exit 1
+          fi
