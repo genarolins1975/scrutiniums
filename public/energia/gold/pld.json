@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "pld.json",
- "gerado_em": "2026-09-28T14:44:12Z",
+ "gerado_em": "2026-09-28T15:25:38Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d31df6ee12e1",
+ "versao_codigo": "d1dcbf611ab9",
  "disponivel": true,
  "unidade": "R$/MWh (nominal)",
  "fuso": "Horário de Brasília (UTC-3, sem horário de verão no período)",
@@ -21091,7 +21091,7 @@
   "id": "ccee_pld_horario@2026-09-28T10:55:46Z",
   "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f",
   "revisoes": {
-   "detectado_em": "2026-09-28T14:44:11Z",
+   "detectado_em": "2026-09-28T15:25:37Z",
    "total": 0,
    "vintages_comparadas": 7,
    "arquivos": 6,
@@ -21223,7 +21223,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-28T10:55:46Z",
-   "validado_em": "2026-09-28T14:44:12Z",
+   "validado_em": "2026-09-28T15:25:38Z",
    "cobertura_historica": {
     "inicio": "2021-01-01T00:00",
     "fim": "2026-09-28T23:00"
@@ -21237,9 +21237,9 @@
     "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d31df6ee12e1",
+   "versao_codigo": "d1dcbf611ab9",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T14:44:11Z",
+    "detectado_em": "2026-09-28T15:25:37Z",
     "total": 0,
     "vintages_comparadas": 7,
     "arquivos": 6,
@@ -21274,7 +21274,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-28T10:55:46Z",
-   "validado_em": "2026-09-28T14:44:12Z",
+   "validado_em": "2026-09-28T15:25:38Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-28"
@@ -21288,9 +21288,9 @@
     "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d31df6ee12e1",
+   "versao_codigo": "d1dcbf611ab9",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T14:44:11Z",
+    "detectado_em": "2026-09-28T15:25:37Z",
     "total": 0,
     "vintages_comparadas": 7,
     "arquivos": 6,
@@ -21326,7 +21326,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-28T10:55:46Z",
-   "validado_em": "2026-09-28T14:44:12Z",
+   "validado_em": "2026-09-28T15:25:38Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-28"
@@ -21341,9 +21341,9 @@
     "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d31df6ee12e1",
+   "versao_codigo": "d1dcbf611ab9",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T14:44:11Z",
+    "detectado_em": "2026-09-28T15:25:37Z",
     "total": 0,
     "vintages_comparadas": 7,
     "arquivos": 6,
@@ -21379,7 +21379,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-28T10:55:46Z",
-   "validado_em": "2026-09-28T14:44:12Z",
+   "validado_em": "2026-09-28T15:25:38Z",
    "cobertura_historica": {
     "inicio": "2021-01-01T00:00",
     "fim": "2026-09-28T23:00"
@@ -21395,9 +21395,9 @@
     "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d31df6ee12e1",
+   "versao_codigo": "d1dcbf611ab9",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T14:44:11Z",
+    "detectado_em": "2026-09-28T15:25:37Z",
     "total": 0,
     "vintages_comparadas": 7,
     "arquivos": 6,
@@ -21433,7 +21433,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-28T10:55:46Z",
-   "validado_em": "2026-09-28T14:44:12Z",
+   "validado_em": "2026-09-28T15:25:38Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-28"
@@ -21448,9 +21448,9 @@
     "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d31df6ee12e1",
+   "versao_codigo": "d1dcbf611ab9",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T14:44:11Z",
+    "detectado_em": "2026-09-28T15:25:37Z",
     "total": 0,
     "vintages_comparadas": 7,
     "arquivos": 6,

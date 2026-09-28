@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "carga.json",
- "gerado_em": "2026-09-28T14:44:14Z",
+ "gerado_em": "2026-09-28T15:25:39Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d31df6ee12e1",
+ "versao_codigo": "d1dcbf611ab9",
  "disponivel": true,
  "dia_referencia": "2026-09-25",
  "unidade": "MWmed",
@@ -11862,7 +11862,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:00:44.552024",
    "capturado_em": "2026-09-28T09:08:16Z",
-   "validado_em": "2026-09-28T14:44:14Z",
+   "validado_em": "2026-09-28T15:25:39Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-25"
@@ -11874,9 +11874,9 @@
     "sha256": "682cc3ec96e0f40af6920bb618fc756ea0602fea2b45e50dbf1ad01918955c5d"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d31df6ee12e1",
+   "versao_codigo": "d1dcbf611ab9",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T14:44:13Z",
+    "detectado_em": "2026-09-28T15:25:39Z",
     "total": 0,
     "vintages_comparadas": 27,
     "arquivos": 27,
@@ -11910,7 +11910,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:00:44.552024",
    "capturado_em": "2026-09-28T09:08:16Z",
-   "validado_em": "2026-09-28T14:44:14Z",
+   "validado_em": "2026-09-28T15:25:39Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-25"
@@ -11926,9 +11926,9 @@
     "sha256": "682cc3ec96e0f40af6920bb618fc756ea0602fea2b45e50dbf1ad01918955c5d"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d31df6ee12e1",
+   "versao_codigo": "d1dcbf611ab9",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T14:44:13Z",
+    "detectado_em": "2026-09-28T15:25:39Z",
     "total": 0,
     "vintages_comparadas": 27,
     "arquivos": 27,
@@ -11963,7 +11963,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:00:44.552024",
    "capturado_em": "2026-09-28T09:08:16Z",
-   "validado_em": "2026-09-28T14:44:14Z",
+   "validado_em": "2026-09-28T15:25:39Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-25"
@@ -11978,9 +11978,9 @@
     "sha256": "682cc3ec96e0f40af6920bb618fc756ea0602fea2b45e50dbf1ad01918955c5d"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d31df6ee12e1",
+   "versao_codigo": "d1dcbf611ab9",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T14:44:13Z",
+    "detectado_em": "2026-09-28T15:25:39Z",
     "total": 0,
     "vintages_comparadas": 27,
     "arquivos": 27,
