@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "carga.json",
- "gerado_em": "2026-09-28T12:28:47Z",
+ "gerado_em": "2026-09-28T13:25:40Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d295f82ec004",
+ "versao_codigo": "b5e69d22218c",
  "disponivel": true,
  "dia_referencia": "2026-09-25",
  "unidade": "MWmed",
@@ -11862,7 +11862,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:00:44.552024",
    "capturado_em": "2026-09-28T09:08:16Z",
-   "validado_em": "2026-09-28T12:28:47Z",
+   "validado_em": "2026-09-28T13:25:40Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-25"
@@ -11874,12 +11874,14 @@
     "sha256": "682cc3ec96e0f40af6920bb618fc756ea0602fea2b45e50dbf1ad01918955c5d"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d295f82ec004",
+   "versao_codigo": "b5e69d22218c",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T12:28:47Z",
+    "detectado_em": "2026-09-28T13:25:40Z",
     "total": 0,
     "vintages_comparadas": 27,
     "arquivos": 27,
+    "recapturas_sem_mudanca": 2,
+    "ultimo_download_ok": "2026-09-28T10:55:16Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -11908,7 +11910,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:00:44.552024",
    "capturado_em": "2026-09-28T09:08:16Z",
-   "validado_em": "2026-09-28T12:28:47Z",
+   "validado_em": "2026-09-28T13:25:40Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-25"
@@ -11924,18 +11926,72 @@
     "sha256": "682cc3ec96e0f40af6920bb618fc756ea0602fea2b45e50dbf1ad01918955c5d"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d295f82ec004",
+   "versao_codigo": "b5e69d22218c",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T12:28:47Z",
+    "detectado_em": "2026-09-28T13:25:40Z",
     "total": 0,
     "vintages_comparadas": 27,
     "arquivos": 27,
+    "recapturas_sem_mudanca": 2,
+    "ultimo_download_ok": "2026-09-28T10:55:16Z",
     "exemplos": []
    },
    "limitacoes": [
     "O ONS mudou o conteúdo da série em 01/03/2021 e em 29/04/2023 (inclusão da estimativa de MMGD); comparações que atravessam essas datas não são homogêneas e não são exibidas como variação.",
     "Dados em processo de consistência recorrente do ONS, sujeitos a revisão após a publicação.",
     "Temperatura, dias úteis e feriados afetam a carga e não são ajustados."
+   ],
+   "download": null,
+   "notas_fonte": null
+  },
+  "mensal": {
+   "indicador": "Carga média mensal do SIN e dos subsistemas",
+   "natureza": "CALCULADO",
+   "fonte": {
+    "orgao": "ONS",
+    "dataset": "Carga de Energia Diária",
+    "recurso": "carga_energia_di (arquivos CSV anuais)",
+    "url_dataset": "https://dados.ons.org.br/dataset/carga-energia",
+    "url_primaria": "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/carga_energia_di/",
+    "licenca": "Creative Commons Atribuição (CC-BY), conforme o portal de dados abertos do ONS"
+   },
+   "unidade": "MWmed",
+   "frequencia": "mensal",
+   "periodo_referencia": {
+    "inicio": "2000-01",
+    "fim": "2026-09"
+   },
+   "publicado_pela_fonte_em": "2026-09-27T22:00:44.552024",
+   "capturado_em": "2026-09-28T09:08:16Z",
+   "validado_em": "2026-09-28T13:25:40Z",
+   "cobertura_historica": {
+    "inicio": "2000-01-01",
+    "fim": "2026-09-25"
+   },
+   "transformacoes": [
+    "média aritmética dos valores diários do mês",
+    "SIN: soma dos quatro subsistemas em cada dia"
+   ],
+   "formula": "carga_mensal(s, m) = média de carga(s, d) para os dias d do mês m com dado; o mês corrente é parcial",
+   "snapshot": {
+    "id": "carga_energia_di@2026-09-28T09:08:16Z",
+    "sha256": "682cc3ec96e0f40af6920bb618fc756ea0602fea2b45e50dbf1ad01918955c5d"
+   },
+   "versao_pipeline": "energia-0.1.0",
+   "versao_codigo": "b5e69d22218c",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-09-28T13:25:40Z",
+    "total": 0,
+    "vintages_comparadas": 27,
+    "arquivos": 27,
+    "recapturas_sem_mudanca": 2,
+    "ultimo_download_ok": "2026-09-28T10:55:16Z",
+    "exemplos": []
+   },
+   "limitacoes": [
+    "O ONS mudou o conteúdo da série em 01/03/2021 e em 29/04/2023 (inclusão da estimativa de MMGD); comparações que atravessam essas datas não são homogêneas e não são exibidas como variação.",
+    "Dados em processo de consistência recorrente do ONS, sujeitos a revisão após a publicação.",
+    "Médias de meses em regimes metodológicos diferentes não são comparáveis diretamente."
    ],
    "download": null,
    "notas_fonte": null

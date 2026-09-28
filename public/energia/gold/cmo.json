@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "cmo.json",
- "gerado_em": "2026-09-28T12:28:59Z",
+ "gerado_em": "2026-09-28T13:25:52Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d295f82ec004",
+ "versao_codigo": "b5e69d22218c",
  "disponivel": true,
  "semana_referencia": "2026-10-02",
  "unidade": "R$/MWh",
@@ -1159,7 +1159,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:00:52.663769",
    "capturado_em": "2026-09-28T09:09:12Z",
-   "validado_em": "2026-09-28T12:28:59Z",
+   "validado_em": "2026-09-28T13:25:52Z",
    "cobertura_historica": {
     "inicio": "2005-01-07",
     "fim": "2026-10-02"
@@ -1171,12 +1171,14 @@
     "sha256": "0c92735cc77edc05022e65b2053fce1cae98f7dd59de17d26ca100638586baab"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d295f82ec004",
+   "versao_codigo": "b5e69d22218c",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T12:28:59Z",
+    "detectado_em": "2026-09-28T13:25:52Z",
     "total": 0,
     "vintages_comparadas": 22,
     "arquivos": 22,
+    "recapturas_sem_mudanca": 2,
+    "ultimo_download_ok": "2026-09-28T10:55:35Z",
     "exemplos": []
    },
    "limitacoes": [

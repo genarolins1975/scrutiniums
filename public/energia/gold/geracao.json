@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "geracao.json",
- "gerado_em": "2026-09-28T12:28:53Z",
+ "gerado_em": "2026-09-28T13:25:46Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d295f82ec004",
+ "versao_codigo": "b5e69d22218c",
  "disponivel": true,
  "dia_referencia": "2026-09-25",
  "fontes": [
@@ -26,8 +26,9 @@
  ],
  "regras": {
   "diaria": "Geração diária por fonte = média das 24 horas verificadas (MWmed). Dias sem as 24 horas não entram.",
-  "participacao": "Participação = geração da fonte ÷ soma da geração verificada hidráulica, térmica, eólica e solar. A micro e minigeração distribuída não faz parte do balanço.",
-  "hes": "Hidráulica, eólica e solar somadas. Não é chamada de participação renovável porque a térmica do balanço agrega fontes que o conjunto não separa, inclusive biomassa.",
+  "participacao": "Participação = geração da fonte ÷ soma da geração verificada hidráulica, térmica, eólica e solar.",
+  "regime": "Leitura da Scrutiniums a partir do dado, não conferida em documento do ONS: em 29/04/2023 a geração solar do SIN no balanço passa de 1.991 para 4.377 MWmed (média diária, de 28 para 29/04/2023) e, desde então, a geração total iguala a carga, que inclui a estimativa de micro e minigeração distribuída a partir dessa data. A plataforma trata 29/04/2023 como quebra de regime: comparações de composição só são feitas dentro do mesmo regime.",
+  "hes": "Hidráulica, eólica e solar somadas. Não é chamada de participação renovável porque o conjunto não separa a térmica por combustível.",
   "termica_contexto": "Participação térmica dos últimos 7 dias comparada às participações térmicas de todas as janelas móveis de 7 dias dos 365 dias anteriores: percentil e mediana."
  },
  "regioes": [
@@ -528,84 +529,6 @@
      "solar": 8.9
     },
     "hes": 87.6
-   }
-  },
-  {
-   "ano": 2022,
-   "7d": {
-    "inicio": "2022-09-19",
-    "fim": "2022-09-25",
-    "mwmed": {
-     "hidraulica": 46630.0,
-     "termica": 9116.0,
-     "eolica": 11019.0,
-     "solar": 1501.0
-    },
-    "total_mwmed": 68267.0,
-    "participacao": {
-     "hidraulica": 68.3,
-     "termica": 13.4,
-     "eolica": 16.1,
-     "solar": 2.2
-    },
-    "hes": 86.6
-   },
-   "30d": {
-    "inicio": "2022-08-27",
-    "fim": "2022-09-25",
-    "mwmed": {
-     "hidraulica": 43268.0,
-     "termica": 9441.0,
-     "eolica": 12992.0,
-     "solar": 1658.0
-    },
-    "total_mwmed": 67359.0,
-    "participacao": {
-     "hidraulica": 64.2,
-     "termica": 14.0,
-     "eolica": 19.3,
-     "solar": 2.5
-    },
-    "hes": 86.0
-   }
-  },
-  {
-   "ano": 2021,
-   "7d": {
-    "inicio": "2021-09-19",
-    "fim": "2021-09-25",
-    "mwmed": {
-     "hidraulica": 35436.0,
-     "termica": 21361.0,
-     "eolica": 10622.0,
-     "solar": 1122.0
-    },
-    "total_mwmed": 68540.0,
-    "participacao": {
-     "hidraulica": 51.7,
-     "termica": 31.2,
-     "eolica": 15.5,
-     "solar": 1.6
-    },
-    "hes": 68.8
-   },
-   "30d": {
-    "inicio": "2021-08-27",
-    "fim": "2021-09-25",
-    "mwmed": {
-     "hidraulica": 34467.0,
-     "termica": 20722.0,
-     "eolica": 11390.0,
-     "solar": 1056.0
-    },
-    "total_mwmed": 67635.0,
-    "participacao": {
-     "hidraulica": 51.0,
-     "termica": 30.6,
-     "eolica": 16.8,
-     "solar": 1.6
-    },
-    "hes": 69.4
    }
   }
  ],
@@ -2106,6 +2029,11 @@
    "d": "2026-09-25",
    "termica_7d": 10.94
   }
+ ],
+ "inicio_regime_atual": "2023-04-29",
+ "anos_fora_do_regime": [
+  2022,
+  2021
  ],
  "perfil_horario_sin": [
   {
@@ -16957,7 +16885,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:00:43.210439",
    "capturado_em": "2026-09-28T09:08:46Z",
-   "validado_em": "2026-09-28T12:28:53Z",
+   "validado_em": "2026-09-28T13:25:46Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-25"
@@ -16972,17 +16900,19 @@
     "sha256": "be6df6321ee402d7c879e597576ad9a82acba3283f3b9783df4ce8f558e0ae02"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d295f82ec004",
+   "versao_codigo": "b5e69d22218c",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T12:28:53Z",
+    "detectado_em": "2026-09-28T13:25:46Z",
     "total": 0,
     "vintages_comparadas": 6,
     "arquivos": 6,
+    "recapturas_sem_mudanca": 2,
+    "ultimo_download_ok": "2026-09-28T10:55:30Z",
     "exemplos": []
    },
    "limitacoes": [
-    "A térmica do balanço agrega todas as usinas térmicas despachadas pelo ONS; o conjunto não separa combustível (gás, carvão, óleo, nuclear, biomassa). A separação exige o conjunto Geração por Usina, catalogado e ainda não integrado.",
-    "A descrição do balanço lista a geração das usinas hidráulicas, térmicas, eólicas e fotovoltaicas e não menciona a micro e minigeração distribuída, que aparece como estimativa na série de carga desde 29/04/2023.",
+    "O balanço não separa a geração térmica por combustível. A separação exige o conjunto Geração por Usina, catalogado e ainda não integrado.",
+    "Quebra de regime em 29/04/2023, identificada no dado e não conferida em documento do ONS: a solar do SIN dobra de um dia para o outro e a geração total passa a igualar a carga, que inclui a estimativa de micro e minigeração distribuída desde essa data; comparações de composição que atravessam a data não são homogêneas.",
     "Dados em processo de consistência recorrente do ONS, sujeitos a revisão."
    ],
    "download": "/energia/series/geracao_diaria.csv",
@@ -17007,7 +16937,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:00:43.210439",
    "capturado_em": "2026-09-28T09:08:46Z",
-   "validado_em": "2026-09-28T12:28:53Z",
+   "validado_em": "2026-09-28T13:25:46Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-25"
@@ -17023,17 +16953,19 @@
     "sha256": "be6df6321ee402d7c879e597576ad9a82acba3283f3b9783df4ce8f558e0ae02"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d295f82ec004",
+   "versao_codigo": "b5e69d22218c",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T12:28:53Z",
+    "detectado_em": "2026-09-28T13:25:46Z",
     "total": 0,
     "vintages_comparadas": 6,
     "arquivos": 6,
+    "recapturas_sem_mudanca": 2,
+    "ultimo_download_ok": "2026-09-28T10:55:30Z",
     "exemplos": []
    },
    "limitacoes": [
-    "A térmica do balanço agrega todas as usinas térmicas despachadas pelo ONS; o conjunto não separa combustível (gás, carvão, óleo, nuclear, biomassa). A separação exige o conjunto Geração por Usina, catalogado e ainda não integrado.",
-    "A descrição do balanço lista a geração das usinas hidráulicas, térmicas, eólicas e fotovoltaicas e não menciona a micro e minigeração distribuída, que aparece como estimativa na série de carga desde 29/04/2023.",
+    "O balanço não separa a geração térmica por combustível. A separação exige o conjunto Geração por Usina, catalogado e ainda não integrado.",
+    "Quebra de regime em 29/04/2023, identificada no dado e não conferida em documento do ONS: a solar do SIN dobra de um dia para o outro e a geração total passa a igualar a carga, que inclui a estimativa de micro e minigeração distribuída desde essa data; comparações de composição que atravessam a data não são homogêneas.",
     "Dados em processo de consistência recorrente do ONS, sujeitos a revisão."
    ],
    "download": "/energia/series/geracao_diaria.csv",

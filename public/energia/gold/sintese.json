@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "sintese.json",
- "gerado_em": "2026-09-28T12:28:59Z",
+ "gerado_em": "2026-09-28T13:25:52Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d295f82ec004",
+ "versao_codigo": "b5e69d22218c",
  "disponivel": true,
  "frases": [
   {
@@ -149,7 +149,7 @@
    "titulo": "Afluência de 30 dias fora da faixa usual",
    "condicao": "ENA acumulada em 30 dias (% da MLT) abaixo do 10º ou acima do 90º percentil da mesma janela nos anos anteriores.",
    "ativo": true,
-   "evidencia": "Sudeste/Centro-Oeste: 143% da MLT (acima da faixa); Sul: 247% da MLT (acima da faixa); Norte: 52% da MLT (abaixo da faixa)",
+   "evidencia": "Sudeste/Centro-Oeste: 143,3% da MLT (acima da faixa); Sul: 247,3% da MLT (acima da faixa); Norte: 52,1% da MLT (abaixo da faixa)",
    "href": "/setor-eletrico/agua-e-clima#ena",
    "tipo": "regra"
   },

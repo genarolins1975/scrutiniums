@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "rede.json",
- "gerado_em": "2026-09-28T12:28:59Z",
+ "gerado_em": "2026-09-28T13:25:52Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d295f82ec004",
+ "versao_codigo": "b5e69d22218c",
  "disponivel": true,
  "dia_referencia": "2026-09-26",
  "dia_referencia_liquido": "2026-09-25",
@@ -11,9 +11,11 @@
  "regras": {
   "fluxo": "Fluxo diário = média das 24 horas do intercâmbio verificado entre subsistemas, com sinal: positivo da primeira para a segunda ponta (N→NE, N→SE/CO, NE→SE/CO, S→SE/CO).",
   "liquido": "Intercâmbio líquido do subsistema = média diária do intercâmbio verificado no balanço de energia do ONS; positivo significa exportação.",
-  "diferenca_preco": "Diferença de preço = PLD médio diário da segunda ponta menos o da primeira.",
+  "diferenca_preco": "Diferença de preço = PLD médio diário da segunda ponta menos o da primeira. Dia com diferença = diferença acima de R$ 1,00/MWh em módulo, contada nos 30 dias que terminam no dia de referência dos fluxos (dias sem PLD integrado ficam fora da contagem).",
+  "amplitude": "Amplitude diária = maior PLD médio diário entre os quatro submercados menos o menor.",
   "limites": "Limites de intercâmbio não estão integrados; nenhuma afirmação de congestionamento é feita a partir destes dados."
  },
+ "limiar_diferenca_dia": 1.0,
  "fronteiras": [
   {
    "par": "N_NE",
@@ -4177,7 +4179,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:04:40.385538",
    "capturado_em": "2026-09-28T09:09:02Z",
-   "validado_em": "2026-09-28T12:28:59Z",
+   "validado_em": "2026-09-28T13:25:52Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-26"
@@ -4192,12 +4194,14 @@
     "sha256": "c59c224c6bdb7afcd4d09b0b18223032386787b2782c8165650ca0f4984a3b5d"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d295f82ec004",
+   "versao_codigo": "b5e69d22218c",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T12:28:55Z",
+    "detectado_em": "2026-09-28T13:25:48Z",
     "total": 0,
     "vintages_comparadas": 6,
     "arquivos": 6,
+    "recapturas_sem_mudanca": 2,
+    "ultimo_download_ok": "2026-09-28T10:55:34Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -4227,7 +4231,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-28T10:55:46Z",
-   "validado_em": "2026-09-28T12:28:59Z",
+   "validado_em": "2026-09-28T13:25:52Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-28"
@@ -4242,16 +4246,70 @@
     "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d295f82ec004",
+   "versao_codigo": "b5e69d22218c",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T12:28:58Z",
+    "detectado_em": "2026-09-28T13:25:51Z",
     "total": 0,
     "vintages_comparadas": 7,
     "arquivos": 6,
+    "recapturas_sem_mudanca": 5,
+    "ultimo_download_ok": "2026-09-28T10:55:46Z",
     "exemplos": []
    },
    "limitacoes": [
     "A série de PLD termina na última captura da CCEE; dias posteriores ficam sem diferença calculada.",
+    "Limites de intercâmbio e restrições elétricas não estão integrados: fluxos altos não significam, por si, rede no limite."
+   ],
+   "download": null,
+   "notas_fonte": null
+  },
+  "amplitude": {
+   "indicador": "Diferença entre o maior e o menor PLD médio diário dos quatro submercados",
+   "natureza": "CALCULADO",
+   "fonte": {
+    "orgao": "CCEE",
+    "dataset": "PLD_HORARIO",
+    "recurso": "pld_horario_2021 a pld_horario_2026",
+    "url_dataset": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "url_primaria": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "licenca": "Creative Commons Attribution 4.0 (CC-BY-4.0), conforme o portal de dados abertos da CCEE"
+   },
+   "unidade": "R$/MWh (nominal)",
+   "frequencia": "diária",
+   "periodo_referencia": {
+    "inicio": "2025-09-26",
+    "fim": "2026-09-28"
+   },
+   "publicado_pela_fonte_em": null,
+   "capturado_em": "2026-09-28T10:55:46Z",
+   "validado_em": "2026-09-28T13:25:52Z",
+   "cobertura_historica": {
+    "inicio": "2021-01-01",
+    "fim": "2026-09-28"
+   },
+   "transformacoes": [
+    "PLD médio diário de cada submercado (média simples das 24 horas)",
+    "máximo menos mínimo entre os quatro submercados"
+   ],
+   "formula": "amplitude(d) = max_s PLD_dia(s, d) − min_s PLD_dia(s, d), s ∈ {SE, S, NE, N}",
+   "snapshot": {
+    "id": "ccee_pld_horario@2026-09-28T10:55:46Z",
+    "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f"
+   },
+   "versao_pipeline": "energia-0.1.0",
+   "versao_codigo": "b5e69d22218c",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-09-28T13:25:51Z",
+    "total": 0,
+    "vintages_comparadas": 7,
+    "arquivos": 6,
+    "recapturas_sem_mudanca": 5,
+    "ultimo_download_ok": "2026-09-28T10:55:46Z",
+    "exemplos": []
+   },
+   "limitacoes": [
+    "Médias diárias: diferenças de poucas horas podem sumir na média.",
+    "A série de PLD termina na última captura da CCEE.",
     "Limites de intercâmbio e restrições elétricas não estão integrados: fluxos altos não significam, por si, rede no limite."
    ],
    "download": null,
@@ -4276,7 +4334,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:00:43.210439",
    "capturado_em": "2026-09-28T09:08:46Z",
-   "validado_em": "2026-09-28T12:28:59Z",
+   "validado_em": "2026-09-28T13:25:52Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-25"
@@ -4291,12 +4349,14 @@
     "sha256": "be6df6321ee402d7c879e597576ad9a82acba3283f3b9783df4ce8f558e0ae02"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d295f82ec004",
+   "versao_codigo": "b5e69d22218c",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T12:28:58Z",
+    "detectado_em": "2026-09-28T13:25:51Z",
     "total": 0,
     "vintages_comparadas": 6,
     "arquivos": 6,
+    "recapturas_sem_mudanca": 2,
+    "ultimo_download_ok": "2026-09-28T10:55:30Z",
     "exemplos": []
    },
    "limitacoes": [
