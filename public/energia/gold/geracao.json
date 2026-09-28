@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "geracao.json",
- "gerado_em": "2026-09-28T12:01:46Z",
+ "gerado_em": "2026-09-28T12:28:53Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "29703049c121",
+ "versao_codigo": "d295f82ec004",
  "disponivel": true,
  "dia_referencia": "2026-09-25",
  "fontes": [
@@ -16957,7 +16957,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:00:43.210439",
    "capturado_em": "2026-09-28T09:08:46Z",
-   "validado_em": "2026-09-28T12:01:46Z",
+   "validado_em": "2026-09-28T12:28:53Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-25"
@@ -16972,9 +16972,9 @@
     "sha256": "be6df6321ee402d7c879e597576ad9a82acba3283f3b9783df4ce8f558e0ae02"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "29703049c121",
+   "versao_codigo": "d295f82ec004",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T12:01:46Z",
+    "detectado_em": "2026-09-28T12:28:53Z",
     "total": 0,
     "vintages_comparadas": 6,
     "arquivos": 6,
@@ -17007,7 +17007,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:00:43.210439",
    "capturado_em": "2026-09-28T09:08:46Z",
-   "validado_em": "2026-09-28T12:01:46Z",
+   "validado_em": "2026-09-28T12:28:53Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-25"
@@ -17023,9 +17023,9 @@
     "sha256": "be6df6321ee402d7c879e597576ad9a82acba3283f3b9783df4ce8f558e0ae02"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "29703049c121",
+   "versao_codigo": "d295f82ec004",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T12:01:46Z",
+    "detectado_em": "2026-09-28T12:28:53Z",
     "total": 0,
     "vintages_comparadas": 6,
     "arquivos": 6,

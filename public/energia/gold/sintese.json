@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "sintese.json",
- "gerado_em": "2026-09-28T12:01:52Z",
+ "gerado_em": "2026-09-28T12:28:59Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "29703049c121",
+ "versao_codigo": "d295f82ec004",
  "disponivel": true,
  "frases": [
   {
@@ -199,5 +199,5 @@
    "tipo": "evento"
   }
  ],
- "nota": "Frases e alertas montados por regras fixas a partir da gold; nenhum texto é redigido livremente. Cada número leva à evidência."
+ "nota": "Frases e alertas montados por regras fixas a partir dos dados processados; nenhum texto é redigido livremente. Cada número leva à evidência."
 }

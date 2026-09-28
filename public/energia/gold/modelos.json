@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "modelos.json",
- "gerado_em": "2026-09-28T12:01:52Z",
+ "gerado_em": "2026-09-28T12:28:59Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "29703049c121",
+ "versao_codigo": "d295f82ec004",
  "disponivel": true,
  "fonte": {
   "artefato": "PLD_PREVISOES_EXPLICADAS v1-previa-r4",
@@ -17,18 +17,18 @@
  },
  "publicacao_resultados": {
   "liberada": false,
-  "motivo": "Resultados retrospectivos da pesquisa PLD ainda em revisão: a entrega de pesquisa (G4) não foi publicada, o achado G23-R1 não está documentado nos relatórios e o artefato de origem é uma prévia interna com revisão pendente. Números de desempenho só entram no portal depois da liberação do dono.",
+  "motivo": "Os resultados dos testes retrospectivos da pesquisa ainda estão em revisão: a última etapa de validação da pesquisa (etapa G4) não foi concluída, uma limitação encontrada na revisão (registro G23-R1) ainda não está documentada nos relatórios e o documento de origem é uma prévia interna. Números de desempenho só entram no portal depois da liberação formal pelo responsável pela plataforma.",
   "condicoes": [
-   "G4 concluída: entrega de pesquisa publicada com sha256",
-   "Achado G23-R1 documentado nos relatórios da pesquisa",
-   "Revisão do artefato de origem aceita",
-   "Liberação registrada pelo dono, com data"
+   "Última etapa de validação da pesquisa (etapa G4) concluída e publicada com sha256",
+   "Limitação registrada como G23-R1 documentada nos relatórios da pesquisa",
+   "Revisão do documento de origem aceita",
+   "Liberação registrada pelo responsável pela plataforma, com data"
   ]
  },
  "definicoes": {
   "alvo": "PLD médio do período de entrega, por submercado, em R$/MWh nominais",
-  "entregas": "Semanas completas de sábado 00h a sábado 00h (horizontes W1 a W4) e meses civis (M1 a M3) que ainda não começaram; 28 células por rodada (7 horizontes × 4 submercados)",
-  "cenario_de_elegibilidade": "LAT1D: um dado é elegível se o período terminou até 1 dia antes do corte (hipótese pré-fixada da pesquisa)",
+  "entregas": "Semanas completas de sábado 00h a sábado 00h (W1 é a próxima semana completa, até W4) e meses civis que ainda não começaram (M1 a M3). São 7 horizontes × 4 submercados = 28 previsões por rodada.",
+  "cenario_de_elegibilidade": "Regra de defasagem LAT1D: um dado só entra como informação se o seu período terminou até 1 dia antes do horário de corte (hipótese fixada pela pesquisa antes dos testes).",
   "corte_operacional": "07h00 de Brasília (10h00 UTC) do dia de origem; prazo de emissão 08h00 de Brasília",
   "quantis": "Níveis 5, 10, 25, 50, 75, 90 e 95%; faixa P10 a P90 com cobertura nominal de 80%"
  },
@@ -73,7 +73,9 @@
      "sha256": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
     }
    ],
-   "auditoria": "Revisão por agente em contexto separado (G0 a G3 aceitos); não é auditoria institucional"
+   "auditoria": "Revisão feita por um agente revisor em contexto separado, que aceitou as etapas G0 a G3 da pesquisa; não é auditoria institucional",
+   "resumo": "Repete o último valor completo: a previsão de cada período é a média do período mais recente já encerrado no corte. Serve de régua: um candidato só vale a pena se errar menos que isso.",
+   "limitacao_principal": "Não usa informação de chuva, reservatórios ou vazões: só o preço passado."
   },
   {
    "id": "c1",
@@ -83,7 +85,7 @@
    "estado": "PESQUISA",
    "papel": "Candidato",
    "objetivo": "Combinar referências simples com pesos fixos.",
-   "metodologia": "Mistura com pesos fixos de referências simples. A composição exata está no arquivo de configuração da pesquisa (projeto_pld/config/etapa2b_E2B-C123-v1.json).",
+   "metodologia": "Mistura com pesos fixos de referências simples. A composição exata (referências e pesos) está no arquivo de configuração da pesquisa, não publicado nesta fase; o caminho do arquivo consta nas evidências.",
    "formula": null,
    "features": [
     "PLD horário do submercado (CCEE)"
@@ -115,7 +117,9 @@
      "sha256": "08511202b236446341e8dd09ae66cfabc8b6470d9691992864f9cadc1567b7dd"
     }
    ],
-   "auditoria": "Revisão por agente em contexto separado (G0 a G3 aceitos); não é auditoria institucional"
+   "auditoria": "Revisão feita por um agente revisor em contexto separado, que aceitou as etapas G0 a G3 da pesquisa; não é auditoria institucional",
+   "resumo": "Combina referências simples com pesos fixos. Quais referências e quais pesos estão no arquivo de configuração da pesquisa, ainda não publicado.",
+   "limitacao_principal": "Nos testes da pesquisa, as faixas de incerteza cobriram menos do que prometiam, e no horizonte mensal há poucos casos para comparar modelos."
   },
   {
    "id": "c2-p",
@@ -175,7 +179,9 @@
      "sha256": "5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d"
     }
    ],
-   "auditoria": "Revisão por agente em contexto separado (G0 a G3 aceitos, G23-R1 pendente); não é auditoria institucional"
+   "auditoria": "Revisão feita por um agente revisor em contexto separado, que aceitou as etapas G0 a G3 da pesquisa (com a limitação G23-R1 pendente); não é auditoria institucional",
+   "resumo": "Parte da persistência (B0) e a corrige com informações recentes de preço.",
+   "limitacao_principal": "As faixas de incerteza não estão calibradas: a faixa do 10º ao 90º percentil não pode ser apresentada como uma faixa de 80%."
   },
   {
    "id": "c2-h",
@@ -226,7 +232,9 @@
      "sha256": "95d244966b09cb4929b839d3cb3d8e9d9595882fd54bc50d963c423dd07ff6af"
     }
    ],
-   "auditoria": "Revisão por agente em contexto separado (G0 a G3 aceitos, G23-R1 pendente); não é auditoria institucional"
+   "auditoria": "Revisão feita por um agente revisor em contexto separado, que aceitou as etapas G0 a G3 da pesquisa (com a limitação G23-R1 pendente); não é auditoria institucional",
+   "resumo": "Parte da persistência (B0) e a corrige com informações de preço e de hidrologia.",
+   "limitacao_principal": "As faixas de incerteza não estão calibradas, e o período usado nos testes já tinha sido examinado antes da definição do modelo (resultado exploratório)."
   }
  ],
  "em_producao": []

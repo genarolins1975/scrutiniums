@@ -1,14 +1,14 @@
 {
  "dominio": "energia",
  "gold": "previsoes.json",
- "gerado_em": "2026-09-28T12:01:52Z",
+ "gerado_em": "2026-09-28T12:28:59Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "29703049c121",
+ "versao_codigo": "d295f82ec004",
  "disponivel": true,
  "atual": {
   "disponivel": false,
   "motivo_codigo": "NENHUM_MODELO_EM_PRODUCAO",
-  "motivo": "Nenhum modelo de previsão do PLD está em produção. Os quatro candidatos estão em pesquisa e não podem alimentar a previsão oficial.",
+  "motivo": "Nenhum modelo de previsão do PLD está em produção: os quatro estão em pesquisa, e modelo em pesquisa não pode alimentar a previsão oficial.",
   "ultima_execucao": {
    "run_id": "prosp_2026-09-27_20260927T191013Z",
    "tipo": "RODADA_INTERNA",
@@ -28,11 +28,11 @@
    ]
   },
   "informacao_faltante": [
-   "Modelo promovido a PRODUÇÃO pelos gates de validação e produção.",
-   "Conclusão da última etapa de validação da pesquisa (etapa G4) e documentação de uma limitação encontrada na revisão (registro G23-R1).",
-   "Captura do PLD antes do corte de cada rodada (07h00 de Brasília)."
+   "Um modelo aprovado nas etapas de validação e promovido a produção.",
+   "Conclusão da última etapa de validação da pesquisa e documentação de uma limitação encontrada na revisão.",
+   "PLD do período necessário capturado antes do horário de corte de cada rodada (07h00 de Brasília)."
   ],
-  "estado_pipeline": "Registro e arquivo de previsões ativos; nenhuma publicação oficial; agendamento das rodadas não instalado."
+  "estado_pipeline": "O registro de modelos e o arquivo de previsões estão ativos; não há previsão oficial publicada; as rodadas ainda não são agendadas automaticamente."
  },
  "publicacoes": 0,
  "rodadas": [
