@@ -4,8 +4,8 @@
  */
 function formata(v: number, casas: number | null | undefined): string {
   return typeof casas === "number"
-    ? v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas })
-    : v.toLocaleString("pt-BR", { maximumFractionDigits: 2 });
+    ? v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas }).replace(/^-/, "\u2212")
+    : v.toLocaleString("pt-BR", { maximumFractionDigits: 2 }).replace(/^-/, "\u2212");
 }
 
 export function TabelaDados({

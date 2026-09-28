@@ -128,8 +128,10 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
               {c.fontes.map((f) => (
                 <li key={f.url + f.documento}>
                   <p className="text-sm">
-                    <strong className="font-medium">{f.orgao}</strong>:{" "}
-                    <a href={f.url} target="_blank" rel="noopener noreferrer" className="text-energia-dark underline underline-offset-4">{f.documento}</a>
+                    <strong className="font-medium">{f.orgao}</strong>
+                    <a href={f.url} target="_blank" rel="noopener noreferrer" className="block py-3 leading-snug text-energia-dark underline underline-offset-4 [overflow-wrap:anywhere]">
+                      {f.documento} <span aria-hidden="true">↗</span>
+                    </a>
                   </p>
                   {f.trecho && <blockquote className="mt-2 border-l-2 border-linha pl-4 text-sm text-carvao-muted">“{f.trecho}”</blockquote>}
                   {f.parafrase && <p className="mt-2 pl-4 text-sm text-carvao">{f.parafrase}</p>}

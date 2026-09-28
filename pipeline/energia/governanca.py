@@ -72,12 +72,13 @@ def valida_registro(rec, modelos_por_codigo):
         v.append(f"{rec.get('forecast_id')}: natureza {rec.get('natureza')} não pode entrar no arquivo de previsões")
     if "CENARIO" in json.dumps(rec, ensure_ascii=False).upper().replace("CENÁRIO", "CENARIO"):
         v.append(f"{rec.get('forecast_id')}: cenário não pode entrar no arquivo de previsões")
-    # faixa rotulada como 80% (em qualquer grafia: "80%", "80 %", "80 por cento",
-    # "oitenta por cento", "P10 a P90") exige calibração CALIBRADO em qualquer tipo de
-    # registro, publicado ou interno
+    # faixa rotulada como 80% exige calibração CALIBRADO em qualquer tipo de registro,
+    # publicado ou interno. Qualquer menção a 80 no rótulo conta ("80%", "80 pct",
+    # "faixa de 80", "oitenta por cento", "0,8"), assim como "P10 a P90"
     q = rec.get("quantis") or {}
     rotulo = str(q.get("rotulo_faixa") or "").lower()
-    if (re.search(r"(80|oitenta)\s*(%|por\s*cento)", rotulo) or re.search(r"p\s*10\s*(a|até|ao|-|–|—)\s*p\s*90", rotulo)) \
+    if (re.search(r"(?<![\d,.])(80|oitenta)(?![\d])", rotulo) or re.search(r"(?<![\d,.])0[,.]8(?!\d)", rotulo)
+            or re.search(r"p\s*10\s*(a|até|ao|-|–|—)\s*p\s*90", rotulo)) \
             and (rec.get("calibracao") or {}).get("status") != "CALIBRADO":
         v.append(f"{rec.get('forecast_id')}: faixa rotulada como 80% sem calibração CALIBRADO")
     # nenhum registro, publicado ou interno, pode usar dado capturado depois do corte;

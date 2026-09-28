@@ -240,6 +240,10 @@ export type GeracaoGold = Cabecalho & {
   serie_termica_7d?: { d: string; termica_7d: number | null }[];
   inicio_regime_atual?: string;
   anos_fora_do_regime?: number[];
+  /** Solar do SIN e do Sul na véspera e no dia da quebra de 29/04/2023 (MWmed). */
+  degrau_solar?: { antes: string; depois: string; solar_sin_antes: number; solar_sin_depois: number; solar_s_antes: number; solar_s_depois: number } | null;
+  /** Mix do SIN nos 12 meses anteriores aos últimos 12, quando a janela inteira está no regime atual. */
+  mix_12m_anterior_sin?: Mix;
   proveniencia: { geracao: Proveniencia; termica_7d?: Proveniencia };
   fonte_notas: string | null;
   downloads: Download[];
@@ -444,7 +448,8 @@ export type EntradaCatalogo = {
   estado: EstadoCatalogo;
   usado_em: string[];
   modelos: string[];
-  quebras: { data: string; descricao: string }[];
+  /** origem: FONTE = declarada na descrição do conjunto; PLATAFORMA = identificada pela Scrutiniums no dado. */
+  quebras: { data: string; descricao: string; origem?: "FONTE" | "PLATAFORMA" }[];
   metadados_verificados: boolean;
   descontinuado: boolean;
 };

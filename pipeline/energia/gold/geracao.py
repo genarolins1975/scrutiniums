@@ -5,8 +5,8 @@ Regras publicadas:
 - participação: geração da fonte ÷ soma de hidráulica, térmica, eólica e solar
   verificadas;
 - quebra de regime em 29/04/2023 (leitura a partir do dado, não conferida em documento
-  do ONS): a solar do SIN dobra de um dia para o outro e a geração total passa a
-  igualar a carga, que desde essa data inclui a estimativa de MMGD; comparações de
+  do ONS): a solar do SIN no balanço mais que dobra de um dia para o outro, na mesma
+  data em que o ONS passa a incluir na carga a estimativa de MMGD; comparações de
   composição só dentro do mesmo regime;
 - "hidráulica, eólica e solar" não é chamada de participação renovável: o conjunto não
   separa a térmica por combustível;
@@ -33,15 +33,40 @@ INICIO_REGIME_ATUAL = "2023-04-29"
 REGRAS = {
     "diaria": "Geração diária por fonte = média das 24 horas verificadas (MWmed). Dias sem as 24 horas não entram.",
     "participacao": "Participação = geração da fonte ÷ soma da geração verificada hidráulica, térmica, eólica e solar.",
-    "regime": (
-        "Leitura da Scrutiniums a partir do dado, não conferida em documento do ONS: em 29/04/2023 a geração solar do SIN no balanço "
-        "passa de 1.991 para 4.377 MWmed (média diária, de 28 para 29/04/2023) e, desde então, a geração total iguala a carga, que "
-        "inclui a estimativa de micro e minigeração distribuída a partir dessa data. A plataforma trata 29/04/2023 como quebra de "
-        "regime: comparações de composição só são feitas dentro do mesmo regime."
-    ),
+    # texto montado em construir() a partir do degrau medido na série (_texto_regime)
+    "regime": None,
     "hes": "Hidráulica, eólica e solar somadas. Não é chamada de participação renovável porque o conjunto não separa a térmica por combustível.",
     "termica_contexto": "Participação térmica dos últimos 7 dias comparada às participações térmicas de todas as janelas móveis de 7 dias dos 365 dias anteriores: percentil e mediana.",
 }
+
+
+def _n(v, casas=0):
+    return f"{v:,.{casas}f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+
+def _degrau_solar(diario):
+    """Solar do SIN e do Sul na véspera e no dia da quebra de 29/04/2023, sem arredondar."""
+    antes = (c.d(INICIO_REGIME_ATUAL) - timedelta(days=1)).isoformat()
+    try:
+        return {"antes": antes, "depois": INICIO_REGIME_ATUAL,
+                "solar_sin_antes": diario[("solar", "SIN")][antes], "solar_sin_depois": diario[("solar", "SIN")][INICIO_REGIME_ATUAL],
+                "solar_s_antes": diario[("solar", "S")][antes], "solar_s_depois": diario[("solar", "S")][INICIO_REGIME_ATUAL]}
+    except KeyError:
+        return None
+
+
+def _texto_regime(dg):
+    """Regra da quebra, com os números do dado. A relação com a MMGD é leitura da plataforma."""
+    if not dg:
+        return ("Leitura da Scrutiniums, não conferida em documento do ONS: a plataforma trata 29/04/2023 como quebra de regime do balanço, "
+                "data em que o ONS passa a incluir na carga a estimativa de micro e minigeração distribuída. Os valores da véspera e do dia "
+                "não estão na série desta publicação. Comparações de composição só são feitas dentro do mesmo regime.")
+    return (f"Leitura da Scrutiniums a partir do dado, não conferida em documento do ONS: de {c.data_br(dg['antes'])} para "
+            f"{c.data_br(dg['depois'])}, a geração solar do SIN no balanço passa de {_n(dg['solar_sin_antes'])} para "
+            f"{_n(dg['solar_sin_depois'])} MWmed (média diária); no Sul, de {_n(dg['solar_s_antes'], 1)} para {_n(dg['solar_s_depois'], 1)} MWmed. "
+            "Na mesma data, o ONS passa a incluir na carga a estimativa de micro e minigeração distribuída, conforme a descrição do conjunto "
+            "de carga; a plataforma lê o salto da solar como a inclusão dessa estimativa no balanço. Por isso trata 29/04/2023 como quebra "
+            "de regime: comparações de composição só são feitas dentro do mesmo regime.")
 
 
 def construir(con):
@@ -72,6 +97,9 @@ def construir(con):
         }
 
     janelas = {"dia": [dia_ref], "7d": janela(7), "30d": janela(30), "12m": janela(365)}
+    # 12 meses anteriores aos últimos 12, só quando a janela inteira está no regime atual
+    ant12 = janela(365, fim - timedelta(days=365))
+    mix_12m_anterior_sin = mix("SIN", ant12) if min(ant12) >= INICIO_REGIME_ATUAL else None
     regioes = []
     for rg in REGIOES:
         regioes.append({"rg": rg, "nome": c.NOME_SUBMERCADO[rg],
@@ -124,13 +152,14 @@ def construir(con):
     for h in sorted(horas_ref["hidraulica"]):
         perfil.append({"h": h[11:16], **{f: c.r(horas_ref[f].get(h), 0) for f in FONTES}})
 
+    degrau = _degrau_solar(diario)
     serie = [{"d": k, **{f: c.r(diario[(f, "SIN")][k], 0) for f in FONTES}} for k in dias]
     base.escreve_csv("geracao_diaria.csv", ["data"] + [f"{f}_{rg}" for rg in REGIOES for f in FONTES],
                      [[k] + [diario[(f, rg)].get(k) for rg in REGIOES for f in FONTES] for k in dias])
     meta = c.meta_ons(DS)
     lim = [
         "O balanço não separa a geração térmica por combustível. A separação exige o conjunto Geração por Usina, catalogado e ainda não integrado.",
-        "Quebra de regime em 29/04/2023, identificada no dado e não conferida em documento do ONS: a solar do SIN dobra de um dia para o outro e a geração total passa a igualar a carga, que inclui a estimativa de micro e minigeração distribuída desde essa data; comparações de composição que atravessam a data não são homogêneas.",
+        "Quebra de regime em 29/04/2023, identificada no dado e não conferida em documento do ONS: a solar do SIN no balanço mais que dobra de um dia para o outro, na mesma data em que o ONS passa a incluir na carga a estimativa de micro e minigeração distribuída; comparações de composição que atravessam a data não são homogêneas.",
         "Dados em processo de consistência recorrente do ONS, sujeitos a revisão.",
     ]
     prov = c.proveniencia(
@@ -158,7 +187,9 @@ def construir(con):
     return {
         **c.cabecalho("geracao.json"),
         "dia_referencia": dia_ref, "fontes": [{"id": f, "nome": NOME_FONTE[f]} for f in FONTES],
-        "regras": REGRAS, "regioes": regioes, "comparacao_anual": comparacao_anual,
+        "regras": {**REGRAS, "regime": _texto_regime(degrau)}, # arredondado uma vez, nas casas em que a interface mostra (SIN sem casa, Sul com uma)
+        "degrau_solar": None if not degrau else {k: (c.r(v, 1 if "_s_" in k else 0) if isinstance(v, float) else v) for k, v in degrau.items()},
+        "regioes": regioes, "mix_12m_anterior_sin": mix_12m_anterior_sin, "comparacao_anual": comparacao_anual,
         "termica_contexto": termica_ctx, "serie_termica_7d": serie_termica_7d,
         "inicio_regime_atual": INICIO_REGIME_ATUAL, "anos_fora_do_regime": anos_fora_do_regime,
         "perfil_horario_sin": perfil, "serie_sin": serie,

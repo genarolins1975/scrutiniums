@@ -89,7 +89,7 @@ export default function ModelosPage() {
                     <dl className="mt-1 space-y-1">
                       {Object.entries(m.fonte.codigos_internos).map(([k, v]) => (
                         <div key={k}>
-                          <dt className="inline font-mono">{k}</dt>: <dd className="inline">{v}</dd>
+                          <dt className="inline font-mono">{k}:</dt> <dd className="inline">{v}</dd>
                         </div>
                       ))}
                     </dl>

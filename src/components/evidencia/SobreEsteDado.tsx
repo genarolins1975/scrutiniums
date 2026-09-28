@@ -48,20 +48,20 @@ function Linha({ rotulo, children }: { rotulo: string; children: React.ReactNode
 
 /** Texto de "nenhuma revisão", distinguindo arquivo capturado uma vez de arquivo recapturado sem mudança. */
 function textoSemRevisao(rev: NonNullable<Proveniencia["revisoes_conhecidas"]>): string {
-  const quando = `verificado em ${dataHora(rev.detectado_em)}`;
+  const quando = `Verificação em ${dataHora(rev.detectado_em)}`;
   const recap = rev.recapturas_sem_mudanca ?? 0;
   const identicos =
     recap > 0
       ? `${recap} ${recap === 1 ? "download posterior veio idêntico" : "downloads posteriores vieram idênticos"} a arquivos já integrados${
-          rev.ultimo_download_ok ? ` (último download em ${dataHora(rev.ultimo_download_ok)})` : ""
+          rev.ultimo_download_ok ? `, o último em ${dataHora(rev.ultimo_download_ok)}` : ""
         }; arquivo idêntico não gera captura nova.`
       : "";
   const umaPorArquivo = rev.vintages_comparadas !== undefined && rev.arquivos !== undefined && rev.vintages_comparadas <= rev.arquivos;
   if (umaPorArquivo && recap === 0)
-    return `Ainda não é possível detectar revisões: há uma única captura de cada um dos ${rev.arquivos} arquivos integrados (${quando}). A detecção começa na segunda captura de um arquivo.`;
+    return `Ainda não é possível detectar revisões: há uma única captura de cada um dos ${rev.arquivos} arquivos integrados. A detecção começa na segunda captura de um arquivo. ${quando}.`;
   if (umaPorArquivo)
-    return `Nenhuma revisão detectada (${quando}): cada um dos ${rev.arquivos} arquivos integrados tem uma captura, e ${identicos}`;
-  return `Nenhuma revisão detectada entre ${rev.vintages_comparadas ?? "as"} capturas distintas de ${rev.arquivos ?? "todos os"} arquivos integrados (${quando}).${identicos ? ` Além disso, ${identicos}` : ""}`;
+    return `Nenhuma revisão detectada: cada um dos ${rev.arquivos} arquivos integrados tem uma captura, e ${identicos} ${quando}.`;
+  return `Nenhuma revisão detectada entre ${rev.vintages_comparadas ?? "as"} capturas distintas de ${rev.arquivos ?? "todos os"} arquivos integrados.${identicos ? ` Além disso, ${identicos}` : ""} ${quando}.`;
 }
 
 export function SobreEsteDado({ p, rotulo = "Sobre este dado" }: { p: Proveniencia; rotulo?: string }) {
@@ -164,9 +164,8 @@ export function SobreEsteDado({ p, rotulo = "Sobre este dado" }: { p: Provenienc
                   textoSemRevisao(rev)
                 ) : (
                   <>
-                    {rev.total.toLocaleString("pt-BR")} observações com valor revisado pela fonte entre as vintages integradas (verificado em{" "}
-                    {dataHora(rev.detectado_em)}). Mais recentes:{" "}
-                    {rev.exemplos.slice(0, 5).map((e) => `${e.serie} em ${dataHora(e.ref)}`).join("; ")}.
+                    {rev.total.toLocaleString("pt-BR")} observações com valor revisado pela fonte entre as vintages integradas. Mais recentes:{" "}
+                    {rev.exemplos.slice(0, 5).map((e) => `${e.serie} em ${dataHora(e.ref)}`).join("; ")}. Verificação em {dataHora(rev.detectado_em)}.
                   </>
                 )}
               </Linha>

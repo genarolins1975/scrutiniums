@@ -30,6 +30,16 @@ const PAGINA_DA_GOLD: Record<string, string> = {
   "modelos.json": "Modelos",
 };
 
+/** "2 mudanças metodológicas declaradas pela fonte", separando o que a plataforma identificou no dado. */
+function textoQuebras(q: { origem?: "FONTE" | "PLATAFORMA" }[]): string {
+  const fonte = q.filter((x) => x.origem !== "PLATAFORMA").length;
+  const plataforma = q.length - fonte;
+  const mud = (n: number) => `${n} ${n === 1 ? "mudança metodológica" : "mudanças metodológicas"}`;
+  if (!plataforma) return `${mud(fonte)} ${fonte === 1 ? "declarada" : "declaradas"} pela fonte`;
+  if (!fonte) return `${mud(plataforma)} ${plataforma === 1 ? "identificada" : "identificadas"} pela Scrutiniums no dado`;
+  return `${mud(q.length)}: ${fonte} ${fonte === 1 ? "declarada" : "declaradas"} pela fonte e ${plataforma} ${plataforma === 1 ? "identificada" : "identificadas"} pela Scrutiniums no dado`;
+}
+
 export default function DadosEnergiaPage() {
   const cat = gold.catalogo();
   if (!cat) {
@@ -89,7 +99,7 @@ export default function DadosEnergiaPage() {
                     Usado em: {(DATASETS_INTEGRADOS.find((d) => d.catalogoId === e.id)?.paginas.map((p) => p.rotulo) ?? Array.from(new Set(e.usado_em.map((u) => PAGINA_DA_GOLD[u] ?? u)))).join(", ")}
                     {e.modelos.length ? ` · modelos ${e.modelos.join(", ")}` : ""}
                   </span>
-                  {e.quebras.length > 0 && <span className="mt-1 text-xs text-aviso">{e.quebras.length} mudanças metodológicas declaradas pela fonte</span>}
+                  {e.quebras.length > 0 && <span className="mt-1 text-xs text-aviso">{textoQuebras(e.quebras)}</span>}
                 </Link>
               </li>
             ))}

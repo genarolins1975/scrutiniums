@@ -308,7 +308,7 @@ class GovernancaEndurecidaTest(unittest.TestCase):
         for ruim in (float("nan"), float("inf")):
             v = g.valida_registro(self._rec(previsao=ruim), {})
             self.assertTrue(any("finito" in x for x in v), v)
-        for rotulo in ("faixa de oitenta por cento", "Faixa P10 a P90", "p10–p90"):
+        for rotulo in ("faixa de oitenta por cento", "Faixa P10 a P90", "p10–p90", "80pct", "faixa de 80", "cobertura 0,8"):
             v = g.valida_registro(self._rec(quantis={"rotulo_faixa": rotulo, "p10": 1.0, "p90": 2.0}), {})
             self.assertTrue(any("80%" in x for x in v), (rotulo, v))
         v = g.valida_registro(self._rec(quantis={"rotulo_faixa": "faixa", "p10": float("nan")}), {})

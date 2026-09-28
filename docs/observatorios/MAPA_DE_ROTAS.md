@@ -20,7 +20,8 @@ Regra: nenhuma URL pública existente muda de destino. Rotas novas vivem sob `/s
 | --- | --- | --- |
 | `/app/observatorios` | Escolha seu observatório | logada |
 | `/credito` | Atalho simétrico, redireciona a `/observatorio` | pública |
-| `/setor-eletrico` | Visão geral: o sistema em poucos minutos | pública |
+| `/setor-eletrico` | Mapa do Observatório: o sistema em seis passos, a pergunta de cada página, trilhas por perfil, como ler e fontes (molde do Mapa do Crédito). Âncoras da antiga visão geral (`#sistema`, `#observar` e demais) redirecionam para `/setor-eletrico/visao-geral` | pública |
+| `/setor-eletrico/visao-geral` | Visão geral: o sistema em poucos minutos, com os números do dia | pública |
 | `/setor-eletrico/pld` | PLD explicado: entender, analisar, auditar | pública |
 | `/setor-eletrico/pld/previsoes` | Histórico de previsões (arquivo imutável) e estado atual | pública |
 | `/setor-eletrico/pld/modelos` e `/setor-eletrico/pld/modelos/[modelo]` | Registro de modelos e model card | pública |

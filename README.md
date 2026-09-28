@@ -84,7 +84,7 @@ O Observatório Brasileiro de Crédito (SPA em JavaScript puro, 16+ abas) roda e
 
 ## Observatório Brasileiro do Setor Elétrico
 
-Domínio `energia`, em **`/setor-eletrico`**: 12 módulos (Visão geral, PLD, Água e clima, Geração, Carga e consumo, Rede, Mercado, Empresas e ativos, Expansão, Regulação, Aprenda, Dados e metodologia), páginas estáticas geradas no build a partir da gold em `public/energia/gold/` e com CSVs em `public/energia/series/`. O pipeline fica em `pipeline/energia/` (bronze imutável com sha256, silver com vintages append only e consulta `como_estava_em` sem look-ahead, gold com proveniência por indicador) e roda pelo workflow `atualizar-energia.yml`:
+Domínio `energia`, em **`/setor-eletrico`**: página inicial com o Mapa do Observatório (como o Mapa do Crédito) e 12 módulos (Visão geral, PLD, Água e clima, Geração, Carga e consumo, Rede, Mercado, Empresas e ativos, Expansão, Regulação, Aprenda, Dados e metodologia), páginas estáticas geradas no build a partir da gold em `public/energia/gold/` e com CSVs em `public/energia/series/`. O pipeline fica em `pipeline/energia/` (bronze imutável com sha256, silver com vintages append only e consulta `como_estava_em` sem look-ahead, gold com proveniência por indicador) e roda pelo workflow `atualizar-energia.yml`:
 
 ```bash
 python3 -m pipeline.energia.run                 # coleta ONS/CCEE e reconstrói a gold

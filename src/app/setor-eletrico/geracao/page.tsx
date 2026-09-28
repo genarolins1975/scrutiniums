@@ -47,9 +47,11 @@ export default function GeracaoPage() {
           referencia={<>Balanço de Energia nos Subsistemas (ONS), dia de referência {dataBR(g.dia_referencia)}</>}
         >
           A <Termo slug="geracao-centralizada">geração verificada</Termo> das usinas hidráulicas, térmicas, eólicas e fotovoltaicas no balanço do ONS,
-          hora a hora, em <Unidade u="MWmed" />. Em 29/04/2023 o balanço muda de regime: a solar dobra de um dia para o outro e a geração passa a
-          igualar a carga, que desde essa data inclui a estimativa de micro e minigeração distribuída (leitura a partir do dado, não conferida em
-          documento do ONS). Por isso as comparações desta página só usam períodos posteriores a essa data.
+          hora a hora, em <Unidade u="MWmed" />. Em 29/04/2023 o balanço muda de regime: a solar do SIN
+          {g.degrau_solar ? ` passa de ${num(g.degrau_solar.solar_sin_antes, 0)} para ${num(g.degrau_solar.solar_sin_depois, 0)} MWmed de um dia para o outro` : " mais que dobra de um dia para o outro"},
+          na mesma data em que o ONS passa a incluir na carga a estimativa de micro e minigeração distribuída. A leitura de que o salto é essa
+          estimativa é da plataforma, a partir do dado, e não foi conferida em documento do ONS. Por isso as comparações desta página só usam
+          períodos posteriores a essa data.
         </CabecalhoModulo>
         <ModoProfundidade>
           <Bloco id="matriz">
@@ -154,7 +156,13 @@ export default function GeracaoPage() {
               pergunta="Como cada fonte evoluiu desde 2021?"
               subtitulo="Geração verificada diária do SIN por fonte · MWmed"
               porQueImporta={<>A trajetória mostra como cada fonte variou desde 2021. A linha vertical marca 29/04/2023: dali em diante o balanço passa a incluir a geração estimada de micro e minigeração distribuída na solar (leitura a partir do dado), e o salto da solar nessa data não é expansão física.</>}
-              oQueMudou={<>Série de {dataBR(g.serie_sin[0].d)} a {dataBR(g.dia_referencia)}.</>}
+              oQueMudou={
+                <>
+                  {sin["12m"] && g.mix_12m_anterior_sin
+                    ? `Participação nos 12 meses até ${dataBR(g.dia_referencia)}, contra os 12 meses anteriores: ${ORDEM_FONTES.map((f) => `${NOME_FONTE[f]} ${pct(sin["12m"]!.participacao[f])} (antes ${pct(g.mix_12m_anterior_sin!.participacao[f])})`).join("; ")}.`
+                    : `Série de ${dataBR(g.serie_sin[0].d)} a ${dataBR(g.dia_referencia)}; sem dois períodos de 12 meses no regime atual para comparar.`}
+                </>
+              }
               comoInterpretar={<>Médias diárias de valores horários; use o cursor para ler cada dia.</>}
               naoConcluir={<>Crescimento de geração não é crescimento de capacidade instalada; a capacidade está em outro conjunto, catalogado.</>}
               proveniencia={g.proveniencia.geracao}

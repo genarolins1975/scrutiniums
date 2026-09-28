@@ -13,7 +13,7 @@ Regras publicadas (repetidas no JSON em `regras`, exibidas na página):
 - menor valor observado no ano: menor valor horário do ano civil até o dia de
   referência. NÃO é o piso regulatório (limite oficial não auditado nesta fase);
 - diferença entre submercados: por hora, maior menos menor valor entre os quatro;
-  contam-se as horas com diferença acima de R$ 1/MWh.
+  contam-se as horas com diferença acima de R$ 1,00/MWh (LIMIAR_DIFERENCA).
 """
 import os
 import sys
@@ -36,7 +36,8 @@ REGRAS = {
     "volatilidade": "Desvio padrão amostral dos valores horários do período.",
     "permanencia": "Fração das horas do período abaixo do 25º percentil, entre o 25º e o 75º e acima do 75º percentil da distribuição horária do submercado desde 01/01/2021.",
     "menor_valor_ano": "Menor valor horário observado no ano civil até o dia de referência. Não é o piso regulatório: o limite oficial vigente não foi auditado nesta fase.",
-    "diferenca_submercados": "Para cada hora, maior valor menos menor valor entre os quatro submercados. Contam-se as horas com diferença acima de R$ 1/MWh; diferenças menores são tratadas como coincidência nesta contagem.",
+    "diferenca_submercados": ("Para cada hora, maior valor menos menor valor entre os quatro submercados. Contam-se as horas com diferença acima de "
+                              "R$ " + f"{LIMIAR_DIFERENCA:.2f}".replace(".", ",") + "/MWh; diferenças menores são tratadas como coincidência nesta contagem."),
 }
 
 LIMITACOES_BASE = [
@@ -264,7 +265,7 @@ def construir(con):
         transformacoes=["seleção das horas do período", "estatísticas descritivas sobre os valores horários", "quartis com interpolação linear (tipo 7)"],
         formula=("média = Σ PLD_h ÷ n; mediana e quartis tipo 7 dos valores horários; desvio padrão amostral; "
                  "permanência = % das horas abaixo de P25, entre P25 e P75 e acima de P75 da distribuição horária desde 01/01/2021; "
-                 f"diferença entre submercados = % das horas com |PLD_a − PLD_b| > R$ {LIMIAR_DIFERENCA:.2f}/MWh".replace(".", ",")),
+                 "diferença entre submercados = % das horas com |PLD_a − PLD_b| > R$ " + f"{LIMIAR_DIFERENCA:.2f}".replace(".", ",") + "/MWh"),
         limitacoes=limitacoes + ["Estatísticas descritivas do período; não indicam tendência nem causa."],
         download="/energia/series/pld_horario.csv",
     )

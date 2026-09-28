@@ -49,7 +49,8 @@ function fmtX(v: string, f: GraficoLinhasProps["formatoX"], longo = false): stri
 
 function fmtV(v: number | null | undefined, casas: number, unidade: string): string {
   if (v === null || v === undefined || !Number.isFinite(v)) return "sem dado";
-  return `${v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas })} ${unidade}`.trim();
+  // sinal de menos tipográfico, como no resto do portal
+  return `${v.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas }).replace(/^-/, "\u2212")} ${unidade}`.trim();
 }
 
 function ticks(min: number, max: number, n = 4): number[] {
@@ -254,7 +255,7 @@ export function GraficoLinhas({
           <g key={v}>
             <line x1={L} x2={w - R} y1={y(v)} y2={y(v)} stroke="var(--cor-grade)" strokeWidth="1" />
             <text x={L - 8} y={y(v) + 4} textAnchor="end" fontSize="11" fill="var(--cor-mineral)">
-              {v.toLocaleString("pt-BR", { maximumFractionDigits: Math.abs(yMax - yMin) < 5 ? 1 : 0 })}
+              {v.toLocaleString("pt-BR", { maximumFractionDigits: Math.abs(yMax - yMin) < 5 ? 1 : 0 }).replace(/^-/, "\u2212")}
             </text>
           </g>
         ))}

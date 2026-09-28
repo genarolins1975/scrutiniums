@@ -199,7 +199,7 @@ export const CONCEITOS: Conceito[] = [
     emUmaFrase:
       "Nome do sistema elétrico interligado do país. A CCEE descreve os quatro submercados (Norte, Nordeste, Sul e Sudeste) como submercados \"de atuação no SIN\".",
     porQueImporta:
-      "Nos dados do ONS usados aqui, os valores do SIN aparecem ao lado dos quatro subsistemas: a EAR e a carga do SIN, por exemplo, reúnem os quatro. Como cada número do SIN é obtido está na regra de cada indicador.",
+      "Nos conjuntos do ONS usados aqui, os valores vêm por subsistema (N, NE, S e SE). Quando a plataforma mostra um valor do SIN, como a EAR ou a carga do SIN, ela o calcula a partir dos quatro, com a regra declarada no indicador.",
     comoEMedido:
       "Não é uma grandeza: é o recorte. Quando a plataforma calcula um valor para o SIN, a regra do indicador diz como (por exemplo, a EAR do SIN é a soma das EAR dos subsistemas dividida pela soma das EAR máximas).",
     relacoes: ["submercado", "intercambio"],
@@ -212,7 +212,7 @@ export const CONCEITOS: Conceito[] = [
       },
     ],
     limitacoes: ["A abrangência física do SIN (quais sistemas isolados ficam de fora) não foi conferida em documento do ONS nesta fase."],
-    vejaNoPortal: [{ rotulo: "Visão geral do sistema", href: "/setor-eletrico" }],
+    vejaNoPortal: [{ rotulo: "Visão geral do sistema", href: "/setor-eletrico/visao-geral" }],
   },
   {
     slug: "cvu",
@@ -359,7 +359,7 @@ export const CONCEITOS: Conceito[] = [
     ],
     limitacoes: [
       "O balanço não separa as térmicas por combustível.",
-      "Em 29/04/2023 a solar do balanço dobra de um dia para o outro e a geração passa a igualar a carga, que inclui a estimativa de micro e minigeração distribuída desde essa data: leitura da Scrutiniums a partir do dado, não conferida em documento do ONS. Comparações que atravessam a data não são homogêneas.",
+      "Em 29/04/2023 a solar do SIN no balanço mais que dobra de um dia para o outro, na mesma data em que o ONS passa a incluir na carga a estimativa de micro e minigeração distribuída. A leitura de que o salto é essa estimativa é da Scrutiniums, a partir do dado, e não foi conferida em documento do ONS. Comparações que atravessam a data não são homogêneas.",
     ],
     vejaNoPortal: [{ rotulo: "Como estamos gerando", href: "/setor-eletrico/geracao" }],
   },

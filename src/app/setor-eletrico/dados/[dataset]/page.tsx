@@ -64,7 +64,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
             ["Última captura", f?.ultima_captura ? carimbo(f.ultima_captura) : "sem captura"],
             ["Snapshot", f?.snapshot ?? "–"],
             ["sha256 do snapshot", <span key="s" className="break-all font-mono text-xs">{f?.snapshot_sha256 ?? "–"}</span>],
-            ["Última tentativa de coleta direta", f?.ultima_tentativa ? `${carimbo(f.ultima_tentativa.tentado_em)} · ${f.ultima_tentativa.ok ? "ok" : "falhou"} · ${f.ultima_tentativa.detalhe}` : "não registrada nesta publicação"],
+            ["Última tentativa de coleta direta", f?.ultima_tentativa ? `${carimbo(f.ultima_tentativa.tentado_em)} · ${f.ultima_tentativa.ok ? "ok" : "falhou"} · ${f.ultima_tentativa.detalhe.replace(/\d{4,}/g, (n) => Number(n).toLocaleString("pt-BR"))}` : "não registrada nesta publicação"],
           ].map(([k, v], i, lista) => (
             <div key={String(k)} className={`min-w-0 bg-superficie p-4 ${lista.length % 2 === 1 && i === lista.length - 1 ? "md:col-span-2" : ""}`}>
               <dt className="rotulo text-mineral">{k}</dt>
@@ -75,10 +75,18 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
 
         {e.quebras.length > 0 && (
           <section className="mt-8 border border-linha bg-superficie p-6">
-            <h2 className="font-serif text-xl text-carvao">Mudanças metodológicas declaradas pela fonte</h2>
+            <h2 className="font-serif text-xl text-carvao">Mudanças metodológicas</h2>
+            <p className="mt-1 text-sm text-carvao-muted">
+              Cada item diz a origem: declarada na descrição do conjunto pela fonte, ou identificada pela Scrutiniums no próprio dado, sem documento da
+              fonte que a confirme.
+            </p>
             <ul className="mt-3 space-y-2 text-sm text-carvao">
               {e.quebras.map((q) => (
-                <li key={q.data}><strong className="font-medium">{dataBR(q.data)}:</strong> {q.descricao}</li>
+                <li key={`${q.data}-${q.origem ?? "FONTE"}`}>
+                  <strong className="font-medium">{dataBR(q.data)}</strong>
+                  <span className="rotulo ml-2 text-mineral">{q.origem === "PLATAFORMA" ? "identificada pela Scrutiniums no dado" : "declarada pela fonte"}</span>
+                  <span className="block">{q.descricao}</span>
+                </li>
               ))}
             </ul>
           </section>
@@ -86,7 +94,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
 
         <section className="mt-8 border border-linha bg-superficie p-6">
           <h2 className="font-serif text-xl text-carvao">Capturas integradas (vintages)</h2>
-          <p className="mt-1 text-sm text-carvao-muted">Cada arquivo baixado com conteúdo novo é uma vintage imutável; download idêntico a uma vintage existente não gera linha nova. A tabela lista todas as vintages, inclusive as substituídas por captura posterior do mesmo arquivo. Os valores das vintages ficam no histórico do pipeline (cache da automação e cópia durável), usado para reconstituir o que se sabia em cada data, e não são publicados no portal.</p>
+          <p className="mt-1 text-sm text-carvao-muted">Cada arquivo baixado com conteúdo novo é uma vintage imutável; download idêntico a uma vintage existente não gera linha nova. A tabela lista todas as vintages, inclusive as substituídas por captura posterior do mesmo arquivo. Os valores das vintages ficam no histórico do processamento (cache da automação e cópia durável), usado para reconstituir o que se sabia em cada data, e não são publicados no portal.</p>
           <div className="tabela-scroll mt-4" tabIndex={0} role="region" aria-label="Capturas do conjunto (tabela rolável)">
             <table className="w-full min-w-[50rem] border-collapse text-xs">
               <caption className="sr-only">Todas as capturas integradas, por recurso</caption>
@@ -120,8 +128,8 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
           )}
         </section>
 
-        <section className="mt-8 grid gap-6 md:grid-cols-2">
-          <div className="border border-linha bg-superficie p-6">
+        <section className="mt-8 grid grid-cols-[minmax(0,1fr)] gap-6 md:grid-cols-2">
+          <div className="min-w-0 border border-linha bg-superficie p-6 [overflow-wrap:anywhere]">
             <h2 className="font-serif text-xl text-carvao">Downloads e páginas</h2>
             <ul className="mt-3 space-y-1 text-sm">
               {d.downloads.map((u) => (
@@ -136,7 +144,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
             </ul>
             <p className="mt-3 text-xs text-mineral">CSV com separador ponto e vírgula e ponto decimal; campo vazio significa ausência, nunca zero.</p>
           </div>
-          <div className="border border-linha bg-superficie p-6">
+          <div className="min-w-0 border border-linha bg-superficie p-6 [overflow-wrap:anywhere]">
             <h2 className="font-serif text-xl text-carvao">Como citar</h2>
             <p className="mt-3 text-sm leading-relaxed text-carvao">
               {e.orgao}. <em>{e.titulo}</em>. Dados abertos, licença {e.licenca ?? "informada na fonte"}. Integrado e processado por Scrutiniums,

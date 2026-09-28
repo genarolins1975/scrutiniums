@@ -30,7 +30,8 @@ export function Footer() {
         <nav aria-label="Observatório Brasileiro do Setor Elétrico">
           <p className="rotulo mb-4 text-mineral-soft">Setor Elétrico</p>
           <ul className="space-y-2 text-sm">
-            <li><Link href="/setor-eletrico" className="hover:text-bronze-soft">Visão geral</Link></li>
+            <li><Link href="/setor-eletrico" className="hover:text-bronze-soft">Mapa do Observatório</Link></li>
+            <li><Link href="/setor-eletrico/visao-geral" className="hover:text-bronze-soft">Visão geral</Link></li>
             <li><Link href="/setor-eletrico/pld" className="hover:text-bronze-soft">PLD explicado</Link></li>
             <li><Link href="/setor-eletrico/dados" className="hover:text-bronze-soft">Dados e catálogo</Link></li>
             <li><Link href="/setor-eletrico/metodologia" className="hover:text-bronze-soft">Metodologia</Link></li>

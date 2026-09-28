@@ -184,6 +184,8 @@ describe("contribuição de modelo nunca vira causa", () => {
       join(raiz, "src", "lib", "energia", "conteudo", "conceitos.ts"),
       join(raiz, "src", "app", "setor-eletrico", "pld", "page.tsx"),
       join(raiz, "src", "app", "setor-eletrico", "page.tsx"),
+      join(raiz, "src", "app", "setor-eletrico", "visao-geral", "page.tsx"),
+      join(raiz, "src", "lib", "energia", "mapa.ts"),
     ];
     for (const f of arquivos) {
       const t = readFileSync(f, "utf-8");

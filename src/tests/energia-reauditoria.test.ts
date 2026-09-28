@@ -13,7 +13,7 @@ const ler = (p: string) => readFileSync(join(raiz, p), "utf-8");
 
 describe("proveniência por painel", () => {
   it("painéis da Visão geral e da Rede trazem a proveniência de cada número que citam", () => {
-    const visao = ler("src/app/setor-eletrico/page.tsx");
+    const visao = ler("src/app/setor-eletrico/visao-geral/page.tsx");
     const rede = ler("src/app/setor-eletrico/rede/page.tsx");
     expect(visao).toContain("p: hid.proveniencia.ena30");
     expect(visao).toContain("ger.proveniencia.termica_7d");
@@ -30,7 +30,7 @@ describe("proveniência por painel", () => {
 describe("arredondamento único", () => {
   it("percentis e ENA de 30 dias são exibidos com uma casa, como na gold", () => {
     const arquivos = [
-      "src/app/setor-eletrico/page.tsx",
+      "src/app/setor-eletrico/visao-geral/page.tsx",
       "src/app/setor-eletrico/agua-e-clima/page.tsx",
       "src/app/setor-eletrico/geracao/page.tsx",
       "src/components/energia/CartoesPld.tsx",
@@ -64,7 +64,7 @@ describe("datas e textos gerados a partir do dado", () => {
     expect(r.balanco_sin).toBeTruthy();
     expect(r.balanco_sin.horas_total).toBeGreaterThan(0);
     expect(r.proveniencia.saldos.limitacoes[0]).toMatch(/intercâmbio do SIN/);
-    for (const f of ["src/app/setor-eletrico/rede/page.tsx", "src/app/setor-eletrico/page.tsx", "pipeline/energia/gold/rede.py"]) {
+    for (const f of ["src/app/setor-eletrico/rede/page.tsx", "src/app/setor-eletrico/visao-geral/page.tsx", "pipeline/energia/gold/rede.py"]) {
       expect(ler(f), f).not.toMatch(/não se compensam|se compensam no SIN|que não é zero/);
     }
   });
@@ -81,7 +81,7 @@ describe("linguagem causal sem rótulo", () => {
   it("não volta, em qualquer flexão", () => {
     const padroes = [/pression(a|am|ar|ando)\b/i, /rep(õe|or|ondo)\s+(o|esse|este)\s+estoque/i, /termômetro/i, /para a época/i];
     const arquivos = [
-      "src/app/setor-eletrico/page.tsx",
+      "src/app/setor-eletrico/visao-geral/page.tsx",
       "src/app/setor-eletrico/pld/page.tsx",
       "src/app/setor-eletrico/agua-e-clima/page.tsx",
       "src/app/setor-eletrico/geracao/page.tsx",
@@ -233,5 +233,46 @@ describe("auditoria final B: regressões", () => {
 
   it("série coincidente no gráfico de períodos do PLD é declarada", () => {
     expect(ler("src/components/energia/PldPeriodos.tsx")).toContain("function sobrepostos(");
+  });
+});
+
+describe("verificação final: regressões", () => {
+  it("a quebra de 29/04/2023 é descrita pelo degrau da solar medido no dado, sem afirmar que a geração iguala a carga", () => {
+    const g = JSON.parse(ler("public/energia/gold/geracao.json"));
+    expect(g.degrau_solar.depois).toBe("2023-04-29");
+    expect(g.degrau_solar.solar_sin_depois / g.degrau_solar.solar_sin_antes).toBeGreaterThan(1.5);
+    expect(g.regras.regime).toContain("não conferida em documento do ONS");
+    for (const f of [
+      "src/app/setor-eletrico/geracao/page.tsx",
+      "pipeline/energia/gold/geracao.py",
+      "pipeline/energia/catalogo.py",
+      "src/lib/energia/conteudo/conceitos.ts",
+      "public/energia/gold/geracao.json",
+      "public/energia/gold/catalogo.json",
+    ]) {
+      expect(ler(f), f).not.toMatch(/iguala(r)? a carga/);
+    }
+  });
+
+  it("mudança identificada pela plataforma não aparece como declarada pela fonte", () => {
+    const c = JSON.parse(ler("public/energia/gold/catalogo.json"));
+    for (const e of c.entradas) for (const q of e.quebras) expect(["FONTE", "PLATAFORMA"], `${e.id} ${q.data}`).toContain(q.origem);
+    expect(ler("src/app/setor-eletrico/dados/page.tsx")).not.toContain("mudanças metodológicas declaradas pela fonte</span>");
+    expect(ler("src/app/setor-eletrico/dados/[dataset]/page.tsx")).toContain("identificada pela Scrutiniums no dado");
+  });
+
+  it("colunas de grade com tabela não empurram a página para o lado", () => {
+    const t = ler("src/app/setor-eletrico/pld/page.tsx");
+    expect(t).toContain('grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]');
+    expect(t).toContain('<div className="min-w-0">');
+  });
+
+  it("limiar da diferença entre submercados escrito do mesmo jeito em todas as regras", () => {
+    for (const g of ["pld.json", "sintese.json"]) expect(ler(`public/energia/gold/${g}`), g).not.toMatch(/R\$ 1\/MWh/);
+  });
+
+  it("verbete SIN não atribui ao ONS a publicação de valores do SIN", () => {
+    const t = ler("src/lib/energia/conteudo/conceitos.ts");
+    expect(t).not.toContain("os valores do SIN aparecem ao lado dos quatro subsistemas");
   });
 });

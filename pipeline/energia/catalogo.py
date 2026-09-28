@@ -42,11 +42,11 @@ INTEGRADOS = {
 }
 QUEBRAS = {
     ("ONS", "carga-energia"): [
-        {"data": "2021-03-01", "descricao": "Passa a incluir a previsão de geração de usinas não despachadas pelo ONS."},
-        {"data": "2023-04-29", "descricao": "Passa a incorporar o valor estimado da micro e minigeração distribuída (MMGD)."},
+        {"data": "2021-03-01", "origem": "FONTE", "descricao": "Passa a incluir a previsão de geração de usinas não despachadas pelo ONS."},
+        {"data": "2023-04-29", "origem": "FONTE", "descricao": "Passa a incorporar o valor estimado da micro e minigeração distribuída (MMGD)."},
     ],
     ("ONS", "balanco-energia-subsistema"): [
-        {"data": "2023-04-29", "descricao": "Leitura da Scrutiniums a partir do dado, não declarada na descrição do conjunto: a solar do SIN dobra de um dia para o outro e a geração total passa a igualar a carga, que inclui a estimativa de MMGD desde essa data."},
+        {"data": "2023-04-29", "origem": "PLATAFORMA", "descricao": "Identificada pela Scrutiniums no dado, não declarada na descrição do conjunto: a solar do SIN no balanço mais que dobra de um dia para o outro, na mesma data em que o ONS passa a incluir na carga a estimativa de MMGD."},
     ],
 }
 TEMAS = [

@@ -135,7 +135,7 @@ def observar(hid, carga, ger, pld, cmo, hoje=None):
     if pld and pld.get("disponivel"):
         dif = pld["periodos"]["30d"]["diferenca"]
         add("descolamento", "Diferença de preço entre submercados",
-            "Ao menos uma hora com diferença acima de R$ 1/MWh entre submercados nos últimos 30 dias da série de PLD.",
+            f"Ao menos uma hora com diferença acima de R$ {nbr(pld.get('limiar_diferenca', 1.0), 2)}/MWh entre submercados nos últimos 30 dias da série de PLD.",
             dif["horas_acima_limiar"] > 0,
             f"{dif['horas_acima_limiar']} de {pld['periodos']['30d']['n_horas']} horas ({nbr(100 * dif['frac_horas_acima_limiar'])}%); maior diferença R$ {nbr(dif['maior'], 2)}/MWh em {c.data_br(dif['quando_maior'])} às {dif['quando_maior'][11:16]}.",
             "/setor-eletrico/rede")

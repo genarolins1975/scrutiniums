@@ -187,7 +187,7 @@ export default function PldPage() {
                   negativo, por submercado e hora, e o resultado financeiro correspondente. O PLD é o preço desse mercado. A CCEE publica esses
                   valores somados por submercado e hora e, no consolidado do mês, separa o resultado de venda e o de compra.
                 </p>
-                <p className="mt-3 flex flex-wrap items-center gap-2 text-xs text-mineral">
+                <p className="mt-3 flex flex-wrap items-center gap-2 text-xs text-mineral [overflow-wrap:anywhere]">
                   Base: descrições oficiais dos conjuntos PLD_HORARIO_SUBMERCADO, SUMARIO_BE_HORARIO_SUBMERCADO e
                   SUMARIO_MENSAL_COMPRA_VENDA_SUBMERCADO no portal de dados abertos da CCEE, capturadas em 28/09/2026. <Conferido ok />
                 </p>
@@ -228,7 +228,7 @@ export default function PldPage() {
                     <p className="mt-2 flex flex-wrap items-center gap-2 leading-relaxed text-carvao">
                       <span>
                         Nos 12 meses até {dataBR(ger.dia_referencia)}, a geração hidráulica respondeu por{" "}
-                        {pct(ger.regioes.find((r) => r.rg === "SIN")!["12m"]!.participacao.hidraulica)} da geração verificada do <Termo slug="sin">SIN</Termo>
+                        {pct(ger.regioes.find((r) => r.rg === "SIN")!["12m"]!.participacao.hidraulica)} da geração verificada do <Termo slug="sin">SIN</Termo>{" "}
                         (ONS, Balanço de Energia nos Subsistemas).
                       </span>
                       <SeloNatureza natureza="CALCULADO" />
@@ -412,8 +412,8 @@ export default function PldPage() {
           {/* 4. Submercados */}
           <Capitulo id="submercados" numero="4" subtitulo="Por que os preços dos submercados podem diferir?" titulo="Quatro preços, quatro regiões e as linhas de transmissão entre elas">
             {integra(rede) && integra(pld) ? (
-              <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-                <div>
+              <div className="grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+                <div className="min-w-0">
                   <MapaSubmercados
                     fluxos={rede.fronteiras.map((f) => ({ de: f.de, para: f.para, fluxo: f.fluxo_dia }))}
                     precos={Object.fromEntries(pld.cartoes.map((c) => [c.sm, c.media_dia]))}
@@ -435,7 +435,7 @@ export default function PldPage() {
                     casas={[null, 2, null, null]}
                   />
                 </div>
-                <div className="space-y-4 leading-relaxed text-carvao">
+                <div className="min-w-0 space-y-4 leading-relaxed text-carvao">
                   <p>
                     A CCEE calcula um PLD para cada submercado. As regiões estão ligadas por linhas de transmissão de fronteira, e o
                     ONS mede o <Termo slug="intercambio">intercâmbio</Termo> entre elas hora a hora.
