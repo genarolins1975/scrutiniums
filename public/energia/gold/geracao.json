@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "geracao.json",
- "gerado_em": "2026-09-28T11:20:53Z",
+ "gerado_em": "2026-09-28T12:01:46Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "7d14e9437f1f",
+ "versao_codigo": "29703049c121",
  "disponivel": true,
  "dia_referencia": "2026-09-25",
  "fontes": [
@@ -16957,7 +16957,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:00:43.210439",
    "capturado_em": "2026-09-28T09:08:46Z",
-   "validado_em": "2026-09-28T11:20:53Z",
+   "validado_em": "2026-09-28T12:01:46Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-25"
@@ -16972,15 +16972,17 @@
     "sha256": "be6df6321ee402d7c879e597576ad9a82acba3283f3b9783df4ce8f558e0ae02"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "7d14e9437f1f",
+   "versao_codigo": "29703049c121",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T11:20:53Z",
+    "detectado_em": "2026-09-28T12:01:46Z",
     "total": 0,
+    "vintages_comparadas": 6,
+    "arquivos": 6,
     "exemplos": []
    },
    "limitacoes": [
     "A térmica do balanço agrega todas as usinas térmicas despachadas pelo ONS; o conjunto não separa combustível (gás, carvão, óleo, nuclear, biomassa). A separação exige o conjunto Geração por Usina, catalogado e ainda não integrado.",
-    "A micro e minigeração distribuída não está na geração verificada do balanço.",
+    "A descrição do balanço lista a geração das usinas hidráulicas, térmicas, eólicas e fotovoltaicas e não menciona a micro e minigeração distribuída, que aparece como estimativa na série de carga desde 29/04/2023.",
     "Dados em processo de consistência recorrente do ONS, sujeitos a revisão."
    ],
    "download": "/energia/series/geracao_diaria.csv",
@@ -17005,7 +17007,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:00:43.210439",
    "capturado_em": "2026-09-28T09:08:46Z",
-   "validado_em": "2026-09-28T11:20:53Z",
+   "validado_em": "2026-09-28T12:01:46Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-25"
@@ -17021,15 +17023,17 @@
     "sha256": "be6df6321ee402d7c879e597576ad9a82acba3283f3b9783df4ce8f558e0ae02"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "7d14e9437f1f",
+   "versao_codigo": "29703049c121",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T11:20:53Z",
+    "detectado_em": "2026-09-28T12:01:46Z",
     "total": 0,
+    "vintages_comparadas": 6,
+    "arquivos": 6,
     "exemplos": []
    },
    "limitacoes": [
     "A térmica do balanço agrega todas as usinas térmicas despachadas pelo ONS; o conjunto não separa combustível (gás, carvão, óleo, nuclear, biomassa). A separação exige o conjunto Geração por Usina, catalogado e ainda não integrado.",
-    "A micro e minigeração distribuída não está na geração verificada do balanço.",
+    "A descrição do balanço lista a geração das usinas hidráulicas, térmicas, eólicas e fotovoltaicas e não menciona a micro e minigeração distribuída, que aparece como estimativa na série de carga desde 29/04/2023.",
     "Dados em processo de consistência recorrente do ONS, sujeitos a revisão."
    ],
    "download": "/energia/series/geracao_diaria.csv",

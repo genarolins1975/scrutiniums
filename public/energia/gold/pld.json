@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "pld.json",
- "gerado_em": "2026-09-28T11:20:49Z",
+ "gerado_em": "2026-09-28T12:01:38Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "7d14e9437f1f",
+ "versao_codigo": "29703049c121",
  "disponivel": true,
  "unidade": "R$/MWh (nominal)",
  "fuso": "Horário de Brasília (UTC-3, sem horário de verão no período)",
@@ -21090,10 +21090,13 @@
   "id": "ccee_pld_horario@2026-09-28T10:55:46Z",
   "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f",
   "revisoes": {
-   "detectado_em": "2026-09-28T11:20:48Z",
+   "detectado_em": "2026-09-28T12:01:37Z",
    "total": 0,
+   "vintages_comparadas": 7,
+   "arquivos": 6,
    "exemplos": []
   },
+  "publicacao_confiavel": false,
   "capturas": [
    {
     "recurso": "pld_horario_2021",
@@ -21159,7 +21162,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-28T10:55:46Z",
-   "validado_em": "2026-09-28T11:20:49Z",
+   "validado_em": "2026-09-28T12:01:38Z",
    "cobertura_historica": {
     "inicio": "2021-01-01T00:00",
     "fim": "2026-09-28T23:00"
@@ -21173,16 +21176,18 @@
     "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "7d14e9437f1f",
+   "versao_codigo": "29703049c121",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T11:20:48Z",
+    "detectado_em": "2026-09-28T12:01:37Z",
     "total": 0,
+    "vintages_comparadas": 7,
+    "arquivos": 6,
     "exemplos": []
    },
    "limitacoes": [
     "Valores nominais em R$/MWh. Os limites regulatórios (mínimo, máximo horário e máximo estrutural) mudam a cada ano e não foram auditados nesta fase; comparações entre anos misturam regimes de limites diferentes.",
     "A CCEE não informa a data de publicação de cada hora no arquivo; o campo last_modified do recurso no portal não acompanha as atualizações diárias.",
-    "Série integrada a partir da captura primária de 28/09/2026 (2026-09-28T10:55:46Z); horas publicadas depois dela ainda não estão integradas. A última tentativa de coleta direta no portal da CCEE (2026-09-28T10:55:46Z) foi bem-sucedida."
+    "Série integrada a partir das capturas primárias de 27/09/2026 (arquivos 2021 a 2025, captura versionada) e de 28/09/2026 (arquivo 2026, coleta direta); horas publicadas depois da última captura ainda não estão integradas. A última tentativa de coleta direta no portal da CCEE (2026-09-28T10:55:46Z) foi bem-sucedida."
    ],
    "download": "/energia/series/pld_horario.csv",
    "notas_fonte": "O PLD é calculado pela CCEE diariamente para cada hora do dia seguinte, considerando a aplicação dos limites máximos (horário e estrutural) e mínimo vigentes para cada período de apuração e para cada submercado. Este cálculo é realizado por modelos computacionais (Newave, Decomp e Dessem) e tem como base o Custo Marginal de Operação (CMO). (Descrição da organização Preço de Liquidação das Diferenças no portal de dados abertos da CCEE, capturada em 27/09/2026.)"
@@ -21204,9 +21209,9 @@
     "inicio": "2021-01-01",
     "fim": "2026-09-28"
    },
-   "publicado_pela_fonte_em": "2026-06-09T16:37:15.091000",
+   "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-28T10:55:46Z",
-   "validado_em": "2026-09-28T11:20:49Z",
+   "validado_em": "2026-09-28T12:01:38Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-28"
@@ -21220,16 +21225,18 @@
     "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "7d14e9437f1f",
+   "versao_codigo": "29703049c121",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T11:20:48Z",
+    "detectado_em": "2026-09-28T12:01:37Z",
     "total": 0,
+    "vintages_comparadas": 7,
+    "arquivos": 6,
     "exemplos": []
    },
    "limitacoes": [
     "Valores nominais em R$/MWh. Os limites regulatórios (mínimo, máximo horário e máximo estrutural) mudam a cada ano e não foram auditados nesta fase; comparações entre anos misturam regimes de limites diferentes.",
     "A CCEE não informa a data de publicação de cada hora no arquivo; o campo last_modified do recurso no portal não acompanha as atualizações diárias.",
-    "Série integrada a partir da captura primária de 28/09/2026 (2026-09-28T10:55:46Z); horas publicadas depois dela ainda não estão integradas. A última tentativa de coleta direta no portal da CCEE (2026-09-28T10:55:46Z) foi bem-sucedida.",
+    "Série integrada a partir das capturas primárias de 27/09/2026 (arquivos 2021 a 2025, captura versionada) e de 28/09/2026 (arquivo 2026, coleta direta); horas publicadas depois da última captura ainda não estão integradas. A última tentativa de coleta direta no portal da CCEE (2026-09-28T10:55:46Z) foi bem-sucedida.",
     "Média simples calculada pela Scrutiniums; pode diferir de médias publicadas por outras fontes com outra ponderação."
    ],
    "download": "/energia/series/pld_diario.csv",
@@ -21252,9 +21259,9 @@
     "inicio": "2026-09-28",
     "fim": "2026-09-28"
    },
-   "publicado_pela_fonte_em": "2026-06-09T16:37:15.091000",
+   "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-28T10:55:46Z",
-   "validado_em": "2026-09-28T11:20:49Z",
+   "validado_em": "2026-09-28T12:01:38Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-28"
@@ -21269,16 +21276,18 @@
     "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "7d14e9437f1f",
+   "versao_codigo": "29703049c121",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T11:20:48Z",
+    "detectado_em": "2026-09-28T12:01:37Z",
     "total": 0,
+    "vintages_comparadas": 7,
+    "arquivos": 6,
     "exemplos": []
    },
    "limitacoes": [
     "Valores nominais em R$/MWh. Os limites regulatórios (mínimo, máximo horário e máximo estrutural) mudam a cada ano e não foram auditados nesta fase; comparações entre anos misturam regimes de limites diferentes.",
     "A CCEE não informa a data de publicação de cada hora no arquivo; o campo last_modified do recurso no portal não acompanha as atualizações diárias.",
-    "Série integrada a partir da captura primária de 28/09/2026 (2026-09-28T10:55:46Z); horas publicadas depois dela ainda não estão integradas. A última tentativa de coleta direta no portal da CCEE (2026-09-28T10:55:46Z) foi bem-sucedida.",
+    "Série integrada a partir das capturas primárias de 27/09/2026 (arquivos 2021 a 2025, captura versionada) e de 28/09/2026 (arquivo 2026, coleta direta); horas publicadas depois da última captura ainda não estão integradas. A última tentativa de coleta direta no portal da CCEE (2026-09-28T10:55:46Z) foi bem-sucedida.",
     "A distribuição de referência cobre só o período do PLD horário (desde 2021); anos de hidrologia muito diferente pesam na classificação."
    ],
    "download": null,
@@ -21301,9 +21310,9 @@
     "inicio": "2021-01-01T00:00",
     "fim": "2026-09-28T23:00"
    },
-   "publicado_pela_fonte_em": "2026-06-09T16:37:15.091000",
+   "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-28T10:55:46Z",
-   "validado_em": "2026-09-28T11:20:49Z",
+   "validado_em": "2026-09-28T12:01:38Z",
    "cobertura_historica": {
     "inicio": "2021-01-01T00:00",
     "fim": "2026-09-28T23:00"
@@ -21319,16 +21328,18 @@
     "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "7d14e9437f1f",
+   "versao_codigo": "29703049c121",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T11:20:48Z",
+    "detectado_em": "2026-09-28T12:01:37Z",
     "total": 0,
+    "vintages_comparadas": 7,
+    "arquivos": 6,
     "exemplos": []
    },
    "limitacoes": [
     "Valores nominais em R$/MWh. Os limites regulatórios (mínimo, máximo horário e máximo estrutural) mudam a cada ano e não foram auditados nesta fase; comparações entre anos misturam regimes de limites diferentes.",
     "A CCEE não informa a data de publicação de cada hora no arquivo; o campo last_modified do recurso no portal não acompanha as atualizações diárias.",
-    "Série integrada a partir da captura primária de 28/09/2026 (2026-09-28T10:55:46Z); horas publicadas depois dela ainda não estão integradas. A última tentativa de coleta direta no portal da CCEE (2026-09-28T10:55:46Z) foi bem-sucedida.",
+    "Série integrada a partir das capturas primárias de 27/09/2026 (arquivos 2021 a 2025, captura versionada) e de 28/09/2026 (arquivo 2026, coleta direta); horas publicadas depois da última captura ainda não estão integradas. A última tentativa de coleta direta no portal da CCEE (2026-09-28T10:55:46Z) foi bem-sucedida.",
     "Estatísticas descritivas do período; não indicam tendência nem causa."
    ],
    "download": "/energia/series/pld_horario.csv",

@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "rede.json",
- "gerado_em": "2026-09-28T11:20:55Z",
+ "gerado_em": "2026-09-28T12:01:52Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "7d14e9437f1f",
+ "versao_codigo": "29703049c121",
  "disponivel": true,
  "dia_referencia": "2026-09-26",
  "dia_referencia_liquido": "2026-09-25",
@@ -106,6 +106,18 @@
    "media_30d": -3288.0
   }
  ],
+ "balanco_sin": {
+  "dia": "2026-09-25",
+  "soma_saldos": 0.0,
+  "intercambio_sin": 0.0,
+  "dias_365": 365,
+  "dias_sin_nao_nulo_365": 211,
+  "horas_sin_nulo_total": 24038,
+  "horas_total": 50256,
+  "dias_divergentes": [
+   "2022-09-14"
+  ]
+ },
  "serie_fluxos": [
   {
    "d": "2025-09-26",
@@ -4165,7 +4177,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:04:40.385538",
    "capturado_em": "2026-09-28T09:09:02Z",
-   "validado_em": "2026-09-28T11:20:55Z",
+   "validado_em": "2026-09-28T12:01:52Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-26"
@@ -4180,10 +4192,12 @@
     "sha256": "c59c224c6bdb7afcd4d09b0b18223032386787b2782c8165650ca0f4984a3b5d"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "7d14e9437f1f",
+   "versao_codigo": "29703049c121",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T11:20:55Z",
+    "detectado_em": "2026-09-28T12:01:48Z",
     "total": 0,
+    "vintages_comparadas": 6,
+    "arquivos": 6,
     "exemplos": []
    },
    "limitacoes": [
@@ -4211,9 +4225,9 @@
     "inicio": "2021-01-01",
     "fim": "2026-09-28"
    },
-   "publicado_pela_fonte_em": "2026-06-09T16:37:15.091000",
+   "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-28T10:55:46Z",
-   "validado_em": "2026-09-28T11:20:55Z",
+   "validado_em": "2026-09-28T12:01:52Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-28"
@@ -4228,10 +4242,12 @@
     "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "7d14e9437f1f",
+   "versao_codigo": "29703049c121",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T11:20:55Z",
+    "detectado_em": "2026-09-28T12:01:51Z",
     "total": 0,
+    "vintages_comparadas": 7,
+    "arquivos": 6,
     "exemplos": []
    },
    "limitacoes": [
@@ -4260,7 +4276,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:00:43.210439",
    "capturado_em": "2026-09-28T09:08:46Z",
-   "validado_em": "2026-09-28T11:20:55Z",
+   "validado_em": "2026-09-28T12:01:52Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-25"
@@ -4275,14 +4291,16 @@
     "sha256": "be6df6321ee402d7c879e597576ad9a82acba3283f3b9783df4ce8f558e0ae02"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "7d14e9437f1f",
+   "versao_codigo": "29703049c121",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T11:20:55Z",
+    "detectado_em": "2026-09-28T12:01:51Z",
     "total": 0,
+    "vintages_comparadas": 6,
+    "arquivos": 6,
     "exemplos": []
    },
    "limitacoes": [
-    "A soma dos quatro saldos coincide, hora a hora, com o intercâmbio do SIN publicado no mesmo balanço, que não é zero; os saldos não se compensam entre si.",
+    "A soma dos quatro saldos é igual ao intercâmbio do SIN publicado no mesmo balanço em todas as horas, exceto no dia 14/09/2022 (tolerância de 1 MWmed). Esse intercâmbio do SIN é nulo (até 1 MWmed em módulo) em 24.038 de 50.256 horas desde o início da série e diferente de zero nas demais; por isso os saldos às vezes somam zero e às vezes não.",
     "O Balanço de Energia e os Intercâmbios Entre Subsistemas são conjuntos distintos, com datas de referência que podem diferir.",
     "Dados em processo de consistência recorrente do ONS, sujeitos a revisão."
    ],

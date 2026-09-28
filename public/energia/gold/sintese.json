@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "sintese.json",
- "gerado_em": "2026-09-28T11:20:56Z",
+ "gerado_em": "2026-09-28T12:01:52Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "7d14e9437f1f",
+ "versao_codigo": "29703049c121",
  "disponivel": true,
  "frases": [
   {
@@ -43,12 +43,12 @@
      "texto": "Nos 30 dias até 26/09/2026, a energia natural afluente (vazões naturais aos reservatórios, em energia) equivaleu a "
     },
     {
-     "texto": "164% da média de longo termo",
+     "texto": "163,7% da média de longo termo",
      "evidencia": "hidrologia.json#SIN.ena.pct_mlt_30d",
      "href": "/setor-eletrico/agua-e-clima#ena"
     },
     {
-     "texto": " para a época."
+     "texto": "."
     }
    ]
   },
