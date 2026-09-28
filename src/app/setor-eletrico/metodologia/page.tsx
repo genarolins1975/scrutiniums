@@ -5,7 +5,7 @@ import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { NATUREZAS, SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold } from "@/lib/energia/gold";
-import { carimbo } from "@/lib/energia/formato";
+import { carimbo, rotuloRegra } from "@/lib/energia/formato";
 import type { Natureza } from "@/lib/energia/tipos";
 
 export const dynamic = "force-static";
@@ -33,7 +33,7 @@ function Regras({ titulo, regras }: { titulo: string; regras?: Record<string, st
       <dl className="mt-3 space-y-3">
         {Object.entries(regras).map(([k, v]) => (
           <div key={k}>
-            <dt className="rotulo text-mineral">{k.replaceAll("_", " ")}</dt>
+            <dt className="rotulo text-mineral">{rotuloRegra(k)}</dt>
             <dd className="mt-0.5 text-sm text-carvao">{v}</dd>
           </div>
         ))}
@@ -76,7 +76,7 @@ export default function MetodologiaEnergia() {
         </S>
 
         <S id="linhagem" titulo="Linhagem e vintages">
-          <pre className="overflow-x-auto border border-linha bg-superficie p-4 font-mono text-xs leading-relaxed text-carvao">{`FONTE (CCEE, ONS, ANEEL)
+          <pre tabIndex={0} aria-label="Linhagem dos dados, do arquivo da fonte à visualização (rolável)" className="overflow-x-auto border border-linha bg-superficie p-4 font-mono text-xs leading-relaxed text-carvao">{`FONTE (CCEE, ONS, ANEEL)
   ↓ captura: arquivo original, sha256, url, capturado_em, publicado_em (metadado da fonte)
 BRONZE: cópia imutável por captura
   ↓ normalização determinística
@@ -90,7 +90,7 @@ Previsões: VINTAGE DA FONTE → FEATURES → VERSÃO DO MODELO → PUBLICAÇÃO
           <p>
             Cada observação guarda a vintage de onde veio. Uma revisão da fonte (o ONS declara que seus dados passam por consistência recorrente) cria uma vintage
             nova sem apagar a anterior. A consulta &quot;como estava em&quot; devolve o valor conhecido em qualquer instante (com fuso explícito, sem
-            ambiguidade de data) e é a que features de modelo em produção e backtests por vintage devem usar. O backtest da pesquisa atual foi feito
+            ambiguidade de data) e é a que as variáveis de entrada de modelos em produção e os testes retrospectivos por vintage devem usar. O backtest da pesquisa atual foi feito
             sobre um snapshot único, em pseudo tempo real; a limitação está declarada em cada cartão de modelo.
           </p>
           <p className="text-sm text-carvao-muted">

@@ -51,7 +51,11 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
         </nav>
         <header className="pb-6 pt-4">
           <h1 className="font-serif text-[clamp(2rem,4.4vw,3rem)] leading-tight text-carvao">
-            {c.sigla && <span className="mr-3">{c.sigla}</span>}
+            {c.sigla && (
+              <>
+                <span className="mr-3">{c.sigla}</span>{" "}
+              </>
+            )}
             <span className={c.sigla ? "text-carvao-muted" : ""}>{c.nome}</span>
           </h1>
           <p className="mt-3 flex flex-wrap items-center gap-3 text-xs text-mineral">

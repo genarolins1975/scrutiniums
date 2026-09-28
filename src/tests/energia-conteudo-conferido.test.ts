@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
 import { NOS_FORMACAO, PLD_NAO_E } from "@/lib/energia/conteudo/pld";
@@ -36,6 +37,25 @@ describe("verbetes conferidos", () => {
     const pld = CONCEITOS.find((c) => c.slug === "pld")!;
     const ccee = pld.fontes.find((f) => f.orgao === "CCEE")!;
     expect(JSON.parse(pkg).result.organization.description).toContain(ccee.trecho!);
+  });
+});
+
+describe("papel do PLD no Mercado de Curto Prazo", () => {
+  it("cada parte do trecho citado está nas capturas versionadas da CCEE (28/09/2026), conferidas por sha256", () => {
+    const dir = readdirSync(join(raiz, "pipeline", "energia", "seed", "ccee_documentos")).sort().at(-1)!;
+    const base = join("pipeline", "energia", "seed", "ccee_documentos", dir);
+    const manifesto = JSON.parse(ler(join(base, "MANIFESTO.json")));
+    let texto = "";
+    for (const a of manifesto.arquivos) {
+      const bruto = readFileSync(join(raiz, base, a.arquivo));
+      expect(createHash("sha256").update(bruto).digest("hex"), a.arquivo).toBe(a.sha256);
+      texto += bruto.toString("utf-8");
+    }
+    const pld = CONCEITOS.find((c) => c.slug === "pld")!;
+    const mcp = pld.fontes.find((f) => f.documento.includes("SUMARIO_BE_HORARIO_SUBMERCADO"))!;
+    for (const parte of mcp.trecho!.split("[...]").map((x) => x.trim().replace(/\.$/, ""))) {
+      expect(texto, parte.slice(0, 50)).toContain(parte.split(":").slice(1).join(":").trim() || parte);
+    }
   });
 });
 

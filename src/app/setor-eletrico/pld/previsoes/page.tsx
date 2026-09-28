@@ -6,7 +6,7 @@ import { ArquivoPrevisoes } from "@/components/energia/ArquivoPrevisoes";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold } from "@/lib/energia/gold";
-import { dataBR } from "@/lib/energia/formato";
+import { dataBR, rotuloRegra } from "@/lib/energia/formato";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -49,7 +49,7 @@ export default function PrevisoesPage() {
             </dl>
             {p.rodadas.map((r) => (
               <p key={r.run_id} className="mt-4 text-sm text-carvao-muted">
-                Rodada interna {r.run_id}: origem {dataBR(r.origem)}, modelo {r.versao_modelo} ({r.estado_modelo.toLowerCase()}), {r.celulas} células, {r.com_numero} com número.
+                Rodada interna {r.run_id}: origem {dataBR(r.origem)}, modelo {r.versao_modelo} ({r.estado_modelo.toLowerCase()}), {r.celulas} combinações de horizonte e submercado, {r.com_numero} com número.
                 Não é publicação: modelo em pesquisa não gera previsão oficial.
               </p>
             ))}
@@ -70,7 +70,7 @@ export default function PrevisoesPage() {
               <dl className="mt-4 grid gap-4 md:grid-cols-2">
                 {Object.entries(p.regras).map(([k, v]) => (
                   <div key={k}>
-                    <dt className="rotulo text-mineral">{k.replaceAll("_", " ")}</dt>
+                    <dt className="rotulo text-mineral">{rotuloRegra(k)}</dt>
                     <dd className="mt-1 text-sm text-carvao">{v}</dd>
                   </div>
                 ))}

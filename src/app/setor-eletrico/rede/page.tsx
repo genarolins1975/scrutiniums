@@ -10,7 +10,7 @@ import { MapaSubmercados } from "@/components/energia/MapaSubmercados";
 import { TabelaDados } from "@/components/energia/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold, integra } from "@/lib/energia/gold";
-import { dataBR, num, reais } from "@/lib/energia/formato";
+import { dataBR, num, reais, rotuloRegra } from "@/lib/energia/formato";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -141,7 +141,7 @@ export default function RedePage() {
               <dl className="mt-4 grid gap-4 md:grid-cols-2">
                 {Object.entries(r.regras).map(([k, v]) => (
                   <div key={k}>
-                    <dt className="rotulo text-mineral">{k.replaceAll("_", " ")}</dt>
+                    <dt className="rotulo text-mineral">{rotuloRegra(k)}</dt>
                     <dd className="mt-1 text-sm text-carvao">{v}</dd>
                   </div>
                 ))}

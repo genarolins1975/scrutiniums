@@ -9,7 +9,7 @@ import { carimbo } from "@/lib/energia/formato";
 export function RodapeEnergia() {
   const meta = gold.meta();
   return (
-    <div className="border-t border-linha bg-papel">
+    <aside aria-label="Observatório Brasileiro do Setor Elétrico: mapa e fontes" className="border-t border-linha bg-papel">
       <div className="mx-auto grid max-w-page gap-8 px-6 py-10 md:grid-cols-3">
         <div className="md:col-span-2">
           <p className="rotulo text-mineral">Fontes deste observatório</p>
@@ -33,6 +33,6 @@ export function RodapeEnergia() {
           <li><Link href="/setor-eletrico/aprenda" className="text-carvao underline-offset-4 hover:underline">Aprenda: base de conhecimento</Link></li>
         </ul>
       </div>
-    </div>
+    </aside>
   );
 }

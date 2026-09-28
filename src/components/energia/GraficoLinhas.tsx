@@ -4,7 +4,9 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 
 /**
  * Gráfico de linhas SVG com camada de leitura: cruz + dica no hover, setas do
- * teclado percorrem os pontos, rótulo direto no fim de cada linha e legenda.
+ * teclado percorrem os pontos (Home e End vão ao início e ao fim), rótulo
+ * direto no fim de cada linha quando não colide, legenda sempre presente e
+ * tabela equivalente recolhida (montada só ao abrir, para não pesar o HTML).
  * Ausência é lacuna na linha (nunca zero). Um único eixo Y.
  */
 export type SerieLinha = {
@@ -76,6 +78,7 @@ export function GraficoLinhas({
   const uid = useId();
   const [largura, setLargura] = useState(760);
   const [ativo, setAtivo] = useState<number | null>(null);
+  const [tabelaAberta, setTabelaAberta] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -160,8 +163,32 @@ export function GraficoLinhas({
     })
     .filter((f): f is { s: SerieLinha; i: number; v: number; yy: number } => !!f)
     .sort((a, b) => a.yy - b.yy);
-  for (let k = 1; k < finais.length; k++) {
-    if (finais[k].yy - finais[k - 1].yy < 14) finais[k].yy = finais[k - 1].yy + 14;
+  // linhas que terminam no mesmo ponto viram um só rótulo ("3 séries iguais")
+  const grupos: { itens: typeof finais; yy: number }[] = [];
+  for (const f of finais) {
+    const g = grupos.at(-1);
+    if (g && Math.abs(g.itens[0].yy - f.yy) < 3 && g.itens[0].i === f.i) g.itens.push(f);
+    else grupos.push({ itens: [f], yy: f.yy });
+  }
+  const rotulos = grupos.map((g) => ({ ...g, alvo: g.yy }));
+  for (let k = 1; k < rotulos.length; k++) {
+    if (rotulos[k].yy - rotulos[k - 1].yy < 14) rotulos[k].yy = rotulos[k - 1].yy + 14;
+  }
+  // rótulo direto seletivo: só onde cabe perto do próprio ponto e dentro da área
+  // do gráfico; o que não cabe fica identificado pela legenda
+  const finaisVisiveis = rotulos.filter((r) => Math.abs(r.yy - r.alvo) <= 10 && r.yy <= h - B - 4 && r.yy >= T + 4);
+
+  // marcos só dentro do intervalo exibido; rótulos próximos são desempilhados
+  const x0 = String(dados[0]?.[chaveX] ?? "");
+  const x1 = String(dados[n - 1]?.[chaveX] ?? "");
+  const marcosVisiveis: { m: { x: string; rotulo: string }; i: number; linha: number }[] = [];
+  for (const m of marcos) {
+    if (!n || m.x < x0 || m.x > x1) continue;
+    const i = dados.findIndex((d) => String(d[chaveX]) >= m.x);
+    if (i < 0) continue;
+    const anterior = marcosVisiveis.at(-1);
+    const linha = anterior && x(i) - x(anterior.i) < 110 ? anterior.linha + 1 : 0;
+    marcosVisiveis.push({ m, i, linha });
   }
 
   const yt = ticks(yMin, yMax);
@@ -176,7 +203,10 @@ export function GraficoLinhas({
   }
 
   function teclado(ev: React.KeyboardEvent<SVGSVGElement>) {
-    if (ev.key === "ArrowRight" || ev.key === "ArrowLeft") {
+    if (ev.key === "Home" || ev.key === "End") {
+      ev.preventDefault();
+      setAtivo(ev.key === "Home" ? 0 : n - 1);
+    } else if (ev.key === "ArrowRight" || ev.key === "ArrowLeft") {
       ev.preventDefault();
       setAtivo((a) => {
         const base = a ?? n - 1;
@@ -231,18 +261,14 @@ export function GraficoLinhas({
           </text>
         ))}
         {bandaPath && <path d={bandaPath} fill={banda?.cor ?? "color-mix(in srgb, var(--serie-referencia) 22%, transparent)"} stroke="none" />}
-        {marcos.map((m) => {
-          const i = dados.findIndex((d) => String(d[chaveX]) >= m.x);
-          if (i < 0) return null;
-          return (
-            <g key={m.x}>
-              <line x1={x(i)} x2={x(i)} y1={T} y2={h - B} stroke="var(--cor-mineral)" strokeWidth="1" strokeDasharray="3 3" />
-              <text x={x(i) + 4} y={T + 10} fontSize="10" fill="var(--cor-mineral)">
-                {m.rotulo}
-              </text>
-            </g>
-          );
-        })}
+        {marcosVisiveis.map(({ m, i, linha }) => (
+          <g key={m.x}>
+            <line x1={x(i)} x2={x(i)} y1={T} y2={h - B} stroke="var(--cor-mineral)" strokeWidth="1" strokeDasharray="3 3" />
+            <text x={x(i) + 4} y={T + 10 + linha * 13} fontSize="10" fill="var(--cor-mineral)">
+              {m.rotulo}
+            </text>
+          </g>
+        ))}
         {series.map((s, k) => (
           <path
             key={s.id}
@@ -256,21 +282,25 @@ export function GraficoLinhas({
           />
         ))}
         {rotulosDiretos &&
-          finais.map((f) => (
-            <g key={f.s.id}>
-              <circle cx={x(f.i)} cy={y(f.v)} r="3.5" fill={f.s.cor} stroke="#fff" strokeWidth="1.5" />
-              <text x={x(f.i) + 8} y={f.yy + 4} fontSize="11" fill="var(--cor-carvao)">
-                {f.s.rotulo.length > 14 && largura < 520 ? f.s.rotulo.slice(0, 12) + "…" : f.s.rotulo}
-              </text>
-            </g>
-          ))}
+          finaisVisiveis.map((r) => {
+            const f = r.itens[0];
+            const texto = r.itens.length > 1 ? `${r.itens.length} séries iguais` : f.s.rotulo;
+            return (
+              <g key={f.s.id}>
+                <circle cx={x(f.i)} cy={y(f.v)} r="3.5" fill={f.s.cor} stroke="var(--cor-superficie)" strokeWidth="1.5" />
+                <text x={x(f.i) + 8} y={r.yy + 4} fontSize="11" fill="var(--cor-carvao)">
+                  {texto.length > 14 && largura < 520 ? texto.slice(0, 12) + "…" : texto}
+                </text>
+              </g>
+            );
+          })}
         {ativo !== null && (
           <g pointerEvents="none">
             <line x1={tipX} x2={tipX} y1={T} y2={h - B} stroke="var(--cor-carvao)" strokeWidth="1" opacity="0.5" />
             {series.map((s) => {
               const v = pa?.[s.id];
               return typeof v === "number" && Number.isFinite(v) ? (
-                <circle key={s.id} cx={tipX} cy={y(v)} r="4.5" fill={s.cor} stroke="#fff" strokeWidth="2" />
+                <circle key={s.id} cx={tipX} cy={y(v)} r="4.5" fill={s.cor} stroke="var(--cor-superficie)" strokeWidth="2" />
               ) : null;
             })}
           </g>
@@ -286,9 +316,15 @@ export function GraficoLinhas({
           onPointerLeave={() => setAtivo(null)}
         />
       </svg>
+      {/* leitura do ponto ativo para leitor de tela: região persistente, anunciada a cada mudança */}
+      <p className="sr-only" aria-live="polite">
+        {pa
+          ? `${fmtX(String(pa[chaveX]), formatoX, true)}: ${series.map((s) => `${s.rotulo} ${fmtV(pa[s.id] as number | null, casas, unidade)}`).join("; ")}`
+          : ""}
+      </p>
       {pa && (
         <div
-          role="status"
+          aria-hidden="true"
           className="pointer-events-none absolute top-6 z-20 min-w-[11rem] border border-linha bg-superficie px-3 py-2 text-xs shadow-[0_6px_20px_rgba(26,29,33,0.12)]"
           style={{ left: `min(max(0px, calc(${(tipX / w) * 100}% - 5.5rem)), calc(100% - 12rem))` }}
         >
@@ -314,6 +350,44 @@ export function GraficoLinhas({
           </ul>
         </div>
       )}
+      <details className="mt-3 text-xs" onToggle={(e) => setTabelaAberta((e.currentTarget as HTMLDetailsElement).open)}>
+        <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
+          Ver os dados em tabela ({n.toLocaleString("pt-BR")} {n === 1 ? "linha" : "linhas"})
+        </summary>
+        {tabelaAberta && (
+          <div className="tabela-scroll mt-2 max-h-80 overflow-y-auto" tabIndex={0} role="region" aria-label={`${titulo}: dados em tabela (rolável)`}>
+            <table className="w-full border-collapse tabular-nums">
+              <caption className="sr-only">{titulo}</caption>
+              <thead className="sticky top-0 bg-superficie">
+                <tr className="text-left text-mineral">
+                  <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">
+                    {formatoX === "hora" ? "Hora" : formatoX === "mes" ? "Mês" : formatoX === "texto" ? "Item" : "Data"}
+                  </th>
+                  {series.map((s) => (
+                    <th key={s.id} scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{s.rotulo}</th>
+                  ))}
+                  {banda && <th scope="col" className="border-b border-linha px-2 py-1.5 font-medium">{banda.rotulo}</th>}
+                </tr>
+              </thead>
+              <tbody>
+                {dados.map((p, i) => (
+                  <tr key={i} className="border-b border-linha">
+                    <th scope="row" className="px-2 py-1 text-left font-normal text-carvao">{fmtX(String(p[chaveX] ?? ""), formatoX, true)}</th>
+                    {series.map((s) => (
+                      <td key={s.id} className="px-2 py-1 text-carvao">{fmtV(p[s.id] as number | null, casas, "")}</td>
+                    ))}
+                    {banda && (
+                      <td className="px-2 py-1 text-mineral">
+                        {typeof p[banda.inferior] === "number" ? `${fmtV(p[banda.inferior] as number, casas, "")} a ${fmtV(p[banda.superior] as number, casas, "")}` : "sem dado"}
+                      </td>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </details>
     </div>
   );
 }

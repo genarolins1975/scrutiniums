@@ -92,6 +92,13 @@ def construir(con):
         "p10_365d": c.r(c.quantil(hist, 0.1), 1), "p90_365d": c.r(c.quantil(hist, 0.9), 1),
         "percentil": c.r(c.percentil_de(atual_term, hist), 1), "n_janelas": len(hist),
     }
+    # série da própria participação de 7 dias (o que o painel descreve), último ano
+    serie_termica_7d = []
+    for i in range(371, -1, -1):
+        f_ = fim - timedelta(days=i)
+        v = part_termica_7d(f_)
+        if v is not None:
+            serie_termica_7d.append({"d": f_.isoformat(), "termica_7d": c.r(v, 2)})
 
     perfil = []
     horas_ref = {f: {ref: v for ref, v in horario[(f, "SIN")] if ref[:10] == dia_ref} for f in FONTES}
@@ -118,11 +125,23 @@ def construir(con):
         formula="participação(f) = G(f) ÷ [G(hidráulica) + G(térmica) + G(eólica) + G(solar)] × 100",
         limitacoes=lim, download="/energia/series/geracao_diaria.csv", notas_fonte=meta.get("notas"),
     )
+    prov_termica = c.proveniencia(
+        indicador="Participação térmica em janelas móveis de 7 dias (SIN)", natureza="CALCULADO",
+        fonte=c.fonte_ons("balanco-energia-subsistema", DS, "Balanço de Energia nos Subsistemas"),
+        unidade="% da geração verificada", frequencia="diária (janela móvel de 7 dias)",
+        periodo={"inicio": serie_termica_7d[0]["d"] if serie_termica_7d else dia_ref, "fim": dia_ref},
+        cobertura={"inicio": dias[0], "fim": dia_ref}, capturado_em=c.ultima_captura(snap), snapshot=snap,
+        transformacoes=["média de 7 dias da geração diária por fonte", "participação térmica sobre a soma das quatro fontes",
+                        "percentil e quantis sobre as janelas terminadas de 7 a 371 dias antes do dia de referência"],
+        formula="térmica_7d(t) = Σ G_térmica(d) ÷ Σ [G_hidráulica + G_térmica + G_eólica + G_solar](d) × 100, d ∈ (t − 6, …, t)",
+        limitacoes=lim, download="/energia/series/geracao_diaria.csv",
+    )
     return {
         **c.cabecalho("geracao.json"),
         "dia_referencia": dia_ref, "fontes": [{"id": f, "nome": NOME_FONTE[f]} for f in FONTES],
         "regras": REGRAS, "regioes": regioes, "comparacao_anual": comparacao_anual,
-        "termica_contexto": termica_ctx, "perfil_horario_sin": perfil, "serie_sin": serie,
-        "proveniencia": {"geracao": prov}, "fonte_notas": meta.get("notas"),
+        "termica_contexto": termica_ctx, "serie_termica_7d": serie_termica_7d,
+        "perfil_horario_sin": perfil, "serie_sin": serie,
+        "proveniencia": {"geracao": prov, "termica_7d": prov_termica}, "fonte_notas": meta.get("notas"),
         "downloads": [{"rotulo": "Geração diária por fonte e subsistema (CSV)", "url": "/energia/series/geracao_diaria.csv"}],
     }

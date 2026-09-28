@@ -10,7 +10,7 @@ import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { TabelaDados } from "@/components/energia/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold, integra } from "@/lib/energia/gold";
-import { dataBR, pct, sinal } from "@/lib/energia/formato";
+import { dataBR, pct, rotuloRegra, sinal } from "@/lib/energia/formato";
 import { ROTULO_FAIXA_USUAL, sin } from "@/lib/energia/leituras";
 
 export const dynamic = "force-static";
@@ -107,7 +107,7 @@ export default function AguaPage() {
               ]}
             >
               <GraficoLinhas titulo="EAR por subsistema nos últimos 3 anos" dados={h.serie_ear} chaveX="d" series={SERIES_SM} unidade="%" />
-              <div className="tabela-scroll mt-5">
+              <div className="tabela-scroll mt-5" tabIndex={0} role="region" aria-label="EAR por subsistema contra o padrão histórico da data (tabela rolável)">
                 <table className="w-full min-w-[40rem] border-collapse text-sm tabular-nums">
                   <caption className="sr-only">EAR por subsistema contra o padrão histórico da data</caption>
                   <thead>
@@ -138,7 +138,7 @@ export default function AguaPage() {
                         <td className="px-2 py-2">{pct(x.ear.valor)}</td>
                         <td className="px-2 py-2">{pct(x.ear.mediana_historica)}</td>
                         <td className="px-2 py-2">{pct(x.ear.p10)} a {pct(x.ear.p90)}</td>
-                        <td className="px-2 py-2">{x.ear.percentil_na_data?.toLocaleString("pt-BR", { maximumFractionDigits: 0 }) ?? "–"}</td>
+                        <td className="px-2 py-2">{x.ear.percentil_na_data?.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) ?? "–"}</td>
                         <td className="px-2 py-2">{x.ear.faixa ? ROTULO_FAIXA_USUAL[x.ear.faixa] : "–"}</td>
                       </tr>
                     ))}
@@ -205,7 +205,7 @@ export default function AguaPage() {
               <dl className="mt-4 grid gap-4 md:grid-cols-2">
                 {Object.entries(h.regras).map(([k, v]) => (
                   <div key={k}>
-                    <dt className="rotulo text-mineral">{k.replaceAll("_", " ")}</dt>
+                    <dt className="rotulo text-mineral">{rotuloRegra(k)}</dt>
                     <dd className="mt-1 text-sm text-carvao">{v}</dd>
                   </div>
                 ))}

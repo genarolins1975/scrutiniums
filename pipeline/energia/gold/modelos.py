@@ -77,7 +77,7 @@ def construir(anterior=None):
         "ultima_execucao": ultima_interna,
         "informacao_faltante": [
             "Modelo promovido a PRODUÇÃO pelos gates de validação e produção.",
-            "Conclusão da entrega de pesquisa (G4) e documentação do achado G23-R1.",
+            "Conclusão da última etapa de validação da pesquisa (etapa G4) e documentação de uma limitação encontrada na revisão (registro G23-R1).",
             "Captura do PLD antes do corte de cada rodada (07h00 de Brasília).",
         ],
         "estado_pipeline": "Registro e arquivo de previsões ativos; nenhuma publicação oficial; agendamento das rodadas não instalado.",
@@ -93,7 +93,7 @@ def construir(anterior=None):
             "estados": "PESQUISA e VALIDAÇÃO nunca alimentam a previsão principal; só PRODUÇÃO.",
             "imutabilidade": "Cada registro tem sha256 do conteúdo canônico; correção cria novo registro com substitui e motivo, sem apagar o original.",
             "calibracao": f"Faixa P10 a P90 só é chamada de faixa de 80% quando a cobertura empírica fora do ajuste fica entre {int(g.CALIBRACAO_MIN * 100)}% e {int(g.CALIBRACAO_MAX * 100)}% com pelo menos {g.CALIBRACAO_N_MIN} casos (regra proposta, a ratificar).",
-            "look_ahead": "Toda feature precisa ter sido capturada até o cutoff da previsão.",
+            "look_ahead": "Toda variável de entrada precisa ter sido capturada até o horário de corte da previsão.",
         },
     }, {
         **c.cabecalho("modelos.json"),

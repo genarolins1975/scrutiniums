@@ -60,15 +60,15 @@ export default function ModelCard({ params }: { params: { modelo: string } }) {
           <L k="Submercados">Sudeste/Centro-Oeste, Sul, Nordeste e Norte</L>
           <L k="Metodologia">{m.metodologia}</L>
           <L k="Fórmula">{m.formula ? <code className="block whitespace-pre-wrap break-words bg-papel px-2 py-1.5 font-mono text-xs">{m.formula}</code> : "Composição exata no arquivo de configuração listado nas evidências."}</L>
-          <L k="Features">
+          <L k="Variáveis de entrada">
             <ul className="list-disc space-y-1 pl-5">{m.features.map((f) => <li key={f}>{f}</li>)}</ul>
           </L>
           <L k="Dados de treinamento">{m.dados_treinamento}</L>
           <L k="Janela histórica">{m.janela}</L>
-          <L k="Cutoff e elegibilidade">{reg.definicoes.cenario_de_elegibilidade}. Corte operacional: {reg.definicoes.corte_operacional}.</L>
+          <L k="Horário de corte e elegibilidade">{reg.definicoes.cenario_de_elegibilidade}. Corte operacional: {reg.definicoes.corte_operacional}.</L>
           <L k="Quantis">{reg.definicoes.quantis}</L>
-          <L k="Benchmarks">{m.benchmarks.length ? m.benchmarks.join(", ") : "É a referência simples contra a qual os demais são comparados."}</L>
-          <L k="Backtest, métricas e calibração">
+          <L k="Referências de comparação">{m.benchmarks.length ? m.benchmarks.join(", ") : "É a referência simples contra a qual os demais são comparados."}</L>
+          <L k="Teste retrospectivo, métricas e calibração">
             {retido ? (
               <span className="text-carvao-muted">Retidos até a liberação: {reg.publicacao_resultados.motivo} Os arquivos de resultado estão identificados nas evidências abaixo, com sha256.</span>
             ) : (

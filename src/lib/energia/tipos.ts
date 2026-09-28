@@ -228,7 +228,8 @@ export type GeracaoGold = Cabecalho & {
   };
   perfil_horario_sin: ({ h: string } & Record<FonteGeracao, number | null>)[];
   serie_sin: ({ d: string } & Record<FonteGeracao, number | null>)[];
-  proveniencia: { geracao: Proveniencia };
+  serie_termica_7d?: { d: string; termica_7d: number | null }[];
+  proveniencia: { geracao: Proveniencia; termica_7d?: Proveniencia };
   fonte_notas: string | null;
   downloads: Download[];
 };

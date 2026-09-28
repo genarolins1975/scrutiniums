@@ -95,7 +95,7 @@ def frases(hid, carga, ger, pld):
             _t(f"Em {c.data_br(pld['dia_referencia'])}, o PLD médio do Sudeste/Centro-Oeste foi "),
             _t(f"R$ {nbr(se['media_dia'], 2)}/MWh", evidencia="pld.json#cartoes.SE.media_dia", href="/setor-eletrico/pld#hoje"),
             _t(", "),
-            _t(f"{FAIXA_PLD[pos['faixa']]} da distribuição desde 2021 (percentil {nbr(pos['percentil'], 0)})",
+            _t(f"{FAIXA_PLD[pos['faixa']]} da distribuição desde 2021 (percentil {nbr(pos['percentil'], 1)})",
                evidencia="pld.json#cartoes.SE.posicao", href="/setor-eletrico/pld#regras"),
         ]
         if amp <= 1.0:
@@ -147,7 +147,7 @@ def observar(hid, carga, ger, pld, cmo, hoje=None):
         fora_t = t["percentil"] is not None and (t["percentil"] > 90 or t["percentil"] < 10)
         add("termica", "Participação térmica incomum",
             "Participação térmica dos últimos 7 dias acima do 90º ou abaixo do 10º percentil das janelas de 7 dias dos 365 dias anteriores.",
-            fora_t, f"{nbr(t['participacao_7d'])}% nos últimos 7 dias; faixa usual de {nbr(t['p10_365d'])}% a {nbr(t['p90_365d'])}% (percentil {nbr(t['percentil'], 0)}).",
+            fora_t, f"{nbr(t['participacao_7d'])}% nos últimos 7 dias; faixa usual de {nbr(t['p10_365d'])}% a {nbr(t['p90_365d'])}% (percentil {nbr(t['percentil'], 1)}).",
             "/setor-eletrico/geracao#termica")
     if carga and carga.get("disponivel"):
         serie = [x["SIN"] for x in carga["serie"]][-365:]
@@ -155,7 +155,7 @@ def observar(hid, carga, ger, pld, cmo, hoje=None):
         p = c.percentil_de(v, serie[:-1]) if v is not None else None
         add("carga_extrema", "Carga diária entre as mais altas do ano",
             "Carga do SIN no dia de referência acima do 95º percentil dos 364 dias anteriores.",
-            p is not None and p > 95, f"{nbr(v, 0)} MWmed em {c.data_br(carga['dia_referencia'])} (percentil {nbr(p, 0)}).",
+            p is not None and p > 95, f"{nbr(v, 0)} MWmed em {c.data_br(carga['dia_referencia'])} (percentil {nbr(p, 1)}).",
             "/setor-eletrico/carga")
     if cmo and cmo.get("disponivel"):
         se = next(x for x in cmo["ultima_semana"] if x["sm"] == "SE")

@@ -1,0 +1,26 @@
+{
+ "descricao": "Metadados oficiais (package_show) de conjuntos do Mercado de Curto Prazo no portal de dados abertos da CCEE, usados como fonte primária dos textos sobre o papel do PLD.",
+ "capturado_em": "2026-09-28T11:07:09Z",
+ "origem": "https://dadosabertos.ccee.org.br/api/3/action/package_show",
+ "licenca": "CC-BY-4.0 (conforme o portal)",
+ "arquivos": [
+  {
+   "arquivo": "package_show_pld_horario_submercado.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=pld_horario_submercado",
+   "sha256": "e20b7fd2cc2b20d8d4881de2665be50520a46a22cb45e38f23ecba9512079fa3",
+   "bytes": 9973
+  },
+  {
+   "arquivo": "package_show_sumario_be_horario_submercado.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=sumario_be_horario_submercado",
+   "sha256": "24f50e2f3a29820752863f7b95c6f3629415159a6fd7d0377843cf44e8a7b83b",
+   "bytes": 11800
+  },
+  {
+   "arquivo": "package_show_sumario_mensal_compra_venda_submercado.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=sumario_mensal_compra_venda_submercado",
+   "sha256": "50b740f7be98e965531bf0b9dd6a7cac9695a9777391a8ffa144daa8eb439f94",
+   "bytes": 12020
+  }
+ ]
+}

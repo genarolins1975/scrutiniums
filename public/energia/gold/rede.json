@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "rede.json",
- "gerado_em": "2026-09-28T10:59:54Z",
+ "gerado_em": "2026-09-28T11:20:55Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "f75418b29af9",
+ "versao_codigo": "7d14e9437f1f",
  "disponivel": true,
  "dia_referencia": "2026-09-26",
  "dia_referencia_liquido": "2026-09-25",
@@ -4165,7 +4165,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:04:40.385538",
    "capturado_em": "2026-09-28T09:09:02Z",
-   "validado_em": "2026-09-28T10:59:54Z",
+   "validado_em": "2026-09-28T11:20:55Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-26"
@@ -4180,9 +4180,9 @@
     "sha256": "c59c224c6bdb7afcd4d09b0b18223032386787b2782c8165650ca0f4984a3b5d"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f75418b29af9",
+   "versao_codigo": "7d14e9437f1f",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T10:59:54Z",
+    "detectado_em": "2026-09-28T11:20:55Z",
     "total": 0,
     "exemplos": []
    },
@@ -4213,7 +4213,7 @@
    },
    "publicado_pela_fonte_em": "2026-06-09T16:37:15.091000",
    "capturado_em": "2026-09-28T10:55:46Z",
-   "validado_em": "2026-09-28T10:59:54Z",
+   "validado_em": "2026-09-28T11:20:55Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-28"
@@ -4228,9 +4228,9 @@
     "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f75418b29af9",
+   "versao_codigo": "7d14e9437f1f",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T10:59:54Z",
+    "detectado_em": "2026-09-28T11:20:55Z",
     "total": 0,
     "exemplos": []
    },
@@ -4260,7 +4260,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:00:43.210439",
    "capturado_em": "2026-09-28T09:08:46Z",
-   "validado_em": "2026-09-28T10:59:54Z",
+   "validado_em": "2026-09-28T11:20:55Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-25"
@@ -4275,9 +4275,9 @@
     "sha256": "be6df6321ee402d7c879e597576ad9a82acba3283f3b9783df4ce8f558e0ae02"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f75418b29af9",
+   "versao_codigo": "7d14e9437f1f",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T10:59:54Z",
+    "detectado_em": "2026-09-28T11:20:55Z",
     "total": 0,
     "exemplos": []
    },

@@ -42,10 +42,14 @@ export default function DadosEnergiaPage() {
 
         <section aria-labelledby="estados-h" className="grid gap-px border border-linha bg-linha sm:grid-cols-3 lg:grid-cols-6">
           <h2 id="estados-h" className="sr-only">Conjuntos por estado</h2>
-          {cat.estados.map((s) => (
+          {cat.estados.map((s, i) => (
             <div key={s} className="bg-superficie p-4">
               <p className="rotulo !text-[0.62rem] text-mineral">{s}</p>
-              <p className="mt-1 font-serif text-2xl tabular-nums text-carvao">{(cat.contagem[s] ?? 0).toLocaleString("pt-BR")}</p>
+              {/* contagem cumulativa: conjuntos neste estado ou em qualquer estado posterior */}
+              <p className="mt-1 font-serif text-2xl tabular-nums text-carvao">
+                {cat.estados.slice(i).reduce((t, e) => t + (cat.contagem[e] ?? 0), 0).toLocaleString("pt-BR")}
+              </p>
+              <p className="text-[0.7rem] text-mineral">neste estado ou além; exatamente neste: {(cat.contagem[s] ?? 0).toLocaleString("pt-BR")}</p>
               <p className="mt-1 text-xs leading-snug text-carvao-muted">{cat.definicoes_estado[s]}</p>
             </div>
           ))}

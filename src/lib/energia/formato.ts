@@ -14,7 +14,7 @@ export function num(v: number | null | undefined, casas = 1): string {
 
 export function reais(v: number | null | undefined, casas = 2): string {
   if (v === null || v === undefined || !Number.isFinite(v)) return AUSENTE;
-  return `R$ ${num(v, casas)}`;
+  return `R$\u00a0${num(v, casas)}`; // espaço não separável: "R$" nunca fica sozinho no fim da linha
 }
 
 export function pct(v: number | null | undefined, casas = 1): string {
@@ -91,3 +91,46 @@ export const NOME_SM: Record<string, string> = {
 };
 
 export const CURTO_SM: Record<string, string> = { SE: "SE/CO", S: "Sul", NE: "Nordeste", N: "Norte", SIN: "SIN" };
+
+/** Rótulo legível das chaves de regra e definição publicadas na gold. */
+const ROTULOS_REGRA: Record<string, string> = {
+  calibracao: "Calibração",
+  carga_sin: "Carga do SIN",
+  comparacao_anual: "Comparação anual",
+  desvio_principal: "Desvio principal",
+  dia_referencia: "Dia de referência",
+  diaria: "Média diária",
+  diferenca_preco: "Diferença de preço",
+  diferenca_submercados: "Diferença entre submercados",
+  ear_sin: "EAR do SIN",
+  ena_30d: "ENA de 30 dias",
+  estados: "Estados do modelo",
+  extremo_12m: "Extremo em 12 meses",
+  faixa_usual: "Faixa usual",
+  fluxo: "Fluxo",
+  hes: "Hidráulica, eólica e solar",
+  imutabilidade: "Imutabilidade",
+  limites: "Limites",
+  liquido: "Saldo líquido",
+  look_ahead: "Sem uso de dado futuro",
+  media_diaria: "Média diária",
+  menor_valor_ano: "Menor valor observado no ano",
+  padrao_historico: "Padrão histórico",
+  participacao: "Participação",
+  permanencia: "Permanência",
+  posicao_historica: "Posição histórica",
+  termica_contexto: "Contexto térmico",
+  volatilidade: "Volatilidade",
+  alvo: "Alvo",
+  entregas: "Entregas",
+  cenario_de_elegibilidade: "Cenário de elegibilidade",
+  corte_operacional: "Corte operacional",
+  quantis: "Quantis",
+};
+
+export function rotuloRegra(chave: string): string {
+  const r = ROTULOS_REGRA[chave];
+  if (r) return r;
+  const t = chave.replaceAll("_", " ");
+  return t.charAt(0).toUpperCase() + t.slice(1);
+}

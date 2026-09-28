@@ -3,6 +3,7 @@ import { LogoMark } from "@/components/ui/Logo";
 import { SwitcherObservatorio } from "@/components/layout/SwitcherObservatorio";
 import { AcessoConta } from "@/components/energia/AcessoConta";
 import { MODULOS_ENERGIA } from "@/lib/energia/navegacao";
+import { AtivoVisivel } from "@/components/energia/AtivoVisivel";
 
 /**
  * Cabeçalho do Observatório Brasileiro do Setor Elétrico: marca Scrutiniums
@@ -35,7 +36,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
         </p>
       </div>
       <nav aria-label="Módulos do Observatório do Setor Elétrico" className="mx-auto max-w-page">
-        <ul className="tabela-scroll relative flex gap-0.5 px-4 md:px-5">
+        <ul id="modulos-energia" className="tabela-scroll relative flex gap-0.5 px-4 md:px-5">
           {MODULOS_ENERGIA.map((m) => {
             const ativo = m.slug === atual;
             return (
@@ -60,6 +61,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
           })}
         </ul>
       </nav>
+      <AtivoVisivel alvo="modulos-energia" />
     </header>
   );
 }

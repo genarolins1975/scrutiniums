@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { DOMINIOS, type DominioId } from "@/lib/dominios";
+import { DetalhesFechaveis } from "@/components/layout/DetalhesFechaveis";
 
 /**
  * Switcher discreto de observatório ("Crédito ▾" / "Setor Elétrico ▾").
- * <details> nativo: funciona sem JavaScript, abre por teclado e toque, e fecha
- * com Esc nos navegadores atuais. Troca de observatório sem novo login: a
+ * <details> nativo: funciona sem JavaScript e abre por teclado e toque; com
+ * JavaScript, fecha com Esc, com clique fora e quando o foco sai do menu. Troca de observatório sem novo login: a
  * sessão e as preferências são da plataforma.
  */
 export function SwitcherObservatorio({
@@ -18,7 +19,7 @@ export function SwitcherObservatorio({
   const rotulo = corrente ? corrente.nomeCurto : "Observatórios";
   const cor = onDark ? "text-marfim" : "text-carvao";
   return (
-    <details className="group relative">
+    <DetalhesFechaveis className="group relative">
       <summary
         className={`rotulo flex min-h-[44px] cursor-pointer list-none items-center gap-1.5 ${cor} hover:text-energia-dark [&::-webkit-details-marker]:hidden`}
         aria-label={`Observatório atual: ${rotulo}. Trocar de observatório`}
@@ -55,6 +56,6 @@ export function SwitcherObservatorio({
           Escolher na minha conta →
         </Link>
       </div>
-    </details>
+    </DetalhesFechaveis>
   );
 }

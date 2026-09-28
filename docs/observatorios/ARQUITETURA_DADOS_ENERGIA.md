@@ -67,3 +67,10 @@ Todo arquivo gold do domínio tem `dominio: "energia"`, `gerado_em`, `versao_pip
 * Nenhum ponto ausente é serializado como zero (valores faltantes são `null`).
 * sha256 de cada captura CCEE confere com o manifesto.
 * Dado observado não pode ter referência além do horizonte de publicação declarado do dataset: PLD até o fim do dia seguinte à captura (o PLD de cada hora é publicado na véspera); CMO semanal até a semana operativa seguinte; demais séries ONS até a data da captura.
+
+## Riscos operacionais registrados na auditoria
+
+* Persistência do histórico: bronze e silver (`data/energia`) vivem no cache do GitHub Actions, fora do git. Se o cache expirar, a gold publicada continua correta, mas o registro de vintages e revisões anteriores se perde e a detecção de revisões recomeça do zero. Encaminhamento: armazenamento durável (bucket versionado ou release com o banco SQLite compactado) a decidir pelo responsável pela plataforma.
+* Coleta da CCEE: o portal recusou a coleta automatizada (HTTP 403) na manhã de 28/09/2026 e a aceitou horas depois. A coleta é tentada em cada execução; o resultado da última tentativa entra em `meta.json` e nos textos de limitação, sem frase fixa.
+* Horizonte de publicação: implementado em `pipeline/energia/validacoes.py`; referência além do horizonte recusa a gold e mantém a anterior no ar.
+

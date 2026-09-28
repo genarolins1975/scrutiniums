@@ -63,6 +63,15 @@ const TRECHO_BALANCO =
 const TRECHO_CARGA =
   "Dados de carga por subsistema em base diária, medida em MWmed. Até fevereiro/2021, os dados representam a carga atendida por usinas despachadas e/ou programadas pelo ONS, com base em dados recebidos pelo Sistema de Supervisão e Controle do ONS. Entre março/2021 e abril/23, os dados representam a carga atendida por usinas despachadas e/ou programadas pelo ONS, com base em dados recebidos pelo Sistema de Supervisão e Controle do ONS, mais a previsão de geração de usinas não despachadas pelo ONS. A partir de 29/04/2023, além dos dados anteriormente considerados, passou a ser incorporado o valor estimado da micro e minigeração distribuída (MMGD), com base em dados meteorológicos previstos.";
 
+const CCEE_MCP: FonteOficial = {
+  orgao: "CCEE",
+  documento:
+    "Portal de dados abertos, conjuntos PLD_HORARIO_SUBMERCADO e SUMARIO_BE_HORARIO_SUBMERCADO (descrição dos recursos), capturados em 28/09/2026",
+  url: "https://dadosabertos.ccee.org.br/dataset/sumario_be_horario_submercado",
+  trecho:
+    "Detalhar os valores do Preço de Liquidação das Diferenças do MCP por mês de referência, período de comercialização e submercado. [...] BE_POSITIVO: Corresponde ao Balanço Energético positivo do perfil de agente “a” no submercado “s” para o período de comercialização “j” [...] RESULTADO_MCP: Corresponde ao Resultado no Mercado de Curto Prazo do perfil de agente “a”, no submercado “s”, por período de comercialização “j”.",
+};
+
 export const CONCEITOS: Conceito[] = [
   {
     slug: "pld",
@@ -72,14 +81,15 @@ export const CONCEITOS: Conceito[] = [
     estado: "CONFERIDO",
     conferidoEm: "2026-09-27",
     emUmaFrase:
-      "Valor em R$/MWh calculado pela CCEE diariamente para cada hora do dia seguinte e para cada submercado, com base no Custo Marginal de Operação e dentro dos limites mínimo e máximos vigentes.",
+      "Preço do Mercado de Curto Prazo, em R$/MWh, calculado pela CCEE diariamente para cada hora do dia seguinte e para cada submercado, com base no Custo Marginal de Operação e dentro dos limites mínimo e máximos vigentes.",
     porQueImporta:
-      "Tem como base o CMO, que o ONS define como o custo, por unidade de energia produzida, para atender ao incremento de uma unidade de carga no SIN. Como o PLD é usado na liquidação e quais diferenças ele liquida está nas Regras de Comercialização da CCEE, cuja conferência documental está pendente nesta fase.",
+      "No Mercado de Curto Prazo, a CCEE apura, para cada perfil de agente, submercado e hora, um balanço energético em MWh (positivo ou negativo) e um resultado em R$; o PLD é o preço desse mercado. Tem como base o CMO, que o ONS define como o custo, por unidade de energia produzida, para atender ao incremento de uma unidade de carga no SIN. Como o balanço de cada agente é formado e como o resultado é liquidado está nas Regras de Comercialização da CCEE, cuja conferência documental está pendente nesta fase.",
     comoEMedido:
       "Em R$/MWh, por hora e por submercado, publicado pela CCEE no conjunto PLD_HORARIO. Médias diárias, semanais ou mensais são agregações dessas horas.",
     relacoes: ["cmo", "submercado", "newave", "decomp", "dessem"],
     fontes: [
       CCEE_PLD,
+      CCEE_MCP,
       ONS("cmo-semanal", "CMO Semanal", TRECHO_CMO_SEMANAL),
       {
         orgao: "ANEEL",

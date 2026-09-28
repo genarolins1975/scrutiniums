@@ -41,7 +41,39 @@ export function MapaSubmercados({
     .join("; ");
   return (
     <figure>
-      <svg viewBox="0 0 540 460" className="mx-auto block w-full max-w-xl" role="img" aria-label={`Fluxos médios de ${diaFluxo}: ${resumo}. PLD médio de ${diaPreco}: ${(Object.keys(POS) as Submercado[]).map((s) => `${POS[s].nome} R$ ${fmt(precos[s] ?? null, 2)}`).join(", ")}.`}>
+      {/* no celular o esquema em SVG ficaria com texto de 6 a 9 px: vira lista legível */}
+      <div className="sm:hidden">
+        <ul className="grid grid-cols-2 gap-2" aria-label={`PLD médio de ${diaPreco}, R$/MWh`}>
+          {(["N", "NE", "SE", "S"] as Submercado[]).map((sm) => (
+            <li key={sm} className="border border-carvao/80 bg-superficie p-3">
+              <p className="text-xs text-mineral">{POS[sm].nome}</p>
+              <p className="mt-1 whitespace-nowrap font-serif text-lg tabular-nums text-carvao">R$&nbsp;{fmt(precos[sm] ?? null, 2)}</p>
+            </li>
+          ))}
+        </ul>
+        <ul className="mt-3 space-y-1.5 text-sm text-carvao" aria-label={`Fluxos médios de ${diaFluxo}`}>
+          {fluxos.map((f) => {
+            if (f.fluxo === null) {
+              return (
+                <li key={`${f.de}${f.para}`} className="text-mineral">
+                  {POS[f.de].nome} e {POS[f.para].nome}: sem dado
+                </li>
+              );
+            }
+            const [o, d] = f.fluxo >= 0 ? [f.de, f.para] : [f.para, f.de];
+            return (
+              <li key={`${f.de}${f.para}`} className="flex items-baseline justify-between gap-3 border-b border-linha pb-1.5">
+                <span>
+                  {POS[o].nome} <span aria-hidden="true">→</span>
+                  <span className="sr-only">para</span> {POS[d].nome}
+                </span>
+                <span className="whitespace-nowrap tabular-nums">{fmt(Math.abs(f.fluxo))} MWmed</span>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+      <svg viewBox="0 0 540 460" className="mx-auto hidden w-full max-w-xl sm:block" role="img" aria-label={`Fluxos médios de ${diaFluxo}: ${resumo}. PLD médio de ${diaPreco}: ${(Object.keys(POS) as Submercado[]).map((s) => `${POS[s].nome} R$ ${fmt(precos[s] ?? null, 2)}`).join(", ")}.`}>
         <defs>
           <marker id="seta" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
             <path d="M0,0 L10,5 L0,10 z" fill="var(--cor-energia-dark)" />
@@ -91,8 +123,9 @@ export function MapaSubmercados({
           );
         })}
       </svg>
-      <figcaption className="mt-2 text-center text-xs text-mineral">
-        Caixas: PLD médio de {diaPreco} (R$/MWh). Setas: sentido e fluxo médio verificado entre subsistemas em {diaFluxo}. Esquema sem escala geográfica.
+      <figcaption className="mt-2 text-xs text-mineral sm:text-center">
+        <span className="hidden sm:inline">Caixas: PLD médio de {diaPreco} (R$/MWh). Setas: sentido e fluxo médio verificado entre subsistemas em {diaFluxo}. Esquema sem escala geográfica.</span>
+        <span className="sm:hidden">PLD médio de {diaPreco} e fluxo médio verificado entre subsistemas em {diaFluxo}, no sentido indicado.</span>
       </figcaption>
     </figure>
   );

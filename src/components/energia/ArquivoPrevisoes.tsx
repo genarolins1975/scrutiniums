@@ -40,6 +40,7 @@ export function ArquivoPrevisoes({ registros }: { registros: RegistroPrevisao[] 
           type="date"
           value={dia}
           min={datas[0]}
+          max={datas.at(-1)}
           onChange={(e) => setDia(e.target.value)}
           className="min-h-[44px] border border-linha bg-superficie px-3 text-sm text-carvao"
         />
@@ -47,10 +48,10 @@ export function ArquivoPrevisoes({ registros }: { registros: RegistroPrevisao[] 
       <p className="mt-3 text-sm text-carvao" aria-live="polite">
         {vistos.length === 0
           ? "Nenhum registro emitido até esta data."
-          : `${vistos.length} registros no arquivo ao fim de ${dia.split("-").reverse().join("/")}: ${vistos.filter((r) => r.tipo === "PUBLICACAO").length} publicações e ${vistos.filter((r) => r.tipo === "RODADA_INTERNA").length} células de rodadas internas.`}
+          : `${vistos.length} registros no arquivo ${dia ? `ao fim de ${dia.split("-").reverse().join("/")}` : "(todas as datas)"}: ${vistos.filter((r) => r.tipo === "PUBLICACAO").length} publicações e ${vistos.filter((r) => r.tipo === "RODADA_INTERNA").length} registros de rodadas internas.`}
       </p>
       {vistos.length > 0 && (
-        <div className="tabela-scroll mt-4">
+        <div className="tabela-scroll mt-4" tabIndex={0} role="region" aria-label="Registros do arquivo de previsões (rolável)">
           <table className="w-full min-w-[62rem] border-collapse text-xs">
             <caption className="sr-only">Registros do arquivo de previsões</caption>
             <thead>

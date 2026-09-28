@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "sintese.json",
- "gerado_em": "2026-09-28T10:59:55Z",
+ "gerado_em": "2026-09-28T11:20:56Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "f75418b29af9",
+ "versao_codigo": "7d14e9437f1f",
  "disponivel": true,
  "frases": [
   {
@@ -116,7 +116,7 @@
      "texto": ", "
     },
     {
-     "texto": "na faixa central da distribuição desde 2021 (percentil 53)",
+     "texto": "na faixa central da distribuição desde 2021 (percentil 53,4)",
      "evidencia": "pld.json#cartoes.SE.posicao",
      "href": "/setor-eletrico/pld#regras"
     },
@@ -176,7 +176,7 @@
    "titulo": "Participação térmica incomum",
    "condicao": "Participação térmica dos últimos 7 dias acima do 90º ou abaixo do 10º percentil das janelas de 7 dias dos 365 dias anteriores.",
    "ativo": false,
-   "evidencia": "10,9% nos últimos 7 dias; faixa usual de 9,2% a 17,4% (percentil 29).",
+   "evidencia": "10,9% nos últimos 7 dias; faixa usual de 9,2% a 17,4% (percentil 29,3).",
    "href": "/setor-eletrico/geracao#termica",
    "tipo": "regra"
   },
@@ -185,7 +185,7 @@
    "titulo": "Carga diária entre as mais altas do ano",
    "condicao": "Carga do SIN no dia de referência acima do 95º percentil dos 364 dias anteriores.",
    "ativo": false,
-   "evidencia": "84.672 MWmed em 25/09/2026 (percentil 75).",
+   "evidencia": "84.672 MWmed em 25/09/2026 (percentil 74,7).",
    "href": "/setor-eletrico/carga",
    "tipo": "regra"
   },

@@ -57,9 +57,9 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
             ["sha256 do snapshot", <span key="s" className="break-all font-mono text-xs">{f?.snapshot_sha256 ?? "–"}</span>],
             ["Última tentativa de coleta direta", f?.ultima_tentativa ? `${carimbo(f.ultima_tentativa.tentado_em)} · ${f.ultima_tentativa.ok ? "ok" : "falhou"} · ${f.ultima_tentativa.detalhe}` : "não registrada nesta publicação"],
           ].map(([k, v]) => (
-            <div key={String(k)} className="bg-superficie p-4">
+            <div key={String(k)} className="min-w-0 bg-superficie p-4">
               <dt className="rotulo text-mineral">{k}</dt>
-              <dd className="mt-1 text-sm text-carvao">{v}</dd>
+              <dd className="mt-1 text-sm text-carvao [overflow-wrap:anywhere]">{v}</dd>
             </div>
           ))}
         </dl>
@@ -78,7 +78,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
         <section className="mt-8 border border-linha bg-superficie p-6">
           <h2 className="font-serif text-xl text-carvao">Capturas integradas (vintages)</h2>
           <p className="mt-1 text-sm text-carvao-muted">Cada arquivo baixado é uma vintage imutável. Uma revisão da fonte vira vintage nova; a anterior continua disponível para reconstituir o que se sabia em cada data.</p>
-          <div className="tabela-scroll mt-4">
+          <div className="tabela-scroll mt-4" tabIndex={0} role="region" aria-label="Capturas do conjunto (tabela rolável)">
             <table className="w-full min-w-[44rem] border-collapse text-xs">
               <caption className="sr-only">Capturas por recurso</caption>
               <thead>

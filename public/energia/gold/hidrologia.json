@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "hidrologia.json",
- "gerado_em": "2026-09-28T10:59:49Z",
+ "gerado_em": "2026-09-28T11:20:50Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "f75418b29af9",
+ "versao_codigo": "7d14e9437f1f",
  "disponivel": true,
  "dia_referencia_ear": "2026-09-26",
  "dia_referencia_ena": "2026-09-26",
@@ -22492,7 +22492,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:01:33.439904",
    "capturado_em": "2026-09-28T09:07:40Z",
-   "validado_em": "2026-09-28T10:59:49Z",
+   "validado_em": "2026-09-28T11:20:50Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-26"
@@ -22504,9 +22504,9 @@
     "sha256": "62286e54eff7ee969f8661d82f2bc6fa74860ea43403d07e027d0a890e0152b0"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f75418b29af9",
+   "versao_codigo": "7d14e9437f1f",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T10:59:49Z",
+    "detectado_em": "2026-09-28T11:20:49Z",
     "total": 0,
     "exemplos": []
    },
@@ -22536,7 +22536,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:01:33.439904",
    "capturado_em": "2026-09-28T09:07:40Z",
-   "validado_em": "2026-09-28T10:59:49Z",
+   "validado_em": "2026-09-28T11:20:50Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-26"
@@ -22550,9 +22550,9 @@
     "sha256": "62286e54eff7ee969f8661d82f2bc6fa74860ea43403d07e027d0a890e0152b0"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f75418b29af9",
+   "versao_codigo": "7d14e9437f1f",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T10:59:49Z",
+    "detectado_em": "2026-09-28T11:20:49Z",
     "total": 0,
     "exemplos": []
    },
@@ -22582,7 +22582,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:01:33.439904",
    "capturado_em": "2026-09-28T09:07:40Z",
-   "validado_em": "2026-09-28T10:59:49Z",
+   "validado_em": "2026-09-28T11:20:50Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-26"
@@ -22597,9 +22597,9 @@
     "sha256": "62286e54eff7ee969f8661d82f2bc6fa74860ea43403d07e027d0a890e0152b0"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f75418b29af9",
+   "versao_codigo": "7d14e9437f1f",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T10:59:49Z",
+    "detectado_em": "2026-09-28T11:20:49Z",
     "total": 0,
     "exemplos": []
    },
@@ -22629,7 +22629,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:01:33.439904",
    "capturado_em": "2026-09-28T09:07:40Z",
-   "validado_em": "2026-09-28T10:59:49Z",
+   "validado_em": "2026-09-28T11:20:50Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-26"
@@ -22644,9 +22644,9 @@
     "sha256": "62286e54eff7ee969f8661d82f2bc6fa74860ea43403d07e027d0a890e0152b0"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f75418b29af9",
+   "versao_codigo": "7d14e9437f1f",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T10:59:49Z",
+    "detectado_em": "2026-09-28T11:20:49Z",
     "total": 0,
     "exemplos": []
    },
@@ -22676,7 +22676,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:01:54.457065",
    "capturado_em": "2026-09-28T09:08:01Z",
-   "validado_em": "2026-09-28T10:59:49Z",
+   "validado_em": "2026-09-28T11:20:50Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-26"
@@ -22688,9 +22688,9 @@
     "sha256": "004e24fa7127845e626be9c5cceb17bdda797afd5a6ab2fd55705f2d29f65178"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f75418b29af9",
+   "versao_codigo": "7d14e9437f1f",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T10:59:49Z",
+    "detectado_em": "2026-09-28T11:20:49Z",
     "total": 0,
     "exemplos": []
    },
@@ -22721,7 +22721,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:01:54.457065",
    "capturado_em": "2026-09-28T09:08:01Z",
-   "validado_em": "2026-09-28T10:59:49Z",
+   "validado_em": "2026-09-28T11:20:50Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-26"
@@ -22736,9 +22736,9 @@
     "sha256": "004e24fa7127845e626be9c5cceb17bdda797afd5a6ab2fd55705f2d29f65178"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f75418b29af9",
+   "versao_codigo": "7d14e9437f1f",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T10:59:49Z",
+    "detectado_em": "2026-09-28T11:20:49Z",
     "total": 0,
     "exemplos": []
    },

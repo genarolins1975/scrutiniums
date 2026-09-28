@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
+/** Busca sem distinção de acento nem de caixa ("geracao" encontra "Geração"). */
+const semAcento = (t: string) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
 export type ItemCatalogo = {
   id: string;
   slug: string | null;
@@ -44,7 +47,7 @@ export function CatalogoFiltro({ itens }: { itens: ItemCatalogo[] }) {
       (!orgao || i.orgao === orgao) &&
       (!tema || i.tema === tema) &&
       (!estado || i.estado === estado) &&
-      (!q || i.titulo.toLowerCase().includes(q.toLowerCase())),
+      (!q || semAcento(i.titulo).includes(semAcento(q))),
   );
   const sel = "min-h-[44px] border border-linha bg-superficie px-3 text-sm text-carvao";
   return (

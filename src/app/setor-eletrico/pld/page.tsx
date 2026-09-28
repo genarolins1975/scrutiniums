@@ -15,7 +15,7 @@ import { IlustracaoDistribuicao } from "@/components/energia/IlustracaoDistribui
 import { TabelaDados } from "@/components/energia/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold, integra } from "@/lib/energia/gold";
-import { carimbo, dataBR, num, reais } from "@/lib/energia/formato";
+import { carimbo, dataBR, num, reais, rotuloRegra } from "@/lib/energia/formato";
 import { NOS_FORMACAO, PLD_NAO_E, TIPOS_RELACAO } from "@/lib/energia/conteudo/pld";
 import { conceito } from "@/lib/energia/conteudo/conceitos";
 import { estadoCarga, estadoEar, estadoEna, estadoPld, estadoRenovaveis, estadoTermicas } from "@/lib/energia/leituras";
@@ -152,7 +152,7 @@ export default function PldPage() {
               ["#submercados", "Por que as regiões diferem"],
               ["#previsao", "Para onde pode ir"],
             ].map(([h, r]) => (
-              <a key={h} href={h} className="text-energia-dark underline decoration-energia/40 underline-offset-4 hover:text-carvao">
+              <a key={h} href={h} className="inline-flex min-h-[44px] items-center text-energia-dark underline decoration-energia/40 underline-offset-4 hover:text-carvao">
                 {r}
               </a>
             ))}
@@ -161,10 +161,23 @@ export default function PldPage() {
 
         <ModoProfundidade>
           {/* 1. Entenda em 90 segundos */}
-          <Capitulo id="o-que-e" numero="1" subtitulo="Entenda em 90 segundos" titulo="O que é o PLD?">
+          <Capitulo
+            id="o-que-e"
+            numero="1"
+            subtitulo="Entenda em 90 segundos"
+            titulo="A que preço se acerta a energia no curto prazo, hora a hora e em cada região?"
+          >
             <div className="grid gap-8 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
               <div>
                 <p className="font-serif text-xl leading-relaxed text-carvao md:text-2xl">
+                  No Mercado de Curto Prazo, a CCEE apura, para cada agente, submercado e hora, um balanço de energia em MWh, positivo
+                  ou negativo, e um resultado financeiro em R$, separado em venda e compra. O PLD é o preço desse mercado.
+                </p>
+                <p className="mt-3 flex flex-wrap items-center gap-2 text-xs text-mineral">
+                  Base: descrições oficiais dos conjuntos PLD_HORARIO_SUBMERCADO, SUMARIO_BE_HORARIO_SUBMERCADO e
+                  SUMARIO_MENSAL_COMPRA_VENDA_SUBMERCADO no portal de dados abertos da CCEE, capturadas em 28/09/2026. <Conferido ok />
+                </p>
+                <p className="mt-6 text-lg leading-relaxed text-carvao">
                   É um valor em R$/MWh que a CCEE calcula todos os dias para cada hora do dia seguinte e para cada um dos quatro{" "}
                   <Termo slug="submercado">submercados</Termo>. O cálculo é feito por modelos computacionais (NEWAVE, DECOMP e
                   DESSEM), tem como base o <Termo slug="cmo">custo marginal de operação</Termo> e respeita os limites mínimo e
@@ -172,6 +185,13 @@ export default function PldPage() {
                 </p>
                 <p className="mt-3 flex flex-wrap items-center gap-2 text-xs text-mineral">
                   Base: descrição oficial da CCEE no portal de dados abertos (conjunto PLD_HORARIO), capturada em 27/09/2026. <Conferido ok />
+                </p>
+                <p className="mt-6 leading-relaxed text-carvao-muted">
+                  Como o balanço de cada agente é formado (contratos, geração e consumo medidos) e como o resultado é liquidado entre
+                  quem vende e quem compra estão nas Regras de Comercialização da CCEE.
+                </p>
+                <p className="mt-2 flex flex-wrap items-center gap-2 text-xs text-mineral">
+                  Regras de Comercialização: <Conferido ok={false} /> (documento não conferido nesta fase)
                 </p>
                 <div className="mt-8 border-l-2 border-energia pl-5">
                   <p className="rotulo text-mineral">A ideia central</p>
@@ -234,13 +254,14 @@ export default function PldPage() {
             {integra(cmo) && (
               <div className="mt-8" data-nivel="analisar">
                 <PainelEvidencia
+                  nivelTitulo={3}
                   id="cmo"
                   pergunta="Qual custo marginal o ONS está publicando para cada subsistema?"
                   subtitulo="CMO semanal (modelo DECOMP) · R$/MWh · últimas 104 semanas operativas"
                   porQueImporta={<>O <Termo slug="cmo">CMO</Termo> é a base do PLD, segundo a CCEE. O ONS publica o CMO semanal estimado pelo DECOMP para cada semana operativa, por subsistema e patamar de carga.</>}
                   oQueMudou={<>Semana de {dataBR(cmo.semana_referencia)}: Sudeste/Centro-Oeste {reais(cmo.ultima_semana[0].semanal)} contra {reais(cmo.ultima_semana[0].semana_anterior)} na semana anterior.</>}
                   comoInterpretar={<>Compare os subsistemas na mesma semana: valores iguais ou diferentes são saída do modelo DECOMP; a razão de uma diferença não é identificada aqui.</>}
-                  naoConcluir={<>CMO não é PLD: o PLD é horário, calculado pela CCEE, e aplica limites regulatórios. O CMO é saída de modelo, não medição.</>}
+                  naoConcluir={<>CMO semanal não é PLD: o PLD é horário, calculado pela CCEE, e aplica limites mínimo e máximos; os dois podem diferir muito na mesma semana (compare com os cartões do PLD no capítulo 3). O CMO é saída de modelo, não medição.</>}
                   proveniencia={cmo.proveniencia.cmo}
                 >
                   <GraficoLinhas
@@ -266,8 +287,15 @@ export default function PldPage() {
             {integra(pld) ? (
               <>
                 <CartoesPld pld={pld} />
+                <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-mineral">
+                  <span>Fonte: CCEE, PLD_HORARIO; médias e posição calculadas pela Scrutiniums.</span>
+                  <SobreEsteDado p={pld.proveniencia.horario} rotulo="Sobre o PLD horário" />
+                  <SobreEsteDado p={pld.proveniencia.diario} rotulo="Sobre a média diária" />
+                  <SobreEsteDado p={pld.proveniencia.posicao} rotulo="Sobre a posição histórica" />
+                </div>
                 <div className="mt-8">
                   <PainelEvidencia
+                    nivelTitulo={3}
                     id="periodos"
                     pergunta="Em que horas o preço sobe, e as regiões se separam?"
                     subtitulo="PLD por submercado · R$/MWh nominais · hora local de Brasília"
@@ -291,7 +319,7 @@ export default function PldPage() {
                   <dl className="mt-4 grid gap-4 md:grid-cols-2">
                     {Object.entries(pld.regras).map(([k, v]) => (
                       <div key={k}>
-                        <dt className="rotulo text-mineral">{k.replaceAll("_", " ")}</dt>
+                        <dt className="rotulo text-mineral">{rotuloRegra(k)}</dt>
                         <dd className="mt-1 text-sm leading-relaxed text-carvao">{v}</dd>
                       </div>
                     ))}
@@ -319,7 +347,7 @@ export default function PldPage() {
                       </li>
                     ))}
                   </ul>
-                  <p className="mt-4 text-xs text-mineral">
+                  <p className="mt-4 text-xs text-mineral [overflow-wrap:anywhere]">
                     Snapshot {pld.snapshot.id} · sha256 {pld.snapshot.sha256} · série de {pld.primeira_hora.replace("T", " ")} a {pld.ultima_hora.replace("T", " ")}
                   </p>
                 </div>
@@ -330,21 +358,29 @@ export default function PldPage() {
           </Capitulo>
 
           {/* 4. Submercados */}
-          <Capitulo id="submercados" numero="4" subtitulo="Por que os preços dos submercados podem diferir?" titulo="Energia sobrando em uma região não baixa, por si, o preço da outra">
+          <Capitulo id="submercados" numero="4" subtitulo="Por que os preços dos submercados podem diferir?" titulo="Quatro preços, quatro regiões e as linhas de transmissão entre elas">
             {integra(rede) && integra(pld) ? (
               <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-                <MapaSubmercados
-                  fluxos={rede.fronteiras.map((f) => ({ de: f.de, para: f.para, fluxo: f.fluxo_dia }))}
-                  precos={Object.fromEntries(pld.cartoes.map((c) => [c.sm, c.media_dia]))}
-                  diaFluxo={dataBR(rede.dia_referencia)}
-                  diaPreco={dataBR(pld.dia_referencia)}
-                />
+                <div>
+                  <MapaSubmercados
+                    fluxos={rede.fronteiras.map((f) => ({ de: f.de, para: f.para, fluxo: f.fluxo_dia }))}
+                    precos={Object.fromEntries(pld.cartoes.map((c) => [c.sm, c.media_dia]))}
+                    diaFluxo={dataBR(rede.dia_referencia)}
+                    diaPreco={dataBR(pld.dia_referencia)}
+                  />
+                  <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-mineral">
+                    <span>Fonte: CCEE (PLD) e ONS (intercâmbio).</span>
+                    <SobreEsteDado p={pld.proveniencia.diario} rotulo="Sobre o PLD médio" />
+                    <SobreEsteDado p={rede.proveniencia.fluxo} rotulo="Sobre os fluxos" />
+                  </div>
+                </div>
                 <div className="space-y-4 leading-relaxed text-carvao">
                   <p>
                     A CCEE calcula um PLD para cada submercado. As regiões estão ligadas por linhas de transmissão de fronteira, e o
                     ONS mede o <Termo slug="intercambio">intercâmbio</Termo> entre elas hora a hora.
                   </p>
-                  <p>
+                  <p className="border border-dashed border-mineral p-3 text-sm text-carvao-muted">
+                    <span className="rotulo mb-1 block text-mineral">Leitura usual do setor, ainda não conferida em documento primário</span>
                     Se a energia pudesse circular sem limite, o custo de atender uma carga a mais seria o mesmo em todo lugar. Como a
                     capacidade de transferência entre regiões é finita, uma região com sobra pode não conseguir enviar tudo o que
                     teria para outra, e os preços se separam.
@@ -361,6 +397,7 @@ export default function PldPage() {
                 </div>
                 <div className="lg:col-span-2" data-nivel="analisar">
                   <PainelEvidencia
+                    nivelTitulo={3}
                     id="amplitude"
                     pergunta="Quando os submercados se separaram no último ano?"
                     subtitulo="Diferença entre o maior e o menor PLD médio diário · R$/MWh"
@@ -400,7 +437,7 @@ export default function PldPage() {
                     ultimaExecucao={
                       ult ? (
                         <>
-                          Rodada interna de {dataBR(ult.origem)} (modelo {ult.versao_modelo}, estado {ult.estado_modelo.toLowerCase()}): {ult.celulas} células, {ult.com_numero} com número. Motivo:{" "}
+                          Rodada interna de {dataBR(ult.origem)} (modelo {ult.versao_modelo}, estado {ult.estado_modelo.toLowerCase()}): {ult.celulas} combinações de horizonte e submercado, {ult.com_numero} com número. Motivo:{" "}
                           {ult.motivos.includes("SEM_PLD_CAPTURADO_ATE_O_CORTE") ? "nenhum PLD do período exigido capturado até o corte" : ult.motivos.join(", ")}.
                         </>
                       ) : (
@@ -440,7 +477,7 @@ export default function PldPage() {
                 <h3 className="font-serif text-lg text-carvao">Por que confiar? O modelo tem acertado?</h3>
                 <p className="mt-2 text-sm leading-relaxed text-carvao-muted">
                   Ainda não há previsão publicada com realizado para comparar. Os resultados retrospectivos da pesquisa estão{" "}
-                  {mods?.publicacao_resultados.liberada ? "no registro de modelos" : "retidos até a conclusão da revisão e a liberação do dono"}.
+                  {mods?.publicacao_resultados.liberada ? "no registro de modelos" : "retidos até a conclusão da revisão da pesquisa e a liberação pelo responsável pela plataforma"}.
                   Toda avaliação futura começa por previsão, realizado e erro, depois erro típico, depois cobertura da faixa, e só então métricas técnicas contra referências simples.
                 </p>
               </div>
@@ -451,7 +488,7 @@ export default function PldPage() {
                 {prev &&
                   Object.entries(prev.regras).map(([k, v]) => (
                     <div key={k}>
-                      <dt className="rotulo text-mineral">{k.replaceAll("_", " ")}</dt>
+                      <dt className="rotulo text-mineral">{rotuloRegra(k)}</dt>
                       <dd className="mt-1 text-sm leading-relaxed text-carvao">{v}</dd>
                     </div>
                   ))}

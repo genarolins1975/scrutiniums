@@ -48,7 +48,7 @@ export default function CargaPage() {
       <MarcaVisita secao="energia:carga" />
       <main className="mx-auto max-w-page px-6">
         <CabecalhoModulo rotulo="Carga e consumo" titulo="Quanto o sistema está consumindo?" referencia={<>Carga de Energia Diária (ONS) até {dataBR(c.dia_referencia)}</>}>
-          A <Termo slug="carga">carga</Termo> é a energia que o sistema precisa atender. O ONS mudou o que a série inclui em 2021 e em 2023;
+          A <Termo slug="carga">carga</Termo> é a energia atendida no sistema interligado, publicada pelo ONS por subsistema. O ONS mudou o que a série inclui em 2021 e em 2023;
           as comparações desta página respeitam essas quebras.
         </CabecalhoModulo>
         <ModoProfundidade>

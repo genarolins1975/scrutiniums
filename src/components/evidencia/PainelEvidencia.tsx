@@ -33,6 +33,7 @@ export function PainelEvidencia({
   nivel,
   extraFonte,
   complementares = [],
+  nivelTitulo = 2,
   ...r
 }: RegraEditorial & {
   id: string;
@@ -42,14 +43,17 @@ export function PainelEvidencia({
   nivel?: "entender" | "analisar" | "auditar";
   extraFonte?: ReactNode;
   complementares?: ProvenienciaComplementar[];
+  /** 2 em páginas de módulo (logo abaixo do h1); 3 dentro de seções que já têm h2. */
+  nivelTitulo?: 2 | 3;
 }) {
   const nat = natureza ?? r.proveniencia.natureza;
+  const Titulo = nivelTitulo === 3 ? "h3" : "h2";
   return (
     <section id={id} aria-labelledby={`${id}-titulo`} data-nivel={nivel} className="scroll-mt-28 border border-linha bg-superficie">
       <header className="px-5 pt-6 md:px-8">
-        <h3 id={`${id}-titulo`} className="font-serif text-xl leading-snug text-carvao md:text-2xl">
+        <Titulo id={`${id}-titulo`} className="font-serif text-xl leading-snug text-carvao md:text-2xl">
           {r.pergunta}
-        </h3>
+        </Titulo>
         <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-mineral">
           <span>{r.subtitulo}</span>
           <SeloNatureza natureza={nat} />

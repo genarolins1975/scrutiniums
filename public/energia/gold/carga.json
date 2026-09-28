@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "carga.json",
- "gerado_em": "2026-09-28T10:59:49Z",
+ "gerado_em": "2026-09-28T11:20:50Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "f75418b29af9",
+ "versao_codigo": "7d14e9437f1f",
  "disponivel": true,
  "dia_referencia": "2026-09-25",
  "unidade": "MWmed",
@@ -11862,7 +11862,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:00:44.552024",
    "capturado_em": "2026-09-28T09:08:16Z",
-   "validado_em": "2026-09-28T10:59:49Z",
+   "validado_em": "2026-09-28T11:20:50Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-25"
@@ -11874,9 +11874,9 @@
     "sha256": "682cc3ec96e0f40af6920bb618fc756ea0602fea2b45e50dbf1ad01918955c5d"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f75418b29af9",
+   "versao_codigo": "7d14e9437f1f",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T10:59:49Z",
+    "detectado_em": "2026-09-28T11:20:50Z",
     "total": 0,
     "exemplos": []
    },
@@ -11906,7 +11906,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:00:44.552024",
    "capturado_em": "2026-09-28T09:08:16Z",
-   "validado_em": "2026-09-28T10:59:49Z",
+   "validado_em": "2026-09-28T11:20:50Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-25"
@@ -11922,9 +11922,9 @@
     "sha256": "682cc3ec96e0f40af6920bb618fc756ea0602fea2b45e50dbf1ad01918955c5d"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f75418b29af9",
+   "versao_codigo": "7d14e9437f1f",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T10:59:49Z",
+    "detectado_em": "2026-09-28T11:20:50Z",
     "total": 0,
     "exemplos": []
    },

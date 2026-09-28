@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 
 type StatSm = {
@@ -46,26 +46,43 @@ const quando = (s: string) => `${s.slice(8, 10)}/${s.slice(5, 7)}/${s.slice(0, 4
  */
 export function PldPeriodos({ periodos, limiar }: { periodos: PeriodoPld[]; limiar: number }) {
   const [sel, setSel] = useState(periodos[0].id);
+  const abas = useRef<(HTMLButtonElement | null)[]>([]);
   const at = periodos.find((x) => x.id === sel) ?? periodos[0];
+  // padrão de abas: setas, Home e End movem a seleção e o foco
+  function teclado(e: React.KeyboardEvent<HTMLButtonElement>, i: number) {
+    const n = periodos.length;
+    const j =
+      e.key === "ArrowRight" ? (i + 1) % n : e.key === "ArrowLeft" ? (i - 1 + n) % n : e.key === "Home" ? 0 : e.key === "End" ? n - 1 : -1;
+    if (j < 0) return;
+    e.preventDefault();
+    setSel(periodos[j].id);
+    abas.current[j]?.focus();
+  }
   const d = at.diferenca;
   return (
     <div>
       <div role="tablist" aria-label="Período" className="flex flex-wrap gap-1 border-b border-linha">
-        {periodos.map((x) => (
+        {periodos.map((x, i) => (
           <button
             key={x.id}
+            ref={(el) => {
+              abas.current[i] = el;
+            }}
+            id={`pld-aba-${x.id}`}
             role="tab"
             type="button"
             aria-selected={sel === x.id}
             aria-controls="pld-periodo-painel"
+            tabIndex={sel === x.id ? 0 : -1}
             onClick={() => setSel(x.id)}
+            onKeyDown={(e) => teclado(e, i)}
             className={`rotulo min-h-[44px] border-b-2 px-3 ${sel === x.id ? "border-energia text-carvao" : "border-transparent text-carvao-muted hover:text-carvao"}`}
           >
             {x.rotulo}
           </button>
         ))}
       </div>
-      <div id="pld-periodo-painel" role="tabpanel" className="pt-5">
+      <div id="pld-periodo-painel" role="tabpanel" aria-labelledby={`pld-aba-${at.id}`} className="pt-5">
         <p className="text-xs text-mineral">
           {quando(at.inicio)} a {quando(at.fim)} · {at.nHoras.toLocaleString("pt-BR")} horas · {at.descricaoSerie}
         </p>
@@ -106,7 +123,7 @@ export function PldPeriodos({ periodos, limiar }: { periodos: PeriodoPld[]; limi
           </div>
         </dl>
 
-        <div className="tabela-scroll mt-5">
+        <div className="tabela-scroll mt-5" tabIndex={0} role="region" aria-label="Estatísticas do período por submercado (rolável)">
           <table className="w-full min-w-[40rem] border-collapse text-sm tabular-nums">
             <caption className="sr-only">Estatísticas do PLD no período por submercado</caption>
             <thead>

@@ -81,6 +81,10 @@ body {
   outline: 2px solid var(--cor-bronze);
   outline-offset: 2px;
 }
+/* no Setor Elétrico o anel de foco usa o acento do domínio */
+.dominio-energia :focus-visible {
+  outline-color: var(--cor-energia);
+}
 
 ::selection {
   background: var(--cor-bronze);
@@ -107,8 +111,21 @@ body {
 
 /* Tabelas largas roláveis sem quebrar o layout no celular */
 .tabela-scroll {
+  position: relative; /* contém descendentes absolutos (textos só para leitor de tela) */
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+}
+/* Setor Elétrico: sombra nas bordas indica conteúdo além da área visível (some quando não há) */
+.dominio-energia div.tabela-scroll {
+  background:
+    linear-gradient(to right, var(--cor-superficie) 30%, transparent) left / 2.5rem 100% no-repeat local,
+    linear-gradient(to left, var(--cor-superficie) 30%, transparent) right / 2.5rem 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, rgba(26, 29, 33, 0.18), transparent) left / 0.75rem 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, rgba(26, 29, 33, 0.18), transparent) right / 0.75rem 100% no-repeat scroll;
+}
+.tabela-scroll:focus-visible {
+  outline: 2px solid var(--cor-energia);
+  outline-offset: 2px;
 }
 
 /* Profundidade progressiva (ModoProfundidade): mesma página, três níveis. */
@@ -124,7 +141,10 @@ body {
 .termo-dica { display: none !important; }
 .termo:hover .termo-dica,
 .termo:focus-within .termo-dica { display: block !important; }
+.termo.termo-fechada .termo-dica { display: none !important; }
 
 /* Domínio Energia: algarismos alinhados na serifa (Playfair usa estilo antigo
    por padrão, ruim para ler números de dados). */
 .dominio-energia .font-serif { font-variant-numeric: lining-nums; }
+/* hashes, ids e URLs longos nunca empurram a página para o lado no celular */
+.dominio-energia { overflow-wrap: break-word; }

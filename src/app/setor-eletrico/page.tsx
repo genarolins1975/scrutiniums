@@ -132,6 +132,7 @@ export default function VisaoGeralEnergia() {
         <Secao id="preco" numero="2" rotulo="Preço" titulo="Quanto custa a energia, hora a hora, em cada região?" cta={{ href: "/setor-eletrico/pld", texto: "Entender o PLD" }}>
           {integra(pld) ? (
             <PainelEvidencia
+              nivelTitulo={3}
               id="preco-painel"
               pergunta={`O PLD de ${dataBR(pld.dia_referencia)} nos quatro submercados`}
               subtitulo="PLD médio diário · R$/MWh nominais"
@@ -152,6 +153,7 @@ export default function VisaoGeralEnergia() {
         <Secao id="agua" numero="3" rotulo="Água" titulo="Quanta energia temos armazenada e quanta água está chegando?" cta={{ href: "/setor-eletrico/agua-e-clima", texto: "Entender água e reservatórios" }}>
           {integra(hid) && hidSin ? (
             <PainelEvidencia
+              nivelTitulo={3}
               id="agua-painel"
               pergunta={`Reservatórios do SIN com ${pct(hidSin.ear.valor)} da capacidade, ${ROTULO_FAIXA_USUAL[hidSin.ear.faixa ?? "dentro"]}`}
               subtitulo="EAR do SIN · % da EAR máxima, com faixa histórica do 10º ao 90º percentil"
@@ -194,11 +196,12 @@ export default function VisaoGeralEnergia() {
         <Secao id="geracao" numero="4" rotulo="Geração" titulo="Como estamos gerando?" cta={{ href: "/setor-eletrico/geracao", texto: "Ver a matriz em detalhe" }}>
           {integra(ger) && gSin ? (
             <PainelEvidencia
+              nivelTitulo={3}
               id="geracao-painel"
               pergunta={`Hidráulica, eólica e solar somaram ${pct(gSin["7d"]?.hes)} da geração verificada nos últimos 7 dias`}
               subtitulo="Geração verificada do SIN por fonte · % do total, por janela"
               porQueImporta={<>A composição mostra de onde vem a energia que atende a carga e quanto o sistema recorre às térmicas, as usinas cujo <Termo slug="cvu">Custo Variável Unitário</Termo> entra na programação da operação.</>}
-              oQueMudou={<>Térmicas com {pct(ger.termica_contexto.participacao_7d)} nos últimos 7 dias, contra mediana de {pct(ger.termica_contexto.mediana_365d)} nos 12 meses anteriores (percentil {num(ger.termica_contexto.percentil, 0)}).</>}
+              oQueMudou={<>Térmicas com {pct(ger.termica_contexto.participacao_7d)} nos últimos 7 dias, contra mediana de {pct(ger.termica_contexto.mediana_365d)} nos 12 meses anteriores (percentil {num(ger.termica_contexto.percentil, 1)}).</>}
               comoInterpretar={<>Cada barra soma 100% da geração verificada na janela. Compare a semana atual com a mesma semana dos anos anteriores para separar sazonalidade de mudança.</>}
               naoConcluir={<>&quot;Hidráulica, eólica e solar&quot; não é a participação renovável: a térmica do balanço inclui biomassa e outras fontes que o conjunto não separa. A micro e minigeração distribuída não está no balanço.</>}
               proveniencia={ger.proveniencia.geracao}
@@ -222,6 +225,7 @@ export default function VisaoGeralEnergia() {
         <Secao id="consumo" numero="5" rotulo="Carga e consumo" titulo="Quanto estamos consumindo?" cta={{ href: "/setor-eletrico/carga", texto: "Ver carga por subsistema" }}>
           {integra(carga) && cargaSin ? (
             <PainelEvidencia
+              nivelTitulo={3}
               id="carga-painel"
               pergunta={
                 cargaSin.ult7?.variacao_pct !== null && cargaSin.ult7
@@ -254,6 +258,7 @@ export default function VisaoGeralEnergia() {
         <Secao id="rede" numero="6" rotulo="Rede" titulo="A rede está limitando o sistema?" cta={{ href: "/setor-eletrico/rede", texto: "Ver intercâmbios" }}>
           {integra(rede) && integra(pld) ? (
             <PainelEvidencia
+              nivelTitulo={3}
               id="rede-painel"
               pergunta="Para onde a energia está fluindo e se os preços se separaram"
               subtitulo="Intercâmbio médio verificado entre subsistemas · MWmed · e PLD médio diário"

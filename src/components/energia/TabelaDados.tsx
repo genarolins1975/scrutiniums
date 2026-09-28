@@ -21,7 +21,7 @@ export function TabelaDados({
       <summary className="rotulo min-h-[44px] cursor-pointer py-2 text-carvao-muted hover:text-carvao">
         Ver tabela ({ult.length === linhas.length ? `${linhas.length} linhas` : `últimas ${ult.length} de ${linhas.length} linhas`})
       </summary>
-      <div className="tabela-scroll mt-2">
+      <div className="tabela-scroll mt-2" tabIndex={0} role="region" aria-label={`${titulo} (tabela rolável)`}>
         <table className="w-full min-w-[28rem] border-collapse text-xs tabular-nums">
           <caption className="sr-only">{titulo}</caption>
           <thead>

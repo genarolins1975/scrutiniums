@@ -10,7 +10,7 @@ import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { TabelaDados } from "@/components/energia/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold, integra } from "@/lib/energia/gold";
-import { dataBR, num, pct } from "@/lib/energia/formato";
+import { dataBR, num, pct, rotuloRegra } from "@/lib/energia/formato";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -35,7 +35,6 @@ export default function GeracaoPage() {
   const sin = g.regioes.find((r) => r.rg === "SIN")!;
   const t = g.termica_contexto;
   const series = ORDEM_FONTES.map((f) => ({ id: f, rotulo: NOME_FONTE[f], cor: COR_FONTE[f] }));
-  const ult365 = g.serie_sin.slice(-365);
   return (
     <>
       <CabecalhoEnergia atual="geracao" />
@@ -86,24 +85,32 @@ export default function GeracaoPage() {
           <Bloco id="termica">
             <PainelEvidencia
               id="termica-ctx"
-              pergunta={`Despacho térmico: ${pct(t.participacao_7d)} da geração nos últimos 7 dias, percentil ${num(t.percentil, 0)} do último ano`}
+              pergunta={`Despacho térmico: ${pct(t.participacao_7d)} da geração nos últimos 7 dias, percentil ${num(t.percentil, 1)} do último ano`}
               subtitulo="Participação térmica em janelas móveis de 7 dias · SIN · %"
               natureza="CALCULADO"
               porQueImporta={<>As térmicas têm <Termo slug="cvu">Custo Variável Unitário</Termo> considerado na programação da operação; este painel mostra a participação delas na geração verificada, comparada à do último ano, sem identificar o motivo do despacho.</>}
               oQueMudou={<>Mediana dos 12 meses anteriores: {pct(t.mediana_365d)}; faixa usual (10º a 90º percentil) de {pct(t.p10_365d)} a {pct(t.p90_365d)}.</>}
               comoInterpretar={<>O percentil compara a semana atual com todas as {t.n_janelas} janelas de 7 dias do ano anterior. Acima do 90º ou abaixo do 10º percentil, a regra &quot;participação térmica incomum&quot; da Visão geral fica ativa.</>}
               naoConcluir={<>O balanço não separa as térmicas por combustível nem por motivo de despacho (mérito, restrição, segurança). O conjunto &quot;Geração Térmica por Motivo de Despacho&quot; está catalogado e ainda não integrado.</>}
-              proveniencia={g.proveniencia.geracao}
+              proveniencia={g.proveniencia.termica_7d ?? g.proveniencia.geracao}
+              complementares={[{ rotulo: "Sobre a geração por fonte", p: g.proveniencia.geracao }]}
             >
-              <GraficoLinhas
-                titulo="Geração térmica diária do SIN nos últimos 12 meses"
-                dados={ult365}
-                chaveX="d"
-                series={[{ id: "termica", rotulo: "Térmica", cor: "var(--serie-termica)" }]}
-                unidade="MWmed"
-                casas={0}
-                zeroNoEixo
-              />
+              {g.serie_termica_7d?.length ? (
+                <GraficoLinhas
+                  titulo="Participação térmica em janelas móveis de 7 dias, último ano, com mediana e faixa usual"
+                  dados={g.serie_termica_7d.map((p) => ({ ...p, mediana: t.mediana_365d, p10: t.p10_365d, p90: t.p90_365d }))}
+                  chaveX="d"
+                  series={[
+                    { id: "termica_7d", rotulo: "Térmica, 7 dias", cor: "var(--serie-termica)", espessura: 2.5 },
+                    { id: "mediana", rotulo: "Mediana do ano anterior", cor: "var(--serie-referencia)", tracejada: true },
+                  ]}
+                  banda={{ inferior: "p10", superior: "p90", rotulo: "10º a 90º percentil" }}
+                  unidade="%"
+                  casas={1}
+                />
+              ) : (
+                <Indisponivel titulo="Série da participação térmica indisponível" motivo="A série de janelas de 7 dias não foi gerada nesta publicação." />
+              )}
             </PainelEvidencia>
           </Bloco>
 
@@ -162,7 +169,7 @@ export default function GeracaoPage() {
               <dl className="mt-4 grid gap-4 md:grid-cols-2">
                 {Object.entries(g.regras).map(([k, v]) => (
                   <div key={k}>
-                    <dt className="rotulo text-mineral">{k.replaceAll("_", " ")}</dt>
+                    <dt className="rotulo text-mineral">{rotuloRegra(k)}</dt>
                     <dd className="mt-1 text-sm text-carvao">{v}</dd>
                   </div>
                 ))}

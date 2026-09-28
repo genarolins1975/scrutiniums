@@ -6,16 +6,17 @@ import { useEffect, useState } from "react";
 
 /**
  * Link de conta sensível à sessão num cabeçalho estático: visitante vê
- * "Entrar"; quem tem sessão vê "Minha conta". Mesma checagem da SPA do Crédito
- * (GET /api/auth/eu, resposta mínima sem PII).
+ * "Entrar"; quem tem sessão vê "Minha conta". Consulta GET /api/auth/estado
+ * (sempre 200, resposta mínima sem PII).
  */
 export function AcessoConta({ destino }: { destino: string }) {
   const [logado, setLogado] = useState(false);
   // volta para a página onde o visitante estava; `destino` é o fallback
   const atual = usePathname() || destino;
   useEffect(() => {
-    fetch("/api/auth/eu", { cache: "no-store" })
-      .then((r) => setLogado(r.status === 204))
+    fetch("/api/auth/estado", { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : { logado: false }))
+      .then((j: { logado?: boolean }) => setLogado(j.logado === true))
       .catch(() => setLogado(false));
   }, []);
   return logado ? (

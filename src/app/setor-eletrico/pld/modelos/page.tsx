@@ -6,6 +6,7 @@ import { EstadoModelo } from "@/components/energia/EstadoModelo";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold } from "@/lib/energia/gold";
+import { rotuloRegra } from "@/lib/energia/formato";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -53,7 +54,7 @@ export default function ModelosPage() {
                     <span className="mt-1 text-xs text-mineral">{x.versao} · {x.papel}</span>
                     <span className="mt-3 text-sm leading-relaxed text-carvao-muted">{x.objetivo}</span>
                     <span className="mt-3 text-xs text-mineral">
-                      {x.limitacoes.length} limitações e {x.falhas_conhecidas.length} falhas conhecidas registradas · {x.usa_hidrologia ? "usa hidrologia" : "só preço passado"}
+                      {x.limitacoes.length} {x.limitacoes.length === 1 ? "limitação" : "limitações"} e {x.falhas_conhecidas.length} {x.falhas_conhecidas.length === 1 ? "falha conhecida registrada" : "falhas conhecidas registradas"} · {x.usa_hidrologia ? "usa hidrologia" : "só preço passado"}
                     </span>
                   </Link>
                 </li>
@@ -64,7 +65,7 @@ export default function ModelosPage() {
               <dl className="mt-3 grid gap-4 md:grid-cols-2">
                 {Object.entries(m.definicoes).map(([k, v]) => (
                   <div key={k}>
-                    <dt className="rotulo text-mineral">{k.replaceAll("_", " ")}</dt>
+                    <dt className="rotulo text-mineral">{rotuloRegra(k)}</dt>
                     <dd className="mt-1 text-sm text-carvao">{v}</dd>
                   </div>
                 ))}
