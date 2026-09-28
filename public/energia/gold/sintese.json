@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "sintese.json",
- "gerado_em": "2026-09-28T13:56:39Z",
+ "gerado_em": "2026-09-28T14:44:27Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "03bc93a2bd06",
+ "versao_codigo": "d31df6ee12e1",
  "disponivel": true,
  "frases": [
   {
@@ -156,7 +156,7 @@
   {
    "id": "descolamento",
    "titulo": "Diferença de preço entre submercados",
-   "condicao": "Ao menos uma hora com diferença acima de R$ 1/MWh entre submercados nos últimos 30 dias da série de PLD.",
+   "condicao": "Ao menos uma hora com diferença acima de R$ 1,00/MWh entre submercados nos últimos 30 dias da série de PLD.",
    "ativo": true,
    "evidencia": "43 de 720 horas (6,0%); maior diferença R$ 82,15/MWh em 16/09/2026 às 16:00.",
    "href": "/setor-eletrico/rede",
