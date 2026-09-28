@@ -1,0 +1,72 @@
+{
+ "dataset": "PLD_HORARIO",
+ "orgao": "CCEE",
+ "portal": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+ "licenca": "CC-BY-4.0",
+ "licenca_url": "https://creativecommons.org/licenses/by/4.0/",
+ "capturado_em": "2026-09-27T15:44:02Z",
+ "origem_da_captura": "Projeto PLD, pasta 01_catalogo/pld_horario/v20260927T154402Z_<sha12> (Google Drive do dono); cada pasta termina com os 12 primeiros caracteres do sha256 do arquivo, conferidos na cópia para este repositório em 2026-09-28.",
+ "package_show": {
+  "arquivo": "package_show.json",
+  "sha256": "f1eaff9257a47454cdeae2deb0f1ec2ca2c2c170e6850c95a2bd87c7af98a9d5",
+  "metadata_modified": "2026-09-26T22:23:11.242850"
+ },
+ "conferencia_cruzada": "As 76.032 horas de 2022-11-01 a 2024-12-31 (quatro submercados) coincidem exatamente com o snapshot snap_bootstrap_20260927T154527Z/pld_horario.parquet embutido no artefato PLD_PREVISOES_EXPLICADAS v1-previa-r4 (sha256 5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d).",
+ "motivo_seed": "O portal de dados abertos e o servidor de download da CCEE responderam HTTP 403 (Acesso bloqueado) ao ambiente de construção em 2026-09-28; a captura primária do dono é a vintage disponível.",
+ "arquivos": [
+  {
+   "recurso": "pld_horario_2021",
+   "resource_id": "51922462-16b4-4c64-8327-4e14d6ee8c6c",
+   "url": "https://pda-download.ccee.org.br/SMpDR_R7SCOOj6pMbk1BJg/content",
+   "last_modified": "2025-07-14T14:18:33.100000",
+   "arquivo_seed": "pld_horario_2021.csv.gz",
+   "sha256": "e7c2c4a16d4cde691553b31200116feea77d173690d559df48c711331a9e4625",
+   "bytes": 1305856
+  },
+  {
+   "recurso": "pld_horario_2022",
+   "resource_id": "723cf7e6-6c29-4da6-aa39-e4c8804baf65",
+   "url": "https://pda-download.ccee.org.br/0YTnGY1jRb-tarnKnSNT9g/content",
+   "last_modified": "2025-07-14T14:19:17.764000",
+   "arquivo_seed": "pld_horario_2022.csv.gz",
+   "sha256": "ecc77391aa5e0310c82eae3698369b48e132bdc4fd3c767ce31776f3b185a8df",
+   "bytes": 1253890
+  },
+  {
+   "recurso": "pld_horario_2023",
+   "resource_id": "5fc317af-7191-4f8a-94e7-f77c56c747b3",
+   "url": "https://pda-download.ccee.org.br/HH4Xegm7R56M_H4qPNOvaw/content",
+   "last_modified": "2025-07-14T14:19:48.538000",
+   "arquivo_seed": "pld_horario_2023.csv.gz",
+   "sha256": "ab74d01e232202acfd477bf08cc69c46cc372cfedfa73fdf352fedfacecd676b",
+   "bytes": 1283110
+  },
+  {
+   "recurso": "pld_horario_2024",
+   "resource_id": "1b5b6946-8036-4622-a7a3-b21f33fc52b7",
+   "url": "https://pda-download.ccee.org.br/rMsBwN6TT-WUW2_LbGUvkw/content",
+   "last_modified": "2025-07-14T14:20:12.586000",
+   "arquivo_seed": "pld_horario_2024.csv.gz",
+   "sha256": "fb53ba53068cf388ae8bfea0a64da16f56d2bb56f8012fcafe05a6dcab05c3e4",
+   "bytes": 1294218
+  },
+  {
+   "recurso": "pld_horario_2025",
+   "resource_id": "2a180a6b-f092-43eb-9f82-a48798b803dc",
+   "url": "https://pda-download.ccee.org.br/korJMXwpSLGyVlpRMQWduA/content",
+   "last_modified": "2025-12-30T18:38:55.272000",
+   "arquivo_seed": "pld_horario_2025.csv.gz",
+   "sha256": "a329d0dcedf6c2f55c9e29b616cf5e008541ccea9db318781dc6d731672cfa6e",
+   "bytes": 1022899
+  },
+  {
+   "recurso": "pld_horario_2026",
+   "resource_id": "3f279d6b-1069-42f7-9b0a-217b084729c4",
+   "url": "https://pda-download.ccee.org.br/6A5wq97KTCWv_bvs3CqsQQ/content",
+   "last_modified": "2026-06-09T16:37:15.091000",
+   "arquivo_seed": "pld_horario_2026.csv.gz",
+   "sha256": "e28cffcf3d406940c153d35d60d70287f40dbc75bb435c02186183db9ee607e0",
+   "bytes": 765423
+  }
+ ]
+}

@@ -1,0 +1,203 @@
+{
+ "dominio": "energia",
+ "gold": "sintese.json",
+ "gerado_em": "2026-09-28T09:11:01Z",
+ "versao_pipeline": "energia-0.1.0",
+ "versao_codigo": "cfba57a74dc7",
+ "disponivel": true,
+ "frases": [
+  {
+   "id": "reservatorios",
+   "ref": "2026-09-26",
+   "natureza": "CALCULADO",
+   "regra": "EAR do SIN = soma das EAR verificadas dos quatro subsistemas (MWmês) ÷ soma das EAR máximas. Mediana, 10º e 90º percentis do valor do mesmo dia do calendário nos anos completos anteriores, desde 2001. Para 29 de fevereiro usa-se 28 de fevereiro.",
+   "trechos": [
+    {
+     "texto": "Os reservatórios do SIN guardam "
+    },
+    {
+     "texto": "61,9% da energia armazenável máxima",
+     "evidencia": "hidrologia.json#SIN.ear.valor",
+     "href": "/setor-eletrico/agua-e-clima#ear"
+    },
+    {
+     "texto": ", "
+    },
+    {
+     "texto": "12,3 p.p. acima da mediana histórica para 26/09/2026",
+     "evidencia": "hidrologia.json#SIN.ear.desvio_mediana_pp",
+     "href": "/setor-eletrico/agua-e-clima#padrao"
+    },
+    {
+     "texto": "."
+    }
+   ]
+  },
+  {
+   "id": "afluencias",
+   "ref": "2026-09-26",
+   "natureza": "CALCULADO",
+   "regra": "ENA de 30 dias em % da MLT = soma da ENA bruta dos 30 dias ÷ soma da MLT implícita de cada dia (ENA ÷ percentual da MLT informado pelo ONS).",
+   "trechos": [
+    {
+     "texto": "Nos 30 dias até 26/09/2026, a água que chegou aos reservatórios equivaleu a "
+    },
+    {
+     "texto": "164% da média de longo termo",
+     "evidencia": "hidrologia.json#SIN.ena.pct_mlt_30d",
+     "href": "/setor-eletrico/agua-e-clima#ena"
+    },
+    {
+     "texto": " para a época."
+    }
+   ]
+  },
+  {
+   "id": "carga",
+   "ref": "2026-09-25",
+   "natureza": "CALCULADO",
+   "regra": "Média dos últimos 7 ou 30 dias contra os mesmos dias do ano anterior, apenas quando os dois períodos estão no mesmo regime metodológico declarado pelo ONS.",
+   "trechos": [
+    {
+     "texto": "A carga do SIN nos 7 dias até 25/09/2026 ficou "
+    },
+    {
+     "texto": "4,5% acima dos mesmos dias de 2025",
+     "evidencia": "carga.json#SIN.ult7.variacao_pct",
+     "href": "/setor-eletrico/carga#comparacao"
+    },
+    {
+     "texto": "."
+    }
+   ]
+  },
+  {
+   "id": "termica",
+   "ref": "2026-09-25",
+   "natureza": "CALCULADO",
+   "regra": "Participação térmica dos últimos 7 dias comparada às participações térmicas de todas as janelas móveis de 7 dias dos 365 dias anteriores: percentil e mediana.",
+   "trechos": [
+    {
+     "texto": "As térmicas responderam por "
+    },
+    {
+     "texto": "10,9% da geração verificada nos 7 dias até 25/09/2026",
+     "evidencia": "geracao.json#termica_contexto.participacao_7d",
+     "href": "/setor-eletrico/geracao#termica"
+    },
+    {
+     "texto": "; nos 12 meses anteriores, a mediana dessa participação foi "
+    },
+    {
+     "texto": "12,4%",
+     "evidencia": "geracao.json#termica_contexto.mediana_365d",
+     "href": "/setor-eletrico/geracao#termica"
+    },
+    {
+     "texto": "."
+    }
+   ]
+  },
+  {
+   "id": "pld",
+   "ref": "2026-09-27",
+   "natureza": "CALCULADO",
+   "regra": "Percentil da média diária do dia de referência na distribuição das médias diárias do mesmo submercado desde 01/01/2021, em valores nominais. Faixa baixa: abaixo do 25º percentil. Central: do 25º ao 75º. Alta: acima do 75º.",
+   "trechos": [
+    {
+     "texto": "Em 27/09/2026, o PLD médio do Sudeste/Centro-Oeste foi "
+    },
+    {
+     "texto": "R$ 71,82/MWh",
+     "evidencia": "pld.json#cartoes.SE.media_dia",
+     "href": "/setor-eletrico/pld#hoje"
+    },
+    {
+     "texto": ", "
+    },
+    {
+     "texto": "na faixa central da distribuição desde 2021 (percentil 47)",
+     "evidencia": "pld.json#cartoes.SE.posicao",
+     "href": "/setor-eletrico/pld#regras"
+    },
+    {
+     "texto": ", com diferença de "
+    },
+    {
+     "texto": "R$ 3,55/MWh entre o maior e o menor submercado",
+     "evidencia": "pld.json#cartoes",
+     "href": "/setor-eletrico/pld#submercados"
+    },
+    {
+     "texto": "."
+    }
+   ]
+  }
+ ],
+ "observar": [
+  {
+   "id": "ear_faixa",
+   "titulo": "Armazenamento fora da faixa usual para a data",
+   "condicao": "EAR de algum subsistema abaixo do 10º ou acima do 90º percentil do mesmo dia nos anos anteriores (desde 2001).",
+   "ativo": true,
+   "evidencia": "Nordeste: 69,5% (acima da faixa 14,3% a 68,7%)",
+   "href": "/setor-eletrico/agua-e-clima#padrao",
+   "tipo": "regra"
+  },
+  {
+   "id": "ena_faixa",
+   "titulo": "Afluência de 30 dias fora da faixa usual",
+   "condicao": "ENA acumulada em 30 dias (% da MLT) abaixo do 10º ou acima do 90º percentil da mesma janela nos anos anteriores.",
+   "ativo": true,
+   "evidencia": "Sudeste/Centro-Oeste: 143% da MLT (acima da faixa); Sul: 247% da MLT (acima da faixa); Norte: 52% da MLT (abaixo da faixa)",
+   "href": "/setor-eletrico/agua-e-clima#ena",
+   "tipo": "regra"
+  },
+  {
+   "id": "descolamento",
+   "titulo": "Diferença de preço entre submercados",
+   "condicao": "Ao menos uma hora com diferença acima de R$ 1/MWh entre submercados nos últimos 30 dias da série de PLD.",
+   "ativo": true,
+   "evidencia": "37 de 720 horas (5,1%); maior diferença R$ 82,15/MWh em 16/09/2026 às 16:00.",
+   "href": "/setor-eletrico/rede",
+   "tipo": "regra"
+  },
+  {
+   "id": "pld_defasagem",
+   "titulo": "Série de PLD sem atualização recente",
+   "condicao": "Último dia de PLD integrado mais de 2 dias antes de hoje.",
+   "ativo": false,
+   "evidencia": "Último dia integrado: 27/09/2026 (1 dia antes de hoje). A coleta direta na CCEE está bloqueada no ambiente de construção.",
+   "href": "/setor-eletrico/dados/ccee-pld-horario",
+   "tipo": "dados"
+  },
+  {
+   "id": "termica",
+   "titulo": "Participação térmica incomum",
+   "condicao": "Participação térmica dos últimos 7 dias acima do 90º ou abaixo do 10º percentil das janelas de 7 dias dos 365 dias anteriores.",
+   "ativo": false,
+   "evidencia": "10,9% nos últimos 7 dias; faixa usual de 9,1% a 17,4% (percentil 29).",
+   "href": "/setor-eletrico/geracao#termica",
+   "tipo": "regra"
+  },
+  {
+   "id": "carga_extrema",
+   "titulo": "Carga diária entre as mais altas do ano",
+   "condicao": "Carga do SIN no dia de referência acima do 95º percentil dos 364 dias anteriores.",
+   "ativo": false,
+   "evidencia": "84.672 MWmed em 25/09/2026 (percentil 75).",
+   "href": "/setor-eletrico/carga",
+   "tipo": "regra"
+  },
+  {
+   "id": "cmo_semana",
+   "titulo": "CMO publicado pelo ONS para a semana operativa mais recente",
+   "condicao": "Evento conhecido: publicação semanal do CMO (modelo DECOMP). Não é previsão da Scrutiniums.",
+   "ativo": true,
+   "evidencia": "Semana de referência 02/10/2026: Sudeste/Centro-Oeste R$ 42,43/MWh; Sul R$ 42,43; Nordeste R$ 42,43; Norte R$ 461,46.",
+   "href": "/setor-eletrico/pld#formacao",
+   "tipo": "evento"
+  }
+ ],
+ "nota": "Frases e alertas montados por regras fixas a partir da gold; nenhum texto é redigido livremente. Cada número leva à evidência."
+}
