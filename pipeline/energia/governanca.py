@@ -9,7 +9,12 @@ Cada regra corresponde a um item de docs/observatorios/PLD_GOVERNANCA_PREVISAO.m
 4. registro publicado não muda de conteúdo sem nova versão (substitui + motivo);
 5. faixa de 80% só com calibração CALIBRADO;
 6. CENARIO nunca rotulado como previsão;
-7. ausência de previsão nunca serializada como número.
+7. ausência de previsão nunca serializada como número;
+8. referência experimental (seção 12.4 da especificação): só de modelo cujo registro a
+   autoriza com as condições verificadas, identificada como tal, com corte, versões e
+   variáveis auditáveis; nunca substitui a previsão principal nem vira PUBLICACAO;
+9. arquivo encadeado: cada registro novo guarda o sha256 do anterior (`anterior`), então
+   apagar, reordenar ou editar um registro do meio quebra a cadeia.
 """
 import hashlib
 import json
@@ -18,7 +23,7 @@ import re
 from datetime import datetime, timezone
 
 ESTADOS_MODELO = ("PESQUISA", "VALIDACAO", "PRODUCAO", "APOSENTADO")
-TIPOS_REGISTRO = ("PUBLICACAO", "RODADA_INTERNA")
+TIPOS_REGISTRO = ("PUBLICACAO", "RODADA_INTERNA", "REFERENCIA_EXPERIMENTAL")
 STATUS_REGISTRO = ("DISPONIVEL", "INDISPONIVEL")
 # Regra proposta nesta fase (a ratificar pelo dono): cobertura empírica da faixa
 # P10–P90 entre 75% e 85% em amostra fora do ajuste com n >= 100.
@@ -105,6 +110,8 @@ def valida_registro(rec, modelos_por_codigo):
     for campo, valor in [("previsao", rec.get("previsao"))] + [(f"quantis.{k}", x) for k, x in q.items() if k != "rotulo_faixa"]:
         if isinstance(valor, float) and not math.isfinite(valor):
             v.append(f"{rec.get('forecast_id')}: {campo} não finito")
+    if rec.get("tipo") == "REFERENCIA_EXPERIMENTAL":
+        v.extend(_valida_referencia_experimental(rec, modelos_por_codigo))
     if rec.get("tipo") == "PUBLICACAO":
         m = modelos_por_codigo.get(rec.get("modelo"))
         if not m or m.get("estado") != "PRODUCAO" or rec.get("estado_modelo") != "PRODUCAO":
@@ -119,6 +126,54 @@ def valida_registro(rec, modelos_por_codigo):
             v.append(f"{rec.get('forecast_id')}: publicação sem features_usadas")
         if rec.get("natureza") != "PREVISTO":
             v.append(f"{rec.get('forecast_id')}: publicação sem natureza PREVISTO")
+    return v
+
+
+def _valida_referencia_experimental(rec, modelos_por_codigo):
+    """Referência experimental (B0): número real permitido quando o registro do modelo a
+    autoriza e as condições da seção 12.4 (cálculo e disponibilidade temporal validados)
+    estão marcadas como verificadas, com evidência. A autorização vem da regra do
+    responsável na especificação, não de liberação de resultados de pesquisa; por isso
+    não depende de `resultados_liberados`, e não promove nem aprova o modelo."""
+    v = []
+    fid = rec.get("forecast_id")
+    m = modelos_por_codigo.get(rec.get("modelo")) or {}
+    ref = m.get("referencia_experimental") or {}
+    if not ref.get("autorizada"):
+        v.append(f"{fid}: modelo {rec.get('modelo')} sem autorização de referência experimental no registro")
+    condicoes = ref.get("condicoes") or []
+    if not condicoes or not all(c_.get("verificada") is True and c_.get("evidencia") for c_ in condicoes):
+        v.append(f"{fid}: referência experimental sem as condições verificadas e com evidência")
+    for campo in ("versao_modelo", "versao_codigo", "cutoff", "emitido_em", "rotulo"):
+        if not rec.get(campo):
+            v.append(f"{fid}: referência experimental sem {campo}")
+    if "referência experimental" not in str(rec.get("rotulo") or "").lower():
+        v.append(f"{fid}: referência experimental sem identificação no rótulo")
+    if rec.get("natureza") != "PREVISTO":
+        v.append(f"{fid}: referência experimental sem natureza PREVISTO")
+    if rec.get("status") == "DISPONIVEL" and not rec.get("features_usadas"):
+        v.append(f"{fid}: referência experimental disponível sem features_usadas")
+    # faixa só com calibração aprovada: o modelo de persistência emite um ponto; banda
+    # sem método validado seria incerteza inventada (seção 12.2)
+    if rec.get("quantis") and (rec.get("calibracao") or {}).get("status") != "CALIBRADO":
+        v.append(f"{fid}: referência experimental com quantis sem calibração CALIBRADO")
+    return v
+
+
+def valida_cadeia(registros):
+    """Encadeamento: todo registro com o campo `anterior` aponta para o sha256 do registro
+    imediatamente anterior na ordem do arquivo. Os registros antigos, anteriores ao
+    encadeamento, não têm o campo; depois do primeiro registro encadeado, todos têm."""
+    v = []
+    anterior_sha, encadeado = None, False
+    for rec in registros:
+        if "anterior" in rec:
+            encadeado = True
+            if rec.get("anterior") != anterior_sha:
+                v.append(f"{rec.get('forecast_id')}: cadeia quebrada (anterior não é o sha256 do registro anterior)")
+        elif encadeado:
+            v.append(f"{rec.get('forecast_id')}: registro sem encadeamento depois do início da cadeia")
+        anterior_sha = rec.get("sha256")
     return v
 
 
