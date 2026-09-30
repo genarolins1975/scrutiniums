@@ -6,6 +6,7 @@
  * índice i de cada array se refere ao mesmo período. Nenhum número é recalculado na
  * interface: comparações entre CMO e PLD já vêm como diferença no mesmo intervalo.
  */
+import type { Evidencia } from "./evidencia";
 import type { Cabecalho, Download, Proveniencia, Submercado } from "./tipos";
 
 export type SerieSm<T> = Record<Submercado, T>;
@@ -23,61 +24,75 @@ export type SituacaoHora =
 
 /* ---------- Evidência ("Comprove este número") ---------- */
 
-export type TesteEvidencia = { nome: string; resultado: string; detalhe: string };
-
-export type EvidenciaPld = {
-  valor_exibido: number | null;
-  valor_calculo: number | null;
-  unidade: string;
-  periodo: Record<string, string | number>;
-  entidade: string;
-  universo: string;
-  filtros: Record<string, string | number | boolean>;
-  fonte: {
-    orgao: string;
-    conjunto: string;
-    recurso: string;
-    url: string;
-    arquivos: { recurso: string; sha256: string | null; capturado_em?: string; publicado_em?: string | null }[];
-  };
-  chaves_origem: string;
-  formula: string;
-  numerador: { descricao: string; valor: number | null } | null;
-  denominador: { descricao: string; valor: number | null } | null;
-  pesos: string | null;
-  exclusoes: string[];
-  cobertura: string;
-  tratamento_ausencia: string;
-  versao: { pipeline: string; codigo: string | null; publicacao: string };
-  revisoes: number | null | Record<string, number | null>;
-  testes: TesteEvidencia[];
-  reconciliacao: {
-    descricao: string;
-    resultado: string;
-    tolerancia: number | null;
-    valor_outro_caminho?: number | null;
-    valor_outro_produto?: number | null;
-  };
-  download: Download[];
-  reproducao: string;
-  citacao: string;
-};
+/** Fichas no contrato compartilhado (pipeline/energia/evidencia.py e src/lib/energia/evidencia.ts). */
+export type EvidenciaPld = Evidencia;
 
 /* ---------- P008: conceito e fontes textuais ---------- */
 
+/**
+ * Texto citado no P008. Passagens normativas (`documento` e `dispositivo` presentes) só
+ * entram quando conferidas literalmente no documento baixado; o arquivo, o sha256 e a
+ * captura ficam em `documentos_normativos[documento]`.
+ */
 export type FonteTextual = {
   id: string;
   orgao: string;
   texto: string | null;
   origem: string;
   url?: string | null;
+  documento?: "decreto_5163_2004" | "ren_aneel_957_2021";
+  dispositivo?: string;
   capturado_em?: string | null;
   sha256?: string | null;
   arquivo?: string | null;
 };
 
+export type DocumentoNormativo = {
+  orgao: string;
+  titulo: string;
+  /** Endereço oficial do ato. */
+  url: string;
+  /** Cópia pública efetivamente lida quando o endereço oficial não responde (Internet Archive). */
+  url_copia: string | null;
+  licenca: string;
+  nota: string;
+  capturado_em: string | null;
+  sha256: string | null;
+  arquivo: string | null;
+};
+
+export type AgenteExemplo = {
+  id: "consumidor" | "gerador";
+  rotulo: string;
+  compras_contratadas_mwh: number;
+  vendas_contratadas_mwh: number;
+  geracao_verificada_mwh: number;
+  consumo_verificado_mwh: number;
+  diferenca_mwh: number;
+  valor_rs: number | null;
+  resultado: "crédito" | "débito" | "sem diferença";
+};
+
+/** Exemplo SINTÉTICO de liquidação: quantidades hipotéticas; só o PLD da hora é real. */
+export type ExemploLiquidacao = {
+  natureza: "EXEMPLO_SINTETICO";
+  aviso: string;
+  pld: { valor: number | null; sm: Submercado; nome: string; hora: string; unidade: string; fonte: string; regra_escolha: string };
+  formula: string;
+  agentes: AgenteExemplo[];
+  leitura: string;
+  simplificacoes: string[];
+  /** Ids de `fontes_textuais` (só passagens conferidas). */
+  base_normativa: string[];
+};
+
 export type ConceitoPld = {
   fontes_textuais: FonteTextual[];
+  documentos_normativos: Record<"decreto_5163_2004" | "ren_aneel_957_2021", DocumentoNormativo>;
+  normas_nao_conferidas: { id: string; documento: string; dispositivo: string; motivo: string }[];
+  /** Os atos anuais de limites, com trecho literal, ficam em `limites.atos`. */
+  atos_de_limites: "limites.atos";
+  exemplo_liquidacao: ExemploLiquidacao;
   bloqueios: { fonte: string; url: string; evidencia: string; consequencia: string }[];
 };
 
@@ -95,6 +110,11 @@ export type ProdutoPreco = {
   unidade_patamares_no_dicionario?: string | null;
   descricao_fonte: string | null;
   url: string;
+  /** Intervalo a que cada valor se refere. */
+  entrega: string;
+  /** Quando o valor é calculado, só quando a fonte informa (null: não informado). */
+  momento_do_calculo: string | null;
+  deck_versao: string;
 };
 
 export type ConvencaoSemana = {
@@ -154,8 +174,20 @@ export type BlocoCmoPld = {
     convencao_semana: SerieSm<ConvencaoSemana>;
     convencao_meia_hora: SerieSm<ConvencaoMeiaHora>;
   };
-  /** Semanas operativas: `fim` é a sexta-feira publicada pelo ONS; `inicio`, o sábado. */
+  /**
+   * Semanas operativas: `fim` é a sexta-feira publicada pelo ONS; `inicio`, o sábado.
+   * Recorte das últimas `semanal_recorte.semanas_na_gold` semanas; o histórico desde 2021
+   * está no CSV `semanal_recorte.historico_completo`.
+   */
   semanal: { fim: string[]; inicio: string[] } & SerieSm<{ decomp: (number | null)[]; dessem: (number | null)[]; pld: (number | null)[] }>;
+  semanal_recorte: { semanas_na_gold: number; semanas_no_csv: number; historico_completo: string };
+  /** Conferência gold contra o CSV publicado, relido depois de escrito. */
+  equivalencia_csv: {
+    celulas: number;
+    divergentes: number;
+    exemplos: { semana_fim: string; sm: Submercado; campo: "decomp" | "dessem" | "pld"; gold: number | null; csv: number | null }[];
+    tolerancia: string;
+  };
   semanas_completas: number;
   semana_referencia: SemanaReferencia | null;
   relacao_anual: RelacaoAnual[];
@@ -444,14 +476,20 @@ export type AchadoA02 = {
   dessem_mesmo_periodo?: { sm: Submercado; meias_horas: number; meias_horas_zero: number; frac_zero: number | null; media: number | null; max: number | null }[];
   pld_mesmo_periodo?: { sm: Submercado; horas: number; media: number | null; horas_com_limite: number; frac_piso: number | null }[];
   observacao_formato?: string;
+  /** Permissões declaradas no dicionário em PDF do CMO semanal (zero admitido ou não). */
+  dicionario_permite?: Record<string, PermissoesCampo> | null;
   texto?: string;
 };
 
 export type CampoDicionario = { descricao: string; unidade?: string };
+/** Colunas "Permite valor nulo / zerado / negativo" do dicionário em PDF do ONS. */
+export type PermissoesCampo = { nulo: boolean; zerado: boolean; negativo: boolean };
+
 export type PdfDicionario = {
   sha256: string | null;
   data_documento: string | null;
   versoes: { versao: string; data: string; descricao: string }[] | null;
+  permissoes: Record<string, PermissoesCampo> | null;
 };
 
 export type AchadoA03 = {
@@ -582,7 +620,7 @@ export type PldDetalheGold = Cabecalho & {
   };
   evidencias: Record<string, EvidenciaPld>;
   snapshots: Record<
-    "cmo_semi_horario" | "cmo_semanal_original" | "dicionarios" | "ipca" | "pld" | "cmo_semanal" | "balanco" | "intercambio",
+    "cmo_semi_horario" | "cmo_semanal_original" | "dicionarios" | "ipca" | "normas" | "pld" | "cmo_semanal" | "balanco" | "intercambio",
     SnapshotResumo
   >;
   downloads: Download[];

@@ -46,21 +46,43 @@ export type ReferenciaTemporal = {
   /** AAAA-MM da última competência publicada em qualquer distribuidora. */
   ultima_competencia: string;
   ultima_competencia_parcial: string | null;
+  /** Último mês (1 a 12) do recorte janeiro..mês do acumulado do ano aberto; null sem acumulado. */
+  mes_fim_acumulado: number | null;
   aviso_parcial: string | null;
+};
+
+/** Razões de somas sobre um subconjunto de distribuidoras (null = nenhuma distribuidora válida). */
+export type SomaNacional = {
+  injetada_mwh: number | null;
+  perdas_totais_mwh: number | null;
+  taxa_total_pct: number | null;
+  n_com_tecnica: number;
+  injetada_com_tecnica_mwh: number | null;
+  /** % da injetada coberta pelas distribuidoras que publicam a separação técnica. */
+  cobertura_tecnica_pct: number | null;
+  perdas_tecnicas_mwh: number | null;
+  /** Razão sobre a injetada das mesmas distribuidoras que publicam a técnica. */
+  taxa_tecnica_pct: number | null;
+  n_com_pnt_bt: number;
+  pnt_mwh: number | null;
+  mercado_bt_mwh: number | null;
+  pnt_bt_pct: number | null;
 };
 
 export type LinhaNacional = {
   ano: number;
   universo: Universo;
+  /** Ano posterior ao de referência: sem soma anual (nenhuma distribuidora tem 12 meses). */
+  parcial: boolean;
   /** Distribuidoras somadas: 12 meses e sem alerta físico. */
   n_distribuidoras: number;
   /** Distribuidoras com algum dado no ano. */
   n_publicadas: number;
-  injetada_mwh: number;
-  perdas_totais_mwh: number;
+  injetada_mwh: number | null;
+  perdas_totais_mwh: number | null;
   taxa_total_pct: number | null;
   n_com_tecnica: number;
-  injetada_com_tecnica_mwh: number;
+  injetada_com_tecnica_mwh: number | null;
   /** % da injetada coberta pelas distribuidoras que publicam a separação técnica. */
   cobertura_tecnica_pct: number | null;
   perdas_tecnicas_mwh: number | null;
@@ -105,6 +127,34 @@ export type VariacaoAnual = {
   atravessa_leiaute: boolean;
 };
 
+/** Acumulado janeiro..mes_fim do ano aberto contra o mesmo período do ano anterior. */
+export type ParcialDistribuidora = {
+  ano: number;
+  mes_fim: number;
+  meses: number;
+  completo: boolean;
+  /** Completa e sem alerta nos dois recortes: só então entra no agregado e na comparação. */
+  comparavel: boolean;
+  origem_injetada: OrigemInjetada;
+  injetada_mwh: number | null;
+  perdas_totais_mwh: number | null;
+  taxa_total_pct: number | null;
+  pnt_bt_pct: number | null;
+  anterior: {
+    perdas_totais_mwh: number | null;
+    taxa_total_pct: number | null;
+    pnt_bt_pct: number | null;
+    origem_injetada: OrigemInjetada;
+  };
+  alertas: AlertaAnual[];
+};
+
+export type AcumuladoAno = {
+  ano: number;
+  mes_fim: number;
+  agregados: { universo: Universo; n_distribuidoras: number; atual: SomaNacional; anterior: SomaNacional }[];
+};
+
 export type SegmentoTecnico = {
   /** AAAA-MM */
   inicio: string;
@@ -112,10 +162,8 @@ export type SegmentoTecnico = {
   /** % da energia injetada, constante no trecho. */
   pct: number;
   meses: number;
-  /** Resolução homologatória cuja vigência começa no mês de transição, quando existe. */
+  /** Resolução homologatória cuja vigência começa no mês da troca (associação por coincidência de mês). */
   reh: { resolucao: string | null; inicio_vigencia: string } | null;
-  /** Dia de início reconstituído da média pró-rata do mês de transição. */
-  dia_inicio_prorata: number | null;
   transicao: string | null;
 };
 
@@ -142,6 +190,8 @@ export type Territorio = {
   exclusivos: number;
   compartilhados: number;
   nao_confirmados: number;
+  /** Municípios fora da relação de conjuntos, ligados só pelo cadastro de MMGD (fora do contexto social). */
+  so_mmgd: number;
   ufs: string[];
   /** UFs que só aparecem em vínculos sem confirmação (em geral erro de código na fonte). */
   ufs_so_nao_confirmadas: string[];
@@ -163,14 +213,6 @@ export type EventoDistribuidora =
   | { tipo: "inicio_serie"; competencia: string }
   | { tipo: "fim_serie"; competencia: string };
 
-export type EvidenciaDistribuidora = {
-  formula: string;
-  numerador: { descricao: string; valor: number | null };
-  denominador: { descricao: string; valor: number | null };
-  chaves_origem: string[];
-  reconciliacao: { descricao: string; resultado: EstadoReconciliacao; tolerancia: string };
-};
-
 export type Distribuidora = {
   cnpj: string;
   cnpj_formatado: string;
@@ -183,23 +225,28 @@ export type Distribuidora = {
   ativa: boolean;
   referencia: ReferenciaDistribuidora | null;
   variacao: VariacaoAnual | null;
+  parcial: ParcialDistribuidora | null;
   tecnica_regulatoria: { segmentos: SegmentoTecnico[]; n_segmentos: number } | null;
   tarifa: TarifaPerdas | null;
   territorio: Territorio | null;
   contexto: ContextoSocial | null;
   eventos: EventoDistribuidora[];
-  evidencia?: EvidenciaDistribuidora;
 };
 
-export type EventoPerdas = EventoDistribuidora & { cnpj: string; sigla: string | null };
+/** [cnpj, renda_media_pc_confirmados, pnt_bt_pct, taxa_total_pct, cobertura_exclusivos_pct] */
+export type PontoAssociacao = [string, number | null, number | null, number | null, number | null];
 
 export type Associacao = {
   variavel_territorial: string;
+  /** Ano das perdas usado (o do Censo, 2022, quando completo). */
+  ano_perdas: number;
   spearman_pnt_bt: number | null;
   n_pnt_bt: number;
   spearman_taxa_total: number | null;
   n_taxa_total: number;
   universo: string;
+  campos_pontos: string[];
+  pontos: PontoAssociacao[];
   leitura: string;
 };
 
@@ -210,6 +257,12 @@ export type MapaPerdas = {
   vinculos: number;
   vinculos_nao_confirmados: number;
   codigos_invalidos: string[];
+  /** Códigos IBGE com vínculo só pelo cadastro de MMGD. */
+  municipios_so_mmgd: string[];
+  /** Códigos IBGE sem nenhuma distribuidora ligada (ficam sem cor no mapa). */
+  municipios_sem_vinculo: string[];
+  /** Vínculos com distribuidora que não tem balanço no SAMP (sem valor de perdas). */
+  vinculos_fora_do_samp: number;
   conjuntos_sem_municipio: string[];
   geometria: string;
   arquivo: string;
@@ -245,39 +298,56 @@ export type QualidadePerdas = {
 
 export type Bloqueio = { item: string; tentativas: string[]; evidencia: string; dependencia: string };
 
-/** Objeto "Comprove este número" (seção 11.5), montado no pipeline. */
+/**
+ * Objeto "Comprove este número" (seção 11.5), montado e validado por
+ * pipeline/energia/evidencia.py (construir); mesma ordem de campos.
+ */
+export type ArquivoEvidencia = {
+  recurso: string | null;
+  arquivo: string | null;
+  sha256: string | null;
+  capturado_em: string | null;
+  publicado_em: string | null;
+};
+
 export type EvidenciaPerdas = {
+  indicador: string;
+  /** "sem dado" quando valor_calculo é null. */
   valor_exibido: string;
   valor_calculo: number | null;
   unidade: string;
-  periodo: string;
+  periodo: { inicio: string; fim: string };
   entidade: string;
   universo: string;
   filtros: string[];
   fonte: {
     orgao: string;
-    dataset: string;
-    recurso: string;
-    url_dataset: string;
-    url_primaria: string;
-    licenca: string;
+    conjunto: string;
+    recurso: string | null;
+    url: string;
     arquivo: string | null;
     sha256: string | null;
     capturado_em: string | null;
     publicado_em: string | null;
+    arquivos?: ArquivoEvidencia[];
   };
+  extracao_pdf: { documento: string; edicao: string; pagina: string; conferencia: string } | null;
   chaves_origem: string[];
+  chaves_total: number | null;
+  consulta: string | null;
+  manifesto: { rotulo: string; url: string } | null;
   formula: string;
-  numerador: { descricao: string; valor: number | null };
-  denominador: { descricao: string; valor: number | null };
+  numerador: { descricao: string; valor: number | null } | null;
+  denominador: { descricao: string; valor: number | null } | null;
   pesos: string | null;
   exclusoes: string[];
   cobertura: string;
   tratamento_ausencia: string;
   versao: { pipeline: string; codigo: string | null; publicacao: string };
-  revisoes: Proveniencia["revisoes_conhecidas"];
-  testes: { nome: string; resultado: string; detalhe: string }[];
-  reconciliacao: { descricao: string; resultado: string; tolerancia: string } | null;
+  /** Texto pronto sobre revisões da fonte entre as capturas. */
+  revisoes: string;
+  testes: { nome: string; resultado: "aprovado" | "ressalva" | "reprovado"; detalhe: string }[];
+  reconciliacao: { descricao: string; resultado: "aprovado" | "ressalva" | "reprovado"; tolerancia: string } | null;
   download: Download[];
   reproducao: string;
   citacao: string;
@@ -287,11 +357,10 @@ export type PerdasGold = Cabecalho & {
   referencia: ReferenciaTemporal;
   definicoes: Definicoes;
   nacional: LinhaNacional[];
-  nacional_parcial: LinhaNacional | null;
+  acumulado: AcumuladoAno | null;
   distribuidoras: Distribuidora[];
   associacao: Associacao;
   mapa: MapaPerdas;
-  eventos: EventoPerdas[];
   qualidade: QualidadePerdas;
   bloqueios: Bloqueio[];
   decisoes: string[];
@@ -304,9 +373,15 @@ export type PerdasGold = Cabecalho & {
     territorio: Proveniencia;
     contexto: Proveniencia;
   };
-  evidencias: { taxa_nacional: EvidenciaPerdas; pnt_bt_nacional: EvidenciaPerdas };
+  evidencias: {
+    taxa_nacional: EvidenciaPerdas;
+    perdas_nacional: EvidenciaPerdas;
+    pnt_bt_nacional: EvidenciaPerdas;
+    injetada_2024: EvidenciaPerdas | null;
+    acumulado: EvidenciaPerdas | null;
+  };
   downloads: Download[];
-  series: { anual: string; municipios: string };
+  series: { anual: string; municipios: string; evidencias: string };
 };
 
 /* ---------- arquivos sob demanda (public/energia/series) ---------- */
@@ -343,14 +418,31 @@ export type SerieAnualPerdas = {
 };
 
 /**
+ * Estado do vínculo município × distribuidora: 0 = relação conjunto × município sem
+ * empreendimento de MMGD que confirme; 1 = relação confirmada pelo cadastro de MMGD;
+ * 2 = só pelo cadastro de MMGD (município fora da relação de conjuntos).
+ */
+export type EstadoVinculo = 0 | 1 | 2;
+
+/**
  * public/energia/series/perdas_municipios.json: município IBGE (7 dígitos, mesmo id da malha
- * em public/energia/geo/municipios.json) → [índice em `distribuidoras`, confirmado pelo
- * cadastro de MMGD (0/1)].
+ * em public/energia/geo/municipios.json) → [índice em `distribuidoras`, estado do vínculo].
  */
 export type MunicipiosPerdas = {
   gerado_em: string;
   ano_relacao: number | null;
   distribuidoras: string[];
   campos: string[];
-  municipios: Record<string, { uf: string; valido: boolean | null; d: [number, 0 | 1][] }>;
+  estados_vinculo: Record<"0" | "1" | "2", string>;
+  municipios: Record<string, { uf: string; valido: boolean | null; d: [number, EstadoVinculo][] }>;
+};
+
+/**
+ * public/energia/series/perdas_evidencias.json: evidência da taxa de perdas totais do ano de
+ * referência de cada distribuidora (CNPJ → evidência), lida sob demanda pelo painel de seleção.
+ */
+export type EvidenciasDistribuidoras = {
+  gerado_em: string;
+  ano: number;
+  evidencias: Record<string, EvidenciaPerdas>;
 };

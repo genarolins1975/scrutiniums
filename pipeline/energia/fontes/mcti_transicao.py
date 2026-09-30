@@ -11,14 +11,19 @@ Há três famílias de fator, com usos diferentes, publicadas em séries separad
    E a margem de operação pelo método simples ajustado, anual, em página HTML.
 
 Onde obter (verificado em 30/09/2026):
-- www.gov.br/mcti/.../sirene/dados-e-ferramentas/fatores-de-emissao (página vigente, com
-  planilhas de 2022 em diante): responde com um desafio de verificação humana (página
-  "This question is for testing whether you are a human visitor", com support ID) para
-  a página e para os arquivos. Não é contornado: a tentativa fica registrada em `coletas`
-  com o support ID, e a série publicada termina onde termina a fonte acessível.
+- www.gov.br/mcti/.../sirene/dados-e-ferramentas/fatores-de-emissao (página vigente): 23
+  planilhas visíveis (inventário 2006 a ago/2026, uma planilha do MDL por ano de 2006 a
+  2026 e o método simples ajustado de 2006 a 2025) e 13 âncoras sem texto, invisíveis ao
+  leitor, que apontam para versões antigas e não são lidas (planilhas_publicadas). A
+  página às vezes responde com um desafio de verificação humana ("This question is for
+  testing whether you are a human visitor", com support ID), para a página e para os
+  arquivos: não é contornado; a tentativa fica registrada em `coletas` com o support ID
+  e vale a última captura válida. Em 30/09/2026 o coletor do pipeline, com a sua própria
+  identificação, recebeu a página às 22h28, 22h41 e 22h48 UTC.
 - antigo.mctic.gov.br/mctic/opencms/ciencia/SEPED/clima/textogeral/*.html (site
   institucional anterior do MCTI, servido pela origem): planilhas de 2006 a 2021 do
-  fator médio e da margem de operação e construção, e a tabela do método simples ajustado.
+  fator médio e da margem de operação e construção, e a tabela do método simples
+  ajustado. Serve de comparação com a página vigente.
 
 As planilhas não seguem um leiaute fixo (a coluna do valor anual e da margem de
 construção muda de ano para ano), então o parser procura rótulos e nomes de mês, e
@@ -402,7 +407,7 @@ def desafio_waf(corpo):
 
 
 def links_xlsx(corpo, base_url):
-    """URLs absolutas de planilhas .xlsx citadas numa página."""
+    """URLs absolutas de planilhas .xlsx citadas numa página (visíveis ou não)."""
     t = corpo.decode("utf-8", errors="replace") if isinstance(corpo, bytes) else corpo
     vistos = []
     for href in re.findall(r'href="([^"]+\.xlsx)"', t, flags=re.I):
@@ -410,6 +415,48 @@ def links_xlsx(corpo, base_url):
         if u not in vistos:
             vistos.append(u)
     return vistos
+
+
+def _sem_tags(trecho):
+    return re.sub(r"\s+", " ", html_mod.unescape(re.sub(r"<[^>]+>", " ", trecho))).strip()
+
+
+def planilhas_publicadas(corpo, base_url):
+    """(publicadas, ocultas) a partir das âncoras de planilha .xlsx de uma página.
+
+    publicadas: [{"titulo", "url", "arquivo"}] das âncoras com texto visível ("Clique
+    Aqui", "Aqui", "Download"), na ordem da página, com o título da linha da tabela em
+    que estão (o MCTI anota ali as correções: "Ano Base 2024 – com correções nos meses
+    de janeiro e março a setembro").
+
+    ocultas: URLs de âncoras sem texto. Em 30/09/2026 a página vigente do MCTI tinha 36
+    links de planilha, dos quais 13 em âncoras vazias, invisíveis para o leitor e
+    apontando para versões antigas (por exemplo, Despacho_2021_jan-a-jun.xlsx, o primeiro
+    semestre de 2021, superado pelo ano completo). Ler essas âncoras como publicação
+    vigente deixaria uma versão parcial sobrescrever a completa, então elas só ficam
+    registradas. Comentários HTML também são ignorados."""
+    t = corpo.decode("utf-8", errors="replace") if isinstance(corpo, bytes) else corpo
+    t = re.sub(r"<!--.*?-->", "", t, flags=re.S)
+    publicadas, ocultas, vistos = [], [], set()
+    for m in re.finditer(r'<a\b[^>]*?href="([^"]+\.xlsx)"[^>]*>(.*?)</a>', t, flags=re.S | re.I):
+        u = urljoin(base_url, html_mod.unescape(m.group(1)))
+        if not _sem_tags(m.group(2)):
+            if u not in ocultas:
+                ocultas.append(u)
+            continue
+        if u in vistos:
+            continue
+        vistos.add(u)
+        ini = t.rfind("<tr", 0, m.start())
+        fim_ant = t.rfind("</tr>", 0, m.start())
+        titulo = None
+        if ini != -1 and ini > fim_ant:
+            fim = t.find("</tr>", m.end())
+            linha = _sem_tags(t[ini:fim if fim != -1 else m.end()])
+            titulo = re.split(r"\s+XLSX\b", linha, maxsplit=1)[0].strip() or None
+        publicadas.append({"titulo": titulo, "url": u, "arquivo": u.rsplit("/", 1)[-1]})
+    ocultas = [u for u in ocultas if u not in vistos]
+    return publicadas, ocultas
 
 
 def tipo_arquivo(nome):

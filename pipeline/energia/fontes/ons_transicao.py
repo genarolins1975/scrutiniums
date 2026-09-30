@@ -32,7 +32,7 @@ URL_DICIONARIO = "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/carga_v
 # Áreas de carga do tipo submercado, na grafia da API; SE = Sudeste/Centro-Oeste ("SECO").
 AREAS = {"SE": "SECO", "S": "S", "NE": "NE", "N": "N"}
 HORAS_INTERVALO = 0.5
-PRIMEIRO_MES = "2019-01"  # primeiro mês com valor de MMGD na API (2018 vem vazio)
+PRIMEIRO_MES = "2019-01"  # primeiro mês pedido; o primeiro dia com valor de MMGD é 15/02/2019 (antes vem vazio)
 CAMPOS = ("val_cargammgd", "val_cargaglobal", "val_cargaglobalsmmgd")
 
 _VAZIO = re.compile(r":\s*(?=[,}\]])")

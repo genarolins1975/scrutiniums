@@ -8,11 +8,15 @@ Conjuntos (portal de dados abertos da ANEEL, licença ODbL):
   DscREH no arquivo; DscUnidade é DscUnidadeTerciaria; VlrTusd é VlrTUSD): o parser
   segue o cabeçalho real e falha alto se ele mudar.
 - componentes-tarifarias: as parcelas que somam a TE e a TUSD (Parquet anual; o
-  Parquet é o mesmo conteúdo do CSV em formato colunar, 50 vezes menor).
+  Parquet é o mesmo conteúdo do CSV em formato colunar, 50 vezes menor, e publica o
+  CNPJ como inteiro, sem zeros à esquerda: entidades.cnpj recompõe os 14 dígitos).
 - bandeiras-tarifarias: adicional por patamar (por resolução) e bandeira acionada
   por mês de competência.
 - subsidios-tarifarios: repasse mensal da CDE a cada distribuidora por categoria de
   desconto tarifário.
+- conta-desenvolvimento-energetico-cde-custeio-dos-beneficios-tarifarios: valores anuais
+  da CDE por rubrica de despesa (Tarifa Social, descontos, CCC...) e de receita (quotas
+  cobradas nas tarifas, UBP, multas...).
 
 Só números: nenhum valor é corrigido, arredondado ou completado aqui. Vazio vira
 None (ausência); ",00" publicado pela fonte vira 0.0 (zero publicado), e quem
@@ -160,45 +164,55 @@ def filtro_componentes_b1(tabela):
     return tabela.filter(m)
 
 
-def linhas_componentes(caminho_bronze, contagem=None):
-    """Linhas do recorte B1 de um Parquet anual de componentes (do bronze, gzip)."""
-    import io
+def linhas_componentes(caminho_bronze, contagem=None, lote=200000):
+    """Linhas do recorte B1 de um Parquet anual de componentes (do bronze, gzip).
+
+    O arquivo de 2025 tem mais de 3 milhões de linhas e só uma fração é B1 residencial:
+    o Parquet é descomprimido em fluxo para um arquivo temporário (o leitor precisa de
+    acesso aleatório) e lido em lotes, só com as colunas usadas, filtrando lote a lote.
+    Assim a memória fica no tamanho de um lote, não no do arquivo."""
+    import shutil
+    import tempfile
+    import pyarrow as pa
     import pyarrow.parquet as pq
     from pipeline.energia import base
     contagem = contagem if contagem is not None else {}
-    with base.abre_bronze(caminho_bronze) as f:
-        buf = io.BytesIO(f.read())
-    arq = pq.ParquetFile(buf)
-    contagem["linhas_lidas"] = contagem.get("linhas_lidas", 0) + arq.metadata.num_rows
-    # filtro já na leitura: o arquivo de 2025 tem 3 milhões de linhas e só uma fração
-    # é B1 residencial; filtrar depois de carregar tudo custaria gigabytes de memória
-    faltam = [c for c in CAMPOS_COMPONENTES if c not in arq.schema_arrow.names]
-    if faltam:
-        raise EsquemaInesperado(f"componentes: colunas ausentes {faltam}")
-    buf.seek(0)
-    tabela = pq.read_table(buf, columns=list(CAMPOS_COMPONENTES), filters=[
-        ("DscSubGrupoTarifario", "==", "B1"), ("DscModalidadeTarifaria", "==", "Convencional"),
-        ("DscSubClasseConsumidor", "==", "Residencial"), ("DscBaseTarifaria", "==", "Tarifa de Aplicação")])
-    rec = filtro_componentes_b1(tabela)
-    for row in rec.to_pylist():
-        unidade = (row["DscUnidade"] or "").strip()
-        if unidade != "R$/MWh":
-            contagem["unidade_diferente_de_mwh"] = contagem.get("unidade_diferente_de_mwh", 0) + 1
-            continue
-        cnpj = entidades.cnpj(row["NumCPFCNPJ"])
-        if not cnpj:
-            contagem["sem_cnpj"] = contagem.get("sem_cnpj", 0) + 1
-            continue
-        ident, data_ato = ato(row["DscResolucaoHomologatoria"])
-        contagem["no_recorte"] = contagem.get("no_recorte", 0) + 1
-        v = row["VlrComponenteTarifario"]
-        yield {
-            "cnpj": cnpj, "sigla": normaliza_texto(row["SigNomeAgente"]),
-            "inicio": str(row["DatInicioVigencia"])[:10], "fim": str(row["DatFimVigencia"])[:10],
-            "ato": ident, "ato_texto": normaliza_texto(row["DscResolucaoHomologatoria"]), "ato_data": data_ato,
-            "componente": normaliza_texto(row["DscComponenteTarifario"]),
-            "valor": None if v is None else float(v),
-        }
+    fd, tmp = tempfile.mkstemp(prefix="conta-componentes-", suffix=".parquet")
+    os.close(fd)
+    try:
+        with base.abre_bronze(caminho_bronze) as src, open(tmp, "wb") as dst:
+            shutil.copyfileobj(src, dst, 1 << 20)
+        arq = pq.ParquetFile(tmp)
+        faltam = [c for c in CAMPOS_COMPONENTES if c not in arq.schema_arrow.names]
+        if faltam:
+            raise EsquemaInesperado(f"componentes: colunas ausentes {faltam}")
+        contagem["linhas_lidas"] = contagem.get("linhas_lidas", 0) + arq.metadata.num_rows
+        for bloco in arq.iter_batches(columns=list(CAMPOS_COMPONENTES), batch_size=lote):
+            rec = filtro_componentes_b1(pa.Table.from_batches([bloco]))
+            for row in rec.to_pylist():
+                unidade = (row["DscUnidade"] or "").strip()
+                if unidade != "R$/MWh":
+                    contagem["unidade_diferente_de_mwh"] = contagem.get("unidade_diferente_de_mwh", 0) + 1
+                    continue
+                cnpj = entidades.cnpj(row["NumCPFCNPJ"])
+                if not cnpj:
+                    contagem["sem_cnpj"] = contagem.get("sem_cnpj", 0) + 1
+                    continue
+                ident, data_ato = ato(row["DscResolucaoHomologatoria"])
+                contagem["no_recorte"] = contagem.get("no_recorte", 0) + 1
+                v = row["VlrComponenteTarifario"]
+                yield {
+                    "cnpj": cnpj, "sigla": normaliza_texto(row["SigNomeAgente"]),
+                    "inicio": str(row["DatInicioVigencia"])[:10], "fim": str(row["DatFimVigencia"])[:10],
+                    "ato": ident, "ato_texto": normaliza_texto(row["DscResolucaoHomologatoria"]), "ato_data": data_ato,
+                    "componente": normaliza_texto(row["DscComponenteTarifario"]),
+                    "valor": None if v is None else float(v),
+                }
+    finally:
+        try:
+            os.remove(tmp)
+        except OSError:
+            pass
 
 
 def data_br_iso(s):
@@ -261,6 +275,42 @@ def linhas_subsidios(caminho_bronze, contagem=None):
             "ato_inicio": data_br_iso(row["DatInicioVigenciaAto"]),
             "ato_publicacao": data_br_iso(row["DthPublicacaoAto"]),
         }
+
+
+CAMPOS_CDE = ("DatGeracaoConjuntoDados", "AnoReferencia", "DscTipoFonte", "DscFonte", "VlrCusteio")
+
+
+def linhas_cde_custeio(caminho_bronze, contagem=None):
+    """Custeio anual da CDE por fonte de despesa e de receita: [{ano, tipo, fonte, valor,
+    gerado_em}]. O nome da fonte é aparado ('RGR ' e 'RGR' aparecem em anos diferentes
+    como a mesma rubrica); vazio vira None (a fonte não publicou valor para a rubrica no
+    ano), '0' vira 0.0 (zero publicado). Rubrica repetida no mesmo ano e tipo depois de
+    aparada, com valor diferente, é contada e fica a primeira: não se soma nada às cegas."""
+    contagem = contagem if contagem is not None else {}
+    vistos, out = {}, []
+    primeira = True
+    for row in ckan.le_csv_bronze(caminho_bronze):
+        if primeira:
+            _confere_cabecalho(row, CAMPOS_CDE, "cde custeio")
+            primeira = False
+        contagem["linhas_lidas"] = contagem.get("linhas_lidas", 0) + 1
+        ano = (row["AnoReferencia"] or "").strip()
+        if not re.match(r"^\d{4}$", ano):
+            contagem["sem_ano"] = contagem.get("sem_ano", 0) + 1
+            continue
+        tipo, fonte = normaliza_texto(row["DscTipoFonte"]), normaliza_texto(row["DscFonte"])
+        valor = ckan.numero_br(row["VlrCusteio"])
+        chave = (ano, tipo, fonte)
+        if chave in vistos:
+            if vistos[chave] != valor:
+                contagem["rubrica_repetida_com_valor_diferente"] = contagem.get("rubrica_repetida_com_valor_diferente", 0) + 1
+            continue
+        vistos[chave] = valor
+        if valor is None:
+            contagem["valor_vazio"] = contagem.get("valor_vazio", 0) + 1
+        out.append({"ano": ano, "tipo": tipo, "fonte": fonte, "valor": valor,
+                    "gerado_em": (row["DatGeracaoConjuntoDados"] or "").strip()[:10] or None})
+    return out
 
 
 def sem_acento(s):

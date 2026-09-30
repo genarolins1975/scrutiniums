@@ -517,6 +517,14 @@ def _pa():
     return pa, pc, pq
 
 
+# O Parquet histórico de unidades geradoras do RALIE tem 18,9 milhões de linhas (177
+# fotografias em 30/09/2026) e cresce a cada fotografia. Ler as colunas usadas de uma
+# vez passava de 1,7 GB de memória residente; em lotes, cada função guarda só o que
+# precisa (agregados parciais ou as linhas das fotografias pedidas) e o processo fica
+# bem abaixo da meta de 2 GB mesmo com o arquivo dobrando de tamanho.
+LOTE_PARQUET = 500_000
+
+
 def abre_parquet(dados):
     """bytes do Parquet (ou caminho) → ParquetFile."""
     pa, _, pq = _pa()
@@ -525,46 +533,77 @@ def abre_parquet(dados):
     return pq.ParquetFile(dados)
 
 
+def _lotes(pf, colunas, lote=LOTE_PARQUET):
+    """Tabelas pyarrow de até `lote` linhas com só as colunas pedidas."""
+    pa, _, _ = _pa()
+    for b in pf.iter_batches(columns=colunas, batch_size=lote):
+        yield pa.Table.from_batches([b])
+
+
+def _reagrega(parciais, chaves, regras):
+    """Combina agregados parciais por lote: `regras` = [(coluna parcial, função de
+    recombinação, nome final)]. Soma de somas, soma de contagens, máximo de máximos e
+    mínimo de mínimos são exatos; média não se recombina assim e não entra aqui."""
+    pa, _, _ = _pa()
+    if not parciais:
+        return None
+    g = pa.concat_tables(parciais).group_by(chaves).aggregate([(col, fn) for col, fn, _ in regras])
+    nomes = {f"{col}_{fn}": nome for col, fn, nome in regras}
+    return g.rename_columns([nomes.get(c, c) for c in g.column_names])
+
+
 def datas_ralie(pf):
     """Fotografias (DatRalie) presentes no Parquet histórico, em ISO."""
     _, pc, _ = _pa()
-    col = pf.read(columns=["DatRalie"]).column("DatRalie")
-    return sorted(d.isoformat() for d in pc.unique(col).to_pylist() if d)
+    datas = set()
+    for t in _lotes(pf, ["DatRalie"]):
+        datas.update(d for d in pc.unique(t["DatRalie"]).to_pylist() if d)
+    return sorted(d.isoformat() for d in datas)
 
 
 def agrega_historico_ug(pf):
     """Por fotografia e tipo de geração: unidades, kW e kW sem previsão de operação
     comercial (DatPrevisaoOpComercialSFG vazia). {DatRalie: {tipo: {...}}}."""
     pa, pc, _ = _pa()
-    t = pf.read(columns=["DatRalie", "SigTipoGeracao", "MdaPotenciaUnitaria", "DatPrevisaoOpComercialSFG"])
-    t = t.append_column("sem_prev", pc.if_else(pc.is_null(t["DatPrevisaoOpComercialSFG"]),
-                                                t["MdaPotenciaUnitaria"], pa.scalar(0.0)))
-    g = t.group_by(["DatRalie", "SigTipoGeracao"]).aggregate(
-        [("MdaPotenciaUnitaria", "sum"), ("MdaPotenciaUnitaria", "count"), ("sem_prev", "sum")])
+    parciais = []
+    for t in _lotes(pf, ["DatRalie", "SigTipoGeracao", "MdaPotenciaUnitaria", "DatPrevisaoOpComercialSFG"]):
+        t = t.append_column("sem_prev", pc.if_else(pc.is_null(t["DatPrevisaoOpComercialSFG"]),
+                                                    t["MdaPotenciaUnitaria"], pa.scalar(0.0)))
+        parciais.append(t.group_by(["DatRalie", "SigTipoGeracao"]).aggregate(
+            [("MdaPotenciaUnitaria", "sum"), ("MdaPotenciaUnitaria", "count"), ("sem_prev", "sum")]))
+    g = _reagrega(parciais, ["DatRalie", "SigTipoGeracao"],
+                  [("MdaPotenciaUnitaria_sum", "sum", "kw"), ("MdaPotenciaUnitaria_count", "sum", "n"),
+                   ("sem_prev_sum", "sum", "kw_sem_previsao")])
     out = {}
-    for r in g.to_pylist():
+    for r in (g.to_pylist() if g is not None else []):
         d = r["DatRalie"].isoformat()
         out.setdefault(d, {})[r["SigTipoGeracao"] or "?"] = {
-            "kw": r["MdaPotenciaUnitaria_sum"], "n": r["MdaPotenciaUnitaria_count"],
-            "kw_sem_previsao": r["sem_prev_sum"]}
+            "kw": r["kw"], "n": r["n"], "kw_sem_previsao": r["kw_sem_previsao"]}
     return out
 
 
 def agrega_historico_usina(pf):
     """Por fotografia: usinas e kW outorgado por tipo, e kW outorgado por situação da
     obra, viabilidade e situação do cronograma (classificações da fiscalização)."""
-    t = pf.read(columns=["DatRalie", "SigTipoGeracao", "MdaPotenciaOutorgadaKw", "DscSituacaoObra",
-                         "DscViabilidade", "DscSituacaoCronograma"])
+    dims = ((["SigTipoGeracao"], "tipo"), (["DscSituacaoObra"], "obra"),
+            (["DscViabilidade"], "viabilidade"), (["DscSituacaoCronograma"], "cronograma"))
+    parciais = {rot: [] for _, rot in dims}
+    for t in _lotes(pf, ["DatRalie", "SigTipoGeracao", "MdaPotenciaOutorgadaKw", "DscSituacaoObra",
+                         "DscViabilidade", "DscSituacaoCronograma"]):
+        for chaves, rot in dims:
+            parciais[rot].append(t.group_by(["DatRalie"] + chaves).aggregate(
+                [("MdaPotenciaOutorgadaKw", "sum"), ("MdaPotenciaOutorgadaKw", "count")]))
     out = {}
-    for chaves, rotulo in ((["SigTipoGeracao"], "tipo"), (["DscSituacaoObra"], "obra"),
-                           (["DscViabilidade"], "viabilidade"), (["DscSituacaoCronograma"], "cronograma")):
-        g = t.group_by(["DatRalie"] + chaves).aggregate([("MdaPotenciaOutorgadaKw", "sum"),
-                                                           ("MdaPotenciaOutorgadaKw", "count")])
-        for r in g.to_pylist():
+    for chaves, rot in dims:
+        g = _reagrega(parciais[rot], ["DatRalie"] + chaves,
+                      [("MdaPotenciaOutorgadaKw_sum", "sum", "kw"), ("MdaPotenciaOutorgadaKw_count", "sum", "n")])
+        for r in (g.to_pylist() if g is not None else []):
             d = r["DatRalie"].isoformat()
             val = (texto(r[chaves[0]]) or "(vazio)")
-            out.setdefault(d, {}).setdefault(rotulo, {})[val] = {
-                "kw": r["MdaPotenciaOutorgadaKw_sum"], "n": r["MdaPotenciaOutorgadaKw_count"]}
+            x = out.setdefault(d, {}).setdefault(rot, {}).setdefault(val, {"kw": 0.0, "n": 0})
+            # rótulos que só diferem por espaço à direita caem no mesmo valor aparado
+            x["kw"] += r["kw"] or 0.0
+            x["n"] += r["n"] or 0
     return out
 
 
@@ -580,12 +619,17 @@ def tabela_liberacoes(indice):
 
 
 def ug_mensal(pf, mensais):
-    """Unidades geradoras só nas fotografias mensais (última de cada mês)."""
+    """Unidades geradoras só nas fotografias mensais (última de cada mês), lidas em
+    lotes: só as linhas dessas fotografias ficam na memória."""
     pa, pc, _ = _pa()
     alvo = pa.array([date.fromisoformat(d) for d in mensais], pa.date32())
-    t = pf.read(columns=["DatRalie", "IdeNucleoCEG", "NumUgUsina", "SigTipoGeracao", "MdaPotenciaUnitaria",
-                         "DatUGInicioOpComerOutorgado", "DatPrevisaoOpComercialSFG"])
-    return t.filter(pc.is_in(t["DatRalie"], value_set=alvo))
+    colunas = ["DatRalie", "IdeNucleoCEG", "NumUgUsina", "SigTipoGeracao", "MdaPotenciaUnitaria",
+               "DatUGInicioOpComerOutorgado", "DatPrevisaoOpComercialSFG"]
+    partes = [t.filter(pc.is_in(t["DatRalie"], value_set=alvo)) for t in _lotes(pf, colunas)]
+    partes = [t for t in partes if t.num_rows]
+    if not partes:
+        return pa.schema([pf.schema_arrow.field(c) for c in colunas]).empty_table()
+    return pa.concat_tables(partes).combine_chunks()
 
 
 def confiabilidade_previsoes(ugm, lib_tab, mensais, corte, horizonte_dias=365, folga_dias=15):
@@ -599,7 +643,6 @@ def confiabilidade_previsoes(ugm, lib_tab, mensais, corte, horizonte_dias=365, f
     inconsistências da fonte: saem do denominador e são contadas à parte."""
     pa, pc, _ = _pa()
     from datetime import timedelta
-    j = ugm.join(lib_tab, keys=["IdeNucleoCEG", "NumUgUsina"], join_type="left outer")
     corte_d = date.fromisoformat(corte)
     out = []
     for s in mensais:
@@ -607,7 +650,9 @@ def confiabilidade_previsoes(ugm, lib_tab, mensais, corte, horizonte_dias=365, f
         fim = S + timedelta(days=horizonte_dias)
         if fim + timedelta(days=folga_dias) > corte_d:
             continue
-        x = j.filter(pc.equal(j["DatRalie"], pa.scalar(S, pa.date32())))
+        # junção só com as linhas da fotografia: a tabela mensal inteira não é duplicada
+        x = ugm.filter(pc.equal(ugm["DatRalie"], pa.scalar(S, pa.date32())))
+        x = x.join(lib_tab, keys=["IdeNucleoCEG", "NumUgUsina"], join_type="left outer")
         prev = x["DatPrevisaoOpComercialSFG"]
         y = x.filter(pc.and_(pc.greater(prev, pa.scalar(S, pa.date32())),
                              pc.less_equal(prev, pa.scalar(fim, pa.date32()))))
@@ -680,7 +725,7 @@ def trajetorias_usinas(pf_ug, pf_usina):
     """Por usina que já passou pelo RALIE: primeira e última fotografia, potência
     outorgada na primeira aparição, maior previsão de operação comercial (SFG) e maior
     data outorgada entre as unidades na primeira e na última fotografia, e número de
-    mudanças da maior previsão ao longo das fotografias mensais."""
+    mudanças da maior previsão ao longo das fotografias."""
     pa, pc, _ = _pa()
     tu = pf_usina.read(columns=["DatRalie", "IdeNucleoCEG", "CodCEG", "NomEmpreendimento", "SigTipoGeracao",
                                 "SigUFPrincipal", "MdaPotenciaOutorgadaKw"])
@@ -697,26 +742,32 @@ def trajetorias_usinas(pf_ug, pf_usina):
         u["kw_ultima"] = r["MdaPotenciaOutorgadaKw"]
         u["nome"] = r["NomEmpreendimento"] or u["nome"]
         u["ceg"] = r["CodCEG"] or u["ceg"]
-    tg = pf_ug.read(columns=["DatRalie", "IdeNucleoCEG", "MdaPotenciaUnitaria", "DatUGInicioOpComerOutorgado",
-                             "DatPrevisaoOpComercialSFG"])
-    g = tg.group_by(["IdeNucleoCEG", "DatRalie"]).aggregate(
-        [("DatPrevisaoOpComercialSFG", "max"), ("DatUGInicioOpComerOutorgado", "max"),
-         ("MdaPotenciaUnitaria", "sum"), ("MdaPotenciaUnitaria", "count")])
+    del tu
+    # unidades: agregado por (usina, fotografia) em lotes e recombinado
+    parciais = []
+    for t in _lotes(pf_ug, ["DatRalie", "IdeNucleoCEG", "MdaPotenciaUnitaria", "DatUGInicioOpComerOutorgado",
+                            "DatPrevisaoOpComercialSFG"]):
+        parciais.append(t.group_by(["IdeNucleoCEG", "DatRalie"]).aggregate(
+            [("DatPrevisaoOpComercialSFG", "max"), ("DatUGInicioOpComerOutorgado", "max"),
+             ("MdaPotenciaUnitaria", "sum"), ("MdaPotenciaUnitaria", "count")]))
+    g = _reagrega(parciais, ["IdeNucleoCEG", "DatRalie"],
+                  [("DatPrevisaoOpComercialSFG_max", "max", "prev"), ("DatUGInicioOpComerOutorgado_max", "max", "outg"),
+                   ("MdaPotenciaUnitaria_sum", "sum", "kw"), ("MdaPotenciaUnitaria_count", "sum", "n")])
+    if g is None:
+        return usinas
     g = g.sort_by([("IdeNucleoCEG", "ascending"), ("DatRalie", "ascending")])
     for r in g.to_pylist():
         u = usinas.get(r["IdeNucleoCEG"])
         if u is None:
             continue
         d = r["DatRalie"].isoformat()
-        prev = r["DatPrevisaoOpComercialSFG_max"]
-        outg = r["DatUGInicioOpComerOutorgado_max"]
-        prev = prev.isoformat() if prev else None
-        outg = outg.isoformat() if outg else None
+        prev = r["prev"].isoformat() if r["prev"] else None
+        outg = r["outg"].isoformat() if r["outg"] else None
         if "ug_primeira" not in u:
             u["ug_primeira"] = d
             u["prev_primeira"] = prev
             u["outorgado_primeira"] = outg
-            u["kw_ug_primeira"] = r["MdaPotenciaUnitaria_sum"]
+            u["kw_ug_primeira"] = r["kw"]
             u["mudancas_previsao"] = 0
             u["_ultima_prev"] = prev
         elif prev != u["_ultima_prev"]:
@@ -724,8 +775,8 @@ def trajetorias_usinas(pf_ug, pf_usina):
             u["_ultima_prev"] = prev
         u["prev_ultima"] = prev
         u["outorgado_ultima"] = outg
-        u["kw_ug_ultima"] = r["MdaPotenciaUnitaria_sum"]
-        u["ugs_ultima"] = r["MdaPotenciaUnitaria_count"]
+        u["kw_ug_ultima"] = r["kw"]
+        u["ugs_ultima"] = r["n"]
     for u in usinas.values():
         u.pop("_ultima_prev", None)
     return usinas
@@ -733,13 +784,19 @@ def trajetorias_usinas(pf_ug, pf_usina):
 
 def ugs_da_primeira_aparicao(pf_ug):
     """{núcleo: [(ug, kW)]} das unidades listadas na primeira fotografia de cada usina
-    (a promessa original), para verificar quantas foram liberadas depois."""
+    (a promessa original), para verificar quantas foram liberadas depois. Duas
+    passagens em lotes: a primeira acha a fotografia inicial de cada usina; a segunda
+    guarda só as linhas dessa fotografia."""
     pa, pc, _ = _pa()
-    t = pf_ug.read(columns=["DatRalie", "IdeNucleoCEG", "NumUgUsina", "MdaPotenciaUnitaria"])
-    prim = t.group_by(["IdeNucleoCEG"]).aggregate([("DatRalie", "min")]).rename_columns(["IdeNucleoCEG", "DatRalie"])
-    j = t.join(prim, keys=["IdeNucleoCEG", "DatRalie"], join_type="inner")
+    parciais = [t.group_by(["IdeNucleoCEG"]).aggregate([("DatRalie", "min")])
+                for t in _lotes(pf_ug, ["DatRalie", "IdeNucleoCEG"])]
+    prim = _reagrega(parciais, ["IdeNucleoCEG"], [("DatRalie_min", "min", "DatRalie")])
     out = {}
-    for n_, u_, k_ in zip(j["IdeNucleoCEG"].to_pylist(), j["NumUgUsina"].to_pylist(),
-                          j["MdaPotenciaUnitaria"].to_pylist()):
-        out.setdefault(n_, []).append((u_, k_))
+    if prim is None:
+        return out
+    for t in _lotes(pf_ug, ["DatRalie", "IdeNucleoCEG", "NumUgUsina", "MdaPotenciaUnitaria"]):
+        j = t.join(prim, keys=["IdeNucleoCEG", "DatRalie"], join_type="inner")
+        for n_, u_, k_ in zip(j["IdeNucleoCEG"].to_pylist(), j["NumUgUsina"].to_pylist(),
+                              j["MdaPotenciaUnitaria"].to_pylist()):
+            out.setdefault(n_, []).append((u_, k_))
     return out

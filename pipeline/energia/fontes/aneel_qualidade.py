@@ -40,7 +40,9 @@ from pipeline.energia import base, entidades  # noqa: E402
 
 # Parcelas desagregadas publicadas a partir de 2010. O DEC "apurado" (o que é comparado
 # com o limite) é, desde 2022, exatamente DECIP + DECIND em todos os registros; em
-# 2010-2021 parte dos conjuntos incluía também parcelas externas (medido, não suposto).
+# 2010-2021 parte dos conjuntos incluía também as parcelas externas não críticas: em 2021,
+# os 1.482 conjunto-meses com DEC diferente de IP + IND têm DEC = IP + IND + XN + XP
+# (medido no Parquet em 30/09/2026, não suposto).
 PARCELAS = {
     "IP": "interna, programada",
     "IND": "interna, não programada, não expurgável",
@@ -62,7 +64,10 @@ GRUPOS_PARCELAS = {
     "ons": ("INO",),
 }
 ROTULO_GRUPO = {
-    "apurado": "Apurado para comparação com o limite (programadas e não programadas de origem interna, sem expurgos)",
+    # desde 2022 este grupo é exatamente o DEC apurado; de 2010 a 2021 o apurado de parte dos
+    # conjuntos incluía também XN e XP (verificado em 2021: 1.482 conjunto-meses, todos com
+    # DEC = IP + IND + XN + XP), então o grupo e o apurado podem diferir nesses anos
+    "apurado": "Interna, programada e não programada não expurgável (IP + IND): desde 2022 igual ao DEC apurado",
     "emergencia": "Situação de emergência (expurgada)",
     "dia_critico": "Dia crítico (expurgada)",
     "externa": "Origem externa ao sistema de distribuição (expurgada)",
@@ -71,7 +76,7 @@ ROTULO_GRUPO = {
 SIGLAS_CONTINUIDADE = {"DEC", "FEC", "NumCon"} | {f"{i}{p}" for i in ("DEC", "FEC") for p in PARCELAS}
 
 
-def ler_parquet_bronze(caminho_relativo, colunas, lote=500_000):
+def ler_parquet_bronze(caminho_relativo, colunas, lote=200_000):
     """Itera lotes (dict de listas) de um Parquet guardado no bronze (gzip). O Parquet
     precisa de arquivo com acesso aleatório: descomprime para um temporário."""
     import pyarrow.parquet as pq
@@ -460,6 +465,151 @@ GRUPO_MANIFESTACAO = {"101": "informacao", "102": "reclamacao", "103": "solicita
 RECLAMACAO_INTERRUPCAO = {"1020901", "1020902", "1020903"}
 
 
+# Correspondência explícita IdeTipoRCA → código da tipologia da REN 1.000/2021.
+# Por que existe: o arquivo de 2023 ainda usa os códigos antigos em CodTipoManifestacao, e
+# alguns deles coincidem com códigos da tipologia nova com outro significado (em 2023, o
+# código 102 é "Outros (Procedimento irregular)" e o 101 é "Cobrança decorrente de religação
+# à revelia"; na tipologia nova, 102 é o grupo das reclamações e 101 o das informações). O
+# dicionário (versão 1.2, 30/07/2026) define IdeTipoRCA como o identificador da tipologia na
+# estrutura atual do sistema, estável entre os anos. A tabela abaixo foi extraída dos
+# arquivos de 2024, 2025 e 2026 (capturados em 30/09/2026), em que 100% das quantidades usam
+# o código novo e cada IdeTipoRCA corresponde a um único código (verificado; linhas com
+# IdeTipoRCA vazio não entram). IdeTipoRCA de 2023 fora da tabela fica "sem_grupo".
+TIPOLOGIA_POR_RCA = {
+    "29": ("10101", "Conexão"),
+    "30": ("10102", "Cadastro / Contratos"),
+    "31": ("10103", "Benefícios Tarifários"),
+    "32": ("10104", "Medição / Equipamentos de Medição"),
+    "33": ("10105", "Leitura"),
+    "34": ("10106", "Tarifas / Fatura / Faturamento / Cobrança"),
+    "35": ("10107", "Serviços Cobráveis"),
+    "36": ("10108", "Pagamento"),
+    "37": ("10109", "Suspensão do Fornecimento"),
+    "38": ("10110", "Procedimento Irregular"),
+    "39": ("10111", "Atendimento / Estrutura de Atendimento"),
+    "40": ("10112", "Qualidade da Prestação do Serviço"),
+    "41": ("10113", "Ressarcimento de Danos Elétricos"),
+    "42": ("10114", "Rede / Manutenção"),
+    "43": ("10115", "Geração Distribuída"),
+    "44": ("10116", "Prazos / acompanhamento de solicitação"),
+    "45": ("10117", "Instalação Interna"),
+    "46": ("10118", "Iluminação Pública"),
+    "47": ("10119", "Legislação do Setor Elétrico ou correlata"),
+    "48": ("10120", "Normas e Padrões Técnicos da distribuidora"),
+    "49": ("10121", "Eficiência Energética / Racionalização do consumo"),
+    "50": ("10122", "Caminho do entendimento (orientação para contato em outro nível)"),
+    "51": ("10199", "Outros"),
+    "52": ("102", "RECLAMAÇÃO"),
+    "53": ("10201", "Conexão (Caso Geral)"),
+    "54": ("1020101", "Solicitação não atendida ou atrasada"),
+    "55": ("1020102", "Orçamento - Participação Financeira / Universalização"),
+    "56": ("1020103", "Restituição de antecipação"),
+    "57": ("1020104", "Prazos (ligação com obras)"),
+    "58": ("1020199", "Outros (Conexão)"),
+    "59": ("10202", "Cadastro / Contratos"),
+    "60": ("1020201", "Cadastro"),
+    "61": ("1020202", "Uso não autorizado de dados cadastrais"),
+    "62": ("1020203", "Contratos / Encerramento contratual"),
+    "63": ("1020204", "Troca de titularidade"),
+    "64": ("1020299", "Outros (Cadastro / Contratos)"),
+    "65": ("10203", "Medição"),
+    "66": ("1020301", "Ausência do medidor/sistema de medição"),
+    "67": ("1020302", "Avaria/Defeito medidor/sistema de medição"),
+    "68": ("1020303", "Lacre"),
+    "69": ("1020399", "Outros (Medição)"),
+    "70": ("10204", "Leitura / Faturamento / Fatura"),
+    "71": ("1020401", "Impedimento de acesso"),
+    "72": ("1020402", "Erro de leitura"),
+    "73": ("1020403", "Variação de consumo (Leitura / Faturamento / Fatura)"),
+    "74": ("1020404", "Demais grandezas faturadas"),
+    "75": ("1020405", "Tarifas aplicadas"),
+    "76": ("1020406", "Classificação / Subsídios tarifários"),
+    "77": ("1020407", "Faturamento por estimativa / média"),
+    "78": ("1020408", "Faturamento pelo custo de disponibilidade"),
+    "79": ("1020409", "Compensação / Devolução não realizada / incorreta"),
+    "80": ("1020410", "Bandeiras Tarifárias"),
+    "81": ("1020411", "Tributos"),
+    "82": ("1020412", "Contribuição para o Custeio dos Serviços de Iluminação Pública - COSIP"),
+    "83": ("1020413", "Apresentação / Entrega da fatura"),
+    "84": ("1020414", "Qualidade da impressão da fatura"),
+    "85": ("1020499", "Outros (Leitura / Faturamento / Fatura)"),
+    "86": ("10205", "Cobranças"),
+    "87": ("1020501", "Acréscimos moratórios - Multas e juros"),
+    "88": ("1020502", "Cobranças de períodos anteriores"),
+    "89": ("1020503", "Parcelamento de débito"),
+    "90": ("1020504", "Serviços cobráveis"),
+    "91": ("1020505", "Atividades acessórias"),
+    "92": ("1020599", "Outros (Cobranças)"),
+    "93": ("10206", "Pagamento / Inadimplência / Suspensão"),
+    "94": ("1020601", "Fatura paga e não baixada"),
+    "95": ("1020602", "Indisponibilidade / Inexistência de posto de arrecadação no Município"),
+    "96": ("1020603", "Suspensão indevida"),
+    "97": ("1020604", "Religação não realizada / fora do prazo"),
+    "98": ("1020605", "Inscrição em Cadastro de Negativação"),
+    "99": ("1020606", "Atuação de empresa de cobrança"),
+    "100": ("1020699", "Outros (Pagamentos / Inadimplências / Suspensão)"),
+    "102": ("1020702", "Deficiência na caracterização da irregularidade"),
+    "103": ("1020703", "Não recebimento do TOI - Termo de Ocorrência e Inspeção"),
+    "104": ("1020704", "Responsabilidade sobre a Irregularidade"),
+    "105": ("1020705", "Cobrança decorrente de religação à revelia"),
+    "106": ("1020799", "Outros (Procedimento irregular)"),
+    "107": ("10208", "Atendimento / Estrutura de Atendimento"),
+    "108": ("1020801", "Conduta de empregado ou prestador de serviço"),
+    "109": ("1020802", "Atendimento Presencial / Falta de agência / posto de atendimento"),
+    "110": ("1020803", "Atendimento Telefônico"),
+    "111": ("1020804", "Atendimento pela Internet"),
+    "112": ("1020805", "Demais canais de acesso"),
+    "113": ("1020899", "Outros (Atendimento / Estrutura de Atendimento)"),
+    "114": ("10209", "Qualidade"),
+    "115": ("1020901", "Interrupção no Fornecimento - Falta de energia"),
+    "116": ("1020902", "Interrupção Frequente do Fornecimento"),
+    "117": ("1020903", "Interrupção Programada"),
+    "118": ("1020904", "Tensão de Fornecimento"),
+    "119": ("1020999", "Outros (Qualidade)"),
+    "120": ("10210", "Ressarcimento de Danos Elétricos"),
+    "121": ("1021001", "Danos em equipamentos"),
+    "122": ("1021002", "Vistoria dos Equipamentos"),
+    "123": ("1021003", "Laudo/orçamento"),
+    "124": ("1021004", "Ressarcimento inferior ao devido"),
+    "125": ("1021005", "Indeferimento total / parcial"),
+    "126": ("1021099", "Outros (Ressarcimento de Danos Elétricos)"),
+    "127": ("10211", "Outros Danos (não elétricos)"),
+    "128": ("10212", "Rede / Manutenção"),
+    "129": ("1021201", "Cabo partido"),
+    "130": ("1021202", "Poste"),
+    "131": ("1021203", "Transformador"),
+    "132": ("1021204", "Objeto na rede"),
+    "133": ("1021205", "Poda de árvore"),
+    "134": ("1021206", "Entulhos / Galhos de árvores não recolhidos"),
+    "135": ("1021299", "Outros (Rede / Manutenção)"),
+    "136": ("10213", "Geração Distribuída"),
+    "137": ("1021301", "Conexão (Geração Distribuída)"),
+    "138": ("1021302", "Faturamento"),
+    "139": ("1021399", "Outros (Geração Distribuída)"),
+    "140": ("10214", "Prazos (não previstos nas tipologias anteriores)"),
+    "141": ("10215", "Instalações internas"),
+    "142": ("10216", "Iluminação Pública"),
+    "143": ("10217", "Outros (Caso Geral)"),
+    "144": ("104", "DENÚNCIA"),
+    "145": ("10401", "Ligação Clandestina"),
+    "146": ("10402", "Fraude/Desvio de Energia Elétrica"),
+    "147": ("10403", "Contra empregado ou prestador de serviço da distribuidora"),
+    "148": ("10404", "Danos Ambientais"),
+    "149": ("10405", "Furtos de cabos e fiações elétricas"),
+    "150": ("10406", "Outros"),
+    "151": ("105", "ELOGIO"),
+    "152": ("106", "SUGESTÃO"),
+    "153": ("101", "INFORMAÇÃO"),
+    "154": ("103", "SOLICITAÇÃO DE SERVIÇOS"),
+    "155": ("107", "CANCELAMENTO DE SERVIÇOS"),
+    "156": ("108", "ENCERRAMENTO CONTRATUAL"),
+    "157": ("1020701", "Valores Cobrados"),
+    "158": ("1020105", "Prazos (ligação sem obras)"),
+    "159": ("1021303", "Variação de Consumo (Geração Distribuída)"),
+    "160": ("1021304", "Apresentação / Entrega de Fatura"),
+}
+
+
 def nivel_manifestacao(canal):
     c = (canal or "").strip().lower()
     if c.startswith("nível 1") or c.startswith("nivel 1"):
@@ -469,16 +619,31 @@ def nivel_manifestacao(canal):
     return None
 
 
+ANO_TIPOLOGIA_NOVA = 2024  # primeiro ano com 100% das quantidades no código novo
+
+
+def codigo_tipologia(cod, rca, ano):
+    """Código da tipologia nova para uma linha: o publicado a partir de 2024; antes, o
+    IdeTipoRCA traduzido pela tabela explícita (nunca o código antigo lido como novo)."""
+    cod = str(_int(cod)) if _int(cod) is not None else ""
+    if ano is not None and ano >= ANO_TIPOLOGIA_NOVA:
+        return cod
+    rca = str(_int(rca)) if _int(rca) is not None else ""
+    return TIPOLOGIA_POR_RCA.get(rca, (None, None))[0]
+
+
 def agrega_manifestacoes(lotes):
     """{(cnpj, 'AAAA-MM'): {"n1.total","n1.recl","n1.recl_interrupcao","n1.recl_proc", ...}}
-    somando QtdManifestacoesRecebidas (e procedentes das reclamações) por nível. Códigos
-    fora da tipologia vigente são contados em "n?.sem_grupo" (não descartados)."""
+    somando QtdManifestacoesRecebidas (e procedentes das reclamações) por nível. Linha sem
+    código da tipologia nova (nem pelo IdeTipoRCA) é contada em "n?.sem_grupo" (não é
+    descartada nem atribuída a um grupo por aproximação)."""
     out = collections.defaultdict(lambda: collections.defaultdict(float))
     for d in lotes:
-        cols = zip(d["NumCPFCNPJ"], d["NomCanalManifestacao"], d["CodTipoManifestacao"],
+        rcas = d.get("IdeTipoRCA") or [None] * len(d["NumCPFCNPJ"])
+        cols = zip(d["NumCPFCNPJ"], d["NomCanalManifestacao"], d["CodTipoManifestacao"], rcas,
                    d["QtdManifestacoesRecebidas"], d["QtdManifestacoesProcedentes"],
                    d["AnoCompetencia"], d["MesCompetencia"])
-        for cnpj, canal, cod, rec, proc, ano, mes in cols:
+        for cnpj, canal, cod, rca, rec, proc, ano, mes in cols:
             c14 = entidades.cnpj(cnpj)
             nv = nivel_manifestacao(canal)
             ano, mes = _int(ano), _int(mes)
@@ -486,8 +651,8 @@ def agrega_manifestacoes(lotes):
                 continue
             q = _num(rec) or 0.0
             p = _num(proc)
-            cod = str(_int(cod)) if _int(cod) is not None else ""
-            grupo = GRUPO_MANIFESTACAO.get(cod[:3])
+            codigo = codigo_tipologia(cod, rca, ano) or ""
+            grupo = GRUPO_MANIFESTACAO.get(codigo[:3])
             a = out[(c14, _ref(ano, mes))]
             a[f"{nv}.total"] += q
             if grupo is None:
@@ -497,7 +662,7 @@ def agrega_manifestacoes(lotes):
                 a[f"{nv}.recl"] += q
                 if p is not None:
                     a[f"{nv}.recl_proc"] += p
-                if cod in RECLAMACAO_INTERRUPCAO:
+                if codigo in RECLAMACAO_INTERRUPCAO:
                     a[f"{nv}.recl_interrupcao"] += q
     return {k: dict(v) for k, v in out.items()}
 
@@ -593,8 +758,28 @@ def le_eventos_emergencia(linhas):
                     "plano_contingencia": (row.get("DscAcionamentoPlanoContingencia") or "").strip() or None,
                     "nivel_contingencia": _int(row.get("NumNivelMaximoContingenciaEvento")),
                     "origem": (row.get("DscOrigemEvento") or "").strip() or None,
-                    "relatorio": (row.get("DscLinkRelatorioExpurgos") or "").strip() or None})
+                    "relatorio": (row.get("DscLinkRelatorioExpurgos") or "").strip() or None,
+                    "gerado_em": (row.get("DatGeracaoConjuntoDados") or "").strip() or None})
     return out
+
+
+def duracao_evento_h(inicio, fim, gerado_em):
+    """(horas, motivo) de um evento. Fim antes do início ou depois da data de geração do
+    arquivo é data implausível publicada pela fonte (ex.: ano 3036 no lugar de 2026): a
+    duração fica ausente com o motivo, e as datas continuam como publicadas (não são
+    corrigidas por suposição)."""
+    from datetime import datetime
+    if not inicio or not fim:
+        return None, "início ou fim não publicado"
+    try:
+        di, df = datetime.fromisoformat(inicio), datetime.fromisoformat(fim)
+    except ValueError:
+        return None, "data em formato não reconhecido"
+    if df < di:
+        return None, "fim anterior ao início"
+    if gerado_em and fim[:10] > gerado_em[:10]:
+        return None, f"fim ({fim[:10]}) posterior à geração do arquivo ({gerado_em[:10]})"
+    return (df - di).total_seconds() / 3600, None
 
 
 def le_conjunto_municipio(linhas):

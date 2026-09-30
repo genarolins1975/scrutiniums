@@ -1,13 +1,17 @@
 /**
  * Tipos da gold do módulo Qualidade do serviço de distribuição
- * (public/energia/gold/qualidade.json e qualidade_mapa.json), espelho exato do que
- * pipeline/energia/modulos/qualidade.py publica.
+ * (public/energia/gold/qualidade.json e public/energia/series/qualidade_mapa.json), espelho
+ * exato do que pipeline/energia/modulos/qualidade.py publica.
+ *
+ * Histórico: DEC e FEC por conjunto e mês desde 2000 (a série de 2000 a 2009 não tem as
+ * parcelas atuais: parcelas_dec e parcelas_fec vêm null nesses anos).
  *
  * Unidades: DEC em horas e centésimos de hora por unidade consumidora (10,50 h são
  * 10 h 30 min, não 10 h 50 min); FEC em interrupções e centésimos por unidade
  * consumidora; compensações em R$ nominais; TMAE em minutos; IASC de 0 a 100.
  * Ausência é null e é exibida como ausência; nenhum número é recalculado na interface.
  */
+import type { Evidencia } from "./evidencia";
 import type { Cabecalho, Download, Natureza, Proveniencia } from "./tipos";
 
 /** Grupos de parcelas publicados (a soma dos grupos é o DEC de todas as origens publicadas). */
@@ -43,6 +47,7 @@ export type BrasilAnual = {
   razao_fec: number | null;
   dec_todas_parcelas: number | null;
   fec_todas_parcelas: number | null;
+  /** null antes de 2010 (outra desagregação na fonte) e em ano incompleto. */
   parcelas_dec: Parcelas | null;
   parcelas_fec: Parcelas | null;
   ucs_media: number | null;
@@ -87,6 +92,7 @@ export type CompensacaoDistribuidora = {
 export type IascDistribuidora = {
   ano: number;
   valor: number | null;
+  /** Entrevistas da distribuidora (soma das contagens por sexo publicadas). */
   amostra: number | null;
   ordem: number | null;
   categoria: string | null;
@@ -97,13 +103,16 @@ export type ReclamacoesDistribuidora = {
   n1: number | null;
   n2: number | null;
   interrupcao_n1: number | null;
+  /** Taxas por UC só com os 12 meses enviados pela distribuidora (senão null). */
   n1_por_mil_uc: number | null;
   n2_por_mil_uc: number | null;
   interrupcao_n1_por_mil_uc: number | null;
   meses: number;
   ouvidoria_aneel: number | null;
   ouvidoria_aneel_procedentes: number | null;
+  /** null quando o arquivo da Ouvidoria não cobre os 12 meses do ano. */
   ouvidoria_aneel_por_100mil_uc: number | null;
+  /** Meses com ao menos uma solicitação registrada (mês sem registro = nenhuma solicitação). */
   meses_ouvidoria: number;
 };
 
@@ -227,6 +236,7 @@ export type CompensacaoAnual = {
   completo: boolean;
   valor: number | null;
   quantidade: number | null;
+  /** null nos anos sem nenhuma linha de unidade geradora na fonte (antes de 2018). */
   valor_ug: number | null;
   valor_por_uc: number | null;
   por_tipo: Partial<Record<TipoCompensacao, { valor: number | null; quantidade: number | null }>>;
@@ -243,6 +253,7 @@ export type Compensacoes = {
   rotulos_tipo: Record<TipoCompensacao, string>;
 };
 
+/** Distribuidora pesquisada no IASC sem indicadores de continuidade no ano de referência. */
 export type IascLinha = {
   cnpj: string;
   sigla: string | null;
@@ -256,13 +267,22 @@ export type IascLinha = {
 
 export type TaxaNacional = {
   ano: number;
+  /** Ano fechado com a fonte cobrindo os 12 meses; ano corrente é parcial (taxas null). */
+  completo: boolean;
+  /** Distribuidoras no numerador e no denominador (mesmo universo). */
   distribuidoras: number;
   total: number | null;
   ucs: number | null;
+  /** UCs do universo ÷ UCs de todas as distribuidoras com continuidade no ano (0 a 1). */
+  cobertura_ucs: number | null;
   /** Por mil UCs (reclamações na distribuidora) ou por 100 mil UCs (Ouvidoria ANEEL). */
   por_ucs: number | null;
   meses_min: number | null;
   meses_max: number | null;
+  /** Manifestações: distribuidoras fora por não terem os 12 meses enviados (0 na Ouvidoria). */
+  distribuidoras_sem_12_meses: number;
+  /** Lista das distribuidoras fora (vazia em ano parcial). */
+  fora_meses_incompletos: { cnpj: string; sigla: string | null; meses: number }[];
 };
 
 export type ReclamacoesNacional = TaxaNacional & {
@@ -291,12 +311,14 @@ export type EventoEmergencia = {
 };
 
 export type Atendimento = {
+  /** IASC de cada distribuidora em Distribuidora.iasc; aqui o resumo do último ano. */
   iasc: {
     ano: number | null;
     distribuidoras: number;
+    /** Soma das amostras (a ANEEL declara cerca de 30 mil entrevistas por ano). */
     entrevistas: number | null;
     quantis: Quantis;
-    lista: IascLinha[];
+    sem_continuidade_no_ano: IascLinha[];
     anos_disponiveis: number[];
   };
   reclamacoes_distribuidora: ReclamacoesNacional[];
@@ -307,8 +329,11 @@ export type Atendimento = {
     distribuidoras: number;
     inicio_min: string | null;
     inicio_max: string | null;
+    /** Sobre os eventos com datas válidas (duração ausente quando a data publicada é implausível). */
     duracao_mediana_h: number | null;
     duracao_max_h: number | null;
+    /** Eventos com início ou fim implausível como publicados (ex.: fim no ano 3036): mantidos, sem duração. */
+    datas_invalidas: { codigo: string; sigla: string | null; inicio: string | null; fim: string | null; motivo: string }[];
     maiores_chi: EventoEmergencia[];
   };
   resiliencia_parcelas: {
@@ -320,14 +345,15 @@ export type Atendimento = {
   }[];
 };
 
-export type RelacaoMunicipio = "conjunto_exclusivo" | "conjunto_compartilhado" | "varios_conjuntos";
+/** Relação do município com os conjuntos ATIVOS no ano de referência (com DEC publicado). */
+export type RelacaoMunicipio = "conjunto_exclusivo" | "conjunto_compartilhado" | "varios_conjuntos" | "sem_conjunto_ativo";
 
 export type MapaResumo = {
   ano: number;
   municipios_com_relacao: number;
   municipios_com_valor: number;
   por_relacao: Partial<Record<RelacaoMunicipio, number>>;
-  /** Arquivo da gold com as linhas por município (qualidade_mapa.json). */
+  /** URL do JSON com as linhas por município (/energia/series/qualidade_mapa.json), lido sob demanda. */
   arquivo: string;
   regra: string;
 };
@@ -349,42 +375,6 @@ export type ReconciliacaoDgcAno = {
     dgc_calculado: number | null;
     diferenca: number | null;
   }[];
-};
-
-export type Evidencia = {
-  valor_exibido: number | null;
-  valor_calculo: number | null;
-  unidade: string;
-  periodo: string;
-  entidade: string;
-  universo: string;
-  filtros: Record<string, string | number>;
-  fonte: {
-    orgao: string;
-    conjunto: string;
-    recurso: string;
-    url: string;
-    arquivo: string[];
-    sha256: Record<string, string>;
-    capturado_em: string | null;
-    publicado_em: string | null;
-    licenca: string;
-  };
-  chaves_origem: string[];
-  formula: string;
-  numerador: { descricao: string; valor: number | null } | null;
-  denominador: { descricao: string; valor: number | null } | null;
-  pesos: string;
-  exclusoes: string;
-  cobertura: string;
-  tratamento_ausencia: string;
-  versao: { pipeline: string; codigo: string | null; publicacao: string };
-  revisoes: null;
-  testes: { nome: string; resultado: string; detalhe: string }[];
-  reconciliacao: { descricao: string; resultado: string; tolerancia: string };
-  download: Download[];
-  reproducao: string;
-  citacao: string;
 };
 
 export type ControleImportacao = {
@@ -419,7 +409,19 @@ export type QualidadeGold = Cabecalho & {
   reconciliacao: { dgc: ReconciliacaoDgcAno[] };
   /** Resultado da importação de cada arquivo vigente (modo Auditar). */
   controles: ControleImportacao[];
-  evidencias: Record<"dec_brasil" | "fec_brasil" | "conjuntos_acima_limite" | "compensacoes_ano", Evidencia>;
+  /** "Comprove este número" (pipeline/energia/evidencia.py). Uma chave some quando o número não
+   * existe no ano de referência (ex.: taxa nacional de ano incompleto). */
+  evidencias: Partial<
+    Record<
+      | "dec_brasil"
+      | "fec_brasil"
+      | "conjuntos_acima_limite"
+      | "compensacoes_ano"
+      | "reclamacoes_distribuidora"
+      | "ouvidoria_aneel",
+      Evidencia
+    >
+  >;
   proveniencia: Record<
     | "conjuntos"
     | "distribuidoras"
@@ -438,17 +440,17 @@ export type QualidadeGold = Cabecalho & {
 };
 
 /**
- * Mapa municipal (public/energia/gold/qualidade_mapa.json), gravado sem indentação.
- * Cada linha: [cod_ibge, índice em `relacoes`, n_conjuntos, dec_min, dec_max, fec_min, fec_max].
- * Os valores são dos conjuntos inteiros que atendem o município (IndQual Município):
- * nunca um DEC medido no município.
+ * Mapa municipal (public/energia/series/qualidade_mapa.json), gravado sem indentação e lido no
+ * cliente sob demanda. Cada linha: [cod_ibge, índice em `relacoes`, n_conjuntos ativos, dec_min,
+ * dec_max, fec_min, fec_max]. Os valores são dos conjuntos inteiros que atendem o município
+ * (IndQual Município, conjuntos com DEC no ano): nunca um DEC medido no município.
  */
-export type LinhaMapaQualidade = [string, 0 | 1 | 2, number, number | null, number | null, number | null, number | null];
+export type LinhaMapaQualidade = [string, 0 | 1 | 2 | 3, number, number | null, number | null, number | null, number | null];
 
 export type QualidadeMapaGold = Cabecalho & {
   ano: number;
   colunas: ["cod_ibge", "relacao", "n_conjuntos", "dec_min", "dec_max", "fec_min", "fec_max"];
-  relacoes: [RelacaoMunicipio, RelacaoMunicipio, RelacaoMunicipio];
+  relacoes: [RelacaoMunicipio, RelacaoMunicipio, RelacaoMunicipio, RelacaoMunicipio];
   linhas: LinhaMapaQualidade[];
 };
 

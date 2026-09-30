@@ -7,7 +7,12 @@ Recortes em pipeline/tests/dados/energia_perdas/ (tirados dos arquivos oficiais 
   módulo. Agentes: CEMIG-D (2023 inteiro, trocas de percentual técnico em 2018 e 2023, meses de
   2005 e 2025), Sulgipe (nov/2025, linha TOTAL de 1 kWh), COCEL (nov/2013, linha repetida),
   CERAL Anitápolis (2023, só a linha antiga de perdas), RGE (2019, série encerrada em maio),
-  Manaus Energia (2006, perda maior que a injetada) e EMT (jun/2025, leiaute novo);
+  Manaus Energia (2006, perda maior que a injetada), EMT (jun/2025, leiaute novo), COCEL
+  (fev/2026, linha "Total (todos os níveis)" da injetada divergente da linha TOTAL), COPREL
+  (ago/2024, divergência arbitrada pelo fechamento do balanço) e EFLJC (jan a ago de 2025 e jan
+  a jul de 2026, acumulado do ano aberto);
+- mmgd_so_mmgd_recorte.csv: empreendimentos de MMGD (só CNPJ da distribuidora, município e
+  sigla; sem dado pessoal) de quatro municípios fora da relação de conjuntos;
 - componentes_b1_cemig.csv.gz: componentes tarifárias da CEMIG-D (REH 2.396/2018 e 3.459/2025);
 - indqual_municipio_recorte.csv, limites_continuidade_recorte.csv, mmgd_recorte.csv: conjuntos
   da EPB (Santa Rita), Neoenergia PE (Oratório), RGE Sul (Veranópolis), Elektro (Paraibuna) e
@@ -33,6 +38,7 @@ from pipeline.energia.modulos import perdas as mod  # noqa: E402
 DADOS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dados", "energia_perdas")
 CEMIG, SULGIPE, COCEL, CERAL = "06981180000116", "13255658000196", "75805895000130", "75826404000138"
 RGE, MANAUS, EMT = "02016439000138", "02341467100020", "03467321000199"
+COPREL, EFLJC = "90660754000160", "86301124000122"
 EPB, ELEKTRO, CEDRAP, RGESUL, NEO_PE = "09095183000140", "02328280000197", "60196987000193", "02016440000162", "10835932000108"
 
 
@@ -380,11 +386,249 @@ class ContratoDoModulo(unittest.TestCase):
             self.assertIn(url, reg["arquivos"])
 
     def test_reconciliacao_2024_intervalo(self):
-        # intervalo implícito nos números do relatório (44,6 TWh = 7,4%; 40,2 TWh = 6,6%)
+        # intervalo implícito nos números do relatório (44,6 TWh = 7,4%; 40,2 TWh = 6,6%):
+        # 605,2 TWh (injetada de referência) cabe; 620,7 TWh (injetada bruta publicada) não
         dentro = mod._reconc_2024([{"ano": 2024, "universo": "concessionarias", "injetada_mwh": 605_200_000}])
         fora = mod._reconc_2024([{"ano": 2024, "universo": "concessionarias", "injetada_mwh": 620_700_000}])
-        self.assertTrue(dentro.startswith("aprovado"))
-        self.assertTrue(fora.startswith("divergente"))
+        self.assertEqual(dentro[0], "aprovado")
+        self.assertIn("[604,5; 606,8]", dentro[1])
+        self.assertEqual(fora[0], "reprovado")
+        self.assertEqual(mod._reconc_2024([]), (None, "sem dado de 2024"))
+
+
+class ConflitosDeRepresentacao(unittest.TestCase):
+    """Divergência entre as linhas que representam a mesma grandeza: arbitrada pela soma dos
+    níveis, pelo fechamento do balanço do mês, ou aberta (alerta)."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.mensal, _, _ = _mensal()
+        cls.csv = _csv_samp()
+
+    def _linha(self, cnpj, ano, mes, modalidade, caracteristica, detalhe):
+        v = [int(r["VlrEnergia"]) for r in self.csv if r["NumCPFCNPJ"] == cnpj and r["AnoReferenciaBalanco"] == str(ano)
+             and r["MesReferenciaBalanco"] == str(mes) and r["DscModalidadeBalanco"] == modalidade
+             and r["DscCctBalanco"].strip() == caracteristica and r["DscDetalheBalanco"] == detalhe]
+        self.assertEqual(len(v), 1)
+        return v[0]
+
+    def test_sulgipe_arbitrada_pela_soma_dos_niveis_sem_alerta(self):
+        m = self.mensal[SULGIPE]["2025-11"]
+        self.assertEqual(m["conflitos"], ["injetada"])
+        self.assertEqual(m["conflitos_sem_niveis"], [])
+        self.assertEqual(m["conflitos_abertos"], [])
+
+    def test_coprel_arbitrada_pelo_fechamento_do_balanco(self):
+        m = self.mensal[COPREL]["2024-08"]
+        self.assertEqual(sorted(m["conflitos"]), ["cativo", "injetada"])
+        self.assertEqual(m["conflitos_sem_niveis"], ["injetada"])  # sem linhas por nível da injetada
+        self.assertEqual(m["residuo"], 0)  # a perda da fonte fecha com a injetada escolhida
+        self.assertEqual(m["conflitos_abertos"], [])
+        self.assertEqual(m["injetada"], 50_489_683)
+
+    def test_cocel_divergencia_aberta_gera_alerta(self):
+        todos = self._linha(COCEL, 2026, 2, "Energia Injetada Total", "Energia Injetada",
+                            "Energia Medida (kWh) - Total (todos os níveis de tensão)")
+        total = self._linha(COCEL, 2026, 2, "Energia Injetada Total", "Energia Injetada Total", "Energia Medida (kWh)")
+        self.assertEqual((todos, total), (981_016, 33_132_240))
+        m = self.mensal[COCEL]["2026-02"]
+        self.assertEqual(m["conflitos_abertos"], ["injetada"])
+        # o denominador do leiaute novo não depende da linha escolhida: é o implícito na perda
+        self.assertEqual(m["injetada_ref"], 33_132_240)
+        a = mod._anual_distribuidora(self.mensal[COCEL], 2026)
+        self.assertIn("representacoes_conflitantes", a["alertas"])
+        self.assertFalse(mod._valido_para_agregado(a))
+
+
+class AcumuladoDoAnoAberto(unittest.TestCase):
+    """Ano aberto comparado só com o mesmo período do ano anterior, sobre as mesmas
+    distribuidoras. Valores esperados relidos do CSV oficial com código próprio."""
+
+    FORN = {("Energia Vendida", "Fornecimento - Cativo"), ("Energia Vendida", "Fornecimento - consumo próprio"),
+            ("Energia Vendida", "Suprimento (Sem CUSD associado)"), ("Energia Entregue", "Mercado Livre"),
+            ("Energia Entregue", "Uso Distribuição e Suprimento")}
+
+    @classmethod
+    def setUpClass(cls):
+        cls.mensal, cls.cad, _ = _mensal()
+        cls.csv = _csv_samp()
+
+    def _csv_periodo(self, cnpj, ano, ate):
+        """(perdas totais, fornecida + irregular + perdas) em kWh, janeiro..ate, a partir das
+        linhas "Total (todos os níveis de tensão)" do CSV."""
+        perdas = req = 0
+        for r in self.csv:
+            if r["NumCPFCNPJ"] != cnpj or r["AnoReferenciaBalanco"] != str(ano) or int(r["MesReferenciaBalanco"]) > ate:
+                continue
+            mod_, cct, det, v = r["DscModalidadeBalanco"], r["DscCctBalanco"].strip(), r["DscDetalheBalanco"], int(r["VlrEnergia"])
+            if mod_ == "Perdas na Distribuição (valor medido)" and cct == "Perdas Totais":
+                perdas += v
+                req += v
+            elif (mod_, cct) in self.FORN and det == "Energia Medida (kWh) - Total (todos os níveis de tensão)":
+                req += v
+            elif cct == "Energia associada à cobrança por procedimento irregular" and "Total (todos" in det:
+                req += v
+        return perdas, req
+
+    def test_efljc_janeiro_a_julho_nos_dois_anos(self):
+        for ano, perdas, req in ((2025, 733_862, 14_990_823), (2026, 675_133, 13_957_308)):
+            self.assertEqual(self._csv_periodo(EFLJC, ano, 7), (perdas, req))
+            a = mod._anual_distribuidora(self.mensal[EFLJC], ano, 7)
+            self.assertTrue(a["completo"])
+            self.assertEqual((a["perdas_totais_med"], a["injetada_ref"]), (perdas, req))
+        # agosto de 2025 está no recorte e não entra no acumulado até julho
+        self.assertEqual(ap.anual(self.mensal[EFLJC], 2025)["meses"], 8)
+        self.assertFalse(mod._anual_distribuidora(self.mensal[EFLJC], 2025)["completo"])
+
+    def test_agregado_do_acumulado_e_razao_de_somas_das_mesmas_distribuidoras(self):
+        cad = {EFLJC: self.cad[EFLJC]}
+        por, agreg = mod._acumulado(self.mensal, cad, {EFLJC: "concessionaria"}, 2026, 7)
+        self.assertTrue(por[EFLJC]["comparavel"])
+        conc = next(x for x in agreg if x["universo"] == "concessionarias")
+        self.assertEqual(conc["n_distribuidoras"], 1)
+        self.assertEqual(conc["atual"]["taxa_total_pct"], round(100 * 675_133 / 13_957_308, 2))  # 4,84%
+        self.assertEqual(conc["anterior"]["taxa_total_pct"], round(100 * 733_862 / 14_990_823, 2))  # 4,90%
+        # a fonte não publica a separação técnica no ano aberto: ausência, não zero
+        self.assertIsNone(conc["atual"]["pnt_bt_pct"])
+        self.assertEqual(conc["atual"]["n_com_pnt_bt"], 0)
+
+    def test_mes_faltando_tira_a_distribuidora_sem_completar(self):
+        m = {k: v for k, v in self.mensal[EFLJC].items() if k != "2026-03"}
+        mensal = {EFLJC: m}
+        por, agreg = mod._acumulado(mensal, {EFLJC: self.cad[EFLJC]}, {EFLJC: "concessionaria"}, 2026, 7)
+        atual = por[EFLJC]["atual"]
+        self.assertFalse(por[EFLJC]["comparavel"])
+        self.assertFalse(atual["completo"])
+        self.assertEqual(atual["meses"], 6)
+        # a soma fica nos 6 meses publicados, rotulada como incompleta: não é escalada para 7
+        # meses nem preenchida com o mês vizinho
+        marco = sum(int(r["VlrEnergia"]) for r in self.csv if r["NumCPFCNPJ"] == EFLJC and r["AnoReferenciaBalanco"] == "2026"
+                    and r["MesReferenciaBalanco"] == "3" and r["DscModalidadeBalanco"] == "Perdas na Distribuição (valor medido)"
+                    and r["DscCctBalanco"] == "Perdas Totais")
+        self.assertEqual(atual["perdas_totais_med"], 675_133 - marco)
+        self.assertEqual(agreg, [])
+
+    def test_sem_mes_no_ano_aberto_nao_ha_recorte(self):
+        cemig = mod._anual_distribuidora(self.mensal[CEMIG], 2023)
+        self.assertIsNone(mod._mes_fim_parcial(self.mensal, {(CEMIG, 2023): cemig}, 2023, 2024))
+
+
+class NacionalSemDadoNaoViraZero(unittest.TestCase):
+    def test_ano_sem_distribuidora_valida_fica_ausente(self):
+        mensal, _, _ = _mensal()
+        rge = mod._anual_distribuidora(mensal[RGE], 2019)
+        linha = next(x for x in mod._nacional({(RGE, 2019): rge}, {RGE: "concessionaria"}, [2019], 2018)
+                     if x["universo"] == "concessionarias")
+        self.assertEqual(linha["n_distribuidoras"], 0)
+        self.assertEqual(linha["n_publicadas"], 1)
+        self.assertTrue(linha["parcial"])
+        for campo in ("injetada_mwh", "perdas_totais_mwh", "taxa_total_pct", "pnt_bt_pct"):
+            self.assertIsNone(linha[campo], campo)
+        self.assertEqual(linha["excluidos"], {"ano_incompleto": 1})
+
+
+class VinculoSoPeloCadastroDeMMGD(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        with open(os.path.join(DADOS, "mmgd_so_mmgd_recorte.csv"), encoding="utf-8", newline="") as f:
+            cls.mmgd = ap.contagem_mmgd(csv.DictReader(f, delimiter=";"))
+
+    def test_criterio_minimo_contra_erro_de_cadastro(self):
+        eq_ma, eq_pi, eletrocar, coprel, alianca = ("06272793000184", "06840748000189", "88446034000155",
+                                                    COPREL, "83647990000181")
+        self.assertEqual(self.mmgd[(eq_ma, "2101772")], 108)
+        self.assertEqual(self.mmgd[(eq_pi, "2101772")], 1)
+        v = ap.vinculos_so_mmgd({"2101772", "2109056", "4220000", "4305603"}, self.mmgd)
+        # Bela Vista do Maranhão: 1 registro da Equatorial Piauí é tratado como erro de cadastro
+        self.assertEqual(v["2101772"], [(eq_ma, 108)])
+        # Colorado (RS): duas distribuidoras com participação relevante
+        self.assertEqual(v["4305603"], [(eletrocar, 320), (coprel, 68)])
+        self.assertEqual(v["4220000"], [(alianca, 14)])
+        # Porto Rico do Maranhão: 5 empreendimentos não bastam; o município fica sem vínculo
+        self.assertNotIn("2109056", v)
+        # só municípios pedidos: a função não cria vínculo onde a relação oficial já existe
+        self.assertEqual(ap.vinculos_so_mmgd({"4305603"}, self.mmgd).keys(), {"4305603"})
+
+
+class LeituraDoBronze(unittest.TestCase):
+    def test_camadas_gzip_da_api_do_ibge(self):
+        import gzip as gz
+        with open(os.path.join(DADOS, "ibge_4714_recorte.json"), "rb") as f:
+            corpo = f.read()
+        self.assertEqual(ap.descomprime_camadas(gz.compress(gz.compress(corpo))), corpo)
+        self.assertEqual(ap.descomprime_camadas(corpo), corpo)
+        pop = ap.serie_sidra_v3(ap.descomprime_camadas(gz.compress(corpo)), 93)
+        self.assertIn("2507507", pop)
+
+
+class GoldPublicada(unittest.TestCase):
+    """Contrato da gold publicada (public/energia/gold/perdas.json) conferido por caminhos
+    independentes: CSV de download, malha do IBGE e validador de evidências."""
+
+    RAIZ = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+    @classmethod
+    def setUpClass(cls):
+        caminho = os.path.join(cls.RAIZ, "public", "energia", "gold", "perdas.json")
+        if not os.path.exists(caminho):
+            raise unittest.SkipTest("gold ainda não gerada")
+        with open(caminho, encoding="utf-8") as f:
+            cls.gold = json.load(f)
+        cls.tamanho = os.path.getsize(caminho)
+
+    def _serie(self, nome):
+        return os.path.join(self.RAIZ, "public", "energia", "series", nome)
+
+    def test_disponivel_e_dentro_do_orcamento(self):
+        self.assertTrue(self.gold["disponivel"])
+        self.assertLessEqual(self.tamanho, 420 * 1024)
+
+    def test_evidencias_validas(self):
+        from pipeline.energia import evidencia
+        for nome, ev in self.gold["evidencias"].items():
+            if ev is not None:
+                self.assertEqual(evidencia.validar(ev), [], nome)
+
+    def test_taxa_nacional_refeita_a_partir_do_csv(self):
+        ano = self.gold["referencia"]["ano"]
+        num = den = 0.0
+        with open(self._serie("perdas_distribuidoras.csv"), encoding="utf-8") as f:
+            for r in csv.DictReader(f, delimiter=";"):
+                if (r["ano"] == str(ano) and r["classificacao"].startswith("Concession") and r["completo"] == "1"
+                        and not r["alertas"] and r["perdas_totais_mwh"] and r["injetada_referencia_mwh"]):
+                    num += float(r["perdas_totais_mwh"])
+                    den += float(r["injetada_referencia_mwh"])
+        nac = next(x for x in self.gold["nacional"] if x["ano"] == ano and x["universo"] == "concessionarias")
+        self.assertAlmostEqual(nac["taxa_total_pct"], round(100 * num / den, 2), places=6)
+        self.assertEqual(nac["perdas_totais_mwh"], round(num))
+
+    def test_linha_nacional_sem_distribuidora_nao_tem_zero(self):
+        for x in self.gold["nacional"]:
+            if x["n_distribuidoras"] == 0:
+                self.assertIsNone(x["injetada_mwh"])
+                self.assertIsNone(x["taxa_total_pct"])
+
+    def test_municipios_ligados_a_malha_do_ibge(self):
+        with open(os.path.join(self.RAIZ, "public", "energia", "geo", "municipios.json"), encoding="utf-8") as f:
+            malha = {x["id"] for x in json.load(f)["features"]}
+        with open(self._serie("perdas_municipios.json"), encoding="utf-8") as f:
+            mun = json.load(f)
+        mapa = self.gold["mapa"]
+        self.assertEqual(set(mun["municipios"]) - malha, set(mapa["codigos_invalidos"]))
+        self.assertEqual(malha - set(mun["municipios"]), set(mapa["municipios_sem_vinculo"]))
+        # índice da distribuidora aponta para um CNPJ publicado na gold (que tem valor de perdas)
+        cnpjs = {d["cnpj"] for d in self.gold["distribuidoras"]}
+        self.assertTrue(set(mun["distribuidoras"]) <= cnpjs)
+        self.assertTrue(all(e in (0, 1, 2) for m in mun["municipios"].values() for _, e in m["d"]))
+
+    def test_acumulado_compara_mesmo_recorte(self):
+        ac = self.gold["acumulado"]
+        if not ac:
+            self.skipTest("sem ano aberto")
+        self.assertEqual(ac["mes_fim"], self.gold["referencia"]["mes_fim_acumulado"])
+        for d in self.gold["distribuidoras"]:
+            if d["parcial"] and d["parcial"]["comparavel"]:
+                self.assertEqual(d["parcial"]["meses"], ac["mes_fim"])
 
 
 if __name__ == "__main__":

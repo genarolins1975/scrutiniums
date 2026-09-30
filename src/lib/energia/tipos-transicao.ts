@@ -13,41 +13,64 @@ import type { Cabecalho, Download, Natureza, Proveniencia } from "./tipos";
 
 /* ---------- Evidência ("Comprove este número") ---------- */
 
-export type FonteEvidenciaTransicao = {
-  orgao: string;
-  conjunto: string;
+/**
+ * Espelho do objeto montado por pipeline/energia/evidencia.py (`construir`, campos na
+ * ordem de `CAMPOS`). Quando src/lib/energia/evidencia.ts existir com o tipo
+ * `Evidencia`, este tipo deve ser equivalente a ele.
+ */
+export type ArquivoEvidenciaTransicao = {
   recurso: string | null;
-  url: string;
   arquivo: string | null;
   sha256: string | null;
   capturado_em: string | null;
   publicado_em: string | null;
 };
 
-export type TesteEvidencia = { nome: string; resultado: "aprovado" | "reprovado"; detalhe: string };
+export type FonteEvidenciaTransicao = {
+  orgao: string;
+  conjunto: string;
+  recurso: string | null;
+  url: string;
+  /** Caminho da cópia no bronze (ou nome do arquivo publicado pela fonte). */
+  arquivo: string | null;
+  sha256: string | null;
+  capturado_em: string | null;
+  /** Data informada pela fonte; null quando a fonte não informa (nunca inventada). */
+  publicado_em: string | null;
+  /** Número que usa mais de um arquivo (ex.: um arquivo por submercado do ONS). */
+  arquivos?: ArquivoEvidenciaTransicao[];
+};
+
+export type TesteEvidencia = { nome: string; resultado: "aprovado" | "ressalva" | "reprovado"; detalhe: string };
 
 export type EvidenciaTransicao = {
-  valor_exibido: number | null;
+  indicador: string;
+  /** Texto exibido (formato brasileiro); "sem dado" quando valor_calculo é null. */
+  valor_exibido: string;
+  /** Valor antes do arredondamento. */
   valor_calculo: number | null;
   unidade: string;
-  periodo: Record<string, string | null> | null;
+  periodo: { inicio: string; fim: string };
   entidade: string;
   universo: string;
   filtros: string[];
   fonte: FonteEvidenciaTransicao;
+  extracao_pdf: { documento: string; edicao: string; pagina: string; conferencia: string } | null;
   chaves_origem: string[];
+  chaves_total: number | null;
+  consulta: string | null;
+  manifesto: { rotulo: string; url: string } | null;
   formula: string;
   numerador: { descricao: string; valor: number | null } | null;
   denominador: { descricao: string; valor: number | null } | null;
   pesos: string | null;
   exclusoes: string[];
-  cobertura: string | null;
+  cobertura: string;
   tratamento_ausencia: string;
   versao: { pipeline: string; codigo: string | null; publicacao: string };
-  /** Formato depende do bloco: revisões do cadastro, do snapshot do ONS ou declaradas pelo MCTI. */
-  revisoes: unknown;
+  revisoes: string;
   testes: TesteEvidencia[];
-  reconciliacao: { descricao: string; resultado: string; tolerancia: string };
+  reconciliacao: { descricao: string; resultado: "aprovado" | "ressalva" | "reprovado"; tolerancia: string } | null;
   download: Download[];
   reproducao: string;
   citacao: string;
@@ -279,7 +302,12 @@ export type OnsMmgdMes = {
   carga_global_sin_mwmed: number | null;
   /** Capacidade cadastrada na ANEEL (Brasil): média do estoque no início e no fim do mês. */
   capacidade_aneel_mw: number | null;
-  /** 100 × MWmed estimado (SIN) ÷ capacidade cadastrada; só em meses completos. Não é fator de capacidade. */
+  /** Mês posterior ao corte provisório do cadastro: o estoque ainda cresce com registro tardio. */
+  capacidade_aneel_provisoria: boolean;
+  /**
+   * 100 × MWmed estimado (SIN) ÷ capacidade cadastrada; só em mês completo do ONS e não
+   * provisório no cadastro (null nos demais). Não é fator de capacidade.
+   */
   razao_estimativa_ons_capacidade_pct: number | null;
 };
 
@@ -316,13 +344,24 @@ export type BlocoOnsMmgd = {
   conferencia_quebra_2023: ConferenciaQuebra2023;
   documentos: DocumentoFonte[];
   proveniencia: { estimativa: Proveniencia; razao: Proveniencia };
-  evidencia: EvidenciaTransicao;
+  /** Último mês completo no SIN; null quando nenhum mês está completo. */
+  evidencia: EvidenciaTransicao | null;
 };
 
 /* ---------- Emissões (MCTI) ---------- */
 
 export type FatorMes = { m: string; valor: number };
 export type FatorAno = { ano: number; valor: number };
+
+export type QuebraMcti = {
+  data: string;
+  origem: "FONTE";
+  series: string[];
+  descricao: string;
+  documento: DocumentoFonte;
+  /** A mesma quebra vista no dado da fonte (energia despachada do método simples ajustado). */
+  no_dado?: { descricao: string; energia_2024_mwh: number; energia_2025_mwh: number; variacao_pct: number };
+};
 
 export type BlocoEmissoes = {
   unidade: "tCO2/MWh";
@@ -337,8 +376,41 @@ export type BlocoEmissoes = {
   energia_despachada_mwh: { ano: number; mwh: number }[];
   ultimo_ano: { ano: number; valor: number; arquivo: string } | null;
   ultimo_mes: { m: string; valor: number; arquivo: string } | null;
-  anual_x_media_mensal: { ano: number; anual_publicado: number; media_simples_meses: number; diferenca: number }[];
-  revisoes_declaradas_pela_fonte: { mes: string; anterior: number; atual: number | null; arquivo: string }[];
+  quebras: QuebraMcti[];
+  /** Controle de leitura: anual publicado × média simples dos 12 meses (tolerância 0,0001). */
+  anual_x_media_mensal: {
+    ano: number;
+    anual_publicado: number;
+    media_simples_meses: number;
+    diferenca: number;
+    dentro_da_tolerancia: boolean;
+  }[];
+  revisoes_declaradas_pela_fonte: {
+    serie: "margem_operacao_mensal" | "margem_construcao";
+    periodo: string;
+    anterior: number;
+    atual: number | null;
+    arquivo: string;
+  }[];
+  /** Mesmo período com valor diferente na página vigente e no site institucional anterior. */
+  divergencias_entre_publicacoes: {
+    serie: string;
+    rotulo: string;
+    periodo: string;
+    valor_vigente: number;
+    arquivo_vigente: string;
+    valor_site_anterior: number;
+    arquivo_site_anterior: string;
+  }[];
+  /** Arquivos da mesma origem com valores diferentes para o mesmo período (vale o mais recente). */
+  conflitos_entre_arquivos: {
+    serie: string;
+    rotulo: string;
+    periodo: string;
+    familia: "atual" | "seed" | "antigo";
+    valores: { recurso: string; valor: number }[];
+    recurso_vigente: string;
+  }[];
   notas_da_fonte: { texto: string; arquivo: string }[];
   notas_margem_construcao: { texto: string; arquivo: string }[];
   descartes: { data: string; valor: number; motivo: string; arquivo: string }[];
@@ -354,13 +426,29 @@ export type BlocoEmissoes = {
     situacao: "acessivel" | "bloqueada" | null;
     tentado_em: string | null;
     detalhe: string | null;
-    alternativa_usada: string;
+    ultimo_acesso_ok: string | null;
+    bloqueios_registrados: { tentado_em: string; detalhe: string }[];
+    /** Origens dos valores publicados: "atual" (página vigente), "seed" (captura depositada), "antigo" (site anterior). */
+    familias_usadas: ("atual" | "seed" | "antigo")[];
+    alternativa: string;
     capturas_depositadas: number;
   };
+  /** Planilhas visíveis na página vigente do MCTI, com o título da linha (anota correções). */
+  pagina_vigente: {
+    url: string;
+    listagem_capturada_em: string | null;
+    planilhas: { titulo: string | null; arquivo: string; url: string }[];
+    links_ocultos_ignorados: string[];
+  } | null;
   arquivos: string[];
+  /** Trechos da fonte que definem o uso de cada fator e a quebra de 2025. */
+  documentos: DocumentoFonte[];
   estimativa_propria: { publicada: boolean; motivo: string };
   proveniencia: { medio: Proveniencia; mdl: Proveniencia };
-  evidencia: EvidenciaTransicao;
+  /** Fator médio anual do último ano completo. */
+  evidencia: EvidenciaTransicao | null;
+  /** Fator médio mensal do último mês publicado. */
+  evidencia_mensal: EvidenciaTransicao | null;
 };
 
 /* ---------- Gold ---------- */

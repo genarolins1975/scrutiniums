@@ -1,0 +1,9 @@
+{
+ "dominio": "energia",
+ "gold": "regulacao.json",
+ "gerado_em": "2026-09-30T23:08:28Z",
+ "versao_pipeline": "energia-0.1.0",
+ "disponivel": false,
+ "ok": false,
+ "motivo": "conferência reprovada: 2024 regra_ipca pld_max_horario: 1.404,77 × IPCA nov/2023 (6735.55) ÷ IPCA nov/2022 (6434.2)"
+}

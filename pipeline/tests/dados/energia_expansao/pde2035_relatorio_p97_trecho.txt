@@ -1,0 +1,63 @@
+Plano Decenal de Expansão de Energia 2035, relatório final aprovado (PDE 2035_Relatório Final_Aprovado.pdf, sha256 do bronze 836f13e0290733aaa79e24922f79246ab11dfd6cec98dd7c6a392a045344f913), página 97, extraída com pdftotext -layout em 30/09/2026:
+
+Plano Decenal de Expansão de Energia 2035                               Geração Centralizada de Energia Elétrica
+
+
+Figura 3-25 – Participação das fontes na matriz elétrica nacional em 2025 e 2035
+
+      DEZ/2025              UTE                          DEZ/2035
+                                                                                       RD
+                           20 GW                                           BATERIAS   3 GW
+                            8%                                              7 GW
+                                                                 UTE                   1%
+                                                                45 GW        2%                  UHE
+                                                                 12%                           113 GW
+           MMGD
+                                                                                                32%
+           40 GW
+            16%
+                                                                              Capacidade
+                            Capacidade                                         instalada
+                             instalada            UHE                            2035:
+          UFV                  2025:            109 GW                          359 GW
+         20 GW                249 GW             44%        MMGD
+          8%                                                78 GW                                      PCH
+                                                            21,8%                                     12 GW
+                                                                                                       3%
+                    EOL                                                                        BIO
+                   35 GW                                             UFV                      23 GW
+                    14%      BIO          PCH                       29 GW          EOL         6%
+                            17 GW        7 GW                        8%           50 GW
+                             7%           3%                                       14%
+
+
+Fonte: Elaboração EPE.
+
+
+A expansão da oferta de energia nacional permanece predominantemente baseada em fontes
+renováveis. Contudo, observa-se também a ampliação da participação das usinas termelétricas
+– sejam elas inflexíveis, em atendimento à legislação, ou flexíveis, para garantir os requisitos de
+capacidade. A Figura 3-26 ilustra essa expansão, evidenciando a contribuição das termelétricas
+para complementar a capacidade, expressa como percentual da potência total instalada do SIN.
+
+
+Figura 3-26 – Renovabilidade média da geração centralizada para o cenário de referência
+do PDE 2035
+
+
+
+
+Fonte: Elaboração EPE.
+
+
+Considerando a expansão do Cenário de Referência em 2035, cada tecnologia tem suas
+respectivas contribuições para o atendimento dos requisitos sistêmicos, de energia e potência.
+A Figura 3-27 apresenta as contribuições de energia média para o ano de 2035. Também são
+mostradas as contribuições de potência para outubro desse ano, mês que se destaca pelo
+elevado requisito de capacidade. As diferentes contribuições de cada tecnologia deixam
+evidente as suas características operativas, de modo a garantir, ao menor custo total, o
+
+
+
+                                                                                                              97
+

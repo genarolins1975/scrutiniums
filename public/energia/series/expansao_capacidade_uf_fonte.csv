@@ -1,151 +1,222 @@
-uf;tipo;origem;usinas;mw_fiscalizado;mw_outorgado
-AC;UFV;Solar;1;0.715;0.7152
-AC;UTE;Biomassa;1;1.5;1.5
-AC;UTE;Fóssil;28;140.668;140.67
-AL;CGH;Hídrica;7;4.459;4.461
-AL;UFV;Solar;7;4.943;4.943
-AL;UHE;Hídrica;1;400.0;400.0
-AL;UTE;Biomassa;21;357.462;357.462
-AL;UTE;Fóssil;17;17.14;17.1411
-AM;UFV;Solar;20;3.768;3.776
-AM;UHE;Hídrica;2;274.71;274.71
-AM;UTE;Biomassa;4;17.027;17.027
-AM;UTE;Fóssil;137;2400.929;2451.2278
-AP;UFV;Solar;1;4.039;4.0392
-AP;UHE;Hídrica;4;941.95;941.95
-AP;UTE;Biomassa;1;1.7;1.7
-AP;UTE;Fóssil;5;26.016;26.016
-BA;CGH;Hídrica;13;10.874;10.8751
-BA;EOL;Eólica;381;11832.1;11840.2006
-BA;PCH;Hídrica;6;85.78;85.78
-BA;UFV;Solar;161;3057.064;3057.0906
-BA;UHE;Hídrica;10;5612.569;5612.569
-BA;UTE;Biomassa;8;533.38;560.16
-BA;UTE;Fóssil;98;899.468;886.5789
-CE;EOL;Eólica;103;2690.34;2690.34
-CE;UFV;Solar;79;2297.901;2297.901
-CE;UTE;Fóssil;30;1735.436;1735.4371
-DF;UFV;Solar;1;0.912;0.912
-DF;UHE;Hídrica;1;30.0;30.0
-DF;UTE;Biomassa;1;2.85;2.85
-DF;UTE;Fóssil;21;16.358;16.3584
-ES;CGH;Hídrica;7;3.371;3.3715
-ES;PCH;Hídrica;15;232.432;232.432
-ES;UFV;Solar;51;35.904;35.9101
-ES;UHE;Hídrica;4;313.337;313.337
-ES;UTE;Biomassa;6;298.55;310.85
-ES;UTE;Fóssil;30;937.971;937.9724
-GO;CGH;Hídrica;8;11.749;11.7509
-GO;PCH;Hídrica;27;539.727;539.727
-GO;UFV;Solar;32;365.202;365.2026
-GO;UHE;Hídrica;16;5388.963;5386.627
-GO;UTE;Biomassa;40;1527.068;1597.068
-GO;UTE;Fóssil;63;395.885;395.8876
-MA;EOL;Eólica;16;426.022;426.0225
-MA;UFV;Solar;10;4.421;4.4225
-MA;UHE;Hídrica;1;1087.0;1087.0
-MA;UTE;Biomassa;7;307.825;307.825
-MA;UTE;Fóssil;21;2656.172;2661.2076
-MG;CGH;Hídrica;140;168.324;168.3314
-MG;EOL;Eólica;1;0.156;0.156
-MG;PCH;Hídrica;65;771.079;771.0792
-MG;UFV;Solar;241;8767.484;8767.4857
-MG;UHE;Hídrica;53;12586.191;12586.341
-MG;UTE;Biomassa;78;2116.993;2116.9932
-MG;UTE;Fóssil;365;847.093;847.1079
-MS;CGH;Hídrica;19;24.268;24.268
-MS;PCH;Hídrica;14;293.968;293.968
-MS;UFV;Solar;2890;904.869;905.9584
-MS;UHE;Hídrica;2;77.5;77.5
-MS;UTE;Biomassa;37;2432.338;2457.838
-MS;UTE;Fóssil;19;442.997;442.997
-MT;CGH;Hídrica;62;78.951;78.9563
-MT;PCH;Hídrica;70;1129.468;1134.608
-MT;UFV;Solar;26;27.787;27.7884
-MT;UHE;Hídrica;13;1927.648;1927.648
-MT;UTE;Biomassa;29;518.743;566.743
-MT;UTE;Fóssil;50;573.429;573.429
-PA;CGH;Hídrica;5;3.122;3.122
-PA;PCH;Hídrica;3;60.0;60.0
-PA;UFV;Solar;13109;18.05;18.051
-PA;UHE;Hídrica;5;22330.7;22330.7
-PA;UTE;Biomassa;16;111.881;111.8814
-PA;UTE;Fóssil;63;942.926;942.9288
-PB;EOL;Eólica;44;1234.24;1243.24
-PB;UFV;Solar;34;714.716;714.7172
-PB;UTE;Biomassa;6;107.204;107.204
-PB;UTE;Fóssil;9;516.858;516.8588
-PE;CGH;Hídrica;10;10.241;10.2416
-PE;EOL;Eólica;46;1265.065;1265.065
-PE;PCH;Hídrica;3;13.475;13.475
-PE;UFV;Solar;78;1505.193;1505.1948
-PE;UHE;Hídrica;1;1479.6;1479.6
-PE;UTE;Biomassa;19;292.377;292.3778
-PE;UTE;Fóssil;50;1772.983;1772.985
-PI;EOL;Eólica;126;4396.35;4415.25
-PI;UFV;Solar;83;2404.249;2404.249
-PI;UHE;Hídrica;1;237.3;237.3
-PI;UTE;Biomassa;1;23.5;23.5
-PI;UTE;Fóssil;16;17.004;17.006
-PR;CGH;Hídrica;73;104.009;104.016
-PR;EOL;Eólica;1;2.5;2.5
-PR;PCH;Hídrica;45;610.211;608.7806
-PR;UFV;Solar;66;33.125;33.1283
-PR;UHE;Hídrica;15;15030.604;15028.466
-PR;UTE;Biomassa;52;1301.918;1305.9196
-PR;UTE;Fóssil;57;629.739;629.7437
-RJ;CGH;Hídrica;18;18.542;18.5455
-RJ;EOL;Eólica;1;28.05;28.05
-RJ;PCH;Hídrica;17;260.61;260.61
-RJ;UFV;Solar;16;6.892;6.8943
-RJ;UHE;Hídrica;5;1015.087;1015.087
-RJ;UTE;Biomassa;9;88.65;88.65
-RJ;UTE;Fóssil;150;9246.865;9252.8453
-RJ;UTN;Nuclear;2;1990.0;1990.0
-RN;EOL;Eólica;319;10726.036;10761.436
-RN;PCH;Hídrica;1;4.7;4.7
-RN;UFV;Solar;80;2113.22;2113.221
-RN;UTE;Biomassa;2;61.0;61.0
-RN;UTE;Fóssil;34;231.671;231.6718
-RO;CGH;Hídrica;14;31.354;31.3546
-RO;PCH;Hídrica;13;141.41;141.41
-RO;UFV;Solar;9;17.695;17.6955
-RO;UHE;Hídrica;4;7608.25;7608.25
-RO;UTE;Biomassa;1;2.288;2.288
-RO;UTE;Fóssil;20;411.98;411.98
-RR;UFV;Solar;2;2.1;2.1
-RR;UHE;Hídrica;1;10.0;10.0
-RR;UTE;Biomassa;7;80.286;80.286
-RR;UTE;Fóssil;92;418.759;418.7648
-RS;CGH;Hídrica;71;83.55;83.5528
-RS;EOL;Eólica;80;2050.691;2084.292
-RS;PCH;Hídrica;52;756.311;756.3113
-RS;UFV;Solar;108;66.196;66.2022
-RS;UHE;Hídrica;17;4805.52;4815.02
-RS;UTE;Biomassa;28;392.153;396.4014
-RS;UTE;Fóssil;112;1749.552;1749.5572
-SC;CGH;Hídrica;193;267.447;267.4606
-SC;EOL;Eólica;18;250.599;250.5995
-SC;PCH;Hídrica;62;680.541;688.009
-SC;UFV;Solar;80;28.921;28.9258
-SC;UHE;Hídrica;12;2758.892;2781.892
-SC;UTE;Biomassa;33;302.992;302.9926
-SC;UTE;Fóssil;94;817.54;817.5442
-SE;EOL;Eólica;1;34.5;34.5
-SE;UFV;Solar;1;0.8;0.8
-SE;UHE;Hídrica;2;3162.364;3162.55
-SE;UTE;Biomassa;5;59.7;59.7
-SE;UTE;Fóssil;38;1635.126;1635.1264
-SP;CGH;Hídrica;56;83.572;83.5775
-SP;EOL;Eólica;1;0.002;0.0022
-SP;PCH;Hídrica;26;295.543;295.543
-SP;UFV;Solar;113;1222.82;1222.8269
-SP;UHE;Hídrica;42;14512.506;14512.506
-SP;UTE;Biomassa;243;7020.029;7158.6522
-SP;UTE;Fóssil;696;2340.154;2540.1579
-TO;CGH;Hídrica;15;23.819;23.819
-TO;PCH;Hídrica;14;188.764;188.764
-TO;UFV;Solar;3;6.275;6.275
-TO;UHE;Hídrica;3;1644.45;1644.45
-TO;UTE;Biomassa;2;91.5;91.5
-TO;UTE;Fóssil;25;18.529;18.529
+uf;tipo;origem;fonte;usinas;mw_fiscalizado;mw_outorgado
+AC;UFV;Solar;Radiação solar;1;0.715;0.7152
+AC;UTE;Biomassa;Floresta;1;1.5;1.5
+AC;UTE;Fóssil;Petróleo;28;140.668;140.67
+AL;CGH;Hídrica;Potencial hidráulico;7;4.459;4.461
+AL;UFV;Solar;Radiação solar;7;4.943;4.943
+AL;UHE;Hídrica;Potencial hidráulico;1;400.0;400.0
+AL;UTE;Biomassa;Agroindustriais;21;357.462;357.462
+AL;UTE;Fóssil;Gás natural;3;6.877;6.8775
+AL;UTE;Fóssil;Petróleo;14;10.263;10.2636
+AM;UFV;Solar;Radiação solar;20;3.768;3.776
+AM;UHE;Hídrica;Potencial hidráulico;2;274.71;274.71
+AM;UTE;Biomassa;Agroindustriais;1;5.0;5.0
+AM;UTE;Biomassa;Floresta;2;9.027;9.027
+AM;UTE;Biomassa;Resíduos sólidos urbanos;1;3.0;3.0
+AM;UTE;Fóssil;Gás natural;16;1547.101;1595.22
+AM;UTE;Fóssil;Petróleo;121;853.828;856.0078
+AP;UFV;Solar;Radiação solar;1;4.039;4.0392
+AP;UHE;Hídrica;Potencial hidráulico;4;941.95;941.95
+AP;UTE;Biomassa;Agroindustriais;1;1.7;1.7
+AP;UTE;Fóssil;Petróleo;5;26.016;26.016
+BA;CGH;Hídrica;Potencial hidráulico;13;10.874;10.8751
+BA;EOL;Eólica;Cinética do vento;381;11832.1;11840.2006
+BA;PCH;Hídrica;Potencial hidráulico;6;85.78;85.78
+BA;UFV;Solar;Radiação solar;161;3057.064;3057.0906
+BA;UHE;Hídrica;Potencial hidráulico;10;5612.569;5612.569
+BA;UTE;Biomassa;Agroindustriais;2;22.0;22.0
+BA;UTE;Biomassa;Floresta;5;491.65;518.43
+BA;UTE;Biomassa;Resíduos sólidos urbanos;1;19.73;19.73
+BA;UTE;Fóssil;Gás natural;12;469.078;456.187
+BA;UTE;Fóssil;Outros Fósseis;1;5.0;5.0
+BA;UTE;Fóssil;Petróleo;85;425.39;425.3919
+CE;EOL;Eólica;Cinética do vento;103;2690.34;2690.34
+CE;UFV;Solar;Radiação solar;79;2297.901;2297.901
+CE;UTE;Fóssil;Carvão mineral;3;1298.274;1298.274
+CE;UTE;Fóssil;Gás natural;6;241.724;241.724
+CE;UTE;Fóssil;Outros Fósseis;1;5.65;5.65
+CE;UTE;Fóssil;Petróleo;20;189.788;189.7891
+DF;UFV;Solar;Radiação solar;1;0.912;0.912
+DF;UHE;Hídrica;Potencial hidráulico;1;30.0;30.0
+DF;UTE;Biomassa;Resíduos sólidos urbanos;1;2.85;2.85
+DF;UTE;Fóssil;Petróleo;21;16.358;16.3584
+ES;CGH;Hídrica;Potencial hidráulico;7;3.371;3.3715
+ES;PCH;Hídrica;Potencial hidráulico;15;232.432;232.432
+ES;UFV;Solar;Radiação solar;51;35.904;35.9101
+ES;UHE;Hídrica;Potencial hidráulico;4;313.337;313.337
+ES;UTE;Biomassa;Agroindustriais;3;56.9;69.2
+ES;UTE;Biomassa;Floresta;2;241.5;241.5
+ES;UTE;Biomassa;Resíduos animais;1;0.15;0.15
+ES;UTE;Fóssil;Gás natural;6;368.406;368.406
+ES;UTE;Fóssil;Outros Fósseis;1;147.3;147.3
+ES;UTE;Fóssil;Petróleo;23;422.265;422.2664
+GO;CGH;Hídrica;Potencial hidráulico;8;11.749;11.7509
+GO;PCH;Hídrica;Potencial hidráulico;27;539.727;539.727
+GO;UFV;Solar;Radiação solar;32;365.202;365.2026
+GO;UHE;Hídrica;Potencial hidráulico;16;5388.963;5386.627
+GO;UTE;Biomassa;Agroindustriais;38;1519.068;1589.068
+GO;UTE;Biomassa;Floresta;2;8.0;8.0
+GO;UTE;Fóssil;Petróleo;63;395.885;395.8876
+MA;EOL;Eólica;Cinética do vento;16;426.022;426.0225
+MA;UFV;Solar;Radiação solar;10;4.421;4.4225
+MA;UHE;Hídrica;Potencial hidráulico;1;1087.0;1087.0
+MA;UTE;Biomassa;Agroindustriais;2;9.4;9.4
+MA;UTE;Biomassa;Floresta;4;295.62;295.62
+MA;UTE;Biomassa;Resíduos sólidos urbanos;1;2.805;2.805
+MA;UTE;Fóssil;Carvão mineral;2;435.337;435.337
+MA;UTE;Fóssil;Gás natural;6;1881.03;1886.064
+MA;UTE;Fóssil;Petróleo;13;339.805;339.8066
+MG;CGH;Hídrica;Potencial hidráulico;140;168.324;168.3314
+MG;EOL;Eólica;Cinética do vento;1;0.156;0.156
+MG;PCH;Hídrica;Potencial hidráulico;65;771.079;771.0792
+MG;UFV;Solar;Radiação solar;241;8767.484;8767.4857
+MG;UHE;Hídrica;Potencial hidráulico;53;12586.191;12586.341
+MG;UTE;Biomassa;Agroindustriais;49;1629.92;1629.92
+MG;UTE;Biomassa;Floresta;21;468.532;468.532
+MG;UTE;Biomassa;Resíduos animais;4;0.455;0.4552
+MG;UTE;Biomassa;Resíduos sólidos urbanos;4;18.086;18.086
+MG;UTE;Fóssil;Carvão mineral;6;113.065;113.065
+MG;UTE;Fóssil;Gás natural;7;381.698;381.6982
+MG;UTE;Fóssil;Petróleo;352;352.33;352.3447
+MS;CGH;Hídrica;Potencial hidráulico;19;24.268;24.268
+MS;PCH;Hídrica;Potencial hidráulico;14;293.968;293.968
+MS;UFV;Solar;Radiação solar;2890;904.869;905.9584
+MS;UHE;Hídrica;Potencial hidráulico;2;77.5;77.5
+MS;UTE;Biomassa;Agroindustriais;24;1171.409;1177.409
+MS;UTE;Biomassa;Floresta;12;1258.379;1277.879
+MS;UTE;Biomassa;Resíduos sólidos urbanos;1;2.55;2.55
+MS;UTE;Fóssil;Gás natural;5;435.071;435.071
+MS;UTE;Fóssil;Petróleo;14;7.926;7.926
+MT;CGH;Hídrica;Potencial hidráulico;62;78.951;78.9563
+MT;PCH;Hídrica;Potencial hidráulico;70;1129.468;1134.608
+MT;UFV;Solar;Radiação solar;26;27.787;27.7884
+MT;UHE;Hídrica;Potencial hidráulico;13;1927.648;1927.648
+MT;UTE;Biomassa;Agroindustriais;10;205.128;205.128
+MT;UTE;Biomassa;Floresta;16;310.355;358.355
+MT;UTE;Biomassa;Resíduos animais;3;3.26;3.26
+MT;UTE;Fóssil;Gás natural;1;529.2;529.2
+MT;UTE;Fóssil;Petróleo;49;44.229;44.229
+PA;CGH;Hídrica;Potencial hidráulico;5;3.122;3.122
+PA;PCH;Hídrica;Potencial hidráulico;3;60.0;60.0
+PA;UFV;Solar;Radiação solar;13109;18.05;18.051
+PA;UHE;Hídrica;Potencial hidráulico;5;22330.7;22330.7
+PA;UTE;Biomassa;Agroindustriais;2;21.25;21.25
+PA;UTE;Biomassa;Biocombustíveis líquidos;3;4.98;4.9804
+PA;UTE;Biomassa;Floresta;10;84.51;84.51
+PA;UTE;Biomassa;Resíduos animais;1;1.141;1.141
+PA;UTE;Fóssil;Carvão mineral;1;91.59;91.59
+PA;UTE;Fóssil;Gás natural;1;629.367;629.367
+PA;UTE;Fóssil;Petróleo;61;221.969;221.9717
+PB;EOL;Eólica;Cinética do vento;44;1234.24;1243.24
+PB;UFV;Solar;Radiação solar;34;714.716;714.7172
+PB;UTE;Biomassa;Agroindustriais;5;101.5;101.5
+PB;UTE;Biomassa;Resíduos sólidos urbanos;1;5.704;5.704
+PB;UTE;Fóssil;Petróleo;9;516.858;516.8588
+PE;CGH;Hídrica;Potencial hidráulico;10;10.241;10.2416
+PE;EOL;Eólica;Cinética do vento;46;1265.065;1265.065
+PE;PCH;Hídrica;Potencial hidráulico;3;13.475;13.475
+PE;UFV;Solar;Radiação solar;78;1505.193;1505.1948
+PE;UHE;Hídrica;Potencial hidráulico;1;1479.6;1479.6
+PE;UTE;Biomassa;Agroindustriais;17;259.685;259.685
+PE;UTE;Biomassa;Biocombustíveis líquidos;1;4.172;4.1728
+PE;UTE;Biomassa;Resíduos sólidos urbanos;1;28.52;28.52
+PE;UTE;Fóssil;Gás natural;4;608.601;608.601
+PE;UTE;Fóssil;Petróleo;46;1164.382;1164.384
+PI;EOL;Eólica;Cinética do vento;126;4396.35;4415.25
+PI;UFV;Solar;Radiação solar;83;2404.249;2404.249
+PI;UHE;Hídrica;Potencial hidráulico;1;237.3;237.3
+PI;UTE;Biomassa;Agroindustriais;1;23.5;23.5
+PI;UTE;Fóssil;Petróleo;16;17.004;17.006
+PR;CGH;Hídrica;Potencial hidráulico;73;104.009;104.016
+PR;EOL;Eólica;Cinética do vento;1;2.5;2.5
+PR;PCH;Hídrica;Potencial hidráulico;45;610.211;608.7806
+PR;UFV;Solar;Radiação solar;66;33.125;33.1283
+PR;UHE;Hídrica;Potencial hidráulico;15;15030.604;15028.466
+PR;UTE;Biomassa;Agroindustriais;32;639.414;643.4148
+PR;UTE;Biomassa;Floresta;13;651.332;651.3328
+PR;UTE;Biomassa;Resíduos animais;6;1.19;1.19
+PR;UTE;Biomassa;Resíduos sólidos urbanos;1;9.982;9.982
+PR;UTE;Fóssil;Gás natural;5;505.889;505.889
+PR;UTE;Fóssil;Petróleo;52;123.85;123.8548
+RJ;CGH;Hídrica;Potencial hidráulico;18;18.542;18.5455
+RJ;EOL;Eólica;Cinética do vento;1;28.05;28.05
+RJ;PCH;Hídrica;Potencial hidráulico;17;260.61;260.61
+RJ;UFV;Solar;Radiação solar;16;6.892;6.8943
+RJ;UHE;Hídrica;Potencial hidráulico;5;1015.087;1015.087
+RJ;UTE;Biomassa;Agroindustriais;2;49.0;49.0
+RJ;UTE;Biomassa;Floresta;1;2.7;2.7
+RJ;UTE;Biomassa;Resíduos sólidos urbanos;6;36.95;36.95
+RJ;UTE;Fóssil;Carvão mineral;2;511.0;511.0
+RJ;UTE;Fóssil;Gás natural;40;8598.959;8598.9599
+RJ;UTE;Fóssil;Petróleo;108;136.906;142.8854
+RJ;UTN;Nuclear;Urânio;2;1990.0;1990.0
+RN;EOL;Eólica;Cinética do vento;319;10726.036;10761.436
+RN;PCH;Hídrica;Potencial hidráulico;1;4.7;4.7
+RN;UFV;Solar;Radiação solar;80;2113.22;2113.221
+RN;UTE;Biomassa;Agroindustriais;2;61.0;61.0
+RN;UTE;Fóssil;Gás natural;6;115.7;115.7
+RN;UTE;Fóssil;Petróleo;28;115.971;115.9718
+RO;CGH;Hídrica;Potencial hidráulico;14;31.354;31.3546
+RO;PCH;Hídrica;Potencial hidráulico;13;141.41;141.41
+RO;UFV;Solar;Radiação solar;9;17.695;17.6955
+RO;UHE;Hídrica;Potencial hidráulico;4;7608.25;7608.25
+RO;UTE;Biomassa;Agroindustriais;1;2.288;2.288
+RO;UTE;Fóssil;Gás natural;1;349.0;349.0
+RO;UTE;Fóssil;Petróleo;19;62.98;62.98
+RR;UFV;Solar;Radiação solar;2;2.1;2.1
+RR;UHE;Hídrica;Potencial hidráulico;1;10.0;10.0
+RR;UTE;Biomassa;Agroindustriais;1;17.936;17.936
+RR;UTE;Biomassa;Biocombustíveis líquidos;1;11.55;11.55
+RR;UTE;Biomassa;Floresta;5;50.8;50.8
+RR;UTE;Fóssil;Gás natural;1;126.289;126.289
+RR;UTE;Fóssil;Petróleo;91;292.47;292.4758
+RS;CGH;Hídrica;Potencial hidráulico;71;83.55;83.5528
+RS;EOL;Eólica;Cinética do vento;80;2050.691;2084.292
+RS;PCH;Hídrica;Potencial hidráulico;52;756.311;756.3113
+RS;UFV;Solar;Radiação solar;108;66.196;66.2022
+RS;UHE;Hídrica;Potencial hidráulico;17;4805.52;4815.02
+RS;UTE;Biomassa;Agroindustriais;13;80.475;80.4754
+RS;UTE;Biomassa;Biocombustíveis líquidos;1;0.32;0.32
+RS;UTE;Biomassa;Floresta;9;298.862;298.862
+RS;UTE;Biomassa;Resíduos sólidos urbanos;5;12.496;16.744
+RS;UTE;Fóssil;Carvão mineral;2;695.0;695.0
+RS;UTE;Fóssil;Gás natural;8;822.186;822.186
+RS;UTE;Fóssil;Petróleo;102;232.366;232.3712
+SC;CGH;Hídrica;Potencial hidráulico;193;267.447;267.4606
+SC;EOL;Eólica;Cinética do vento;18;250.599;250.5995
+SC;PCH;Hídrica;Potencial hidráulico;62;680.541;688.009
+SC;UFV;Solar;Radiação solar;80;28.921;28.9258
+SC;UHE;Hídrica;Potencial hidráulico;12;2758.892;2781.892
+SC;UTE;Biomassa;Agroindustriais;5;14.895;14.8956
+SC;UTE;Biomassa;Floresta;21;278.528;278.528
+SC;UTE;Biomassa;Resíduos animais;5;2.625;2.625
+SC;UTE;Biomassa;Resíduos sólidos urbanos;2;6.944;6.944
+SC;UTE;Fóssil;Carvão mineral;4;745.0;745.0
+SC;UTE;Fóssil;Gás natural;2;3.005;3.0052
+SC;UTE;Fóssil;Petróleo;88;69.535;69.539
+SE;EOL;Eólica;Cinética do vento;1;34.5;34.5
+SE;UFV;Solar;Radiação solar;1;0.8;0.8
+SE;UHE;Hídrica;Potencial hidráulico;2;3162.364;3162.55
+SE;UTE;Biomassa;Agroindustriais;5;59.7;59.7
+SE;UTE;Fóssil;Gás natural;4;1601.599;1601.599
+SE;UTE;Fóssil;Petróleo;34;33.527;33.5274
+SP;CGH;Hídrica;Potencial hidráulico;56;83.572;83.5775
+SP;EOL;Eólica;Cinética do vento;1;0.002;0.0022
+SP;PCH;Hídrica;Potencial hidráulico;26;295.543;295.543
+SP;UFV;Solar;Radiação solar;113;1222.82;1222.8269
+SP;UHE;Hídrica;Potencial hidráulico;42;14512.506;14512.506
+SP;UTE;Biomassa;Agroindustriais;218;6296.446;6431.9892
+SP;UTE;Biomassa;Floresta;11;637.215;637.215
+SP;UTE;Biomassa;Resíduos animais;1;0.32;0.32
+SP;UTE;Biomassa;Resíduos sólidos urbanos;13;86.048;89.128
+SP;UTE;Fóssil;Carvão mineral;1;24.4;24.4
+SP;UTE;Fóssil;Gás natural;48;959.191;962.3374
+SP;UTE;Fóssil;Petróleo;647;1356.563;1553.4205
+TO;CGH;Hídrica;Potencial hidráulico;15;23.819;23.819
+TO;PCH;Hídrica;Potencial hidráulico;14;188.764;188.764
+TO;UFV;Solar;Radiação solar;3;6.275;6.275
+TO;UHE;Hídrica;Potencial hidráulico;3;1644.45;1644.45
+TO;UTE;Biomassa;Agroindustriais;1;80.0;80.0
+TO;UTE;Biomassa;Floresta;1;11.5;11.5
+TO;UTE;Fóssil;Outros Fósseis;1;8.02;8.02
+TO;UTE;Fóssil;Petróleo;24;10.509;10.509

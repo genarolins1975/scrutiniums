@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "transicao.json",
- "gerado_em": "2026-09-30T22:29:54Z",
+ "gerado_em": "2026-09-30T22:57:56Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "dcad322a4ea9+alterado",
+ "versao_codigo": "dafa93bb2111+alterado",
  "disponivel": true,
  "paineis": [
   "P063",
@@ -41,136 +41,170 @@
   },
   "evidencias": {
    "unidades": {
-    "valor_exibido": 4656839.0,
+    "indicador": "Unidades de micro e minigeração distribuída no cadastro da ANEEL",
+    "valor_exibido": "4.656.839",
     "valor_calculo": 4656839.0,
     "unidade": "empreendimentos",
     "periodo": {
-     "cadastro_em": "2026-09-29"
+     "inicio": "2004-01-01",
+     "fim": "2026-09-29"
     },
     "entidade": "Brasil",
-    "universo": "todos os empreendimentos de MMGD no cadastro vigente da ANEEL",
+    "universo": "empreendimentos de micro e minigeração distribuída no cadastro vigente da ANEEL (todas as distribuidoras que enviaram dados)",
     "filtros": [],
     "fonte": {
      "orgao": "ANEEL",
      "conjunto": "Relação de empreendimentos de Mini e Micro Geração Distribuída",
      "recurso": "empreendimento-geracao-distribuida.parquet",
-     "url": "https://dadosabertos.aneel.gov.br/dataset/relacao-de-empreendimentos-de-geracao-distribuida",
-     "arquivo": "empreendimento-geracao-distribuida.parquet",
+     "url": "https://dadosabertos.aneel.gov.br/dataset/5e0fafd2-21b9-4d5b-b622-40438d40aba2/resource/cd29f6eb-e08d-4db7-b6fb-ed6e3b682d27/download/empreendimento-geracao-distribuida.parquet",
+     "arquivo": "data/energia/bronze/aneel/aneel_mmgd_empreendimentos/empreendimento-geracao-distribuida.parquet/20260930T222234Z.8d53e3da748a.parquet.gz",
      "sha256": "8d53e3da748a1f44cf521094275fa85964e6e808d0fdff0f1a3959a4de151d5f",
      "capturado_em": "2026-09-30T22:22:34Z",
      "publicado_em": "2026-09-29T12:07:03Z"
     },
+    "extracao_pdf": null,
     "chaves_origem": [
-     "CodEmpreendimento (um registro por empreendimento)"
+     "CodEmpreendimento (um registro por empreendimento)",
+     "DatGeracaoConjuntoDados = 2026-09-29"
     ],
-    "formula": "unidades = número de códigos de empreendimento distintos no arquivo",
+    "chaves_total": null,
+    "consulta": "SELECT COUNT(*), SUM(MdaPotenciaInstaladaKW) FROM empreendimento-geracao-distribuida.parquet",
+    "manifesto": null,
+    "formula": "unidades = número de códigos de empreendimento distintos no arquivo (um registro por empreendimento)",
     "numerador": null,
     "denominador": null,
     "pesos": null,
     "exclusoes": [],
-    "cobertura": "conexões de 2004 até 2026-09-29, todas as distribuidoras que enviaram dados",
-    "tratamento_ausencia": "registro com data sentinela conta no estoque, sem ano; potência ausente não vira zero",
+    "cobertura": "estoque cadastrado em 29/09/2026; conexões desde 2004",
+    "tratamento_ausencia": "registro com data sentinela (ano 1900) conta no estoque, sem ano de conexão; potência ausente não vira zero",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "dcad322a4ea9+alterado",
-     "publicacao": "2026-09-30T22:29:54Z"
+     "codigo": "dafa93bb2111+alterado",
+     "publicacao": "2026-09-30T22:57:55Z"
     },
-    "revisoes": {
-     "capturas_comparadas": 1,
-     "meses": [],
-     "nota": "Uma única captura do cadastro integrada até aqui: as revisões por registro tardio serão medidas a partir da próxima captura."
-    },
+    "revisoes": "Uma única captura do cadastro integrada até aqui: as revisões por registro tardio serão medidas a partir da próxima captura.",
     "testes": [
      {
       "nome": "códigos únicos",
       "resultado": "aprovado",
-      "detalhe": "4656839 códigos distintos em 4656839 linhas"
+      "detalhe": "4.656.839 códigos distintos em 4.656.839 linhas"
      },
      {
       "nome": "identidade de agregação",
       "resultado": "aprovado",
-      "detalhe": "soma por município = soma por UF e mês = soma por distribuidora = linhas do arquivo"
+      "detalhe": "soma por município = soma por UF e mês = soma por distribuidora = soma por classe, modalidade, porte e fonte = linhas do arquivo"
+     },
+     {
+      "nome": "potência não negativa",
+      "resultado": "aprovado",
+      "detalhe": "0 registros com potência negativa; 6 com potência zero publicada"
+     },
+     {
+      "nome": "duplicidade candidata",
+      "resultado": "ressalva",
+      "detalhe": "49.107 unidades com todos os atributos observáveis iguais a outra (1,05% do total); medidas, não removidas"
      }
     ],
     "reconciliacao": {
-     "descricao": "DthAtualizaCadastralEmpreend (relação) comparada, pelo código, com DatConexao (informações técnicas fotovoltaicas, 'Data da conexão da Unidade Geradora').",
-     "resultado": "aprovada",
-     "tolerancia": "igualdade exata de datas; potência a até 0,005 kW (centésimo publicado)"
+     "descricao": "Outro arquivo do mesmo conjunto (informações técnicas fotovoltaicas): 4.655.916 de 4.655.916 empreendimentos solares da relação encontrados pelo código, 4.655.916 com a mesma data de conexão e 4.655.916 com a mesma potência instalada.",
+     "resultado": "aprovado",
+     "tolerancia": "0 empreendimentos de diferença; potência igual a 0,005 kW (centésimo publicado)"
     },
     "download": [
      {
-      "rotulo": "Municípios (CSV)",
+      "rotulo": "MMGD por município, ano e fonte (CSV)",
+      "url": "/energia/series/transicao_mmgd_municipio_ano_fonte.csv"
+     },
+     {
+      "rotulo": "MMGD por município, com população (CSV)",
       "url": "/energia/series/transicao_mmgd_municipios.csv"
      }
     ],
-    "reproducao": "python3 pipeline/energia/executar_modulo.py transicao",
-    "citacao": "Scrutiniums, Observatório do Setor Elétrico. Unidades de micro e minigeração distribuída no cadastro da ANEEL. Dados: ANEEL (Relação de empreendimentos de Mini e Micro Geração Distribuída), Licença Aberta para Bases de Dados (ODbL) do Open Data Commons. Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/transicao"
+    "reproducao": "python3 pipeline/energia/executar_modulo.py transicao --sem-coleta (silver data/energia/silver/aneel_mmgd.db)",
+    "citacao": "SCRUTINIUMS. Unidades de micro e minigeração distribuída no cadastro da ANEEL: 4.656.839 empreendimentos, Brasil, 01/01/2004 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Relação de empreendimentos de Mini e Micro Geração Distribuída (recurso empreendimento-geracao-distribuida.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    },
    "potencia": {
-    "valor_exibido": 53965.593,
+    "indicador": "Potência instalada de micro e minigeração distribuída no cadastro da ANEEL",
+    "valor_exibido": "53.965,6",
     "valor_calculo": 53965.59258999996,
     "unidade": "MW",
     "periodo": {
-     "cadastro_em": "2026-09-29"
+     "inicio": "2004-01-01",
+     "fim": "2026-09-29"
     },
     "entidade": "Brasil",
-    "universo": "todos os empreendimentos de MMGD no cadastro vigente da ANEEL",
+    "universo": "empreendimentos de micro e minigeração distribuída no cadastro vigente da ANEEL (todas as distribuidoras que enviaram dados)",
     "filtros": [],
     "fonte": {
      "orgao": "ANEEL",
      "conjunto": "Relação de empreendimentos de Mini e Micro Geração Distribuída",
      "recurso": "empreendimento-geracao-distribuida.parquet",
-     "url": "https://dadosabertos.aneel.gov.br/dataset/relacao-de-empreendimentos-de-geracao-distribuida",
-     "arquivo": "empreendimento-geracao-distribuida.parquet",
+     "url": "https://dadosabertos.aneel.gov.br/dataset/5e0fafd2-21b9-4d5b-b622-40438d40aba2/resource/cd29f6eb-e08d-4db7-b6fb-ed6e3b682d27/download/empreendimento-geracao-distribuida.parquet",
+     "arquivo": "data/energia/bronze/aneel/aneel_mmgd_empreendimentos/empreendimento-geracao-distribuida.parquet/20260930T222234Z.8d53e3da748a.parquet.gz",
      "sha256": "8d53e3da748a1f44cf521094275fa85964e6e808d0fdff0f1a3959a4de151d5f",
      "capturado_em": "2026-09-30T22:22:34Z",
      "publicado_em": "2026-09-29T12:07:03Z"
     },
+    "extracao_pdf": null,
     "chaves_origem": [
-     "CodEmpreendimento (um registro por empreendimento)"
+     "CodEmpreendimento (um registro por empreendimento)",
+     "DatGeracaoConjuntoDados = 2026-09-29"
     ],
-    "formula": "potência = soma de MdaPotenciaInstaladaKW de todos os empreendimentos ÷ 1000",
+    "chaves_total": null,
+    "consulta": "SELECT COUNT(*), SUM(MdaPotenciaInstaladaKW) FROM empreendimento-geracao-distribuida.parquet",
+    "manifesto": null,
+    "formula": "potência = Σ MdaPotenciaInstaladaKW de todos os empreendimentos ÷ 1000 (capacidade cadastrada, não energia gerada)",
     "numerador": null,
     "denominador": null,
     "pesos": null,
     "exclusoes": [],
-    "cobertura": "conexões de 2004 até 2026-09-29, todas as distribuidoras que enviaram dados",
-    "tratamento_ausencia": "registro com data sentinela conta no estoque, sem ano; potência ausente não vira zero",
+    "cobertura": "estoque cadastrado em 29/09/2026; conexões desde 2004",
+    "tratamento_ausencia": "registro com data sentinela (ano 1900) conta no estoque, sem ano de conexão; potência ausente não vira zero",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "dcad322a4ea9+alterado",
-     "publicacao": "2026-09-30T22:29:54Z"
+     "codigo": "dafa93bb2111+alterado",
+     "publicacao": "2026-09-30T22:57:55Z"
     },
-    "revisoes": {
-     "capturas_comparadas": 1,
-     "meses": [],
-     "nota": "Uma única captura do cadastro integrada até aqui: as revisões por registro tardio serão medidas a partir da próxima captura."
-    },
+    "revisoes": "Uma única captura do cadastro integrada até aqui: as revisões por registro tardio serão medidas a partir da próxima captura.",
     "testes": [
      {
       "nome": "códigos únicos",
       "resultado": "aprovado",
-      "detalhe": "4656839 códigos distintos em 4656839 linhas"
+      "detalhe": "4.656.839 códigos distintos em 4.656.839 linhas"
      },
      {
       "nome": "identidade de agregação",
       "resultado": "aprovado",
-      "detalhe": "soma por município = soma por UF e mês = soma por distribuidora = linhas do arquivo"
+      "detalhe": "soma por município = soma por UF e mês = soma por distribuidora = soma por classe, modalidade, porte e fonte = linhas do arquivo"
+     },
+     {
+      "nome": "potência não negativa",
+      "resultado": "aprovado",
+      "detalhe": "0 registros com potência negativa; 6 com potência zero publicada"
+     },
+     {
+      "nome": "duplicidade candidata",
+      "resultado": "ressalva",
+      "detalhe": "49.107 unidades com todos os atributos observáveis iguais a outra (1,05% do total); medidas, não removidas"
      }
     ],
     "reconciliacao": {
-     "descricao": "DthAtualizaCadastralEmpreend (relação) comparada, pelo código, com DatConexao (informações técnicas fotovoltaicas, 'Data da conexão da Unidade Geradora').",
-     "resultado": "aprovada",
-     "tolerancia": "igualdade exata de datas; potência a até 0,005 kW (centésimo publicado)"
+     "descricao": "Outro arquivo do mesmo conjunto (informações técnicas fotovoltaicas): 4.655.916 de 4.655.916 empreendimentos solares da relação encontrados pelo código, 4.655.916 com a mesma data de conexão e 4.655.916 com a mesma potência instalada.",
+     "resultado": "aprovado",
+     "tolerancia": "0 empreendimentos de diferença; potência igual a 0,005 kW (centésimo publicado)"
     },
     "download": [
      {
-      "rotulo": "Municípios (CSV)",
+      "rotulo": "MMGD por município, ano e fonte (CSV)",
+      "url": "/energia/series/transicao_mmgd_municipio_ano_fonte.csv"
+     },
+     {
+      "rotulo": "MMGD por município, com população (CSV)",
       "url": "/energia/series/transicao_mmgd_municipios.csv"
      }
     ],
-    "reproducao": "python3 pipeline/energia/executar_modulo.py transicao",
-    "citacao": "Scrutiniums, Observatório do Setor Elétrico. Potência instalada de micro e minigeração distribuída no cadastro da ANEEL. Dados: ANEEL (Relação de empreendimentos de Mini e Micro Geração Distribuída), Licença Aberta para Bases de Dados (ODbL) do Open Data Commons. Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/transicao"
+    "reproducao": "python3 pipeline/energia/executar_modulo.py transicao --sem-coleta (silver data/energia/silver/aneel_mmgd.db)",
+    "citacao": "SCRUTINIUMS. Potência instalada de micro e minigeração distribuída no cadastro da ANEEL: 53.965,6 MW, Brasil, 01/01/2004 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Relação de empreendimentos de Mini e Micro Geração Distribuída (recurso empreendimento-geracao-distribuida.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    }
   },
   "fontes": [
@@ -8468,7 +8502,7 @@
     },
     "publicado_pela_fonte_em": "2026-09-29T12:07:03Z",
     "capturado_em": "2026-09-30T22:22:34Z",
-    "validado_em": "2026-09-30T22:29:54Z",
+    "validado_em": "2026-09-30T22:57:55Z",
     "cobertura_historica": {
      "inicio": "2008-12-01",
      "fim": "2026-09-29"
@@ -8485,9 +8519,9 @@
      "sha256": "289f0a9661b05aa08afa8c8edad455ae2e0faad38aef28d8257d037bc30459ef"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "dcad322a4ea9+alterado",
+    "versao_codigo": "dafa93bb2111+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-09-30T22:29:54Z",
+     "detectado_em": "2026-09-30T22:57:55Z",
      "total": 0,
      "vintages_comparadas": 2,
      "arquivos": 2,
@@ -8525,7 +8559,7 @@
     },
     "publicado_pela_fonte_em": "2026-09-29T12:07:03Z",
     "capturado_em": "2026-09-30T22:22:34Z",
-    "validado_em": "2026-09-30T22:29:54Z",
+    "validado_em": "2026-09-30T22:57:55Z",
     "cobertura_historica": {
      "inicio": "2026-09-29",
      "fim": "2026-09-29"
@@ -8539,9 +8573,9 @@
      "sha256": "289f0a9661b05aa08afa8c8edad455ae2e0faad38aef28d8257d037bc30459ef"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "dcad322a4ea9+alterado",
+    "versao_codigo": "dafa93bb2111+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-09-30T22:29:54Z",
+     "detectado_em": "2026-09-30T22:57:55Z",
      "total": 0,
      "vintages_comparadas": 2,
      "arquivos": 2,
@@ -8561,21 +8595,22 @@
  },
  "ons_mmgd": {
   "inicio_serie": "2019-02-15",
-  "fim_serie": "2026-09-30",
+  "fim_serie": "2026-09-29",
   "ultimo_mes_completo": {
-   "m": "2026-09",
-   "dias_no_mes": 30,
-   "SE": 4731.4,
-   "S": 1581.2,
-   "NE": 2231.5,
-   "N": 994.1,
-   "SIN": 9538.1,
-   "dias_completos_sin": 30,
+   "m": "2026-08",
+   "dias_no_mes": 31,
+   "SE": 4622.0,
+   "S": 1349.6,
+   "NE": 2030.4,
+   "N": 965.9,
+   "SIN": 8967.9,
+   "dias_completos_sin": 31,
    "completo": true,
-   "participacao_carga_global_sin_pct": 11.41,
-   "carga_global_sin_mwmed": 83599.0,
-   "capacidade_aneel_mw": 53965.0,
-   "razao_estimativa_ons_capacidade_pct": 17.7
+   "participacao_carga_global_sin_pct": 10.8,
+   "carga_global_sin_mwmed": 83065.0,
+   "capacidade_aneel_mw": 53953.0,
+   "capacidade_aneel_provisoria": true,
+   "razao_estimativa_ons_capacidade_pct": null
   },
   "mensal": [
    {
@@ -8591,6 +8626,7 @@
     "participacao_carga_global_sin_pct": 0.26,
     "carga_global_sin_mwmed": 71932.0,
     "capacidade_aneel_mw": 868.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": null
    },
    {
@@ -8606,6 +8642,7 @@
     "participacao_carga_global_sin_pct": 0.28,
     "carga_global_sin_mwmed": 69280.0,
     "capacidade_aneel_mw": 953.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 20.5
    },
    {
@@ -8621,6 +8658,7 @@
     "participacao_carga_global_sin_pct": 0.28,
     "carga_global_sin_mwmed": 68812.0,
     "capacidade_aneel_mw": 1052.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 18.4
    },
    {
@@ -8636,6 +8674,7 @@
     "participacao_carga_global_sin_pct": 0.28,
     "carga_global_sin_mwmed": 67053.0,
     "capacidade_aneel_mw": 1175.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 16.0
    },
    {
@@ -8651,6 +8690,7 @@
     "participacao_carga_global_sin_pct": 0.32,
     "carga_global_sin_mwmed": 63830.0,
     "capacidade_aneel_mw": 1295.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 16.0
    },
    {
@@ -8666,6 +8706,7 @@
     "participacao_carga_global_sin_pct": 0.36,
     "carga_global_sin_mwmed": 63217.0,
     "capacidade_aneel_mw": 1430.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 16.0
    },
    {
@@ -8681,6 +8722,7 @@
     "participacao_carga_global_sin_pct": 0.43,
     "carga_global_sin_mwmed": 64179.0,
     "capacidade_aneel_mw": 1592.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 17.4
    },
    {
@@ -8696,6 +8738,7 @@
     "participacao_carga_global_sin_pct": 0.51,
     "carga_global_sin_mwmed": 67040.0,
     "capacidade_aneel_mw": 1752.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 19.3
    },
    {
@@ -8711,6 +8754,7 @@
     "participacao_carga_global_sin_pct": 0.57,
     "carga_global_sin_mwmed": 69786.0,
     "capacidade_aneel_mw": 1923.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 20.8
    },
    {
@@ -8726,6 +8770,7 @@
     "participacao_carga_global_sin_pct": 0.64,
     "carga_global_sin_mwmed": 69457.0,
     "capacidade_aneel_mw": 2109.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 21.0
    },
    {
@@ -8741,6 +8786,7 @@
     "participacao_carga_global_sin_pct": 0.74,
     "carga_global_sin_mwmed": 68467.0,
     "capacidade_aneel_mw": 2336.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 21.8
    },
    {
@@ -8756,6 +8802,7 @@
     "participacao_carga_global_sin_pct": 0.6,
     "carga_global_sin_mwmed": 70976.0,
     "capacidade_aneel_mw": 2590.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 16.5
    },
    {
@@ -8771,6 +8818,7 @@
     "participacao_carga_global_sin_pct": 0.63,
     "carga_global_sin_mwmed": 71591.0,
     "capacidade_aneel_mw": 2853.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 15.7
    },
    {
@@ -8786,6 +8834,7 @@
     "participacao_carga_global_sin_pct": 0.71,
     "carga_global_sin_mwmed": 69071.0,
     "capacidade_aneel_mw": 3151.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 15.6
    },
    {
@@ -8801,6 +8850,7 @@
     "participacao_carga_global_sin_pct": 0.79,
     "carga_global_sin_mwmed": 60809.0,
     "capacidade_aneel_mw": 3445.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 13.9
    },
    {
@@ -8816,6 +8866,7 @@
     "participacao_carga_global_sin_pct": 0.73,
     "carga_global_sin_mwmed": 60321.0,
     "capacidade_aneel_mw": 3708.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 12.0
    },
    {
@@ -8831,6 +8882,7 @@
     "participacao_carga_global_sin_pct": 0.68,
     "carga_global_sin_mwmed": 62018.0,
     "capacidade_aneel_mw": 3963.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 10.7
    },
    {
@@ -8846,6 +8898,7 @@
     "participacao_carga_global_sin_pct": 0.79,
     "carga_global_sin_mwmed": 63673.0,
     "capacidade_aneel_mw": 4239.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 11.8
    },
    {
@@ -8861,6 +8914,7 @@
     "participacao_carga_global_sin_pct": 0.97,
     "carga_global_sin_mwmed": 65127.0,
     "capacidade_aneel_mw": 4521.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 13.9
    },
    {
@@ -8876,6 +8930,7 @@
     "participacao_carga_global_sin_pct": 1.13,
     "carga_global_sin_mwmed": 69970.0,
     "capacidade_aneel_mw": 4793.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 16.5
    },
    {
@@ -8891,6 +8946,7 @@
     "participacao_carga_global_sin_pct": 1.2,
     "carga_global_sin_mwmed": 71949.0,
     "capacidade_aneel_mw": 5083.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 17.0
    },
    {
@@ -8906,6 +8962,7 @@
     "participacao_carga_global_sin_pct": 1.37,
     "carga_global_sin_mwmed": 69772.0,
     "capacidade_aneel_mw": 5403.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 17.7
    },
    {
@@ -8921,6 +8978,7 @@
     "participacao_carga_global_sin_pct": 1.37,
     "carga_global_sin_mwmed": 71651.0,
     "capacidade_aneel_mw": 5752.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 17.0
    },
    {
@@ -8936,6 +8994,7 @@
     "participacao_carga_global_sin_pct": 1.37,
     "carga_global_sin_mwmed": 73129.0,
     "capacidade_aneel_mw": 6096.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 16.5
    },
    {
@@ -8951,6 +9010,7 @@
     "participacao_carga_global_sin_pct": 1.41,
     "carga_global_sin_mwmed": 73872.0,
     "capacidade_aneel_mw": 6420.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 16.2
    },
    {
@@ -8966,6 +9026,7 @@
     "participacao_carga_global_sin_pct": 1.43,
     "carga_global_sin_mwmed": 73433.0,
     "capacidade_aneel_mw": 6824.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 15.4
    },
    {
@@ -8981,6 +9042,7 @@
     "participacao_carga_global_sin_pct": 1.47,
     "carga_global_sin_mwmed": 69601.0,
     "capacidade_aneel_mw": 7253.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 14.1
    },
    {
@@ -8996,6 +9058,7 @@
     "participacao_carga_global_sin_pct": 1.34,
     "carga_global_sin_mwmed": 68189.0,
     "capacidade_aneel_mw": 7656.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 11.9
    },
    {
@@ -9011,6 +9074,7 @@
     "participacao_carga_global_sin_pct": 1.27,
     "carga_global_sin_mwmed": 67072.0,
     "capacidade_aneel_mw": 8086.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 10.5
    },
    {
@@ -9026,6 +9090,7 @@
     "participacao_carga_global_sin_pct": 1.58,
     "carga_global_sin_mwmed": 66082.0,
     "capacidade_aneel_mw": 8525.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 12.2
    },
    {
@@ -9041,6 +9106,7 @@
     "participacao_carga_global_sin_pct": 1.76,
     "carga_global_sin_mwmed": 68204.0,
     "capacidade_aneel_mw": 9000.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 13.4
    },
    {
@@ -9056,6 +9122,7 @@
     "participacao_carga_global_sin_pct": 2.06,
     "carga_global_sin_mwmed": 71870.0,
     "capacidade_aneel_mw": 9485.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 15.6
    },
    {
@@ -9071,6 +9138,7 @@
     "participacao_carga_global_sin_pct": 2.12,
     "carga_global_sin_mwmed": 69722.0,
     "capacidade_aneel_mw": 9970.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 14.9
    },
    {
@@ -9086,6 +9154,7 @@
     "participacao_carga_global_sin_pct": 2.39,
     "carga_global_sin_mwmed": 71685.0,
     "capacidade_aneel_mw": 10529.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 16.2
    },
    {
@@ -9101,6 +9170,7 @@
     "participacao_carga_global_sin_pct": 2.48,
     "carga_global_sin_mwmed": 71689.0,
     "capacidade_aneel_mw": 11219.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 15.8
    },
    {
@@ -9116,6 +9186,7 @@
     "participacao_carga_global_sin_pct": 2.58,
     "carga_global_sin_mwmed": 73822.0,
     "capacidade_aneel_mw": 11838.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 16.1
    },
    {
@@ -9131,6 +9202,7 @@
     "participacao_carga_global_sin_pct": 2.63,
     "carga_global_sin_mwmed": 75926.0,
     "capacidade_aneel_mw": 12363.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 16.2
    },
    {
@@ -9146,6 +9218,7 @@
     "participacao_carga_global_sin_pct": 2.48,
     "carga_global_sin_mwmed": 76311.0,
     "capacidade_aneel_mw": 13002.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 14.6
    },
    {
@@ -9161,6 +9234,7 @@
     "participacao_carga_global_sin_pct": 2.59,
     "carga_global_sin_mwmed": 71181.0,
     "capacidade_aneel_mw": 13672.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 13.5
    },
    {
@@ -9176,6 +9250,7 @@
     "participacao_carga_global_sin_pct": 2.39,
     "carga_global_sin_mwmed": 68653.0,
     "capacidade_aneel_mw": 14344.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 11.4
    },
    {
@@ -9191,6 +9266,7 @@
     "participacao_carga_global_sin_pct": 2.4,
     "carga_global_sin_mwmed": 67128.0,
     "capacidade_aneel_mw": 15062.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 10.7
    },
    {
@@ -9206,6 +9282,7 @@
     "participacao_carga_global_sin_pct": 2.8,
     "carga_global_sin_mwmed": 67679.0,
     "capacidade_aneel_mw": 15811.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 12.0
    },
    {
@@ -9221,6 +9298,7 @@
     "participacao_carga_global_sin_pct": 3.19,
     "carga_global_sin_mwmed": 69084.0,
     "capacidade_aneel_mw": 16594.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 13.3
    },
    {
@@ -9236,6 +9314,7 @@
     "participacao_carga_global_sin_pct": 3.67,
     "carga_global_sin_mwmed": 69699.0,
     "capacidade_aneel_mw": 17384.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 14.7
    },
    {
@@ -9251,6 +9330,7 @@
     "participacao_carga_global_sin_pct": 4.11,
     "carga_global_sin_mwmed": 71936.0,
     "capacidade_aneel_mw": 18137.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 16.3
    },
    {
@@ -9266,6 +9346,7 @@
     "participacao_carga_global_sin_pct": 4.55,
     "carga_global_sin_mwmed": 71356.0,
     "capacidade_aneel_mw": 18935.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 17.1
    },
    {
@@ -9281,6 +9362,7 @@
     "participacao_carga_global_sin_pct": 4.41,
     "carga_global_sin_mwmed": 71560.0,
     "capacidade_aneel_mw": 19927.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 15.8
    },
    {
@@ -9296,6 +9378,7 @@
     "participacao_carga_global_sin_pct": 5.06,
     "carga_global_sin_mwmed": 74588.0,
     "capacidade_aneel_mw": 21018.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 18.0
    },
    {
@@ -9311,6 +9394,7 @@
     "participacao_carga_global_sin_pct": 5.16,
     "carga_global_sin_mwmed": 78015.0,
     "capacidade_aneel_mw": 22025.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 18.3
    },
    {
@@ -9326,6 +9410,7 @@
     "participacao_carga_global_sin_pct": 4.95,
     "carga_global_sin_mwmed": 78692.0,
     "capacidade_aneel_mw": 23004.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 16.9
    },
    {
@@ -9341,6 +9426,7 @@
     "participacao_carga_global_sin_pct": 4.91,
     "carga_global_sin_mwmed": 72421.0,
     "capacidade_aneel_mw": 23889.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 14.9
    },
    {
@@ -9356,6 +9442,7 @@
     "participacao_carga_global_sin_pct": 4.71,
     "carga_global_sin_mwmed": 71752.0,
     "capacidade_aneel_mw": 24707.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 13.7
    },
    {
@@ -9371,6 +9458,7 @@
     "participacao_carga_global_sin_pct": 4.6,
     "carga_global_sin_mwmed": 69674.0,
     "capacidade_aneel_mw": 25428.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 12.6
    },
    {
@@ -9386,6 +9474,7 @@
     "participacao_carga_global_sin_pct": 4.91,
     "carga_global_sin_mwmed": 69656.0,
     "capacidade_aneel_mw": 25959.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 13.2
    },
    {
@@ -9401,6 +9490,7 @@
     "participacao_carga_global_sin_pct": 5.52,
     "carga_global_sin_mwmed": 72910.0,
     "capacidade_aneel_mw": 26485.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 15.2
    },
    {
@@ -9416,6 +9506,7 @@
     "participacao_carga_global_sin_pct": 6.14,
     "carga_global_sin_mwmed": 76635.0,
     "capacidade_aneel_mw": 27029.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 17.4
    },
    {
@@ -9431,6 +9522,7 @@
     "participacao_carga_global_sin_pct": 6.35,
     "carga_global_sin_mwmed": 78399.0,
     "capacidade_aneel_mw": 27596.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 18.0
    },
    {
@@ -9446,6 +9538,7 @@
     "participacao_carga_global_sin_pct": 6.88,
     "carga_global_sin_mwmed": 81330.0,
     "capacidade_aneel_mw": 28203.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 19.9
    },
    {
@@ -9461,6 +9554,7 @@
     "participacao_carga_global_sin_pct": 7.24,
     "carga_global_sin_mwmed": 81117.0,
     "capacidade_aneel_mw": 28869.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 20.3
    },
    {
@@ -9476,6 +9570,7 @@
     "participacao_carga_global_sin_pct": 6.81,
     "carga_global_sin_mwmed": 80575.0,
     "capacidade_aneel_mw": 29632.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 18.5
    },
    {
@@ -9491,6 +9586,7 @@
     "participacao_carga_global_sin_pct": 6.59,
     "carga_global_sin_mwmed": 83248.0,
     "capacidade_aneel_mw": 30412.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 18.0
    },
    {
@@ -9506,6 +9602,7 @@
     "participacao_carga_global_sin_pct": 6.33,
     "carga_global_sin_mwmed": 83155.0,
     "capacidade_aneel_mw": 31224.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 16.9
    },
    {
@@ -9521,6 +9618,7 @@
     "participacao_carga_global_sin_pct": 5.92,
     "carga_global_sin_mwmed": 80684.0,
     "capacidade_aneel_mw": 32108.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 14.9
    },
    {
@@ -9536,6 +9634,7 @@
     "participacao_carga_global_sin_pct": 5.79,
     "carga_global_sin_mwmed": 77959.0,
     "capacidade_aneel_mw": 32992.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 13.7
    },
    {
@@ -9551,6 +9650,7 @@
     "participacao_carga_global_sin_pct": 6.04,
     "carga_global_sin_mwmed": 74403.0,
     "capacidade_aneel_mw": 33873.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 13.3
    },
    {
@@ -9566,6 +9666,7 @@
     "participacao_carga_global_sin_pct": 6.36,
     "carga_global_sin_mwmed": 74724.0,
     "capacidade_aneel_mw": 34801.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 13.7
    },
    {
@@ -9581,6 +9682,7 @@
     "participacao_carga_global_sin_pct": 7.69,
     "carga_global_sin_mwmed": 76645.0,
     "capacidade_aneel_mw": 35761.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 16.5
    },
    {
@@ -9596,6 +9698,7 @@
     "participacao_carga_global_sin_pct": 8.55,
     "carga_global_sin_mwmed": 82121.0,
     "capacidade_aneel_mw": 36645.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 19.2
    },
    {
@@ -9611,6 +9714,7 @@
     "participacao_carga_global_sin_pct": 8.6,
     "carga_global_sin_mwmed": 82042.0,
     "capacidade_aneel_mw": 37515.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 18.8
    },
    {
@@ -9626,6 +9730,7 @@
     "participacao_carga_global_sin_pct": 8.53,
     "carga_global_sin_mwmed": 81288.0,
     "capacidade_aneel_mw": 38406.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 18.1
    },
    {
@@ -9641,6 +9746,7 @@
     "participacao_carga_global_sin_pct": 9.07,
     "carga_global_sin_mwmed": 80367.0,
     "capacidade_aneel_mw": 39368.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 18.5
    },
    {
@@ -9656,6 +9762,7 @@
     "participacao_carga_global_sin_pct": 9.0,
     "carga_global_sin_mwmed": 84247.0,
     "capacidade_aneel_mw": 40396.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 18.8
    },
    {
@@ -9671,6 +9778,7 @@
     "participacao_carga_global_sin_pct": 8.88,
     "carga_global_sin_mwmed": 90403.0,
     "capacidade_aneel_mw": 41346.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 19.4
    },
    {
@@ -9686,6 +9794,7 @@
     "participacao_carga_global_sin_pct": 8.78,
     "carga_global_sin_mwmed": 86580.0,
     "capacidade_aneel_mw": 42257.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 18.0
    },
    {
@@ -9701,6 +9810,7 @@
     "participacao_carga_global_sin_pct": 7.92,
     "carga_global_sin_mwmed": 80754.0,
     "capacidade_aneel_mw": 43143.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 14.8
    },
    {
@@ -9716,6 +9826,7 @@
     "participacao_carga_global_sin_pct": 7.93,
     "carga_global_sin_mwmed": 77638.0,
     "capacidade_aneel_mw": 43969.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 14.0
    },
    {
@@ -9731,6 +9842,7 @@
     "participacao_carga_global_sin_pct": 7.38,
     "carga_global_sin_mwmed": 75589.0,
     "capacidade_aneel_mw": 44738.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 12.5
    },
    {
@@ -9746,6 +9858,7 @@
     "participacao_carga_global_sin_pct": 8.55,
     "carga_global_sin_mwmed": 75104.0,
     "capacidade_aneel_mw": 45520.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 14.1
    },
    {
@@ -9761,6 +9874,7 @@
     "participacao_carga_global_sin_pct": 9.66,
     "carga_global_sin_mwmed": 76508.0,
     "capacidade_aneel_mw": 46292.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 16.0
    },
    {
@@ -9776,6 +9890,7 @@
     "participacao_carga_global_sin_pct": 10.74,
     "carga_global_sin_mwmed": 80490.0,
     "capacidade_aneel_mw": 46988.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 18.4
    },
    {
@@ -9791,6 +9906,7 @@
     "participacao_carga_global_sin_pct": 10.96,
     "carga_global_sin_mwmed": 82488.0,
     "capacidade_aneel_mw": 47719.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 18.9
    },
    {
@@ -9806,6 +9922,7 @@
     "participacao_carga_global_sin_pct": 11.86,
     "carga_global_sin_mwmed": 83388.0,
     "capacidade_aneel_mw": 48458.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 20.4
    },
    {
@@ -9821,6 +9938,7 @@
     "participacao_carga_global_sin_pct": 11.34,
     "carga_global_sin_mwmed": 84979.0,
     "capacidade_aneel_mw": 49168.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 19.6
    },
    {
@@ -9836,6 +9954,7 @@
     "participacao_carga_global_sin_pct": 11.5,
     "carga_global_sin_mwmed": 85970.0,
     "capacidade_aneel_mw": 49897.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 19.8
    },
    {
@@ -9851,6 +9970,7 @@
     "participacao_carga_global_sin_pct": 10.33,
     "carga_global_sin_mwmed": 88163.0,
     "capacidade_aneel_mw": 50595.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 18.0
    },
    {
@@ -9866,6 +9986,7 @@
     "participacao_carga_global_sin_pct": 10.38,
     "carga_global_sin_mwmed": 87675.0,
     "capacidade_aneel_mw": 51311.0,
+    "capacidade_aneel_provisoria": false,
     "razao_estimativa_ons_capacidade_pct": 17.7
    },
    {
@@ -9881,7 +10002,8 @@
     "participacao_carga_global_sin_pct": 9.96,
     "carga_global_sin_mwmed": 84749.0,
     "capacidade_aneel_mw": 52126.0,
-    "razao_estimativa_ons_capacidade_pct": 16.2
+    "capacidade_aneel_provisoria": true,
+    "razao_estimativa_ons_capacidade_pct": null
    },
    {
     "m": "2026-05",
@@ -9896,7 +10018,8 @@
     "participacao_carga_global_sin_pct": 8.88,
     "carga_global_sin_mwmed": 80378.0,
     "capacidade_aneel_mw": 52902.0,
-    "razao_estimativa_ons_capacidade_pct": 13.5
+    "capacidade_aneel_provisoria": true,
+    "razao_estimativa_ons_capacidade_pct": null
    },
    {
     "m": "2026-06",
@@ -9911,7 +10034,8 @@
     "participacao_carga_global_sin_pct": 8.66,
     "carga_global_sin_mwmed": 78376.0,
     "capacidade_aneel_mw": 53476.0,
-    "razao_estimativa_ons_capacidade_pct": 12.7
+    "capacidade_aneel_provisoria": true,
+    "razao_estimativa_ons_capacidade_pct": null
    },
    {
     "m": "2026-07",
@@ -9926,7 +10050,8 @@
     "participacao_carga_global_sin_pct": 9.51,
     "carga_global_sin_mwmed": 78940.0,
     "capacidade_aneel_mw": 53824.0,
-    "razao_estimativa_ons_capacidade_pct": 13.9
+    "capacidade_aneel_provisoria": true,
+    "razao_estimativa_ons_capacidade_pct": null
    },
    {
     "m": "2026-08",
@@ -9941,22 +10066,24 @@
     "participacao_carga_global_sin_pct": 10.8,
     "carga_global_sin_mwmed": 83065.0,
     "capacidade_aneel_mw": 53953.0,
-    "razao_estimativa_ons_capacidade_pct": 16.6
+    "capacidade_aneel_provisoria": true,
+    "razao_estimativa_ons_capacidade_pct": null
    },
    {
     "m": "2026-09",
     "dias_no_mes": 30,
-    "SE": 4731.4,
-    "S": 1581.2,
-    "NE": 2231.5,
-    "N": 994.1,
-    "SIN": 9538.1,
-    "dias_completos_sin": 30,
-    "completo": true,
-    "participacao_carga_global_sin_pct": 11.41,
-    "carga_global_sin_mwmed": 83599.0,
+    "SE": 4699.5,
+    "S": 1595.3,
+    "NE": 2228.4,
+    "N": 993.2,
+    "SIN": 9516.4,
+    "dias_completos_sin": 29,
+    "completo": false,
+    "participacao_carga_global_sin_pct": 11.34,
+    "carga_global_sin_mwmed": 83947.0,
     "capacidade_aneel_mw": 53965.0,
-    "razao_estimativa_ons_capacidade_pct": 17.7
+    "capacidade_aneel_provisoria": true,
+    "razao_estimativa_ons_capacidade_pct": null
    }
   ],
   "anual": [
@@ -10018,10 +10145,10 @@
    },
    {
     "ano": 2026,
-    "mmgd_sin_mwmed": 8494.0,
-    "mmgd_sin_twh": 55.65,
-    "participacao_carga_global_pct": 10.19,
-    "dias_completos": 273,
+    "mmgd_sin_mwmed": 8488.0,
+    "mmgd_sin_twh": 55.41,
+    "participacao_carga_global_pct": 10.17,
+    "dias_completos": 272,
     "completo": false
    }
   ],
@@ -10154,14 +10281,14 @@
     "frequencia": "semi-horária na fonte; diária e mensal aqui",
     "periodo_referencia": {
      "inicio": "2019-02-15",
-     "fim": "2026-09-30"
+     "fim": "2026-09-29"
     },
     "publicado_pela_fonte_em": null,
     "capturado_em": "2026-09-30T22:28:48Z",
-    "validado_em": "2026-09-30T22:29:54Z",
+    "validado_em": "2026-09-30T22:57:56Z",
     "cobertura_historica": {
      "inicio": "2019-02-15",
-     "fim": "2026-09-30"
+     "fim": "2026-09-29"
     },
     "transformacoes": [
      "energia de cada meia hora = valor × 0,5 h",
@@ -10175,9 +10302,9 @@
      "sha256": "a9a69fd8cf9a7c918b31755448e2ed1c3b844125da08dcd6ee9d803eba6be575"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "dcad322a4ea9+alterado",
+    "versao_codigo": "dafa93bb2111+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-09-30T22:29:54Z",
+     "detectado_em": "2026-09-30T22:57:55Z",
      "total": 0,
      "vintages_comparadas": 372,
      "arquivos": 372,
@@ -10214,7 +10341,7 @@
     },
     "publicado_pela_fonte_em": null,
     "capturado_em": "2026-09-30T22:28:48Z",
-    "validado_em": "2026-09-30T22:29:54Z",
+    "validado_em": "2026-09-30T22:57:56Z",
     "cobertura_historica": {
      "inicio": "2019-02",
      "fim": "2026-09"
@@ -10228,9 +10355,9 @@
      "sha256": "a9a69fd8cf9a7c918b31755448e2ed1c3b844125da08dcd6ee9d803eba6be575"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "dcad322a4ea9+alterado",
+    "versao_codigo": "dafa93bb2111+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-09-30T22:29:54Z",
+     "detectado_em": "2026-09-30T22:57:55Z",
      "total": 0,
      "vintages_comparadas": 372,
      "arquivos": 372,
@@ -10240,88 +10367,124 @@
     },
     "limitacoes": [
      "Não é fator de capacidade medido: compara uma estimativa do ONS (SIN) com um cadastro da ANEEL (Brasil) e herda as limitações das duas.",
-     "Registro tardio na ANEEL aumenta a razão nos meses recentes; meses incompletos não têm razão calculada."
+     "Registro tardio na ANEEL aumentaria a razão nos meses recentes: meses provisórios do cadastro e meses incompletos do ONS não têm razão calculada."
     ],
     "download": "/energia/series/transicao_ons_mmgd_mensal.csv",
     "notas_fonte": null
    }
   },
   "evidencia": {
-   "valor_exibido": 9538.0,
-   "valor_calculo": 9538.1,
+   "indicador": "MMGD estimada pelo ONS no SIN, média do mês",
+   "valor_exibido": "8.968",
+   "valor_calculo": 8967.926945295705,
    "unidade": "MWmed",
    "periodo": {
-    "inicio": "2026-09-01",
-    "fim": "2026-09"
+    "inicio": "2026-08-01",
+    "fim": "2026-08-31"
    },
    "entidade": "SIN",
-   "universo": "quatro submercados (SECO, S, NE, N)",
+   "universo": "quatro submercados (SE/CO, S, NE, N) da Carga de Energia Verificada",
    "filtros": [
-    "dias com as 24 horas nos quatro submercados"
+    "dias com as 48 meias horas nos quatro submercados"
    ],
    "fonte": {
     "orgao": "ONS",
     "conjunto": "Carga de Energia Verificada",
-    "recurso": "carga_verificada_SECO_2026-09",
-    "url": "https://dados.ons.org.br/dataset/carga-energia-verificada",
-    "arquivo": "carga_verificada_SECO_2026-09",
-    "sha256": "ea6936d349a03b280794e665169af2e802749d6fa8b25080e26e938d44852a68",
-    "capturado_em": "2026-09-30T22:28:46Z",
-    "publicado_em": null
+    "recurso": "carga_verificada_SECO_2026-08",
+    "url": "https://apicarga.ons.org.br/prd/cargaverificada?dat_inicio=2026-08-01&dat_fim=2026-08-31&cod_areacarga=SECO",
+    "arquivo": "data/energia/bronze/ons/ons_carga_verificada_mmgd/carga_verificada_SECO_2026-08/20260930T222843Z.e6e3cb8012e0.json.gz",
+    "sha256": "e6e3cb8012e0a4951498c3bf05592be570bf0f4fd60faf1df010c10f01b10367",
+    "capturado_em": "2026-09-30T22:28:43Z",
+    "publicado_em": null,
+    "arquivos": [
+     {
+      "recurso": "carga_verificada_SECO_2026-08",
+      "arquivo": "data/energia/bronze/ons/ons_carga_verificada_mmgd/carga_verificada_SECO_2026-08/20260930T222843Z.e6e3cb8012e0.json.gz",
+      "sha256": "e6e3cb8012e0a4951498c3bf05592be570bf0f4fd60faf1df010c10f01b10367",
+      "capturado_em": "2026-09-30T22:28:43Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "carga_verificada_S_2026-08",
+      "arquivo": "data/energia/bronze/ons/ons_carga_verificada_mmgd/carga_verificada_S_2026-08/20260930T222844Z.e8dfed2537b8.json.gz",
+      "sha256": "e8dfed2537b8a24d92533c47d6281ff476c6758ddd9f8172252892b5a1782805",
+      "capturado_em": "2026-09-30T22:28:44Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "carga_verificada_NE_2026-08",
+      "arquivo": "data/energia/bronze/ons/ons_carga_verificada_mmgd/carga_verificada_NE_2026-08/20260930T222844Z.d6d866bb7f4a.json.gz",
+      "sha256": "d6d866bb7f4a4977b1cf6f4f39cdc0973882b013d7547b68033918871a1a64c2",
+      "capturado_em": "2026-09-30T22:28:44Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "carga_verificada_N_2026-08",
+      "arquivo": "data/energia/bronze/ons/ons_carga_verificada_mmgd/carga_verificada_N_2026-08/20260930T222845Z.4fd8b8a16d0f.json.gz",
+      "sha256": "4fd8b8a16d0fe1833b36278828e919b6820a6224bebd86e9e412ef87f3496dd4",
+      "capturado_em": "2026-09-30T22:28:45Z",
+      "publicado_em": null
+     }
+    ]
    },
+   "extracao_pdf": null,
    "chaves_origem": [
-    "cargaverificada?cod_areacarga=SECO&mês=2026-09",
-    "cargaverificada?cod_areacarga=S&mês=2026-09",
-    "cargaverificada?cod_areacarga=NE&mês=2026-09",
-    "cargaverificada?cod_areacarga=N&mês=2026-09"
+    "https://apicarga.ons.org.br/prd/cargaverificada?dat_inicio=2026-08-01&dat_fim=2026-08-31&cod_areacarga=SECO",
+    "https://apicarga.ons.org.br/prd/cargaverificada?dat_inicio=2026-08-01&dat_fim=2026-08-31&cod_areacarga=S",
+    "https://apicarga.ons.org.br/prd/cargaverificada?dat_inicio=2026-08-01&dat_fim=2026-08-31&cod_areacarga=NE",
+    "https://apicarga.ons.org.br/prd/cargaverificada?dat_inicio=2026-08-01&dat_fim=2026-08-31&cod_areacarga=N"
    ],
-   "formula": "Σ(val_cargammgd × 0,5 h) ÷ Σ horas, somando os quatro submercados",
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "Σ(val_cargammgd × 0,5 h) dos quatro submercados ÷ horas cobertas",
    "numerador": {
-    "descricao": "MWh de MMGD estimada no mês (SIN)",
-    "valor": 6867437.0
+    "descricao": "energia de MMGD estimada no mês, SIN (MWh)",
+    "valor": 6672137.6
    },
    "denominador": {
-    "descricao": "horas do mês",
-    "valor": 720.0
+    "descricao": "horas cobertas no mês (dias completos nos quatro submercados)",
+    "valor": 744.0
    },
    "pesos": null,
    "exclusoes": [],
-   "cobertura": "dias completos do mês",
-   "tratamento_ausencia": "meia hora sem valor fica fora da soma e das horas; dia incompleto não entra no SIN",
+   "cobertura": "31 de 31 dias completos",
+   "tratamento_ausencia": "meia hora sem valor fica fora da soma e das horas; dia incompleto não entra no SIN; dia em curso na captura não é verificado",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:29:54Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T22:57:56Z"
    },
-   "revisoes": {
-    "detectado_em": "2026-09-30T22:29:54Z",
-    "total": 0,
-    "vintages_comparadas": 372,
-    "arquivos": 372,
-    "recapturas_sem_mudanca": 0,
-    "ultimo_download_ok": "2026-09-30T22:28:48Z",
-    "exemplos": []
-   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
    "testes": [
     {
-     "nome": "intervalos sem valor tratados como ausência",
+     "nome": "campo vazio é ausência",
      "resultado": "aprovado",
-     "detalhe": "respostas com campo vazio são lidas como null"
+     "detalhe": "respostas com valor vazio ('\"val_cargammgd\": ,') são lidas como null, nunca zero"
+    },
+    {
+     "nome": "valores não negativos",
+     "resultado": "aprovado",
+     "detalhe": "o dicionário do ONS não admite MMGD negativa"
     }
    ],
    "reconciliacao": {
-    "descricao": "carga global = carga sem MMGD + MMGD em cada meia hora (identidade do próprio ONS)",
-    "resultado": "com divergência: 11132 de 11136 dias por submercado fecham",
-    "tolerancia": "0,1 MWh por dia (arredondamento de três casas em 48 meias horas)"
+    "descricao": "Identidade publicada pelo próprio ONS, dia a dia por submercado: carga global = carga sem MMGD + MMGD. 11.132 de 11.132 dias por submercado fecham.",
+    "resultado": "aprovado",
+    "tolerancia": "0,1 MWh por dia (arredondamento dos valores de 48 meias horas)"
    },
    "download": [
     {
      "rotulo": "MMGD estimada pelo ONS, mensal (CSV)",
      "url": "/energia/series/transicao_ons_mmgd_mensal.csv"
+    },
+    {
+     "rotulo": "MMGD estimada pelo ONS, diária (CSV)",
+     "url": "/energia/series/transicao_ons_mmgd_diario.csv"
     }
    ],
-   "reproducao": "python3 pipeline/energia/executar_modulo.py transicao",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. MMGD estimada pelo ONS no SIN. Dados: ONS (Carga de Energia Verificada), Creative Commons Atribuição (CC-BY). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/transicao"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py transicao --sem-coleta (silver data/energia/silver/aneel_mmgd.db)",
+   "citacao": "SCRUTINIUMS. MMGD estimada pelo ONS no SIN, média do mês: 8.968 MWmed, SIN, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Verificada (recurso carga_verificada_SECO_2026-08, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "emissoes": {
@@ -11090,7 +11253,7 @@
    },
    {
     "m": "2021-11",
-    "valor": 0.1484
+    "valor": 0.1474
    },
    {
     "m": "2021-12",
@@ -11384,7 +11547,7 @@
    },
    {
     "ano": 2021,
-    "valor": 0.1264
+    "valor": 0.1263
    },
    {
     "ano": 2022,
@@ -12173,6 +12336,102 @@
     "valor": 0.5815
    },
    {
+    "m": "2022-01",
+    "valor": 0.5226
+   },
+   {
+    "m": "2022-02",
+    "valor": 0.4883
+   },
+   {
+    "m": "2022-03",
+    "valor": 0.406
+   },
+   {
+    "m": "2022-04",
+    "valor": 0.2159
+   },
+   {
+    "m": "2022-05",
+    "valor": 0.2803
+   },
+   {
+    "m": "2022-06",
+    "valor": 0.4404
+   },
+   {
+    "m": "2022-07",
+    "valor": 0.4186
+   },
+   {
+    "m": "2022-08",
+    "valor": 0.4566
+   },
+   {
+    "m": "2022-09",
+    "valor": 0.4894
+   },
+   {
+    "m": "2022-10",
+    "valor": 0.467
+   },
+   {
+    "m": "2022-11",
+    "valor": 0.4034
+   },
+   {
+    "m": "2022-12",
+    "valor": 0.2937
+   },
+   {
+    "m": "2023-01",
+    "valor": 0.2917
+   },
+   {
+    "m": "2023-02",
+    "valor": 0.2377
+   },
+   {
+    "m": "2023-03",
+    "valor": 0.2957
+   },
+   {
+    "m": "2023-04",
+    "valor": 0.3403
+   },
+   {
+    "m": "2023-05",
+    "valor": 0.2951
+   },
+   {
+    "m": "2023-06",
+    "valor": 0.5231
+   },
+   {
+    "m": "2023-07",
+    "valor": 0.4939
+   },
+   {
+    "m": "2023-08",
+    "valor": 0.419
+   },
+   {
+    "m": "2023-09",
+    "valor": 0.3433
+   },
+   {
+    "m": "2023-10",
+    "valor": 0.3873
+   },
+   {
+    "m": "2023-11",
+    "valor": 0.4882
+   },
+   {
+    "m": "2023-12",
+    "valor": 0.4273
+   },
+   {
     "m": "2024-01",
     "valor": 0.4164
    },
@@ -12367,6 +12626,14 @@
     "valor": 0.054
    },
    {
+    "ano": 2022,
+    "valor": 0.0271
+   },
+   {
+    "ano": 2023,
+    "valor": 0.0326
+   },
+   {
     "ano": 2024,
     "valor": 0.0523
    },
@@ -12430,11 +12697,31 @@
    },
    {
     "ano": 2019,
-    "valor": 0.386
+    "valor": 0.3896
    },
    {
     "ano": 2020,
     "valor": 0.349
+   },
+   {
+    "ano": 2021,
+    "valor": 0.5004
+   },
+   {
+    "ano": 2022,
+    "valor": 0.2453
+   },
+   {
+    "ano": 2023,
+    "valor": 0.2601
+   },
+   {
+    "ano": 2024,
+    "valor": 0.2749
+   },
+   {
+    "ano": 2025,
+    "valor": 0.287
    }
   ],
   "energia_despachada_mwh": [
@@ -12497,6 +12784,26 @@
    {
     "ano": 2020,
     "mwh": 460901666.0
+   },
+   {
+    "ano": 2021,
+    "mwh": 466641984.0
+   },
+   {
+    "ano": 2022,
+    "mwh": 458989706.0
+   },
+   {
+    "ano": 2023,
+    "mwh": 456987568.0
+   },
+   {
+    "ano": 2024,
+    "mwh": 459811225.0
+   },
+   {
+    "ano": 2025,
+    "mwh": 596828023.0
    }
   ],
   "ultimo_ano": {
@@ -12509,555 +12816,440 @@
    "valor": 0.0471,
    "arquivo": "Inventario_2026_janago.xlsx"
   },
+  "quebras": [
+   {
+    "data": "2025-01",
+    "origem": "FONTE",
+    "series": [
+     "medio_mensal",
+     "medio_anual",
+     "om_despacho_mensal",
+     "om_despacho_diario",
+     "bm_anual",
+     "om_simples_ajustado_anual",
+     "energia_despachada_mwh"
+    ],
+    "descricao": "Base de usinas do ONS ampliada (termelétricas a biomassa e conjuntos de usinas solares e eólicas, de emissão nula); metodologia mantida. Valores a partir de jan/2025 podem ser menores por causa da base, não só da operação.",
+    "documento": {
+     "orgao": "MCTI",
+     "titulo": "Nota técnica de junho de 2025: aprimoramento na publicação dos fatores de emissão de CO2 do SIN (NT_FE_jun25)",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/cgcl/paginas/NT_FE_jun25.pdf",
+     "consultado_em": "2026-09-30",
+     "trecho": "a partir de janeiro de 2025, os fatores de emissão de CO₂ da Margem de Operação do Sistema Interligado Nacional (SIN) passaram a refletir um aprimoramento importante no banco de dados do Operador Nacional do Sistema Elétrico (ONS) [...] A metodologia utilizada para o cálculo dos fatores de emissão de CO₂ permanece inalterada, tanto para projetos sob o Mecanismo de Desenvolvimento Limpo (MDL) quanto para inventários de emissões. A diferença reside na ampliação da base de dados, o que, consequentemente, pode resultar em uma redução nos valores dos fatores de emissão"
+    },
+    "no_dado": {
+     "descricao": "energia despachada no SIN usada pelo MCTI no método simples ajustado (MWh), antes e depois da ampliação da base",
+     "energia_2024_mwh": 459811225.0,
+     "energia_2025_mwh": 596828023.0,
+     "variacao_pct": 29.8
+    }
+   }
+  ],
   "anual_x_media_mensal": [
    {
     "ano": 2006,
     "anual_publicado": 0.0323,
-    "media_simples_meses": 0.0323,
-    "diferenca": -0.0
+    "media_simples_meses": 0.03232,
+    "diferenca": -2e-05,
+    "dentro_da_tolerancia": true
    },
    {
     "ano": 2007,
     "anual_publicado": 0.0293,
-    "media_simples_meses": 0.0292,
-    "diferenca": 0.0001
+    "media_simples_meses": 0.02917,
+    "diferenca": 0.00013,
+    "dentro_da_tolerancia": false
    },
    {
     "ano": 2008,
     "anual_publicado": 0.0484,
-    "media_simples_meses": 0.0484,
-    "diferenca": 0.0
+    "media_simples_meses": 0.04838,
+    "diferenca": 2e-05,
+    "dentro_da_tolerancia": true
    },
    {
     "ano": 2009,
     "anual_publicado": 0.0246,
     "media_simples_meses": 0.0245,
-    "diferenca": 0.0001
+    "diferenca": 0.0001,
+    "dentro_da_tolerancia": true
    },
    {
     "ano": 2010,
     "anual_publicado": 0.0512,
-    "media_simples_meses": 0.0513,
-    "diferenca": -0.0001
+    "media_simples_meses": 0.05127,
+    "diferenca": -7e-05,
+    "dentro_da_tolerancia": true
    },
    {
     "ano": 2011,
     "anual_publicado": 0.0292,
     "media_simples_meses": 0.0292,
-    "diferenca": 0.0
+    "diferenca": 0.0,
+    "dentro_da_tolerancia": true
    },
    {
     "ano": 2012,
     "anual_publicado": 0.0653,
-    "media_simples_meses": 0.0653,
-    "diferenca": -0.0
+    "media_simples_meses": 0.06534,
+    "diferenca": -4e-05,
+    "dentro_da_tolerancia": true
    },
    {
     "ano": 2013,
     "anual_publicado": 0.096,
-    "media_simples_meses": 0.096,
-    "diferenca": -0.0
+    "media_simples_meses": 0.09603,
+    "diferenca": -3e-05,
+    "dentro_da_tolerancia": true
    },
    {
     "ano": 2014,
     "anual_publicado": 0.1355,
-    "media_simples_meses": 0.1355,
-    "diferenca": 0.0
+    "media_simples_meses": 0.13548,
+    "diferenca": 2e-05,
+    "dentro_da_tolerancia": true
    },
    {
     "ano": 2015,
     "anual_publicado": 0.1244,
-    "media_simples_meses": 0.1244,
-    "diferenca": -0.0
+    "media_simples_meses": 0.12444,
+    "diferenca": -4e-05,
+    "dentro_da_tolerancia": true
    },
    {
     "ano": 2016,
     "anual_publicado": 0.0817,
-    "media_simples_meses": 0.0817,
-    "diferenca": 0.0
+    "media_simples_meses": 0.08168,
+    "diferenca": 2e-05,
+    "dentro_da_tolerancia": true
    },
    {
     "ano": 2017,
     "anual_publicado": 0.0927,
-    "media_simples_meses": 0.0927,
-    "diferenca": -0.0
+    "media_simples_meses": 0.09273,
+    "diferenca": -3e-05,
+    "dentro_da_tolerancia": true
    },
    {
     "ano": 2018,
     "anual_publicado": 0.074,
-    "media_simples_meses": 0.074,
-    "diferenca": 0.0
+    "media_simples_meses": 0.07398,
+    "diferenca": 2e-05,
+    "dentro_da_tolerancia": true
    },
    {
     "ano": 2019,
     "anual_publicado": 0.075,
-    "media_simples_meses": 0.075,
-    "diferenca": -0.0
+    "media_simples_meses": 0.07504,
+    "diferenca": -4e-05,
+    "dentro_da_tolerancia": true
    },
    {
     "ano": 2020,
     "anual_publicado": 0.0617,
-    "media_simples_meses": 0.0617,
-    "diferenca": -0.0
+    "media_simples_meses": 0.06172,
+    "diferenca": -2e-05,
+    "dentro_da_tolerancia": true
    },
    {
     "ano": 2021,
-    "anual_publicado": 0.1264,
-    "media_simples_meses": 0.1264,
-    "diferenca": -0.0
+    "anual_publicado": 0.1263,
+    "media_simples_meses": 0.12633,
+    "diferenca": -3e-05,
+    "dentro_da_tolerancia": true
    },
    {
     "ano": 2022,
     "anual_publicado": 0.0426,
     "media_simples_meses": 0.0426,
-    "diferenca": 0.0
+    "diferenca": 0.0,
+    "dentro_da_tolerancia": true
    },
    {
     "ano": 2023,
     "anual_publicado": 0.0385,
-    "media_simples_meses": 0.0385,
-    "diferenca": -0.0
+    "media_simples_meses": 0.03851,
+    "diferenca": -1e-05,
+    "dentro_da_tolerancia": true
    },
    {
     "ano": 2024,
     "anual_publicado": 0.0545,
-    "media_simples_meses": 0.0545,
-    "diferenca": 0.0
+    "media_simples_meses": 0.05447,
+    "diferenca": 3e-05,
+    "dentro_da_tolerancia": true
    },
    {
     "ano": 2025,
     "anual_publicado": 0.0461,
-    "media_simples_meses": 0.0461,
-    "diferenca": 0.0
+    "media_simples_meses": 0.04608,
+    "diferenca": 2e-05,
+    "dentro_da_tolerancia": true
    }
   ],
   "revisoes_declaradas_pela_fonte": [
    {
-    "mes": "2020-09",
+    "serie": "margem_operacao_mensal",
+    "periodo": "2024-01",
+    "anterior": 0.416345783505787,
+    "atual": 0.41635942812446686,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_mensal",
+    "periodo": "2024-03",
+    "anterior": 0.278048932211758,
+    "atual": 0.277909759100561,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_mensal",
+    "periodo": "2024-06",
+    "anterior": 0.3642,
+    "atual": 0.36478268557543064,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_mensal",
+    "periodo": "2024-08",
+    "anterior": 0.601582173593182,
+    "atual": 0.6014694300792103,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_mensal",
+    "periodo": "2024-09",
+    "anterior": 0.604798841068873,
+    "atual": 0.605403673564374,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_construcao",
+    "periodo": "2022",
+    "anterior": 0.027,
+    "atual": 0.0271,
+    "arquivo": "Margemdeconstruo_2022corrigido.xlsx"
+   },
+   {
+    "serie": "margem_operacao_mensal",
+    "periodo": "2022-07",
+    "anterior": 0.0419,
+    "atual": 0.4186,
+    "arquivo": "Margemdeconstruo_2022corrigido.xlsx"
+   },
+   {
+    "serie": "margem_construcao",
+    "periodo": "2023",
+    "anterior": 0.0467,
+    "atual": 0.0326,
+    "arquivo": "Margemdeconstruo_2023corrigido.xlsx"
+   },
+   {
+    "serie": "margem_operacao_mensal",
+    "periodo": "2020-09",
     "anterior": 0.3285,
     "atual": 0.3287,
-    "arquivo": "Despacho_2020_dezembro_corrigido_set-a-dez_MC.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
    },
    {
-    "mes": "2020-10",
+    "serie": "margem_operacao_mensal",
+    "periodo": "2020-10",
     "anterior": 0.572,
     "atual": 0.5723,
-    "arquivo": "Despacho_2020_dezembro_corrigido_set-a-dez_MC.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
    },
    {
-    "mes": "2020-12",
+    "serie": "margem_operacao_mensal",
+    "periodo": "2020-12",
     "anterior": 0.6078,
     "atual": 0.6106,
-    "arquivo": "Despacho_2020_dezembro_corrigido_set-a-dez_MC.xlsx"
-   },
-   {
-    "mes": "2020-09",
-    "anterior": 0.3285,
-    "atual": 0.3287,
-    "arquivo": "Despacho_2020_dezembro_corrigido_set-a-dez_MC.xlsx"
-   },
-   {
-    "mes": "2020-10",
-    "anterior": 0.572,
-    "atual": 0.5723,
-    "arquivo": "Despacho_2020_dezembro_corrigido_set-a-dez_MC.xlsx"
-   },
-   {
-    "mes": "2020-12",
-    "anterior": 0.6078,
-    "atual": 0.6106,
-    "arquivo": "Despacho_2020_dezembro_corrigido_set-a-dez_MC.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
    }
   ],
+  "divergencias_entre_publicacoes": [
+   {
+    "serie": "medio_anual",
+    "rotulo": "fator médio anual",
+    "periodo": "2021",
+    "valor_vigente": 0.1263,
+    "arquivo_vigente": "atual_Inventario_2026_janago",
+    "valor_site_anterior": 0.1264,
+    "arquivo_site_anterior": "antigo_Inventario_2021_jan-a-dez"
+   },
+   {
+    "serie": "medio_mensal",
+    "rotulo": "fator médio mensal",
+    "periodo": "2021-11",
+    "valor_vigente": 0.1474,
+    "arquivo_vigente": "atual_Inventario_2026_janago",
+    "valor_site_anterior": 0.1483679819593559,
+    "arquivo_site_anterior": "antigo_Inventario_2021_jan-a-dez"
+   },
+   {
+    "serie": "om_despacho_diario",
+    "rotulo": "margem de operação (despacho) diária",
+    "periodo": "2021-12-31",
+    "valor_vigente": 0.5778346802772214,
+    "arquivo_vigente": "atual_Despacho_2021_jandez",
+    "valor_site_anterior": 0.5500098150282624,
+    "arquivo_site_anterior": "antigo_Despacho_2021_jan-a-dez"
+   },
+   {
+    "serie": "om_simples_ajustado_anual",
+    "rotulo": "margem de operação (simples ajustado) anual",
+    "periodo": "2019",
+    "valor_vigente": 0.3896,
+    "arquivo_vigente": "atual_FE_simplesajustado_2025_web",
+    "valor_site_anterior": 0.386,
+    "arquivo_site_anterior": "antigo_emissao_ajustado"
+   }
+  ],
+  "conflitos_entre_arquivos": [],
   "notas_da_fonte": [
    {
+    "texto": "Os dados em azul indicam valores corrigidos.",
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "texto": "Os dados em vermelho indicam valores anteriormente publicados com erros",
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "texto": "Valores anteriormente publicados (com erros)",
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "texto": "*Em 2018 foi feito um recálculo para o ano de 2016. O valor anterior era 0,4372.",
+    "arquivo": "FE_simplesajustado_2025_web.xlsx"
+   },
+   {
+    "texto": "**O valor foi revisado em agosto de 2020. O valor anterior era 0,3992",
+    "arquivo": "FE_simplesajustado_2025_web.xlsx"
+   },
+   {
+    "texto": "Publicação anterior (com erro)",
+    "arquivo": "Margemdeconstruo_2022corrigido.xlsx"
+   },
+   {
+    "texto": "Valor anteriormente publicado",
+    "arquivo": "Margemdeconstruo_2023corrigido.xlsx"
+   },
+   {
     "texto": "24 de fevereiro de 2007 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho-2007.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2007.xlsx"
    },
    {
     "texto": "14 de outubro de 2007 - hora 01: início do horário de verão",
-    "arquivo": "Despacho-2007.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2007.xlsx"
    },
    {
     "texto": "16 de fevereiro de 2008 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho-2008.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2008.xlsx"
    },
    {
     "texto": "19 de outubro de 2008 - hora 01: início do horário de verão",
-    "arquivo": "Despacho-2008.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2008.xlsx"
    },
    {
     "texto": "14 de fevereiro de 2009 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho-2009.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2009.xlsx"
    },
    {
     "texto": "18 de outubro de 2009 - hora 01: início do horário de verão",
-    "arquivo": "Despacho-2009.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2009.xlsx"
    },
    {
     "texto": "20 de fevereiro de 2010 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho-2010.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2010.xlsx"
    },
    {
     "texto": "17 de outubro de 2010 - hora 01: início do horário de verão",
-    "arquivo": "Despacho-2010.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2010.xlsx"
    },
    {
     "texto": "19 de fevereiro de 2011 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho-2011.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2011.xlsx"
    },
    {
     "texto": "16 de outubro de 2011 - hora 01: início do horário de verão",
-    "arquivo": "Despacho-2011.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2011.xlsx"
    },
    {
     "texto": "25 de fevereiro de 2012 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho-2012.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2012.xlsx"
    },
    {
     "texto": "21 de outubro de 2012 - hora 01: início do horário de verão",
-    "arquivo": "Despacho-2012.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2012.xlsx"
    },
    {
     "texto": "16 de fevereiro de 2013 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho-2013.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2013.xlsx"
    },
    {
     "texto": "20 de outubro de 2013 - hora 01: início do horário de verão",
-    "arquivo": "Despacho-2013.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2013.xlsx"
    },
    {
     "texto": "15 de fevereiro de 2014 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho-2014.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2014.xlsx"
    },
    {
     "texto": "19 de outubro de 2014 - hora 01: início do horário de verão",
-    "arquivo": "Despacho-2014.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2014.xlsx"
    },
    {
     "texto": "21 de fevereiro de 2015 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho-2015.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2015.xlsx"
    },
    {
     "texto": "18 de outubro - hora 1: começo do horário de verão",
-    "arquivo": "Despacho-2015.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2015.xlsx"
    },
    {
     "texto": "20 de fevereiro de 2016 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho-2016.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2016.xlsx"
    },
    {
     "texto": "16 de outubro - hora 1: começo do horário de verão",
-    "arquivo": "Despacho-2016.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2016.xlsx"
    },
    {
     "texto": "Em 03/01/2018 foram alterados os valores referentes ao mês de setembro/2017, para correção de erros.",
-    "arquivo": "Despacho-2017.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2017.xlsx"
    },
    {
     "texto": "18 de fevereiro de 2017 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho-2017.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2017.xlsx"
    },
    {
     "texto": "15 de outubro de 2017 - hora 1: começo do horário de verão",
-    "arquivo": "Despacho-2017.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2017.xlsx"
    },
    {
     "texto": "17 de fevereiro de 2018 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho_2018_ano_todo.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2018.xlsx"
    },
    {
     "texto": "04 de novembro de 2018 - hora 01: início do horário de verão.",
-    "arquivo": "Despacho_2018_ano_todo.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2018.xlsx"
    },
    {
     "texto": "16 de fevereiro de 2019 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho_2019_nov_dez.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2019.xlsx"
    },
    {
     "texto": "Publicação anterior (com erros)",
-    "arquivo": "Despacho_2020_dezembro_corrigido_set-a-dez_MC.xlsx"
-   },
-   {
-    "texto": "* Em 2018 foi feito um recálculo para o ano de 2016. O valor anterior era 0,4372.",
-    "arquivo": "emissao_ajustado.html"
-   },
-   {
-    "texto": "** O valor foi revisado em agosto de 2020. O valor anterior era 0,3992.",
-    "arquivo": "emissao_ajustado.html"
-   },
-   {
-    "texto": "24 de fevereiro de 2007 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho-2007.xlsx"
-   },
-   {
-    "texto": "14 de outubro de 2007 - hora 01: início do horário de verão",
-    "arquivo": "Despacho-2007.xlsx"
-   },
-   {
-    "texto": "16 de fevereiro de 2008 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho-2008.xlsx"
-   },
-   {
-    "texto": "19 de outubro de 2008 - hora 01: início do horário de verão",
-    "arquivo": "Despacho-2008.xlsx"
-   },
-   {
-    "texto": "14 de fevereiro de 2009 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho-2009.xlsx"
-   },
-   {
-    "texto": "18 de outubro de 2009 - hora 01: início do horário de verão",
-    "arquivo": "Despacho-2009.xlsx"
-   },
-   {
-    "texto": "20 de fevereiro de 2010 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho-2010.xlsx"
-   },
-   {
-    "texto": "17 de outubro de 2010 - hora 01: início do horário de verão",
-    "arquivo": "Despacho-2010.xlsx"
-   },
-   {
-    "texto": "19 de fevereiro de 2011 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho-2011.xlsx"
-   },
-   {
-    "texto": "16 de outubro de 2011 - hora 01: início do horário de verão",
-    "arquivo": "Despacho-2011.xlsx"
-   },
-   {
-    "texto": "25 de fevereiro de 2012 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho-2012.xlsx"
-   },
-   {
-    "texto": "21 de outubro de 2012 - hora 01: início do horário de verão",
-    "arquivo": "Despacho-2012.xlsx"
-   },
-   {
-    "texto": "16 de fevereiro de 2013 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho-2013.xlsx"
-   },
-   {
-    "texto": "20 de outubro de 2013 - hora 01: início do horário de verão",
-    "arquivo": "Despacho-2013.xlsx"
-   },
-   {
-    "texto": "15 de fevereiro de 2014 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho-2014.xlsx"
-   },
-   {
-    "texto": "19 de outubro de 2014 - hora 01: início do horário de verão",
-    "arquivo": "Despacho-2014.xlsx"
-   },
-   {
-    "texto": "21 de fevereiro de 2015 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho-2015.xlsx"
-   },
-   {
-    "texto": "18 de outubro - hora 1: começo do horário de verão",
-    "arquivo": "Despacho-2015.xlsx"
-   },
-   {
-    "texto": "17 de fevereiro de 2018 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho_2018_ano_todo.xlsx"
-   },
-   {
-    "texto": "04 de novembro de 2018 - hora 01: início do horário de verão.",
-    "arquivo": "Despacho_2018_ano_todo.xlsx"
-   },
-   {
-    "texto": "16 de fevereiro de 2019 - hora 25: fim do horário de verão.",
-    "arquivo": "Despacho_2019_nov_dez.xlsx"
-   },
-   {
-    "texto": "Publicação anterior (com erros)",
-    "arquivo": "Despacho_2020_dezembro_corrigido_set-a-dez_MC.xlsx"
-   },
-   {
-    "texto": "Os dados em azul indicam valores corrigidos.",
-    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
-   },
-   {
-    "texto": "Os dados em vermelho indicam valores anteriormente publicados com erros",
-    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
-   },
-   {
-    "texto": "Valores anteriormente publicados (com erros)",
-    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
-   },
-   {
-    "texto": "Os dados em azul indicam valores corrigidos.",
-    "arquivo": "Despacho_2025_jandez_corrigidacomMO.xlsx"
-   },
-   {
-    "texto": "Os dados em vermelho indicam valores anteriormente publicados com erros",
-    "arquivo": "Despacho_2025_jandez_corrigidacomMO.xlsx"
-   },
-   {
-    "texto": "Valores anteriormente publicados (com erros)",
-    "arquivo": "Despacho_2025_jandez_corrigidacomMO.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
    }
   ],
   "notas_margem_construcao": [
    {
-    "texto": "null",
-    "arquivo": "Despacho-2006.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho-2007.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho-2008.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho-2009.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho-2010.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho-2011.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho-2012.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho-2013.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho-2014.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho-2015.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho-2016.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho-2017.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho_2018_ano_todo.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho_2019_nov_dez.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho_2020_dezembro_corrigido_set-a-dez_MC.xlsx"
-   },
-   {
-    "texto": "Valor a ser publicado no início de 2022",
-    "arquivo": "Despacho_2021_jan-a-dez.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho-2007.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho-2008.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho-2009.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho-2010.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho-2011.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho-2012.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho-2013.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho-2014.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho-2015.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho_2018_ano_todo.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho_2019_nov_dez.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho_2020_dezembro_corrigido_set-a-dez_MC.xlsx"
-   },
-   {
-    "texto": "Valor a ser publicado no início de 2022",
-    "arquivo": "Despacho_2021_jan-a-jun.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho_2021_jandez.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
-   },
-   {
-    "texto": "null",
-    "arquivo": "Despacho_2025_jandez_corrigidacomMO.xlsx"
-   },
-   {
-    "texto": "null",
+    "texto": "Este fator de emissão será disponibilizado no início de 2027",
     "arquivo": "Despacho_2026_janago.xlsx"
    }
   ],
   "descartes": [
-   {
-    "data": "2019-09-31",
-    "valor": 0.0,
-    "motivo": "data inexistente no calendário",
-    "arquivo": "Despacho_2019_nov_dez.xlsx"
-   },
-   {
-    "data": "2021-02-29",
-    "valor": 0.0,
-    "motivo": "data inexistente no calendário",
-    "arquivo": "Despacho_2021_jan-a-dez.xlsx"
-   },
-   {
-    "data": "2019-09-31",
-    "valor": 0.0,
-    "motivo": "data inexistente no calendário",
-    "arquivo": "Despacho_2019_nov_dez.xlsx"
-   },
-   {
-    "data": "2021-02-29",
-    "valor": 0.0,
-    "motivo": "data inexistente no calendário",
-    "arquivo": "Despacho_2021_jan-a-jun.xlsx"
-   },
    {
     "data": "2021-02-29",
     "valor": 0.0,
@@ -13105,24 +13297,26 @@
     "valor": 0.0,
     "motivo": "data inexistente no calendário",
     "arquivo": "Despacho_2025_jandez_corrigidacomMO.xlsx"
+   },
+   {
+    "data": "2019-09-31",
+    "valor": 0.0,
+    "motivo": "data inexistente no calendário",
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2019.xlsx"
    }
   ],
   "problemas_de_leitura": [
    {
     "texto": "margem de operação diária 2015: coluna I rotulada maio na posição de julho; lida pela posição",
-    "arquivo": "Despacho-2015.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2015.xlsx"
    },
    {
     "texto": "margem de operação diária 2016: coluna I rotulada maio na posição de julho; lida pela posição",
-    "arquivo": "Despacho-2016.xlsx"
-   },
-   {
-    "texto": "margem de operação diária 2015: coluna I rotulada maio na posição de julho; lida pela posição",
-    "arquivo": "Despacho-2015.xlsx"
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2016.xlsx"
    }
   ],
   "consistencia_diaria_mensal": {
-   "meses_comparados": 224,
+   "meses_comparados": 248,
    "maior_diferenca_absoluta": 0.0071,
    "mes_da_maior_diferenca": "2024-02",
    "descricao": "média simples dos fatores diários da margem de operação comparada ao fator mensal publicado"
@@ -13130,34 +13324,199 @@
   "acesso": {
    "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/sirene/dados-e-ferramentas/fatores-de-emissao",
    "situacao": "acessivel",
-   "tentado_em": "2026-09-30T22:28:50Z",
-   "detalhe": "36 planilhas listadas",
-   "alternativa_usada": "site institucional anterior do MCTI (antigo.mctic.gov.br), planilhas oficiais de 2006 a 2021",
+   "tentado_em": "2026-09-30T22:48:13Z",
+   "detalhe": "23 planilhas publicadas, 13 âncoras ocultas ignoradas, 1 notas técnicas; listagem nova",
+   "ultimo_acesso_ok": "2026-09-30T22:48:13Z",
+   "bloqueios_registrados": [],
+   "familias_usadas": [
+    "atual"
+   ],
+   "alternativa": "site institucional anterior do MCTI (antigo.mctic.gov.br), planilhas oficiais de 2006 a 2021: usadas só onde a página vigente não tem valor, e sempre comparadas com ela",
    "capturas_depositadas": 0
   },
+  "pagina_vigente": {
+   "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/sirene/dados-e-ferramentas/fatores-de-emissao",
+   "listagem_capturada_em": "2026-09-30T22:48:13Z",
+   "planilhas": [
+    {
+     "titulo": "Inventários Corporativos - 2026",
+     "arquivo": "Inventario_2026_janago.xlsx",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/sirene/dados-e-ferramentas/fatores-de-emissao/arquivo/Inventario_2026_janago.xlsx"
+    },
+    {
+     "titulo": "Fatores de emissão de CO2 pela geração de energia elétrica no Sistema Interligado Nacional do Brasil - Ano Base 2026",
+     "arquivo": "Despacho_2026_janago.xlsx",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/sirene/dados-e-ferramentas/fatores-de-emissao/arquivo/Despacho_2026_janago.xlsx"
+    },
+    {
+     "titulo": "Fatores de emissão de CO2 pela geração de energia elétrica no Sistema Interligado Nacional do Brasil - Ano Base 2025 – com correções nos fatores de emissão horários referentes ao mês de julho",
+     "arquivo": "Despacho_2025_jandez_corrigidacomMO.xlsx",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/sirene/dados-e-ferramentas/fatores-de-emissao/arquivo/Despacho_2025_jandez_corrigidacomMO.xlsx"
+    },
+    {
+     "titulo": "Fatores de emissão de CO2 pela geração de energia elétrica no Sistema Interligado Nacional do Brasil - Ano Base 2024 – com correções nos meses de janeiro e março a setembro",
+     "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/sirene/dados-e-ferramentas/fatores-de-emissao/arquivo/Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+    },
+    {
+     "titulo": "Fatores de emissão de CO2 pela geração de energia elétrica no Sistema Interligado Nacional do Brasil - Ano Base 2023 – com correções nos fatores de emissão diários referentes ao dia 31 para os meses de abril a julho, setembro, novembro e dezembro",
+     "arquivo": "Margemdeconstruo_2023corrigido.xlsx",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/sirene/dados-e-ferramentas/fatores-de-emissao/arquivo/Margemdeconstruo_2023corrigido.xlsx"
+    },
+    {
+     "titulo": "Fatores de emissão de CO2 pela geração de energia elétrica no Sistema Interligado Nacional do Brasil - Ano Base 2022 - com correções para o mês de julho",
+     "arquivo": "Margemdeconstruo_2022corrigido.xlsx",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/sirene/dados-e-ferramentas/fatores-de-emissao/arquivo/Margemdeconstruo_2022corrigido.xlsx"
+    },
+    {
+     "titulo": "Fatores de emissão de CO2 pela geração de energia elétrica no Sistema Interligado Nacional do Brasil - Ano Base 2021",
+     "arquivo": "Despacho_2021_jandez.xlsx",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/sirene/dados-e-ferramentas/fatores-de-emissao/arquivo/Despacho_2021_jandez.xlsx"
+    },
+    {
+     "titulo": "Fatores de emissão de CO2 pela geração de energia elétrica no Sistema Interligado Nacional do Brasil - Ano Base 2020 - com correções de setembro a dezembro",
+     "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/cgcl/Banner_Relatorios_Especiais_IPCC/metodo-da-analise-de-despacho/fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+    },
+    {
+     "titulo": "Fatores de emissão de CO2 pela geração de energia elétrica no Sistema Interligado Nacional do Brasil - Ano Base 2019",
+     "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2019.xlsx",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/cgcl/Banner_Relatorios_Especiais_IPCC/metodo-da-analise-de-despacho/fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2019.xlsx"
+    },
+    {
+     "titulo": "Fatores de emissão de CO2 pela geração de energia elétrica no Sistema Interligado Nacional do Brasil - Ano Base 2018",
+     "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2018.xlsx",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/cgcl/Banner_Relatorios_Especiais_IPCC/metodo-da-analise-de-despacho/fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2018.xlsx"
+    },
+    {
+     "titulo": "Fatores de emissão de CO2 pela geração de energia elétrica no Sistema Interligado Nacional do Brasil - Ano Base 2017",
+     "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2017.xlsx",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/cgcl/Banner_Relatorios_Especiais_IPCC/metodo-da-analise-de-despacho/fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2017.xlsx"
+    },
+    {
+     "titulo": "Fatores de emissão de CO2 pela geração de energia elétrica no Sistema Interligado Nacional do Brasil - Ano Base 2016",
+     "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2016.xlsx",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/cgcl/Banner_Relatorios_Especiais_IPCC/metodo-da-analise-de-despacho/fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2016.xlsx"
+    },
+    {
+     "titulo": "Fatores de emissão de CO2 pela geração de energia elétrica no Sistema Interligado Nacional do Brasil - Ano Base 2015",
+     "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2015.xlsx",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/cgcl/Banner_Relatorios_Especiais_IPCC/metodo-da-analise-de-despacho/fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2015.xlsx"
+    },
+    {
+     "titulo": "Fatores de emissão de CO2 pela geração de energia elétrica no Sistema Interligado Nacional do Brasil - Ano Base 2014",
+     "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2014.xlsx",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/cgcl/Banner_Relatorios_Especiais_IPCC/metodo-da-analise-de-despacho/fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2014.xlsx"
+    },
+    {
+     "titulo": "Fatores de emissão de CO2 pela geração de energia elétrica no Sistema Interligado Nacional do Brasil - Ano Base 2013",
+     "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2013.xlsx",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/cgcl/Banner_Relatorios_Especiais_IPCC/metodo-da-analise-de-despacho/fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2013.xlsx"
+    },
+    {
+     "titulo": "Fatores de emissão de CO2 pela geração de energia elétrica no Sistema Interligado Nacional do Brasil - Ano Base 2012",
+     "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2012.xlsx",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/cgcl/Banner_Relatorios_Especiais_IPCC/metodo-da-analise-de-despacho/fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2012.xlsx"
+    },
+    {
+     "titulo": "Fatores de emissão de CO2 pela geração de energia elétrica no Sistema Interligado Nacional do Brasil - Ano Base 2011",
+     "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2011.xlsx",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/cgcl/Banner_Relatorios_Especiais_IPCC/metodo-da-analise-de-despacho/fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2011.xlsx"
+    },
+    {
+     "titulo": "Fatores de emissão de CO2 pela geração de energia elétrica no Sistema Interligado Nacional do Brasil - Ano Base 2010",
+     "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2010.xlsx",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/cgcl/Banner_Relatorios_Especiais_IPCC/metodo-da-analise-de-despacho/fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2010.xlsx"
+    },
+    {
+     "titulo": "Fatores de emissão de CO2 pela geração de energia elétrica no Sistema Interligado Nacional do Brasil - Ano Base 2009",
+     "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2009.xlsx",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/cgcl/Banner_Relatorios_Especiais_IPCC/metodo-da-analise-de-despacho/fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2009.xlsx"
+    },
+    {
+     "titulo": "Fatores de emissão de CO2 pela geração de energia elétrica no Sistema Interligado Nacional do Brasil - Ano Base 2008",
+     "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2008.xlsx",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/cgcl/Banner_Relatorios_Especiais_IPCC/metodo-da-analise-de-despacho/fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2008.xlsx"
+    },
+    {
+     "titulo": "Fatores de emissão de CO2 pela geração de energia elétrica no Sistema Interligado Nacional do Brasil - Ano Base 2007",
+     "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2007.xlsx",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/cgcl/Banner_Relatorios_Especiais_IPCC/metodo-da-analise-de-despacho/fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2007.xlsx"
+    },
+    {
+     "titulo": "Fatores de emissão de CO2 pela geração de energia elétrica no Sistema Interligado Nacional do Brasil - Ano Base 2006",
+     "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2006.xlsx",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/cgcl/Banner_Relatorios_Especiais_IPCC/metodo-da-analise-de-despacho/fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2006.xlsx"
+    },
+    {
+     "titulo": "Fatores de emissão simples ajustado - Cálculos de 2025",
+     "arquivo": "FE_simplesajustado_2025_web.xlsx",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/sirene/dados-e-ferramentas/fatores-de-emissao/arquivo/FE_simplesajustado_2025_web.xlsx"
+    }
+   ],
+   "links_ocultos_ignorados": [
+    "Despacho-2007.xlsx",
+    "Despacho-2008.xlsx",
+    "Despacho-2009.xlsx",
+    "Despacho-2010.xlsx",
+    "Despacho-2011.xlsx",
+    "Despacho-2012.xlsx",
+    "Despacho-2013.xlsx",
+    "Despacho-2014.xlsx",
+    "Despacho-2015.xlsx",
+    "Despacho_2018_ano_todo.xlsx",
+    "Despacho_2019_nov_dez.xlsx",
+    "Despacho_2020_dezembro_corrigido_set-a-dez_MC.xlsx",
+    "Despacho_2021_jan-a-jun.xlsx"
+   ]
+  },
   "arquivos": [
-   "Despacho-2006.xlsx",
-   "Despacho-2007.xlsx",
-   "Despacho-2008.xlsx",
-   "Despacho-2009.xlsx",
-   "Despacho-2010.xlsx",
-   "Despacho-2011.xlsx",
-   "Despacho-2012.xlsx",
-   "Despacho-2013.xlsx",
-   "Despacho-2014.xlsx",
-   "Despacho-2015.xlsx",
-   "Despacho-2016.xlsx",
-   "Despacho-2017.xlsx",
-   "Despacho_2018_ano_todo.xlsx",
-   "Despacho_2019_nov_dez.xlsx",
-   "Despacho_2020_dezembro_corrigido_set-a-dez_MC.xlsx",
    "Despacho_2021_jandez.xlsx",
    "Despacho_2024_jandezcomcorrees_FE_MC.xlsx",
    "Despacho_2025_jandez_corrigidacomMO.xlsx",
    "Despacho_2026_janago.xlsx",
-   "Inventario_2021_jan-a-dez.xlsx",
+   "FE_simplesajustado_2025_web.xlsx",
    "Inventario_2026_janago.xlsx",
-   "emissao_ajustado.html"
+   "Margemdeconstruo_2022corrigido.xlsx",
+   "Margemdeconstruo_2023corrigido.xlsx",
+   "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2006.xlsx",
+   "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2007.xlsx",
+   "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2008.xlsx",
+   "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2009.xlsx",
+   "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2010.xlsx",
+   "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2011.xlsx",
+   "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2012.xlsx",
+   "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2013.xlsx",
+   "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2014.xlsx",
+   "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2015.xlsx",
+   "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2016.xlsx",
+   "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2017.xlsx",
+   "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2018.xlsx",
+   "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2019.xlsx",
+   "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+  ],
+  "documentos": [
+   {
+    "orgao": "MCTI",
+    "titulo": "Fatores de emissão MDL/SIN: texto da seção Fator médio (inventários corporativos)",
+    "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/sirene/dados-e-ferramentas/fatores-de-emissao",
+    "consultado_em": "2026-09-30",
+    "trecho": "Ele calcula a média das emissões da geração, levando em consideração todas as usinas que estão gerando energia e não somente aquelas que estejam funcionando na margem. Se todos os consumidores de energia elétrica do SIN calculassem as suas emissões multiplicando a energia consumida por esse Fator de Emissão, o somatório corresponderia às emissões do SIN."
+   },
+   {
+    "orgao": "MCTI",
+    "titulo": "Fatores de emissão MDL/SIN: texto da seção Margem de operação pelo método da análise de despacho",
+    "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/sirene/dados-e-ferramentas/fatores-de-emissao",
+    "consultado_em": "2026-09-30",
+    "trecho": "Esse fator serve para quantificar a emissão que está sendo deslocada na margem. A sua utilidade está associada a projetos de MDL e se aplica, exclusivamente, para estimar as reduções certificadas de emissões (RCEs) dos projetos de MDL."
+   },
+   {
+    "orgao": "MCTI",
+    "titulo": "Nota técnica de junho de 2025: aprimoramento na publicação dos fatores de emissão de CO2 do SIN (NT_FE_jun25)",
+    "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/cgcl/paginas/NT_FE_jun25.pdf",
+    "consultado_em": "2026-09-30",
+    "trecho": "a partir de janeiro de 2025, os fatores de emissão de CO₂ da Margem de Operação do Sistema Interligado Nacional (SIN) passaram a refletir um aprimoramento importante no banco de dados do Operador Nacional do Sistema Elétrico (ONS) [...] A metodologia utilizada para o cálculo dos fatores de emissão de CO₂ permanece inalterada, tanto para projetos sob o Mecanismo de Desenvolvimento Limpo (MDL) quanto para inventários de emissões. A diferença reside na ampliação da base de dados, o que, consequentemente, pode resultar em uma redução nos valores dos fatores de emissão"
+   }
   ],
   "estimativa_propria": {
    "publicada": false,
@@ -13172,7 +13531,7 @@
      "dataset": "Fatores de emissão de CO2 pela geração de energia elétrica no SIN",
      "recurso": "planilhas de inventário (fator médio) e de análise de despacho (MDL), e tabela do método simples ajustado",
      "url_dataset": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/sirene/dados-e-ferramentas/fatores-de-emissao",
-     "url_primaria": "https://antigo.mctic.gov.br/mctic/opencms/ciencia/SEPED/clima/textogeral/emissao_corporativos.html",
+     "url_primaria": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/sirene/dados-e-ferramentas/fatores-de-emissao",
      "licenca": "Informação pública de órgão federal (Lei 12.527/2011), sem licença específica declarada na página; citar o MCTI como fonte"
     },
     "unidade": "tCO2/MWh",
@@ -13182,58 +13541,42 @@
      "fim": "2026-08"
     },
     "publicado_pela_fonte_em": null,
-    "capturado_em": "2026-09-30T22:29:53Z",
-    "validado_em": "2026-09-30T22:29:54Z",
+    "capturado_em": "2026-09-30T22:49:08Z",
+    "validado_em": "2026-09-30T22:57:56Z",
     "cobertura_historica": {
      "inicio": "2006-01",
      "fim": "2026-08"
     },
     "transformacoes": [
-     "leitura das planilhas oficiais sem alteração de valor (4 casas decimais na publicação da gold)"
+     "leitura das planilhas oficiais sem alteração de valor (4 casas decimais na publicação da gold)",
+     "precedência: página vigente do MCTI sobre o site institucional anterior; divergências entre as duas publicadas",
+     "âncoras sem texto (invisíveis) da página vigente ignoradas: apontam para versões antigas"
     ],
     "formula": null,
     "snapshot": {
-     "id": "mcti_fator_emissao@2026-09-30T22:29:53Z",
-     "sha256": "607850f5d86dfd9545400bee6fc682de50769bf234f816781ffa24e08b348ec8"
+     "id": "mcti_fator_emissao@2026-09-30T22:49:08Z",
+     "sha256": "ce020b6e9fe69af47873516bfea01c38a50f929436a7d931e78d866b65a624b9"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "dcad322a4ea9+alterado",
+    "versao_codigo": "dafa93bb2111+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-09-30T22:29:54Z",
-     "total": 4,
-     "vintages_comparadas": 54,
-     "arquivos": 54,
+     "detectado_em": "2026-09-30T22:57:56Z",
+     "total": 0,
+     "vintages_comparadas": 42,
+     "arquivos": 42,
      "recapturas_sem_mudanca": 1,
-     "ultimo_download_ok": "2026-09-30T22:29:53Z",
-     "exemplos": [
-      {
-       "serie": "om_despacho_diario",
-       "ref": "2021-12-31",
-       "valores": 2
-      },
-      {
-       "serie": "medio_mensal",
-       "ref": "2021-12",
-       "valores": 2
-      },
-      {
-       "serie": "medio_mensal",
-       "ref": "2021-11",
-       "valores": 2
-      },
-      {
-       "serie": "medio_anual",
-       "ref": "2021",
-       "valores": 2
-      }
-     ]
+     "ultimo_download_ok": "2026-09-30T22:49:08Z",
+     "exemplos": []
     },
     "limitacoes": [
      "Fator médio: média das emissões de todas as usinas em operação no SIN por MWh gerado; é o fator para inventários. Não é fator marginal e não mede o efeito de consumir ou economizar um MWh a mais.",
      "Somente CO2 (tCO2/MWh), como o MCTI publica; não é CO2 equivalente (sem CH4 e N2O) e considera emissões da operação das usinas, não o ciclo de vida.",
+     "Fronteira: emissões da geração despachada no SIN divididas pela geração do SIN. O MCTI orienta aplicar o fator à energia consumida em inventários; perdas de transmissão e distribuição não são tratadas à parte pela fonte nem pela plataforma.",
      "Perímetro: geração no SIN. Sistemas isolados e geração distribuída fora do despacho do ONS não entram.",
      "É um fator nacional mensal: não existe fator municipal nem horário oficial, e a plataforma não deriva um a partir deste.",
-     "Série até 2025: a página vigente do MCTI, com as planilhas mais recentes, exige verificação humana e não foi acessada por automação; a série publicada vem do site institucional anterior do MCTI."
+     "Quebra declarada pelo MCTI em jan/2025: a base de usinas do ONS foi ampliada (biomassa e conjuntos solares e eólicos, de emissão nula), com a mesma metodologia; comparações que atravessam jan/2025 misturam bases diferentes.",
+     "O ano corrente (2026) é parcial (meses publicados até o último disponível) e não tem fator anual.",
+     "4 valores da página vigente diferem do publicado no site institucional anterior para o mesmo período; vale a publicação vigente e as diferenças ficam listadas."
     ],
     "download": "/energia/series/transicao_mcti_fatores.csv",
     "notas_fonte": "Calculado pelo MCTI com dados de geração do ONS; publicado pela fonte."
@@ -13246,7 +13589,7 @@
      "dataset": "Fatores de emissão de CO2 pela geração de energia elétrica no SIN",
      "recurso": "planilhas de inventário (fator médio) e de análise de despacho (MDL), e tabela do método simples ajustado",
      "url_dataset": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/sirene/dados-e-ferramentas/fatores-de-emissao",
-     "url_primaria": "https://antigo.mctic.gov.br/mctic/opencms/ciencia/SEPED/clima/textogeral/emissao_despacho.html",
+     "url_primaria": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/sirene/dados-e-ferramentas/fatores-de-emissao",
      "licenca": "Informação pública de órgão federal (Lei 12.527/2011), sem licença específica declarada na página; citar o MCTI como fonte"
     },
     "unidade": "tCO2/MWh",
@@ -13256,8 +13599,8 @@
      "fim": "2026-08"
     },
     "publicado_pela_fonte_em": null,
-    "capturado_em": "2026-09-30T22:29:53Z",
-    "validado_em": "2026-09-30T22:29:54Z",
+    "capturado_em": "2026-09-30T22:49:08Z",
+    "validado_em": "2026-09-30T22:57:56Z",
     "cobertura_historica": {
      "inicio": "2006-01",
      "fim": "2026-08"
@@ -13267,52 +13610,33 @@
     ],
     "formula": null,
     "snapshot": {
-     "id": "mcti_fator_emissao@2026-09-30T22:29:53Z",
-     "sha256": "607850f5d86dfd9545400bee6fc682de50769bf234f816781ffa24e08b348ec8"
+     "id": "mcti_fator_emissao@2026-09-30T22:49:08Z",
+     "sha256": "ce020b6e9fe69af47873516bfea01c38a50f929436a7d931e78d866b65a624b9"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "dcad322a4ea9+alterado",
+    "versao_codigo": "dafa93bb2111+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-09-30T22:29:54Z",
-     "total": 4,
-     "vintages_comparadas": 54,
-     "arquivos": 54,
+     "detectado_em": "2026-09-30T22:57:56Z",
+     "total": 0,
+     "vintages_comparadas": 42,
+     "arquivos": 42,
      "recapturas_sem_mudanca": 1,
-     "ultimo_download_ok": "2026-09-30T22:29:53Z",
-     "exemplos": [
-      {
-       "serie": "om_despacho_diario",
-       "ref": "2021-12-31",
-       "valores": 2
-      },
-      {
-       "serie": "medio_mensal",
-       "ref": "2021-12",
-       "valores": 2
-      },
-      {
-       "serie": "medio_mensal",
-       "ref": "2021-11",
-       "valores": 2
-      },
-      {
-       "serie": "medio_anual",
-       "ref": "2021",
-       "valores": 2
-      }
-     ]
+     "ultimo_download_ok": "2026-09-30T22:49:08Z",
+     "exemplos": []
     },
     "limitacoes": [
      "Fatores de margem estimam a emissão deslocada por um projeto de MDL que gera para a rede; não descrevem a intensidade média da eletricidade.",
      "Margem de operação e margem de construção têm métodos distintos (ferramenta do Conselho Executivo do MDL) e não são comparáveis ao fator médio.",
-     "Somente CO2 (tCO2/MWh)."
+     "Somente CO2 (tCO2/MWh).",
+     "Base de usinas do ONS ampliada (termelétricas a biomassa e conjuntos de usinas solares e eólicas, de emissão nula); metodologia mantida. Valores a partir de jan/2025 podem ser menores por causa da base, não só da operação."
     ],
     "download": "/energia/series/transicao_mcti_fatores.csv",
     "notas_fonte": null
    }
   },
   "evidencia": {
-   "valor_exibido": 0.0461,
+   "indicador": "Fator médio anual de emissão de CO2 do SIN (inventários)",
+   "valor_exibido": "0,0461",
    "valor_calculo": 0.0461,
    "unidade": "tCO2/MWh",
    "periodo": {
@@ -13320,120 +13644,43 @@
     "fim": "2025-12-31"
    },
    "entidade": "SIN",
-   "universo": "geração de energia elétrica no Sistema Interligado Nacional",
+   "universo": "geração de energia elétrica despachada no Sistema Interligado Nacional",
    "filtros": [],
    "fonte": {
     "orgao": "MCTI",
     "conjunto": "Fatores de emissão de CO2 pela geração de energia elétrica no SIN",
-    "recurso": "Inventario_2026_janago.xlsx",
-    "url": "https://antigo.mctic.gov.br/mctic/opencms/ciencia/SEPED/clima/textogeral/emissao_corporativos.html",
+    "recurso": "Inventários Corporativos - 2026 (Inventario_2026_janago.xlsx)",
+    "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/sirene/dados-e-ferramentas/fatores-de-emissao/arquivo/Inventario_2026_janago.xlsx",
     "arquivo": "Inventario_2026_janago.xlsx",
     "sha256": "ab369a41bb8d8651509b6c9a2132a3e99caecd8a2b665483cb1cc2726f9fbabc",
-    "capturado_em": "2026-09-30T22:28:50Z",
+    "capturado_em": "2026-09-30T22:48:14Z",
     "publicado_em": null
    },
+   "extracao_pdf": null,
    "chaves_origem": [
-    "planilha Inventario_2026_janago.xlsx, bloco do ano 2025, coluna do fator anual"
+    "planilha Inventario_2026_janago.xlsx, bloco do ano 2025, coluna do fator anual (à direita de dezembro)"
    ],
-   "formula": "valor publicado pelo MCTI (sem cálculo da plataforma)",
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "valor publicado pelo MCTI, sem cálculo da plataforma (fator médio = emissões de CO2 da geração ÷ energia gerada no SIN)",
    "numerador": null,
    "denominador": null,
    "pesos": null,
    "exclusoes": [],
-   "cobertura": "2006 a 2025",
-   "tratamento_ausencia": "ano sem planilha acessível fica sem valor; nada é estimado para preencher",
+   "cobertura": "2006 a 2025 (anos completos publicados)",
+   "tratamento_ausencia": "ano sem planilha acessível fica sem valor; ano corrente parcial não tem fator anual; nada é estimado para preencher",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:29:54Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T22:57:56Z"
    },
-   "revisoes": {
-    "declaradas_pela_fonte": [
-     {
-      "mes": "2020-09",
-      "anterior": 0.3285,
-      "atual": 0.3287,
-      "arquivo": "Despacho_2020_dezembro_corrigido_set-a-dez_MC.xlsx"
-     },
-     {
-      "mes": "2020-10",
-      "anterior": 0.572,
-      "atual": 0.5723,
-      "arquivo": "Despacho_2020_dezembro_corrigido_set-a-dez_MC.xlsx"
-     },
-     {
-      "mes": "2020-12",
-      "anterior": 0.6078,
-      "atual": 0.6106,
-      "arquivo": "Despacho_2020_dezembro_corrigido_set-a-dez_MC.xlsx"
-     },
-     {
-      "mes": "2020-09",
-      "anterior": 0.3285,
-      "atual": 0.3287,
-      "arquivo": "Despacho_2020_dezembro_corrigido_set-a-dez_MC.xlsx"
-     },
-     {
-      "mes": "2020-10",
-      "anterior": 0.572,
-      "atual": 0.5723,
-      "arquivo": "Despacho_2020_dezembro_corrigido_set-a-dez_MC.xlsx"
-     },
-     {
-      "mes": "2020-12",
-      "anterior": 0.6078,
-      "atual": 0.6106,
-      "arquivo": "Despacho_2020_dezembro_corrigido_set-a-dez_MC.xlsx"
-     }
-    ],
-    "notas": [
-     {
-      "texto": "24 de fevereiro de 2007 - hora 25: fim do horário de verão.",
-      "arquivo": "Despacho-2007.xlsx"
-     },
-     {
-      "texto": "14 de outubro de 2007 - hora 01: início do horário de verão",
-      "arquivo": "Despacho-2007.xlsx"
-     },
-     {
-      "texto": "16 de fevereiro de 2008 - hora 25: fim do horário de verão.",
-      "arquivo": "Despacho-2008.xlsx"
-     },
-     {
-      "texto": "19 de outubro de 2008 - hora 01: início do horário de verão",
-      "arquivo": "Despacho-2008.xlsx"
-     },
-     {
-      "texto": "14 de fevereiro de 2009 - hora 25: fim do horário de verão.",
-      "arquivo": "Despacho-2009.xlsx"
-     },
-     {
-      "texto": "18 de outubro de 2009 - hora 01: início do horário de verão",
-      "arquivo": "Despacho-2009.xlsx"
-     },
-     {
-      "texto": "20 de fevereiro de 2010 - hora 25: fim do horário de verão.",
-      "arquivo": "Despacho-2010.xlsx"
-     },
-     {
-      "texto": "17 de outubro de 2010 - hora 01: início do horário de verão",
-      "arquivo": "Despacho-2010.xlsx"
-     },
-     {
-      "texto": "19 de fevereiro de 2011 - hora 25: fim do horário de verão.",
-      "arquivo": "Despacho-2011.xlsx"
-     },
-     {
-      "texto": "16 de outubro de 2011 - hora 01: início do horário de verão",
-      "arquivo": "Despacho-2011.xlsx"
-     }
-    ]
-   },
+   "revisoes": "11 revisões declaradas pelo MCTI nas planilhas usadas; 4 valores da página vigente diferentes do site institucional anterior (listados em divergencias_entre_publicacoes).",
    "testes": [
     {
      "nome": "domínio do fator",
      "resultado": "aprovado",
-     "detalhe": "0 ≤ fator < 2 tCO2/MWh em todos os meses"
+     "detalhe": "0 ≤ fator < 2 tCO2/MWh em todos os meses e anos"
     },
     {
      "nome": "12 meses por ano completo",
@@ -13442,9 +13689,9 @@
     }
    ],
    "reconciliacao": {
-    "descricao": "fator anual publicado comparado à média simples dos 12 meses (o MCTI pondera pela geração; diferença esperada pequena, não nula)",
-    "resultado": "maior diferença absoluta: 0.0001 tCO2/MWh",
-    "tolerancia": "informativa: o anual oficial é ponderado pela geração"
+    "descricao": "Fator anual publicado (0,0461) comparado à média simples dos 12 fatores mensais de 2025 na mesma planilha (0,04608): diferença 0,00002. Nos 20 anos com 12 meses, 19 ficam dentro da tolerância; fora: 2007. Confere a leitura da coluna do anual; não é um segundo cálculo do MCTI.",
+    "resultado": "aprovado",
+    "tolerancia": "0,0001 tCO2/MWh (arredondamento da quarta casa decimal publicada nos meses e no anual)"
    },
    "download": [
     {
@@ -13452,8 +13699,67 @@
      "url": "/energia/series/transicao_mcti_fatores.csv"
     }
    ],
-   "reproducao": "python3 pipeline/energia/executar_modulo.py transicao",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. Fator médio anual de emissão de CO2 do SIN. Dados: MCTI (Fatores de emissão de CO2 pela geração de energia elétrica no SIN), Informação pública de órgão federal (Lei 12.527/2011). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/transicao"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py transicao --sem-coleta (silver data/energia/silver/aneel_mmgd.db)",
+   "citacao": "SCRUTINIUMS. Fator médio anual de emissão de CO2 do SIN (inventários): 0,0461 tCO2/MWh, SIN, 01/01/2025 a 31/12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: MCTI, Fatores de emissão de CO2 pela geração de energia elétrica no SIN (recurso Inventários Corporativos - 2026 (Inventario_2026_janago.xlsx), capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "evidencia_mensal": {
+   "indicador": "Fator médio mensal de emissão de CO2 do SIN (inventários)",
+   "valor_exibido": "0,0471",
+   "valor_calculo": 0.0471,
+   "unidade": "tCO2/MWh",
+   "periodo": {
+    "inicio": "2026-08-01",
+    "fim": "2026-08-31"
+   },
+   "entidade": "SIN",
+   "universo": "geração de energia elétrica despachada no Sistema Interligado Nacional",
+   "filtros": [],
+   "fonte": {
+    "orgao": "MCTI",
+    "conjunto": "Fatores de emissão de CO2 pela geração de energia elétrica no SIN",
+    "recurso": "Inventários Corporativos - 2026 (Inventario_2026_janago.xlsx)",
+    "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/sirene/dados-e-ferramentas/fatores-de-emissao/arquivo/Inventario_2026_janago.xlsx",
+    "arquivo": "Inventario_2026_janago.xlsx",
+    "sha256": "ab369a41bb8d8651509b6c9a2132a3e99caecd8a2b665483cb1cc2726f9fbabc",
+    "capturado_em": "2026-09-30T22:48:14Z",
+    "publicado_em": null
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "planilha Inventario_2026_janago.xlsx, bloco do ano 2026, coluna de agosto"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "valor publicado pelo MCTI, sem cálculo da plataforma",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "2006-01 a 2026-08",
+   "tratamento_ausencia": "mês sem valor publicado fica sem valor; nada é interpolado",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T22:57:56Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
+   "testes": [
+    {
+     "nome": "domínio do fator",
+     "resultado": "aprovado",
+     "detalhe": "0 ≤ fator < 2 tCO2/MWh"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Fatores do MCTI (CSV)",
+     "url": "/energia/series/transicao_mcti_fatores.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py transicao --sem-coleta (silver data/energia/silver/aneel_mmgd.db)",
+   "citacao": "SCRUTINIUMS. Fator médio mensal de emissão de CO2 do SIN (inventários): 0,0471 tCO2/MWh, SIN, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: MCTI, Fatores de emissão de CO2 pela geração de energia elétrica no SIN (recurso Inventários Corporativos - 2026 (Inventario_2026_janago.xlsx), capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "downloads": [

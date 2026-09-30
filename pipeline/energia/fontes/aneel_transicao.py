@@ -281,8 +281,9 @@ def agrega(registros, ibge_por_prefixo6=None, ibge_validos=None):
     return ag
 
 
-def linhas_parquet(caminho, lote=250_000):
-    """Itera as linhas do Parquet oficial como dicts, em lotes (memória limitada)."""
+def linhas_parquet(caminho, lote=50_000):
+    """Itera as linhas do Parquet oficial como dicts, em lotes (memória limitada: cada lote
+    vira objetos Python; com 50 mil linhas o pico da agregação fica perto de 300 MB)."""
     import pyarrow.parquet as pq
     arq = pq.ParquetFile(caminho)
     cols = [c for c in COLUNAS if c in arq.schema_arrow.names]
@@ -293,23 +294,78 @@ def linhas_parquet(caminho, lote=250_000):
             yield dict(zip(nomes, valores))
 
 
-def controles_tabela(caminho):
-    """Controles que pedem a tabela inteira, feitos no motor do pyarrow (sem carregar
-    milhões de tuplas no Python): unicidade do código e duplicidade candidata."""
+# Os controles que olham a tabela inteira (código único, duplicidade candidata e a
+# concordância com o recurso técnico) rodam por partes: lidos de uma vez, com 4,66 milhões
+# de linhas, passavam de 2 GB de memória (medido em 30/09/2026). As partes são exatas para
+# cada controle: códigos repetidos têm o mesmo último caractere, e a chave da duplicidade
+# inclui a distribuidora, então nenhum grupo atravessa partes.
+DIGITOS = tuple("0123456789")
+PARTES_DISTRIBUIDORA = 8
+
+
+def _filtros_por_final(campo):
+    """Filtros que dividem as linhas pelo último caractere do código: um por dígito e um
+    para o resto (final não numérico). Código nulo fica de fora e é contado à parte."""
     import pyarrow.compute as pc
-    import pyarrow.parquet as pq
-    nomes = pq.ParquetFile(caminho).schema_arrow.names
-    t = pq.read_table(caminho, columns=["CodEmpreendimento"])
-    vc = pc.value_counts(t["CodEmpreendimento"])
-    contagens = vc.field("counts")
-    repetidos = pc.filter(vc, pc.greater(contagens, 1))
-    out = {
-        "codigos_distintos": len(vc),
-        "codigos_repetidos": len(repetidos),
-        "codigo_ausente": t["CodEmpreendimento"].null_count,
-    }
-    chave = [c for c in CHAVE_DUPLICIDADE if c in nomes]
-    out.update(duplicidade_candidata(pq.read_table(caminho, columns=chave), chave))
+    import pyarrow.dataset as ds
+    por_digito = [pc.ends_with(ds.field(campo), pattern=d) for d in DIGITOS]
+    resto = ~por_digito[0]
+    for f in por_digito[1:]:
+        resto = resto & ~f
+    return por_digito + [resto]
+
+
+def _filtros_por_distribuidora(dataset):
+    """Filtros que dividem as linhas em partes de distribuidoras inteiras, equilibradas pelo
+    número de linhas, mais uma parte para CNPJ ausente."""
+    import pyarrow.compute as pc
+    import pyarrow.dataset as ds
+    contagem = pc.value_counts(dataset.to_table(columns=["NumCNPJDistribuidora"])["NumCNPJDistribuidora"]).to_pylist()
+    partes = [[] for _ in range(PARTES_DISTRIBUIDORA)]
+    carga = [0] * PARTES_DISTRIBUIDORA
+    for item in sorted((x for x in contagem if x["values"] is not None), key=lambda x: -x["counts"]):
+        i = carga.index(min(carga))
+        partes[i].append(item["values"])
+        carga[i] += item["counts"]
+    campo = ds.field("NumCNPJDistribuidora")
+    return [campo.isin(p) for p in partes if p] + [campo.is_null()]
+
+
+def controles_tabela(caminho):
+    """Controles que pedem a tabela inteira, feitos no motor do pyarrow e por partes (sem
+    carregar milhões de tuplas no Python): unicidade do código e duplicidade candidata."""
+    import pyarrow.compute as pc
+    import pyarrow.dataset as ds
+    d = ds.dataset(caminho, format="parquet")
+    total = d.count_rows()
+    ausente = d.count_rows(filter=ds.field("CodEmpreendimento").is_null())
+    distintos, repetidos, vistos = 0, 0, ausente
+    for filtro in _filtros_por_final("CodEmpreendimento"):
+        col = d.to_table(columns=["CodEmpreendimento"], filter=filtro)["CodEmpreendimento"]
+        vc = pc.value_counts(col)
+        distintos += len(vc)
+        repetidos += int(pc.sum(pc.greater(vc.field("counts"), 1)).as_py() or 0)
+        vistos += len(col)
+    if vistos != total:
+        raise ValueError(f"partição dos códigos incompleta: {vistos} de {total} linhas")
+    out = {"codigos_distintos": distintos, "codigos_repetidos": repetidos, "codigo_ausente": ausente}
+    chave = [c for c in CHAVE_DUPLICIDADE if c in d.schema.names]
+    grupos, extras, kw, maior, vistos = 0, 0, 0.0, 0, 0
+    for filtro in _filtros_por_distribuidora(d):
+        parte = d.to_table(columns=chave, filter=filtro)
+        vistos += parte.num_rows
+        if not parte.num_rows:
+            continue
+        r = duplicidade_candidata(parte, chave)
+        grupos += r["duplicidade_candidata_grupos"]
+        extras += r["duplicidade_candidata_linhas_extras"]
+        kw += r["duplicidade_candidata_kw_extras"] or 0.0
+        maior = max(maior, r["duplicidade_candidata_maior_grupo"])
+    if vistos != total:
+        raise ValueError(f"partição por distribuidora incompleta: {vistos} de {total} linhas")
+    out.update({"duplicidade_candidata_grupos": grupos, "duplicidade_candidata_linhas_extras": extras,
+                "duplicidade_candidata_kw_extras": round(kw, 2) if "MdaPotenciaInstaladaKW" in chave else None,
+                "duplicidade_candidata_maior_grupo": maior})
     return out
 
 
@@ -341,20 +397,24 @@ def duplicidade_candidata(tabela, chave=None):
 def concordancia_datas(caminho_relacao, caminho_tecnico_fv):
     """Controle semântico da data: DthAtualizaCadastralEmpreend (relação) × DatConexao
     (informações técnicas fotovoltaicas, "Data da conexão da Unidade Geradora"), pelo
-    código do empreendimento. Também compara a potência instalada dos dois recursos."""
+    código do empreendimento. Também compara a potência instalada dos dois recursos.
+    Feito por partes do último caractere do código (o par tem o mesmo código, então cai na
+    mesma parte)."""
     import pyarrow.compute as pc
-    import pyarrow.parquet as pq
-    a = pq.read_table(caminho_relacao, columns=["CodEmpreendimento", "DthAtualizaCadastralEmpreend",
-                                                "MdaPotenciaInstaladaKW", "SigTipoGeracao"])
-    b = pq.read_table(caminho_tecnico_fv, columns=["CodGeracaoDistribuida", "DatConexao", "MdaPotenciaInstalada"])
-    ufv = a.filter(pc.equal(a["SigTipoGeracao"], "UFV"))
-    j = ufv.join(b, keys="CodEmpreendimento", right_keys="CodGeracaoDistribuida", join_type="inner")
-    iguais = pc.equal(j["DthAtualizaCadastralEmpreend"], j["DatConexao"])
-    pot = pc.less_equal(pc.abs(pc.subtract(j["MdaPotenciaInstaladaKW"], j["MdaPotenciaInstalada"])), 0.005)
-    return {
-        "ufv_na_relacao": ufv.num_rows,
-        "registros_no_tecnico": b.num_rows,
-        "pareados_por_codigo": j.num_rows,
-        "datas_iguais": int(pc.sum(pc.cast(pc.fill_null(iguais, False), "int64")).as_py() or 0),
-        "potencias_iguais": int(pc.sum(pc.cast(pc.fill_null(pot, False), "int64")).as_py() or 0),
-    }
+    import pyarrow.dataset as ds
+    a_ds = ds.dataset(caminho_relacao, format="parquet")
+    b_ds = ds.dataset(caminho_tecnico_fv, format="parquet")
+    ufv_filtro = ds.field("SigTipoGeracao") == "UFV"
+    out = {"ufv_na_relacao": a_ds.count_rows(filter=ufv_filtro), "registros_no_tecnico": b_ds.count_rows(),
+           "pareados_por_codigo": 0, "datas_iguais": 0, "potencias_iguais": 0}
+    for fa, fb in zip(_filtros_por_final("CodEmpreendimento"), _filtros_por_final("CodGeracaoDistribuida")):
+        a = a_ds.to_table(columns=["CodEmpreendimento", "DthAtualizaCadastralEmpreend", "MdaPotenciaInstaladaKW"],
+                          filter=ufv_filtro & fa)
+        b = b_ds.to_table(columns=["CodGeracaoDistribuida", "DatConexao", "MdaPotenciaInstalada"], filter=fb)
+        j = a.join(b, keys="CodEmpreendimento", right_keys="CodGeracaoDistribuida", join_type="inner")
+        iguais = pc.equal(j["DthAtualizaCadastralEmpreend"], j["DatConexao"])
+        pot = pc.less_equal(pc.abs(pc.subtract(j["MdaPotenciaInstaladaKW"], j["MdaPotenciaInstalada"])), 0.005)
+        out["pareados_por_codigo"] += j.num_rows
+        out["datas_iguais"] += int(pc.sum(pc.cast(pc.fill_null(iguais, False), "int64")).as_py() or 0)
+        out["potencias_iguais"] += int(pc.sum(pc.cast(pc.fill_null(pot, False), "int64")).as_py() or 0)
+    return out

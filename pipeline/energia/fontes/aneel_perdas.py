@@ -33,6 +33,7 @@ import collections
 import csv
 import io
 import json
+import sys
 
 # ---------------------------------------------------------------- rótulos do SAMP Balanço
 MOD_PERDA_MED = "Perdas na Distribuição (valor medido)"
@@ -102,14 +103,28 @@ def normaliza_linha(r):
     )
 
 
-def linhas_parquet(caminho_ou_arquivo):
-    """Itera as linhas do Parquet oficial como dicts (pyarrow, só as colunas usadas)."""
+def lotes_parquet(fonte, colunas, filtro=None, lote=200_000):
+    """Itera as linhas de um Parquet como dicts, em lotes (pyarrow.ParquetFile.iter_batches),
+    lendo só as `colunas` pedidas: o arquivo nunca é carregado inteiro na memória. `filtro`
+    recebe cada lote (RecordBatch) e devolve o lote filtrado (ex.: só a tarifa B1)."""
     import pyarrow.parquet as pq
-    cols = ["NumCPFCNPJ", "NomAgente", "DscModalidadeBalanco", "DscCctBalanco", "DscClassificacaoAgente",
-            "AnoReferenciaBalanco", "MesReferenciaBalanco", "DscDetalheBalanco", "VlrEnergia"]
-    t = pq.read_table(caminho_ou_arquivo, columns=cols).to_pydict()
-    for i in range(len(t["VlrEnergia"])):
-        yield {c: t[c][i] for c in cols}
+    pf = pq.ParquetFile(fonte)
+    presentes = [c for c in colunas if c in pf.schema_arrow.names]
+    for b in pf.iter_batches(columns=presentes, batch_size=lote):
+        if filtro is not None:
+            b = filtro(b)
+        d = b.to_pydict()
+        for i in range(b.num_rows):
+            yield {c: d[c][i] for c in presentes}
+
+
+COLUNAS_SAMP = ["NumCPFCNPJ", "NomAgente", "DscModalidadeBalanco", "DscCctBalanco", "DscClassificacaoAgente",
+                "AnoReferenciaBalanco", "MesReferenciaBalanco", "DscDetalheBalanco", "VlrEnergia"]
+
+
+def linhas_parquet(caminho_ou_arquivo):
+    """Itera as linhas do Parquet oficial do SAMP Balanço como dicts (só as colunas usadas)."""
+    yield from lotes_parquet(caminho_ou_arquivo, COLUNAS_SAMP)
 
 
 def linhas_csv(texto_ou_arquivo):
@@ -135,7 +150,7 @@ def pivota(linhas):
         if v is None:
             continue  # valor vazio é ausência, não zero
         comp = f"{ano:04d}-{mes:02d}"
-        chave = (mod, cct, det)
+        chave = (sys.intern(mod), sys.intern(cct), sys.intern(det))
         d = meses[(cnpj, comp)]
         if chave in d:
             duplicadas.append((cnpj, comp, chave, (d[chave], v)))
@@ -158,14 +173,18 @@ def _niveis(d, mod, cct, tipo=MEDIDA):
 
 def _representacao(niveis, todos, total):
     """Escolhe entre as representações de uma mesma grandeza (ver docstring do módulo).
-    Retorna (valor, rótulo da representação escolhida, conflito entre representações)."""
+    Retorna (valor, rótulo da representação escolhida, conflito), com conflito None quando as
+    representações concordam, "resolvido" quando discordam mas a escolhida é igual à soma dos
+    níveis publicada no mesmo mês, e "sem_niveis" quando discordam e não há soma que arbitre
+    (o balanço do mês ainda pode confirmar a escolha; ver deriva_mes)."""
     soma = sum(niveis.values()) if niveis else None
     tol = max(1, len(niveis or ()))  # arredondamento de 1 kWh por linha
-    conflito = todos is not None and total is not None and abs(todos - total) > tol
+    diverge = todos is not None and total is not None and abs(todos - total) > tol
     if soma is not None:
         for valor, rotulo in ((todos, "todos"), (total, "total")):
             if valor is not None and abs(valor - soma) <= tol:
-                return valor, rotulo + "=niveis", conflito
+                return valor, rotulo + "=niveis", ("resolvido" if diverge else None)
+    conflito = "sem_niveis" if diverge else None
     if todos is not None:
         return todos, "todos", conflito
     if total is not None:
@@ -190,8 +209,10 @@ def mes_balanco(d):
 
     Campos: injetada, injetada_repr, perdas_totais_med, perdas_tecnicas, pnt_med,
     perdas_totais_fat, pnt_fat, fornecida_med, fornecida_partes, outros_requisitos,
-    irregular, bt_med, mmgd, residuo, conflitos."""
-    out = {"conflitos": []}
+    irregular, bt_med, mmgd, residuo, conflitos (grandezas cujas representações discordam),
+    conflitos_sem_niveis (as que a soma dos níveis não arbitrou) e conflitos_abertos (as que
+    nem o balanço do mês confirmou; só estas geram alerta)."""
+    out = {"conflitos": [], "conflitos_sem_niveis": []}
     inj, rep, conf = _representacao(
         _niveis(d, MOD_INJETADA, "Energia Injetada"),
         d.get((MOD_INJETADA, "Energia Injetada", f"{MEDIDA}{NIVEL}{TODOS}")),
@@ -199,6 +220,8 @@ def mes_balanco(d):
     out["injetada"], out["injetada_repr"] = inj, rep
     if conf:
         out["conflitos"].append("injetada")
+    if conf == "sem_niveis":
+        out["conflitos_sem_niveis"].append("injetada")
     out["perdas_totais_med"] = d.get((MOD_PERDA_MED, CCT_TOTAIS, DET_CALCULADA))
     tec_med = d.get((MOD_PERDA_MED, CCT_TECNICAS, DET_CALCULADA))
     tec_fat = d.get((MOD_PERDA_FAT, CCT_TECNICAS, DET_CALCULADA))
@@ -216,6 +239,8 @@ def mes_balanco(d):
             partes[nome] = v
         if conf:
             out["conflitos"].append(nome)
+        if conf == "sem_niveis":
+            out["conflitos_sem_niveis"].append(nome)
     out["fornecida_partes"] = partes
     out["fornecida_med"] = sum(partes.values()) if partes else None
     outros = [v for (m, c, det), v in d.items() if (m, c) in OUTROS_REQUISITOS]
@@ -262,6 +287,13 @@ def deriva_mes(m):
         m["residuo"] = inj - forn - (m.get("outros_requisitos") or 0) - (m.get("irregular") or 0) - pt
     else:
         m["residuo"] = None
+    # Divergência entre representações sem soma de níveis para arbitrar: a escolha fica
+    # confirmada quando o balanço do mês fecha com ela (a linha de perdas que a própria fonte
+    # calculou concorda com a injetada e o fornecimento escolhidos). Sem isso, o conflito fica
+    # aberto e o agente-ano recebe alerta.
+    tol = max(1, m.get("n_linhas") or 1)
+    fecha = m["residuo"] is not None and abs(m["residuo"]) <= tol
+    m["conflitos_abertos"] = [] if fecha else list(m.get("conflitos_sem_niveis") or [])
     leiaute_novo = (m.get("injetada_repr") or "").startswith("todos")
     m["leiaute"] = "2024" if leiaute_novo else ("antigo" if m.get("injetada_repr") else None)
     if leiaute_novo and forn is not None and pt is not None:
@@ -286,13 +318,15 @@ def soma_completa(valores):
     return sum(valores)
 
 
-def anual(mensal, ano):
+def anual(mensal, ano, ate_mes=None):
     """Agrega os meses de um agente num ano. `mensal` = {'AAAA-MM': mes_balanco(...)}.
 
     Retorna dict com as somas (kWh) de cada campo quando os meses presentes têm o campo em
     todos eles, a contagem de meses e o subconjunto com perdas técnicas/BT. Soma de um campo
-    parcial (ex.: técnica publicada em só 7 dos 12 meses) é None e a contagem fica registrada."""
-    meses = sorted(k for k in mensal if k.startswith(f"{ano:04d}-"))
+    parcial (ex.: técnica publicada em só 7 dos 12 meses) é None e a contagem fica registrada.
+    `ate_mes` restringe a janeiro..ate_mes (acumulado do ano corrente e o mesmo período do ano
+    anterior, a única comparação justa com um ano ainda aberto)."""
+    meses = sorted(k for k in mensal if k.startswith(f"{ano:04d}-") and (ate_mes is None or int(k[5:7]) <= ate_mes))
     out = {"ano": ano, "meses": len(meses), "competencias": meses}
     for campo in CAMPOS_SOMA:
         vals = [mensal[m].get(campo) for m in meses]
@@ -304,6 +338,7 @@ def anual(mensal, ano):
     out["leiautes"] = sorted({mensal[m].get("leiaute") or "ausente" for m in meses})
     out["meses_injetada_requerida"] = sum(1 for m in meses if mensal[m].get("injetada_ref_origem") == "requerida")
     out["conflitos"] = sorted({c for m in meses for c in mensal[m].get("conflitos", [])})
+    out["conflitos_abertos"] = sorted({c for m in meses for c in mensal[m].get("conflitos_abertos", [])})
     return out
 
 
@@ -361,7 +396,7 @@ def validade_anual(a):
             alertas.append("perda_total_negativa")
         elif pt >= inj:
             alertas.append("perda_total_maior_que_injetada")
-    if a.get("conflitos"):
+    if a.get("conflitos_abertos"):
         alertas.append("representacoes_conflitantes")
     return alertas
 
@@ -444,16 +479,21 @@ def filtra_componentes_b1(linhas):
     return out
 
 
+COLUNAS_COMPONENTES = ["NumCPFCNPJ", "SigNomeAgente", "SigAgente", "DscResolucaoHomologatoria", "DatInicioVigencia",
+                       "DatFimVigencia", "DscBaseTarifaria", "DscSubGrupoTarifario", "DscModalidadeTarifaria",
+                       "DscSubClasseConsumidor", "DscDetalheConsumidor", "DscComponenteTarifario", "DscUnidade",
+                       "VlrComponenteTarifario"]
+
+
 def linhas_componentes_parquet(caminho):
-    import pyarrow.parquet as pq
+    """Linhas B1 convencional das componentes tarifárias, lidas em lotes e já filtradas no
+    pyarrow (o arquivo anual tem centenas de milhares de linhas de todos os subgrupos)."""
     import pyarrow.compute as pc
-    t = pq.read_table(caminho)
-    filtro = pc.and_(pc.equal(t["DscSubGrupoTarifario"], "B1"), pc.equal(t["DscModalidadeTarifaria"], "Convencional"))
-    t = t.filter(filtro)
-    cols = t.column_names
-    d = t.to_pydict()
-    for i in range(t.num_rows):
-        yield {c: d[c][i] for c in cols}
+
+    def so_b1(b):
+        return b.filter(pc.and_(pc.equal(b.column("DscSubGrupoTarifario"), "B1"),
+                                pc.equal(b.column("DscModalidadeTarifaria"), "Convencional")))
+    yield from lotes_parquet(caminho, COLUNAS_COMPONENTES, filtro=so_b1)
 
 
 def resumo_tarifa(e):
@@ -523,14 +563,43 @@ def contagem_mmgd(linhas):
     return c
 
 
+def vinculos_so_mmgd(codigos, mmgd, minimo=10, participacao=0.05):
+    """Distribuidoras de municípios que a relação conjunto × município não cobre, lidas do
+    cadastro de MMGD da ANEEL (cada empreendimento registra a distribuidora a que se conecta
+    e o município onde está). Só entra a distribuidora com ao menos `minimo` empreendimentos
+    E ao menos `participacao` dos empreendimentos do município: um ou dois registros de outra
+    distribuidora (ex.: Equatorial Pará com 1 empreendimento num município do Maranhão) são
+    tratados como erro de cadastro, não como atendimento. Retorna {cod: [(cnpj, n), ...]}."""
+    por_mun = collections.defaultdict(dict)
+    for (cnpj, cod), n in mmgd.items():
+        if cod in codigos:
+            por_mun[cod][cnpj] = n
+    out = {}
+    for cod, d in por_mun.items():
+        total = sum(d.values())
+        sel = sorted(((c, n) for c, n in d.items() if n >= minimo and n / total >= participacao), key=lambda x: -x[1])
+        if sel:
+            out[cod] = sel
+    return out
+
+
 def linhas_mmgd_parquet(caminho):
-    import pyarrow.parquet as pq
-    t = pq.read_table(caminho, columns=["NumCNPJDistribuidora", "CodMunicipioIbge"]).to_pydict()
-    for a, b in zip(t["NumCNPJDistribuidora"], t["CodMunicipioIbge"]):
-        yield {"NumCNPJDistribuidora": a, "CodMunicipioIbge": b}
+    """Só as duas colunas da ligação distribuidora × município, em lotes (o cadastro tem
+    milhões de empreendimentos)."""
+    yield from lotes_parquet(caminho, ["NumCNPJDistribuidora", "CodMunicipioIbge"])
 
 
 # ---------------------------------------------------------------- IBGE
+def descomprime_camadas(corpo):
+    """Abre camadas gzip sobrepostas (assinatura 1f 8b). A API do IBGE responde com
+    Content-Encoding gzip e o download guarda o corpo como veio; o bronze ainda comprime de
+    novo. Corpo sem a assinatura volta intacto."""
+    import gzip
+    while corpo[:2] == b"\x1f\x8b":
+        corpo = gzip.decompress(corpo)
+    return corpo
+
+
 def serie_sidra_v3(corpo_json, variavel):
     """{cod_municipio: float} de uma resposta da API de agregados v3 do IBGE para `variavel`.
     Valores especiais do IBGE ('-', '...', 'X') são ausência (None não entra)."""

@@ -78,3 +78,30 @@ def le_localidades(planilhas):
             "populacao": _num(g(linha, "População")),
         })
     return out, faltando
+
+
+# ---------------------------------------------------------------- caderno do ciclo (PDF)
+
+# Caderno "Planejamento do Atendimento aos Sistemas Isolados", ciclo 2025 (EPE): usado só
+# para conferir a exportação do PASI por outro produto da mesma fonte (número de
+# localidades e população total declarados no texto).
+URL_CADERNO_2025 = ("https://www.epe.gov.br/sites-pt/publicacoes-dados-abertos/publicacoes/PublicacoesArquivos/"
+                    "publicacao-942/Caderno_Planejamento%20SISOL_2025_FINAL.pdf")
+
+
+def le_totais_caderno(texto):
+    """Texto do caderno (pdftotext -layout; páginas separadas por \\f) → dict com
+    localidades, localidades do ciclo anterior, população em milhões de pessoas e a
+    página (1 = primeira página do PDF) de cada achado; campo não encontrado fica None."""
+    out = {"localidades": None, "localidades_ciclo_anterior": None, "populacao_milhoes": None,
+           "pagina_localidades": None, "pagina_populacao": None}
+    m = re.search(r"localidades\s+isoladas\s+consideradas\s+no\s+ciclo\s+\d{4}\s+totaliza\s+(\d+)[^()]*\((\d+)\s+localidades\)",
+                  texto, re.S)
+    if m:
+        out["localidades"], out["localidades_ciclo_anterior"] = int(m.group(1)), int(m.group(2))
+        out["pagina_localidades"] = texto.count("\f", 0, m.start()) + 1
+    m = re.search(r"TOTAL\s*\n.*?\d+\s+SISOL\s*\n[^\n]*?(\d+,\d+)\s+milh", texto, re.S)
+    if m:
+        out["populacao_milhoes"] = float(m.group(1).replace(",", "."))
+        out["pagina_populacao"] = texto.count("\f", 0, m.start()) + 1
+    return out

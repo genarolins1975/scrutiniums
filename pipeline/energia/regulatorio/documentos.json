@@ -231,6 +231,30 @@
    "bytes": 190817
   },
   {
+   "id": "ren20251114",
+   "orgao": "ANEEL",
+   "natureza": "texto_integral_do_ato",
+   "titulo": "Resolução Normativa nº 1.114, de 11 de fevereiro de 2025 (perdas não técnicas sobre o mercado medido)",
+   "formato": "pdf",
+   "url_oficial": "https://www2.aneel.gov.br/cedoc/ren20251114.pdf",
+   "copia_publica": "https://web.archive.org/web/20250723195957id_/https://www2.aneel.gov.br/cedoc/ren20251114.pdf",
+   "copia_capturada_em": "2025-07-23T19:59:57Z",
+   "sha256": "f5bb38dbe356fb5bbacc197a1a18dc9511343a5919c13bb840dc1a04326c0a80",
+   "bytes": 299302
+  },
+  {
+   "id": "ren20251137",
+   "orgao": "ANEEL",
+   "natureza": "texto_integral_do_ato",
+   "titulo": "Resolução Normativa nº 1.137, de 21 de outubro de 2025 (resiliência a eventos climáticos severos; indicador DISE)",
+   "formato": "pdf",
+   "url_oficial": "https://www2.aneel.gov.br/cedoc/ren20251137.pdf",
+   "copia_publica": "https://web.archive.org/web/20251129212833id_/https://www2.aneel.gov.br/cedoc/ren20251137.pdf",
+   "copia_capturada_em": "2025-11-29T21:28:33Z",
+   "sha256": "aae70356c1fee7569051ef95359b142d053564866cb210fb4be735c19d6c5043",
+   "bytes": 481444
+  },
+  {
    "id": "prt20257030",
    "orgao": "ANEEL",
    "natureza": "texto_integral_do_ato",

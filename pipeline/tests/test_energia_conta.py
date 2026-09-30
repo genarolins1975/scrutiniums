@@ -10,6 +10,7 @@ reais capturados em 30/09/2026 (linhas copiadas sem alteração):
 - bandeira_adicional.csv e bandeira_acionamento.csv: os dois recursos inteiros;
 - subsidios_amostra.csv: três pares distribuidora-mês do CSV de subsídios;
 - sidra_ipca_amostra.json: resposta do SIDRA (tabela 1737) de jul/2025 a ago/2026;
+- cde_custeio_amostra.csv: todas as linhas de 2022, 2023 e 2026 do CSV de custeio da CDE;
 - lei_15235_2025_trecho.html e aneel_gd_trecho.html: trechos do HTML oficial.
 
 Os valores esperados são escritos por extenso e conferidos com aritmética decimal
@@ -29,6 +30,7 @@ from unittest import mock
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from pipeline.energia import base, metricas  # noqa: E402
+from pipeline.energia import evidencia as ev  # noqa: E402
 from pipeline.energia.fontes import aneel_conta as fa  # noqa: E402
 from pipeline.energia.fontes import ckan  # noqa: E402
 from pipeline.energia.fontes import ibge_conta as fi  # noqa: E402
@@ -313,6 +315,12 @@ class Ipca(unittest.TestCase):
         self.assertLessEqual(abs(100 * calc - pub["2026-08"]), 0.01)   # 4,2233 contra 4,22 publicado
         self.assertIsNone(conta.ipca_entre(idx, "2025-08", "2026-09"))  # mês não publicado não é inventado
 
+    def test_data_de_referencia_em_brasilia(self):
+        from datetime import datetime, timezone
+        # 30/09/2026 às 23h30 em UTC ainda é 30/09 às 20h30 em Brasília; 01/10 às 02h UTC é 30/09 às 23h
+        self.assertEqual(conta.data_brasilia(datetime(2026, 10, 1, 2, 0, tzinfo=timezone.utc)).isoformat(), "2026-09-30")
+        self.assertEqual(conta.data_brasilia(datetime(2026, 10, 1, 3, 0, tzinfo=timezone.utc)).isoformat(), "2026-10-01")
+
     def test_calendario(self):
         self.assertEqual(conta.mes_anterior("2026-01"), "2025-12")
         self.assertEqual(conta.soma_meses("2026-08", -12), "2025-08")
@@ -368,6 +376,90 @@ class Normas(unittest.TestCase):
         self.assertFalse(res[conta.NORMAS[0]["trechos"][0]])
 
 
+class LeituraEmLotes(_Ambiente):
+    def test_lotes_pequenos_dao_o_mesmo_resultado(self):
+        # o Parquet é lido em lotes para caber na memória; a divisão não pode mudar o resultado
+        v = self.vintage(conta.DS_COMP, "componentes-tarifarias-2026.parquet", "componentes_cemig_2026.parquet", "parquet")
+        c1, c2 = {}, {}
+        inteiro = list(fa.linhas_componentes(v["arquivo"], c1))
+        em_lotes = list(fa.linhas_componentes(v["arquivo"], c2, lote=10))   # 126 linhas em 13 lotes
+        self.assertEqual(inteiro, em_lotes)
+        self.assertEqual(c1, c2)
+
+    def test_parcela_cde_confere_com_releitura_do_parquet(self):
+        import pyarrow.parquet as pq
+        v = self.vintage(conta.DS_COMP, "componentes-tarifarias-2026.parquet", "componentes_cemig_2026.parquet", "parquet")
+        comps = {l["componente"]: l["valor"] for l in fa.linhas_componentes(v["arquivo"])}
+        # releitura independente: todas as linhas de aplicação B1 residencial com CDE no código
+        t = pq.read_table(os.path.join(DADOS, "componentes_cemig_2026.parquet")).to_pylist()
+        esperado = sum((D(str(r["VlrComponenteTarifario"])) for r in t
+                        if r["DscSubGrupoTarifario"] == "B1" and r["DscBaseTarifaria"] == "Tarifa de Aplicação"
+                        and r["DscSubClasseConsumidor"] == "Residencial" and "CDE" in r["DscComponenteTarifario"]), D(0))
+        self.assertAlmostEqual(conta.parcela_cde(comps), float(esperado), places=9)
+        # ausência de todas as componentes CDE não vira zero
+        self.assertIsNone(conta.parcela_cde({"TE": 300.0, "TUSD": 500.0}))
+
+
+class CusteioCde(_Ambiente):
+    def _vint(self):
+        return self.vintage(conta.DS_CDE, "cde-custeio-beneficios-tarifarios.csv", "cde_custeio_amostra.csv", "csv")
+
+    def test_ausencia_zero_e_rubrica_aparada(self):
+        cont = {}
+        linhas = fa.linhas_cde_custeio(self._vint()["arquivo"], cont)
+        self.assertEqual(cont["linhas_lidas"], 86)
+        val = {(x["ano"], x["tipo"], x["fonte"]): x["valor"] for x in linhas}
+        self.assertIsNone(val[("2026", "Despesa", "Verba MME")])                      # vazio publicado: ausência
+        self.assertEqual(val[("2026", "Despesa", "Subsídio Água-esgoto-saneamento")], 0.0)  # "0" publicado: zero
+        # 'RGR' (2022) e 'RGR ' (2023, com espaço) são a mesma rubrica depois de aparada
+        self.assertIn(("2022", "Receita", "RGR"), val)
+        self.assertIn(("2023", "Receita", "RGR"), val)
+        self.assertNotIn("rubrica_repetida_com_valor_diferente", cont)
+
+    def test_identidade_e_quotas_2026_contra_releitura_independente(self):
+        conta._processa_cde(self.con, self._vint())
+        obs = conta.valores_vigentes(self.con, conta.DS_CDE)
+        sem_valor = {(ch.split("|")[1], ch.split("|", 2)[2], k.split("|")[1])
+                     for ch, campos in base.registros_como_estavam_em(self.con, conta.DS_CDE).items() if ch.startswith("rubrica|")
+                     for k, v_ in campos.items() if k.startswith("ano|") and v_ == "vazio"}
+        ag = conta.agrega_cde(obs, sem_valor)
+        t26 = next(t for t in ag["totais"] if t["ano"] == "2026")
+        # releitura com o módulo csv e Decimal
+        desp = rec = quotas = D(0)
+        for r in csv.DictReader(io.StringIO(_ler("cde_custeio_amostra.csv").decode("utf-8-sig")), delimiter=";"):
+            if r["AnoReferencia"] != "2026" or not r["VlrCusteio"].strip():
+                continue
+            x = D(r["VlrCusteio"].replace(",", "."))
+            if r["DscTipoFonte"] == "Despesa":
+                desp += x
+            else:
+                rec += x
+                quotas += x if r["DscFonte"].startswith("Quotas CDE") else D(0)
+        self.assertEqual(round(desp, 2), D("52660050882.84"))
+        self.assertAlmostEqual(t26["despesa"], float(desp), places=2)
+        self.assertAlmostEqual(t26["receita"], float(rec), places=2)
+        self.assertTrue(t26["fecha"])
+        self.assertAlmostEqual(t26["grupos"]["quotas_tarifa"], float(quotas), places=2)   # 50.743.043.602,87
+        self.assertAlmostEqual(t26["quotas_pct"], float(100 * quotas / rec), places=9)    # 96,36%
+        self.assertEqual(t26["rubricas_sem_valor"],
+                         ["CDE Eletrobras - Lei 14.182", "Indenização das Concessões", "Subvenção RTE", "Verba MME"])
+        # rubrica sem valor fica nula na série da rubrica, não zero
+        verba = next(l for l in ag["linhas"] if l["fonte"] == "Verba MME")
+        self.assertIsNone(verba["valores"]["2026"])
+        # a Tarifa Social é a rubrica Subsídio Baixa Renda; descontos a categorias ficam em outro grupo
+        self.assertEqual(conta.grupo_cde("Despesa", "Subsídio Baixa Renda"), "tarifa_social")
+        self.assertEqual(conta.grupo_cde("Despesa", "Subsídio Rural"), "descontos_tarifarios")
+        self.assertEqual(conta.grupo_cde("Despesa", "Subsídio GD - Lei 14.300"), "descontos_tarifarios")
+        self.assertEqual(conta.grupo_cde("Receita", "Quotas CDE - GD"), "quotas_tarifa")
+        self.assertEqual(conta.grupo_cde("Receita", "Recursos da União"), "outras_receitas")
+
+    def test_ano_que_nao_fecha_fica_marcado(self):
+        obs = {"Despesa|CCC": {"2030": 100.0}, "Receita|Quotas CDE Uso": {"2030": 90.0}}
+        t = conta.agrega_cde(obs)["totais"][0]
+        self.assertFalse(t["fecha"])
+        self.assertAlmostEqual(t["quotas_pct"], 100.0, places=9)
+
+
 class Gold(_Ambiente):
     """Gold construída de ponta a ponta a partir das amostras reais."""
 
@@ -380,6 +472,7 @@ class Gold(_Ambiente):
             conta._processa_bandeiras(self.con, self.vintage(conta.DS_BAND, rec, arq, "csv"))
         conta._processa_subsidios(self.con, self.vintage(conta.DS_SUBS, "Subsídios Tarifários", "subsidios_amostra.csv", "csv"))
         conta._processa_ipca(self.con, self.vintage(conta.DS_IPCA, "sidra_1737_ipca", "sidra_ipca_amostra.json", "json", orgao="IBGE"))
+        conta._processa_cde(self.con, self.vintage(conta.DS_CDE, "cde-custeio-beneficios-tarifarios.csv", "cde_custeio_amostra.csv", "csv"))
         conta._processa_norma(self.con, conta.NORMAS[0], self.vintage(conta.DS_NORMAS, "lei_15235_2025", "lei_15235_2025_trecho.html", "html", orgao="camara"))
         return conta.construir(self.con, {"hoje": date(2026, 9, 30)})
 
@@ -445,6 +538,62 @@ class Gold(_Ambiente):
         with open(os.path.join(base.SERIES, conta.CSV_VIGENTES), encoding="utf-8") as f:
             t = f.read()
         self.assertNotRegex(t, r";(nan|None|null)(;|\n)")
+
+    def test_evidencias_validas_e_historico_fora_da_gold(self):
+        g = self._monta()
+        evs = {"mediana": g["tarifas"]["evidencia_mediana"], "composicao": g["composicao"]["evidencia"],
+               "simulador": g["simulador"]["evidencia"], "reajuste": g["reajustes"]["evidencia"],
+               "bandeira": g["bandeiras"]["evidencia"], "cde": g["financiamento_cde"]["evidencia"]}
+        # a amostra de subsídios não tem ano completo de competência: a evidência fica nula,
+        # em vez de comprovar um total anual que não existe
+        self.assertIsNone(g["subsidios"]["ultimo_ano_completo"])
+        self.assertIsNone(g["subsidios"]["evidencia"])
+        for nome, e in evs.items():
+            self.assertIsNotNone(e, nome)
+            self.assertEqual(ev.validar(e), [], nome)
+            self.assertRegex(e["fonte"]["sha256"] or "", r"^[0-9a-f]{64}$", nome)
+        # mediana de uma distribuidora só = a própria tarifa da CEMIG-D
+        self.assertEqual(evs["mediana"]["valor_calculo"], 903.29)
+        self.assertEqual(evs["mediana"]["valor_exibido"], "R$ 0,9033/kWh")
+        # simulador: 150 kWh residenciais com a amarela de set/2026 na CEMIG-D
+        esperado = D(150) * D("903.29") / 1000 + D(150) * D("18.85") / 1000         # 135,4935 + 2,8275
+        self.assertAlmostEqual(evs["simulador"]["valor_calculo"], float(esperado), places=9)
+        # composição: encargos da CEMIG-D ÷ 903,29, numerador e denominador publicados
+        self.assertAlmostEqual(evs["composicao"]["numerador"]["valor"] / evs["composicao"]["denominador"]["valor"] * 100,
+                               evs["composicao"]["valor_calculo"], places=9)
+        # quotas da CDE em 2026 (ano mais recente da amostra)
+        self.assertEqual(g["financiamento_cde"]["ultimo_ano"], "2026")
+        self.assertEqual(evs["cde"]["periodo"], {"inicio": "2026", "fim": "2026"})
+        # histórico por distribuidora publicado fora da gold, com as vigências resolvidas
+        self.assertNotIn("historico", g["tarifas"])
+        with open(os.path.join(base.SERIES, conta.JSON_HIST), encoding="utf-8") as f:
+            hist = json.load(f)
+        cemig = hist["distribuidoras"][CEMIG]
+        self.assertEqual(cemig["vigencias"][-1], ["2026-05-28", "2027-05-27", "REH 3.589/2026", 310.21, 593.08, 903.29])
+        ev26 = next(e for e in cemig["eventos"] if e[0] == "2026-05-28")
+        var = (D("310.21") + D("593.08")) / (D("317.28") + D("541.30")) - 1
+        self.assertEqual(ev26[5], float(round(100 * var, 2)))                            # 5,21%
+        # último evento de cada distribuidora do ranking na gold
+        self.assertEqual(g["reajustes"]["ultimos"][0][:3], [CEMIG, "CEMIG-D", "2026-05-28"])
+        # efeito médio do processo tarifário: declarado como não integrado, com motivo
+        self.assertFalse(g["reajustes"]["efeito_medio"]["disponivel"])
+        with open(os.path.join(base.SERIES, conta.CSV_JAN), encoding="utf-8") as f:
+            self.assertIn(CEMIG, f.read())
+
+    def test_validacao_fisica_critica_vira_stub_e_atipico_vira_ressalva(self):
+        g = self._monta()
+        self.assertEqual(g["validacao"]["ressalvas"], [])
+        # CNPJ repetido no ranking é violação crítica
+        g2 = json.loads(json.dumps(g))
+        g2["tarifas"]["vigentes"].append(dict(g2["tarifas"]["vigentes"][0]))
+        criticas, _, _ = conta.valida_gold(g2)
+        self.assertTrue(any("CNPJ repetido" in x for x in criticas))
+        # valor atípico não é descartado: vira ressalva visível
+        g3 = json.loads(json.dumps(g))
+        g3["tarifas"]["vigentes"][0]["total"] = 3500.0
+        criticas, ressalvas, _ = conta.valida_gold(g3)
+        self.assertEqual(criticas, [])
+        self.assertTrue(any("atípica" in x for x in ressalvas))
 
     def test_sem_tarifas_no_silver_vira_stub(self):
         g = conta.construir(self.con, {"hoje": date(2026, 9, 30)})

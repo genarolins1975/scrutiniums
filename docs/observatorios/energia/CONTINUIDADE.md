@@ -46,5 +46,6 @@ O contêiner reiniciou e interrompeu os fluxos; o disco sobreviveu (silvers, bro
 | Módulos W2 | conta, inclusão | wf_1a982800-0da |
 | Módulos W4 | regulação, pld, previsões | wf_a93ab047-902 |
 | Módulos W3 | expansão, transição, empresas | wf_f8321428-1d4 |
+| Módulos W5 | água e clima, carga | wf_091c0372-524 |
 
 Pendentes de disparo: água e clima e carga (`scratchpad/wave2a.json`), geração, rede e mercado (`scratchpad/wave2b.json`); depois visão geral, aprenda, dados e metodologia, home, integração, auditoria e documentação final. Descoberta de fontes: inventário, ONS e ANEEL distribuição concluídos; tarifas/social, geração/expansão/empresas, outras fontes, benchmarks e crítico interrompidos (os módulos verificam as próprias fontes; benchmarks e crítico ainda precisam rodar).

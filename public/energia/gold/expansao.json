@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "expansao.json",
- "gerado_em": "2026-09-30T22:34:01Z",
+ "gerado_em": "2026-09-30T23:06:18Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "dcad322a4ea9+alterado",
+ "versao_codigo": "dafa93bb2111+alterado",
  "disponivel": true,
  "referencias": {
   "siga": "2026-09-30",
@@ -24,7 +24,7 @@
   "confiabilidade": "Para cada fotografia mensal S (última do mês), potência das unidades com previsão em (S, S + 365 dias] e quanto dela foi liberada para operação comercial até S + 365 dias, depois disso ou não foi liberada até a data do arquivo de liberações. Só janelas encerradas pelo menos 15 dias antes dessa data.",
   "deslizamento": "Variação da previsão da mesma unidade entre a fotografia mensal S e a do mesmo mês do ano seguinte, ponderada pela potência (positivo = adiada).",
   "atraso_realizado": "Data de liberação comercial realizada menos a data outorgada da unidade no arquivo de liberações (cronograma outorgado vigente na publicação), mediana ponderada por kW.",
-  "transmissao": "km de linhas novas e MVA de transformação nova (módulos de obras do tipo Instalação no SIGET) e investimento e RAP dos leilões ficam em campos separados; nunca são somados entre si.",
+  "transmissao": "km de circuito de linhas novas e MVA de transformação nova (módulos de obras do tipo Instalação no SIGET) e investimento e RAP dos leilões ficam em campos separados; nunca são somados entre si. No SIGET cada circuito é um módulo: linha de circuito duplo ou bipolo conta a extensão de cada circuito.",
   "cenario": "PDE 2035 é CENÁRIO de uma edição específica (data-base janeiro de 2025), mostrado em camada separada do realizado (SIGA) e da carteira (RALIE)."
  },
  "ressalvas": [
@@ -628,192 +628,282 @@
      "uf": "AC",
      "siga_mw": 142.883,
      "agregado_mw": 143.582,
+     "liberado_no_intervalo_mw": 0.0,
      "diferenca_mw": -0.699,
-     "diferenca_pct": -0.49
+     "diferenca_pct": -0.49,
+     "residuo_mw": -0.699,
+     "residuo_pct": -0.487
     },
     {
      "uf": "AL",
      "siga_mw": 784.004,
      "agregado_mw": 784.007,
+     "liberado_no_intervalo_mw": 0.0,
      "diferenca_mw": -0.003,
-     "diferenca_pct": -0.0
+     "diferenca_pct": -0.0,
+     "residuo_mw": -0.003,
+     "residuo_pct": -0.0
     },
     {
      "uf": "AM",
      "siga_mw": 2696.434,
      "agregado_mw": 2190.385,
+     "liberado_no_intervalo_mw": 476.29,
      "diferenca_mw": 506.049,
-     "diferenca_pct": 23.1
+     "diferenca_pct": 23.1,
+     "residuo_mw": 29.759,
+     "residuo_pct": 1.359
     },
     {
      "uf": "AP",
      "siga_mw": 973.705,
      "agregado_mw": 973.705,
+     "liberado_no_intervalo_mw": 0.0,
      "diferenca_mw": -0.0,
-     "diferenca_pct": -0.0
+     "diferenca_pct": -0.0,
+     "residuo_mw": -0.0,
+     "residuo_pct": -0.0
     },
     {
      "uf": "BA",
      "siga_mw": 22031.235,
      "agregado_mw": 21943.55,
+     "liberado_no_intervalo_mw": 195.0,
      "diferenca_mw": 87.685,
-     "diferenca_pct": 0.4
+     "diferenca_pct": 0.4,
+     "residuo_mw": -107.315,
+     "residuo_pct": -0.489
     },
     {
      "uf": "CE",
      "siga_mw": 6723.677,
      "agregado_mw": 6728.453,
+     "liberado_no_intervalo_mw": 0.0,
      "diferenca_mw": -4.776,
-     "diferenca_pct": -0.07
+     "diferenca_pct": -0.07,
+     "residuo_mw": -4.776,
+     "residuo_pct": -0.071
     },
     {
      "uf": "DF",
      "siga_mw": 50.12,
      "agregado_mw": 50.12,
+     "liberado_no_intervalo_mw": 0.0,
      "diferenca_mw": -0.0,
-     "diferenca_pct": -0.0
+     "diferenca_pct": -0.0,
+     "residuo_mw": -0.0,
+     "residuo_pct": -0.001
     },
     {
      "uf": "ES",
      "siga_mw": 1821.565,
      "agregado_mw": 1817.441,
+     "liberado_no_intervalo_mw": 0.0,
      "diferenca_mw": 4.124,
-     "diferenca_pct": 0.23
+     "diferenca_pct": 0.23,
+     "residuo_mw": 4.124,
+     "residuo_pct": 0.227
     },
     {
      "uf": "GO",
      "siga_mw": 8228.594,
      "agregado_mw": 8225.609,
+     "liberado_no_intervalo_mw": 0.0,
      "diferenca_mw": 2.985,
-     "diferenca_pct": 0.04
+     "diferenca_pct": 0.04,
+     "residuo_mw": 2.985,
+     "residuo_pct": 0.036
     },
     {
      "uf": "MA",
      "siga_mw": 4481.44,
      "agregado_mw": 4481.444,
+     "liberado_no_intervalo_mw": 0.0,
      "diferenca_mw": -0.004,
-     "diferenca_pct": -0.0
+     "diferenca_pct": -0.0,
+     "residuo_mw": -0.004,
+     "residuo_pct": -0.0
     },
     {
      "uf": "MG",
      "siga_mw": 25257.32,
      "agregado_mw": 25217.374,
+     "liberado_no_intervalo_mw": 54.0,
      "diferenca_mw": 39.946,
-     "diferenca_pct": 0.16
+     "diferenca_pct": 0.16,
+     "residuo_mw": -14.054,
+     "residuo_pct": -0.056
     },
     {
      "uf": "MS",
      "siga_mw": 4175.94,
      "agregado_mw": 3416.648,
+     "liberado_no_intervalo_mw": 894.197,
      "diferenca_mw": 759.292,
-     "diferenca_pct": 22.22
+     "diferenca_pct": 22.22,
+     "residuo_mw": -134.905,
+     "residuo_pct": -3.948
     },
     {
      "uf": "MT",
      "siga_mw": 4256.026,
      "agregado_mw": 4246.335,
+     "liberado_no_intervalo_mw": 10.0,
      "diferenca_mw": 9.691,
-     "diferenca_pct": 0.23
+     "diferenca_pct": 0.23,
+     "residuo_mw": -0.309,
+     "residuo_pct": -0.007
     },
     {
      "uf": "PA",
      "siga_mw": 23466.679,
      "agregado_mw": 22849.58,
+     "liberado_no_intervalo_mw": 629.367,
      "diferenca_mw": 617.099,
-     "diferenca_pct": 2.7
+     "diferenca_pct": 2.7,
+     "residuo_mw": -12.268,
+     "residuo_pct": -0.054
     },
     {
      "uf": "PB",
      "siga_mw": 2573.018,
      "agregado_mw": 2447.02,
+     "liberado_no_intervalo_mw": 126.0,
      "diferenca_mw": 125.998,
-     "diferenca_pct": 5.15
+     "diferenca_pct": 5.15,
+     "residuo_mw": -0.002,
+     "residuo_pct": -0.0
     },
     {
      "uf": "PE",
      "siga_mw": 6338.934,
      "agregado_mw": 6334.49,
+     "liberado_no_intervalo_mw": 0.0,
      "diferenca_mw": 4.444,
-     "diferenca_pct": 0.07
+     "diferenca_pct": 0.07,
+     "residuo_mw": 4.444,
+     "residuo_pct": 0.07
     },
     {
      "uf": "PI",
      "siga_mw": 7078.403,
      "agregado_mw": 7078.405,
+     "liberado_no_intervalo_mw": 44.1,
      "diferenca_mw": -0.002,
-     "diferenca_pct": -0.0
+     "diferenca_pct": -0.0,
+     "residuo_mw": -44.102,
+     "residuo_pct": -0.623
     },
     {
      "uf": "PR",
      "siga_mw": 17712.106,
      "agregado_mw": 17672.098,
+     "liberado_no_intervalo_mw": 32.0,
      "diferenca_mw": 40.008,
-     "diferenca_pct": 0.23
+     "diferenca_pct": 0.23,
+     "residuo_mw": 8.008,
+     "residuo_pct": 0.045
     },
     {
      "uf": "RJ",
      "siga_mw": 12654.696,
      "agregado_mw": 12676.447,
+     "liberado_no_intervalo_mw": 0.0,
      "diferenca_mw": -21.751,
-     "diferenca_pct": -0.17
+     "diferenca_pct": -0.17,
+     "residuo_mw": -21.751,
+     "residuo_pct": -0.172
     },
     {
      "uf": "RN",
      "siga_mw": 13136.627,
      "agregado_mw": 13136.639,
+     "liberado_no_intervalo_mw": 0.0,
      "diferenca_mw": -0.012,
-     "diferenca_pct": -0.0
+     "diferenca_pct": -0.0,
+     "residuo_mw": -0.012,
+     "residuo_pct": -0.0
     },
     {
      "uf": "RO",
      "siga_mw": 8212.977,
      "agregado_mw": 8277.781,
+     "liberado_no_intervalo_mw": 0.0,
      "diferenca_mw": -64.804,
-     "diferenca_pct": -0.78
+     "diferenca_pct": -0.78,
+     "residuo_mw": -64.804,
+     "residuo_pct": -0.783
     },
     {
      "uf": "RR",
      "siga_mw": 511.145,
      "agregado_mw": 515.851,
+     "liberado_no_intervalo_mw": 0.0,
      "diferenca_mw": -4.706,
-     "diferenca_pct": -0.91
+     "diferenca_pct": -0.91,
+     "residuo_mw": -4.706,
+     "residuo_pct": -0.912
     },
     {
      "uf": "RS",
      "siga_mw": 9903.973,
      "agregado_mw": 9976.687,
+     "liberado_no_intervalo_mw": 0.0,
      "diferenca_mw": -72.714,
-     "diferenca_pct": -0.73
+     "diferenca_pct": -0.73,
+     "residuo_mw": -72.714,
+     "residuo_pct": -0.729
     },
     {
      "uf": "SC",
      "siga_mw": 5106.932,
      "agregado_mw": 5109.198,
+     "liberado_no_intervalo_mw": 0.0,
      "diferenca_mw": -2.266,
-     "diferenca_pct": -0.04
+     "diferenca_pct": -0.04,
+     "residuo_mw": -2.266,
+     "residuo_pct": -0.044
     },
     {
      "uf": "SE",
      "siga_mw": 4892.49,
      "agregado_mw": 4892.49,
+     "liberado_no_intervalo_mw": 0.0,
      "diferenca_mw": -0.0,
-     "diferenca_pct": -0.0
+     "diferenca_pct": -0.0,
+     "residuo_mw": -0.0,
+     "residuo_pct": -0.0
     },
     {
      "uf": "SP",
      "siga_mw": 25474.626,
      "agregado_mw": 25509.309,
+     "liberado_no_intervalo_mw": 0.0,
      "diferenca_mw": -34.684,
-     "diferenca_pct": -0.14
+     "diferenca_pct": -0.14,
+     "residuo_mw": -34.684,
+     "residuo_pct": -0.136
     },
     {
      "uf": "TO",
      "siga_mw": 1973.337,
      "agregado_mw": 1973.396,
+     "liberado_no_intervalo_mw": 0.0,
      "diferenca_mw": -0.059,
-     "diferenca_pct": -0.0
+     "diferenca_pct": -0.0,
+     "residuo_mw": -0.059,
+     "residuo_pct": -0.003
     }
-   ]
+   ],
+   "tolerancia_residuo_pct": 1.0,
+   "justificativa_tolerancia": "1% do agregado do grupo: cobre revisões de potência fiscalizada, desativações e usinas fora do RALIE entre o fim do mês do agregado e a data do SIGA, que nenhum arquivo aberto data; uma quebra de leitura (kW lido como MW, fase ou UF trocada) produz dezenas de %.",
+   "fora_da_tolerancia": {
+    "tipos": [],
+    "ufs": [
+     "AM",
+     "MS"
+    ]
+   }
   }
  },
  "estagios": {
@@ -1290,13 +1380,13 @@
     },
     {
      "tipo": "UTE",
-     "atos": 226,
-     "mw_declarado": 13382.5
+     "atos": 228,
+     "mw_declarado": 13442.5
     },
     {
      "tipo": "EOL",
-     "atos": 325,
-     "mw_declarado": 11034.8
+     "atos": 326,
+     "mw_declarado": 11085.2
     },
     {
      "tipo": "PCH",
@@ -1314,8 +1404,12 @@
      "mw_declarado": 750.5
     }
    ],
-   "total_atos": 2542,
-   "total_mw_declarado": 99613.9
+   "sem_data_publicacao": {
+    "atos": 3,
+    "mw_declarado": 110.4
+   },
+   "total_atos": 2545,
+   "total_mw_declarado": 99724.3
   },
   "ralie": {
    "data_ralie": "2026-09-18",
@@ -1757,14 +1851,14 @@
       "pct_mw": 68.3
      },
      "outorga_encerrada": {
-      "usinas": 208,
-      "mw_outorgado": 8156.8,
-      "pct_mw": 17.7
+      "usinas": 210,
+      "mw_outorgado": 8216.8,
+      "pct_mw": 17.8
      },
      "sem_desfecho": {
-      "usinas": 16,
-      "mw_outorgado": 496.8,
-      "pct_mw": 1.1
+      "usinas": 14,
+      "mw_outorgado": 436.8,
+      "pct_mw": 0.9
      }
     }
    },
@@ -1813,14 +1907,14 @@
       "pct_mw": 15.7
      },
      "outorga_encerrada": {
-      "usinas": 491,
-      "mw_outorgado": 20652.0,
-      "pct_mw": 36.6
+      "usinas": 492,
+      "mw_outorgado": 20702.0,
+      "pct_mw": 36.7
      },
      "sem_desfecho": {
-      "usinas": 115,
-      "mw_outorgado": 5115.6,
-      "pct_mw": 9.1
+      "usinas": 114,
+      "mw_outorgado": 5065.6,
+      "pct_mw": 9.0
      }
     }
    },
@@ -1940,7 +2034,7 @@
   "desfechos_definicao": {
    "em_implantacao": "Segue em implantação (consta na fotografia mais recente do RALIE)",
    "operacao": "Entrou em operação (fase Operação no SIGA ou todas as unidades da primeira fotografia liberadas)",
-   "outorga_encerrada": "Outorga revogada ou extinta (ato da ANEEL publicado após a primeira aparição)",
+   "outorga_encerrada": "Outorga revogada ou extinta (ato da ANEEL publicado após a primeira aparição, ou ato de encerramento sem data de publicação na fonte)",
    "sem_desfecho": "Saiu do acompanhamento sem operação nem ato de encerramento identificados"
   },
   "historico_mensal": [
@@ -6061,6 +6155,10 @@
     }
    ],
    "lotes": 488,
+   "ultimo_leilao": {
+    "leilao": "002/2024",
+    "data": "2024-09-27"
+   },
    "desagio_inconsistente": [
     {
      "lote": "001/2009:2",
@@ -6077,6 +6175,8 @@
   },
   "obras": {
    "data_referencia": "2026-09-29",
+   "definicao_km": "km de circuito: soma de NumEtnLinTms (extensão da linha, em km) de cada módulo de linha distinto; no SIGET cada circuito é um módulo, então linha de circuito duplo ou bipolo conta cada circuito",
+   "modulos_lt_fora_do_limite": 0,
    "por_situacao": [
     {
      "situacao": "Em Operação",
@@ -7168,7 +7268,7 @@
     "pagina": null
    },
    {
-    "texto": "Caso Base: oferta existente e contratada (leilões realizados até janeiro de 2025 e expansão prevista via ambiente livre), sem expansão indicativa.",
+    "texto": "Caso Base: sistema existente em janeiro de 2025, oferta contratada em leilões regulados até janeiro de 2025 e entrada pelo ambiente livre só de empreendimentos com alta viabilidade, sem expansão indicativa.",
     "pagina": 72
    },
    {
@@ -7188,11 +7288,11 @@
     "pagina": 73
    },
    {
-    "texto": "Cenário de Referência considera a Lei nº 14.182/2021 (8.000 MW de termelétricas a gás com inflexibilidade de pelo menos 70%, contratação de centrais hidrelétricas de até 50 MW e prorrogação do PROINFA) e a Lei nº 14.299/2022 (manutenção do Complexo Jorge Lacerda).",
-    "pagina": 92
+    "texto": "Cenário de Referência considera a Lei nº 14.182/2021 (8.000 MW de termelétricas a gás com inflexibilidade de pelo menos 70%, contratação de centrais hidrelétricas de até 50 MW até 2.000 MW e prorrogação do PROINFA) e a Lei nº 14.299/2022 (manutenção do Complexo Jorge Lacerda).",
+    "pagina": 93
    },
    {
-    "texto": "Angra 3 com início de operação comercial em 2033, por diretriz do MME.",
+    "texto": "Angra 3 com início de operação comercial em 2033, adotado após consulta ao MME.",
     "pagina": 93
    },
    {
@@ -8065,14 +8165,14 @@
     "url_primaria": "https://dadosabertos.aneel.gov.br/dataset/siga-sistema-de-informacoes-de-geracao-da-aneel"
    },
    "unidade": "MW",
-   "frequencia": "semanal (captura do arquivo diário)",
+   "frequencia": "mensal segundo o dicionário; o arquivo diário é capturado no máximo uma vez por semana",
    "periodo_referencia": {
     "inicio": "2026-09-30",
     "fim": "2026-09-30"
    },
    "publicado_pela_fonte_em": "2026-09-30T10:40:44Z",
    "capturado_em": "2026-09-30T22:18:54Z",
-   "validado_em": "2026-09-30T22:34:01Z",
+   "validado_em": "2026-09-30T23:06:18Z",
    "cobertura_historica": {
     "inicio": "2026-09-30",
     "fim": "2026-09-30"
@@ -8087,9 +8187,9 @@
     "sha256": "d169541d7cbb805f08bd74db3b8283fee946f08b5d217f89e1ab396df6362d35"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dcad322a4ea9+alterado",
+   "versao_codigo": "dafa93bb2111+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T22:34:01Z",
+    "detectado_em": "2026-09-30T23:06:18Z",
     "total": 0,
     "vintages_comparadas": 1,
     "arquivos": 1,
@@ -8101,6 +8201,7 @@
     "Potência em MW não é energia: a produção depende do fator de capacidade de cada fonte, e a garantia física (quando existe) é outra grandeza.",
     "Usina multiestadual é atribuída à UF principal informada pelo SIGA; a potência não é dividida entre UFs.",
     "O SIGA marca usina sem data de entrada em operação com 1900-01-03 e localização não informada com 0: os dois viram ausência.",
+    "O dicionário do SIGA descreve fases desde antes da outorga até a revogação, mas o arquivo aberto traz só Operação, Construção e Construção não iniciada: usina revogada ou extinta sai do arquivo e é contada pelos atos de outorga.",
     "Reconciliação com os agregados publicados pela ANEEL (por tipo e por UF) mostrada ao lado; os agregados têm mês de referência anterior ao SIGA."
    ],
    "download": "/energia/series/expansao_capacidade_uf_fonte.csv",
@@ -8118,14 +8219,14 @@
     "url_primaria": "https://dadosabertos.aneel.gov.br/dataset/siga-sistema-de-informacoes-de-geracao-da-aneel"
    },
    "unidade": "MW e usinas",
-   "frequencia": "semanal",
+   "frequencia": "mensal segundo o dicionário; o arquivo diário é capturado no máximo uma vez por semana",
    "periodo_referencia": {
     "inicio": "2026-09-30",
     "fim": "2026-09-30"
    },
    "publicado_pela_fonte_em": "2026-09-30T10:40:44Z",
    "capturado_em": "2026-09-30T22:18:54Z",
-   "validado_em": "2026-09-30T22:34:02Z",
+   "validado_em": "2026-09-30T23:06:18Z",
    "cobertura_historica": {
     "inicio": "2026-09-30",
     "fim": "2026-09-30"
@@ -8140,9 +8241,9 @@
     "sha256": "d169541d7cbb805f08bd74db3b8283fee946f08b5d217f89e1ab396df6362d35"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dcad322a4ea9+alterado",
+   "versao_codigo": "dafa93bb2111+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T22:34:02Z",
+    "detectado_em": "2026-09-30T23:06:18Z",
     "total": 0,
     "vintages_comparadas": 1,
     "arquivos": 1,
@@ -8154,6 +8255,7 @@
     "Potência em MW não é energia: a produção depende do fator de capacidade de cada fonte, e a garantia física (quando existe) é outra grandeza.",
     "Usina multiestadual é atribuída à UF principal informada pelo SIGA; a potência não é dividida entre UFs.",
     "O SIGA marca usina sem data de entrada em operação com 1900-01-03 e localização não informada com 0: os dois viram ausência.",
+    "O dicionário do SIGA descreve fases desde antes da outorga até a revogação, mas o arquivo aberto traz só Operação, Construção e Construção não iniciada: usina revogada ou extinta sai do arquivo e é contada pelos atos de outorga.",
     "Potência fiscalizada de usina em construção é a parcela que já opera (ex.: parque com unidades liberadas)."
    ],
    "download": "/energia/series/expansao_usinas_siga.csv",
@@ -8178,13 +8280,13 @@
    },
    "publicado_pela_fonte_em": "2026-09-25T18:14:51Z",
    "capturado_em": "2026-09-30T22:21:26Z",
-   "validado_em": "2026-09-30T22:34:02Z",
+   "validado_em": "2026-09-30T23:06:18Z",
    "cobertura_historica": {
     "inicio": "2015",
     "fim": "2026-09-25"
    },
    "transformacoes": [
-    "filtro DscObjeto em {Autorização - Revogação, Concessão - Extinção}",
+    "filtro DscObjeto igual a um dos rótulos da fonte 'Autorização - Revogação' ou 'Concessão - Extinção'",
     "contagem por ano de publicação; soma da potência declarada no ato"
    ],
    "formula": "MW(ano) = Σ MdaPotenciaInstaladaMW dos atos de encerramento publicados no ano",
@@ -8193,9 +8295,9 @@
     "sha256": "0da8e26db84d3c522d694bf98850457b1c0c82df6158c9d4690fa10a9904dc61"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dcad322a4ea9+alterado",
+   "versao_codigo": "dafa93bb2111+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T22:34:02Z",
+    "detectado_em": "2026-09-30T23:06:18Z",
     "total": 0,
     "vintages_comparadas": 1,
     "arquivos": 1,
@@ -8205,6 +8307,7 @@
    },
    "limitacoes": [
     "O conjunto de atos começa em 2015; encerramentos anteriores não constam.",
+    "Ato sem data de publicação na fonte fica fora da série anual e é contado à parte (sem_data_publicacao).",
     "Revogação de DRO, DRI e DRS (registros anteriores à outorga) não entra.",
     "A potência é a declarada no ato; atos sem potência contam como ato, não como 0 MW.",
     "O ano corrente é parcial."
@@ -8224,14 +8327,14 @@
     "url_primaria": "https://dadosabertos.aneel.gov.br/dataset/ralie-relatorio-de-acompanhamento-da-expansao-da-oferta-de-geracao-de-energia-eletrica"
    },
    "unidade": "MW e usinas",
-   "frequencia": "quinzenal",
+   "frequencia": "mensal segundo o dicionário; 177 fotografias publicadas entre 17/06/2021 e 18/09/2026",
    "periodo_referencia": {
     "inicio": "2026-09-18",
     "fim": "2026-09-18"
    },
    "publicado_pela_fonte_em": "2026-09-18T21:17:26Z",
    "capturado_em": "2026-09-30T22:20:52Z",
-   "validado_em": "2026-09-30T22:34:02Z",
+   "validado_em": "2026-09-30T23:06:18Z",
    "cobertura_historica": {
     "inicio": "2021-06-17",
     "fim": "2026-09-18"
@@ -8246,9 +8349,9 @@
     "sha256": "37c206fc0b79e067183992c8ee84e009aa9ee6771113407d2ed05cf42a54faf6"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dcad322a4ea9+alterado",
+   "versao_codigo": "dafa93bb2111+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T22:34:02Z",
+    "detectado_em": "2026-09-30T23:06:18Z",
     "total": 0,
     "vintages_comparadas": 5,
     "arquivos": 5,
@@ -8259,7 +8362,8 @@
    "limitacoes": [
     "O RALIE só cobre usinas em implantação acompanhadas pela fiscalização; unidades que entram em operação comercial deixam de constar.",
     "A previsão é da fiscalização da ANEEL (SFG) e muda a cada fotografia; datas atribuídas em bloco a milhares de unidades sem licença de instalação ou sem acesso contratado indicam previsão convencional, não cronograma de obra.",
-    "Outorga não é capacidade que certamente entrará; MW outorgado não é energia firme."
+    "Outorga não é capacidade que certamente entrará; MW outorgado não é energia firme.",
+    "O dicionário do recurso de unidades geradoras (versão 1.0, 16/06/2026) tem descrições deslocadas uma linha (ex.: DatLiberOpTesteRealizado descrito como descida do rotor); a leitura segue o nome do campo: DatUGInicioOpComerOutorgado é a data outorgada de operação comercial e DatPrevisaoOpComercialSFG a previsão da fiscalização."
    ],
    "download": "/energia/series/expansao_carteira_ralie.csv",
    "notas_fonte": null
@@ -8276,14 +8380,14 @@
     "url_primaria": "https://dadosabertos.aneel.gov.br/dataset/ralie-relatorio-de-acompanhamento-da-expansao-da-oferta-de-geracao-de-energia-eletrica"
    },
    "unidade": "MW outorgado na primeira fotografia",
-   "frequencia": "quinzenal",
+   "frequencia": "mensal segundo o dicionário (fotografias com intervalo irregular)",
    "periodo_referencia": {
     "inicio": "2021-06-17",
     "fim": "2026-09-18"
    },
    "publicado_pela_fonte_em": "2026-09-18T21:17:26Z",
    "capturado_em": "2026-09-30T22:20:52Z",
-   "validado_em": "2026-09-30T22:34:02Z",
+   "validado_em": "2026-09-30T23:06:18Z",
    "cobertura_historica": {
     "inicio": "2021-06-17",
     "fim": "2026-09-18"
@@ -8299,9 +8403,9 @@
     "sha256": "37c206fc0b79e067183992c8ee84e009aa9ee6771113407d2ed05cf42a54faf6"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dcad322a4ea9+alterado",
+   "versao_codigo": "dafa93bb2111+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T22:34:02Z",
+    "detectado_em": "2026-09-30T23:06:18Z",
     "total": 0,
     "vintages_comparadas": 5,
     "arquivos": 5,
@@ -8313,6 +8417,7 @@
     "O RALIE só cobre usinas em implantação acompanhadas pela fiscalização; unidades que entram em operação comercial deixam de constar.",
     "A previsão é da fiscalização da ANEEL (SFG) e muda a cada fotografia; datas atribuídas em bloco a milhares de unidades sem licença de instalação ou sem acesso contratado indicam previsão convencional, não cronograma de obra.",
     "Outorga não é capacidade que certamente entrará; MW outorgado não é energia firme.",
+    "O dicionário do recurso de unidades geradoras (versão 1.0, 16/06/2026) tem descrições deslocadas uma linha (ex.: DatLiberOpTesteRealizado descrito como descida do rotor); a leitura segue o nome do campo: DatUGInicioOpComerOutorgado é a data outorgada de operação comercial e DatPrevisaoOpComercialSFG a previsão da fiscalização.",
     "Usinas em operação parcial que seguem no RALIE contam como em implantação.",
     "Sem desfecho não significa abandono: pode ser mudança de CEG, saída do acompanhamento ou ato fora do conjunto de atos."
    ],
@@ -8338,7 +8443,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-18T21:17:26Z",
    "capturado_em": "2026-09-30T22:20:52Z",
-   "validado_em": "2026-09-30T22:34:02Z",
+   "validado_em": "2026-09-30T23:06:18Z",
    "cobertura_historica": {
     "inicio": "2021-06-17",
     "fim": "2026-09-18"
@@ -8354,9 +8459,9 @@
     "sha256": "37c206fc0b79e067183992c8ee84e009aa9ee6771113407d2ed05cf42a54faf6"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dcad322a4ea9+alterado",
+   "versao_codigo": "dafa93bb2111+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T22:34:02Z",
+    "detectado_em": "2026-09-30T23:06:18Z",
     "total": 0,
     "vintages_comparadas": 5,
     "arquivos": 5,
@@ -8368,6 +8473,7 @@
     "O RALIE só cobre usinas em implantação acompanhadas pela fiscalização; unidades que entram em operação comercial deixam de constar.",
     "A previsão é da fiscalização da ANEEL (SFG) e muda a cada fotografia; datas atribuídas em bloco a milhares de unidades sem licença de instalação ou sem acesso contratado indicam previsão convencional, não cronograma de obra.",
     "Outorga não é capacidade que certamente entrará; MW outorgado não é energia firme.",
+    "O dicionário do recurso de unidades geradoras (versão 1.0, 16/06/2026) tem descrições deslocadas uma linha (ex.: DatLiberOpTesteRealizado descrito como descida do rotor); a leitura segue o nome do campo: DatUGInicioOpComerOutorgado é a data outorgada de operação comercial e DatPrevisaoOpComercialSFG a previsão da fiscalização.",
     "Unidade renumerada pela fonte entre a fotografia e a liberação aparece como não liberada.",
     "A data-base de cada previsão é a fotografia do RALIE; nenhuma previsão é reconstruída com o estoque atual."
    ],
@@ -8386,14 +8492,14 @@
     "url_primaria": "https://dadosabertos.aneel.gov.br/dataset/liberacao-para-operacao-comercial-de-empreendimentos-de-geracao"
    },
    "unidade": "dias (mediana ponderada por kW) e %",
-   "frequencia": "quinzenal",
+   "frequencia": "quinzenal segundo o dicionário",
    "periodo_referencia": {
     "inicio": "2014",
     "fim": "2026-09-16"
    },
    "publicado_pela_fonte_em": "2026-09-18T20:07:07Z",
    "capturado_em": "2026-09-30T22:21:15Z",
-   "validado_em": "2026-09-30T22:34:02Z",
+   "validado_em": "2026-09-30T23:06:18Z",
    "cobertura_historica": {
     "inicio": "2014",
     "fim": "2026-09-16"
@@ -8408,9 +8514,9 @@
     "sha256": "7f2c5d02aa1d1fa87d33a136983e562f32490795ed6bbe5c0ad6966add0b648e"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dcad322a4ea9+alterado",
+   "versao_codigo": "dafa93bb2111+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T22:34:02Z",
+    "detectado_em": "2026-09-30T23:06:18Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -8420,6 +8526,7 @@
    },
    "limitacoes": [
     "A data outorgada é a vigente na publicação do arquivo: se o cronograma foi alterado por ato posterior, o atraso é medido contra a data alterada.",
+    "Em autorizações recentes (sobretudo solares) a data outorgada é um prazo limite anos à frente; liberação muito antes dela aparece como atraso negativo grande, que é antecipação em relação ao prazo, não em relação a uma previsão.",
     "Antes de 2014 o arquivo detalhado não cobre toda a potência liberada no ano (nota da ANEEL).",
     "O ano corrente é parcial."
    ],
@@ -8438,14 +8545,14 @@
     "url_primaria": "https://dadosabertos.aneel.gov.br/dataset/resultado-de-leiloes"
    },
    "unidade": "km, MVA, R$ milhões (nominais) e %",
-   "frequencia": "mensal",
+   "frequencia": "mensal segundo o dicionário",
    "periodo_referencia": {
     "inicio": "1999",
     "fim": "2024"
    },
    "publicado_pela_fonte_em": "2026-09-01T05:01:33Z",
    "capturado_em": "2026-09-30T22:21:32Z",
-   "validado_em": "2026-09-30T22:34:02Z",
+   "validado_em": "2026-09-30T23:06:18Z",
    "cobertura_historica": {
     "inicio": "1999",
     "fim": "2026-09-01"
@@ -8460,9 +8567,9 @@
     "sha256": "a0671f9f513cbd2caeb80077ecf84f9335dc42238007264d9c9300dd5e5c57e5"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dcad322a4ea9+alterado",
+   "versao_codigo": "dafa93bb2111+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T22:34:02Z",
+    "detectado_em": "2026-09-30T23:06:18Z",
     "total": 0,
     "vintages_comparadas": 1,
     "arquivos": 1,
@@ -8471,6 +8578,7 @@
     "exemplos": []
    },
    "limitacoes": [
+    "O arquivo publicado termina no leilão 002/2024 (27/09/2024); ano sem linha aparece como ausência, não como ano sem leilão.",
     "Reais nominais da data de cada leilão, sem correção monetária: anos não são comparáveis em valor real.",
     "Investimento é o previsto no edital, não o realizado.",
     "km, MVA e reais são grandezas diferentes e nunca somadas."
@@ -8489,15 +8597,15 @@
     "licenca": "Open Data Commons Open Database License (ODbL)",
     "url_primaria": "https://dadosabertos.aneel.gov.br/dataset/sistema-de-gestao-da-transmissao-siget"
    },
-   "unidade": "km, MVA, empreendimentos e dias",
-   "frequencia": "semanal (captura do arquivo diário)",
+   "unidade": "km de circuito, MVA, empreendimentos e dias",
+   "frequencia": "diária segundo o dicionário; capturado no máximo uma vez por semana",
    "periodo_referencia": {
     "inicio": "2026-09-29",
     "fim": "2026-09-29"
    },
    "publicado_pela_fonte_em": "2026-09-29T16:36:54Z",
    "capturado_em": "2026-09-30T22:22:38Z",
-   "validado_em": "2026-09-30T22:34:02Z",
+   "validado_em": "2026-09-30T23:06:18Z",
    "cobertura_historica": {
     "inicio": "2005",
     "fim": "2026-09-29"
@@ -8513,9 +8621,9 @@
     "sha256": "6a7d8ce143d41e9e55d0aae364fefdc81d6d6f188edcf45f80bb3905536b9df1"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dcad322a4ea9+alterado",
+   "versao_codigo": "dafa93bb2111+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T22:34:02Z",
+    "detectado_em": "2026-09-30T23:06:18Z",
     "total": 0,
     "vintages_comparadas": 4,
     "arquivos": 4,
@@ -8524,6 +8632,7 @@
     "exemplos": []
    },
    "limitacoes": [
+    "km de circuito: no SIGET cada circuito é um módulo de linha com a extensão da linha, então circuito duplo e bipolo contam cada circuito.",
     "As datas de previsão informadas pelas transmissoras não estão no arquivo aberto do SIGET: o atraso em andamento é medido contra o ato legal, não contra a previsão.",
     "Linha interestadual aparece nas duas UFs na tabela por UF: a soma das UFs supera o total nacional.",
     "Reatores e capacitores (Mvar) não entram no MVA de transformação.",
@@ -8551,7 +8660,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T22:22:59Z",
-   "validado_em": "2026-09-30T22:34:02Z",
+   "validado_em": "2026-09-30T23:06:18Z",
    "cobertura_historica": {
     "inicio": "2025",
     "fim": "2035"
@@ -8565,9 +8674,9 @@
     "sha256": "f3c3178071b54b7726abda5cf49cda2a114e73173c0e658bacb6c4a367592d9b"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dcad322a4ea9+alterado",
+   "versao_codigo": "dafa93bb2111+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T22:34:02Z",
+    "detectado_em": "2026-09-30T23:06:18Z",
     "total": 0,
     "vintages_comparadas": 3,
     "arquivos": 3,
@@ -8586,13 +8695,19 @@
  },
  "evidencias": {
   "capacidade_total": {
+   "indicador": "Capacidade instalada em operação",
    "valor_exibido": "220.659 MW",
-   "valor_calculo": 220658.9,
+   "valor_calculo": 220658.886,
    "unidade": "MW",
-   "periodo": "2026-09-30",
-   "entidade": "Brasil (SIN e sistemas isolados)",
-   "universo": "22798 usinas na fase Operação do SIGA",
-   "filtros": [],
+   "periodo": {
+    "inicio": "2026-09-30",
+    "fim": "2026-09-30"
+   },
+   "entidade": "Brasil (Sistema Interligado e sistemas isolados)",
+   "universo": "22.798 usinas na fase Operação do SIGA",
+   "filtros": [
+    "DscFaseUsina = Operação"
+   ],
    "fonte": {
     "orgao": "ANEEL",
     "conjunto": "SIGA: Sistema de Informações de Geração da ANEEL",
@@ -8603,113 +8718,71 @@
     "capturado_em": "2026-09-30T22:18:54Z",
     "publicado_em": "2026-09-30T10:40:44Z"
    },
-   "chaves_origem": "IdeNucleoCEG das usinas na fase Operação (CSV de usinas)",
-   "formula": "Σ MdaPotenciaFiscalizadaKw (fase Operação) ÷ 1.000",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "linhas de siga-empreendimentos-geracao-diario.csv com DscFaseUsina = Operação, uma por IdeNucleoCEG; soma de MdaPotenciaFiscalizadaKw",
+   "manifesto": {
+    "rotulo": "Usinas do SIGA com fase, potência e coordenadas (CSV)",
+    "url": "/energia/series/expansao_usinas_siga.csv"
+   },
+   "formula": "Σ MdaPotenciaFiscalizadaKw das usinas em operação ÷ 1.000",
    "numerador": null,
    "denominador": null,
    "pesos": null,
    "exclusoes": [],
-   "cobertura": "Todas as usinas do arquivo diário na fase Operação",
-   "tratamento_ausencia": "Potência vazia não soma; linhas duplicadas idênticas contam uma vez.",
+   "cobertura": "todas as usinas na fase Operação do arquivo diário do SIGA",
+   "tratamento_ausencia": "potência vazia não soma e não vira zero exibido; núcleo de CEG repetido na fonte conta uma vez",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T10:40:44Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:06:18Z"
    },
-   "revisoes": null,
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
    "testes": [
     {
+     "nome": "potência não negativa",
+     "resultado": "aprovado",
+     "detalhe": "0 usinas com potência negativa no arquivo"
+    },
+    {
      "nome": "reconciliação por tipo com o agregado 'empreendimentos em operação'",
-     "resultado": "5 de 7 tipos com resíduo até 0,5%",
-     "detalhe": "resíduo = SIGA − agregado − liberações comerciais entre o mês do agregado e a data do SIGA"
+     "resultado": "aprovado",
+     "detalhe": "7 de 7 tipos com resíduo dentro de 1%"
     }
    ],
    "reconciliacao": {
-    "descricao": "Agregados publicados pela ANEEL (referência 2026-06)",
-    "resultado": [
-     {
-      "tipo": "CGH",
-      "siga_mw": 927.652,
-      "agregado_mw": 925.909,
-      "liberado_no_intervalo_mw": 3.2,
-      "diferenca_mw": 1.743,
-      "residuo_mw": -1.457,
-      "residuo_pct": -0.157
-     },
-     {
-      "tipo": "EOL",
-      "siga_mw": 34936.651,
-      "agregado_mw": 34810.654,
-      "liberado_no_intervalo_mw": 126.0,
-      "diferenca_mw": 125.997,
-      "residuo_mw": -0.003,
-      "residuo_pct": -0.0
-     },
-     {
-      "tipo": "PCH",
-      "siga_mw": 6064.019,
-      "agregado_mw": 6057.02,
-      "liberado_no_intervalo_mw": 7.0,
-      "diferenca_mw": 6.999,
-      "residuo_mw": -0.001,
-      "residuo_pct": -0.0
-     },
-     {
-      "tipo": "UFV",
-      "siga_mw": 23615.261,
-      "agregado_mw": 22564.521,
-      "liberado_no_intervalo_mw": 1184.097,
-      "diferenca_mw": 1050.74,
-      "residuo_mw": -133.357,
-      "residuo_pct": -0.591
-     },
-     {
-      "tipo": "UHE",
-      "siga_mw": 103235.141,
-      "agregado_mw": 103235.221,
-      "liberado_no_intervalo_mw": 0.0,
-      "diferenca_mw": -0.08,
-      "residuo_mw": -0.08,
-      "residuo_pct": -0.0
-     },
-     {
-      "tipo": "UTE",
-      "siga_mw": 49890.162,
-      "agregado_mw": 49084.721,
-      "liberado_no_intervalo_mw": 1140.657,
-      "diferenca_mw": 805.441,
-      "residuo_mw": -335.216,
-      "residuo_pct": -0.683
-     },
-     {
-      "tipo": "UTN",
-      "siga_mw": 1990.0,
-      "agregado_mw": 1990.0,
-      "liberado_no_intervalo_mw": 0.0,
-      "diferenca_mw": 0.0,
-      "residuo_mw": 0.0,
-      "residuo_pct": 0.0
-     }
-    ],
-    "tolerancia": "0,5% por tipo, depois de descontar as liberações comerciais do intervalo"
+    "descricao": "SIGA menos o agregado oficial por tipo de 2026-06 menos as liberações comerciais entre o fim desse mês e a data do SIGA",
+    "resultado": "aprovado",
+    "tolerancia": "1% do agregado de cada tipo (MW)"
    },
    "download": [
     {
-     "rotulo": "Usinas do SIGA (CSV)",
+     "rotulo": "Usinas do SIGA com fase, potência e coordenadas (CSV)",
      "url": "/energia/series/expansao_usinas_siga.csv"
+    },
+    {
+     "rotulo": "Capacidade em operação por UF, tipo e origem (CSV)",
+     "url": "/energia/series/expansao_capacidade_uf_fonte.csv"
     }
    ],
-   "reproducao": "python3 pipeline/energia/executar_modulo.py expansao (coleta e gold); --sem-coleta refaz a gold a partir do silver.",
-   "citacao": "ANEEL. SIGA: Sistema de Informações de Geração da ANEEL. Disponível em: https://dadosabertos.aneel.gov.br/dataset/siga-sistema-de-informacoes-de-geracao-da-aneel. Capturado em 2026-09-30. Processado pelo Observatório do Setor Elétrico (módulo Expansão)."
+   "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
+   "citacao": "SCRUTINIUMS. Capacidade instalada em operação: 220.659 MW, Brasil (Sistema Interligado e sistemas isolados), 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SIGA: Sistema de Informações de Geração da ANEEL (recurso siga-empreendimentos-geracao-diario.csv, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "outorgado_sem_obra": {
+   "indicador": "Potência outorgada com construção não iniciada",
    "valor_exibido": "87.267 MW",
-   "valor_calculo": 87267.2,
+   "valor_calculo": 87267.22824999999,
    "unidade": "MW",
-   "periodo": "2026-09-30",
+   "periodo": {
+    "inicio": "2026-09-30",
+    "fim": "2026-09-30"
+   },
    "entidade": "Brasil",
-   "universo": "2099 usinas na fase Construção não iniciada",
-   "filtros": [],
+   "universo": "2.099 usinas na fase Construção não iniciada do SIGA",
+   "filtros": [
+    "DscFaseUsina = Construção não iniciada"
+   ],
    "fonte": {
     "orgao": "ANEEL",
     "conjunto": "SIGA: Sistema de Informações de Geração da ANEEL",
@@ -8720,93 +8793,129 @@
     "capturado_em": "2026-09-30T22:18:54Z",
     "publicado_em": "2026-09-30T10:40:44Z"
    },
-   "chaves_origem": "IdeNucleoCEG (CSV de usinas, estagio = construcao_nao_iniciada)",
-   "formula": "Σ MdaPotenciaOutorgadaKw (fase Construção não iniciada) ÷ 1.000",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "linhas do SIGA com DscFaseUsina = Construção não iniciada; soma de MdaPotenciaOutorgadaKw",
+   "manifesto": {
+    "rotulo": "Usinas do SIGA com fase, potência e coordenadas (CSV)",
+    "url": "/energia/series/expansao_usinas_siga.csv"
+   },
+   "formula": "Σ MdaPotenciaOutorgadaKw das usinas com construção não iniciada ÷ 1.000",
    "numerador": null,
    "denominador": null,
    "pesos": null,
    "exclusoes": [],
-   "cobertura": "Arquivo diário do SIGA",
-   "tratamento_ausencia": "Potência vazia não soma.",
+   "cobertura": "todas as usinas da fase no arquivo diário do SIGA",
+   "tratamento_ausencia": "potência vazia não soma",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T10:40:44Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:06:18Z"
    },
-   "revisoes": null,
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
    "testes": [
     {
-     "nome": "outorga não somada à capacidade em operação",
+     "nome": "estágios disjuntos e exaustivos",
      "resultado": "aprovado",
-     "detalhe": "estágios disjuntos por fase"
+     "detalhe": "25.042 usinas somadas nos estágios para 25.042 núcleos de CEG no SIGA; outorga sem obra nunca entra na capacidade em operação"
+    },
+    {
+     "nome": "outorga não é entrada certa",
+     "resultado": "aprovado",
+     "detalhe": "o desfecho das usinas do RALIE desde 2021 é publicado ao lado (coortes)"
     }
    ],
    "reconciliacao": null,
    "download": [
     {
-     "rotulo": "Usinas do SIGA (CSV)",
+     "rotulo": "Usinas do SIGA com fase, potência e coordenadas (CSV)",
      "url": "/energia/series/expansao_usinas_siga.csv"
     }
    ],
-   "reproducao": "python3 pipeline/energia/executar_modulo.py expansao (coleta e gold); --sem-coleta refaz a gold a partir do silver.",
-   "citacao": "ANEEL. SIGA: Sistema de Informações de Geração da ANEEL. Disponível em: https://dadosabertos.aneel.gov.br/dataset/siga-sistema-de-informacoes-de-geracao-da-aneel. Capturado em 2026-09-30. Processado pelo Observatório do Setor Elétrico (módulo Expansão)."
+   "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
+   "citacao": "SCRUTINIUMS. Potência outorgada com construção não iniciada: 87.267 MW, Brasil, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SIGA: Sistema de Informações de Geração da ANEEL (recurso siga-empreendimentos-geracao-diario.csv, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
-  "coorte_inicial_operacao": {
-   "valor_exibido": "68,3%",
-   "valor_calculo": 68.3,
-   "unidade": "% do MW outorgado",
-   "periodo": "2021-06-17 a 2026-09-18",
-   "entidade": "Usinas na primeira fotografia do RALIE",
-   "universo": "1116 usinas, 46146.0 MW outorgados",
+  "ralie_em_implantacao": {
+   "indicador": "Potência das unidades geradoras em implantação acompanhadas pelo RALIE",
+   "valor_exibido": "95.888 MW",
+   "valor_calculo": 95888.26104002971,
+   "unidade": "MW",
+   "periodo": {
+    "inicio": "2026-09-18",
+    "fim": "2026-09-18"
+   },
+   "entidade": "Brasil",
+   "universo": "76.591 unidades geradoras de 2.246 usinas na fotografia de 18/09/2026",
    "filtros": [],
    "fonte": {
     "orgao": "ANEEL",
     "conjunto": "RALIE: Relatório de Acompanhamento da Expansão da Oferta de Geração",
-    "recurso": "ralie-usina-historico.parquet e ralie-unidade-geradora-historico.parquet",
-    "url": "https://dadosabertos.aneel.gov.br/dataset/57e4b8b5-a5db-40e6-9901-27ca629d0477/resource/896a51b2-6d40-4b0a-b2b2-b460f6a5b7ed/download/ralie-unidade-geradora-historico.parquet",
-    "arquivo": "data/energia/bronze/aneel/aneel_ralie/ralie-unidade-geradora-historico.parquet/20260930T222052Z.c6a184da5d13.parquet.gz",
-    "sha256": "c6a184da5d1318a19d924f5577b92372ad8b95c2c80f15eb72d4b89ba1ed48aa",
-    "capturado_em": "2026-09-30T22:20:52Z",
-    "publicado_em": "2026-09-18T21:17:26Z"
+    "recurso": "ralie-unidade-geradora-atual.csv",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/57e4b8b5-a5db-40e6-9901-27ca629d0477/resource/8a794ee4-3d41-4ce7-a80a-ae7702a16b7b/download/ralie-unidade-geradora-atual.csv",
+    "arquivo": "data/energia/bronze/aneel/aneel_ralie/ralie-unidade-geradora-atual.csv/20260930T221937Z.cbb765640566.csv.gz",
+    "sha256": "cbb765640566f641519f6fb8e128e24f66b986ac743657d899fd636a17a36b51",
+    "capturado_em": "2026-09-30T22:19:37Z",
+    "publicado_em": "2026-09-18T21:05:07Z"
    },
-   "chaves_origem": "IdeNucleoCEG (CSV de trajetórias, coorte = primeira fotografia)",
-   "formula": "100 × Σ kW outorgado (primeira fotografia) das usinas com desfecho operação ÷ Σ kW da coorte",
-   "numerador": {
-    "descricao": "MW outorgado das usinas que entraram em operação",
-    "valor": 31524.6
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "linhas de ralie-unidade-geradora-atual.csv (uma por IdeNucleoCEG e NumUgUsina); soma de MdaPotenciaUnitaria",
+   "manifesto": {
+    "rotulo": "Unidades geradoras do RALIE com previsão (CSV)",
+    "url": "/energia/series/expansao_unidades_ralie.csv"
    },
-   "denominador": {
-    "descricao": "MW outorgado da coorte",
-    "valor": 46146.0
-   },
+   "formula": "Σ MdaPotenciaUnitaria das unidades listadas ÷ 1.000",
+   "numerador": null,
+   "denominador": null,
    "pesos": null,
    "exclusoes": [],
-   "cobertura": "Todas as usinas da primeira fotografia",
-   "tratamento_ausencia": "Usina sem operação nem ato de encerramento fica em 'sem desfecho', nunca em operação.",
+   "cobertura": "usinas em implantação acompanhadas pela fiscalização; unidades já liberadas para operação comercial deixam o relatório",
+   "tratamento_ausencia": "unidade sem potência não soma; unidade sem previsão da fiscalização é contada à parte, com a justificativa publicada",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-18T21:17:26Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:06:18Z"
    },
-   "revisoes": null,
-   "testes": [],
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
+   "testes": [
+    {
+     "nome": "chave única por unidade",
+     "resultado": "aprovado",
+     "detalhe": "76.591 linhas no arquivo e 76.591 chaves (IdeNucleoCEG, NumUgUsina) distintas"
+    },
+    {
+     "nome": "potência não negativa",
+     "resultado": "aprovado",
+     "detalhe": "potência unitária de todas as unidades conferida"
+    }
+   ],
    "reconciliacao": null,
    "download": [
     {
-     "rotulo": "Trajetórias (CSV)",
-     "url": "/energia/series/expansao_trajetorias_ralie.csv"
+     "rotulo": "Unidades geradoras do RALIE (CSV)",
+     "url": "/energia/series/expansao_unidades_ralie.csv"
+    },
+    {
+     "rotulo": "Carteira do RALIE por usina (CSV)",
+     "url": "/energia/series/expansao_carteira_ralie.csv"
     }
    ],
-   "reproducao": "python3 pipeline/energia/executar_modulo.py expansao (coleta e gold); --sem-coleta refaz a gold a partir do silver.",
-   "citacao": "ANEEL. RALIE: Relatório de Acompanhamento da Expansão da Oferta de Geração. Disponível em: https://dadosabertos.aneel.gov.br/dataset/ralie-relatorio-de-acompanhamento-da-expansao-da-oferta-de-geracao-de-energia-eletrica. Capturado em 2026-09-30. Processado pelo Observatório do Setor Elétrico (módulo Expansão)."
+   "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
+   "citacao": "SCRUTINIUMS. Potência das unidades geradoras em implantação acompanhadas pelo RALIE: 95.888 MW, Brasil, 18/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, RALIE: Relatório de Acompanhamento da Expansão da Oferta de Geração (recurso ralie-unidade-geradora-atual.csv, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
-  "confiabilidade_ultima": {
-   "valor_exibido": "50,5%",
-   "valor_calculo": 50.5,
-   "unidade": "% do MW prometido",
-   "periodo": "2025-08-22 a 2026-08-22",
-   "entidade": "Unidades geradoras com previsão SFG nos 12 meses seguintes",
-   "universo": "8648 unidades, 11369.0 MW",
+  "coorte_inicial_operacao": {
+   "indicador": "Potência da primeira fotografia do RALIE que entrou em operação",
+   "valor_exibido": "68,3%",
+   "valor_calculo": 68.31494337654877,
+   "unidade": "% do MW outorgado",
+   "periodo": {
+    "inicio": "2021-06-17",
+    "fim": "2026-09-18"
+   },
+   "entidade": "usinas presentes na primeira fotografia do RALIE",
+   "universo": "1.116 usinas, 46.146 MW outorgados em 17/06/2021",
    "filtros": [],
    "fonte": {
     "orgao": "ANEEL",
@@ -8816,48 +8925,189 @@
     "arquivo": "data/energia/bronze/aneel/aneel_ralie/ralie-unidade-geradora-historico.parquet/20260930T222052Z.c6a184da5d13.parquet.gz",
     "sha256": "c6a184da5d1318a19d924f5577b92372ad8b95c2c80f15eb72d4b89ba1ed48aa",
     "capturado_em": "2026-09-30T22:20:52Z",
-    "publicado_em": "2026-09-18T21:17:26Z"
+    "publicado_em": "2026-09-18T21:17:26Z",
+    "arquivos": [
+     {
+      "recurso": "ralie-usina-historico.parquet",
+      "arquivo": "data/energia/bronze/aneel/aneel_ralie/ralie-usina-historico.parquet/20260930T222000Z.06f503b39718.parquet.gz",
+      "sha256": "06f503b39718e1e2fc95e10097302f345ef9137d2f6fefd040089e56ee024cd6",
+      "capturado_em": "2026-09-30T22:20:00Z",
+      "publicado_em": "2026-09-18T21:11:17Z"
+     },
+     {
+      "recurso": "ralie-unidade-geradora-historico.parquet",
+      "arquivo": "data/energia/bronze/aneel/aneel_ralie/ralie-unidade-geradora-historico.parquet/20260930T222052Z.c6a184da5d13.parquet.gz",
+      "sha256": "c6a184da5d1318a19d924f5577b92372ad8b95c2c80f15eb72d4b89ba1ed48aa",
+      "capturado_em": "2026-09-30T22:20:52Z",
+      "publicado_em": "2026-09-18T21:17:26Z"
+     },
+     {
+      "recurso": "unidades-geradoras-liberadas-operacao-comercial-detalhado.csv",
+      "arquivo": "data/energia/bronze/aneel/aneel_liberacao_comercial/unidades-geradoras-liberadas-operacao-comercial-detalhado.csv/20260930T222113Z.5725c5fef333.csv.gz",
+      "sha256": "5725c5fef3330c5fdc916bed8e73a99cf7ab85f22d4d2829e5bf1c3afd03b5fc",
+      "capturado_em": "2026-09-30T22:21:13Z",
+      "publicado_em": "2026-09-18T20:07:07Z"
+     },
+     {
+      "recurso": "atos-outorgas-aneel.csv",
+      "arquivo": "data/energia/bronze/aneel/aneel_atos_outorga_geracao/atos-outorgas-aneel.csv/20260930T222126Z.5ce85153dfd5.csv.gz",
+      "sha256": "5ce85153dfd5f1c3960cad2afe2f3ac6f8b95965f0ec6fbd252daf0f495a0a14",
+      "capturado_em": "2026-09-30T22:21:26Z",
+      "publicado_em": "2026-09-25T18:14:51Z"
+     },
+     {
+      "recurso": "siga-empreendimentos-geracao-diario.csv",
+      "arquivo": "data/energia/bronze/aneel/aneel_siga/siga-empreendimentos-geracao-diario.csv/20260930T221854Z.139603153f57.csv.gz",
+      "sha256": "139603153f575740b39a222e65dfc0c15567d057495e412a2e022712b5c6168b",
+      "capturado_em": "2026-09-30T22:18:54Z",
+      "publicado_em": "2026-09-30T10:40:44Z"
+     }
+    ]
    },
-   "chaves_origem": "(IdeNucleoCEG, NumUgUsina) na fotografia e no arquivo de liberações",
-   "formula": "100 × Σ kW liberado até o fim da janela ÷ Σ kW prometido na fotografia",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "usinas do Parquet histórico cuja primeira DatRalie é a primeira fotografia publicada; desfecho pelo núcleo do CEG no SIGA, nas liberações comerciais e nos atos de encerramento",
+   "manifesto": {
+    "rotulo": "Trajetória e desfecho das usinas do RALIE (CSV)",
+    "url": "/energia/series/expansao_trajetorias_ralie.csv"
+   },
+   "formula": "100 × Σ kW outorgado na primeira fotografia das usinas com desfecho operação ÷ Σ kW outorgado da coorte",
    "numerador": {
-    "descricao": "MW liberado para operação comercial no prazo",
-    "valor": 5737.5
+    "descricao": "kW outorgado das usinas da coorte que entraram em operação",
+    "valor": 31524640.55
    },
    "denominador": {
-    "descricao": "MW com previsão na janela",
-    "valor": 11369.0
+    "descricao": "kW outorgado de toda a coorte na primeira fotografia",
+    "valor": 46146039.2
    },
    "pesos": null,
-   "exclusoes": [
-    "0 unidades já liberadas antes da fotografia"
-   ],
-   "cobertura": "Fotografia mensal do RALIE e liberações até a data do arquivo",
-   "tratamento_ausencia": "Unidade sem liberação conta como não liberada.",
+   "exclusoes": [],
+   "cobertura": "todas as usinas da primeira fotografia (17/06/2021 ou a primeira publicada)",
+   "tratamento_ausencia": "usina sem operação nem ato de encerramento fica em 'sem desfecho', nunca em operação",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-18T21:17:26Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:06:18Z"
    },
-   "revisoes": null,
-   "testes": [],
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
+   "testes": [
+    {
+     "nome": "desfechos exaustivos e disjuntos",
+     "resultado": "aprovado",
+     "detalhe": "soma dos quatro desfechos 46.146,0 MW para 46.146,0 MW da coorte"
+    }
+   ],
    "reconciliacao": null,
    "download": [
     {
-     "rotulo": "Confiabilidade (CSV)",
+     "rotulo": "Trajetórias (CSV)",
+     "url": "/energia/series/expansao_trajetorias_ralie.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
+   "citacao": "SCRUTINIUMS. Potência da primeira fotografia do RALIE que entrou em operação: 68,3%, usinas presentes na primeira fotografia do RALIE, 17/06/2021 a 18/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, RALIE: Relatório de Acompanhamento da Expansão da Oferta de Geração (recurso ralie-unidade-geradora-historico.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "confiabilidade_ultima": {
+   "indicador": "Potência prometida para os 12 meses seguintes que foi liberada no prazo",
+   "valor_exibido": "50,5%",
+   "valor_calculo": 50.4661363145713,
+   "unidade": "% do MW prometido",
+   "periodo": {
+    "inicio": "2025-08-22",
+    "fim": "2026-08-22"
+   },
+   "entidade": "unidades geradoras com previsão da fiscalização dentro da janela",
+   "universo": "8.648 unidades, 11.369 MW, fotografia de 22/08/2025",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "RALIE: Relatório de Acompanhamento da Expansão da Oferta de Geração",
+    "recurso": "ralie-unidade-geradora-historico.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/57e4b8b5-a5db-40e6-9901-27ca629d0477/resource/896a51b2-6d40-4b0a-b2b2-b460f6a5b7ed/download/ralie-unidade-geradora-historico.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_ralie/ralie-unidade-geradora-historico.parquet/20260930T222052Z.c6a184da5d13.parquet.gz",
+    "sha256": "c6a184da5d1318a19d924f5577b92372ad8b95c2c80f15eb72d4b89ba1ed48aa",
+    "capturado_em": "2026-09-30T22:20:52Z",
+    "publicado_em": "2026-09-18T21:17:26Z",
+    "arquivos": [
+     {
+      "recurso": "ralie-unidade-geradora-historico.parquet",
+      "arquivo": "data/energia/bronze/aneel/aneel_ralie/ralie-unidade-geradora-historico.parquet/20260930T222052Z.c6a184da5d13.parquet.gz",
+      "sha256": "c6a184da5d1318a19d924f5577b92372ad8b95c2c80f15eb72d4b89ba1ed48aa",
+      "capturado_em": "2026-09-30T22:20:52Z",
+      "publicado_em": "2026-09-18T21:17:26Z"
+     },
+     {
+      "recurso": "unidades-geradoras-liberadas-operacao-comercial-detalhado.csv",
+      "arquivo": "data/energia/bronze/aneel/aneel_liberacao_comercial/unidades-geradoras-liberadas-operacao-comercial-detalhado.csv/20260930T222113Z.5725c5fef333.csv.gz",
+      "sha256": "5725c5fef3330c5fdc916bed8e73a99cf7ab85f22d4d2829e5bf1c3afd03b5fc",
+      "capturado_em": "2026-09-30T22:21:13Z",
+      "publicado_em": "2026-09-18T20:07:07Z"
+     }
+    ]
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "unidades da fotografia 2025-08-22 com DatPrevisaoOpComercialSFG em (2025-08-22, 2026-08-22]; liberação pela chave (IdeNucleoCEG, NumUgUsina) no arquivo detalhado",
+   "manifesto": {
+    "rotulo": "Confiabilidade por fotografia (CSV)",
+    "url": "/energia/series/expansao_confiabilidade_previsoes.csv"
+   },
+   "formula": "100 × Σ kW das unidades prometidas e liberadas até o fim da janela ÷ Σ kW prometido na fotografia",
+   "numerador": {
+    "descricao": "kW liberado para operação comercial até o fim da janela",
+    "valor": 5737516.949999999
+   },
+   "denominador": {
+    "descricao": "kW com previsão dentro da janela na fotografia",
+    "valor": 11369043.42
+   },
+   "pesos": null,
+   "exclusoes": [
+    "0 unidades já liberadas antes da fotografia e ainda listadas com previsão futura"
+   ],
+   "cobertura": "janela encerrada pelo menos 15 dias antes da data do arquivo de liberações (18/09/2026)",
+   "tratamento_ausencia": "unidade sem liberação no arquivo conta como não liberada; nenhuma previsão é reconstruída com o estoque atual",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:06:18Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
+   "testes": [
+    {
+     "nome": "partição da potência prometida",
+     "resultado": "aprovado",
+     "detalhe": "no prazo + depois do prazo + não liberada = prometida em 50 fotografias (maior diferença 0.000000 kW)"
+    },
+    {
+     "nome": "data-base conhecida",
+     "resultado": "aprovado",
+     "detalhe": "cada previsão é lida da fotografia DatRalie em que foi publicada"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Confiabilidade das previsões (CSV)",
      "url": "/energia/series/expansao_confiabilidade_previsoes.csv"
     }
    ],
-   "reproducao": "python3 pipeline/energia/executar_modulo.py expansao (coleta e gold); --sem-coleta refaz a gold a partir do silver.",
-   "citacao": "ANEEL. RALIE: Relatório de Acompanhamento da Expansão da Oferta de Geração. Disponível em: https://dadosabertos.aneel.gov.br/dataset/ralie-relatorio-de-acompanhamento-da-expansao-da-oferta-de-geracao-de-energia-eletrica. Capturado em 2026-09-30. Processado pelo Observatório do Setor Elétrico (módulo Expansão)."
+   "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
+   "citacao": "SCRUTINIUMS. Potência prometida para os 12 meses seguintes que foi liberada no prazo: 50,5%, unidades geradoras com previsão da fiscalização dentro da janela, 22/08/2025 a 22/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, RALIE: Relatório de Acompanhamento da Expansão da Oferta de Geração (recurso ralie-unidade-geradora-historico.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "atraso_realizado_ultimo_ano": {
+   "indicador": "Atraso mediano da liberação comercial em relação à data outorgada",
    "valor_exibido": "86 dias",
    "valor_calculo": 86,
    "unidade": "dias",
-   "periodo": "2025",
-   "entidade": "Unidades liberadas para operação comercial no ano",
-   "universo": "7466.5 MW liberados",
+   "periodo": {
+    "inicio": "2025-01-01",
+    "fim": "2025-12-31"
+   },
+   "entidade": "unidades geradoras liberadas para operação comercial no ano",
+   "universo": "7.466,5 MW liberados em 5.091 linhas do arquivo",
    "filtros": [],
    "fonte": {
     "orgao": "ANEEL",
@@ -8869,39 +9119,59 @@
     "capturado_em": "2026-09-30T22:21:13Z",
     "publicado_em": "2026-09-18T20:07:07Z"
    },
-   "chaves_origem": "linhas do arquivo detalhado com liberação no ano",
-   "formula": "mediana ponderada por kW de (DatLiberOpComerRealizado − DatUGInicioOpComerOutorgado)",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "linhas do arquivo detalhado com DatLiberOpComerRealizado em 2025 e DatUGInicioOpComerOutorgado preenchida",
+   "manifesto": {
+    "rotulo": "Liberações por ano e tipo (CSV)",
+    "url": "/energia/series/expansao_liberacoes_anuais.csv"
+   },
+   "formula": "mediana ponderada por kW de (DatLiberOpComerRealizado − DatUGInicioOpComerOutorgado), em dias",
    "numerador": null,
    "denominador": null,
-   "pesos": "MdaPotenciaLiberadaComercial",
+   "pesos": "MdaPotenciaLiberadaComercial (kW) de cada linha",
    "exclusoes": [],
-   "cobertura": "Arquivo detalhado de liberações",
-   "tratamento_ausencia": "Linha sem data outorgada fica fora da mediana e é contada à parte.",
+   "cobertura": "usinas acompanhadas pela fiscalização (o arquivo não cobre todo o SIGA)",
+   "tratamento_ausencia": "linha sem data outorgada fica fora da mediana e da parcela com atraso",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-18T20:07:07Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:06:18Z"
    },
-   "revisoes": null,
-   "testes": [],
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
+   "testes": [
+    {
+     "nome": "ano completo",
+     "resultado": "aprovado",
+     "detalhe": "o ano corrente, parcial, não é usado como destaque"
+    }
+   ],
    "reconciliacao": null,
    "download": [
     {
-     "rotulo": "Liberações por ano (CSV)",
+     "rotulo": "Liberações comerciais e atraso por ano (CSV)",
      "url": "/energia/series/expansao_liberacoes_anuais.csv"
     }
    ],
-   "reproducao": "python3 pipeline/energia/executar_modulo.py expansao (coleta e gold); --sem-coleta refaz a gold a partir do silver.",
-   "citacao": "ANEEL. Liberação para operação comercial de empreendimentos de geração. Disponível em: https://dadosabertos.aneel.gov.br/dataset/liberacao-para-operacao-comercial-de-empreendimentos-de-geracao. Capturado em 2026-09-30. Processado pelo Observatório do Setor Elétrico (módulo Expansão)."
+   "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
+   "citacao": "SCRUTINIUMS. Atraso mediano da liberação comercial em relação à data outorgada: 86 dias, unidades geradoras liberadas para operação comercial no ano, 01/01/2025 a 31/12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Liberação para operação comercial de empreendimentos de geração (recurso unidades-geradoras-liberadas-operacao-comercial-detalhado.csv, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "transmissao_em_andamento": {
-   "valor_exibido": "25.948 km",
-   "valor_calculo": 25947.5,
-   "unidade": "km",
-   "periodo": "2026-09-29",
-   "entidade": "Empreendimentos de transmissão em andamento",
-   "universo": "763 empreendimentos",
-   "filtros": [],
+   "indicador": "Linhas de transmissão novas em empreendimentos em andamento",
+   "valor_exibido": "25.947 km",
+   "valor_calculo": 25947.480000000007,
+   "unidade": "km de circuito",
+   "periodo": {
+    "inicio": "2026-09-29",
+    "fim": "2026-09-29"
+   },
+   "entidade": "Rede Básica e demais instalações cadastradas no SIGET",
+   "universo": "763 empreendimentos com situação Em andamento",
+   "filtros": [
+    "DscSituacaoEpd = Em andamento",
+    "DscTipObr = Instalação"
+   ],
    "fonte": {
     "orgao": "ANEEL",
     "conjunto": "Sistema de Gestão da Transmissão (SIGET)",
@@ -8910,45 +9180,77 @@
     "arquivo": "data/energia/bronze/aneel/aneel_siget/siget-contrato-empreendimento-obra-modulo.csv/20260930T222158Z.d9a84fa14970.csv.gz",
     "sha256": "d9a84fa1497095eee660670b13c4f41e58bad3eab3affac30e0dfee77fa8d6e0",
     "capturado_em": "2026-09-30T22:21:58Z",
-    "publicado_em": "2026-09-29T16:35:48Z"
+    "publicado_em": "2026-09-29T16:35:48Z",
+    "arquivos": [
+     {
+      "recurso": "siget-contrato-empreendimento-obra-modulo.csv",
+      "arquivo": "data/energia/bronze/aneel/aneel_siget/siget-contrato-empreendimento-obra-modulo.csv/20260930T222158Z.d9a84fa14970.csv.gz",
+      "sha256": "d9a84fa1497095eee660670b13c4f41e58bad3eab3affac30e0dfee77fa8d6e0",
+      "capturado_em": "2026-09-30T22:21:58Z",
+      "publicado_em": "2026-09-29T16:35:48Z"
+     },
+     {
+      "recurso": "siget-contrato-modulolinhatransmissao-subestacaoorigem-subestacaodestino.csv",
+      "arquivo": "data/energia/bronze/aneel/aneel_siget/siget-contrato-modulolinhatransmissao-subestacaoorigem-subestacaodestino.csv/20260930T222210Z.4d5200f2d103.csv.gz",
+      "sha256": "4d5200f2d10398774357ab55c66d6da848f1a88804c209d8be7ccb2b48f57711",
+      "capturado_em": "2026-09-30T22:22:10Z",
+      "publicado_em": "2026-09-29T16:35:50Z"
+     }
+    ]
    },
-   "chaves_origem": "IdeEpd, IdeObr, IdeMdl (CSV de obras)",
-   "formula": "Σ NumEtnLinTms dos módulos LT distintos com obra de Instalação em empreendimentos Em andamento",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "módulos de linha (SigTipMdl = LT) distintos de obras do tipo Instalação em empreendimentos Em andamento; extensão NumEtnLinTms do arquivo de módulos de linha",
+   "manifesto": {
+    "rotulo": "Empreendimentos de transmissão do SIGET (CSV)",
+    "url": "/energia/series/expansao_obras_transmissao.csv"
+   },
+   "formula": "Σ NumEtnLinTms dos módulos de linha distintos (um por circuito)",
    "numerador": null,
    "denominador": null,
    "pesos": null,
    "exclusoes": [],
-   "cobertura": "Rede Básica cadastrada no SIGET",
-   "tratamento_ausencia": "Módulo sem extensão informada não soma.",
+   "cobertura": "empreendimentos de transmissão com contrato no SIGET",
+   "tratamento_ausencia": "módulo sem extensão informada não soma; MVA e km nunca são somados entre si",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-29T16:35:48Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:06:18Z"
    },
-   "revisoes": null,
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
    "testes": [
     {
-     "nome": "km e MVA em campos separados",
+     "nome": "extensão física",
      "resultado": "aprovado",
-     "detalhe": "nenhuma soma entre grandezas"
+     "detalhe": "0 módulos de linha com extensão negativa ou acima de 3.000 km"
+    },
+    {
+     "nome": "grandezas separadas",
+     "resultado": "aprovado",
+     "detalhe": "km, MVA e reais em campos distintos; nenhuma soma entre eles"
     }
    ],
    "reconciliacao": null,
    "download": [
     {
-     "rotulo": "Obras de transmissão (CSV)",
+     "rotulo": "Empreendimentos de transmissão do SIGET (CSV)",
      "url": "/energia/series/expansao_obras_transmissao.csv"
     }
    ],
-   "reproducao": "python3 pipeline/energia/executar_modulo.py expansao (coleta e gold); --sem-coleta refaz a gold a partir do silver.",
-   "citacao": "ANEEL. Sistema de Gestão da Transmissão (SIGET). Disponível em: https://dadosabertos.aneel.gov.br/dataset/sistema-de-gestao-da-transmissao-siget. Capturado em 2026-09-30. Processado pelo Observatório do Setor Elétrico (módulo Expansão)."
+   "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
+   "citacao": "SCRUTINIUMS. Linhas de transmissão novas em empreendimentos em andamento: 25.947 km, Rede Básica e demais instalações cadastradas no SIGET, 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Sistema de Gestão da Transmissão (SIGET) (recurso siget-contrato-empreendimento-obra-modulo.csv, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "leiloes_ultimo_ano": {
+   "indicador": "Extensão de linhas leiloadas no ano",
    "valor_exibido": "7.247 km",
-   "valor_calculo": 7247.0,
+   "valor_calculo": 7246.96,
    "unidade": "km",
-   "periodo": "2024",
-   "entidade": "Lotes de transmissão leiloados no ano",
+   "periodo": {
+    "inicio": "2024-01-01",
+    "fim": "2024-12-31"
+   },
+   "entidade": "lotes de transmissão leiloados no ano",
    "universo": "18 lotes",
    "filtros": [],
    "fonte": {
@@ -8961,102 +9263,135 @@
     "capturado_em": "2026-09-30T22:21:32Z",
     "publicado_em": "2026-09-01T05:01:33Z"
    },
-   "chaves_origem": "NumLeilao e NumLoteLeilao (CSV de leilões)",
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "leilão 001/2024, lote 1",
+    "leilão 001/2024, lote 10",
+    "leilão 001/2024, lote 11",
+    "leilão 001/2024, lote 12",
+    "leilão 001/2024, lote 13",
+    "leilão 001/2024, lote 14",
+    "leilão 001/2024, lote 15",
+    "leilão 001/2024, lote 2",
+    "leilão 001/2024, lote 3",
+    "leilão 001/2024, lote 4",
+    "leilão 001/2024, lote 5",
+    "leilão 001/2024, lote 6",
+    "leilão 001/2024, lote 7",
+    "leilão 001/2024, lote 8",
+    "leilão 001/2024, lote 9",
+    "leilão 002/2024, lote 1",
+    "leilão 002/2024, lote 3",
+    "leilão 002/2024, lote 4"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
    "formula": "Σ MdaExtensaoLinhaTransmissaoKm dos lotes do ano",
    "numerador": null,
    "denominador": null,
    "pesos": null,
    "exclusoes": [],
-   "cobertura": "Leilões desde 1999",
-   "tratamento_ausencia": "Lote sem linha soma 0 km (valor publicado pela fonte).",
+   "cobertura": "leilões de transmissão desde 1999; o arquivo termina no leilão 002/2024",
+   "tratamento_ausencia": "lote só de subestação tem 0 km publicado pela fonte e soma 0; ano sem linha no arquivo é ausência, não zero",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-01T05:01:33Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:06:18Z"
    },
-   "revisoes": null,
-   "testes": [],
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
+   "testes": [
+    {
+     "nome": "deságio publicado confere com a RAP",
+     "resultado": "ressalva",
+     "detalhe": "2 de 488 lotes com deságio publicado diferente de 1 − RAP vencedora ÷ RAP do edital (tolerância 0,6 ponto percentual)"
+    },
+    {
+     "nome": "grandezas separadas",
+     "resultado": "aprovado",
+     "detalhe": "km, MVA, investimento e RAP em campos distintos"
+    }
+   ],
    "reconciliacao": null,
    "download": [
     {
-     "rotulo": "Leilões de transmissão (CSV)",
+     "rotulo": "Leilões de transmissão por lote (CSV)",
      "url": "/energia/series/expansao_leiloes_transmissao.csv"
     }
    ],
-   "reproducao": "python3 pipeline/energia/executar_modulo.py expansao (coleta e gold); --sem-coleta refaz a gold a partir do silver.",
-   "citacao": "ANEEL. Resultado de leilões de geração e transmissão de energia elétrica. Disponível em: https://dadosabertos.aneel.gov.br/dataset/resultado-de-leiloes. Capturado em 2026-09-30. Processado pelo Observatório do Setor Elétrico (módulo Expansão)."
+   "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
+   "citacao": "SCRUTINIUMS. Extensão de linhas leiloadas no ano: 7.247 km, lotes de transmissão leiloados no ano, 01/01/2024 a 31/12/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Resultado de leilões de geração e transmissão de energia elétrica (recurso resultado-leiloes-transmissao.csv, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "pde_capacidade_2035": {
+   "indicador": "Capacidade instalada nacional em 2035 no Cenário de Referência do PDE 2035 (CENÁRIO)",
    "valor_exibido": "359 GW",
-   "valor_calculo": 359.008,
+   "valor_calculo": 359.00800000000004,
    "unidade": "GW",
-   "periodo": "dezembro de 2035 (CENÁRIO)",
-   "entidade": "Matriz elétrica nacional no Cenário de Referência do PDE 2035",
-   "universo": "categorias da Figura 3-25",
+   "periodo": {
+    "inicio": "2035-12",
+    "fim": "2035-12"
+   },
+   "entidade": "matriz elétrica nacional (inclui MMGD, baterias e resposta da demanda)",
+   "universo": "categorias da Figura 3-25 do PDE 2035",
    "filtros": [],
    "fonte": {
     "orgao": "EPE",
     "conjunto": "Plano Decenal de Expansão de Energia 2035",
-    "recurso": "Capítulo 03, aba Figura 3-25",
+    "recurso": "pde2035_dados_relatorio_final.zip",
     "url": "https://www.epe.gov.br/sites-pt/publicacoes-dados-abertos/publicacoes/Documents/PDE%202035_Dados_Relat%C3%B3rio%20Final.zip",
     "arquivo": "data/energia/bronze/epe/epe_pde/pde2035_dados_relatorio_final.zip/20260930T222253Z.aac18732cc52.zip.gz",
     "sha256": "aac18732cc527fda40b6082593b53705eb596f7e443dd2a7aae81da5075c6f6f",
     "capturado_em": "2026-09-30T22:22:53Z",
     "publicado_em": null
    },
-   "chaves_origem": "aba Figura 3-25 da planilha do Capítulo 03",
-   "formula": "Σ das categorias da Figura 3-25 em 2035-12",
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "planilha do Capítulo 03, aba Figura 3-25, linha 2035-12, coluna Baterias (GW)",
+    "planilha do Capítulo 03, aba Figura 3-25, linha 2035-12, coluna Biomassa (GW)",
+    "planilha do Capítulo 03, aba Figura 3-25, linha 2035-12, coluna Eólica (GW)",
+    "planilha do Capítulo 03, aba Figura 3-25, linha 2035-12, coluna MMGD (GW)",
+    "planilha do Capítulo 03, aba Figura 3-25, linha 2035-12, coluna PCH (GW)",
+    "planilha do Capítulo 03, aba Figura 3-25, linha 2035-12, coluna RD (GW)",
+    "planilha do Capítulo 03, aba Figura 3-25, linha 2035-12, coluna Solar fotovoltaica (GW)",
+    "planilha do Capítulo 03, aba Figura 3-25, linha 2035-12, coluna UHE (GW)",
+    "planilha do Capítulo 03, aba Figura 3-25, linha 2035-12, coluna UTE (GW)"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "Σ das categorias da Figura 3-25 em dezembro de 2035",
    "numerador": null,
    "denominador": null,
    "pesos": null,
    "exclusoes": [],
-   "cobertura": "Edição PDE 2035",
-   "tratamento_ausencia": "Não se aplica",
+   "cobertura": "edição PDE 2035 (data-base das premissas janeiro de 2025)",
+   "tratamento_ausencia": "célula vazia não soma",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": null
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:06:18Z"
    },
-   "revisoes": null,
-   "testes": [],
+   "revisoes": "Edição fixa aprovada: o caderno de dados é recapturado mensalmente e uma mudança de sha256 fica registrada como nova vintage.",
+   "testes": [
+    {
+     "nome": "colunas conferidas",
+     "resultado": "aprovado",
+     "detalhe": "título da aba e rótulos das colunas conferidos antes da leitura"
+    }
+   ],
    "reconciliacao": {
-    "descricao": "Total rotulado no relatório (p. 97)",
-    "resultado": [
-     {
-      "descricao": "Soma das categorias da Figura 3-25 em dez/2025 contra o total rotulado no relatório (249 GW, p. 97)",
-      "calculado_gw": 249.37,
-      "relatorio_gw": 249,
-      "diferenca_gw": 0.37,
-      "tolerancia_gw": 0.5,
-      "resultado": "aprovada"
-     },
-     {
-      "descricao": "Soma das categorias da Figura 3-25 em dez/2035 contra o total rotulado no relatório (359 GW, p. 97)",
-      "calculado_gw": 359.01,
-      "relatorio_gw": 359,
-      "diferenca_gw": 0.01,
-      "tolerancia_gw": 0.5,
-      "resultado": "aprovada"
-     },
-     {
-      "descricao": "Soma das fontes da Figura 3-6 em 2025 contra 'aproximadamente 251 GW' do texto (p. 72)",
-      "calculado_gw": 251.53,
-      "relatorio_gw": 251,
-      "diferenca_gw": 0.53,
-      "tolerancia_gw": 1.0,
-      "resultado": "aprovada"
-     }
-    ],
-    "tolerancia": "0,5 GW (arredondamento do rótulo em GW inteiros)"
+    "descricao": "total rotulado na Figura 3-25 do relatório final (359 GW em 2035, p. 97)",
+    "resultado": "aprovado",
+    "tolerancia": "0,5 GW (o relatório rotula o total em GW inteiros)"
    },
    "download": [
     {
-     "rotulo": "PDE 2035 (CSV)",
+     "rotulo": "PDE 2035: figuras usadas (CSV)",
      "url": "/energia/series/expansao_pde2035.csv"
     }
    ],
-   "reproducao": "python3 pipeline/energia/executar_modulo.py expansao (coleta e gold); --sem-coleta refaz a gold a partir do silver.",
-   "citacao": "EPE/MME. Plano Decenal de Expansão de Energia 2035. Brasília: MME/EPE, 2026. Figura 3-25. Disponível em: https://www.epe.gov.br/pt/publicacoes-dados-abertos/publicacoes/plano-decenal-de-expansao-de-energia-2035"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
+   "citacao": "SCRUTINIUMS. Capacidade instalada nacional em 2035 no Cenário de Referência do PDE 2035 (CENÁRIO): 359 GW, matriz elétrica nacional (inclui MMGD, baterias e resposta da demanda), 12/2035. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: EPE, Plano Decenal de Expansão de Energia 2035 (recurso pde2035_dados_relatorio_final.zip, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "downloads": [

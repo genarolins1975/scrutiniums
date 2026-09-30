@@ -179,6 +179,8 @@ def texto_periodo(periodo):
         return "período não informado"
     if ini == fim or not fim:
         return ini
+    if not ini:
+        return f"até {fim}"
     return f"{ini} a {fim}"
 
 

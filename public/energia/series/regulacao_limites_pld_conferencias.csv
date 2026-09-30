@@ -1,0 +1,42 @@
+conferencia;ano;ato;campo;valor_ato;valor_esperado;diferenca;tolerancia;resultado;detalhe
+trecho_no_pdf;2021;Resolução Homologatória ANEEL nº 2.828/2020;trecho;;;;igualdade de texto normalizado (espaços e quebras de linha);aprovado;3 passagens do trecho encontradas em areh20212994_1
+publicacao_no_extrato;2021;Resolução Homologatória ANEEL nº 2.828/2020;data_publicacao;;;;igualdade da data (dd.mm.aaaa);ressalva;data de publicação não conferida: extrato do ato não acessível; campo mantido vazio
+deliberacao_na_ata;2021;Resolução Homologatória ANEEL nº 2.828/2020;numero_e_data;;;;igualdade do número do ato;aprovado;Resolução Homologatória nº 2.828 deliberada em 15/12/2020 (47/2020 - RPO), processo 48500.005928/2020-28
+piso_teo;2021;Resolução Homologatória ANEEL nº 2.828/2020;pld_min;49.77;49.77;0.0;R$ 0,00/MWh (mesmo ato, mesma precisão);aprovado;TEO R$ 12,74/MWh e TEO de Itaipu R$ 49,77/MWh
+trecho_no_pdf;2022;Despacho ANEEL nº 4.046/2021;trecho;;;;igualdade de texto normalizado (espaços e quebras de linha);aprovado;1 passagens do trecho encontradas em dsp20214046
+publicacao_no_extrato;2022;Despacho ANEEL nº 4.046/2021;data_publicacao;;;;igualdade da data (dd.mm.aaaa);aprovado;'D.O. de 17.12.2021' encontrado em dsp20214046
+trecho_no_pdf;2022;Resolução Homologatória ANEEL nº 2.994/2021;trecho;;;;igualdade de texto normalizado;nao_executada;documento reh20212994ti: sem_arquivo
+publicacao_no_extrato;2022;Resolução Homologatória ANEEL nº 2.994/2021;data_publicacao;;;;igualdade da data (dd.mm.aaaa);aprovado;'D.O. de 20.12.2021' encontrado em reh20212994
+deliberacao_na_ata;2022;Resolução Homologatória ANEEL nº 2.994/2021;numero_e_data;;;;igualdade do número do ato;aprovado;Resolução Homologatória nº 2.994 deliberada em 14/12/2021 (47/2021 - RPO), processo 48500.005474/2021-76
+piso_teo;2022;Resolução Homologatória ANEEL nº 2.994/2021;pld_min;55.7;55.7;0.0;R$ 0,00/MWh (mesmo ato, mesma precisão);aprovado;TEO R$ 14,04/MWh e TEO de Itaipu R$ 55,70/MWh
+trecho_no_pdf;2023;Resolução Homologatória ANEEL nº 3.167/2022;trecho;;;;igualdade de texto normalizado (espaços e quebras de linha);aprovado;2 passagens do trecho encontradas em areh20223167_1
+publicacao_no_extrato;2023;Resolução Homologatória ANEEL nº 3.167/2022;data_publicacao;;;;igualdade da data (dd.mm.aaaa);aprovado;'D.O. de 04.01.2023' encontrado em reh20223167
+deliberacao_na_ata;2023;Resolução Homologatória ANEEL nº 3.167/2022;numero_e_data;;;;igualdade do número do ato;aprovado;Resolução Homologatória nº 3.167 deliberada em 29/12/2022 (5/2022 - RPE), processo 48500.008504/2022-87
+piso_teo;2023;Resolução Homologatória ANEEL nº 3.167/2022;pld_min;69.04;69.04;0.0;R$ 0,00/MWh;ressalva;TEO das demais usinas não lida no ato; conferido só contra a TEO de Itaipu
+trecho_no_pdf;2023;Retificação da Resolução Homologatória ANEEL nº 3.167/2022;trecho;;;;igualdade de texto normalizado (espaços e quebras de linha);aprovado;1 passagens do trecho encontradas em nreh20223167_1
+publicacao_no_extrato;2023;Retificação da Resolução Homologatória ANEEL nº 3.167/2022;data_publicacao;;;;igualdade da data (dd.mm.aaaa);aprovado;'D.O. de 06.01.2023' encontrado em reh20223167
+trecho_no_pdf;2024;Resolução Homologatória ANEEL nº 3.304/2023;trecho;;;;igualdade de texto normalizado (espaços e quebras de linha);aprovado;4 passagens do trecho encontradas em reh20233304ti
+publicacao_no_extrato;2024;Resolução Homologatória ANEEL nº 3.304/2023;data_publicacao;;;;igualdade da data (dd.mm.aaaa);aprovado;'D.O. de 22.12.2023' encontrado em reh20233304
+deliberacao_na_ata;2024;Resolução Homologatória ANEEL nº 3.304/2023;numero_e_data;;;;igualdade do número do ato;aprovado;Resolução Homologatória nº 3.304 deliberada em 19/12/2023 (4/2023 - RPE), processo 48500.006275/2023-47
+valor_na_ata;2024;Resolução Homologatória ANEEL nº 3.304/2023;pld_min;61.07;61.07;0.0;igualdade a centavos;aprovado;R$ 61,07/MWh escrito na decisão da ata de 19/12/2023
+valor_na_ata;2024;Resolução Homologatória ANEEL nº 3.304/2023;pld_max_horario;1470.57;1470.57;0.0;igualdade a centavos;aprovado;R$ 1.470,57/MWh escrito na decisão da ata de 19/12/2023
+valor_na_ata;2024;Resolução Homologatória ANEEL nº 3.304/2023;pld_max_estrutural;716.8;716.8;0.0;igualdade a centavos;aprovado;R$ 716,80/MWh escrito na decisão da ata de 19/12/2023
+piso_teo;2024;Resolução Homologatória ANEEL nº 3.304/2023;pld_min;61.07;61.07;0.0;R$ 0,00/MWh (mesmo ato, mesma precisão);aprovado;TEO R$ 15,83/MWh e TEO de Itaipu R$ 61,07/MWh
+trecho_no_pdf;2025;Despacho ANEEL nº 3.625/2024;trecho;;;;igualdade de texto normalizado (espaços e quebras de linha);aprovado;4 passagens do trecho encontradas em dsp20243625ti
+publicacao_no_extrato;2025;Despacho ANEEL nº 3.625/2024;data_publicacao;;;;igualdade da data (dd.mm.aaaa);aprovado;'D.O. de 17.12.2024' encontrado em dsp20243625
+piso_teo;2025;Despacho ANEEL nº 3.625/2024;pld_min;58.6;58.6;0.0;R$ 0,00/MWh (mesmo ato, mesma precisão);aprovado;TEO R$ 17,37/MWh e TEO de Itaipu R$ 58,60/MWh
+trecho_no_pdf;2026;Despacho ANEEL nº 3.850/2025;trecho;;;;igualdade de texto normalizado (espaços e quebras de linha);aprovado;4 passagens do trecho encontradas em dsp20253850ti
+publicacao_no_extrato;2026;Despacho ANEEL nº 3.850/2025;data_publicacao;;;;igualdade da data (dd.mm.aaaa);aprovado;'D.O. de 23.12.2025' encontrado em dsp20253850
+piso_teo;2026;Despacho ANEEL nº 3.850/2025;pld_min;57.31;57.31;0.0;R$ 0,00/MWh (mesmo ato, mesma precisão);aprovado;TEO R$ 18,27/MWh e TEO de Itaipu R$ 57,31/MWh
+regra_ipca;2022;Despacho ANEEL nº 4.046/2021;pld_max_estrutural;646.58;646.58;0.0;R$ 0,005/MWh (arredondamento a centavos);aprovado;583,88 × IPCA nov/2021 (6075.69) ÷ IPCA nov/2020 (5486.52)
+regra_ipca;2022;Despacho ANEEL nº 4.046/2021;pld_max_horario;1326.5;1326.5;0.0;R$ 0,005/MWh (arredondamento a centavos);aprovado;1.197,87 × IPCA nov/2021 (6075.69) ÷ IPCA nov/2020 (5486.52)
+regra_ipca;2023;Retificação da Resolução Homologatória ANEEL nº 3.167/2022;pld_max_estrutural;684.73;684.73;0.0;R$ 0,005/MWh (arredondamento a centavos);aprovado;646,58 × IPCA nov/2022 (6434.2) ÷ IPCA nov/2021 (6075.69)
+regra_ipca;2023;Retificação da Resolução Homologatória ANEEL nº 3.167/2022;pld_max_horario;1404.77;1404.77;0.0;R$ 0,005/MWh (arredondamento a centavos);aprovado;1.326,50 × IPCA nov/2022 (6434.2) ÷ IPCA nov/2021 (6075.69)
+regra_ipca;2024;Resolução Homologatória ANEEL nº 3.304/2023;pld_max_estrutural;716.8;716.8;0.0;R$ 0,005/MWh (arredondamento a centavos);aprovado;684,73 × IPCA nov/2023 (6735.55) ÷ IPCA nov/2022 (6434.2)
+regra_ipca;2024;Resolução Homologatória ANEEL nº 3.304/2023;pld_max_horario;1470.57;1470.56;0.01;R$ 0,005/MWh (arredondamento a centavos);reprovado;1.404,77 × IPCA nov/2023 (6735.55) ÷ IPCA nov/2022 (6434.2)
+regra_ipca;2025;Despacho ANEEL nº 3.625/2024;pld_max_estrutural;751.73;751.73;0.0;R$ 0,005/MWh (arredondamento a centavos);aprovado;716,80 × IPCA nov/2024 (7063.77) ÷ IPCA nov/2023 (6735.55)
+regra_ipca;2025;Despacho ANEEL nº 3.625/2024;pld_max_horario;1542.23;1542.23;0.0;R$ 0,005/MWh (arredondamento a centavos);aprovado;1.470,57 × IPCA nov/2024 (7063.77) ÷ IPCA nov/2023 (6735.55)
+regra_ipca;2026;Despacho ANEEL nº 3.850/2025;pld_max_estrutural;785.27;785.27;0.0;R$ 0,005/MWh (arredondamento a centavos);aprovado;751,73 × IPCA nov/2025 (7378.94) ÷ IPCA nov/2024 (7063.77)
+regra_ipca;2026;Despacho ANEEL nº 3.850/2025;pld_max_horario;1611.04;1611.04;0.0;R$ 0,005/MWh (arredondamento a centavos);aprovado;1.542,23 × IPCA nov/2025 (7378.94) ÷ IPCA nov/2024 (7063.77)
+regra_ipca;2023;Resolução Homologatória ANEEL nº 3.167/2022;pld_max_estrutural;678.29;678.29;0.0;R$ 0,005/MWh (arredondamento a centavos);aprovado;valor original retificado: 640,50 (REH nº 2.994/2021, preços de nov/2021) × IPCA nov/2022 ÷ nov/2021; a retificação passou a partir do Despacho nº 4.046/2021
+regra_ipca;2023;Resolução Homologatória ANEEL nº 3.167/2022;pld_max_horario;1391.56;1391.56;0.0;R$ 0,005/MWh (arredondamento a centavos);aprovado;valor original retificado: 1.314,02 (REH nº 2.994/2021, preços de nov/2021) × IPCA nov/2022 ÷ nov/2021; a retificação passou a partir do Despacho nº 4.046/2021

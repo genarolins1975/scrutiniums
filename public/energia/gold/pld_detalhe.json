@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "pld_detalhe.json",
- "gerado_em": "2026-09-30T22:32:14Z",
+ "gerado_em": "2026-09-30T23:02:36Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "dcad322a4ea9+alterado",
+ "versao_codigo": "dafa93bb2111+alterado",
  "disponivel": true,
  "unidade": "R$/MWh nominais, salvo onde indicado",
  "fuso": "Horário de Brasília (UTC−3, sem horário de verão no período integrado)",
@@ -24,6 +24,132 @@
  },
  "conceito": {
   "fontes_textuais": [
+   {
+    "id": "d5163_art57_caput",
+    "orgao": "Presidência da República (texto publicado pela Câmara dos Deputados)",
+    "texto": "Art. 57. A contabilização e a liquidação no mercado de curto prazo serão realizadas com base no PLD.",
+    "documento": "decreto_5163_2004",
+    "dispositivo": "art. 57, caput (redação do Decreto nº 9.143/2017)",
+    "origem": "Decreto nº 5.163, de 30 de julho de 2004 (norma atualizada), art. 57, caput (redação do Decreto nº 9.143/2017)",
+    "url": "https://www2.camara.leg.br/legin/fed/decret/2004/decreto-5163-30-julho-2004-533148-normaatualizada-pe.html"
+   },
+   {
+    "id": "d5163_art57_p1",
+    "orgao": "Presidência da República (texto publicado pela Câmara dos Deputados)",
+    "texto": "§ 1º O PLD, a ser publicado pela CCEE, será calculado antecipadamente, com periodicidade máxima semanal e terá como base o custo marginal de operação, limitado por preços mínimo e máximo, e deverá observar o seguinte:",
+    "documento": "decreto_5163_2004",
+    "dispositivo": "art. 57, § 1º",
+    "origem": "Decreto nº 5.163, de 30 de julho de 2004 (norma atualizada), art. 57, § 1º",
+    "url": "https://www2.camara.leg.br/legin/fed/decret/2004/decreto-5163-30-julho-2004-533148-normaatualizada-pe.html"
+   },
+   {
+    "id": "d5163_art57_p1_v",
+    "orgao": "Presidência da República (texto publicado pela Câmara dos Deputados)",
+    "texto": "V - as restrições de transmissão entre submercados;",
+    "documento": "decreto_5163_2004",
+    "dispositivo": "art. 57, § 1º, V",
+    "origem": "Decreto nº 5.163, de 30 de julho de 2004 (norma atualizada), art. 57, § 1º, V",
+    "url": "https://www2.camara.leg.br/legin/fed/decret/2004/decreto-5163-30-julho-2004-533148-normaatualizada-pe.html"
+   },
+   {
+    "id": "d5163_art57_p2",
+    "orgao": "Presidência da República (texto publicado pela Câmara dos Deputados)",
+    "texto": "§ 2º O valor máximo do PLD, a ser estabelecido pela ANEEL, será calculado levando em conta os custos variáveis de operação dos empreendimentos termelétricos disponíveis para o despacho centralizado.",
+    "documento": "decreto_5163_2004",
+    "dispositivo": "art. 57, § 2º",
+    "origem": "Decreto nº 5.163, de 30 de julho de 2004 (norma atualizada), art. 57, § 2º",
+    "url": "https://www2.camara.leg.br/legin/fed/decret/2004/decreto-5163-30-julho-2004-533148-normaatualizada-pe.html"
+   },
+   {
+    "id": "d5163_art57_p3",
+    "orgao": "Presidência da República (texto publicado pela Câmara dos Deputados)",
+    "texto": "§ 3º O valor mínimo do PLD, a ser estabelecido pela ANEEL, será calculado levando em conta os custos de operação e manutenção das usinas hidrelétricas, bem como os relativos à compensação financeira pelo uso dos recursos hídricos e royalties.",
+    "documento": "decreto_5163_2004",
+    "dispositivo": "art. 57, § 3º",
+    "origem": "Decreto nº 5.163, de 30 de julho de 2004 (norma atualizada), art. 57, § 3º",
+    "url": "https://www2.camara.leg.br/legin/fed/decret/2004/decreto-5163-30-julho-2004-533148-normaatualizada-pe.html"
+   },
+   {
+    "id": "d5163_art57_p4",
+    "orgao": "Presidência da República (texto publicado pela Câmara dos Deputados)",
+    "texto": "§ 4º O critério determinante para a definição dos submercados será a presença e duração de restrições relevantes de transmissão aos fluxos de energia elétrica no SIN.",
+    "documento": "decreto_5163_2004",
+    "dispositivo": "art. 57, § 4º",
+    "origem": "Decreto nº 5.163, de 30 de julho de 2004 (norma atualizada), art. 57, § 4º",
+    "url": "https://www2.camara.leg.br/legin/fed/decret/2004/decreto-5163-30-julho-2004-533148-normaatualizada-pe.html"
+   },
+   {
+    "id": "d5163_art57_p5",
+    "orgao": "Presidência da República (texto publicado pela Câmara dos Deputados)",
+    "texto": "§ 5º O cálculo do PLD em cada submercado levará em conta o ajuste de todas as quantidades de energia pela aplicação do fator de perdas de transmissão, relativamente a um ponto comum de referência, definido para cada submercado.",
+    "documento": "decreto_5163_2004",
+    "dispositivo": "art. 57, § 5º",
+    "origem": "Decreto nº 5.163, de 30 de julho de 2004 (norma atualizada), art. 57, § 5º",
+    "url": "https://www2.camara.leg.br/legin/fed/decret/2004/decreto-5163-30-julho-2004-533148-normaatualizada-pe.html"
+   },
+   {
+    "id": "d5163_art57_p6",
+    "orgao": "Presidência da República (texto publicado pela Câmara dos Deputados)",
+    "texto": "§ 6º A contabilização e a liquidação no mercado de curto prazo serão realizadas no máximo em base mensal.",
+    "documento": "decreto_5163_2004",
+    "dispositivo": "art. 57, § 6º (redação do Decreto nº 9.143/2017)",
+    "origem": "Decreto nº 5.163, de 30 de julho de 2004 (norma atualizada), art. 57, § 6º (redação do Decreto nº 9.143/2017)",
+    "url": "https://www2.camara.leg.br/legin/fed/decret/2004/decreto-5163-30-julho-2004-533148-normaatualizada-pe.html"
+   },
+   {
+    "id": "d5163_art58",
+    "orgao": "Presidência da República (texto publicado pela Câmara dos Deputados)",
+    "texto": "Art. 58. O processo de contabilização e liquidação de energia elétrica, realizado segundo as regras e os procedimentos de comercialização da CCEE, identificará as quantidades comercializadas no mercado e as liquidadas ao PLD.",
+    "documento": "decreto_5163_2004",
+    "dispositivo": "art. 58",
+    "origem": "Decreto nº 5.163, de 30 de julho de 2004 (norma atualizada), art. 58",
+    "url": "https://www2.camara.leg.br/legin/fed/decret/2004/decreto-5163-30-julho-2004-533148-normaatualizada-pe.html"
+   },
+   {
+    "id": "ren957_art2_xiii",
+    "orgao": "ANEEL",
+    "texto": "XIII – Mercado de Curto Prazo – MCP: denominação do processo em que se procede à contabilização e liquidação financeira das diferenças apuradas entre os montantes de energia elétrica seguintes: a) contratados, registrados e validados pelos agentes da CCEE, cujo registro tenha sido efetivado pela Câmara; e b) de geração ou de consumo efetivamente verificados e atribuídos aos respectivos agentes da CCEE;",
+    "documento": "ren_aneel_957_2021",
+    "dispositivo": "art. 2º, XIII",
+    "origem": "Resolução Normativa ANEEL nº 957, de 7 de dezembro de 2021 (Convenção de Comercialização), texto compilado, art. 2º, XIII",
+    "url": "https://www2.aneel.gov.br/cedoc/ren2021957.pdf"
+   },
+   {
+    "id": "ren957_art5_p4",
+    "orgao": "ANEEL",
+    "texto": "§ 4º As operações realizadas no MCP serão contabilizadas pela CCEE de acordo com as Regras e Procedimentos de Comercialização, inclusive as relativas ao intercâmbio internacional de energia elétrica e Energia de Reserva, definidas por regulamentação específica, devendo as exposições dos agentes da CCEE serem valoradas ao PLD.",
+    "documento": "ren_aneel_957_2021",
+    "dispositivo": "art. 5º, § 4º",
+    "origem": "Resolução Normativa ANEEL nº 957, de 7 de dezembro de 2021 (Convenção de Comercialização), texto compilado, art. 5º, § 4º",
+    "url": "https://www2.aneel.gov.br/cedoc/ren2021957.pdf"
+   },
+   {
+    "id": "ren957_art76",
+    "orgao": "ANEEL",
+    "texto": "Art. 76. A CCEE identificará os montantes de energia comercializados pelos Agentes no MCP, por intermédio do processo de Contabilização, considerando os dados verificados de geração, de consumo e os montantes de energia elétrica contratados e registrados.",
+    "documento": "ren_aneel_957_2021",
+    "dispositivo": "art. 76",
+    "origem": "Resolução Normativa ANEEL nº 957, de 7 de dezembro de 2021 (Convenção de Comercialização), texto compilado, art. 76",
+    "url": "https://www2.aneel.gov.br/cedoc/ren2021957.pdf"
+   },
+   {
+    "id": "ren957_art78",
+    "orgao": "ANEEL",
+    "texto": "Art. 78. O PLD a ser divulgado pela CCEE será calculado antecipadamente, terá como base o Custo Marginal de Operação, será limitado por preços mínimo e máximo e deverá observar o disposto nos incisos I a VII do § 1º e no § 6º do art. 57 do Decreto nº 5.163, de 2004, e regulamentação da ANEEL.",
+    "documento": "ren_aneel_957_2021",
+    "dispositivo": "art. 78",
+    "origem": "Resolução Normativa ANEEL nº 957, de 7 de dezembro de 2021 (Convenção de Comercialização), texto compilado, art. 78",
+    "url": "https://www2.aneel.gov.br/cedoc/ren2021957.pdf"
+   },
+   {
+    "id": "ren957_art82",
+    "orgao": "ANEEL",
+    "texto": "Art. 82. A Liquidação Financeira das operações de compra e venda de energia elétrica realizadas no âmbito MCP far-se-á de forma multilateral, com periodicidade máxima mensal, conforme Procedimentos de Comercialização específicos.",
+    "documento": "ren_aneel_957_2021",
+    "dispositivo": "art. 82",
+    "origem": "Resolução Normativa ANEEL nº 957, de 7 de dezembro de 2021 (Convenção de Comercialização), texto compilado, art. 82",
+    "url": "https://www2.aneel.gov.br/cedoc/ren2021957.pdf"
+   },
    {
     "id": "ccee_pld",
     "orgao": "CCEE",
@@ -63,94 +189,99 @@
     "capturado_em": "2026-09-30T22:06:13Z",
     "sha256": null,
     "arquivo": null
-   },
-   {
-    "id": "aneel_2021_Resolução Homologatória ANEEL nº 2.828/2020",
-    "orgao": "ANEEL",
-    "texto": "Na Tabela a seguir encontram-se os valores estabelecidos por meio da REH nº 2.828, de 2020, para 2020, e aqueles que constam deste voto, para 2022 […] PLDmin (R$/MWh)15 49,77 55,70 11,91 PLDmax_estrutural 583,88 640,5016 9,70 (R$/MWh) PLDmax_horário (R$/MWh) 1.197,87 1.314,0217 9,70 […] 14 Nos termos da REH nº 2.828, de 2020.",
-    "origem": "Resolução Homologatória ANEEL nº 2.828/2020, Texto integral do ato não acessado (biblioteca da ANEEL bloqueada e sem cópia pública arquivada); valores citados na tabela do item 42 do Voto do processo nº 48500.005474/2021-76, que resultou na REH nº 2.994/2021",
-    "url": "https://www2.aneel.gov.br/cedoc/areh20212994_1.pdf",
-    "capturado_em": "2026-09-30",
-    "sha256": null,
-    "arquivo": "pipeline/energia/regulatorio/limites_pld.json"
-   },
-   {
-    "id": "aneel_2022_Despacho ANEEL nº 4.046/2021",
-    "orgao": "ANEEL",
-    "texto": "decide atualizar, com vigência em 2022, os limites do PLDmax_ estrutural e PLDmax_horário para 646,58/MWh e R$ 1.326,50/MWh respectivamnte.",
-    "origem": "Despacho ANEEL nº 4.046/2021, Parte decisória do despacho (ato sem artigos), emitido por delegação do art. 3º da REH nº 2.994/2021",
-    "url": "https://www2.aneel.gov.br/cedoc/dsp20214046.pdf",
-    "capturado_em": "2026-09-30",
-    "sha256": null,
-    "arquivo": "pipeline/energia/regulatorio/limites_pld.json"
-   },
-   {
-    "id": "aneel_2022_Resolução Homologatória ANEEL nº 2.994/2021",
-    "orgao": "ANEEL",
-    "texto": "Art. 2º Definir os limites mínimo (PLDmin) e máximos (PLDmax_estrutural e PLDmax_horário ) do Preço de Liquidação de Diferenças (PLD), com validade entre a primeira semana operativa de 2022 e 31 de dezembro de 2022 […] § 1º O valor do limite mínimo (PLDmin) de R$ 55,70/MWh […] Art. 3º Delegar ao Superintendente de Gestão Tarifária competência para atualizar os limites máximos do PLD previstos no art. 2º, §§ 2º e 3º, por ocasião da publicação do Índice Nacional de Preços ao Consumidor Amplo (IPCA) de novembro de 2021.",
-    "origem": "Resolução Homologatória ANEEL nº 2.994/2021, art. 2º, § 1º (limite mínimo). Os limites máximos do art. 2º, §§ 2º e 3º, estavam a preços de novembro de 2021 e foram substituídos, antes do início da vigência e por delegação do art. 3º, pelos valores do Despacho nº 4.046/2021; por isso não são registrados aqui como vigentes",
-    "url": "https://www2.aneel.gov.br/cedoc/reh20212994ti.pdf",
-    "capturado_em": "2026-09-30",
-    "sha256": null,
-    "arquivo": "pipeline/energia/regulatorio/limites_pld.json"
-   },
-   {
-    "id": "aneel_2023_Resolução Homologatória ANEEL nº 3.167/2022",
-    "orgao": "ANEEL",
-    "texto": "a área técnica calculou que o PLDmax_estrutural para 2023 será de R$ 678,29/MWh e PLDmax_horário para 2023 será de R$ 1.391,56/MWh […] voto por aprovar o valor do PLDmin para o ano de 2023 em R$ 69,04/MWh.",
-    "origem": "Resolução Homologatória ANEEL nº 3.167/2022, Texto integral do ato não acessado (biblioteca da ANEEL bloqueada e sem cópia pública arquivada); valores do Voto do Diretor-Relator, itens 41 e 115, processo nº 48500.008504/2022-87. Os limites máximos foram retificados no DOU de 06/01/2023 (registro seguinte)",
-    "url": "https://www2.aneel.gov.br/cedoc/areh20223167_1.pdf",
-    "capturado_em": "2026-09-30",
-    "sha256": null,
-    "arquivo": "pipeline/energia/regulatorio/limites_pld.json"
-   },
-   {
-    "id": "aneel_2023_Retificação da Resolução Homologatória ANEEL nº 3.167/2022",
-    "orgao": "ANEEL",
-    "texto": "14. Ao atualizar os valores estabelecidos no Despacho nº 4.046/2021, pelo IPCA apresentado na Tabela 1, obtêm-se o PLDmax_estrutural de R$ 684,73/MWh e o PLDmax_horário de R$ 1.404,77/MWh para o ano de 2023 conforme Tabela 2.",
-    "origem": "Retificação da Resolução Homologatória ANEEL nº 3.167/2022, Retificação dos limites máximos da REH nº 3.167/2022 (texto retificado não acessado); valores do item 14 e da Tabela 2 da Nota Técnica nº 01/2023-SGT/ANEEL, que fundamenta a retificação; data da retificação no extrato oficial da REH nº 3.167/2022",
-    "url": "https://www2.aneel.gov.br/cedoc/nreh20223167_1.pdf",
-    "capturado_em": "2026-09-30",
-    "sha256": null,
-    "arquivo": "pipeline/energia/regulatorio/limites_pld.json"
-   },
-   {
-    "id": "aneel_2024_Resolução Homologatória ANEEL nº 3.304/2023",
-    "orgao": "ANEEL",
-    "texto": "Art. 2º Definir os seguintes limites do Preço de Liquidação de Diferenças – PLD, com validade entre 1º de janeiro de 2024 e 31 de dezembro de 2024 […] I – O valor do limite mínimo (PLDmin) em R$ 61,07/MWh […] II – O valor do limite máximo estrutural (PLDmax_estrutural) em R$ 716,80/MWh […] III – O valor do limite máximo horário (PLDmax_horário) em R$ 1.470,57",
-    "origem": "Resolução Homologatória ANEEL nº 3.304/2023, art. 2º, incisos I a III",
-    "url": "https://www2.aneel.gov.br/cedoc/reh20233304ti.pdf",
-    "capturado_em": "2026-09-30",
-    "sha256": null,
-    "arquivo": "pipeline/energia/regulatorio/limites_pld.json"
-   },
-   {
-    "id": "aneel_2025_Despacho ANEEL nº 3.625/2024",
-    "orgao": "ANEEL",
-    "texto": "(ii) definir os limites do Preço de Liquidação de Diferenças – PLD, com validade entre 1º de janeiro de 2025 e 31 de dezembro de 2025 […] o valor do limite mínimo (PLDmin) de R$ 58,60/MWh […] o valor do limite máximo estrutural (PLDmax_estrutural) de R$ 751,73/MWh […] o valor do limite máximo horário (PLDmax_horário) de R$ 1.542,23",
-    "origem": "Despacho ANEEL nº 3.625/2024, item (ii) da parte decisória (ato sem artigos), emitido pela Superintendência de Gestão Tarifária e Regulação Econômica por delegação da Portaria nº 6.828/2023",
-    "url": "https://www2.aneel.gov.br/cedoc/dsp20243625ti.pdf",
-    "capturado_em": "2026-09-30",
-    "sha256": null,
-    "arquivo": "pipeline/energia/regulatorio/limites_pld.json"
-   },
-   {
-    "id": "aneel_2026_Despacho ANEEL nº 3.850/2025",
-    "orgao": "ANEEL",
-    "texto": "estabelecer, com vigência entre 1º de janeiro de 2026 e 31 de dezembro de 2026 […] o valor do limite mínimo (PLDmin) de R$ 57,31/MWh […] o valor do limite máximo estrutural (PLDmax_estrutural) de R$ 785,27/MWh […] o valor do limite máximo horário (PLDmax_horário) de R$ 1.611,04",
-    "origem": "Despacho ANEEL nº 3.850/2025, item (ii) da parte decisória (ato sem artigos), emitido pela Superintendência Adjunta de Gestão Tarifária e Regulação Econômica por delegação da Portaria nº 6.828/2023",
-    "url": "https://www2.aneel.gov.br/cedoc/dsp20253850ti.pdf",
-    "capturado_em": "2026-09-30",
-    "sha256": null,
-    "arquivo": "pipeline/energia/regulatorio/limites_pld.json"
    }
   ],
+  "documentos_normativos": {
+   "decreto_5163_2004": {
+    "orgao": "Presidência da República (texto publicado pela Câmara dos Deputados)",
+    "titulo": "Decreto nº 5.163, de 30 de julho de 2004 (norma atualizada)",
+    "url": "https://www2.camara.leg.br/legin/fed/decret/2004/decreto-5163-30-julho-2004-533148-normaatualizada-pe.html",
+    "url_copia": null,
+    "licenca": "Ato normativo federal: texto oficial de domínio público (Lei nº 9.610/1998, art. 8º, IV)",
+    "nota": "Norma atualizada mantida pela Câmara dos Deputados (Legislação Informatizada). O caput e o § 6º do art. 57 têm redação dada pelo Decreto nº 9.143/2017; a publicação original está em https://www2.camara.leg.br/legin/fed/decret/2004/decreto-5163-30-julho-2004-533148-publicacaooriginal-16354-pe.html.",
+    "capturado_em": "2026-09-30T22:48:12Z",
+    "sha256": "0557d7f53b199af508b8f84c3f950b140e3d30ced5531f6a26fab394cf05a518",
+    "arquivo": "data/energia/bronze/camara-dos-deputados/normas_pld/decreto_5163_2004/20260930T224812Z.0557d7f53b19.html.gz"
+   },
+   "ren_aneel_957_2021": {
+    "orgao": "ANEEL",
+    "titulo": "Resolução Normativa ANEEL nº 957, de 7 de dezembro de 2021 (Convenção de Comercialização), texto compilado",
+    "url": "https://www2.aneel.gov.br/cedoc/ren2021957.pdf",
+    "url_copia": "https://web.archive.org/web/20250601132442id_/https://www2.aneel.gov.br/cedoc/ren2021957.pdf",
+    "licenca": "Ato normativo da ANEEL: texto oficial de domínio público (Lei nº 9.610/1998, art. 8º, IV)",
+    "nota": "O endereço oficial respondeu HTTP 403 com desafio de navegador (Cloudflare) em 30/09/2026. A cópia é a do Internet Archive de 2025-06-01 do mesmo endereço oficial; o texto compilado traz as alterações até a data da cópia.",
+    "capturado_em": "2026-09-30T22:48:13Z",
+    "sha256": "472d18da11b487082e7abb9be992b67126f5b92f0929bc3785009d5807023e00",
+    "arquivo": "data/energia/bronze/aneel/normas_pld/ren_aneel_957_2021/20260930T224813Z.472d18da11b4.pdf.gz"
+   }
+  },
+  "normas_nao_conferidas": [],
+  "atos_de_limites": "limites.atos",
+  "exemplo_liquidacao": {
+   "natureza": "EXEMPLO_SINTETICO",
+   "aviso": "Exemplo sintético para explicar o mecanismo. As quantidades são hipotéticas e não representam a contabilização de nenhum agente nem de nenhum mês; o único número real é o PLD da hora indicada, publicado pela CCEE.",
+   "pld": {
+    "valor": 577.2,
+    "sm": "SE",
+    "nome": "Sudeste/Centro-Oeste",
+    "hora": "2026-09-30T18:00",
+    "unidade": "R$/MWh",
+    "fonte": "CCEE, PLD_HORARIO",
+    "regra_escolha": "hora de maior PLD do Sudeste/Centro-Oeste no dia de referência"
+   },
+   "formula": "diferença (MWh) = geração verificada + compras contratadas − consumo verificado − vendas contratadas; valor no mercado de curto prazo (R$) = diferença × PLD da hora",
+   "agentes": [
+    {
+     "id": "consumidor",
+     "rotulo": "Consumidor hipotético",
+     "compras_contratadas_mwh": 100.0,
+     "vendas_contratadas_mwh": 0.0,
+     "geracao_verificada_mwh": 0.0,
+     "consumo_verificado_mwh": 120.0,
+     "diferenca_mwh": -20.0,
+     "valor_rs": -11544.0,
+     "resultado": "débito"
+    },
+    {
+     "id": "gerador",
+     "rotulo": "Gerador hipotético",
+     "compras_contratadas_mwh": 0.0,
+     "vendas_contratadas_mwh": 100.0,
+     "geracao_verificada_mwh": 120.0,
+     "consumo_verificado_mwh": 0.0,
+     "diferenca_mwh": 20.0,
+     "valor_rs": 11544.0,
+     "resultado": "crédito"
+    }
+   ],
+   "leitura": "O preço de cada contrato é acertado entre as partes e não entra na conta: só a diferença entre o que foi contratado e o que foi verificado é valorada ao PLD. Neste exemplo as duas diferenças se compensam.",
+   "simplificacoes": [
+    "Uma hora e um submercado. A contabilização real soma todas as horas do mês e a liquidação financeira é multilateral, com periodicidade máxima mensal (REN ANEEL nº 957/2021, art. 82).",
+    "Sem perdas de transmissão: o cálculo real ajusta as quantidades pelo fator de perdas (Decreto nº 5.163/2004, art. 57, § 5º).",
+    "Sem encargos, penalidades, garantias financeiras, sazonalização e modulação de contratos, nem mecanismos de compartilhamento de risco.",
+    "Contratos, geração e consumo no mesmo submercado: o exemplo não trata diferenças de preço entre submercados.",
+    "Crédito para diferença positiva e débito para negativa é a convenção deste exemplo; as regras algébricas da CCEE não estão acessíveis (HTTP 403)."
+   ],
+   "base_normativa": [
+    "ren957_art2_xiii",
+    "ren957_art5_p4",
+    "d5163_art57_caput",
+    "ren957_art82",
+    "d5163_art57_p5"
+   ]
+  },
   "bloqueios": [
    {
     "fonte": "CCEE: regras de comercialização (módulo Preço de Liquidação das Diferenças) e painéis de preços",
     "url": "https://www.ccee.org.br/precos/painel-precos",
     "evidencia": "HTTP 403 com página \"Acesso bloqueado\" do firewall da origem em 30/09/2026, também para o portal de dados abertos e para o servidor de download",
-    "consequencia": "Os textos de formação de preço usam só as descrições oficiais já versionadas e os atos da ANEEL; a regra detalhada de cálculo não é citada."
+    "consequencia": "A regra algébrica de cálculo e de contabilização não é citada. Os textos usam o Decreto nº 5.163/2004, a Convenção de Comercialização (REN ANEEL nº 957/2021), as descrições oficiais já versionadas e os atos da ANEEL."
+   },
+   {
+    "fonte": "ANEEL: biblioteca de atos (www2.aneel.gov.br/cedoc)",
+    "url": "https://www2.aneel.gov.br/cedoc/ren2021957.pdf",
+    "evidencia": "HTTP 403 com desafio de navegador (Cloudflare) em 30/09/2026",
+    "consequencia": "A REN nº 957/2021 é lida da cópia do Internet Archive do mesmo endereço oficial, de 2025-06-01, com sha256 registrado; nenhuma alteração posterior à cópia está coberta."
    }
   ]
  },
@@ -167,7 +298,10 @@
     "unidade_no_dicionario": "R$/MW",
     "unidade_patamares_no_dicionario": "R$/MWh",
     "descricao_fonte": "Valores do custo, por unidade de energia produzida, para atender ao incremento de uma unidade de carga no SIN, chamado de Custo Marginal de Operação – CMO. Valores para cada semana operativa por subsistema, e por patamar de carga, além da média semanal, estimados pelo modelo Decomp.",
-    "url": "https://dados.ons.org.br/dataset/cmo-semanal"
+    "url": "https://dados.ons.org.br/dataset/cmo-semanal",
+    "entrega": "semana operativa de sábado a sexta",
+    "momento_do_calculo": null,
+    "deck_versao": "não identificados por valor no conjunto do ONS"
    },
    {
     "id": "dessem_semi_horario",
@@ -178,7 +312,10 @@
     "grao_geografico": "subsistema: média dos CMOs das barras do subsistema ponderada pelas cargas (descrição do ONS)",
     "unidade_no_dicionario": "R$/MWh",
     "descricao_fonte": "Valores do custo, por unidade de energia produzida, para atender ao incremento de uma unidade de carga no SIN, chamado de Custo Marginal de Operação – CMO. Este CMO é estimado pelo modelo DESSEM para cada barra do sistema em base semi-horária. O CMO do subsistema é obtido pelo média dos CMOs nas barras de cada subsistema, ponderados pelas respectivas cargas, considerando que um aumento de carga no subsistema se dá de maneira uniforme nas barras que a ele pertencem.",
-    "url": "https://dados.ons.org.br/dataset/cmo-semi-horario"
+    "url": "https://dados.ons.org.br/dataset/cmo-semi-horario",
+    "entrega": "meia hora",
+    "momento_do_calculo": null,
+    "deck_versao": "não identificados por valor no conjunto do ONS"
    },
    {
     "id": "pld_horario",
@@ -189,11 +326,14 @@
     "grao_geografico": "submercado",
     "unidade_no_dicionario": "R$/MWh",
     "descricao_fonte": "O Preço de Liquidação das Diferenças (PLD) é calculado pela Câmara de Comercialização de Energia Elétrica (CCEE) diariamente para cada hora do dia seguinte, considerando a aplicação dos limites máximos (horário e estrutural) e mínimo vigentes para cada período de apuração e para cada submercado. Este cálculo é realizado por modelos computacionais (Newave, Decomp e Dessem) e tem como base o Custo Marginal de Operação (CMO).",
-    "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario"
+    "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "entrega": "hora",
+    "momento_do_calculo": "diariamente, para cada hora do dia seguinte (descrição oficial da CCEE)",
+    "deck_versao": "não identificados por valor no conjunto da CCEE"
    }
   ],
   "nao_equivalencia": [
-   "O CMO semanal do DECOMP é calculado antes da semana operativa, para a semana inteira e por patamar de carga; não é uma média de valores horários.",
+   "O CMO semanal do DECOMP é um valor para a semana operativa inteira, por patamar de carga e em média semanal (descrição do ONS); não é uma média de valores horários.",
    "O CMO semi-horário do DESSEM publicado pelo ONS é o do subsistema, média das barras ponderada pelas cargas; os conjuntos do ONS não identificam deck, versão ou revisão do modelo por valor.",
    "O PLD é calculado pela CCEE para cada hora do dia seguinte, com base no CMO e com a aplicação dos limites mínimo e máximos vigentes; a descrição pública integrada não detalha as diferenças de configuração entre a execução da CCEE e a do ONS.",
    "Agregar as duas meias horas por duração alinha a resolução, mas não torna as séries iguais: mesmo nas horas com o PLD entre os limites, o PLD e o CMO do ONS diferem (ver relação por ano)."
@@ -260,150 +400,6 @@
   },
   "semanal": {
    "fim": [
-    "2021-01-08",
-    "2021-01-15",
-    "2021-01-22",
-    "2021-01-29",
-    "2021-02-05",
-    "2021-02-12",
-    "2021-02-19",
-    "2021-02-26",
-    "2021-03-05",
-    "2021-03-12",
-    "2021-03-19",
-    "2021-03-26",
-    "2021-04-02",
-    "2021-04-09",
-    "2021-04-16",
-    "2021-04-23",
-    "2021-04-30",
-    "2021-05-07",
-    "2021-05-14",
-    "2021-05-21",
-    "2021-05-28",
-    "2021-06-04",
-    "2021-06-11",
-    "2021-06-18",
-    "2021-06-25",
-    "2021-07-02",
-    "2021-07-09",
-    "2021-07-16",
-    "2021-07-23",
-    "2021-07-30",
-    "2021-08-06",
-    "2021-08-13",
-    "2021-08-20",
-    "2021-08-27",
-    "2021-09-03",
-    "2021-09-10",
-    "2021-09-17",
-    "2021-09-24",
-    "2021-10-01",
-    "2021-10-08",
-    "2021-10-15",
-    "2021-10-22",
-    "2021-10-29",
-    "2021-11-05",
-    "2021-11-12",
-    "2021-11-19",
-    "2021-11-26",
-    "2021-12-03",
-    "2021-12-10",
-    "2021-12-17",
-    "2021-12-24",
-    "2021-12-31",
-    "2022-01-07",
-    "2022-01-14",
-    "2022-01-21",
-    "2022-01-28",
-    "2022-02-04",
-    "2022-02-11",
-    "2022-02-18",
-    "2022-02-25",
-    "2022-03-04",
-    "2022-03-11",
-    "2022-03-18",
-    "2022-03-25",
-    "2022-04-01",
-    "2022-04-08",
-    "2022-04-15",
-    "2022-04-22",
-    "2022-04-29",
-    "2022-05-06",
-    "2022-05-13",
-    "2022-05-20",
-    "2022-05-27",
-    "2022-06-03",
-    "2022-06-10",
-    "2022-06-17",
-    "2022-06-24",
-    "2022-07-01",
-    "2022-07-08",
-    "2022-07-15",
-    "2022-07-22",
-    "2022-07-29",
-    "2022-08-05",
-    "2022-08-12",
-    "2022-08-19",
-    "2022-08-26",
-    "2022-09-02",
-    "2022-09-09",
-    "2022-09-16",
-    "2022-09-23",
-    "2022-09-30",
-    "2022-10-07",
-    "2022-10-14",
-    "2022-10-21",
-    "2022-10-28",
-    "2022-11-04",
-    "2022-11-11",
-    "2022-11-18",
-    "2022-11-25",
-    "2022-12-02",
-    "2022-12-09",
-    "2022-12-16",
-    "2022-12-23",
-    "2022-12-30",
-    "2023-01-06",
-    "2023-01-13",
-    "2023-01-20",
-    "2023-01-27",
-    "2023-02-03",
-    "2023-02-10",
-    "2023-02-17",
-    "2023-02-24",
-    "2023-03-03",
-    "2023-03-10",
-    "2023-03-17",
-    "2023-03-24",
-    "2023-03-31",
-    "2023-04-07",
-    "2023-04-14",
-    "2023-04-21",
-    "2023-04-28",
-    "2023-05-05",
-    "2023-05-12",
-    "2023-05-19",
-    "2023-05-26",
-    "2023-06-02",
-    "2023-06-09",
-    "2023-06-16",
-    "2023-06-23",
-    "2023-06-30",
-    "2023-07-07",
-    "2023-07-14",
-    "2023-07-21",
-    "2023-07-28",
-    "2023-08-04",
-    "2023-08-11",
-    "2023-08-18",
-    "2023-08-25",
-    "2023-09-01",
-    "2023-09-08",
-    "2023-09-15",
-    "2023-09-22",
-    "2023-09-29",
-    "2023-10-06",
     "2023-10-13",
     "2023-10-20",
     "2023-10-27",
@@ -562,150 +558,6 @@
     "2026-10-02"
    ],
    "inicio": [
-    "2021-01-02",
-    "2021-01-09",
-    "2021-01-16",
-    "2021-01-23",
-    "2021-01-30",
-    "2021-02-06",
-    "2021-02-13",
-    "2021-02-20",
-    "2021-02-27",
-    "2021-03-06",
-    "2021-03-13",
-    "2021-03-20",
-    "2021-03-27",
-    "2021-04-03",
-    "2021-04-10",
-    "2021-04-17",
-    "2021-04-24",
-    "2021-05-01",
-    "2021-05-08",
-    "2021-05-15",
-    "2021-05-22",
-    "2021-05-29",
-    "2021-06-05",
-    "2021-06-12",
-    "2021-06-19",
-    "2021-06-26",
-    "2021-07-03",
-    "2021-07-10",
-    "2021-07-17",
-    "2021-07-24",
-    "2021-07-31",
-    "2021-08-07",
-    "2021-08-14",
-    "2021-08-21",
-    "2021-08-28",
-    "2021-09-04",
-    "2021-09-11",
-    "2021-09-18",
-    "2021-09-25",
-    "2021-10-02",
-    "2021-10-09",
-    "2021-10-16",
-    "2021-10-23",
-    "2021-10-30",
-    "2021-11-06",
-    "2021-11-13",
-    "2021-11-20",
-    "2021-11-27",
-    "2021-12-04",
-    "2021-12-11",
-    "2021-12-18",
-    "2021-12-25",
-    "2022-01-01",
-    "2022-01-08",
-    "2022-01-15",
-    "2022-01-22",
-    "2022-01-29",
-    "2022-02-05",
-    "2022-02-12",
-    "2022-02-19",
-    "2022-02-26",
-    "2022-03-05",
-    "2022-03-12",
-    "2022-03-19",
-    "2022-03-26",
-    "2022-04-02",
-    "2022-04-09",
-    "2022-04-16",
-    "2022-04-23",
-    "2022-04-30",
-    "2022-05-07",
-    "2022-05-14",
-    "2022-05-21",
-    "2022-05-28",
-    "2022-06-04",
-    "2022-06-11",
-    "2022-06-18",
-    "2022-06-25",
-    "2022-07-02",
-    "2022-07-09",
-    "2022-07-16",
-    "2022-07-23",
-    "2022-07-30",
-    "2022-08-06",
-    "2022-08-13",
-    "2022-08-20",
-    "2022-08-27",
-    "2022-09-03",
-    "2022-09-10",
-    "2022-09-17",
-    "2022-09-24",
-    "2022-10-01",
-    "2022-10-08",
-    "2022-10-15",
-    "2022-10-22",
-    "2022-10-29",
-    "2022-11-05",
-    "2022-11-12",
-    "2022-11-19",
-    "2022-11-26",
-    "2022-12-03",
-    "2022-12-10",
-    "2022-12-17",
-    "2022-12-24",
-    "2022-12-31",
-    "2023-01-07",
-    "2023-01-14",
-    "2023-01-21",
-    "2023-01-28",
-    "2023-02-04",
-    "2023-02-11",
-    "2023-02-18",
-    "2023-02-25",
-    "2023-03-04",
-    "2023-03-11",
-    "2023-03-18",
-    "2023-03-25",
-    "2023-04-01",
-    "2023-04-08",
-    "2023-04-15",
-    "2023-04-22",
-    "2023-04-29",
-    "2023-05-06",
-    "2023-05-13",
-    "2023-05-20",
-    "2023-05-27",
-    "2023-06-03",
-    "2023-06-10",
-    "2023-06-17",
-    "2023-06-24",
-    "2023-07-01",
-    "2023-07-08",
-    "2023-07-15",
-    "2023-07-22",
-    "2023-07-29",
-    "2023-08-05",
-    "2023-08-12",
-    "2023-08-19",
-    "2023-08-26",
-    "2023-09-02",
-    "2023-09-09",
-    "2023-09-16",
-    "2023-09-23",
-    "2023-09-30",
     "2023-10-07",
     "2023-10-14",
     "2023-10-21",
@@ -865,150 +717,6 @@
    ],
    "SE": {
     "decomp": [
-     281.49,
-     361.74,
-     223.7,
-     177.73,
-     148.01,
-     179.93,
-     166.42,
-     175.74,
-     134.84,
-     81.27,
-     133.41,
-     139.33,
-     106.11,
-     157.67,
-     131.7,
-     164.9,
-     162.29,
-     173.48,
-     172.56,
-     220.13,
-     287.26,
-     325.11,
-     431.24,
-     434.26,
-     682.22,
-     944.55,
-     957.12,
-     1030.55,
-     1109.51,
-     1239.0,
-     2540.18,
-     2901.0,
-     3044.45,
-     2449.89,
-     1027.43,
-     1261.35,
-     868.3,
-     712.8,
-     533.36,
-     426.2,
-     198.74,
-     172.6,
-     161.01,
-     94.09,
-     99.64,
-     68.91,
-     88.23,
-     41.61,
-     56.65,
-     84.57,
-     63.66,
-     63.54,
-     66.62,
-     50.35,
-     61.77,
-     61.39,
-     13.25,
-     6.98,
-     10.19,
-     11.59,
-     10.03,
-     12.08,
-     13.2,
-     11.94,
-     42.32,
-     40.15,
-     6.48,
-     26.83,
-     32.22,
-     20.36,
-     15.13,
-     40.92,
-     42.28,
-     39.5,
-     57.89,
-     50.17,
-     50.08,
-     45.35,
-     55.86,
-     56.96,
-     66.81,
-     72.01,
-     98.67,
-     91.12,
-     70.65,
-     51.65,
-     50.19,
-     36.98,
-     44.28,
-     40.81,
-     36.0,
-     10.21,
-     4.12,
-     3.02,
-     3.57,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.07,
-     0.03,
-     0.01,
-     0.01,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
      0.0,
      0.0,
      0.0,
@@ -1167,150 +875,6 @@
      42.43
     ],
     "dessem": [
-     289.22,
-     369.24,
-     219.24,
-     183.74,
-     149.84,
-     171.6,
-     168.16,
-     176.2,
-     114.73,
-     77.19,
-     136.42,
-     133.12,
-     103.1,
-     126.14,
-     127.33,
-     174.63,
-     146.13,
-     212.35,
-     192.91,
-     236.66,
-     280.04,
-     368.09,
-     429.13,
-     407.3,
-     652.86,
-     906.08,
-     956.62,
-     1026.33,
-     1118.49,
-     1247.29,
-     2519.55,
-     null,
-     3033.36,
-     2412.0,
-     null,
-     1260.61,
-     779.93,
-     723.97,
-     543.2,
-     429.37,
-     203.41,
-     176.51,
-     161.32,
-     100.04,
-     101.18,
-     69.27,
-     90.55,
-     47.72,
-     64.15,
-     92.35,
-     64.68,
-     61.88,
-     null,
-     null,
-     57.62,
-     66.77,
-     13.44,
-     6.65,
-     9.52,
-     null,
-     10.42,
-     14.68,
-     null,
-     11.17,
-     34.3,
-     36.7,
-     10.48,
-     16.01,
-     26.78,
-     11.92,
-     11.47,
-     35.03,
-     38.93,
-     38.24,
-     49.08,
-     43.94,
-     48.82,
-     45.39,
-     55.61,
-     57.08,
-     67.55,
-     72.03,
-     109.64,
-     92.18,
-     69.18,
-     51.64,
-     50.96,
-     36.61,
-     44.08,
-     39.69,
-     34.55,
-     10.02,
-     3.83,
-     2.34,
-     3.61,
-     null,
-     null,
-     0.0,
-     null,
-     0.1,
-     null,
-     0.01,
-     0.01,
-     null,
-     null,
-     null,
-     null,
-     null,
-     null,
-     null,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     null,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.02,
-     78.32,
-     null,
      0.02,
      0.03,
      65.14,
@@ -1469,150 +1033,6 @@
      null
     ],
     "pld": [
-     297.43,
-     306.12,
-     215.56,
-     184.35,
-     152.1,
-     170.45,
-     173.37,
-     184.15,
-     119.64,
-     70.71,
-     117.4,
-     126.23,
-     99.96,
-     125.43,
-     108.77,
-     161.94,
-     146.95,
-     207.05,
-     191.8,
-     230.39,
-     231.73,
-     252.82,
-     276.15,
-     284.47,
-     321.3,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     549.01,
-     452.28,
-     209.43,
-     177.38,
-     161.22,
-     101.07,
-     107.09,
-     74.13,
-     94.1,
-     50.79,
-     59.15,
-     82.26,
-     66.34,
-     65.5,
-     69.7,
-     57.09,
-     62.1,
-     65.82,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.76,
-     55.7,
-     55.7,
-     55.7,
-     57.17,
-     59.0,
-     68.82,
-     71.35,
-     110.92,
-     91.03,
-     69.36,
-     56.26,
-     59.93,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     67.13,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     117.59,
-     71.6,
      69.04,
      69.04,
      87.51,
@@ -1773,150 +1193,6 @@
    },
    "S": {
     "decomp": [
-     281.49,
-     361.74,
-     223.7,
-     177.73,
-     147.53,
-     176.05,
-     166.42,
-     175.74,
-     134.84,
-     81.27,
-     133.41,
-     139.33,
-     106.11,
-     157.67,
-     131.7,
-     164.9,
-     162.29,
-     173.48,
-     172.56,
-     220.13,
-     287.26,
-     325.11,
-     431.24,
-     434.26,
-     682.22,
-     944.55,
-     957.12,
-     1030.55,
-     1109.51,
-     1239.0,
-     2540.18,
-     2901.0,
-     3044.45,
-     2449.89,
-     1027.43,
-     1261.35,
-     868.3,
-     712.8,
-     533.36,
-     426.2,
-     198.74,
-     172.6,
-     161.01,
-     94.09,
-     99.64,
-     68.91,
-     88.23,
-     41.61,
-     56.65,
-     84.57,
-     63.66,
-     63.54,
-     66.62,
-     50.35,
-     61.77,
-     61.39,
-     13.25,
-     6.98,
-     10.19,
-     11.59,
-     10.71,
-     13.9,
-     13.2,
-     11.94,
-     42.32,
-     40.15,
-     6.48,
-     26.83,
-     32.22,
-     20.36,
-     15.13,
-     40.92,
-     42.28,
-     39.5,
-     57.89,
-     50.17,
-     50.08,
-     45.35,
-     55.86,
-     56.96,
-     66.81,
-     72.01,
-     98.67,
-     91.12,
-     70.65,
-     51.65,
-     50.19,
-     36.98,
-     44.28,
-     40.81,
-     36.0,
-     10.21,
-     4.12,
-     3.02,
-     3.57,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.07,
-     0.03,
-     0.01,
-     0.01,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
      0.0,
      0.0,
      0.0,
@@ -2075,150 +1351,6 @@
      42.43
     ],
     "dessem": [
-     289.23,
-     369.34,
-     219.5,
-     182.36,
-     142.26,
-     171.79,
-     168.21,
-     176.92,
-     115.91,
-     78.1,
-     136.49,
-     138.54,
-     109.14,
-     130.85,
-     140.09,
-     180.89,
-     161.75,
-     255.42,
-     194.05,
-     235.97,
-     277.39,
-     363.08,
-     425.41,
-     406.49,
-     651.23,
-     906.04,
-     955.8,
-     1018.85,
-     1111.82,
-     1238.19,
-     2518.35,
-     null,
-     3032.92,
-     2403.89,
-     null,
-     1259.89,
-     777.92,
-     723.61,
-     542.54,
-     426.48,
-     203.41,
-     176.43,
-     161.31,
-     100.04,
-     101.23,
-     69.26,
-     90.6,
-     47.83,
-     64.27,
-     92.4,
-     64.93,
-     63.97,
-     null,
-     null,
-     58.75,
-     67.07,
-     13.59,
-     7.06,
-     10.0,
-     null,
-     17.88,
-     13.69,
-     null,
-     11.19,
-     34.57,
-     37.42,
-     10.24,
-     17.0,
-     26.49,
-     11.88,
-     10.12,
-     33.9,
-     38.85,
-     38.24,
-     49.05,
-     42.09,
-     48.78,
-     45.39,
-     55.6,
-     57.07,
-     67.55,
-     71.99,
-     109.64,
-     92.18,
-     69.18,
-     51.64,
-     50.96,
-     36.61,
-     44.08,
-     39.68,
-     34.63,
-     10.02,
-     3.83,
-     2.34,
-     3.6,
-     null,
-     null,
-     0.0,
-     null,
-     0.1,
-     null,
-     0.01,
-     0.01,
-     null,
-     null,
-     null,
-     null,
-     null,
-     null,
-     null,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     null,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.01,
-     73.0,
-     null,
      0.02,
      0.03,
      65.09,
@@ -2377,150 +1509,6 @@
      null
     ],
     "pld": [
-     297.43,
-     306.12,
-     214.3,
-     178.85,
-     141.53,
-     169.7,
-     173.36,
-     184.44,
-     123.01,
-     71.37,
-     118.38,
-     127.56,
-     100.28,
-     126.8,
-     115.38,
-     165.53,
-     153.74,
-     239.8,
-     192.04,
-     230.41,
-     231.73,
-     252.82,
-     276.15,
-     284.47,
-     321.3,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     549.01,
-     452.28,
-     209.43,
-     177.38,
-     161.22,
-     101.07,
-     107.09,
-     74.13,
-     94.1,
-     50.79,
-     59.15,
-     82.26,
-     66.34,
-     65.5,
-     69.71,
-     57.11,
-     62.13,
-     65.82,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.76,
-     55.7,
-     55.7,
-     55.7,
-     57.17,
-     59.0,
-     68.82,
-     71.35,
-     110.92,
-     91.03,
-     69.36,
-     56.26,
-     59.93,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     67.13,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     117.59,
-     71.6,
      69.04,
      69.04,
      87.51,
@@ -2681,150 +1669,6 @@
    },
    "NE": {
     "decomp": [
-     281.49,
-     361.74,
-     223.7,
-     177.73,
-     148.01,
-     179.93,
-     166.42,
-     175.74,
-     134.84,
-     76.01,
-     133.31,
-     139.09,
-     0.0,
-     140.44,
-     120.19,
-     142.41,
-     143.75,
-     0.0,
-     85.72,
-     195.29,
-     248.6,
-     280.83,
-     303.9,
-     296.14,
-     440.56,
-     944.55,
-     957.12,
-     1030.55,
-     1109.51,
-     1239.0,
-     2540.18,
-     2901.0,
-     3044.45,
-     2405.76,
-     996.06,
-     968.77,
-     868.3,
-     712.4,
-     533.36,
-     426.2,
-     198.74,
-     172.6,
-     161.01,
-     94.09,
-     99.64,
-     68.91,
-     88.23,
-     41.61,
-     56.65,
-     84.57,
-     63.66,
-     43.13,
-     36.09,
-     0.0,
-     0.02,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     40.92,
-     42.28,
-     39.5,
-     57.89,
-     50.17,
-     50.08,
-     45.35,
-     55.86,
-     56.96,
-     66.81,
-     72.01,
-     98.67,
-     91.12,
-     70.65,
-     51.65,
-     50.19,
-     36.98,
-     44.28,
-     40.81,
-     36.0,
-     10.21,
-     4.12,
-     3.02,
-     3.57,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.07,
-     0.03,
-     0.01,
-     0.01,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
      0.0,
      0.0,
      0.0,
@@ -2983,150 +1827,6 @@
      42.43
     ],
     "dessem": [
-     284.94,
-     384.01,
-     220.07,
-     181.65,
-     145.95,
-     175.43,
-     169.38,
-     184.43,
-     46.11,
-     78.88,
-     113.79,
-     104.04,
-     111.96,
-     5.62,
-     91.46,
-     173.16,
-     114.13,
-     155.76,
-     143.76,
-     212.54,
-     245.83,
-     284.62,
-     337.51,
-     347.77,
-     462.11,
-     906.01,
-     954.92,
-     1006.5,
-     1061.14,
-     1193.96,
-     2193.01,
-     null,
-     2948.07,
-     987.12,
-     null,
-     1215.8,
-     803.27,
-     722.22,
-     541.51,
-     441.7,
-     208.55,
-     178.43,
-     161.32,
-     101.04,
-     101.48,
-     68.72,
-     91.1,
-     50.58,
-     64.2,
-     92.35,
-     64.24,
-     60.4,
-     null,
-     null,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.01,
-     null,
-     0.0,
-     -0.02,
-     null,
-     -0.0,
-     2.94,
-     2.6,
-     7.4,
-     0.12,
-     0.0,
-     0.83,
-     9.46,
-     33.91,
-     38.28,
-     38.24,
-     49.04,
-     43.93,
-     48.78,
-     45.34,
-     52.67,
-     55.32,
-     67.78,
-     74.68,
-     109.44,
-     92.18,
-     69.17,
-     51.48,
-     50.96,
-     36.42,
-     48.69,
-     53.57,
-     43.28,
-     10.02,
-     4.43,
-     2.33,
-     3.6,
-     null,
-     null,
-     0.0,
-     null,
-     0.1,
-     null,
-     0.01,
-     0.01,
-     null,
-     null,
-     null,
-     null,
-     null,
-     null,
-     null,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     null,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     76.08,
-     null,
      0.02,
      0.03,
      65.12,
@@ -3285,150 +1985,6 @@
      null
     ],
     "pld": [
-     291.83,
-     306.11,
-     214.19,
-     178.41,
-     146.43,
-     170.42,
-     173.51,
-     184.05,
-     63.42,
-     60.03,
-     85.41,
-     83.98,
-     88.19,
-     50.03,
-     66.47,
-     133.06,
-     109.19,
-     149.74,
-     151.85,
-     207.93,
-     221.99,
-     250.52,
-     271.74,
-     282.85,
-     293.7,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     518.89,
-     450.72,
-     209.43,
-     177.38,
-     161.22,
-     101.07,
-     107.09,
-     74.01,
-     94.09,
-     50.79,
-     59.15,
-     82.26,
-     66.32,
-     64.59,
-     61.92,
-     56.22,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.76,
-     55.7,
-     55.7,
-     55.7,
-     57.16,
-     59.0,
-     68.76,
-     71.35,
-     110.9,
-     91.03,
-     69.36,
-     56.26,
-     59.93,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     67.13,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     117.59,
-     71.6,
      69.04,
      69.04,
      87.51,
@@ -3589,150 +2145,6 @@
    },
    "N": {
     "decomp": [
-     281.49,
-     361.74,
-     223.7,
-     177.73,
-     148.01,
-     179.93,
-     166.42,
-     175.74,
-     131.23,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     142.41,
-     143.75,
-     0.0,
-     85.72,
-     195.29,
-     248.6,
-     280.83,
-     350.26,
-     426.3,
-     682.22,
-     944.55,
-     957.12,
-     1030.55,
-     1109.51,
-     1239.0,
-     2540.18,
-     2901.0,
-     3044.45,
-     2449.89,
-     1027.43,
-     1261.35,
-     868.3,
-     712.8,
-     533.36,
-     426.2,
-     198.74,
-     172.6,
-     161.01,
-     94.09,
-     99.64,
-     68.91,
-     88.23,
-     41.61,
-     56.65,
-     84.57,
-     63.66,
-     43.13,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     40.92,
-     42.28,
-     39.5,
-     57.89,
-     50.17,
-     50.08,
-     45.35,
-     55.86,
-     56.96,
-     66.81,
-     72.01,
-     98.67,
-     91.12,
-     70.65,
-     51.65,
-     50.19,
-     36.98,
-     44.28,
-     40.81,
-     36.0,
-     10.21,
-     4.12,
-     3.02,
-     3.57,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.07,
-     0.03,
-     0.01,
-     0.01,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
      0.0,
      0.0,
      0.0,
@@ -3891,150 +2303,6 @@
      461.46
     ],
     "dessem": [
-     270.47,
-     337.81,
-     203.76,
-     171.67,
-     140.64,
-     168.5,
-     168.5,
-     173.03,
-     29.66,
-     38.01,
-     43.85,
-     41.01,
-     44.82,
-     20.52,
-     19.48,
-     91.53,
-     97.22,
-     135.6,
-     143.91,
-     212.12,
-     249.14,
-     298.99,
-     369.05,
-     368.52,
-     518.32,
-     906.03,
-     955.24,
-     1011.54,
-     1091.93,
-     1215.38,
-     2320.79,
-     null,
-     3015.02,
-     1571.95,
-     null,
-     1242.46,
-     770.52,
-     718.02,
-     535.56,
-     426.39,
-     203.42,
-     176.47,
-     161.34,
-     99.82,
-     101.16,
-     71.41,
-     90.93,
-     47.78,
-     63.82,
-     92.08,
-     64.17,
-     59.23,
-     null,
-     null,
-     0.09,
-     0.09,
-     0.02,
-     0.01,
-     0.02,
-     null,
-     0.01,
-     0.02,
-     null,
-     0.01,
-     0.53,
-     0.54,
-     2.35,
-     0.06,
-     0.05,
-     0.05,
-     9.14,
-     34.9,
-     38.75,
-     38.24,
-     49.04,
-     43.93,
-     48.78,
-     45.34,
-     54.3,
-     56.84,
-     67.61,
-     72.1,
-     109.8,
-     92.73,
-     69.75,
-     52.34,
-     51.2,
-     36.78,
-     44.19,
-     40.07,
-     37.67,
-     17.11,
-     4.74,
-     2.35,
-     3.61,
-     null,
-     null,
-     0.0,
-     null,
-     0.1,
-     null,
-     0.01,
-     0.01,
-     null,
-     null,
-     null,
-     null,
-     null,
-     null,
-     null,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     null,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.0,
-     0.03,
-     0.0,
-     0.01,
-     0.66,
-     0.0,
-     0.0,
-     0.14,
-     0.09,
-     0.06,
-     0.09,
-     1.56,
-     1.45,
-     77.44,
-     null,
      3.0,
      0.71,
      65.47,
@@ -4193,150 +2461,6 @@
      null
     ],
     "pld": [
-     297.43,
-     306.11,
-     214.29,
-     178.81,
-     146.43,
-     170.42,
-     173.37,
-     184.03,
-     61.47,
-     52.49,
-     54.41,
-     49.77,
-     56.42,
-     49.77,
-     49.77,
-     115.01,
-     102.38,
-     146.5,
-     153.01,
-     207.96,
-     222.99,
-     250.77,
-     273.07,
-     284.28,
-     320.69,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     583.88,
-     549.01,
-     452.28,
-     209.43,
-     177.38,
-     161.22,
-     101.07,
-     107.09,
-     74.13,
-     94.1,
-     50.79,
-     59.15,
-     82.26,
-     66.32,
-     63.93,
-     55.73,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.76,
-     55.7,
-     55.7,
-     55.7,
-     57.17,
-     59.0,
-     68.82,
-     71.35,
-     110.92,
-     91.03,
-     69.36,
-     56.26,
-     59.93,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     55.7,
-     67.13,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     69.04,
-     117.59,
-     71.6,
      69.04,
      69.04,
      87.51,
@@ -4496,6 +2620,17 @@
     ]
    }
   },
+  "semanal_recorte": {
+   "semanas_na_gold": 156,
+   "semanas_no_csv": 300,
+   "historico_completo": "/energia/series/pld_cmo_semanal.csv"
+  },
+  "equivalencia_csv": {
+   "celulas": 1872,
+   "divergentes": 0,
+   "exemplos": [],
+   "tolerancia": "R$ 0,005/MWh (arredondamento da gold)"
+  },
   "semanas_completas": 271,
   "semana_referencia": {
    "inicio": "2026-09-19",
@@ -4542,7 +2677,7 @@
      "dessem_menos_decomp": -1780.2
     }
    ],
-   "texto": "Semana operativa de 19/09/2026 a 25/09/2026, Norte: CMO semanal do DECOMP R$ 1.866,74/MWh; média das meias horas do CMO do DESSEM R$ 86,54/MWh; média das 168 horas do PLD R$ 124,09/MWh. O PLD médio ficou R$ 1.742,65/MWh abaixo do CMO semanal. São três produtos diferentes (modelo, resolução e momento de cálculo); a diferença não é explicada por estes dados."
+   "texto": "Semana operativa de 19/09/2026 a 25/09/2026, Norte: CMO semanal do DECOMP R$ 1.866,74/MWh; média das meias horas do CMO do DESSEM R$ 86,54/MWh; média das 168 horas do PLD R$ 124,09/MWh. O PLD médio ficou R$ 1.742,65/MWh abaixo do CMO semanal. São três produtos diferentes (modelo, resolução e regras de cálculo); a diferença não é explicada por estes dados."
   },
   "relacao_anual": [
    {
@@ -5365,7 +3500,7 @@
  },
  "limites": {
   "disponivel": true,
-  "origem": "pipeline/energia/regulatorio/limites_pld.json (leitura direta)",
+  "origem": "pipeline.energia.regulatorio.limites_pld()",
   "conferido_em": "2026-09-30",
   "tolerancia": {
    "valor": 0.01,
@@ -18700,7 +16835,7 @@
       "dessem_menos_decomp": -1780.2
      }
     ],
-    "texto": "Semana operativa de 19/09/2026 a 25/09/2026, Norte: CMO semanal do DECOMP R$ 1.866,74/MWh; média das meias horas do CMO do DESSEM R$ 86,54/MWh; média das 168 horas do PLD R$ 124,09/MWh. O PLD médio ficou R$ 1.742,65/MWh abaixo do CMO semanal. São três produtos diferentes (modelo, resolução e momento de cálculo); a diferença não é explicada por estes dados."
+    "texto": "Semana operativa de 19/09/2026 a 25/09/2026, Norte: CMO semanal do DECOMP R$ 1.866,74/MWh; média das meias horas do CMO do DESSEM R$ 86,54/MWh; média das 168 horas do PLD R$ 124,09/MWh. O PLD médio ficou R$ 1.742,65/MWh abaixo do CMO semanal. São três produtos diferentes (modelo, resolução e regras de cálculo); a diferença não é explicada por estes dados."
    }
   },
   "A02": {
@@ -18933,6 +17068,28 @@
     "nota": "Diferenças e ausências vêm de capturas em datas distintas do mesmo arquivo anual (o ONS atualiza o arquivo do ano corrente)."
    },
    "status": "confirmado no arquivo original",
+   "dicionario_permite": {
+    "val_cmomediasemanal": {
+     "nulo": false,
+     "zerado": true,
+     "negativo": true
+    },
+    "val_cmoleve": {
+     "nulo": false,
+     "zerado": true,
+     "negativo": true
+    },
+    "val_cmomedia": {
+     "nulo": false,
+     "zerado": true,
+     "negativo": true
+    },
+    "val_cmopesada": {
+     "nulo": false,
+     "zerado": true,
+     "negativo": true
+    }
+   },
    "periodo": {
     "primeira_semana_inicio": "2022-12-24",
     "ultima_semana_fim": "2024-02-23",
@@ -19064,8 +17221,8 @@
      "frac_piso": 0.9854
     }
    ],
-   "observacao_formato": "O mesmo zero aparece escrito de formas diferentes conforme o arquivo anual (por exemplo 0E-8 em 2022 e 0.0 em 2023): sinal de rotinas de exportação distintas, não de valores distintos.",
-   "texto": "Nas 61 semanas operativas datadas pelo ONS de 30/12/2022 a 23/02/2024 (sextas-feiras que encerram as semanas; o período vai de 24/12/2022 a 23/02/2024), o CMO semanal do DECOMP publicado pelo ONS é zero nos quatro subsistemas, na média semanal e nos três patamares. Os zeros estão no arquivo original: CSV e Parquet oficiais conferem célula a célula. No mesmo período, o CMO semi-horário do DESSEM foi zero em 91,2% das meias horas do Sudeste/Centro-Oeste e o PLD do Sudeste/Centro-Oeste ficou no piso em 98,5% das horas. O conjunto do ONS não informa a razão dos zeros; nenhuma causa é atribuída aqui."
+   "observacao_formato": "O mesmo zero aparece escrito de formas diferentes conforme o arquivo anual (0E-8 em 2022; 0.0 em 2023 e 2024). A forma textual muda entre arquivos; o valor numérico é o mesmo e o CSV confere com o Parquet oficial.",
+   "texto": "Nas 61 semanas operativas datadas pelo ONS de 30/12/2022 a 23/02/2024 (sextas-feiras que encerram as semanas; o período vai de 24/12/2022 a 23/02/2024), o CMO semanal do DECOMP publicado pelo ONS é zero nos quatro subsistemas, na média semanal e nos três patamares. Os zeros estão no arquivo original: CSV e Parquet oficiais conferem célula a célula. No mesmo período, o CMO semi-horário do DESSEM foi zero em 91,2% das meias horas do Sudeste/Centro-Oeste e o PLD do Sudeste/Centro-Oeste ficou no piso em 98,5% das horas. O dicionário de dados do ONS (PDF, versão de 02/05/2023) declara que o campo admite valor zerado. O conjunto do ONS não informa a razão dos zeros; nenhuma causa é atribuída aqui."
   },
   "A03": {
    "status": "documentado",
@@ -19126,7 +17283,29 @@
        "data": "02-05-2023",
        "descricao": "Evolução do Dicionário de Dados para incorporar informações que apoiem o processo de validação e checagem de qualidade de dados. Informações sobre os dados com conteúdo nulas ou vazio; dados numéricos negativos e de numéricos de valor zero."
       }
-     ]
+     ],
+     "permissoes": {
+      "val_cmomediasemanal": {
+       "nulo": false,
+       "zerado": true,
+       "negativo": true
+      },
+      "val_cmoleve": {
+       "nulo": false,
+       "zerado": true,
+       "negativo": true
+      },
+      "val_cmomedia": {
+       "nulo": false,
+       "zerado": true,
+       "negativo": true
+      },
+      "val_cmopesada": {
+       "nulo": false,
+       "zerado": true,
+       "negativo": true
+      }
+     }
     },
     "cmo_semi_horario": {
      "sha256": "1794ee35942e2f528ce1ea581ac037652a5771b5d7d1193600876af861352604",
@@ -19147,7 +17326,14 @@
        "data": "02-05-2023",
        "descricao": "Alteração de conteúdo dos itens associados a qualidade de dados."
       }
-     ]
+     ],
+     "permissoes": {
+      "val_cmo": {
+       "nulo": false,
+       "zerado": true,
+       "negativo": true
+      }
+     }
     }
    },
    "unidade_media_semanal_no_dicionario": "R$/MW",
@@ -19164,7 +17350,7 @@
   },
   "A04": {
    "status": "integrado",
-   "origem": "pipeline/energia/regulatorio/limites_pld.json (leitura direta)",
+   "origem": "pipeline.energia.regulatorio.limites_pld()",
    "motivo": null,
    "atos": 8,
    "rejeitados": [],
@@ -19527,12 +17713,12 @@
   {
    "nome": "Convenção de data do CMO semanal (sexta que encerra a semana)",
    "resultado": "aprovado",
-   "detalhe": "correlação com o DESSEM da semana que termina na data 0.994 contra 0.912 da semana seguinte (SE, 300 semanas)"
+   "detalhe": "correlação com o DESSEM da semana que termina na data 0,994 contra 0,912 da semana seguinte (SE, 300 semanas)"
   },
   {
    "nome": "Convenção da meia hora do DESSEM (instante = início)",
    "resultado": "aprovado",
-   "detalhe": "erro absoluto médio contra o PLD: 28.86 (início) contra 31.45 (fim) R$/MWh, 23009 horas, horas com PLD entre os limites vigentes, fora de dias no teto estrutural"
+   "detalhe": "erro absoluto médio contra o PLD: 28,86 (início) contra 31,45 (fim) R$/MWh, 23009 horas, horas com PLD entre os limites vigentes, fora de dias no teto estrutural"
   },
   {
    "nome": "CMO semanal: silver principal contra releitura do arquivo original",
@@ -19545,9 +17731,14 @@
    "detalhe": "0 horas abaixo do piso, 0 horas acima do teto horário, 0 dias com média acima do teto estrutural"
   },
   {
+   "nome": "Limites vigentes por dia: mesma leitura do módulo Regulação (limites_em)",
+   "resultado": "aprovado",
+   "detalhe": "2099 dias conferidos, 0 divergentes"
+  },
+  {
    "nome": "Equivalência gold e CSV semanal",
    "resultado": "aprovado",
-   "detalhe": "1200 linhas semana-subsistema na gold e no CSV pld_cmo_semanal.csv"
+   "detalhe": "1872 células (semana, submercado e produto) relidas do CSV pld_cmo_semanal.csv, 0 divergentes"
   }
  ],
  "proveniencia": {
@@ -19570,7 +17761,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T15:01:21Z",
    "capturado_em": "2026-09-30T22:06:13Z",
-   "validado_em": "2026-09-30T22:32:13Z",
+   "validado_em": "2026-09-30T23:02:36Z",
    "cobertura_historica": {
     "inicio": "2020-01-01T00:00",
     "fim": "2026-10-01T23:30"
@@ -19586,14 +17777,14 @@
     "sha256": "85e6f360396ec924e3dea1a16adc5d29357d54b2441b83fa6f9acfef484d517f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dcad322a4ea9+alterado",
+   "versao_codigo": "dafa93bb2111+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T22:31:56Z",
+    "detectado_em": "2026-09-30T23:02:20Z",
     "total": 0,
     "vintages_comparadas": 7,
     "arquivos": 7,
-    "recapturas_sem_mudanca": 1,
-    "ultimo_download_ok": "2026-09-30T22:28:21Z",
+    "recapturas_sem_mudanca": 3,
+    "ultimo_download_ok": "2026-09-30T22:58:21Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -19624,7 +17815,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T15:01:21Z",
    "capturado_em": "2026-09-30T22:06:13Z",
-   "validado_em": "2026-09-30T22:32:13Z",
+   "validado_em": "2026-09-30T23:02:36Z",
    "cobertura_historica": {
     "inicio": "2020-01-01T00:00",
     "fim": "2026-10-01T23:30"
@@ -19638,14 +17829,14 @@
     "sha256": "85e6f360396ec924e3dea1a16adc5d29357d54b2441b83fa6f9acfef484d517f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dcad322a4ea9+alterado",
+   "versao_codigo": "dafa93bb2111+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T22:31:56Z",
+    "detectado_em": "2026-09-30T23:02:20Z",
     "total": 0,
     "vintages_comparadas": 7,
     "arquivos": 7,
-    "recapturas_sem_mudanca": 1,
-    "ultimo_download_ok": "2026-09-30T22:28:21Z",
+    "recapturas_sem_mudanca": 3,
+    "ultimo_download_ok": "2026-09-30T22:58:21Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -19669,14 +17860,14 @@
    "unidade": "R$/MWh",
    "frequencia": "semana operativa (sábado a sexta)",
    "periodo_referencia": {
-    "inicio": "2021-01-02",
+    "inicio": "2023-10-07",
     "fim": "2026-10-02"
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:14Z",
-   "validado_em": "2026-09-30T22:32:13Z",
+   "validado_em": "2026-09-30T23:02:36Z",
    "cobertura_historica": {
-    "inicio": "2021-01-02",
+    "inicio": "2023-10-07",
     "fim": "2026-10-02"
    },
    "transformacoes": [
@@ -19690,9 +17881,9 @@
     "sha256": "0c92735cc77edc05022e65b2053fce1cae98f7dd59de17d26ca100638586baab"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dcad322a4ea9+alterado",
+   "versao_codigo": "dafa93bb2111+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T22:31:56Z",
+    "detectado_em": "2026-09-30T23:02:20Z",
     "total": 0,
     "vintages_comparadas": 22,
     "arquivos": 22,
@@ -19704,7 +17895,7 @@
     "Valores nominais em R$/MWh, salvo a série em moeda constante.",
     "A CCEE não informa a data de publicação de cada hora; ver achado A09.",
     "O portal da CCEE respondeu HTTP 403 (Acesso bloqueado) ao ambiente de construção; o PLD vem das capturas integradas pelo pipeline de operação.",
-    "Os três valores são produtos diferentes (modelo, resolução e momento de cálculo); a diferença entre eles não é explicada por estes dados.",
+    "Os três valores são produtos diferentes (modelo, resolução e regras de cálculo); a diferença entre eles não é explicada por estes dados.",
     "Semana com meia hora ou hora ausente fica sem média."
    ],
    "download": "/energia/series/pld_cmo_semanal.csv",
@@ -19729,7 +17920,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:14Z",
-   "validado_em": "2026-09-30T22:32:13Z",
+   "validado_em": "2026-09-30T23:02:36Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-30"
@@ -19745,9 +17936,9 @@
     "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dcad322a4ea9+alterado",
+   "versao_codigo": "dafa93bb2111+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T22:31:56Z",
+    "detectado_em": "2026-09-30T23:02:20Z",
     "total": 0,
     "vintages_comparadas": 8,
     "arquivos": 6,
@@ -19785,7 +17976,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:14Z",
-   "validado_em": "2026-09-30T22:32:13Z",
+   "validado_em": "2026-09-30T23:02:36Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-30"
@@ -19801,9 +17992,9 @@
     "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dcad322a4ea9+alterado",
+   "versao_codigo": "dafa93bb2111+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T22:31:56Z",
+    "detectado_em": "2026-09-30T23:02:20Z",
     "total": 0,
     "vintages_comparadas": 8,
     "arquivos": 6,
@@ -19840,7 +18031,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:14Z",
-   "validado_em": "2026-09-30T22:32:13Z",
+   "validado_em": "2026-09-30T23:02:36Z",
    "cobertura_historica": {
     "inicio": "2021-01-01T00:00",
     "fim": "2026-09-30T23:00"
@@ -19855,9 +18046,9 @@
     "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dcad322a4ea9+alterado",
+   "versao_codigo": "dafa93bb2111+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T22:31:56Z",
+    "detectado_em": "2026-09-30T23:02:20Z",
     "total": 0,
     "vintages_comparadas": 8,
     "arquivos": 6,
@@ -19893,7 +18084,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:08Z",
-   "validado_em": "2026-09-30T22:32:13Z",
+   "validado_em": "2026-09-30T23:02:36Z",
    "cobertura_historica": {
     "inicio": "2021-01-01T00:00",
     "fim": "2026-09-28T23:00"
@@ -19908,9 +18099,9 @@
     "sha256": "cc661040c697757661b1c94d38a802ccc10c0d9b8c1403082731a53f2994d931"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dcad322a4ea9+alterado",
+   "versao_codigo": "dafa93bb2111+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T22:31:59Z",
+    "detectado_em": "2026-09-30T23:02:23Z",
     "total": 0,
     "vintages_comparadas": 7,
     "arquivos": 6,
@@ -19945,7 +18136,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T15:01:06Z",
    "capturado_em": "2026-09-30T22:06:43Z",
-   "validado_em": "2026-09-30T22:32:13Z",
+   "validado_em": "2026-09-30T23:02:36Z",
    "cobertura_historica": {
     "inicio": "2005-01-07",
     "fim": "2026-10-02"
@@ -19961,14 +18152,14 @@
     "sha256": "c7b5fe550dbb5b44b839999c3c68e1e5b34a31efbf36427bdfca2e300931ad89"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dcad322a4ea9+alterado",
+   "versao_codigo": "dafa93bb2111+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T22:31:56Z",
+    "detectado_em": "2026-09-30T23:02:20Z",
     "total": 0,
     "vintages_comparadas": 44,
     "arquivos": 44,
-    "recapturas_sem_mudanca": 2,
-    "ultimo_download_ok": "2026-09-30T22:28:22Z",
+    "recapturas_sem_mudanca": 6,
+    "ultimo_download_ok": "2026-09-30T22:58:22Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -19997,7 +18188,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:14Z",
-   "validado_em": "2026-09-30T22:32:14Z",
+   "validado_em": "2026-09-30T23:02:36Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-30"
@@ -20012,9 +18203,9 @@
     "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dcad322a4ea9+alterado",
+   "versao_codigo": "dafa93bb2111+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T22:31:56Z",
+    "detectado_em": "2026-09-30T23:02:20Z",
     "total": 0,
     "vintages_comparadas": 8,
     "arquivos": 6,
@@ -20035,7 +18226,8 @@
  },
  "evidencias": {
   "pld_semana_SE": {
-   "valor_exibido": 124.09,
+   "indicador": "PLD médio da semana operativa de 19/09/2026 a 25/09/2026",
+   "valor_exibido": "R$ 124,09/MWh",
    "valor_calculo": 124.09113095238115,
    "unidade": "R$/MWh",
    "periodo": {
@@ -20044,24 +18236,25 @@
    },
    "entidade": "Sudeste/Centro-Oeste",
    "universo": "168 horas da semana operativa (sábado a sexta)",
-   "filtros": {
-    "semana_operativa_fim": "2026-09-25"
-   },
+   "filtros": [
+    "submercado Sudeste/Centro-Oeste",
+    "semana operativa que termina em 25/09/2026"
+   ],
    "fonte": {
     "orgao": "CCEE",
     "conjunto": "PLD_HORARIO",
-    "recurso": "pld_horario_2021 a pld_horario_2026",
+    "recurso": "pld_horario_2026",
     "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
-    "arquivos": [
-     {
-      "recurso": "pld_horario_2026",
-      "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
-      "capturado_em": "2026-09-30T02:20:14Z",
-      "publicado_em": "2026-06-09T16:37:15.091000"
-     }
-    ]
+    "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
+    "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
+    "capturado_em": "2026-09-30T02:20:14Z",
+    "publicado_em": null
    },
-   "chaves_origem": "PLD_HORARIO, SUBMERCADO=SE, horas 2026-09-19T00:00 a 2026-09-25T23:00 (horário de Brasília)",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "PLD_HORARIO, SUBMERCADO=SUDESTE, horas de 2026-09-19T00:00 a 2026-09-25T23:00 (horário de Brasília)",
+   "manifesto": null,
    "formula": "PLD_semana = Σ PLD_h ÷ 168",
    "numerador": {
     "descricao": "soma do PLD das 168 horas (R$/MWh × h)",
@@ -20077,38 +18270,38 @@
    "tratamento_ausencia": "semana com hora ausente não recebe média",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:32:14Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:02:36Z"
    },
-   "revisoes": 0,
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas.",
    "testes": [
     {
      "nome": "semana completa",
      "resultado": "aprovado",
-     "detalhe": "168 horas presentes"
+     "detalhe": "168 horas presentes, uma por hora de sábado a sexta"
     }
    ],
    "reconciliacao": {
-    "descricao": "média das sete médias diárias da mesma semana (outro caminho de soma)",
+    "descricao": "média das sete médias diárias da mesma semana (outra ordem de soma): 124,091131 R$/MWh",
     "resultado": "aprovado",
-    "tolerancia": 1e-06,
-    "valor_outro_caminho": 124.0911
+    "tolerancia": "0,000001 R$/MWh"
    },
    "download": [
     {
-     "rotulo": "CSV semanal",
+     "rotulo": "CSV semanal (DECOMP, DESSEM e PLD)",
      "url": "/energia/series/pld_cmo_semanal.csv"
     },
     {
-     "rotulo": "CSV horário",
+     "rotulo": "CSV horário (CMO e PLD)",
      "url": "/energia/series/pld_cmo_horario.csv"
     }
    ],
-   "reproducao": "Filtrar pld_cmo_horario.csv pelas horas da semana e tirar a média da coluna PLD_SE.",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. PLD médio da semana operativa de 19/09/2026 a 25/09/2026, Sudeste/Centro-Oeste. Dados: CCEE (PLD_HORARIO), licença Creative Commons Attribution 4.0 (CC-BY-4.0). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/pld"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py pld --sem-coleta\nFiltrar pld_cmo_horario.csv pelas horas da semana e tirar a média da coluna PLD_SE.",
+   "citacao": "SCRUTINIUMS. PLD médio da semana operativa de 19/09/2026 a 25/09/2026: R$ 124,09/MWh, Sudeste/Centro-Oeste, 19/09/2026 00:00 a 25/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "dessem_semana_SE": {
-   "valor_exibido": 63.31,
+   "indicador": "CMO médio do DESSEM na semana operativa de 19/09/2026 a 25/09/2026",
+   "valor_exibido": "R$ 63,31/MWh",
    "valor_calculo": 63.31336309523805,
    "unidade": "R$/MWh",
    "periodo": {
@@ -20117,24 +18310,25 @@
    },
    "entidade": "Sudeste/Centro-Oeste",
    "universo": "336 meias horas da semana operativa",
-   "filtros": {
-    "semana_operativa_fim": "2026-09-25"
-   },
+   "filtros": [
+    "subsistema SE",
+    "semana operativa que termina em 25/09/2026"
+   ],
    "fonte": {
     "orgao": "ONS",
     "conjunto": "CMO Semi-Horário (DESSEM)",
-    "recurso": "CMO_SEMIHORARIO_<ano>.csv (arquivos anuais 2020 em diante)",
+    "recurso": "CMO_SEMIHORARIO_2026",
     "url": "https://dados.ons.org.br/dataset/cmo-semi-horario",
-    "arquivos": [
-     {
-      "recurso": "CMO_SEMIHORARIO_2026",
-      "sha256": "0d33ce850b7a82550c5f2235a5096230db0688da75eee0407292b1529c7149db",
-      "capturado_em": "2026-09-30T22:06:13Z",
-      "publicado_em": "2026-09-30T15:01:21Z"
-     }
-    ]
+    "arquivo": "data/energia/bronze/ons/ons_cmo_semihorario/CMO_SEMIHORARIO_2026/20260930T220613Z.0d33ce850b7a.csv.gz",
+    "sha256": "0d33ce850b7a82550c5f2235a5096230db0688da75eee0407292b1529c7149db",
+    "capturado_em": "2026-09-30T22:06:13Z",
+    "publicado_em": "2026-09-30T15:01:21Z"
    },
-   "chaves_origem": "CMO_SEMIHORARIO, id_subsistema=SE, din_instante de 2026-09-19T00:00 a 2026-09-25T23:30",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "CMO_SEMIHORARIO, id_subsistema=SE, din_instante de 2026-09-19T00:00 a 2026-09-25T23:30",
+   "manifesto": null,
    "formula": "DESSEM_semana = Σ CMO_meia ÷ 336",
    "numerador": {
     "descricao": "soma do CMO das 336 meias horas",
@@ -20150,34 +18344,39 @@
    "tratamento_ausencia": "semana com meia hora ausente não recebe média",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:32:14Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:02:36Z"
    },
-   "revisoes": 0,
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas.",
    "testes": [
     {
      "nome": "CMO semi-horário: esquema e domínio",
      "resultado": "aprovado",
      "detalhe": "0 valores inválidos, 0 meias horas duplicadas, 0 linhas fora da grade ou de subsistema desconhecido nos arquivos vigentes"
+    },
+    {
+     "nome": "produto diferente do CMO semanal",
+     "resultado": "aprovado",
+     "detalhe": "o CMO semanal do DECOMP da mesma semana é R$ 97,89/MWh; a diferença é publicada, não reconciliada"
     }
    ],
    "reconciliacao": {
-    "descricao": "CMO semanal do DECOMP da mesma semana, produto diferente (não é reconciliação de igualdade)",
-    "resultado": "informativo",
-    "tolerancia": null,
-    "valor_outro_produto": 97.89
+    "descricao": "média das sete médias diárias de 48 meias horas: 63,313363 R$/MWh",
+    "resultado": "aprovado",
+    "tolerancia": "0,000001 R$/MWh"
    },
    "download": [
     {
-     "rotulo": "CSV semanal",
+     "rotulo": "CSV semanal (DECOMP, DESSEM e PLD)",
      "url": "/energia/series/pld_cmo_semanal.csv"
     }
    ],
-   "reproducao": "Somar as meias horas da semana no arquivo CMO_SEMIHORARIO do ano e dividir por 336.",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. CMO médio do DESSEM na semana operativa de 19/09/2026 a 25/09/2026, Sudeste/Centro-Oeste. Dados: ONS (CMO Semi-Horário (DESSEM)), licença Creative Commons Atribuição (CC-BY). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/pld"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py pld --sem-coleta\nSomar as meias horas da semana no arquivo CMO_SEMIHORARIO do ano e dividir por 336.",
+   "citacao": "SCRUTINIUMS. CMO médio do DESSEM na semana operativa de 19/09/2026 a 25/09/2026: R$ 63,31/MWh, Sudeste/Centro-Oeste, 19/09/2026 00:00 a 25/09/2026 23:30. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, CMO Semi-Horário (DESSEM) (recurso CMO_SEMIHORARIO_2026, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "pld_semana_S": {
-   "valor_exibido": 120.86,
+   "indicador": "PLD médio da semana operativa de 19/09/2026 a 25/09/2026",
+   "valor_exibido": "R$ 120,86/MWh",
    "valor_calculo": 120.8635714285715,
    "unidade": "R$/MWh",
    "periodo": {
@@ -20186,24 +18385,25 @@
    },
    "entidade": "Sul",
    "universo": "168 horas da semana operativa (sábado a sexta)",
-   "filtros": {
-    "semana_operativa_fim": "2026-09-25"
-   },
+   "filtros": [
+    "submercado Sul",
+    "semana operativa que termina em 25/09/2026"
+   ],
    "fonte": {
     "orgao": "CCEE",
     "conjunto": "PLD_HORARIO",
-    "recurso": "pld_horario_2021 a pld_horario_2026",
+    "recurso": "pld_horario_2026",
     "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
-    "arquivos": [
-     {
-      "recurso": "pld_horario_2026",
-      "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
-      "capturado_em": "2026-09-30T02:20:14Z",
-      "publicado_em": "2026-06-09T16:37:15.091000"
-     }
-    ]
+    "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
+    "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
+    "capturado_em": "2026-09-30T02:20:14Z",
+    "publicado_em": null
    },
-   "chaves_origem": "PLD_HORARIO, SUBMERCADO=S, horas 2026-09-19T00:00 a 2026-09-25T23:00 (horário de Brasília)",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "PLD_HORARIO, SUBMERCADO=SUL, horas de 2026-09-19T00:00 a 2026-09-25T23:00 (horário de Brasília)",
+   "manifesto": null,
    "formula": "PLD_semana = Σ PLD_h ÷ 168",
    "numerador": {
     "descricao": "soma do PLD das 168 horas (R$/MWh × h)",
@@ -20219,38 +18419,38 @@
    "tratamento_ausencia": "semana com hora ausente não recebe média",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:32:14Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:02:36Z"
    },
-   "revisoes": 0,
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas.",
    "testes": [
     {
      "nome": "semana completa",
      "resultado": "aprovado",
-     "detalhe": "168 horas presentes"
+     "detalhe": "168 horas presentes, uma por hora de sábado a sexta"
     }
    ],
    "reconciliacao": {
-    "descricao": "média das sete médias diárias da mesma semana (outro caminho de soma)",
+    "descricao": "média das sete médias diárias da mesma semana (outra ordem de soma): 120,863571 R$/MWh",
     "resultado": "aprovado",
-    "tolerancia": 1e-06,
-    "valor_outro_caminho": 120.8636
+    "tolerancia": "0,000001 R$/MWh"
    },
    "download": [
     {
-     "rotulo": "CSV semanal",
+     "rotulo": "CSV semanal (DECOMP, DESSEM e PLD)",
      "url": "/energia/series/pld_cmo_semanal.csv"
     },
     {
-     "rotulo": "CSV horário",
+     "rotulo": "CSV horário (CMO e PLD)",
      "url": "/energia/series/pld_cmo_horario.csv"
     }
    ],
-   "reproducao": "Filtrar pld_cmo_horario.csv pelas horas da semana e tirar a média da coluna PLD_S.",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. PLD médio da semana operativa de 19/09/2026 a 25/09/2026, Sul. Dados: CCEE (PLD_HORARIO), licença Creative Commons Attribution 4.0 (CC-BY-4.0). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/pld"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py pld --sem-coleta\nFiltrar pld_cmo_horario.csv pelas horas da semana e tirar a média da coluna PLD_S.",
+   "citacao": "SCRUTINIUMS. PLD médio da semana operativa de 19/09/2026 a 25/09/2026: R$ 120,86/MWh, Sul, 19/09/2026 00:00 a 25/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "dessem_semana_S": {
-   "valor_exibido": 58.29,
+   "indicador": "CMO médio do DESSEM na semana operativa de 19/09/2026 a 25/09/2026",
+   "valor_exibido": "R$ 58,29/MWh",
    "valor_calculo": 58.29449404761908,
    "unidade": "R$/MWh",
    "periodo": {
@@ -20259,24 +18459,25 @@
    },
    "entidade": "Sul",
    "universo": "336 meias horas da semana operativa",
-   "filtros": {
-    "semana_operativa_fim": "2026-09-25"
-   },
+   "filtros": [
+    "subsistema S",
+    "semana operativa que termina em 25/09/2026"
+   ],
    "fonte": {
     "orgao": "ONS",
     "conjunto": "CMO Semi-Horário (DESSEM)",
-    "recurso": "CMO_SEMIHORARIO_<ano>.csv (arquivos anuais 2020 em diante)",
+    "recurso": "CMO_SEMIHORARIO_2026",
     "url": "https://dados.ons.org.br/dataset/cmo-semi-horario",
-    "arquivos": [
-     {
-      "recurso": "CMO_SEMIHORARIO_2026",
-      "sha256": "0d33ce850b7a82550c5f2235a5096230db0688da75eee0407292b1529c7149db",
-      "capturado_em": "2026-09-30T22:06:13Z",
-      "publicado_em": "2026-09-30T15:01:21Z"
-     }
-    ]
+    "arquivo": "data/energia/bronze/ons/ons_cmo_semihorario/CMO_SEMIHORARIO_2026/20260930T220613Z.0d33ce850b7a.csv.gz",
+    "sha256": "0d33ce850b7a82550c5f2235a5096230db0688da75eee0407292b1529c7149db",
+    "capturado_em": "2026-09-30T22:06:13Z",
+    "publicado_em": "2026-09-30T15:01:21Z"
    },
-   "chaves_origem": "CMO_SEMIHORARIO, id_subsistema=S, din_instante de 2026-09-19T00:00 a 2026-09-25T23:30",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "CMO_SEMIHORARIO, id_subsistema=S, din_instante de 2026-09-19T00:00 a 2026-09-25T23:30",
+   "manifesto": null,
    "formula": "DESSEM_semana = Σ CMO_meia ÷ 336",
    "numerador": {
     "descricao": "soma do CMO das 336 meias horas",
@@ -20292,34 +18493,39 @@
    "tratamento_ausencia": "semana com meia hora ausente não recebe média",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:32:14Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:02:36Z"
    },
-   "revisoes": 0,
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas.",
    "testes": [
     {
      "nome": "CMO semi-horário: esquema e domínio",
      "resultado": "aprovado",
      "detalhe": "0 valores inválidos, 0 meias horas duplicadas, 0 linhas fora da grade ou de subsistema desconhecido nos arquivos vigentes"
+    },
+    {
+     "nome": "produto diferente do CMO semanal",
+     "resultado": "aprovado",
+     "detalhe": "o CMO semanal do DECOMP da mesma semana é R$ 97,89/MWh; a diferença é publicada, não reconciliada"
     }
    ],
    "reconciliacao": {
-    "descricao": "CMO semanal do DECOMP da mesma semana, produto diferente (não é reconciliação de igualdade)",
-    "resultado": "informativo",
-    "tolerancia": null,
-    "valor_outro_produto": 97.89
+    "descricao": "média das sete médias diárias de 48 meias horas: 58,294494 R$/MWh",
+    "resultado": "aprovado",
+    "tolerancia": "0,000001 R$/MWh"
    },
    "download": [
     {
-     "rotulo": "CSV semanal",
+     "rotulo": "CSV semanal (DECOMP, DESSEM e PLD)",
      "url": "/energia/series/pld_cmo_semanal.csv"
     }
    ],
-   "reproducao": "Somar as meias horas da semana no arquivo CMO_SEMIHORARIO do ano e dividir por 336.",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. CMO médio do DESSEM na semana operativa de 19/09/2026 a 25/09/2026, Sul. Dados: ONS (CMO Semi-Horário (DESSEM)), licença Creative Commons Atribuição (CC-BY). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/pld"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py pld --sem-coleta\nSomar as meias horas da semana no arquivo CMO_SEMIHORARIO do ano e dividir por 336.",
+   "citacao": "SCRUTINIUMS. CMO médio do DESSEM na semana operativa de 19/09/2026 a 25/09/2026: R$ 58,29/MWh, Sul, 19/09/2026 00:00 a 25/09/2026 23:30. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, CMO Semi-Horário (DESSEM) (recurso CMO_SEMIHORARIO_2026, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "pld_semana_NE": {
-   "valor_exibido": 124.09,
+   "indicador": "PLD médio da semana operativa de 19/09/2026 a 25/09/2026",
+   "valor_exibido": "R$ 124,09/MWh",
    "valor_calculo": 124.08857142857158,
    "unidade": "R$/MWh",
    "periodo": {
@@ -20328,24 +18534,25 @@
    },
    "entidade": "Nordeste",
    "universo": "168 horas da semana operativa (sábado a sexta)",
-   "filtros": {
-    "semana_operativa_fim": "2026-09-25"
-   },
+   "filtros": [
+    "submercado Nordeste",
+    "semana operativa que termina em 25/09/2026"
+   ],
    "fonte": {
     "orgao": "CCEE",
     "conjunto": "PLD_HORARIO",
-    "recurso": "pld_horario_2021 a pld_horario_2026",
+    "recurso": "pld_horario_2026",
     "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
-    "arquivos": [
-     {
-      "recurso": "pld_horario_2026",
-      "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
-      "capturado_em": "2026-09-30T02:20:14Z",
-      "publicado_em": "2026-06-09T16:37:15.091000"
-     }
-    ]
+    "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
+    "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
+    "capturado_em": "2026-09-30T02:20:14Z",
+    "publicado_em": null
    },
-   "chaves_origem": "PLD_HORARIO, SUBMERCADO=NE, horas 2026-09-19T00:00 a 2026-09-25T23:00 (horário de Brasília)",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "PLD_HORARIO, SUBMERCADO=NORDESTE, horas de 2026-09-19T00:00 a 2026-09-25T23:00 (horário de Brasília)",
+   "manifesto": null,
    "formula": "PLD_semana = Σ PLD_h ÷ 168",
    "numerador": {
     "descricao": "soma do PLD das 168 horas (R$/MWh × h)",
@@ -20361,38 +18568,38 @@
    "tratamento_ausencia": "semana com hora ausente não recebe média",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:32:14Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:02:36Z"
    },
-   "revisoes": 0,
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas.",
    "testes": [
     {
      "nome": "semana completa",
      "resultado": "aprovado",
-     "detalhe": "168 horas presentes"
+     "detalhe": "168 horas presentes, uma por hora de sábado a sexta"
     }
    ],
    "reconciliacao": {
-    "descricao": "média das sete médias diárias da mesma semana (outro caminho de soma)",
+    "descricao": "média das sete médias diárias da mesma semana (outra ordem de soma): 124,088571 R$/MWh",
     "resultado": "aprovado",
-    "tolerancia": 1e-06,
-    "valor_outro_caminho": 124.0886
+    "tolerancia": "0,000001 R$/MWh"
    },
    "download": [
     {
-     "rotulo": "CSV semanal",
+     "rotulo": "CSV semanal (DECOMP, DESSEM e PLD)",
      "url": "/energia/series/pld_cmo_semanal.csv"
     },
     {
-     "rotulo": "CSV horário",
+     "rotulo": "CSV horário (CMO e PLD)",
      "url": "/energia/series/pld_cmo_horario.csv"
     }
    ],
-   "reproducao": "Filtrar pld_cmo_horario.csv pelas horas da semana e tirar a média da coluna PLD_NE.",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. PLD médio da semana operativa de 19/09/2026 a 25/09/2026, Nordeste. Dados: CCEE (PLD_HORARIO), licença Creative Commons Attribution 4.0 (CC-BY-4.0). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/pld"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py pld --sem-coleta\nFiltrar pld_cmo_horario.csv pelas horas da semana e tirar a média da coluna PLD_NE.",
+   "citacao": "SCRUTINIUMS. PLD médio da semana operativa de 19/09/2026 a 25/09/2026: R$ 124,09/MWh, Nordeste, 19/09/2026 00:00 a 25/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "dessem_semana_NE": {
-   "valor_exibido": 59.67,
+   "indicador": "CMO médio do DESSEM na semana operativa de 19/09/2026 a 25/09/2026",
+   "valor_exibido": "R$ 59,67/MWh",
    "valor_calculo": 59.671011904761905,
    "unidade": "R$/MWh",
    "periodo": {
@@ -20401,24 +18608,25 @@
    },
    "entidade": "Nordeste",
    "universo": "336 meias horas da semana operativa",
-   "filtros": {
-    "semana_operativa_fim": "2026-09-25"
-   },
+   "filtros": [
+    "subsistema NE",
+    "semana operativa que termina em 25/09/2026"
+   ],
    "fonte": {
     "orgao": "ONS",
     "conjunto": "CMO Semi-Horário (DESSEM)",
-    "recurso": "CMO_SEMIHORARIO_<ano>.csv (arquivos anuais 2020 em diante)",
+    "recurso": "CMO_SEMIHORARIO_2026",
     "url": "https://dados.ons.org.br/dataset/cmo-semi-horario",
-    "arquivos": [
-     {
-      "recurso": "CMO_SEMIHORARIO_2026",
-      "sha256": "0d33ce850b7a82550c5f2235a5096230db0688da75eee0407292b1529c7149db",
-      "capturado_em": "2026-09-30T22:06:13Z",
-      "publicado_em": "2026-09-30T15:01:21Z"
-     }
-    ]
+    "arquivo": "data/energia/bronze/ons/ons_cmo_semihorario/CMO_SEMIHORARIO_2026/20260930T220613Z.0d33ce850b7a.csv.gz",
+    "sha256": "0d33ce850b7a82550c5f2235a5096230db0688da75eee0407292b1529c7149db",
+    "capturado_em": "2026-09-30T22:06:13Z",
+    "publicado_em": "2026-09-30T15:01:21Z"
    },
-   "chaves_origem": "CMO_SEMIHORARIO, id_subsistema=NE, din_instante de 2026-09-19T00:00 a 2026-09-25T23:30",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "CMO_SEMIHORARIO, id_subsistema=NE, din_instante de 2026-09-19T00:00 a 2026-09-25T23:30",
+   "manifesto": null,
    "formula": "DESSEM_semana = Σ CMO_meia ÷ 336",
    "numerador": {
     "descricao": "soma do CMO das 336 meias horas",
@@ -20434,34 +18642,39 @@
    "tratamento_ausencia": "semana com meia hora ausente não recebe média",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:32:14Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:02:36Z"
    },
-   "revisoes": 0,
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas.",
    "testes": [
     {
      "nome": "CMO semi-horário: esquema e domínio",
      "resultado": "aprovado",
      "detalhe": "0 valores inválidos, 0 meias horas duplicadas, 0 linhas fora da grade ou de subsistema desconhecido nos arquivos vigentes"
+    },
+    {
+     "nome": "produto diferente do CMO semanal",
+     "resultado": "aprovado",
+     "detalhe": "o CMO semanal do DECOMP da mesma semana é R$ 97,89/MWh; a diferença é publicada, não reconciliada"
     }
    ],
    "reconciliacao": {
-    "descricao": "CMO semanal do DECOMP da mesma semana, produto diferente (não é reconciliação de igualdade)",
-    "resultado": "informativo",
-    "tolerancia": null,
-    "valor_outro_produto": 97.89
+    "descricao": "média das sete médias diárias de 48 meias horas: 59,671012 R$/MWh",
+    "resultado": "aprovado",
+    "tolerancia": "0,000001 R$/MWh"
    },
    "download": [
     {
-     "rotulo": "CSV semanal",
+     "rotulo": "CSV semanal (DECOMP, DESSEM e PLD)",
      "url": "/energia/series/pld_cmo_semanal.csv"
     }
    ],
-   "reproducao": "Somar as meias horas da semana no arquivo CMO_SEMIHORARIO do ano e dividir por 336.",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. CMO médio do DESSEM na semana operativa de 19/09/2026 a 25/09/2026, Nordeste. Dados: ONS (CMO Semi-Horário (DESSEM)), licença Creative Commons Atribuição (CC-BY). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/pld"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py pld --sem-coleta\nSomar as meias horas da semana no arquivo CMO_SEMIHORARIO do ano e dividir por 336.",
+   "citacao": "SCRUTINIUMS. CMO médio do DESSEM na semana operativa de 19/09/2026 a 25/09/2026: R$ 59,67/MWh, Nordeste, 19/09/2026 00:00 a 25/09/2026 23:30. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, CMO Semi-Horário (DESSEM) (recurso CMO_SEMIHORARIO_2026, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "pld_semana_N": {
-   "valor_exibido": 124.09,
+   "indicador": "PLD médio da semana operativa de 19/09/2026 a 25/09/2026",
+   "valor_exibido": "R$ 124,09/MWh",
    "valor_calculo": 124.09339285714307,
    "unidade": "R$/MWh",
    "periodo": {
@@ -20470,24 +18683,25 @@
    },
    "entidade": "Norte",
    "universo": "168 horas da semana operativa (sábado a sexta)",
-   "filtros": {
-    "semana_operativa_fim": "2026-09-25"
-   },
+   "filtros": [
+    "submercado Norte",
+    "semana operativa que termina em 25/09/2026"
+   ],
    "fonte": {
     "orgao": "CCEE",
     "conjunto": "PLD_HORARIO",
-    "recurso": "pld_horario_2021 a pld_horario_2026",
+    "recurso": "pld_horario_2026",
     "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
-    "arquivos": [
-     {
-      "recurso": "pld_horario_2026",
-      "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
-      "capturado_em": "2026-09-30T02:20:14Z",
-      "publicado_em": "2026-06-09T16:37:15.091000"
-     }
-    ]
+    "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
+    "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
+    "capturado_em": "2026-09-30T02:20:14Z",
+    "publicado_em": null
    },
-   "chaves_origem": "PLD_HORARIO, SUBMERCADO=N, horas 2026-09-19T00:00 a 2026-09-25T23:00 (horário de Brasília)",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "PLD_HORARIO, SUBMERCADO=NORTE, horas de 2026-09-19T00:00 a 2026-09-25T23:00 (horário de Brasília)",
+   "manifesto": null,
    "formula": "PLD_semana = Σ PLD_h ÷ 168",
    "numerador": {
     "descricao": "soma do PLD das 168 horas (R$/MWh × h)",
@@ -20503,38 +18717,38 @@
    "tratamento_ausencia": "semana com hora ausente não recebe média",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:32:14Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:02:36Z"
    },
-   "revisoes": 0,
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas.",
    "testes": [
     {
      "nome": "semana completa",
      "resultado": "aprovado",
-     "detalhe": "168 horas presentes"
+     "detalhe": "168 horas presentes, uma por hora de sábado a sexta"
     }
    ],
    "reconciliacao": {
-    "descricao": "média das sete médias diárias da mesma semana (outro caminho de soma)",
+    "descricao": "média das sete médias diárias da mesma semana (outra ordem de soma): 124,093393 R$/MWh",
     "resultado": "aprovado",
-    "tolerancia": 1e-06,
-    "valor_outro_caminho": 124.0934
+    "tolerancia": "0,000001 R$/MWh"
    },
    "download": [
     {
-     "rotulo": "CSV semanal",
+     "rotulo": "CSV semanal (DECOMP, DESSEM e PLD)",
      "url": "/energia/series/pld_cmo_semanal.csv"
     },
     {
-     "rotulo": "CSV horário",
+     "rotulo": "CSV horário (CMO e PLD)",
      "url": "/energia/series/pld_cmo_horario.csv"
     }
    ],
-   "reproducao": "Filtrar pld_cmo_horario.csv pelas horas da semana e tirar a média da coluna PLD_N.",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. PLD médio da semana operativa de 19/09/2026 a 25/09/2026, Norte. Dados: CCEE (PLD_HORARIO), licença Creative Commons Attribution 4.0 (CC-BY-4.0). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/pld"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py pld --sem-coleta\nFiltrar pld_cmo_horario.csv pelas horas da semana e tirar a média da coluna PLD_N.",
+   "citacao": "SCRUTINIUMS. PLD médio da semana operativa de 19/09/2026 a 25/09/2026: R$ 124,09/MWh, Norte, 19/09/2026 00:00 a 25/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "dessem_semana_N": {
-   "valor_exibido": 86.54,
+   "indicador": "CMO médio do DESSEM na semana operativa de 19/09/2026 a 25/09/2026",
+   "valor_exibido": "R$ 86,54/MWh",
    "valor_calculo": 86.54139880952383,
    "unidade": "R$/MWh",
    "periodo": {
@@ -20543,24 +18757,25 @@
    },
    "entidade": "Norte",
    "universo": "336 meias horas da semana operativa",
-   "filtros": {
-    "semana_operativa_fim": "2026-09-25"
-   },
+   "filtros": [
+    "subsistema N",
+    "semana operativa que termina em 25/09/2026"
+   ],
    "fonte": {
     "orgao": "ONS",
     "conjunto": "CMO Semi-Horário (DESSEM)",
-    "recurso": "CMO_SEMIHORARIO_<ano>.csv (arquivos anuais 2020 em diante)",
+    "recurso": "CMO_SEMIHORARIO_2026",
     "url": "https://dados.ons.org.br/dataset/cmo-semi-horario",
-    "arquivos": [
-     {
-      "recurso": "CMO_SEMIHORARIO_2026",
-      "sha256": "0d33ce850b7a82550c5f2235a5096230db0688da75eee0407292b1529c7149db",
-      "capturado_em": "2026-09-30T22:06:13Z",
-      "publicado_em": "2026-09-30T15:01:21Z"
-     }
-    ]
+    "arquivo": "data/energia/bronze/ons/ons_cmo_semihorario/CMO_SEMIHORARIO_2026/20260930T220613Z.0d33ce850b7a.csv.gz",
+    "sha256": "0d33ce850b7a82550c5f2235a5096230db0688da75eee0407292b1529c7149db",
+    "capturado_em": "2026-09-30T22:06:13Z",
+    "publicado_em": "2026-09-30T15:01:21Z"
    },
-   "chaves_origem": "CMO_SEMIHORARIO, id_subsistema=N, din_instante de 2026-09-19T00:00 a 2026-09-25T23:30",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "CMO_SEMIHORARIO, id_subsistema=N, din_instante de 2026-09-19T00:00 a 2026-09-25T23:30",
+   "manifesto": null,
    "formula": "DESSEM_semana = Σ CMO_meia ÷ 336",
    "numerador": {
     "descricao": "soma do CMO das 336 meias horas",
@@ -20576,92 +18791,101 @@
    "tratamento_ausencia": "semana com meia hora ausente não recebe média",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:32:14Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:02:36Z"
    },
-   "revisoes": 0,
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas.",
    "testes": [
     {
      "nome": "CMO semi-horário: esquema e domínio",
      "resultado": "aprovado",
      "detalhe": "0 valores inválidos, 0 meias horas duplicadas, 0 linhas fora da grade ou de subsistema desconhecido nos arquivos vigentes"
+    },
+    {
+     "nome": "produto diferente do CMO semanal",
+     "resultado": "aprovado",
+     "detalhe": "o CMO semanal do DECOMP da mesma semana é R$ 1.866,74/MWh; a diferença é publicada, não reconciliada"
     }
    ],
    "reconciliacao": {
-    "descricao": "CMO semanal do DECOMP da mesma semana, produto diferente (não é reconciliação de igualdade)",
-    "resultado": "informativo",
-    "tolerancia": null,
-    "valor_outro_produto": 1866.74
+    "descricao": "média das sete médias diárias de 48 meias horas: 86,541399 R$/MWh",
+    "resultado": "aprovado",
+    "tolerancia": "0,000001 R$/MWh"
    },
    "download": [
     {
-     "rotulo": "CSV semanal",
+     "rotulo": "CSV semanal (DECOMP, DESSEM e PLD)",
      "url": "/energia/series/pld_cmo_semanal.csv"
     }
    ],
-   "reproducao": "Somar as meias horas da semana no arquivo CMO_SEMIHORARIO do ano e dividir por 336.",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. CMO médio do DESSEM na semana operativa de 19/09/2026 a 25/09/2026, Norte. Dados: ONS (CMO Semi-Horário (DESSEM)), licença Creative Commons Atribuição (CC-BY). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/pld"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py pld --sem-coleta\nSomar as meias horas da semana no arquivo CMO_SEMIHORARIO do ano e dividir por 336.",
+   "citacao": "SCRUTINIUMS. CMO médio do DESSEM na semana operativa de 19/09/2026 a 25/09/2026: R$ 86,54/MWh, Norte, 19/09/2026 00:00 a 25/09/2026 23:30. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, CMO Semi-Horário (DESSEM) (recurso CMO_SEMIHORARIO_2026, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "piso_2026_SE": {
-   "valor_exibido": 0.2396,
-   "valor_calculo": 0.2396,
-   "unidade": "fração das horas",
+   "indicador": "Horas de 2026 com o PLD no piso",
+   "valor_exibido": "23,96%",
+   "valor_calculo": 23.962148962148962,
+   "unidade": "% das horas",
    "periodo": {
     "inicio": "2026-01-01T00:00",
     "fim": "2026-09-30T23:00"
    },
    "entidade": "Sudeste/Centro-Oeste",
-   "universo": "horas de 2026 com PLD publicado até o dia de referência",
-   "filtros": {
-    "ano": 2026,
-    "parcial": true
-   },
+   "universo": "horas de 2026 com PLD publicado e limites vigentes até o dia de referência",
+   "filtros": [
+    "ano 2026 (parcial)",
+    "submercado Sudeste/Centro-Oeste"
+   ],
    "fonte": {
-    "orgao": "CCEE",
-    "conjunto": "PLD_HORARIO",
-    "recurso": "pld_horario_2021 a pld_horario_2026",
+    "orgao": "CCEE; ANEEL",
+    "conjunto": "PLD_HORARIO; Atos anuais de limites do PLD",
+    "recurso": "pld_horario_2026",
     "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
-    "arquivos": [
-     {
-      "recurso": "pld_horario_2026",
-      "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
-      "capturado_em": "2026-09-30T02:20:14Z",
-      "publicado_em": "2026-06-09T16:37:15.091000"
-     }
-    ]
+    "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
+    "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
+    "capturado_em": "2026-09-30T02:20:14Z",
+    "publicado_em": null
    },
-   "chaves_origem": "PLD_HORARIO, SUBMERCADO=SE, ano 2026; limites vigentes por dia (atos: Despacho ANEEL nº 3.850/2025)",
-   "formula": "frac_piso = nº de horas com |PLD − mínimo vigente| ≤ R$ 0,01/MWh ÷ nº de horas",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "PLD_HORARIO, submercado Sudeste/Centro-Oeste, ano 2026; mínimo vigente por dia segundo Despacho ANEEL nº 3.850/2025",
+   "manifesto": null,
+   "formula": "100 × nº de horas com |PLD − mínimo vigente| ≤ R$ 0,01/MWh ÷ nº de horas com limites vigentes",
    "numerador": {
     "descricao": "horas no piso",
     "valor": 1570
    },
    "denominador": {
-    "descricao": "horas",
+    "descricao": "horas com limites vigentes",
     "valor": 6552
    },
    "pesos": null,
    "exclusoes": [],
    "cobertura": "6552 horas; 0 sem limite vigente",
-   "tratamento_ausencia": "hora sem PLD não entra; dia sem ato vigente conta como sem limite",
+   "tratamento_ausencia": "hora sem PLD não entra; dia sem ato vigente conta como sem limite e fica fora do denominador",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:32:14Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:02:36Z"
    },
-   "revisoes": 0,
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas.",
    "testes": [
     {
      "nome": "PLD dentro dos limites dos atos",
      "resultado": "aprovado",
      "detalhe": "0 horas abaixo do piso, 0 horas acima do teto horário, 0 dias com média acima do teto estrutural"
+    },
+    {
+     "nome": "Limites vigentes por dia: mesma leitura do módulo Regulação (limites_em)",
+     "resultado": "aprovado",
+     "detalhe": "2099 dias conferidos, 0 divergentes"
     }
    ],
    "reconciliacao": {
-    "descricao": "contagem com tolerância de meio centavo (sensibilidade)",
-    "resultado": "igual",
-    "tolerancia": 0.005,
-    "valor_outro_caminho": 1570
+    "descricao": "contagem com tolerância de meio centavo: 1570 horas no piso",
+    "resultado": "aprovado",
+    "tolerancia": "R$ 0,005/MWh (a regra publicada usa R$ 0,01/MWh)"
    },
    "download": [
     {
@@ -20669,69 +18893,74 @@
      "url": "/energia/series/pld_limites_diario.csv"
     }
    ],
-   "reproducao": "Somar horas_no_piso de pld_limites_diario.csv no ano e submercado e dividir pelas horas.",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. Fração das horas de 2026 com o PLD no piso, Sudeste/Centro-Oeste. Dados: CCEE (PLD_HORARIO), licença Creative Commons Attribution 4.0 (CC-BY-4.0). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/pld"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py pld --sem-coleta\nSomar horas_no_piso de pld_limites_diario.csv no ano e submercado e dividir pelas horas.",
+   "citacao": "SCRUTINIUMS. Horas de 2026 com o PLD no piso: 23,96%, Sudeste/Centro-Oeste, 01/01/2026 00:00 a 30/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE; ANEEL, PLD_HORARIO; Atos anuais de limites do PLD (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "piso_2026_S": {
-   "valor_exibido": 0.1885,
-   "valor_calculo": 0.1885,
-   "unidade": "fração das horas",
+   "indicador": "Horas de 2026 com o PLD no piso",
+   "valor_exibido": "18,85%",
+   "valor_calculo": 18.849206349206348,
+   "unidade": "% das horas",
    "periodo": {
     "inicio": "2026-01-01T00:00",
     "fim": "2026-09-30T23:00"
    },
    "entidade": "Sul",
-   "universo": "horas de 2026 com PLD publicado até o dia de referência",
-   "filtros": {
-    "ano": 2026,
-    "parcial": true
-   },
+   "universo": "horas de 2026 com PLD publicado e limites vigentes até o dia de referência",
+   "filtros": [
+    "ano 2026 (parcial)",
+    "submercado Sul"
+   ],
    "fonte": {
-    "orgao": "CCEE",
-    "conjunto": "PLD_HORARIO",
-    "recurso": "pld_horario_2021 a pld_horario_2026",
+    "orgao": "CCEE; ANEEL",
+    "conjunto": "PLD_HORARIO; Atos anuais de limites do PLD",
+    "recurso": "pld_horario_2026",
     "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
-    "arquivos": [
-     {
-      "recurso": "pld_horario_2026",
-      "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
-      "capturado_em": "2026-09-30T02:20:14Z",
-      "publicado_em": "2026-06-09T16:37:15.091000"
-     }
-    ]
+    "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
+    "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
+    "capturado_em": "2026-09-30T02:20:14Z",
+    "publicado_em": null
    },
-   "chaves_origem": "PLD_HORARIO, SUBMERCADO=S, ano 2026; limites vigentes por dia (atos: Despacho ANEEL nº 3.850/2025)",
-   "formula": "frac_piso = nº de horas com |PLD − mínimo vigente| ≤ R$ 0,01/MWh ÷ nº de horas",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "PLD_HORARIO, submercado Sul, ano 2026; mínimo vigente por dia segundo Despacho ANEEL nº 3.850/2025",
+   "manifesto": null,
+   "formula": "100 × nº de horas com |PLD − mínimo vigente| ≤ R$ 0,01/MWh ÷ nº de horas com limites vigentes",
    "numerador": {
     "descricao": "horas no piso",
     "valor": 1235
    },
    "denominador": {
-    "descricao": "horas",
+    "descricao": "horas com limites vigentes",
     "valor": 6552
    },
    "pesos": null,
    "exclusoes": [],
    "cobertura": "6552 horas; 0 sem limite vigente",
-   "tratamento_ausencia": "hora sem PLD não entra; dia sem ato vigente conta como sem limite",
+   "tratamento_ausencia": "hora sem PLD não entra; dia sem ato vigente conta como sem limite e fica fora do denominador",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:32:14Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:02:36Z"
    },
-   "revisoes": 0,
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas.",
    "testes": [
     {
      "nome": "PLD dentro dos limites dos atos",
      "resultado": "aprovado",
      "detalhe": "0 horas abaixo do piso, 0 horas acima do teto horário, 0 dias com média acima do teto estrutural"
+    },
+    {
+     "nome": "Limites vigentes por dia: mesma leitura do módulo Regulação (limites_em)",
+     "resultado": "aprovado",
+     "detalhe": "2099 dias conferidos, 0 divergentes"
     }
    ],
    "reconciliacao": {
-    "descricao": "contagem com tolerância de meio centavo (sensibilidade)",
-    "resultado": "igual",
-    "tolerancia": 0.005,
-    "valor_outro_caminho": 1235
+    "descricao": "contagem com tolerância de meio centavo: 1235 horas no piso",
+    "resultado": "aprovado",
+    "tolerancia": "R$ 0,005/MWh (a regra publicada usa R$ 0,01/MWh)"
    },
    "download": [
     {
@@ -20739,69 +18968,74 @@
      "url": "/energia/series/pld_limites_diario.csv"
     }
    ],
-   "reproducao": "Somar horas_no_piso de pld_limites_diario.csv no ano e submercado e dividir pelas horas.",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. Fração das horas de 2026 com o PLD no piso, Sul. Dados: CCEE (PLD_HORARIO), licença Creative Commons Attribution 4.0 (CC-BY-4.0). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/pld"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py pld --sem-coleta\nSomar horas_no_piso de pld_limites_diario.csv no ano e submercado e dividir pelas horas.",
+   "citacao": "SCRUTINIUMS. Horas de 2026 com o PLD no piso: 18,85%, Sul, 01/01/2026 00:00 a 30/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE; ANEEL, PLD_HORARIO; Atos anuais de limites do PLD (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "piso_2026_NE": {
-   "valor_exibido": 0.2824,
-   "valor_calculo": 0.2824,
-   "unidade": "fração das horas",
+   "indicador": "Horas de 2026 com o PLD no piso",
+   "valor_exibido": "28,24%",
+   "valor_calculo": 28.235653235653235,
+   "unidade": "% das horas",
    "periodo": {
     "inicio": "2026-01-01T00:00",
     "fim": "2026-09-30T23:00"
    },
    "entidade": "Nordeste",
-   "universo": "horas de 2026 com PLD publicado até o dia de referência",
-   "filtros": {
-    "ano": 2026,
-    "parcial": true
-   },
+   "universo": "horas de 2026 com PLD publicado e limites vigentes até o dia de referência",
+   "filtros": [
+    "ano 2026 (parcial)",
+    "submercado Nordeste"
+   ],
    "fonte": {
-    "orgao": "CCEE",
-    "conjunto": "PLD_HORARIO",
-    "recurso": "pld_horario_2021 a pld_horario_2026",
+    "orgao": "CCEE; ANEEL",
+    "conjunto": "PLD_HORARIO; Atos anuais de limites do PLD",
+    "recurso": "pld_horario_2026",
     "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
-    "arquivos": [
-     {
-      "recurso": "pld_horario_2026",
-      "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
-      "capturado_em": "2026-09-30T02:20:14Z",
-      "publicado_em": "2026-06-09T16:37:15.091000"
-     }
-    ]
+    "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
+    "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
+    "capturado_em": "2026-09-30T02:20:14Z",
+    "publicado_em": null
    },
-   "chaves_origem": "PLD_HORARIO, SUBMERCADO=NE, ano 2026; limites vigentes por dia (atos: Despacho ANEEL nº 3.850/2025)",
-   "formula": "frac_piso = nº de horas com |PLD − mínimo vigente| ≤ R$ 0,01/MWh ÷ nº de horas",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "PLD_HORARIO, submercado Nordeste, ano 2026; mínimo vigente por dia segundo Despacho ANEEL nº 3.850/2025",
+   "manifesto": null,
+   "formula": "100 × nº de horas com |PLD − mínimo vigente| ≤ R$ 0,01/MWh ÷ nº de horas com limites vigentes",
    "numerador": {
     "descricao": "horas no piso",
     "valor": 1850
    },
    "denominador": {
-    "descricao": "horas",
+    "descricao": "horas com limites vigentes",
     "valor": 6552
    },
    "pesos": null,
    "exclusoes": [],
    "cobertura": "6552 horas; 0 sem limite vigente",
-   "tratamento_ausencia": "hora sem PLD não entra; dia sem ato vigente conta como sem limite",
+   "tratamento_ausencia": "hora sem PLD não entra; dia sem ato vigente conta como sem limite e fica fora do denominador",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:32:14Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:02:36Z"
    },
-   "revisoes": 0,
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas.",
    "testes": [
     {
      "nome": "PLD dentro dos limites dos atos",
      "resultado": "aprovado",
      "detalhe": "0 horas abaixo do piso, 0 horas acima do teto horário, 0 dias com média acima do teto estrutural"
+    },
+    {
+     "nome": "Limites vigentes por dia: mesma leitura do módulo Regulação (limites_em)",
+     "resultado": "aprovado",
+     "detalhe": "2099 dias conferidos, 0 divergentes"
     }
    ],
    "reconciliacao": {
-    "descricao": "contagem com tolerância de meio centavo (sensibilidade)",
-    "resultado": "igual",
-    "tolerancia": 0.005,
-    "valor_outro_caminho": 1850
+    "descricao": "contagem com tolerância de meio centavo: 1850 horas no piso",
+    "resultado": "aprovado",
+    "tolerancia": "R$ 0,005/MWh (a regra publicada usa R$ 0,01/MWh)"
    },
    "download": [
     {
@@ -20809,69 +19043,74 @@
      "url": "/energia/series/pld_limites_diario.csv"
     }
    ],
-   "reproducao": "Somar horas_no_piso de pld_limites_diario.csv no ano e submercado e dividir pelas horas.",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. Fração das horas de 2026 com o PLD no piso, Nordeste. Dados: CCEE (PLD_HORARIO), licença Creative Commons Attribution 4.0 (CC-BY-4.0). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/pld"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py pld --sem-coleta\nSomar horas_no_piso de pld_limites_diario.csv no ano e submercado e dividir pelas horas.",
+   "citacao": "SCRUTINIUMS. Horas de 2026 com o PLD no piso: 28,24%, Nordeste, 01/01/2026 00:00 a 30/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE; ANEEL, PLD_HORARIO; Atos anuais de limites do PLD (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "piso_2026_N": {
-   "valor_exibido": 0.2741,
-   "valor_calculo": 0.2741,
-   "unidade": "fração das horas",
+   "indicador": "Horas de 2026 com o PLD no piso",
+   "valor_exibido": "27,41%",
+   "valor_calculo": 27.41147741147741,
+   "unidade": "% das horas",
    "periodo": {
     "inicio": "2026-01-01T00:00",
     "fim": "2026-09-30T23:00"
    },
    "entidade": "Norte",
-   "universo": "horas de 2026 com PLD publicado até o dia de referência",
-   "filtros": {
-    "ano": 2026,
-    "parcial": true
-   },
+   "universo": "horas de 2026 com PLD publicado e limites vigentes até o dia de referência",
+   "filtros": [
+    "ano 2026 (parcial)",
+    "submercado Norte"
+   ],
    "fonte": {
-    "orgao": "CCEE",
-    "conjunto": "PLD_HORARIO",
-    "recurso": "pld_horario_2021 a pld_horario_2026",
+    "orgao": "CCEE; ANEEL",
+    "conjunto": "PLD_HORARIO; Atos anuais de limites do PLD",
+    "recurso": "pld_horario_2026",
     "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
-    "arquivos": [
-     {
-      "recurso": "pld_horario_2026",
-      "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
-      "capturado_em": "2026-09-30T02:20:14Z",
-      "publicado_em": "2026-06-09T16:37:15.091000"
-     }
-    ]
+    "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
+    "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
+    "capturado_em": "2026-09-30T02:20:14Z",
+    "publicado_em": null
    },
-   "chaves_origem": "PLD_HORARIO, SUBMERCADO=N, ano 2026; limites vigentes por dia (atos: Despacho ANEEL nº 3.850/2025)",
-   "formula": "frac_piso = nº de horas com |PLD − mínimo vigente| ≤ R$ 0,01/MWh ÷ nº de horas",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "PLD_HORARIO, submercado Norte, ano 2026; mínimo vigente por dia segundo Despacho ANEEL nº 3.850/2025",
+   "manifesto": null,
+   "formula": "100 × nº de horas com |PLD − mínimo vigente| ≤ R$ 0,01/MWh ÷ nº de horas com limites vigentes",
    "numerador": {
     "descricao": "horas no piso",
     "valor": 1796
    },
    "denominador": {
-    "descricao": "horas",
+    "descricao": "horas com limites vigentes",
     "valor": 6552
    },
    "pesos": null,
    "exclusoes": [],
    "cobertura": "6552 horas; 0 sem limite vigente",
-   "tratamento_ausencia": "hora sem PLD não entra; dia sem ato vigente conta como sem limite",
+   "tratamento_ausencia": "hora sem PLD não entra; dia sem ato vigente conta como sem limite e fica fora do denominador",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:32:14Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:02:36Z"
    },
-   "revisoes": 0,
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas.",
    "testes": [
     {
      "nome": "PLD dentro dos limites dos atos",
      "resultado": "aprovado",
      "detalhe": "0 horas abaixo do piso, 0 horas acima do teto horário, 0 dias com média acima do teto estrutural"
+    },
+    {
+     "nome": "Limites vigentes por dia: mesma leitura do módulo Regulação (limites_em)",
+     "resultado": "aprovado",
+     "detalhe": "2099 dias conferidos, 0 divergentes"
     }
    ],
    "reconciliacao": {
-    "descricao": "contagem com tolerância de meio centavo (sensibilidade)",
-    "resultado": "igual",
-    "tolerancia": 0.005,
-    "valor_outro_caminho": 1796
+    "descricao": "contagem com tolerância de meio centavo: 1796 horas no piso",
+    "resultado": "aprovado",
+    "tolerancia": "R$ 0,005/MWh (a regra publicada usa R$ 0,01/MWh)"
    },
    "download": [
     {
@@ -20879,11 +19118,12 @@
      "url": "/energia/series/pld_limites_diario.csv"
     }
    ],
-   "reproducao": "Somar horas_no_piso de pld_limites_diario.csv no ano e submercado e dividir pelas horas.",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. Fração das horas de 2026 com o PLD no piso, Norte. Dados: CCEE (PLD_HORARIO), licença Creative Commons Attribution 4.0 (CC-BY-4.0). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/pld"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py pld --sem-coleta\nSomar horas_no_piso de pld_limites_diario.csv no ano e submercado e dividir pelas horas.",
+   "citacao": "SCRUTINIUMS. Horas de 2026 com o PLD no piso: 27,41%, Norte, 01/01/2026 00:00 a 30/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE; ANEEL, PLD_HORARIO; Atos anuais de limites do PLD (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "ponderada_2026-08_SE": {
-   "valor_exibido": 131.73,
+   "indicador": "PLD médio de ago/2026 ponderado pela carga",
+   "valor_exibido": "R$ 131,73/MWh",
    "valor_calculo": 131.73306792188131,
    "unidade": "R$/MWh",
    "periodo": {
@@ -20892,30 +19132,41 @@
    },
    "entidade": "Sudeste/Centro-Oeste",
    "universo": "horas do mês com PLD e carga",
-   "filtros": {
-    "mes": "2026-08"
-   },
+   "filtros": [
+    "mês 2026-08",
+    "submercado Sudeste/Centro-Oeste e subsistema SE do ONS"
+   ],
    "fonte": {
     "orgao": "CCEE; ONS",
     "conjunto": "PLD_HORARIO; Balanço de Energia nos Subsistemas",
     "recurso": "pld_horario_2021 a pld_horario_2026; balanco_energia_subsistema_ho (arquivos CSV anuais)",
     "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": null,
+    "publicado_em": null,
     "arquivos": [
      {
       "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
       "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
       "capturado_em": "2026-09-30T02:20:14Z",
-      "publicado_em": "2026-06-09T16:37:15.091000"
+      "publicado_em": null
      },
      {
       "recurso": "BALANCO_ENERGIA_SUBSISTEMA_2026",
+      "arquivo": "data/energia/bronze/ons/balanco_energia_subsistema_ho/BALANCO_ENERGIA_SUBSISTEMA_2026/20260930T021957Z.81f6ecfcb899.csv.gz",
       "sha256": "81f6ecfcb8995376afc77ccc2fdc79452ce4006b18e922b77dfce8dfecb07ad7",
       "capturado_em": "2026-09-30T02:19:57Z",
       "publicado_em": "2026-09-29T22:00:42.467156"
      }
     ]
    },
-   "chaves_origem": "PLD_HORARIO SUBMERCADO=SE; BALANCO_ENERGIA_SUBSISTEMA id_subsistema=SE, val_carga; horas de 2026-08",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "PLD_HORARIO submercado Sudeste/Centro-Oeste e BALANCO_ENERGIA_SUBSISTEMA id_subsistema=SE (val_carga), horas de 2026-08",
+   "manifesto": null,
    "formula": "Σ PLD_h × carga_h ÷ Σ carga_h",
    "numerador": {
     "descricao": "Σ PLD × carga (R$)",
@@ -20925,25 +19176,37 @@
     "descricao": "Σ carga (MWh)",
     "valor": 32499153.392
    },
-   "pesos": "carga verificada do subsistema na hora (MWmed = MWh em uma hora)",
+   "pesos": "carga verificada do subsistema na hora (MWmed; numa hora, MWmed equivale a MWh)",
    "exclusoes": [],
    "cobertura": "744 horas, todas com carga",
-   "tratamento_ausencia": "hora sem carga fica fora da ponderada (campo mesmas_horas)",
+   "tratamento_ausencia": "hora sem carga fica fora da ponderada (campo mesmas_horas no CSV mensal)",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:32:14Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:02:36Z"
    },
-   "revisoes": {
-    "pld": 0,
-    "carga": 2620
-   },
-   "testes": [],
+   "revisoes": "PLD: Nenhuma revisão detectada entre as capturas integradas.; carga: 2.620 observações revisadas pela fonte entre as capturas integradas.",
+   "testes": [
+    {
+     "nome": "mesmas horas da média temporal",
+     "resultado": "aprovado",
+     "detalhe": "744 horas com PLD e carga, mês completo"
+    },
+    {
+     "nome": "carga positiva",
+     "resultado": "aprovado",
+     "detalhe": "menor carga horária do mês: 31.420,9 MWmed"
+    },
+    {
+     "nome": "média temporal do mesmo mês (medida diferente, publicada ao lado)",
+     "resultado": "aprovado",
+     "detalhe": "R$ 128,12/MWh"
+    }
+   ],
    "reconciliacao": {
-    "descricao": "média temporal do mesmo mês, para comparação (medida diferente)",
-    "resultado": "informativo",
-    "tolerancia": null,
-    "valor_outro_caminho": 128.12
+    "descricao": "somas diárias de numerador e denominador agregadas no fim: 131,733068 R$/MWh",
+    "resultado": "aprovado",
+    "tolerancia": "0,000001 R$/MWh"
    },
    "download": [
     {
@@ -20951,11 +19214,12 @@
      "url": "/energia/series/pld_mensal.csv"
     }
    ],
-   "reproducao": "Cruzar pld_cmo_horario.csv (PLD) com a carga horária do balanço do ONS na mesma hora e aplicar a fórmula.",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. PLD médio de ago/2026 ponderado pela carga, Sudeste/Centro-Oeste. Dados: CCEE; ONS (PLD_HORARIO; Balanço de Energia nos Subsistemas), licença Creative Commons Attribution 4.0 (CC-BY-4.0). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/pld"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py pld --sem-coleta\nCruzar pld_cmo_horario.csv (PLD) com a carga horária do balanço do ONS na mesma hora e aplicar a fórmula.",
+   "citacao": "SCRUTINIUMS. PLD médio de ago/2026 ponderado pela carga: R$ 131,73/MWh, Sudeste/Centro-Oeste, 01/08/2026 00:00 a 31/08/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE; ONS, PLD_HORARIO; Balanço de Energia nos Subsistemas (recurso pld_horario_2021 a pld_horario_2026; balanco_energia_subsistema_ho (arquivos CSV anuais)). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "ponderada_2026-08_S": {
-   "valor_exibido": 132.36,
+   "indicador": "PLD médio de ago/2026 ponderado pela carga",
+   "valor_exibido": "R$ 132,36/MWh",
    "valor_calculo": 132.3642016900068,
    "unidade": "R$/MWh",
    "periodo": {
@@ -20964,30 +19228,41 @@
    },
    "entidade": "Sul",
    "universo": "horas do mês com PLD e carga",
-   "filtros": {
-    "mes": "2026-08"
-   },
+   "filtros": [
+    "mês 2026-08",
+    "submercado Sul e subsistema S do ONS"
+   ],
    "fonte": {
     "orgao": "CCEE; ONS",
     "conjunto": "PLD_HORARIO; Balanço de Energia nos Subsistemas",
     "recurso": "pld_horario_2021 a pld_horario_2026; balanco_energia_subsistema_ho (arquivos CSV anuais)",
     "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": null,
+    "publicado_em": null,
     "arquivos": [
      {
       "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
       "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
       "capturado_em": "2026-09-30T02:20:14Z",
-      "publicado_em": "2026-06-09T16:37:15.091000"
+      "publicado_em": null
      },
      {
       "recurso": "BALANCO_ENERGIA_SUBSISTEMA_2026",
+      "arquivo": "data/energia/bronze/ons/balanco_energia_subsistema_ho/BALANCO_ENERGIA_SUBSISTEMA_2026/20260930T021957Z.81f6ecfcb899.csv.gz",
       "sha256": "81f6ecfcb8995376afc77ccc2fdc79452ce4006b18e922b77dfce8dfecb07ad7",
       "capturado_em": "2026-09-30T02:19:57Z",
       "publicado_em": "2026-09-29T22:00:42.467156"
      }
     ]
    },
-   "chaves_origem": "PLD_HORARIO SUBMERCADO=S; BALANCO_ENERGIA_SUBSISTEMA id_subsistema=S, val_carga; horas de 2026-08",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "PLD_HORARIO submercado Sul e BALANCO_ENERGIA_SUBSISTEMA id_subsistema=S (val_carga), horas de 2026-08",
+   "manifesto": null,
    "formula": "Σ PLD_h × carga_h ÷ Σ carga_h",
    "numerador": {
     "descricao": "Σ PLD × carga (R$)",
@@ -20997,25 +19272,37 @@
     "descricao": "Σ carga (MWh)",
     "valor": 9982115.271
    },
-   "pesos": "carga verificada do subsistema na hora (MWmed = MWh em uma hora)",
+   "pesos": "carga verificada do subsistema na hora (MWmed; numa hora, MWmed equivale a MWh)",
    "exclusoes": [],
    "cobertura": "744 horas, todas com carga",
-   "tratamento_ausencia": "hora sem carga fica fora da ponderada (campo mesmas_horas)",
+   "tratamento_ausencia": "hora sem carga fica fora da ponderada (campo mesmas_horas no CSV mensal)",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:32:14Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:02:36Z"
    },
-   "revisoes": {
-    "pld": 0,
-    "carga": 2620
-   },
-   "testes": [],
+   "revisoes": "PLD: Nenhuma revisão detectada entre as capturas integradas.; carga: 2.620 observações revisadas pela fonte entre as capturas integradas.",
+   "testes": [
+    {
+     "nome": "mesmas horas da média temporal",
+     "resultado": "aprovado",
+     "detalhe": "744 horas com PLD e carga, mês completo"
+    },
+    {
+     "nome": "carga positiva",
+     "resultado": "aprovado",
+     "detalhe": "menor carga horária do mês: 8.003,0 MWmed"
+    },
+    {
+     "nome": "média temporal do mesmo mês (medida diferente, publicada ao lado)",
+     "resultado": "aprovado",
+     "detalhe": "R$ 128,10/MWh"
+    }
+   ],
    "reconciliacao": {
-    "descricao": "média temporal do mesmo mês, para comparação (medida diferente)",
-    "resultado": "informativo",
-    "tolerancia": null,
-    "valor_outro_caminho": 128.1
+    "descricao": "somas diárias de numerador e denominador agregadas no fim: 132,364202 R$/MWh",
+    "resultado": "aprovado",
+    "tolerancia": "0,000001 R$/MWh"
    },
    "download": [
     {
@@ -21023,11 +19310,12 @@
      "url": "/energia/series/pld_mensal.csv"
     }
    ],
-   "reproducao": "Cruzar pld_cmo_horario.csv (PLD) com a carga horária do balanço do ONS na mesma hora e aplicar a fórmula.",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. PLD médio de ago/2026 ponderado pela carga, Sul. Dados: CCEE; ONS (PLD_HORARIO; Balanço de Energia nos Subsistemas), licença Creative Commons Attribution 4.0 (CC-BY-4.0). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/pld"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py pld --sem-coleta\nCruzar pld_cmo_horario.csv (PLD) com a carga horária do balanço do ONS na mesma hora e aplicar a fórmula.",
+   "citacao": "SCRUTINIUMS. PLD médio de ago/2026 ponderado pela carga: R$ 132,36/MWh, Sul, 01/08/2026 00:00 a 31/08/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE; ONS, PLD_HORARIO; Balanço de Energia nos Subsistemas (recurso pld_horario_2021 a pld_horario_2026; balanco_energia_subsistema_ho (arquivos CSV anuais)). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "ponderada_2026-08_NE": {
-   "valor_exibido": 128.47,
+   "indicador": "PLD médio de ago/2026 ponderado pela carga",
+   "valor_exibido": "R$ 128,47/MWh",
    "valor_calculo": 128.47303893171173,
    "unidade": "R$/MWh",
    "periodo": {
@@ -21036,30 +19324,41 @@
    },
    "entidade": "Nordeste",
    "universo": "horas do mês com PLD e carga",
-   "filtros": {
-    "mes": "2026-08"
-   },
+   "filtros": [
+    "mês 2026-08",
+    "submercado Nordeste e subsistema NE do ONS"
+   ],
    "fonte": {
     "orgao": "CCEE; ONS",
     "conjunto": "PLD_HORARIO; Balanço de Energia nos Subsistemas",
     "recurso": "pld_horario_2021 a pld_horario_2026; balanco_energia_subsistema_ho (arquivos CSV anuais)",
     "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": null,
+    "publicado_em": null,
     "arquivos": [
      {
       "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
       "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
       "capturado_em": "2026-09-30T02:20:14Z",
-      "publicado_em": "2026-06-09T16:37:15.091000"
+      "publicado_em": null
      },
      {
       "recurso": "BALANCO_ENERGIA_SUBSISTEMA_2026",
+      "arquivo": "data/energia/bronze/ons/balanco_energia_subsistema_ho/BALANCO_ENERGIA_SUBSISTEMA_2026/20260930T021957Z.81f6ecfcb899.csv.gz",
       "sha256": "81f6ecfcb8995376afc77ccc2fdc79452ce4006b18e922b77dfce8dfecb07ad7",
       "capturado_em": "2026-09-30T02:19:57Z",
       "publicado_em": "2026-09-29T22:00:42.467156"
      }
     ]
    },
-   "chaves_origem": "PLD_HORARIO SUBMERCADO=NE; BALANCO_ENERGIA_SUBSISTEMA id_subsistema=NE, val_carga; horas de 2026-08",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "PLD_HORARIO submercado Nordeste e BALANCO_ENERGIA_SUBSISTEMA id_subsistema=NE (val_carga), horas de 2026-08",
+   "manifesto": null,
    "formula": "Σ PLD_h × carga_h ÷ Σ carga_h",
    "numerador": {
     "descricao": "Σ PLD × carga (R$)",
@@ -21069,25 +19368,37 @@
     "descricao": "Σ carga (MWh)",
     "valor": 10109674.232
    },
-   "pesos": "carga verificada do subsistema na hora (MWmed = MWh em uma hora)",
+   "pesos": "carga verificada do subsistema na hora (MWmed; numa hora, MWmed equivale a MWh)",
    "exclusoes": [],
    "cobertura": "744 horas, todas com carga",
-   "tratamento_ausencia": "hora sem carga fica fora da ponderada (campo mesmas_horas)",
+   "tratamento_ausencia": "hora sem carga fica fora da ponderada (campo mesmas_horas no CSV mensal)",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:32:14Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:02:36Z"
    },
-   "revisoes": {
-    "pld": 0,
-    "carga": 2620
-   },
-   "testes": [],
+   "revisoes": "PLD: Nenhuma revisão detectada entre as capturas integradas.; carga: 2.620 observações revisadas pela fonte entre as capturas integradas.",
+   "testes": [
+    {
+     "nome": "mesmas horas da média temporal",
+     "resultado": "aprovado",
+     "detalhe": "744 horas com PLD e carga, mês completo"
+    },
+    {
+     "nome": "carga positiva",
+     "resultado": "aprovado",
+     "detalhe": "menor carga horária do mês: 9.708,2 MWmed"
+    },
+    {
+     "nome": "média temporal do mesmo mês (medida diferente, publicada ao lado)",
+     "resultado": "aprovado",
+     "detalhe": "R$ 125,27/MWh"
+    }
+   ],
    "reconciliacao": {
-    "descricao": "média temporal do mesmo mês, para comparação (medida diferente)",
-    "resultado": "informativo",
-    "tolerancia": null,
-    "valor_outro_caminho": 125.27
+    "descricao": "somas diárias de numerador e denominador agregadas no fim: 128,473039 R$/MWh",
+    "resultado": "aprovado",
+    "tolerancia": "0,000001 R$/MWh"
    },
    "download": [
     {
@@ -21095,11 +19406,12 @@
      "url": "/energia/series/pld_mensal.csv"
     }
    ],
-   "reproducao": "Cruzar pld_cmo_horario.csv (PLD) com a carga horária do balanço do ONS na mesma hora e aplicar a fórmula.",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. PLD médio de ago/2026 ponderado pela carga, Nordeste. Dados: CCEE; ONS (PLD_HORARIO; Balanço de Energia nos Subsistemas), licença Creative Commons Attribution 4.0 (CC-BY-4.0). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/pld"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py pld --sem-coleta\nCruzar pld_cmo_horario.csv (PLD) com a carga horária do balanço do ONS na mesma hora e aplicar a fórmula.",
+   "citacao": "SCRUTINIUMS. PLD médio de ago/2026 ponderado pela carga: R$ 128,47/MWh, Nordeste, 01/08/2026 00:00 a 31/08/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE; ONS, PLD_HORARIO; Balanço de Energia nos Subsistemas (recurso pld_horario_2021 a pld_horario_2026; balanco_energia_subsistema_ho (arquivos CSV anuais)). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "ponderada_2026-08_N": {
-   "valor_exibido": 127.09,
+   "indicador": "PLD médio de ago/2026 ponderado pela carga",
+   "valor_exibido": "R$ 127,09/MWh",
    "valor_calculo": 127.08510987732733,
    "unidade": "R$/MWh",
    "periodo": {
@@ -21108,30 +19420,41 @@
    },
    "entidade": "Norte",
    "universo": "horas do mês com PLD e carga",
-   "filtros": {
-    "mes": "2026-08"
-   },
+   "filtros": [
+    "mês 2026-08",
+    "submercado Norte e subsistema N do ONS"
+   ],
    "fonte": {
     "orgao": "CCEE; ONS",
     "conjunto": "PLD_HORARIO; Balanço de Energia nos Subsistemas",
     "recurso": "pld_horario_2021 a pld_horario_2026; balanco_energia_subsistema_ho (arquivos CSV anuais)",
     "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": null,
+    "publicado_em": null,
     "arquivos": [
      {
       "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
       "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
       "capturado_em": "2026-09-30T02:20:14Z",
-      "publicado_em": "2026-06-09T16:37:15.091000"
+      "publicado_em": null
      },
      {
       "recurso": "BALANCO_ENERGIA_SUBSISTEMA_2026",
+      "arquivo": "data/energia/bronze/ons/balanco_energia_subsistema_ho/BALANCO_ENERGIA_SUBSISTEMA_2026/20260930T021957Z.81f6ecfcb899.csv.gz",
       "sha256": "81f6ecfcb8995376afc77ccc2fdc79452ce4006b18e922b77dfce8dfecb07ad7",
       "capturado_em": "2026-09-30T02:19:57Z",
       "publicado_em": "2026-09-29T22:00:42.467156"
      }
     ]
    },
-   "chaves_origem": "PLD_HORARIO SUBMERCADO=N; BALANCO_ENERGIA_SUBSISTEMA id_subsistema=N, val_carga; horas de 2026-08",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "PLD_HORARIO submercado Norte e BALANCO_ENERGIA_SUBSISTEMA id_subsistema=N (val_carga), horas de 2026-08",
+   "manifesto": null,
    "formula": "Σ PLD_h × carga_h ÷ Σ carga_h",
    "numerador": {
     "descricao": "Σ PLD × carga (R$)",
@@ -21141,25 +19464,37 @@
     "descricao": "Σ carga (MWh)",
     "valor": 7069475.251
    },
-   "pesos": "carga verificada do subsistema na hora (MWmed = MWh em uma hora)",
+   "pesos": "carga verificada do subsistema na hora (MWmed; numa hora, MWmed equivale a MWh)",
    "exclusoes": [],
    "cobertura": "744 horas, todas com carga",
-   "tratamento_ausencia": "hora sem carga fica fora da ponderada (campo mesmas_horas)",
+   "tratamento_ausencia": "hora sem carga fica fora da ponderada (campo mesmas_horas no CSV mensal)",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:32:14Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:02:36Z"
    },
-   "revisoes": {
-    "pld": 0,
-    "carga": 2620
-   },
-   "testes": [],
+   "revisoes": "PLD: Nenhuma revisão detectada entre as capturas integradas.; carga: 2.620 observações revisadas pela fonte entre as capturas integradas.",
+   "testes": [
+    {
+     "nome": "mesmas horas da média temporal",
+     "resultado": "aprovado",
+     "detalhe": "744 horas com PLD e carga, mês completo"
+    },
+    {
+     "nome": "carga positiva",
+     "resultado": "aprovado",
+     "detalhe": "menor carga horária do mês: 7.978,9 MWmed"
+    },
+    {
+     "nome": "média temporal do mesmo mês (medida diferente, publicada ao lado)",
+     "resultado": "aprovado",
+     "detalhe": "R$ 126,70/MWh"
+    }
+   ],
    "reconciliacao": {
-    "descricao": "média temporal do mesmo mês, para comparação (medida diferente)",
-    "resultado": "informativo",
-    "tolerancia": null,
-    "valor_outro_caminho": 126.7
+    "descricao": "somas diárias de numerador e denominador agregadas no fim: 127,085110 R$/MWh",
+    "resultado": "aprovado",
+    "tolerancia": "0,000001 R$/MWh"
    },
    "download": [
     {
@@ -21167,44 +19502,56 @@
      "url": "/energia/series/pld_mensal.csv"
     }
    ],
-   "reproducao": "Cruzar pld_cmo_horario.csv (PLD) com a carga horária do balanço do ONS na mesma hora e aplicar a fórmula.",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. PLD médio de ago/2026 ponderado pela carga, Norte. Dados: CCEE; ONS (PLD_HORARIO; Balanço de Energia nos Subsistemas), licença Creative Commons Attribution 4.0 (CC-BY-4.0). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/pld"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py pld --sem-coleta\nCruzar pld_cmo_horario.csv (PLD) com a carga horária do balanço do ONS na mesma hora e aplicar a fórmula.",
+   "citacao": "SCRUTINIUMS. PLD médio de ago/2026 ponderado pela carga: R$ 127,09/MWh, Norte, 01/08/2026 00:00 a 31/08/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE; ONS, PLD_HORARIO; Balanço de Energia nos Subsistemas (recurso pld_horario_2021 a pld_horario_2026; balanco_energia_subsistema_ho (arquivos CSV anuais)). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "separacao_12m_SE_S": {
-   "valor_exibido": 0.1303,
-   "valor_calculo": 0.1303,
-   "unidade": "fração das horas",
+   "indicador": "Frequência de separação de preços nos últimos 12 meses",
+   "valor_exibido": "13,03%",
+   "valor_calculo": 13.025114155251142,
+   "unidade": "% das horas",
    "periodo": {
     "inicio": "2025-10-01T00:00",
     "fim": "2026-09-30T23:00"
    },
    "entidade": "Sudeste/Centro-Oeste e Sul",
    "universo": "horas com os quatro submercados publicados",
-   "filtros": {
-    "periodo": "12m"
-   },
+   "filtros": [
+    "últimos 365 dias até o dia de referência",
+    "par Sudeste/Centro-Oeste e Sul"
+   ],
    "fonte": {
     "orgao": "CCEE",
     "conjunto": "PLD_HORARIO",
     "recurso": "pld_horario_2021 a pld_horario_2026",
     "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": null,
+    "publicado_em": null,
     "arquivos": [
      {
       "recurso": "pld_horario_2025",
+      "arquivo": "pipeline/energia/seed/ccee_pld_horario/v20260927T154402Z/pld_horario_2025.csv.gz",
       "sha256": "a329d0dcedf6c2f55c9e29b616cf5e008541ccea9db318781dc6d731672cfa6e",
       "capturado_em": "2026-09-27T15:44:02Z",
-      "publicado_em": "2025-12-30T18:38:55.272000"
+      "publicado_em": null
      },
      {
       "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
       "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
       "capturado_em": "2026-09-30T02:20:14Z",
-      "publicado_em": "2026-06-09T16:37:15.091000"
+      "publicado_em": null
      }
     ]
    },
-   "chaves_origem": "PLD_HORARIO SUBMERCADO=SE e S, mesmas horas",
-   "formula": "horas com |PLD_A − PLD_B| > R$ 0,01/MWh ÷ horas",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "PLD_HORARIO submercados Sudeste/Centro-Oeste e Sul, mesmas horas, de 2025-10-01T00:00 a 2026-09-30T23:00",
+   "manifesto": null,
+   "formula": "100 × horas com |PLD_A − PLD_B| > R$ 0,01/MWh ÷ horas",
    "numerador": {
     "descricao": "horas separadas",
     "valor": 1141
@@ -21219,16 +19566,26 @@
    "tratamento_ausencia": "hora sem um dos submercados não entra",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:32:14Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:02:36Z"
    },
-   "revisoes": 0,
-   "testes": [],
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas.",
+   "testes": [
+    {
+     "nome": "mesma hora nos dois submercados",
+     "resultado": "aprovado",
+     "detalhe": "8760 horas comuns aos quatro submercados"
+    },
+    {
+     "nome": "matriz de separação",
+     "resultado": "aprovado",
+     "detalhe": "a matriz 12m publica 13,03% para o par"
+    }
+   ],
    "reconciliacao": {
-    "descricao": "matriz 12m: mesma fração calculada pela rotina da matriz",
-    "resultado": "igual",
-    "tolerancia": 0,
-    "valor_outro_caminho": 0.1303
+    "descricao": "contagem pelas diferenças arredondadas ao centavo (|Δ| de 2 centavos ou mais): 1141 horas",
+    "resultado": "aprovado",
+    "tolerancia": "0 hora (contagem exata)"
    },
    "download": [
     {
@@ -21236,44 +19593,56 @@
      "url": "/energia/series/pld_separacao_diaria.csv"
     }
    ],
-   "reproducao": "Somar horas_separadas do par nos últimos 365 dias de pld_separacao_diaria.csv e dividir pelas horas.",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. Frequência de separação de preços entre Sudeste/Centro-Oeste e Sul nos últimos 12 meses. Dados: CCEE (PLD_HORARIO), licença Creative Commons Attribution 4.0 (CC-BY-4.0). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/pld"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py pld --sem-coleta\nSomar horas_separadas do par nos últimos 365 dias de pld_separacao_diaria.csv e dividir pelas horas.",
+   "citacao": "SCRUTINIUMS. Frequência de separação de preços nos últimos 12 meses: 13,03%, Sudeste/Centro-Oeste e Sul, 01/10/2025 00:00 a 30/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (recurso pld_horario_2021 a pld_horario_2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "separacao_12m_SE_NE": {
-   "valor_exibido": 0.1776,
-   "valor_calculo": 0.1776,
-   "unidade": "fração das horas",
+   "indicador": "Frequência de separação de preços nos últimos 12 meses",
+   "valor_exibido": "17,76%",
+   "valor_calculo": 17.76255707762557,
+   "unidade": "% das horas",
    "periodo": {
     "inicio": "2025-10-01T00:00",
     "fim": "2026-09-30T23:00"
    },
    "entidade": "Sudeste/Centro-Oeste e Nordeste",
    "universo": "horas com os quatro submercados publicados",
-   "filtros": {
-    "periodo": "12m"
-   },
+   "filtros": [
+    "últimos 365 dias até o dia de referência",
+    "par Sudeste/Centro-Oeste e Nordeste"
+   ],
    "fonte": {
     "orgao": "CCEE",
     "conjunto": "PLD_HORARIO",
     "recurso": "pld_horario_2021 a pld_horario_2026",
     "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": null,
+    "publicado_em": null,
     "arquivos": [
      {
       "recurso": "pld_horario_2025",
+      "arquivo": "pipeline/energia/seed/ccee_pld_horario/v20260927T154402Z/pld_horario_2025.csv.gz",
       "sha256": "a329d0dcedf6c2f55c9e29b616cf5e008541ccea9db318781dc6d731672cfa6e",
       "capturado_em": "2026-09-27T15:44:02Z",
-      "publicado_em": "2025-12-30T18:38:55.272000"
+      "publicado_em": null
      },
      {
       "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
       "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
       "capturado_em": "2026-09-30T02:20:14Z",
-      "publicado_em": "2026-06-09T16:37:15.091000"
+      "publicado_em": null
      }
     ]
    },
-   "chaves_origem": "PLD_HORARIO SUBMERCADO=SE e NE, mesmas horas",
-   "formula": "horas com |PLD_A − PLD_B| > R$ 0,01/MWh ÷ horas",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "PLD_HORARIO submercados Sudeste/Centro-Oeste e Nordeste, mesmas horas, de 2025-10-01T00:00 a 2026-09-30T23:00",
+   "manifesto": null,
+   "formula": "100 × horas com |PLD_A − PLD_B| > R$ 0,01/MWh ÷ horas",
    "numerador": {
     "descricao": "horas separadas",
     "valor": 1556
@@ -21288,16 +19657,26 @@
    "tratamento_ausencia": "hora sem um dos submercados não entra",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:32:14Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:02:36Z"
    },
-   "revisoes": 0,
-   "testes": [],
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas.",
+   "testes": [
+    {
+     "nome": "mesma hora nos dois submercados",
+     "resultado": "aprovado",
+     "detalhe": "8760 horas comuns aos quatro submercados"
+    },
+    {
+     "nome": "matriz de separação",
+     "resultado": "aprovado",
+     "detalhe": "a matriz 12m publica 17,76% para o par"
+    }
+   ],
    "reconciliacao": {
-    "descricao": "matriz 12m: mesma fração calculada pela rotina da matriz",
-    "resultado": "igual",
-    "tolerancia": 0,
-    "valor_outro_caminho": 0.1776
+    "descricao": "contagem pelas diferenças arredondadas ao centavo (|Δ| de 2 centavos ou mais): 1556 horas",
+    "resultado": "aprovado",
+    "tolerancia": "0 hora (contagem exata)"
    },
    "download": [
     {
@@ -21305,44 +19684,56 @@
      "url": "/energia/series/pld_separacao_diaria.csv"
     }
    ],
-   "reproducao": "Somar horas_separadas do par nos últimos 365 dias de pld_separacao_diaria.csv e dividir pelas horas.",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. Frequência de separação de preços entre Sudeste/Centro-Oeste e Nordeste nos últimos 12 meses. Dados: CCEE (PLD_HORARIO), licença Creative Commons Attribution 4.0 (CC-BY-4.0). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/pld"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py pld --sem-coleta\nSomar horas_separadas do par nos últimos 365 dias de pld_separacao_diaria.csv e dividir pelas horas.",
+   "citacao": "SCRUTINIUMS. Frequência de separação de preços nos últimos 12 meses: 17,76%, Sudeste/Centro-Oeste e Nordeste, 01/10/2025 00:00 a 30/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (recurso pld_horario_2021 a pld_horario_2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "separacao_12m_SE_N": {
-   "valor_exibido": 0.1595,
-   "valor_calculo": 0.1595,
-   "unidade": "fração das horas",
+   "indicador": "Frequência de separação de preços nos últimos 12 meses",
+   "valor_exibido": "15,95%",
+   "valor_calculo": 15.947488584474886,
+   "unidade": "% das horas",
    "periodo": {
     "inicio": "2025-10-01T00:00",
     "fim": "2026-09-30T23:00"
    },
    "entidade": "Sudeste/Centro-Oeste e Norte",
    "universo": "horas com os quatro submercados publicados",
-   "filtros": {
-    "periodo": "12m"
-   },
+   "filtros": [
+    "últimos 365 dias até o dia de referência",
+    "par Sudeste/Centro-Oeste e Norte"
+   ],
    "fonte": {
     "orgao": "CCEE",
     "conjunto": "PLD_HORARIO",
     "recurso": "pld_horario_2021 a pld_horario_2026",
     "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": null,
+    "publicado_em": null,
     "arquivos": [
      {
       "recurso": "pld_horario_2025",
+      "arquivo": "pipeline/energia/seed/ccee_pld_horario/v20260927T154402Z/pld_horario_2025.csv.gz",
       "sha256": "a329d0dcedf6c2f55c9e29b616cf5e008541ccea9db318781dc6d731672cfa6e",
       "capturado_em": "2026-09-27T15:44:02Z",
-      "publicado_em": "2025-12-30T18:38:55.272000"
+      "publicado_em": null
      },
      {
       "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
       "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
       "capturado_em": "2026-09-30T02:20:14Z",
-      "publicado_em": "2026-06-09T16:37:15.091000"
+      "publicado_em": null
      }
     ]
    },
-   "chaves_origem": "PLD_HORARIO SUBMERCADO=SE e N, mesmas horas",
-   "formula": "horas com |PLD_A − PLD_B| > R$ 0,01/MWh ÷ horas",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "PLD_HORARIO submercados Sudeste/Centro-Oeste e Norte, mesmas horas, de 2025-10-01T00:00 a 2026-09-30T23:00",
+   "manifesto": null,
+   "formula": "100 × horas com |PLD_A − PLD_B| > R$ 0,01/MWh ÷ horas",
    "numerador": {
     "descricao": "horas separadas",
     "valor": 1397
@@ -21357,16 +19748,26 @@
    "tratamento_ausencia": "hora sem um dos submercados não entra",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:32:14Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:02:36Z"
    },
-   "revisoes": 0,
-   "testes": [],
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas.",
+   "testes": [
+    {
+     "nome": "mesma hora nos dois submercados",
+     "resultado": "aprovado",
+     "detalhe": "8760 horas comuns aos quatro submercados"
+    },
+    {
+     "nome": "matriz de separação",
+     "resultado": "aprovado",
+     "detalhe": "a matriz 12m publica 15,95% para o par"
+    }
+   ],
    "reconciliacao": {
-    "descricao": "matriz 12m: mesma fração calculada pela rotina da matriz",
-    "resultado": "igual",
-    "tolerancia": 0,
-    "valor_outro_caminho": 0.1595
+    "descricao": "contagem pelas diferenças arredondadas ao centavo (|Δ| de 2 centavos ou mais): 1397 horas",
+    "resultado": "aprovado",
+    "tolerancia": "0 hora (contagem exata)"
    },
    "download": [
     {
@@ -21374,44 +19775,56 @@
      "url": "/energia/series/pld_separacao_diaria.csv"
     }
    ],
-   "reproducao": "Somar horas_separadas do par nos últimos 365 dias de pld_separacao_diaria.csv e dividir pelas horas.",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. Frequência de separação de preços entre Sudeste/Centro-Oeste e Norte nos últimos 12 meses. Dados: CCEE (PLD_HORARIO), licença Creative Commons Attribution 4.0 (CC-BY-4.0). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/pld"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py pld --sem-coleta\nSomar horas_separadas do par nos últimos 365 dias de pld_separacao_diaria.csv e dividir pelas horas.",
+   "citacao": "SCRUTINIUMS. Frequência de separação de preços nos últimos 12 meses: 15,95%, Sudeste/Centro-Oeste e Norte, 01/10/2025 00:00 a 30/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (recurso pld_horario_2021 a pld_horario_2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "separacao_12m_S_NE": {
-   "valor_exibido": 0.3311,
-   "valor_calculo": 0.3311,
-   "unidade": "fração das horas",
+   "indicador": "Frequência de separação de preços nos últimos 12 meses",
+   "valor_exibido": "33,11%",
+   "valor_calculo": 33.10502283105023,
+   "unidade": "% das horas",
    "periodo": {
     "inicio": "2025-10-01T00:00",
     "fim": "2026-09-30T23:00"
    },
    "entidade": "Sul e Nordeste",
    "universo": "horas com os quatro submercados publicados",
-   "filtros": {
-    "periodo": "12m"
-   },
+   "filtros": [
+    "últimos 365 dias até o dia de referência",
+    "par Sul e Nordeste"
+   ],
    "fonte": {
     "orgao": "CCEE",
     "conjunto": "PLD_HORARIO",
     "recurso": "pld_horario_2021 a pld_horario_2026",
     "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": null,
+    "publicado_em": null,
     "arquivos": [
      {
       "recurso": "pld_horario_2025",
+      "arquivo": "pipeline/energia/seed/ccee_pld_horario/v20260927T154402Z/pld_horario_2025.csv.gz",
       "sha256": "a329d0dcedf6c2f55c9e29b616cf5e008541ccea9db318781dc6d731672cfa6e",
       "capturado_em": "2026-09-27T15:44:02Z",
-      "publicado_em": "2025-12-30T18:38:55.272000"
+      "publicado_em": null
      },
      {
       "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
       "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
       "capturado_em": "2026-09-30T02:20:14Z",
-      "publicado_em": "2026-06-09T16:37:15.091000"
+      "publicado_em": null
      }
     ]
    },
-   "chaves_origem": "PLD_HORARIO SUBMERCADO=S e NE, mesmas horas",
-   "formula": "horas com |PLD_A − PLD_B| > R$ 0,01/MWh ÷ horas",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "PLD_HORARIO submercados Sul e Nordeste, mesmas horas, de 2025-10-01T00:00 a 2026-09-30T23:00",
+   "manifesto": null,
+   "formula": "100 × horas com |PLD_A − PLD_B| > R$ 0,01/MWh ÷ horas",
    "numerador": {
     "descricao": "horas separadas",
     "valor": 2900
@@ -21426,16 +19839,26 @@
    "tratamento_ausencia": "hora sem um dos submercados não entra",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:32:14Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:02:36Z"
    },
-   "revisoes": 0,
-   "testes": [],
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas.",
+   "testes": [
+    {
+     "nome": "mesma hora nos dois submercados",
+     "resultado": "aprovado",
+     "detalhe": "8760 horas comuns aos quatro submercados"
+    },
+    {
+     "nome": "matriz de separação",
+     "resultado": "aprovado",
+     "detalhe": "a matriz 12m publica 33,11% para o par"
+    }
+   ],
    "reconciliacao": {
-    "descricao": "matriz 12m: mesma fração calculada pela rotina da matriz",
-    "resultado": "igual",
-    "tolerancia": 0,
-    "valor_outro_caminho": 0.3311
+    "descricao": "contagem pelas diferenças arredondadas ao centavo (|Δ| de 2 centavos ou mais): 2900 horas",
+    "resultado": "aprovado",
+    "tolerancia": "0 hora (contagem exata)"
    },
    "download": [
     {
@@ -21443,44 +19866,56 @@
      "url": "/energia/series/pld_separacao_diaria.csv"
     }
    ],
-   "reproducao": "Somar horas_separadas do par nos últimos 365 dias de pld_separacao_diaria.csv e dividir pelas horas.",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. Frequência de separação de preços entre Sul e Nordeste nos últimos 12 meses. Dados: CCEE (PLD_HORARIO), licença Creative Commons Attribution 4.0 (CC-BY-4.0). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/pld"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py pld --sem-coleta\nSomar horas_separadas do par nos últimos 365 dias de pld_separacao_diaria.csv e dividir pelas horas.",
+   "citacao": "SCRUTINIUMS. Frequência de separação de preços nos últimos 12 meses: 33,11%, Sul e Nordeste, 01/10/2025 00:00 a 30/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (recurso pld_horario_2021 a pld_horario_2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "separacao_12m_S_N": {
-   "valor_exibido": 0.3553,
-   "valor_calculo": 0.3553,
-   "unidade": "fração das horas",
+   "indicador": "Frequência de separação de preços nos últimos 12 meses",
+   "valor_exibido": "35,53%",
+   "valor_calculo": 35.52511415525114,
+   "unidade": "% das horas",
    "periodo": {
     "inicio": "2025-10-01T00:00",
     "fim": "2026-09-30T23:00"
    },
    "entidade": "Sul e Norte",
    "universo": "horas com os quatro submercados publicados",
-   "filtros": {
-    "periodo": "12m"
-   },
+   "filtros": [
+    "últimos 365 dias até o dia de referência",
+    "par Sul e Norte"
+   ],
    "fonte": {
     "orgao": "CCEE",
     "conjunto": "PLD_HORARIO",
     "recurso": "pld_horario_2021 a pld_horario_2026",
     "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": null,
+    "publicado_em": null,
     "arquivos": [
      {
       "recurso": "pld_horario_2025",
+      "arquivo": "pipeline/energia/seed/ccee_pld_horario/v20260927T154402Z/pld_horario_2025.csv.gz",
       "sha256": "a329d0dcedf6c2f55c9e29b616cf5e008541ccea9db318781dc6d731672cfa6e",
       "capturado_em": "2026-09-27T15:44:02Z",
-      "publicado_em": "2025-12-30T18:38:55.272000"
+      "publicado_em": null
      },
      {
       "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
       "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
       "capturado_em": "2026-09-30T02:20:14Z",
-      "publicado_em": "2026-06-09T16:37:15.091000"
+      "publicado_em": null
      }
     ]
    },
-   "chaves_origem": "PLD_HORARIO SUBMERCADO=S e N, mesmas horas",
-   "formula": "horas com |PLD_A − PLD_B| > R$ 0,01/MWh ÷ horas",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "PLD_HORARIO submercados Sul e Norte, mesmas horas, de 2025-10-01T00:00 a 2026-09-30T23:00",
+   "manifesto": null,
+   "formula": "100 × horas com |PLD_A − PLD_B| > R$ 0,01/MWh ÷ horas",
    "numerador": {
     "descricao": "horas separadas",
     "valor": 3112
@@ -21495,16 +19930,26 @@
    "tratamento_ausencia": "hora sem um dos submercados não entra",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:32:14Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:02:36Z"
    },
-   "revisoes": 0,
-   "testes": [],
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas.",
+   "testes": [
+    {
+     "nome": "mesma hora nos dois submercados",
+     "resultado": "aprovado",
+     "detalhe": "8760 horas comuns aos quatro submercados"
+    },
+    {
+     "nome": "matriz de separação",
+     "resultado": "aprovado",
+     "detalhe": "a matriz 12m publica 35,53% para o par"
+    }
+   ],
    "reconciliacao": {
-    "descricao": "matriz 12m: mesma fração calculada pela rotina da matriz",
-    "resultado": "igual",
-    "tolerancia": 0,
-    "valor_outro_caminho": 0.3553
+    "descricao": "contagem pelas diferenças arredondadas ao centavo (|Δ| de 2 centavos ou mais): 3112 horas",
+    "resultado": "aprovado",
+    "tolerancia": "0 hora (contagem exata)"
    },
    "download": [
     {
@@ -21512,44 +19957,56 @@
      "url": "/energia/series/pld_separacao_diaria.csv"
     }
    ],
-   "reproducao": "Somar horas_separadas do par nos últimos 365 dias de pld_separacao_diaria.csv e dividir pelas horas.",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. Frequência de separação de preços entre Sul e Norte nos últimos 12 meses. Dados: CCEE (PLD_HORARIO), licença Creative Commons Attribution 4.0 (CC-BY-4.0). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/pld"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py pld --sem-coleta\nSomar horas_separadas do par nos últimos 365 dias de pld_separacao_diaria.csv e dividir pelas horas.",
+   "citacao": "SCRUTINIUMS. Frequência de separação de preços nos últimos 12 meses: 35,53%, Sul e Norte, 01/10/2025 00:00 a 30/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (recurso pld_horario_2021 a pld_horario_2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "separacao_12m_NE_N": {
-   "valor_exibido": 0.0521,
-   "valor_calculo": 0.0521,
-   "unidade": "fração das horas",
+   "indicador": "Frequência de separação de preços nos últimos 12 meses",
+   "valor_exibido": "5,21%",
+   "valor_calculo": 5.205479452054795,
+   "unidade": "% das horas",
    "periodo": {
     "inicio": "2025-10-01T00:00",
     "fim": "2026-09-30T23:00"
    },
    "entidade": "Nordeste e Norte",
    "universo": "horas com os quatro submercados publicados",
-   "filtros": {
-    "periodo": "12m"
-   },
+   "filtros": [
+    "últimos 365 dias até o dia de referência",
+    "par Nordeste e Norte"
+   ],
    "fonte": {
     "orgao": "CCEE",
     "conjunto": "PLD_HORARIO",
     "recurso": "pld_horario_2021 a pld_horario_2026",
     "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": null,
+    "publicado_em": null,
     "arquivos": [
      {
       "recurso": "pld_horario_2025",
+      "arquivo": "pipeline/energia/seed/ccee_pld_horario/v20260927T154402Z/pld_horario_2025.csv.gz",
       "sha256": "a329d0dcedf6c2f55c9e29b616cf5e008541ccea9db318781dc6d731672cfa6e",
       "capturado_em": "2026-09-27T15:44:02Z",
-      "publicado_em": "2025-12-30T18:38:55.272000"
+      "publicado_em": null
      },
      {
       "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
       "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
       "capturado_em": "2026-09-30T02:20:14Z",
-      "publicado_em": "2026-06-09T16:37:15.091000"
+      "publicado_em": null
      }
     ]
    },
-   "chaves_origem": "PLD_HORARIO SUBMERCADO=NE e N, mesmas horas",
-   "formula": "horas com |PLD_A − PLD_B| > R$ 0,01/MWh ÷ horas",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "PLD_HORARIO submercados Nordeste e Norte, mesmas horas, de 2025-10-01T00:00 a 2026-09-30T23:00",
+   "manifesto": null,
+   "formula": "100 × horas com |PLD_A − PLD_B| > R$ 0,01/MWh ÷ horas",
    "numerador": {
     "descricao": "horas separadas",
     "valor": 456
@@ -21564,16 +20021,26 @@
    "tratamento_ausencia": "hora sem um dos submercados não entra",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:32:14Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:02:36Z"
    },
-   "revisoes": 0,
-   "testes": [],
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas.",
+   "testes": [
+    {
+     "nome": "mesma hora nos dois submercados",
+     "resultado": "aprovado",
+     "detalhe": "8760 horas comuns aos quatro submercados"
+    },
+    {
+     "nome": "matriz de separação",
+     "resultado": "aprovado",
+     "detalhe": "a matriz 12m publica 5,21% para o par"
+    }
+   ],
    "reconciliacao": {
-    "descricao": "matriz 12m: mesma fração calculada pela rotina da matriz",
-    "resultado": "igual",
-    "tolerancia": 0,
-    "valor_outro_caminho": 0.0521
+    "descricao": "contagem pelas diferenças arredondadas ao centavo (|Δ| de 2 centavos ou mais): 456 horas",
+    "resultado": "aprovado",
+    "tolerancia": "0 hora (contagem exata)"
    },
    "download": [
     {
@@ -21581,69 +20048,95 @@
      "url": "/energia/series/pld_separacao_diaria.csv"
     }
    ],
-   "reproducao": "Somar horas_separadas do par nos últimos 365 dias de pld_separacao_diaria.csv e dividir pelas horas.",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. Frequência de separação de preços entre Nordeste e Norte nos últimos 12 meses. Dados: CCEE (PLD_HORARIO), licença Creative Commons Attribution 4.0 (CC-BY-4.0). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/pld"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py pld --sem-coleta\nSomar horas_separadas do par nos últimos 365 dias de pld_separacao_diaria.csv e dividir pelas horas.",
+   "citacao": "SCRUTINIUMS. Frequência de separação de preços nos últimos 12 meses: 5,21%, Nordeste e Norte, 01/10/2025 00:00 a 30/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (recurso pld_horario_2021 a pld_horario_2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "a02_zeros": {
-   "valor_exibido": 61.0,
+   "indicador": "Sequência de CMO semanal igual a zero",
+   "valor_exibido": "61 semanas",
    "valor_calculo": 61,
    "unidade": "semanas operativas",
    "periodo": {
-    "primeira_semana_inicio": "2022-12-24",
-    "ultima_semana_fim": "2024-02-23",
-    "semanas": 61
+    "inicio": "2022-12-24",
+    "fim": "2024-02-23"
    },
    "entidade": "quatro subsistemas",
    "universo": "CMO semanal do DECOMP publicado pelo ONS",
-   "filtros": {
-    "valor": 0
-   },
+   "filtros": [
+    "média semanal e três patamares iguais a zero"
+   ],
    "fonte": {
     "orgao": "ONS",
     "conjunto": "CMO Semanal (DECOMP)",
     "recurso": "CMO_SEMANAL_<ano>.csv e .parquet",
     "url": "https://dados.ons.org.br/dataset/cmo-semanal",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": null,
+    "publicado_em": null,
     "arquivos": [
      {
       "recurso": "CMO_SEMANAL_2022.csv",
-      "sha256": "a9ce0c858605301e7e26795cf4e95766f8d68640b328dafdf9aafdd018879e74"
-     },
-     {
-      "recurso": "CMO_SEMANAL_2023.csv",
-      "sha256": "55e7b2e2801e78475e20d8bfbcde367b5443b0f8e3fd7adb3e40351a5e26f210"
-     },
-     {
-      "recurso": "CMO_SEMANAL_2024.csv",
-      "sha256": "f83322351e96b53ea32250c06cd01d6684dd4f71341b33fbe0be96cc5a601036"
+      "arquivo": "data/energia/bronze/ons/ons_cmo_semanal_a02/CMO_SEMANAL_2022/20260930T220639Z.a9ce0c858605.csv.gz",
+      "sha256": "a9ce0c858605301e7e26795cf4e95766f8d68640b328dafdf9aafdd018879e74",
+      "capturado_em": "2026-09-30T22:06:39Z",
+      "publicado_em": "2024-08-26T18:24:01Z"
      },
      {
       "recurso": "CMO_SEMANAL_2022.parquet",
-      "sha256": "9d93d6ff3e32c9365847b94229ddebc5c44e5651fd2ee03bb12e789e867128ca"
+      "arquivo": "data/energia/bronze/ons/ons_cmo_semanal_a02/CMO_SEMANAL_2022_parquet/20260930T220640Z.9d93d6ff3e32.parquet.gz",
+      "sha256": "9d93d6ff3e32c9365847b94229ddebc5c44e5651fd2ee03bb12e789e867128ca",
+      "capturado_em": "2026-09-30T22:06:40Z",
+      "publicado_em": "2024-08-26T18:24:01Z"
+     },
+     {
+      "recurso": "CMO_SEMANAL_2023.csv",
+      "arquivo": "data/energia/bronze/ons/ons_cmo_semanal_a02/CMO_SEMANAL_2023/20260930T220640Z.55e7b2e2801e.csv.gz",
+      "sha256": "55e7b2e2801e78475e20d8bfbcde367b5443b0f8e3fd7adb3e40351a5e26f210",
+      "capturado_em": "2026-09-30T22:06:40Z",
+      "publicado_em": "2025-02-13T18:06:29Z"
      },
      {
       "recurso": "CMO_SEMANAL_2023.parquet",
-      "sha256": "d59c5bdec033fbc4f6a803023f29a432c9dec08616e43e36dfd6b789ec576ddd"
+      "arquivo": "data/energia/bronze/ons/ons_cmo_semanal_a02/CMO_SEMANAL_2023_parquet/20260930T220640Z.d59c5bdec033.parquet.gz",
+      "sha256": "d59c5bdec033fbc4f6a803023f29a432c9dec08616e43e36dfd6b789ec576ddd",
+      "capturado_em": "2026-09-30T22:06:40Z",
+      "publicado_em": "2025-02-13T18:06:26Z"
+     },
+     {
+      "recurso": "CMO_SEMANAL_2024.csv",
+      "arquivo": "data/energia/bronze/ons/ons_cmo_semanal_a02/CMO_SEMANAL_2024/20260930T220641Z.f83322351e96.csv.gz",
+      "sha256": "f83322351e96b53ea32250c06cd01d6684dd4f71341b33fbe0be96cc5a601036",
+      "capturado_em": "2026-09-30T22:06:41Z",
+      "publicado_em": "2025-02-13T18:06:53Z"
      },
      {
       "recurso": "CMO_SEMANAL_2024.parquet",
-      "sha256": "4dde295936633d18cf17867ec922e5a6855e1ee82f66b417a2bb9eab77bf7d78"
+      "arquivo": "data/energia/bronze/ons/ons_cmo_semanal_a02/CMO_SEMANAL_2024_parquet/20260930T220641Z.4dde29593663.parquet.gz",
+      "sha256": "4dde295936633d18cf17867ec922e5a6855e1ee82f66b417a2bb9eab77bf7d78",
+      "capturado_em": "2026-09-30T22:06:41Z",
+      "publicado_em": "2025-02-13T18:06:50Z"
      }
     ]
    },
-   "chaves_origem": "CMO_SEMANAL, din_instante de 2022-12-30 a 2024-02-23, todos os subsistemas e campos",
-   "formula": "nº de semanas consecutivas com média semanal = 0",
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "CMO_SEMANAL, din_instante de 2022-12-30 a 2024-02-23, todos os subsistemas e campos",
+   "manifesto": null,
+   "formula": "nº de semanas consecutivas (passo de 7 dias) com média semanal = 0",
    "numerador": null,
    "denominador": null,
    "pesos": null,
    "exclusoes": [],
-   "cobertura": "3 arquivos anuais relidos",
+   "cobertura": "3 arquivos anuais relidos em CSV e Parquet",
    "tratamento_ausencia": "semana ausente interrompe a sequência",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dcad322a4ea9+alterado",
-    "publicacao": "2026-09-30T22:32:14Z"
+    "codigo": "dafa93bb2111+alterado",
+    "publicacao": "2026-09-30T23:02:36Z"
    },
-   "revisoes": 0,
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas.",
    "testes": [
     {
      "nome": "CMO semanal: silver principal contra releitura do arquivo original",
@@ -21653,8 +20146,8 @@
    ],
    "reconciliacao": {
     "descricao": "CSV contra Parquet oficial, célula a célula",
-    "resultado": "igual",
-    "tolerancia": 1e-09
+    "resultado": "aprovado",
+    "tolerancia": "0,00000001 R$/MWh por célula"
    },
    "download": [
     {
@@ -21662,8 +20155,8 @@
      "url": "/energia/series/pld_cmo_semanal.csv"
     }
    ],
-   "reproducao": "Baixar CMO_SEMANAL_<ano>.csv do ONS e filtrar as semanas do período.",
-   "citacao": "Scrutiniums, Observatório do Setor Elétrico. Sequência de CMO semanal igual a zero. Dados: ONS (CMO Semanal (DECOMP)), licença Creative Commons Atribuição (CC-BY). Gerado em 30/09/2026. https://scrutiniums.com/setor-eletrico/pld"
+   "reproducao": "python3 pipeline/energia/executar_modulo.py pld --sem-coleta\nBaixar CMO_SEMANAL_<ano>.csv do ONS e filtrar as semanas do período.",
+   "citacao": "SCRUTINIUMS. Sequência de CMO semanal igual a zero: 61 semanas, quatro subsistemas, 24/12/2022 a 23/02/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, CMO Semanal (DECOMP) (recurso CMO_SEMANAL_<ano>.csv e .parquet). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "snapshots": {
@@ -21673,6 +20166,7 @@
    "arquivos": 7,
    "ultima_captura": "2026-09-30T22:06:13Z",
    "publicacao_mais_recente": "2026-09-30T15:01:21Z",
+   "publicacao_confiavel": true,
    "revisoes_detectadas": 0
   },
   "cmo_semanal_original": {
@@ -21681,6 +20175,7 @@
    "arquivos": 44,
    "ultima_captura": "2026-09-30T22:06:43Z",
    "publicacao_mais_recente": "2026-09-30T15:01:06Z",
+   "publicacao_confiavel": true,
    "revisoes_detectadas": 0
   },
   "dicionarios": {
@@ -21689,6 +20184,7 @@
    "arquivos": 4,
    "ultima_captura": "2026-09-30T22:06:45Z",
    "publicacao_mais_recente": null,
+   "publicacao_confiavel": true,
    "revisoes_detectadas": 0
   },
   "ipca": {
@@ -21697,6 +20193,16 @@
    "arquivos": 1,
    "ultima_captura": "2026-09-30T22:06:47Z",
    "publicacao_mais_recente": null,
+   "publicacao_confiavel": true,
+   "revisoes_detectadas": 0
+  },
+  "normas": {
+   "id": "normas_pld@2026-09-30T22:48:13Z",
+   "sha256": "8219e4e7184dd5cfa152f19ada82f0e3229caf8980f27625464e2b0201331531",
+   "arquivos": 2,
+   "ultima_captura": "2026-09-30T22:48:13Z",
+   "publicacao_mais_recente": null,
+   "publicacao_confiavel": true,
    "revisoes_detectadas": 0
   },
   "pld": {
@@ -21704,7 +20210,8 @@
    "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2",
    "arquivos": 6,
    "ultima_captura": "2026-09-30T02:20:14Z",
-   "publicacao_mais_recente": "2026-06-09T16:37:15.091000",
+   "publicacao_mais_recente": null,
+   "publicacao_confiavel": false,
    "revisoes_detectadas": 0
   },
   "cmo_semanal": {
@@ -21713,6 +20220,7 @@
    "arquivos": 22,
    "ultima_captura": "2026-09-29T02:43:32Z",
    "publicacao_mais_recente": "2026-09-28T22:00:54.464349",
+   "publicacao_confiavel": true,
    "revisoes_detectadas": 0
   },
   "balanco": {
@@ -21721,6 +20229,7 @@
    "arquivos": 6,
    "ultima_captura": "2026-09-30T02:19:57Z",
    "publicacao_mais_recente": "2026-09-29T22:00:42.467156",
+   "publicacao_confiavel": true,
    "revisoes_detectadas": 2620
   },
   "intercambio": {
@@ -21729,6 +20238,7 @@
    "arquivos": 6,
    "ultima_captura": "2026-09-30T02:20:08Z",
    "publicacao_mais_recente": "2026-09-29T22:04:31.640235",
+   "publicacao_confiavel": true,
    "revisoes_detectadas": 0
   }
  },

@@ -5,11 +5,13 @@
  * ausência. Nenhum número é recalculado na interface, com uma exceção declarada: o
  * simulador reaplica a fórmula publicada em `simulador.formula` e deve reproduzir
  * `simulador.casos_referencia` (teste em src/tests/energia-conta.test.ts).
+ *
+ * O histórico por distribuidora (vigências e mudanças da tarifa B1) fica fora da gold,
+ * em public/energia/series/conta_historico_b1.json (tipo `HistoricoB1`), para a página
+ * carregar sob demanda (contrato dos módulos, seção 5.1).
  */
+import type { Evidencia } from "./evidencia";
 import type { Cabecalho, Download, Proveniencia } from "./tipos";
-
-/** [início, fim, TE + TUSD em R$/MWh] de uma vigência resolvida (TE e TUSD separadas no CSV de histórico). */
-export type PedacoTarifa = [string, string, number | null];
 
 export type Perfis = { "100": number | null; "200": number | null; "300": number | null };
 
@@ -51,6 +53,10 @@ export type ResumoTarifas = {
   maximo: number | null;
   perfis_mediana: Perfis;
   ponderacao: string;
+  /** Fora do ranking com vigência encerrada há até 90 dias e a sucessora ainda não publicada no arquivo. */
+  fora_vigencia_recente: number;
+  /** Fora do ranking sem tarifa há mais de 90 dias (incorporação, extinção ou troca de CNPJ não informadas). */
+  fora_sem_tarifa_ha_mais_de_90_dias: number;
 };
 
 /**
@@ -59,46 +65,6 @@ export type ResumoTarifas = {
  * mínima (80% do maior n mensal); a mediana real fica null sem índice do mês.
  */
 export type PontoEvolucao = [string, number, number | null, number | null, number | null, number | null];
-
-export type Conferencia = { nome: string; resultado: string; detalhe: string };
-
-export type FonteEvidencia = {
-  orgao: string;
-  conjunto: string;
-  recurso: string | null;
-  url: string;
-  arquivo: string | null;
-  sha256: string | null;
-  capturado_em: string | null;
-  publicado_em: string | null;
-};
-
-/** Objeto "Comprove este número" (seção 11.5 da especificação). */
-export type Evidencia = {
-  valor_exibido: string | null;
-  valor_calculo: number | null;
-  unidade: string;
-  periodo: Record<string, string | null>;
-  entidade: string;
-  universo: string;
-  filtros: string[];
-  fonte: FonteEvidencia;
-  chaves_origem: string[];
-  formula: string;
-  numerador: { descricao: string; valor: number | null } | null;
-  denominador: { descricao: string; valor: number | null } | null;
-  pesos: string | null;
-  exclusoes: string[];
-  cobertura: string | null;
-  tratamento_ausencia: string;
-  versao: { pipeline: string; codigo: string | null; publicacao: string };
-  revisoes: Proveniencia["revisoes_conhecidas"] | null;
-  testes: Conferencia[];
-  reconciliacao: { descricao: string; resultado: string; tolerancia: string } | null;
-  download: Download[];
-  reproducao: string;
-  citacao: string;
-};
 
 export type ConflitoFonte = {
   cnpj: string;
@@ -121,6 +87,9 @@ export type ComposicaoDistribuidora = {
   total: number;
   grupos: PorGrupo<number | null>;
   pct: PorGrupo<number | null>;
+  /** Componentes com CDE no código (subconjunto de `encargos`; não somar aos grupos). */
+  cde: number | null;
+  cde_pct: number | null;
   fecha_com_total: boolean;
   confere_com_tarifas: boolean;
   codigos_sem_grupo: string[];
@@ -130,14 +99,19 @@ export type Composicao = {
   grupos: { id: GrupoComponenteId; rotulo: string; componentes: { codigo: string; descricao: string | null }[] }[];
   classificacao: string;
   mediana_rs_mwh: PorGrupo<number | null>;
+  cde: { mediana_rs_mwh: number | null; mediana_pct: number | null; n: number; codigos: string[]; nota: string };
   distribuidoras: ComposicaoDistribuidora[];
   reconciliacao: {
     conferidas: number;
     divergentes: { sigla: string | null; te_tarifas: number | null; te_componentes: number | null; tusd_tarifas: number | null; tusd_componentes: number | null }[];
     sem_componentes: (string | null)[];
+    /** Repetições da mesma componente, vigência e ato nos arquivos anuais (contadas na ingestão). */
+    duplicatas_fonte: { iguais: number; conflitantes: number; arquivos_com_conflito: { arquivo: string; n: number }[]; regra: string };
   };
   excluidos: string[];
   proveniencia: Proveniencia;
+  /** Participação dos encargos na distribuidora mais próxima da mediana; null sem componentes. */
+  evidencia: Evidencia | null;
 };
 
 export type ClasseSimuladorId = "residencial" | "tarifa_social" | "desconto_social" | "rural" | "demais";
@@ -198,10 +172,16 @@ export type Simulador = {
   rotulo: string;
   formula: string;
   proveniencia: Proveniencia;
+  /** Caso residencial de 150 kWh na distribuidora de referência com a bandeira do mês; null sem bandeira ou tarifa. */
+  evidencia: Evidencia | null;
 };
 
-/** [data, ato, variação % da tarifa B1, IPCA % desde o evento anterior]. */
-export type EventoTarifa = [string, string, number | null, number | null];
+/**
+ * Último evento da tarifa B1 de cada distribuidora do ranking: [cnpj, sigla, data, ato,
+ * variação % do total, IPCA % desde o evento anterior, mês inicial do IPCA, mês final].
+ * Ordem: data mais recente primeiro. Histórico completo em `historico_url`.
+ */
+export type UltimoEvento = [string, string | null, string, string, number | null, number | null, string, string];
 
 export type JanelaInflacao = {
   meses: number;
@@ -217,12 +197,12 @@ export type JanelaInflacao = {
   acima_ipca: number;
   abaixo_ou_igual_ipca: number;
   /** [cnpj, sigla, variação %, variação real %], em ordem crescente de variação. */
-  distribuidoras: [string, string | null, number, number | null][];
+  distribuidoras: [string, string | null, number | null, number | null][];
 };
 
 export type Reajustes = {
-  /** Por CNPJ, eventos desde 2019 (lista completa no CSV). */
-  eventos: Record<string, EventoTarifa[]>;
+  ultimos: UltimoEvento[];
+  historico_url: string;
   comparacao_inflacao: {
     referencia: string;
     ultimo_ipca: string;
@@ -238,6 +218,10 @@ export type Reajustes = {
   } | null;
   proveniencia: Proveniencia;
   proveniencia_ipca: Proveniencia;
+  /** Mediana da variação em 12 meses contra o IPCA; null sem IPCA. */
+  evidencia: Evidencia | null;
+  /** Efeito médio do processo tarifário: não integrado (motivo com a evidência do bloqueio). */
+  efeito_medio: { disponivel: false; motivo: string };
   nota: string;
 };
 
@@ -253,7 +237,7 @@ export type Bandeiras = {
     divergem: { mes: string; bandeira: string | null; acionamento: number | null; tabela: number | null }[];
   };
   proveniencia: Proveniencia;
-  evidencia: Evidencia;
+  evidencia: Evidencia | null;
 };
 
 export type SubsidioAno = {
@@ -273,13 +257,44 @@ export type Subsidios = {
   categorias: { categoria: string; definicao: string }[];
   nota: string;
   checagem: {
-    total_vs_categorias: { comparacoes: number; divergem: number; maior_diferenca_rs: number };
+    total_vs_categorias: { comparacoes: number; divergem: number; maior_diferenca_rs: number; divergem_por_ano: Record<string, number> };
     /** Conferido na ingestão (o silver guarda só o montante Total). */
     total_vs_previsao_mais_ajuste: { comparacoes: number; divergem: number; nota?: string };
   };
   competencias_futuras_excluidas: number;
   proveniencia: Proveniencia;
-  evidencia: Evidencia;
+  evidencia: Evidencia | null;
+};
+
+export type GrupoCdeId =
+  | "tarifa_social"
+  | "descontos_tarifarios"
+  | "ccc_luz_para_todos"
+  | "outras_despesas"
+  | "quotas_tarifa"
+  | "outras_receitas";
+
+export type FinanciamentoCde = {
+  anos: string[];
+  ultimo_ano: string;
+  grupos: { id: GrupoCdeId; tipo: "Despesa" | "Receita"; rotulo: string; definicao: string }[];
+  /** Valores em R$ nominais alinhados com `anos`; null = sem valor publicado no ano. */
+  rubricas: { tipo: "Despesa" | "Receita"; fonte: string; grupo: GrupoCdeId; valores: (number | null)[] }[];
+  totais: {
+    ano: string;
+    despesa: number | null;
+    receita: number | null;
+    grupos: Record<GrupoCdeId, number | null>;
+    quotas_pct: number | null;
+    tarifa_social_pct: number | null;
+    /** Despesa e receita publicadas iguais (tolerância de R$ 1). */
+    fecha: boolean;
+    rubricas_sem_valor: string[];
+  }[];
+  nota: string;
+  comparacao_com_subsidios: string;
+  proveniencia: Proveniencia | null;
+  evidencia: Evidencia | null;
 };
 
 export type ContaGold = Cabecalho & {
@@ -300,8 +315,8 @@ export type ContaGold = Cabecalho & {
     vigentes: TarifaVigente[];
     sem_vigente: SemVigente[];
     evolucao: PontoEvolucao[];
-    /** Por CNPJ: vigências B1 residencial desde 2016. */
-    historico: Record<string, PedacoTarifa[]>;
+    /** JSON com o histórico por distribuidora (tipo HistoricoB1), carregado sob demanda. */
+    historico_url: string;
     proveniencia: Proveniencia;
     proveniencia_evolucao: Proveniencia;
     evidencia_mediana: Evidencia;
@@ -311,6 +326,7 @@ export type ContaGold = Cabecalho & {
   reajustes: Reajustes;
   bandeiras: Bandeiras;
   subsidios: Subsidios;
+  financiamento_cde: FinanciamentoCde | null;
   conflitos_fonte: {
     total: number;
     por_subclasse: { subgrupo: string; subclasse: string; base: "TA" | "BE"; n: number }[];
@@ -320,4 +336,36 @@ export type ContaGold = Cabecalho & {
     download: string;
   };
   downloads: Download[];
+  /** Limites físicos e de domínio conferidos antes de publicar; ressalvas visíveis (violação crítica vira stub). */
+  validacao: { regras: string[]; ressalvas: string[] };
+};
+
+/* ---------- public/energia/series/conta_historico_b1.json ---------- */
+
+/** [início, fim, ato, TE, TUSD, TE + TUSD] em R$/MWh, vigência resolvida sem sobreposição. */
+export type VigenciaB1 = [string, string, string, number | null, number | null, number | null];
+
+/**
+ * [data, ato, mesmo ato, total antes, total depois, variação %, variação TE %,
+ * variação TUSD %, IPCA % desde o evento anterior, mês inicial do IPCA, mês final].
+ */
+export type EventoB1 = [
+  string,
+  string,
+  boolean,
+  number | null,
+  number | null,
+  number | null,
+  number | null,
+  number | null,
+  number | null,
+  string,
+  string,
+];
+
+export type HistoricoB1 = {
+  gerado_em: string;
+  data_referencia: string;
+  unidade: string;
+  distribuidoras: Record<string, { sigla: string | null; nome: string | null; vigencias: VigenciaB1[]; eventos: EventoB1[] }>;
 };

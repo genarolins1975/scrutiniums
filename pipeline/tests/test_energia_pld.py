@@ -6,7 +6,10 @@ Sem rede. As amostras em pipeline/tests/dados/energia_pld/ são recortes reais:
 - CMO semanal do ONS (arquivos CSV e Parquet de 2023 inteiros, trechos de 2022, 2024 e 2026);
 - PLD horário da CCEE (captura versionada do projeto: semana de 19 a 25/09/2026, 30/03/2026,
   06/07/2021 e 01/06/2023);
-- balanço de energia (25/09/2026) e intercâmbios (semana) do ONS; IPCA do IBGE; dicionários.
+- balanço de energia (25/09/2026) e intercâmbios (semana) do ONS; IPCA do IBGE; dicionários;
+- Decreto nº 5.163/2004 (Câmara dos Deputados, arts. 56 a 59 da norma atualizada e da
+  publicação original) e texto extraído pelo pdftotext das páginas 3, 6, 58 e 59 da REN
+  ANEEL nº 957/2021 (cópia do Internet Archive, sha256 472d18da...).
 Os valores esperados foram calculados por outro caminho (awk sobre os arquivos originais)
 e estão escritos nos testes; os limites do PLD vêm de uma fixture no esquema do módulo
 Regulação (limites_pld_fixture.json), não publicada.
@@ -26,7 +29,8 @@ from unittest import mock
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from pipeline.energia import base, metricas  # noqa: E402
-from pipeline.energia.fontes import ccee, ibge_pld, ons, ons_pld  # noqa: E402
+from pipeline.energia import regulatorio  # noqa: E402
+from pipeline.energia.fontes import ccee, ibge_pld, normas_pld, ons, ons_pld  # noqa: E402
 from pipeline.energia.modulos import pld_detalhe as m  # noqa: E402
 
 DADOS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dados", "energia_pld")
@@ -113,9 +117,54 @@ class Leitores(unittest.TestCase):
         sh = ons_pld.parse_dicionario_json(_texto("DicionarioDados_Cmo_Semi_Horario.json"))
         self.assertEqual({x["codigo"]: x["unidade"] for x in sh["campos"]}["val_cmo"], "R$/MWh")
 
+    def test_dicionario_pdf_admite_zero_e_negativo(self):
+        """A02: o dicionário em PDF (texto do pdftotext -layout, versão 1.1 de 02/05/2023) declara
+        que os campos de CMO semanal admitem valor zerado e negativo e não admitem nulo."""
+        with open(os.path.join(DADOS, "DicionarioDados_Cmo_Semanal_pdftotext.txt"), encoding="utf-8") as f:
+            perm = m.permissoes_do_dicionario(f.read())
+        self.assertEqual(set(perm), {"val_cmomediasemanal", "val_cmoleve", "val_cmomedia", "val_cmopesada"})
+        self.assertEqual(perm["val_cmomediasemanal"], {"nulo": False, "zerado": True, "negativo": True})
+        self.assertEqual(m.permissoes_do_dicionario(""), {})
+
     def test_ipca_sidra(self):
         obs = dict((r, v) for _, r, v in ibge_pld.parse_ipca_sidra(_texto("ipca_sidra_amostra.json")))
         self.assertEqual(obs, {"2026-07": 7657.73, "2026-08": 7633.23})
+
+
+class Normas(unittest.TestCase):
+    """P008: passagens normativas citadas só quando conferidas no documento baixado."""
+
+    def _html(self, nome):
+        with open(os.path.join(DADOS, nome), "rb") as f:
+            return normas_pld.texto_html(f.read())
+
+    def test_decreto_norma_atualizada_confere(self):
+        r = {t: ok for t, _, _, ok in normas_pld.confere_trechos("decreto_5163_2004", self._html("decreto_5163_normaatualizada_trecho.html"))}
+        self.assertEqual(len(r), 9)
+        self.assertTrue(all(r.values()), r)
+
+    def test_publicacao_original_nao_confere_redacao_de_2017(self):
+        """A publicação original de 2004 dizia "liquidação mensal" e "far-se-á": a conferência
+        detecta que o documento não é a norma atualizada, em vez de aceitar qualquer versão."""
+        r = {t: ok for t, _, _, ok in normas_pld.confere_trechos("decreto_5163_2004", self._html("decreto_5163_publicacaooriginal_trecho.html"))}
+        self.assertFalse(r["d5163_art57_caput"])
+        self.assertFalse(r["d5163_art57_p6"])
+        self.assertTrue(r["d5163_art57_p2"])  # § 2º não mudou
+        texto = self._html("decreto_5163_publicacaooriginal_trecho.html")
+        self.assertIn("Art. 57. A contabilização e a liquidação mensal no mercado de curto prazo serão realizadas com base no PLD.", texto)
+
+    def test_ren957_texto_extraido_confere(self):
+        with open(os.path.join(DADOS, "ren957_paginas_3_6_58_59.txt"), encoding="utf-8") as f:
+            texto = normas_pld.normaliza(f.read())
+        r = {t: ok for t, _, _, ok in normas_pld.confere_trechos("ren_aneel_957_2021", texto)}
+        self.assertEqual(r, {"ren957_art2_xiii": True, "ren957_art5_p4": True, "ren957_art76": True, "ren957_art78": True, "ren957_art82": True})
+        # uma palavra trocada basta para a passagem não conferir
+        self.assertNotIn(normas_pld.normaliza("devendo as exposições dos agentes da CCEE serem valoradas ao CMO."), texto)
+        self.assertEqual({ok for *_, ok in normas_pld.confere_trechos("ren_aneel_957_2021", None)}, {False})
+
+    def test_normaliza_pontuacao_e_espacos(self):
+        self.assertEqual(normas_pld.normaliza("royalties </i>.".replace("</i>", "")), "royalties.")
+        self.assertEqual(normas_pld.normaliza("a\n  b\u00a0c"), "a b c")
 
 
 class Calculos(unittest.TestCase):
@@ -187,6 +236,31 @@ class Calculos(unittest.TestCase):
                 self.assertIsNone(dado)
                 self.assertIn("ainda não publicado", motivo)
 
+    def test_limites_do_modulo_regulacao_nos_atos_primarios(self):
+        """A04 com os atos reais: a leitura campo a campo deste módulo e a limites_em do módulo
+        Regulação (outro código) dão os mesmos limites em todos os dias de 2021 a 2026, e os
+        valores conferem com os atos da ANEEL citados (trechos em limites_pld.json)."""
+        dado = regulatorio.limites_pld()
+        atos, rej = m.normaliza_atos(dado)
+        self.assertEqual(rej, [])
+        dia = date(2021, 1, 1)
+        while dia <= date(2026, 12, 31):
+            iso = dia.isoformat()
+            self.assertEqual(m.limites_vigentes(atos, iso), regulatorio.limites_em(iso, dado["atos"]), iso)
+            dia = date.fromordinal(dia.toordinal() + 1)
+        l21, l22, l23, l26 = (m.limites_vigentes(atos, x) for x in ("2021-07-06", "2022-06-01", "2023-06-01", "2026-09-30"))
+        self.assertEqual((l21["pld_min"], l21["pld_max_estrutural"], l21["pld_max_horario"]), (49.77, 583.88, 1197.87))
+        # 2022: piso da REH nº 2.994/2021; tetos atualizados pelo IPCA no Despacho nº 4.046/2021
+        self.assertEqual((l22["pld_min"], l22["pld_max_horario"], l22["pld_max_estrutural"]), (55.7, 1326.5, 646.58))
+        self.assertEqual(l22["ato_pld_min"], "Resolução Homologatória ANEEL nº 2.994/2021")
+        # 2023: a retificação (Nota Técnica nº 01/2023) prevalece nos tetos; o piso continua o da REH nº 3.167/2022
+        self.assertEqual((l23["pld_min"], l23["pld_max_horario"], l23["pld_max_estrutural"]), (69.04, 1404.77, 684.73))
+        self.assertTrue(l23["ato_pld_max_horario"].startswith("Retificação"))
+        self.assertEqual((l26["pld_min"], l26["pld_max_horario"], l26["pld_max_estrutural"]), (57.31, 1611.04, 785.27))
+        # o módulo lê pela função pública do módulo Regulação quando ela existe
+        _, origem, motivo = m.carrega_limites({})
+        self.assertEqual((origem, motivo), ("pipeline.energia.regulatorio.limites_pld()", None))
+
     def test_situacao_com_tolerancia_monetaria(self):
         atos, _ = m.normaliza_atos(_fixture_limites())
         l21, l26 = m.limites_vigentes(atos, "2021-07-06"), m.limites_vigentes(atos, "2026-03-30")
@@ -216,6 +290,18 @@ class Calculos(unittest.TestCase):
     def test_deflator(self):
         self.assertAlmostEqual(m.deflaciona(100.0, 7657.73, 7633.23), 100.0 * 7633.23 / 7657.73, places=12)
         self.assertIsNone(m.deflaciona(100.0, None, 7633.23))  # mês sem índice fica sem valor real
+
+    def test_exemplo_de_liquidacao_sintetico(self):
+        """P008: o exemplo usa o PLD real de 30/03/2026 às 19h no Sudeste/Centro-Oeste (R$ 1.611,04/MWh,
+        o teto horário do ano) e quantidades hipotéticas; diferença = geração + compras − consumo − vendas."""
+        pld = {(r["DIA"], int(r["HORA"])): float(r["PLD_HORA"]) for r in _linhas("pld_horario_2026_amostra.csv.gz")
+               if r["SUBMERCADO"] == "SUDESTE" and r["MES_REFERENCIA"] == "202603"}
+        self.assertEqual(pld[("30", 19)], 1611.04)
+        ag = {a["id"]: a for a in m.exemplo_liquidacao(pld[("30", 19)])}
+        self.assertEqual((ag["consumidor"]["diferenca_mwh"], ag["consumidor"]["valor_rs"], ag["consumidor"]["resultado"]), (-20.0, -32220.8, "débito"))
+        self.assertEqual((ag["gerador"]["diferenca_mwh"], ag["gerador"]["valor_rs"], ag["gerador"]["resultado"]), (20.0, 32220.8, "crédito"))
+        # quantidades do exemplo são as declaradas como hipotéticas no módulo, nada vem de dado de agente
+        self.assertEqual({a["id"] for a in m.EXEMPLO_AGENTES}, {"consumidor", "gerador"})
 
     def test_sentido_do_fluxo(self):
         self.assertEqual(m.sentido_fluxo(100.0, 100.005, 500.0), "sem_separacao")
@@ -268,6 +354,13 @@ class ConstrucaoDaGold(unittest.TestCase):
             vid, _ = base.registra_vintage(cf, m.DS_DIC, rec, "u", "2026-09-26T00:00:00Z", None, sha, n, "coleta_direta", arq)
             m._importa_dicionario(cf, {"vintage_id": vid, "recurso": rec, "arquivo": arq, "sha256": sha},
                                   "cmo_semi_horario" if "Semi" in rec else "cmo_semanal")
+        # Decreto nº 5.163/2004 (recorte real) pelo caminho de importação do módulo; a REN nº 957/2021 fica de
+        # fora de propósito, para exercitar a ausência declarada de um documento
+        arq, sha, n = base.salva_bronze_arquivo("camara-dos-deputados", m.DS_NORMAS, "decreto_5163_2004",
+                                                os.path.join(DADOS, "decreto_5163_normaatualizada_trecho.html"), "html", "2026-09-26T00:00:00Z")
+        vid, _ = base.registra_vintage(cf, m.DS_NORMAS, "decreto_5163_2004", normas_pld.URL_DECRETO, "2026-09-26T00:00:00Z", None, sha, n,
+                                       "coleta_direta", arq)
+        m._importa_norma(cf, {"vintage_id": vid, "recurso": "decreto_5163_2004", "arquivo": arq, "sha256": sha}, "decreto_5163_2004")
         vid, _ = base.registra_vintage(cf, m.DS_IPCA, "ipca_numero_indice", "u", "2026-09-26T00:00:00Z", None, "e" * 64, 1, "coleta_direta", None)
         base.grava_observacoes(cf, m.DS_IPCA, vid, ibge_pld.parse_ipca_sidra(_texto("ipca_sidra_amostra.json")))
         cls.csv_dir = os.path.join(cls.tmp, "series")
@@ -320,6 +413,9 @@ class ConstrucaoDaGold(unittest.TestCase):
             self.assertEqual(r["pld_media"] == "", g is None)  # ausência vazia nos dois
             if g is not None:
                 self.assertAlmostEqual(float(r["pld_media"]), g, delta=0.005)
+        eq = self.g["cmo_pld"]["equivalencia_csv"]
+        self.assertEqual(eq["divergentes"], 0)
+        self.assertEqual(eq["celulas"], len(sem["fim"]) * 4 * 3)
 
     def test_permanencia_nos_limites(self):
         lim = self.g["limites"]
@@ -392,16 +488,49 @@ class ConstrucaoDaGold(unittest.TestCase):
         self.assertAlmostEqual(d25["antecedencia_ao_inicio_do_dia_h"], 0.67, places=2)  # 23h20 de 24/09 em Brasília
         self.assertAlmostEqual(d25["folga_lat1d_h"], 48.67, places=2)
 
-    def test_evidencias_tem_campos_do_contrato(self):
-        campos = {"valor_exibido", "valor_calculo", "unidade", "periodo", "entidade", "universo", "filtros", "fonte", "chaves_origem",
-                  "formula", "numerador", "denominador", "pesos", "exclusoes", "cobertura", "tratamento_ausencia", "versao", "revisoes",
-                  "testes", "reconciliacao", "download", "reproducao", "citacao"}
+    def test_evidencias_no_contrato_compartilhado(self):
+        """Fichas montadas por pipeline/energia/evidencia.py: validação sem problemas, chaves na
+        ordem do contrato e reconciliação por outro caminho com valor conferido por awk."""
+        from pipeline.energia import evidencia as ev
         self.assertTrue(self.g["evidencias"])
         for k, e in self.g["evidencias"].items():
-            self.assertTrue(campos <= set(e), k)
+            self.assertEqual(ev.validar(e), [], k)
+            self.assertEqual(tuple(e), ev.CAMPOS, k)
+            self.assertTrue(e["testes"], k)
         e = self.g["evidencias"]["pld_semana_N"]
         self.assertEqual(e["reconciliacao"]["resultado"], "aprovado")
         self.assertEqual(e["denominador"]["valor"], 168)
+        self.assertAlmostEqual(e["valor_calculo"], 124.093393, places=5)  # awk sobre a amostra da CCEE
+        self.assertEqual(e["valor_exibido"], "R$ 124,09/MWh")
+        # a data de publicação da CCEE não é confiável (A09): nunca aparece na ficha
+        self.assertIsNone(e["fonte"]["publicado_em"])
+        sep = self.g["evidencias"]["separacao_12m_SE_S"]
+        self.assertEqual((sep["numerador"]["valor"], sep["reconciliacao"]["resultado"]), (28, "aprovado"))
+
+    def test_conceito_cita_so_o_que_conferiu(self):
+        cc = self.g["conceito"]
+        ids = {f["id"] for f in cc["fontes_textuais"]}
+        self.assertIn("d5163_art57_caput", ids)
+        caput = next(f for f in cc["fontes_textuais"] if f["id"] == "d5163_art57_caput")
+        self.assertEqual(caput["texto"], "Art. 57. A contabilização e a liquidação no mercado de curto prazo serão realizadas com base no PLD.")
+        self.assertEqual(cc["documentos_normativos"]["decreto_5163_2004"]["url"], normas_pld.URL_DECRETO)
+        # REN nº 957/2021 não coletada neste ensaio: nenhuma passagem citada, ausência declarada
+        self.assertFalse(any(i.startswith("ren957") for i in ids))
+        self.assertEqual({x["motivo"] for x in cc["normas_nao_conferidas"]}, {"documento não coletado"})
+        self.assertIsNone(cc["documentos_normativos"]["ren_aneel_957_2021"]["sha256"])
+
+    def test_exemplo_rotulado_e_com_pld_real(self):
+        ex = self.g["conceito"]["exemplo_liquidacao"]
+        self.assertEqual(ex["natureza"], "EXEMPLO_SINTETICO")
+        self.assertIn("hipotéticas", ex["aviso"])
+        # dia de referência da amostra: 25/09/2026; maior PLD do Sudeste/Centro-Oeste no dia (awk sobre a amostra)
+        pld = {int(r["HORA"]): float(r["PLD_HORA"]) for r in _linhas("pld_horario_2026_amostra.csv.gz")
+               if r["SUBMERCADO"] == "SUDESTE" and r["MES_REFERENCIA"] == "202609" and r["DIA"] == "25"}
+        hmax = min(h for h in pld if pld[h] == max(pld.values()))
+        self.assertEqual((ex["pld"]["hora"], ex["pld"]["valor"]), (f"2026-09-25T{hmax:02d}:00", pld[hmax]))
+        # a base normativa só lista passagens conferidas (a REN não foi coletada neste ensaio)
+        self.assertEqual(ex["base_normativa"], ["d5163_art57_caput", "d5163_art57_p5"])
+        self.assertEqual(sum(a["diferenca_mwh"] for a in ex["agentes"]), 0)
 
     def test_proveniencias_com_limitacoes(self):
         for k, p in self.g["proveniencia"].items():

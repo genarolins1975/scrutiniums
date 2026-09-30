@@ -23,6 +23,7 @@ from unittest import mock
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from pipeline.energia import base, entidades  # noqa: E402
+from pipeline.energia import evidencia as ev  # noqa: E402
 from pipeline.energia.fontes import aneel_transicao as mmgd  # noqa: E402
 from pipeline.energia.fontes import mcti_transicao as mcti  # noqa: E402
 from pipeline.energia.fontes import ons_transicao as ons  # noqa: E402
@@ -247,6 +248,16 @@ class EstimativaONS(unittest.TestCase):
             a = ons.agrega_diario(ons.parse(_ons(area, "2026-09-01")))[(area, "2026-09-01")]
             self.assertAlmostEqual(a["global_mwh"], a["semmmgd_mwh"] + a["mmgd_mwh"], delta=0.1, msg=area)
 
+    def test_dia_em_curso_na_captura_nao_e_dia_verificado(self):
+        """A API devolve as 48 meias horas do dia corrente com zeros nas horas futuras: o
+        dia da captura (data de Brasília) fica fora; o dia anterior entra inteiro."""
+        regs = ons.parse(_ons("S", "2026-09-01"))
+        self.assertEqual(ons.agrega_diario(regs, dia_limite="2026-09-01"), {})
+        a = ons.agrega_diario(regs, dia_limite="2026-09-02")[("S", "2026-09-01")]
+        self.assertAlmostEqual(a["mmgd_mwh"], self.ESPERADO_MWH["S"], delta=1e-6)
+        self.assertEqual(transicao._data_brasilia("2026-10-01T02:59:00Z"), "2026-09-30")
+        self.assertEqual(transicao._data_brasilia("2026-10-01T03:00:00Z"), "2026-10-01")
+
 
 class BlocoONS(_Ambiente):
     def test_sin_mensal_e_razao_de_somas_e_mes_incompleto_marcado(self):
@@ -268,6 +279,13 @@ class BlocoONS(_Ambiente):
         self.assertEqual(m["capacidade_aneel_mw"], 50500)
         self.assertTrue(os.path.exists(os.path.join(base.SERIES, "transicao_ons_mmgd_mensal.csv")))
         self.assertIsNone(b["ultimo_mes_completo"])
+        self.assertIsNone(b["evidencia"])  # sem mês completo, nada a comprovar
+        # mês posterior ao corte provisório do cadastro: capacidade marcada, razão ausente
+        b2 = transicao._bloco_ons(self.con, None, {"2026-08": 50_000_000.0, "2026-09": 51_000_000.0}, corte_provisorio="2026-03")
+        self.assertTrue(b2["mensal"][-1]["capacidade_aneel_provisoria"])
+        self.assertIsNone(b2["mensal"][-1]["razao_estimativa_ons_capacidade_pct"])
+        b3 = transicao._bloco_ons(self.con, None, {"2026-08": 50_000_000.0, "2026-09": 51_000_000.0}, corte_provisorio="2026-12")
+        self.assertFalse(b3["mensal"][-1]["capacidade_aneel_provisoria"])
 
 
 # ---------------------------------------------------------------------------
@@ -335,9 +353,10 @@ class FatoresMCTI(unittest.TestCase):
 
     def test_revisao_declarada_pela_fonte(self):
         p = mcti.parse_despacho(mcti.le_xlsx(_xlsx("mcti_despacho_2020_recorte.xlsx")))
-        self.assertEqual(p["revisoes"], [{"mes": "2020-09", "anterior": 0.3285, "atual": 0.3287},
-                                         {"mes": "2020-10", "anterior": 0.572, "atual": 0.5723},
-                                         {"mes": "2020-12", "anterior": 0.6078, "atual": 0.6106}])
+        self.assertEqual(p["revisoes"], [
+            {"serie": "margem_operacao_mensal", "periodo": "2020-09", "anterior": 0.3285, "atual": 0.3287},
+            {"serie": "margem_operacao_mensal", "periodo": "2020-10", "anterior": 0.572, "atual": 0.5723},
+            {"serie": "margem_operacao_mensal", "periodo": "2020-12", "anterior": 0.6078, "atual": 0.6106}])
         self.assertEqual(p["bm"], 0.0979)
 
     def test_metodo_simples_ajustado_da_pagina_html(self):
@@ -380,9 +399,154 @@ class BlocoEmissoes(_Ambiente):
         self.assertEqual(len(b["problemas_de_leitura"]), 1)
         self.assertLess(b["consistencia_diaria_mensal"]["maior_diferenca_absoluta"], 0.01)
         self.assertFalse(b["estimativa_propria"]["publicada"])
-        # o anual oficial não é a média simples dos meses: a diferença existe e é pequena
+        # controle de leitura do anual: média simples dos 12 meses publicados na mesma planilha
         d2021 = next(x for x in b["anual_x_media_mensal"] if x["ano"] == 2021)
-        self.assertAlmostEqual(d2021["media_simples_meses"], 0.1264, delta=0.01)
+        self.assertAlmostEqual(d2021["media_simples_meses"], 0.1264, delta=0.0001)
+        self.assertTrue(d2021["dentro_da_tolerancia"])
+        self.assertEqual(b["acesso"]["familias_usadas"], ["antigo"])
+        self.assertIsNone(b["pagina_vigente"])
+
+
+URL_ATUAL = "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/sirene/dados-e-ferramentas/fatores-de-emissao/arquivo/"
+
+
+def _pagina_vigente():
+    with gzip.open(os.path.join(DADOS, "mcti_pagina_vigente_recorte.html.gz")) as f:
+        return f.read()
+
+
+class PaginaVigenteMCTI(unittest.TestCase):
+    """Recorte das tabelas da página vigente do MCTI capturada em 30/09/2026."""
+
+    def test_so_ancoras_visiveis_sao_publicacao(self):
+        """Das 36 âncoras de planilha, 13 não têm texto (invisíveis ao leitor) e apontam para
+        versões antigas, entre elas o primeiro semestre de 2021 superado pelo ano completo."""
+        corpo = _pagina_vigente()
+        self.assertEqual(len(mcti.links_xlsx(corpo, mcti.URL_PAGINA_ATUAL)), 36)
+        pub, ocultas = mcti.planilhas_publicadas(corpo, mcti.URL_PAGINA_ATUAL)
+        self.assertEqual(len(pub), 23)
+        self.assertEqual(len(ocultas), 13)
+        arquivos = [p["arquivo"] for p in pub]
+        self.assertIn("Despacho_2021_jandez.xlsx", arquivos)
+        self.assertNotIn("Despacho_2021_jan-a-jun.xlsx", arquivos)
+        self.assertTrue(any(u.endswith("/Despacho_2021_jan-a-jun.xlsx") for u in ocultas))
+        titulos = {p["arquivo"]: p["titulo"] for p in pub}
+        self.assertEqual(titulos["Inventario_2026_janago.xlsx"], "Inventários Corporativos - 2026")
+        self.assertIn("com correções nos meses de janeiro e março a setembro", titulos["Despacho_2024_jandezcomcorrees_FE_MC.xlsx"])
+        # a planilha do ano-base 2006 aparece oculta na linha de 2025 e visível na própria linha: uma vez, publicada
+        base2006 = [p for p in pub if p["arquivo"].endswith("ano-base-2006.xlsx")]
+        self.assertEqual(len(base2006), 1)
+        self.assertTrue(base2006[0]["titulo"].endswith("Ano Base 2006"))
+        self.assertFalse(any(u.endswith("ano-base-2006.xlsx") for u in ocultas))
+
+    def test_comentario_html_nao_e_publicacao(self):
+        corpo = b'<table><tr><td>Planilha</td><td><!-- <a href="/x/Velha.xlsx">Aqui</a> --><a href="/x/Nova.xlsx">Aqui</a></td></tr></table>'
+        pub, ocultas = mcti.planilhas_publicadas(corpo, "https://www.gov.br/")
+        self.assertEqual([p["arquivo"] for p in pub], ["Nova.xlsx"])
+        self.assertEqual(ocultas, [])
+
+
+class ListagemMCTI(_Ambiente):
+    def test_listagem_so_vira_vintage_quando_muda(self):
+        corpo = _pagina_vigente()
+        pub, ocu = mcti.planilhas_publicadas(corpo, mcti.URL_PAGINA_ATUAL)
+        self.assertTrue(transicao._registra_listagem(self.con, "pagina_atual", mcti.URL_PAGINA_ATUAL, corpo, pub, ocu))
+        # o gov.br muda identificadores a cada pedido: HTML diferente, mesma listagem, sem vintage nova
+        outro = corpo + b"<!-- outro pedido -->"
+        p2, o2 = mcti.planilhas_publicadas(outro, mcti.URL_PAGINA_ATUAL)
+        self.assertFalse(transicao._registra_listagem(self.con, "pagina_atual", mcti.URL_PAGINA_ATUAL, outro, p2, o2))
+        # a âncora do inventário perde o texto: a listagem muda e vira vintage
+        sem_inv = corpo.replace(b">Aqui</a>", b"></a>", 1)
+        p3, o3 = mcti.planilhas_publicadas(sem_inv, mcti.URL_PAGINA_ATUAL)
+        self.assertEqual(len(p3), 22)
+        self.assertTrue(transicao._registra_listagem(self.con, "pagina_atual", mcti.URL_PAGINA_ATUAL, sem_inv, p3, o3))
+        n = self.con.execute("SELECT COUNT(*) FROM vintages WHERE dataset=? AND recurso='pagina_atual'",
+                             (transicao.DS_MCTI_META,)).fetchone()[0]
+        self.assertEqual(n, 2)
+        _, planilhas, ocultas, _ = transicao._listagem(self.con, "pagina_atual")
+        self.assertEqual(len(planilhas), 22)
+        self.assertEqual(len(ocultas), 14)
+
+
+class FatoresMCTIVigentes(unittest.TestCase):
+    def test_inventario_2026_da_pagina_vigente(self):
+        """Valores conferidos no XML da planilha Inventario_2026_janago.xlsx (células O99 e J105)."""
+        p = mcti.parse_inventario(mcti.le_xlsx(_xlsx("mcti_inventario_2026_janago.xlsx")))
+        self.assertEqual(len(p["mensal"]), 248)  # jan/2006 a ago/2026
+        self.assertEqual(len(p["anual"]), 20)    # 2006 a 2025: o ano parcial não tem anual
+        self.assertNotIn("2026", p["anual"])
+        self.assertEqual(p["anual"]["2025"], 0.0461)
+        self.assertEqual(p["mensal"]["2026-08"], 0.0471)
+        self.assertAlmostEqual(p["mensal"]["2025-11"], 0.0778, places=12)  # gravado 0.07779999999999999
+        self.assertEqual(p["anual"]["2021"], 0.1263)  # o site institucional anterior publicou 0,1264
+        self.assertEqual(p["anual"]["2007"], 0.0293)
+        self.assertEqual(p["problemas"], [])
+
+    def test_margem_2022_corrigida_traz_a_publicacao_anterior(self):
+        """Planilha "Margemdeconstruo_2022corrigido.xlsx": o nome fala de margem de
+        construção, mas o conteúdo tem as duas margens. Julho/2022 foi publicado antes como
+        0,0419 e corrigido para 0,4186 (coluna Q, "Publicação anterior (com erro)")."""
+        pl = mcti.le_xlsx(_xlsx("mcti_margem_construcao_2022_recorte.xlsx"))
+        self.assertEqual(mcti.tipo_planilha(pl), "despacho")
+        p = mcti.parse_despacho(pl)
+        self.assertEqual(p["ano"], 2022)
+        self.assertEqual(p["bm"], 0.0271)
+        self.assertEqual(p["om_mensal"]["2022-07"], 0.4186)
+        self.assertEqual(len(p["om_mensal"]), 12)
+        self.assertIn({"serie": "margem_operacao_mensal", "periodo": "2022-07", "anterior": 0.0419, "atual": 0.4186}, p["revisoes"])
+        self.assertIn({"serie": "margem_construcao", "periodo": "2022", "anterior": 0.027, "atual": 0.0271}, p["revisoes"])
+
+    def test_simples_ajustado_2025_em_planilha(self):
+        p = mcti.parse_simples_ajustado_xlsx(mcti.le_xlsx(_xlsx("mcti_simples_ajustado_2025.xlsx")))
+        self.assertEqual(len(p["om"]), 20)
+        self.assertEqual(p["om"]["2025"], 0.287)
+        self.assertEqual(p["om"]["2019"], 0.3896)  # a página HTML do site anterior publicava 0,386
+        self.assertEqual(p["energia_mwh"]["2024"], 459811225.0)
+        self.assertEqual(p["energia_mwh"]["2025"], 596828023.0)  # base de usinas ampliada em 2025
+        self.assertEqual(p["anos_com_nota"], {"2016": "*", "2019": "**"})
+
+
+class PrecedenciaMCTI(_Ambiente):
+    def _grava(self, recurso, arquivo, capturado):
+        transicao._grava_mcti(self.con, recurso, URL_ATUAL + recurso.split("_", 1)[1] + ".xlsx", _xlsx(arquivo), "xlsx", "teste",
+                              capturado=capturado)
+
+    def test_pagina_vigente_prevalece_mesmo_capturada_antes(self):
+        """A precedência é pela origem (página vigente antes do site anterior), não pela ordem
+        de captura; a diferença entre as duas publicações fica publicada."""
+        self._grava("atual_Inventario_2026_janago", "mcti_inventario_2026_janago.xlsx", "2026-09-30T22:48:14Z")
+        self._grava("antigo_Inventario_2021_jan-a-dez", "mcti_inventario_2021.xlsx", "2026-09-30T22:49:00Z")
+        b = transicao._bloco_emissoes(self.con)
+        anual = {x["ano"]: x["valor"] for x in b["medio_anual"]}
+        self.assertEqual(anual[2021], 0.1263)
+        self.assertEqual(anual[2025], 0.0461)
+        div = {(d["serie"], d["periodo"]): d for d in b["divergencias_entre_publicacoes"]}
+        self.assertEqual(div[("medio_anual", "2021")]["valor_site_anterior"], 0.1264)
+        self.assertIn(("medio_mensal", "2021-11"), div)
+        self.assertEqual(b["conflitos_entre_arquivos"], [])
+        # controle de leitura do anual: 2007 fica fora da tolerância de arredondamento (0,000125), 2025 dentro
+        cmp_ = {x["ano"]: x for x in b["anual_x_media_mensal"]}
+        self.assertFalse(cmp_[2007]["dentro_da_tolerancia"])
+        self.assertTrue(cmp_[2025]["dentro_da_tolerancia"])
+        self.assertEqual(ev.validar(b["evidencia"]), [])
+        self.assertEqual(ev.validar(b["evidencia_mensal"]), [])
+        self.assertEqual(b["evidencia"]["valor_exibido"], "0,0461")
+        self.assertEqual(b["evidencia"]["reconciliacao"]["resultado"], "aprovado")
+        self.assertIn("fora: 2007", b["evidencia"]["reconciliacao"]["descricao"])
+        self.assertEqual(b["ultimo_mes"], {"m": "2026-08", "valor": 0.0471, "arquivo": "Inventario_2026_janago.xlsx"})
+
+    def test_arquivos_da_mesma_origem_com_valores_diferentes_viram_conflito(self):
+        """Página que listasse o inventário antigo e o novo: vale o capturado por último e o
+        conflito fica registrado com os dois valores."""
+        self._grava("atual_Inventario_2021_jan-a-dez", "mcti_inventario_2021.xlsx", "2026-09-30T10:00:00Z")
+        self._grava("atual_Inventario_2026_janago", "mcti_inventario_2026_janago.xlsx", "2026-09-30T11:00:00Z")
+        b = transicao._bloco_emissoes(self.con)
+        conf = {(x["serie"], x["periodo"]): x for x in b["conflitos_entre_arquivos"]}
+        c2021 = conf[("medio_anual", "2021")]
+        self.assertEqual(c2021["recurso_vigente"], "atual_Inventario_2026_janago")
+        self.assertEqual({v["valor"] for v in c2021["valores"]}, {0.1264, 0.1263})
+        self.assertEqual({x["ano"]: x["valor"] for x in b["medio_anual"]}[2021], 0.1263)
+        self.assertEqual(b["divergencias_entre_publicacoes"], [])
 
 
 # ---------------------------------------------------------------------------
@@ -425,6 +589,13 @@ class ImportacaoEGold(_Ambiente):
         self.assertEqual(len(rr), 15)
         self.assertTrue(all(x["unidades"] == 0 and x["w_por_habitante"] == 0.0 for x in rr))
         self.assertEqual(b["revisoes"]["capturas_comparadas"], 1)
+        # evidências no contrato comum: arquivo com sha256, sem o recurso técnico a reconciliação é ressalva
+        for chave in ("unidades", "potencia"):
+            self.assertEqual(ev.validar(b["evidencias"][chave]), [], chave)
+        self.assertEqual(b["evidencias"]["unidades"]["valor_exibido"], "274")
+        self.assertEqual(b["evidencias"]["unidades"]["fonte"]["sha256"],
+                         base.ultima_vintage(self.con, transicao.DS_MMGD, transicao.RECURSO_PARQUET)["sha256"])
+        self.assertEqual(b["evidencias"]["unidades"]["reconciliacao"]["resultado"], "ressalva")
         # segunda captura sem as 20 unidades da CODESAM: zeros explícitos e histórico preservado
         t = pq.read_table(PARQUET)
         sem = t.filter(pc.not_equal(t["NumCNPJDistribuidora"], int(CNPJ_CODESAM)))
@@ -442,6 +613,26 @@ class ImportacaoEGold(_Ambiente):
         self.assertEqual(b2["resumo"]["unidades"], 254)
         self.assertNotIn(CNPJ_CODESAM, {d["cnpj"] for d in b2["distribuidoras"]})
         self.assertEqual(b2["revisoes"]["capturas_comparadas"], 2)
+        self.assertIn("2 capturas comparadas", b2["evidencias"]["unidades"]["revisoes"])
+        # a evidência aponta o arquivo que gerou os números (a segunda captura)
+        self.assertEqual(b2["evidencias"]["unidades"]["fonte"]["capturado_em"], "2026-10-06T15:00:00Z")
+
+    def test_construir_publica_gold_e_csv_equivalentes(self):
+        """Equivalência gold e exportação: o CSV municipal soma o total da gold; blocos sem
+        dado (ONS e MCTI) viram pendência declarada, não número."""
+        self._ibge()
+        self._importa(PARQUET, "2026-09-29T15:00:00Z")
+        g = transicao.construir(self.con, {"hoje": date(2026, 9, 30), "con_principal": None})
+        self.assertTrue(g["disponivel"])
+        self.assertIsNone(g["ons_mmgd"])
+        self.assertIsNone(g["emissoes"])
+        self.assertEqual(len(g["pendencias"]), 2)
+        self.assertNotIn("_municipios", g["mmgd"])
+        with open(os.path.join(base.SERIES, "transicao_mmgd_municipio_ano_fonte.csv"), encoding="utf-8") as f:
+            linhas = list(csv.DictReader(f, delimiter=";"))
+        self.assertEqual(sum(int(x["unidades"]) for x in linhas), g["mmgd"]["resumo"]["unidades"])
+        self.assertAlmostEqual(sum(float(x["potencia_kw"]) for x in linhas), g["mmgd"]["resumo"]["potencia_kw"], delta=0.01 * len(linhas))
+        json.dumps(g, allow_nan=False)
 
     def test_validacao_critica_vira_motivo(self):
         """Linhas do arquivo diferentes da soma agregada derrubam a publicação (stub)."""

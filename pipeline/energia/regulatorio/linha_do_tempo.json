@@ -385,6 +385,72 @@
    "observacoes": [
     "Os prazos são máximos ('até') e contados da entrada em vigor do dispositivo; a lei não fixa uma data de abertura. A regulação da ANEEL consta da Agenda Regulatória 2026-2027 (atividades AR26-08 e AR26-26)."
    ]
+  },
+  {
+   "id": "ren-1114-2025",
+   "titulo": "Perdas não técnicas passam a ser calculadas sobre o mercado medido",
+   "orgao": "ANEEL",
+   "ato": "Resolução Normativa ANEEL nº 1.114, de 11 de fevereiro de 2025",
+   "tipo_ato": "Resolução Normativa",
+   "data_ato": "2025-02-11",
+   "data_publicacao": "2025-03-14",
+   "vigencia_inicio": "2025-03-14",
+   "vigencia_regra": "Art. 4º Esta Resolução entra em vigor na data de sua publicação.",
+   "vigencia_calculada": false,
+   "dispositivo": "art. 1º e parágrafo único (objeto e recálculo), art. 2º, incisos II e III (Submódulos 2.6 v3.0 e 2.6A v2.0 do PRORET), item 38 do Submódulo 2.6 no Anexo I e art. 4º (vigência)",
+   "resumo": "Nos processos tarifários, o ponto de partida, a meta e a trajetória das perdas não técnicas passam a usar o mercado de baixa tensão medido, e não o faturado, por causa dos efeitos da micro e minigeração distribuída no Sistema de Compensação. Os percentuais de perdas não técnicas já definidos nas revisões tarifárias seriam recalculados e publicados em despacho da superintendência de gestão tarifária.",
+   "efeito_declarado": "Altera os Procedimentos de Regulação Tarifária – PRORET no tocante a definição da energia requerida e das perdas não técnicas nos sistemas de distribuição de energia elétrica, considerando os efeitos da MMGD participante do SCEE.",
+   "impacto_estimado": null,
+   "temas": [
+    "perdas",
+    "metodologia",
+    "mmgd"
+   ],
+   "paineis": [
+    {
+     "rotulo": "Perdas",
+     "href": "/setor-eletrico/perdas"
+    }
+   ],
+   "documento": "ren20251114",
+   "trecho": "Parágrafo único. Os atuais percentuais de perdas não técnicas definidos nas revisões tarifárias das concessionárias de energia serão recalculados conforme as adequações do caput e publicados em Despacho da Superintendência de Gestão Tarifária e Regulação Econômica. […] 38.O mercado medido deve ser utilizado: i) na definição do ponto de partida e da meta de perdas não técnicas; ii) na trajetória de redução a ser aplicada nos reajustes subsequentes e iii) para o cálculo dos percentuais na construção do balanço energético nos processos tarifários. […] Art. 4º Esta Resolução entra em vigor na data de sua publicação.",
+   "nivel_conferencia": "texto_do_ato",
+   "observacoes": [
+    "Muda o denominador das perdas não técnicas regulatórias: séries anteriores e posteriores a 2025 não são diretamente comparáveis sem ajuste. A página oficial do PRORET lista as versões 3.0 do Submódulo 2.6 e 2.0 do Submódulo 2.6A como vigentes, aprovadas por esta resolução."
+   ]
+  },
+  {
+   "id": "ren-1137-2025",
+   "titulo": "Novo indicador DISE: interrupções em situação de emergência passam a gerar compensação",
+   "orgao": "ANEEL",
+   "ato": "Resolução Normativa ANEEL nº 1.137, de 21 de outubro de 2025",
+   "tipo_ato": "Resolução Normativa",
+   "data_ato": "2025-10-21",
+   "data_publicacao": "2025-10-30",
+   "vigencia_inicio": "2025-10-30",
+   "vigencia_regra": "Art. 21. Esta Resolução entra em vigor na data de sua publicação.",
+   "vigencia_calculada": false,
+   "dispositivo": "art. 2º (item 134-A do Módulo 1 do PRODIST), art. 5º (itens 172, 214, 216, 219 e 220-A do Módulo 8), art. 13, incisos I a VI (prazos de implantação) e art. 21 (vigência)",
+   "resumo": "Cria o indicador individual DISE, a duração de cada interrupção ocorrida em situação de emergência, com limite vinculado ao DEC anual e compensação ao consumidor de média ou baixa tensão a cada interrupção que o supere. A apuração do DISE deve começar em até 180 dias da publicação, com efeitos retroativos a dois meses após a publicação. A mesma resolução exige planos de manejo de vegetação, de comunicação e de contingência e a divulgação, em mapa, das unidades afetadas por interrupções.",
+   "efeito_declarado": "Estabelece disposições para o aumento da resiliência do sistema de distribuição e de transmissão a eventos climáticos severos; altera as Resoluções Normativas nº 846, de 11 de junho de 2019, nº 905, de 08 de dezembro de 2020, nº 948, de 16 de novembro de 2021, nº 956, de 7 de dezembro de 2021, nº 1.000, de 7 de dezembro de 2021, e dá outras providências.",
+   "impacto_estimado": null,
+   "temas": [
+    "qualidade",
+    "metodologia",
+    "consumidor"
+   ],
+   "paineis": [
+    {
+     "rotulo": "Qualidade",
+     "href": "/setor-eletrico/qualidade"
+    }
+   ],
+   "documento": "ren20251137",
+   "trecho": "134-A. Duração da Interrupção Individual ocorrida em Situação de Emergência por Unidade Consumidora ou por Ponto de Conexão – DISE: corresponde à duração de cada interrupção ocorrida em Situação de Emergência, para cada unidade consumidora ou ponto de conexão. […] 216. Os limites dos indicadores DIC, DMIC, DICRI e DISE são vinculados ao limite anual do indicador DEC […] 220-A. A distribuidora deve efetuar uma compensação ao consumidor ou central geradora de média ou baixa tensão para cada interrupção ocorrida em Situação de Emergência que superar o limite do indicador DISE. […] VI - Até 180 (cento e oitenta) dias mês para iniciar as apurações do Duração da Interrupção Individual ocorrida em Situação de Emergência por Unidade Consumidora ou por Ponto de Conexão – DISE e observar as disposições da Seção 8.2 do Módulo 8 do PRODIST com o corresponde pagamento de compensações por transgressão desse indicador, com efeitos retroativos a 2 meses após a publicação da norma;",
+   "nivel_conferencia": "texto_do_ato",
+   "observacoes": [
+    "O texto do art. 13, VI, diz '180 (cento e oitenta) dias mês', como transcrito. A página oficial do PRODIST lista a versão 14 do Módulo 8 como vigente, aprovada por esta resolução. Os indicadores de continuidade publicados antes da resolução não têm o DISE."
+   ]
   }
  ]
 }

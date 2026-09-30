@@ -1,0 +1,562 @@
+"""Testes do módulo Inclusão energética (P059 a P062) com recortes reais das fontes, sem rede.
+
+Recortes em pipeline/tests/dados/energia_inclusao/ (tirados dos arquivos oficiais em 30/09/2026):
+- scs_amostra.csv: linhas integrais do SCS (ANEEL) de RGE e CERIM (jan/2014, CERIM em dois
+  despachos idênticos), CEEE-D (abr/2020 em dois despachos DIVERGENTES), Eletropaulo (set/2021 a
+  mar/2022, total residencial de dez/2021 fora do padrão) e EMR (jun e jul/2023, total residencial
+  zero em jul/2023);
+- cde_amostra_01may2025.zip: linhas integrais do arquivo de Beneficiários da CDE de mai/2025 com os
+  dois campos pessoais (NomCliente, NumCPFCNPJCliente) apagados no recorte; inclui linhas com
+  código de município inválido (Equatorial MA '210083', CELPE '0') e faturas de tipos 2 a 4;
+- tarifa_social_antiga_arquivada.csv: o CSV da série antiga (descontinuada), cópia do Internet
+  Archive de 29/07/2024;
+- mds_*: respostas do serviço MI Social (MDS) recortadas a cinco municípios e às estatísticas;
+- sidra_67xx_recorte.json: respostas da API SIDRA (POF 6715; PNAD Contínua 6737, 6738, 6731);
+- pof_amostra_dados.zip e pof_tradutor_recorte.json: registros de duas famílias de Rondônia dos
+  microdados da POF 2017-2018 e as linhas do tradutor da despesa geral que elas usam;
+- pof_coeficientes_despesas.xlsx e pof_indice_despesa.xls: planilhas originais do IBGE;
+- pasi_localizacao_ciclo2025.xlsx: exportação integral do PASI (EPE), ciclo 2025;
+- caderno_sisol_2025_trecho.txt: trecho do texto do caderno do ciclo 2025 (pdftotext -layout);
+- lpt_*_recorte.csv: linhas integrais (Latin-1) do conjunto Luz para Todos do MME.
+
+Os valores esperados foram lidos nos arquivos originais por outro caminho (soma direta das
+colunas, tabela publicada pelo IBGE, texto do caderno da EPE) e estão escritos nos testes.
+"""
+import csv
+import io
+import json
+import math
+import os
+import sys
+import unittest
+import zipfile
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+from pipeline.energia import evidencia as ev  # noqa: E402
+from pipeline.energia import metricas  # noqa: E402
+from pipeline.energia.fontes import aneel_inclusao as fa  # noqa: E402
+from pipeline.energia.fontes import epe_inclusao as fe  # noqa: E402
+from pipeline.energia.fontes import ibge_inclusao as fi  # noqa: E402
+from pipeline.energia.fontes import mds_inclusao as fm  # noqa: E402
+from pipeline.energia.fontes import mme_inclusao as fl  # noqa: E402
+from pipeline.energia.fontes import planilha_inclusao as fp  # noqa: E402
+from pipeline.energia.metricas import inclusao as metricas_inclusao  # noqa: E402
+from pipeline.energia.modulos import inclusao as mod  # noqa: E402
+
+AQUI = os.path.dirname(os.path.abspath(__file__))
+DADOS = os.path.join(AQUI, "dados", "energia_inclusao")
+RAIZ = os.path.dirname(os.path.dirname(AQUI))
+GOLD = os.path.join(RAIZ, "public", "energia", "gold", "inclusao.json")
+
+RGE, CERIM, CEEE, ELETROPAULO, EMR = "02016439000138", "50235449000107", "08467115000100", "61695227000193", "19527639000158"
+
+
+def _dados(nome):
+    return os.path.join(DADOS, nome)
+
+
+def _scs():
+    with open(_dados("scs_amostra.csv"), encoding="utf-8", newline="") as f:
+        return fa.le_scs(csv.DictReader(f, delimiter=";"))
+
+
+def _gold():
+    if not os.path.exists(GOLD):
+        return None
+    with open(GOLD, encoding="utf-8") as f:
+        g = json.load(f)
+    return g if g.get("disponivel") is True else None
+
+
+class SCS(unittest.TestCase):
+    """SCS: despacho vigente, DMR lida uma vez, contagens por modalidade e faixa."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.esc, cls.diag = _scs()
+
+    def test_esquema_completo(self):
+        self.assertEqual(self.diag["cabecalho_faltando"], [])
+        self.assertEqual(self.diag["linhas"], 70)
+
+    def test_dmr_nao_multiplicada_pelas_faixas(self):
+        # RGE jan/2014: VlrDMR = 1.468.574,35 repetido nas 5 linhas de faixa do despacho 493/2014
+        tot = fa.totais_scs(self.esc[(RGE, "2014-01")])
+        self.assertAlmostEqual(tot["dmr"], 1468574.35, places=2)
+        self.assertNotAlmostEqual(tot["dmr"], 5 * 1468574.35, places=0)
+        # soma direta das colunas do arquivo: UC 96.248, residencial 1.094.608, 17.002,534 MWh
+        self.assertEqual(tot["uc_tsee"], 96248)
+        self.assertEqual(tot["uc_residencial"], 1094608)
+        self.assertAlmostEqual(tot["mwh_tsee"], 17002.534, places=3)
+
+    def test_despacho_vigente_quando_diverge(self):
+        # CEEE-D abr/2020: 1533/2020 (29/05/2020, 74.940 UC) e 2528/2020 (31/08/2020, 78.574 UC)
+        reg = self.esc[(CEEE, "2020-04")]
+        self.assertEqual(reg["despacho"], "2528/2020")
+        self.assertTrue(reg["divergentes"])
+        self.assertIn("1533/2020 (2020-05-29)", reg["alternativos"])
+        tot = fa.totais_scs(reg)
+        self.assertEqual(tot["uc_tsee"], 78574)
+        self.assertAlmostEqual(tot["dmr"], 5492976.51, places=2)
+
+    def test_republicacao_identica(self):
+        reg = self.esc[(CERIM, "2014-01")]
+        self.assertEqual(reg["despacho"], "648/2014")
+        self.assertFalse(reg["divergentes"])
+        self.assertEqual(self.diag["pares_com_mais_de_um_despacho"], 2)
+        self.assertEqual(self.diag["pares_com_despachos_divergentes"], 1)
+        self.assertEqual(self.diag["pares_com_faixas_incompletas"], 0)
+
+    def test_numero_ausencia_e_zero(self):
+        self.assertEqual(fa.numero(",00"), 0.0)
+        self.assertIsNone(fa.numero(""))
+        self.assertIsNone(fa.numero("NULL"))
+        self.assertEqual(fa.numero("1.234,56"), 1234.56)
+
+    def test_residencial_inconsistente(self):
+        res, ts = {}, {}
+        for (cn, mes), reg in self.esc.items():
+            if cn == ELETROPAULO:
+                t = fa.totais_scs(reg)
+                res[mes], ts[mes] = t["uc_residencial"], t["uc_tsee"]
+        # dez/2021: 2.552.348 contra cerca de 7,4 milhões nos vizinhos
+        self.assertTrue(mod.residencial_inconsistente(res, ts, "2021-12"))
+        self.assertFalse(mod.residencial_inconsistente(res, ts, "2021-11"))
+        self.assertFalse(mod.residencial_inconsistente(res, ts, "2022-01"))
+        emr_res = {m: fa.totais_scs(self.esc[(EMR, m)])["uc_residencial"] for m in ("2023-06", "2023-07")}
+        emr_ts = {m: fa.totais_scs(self.esc[(EMR, m)])["uc_tsee"] for m in ("2023-06", "2023-07")}
+        self.assertEqual(emr_res["2023-07"], 0)  # zero informado pela distribuidora, não ausência
+        self.assertTrue(mod.residencial_inconsistente(emr_res, emr_ts, "2023-07"))
+
+    def test_observacoes_sem_ausencia_virando_zero(self):
+        obs = list(fa.observacoes_scs(self.esc))
+        self.assertTrue(all(v is not None for _, _, v in obs))
+        faixas = [o for o in obs if o[0].startswith(f"{RGE}.f") and o[0].endswith(".uc_tsee")]
+        self.assertEqual(len(faixas), 5)
+        self.assertEqual(sum(v for _, _, v in faixas), 96248)
+
+
+class Completude(unittest.TestCase):
+    """Regra do mês completo: lacuna conta como falta; incorporação não."""
+
+    def test_incorporacao_nao_torna_incompleto(self):
+        # RGE (02016439000138) informou até jan/2020 e foi incorporada pela RGE Sul (02016440000162)
+        meses = {"2019-12": {RGE: 1.0, "02016440000162": 1.0, CERIM: 1.0},
+                 "2020-01": {RGE: 1.0, "02016440000162": 1.0, CERIM: 1.0},
+                 "2020-02": {"02016440000162": 1.0, CERIM: 1.0},
+                 "2020-03": {"02016440000162": 1.0, CERIM: 1.0},
+                 "2020-04": {"02016440000162": 1.0, CERIM: 1.0},
+                 "2020-05": {"02016440000162": 1.0, CERIM: 1.0}}
+        comp = mod.completude_scs(meses, minimo=2)
+        self.assertTrue(comp["2020-02"]["completo"])
+        self.assertTrue(comp["2020-05"]["completo"])
+
+    def test_lacuna_e_cauda(self):
+        # CERAL-DIS ausente em abr/2025 e de volta em mai/2025; ENEL CE ausente no último mês do arquivo
+        ceral, enel_ce = "02900000000000", "07047251000170"
+        meses = {"2025-03": {ceral: 20.0, enel_ce: 1.0, RGE: 1.0},
+                 "2025-04": {enel_ce: 1.0, RGE: 1.0},
+                 "2025-05": {ceral: 21.0, enel_ce: 1.0, RGE: 1.0},
+                 "2025-06": {ceral: 21.0, RGE: 1.0}}
+        comp = mod.completude_scs(meses, minimo=2)
+        self.assertFalse(comp["2025-04"]["completo"])
+        self.assertEqual(comp["2025-04"]["faltantes"], [ceral])
+        self.assertTrue(comp["2025-05"]["completo"])
+        self.assertFalse(comp["2025-06"]["completo"])
+        self.assertEqual(comp["2025-06"]["faltantes"], [enel_ce])
+
+    def test_minimo_de_informantes(self):
+        comp = mod.completude_scs({"2013-12": {RGE: 1.0}, "2014-01": {RGE: 1.0, CERIM: 1.0}})
+        self.assertFalse(comp["2013-12"]["completo"])  # abaixo de 90 informantes
+
+
+class BeneficiariosCDE(unittest.TestCase):
+    """Beneficiários da CDE: agregação em fluxo, faturas por tipo e subclasse, nenhum dado pessoal."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.agg = fa.agrega_cde_zip(_dados("cde_amostra_01may2025.zip"))
+
+    def _faturas(self, cnpj):
+        n = v = 0.0
+        for (cn, mun, sc, tf), (k, soma, _) in self.agg["chaves"].items():
+            if cn == cnpj and tf == "1" and sc in fa.SUBCLASSES_TSEE:
+                n += k
+                v += soma
+        return n, round(v, 2)
+
+    def test_contagens_do_recorte(self):
+        # contagem direta no CSV: 283 linhas, 225 com SubsBaixaRenda (218 de faturamento)
+        self.assertEqual(self.agg["linhas"], 283)
+        self.assertEqual(self.agg["linhas_tsee"], 225)
+        self.assertEqual(self.agg["referencias"], {"05/2025": 225})
+        self.assertEqual(self._faturas("82574864000181"), (167, 5428.86))   # CEREJ
+        self.assertEqual(self._faturas("01229747000189"), (48, 1480.79))    # CERGAPA
+
+    def test_municipio_invalido_fica_fora_do_mapa(self):
+        self.assertIsNone(fa.municipio_valido("210083"))
+        self.assertIsNone(fa.municipio_valido("0"))
+        self.assertEqual(fa.municipio_valido("2704302"), "2704302")
+        inval = {cn: k for (cn, mun, sc, tf), (k, _, _) in self.agg["chaves"].items() if mun == "invalido" and tf == "1"}
+        self.assertEqual(inval, {"06272793000184": 2, "10835932000108": 1})  # Equatorial MA e CELPE
+
+    def test_tipos_de_faturamento_separados(self):
+        tipos = {}
+        for (cn, mun, sc, tf), (k, _, _) in self.agg["chaves"].items():
+            tipos[tf] = tipos.get(tf, 0) + k
+        self.assertEqual(tipos, {"1": 218, "2": 2, "3": 2, "4": 3})
+
+    def test_nenhum_campo_pessoal(self):
+        with zipfile.ZipFile(_dados("cde_amostra_01may2025.zip")) as z:
+            texto = z.read(z.namelist()[0]).decode("latin-1")
+        linhas = texto.splitlines()
+        marcada = linhas[1].replace(",,,SubsBaixaRenda", ",FULANO DE TAL,***.123.456-**,SubsBaixaRenda")
+        self.assertNotEqual(marcada, linhas[1])
+        agg = fa.agrega_cde(io.StringIO("\n".join([linhas[0], marcada]) + "\n"))
+        self.assertNotIn("FULANO", repr(agg))
+        self.assertNotIn("123.456", repr(agg))
+
+    def test_esquema_mudado_falha(self):
+        with self.assertRaises(ValueError):
+            fa.agrega_cde(io.StringIO("AnmReferencia,SigAgente\n05/2025,X\n"))
+
+    def test_mes_do_recurso(self):
+        self.assertEqual(fa.mes_do_recurso("cde-beneficiarios-01may2026.zip"), "2026-05")
+        self.assertEqual(fa.mes_do_recurso("Beneficiários da CDE - mai/25"), "2025-05")
+        self.assertIsNone(fa.mes_do_recurso("Dicionário de dados"))
+
+
+class SerieAntiga(unittest.TestCase):
+    def test_leitura_e_repeticao_de_2018(self):
+        with open(_dados("tarifa_social_antiga_arquivada.csv"), encoding="utf-8-sig") as f:
+            pts = fa.le_ts_antiga(f.read())
+        d = {(r, m): (res, br) for r, m, res, br, _ in pts}
+        self.assertEqual(d[("CO", "2012-12")], (4412374, 441295))
+        self.assertEqual({r for r, _, _, _, _ in pts}, {"N", "NE", "SE", "S", "CO"})
+        # o arquivo original repete em nov/2018 as contagens de set/2018 (conferido linha a linha)
+        for reg in ("N", "NE", "SE", "S", "CO"):
+            self.assertEqual(d[(reg, "2018-11")][1], d[(reg, "2018-09")][1])
+
+
+class CadastroUnico(unittest.TestCase):
+    def test_municipios(self):
+        with open(_dados("mds_municipios_recorte.csv"), encoding="utf-8") as f:
+            linhas = fm.le_municipios(f.read())
+        d = {cod: (mes, nome, uf, v) for cod, mes, nome, uf, v in linhas}
+        mes, nome, uf, v = d["355030"]
+        self.assertEqual((mes, uf), ("2026-03", "SP"))
+        self.assertEqual(v["familias_ate_meio_sm"], 1064351)
+        self.assertEqual(v["familias_ate_meio_sm_atualizadas"], 938554)
+        # atualizadas são subconjunto das cadastradas; cadastro total não é universo elegível
+        for _, _, _, _, x in linhas:
+            self.assertLessEqual(x["familias_ate_meio_sm_atualizadas"], x["familias_ate_meio_sm"])
+            self.assertLess(x["familias_ate_meio_sm"], x["familias_total"])
+
+    def test_totais_nacionais(self):
+        with open(_dados("mds_totais_recorte.json"), encoding="utf-8") as f:
+            tot = fm.le_totais(f.read())
+        soma, n, falt = tot[("familias_ate_meio_sm_atualizadas", "2026-03")]
+        self.assertEqual((soma, n, falt), (25305223.0, 5571, 0))
+
+
+class POF(unittest.TestCase):
+    """POF 2017-2018: SIDRA, coeficientes publicados, microdados e estimador do plano amostral."""
+
+    def test_tabela_6715(self):
+        with open(_dados("sidra_6715_recorte.json"), encoding="utf-8") as f:
+            pts = {(t, cl, tp, var): v for t, cl, tp, var, v in fi.le_pof_6715(f.read())}
+        # valores publicados pelo IBGE (tabela 6715): Brasil, energia elétrica, R$ 115,36 (2,5%);
+        # até R$ 1.908, R$ 65,62 (4,4%); Sergipe (UF) e Sudeste (região) com chaves distintas
+        self.assertEqual(pts[("BR", "7999", "energia_eletrica", "media_reais")], 115.36)
+        self.assertEqual(pts[("BR", "47558", "energia_eletrica", "distribuicao_pct")], 4.4)
+        self.assertEqual(pts[("SE", "7999", "energia_eletrica", "media_reais")], 77.73)
+        self.assertEqual(pts[("RG-SE", "7999", "energia_eletrica", "media_reais")], 125.53)
+
+    def test_razao_de_medias_nao_e_media_de_razoes(self):
+        # a distribuição publicada é razão de médias: 115,36 ÷ 4.649,03 = 2,48% → 2,5
+        self.assertAlmostEqual(100 * 115.36 / 4649.03, 2.48, places=2)
+
+    def test_coeficientes_publicados(self):
+        with open(_dados("pof_coeficientes_despesas.xlsx"), "rb") as f:
+            cv = fi.le_cv_pof(fp.ler_xlsx(f.read())["Tabela 1"])
+        self.assertEqual(cv["energia_eletrica"], [0.8, 1.4, 1.1, 0.8, 1.0, 1.7, 2.6, 3.6])
+        self.assertEqual(cv["despesa_total"][0], 1.5)
+
+    def test_leitor_xls_biff(self):
+        with open(_dados("pof_indice_despesa.xls"), "rb") as f:
+            pl = fp.ler_xls(f.read())
+        linhas = pl["Planilha1"]
+        self.assertEqual(linhas[0], ["INDICE", "NIVEL", "DESCRICAO"])
+        self.assertEqual(linhas[1], [1.0, 0.0, "DESPESA TOTAL"])
+
+    def test_microdados_duas_familias(self):
+        with open(_dados("pof_tradutor_recorte.json"), encoding="utf-8") as f:
+            trad = fi.le_tradutor_despesa(json.load(f))
+        fams, diag = fi.familias_pof(_dados("pof_amostra_dados.zip"), trad)
+        self.assertEqual(diag["familias"], 2)
+        f1 = fams[("110000016", "2", "1")]
+        f2 = fams[("110000602", "13", "1")]
+        # família 1: item 600101 (energia elétrica), quadro 6, R$ 266,00 deflacionados, fator 12 → 266 × 12 ÷ 12
+        self.assertAlmostEqual(f1["energia"], 266.00, places=6)
+        self.assertEqual(f1["renda"], 3855.34)
+        self.assertAlmostEqual(f1["peso"], 690.88373818, places=8)
+        self.assertGreater(f1["despesa"], f1["energia"])
+        # família 2 não declarou conta de energia: zero de despesa, não ausência
+        self.assertEqual(f2["energia"], 0.0)
+        self.assertEqual(fi.classe_renda(3855.34), 2)
+        self.assertEqual(fi.classe_renda(1908.0), 0)
+        self.assertIsNone(fi.classe_renda(None))
+
+    def test_estimador_de_razao_com_plano(self):
+        # dois estratos com duas UPA cada; conta à mão:
+        # Y = 2·10 + 2·20 + 1·30 + 1·40 = 130; X = Σw = 6; R = 130/6
+        fams = [{"estrato": "A", "upa": "a1", "peso": 2.0, "y": 10.0}, {"estrato": "A", "upa": "a2", "peso": 2.0, "y": 20.0},
+                {"estrato": "B", "upa": "b1", "peso": 1.0, "y": 30.0}, {"estrato": "B", "upa": "b2", "peso": 1.0, "y": 40.0}]
+        plano = mod.Plano(fams)
+        R, ep, n, X = plano.razao(fams, lambda f: f["y"], lambda f: 1.0)
+        self.assertAlmostEqual(R, 130 / 6)
+        # z_i = w(y − R)/X por UPA; V = Σ_h n_h/(n_h−1) Σ (z − z̄_h)²
+        z = {u: w * (y - 130 / 6) / 6 for u, w, y in (("a1", 2, 10), ("a2", 2, 20), ("b1", 1, 30), ("b2", 1, 40))}
+        va = 2 * ((z["a1"] - (z["a1"] + z["a2"]) / 2) ** 2 + (z["a2"] - (z["a1"] + z["a2"]) / 2) ** 2)
+        vb = 2 * ((z["b1"] - (z["b1"] + z["b2"]) / 2) ** 2 + (z["b2"] - (z["b1"] + z["b2"]) / 2) ** 2)
+        self.assertAlmostEqual(ep, math.sqrt(va + vb))
+        # domínio: UPA sem membro continua no estrato e contribui com zero
+        R2, ep2, n2, _ = plano.razao(fams[:1] + fams[2:], lambda f: f["y"], lambda f: 1.0)
+        self.assertEqual(n2, 3)
+        self.assertAlmostEqual(R2, (20 + 30 + 40) / 4)
+
+    def test_regra_de_precisao(self):
+        self.assertEqual(mod.estado_precisao(10.0, 1.0), ("publicado", 10.0))
+        self.assertEqual(mod.estado_precisao(10.0, 2.0)[0], "cautela")
+        self.assertEqual(mod.estado_precisao(10.0, 3.5)[0], "suprimido")
+        self.assertEqual(mod.estado_precisao(None, None), ("ausente", None))
+        self.assertEqual(mod.estado_precisao(0.0, 0.0), ("zero_na_amostra", None))
+
+
+class PNAD(unittest.TestCase):
+    def _le(self, tab):
+        with open(_dados(f"sidra_{tab}_recorte.json"), encoding="utf-8") as f:
+            return {(t, a, s, var, fo): v for t, a, s, var, fo, v in fi.le_pnad(f.read(), tab)}
+
+    def test_valores_publicados(self):
+        a, b, c = self._le("6737"), self._le("6738"), self._le("6731")
+        self.assertEqual(a[("BR", "2025", "total", "domicilios_mil", "qualquer")], 79170)
+        self.assertEqual(a[("BR", "2025", "total", "domicilios_mil", "rede_geral")], 78692)
+        self.assertEqual(b[("BR", "2025", "total", "pct", "rede_geral_integral")], 98.3)
+        self.assertEqual(c[("BR", "2025", "total", "domicilios_mil", "todos")], 79305)
+        # o percentual em tempo integral é sobre os domicílios de rede geral: 77.364 ÷ 78.692
+        integral = b[("BR", "2025", "total", "domicilios_mil", "rede_geral_integral")]
+        self.assertEqual(integral, 77364)
+        self.assertAlmostEqual(100 * integral / 78692, 98.3, delta=0.05)
+        self.assertNotAlmostEqual(100 * integral / 79305, 98.3, delta=0.5)
+        # sem energia de qualquer fonte: 79.305 − 79.170 = 135 mil domicílios
+        self.assertEqual(c[("BR", "2025", "total", "domicilios_mil", "todos")] - a[("BR", "2025", "total", "domicilios_mil", "qualquer")], 135)
+
+    def test_convencoes_do_ibge(self):
+        for s in ("-", "..", "...", "X", ""):
+            self.assertIsNone(fi.valor_sidra(s))
+        self.assertEqual(fi.valor_sidra("0"), 0.0)
+
+
+class SistemasIsolados(unittest.TestCase):
+    def test_pasi_contra_caderno_em_pdf(self):
+        with open(_dados("pasi_localizacao_ciclo2025.xlsx"), "rb") as f:
+            locs, falt = fe.le_localidades(fp.ler_xlsx(f.read()))
+        self.assertEqual(falt, [])
+        with open(_dados("caderno_sisol_2025_trecho.txt"), encoding="utf-8") as f:
+            cad = fe.le_totais_caderno(f.read())
+        # caderno do ciclo 2025: "totaliza 160 ... (175 localidades)" e "1,965 milhões pessoas"
+        self.assertEqual((cad["localidades"], cad["localidades_ciclo_anterior"], cad["populacao_milhoes"]), (160, 175, 1.965))
+        self.assertEqual(len(locs), cad["localidades"])
+        pop = sum(l["populacao"] or 0 for l in locs)
+        self.assertEqual(pop, 1964825)
+        self.assertLessEqual(abs(pop / 1e6 - cad["populacao_milhoes"]), 0.0005)
+        # população ausente fica None (2 localidades), nunca zero
+        self.assertEqual(sum(1 for l in locs if l["populacao"] is None), 2)
+        progs = {l["programa"] for l in locs if l["programa"]}
+        self.assertEqual(progs, {"MLA - Mais Luz para Amazônia", "PLPT - Programa Luz para Todos"})
+
+
+class LuzParaTodos(unittest.TestCase):
+    def test_domicilios(self):
+        with open(_dados("lpt_domicilios_recorte.csv"), encoding="latin-1", newline="") as f:
+            agg, diag = fl.agrega_domicilios(csv.DictReader(f, delimiter=";"))
+        self.assertEqual(diag["linhas"], 31)
+        self.assertEqual(diag["linhas_usadas"], 31)
+        # soma direta das linhas do recorte
+        self.assertEqual(diag["domicilios"], 670)
+        mun = {}
+        for (uf, nn, prog, ano), q in agg["municipal"].items():
+            mun[(uf, nn, prog)] = mun.get((uf, nn, prog), 0) + q
+        self.assertEqual(mun[("AC", "ACRELANDIA", "rural")], 381)
+        self.assertEqual(mun[("AC", "ACRELANDIA", "recurso_distribuidora")], 101)
+        self.assertEqual(mun[("AM", "BERURI", "regioes_remotas")], 69)
+        self.assertEqual(mun[("PB", "CABACEIRAS", "rural")], 105)  # estado grafado "Paraiba" no arquivo
+        self.assertEqual(agg["mensal"][("AM", "regioes_remotas", "2023-03")], 69)
+        self.assertEqual(agg["nomes"][("AC", "ACRELANDIA")], "Acrelândia")
+
+    def test_linha_invalida_nao_vira_zero(self):
+        agg, diag = fl.agrega_domicilios([
+            {"programa": "LPT - Rural", "qtddomicilios": "", "mes": "1", "ano": "2005", "municipio": "Acrelândia", "estado": "Acre", "DtHomologacao": ""},
+            {"programa": "LPT - Rural", "qtddomicilios": "3", "mes": "13", "ano": "2005", "municipio": "Acrelândia", "estado": "Acre", "DtHomologacao": ""},
+            {"programa": "Outro", "qtddomicilios": "3", "mes": "1", "ano": "2005", "municipio": "Acrelândia", "estado": "Acre", "DtHomologacao": ""}])
+        self.assertEqual(agg["mensal"], {})
+        self.assertEqual((diag["quantidade_invalida"], diag["data_invalida"]), (1, 1))
+        self.assertEqual(diag["programa_desconhecido"], {"Outro": 1})
+
+    def test_recursos(self):
+        with open(_dados("lpt_recursos_recorte.csv"), encoding="latin-1", newline="") as f:
+            contratos, diag = fl.le_recursos(csv.DictReader(f, delimiter=";"))
+        self.assertEqual(diag["cabecalho_faltando"], [])
+        c0 = contratos[0]
+        self.assertEqual((c0["uf"], c0["inicio"], c0["fim"]), ("RR", "2010-01", "2013-10"))
+        self.assertEqual(c0["valores"]["vlrempenhadocde"], 53772800.0)
+        self.assertEqual(c0["valores"]["vlrpagocde"], 48748419.0)
+        self.assertEqual(c0["valores"]["vlrempenhadorgr"], 0.0)
+
+    def test_vinculo_de_municipio_por_nome_exato(self):
+        idx = fl.indice_municipios([("120001", "ACRELÂNDIA", "AC"), ("250270", "CABACEIRAS", "PB"),
+                                    ("110013", "MACHADINHO D'OESTE", "RO"), ("330380", "PARATY", "RJ")])
+        self.assertEqual(idx[("AC", fl.chave_nome("Acrelândia"))], "120001")
+        self.assertNotIn(("AC", fl.chave_nome("Acrelandia do Norte")), idx)
+        # o arquivo do MME escreve "Machadinho Doeste": a chave sem espaços casa exatamente
+        self.assertEqual(idx[("RO", fl.chave_nome("Machadinho Doeste"))], "110013")
+        # nome antigo (Parati) não casa com o atual (Paraty): fica sem código, sem aproximação
+        self.assertNotIn(("RJ", fl.chave_nome("Parati")), idx)
+        self.assertEqual(fl.uf_do_estado("Paraiba"), "PB")
+        self.assertEqual(fl.uf_do_estado("Amapá"), "AP")
+
+
+class Metricas(unittest.TestCase):
+    def test_catalogo_valido(self):
+        erros = [e for m in metricas_inclusao.METRICAS for e in metricas.validar(m)]
+        self.assertEqual(erros, [])
+        self.assertTrue(all(m["id"].startswith("inclusao.") for m in metricas_inclusao.METRICAS))
+
+
+class Gold(unittest.TestCase):
+    """Contrato e reconciliações da gold publicada (pulado se a gold não existir)."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.g = _gold()
+        if cls.g is None:
+            raise unittest.SkipTest("public/energia/gold/inclusao.json ausente ou indisponível")
+
+    def test_blocos_e_tamanho(self):
+        for k in ("tarifa_social", "cobertura", "orcamento", "acesso"):
+            self.assertIn(k, self.g)
+        # meta do contrato: ~400 KB; a gold do módulo fica em torno de 450 KB (quatro painéis, detalhe no CSV);
+        # o teto de 470 KB acusa crescimento sem revisão do que vai para a gold
+        self.assertLess(os.path.getsize(GOLD), 470 * 1024)
+
+    def test_nenhum_dado_pessoal(self):
+        texto = json.dumps(self.g, ensure_ascii=False)
+        for campo in ("NomCliente", "NumCPFCNPJCliente", "CPF"):
+            self.assertNotIn(f'"{campo}"', texto)
+
+    def test_evidencias_validas(self):
+        ts = self.g["tarifa_social"]
+        fichas = [k["evidencia"] for k in ts["kpis"].values() if isinstance(k, dict) and k.get("evidencia")]
+        fichas.append(self.g["cobertura"]["brasil"]["evidencia"])
+        fichas += list(self.g["orcamento"]["evidencias"].values())
+        fichas.append(self.g["acesso"]["evidencia_sem_energia"])
+        lpt = self.g["acesso"]["universalizacao"]["luz_para_todos"]
+        fichas.append(lpt["evidencia_total"])
+        for f in fichas:
+            self.assertEqual(ev.validar(f), [], f.get("indicador"))
+            for t in f["testes"]:
+                self.assertNotEqual(t["resultado"], "reprovado", (f["indicador"], t))
+        # a série antiga diverge do SCS em 2015 (recadastramento); a ficha precisa dizer isso, não esconder
+        antiga = next(t for t in ts["kpis"]["uc_tsee"]["evidencia"]["testes"] if "série antiga" in t["nome"])
+        self.assertEqual(antiga["resultado"], "ressalva")
+        self.assertIn("2015-09 (-5,61%)", antiga["detalhe"])
+
+    def test_scs_contra_cde_mai_2025(self):
+        # conferência por caminho independente: o arquivo de Beneficiários da CDE de mai/2025 foi
+        # agregado por outro programa (leitura direta do CSV, sem as funções do módulo) e deu
+        # 17.612.898 faturas de faturamento com desconto da Tarifa Social (subclasses 3.2 a 3.6)
+        ts = self.g["tarifa_social"]
+        mai = next(m for m in ts["cde_meses"] if m["mes"] == "2025-05")
+        self.assertEqual(mai["faturas_tsee"], 17612898)
+        conf = ts["conferencia_scs_cde"]
+        self.assertEqual(conf["mes"], "2025-05")
+        # 102 distribuidoras nas duas bases (a CODESAM só aparece na CDE, com 25 faturas)
+        self.assertEqual((conf["uc_scs"], conf["faturas_cde"]), (17246524, 17612873))
+        self.assertEqual(conf["so_na_cde"], ["CODESAM"])
+        self.assertAlmostEqual(conf["diferenca_pct"], 2.12, places=2)
+        # acima de ±2% no total: a reconciliação é publicada como ressalva, com as maiores diferenças
+        rec = ts["kpis"]["uc_tsee"]["evidencia"]["reconciliacao"]
+        self.assertEqual(rec["resultado"], "ressalva")
+        self.assertEqual(conf["maiores_diferencas"][0]["sigla"], "CEMIG-D")
+
+    def test_serie_nacional_e_participacao(self):
+        ts = self.g["tarifa_social"]
+        por_mes = {l["m"]: l for l in ts["serie_mensal"]}
+        # SCS mai/2025, soma direta das modalidades no arquivo de 20/09/2026: 17.246.524 UC em 102 distribuidoras
+        self.assertEqual(ts["mes_referencia"], "2025-05")
+        self.assertEqual(por_mes["2025-05"]["uc_tsee"], 17246524)
+        self.assertEqual(por_mes["2025-05"]["distribuidoras"], 102)
+        self.assertFalse(por_mes["2025-04"]["completo"])   # CERAL-DIS ausente
+        self.assertTrue(por_mes["2024-01"]["completo"])    # EBO incorporada não é falta
+        ev_part = ts["kpis"]["participacao_pct"]["evidencia"]
+        self.assertAlmostEqual(ev_part["valor_calculo"],
+                               100 * ev_part["numerador"]["valor"] / ev_part["denominador"]["valor"], places=2)
+        # CSV de download: modalidades somam o total em todos os meses; participação entre 0 e 100
+        caminho = os.path.join(RAIZ, "public", "energia", "series", "inclusao_tsee_mensal.csv")
+        with open(caminho, encoding="utf-8") as f:
+            for l in csv.DictReader(f, delimiter=";"):
+                soma = sum(float(l[f"uc_{m}"] or 0) for m in mod.MODS)
+                self.assertAlmostEqual(soma, float(l["uc_tsee"] or 0), places=3)
+                if l["participacao_pct"]:
+                    self.assertTrue(0 < float(l["participacao_pct"]) < 100)
+
+    def test_mapa_uf_soma_total(self):
+        ts = self.g["tarifa_social"]
+        mm = next(m for m in ts["cde_meses"] if m["mes"] == ts["mes_mapa"])
+        self.assertEqual(sum(u["faturas_tsee"] for u in ts["ufs"]) + mm["faturas_municipio_invalido"], mm["faturas_tsee"])
+
+    def test_cobertura_rotulada_como_proxy(self):
+        cob = self.g["cobertura"]
+        self.assertEqual(cob["natureza_da_medida"], "PROXY")
+        self.assertTrue(cob["brasil"]["proxy"])
+        self.assertFalse(any("fora" in k for k in cob["brasil"]))  # nenhuma contagem de "famílias fora"
+        self.assertLessEqual(cob["brasil"]["razao_cadastradas_pct"], cob["brasil"]["razao_atualizadas_pct"])
+
+    def test_pof_reconciliada_com_6715(self):
+        conf = self.g["orcamento"]["conferencia"]
+        self.assertEqual(conf["energia_ate_1_centavo"], conf["comparacoes"])
+        br = next(x for x in conf["comparacoes_brasil"] if x["classe"] == "7999")
+        self.assertEqual(br["energia_sidra"], 115.36)
+        self.assertLess(abs(br["energia_micro"] - 115.36), 0.005 + 1e-9)
+        linhas = {(l["territorio"], l["classe"]): l for l in self.g["orcamento"]["linhas"]}
+        # classes de renda só em Brasil e regiões: nenhuma linha de UF por classe
+        self.assertFalse(any(t not in ("BR",) and not t.startswith("RG-") and cl != "7999" for t, cl in linhas))
+        baixa = linhas[("BR", "47558")]["microdados"]
+        # média das razões (por família) difere da razão de médias (4,4% publicada)
+        self.assertNotAlmostEqual(baixa["media_razoes_desp_pct"][0], baixa["razao_medias_pct"][0], places=1)
+        self.assertAlmostEqual(baixa["razao_medias_pct"][0], 4.4, delta=0.05)
+
+    def test_limiares_decrescentes(self):
+        for l in self.g["orcamento"]["linhas"]:
+            v = [l["microdados"][f"acima_{L}_renda_pct"][0] for L in (3, 5, 10) if f"acima_{L}_renda_pct" in l["microdados"]]
+            v = [x for x in v if x is not None]
+            self.assertEqual(v, sorted(v, reverse=True), l["territorio"])
+
+    def test_acesso(self):
+        ac = self.g["acesso"]
+        br = next(l for l in ac["pnad_serie"] if l["territorio"] == "BR" and l["ano"] == "2025")
+        self.assertEqual(br["domicilios_sem_energia_mil"], 135)
+        iso = ac["sistemas_isolados"]
+        self.assertEqual(iso["conferencia_pdf"]["resultado"], "aprovado")
+        c25 = next(c for c in iso["ciclos"] if c["ciclo"] == "2025")
+        self.assertEqual(c25["localidades"], 160)
+        lpt = ac["universalizacao"]["luz_para_todos"]
+        self.assertEqual(sum(u["total"] for u in lpt["por_uf"]), lpt["evidencia_total"]["valor_calculo"])
+        parciais = [a for a in lpt["serie_anual"] if a["parcial"]]
+        self.assertEqual(len(parciais), 1)
+
+
+if __name__ == "__main__":
+    unittest.main()
