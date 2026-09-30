@@ -112,7 +112,8 @@ export function Numero({
           <span className="sr-only">{vari.leitura}</span>
         </p>
       )}
-      {nota && <p className="mt-3 border-t border-linha pt-3 text-xs leading-relaxed text-carvao-muted">{nota}</p>}
+      {/* div, não p: a nota é ReactNode e pode trazer parágrafo ou lista (p dentro de p é HTML inválido) */}
+      {nota && <div className="mt-3 border-t border-linha pt-3 text-xs leading-relaxed text-carvao-muted">{nota}</div>}
       {evidencia && (
         <div className="mt-auto pt-2">
           <ComproveNumero evidencia={evidencia} endereco={endereco} />

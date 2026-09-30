@@ -1409,7 +1409,7 @@ def _bloco_tarifa_social(con, scs):
     # KPIs com evidência: os testes são controles executados nesta construção
     snap = c.snapshot_de(con, DS_SCS)
     rec_scs = "sistema-controle-subvencoes-programas-sociais.csv"
-    f_scs = _fonte_evid(con, DS_SCS, rec_scs, "ANEEL", "SCS - Sistema de Controle de Subvenções e Programas Sociais",
+    f_scs = _fonte_evid(con, DS_SCS, rec_scs, "ANEEL", "SCS: Sistema de Controle de Subvenções e Programas Sociais",
                         ckan.url_dataset("ANEEL", PAC_SCS))
     diag_scs = None
     for ch, campos in base.registros_como_estavam_em(con, DS_CONTROLE).items():
@@ -1495,7 +1495,7 @@ def _bloco_tarifa_social(con, scs):
     ]
     prov_scs = c.proveniencia(
         indicador="Tarifa Social por distribuidora e mês (SCS)", natureza="OBSERVADO",
-        fonte=_fonte("ANEEL", "SCS - Sistema de Controle de Subvenções e Programas Sociais", rec_scs,
+        fonte=_fonte("ANEEL", "SCS: Sistema de Controle de Subvenções e Programas Sociais", rec_scs,
                      ckan.url_dataset("ANEEL", PAC_SCS), f_scs["url"], LIC_ANEEL),
         unidade="unidades consumidoras; MWh; R$ correntes", frequencia="mensal",
         periodo={"inicio": meses[0], "fim": ref}, cobertura={"inicio": meses[0], "fim": meses[-1]},
@@ -1514,7 +1514,7 @@ def _bloco_tarifa_social(con, scs):
     snap_cde = c.snapshot_de(con, DS_CDE)
     prov_cde = c.proveniencia(
         indicador="Faturas com desconto da Tarifa Social por município e UF (Beneficiários da CDE)", natureza="CALCULADO",
-        fonte=_fonte("ANEEL", "Beneficiários da Conta de Desenvolvimento Energético - CDE",
+        fonte=_fonte("ANEEL", "Beneficiários da Conta de Desenvolvimento Energético (CDE)",
                      (next((m["recurso"] for m in cde_meses if m["mes"] == mes_mapa), None) or "arquivos mensais"),
                      ckan.url_dataset("ANEEL", PAC_CDE), next((m.get("url") for m in [infos.get(mes_mapa) or {}]), None) or ckan.url_dataset("ANEEL", PAC_CDE),
                      LIC_ANEEL),
@@ -1671,7 +1671,7 @@ def _bloco_antiga(con, por_mes_scs):
                       for l in linhas])
     prov = c.proveniencia(
         indicador="Série antiga da Tarifa Social por região (descontinuada)", natureza="OBSERVADO",
-        fonte=_fonte("ANEEL", "Tarifa Social de Energia Elétrica - Beneficiários (descontinuado)",
+        fonte=_fonte("ANEEL", "Tarifa Social de Energia Elétrica: Beneficiários (descontinuado)",
                      "tarifasocial.csv (cópia arquivada em 29/07/2024)", ckan.url_dataset("ANEEL", PAC_ANTIGA),
                      URL_ANTIGA_ARQUIVADA, LIC_ANTIGA),
         unidade="unidades consumidoras", frequencia="trimestral", periodo={"inicio": linhas[0]["m"], "fim": linhas[-1]["m"]},
@@ -1718,7 +1718,7 @@ def _bloco_custeio(con):
     ano_corrente = str(datetime.now(timezone.utc).year)
     prov = c.proveniencia(
         indicador="CDE: valores anuais para Tarifa Social, Luz para Todos e CCC", natureza="OBSERVADO",
-        fonte=_fonte("ANEEL", "Conta Desenvolvimento Energético (CDE) - Custeio dos Benefícios Tarifários",
+        fonte=_fonte("ANEEL", "Conta Desenvolvimento Energético (CDE): custeio dos benefícios tarifários",
                      "cde-custeio-beneficios-tarifarios.csv", ckan.url_dataset("ANEEL", PAC_CUSTEIO),
                      (base.ultima_vintage(con, DS_CUSTEIO, "cde-custeio-beneficios-tarifarios.csv") or {}).get("url"), LIC_ANEEL),
         unidade="R$ correntes", frequencia="anual", periodo={"inicio": anos[0], "fim": anos[-1]},
@@ -2427,7 +2427,7 @@ def _bloco_acesso(con, ctx):
         snap_i = c.snapshot_de(con, DS_PASI)
         prov_i = c.proveniencia(
             indicador="Localidades e população dos sistemas isolados (PASI)", natureza="OBSERVADO",
-            fonte=_fonte("EPE", "PASI - Portal de Acompanhamento e Informações dos Sistemas Isolados",
+            fonte=_fonte("EPE", "PASI: Portal de Acompanhamento e Informações dos Sistemas Isolados",
                          "Downloads > Localização Geográfica (XLSX por ciclo)", fe.URL_DOWNLOADS, fe.URL_LOCALIZACAO.format(cod="<ciclo>"), LIC_EPE),
             unidade="localidades; pessoas", frequencia="anual (ciclo de planejamento)", periodo={"inicio": ciclos[0], "fim": ultc},
             cobertura={"inicio": ciclos[0], "fim": ultc}, capturado_em=c.ultima_captura(snap_i), snapshot=snap_i,

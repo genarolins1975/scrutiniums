@@ -44,7 +44,7 @@ ROTA = "/setor-eletrico/qualidade"
 # Versão de cada importador: muda quando a regra de importação muda e força reprocessar
 # só as vintages daquele tipo de arquivo (os Parquets grandes levam minutos).
 VERSOES = {"continuidade": "3", "limites": "2", "compensacoes": "1", "iasc": "1", "manifestacoes": "2",
-           "ouvidoria": "1", "atendimento": "1", "eventos": "3", "municipios": "1", "ranking": "1"}
+           "ouvidoria": "1", "atendimento": "1", "eventos": "4", "municipios": "1", "ranking": "1"}
 
 DS_CONT = "aneel_continuidade"
 DS_IASC = "aneel_iasc"
@@ -72,7 +72,8 @@ ANO_INICIO_PARCELAS = 2010   # parcelas desagregadas atuais (IP, IND, INE...) co
 ANO_INICIO_TIPOLOGIA = 2023  # manifestações e Ouvidoria: tipologia da REN 1.000/2021
 JANELA_CONJ_MES = 24          # meses por conjunto guardados no silver (grão mensal)
 MESES_SERIE = 36              # meses nas séries mensais da gold
-ANOS_SERIE_GOLD = 11          # anos por distribuidora na gold (o CSV tem desde 2010)
+ANOS_SERIE_GOLD = 11          # anos por distribuidora na gold (o CSV tem desde 2000)
+DECADAS = ((2000, 2009), (2010, 2019), (2020, 2029))   # recortes dos CSV por conjunto, como os Parquets
 
 PAG = [{"rotulo": "Qualidade do serviço", "href": ROTA}]
 
@@ -88,7 +89,8 @@ REGISTRO = {
          "titulo": "Indicadores Coletivos de Continuidade (DEC e FEC)", "estado": "UTILIZADO EM INDICADOR",
          "url": _url(PAC_CONT), "licenca": LICENCA, "paginas": PAG,
          "downloads": ["/energia/series/qualidade_distribuidoras_anual.csv", "/energia/series/qualidade_distribuidoras_mensal.csv",
-                       "/energia/series/qualidade_brasil.csv", "/energia/series/qualidade_conjuntos_anual.csv",
+                       "/energia/series/qualidade_brasil.csv", "/energia/series/qualidade_conjuntos_anual_2000_2009.csv",
+                       "/energia/series/qualidade_conjuntos_anual_2010_2019.csv", "/energia/series/qualidade_conjuntos_anual_2020_2029.csv",
                        "/energia/series/qualidade_conjuntos_mensal.csv", "/energia/series/qualidade_compensacoes.csv"],
          "quebras": [
              {"data": "2010-01-01", "descricao": "O arquivo de 2000 a 2009 publica DEC e FEC por conjunto e mês com outra desagregação (DECi, DECx, Decr, Dec1 e equivalentes do FEC); as parcelas atuais (IP, IND, INE, INC, IPC, INO, XN, XP, XNC, XPC) começam em 2010. Os critérios de apuração e de expurgo mudaram entre os regimes: comparações de nível entre as duas décadas levam essa ressalva."},
@@ -130,13 +132,15 @@ REGISTRO = {
         "/energia/series/qualidade_distribuidoras_anual.csv": "cnpj; sigla; ano; meses (com DEC); dec_h e fec_interrupcoes (soma dos 12 meses; vazio se o ano não tem 12 meses); dec_limite_h e fec_limite_interrupcoes (média dos limites dos conjuntos ponderada pelas UCs médias); cobertura_limite (fração das UCs com limite); razao_dec e razao_fec (apurado ÷ limite); dgc_calculado (média das duas razões); dec_todas_parcelas_h e fec_todas_parcelas (soma de todas as parcelas publicadas, inclusive expurgadas); parcelas por grupo em horas e interrupções; ucs_media; conjuntos. Vazio = ausência.",
         "/energia/series/qualidade_distribuidoras_mensal.csv": "cnpj; sigla; mes (AAAA-MM); dec_h; fec_interrupcoes; ucs (UCs dos conjuntos com DEC no mês, denominador); ucs_total; conjuntos; cobertura (ucs ÷ ucs_total). DEC em horas e centésimos de hora, não minutos.",
         "/energia/series/qualidade_brasil.csv": "periodo (AAAA ou AAAA-MM); tipo (anual ou mensal); dec_h; fec_interrupcoes; dec_limite_h; fec_limite_interrupcoes; ucs; conjuntos; completo (1 = 12 meses ou mês com cobertura plena).",
-        "/energia/series/qualidade_conjuntos_anual.csv": "conjunto (IdeConjUndConsumidoras); nome; cnpj; sigla; ano; meses; dec_h; fec_interrupcoes; dec_limite_h; fec_limite_interrupcoes; razao_dec; razao_fec; ucs_media. Soma dos meses publicados; o ano só é completo com 12 meses.",
+        "/energia/series/qualidade_conjuntos_anual_2000_2009.csv": "Conjuntos de 2000 a 2009: conjunto (IdeConjUndConsumidoras); nome (cadastro mais recente); cnpj (de quem publicou o ano); sigla; ano; meses; dec_h; fec_interrupcoes (soma dos meses publicados; o ano só é completo com 12 meses); dec_limite_h e fec_limite_interrupcoes (limite do mesmo ano); razao_dec e razao_fec (só com 12 meses); ucs_media.",
+        "/energia/series/qualidade_conjuntos_anual_2010_2019.csv": "Conjuntos de 2010 a 2019: conjunto (IdeConjUndConsumidoras); nome (cadastro mais recente); cnpj (de quem publicou o ano); sigla; ano; meses; dec_h; fec_interrupcoes (soma dos meses publicados; o ano só é completo com 12 meses); dec_limite_h e fec_limite_interrupcoes (limite do mesmo ano); razao_dec e razao_fec (só com 12 meses); ucs_media.",
+        "/energia/series/qualidade_conjuntos_anual_2020_2029.csv": "Conjuntos de 2020 a 2029: conjunto (IdeConjUndConsumidoras); nome (cadastro mais recente); cnpj (de quem publicou o ano); sigla; ano; meses; dec_h; fec_interrupcoes (soma dos meses publicados; o ano só é completo com 12 meses); dec_limite_h e fec_limite_interrupcoes (limite do mesmo ano); razao_dec e razao_fec (só com 12 meses); ucs_media.",
         "/energia/series/qualidade_conjuntos_mensal.csv": "conjunto; cnpj; mes (AAAA-MM); dec_h; fec_interrupcoes; ucs. Últimos 24 meses publicados.",
         "/energia/series/qualidade_compensacoes.csv": "cnpj; sigla; competencia (AAAA-MM, AAAA-Tn ou AAAA); tipo (mensal, trimestral, anual, dicri, dise); unidade (uc = unidade consumidora, ug = unidade geradora); valor_rs (R$ nominais); quantidade (ocorrências de compensação, não UCs distintas).",
         "/energia/series/qualidade_atendimento.csv": "cnpj; sigla; ano; ucs_media; iasc (0 a 100); iasc_amostra (entrevistas); iasc_ordem; reclamacoes_distribuidora_n1 e _n2; reclamacoes_interrupcao_n1; por_mil_uc de cada uma; reclamacoes_ouvidoria_aneel; procedentes; por_100mil_uc; tmae_min; ocorrencias_emergenciais; meses de cada fonte no ano.",
         "/energia/series/qualidade_municipios.csv": "cod_ibge; municipio; uf; conjuntos (IDs separados por espaço); n_conjuntos; relacao (conjunto_exclusivo, conjunto_compartilhado, varios_conjuntos); dec_min_h e dec_max_h, fec_min e fec_max dos conjuntos que atendem o município no ano de referência. O valor é do conjunto inteiro, não medido no município.",
         "/energia/series/qualidade_mapa.json": "JSON compacto para o mapa: ano; colunas [cod_ibge, relacao (índice em relacoes), n_conjuntos, dec_min, dec_max, fec_min, fec_max]; valores dos conjuntos que atendem o município (intervalo), nunca medidos no município; null = sem conjunto com 12 meses no ano.",
-        "/energia/series/qualidade_eventos_emergencia.csv": "cnpj; sigla; codigo; inicio e fim como publicados; duracao_h (vazio quando a data é implausível); duracao_ausente_motivo; chi_evento e chi_limite (consumidor × hora); razao_chi; plano_contingencia; nivel; origem.",
+        "/energia/series/qualidade_eventos_emergencia.csv": "uma linha por evento e competência (AAAA-MM; evento que atravessa o mês aparece em mais de uma, sem soma); cnpj; sigla; codigo; inicio e fim como publicados; duracao_h (vazio quando a data é implausível); duracao_ausente_motivo; chi_evento e chi_limite (consumidor × hora); razao_chi; plano_contingencia; nivel; origem.",
         "/energia/series/qualidade_reconciliacao_dgc.csv": "ano; porte; posicao; sigla_ranking; empresa (como publicada); cnpj (tabela explícita); dgc_publicado; dgc_calculado; diferenca.",
     },
 }
@@ -454,14 +458,16 @@ def importa_atendimento(con, vint):
 
 
 def importa_eventos(con, vint):
-    """Um registro por (CNPJ, código do evento): o código é da distribuidora e se repete
-    entre distribuidoras (ex.: "ISE 01.2026" da EDP ES e da EDP SP). Linhas repetidas
-    idênticas são contadas e guardadas uma vez; repetição com conteúdo diferente é contada
-    como conflito e fica a última linha do arquivo."""
+    """Um registro por (CNPJ, competência, código do evento). O código é da distribuidora e
+    se repete entre distribuidoras (ex.: "ISE 01.2026" da EDP ES e da EDP SP), e um evento
+    que atravessa o mês aparece em mais de uma competência, às vezes com o CHI da parte do
+    mês, às vezes com o mesmo CHI repetido: por isso as linhas não são somadas nem fundidas.
+    Linhas repetidas idênticas são contadas e guardadas uma vez; repetição com conteúdo
+    diferente na mesma competência é contada como conflito e fica a última linha."""
     evs = fq.le_eventos_emergencia(ckan.le_csv_bronze(vint["arquivo"]))
     por_chave, duplicadas, conflitos = {}, 0, 0
     for e in evs:
-        ch = (e["cnpj"], e["codigo"])
+        ch = (e["cnpj"], f"{e['ano'] or 0:04d}-{e['mes'] or 0:02d}", e["codigo"])
         if ch in por_chave:
             if por_chave[ch] == e:
                 duplicadas += 1
@@ -469,12 +475,13 @@ def importa_eventos(con, vint):
             conflitos += 1
         por_chave[ch] = e
     regs = []
-    for (c14, cod), e in por_chave.items():
+    for (c14, comp, cod), e in por_chave.items():
         for k, v in e.items():
             if k not in ("codigo", "cnpj"):
-                regs.append((f"evento:{c14}:{cod}", k, v))
+                regs.append((f"evento:{c14}:{comp}:{cod}", k, v))
     novas, revis = base.grava_registros(con, DS_EVENTO, vint["vintage_id"], regs)
-    return {"linhas": len(evs), "eventos": len(por_chave), "linhas_duplicadas": duplicadas,
+    return {"linhas": len(evs), "registros_competencia": len(por_chave),
+            "eventos": len({(c14, cod) for c14, _, cod in por_chave}), "linhas_duplicadas": duplicadas,
             "conflitos": conflitos, "registros_novos": novas, "revisoes": revis}
 
 
@@ -832,6 +839,56 @@ def _nomes_distribuidoras(con_iasc_regs, siglas_cont, manif_regs):
     return nomes, classif
 
 
+HORAS_MES_MAX = 744      # 31 dias × 24 h: DEC mensal de um conjunto não pode passar disso
+HORAS_ANO_MAX = 8784     # 366 dias × 24 h
+
+
+def validar_dados(*, br_m, conj_ano, limites, dist, comp_anual, iasc, ultimo_mes, hoje):
+    """Controles físicos e de domínio antes de publicar. Cada item: nome, resultado
+    (aprovado, ressalva, reprovado), crítico (reprovação derruba a publicação) e detalhe.
+    Valor atípico não é descartado: vira ressalva com as chaves para conferência no original."""
+    out = []
+
+    def item(nome, ok, critico, detalhe, ressalva=False):
+        out.append({"nome": nome, "resultado": "aprovado" if ok else ("ressalva" if ressalva else "reprovado"),
+                    "critico": critico, "detalhe": detalhe})
+
+    neg = [(k, r) for k in ("dec", "fec") for r, x in br_m.get(k, {}).items() if x is not None and x < 0]
+    item("DEC e FEC nacionais mensais não negativos", not neg, True, f"{len(neg)} meses negativos")
+    alto = [r for r, x in br_m.get("dec", {}).items() if x is not None and x > HORAS_MES_MAX]
+    item(f"DEC nacional mensal abaixo de {HORAS_MES_MAX} h (horas de um mês)", not alto, True, f"{len(alto)} meses acima")
+    neg_c = [(cj, a) for (cj, a), x in conj_ano.items()
+             if (x["dec"] is not None and x["dec"] < 0) or (x["fec"] is not None and x["fec"] < 0)]
+    item("DEC e FEC anuais dos conjuntos não negativos", not neg_c, True,
+         f"{len(neg_c)} conjunto-anos negativos" + (f", ex.: {neg_c[:3]}" if neg_c else ""))
+    alto_c = [(cj, a) for (cj, a), x in conj_ano.items() if x["dec"] is not None and x["dec"] > HORAS_ANO_MAX]
+    item(f"DEC anual dos conjuntos abaixo de {HORAS_ANO_MAX} h (horas de um ano)", not alto_c, True,
+         f"{len(alto_c)} conjunto-anos acima" + (f", ex.: {alto_c[:3]}" if alto_c else ""))
+    meses_c = [(cj, a) for (cj, a), x in conj_ano.items() if not 0 <= x["meses"] <= 12]
+    item("No máximo 12 meses por conjunto e ano", not meses_c, True, f"{len(meses_c)} conjunto-anos fora")
+    lim_neg = [k for k, x in limites.items() if x is None or x < 0]
+    item("Limites não negativos", not lim_neg, True, f"{len(lim_neg)} limites negativos ou vazios")
+    lim_zero = [k for k, x in limites.items() if x == 0]
+    item("Limites diferentes de zero (razão definida)", not lim_zero, False,
+         f"{len(lim_zero)} limites iguais a zero publicados; a razão desses conjuntos fica ausente", ressalva=True)
+    futuro = ultimo_mes > f"{hoje.year:04d}-{hoje.month:02d}"
+    item("Último mês completo não posterior ao mês corrente", not futuro, True, f"último mês {ultimo_mes}, hoje {hoje.isoformat()}")
+    cnpjs = list(dist)
+    ruins = [x for x in cnpjs if not (len(x) == 14 and x.isdigit())]
+    item("Chave de distribuidora é CNPJ de 14 dígitos", not ruins, True, f"{len(cnpjs)} distribuidoras, {len(ruins)} fora do padrão")
+    comp_neg = [(a, k) for a, d in comp_anual.items() for k, x in d.items() if x < 0]
+    item("Compensações (valor e quantidade) não negativas", not comp_neg, True, f"{len(comp_neg)} somas negativas")
+    fora = [(ch, r, x) for ch, campos in iasc.items() for r, x in campos.get("iasc", {}).items() if not 0 <= x <= 100]
+    item("IASC entre 0 e 100", not fora, True, f"{len(fora)} valores fora da escala")
+    # extremos plausíveis mas raros: conferidos, não descartados
+    extremos = sorted(((x["dec"], cj, a) for (cj, a), x in conj_ano.items() if x["dec"] is not None and x["dec"] > 200),
+                      reverse=True)
+    item("DEC anual de conjunto acima de 200 h (extremo raro)", not extremos, False,
+         f"{len(extremos)} conjunto-anos; maiores: " + ", ".join(f"conjunto {cj} em {a}: {fmt_br(d, 2)} h" for d, cj, a in extremos[:5])
+         if extremos else "nenhum", ressalva=True)
+    return out
+
+
 def construir(con, ctx):
     snap = c.snapshot_de(con, DS_CONT)
     if not snap.get("capturas"):
@@ -1141,15 +1198,15 @@ def construir(con, ctx):
         ini, fim = campos.get("inicio"), campos.get("fim")
         dur, motivo_dur = fq.duracao_evento_h(ini, fim, campos.get("gerado_em"))
         chi_e, chi_l = fq._num(campos.get("chi_evento")), fq._num(campos.get("chi_limite"))
-        _, c14_ev, codigo_ev = ch.split(":", 2)
-        evs.append({"codigo": codigo_ev, "cnpj": c14_ev, "sigla": sigla(c14_ev),
+        _, c14_ev, comp_ev, codigo_ev = ch.split(":", 3)
+        evs.append({"codigo": codigo_ev, "cnpj": c14_ev, "sigla": sigla(c14_ev), "competencia": comp_ev,
                     "inicio": ini, "fim": fim, "duracao_h": dur, "duracao_ausente_motivo": motivo_dur,
                     "chi_evento": chi_e, "chi_limite": chi_l,
                     "razao_chi": (chi_e / chi_l) if chi_e is not None and chi_l else None,
                     "plano_contingencia": campos.get("plano_contingencia"),
                     "nivel_contingencia": fq._int(campos.get("nivel_contingencia")), "origem": campos.get("origem"),
                     "ano": fq._int(campos.get("ano")), "mes": fq._int(campos.get("mes"))})
-    evs.sort(key=lambda e: (e["inicio"] or "", e["codigo"]))
+    evs.sort(key=lambda e: (e["inicio"] or "", e["cnpj"], e["codigo"], e["competencia"]))
 
     # ---------------- mapa: conjunto × município ----------------
     mun_regs = base.registros_como_estavam_em(con, DS_MUN)
@@ -1231,9 +1288,12 @@ def construir(con, ctx):
         conj_csv.append([cj, cadastro.get(cj, {}).get("nome"), v["cnpj"], sigla(v["cnpj"]), a, v["meses"], v["dec"],
                          v["fec"], ld, lf, razao(v["dec"], ld) if completo else None,
                          razao(v["fec"], lf) if v["meses_fec"] == 12 else None, v["ucs_media"]])
-    base.escreve_csv("qualidade_conjuntos_anual.csv",
-                     ["conjunto", "nome", "cnpj", "sigla", "ano", "meses", "dec_h", "fec_interrupcoes", "dec_limite_h",
-                      "fec_limite_interrupcoes", "razao_dec", "razao_fec", "ucs_media"], conj_csv)
+    # um arquivo por década, como a fonte: o histórico inteiro num CSV só passaria de 5 MB
+    for d0, d1 in DECADAS:
+        base.escreve_csv(f"qualidade_conjuntos_anual_{d0}_{d1}.csv",
+                         ["conjunto", "nome", "cnpj", "sigla", "ano", "meses", "dec_h", "fec_interrupcoes", "dec_limite_h",
+                          "fec_limite_interrupcoes", "razao_dec", "razao_fec", "ucs_media"],
+                         [x for x in conj_csv if d0 <= x[4] <= d1])
     conj_m_csv = []
     for chave, campos in c_obs.items():
         cj = int(chave[1:])
@@ -1258,9 +1318,9 @@ def construir(con, ctx):
                      ["cod_ibge", "municipio", "uf", "conjuntos", "n_conjuntos", "relacao", "conjuntos_com_valor",
                       "dec_min_h", "dec_max_h", "fec_min", "fec_max", "cnpjs", "conjuntos_historicos"], mun_csv)
     base.escreve_csv("qualidade_eventos_emergencia.csv",
-                     ["cnpj", "sigla", "codigo", "inicio", "fim", "duracao_h", "duracao_ausente_motivo", "chi_evento",
+                     ["cnpj", "sigla", "codigo", "competencia", "inicio", "fim", "duracao_h", "duracao_ausente_motivo", "chi_evento",
                       "chi_limite", "razao_chi", "plano_contingencia", "nivel", "origem"],
-                     [[e["cnpj"], e["sigla"], e["codigo"], e["inicio"], e["fim"], e["duracao_h"], e["duracao_ausente_motivo"],
+                     [[e["cnpj"], e["sigla"], e["codigo"], e["competencia"], e["inicio"], e["fim"], e["duracao_h"], e["duracao_ausente_motivo"],
                        e["chi_evento"], e["chi_limite"], e["razao_chi"], e["plano_contingencia"], e["nivel_contingencia"],
                        e["origem"]] for e in evs])
     base.escreve_csv("qualidade_reconciliacao_dgc.csv",
@@ -1268,7 +1328,16 @@ def construir(con, ctx):
                      [[x["ano"], x["porte"], x["posicao"], x["sigla_ranking"], x["empresa"], x["cnpj"], x["dgc_publicado"],
                        x["dgc_calculado"], x["diferenca"]] for x in recon])
 
+    # ---------------- validação física e de domínio (seção 5.2 do contrato) ----------------
+    hoje = ctx.get("hoje") or date.today()
+    validacao = validar_dados(br_m=br_m, conj_ano=conj_ano, limites=limites, dist=dist, comp_anual=comp_anual,
+                              iasc=arvore(vigentes(con, DS_IASC, "d")), ultimo_mes=ultimo_mes, hoje=hoje)
+    criticas = [x for x in validacao if x["resultado"] == "reprovado" and x["critico"]]
+    if criticas:
+        return c.stub(GOLD, "validação crítica reprovada: " + "; ".join(f"{x['nome']}: {x['detalhe']}" for x in criticas))
+
     calc = {
+        "validacao": validacao,
         "snap": snap, "ano_ref": ano_ref, "anos": anos, "anos_completos": anos_completos, "ultimo_mes": ultimo_mes,
         "completos": completos,
         "parcial": parcial, "brasil_anual": brasil_anual, "brasil_mensal": brasil_mensal, "br": br,
@@ -1295,12 +1364,14 @@ def construir(con, ctx):
 
 def _fonte(meta, pacote, titulo, recursos_nomes):
     urls = {r.get("nome"): r.get("url") for r in (meta.get("recursos") or [])}
-    primaria = next((urls[n] for n in recursos_nomes if urls.get(n)), _url(pacote))
+    # URL primária = o recurso mais recente da lista (o que traz o ano de referência)
+    primaria = next((urls[n] for n in reversed(recursos_nomes) if urls.get(n)), _url(pacote))
     return {"orgao": "ANEEL", "dataset": titulo, "recurso": "; ".join(recursos_nomes), "url_dataset": _url(pacote),
             "url_primaria": primaria, "licenca": meta.get("licenca") or LICENCA}
 
 
-R_CONT = ["indicadores-continuidade-coletivos-2010-2019.parquet", "indicadores-continuidade-coletivos-2020-2029.parquet"]
+R_CONT = ["indicadores-continuidade-coletivos-2000-2009.parquet", "indicadores-continuidade-coletivos-2010-2019.parquet",
+          "indicadores-continuidade-coletivos-2020-2029.parquet"]
 R_LIM = ["indicadores-continuidade-coletivos-limite"]
 R_COMP = ["indicadores-continuidade-coletivos-compensacao-2010-2019.parquet",
           "indicadores-continuidade-coletivos-compensacao-2020-2029.parquet"]
@@ -1345,7 +1416,7 @@ def montar_gold(con, ctx, v):
     at = {}
     for row in v["atendimento_csv"]:
         at[(row[0], row[2])] = row
-    eventos_por_dist = collections.Counter(e["cnpj"] for e in v["evs"])
+    eventos_por_dist = collections.Counter(c14 for c14, _ in {(e["cnpj"], e["codigo"]) for e in v["evs"]})
     iasc_regs = base.registros_como_estavam_em(con, DS_IASC)
 
     # ---------- distribuidoras ----------
@@ -1533,14 +1604,17 @@ def montar_gold(con, ctx, v):
                             for a in v["anos_ouv"]],
         "tmae": tmae_anos,
         "eventos_emergencia": {
-            "total": len(evs), "distribuidoras": len({e["cnpj"] for e in evs}),
+            # evento = (CNPJ, código); registro = evento em uma competência (não somados)
+            "total": len({(e["cnpj"], e["codigo"]) for e in evs}), "registros_competencia": len(evs),
+            "distribuidoras": len({e["cnpj"] for e in evs}),
             "inicio_min": min((e["inicio"] for e in evs if e["inicio"]), default=None),
             "inicio_max": max((e["inicio"] for e in evs if e["inicio"]), default=None),
             "duracao_mediana_h": _r(c.quantil(duracoes, 0.5), 1), "duracao_max_h": _r(max(duracoes), 1) if duracoes else None,
             # datas implausíveis publicadas pela fonte: duração ausente, evento mantido e listado
             "datas_invalidas": [{"codigo": e["codigo"], "sigla": e["sigla"], "inicio": e["inicio"], "fim": e["fim"],
                                  "motivo": e["duracao_ausente_motivo"]} for e in evs if e["duracao_ausente_motivo"]],
-            "maiores_chi": [{"codigo": e["codigo"], "cnpj": e["cnpj"], "sigla": e["sigla"], "inicio": e["inicio"],
+            "maiores_chi": [{"codigo": e["codigo"], "cnpj": e["cnpj"], "sigla": e["sigla"], "competencia": e["competencia"],
+                             "inicio": e["inicio"],
                              "fim": e["fim"], "duracao_h": _r(e["duracao_h"], 1), "chi_evento": _r(e["chi_evento"], 0),
                              "chi_limite": _r(e["chi_limite"], 0), "razao_chi": _r(e["razao_chi"], 2), "origem": e["origem"]}
                             for e in sorted(evs, key=lambda e: -(e["chi_evento"] or 0))[:15]],
@@ -1591,6 +1665,10 @@ def montar_gold(con, ctx, v):
                                                 c.snapshot_de(con, DS_MUN), c.snapshot_de(con, DS_RANK))
     meta_iasc, meta_manif, meta_ouv = ckan.meta_local(DS_IASC), ckan.meta_local(DS_MANIF), ckan.meta_local(DS_OUV)
     meta_atend, meta_ev, meta_mun = ckan.meta_local(DS_ATEND), ckan.meta_local(DS_EVENTO), ckan.meta_local(DS_MUN)
+    # nome do recurso efetivamente usado em cada ano da Ouvidoria (Parquet quando existe, CSV senão)
+    vig_ouv = ckan.vintages_vigentes(con, DS_OUV)
+    nomes_ouv = [f"ouvidoria-aneel-{a}" + (".parquet" if ".parquet" in (vig_ouv.get(f"ouv-{a}") or {}).get("arquivo", "") else "")
+                 for a in v["anos_ouv"]]
     meses_atend = sorted({r for ch in v["atend"].values() for r in ch.get("m.ocorr", {})})
     per_atend = {"inicio": meses_atend[0] if meses_atend else "", "fim": meses_atend[-1] if meses_atend else ""}
     prov = {
@@ -1599,7 +1677,7 @@ def montar_gold(con, ctx, v):
             unidade="horas (DEC); interrupções (FEC)", frequencia="mensal", periodo=periodo_hist,
             cobertura={"inicio": f"{min(v['anos'])}-01", "fim": v["ultimo_mes"]}, capturado_em=cap, snapshot=snap,
             transformacoes=["soma dos 12 meses para o valor anual do conjunto (ano completo só com 12 meses)"],
-            limitacoes=lim_comum, download="/energia/series/qualidade_conjuntos_anual.csv", notas_fonte=meta.get("notas")),
+            limitacoes=lim_comum, download="/energia/series/qualidade_conjuntos_anual_2020_2029.csv", notas_fonte=meta.get("notas")),
         "distribuidoras": c.proveniencia(
             indicador="DEC e FEC da distribuidora e do Brasil", natureza="CALCULADO", fonte=fonte_cont,
             unidade="horas (DEC); interrupções (FEC)", frequencia="mensal e anual", periodo=periodo_hist,
@@ -1652,22 +1730,27 @@ def montar_gold(con, ctx, v):
             periodo={"inicio": str(min(v["anos_manif"])) if v["anos_manif"] else "", "fim": str(max(v["anos_manif"])) if v["anos_manif"] else ""},
             cobertura={"inicio": str(ANO_INICIO_TIPOLOGIA), "fim": str(max(v["anos_manif"])) if v["anos_manif"] else ""},
             capturado_em=c.ultima_captura(snap_manif), snapshot=snap_manif,
-            transformacoes=["reclamação = código de tipologia iniciado por 102 (REN 1.000/2021)",
-                            "interrupção = códigos 1020901, 1020902 e 1020903",
+            transformacoes=["reclamação = tipologia do grupo 102 (REN 1.000/2021); desde 2024 pelo código publicado, em 2023 pelo IdeTipoRCA traduzido por tabela explícita (o arquivo de 2023 ainda usa códigos antigos, alguns iguais a códigos novos com outro sentido)",
+                            "interrupção = tipologias 1020901, 1020902 e 1020903",
+                            "taxa só com os 12 meses enviados pela distribuidora; agregado nacional só com essas distribuidoras",
                             "denominador = UCs médias da mesma distribuidora (CNPJ) no mesmo ano, dos indicadores de continuidade"],
             formula="taxa(g, ano) = 1.000 × Σ_meses reclamações recebidas(g) ÷ UCs médias(g, ano)",
             limitacoes=["O registro de manifestações depende dos canais e da prática de cada distribuidora; taxas diferentes podem refletir registro, não só serviço.",
+                        "Ligação sobre falta de energia é registrada como reclamação (tipologia 1020901): a taxa de reclamações acompanha o número de interrupções e não mede só insatisfação.",
+                        "2023 foi classificado pelo IdeTipoRCA; a comparação 2023 × 2024 pode refletir também a transição de códigos das distribuidoras.",
                         "Ano corrente é parcial e não é comparado com anos completos.",
                         "A tipologia de 2010 a 2022 é diferente e não é somada a esta série."],
             download="/energia/series/qualidade_atendimento.csv", notas_fonte=meta_manif.get("notas")),
         "ouvidoria_aneel": c.proveniencia(
             indicador="Reclamações registradas na Ouvidoria Setorial da ANEEL por 100 mil UCs", natureza="CALCULADO",
-            fonte=_fonte(meta_ouv, PAC_OUV, "Ouvidoria Setorial ANEEL", [f"ouvidoria-aneel-{a}" for a in v["anos_ouv"]]),
+            fonte=_fonte(meta_ouv, PAC_OUV, "Ouvidoria Setorial ANEEL", nomes_ouv),
             unidade="reclamações por 100 mil UCs no ano", frequencia="diária, publicada por ano",
             periodo={"inicio": str(min(v["anos_ouv"])) if v["anos_ouv"] else "", "fim": str(max(v["anos_ouv"])) if v["anos_ouv"] else ""},
             cobertura={"inicio": str(ANO_INICIO_TIPOLOGIA), "fim": str(max(v["anos_ouv"])) if v["anos_ouv"] else ""},
             capturado_em=c.ultima_captura(snap_ouv), snapshot=snap_ouv,
-            transformacoes=["categoria Reclamações; mês pela data de criação da solicitação; decisão procedente, improcedente ou sem decisão"],
+            transformacoes=["categoria Reclamações; mês pela data de criação da solicitação; decisão procedente, improcedente ou sem decisão",
+                            "2023 pelo Parquet oficial (conferido com o CSV do mesmo ano: 603.640 linhas e as mesmas somas por categoria); 2024 em diante pelo CSV, único formato publicado",
+                            "taxa só quando o arquivo cobre os 12 meses; distribuidora sem nenhuma solicitação no ano fica fora do agregado, com a cobertura em UCs publicada"],
             formula="taxa(g, ano) = 100.000 × Σ reclamações(g) ÷ UCs médias(g, ano)",
             limitacoes=["Solicitações recentes podem estar sem decisão; a proporção procedente muda com o tempo."],
             download="/energia/series/qualidade_atendimento.csv", notas_fonte=meta_ouv.get("notas")),
@@ -1755,7 +1838,8 @@ def montar_gold(con, ctx, v):
     per_ref = {"inicio": f"{ano_ref:04d}-01", "fim": f"{ano_ref:04d}-12"}
     dl_br = [{"rotulo": "Brasil mensal e anual (CSV)", "url": "/energia/series/qualidade_brasil.csv"},
              {"rotulo": "Distribuidoras por mês (CSV)", "url": "/energia/series/qualidade_distribuidoras_mensal.csv"}]
-    consulta_br = (f"Parquet {R_CONT[-1] if ano_ref >= 2020 else R_CONT[0]}: linhas com SigIndicador em (DEC, FEC, NumCon) e "
+    r_cont_ref = R_CONT[2 if ano_ref >= 2020 else (1 if ano_ref >= 2010 else 0)]
+    consulta_br = (f"Parquet {r_cont_ref}: linhas com SigIndicador em (DEC, FEC, NumCon) e "
                    f"AnoIndice = {ano_ref}; por mês, Σ(valor × NumCon) ÷ Σ NumCon dos conjuntos com os dois campos; soma dos 12 meses")
     evidencias = {}
     for ind, nome, uni, sufixo in (("dec", "DEC do Brasil", "horas por unidade consumidora", " h"),
@@ -1776,6 +1860,7 @@ def montar_gold(con, ctx, v):
             tratamento_ausencia="Mês incompleto não fecha o ano; nulo nunca vira zero nem é interpolado.",
             revisoes=snap.get("revisoes"), testes=[t_meses, t_ident, t_chaves], reconciliacao=reconc_dgc, download=dl_br)
     acima, com_lim = len(v["acima_dec"]), len(v["rz"])
+    csv_conj_ref = next(f"qualidade_conjuntos_anual_{d0}_{d1}.csv" for d0, d1 in DECADAS if d0 <= ano_ref <= d1)
     if com_lim:
         pct = 100 * acima / com_lim
         evidencias["conjuntos_acima_limite"] = evidencia(
@@ -1784,9 +1869,9 @@ def montar_gold(con, ctx, v):
             universo=f"{com_lim} conjuntos com 12 meses de DEC e limite de DEC publicado para {ano_ref}",
             filtros=[f"ano {ano_ref}", "conjunto com 12 meses", "limite do mesmo ano (mesma vigência)"],
             fonte=fonte_ev_lim, chaves_origem=[str(x["conjunto"]) for x in sorted(v["acima_dec"], key=lambda x: x["conjunto"])],
-            consulta=(f"qualidade_conjuntos_anual.csv com ano = {ano_ref}, meses = 12 e dec_limite_h preenchido; "
+            consulta=(f"{csv_conj_ref} com ano = {ano_ref}, meses = 12 e dec_limite_h preenchido; "
                       "conta as linhas com dec_h > dec_limite_h"),
-            manifesto={"rotulo": "Conjuntos por ano (CSV)", "url": "/energia/series/qualidade_conjuntos_anual.csv"},
+            manifesto={"rotulo": "Conjuntos por ano (CSV)", "url": f"/energia/series/{csv_conj_ref}"},
             formula="100 × #(DEC anual > limite anual) ÷ #(conjuntos com limite)",
             numerador={"descricao": "conjuntos com DEC anual acima do limite", "valor": acima},
             denominador={"descricao": "conjuntos com 12 meses e limite publicado", "valor": com_lim},
@@ -1797,7 +1882,7 @@ def montar_gold(con, ctx, v):
             revisoes=snap.get("revisoes"),
             testes=[t_meses, t_chaves, ev.teste("Comparação estrita DEC > limite com os valores publicados em centésimos", "aprovado",
                                                 f"{acima} acima, {com_lim - acima} iguais ou abaixo")],
-            download=[{"rotulo": "Conjuntos por ano (CSV)", "url": "/energia/series/qualidade_conjuntos_anual.csv"}])
+            download=[{"rotulo": "Conjuntos por ano (CSV)", "url": f"/energia/series/{csv_conj_ref}"}])
     if ref_comp and ref_comp.get("valor") is not None:
         a_c = v["comp_ano_ref"]
         rec_comp = ["comp-2000-2009", "comp-2010-2019", "comp-2020-2029"][2 if a_c >= 2020 else (1 if a_c >= 2010 else 0)]
@@ -1878,6 +1963,8 @@ def montar_gold(con, ctx, v):
         "mapa": mapa,
         "reconciliacao": {"dgc": rec_anos},
         "controles": controles,
+        # controles físicos e de domínio executados nesta construção; reprovação crítica vira stub
+        "validacao": v["validacao"],
         "evidencias": evidencias,
         "proveniencia": prov,
         "downloads": [{"rotulo": d.split("/")[-1], "url": d} for d in REGISTRO["arquivos"]],

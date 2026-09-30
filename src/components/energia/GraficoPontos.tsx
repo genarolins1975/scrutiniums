@@ -311,10 +311,11 @@ export function GraficoPontos({
     const est = 104 + (pa.detalhe ? 16 : 0);
     const y0 = iAtivo * hc;
     const acima = y0 + hc + est > h && y0 - est >= 0;
+    // sem w-max: a largura da dica se ajusta ao espaço entre left e a borda do gráfico, então ela nunca cria rolagem horizontal na página
     dica = (
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute z-20 w-max min-w-[12rem] max-w-[17rem] border border-linha bg-superficie px-3 py-2 text-xs shadow-[0_6px_20px_rgba(26,29,33,0.12)]"
+        className="pointer-events-none absolute z-20 min-w-[12rem] max-w-[17rem] border border-linha bg-superficie px-3 py-2 text-xs shadow-[0_6px_20px_rgba(26,29,33,0.12)]"
         style={{ top: acima ? y0 : y0 + hc, transform: acima ? "translateY(-100%)" : undefined, left: `min(${colunaRotulo}px, calc(100% - 13rem))` }}
       >
         <p className="font-medium text-carvao">{pa.rotulo}</p>

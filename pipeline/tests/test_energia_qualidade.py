@@ -11,15 +11,22 @@ O que cada grupo confere:
 - robustez: entidade grande (CEMIG, 265 conjuntos), pequena (cooperativa de um conjunto),
   multiestadual (Energisa Minas Rio, MG e RJ), mudança societária (mesmo CNPJ com nomes
   diferentes no ranking), valor extremo e ausência (mês faltante, NumCon ausente);
-- nulo, zero e não se aplica distintos; vigência do limite; unidade (centésimos de hora).
+- nulo, zero e não se aplica distintos; vigência do limite; unidade (centésimos de hora);
+- regras que já falharam de verdade nos dados: códigos antigos de manifestação de 2023 que
+  colidem com a tipologia nova (conferidos pela descrição publicada), códigos de evento
+  repetidos entre distribuidoras e em mais de uma competência, data de fim no ano 3036,
+  cadastro de conjunto escolhido pela captura em vez do mês de referência, regra de
+  importação nova que não substituía os valores da regra antiga.
 """
 import csv
 import gzip
 import io
+import json
 import os
 import sys
 import tempfile
 import unittest
+from datetime import date
 from unittest import mock
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -409,6 +416,196 @@ class Silver(unittest.TestCase):
         det2 = q.importa_limites(self.con, {"vintage_id": vid2, "arquivo": arq2})
         self.assertEqual(det2["revisoes"], 1)
         self.assertEqual(q.vigentes(self.con, q.DS_CONT, "c14768.")[("c14768.lim.dec", "2025")], 5.5)
+
+
+class Manifestacoes2023(unittest.TestCase):
+    """O arquivo de 2023 usa os códigos antigos; alguns coincidem com a tipologia nova."""
+
+    def setUp(self):
+        linhas = _csv_gz("manifestacoes_2023_cocel.csv.gz")
+        self.linhas = linhas
+        self.agg = fq.agrega_manifestacoes(_lotes(linhas, q.COLS_MANIF))
+
+    def _tot(self, k):
+        return sum(a.get(k, 0) for (c14, ref), a in self.agg.items() if c14 == COCEL)
+
+    def test_interrupcao_pelo_rca_igual_a_soma_pela_descricao(self):
+        # caminho independente: soma pela descrição publicada (DscManifestacao), sem código
+        # nem tabela; o Parquet de 2023 da COCEL tem 34.535 (nível 1) e 48 (nível 2)
+        descricoes = {"Interrupção no Fornecimento - Falta de energia", "Interrupção Frequente do Fornecimento",
+                      "Interrupção Programada"}
+        por_desc = {"Nível 1": 0, "Nível 2": 0}
+        for r in self.linhas:
+            if r["DscManifestacao"] in descricoes:
+                por_desc[r["NomCanalManifestacao"]] += int(r["QtdManifestacoesRecebidas"])
+        self.assertEqual(por_desc, {"Nível 1": 34535, "Nível 2": 48})
+        self.assertEqual(self._tot("n1.recl_interrupcao"), 34535)
+        self.assertEqual(self._tot("n2.recl_interrupcao"), 48)
+
+    def test_codigo_antigo_nao_e_lido_como_tipologia_nova(self):
+        # em 2023 o código 101 é "Cobrança decorrente de religação à revelia" (IdeTipoRCA 105),
+        # uma reclamação (1020705); lido como código novo viraria "informação"
+        self.assertEqual(fq.codigo_tipologia("101", "105", 2023), "1020705")
+        self.assertEqual(fq.codigo_tipologia("101", "105", 2024), "101")
+        # o classificador ingênuo por prefixo não acharia nenhuma reclamação no nível 1
+        ingenuo = sum(int(r["QtdManifestacoesRecebidas"]) for r in self.linhas
+                      if r["NomCanalManifestacao"] == "Nível 1" and r["CodTipoManifestacao"][:3] == "102")
+        self.assertEqual(ingenuo, 0)
+        self.assertEqual(self._tot("n1.recl"), 37058)
+        self.assertEqual(self._tot("n1.total"), 350146)   # nada some: total = soma de todas as linhas
+        self.assertEqual(self._tot("n1.sem_grupo"), 0)
+
+    def test_rca_desconhecido_vai_para_sem_grupo(self):
+        self.assertIsNone(fq.codigo_tipologia("1", "14", 2023))   # "Reclamação de Interrupção", sem par na tabela
+        lote = [{"NumCPFCNPJ": [COCEL], "NomCanalManifestacao": ["Nível 1"], "CodTipoManifestacao": ["1"],
+                 "IdeTipoRCA": ["14"], "QtdManifestacoesRecebidas": ["7"], "QtdManifestacoesProcedentes": ["0"],
+                 "AnoCompetencia": ["2023"], "MesCompetencia": ["5"]}]
+        a = fq.agrega_manifestacoes(lote)[(COCEL, "2023-05")]
+        self.assertEqual(a["n1.sem_grupo"], 7)
+        self.assertNotIn("n1.recl", a)
+
+
+class Continuidade2000(unittest.TestCase):
+    """Arquivo de 2000 a 2009: DEC e FEC por conjunto, outra desagregação de parcelas."""
+
+    def setUp(self):
+        linhas = _csv_gz("continuidade_2009_cocel.csv.gz")
+        self.dados, self.cadastro, self.conflitos = fq.conjuntos_mes(_lotes(linhas, q.COLS_CONT))
+
+    def test_dec_anual_2009(self):
+        # 13,93 h: soma dos 12 DEC mensais do conjunto 12306 relida com pyarrow (group_by) no
+        # Parquet de 2000-2009; com um só conjunto, o ponderado da distribuidora é o mesmo
+        anual = fq.conjuntos_anual(self.dados)
+        self.assertAlmostEqual(anual[(12306, 2009)]["dec"], 13.93, places=6)
+        self.assertEqual(anual[(12306, 2009)]["meses"], 12)
+        mensal = fq.agrega_mensal(self.dados, lambda cn, cj: cn)
+        self.assertAlmostEqual(sum(a["dec"] for (g, r), a in mensal.items() if g == COCEL), 13.93, places=6)
+
+    def test_parcelas_antigas_e_linha_sem_conjunto_ficam_fora(self):
+        siglas = {sg for s_ in self.dados.values() for sg in s_}
+        self.assertFalse(siglas & {"DECi", "DECx", "FECi", "FECx", "NumConsAgt"})
+        self.assertEqual({k[1] for k in self.dados}, {12306})     # NumConsAgt não tem conjunto
+        parc = fq.agrega_parcelas_anual(self.dados, lambda cn, cj: cn)
+        grupos = q.grupos_parcelas(parc.get((COCEL, 2009), {}), "DEC")
+        self.assertTrue(all(v is None for v in grupos.values()))  # ausência, não zero
+        self.assertEqual(self.conflitos, 0)
+
+
+class Eventos(unittest.TestCase):
+    def test_colisao_de_codigo_e_competencias(self):
+        with open(os.path.join(DADOS, "eventos_emergencia_colisoes.csv"), encoding="utf-8") as f:
+            corpo = f.read().encode("utf-8")
+        with tempfile.TemporaryDirectory() as tmp, mock.patch.multiple(base, BRONZE=os.path.join(tmp, "b")):
+            con = base.conecta(":memory:")
+            arq, sha = base.salva_bronze("aneel", q.DS_EVENTO, "eventos-2026", corpo, "csv", "2026-09-30T12:00:00Z")
+            vid, _ = base.registra_vintage(con, q.DS_EVENTO, "eventos-2026", "u", "2026-09-30T12:00:00Z", None, sha,
+                                           len(corpo), "teste", arq)
+            det = q.importa_eventos(con, {"vintage_id": vid, "arquivo": arq})
+            regs = base.registros_como_estavam_em(con, q.DS_EVENTO)
+            con.close()
+        # 8 linhas: "ISE 01.2026" da EDP ES e da EDP SP são eventos diferentes; a linha repetida
+        # idêntica da EDP ES conta uma vez; a EPB aparece em março e em abril com CHI parcial
+        self.assertEqual((det["linhas"], det["registros_competencia"], det["eventos"]), (8, 6, 5))
+        self.assertEqual((det["linhas_duplicadas"], det["conflitos"]), (1, 1))
+        self.assertIn("evento:28152650000171:2026-01:ISE 01.2026", regs)
+        self.assertIn("evento:02302100000106:2026-02:ISE 01.2026", regs)
+        epb = [k for k in regs if ":EPB_ISE_04_2026" in k]
+        self.assertEqual(sorted(k.split(":")[2] for k in epb), ["2026-03", "2026-04"])
+
+    def test_data_implausivel_nao_vira_duracao(self):
+        # como publicado pela ANEEL (arquivo gerado em 12/08/2026): fim no ano 3036
+        dur, motivo = fq.duracao_evento_h("2026-03-07 00:00:00", "3036-03-13 23:00:00", "2026-08-12")
+        self.assertIsNone(dur)
+        self.assertIn("3036", motivo)
+        dur, motivo = fq.duracao_evento_h("2026-03-29 00:02:00", "2026-04-08 23:37:00", "2026-08-12")
+        self.assertAlmostEqual(dur, 263.5833333, places=5)
+        self.assertIsNone(motivo)
+        self.assertEqual(fq.duracao_evento_h("2026-02-02 00:00:00", "2026-02-01 00:00:00", None)[1], "fim anterior ao início")
+
+
+class RegrasDeLeitura(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.p = mock.patch.multiple(base, BRONZE=os.path.join(self.tmp.name, "b"))
+        self.p.start()
+        self.con = base.conecta(":memory:")
+
+    def tearDown(self):
+        self.con.close()
+        self.p.stop()
+        self.tmp.cleanup()
+
+    def _vintage(self, recurso, capturado, sha):
+        vid, _ = base.registra_vintage(self.con, q.DS_CONT, recurso, "u", capturado, None, sha, 1, "teste", None)
+        return vid
+
+    def test_cadastro_pelo_mes_mais_recente_e_nao_pela_captura(self):
+        # o arquivo de 2000-2009 capturado DEPOIS não pode trocar o nome atual do conjunto
+        v_novo = self._vintage("cont-2020-2029", "2026-09-30T10:00:00Z", "a" * 64)
+        v_antigo = self._vintage("cont-2000-2009", "2026-09-30T11:00:00Z", "b" * 64)
+        base.grava_registros(self.con, q.DS_CONT, v_novo, [
+            ("conj:12306", "cad.cont-2020-2029", json.dumps({"cnpj": COCEL, "sigla": "COCEL", "nome": "NOME ATUAL", "ref": "2026-08"})),
+            ("dist:" + COCEL, "sigla.cont-2020-2029", json.dumps({"sigla": "COCEL", "ref": "2026-08"}))])
+        base.grava_registros(self.con, q.DS_CONT, v_antigo, [
+            ("conj:12306", "cad.cont-2000-2009", json.dumps({"cnpj": COCEL, "sigla": "COCEL ANTIGA", "nome": "Cocel", "ref": "2009-12"})),
+            ("dist:" + COCEL, "sigla.cont-2000-2009", json.dumps({"sigla": "COCEL ANTIGA", "ref": "2009-12"}))])
+        cad, siglas = q._cadastro(self.con)
+        self.assertEqual(cad[12306]["nome"], "NOME ATUAL")
+        self.assertEqual(siglas[COCEL], "COCEL")
+
+    def test_regra_nova_substitui_valores_da_regra_antiga(self):
+        vid = self._vintage("limite", "2026-09-30T10:00:00Z", "c" * 64)
+        vint = {"vintage_id": vid, "arquivo": None}
+        st = {"importacoes": {}, "falhas": []}
+
+        def regra_antiga(con, v):
+            base.grava_observacoes(con, q.DS_CONT, v["vintage_id"], [("c1.lim.dec", "2025", 5.0)])
+            return {}
+
+        def regra_nova(con, v):
+            base.grava_observacoes(con, q.DS_CONT, v["vintage_id"], [("c1.lim.dec", "2025", 5.5)])
+            return {}
+        with mock.patch.dict(q.VERSOES, {"limites": "1"}):
+            q.importa_vintage(self.con, st, q.DS_CONT, "limite", vint, "limites", regra_antiga)
+        with mock.patch.dict(q.VERSOES, {"limites": "2"}):
+            q.importa_vintage(self.con, st, q.DS_CONT, "limite", vint, "limites", regra_nova)
+            q.importa_vintage(self.con, st, q.DS_CONT, "limite", vint, "limites", regra_antiga)  # já importado: nada
+        self.assertEqual(q.vigentes(self.con, q.DS_CONT, "c1.")[("c1.lim.dec", "2025")], 5.5)
+        # e a troca de regra não aparece como revisão da fonte (uma linha só para a chave)
+        n = self.con.execute("SELECT COUNT(*) FROM observacoes WHERE serie='c1.lim.dec'").fetchone()[0]
+        self.assertEqual(n, 1)
+        self.assertEqual(st["falhas"], [])
+
+
+class Validacao(unittest.TestCase):
+    def _v(self, **kw):
+        args = dict(br_m={"dec": {"2025-01": 0.8}, "fec": {"2025-01": 0.4}},
+                    conj_ano={(1, 2025): {"dec": 10.0, "fec": 5.0, "meses": 12}},
+                    limites={(1, 2025, "DEC"): 12.0}, dist={COCEL: {}}, comp_anual={2025: {"valor": 10.0}},
+                    iasc={"d" + COCEL: {"iasc": {"2025": 70.0}}}, ultimo_mes="2025-12", hoje=date(2026, 9, 30))
+        args.update(kw)
+        return {x["nome"]: x for x in q.validar_dados(**args)}
+
+    def test_limites_fisicos_derrubam_a_publicacao(self):
+        ok = self._v()
+        self.assertTrue(all(x["resultado"] == "aprovado" for x in ok.values()))
+        r = self._v(br_m={"dec": {"2025-01": -0.1}, "fec": {}})
+        self.assertEqual(r["DEC e FEC nacionais mensais não negativos"]["resultado"], "reprovado")
+        # DEC mensal de 800 h é fisicamente impossível (um mês tem no máximo 744 h)
+        r = self._v(br_m={"dec": {"2025-01": 800.0}, "fec": {}})
+        item = r["DEC nacional mensal abaixo de 744 h (horas de um mês)"]
+        self.assertEqual((item["resultado"], item["critico"]), ("reprovado", True))
+        r = self._v(ultimo_mes="2026-10")
+        self.assertEqual(r["Último mês completo não posterior ao mês corrente"]["resultado"], "reprovado")
+        r = self._v(dist={"123": {}})
+        self.assertEqual(r["Chave de distribuidora é CNPJ de 14 dígitos"]["resultado"], "reprovado")
+
+    def test_extremo_raro_e_ressalva_e_nao_descarte(self):
+        # 1.482 h: conjunto RURAL BENJAMIN CONSTANT (CEAM) em 2007, valor publicado
+        r = self._v(conj_ano={(11216, 2007): {"dec": 1482.0, "fec": 90.0, "meses": 12}})
+        item = r["DEC anual de conjunto acima de 200 h (extremo raro)"]
+        self.assertEqual((item["resultado"], item["critico"]), ("ressalva", False))
+        self.assertIn("11216", item["detalhe"])
 
 
 if __name__ == "__main__":

@@ -17,8 +17,9 @@ import {
   type ValorCelula,
 } from "@/lib/energia/mapa-calor";
 
+// só tipos: NAO_SE_APLICA vem de @/lib/energia/escalas (constante reexportada por módulo
+// "use client" chega ao Server Component como referência de cliente, não como o texto)
 export type { EscalaCores, ValorCelula } from "@/lib/energia/mapa-calor";
-export { NAO_SE_APLICA } from "@/lib/energia/mapa-calor";
 
 /**
  * Mapa de calor genérico (hora × dia, mês × ano): linhas, colunas e uma

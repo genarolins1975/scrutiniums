@@ -132,6 +132,17 @@ export function massasPontuais(
     .sort((a, b) => b.contagem - a.contagem || a.valor - b.valor);
 }
 
+/** Mínimo e máximo por laço: Math.min(...xs) estoura a pilha de argumentos em série horária de vários anos. */
+function extremos(xs: readonly number[]): { mn: number; mx: number } {
+  let mn = Infinity;
+  let mx = -Infinity;
+  for (const x of xs) {
+    if (x < mn) mn = x;
+    if (x > mx) mx = x;
+  }
+  return { mn, mx };
+}
+
 /* ---------- Marcas de eixo ---------- */
 
 /** Arredonda em 12 algarismos significativos: 3 × 0,1 vira 0,3 e não 0,30000000000000004. */
@@ -177,8 +188,7 @@ export function dominioLegivel(
 ): { min: number; max: number; marcas: number[] } {
   const v = valores.filter((x) => Number.isFinite(x));
   if (!v.length) return { min: 0, max: 1, marcas: marcasEixo(0, 1, alvo) };
-  let mn = Math.min(...v);
-  let mx = Math.max(...v);
+  let { mn, mx } = extremos(v);
   if (incluirZero) {
     mn = Math.min(0, mn);
     mx = Math.max(0, mx);
@@ -278,8 +288,7 @@ export function montaHistograma(xs: readonly Valor[], opcoes: OpcoesHistograma):
     if (!(w > 0) || !Number.isFinite(w)) throw new Error("largura de classe precisa ser positiva");
     if (!resto.length) bordas = [];
     else {
-      const mn = Math.min(...resto);
-      const mx = Math.max(...resto);
+      const { mn, mx } = extremos(resto);
       // tolerância relativa: 0,3 / 0,1 = 2,9999999999999996 no ponto flutuante e não pode virar classe 2
       let k0 = Math.floor(mn / w + 1e-9);
       if (limpa(k0 * w) > mn) k0 -= 1; // a tolerância nunca pode deixar o mínimo abaixo da primeira borda
@@ -327,10 +336,15 @@ export function alturaClasse(c: Classe, larguraReferencia: number): number {
 
 /* ---------- Texto ---------- */
 
-/** Valor com unidade, ou "sem dado". "%" cola no número; demais unidades vêm após espaço. */
+/**
+ * Valor com unidade, ou "sem dado". Arredonda antes do sinal: −0,04 com uma
+ * casa é "0,0", não "−0,0" (a mesma regra de formatarValor em escalas.ts).
+ * "%" cola no número; demais unidades vêm após espaço não separável.
+ */
 export function textoValor(v: Valor, casas: number, unidade: string): string {
   if (typeof v !== "number" || !Number.isFinite(v)) return "sem dado";
-  const n = num(v, casas);
+  const r = Number(v.toFixed(Math.max(0, Math.min(20, casas))));
+  const n = num(r === 0 ? 0 : r, casas);
   if (!unidade) return n;
   if (unidade === "%") return `${n}%`;
   if (unidade === "R$") return `R$ ${n}`;

@@ -11,12 +11,12 @@ Arquivos do módulo:
 | Parser da carga verificada (ONS) | `pipeline/energia/fontes/ons_transicao.py` |
 | Parser das planilhas e páginas do MCTI | `pipeline/energia/fontes/mcti_transicao.py` |
 | Métricas | `pipeline/energia/metricas/transicao.py` (11 medidas) |
-| Testes | `pipeline/tests/test_energia_transicao.py` (37 testes), amostras em `pipeline/tests/dados/energia_transicao/` |
+| Testes | `pipeline/tests/test_energia_transicao.py` (38 testes), amostras em `pipeline/tests/dados/energia_transicao/` |
 | Gold | `public/energia/gold/transicao.json` (cerca de 305 KB) |
 | Downloads | `public/energia/series/transicao_*.csv` e `transicao_municipios.json` |
 | Tipos TS | `src/lib/energia/tipos-transicao.ts` |
 
-Execução: `python3 pipeline/energia/executar_modulo.py transicao` (coleta e gold) ou `--sem-coleta` (só gold, 2 s). A coleta completa com o cadastro já importado leva cerca de 1 minuto e ficou abaixo de 100 MB de memória; a importação de um cadastro novo da ANEEL (4,66 milhões de linhas, lidas em lotes de 250 mil) levou 129 s.
+Execução: `python3 pipeline/energia/executar_modulo.py transicao` (coleta e gold) ou `--sem-coleta` (só gold, 2 s). A coleta com o cadastro já importado leva cerca de 1 minuto, com pico de 94 MB de memória residente. A importação de um cadastro novo da ANEEL (4,66 milhões de linhas lidas em lotes de 50 mil; controles de tabela inteira feitos por partes) levou 94 s com pico de 1,06 GB, medido em 30/09/2026; antes da divisão em partes, o pico era 2,59 GB.
 
 ## 1. Painéis e estado
 
@@ -67,7 +67,7 @@ Execução: `python3 pipeline/energia/executar_modulo.py transicao` (coleta e go
   * Método simples ajustado: `FE_simplesajustado_2025_web.xlsx`, anual de 2006 a 2025, com a energia despachada (MWh).
   * Nota técnica `NT_FE_jun25.pdf` (https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/cgcl/paginas/NT_FE_jun25.pdf, sha256 `a6ca97b54a667ee9…`), texto extraído com pdftotext e conferido: a partir de janeiro de 2025 a base de usinas do ONS foi ampliada (termelétricas a biomassa, conjuntos de usinas solares e eólicas, de emissão nula), com a metodologia mantida para MDL e inventários, "o que, consequentemente, pode resultar em uma redução nos valores dos fatores de emissão".
 * Site institucional anterior do MCTI (antigo.mctic.gov.br, páginas `emissao_corporativos.html`, `emissao_despacho.html` e `emissao_ajustado.html`): planilhas de 2006 a 2021 e a tabela HTML do método simples ajustado. Recolhido para comparação; só preenche período sem valor na página vigente (nenhum, em 30/09/2026).
-* Acesso: a página vigente às vezes responde com desafio de verificação humana ("This question is for testing whether you are a human visitor"). Evidências: amostra `mcti_desafio_waf_recorte.html` (support ID 11080339514068322584, capturada pelo agente anterior) e pedido manual com o cliente curl em 30/09/2026 22:40 UTC (support ID 13061729978711597023). O coletor do pipeline, com a sua própria identificação (`ObservatorioBrasileiroDeCredito/0.1`, sem se passar por navegador), recebeu a página às 22:28, 22:41 e 22:48 UTC. O desafio não é contornado: a tentativa fica em `coletas` e vale a última captura válida.
+* Acesso: a página vigente às vezes responde com desafio de verificação humana ("This question is for testing whether you are a human visitor"). Evidências: amostra `mcti_desafio_waf_recorte.html` (support ID 11080339514068322584, capturada pelo agente anterior) e pedido manual com o cliente curl em 30/09/2026 22:40 UTC (support ID 13061729978711597023). O coletor do pipeline, com a sua própria identificação (`ObservatorioBrasileiroDeCredito/0.1`, sem se passar por navegador), recebeu a página em três pedidos entre 22:28 e 22:48 UTC. O desafio não é contornado: a tentativa fica em `coletas` e vale a última captura válida.
 * Frequência: fator médio e margem de operação mensais; margem de construção e simples ajustado anuais (nota técnica).
 
 ### 2.6 Alternativas consideradas e não usadas
@@ -89,6 +89,7 @@ Execução: `python3 pipeline/energia/executar_modulo.py transicao` (coleta e go
 * Crescimento no ano de referência (último ano completo antes da data do cadastro, 2025): 100 × kW conectados no ano ÷ kW conectados até 31/12 do ano anterior; estoque anterior zero = ausente.
 * Provisório: os 6 meses anteriores à data do cadastro (abr a set/2026) ficam marcados; no dado, as conexões mensais caem de 862 MW (abr/2026) para 24 MW (ago/2026), o registro tardio que a ANEEL descreve.
 * Duplicidade candidata: grupos com todos os atributos observáveis iguais (distribuidora, município, CEP, data, potência, classe, CPF/CNPJ tarjado, modalidade) e códigos distintos: 46.542 grupos, 49.107 unidades a mais (1,05%), 1.607,5 MW. Medida e publicada, não removida (CPF e CEP de pessoa física vêm tarjados; unidades iguais do mesmo titular podem ser legítimas).
+* Controles de tabela inteira (código único, duplicidade candidata, concordância com o recurso técnico) rodam por partes exatas: pelo último caractere do código (códigos repetidos caem na mesma parte) e por grupos de distribuidoras inteiras (a chave da duplicidade inclui a distribuidora). A soma das partes é conferida contra o total de linhas.
 * Silver: agregados no grão publicado em `observacoes` (referência composta `entidade|período|fonte`), controles do arquivo como série `controle.*`, nomes de distribuidora em `registros`. O arquivo original fica no bronze com sha256.
 
 ### 3.2 Estimativa de MMGD do ONS e relação com o cadastro
@@ -164,7 +165,7 @@ Recurso técnico fotovoltaico: 4.655.916 de 4.655.916 empreendimentos solares da
 
 ### 4.5 Testes automatizados
 
-`python3 -m unittest pipeline.tests.test_energia_transicao`: 37 testes, todos aprovados em 30/09/2026. Cobrem: agregados iguais entre o Parquet e o CSV oficiais (amostra real de 274 linhas); distribuidora pequena (CODESAM, 20 unidades e 332,07 kW) e multiestadual (CERES em MG e RJ) contra somas do CSV completo; identidade pelo CNPJ (Âmbar Amazonas com o CNPJ da antiga Amazonas Energia); data sentinela; código de município de 6 dígitos só com prefixo único; potência ausente distinta de zero; valor extremo de minigeração mantido; duplicidade candidata medida sem remover; energia do ONS contra o texto bruto; campo vazio de 2018 como ausência; dia em curso descartado; razão bloqueada em mês provisório; população de Roraima igual à soma dos municípios; planilhas do MCTI de 2015 (mês rotulado errado), 2020 e 2022 (revisões declaradas), 2021 (29/02 inexistente), inventário 2026 e simples ajustado 2025; âncoras invisíveis e comentários HTML ignorados; listagem nova só quando muda; precedência da página vigente e conflito entre arquivos; evidências válidas pelo contrato de `pipeline/energia/evidencia.py`; revisão quando unidades somem entre capturas; validação crítica vira stub; equivalência entre gold e CSV.
+`python3 -m unittest pipeline.tests.test_energia_transicao`: 38 testes, todos aprovados em 30/09/2026. Cobrem: agregados iguais entre o Parquet e o CSV oficiais (amostra real de 274 linhas); distribuidora pequena (CODESAM, 20 unidades e 332,07 kW) e multiestadual (CERES em MG e RJ) contra somas do CSV completo; identidade pelo CNPJ (Âmbar Amazonas com o CNPJ da antiga Amazonas Energia); data sentinela; código de município de 6 dígitos só com prefixo único; potência ausente distinta de zero; valor extremo de minigeração mantido; duplicidade candidata medida sem remover; controles por partes iguais aos da tabela inteira; energia do ONS contra o texto bruto; campo vazio de 2018 como ausência; dia em curso descartado; razão bloqueada em mês provisório; população de Roraima igual à soma dos municípios; planilhas do MCTI de 2015 (mês rotulado errado), 2020 e 2022 (revisões declaradas), 2021 (29/02 inexistente), inventário 2026 e simples ajustado 2025; âncoras invisíveis e comentários HTML ignorados; listagem nova só quando muda; precedência da página vigente e conflito entre arquivos; evidências válidas pelo contrato de `pipeline/energia/evidencia.py`; revisão quando unidades somem entre capturas; validação crítica vira stub; equivalência entre gold e CSV.
 
 ## 5. Limitações materiais e o que não se pode concluir
 

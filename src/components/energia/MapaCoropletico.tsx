@@ -44,8 +44,11 @@ import {
   validaCores,
 } from "@/lib/energia/mapa-coropletico";
 
-export { NAO_SE_APLICA } from "@/lib/energia/escalas";
-export { URL_GEO, agruparPorChave, type CamadaGeo, type FeatureGeo } from "@/lib/energia/geo";
+// Só tipos saem daqui. NAO_SE_APLICA (escalas.ts), URL_GEO e agruparPorChave (geo.ts) são
+// importados das bibliotecas: um valor reexportado por módulo "use client" chega ao Server
+// Component como referência de cliente (URL_GEO.uf lança erro no servidor e NAO_SE_APLICA
+// deixa de ser o texto que classeDe reconhece).
+export type { CamadaGeo, FeatureGeo } from "@/lib/energia/geo";
 
 /**
  * Mapa coroplético sobre a malha oficial do IBGE (public/energia/geo/*.json,
@@ -119,7 +122,7 @@ const BOTAO =
 const cacheGeo = new Map<string, Promise<CamadaGeo>>();
 
 /** Busca e valida uma camada; pedidos iguais compartilham a mesma promessa, e falha não fica em cache. */
-export function carregarGeometria(url: string): Promise<CamadaGeo> {
+function carregarGeometria(url: string): Promise<CamadaGeo> {
   let p = cacheGeo.get(url);
   if (!p) {
     p = fetch(url)

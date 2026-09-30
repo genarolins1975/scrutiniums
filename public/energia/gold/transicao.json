@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "transicao.json",
- "gerado_em": "2026-09-30T22:57:56Z",
+ "gerado_em": "2026-09-30T23:09:55Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "dafa93bb2111+alterado",
+ "versao_codigo": "883727b9c73e+alterado",
  "disponivel": true,
  "paineis": [
   "P063",
@@ -79,8 +79,8 @@
     "tratamento_ausencia": "registro com data sentinela (ano 1900) conta no estoque, sem ano de conexão; potência ausente não vira zero",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "dafa93bb2111+alterado",
-     "publicacao": "2026-09-30T22:57:55Z"
+     "codigo": "883727b9c73e+alterado",
+     "publicacao": "2026-09-30T23:09:54Z"
     },
     "revisoes": "Uma única captura do cadastro integrada até aqui: as revisões por registro tardio serão medidas a partir da próxima captura.",
     "testes": [
@@ -121,7 +121,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py transicao --sem-coleta (silver data/energia/silver/aneel_mmgd.db)",
-    "citacao": "SCRUTINIUMS. Unidades de micro e minigeração distribuída no cadastro da ANEEL: 4.656.839 empreendimentos, Brasil, 01/01/2004 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Relação de empreendimentos de Mini e Micro Geração Distribuída (recurso empreendimento-geracao-distribuida.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Unidades de micro e minigeração distribuída no cadastro da ANEEL: 4.656.839 empreendimentos, Brasil, 01/01/2004 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Relação de empreendimentos de Mini e Micro Geração Distribuída (recurso empreendimento-geracao-distribuida.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código 883727b9c73e+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    },
    "potencia": {
     "indicador": "Potência instalada de micro e minigeração distribuída no cadastro da ANEEL",
@@ -162,8 +162,8 @@
     "tratamento_ausencia": "registro com data sentinela (ano 1900) conta no estoque, sem ano de conexão; potência ausente não vira zero",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "dafa93bb2111+alterado",
-     "publicacao": "2026-09-30T22:57:55Z"
+     "codigo": "883727b9c73e+alterado",
+     "publicacao": "2026-09-30T23:09:54Z"
     },
     "revisoes": "Uma única captura do cadastro integrada até aqui: as revisões por registro tardio serão medidas a partir da próxima captura.",
     "testes": [
@@ -204,7 +204,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py transicao --sem-coleta (silver data/energia/silver/aneel_mmgd.db)",
-    "citacao": "SCRUTINIUMS. Potência instalada de micro e minigeração distribuída no cadastro da ANEEL: 53.965,6 MW, Brasil, 01/01/2004 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Relação de empreendimentos de Mini e Micro Geração Distribuída (recurso empreendimento-geracao-distribuida.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Potência instalada de micro e minigeração distribuída no cadastro da ANEEL: 53.965,6 MW, Brasil, 01/01/2004 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Relação de empreendimentos de Mini e Micro Geração Distribuída (recurso empreendimento-geracao-distribuida.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código 883727b9c73e+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    }
   },
   "fontes": [
@@ -8502,7 +8502,7 @@
     },
     "publicado_pela_fonte_em": "2026-09-29T12:07:03Z",
     "capturado_em": "2026-09-30T22:22:34Z",
-    "validado_em": "2026-09-30T22:57:55Z",
+    "validado_em": "2026-09-30T23:09:54Z",
     "cobertura_historica": {
      "inicio": "2008-12-01",
      "fim": "2026-09-29"
@@ -8519,9 +8519,9 @@
      "sha256": "289f0a9661b05aa08afa8c8edad455ae2e0faad38aef28d8257d037bc30459ef"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "dafa93bb2111+alterado",
+    "versao_codigo": "883727b9c73e+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-09-30T22:57:55Z",
+     "detectado_em": "2026-09-30T23:09:54Z",
      "total": 0,
      "vintages_comparadas": 2,
      "arquivos": 2,
@@ -8559,7 +8559,7 @@
     },
     "publicado_pela_fonte_em": "2026-09-29T12:07:03Z",
     "capturado_em": "2026-09-30T22:22:34Z",
-    "validado_em": "2026-09-30T22:57:55Z",
+    "validado_em": "2026-09-30T23:09:55Z",
     "cobertura_historica": {
      "inicio": "2026-09-29",
      "fim": "2026-09-29"
@@ -8573,9 +8573,9 @@
      "sha256": "289f0a9661b05aa08afa8c8edad455ae2e0faad38aef28d8257d037bc30459ef"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "dafa93bb2111+alterado",
+    "versao_codigo": "883727b9c73e+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-09-30T22:57:55Z",
+     "detectado_em": "2026-09-30T23:09:54Z",
      "total": 0,
      "vintages_comparadas": 2,
      "arquivos": 2,
@@ -10285,7 +10285,7 @@
     },
     "publicado_pela_fonte_em": null,
     "capturado_em": "2026-09-30T22:28:48Z",
-    "validado_em": "2026-09-30T22:57:56Z",
+    "validado_em": "2026-09-30T23:09:55Z",
     "cobertura_historica": {
      "inicio": "2019-02-15",
      "fim": "2026-09-29"
@@ -10302,9 +10302,9 @@
      "sha256": "a9a69fd8cf9a7c918b31755448e2ed1c3b844125da08dcd6ee9d803eba6be575"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "dafa93bb2111+alterado",
+    "versao_codigo": "883727b9c73e+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-09-30T22:57:55Z",
+     "detectado_em": "2026-09-30T23:09:55Z",
      "total": 0,
      "vintages_comparadas": 372,
      "arquivos": 372,
@@ -10317,7 +10317,7 @@
      "Cobre o Sistema Interligado Nacional; o cadastro da ANEEL cobre o Brasil inteiro, inclusive sistemas isolados.",
      "Estimativa de energia (MWmed) e cadastro de capacidade (MW) são grandezas diferentes: aparecem lado a lado e nunca são somadas.",
      "O ONS revisa o histórico (há registros de 2023 atualizados em 2026); os meses antigos são recoletados a cada 30 dias.",
-     "Antes de 2019 a API publica a parcela de MMGD vazia: é ausência, não zero."
+     "Antes de 15/02/2019 a API publica a parcela de MMGD vazia, e há dias sem valor em 2019: é ausência, não zero."
     ],
     "download": "/energia/series/transicao_ons_mmgd_mensal.csv",
     "notas_fonte": "Natureza ESTIMADO: estimativa publicada pelo próprio ONS, não pela plataforma."
@@ -10341,7 +10341,7 @@
     },
     "publicado_pela_fonte_em": null,
     "capturado_em": "2026-09-30T22:28:48Z",
-    "validado_em": "2026-09-30T22:57:56Z",
+    "validado_em": "2026-09-30T23:09:55Z",
     "cobertura_historica": {
      "inicio": "2019-02",
      "fim": "2026-09"
@@ -10355,9 +10355,9 @@
      "sha256": "a9a69fd8cf9a7c918b31755448e2ed1c3b844125da08dcd6ee9d803eba6be575"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "dafa93bb2111+alterado",
+    "versao_codigo": "883727b9c73e+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-09-30T22:57:55Z",
+     "detectado_em": "2026-09-30T23:09:55Z",
      "total": 0,
      "vintages_comparadas": 372,
      "arquivos": 372,
@@ -10452,8 +10452,8 @@
    "tratamento_ausencia": "meia hora sem valor fica fora da soma e das horas; dia incompleto não entra no SIN; dia em curso na captura não é verificado",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dafa93bb2111+alterado",
-    "publicacao": "2026-09-30T22:57:56Z"
+    "codigo": "883727b9c73e+alterado",
+    "publicacao": "2026-09-30T23:09:55Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
    "testes": [
@@ -10484,7 +10484,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py transicao --sem-coleta (silver data/energia/silver/aneel_mmgd.db)",
-   "citacao": "SCRUTINIUMS. MMGD estimada pelo ONS no SIN, média do mês: 8.968 MWmed, SIN, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Verificada (recurso carga_verificada_SECO_2026-08, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. MMGD estimada pelo ONS no SIN, média do mês: 8.968 MWmed, SIN, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Verificada (recurso carga_verificada_SECO_2026-08, capturado em 30/09/2026). Versão energia-0.1.0, código 883727b9c73e+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "emissoes": {
@@ -13542,7 +13542,7 @@
     },
     "publicado_pela_fonte_em": null,
     "capturado_em": "2026-09-30T22:49:08Z",
-    "validado_em": "2026-09-30T22:57:56Z",
+    "validado_em": "2026-09-30T23:09:55Z",
     "cobertura_historica": {
      "inicio": "2006-01",
      "fim": "2026-08"
@@ -13558,9 +13558,9 @@
      "sha256": "ce020b6e9fe69af47873516bfea01c38a50f929436a7d931e78d866b65a624b9"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "dafa93bb2111+alterado",
+    "versao_codigo": "883727b9c73e+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-09-30T22:57:56Z",
+     "detectado_em": "2026-09-30T23:09:55Z",
      "total": 0,
      "vintages_comparadas": 42,
      "arquivos": 42,
@@ -13600,7 +13600,7 @@
     },
     "publicado_pela_fonte_em": null,
     "capturado_em": "2026-09-30T22:49:08Z",
-    "validado_em": "2026-09-30T22:57:56Z",
+    "validado_em": "2026-09-30T23:09:55Z",
     "cobertura_historica": {
      "inicio": "2006-01",
      "fim": "2026-08"
@@ -13614,9 +13614,9 @@
      "sha256": "ce020b6e9fe69af47873516bfea01c38a50f929436a7d931e78d866b65a624b9"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "dafa93bb2111+alterado",
+    "versao_codigo": "883727b9c73e+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-09-30T22:57:56Z",
+     "detectado_em": "2026-09-30T23:09:55Z",
      "total": 0,
      "vintages_comparadas": 42,
      "arquivos": 42,
@@ -13672,8 +13672,8 @@
    "tratamento_ausencia": "ano sem planilha acessível fica sem valor; ano corrente parcial não tem fator anual; nada é estimado para preencher",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dafa93bb2111+alterado",
-    "publicacao": "2026-09-30T22:57:56Z"
+    "codigo": "883727b9c73e+alterado",
+    "publicacao": "2026-09-30T23:09:55Z"
    },
    "revisoes": "11 revisões declaradas pelo MCTI nas planilhas usadas; 4 valores da página vigente diferentes do site institucional anterior (listados em divergencias_entre_publicacoes).",
    "testes": [
@@ -13700,7 +13700,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py transicao --sem-coleta (silver data/energia/silver/aneel_mmgd.db)",
-   "citacao": "SCRUTINIUMS. Fator médio anual de emissão de CO2 do SIN (inventários): 0,0461 tCO2/MWh, SIN, 01/01/2025 a 31/12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: MCTI, Fatores de emissão de CO2 pela geração de energia elétrica no SIN (recurso Inventários Corporativos - 2026 (Inventario_2026_janago.xlsx), capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Fator médio anual de emissão de CO2 do SIN (inventários): 0,0461 tCO2/MWh, SIN, 01/01/2025 a 31/12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: MCTI, Fatores de emissão de CO2 pela geração de energia elétrica no SIN (recurso Inventários Corporativos - 2026 (Inventario_2026_janago.xlsx), capturado em 30/09/2026). Versão energia-0.1.0, código 883727b9c73e+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "evidencia_mensal": {
    "indicador": "Fator médio mensal de emissão de CO2 do SIN (inventários)",
@@ -13740,8 +13740,8 @@
    "tratamento_ausencia": "mês sem valor publicado fica sem valor; nada é interpolado",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dafa93bb2111+alterado",
-    "publicacao": "2026-09-30T22:57:56Z"
+    "codigo": "883727b9c73e+alterado",
+    "publicacao": "2026-09-30T23:09:55Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
    "testes": [
@@ -13759,7 +13759,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py transicao --sem-coleta (silver data/energia/silver/aneel_mmgd.db)",
-   "citacao": "SCRUTINIUMS. Fator médio mensal de emissão de CO2 do SIN (inventários): 0,0471 tCO2/MWh, SIN, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: MCTI, Fatores de emissão de CO2 pela geração de energia elétrica no SIN (recurso Inventários Corporativos - 2026 (Inventario_2026_janago.xlsx), capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Fator médio mensal de emissão de CO2 do SIN (inventários): 0,0471 tCO2/MWh, SIN, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: MCTI, Fatores de emissão de CO2 pela geração de energia elétrica no SIN (recurso Inventários Corporativos - 2026 (Inventario_2026_janago.xlsx), capturado em 30/09/2026). Versão energia-0.1.0, código 883727b9c73e+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "downloads": [

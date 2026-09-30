@@ -192,6 +192,21 @@ class LeituraMMGD(unittest.TestCase):
         self.assertAlmostEqual(r["duplicidade_candidata_kw_extras"], 3.24, delta=1e-9)
         self.assertEqual(len(set(t["CodEmpreendimento"].to_pylist())), t.num_rows)
 
+    def test_controles_por_partes_iguais_aos_da_tabela_inteira(self):
+        """Os controles rodam por partes (último caractere do código; grupos de
+        distribuidoras) para caber na memória; o resultado tem de ser o da tabela inteira."""
+        import pyarrow.compute as pc
+        import pyarrow.parquet as pq
+        t = pq.read_table(PARQUET)
+        chave = [c for c in mmgd.CHAVE_DUPLICIDADE if c in t.column_names]
+        inteira = mmgd.duplicidade_candidata(t.select(chave), chave)
+        partes = mmgd.controles_tabela(PARQUET)
+        for k, v in inteira.items():
+            self.assertEqual(partes[k], v, k)
+        self.assertEqual(partes["codigos_distintos"], len(pc.unique(t["CodEmpreendimento"])))
+        self.assertEqual(partes["codigos_repetidos"], 0)
+        self.assertGreater(inteira["duplicidade_candidata_linhas_extras"], 0)
+
     def test_observacoes_usam_referencia_composta(self):
         obs = list(self.ag_pq.observacoes())
         series = {s for s, _, _ in obs}

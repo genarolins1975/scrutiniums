@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { useCursorSincronizado } from "@/components/energia/CursorSincronizado";
+import { rotuloTick } from "@/lib/energia/escalas";
 import {
   dominioLinhas,
   formatarX,
@@ -157,6 +158,17 @@ export function GraficoLinhas({
     return () => ro.disconnect();
   }, []);
 
+  // no toque não há "sair com o ponteiro": a dica fica aberta até um toque fora do gráfico
+  const temAtivo = ativo !== null;
+  useEffect(() => {
+    if (!temAtivo) return;
+    const fora = (e: PointerEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setAtivo(null);
+    };
+    document.addEventListener("pointerdown", fora);
+    return () => document.removeEventListener("pointerdown", fora);
+  }, [temAtivo]);
+
   /* ---------- trecho exibido (zoom) ---------- */
   const N = dados.length;
   // valores de X e períodos prontos só mudam com os dados: não são refeitos a cada movimento do cursor
@@ -282,6 +294,8 @@ export function GraficoLinhas({
   }
 
   const yt = ticks(yMin, yMax);
+  // rótulo com as casas do passo: com passo 2,5 os ticks são "2,5" e "7,5", não "3" e "8"
+  const passoY = yt.length > 1 ? yt[1] - yt[0] : 1;
   const nx = Math.min(largura < ESTREITO ? 4 : 7, n);
   const xt = n <= 1 ? [0] : Array.from({ length: nx }, (_, k) => Math.round((k / Math.max(nx - 1, 1)) * (n - 1)));
 
@@ -560,7 +574,7 @@ export function GraficoLinhas({
           <g key={v}>
             <line x1={L} x2={w - R} y1={y(v)} y2={y(v)} stroke="var(--cor-grade)" strokeWidth="1" />
             <text x={L - 8} y={y(v) + 4} textAnchor="end" fontSize="11" fill="var(--cor-mineral)">
-              {v.toLocaleString("pt-BR", { maximumFractionDigits: Math.abs(yMax - yMin) < 5 ? 1 : 0 }).replace(/^-/, "\u2212")}
+              {rotuloTick(v, passoY)}
             </text>
           </g>
         ))}
@@ -642,8 +656,9 @@ export function GraficoLinhas({
           onPointerDown={pressionar}
           onPointerUp={soltar}
           onPointerCancel={() => setArrasto(null)}
-          onPointerLeave={() => {
-            setAtivo(null);
+          onPointerLeave={(ev) => {
+            // no toque o ponteiro "sai" ao levantar o dedo: a dica continua até outro toque
+            if (ev.pointerType === "mouse") setAtivo(null);
             if (arrasto) soltar();
           }}
         />

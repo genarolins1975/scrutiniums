@@ -10,6 +10,7 @@
  * nunca somados entre si. Ausência é null; zero só aparece quando a contagem ou a soma é
  * realmente zero. Nenhuma conta é refeita na interface.
  */
+import type { Evidencia } from "./evidencia";
 import type { Cabecalho, Download, Proveniencia } from "./tipos";
 
 /** Tipo de geração do SIGA (SigTipoGeracao). */
@@ -220,6 +221,8 @@ export type Estagios = {
   ralie: RalieAtual;
   coortes: Coorte[];
   desfechos_definicao: Record<Desfecho, string>;
+  /** Onde estão no SIGA as usinas sem desfecho ("ausente do SIGA" = fora do arquivo aberto, sem ato vinculado). */
+  sem_desfecho_no_siga: { situacao_siga: string; usinas: number; mw_outorgado: number }[];
   historico_mensal: HistoricoMensalRalie[];
 };
 
@@ -457,58 +460,34 @@ export type Cenarios = {
   vintage: { arquivo: string | null; sha256: string | null; capturado_em: string | null };
 };
 
+// ------------------------------------------------------------------ conferências entre recursos oficiais
+
+export type Conferencias = {
+  /** RALIE atual (CSV) contra a mesma fotografia no Parquet histórico, unidade por unidade. */
+  ralie_csv_x_parquet: {
+    fotografia: string;
+    ugs_csv: number;
+    ugs_parquet: number;
+    ugs_iguais: number;
+    mw_csv: number;
+    mw_parquet: number;
+    resultado: "aprovada" | "divergente";
+  };
+  /** Liberações do arquivo detalhado somadas por ano e tipo contra o resumo anual oficial (kW, desde 2014). */
+  liberacoes_detalhado_x_resumo: {
+    desde: string;
+    grupos_ano_tipo: number;
+    iguais: number;
+    tolerancia_kw: number;
+    divergentes: { ano: string; tipo: string; detalhado_kw: number | null; resumo_kw: number | null }[];
+    resultado: "aprovada" | "divergente";
+  };
+};
+
 // ------------------------------------------------------------------ evidência (seção 11.5)
 
-export type ResultadoTeste = "aprovado" | "ressalva" | "reprovado";
-
-export type ArquivoEvidencia = {
-  recurso: string | null;
-  arquivo: string | null;
-  sha256: string | null;
-  capturado_em: string | null;
-  publicado_em: string | null;
-};
-
-export type FonteEvidencia = ArquivoEvidencia & {
-  orgao: string;
-  conjunto: string;
-  url: string;
-  /** Presente quando o número usa mais de um arquivo. */
-  arquivos?: ArquivoEvidencia[];
-};
-
-/** Ficha "Comprove este número" montada e validada por pipeline/energia/evidencia.py. */
-export type EvidenciaExpansao = {
-  indicador: string;
-  valor_exibido: string;
-  /** Valor antes do arredondamento; null quando ausente (valor_exibido é "sem dado"). */
-  valor_calculo: number | null;
-  unidade: string;
-  periodo: { inicio: string; fim: string };
-  entidade: string;
-  universo: string;
-  filtros: string[];
-  fonte: FonteEvidencia;
-  extracao_pdf: { documento: string; edicao: string; pagina: string; conferencia: string } | null;
-  chaves_origem: string[];
-  chaves_total: number | null;
-  consulta: string | null;
-  manifesto: Download | null;
-  formula: string;
-  numerador: { descricao: string; valor: number | null } | null;
-  denominador: { descricao: string; valor: number | null } | null;
-  pesos: string | null;
-  exclusoes: string[];
-  cobertura: string;
-  tratamento_ausencia: string;
-  versao: { pipeline: string; codigo: string | null; publicacao: string };
-  revisoes: string;
-  testes: { nome: string; resultado: ResultadoTeste; detalhe: string }[];
-  reconciliacao: { descricao: string; resultado: ResultadoTeste; tolerancia: string } | null;
-  download: Download[];
-  reproducao: string;
-  citacao: string;
-};
+/** Ficha "Comprove este número" montada e validada por pipeline/energia/evidencia.py (contrato comum). */
+export type EvidenciaExpansao = Evidencia;
 
 export type ChaveEvidenciaExpansao =
   | "capacidade_total"
@@ -545,6 +524,7 @@ export type ExpansaoGold = Cabecalho & {
   cronograma: Cronograma;
   transmissao: Transmissao;
   cenarios: Cenarios;
+  conferencias: Conferencias;
   proveniencia: Record<ChaveProvenienciaExpansao, Proveniencia>;
   /** Fichas dos números de destaque; uma ficha some quando a série de origem não existe. */
   evidencias: Partial<Record<ChaveEvidenciaExpansao, EvidenciaExpansao>>;

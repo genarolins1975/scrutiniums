@@ -4,7 +4,7 @@ import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent, type R
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { dominioBonito, escalaLinear, rotuloTick, type Dominio, type EscalaLinear } from "@/lib/energia/escalas";
-import { alternarSelecao, buscarEntidades, type EntidadeBuscavel } from "@/lib/energia/tabela";
+import { LIMITE_COMPARACAO, alternarSelecao, buscarEntidades, type EntidadeBuscavel } from "@/lib/energia/tabela";
 
 /**
  * Comparador de até quatro entidades (distribuidoras, submercados, usinas,
@@ -68,7 +68,6 @@ export type ComparadorProps = {
   renderizarItem?: (e: EntidadeComparavel, ctx: ContextoComparador & { indice: number }) => ReactNode;
 };
 
-export const LIMITE_COMPARACAO = 4;
 const MAX_OPCOES = 50;
 
 export function Comparador({

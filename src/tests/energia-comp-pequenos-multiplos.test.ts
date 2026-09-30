@@ -121,7 +121,7 @@ describe("PequenosMultiplos no servidor", () => {
   });
 
   it("cursor sincronizado: todos os painéis mostram a cruz e o valor do mesmo dia no cabeçalho", () => {
-    const c = renderToStaticMarkup(createElement(CursorSincronizado, { inicial: { grupo: "d", valor: "2024-01-04" }, children: createElement(PequenosMultiplos, base) }));
+    const c = renderToStaticMarkup(createElement(CursorSincronizado, { inicial: { grupo: "d", valor: "2024-01-04" } }, createElement(PequenosMultiplos, base)));
     expect(c.match(/data-cursor=""/g)).toHaveLength(4);
     expect(painel(c, "SE")).toContain("04/01/2024: 40\u00a0MWmed");
     expect(painel(c, "N")).toContain("04/01/2024: sem dado");

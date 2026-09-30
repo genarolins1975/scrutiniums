@@ -27,7 +27,8 @@ import { criarLojaCursor, type CursorCompartilhado, type LojaCursor } from "@/li
 
 const Contexto = createContext<LojaCursor | null>(null);
 
-export function CursorSincronizado({ children, inicial }: { children: ReactNode; inicial?: { grupo: string; valor: string } }) {
+// children opcional no tipo: permite createElement(CursorSincronizado, props, ...filhos) em código sem JSX
+export function CursorSincronizado({ children, inicial }: { children?: ReactNode; inicial?: { grupo: string; valor: string } }) {
   const loja = useRef<LojaCursor | null>(null);
   if (!loja.current) loja.current = criarLojaCursor(inicial ? { ...inicial, origem: "inicial" } : null);
   return <Contexto.Provider value={loja.current}>{children}</Contexto.Provider>;

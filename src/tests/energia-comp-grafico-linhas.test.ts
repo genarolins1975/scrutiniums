@@ -178,6 +178,14 @@ describe("GraficoLinhas no servidor, sem as props novas (compatibilidade)", () =
     expect(d).not.toBeNull();
     expect((d as string).match(/M/g)).toHaveLength(2);
   });
+
+  it("ticks do eixo vertical com as casas do passo: passo 2,5 não vira 3 e 8", () => {
+    // valores de 0 a 9 com folga de 6%: passo 2,5 (ticks 0; 2,5; 5; 7,5)
+    const dados = X10.map((d, i) => ({ d, a: i }));
+    const g = html({ titulo: "Passo 2,5", dados, chaveX: "d", series: [{ id: "a", rotulo: "A", cor: "var(--serie-1)" }], unidade: "MW" });
+    const ticks = Array.from(g.matchAll(/text-anchor="end" font-size="11" fill="var\(--cor-mineral\)">([^<]+)</g)).map((t) => t[1]);
+    expect(ticks).toEqual(["0,0", "2,5", "5,0", "7,5"]);
+  });
 });
 
 describe("zoom por intervalo", () => {
@@ -251,9 +259,10 @@ describe("cursor sincronizado", () => {
       { m: "2024-02", a: 3, b: 4 },
     ];
     const m = renderToStaticMarkup(
-      createElement(CursorSincronizado, {
-        inicial: { grupo: "d", valor: "2024-01-04" },
-        children: createElement(
+      createElement(
+        CursorSincronizado,
+        { inicial: { grupo: "d", valor: "2024-01-04" } },
+        createElement(
           Fragment,
           null,
           grafico({ titulo: "G1" }),
@@ -262,7 +271,7 @@ describe("cursor sincronizado", () => {
           grafico({ titulo: "G4 sem sincronia", sincronizarCursor: false }),
           grafico({ titulo: "G5 fora do trecho", zoom: true, intervaloInicial: { inicio: "2024-01-06", fim: "2024-01-09" } }),
         ),
-      }),
+      ),
     );
     const partes = m.split(/(?=<title id=)/).slice(1);
     const comCursor = partes.map((p) => /data-cursor="sincronizado"/.test(p));

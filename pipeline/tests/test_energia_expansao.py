@@ -68,6 +68,29 @@ RECORTES = [
 ]
 
 
+_SAIDAS_ORIGINAIS = {}
+
+
+def setUpModule():
+    """Os blocos da gold escrevem os CSV de download (base.escreve_csv): durante os testes,
+    as saídas vão para um diretório temporário, nunca para public/energia (que guarda a
+    publicação real feita a partir do silver completo)."""
+    import tempfile
+    tmp = tempfile.mkdtemp(prefix="teste-expansao-")
+    _SAIDAS_ORIGINAIS.update(SERIES=base.SERIES, GOLD=base.GOLD, tmp=tmp)
+    base.SERIES = os.path.join(tmp, "series")
+    base.GOLD = os.path.join(tmp, "gold")
+    os.makedirs(base.SERIES)
+    os.makedirs(base.GOLD)
+
+
+def tearDownModule():
+    import shutil
+    base.SERIES = _SAIDAS_ORIGINAIS["SERIES"]
+    base.GOLD = _SAIDAS_ORIGINAIS["GOLD"]
+    shutil.rmtree(_SAIDAS_ORIGINAIS["tmp"], ignore_errors=True)
+
+
 def _caminho(nome):
     return os.path.join(DADOS, nome)
 
@@ -427,6 +450,14 @@ class ContratoDaGoldPublicada(unittest.TestCase):
         resumo = {x["estagio"]: x for x in self.g["estagios"]["resumo"]}
         self.assertEqual(resumo["operacao"]["usinas"], self.g["capacidade_instalada"]["total"]["usinas"])
         self.assertEqual(resumo["construcao_nao_iniciada"]["mw_fiscalizado"], 0.0)
+
+
+class SemEfeitoNaPublicacao(unittest.TestCase):
+    def test_blocos_escrevem_no_diretorio_temporario(self):
+        self.assertNotEqual(os.path.realpath(base.SERIES), os.path.realpath(os.path.join(RAIZ, "public", "energia", "series")))
+        con = _silver_dos_recortes([x for x in RECORTES if x[0] == mx.DS_LEILOES])
+        mx._bloco_leiloes(mx._estado(con, mx.DS_LEILOES, "lote:"), None)
+        self.assertTrue(os.path.exists(os.path.join(base.SERIES, "expansao_leiloes_transmissao.csv")))
 
 
 class Metricas(unittest.TestCase):

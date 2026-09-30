@@ -341,8 +341,10 @@ export function agruparPorChave(
       nome: nome ? nome(k, ms) : k,
       uf: Array.from(new Set(ms.map((m) => m.uf))).sort().join("/"),
       membros: ms.map((m) => m.id).sort(),
-      // cada caminho publicado já é uma sequência de subcaminhos "M...z": a concatenação é válida
-      d: ms.map((m) => m.d).join(""),
+      // cada caminho publicado já é uma sequência de subcaminhos "M...z": a concatenação é válida.
+      // Um "m" inicial (relativo, mas absoluto por ser o primeiro do caminho) vira "M": concatenado,
+      // ele passaria a ser relativo ao subcaminho anterior e deslocaria o membro inteiro
+      d: ms.map((m) => m.d.replace(/^\s*m/, "M")).join(""),
     }));
 }
 

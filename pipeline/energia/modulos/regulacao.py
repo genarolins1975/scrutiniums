@@ -27,6 +27,8 @@ Diário Oficial (www.in.gov.br) encerra a conexão; não contornamos. Os PDFs v�
 pública do Internet Archive no modo id_ (bytes originais), conferida pelo sha256
 registrado. O InfoPLD da CCEE está em domínio bloqueado e não é fonte de ato.
 """
+import csv
+import io
 import json
 import os
 import re
@@ -159,7 +161,17 @@ def _hoje(ctx):
 
 
 def _escreve_csv(ctx, nome, cab, linhas):
-    return base.escreve_csv(nome, cab, linhas, destino=(ctx or {}).get("destino_csv"))
+    """CSV com ';', ponto decimal e vazio = ausência, como base.escreve_csv, mas com aspas
+    (RFC 4180) nos campos que contêm ';', aspas ou quebra de linha: dispositivos, trechos e
+    decisões citam o texto dos atos, que tem ponto e vírgula e não pode ser alterado.
+    ctx['destino_csv'] desvia a escrita (testes)."""
+    buf = io.StringIO()
+    w = csv.writer(buf, delimiter=";", quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
+    w.writerow(cab)
+    for linha in linhas:
+        w.writerow(["" if v is None else (repr(round(v, 4)) if isinstance(v, float) else v) for v in linha])
+    destino = (ctx or {}).get("destino_csv") or base.SERIES
+    return base._escreve_atomico(os.path.join(destino, nome), buf.getvalue())
 
 
 def _bytes_bronze(arquivo):
@@ -616,8 +628,11 @@ def _evidencias_limites(bl, textos, docs, snap_docs):
     """'Comprove este número' dos três limites vigentes na data de referência."""
     out = {}
     hoje_lim = bl["vigente_hoje"]
-    for campo, rot in (("pld_min", "PLD mínimo"), ("pld_max_horario", "PLD máximo horário"),
-                       ("pld_max_estrutural", "PLD máximo estrutural")):
+    nomes = {"trecho_no_pdf": "Trecho literal encontrado no PDF do ato", "publicacao_no_extrato": "Data do DOU no extrato oficial",
+             "deliberacao_na_ata": "Número e data da deliberação nas atas da Diretoria", "valor_na_ata": "Valor escrito na ata da Diretoria",
+             "piso_teo": "Piso igual ao maior entre TEO e TEO de Itaipu", "regra_ipca": "Teto refeito pela variação do IPCA"}
+    for campo, rot in (("pld_min", "Piso do PLD (PLD mínimo)"), ("pld_max_horario", "Teto horário do PLD"),
+                       ("pld_max_estrutural", "Teto estrutural do PLD")):
         ato_nome = hoje_lim.get(f"ato_{campo}")
         a = next((x for x in bl["atos"] if x["ato"] == ato_nome and x[campo] == hoje_lim.get(campo)), None)
         if not a:
@@ -627,8 +642,8 @@ def _evidencias_limites(bl, textos, docs, snap_docs):
         if not v:
             continue
         cs = [x for x in a["conferencias"] if x.get("campo") in (campo, "trecho", "data_publicacao", "numero_e_data")]
-        testes = [ev.teste(x["conferencia"].replace("_", " "), x["resultado"] if x["resultado"] != "nao_executada" else "ressalva",
-                           x["detalhe"]) for x in cs]
+        testes = [ev.teste(nomes.get(x["conferencia"], x["conferencia"]),
+                           x["resultado"] if x["resultado"] != "nao_executada" else "ressalva", x["detalhe"]) for x in cs]
         ipca = next((x for x in bl["conferencias_detalhe"] if x["conferencia"] == "regra_ipca" and x["ano"] == a["ano"]
                      and x["campo"] == campo), None)
         rec = (ev.reconciliacao(f"Regra do art. 23, § 1º, da REN nº 1.032/2022 refeita com o IPCA do IBGE: {ipca['detalhe']}",
@@ -638,14 +653,15 @@ def _evidencias_limites(bl, textos, docs, snap_docs):
                                 next((x["resultado"] for x in a["conferencias"] if x["conferencia"] == "piso_teo"), "ressalva"),
                                 "R$ 0,00/MWh") if campo == "pld_min" else None)
         out[campo] = ev.construir(
-            indicador=f"{rot} do PLD vigente", valor_exibido=f"R$ {rg.numero_br(a[campo])}/MWh", valor_calculo=a[campo],
+            indicador=f"{rot} vigente", valor_exibido=f"R$ {rg.numero_br(a[campo])}/MWh", valor_calculo=a[campo],
             unidade="R$/MWh", periodo={"inicio": a["vigencia_inicio"], "fim": a["vigencia_fim"]},
             entidade="Mercado de Curto Prazo (todos os submercados)", universo=f"limite fixado para {a['ano']}",
             fonte={"orgao": "ANEEL", "conjunto": a["ato"], "recurso": v["recurso"], "url": a["url_oficial"] or a["url"],
                    "arquivo": v["arquivo"], "sha256": v["sha256"], "capturado_em": v["capturado_em"], "publicado_em": a["data_publicacao"]},
             extracao_pdf={"documento": a["documento_titulo"] or a["ato"], "edicao": a["dou"] or "publicação no DOU não conferida",
                           "pagina": str(a["pagina"]) if a["pagina"] else "não localizada",
-                          "conferencia": "passagens do trecho literal conferidas no texto extraído do PDF a cada execução"
+                          "conferencia": ("passagens do trecho literal conferidas no texto extraído do PDF a cada execução; PDF obtido na "
+                                          f"cópia pública {a['copia_publica']} e aceito pelo sha256 registrado")
                                          if a["trecho_confere"] else "conferência automática não executada neste ambiente"},
             chaves_origem=[f"{a['ato']} | {a['dispositivo'][:120]}"],
             formula="valor fixado pelo ato; vigente campo a campo (ato em vigor que informa o campo, publicação mais recente)",
@@ -808,13 +824,15 @@ def _bloco_consultas(con, ctx, hoje, atas, agenda_codigos):
                    (i["resultado"] or {}).get("resultado_julgamento"), (i["resultado"] or {}).get("vinculo"),
                    i["deliberacao_abertura"]["decisao"]] for i in todos])
     # cobertura: aberturas de consulta pública nas atas × total anual publicado pela ANEEL
-    totais = _serie(con, DS_PART, "consultas")
+    totais, totais_ap = _serie(con, DS_PART, "consultas"), _serie(con, DS_PART, "audiencias")
     ger_part = base.registros_como_estavam_em(con, DS_PART)
-    abertas_ano = {}
+    abertas_ano, ap_ano = {}, {}
     for i in todos:
-        if i["modalidade"] == "Consulta Pública":
-            abertas_ano[i["ano"]] = abertas_ano.get(i["ano"], 0) + 1
+        alvo = abertas_ano if i["modalidade"] == "Consulta Pública" else ap_ano
+        alvo[i["ano"]] = alvo.get(i["ano"], 0) + 1
     cobertura = [{"ano": int(a), "nas_atas": abertas_ano.get(int(a), 0), "total_anual_aneel": int(v),
+                  "audiencias_nas_atas": ap_ano.get(int(a), 0),
+                  "audiencias_total_anual_aneel": int(totais_ap[a]) if totais_ap.get(a) is not None else None,
                   "parcial": (ger_part.get(a) or {}).get("gerado_em", "")[:4] == a,
                   "gerado_em": (ger_part.get(a) or {}).get("gerado_em")}
                  for a, v in sorted(totais.items()) if int(a) >= 2018]
@@ -1018,6 +1036,20 @@ def construir(con, ctx):
     v_atas = max((v for v in base.vintages_do_dataset(con, DS_ATAS) if v["recurso"].lower().endswith(".csv")),
                  key=lambda v: v["capturado_em"], default=None)
     evid_cons = None
+    # controles reais sobre as abertas: a janela é relida do trecho da decisão guardado na
+    # gold e nenhuma consulta com fim anterior à data de referência está entre elas
+    relidas = 0
+    for i in abertas:
+        f = next((x for x in i["fases"] if x["inicio"] == i["inicio"] and x["fim"] == i["fim"]), None)
+        rel = ar.periodos_da_decisao(f["trecho_periodo"] or "", f["data_deliberacao"]) if f else []
+        relidas += bool(rel) and min(x["inicio"] for x in rel) == i["inicio"] and max(x["fim"] for x in rel) == i["fim"]
+    vencidas = [i["id"] for i in cons.get("itens", []) if i["situacao"] in ("aberta", "a_abrir") and (i["fim"] or "9999") < hoje]
+    testes_abertas = [
+        ev.teste("Janela relida do trecho da decisão", "aprovado" if relidas == len(abertas) else "reprovado",
+                 f"{relidas} de {len(abertas)} janelas reproduzidas a partir do trecho literal guardado"),
+        ev.teste("Consulta vencida fora das abertas", "aprovado" if not vencidas else "reprovado",
+                 "nenhuma consulta com fim anterior à data de referência aparece como aberta" if not vencidas
+                 else "vencidas marcadas como abertas: " + ", ".join(vencidas))]
     if v_atas and cons.get("disponivel", True) and atas:
         evid_cons = ev.construir(
             indicador="Consultas e audiências públicas recebendo contribuições", valor_exibido=str(len(abertas)),
@@ -1029,9 +1061,7 @@ def construir(con, ctx):
             cobertura=f"atas publicadas até a reunião de {c.data_br(cons['atas_ate'])}" if cons.get("atas_ate") else "atas publicadas",
             tratamento_ausencia="fase sem datas na ata fica como prazo não datado e não é contada como aberta",
             revisoes=c.snapshot_de(con, DS_ATAS).get("revisoes"),
-            testes=[ev.teste("janela datada", "aprovado", f"{len(abertas)} de {len(abertas)} com início e fim lidos na decisão"),
-                    ev.teste("consulta vencida não aparece como aberta", "aprovado",
-                             "nenhuma consulta com fim anterior à data de referência entre as abertas")],
+            testes=testes_abertas,
             download=[{"rotulo": "Consultas e audiências (CSV)", "url": _u(CSV_CONS)}],
             reproducao="python3 pipeline/energia/executar_modulo.py regulacao --sem-coleta")
 

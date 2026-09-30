@@ -180,6 +180,9 @@ describe("texto de valor", () => {
     expect(textoValor(null, 1, "R$/MWh")).toBe("sem dado");
     expect(textoValor(NaN, 1, "R$/MWh")).toBe("sem dado");
     expect(textoValor(0, 1, "R$/MWh")).toBe("0,0 R$/MWh");
+    // arredonda antes do sinal: um valor que some no arredondamento não vira "−0,0"
+    expect(textoValor(-0.04, 1, "")).toBe("0,0");
+    expect(textoValor(-0.06, 1, "")).toBe("\u22120,1");
     expect(textoValor(-2.5, 1, "%")).toBe("−2,5%");
   });
 });

@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "arquivos.json",
- "gerado_em": "2026-09-30T23:09:03Z",
+ "gerado_em": "2026-09-30T23:20:57Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "1313c6cb8127",
+ "versao_codigo": "883727b9c73e+alterado",
  "disponivel": true,
  "arquivos": {
   "/energia/series/regulacao_limites_pld_atos.csv": {
@@ -261,8 +261,18 @@
    "modulo": "qualidade",
    "gold": "qualidade.json"
   },
-  "/energia/series/qualidade_conjuntos_anual.csv": {
-   "colunas": "conjunto (IdeConjUndConsumidoras); nome; cnpj; sigla; ano; meses; dec_h; fec_interrupcoes; dec_limite_h; fec_limite_interrupcoes; razao_dec; razao_fec; ucs_media. Soma dos meses publicados; o ano só é completo com 12 meses.",
+  "/energia/series/qualidade_conjuntos_anual_2000_2009.csv": {
+   "colunas": "Conjuntos de 2000 a 2009: conjunto (IdeConjUndConsumidoras); nome (cadastro mais recente); cnpj (de quem publicou o ano); sigla; ano; meses; dec_h; fec_interrupcoes (soma dos meses publicados; o ano só é completo com 12 meses); dec_limite_h e fec_limite_interrupcoes (limite do mesmo ano); razao_dec e razao_fec (só com 12 meses); ucs_media.",
+   "modulo": "qualidade",
+   "gold": "qualidade.json"
+  },
+  "/energia/series/qualidade_conjuntos_anual_2010_2019.csv": {
+   "colunas": "Conjuntos de 2010 a 2019: conjunto (IdeConjUndConsumidoras); nome (cadastro mais recente); cnpj (de quem publicou o ano); sigla; ano; meses; dec_h; fec_interrupcoes (soma dos meses publicados; o ano só é completo com 12 meses); dec_limite_h e fec_limite_interrupcoes (limite do mesmo ano); razao_dec e razao_fec (só com 12 meses); ucs_media.",
+   "modulo": "qualidade",
+   "gold": "qualidade.json"
+  },
+  "/energia/series/qualidade_conjuntos_anual_2020_2029.csv": {
+   "colunas": "Conjuntos de 2020 a 2029: conjunto (IdeConjUndConsumidoras); nome (cadastro mais recente); cnpj (de quem publicou o ano); sigla; ano; meses; dec_h; fec_interrupcoes (soma dos meses publicados; o ano só é completo com 12 meses); dec_limite_h e fec_limite_interrupcoes (limite do mesmo ano); razao_dec e razao_fec (só com 12 meses); ucs_media.",
    "modulo": "qualidade",
    "gold": "qualidade.json"
   },
@@ -292,7 +302,7 @@
    "gold": "qualidade.json"
   },
   "/energia/series/qualidade_eventos_emergencia.csv": {
-   "colunas": "cnpj; sigla; codigo; inicio e fim como publicados; duracao_h (vazio quando a data é implausível); duracao_ausente_motivo; chi_evento e chi_limite (consumidor × hora); razao_chi; plano_contingencia; nivel; origem.",
+   "colunas": "uma linha por evento e competência (AAAA-MM; evento que atravessa o mês aparece em mais de uma, sem soma); cnpj; sigla; codigo; inicio e fim como publicados; duracao_h (vazio quando a data é implausível); duracao_ausente_motivo; chi_evento e chi_limite (consumidor × hora); razao_chi; plano_contingencia; nivel; origem.",
    "modulo": "qualidade",
    "gold": "qualidade.json"
   },

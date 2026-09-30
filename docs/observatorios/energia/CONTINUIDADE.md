@@ -41,11 +41,12 @@ O contêiner reiniciou e interrompeu os fluxos; o disco sobreviveu (silvers, bro
 
 | Fluxo | Módulos | Run ID |
 | --- | --- | --- |
-| Biblioteca de componentes (retomada; 4 construtores em cache) | evidência, séries e cronograma, navegação, revisão | wf_4b729d6c-a2b |
+| Biblioteca de componentes (concluída às 23h20 UTC; revisão corrigiu 8 defeitos) | 17 componentes e hooks, catálogo em docs/observatorios/COMPONENTES_ENERGIA.md | wf_4b729d6c-a2b |
 | Módulos W1 | perdas, qualidade | wf_6e201925-cf8 |
 | Módulos W2 | conta, inclusão | wf_1a982800-0da |
 | Módulos W4 | regulação, pld, previsões | wf_a93ab047-902 |
 | Módulos W3 | expansão, transição, empresas | wf_f8321428-1d4 |
 | Módulos W5 | água e clima, carga | wf_091c0372-524 |
+| Módulos W6 | geração, rede, mercado | wf_61f40fd7-0cf |
 
 Pendentes de disparo: água e clima e carga (`scratchpad/wave2a.json`), geração, rede e mercado (`scratchpad/wave2b.json`); depois visão geral, aprenda, dados e metodologia, home, integração, auditoria e documentação final. Descoberta de fontes: inventário, ONS e ANEEL distribuição concluídos; tarifas/social, geração/expansão/empresas, outras fontes, benchmarks e crítico interrompidos (os módulos verificam as próprias fontes; benchmarks e crítico ainda precisam rodar).

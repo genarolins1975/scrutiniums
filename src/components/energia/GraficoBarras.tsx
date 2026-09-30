@@ -483,11 +483,11 @@ export function GraficoBarras({
   ) : (
     <line x1={r1(zero)} x2={r1(zero)} y1={0} y2={h} stroke="var(--cor-carvao-muted)" strokeWidth="1" />
   );
-  const linhasRef = referencias.map((r) => {
+  const linhasRef = referencias.map((r, k) => {
     const p = r1(escala(r.valor));
     const texto = `${r.rotulo}: ${formatarValor(r.valor, casas, unidade)}`;
     return (
-      <g key={`${r.rotulo}-${r.valor}`} pointerEvents="none" data-referencia={r.rotulo}>
+      <g key={`${k}-${r.rotulo}`} pointerEvents="none" data-referencia={r.rotulo}>
         {vertical ? (
           <>
             <line x1={plot.x0} x2={plot.x1} y1={p} y2={p} stroke="var(--cor-carvao-muted)" strokeWidth="1.5" strokeDasharray="5 4" />
@@ -514,11 +514,12 @@ export function GraficoBarras({
   });
 
   // ---------- dica ----------
+  // sem w-max: a largura da dica se ajusta ao espaço entre left e a borda do gráfico, então ela nunca cria rolagem horizontal na página
   const dica =
     ativo !== null && ativo < n ? (
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute z-20 w-max min-w-[11rem] max-w-[16rem] border border-linha bg-superficie px-3 py-2 text-xs shadow-[0_6px_20px_rgba(26,29,33,0.12)]"
+        className="pointer-events-none absolute z-20 min-w-[11rem] max-w-[16rem] border border-linha bg-superficie px-3 py-2 text-xs shadow-[0_6px_20px_rgba(26,29,33,0.12)]"
         style={
           vertical
             ? { top: 8, left: `min(max(0px, calc(${((banda(ativo).x + banda(ativo).w / 2) / w) * 100}% - 5.5rem)), calc(100% - 12rem))` }
@@ -551,10 +552,10 @@ export function GraficoBarras({
               </span>
             </li>
           )}
-          {referencias.map((r) => {
+          {referencias.map((r, k) => {
             const tot = pilhas ? (pilhas[ativo].completo ? pilhas[ativo].total : null) : series.length === 1 ? valor(ativo, series[0]) : null;
             return tot === null ? null : (
-              <li key={r.rotulo} className="flex justify-between gap-3 text-carvao-muted">
+              <li key={`${k}-${r.rotulo}`} className="flex justify-between gap-3 text-carvao-muted">
                 <span>Diferença ({r.rotulo})</span>
                 <span className="tabular-nums">{formatarDiferenca(tot - r.valor, casas, unidade === "%" ? "p.p." : unidade)}</span>
               </li>
@@ -624,8 +625,8 @@ export function GraficoBarras({
               {s.rotulo}
             </li>
           ))}
-        {referencias.map((r) => (
-          <li key={r.rotulo} className="flex items-center gap-1.5">
+        {referencias.map((r, k) => (
+          <li key={`${k}-${r.rotulo}`} className="flex items-center gap-1.5">
             <svg width="18" height="8" aria-hidden="true">
               <line x1="0" y1="4" x2="18" y2="4" stroke="var(--cor-carvao-muted)" strokeWidth="1.5" strokeDasharray="5 4" />
             </svg>
@@ -662,8 +663,8 @@ export function GraficoBarras({
                 </text>
               );
             })}
-            {referencias.map((r) => (
-              <line key={r.rotulo} x1={r1(escala(r.valor))} x2={r1(escala(r.valor))} y1="17" y2="22" stroke="var(--cor-carvao-muted)" strokeWidth="1.5" />
+            {referencias.map((r, k) => (
+              <line key={`${k}-${r.rotulo}`} x1={r1(escala(r.valor))} x2={r1(escala(r.valor))} y1="17" y2="22" stroke="var(--cor-carvao-muted)" strokeWidth="1.5" />
             ))}
           </svg>
           <div className="overflow-y-auto overflow-x-hidden" style={{ maxHeight: alturaMaxima }} data-rolagem={h > alturaMaxima ? "sim" : "nao"}>

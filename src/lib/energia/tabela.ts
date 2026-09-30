@@ -632,6 +632,14 @@ export function gerarXlsx(colunas: readonly ColunaTabela[], linhas: readonly Lin
 
 /* ---------- seleção para comparação (Comparador) ---------- */
 
+/**
+ * Limite de entidades comparadas lado a lado (seção 7.3: "até quatro"). Fica
+ * aqui, e não no Comparador ("use client"), para que páginas do servidor
+ * possam lê-lo: constante importada de módulo cliente chega ao servidor como
+ * referência de cliente, não como o número.
+ */
+export const LIMITE_COMPARACAO = 4;
+
 export type EntidadeBuscavel = { id: string; rotulo: string; detalhe?: string; sinonimos?: readonly string[] };
 
 /**

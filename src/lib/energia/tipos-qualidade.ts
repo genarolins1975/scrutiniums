@@ -297,10 +297,13 @@ export type OuvidoriaNacional = TaxaNacional & {
   procedentes_por_100mil_uc: number | null;
 };
 
+/** Registro de um evento em uma competência (evento que atravessa o mês aparece em mais de uma). */
 export type EventoEmergencia = {
   codigo: string;
   cnpj: string | null;
   sigla: string | null;
+  /** AAAA-MM de competência do registro. */
+  competencia: string;
   inicio: string | null;
   fim: string | null;
   duracao_h: number | null;
@@ -325,7 +328,10 @@ export type Atendimento = {
   ouvidoria_aneel: OuvidoriaNacional[];
   tmae: { ano: number; distribuidoras: number; ocorrencias: number | null; tmae_min: number | null }[];
   eventos_emergencia: {
+    /** Eventos distintos (CNPJ, código). */
     total: number;
+    /** Registros por competência (um evento pode ter mais de um). */
+    registros_competencia: number;
     distribuidoras: number;
     inicio_min: string | null;
     inicio_max: string | null;

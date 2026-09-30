@@ -1437,6 +1437,10 @@ def _conferencias(con, ralie_ug, pf_ug, data_ralie, lib_linhas):
     return {"ralie_csv_x_parquet": ralie, "liberacoes_detalhado_x_resumo": lib}
 
 
+def _contagem(n, singular, plural):
+    return f"{_milhar(n)} {singular if n == 1 else plural}"
+
+
 def _valida(siga, ralie_ug, data_siga, hoje):
     """Controles físicos e de esquema (seção 5.2 do contrato). Retorna (críticos, ressalvas)."""
     criticos, ressalvas = [], []
@@ -1447,15 +1451,15 @@ def _valida(siga, ralie_ug, data_siga, hoje):
         criticos.append(f"{len(neg)} usinas do SIGA com potência negativa")
     fora = [k for k, u in siga.items() if u.get("lat") is not None and not (-34.5 <= u["lat"] <= 5.5 and -74.5 <= u["lon"] <= -28.5)]
     if fora:
-        ressalvas.append(f"{len(fora)} usinas com coordenada fora do retângulo do território brasileiro: ficam fora do mapa.")
+        ressalvas.append(f"{_contagem(len(fora), 'usina', 'usinas')} com coordenada fora do retângulo do território brasileiro: fora do mapa.")
     if data_siga and data_siga > hoje.isoformat():
         criticos.append(f"data de geração do SIGA no futuro: {data_siga}")
     op_sem_pot = [k for k, u in siga.items() if u.get("fase") == "Operação" and not u.get("kw_fiscalizado")]
     if op_sem_pot:
-        ressalvas.append(f"{len(op_sem_pot)} usinas na fase Operação com potência fiscalizada zero ou vazia no SIGA (mantidas; somam 0 kW).")
+        ressalvas.append(f"{_contagem(len(op_sem_pot), 'usina', 'usinas')} na fase Operação com potência fiscalizada zero ou vazia no SIGA (mantidas; somam 0 kW).")
     fiscal_acima = [k for k, u in siga.items() if (u.get("kw_fiscalizado") or 0) > 1.2 * (u.get("kw_outorgado") or 0) > 0]
     if fiscal_acima:
-        ressalvas.append(f"{len(fiscal_acima)} usinas com potência fiscalizada mais de 20% acima da outorgada (valor da fonte mantido).")
+        ressalvas.append(f"{_contagem(len(fiscal_acima), 'usina', 'usinas')} com potência fiscalizada mais de 20% acima da outorgada (valor da fonte mantido).")
     negu = [k for k, x in ralie_ug.items() if (x.get("kw") or 0) < 0]
     if negu:
         criticos.append(f"{len(negu)} unidades do RALIE com potência negativa")
@@ -1504,6 +1508,17 @@ def construir(con, ctx):
 
     conferencias = _conferencias(con, ralie_ug, pf_ug, data_ralie, lib_linhas)
     capacidade = _bloco_capacidade(siga, agreg, lib_linhas, data_siga)
+    fora = capacidade["reconciliacao"]["fora_da_tolerancia"]
+    rec_ref = capacidade["reconciliacao"]
+    if fora["tipos"]:
+        ressalvas.append(f"Reconciliação com o agregado oficial por tipo ({rec_ref['referencia_tipo']}) com resíduo acima de "
+                         f"{TOLERANCIA_RESIDUO_PCT:g}% em: {', '.join(fora['tipos'])}.")
+    if fora["ufs"]:
+        ressalvas.append(f"Reconciliação com o agregado oficial por UF ({rec_ref['referencia_uf']}) com resíduo acima de "
+                         f"{TOLERANCIA_RESIDUO_PCT:g}% em: {', '.join(fora['ufs'])} (diferença não explicada pelas liberações do intervalo; valores da fonte mantidos).")
+    for nome, x in conferencias.items():
+        if x["resultado"] != "aprovada":
+            ressalvas.append(f"Conferência {nome.replace('_', ' ')} divergente: ver conferencias.{nome}.")
     estagios = _bloco_estagios(siga, encerramentos, ralie_us, ralie_ug, ralie_lei, data_siga, data_ralie)
     # data de corte das liberações para a janela de confiabilidade: data de geração do
     # arquivo publicada pela ANEEL (last_modified do recurso)
@@ -1516,6 +1531,16 @@ def construir(con, ctx):
     desf = _desfechos(trajs, prim, lib_idx, siga, encerramentos, datas_hist[-1])
     estagios["coortes"] = _bloco_coortes(desf, datas_hist[0])
     estagios["desfechos_definicao"] = DESFECHOS
+    # sem desfecho: a usina saiu do RALIE sem operação nem ato; onde ela está no SIGA
+    # (ausente do arquivo aberto = provável encerramento ainda sem ato vinculado ao CEG)
+    sd = defaultdict(lambda: {"usinas": 0, "kw": 0.0})
+    for x in desf.values():
+        if x["desfecho"] == "sem_desfecho":
+            k = x.get("fase_siga") or "ausente do SIGA"
+            sd[k]["usinas"] += 1
+            sd[k]["kw"] += x.get("kw_primeira") or 0
+    estagios["sem_desfecho_no_siga"] = [{"situacao_siga": k, "usinas": v["usinas"], "mw_outorgado": _r(_mw(v["kw"]))}
+                                        for k, v in sorted(sd.items(), key=lambda kv: -kv[1]["usinas"])]
     estagios["historico_mensal"] = _historico_mensal(con, mensais)
     leiloes = _bloco_leiloes(lotes, (vig[DS_LEILOES].get("resultado-leiloes-transmissao.csv") or {}).get("publicado_em"))
     data_siget = ((vig[DS_SIGET].get("siget-contrato-empreendimento-obra-modulo.csv") or {}).get("publicado_em") or "")[:10] \

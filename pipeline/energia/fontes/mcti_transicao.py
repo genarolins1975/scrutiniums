@@ -19,7 +19,7 @@ Onde obter (verificado em 30/09/2026):
   testing whether you are a human visitor", com support ID), para a página e para os
   arquivos: não é contornado; a tentativa fica registrada em `coletas` com o support ID
   e vale a última captura válida. Em 30/09/2026 o coletor do pipeline, com a sua própria
-  identificação, recebeu a página às 22h28, 22h41 e 22h48 UTC.
+  identificação, recebeu a página em três pedidos entre 22h28 e 22h48 UTC.
 - antigo.mctic.gov.br/mctic/opencms/ciencia/SEPED/clima/textogeral/*.html (site
   institucional anterior do MCTI, servido pela origem): planilhas de 2006 a 2021 do
   fator médio e da margem de operação e construção, e a tabela do método simples

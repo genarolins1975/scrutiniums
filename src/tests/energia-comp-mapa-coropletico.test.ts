@@ -158,6 +158,16 @@ describe("agrupamento por chave", () => {
     expect(g.flatMap((x) => x.membros)).not.toContain("3500105");
   });
 
+  it("membro com moveto inicial relativo ('m') não é deslocado ao entrar no grupo", () => {
+    const a: FeatureGeo = { id: "1", nome: "A", uf: "MG", d: "M5 5l10 0 0 10-10 0z" };
+    const b: FeatureGeo = { id: "2", nome: "B", uf: "MG", d: "m100 100l10 0 0 10-10 0z" };
+    const [g] = agruparPorChave([a, b], () => "g");
+    const caixa = caixaDoCaminho(g.d);
+    // sozinho, o "m" inicial é absoluto; concatenado sem correção viraria relativo ao início de A
+    expect(caixa).toEqual({ x: 5, y: 5, largura: 105, altura: 105 });
+    expect(lerCaminho(g.d)[1][0]).toEqual([100, 100]);
+  });
+
   it("grupo que cruza UFs guarda as siglas", () => {
     const [g] = agruparPorChave(fs, () => "tudo");
     expect(g.uf).toBe("MG/RJ/SP");

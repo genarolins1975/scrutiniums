@@ -15,7 +15,6 @@ import {
 } from "@/lib/energia/mapa-calor";
 import { MapaCalor, type MapaCalorProps } from "@/components/energia/MapaCalor";
 import { NAO_SE_APLICA as NAO_SE_APLICA_ESCALAS } from "@/lib/energia/escalas";
-import { NAO_SE_APLICA as NAO_SE_APLICA_COROPLETICO } from "@/components/energia/MapaCoropletico";
 
 /**
  * Mapa de calor: a escala só aceita cores por token e com número certo de
@@ -67,10 +66,9 @@ describe("escala", () => {
     expect(classeDe(NAO_SE_APLICA, SEQ.limites)).toBeNull();
   });
 
-  it("não se aplica é o mesmo marcador do mapa coroplético e de escalas.ts (a mesma matriz serve aos dois mapas)", () => {
+  it("não se aplica é o mesmo marcador de escalas.ts, o do mapa coroplético (a mesma matriz serve aos dois mapas)", () => {
     expect(NAO_SE_APLICA).toBe(NAO_SE_APLICA_ESCALAS);
-    expect(NAO_SE_APLICA_COROPLETICO).toBe(NAO_SE_APLICA_ESCALAS);
-    const r = resumoGrade([[NAO_SE_APLICA_COROPLETICO, 0]], SEQ.limites);
+    const r = resumoGrade([[NAO_SE_APLICA_ESCALAS, 0]], SEQ.limites);
     expect(r.naoSeAplica).toBe(1);
     expect(r.semDado).toBe(0);
   });

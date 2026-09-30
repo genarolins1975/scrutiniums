@@ -361,7 +361,9 @@ def consultas_das_atas(atas):
                     "trecho_periodo": " […] ".join(j["trecho"] for j in janelas) or None,
                     "duracao_dias": None if janelas else duracao_da_decisao(a["decisao"]), "sessao": None,
                     "chave": chave_ata(a)})
-        m = _RESULTADO.search(a["assunto"])
+        # linha de aviso (abertura, fase, prorrogação) nunca é resultado, mesmo quando o assunto
+        # repete "Resultado da Consulta Pública nº ..." (acontece na fonte)
+        m = None if (a["tipo_ato"] in TIPOS_ABERTURA or tf) else _RESULTADO.search(a["assunto"])
         if m:
             sig = "CP" if m.group(1).lower().startswith("consulta") else "AP"
             cid = f"{sig}-{_int(m.group(2))}-{int(m.group(3))}"
@@ -379,7 +381,8 @@ def consultas_das_atas(atas):
     # liga pelo número do processo, chave exata do SEI, quando um único aviso aberto antes
     # tem o mesmo processo e ainda não tem resultado pela citação explícita.
     for a in ordenadas:
-        if not re.match(r"\s*Resultados?\b", a["assunto"]) or _RESULTADO.search(a["assunto"]):
+        if (not re.match(r"\s*Resultados?\b", a["assunto"]) or _RESULTADO.search(a["assunto"])
+                or a["tipo_ato"] in TIPOS_ABERTURA or a["tipo_ato"] in TIPOS_FASE):
             continue
         alvo = {cid for p in processos(a["processo"]) for cid in por_processo.get(p, ())
                 if cons[cid]["abertura"]["data"] < a["data"]}
