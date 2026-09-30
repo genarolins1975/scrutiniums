@@ -1,41 +1,85 @@
 {
  "dominio": "energia",
  "gold": "previsoes.json",
- "gerado_em": "2026-09-30T02:20:41Z",
+ "gerado_em": "2026-09-30T23:38:39Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "196905461ac0",
+ "versao_codigo": "30ad85ccb171+alterado",
  "disponivel": true,
  "atual": {
   "disponivel": false,
   "motivo_codigo": "NENHUM_MODELO_EM_PRODUCAO",
-  "motivo": "Nenhum modelo de previsão do PLD está em produção: os quatro estão em pesquisa, e modelo em pesquisa não pode alimentar a previsão oficial.",
+  "motivo": "Nenhum modelo de previsão do PLD está em produção: todos estão em pesquisa, e modelo em pesquisa não pode alimentar a previsão oficial.",
   "ultima_execucao": {
-   "run_id": "prosp_2026-09-27_20260927T191013Z",
-   "tipo": "RODADA_INTERNA",
-   "origem": "2026-09-27",
-   "cutoff": "2026-09-27T10:00:00Z",
-   "emitido_em": "2026-09-27T19:10:13Z",
+   "run_id": "prosp_2026-09-30_20260930T233117Z",
+   "tipo": "REFERENCIA_EXPERIMENTAL",
+   "origem": "2026-09-30",
+   "cutoff": "2026-09-30T10:00:00Z",
+   "emitido_em": "2026-09-30T23:31:17Z",
    "modelo": "B0",
    "versao_modelo": "B0-v1",
    "estado_modelo": "PESQUISA",
    "celulas": 28,
-   "com_numero": 0,
-   "motivos": [
-    "SEM_PLD_CAPTURADO_ATE_O_CORTE"
-   ],
+   "com_numero": 28,
+   "motivos": [],
    "alertas": [
-    "ATRASADO_APOS_08H"
-   ]
+    "ATRASADO_APOS_08H",
+    "CODIGO_NAO_COMMITADO",
+    "EXECUCAO_MANUAL"
+   ],
+   "modo": "manual"
   },
   "informacao_faltante": [
-   "Um modelo aprovado nas etapas de validação e promovido a produção.",
-   "Conclusão da última etapa de validação da pesquisa e documentação de uma limitação encontrada na revisão.",
-   "PLD do período necessário capturado antes do horário de corte de cada rodada (07h00 de Brasília)."
+   "Um modelo aprovado nas etapas de validação (revisão independente) e promovido a produção pelo responsável.",
+   "Período prospectivo com rodadas registradas antes do realizado; para os candidatos, ele só começa depois da liberação formal de número em rodada interna.",
+   "Rodadas agendadas reais no prazo (corte às 07h00 e emissão até 08h00 de Brasília) que comprovem a rotina."
   ],
-  "estado_pipeline": "O registro de modelos e o arquivo de previsões estão ativos; não há previsão oficial publicada; as rodadas ainda não são agendadas automaticamente."
+  "estado_pipeline": "A rodada diária está implementada (pipeline/energia/previsoes/emissao.py) e agendada no workflow previsao-pld.yml; a previsão principal segue sem número porque nenhum modelo está em produção. A persistência (B0) aparece à parte como referência experimental identificada."
+ },
+ "referencia_experimental": {
+  "modelo": "B0",
+  "ultima_rodada": {
+   "run_id": "prosp_2026-09-30_20260930T233117Z",
+   "tipo": "REFERENCIA_EXPERIMENTAL",
+   "origem": "2026-09-30",
+   "cutoff": "2026-09-30T10:00:00Z",
+   "emitido_em": "2026-09-30T23:31:17Z",
+   "modelo": "B0",
+   "versao_modelo": "B0-v1",
+   "estado_modelo": "PESQUISA",
+   "celulas": 28,
+   "com_numero": 28,
+   "motivos": [],
+   "alertas": [
+    "ATRASADO_APOS_08H",
+    "CODIGO_NAO_COMMITADO",
+    "EXECUCAO_MANUAL"
+   ],
+   "modo": "manual"
+  },
+  "detalhe": "public/energia/gold/previsoes_desempenho.json (previsao_atual)",
+  "nota": "Referência experimental de persistência, identificada como tal (seção 12.4 da especificação). Não é a previsão principal nem previsão aprovada."
  },
  "publicacoes": 0,
  "rodadas": [
+  {
+   "run_id": "prosp_2026-09-30_20260930T233117Z",
+   "tipo": "REFERENCIA_EXPERIMENTAL",
+   "origem": "2026-09-30",
+   "cutoff": "2026-09-30T10:00:00Z",
+   "emitido_em": "2026-09-30T23:31:17Z",
+   "modelo": "B0",
+   "versao_modelo": "B0-v1",
+   "estado_modelo": "PESQUISA",
+   "celulas": 28,
+   "com_numero": 28,
+   "motivos": [],
+   "alertas": [
+    "ATRASADO_APOS_08H",
+    "CODIGO_NAO_COMMITADO",
+    "EXECUCAO_MANUAL"
+   ],
+   "modo": "manual"
+  },
   {
    "run_id": "prosp_2026-09-27_20260927T191013Z",
    "tipo": "RODADA_INTERNA",
@@ -52,9 +96,11 @@
    ],
    "alertas": [
     "ATRASADO_APOS_08H"
-   ]
+   ],
+   "modo": "manual"
   }
  ],
+ "rodadas_total": 2,
  "arquivo": [
   {
    "alertas": [
@@ -1261,11 +1307,32 @@
    "versao_modelo": "B0-v1"
   }
  ],
+ "emissoes": {
+  "particoes": [
+   {
+    "mes": "2026-09",
+    "url": "/energia/series/previsoes_emissoes_2026-09.json",
+    "registros": 28,
+    "primeiro": "prosp_2026-09-30_20260930T233117Z:W1:SE:B0",
+    "ultimo_sha256": "99dd04662d10412ad5f394e89c25e90a070d4c184b8987bc48dbbd4c72566126",
+    "sha256_particao": "73a4eec9b11d24d60f0ce14e0973b010a2c8d1aefd8c21423c859f8889e32ecc",
+    "por_tipo": {
+     "PUBLICACAO": 0,
+     "RODADA_INTERNA": 0,
+     "REFERENCIA_EXPERIMENTAL": 28
+    }
+   }
+  ],
+  "registros": 28,
+  "cadeia": "íntegra",
+  "nota": "Registros a partir do particionamento: um arquivo por mês de inclusão, carregado sob demanda. `arquivo` guarda só os registros anteriores ao particionamento."
+ },
  "apuracoes": [],
  "regras": {
   "estados": "PESQUISA e VALIDAÇÃO nunca alimentam a previsão principal; só PRODUÇÃO.",
-  "imutabilidade": "Cada registro tem uma impressão digital do conteúdo (sha256): qualquer alteração a denuncia. Correção cria um registro novo que aponta para o original e declara o motivo; o original nunca é apagado.",
+  "imutabilidade": "Cada registro tem uma impressão digital do conteúdo (sha256) e guarda a do registro anterior: qualquer alteração, remoção ou reordenação a denuncia. Correção cria um registro novo que aponta para o original e declara o motivo; o original nunca é apagado.",
   "calibracao": "Faixa P10 a P90 só é chamada de faixa de 80% quando a cobertura empírica fora do ajuste fica entre 75% e 85% com pelo menos 100 casos (regra proposta, a ratificar).",
-  "look_ahead": "Toda variável de entrada precisa ter sido capturada até o horário de corte da previsão."
+  "look_ahead": "Toda variável de entrada precisa ter sido capturada até o horário de corte da previsão.",
+  "referencia_experimental": "B0 pode aparecer como referência experimental identificada, sem faixa não calibrada, sem promoção e fora do bloco principal."
  }
 }

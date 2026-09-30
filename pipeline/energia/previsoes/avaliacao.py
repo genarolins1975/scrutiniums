@@ -141,6 +141,8 @@ def _c2(seg, mod, idx, freq, k, ajustes):
             else:
                 i_fim = bisect_right(fins, f - timedelta(days=k))
                 cache[f] = mp.ajusta_c2(acum, fins, origs, i_fim, k, freq)
+                # fim da última entrega realmente usada no treino (auditoria de look-ahead)
+                cache[f]["ultimo_fim_treino"] = fins[i_fim - 1] if (i_fim and cache[f].get("ok")) else None
             if ajustes is not None:
                 ajustes.append({"origem_ajuste": f, "modelo": mod, "horizonte": ln.h, "sm": ln.sm, "k": k, **cache[f]})
         aj = cache[f]

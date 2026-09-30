@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "regulacao.json",
- "gerado_em": "2026-09-30T23:20:57Z",
+ "gerado_em": "2026-09-30T23:21:41Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "883727b9c73e+alterado",
+ "versao_codigo": "30ad85ccb171",
  "disponivel": true,
  "modulo": "regulacao",
  "data_referencia": "2026-09-30",
@@ -5773,8 +5773,8 @@
     "tratamento_ausencia": "campo que o ato não fixa fica vazio e vale o ato anterior do mesmo ano; nunca o menor preço observado",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "883727b9c73e+alterado",
-     "publicacao": "2026-09-30T23:20:57Z"
+     "codigo": "30ad85ccb171",
+     "publicacao": "2026-09-30T23:21:40Z"
     },
     "revisoes": "Curadoria versionada: edição do valor no arquivo curado vira revisão registrada no silver (dataset regulacao_curadoria).",
     "testes": [
@@ -5810,7 +5810,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py regulacao --sem-coleta",
-    "citacao": "SCRUTINIUMS. Piso do PLD (PLD mínimo) vigente: R$ 57,31/MWh, Mercado de Curto Prazo (todos os submercados), 01/01/2026 a 31/12/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Despacho ANEEL nº 3.850/2025 (recurso dsp20253850ti, capturado em 30/09/2026). Versão energia-0.1.0, código 883727b9c73e+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Piso do PLD (PLD mínimo) vigente: R$ 57,31/MWh, Mercado de Curto Prazo (todos os submercados), 01/01/2026 a 31/12/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Despacho ANEEL nº 3.850/2025 (recurso dsp20253850ti, capturado em 30/09/2026). Versão energia-0.1.0, código 30ad85ccb171, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    },
    "pld_max_horario": {
     "indicador": "Teto horário do PLD vigente",
@@ -5855,8 +5855,8 @@
     "tratamento_ausencia": "campo que o ato não fixa fica vazio e vale o ato anterior do mesmo ano; nunca o menor preço observado",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "883727b9c73e+alterado",
-     "publicacao": "2026-09-30T23:20:57Z"
+     "codigo": "30ad85ccb171",
+     "publicacao": "2026-09-30T23:21:40Z"
     },
     "revisoes": "Curadoria versionada: edição do valor no arquivo curado vira revisão registrada no silver (dataset regulacao_curadoria).",
     "testes": [
@@ -5892,7 +5892,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py regulacao --sem-coleta",
-    "citacao": "SCRUTINIUMS. Teto horário do PLD vigente: R$ 1.611,04/MWh, Mercado de Curto Prazo (todos os submercados), 01/01/2026 a 31/12/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Despacho ANEEL nº 3.850/2025 (recurso dsp20253850ti, capturado em 30/09/2026). Versão energia-0.1.0, código 883727b9c73e+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Teto horário do PLD vigente: R$ 1.611,04/MWh, Mercado de Curto Prazo (todos os submercados), 01/01/2026 a 31/12/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Despacho ANEEL nº 3.850/2025 (recurso dsp20253850ti, capturado em 30/09/2026). Versão energia-0.1.0, código 30ad85ccb171, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    },
    "pld_max_estrutural": {
     "indicador": "Teto estrutural do PLD vigente",
@@ -5937,8 +5937,8 @@
     "tratamento_ausencia": "campo que o ato não fixa fica vazio e vale o ato anterior do mesmo ano; nunca o menor preço observado",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "883727b9c73e+alterado",
-     "publicacao": "2026-09-30T23:20:57Z"
+     "codigo": "30ad85ccb171",
+     "publicacao": "2026-09-30T23:21:40Z"
     },
     "revisoes": "Curadoria versionada: edição do valor no arquivo curado vira revisão registrada no silver (dataset regulacao_curadoria).",
     "testes": [
@@ -5974,7 +5974,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py regulacao --sem-coleta",
-    "citacao": "SCRUTINIUMS. Teto estrutural do PLD vigente: R$ 785,27/MWh, Mercado de Curto Prazo (todos os submercados), 01/01/2026 a 31/12/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Despacho ANEEL nº 3.850/2025 (recurso dsp20253850ti, capturado em 30/09/2026). Versão energia-0.1.0, código 883727b9c73e+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Teto estrutural do PLD vigente: R$ 785,27/MWh, Mercado de Curto Prazo (todos os submercados), 01/01/2026 a 31/12/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Despacho ANEEL nº 3.850/2025 (recurso dsp20253850ti, capturado em 30/09/2026). Versão energia-0.1.0, código 30ad85ccb171, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    }
   },
   "consultas_abertas": {
@@ -6022,8 +6022,8 @@
    "tratamento_ausencia": "fase sem datas na ata fica como prazo não datado e não é contada como aberta",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "883727b9c73e+alterado",
-    "publicacao": "2026-09-30T23:20:57Z"
+    "codigo": "30ad85ccb171",
+    "publicacao": "2026-09-30T23:21:41Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
    "testes": [
@@ -6046,7 +6046,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py regulacao --sem-coleta",
-   "citacao": "SCRUTINIUMS. Consultas e audiências públicas recebendo contribuições: 8 consultas, ANEEL, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Pautas e atas das reuniões públicas da Diretoria (recurso pautas-atas-reunioes-publicas-diretoria.csv, capturado em 30/09/2026). Versão energia-0.1.0, código 883727b9c73e+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Consultas e audiências públicas recebendo contribuições: 8 consultas, ANEEL, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Pautas e atas das reuniões públicas da Diretoria (recurso pautas-atas-reunioes-publicas-diretoria.csv, capturado em 30/09/2026). Versão energia-0.1.0, código 30ad85ccb171, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "proveniencia": {
@@ -6069,7 +6069,7 @@
    },
    "publicado_pela_fonte_em": "2025-12-23",
    "capturado_em": "2026-09-30T23:09:37Z",
-   "validado_em": "2026-09-30T23:20:57Z",
+   "validado_em": "2026-09-30T23:21:41Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-12-31"
@@ -6085,9 +6085,9 @@
     "sha256": "881adceeb9e03646dd21a20c402a300fd14468dadd0a4fa19adac79f3efd066f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "883727b9c73e+alterado",
+   "versao_codigo": "30ad85ccb171",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:20:57Z",
+    "detectado_em": "2026-09-30T23:21:40Z",
     "total": 0,
     "vintages_comparadas": 29,
     "arquivos": 29,
@@ -6124,7 +6124,7 @@
    },
    "publicado_pela_fonte_em": "2026-07-15T14:55:00Z",
    "capturado_em": "2026-09-30T23:08:17Z",
-   "validado_em": "2026-09-30T23:20:57Z",
+   "validado_em": "2026-09-30T23:21:41Z",
    "cobertura_historica": {
     "inicio": "2015-03-02",
     "fim": "2024-04-01"
@@ -6138,9 +6138,9 @@
     "sha256": "55d3aeb75349f0a70ae30a8adee8ccd521f0a989ae6d85ed40dec7156e408f44"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "883727b9c73e+alterado",
+   "versao_codigo": "30ad85ccb171",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:20:57Z",
+    "detectado_em": "2026-09-30T23:21:40Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -6175,7 +6175,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T23:08:24Z",
-   "validado_em": "2026-09-30T23:20:57Z",
+   "validado_em": "2026-09-30T23:21:41Z",
    "cobertura_historica": {
     "inicio": "2026-09-30",
     "fim": "2026-09-30"
@@ -6189,9 +6189,9 @@
     "sha256": "4951d081937e8bc42335829da2a7c8c8ce60fe0c37412a0585b30c4a73b951c8"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "883727b9c73e+alterado",
+   "versao_codigo": "30ad85ccb171",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:20:57Z",
+    "detectado_em": "2026-09-30T23:21:40Z",
     "total": 0,
     "vintages_comparadas": 4,
     "arquivos": 4,
@@ -6225,7 +6225,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T23:09:37Z",
-   "validado_em": "2026-09-30T23:20:57Z",
+   "validado_em": "2026-09-30T23:21:41Z",
    "cobertura_historica": {
     "inicio": "2015-03-02",
     "fim": "2025-12-16"
@@ -6241,9 +6241,9 @@
     "sha256": "881adceeb9e03646dd21a20c402a300fd14468dadd0a4fa19adac79f3efd066f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "883727b9c73e+alterado",
+   "versao_codigo": "30ad85ccb171",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:20:57Z",
+    "detectado_em": "2026-09-30T23:21:40Z",
     "total": 0,
     "vintages_comparadas": 29,
     "arquivos": 29,
@@ -6279,7 +6279,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-25T03:04:53Z",
    "capturado_em": "2026-09-30T23:08:03Z",
-   "validado_em": "2026-09-30T23:20:57Z",
+   "validado_em": "2026-09-30T23:21:41Z",
    "cobertura_historica": {
     "inicio": "2017-09-12",
     "fim": "2026-09-22"
@@ -6295,9 +6295,9 @@
     "sha256": "04277a1d8a0da17bd0566f4337709a344a63035e87e39c2bc244649a72928c3d"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "883727b9c73e+alterado",
+   "versao_codigo": "30ad85ccb171",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:20:57Z",
+    "detectado_em": "2026-09-30T23:21:40Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -6333,7 +6333,7 @@
    },
    "publicado_pela_fonte_em": "2025-12-05",
    "capturado_em": "2026-09-30T23:09:37Z",
-   "validado_em": "2026-09-30T23:20:57Z",
+   "validado_em": "2026-09-30T23:21:41Z",
    "cobertura_historica": {
     "inicio": "2026-01-01",
     "fim": "2027-12-31"
@@ -6347,9 +6347,9 @@
     "sha256": "881adceeb9e03646dd21a20c402a300fd14468dadd0a4fa19adac79f3efd066f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "883727b9c73e+alterado",
+   "versao_codigo": "30ad85ccb171",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:20:57Z",
+    "detectado_em": "2026-09-30T23:21:40Z",
     "total": 0,
     "vintages_comparadas": 29,
     "arquivos": 29,
@@ -6369,8 +6369,8 @@
  },
  "curadoria": {
   "snapshot": {
-   "id": "regulacao_curadoria@2026-09-30T23:01:51Z",
-   "sha256": "cbceb2ff2f171edaf98b6fff44996712c98f8d167a4f4eaf8ef33668267f9497"
+   "id": "regulacao_curadoria@2026-09-30T23:21:32Z",
+   "sha256": "a67e85155439fe59efa74336b973eb7f36d58abe368379f9c5569b2e45d8d631"
   },
   "arquivos": [
    {
@@ -6385,8 +6385,8 @@
    },
    {
     "arquivo": "limites_pld_conferencia.json",
-    "sha256": "870585c75bf64b7d2c75dee3b37819649d5b79a2521c73dc6dd3672abe8185c8",
-    "registrado_em": "2026-09-30T23:01:51Z"
+    "sha256": "fc9dd995ffe81748001c4c136a685f5d434ca0df43ecbda53b30f68027f612d9",
+    "registrado_em": "2026-09-30T23:21:32Z"
    },
    {
     "arquivo": "linha_do_tempo.json",

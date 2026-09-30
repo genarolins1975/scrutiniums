@@ -129,7 +129,9 @@ REGISTRO = {
     },
 }
 
-CAMPOS_MES = ("injetada", "perdas_totais_med", "perdas_tecnicas", "pnt_med", "perdas_totais_fat", "pnt_fat",
+# Versão 3 do silver: a técnica medida e a faturada ficam em séries próprias (tecnica_med,
+# tecnica_fat); a série antiga "perdas_tecnicas" misturava as duas e deixa de ser lida.
+CAMPOS_MES = ("injetada", "perdas_totais_med", "tecnica_med", "tecnica_fat", "pnt_med", "perdas_totais_fat", "pnt_fat",
               "perdas_legado", "fornecida_med", "outros_requisitos", "irregular", "bt_med", "mmgd", "n_linhas")
 
 
@@ -142,7 +144,7 @@ def _processados(con):
 # Versão do processamento bronze → silver por dataset. Quando a leitura muda de um jeito que
 # exige reprocessar a mesma vintage (campo novo no silver), a versão sobe e a marca antiga deixa
 # de valer; os valores iguais não geram linha nova (grava_* só grava o que mudou).
-VERSAO_PROCESSAMENTO = {DS_SAMP: "2"}
+VERSAO_PROCESSAMENTO = {DS_SAMP: "3"}
 
 
 def _marca_de(ds, vid):
@@ -221,6 +223,8 @@ def _processa_samp(con, v):
     # versão 2: a divergência entre representações vem separada em arbitrada pela soma dos
     # níveis (conflitos) e não arbitrada (conflitos_sem_niveis)
     regs.append(("_arquivo", "versao_conflitos", "2"))
+    # versão 3: técnica medida e faturada em séries separadas (sem substituição entre bases)
+    regs.append(("_arquivo", "versao_tecnica", "3"))
     regs.append(("_arquivo", "agentes_distribuicao", str(len(distribuidoras))))
     n1 = base.grava_observacoes(con, DS_SAMP, v["vintage_id"], obs)
     n2 = base.grava_registros(con, DS_SAMP, v["vintage_id"], regs)
@@ -419,6 +423,7 @@ def _mensal_samp(con):
     regs = base.registros_como_estavam_em(con, DS_SAMP)
     mensal = collections.defaultdict(dict)
     com_arbitragem = regs.get("_arquivo", {}).get("versao_conflitos") == "2"
+    tecnica_separada = regs.get("_arquivo", {}).get("versao_tecnica") == "3"
     for (serie, comp), valor in obs.items():
         campo, cnpj = serie.split(".", 1)
         mensal[cnpj].setdefault(comp, {})[campo] = int(round(valor))
@@ -430,8 +435,16 @@ def _mensal_samp(con):
             # silver gravado antes deste campo existir: toda divergência conta como não arbitrada
             sem = r.get("conflitos_sem_niveis") if com_arbitragem else r.get("conflitos")
             m["conflitos_sem_niveis"] = [x for x in (sem or "").split(",") if x]
+            # silver da versão 3: a técnica é só a do valor medido (a série antiga, que usava a
+            # faturada quando a medida faltava, fica no banco mas não é lida)
+            if tecnica_separada:
+                m["perdas_tecnicas"] = m.get("tecnica_med")
             ap.deriva_mes(m)
     return dict(mensal), regs
+
+
+def _silver_com_tecnica_separada(regs):
+    return regs.get("_arquivo", {}).get("versao_tecnica") == "3"
 
 
 # ======================================================================= construção
@@ -474,9 +487,15 @@ def _anual_distribuidora(mensal_cnpj, ano, ate_mes=None):
         a["origem_injetada"] = "requerida"
     else:
         a["origem_injetada"] = "mista"
+    a["decomposicao"] = ap.estado_decomposicao(a)
     den = a["injetada_ref"]
     a["taxa_total"] = ap.taxa(a["perdas_totais_med"], den)
+    # Técnica sobre a injetada de referência: mesma base da taxa total, para que a composição
+    # (técnica + não técnica) se leia sobre um só denominador. Técnica sobre a injetada
+    # publicada: a base sobre a qual a fonte aplica o percentual regulatório, a que se compara
+    # com ele. Até 2023 as duas coincidem; no leiaute de 2024 a publicada é maior.
     a["taxa_tecnica"] = ap.taxa(a["perdas_tecnicas"], den)
+    a["taxa_tecnica_publicada"] = ap.taxa(a["perdas_tecnicas"], a["injetada"])
     a["pnt_injetada"] = ap.taxa(a["pnt_med"], den)
     a["pnt_bt"] = ap.taxa(a["pnt_med"], a["bt_med"])
     a["taxa_total_fat"] = ap.taxa(a["perdas_totais_fat"], den)
@@ -486,6 +505,17 @@ def _anual_distribuidora(mensal_cnpj, ano, ate_mes=None):
 
 def _valido_para_agregado(a):
     return a["completo"] and not a["alertas"] and a["injetada_ref"] is not None and a["perdas_totais_med"] is not None
+
+
+def _valido_tecnica(a):
+    """Técnica publicada nos 12 meses e decomposição que não contradiz a linha técnica."""
+    return _valido_para_agregado(a) and a["perdas_tecnicas"] is not None and a["decomposicao"] != "nao_fecha"
+
+
+def _valido_pnt_bt(a):
+    """Não técnica e mercado BT nos 12 meses, com a decomposição fechando."""
+    return (_valido_para_agregado(a) and a["pnt_med"] is not None and a["bt_med"] is not None
+            and a["decomposicao"] in ap.DECOMPOSICAO_OK)
 
 
 def _soma_nacional(validos):

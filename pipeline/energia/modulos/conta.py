@@ -213,9 +213,44 @@ GRUPOS = [
                                         "TE_CDE_ELET", "TE_CDE_GD", "TE_CDE_COVID")),
     ("outros", "Outros componentes e ajustes", ("TUSD_SUBSIDIO", "TE_SUBSIDIO", "TUSD BENEFICIO_L14299",
                                                 "TE_BENEFICIO_L14299", "TUSD_Liminar", "TE_Liminar", "TUSD_OUTROS")),
+    # sem código próprio: recebe só o valor negativo de componente de custo listada em
+    # RECLASSIFICA_SE_NEGATIVO (ver abaixo); o código continua visível na lista de créditos
+    ("creditos", "Créditos tarifários lançados em componente de custo", ()),
 ]
 GRUPO_DE = {cod: g for g, _, cods in GRUPOS for cod in cods}
 TOTAIS_COMP = ("TE", "TUSD")
+# Grupos cuja natureza é custo: a soma do grupo não deveria ser negativa, e componente
+# negativa de peso material nesses grupos é atípica (conferida no arquivo original).
+GRUPOS_DE_CUSTO = ("energia", "transmissao", "distribuicao", "perdas", "encargos")
+
+# Componente de custo cujo valor negativo não é custo daquela natureza e sai do grupo.
+# TE_CFURH: a compensação financeira pelo uso de recursos hídricos é paga pelas
+# hidrelétricas; como parcela de custo da TE, de 2012 a 2024 ficou entre -5,38 e 4,44
+# R$/MWh em todas as vigências publicadas. A partir de 13/12/2025 o código aparece com
+# -13 a -267 R$/MWh em distribuidoras das áreas da Sudam e da Sudene, as mesmas que a
+# ANEEL listou em 11/08/2026 no repasse de R$ 5,48 bilhões da repactuação do Uso de Bem
+# Público (UBP, Lei nº 15.235/2025) para reduzir tarifas (página guardada no bronze e
+# conferida em DOCUMENTOS). Somar esse crédito aos encargos deixava o grupo negativo
+# (CEA, ERO) e menor que a própria parcela CDE. O PRORET, que diria em qual componente
+# o crédito é lançado, não pôde ser lido: por isso o valor negativo vai para
+# "créditos" com a origem declarada como provável, e o código continua visível.
+RECLASSIFICA_SE_NEGATIVO = {
+    "TE_CFURH": {"grupo": "creditos", "documento": "aneel_ubp_repasse_2026",
+                 "leitura": ("valor negativo na componente CFURH lido como crédito tarifário, provavelmente o repasse da "
+                             "repactuação da UBP (Lei nº 15.235/2025) às distribuidoras das áreas da Sudam e da Sudene; "
+                             "a regra de lançamento (PRORET) não pôde ser lida")},
+}
+# Componente atípica (vira ressalva visível e é conferida no arquivo original):
+# (a) sinal contrário à natureza do grupo de custo com módulo de pelo menos 5% da tarifa
+#     da distribuidora; devoluções pequenas (CDE Covid, P&D) são comuns e ficam abaixo;
+# (b) módulo mais de 10 vezes a mediana do módulo da mesma componente entre as
+#     distribuidoras com composição na data, também com pelo menos 5% da tarifa (pega um
+#     código usado no lugar de outro, como energia inteira lançada em TE_ANGRA).
+# Os 5% (cerca de R$ 0,04/kWh na tarifa mediana) separam valor que muda a leitura da
+# composição de ajuste de centavos; o fator 10 fica muito acima da dispersão entre
+# distribuidoras de qualquer código publicado em 2026.
+ATIPICO_PCT_TARIFA = 5.0
+ATIPICO_FATOR_MEDIANA = 10.0
 
 DESCRICAO_COMPONENTE = {
     "TE_ENERGIA": "Custo da energia comprada pela distribuidora",
@@ -648,27 +683,67 @@ def custo_perfil(total, kwh):
     return None if total is None else kwh * total / 1000.0
 
 
+def grupo_da_componente(cod, valor):
+    """Grupo de leitura de uma componente: pelo código, exceto o valor negativo de
+    componente listada em RECLASSIFICA_SE_NEGATIVO, que vai para o grupo indicado ali."""
+    regra = RECLASSIFICA_SE_NEGATIVO.get(cod)
+    if regra and valor is not None and valor < 0:
+        return regra["grupo"]
+    return GRUPO_DE.get(cod)
+
+
 def grupos_componentes(comps):
     """{grupo: soma R$/MWh} e checagens: soma das parcelas da TE e da TUSD contra os
     totais TE e TUSD publicados no próprio conjunto. Código sem grupo conhecido vai
-    para 'outros' e é listado, nunca descartado."""
+    para 'outros' e é listado, nunca descartado; valor reclassificado pelo sinal fica
+    listado em `reclassificadas` com o grupo que teria pelo código."""
     grupos = {g: 0.0 for g, _, _ in GRUPOS}
-    desconhecidos = []
+    desconhecidos, reclassificadas = [], []
     soma_te = soma_tusd = 0.0
     for cod, v in comps.items():
         if cod in TOTAIS_COMP or v is None:
             continue
-        g = GRUPO_DE.get(cod)
+        g = grupo_da_componente(cod, v)
         if g is None:
             desconhecidos.append(cod)
             g = "outros"
+        elif g != GRUPO_DE.get(cod, g):
+            reclassificadas.append({"codigo": cod, "valor": v, "grupo_pelo_codigo": GRUPO_DE[cod], "grupo_usado": g})
         grupos[g] += v
         if cod.startswith("TE"):
             soma_te += v
         else:
             soma_tusd += v
     return grupos, {"soma_te": soma_te, "soma_tusd": soma_tusd, "te": comps.get("TE"), "tusd": comps.get("TUSD"),
-                    "desconhecidos": sorted(desconhecidos)}
+                    "desconhecidos": sorted(desconhecidos),
+                    "reclassificadas": sorted(reclassificadas, key=lambda x: x["codigo"])}
+
+
+def componentes_atipicas(comps, total, mediana_modulo):
+    """Componentes atípicas de uma distribuidora (regras em ATIPICO_*), para ressalva e
+    conferência no arquivo original. mediana_modulo = {código: mediana de |valor| entre
+    as distribuidoras com composição na data}. Nada é descartado: a lista só marca."""
+    out = []
+    if not total:
+        return out
+    for cod, v in sorted(comps.items()):
+        if cod in TOTAIS_COMP or v is None:
+            continue
+        pct = 100.0 * v / total
+        if abs(pct) < ATIPICO_PCT_TARIFA:
+            continue
+        g_codigo = GRUPO_DE.get(cod, "outros")
+        criterios = []
+        if g_codigo in GRUPOS_DE_CUSTO and v < 0:
+            criterios.append("sinal contrário à natureza do grupo")
+        med = mediana_modulo.get(cod)
+        if med is not None and abs(v) > ATIPICO_FATOR_MEDIANA * med:
+            criterios.append(f"módulo mais de {ATIPICO_FATOR_MEDIANA:g} vezes a mediana da componente entre as distribuidoras")
+        if criterios:
+            out.append({"codigo": cod, "valor": v, "pct_tarifa": pct, "grupo_pelo_codigo": g_codigo,
+                        "grupo_usado": grupo_da_componente(cod, v) or "outros", "mediana_modulo": med,
+                        "criterios": criterios})
+    return out
 
 
 # componentes com CDE no código (subconjunto de "encargos"): é por elas que o consumidor

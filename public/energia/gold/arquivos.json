@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "arquivos.json",
- "gerado_em": "2026-09-30T23:20:57Z",
+ "gerado_em": "2026-09-30T23:37:06Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "883727b9c73e+alterado",
+ "versao_codigo": "30ad85ccb171+alterado",
  "disponivel": true,
  "arquivos": {
   "/energia/series/regulacao_limites_pld_atos.csv": {
@@ -80,6 +80,61 @@
    "colunas": "sm; mes (1 a 12); n_dias e anos (dias completos do mesmo mês em anos anteriores ao ano de referência); p10, p25, p50, p75, p90 da média diária do PLD nesses dias (R$/MWh nominais, quantil tipo 7).",
    "modulo": "pld",
    "gold": "pld_detalhe.json"
+  },
+  "/energia/series/carga_horaria.csv": {
+   "colunas": "data_hora (início da hora, horário de Brasília); SE, S, NE, N = carga horária da Curva de Carga Horária do ONS em MWmed; SIN = soma dos quatro na hora (vazio se algum faltar); regime = 1, 2 ou 3 (mudanças de conteúdo do ONS em 01/03/2021 e 29/04/2023). Desde 2019.",
+   "modulo": "carga",
+   "gold": "carga_detalhe.json"
+  },
+  "/energia/series/carga_verificada_horaria.csv": {
+   "colunas": "data_hora (início da hora, Brasília); submercado (SE, S, NE, N, SIN); carga_global_mwmed, mmgd_mwmed, carga_liquida_mwmed = médias das duas meias horas da API de carga verificada; carga_liquida = carga_global − mmgd (identidade publicada pelo ONS, conferida). Desde 2024.",
+   "modulo": "carga",
+   "gold": "carga_detalhe.json"
+  },
+  "/energia/series/carga_verificada_diaria.csv": {
+   "colunas": "data; submercado; carga_global_mwmed; mmgd_mwmed; carga_liquida_mwmed; mmgd_pct (100 × MMGD ÷ carga global, mesmas horas); pico_global_mwmed e hora_pico_global; pico_liquida_mwmed e hora_pico_liquida (hora de início, Brasília); horas (horas cheias com os dois campos). Desde 15/02/2019.",
+   "modulo": "carga",
+   "gold": "carga_detalhe.json"
+  },
+  "/energia/series/carga_pico_diario.csv": {
+   "colunas": "data; submercado (SE, S, NE, N, SIN); media_mwmed (média das 24 horas da curva); pico_mwmed (maior valor horário); hora_pico (0 a 23, início da hora); classe_dia (util, sabado, domingo_feriado; vazio antes de 2003); regime. Desde 2000.",
+   "modulo": "carga",
+   "gold": "carga_detalhe.json"
+  },
+  "/energia/series/carga_perfil_tipico.csv": {
+   "colunas": "produto (curva: Curva de Carga Horária; verificada: API); mes (AAAA-MM); submercado; classe_dia; hora (0 a 23); serie (carga, carga_global, mmgd, carga_liquida); media_mwmed; dias (dias completos na média).",
+   "modulo": "carga",
+   "gold": "carga_detalhe.json"
+  },
+  "/energia/series/carga_comparacoes.csv": {
+   "colunas": "submercado; janela (7d, 28d, mes_corrente, ultimo_mes_completo); tipo (mesmas_datas: mesmas datas do ano anterior; equivalente: 364 dias antes, mesmos dias da semana); inicio; fim; inicio_ant; fim_ant; media_mwmed; media_ant_mwmed; variacao_pct (vazio quando os períodos atravessam mudança de regime); mesmo_regime; dias_uteis; dias_uteis_ant; feriados_dia_util; feriados_dia_util_ant.",
+   "modulo": "carga",
+   "gold": "carga_detalhe.json"
+  },
+  "/energia/series/carga_revisoes.csv": {
+   "colunas": "dataset; serie; ref; capturado_em (UTC) de cada vintage; valor; valor_anterior; diferenca; diferenca_pct; situacao (revisao ou quarentena).",
+   "modulo": "carga",
+   "gold": "carga_detalhe.json"
+  },
+  "/energia/series/carga_decomposicao_diaria.csv": {
+   "colunas": "data; submercado; real_mwmed; previsto_mwmed (fora da amostra, modelo estimado até o mês anterior); p10, p90, p025, p975 (intervalos); residuo_pct; contribuições em log × 100 relativas à média do treino: nivel_tendencia, calendario, sazonalidade, temperatura; origem (primeiro dia do mês previsto).",
+   "modulo": "carga",
+   "gold": "carga_detalhe.json"
+  },
+  "/energia/series/carga_decomposicao_backtest.csv": {
+   "colunas": "variante; submercado; origem; dias_treino; dias_previstos; mape_pct; vies_pct; fonte_intervalo.",
+   "modulo": "carga",
+   "gold": "carga_detalhe.json"
+  },
+  "/energia/series/carga_temperatura_diaria.csv": {
+   "colunas": "data; submercado (SE, S, NE, N, SIN); temperatura_media_c e temperatura_maxima_c ponderadas pela população das UFs (capitais); fonte_mes (MERRA2 ou GEOSIT, quando identificada). Desde 2019.",
+   "modulo": "carga",
+   "gold": "carga_detalhe.json"
+  },
+  "/energia/series/carga_calendario.csv": {
+   "colunas": "data; nome; categoria (feriado_nacional, paixao, ponto_facultativo); base_legal; dia_semana. 2003 a 2027.",
+   "modulo": "carga",
+   "gold": "carga_detalhe.json"
   },
   "/energia/series/expansao_usinas_siga.csv": {
    "colunas": "nucleo_ceg; ceg; nome; tipo; origem; fonte; fase (SIGA); estagio; outorga; uf; municipios; lat; lon (grau decimal, vazio = não informado ou 0 na fonte); kw_outorgado; kw_fiscalizado; entrada_operacao (vazio = sem data, inclui o marcador 1900-01-03 do SIGA); garantia_fisica_kwmed (vazio = sem garantia física registrada); vigencia_inicio; vigencia_fim; cnpjs_proprietarios (14 dígitos, separados por |)",
@@ -430,6 +485,31 @@
    "colunas": "uf; contrato; primeira_liberacao e ultima_liberacao (AAAA-MM); vlrempenhadocde, vlrpagocde (subvenção da CDE), vlrempenhadorgr, vlrpagorgr (empréstimo da RGR), vlrempenhadocaixa, vlrpagocaixa (Caixa ou outras fontes), vlrempenhadoae, vlrpago (contrapartida do agente executor): R$ correntes, como informados pelo MME. Vazio = ausência.",
    "modulo": "inclusao",
    "gold": "inclusao.json"
+  },
+  "/energia/series/previsoes_backtest_semanal.csv": {
+   "colunas": "origem (dia da rodada, Brasília; corte às 07h00); horizonte (W1 a W4); submercado; entrega (sábado de início da semana, de sábado 00h a sábado 00h, fim excluído); periodo (desenvolvimento = entrega termina até 01/01/2025; teste = começa em 01/01/2025 ou depois; fronteira = atravessa a virada); realizado (média das 168 horas do PLD, vazio se a semana não está completa); b0, s0, c2p, c2h = previsões em R$/MWh nominais depois da restrição de preço (vazio = modelo sem previsão naquela célula); *_p10 e *_p90 = quantis empíricos (vazio sem 24 entregas de resíduos); piso e teto = faixa média [PLD mínimo, teto estrutural] dos atos publicados até a origem; faixa_provisoria = 1 quando o ato do ano da entrega ainda não tinha saído. Teste retrospectivo sob a hipótese LAT1D; não é previsão emitida.",
+   "modulo": "previsoes",
+   "gold": "previsoes_desempenho.json"
+  },
+  "/energia/series/previsoes_backtest_mensal.csv": {
+   "colunas": "Mesmas colunas do arquivo semanal, para os horizontes M1 a M3 (entrega = AAAA-MM, mês civil).",
+   "modulo": "previsoes",
+   "gold": "previsoes_desempenho.json"
+  },
+  "/energia/series/previsoes_desempenho.csv": {
+   "colunas": "modelo; recorte (celula = horizonte e submercado; horizonte = submercados juntos; frequencia = horizontes juntos); horizonte; submercado; periodo; linhas (células avaliadas); entregas (entregas distintas); origens; mae, vies (média de previsão − realizado), rmse em R$/MWh; mae_b0_pareado e ganho_vs_b0 (MAE do B0 − MAE do modelo nas mesmas células; positivo = melhor que B0); ganho_ic90_inf e ganho_ic90_sup (bootstrap de blocos de origens); skill (1 − MAE/MAE do B0); perda_quantilica (média da perda nos níveis 5 a 95%); cobertura_p10_p90, cobertura_p05_p95 (fração 0 a 1); largura_p10_p90 (R$/MWh); calibracao (estado pela regra da governança; n = entregas distintas).",
+   "modulo": "previsoes",
+   "gold": "previsoes_desempenho.json"
+  },
+  "/energia/series/previsoes_ajustes_c2.csv": {
+   "colunas": "origem_ajuste (domingo); modelo (C2-P, C2-H); horizonte; submercado; ok (1 = ajustado; 0 = treino insuficiente); lambda (ZERO = correção desligada); entregas_treino; linhas_treino; coef_* = coeficiente de cada variável na unidade original (R$/MWh por R$/MWh, ou por ponto percentual); escala_* = escala RMS no treino; ultimo_fim_treino = fim da última entrega usada no treino (sempre até o domingo menos 1 dia).",
+   "modulo": "previsoes",
+   "gold": "previsoes_desempenho.json"
+  },
+  "/energia/series/previsoes_emissoes.csv": {
+   "colunas": "Uma linha por célula emitida pelo observatório (arquivo imutável, pipeline/energia/previsoes/): forecast_id; run_id; tipo (REFERENCIA_EXPERIMENTAL, RODADA_INTERNA, PUBLICACAO); modelo; versao_modelo; origem; cutoff, prazo e emitido_em (UTC); atraso_min; modo (agendada ou manual); horizonte; entrega; submercado; status; previsao (R$/MWh, vazio = sem número); motivo; realizado e erro quando a entrega já terminou; sha256.",
+   "modulo": "previsoes",
+   "gold": "previsoes_desempenho.json"
   }
  }
 }
