@@ -85,9 +85,12 @@ CSV_CONS = "regulacao_consultas.csv"
 CSV_AGENDA = "regulacao_agenda_2026_2027.csv"
 
 # Tolerâncias (seção 11.6: específicas por unidade e precisão).
-# Os atos publicam reais com dois decimais e cada ano parte do valor já arredondado do ano
-# anterior: a regra do IPCA reproduz o ato se o arredondamento a centavos coincidir.
-TOL_IPCA_RS = 0.005     # R$/MWh: meio centavo, o erro máximo do arredondamento a dois decimais
+# Os atos publicam reais com dois decimais. Refazer o teto de um ano a partir do teto
+# publicado do ano anterior acumula dois arredondamentos: o do valor anterior (até R$ 0,005,
+# multiplicado pelo fator anual do IPCA, no máximo 1,11 no período) e o do valor atual (até
+# R$ 0,005). Tolerância: R$ 0,011/MWh. Acima disso a diferença não é arredondamento.
+TOL_IPCA_RS = 0.011
+TOL_TEXTO = "R$ 0,011/MWh (dois arredondamentos a centavos)"
 # Janela da gold para consultas (o CSV traz o histórico inteiro desde set/2017)
 JANELA_CONSULTAS_DIAS = 200
 
@@ -526,14 +529,13 @@ def _conferencias_limites(atos, conf, docs, textos, atas, ipca):
             if None in (atual, anterior):
                 continue
             if i1 is None or i0 is None:
-                add("regra_ipca", a_ref, campo, atual, None, f"R$ {TOL_IPCA_RS:.3f}/MWh".replace(".", ","), "nao_executada",
-                    "IPCA de novembro ausente no silver")
+                add("regra_ipca", a_ref, campo, atual, None, TOL_TEXTO, "nao_executada", "IPCA de novembro ausente no silver")
                 continue
-            esperado = round(anterior * i1 / i0, 2)
+            esperado = round(anterior * i1 / i0, 4)
             ok = abs(esperado - atual) <= TOL_IPCA_RS
-            add("regra_ipca", a_ref, campo, atual, esperado, "R$ 0,005/MWh (arredondamento a centavos)",
-                "aprovado" if ok else "reprovado",
-                f"{rg.numero_br(anterior)} × IPCA nov/{ano - 1} ({i1}) ÷ IPCA nov/{ano - 2} ({i0})")
+            add("regra_ipca", a_ref, campo, atual, esperado, TOL_TEXTO, "aprovado" if ok else "reprovado",
+                f"{rg.numero_br(anterior)} × IPCA nov/{ano - 1} ({rg.numero_br(i1)}) ÷ IPCA nov/{ano - 2} ({rg.numero_br(i0)}) = "
+                f"{rg.numero_br(esperado, 4)}")
     # o valor original de 2023 (antes da retificação) reproduz a atualização a partir dos tetos
     # a preços de novembro de 2021 da REH nº 2.994/2021: é o erro que a retificação corrigiu
     orig = next((x for x in atos if x["ato"] == "Resolução Homologatória ANEEL nº 3.167/2022"), None)
@@ -543,11 +545,11 @@ def _conferencias_limites(atos, conf, docs, textos, atas, ipca):
         for campo in ("pld_max_estrutural", "pld_max_horario"):
             if orig[campo] is None or base21.get(campo) is None:
                 continue
-            esperado = round(base21[campo] * i1 / i0, 2)
-            add("regra_ipca", orig, campo, orig[campo], esperado, "R$ 0,005/MWh (arredondamento a centavos)",
+            esperado = round(base21[campo] * i1 / i0, 4)
+            add("regra_ipca", orig, campo, orig[campo], esperado, TOL_TEXTO,
                 "aprovado" if abs(esperado - orig[campo]) <= TOL_IPCA_RS else "reprovado",
-                f"valor original retificado: {rg.numero_br(base21[campo])} (REH nº 2.994/2021, preços de nov/2021) × "
-                f"IPCA nov/2022 ÷ nov/2021; a retificação passou a partir do Despacho nº 4.046/2021")
+                f"valor original, depois retificado: {rg.numero_br(base21[campo])} (REH nº 2.994/2021, preços de nov/2021) × "
+                f"IPCA nov/2022 ÷ nov/2021 = {rg.numero_br(esperado, 4)}; a retificação passou a partir do Despacho nº 4.046/2021")
     return linhas, por_ato
 
 
@@ -629,8 +631,8 @@ def _evidencias_limites(bl, textos, docs, snap_docs):
                            x["detalhe"]) for x in cs]
         ipca = next((x for x in bl["conferencias_detalhe"] if x["conferencia"] == "regra_ipca" and x["ano"] == a["ano"]
                      and x["campo"] == campo), None)
-        rec = (ev.reconciliacao(f"Regra do art. 23, § 1º, da REN nº 1.032/2022 refeita com o IPCA do IBGE: {ipca['detalhe']} = "
-                                f"{rg.numero_br(ipca['valor_esperado'])}", ipca["resultado"], "R$ 0,005/MWh")
+        rec = (ev.reconciliacao(f"Regra do art. 23, § 1º, da REN nº 1.032/2022 refeita com o IPCA do IBGE: {ipca['detalhe']}",
+                                ipca["resultado"], TOL_TEXTO)
                if ipca and ipca["valor_esperado"] is not None else
                ev.reconciliacao("Piso igual ao maior valor entre TEO e TEO de Itaipu fixados no mesmo ato (REN nº 1.032/2022, art. 24)",
                                 next((x["resultado"] for x in a["conferencias"] if x["conferencia"] == "piso_teo"), "ressalva"),

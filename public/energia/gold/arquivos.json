@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "arquivos.json",
- "gerado_em": "2026-09-30T23:08:28Z",
+ "gerado_em": "2026-09-30T23:09:03Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "dafa93bb2111+alterado",
+ "versao_codigo": "1313c6cb8127",
  "disponivel": true,
  "arquivos": {
   "/energia/series/regulacao_limites_pld_atos.csv": {
@@ -107,7 +107,7 @@
    "gold": "expansao.json"
   },
   "/energia/series/expansao_trajetorias_ralie.csv": {
-   "colunas": "usinas que passaram pelo RALIE desde jun/2021: nucleo_ceg; ceg; nome; tipo; uf; primeira_fotografia; ultima_fotografia; kw_outorgado_primeira; previsao_primeira; outorgado_primeira; previsao_ultima; outorgado_ultima; mudancas_previsao; ugs_primeira; ugs_primeira_liberadas; kw_primeira_liberado; ultima_liberacao; desfecho; data_encerramento",
+   "colunas": "usinas que passaram pelo RALIE desde jun/2021: nucleo_ceg; ceg; nome; tipo; uf; primeira_fotografia; ultima_fotografia; kw_outorgado_primeira; previsao_primeira; outorgado_primeira; previsao_ultima; outorgado_ultima; mudancas_previsao; ugs_primeira; ugs_primeira_liberadas; kw_primeira_liberado; ultima_liberacao; desfecho; data_encerramento (vazio = sem ato datado); encerramento_sem_data (sim = ato de encerramento sem data de publicação na fonte)",
    "modulo": "expansao",
    "gold": "expansao.json"
   },
@@ -292,7 +292,7 @@
    "gold": "qualidade.json"
   },
   "/energia/series/qualidade_eventos_emergencia.csv": {
-   "colunas": "cnpj; sigla; codigo; inicio; fim; duracao_h; chi_evento; chi_limite; razao_chi; plano_contingencia; nivel; origem.",
+   "colunas": "cnpj; sigla; codigo; inicio e fim como publicados; duracao_h (vazio quando a data é implausível); duracao_ausente_motivo; chi_evento e chi_limite (consumidor × hora); razao_chi; plano_contingencia; nivel; origem.",
    "modulo": "qualidade",
    "gold": "qualidade.json"
   },
@@ -356,21 +356,6 @@
    "modulo": "conta",
    "gold": "conta.json"
   },
-  "/energia/series/inclusao_luz_para_todos_mensal.csv": {
-   "colunas": "uf; programa (rural, regioes_remotas = regiões remotas da Amazônia Legal, recurso_distribuidora); mes (AAAA-MM do atendimento); domicilios (domicílios atendidos, soma de qtddomicilios do MME). Mês sem atendimento não tem linha (não é zero publicado).",
-   "modulo": "inclusao",
-   "gold": "inclusao.json"
-  },
-  "/energia/series/inclusao_luz_para_todos_municipios.csv": {
-   "colunas": "cod_ibge6 (código do município pelo nome exato na UF; vazio = sem correspondência exata); municipio (nome como no arquivo do MME); uf; programa; ano (do atendimento); domicilios.",
-   "modulo": "inclusao",
-   "gold": "inclusao.json"
-  },
-  "/energia/series/inclusao_luz_para_todos_recursos.csv": {
-   "colunas": "uf; contrato; primeira_liberacao e ultima_liberacao (AAAA-MM); vlrempenhadocde, vlrpagocde (subvenção da CDE), vlrempenhadorgr, vlrpagorgr (empréstimo da RGR), vlrempenhadocaixa, vlrpagocaixa (Caixa ou outras fontes), vlrempenhadoae, vlrpago (contrapartida do agente executor): R$ correntes, como informados pelo MME. Vazio = ausência.",
-   "modulo": "inclusao",
-   "gold": "inclusao.json"
-  },
   "/energia/series/inclusao_tsee_mensal.csv": {
    "colunas": "mes (AAAA-MM); distribuidoras (n que informaram no SCS); completo (1 = nenhuma distribuidora esperada faltando, regra na gold); distribuidoras_faltantes; uc_tsee_faltantes_ultimo_informe (UC com Tarifa Social que as faltantes tinham no último mês informado); uc_tsee (unidades consumidoras com Tarifa Social, soma das modalidades); uc_baixa_renda, uc_bpc, uc_indigena, uc_quilombola, uc_multifamiliar (UC por modalidade); uc_residencial (UC da classe residencial das mesmas distribuidoras); participacao_pct (100 × UC com Tarifa Social ÷ UC residenciais, só distribuidoras sem inconsistência no mês); excluidas_participacao (distribuidoras fora da participação); dmr_reais (Diferença Mensal de Receita, R$ correntes); dmr_cde_reais (parcela custeada pela CDE); mwh_tsee (energia faturada das UC com Tarifa Social, MWh). Vazio = ausência.",
    "modulo": "inclusao",
@@ -382,7 +367,7 @@
    "gold": "inclusao.json"
   },
   "/energia/series/inclusao_municipios.csv": {
-   "colunas": "cod_ibge6 (município, 6 dígitos); municipio; uf; mes_cde (mês do arquivo de Beneficiários da CDE); faturas_tsee (faturas de faturamento, tipo 1, com desconto da Tarifa Social nas subclasses 3.2 a 3.6; cada fatura corresponde a uma UC no mês); desconto_reais (soma dos descontos dessas faturas, R$); mes_cadunico; familias_ate_meio_sm_atualizadas; familias_ate_meio_sm; razao_proxy_atualizadas (100 × faturas ÷ famílias atualizadas); razao_proxy_cadastradas; base_pequena (1 = menos de 50 famílias no denominador). PROXY: o numerador inclui beneficiários pelo BPC e por equipamento médico, que não estão no denominador. Vazio = ausência.",
+   "colunas": "cod_ibge6 (município, 6 dígitos); municipio; uf; mes_cde (mês do arquivo de Beneficiários da CDE); faturas_tsee (faturas de faturamento, tipo 1, com desconto da Tarifa Social nas subclasses 3.2 a 3.6; em regra uma por UC no mês, mas a conferência com o SCS mostra distribuidoras com mais faturas que UC); desconto_reais (soma dos descontos dessas faturas, R$); mes_cadunico; familias_ate_meio_sm_atualizadas; familias_ate_meio_sm; razao_proxy_atualizadas (100 × faturas ÷ famílias atualizadas); razao_proxy_cadastradas; base_pequena (1 = menos de 50 famílias no denominador). PROXY: o numerador inclui beneficiários pelo BPC e por equipamento médico, que não estão no denominador. Vazio = ausência.",
    "modulo": "inclusao",
    "gold": "inclusao.json"
   },
@@ -413,6 +398,26 @@
   },
   "/energia/series/inclusao_sistemas_isolados.csv": {
    "colunas": "ciclo; sigla; nome; uf; municipio; distribuidora; populacao (pessoas); previsao_interligacao; previsao_interconexao; programa (programa de universalização informado); latitude; longitude. O mesmo ciclo mais recente também sai em inclusao_sistemas_isolados_pontos.json (lista de listas, campos declarados no arquivo) para o mapa.",
+   "modulo": "inclusao",
+   "gold": "inclusao.json"
+  },
+  "/energia/series/inclusao_sistemas_isolados_pontos.json": {
+   "colunas": "JSON para o mapa, lido sob demanda: {ciclo, gerado_em, fonte, campos, localidades}; cada localidade é uma lista na ordem de campos (sigla, nome, uf, municipio, distribuidora, populacao em pessoas, previsao_interligacao, programa, latitude, longitude). null = ausência.",
+   "modulo": "inclusao",
+   "gold": "inclusao.json"
+  },
+  "/energia/series/inclusao_luz_para_todos_mensal.csv": {
+   "colunas": "uf; programa (rural, regioes_remotas = regiões remotas da Amazônia Legal, recurso_distribuidora); mes (AAAA-MM do atendimento); domicilios (domicílios atendidos, soma de qtddomicilios do MME). Mês sem atendimento não tem linha (não é zero publicado).",
+   "modulo": "inclusao",
+   "gold": "inclusao.json"
+  },
+  "/energia/series/inclusao_luz_para_todos_municipios.csv": {
+   "colunas": "cod_ibge6 (código do município pelo nome exato na UF; vazio = sem correspondência exata); municipio (nome como no arquivo do MME); uf; programa; ano (do atendimento); domicilios.",
+   "modulo": "inclusao",
+   "gold": "inclusao.json"
+  },
+  "/energia/series/inclusao_luz_para_todos_recursos.csv": {
+   "colunas": "uf; contrato; primeira_liberacao e ultima_liberacao (AAAA-MM); vlrempenhadocde, vlrpagocde (subvenção da CDE), vlrempenhadorgr, vlrpagorgr (empréstimo da RGR), vlrempenhadocaixa, vlrpagocaixa (Caixa ou outras fontes), vlrempenhadoae, vlrpago (contrapartida do agente executor): R$ correntes, como informados pelo MME. Vazio = ausência.",
    "modulo": "inclusao",
    "gold": "inclusao.json"
   }
