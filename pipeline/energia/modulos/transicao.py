@@ -1,0 +1,1641 @@
+"""Módulo Transição e ambiente: MMGD no território (P063) e fatores de emissão do SIN (P064).
+
+Gold: public/energia/gold/transicao.json; detalhe em public/energia/series/transicao_*.csv
+e transicao_municipios.json (carregado sob demanda pelo mapa). Método, fontes verificadas,
+conferências e limitações em docs/observatorios/energia/modulos/transicao.md.
+
+Fontes e por que cada uma:
+- ANEEL, Relação de empreendimentos de MMGD (Parquet oficial, equivalente ao CSV do
+  mesmo conjunto; conferidos um contra o outro em 30/09/2026): cadastro regulatório de
+  cada micro e minigeração conectada, com município IBGE, distribuidora (CNPJ), classe,
+  modalidade, fonte, potência instalada e data de conexão. É CAPACIDADE cadastrada.
+- ANEEL, Informações técnicas fotovoltaicas (mesmo conjunto): só para conferir que a data
+  do registro é a data de conexão (controle semântico).
+- ONS, Carga de Energia Verificada (API): parcela da carga atendida por MMGD, uma
+  ESTIMATIVA operacional do ONS. É energia estimada, não cadastro; as duas grandezas
+  são publicadas lado a lado e nunca somadas.
+- ONS, Balanço de Energia nos Subsistemas (silver principal, só leitura): solar do SIN em
+  torno de 29/04/2023, para a conferência do achado A11 com números do dado.
+- IBGE, Estimativas de população (SIDRA 6579): denominador por habitante; relaciona o
+  território sem inferir renda de nenhum beneficiário.
+- MCTI, fatores de emissão de CO2 do SIN: fator médio (inventários) e fatores de margem
+  do MDL, em séries separadas. A página vigente do MCTI está atrás de desafio de
+  verificação humana e não é contornada; a série publicada vem do site institucional
+  anterior do próprio MCTI (2006 a 2021) e de capturas depositadas por pessoa, quando houver.
+"""
+import gzip
+import json
+import os
+import shutil
+import sys
+import tempfile
+import time
+from collections import Counter, defaultdict
+from datetime import date, datetime, timedelta, timezone
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+
+from pipeline.common import http_get  # noqa: E402
+from pipeline.energia import base, entidades  # noqa: E402
+from pipeline.energia.fontes import aneel_transicao as mmgd  # noqa: E402
+from pipeline.energia.fontes import ckan  # noqa: E402
+from pipeline.energia.fontes import mcti_transicao as mcti  # noqa: E402
+from pipeline.energia.fontes import ons_transicao as ons  # noqa: E402
+from pipeline.energia.gold import comum as c  # noqa: E402
+
+GOLD = "transicao.json"
+FAMILIA = "aneel_mmgd"
+SITE = "https://scrutiniums.com/setor-eletrico/transicao"
+PAGINA = {"rotulo": "Transição e ambiente", "href": "/setor-eletrico/transicao"}
+
+DS_MMGD = "aneel_mmgd_empreendimentos"
+DS_FV = "aneel_mmgd_tecnico_fv"
+DS_DIST = "aneel_mmgd_distribuidoras"      # registros: CNPJ → sigla e nome como a fonte publica
+DS_CONTROLE = "aneel_mmgd_controle"        # registros: marca de importação de cada vintage
+DS_ONS = "ons_carga_verificada_mmgd"
+DS_MCTI = "mcti_fator_emissao"
+DS_MCTI_META = "mcti_fator_emissao_meta"   # registros: notas, revisões declaradas, descartes
+DS_IBGE = "ibge_populacao_6579"
+DS_IBGE_MUN = "ibge_municipios"            # registros: código IBGE → nome e UF
+DS_BAL = "balanco_energia_subsistema_ho"   # silver principal, só leitura
+
+PACOTE_MMGD = "relacao-de-empreendimentos-de-geracao-distribuida"
+URL_MMGD = "https://dadosabertos.aneel.gov.br/dataset/relacao-de-empreendimentos-de-geracao-distribuida"
+RECURSO_PARQUET = "empreendimento-geracao-distribuida.parquet"
+RECURSO_FV = "empreendimento-gd-informacoes-tecnicas-fotovoltaica.parquet"
+URL_SIDRA = "https://apisidra.ibge.gov.br/values/t/6579/n1/all/n3/all/n6/all/v/9324/p/last%201"
+URL_TABELA_SIDRA = "https://sidra.ibge.gov.br/tabela/6579"
+SEED_MCTI = os.path.join(base.SEED, "mcti_fatores_emissao")
+
+LICENCA_ANEEL = "Licença Aberta para Bases de Dados (ODbL) do Open Data Commons, conforme o portal de dados abertos da ANEEL"
+LICENCA_IBGE = "Uso livre com citação da fonte (IBGE)"
+LICENCA_MCTI = ("Informação pública de órgão federal (Lei 12.527/2011), sem licença específica declarada na página; "
+                "citar o MCTI como fonte")
+
+# Política de recoleta. O arquivo da ANEEL é regerado todo dia (last_modified muda a cada
+# dia), então a regra do coletor CKAN (baixar quando a publicação muda) baixaria 216 MB e
+# criaria duas vintages por dia no bronze. O dicionário declara frequência mensal: a
+# relação é recoletada quando a última captura bem-sucedida tem 30 dias ou mais, e o
+# recurso técnico fotovoltaico (só para o controle da data de conexão) a cada 90 dias.
+MAX_IDADE_MMGD = 30
+MAX_IDADE_FV = 90
+MAX_IDADE_MCTI = 30
+MAX_IDADE_IBGE = 30
+ONS_MESES_RECENTES = 3        # meses recoletados a cada execução (dado em consistência)
+ONS_IDADE_RECENTES_H = 20
+ONS_IDADE_ANTIGOS_D = 30      # o ONS revisa o histórico: recoleta mensal dos meses antigos
+PAUSA_S = 0.2
+
+# Meses anteriores à data do conjunto marcados como provisórios: o registro no sistema da
+# ANEEL chega depois da conexão, e a própria ANEEL avisa de inserção mais lenta após a
+# migração de sistema (nota do conjunto). A magnitude real do atraso é medida pelas
+# revisões entre capturas, publicadas em mmgd.revisoes.
+MESES_PROVISORIOS = 6
+# Ranking por habitante só entre municípios com população estimada de pelo menos 100 mil:
+# com denominador pequeno, uma única usina de minigeração domina a razão.
+POP_MINIMA_RANKING = 100_000
+QUEBRA_ONS = "2023-04-29"
+DOC_ONS_BALANCO = {
+    "orgao": "ONS",
+    "titulo": "Energia Agora: Balanço de Energia (texto de apresentação da página)",
+    "url": "https://www.ons.org.br/paginas/energia-agora/balanco-de-energia",
+    "consultado_em": "2026-09-30",
+    "trecho": ("A partir de 29/04/2023, o valor estimado da micro e minigeração distribuída (MMGD) também passou a "
+               "incorporar os dados de geração e carga apresentados nesta página."),
+}
+DOC_ONS_PMO = {
+    "orgao": "ONS",
+    "titulo": "Notícia de 28/04/2023: Projeções do PMO passam a incorporar a carga da MMGD",
+    "url": "https://www.ons.org.br/Paginas/Noticias/20230428-Proje%C3%A7%C3%B5es-do-PMO-passam-a-incorporar-a-carga-da-MMGD.aspx",
+    "consultado_em": "2026-09-30",
+    "trecho": ("O boletim do Programa Mensal de Operação (PMO), a partir da semana operativa entre os dias 29 de abril e "
+               "05 de maio, passa a incorporar, nas análises de carga, os montantes de geração da Micro e Minigeração "
+               "Distribuída (MMGD)."),
+}
+
+SERIES_AGREGADAS = ("mun_ano_fonte", "uf_mes_fonte", "dist_uf_ano", "classe_ano", "modalidade_ano", "porte_ano",
+                    "tipo_consumidor_ano", "fonte_detalhe_ano")
+
+FONTE_ANEEL = {"orgao": "ANEEL", "dataset": "Relação de empreendimentos de Mini e Micro Geração Distribuída",
+               "recurso": f"{RECURSO_PARQUET} (Parquet oficial; o CSV do mesmo conjunto tem o mesmo conteúdo)",
+               "url_dataset": URL_MMGD, "url_primaria": URL_MMGD, "licenca": LICENCA_ANEEL}
+FONTE_ONS = {"orgao": "ONS", "dataset": "Carga de Energia Verificada",
+             "recurso": "API cargaverificada (val_cargammgd, val_cargaglobal, val_cargaglobalsmmgd), áreas SECO, S, NE e N",
+             "url_dataset": ons.URL_DATASET, "url_primaria": ons.URL_API, "licenca": c.LICENCA_ONS}
+FONTE_IBGE = {"orgao": "IBGE", "dataset": "Estimativas de população (tabela SIDRA 6579)",
+              "recurso": "variável 9324, População residente estimada, municípios, UF e Brasil, último ano",
+              "url_dataset": URL_TABELA_SIDRA, "url_primaria": URL_SIDRA, "licenca": LICENCA_IBGE}
+FONTE_MCTI = {"orgao": "MCTI", "dataset": "Fatores de emissão de CO2 pela geração de energia elétrica no SIN",
+              "recurso": "planilhas de inventário (fator médio) e de análise de despacho (MDL), e tabela do método simples ajustado",
+              "url_dataset": mcti.URL_PAGINA_ATUAL, "url_primaria": mcti.URL_PAGINA_ATUAL, "licenca": LICENCA_MCTI}
+
+REGISTRO = {
+    "id": "transicao",
+    "gold": GOLD,
+    "familia": FAMILIA,
+    "ordem": 31,
+    "datasets": [
+        {"orgao": "ANEEL", "nome": PACOTE_MMGD, "slug": "aneel-mmgd-empreendimentos", "dataset_silver": DS_MMGD,
+         "titulo": "Relação de empreendimentos de Mini e Micro Geração Distribuída", "estado": "UTILIZADO EM INDICADOR",
+         "url": URL_MMGD, "licenca": LICENCA_ANEEL, "tema": "distribuicao",
+         "descricao": "Cadastro de cada micro e minigeração distribuída conectada: município, distribuidora, classe, modalidade, fonte, potência instalada e data de conexão.",
+         "paginas": [PAGINA],
+         "downloads": ["/energia/series/transicao_mmgd_municipio_ano_fonte.csv", "/energia/series/transicao_mmgd_municipios.csv",
+                       "/energia/series/transicao_mmgd_uf_mes_fonte.csv", "/energia/series/transicao_mmgd_distribuidoras.csv",
+                       "/energia/series/transicao_mmgd_perfil.csv"],
+         "quebras": [{"data": "2025-09-23", "origem": "FONTE",
+                      "descricao": "Atualização suspensa de 23/09/2025 a 13/11/2025 na migração do SISGD para o sistema MMGD; a ANEEL avisa de inserção mais lenta nos meses seguintes."}]},
+        {"orgao": "ONS", "nome": "carga-energia-verificada", "slug": "ons-carga-verificada-mmgd", "dataset_silver": DS_ONS,
+         "titulo": "Carga de Energia Verificada: parcela atendida por MMGD (API)", "estado": "UTILIZADO EM INDICADOR",
+         "url": ons.URL_DATASET, "licenca": c.LICENCA_ONS, "tema": "carga",
+         "descricao": "Carga semi-horária por área de carga com a parcela atendida por MMGD estimada pelo ONS; usada por submercado.",
+         "paginas": [PAGINA], "downloads": ["/energia/series/transicao_ons_mmgd_diario.csv", "/energia/series/transicao_ons_mmgd_mensal.csv"],
+         "quebras": []},
+        {"orgao": "IBGE", "nome": "sidra-6579", "slug": "ibge-populacao-estimada-6579", "dataset_silver": DS_IBGE,
+         "titulo": "Estimativas de população residente (SIDRA 6579)", "estado": "UTILIZADO EM INDICADOR",
+         "url": URL_TABELA_SIDRA, "licenca": LICENCA_IBGE, "tema": "contexto",
+         "descricao": "População residente estimada por município, usada como denominador por habitante.",
+         "paginas": [PAGINA], "downloads": ["/energia/series/transicao_mmgd_municipios.csv"], "quebras": []},
+        {"orgao": "MCTI", "nome": "fatores-de-emissao-sin", "slug": "mcti-fatores-emissao-sin", "dataset_silver": DS_MCTI,
+         "titulo": "Fatores de emissão de CO2 da geração de energia elétrica no SIN", "estado": "UTILIZADO EM INDICADOR",
+         "url": mcti.URL_PAGINA_ATUAL, "licenca": LICENCA_MCTI, "tema": "ambiente",
+         "descricao": "Fator médio mensal e anual para inventários e fatores de margem de operação e de construção para projetos de MDL, em tCO2/MWh.",
+         "paginas": [PAGINA], "downloads": ["/energia/series/transicao_mcti_fatores.csv", "/energia/series/transicao_mcti_om_diario.csv"],
+         "quebras": [{"data": "2025-01-01", "origem": "FONTE",
+                      "descricao": "Base de usinas do ONS usada no cálculo ampliada (biomassa e conjuntos solares e eólicos); metodologia mantida, valores podem cair pela base (nota técnica NT_FE_jun25 do MCTI)."}]},
+    ],
+    "arquivos": {
+        "/energia/series/transicao_mmgd_municipio_ano_fonte.csv": (
+            "codigo_ibge; municipio; uf; ano_conexao (AAAA, ou sem_data quando a data publicada é sentinela); fonte (solar, "
+            "termica, hidraulica, eolica, outra, nao_informada); unidades = empreendimentos no cadastro vigente; potencia_kw = "
+            "potência instalada cadastrada em kW (capacidade, não energia). Combinação ausente = nenhum empreendimento no cadastro."),
+        "/energia/series/transicao_mmgd_municipios.csv": (
+            "codigo_ibge; municipio; uf; unidades e potencia_kw no cadastro vigente; populacao_estimada e ano_populacao (IBGE, "
+            "SIDRA 6579); w_por_habitante = potencia_kw × 1000 ÷ população; unidades_por_mil_habitantes; ano_referencia (último "
+            "ano completo antes da data do cadastro); unidades_ano_referencia e potencia_kw_ano_referencia = conectadas no ano; "
+            "potencia_kw_estoque_ano_anterior = conectadas até 31/12 do ano anterior; crescimento_estoque_pct = potência do ano "
+            "÷ estoque anterior × 100 (vazio quando o estoque anterior é zero). Vazio = ausência (sem população publicada)."),
+        "/energia/series/transicao_mmgd_uf_mes_fonte.csv": (
+            "uf (pelo código IBGE do município); mes_conexao (AAAA-MM ou sem_data); fonte; unidades; potencia_kw. Os últimos "
+            "meses são provisórios: registros chegam à ANEEL depois da conexão."),
+        "/energia/series/transicao_mmgd_distribuidoras.csv": (
+            "cnpj (14 dígitos, chave da distribuidora); sigla e nome como publicados (a sigla pode mudar para o mesmo CNPJ); uf "
+            "do município da unidade; ano_conexao; unidades; potencia_kw."),
+        "/energia/series/transicao_mmgd_perfil.csv": (
+            "dimensao (classe, modalidade, porte, tipo_consumidor, fonte_detalhe); categoria como publicada pela ANEEL; "
+            "ano_conexao; unidades; potencia_kw."),
+        "/energia/series/transicao_ons_mmgd_diario.csv": (
+            "data (dia de referência do ONS); submercado (SE, S, NE, N); mmgd_mwh = soma das meias horas × 0,5 h da parcela da "
+            "carga atendida por MMGD estimada pelo ONS; mmgd_mwmed = mmgd_mwh ÷ horas; horas = horas cobertas; carga_global_mwh; "
+            "carga_sem_mmgd_mwh. Estimativa operacional do ONS, não medição nem cadastro."),
+        "/energia/series/transicao_ons_mmgd_mensal.csv": (
+            "mes; submercado (SE, S, NE, N, SIN); mmgd_mwmed = MWh do mês ÷ horas cobertas; carga_global_mwmed; "
+            "participacao_mmgd_pct = 100 × MWh de MMGD ÷ MWh da carga global; dias_completos; dias_no_mes. SIN = soma dos "
+            "quatro submercados nos dias em que os quatro estão completos."),
+        "/energia/series/transicao_mcti_fatores.csv": (
+            "serie (fator_medio_mensal, fator_medio_anual, margem_operacao_despacho_mensal, margem_construcao_anual, "
+            "margem_operacao_simples_ajustado_anual, energia_despachada_mwh); periodo (AAAA-MM ou AAAA); valor; unidade "
+            "(tCO2/MWh, ou MWh para energia_despachada_mwh); arquivo de origem no MCTI. Fator médio não é fator marginal."),
+        "/energia/series/transicao_mcti_om_diario.csv": (
+            "data; margem_operacao_despacho_tco2_mwh (fator diário da margem de operação do MDL, MCTI); arquivo. Uso exclusivo "
+            "em projetos de MDL; não é intensidade média da eletricidade consumida."),
+        "/energia/series/transicao_municipios.json": (
+            "Mapa de MMGD por município (carregado sob demanda): campos e linhas na mesma definição do CSV "
+            "transicao_mmgd_municipios.csv."),
+    },
+}
+
+
+# ---------------------------------------------------------------------------
+# Coleta
+# ---------------------------------------------------------------------------
+
+def _idade(con, dataset, recurso, agora):
+    v = base.ultima_vintage(con, dataset, recurso)
+    ok = ckan._ultima_coleta_ok(con, dataset, recurso)
+    ref = ok or (datetime.fromisoformat(v["capturado_em"].replace("Z", "+00:00")) if v else None)
+    return (agora - ref) if ref else None
+
+
+def _vintage_importada(con, vid):
+    return con.execute("SELECT 1 FROM registros WHERE dataset=? AND chave=? LIMIT 1", (DS_CONTROLE, vid)).fetchone() is not None
+
+
+def _marca_importada(con, vid, detalhe):
+    base.grava_registros(con, DS_CONTROLE, vid, [(vid, "importado_em", base.agora_utc()), (vid, "detalhe", detalhe)])
+
+
+def _bronze_para_arquivo(caminho_rel, sufixo):
+    """Descomprime um arquivo do bronze para um temporário (o pyarrow precisa de arquivo
+    com acesso aleatório). Quem chama remove o temporário."""
+    fd, tmp = tempfile.mkstemp(prefix="transicao-", suffix=sufixo)
+    os.close(fd)
+    with base.abre_bronze(caminho_rel) as src, open(tmp, "wb") as dst:
+        shutil.copyfileobj(src, dst, 1 << 20)
+    return tmp
+
+
+def _ibge_referencia(con):
+    """(prefixo6 → código7, conjunto de códigos7) a partir do cadastro IBGE no silver."""
+    muns = base.registros_como_estavam_em(con, DS_IBGE_MUN)
+    validos = set(muns)
+    por6 = defaultdict(list)
+    for cod in validos:
+        por6[cod[:6]].append(cod)
+    return {k: v[0] for k, v in por6.items() if len(v) == 1}, (validos or None)
+
+
+def _zeros_para_sumidos(con, linhas):
+    """O arquivo da ANEEL é o cadastro completo: combinação que existia na captura anterior
+    e sumiu na nova tem hoje zero empreendimentos (zero real, não ausência). Sem esta linha,
+    a leitura vigente repetiria o valor antigo."""
+    novas = {(s, r) for s, r, _ in linhas}
+    series = sorted({s for s, _, _ in linhas if not s.startswith("controle.")})
+    extras = []
+    for s in series:
+        for ref, v in base.serie_vigente(con, DS_MMGD, s):
+            if v != 0 and (s, ref) not in novas:
+                extras.append((s, ref, 0.0))
+    return extras
+
+
+def _importa_mmgd(con, vintage, vint_fv):
+    ibge6, validos = _ibge_referencia(con)
+    tmp = _bronze_para_arquivo(vintage["arquivo"], ".parquet")
+    tmp_fv = None
+    try:
+        t0 = time.time()
+        ag = mmgd.agrega(mmgd.linhas_parquet(tmp), ibge6, validos)
+        ctrl = ag.controles()
+        ctrl.update(mmgd.controles_tabela(tmp))
+        if vint_fv:
+            tmp_fv = _bronze_para_arquivo(vint_fv["arquivo"], ".parquet")
+            conc = mmgd.concordancia_datas(tmp, tmp_fv)
+            ctrl.update({f"fv_{k}": v for k, v in conc.items()})
+        datas = ag.datas_conjunto
+        data_conj = max(datas) if datas else vintage["capturado_em"][:10]
+        linhas = list(ag.observacoes())
+        linhas += _zeros_para_sumidos(con, linhas)
+        linhas += [(f"controle.{k}", data_conj, float(v)) for k, v in ctrl.items() if v is not None]
+        novas, revs = base.grava_observacoes(con, DS_MMGD, vintage["vintage_id"], linhas)
+        dist = []
+        for cnpj, nomes in ag.nomes_dist.items():
+            (sigla, nome), _ = nomes.most_common(1)[0]
+            siglas = sorted({s for s, _ in nomes if s})
+            dist += [(cnpj, "sigla", sigla or None), (cnpj, "nome", nome or None), (cnpj, "siglas_publicadas", "; ".join(siglas) or None)]
+        base.grava_registros(con, DS_DIST, vintage["vintage_id"], dist)
+        base.grava_registros(con, DS_CONTROLE, vintage["vintage_id"], [
+            ("conjunto", "data_geracao", data_conj),
+            ("conjunto", "datas_geracao_distintas", str(len(datas))),
+            ("conjunto", "fv_vintage", vint_fv["vintage_id"] if vint_fv else None),
+        ])
+        _marca_importada(con, vintage["vintage_id"], f"{ctrl.get('linhas')} linhas, {novas} novas, {revs} revisões, {time.time() - t0:.0f} s")
+        con.commit()
+        return {"linhas": ctrl.get("linhas"), "novas": novas, "revisoes": revs, "data_conjunto": data_conj}
+    finally:
+        for t in (tmp, tmp_fv):
+            if t:
+                try:
+                    os.remove(t)
+                except OSError:
+                    pass
+
+
+def _coleta_mmgd(con):
+    agora = datetime.now(timezone.utc)
+    status = {}
+    idade_fv = _idade(con, DS_FV, RECURSO_FV, agora)
+    vint_fv = {}
+    if idade_fv is None or idade_fv >= timedelta(days=MAX_IDADE_FV):
+        status["tecnico_fv"], _, vint_fv = ckan.coleta_pacote(
+            con, orgao="ANEEL", nome=PACOTE_MMGD, dataset=DS_FV, max_idade_dias=MAX_IDADE_FV,
+            filtro_recurso=lambda r: (r.get("name") or "").strip() == RECURSO_FV,
+            ext_de=lambda r: "parquet")
+    else:
+        status["tecnico_fv"] = {"status": "pulada", "idade_dias": idade_fv.days}
+    idade = _idade(con, DS_MMGD, RECURSO_PARQUET, agora)
+    if idade is None or idade >= timedelta(days=MAX_IDADE_MMGD):
+        status["coleta"], _, vints = ckan.coleta_pacote(
+            con, orgao="ANEEL", nome=PACOTE_MMGD, dataset=DS_MMGD, max_idade_dias=MAX_IDADE_MMGD,
+            filtro_recurso=lambda r: (r.get("name") or "").strip() == RECURSO_PARQUET or (r.get("format") or "").upper() == "PDF"
+            and "relacao-de-empreendimentos" in (r.get("url") or ""),
+            ext_de=lambda r: "pdf" if (r.get("format") or "").upper() == "PDF" else "parquet")
+    else:
+        status["coleta"] = {"status": "pulada", "idade_dias": idade.days}
+        vints = {RECURSO_PARQUET: base.ultima_vintage(con, DS_MMGD, RECURSO_PARQUET)}
+    v = vints.get(RECURSO_PARQUET)
+    if v and not _vintage_importada(con, v["vintage_id"]):
+        try:
+            status["importacao"] = _importa_mmgd(con, v, vint_fv.get(RECURSO_FV) or base.ultima_vintage(con, DS_FV, RECURSO_FV))
+        except Exception as e:  # arquivo corrompido ou esquema novo: falha registrada, sem número
+            con.rollback()
+            base.registra_coleta(con, DS_MMGD, RECURSO_PARQUET, False, f"importação: {e}")
+            con.commit()
+            status["importacao"] = {"erro": str(e)[:300]}
+    return status
+
+
+def _data_brasilia(instante_utc):
+    """Data civil de Brasília (UTC−3, sem horário de verão desde 2019) de um instante UTC."""
+    t = datetime.fromisoformat(instante_utc.replace("Z", "+00:00"))
+    return (t - timedelta(hours=3)).date().isoformat()
+
+
+def _meses(inicio, fim):
+    a, m = int(inicio[:4]), int(inicio[5:7])
+    while f"{a:04d}-{m:02d}" <= fim:
+        yield f"{a:04d}-{m:02d}"
+        m += 1
+        if m == 13:
+            a, m = a + 1, 1
+
+
+def _coleta_ons(con, hoje, baixar=http_get, pausa=PAUSA_S):
+    agora = datetime.now(timezone.utc)
+    meses = list(_meses(ons.PRIMEIRO_MES, hoje.strftime("%Y-%m")))
+    recentes = set(meses[-ONS_MESES_RECENTES:])
+    st = {"pedidos": 0, "novas": 0, "identicas": 0, "puladas": 0, "falhas": [], "observacoes_novas": 0, "revisoes": 0}
+    for mes in meses:
+        a, m = int(mes[:4]), int(mes[5:7])
+        fim = date(a + (m == 12), m % 12 + 1, 1) - timedelta(days=1)
+        fim = min(fim, hoje)
+        for sm, area in ons.AREAS.items():
+            recurso = f"carga_verificada_{area}_{mes}"
+            idade = _idade(con, DS_ONS, recurso, agora)
+            limite = timedelta(hours=ONS_IDADE_RECENTES_H) if mes in recentes else timedelta(days=ONS_IDADE_ANTIGOS_D)
+            if idade is not None and idade < limite:
+                st["puladas"] += 1
+                continue
+            url = ons.url(area, f"{mes}-01", fim.isoformat())
+            st["pedidos"] += 1
+            try:
+                corpo, _ = baixar(url, timeout=120)
+                regs = ons.parse(corpo)
+            except Exception as e:
+                base.registra_coleta(con, DS_ONS, recurso, False, str(e))
+                st["falhas"].append(f"{recurso}: {str(e)[:120]}")
+                continue
+            capturado = base.agora_utc()
+            arq, sha = base.salva_bronze("ons", DS_ONS, recurso, corpo, "json", capturado)
+            ult = base.ultima_vintage(con, DS_ONS, recurso)
+            if ult and ult["sha256"] == sha:
+                base.registra_coleta(con, DS_ONS, recurso, True, "idêntico à vintage anterior")
+                st["identicas"] += 1
+            else:
+                vid, _ = base.registra_vintage(con, DS_ONS, recurso, url, capturado, None, sha, len(corpo), "coleta_direta", arq)
+                diario = ons.agrega_diario(regs, dia_limite=_data_brasilia(capturado))
+                n, rv = base.grava_observacoes(con, DS_ONS, vid, ons.observacoes(diario))
+                base.registra_coleta(con, DS_ONS, recurso, True, f"{len(regs)} meias horas, {n} novas, {rv} revisões")
+                st["novas"] += 1
+                st["observacoes_novas"] += n
+                st["revisoes"] += rv
+            con.commit()
+            if pausa:
+                time.sleep(pausa)
+    st["ok"] = not st["falhas"]
+    return st
+
+
+def _grava_mcti(con, recurso, url, corpo, ext, origem, capturado=None, publicado=None, arquivo=None):
+    """Registra uma planilha ou página do MCTI e importa a série quando a vintage é nova."""
+    capturado = capturado or base.agora_utc()
+    if arquivo is None:
+        arquivo, sha = base.salva_bronze("mcti", DS_MCTI, recurso, corpo, ext, capturado)
+    else:
+        sha = base.sha256_bytes(corpo)
+    ult = base.ultima_vintage(con, DS_MCTI, recurso)
+    if ult and ult["sha256"] == sha:
+        base.registra_coleta(con, DS_MCTI, recurso, True, "idêntico à vintage anterior")
+        return {"recurso": recurso, "status": "identica"}
+    vid, nova = base.registra_vintage(con, DS_MCTI, recurso, url, capturado, publicado, sha, len(corpo), origem, arquivo)
+    if not nova:
+        return {"recurso": recurso, "status": "identica"}
+    linhas, meta = _linhas_mcti(recurso, corpo, ext)
+    n, rv = base.grava_observacoes(con, DS_MCTI, vid, linhas)
+    base.grava_registros(con, DS_MCTI_META, vid, [(recurso, k, json.dumps(v, ensure_ascii=False) if not isinstance(v, str) else v)
+                                                  for k, v in meta.items()])
+    base.registra_coleta(con, DS_MCTI, recurso, True, f"{len(linhas)} valores, {n} novos, {rv} revisões")
+    return {"recurso": recurso, "status": "nova", "valores": len(linhas), "revisoes": rv}
+
+
+FAMILIAS_MCTI = ("atual", "seed", "antigo")  # ordem de precedência na gold
+
+
+def _familia_mcti(recurso):
+    """Família de origem pelo prefixo do recurso: página vigente do MCTI ("atual"),
+    captura depositada por pessoa ("seed") ou site institucional anterior ("antigo").
+    As séries levam a família no nome para que uma planilha antiga recapturada depois
+    não passe por revisão de uma publicação mais nova (a leitura vigente do silver segue
+    a ordem de captura, não a de publicação)."""
+    f = recurso.split("_", 1)[0]
+    return f if f in FAMILIAS_MCTI else "antigo"
+
+
+def _linhas_mcti(recurso, corpo, ext):
+    fam = _familia_mcti(recurso)
+    if ext == "html":
+        p = mcti.parse_simples_ajustado(corpo)
+        tipo = "simples_ajustado"
+    elif ext == "pdf":
+        return [], {"tipo": "documento"}
+    else:
+        planilha = mcti.le_xlsx(corpo)
+        tipo = mcti.tipo_planilha(planilha)
+        if tipo == "simples_ajustado":
+            p = mcti.parse_simples_ajustado_xlsx(planilha)
+    if tipo == "simples_ajustado":
+        linhas = [(f"{fam}.om_simples_ajustado_anual", a, v) for a, v in p["om"].items()]
+        linhas += [(f"{fam}.energia_despachada_mwh", a, v) for a, v in p["energia_mwh"].items()]
+        return linhas, {"tipo": tipo, "notas": p["notas"], "anos_com_nota": p["anos_com_nota"]}
+    if tipo == "inventario":
+        p = mcti.parse_inventario(planilha)
+        linhas = [(f"{fam}.medio_mensal", k, v) for k, v in p["mensal"].items()]
+        linhas += [(f"{fam}.medio_anual", k, v) for k, v in p["anual"].items()]
+        return linhas, {"tipo": tipo, "problemas": p["problemas"]}
+    if tipo == "despacho":
+        p = mcti.parse_despacho(planilha)
+        linhas = [(f"{fam}.om_despacho_mensal", k, v) for k, v in p["om_mensal"].items()]
+        linhas += [(f"{fam}.om_despacho_diario", k, v) for k, v in p["om_diario"].items()]
+        if p["bm"] is not None and p["ano"]:
+            linhas.append((f"{fam}.bm_anual", str(p["ano"]), p["bm"]))
+        return linhas, {"tipo": tipo, "ano": p["ano"], "bm_nota": p["bm_nota"], "notas": p["notas"],
+                        "revisoes_declaradas": p["revisoes"], "descartes": p["descartes"], "problemas": p["problemas"]}
+    return [], {"tipo": "outro"}
+
+
+def _coleta_mcti(con, baixar=http_get):
+    agora = datetime.now(timezone.utc)
+    st = {"pagina_atual": None, "atual": [], "antigo": [], "seed": [], "falhas": []}
+    # 1. página vigente: tentativa registrada; desafio de verificação humana não é contornado
+    try:
+        corpo, _ = baixar(mcti.URL_PAGINA_ATUAL, timeout=60, accept=None)
+        sid = mcti.desafio_waf(corpo)
+        if sid:
+            base.registra_coleta(con, DS_MCTI, "pagina_atual", False,
+                                 f"desafio de verificação humana do gov.br (support ID {sid}); não contornado")
+            st["pagina_atual"] = {"situacao": "bloqueada", "support_id": sid, "tentado_em": base.agora_utc()}
+        else:
+            links = mcti.links_xlsx(corpo, mcti.URL_PAGINA_ATUAL)
+            docs = mcti.links_documentos(corpo, mcti.URL_PAGINA_ATUAL)
+            base.registra_coleta(con, DS_MCTI, "pagina_atual", True, f"{len(links)} planilhas e {len(docs)} notas técnicas listadas")
+            st["pagina_atual"] = {"situacao": "acessivel", "planilhas": len(links), "tentado_em": base.agora_utc()}
+            for u in [(x, "xlsx") for x in links] + [(x, "pdf") for x in docs]:
+                u, ext = u
+                nome = "atual_" + u.rsplit("/", 1)[-1].rsplit(".", 1)[0]
+                idade = _idade(con, DS_MCTI, nome, agora)
+                if idade is not None and idade < timedelta(days=MAX_IDADE_MCTI):
+                    continue
+                try:
+                    arq, _ = baixar(u, timeout=120, accept="*/*")
+                    if mcti.desafio_waf(arq):
+                        raise RuntimeError("desafio de verificação humana no arquivo")
+                    st["atual"].append(_grava_mcti(con, nome, u, arq, ext, "coleta_direta"))
+                except Exception as e:
+                    base.registra_coleta(con, DS_MCTI, nome, False, str(e))
+                    st["falhas"].append(f"{nome}: {str(e)[:120]}")
+    except Exception as e:
+        base.registra_coleta(con, DS_MCTI, "pagina_atual", False, str(e))
+        st["pagina_atual"] = {"situacao": "falha", "detalhe": str(e)[:200], "tentado_em": base.agora_utc()}
+    # 2. site institucional anterior do MCTI (origem oficial acessível)
+    for pagina, rotulo in ((mcti.URL_ANTIGO_INVENTARIO, "inventario"), (mcti.URL_ANTIGO_DESPACHO, "despacho")):
+        try:
+            corpo, _ = baixar(pagina, timeout=60, accept=None)
+            links = mcti.links_xlsx(corpo, pagina)
+        except Exception as e:
+            base.registra_coleta(con, DS_MCTI, f"pagina_{rotulo}", False, str(e))
+            st["falhas"].append(f"pagina_{rotulo}: {str(e)[:120]}")
+            continue
+        for u in links:
+            nome = "antigo_" + u.rsplit("/", 1)[-1].rsplit(".", 1)[0]
+            idade = _idade(con, DS_MCTI, nome, agora)
+            if idade is not None and idade < timedelta(days=MAX_IDADE_MCTI):
+                continue
+            try:
+                arq, _ = baixar(u, timeout=120, accept="*/*")
+                st["antigo"].append(_grava_mcti(con, nome, u, arq, "xlsx", "coleta_direta"))
+            except Exception as e:
+                base.registra_coleta(con, DS_MCTI, nome, False, str(e))
+                st["falhas"].append(f"{nome}: {str(e)[:120]}")
+            con.commit()
+            time.sleep(PAUSA_S)
+    nome = "antigo_emissao_ajustado"
+    idade = _idade(con, DS_MCTI, nome, agora)
+    if idade is None or idade >= timedelta(days=MAX_IDADE_MCTI):
+        try:
+            corpo, _ = baixar(mcti.URL_ANTIGO_AJUSTADO, timeout=60, accept=None)
+            st["antigo"].append(_grava_mcti(con, nome, mcti.URL_ANTIGO_AJUSTADO, corpo, "html", "coleta_direta"))
+        except Exception as e:
+            base.registra_coleta(con, DS_MCTI, nome, False, str(e))
+            st["falhas"].append(f"{nome}: {str(e)[:120]}")
+    # 3. capturas depositadas por pessoa (páginas que exigem verificação humana)
+    st["seed"] = importa_seed_mcti(con)
+    con.commit()
+    st["ok"] = not st["falhas"]
+    return st
+
+
+def importa_seed_mcti(con, pasta=SEED_MCTI):
+    """Planilhas do MCTI baixadas por uma pessoa (a página vigente exige verificação humana)
+    e versionadas em pipeline/energia/seed/mcti_fatores_emissao/<versao>/ com MANIFESTO.json:
+    {"capturado_em", "capturado_por", "pagina", "arquivos": [{"recurso", "url", "arquivo_seed",
+    "sha256"}]}. sha256 divergente do manifesto = arquivo recusado."""
+    out = []
+    if not os.path.isdir(pasta):
+        return out
+    for versao in sorted(os.listdir(pasta)):
+        mpath = os.path.join(pasta, versao, "MANIFESTO.json")
+        if not os.path.isfile(mpath):
+            continue
+        with open(mpath, encoding="utf-8") as f:
+            man = json.load(f)
+        for item in man.get("arquivos", []):
+            caminho = os.path.join(pasta, versao, item["arquivo_seed"])
+            with open(caminho, "rb") as f:
+                corpo = f.read()
+            if caminho.endswith(".gz"):
+                corpo = gzip.decompress(corpo)
+            sha = base.sha256_bytes(corpo)
+            if sha != item["sha256"]:
+                base.registra_coleta(con, DS_MCTI, item["recurso"], False, "seed com sha256 divergente")
+                out.append({"recurso": item["recurso"], "ok": False, "erro": "sha256 divergente"})
+                continue
+            r = _grava_mcti(con, "seed_" + item["recurso"], item["url"], corpo, "xlsx", "seed",
+                            capturado=man["capturado_em"], arquivo=os.path.relpath(caminho, base.RAIZ))
+            out.append({**r, "ok": True})
+    return out
+
+
+def parse_sidra(corpo):
+    """[(nivel, codigo, nome, ano, valor|None)] da resposta da API SIDRA (1ª linha é cabeçalho)."""
+    dados = json.loads(corpo.decode("utf-8") if isinstance(corpo, bytes) else corpo)
+    out = []
+    for x in dados[1:]:
+        v = (x.get("V") or "").strip()
+        valor = float(v) if v.replace(".", "", 1).isdigit() else None  # "...", "-", "X" = ausência
+        out.append((x.get("NC"), x.get("D1C"), x.get("D1N"), x.get("D3C"), valor))
+    return out
+
+
+def _coleta_ibge(con, baixar=http_get):
+    agora = datetime.now(timezone.utc)
+    recurso = "sidra_6579_ultimo_ano"
+    idade = _idade(con, DS_IBGE, recurso, agora)
+    if idade is not None and idade < timedelta(days=MAX_IDADE_IBGE):
+        return {"status": "pulada"}
+    try:
+        corpo, _ = baixar(URL_SIDRA, timeout=180)
+        linhas = parse_sidra(corpo)
+    except Exception as e:
+        base.registra_coleta(con, DS_IBGE, recurso, False, str(e))
+        return {"status": "falha", "detalhe": str(e)[:200]}
+    capturado = base.agora_utc()
+    arq, sha = base.salva_bronze("ibge", DS_IBGE, recurso, corpo, "json", capturado)
+    vid, nova = base.registra_vintage(con, DS_IBGE, recurso, URL_SIDRA, capturado, None, sha, len(corpo), "coleta_direta", arq)
+    obs, regs = [], []
+    for nivel, cod, nome, ano, valor in linhas:
+        if valor is not None:
+            obs.append(("populacao", f"{cod}|{ano}", valor))
+        if nivel == "6" and cod and len(cod) == 7:
+            uf = mmgd.UF_POR_CODIGO.get(cod[:2])
+            nome_mun = nome.rsplit(" - ", 1)[0] if nome and " - " in nome else nome
+            regs += [(cod, "nome", nome_mun), (cod, "uf", uf)]
+    n, rv = base.grava_observacoes(con, DS_IBGE, vid, obs)
+    # o cadastro de municípios vai para outro dataset de registros, com a mesma vintage
+    vid_mun, _ = base.registra_vintage(con, DS_IBGE_MUN, recurso, URL_SIDRA, capturado, None, sha, len(corpo), "coleta_direta", arq)
+    base.grava_registros(con, DS_IBGE_MUN, vid_mun, regs)
+    base.registra_coleta(con, DS_IBGE, recurso, True, f"{len(linhas)} linhas, {n} novas, {rv} revisões")
+    con.commit()
+    return {"status": "nova" if nova else "identica", "linhas": len(linhas)}
+
+
+def coletar(con, ctx):
+    hoje = ctx.get("hoje") or c.agora_date()
+    status = {"modulo": "transicao"}
+    # IBGE antes da MMGD: o cadastro de municípios completa códigos de 6 dígitos
+    for nome, f in (("ibge", lambda: _coleta_ibge(con)), ("mmgd", lambda: _coleta_mmgd(con)),
+                    ("ons", lambda: _coleta_ons(con, hoje)), ("mcti", lambda: _coleta_mcti(con))):
+        try:
+            status[nome] = f()
+        except Exception as e:  # nenhuma falha de fonte derruba as demais
+            status[nome] = {"ok": False, "erro": str(e)[:300]}
+            try:
+                con.rollback()
+            except Exception:
+                pass
+    return status
+
+
+# ---------------------------------------------------------------------------
+# Leitura do silver
+# ---------------------------------------------------------------------------
+
+def _serie_ref(con, ds, serie, partes):
+    """{tupla da referência composta: valor} da série vigente."""
+    out = {}
+    for ref, v in base.serie_vigente(con, ds, serie):
+        k = tuple(ref.split("|"))
+        if len(k) == partes:
+            out[k] = v
+    return out
+
+
+def _par(con, serie, partes):
+    """{chave: (unidades, kW)} juntando qtd.<serie> e kw.<serie>; combinação com zero
+    unidades (sumiu do cadastro) não entra."""
+    q = _serie_ref(con, DS_MMGD, f"qtd.{serie}", partes)
+    k = _serie_ref(con, DS_MMGD, f"kw.{serie}", partes)
+    return {ch: (int(round(n)), k.get(ch, 0.0)) for ch, n in q.items() if n > 0}
+
+
+def _controles(con):
+    out, data = {}, None
+    rows = con.execute(
+        """SELECT o.serie, o.ref, o.valor FROM observacoes o JOIN vintages v ON v.vintage_id=o.vintage_id
+           WHERE o.dataset=? AND o.serie LIKE 'controle.%' ORDER BY v.capturado_em, o.rowid""", (DS_MMGD,)).fetchall()
+    ultimo_ref = max((r for _, r, _ in rows), default=None)
+    for s, r, v in rows:
+        if r == ultimo_ref:
+            out[s[len("controle."):]] = v
+    data = ultimo_ref
+    return out, data
+
+
+def _pop(con):
+    pops = {}
+    ano = None
+    for ref, v in base.serie_vigente(con, DS_IBGE, "populacao"):
+        cod, a = ref.split("|")
+        if ano is None or a > ano:
+            ano = a
+        pops.setdefault(a, {})[cod] = v
+    return (pops.get(ano, {}), ano)
+
+
+def _mw(kw):
+    return c.r(kw / 1000.0, 3) if kw is not None else None
+
+
+# ---------------------------------------------------------------------------
+# Evidência
+# ---------------------------------------------------------------------------
+
+def _fonte_ev(fonte, snap, recurso=None):
+    capt = [x for x in snap.get("capturas", []) if recurso is None or x["recurso"] == recurso]
+    x = capt[-1] if capt else {}
+    return {"orgao": fonte["orgao"], "conjunto": fonte["dataset"], "recurso": recurso or fonte["recurso"],
+            "url": fonte["url_dataset"], "arquivo": x.get("recurso"), "sha256": x.get("sha256"),
+            "capturado_em": x.get("capturado_em"), "publicado_em": x.get("publicado_em")}
+
+
+def _evidencia(*, valor, casas, unidade, periodo, entidade, universo, filtros, fonte, chaves_origem, formula,
+               numerador=None, denominador=None, pesos=None, exclusoes=None, cobertura, tratamento_ausencia,
+               revisoes, testes, reconciliacao, download, reproducao, indicador, licenca):
+    """Objeto "Comprove este número" (seção 11.5 e contrato dos módulos)."""
+    return {
+        "valor_exibido": c.r(valor, casas), "valor_calculo": valor, "unidade": unidade, "periodo": periodo,
+        "entidade": entidade, "universo": universo, "filtros": filtros, "fonte": fonte,
+        "chaves_origem": chaves_origem, "formula": formula, "numerador": numerador, "denominador": denominador,
+        "pesos": pesos, "exclusoes": exclusoes or [], "cobertura": cobertura, "tratamento_ausencia": tratamento_ausencia,
+        "versao": {"pipeline": base.VERSAO_PIPELINE, "codigo": base.versao_codigo(), "publicacao": base.agora_utc()},
+        "revisoes": revisoes, "testes": testes, "reconciliacao": reconciliacao, "download": download,
+        "reproducao": reproducao,
+        "citacao": (f"Scrutiniums, Observatório do Setor Elétrico. {indicador}. Dados: {fonte['orgao']} ({fonte['conjunto']}), "
+                    f"{licenca.split(',')[0]}. Gerado em {c.data_br(base.agora_utc())}. {SITE}"),
+    }
+
+
+def _teste(nome, ok, detalhe):
+    return {"nome": nome, "resultado": "aprovado" if ok else "reprovado", "detalhe": detalhe}
+
+
+# ---------------------------------------------------------------------------
+# Gold: MMGD
+# ---------------------------------------------------------------------------
+
+def _bloco_mmgd(con, hoje):
+    ctrl, data_conj = _controles(con)
+    mun = _par(con, "mun_ano_fonte", 3)
+    if not mun or not data_conj:
+        return None, "cadastro de MMGD ausente no silver"
+    ufm = _par(con, "uf_mes_fonte", 3)
+    dist = _par(con, "dist_uf_ano", 3)
+    perfis = {d: _par(con, f"{d}_ano", 2) for d in ("classe", "modalidade", "porte", "tipo_consumidor")}
+    fdet = _par(con, "fonte_detalhe_ano", 3)
+    ucs = _serie_ref(con, DS_MMGD, "ucs_credito.uf_ano", 2)
+    muns_dist = dict(base.serie_vigente(con, DS_MMGD, "municipios.dist"))
+    nomes_dist = base.registros_como_estavam_em(con, DS_DIST)
+    cad_ibge = base.registros_como_estavam_em(con, DS_IBGE_MUN)
+    pops, ano_pop = _pop(con)
+    snap = c.snapshot_de(con, DS_MMGD)
+    snap_ibge = c.snapshot_de(con, DS_IBGE)
+    ano_conj = int(data_conj[:4])
+    ano_ref = ano_conj - 1  # último ano completo antes da data do cadastro
+
+    # ---- validações físicas e identidades de agregação (seção 5.2 do contrato)
+    tot_q = sum(q for q, _ in mun.values())
+    tot_kw = sum(k for _, k in mun.values())
+    ident = {
+        "uf_mes_fonte": sum(q for q, _ in ufm.values()),
+        "dist_uf_ano": sum(q for q, _ in dist.values()),
+        **{f"{d}_ano": sum(q for q, _ in v.values()) for d, v in perfis.items()},
+        "fonte_detalhe_ano": sum(q for q, _ in fdet.values()),
+    }
+    linhas = int(ctrl.get("linhas") or 0)
+    criticos = []
+    if ctrl.get("codigos_repetidos"):
+        criticos.append(f"{int(ctrl['codigos_repetidos'])} códigos de empreendimento repetidos no arquivo")
+    if tot_q != linhas:
+        criticos.append(f"soma municipal ({tot_q}) difere das linhas do arquivo ({linhas})")
+    for k, v in ident.items():
+        if v != tot_q:
+            criticos.append(f"agregado {k} soma {v} unidades, diferente de {tot_q}")
+    if any(k < 0 for _, k in mun.values()):
+        criticos.append("potência negativa em agregado municipal")
+    if criticos:
+        return None, "validação crítica: " + "; ".join(criticos)
+    kw_ident = abs(sum(k for _, k in ufm.values()) - tot_kw)
+
+    # ---- totais e fontes
+    por_fonte = defaultdict(lambda: [0, 0.0])
+    for (m, ano, f), (q, k) in mun.items():
+        por_fonte[f][0] += q
+        por_fonte[f][1] += k
+    fontes = [{"fonte": f, "rotulo": mmgd.ROTULO_FONTE[f], "unidades": por_fonte[f][0], "potencia_mw": _mw(por_fonte[f][1]),
+               "participacao_potencia_pct": c.r(100 * por_fonte[f][1] / tot_kw, 2) if tot_kw else None}
+              for f in mmgd.ORDEM_FONTES if f in por_fonte]
+    municipios_com = {m for (m, _, _) in mun if m != "sem_municipio"}
+    pop_br = pops.get("1")
+    tot_ucs = sum(ucs.values())
+
+    # ---- séries anual e mensal (Brasil)
+    anual = defaultdict(lambda: {"q": 0, "kw": 0.0, "f": defaultdict(lambda: [0, 0.0])})
+    for (m, ano, f), (q, k) in mun.items():
+        a = anual[ano]
+        a["q"] += q
+        a["kw"] += k
+        a["f"][f][0] += q
+        a["f"][f][1] += k
+    serie_anual, acq, ackw = [], 0, 0.0
+    for ano in sorted(x for x in anual if x != mmgd.SEM_DATA):
+        a = anual[ano]
+        acq += a["q"]
+        ackw += a["kw"]
+        serie_anual.append({
+            "ano": int(ano), "unidades": a["q"], "potencia_mw": _mw(a["kw"]),
+            "por_fonte": {f: {"unidades": v[0], "potencia_mw": _mw(v[1])} for f, v in sorted(a["f"].items())},
+            "acumulado_unidades": acq, "acumulado_mw": _mw(ackw),
+            "parcial": int(ano) >= ano_conj,
+        })
+    sem_data = anual.get(mmgd.SEM_DATA)
+    mensal_br = defaultdict(lambda: [0, 0.0])
+    for (uf, mes, f), (q, k) in ufm.items():
+        mensal_br[mes][0] += q
+        mensal_br[mes][1] += k
+    corte_prov = _mes_menos(data_conj[:7], MESES_PROVISORIOS)
+    serie_mensal, ackw = [], 0.0
+    estoque_fim_mes = {}
+    for mes in sorted(x for x in mensal_br if x != mmgd.SEM_DATA):
+        q, k = mensal_br[mes]
+        ackw += k
+        estoque_fim_mes[mes] = ackw
+        serie_mensal.append({"m": mes, "unidades": q, "potencia_mw": _mw(k), "acumulado_mw": _mw(ackw),
+                             "provisorio": mes > corte_prov})
+
+    # ---- UFs
+    uf_tot = defaultdict(lambda: [0, 0.0])
+    uf_ano = defaultdict(lambda: [0, 0.0])
+    for (uf, mes, f), (q, k) in ufm.items():
+        uf_tot[uf][0] += q
+        uf_tot[uf][1] += k
+        ano = mes[:4] if mes != mmgd.SEM_DATA else mmgd.SEM_DATA
+        uf_ano[(uf, ano)][0] += q
+        uf_ano[(uf, ano)][1] += k
+    cod_uf = {v: k for k, v in mmgd.UF_POR_CODIGO.items()}
+    ufs = []
+    for uf in sorted(uf_tot, key=lambda u: -uf_tot[u][1]):
+        q, k = uf_tot[uf]
+        pop = pops.get(cod_uf.get(uf, ""))
+        estoque_ant = sum(v[1] for (u, a), v in uf_ano.items() if u == uf and a != mmgd.SEM_DATA and int(a) < ano_ref)
+        k_ref = uf_ano.get((uf, str(ano_ref)), [0, 0.0])[1]
+        ufs.append({
+            "uf": uf, "nome": mmgd.NOME_UF.get(uf, uf), "unidades": q, "potencia_mw": _mw(k),
+            "participacao_potencia_pct": c.r(100 * k / tot_kw, 2) if tot_kw else None,
+            "populacao": int(pop) if pop else None,
+            "w_por_habitante": c.r(k * 1000 / pop, 1) if pop else None,
+            "unidades_por_mil_habitantes": c.r(q * 1000 / pop, 2) if pop else None,
+            "potencia_mw_ano_referencia": _mw(k_ref),
+            "crescimento_estoque_ano_referencia_pct": c.r(100 * k_ref / estoque_ant, 1) if estoque_ant else None,
+            "ucs_recebem_credito": int(sum(v for (u, _), v in ucs.items() if u == uf)),
+        })
+    uf_anual = [{"uf": u, "ano": int(a), "unidades": v[0], "potencia_mw": _mw(v[1])}
+                for (u, a), v in sorted(uf_ano.items()) if a != mmgd.SEM_DATA]
+
+    # ---- distribuidoras (chave: CNPJ)
+    d_tot = defaultdict(lambda: {"q": 0, "kw": 0.0, "ufs": Counter(), "ref": [0, 0.0]})
+    for (cnpj, uf, ano), (q, k) in dist.items():
+        d = d_tot[cnpj]
+        d["q"] += q
+        d["kw"] += k
+        d["ufs"][uf] += q
+        if ano == str(ano_ref):
+            d["ref"][0] += q
+            d["ref"][1] += k
+    distribuidoras = []
+    for cnpj, d in sorted(d_tot.items(), key=lambda x: -x[1]["kw"]):
+        nm = nomes_dist.get(cnpj, {})
+        uf_princ, n_princ = d["ufs"].most_common(1)[0]
+        distribuidoras.append({
+            "cnpj": cnpj, "sigla": nm.get("sigla"), "nome": nm.get("nome"),
+            "siglas_publicadas": [s for s in (nm.get("siglas_publicadas") or "").split("; ") if s],
+            "unidades": d["q"], "potencia_mw": _mw(d["kw"]),
+            "unidades_ano_referencia": d["ref"][0], "potencia_mw_ano_referencia": _mw(d["ref"][1]),
+            "municipios": int(muns_dist.get(cnpj, 0)),
+            "uf_principal": uf_princ,
+            "unidades_fora_uf_principal": d["q"] - n_princ,
+            "ufs": [{"uf": u, "unidades": n} for u, n in d["ufs"].most_common()],
+        })
+
+    # ---- perfis
+    def perfil(d):
+        tot = defaultdict(lambda: [0, 0.0])
+        ref = defaultdict(lambda: [0, 0.0])
+        for (cat, ano), (q, k) in d.items():
+            tot[cat][0] += q
+            tot[cat][1] += k
+            if ano == str(ano_ref):
+                ref[cat][0] += q
+                ref[cat][1] += k
+        return [{"categoria": cat, "unidades": v[0], "potencia_mw": _mw(v[1]),
+                 "participacao_unidades_pct": c.r(100 * v[0] / tot_q, 2),
+                 "unidades_ano_referencia": ref[cat][0], "potencia_mw_ano_referencia": _mw(ref[cat][1])}
+                for cat, v in sorted(tot.items(), key=lambda x: -x[1][1])]
+    fdet_tot = defaultdict(lambda: [0, 0.0])
+    for (tipo, desc, ano), (q, k) in fdet.items():
+        fdet_tot[(tipo, desc)][0] += q
+        fdet_tot[(tipo, desc)][1] += k
+    fontes_detalhe = [{"tipo": t, "descricao": dsc, "unidades": v[0], "potencia_kw": c.r(v[1], 2)}
+                      for (t, dsc), v in sorted(fdet_tot.items(), key=lambda x: -x[1][1])]
+
+    # ---- municípios
+    m_tot = defaultdict(lambda: {"q": 0, "kw": 0.0, "ref_q": 0, "ref_kw": 0.0, "ant_kw": 0.0, "f": defaultdict(float)})
+    for (m, ano, f), (q, k) in mun.items():
+        x = m_tot[m]
+        x["q"] += q
+        x["kw"] += k
+        x["f"][f] += k
+        if ano == str(ano_ref):
+            x["ref_q"] += q
+            x["ref_kw"] += k
+        elif ano != mmgd.SEM_DATA and int(ano) < ano_ref:
+            x["ant_kw"] += k
+    todos = sorted(set(cad_ibge) | {m for m in m_tot if m != "sem_municipio"})
+    municipios = []
+    for m in todos:
+        x = m_tot.get(m)
+        info = cad_ibge.get(m, {})
+        pop = pops.get(m)
+        q = x["q"] if x else 0
+        kw = x["kw"] if x else 0.0
+        municipios.append({
+            "ibge": m, "nome": info.get("nome"), "uf": info.get("uf") or mmgd.UF_POR_CODIGO.get(m[:2]),
+            "unidades": q, "potencia_kw": c.r(kw, 2), "populacao": int(pop) if pop else None,
+            "w_por_habitante": c.r(kw * 1000 / pop, 1) if pop else None,
+            "unidades_por_mil_habitantes": c.r(q * 1000 / pop, 2) if pop else None,
+            "unidades_ano_referencia": x["ref_q"] if x else 0,
+            "potencia_kw_ano_referencia": c.r(x["ref_kw"], 2) if x else 0.0,
+            "potencia_kw_estoque_ano_anterior": c.r(x["ant_kw"], 2) if x else 0.0,
+            "crescimento_estoque_pct": c.r(100 * x["ref_kw"] / x["ant_kw"], 1) if x and x["ant_kw"] else None,
+            "fonte_principal": max(x["f"], key=x["f"].get) if x and x["f"] else None,
+            "no_cadastro_ibge": m in cad_ibge,
+        })
+    com_pop = [x for x in municipios if x["populacao"]]
+    maior_pot = sorted((x for x in municipios if x["unidades"]), key=lambda x: -x["potencia_kw"])[:15]
+    grandes = [x for x in com_pop if x["populacao"] >= POP_MINIMA_RANKING]
+    maior_whab = sorted(grandes, key=lambda x: -(x["w_por_habitante"] or 0))[:15]
+    menor_whab = sorted(grandes, key=lambda x: (x["w_por_habitante"] or 0))[:15]
+    maior_cresc = sorted((x for x in grandes if x["crescimento_estoque_pct"] is not None),
+                         key=lambda x: -x["crescimento_estoque_pct"])[:15]
+    whab = [x["w_por_habitante"] for x in com_pop]
+    distrib = {"quantis_w_por_habitante": {f"p{int(q * 100)}": c.r(c.quantil(whab, q), 1) for q in (0.1, 0.25, 0.5, 0.75, 0.9)},
+               "municipios_com_populacao": len(com_pop),
+               "municipios_sem_mmgd": sum(1 for x in municipios if x["no_cadastro_ibge"] and not x["unidades"]),
+               "municipios_no_cadastro_ibge": len(cad_ibge)}
+
+    # ---- controles e revisões
+    dup_linhas = int(ctrl.get("duplicidade_candidata_linhas_extras") or 0)
+    fv_par = ctrl.get("fv_pareados_por_codigo")
+    fv_ok = fv_par is not None and ctrl.get("fv_datas_iguais") == fv_par
+    controles = {
+        "linhas_do_arquivo": linhas,
+        "codigos_distintos": int(ctrl.get("codigos_distintos") or 0),
+        "codigos_repetidos": int(ctrl.get("codigos_repetidos") or 0),
+        "identidade_agregacao": {"unidades": tot_q, "diferenca_kw_municipio_uf": c.r(kw_ident, 4), "resultado": "aprovada"},
+        "datas_sentinela": int(ctrl.get("data_invalida") or 0),
+        "datas_ausentes": int(ctrl.get("data_ausente") or 0),
+        "potencia_sem_data_kw": c.r(sem_data["kw"], 2) if sem_data else 0.0,
+        "anteriores_cobertura_declarada": int(ctrl.get("anterior_cobertura_declarada") or 0),
+        "datas_posteriores_ao_conjunto": int(ctrl.get("data_posterior_ao_conjunto") or 0),
+        "potencia_zero": int(ctrl.get("potencia_zero") or 0),
+        "potencia_ausente": int(ctrl.get("potencia_ausente") or 0),
+        "potencia_negativa": int(ctrl.get("potencia_negativa") or 0),
+        "fonte_nao_informada": int(ctrl.get("fonte_nao_informada") or 0),
+        "municipio_codigo_6_digitos_completado": int(ctrl.get("municipio_completado_6") or 0),
+        "municipio_fora_cadastro_ibge": int(ctrl.get("municipio_fora_ibge") or 0),
+        "municipio_invalido": int(ctrl.get("municipio_invalido") or 0),
+        "uf_publicada_ausente": int(ctrl.get("uf_publicada_ausente") or 0),
+        "uf_publicada_diverge_do_municipio": int(ctrl.get("uf_publicada_diverge_do_municipio") or 0),
+        "uf_do_codigo_empreendimento_diverge": int(ctrl.get("uf_do_codigo_diverge") or 0),
+        "sigla_distribuidora_ausente": int(ctrl.get("sigla_distribuidora_ausente") or 0),
+        "duplicidade_candidata": {
+            "grupos": int(ctrl.get("duplicidade_candidata_grupos") or 0), "linhas_extras": dup_linhas,
+            "potencia_kw_extras": ctrl.get("duplicidade_candidata_kw_extras"),
+            "maior_grupo": int(ctrl.get("duplicidade_candidata_maior_grupo") or 0),
+            "participacao_unidades_pct": c.r(100 * dup_linhas / tot_q, 2) if tot_q else None,
+            "tratamento": "medida e publicada, não removida: CPF e CEP de pessoa física vêm tarjados e unidades iguais do mesmo titular podem ser legítimas",
+        },
+        "data_de_conexao": {
+            "ufv_na_relacao": int(ctrl["fv_ufv_na_relacao"]) if "fv_ufv_na_relacao" in ctrl else None,
+            "pareados_por_codigo": int(fv_par) if fv_par is not None else None,
+            "datas_iguais": int(ctrl["fv_datas_iguais"]) if "fv_datas_iguais" in ctrl else None,
+            "potencias_iguais": int(ctrl["fv_potencias_iguais"]) if "fv_potencias_iguais" in ctrl else None,
+            "resultado": ("aprovada" if fv_ok else "pendente") if fv_par is not None else "sem captura do recurso técnico",
+            "descricao": "DthAtualizaCadastralEmpreend (relação) comparada, pelo código, com DatConexao (informações técnicas fotovoltaicas, 'Data da conexão da Unidade Geradora').",
+        },
+    }
+    revisoes = _revisoes_mmgd(con, data_conj)
+    unidades_ev = _evidencia(
+        valor=float(tot_q), casas=0, unidade="empreendimentos", periodo={"cadastro_em": data_conj},
+        entidade="Brasil", universo="todos os empreendimentos de MMGD no cadastro vigente da ANEEL", filtros=[],
+        fonte=_fonte_ev(FONTE_ANEEL, snap, RECURSO_PARQUET),
+        chaves_origem=["CodEmpreendimento (um registro por empreendimento)"],
+        formula="unidades = número de códigos de empreendimento distintos no arquivo",
+        cobertura=f"conexões de {serie_anual[0]['ano'] if serie_anual else '?'} até {data_conj}, todas as distribuidoras que enviaram dados",
+        tratamento_ausencia="registro com data sentinela conta no estoque, sem ano; potência ausente não vira zero",
+        revisoes=revisoes, testes=[
+            _teste("códigos únicos", controles["codigos_repetidos"] == 0, f"{controles['codigos_distintos']} códigos distintos em {linhas} linhas"),
+            _teste("identidade de agregação", True, "soma por município = soma por UF e mês = soma por distribuidora = linhas do arquivo"),
+        ],
+        reconciliacao={"descricao": controles["data_de_conexao"]["descricao"], "resultado": controles["data_de_conexao"]["resultado"],
+                       "tolerancia": "igualdade exata de datas; potência a até 0,005 kW (centésimo publicado)"},
+        download=[{"rotulo": "Municípios (CSV)", "url": "/energia/series/transicao_mmgd_municipios.csv"}],
+        reproducao="python3 pipeline/energia/executar_modulo.py transicao",
+        indicador="Unidades de micro e minigeração distribuída no cadastro da ANEEL", licenca=LICENCA_ANEEL)
+    potencia_ev = {**unidades_ev, "valor_exibido": _mw(tot_kw), "valor_calculo": tot_kw / 1000, "unidade": "MW",
+                   "formula": "potência = soma de MdaPotenciaInstaladaKW de todos os empreendimentos ÷ 1000",
+                   "citacao": unidades_ev["citacao"].replace("Unidades de", "Potência instalada de")}
+    lim = [
+        "Capacidade cadastrada (kW instalados) não é energia gerada: a geração depende de sol, perdas e uso, e não é publicada por unidade.",
+        "O cadastro é o vigente na data do arquivo: unidades desativadas e excluídas não aparecem no histórico; a série por ano é das unidades que continuam cadastradas.",
+        f"Os meses mais recentes são provisórios: a ANEEL recebe o registro depois da conexão e suspendeu a atualização de 23/09/2025 a 13/11/2025 na troca de sistema, com inserção mais lenta depois. Aqui, os {MESES_PROVISORIOS} meses anteriores à data do cadastro ficam marcados como provisórios.",
+        "O local é o município da unidade consumidora com geração; na modalidade de autoconsumo remoto o crédito é usado em outras unidades, possivelmente em outro município.",
+        "Potência por habitante relaciona o território, não a renda de quem instalou: nada aqui permite inferir renda ou perfil de um beneficiário individual.",
+        "Duplicidade candidata (mesmos atributos observáveis e códigos distintos) é medida e não removida; a proporção está nos controles.",
+    ]
+    prov = c.proveniencia(
+        indicador="Micro e minigeração distribuída: unidades e potência instalada cadastradas", natureza="OBSERVADO",
+        fonte=FONTE_ANEEL, unidade="unidades e kW (MW nas tabelas)", frequencia="cadastro publicado pela ANEEL (diário no portal; mensal pelo dicionário)",
+        periodo={"inicio": f"{serie_anual[0]['ano']}-01-01" if serie_anual else data_conj, "fim": data_conj},
+        cobertura={"inicio": INICIO_COB_DECL, "fim": data_conj}, capturado_em=c.ultima_captura(snap), snapshot=snap,
+        transformacoes=["agregação por município (código IBGE) × ano de conexão × fonte", "agregação por UF × mês × fonte, por distribuidora (CNPJ) × UF × ano e por classe, modalidade, porte e tipo de consumidor",
+                        "código de município de 6 dígitos completado pelo cadastro IBGE quando o prefixo é único", "datas sentinela (ano < 2000) tratadas como sem data"],
+        limitacoes=lim, download="/energia/series/transicao_mmgd_municipio_ano_fonte.csv",
+        notas_fonte=(ckan.meta_local(DS_MMGD).get("notas") or None))
+    prov_hab = c.proveniencia(
+        indicador="Potência de MMGD por habitante e unidades por mil habitantes", natureza="CALCULADO",
+        fonte={**FONTE_ANEEL, "recurso": FONTE_ANEEL["recurso"] + "; população: " + FONTE_IBGE["dataset"]},
+        unidade="W por habitante; unidades por mil habitantes", frequencia="cadastro vigente",
+        periodo={"inicio": data_conj, "fim": data_conj}, cobertura={"inicio": data_conj, "fim": data_conj},
+        capturado_em=c.ultima_captura(snap), snapshot=snap,
+        transformacoes=["potência cadastrada no território ÷ população residente estimada pelo IBGE"],
+        formula="W/hab = Σ kW instalados × 1000 ÷ população estimada; unidades/mil hab = Σ unidades × 1000 ÷ população estimada",
+        limitacoes=lim[:1] + [f"População estimada pelo IBGE para {ano_pop} (data de referência 1º de julho), não o Censo.",
+                              f"Rankings por habitante só entre municípios com pelo menos {POP_MINIMA_RANKING:,} habitantes estimados: com denominador pequeno, uma única minigeração domina a razão.".replace(",", ".")],
+        download="/energia/series/transicao_mmgd_municipios.csv")
+    return {
+        "data_cadastro": data_conj,
+        "ano_referencia": ano_ref,
+        "ano_populacao": int(ano_pop) if ano_pop else None,
+        "resumo": {
+            "unidades": tot_q, "potencia_mw": _mw(tot_kw), "potencia_kw": c.r(tot_kw, 2),
+            "municipios_com_mmgd": len(municipios_com), "municipios_no_cadastro_ibge": len(cad_ibge),
+            "ucs_recebem_credito": int(tot_ucs),
+            "participacao_solar_potencia_pct": next((f["participacao_potencia_pct"] for f in fontes if f["fonte"] == "solar"), None),
+            "populacao_brasil": int(pop_br) if pop_br else None,
+            "w_por_habitante_brasil": c.r(tot_kw * 1000 / pop_br, 1) if pop_br else None,
+            "unidades_sem_data": sem_data["q"] if sem_data else 0,
+            "potencia_mw_ano_referencia": next((a["potencia_mw"] for a in serie_anual if a["ano"] == ano_ref), None),
+            "unidades_ano_referencia": next((a["unidades"] for a in serie_anual if a["ano"] == ano_ref), None),
+        },
+        "evidencias": {"unidades": unidades_ev, "potencia": potencia_ev},
+        "fontes": fontes, "fontes_detalhe": fontes_detalhe,
+        "anual": serie_anual, "mensal": serie_mensal, "corte_provisorio": corte_prov,
+        "ufs": ufs, "uf_anual": uf_anual,
+        "distribuidoras": distribuidoras,
+        "perfis": {d: perfil(v) for d, v in perfis.items()},
+        "municipios_destaque": {
+            "maior_potencia": [_mun_curto(x) for x in maior_pot],
+            "maior_w_por_habitante": [_mun_curto(x) for x in maior_whab],
+            "menor_w_por_habitante": [_mun_curto(x) for x in menor_whab],
+            "maior_crescimento_estoque": [_mun_curto(x) for x in maior_cresc],
+            "populacao_minima_ranking": POP_MINIMA_RANKING,
+        },
+        "distribuicao_municipal": distrib,
+        "controles": controles, "revisoes": revisoes,
+        "proveniencia": {"cadastro": prov, "por_habitante": prov_hab},
+        "_municipios": municipios, "_mun_ano_fonte": mun, "_ufm": ufm, "_dist": dist, "_perfis": perfis, "_fdet": fdet,
+        "_estoque_fim_mes": estoque_fim_mes, "_snap": snap, "_snap_ibge": snap_ibge, "_nomes_dist": nomes_dist, "_cad": cad_ibge,
+    }, None
+
+
+INICIO_COB_DECL = "2008-12-01"
+
+
+def _mun_curto(x):
+    return {k: x[k] for k in ("ibge", "nome", "uf", "unidades", "potencia_kw", "populacao", "w_por_habitante",
+                              "potencia_kw_ano_referencia", "crescimento_estoque_pct")}
+
+
+def _mes_menos(mes, n):
+    a, m = int(mes[:4]), int(mes[5:7]) - n
+    while m <= 0:
+        a, m = a - 1, m + 12
+    return f"{a:04d}-{m:02d}"
+
+
+def _revisoes_mmgd(con, data_conj):
+    """Revisões entre capturas do cadastro: quanto mudou, por mês de conexão recente, o
+    número de unidades e a potência entre a primeira e a última captura que o contêm."""
+    vs = [v for v in base.vintages_do_dataset(con, DS_MMGD) if v["recurso"] == RECURSO_PARQUET]
+    if len(vs) < 2:
+        return {"capturas_comparadas": len(vs), "meses": [],
+                "nota": "Uma única captura do cadastro integrada até aqui: as revisões por registro tardio serão medidas a partir da próxima captura."}
+    primeira, ultima = vs[0]["capturado_em"], vs[-1]["capturado_em"]
+    antes = {}
+    for ref, v in base.como_estava_em(con, DS_MMGD, "kw.uf_mes_fonte", primeira):
+        antes[ref] = v
+    antes_q = dict(base.como_estava_em(con, DS_MMGD, "qtd.uf_mes_fonte", primeira))
+    agora_kw = dict(base.serie_vigente(con, DS_MMGD, "kw.uf_mes_fonte"))
+    agora_q = dict(base.serie_vigente(con, DS_MMGD, "qtd.uf_mes_fonte"))
+    por_mes = defaultdict(lambda: [0.0, 0.0, 0.0, 0.0])
+    for ref in set(antes) | set(agora_kw):
+        mes = ref.split("|")[1]
+        if mes == mmgd.SEM_DATA:
+            continue
+        x = por_mes[mes]
+        x[0] += antes_q.get(ref, 0.0)
+        x[1] += agora_q.get(ref, 0.0)
+        x[2] += antes.get(ref, 0.0)
+        x[3] += agora_kw.get(ref, 0.0)
+    ult12 = sorted(por_mes)[-18:]
+    return {"capturas_comparadas": len(vs), "primeira_captura": primeira, "ultima_captura": ultima,
+            "meses": [{"m": m, "unidades_primeira": int(por_mes[m][0]), "unidades_ultima": int(por_mes[m][1]),
+                       "potencia_mw_primeira": _mw(por_mes[m][2]), "potencia_mw_ultima": _mw(por_mes[m][3])} for m in ult12]}
+
+
+# ---------------------------------------------------------------------------
+# Gold: ONS (estimativa de MMGD) e relação com o cadastro
+# ---------------------------------------------------------------------------
+
+def _bloco_ons(con, con_p, estoque_fim_mes):
+    # dia em curso na captura não é dia verificado: vale a data de Brasília da última
+    # captura do mês de cada submercado (uma captura posterior do mesmo mês o libera)
+    limite = {}
+    for v in base.vintages_do_dataset(con, DS_ONS):
+        partes = v["recurso"].rsplit("_", 2)
+        if len(partes) == 3:
+            limite[(partes[1], partes[2])] = _data_brasilia(v["capturado_em"])
+    series = {}
+    for sm in ons.AREAS:
+        for s in ("mmgd_mwh", "horas_mmgd", "global_mwh", "horas_global", "semmmgd_mwh"):
+            series[(s, sm)] = {d: v for d, v in base.serie_vigente(con, DS_ONS, f"{s}.{sm}")
+                               if d < limite.get((ons.AREAS[sm], d[:7]), "9999")}
+    if not any(series[("mmgd_mwh", sm)] for sm in ons.AREAS):
+        return None
+    snap = c.snapshot_de(con, DS_ONS)
+    dias = sorted(set.union(*(set(series[("mmgd_mwh", sm)]) for sm in ons.AREAS)))
+
+    def completo(sm, d):
+        return series[("horas_mmgd", sm)].get(d, 0) >= 24 and series[("horas_global", sm)].get(d, 0) >= 24
+
+    diario = []
+    for d in dias:
+        for sm in ons.AREAS:
+            e = series[("mmgd_mwh", sm)].get(d)
+            h = series[("horas_mmgd", sm)].get(d)
+            if e is None or not h:
+                continue
+            g = series[("global_mwh", sm)].get(d)
+            hg = series[("horas_global", sm)].get(d)
+            diario.append([d, sm, c.r(e, 1), c.r(e / h, 1), h, c.r(g, 1) if g is not None else None,
+                           c.r(g / hg, 1) if g is not None and hg else None, c.r(series[("semmmgd_mwh", sm)].get(d), 1)])
+    base.escreve_csv("transicao_ons_mmgd_diario.csv",
+                     ["data", "submercado", "mmgd_mwh", "mmgd_mwmed", "horas", "carga_global_mwh", "carga_global_mwmed", "carga_sem_mmgd_mwh"],
+                     diario)
+    por_mes = defaultdict(lambda: defaultdict(lambda: [0.0, 0.0, 0.0, 0.0, 0]))
+    dias_sin = defaultdict(list)
+    for d in dias:
+        m = d[:7]
+        todos = all(completo(sm, d) for sm in ons.AREAS)
+        for sm in ons.AREAS:
+            if not completo(sm, d):
+                continue
+            x = por_mes[m][sm]
+            x[0] += series[("mmgd_mwh", sm)][d]
+            x[1] += series[("horas_mmgd", sm)][d]
+            x[2] += series[("global_mwh", sm)][d]
+            x[3] += series[("horas_global", sm)][d]
+            x[4] += 1
+            if todos:
+                y = por_mes[m]["SIN"]
+                y[0] += series[("mmgd_mwh", sm)][d]
+                y[2] += series[("global_mwh", sm)][d]
+        if todos:
+            y = por_mes[m]["SIN"]
+            y[1] += series[("horas_mmgd", "SE")][d]
+            y[3] += series[("horas_global", "SE")][d]
+            y[4] += 1
+            dias_sin[m].append(d)
+    mensal, csv_m = [], []
+    for m in sorted(por_mes):
+        a, mm = int(m[:4]), int(m[5:7])
+        dias_mes = (date(a + (mm == 12), mm % 12 + 1, 1) - date(a, mm, 1)).days
+        linha = {"m": m, "dias_no_mes": dias_mes}
+        for sm in (*ons.AREAS, "SIN"):
+            x = por_mes[m].get(sm)
+            if not x or not x[1]:
+                linha[sm] = None
+                continue
+            linha[sm] = c.r(x[0] / x[1], 1)
+            csv_m.append([m, sm, c.r(x[0] / x[1], 1), c.r(x[2] / x[3], 1) if x[3] else None,
+                          c.r(100 * x[0] / x[2], 2) if x[2] else None, x[4], dias_mes])
+        y = por_mes[m].get("SIN")
+        linha["dias_completos_sin"] = y[4] if y else 0
+        linha["completo"] = bool(y) and y[4] == dias_mes
+        linha["participacao_carga_global_sin_pct"] = c.r(100 * y[0] / y[2], 2) if y and y[2] else None
+        linha["carga_global_sin_mwmed"] = c.r(y[2] / y[3], 0) if y and y[3] else None
+        # capacidade cadastrada na ANEEL: média do estoque no início e no fim do mês (Brasil)
+        ini = estoque_fim_mes.get(_mes_menos(m, 1)) if estoque_fim_mes else None
+        if ini is None and estoque_fim_mes:
+            ant = [k for k in estoque_fim_mes if k < m]
+            ini = estoque_fim_mes[max(ant)] if ant else 0.0
+        fim = estoque_fim_mes.get(m) if estoque_fim_mes else None
+        if fim is None and estoque_fim_mes:
+            ant = [k for k in estoque_fim_mes if k <= m]
+            fim = estoque_fim_mes[max(ant)] if ant else None
+        cap_mw = (ini + fim) / 2 / 1000 if (ini is not None and fim is not None) else None
+        linha["capacidade_aneel_mw"] = c.r(cap_mw, 0) if cap_mw else None
+        linha["razao_estimativa_ons_capacidade_pct"] = (c.r(100 * linha["SIN"] / cap_mw, 1)
+                                                        if cap_mw and linha.get("SIN") is not None and linha["completo"] else None)
+        mensal.append(linha)
+    base.escreve_csv("transicao_ons_mmgd_mensal.csv",
+                     ["mes", "submercado", "mmgd_mwmed", "carga_global_mwmed", "participacao_mmgd_pct", "dias_completos", "dias_no_mes"], csv_m)
+    anual = []
+    for ano in sorted({m["m"][:4] for m in mensal}):
+        ms = [m for m in mensal if m["m"][:4] == ano]
+        ys = [por_mes[m["m"]].get("SIN") for m in ms]
+        e = sum(y[0] for y in ys if y)
+        h = sum(y[1] for y in ys if y)
+        g = sum(y[2] for y in ys if y)
+        dias_c = sum(y[4] for y in ys if y)
+        dias_ano = 366 if int(ano) % 4 == 0 else 365
+        anual.append({"ano": int(ano), "mmgd_sin_mwmed": c.r(e / h, 0) if h else None, "mmgd_sin_twh": c.r(e / 1e6, 2),
+                      "participacao_carga_global_pct": c.r(100 * e / g, 2) if g else None,
+                      "dias_completos": dias_c, "completo": dias_c == dias_ano})
+    ultimo = next((m for m in reversed(mensal) if m["completo"]), None)
+    conf = _conferencia_quebra(con, con_p, series)
+    lim = [
+        "É uma estimativa do ONS (modelo com dados meteorológicos), não medição: a MMGD não é supervisionada pelo ONS.",
+        "Cobre o Sistema Interligado Nacional; o cadastro da ANEEL cobre o Brasil inteiro, inclusive sistemas isolados.",
+        "Estimativa de energia (MWmed) e cadastro de capacidade (MW) são grandezas diferentes: aparecem lado a lado e nunca são somadas.",
+        "O ONS revisa o histórico (há registros de 2023 atualizados em 2026); os meses antigos são recoletados a cada 30 dias.",
+        "Antes de 2019 a API publica a parcela de MMGD vazia: é ausência, não zero.",
+    ]
+    prov = c.proveniencia(
+        indicador="Parcela da carga atendida por MMGD estimada pelo ONS", natureza="ESTIMADO", fonte=FONTE_ONS,
+        unidade="MWmed (média do período) e % da carga global", frequencia="semi-horária na fonte; diária e mensal aqui",
+        periodo={"inicio": dias[0], "fim": dias[-1]}, cobertura={"inicio": dias[0], "fim": dias[-1]},
+        capturado_em=c.ultima_captura(snap), snapshot=snap,
+        transformacoes=["energia de cada meia hora = valor × 0,5 h", "MWmed do período = Σ MWh ÷ horas cobertas",
+                        "SIN = soma dos quatro submercados nos dias em que os quatro têm as 24 horas",
+                        "participação = 100 × Σ MWh de MMGD ÷ Σ MWh da carga global, mesmos dias"],
+        formula="MWmed = Σ(val_cargammgd × 0,5) ÷ Σ horas; participação = 100 × Σ(val_cargammgd) ÷ Σ(val_cargaglobal)",
+        limitacoes=lim, download="/energia/series/transicao_ons_mmgd_mensal.csv",
+        notas_fonte="Natureza ESTIMADO: estimativa publicada pelo próprio ONS, não pela plataforma.")
+    prov_razao = c.proveniencia(
+        indicador="Razão entre a estimativa de MMGD do ONS e a capacidade cadastrada na ANEEL", natureza="CALCULADO",
+        fonte={**FONTE_ONS, "recurso": FONTE_ONS["recurso"] + "; capacidade: " + FONTE_ANEEL["recurso"]},
+        unidade="%", frequencia="mensal", periodo={"inicio": mensal[0]["m"], "fim": mensal[-1]["m"]},
+        cobertura={"inicio": mensal[0]["m"], "fim": mensal[-1]["m"]}, capturado_em=c.ultima_captura(snap), snapshot=snap,
+        transformacoes=["capacidade do mês = média do estoque cadastrado no início e no fim do mês (Brasil)"],
+        formula="razão = 100 × MMGD estimada no SIN (MWmed) ÷ capacidade cadastrada (MW)",
+        limitacoes=["Não é fator de capacidade medido: compara uma estimativa do ONS (SIN) com um cadastro da ANEEL (Brasil) e herda as limitações das duas.",
+                    "Registro tardio na ANEEL aumenta a razão nos meses recentes; meses incompletos não têm razão calculada."],
+        download="/energia/series/transicao_ons_mmgd_mensal.csv")
+    return {
+        "inicio_serie": dias[0], "fim_serie": dias[-1],
+        "ultimo_mes_completo": ultimo,
+        "mensal": mensal, "anual": anual,
+        "conferencia_quebra_2023": conf,
+        "documentos": [DOC_ONS_BALANCO, DOC_ONS_PMO],
+        "proveniencia": {"estimativa": prov, "razao": prov_razao},
+        "evidencia": _evidencia(
+            valor=ultimo["SIN"] if ultimo else None, casas=0, unidade="MWmed",
+            periodo={"inicio": f"{ultimo['m']}-01" if ultimo else None, "fim": ultimo["m"] if ultimo else None},
+            entidade="SIN", universo="quatro submercados (SECO, S, NE, N)", filtros=["dias com as 24 horas nos quatro submercados"],
+            fonte=_fonte_ev({**FONTE_ONS, "dataset": FONTE_ONS["dataset"]}, snap, f"carga_verificada_SECO_{ultimo['m']}" if ultimo else None),
+            chaves_origem=[f"cargaverificada?cod_areacarga={a}&mês={ultimo['m'] if ultimo else ''}" for a in ons.AREAS.values()],
+            formula="Σ(val_cargammgd × 0,5 h) ÷ Σ horas, somando os quatro submercados",
+            numerador={"descricao": "MWh de MMGD estimada no mês (SIN)", "valor": c.r(por_mes[ultimo["m"]]["SIN"][0], 0) if ultimo else None},
+            denominador={"descricao": "horas do mês", "valor": por_mes[ultimo["m"]]["SIN"][1] if ultimo else None},
+            cobertura="dias completos do mês", tratamento_ausencia="meia hora sem valor fica fora da soma e das horas; dia incompleto não entra no SIN",
+            revisoes=snap.get("revisoes"),
+            testes=[_teste("intervalos sem valor tratados como ausência", True, "respostas com campo vazio são lidas como null")],
+            reconciliacao={"descricao": "carga global = carga sem MMGD + MMGD em cada meia hora (identidade do próprio ONS)",
+                           "resultado": _identidade_ons(series), "tolerancia": "0,1 MWh por dia (arredondamento de três casas em 48 meias horas)"},
+            download=[{"rotulo": "MMGD estimada pelo ONS, mensal (CSV)", "url": "/energia/series/transicao_ons_mmgd_mensal.csv"}],
+            reproducao="python3 pipeline/energia/executar_modulo.py transicao",
+            indicador="MMGD estimada pelo ONS no SIN", licenca=c.LICENCA_ONS),
+    }
+
+
+def _identidade_ons(series):
+    """Confere, dia a dia, carga global ≈ carga sem MMGD + MMGD (dados do próprio ONS)."""
+    n, falhas = 0, 0
+    for sm in ons.AREAS:
+        g, s, m = series[("global_mwh", sm)], series[("semmmgd_mwh", sm)], series[("mmgd_mwh", sm)]
+        for d in g:
+            if d in s and d in m:
+                n += 1
+                if abs(g[d] - s[d] - m[d]) > 0.1:
+                    falhas += 1
+    return f"{'aprovada' if falhas == 0 else 'com divergência'}: {n - falhas} de {n} dias por submercado fecham"
+
+
+def _conferencia_quebra(con, con_p, series):
+    """Achado A11: solar do SIN no balanço (silver principal) e MMGD estimada pelo ONS, dia a
+    dia, de 7 dias antes a 7 dias depois de 29/04/2023. Números do dado, sem conclusão
+    além do que mostram."""
+    ini, fim = "2023-04-22", "2023-05-06"
+    solar = defaultdict(list)
+    if con_p is not None:
+        try:
+            rows = con_p.execute(
+                """SELECT o.ref, o.valor FROM observacoes o JOIN vintages v ON v.vintage_id=o.vintage_id
+                   WHERE o.dataset=? AND o.serie='solar.SIN' AND o.ref >= ? AND o.ref < ? ORDER BY v.capturado_em, o.rowid""",
+                (DS_BAL, ini, "2023-05-07")).fetchall()
+            ult = {}
+            for ref, v in rows:
+                ult[ref] = v
+            for ref, v in ult.items():
+                solar[ref[:10]].append(v)
+        except Exception:
+            solar = {}
+    d0 = date.fromisoformat(ini)
+    dias = []
+    while d0.isoformat() <= fim:
+        d = d0.isoformat()
+        hs = solar.get(d, [])
+        sol = sum(hs) / len(hs) if len(hs) == 24 else None
+        mm = None
+        if all(series[("horas_mmgd", sm)].get(d, 0) >= 24 for sm in ons.AREAS):
+            mm = sum(series[("mmgd_mwh", sm)][d] for sm in ons.AREAS) / series[("horas_mmgd", "SE")][d]
+        dias.append({"d": d, "solar_balanco_sin_mwmed": c.r(sol, 0), "mmgd_ons_sin_mwmed": c.r(mm, 0)})
+        d0 += timedelta(days=1)
+    by = {x["d"]: x for x in dias}
+    antes, depois = by.get("2023-04-28", {}), by.get(QUEBRA_ONS, {})
+    degrau = (depois.get("solar_balanco_sin_mwmed") - antes.get("solar_balanco_sin_mwmed")
+              if depois.get("solar_balanco_sin_mwmed") is not None and antes.get("solar_balanco_sin_mwmed") is not None else None)
+    med = lambda xs: c.r(c.media(xs), 0)  # noqa: E731
+    sol_antes = med([x["solar_balanco_sin_mwmed"] for x in dias if x["d"] < QUEBRA_ONS])
+    sol_depois = med([x["solar_balanco_sin_mwmed"] for x in dias if x["d"] >= QUEBRA_ONS])
+    mm_depois = med([x["mmgd_ons_sin_mwmed"] for x in dias if x["d"] >= QUEBRA_ONS])
+    return {
+        "janela": {"inicio": ini, "fim": fim}, "dias": dias,
+        "degrau_solar_mwmed": c.r(degrau, 0),
+        "mmgd_ons_no_dia_mwmed": depois.get("mmgd_ons_sin_mwmed"),
+        "solar_media_7d_antes": sol_antes, "solar_media_depois": sol_depois,
+        "diferenca_medias_solar": c.r(sol_depois - sol_antes, 0) if sol_antes is not None and sol_depois is not None else None,
+        "mmgd_ons_media_depois": mm_depois,
+        "documento": DOC_ONS_BALANCO,
+        "leitura": ("O ONS declara, na página do Balanço de Energia, que a estimativa de MMGD passou a compor os dados de geração "
+                    "e carga a partir de 29/04/2023. No dado, a solar do SIN no balanço sobe de um dia para o outro na mesma data. "
+                    "A estimativa de MMGD da API de carga verificada, como está publicada hoje, não é igual ao degrau: as duas vêm "
+                    "de processos diferentes do ONS (previsão meteorológica na programação, dados verificados e revisados na API), "
+                    "e a comparação mostra ordem de grandeza, não identidade."),
+    }
+
+
+# ---------------------------------------------------------------------------
+# Gold: MCTI
+# ---------------------------------------------------------------------------
+
+def _serie_com_origem(con, ds, serie):
+    """{ref: (valor, recurso, capturado_em)} vigente, com o recurso (arquivo) que forneceu o valor."""
+    out = {}
+    for ref, v, rec, cap in con.execute(
+            """SELECT o.ref, o.valor, v.recurso, v.capturado_em FROM observacoes o JOIN vintages v ON v.vintage_id=o.vintage_id
+               WHERE o.dataset=? AND o.serie=? ORDER BY v.capturado_em, o.rowid""", (ds, serie)):
+        out[ref] = (v, rec, cap)
+    return out
+
+
+SERIES_MCTI = ("medio_mensal", "medio_anual", "om_despacho_mensal", "om_despacho_diario", "bm_anual",
+               "om_simples_ajustado_anual", "energia_despachada_mwh")
+ROTULO_SERIE_MCTI = {"medio_mensal": "fator médio mensal", "medio_anual": "fator médio anual",
+                     "om_despacho_mensal": "margem de operação (despacho) mensal", "om_despacho_diario": "margem de operação (despacho) diária",
+                     "bm_anual": "margem de construção anual", "om_simples_ajustado_anual": "margem de operação (simples ajustado) anual",
+                     "energia_despachada_mwh": "energia despachada (MWh)"}
+DOC_MCTI_NT = {
+    "orgao": "MCTI",
+    "titulo": "Nota técnica de junho de 2025: aprimoramento na publicação dos fatores de emissão de CO2 do SIN (NT_FE_jun25)",
+    "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/cgcl/paginas/NT_FE_jun25.pdf",
+    "consultado_em": "2026-09-30",
+    "trecho": ("a partir de janeiro de 2025, os fatores de emissão de CO₂ da Margem de Operação do Sistema Interligado Nacional (SIN) "
+               "passaram a refletir um aprimoramento importante no banco de dados do Operador Nacional do Sistema Elétrico (ONS) [...] "
+               "A metodologia utilizada para o cálculo dos fatores de emissão de CO₂ permanece inalterada, tanto para projetos sob o "
+               "Mecanismo de Desenvolvimento Limpo (MDL) quanto para inventários de emissões. A diferença reside na ampliação da base "
+               "de dados, o que, consequentemente, pode resultar em uma redução nos valores dos fatores de emissão"),
+}
+QUEBRAS_MCTI = [{
+    "data": "2025-01", "origem": "FONTE", "series": ["medio_mensal", "medio_anual", "om_despacho_mensal", "om_despacho_diario",
+                                                     "bm_anual", "om_simples_ajustado_anual", "energia_despachada_mwh"],
+    "descricao": ("Base de usinas do ONS ampliada (termelétricas a biomassa e conjuntos de usinas solares e eólicas, de emissão nula); "
+                  "metodologia mantida. Valores a partir de jan/2025 podem ser menores por causa da base, não só da operação."),
+    "documento": DOC_MCTI_NT,
+}]
+
+
+def _mcti_vigente(con):
+    """Séries vigentes do MCTI com precedência por família de origem: página vigente do MCTI
+    e capturas depositadas (a mais recente das duas) antes do site institucional anterior.
+    Devolve (séries {serie: {ref: (valor, recurso)}}, divergências entre publicações)."""
+    vig, divergencias = {}, []
+    for serie in SERIES_MCTI:
+        fam = {f: _serie_com_origem(con, DS_MCTI, f"{f}.{serie}") for f in FAMILIAS_MCTI}
+        refs = set().union(*fam.values())
+        out = {}
+        for ref in refs:
+            recentes = [fam[f][ref] for f in ("atual", "seed") if ref in fam[f]]
+            escolhido = max(recentes, key=lambda x: x[2]) if recentes else fam["antigo"].get(ref)
+            out[ref] = (escolhido[0], escolhido[1])
+            ant = fam["antigo"].get(ref)
+            if recentes and ant and abs(ant[0] - escolhido[0]) > 5e-5:
+                divergencias.append({"serie": serie, "rotulo": ROTULO_SERIE_MCTI[serie], "periodo": ref,
+                                     "valor_vigente": escolhido[0], "arquivo_vigente": escolhido[1],
+                                     "valor_site_anterior": ant[0], "arquivo_site_anterior": ant[1]})
+        vig[serie] = out
+    return vig, sorted(divergencias, key=lambda x: (x["serie"], x["periodo"]))
+
+
+def _bloco_emissoes(con):
+    s, divergencias = _mcti_vigente(con)
+    if not s["medio_mensal"]:
+        return None
+    snap = c.snapshot_de(con, DS_MCTI)
+    meta = base.registros_como_estavam_em(con, DS_MCTI_META)
+    vint = {v["recurso"]: v for v in base.vintages_do_dataset(con, DS_MCTI)}
+
+    def arq(rec):
+        v = vint.get(rec)
+        return v["url"].rsplit("/", 1)[-1] if v and v.get("url") else rec
+
+    def lista(serie, chave):
+        return [{chave: (int(k) if chave == "ano" else k), "valor": c.r(v, 4), "arquivo": arq(rec)}
+                for k, (v, rec) in sorted(s[serie].items())]
+    medio_m = lista("medio_mensal", "m")
+    medio_a = lista("medio_anual", "ano")
+    om_m = lista("om_despacho_mensal", "m")
+    bm_a = lista("bm_anual", "ano")
+    sa_a = lista("om_simples_ajustado_anual", "ano")
+    en_a = [{"ano": int(k), "mwh": v, "arquivo": arq(rec)} for k, (v, rec) in sorted(s["energia_despachada_mwh"].items())]
+    # anual x mensal: o anual do MCTI não é média simples dos meses; publicamos a diferença como controle
+    compara = []
+    for a in medio_a:
+        ms = [x["valor"] for x in medio_m if x["m"].startswith(str(a["ano"]))]
+        if len(ms) == 12:
+            compara.append({"ano": a["ano"], "anual_publicado": a["valor"], "media_simples_meses": c.r(sum(ms) / 12, 4),
+                            "diferenca": c.r(a["valor"] - sum(ms) / 12, 4)})
+    usados = {rec for serie in s.values() for (_, rec) in serie.values()}
+    revisoes, notas, descartes, bm_notas, problemas = [], [], [], [], []
+    vistos = set()
+    for rec, campos in sorted(meta.items()):
+        if rec not in usados:
+            continue  # planilha cuja contribuição foi superada por publicação mais nova
+        for pr in json.loads(campos.get("problemas") or "[]"):
+            problemas.append({"texto": pr, "arquivo": arq(rec)})
+        for r in json.loads(campos.get("revisoes_declaradas") or "[]"):
+            chave = (r.get("serie"), r.get("periodo"), r.get("anterior"))
+            if chave not in vistos:
+                vistos.add(chave)
+                revisoes.append({**r, "arquivo": arq(rec)})
+        for n in json.loads(campos.get("notas") or "[]"):
+            if n not in {x["texto"] for x in notas}:
+                notas.append({"texto": n, "arquivo": arq(rec)})
+        for d in json.loads(campos.get("descartes") or "[]"):
+            descartes.append({**d, "arquivo": arq(rec)})
+        if campos.get("bm_nota"):
+            bm_notas.append({"texto": campos["bm_nota"], "arquivo": arq(rec)})
+    base.escreve_csv("transicao_mcti_fatores.csv", ["serie", "periodo", "valor", "unidade", "arquivo"],
+                     [["fator_medio_mensal", x["m"], x["valor"], "tCO2/MWh", x["arquivo"]] for x in medio_m]
+                     + [["fator_medio_anual", str(x["ano"]), x["valor"], "tCO2/MWh", x["arquivo"]] for x in medio_a]
+                     + [["margem_operacao_despacho_mensal", x["m"], x["valor"], "tCO2/MWh", x["arquivo"]] for x in om_m]
+                     + [["margem_construcao_anual", str(x["ano"]), x["valor"], "tCO2/MWh", x["arquivo"]] for x in bm_a]
+                     + [["margem_operacao_simples_ajustado_anual", str(x["ano"]), x["valor"], "tCO2/MWh", x["arquivo"]] for x in sa_a]
+                     + [["energia_despachada_mwh", str(x["ano"]), x["mwh"], "MWh", x["arquivo"]] for x in en_a])
+    base.escreve_csv("transicao_mcti_om_diario.csv", ["data", "margem_operacao_despacho_tco2_mwh", "arquivo"],
+                     [[k, c.r(v, 4), arq(rec)] for k, (v, rec) in sorted(s["om_despacho_diario"].items())])
+    # consistência interna: média simples dos fatores diários do mês × fator mensal publicado
+    # (o mensal oficial é ponderado pela geração horária; a diferença esperada é pequena)
+    por_mes_d = defaultdict(list)
+    for k, (v, _) in s["om_despacho_diario"].items():
+        por_mes_d[k[:7]].append(v)
+    difs = [(m_, sum(v) / len(v) - s["om_despacho_mensal"][m_][0]) for m_, v in por_mes_d.items() if m_ in s["om_despacho_mensal"]]
+    pior = max(difs, key=lambda x: abs(x[1])) if difs else None
+    consist_diaria = {"meses_comparados": len(difs), "maior_diferenca_absoluta": c.r(abs(pior[1]), 4) if pior else None,
+                      "mes_da_maior_diferenca": pior[0] if pior else None,
+                      "descricao": "média simples dos fatores diários da margem de operação comparada ao fator mensal publicado"}
+    tent = con.execute("SELECT tentado_em, ok, detalhe FROM coletas WHERE dataset=? AND recurso='pagina_atual' ORDER BY rowid DESC LIMIT 1",
+                       (DS_MCTI,)).fetchone()
+    ok_ult = con.execute("SELECT MAX(tentado_em) FROM coletas WHERE dataset=? AND recurso='pagina_atual' AND ok=1", (DS_MCTI,)).fetchone()
+    bloqueios = con.execute("SELECT tentado_em, detalhe FROM coletas WHERE dataset=? AND recurso='pagina_atual' AND ok=0 ORDER BY rowid DESC LIMIT 5",
+                            (DS_MCTI,)).fetchall()
+    familias_usadas = sorted({_familia_mcti(rec) for serie in s.values() for (_, rec) in serie.values()})
+    acesso = {"url": mcti.URL_PAGINA_ATUAL,
+              "situacao": (None if not tent else ("acessivel" if tent[1] else "bloqueada")),
+              "tentado_em": tent[0] if tent else None, "detalhe": tent[2] if tent else None,
+              "ultimo_acesso_ok": ok_ult[0] if ok_ult else None,
+              "bloqueios_registrados": [{"tentado_em": t, "detalhe": d} for t, d in bloqueios],
+              "familias_usadas": familias_usadas,
+              "alternativa": "site institucional anterior do MCTI (antigo.mctic.gov.br), planilhas oficiais de 2006 a 2021, usadas só onde a página vigente não tem valor",
+              "capturas_depositadas": sum(1 for v in vint.values() if v["origem"] == "seed")}
+    ult_ano = medio_a[-1] if medio_a else None
+    ult_mes = medio_m[-1] if medio_m else None
+    lim_medio = [
+        "Fator médio: média das emissões de todas as usinas em operação no SIN por MWh gerado; é o fator para inventários. Não é fator marginal e não mede o efeito de consumir ou economizar um MWh a mais.",
+        "Somente CO2 (tCO2/MWh), como o MCTI publica; não é CO2 equivalente (sem CH4 e N2O) e considera emissões da operação das usinas, não o ciclo de vida.",
+        "Perímetro: geração no SIN. Sistemas isolados e geração distribuída fora do despacho do ONS não entram.",
+        "É um fator nacional mensal: não existe fator municipal nem horário oficial, e a plataforma não deriva um a partir deste.",
+        "Quebra declarada pelo MCTI em jan/2025: a base de usinas do ONS foi ampliada (biomassa e conjuntos solares e eólicos, de emissão nula), com a mesma metodologia; comparações que atravessam jan/2025 misturam bases diferentes.",
+        "O ano corrente é parcial (meses publicados até o último mês disponível) e não tem fator anual.",
+    ]
+    if acesso["situacao"] == "bloqueada":
+        lim_medio.append("Na última tentativa, a página vigente do MCTI respondeu com desafio de verificação humana; valores posteriores à última captura bem-sucedida não foram lidos.")
+    prov_medio = c.proveniencia(
+        indicador="Fator médio de emissão de CO2 do SIN (inventários)", natureza="OBSERVADO", fonte=FONTE_MCTI,
+        unidade="tCO2/MWh", frequencia="mensal e anual",
+        periodo={"inicio": medio_m[0]["m"], "fim": medio_m[-1]["m"]}, cobertura={"inicio": medio_m[0]["m"], "fim": medio_m[-1]["m"]},
+        capturado_em=c.ultima_captura(snap), snapshot=snap,
+        transformacoes=["leitura das planilhas oficiais sem alteração de valor (4 casas decimais na publicação da gold)",
+                        "precedência: página vigente do MCTI sobre o site institucional anterior; divergências entre as duas publicadas"],
+        limitacoes=lim_medio, download="/energia/series/transicao_mcti_fatores.csv",
+        notas_fonte="Calculado pelo MCTI com dados de geração do ONS; publicado pela fonte.")
+    prov_mdl = c.proveniencia(
+        indicador="Fatores de margem do MDL: margem de operação (despacho e simples ajustado) e margem de construção", natureza="OBSERVADO",
+        fonte=FONTE_MCTI, unidade="tCO2/MWh", frequencia="mensal, diária e anual conforme o fator",
+        periodo={"inicio": om_m[0]["m"] if om_m else None, "fim": om_m[-1]["m"] if om_m else None},
+        cobertura={"inicio": om_m[0]["m"] if om_m else None, "fim": om_m[-1]["m"] if om_m else None},
+        capturado_em=c.ultima_captura(snap), snapshot=snap, transformacoes=["leitura das planilhas oficiais; dia inexistente no calendário descartado"],
+        limitacoes=["Fatores de margem estimam a emissão deslocada por um projeto de MDL que gera para a rede; não descrevem a intensidade média da eletricidade.",
+                    "Margem de operação e margem de construção têm métodos distintos (ferramenta do Conselho Executivo do MDL) e não são comparáveis ao fator médio.",
+                    "Somente CO2 (tCO2/MWh).", QUEBRAS_MCTI[0]["descricao"]],
+        download="/energia/series/transicao_mcti_fatores.csv")
+    vint_ult = next((v for r, v in vint.items() if ult_ano and arq(r) == ult_ano["arquivo"]), None)
+    ev = _evidencia(
+        valor=ult_ano["valor"] if ult_ano else None, casas=4, unidade="tCO2/MWh",
+        periodo={"inicio": f"{ult_ano['ano']}-01-01", "fim": f"{ult_ano['ano']}-12-31"} if ult_ano else None,
+        entidade="SIN", universo="geração de energia elétrica no Sistema Interligado Nacional", filtros=[],
+        fonte={"orgao": "MCTI", "conjunto": FONTE_MCTI["dataset"], "recurso": ult_ano["arquivo"] if ult_ano else None,
+               "url": vint_ult["url"] if vint_ult else mcti.URL_PAGINA_ATUAL, "arquivo": ult_ano["arquivo"] if ult_ano else None,
+               "sha256": vint_ult["sha256"] if vint_ult else None, "capturado_em": vint_ult["capturado_em"] if vint_ult else None,
+               "publicado_em": None},
+        chaves_origem=[f"planilha {ult_ano['arquivo']}, bloco do ano {ult_ano['ano']}, coluna do fator anual"] if ult_ano else [],
+        formula="valor publicado pelo MCTI (sem cálculo da plataforma)",
+        cobertura=f"{medio_a[0]['ano']} a {medio_a[-1]['ano']}" if medio_a else None,
+        tratamento_ausencia="ano sem planilha acessível fica sem valor; nada é estimado para preencher",
+        revisoes={"declaradas_pela_fonte": revisoes, "divergencias_entre_publicacoes": divergencias},
+        testes=[_teste("domínio do fator", all(0 <= x["valor"] < mcti.LIMITE_FATOR for x in medio_m), "0 ≤ fator < 2 tCO2/MWh em todos os meses"),
+                _teste("12 meses por ano completo", all(sum(1 for x in medio_m if x["m"].startswith(str(a["ano"]))) == 12 for a in medio_a),
+                       "cada ano com fator anual tem os 12 fatores mensais")],
+        reconciliacao={"descricao": "fator anual publicado comparado à média simples dos 12 meses (o MCTI pondera pela geração; diferença esperada pequena, não nula)",
+                       "resultado": f"maior diferença absoluta: {max((abs(x['diferenca']) for x in compara), default=0):.4f} tCO2/MWh",
+                       "tolerancia": "informativa: o anual oficial é ponderado pela geração"},
+        download=[{"rotulo": "Fatores do MCTI (CSV)", "url": "/energia/series/transicao_mcti_fatores.csv"}],
+        reproducao="python3 pipeline/energia/executar_modulo.py transicao",
+        indicador="Fator médio anual de emissão de CO2 do SIN", licenca=LICENCA_MCTI)
+    return {
+        "unidade": "tCO2/MWh", "gas": "CO2 (não CO2e)",
+        "medio_mensal": [{"m": x["m"], "valor": x["valor"]} for x in medio_m],
+        "medio_anual": [{"ano": x["ano"], "valor": x["valor"]} for x in medio_a],
+        "margem_operacao_despacho_mensal": [{"m": x["m"], "valor": x["valor"]} for x in om_m],
+        "margem_construcao_anual": [{"ano": x["ano"], "valor": x["valor"]} for x in bm_a],
+        "margem_operacao_simples_ajustado_anual": [{"ano": x["ano"], "valor": x["valor"]} for x in sa_a],
+        "energia_despachada_mwh": [{"ano": x["ano"], "mwh": x["mwh"]} for x in en_a],
+        "ultimo_ano": ult_ano, "ultimo_mes": ult_mes,
+        "quebras": QUEBRAS_MCTI,
+        "anual_x_media_mensal": compara,
+        "revisoes_declaradas_pela_fonte": revisoes, "divergencias_entre_publicacoes": divergencias,
+        "notas_da_fonte": notas, "notas_margem_construcao": bm_notas,
+        "descartes": descartes, "problemas_de_leitura": problemas, "consistencia_diaria_mensal": consist_diaria,
+        "acesso": acesso,
+        "arquivos": sorted({x["arquivo"] for x in medio_m + medio_a + om_m + bm_a + sa_a}),
+        "estimativa_propria": {
+            "publicada": False,
+            "motivo": ("Uma estimativa própria de intensidade (por exemplo, geração térmica do ONS por combustível multiplicada por fatores "
+                       "de combustível) exigiria consumo específico de cada usina, que não é publicado de forma estruturada; o resultado "
+                       "teria incerteza maior que a diferença entre anos e não substitui o fator oficial. Nada foi estimado."),
+        },
+        "proveniencia": {"medio": prov_medio, "mdl": prov_mdl},
+        "evidencia": ev,
+    }
+
+
+# ---------------------------------------------------------------------------
+# CSVs e construção
+# ---------------------------------------------------------------------------
+
+def _escreve_csvs_mmgd(b):
+    cad = b["_cad"]
+    nome = lambda m: (cad.get(m) or {}).get("nome")  # noqa: E731
+    base.escreve_csv("transicao_mmgd_municipio_ano_fonte.csv",
+                     ["codigo_ibge", "municipio", "uf", "ano_conexao", "fonte", "unidades", "potencia_kw"],
+                     [[m, nome(m), (cad.get(m) or {}).get("uf") or mmgd.UF_POR_CODIGO.get(m[:2]), a, f, q, c.r(k, 2)]
+                      for (m, a, f), (q, k) in sorted(b["_mun_ano_fonte"].items())])
+    base.escreve_csv("transicao_mmgd_uf_mes_fonte.csv", ["uf", "mes_conexao", "fonte", "unidades", "potencia_kw"],
+                     [[u, mes, f, q, c.r(k, 2)] for (u, mes, f), (q, k) in sorted(b["_ufm"].items())])
+    nd = b["_nomes_dist"]
+    base.escreve_csv("transicao_mmgd_distribuidoras.csv", ["cnpj", "sigla", "nome", "uf", "ano_conexao", "unidades", "potencia_kw"],
+                     [[cn, (nd.get(cn) or {}).get("sigla"), (nd.get(cn) or {}).get("nome"), u, a, q, c.r(k, 2)]
+                      for (cn, u, a), (q, k) in sorted(b["_dist"].items())])
+    perf = []
+    for d, v in b["_perfis"].items():
+        perf += [[d, cat, a, q, c.r(k, 2)] for (cat, a), (q, k) in sorted(v.items())]
+    perf += [["fonte_detalhe", f"{t} | {dsc}", a, q, c.r(k, 2)] for (t, dsc, a), (q, k) in sorted(b["_fdet"].items())]
+    base.escreve_csv("transicao_mmgd_perfil.csv", ["dimensao", "categoria", "ano_conexao", "unidades", "potencia_kw"], perf)
+    campos = ["ibge", "nome", "uf", "unidades", "potencia_kw", "populacao", "w_por_habitante", "unidades_por_mil_habitantes",
+              "unidades_ano_referencia", "potencia_kw_ano_referencia", "potencia_kw_estoque_ano_anterior", "crescimento_estoque_pct",
+              "fonte_principal"]
+    base.escreve_csv("transicao_mmgd_municipios.csv",
+                     ["codigo_ibge", "municipio", "uf", "unidades", "potencia_kw", "populacao_estimada", "w_por_habitante",
+                      "unidades_por_mil_habitantes", "unidades_ano_referencia", "potencia_kw_ano_referencia",
+                      "potencia_kw_estoque_ano_anterior", "crescimento_estoque_pct", "fonte_principal", "ano_referencia", "ano_populacao"],
+                     [[x[k] for k in campos] + [b["ano_referencia"], b["ano_populacao"]] for x in b["_municipios"]])
+    # JSON compacto (sem indentação): é carregado sob demanda pelo mapa e tem ~5.570 linhas
+    carga = {"gerado_em": base.agora_utc(), "data_cadastro": b["data_cadastro"], "ano_referencia": b["ano_referencia"],
+             "ano_populacao": b["ano_populacao"], "campos": campos, "linhas": [[x[k] for k in campos] for x in b["_municipios"]]}
+    destino = os.path.join(base.SERIES, "transicao_municipios.json")
+    os.makedirs(base.SERIES, exist_ok=True)
+    tmp = f"{destino}.{os.getpid()}.tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(carga, f, ensure_ascii=False, separators=(",", ":"), allow_nan=False)
+    os.replace(tmp, destino)
+
+
+def construir(con, ctx):
+    hoje = ctx.get("hoje") or c.agora_date()
+    try:
+        b, motivo = _bloco_mmgd(con, hoje)
+    except Exception as e:
+        return c.stub(GOLD, f"falha ao montar o bloco de MMGD: {e}")
+    if b is None:
+        return c.stub(GOLD, motivo)
+    _escreve_csvs_mmgd(b)
+    ons_b = _bloco_ons(con, ctx.get("con_principal"), b["_estoque_fim_mes"])
+    emis = _bloco_emissoes(con)
+    publico = {k: v for k, v in b.items() if not k.startswith("_")}
+    pendencias = []
+    if ons_b is None:
+        pendencias.append("estimativa de MMGD do ONS ausente no silver")
+    if emis is None:
+        pendencias.append("fatores de emissão do MCTI ausentes no silver")
+    downloads = [{"rotulo": r, "url": u} for r, u in (
+        ("MMGD por município, ano e fonte (CSV)", "/energia/series/transicao_mmgd_municipio_ano_fonte.csv"),
+        ("MMGD por município, com população (CSV)", "/energia/series/transicao_mmgd_municipios.csv"),
+        ("MMGD por UF, mês e fonte (CSV)", "/energia/series/transicao_mmgd_uf_mes_fonte.csv"),
+        ("MMGD por distribuidora, UF e ano (CSV)", "/energia/series/transicao_mmgd_distribuidoras.csv"),
+        ("MMGD por classe, modalidade, porte e fonte (CSV)", "/energia/series/transicao_mmgd_perfil.csv"),
+        ("MMGD estimada pelo ONS, diária (CSV)", "/energia/series/transicao_ons_mmgd_diario.csv"),
+        ("MMGD estimada pelo ONS, mensal (CSV)", "/energia/series/transicao_ons_mmgd_mensal.csv"),
+        ("Fatores de emissão do MCTI (CSV)", "/energia/series/transicao_mcti_fatores.csv"),
+        ("Margem de operação diária do MCTI (CSV)", "/energia/series/transicao_mcti_om_diario.csv"),
+    )]
+    return {
+        **c.cabecalho(GOLD),
+        "paineis": ["P063", "P064"],
+        "pendencias": pendencias,
+        "regras": {
+            "capacidade_nao_e_energia": "Potência instalada cadastrada (kW, MW) é capacidade; energia gerada (MWh, MWmed) só aparece na estimativa do ONS, em bloco separado.",
+            "cadastro_x_estimativa": "Cadastro regulatório da ANEEL e estimativa operacional do ONS são grandezas diferentes: nunca somadas, só comparadas por razão rotulada.",
+            "ano_de_conexao": "Ano e mês vêm da data de conexão publicada (DthAtualizaCadastralEmpreend, conferida com DatConexao do recurso técnico).",
+            "provisorio": f"Os {MESES_PROVISORIOS} meses anteriores à data do cadastro são provisórios (registro tardio).",
+            "ano_referencia": "Comparações de crescimento usam o último ano completo antes da data do cadastro; o ano corrente é parcial e não entra em ranking.",
+            "por_habitante": f"Por habitante usa a população estimada pelo IBGE; rankings só com população de pelo menos {POP_MINIMA_RANKING:,}.".replace(",", "."),
+            "fator_medio_nao_marginal": "Fator médio (inventários) e fatores de margem (MDL) são séries separadas e não se substituem.",
+            "co2_nao_co2e": "Os fatores do MCTI são de CO2, em tCO2/MWh; não são CO2 equivalente.",
+            "sem_intensidade_local": "Não há intensidade de emissão municipal nem horária: o fator oficial é nacional (SIN) e mensal.",
+        },
+        "mmgd": publico,
+        "ons_mmgd": ons_b,
+        "emissoes": emis,
+        "downloads": downloads,
+        "mapa_municipios": "/energia/series/transicao_municipios.json",
+    }

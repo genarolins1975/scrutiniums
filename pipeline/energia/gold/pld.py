@@ -11,7 +11,8 @@ Regras publicadas (repetidas no JSON em `regras`, exibidas na página):
 - permanência: fração de horas do período abaixo do P25, entre P25 e P75 e acima do
   P75 da distribuição HORÁRIA do submercado desde 01/01/2021;
 - menor valor observado no ano: menor valor horário do ano civil até o dia de
-  referência. NÃO é o piso regulatório (limite oficial não auditado nesta fase);
+  referência. NÃO é o piso regulatório: os limites de cada ano, com ato e vigência,
+  ficam no detalhe do PLD (modulos/pld_detalhe.py, gold pld_detalhe.json);
 - diferença entre submercados: por hora, maior menos menor valor entre os quatro;
   contam-se as horas com diferença acima de R$ 1,00/MWh (LIMIAR_DIFERENCA).
 """
@@ -35,13 +36,16 @@ REGRAS = {
     "posicao_historica": "Percentil da média diária do dia de referência na distribuição das médias diárias do mesmo submercado desde 01/01/2021, em valores nominais. Faixa baixa: abaixo do 25º percentil. Central: do 25º ao 75º. Alta: acima do 75º.",
     "volatilidade": "Desvio padrão amostral dos valores horários do período.",
     "permanencia": "Fração das horas do período abaixo do 25º percentil, entre o 25º e o 75º e acima do 75º percentil da distribuição horária do submercado desde 01/01/2021.",
-    "menor_valor_ano": "Menor valor horário observado no ano civil até o dia de referência. Não é o piso regulatório: o limite oficial vigente não foi auditado nesta fase.",
+    "menor_valor_ano": ("Menor valor horário observado no ano civil até o dia de referência. Não é o piso regulatório: o piso de cada ano, "
+                        "com o ato da ANEEL e a vigência, fica no detalhe do PLD (limites, piso e tetos)."),
     "diferenca_submercados": ("Para cada hora, maior valor menos menor valor entre os quatro submercados. Contam-se as horas com diferença acima de "
                               "R$ " + f"{LIMIAR_DIFERENCA:.2f}".replace(".", ",") + "/MWh; diferenças menores são tratadas como coincidência nesta contagem."),
 }
 
 LIMITACOES_BASE = [
-    "Valores nominais em R$/MWh. Os limites regulatórios (mínimo, máximo horário e máximo estrutural) mudam a cada ano e não foram auditados nesta fase; comparações entre anos misturam regimes de limites diferentes.",
+    ("Valores nominais em R$/MWh. Os limites regulatórios (mínimo, máximo horário e máximo estrutural) mudam a cada ano; os atos da ANEEL "
+     "e a permanência do PLD em cada limite ficam no detalhe do PLD (pld_detalhe.json), quando os atos estão integrados. Comparações "
+     "entre anos misturam regimes de limites diferentes."),
     "A CCEE não informa a data de publicação de cada hora no arquivo; o campo last_modified do recurso no portal não acompanha as atualizações diárias.",
 ]
 

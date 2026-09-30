@@ -16,6 +16,26 @@ from pipeline.energia.gold import comum as c  # noqa: E402
 DS = "cmo_se"
 
 
+def _limitacao_unidade(series, patamares):
+    """Achado A03: o dicionário do ONS diz R$/MW para a média semanal e R$/MWh para os
+    patamares. A exibição em R$/MWh se apoia na conferência de que a média fica entre o
+    menor e o maior patamar da mesma semana; o texto sai da conferência, não é fixo."""
+    n = dentro = 0
+    for sm in c.ORDEM_SM:
+        for k, v in series[sm].items():
+            pats = [patamares[(p, sm)].get(k) for p in ("leve", "media", "pesada")]
+            if None in pats:
+                continue
+            n += 1
+            dentro += min(pats) - 0.01 <= v <= max(pats) + 0.01
+    base_txt = "O dicionário de dados do ONS indica a unidade da média semanal como R$/MW e a dos patamares como R$/MWh. "
+    if n and dentro == n:
+        return base_txt + (f"A média semanal é exibida em R$/MWh porque fica entre o menor e o maior patamar em todas as {n} semanas-subsistema "
+                           "conferidas (achado A03); R$/MW seria custo por potência e não é equivalente.")
+    return base_txt + (f"A média semanal fica fora do intervalo dos patamares em {n - dentro} de {n} semanas-subsistema; a leitura em R$/MWh "
+                       "não está confirmada para essas semanas.")
+
+
 def construir(con):
     series = {sm: dict(base.serie_vigente(con, DS, f"cmo_semanal.{sm}")) for sm in c.ORDEM_SM}
     if not all(series.values()):
@@ -45,7 +65,7 @@ def construir(con):
         limitacoes=[
             "Valor estimado pelo modelo DECOMP e publicado pelo ONS: é resultado de modelo da fonte, não medição.",
             "CMO não é PLD: o PLD é calculado pela CCEE em base horária e aplica limites regulatórios.",
-            "O dicionário de dados do ONS indica a unidade da média semanal como R$/MW e a dos patamares como R$/MWh; a Scrutiniums trata ambas como R$/MWh.",
+            _limitacao_unidade(series, patamares),
             "A data de referência é a da semana operativa informada pelo ONS; semanas futuras podem já estar publicadas.",
         ],
         download="/energia/series/cmo_semanal.csv", notas_fonte=meta.get("notas"),

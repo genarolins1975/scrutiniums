@@ -1,0 +1,3101 @@
+{
+ "dominio": "energia",
+ "gold": "metricas.json",
+ "gerado_em": "2026-09-30T22:34:02Z",
+ "versao_pipeline": "energia-0.1.0",
+ "versao_codigo": "dcad322a4ea9+alterado",
+ "disponivel": true,
+ "metricas": [
+  {
+   "id": "conta_bandeira_adicional",
+   "titulo": "Bandeira tarifária acionada e adicional por patamar",
+   "pergunta": "Qual bandeira vigorou em cada mês e quanto ela acrescenta por kWh?",
+   "definicao": "Bandeira acionada pela ANEEL para cada mês de competência e o adicional por MWh consumido definido na resolução vigente para cada patamar.",
+   "unidade": "R$/MWh",
+   "grao_geografico": "Sistema Interligado Nacional (consumidores cativos, exceto sistemas isolados)",
+   "grao_temporal": "mensal",
+   "fontes": [
+    "aneel_bandeiras_tarifarias"
+   ],
+   "regra_agregacao": "Valor publicado; contagem de meses por patamar e ano.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "mês",
+    "patamar"
+   ],
+   "regras_comparabilidade": [
+    "Adicionais mudam por resolução: comparar meses de resoluções diferentes exige a tabela de adicionais."
+   ],
+   "regra_cobertura": "Meses publicados no recurso de acionamento.",
+   "politica_ausencia": "Mês não publicado não é preenchido nem repetido.",
+   "validacoes": [
+    "Valor acionado confere com a tabela de adicionais do mesmo conjunto.",
+    "Adicional da amarela confere com a página oficial da ANEEL (R$ 0,01885/kWh)."
+   ],
+   "limitacoes": [
+    "O dicionário descreve o campo como reais por kWh, mas os valores são R$/MWh."
+   ],
+   "gold": "conta.json",
+   "paginas": [
+    "/setor-eletrico/conta-de-luz"
+   ],
+   "arquivo": "pipeline/energia/metricas/conta.py"
+  },
+  {
+   "id": "conta_composicao_grupo",
+   "titulo": "Composição da tarifa B1 por grupo de componentes",
+   "pergunta": "Para onde vai o valor pago por kWh: energia, transmissão, distribuição, perdas ou encargos?",
+   "definicao": "Soma das componentes tarifárias oficiais da TE e da TUSD de aplicação B1 residencial, agrupadas por código em energia comprada, transmissão e conexão, distribuição (fio B), perdas e receitas irrecuperáveis, encargos setoriais e outros ajustes. O agrupamento é do observatório; cada código fica visível.",
+   "unidade": "R$/MWh e % da tarifa",
+   "grao_geografico": "distribuidora (CNPJ)",
+   "grao_temporal": "vigência",
+   "fontes": [
+    "aneel_componentes_tarifarias",
+    "aneel_tarifas_aplicacao"
+   ],
+   "formula": "grupo(g) = Σ componentes com GRUPO = g; participação = grupo ÷ (TE + TUSD)",
+   "numerador": "Σ das componentes do grupo (R$/MWh)",
+   "denominador": "TE + TUSD de aplicação (R$/MWh)",
+   "regra_agregacao": "Por distribuidora; resumo nacional pela mediana de cada grupo (as medianas não somam o total).",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "distribuidora",
+    "grupo",
+    "componente"
+   ],
+   "regras_comparabilidade": [
+    "Componentes já estão dentro da TE e da TUSD: nada é somado por fora.",
+    "Componentes negativas (devoluções) reduzem o grupo e são mantidas."
+   ],
+   "regra_cobertura": "Distribuidoras com tarifa B1 vigente e componentes publicadas para o mesmo ato e vigência.",
+   "politica_ausencia": "Componente ausente não vira zero; distribuidora sem componentes para o ato vigente fica listada em reconciliacao.sem_componentes.",
+   "validacoes": [
+    "Soma das parcelas = TE e TUSD publicadas no próprio conjunto (tolerância 0,01 R$/MWh).",
+    "TE e TUSD do conjunto de componentes = TE e TUSD do conjunto de tarifas (tolerância 0,005 R$/MWh)."
+   ],
+   "limitacoes": [
+    "O PRORET 7.1, que define as componentes, não pôde ser lido (acesso bloqueado); o grupo é classificação do observatório.",
+    "Tributos e iluminação pública não fazem parte da tarifa."
+   ],
+   "gold": "conta.json",
+   "paginas": [
+    "/setor-eletrico/conta-de-luz"
+   ],
+   "arquivo": "pipeline/energia/metricas/conta.py"
+  },
+  {
+   "id": "conta_custo_perfil",
+   "titulo": "Custo da energia para um perfil de consumo de referência",
+   "pergunta": "Quanto custaria, antes de tributos, consumir 100, 200 ou 300 kWh em cada distribuidora?",
+   "definicao": "Consumo do perfil (kWh/mês) multiplicado pela tarifa de aplicação B1 residencial convencional. Perfis definidos pelo observatório para comparação; não são consumo médio. Sem ICMS, PIS/Pasep, Cofins, contribuição de iluminação pública e bandeira.",
+   "unidade": "R$/mês",
+   "grao_geografico": "distribuidora (CNPJ)",
+   "grao_temporal": "vigência",
+   "fontes": [
+    "aneel_tarifas_aplicacao"
+   ],
+   "formula": "kWh_perfil × (TE + TUSD) ÷ 1000",
+   "numerador": "kWh do perfil × (TE + TUSD) em R$/MWh",
+   "denominador": "1000 kWh por MWh",
+   "regra_agregacao": "Por distribuidora; resumo nacional pela mediana da tarifa aplicada ao perfil.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "distribuidora",
+    "perfil (100, 200, 300 kWh)"
+   ],
+   "regras_comparabilidade": [
+    "Mesmo perfil e mesma data de referência para todas as distribuidoras.",
+    "Perfis a partir de 100 kWh não são afetados pelo custo de disponibilidade (mínimo de 30, 50 ou 100 kWh)."
+   ],
+   "regra_cobertura": "Igual à da tarifa B1.",
+   "politica_ausencia": "Distribuidora sem vigência cobrindo a data fica fora e é listada em sem_vigente; TE e TUSD iguais a zero na mesma linha (',00' na fonte) são tarifa não homologada para a subclasse e não entram; nunca se repete a vigência anterior.",
+   "validacoes": [
+    "Custo = perfil × tarifa conferido por releitura do CSV original no teste."
+   ],
+   "limitacoes": [
+    "Sem bandeira: a bandeira vigente é mostrada à parte.",
+    "Não inclui descontos sociais."
+   ],
+   "gold": "conta.json",
+   "paginas": [
+    "/setor-eletrico/conta-de-luz"
+   ],
+   "arquivo": "pipeline/energia/metricas/conta.py"
+  },
+  {
+   "id": "conta_simulacao",
+   "titulo": "Estimativa do valor da energia na fatura (simulador)",
+   "pergunta": "Como o valor da energia na minha conta varia com o consumo, a classe e a bandeira?",
+   "definicao": "Estimativa mensal para uma unidade de baixa tensão: energia faturada pelas faixas da classe (Tarifa Social: 100% de desconto até 80 kWh; Desconto Social: faixa sem CDE até 120 kWh), custo de disponibilidade (30, 50 ou 100 kWh) onde se aplica, e adicional de bandeira por kWh consumido. Sem ICMS, PIS/Pasep, Cofins, contribuição de iluminação pública.",
+   "unidade": "R$/mês",
+   "grao_geografico": "distribuidora (CNPJ)",
+   "grao_temporal": "vigência na data de referência",
+   "fontes": [
+    "aneel_tarifas_aplicacao",
+    "aneel_bandeiras_tarifarias",
+    "normas_conta"
+   ],
+   "formula": "Σ faixas (kWh da faixa × (TE + TUSD) da faixa ÷ 1000) − descontos + kWh sujeitos à bandeira × adicional ÷ 1000",
+   "regra_agregacao": "Não se agrega: é uma estimativa por cenário.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "ESTIMADO",
+   "dimensoes": [
+    "distribuidora",
+    "classe",
+    "consumo (kWh)",
+    "tipo de ligação",
+    "bandeira"
+   ],
+   "regras_comparabilidade": [
+    "Resultado rotulado como estimativa sem tributos; não é a fatura."
+   ],
+   "regra_cobertura": "Distribuidoras com tarifa da classe publicada na vigência; classe sem tarifa devolve indisponível com motivo.",
+   "politica_ausencia": "Tarifa da classe ausente torna a simulação indisponível para aquela classe; não se usa tarifa de outra classe.",
+   "validacoes": [
+    "Casos de referência calculados no pipeline (casos_referencia) devem ser reproduzidos pela interface.",
+    "Trechos das normas conferidos a cada captura (simulador.normas)."
+   ],
+   "limitacoes": [
+    "Desconto Social por parcela e bandeira na Tarifa Social são leituras declaradas (REN não lida por bloqueio de acesso).",
+    "Custo de disponibilidade da Tarifa Social acima de 80 kWh não modelado."
+   ],
+   "gold": "conta.json",
+   "paginas": [
+    "/setor-eletrico/conta-de-luz"
+   ],
+   "arquivo": "pipeline/energia/metricas/conta.py"
+  },
+  {
+   "id": "conta_subsidio_anual",
+   "titulo": "Subsídios tarifários custeados pela CDE por categoria",
+   "pergunta": "Quanto a CDE repassa às distribuidoras para cobrir descontos tarifários, e para quais categorias?",
+   "definicao": "Soma, por ano de competência, dos repasses mensais homologados (montante Total = previsão + ajuste) a todas as distribuidoras, por categoria de desconto. Não são transferências a famílias; a Tarifa Social não integra o conjunto.",
+   "unidade": "R$ nominais",
+   "grao_geografico": "nacional e distribuidora",
+   "grao_temporal": "anual (competência)",
+   "fontes": [
+    "aneel_subsidios_tarifarios"
+   ],
+   "formula": "Σ distribuidoras Σ meses do ano do repasse Total da categoria",
+   "regra_agregacao": "Soma de valores monetários nominais; a linha de categoria Total publicada é usada só como conferência.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "ano",
+    "categoria",
+    "distribuidora"
+   ],
+   "regras_comparabilidade": [
+    "Valores nominais: comparar anos distantes exige correção monetária.",
+    "Ano com menos de 12 meses de competência é parcial."
+   ],
+   "regra_cobertura": "Competências até o mês de referência; competências futuras homologadas ficam fora.",
+   "politica_ausencia": "Célula vazia não entra na soma e não vira zero.",
+   "validacoes": [
+    "Categorias somam o Total publicado por distribuidora e mês (tolerância R$ 0,05).",
+    "Total = previsão + ajuste por categoria (tolerância R$ 0,05)."
+   ],
+   "limitacoes": [
+    "Valores homologados em resolução, não desembolso realizado."
+   ],
+   "gold": "conta.json",
+   "paginas": [
+    "/setor-eletrico/conta-de-luz"
+   ],
+   "arquivo": "pipeline/energia/metricas/conta.py"
+  },
+  {
+   "id": "conta_tarifa_b1_aplicacao",
+   "titulo": "Tarifa de aplicação residencial B1 convencional",
+   "pergunta": "Quanto a distribuidora cobra por kWh de um consumidor residencial comum, antes de tributos?",
+   "definicao": "Soma da Tarifa de Energia (TE) e da Tarifa de Uso do Sistema de Distribuição (TUSD) de aplicação homologadas pela ANEEL para o subgrupo B1, subclasse residencial, modalidade convencional, na vigência que cobre a data de referência. Sem ICMS, PIS/Pasep, Cofins, contribuição de iluminação pública e bandeira.",
+   "unidade": "R$/MWh (divida por 1000 para R$/kWh)",
+   "grao_geografico": "distribuidora (CNPJ)",
+   "grao_temporal": "vigência (resolução homologatória)",
+   "fontes": [
+    "aneel_tarifas_aplicacao"
+   ],
+   "formula": "TE_aplicação + TUSD_aplicação",
+   "regra_agregacao": "Não se soma entre distribuidoras. Resumo nacional = mediana, 25º e 75º percentis entre distribuidoras (quantil tipo 7), sem ponderação por consumo.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "distribuidora",
+    "vigência",
+    "base tarifária (aplicação ou base econômica)"
+   ],
+   "regras_comparabilidade": [
+    "Só compara a mesma modalidade (convencional), subgrupo e subclasse.",
+    "Tarifa de aplicação e base econômica não se misturam.",
+    "Não é tarifa média de fornecimento nem conta final."
+   ],
+   "regra_cobertura": "Distribuidoras com linha B1 residencial convencional de aplicação, unidade MWh, cuja vigência cobre a data de referência.",
+   "politica_ausencia": "Distribuidora sem vigência cobrindo a data fica fora e é listada em sem_vigente; TE e TUSD iguais a zero na mesma linha (',00' na fonte) são tarifa não homologada para a subclasse e não entram; nunca se repete a vigência anterior.",
+   "validacoes": [
+    "TE e TUSD iguais no conjunto de tarifas e no de componentes (tolerância 0,005 R$/MWh).",
+    "Unidade MWh conferida linha a linha; linha em kW fica fora e é contada.",
+    "Vigências sobrepostas com valores diferentes resolvidas pela regra publicada e listadas em conflitos_fonte."
+   ],
+   "limitacoes": [
+    "Mediana entre distribuidoras não representa o consumidor médio do país.",
+    "Permissionárias com vigência encerrada e sucessora ainda não publicada no conjunto ficam fora na data."
+   ],
+   "gold": "conta.json",
+   "paginas": [
+    "/setor-eletrico/conta-de-luz"
+   ],
+   "arquivo": "pipeline/energia/metricas/conta.py"
+  },
+  {
+   "id": "conta_variacao_tarifa_b1",
+   "titulo": "Variação da tarifa B1 entre vigências e comparação com o IPCA",
+   "pergunta": "Quanto a tarifa residencial mudou em cada ato e em relação à inflação do mesmo período?",
+   "definicao": "Variação percentual da tarifa de aplicação B1 residencial convencional (TE + TUSD) entre pedaços contíguos da linha do tempo; comparação com o IPCA do IBGE no mesmo intervalo (índices do mês anterior a cada data) e, nas janelas de 12, 60 e 120 meses, entre as tarifas vigentes no último dia dos meses inicial e final do IPCA.",
+   "unidade": "%",
+   "grao_geografico": "distribuidora (CNPJ)",
+   "grao_temporal": "evento tarifário; janelas de 12, 60 e 120 meses",
+   "fontes": [
+    "aneel_tarifas_aplicacao",
+    "ibge_ipca"
+   ],
+   "formula": "variação = total_depois ÷ total_antes − 1; IPCA = I(mês final) ÷ I(mês inicial) − 1; real = (1 + variação) ÷ (1 + IPCA) − 1",
+   "numerador": "tarifa depois (R$/MWh)",
+   "denominador": "tarifa antes (R$/MWh)",
+   "regra_agregacao": "Por distribuidora; resumo por mediana e quartis entre distribuidoras; contagem das acima e abaixo do IPCA.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "distribuidora",
+    "evento",
+    "janela"
+   ],
+   "regras_comparabilidade": [
+    "Tarifa e IPCA sempre nos mesmos meses.",
+    "Não é o efeito médio do processo tarifário (que pondera todas as classes).",
+    "Diferença entre PLD e tarifa não é margem da distribuidora."
+   ],
+   "regra_cobertura": "Distribuidoras com tarifa nas duas datas; as demais são contadas como excluídas.",
+   "politica_ausencia": "Sem tarifa em uma das datas ou sem índice publicado no mês, a variação fica vazia.",
+   "validacoes": [
+    "IPCA de 12 meses pela razão de índices conferido com a variação publicada pelo IBGE (tolerância 0,01 ponto percentual)."
+   ],
+   "limitacoes": [
+    "O conjunto não diz se o ato é reajuste, revisão periódica ou extraordinária."
+   ],
+   "gold": "conta.json",
+   "paginas": [
+    "/setor-eletrico/conta-de-luz"
+   ],
+   "arquivo": "pipeline/energia/metricas/conta.py"
+  },
+  {
+   "id": "inclusao.cde_custeio",
+   "titulo": "CDE: valores anuais para Tarifa Social, Luz para Todos e CCC",
+   "pergunta": "Quanto a CDE destina por ano à Tarifa Social, à universalização e aos sistemas isolados?",
+   "definicao": "Valores anuais de despesa da CDE nas rubricas Subsídio Baixa Renda, Programa Luz para Todos e CCC, como publicados pela ANEEL.",
+   "unidade": "R$ correntes por ano",
+   "grao_geografico": "Brasil",
+   "grao_temporal": "ano",
+   "fontes": [
+    "aneel_cde_custeio"
+   ],
+   "regra_agregacao": "valor da fonte; participação = rubrica ÷ soma das rubricas de despesa do ano",
+   "versao_formula": "1.0",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "ano",
+    "rubrica"
+   ],
+   "regras_comparabilidade": [
+    "valores nominais",
+    "ano em curso é orçamento"
+   ],
+   "regra_cobertura": "anos publicados (desde 2013)",
+   "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
+   "validacoes": [
+    "rubricas conferidas por nome exato"
+   ],
+   "limitacoes": [
+    "o conjunto não separa orçado de executado"
+   ],
+   "gold": "inclusao.json",
+   "paginas": [
+    "/setor-eletrico/inclusao-energetica"
+   ],
+   "arquivo": "pipeline/energia/metricas/inclusao.py"
+  },
+  {
+   "id": "inclusao.cde_desconto_tsee",
+   "titulo": "Desconto da Tarifa Social nas faturas (Beneficiários da CDE)",
+   "pergunta": "Quanto de desconto chegou às faturas em cada UF?",
+   "definicao": "Soma de VlrSubsidio das faturas de faturamento (tipo 1) com subsídio baixa renda nas subclasses 3.2 a 3.6.",
+   "unidade": "R$ correntes no mês",
+   "grao_geografico": "município, UF, distribuidora",
+   "grao_temporal": "mês do arquivo",
+   "fontes": [
+    "aneel_cde_beneficiarios"
+   ],
+   "numerador": "Σ VlrSubsidio",
+   "regra_agregacao": "soma; cancelamentos e refaturamentos (tipos 2 a 4) só no desconto líquido do mês",
+   "versao_formula": "1.0",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "município",
+    "UF",
+    "distribuidora"
+   ],
+   "regras_comparabilidade": [
+    "valores nominais",
+    "regra de desconto mudou em 05/07/2025"
+   ],
+   "regra_cobertura": "mesma do número de faturas",
+   "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
+   "validacoes": [
+    "comparação com a DMR do SCS por distribuidora no mês de conferência"
+   ],
+   "limitacoes": [
+    "o desconto médio por fatura depende da tarifa local e do consumo"
+   ],
+   "gold": "inclusao.json",
+   "paginas": [
+    "/setor-eletrico/inclusao-energetica"
+   ],
+   "arquivo": "pipeline/energia/metricas/inclusao.py"
+  },
+  {
+   "id": "inclusao.cde_faturas_tsee",
+   "titulo": "Faturas com desconto da Tarifa Social (Beneficiários da CDE)",
+   "pergunta": "Onde, por município e UF, estão as unidades que recebem o desconto?",
+   "definicao": "Número de linhas de faturamento (tipo 1) com subsídio baixa renda nas subclasses 3.2 a 3.6 do arquivo mensal de Beneficiários da CDE; cada linha é a fatura de uma UC no mês.",
+   "unidade": "faturas (uma por UC no mês)",
+   "grao_geografico": "município (código IBGE), UF, distribuidora",
+   "grao_temporal": "mês do arquivo processado",
+   "fontes": [
+    "aneel_cde_beneficiarios"
+   ],
+   "numerador": "contagem de linhas com DscTipoSubsidio = SubsBaixaRenda, IdcTipoFaturamento = 1, IdcSubclasse em 3.2 a 3.6",
+   "regra_agregacao": "contagem por município; UF = soma dos municípios; linhas com código de município inválido só no total nacional",
+   "versao_formula": "1.0",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "município",
+    "UF",
+    "distribuidora",
+    "subclasse"
+   ],
+   "regras_comparabilidade": [
+    "mês do mapa: o mais recente com cobertura ≥ 99,5% das UC do SCS",
+    "fatura não é família"
+   ],
+   "regra_cobertura": "cobertura = UC do SCS (mês de conferência) das distribuidoras presentes no arquivo ÷ UC do SCS de todas",
+   "politica_ausencia": "Município sem fatura no arquivo aparece sem valor (ausente), não como zero.",
+   "validacoes": [
+    "nenhum campo pessoal lido ou publicado",
+    "esquema do arquivo conferido a cada leitura",
+    "conferência com o SCS por distribuidora"
+   ],
+   "limitacoes": [
+    "base sujeita a retificação a qualquer momento, segundo a ANEEL"
+   ],
+   "gold": "inclusao.json",
+   "paginas": [
+    "/setor-eletrico/inclusao-energetica"
+   ],
+   "arquivo": "pipeline/energia/metricas/inclusao.py"
+  },
+  {
+   "id": "inclusao.cobertura_proxy",
+   "titulo": "Cobertura potencial da Tarifa Social (proxy)",
+   "pergunta": "Quem pode estar ficando de fora?",
+   "definicao": "UC (ou faturas) com Tarifa Social por 100 famílias do Cadastro Único com renda per capita de até meio salário mínimo e cadastro atualizado, no mesmo mês e território. É PROXY: o numerador inclui beneficiários pelo BPC e por equipamento médico, fora do denominador, e conta UC, não famílias.",
+   "unidade": "UC com Tarifa Social por 100 famílias",
+   "grao_geografico": "município, UF, Brasil",
+   "grao_temporal": "mês",
+   "fontes": [
+    "aneel_scs",
+    "aneel_cde_beneficiarios",
+    "mds_cadunico"
+   ],
+   "numerador": "UC com Tarifa Social (SCS, série nacional) ou faturas com Tarifa Social (CDE, município e UF)",
+   "denominador": "famílias do Cadastro Único com renda per capita até ½ salário mínimo e cadastro atualizado (MI Social)",
+   "formula": "100 × Σ numerador ÷ Σ denominador; faixa de sensibilidade com todas as famílias cadastradas no denominador",
+   "regra_agregacao": "razão de somas; município com menos de 50 famílias fora da distribuição",
+   "versao_formula": "1.0",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "município",
+    "UF",
+    "mês"
+   ],
+   "regras_comparabilidade": [
+    "mesmo mês no numerador e no denominador",
+    "critérios de elegibilidade iguais no período (verificado na ANEEL em 30/09/2026)"
+   ],
+   "regra_cobertura": "municípios com fatura no arquivo e cadastro no MDS; vínculo pelos 6 dígitos do código IBGE",
+   "politica_ausencia": "Município sem fatura no arquivo: razão ausente, não zero.",
+   "validacoes": [
+    "não se publica número de famílias fora do benefício",
+    "rótulo PROXY em toda exibição"
+   ],
+   "limitacoes": [
+    "titularidade da conta, falta de acesso à rede e critérios II e III afastam a razão da cobertura real"
+   ],
+   "gold": "inclusao.json",
+   "paginas": [
+    "/setor-eletrico/inclusao-energetica"
+   ],
+   "arquivo": "pipeline/energia/metricas/inclusao.py"
+  },
+  {
+   "id": "inclusao.pnad_com_energia",
+   "titulo": "Domicílios com energia elétrica (PNAD Contínua)",
+   "pergunta": "Quantos domicílios têm energia elétrica, e de que fonte?",
+   "definicao": "Percentual de domicílios com energia elétrica de qualquer fonte e percentual com energia da rede geral (tabela 6737), com o coeficiente de variação publicado.",
+   "unidade": "% dos domicílios",
+   "grao_geografico": "Brasil, grande região, UF",
+   "grao_temporal": "ano",
+   "fontes": [
+    "ibge_pnadc_energia"
+   ],
+   "regra_agregacao": "publicado pelo IBGE",
+   "versao_formula": "1.0",
+   "natureza_fonte": "ESTIMADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "território",
+    "ano",
+    "situação (urbana, rural)"
+   ],
+   "regras_comparabilidade": [
+    "erro-padrão = CV × estimativa ÷ 100"
+   ],
+   "regra_cobertura": "domicílios particulares permanentes",
+   "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
+   "validacoes": [
+    "percentual entre 0 e 100",
+    "CV publicado junto"
+   ],
+   "limitacoes": [
+    "não mede qualidade nem continuidade"
+   ],
+   "gold": "inclusao.json",
+   "paginas": [
+    "/setor-eletrico/inclusao-energetica"
+   ],
+   "arquivo": "pipeline/energia/metricas/inclusao.py"
+  },
+  {
+   "id": "inclusao.pnad_rede_integral",
+   "titulo": "Fornecimento da rede geral em tempo integral (PNAD Contínua)",
+   "pergunta": "Entre os domicílios ligados à rede, quantos têm energia o tempo todo?",
+   "definicao": "Percentual dos domicílios com energia da rede geral que declaram fornecimento em tempo integral (tabela 6738).",
+   "unidade": "% dos domicílios ligados à rede geral",
+   "grao_geografico": "Brasil, grande região, UF",
+   "grao_temporal": "ano",
+   "fontes": [
+    "ibge_pnadc_energia"
+   ],
+   "regra_agregacao": "publicado pelo IBGE",
+   "versao_formula": "1.0",
+   "natureza_fonte": "ESTIMADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "território",
+    "ano",
+    "situação"
+   ],
+   "regras_comparabilidade": [
+    "denominador são os domicílios ligados à rede, não todos"
+   ],
+   "regra_cobertura": "domicílios com energia de rede geral",
+   "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
+   "validacoes": [
+    "denominador conferido: domicílios em tempo integral ÷ domicílios de rede geral reproduz o percentual publicado"
+   ],
+   "limitacoes": [
+    "declaração do morador, não medição de interrupções"
+   ],
+   "gold": "inclusao.json",
+   "paginas": [
+    "/setor-eletrico/inclusao-energetica"
+   ],
+   "arquivo": "pipeline/energia/metricas/inclusao.py"
+  },
+  {
+   "id": "inclusao.pnad_sem_energia",
+   "titulo": "Domicílios sem energia elétrica (diferença calculada)",
+   "pergunta": "Quantos domicílios ainda não têm energia elétrica?",
+   "definicao": "Domicílios (tabela 6731, total) menos domicílios com energia elétrica de qualquer fonte (tabela 6737), em mil.",
+   "unidade": "mil domicílios",
+   "grao_geografico": "Brasil, grande região, UF",
+   "grao_temporal": "ano",
+   "fontes": [
+    "ibge_pnadc_energia"
+   ],
+   "numerador": "domicílios − domicílios com energia",
+   "formula": "domicílios_mil − domicílios_com_energia_mil",
+   "regra_agregacao": "diferença de duas estimativas publicadas",
+   "versao_formula": "1.0",
+   "natureza_fonte": "ESTIMADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "território",
+    "ano",
+    "situação"
+   ],
+   "regras_comparabilidade": [
+    "sem erro-padrão publicado; valores pequenos são imprecisos"
+   ],
+   "regra_cobertura": "domicílios particulares permanentes",
+   "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
+   "validacoes": [
+    "percentual complementar coerente com 100 − percentual com energia"
+   ],
+   "limitacoes": [
+    "as duas estimativas vêm arredondadas em milhares"
+   ],
+   "gold": "inclusao.json",
+   "paginas": [
+    "/setor-eletrico/inclusao-energetica"
+   ],
+   "arquivo": "pipeline/energia/metricas/inclusao.py"
+  },
+  {
+   "id": "inclusao.pof_acima_limiar",
+   "titulo": "Famílias com energia acima de um limiar do orçamento (sensibilidade)",
+   "pergunta": "Quantas famílias gastam com energia mais que 3%, 5% ou 10% da renda ou da despesa?",
+   "definicao": "Proporção ponderada de famílias cuja despesa com energia supera o limiar da renda (ou da despesa total). Os limiares são análise de sensibilidade, não definição oficial de pobreza energética.",
+   "unidade": "% das famílias",
+   "grao_geografico": "Brasil, grande região, UF",
+   "grao_temporal": "2017-2018",
+   "fontes": [
+    "ibge_pof_microdados"
+   ],
+   "numerador": "Σ w·1(energia ÷ base > limiar)",
+   "denominador": "Σ w (famílias com base positiva)",
+   "formula": "100 × Σ w·indicador ÷ Σ w",
+   "regra_agregacao": "proporção ponderada; erro-padrão por linearização",
+   "versao_formula": "1.0",
+   "natureza_fonte": "ESTIMADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "território",
+    "classe de rendimento",
+    "limiar (3, 5, 10%)",
+    "base"
+   ],
+   "regras_comparabilidade": [
+    "sempre apresentado com os três limiares"
+   ],
+   "regra_cobertura": "famílias com base positiva",
+   "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
+   "validacoes": [
+    "proporções entre 0 e 100 e decrescentes com o limiar"
+   ],
+   "limitacoes": [
+    "não mede privação (família que deixa de usar energia para economizar não aparece)"
+   ],
+   "gold": "inclusao.json",
+   "paginas": [
+    "/setor-eletrico/inclusao-energetica"
+   ],
+   "arquivo": "pipeline/energia/metricas/inclusao.py"
+  },
+  {
+   "id": "inclusao.pof_energia_media",
+   "titulo": "Despesa média mensal com energia elétrica por família (POF)",
+   "pergunta": "Quanto as famílias gastam com energia elétrica por mês?",
+   "definicao": "Despesa monetária e não monetária média mensal familiar com energia elétrica (POF 2017-2018), em reais de 15/01/2018.",
+   "unidade": "R$ por família e mês (15/01/2018)",
+   "grao_geografico": "Brasil, grande região, UF",
+   "grao_temporal": "período da pesquisa (jul/2017 a jul/2018)",
+   "fontes": [
+    "ibge_pof_6715",
+    "ibge_pof_cv",
+    "ibge_pof_microdados"
+   ],
+   "numerador": "Σ w·despesa com energia",
+   "denominador": "Σ w (famílias)",
+   "formula": "Σ w·y ÷ Σ w; erro-padrão por linearização com estrato e UPA",
+   "regra_agregacao": "média ponderada pelo fator de expansão",
+   "versao_formula": "1.0",
+   "natureza_fonte": "ESTIMADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "território",
+    "classe de rendimento (Brasil e regiões)"
+   ],
+   "regras_comparabilidade": [
+    "estatística histórica; não representa 2026",
+    "reais de 15/01/2018"
+   ],
+   "regra_cobertura": "CV até 15% publicado; 15% a 30% com cautela; acima de 30% suprimido",
+   "politica_ausencia": "Estimativa suprimida por precisão aparece como suprimida, não como zero.",
+   "validacoes": [
+    "igual à tabela 6715 em todos os territórios e classes (meio centavo)",
+    "CV comparado ao publicado pelo IBGE (Brasil)"
+   ],
+   "limitacoes": [
+    "despesa declarada: família sem conta própria aparece com zero"
+   ],
+   "gold": "inclusao.json",
+   "paginas": [
+    "/setor-eletrico/inclusao-energetica"
+   ],
+   "arquivo": "pipeline/energia/metricas/inclusao.py"
+  },
+  {
+   "id": "inclusao.pof_media_razoes",
+   "titulo": "Participação média da energia no orçamento de cada família (média das razões)",
+   "pergunta": "Para a família típica, quanto a energia pesa no orçamento?",
+   "definicao": "Média ponderada, entre famílias, da razão despesa com energia ÷ despesa total (ou ÷ rendimento total e variação patrimonial), e a mediana ponderada da mesma razão.",
+   "unidade": "% da despesa total ou da renda",
+   "grao_geografico": "Brasil, grande região, UF",
+   "grao_temporal": "2017-2018",
+   "fontes": [
+    "ibge_pof_microdados"
+   ],
+   "numerador": "Σ w·(energia ÷ base)",
+   "denominador": "Σ w (famílias com base positiva)",
+   "formula": "100 × Σ w·(y ÷ x) ÷ Σ w",
+   "regra_agregacao": "média ponderada de razões individuais; erro-padrão por linearização",
+   "versao_formula": "1.0",
+   "natureza_fonte": "ESTIMADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "território",
+    "classe de rendimento",
+    "base (despesa ou renda)"
+   ],
+   "regras_comparabilidade": [
+    "publicada ao lado da razão de médias, nunca no lugar dela"
+   ],
+   "regra_cobertura": "famílias com despesa total (ou renda) positiva",
+   "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
+   "validacoes": [
+    "mesma base de famílias conferida contra a tabela 6715"
+   ],
+   "limitacoes": [
+    "sensível a famílias com renda muito baixa; por isso a mediana acompanha"
+   ],
+   "gold": "inclusao.json",
+   "paginas": [
+    "/setor-eletrico/inclusao-energetica"
+   ],
+   "arquivo": "pipeline/energia/metricas/inclusao.py"
+  },
+  {
+   "id": "inclusao.pof_razao_medias",
+   "titulo": "Participação da energia na despesa total (razão de médias)",
+   "pergunta": "Que parte do gasto total das famílias vai para energia elétrica, somando todas?",
+   "definicao": "Média da despesa com energia dividida pela média da despesa total do mesmo domínio: é a 'distribuição' publicada pelo IBGE.",
+   "unidade": "% da despesa total",
+   "grao_geografico": "Brasil, grande região, UF",
+   "grao_temporal": "2017-2018",
+   "fontes": [
+    "ibge_pof_6715",
+    "ibge_pof_microdados"
+   ],
+   "numerador": "Σ w·despesa com energia",
+   "denominador": "Σ w·despesa total",
+   "formula": "100 × Σ w·energia ÷ Σ w·despesa",
+   "regra_agregacao": "razão de totais ponderados",
+   "versao_formula": "1.0",
+   "natureza_fonte": "ESTIMADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "território",
+    "classe de rendimento"
+   ],
+   "regras_comparabilidade": [
+    "não é a média das participações de cada família (pesa mais as famílias que gastam mais)"
+   ],
+   "regra_cobertura": "igual à despesa média",
+   "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
+   "validacoes": [
+    "igual à distribuição da tabela 6715 até o arredondamento de uma casa"
+   ],
+   "limitacoes": [
+    "subestima o peso típico nas famílias de menor despesa"
+   ],
+   "gold": "inclusao.json",
+   "paginas": [
+    "/setor-eletrico/inclusao-energetica"
+   ],
+   "arquivo": "pipeline/energia/metricas/inclusao.py"
+  },
+  {
+   "id": "inclusao.sisol_localidades",
+   "titulo": "Localidades e população dos sistemas isolados (PASI)",
+   "pergunta": "Quantas pessoas vivem em localidades fora do SIN?",
+   "definicao": "Localidades listadas no ciclo de planejamento dos sistemas isolados (EPE, PASI) e a soma da população informada.",
+   "unidade": "localidades; pessoas",
+   "grao_geografico": "localidade, município, UF, distribuidora",
+   "grao_temporal": "ciclo anual de planejamento",
+   "fontes": [
+    "epe_pasi_localidades"
+   ],
+   "numerador": "contagem de localidades; Σ população",
+   "regra_agregacao": "contagem e soma por ciclo",
+   "versao_formula": "1.0",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "ciclo",
+    "UF",
+    "distribuidora",
+    "programa de universalização"
+   ],
+   "regras_comparabilidade": [
+    "entrada e saída da lista entre ciclos não têm motivo informado"
+   ],
+   "regra_cobertura": "localidades do ciclo; população ausente não vira zero na contagem de localidades sem população",
+   "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
+   "validacoes": [
+    "ciclo 2025 conferido contra o caderno em PDF da EPE (160 localidades, 1,965 milhão de pessoas)"
+   ],
+   "limitacoes": [
+    "população informada no planejamento, não censitária"
+   ],
+   "gold": "inclusao.json",
+   "paginas": [
+    "/setor-eletrico/inclusao-energetica"
+   ],
+   "arquivo": "pipeline/energia/metricas/inclusao.py"
+  },
+  {
+   "id": "inclusao.tsee_dmr",
+   "titulo": "Diferença Mensal de Receita da Tarifa Social",
+   "pergunta": "Quanto custa o desconto da Tarifa Social por mês?",
+   "definicao": "Diferença Mensal de Receita (VlrDMR) aprovada pela ANEEL no despacho vigente: a receita que a distribuidora deixa de cobrar das UC com Tarifa Social e recebe da CDE.",
+   "unidade": "R$ correntes",
+   "grao_geografico": "distribuidora; Brasil",
+   "grao_temporal": "mês de competência",
+   "fontes": [
+    "aneel_scs"
+   ],
+   "numerador": "Σ VlrDMR (um valor por distribuidora e mês)",
+   "regra_agregacao": "soma entre distribuidoras; o valor, repetido nas cinco linhas de faixa do arquivo, é lido uma vez",
+   "versao_formula": "1.0",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "distribuidora",
+    "mês"
+   ],
+   "regras_comparabilidade": [
+    "valores nominais",
+    "não coincide com o valor anual da CDE (competência versus ano de referência do orçamento)"
+   ],
+   "regra_cobertura": "distribuidoras com despacho no mês",
+   "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
+   "validacoes": [
+    "DMR idêntica nas cinco faixas de cada despacho",
+    "soma por faixa nunca usada"
+   ],
+   "limitacoes": [
+    "a DMR não é o desconto por família"
+   ],
+   "gold": "inclusao.json",
+   "paginas": [
+    "/setor-eletrico/inclusao-energetica"
+   ],
+   "arquivo": "pipeline/energia/metricas/inclusao.py"
+  },
+  {
+   "id": "inclusao.tsee_dmr_por_uc",
+   "titulo": "DMR por unidade consumidora",
+   "pergunta": "Qual é, em média, o valor do desconto por UC beneficiada no mês?",
+   "definicao": "DMR da distribuidora (ou do Brasil) dividida pelas UC com Tarifa Social no mesmo mês.",
+   "unidade": "R$ por UC no mês",
+   "grao_geografico": "distribuidora; Brasil",
+   "grao_temporal": "mês",
+   "fontes": [
+    "aneel_scs"
+   ],
+   "numerador": "Σ VlrDMR",
+   "denominador": "Σ UC com Tarifa Social",
+   "formula": "Σ DMR ÷ Σ UC",
+   "regra_agregacao": "razão de somas",
+   "versao_formula": "1.0",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "distribuidora",
+    "mês"
+   ],
+   "regras_comparabilidade": [
+    "depende da tarifa de cada distribuidora e da regra de desconto vigente"
+   ],
+   "regra_cobertura": "UC > 0 e DMR informada",
+   "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
+   "validacoes": [
+    "mesma competência e mesmo despacho no numerador e no denominador"
+   ],
+   "limitacoes": [
+    "média por UC, não valor de cada fatura"
+   ],
+   "gold": "inclusao.json",
+   "paginas": [
+    "/setor-eletrico/inclusao-energetica"
+   ],
+   "arquivo": "pipeline/energia/metricas/inclusao.py"
+  },
+  {
+   "id": "inclusao.tsee_kwh_por_uc",
+   "titulo": "Consumo faturado médio das UC com Tarifa Social",
+   "pergunta": "Quanto consome, em média, uma UC com Tarifa Social?",
+   "definicao": "Energia faturada das UC com Tarifa Social (soma das modalidades) dividida pelo número dessas UC.",
+   "unidade": "kWh por UC no mês",
+   "grao_geografico": "distribuidora; Brasil",
+   "grao_temporal": "mês",
+   "fontes": [
+    "aneel_scs"
+   ],
+   "numerador": "1.000 × Σ MdaMWh das modalidades",
+   "denominador": "Σ UC com Tarifa Social",
+   "formula": "1000 × Σ MWh ÷ Σ UC",
+   "regra_agregacao": "razão de somas",
+   "versao_formula": "1.0",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "distribuidora",
+    "mês"
+   ],
+   "regras_comparabilidade": [
+    "MWh convertido em kWh por 1.000"
+   ],
+   "regra_cobertura": "UC > 0",
+   "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
+   "validacoes": [
+    "unidade conferida no dicionário do SCS (MdaMWh em MWh)"
+   ],
+   "limitacoes": [
+    "energia faturada, não consumo medido de cada domicílio"
+   ],
+   "gold": "inclusao.json",
+   "paginas": [
+    "/setor-eletrico/inclusao-energetica"
+   ],
+   "arquivo": "pipeline/energia/metricas/inclusao.py"
+  },
+  {
+   "id": "inclusao.tsee_participacao_residencial",
+   "titulo": "Participação da Tarifa Social nas UC residenciais",
+   "pergunta": "Que parte das unidades consumidoras residenciais tem a Tarifa Social?",
+   "definicao": "UC com Tarifa Social divididas pelas UC da classe residencial das mesmas distribuidoras e mês.",
+   "unidade": "%",
+   "grao_geografico": "distribuidora; Brasil",
+   "grao_temporal": "mês",
+   "fontes": [
+    "aneel_scs"
+   ],
+   "numerador": "Σ UC com Tarifa Social das distribuidoras com total residencial consistente",
+   "denominador": "Σ QtdConsResTotal das mesmas distribuidoras",
+   "formula": "100 × Σ numerador ÷ Σ denominador",
+   "regra_agregacao": "razão de somas; distribuidora com total residencial inconsistente sai das duas somas no mês",
+   "versao_formula": "1.0",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "distribuidora",
+    "mês"
+   ],
+   "regras_comparabilidade": [
+    "nunca média simples das participações das distribuidoras",
+    "não é cobertura do público elegível"
+   ],
+   "regra_cobertura": "total residencial inconsistente: ausente, zero, menor que as UC com Tarifa Social ou a mais de 25% da mediana de ±3 meses",
+   "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
+   "validacoes": [
+    "caso real: ELETROPAULO dez/2021 (total residencial cai de 7,44 milhões para 2,55 milhões e volta) marcado como inconsistente"
+   ],
+   "limitacoes": [
+    "o total residencial é informado pela própria distribuidora no SCS"
+   ],
+   "gold": "inclusao.json",
+   "paginas": [
+    "/setor-eletrico/inclusao-energetica"
+   ],
+   "arquivo": "pipeline/energia/metricas/inclusao.py"
+  },
+  {
+   "id": "inclusao.tsee_uc",
+   "titulo": "Unidades consumidoras com Tarifa Social",
+   "pergunta": "Quantas unidades consumidoras recebem o desconto da Tarifa Social?",
+   "definicao": "Soma das UC das cinco modalidades da subclasse residencial baixa renda (baixa renda, BPC, indígena, quilombola e multifamiliar) informadas pelas distribuidoras no SCS, nas cinco faixas de consumo, no despacho vigente.",
+   "unidade": "unidades consumidoras",
+   "grao_geografico": "distribuidora; Brasil (soma)",
+   "grao_temporal": "mês de competência",
+   "fontes": [
+    "aneel_scs"
+   ],
+   "numerador": "Σ NumConsBaixaRenda + NumConsIndigena + NumConsQuilombola + NumConsBPC + NumConsMultifamiliar",
+   "regra_agregacao": "soma entre faixas e distribuidoras; série nacional só em meses completos (distribuidoras informantes ≥ mediana dos 12 meses anteriores e ≥ 90)",
+   "versao_formula": "1.0",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "distribuidora (CNPJ)",
+    "modalidade",
+    "faixa de consumo",
+    "mês"
+   ],
+   "regras_comparabilidade": [
+    "UC não é família nem pessoa",
+    "meses incompletos não entram em comparação nacional",
+    "concessão automática a partir de jan/2022 e nova regra de desconto a partir de 05/07/2025 mudam o regime"
+   ],
+   "regra_cobertura": "distribuidoras que informaram o SCS no mês; o último mês do arquivo costuma estar incompleto",
+   "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
+   "validacoes": [
+    "exatamente 5 faixas por despacho",
+    "despacho vigente por competência",
+    "conferência com os Beneficiários da CDE no mês de conferência, ±2% por distribuidora",
+    "conferência com a série antiga da ANEEL nos trimestres comuns (2014 a 2019)"
+   ],
+   "limitacoes": [
+    "não distingue famílias com mais de uma UC (a regra permite uma só)",
+    "sujeito a retificação pela distribuidora"
+   ],
+   "gold": "inclusao.json",
+   "paginas": [
+    "/setor-eletrico/inclusao-energetica"
+   ],
+   "arquivo": "pipeline/energia/metricas/inclusao.py"
+  },
+  {
+   "id": "mcti_fator_medio_emissao",
+   "titulo": "Fator médio de emissão de CO2 do SIN (inventários)",
+   "pergunta": "Quanto CO2, em média, foi emitido por MWh gerado no SIN?",
+   "definicao": "Fator médio mensal e anual publicado pelo MCTI: média das emissões de todas as usinas em operação no SIN por MWh gerado. Serve para inventários. Não é fator marginal.",
+   "unidade": "tCO2/MWh",
+   "grao_geografico": "SIN (nacional)",
+   "grao_temporal": "mês e ano",
+   "fontes": [
+    "mcti_fator_emissao"
+   ],
+   "regra_agregacao": "Nenhuma: valores oficiais como publicados. O anual oficial é o do MCTI, não média dos meses.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "mês",
+    "ano"
+   ],
+   "regras_comparabilidade": [
+    "Não comparar com margem de operação ou de construção.",
+    "CO2, não CO2e.",
+    "Fator nacional: não existe versão municipal nem horária."
+   ],
+   "regra_cobertura": "Anos com planilha oficial acessível (2006 a 2021 nesta integração).",
+   "politica_ausencia": "Ano sem planilha acessível fica sem valor; nada é estimado para preencher.",
+   "validacoes": [
+    "0 ≤ fator < 2 tCO2/MWh.",
+    "12 meses em cada ano com fator anual.",
+    "Anual publicado comparado à média simples dos meses (diferença informativa)."
+   ],
+   "limitacoes": [
+    "A página vigente do MCTI (2022 em diante) exige verificação humana e não é acessada por automação."
+   ],
+   "gold": "transicao.json",
+   "paginas": [
+    "/setor-eletrico/transicao"
+   ],
+   "arquivo": "pipeline/energia/metricas/transicao.py"
+  },
+  {
+   "id": "mcti_margem_construcao",
+   "titulo": "Fator de emissão da margem de construção (MDL)",
+   "pergunta": "Qual a intensidade de CO2 das usinas construídas mais recentemente, para projetos de MDL?",
+   "definicao": "Fator anual da margem de construção publicado pelo MCTI nas planilhas do MDL.",
+   "unidade": "tCO2/MWh",
+   "grao_geografico": "SIN",
+   "grao_temporal": "ano",
+   "fontes": [
+    "mcti_fator_emissao"
+   ],
+   "regra_agregacao": "Nenhuma: valor oficial.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "ano"
+   ],
+   "regras_comparabilidade": [
+    "Não comparar com o fator médio."
+   ],
+   "regra_cobertura": "Anos com valor publicado (2021 marcado pela fonte como a publicar).",
+   "politica_ausencia": "Texto no lugar do valor (\"a ser publicado\") = ausência com a nota da fonte.",
+   "validacoes": [
+    "0 ≤ fator < 2 tCO2/MWh."
+   ],
+   "limitacoes": [
+    "Método do MDL."
+   ],
+   "gold": "transicao.json",
+   "paginas": [
+    "/setor-eletrico/transicao"
+   ],
+   "arquivo": "pipeline/energia/metricas/transicao.py"
+  },
+  {
+   "id": "mcti_margem_operacao",
+   "titulo": "Fator de emissão da margem de operação (MDL)",
+   "pergunta": "Qual a intensidade de CO2 das usinas na margem do despacho, para projetos de MDL?",
+   "definicao": "Fator da margem de operação pelo método da análise de despacho (mensal e diário) e pelo método simples ajustado (anual), publicados pelo MCTI conforme a ferramenta do Conselho Executivo do MDL.",
+   "unidade": "tCO2/MWh",
+   "grao_geografico": "SIN",
+   "grao_temporal": "dia, mês (despacho) e ano (simples ajustado)",
+   "fontes": [
+    "mcti_fator_emissao"
+   ],
+   "regra_agregacao": "Nenhuma: valores oficiais.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "dia",
+    "mês",
+    "ano",
+    "método"
+   ],
+   "regras_comparabilidade": [
+    "Uso exclusivo em projetos de MDL; não é intensidade média da eletricidade consumida."
+   ],
+   "regra_cobertura": "2006 a 2021 (despacho) e 2006 a 2020 (simples ajustado) nas planilhas acessíveis.",
+   "politica_ausencia": "Dia inexistente no calendário (ex.: 29/02 em ano não bissexto, preenchido com 0 na planilha) é descartado.",
+   "validacoes": [
+    "Média simples dos fatores diários comparada ao mensal publicado.",
+    "Leitura do mês pela posição quando o rótulo da coluna diverge (registrado em problemas de leitura)."
+   ],
+   "limitacoes": [
+    "Método do MDL; não descreve o sistema médio."
+   ],
+   "gold": "transicao.json",
+   "paginas": [
+    "/setor-eletrico/transicao"
+   ],
+   "arquivo": "pipeline/energia/metricas/transicao.py"
+  },
+  {
+   "id": "mmgd_crescimento_estoque_ano",
+   "titulo": "Crescimento da potência de MMGD no último ano completo",
+   "pergunta": "Onde a geração distribuída cresceu mais no último ano completo?",
+   "definicao": "Potência conectada no ano de referência (último ano completo antes da data do cadastro) dividida pela potência conectada até 31/12 do ano anterior, no cadastro vigente.",
+   "unidade": "%",
+   "grao_geografico": "município, UF",
+   "grao_temporal": "ano",
+   "fontes": [
+    "aneel_mmgd_empreendimentos"
+   ],
+   "formula": "100 × kW conectados no ano ÷ kW conectados até o fim do ano anterior",
+   "numerador": "kW com data de conexão no ano de referência",
+   "denominador": "kW com data de conexão até 31/12 do ano anterior",
+   "regra_agregacao": "Razão de somas por território.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "município",
+    "UF"
+   ],
+   "regras_comparabilidade": [
+    "Estoque anterior zero: crescimento ausente (não infinito).",
+    "Ranking municipal só com população ≥ 100 mil."
+   ],
+   "regra_cobertura": "Territórios com estoque anterior positivo.",
+   "politica_ausencia": "Estoque anterior zero ou sem data: ausente.",
+   "validacoes": [
+    "Soma das parcelas por ano reproduz o estoque na data do cadastro (identidade de agregação)."
+   ],
+   "limitacoes": [
+    "Registro tardio pode subestimar o ano de referência até a captura seguinte.",
+    "Capacidade instalada cadastrada, não energia gerada."
+   ],
+   "gold": "transicao.json",
+   "paginas": [
+    "/setor-eletrico/transicao"
+   ],
+   "arquivo": "pipeline/energia/metricas/transicao.py"
+  },
+  {
+   "id": "mmgd_potencia_instalada",
+   "titulo": "Potência instalada de MMGD",
+   "pergunta": "Quanta capacidade de micro e minigeração distribuída existe em cada lugar?",
+   "definicao": "Soma da potência instalada (MdaPotenciaInstaladaKW: soma das potências elétricas ativas nominais das unidades geradoras) dos empreendimentos do cadastro vigente. Capacidade instalada cadastrada, não energia gerada.",
+   "unidade": "kW (MW nas tabelas, kW ÷ 1000)",
+   "grao_geografico": "município (código IBGE), UF, distribuidora (CNPJ), Brasil",
+   "grao_temporal": "ano e mês de conexão; estoque na data do cadastro",
+   "fontes": [
+    "aneel_mmgd_empreendimentos"
+   ],
+   "regra_agregacao": "Soma dos kW; estoque acumulado por data de conexão.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "município",
+    "UF",
+    "distribuidora",
+    "fonte",
+    "classe",
+    "modalidade",
+    "porte",
+    "ano e mês de conexão"
+   ],
+   "regras_comparabilidade": [
+    "Capacidade (MW) não se compara nem se soma com energia (MWh, MWmed).",
+    "Ano parcial (o da data do cadastro) não entra em comparação de crescimento; usa-se o último ano completo."
+   ],
+   "regra_cobertura": "Igual à de unidades.",
+   "politica_ausencia": "Combinação sem registro no cadastro = zero empreendimentos (o arquivo é o cadastro completo); potência ausente em um registro não vira zero: a unidade conta e a potência fica fora da soma, contada no controle; data sentinela (ano < 2000) = sem ano de conexão, no estoque e fora das séries por ano.",
+   "validacoes": [
+    "Código de empreendimento único no arquivo (repetição derruba a publicação).",
+    "Identidade de agregação: soma por município = soma por UF e mês = soma por distribuidora = linhas do arquivo.",
+    "Potência não negativa; datas não posteriores à data de geração do conjunto.",
+    "Data de conexão conferida com DatConexao do recurso técnico fotovoltaico, pelo código.",
+    "Parquet e CSV oficiais do mesmo conjunto conferidos entre si por UF e ano (30/09/2026)."
+   ],
+   "limitacoes": [
+    "O cadastro é o vigente na data do arquivo; unidades desativadas não aparecem no histórico.",
+    "Meses recentes provisórios por registro tardio (a ANEEL avisa de inserção mais lenta após a migração de sistema em 2025).",
+    "Duplicidade candidata medida e não removida (CPF e CEP de pessoa física vêm tarjados).",
+    "Minigeração em autoconsumo remoto fica no município da usina, não no de quem usa o crédito."
+   ],
+   "gold": "transicao.json",
+   "paginas": [
+    "/setor-eletrico/transicao"
+   ],
+   "arquivo": "pipeline/energia/metricas/transicao.py"
+  },
+  {
+   "id": "mmgd_potencia_por_habitante",
+   "titulo": "Potência de MMGD por habitante",
+   "pergunta": "Onde há mais capacidade de geração distribuída em relação à população?",
+   "definicao": "Potência instalada cadastrada no território dividida pela população residente estimada pelo IBGE. Relaciona território, não renda nem perfil de beneficiário.",
+   "unidade": "W por habitante",
+   "grao_geografico": "município, UF, Brasil",
+   "grao_temporal": "estoque na data do cadastro; população do último ano estimado",
+   "fontes": [
+    "aneel_mmgd_empreendimentos",
+    "ibge_populacao_6579"
+   ],
+   "formula": "Σ kW instalados × 1000 ÷ população estimada",
+   "numerador": "potência instalada cadastrada no território (W)",
+   "denominador": "população residente estimada (IBGE, SIDRA 6579)",
+   "regra_agregacao": "Razão de somas: Σ W ÷ Σ habitantes do território; nunca média de razões municipais.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "município",
+    "UF"
+   ],
+   "regras_comparabilidade": [
+    "Rankings só entre municípios com pelo menos 100 mil habitantes estimados (denominador pequeno é instável).",
+    "Não indica renda nem quem se beneficia da geração."
+   ],
+   "regra_cobertura": "Municípios com população estimada publicada; sem população = razão ausente.",
+   "politica_ausencia": "Município sem população publicada: razão ausente (não zero). Município sem MMGD: zero real.",
+   "validacoes": [
+    "Soma municipal da população igual à da UF publicada pelo IBGE (conferida no teste com amostra real)."
+   ],
+   "limitacoes": [
+    "População é estimativa do IBGE para 1º de julho do ano, não contagem censitária.",
+    "Capacidade instalada cadastrada, não energia gerada."
+   ],
+   "gold": "transicao.json",
+   "paginas": [
+    "/setor-eletrico/transicao"
+   ],
+   "arquivo": "pipeline/energia/metricas/transicao.py"
+  },
+  {
+   "id": "mmgd_unidades",
+   "titulo": "Unidades de micro e minigeração distribuída",
+   "pergunta": "Quantos empreendimentos de MMGD estão conectados e cadastrados?",
+   "definicao": "Número de empreendimentos (códigos distintos) na Relação de empreendimentos de MMGD da ANEEL, no cadastro vigente, por território, distribuidora, fonte, classe, modalidade ou ano de conexão.",
+   "unidade": "empreendimentos",
+   "grao_geografico": "município (código IBGE), UF, distribuidora (CNPJ), Brasil",
+   "grao_temporal": "ano e mês de conexão; estoque na data do cadastro",
+   "fontes": [
+    "aneel_mmgd_empreendimentos"
+   ],
+   "regra_agregacao": "Contagem simples de registros; soma entre territórios e anos (cada empreendimento conta uma vez).",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "município",
+    "UF",
+    "distribuidora",
+    "fonte",
+    "classe de consumo",
+    "modalidade",
+    "porte",
+    "tipo de consumidor",
+    "ano de conexão"
+   ],
+   "regras_comparabilidade": [
+    "Unidade de MMGD não é domicílio nem consumidor: uma unidade pode repartir créditos com várias outras.",
+    "Ano parcial (o da data do cadastro) não entra em comparação de crescimento; usa-se o último ano completo."
+   ],
+   "regra_cobertura": "Todas as distribuidoras que enviaram dados ao sistema de MMGD da ANEEL; conexões desde dez/2008 (cobertura declarada).",
+   "politica_ausencia": "Combinação sem registro no cadastro = zero empreendimentos (o arquivo é o cadastro completo); potência ausente em um registro não vira zero: a unidade conta e a potência fica fora da soma, contada no controle; data sentinela (ano < 2000) = sem ano de conexão, no estoque e fora das séries por ano.",
+   "validacoes": [
+    "Código de empreendimento único no arquivo (repetição derruba a publicação).",
+    "Identidade de agregação: soma por município = soma por UF e mês = soma por distribuidora = linhas do arquivo.",
+    "Potência não negativa; datas não posteriores à data de geração do conjunto.",
+    "Data de conexão conferida com DatConexao do recurso técnico fotovoltaico, pelo código.",
+    "Parquet e CSV oficiais do mesmo conjunto conferidos entre si por UF e ano (30/09/2026)."
+   ],
+   "limitacoes": [
+    "O cadastro é o vigente na data do arquivo; unidades desativadas não aparecem no histórico.",
+    "Meses recentes provisórios por registro tardio (a ANEEL avisa de inserção mais lenta após a migração de sistema em 2025).",
+    "Duplicidade candidata medida e não removida (CPF e CEP de pessoa física vêm tarjados)."
+   ],
+   "gold": "transicao.json",
+   "paginas": [
+    "/setor-eletrico/transicao"
+   ],
+   "arquivo": "pipeline/energia/metricas/transicao.py"
+  },
+  {
+   "id": "mmgd_unidades_por_mil_habitantes",
+   "titulo": "Unidades de MMGD por mil habitantes",
+   "pergunta": "Quão difundida está a geração distribuída em cada território?",
+   "definicao": "Empreendimentos de MMGD no território por mil habitantes estimados pelo IBGE.",
+   "unidade": "unidades por mil habitantes",
+   "grao_geografico": "município, UF",
+   "grao_temporal": "estoque na data do cadastro",
+   "fontes": [
+    "aneel_mmgd_empreendimentos",
+    "ibge_populacao_6579"
+   ],
+   "formula": "Σ unidades × 1000 ÷ população estimada",
+   "numerador": "unidades de MMGD no território",
+   "denominador": "população residente estimada",
+   "regra_agregacao": "Razão de somas.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "município",
+    "UF"
+   ],
+   "regras_comparabilidade": [
+    "Unidade não é domicílio: não é taxa de adoção por família."
+   ],
+   "regra_cobertura": "Municípios com população estimada publicada.",
+   "politica_ausencia": "Sem população: razão ausente.",
+   "validacoes": [
+    "Mesmas da potência por habitante."
+   ],
+   "limitacoes": [
+    "Não mede quantas famílias se beneficiam: créditos podem ir para várias unidades."
+   ],
+   "gold": "transicao.json",
+   "paginas": [
+    "/setor-eletrico/transicao"
+   ],
+   "arquivo": "pipeline/energia/metricas/transicao.py"
+  },
+  {
+   "id": "ons_mmgd_estimada_mwmed",
+   "titulo": "MMGD estimada pelo ONS",
+   "pergunta": "Quanta energia a micro e minigeração distribuída entregou, segundo a estimativa do ONS?",
+   "definicao": "Parcela da carga atendida por MMGD (val_cargammgd) na Carga de Energia Verificada do ONS, em MWmed do período: energia estimada dividida pelas horas cobertas.",
+   "unidade": "MWmed",
+   "grao_geografico": "submercado (SE/CO, S, NE, N) e SIN",
+   "grao_temporal": "dia e mês (fonte semi-horária)",
+   "fontes": [
+    "ons_carga_verificada_mmgd"
+   ],
+   "formula": "Σ(val_cargammgd × 0,5 h) ÷ Σ horas cobertas; SIN = soma dos quatro submercados nos dias completos",
+   "numerador": "energia de MMGD estimada (MWh)",
+   "denominador": "horas cobertas",
+   "regra_agregacao": "Razão de somas de energia por horas; nunca média de médias diárias.",
+   "versao_formula": "1",
+   "natureza_fonte": "ESTIMADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "submercado",
+    "dia",
+    "mês",
+    "ano"
+   ],
+   "regras_comparabilidade": [
+    "Energia estimada (MWmed) não se soma com capacidade cadastrada (MW).",
+    "Só SIN: não inclui sistemas isolados."
+   ],
+   "regra_cobertura": "Desde jan/2019 (antes, a API publica o campo vazio).",
+   "politica_ausencia": "Meia hora sem valor fora da soma e das horas; dia sem as 24 horas não entra no SIN.",
+   "validacoes": [
+    "Identidade do ONS: carga global = carga sem MMGD + MMGD, dia a dia (0,1 MWh).",
+    "Valores não negativos (o dicionário não admite negativo)."
+   ],
+   "limitacoes": [
+    "Estimativa do ONS, não medição.",
+    "O ONS revisa o histórico; meses antigos são recoletados a cada 30 dias."
+   ],
+   "gold": "transicao.json",
+   "paginas": [
+    "/setor-eletrico/transicao"
+   ],
+   "arquivo": "pipeline/energia/metricas/transicao.py"
+  },
+  {
+   "id": "ons_mmgd_participacao_carga",
+   "titulo": "Participação da MMGD estimada na carga global",
+   "pergunta": "Que parte da carga do SIN foi atendida por MMGD, segundo o ONS?",
+   "definicao": "Energia de MMGD estimada dividida pela energia da carga global, no mesmo período e perímetro.",
+   "unidade": "%",
+   "grao_geografico": "submercado e SIN",
+   "grao_temporal": "mês e ano",
+   "fontes": [
+    "ons_carga_verificada_mmgd"
+   ],
+   "formula": "100 × Σ MWh de MMGD ÷ Σ MWh da carga global",
+   "numerador": "energia de MMGD estimada (MWh)",
+   "denominador": "energia da carga global (MWh), mesmos intervalos",
+   "regra_agregacao": "Razão de somas; nunca média de percentuais.",
+   "versao_formula": "1",
+   "natureza_fonte": "ESTIMADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "submercado",
+    "mês",
+    "ano"
+   ],
+   "regras_comparabilidade": [
+    "Numerador e denominador do mesmo conjunto e intervalos."
+   ],
+   "regra_cobertura": "Dias completos.",
+   "politica_ausencia": "Mês sem dia completo: ausente.",
+   "validacoes": [
+    "Participação entre 0 e 100%."
+   ],
+   "limitacoes": [
+    "Herda a natureza estimada da parcela de MMGD."
+   ],
+   "gold": "transicao.json",
+   "paginas": [
+    "/setor-eletrico/transicao"
+   ],
+   "arquivo": "pipeline/energia/metricas/transicao.py"
+  },
+  {
+   "id": "perdas_area_municipios",
+   "titulo": "Área de atuação por municípios (vínculos oficiais)",
+   "pergunta": "Em quais municípios cada distribuidora atua, segundo a ANEEL?",
+   "definicao": "Municípios ligados à distribuidora por algum conjunto elétrico de continuidade do ano (limites de continuidade) presente na relação IndQual Município. Vínculo confirmado quando o cadastro de micro e minigeração distribuída tem ao menos um empreendimento da distribuidora no município.",
+   "unidade": "municípios",
+   "grao_geografico": "município (código IBGE) × distribuidora (CNPJ)",
+   "grao_temporal": "relação vigente do ano",
+   "fontes": [
+    "aneel_continuidade_limites",
+    "aneel_indqual_municipio",
+    "aneel_mmgd_municipio"
+   ],
+   "formula": "vínculo(d, m) ⇔ ∃ conjunto c: CNPJ(c, ano) = d e m ∈ municípios(c)",
+   "regra_agregacao": "Contagem de municípios; compartilhado quando mais de uma distribuidora tem vínculo confirmado.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "distribuidora",
+    "município",
+    "UF"
+   ],
+   "regras_comparabilidade": [
+    "Nunca ratear volume ou taxa da distribuidora entre municípios."
+   ],
+   "regra_cobertura": "Conjuntos com limite de continuidade no ano da relação.",
+   "politica_ausencia": "Conjunto sem município na relação IndQual fica listado; município sem distribuidora não recebe cor.",
+   "validacoes": [
+    "Código de município conferido na lista oficial do IBGE.",
+    "Vínculo sem MMGD marcado como não confirmado, não removido."
+   ],
+   "limitacoes": [
+    "Município inteiro mesmo quando atendido só em parte; não é polígono de concessão."
+   ],
+   "gold": "perdas.json",
+   "paginas": [
+    "/setor-eletrico/perdas"
+   ],
+   "arquivo": "pipeline/energia/metricas/perdas.py"
+  },
+  {
+   "id": "perdas_contexto_renda",
+   "titulo": "Renda domiciliar per capita média na área (Censo 2022)",
+   "pergunta": "Qual é a renda média dos moradores dos municípios onde a distribuidora atua?",
+   "definicao": "Média do rendimento nominal mensal domiciliar per capita dos moradores em domicílios particulares permanentes ocupados (Censo 2022, tabela 10295), ponderada pelo número de moradores de cada município confirmado da área; versão só com municípios exclusivos ao lado.",
+   "unidade": "R$ de 2022 por mês",
+   "grao_geografico": "conjunto dos municípios da distribuidora",
+   "grao_temporal": "2022 (censitário)",
+   "fontes": [
+    "ibge_censo2022_municipio"
+   ],
+   "numerador": "Σ renda média per capita × moradores",
+   "denominador": "Σ moradores",
+   "formula": "Σ(r_m × n_m) ÷ Σ n_m",
+   "regra_agregacao": "Ponderada por moradores; nunca média simples de médias municipais.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "distribuidora"
+   ],
+   "regras_comparabilidade": [
+    "Contexto territorial, não explicação de perdas; associação descritiva (Spearman) com n e sem causalidade."
+   ],
+   "regra_cobertura": "Municípios confirmados com dado do Censo.",
+   "politica_ausencia": "Município sem valor do IBGE fica fora do numerador e do denominador; a contagem aparece.",
+   "validacoes": [
+    "Soma de moradores e média ponderada conferidas com valores do IBGE em teste."
+   ],
+   "limitacoes": [
+    "Municípios compartilhados entram inteiros; a cobertura exclusiva mostra o peso deles.",
+    "Perda não técnica não é atribuída às famílias da área."
+   ],
+   "gold": "perdas.json",
+   "paginas": [
+    "/setor-eletrico/perdas"
+   ],
+   "arquivo": "pipeline/energia/metricas/perdas.py"
+  },
+  {
+   "id": "perdas_custo_tarifa_b1",
+   "titulo": "Custo unitário das perdas na tarifa residencial",
+   "pergunta": "Quanto da tarifa residencial remunera perdas de energia, segundo o processo tarifário?",
+   "definicao": "Soma das componentes TUSD_PT (perdas técnicas), TUSD_PNT (não técnicas), TUSD_Per_RB_D e TE_Per_RB (perdas na Rede Básica) da tarifa B1 residencial convencional, base econômica, publicadas pela ANEEL por resolução homologatória e vigência; participação = essa soma ÷ (TUSD + TE).",
+   "unidade": "R$/MWh nominais, sem tributos; % da tarifa",
+   "grao_geografico": "distribuidora (CNPJ)",
+   "grao_temporal": "processo tarifário (vigência)",
+   "fontes": [
+    "aneel_componentes_tarifarias_b1"
+   ],
+   "numerador": "TUSD_PT + TUSD_PNT + TUSD_Per_RB_D + TE_Per_RB (R$/MWh)",
+   "denominador": "TUSD + TE (R$/MWh)",
+   "formula": "participação = 100 × perdas ÷ (TUSD + TE)",
+   "regra_agregacao": "Não se agrega entre distribuidoras (tarifas diferentes, mercados diferentes).",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "distribuidora",
+    "resolução homologatória",
+    "vigência",
+    "base tarifária"
+   ],
+   "regras_comparabilidade": [
+    "Valores nominais: comparar anos exige cuidado com inflação e preço da energia.",
+    "É nível regulatório reconhecido, não custo das perdas reais."
+   ],
+   "regra_cobertura": "Processos com vigência desde 2010 publicados nas componentes tarifárias (arquivos de 2012 a 2026).",
+   "politica_ausencia": "Processo sem alguma das seis componentes não tem resumo.",
+   "validacoes": [
+    "TUSD igual à soma das componentes TUSD_* e TE igual à soma das TE_* (tolerância de 0,01 R$/MWh, arredondamento da fonte)."
+   ],
+   "limitacoes": [
+    "Não é o custo total em reais reconhecido no processo (planilhas do processo inacessíveis).",
+    "Não se multiplica pela tarifa cheia nem por mercado para inventar um custo total."
+   ],
+   "gold": "perdas.json",
+   "paginas": [
+    "/setor-eletrico/perdas"
+   ],
+   "arquivo": "pipeline/energia/metricas/perdas.py"
+  },
+  {
+   "id": "perdas_nao_tecnicas_bt",
+   "titulo": "Perdas não técnicas sobre o mercado de baixa tensão",
+   "pergunta": "Quanto da energia perdida não se explica pela física da rede, em relação ao consumo de baixa tensão?",
+   "definicao": "Perdas não técnicas medidas (perdas totais menos técnicas, linha 'Perdas Não-Técnicas' do SAMP) divididas pelo mercado de baixa tensão medido: energia medida entregue em BT a cativos, consumo próprio e livres. É a base que a ANEEL usa para a referência regulatória não técnica (mercado medido desde 2025). Inclui furto, fraude e erros de medição, leitura e faturamento, que a fonte não separa.",
+   "unidade": "% do mercado de baixa tensão medido",
+   "grao_geografico": "distribuidora (CNPJ); Brasil por universo",
+   "grao_temporal": "ano civil",
+   "fontes": [
+    "aneel_samp_balanco"
+   ],
+   "numerador": "Σ perdas não técnicas medidas do ano (MWh)",
+   "denominador": "Σ mercado BT medido do ano (MWh)",
+   "formula": "100 × Σ pnt_medidas ÷ Σ mercado_BT_medido",
+   "regra_agregacao": "100 × Σ numeradores ÷ Σ denominadores do subconjunto com as duas grandezas nos 12 meses.",
+   "versao_formula": "1",
+   "natureza_fonte": "CALCULADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "distribuidora",
+    "ano",
+    "universo"
+   ],
+   "regras_comparabilidade": [
+    "Pode passar de 100% em áreas com perda muito alta (a base é só o mercado BT).",
+    "Pode ser negativa quando a estimativa técnica supera a perda total medida (pequenas distribuidoras).",
+    "Quebra em 2024: leiaute da REN 1.003/2022; injetada publicada bruta (o denominador passa a ser a energia implícita no cálculo da fonte) e separação técnica e não técnica publicada para cerca de metade das distribuidoras."
+   ],
+   "regra_cobertura": "Mercado BT por nível de tensão existe a partir de 2010.",
+   "politica_ausencia": "Soma anual só existe quando a linha está publicada nos 12 meses do ano civil; um mês ausente deixa o ano ausente (nunca vira zero nem é completado). Ano corrente é parcial e fica fora de comparações.",
+   "validacoes": [
+    "Não técnica = total − técnica conferido nas linhas da fonte."
+   ],
+   "limitacoes": [
+    "Não resumir a furto: a definição da fonte inclui erros de medição e faturamento.",
+    "Não atribuir às famílias de uma área a responsabilidade pelas perdas não técnicas."
+   ],
+   "gold": "perdas.json",
+   "paginas": [
+    "/setor-eletrico/perdas"
+   ],
+   "arquivo": "pipeline/energia/metricas/perdas.py"
+  },
+  {
+   "id": "perdas_nao_tecnicas_injetada",
+   "titulo": "Perdas não técnicas sobre a energia injetada",
+   "pergunta": "Que fração da energia injetada corresponde às perdas não técnicas?",
+   "definicao": "Perdas não técnicas medidas divididas pela energia injetada de referência. Mesma base da taxa total, o que permite somar técnica e não técnica: taxa técnica + taxa não técnica = taxa total.",
+   "unidade": "% da energia injetada",
+   "grao_geografico": "distribuidora (CNPJ)",
+   "grao_temporal": "ano civil",
+   "fontes": [
+    "aneel_samp_balanco"
+   ],
+   "numerador": "Σ perdas não técnicas medidas (MWh)",
+   "denominador": "Σ energia injetada de referência (MWh)",
+   "formula": "100 × Σ pnt_medidas ÷ Σ injetada_referência",
+   "regra_agregacao": "100 × Σ numeradores ÷ Σ denominadores.",
+   "versao_formula": "1",
+   "natureza_fonte": "CALCULADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "distribuidora",
+    "ano"
+   ],
+   "regras_comparabilidade": [
+    "Só se soma à taxa técnica porque o denominador é o mesmo; nunca somar com a taxa sobre BT."
+   ],
+   "regra_cobertura": "Como a técnica.",
+   "politica_ausencia": "Soma anual só existe quando a linha está publicada nos 12 meses do ano civil; um mês ausente deixa o ano ausente (nunca vira zero nem é completado). Ano corrente é parcial e fica fora de comparações.",
+   "validacoes": [
+    "taxa técnica + taxa não técnica = taxa total (arredondamento de 0,01 p.p.)."
+   ],
+   "limitacoes": [
+    "A parcela técnica publicada no SAMP é o percentual regulatório da revisão tarifária aplicado à energia injetada (estimativa), não medição."
+   ],
+   "gold": "perdas.json",
+   "paginas": [
+    "/setor-eletrico/perdas"
+   ],
+   "arquivo": "pipeline/energia/metricas/perdas.py"
+  },
+  {
+   "id": "perdas_residuo_balanco",
+   "titulo": "Resíduo do balanço energético",
+   "pergunta": "A perda publicada é explicada pelas linhas de energia publicadas?",
+   "definicao": "Energia injetada publicada menos energia fornecida medida, energia cobrada por procedimento irregular e perdas totais. Zero quando a conta fecha; diferente de zero mostra o que a fonte não explica. Não é outra perda e não é atribuído a nenhuma causa.",
+   "unidade": "MWh e % da energia injetada publicada",
+   "grao_geografico": "distribuidora (CNPJ)",
+   "grao_temporal": "mês e ano civil",
+   "fontes": [
+    "aneel_samp_balanco"
+   ],
+   "numerador": "injetada publicada − fornecida − irregular − perdas totais (MWh)",
+   "denominador": "injetada publicada (MWh)",
+   "formula": "resíduo = I − F − R − P; classe: |resíduo| ≤ 1 kWh por linha (fecha), ≤ 0,1% de I (pequeno), acima (relevante)",
+   "regra_agregacao": "Soma dos meses do ano.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "distribuidora",
+    "mês",
+    "ano"
+   ],
+   "regras_comparabilidade": [
+    "O leiaute de 2024 produz resíduo positivo sistemático nas distribuidoras com muita geração conectada à rede."
+   ],
+   "regra_cobertura": "Meses com injetada, fornecida medida e perda total publicadas.",
+   "politica_ausencia": "Sem as linhas de fornecimento medido o resíduo é ausente e a classe é 'sem_componentes'.",
+   "validacoes": [
+    "Representação de cada grandeza escolhida pela concordância com a soma dos níveis de tensão do mês."
+   ],
+   "limitacoes": [
+    "Tolerância de 0,1% da injetada: abaixo disso a taxa não muda na primeira casa decimal."
+   ],
+   "gold": "perdas.json",
+   "paginas": [
+    "/setor-eletrico/perdas"
+   ],
+   "arquivo": "pipeline/energia/metricas/perdas.py"
+  },
+  {
+   "id": "perdas_taxa_total_injetada",
+   "titulo": "Taxa de perdas totais sobre a energia injetada",
+   "pergunta": "Que fração da energia injetada na rede se perdeu?",
+   "definicao": "Perdas totais medidas divididas pela energia injetada de referência do mesmo ano. Energia injetada de referência: a linha publicada no leiaute antigo do SAMP; no leiaute de 2024, a energia implícita no cálculo da própria fonte (fornecida + irregular + perdas), porque a linha publicada passou a ser bruta.",
+   "unidade": "% da energia injetada",
+   "grao_geografico": "distribuidora (CNPJ); Brasil por universo",
+   "grao_temporal": "ano civil",
+   "fontes": [
+    "aneel_samp_balanco"
+   ],
+   "numerador": "Σ perdas totais medidas do ano (MWh)",
+   "denominador": "Σ energia injetada de referência do ano (MWh)",
+   "formula": "100 × Σ perdas_totais ÷ Σ injetada_referência",
+   "regra_agregacao": "Agregado = 100 × Σ numeradores ÷ Σ denominadores das distribuidoras válidas; nunca média de taxas.",
+   "versao_formula": "1",
+   "natureza_fonte": "CALCULADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "distribuidora",
+    "ano",
+    "universo"
+   ],
+   "regras_comparabilidade": [
+    "Quebra em 2024: leiaute da REN 1.003/2022; injetada publicada bruta (o denominador passa a ser a energia implícita no cálculo da fonte) e separação técnica e não técnica publicada para cerca de metade das distribuidoras.",
+    "Não comparar ano parcial com ano completo.",
+    "Variação anual com mudança de escala da injetada acima de 30% fica marcada como provável mudança de universo."
+   ],
+   "regra_cobertura": "Ano civil com os 12 meses de perdas e de injetada de referência publicados.",
+   "politica_ausencia": "Soma anual só existe quando a linha está publicada nos 12 meses do ano civil; um mês ausente deixa o ano ausente (nunca vira zero nem é completado). Ano corrente é parcial e fica fora de comparações.",
+   "validacoes": [
+    "Identidade do balanço conferida mês a mês: injetada − fornecida − irregular − perdas; o resíduo é publicado e classificado (fecha, residuo_pequeno, residuo_relevante, sem_componentes).",
+    "Agente-ano com perda total anual negativa ou maior que a injetada recebe alerta e fica fora de agregados e comparações (o valor da fonte segue no CSV).",
+    "Taxa nacional das concessionárias entre 5% e 30% (fora disso a gold não é publicada).",
+    "2024: injetada de referência das concessionárias dentro do intervalo implícito nos números do relatório da ANEEL."
+   ],
+   "limitacoes": [
+    "Base medida: difere da taxa sobre o mercado faturado usada pela ANEEL até 2024.",
+    "A parcela técnica publicada no SAMP é o percentual regulatório da revisão tarifária aplicado à energia injetada (estimativa), não medição."
+   ],
+   "gold": "perdas.json",
+   "paginas": [
+    "/setor-eletrico/perdas"
+   ],
+   "arquivo": "pipeline/energia/metricas/perdas.py"
+  },
+  {
+   "id": "perdas_tecnica_regulatoria_implicita",
+   "titulo": "Percentual regulatório de perdas técnicas (implícito no SAMP)",
+   "pergunta": "Qual percentual técnico a regulação reconhece para a distribuidora em cada período tarifário?",
+   "definicao": "Razão entre perdas técnicas e energia injetada publicadas no SAMP quando ela é constante por meses seguidos: é o percentual regulatório aplicado pela fonte. O mês de troca mistura as duas taxas pró-rata dos dias; o dia de início reconstituído é conferido com o início de vigência da resolução homologatória nas componentes tarifárias.",
+   "unidade": "% da energia injetada",
+   "grao_geografico": "distribuidora (CNPJ)",
+   "grao_temporal": "trecho de vigência (meses)",
+   "fontes": [
+    "aneel_samp_balanco",
+    "aneel_componentes_tarifarias_b1"
+   ],
+   "numerador": "perdas técnicas do mês (kWh)",
+   "denominador": "energia injetada publicada do mês (kWh)",
+   "formula": "pct = round(100 × PT ÷ I, 3); trecho = meses consecutivos com o mesmo pct (mínimo 2)",
+   "regra_agregacao": "Não se agrega entre distribuidoras.",
+   "versao_formula": "1",
+   "natureza_fonte": "ESTIMADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "distribuidora",
+    "vigência"
+   ],
+   "regras_comparabilidade": [
+    "É parâmetro regulatório, não perda realizada nem meta de perda zero."
+   ],
+   "regra_cobertura": "Distribuidoras e períodos em que a fonte aplica percentual fixo (em geral de 2016 a 2023).",
+   "politica_ausencia": "Onde a razão varia mês a mês não há trecho: o percentual regulatório fica ausente (não é estimado).",
+   "validacoes": [
+    "CEMIG-D: 8,766% de jun/2018 a abr/2023; maio/2018 = 7,959% = média pró-rata com início em 28/05/2018, a vigência da REH 2.396/2018."
+   ],
+   "limitacoes": [
+    "A referência regulatória não técnica não está em base aberta acessível."
+   ],
+   "gold": "perdas.json",
+   "paginas": [
+    "/setor-eletrico/perdas"
+   ],
+   "arquivo": "pipeline/energia/metricas/perdas.py"
+  },
+  {
+   "id": "perdas_tecnicas_energia",
+   "titulo": "Perdas técnicas (estimativa regulatória publicada)",
+   "pergunta": "Quanto das perdas se atribui às características físicas da rede?",
+   "definicao": "Linha 'Perdas Técnicas' do SAMP Balanço. A parcela técnica publicada no SAMP é o percentual regulatório da revisão tarifária aplicado à energia injetada (estimativa), não medição. Taxa técnica = perdas técnicas ÷ energia injetada de referência.",
+   "unidade": "MWh e % da energia injetada",
+   "grao_geografico": "distribuidora (CNPJ)",
+   "grao_temporal": "ano civil",
+   "fontes": [
+    "aneel_samp_balanco"
+   ],
+   "numerador": "Σ perdas técnicas do ano (MWh)",
+   "denominador": "Σ energia injetada de referência do ano (MWh), só das distribuidoras com a técnica publicada nos 12 meses",
+   "formula": "taxa_tecnica = 100 × Σ perdas_tecnicas ÷ Σ injetada_referência",
+   "regra_agregacao": "Agregado só sobre o subconjunto com a técnica publicada, com a cobertura (em % da injetada) ao lado.",
+   "versao_formula": "1",
+   "natureza_fonte": "ESTIMADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "distribuidora",
+    "ano"
+   ],
+   "regras_comparabilidade": [
+    "Quebra em 2024: leiaute da REN 1.003/2022; injetada publicada bruta (o denominador passa a ser a energia implícita no cálculo da fonte) e separação técnica e não técnica publicada para cerca de metade das distribuidoras.",
+    "A técnica não mede desempenho: segue o percentual regulatório por construção."
+   ],
+   "regra_cobertura": "Publicada para a maioria das distribuidoras até 2023; cerca de metade a partir de 2024.",
+   "politica_ausencia": "Soma anual só existe quando a linha está publicada nos 12 meses do ano civil; um mês ausente deixa o ano ausente (nunca vira zero nem é completado). Ano corrente é parcial e fica fora de comparações. Distribuidora sem a técnica em algum mês não tem técnica nem não técnica no ano.",
+   "validacoes": [
+    "Perda técnica idêntica nas bases medida e faturada (conferido no arquivo)."
+   ],
+   "limitacoes": [
+    "Não se pode concluir que toda perda técnica é evitável nem que é eliminável a custo zero."
+   ],
+   "gold": "perdas.json",
+   "paginas": [
+    "/setor-eletrico/perdas"
+   ],
+   "arquivo": "pipeline/energia/metricas/perdas.py"
+  },
+  {
+   "id": "perdas_totais_energia",
+   "titulo": "Perdas totais de energia na distribuição",
+   "pergunta": "Quanta energia injetada na rede da distribuidora não chegou a ser entregue como consumo medido?",
+   "definicao": "Linha 'Perdas Totais' do SAMP Balanço da ANEEL, valor medido: energia injetada menos energia fornecida medida (cativos, consumo próprio, suprimento, livres, uso por outras distribuidoras) e menos a energia cobrada por procedimento irregular. Soma dos 12 meses do ano civil, convertida de kWh para MWh.",
+   "unidade": "MWh",
+   "grao_geografico": "distribuidora (CNPJ); agregados nacionais por universo (concessionárias, permissionárias, todas)",
+   "grao_temporal": "mês (fonte); ano civil (publicação)",
+   "fontes": [
+    "aneel_samp_balanco"
+   ],
+   "formula": "perdas_totais(d, ano) = Σ_m perdas_totais_medidas(d, m) ÷ 1.000",
+   "regra_agregacao": "Soma simples de volumes do mesmo ano e do mesmo subconjunto de distribuidoras válidas.",
+   "versao_formula": "1",
+   "natureza_fonte": "CALCULADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "distribuidora",
+    "ano",
+    "universo"
+   ],
+   "regras_comparabilidade": [
+    "Volume depende do tamanho do mercado: comparar distribuidoras pela taxa, não pelo volume.",
+    "Mudança societária ou incorporação muda o universo da série (eventos publicados).",
+    "Quebra em 2024: leiaute da REN 1.003/2022; injetada publicada bruta (o denominador passa a ser a energia implícita no cálculo da fonte) e separação técnica e não técnica publicada para cerca de metade das distribuidoras."
+   ],
+   "regra_cobertura": "Agentes com balanço de distribuição no SAMP Balanço de jan/2003 até a última competência publicada.",
+   "politica_ausencia": "Soma anual só existe quando a linha está publicada nos 12 meses do ano civil; um mês ausente deixa o ano ausente (nunca vira zero nem é completado). Ano corrente é parcial e fica fora de comparações.",
+   "validacoes": [
+    "Identidade do balanço conferida mês a mês: injetada − fornecida − irregular − perdas; o resíduo é publicado e classificado (fecha, residuo_pequeno, residuo_relevante, sem_componentes).",
+    "Agente-ano com perda total anual negativa ou maior que a injetada recebe alerta e fica fora de agregados e comparações (o valor da fonte segue no CSV).",
+    "Parquet e CSV oficiais conferidos: mesmo número de linhas e mesmas somas anuais."
+   ],
+   "limitacoes": [
+    "Valores mensais oscilam com o calendário de leitura; só o ano civil completo é comparado.",
+    "Perda medida difere da faturada (custo de disponibilidade e compensação da MMGD)."
+   ],
+   "gold": "perdas.json",
+   "paginas": [
+    "/setor-eletrico/perdas"
+   ],
+   "arquivo": "pipeline/energia/metricas/perdas.py"
+  },
+  {
+   "gold": "pld_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/pld"
+   ],
+   "versao_formula": "1.0",
+   "id": "pld_amplitude_horaria",
+   "titulo": "Amplitude horária entre submercados",
+   "pergunta": "Quanto o maior PLD se afastou do menor na mesma hora?",
+   "definicao": "Maior PLD menos menor PLD entre os quatro submercados na mesma hora; resumida por período.",
+   "unidade": "R$/MWh",
+   "grao_geografico": "sistema",
+   "grao_temporal": "hora; resumo por ano, 12 meses e 30 dias",
+   "fontes": [
+    "ccee_pld_horario"
+   ],
+   "formula": "amplitude_h = max_s PLD_h(s) − min_s PLD_h(s)",
+   "regra_agregacao": "média, quantis e máximo das horas",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "período",
+    "hora"
+   ],
+   "regras_comparabilidade": [
+    "Sempre na mesma hora e na mesma publicação da CCEE."
+   ],
+   "regra_cobertura": "Horas com os quatro submercados.",
+   "politica_ausencia": "Hora sem PLD publicado não entra no cálculo nem vira zero; o número de horas usadas acompanha cada valor.",
+   "validacoes": [
+    "amplitude ≥ 0"
+   ],
+   "limitacoes": [
+    "Estatística descritiva: não identifica causa."
+   ],
+   "arquivo": "pipeline/energia/metricas/pld.py"
+  },
+  {
+   "gold": "pld_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/pld"
+   ],
+   "versao_formula": "1.0",
+   "id": "pld_cmo_dessem_hora",
+   "titulo": "CMO do DESSEM na hora",
+   "pergunta": "Qual foi o custo marginal de operação calculado pelo ONS em cada hora?",
+   "definicao": "Média das duas meias horas do CMO semi-horário do DESSEM publicado pelo ONS que começam em h:00 e h:30.",
+   "unidade": "R$/MWh",
+   "grao_geografico": "subsistema do ONS",
+   "grao_temporal": "hora",
+   "fontes": [
+    "ons_cmo_semihorario"
+   ],
+   "formula": "CMO_h = (CMO_{h:00} + CMO_{h:30}) ÷ 2",
+   "regra_agregacao": "média por duração (as duas meias horas têm 30 minutos)",
+   "natureza_fonte": "ESTIMADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "subsistema",
+    "hora"
+   ],
+   "regras_comparabilidade": [
+    "Comparável com o PLD da mesma hora, mas não equivalente: o PLD é calculado pela CCEE e tem limites."
+   ],
+   "regra_cobertura": "Só horas com as duas meias horas publicadas.",
+   "politica_ausencia": "Hora com meia hora ausente fica sem valor (não é completada).",
+   "validacoes": [
+    "esquema do CSV (subsistema, grade de 30 minutos, número com ponto decimal)",
+    "sem duplicidade de (subsistema, instante)",
+    "convenção do instante (início da meia hora) conferida contra o PLD"
+   ],
+   "limitacoes": [
+    "Resultado de modelo do ONS, não medição.",
+    "O conjunto não identifica deck, versão ou revisão do modelo."
+   ],
+   "arquivo": "pipeline/energia/metricas/pld.py"
+  },
+  {
+   "gold": "pld_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/pld"
+   ],
+   "versao_formula": "1.0",
+   "id": "pld_cmo_dessem_semana",
+   "titulo": "CMO médio do DESSEM na semana operativa",
+   "pergunta": "Qual foi o CMO médio do DESSEM na mesma semana do CMO semanal do DECOMP?",
+   "definicao": "Média das 336 meias horas do CMO do DESSEM da semana operativa (sábado a sexta).",
+   "unidade": "R$/MWh",
+   "grao_geografico": "subsistema do ONS",
+   "grao_temporal": "semana operativa",
+   "fontes": [
+    "ons_cmo_semihorario"
+   ],
+   "formula": "DESSEM_semana = Σ CMO_meia ÷ 336",
+   "regra_agregacao": "média por duração",
+   "natureza_fonte": "ESTIMADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "subsistema",
+    "semana operativa"
+   ],
+   "regras_comparabilidade": [
+    "Comparado com o CMO semanal do DECOMP e com o PLD da mesma semana, em diferença absoluta; nunca em razão."
+   ],
+   "regra_cobertura": "Semana com as 336 meias horas.",
+   "politica_ausencia": "Semana incompleta fica sem média; a contagem de meias horas é publicada no CSV.",
+   "validacoes": [
+    "contagem de meias horas por semana",
+    "convenção de data do CMO semanal (sexta que encerra a semana) conferida por correlação"
+   ],
+   "limitacoes": [
+    "O CMO semanal do DECOMP é calculado antes da semana e por patamar; a média do DESSEM não é o mesmo produto."
+   ],
+   "arquivo": "pipeline/energia/metricas/pld.py"
+  },
+  {
+   "gold": "pld_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/pld"
+   ],
+   "versao_formula": "1.0",
+   "id": "pld_dias_teto_estrutural",
+   "titulo": "Dias com a média do PLD no teto estrutural",
+   "pergunta": "Em quantos dias a média diária do PLD ficou no máximo estrutural?",
+   "definicao": "Dias com |média das 24 horas − máximo estrutural vigente| ≤ R$ 0,01/MWh.",
+   "unidade": "dias",
+   "grao_geografico": "submercado",
+   "grao_temporal": "dia; total por ano",
+   "fontes": [
+    "ccee_pld_horario",
+    "regulatorio:limites_pld"
+   ],
+   "formula": "|Σ PLD_h ÷ 24 − máximo estrutural| ≤ 0,01",
+   "regra_agregacao": "contagem de dias completos",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "submercado",
+    "ano",
+    "dia"
+   ],
+   "regras_comparabilidade": [
+    "A média de 24 valores arredondados ao centavo erra no máximo R$ 0,005/MWh."
+   ],
+   "regra_cobertura": "Dias com as 24 horas.",
+   "politica_ausencia": "Dia incompleto não recebe média.",
+   "validacoes": [
+    "nenhum dia com média acima do teto estrutural"
+   ],
+   "limitacoes": [
+    "A verificação é sobre a média diária publicada; a regra de aplicação está nos atos da ANEEL."
+   ],
+   "arquivo": "pipeline/energia/metricas/pld.py"
+  },
+  {
+   "gold": "pld_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/pld"
+   ],
+   "versao_formula": "1.0",
+   "id": "pld_diferenca_media_par",
+   "titulo": "Diferença média entre submercados",
+   "pergunta": "Em média, quanto um submercado ficou acima ou abaixo de outro?",
+   "definicao": "Média de PLD_A − PLD_B nas mesmas horas; matriz para os últimos 12 meses.",
+   "unidade": "R$/MWh",
+   "grao_geografico": "par ordenado de submercados",
+   "grao_temporal": "período",
+   "fontes": [
+    "ccee_pld_horario"
+   ],
+   "formula": "média de (PLD_A − PLD_B)",
+   "regra_agregacao": "média temporal das diferenças",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "par",
+    "período"
+   ],
+   "regras_comparabilidade": [
+    "Matriz antissimétrica: dif(A,B) = −dif(B,A)."
+   ],
+   "regra_cobertura": "Horas com os quatro submercados.",
+   "politica_ausencia": "Hora sem PLD publicado não entra no cálculo nem vira zero; o número de horas usadas acompanha cada valor.",
+   "validacoes": [
+    "antissimetria da matriz"
+   ],
+   "limitacoes": [
+    "Estatística descritiva: não identifica causa."
+   ],
+   "arquivo": "pipeline/energia/metricas/pld.py"
+  },
+  {
+   "gold": "pld_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/pld"
+   ],
+   "versao_formula": "1.0",
+   "id": "pld_diferenca_pld_cmo",
+   "titulo": "Diferença entre PLD e CMO no mesmo intervalo",
+   "pergunta": "Quanto o PLD se afastou do CMO publicado pelo ONS no mesmo intervalo?",
+   "definicao": "PLD menos CMO na mesma hora (DESSEM) ou na mesma semana operativa (DECOMP e média do DESSEM), em R$/MWh. Resumida por ano e submercado nas horas com o PLD entre os limites (fora de dias com a média no teto estrutural) e nas horas no piso.",
+   "unidade": "R$/MWh",
+   "grao_geografico": "submercado e subsistema de mesmo nome",
+   "grao_temporal": "hora e semana operativa",
+   "fontes": [
+    "ccee_pld_horario",
+    "ons_cmo_semihorario",
+    "cmo_se",
+    "regulatorio:limites_pld"
+   ],
+   "formula": "Δ = PLD − CMO do mesmo intervalo; média, média do módulo e mediana do módulo por ano",
+   "regra_agregacao": "média simples das diferenças horárias",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "submercado",
+    "ano",
+    "situação do PLD frente aos limites"
+   ],
+   "regras_comparabilidade": [
+    "Só entre o mesmo intervalo de tempo.",
+    "Diferença absoluta; nenhuma razão ou multiplicador (achado A01)."
+   ],
+   "regra_cobertura": "Horas com PLD e CMO do DESSEM na hora.",
+   "politica_ausencia": "Hora sem um dos dois fica fora e é contada em horas_sem_cmo.",
+   "validacoes": [
+    "situação frente aos limites só quando os atos estão disponíveis"
+   ],
+   "limitacoes": [
+    "CMO e PLD não são automaticamente equivalentes: modelo, configuração e limites diferem.",
+    "Estatística descritiva: não identifica causa."
+   ],
+   "arquivo": "pipeline/energia/metricas/pld.py"
+  },
+  {
+   "gold": "pld_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/pld"
+   ],
+   "versao_formula": "1.0",
+   "id": "pld_empates_piso",
+   "titulo": "Horas com os quatro submercados no piso",
+   "pergunta": "Quando o piso vale para todo o sistema ao mesmo tempo?",
+   "definicao": "Número de horas do ano em que 0, 1, 2, 3 ou 4 submercados estavam no piso; empate no piso = os quatro no piso.",
+   "unidade": "horas",
+   "grao_geografico": "sistema (quatro submercados)",
+   "grao_temporal": "ano",
+   "fontes": [
+    "ccee_pld_horario",
+    "regulatorio:limites_pld"
+   ],
+   "formula": "k_h = nº de submercados com |PLD − mínimo| ≤ 0,01 na hora h",
+   "regra_agregacao": "contagem",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "ano",
+    "quantidade de submercados no piso"
+   ],
+   "regras_comparabilidade": [
+    "Horas empatadas no piso têm diferença de preço zero por construção dos limites."
+   ],
+   "regra_cobertura": "Horas com os quatro submercados.",
+   "politica_ausencia": "Hora sem PLD publicado não entra no cálculo nem vira zero; o número de horas usadas acompanha cada valor.",
+   "validacoes": [
+    "soma das classes igual às horas do ano"
+   ],
+   "limitacoes": [
+    "Depende dos atos integrados pelo módulo Regulação."
+   ],
+   "arquivo": "pipeline/energia/metricas/pld.py"
+  },
+  {
+   "gold": "pld_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/pld"
+   ],
+   "versao_formula": "1.0",
+   "id": "pld_folga_lat1d",
+   "titulo": "Folga da hipótese LAT1D para o PLD",
+   "pergunta": "A regra de defasagem dos backtests antecipa informação do PLD?",
+   "definicao": "Horas entre a primeira captura completa de um dia do PLD e o instante em que LAT1D permite usar aquele dia (D+2 às 00h de Brasília).",
+   "unidade": "horas",
+   "grao_geografico": "sistema",
+   "grao_temporal": "dia",
+   "fontes": [
+    "ccee_pld_horario"
+   ],
+   "formula": "folga = (início do dia D + 2 dias) − primeira captura completa",
+   "regra_agregacao": "mínimo entre os dias observados",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "dia"
+   ],
+   "regras_comparabilidade": [
+    "Só dias com captura direta; a captura versionada não informa publicação."
+   ],
+   "regra_cobertura": "Dias com captura direta.",
+   "politica_ausencia": "Sem captura direta, sem folga.",
+   "validacoes": [
+    "primeira captura calculada da vintage mais antiga que contém a hora"
+   ],
+   "limitacoes": [
+    "Primeira captura não é publicação; a CCEE não informa a data de publicação."
+   ],
+   "arquivo": "pipeline/energia/metricas/pld.py"
+  },
+  {
+   "gold": "pld_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/pld"
+   ],
+   "versao_formula": "1.0",
+   "id": "pld_horas_piso",
+   "titulo": "Horas com o PLD no piso",
+   "pergunta": "Com que frequência o PLD ficou no limite mínimo?",
+   "definicao": "Fração das horas do ano em que o PLD ficou a até R$ 0,01/MWh do mínimo vigente no dia, segundo os atos anuais da ANEEL.",
+   "unidade": "fração das horas",
+   "grao_geografico": "submercado",
+   "grao_temporal": "ano civil (parcial marcado)",
+   "fontes": [
+    "ccee_pld_horario",
+    "regulatorio:limites_pld"
+   ],
+   "numerador": "horas com |PLD − mínimo vigente| ≤ 0,01",
+   "denominador": "horas com limites vigentes conhecidos",
+   "formula": "frac_piso = horas_piso ÷ horas_com_limite",
+   "regra_agregacao": "contagem de horas",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "submercado",
+    "ano",
+    "dia (calendário)"
+   ],
+   "regras_comparabilidade": [
+    "Cada ano tem o seu piso; frações de anos diferentes comparam regimes diferentes.",
+    "Ano parcial marcado."
+   ],
+   "regra_cobertura": "Horas com PLD e com ato vigente no dia.",
+   "politica_ausencia": "Dia sem ato vigente conta como sem limite e sai do denominador.",
+   "validacoes": [
+    "nenhuma hora abaixo do piso",
+    "sensibilidade com tolerância de meio centavo",
+    "menor valor observado conferido com o piso do ato (sem substituí-lo)"
+   ],
+   "limitacoes": [
+    "O menor valor observado nunca substitui o piso regulatório.",
+    "Depende dos atos integrados pelo módulo Regulação."
+   ],
+   "arquivo": "pipeline/energia/metricas/pld.py"
+  },
+  {
+   "gold": "pld_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/pld"
+   ],
+   "versao_formula": "1.0",
+   "id": "pld_horas_teto_horario",
+   "titulo": "Horas com o PLD no teto horário",
+   "pergunta": "Com que frequência o PLD encostou no máximo horário?",
+   "definicao": "Fração das horas do ano com |PLD − máximo horário vigente| ≤ R$ 0,01/MWh.",
+   "unidade": "fração das horas",
+   "grao_geografico": "submercado",
+   "grao_temporal": "ano civil",
+   "fontes": [
+    "ccee_pld_horario",
+    "regulatorio:limites_pld"
+   ],
+   "numerador": "horas no teto horário",
+   "denominador": "horas com limites vigentes conhecidos",
+   "formula": "frac_teto = horas_teto ÷ horas_com_limite",
+   "regra_agregacao": "contagem de horas",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "submercado",
+    "ano"
+   ],
+   "regras_comparabilidade": [
+    "Cada ano tem o seu teto."
+   ],
+   "regra_cobertura": "Horas com ato vigente.",
+   "politica_ausencia": "Dia sem ato vigente sai do denominador.",
+   "validacoes": [
+    "nenhuma hora acima do teto horário"
+   ],
+   "limitacoes": [
+    "Depende dos atos integrados pelo módulo Regulação."
+   ],
+   "arquivo": "pipeline/energia/metricas/pld.py"
+  },
+  {
+   "gold": "pld_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/pld"
+   ],
+   "versao_formula": "1.0",
+   "id": "pld_media_mensal_ponderada_carga",
+   "titulo": "PLD médio mensal ponderado pela carga",
+   "pergunta": "Qual foi o PLD médio do mês pesando cada hora pela carga do subsistema?",
+   "definicao": "Soma do PLD vezes a carga verificada do subsistema na mesma hora, dividida pela soma da carga.",
+   "unidade": "R$/MWh",
+   "grao_geografico": "submercado (peso: subsistema de mesmo nome)",
+   "grao_temporal": "mês",
+   "fontes": [
+    "ccee_pld_horario",
+    "balanco_energia_subsistema_ho"
+   ],
+   "numerador": "Σ PLD_h × carga_h",
+   "denominador": "Σ carga_h",
+   "formula": "Σ PLD_h × carga_h ÷ Σ carga_h",
+   "regra_agregacao": "média ponderada pela energia (MWmed numa hora = MWh)",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "submercado",
+    "mês"
+   ],
+   "regras_comparabilidade": [
+    "Só é comparada com a média temporal quando as duas usam as mesmas horas (campo mesmas_horas)."
+   ],
+   "regra_cobertura": "Horas com PLD e carga.",
+   "politica_ausencia": "Hora sem carga fica fora da ponderada; mesmas_horas indica a diferença de cobertura.",
+   "validacoes": [
+    "numerador e denominador publicados na evidência"
+   ],
+   "limitacoes": [
+    "Carga do subsistema do ONS, não consumo contabilizado na CCEE; correspondência subsistema e submercado pelo nome."
+   ],
+   "arquivo": "pipeline/energia/metricas/pld.py"
+  },
+  {
+   "gold": "pld_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/pld"
+   ],
+   "versao_formula": "1.0",
+   "id": "pld_media_mensal_real",
+   "titulo": "PLD médio mensal em moeda constante",
+   "pergunta": "Quanto valeria o PLD médio de cada mês em reais de hoje?",
+   "definicao": "Média temporal do mês multiplicada pelo IPCA do mês-base e dividida pelo IPCA do mês.",
+   "unidade": "R$/MWh do mês-base",
+   "grao_geografico": "submercado",
+   "grao_temporal": "mês",
+   "fontes": [
+    "ccee_pld_horario",
+    "ibge_ipca_1737"
+   ],
+   "formula": "real = temporal × IPCA(base) ÷ IPCA(mês)",
+   "regra_agregacao": "deflação mensal",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "submercado",
+    "mês"
+   ],
+   "regras_comparabilidade": [
+    "Perspectiva adicional; o valor nominal é o dado principal."
+   ],
+   "regra_cobertura": "Meses com IPCA publicado.",
+   "politica_ausencia": "Mês sem índice fica sem valor real.",
+   "validacoes": [
+    "mês-base = último mês do IPCA não posterior ao dia de referência"
+   ],
+   "limitacoes": [
+    "O IPCA mede preços ao consumidor, não custos de energia."
+   ],
+   "arquivo": "pipeline/energia/metricas/pld.py"
+  },
+  {
+   "gold": "pld_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/pld"
+   ],
+   "versao_formula": "1.0",
+   "id": "pld_media_mensal_temporal",
+   "titulo": "PLD médio mensal (média temporal)",
+   "pergunta": "Qual foi o PLD médio do mês?",
+   "definicao": "Média simples das horas do mês com PLD publicado.",
+   "unidade": "R$/MWh",
+   "grao_geografico": "submercado",
+   "grao_temporal": "mês (parcial marcado)",
+   "fontes": [
+    "ccee_pld_horario"
+   ],
+   "numerador": "Σ PLD_h do mês",
+   "denominador": "horas do mês com PLD",
+   "formula": "Σ PLD_h ÷ n",
+   "regra_agregacao": "média temporal",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "submercado",
+    "mês"
+   ],
+   "regras_comparabilidade": [
+    "Não é preço ponderado pelo consumo.",
+    "Mês parcial não compete com mês completo sem aviso."
+   ],
+   "regra_cobertura": "Todas as horas publicadas do mês.",
+   "politica_ausencia": "Hora sem PLD publicado não entra no cálculo nem vira zero; o número de horas usadas acompanha cada valor.",
+   "validacoes": [
+    "horas por mês publicadas"
+   ],
+   "limitacoes": [
+    "Valores nominais."
+   ],
+   "arquivo": "pipeline/energia/metricas/pld.py"
+  },
+  {
+   "gold": "pld_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/pld"
+   ],
+   "versao_formula": "1.0",
+   "id": "pld_percentil_sazonal",
+   "titulo": "Posição sazonal do PLD",
+   "pergunta": "O preço está alto para esta época do ano?",
+   "definicao": "Percentil da média diária do dia de referência na distribuição das médias diárias do mesmo mês (e da mesma semana ISO) nos anos anteriores; quantis P10 a P90 por mês.",
+   "unidade": "percentil (0 a 100); R$/MWh nos quantis",
+   "grao_geografico": "submercado",
+   "grao_temporal": "dia; mês do ano",
+   "fontes": [
+    "ccee_pld_horario"
+   ],
+   "formula": "percentil = 100 × (menores + 0,5 × iguais) ÷ n; quantis tipo 7",
+   "regra_agregacao": "distribuição empírica dos dias completos",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "submercado",
+    "mês do ano",
+    "semana ISO"
+   ],
+   "regras_comparabilidade": [
+    "Anos anteriores têm limites diferentes; ver a distribuição por regime.",
+    "n publicado ao lado."
+   ],
+   "regra_cobertura": "Dias completos de anos anteriores ao ano de referência.",
+   "politica_ausencia": "Dia incompleto não entra.",
+   "validacoes": [
+    "empates contados pelo rank médio"
+   ],
+   "limitacoes": [
+    "Série horária desde 2021: no máximo cinco anos anteriores."
+   ],
+   "arquivo": "pipeline/energia/metricas/pld.py"
+  },
+  {
+   "gold": "pld_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/pld"
+   ],
+   "versao_formula": "1.0",
+   "id": "pld_perfil_hora_mes",
+   "titulo": "Perfil hora a hora por mês",
+   "pergunta": "Em que horas do dia o PLD costuma ser mais alto em cada mês?",
+   "definicao": "Média do PLD em cada hora do dia (0 a 23) dentro de cada um dos últimos 12 meses.",
+   "unidade": "R$/MWh",
+   "grao_geografico": "submercado",
+   "grao_temporal": "hora do dia × mês",
+   "fontes": [
+    "ccee_pld_horario"
+   ],
+   "formula": "média de PLD_h com hora do dia = k no mês m",
+   "regra_agregacao": "média temporal",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "submercado",
+    "mês",
+    "hora do dia"
+   ],
+   "regras_comparabilidade": [
+    "Mês parcial marcado."
+   ],
+   "regra_cobertura": "Horas publicadas.",
+   "politica_ausencia": "Hora sem PLD publicado não entra no cálculo nem vira zero; o número de horas usadas acompanha cada valor.",
+   "validacoes": [
+    "24 colunas por mês"
+   ],
+   "limitacoes": [
+    "Estatística descritiva: não identifica causa."
+   ],
+   "arquivo": "pipeline/energia/metricas/pld.py"
+  },
+  {
+   "gold": "pld_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/pld"
+   ],
+   "versao_formula": "1.0",
+   "id": "pld_pld_semana",
+   "titulo": "PLD médio da semana operativa",
+   "pergunta": "Qual foi o PLD médio na semana operativa?",
+   "definicao": "Média simples das 168 horas do PLD da semana operativa (sábado a sexta).",
+   "unidade": "R$/MWh",
+   "grao_geografico": "submercado",
+   "grao_temporal": "semana operativa",
+   "fontes": [
+    "ccee_pld_horario"
+   ],
+   "numerador": "Σ PLD_h nas 168 horas",
+   "denominador": "168",
+   "formula": "PLD_semana = Σ PLD_h ÷ 168",
+   "regra_agregacao": "média temporal",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "submercado",
+    "semana operativa"
+   ],
+   "regras_comparabilidade": [
+    "Média temporal: não é preço ponderado pela carga."
+   ],
+   "regra_cobertura": "Semana com as 168 horas.",
+   "politica_ausencia": "Hora sem PLD publicado não entra no cálculo nem vira zero; o número de horas usadas acompanha cada valor.",
+   "validacoes": [
+    "reconciliação com a média das sete médias diárias da mesma semana"
+   ],
+   "limitacoes": [
+    "Valores nominais."
+   ],
+   "arquivo": "pipeline/energia/metricas/pld.py"
+  },
+  {
+   "gold": "pld_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/pld"
+   ],
+   "versao_formula": "1.0",
+   "id": "pld_quantis_regime",
+   "titulo": "Distribuição do PLD por regime de limites",
+   "pergunta": "Como o PLD se distribuiu em cada regime anual de limites?",
+   "definicao": "Quantis P10 a P90 dos valores horários de cada ano, com os limites vigentes e as frações no piso e no teto.",
+   "unidade": "R$/MWh",
+   "grao_geografico": "submercado",
+   "grao_temporal": "ano (regime)",
+   "fontes": [
+    "ccee_pld_horario",
+    "regulatorio:limites_pld"
+   ],
+   "formula": "quantis tipo 7 dos valores horários",
+   "regra_agregacao": "distribuição horária",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "submercado",
+    "ano"
+   ],
+   "regras_comparabilidade": [
+    "Ano parcial marcado."
+   ],
+   "regra_cobertura": "Horas publicadas.",
+   "politica_ausencia": "Hora sem PLD publicado não entra no cálculo nem vira zero; o número de horas usadas acompanha cada valor.",
+   "validacoes": [
+    "limites do regime listados com o ato"
+   ],
+   "limitacoes": [
+    "Valores nominais."
+   ],
+   "arquivo": "pipeline/energia/metricas/pld.py"
+  },
+  {
+   "gold": "pld_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/pld"
+   ],
+   "versao_formula": "1.0",
+   "id": "pld_sentido_fluxo_separacao",
+   "titulo": "Sentido do fluxo nas horas de preços separados",
+   "pergunta": "Quando os preços se separam, para que lado a energia está fluindo na fronteira?",
+   "definicao": "Nas horas com preços separados entre as pontas de uma fronteira monitorada pelo ONS, contagem das horas em que o fluxo verificado ia do submercado de menor para o de maior preço, no sentido oposto ou era nulo (até 1 MWmed).",
+   "unidade": "horas; fração das horas separadas",
+   "grao_geografico": "fronteira (N e NE, N e SE/CO, NE e SE/CO, S e SE/CO)",
+   "grao_temporal": "período",
+   "fontes": [
+    "ccee_pld_horario",
+    "intercambio_nacional_ho"
+   ],
+   "numerador": "horas do menor para o maior preço",
+   "denominador": "horas separadas com fluxo",
+   "formula": "sentido = sinal do fluxo na orientação canônica comparado com o lado de menor preço",
+   "regra_agregacao": "contagem",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "fronteira",
+    "período"
+   ],
+   "regras_comparabilidade": [
+    "Mesma hora; fluxo publicado até a última hora do balanço de intercâmbio."
+   ],
+   "regra_cobertura": "Horas com PLD nas duas pontas e fluxo publicado.",
+   "politica_ausencia": "Hora sem fluxo fica fora.",
+   "validacoes": [
+    "classes somam as horas com fluxo"
+   ],
+   "limitacoes": [
+    "Limites de intercâmbio não integrados: nenhuma hora é classificada como congestionada.",
+    "Estatística descritiva: não identifica causa."
+   ],
+   "arquivo": "pipeline/energia/metricas/pld.py"
+  },
+  {
+   "gold": "pld_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/pld"
+   ],
+   "versao_formula": "1.0",
+   "id": "pld_separacao_par",
+   "titulo": "Frequência de separação de preços por par",
+   "pergunta": "Com que frequência dois submercados tiveram preços diferentes?",
+   "definicao": "Fração das horas em que |PLD_A − PLD_B| > R$ 0,01/MWh; com contagens acima de R$ 1 e R$ 10 como sensibilidade.",
+   "unidade": "fração das horas",
+   "grao_geografico": "par de submercados",
+   "grao_temporal": "período",
+   "fontes": [
+    "ccee_pld_horario"
+   ],
+   "numerador": "horas separadas",
+   "denominador": "horas com os quatro submercados",
+   "formula": "horas com |Δ| > 0,01 ÷ horas",
+   "regra_agregacao": "contagem de horas",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "par",
+    "período",
+    "hora do dia"
+   ],
+   "regras_comparabilidade": [
+    "Limiar diferente do usado em pld.json (R$ 1,00/MWh); cada medida declara o seu."
+   ],
+   "regra_cobertura": "Horas com os quatro submercados.",
+   "politica_ausencia": "Hora sem PLD publicado não entra no cálculo nem vira zero; o número de horas usadas acompanha cada valor.",
+   "validacoes": [
+    "matriz 12 meses reconciliada com a tabela por par"
+   ],
+   "limitacoes": [
+    "Estatística descritiva: não identifica causa."
+   ],
+   "arquivo": "pipeline/energia/metricas/pld.py"
+  },
+  {
+   "gold": "pld_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/pld"
+   ],
+   "versao_formula": "1.0",
+   "id": "pld_sequencia_zero_cmo_semanal",
+   "titulo": "Sequência de CMO semanal igual a zero",
+   "pergunta": "Os zeros do CMO semanal existem no arquivo original do ONS?",
+   "definicao": "Semanas operativas consecutivas com CMO semanal exatamente zero, e conferência no CSV e no Parquet originais.",
+   "unidade": "semanas",
+   "grao_geografico": "subsistema",
+   "grao_temporal": "semana operativa",
+   "fontes": [
+    "cmo_se",
+    "ons_cmo_semanal_a02"
+   ],
+   "formula": "semanas consecutivas (passo de 7 dias) com média semanal = 0; mínimo de 4",
+   "regra_agregacao": "contagem",
+   "natureza_fonte": "ESTIMADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "subsistema"
+   ],
+   "regras_comparabilidade": [
+    "Zero é valor publicado; ausência interrompe a sequência."
+   ],
+   "regra_cobertura": "Todos os arquivos anuais.",
+   "politica_ausencia": "Semana ausente interrompe a sequência.",
+   "validacoes": [
+    "CSV contra Parquet célula a célula",
+    "silver principal contra releitura independente"
+   ],
+   "limitacoes": [
+    "O ONS não informa a razão dos zeros."
+   ],
+   "arquivo": "pipeline/energia/metricas/pld.py"
+  },
+  {
+   "id": "qualidade_compensacoes",
+   "titulo": "Compensações pagas por violação dos limites individuais de continuidade",
+   "pergunta": "Quanto as distribuidoras pagaram em compensações por interrupções acima dos limites individuais?",
+   "definicao": "Soma dos valores pagos e das quantidades de compensação publicadas pela ANEEL por conjunto, tipo (mensal, trimestral, anual, DICRI, DISE), tensão e competência, para unidades consumidoras e unidades geradoras.",
+   "unidade": "R$ nominais; ocorrências de compensação",
+   "grao_geografico": "distribuidora (CNPJ) e Brasil",
+   "grao_temporal": "competência mensal (trimestre e ano para os tipos trimestral e anual)",
+   "fontes": [
+    "aneel_continuidade"
+   ],
+   "formula": "valor(g, competência) = Σ_c Σ_tensão valor pago(c, tensão, tipo, competência)",
+   "numerador": "valor pago (R$) ou quantidade",
+   "regra_agregacao": "Soma simples (grandezas aditivas); valor por UC = valor anual ÷ UCs médias do ano, só como normalização.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "distribuidora",
+    "competência",
+    "tipo",
+    "unidade consumidora ou geradora",
+    "tensão"
+   ],
+   "regras_comparabilidade": [
+    "Reais correntes, sem correção pela inflação.",
+    "Trimestral e anual têm valores nulos desde 2022 (mudança do PRODIST); DISE só desde 2026.",
+    "Mês ou ano sem todas as distribuidoras fica marcado como incompleto."
+   ],
+   "regra_cobertura": "Compensações publicadas desde 2011.",
+   "politica_ausencia": "Distribuidora sem linha na competência fica sem valor; zero só quando a fonte publica zero.",
+   "validacoes": [
+    "Sigla fora do padrão PG/QT de continuidade é contada e não somada.",
+    "Soma relida do Parquet por outro código no teste."
+   ],
+   "limitacoes": [
+    "Quantidade é de ocorrências, não de consumidores distintos.",
+    "A fonte não informa a data do crédito, só a competência.",
+    "O crédito individual não pode ser estimado a partir do DEC ou FEC do conjunto."
+   ],
+   "gold": "qualidade.json",
+   "paginas": [
+    "/setor-eletrico/qualidade"
+   ],
+   "arquivo": "pipeline/energia/metricas/qualidade.py"
+  },
+  {
+   "id": "qualidade_dec_conjunto",
+   "titulo": "DEC do conjunto de unidades consumidoras",
+   "pergunta": "Por quanto tempo, em média, cada unidade consumidora do conjunto ficou sem energia?",
+   "definicao": "Duração Equivalente de Interrupção por Unidade Consumidora apurada pela distribuidora para o conjunto (PRODIST, Módulo 8): soma das durações das interrupções de mais de 3 minutos de cada UC dividida pelo número de UCs. Valor mensal publicado pela ANEEL; o anual é a soma dos 12 meses. O apurado exclui interrupções em situação de emergência, dia crítico, de origem externa e por ação do ONS; elas aparecem nas parcelas.",
+   "unidade": "horas e centésimos de hora por unidade consumidora (10,50 h = 10 h 30 min)",
+   "grao_geografico": "conjunto de unidades consumidoras (IdeConjUndConsumidoras)",
+   "grao_temporal": "mês; ano civil (soma dos meses)",
+   "fontes": [
+    "aneel_continuidade"
+   ],
+   "formula": "DEC(c, ano) = Σ_m DEC(c, m), só com os 12 meses publicados",
+   "regra_agregacao": "Anual = soma dos meses do conjunto. Não se faz média simples entre conjuntos: agregados usam qualidade_dec_distribuidora.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "conjunto",
+    "distribuidora (CNPJ)",
+    "mês",
+    "ano",
+    "parcela"
+   ],
+   "regras_comparabilidade": [
+    "Comparar com o limite do mesmo conjunto e do mesmo ano.",
+    "Ano parcial não é comparado com ano completo."
+   ],
+   "regra_cobertura": "Conjuntos publicados no Parquet de continuidade de 2010 em diante.",
+   "politica_ausencia": "Conjunto sem valor ou sem número de UCs no mês fica fora do numerador e do denominador daquele mês (nunca vira zero); ano com menos de 12 meses não tem valor anual; mês nacional com menos de 99% dos conjuntos do último ano fica marcado como incompleto.",
+   "validacoes": [
+    "Chave (CNPJ, conjunto, ano, mês, sigla) única; duplicata com valor diferente é contada.",
+    "Desde 2022, DEC = DECIP + DECIND em todos os conjunto-meses (tolerância 0,01 h de arredondamento).",
+    "Teste relê o Parquet por outro código e confere valores concretos."
+   ],
+   "limitacoes": [
+    "Média por unidade consumidora: não descreve o tempo sem energia de cada pessoa nem de cada município.",
+    "Apurado e enviado pela distribuidora; sujeito a revisão e fiscalização da ANEEL."
+   ],
+   "gold": "qualidade.json",
+   "paginas": [
+    "/setor-eletrico/qualidade"
+   ],
+   "arquivo": "pipeline/energia/metricas/qualidade.py"
+  },
+  {
+   "id": "qualidade_dec_distribuidora",
+   "titulo": "DEC da distribuidora e do Brasil",
+   "pergunta": "Por quanto tempo, em média, os consumidores da distribuidora (ou do país) ficaram sem energia no ano?",
+   "definicao": "Média mensal do DEC dos conjuntos ponderada pelo número de unidades consumidoras de cada conjunto no mês, somada nos 12 meses. É o DEC da união dos conjuntos (Σ DIC ÷ UCs), a regra usada pela ANEEL no DGC do ranking da continuidade.",
+   "unidade": "horas e centésimos de hora por unidade consumidora (10,50 h = 10 h 30 min)",
+   "grao_geografico": "distribuidora (CNPJ de 14 dígitos) e Brasil",
+   "grao_temporal": "mês e ano civil",
+   "fontes": [
+    "aneel_continuidade"
+   ],
+   "formula": "DEC(g, m) = Σ_c DEC(c, m) × UC(c, m) ÷ Σ_c UC(c, m); DEC(g, ano) = Σ_m DEC(g, m)",
+   "numerador": "Σ_c DEC(c, m) × UC(c, m), em horas × UC",
+   "denominador": "Σ_c UC(c, m) dos conjuntos com DEC e número de UCs no mês",
+   "regra_agregacao": "Ponderação por UCs no mês; soma dos meses no ano. Nunca média simples de conjuntos ou de distribuidoras.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "distribuidora",
+    "mês",
+    "ano",
+    "parcela"
+   ],
+   "regras_comparabilidade": [
+    "Comparar com o limite agregado do mesmo ano.",
+    "Ano corrente só contra os mesmos meses do ano anterior.",
+    "2010 a 2021: parte dos conjuntos incluía parcelas externas no apurado (identidade publicada por ano)."
+   ],
+   "regra_cobertura": "Distribuidoras com conjuntos no Parquet de continuidade; cobertura mensal (UCs com DEC ÷ UCs com número de UCs) publicada.",
+   "politica_ausencia": "Conjunto sem valor ou sem número de UCs no mês fica fora do numerador e do denominador daquele mês (nunca vira zero); ano com menos de 12 meses não tem valor anual; mês nacional com menos de 99% dos conjuntos do último ano fica marcado como incompleto.",
+   "validacoes": [
+    "Reconciliação: DGC calculado com esta regra contra o DGC publicado pela ANEEL no ranking (tolerância 0,01, a precisão publicada).",
+    "Identidade: Brasil = agregação das distribuidoras com os mesmos pesos."
+   ],
+   "limitacoes": [
+    "Média por unidade consumidora: não descreve o tempo sem energia de cada pessoa nem de cada município.",
+    "Distribuidora sem conjuntos no conjunto de dados (algumas permissionárias pequenas) não aparece."
+   ],
+   "gold": "qualidade.json",
+   "paginas": [
+    "/setor-eletrico/qualidade"
+   ],
+   "arquivo": "pipeline/energia/metricas/qualidade.py"
+  },
+  {
+   "id": "qualidade_fec_conjunto",
+   "titulo": "FEC do conjunto de unidades consumidoras",
+   "pergunta": "Quantas vezes, em média, cada unidade consumidora do conjunto ficou sem energia?",
+   "definicao": "Frequência Equivalente de Interrupção por Unidade Consumidora: número de interrupções de mais de 3 minutos de cada UC somado e dividido pelo número de UCs do conjunto. Valor mensal; anual = soma dos meses. O apurado exclui interrupções em situação de emergência, dia crítico, de origem externa e por ação do ONS; elas aparecem nas parcelas.",
+   "unidade": "interrupções e centésimos de interrupção por unidade consumidora",
+   "grao_geografico": "conjunto de unidades consumidoras",
+   "grao_temporal": "mês; ano civil",
+   "fontes": [
+    "aneel_continuidade"
+   ],
+   "formula": "FEC(c, ano) = Σ_m FEC(c, m), só com os 12 meses publicados",
+   "regra_agregacao": "Como o DEC do conjunto.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "conjunto",
+    "distribuidora (CNPJ)",
+    "mês",
+    "ano",
+    "parcela"
+   ],
+   "regras_comparabilidade": [
+    "Comparar com o limite de FEC do mesmo conjunto e ano."
+   ],
+   "regra_cobertura": "Conjuntos publicados de 2010 em diante.",
+   "politica_ausencia": "Conjunto sem valor ou sem número de UCs no mês fica fora do numerador e do denominador daquele mês (nunca vira zero); ano com menos de 12 meses não tem valor anual; mês nacional com menos de 99% dos conjuntos do último ano fica marcado como incompleto.",
+   "validacoes": [
+    "Desde 2022, FEC = FECIP + FECIND em todos os conjunto-meses (tolerância 0,01)."
+   ],
+   "limitacoes": [
+    "Média por unidade consumidora: não descreve o tempo sem energia de cada pessoa nem de cada município."
+   ],
+   "gold": "qualidade.json",
+   "paginas": [
+    "/setor-eletrico/qualidade"
+   ],
+   "arquivo": "pipeline/energia/metricas/qualidade.py"
+  },
+  {
+   "id": "qualidade_fec_distribuidora",
+   "titulo": "FEC da distribuidora e do Brasil",
+   "pergunta": "Quantas vezes, em média, os consumidores da distribuidora (ou do país) ficaram sem energia no ano?",
+   "definicao": "Média mensal do FEC dos conjuntos ponderada pelo número de UCs de cada conjunto no mês, somada nos 12 meses.",
+   "unidade": "interrupções e centésimos de interrupção por unidade consumidora",
+   "grao_geografico": "distribuidora (CNPJ) e Brasil",
+   "grao_temporal": "mês e ano civil",
+   "fontes": [
+    "aneel_continuidade"
+   ],
+   "formula": "FEC(g, m) = Σ_c FEC(c, m) × UC(c, m) ÷ Σ_c UC(c, m); FEC(g, ano) = Σ_m FEC(g, m)",
+   "numerador": "Σ_c FEC(c, m) × UC(c, m)",
+   "denominador": "Σ_c UC(c, m) dos conjuntos com FEC no mês",
+   "regra_agregacao": "Como o DEC da distribuidora.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "distribuidora",
+    "mês",
+    "ano",
+    "parcela"
+   ],
+   "regras_comparabilidade": [
+    "Como o DEC da distribuidora."
+   ],
+   "regra_cobertura": "Como o DEC da distribuidora.",
+   "politica_ausencia": "Conjunto sem valor ou sem número de UCs no mês fica fora do numerador e do denominador daquele mês (nunca vira zero); ano com menos de 12 meses não tem valor anual; mês nacional com menos de 99% dos conjuntos do último ano fica marcado como incompleto.",
+   "validacoes": [
+    "Reconciliação com o DGC publicado (inclui a razão de FEC)."
+   ],
+   "limitacoes": [
+    "Média por unidade consumidora: não descreve o tempo sem energia de cada pessoa nem de cada município."
+   ],
+   "gold": "qualidade.json",
+   "paginas": [
+    "/setor-eletrico/qualidade"
+   ],
+   "arquivo": "pipeline/energia/metricas/qualidade.py"
+  },
+  {
+   "id": "qualidade_iasc",
+   "titulo": "Índice ANEEL de Satisfação do Consumidor (IASC)",
+   "pergunta": "Quão satisfeitos os consumidores residenciais dizem estar com a distribuidora?",
+   "definicao": "Índice de 0 a 100 estimado pela ANEEL a partir de pesquisa amostral anual com consumidores residenciais de cada distribuidora (construto de satisfação), publicado com a ordem na categoria e com as contagens de entrevistados.",
+   "unidade": "índice de 0 a 100; entrevistas",
+   "grao_geografico": "distribuidora (CNPJ)",
+   "grao_temporal": "ano da pesquisa",
+   "fontes": [
+    "aneel_iasc"
+   ],
+   "regra_agregacao": "Não é agregado: publicado por distribuidora; resumo nacional apenas por quantis entre distribuidoras.",
+   "versao_formula": "1",
+   "natureza_fonte": "ESTIMADO",
+   "natureza_transformacao": "ESTIMADO",
+   "dimensoes": [
+    "distribuidora",
+    "ano",
+    "categoria da pesquisa"
+   ],
+   "regras_comparabilidade": [
+    "A ANEEL compara distribuidoras dentro de categorias de porte e região.",
+    "Em 2020 o construto de fidelidade não se formou (ausência publicada)."
+   ],
+   "regra_cobertura": "Distribuidoras pesquisadas no ano (concessionárias e permissionárias).",
+   "politica_ausencia": "Construto não publicado fica ausente.",
+   "validacoes": [
+    "Soma das amostras por distribuidora conferida com o total declarado pela ANEEL (cerca de 30 mil entrevistas)."
+   ],
+   "limitacoes": [
+    "Estimativa amostral sem intervalo de confiança publicado por distribuidora.",
+    "Só consumidores residenciais."
+   ],
+   "gold": "qualidade.json",
+   "paginas": [
+    "/setor-eletrico/qualidade"
+   ],
+   "arquivo": "pipeline/energia/metricas/qualidade.py"
+  },
+  {
+   "id": "qualidade_limite_e_razao",
+   "titulo": "Limite anual e distância ao limite (razão apurado ÷ limite)",
+   "pergunta": "O serviço cumpriu o padrão regulatório no ano?",
+   "definicao": "Limite anual de DEC e FEC fixado pela ANEEL para cada conjunto e ano. Para a distribuidora e o Brasil, média dos limites dos conjuntos ponderada pelas UCs médias do ano. Razão = apurado anual ÷ limite do mesmo ano; acima de 1 = transgressão.",
+   "unidade": "horas, interrupções e razão adimensional",
+   "grao_geografico": "conjunto, distribuidora e Brasil",
+   "grao_temporal": "ano civil (vigência do limite)",
+   "fontes": [
+    "aneel_continuidade"
+   ],
+   "formula": "L(g, ano) = Σ_c L(c, ano) × UCmédia(c, ano) ÷ Σ_c UCmédia(c, ano); razão = DEC(g, ano) ÷ L(g, ano)",
+   "numerador": "DEC ou FEC apurado no ano",
+   "denominador": "limite do mesmo ano e do mesmo universo de conjuntos",
+   "regra_agregacao": "Limite ponderado pelas UCs; razão calculada depois da agregação (nunca média de razões de conjuntos).",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "conjunto",
+    "distribuidora",
+    "ano"
+   ],
+   "regras_comparabilidade": [
+    "Realizado e limite sempre do mesmo ano e da mesma cobertura.",
+    "Conjunto sem limite no ano fica fora da razão."
+   ],
+   "regra_cobertura": "Conjuntos com 12 meses e limite publicado no ano; cobertura do limite (fração de UCs) publicada por distribuidora.",
+   "politica_ausencia": "Sem limite publicado para o conjunto e ano: razão ausente; distribuidora em carência de contrato novo fica sem razão.",
+   "validacoes": [
+    "DGC = (razão DEC + razão FEC) ÷ 2 reconciliado com o ranking da ANEEL de 2021 em diante."
+   ],
+   "limitacoes": [
+    "A distribuição dos conjuntos (quantis e caudas) é publicada ao lado da média para não esconder conjuntos muito acima do limite."
+   ],
+   "gold": "qualidade.json",
+   "paginas": [
+    "/setor-eletrico/qualidade"
+   ],
+   "arquivo": "pipeline/energia/metricas/qualidade.py"
+  },
+  {
+   "id": "qualidade_parcelas",
+   "titulo": "Parcelas do DEC e do FEC por origem e expurgo",
+   "pergunta": "Quanto do tempo sem energia foi expurgado do apurado e por quê?",
+   "definicao": "Parcelas publicadas pela ANEEL: interna programada (IP) e não programada não expurgável (IND), que formam o apurado; situação de emergência (INE); dia crítico (INC, IPC); origem externa (XN, XP, XNC, XPC); racionamento ou alívio de carga pelo ONS (INO). O total de todas as parcelas é o DEC de todas as origens publicadas.",
+   "unidade": "horas e centésimos de hora por unidade consumidora (10,50 h = 10 h 30 min); interrupções e centésimos de interrupção por unidade consumidora",
+   "grao_geografico": "distribuidora (CNPJ) e Brasil",
+   "grao_temporal": "ano civil",
+   "fontes": [
+    "aneel_continuidade"
+   ],
+   "formula": "P(g, ano) = Σ_m [Σ_c P(c, m) × UC(c, m) ÷ Σ_c UC(c, m)], só conjuntos que informaram a parcela no mês",
+   "numerador": "Σ_c P(c, m) × UC(c, m)",
+   "denominador": "Σ_c UC(c, m) dos conjuntos que informaram a parcela",
+   "regra_agregacao": "Ponderação por UCs no mês, soma no ano; a cobertura da parcela (fração das UC-mês com a parcela informada) é guardada no silver.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "distribuidora",
+    "ano",
+    "grupo de parcela"
+   ],
+   "regras_comparabilidade": [
+    "Desde 2022 as parcelas externas em dia crítico (XNC, XPC) deixaram de ser informadas pela maioria dos conjuntos: o grupo externa antes e depois de 2022 não é homogêneo."
+   ],
+   "regra_cobertura": "Conjuntos com as parcelas IP e IND informadas entram no total.",
+   "politica_ausencia": "Parcela não informada não é zero: fica fora do numerador e do denominador daquela parcela.",
+   "validacoes": [
+    "Soma dos grupos = total de todas as parcelas publicadas.",
+    "Apurado = IP + IND desde 2022."
+   ],
+   "limitacoes": [
+    "Interrupções de até 3 minutos e as de responsabilidade do consumidor não são publicadas em nenhuma parcela."
+   ],
+   "gold": "qualidade.json",
+   "paginas": [
+    "/setor-eletrico/qualidade"
+   ],
+   "arquivo": "pipeline/energia/metricas/qualidade.py"
+  },
+  {
+   "id": "qualidade_pct_conjuntos_acima",
+   "titulo": "Conjuntos acima do limite de DEC",
+   "pergunta": "Quantos conjuntos, e quantas unidades consumidoras, ficaram acima do limite de DEC no ano?",
+   "definicao": "Número e percentual de conjuntos com 12 meses publicados e limite de DEC no ano cujo DEC anual é maior que o limite; também a fração das UCs (médias do ano) nesses conjuntos.",
+   "unidade": "% dos conjuntos e % das UCs",
+   "grao_geografico": "Brasil",
+   "grao_temporal": "ano civil",
+   "fontes": [
+    "aneel_continuidade"
+   ],
+   "formula": "100 × #(DEC(c, ano) > L(c, ano)) ÷ #(conjuntos com limite)",
+   "numerador": "conjuntos com DEC anual acima do limite",
+   "denominador": "conjuntos com 12 meses e limite",
+   "regra_agregacao": "Contagem simples de conjuntos; versão ponderada por UCs publicada ao lado.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "ano"
+   ],
+   "regras_comparabilidade": [
+    "Conjuntos têm tamanhos muito diferentes: a contagem e a fração de UCs respondem perguntas diferentes."
+   ],
+   "regra_cobertura": "Conjuntos com 12 meses e limite de DEC publicado no ano.",
+   "politica_ausencia": "Sem limite ou com menos de 12 meses: fora do denominador.",
+   "validacoes": [
+    "Comparação estrita com os valores publicados em centésimos."
+   ],
+   "limitacoes": [
+    "Estar acima do limite coletivo não implica que cada UC do conjunto tenha recebido compensação."
+   ],
+   "gold": "qualidade.json",
+   "paginas": [
+    "/setor-eletrico/qualidade"
+   ],
+   "arquivo": "pipeline/energia/metricas/qualidade.py"
+  },
+  {
+   "id": "qualidade_reclamacoes_por_uc",
+   "titulo": "Reclamações por mil unidades consumidoras",
+   "pergunta": "Quantas reclamações os consumidores registram na distribuidora e na ANEEL, considerando o tamanho de cada uma?",
+   "definicao": "Reclamações recebidas no ano no 1º nível (SAC) e no 2º nível (ouvidoria) da distribuidora, pela tipologia da REN 1.000/2021 (códigos 102), e reclamações registradas na Ouvidoria Setorial da ANEEL, divididas pelas UCs médias da mesma distribuidora no mesmo ano.",
+   "unidade": "reclamações por mil UCs (distribuidora) e por 100 mil UCs (ANEEL)",
+   "grao_geografico": "distribuidora (CNPJ) e Brasil",
+   "grao_temporal": "ano civil (meses publicados informados)",
+   "fontes": [
+    "aneel_manifestacoes",
+    "aneel_ouvidoria",
+    "aneel_continuidade"
+   ],
+   "formula": "taxa = fator × Σ reclamações(g, ano) ÷ UCs médias(g, ano)",
+   "numerador": "reclamações recebidas no ano",
+   "denominador": "UCs médias da distribuidora no mesmo ano (indicadores de continuidade)",
+   "regra_agregacao": "Brasil = Σ reclamações ÷ Σ UCs das distribuidoras com os dois dados (mesmo universo no numerador e no denominador).",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "distribuidora",
+    "ano",
+    "nível",
+    "tipo de reclamação"
+   ],
+   "regras_comparabilidade": [
+    "Nunca comparar números absolutos sem a população exposta.",
+    "Ano parcial não é comparado com ano completo.",
+    "Série de 2010 a 2022 usa outra tipologia e não é somada."
+   ],
+   "regra_cobertura": "Distribuidoras com manifestações e com UCs nos indicadores de continuidade.",
+   "politica_ausencia": "Sem UCs no ano: taxa ausente.",
+   "validacoes": [
+    "Reclamação identificada pelo prefixo 102 do código de tipologia; códigos fora da tipologia contados à parte."
+   ],
+   "limitacoes": [
+    "Registro depende dos canais e da prática de cada distribuidora."
+   ],
+   "gold": "qualidade.json",
+   "paginas": [
+    "/setor-eletrico/qualidade"
+   ],
+   "arquivo": "pipeline/energia/metricas/qualidade.py"
+  },
+  {
+   "id": "qualidade_tmae",
+   "titulo": "Tempo médio de atendimento a emergências (TMAE)",
+   "pergunta": "Quanto tempo, em média, a distribuidora leva para atender uma ocorrência emergencial?",
+   "definicao": "TMAE = TMP (preparação) + TMD (deslocamento) + TME (execução), em minutos, apurado por conjunto e mês; agregado pela média ponderada pelo número de ocorrências emergenciais.",
+   "unidade": "minutos",
+   "grao_geografico": "distribuidora (CNPJ) e Brasil",
+   "grao_temporal": "mês; ano",
+   "fontes": [
+    "aneel_atendimento_emergencial"
+   ],
+   "formula": "TMAE(g, período) = Σ (TMP + TMD + TME)(c, m) × ocorrências(c, m) ÷ Σ ocorrências(c, m)",
+   "numerador": "Σ tempo médio × ocorrências",
+   "denominador": "Σ ocorrências com os três tempos informados",
+   "regra_agregacao": "Ponderação pelo número de ocorrências.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "distribuidora",
+    "mês",
+    "ano"
+   ],
+   "regras_comparabilidade": [
+    "Distribuidoras com redes rurais extensas têm deslocamentos maiores."
+   ],
+   "regra_cobertura": "Conjuntos com ocorrências e os três tempos informados, de 2015 em diante.",
+   "politica_ausencia": "Conjunto-mês sem algum dos três tempos fica fora da média.",
+   "validacoes": [
+    "Ocorrências com interrupção (Nie) nunca maiores que o total de ocorrências."
+   ],
+   "limitacoes": [
+    "Média: não mostra os atendimentos muito longos."
+   ],
+   "gold": "qualidade.json",
+   "paginas": [
+    "/setor-eletrico/qualidade"
+   ],
+   "arquivo": "pipeline/energia/metricas/qualidade.py"
+  },
+  {
+   "id": "razao_mmgd_ons_capacidade_aneel",
+   "titulo": "Razão entre a MMGD estimada pelo ONS e a capacidade cadastrada na ANEEL",
+   "pergunta": "A estimativa operacional do ONS é coerente com o tamanho do parque cadastrado?",
+   "definicao": "MMGD estimada no SIN (MWmed) dividida pela capacidade cadastrada no Brasil (MW), média do estoque no início e no fim do mês. Comparação de coerência entre duas fontes, não fator de capacidade medido.",
+   "unidade": "%",
+   "grao_geografico": "SIN (numerador) e Brasil (denominador)",
+   "grao_temporal": "mês",
+   "fontes": [
+    "ons_carga_verificada_mmgd",
+    "aneel_mmgd_empreendimentos"
+   ],
+   "formula": "100 × MWmed estimado (SIN) ÷ ((estoque no início do mês + estoque no fim do mês) ÷ 2)",
+   "numerador": "MMGD estimada pelo ONS no SIN (MWmed)",
+   "denominador": "capacidade de MMGD cadastrada na ANEEL (MW), Brasil",
+   "regra_agregacao": "Mensal; sem agregação anual.",
+   "versao_formula": "1",
+   "natureza_fonte": "ESTIMADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "mês"
+   ],
+   "regras_comparabilidade": [
+    "Perímetros diferentes (SIN × Brasil); registro tardio infla a razão nos meses recentes."
+   ],
+   "regra_cobertura": "Meses completos da estimativa do ONS.",
+   "politica_ausencia": "Mês incompleto: ausente.",
+   "validacoes": [
+    "Estoque mensal reproduz o total cadastrado na data do cadastro."
+   ],
+   "limitacoes": [
+    "Não é fator de capacidade e não deve ser usado para estimar geração municipal."
+   ],
+   "gold": "transicao.json",
+   "paginas": [
+    "/setor-eletrico/transicao"
+   ],
+   "arquivo": "pipeline/energia/metricas/transicao.py"
+  }
+ ]
+}

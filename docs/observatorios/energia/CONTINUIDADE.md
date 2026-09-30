@@ -34,3 +34,17 @@ PW_CORE=<playwright-core> node scripts/energia-inspecao.mjs --base http://localh
 ### Em execução / próximos passos
 
 Ver `MATRIZ_PAINEIS.md` (estado por painel) e a seção final deste arquivo, atualizada ao fim de cada onda.
+
+## Execução em andamento (30/09/2026, após reinício do contêiner às ~22h30 UTC)
+
+O contêiner reiniciou e interrompeu os fluxos; o disco sobreviveu (silvers, bronze e arquivos parciais). Fluxos relançados com instrução de retomada a partir dos arquivos existentes e disciplina de memória (Parquet em lotes, processo abaixo de 2 GB):
+
+| Fluxo | Módulos | Run ID |
+| --- | --- | --- |
+| Biblioteca de componentes (retomada; 4 construtores em cache) | evidência, séries e cronograma, navegação, revisão | wf_4b729d6c-a2b |
+| Módulos W1 | perdas, qualidade | wf_6e201925-cf8 |
+| Módulos W2 | conta, inclusão | wf_1a982800-0da |
+| Módulos W4 | regulação, pld, previsões | wf_a93ab047-902 |
+| Módulos W3 | expansão, transição, empresas | wf_f8321428-1d4 |
+
+Pendentes de disparo: água e clima e carga (`scratchpad/wave2a.json`), geração, rede e mercado (`scratchpad/wave2b.json`); depois visão geral, aprenda, dados e metodologia, home, integração, auditoria e documentação final. Descoberta de fontes: inventário, ONS e ANEEL distribuição concluídos; tarifas/social, geração/expansão/empresas, outras fontes, benchmarks e crítico interrompidos (os módulos verificam as próprias fontes; benchmarks e crítico ainda precisam rodar).

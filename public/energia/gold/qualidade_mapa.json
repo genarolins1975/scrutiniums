@@ -1,0 +1,1 @@
+{"dominio":"energia","gold":"qualidade_mapa.json","gerado_em":"2026-09-30T22:28:50Z","versao_pipeline":"energia-0.1.0","versao_codigo":"dcad322a4ea9+alterado","disponivel":true,"ano":2025,"colunas":["cod_ibge","relacao","n_conjuntos","dec_min","dec_max","fec_min","fec_max"],"relacoes":["conjunto_exclusivo","conjunto_compartilhado","varios_conjuntos"],"linhas":[]}

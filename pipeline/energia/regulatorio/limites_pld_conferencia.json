@@ -1,0 +1,146 @@
+{
+ "conferido_em": "2026-09-30",
+ "metodo": "Cada valor de limites_pld.json foi lido no documento indicado em 'documento_valores' (texto extraído do PDF, espaços normalizados) e o 'trecho' de cada ato é composto de passagens literais desse documento, separadas por ' […] '. A data de publicação vem da linha 'Este texto não substitui o publicado no D.O. de ...' do extrato ou do texto do ato; a vigência vem do dispositivo do ato. Nível 'texto_do_ato' = valores lidos no próprio ato; nível 'documento_oficial_do_processo' = texto integral do ato não acessível, valores lidos em voto ou nota técnica da ANEEL do mesmo processo. A consistência dos tetos com a regra de atualização pelo IPCA (REN nº 1.032/2022, art. 23, § 1º) e do piso com a regra do art. 24 é recalculada na gold a partir do IPCA do IBGE, por caminho independente.",
+ "atos": [
+  {
+   "ano": 2021,
+   "ato": "Resolução Homologatória ANEEL nº 2.828/2020",
+   "nivel": "documento_oficial_do_processo",
+   "documento_valores": "areh20212994_1",
+   "documento_publicacao": null,
+   "dou": null,
+   "data_do_ato": "2020-12-15",
+   "fonte_data_do_ato": "Tabela 5 da Nota Técnica nº 289/2021-SGT/ANEEL ('REH nº 2.828, de 15/12/2020') e ata da 47ª Reunião Pública Ordinária de 2020 (15/12/2020), que deliberou a resolução. A mesma nota técnica, no item 13, cita 'de 24 de dezembro de 2020'; a divergência não pôde ser resolvida sem o ato.",
+   "teo": 12.74,
+   "teo_itaipu": 49.77,
+   "trecho_teo": "TEO (R$/MWh) [1] 12,74 14,04 10,20 TEOItaipu (R$/MWh) [2] 49,77 55,70 11,91",
+   "documento_teo": "areh20212994_1",
+   "observacoes": [
+    "O texto do voto diz 'para 2020', mas a coluna da tabela é 'Valor em 2021' com a nota 14 ('Nos termos da REH nº 2.828, de 2020'); os valores são os de 2021.",
+    "Data de publicação no DOU não conferida: o extrato da REH nº 2.828/2020 não está acessível; o campo fica vazio.",
+    "Vigência registrada como o ano civil de 2021 porque os documentos posteriores tratam os valores como 'para o ano de 2021'; o texto do ato, que pode definir a vigência por semana operativa, não foi lido."
+   ]
+  },
+  {
+   "ano": 2022,
+   "ato": "Despacho ANEEL nº 4.046/2021",
+   "nivel": "texto_do_ato",
+   "documento_valores": "dsp20214046",
+   "documento_publicacao": "dsp20214046",
+   "dou": "D.O. de 17.12.2021, seção 1, p. 128, v. 159, n. 237",
+   "data_do_ato": "2021-12-16",
+   "teo": null,
+   "teo_itaipu": null,
+   "observacoes": [
+    "O despacho foi publicado três dias antes da própria REH nº 2.994/2021 que o autorizou (D.O. de 20.12.2021). Por isso a ordem de publicação não indica qual valor prevalece: a REH registra só o limite mínimo como vigente e o despacho registra os tetos.",
+    "A Nota Técnica nº 01/2023-SGT/ANEEL (item 4) confirma: 'Em 16/12/2021 foi emitido o Despacho nº 4.046/2021, que atualizou os limites máximos do PLD para o ano de 2022'."
+   ]
+  },
+  {
+   "ano": 2022,
+   "ato": "Resolução Homologatória ANEEL nº 2.994/2021",
+   "nivel": "texto_do_ato",
+   "documento_valores": "reh20212994ti",
+   "documento_publicacao": "reh20212994",
+   "dou": "D.O. de 20.12.2021, seção 1, p. 204, v. 159, n. 238",
+   "data_do_ato": "2021-12-14",
+   "teo": 14.04,
+   "teo_itaipu": 55.7,
+   "trecho_teo": "§ 1º O valor da Tarifa de Energia de Otimização (TEO) em R$ 14,04/MWh […] (TEOItaipu) em R$ 55,70/MWh",
+   "documento_teo": "reh20212994ti",
+   "valores_nao_vigentes": {"pld_max_estrutural": 640.5, "pld_max_horario": 1314.02, "motivo": "art. 2º, §§ 2º e 3º, a preços de novembro de 2021, substituídos pelo Despacho nº 4.046/2021 (art. 3º da própria resolução)"},
+   "observacoes": [
+    "A validade dos limites é 'entre a primeira semana operativa de 2022 e 31 de dezembro de 2022'; a primeira semana operativa de 2022 começou no sábado, 01/01/2022, por isso a vigência registrada começa em 01/01/2022."
+   ]
+  },
+  {
+   "ano": 2023,
+   "ato": "Resolução Homologatória ANEEL nº 3.167/2022",
+   "nivel": "documento_oficial_do_processo",
+   "documento_valores": "areh20223167_1",
+   "documento_publicacao": "reh20223167",
+   "dou": "D.O. de 04.01.2023, seção 1, p. 20, v. 161, n. 3",
+   "data_do_ato": "2022-12-29",
+   "teo": null,
+   "teo_itaipu": 69.04,
+   "trecho_teo": "voto por aprovar a Tarifa de Energia de Otimização de Itaipu – TEOItaipu, no valor de R$ 69,04/MWh, para vigorar a partir de 1º de janeiro de 2023.",
+   "documento_teo": "areh20223167_1",
+   "observacoes": [
+    "O voto registra a TEO proposta pela área técnica (R$ 15,05/MWh, item 35); o valor homologado da TEO não foi lido no ato e fica vazio. Pela regra do art. 24 da REN nº 1.032/2022 o piso é o maior valor entre TEO e TEO de Itaipu, e o voto aprova o PLDmin igual à TEO de Itaipu (item 115).",
+    "Texto integral da REH nº 3.167/2022 (reh20223167ti.pdf) não acessível: a origem está bloqueada e a única captura pública é um redirecionamento, sem o arquivo."
+   ]
+  },
+  {
+   "ano": 2023,
+   "ato": "Retificação da Resolução Homologatória ANEEL nº 3.167/2022",
+   "nivel": "documento_oficial_do_processo",
+   "documento_valores": "nreh20223167_1",
+   "documento_publicacao": "reh20223167",
+   "dou": "retificado no D.O. de 06.01.2023",
+   "data_do_ato": "2023-01-05",
+   "teo": null,
+   "teo_itaipu": null,
+   "observacoes": [
+    "A data do ato registrada é a da Nota Técnica nº 01/2023-SGT/ANEEL (05/01/2023), que fundamenta a retificação; o texto da retificação publicada não foi lido.",
+    "A vigência dos valores retificados é o ano de 2023 inteiro: a retificação corrige erro material da resolução, que valia desde 01/01/2023. Entre 01/01 e 05/01/2023 estava publicada a versão com erro; o PLD desses dias não pôde ser conferido contra os tetos na fonte da CCEE (bloqueada)."
+   ]
+  },
+  {
+   "ano": 2024,
+   "ato": "Resolução Homologatória ANEEL nº 3.304/2023",
+   "nivel": "texto_do_ato",
+   "documento_valores": "reh20233304ti",
+   "documento_publicacao": "reh20233304",
+   "dou": "D.O. de 22.12.2023, seção 1, p. 110, v. 161, n. 243",
+   "data_do_ato": "2023-12-19",
+   "teo": 15.83,
+   "teo_itaipu": 61.07,
+   "trecho_teo": "I – Tarifa de Energia de Otimização – TEO em R$ 15,83/MWh […] TEOItaipu em R$ 61,07/MWh",
+   "documento_teo": "reh20233304ti",
+   "observacoes": [
+    "O art. 3º diz 'Esta Resolução entra em vigor em 1º de janeiro de 2024'; o art. 2º fixa a validade entre 1º de janeiro e 31 de dezembro de 2024.",
+    "O Despacho nº 3.587/2023 (item ii) já havia definido que os tetos de 2024 seriam os da REH nº 3.167/2022 atualizados pelo IPCA de 2023."
+   ]
+  },
+  {
+   "ano": 2025,
+   "ato": "Despacho ANEEL nº 3.625/2024",
+   "nivel": "texto_do_ato",
+   "documento_valores": "dsp20243625ti",
+   "documento_publicacao": "dsp20243625",
+   "dou": "D.O. de 17.12.2024, seção 1, p. 92, v. 162, n. 242",
+   "data_do_ato": "2024-12-16",
+   "teo": 17.37,
+   "teo_itaipu": 58.6,
+   "trecho_teo": "o valor da Tarifa de Energia de Otimização – TEO em R$ 17,37/MWh […] TEOItaipu em R$ 58,60/MWh",
+   "documento_teo": "dsp20243625ti",
+   "observacoes": [
+    "A partir de 2025 os limites passaram a ser fixados por despacho da superintendência, e não por resolução homologatória da Diretoria; a ata da Diretoria de 27/05/2025 registra recurso da Apine contra este despacho, não conhecido."
+   ]
+  },
+  {
+   "ano": 2026,
+   "ato": "Despacho ANEEL nº 3.850/2025",
+   "nivel": "texto_do_ato",
+   "documento_valores": "dsp20253850ti",
+   "documento_publicacao": "dsp20253850",
+   "dou": "D.O. de 23.12.2025, seção 1, p. 245, v. 163, n. 244",
+   "data_do_ato": "2025-12-19",
+   "teo": 18.27,
+   "teo_itaipu": 57.31,
+   "trecho_teo": "(i) o valor da Tarifa de Energia de Otimização – TEO em R$ 18,27/MWh […] TEOItaipu em R$ 57,31/MWh",
+   "documento_teo": "dsp20253850ti",
+   "observacoes": []
+  }
+ ],
+ "pendencias": [
+  {"ano": 2021, "item": "Texto integral e extrato da REH nº 2.828/2020", "situacao": "não acessado", "evidencia": "www2.aneel.gov.br/cedoc/reh20202828ti.pdf e reh20202828.pdf respondem 403 com desafio de navegador; o índice do Internet Archive não tem captura dos dois arquivos (consulta CDX de 30/09/2026 sem resultado); a cópia hospedada pela CCEE está em domínio bloqueado (403).", "efeito": "valores de 2021 lidos em documento oficial posterior do mesmo tema (voto da REH nº 2.994/2021); data de publicação vazia; vigência exata não conferida."},
+  {"ano": 2023, "item": "Texto integral da REH nº 3.167/2022 e texto da retificação publicada em 06/01/2023", "situacao": "não acessado", "evidencia": "reh20223167ti.pdf: origem 403 com desafio de navegador; a única captura pública do Internet Archive é um redirecionamento HTTP 301 de 09/08/2024, sem o arquivo. Diário Oficial (www.in.gov.br) não respondeu (conexão encerrada sem resposta).", "efeito": "valores de 2023 lidos no voto (original) e na Nota Técnica nº 01/2023-SGT/ANEEL (retificados), ambos do mesmo processo."}
+ ],
+ "bloqueios": [
+  {"fonte": "Biblioteca e CEDOC da ANEEL (www2.aneel.gov.br/cedoc, biblioteca.aneel.gov.br, antigo.aneel.gov.br, sei.aneel.gov.br, git.aneel.gov.br)", "verificado_em": "2026-09-30", "resposta": "HTTP 403 com página 'Just a moment...' (desafio de JavaScript e cookies do Cloudflare)", "conduta": "não contornado; usada a cópia pública id_ do Internet Archive quando existe, conferida por sha256"},
+  {"fonte": "Diário Oficial da União (www.in.gov.br, pesquisa.in.gov.br)", "verificado_em": "2026-09-30", "resposta": "conexão TLS aceita e encerrada sem resposta HTTP (HTTP/2 PROTOCOL_ERROR; em HTTP/1.1, 'Empty reply from server')", "conduta": "data de publicação no DOU lida na linha de referência do extrato oficial da ANEEL"},
+  {"fonte": "CCEE (www.ccee.org.br, dadosabertos.ccee.org.br), inclusive o InfoPLD (S20)", "verificado_em": "2026-09-30", "resposta": "HTTP 403 'Acesso bloqueado'", "conduta": "não é fonte do ato; não usada"},
+  {"fonte": "Planalto (www.planalto.gov.br)", "verificado_em": "2026-09-30", "resposta": "conexão encerrada sem resposta", "conduta": "texto das leis lido no portal de Legislação Federal do Senado"}
+ ]
+}
