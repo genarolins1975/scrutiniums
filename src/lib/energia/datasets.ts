@@ -1,3 +1,5 @@
+import { gold, lerGold } from "./gold";
+
 /**
  * Datasets integrados: slug público → identificador interno do pipeline, golds
  * que consome, páginas que o exibem e downloads. Espelha INTEGRADOS de
@@ -11,7 +13,7 @@ export type DatasetIntegrado = {
   downloads: string[];
 };
 
-export const DATASETS_INTEGRADOS: DatasetIntegrado[] = [
+const DATASETS_ESTATICOS: DatasetIntegrado[] = [
   { slug: "ccee-pld-horario", interno: "ccee_pld_horario", catalogoId: "ccee:pld_horario", paginas: [{ rotulo: "PLD", href: "/setor-eletrico/pld" }, { rotulo: "Rede", href: "/setor-eletrico/rede" }, { rotulo: "Visão geral", href: "/setor-eletrico/visao-geral" }], downloads: ["/energia/series/pld_horario.csv", "/energia/series/pld_diario.csv"] },
   { slug: "ons-ear-subsistema", interno: "ear_subsistema_di", catalogoId: "ons:ear-diario-por-subsistema", paginas: [{ rotulo: "Água e clima", href: "/setor-eletrico/agua-e-clima" }, { rotulo: "Visão geral", href: "/setor-eletrico/visao-geral" }, { rotulo: "PLD (formação)", href: "/setor-eletrico/pld#formacao" }], downloads: ["/energia/series/ear_diario.csv"] },
   { slug: "ons-ena-subsistema", interno: "ena_subsistema_di", catalogoId: "ons:ena-diario-por-subsistema", paginas: [{ rotulo: "Água e clima", href: "/setor-eletrico/agua-e-clima#ena" }, { rotulo: "Visão geral", href: "/setor-eletrico/visao-geral" }, { rotulo: "PLD (formação)", href: "/setor-eletrico/pld#formacao" }], downloads: ["/energia/series/ena_diario.csv"] },
@@ -21,12 +23,27 @@ export const DATASETS_INTEGRADOS: DatasetIntegrado[] = [
   { slug: "ons-cmo-semanal", interno: "cmo_se", catalogoId: "ons:cmo-semanal", paginas: [{ rotulo: "PLD (formação)", href: "/setor-eletrico/pld#cmo" }, { rotulo: "Visão geral", href: "/setor-eletrico/visao-geral" }], downloads: ["/energia/series/cmo_semanal.csv"] },
 ];
 
+/**
+ * Conjuntos integrados pelos módulos temáticos: vêm do catálogo publicado
+ * (catalogo.json), que os recebe do REGISTRO de cada módulo do pipeline. A mesma
+ * declaração alimenta o catálogo, a página Dados e esta lista; não há cópia à mão.
+ */
+function integradosDeModulos(): DatasetIntegrado[] {
+  const cat = gold.catalogo();
+  const fixos = new Set(DATASETS_ESTATICOS.map((d) => d.slug));
+  return (cat?.entradas ?? [])
+    .filter((e) => e.slug && e.interno && !fixos.has(e.slug) && e.estado !== "CATALOGADO")
+    .map((e) => ({ slug: e.slug!, interno: e.interno!, catalogoId: e.id, paginas: e.paginas ?? [], downloads: e.downloads ?? [] }));
+}
+
+export const DATASETS_INTEGRADOS: DatasetIntegrado[] = [...DATASETS_ESTATICOS, ...integradosDeModulos()];
+
 export function datasetPorSlug(slug: string) {
   return DATASETS_INTEGRADOS.find((d) => d.slug === slug);
 }
 
 /** Colunas e unidade de cada arquivo publicado pela plataforma (CSV com ";" e ponto decimal; vazio = ausência). */
-export const COLUNAS_ARQUIVO: Record<string, string> = {
+const COLUNAS_ESTATICAS: Record<string, string> = {
   "/energia/series/pld_horario.csv":
     "data_hora_local: data e hora no horário de Brasília (AAAA-MM-DDTHH:MM); SE, S, NE, N: PLD de cada submercado naquela hora, em R$/MWh nominais.",
   "/energia/series/pld_diario.csv":
@@ -45,3 +62,10 @@ export const COLUNAS_ARQUIVO: Record<string, string> = {
     "semana_operativa: data de referência da semana operativa informada pelo ONS; para cada subsistema, CMO semanal e por patamar de carga (leve, média, pesada), em R$/MWh.",
 };
 
+/** Dicionário dos arquivos dos módulos temáticos, publicado pelo pipeline (arquivos.json). */
+type ArquivosGold = { arquivos: Record<string, { colunas: string; modulo: string; gold: string }> };
+
+export const COLUNAS_ARQUIVO: Record<string, string> = {
+  ...COLUNAS_ESTATICAS,
+  ...Object.fromEntries(Object.entries(lerGold<ArquivosGold>("arquivos.json")?.arquivos ?? {}).map(([url, a]) => [url, a.colunas])),
+};

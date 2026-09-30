@@ -9,7 +9,24 @@
  *   pendente aparece como "em preparação", sem definição.
  */
 
+import { CONCEITOS_MODULOS } from "./conceitos-modulos";
+
 export type EstadoConferencia = "CONFERIDO" | "PENDENTE";
+
+export type GrupoConceito =
+  | "Preço"
+  | "Água"
+  | "Operação"
+  | "Modelos"
+  | "Mercado"
+  | "Rede"
+  | "Consumidor"
+  | "Qualidade e perdas"
+  | "Inclusão"
+  | "Empresas"
+  | "Expansão"
+  | "Regulação"
+  | "Transição";
 
 export type FonteOficial = {
   orgao: string;
@@ -25,7 +42,7 @@ export type Conceito = {
   slug: string;
   sigla?: string;
   nome: string;
-  grupo: "Preço" | "Água" | "Operação" | "Modelos" | "Mercado";
+  grupo: GrupoConceito;
   estado: EstadoConferencia;
   conferidoEm?: string;
   emUmaFrase?: string;
@@ -87,7 +104,7 @@ const CCEE_MCP_MENSAL: FonteOficial = {
   parafrase: "Em outras palavras: no consolidado do mês, a CCEE publica por submercado o resultado de venda e o de compra no Mercado de Curto Prazo.",
 };
 
-export const CONCEITOS: Conceito[] = [
+const CONCEITOS_BASE: Conceito[] = [
   {
     slug: "pld",
     sigla: "PLD",
@@ -532,8 +549,34 @@ export const CONCEITOS: Conceito[] = [
   },
 ];
 
+/**
+ * Verbetes dos módulos temáticos ficam em conceitos-<modulo>.ts (reunidos em
+ * conceitos-modulos.ts). Um verbete de módulo com o mesmo slug de um verbete base
+ * o substitui: é assim que um verbete PENDENTE vira CONFERIDO quando o módulo que
+ * conferiu a fonte primária o publica, sem duplicar a entrada.
+ */
+const SUBSTITUTOS = new Map(CONCEITOS_MODULOS.map((c) => [c.slug, c]));
+export const CONCEITOS: Conceito[] = [
+  ...CONCEITOS_BASE.map((c) => SUBSTITUTOS.get(c.slug) ?? c),
+  ...CONCEITOS_MODULOS.filter((c) => !CONCEITOS_BASE.some((b) => b.slug === c.slug)),
+];
+
 export function conceito(slug: string): Conceito | undefined {
   return CONCEITOS.find((c) => c.slug === slug);
 }
 
-export const GRUPOS: Conceito["grupo"][] = ["Preço", "Água", "Operação", "Modelos", "Mercado"];
+export const GRUPOS: GrupoConceito[] = [
+  "Preço",
+  "Água",
+  "Operação",
+  "Rede",
+  "Modelos",
+  "Mercado",
+  "Consumidor",
+  "Qualidade e perdas",
+  "Inclusão",
+  "Empresas",
+  "Expansão",
+  "Transição",
+  "Regulação",
+].filter((g) => CONCEITOS.some((c) => c.grupo === g)) as GrupoConceito[];

@@ -1,0 +1,289 @@
+{
+ "atualizado_em": "2026-09-30",
+ "paineis": {
+  "P001": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P002": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P003": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P004": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P005": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P006": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P007": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P008": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P009": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P010": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P011": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P012": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P013": {
+   "inicial": "placeholder",
+   "estado": "pendente"
+  },
+  "P014": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P015": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P016": {
+   "inicial": "placeholder",
+   "estado": "pendente"
+  },
+  "P017": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P018": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P019": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P020": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P021": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P022": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P023": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P024": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P025": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P026": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P027": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P028": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P029": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P030": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P031": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P032": {
+   "inicial": "placeholder",
+   "estado": "pendente"
+  },
+  "P033": {
+   "inicial": "placeholder",
+   "estado": "pendente"
+  },
+  "P034": {
+   "inicial": "placeholder",
+   "estado": "pendente"
+  },
+  "P035": {
+   "inicial": "placeholder",
+   "estado": "pendente"
+  },
+  "P036": {
+   "inicial": "placeholder",
+   "estado": "pendente"
+  },
+  "P037": {
+   "inicial": "placeholder",
+   "estado": "pendente"
+  },
+  "P038": {
+   "inicial": "placeholder",
+   "estado": "pendente"
+  },
+  "P039": {
+   "inicial": "placeholder",
+   "estado": "pendente"
+  },
+  "P040": {
+   "inicial": "placeholder",
+   "estado": "pendente"
+  },
+  "P041": {
+   "inicial": "placeholder",
+   "estado": "pendente"
+  },
+  "P042": {
+   "inicial": "placeholder",
+   "estado": "pendente"
+  },
+  "P043": {
+   "inicial": "placeholder",
+   "estado": "pendente"
+  },
+  "P044": {
+   "inicial": "placeholder",
+   "estado": "pendente"
+  },
+  "P045": {
+   "inicial": "placeholder",
+   "estado": "pendente"
+  },
+  "P046": {
+   "inicial": "placeholder",
+   "estado": "pendente"
+  },
+  "P047": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P048": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P049": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P050": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P051": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P052": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P053": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P054": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P055": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P056": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P057": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P058": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P059": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P060": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P061": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P062": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P063": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P064": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  },
+  "P065": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P066": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P067": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P068": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P069": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P070": {
+   "inicial": "parcial",
+   "estado": "pendente"
+  },
+  "P071": {
+   "inicial": "inexistente",
+   "estado": "pendente"
+  }
+ }
+}

@@ -70,9 +70,26 @@ def tema(nome, titulo):
     return "outros"
 
 
+_MODULOS = None
+
+
+def integrados_de_modulos():
+    """Conjuntos integrados pelos módulos temáticos (pipeline/energia/modulos), lidos do
+    REGISTRO de cada módulo: um só lugar declara o dataset, o slug e as páginas."""
+    global _MODULOS
+    if _MODULOS is None:
+        from pipeline.energia import modulos
+        _MODULOS = modulos.datasets_integrados()
+    return _MODULOS
+
+
+def integrado(orgao, nome):
+    return INTEGRADOS.get((orgao, nome)) or integrados_de_modulos().get((orgao, nome))
+
+
 def _entrada(orgao, pkg, verificado=True):
     nome = pkg.get("name")
-    integ = INTEGRADOS.get((orgao, nome))
+    integ = integrado(orgao, nome)
     formatos = sorted({(r.get("format") or "").upper() for r in pkg.get("resources", []) if r.get("format")})
     notas = (pkg.get("notes") or "").split("-----")[0].strip()
     return {
@@ -91,10 +108,20 @@ def _entrada(orgao, pkg, verificado=True):
         "estado": integ["estado"] if integ else "CATALOGADO",
         "usado_em": integ["golds"] if integ else [],
         "modelos": integ.get("modelos", []) if integ else [],
-        "quebras": QUEBRAS.get((orgao, nome), []),
+        "quebras": QUEBRAS.get((orgao, nome), []) or (integ or {}).get("quebras", []),
         "metadados_verificados": verificado,
         "descontinuado": "descontinuad" in (pkg.get("title") or "").lower() or "descontinuad" in (nome or ""),
+        **_extras_modulo(integ),
     }
+
+
+def _extras_modulo(integ):
+    """Campos que a interface usa para listar o conjunto integrado por um módulo (páginas,
+    downloads e o identificador do dataset no silver, chave de meta.json/fontes)."""
+    if not integ or "dataset_silver" not in integ:
+        return {}
+    return {"paginas": integ.get("paginas", []), "downloads": integ.get("downloads", []),
+            "interno": integ["dataset_silver"], "familia": integ.get("familia")}
 
 
 def colhe(baixar=http_get):
@@ -125,6 +152,24 @@ def construir(brutos):
         entradas.append(_entrada("CCEE", json.load(f)["result"]))
     status["CCEE"] = {"colhido_em": "2026-09-27T15:44:02Z", "conjuntos": 1,
                       "erro": "Catálogo da CCEE não colhido automaticamente nesta fase; os metadados do PLD_HORARIO vêm da captura versionada de 27/09/2026."}
+    # conjuntos integrados por módulos que não estão na listagem CKAN colhida (IBGE, CVM,
+    # EPE, MCTI, atos da ANEEL): a entrada vem do REGISTRO do módulo, que declara título,
+    # URL e licença verificados na integração
+    presentes = {(e["orgao"], e["nome"]) for e in entradas}
+    for (orgao, nome), integ in sorted(integrados_de_modulos().items()):
+        if (orgao, nome) in presentes:
+            continue
+        entradas.append({
+            "id": f"{orgao.lower()}:{nome}", "slug": integ["slug"], "orgao": orgao, "nome": nome,
+            "titulo": integ.get("titulo"), "url": integ.get("url") or URL_DATASET.get(orgao, "") + nome,
+            "licenca": integ.get("licenca"), "modificado_na_fonte": None,
+            "descricao": (integ.get("descricao") or "")[:600], "n_recursos": integ.get("n_recursos"),
+            "formatos": integ.get("formatos", []), "tema": integ.get("tema") or tema(nome, integ.get("titulo") or ""),
+            "estado": integ["estado"], "usado_em": integ["golds"], "modelos": integ.get("modelos", []),
+            "quebras": integ.get("quebras", []), "metadados_verificados": True,
+            "descontinuado": bool(integ.get("descontinuado")),
+            **_extras_modulo(integ),
+        })
     with open(os.path.join(AQUI, "catalogo_manual.json"), encoding="utf-8") as f:
         for m in json.load(f)["entradas"]:
             entradas.append({**m, "estado": "CATALOGADO", "usado_em": [], "modelos": [], "quebras": [],

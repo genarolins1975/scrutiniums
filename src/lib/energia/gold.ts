@@ -40,6 +40,15 @@ function ler<T>(nome: string): T | null {
   }
 }
 
+/**
+ * Leitura genérica de uma gold pelo nome do arquivo, para os módulos temáticos
+ * (pipeline/energia/modulos): cada módulo tipa a própria gold em
+ * src/lib/energia/tipos-<modulo>.ts sem editar este arquivo.
+ */
+export function lerGold<T>(nome: string): T | null {
+  return ler<T>(nome);
+}
+
 export const gold = {
   pld: () => ler<PldGold>("pld.json"),
   hidrologia: () => ler<HidrologiaGold>("hidrologia.json"),

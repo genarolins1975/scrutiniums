@@ -452,6 +452,12 @@ export type EntradaCatalogo = {
   quebras: { data: string; descricao: string; origem?: "FONTE" | "PLATAFORMA" }[];
   metadados_verificados: boolean;
   descontinuado: boolean;
+  /** Só nos conjuntos integrados por módulos temáticos (pipeline/energia/modulos). */
+  paginas?: { rotulo: string; href: string }[];
+  downloads?: string[];
+  /** Identificador do dataset no silver (chave de meta.json/fontes). */
+  interno?: string;
+  familia?: string;
 };
 
 export type CatalogoGold = {
