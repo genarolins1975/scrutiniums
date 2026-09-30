@@ -1,11 +1,11 @@
 {
  "dominio": "energia",
  "gold": "geracao.json",
- "gerado_em": "2026-09-28T15:25:46Z",
+ "gerado_em": "2026-09-30T02:20:34Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d1dcbf611ab9",
+ "versao_codigo": "196905461ac0",
  "disponivel": true,
- "dia_referencia": "2026-09-25",
+ "dia_referencia": "2026-09-28",
  "fontes": [
   {
    "id": "hidraulica",
@@ -44,69 +44,69 @@
    "rg": "SIN",
    "nome": "Sistema Interligado Nacional",
    "dia": {
-    "inicio": "2026-09-25",
-    "fim": "2026-09-25",
+    "inicio": "2026-09-28",
+    "fim": "2026-09-28",
     "mwmed": {
-     "hidraulica": 45864.0,
-     "termica": 8779.0,
-     "eolica": 15023.0,
-     "solar": 15006.0
+     "hidraulica": 47999.0,
+     "termica": 9556.0,
+     "eolica": 14789.0,
+     "solar": 16552.0
     },
-    "total_mwmed": 84672.0,
+    "total_mwmed": 88896.0,
     "participacao": {
-     "hidraulica": 54.2,
-     "termica": 10.4,
-     "eolica": 17.7,
-     "solar": 17.7
+     "hidraulica": 54.0,
+     "termica": 10.7,
+     "eolica": 16.6,
+     "solar": 18.6
     },
-    "hes": 89.6
+    "hes": 89.3
    },
    "7d": {
-    "inicio": "2026-09-19",
-    "fim": "2026-09-25",
+    "inicio": "2026-09-22",
+    "fim": "2026-09-28",
     "mwmed": {
-     "hidraulica": 44427.0,
-     "termica": 8978.0,
-     "eolica": 14503.0,
-     "solar": 14175.0
+     "hidraulica": 45806.0,
+     "termica": 8905.0,
+     "eolica": 14059.0,
+     "solar": 14986.0
     },
-    "total_mwmed": 82083.0,
+    "total_mwmed": 83757.0,
     "participacao": {
-     "hidraulica": 54.1,
-     "termica": 10.9,
-     "eolica": 17.7,
-     "solar": 17.3
+     "hidraulica": 54.7,
+     "termica": 10.6,
+     "eolica": 16.8,
+     "solar": 17.9
     },
-    "hes": 89.1
+    "hes": 89.4
    },
    "30d": {
-    "inicio": "2026-08-27",
-    "fim": "2026-09-25",
+    "inicio": "2026-08-30",
+    "fim": "2026-09-28",
     "mwmed": {
-     "hidraulica": 43175.0,
-     "termica": 9884.0,
-     "eolica": 15016.0,
-     "solar": 13760.0
+     "hidraulica": 43046.0,
+     "termica": 9711.0,
+     "eolica": 14885.0,
+     "solar": 13823.0
     },
-    "total_mwmed": 81836.0,
+    "total_mwmed": 81465.0,
     "participacao": {
      "hidraulica": 52.8,
-     "termica": 12.1,
+     "termica": 11.9,
      "eolica": 18.3,
-     "solar": 16.8
+     "solar": 17.0
     },
-    "hes": 87.9
+    "hes": 88.1
    },
    "12m": {
-    "inicio": "2025-09-26",
-    "fim": "2026-09-25",
+    "inicio": "2025-09-29",
+    "fim": "2026-09-28",
     "mwmed": {
-     "hidraulica": 46374.0,
-     "termica": 10071.0,
-     "eolica": 12334.0,
-     "solar": 11618.0
+     "hidraulica": 46465.0,
+     "termica": 10049.0,
+     "eolica": 12318.0,
+     "solar": 11656.0
     },
-    "total_mwmed": 80397.0,
+    "total_mwmed": 80488.0,
     "participacao": {
      "hidraulica": 57.7,
      "termica": 12.5,
@@ -120,149 +120,149 @@
    "rg": "SE",
    "nome": "Sudeste/Centro-Oeste",
    "dia": {
-    "inicio": "2026-09-25",
-    "fim": "2026-09-25",
+    "inicio": "2026-09-28",
+    "fim": "2026-09-28",
     "mwmed": {
-     "hidraulica": 26569.0,
-     "termica": 5495.0,
-     "eolica": 175.0,
-     "solar": 7468.0
+     "hidraulica": 27512.0,
+     "termica": 5507.0,
+     "eolica": 178.0,
+     "solar": 9102.0
     },
-    "total_mwmed": 39707.0,
+    "total_mwmed": 42299.0,
     "participacao": {
-     "hidraulica": 66.9,
-     "termica": 13.8,
+     "hidraulica": 65.0,
+     "termica": 13.0,
      "eolica": 0.4,
-     "solar": 18.8
+     "solar": 21.5
     },
-    "hes": 86.2
+    "hes": 87.0
    },
    "7d": {
-    "inicio": "2026-09-19",
-    "fim": "2026-09-25",
+    "inicio": "2026-09-22",
+    "fim": "2026-09-28",
     "mwmed": {
-     "hidraulica": 25488.0,
-     "termica": 5544.0,
+     "hidraulica": 26402.0,
+     "termica": 5569.0,
      "eolica": 134.0,
-     "solar": 6784.0
+     "solar": 7331.0
     },
-    "total_mwmed": 37949.0,
+    "total_mwmed": 39436.0,
     "participacao": {
-     "hidraulica": 67.2,
-     "termica": 14.6,
-     "eolica": 0.4,
-     "solar": 17.9
+     "hidraulica": 67.0,
+     "termica": 14.1,
+     "eolica": 0.3,
+     "solar": 18.6
     },
-    "hes": 85.4
+    "hes": 85.9
    },
    "30d": {
-    "inicio": "2026-08-27",
-    "fim": "2026-09-25",
+    "inicio": "2026-08-30",
+    "fim": "2026-09-28",
     "mwmed": {
-     "hidraulica": 24509.0,
-     "termica": 5753.0,
+     "hidraulica": 24565.0,
+     "termica": 5643.0,
      "eolica": 144.0,
-     "solar": 6649.0
+     "solar": 6719.0
     },
-    "total_mwmed": 37054.0,
+    "total_mwmed": 37071.0,
     "participacao": {
-     "hidraulica": 66.1,
-     "termica": 15.5,
+     "hidraulica": 66.3,
+     "termica": 15.2,
      "eolica": 0.4,
-     "solar": 17.9
+     "solar": 18.1
     },
-    "hes": 84.5
+    "hes": 84.8
    },
    "12m": {
-    "inicio": "2025-09-26",
-    "fim": "2026-09-25",
+    "inicio": "2025-09-29",
+    "fim": "2026-09-28",
     "mwmed": {
-     "hidraulica": 27083.0,
-     "termica": 5676.0,
+     "hidraulica": 27133.0,
+     "termica": 5656.0,
      "eolica": 118.0,
-     "solar": 5787.0
+     "solar": 5809.0
     },
-    "total_mwmed": 38664.0,
+    "total_mwmed": 38716.0,
     "participacao": {
-     "hidraulica": 70.0,
-     "termica": 14.7,
+     "hidraulica": 70.1,
+     "termica": 14.6,
      "eolica": 0.3,
      "solar": 15.0
     },
-    "hes": 85.3
+    "hes": 85.4
    }
   },
   {
    "rg": "S",
    "nome": "Sul",
    "dia": {
-    "inicio": "2026-09-25",
-    "fim": "2026-09-25",
+    "inicio": "2026-09-28",
+    "fim": "2026-09-28",
     "mwmed": {
-     "hidraulica": 12344.0,
-     "termica": 719.0,
-     "eolica": 240.0,
-     "solar": 2045.0
+     "hidraulica": 12793.0,
+     "termica": 1101.0,
+     "eolica": 450.0,
+     "solar": 1415.0
     },
-    "total_mwmed": 15348.0,
+    "total_mwmed": 15759.0,
     "participacao": {
-     "hidraulica": 80.4,
-     "termica": 4.7,
-     "eolica": 1.6,
-     "solar": 13.3
+     "hidraulica": 81.2,
+     "termica": 7.0,
+     "eolica": 2.9,
+     "solar": 9.0
     },
-    "hes": 95.3
+    "hes": 93.0
    },
    "7d": {
-    "inicio": "2026-09-19",
-    "fim": "2026-09-25",
+    "inicio": "2026-09-22",
+    "fim": "2026-09-28",
     "mwmed": {
-     "hidraulica": 12079.0,
-     "termica": 944.0,
-     "eolica": 370.0,
-     "solar": 1570.0
+     "hidraulica": 12436.0,
+     "termica": 804.0,
+     "eolica": 334.0,
+     "solar": 1791.0
     },
-    "total_mwmed": 14963.0,
+    "total_mwmed": 15364.0,
     "participacao": {
-     "hidraulica": 80.7,
-     "termica": 6.3,
-     "eolica": 2.5,
-     "solar": 10.5
+     "hidraulica": 80.9,
+     "termica": 5.2,
+     "eolica": 2.2,
+     "solar": 11.7
     },
-    "hes": 93.7
+    "hes": 94.8
    },
    "30d": {
-    "inicio": "2026-08-27",
-    "fim": "2026-09-25",
+    "inicio": "2026-08-30",
+    "fim": "2026-09-28",
     "mwmed": {
-     "hidraulica": 11756.0,
-     "termica": 1148.0,
-     "eolica": 383.0,
-     "solar": 1456.0
+     "hidraulica": 11718.0,
+     "termica": 1153.0,
+     "eolica": 367.0,
+     "solar": 1487.0
     },
-    "total_mwmed": 14742.0,
+    "total_mwmed": 14725.0,
     "participacao": {
-     "hidraulica": 79.7,
+     "hidraulica": 79.6,
      "termica": 7.8,
-     "eolica": 2.6,
-     "solar": 9.9
+     "eolica": 2.5,
+     "solar": 10.1
     },
     "hes": 92.2
    },
    "12m": {
-    "inicio": "2025-09-26",
-    "fim": "2026-09-25",
+    "inicio": "2025-09-29",
+    "fim": "2026-09-28",
     "mwmed": {
-     "hidraulica": 8414.0,
-     "termica": 1122.0,
-     "eolica": 633.0,
-     "solar": 1399.0
+     "hidraulica": 8446.0,
+     "termica": 1121.0,
+     "eolica": 627.0,
+     "solar": 1401.0
     },
-    "total_mwmed": 11567.0,
+    "total_mwmed": 11594.0,
     "participacao": {
-     "hidraulica": 72.7,
+     "hidraulica": 72.8,
      "termica": 9.7,
-     "eolica": 5.5,
+     "eolica": 5.4,
      "solar": 12.1
     },
     "hes": 90.3
@@ -272,74 +272,74 @@
    "rg": "NE",
    "nome": "Nordeste",
    "dia": {
-    "inicio": "2026-09-25",
-    "fim": "2026-09-25",
+    "inicio": "2026-09-28",
+    "fim": "2026-09-28",
     "mwmed": {
-     "hidraulica": 4306.0,
-     "termica": 471.0,
-     "eolica": 14331.0,
-     "solar": 4567.0
+     "hidraulica": 4690.0,
+     "termica": 556.0,
+     "eolica": 13809.0,
+     "solar": 5054.0
     },
-    "total_mwmed": 23675.0,
+    "total_mwmed": 24110.0,
     "participacao": {
-     "hidraulica": 18.2,
-     "termica": 2.0,
-     "eolica": 60.5,
-     "solar": 19.3
+     "hidraulica": 19.5,
+     "termica": 2.3,
+     "eolica": 57.3,
+     "solar": 21.0
     },
-    "hes": 98.0
+    "hes": 97.7
    },
    "7d": {
-    "inicio": "2026-09-19",
-    "fim": "2026-09-25",
+    "inicio": "2026-09-22",
+    "fim": "2026-09-28",
     "mwmed": {
-     "hidraulica": 4206.0,
-     "termica": 458.0,
-     "eolica": 13704.0,
-     "solar": 4789.0
+     "hidraulica": 4253.0,
+     "termica": 478.0,
+     "eolica": 13280.0,
+     "solar": 4863.0
     },
-    "total_mwmed": 23157.0,
+    "total_mwmed": 22875.0,
     "participacao": {
-     "hidraulica": 18.2,
+     "hidraulica": 18.6,
+     "termica": 2.1,
+     "eolica": 58.1,
+     "solar": 21.3
+    },
+    "hes": 97.9
+   },
+   "30d": {
+    "inicio": "2026-08-30",
+    "fim": "2026-09-28",
+    "mwmed": {
+     "hidraulica": 4117.0,
+     "termica": 454.0,
+     "eolica": 14067.0,
+     "solar": 4598.0
+    },
+    "total_mwmed": 23235.0,
+    "participacao": {
+     "hidraulica": 17.7,
      "termica": 2.0,
-     "eolica": 59.2,
-     "solar": 20.7
+     "eolica": 60.5,
+     "solar": 19.8
     },
     "hes": 98.0
    },
-   "30d": {
-    "inicio": "2026-08-27",
-    "fim": "2026-09-25",
-    "mwmed": {
-     "hidraulica": 4207.0,
-     "termica": 447.0,
-     "eolica": 14176.0,
-     "solar": 4635.0
-    },
-    "total_mwmed": 23464.0,
-    "participacao": {
-     "hidraulica": 17.9,
-     "termica": 1.9,
-     "eolica": 60.4,
-     "solar": 19.8
-    },
-    "hes": 98.1
-   },
    "12m": {
-    "inicio": "2025-09-26",
-    "fim": "2026-09-25",
+    "inicio": "2025-09-29",
+    "fim": "2026-09-28",
     "mwmed": {
-     "hidraulica": 3629.0,
+     "hidraulica": 3639.0,
      "termica": 989.0,
-     "eolica": 11408.0,
-     "solar": 3763.0
+     "eolica": 11397.0,
+     "solar": 3774.0
     },
-    "total_mwmed": 19790.0,
+    "total_mwmed": 19799.0,
     "participacao": {
-     "hidraulica": 18.3,
+     "hidraulica": 18.4,
      "termica": 5.0,
      "eolica": 57.6,
-     "solar": 19.0
+     "solar": 19.1
     },
     "hes": 95.0
    }
@@ -348,89 +348,89 @@
    "rg": "N",
    "nome": "Norte",
    "dia": {
-    "inicio": "2026-09-25",
-    "fim": "2026-09-25",
+    "inicio": "2026-09-28",
+    "fim": "2026-09-28",
     "mwmed": {
-     "hidraulica": 2645.0,
-     "termica": 2094.0,
-     "eolica": 278.0,
-     "solar": 925.0
+     "hidraulica": 3004.0,
+     "termica": 2393.0,
+     "eolica": 352.0,
+     "solar": 981.0
     },
-    "total_mwmed": 5942.0,
+    "total_mwmed": 6730.0,
     "participacao": {
-     "hidraulica": 44.5,
-     "termica": 35.2,
-     "eolica": 4.7,
-     "solar": 15.6
+     "hidraulica": 44.6,
+     "termica": 35.6,
+     "eolica": 5.2,
+     "solar": 14.6
     },
-    "hes": 64.8
+    "hes": 64.4
    },
    "7d": {
-    "inicio": "2026-09-19",
-    "fim": "2026-09-25",
+    "inicio": "2026-09-22",
+    "fim": "2026-09-28",
     "mwmed": {
-     "hidraulica": 2654.0,
-     "termica": 2033.0,
-     "eolica": 295.0,
-     "solar": 1032.0
+     "hidraulica": 2715.0,
+     "termica": 2055.0,
+     "eolica": 310.0,
+     "solar": 1002.0
     },
-    "total_mwmed": 6015.0,
+    "total_mwmed": 6082.0,
     "participacao": {
-     "hidraulica": 44.1,
+     "hidraulica": 44.6,
      "termica": 33.8,
-     "eolica": 4.9,
-     "solar": 17.2
+     "eolica": 5.1,
+     "solar": 16.5
     },
     "hes": 66.2
    },
    "30d": {
-    "inicio": "2026-08-27",
-    "fim": "2026-09-25",
+    "inicio": "2026-08-30",
+    "fim": "2026-09-28",
     "mwmed": {
-     "hidraulica": 2704.0,
-     "termica": 2536.0,
-     "eolica": 314.0,
-     "solar": 1021.0
+     "hidraulica": 2646.0,
+     "termica": 2461.0,
+     "eolica": 308.0,
+     "solar": 1019.0
     },
-    "total_mwmed": 6575.0,
+    "total_mwmed": 6434.0,
     "participacao": {
      "hidraulica": 41.1,
-     "termica": 38.6,
+     "termica": 38.2,
      "eolica": 4.8,
-     "solar": 15.5
+     "solar": 15.8
     },
-    "hes": 61.4
+    "hes": 61.8
    },
    "12m": {
-    "inicio": "2025-09-26",
-    "fim": "2026-09-25",
+    "inicio": "2025-09-29",
+    "fim": "2026-09-28",
     "mwmed": {
-     "hidraulica": 7249.0,
-     "termica": 2284.0,
+     "hidraulica": 7248.0,
+     "termica": 2283.0,
      "eolica": 210.0,
-     "solar": 670.0
+     "solar": 672.0
     },
-    "total_mwmed": 10412.0,
+    "total_mwmed": 10413.0,
     "participacao": {
      "hidraulica": 69.6,
      "termica": 21.9,
      "eolica": 2.0,
-     "solar": 6.4
+     "solar": 6.5
     },
     "hes": 78.1
    }
   }
  ],
  "mix_12m_anterior_sin": {
-  "inicio": "2024-09-26",
-  "fim": "2025-09-25",
+  "inicio": "2024-09-29",
+  "fim": "2025-09-28",
   "mwmed": {
-   "hidraulica": 46815.0,
-   "termica": 9953.0,
-   "eolica": 13273.0,
-   "solar": 9966.0
+   "hidraulica": 46740.0,
+   "termica": 9914.0,
+   "eolica": 13277.0,
+   "solar": 9969.0
   },
-  "total_mwmed": 80006.0,
+  "total_mwmed": 79901.0,
   "participacao": {
    "hidraulica": 58.5,
    "termica": 12.4,
@@ -443,142 +443,130 @@
   {
    "ano": 2025,
    "7d": {
-    "inicio": "2025-09-19",
-    "fim": "2025-09-25",
+    "inicio": "2025-09-22",
+    "fim": "2025-09-28",
     "mwmed": {
-     "hidraulica": 37382.0,
-     "termica": 13588.0,
-     "eolica": 17289.0,
-     "solar": 10237.0
+     "hidraulica": 35766.0,
+     "termica": 12726.0,
+     "eolica": 17000.0,
+     "solar": 10262.0
     },
-    "total_mwmed": 78497.0,
+    "total_mwmed": 75754.0,
     "participacao": {
-     "hidraulica": 47.6,
-     "termica": 17.3,
-     "eolica": 22.0,
-     "solar": 13.0
-    },
-    "hes": 82.7
-   },
-   "30d": {
-    "inicio": "2025-08-27",
-    "fim": "2025-09-25",
-    "mwmed": {
-     "hidraulica": 37264.0,
-     "termica": 12611.0,
-     "eolica": 17217.0,
-     "solar": 10514.0
-    },
-    "total_mwmed": 77605.0,
-    "participacao": {
-     "hidraulica": 48.0,
-     "termica": 16.2,
-     "eolica": 22.2,
+     "hidraulica": 47.2,
+     "termica": 16.8,
+     "eolica": 22.4,
      "solar": 13.5
     },
-    "hes": 83.8
+    "hes": 83.2
+   },
+   "30d": {
+    "inicio": "2025-08-30",
+    "fim": "2025-09-28",
+    "mwmed": {
+     "hidraulica": 36839.0,
+     "termica": 12287.0,
+     "eolica": 17151.0,
+     "solar": 10474.0
+    },
+    "total_mwmed": 76751.0,
+    "participacao": {
+     "hidraulica": 48.0,
+     "termica": 16.0,
+     "eolica": 22.3,
+     "solar": 13.6
+    },
+    "hes": 84.0
    }
   },
   {
    "ano": 2024,
    "7d": {
-    "inicio": "2024-09-19",
-    "fim": "2024-09-25",
+    "inicio": "2024-09-22",
+    "fim": "2024-09-28",
     "mwmed": {
-     "hidraulica": 40179.0,
-     "termica": 15526.0,
-     "eolica": 17073.0,
-     "solar": 9512.0
+     "hidraulica": 41374.0,
+     "termica": 15773.0,
+     "eolica": 16591.0,
+     "solar": 9650.0
     },
-    "total_mwmed": 82290.0,
+    "total_mwmed": 83387.0,
     "participacao": {
-     "hidraulica": 48.8,
+     "hidraulica": 49.6,
      "termica": 18.9,
-     "eolica": 20.7,
+     "eolica": 19.9,
      "solar": 11.6
     },
     "hes": 81.1
    },
    "30d": {
-    "inicio": "2024-08-27",
-    "fim": "2024-09-25",
+    "inicio": "2024-08-30",
+    "fim": "2024-09-28",
     "mwmed": {
-     "hidraulica": 39829.0,
-     "termica": 14005.0,
-     "eolica": 16879.0,
-     "solar": 9047.0
+     "hidraulica": 40067.0,
+     "termica": 14393.0,
+     "eolica": 16658.0,
+     "solar": 9180.0
     },
-    "total_mwmed": 79761.0,
+    "total_mwmed": 80298.0,
     "participacao": {
      "hidraulica": 49.9,
-     "termica": 17.6,
-     "eolica": 21.2,
-     "solar": 11.3
+     "termica": 17.9,
+     "eolica": 20.7,
+     "solar": 11.4
     },
-    "hes": 82.4
+    "hes": 82.1
    }
   },
   {
    "ano": 2023,
    "7d": {
-    "inicio": "2023-09-19",
-    "fim": "2023-09-25",
+    "inicio": "2023-09-22",
+    "fim": "2023-09-28",
     "mwmed": {
-     "hidraulica": 50506.0,
-     "termica": 8961.0,
-     "eolica": 12944.0,
-     "solar": 7485.0
+     "hidraulica": 53783.0,
+     "termica": 8705.0,
+     "eolica": 11404.0,
+     "solar": 7362.0
     },
-    "total_mwmed": 79896.0,
+    "total_mwmed": 81254.0,
     "participacao": {
-     "hidraulica": 63.2,
-     "termica": 11.2,
-     "eolica": 16.2,
-     "solar": 9.4
+     "hidraulica": 66.2,
+     "termica": 10.7,
+     "eolica": 14.0,
+     "solar": 9.1
     },
-    "hes": 88.8
+    "hes": 89.3
    },
    "30d": {
-    "inicio": "2023-08-27",
-    "fim": "2023-09-25",
+    "inicio": "2023-08-30",
+    "fim": "2023-09-28",
     "mwmed": {
-     "hidraulica": 46117.0,
-     "termica": 9269.0,
-     "eolica": 12429.0,
-     "solar": 6646.0
+     "hidraulica": 47170.0,
+     "termica": 9100.0,
+     "eolica": 12727.0,
+     "solar": 6803.0
     },
-    "total_mwmed": 74461.0,
+    "total_mwmed": 75799.0,
     "participacao": {
-     "hidraulica": 61.9,
-     "termica": 12.4,
-     "eolica": 16.7,
-     "solar": 8.9
+     "hidraulica": 62.2,
+     "termica": 12.0,
+     "eolica": 16.8,
+     "solar": 9.0
     },
-    "hes": 87.6
+    "hes": 88.0
    }
   }
  ],
  "termica_contexto": {
-  "participacao_7d": 10.9,
+  "participacao_7d": 10.6,
   "mediana_365d": 12.4,
   "p10_365d": 9.2,
   "p90_365d": 17.4,
-  "percentil": 29.3,
+  "percentil": 24.7,
   "n_janelas": 365
  },
  "serie_termica_7d": [
-  {
-   "d": "2025-09-19",
-   "termica_7d": 14.62
-  },
-  {
-   "d": "2025-09-20",
-   "termica_7d": 14.85
-  },
-  {
-   "d": "2025-09-21",
-   "termica_7d": 15.25
-  },
   {
    "d": "2025-09-22",
    "termica_7d": 15.63
@@ -1957,7 +1945,7 @@
   },
   {
    "d": "2026-09-01",
-   "termica_7d": 12.1
+   "termica_7d": 12.11
   },
   {
    "d": "2026-09-02",
@@ -1993,7 +1981,7 @@
   },
   {
    "d": "2026-09-10",
-   "termica_7d": 12.23
+   "termica_7d": 12.24
   },
   {
    "d": "2026-09-11",
@@ -2054,6 +2042,18 @@
   {
    "d": "2026-09-25",
    "termica_7d": 10.94
+  },
+  {
+   "d": "2026-09-26",
+   "termica_7d": 10.74
+  },
+  {
+   "d": "2026-09-27",
+   "termica_7d": 10.57
+  },
+  {
+   "d": "2026-09-28",
+   "termica_7d": 10.63
   }
  ],
  "inicio_regime_atual": "2023-04-29",
@@ -2064,170 +2064,170 @@
  "perfil_horario_sin": [
   {
    "h": "00:00",
-   "hidraulica": 46781.0,
-   "termica": 9458.0,
-   "eolica": 21255.0,
+   "hidraulica": 48933.0,
+   "termica": 8631.0,
+   "eolica": 20284.0,
    "solar": 1.0
   },
   {
    "h": "01:00",
-   "hidraulica": 43397.0,
-   "termica": 8897.0,
-   "eolica": 21363.0,
+   "hidraulica": 46230.0,
+   "termica": 8582.0,
+   "eolica": 20210.0,
    "solar": 1.0
   },
   {
    "h": "02:00",
-   "hidraulica": 41241.0,
-   "termica": 8855.0,
-   "eolica": 21152.0,
+   "hidraulica": 44343.0,
+   "termica": 8679.0,
+   "eolica": 20057.0,
    "solar": 1.0
   },
   {
    "h": "03:00",
-   "hidraulica": 40419.0,
-   "termica": 8831.0,
-   "eolica": 20684.0,
+   "hidraulica": 43983.0,
+   "termica": 8743.0,
+   "eolica": 19285.0,
    "solar": 1.0
   },
   {
    "h": "04:00",
-   "hidraulica": 41538.0,
-   "termica": 8785.0,
-   "eolica": 19906.0,
+   "hidraulica": 44801.0,
+   "termica": 8751.0,
+   "eolica": 18445.0,
    "solar": 14.0
   },
   {
    "h": "05:00",
-   "hidraulica": 44649.0,
-   "termica": 8783.0,
-   "eolica": 18601.0,
-   "solar": 778.0
+   "hidraulica": 46859.0,
+   "termica": 8709.0,
+   "eolica": 17754.0,
+   "solar": 775.0
   },
   {
    "h": "06:00",
-   "hidraulica": 42139.0,
-   "termica": 8565.0,
-   "eolica": 16767.0,
-   "solar": 9390.0
+   "hidraulica": 42555.0,
+   "termica": 8711.0,
+   "eolica": 16804.0,
+   "solar": 9549.0
   },
   {
    "h": "07:00",
-   "hidraulica": 35790.0,
-   "termica": 8377.0,
-   "eolica": 15792.0,
-   "solar": 21453.0
+   "hidraulica": 34817.0,
+   "termica": 8671.0,
+   "eolica": 15971.0,
+   "solar": 23175.0
   },
   {
    "h": "08:00",
-   "hidraulica": 32207.0,
-   "termica": 8338.0,
-   "eolica": 12730.0,
-   "solar": 31569.0
+   "hidraulica": 32617.0,
+   "termica": 8665.0,
+   "eolica": 14774.0,
+   "solar": 32377.0
   },
   {
    "h": "09:00",
-   "hidraulica": 31193.0,
-   "termica": 8319.0,
-   "eolica": 9628.0,
-   "solar": 37422.0
+   "hidraulica": 31435.0,
+   "termica": 8628.0,
+   "eolica": 11856.0,
+   "solar": 40001.0
   },
   {
    "h": "10:00",
-   "hidraulica": 31608.0,
-   "termica": 8253.0,
-   "eolica": 7807.0,
-   "solar": 40990.0
+   "hidraulica": 31511.0,
+   "termica": 8618.0,
+   "eolica": 9594.0,
+   "solar": 45830.0
   },
   {
    "h": "11:00",
-   "hidraulica": 31485.0,
-   "termica": 8277.0,
-   "eolica": 6882.0,
-   "solar": 43792.0
+   "hidraulica": 31446.0,
+   "termica": 8639.0,
+   "eolica": 8058.0,
+   "solar": 49598.0
   },
   {
    "h": "12:00",
-   "hidraulica": 32322.0,
-   "termica": 8278.0,
-   "eolica": 5339.0,
-   "solar": 42957.0
+   "hidraulica": 30684.0,
+   "termica": 8689.0,
+   "eolica": 7088.0,
+   "solar": 49427.0
   },
   {
    "h": "13:00",
-   "hidraulica": 33082.0,
-   "termica": 8327.0,
-   "eolica": 6887.0,
-   "solar": 41962.0
+   "hidraulica": 32655.0,
+   "termica": 8826.0,
+   "eolica": 7981.0,
+   "solar": 47691.0
   },
   {
    "h": "14:00",
-   "hidraulica": 34631.0,
-   "termica": 8361.0,
-   "eolica": 9690.0,
-   "solar": 38408.0
+   "hidraulica": 36865.0,
+   "termica": 9262.0,
+   "eolica": 9383.0,
+   "solar": 42104.0
   },
   {
    "h": "15:00",
-   "hidraulica": 40255.0,
-   "termica": 8445.0,
-   "eolica": 11361.0,
-   "solar": 30387.0
+   "hidraulica": 44656.0,
+   "termica": 9626.0,
+   "eolica": 9912.0,
+   "solar": 33024.0
   },
   {
    "h": "16:00",
-   "hidraulica": 51282.0,
-   "termica": 8762.0,
-   "eolica": 13022.0,
-   "solar": 17094.0
+   "hidraulica": 57297.0,
+   "termica": 9790.0,
+   "eolica": 11000.0,
+   "solar": 19670.0
   },
   {
    "h": "17:00",
-   "hidraulica": 62253.0,
-   "termica": 9385.0,
-   "eolica": 14808.0,
-   "solar": 3776.0
+   "hidraulica": 67576.0,
+   "termica": 11099.0,
+   "eolica": 13076.0,
+   "solar": 3859.0
   },
   {
    "h": "18:00",
-   "hidraulica": 68827.0,
-   "termica": 9606.0,
-   "eolica": 15747.0,
-   "solar": 116.0
+   "hidraulica": 70589.0,
+   "termica": 12152.0,
+   "eolica": 14771.0,
+   "solar": 133.0
   },
   {
    "h": "19:00",
-   "hidraulica": 68699.0,
-   "termica": 9413.0,
-   "eolica": 17072.0,
+   "hidraulica": 69843.0,
+   "termica": 12070.0,
+   "eolica": 16796.0,
    "solar": 19.0
   },
   {
    "h": "20:00",
-   "hidraulica": 65907.0,
-   "termica": 9120.0,
-   "eolica": 17733.0,
+   "hidraulica": 68775.0,
+   "termica": 12146.0,
+   "eolica": 17239.0,
    "solar": 1.0
   },
   {
    "h": "21:00",
-   "hidraulica": 64007.0,
-   "termica": 9141.0,
-   "eolica": 18411.0,
+   "hidraulica": 68324.0,
+   "termica": 11433.0,
+   "eolica": 17738.0,
    "solar": 1.0
   },
   {
    "h": "22:00",
-   "hidraulica": 60564.0,
-   "termica": 9049.0,
-   "eolica": 18873.0,
+   "hidraulica": 65158.0,
+   "termica": 10243.0,
+   "eolica": 18171.0,
    "solar": 1.0
   },
   {
    "h": "23:00",
-   "hidraulica": 56451.0,
-   "termica": 9068.0,
-   "eolica": 19052.0,
+   "hidraulica": 60028.0,
+   "termica": 9977.0,
+   "eolica": 18692.0,
    "solar": 1.0
   }
  ],
@@ -16719,7 +16719,7 @@
    "d": "2026-09-01",
    "hidraulica": 48711.0,
    "termica": 10570.0,
-   "eolica": 13449.0,
+   "eolica": 13437.0,
    "solar": 14435.0
   },
   {
@@ -16761,7 +16761,7 @@
    "d": "2026-09-07",
    "hidraulica": 35512.0,
    "termica": 9532.0,
-   "eolica": 14236.0,
+   "eolica": 14218.0,
    "solar": 11808.0
   },
   {
@@ -16781,7 +16781,7 @@
   {
    "d": "2026-09-10",
    "hidraulica": 43008.0,
-   "termica": 10323.0,
+   "termica": 10338.0,
    "eolica": 18228.0,
    "solar": 13718.0
   },
@@ -16789,28 +16789,28 @@
    "d": "2026-09-11",
    "hidraulica": 43603.0,
    "termica": 10779.0,
-   "eolica": 16613.0,
+   "eolica": 16619.0,
    "solar": 14897.0
   },
   {
    "d": "2026-09-12",
    "hidraulica": 41940.0,
    "termica": 11273.0,
-   "eolica": 13566.0,
+   "eolica": 13573.0,
    "solar": 12985.0
   },
   {
    "d": "2026-09-13",
    "hidraulica": 36267.0,
    "termica": 10326.0,
-   "eolica": 13535.0,
+   "eolica": 13542.0,
    "solar": 11818.0
   },
   {
    "d": "2026-09-14",
    "hidraulica": 41348.0,
    "termica": 10768.0,
-   "eolica": 16818.0,
+   "eolica": 16827.0,
    "solar": 13319.0
   },
   {
@@ -16837,58 +16837,79 @@
   {
    "d": "2026-09-18",
    "hidraulica": 42488.0,
-   "termica": 9800.0,
+   "termica": 9801.0,
    "eolica": 17031.0,
    "solar": 13180.0
   },
   {
    "d": "2026-09-19",
    "hidraulica": 40317.0,
-   "termica": 8726.0,
-   "eolica": 16482.0,
-   "solar": 11689.0
+   "termica": 8727.0,
+   "eolica": 16480.0,
+   "solar": 11690.0
   },
   {
    "d": "2026-09-20",
    "hidraulica": 37143.0,
-   "termica": 8664.0,
-   "eolica": 13765.0,
-   "solar": 12272.0
+   "termica": 8665.0,
+   "eolica": 13762.0,
+   "solar": 12273.0
   },
   {
    "d": "2026-09-21",
    "hidraulica": 44645.0,
-   "termica": 8726.0,
+   "termica": 8728.0,
    "eolica": 15718.0,
    "solar": 15401.0
   },
   {
    "d": "2026-09-22",
    "hidraulica": 47713.0,
-   "termica": 9345.0,
-   "eolica": 14072.0,
-   "solar": 15446.0
+   "termica": 9347.0,
+   "eolica": 14090.0,
+   "solar": 15449.0
   },
   {
    "d": "2026-09-23",
    "hidraulica": 49601.0,
-   "termica": 9479.0,
-   "eolica": 11629.0,
-   "solar": 14846.0
+   "termica": 9480.0,
+   "eolica": 11660.0,
+   "solar": 14880.0
   },
   {
    "d": "2026-09-24",
    "hidraulica": 45711.0,
    "termica": 9130.0,
-   "eolica": 14829.0,
-   "solar": 14563.0
+   "eolica": 14838.0,
+   "solar": 14562.0
   },
   {
    "d": "2026-09-25",
    "hidraulica": 45864.0,
-   "termica": 8779.0,
-   "eolica": 15023.0,
-   "solar": 15006.0
+   "termica": 8774.0,
+   "eolica": 15024.0,
+   "solar": 15012.0
+  },
+  {
+   "d": "2026-09-26",
+   "hidraulica": 43678.0,
+   "termica": 7905.0,
+   "eolica": 14119.0,
+   "solar": 14366.0
+  },
+  {
+   "d": "2026-09-27",
+   "hidraulica": 40080.0,
+   "termica": 8144.0,
+   "eolica": 13893.0,
+   "solar": 14083.0
+  },
+  {
+   "d": "2026-09-28",
+   "hidraulica": 47999.0,
+   "termica": 9556.0,
+   "eolica": 14789.0,
+   "solar": 16552.0
   }
  ],
  "proveniencia": {
@@ -16907,14 +16928,14 @@
    "frequencia": "horária, agregada por dia",
    "periodo_referencia": {
     "inicio": "2021-01-01",
-    "fim": "2026-09-25"
+    "fim": "2026-09-28"
    },
-   "publicado_pela_fonte_em": "2026-09-27T22:00:43.210439",
-   "capturado_em": "2026-09-28T09:08:46Z",
-   "validado_em": "2026-09-28T15:25:46Z",
+   "publicado_pela_fonte_em": "2026-09-29T22:00:42.467156",
+   "capturado_em": "2026-09-30T02:19:57Z",
+   "validado_em": "2026-09-30T02:20:34Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
-    "fim": "2026-09-25"
+    "fim": "2026-09-28"
    },
    "transformacoes": [
     "média diária das 24 horas por fonte",
@@ -16922,19 +16943,120 @@
    ],
    "formula": "participação(f) = G(f) ÷ [G(hidráulica) + G(térmica) + G(eólica) + G(solar)] × 100",
    "snapshot": {
-    "id": "balanco_energia_subsistema_ho@2026-09-28T09:08:46Z",
-    "sha256": "be6df6321ee402d7c879e597576ad9a82acba3283f3b9783df4ce8f558e0ae02"
+    "id": "balanco_energia_subsistema_ho@2026-09-30T02:19:57Z",
+    "sha256": "8774bc4794fad38b820ea212ddf4bf343761f449d90dfef8d2a31d64fb0993ba"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d1dcbf611ab9",
+   "versao_codigo": "196905461ac0",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T15:25:45Z",
-    "total": 0,
-    "vintages_comparadas": 6,
+    "detectado_em": "2026-09-30T02:20:34Z",
+    "total": 2620,
+    "vintages_comparadas": 7,
     "arquivos": 6,
-    "recapturas_sem_mudanca": 2,
-    "ultimo_download_ok": "2026-09-28T10:55:30Z",
-    "exemplos": []
+    "recapturas_sem_mudanca": 1,
+    "ultimo_download_ok": "2026-09-30T02:20:04Z",
+    "exemplos": [
+     {
+      "serie": "carga.N",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.NE",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.S",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.SE",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.SIN",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "eolica.N",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "eolica.NE",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "eolica.S",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "eolica.SE",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "eolica.SIN",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "termica.N",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "termica.NE",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "termica.S",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "termica.SE",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "termica.SIN",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.N",
+      "ref": "2026-09-26T22:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.NE",
+      "ref": "2026-09-26T22:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.S",
+      "ref": "2026-09-26T22:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.SE",
+      "ref": "2026-09-26T22:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.SIN",
+      "ref": "2026-09-26T22:00",
+      "valores": 2
+     }
+    ]
    },
    "limitacoes": [
     "O balanço não separa a geração térmica por combustível. A separação exige o conjunto Geração por Usina, catalogado e ainda não integrado.",
@@ -16958,15 +17080,15 @@
    "unidade": "% da geração verificada",
    "frequencia": "diária (janela móvel de 7 dias)",
    "periodo_referencia": {
-    "inicio": "2025-09-19",
-    "fim": "2026-09-25"
+    "inicio": "2025-09-22",
+    "fim": "2026-09-28"
    },
-   "publicado_pela_fonte_em": "2026-09-27T22:00:43.210439",
-   "capturado_em": "2026-09-28T09:08:46Z",
-   "validado_em": "2026-09-28T15:25:46Z",
+   "publicado_pela_fonte_em": "2026-09-29T22:00:42.467156",
+   "capturado_em": "2026-09-30T02:19:57Z",
+   "validado_em": "2026-09-30T02:20:34Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
-    "fim": "2026-09-25"
+    "fim": "2026-09-28"
    },
    "transformacoes": [
     "média de 7 dias da geração diária por fonte",
@@ -16975,19 +17097,120 @@
    ],
    "formula": "térmica_7d(t) = Σ G_térmica(d) ÷ Σ [G_hidráulica + G_térmica + G_eólica + G_solar](d) × 100, d ∈ (t − 6, …, t)",
    "snapshot": {
-    "id": "balanco_energia_subsistema_ho@2026-09-28T09:08:46Z",
-    "sha256": "be6df6321ee402d7c879e597576ad9a82acba3283f3b9783df4ce8f558e0ae02"
+    "id": "balanco_energia_subsistema_ho@2026-09-30T02:19:57Z",
+    "sha256": "8774bc4794fad38b820ea212ddf4bf343761f449d90dfef8d2a31d64fb0993ba"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d1dcbf611ab9",
+   "versao_codigo": "196905461ac0",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T15:25:45Z",
-    "total": 0,
-    "vintages_comparadas": 6,
+    "detectado_em": "2026-09-30T02:20:34Z",
+    "total": 2620,
+    "vintages_comparadas": 7,
     "arquivos": 6,
-    "recapturas_sem_mudanca": 2,
-    "ultimo_download_ok": "2026-09-28T10:55:30Z",
-    "exemplos": []
+    "recapturas_sem_mudanca": 1,
+    "ultimo_download_ok": "2026-09-30T02:20:04Z",
+    "exemplos": [
+     {
+      "serie": "carga.N",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.NE",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.S",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.SE",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.SIN",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "eolica.N",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "eolica.NE",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "eolica.S",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "eolica.SE",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "eolica.SIN",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "termica.N",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "termica.NE",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "termica.S",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "termica.SE",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "termica.SIN",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.N",
+      "ref": "2026-09-26T22:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.NE",
+      "ref": "2026-09-26T22:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.S",
+      "ref": "2026-09-26T22:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.SE",
+      "ref": "2026-09-26T22:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.SIN",
+      "ref": "2026-09-26T22:00",
+      "valores": 2
+     }
+    ]
    },
    "limitacoes": [
     "O balanço não separa a geração térmica por combustível. A separação exige o conjunto Geração por Usina, catalogado e ainda não integrado.",

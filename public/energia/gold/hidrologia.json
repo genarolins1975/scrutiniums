@@ -1,12 +1,12 @@
 {
  "dominio": "energia",
  "gold": "hidrologia.json",
- "gerado_em": "2026-09-28T15:25:39Z",
+ "gerado_em": "2026-09-30T02:20:26Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d1dcbf611ab9",
+ "versao_codigo": "196905461ac0",
  "disponivel": true,
- "dia_referencia_ear": "2026-09-26",
- "dia_referencia_ena": "2026-09-26",
+ "dia_referencia_ear": "2026-09-28",
+ "dia_referencia_ena": "2026-09-28",
  "regras": {
   "ear_sin": "EAR do SIN = soma das EAR verificadas dos quatro subsistemas (MWmês) ÷ soma das EAR máximas.",
   "padrao_historico": "Mediana, 10º e 90º percentis do valor do mesmo dia do calendário nos anos completos anteriores, desde 2001. Para 29 de fevereiro usa-se 28 de fevereiro.",
@@ -19,27 +19,27 @@
    "sm": "SE",
    "nome": "Sudeste/Centro-Oeste",
    "ear": {
-    "valor": 57.2,
-    "dia": "2026-09-26",
+    "valor": 56.9,
+    "dia": "2026-09-28",
     "natureza": "OBSERVADO",
-    "variacao_7d_pp": -0.3,
-    "variacao_30d_pp": -1.7,
-    "mediana_historica": 49.7,
-    "p10": 24.4,
-    "p90": 67.0,
+    "variacao_7d_pp": -0.5,
+    "variacao_30d_pp": -1.6,
+    "mediana_historica": 49.5,
+    "p10": 23.8,
+    "p90": 66.3,
     "anos_na_base": 25,
-    "desvio_mediana_pp": 7.5,
+    "desvio_mediana_pp": 7.4,
     "percentil_na_data": 72.0,
     "faixa": "dentro"
    },
    "ena": {
-    "dia": "2026-09-26",
-    "pct_mlt_dia": 176.2,
+    "dia": "2026-09-28",
+    "pct_mlt_dia": 155.8,
     "natureza_dia": "OBSERVADO",
-    "pct_mlt_30d": 143.3,
+    "pct_mlt_30d": 147.8,
     "percentil_30d_mesma_janela": 96.0,
-    "p10_30d": 64.2,
-    "p90_30d": 105.3,
+    "p10_30d": 63.6,
+    "p90_30d": 107.7,
     "anos_na_base_30d": 25,
     "faixa_30d": "acima"
    }
@@ -48,27 +48,27 @@
    "sm": "S",
    "nome": "Sul",
    "ear": {
-    "valor": 81.4,
-    "dia": "2026-09-26",
+    "valor": 82.6,
+    "dia": "2026-09-28",
     "natureza": "OBSERVADO",
-    "variacao_7d_pp": 0.3,
-    "variacao_30d_pp": -0.6,
-    "mediana_historica": 66.4,
-    "p10": 39.6,
-    "p90": 94.4,
+    "variacao_7d_pp": 0.0,
+    "variacao_30d_pp": 2.2,
+    "mediana_historica": 66.0,
+    "p10": 38.8,
+    "p90": 95.5,
     "anos_na_base": 25,
-    "desvio_mediana_pp": 15.0,
-    "percentil_na_data": 68.0,
+    "desvio_mediana_pp": 16.5,
+    "percentil_na_data": 72.0,
     "faixa": "dentro"
    },
    "ena": {
-    "dia": "2026-09-26",
-    "pct_mlt_dia": 215.8,
+    "dia": "2026-09-28",
+    "pct_mlt_dia": 242.8,
     "natureza_dia": "OBSERVADO",
-    "pct_mlt_30d": 247.3,
-    "percentil_30d_mesma_janela": 96.0,
-    "p10_30d": 33.3,
-    "p90_30d": 183.7,
+    "pct_mlt_30d": 253.4,
+    "percentil_30d_mesma_janela": 100.0,
+    "p10_30d": 33.5,
+    "p90_30d": 192.8,
     "anos_na_base_30d": 25,
     "faixa_30d": "acima"
    }
@@ -77,27 +77,27 @@
    "sm": "NE",
    "nome": "Nordeste",
    "ear": {
-    "valor": 69.5,
-    "dia": "2026-09-26",
+    "valor": 68.9,
+    "dia": "2026-09-28",
     "natureza": "OBSERVADO",
-    "variacao_7d_pp": -1.8,
-    "variacao_30d_pp": -7.4,
-    "mediana_historica": 49.4,
-    "p10": 14.3,
-    "p90": 68.7,
+    "variacao_7d_pp": -1.9,
+    "variacao_30d_pp": -7.5,
+    "mediana_historica": 49.1,
+    "p10": 14.2,
+    "p90": 68.0,
     "anos_na_base": 25,
-    "desvio_mediana_pp": 20.0,
+    "desvio_mediana_pp": 19.9,
     "percentil_na_data": 92.0,
     "faixa": "acima"
    },
    "ena": {
-    "dia": "2026-09-26",
-    "pct_mlt_dia": 71.3,
+    "dia": "2026-09-28",
+    "pct_mlt_dia": 69.8,
     "natureza_dia": "OBSERVADO",
-    "pct_mlt_30d": 66.2,
-    "percentil_30d_mesma_janela": 60.0,
-    "p10_30d": 41.7,
-    "p90_30d": 93.2,
+    "pct_mlt_30d": 67.0,
+    "percentil_30d_mesma_janela": 64.0,
+    "p10_30d": 41.8,
+    "p90_30d": 93.6,
     "anos_na_base_30d": 25,
     "faixa_30d": "dentro"
    }
@@ -106,27 +106,27 @@
    "sm": "N",
    "nome": "Norte",
    "ear": {
-    "valor": 73.9,
-    "dia": "2026-09-26",
+    "valor": 73.1,
+    "dia": "2026-09-28",
     "natureza": "OBSERVADO",
-    "variacao_7d_pp": -2.2,
-    "variacao_30d_pp": -9.3,
-    "mediana_historica": 51.3,
-    "p10": 39.7,
-    "p90": 74.8,
+    "variacao_7d_pp": -2.3,
+    "variacao_30d_pp": -9.2,
+    "mediana_historica": 49.8,
+    "p10": 38.7,
+    "p90": 73.7,
     "anos_na_base": 25,
-    "desvio_mediana_pp": 22.6,
-    "percentil_na_data": 84.0,
+    "desvio_mediana_pp": 23.4,
+    "percentil_na_data": 88.0,
     "faixa": "dentro"
    },
    "ena": {
-    "dia": "2026-09-26",
-    "pct_mlt_dia": 50.4,
+    "dia": "2026-09-28",
+    "pct_mlt_dia": 51.3,
     "natureza_dia": "OBSERVADO",
-    "pct_mlt_30d": 52.1,
-    "percentil_30d_mesma_janela": 8.0,
-    "p10_30d": 58.3,
-    "p90_30d": 99.4,
+    "pct_mlt_30d": 52.2,
+    "percentil_30d_mesma_janela": 4.0,
+    "p10_30d": 58.7,
+    "p90_30d": 99.8,
     "anos_na_base_30d": 25,
     "faixa_30d": "abaixo"
    }
@@ -135,27 +135,27 @@
    "sm": "SIN",
    "nome": "Sistema Interligado Nacional",
    "ear": {
-    "valor": 61.9,
-    "dia": "2026-09-26",
+    "valor": 61.6,
+    "dia": "2026-09-28",
     "natureza": "CALCULADO",
-    "variacao_7d_pp": -0.6,
-    "variacao_30d_pp": -3.0,
-    "mediana_historica": 49.6,
-    "p10": 26.0,
-    "p90": 68.0,
+    "variacao_7d_pp": -0.8,
+    "variacao_30d_pp": -2.7,
+    "mediana_historica": 49.3,
+    "p10": 25.5,
+    "p90": 67.5,
     "anos_na_base": 25,
-    "desvio_mediana_pp": 12.3,
+    "desvio_mediana_pp": 12.4,
     "percentil_na_data": 80.0,
     "faixa": "dentro"
    },
    "ena": {
-    "dia": "2026-09-26",
-    "pct_mlt_dia": 172.7,
+    "dia": "2026-09-28",
+    "pct_mlt_dia": 170.3,
     "natureza_dia": "CALCULADO",
-    "pct_mlt_30d": 163.7,
+    "pct_mlt_30d": 168.6,
     "percentil_30d_mesma_janela": 96.0,
-    "p10_30d": 56.3,
-    "p90_30d": 126.0,
+    "p10_30d": 56.4,
+    "p90_30d": 128.5,
     "anos_na_base_30d": 25,
     "faixa_30d": "acima"
    }
@@ -164,25 +164,9 @@
  "desvio_principal": {
   "sm": "N",
   "nome": "Norte",
-  "desvio_pp": 22.6
+  "desvio_pp": 23.4
  },
  "serie_ear": [
-  {
-   "d": "2023-09-27",
-   "SE": 72.85,
-   "S": 90.25,
-   "NE": 67.71,
-   "N": 73.45,
-   "SIN": 73.19
-  },
-  {
-   "d": "2023-09-28",
-   "SE": 72.62,
-   "S": 90.36,
-   "NE": 67.48,
-   "N": 72.65,
-   "SIN": 72.95
-  },
   {
    "d": "2023-09-29",
    "SE": 72.4,
@@ -8753,35 +8737,35 @@
   },
   {
    "d": "2026-09-04",
-   "SE": 57.2,
+   "SE": 57.21,
    "S": 81.63,
    "NE": 74.78,
-   "N": 80.07,
-   "SIN": 63.22
+   "N": 80.08,
+   "SIN": 63.23
   },
   {
    "d": "2026-09-05",
-   "SE": 57.1,
+   "SE": 57.11,
    "S": 81.78,
    "NE": 74.48,
    "N": 79.78,
-   "SIN": 63.09
+   "SIN": 63.1
   },
   {
    "d": "2026-09-06",
-   "SE": 57.04,
+   "SE": 57.05,
    "S": 81.95,
    "NE": 74.22,
-   "N": 79.5,
-   "SIN": 63.0
+   "N": 79.51,
+   "SIN": 63.01
   },
   {
    "d": "2026-09-07",
-   "SE": 57.06,
+   "SE": 57.07,
    "S": 82.03,
    "NE": 74.0,
    "N": 79.28,
-   "SIN": 62.97
+   "SIN": 62.98
   },
   {
    "d": "2026-09-08",
@@ -8796,52 +8780,52 @@
    "SE": 56.79,
    "S": 81.43,
    "NE": 73.53,
-   "N": 78.67,
-   "SIN": 62.63
+   "N": 78.68,
+   "SIN": 62.62
   },
   {
    "d": "2026-09-10",
-   "SE": 56.78,
+   "SE": 56.76,
    "S": 81.4,
    "NE": 73.3,
    "N": 78.42,
-   "SIN": 62.56
+   "SIN": 62.55
   },
   {
    "d": "2026-09-11",
-   "SE": 56.88,
+   "SE": 56.83,
    "S": 82.47,
    "NE": 73.05,
    "N": 78.14,
-   "SIN": 62.65
+   "SIN": 62.61
   },
   {
    "d": "2026-09-12",
-   "SE": 57.09,
+   "SE": 57.06,
    "S": 83.03,
    "NE": 72.82,
    "N": 77.88,
-   "SIN": 62.78
+   "SIN": 62.76
   },
   {
    "d": "2026-09-13",
-   "SE": 57.3,
+   "SE": 57.27,
    "S": 82.61,
    "NE": 72.59,
-   "N": 77.69,
-   "SIN": 62.85
+   "N": 77.7,
+   "SIN": 62.83
   },
   {
    "d": "2026-09-14",
    "SE": 57.42,
    "S": 82.22,
    "NE": 72.37,
-   "N": 77.4,
+   "N": 77.41,
    "SIN": 62.85
   },
   {
    "d": "2026-09-15",
-   "SE": 57.47,
+   "SE": 57.46,
    "S": 81.48,
    "NE": 72.17,
    "N": 77.01,
@@ -8849,110 +8833,110 @@
   },
   {
    "d": "2026-09-16",
-   "SE": 57.51,
+   "SE": 57.5,
    "S": 81.07,
    "NE": 71.93,
    "N": 76.69,
-   "SIN": 62.72
+   "SIN": 62.71
   },
   {
    "d": "2026-09-17",
-   "SE": 57.49,
+   "SE": 57.48,
    "S": 80.7,
    "NE": 71.71,
-   "N": 76.43,
+   "N": 76.41,
    "SIN": 62.62
   },
   {
    "d": "2026-09-18",
-   "SE": 57.45,
+   "SE": 57.44,
    "S": 80.73,
    "NE": 71.47,
-   "N": 76.23,
-   "SIN": 62.55
+   "N": 76.2,
+   "SIN": 62.54
   },
   {
    "d": "2026-09-19",
    "SE": 57.48,
    "S": 81.14,
-   "NE": 71.24,
-   "N": 76.06,
+   "NE": 71.3,
+   "N": 76.04,
    "SIN": 62.55
   },
   {
    "d": "2026-09-20",
    "SE": 57.49,
    "S": 81.86,
-   "NE": 70.99,
-   "N": 75.85,
-   "SIN": 62.55
+   "NE": 71.06,
+   "N": 75.82,
+   "SIN": 62.56
   },
   {
    "d": "2026-09-21",
-   "SE": 57.38,
+   "SE": 57.37,
    "S": 82.52,
-   "NE": 70.75,
-   "N": 75.49,
-   "SIN": 62.45
+   "NE": 70.81,
+   "N": 75.47,
+   "SIN": 62.46
   },
   {
    "d": "2026-09-22",
-   "SE": 57.34,
+   "SE": 57.33,
    "S": 83.39,
-   "NE": 70.46,
-   "N": 75.09,
+   "NE": 70.53,
+   "N": 75.07,
    "SIN": 62.42
   },
   {
    "d": "2026-09-23",
-   "SE": 57.32,
+   "SE": 57.31,
    "S": 83.02,
-   "NE": 70.23,
-   "N": 74.72,
-   "SIN": 62.31
+   "NE": 70.29,
+   "N": 74.69,
+   "SIN": 62.32
   },
   {
    "d": "2026-09-24",
-   "SE": 57.34,
-   "S": 82.4,
-   "NE": 69.9,
-   "N": 74.4,
+   "SE": 57.32,
+   "S": 82.41,
+   "NE": 69.97,
+   "N": 74.35,
    "SIN": 62.21
   },
   {
    "d": "2026-09-25",
-   "SE": 57.26,
-   "S": 81.81,
-   "NE": 69.65,
-   "N": 74.08,
-   "SIN": 62.06
+   "SE": 57.25,
+   "S": 81.82,
+   "NE": 69.71,
+   "N": 74.0,
+   "SIN": 62.05
   },
   {
    "d": "2026-09-26",
    "SE": 57.18,
-   "S": 81.42,
-   "NE": 69.48,
-   "N": 73.91,
+   "S": 81.43,
+   "NE": 69.5,
+   "N": 73.81,
    "SIN": 61.93
+  },
+  {
+   "d": "2026-09-27",
+   "SE": 57.05,
+   "S": 81.34,
+   "NE": 69.27,
+   "N": 73.56,
+   "SIN": 61.78
+  },
+  {
+   "d": "2026-09-28",
+   "SE": 56.86,
+   "S": 82.56,
+   "NE": 68.92,
+   "N": 73.13,
+   "SIN": 61.65
   }
  ],
  "serie_ena": [
-  {
-   "d": "2025-03-27",
-   "SE": 69.4,
-   "S": 50.8,
-   "NE": 17.9,
-   "N": 95.9,
-   "SIN": 68.1
-  },
-  {
-   "d": "2025-03-28",
-   "SE": 70.2,
-   "S": 55.9,
-   "NE": 14.7,
-   "N": 94.7,
-   "SIN": 68.3
-  },
   {
    "d": "2025-03-29",
    "SE": 70.1,
@@ -13091,243 +13075,259 @@
   },
   {
    "d": "2026-08-28",
-   "SE": 84.7,
+   "SE": 84.4,
    "S": 109.9,
    "NE": 59.7,
    "N": 45.1,
-   "SIN": 85.9
+   "SIN": 85.8
   },
   {
    "d": "2026-08-29",
-   "SE": 84.7,
+   "SE": 84.5,
    "S": 107.8,
    "NE": 58.9,
    "N": 44.3,
-   "SIN": 85.2
+   "SIN": 85.1
   },
   {
    "d": "2026-08-30",
-   "SE": 84.5,
+   "SE": 84.4,
    "S": 122.3,
    "NE": 57.6,
    "N": 43.3,
-   "SIN": 88.8
+   "SIN": 88.7
   },
   {
    "d": "2026-08-31",
-   "SE": 85.3,
+   "SE": 85.2,
    "S": 241.4,
    "NE": 56.9,
-   "N": 42.5,
-   "SIN": 121.3
+   "N": 42.6,
+   "SIN": 121.2
   },
   {
    "d": "2026-09-01",
-   "SE": 92.4,
+   "SE": 92.3,
    "S": 325.1,
    "NE": 63.7,
-   "N": 58.6,
-   "SIN": 162.4
+   "N": 58.7,
+   "SIN": 162.3
   },
   {
    "d": "2026-09-02",
-   "SE": 95.2,
+   "SE": 95.1,
    "S": 329.4,
    "NE": 65.7,
    "N": 58.1,
-   "SIN": 165.4
+   "SIN": 165.3
   },
   {
    "d": "2026-09-03",
-   "SE": 99.2,
+   "SE": 99.1,
    "S": 283.6,
    "NE": 66.4,
    "N": 57.5,
-   "SIN": 153.0
+   "SIN": 152.9
   },
   {
    "d": "2026-09-04",
-   "SE": 103.4,
+   "SE": 103.2,
    "S": 237.2,
    "NE": 64.8,
-   "N": 56.8,
-   "SIN": 140.2
+   "N": 56.9,
+   "SIN": 140.1
   },
   {
    "d": "2026-09-05",
-   "SE": 106.9,
+   "SE": 106.7,
    "S": 206.4,
    "NE": 62.7,
-   "N": 56.6,
-   "SIN": 132.1
+   "N": 56.7,
+   "SIN": 132.0
   },
   {
    "d": "2026-09-06",
-   "SE": 109.4,
+   "SE": 109.3,
    "S": 186.4,
    "NE": 60.6,
-   "N": 56.6,
+   "N": 56.8,
    "SIN": 126.8
   },
   {
    "d": "2026-09-07",
-   "SE": 109.3,
+   "SE": 109.2,
    "S": 166.4,
    "NE": 60.3,
-   "N": 56.3,
-   "SIN": 120.4
+   "N": 56.5,
+   "SIN": 120.3
   },
   {
    "d": "2026-09-08",
-   "SE": 110.4,
+   "SE": 110.3,
    "S": 155.6,
    "NE": 61.1,
-   "N": 56.1,
+   "N": 56.2,
    "SIN": 117.5
   },
   {
    "d": "2026-09-09",
-   "SE": 112.1,
+   "SE": 112.0,
    "S": 148.1,
    "NE": 62.5,
-   "N": 56.4,
-   "SIN": 116.2
+   "N": 56.5,
+   "SIN": 116.1
   },
   {
    "d": "2026-09-10",
-   "SE": 118.6,
+   "SE": 118.5,
    "S": 187.9,
    "NE": 63.8,
-   "N": 56.8,
+   "N": 57.0,
    "SIN": 132.5
   },
   {
    "d": "2026-09-11",
-   "SE": 125.6,
+   "SE": 125.5,
    "S": 311.4,
    "NE": 65.3,
-   "N": 56.9,
+   "N": 57.1,
    "SIN": 175.9
   },
   {
    "d": "2026-09-12",
-   "SE": 149.8,
-   "S": 412.9,
+   "SE": 149.5,
+   "S": 412.7,
    "NE": 68.2,
    "N": 57.0,
-   "SIN": 221.6
+   "SIN": 221.4
   },
   {
    "d": "2026-09-13",
-   "SE": 168.2,
-   "S": 392.8,
+   "SE": 167.6,
+   "S": 392.5,
    "NE": 69.5,
-   "N": 56.7,
-   "SIN": 225.2
+   "N": 56.3,
+   "SIN": 224.8
   },
   {
    "d": "2026-09-14",
-   "SE": 187.8,
-   "S": 330.7,
+   "SE": 187.1,
+   "S": 330.4,
    "NE": 69.4,
-   "N": 56.1,
-   "SIN": 215.8
+   "N": 55.6,
+   "SIN": 215.4
   },
   {
    "d": "2026-09-15",
-   "SE": 199.4,
-   "S": 279.0,
+   "SE": 198.5,
+   "S": 278.8,
    "NE": 68.7,
-   "N": 55.2,
-   "SIN": 205.5
+   "N": 54.7,
+   "SIN": 204.9
   },
   {
    "d": "2026-09-16",
-   "SE": 205.1,
-   "S": 243.0,
+   "SE": 203.9,
+   "S": 242.9,
    "NE": 68.2,
-   "N": 53.7,
-   "SIN": 196.9
+   "N": 53.2,
+   "SIN": 196.2
   },
   {
    "d": "2026-09-17",
-   "SE": 205.6,
-   "S": 211.7,
+   "SE": 204.2,
+   "S": 211.5,
    "NE": 69.2,
-   "N": 52.4,
-   "SIN": 187.1
+   "N": 51.8,
+   "SIN": 186.3
   },
   {
    "d": "2026-09-18",
-   "SE": 200.7,
-   "S": 194.8,
+   "SE": 199.4,
+   "S": 194.7,
    "NE": 70.4,
-   "N": 50.9,
-   "SIN": 179.1
+   "N": 50.6,
+   "SIN": 178.4
   },
   {
    "d": "2026-09-19",
-   "SE": 193.3,
-   "S": 195.5,
+   "SE": 192.0,
+   "S": 195.4,
    "NE": 70.6,
-   "N": 49.5,
-   "SIN": 175.3
+   "N": 49.2,
+   "SIN": 174.5
   },
   {
    "d": "2026-09-20",
-   "SE": 186.8,
-   "S": 211.7,
+   "SE": 185.2,
+   "S": 211.5,
    "NE": 71.3,
-   "N": 48.6,
-   "SIN": 176.9
+   "N": 48.2,
+   "SIN": 176.0
   },
   {
    "d": "2026-09-21",
-   "SE": 182.1,
-   "S": 273.7,
+   "SE": 180.4,
+   "S": 273.5,
    "NE": 72.6,
-   "N": 48.2,
-   "SIN": 194.3
+   "N": 47.6,
+   "SIN": 193.3
   },
   {
    "d": "2026-09-22",
-   "SE": 182.7,
-   "S": 382.9,
+   "SE": 178.4,
+   "S": 382.8,
    "NE": 73.4,
-   "N": 48.4,
-   "SIN": 229.6
+   "N": 46.9,
+   "SIN": 227.2
   },
   {
    "d": "2026-09-23",
-   "SE": 181.5,
-   "S": 352.5,
+   "SE": 178.6,
+   "S": 352.1,
    "NE": 73.3,
-   "N": 49.0,
-   "SIN": 219.3
+   "N": 46.8,
+   "SIN": 217.5
   },
   {
    "d": "2026-09-24",
-   "SE": 185.0,
-   "S": 294.9,
+   "SE": 184.9,
+   "S": 294.5,
    "NE": 72.6,
-   "N": 48.8,
-   "SIN": 202.7
+   "N": 46.5,
+   "SIN": 202.4
   },
   {
    "d": "2026-09-25",
-   "SE": 183.3,
-   "S": 249.7,
+   "SE": 182.2,
+   "S": 249.9,
    "NE": 71.9,
-   "N": 49.2,
-   "SIN": 187.3
+   "N": 46.8,
+   "SIN": 186.7
   },
   {
    "d": "2026-09-26",
-   "SE": 176.2,
-   "S": 215.8,
-   "NE": 71.3,
-   "N": 50.4,
-   "SIN": 172.7
+   "SE": 174.4,
+   "S": 216.3,
+   "NE": 71.2,
+   "N": 48.7,
+   "SIN": 171.8
+  },
+  {
+   "d": "2026-09-27",
+   "SE": 166.3,
+   "S": 198.8,
+   "NE": 70.2,
+   "N": 49.8,
+   "SIN": 161.8
+  },
+  {
+   "d": "2026-09-28",
+   "SE": 155.8,
+   "S": 242.8,
+   "NE": 69.8,
+   "N": 51.3,
+   "SIN": 170.3
   }
  ],
  "bandas_ear": [
@@ -22465,11 +22465,11 @@
   },
   {
    "m": "2026-09",
-   "SE": 57.3,
+   "SE": 57.2,
    "S": 82.1,
-   "NE": 72.5,
-   "N": 77.5,
-   "SIN": 62.8
+   "NE": 72.3,
+   "N": 77.2,
+   "SIN": 62.7
   }
  ],
  "proveniencia": {
@@ -22488,31 +22488,132 @@
    "frequencia": "diária",
    "periodo_referencia": {
     "inicio": "2000-01-01",
-    "fim": "2026-09-26"
+    "fim": "2026-09-28"
    },
-   "publicado_pela_fonte_em": "2026-09-27T22:01:33.439904",
-   "capturado_em": "2026-09-28T09:07:40Z",
-   "validado_em": "2026-09-28T15:25:39Z",
+   "publicado_pela_fonte_em": "2026-09-29T22:01:32.453930",
+   "capturado_em": "2026-09-30T02:19:44Z",
+   "validado_em": "2026-09-30T02:20:26Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
-    "fim": "2026-09-26"
+    "fim": "2026-09-28"
    },
    "transformacoes": [],
    "formula": null,
    "snapshot": {
-    "id": "ear_subsistema_di@2026-09-28T09:07:40Z",
-    "sha256": "62286e54eff7ee969f8661d82f2bc6fa74860ea43403d07e027d0a890e0152b0"
+    "id": "ear_subsistema_di@2026-09-30T02:19:44Z",
+    "sha256": "c6dc295f61297e7370b531966e5fcb135aea08d8aa2a108a51f35d8979ea502f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d1dcbf611ab9",
+   "versao_codigo": "196905461ac0",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T15:25:39Z",
-    "total": 0,
-    "vintages_comparadas": 27,
+    "detectado_em": "2026-09-30T02:20:26Z",
+    "total": 44,
+    "vintages_comparadas": 28,
     "arquivos": 27,
-    "recapturas_sem_mudanca": 2,
-    "ultimo_download_ok": "2026-09-28T10:55:12Z",
-    "exemplos": []
+    "recapturas_sem_mudanca": 1,
+    "ultimo_download_ok": "2026-09-30T02:19:44Z",
+    "exemplos": [
+     {
+      "serie": "ear_mwmes.N",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.NE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.SE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.N",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.NE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.SE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.N",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.NE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.SE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.N",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.NE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.SE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.N",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.NE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.SE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.N",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.NE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.SE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.NE",
+      "ref": "2026-09-24",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.SE",
+      "ref": "2026-09-24",
+      "valores": 2
+     }
+    ]
    },
    "limitacoes": [
     "O ONS informa que os dados fazem parte de um processo de consistência recorrente e podem ser atualizados após a publicação; revisões entram como novas vintages.",
@@ -22536,33 +22637,134 @@
    "frequencia": "diária",
    "periodo_referencia": {
     "inicio": "2000-01-01",
-    "fim": "2026-09-26"
+    "fim": "2026-09-28"
    },
-   "publicado_pela_fonte_em": "2026-09-27T22:01:33.439904",
-   "capturado_em": "2026-09-28T09:07:40Z",
-   "validado_em": "2026-09-28T15:25:39Z",
+   "publicado_pela_fonte_em": "2026-09-29T22:01:32.453930",
+   "capturado_em": "2026-09-30T02:19:44Z",
+   "validado_em": "2026-09-30T02:20:26Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
-    "fim": "2026-09-26"
+    "fim": "2026-09-28"
    },
    "transformacoes": [
     "soma das EAR verificadas e das EAR máximas dos quatro subsistemas"
    ],
    "formula": "EAR_SIN = Σ EAR_verificada(s) ÷ Σ EAR_máxima(s) × 100, s ∈ {SE, S, NE, N}",
    "snapshot": {
-    "id": "ear_subsistema_di@2026-09-28T09:07:40Z",
-    "sha256": "62286e54eff7ee969f8661d82f2bc6fa74860ea43403d07e027d0a890e0152b0"
+    "id": "ear_subsistema_di@2026-09-30T02:19:44Z",
+    "sha256": "c6dc295f61297e7370b531966e5fcb135aea08d8aa2a108a51f35d8979ea502f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d1dcbf611ab9",
+   "versao_codigo": "196905461ac0",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T15:25:39Z",
-    "total": 0,
-    "vintages_comparadas": 27,
+    "detectado_em": "2026-09-30T02:20:26Z",
+    "total": 44,
+    "vintages_comparadas": 28,
     "arquivos": 27,
-    "recapturas_sem_mudanca": 2,
-    "ultimo_download_ok": "2026-09-28T10:55:12Z",
-    "exemplos": []
+    "recapturas_sem_mudanca": 1,
+    "ultimo_download_ok": "2026-09-30T02:19:44Z",
+    "exemplos": [
+     {
+      "serie": "ear_mwmes.N",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.NE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.SE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.N",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.NE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.SE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.N",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.NE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.SE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.N",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.NE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.SE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.N",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.NE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.SE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.N",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.NE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.SE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.NE",
+      "ref": "2026-09-24",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.SE",
+      "ref": "2026-09-24",
+      "valores": 2
+     }
+    ]
    },
    "limitacoes": [
     "O ONS informa que os dados fazem parte de um processo de consistência recorrente e podem ser atualizados após a publicação; revisões entram como novas vintages.",
@@ -22588,12 +22790,12 @@
     "inicio": "2001-01-01",
     "fim": "2025-12-31"
    },
-   "publicado_pela_fonte_em": "2026-09-27T22:01:33.439904",
-   "capturado_em": "2026-09-28T09:07:40Z",
-   "validado_em": "2026-09-28T15:25:39Z",
+   "publicado_pela_fonte_em": "2026-09-29T22:01:32.453930",
+   "capturado_em": "2026-09-30T02:19:44Z",
+   "validado_em": "2026-09-30T02:20:26Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
-    "fim": "2026-09-26"
+    "fim": "2026-09-28"
    },
    "transformacoes": [
     "valores do mesmo dia do calendário em cada ano completo anterior",
@@ -22601,19 +22803,120 @@
    ],
    "formula": "mediana e percentis 10 e 90 de {EAR(ano, dia) : ano = 2001..ano_ref − 1}; percentil na data = rank médio do valor do dia nessa distribuição; 29/02 fica fora da distribuição e, como dia de referência, usa a de 28/02",
    "snapshot": {
-    "id": "ear_subsistema_di@2026-09-28T09:07:40Z",
-    "sha256": "62286e54eff7ee969f8661d82f2bc6fa74860ea43403d07e027d0a890e0152b0"
+    "id": "ear_subsistema_di@2026-09-30T02:19:44Z",
+    "sha256": "c6dc295f61297e7370b531966e5fcb135aea08d8aa2a108a51f35d8979ea502f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d1dcbf611ab9",
+   "versao_codigo": "196905461ac0",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T15:25:39Z",
-    "total": 0,
-    "vintages_comparadas": 27,
+    "detectado_em": "2026-09-30T02:20:26Z",
+    "total": 44,
+    "vintages_comparadas": 28,
     "arquivos": 27,
-    "recapturas_sem_mudanca": 2,
-    "ultimo_download_ok": "2026-09-28T10:55:12Z",
-    "exemplos": []
+    "recapturas_sem_mudanca": 1,
+    "ultimo_download_ok": "2026-09-30T02:19:44Z",
+    "exemplos": [
+     {
+      "serie": "ear_mwmes.N",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.NE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.SE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.N",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.NE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.SE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.N",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.NE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.SE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.N",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.NE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.SE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.N",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.NE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.SE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.N",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.NE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.SE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.NE",
+      "ref": "2026-09-24",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.SE",
+      "ref": "2026-09-24",
+      "valores": 2
+     }
+    ]
    },
    "limitacoes": [
     "O ONS informa que os dados fazem parte de um processo de consistência recorrente e podem ser atualizados após a publicação; revisões entram como novas vintages.",
@@ -22639,12 +22942,12 @@
     "inicio": "2000-01",
     "fim": "2026-09"
    },
-   "publicado_pela_fonte_em": "2026-09-27T22:01:33.439904",
-   "capturado_em": "2026-09-28T09:07:40Z",
-   "validado_em": "2026-09-28T15:25:39Z",
+   "publicado_pela_fonte_em": "2026-09-29T22:01:32.453930",
+   "capturado_em": "2026-09-30T02:19:44Z",
+   "validado_em": "2026-09-30T02:20:26Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
-    "fim": "2026-09-26"
+    "fim": "2026-09-28"
    },
    "transformacoes": [
     "média aritmética dos valores diários do mês",
@@ -22652,19 +22955,120 @@
    ],
    "formula": "EAR_mensal(s, m) = média de EAR%(s, d) para os dias d do mês m com dado; o mês corrente é parcial",
    "snapshot": {
-    "id": "ear_subsistema_di@2026-09-28T09:07:40Z",
-    "sha256": "62286e54eff7ee969f8661d82f2bc6fa74860ea43403d07e027d0a890e0152b0"
+    "id": "ear_subsistema_di@2026-09-30T02:19:44Z",
+    "sha256": "c6dc295f61297e7370b531966e5fcb135aea08d8aa2a108a51f35d8979ea502f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d1dcbf611ab9",
+   "versao_codigo": "196905461ac0",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T15:25:39Z",
-    "total": 0,
-    "vintages_comparadas": 27,
+    "detectado_em": "2026-09-30T02:20:26Z",
+    "total": 44,
+    "vintages_comparadas": 28,
     "arquivos": 27,
-    "recapturas_sem_mudanca": 2,
-    "ultimo_download_ok": "2026-09-28T10:55:12Z",
-    "exemplos": []
+    "recapturas_sem_mudanca": 1,
+    "ultimo_download_ok": "2026-09-30T02:19:44Z",
+    "exemplos": [
+     {
+      "serie": "ear_mwmes.N",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.NE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.SE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.N",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.NE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.SE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.N",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.NE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.SE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.N",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.NE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.SE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.N",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.NE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.SE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.N",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.NE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_pct.SE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.NE",
+      "ref": "2026-09-24",
+      "valores": 2
+     },
+     {
+      "serie": "ear_mwmes.SE",
+      "ref": "2026-09-24",
+      "valores": 2
+     }
+    ]
    },
    "limitacoes": [
     "O ONS informa que os dados fazem parte de um processo de consistência recorrente e podem ser atualizados após a publicação; revisões entram como novas vintages.",
@@ -22688,31 +23092,132 @@
    "frequencia": "diária",
    "periodo_referencia": {
     "inicio": "2000-01-01",
-    "fim": "2026-09-26"
+    "fim": "2026-09-28"
    },
-   "publicado_pela_fonte_em": "2026-09-27T22:01:54.457065",
-   "capturado_em": "2026-09-28T09:08:01Z",
-   "validado_em": "2026-09-28T15:25:39Z",
+   "publicado_pela_fonte_em": "2026-09-29T22:01:54.077751",
+   "capturado_em": "2026-09-30T02:19:46Z",
+   "validado_em": "2026-09-30T02:20:26Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
-    "fim": "2026-09-26"
+    "fim": "2026-09-28"
    },
    "transformacoes": [],
    "formula": null,
    "snapshot": {
-    "id": "ena_subsistema_di@2026-09-28T09:08:01Z",
-    "sha256": "004e24fa7127845e626be9c5cceb17bdda797afd5a6ab2fd55705f2d29f65178"
+    "id": "ena_subsistema_di@2026-09-30T02:19:46Z",
+    "sha256": "62e12b18c00dcadf9d0d23ab981f15c2c9cc9f5d088f5801b68767c6cc8be6d8"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d1dcbf611ab9",
+   "versao_codigo": "196905461ac0",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T15:25:39Z",
-    "total": 0,
-    "vintages_comparadas": 27,
+    "detectado_em": "2026-09-30T02:20:26Z",
+    "total": 360,
+    "vintages_comparadas": 28,
     "arquivos": 27,
-    "recapturas_sem_mudanca": 2,
-    "ultimo_download_ok": "2026-09-28T10:55:15Z",
-    "exemplos": []
+    "recapturas_sem_mudanca": 1,
+    "ultimo_download_ok": "2026-09-30T02:19:47Z",
+    "exemplos": [
+     {
+      "serie": "ena_arm_mwmed.N",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_arm_mwmed.NE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_arm_mwmed.S",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_arm_mwmed.SE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_arm_pct_mlt.N",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_arm_pct_mlt.NE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_arm_pct_mlt.S",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_arm_pct_mlt.SE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_bruta_mwmed.N",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_bruta_mwmed.NE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_bruta_mwmed.S",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_bruta_mwmed.SE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_bruta_pct_mlt.N",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_bruta_pct_mlt.NE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_bruta_pct_mlt.S",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_bruta_pct_mlt.SE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_arm_mwmed.N",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ena_arm_mwmed.NE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ena_arm_mwmed.S",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ena_arm_mwmed.SE",
+      "ref": "2026-09-26",
+      "valores": 2
+     }
+    ]
    },
    "limitacoes": [
     "O ONS informa que os dados fazem parte de um processo de consistência recorrente e podem ser atualizados após a publicação; revisões entram como novas vintages.",
@@ -22736,15 +23241,15 @@
    "unidade": "% da MLT",
    "frequencia": "diária (janela móvel de 30 dias)",
    "periodo_referencia": {
-    "inicio": "2026-08-28",
-    "fim": "2026-09-26"
+    "inicio": "2026-08-30",
+    "fim": "2026-09-28"
    },
-   "publicado_pela_fonte_em": "2026-09-27T22:01:54.457065",
-   "capturado_em": "2026-09-28T09:08:01Z",
-   "validado_em": "2026-09-28T15:25:39Z",
+   "publicado_pela_fonte_em": "2026-09-29T22:01:54.077751",
+   "capturado_em": "2026-09-30T02:19:46Z",
+   "validado_em": "2026-09-30T02:20:26Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
-    "fim": "2026-09-26"
+    "fim": "2026-09-28"
    },
    "transformacoes": [
     "MLT implícita diária = ENA ÷ (percentual da MLT ÷ 100)",
@@ -22752,19 +23257,120 @@
    ],
    "formula": "ENA30 = Σ ENA(d) ÷ Σ MLT(d) × 100, d nos últimos 30 dias",
    "snapshot": {
-    "id": "ena_subsistema_di@2026-09-28T09:08:01Z",
-    "sha256": "004e24fa7127845e626be9c5cceb17bdda797afd5a6ab2fd55705f2d29f65178"
+    "id": "ena_subsistema_di@2026-09-30T02:19:46Z",
+    "sha256": "62e12b18c00dcadf9d0d23ab981f15c2c9cc9f5d088f5801b68767c6cc8be6d8"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d1dcbf611ab9",
+   "versao_codigo": "196905461ac0",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T15:25:39Z",
-    "total": 0,
-    "vintages_comparadas": 27,
+    "detectado_em": "2026-09-30T02:20:26Z",
+    "total": 360,
+    "vintages_comparadas": 28,
     "arquivos": 27,
-    "recapturas_sem_mudanca": 2,
-    "ultimo_download_ok": "2026-09-28T10:55:15Z",
-    "exemplos": []
+    "recapturas_sem_mudanca": 1,
+    "ultimo_download_ok": "2026-09-30T02:19:47Z",
+    "exemplos": [
+     {
+      "serie": "ena_arm_mwmed.N",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_arm_mwmed.NE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_arm_mwmed.S",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_arm_mwmed.SE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_arm_pct_mlt.N",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_arm_pct_mlt.NE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_arm_pct_mlt.S",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_arm_pct_mlt.SE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_bruta_mwmed.N",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_bruta_mwmed.NE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_bruta_mwmed.S",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_bruta_mwmed.SE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_bruta_pct_mlt.N",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_bruta_pct_mlt.NE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_bruta_pct_mlt.S",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_bruta_pct_mlt.SE",
+      "ref": "2026-09-27",
+      "valores": 2
+     },
+     {
+      "serie": "ena_arm_mwmed.N",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ena_arm_mwmed.NE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ena_arm_mwmed.S",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "ena_arm_mwmed.SE",
+      "ref": "2026-09-26",
+      "valores": 2
+     }
+    ]
    },
    "limitacoes": [
     "O ONS informa que os dados fazem parte de um processo de consistência recorrente e podem ser atualizados após a publicação; revisões entram como novas vintages.",

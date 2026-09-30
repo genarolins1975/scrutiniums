@@ -1,7 +1,7 @@
 {
  "dominio": "energia",
  "gold": "catalogo.json",
- "gerado_em": "2026-09-28T15:25:52Z",
+ "gerado_em": "2026-09-30T02:20:41Z",
  "versao_pipeline": "energia-0.1.0",
  "disponivel": true,
  "estados": [
@@ -22,12 +22,12 @@
  },
  "portais": {
   "ONS": {
-   "colhido_em": "2026-09-28T10:55:47Z",
+   "colhido_em": "2026-09-30T02:20:15Z",
    "conjuntos": 85,
    "erro": null
   },
   "ANEEL": {
-   "colhido_em": "2026-09-28T10:55:50Z",
+   "colhido_em": "2026-09-30T02:20:19Z",
    "conjuntos": 72,
    "erro": null
   },
@@ -83,7 +83,7 @@
    "titulo": "EAR Diário por Subsistema",
    "url": "https://dados.ons.org.br/dataset/ear-diario-por-subsistema",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:01:36.989448",
+   "modificado_na_fonte": "2026-09-29T22:01:35.961171",
    "descricao": "Dados das grandezas de energia armazenada (EAR) em periodicidade diária por Subsistemas.\r\n\r\nA Energia Armazenada (EAR) representa a energia associada ao volume de água disponível nos reservatórios que pode ser convertido em geração na própria usina e em todas as usinas à jusante na cascata. A grandeza de EAR leva em conta nível verificado nos reservatórios na data de referência. A grandeza de EAR máxima representa a capacidade de armazenamento caso todos os reservatórios do sistema estivessem cheios. A grandeza de EAR para o subsistema à jusante considera a utilização da água do reservatório p",
    "n_recursos": 83,
    "formatos": [
@@ -114,7 +114,7 @@
    "titulo": "ENA Diário por Subsistema",
    "url": "https://dados.ons.org.br/dataset/ena-diario-por-subsistema",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:01:57.675554",
+   "modificado_na_fonte": "2026-09-29T22:01:57.541151",
    "descricao": "Dados das grandezas de energia natural afluente (ENA) dos reservatórios com periodicidade diária por Subsistemas.\r\n\r\nA Energia Natural Afluente (ENA) Bruta representa a energia produzível pela usina e é calculada pelo produto das vazões naturais aos reservatórios com as produtividades a 65% dos volumes úteis. A ENA Armazenável considera as vazões naturais descontadas das vazões vertidas nos reservatórios.\r\n\r\n**Como esses dados podem ser utilizados:** os dados podem servir de insumo para estudos energéticos e projeção do custo marginal de operação. Contudo, saiba que os dados disponibilizados f",
    "n_recursos": 62,
    "formatos": [
@@ -145,7 +145,7 @@
    "titulo": "Balanço de Energia nos Subsistemas",
    "url": "https://dados.ons.org.br/dataset/balanco-energia-subsistema",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:00:46.740925",
+   "modificado_na_fonte": "2026-09-29T22:00:46.079763",
    "descricao": "Informações da carga e oferta de energia verificados em periodicidade horária por subsistema. A oferta é representada pelos valores de geração das usinas hidráulicas, térmicas, eólicas e fotovoltaicas, em MWmed.",
    "n_recursos": 83,
    "formatos": [
@@ -181,7 +181,7 @@
    "titulo": "CMO Semanal",
    "url": "https://dados.ons.org.br/dataset/cmo-semanal",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:00:56.065061",
+   "modificado_na_fonte": "2026-09-29T22:00:56.568061",
    "descricao": "Valores do custo, por unidade de energia produzida, para atender ao incremento de uma unidade de carga no SIN, chamado de Custo Marginal de Operação – CMO. Valores para cada semana operativa por subsistema, e por patamar de carga, além da média semanal, estimados pelo modelo Decomp.",
    "n_recursos": 68,
    "formatos": [
@@ -210,7 +210,7 @@
    "titulo": "Carga de Energia Diária",
    "url": "https://dados.ons.org.br/dataset/carga-energia",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:00:48.266333",
+   "modificado_na_fonte": "2026-09-29T22:00:46.979982",
    "descricao": "Dados de carga por subsistema em base diária, medida em MWmed. \r\n\r\nAté fevereiro/2021, os dados representam a carga atendida por usinas despachadas e/ou programadas pelo ONS, com base em dados recebidos pelo Sistema de Supervisão e Controle do ONS. Entre março/2021 e abril/23, os dados representam a carga atendida por usinas despachadas e/ou programadas pelo ONS, com base em dados recebidos pelo Sistema de Supervisão e Controle do ONS, mais a previsão de geração de usinas não despachadas pelo ONS. A partir de 29/04/2023, além dos dados anteriormente considerados, passou a ser incorporado o val",
    "n_recursos": 83,
    "formatos": [
@@ -250,7 +250,7 @@
    "titulo": "Intercâmbios Entre Subsistemas",
    "url": "https://dados.ons.org.br/dataset/intercambio-nacional",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:04:43.825223",
+   "modificado_na_fonte": "2026-09-29T22:04:35.261514",
    "descricao": "Dados de intercâmbio entre subsistemas em base horária, em MWmed. As grandezas representam a soma das medidas de fluxo de potência ativa nas linhas de transmissão de fronteira entre os subsistemas.",
    "n_recursos": 60,
    "formatos": [
@@ -1250,7 +1250,7 @@
    "titulo": "Ouvidoria Setorial ANEEL",
    "url": "https://dadosabertos.aneel.gov.br/dataset/ouvidoria-setorial-aneel",
    "licenca": "Open Data Commons Open Database License (ODbL)",
-   "modificado_na_fonte": "2026-09-28T10:02:58.769753",
+   "modificado_na_fonte": "2026-09-29T10:07:15.304952",
    "descricao": "A Ouvidoria Setorial apoia os consumidores na busca pela conciliação com a distribuidora em questões relacionadas à prestação do serviço público de energia elétrica. É um canal oferecido pela ANEEL para acesso direto da sociedade com a Agência: se o consumidor encontrar dificuldade no relacionamento com a distribuidora, pode procurar a intermediação da ANEEL.\n\nAs solicitações registradas na Ouvidoria Setorial, além de passarem pelo processo de análise e busca por solução por parte da Agência, subsidiam as ações de fiscalização, a elaboração dos atos regulatórios e os processos de tomada de dec",
    "n_recursos": 19,
    "formatos": [
@@ -1561,7 +1561,7 @@
    "titulo": "Relação de empreendimentos de Mini e Micro Geração Distribuída",
    "url": "https://dadosabertos.aneel.gov.br/dataset/relacao-de-empreendimentos-de-geracao-distribuida",
    "licenca": "Licença Aberta para Bases de Dados (ODbL) do Open Data Commons",
-   "modificado_na_fonte": "2026-09-28T06:17:58.493788",
+   "modificado_na_fonte": "2026-09-29T12:12:56.159196",
    "descricao": "O presente documento trata de dados referentes às conexões de microgeração e minigeração distribuída (MMGD) por meio de unidades consumidoras, conforme regulamentado no art. 655-W da Resolução Normativa ANEEL 1.000/2021. A relação dos empreendimentos é classificada pelas variáveis que compõem sua identificação, quais sejam: distribuidora conectada, o código do empreendimento, o núcleo numérico do código do empreendimento, o nome do titular, a classe de produção, subgrupo, a quantidade de unidades consumidoras que recebem os créditos excedentes de energia, a data da conexão, o tipo de unidade p",
    "n_recursos": 12,
    "formatos": [
@@ -1729,7 +1729,7 @@
    "titulo": "SIGEC - Sistema de Gestão de Créditos",
    "url": "https://dadosabertos.aneel.gov.br/dataset/sigec-sistema-de-gestao-de-creditos",
    "licenca": "Licença Aberta para Bases de Dados (ODbL) do Open Data Commons",
-   "modificado_na_fonte": "2026-09-28T04:18:49.499051",
+   "modificado_na_fonte": "2026-09-29T04:18:48.520119",
    "descricao": "O Sistema de Gestão de Créditos (SIGEC) foi desenvolvido em meados de 2005 com a finalidade de viabilizar uma melhor gestão dos créditos arrecadados pela ANEEL, em especial as multas impostas por Autos de Infração (AI) e a Taxa de Fiscalização dos Serviços de Energia Elétrica (TFSEE). \nPosteriormente, com a edição do Decreto 8.299, de 15/8/2014, os valores relativos ao Uso de Bem Público (UBP), antes arrecadados diretamente à Eletrobrás, também passaram a ser recolhidos à Conta Única da União, sendo gerenciados pela ANEEL. Assim, foi criado um módulo no SIGEC para gestão do referido crédito.\nP",
    "n_recursos": 5,
    "formatos": [
@@ -1799,7 +1799,7 @@
    "titulo": "Sistema de Gestão da Transmissão - SIGET",
    "url": "https://dadosabertos.aneel.gov.br/dataset/sistema-de-gestao-da-transmissao-siget",
    "licenca": "Open Data Commons Open Database License (ODbL)",
-   "modificado_na_fonte": "2026-09-28T10:49:03.593847",
+   "modificado_na_fonte": "2026-09-29T16:37:03.189638",
    "descricao": "A expansão da rede básica de transmissão de energia elétrica tem seu planejamento centralizado. O Ministério de Minas e Energia — MME, a partir dos estudos técnicos elaborados pela Empresa de Pesquisa Energética — EPE e pelo Operador Nacional do Sistema Elétrico — ONS, consolida os programas de outorgas, observando os preceitos técnicos e de modicidade tarifária.\n\nDefinidos os Programas de Expansão pelo MME, a Agência Nacional de Energia Elétrica (ANEEL) operacionaliza a concessão de novas outorgas, observando a Lei 8.987/1995.\n\nAs outorgas de transmissão têm seus dados cadastrais atualizados ",
    "n_recursos": 34,
    "formatos": [
@@ -1845,7 +1845,7 @@
    "titulo": "TFSEE - Taxa de Fiscalização de Serviços de Energia Elétrica",
    "url": "https://dadosabertos.aneel.gov.br/dataset/tfsee",
    "licenca": "Open Data Commons Open Database License (ODbL)",
-   "modificado_na_fonte": "2026-09-28T09:01:01.188724",
+   "modificado_na_fonte": "2026-09-29T09:00:58.821085",
    "descricao": "A Taxa de Fiscalização dos Serviços de Energia Elétrica – TFSEE é um tributo instituído pela Lei nº 9.427/1996 e regulamentado pelo Decreto nº 2.410/1997. A taxa tem como finalidade custear as atividades de regulação e fiscalização desempenhadas pela Agência Nacional de Energia Elétrica (ANEEL).\n A TFSEE corresponde a 0,4% do benefício econômico anual auferido por concessionários, permissionários e autorizados do setor elétrico, conforme metodologia detalhada no Submódulo 5.5 do PRORET. \n Este conjunto de dados apresenta os valores anuais de TFSEE devidos pelos agentes do setor elétrico, os qu",
    "n_recursos": 2,
    "formatos": [
@@ -1892,8 +1892,8 @@
    "nome": "tarifas-distribuidoras-energia-eletrica",
    "titulo": "Tarifas de aplicação das distribuidoras de energia elétrica",
    "url": "https://dadosabertos.aneel.gov.br/dataset/tarifas-distribuidoras-energia-eletrica",
-   "licenca": "Open Data Commons Open Database License (ODbL)",
-   "modificado_na_fonte": "2026-09-28T10:03:37.481381",
+   "licenca": "Licença Aberta para Bases de Dados (ODbL) do Open Data Commons",
+   "modificado_na_fonte": "2026-09-29T10:02:52.126931",
    "descricao": "Apresenta os valores das Tarifas de Energia - TE e das Tarifas de Uso do Sistema de Distribuição - TUSD, resultantes dos processos de reajustes tarifários das distribuidoras de energia elétrica.",
    "n_recursos": 3,
    "formatos": [
@@ -2232,7 +2232,7 @@
    "titulo": "CMO Semi-Horário",
    "url": "https://dados.ons.org.br/dataset/cmo-semi-horario",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:01:12.668157",
+   "modificado_na_fonte": "2026-09-29T22:01:12.317084",
    "descricao": "Valores do custo, por unidade de energia produzida, para atender ao incremento de uma unidade de carga no SIN, chamado de Custo Marginal de Operação – CMO. Este CMO é estimado pelo modelo DESSEM para cada barra do sistema em base semi-horária. O CMO do subsistema é obtido pelo média dos CMOs nas barras de cada subsistema, ponderados pelas respectivas cargas, considerando que um aumento de carga no subsistema se dá de maneira uniforme nas barras que a ele pertencem.",
    "n_recursos": 23,
    "formatos": [
@@ -2258,7 +2258,7 @@
    "titulo": "CVU das Usina Térmicas",
    "url": "https://dados.ons.org.br/dataset/cvu-usitermica",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:01:21.031484",
+   "modificado_na_fonte": "2026-09-29T22:01:23.175862",
    "descricao": "Custo Variável Unitário (CVU) de usinas térmicas considerado no Programa Mensal da Operação, conforme utilizado na execução do modelo NEWAVE, DECOMP, DESSEM, além de seu uso nas decisões de programação e acompanhamentos dos custos da operação.",
    "n_recursos": 68,
    "formatos": [
@@ -2284,7 +2284,7 @@
    "titulo": "Capacidade Instalada de Geração",
    "url": "https://dados.ons.org.br/dataset/capacidade-geracao",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:00:52.447207",
+   "modificado_na_fonte": "2026-09-29T22:00:51.860488",
    "descricao": "Dados de potência nominal de Unidades Geradoras de Usinas despachadas pelo ONS, que são aquelas classificadas com modalidade de operação Tipo I, Tipo II-A, Tipo II-B e Tipo II-C.",
    "n_recursos": 5,
    "formatos": [
@@ -2310,7 +2310,7 @@
    "titulo": "Capacidade de Transformação da Rede Básica",
    "url": "https://dados.ons.org.br/dataset/capacidade-transformacao",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:00:45.397369",
+   "modificado_na_fonte": "2026-09-29T22:00:45.793447",
    "descricao": "Dados de potência nominal de transformadores da Rede Básica, bem como seus agentes proprietários e tensões terminais.",
    "n_recursos": 5,
    "formatos": [
@@ -2336,7 +2336,7 @@
    "titulo": "Carga de Energia Mensal",
    "url": "https://dados.ons.org.br/dataset/carga-mensal",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:00:50.470230",
+   "modificado_na_fonte": "2026-09-29T22:00:50.504383",
    "descricao": "Dados de carga por subsistema em base mensal, medida em MWmed. \r\n\r\nAté dezembro/2014, os dados representam a carga atendida por usinas despachadas e/ou programadas pelo ONS, com base em dados recebidos pelo Sistema de Supervisão e Controle do ONS.\r\nEntre janeiro/2015 e fevereiro/2021, os dados representam a carga atendida por usinas despachadas e/ou programadas pelo ONS, além de usinas não despachadas pelo ONS. Todos os dados são verificados e provenientes do Sistema de Medição para Faturamento, que são enviados pela CCEE ao ONS.\r\nA partir de 29/04/2023: além dos dados anteriormente considerad",
    "n_recursos": 5,
    "formatos": [
@@ -2458,7 +2458,7 @@
    "titulo": "Curva de Carga Horária",
    "url": "https://dados.ons.org.br/dataset/curva-carga",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:01:10.727582",
+   "modificado_na_fonte": "2026-09-29T22:01:10.881334",
    "descricao": "Dados de curva de carga horária, que representam o perfil de consumo de energia elétrica com discretização horária.",
    "n_recursos": 83,
    "formatos": [
@@ -2484,9 +2484,9 @@
    "titulo": "DESSEM - Balanço de Energia Detalhado",
    "url": "https://dados.ons.org.br/dataset/balanco_dessem_detalhe",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T19:38:50.644764",
+   "modificado_na_fonte": "2026-09-29T19:28:09.957595",
    "descricao": "Informação da programação eletro energética, resultante do modelo DESSEM no formato detalhado, da demanda de energia e geração por fontes previstas para um dia de referência em periodicidade semi-horária no subsistema.",
-   "n_recursos": 1469,
+   "n_recursos": 1475,
    "formatos": [
     "CSV",
     "JSON",
@@ -2510,9 +2510,9 @@
    "titulo": "DESSEM - Balanço de Energia Geral",
    "url": "https://dados.ons.org.br/dataset/balanco_dessem_geral",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T19:38:42.654325",
+   "modificado_na_fonte": "2026-09-29T19:28:29.893191",
    "descricao": "Informação simplificada da programação eletro energética, resultante do modelo DESSEM, da demanda de energia e geração por fontes previstas para um dia de referência em periodicidade semi-horária no subsistema.",
-   "n_recursos": 1472,
+   "n_recursos": 1478,
    "formatos": [
     "CSV",
     "JSON",
@@ -2536,7 +2536,7 @@
    "titulo": "Dados Hidrológicos - Volume de Espera Recomendado",
    "url": "https://dados.ons.org.br/dataset/res_volumeespera",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:05:52.497779",
+   "modificado_na_fonte": "2026-09-29T22:05:53.252255",
    "descricao": "Valores do volume de espera utilizados na programação hidráulica de um reservatório. Representa o nível máximo a ser atingido, em % do volume útil, de forma que o reservatório tenha capacidade de amortecer cheias e evitar danos por inundação em locais a jusante a partir de restrições de vazões máximas e tempos de recorrência definidos pelos agentes de geração.",
    "n_recursos": 66,
    "formatos": [
@@ -2562,7 +2562,7 @@
    "titulo": "Dados Hidráulicos por Reservatório – Base diária",
    "url": "https://dados.ons.org.br/dataset/dados-hidrologicos-res",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T20:01:27.487252",
+   "modificado_na_fonte": "2026-09-29T20:01:28.238920",
    "descricao": "Dados hidráulicos verificados de reservatórios consolidados pelo ONS na periodicidade diária.\r\n\r\n**A atualização desses dados no Portal ocorrem as 9:15h, 14:15 e 17h.**",
    "n_recursos": 83,
    "formatos": [
@@ -2588,9 +2588,9 @@
    "titulo": "Dados Hidráulicos por Reservatório – Base horária",
    "url": "https://dados.ons.org.br/dataset/dados_hidrologicos_ho",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-28T10:26:48.597155",
+   "modificado_na_fonte": "2026-09-30T02:12:02.371313",
    "descricao": "Dados hidráulicos de reservatórios em periodicidade horária, **não consistidos pelo ONS**. Os dados disponibilizados são de responsabilidade dos agentes de geração e refletem uma réplica exata do que foi encaminhado ao ONS. Pode haver lacunas de dados e podem ser realizadas alterações de dados.",
-   "n_recursos": 609,
+   "n_recursos": 608,
    "formatos": [
     "CSV",
     "JSON",
@@ -2640,7 +2640,7 @@
    "titulo": "Dados de Disponibilidade de Usinas",
    "url": "https://dados.ons.org.br/dataset/disponibilidade_usina",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:07:01.327310",
+   "modificado_na_fonte": "2026-09-29T22:04:40.930114",
    "descricao": "Disponibilidade de usinas hidráulicas e térmicas com modalidade de operação Tipo I e II-A em base horária.",
    "n_recursos": 332,
    "formatos": [
@@ -2666,7 +2666,7 @@
    "titulo": "Dados de Grandezas Fluviométricas",
    "url": "https://dados.ons.org.br/dataset/grandezas_fluviometricas",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:02:56.414113",
+   "modificado_na_fonte": "2026-09-29T22:02:55.569131",
    "descricao": "Dados de medidas de grandezas obtidas nos postos fluviométricos (ou estação fluviométricas) consolidados pelo ONS na periodicidade diária.",
    "n_recursos": 38,
    "formatos": [
@@ -2692,7 +2692,7 @@
    "titulo": "Dados de Intercâmbio de Energia por Modalidade",
    "url": "https://dados.ons.org.br/dataset/intercambio_modalidade",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:04:44.197006",
+   "modificado_na_fonte": "2026-09-29T22:04:44.454438",
    "descricao": "Histórico de dados de intercâmbio de energia por modalidade discretizado em patamar horário, por conversora e montante de energia em MWh na periodicidade horária.",
    "n_recursos": 60,
    "formatos": [
@@ -2718,7 +2718,7 @@
    "titulo": "Dados de Restrição De Operação Por Constrained-off de Usinas Eólicas - Detalhamento Por Usinas",
    "url": "https://dados.ons.org.br/dataset/restricao_coff_eolica_detail",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:21:22.475521",
+   "modificado_na_fonte": "2026-09-29T22:21:10.274172",
    "descricao": "Informações associadas à apuração das restrições de operação por Constrained-off nas usinas eólicas classificadas nas modalidades Tipo I, Tipo II-B e Tipo II-C, detalhadas por usinas.",
    "n_recursos": 184,
    "formatos": [
@@ -2744,7 +2744,7 @@
    "titulo": "Dados de Restrição De Operação Por Constrained-off de Usinas Fotovoltaicas - Detalhamento Por Usinas",
    "url": "https://dados.ons.org.br/dataset/restricao_coff_fotovoltaica_detail",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:14:20.635599",
+   "modificado_na_fonte": "2026-09-29T22:15:35.714206",
    "descricao": "Informações associadas à apuração das restrições de operação por Constrained-off nas usinas fotovoltaicas classificadas nas modalidades Tipo I, Tipo II-B e Tipo II-C, detalhadas por usinas.",
    "n_recursos": 94,
    "formatos": [
@@ -2770,7 +2770,7 @@
    "titulo": "Dados de Restrição de Operação por Constrained-off de Usinas Eólicas",
    "url": "https://dados.ons.org.br/dataset/restricao_coff_eolica_usi",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:09:36.051100",
+   "modificado_na_fonte": "2026-09-29T22:09:07.149538",
    "descricao": "Informações associadas à apuração das restrições de operação por Constrained-off nas usinas eólicas classificadas nas modalidades Tipo I, Tipo II-B e Tipo II-C",
    "n_recursos": 182,
    "formatos": [
@@ -2796,7 +2796,7 @@
    "titulo": "Dados de Restrição de Operação por Constrained-off de Usinas Eólicas Intra SemiHora",
    "url": "https://dados.ons.org.br/dataset/coff_eolica_usi_intrasemihora",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:08:30.253029",
+   "modificado_na_fonte": "2026-09-29T22:09:06.756002",
    "descricao": "Informações associadas à apuração das restrições de operação por constrained-off nas usinas eólicas classificadas nas modalidades Tipo I, Tipo II-B e Tipo II-C. São apresentados os períodos de restrição dentro dos patamares semi-horários.",
    "n_recursos": 182,
    "formatos": [
@@ -2822,7 +2822,7 @@
    "titulo": "Dados de Restrição de Operação por Constrained-off de Usinas Fotovoltaicas",
    "url": "https://dados.ons.org.br/dataset/restricao_coff_fotovoltaica",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:08:09.230835",
+   "modificado_na_fonte": "2026-09-29T22:08:39.897832",
    "descricao": "Informações associadas à apuração das restrições de operação por Constrained-off nas usinas fotovoltaicas classificadas nas modalidades Tipo I, Tipo II-B e Tipo II-C",
    "n_recursos": 92,
    "formatos": [
@@ -2848,7 +2848,7 @@
    "titulo": "Dados de Restrição de Operação por Constrained-off de Usinas Fotovoltaicas Intra SemiHora",
    "url": "https://dados.ons.org.br/dataset/coff_fotovoltaica_intrasemihora",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:07:49.809431",
+   "modificado_na_fonte": "2026-09-29T22:07:59.399053",
    "descricao": "Informações associadas à apuração das restrições de operação por constrained-off nas usinas fotovoltaicas classificadas nas modalidades Tipo I, Tipo II-B e Tipo II-C. São apresentados os períodos de restrição dentro dos patamares semi-horários.",
    "n_recursos": 92,
    "formatos": [
@@ -2899,7 +2899,7 @@
    "titulo": "Dados do Relacionamento Entre Conjuntos e Usinas",
    "url": "https://dados.ons.org.br/dataset/usina_conjunto",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:05:05.873605",
+   "modificado_na_fonte": "2026-09-29T22:05:06.418358",
    "descricao": "Histórico de relação das usinas Tipo II-C que compõem os Conjuntos de Usina.",
    "n_recursos": 5,
    "formatos": [
@@ -2925,7 +2925,7 @@
    "titulo": "Dados do Relacionamento Entre Grupos de Pequenas Usinas e Usinas",
    "url": "https://dados.ons.org.br/dataset/usina_pqu",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:05:10.222108",
+   "modificado_na_fonte": "2026-09-29T22:05:10.345322",
    "descricao": "Relação das usinas Tipo III que compõem os Grupos de Pequenas Usinas.",
    "n_recursos": 5,
    "formatos": [
@@ -2951,9 +2951,9 @@
    "titulo": "Dados dos Programados dos Elementos de Fluxo Controlado",
    "url": "https://dados.ons.org.br/dataset/programacao_fluxo_controlado",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-28T00:28:31.527762",
+   "modificado_na_fonte": "2026-09-29T23:41:41.370927",
    "descricao": "Dados programados dos elementos de fluxo controlado.",
-   "n_recursos": 2161,
+   "n_recursos": 2167,
    "formatos": [
     "CSV",
     "JSON",
@@ -2977,9 +2977,9 @@
    "titulo": "Dados dos Valores da Previsão Versus Programado - Eólicas e Solares",
    "url": "https://dados.ons.org.br/dataset/programacao_x_previsao",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-28T00:29:27.409222",
+   "modificado_na_fonte": "2026-09-29T23:44:23.325402",
    "descricao": "Dados de valores de previsão versus valores do programado de usinas eólicas e solares.",
-   "n_recursos": 2150,
+   "n_recursos": 2156,
    "formatos": [
     "CSV",
     "JSON",
@@ -3003,9 +3003,9 @@
    "titulo": "Dados dos Valores da Programação Diária",
    "url": "https://dados.ons.org.br/dataset/programacao_diaria",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-28T00:31:25.902040",
+   "modificado_na_fonte": "2026-09-29T23:43:34.496843",
    "descricao": "Dados de carga e geração considerados no fechamento da programação diária, por submercado, em base semi-horária.",
-   "n_recursos": 2126,
+   "n_recursos": 2132,
    "formatos": [
     "CSV",
     "JSON",
@@ -3029,7 +3029,7 @@
    "titulo": "Dados dos indicadores de confiabilidade da rede básica: ATLS – atendimento aos limites sistêmicos",
    "url": "https://dados.ons.org.br/dataset/ind_confiarb_atls",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:02:56.474046",
+   "modificado_na_fonte": "2026-09-29T22:02:58.269553",
    "descricao": "Indicador de Atendimento aos Limites Sistêmicos (ATLS), estabelecido conforme Submódulo 9.1 dos Procedimentos de Rede. O indicador é apresentado por fluxo, nas periodicidades mensal e anual.",
    "n_recursos": 5,
    "formatos": [
@@ -3055,7 +3055,7 @@
    "titulo": "Dados dos indicadores de confiabilidade da rede básica: CCAL – controle de carregamento de linhas de transmissão",
    "url": "https://dados.ons.org.br/dataset/ind_confiarb_ccal",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:02:58.067699",
+   "modificado_na_fonte": "2026-09-29T22:02:58.372107",
    "descricao": "Indicador de Controle de Carregamento de Linhas de Transmissão (CCAL), estabelecido conforme Submódulo 9.1 dos Procedimentos de Rede. O indicador é apresentado nas agregações SIN, Área de Controle e Agente, nas periodicidades mensal e anual.",
    "n_recursos": 6,
    "formatos": [
@@ -3081,7 +3081,7 @@
    "titulo": "Dados dos indicadores de confiabilidade da rede básica: CCAT – controle de carregamento de transformadores",
    "url": "https://dados.ons.org.br/dataset/ind_confiarb_ccat",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:02:52.857184",
+   "modificado_na_fonte": "2026-09-29T22:02:51.574498",
    "descricao": "Indicador de Controle de Carregamento de Transformadores (CCAT), estabelecido conforme Submódulo 9.1 dos Procedimentos de Rede. O indicador é apresentado nas agregações SIN, Área de Controle e Agente, nas periodicidades mensal e anual.",
    "n_recursos": 5,
    "formatos": [
@@ -3107,7 +3107,7 @@
    "titulo": "Dados dos indicadores de cumprimento de providências: ECPA E PCPA",
    "url": "https://dados.ons.org.br/dataset/ind_providencia_ecpa_pcpa",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:03:41.872332",
+   "modificado_na_fonte": "2026-09-29T22:03:43.233390",
    "descricao": "Indicadores de Evolução do Cumprimento às Providências (ECPA) e Pontualidade do Cumprimento às Providências (PCPA), estabelecidos conforme Submódulo 9.5 dos Procedimentos de Rede. Os indicadores são apresentados nas agregações SIN, Agente, Área de Atuação do Agente e Gestor, na periodicidade mensal.",
    "n_recursos": 5,
    "formatos": [
@@ -3133,7 +3133,7 @@
    "titulo": "Dados dos indicadores de qualidade de energia da rede básica: DFD – desempenho da frequência em distúrbios -  mensal e anual",
    "url": "https://dados.ons.org.br/dataset/ind_qualid_dfd_meano",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:04:08.647072",
+   "modificado_na_fonte": "2026-09-29T22:04:07.938660",
    "descricao": "Indicador de Desempenho da Frequência em Distúrbios – DFD, estabelecido conforme Submódulo 9.7 dos Procedimentos de Rede, apresentado nas periodicidades mensal e anual.",
    "n_recursos": 5,
    "formatos": [
@@ -3159,7 +3159,7 @@
    "titulo": "Dados dos indicadores de qualidade de energia da rede básica: DFD – desempenho da frequência em distúrbios – por evento",
    "url": "https://dados.ons.org.br/dataset/ind_qualid_dfd_evento",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:04:02.627606",
+   "modificado_na_fonte": "2026-09-29T22:04:04.270715",
    "descricao": "Indicador de Desempenho da Frequência em Distúrbios – DFD, estabelecido conforme Submódulo 9.7 dos Procedimentos de Rede, apresentado por evento.",
    "n_recursos": 5,
    "formatos": [
@@ -3185,7 +3185,7 @@
    "titulo": "Dados dos indicadores de qualidade de energia da rede básica: DFP – desempenho da frequência em regime permanente",
    "url": "https://dados.ons.org.br/dataset/ind_qualid_dfp_regime",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:04:14.264042",
+   "modificado_na_fonte": "2026-09-29T22:04:15.464536",
    "descricao": "Indicador de Desempenho da Frequência em Regime Permanente (DFP), estabelecido conforme Submódulo 9.7 dos Procedimentos de Rede. O indicador é apresentado nas periodicidades diária, mensal e anual.",
    "n_recursos": 5,
    "formatos": [
@@ -3237,7 +3237,7 @@
    "titulo": "EAR Diário por Bacia",
    "url": "https://dados.ons.org.br/dataset/ear-diario-por-bacia",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:01:22.131943",
+   "modificado_na_fonte": "2026-09-29T22:01:27.891929",
    "descricao": "Dados das grandezas de energia armazenada (EAR) em periodicidade diária por Bacias Hidro Energéticas.\r\n\r\nA Energia Armazenada (EAR) representa a energia associada ao volume de água disponível nos reservatórios que pode ser convertido em geração na própria usina e em todas as usinas à jusante na cascata. A grandeza de EAR leva em conta nível verificado nos reservatórios na data de referência. A grandeza de EAR máxima representa a capacidade de armazenamento caso todos os reservatórios do sistema estivessem cheios. A grandeza de EAR para o subsistema à jusante considera a utilização da água do r",
    "n_recursos": 83,
    "formatos": [
@@ -3263,7 +3263,7 @@
    "titulo": "EAR Diário por REE - Reservatório Equivalente de Energia",
    "url": "https://dados.ons.org.br/dataset/ear-diario-por-ree-reservatorio-equivalente-de-energia",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:01:25.496365",
+   "modificado_na_fonte": "2026-09-29T22:01:25.647750",
    "descricao": "Dados das grandezas de energia armazenada (EAR) em periodicidade diária por Reservatórios Equivalentes. \r\n\r\nA Energia Armazenada (EAR) representa a energia associada ao volume de água disponível nos reservatórios que pode ser convertido em geração na própria usina e em todas as usinas à jusante na cascata. A grandeza de EAR leva em conta nível verificado nos reservatórios na data de referência. A grandeza de EAR máxima representa a capacidade de armazenamento caso todos os reservatórios do sistema estivessem cheios. A grandeza de EAR para o subsistema à jusante considera a utilização da água d",
    "n_recursos": 35,
    "formatos": [
@@ -3289,7 +3289,7 @@
    "titulo": "EAR Diário por Reservatório",
    "url": "https://dados.ons.org.br/dataset/ear-diario-por-reservatorio",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:01:53.778509",
+   "modificado_na_fonte": "2026-09-29T22:01:53.569294",
    "descricao": "Dados das grandezas de energia armazenada (EAR) em periodicidade diária por Reservatórios.\r\n\r\nA Energia Armazenada (EAR) representa a energia associada ao volume de água disponível nos reservatórios que pode ser convertido em geração na própria usina e em todas as usinas à jusante na cascata. A grandeza de EAR leva em conta nível verificado nos reservatórios na data de referência. A grandeza de EAR máxima representa a capacidade de armazenamento caso todos os reservatórios do sistema estivessem cheios. A grandeza de EAR para o subsistema à jusante considera a utilização da água do reservatório",
    "n_recursos": 83,
    "formatos": [
@@ -3315,7 +3315,7 @@
    "titulo": "ENA Diário por Bacia",
    "url": "https://dados.ons.org.br/dataset/ena-diario-por-bacia",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:01:42.647473",
+   "modificado_na_fonte": "2026-09-29T22:01:42.416150",
    "descricao": "Dados das grandezas de energia natural afluente (ENA) dos reservatórios com periodicidade diária por Bacias Hidro Energéticas.\r\n\r\nA Energia Natural Afluente (ENA) Bruta representa a energia produzível pela usina e é calculada pelo produto das vazões naturais aos reservatórios com as produtividades a 65% dos volumes úteis. A ENA Armazenável considera as vazões naturais descontadas das vazões vertidas nos reservatórios.\r\n\r\n**Como esses dados podem ser utilizados:** os dados podem servir de insumo para estudos energéticos e projeção do custo marginal de operação. Contudo, saiba que os dados dispo",
    "n_recursos": 62,
    "formatos": [
@@ -3341,7 +3341,7 @@
    "titulo": "ENA Diário por REE - Reservatório Equivalente de Energia",
    "url": "https://dados.ons.org.br/dataset/ena-diario-por-ree-reservatorio-equivalente-de-energia",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:01:46.476367",
+   "modificado_na_fonte": "2026-09-29T22:01:46.571000",
    "descricao": "Dados das grandezas de energia natural afluente (ENA) dos reservatórios com periodicidade diária por Reservatórios Equivalentes. \r\n\r\nA Energia Natural Afluente (ENA) Bruta representa a energia produzível pela usina e é calculada pelo produto das vazões naturais aos reservatórios com as produtividades a 65% dos volumes úteis. A ENA Armazenável considera as vazões naturais descontadas das vazões vertidas nos reservatórios.\r\n\r\n**Como esses dados podem ser utilizados:** os dados podem servir de insumo para estudos energéticos e projeção do custo marginal de operação. Contudo, saiba que os dados di",
    "n_recursos": 30,
    "formatos": [
@@ -3367,7 +3367,7 @@
    "titulo": "ENA Diário por Reservatório",
    "url": "https://dados.ons.org.br/dataset/ena-diario-por-reservatorio",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:02:14.890345",
+   "modificado_na_fonte": "2026-09-29T22:02:17.045239",
    "descricao": "Dados das grandezas de energia natural afluente (ENA) com periodicidade diária por Reservatório. \r\n\r\nA Energia Natural Afluente (ENA) Bruta representa a energia produzível pela usina e é calculada pelo produto das vazões naturais aos reservatórios com as produtividades a 65% dos volumes úteis. A ENA Armazenável considera as vazões naturais descontadas das vazões vertidas nos reservatórios.\r\n\r\n**Como esses dados podem ser utilizados:** os dados podem servir de insumo para estudos energéticos e projeção do custo marginal de operação. Contudo, saiba que os dados disponibilizados fazem parte de um",
    "n_recursos": 62,
    "formatos": [
@@ -3393,7 +3393,7 @@
    "titulo": "Energia Vertida Turbinável",
    "url": "https://dados.ons.org.br/dataset/energia-vertida-turbinavel",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:05:20.739813",
+   "modificado_na_fonte": "2026-09-29T22:05:48.688820",
    "descricao": "Dados de energia vertida turbinável consolidados pelo ONS por reservatório em periodicidade horária.\r\n\r\nPara este conjunto de dados, a Hora Início (00:00) está representada pelo intervalo entre 00:00 até 00:59:59",
    "n_recursos": 129,
    "formatos": [
@@ -3419,7 +3419,7 @@
    "titulo": "Equipamentos de Controle de Reativos",
    "url": "https://dados.ons.org.br/dataset/equipamento-controle-reativo",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:02:14.522440",
+   "modificado_na_fonte": "2026-09-29T22:02:17.892390",
    "descricao": "Dados de potência nominal de reatores, capacitores shunt, compensadores síncronos e compensadores estáticos da Rede de Operação, bem como seus Agentes proprietários.",
    "n_recursos": 5,
    "formatos": [
@@ -3445,7 +3445,7 @@
    "titulo": "Fator de Capacidade de Geração Eólica e Solar",
    "url": "https://dados.ons.org.br/dataset/fator-capacidade-2",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:06:36.719707",
+   "modificado_na_fonte": "2026-09-29T22:06:58.066048",
    "descricao": "Fator de capacidade de usinas e conjuntos de usinas eólicos e solares despachados pelo ONS em base horária. O fator de capacidade é obtido pela relação entre a geração e a capacidade instalada das usinas.\r\n\r\nOs dados dos anos de 2009 a 2011 estão disponibilizados em arquivos agrupados pelos respectivos anos, e a partir do ano de 2022 as informações estão agrupados em arquivos por mês/ano.",
    "n_recursos": 214,
    "formatos": [
@@ -3471,7 +3471,7 @@
    "titulo": "Geração Comercial Para Exportação Internacional",
    "url": "https://dados.ons.org.br/dataset/geracao-exportacao-internacional",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:02:32.452078",
+   "modificado_na_fonte": "2026-09-29T22:02:32.823698",
    "descricao": "Dados de Geração e Fluxo de Energia para exportação internacional (Argentina e Uruguai), na modalidade comercial, em base horária, em MWmed. Os dados têm início em outubro de 2022, quando a Portaria MME nº 049/2022 teve início de vigência.",
    "n_recursos": 16,
    "formatos": [
@@ -3497,7 +3497,7 @@
    "titulo": "Geração Térmica por Motivo de Despacho",
    "url": "https://dados.ons.org.br/dataset/geracao-termica-despacho-2",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:07:14.191804",
+   "modificado_na_fonte": "2026-09-29T22:07:31.025355",
    "descricao": "Dados programados e verificados de geração de usinas térmicas despachadas pelo ONS por motivo de despacho em base horária.  Os dados dos anos de 2013 a 2021 estão disponibilizados em arquivos agrupados pelos respectivos anos, e a partir do ano de 2022 as informações estão agrupados em arquivos por mês/ano.",
    "n_recursos": 206,
    "formatos": [
@@ -3523,7 +3523,7 @@
    "titulo": "Geração de Itaipu Binacional - Base horária",
    "url": "https://dados.ons.org.br/dataset/geracao_itaipu",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:03:22.645900",
+   "modificado_na_fonte": "2026-09-29T22:03:27.683261",
    "descricao": "Dados de geração da UHE Itaipu Binacional em base horária, obtidos a partir do Sistema de Supervisão e Controle do ONS. Os dados contemplam a geração total da usina, separando os dados do setor de 60 Hz, 50 Hz, atendimento ao Brasil e ao Paraguai",
    "n_recursos": 5,
    "formatos": [
@@ -3549,7 +3549,7 @@
    "titulo": "Geração por Usina em Base Horária",
    "url": "https://dados.ons.org.br/dataset/geracao-usina-2",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:08:51.473826",
+   "modificado_na_fonte": "2026-09-29T22:08:29.281995",
    "descricao": "Geração verificada de usinas, conjuntos de usinas e grupos de pequenas usinas em base horária. Os Conjuntos são formados por usinas classificadas na modalidade Tipo II-C, conforme Submódulo 7.2 dos Procedimentos de Rede e são estabelecidos em Ajustamentos Operativos, disponíveis no MPO. Os grupos de pequenas usinas são formados por usinas Tipo III, que não possuem relacionamento com o ONS, e os dados são referentes a previsões de geração.\r\n\r\nOs dados dos anos de 2000 a 2021 estão disponibilizados em arquivos agrupados pelos respectivos anos, e a partir do ano de 2022 as informações estão agrup",
    "n_recursos": 241,
    "formatos": [
@@ -3575,7 +3575,7 @@
    "titulo": "Importação de Energia na Modalidade Comercial por Bloco",
    "url": "https://dados.ons.org.br/dataset/importacaoenergia-comercial-2",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:04:41.620899",
+   "modificado_na_fonte": "2026-09-29T22:04:43.977608",
    "descricao": "Dados de importação de energia na modalidade comercial em base horária por bloco, em MWmed, e o preço correspondente ofertado pelo agente comercializador no PMO. Observação: Este modelo de importação foi estabelecido pela Portaria MME nº 339/2018, com vigência a partir de 01/01/2019.",
    "n_recursos": 27,
    "formatos": [
@@ -3601,7 +3601,7 @@
    "titulo": "Indicadores de Confiabilidade da Rede Básica: CIPER – Carga Interrompida por Perturbações",
    "url": "https://dados.ons.org.br/dataset/ind_confiarb_ciper",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:03:05.807091",
+   "modificado_na_fonte": "2026-09-29T22:03:07.023141",
    "descricao": "Indicador de Carga Interrompida por Perturbações (CIPER), estabelecido conforme Submódulo 9.1 dos Procedimentos de Rede. O indicador é apresentado nas agregações SIN, Subsistema, Região geográfica e Estado, nas periodicidades mensal e anual.",
    "n_recursos": 5,
    "formatos": [
@@ -3627,7 +3627,7 @@
    "titulo": "Indicadores de Confiabilidade da Rede Básica: DREQ, FREQ",
    "url": "https://dados.ons.org.br/dataset/ind_confiarb_dreq_freq",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:03:12.279382",
+   "modificado_na_fonte": "2026-09-29T22:03:13.157255",
    "descricao": "Indicadores de Duração Equivalente de Interrupção de Carga (DREQ), Frequência Equivalente de Interrupção de Carga (FREQ), estabelecidos conforme Submódulo 9.1 dos Procedimentos de Rede. Os indicadores são apresentados nas agregações SIN, Subsistema, Região geográfica e Estado, nas periodicidades mensal e anual.",
    "n_recursos": 5,
    "formatos": [
@@ -3653,7 +3653,7 @@
    "titulo": "Indicadores de Confiabilidade da Rede Básica: ENS – Energia Não Suprida",
    "url": "https://dados.ons.org.br/dataset/ind_confiarb_energianaosuprida",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:03:14.026118",
+   "modificado_na_fonte": "2026-09-29T22:03:14.335484",
    "descricao": "Indicador de Energia Não Suprida (ENS), estabelecido conforme Submódulo 9.1 dos Procedimentos de Rede. Os indicadores são apresentados nas agregações SIN, Subsistema, Região geográfica e Estado, nas periodicidades mensal e anual.",
    "n_recursos": 5,
    "formatos": [
@@ -3679,7 +3679,7 @@
    "titulo": "Indicadores de Confiabilidade da Rede Básica: Robustez – RMAL, RMCS, RRB e RRBCS",
    "url": "https://dados.ons.org.br/dataset/ind_confiarb_robustez",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:03:35.592700",
+   "modificado_na_fonte": "2026-09-29T22:03:34.243242",
    "descricao": "Indicadores de Robustez da Malha Sistêmica (RMAL), Robustez da Malha Sistêmica para Contingências Simples (RMCS), Robustez da Rede Básica (RRB), Robustez da Rede Básica para Contingências Simples (RRBCS), estabelecidos conforme Submódulo 9.1 dos Procedimentos de Rede. Os indicadores são apresentados nas agregações SIN, Subsistema, Região geográfica e Estado, nas periodicidades mensal e anual.",
    "n_recursos": 5,
    "formatos": [
@@ -3705,7 +3705,7 @@
    "titulo": "Indicadores de Confiabilidade da Rede Básica: SM - Severidade das Perturbações",
    "url": "https://dados.ons.org.br/dataset/ind_confiarb_severidade",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:03:25.569742",
+   "modificado_na_fonte": "2026-09-29T22:03:25.967814",
    "descricao": "Indicador de Severidade das Perturbações(SM), estabelecido conforme Submódulo 9.1 dos Procedimentos de Rede. O indicador é apresentado nas agregações SIN, subsistema, região geográfica e estado, nas periodicidades mensal e anual.",
    "n_recursos": 5,
    "formatos": [
@@ -3731,7 +3731,7 @@
    "titulo": "Indicadores de Desempenho das Funções Geração por Unidade Geradora em Base Anual",
    "url": "https://dados.ons.org.br/dataset/ind_disponibilidade_fgeracao_uge_anual",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:03:46.341685",
+   "modificado_na_fonte": "2026-09-29T22:03:44.588722",
    "descricao": "Indicadores de desempenho das funções geração por unidade geradora em base anual, conforme estabelecido no Submódulo 9.2 dos Procedimentos de Rede.",
    "n_recursos": 5,
    "formatos": [
@@ -3757,7 +3757,7 @@
    "titulo": "Indicadores de Desempenho das Funções Geração por Unidade Geradora em Base Mensal",
    "url": "https://dados.ons.org.br/dataset/ind_disponibilidade_fgeracao_uge_mensal",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:03:46.070696",
+   "modificado_na_fonte": "2026-09-29T22:03:45.317128",
    "descricao": "Indicadores de desempenho das funções geração por unidade geradora em base mensal, conforme estabelecido no Submódulo 9.2 dos Procedimentos de Rede.",
    "n_recursos": 50,
    "formatos": [
@@ -3783,7 +3783,7 @@
    "titulo": "Indicadores de Disponibilidade de Função Geração para o SIN – Base Mensal",
    "url": "https://dados.ons.org.br/dataset/ind-disponibilidade-geracao-sin",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:03:43.682929",
+   "modificado_na_fonte": "2026-09-29T22:03:43.607752",
    "descricao": "Indicadores de Disponibilidade das Funções Geração (DISPF), Indisponibilidade Programada das Funções Geração (INDISPPF) e Indisponibilidade Forçada das Funções Geração (INDISPFF), agregados para o SIN, em base mensal, conforme estabelecido no Submódulo 9.2 dos Procedimentos de Rede.",
    "n_recursos": 51,
    "formatos": [
@@ -3809,7 +3809,7 @@
    "titulo": "Indicadores de Disponibilidade de Função Transmissão – Conversores",
    "url": "https://dados.ons.org.br/dataset/ind_disponibilidade_ft_conversor",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:03:52.885999",
+   "modificado_na_fonte": "2026-09-29T22:03:53.999235",
    "descricao": "Indicador de Disponibilidade das Funções Transmissão Conversora (DISPFTConv) agregados por nível de tensão, em base mensal.",
    "n_recursos": 23,
    "formatos": [
@@ -3835,7 +3835,7 @@
    "titulo": "Indicadores de Disponibilidade de Função Transmissão – Equipamentos de Controle de Reativo",
    "url": "https://dados.ons.org.br/dataset/ind_disponibilidade_ft_reativo",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:03:48.902000",
+   "modificado_na_fonte": "2026-09-29T22:03:48.305256",
    "descricao": "Indicador de Disponibilidade das Funções Transmissão (DISP) agregados por função transmissão e nível de tensão, em base mensal, conforme estabelecido no Submódulo 9.2 dos Procedimentos de Rede.",
    "n_recursos": 50,
    "formatos": [
@@ -3861,7 +3861,7 @@
    "titulo": "Indicadores de Disponibilidade de Função Transmissão – Linhas de Transmissão e Transformadores",
    "url": "https://dados.ons.org.br/dataset/ind_disponibilidade_ft_trlt",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:03:59.204653",
+   "modificado_na_fonte": "2026-09-29T22:04:01.116535",
    "descricao": "Indicadores de Disponibilidade das Funções Transmissão (DISP), Indisponibilidade Programada das Funções Transmissão (INDISPPF) e Indisponibilidade Forçada das Funções Transmissão (INDISPFF), agregados por função transmissão e nível de tensão para transformadores e linha de transmissão, em base mensal, conforme estabelecido no Submódulo 9.2 dos Procedimentos de Rede.",
    "n_recursos": 50,
    "formatos": [
@@ -3887,7 +3887,7 @@
    "titulo": "Intercâmbio do SIN com Outros Países",
    "url": "https://dados.ons.org.br/dataset/intercambio-internacional",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:04:22.654781",
+   "modificado_na_fonte": "2026-09-29T22:04:22.423683",
    "descricao": "Dados de intercâmbio entre o Sistema Interligado Nacional-SIN e outros países em base horária, em MWmed. As grandezas representam a soma das medidas de fluxo de potência ativa nas conversoras de frequência de fronteira entre os dois países. O intercâmbio com a Argentina pode ser realizado pelas conversoras de Garabi I, Garabi II e Uruguaiana. O intercâmbio com o Uruguai pode ser realizado pelas conversoras de Melo e Rivera. O intercâmbio com o Paraguai pode ser realizado pela conversora de Acaray.",
    "n_recursos": 60,
    "formatos": [
@@ -3913,7 +3913,7 @@
    "titulo": "Interrupção de Carga",
    "url": "https://dados.ons.org.br/dataset/interrupcao_carga",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:04:41.071884",
+   "modificado_na_fonte": "2026-09-29T22:04:42.649340",
    "descricao": "Dados de interrupção de carga relacionados a desligamentos forçados em equipamentos da Rede de Operação do ONS ou de desligamentos envolvendo apenas a Rede de Distribuição, quando maiores que 100 MW por 10 minutos ou mais. Os critérios de apuração dos dados são estabelecidos na RO-AO.BR.03 - Consistência dos Dados de Perturbações, disponível no MPO. Os dados são submetidos para consistência dos agentes e podem ser revisados.",
    "n_recursos": 5,
    "formatos": [
@@ -3939,7 +3939,7 @@
    "titulo": "Linhas de Transmissão da Rede de Operação",
    "url": "https://dados.ons.org.br/dataset/linha-transmissao",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:04:56.184249",
+   "modificado_na_fonte": "2026-09-29T22:04:57.826350",
    "descricao": "Dados cadastrais das linhas de transmissão da Rede de Operação (Rede Básica + Rede Complementar) com tensão maior ou igual a 230 kV, contemplando subsistema, estado (Unidade Federativa), Agente proprietário, nível de tensão e comprimento da linha. O universo de linhas contemplado aqui é mais amplo que o apresentado na página de Histórico da Operação do site do ONS, onde são consideradas apenas as linhas de transmissão da Rede Básica.",
    "n_recursos": 5,
    "formatos": [
@@ -3965,7 +3965,7 @@
    "titulo": "Modalidade de Operação de Usinas",
    "url": "https://dados.ons.org.br/dataset/modalidade-usina",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:04:51.769457",
+   "modificado_na_fonte": "2026-09-29T22:04:53.036736",
    "descricao": "As modalidades de operação de usinas são divididas em Tipo I, Tipos II-A, II-B e II-C e Tipo III. O processo de classificação de modalidade de operação de usinas é estabelecido pelas diretrizes contidas no Submódulo 7.2 dos Procedimentos de Rede e envolve análises sob responsabilidade do Operador a partir de informações fornecidas pelos agentes de geração.",
    "n_recursos": 5,
    "formatos": [
@@ -3991,7 +3991,7 @@
    "titulo": "Oferta - Resposta à Demanda",
    "url": "https://dados.ons.org.br/dataset/oferta_respostademanda",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:04:51.122771",
+   "modificado_na_fonte": "2026-09-29T22:04:50.764351",
    "descricao": "Ofertas aprovadas do programa de Resposta da Demanda a partir de novembro de 2023.",
    "n_recursos": 14,
    "formatos": [
@@ -4067,7 +4067,7 @@
    "titulo": "Reservatórios",
    "url": "https://dados.ons.org.br/dataset/reservatorio",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:05:17.875345",
+   "modificado_na_fonte": "2026-09-29T22:05:16.929619",
    "descricao": "Dados cadastrais dos reservatórios.",
    "n_recursos": 5,
    "formatos": [
@@ -4093,7 +4093,7 @@
    "titulo": "Subestação da Rede de Operação",
    "url": "https://dados.ons.org.br/dataset/subestacao",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:06:02.639436",
+   "modificado_na_fonte": "2026-09-29T22:06:03.777075",
    "descricao": "Dados cadastrais das subestações em operação existentes na Rede de Operação (Rede Básica + Rede Complementar) com tensão base maior ou igual a 69 kV.",
    "n_recursos": 5,
    "formatos": [
@@ -4119,7 +4119,7 @@
    "titulo": "Taxas TEIFa E TEIP - Parâmetros",
    "url": "https://dados.ons.org.br/dataset/taxa_teif_teip_parametro",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:06:32.285307",
+   "modificado_na_fonte": "2026-09-29T22:06:33.327012",
    "descricao": "As informações dos parâmetros representam as horas de operação para efeito de cálculo das taxas equivalentes de indisponibilidade forçada apurada e programada.",
    "n_recursos": 24,
    "formatos": [
@@ -4145,7 +4145,7 @@
    "titulo": "Taxas TEIFa Oper e TEIP Oper",
    "url": "https://dados.ons.org.br/dataset/taxa_teif_teip_oper",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:06:18.812119",
+   "modificado_na_fonte": "2026-09-29T22:06:18.392076",
    "descricao": "Taxas TEIFa_Oper(Taxa Equivalente de Indisponibilidade Forçada Operativa) e TEIP_Oper(Taxa de Indisponibilidade Programada Operativa) das usinas despachadas centralizadamente pelo ONS (Tipo I e Tipo II-A) dos últimos 60 meses.",
    "n_recursos": 5,
    "formatos": [
@@ -4171,7 +4171,7 @@
    "titulo": "Taxas TEIFa e TEIP",
    "url": "https://dados.ons.org.br/dataset/taxa_teif_teip",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:06:13.083967",
+   "modificado_na_fonte": "2026-09-29T22:06:11.385498",
    "descricao": "Taxas TEIFa(Taxa Equivalente de Indisponibilidade Forçada) e TEIP(Taxa de Indisponibilidade Programada) das usinas despachadas centralizadamente pelo ONS (Tipo I e Tipo II-A) dos últimos 60 meses.",
    "n_recursos": 5,
    "formatos": [
@@ -4197,7 +4197,7 @@
    "titulo": "Unidade Geradora em Operação como Compensador Síncrono",
    "url": "https://dados.ons.org.br/dataset/uge_opera_csi",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-27T22:06:25.506138",
+   "modificado_na_fonte": "2026-09-29T22:06:25.390678",
    "descricao": "Unidade geradora em operação como compensador síncrono.",
    "n_recursos": 20,
    "formatos": [

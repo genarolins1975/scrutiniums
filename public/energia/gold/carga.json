@@ -1,11 +1,11 @@
 {
  "dominio": "energia",
  "gold": "carga.json",
- "gerado_em": "2026-09-28T15:25:39Z",
+ "gerado_em": "2026-09-30T02:20:27Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d1dcbf611ab9",
+ "versao_codigo": "196905461ac0",
  "disponivel": true,
- "dia_referencia": "2026-09-25",
+ "dia_referencia": "2026-09-28",
  "unidade": "MWmed",
  "regras": {
   "carga_sin": "Carga do SIN = soma das cargas diárias dos quatro subsistemas.",
@@ -34,26 +34,26 @@
    "sm": "SE",
    "nome": "Sudeste/Centro-Oeste",
    "natureza": "OBSERVADO",
-   "dia": 45981.0,
+   "dia": 49000.0,
    "ult7": {
-    "media": 44443.0,
-    "media_ano_anterior": 43394.0,
-    "variacao_pct": 2.4,
+    "media": 45653.0,
+    "media_ano_anterior": 41465.0,
+    "variacao_pct": 10.1,
     "mesmo_regime": true,
-    "inicio": "2026-09-19",
-    "fim": "2026-09-25",
-    "inicio_anterior": "2025-09-19",
-    "fim_anterior": "2025-09-25"
+    "inicio": "2026-09-22",
+    "fim": "2026-09-28",
+    "inicio_anterior": "2025-09-22",
+    "fim_anterior": "2025-09-28"
    },
    "ult30": {
-    "media": 44216.0,
-    "media_ano_anterior": 43102.0,
-    "variacao_pct": 2.6,
+    "media": 44118.0,
+    "media_ano_anterior": 42478.0,
+    "variacao_pct": 3.9,
     "mesmo_regime": true,
-    "inicio": "2026-08-27",
-    "fim": "2026-09-25",
-    "inicio_anterior": "2025-08-27",
-    "fim_anterior": "2025-09-25"
+    "inicio": "2026-08-30",
+    "fim": "2026-09-28",
+    "inicio_anterior": "2025-08-30",
+    "fim_anterior": "2025-09-28"
    },
    "max_12m": {
     "valor": 52592.0,
@@ -64,26 +64,26 @@
    "sm": "S",
    "nome": "Sul",
    "natureza": "OBSERVADO",
-   "dia": 13787.0,
+   "dia": 14909.0,
    "ult7": {
-    "media": 13205.0,
-    "media_ano_anterior": 12510.0,
-    "variacao_pct": 5.6,
+    "media": 13508.0,
+    "media_ano_anterior": 11976.0,
+    "variacao_pct": 12.8,
     "mesmo_regime": true,
-    "inicio": "2026-09-19",
-    "fim": "2026-09-25",
-    "inicio_anterior": "2025-09-19",
-    "fim_anterior": "2025-09-25"
+    "inicio": "2026-09-22",
+    "fim": "2026-09-28",
+    "inicio_anterior": "2025-09-22",
+    "fim_anterior": "2025-09-28"
    },
    "ult30": {
-    "media": 13210.0,
-    "media_ano_anterior": 12530.0,
-    "variacao_pct": 5.4,
+    "media": 13068.0,
+    "media_ano_anterior": 12377.0,
+    "variacao_pct": 5.6,
     "mesmo_regime": true,
-    "inicio": "2026-08-27",
-    "fim": "2026-09-25",
-    "inicio_anterior": "2025-08-27",
-    "fim_anterior": "2025-09-25"
+    "inicio": "2026-08-30",
+    "fim": "2026-09-28",
+    "inicio_anterior": "2025-08-30",
+    "fim_anterior": "2025-09-28"
    },
    "max_12m": {
     "valor": 19117.0,
@@ -94,29 +94,29 @@
    "sm": "NE",
    "nome": "Nordeste",
    "natureza": "OBSERVADO",
-   "dia": 15109.0,
+   "dia": 15064.0,
    "ult7": {
-    "media": 14465.0,
-    "media_ano_anterior": 13491.0,
-    "variacao_pct": 7.2,
+    "media": 14709.0,
+    "media_ano_anterior": 13311.0,
+    "variacao_pct": 10.5,
     "mesmo_regime": true,
-    "inicio": "2026-09-19",
-    "fim": "2026-09-25",
-    "inicio_anterior": "2025-09-19",
-    "fim_anterior": "2025-09-25"
+    "inicio": "2026-09-22",
+    "fim": "2026-09-28",
+    "inicio_anterior": "2025-09-22",
+    "fim_anterior": "2025-09-28"
    },
    "ult30": {
-    "media": 14320.0,
-    "media_ano_anterior": 13011.0,
-    "variacao_pct": 10.1,
+    "media": 14307.0,
+    "media_ano_anterior": 12968.0,
+    "variacao_pct": 10.3,
     "mesmo_regime": true,
-    "inicio": "2026-08-27",
-    "fim": "2026-09-25",
-    "inicio_anterior": "2025-08-27",
-    "fim_anterior": "2025-09-25"
+    "inicio": "2026-08-30",
+    "fim": "2026-09-28",
+    "inicio_anterior": "2025-08-30",
+    "fim_anterior": "2025-09-28"
    },
    "max_12m": {
-    "valor": 15299.0,
+    "valor": 15310.0,
     "dia": "2026-09-24"
    }
   },
@@ -124,26 +124,26 @@
    "sm": "N",
    "nome": "Norte",
    "natureza": "OBSERVADO",
-   "dia": 9794.0,
+   "dia": 9923.0,
    "ult7": {
-    "media": 9984.0,
-    "media_ano_anterior": 9131.0,
-    "variacao_pct": 9.3,
+    "media": 9901.0,
+    "media_ano_anterior": 9032.0,
+    "variacao_pct": 9.6,
     "mesmo_regime": true,
-    "inicio": "2026-09-19",
-    "fim": "2026-09-25",
-    "inicio_anterior": "2025-09-19",
-    "fim_anterior": "2025-09-25"
+    "inicio": "2026-09-22",
+    "fim": "2026-09-28",
+    "inicio_anterior": "2025-09-22",
+    "fim_anterior": "2025-09-28"
    },
    "ult30": {
-    "media": 9863.0,
-    "media_ano_anterior": 8919.0,
-    "variacao_pct": 10.6,
+    "media": 9836.0,
+    "media_ano_anterior": 8885.0,
+    "variacao_pct": 10.7,
     "mesmo_regime": true,
-    "inicio": "2026-08-27",
-    "fim": "2026-09-25",
-    "inicio_anterior": "2025-08-27",
-    "fim_anterior": "2025-09-25"
+    "inicio": "2026-08-30",
+    "fim": "2026-09-28",
+    "inicio_anterior": "2025-08-30",
+    "fim_anterior": "2025-09-28"
    },
    "max_12m": {
     "valor": 10361.0,
@@ -154,26 +154,26 @@
    "sm": "SIN",
    "nome": "Sistema Interligado Nacional",
    "natureza": "CALCULADO",
-   "dia": 84672.0,
+   "dia": 88896.0,
    "ult7": {
-    "media": 82097.0,
-    "media_ano_anterior": 78527.0,
-    "variacao_pct": 4.5,
+    "media": 83771.0,
+    "media_ano_anterior": 75784.0,
+    "variacao_pct": 10.5,
     "mesmo_regime": true,
-    "inicio": "2026-09-19",
-    "fim": "2026-09-25",
-    "inicio_anterior": "2025-09-19",
-    "fim_anterior": "2025-09-25"
+    "inicio": "2026-09-22",
+    "fim": "2026-09-28",
+    "inicio_anterior": "2025-09-22",
+    "fim_anterior": "2025-09-28"
    },
    "ult30": {
-    "media": 81609.0,
-    "media_ano_anterior": 77562.0,
-    "variacao_pct": 5.2,
+    "media": 81330.0,
+    "media_ano_anterior": 76708.0,
+    "variacao_pct": 6.0,
     "mesmo_regime": true,
-    "inicio": "2026-08-27",
-    "fim": "2026-09-25",
-    "inicio_anterior": "2025-08-27",
-    "fim_anterior": "2025-09-25"
+    "inicio": "2026-08-30",
+    "fim": "2026-09-28",
+    "inicio_anterior": "2025-08-30",
+    "fim_anterior": "2025-09-28"
    },
    "max_12m": {
     "valor": 92081.0,
@@ -182,30 +182,6 @@
   }
  ],
  "serie": [
-  {
-   "d": "2023-09-26",
-   "SE": 50879.0,
-   "S": 14290.0,
-   "NE": 13326.0,
-   "N": 8237.0,
-   "SIN": 86732.0
-  },
-  {
-   "d": "2023-09-27",
-   "SE": 51028.0,
-   "S": 13655.0,
-   "NE": 13565.0,
-   "N": 8215.0,
-   "SIN": 86463.0
-  },
-  {
-   "d": "2023-09-28",
-   "SE": 45794.0,
-   "S": 12862.0,
-   "NE": 13270.0,
-   "N": 8038.0,
-   "SIN": 79964.0
-  },
   {
    "d": "2023-09-29",
    "SE": 44036.0,
@@ -8754,9 +8730,9 @@
    "d": "2026-09-01",
    "SE": 48582.0,
    "S": 13786.0,
-   "NE": 14682.0,
+   "NE": 14671.0,
    "N": 10114.0,
-   "SIN": 87165.0
+   "SIN": 87153.0
   },
   {
    "d": "2026-09-02",
@@ -8802,9 +8778,9 @@
    "d": "2026-09-07",
    "SE": 37309.0,
    "S": 10976.0,
-   "NE": 13240.0,
+   "NE": 13222.0,
    "N": 9133.0,
-   "SIN": 70659.0
+   "SIN": 70641.0
   },
   {
    "d": "2026-09-08",
@@ -8824,43 +8800,43 @@
   },
   {
    "d": "2026-09-10",
-   "SE": 46234.0,
+   "SE": 46250.0,
    "S": 14614.0,
    "NE": 14498.0,
    "N": 9973.0,
-   "SIN": 85319.0
+   "SIN": 85334.0
   },
   {
    "d": "2026-09-11",
    "SE": 46745.0,
    "S": 14498.0,
-   "NE": 14500.0,
+   "NE": 14506.0,
    "N": 9971.0,
-   "SIN": 85714.0
+   "SIN": 85720.0
   },
   {
    "d": "2026-09-12",
    "SE": 43645.0,
    "S": 12218.0,
-   "NE": 13807.0,
+   "NE": 13813.0,
    "N": 9732.0,
-   "SIN": 79403.0
+   "SIN": 79409.0
   },
   {
    "d": "2026-09-13",
    "SE": 38867.0,
    "S": 10568.0,
-   "NE": 12829.0,
+   "NE": 12837.0,
    "N": 9417.0,
-   "SIN": 71681.0
+   "SIN": 71689.0
   },
   {
    "d": "2026-09-14",
    "SE": 43684.0,
    "S": 13923.0,
-   "NE": 14305.0,
+   "NE": 14313.0,
    "N": 10088.0,
-   "SIN": 82000.0
+   "SIN": 82008.0
   },
   {
    "d": "2026-09-15",
@@ -8888,67 +8864,91 @@
   },
   {
    "d": "2026-09-18",
-   "SE": 43905.0,
+   "SE": 43906.0,
    "S": 13598.0,
    "NE": 14906.0,
    "N": 10090.0,
-   "SIN": 82499.0
+   "SIN": 82500.0
   },
   {
    "d": "2026-09-19",
-   "SE": 40984.0,
+   "SE": 40986.0,
    "S": 12673.0,
-   "NE": 13786.0,
+   "NE": 13784.0,
    "N": 9770.0,
    "SIN": 77214.0
   },
   {
    "d": "2026-09-20",
-   "SE": 39166.0,
+   "SE": 39167.0,
    "S": 10576.0,
-   "NE": 12679.0,
+   "NE": 12676.0,
    "N": 9423.0,
-   "SIN": 71844.0
+   "SIN": 71842.0
   },
   {
    "d": "2026-09-21",
-   "SE": 46552.0,
+   "SE": 46553.0,
    "S": 13645.0,
-   "NE": 14224.0,
+   "NE": 14225.0,
    "N": 10068.0,
-   "SIN": 84490.0
+   "SIN": 84491.0
   },
   {
    "d": "2026-09-22",
-   "SE": 47677.0,
-   "S": 13896.0,
-   "NE": 14884.0,
+   "SE": 47682.0,
+   "S": 13898.0,
+   "NE": 14901.0,
    "N": 10218.0,
-   "SIN": 86676.0
+   "SIN": 86698.0
   },
   {
    "d": "2026-09-23",
-   "SE": 46037.0,
-   "S": 13988.0,
-   "NE": 15273.0,
+   "SE": 46069.0,
+   "S": 13990.0,
+   "NE": 15304.0,
    "N": 10257.0,
-   "SIN": 85555.0
+   "SIN": 85620.0
   },
   {
    "d": "2026-09-24",
-   "SE": 44701.0,
+   "SE": 44698.0,
    "S": 13872.0,
-   "NE": 15299.0,
+   "NE": 15310.0,
    "N": 10361.0,
-   "SIN": 84233.0
+   "SIN": 84241.0
   },
   {
    "d": "2026-09-25",
-   "SE": 45981.0,
-   "S": 13787.0,
-   "NE": 15109.0,
+   "SE": 45979.0,
+   "S": 13788.0,
+   "NE": 15114.0,
    "N": 9794.0,
-   "SIN": 84672.0
+   "SIN": 84675.0
+  },
+  {
+   "d": "2026-09-26",
+   "SE": 44162.0,
+   "S": 12520.0,
+   "NE": 13985.0,
+   "N": 9401.0,
+   "SIN": 80068.0
+  },
+  {
+   "d": "2026-09-27",
+   "SE": 41981.0,
+   "S": 11580.0,
+   "NE": 13288.0,
+   "N": 9350.0,
+   "SIN": 76200.0
+  },
+  {
+   "d": "2026-09-28",
+   "SE": 49000.0,
+   "S": 14909.0,
+   "NE": 15064.0,
+   "N": 9923.0,
+   "SIN": 88896.0
   }
  ],
  "mensal": [
@@ -11834,12 +11834,12 @@
   },
   {
    "m": "2026-09",
-   "dias": 25,
-   "SE": 43913.0,
-   "S": 13085.0,
-   "NE": 14378.0,
-   "N": 9882.0,
-   "SIN": 81258.0
+   "dias": 28,
+   "SE": 44037.0,
+   "S": 13076.0,
+   "NE": 14351.0,
+   "N": 9847.0,
+   "SIN": 81312.0
   }
  ],
  "proveniencia": {
@@ -11858,31 +11858,132 @@
    "frequencia": "diária",
    "periodo_referencia": {
     "inicio": "2000-01-01",
-    "fim": "2026-09-25"
+    "fim": "2026-09-28"
    },
-   "publicado_pela_fonte_em": "2026-09-27T22:00:44.552024",
-   "capturado_em": "2026-09-28T09:08:16Z",
-   "validado_em": "2026-09-28T15:25:39Z",
+   "publicado_pela_fonte_em": "2026-09-29T22:00:43.436290",
+   "capturado_em": "2026-09-30T02:19:48Z",
+   "validado_em": "2026-09-30T02:20:27Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
-    "fim": "2026-09-25"
+    "fim": "2026-09-28"
    },
    "transformacoes": [],
    "formula": null,
    "snapshot": {
-    "id": "carga_energia_di@2026-09-28T09:08:16Z",
-    "sha256": "682cc3ec96e0f40af6920bb618fc756ea0602fea2b45e50dbf1ad01918955c5d"
+    "id": "carga_energia_di@2026-09-30T02:19:48Z",
+    "sha256": "b6e8471dc064c63a4db34e9e6e3009a019460c71bff839104a1415ea0dbaefb3"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d1dcbf611ab9",
+   "versao_codigo": "196905461ac0",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T15:25:39Z",
-    "total": 0,
-    "vintages_comparadas": 27,
+    "detectado_em": "2026-09-30T02:20:26Z",
+    "total": 33,
+    "vintages_comparadas": 28,
     "arquivos": 27,
-    "recapturas_sem_mudanca": 2,
-    "ultimo_download_ok": "2026-09-28T10:55:16Z",
-    "exemplos": []
+    "recapturas_sem_mudanca": 1,
+    "ultimo_download_ok": "2026-09-30T02:19:48Z",
+    "exemplos": [
+     {
+      "serie": "carga_mwmed.N",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.S",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.N",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.S",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-24",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.S",
+      "ref": "2026-09-24",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-24",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-23",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.S",
+      "ref": "2026-09-23",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-23",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-22",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.S",
+      "ref": "2026-09-22",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-22",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.N",
+      "ref": "2026-09-21",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-21",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-21",
+      "valores": 2
+     }
+    ]
    },
    "limitacoes": [
     "O ONS mudou o conteúdo da série em 01/03/2021 e em 29/04/2023 (inclusão da estimativa de MMGD); comparações que atravessam essas datas não são homogêneas e não são exibidas como variação.",
@@ -11906,14 +12007,14 @@
    "frequencia": "diária",
    "periodo_referencia": {
     "inicio": "2000-01-01",
-    "fim": "2026-09-25"
+    "fim": "2026-09-28"
    },
-   "publicado_pela_fonte_em": "2026-09-27T22:00:44.552024",
-   "capturado_em": "2026-09-28T09:08:16Z",
-   "validado_em": "2026-09-28T15:25:39Z",
+   "publicado_pela_fonte_em": "2026-09-29T22:00:43.436290",
+   "capturado_em": "2026-09-30T02:19:48Z",
+   "validado_em": "2026-09-30T02:20:27Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
-    "fim": "2026-09-25"
+    "fim": "2026-09-28"
    },
    "transformacoes": [
     "soma dos quatro subsistemas",
@@ -11922,19 +12023,120 @@
    ],
    "formula": "variação = média(últimos n dias) ÷ média(mesmos n dias do ano anterior) − 1",
    "snapshot": {
-    "id": "carga_energia_di@2026-09-28T09:08:16Z",
-    "sha256": "682cc3ec96e0f40af6920bb618fc756ea0602fea2b45e50dbf1ad01918955c5d"
+    "id": "carga_energia_di@2026-09-30T02:19:48Z",
+    "sha256": "b6e8471dc064c63a4db34e9e6e3009a019460c71bff839104a1415ea0dbaefb3"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d1dcbf611ab9",
+   "versao_codigo": "196905461ac0",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T15:25:39Z",
-    "total": 0,
-    "vintages_comparadas": 27,
+    "detectado_em": "2026-09-30T02:20:26Z",
+    "total": 33,
+    "vintages_comparadas": 28,
     "arquivos": 27,
-    "recapturas_sem_mudanca": 2,
-    "ultimo_download_ok": "2026-09-28T10:55:16Z",
-    "exemplos": []
+    "recapturas_sem_mudanca": 1,
+    "ultimo_download_ok": "2026-09-30T02:19:48Z",
+    "exemplos": [
+     {
+      "serie": "carga_mwmed.N",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.S",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.N",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.S",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-24",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.S",
+      "ref": "2026-09-24",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-24",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-23",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.S",
+      "ref": "2026-09-23",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-23",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-22",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.S",
+      "ref": "2026-09-22",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-22",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.N",
+      "ref": "2026-09-21",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-21",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-21",
+      "valores": 2
+     }
+    ]
    },
    "limitacoes": [
     "O ONS mudou o conteúdo da série em 01/03/2021 e em 29/04/2023 (inclusão da estimativa de MMGD); comparações que atravessam essas datas não são homogêneas e não são exibidas como variação.",
@@ -11961,12 +12163,12 @@
     "inicio": "2000-01",
     "fim": "2026-09"
    },
-   "publicado_pela_fonte_em": "2026-09-27T22:00:44.552024",
-   "capturado_em": "2026-09-28T09:08:16Z",
-   "validado_em": "2026-09-28T15:25:39Z",
+   "publicado_pela_fonte_em": "2026-09-29T22:00:43.436290",
+   "capturado_em": "2026-09-30T02:19:48Z",
+   "validado_em": "2026-09-30T02:20:27Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
-    "fim": "2026-09-25"
+    "fim": "2026-09-28"
    },
    "transformacoes": [
     "média aritmética dos valores diários do mês",
@@ -11974,19 +12176,120 @@
    ],
    "formula": "carga_mensal(s, m) = média de carga(s, d) para os dias d do mês m com dado; o mês corrente é parcial",
    "snapshot": {
-    "id": "carga_energia_di@2026-09-28T09:08:16Z",
-    "sha256": "682cc3ec96e0f40af6920bb618fc756ea0602fea2b45e50dbf1ad01918955c5d"
+    "id": "carga_energia_di@2026-09-30T02:19:48Z",
+    "sha256": "b6e8471dc064c63a4db34e9e6e3009a019460c71bff839104a1415ea0dbaefb3"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d1dcbf611ab9",
+   "versao_codigo": "196905461ac0",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T15:25:39Z",
-    "total": 0,
-    "vintages_comparadas": 27,
+    "detectado_em": "2026-09-30T02:20:26Z",
+    "total": 33,
+    "vintages_comparadas": 28,
     "arquivos": 27,
-    "recapturas_sem_mudanca": 2,
-    "ultimo_download_ok": "2026-09-28T10:55:16Z",
-    "exemplos": []
+    "recapturas_sem_mudanca": 1,
+    "ultimo_download_ok": "2026-09-30T02:19:48Z",
+    "exemplos": [
+     {
+      "serie": "carga_mwmed.N",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.S",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.N",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.S",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-24",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.S",
+      "ref": "2026-09-24",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-24",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-23",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.S",
+      "ref": "2026-09-23",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-23",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-22",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.S",
+      "ref": "2026-09-22",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-22",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.N",
+      "ref": "2026-09-21",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-21",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-21",
+      "valores": 2
+     }
+    ]
    },
    "limitacoes": [
     "O ONS mudou o conteúdo da série em 01/03/2021 e em 29/04/2023 (inclusão da estimativa de MMGD); comparações que atravessam essas datas não são homogêneas e não são exibidas como variação.",

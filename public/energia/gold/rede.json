@@ -1,13 +1,13 @@
 {
  "dominio": "energia",
  "gold": "rede.json",
- "gerado_em": "2026-09-28T15:25:51Z",
+ "gerado_em": "2026-09-30T02:20:41Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d1dcbf611ab9",
+ "versao_codigo": "196905461ac0",
  "disponivel": true,
- "dia_referencia": "2026-09-26",
- "dia_referencia_liquido": "2026-09-25",
- "ultimo_dia_pld": "2026-09-28",
+ "dia_referencia": "2026-09-28",
+ "dia_referencia_liquido": "2026-09-28",
+ "ultimo_dia_pld": "2026-09-30",
  "regras": {
   "fluxo": "Fluxo diário = média das 24 horas do intercâmbio verificado entre subsistemas, com sinal: positivo da primeira para a segunda ponta (N→NE, N→SE/CO, NE→SE/CO, S→SE/CO).",
   "liquido": "Intercâmbio líquido do subsistema = média diária do intercâmbio verificado no balanço de energia do ONS; positivo significa exportação.",
@@ -22,16 +22,16 @@
    "de": "N",
    "para": "NE",
    "nome": "Norte → Nordeste",
-   "fluxo_dia": -3557.0,
-   "programado_dia": -3401.0,
-   "fluxo_media_30d": -4095.0,
-   "fluxo_media_30d_anterior": -4166.0,
+   "fluxo_dia": -3861.0,
+   "programado_dia": -3777.0,
+   "fluxo_media_30d": -4086.0,
+   "fluxo_media_30d_anterior": -4156.0,
    "dias_sentido_canonico_30d": 0,
    "diferenca_preco_ultimo_dia_comum": {
-    "dia": "2026-09-26",
+    "dia": "2026-09-28",
     "valor": -0.01
    },
-   "dias_com_diferenca_30d": 5,
+   "dias_com_diferenca_30d": 4,
    "n_dias_pld_30d": 30
   },
   {
@@ -39,16 +39,16 @@
    "de": "N",
    "para": "SE",
    "nome": "Norte → Sudeste/Centro-Oeste",
-   "fluxo_dia": -172.0,
-   "programado_dia": -981.0,
-   "fluxo_media_30d": 774.0,
-   "fluxo_media_30d_anterior": 1491.0,
+   "fluxo_dia": 668.0,
+   "programado_dia": 321.0,
+   "fluxo_media_30d": 684.0,
+   "fluxo_media_30d_anterior": 1479.0,
    "dias_sentido_canonico_30d": 25,
    "diferenca_preco_ultimo_dia_comum": {
-    "dia": "2026-09-26",
+    "dia": "2026-09-28",
     "valor": -0.0
    },
-   "dias_com_diferenca_30d": 2,
+   "dias_com_diferenca_30d": 1,
    "n_dias_pld_30d": 30
   },
   {
@@ -56,16 +56,16 @@
    "de": "NE",
    "para": "SE",
    "nome": "Nordeste → Sudeste/Centro-Oeste",
-   "fluxo_dia": 3808.0,
-   "programado_dia": 3900.0,
-   "fluxo_media_30d": 4963.0,
-   "fluxo_media_30d_anterior": 5693.0,
+   "fluxo_dia": 5184.0,
+   "programado_dia": 5452.0,
+   "fluxo_media_30d": 4842.0,
+   "fluxo_media_30d_anterior": 5769.0,
    "dias_sentido_canonico_30d": 30,
    "diferenca_preco_ultimo_dia_comum": {
-    "dia": "2026-09-26",
+    "dia": "2026-09-28",
     "valor": 0.0
    },
-   "dias_com_diferenca_30d": 5,
+   "dias_com_diferenca_30d": 4,
    "n_dias_pld_30d": 30
   },
   {
@@ -73,16 +73,16 @@
    "de": "S",
    "para": "SE",
    "nome": "Sul → Sudeste/Centro-Oeste",
-   "fluxo_dia": 2835.0,
-   "programado_dia": 2945.0,
-   "fluxo_media_30d": 1404.0,
-   "fluxo_media_30d_anterior": 690.0,
-   "dias_sentido_canonico_30d": 28,
+   "fluxo_dia": 849.0,
+   "programado_dia": 2283.0,
+   "fluxo_media_30d": 1521.0,
+   "fluxo_media_30d_anterior": 667.0,
+   "dias_sentido_canonico_30d": 29,
    "diferenca_preco_ultimo_dia_comum": {
-    "dia": "2026-09-26",
-    "valor": 4.08
+    "dia": "2026-09-28",
+    "valor": 6.26
    },
-   "dias_com_diferenca_30d": 6,
+   "dias_com_diferenca_30d": 8,
    "n_dias_pld_30d": 30
   }
  ],
@@ -90,55 +90,41 @@
   {
    "sm": "SE",
    "nome": "Sudeste/Centro-Oeste",
-   "dia": -6275.0,
-   "media_30d": -7162.0
+   "dia": -6701.0,
+   "media_30d": -7047.0
   },
   {
    "sm": "S",
    "nome": "Sul",
-   "dia": 1561.0,
-   "media_30d": 1533.0
+   "dia": 849.0,
+   "media_30d": 1657.0
   },
   {
    "sm": "NE",
    "nome": "Nordeste",
-   "dia": 8566.0,
-   "media_30d": 9144.0
+   "dia": 9045.0,
+   "media_30d": 8928.0
   },
   {
    "sm": "N",
    "nome": "Norte",
-   "dia": -3852.0,
-   "media_30d": -3288.0
+   "dia": -3193.0,
+   "media_30d": -3402.0
   }
  ],
  "balanco_sin": {
-  "dia": "2026-09-25",
-  "soma_saldos": 0.0,
+  "dia": "2026-09-28",
+  "soma_saldos": -0.0,
   "intercambio_sin": 0.0,
   "dias_365": 365,
   "dias_sin_nao_nulo_365": 211,
-  "horas_sin_nulo_total": 24038,
-  "horas_total": 50256,
+  "horas_sin_nulo_total": 24110,
+  "horas_total": 50328,
   "dias_divergentes": [
    "2022-09-14"
   ]
  },
  "serie_fluxos": [
-  {
-   "d": "2025-09-26",
-   "N_NE": -4240.0,
-   "N_SE": 1184.0,
-   "NE_SE": 5147.0,
-   "S_SE": 411.0
-  },
-  {
-   "d": "2025-09-27",
-   "N_NE": -4011.0,
-   "N_SE": 900.0,
-   "NE_SE": 4556.0,
-   "S_SE": 381.0
-  },
   {
    "d": "2025-09-28",
    "N_NE": -3561.0,
@@ -2686,17 +2672,23 @@
    "N_SE": -172.0,
    "NE_SE": 3808.0,
    "S_SE": 2835.0
+  },
+  {
+   "d": "2026-09-27",
+   "N_NE": -4024.0,
+   "N_SE": 12.0,
+   "NE_SE": 3633.0,
+   "S_SE": 2668.0
+  },
+  {
+   "d": "2026-09-28",
+   "N_NE": -3861.0,
+   "N_SE": 668.0,
+   "NE_SE": 5184.0,
+   "S_SE": 849.0
   }
  ],
  "serie_amplitude_pld": [
-  {
-   "d": "2025-09-26",
-   "amplitude": 2.13
-  },
-  {
-   "d": "2025-09-27",
-   "amplitude": 4.28
-  },
   {
    "d": "2025-09-28",
    "amplitude": 0.42
@@ -2939,7 +2931,7 @@
   },
   {
    "d": "2025-11-27",
-   "amplitude": 0.01
+   "amplitude": 0.0
   },
   {
    "d": "2025-11-28",
@@ -2987,7 +2979,7 @@
   },
   {
    "d": "2025-12-09",
-   "amplitude": 0.01
+   "amplitude": 0.0
   },
   {
    "d": "2025-12-10",
@@ -3075,7 +3067,7 @@
   },
   {
    "d": "2025-12-31",
-   "amplitude": 0.01
+   "amplitude": 0.0
   },
   {
    "d": "2026-01-01",
@@ -3135,7 +3127,7 @@
   },
   {
    "d": "2026-01-15",
-   "amplitude": 18.57
+   "amplitude": 18.58
   },
   {
    "d": "2026-01-16",
@@ -3403,7 +3395,7 @@
   },
   {
    "d": "2026-03-23",
-   "amplitude": 214.89
+   "amplitude": 214.88
   },
   {
    "d": "2026-03-24",
@@ -3439,7 +3431,7 @@
   },
   {
    "d": "2026-04-01",
-   "amplitude": 101.13
+   "amplitude": 101.14
   },
   {
    "d": "2026-04-02",
@@ -3539,7 +3531,7 @@
   },
   {
    "d": "2026-04-26",
-   "amplitude": 161.04
+   "amplitude": 161.03
   },
   {
    "d": "2026-04-27",
@@ -3547,7 +3539,7 @@
   },
   {
    "d": "2026-04-28",
-   "amplitude": 241.32
+   "amplitude": 241.31
   },
   {
    "d": "2026-04-29",
@@ -3767,7 +3759,7 @@
   },
   {
    "d": "2026-06-22",
-   "amplitude": 21.93
+   "amplitude": 21.94
   },
   {
    "d": "2026-06-23",
@@ -4099,7 +4091,7 @@
   },
   {
    "d": "2026-09-13",
-   "amplitude": 0.01
+   "amplitude": 0.0
   },
   {
    "d": "2026-09-14",
@@ -4160,13 +4152,21 @@
   {
    "d": "2026-09-28",
    "amplitude": 6.26
+  },
+  {
+   "d": "2026-09-29",
+   "amplitude": 7.59
+  },
+  {
+   "d": "2026-09-30",
+   "amplitude": 10.32
   }
  ],
  "resumo_amplitude": {
-  "dia": "2026-09-28",
-  "valor": 6.26,
-  "media_30d": 1.92,
-  "media_30d_anterior": 2.86,
+  "dia": "2026-09-30",
+  "valor": 10.32,
+  "media_30d": 2.42,
+  "media_30d_anterior": 2.96,
   "maior_30d": {
    "dia": "2026-09-24",
    "valor": 10.99
@@ -4189,14 +4189,14 @@
    "frequencia": "horária, agregada por dia",
    "periodo_referencia": {
     "inicio": "2021-01-01",
-    "fim": "2026-09-26"
+    "fim": "2026-09-28"
    },
-   "publicado_pela_fonte_em": "2026-09-27T22:04:40.385538",
-   "capturado_em": "2026-09-28T09:09:02Z",
-   "validado_em": "2026-09-28T15:25:51Z",
+   "publicado_pela_fonte_em": "2026-09-29T22:04:31.640235",
+   "capturado_em": "2026-09-30T02:20:08Z",
+   "validado_em": "2026-09-30T02:20:41Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
-    "fim": "2026-09-26"
+    "fim": "2026-09-28"
    },
    "transformacoes": [
     "orientação canônica por fronteira com sinal",
@@ -4205,18 +4205,18 @@
    ],
    "formula": "fluxo_dia(par) = (1/24) × Σ sinal × intercâmbio_verificado(h); média_30d = média de fluxo_dia nos 30 dias da janela",
    "snapshot": {
-    "id": "intercambio_nacional_ho@2026-09-28T09:09:02Z",
-    "sha256": "c59c224c6bdb7afcd4d09b0b18223032386787b2782c8165650ca0f4984a3b5d"
+    "id": "intercambio_nacional_ho@2026-09-30T02:20:08Z",
+    "sha256": "cc661040c697757661b1c94d38a802ccc10c0d9b8c1403082731a53f2994d931"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d1dcbf611ab9",
+   "versao_codigo": "196905461ac0",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T15:25:47Z",
+    "detectado_em": "2026-09-30T02:20:36Z",
     "total": 0,
-    "vintages_comparadas": 6,
+    "vintages_comparadas": 7,
     "arquivos": 6,
-    "recapturas_sem_mudanca": 2,
-    "ultimo_download_ok": "2026-09-28T10:55:34Z",
+    "recapturas_sem_mudanca": 1,
+    "ultimo_download_ok": "2026-09-30T02:20:08Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -4242,14 +4242,14 @@
    "frequencia": "diária",
    "periodo_referencia": {
     "inicio": "2021-01-01",
-    "fim": "2026-09-28"
+    "fim": "2026-09-30"
    },
    "publicado_pela_fonte_em": null,
-   "capturado_em": "2026-09-28T10:55:46Z",
-   "validado_em": "2026-09-28T15:25:51Z",
+   "capturado_em": "2026-09-30T02:20:14Z",
+   "validado_em": "2026-09-30T02:20:41Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
-    "fim": "2026-09-28"
+    "fim": "2026-09-30"
    },
    "transformacoes": [
     "PLD médio diário de cada submercado",
@@ -4257,18 +4257,18 @@
    ],
    "formula": "diferença(par) = PLD_dia(para) − PLD_dia(de)",
    "snapshot": {
-    "id": "ccee_pld_horario@2026-09-28T10:55:46Z",
-    "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f"
+    "id": "ccee_pld_horario@2026-09-30T02:20:14Z",
+    "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d1dcbf611ab9",
+   "versao_codigo": "196905461ac0",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T15:25:50Z",
+    "detectado_em": "2026-09-30T02:20:40Z",
     "total": 0,
-    "vintages_comparadas": 7,
+    "vintages_comparadas": 8,
     "arquivos": 6,
-    "recapturas_sem_mudanca": 5,
-    "ultimo_download_ok": "2026-09-28T10:55:46Z",
+    "recapturas_sem_mudanca": 10,
+    "ultimo_download_ok": "2026-09-30T02:20:15Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -4292,15 +4292,15 @@
    "unidade": "R$/MWh (nominal)",
    "frequencia": "diária",
    "periodo_referencia": {
-    "inicio": "2025-09-26",
-    "fim": "2026-09-28"
+    "inicio": "2025-09-28",
+    "fim": "2026-09-30"
    },
    "publicado_pela_fonte_em": null,
-   "capturado_em": "2026-09-28T10:55:46Z",
-   "validado_em": "2026-09-28T15:25:51Z",
+   "capturado_em": "2026-09-30T02:20:14Z",
+   "validado_em": "2026-09-30T02:20:41Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
-    "fim": "2026-09-28"
+    "fim": "2026-09-30"
    },
    "transformacoes": [
     "PLD médio diário de cada submercado (média simples das 24 horas)",
@@ -4308,18 +4308,18 @@
    ],
    "formula": "amplitude(d) = max_s PLD_dia(s, d) − min_s PLD_dia(s, d), s ∈ {SE, S, NE, N}",
    "snapshot": {
-    "id": "ccee_pld_horario@2026-09-28T10:55:46Z",
-    "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f"
+    "id": "ccee_pld_horario@2026-09-30T02:20:14Z",
+    "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d1dcbf611ab9",
+   "versao_codigo": "196905461ac0",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T15:25:50Z",
+    "detectado_em": "2026-09-30T02:20:40Z",
     "total": 0,
-    "vintages_comparadas": 7,
+    "vintages_comparadas": 8,
     "arquivos": 6,
-    "recapturas_sem_mudanca": 5,
-    "ultimo_download_ok": "2026-09-28T10:55:46Z",
+    "recapturas_sem_mudanca": 10,
+    "ultimo_download_ok": "2026-09-30T02:20:15Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -4345,14 +4345,14 @@
    "frequencia": "horária, agregada por dia",
    "periodo_referencia": {
     "inicio": "2021-01-01",
-    "fim": "2026-09-25"
+    "fim": "2026-09-28"
    },
-   "publicado_pela_fonte_em": "2026-09-27T22:00:43.210439",
-   "capturado_em": "2026-09-28T09:08:46Z",
-   "validado_em": "2026-09-28T15:25:51Z",
+   "publicado_pela_fonte_em": "2026-09-29T22:00:42.467156",
+   "capturado_em": "2026-09-30T02:19:57Z",
+   "validado_em": "2026-09-30T02:20:41Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
-    "fim": "2026-09-25"
+    "fim": "2026-09-28"
    },
    "transformacoes": [
     "média das 24 horas do dia do valor de intercâmbio do balanço de cada subsistema",
@@ -4360,22 +4360,123 @@
    ],
    "formula": "saldo_dia(s) = (1/24) × Σ intercâmbio_balanço(s, h); positivo = subsistema exportador, negativo = importador, conforme o sinal do ONS",
    "snapshot": {
-    "id": "balanco_energia_subsistema_ho@2026-09-28T09:08:46Z",
-    "sha256": "be6df6321ee402d7c879e597576ad9a82acba3283f3b9783df4ce8f558e0ae02"
+    "id": "balanco_energia_subsistema_ho@2026-09-30T02:19:57Z",
+    "sha256": "8774bc4794fad38b820ea212ddf4bf343761f449d90dfef8d2a31d64fb0993ba"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d1dcbf611ab9",
+   "versao_codigo": "196905461ac0",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-28T15:25:50Z",
-    "total": 0,
-    "vintages_comparadas": 6,
+    "detectado_em": "2026-09-30T02:20:40Z",
+    "total": 2620,
+    "vintages_comparadas": 7,
     "arquivos": 6,
-    "recapturas_sem_mudanca": 2,
-    "ultimo_download_ok": "2026-09-28T10:55:30Z",
-    "exemplos": []
+    "recapturas_sem_mudanca": 1,
+    "ultimo_download_ok": "2026-09-30T02:20:04Z",
+    "exemplos": [
+     {
+      "serie": "carga.N",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.NE",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.S",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.SE",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.SIN",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "eolica.N",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "eolica.NE",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "eolica.S",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "eolica.SE",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "eolica.SIN",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "termica.N",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "termica.NE",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "termica.S",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "termica.SE",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "termica.SIN",
+      "ref": "2026-09-26T23:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.N",
+      "ref": "2026-09-26T22:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.NE",
+      "ref": "2026-09-26T22:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.S",
+      "ref": "2026-09-26T22:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.SE",
+      "ref": "2026-09-26T22:00",
+      "valores": 2
+     },
+     {
+      "serie": "carga.SIN",
+      "ref": "2026-09-26T22:00",
+      "valores": 2
+     }
+    ]
    },
    "limitacoes": [
-    "A soma dos quatro saldos é igual ao intercâmbio do SIN publicado no mesmo balanço em todas as horas, exceto no dia 14/09/2022 (tolerância de 1 MWmed). Esse intercâmbio do SIN é nulo (até 1 MWmed em módulo) em 24.038 de 50.256 horas desde o início da série e diferente de zero nas demais; por isso os saldos às vezes somam zero e às vezes não.",
+    "A soma dos quatro saldos é igual ao intercâmbio do SIN publicado no mesmo balanço em todas as horas, exceto no dia 14/09/2022 (tolerância de 1 MWmed). Esse intercâmbio do SIN é nulo (até 1 MWmed em módulo) em 24.110 de 50.328 horas desde o início da série e diferente de zero nas demais; por isso os saldos às vezes somam zero e às vezes não.",
     "O Balanço de Energia e os Intercâmbios Entre Subsistemas são conjuntos distintos, com datas de referência que podem diferir.",
     "Dados em processo de consistência recorrente do ONS, sujeitos a revisão."
    ],
