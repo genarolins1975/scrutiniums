@@ -11,8 +11,12 @@
  */
 import { num } from "@/lib/energia/formato";
 import { quantis, validos } from "@/lib/energia/distribuicao";
+import { NAO_SE_APLICA } from "@/lib/energia/escalas";
 
-export const NAO_SE_APLICA = "nao_se_aplica" as const;
+// Um só marcador de "não se aplica" no domínio (o de escalas.ts, também usado
+// pelo mapa coroplético): com dois valores diferentes, a mesma matriz passada
+// ao MapaCalor e ao MapaCoropletico viraria "sem dado" num deles.
+export { NAO_SE_APLICA };
 export type ValorCelula = number | null | undefined | typeof NAO_SE_APLICA;
 export type EstadoCelula = "valor" | "sem-dado" | "nao-se-aplica";
 
@@ -76,14 +80,18 @@ export function classeDe(v: ValorCelula, limites: readonly number[]): number | n
   return k;
 }
 
-/** Rótulos das classes: os do chamador ou faixas geradas ("abaixo de 10", "10 a 20", "20 ou mais"). */
+/**
+ * Rótulos das classes: os do chamador ou faixas geradas com a mesma redação
+ * das classes de escalas.ts ("menos de 10", "10 a menos de 20", "20 ou mais"),
+ * que diz em que classe cai o valor exatamente no limite.
+ */
 export function rotulosClasses(e: EscalaCores, casas: number): string[] {
   if (e.rotulos) return e.rotulos;
   const l = e.limites;
   return e.cores.map((_, i) => {
-    if (i === 0) return `abaixo de ${num(l[0], casas)}`;
+    if (i === 0) return `menos de ${num(l[0], casas)}`;
     if (i === l.length) return `${num(l[l.length - 1], casas)} ou mais`;
-    return `${num(l[i - 1], casas)} a ${num(l[i], casas)}`;
+    return `${num(l[i - 1], casas)} a menos de ${num(l[i], casas)}`;
   });
 }
 

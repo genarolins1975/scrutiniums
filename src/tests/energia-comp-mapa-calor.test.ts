@@ -14,6 +14,8 @@ import {
   type ValorCelula,
 } from "@/lib/energia/mapa-calor";
 import { MapaCalor, type MapaCalorProps } from "@/components/energia/MapaCalor";
+import { NAO_SE_APLICA as NAO_SE_APLICA_ESCALAS } from "@/lib/energia/escalas";
+import { NAO_SE_APLICA as NAO_SE_APLICA_COROPLETICO } from "@/components/energia/MapaCoropletico";
 
 /**
  * Mapa de calor: a escala só aceita cores por token e com número certo de
@@ -65,8 +67,16 @@ describe("escala", () => {
     expect(classeDe(NAO_SE_APLICA, SEQ.limites)).toBeNull();
   });
 
+  it("não se aplica é o mesmo marcador do mapa coroplético e de escalas.ts (a mesma matriz serve aos dois mapas)", () => {
+    expect(NAO_SE_APLICA).toBe(NAO_SE_APLICA_ESCALAS);
+    expect(NAO_SE_APLICA_COROPLETICO).toBe(NAO_SE_APLICA_ESCALAS);
+    const r = resumoGrade([[NAO_SE_APLICA_COROPLETICO, 0]], SEQ.limites);
+    expect(r.naoSeAplica).toBe(1);
+    expect(r.semDado).toBe(0);
+  });
+
   it("rótulos gerados descrevem as faixas; rótulos do chamador prevalecem", () => {
-    expect(rotulosClasses(SEQ, 0)).toEqual(["abaixo de 100", "100 a 200", "200 a 300", "300 ou mais"]);
+    expect(rotulosClasses(SEQ, 0)).toEqual(["menos de 100", "100 a menos de 200", "200 a menos de 300", "300 ou mais"]);
     expect(rotulosClasses({ ...SEQ, rotulos: ["baixa", "média", "alta", "muito alta"] }, 0)[3]).toBe("muito alta");
   });
 
@@ -161,7 +171,7 @@ describe("renderização no servidor", () => {
 
   it("legenda com unidade, classes, sem dado e não se aplica", () => {
     expect(html).toContain("Escala em R$/MWh");
-    expect(html).toContain("abaixo de 100");
+    expect(html).toContain("menos de 100");
     expect(html).toMatch(/aria-label="Legenda: classes em R\$\/MWh"/);
     expect(html).toMatch(/<\/span>sem dado<\/li>/);
     expect(html).toMatch(/<\/span>não se aplica<\/li>/);

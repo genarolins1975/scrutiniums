@@ -44,7 +44,7 @@ ROTA = "/setor-eletrico/qualidade"
 # Versão de cada importador: muda quando a regra de importação muda e força reprocessar
 # só as vintages daquele tipo de arquivo (os Parquets grandes levam minutos).
 VERSOES = {"continuidade": "3", "limites": "2", "compensacoes": "1", "iasc": "1", "manifestacoes": "2",
-           "ouvidoria": "1", "atendimento": "1", "eventos": "2", "municipios": "1", "ranking": "1"}
+           "ouvidoria": "1", "atendimento": "1", "eventos": "3", "municipios": "1", "ranking": "1"}
 
 DS_CONT = "aneel_continuidade"
 DS_IASC = "aneel_iasc"
@@ -454,14 +454,28 @@ def importa_atendimento(con, vint):
 
 
 def importa_eventos(con, vint):
+    """Um registro por (CNPJ, código do evento): o código é da distribuidora e se repete
+    entre distribuidoras (ex.: "ISE 01.2026" da EDP ES e da EDP SP). Linhas repetidas
+    idênticas são contadas e guardadas uma vez; repetição com conteúdo diferente é contada
+    como conflito e fica a última linha do arquivo."""
     evs = fq.le_eventos_emergencia(ckan.le_csv_bronze(vint["arquivo"]))
-    regs = []
+    por_chave, duplicadas, conflitos = {}, 0, 0
     for e in evs:
+        ch = (e["cnpj"], e["codigo"])
+        if ch in por_chave:
+            if por_chave[ch] == e:
+                duplicadas += 1
+                continue
+            conflitos += 1
+        por_chave[ch] = e
+    regs = []
+    for (c14, cod), e in por_chave.items():
         for k, v in e.items():
-            if k != "codigo":
-                regs.append((f"evento:{e['codigo']}", k, v))
+            if k not in ("codigo", "cnpj"):
+                regs.append((f"evento:{c14}:{cod}", k, v))
     novas, revis = base.grava_registros(con, DS_EVENTO, vint["vintage_id"], regs)
-    return {"eventos": len(evs), "registros_novos": novas, "revisoes": revis}
+    return {"linhas": len(evs), "eventos": len(por_chave), "linhas_duplicadas": duplicadas,
+            "conflitos": conflitos, "registros_novos": novas, "revisoes": revis}
 
 
 def importa_municipios(con, vint):
@@ -1127,7 +1141,8 @@ def construir(con, ctx):
         ini, fim = campos.get("inicio"), campos.get("fim")
         dur, motivo_dur = fq.duracao_evento_h(ini, fim, campos.get("gerado_em"))
         chi_e, chi_l = fq._num(campos.get("chi_evento")), fq._num(campos.get("chi_limite"))
-        evs.append({"codigo": ch.split(":", 1)[1], "cnpj": campos.get("cnpj"), "sigla": sigla(campos.get("cnpj")),
+        _, c14_ev, codigo_ev = ch.split(":", 2)
+        evs.append({"codigo": codigo_ev, "cnpj": c14_ev, "sigla": sigla(c14_ev),
                     "inicio": ini, "fim": fim, "duracao_h": dur, "duracao_ausente_motivo": motivo_dur,
                     "chi_evento": chi_e, "chi_limite": chi_l,
                     "razao_chi": (chi_e / chi_l) if chi_e is not None and chi_l else None,
