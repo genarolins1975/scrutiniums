@@ -54,6 +54,8 @@ export default function DadosEnergiaPage() {
   }
   // compatibilidade com o catálogo de cinco estados (a página nova vem na fase de interface)
   const integrados = cat.entradas.filter((e) => ["INTEGRADO", "VALIDADO", "PUBLICADO"].includes(e.estado as string) && e.slug);
+  // só há ficha em /dados/[dataset] para os conjuntos que a rota gera (DATASETS_INTEGRADOS); os demais não viram link
+  const temFicha = (slug: string | null | undefined) => Boolean(slug && DATASETS_INTEGRADOS.some((d) => d.slug === slug));
   return (
     <>
       <CabecalhoEnergia atual="dados" />
@@ -93,6 +95,7 @@ export default function DadosEnergiaPage() {
           <ul className="mt-4 grid gap-3 md:grid-cols-2">
             {integrados.map((e) => (
               <li key={e.id}>
+{temFicha(e.slug) ? (
                 <Link href={`/setor-eletrico/dados/${e.slug}`} className="flex h-full flex-col border border-linha bg-superficie p-5 hover:border-energia">
                   <span className="rotulo text-mineral">{e.orgao} · {e.estado}</span>
                   <span className="mt-2 font-serif text-lg text-carvao">{e.titulo}</span>
@@ -102,6 +105,17 @@ export default function DadosEnergiaPage() {
                   </span>
                   {(e.quebras ?? []).length > 0 && <span className="mt-1 text-xs text-aviso">{textoQuebras(e.quebras)}</span>}
                 </Link>
+                ) : (
+                <div className="flex h-full flex-col border border-linha bg-superficie p-5">
+                  <span className="rotulo text-mineral">{e.orgao} · {e.estado}</span>
+                  <span className="mt-2 font-serif text-lg text-carvao">{e.titulo}</span>
+                  <span className="mt-1 text-sm text-carvao-muted">
+                    Usado em: {(DATASETS_INTEGRADOS.find((d) => d.catalogoId === e.id)?.paginas.map((p) => p.rotulo) ?? Array.from(new Set(e.usado_em.map((u) => PAGINA_DA_GOLD[u] ?? u)))).join(", ")}
+                    {(e.modelos ?? []).length ? ` · modelos ${(e.modelos ?? []).join(", ")}` : ""}
+                  </span>
+                  {(e.quebras ?? []).length > 0 && <span className="mt-1 text-xs text-aviso">{textoQuebras(e.quebras)}</span>}
+                </div>
+                )}
               </li>
             ))}
           </ul>
@@ -113,7 +127,7 @@ export default function DadosEnergiaPage() {
           <CatalogoFiltro
             itens={cat.entradas.map((e) => ({
               id: e.id,
-              slug: e.slug,
+              slug: temFicha(e.slug) ? e.slug : null,
               orgao: e.orgao,
               titulo: e.titulo,
               url: urlDoConjunto(e) ?? "",

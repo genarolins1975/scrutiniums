@@ -162,8 +162,11 @@ describe("página inicial: mapa didático (P001)", () => {
     expect(TRANSVERSAIS.map((t) => t.titulo)).toEqual(["Empresas", "Expansão", "Regulação", "Dados e método"]);
     // alternativa textual equivalente e versão de celular
     const t = ler(HOME);
-    expect(t).toContain("O mesmo mapa em texto");
-    expect(t).toMatch(/className="md:hidden"[\s\S]*<MapaEmTexto \/>/);
+    expect(t).toContain("O mapa em texto");
+    // uma só cópia: visível no celular, disponível ao leitor de tela no desktop (o desenho é aria-hidden)
+    expect(t).toMatch(/className="md:sr-only"[\s\S]*<MapaEmTexto \/>/);
+    expect(t.match(/<MapaEmTexto \/>/g)).toHaveLength(1);
+    expect(ler("src/components/energia/MapaConceitual.tsx")).toContain('aria-hidden="true"');
   });
 
   it("links antigos com âncora da visão geral seguem para a nova página, e a home não reusa essas âncoras", () => {

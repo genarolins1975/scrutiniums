@@ -69,6 +69,7 @@ export default function PerfilHorarioPage() {
   const natSeries = g.proveniencia.api.natureza_por_serie;
   const ultimoAno = p.compatibilidade.por_ano.filter((x) => x.sm === "SIN").at(-1);
   const downloads = g.downloads.filter((d) => /horaria|pico|perfil|verificada/.test(d.url));
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- campos retirados do que vai ao cliente
   const { compatibilidade: _c, conceitos: _k, ...p026Cliente } = p;
   // hora do pico do dia provado na ficha, lida da mesma série de picos (nunca do texto da ficha)
   const picoEv = p.picos_90d.find((x) => x.d === ev.p026_pico_sin?.periodo?.fim && x.hora !== null) ?? null;

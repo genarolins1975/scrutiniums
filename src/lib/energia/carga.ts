@@ -740,6 +740,7 @@ export function linhasSensibilidade(p: Pick<P027Pronto, "sensibilidade">, sm: Re
   const principal = ls.find((x) => x.variante === "principal")?.mape_pct ?? null;
   return VARIANTES.map((v) => ls.find((x) => x.variante === v))
     .filter((x): x is (typeof ls)[number] => !!x)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- o submercado sai da linha
     .map(({ sm: _sm, variante, ...resto }) => ({ ...resto, id: variante, mape_principal: principal }));
 }
 

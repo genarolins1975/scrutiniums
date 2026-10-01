@@ -345,7 +345,7 @@ export default function PldPage() {
                         {exemplo.pld.regra_escolha}) <SeloNatureza natureza="OBSERVADO" />
                       </p>
                       <p className="text-sm text-carvao-muted">Regra do exemplo: {exemplo.formula}.</p>
-                      <div className="tabela-scroll">
+                      <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Exemplo sintético de liquidação (tabela rolável)">
                         <table className="w-full min-w-[34rem] text-sm tabular-nums">
                           <caption className="sr-only">Exemplo sintético de liquidação: quantidades hipotéticas e PLD real da hora</caption>
                           <thead>
@@ -417,7 +417,7 @@ export default function PldPage() {
                           Semana operativa de {dataBR(semanaRef.inicio)} a {dataBR(semanaRef.fim)}: o CMO semanal do DECOMP (ONS), a média das meias horas do CMO do DESSEM (ONS) e a média
                           das horas do PLD (CCEE), em R$/MWh. São produtos diferentes; a comparação só vale no mesmo intervalo.
                         </p>
-                        <div className="tabela-scroll">
+                        <div className="tabela-scroll" tabIndex={0} role="region" aria-label="CMO e PLD na semana de referência (tabela rolável)">
                           <table className="w-full min-w-[28rem] text-sm tabular-nums">
                             <caption className="sr-only">CMO semanal do DECOMP, média do DESSEM e média do PLD na semana de referência, R$/MWh</caption>
                             <thead>

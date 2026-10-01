@@ -28,7 +28,6 @@ import { integra, lerGold } from "@/lib/energia/gold";
 import {
   COLUNAS_COORTES,
   COLUNAS_ENCERRAMENTOS,
-  COLUNAS_ESTAGIOS,
   COLUNAS_JUSTIFICATIVAS,
   COLUNAS_OBRA_VIABILIDADE,
   COR_DESFECHO,

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { ComproveNumero, ConteudoEvidencia } from "@/components/energia/ComproveNumero";
+import { ComproveNumero, ConteudoEvidencia, DialogoEvidencia } from "@/components/energia/ComproveNumero";
 import { Numero } from "@/components/energia/Numero";
 import {
   citacaoAcademica,
@@ -331,8 +331,12 @@ const semTags = (s: string) => s.replace(/<[^>]+>/g, "").replace(/&quot;/g, '"')
 
 describe("renderização no servidor", () => {
   it("ComproveNumero: botão nomeado que abre um diálogo rotulado; conteúdo só na primeira abertura", () => {
-    const html = renderToStaticMarkup(createElement(ComproveNumero, { evidencia: TARIFA }));
-    expect(html).toMatch(/<button type="button" aria-haspopup="dialog"[^>]*>Comprove este número<span class="sr-only">: Tarifa residencial mediana, R\$ 0,8123\/kWh<\/span><\/button>/);
+    const botao = renderToStaticMarkup(createElement(ComproveNumero, { evidencia: TARIFA }));
+    expect(botao).toMatch(/<button type="button" aria-haspopup="dialog"[^>]*>Comprove este número<span class="sr-only">: Tarifa residencial mediana, R\$ 0,8123\/kWh<\/span><\/button>/);
+    // o servidor não emite o <dialog> junto do botão: dentro de um <p>, ele fecharia o parágrafo e quebraria a hidratação
+    expect(botao).not.toContain("<dialog");
+    const ref = { current: null };
+    const html = renderToStaticMarkup(createElement(DialogoEvidencia, { evidencia: TARIFA, dialogo: ref, gatilho: ref, montado: false, acesso: null }));
     const rotulado = html.match(/<dialog aria-labelledby="([^"]+)"/);
     expect(rotulado).not.toBeNull();
     expect(html).toContain(`<h2 id="${rotulado![1]}"`);

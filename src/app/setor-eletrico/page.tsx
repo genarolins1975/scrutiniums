@@ -319,14 +319,10 @@ export default function MapaDoObservatorio() {
               ligacoes={LIGACOES.map((l) => ({ de: l.de, para: l.para, tipo: l.tipo }))}
               tipos={(Object.keys(TIPOS_LIGACAO) as (keyof typeof TIPOS_LIGACAO)[]).map((id) => ({ id, ...TIPOS_LIGACAO[id] }))}
             />
-            <details className="mt-6 border-t border-linha pt-4">
-              <summary className="rotulo inline-flex min-h-[44px] cursor-pointer items-center text-energia-dark">O mesmo mapa em texto</summary>
-              <div className="mt-4">
-                <MapaEmTexto />
-              </div>
-            </details>
           </div>
-          <div className="md:hidden">
+          {/* versão em texto: é o mapa no celular; no desktop fica para o leitor de tela, que não usa o desenho */}
+          <div className="md:sr-only">
+            <h3 className="mb-3 font-serif text-lg text-carvao">O mapa em texto</h3>
             <p className="mb-4 text-sm leading-relaxed text-carvao-muted">
               Tipos de ligação:{" "}
               {(Object.keys(TIPOS_LIGACAO) as (keyof typeof TIPOS_LIGACAO)[]).map((t, i, a) => (
@@ -511,10 +507,10 @@ export default function MapaDoObservatorio() {
                     <dt>Processado em</dt>
                     <dd className="text-carvao">{dataBR(perdas!.gerado_em.slice(0, 10))}</dd>
                   </dl>
-                  <p>
-                    A ficha mostra a fórmula, o numerador, o denominador, o arquivo original com o sha256, os testes e a citação pronta.{" "}
+                  <div>
+                    <p>A ficha mostra a fórmula, o numerador, o denominador, o arquivo original com o sha256, os testes e a citação pronta.</p>
                     <ComproveNumero evidencia={ev} rotulo="Comprove este número" />
-                  </p>
+                  </div>
                 </>
               ) : (
                 <p className="text-mineral">Exemplo indisponível nesta publicação: a gold de Perdas não foi processada.</p>

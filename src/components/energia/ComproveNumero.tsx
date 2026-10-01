@@ -1,6 +1,7 @@
 "use client";
 
-import { useId, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode, type RefObject } from "react";
+import { createPortal } from "react-dom";
 import { carimbo } from "@/lib/energia/formato";
 import {
   MENSAGEM_COPIA,
@@ -52,16 +53,18 @@ export type ComproveNumeroProps = {
 export function ComproveNumero({ evidencia: ev, variante = "link", rotulo = "Comprove este número", endereco }: ComproveNumeroProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const gatilho = useRef<HTMLButtonElement>(null);
-  const tituloId = useId();
   const [montado, setMontado] = useState(false);
   const [acesso, setAcesso] = useState<Date | null>(null);
+  // o diálogo vai para o fim do <body> e só existe no cliente: o botão pode ficar dentro de um
+  // parágrafo (variante "valor") sem que o <dialog> feche o <p> e quebre a hidratação
+  const [alvo, setAlvo] = useState<HTMLElement | null>(null);
+  useEffect(() => setAlvo(document.body), []);
 
   const abrir = () => {
     setMontado(true);
     setAcesso(new Date());
     ref.current?.showModal();
   };
-  const fechar = () => ref.current?.close();
 
   return (
     <>
@@ -88,41 +91,68 @@ export function ComproveNumero({ evidencia: ev, variante = "link", rotulo = "Com
           </>
         )}
       </button>
-      <dialog
-        ref={ref}
-        aria-labelledby={tituloId}
-        onClose={() => gatilho.current?.focus()}
-        onClick={(e) => {
-          if (e.target === ref.current) fechar();
-        }}
-        className="m-0 ml-auto h-full max-h-none w-full max-w-none bg-superficie p-0 text-carvao backdrop:bg-carvao/40 sm:max-w-2xl"
-      >
-        <div className="flex h-full flex-col">
-          <header className="flex items-start justify-between gap-4 border-b border-linha px-5 py-4 sm:px-6">
-            <div className="min-w-0">
-              <p className="rotulo text-mineral">Comprove este número</p>
-              <h2 id={tituloId} className="mt-2 font-serif text-xl leading-snug text-carvao">
-                {ev.indicador}
-              </h2>
-              <p className="mt-1 text-sm text-carvao-muted [overflow-wrap:anywhere]">
-                <span className="font-medium tabular-nums text-carvao">{ev.valor_exibido}</span> · {textoPeriodo(ev.periodo)} · {ev.entidade}
-              </p>
-            </div>
-            <button type="button" onClick={fechar} className="rotulo min-h-[44px] min-w-[44px] shrink-0 text-mineral hover:text-carvao" aria-label="Fechar">
-              ✕
-            </button>
-          </header>
-          <div className="flex-1 overflow-y-auto px-5 sm:px-6" tabIndex={0} role="region" aria-label={`Evidência: ${ev.indicador}`}>
-            {montado && <ConteudoEvidencia evidencia={ev} acesso={acesso} endereco={endereco} />}
-          </div>
-          <footer className="flex flex-wrap gap-3 border-t border-linha px-5 py-3 sm:px-6">
-            <button type="button" onClick={fechar} className="rotulo inline-flex min-h-[44px] items-center border border-linha px-4 text-carvao hover:border-carvao">
-              Fechar
-            </button>
-          </footer>
-        </div>
-      </dialog>
+      {alvo &&
+        createPortal(
+          <DialogoEvidencia evidencia={ev} dialogo={ref} gatilho={gatilho} montado={montado} acesso={acesso} endereco={endereco} />,
+          alvo,
+        )}
     </>
+  );
+}
+
+/** O diálogo da ficha, fechado por padrão; o conteúdo só é montado na primeira abertura. */
+export function DialogoEvidencia({
+  evidencia: ev,
+  dialogo,
+  gatilho,
+  montado,
+  acesso,
+  endereco,
+}: {
+  evidencia: Evidencia;
+  dialogo: RefObject<HTMLDialogElement>;
+  gatilho: RefObject<HTMLButtonElement>;
+  montado: boolean;
+  acesso: Date | null;
+  endereco?: string;
+}) {
+  const tituloId = useId();
+  const fechar = () => dialogo.current?.close();
+  return (
+    <dialog
+      ref={dialogo}
+      aria-labelledby={tituloId}
+      onClose={() => gatilho.current?.focus()}
+      onClick={(e) => {
+        if (e.target === dialogo.current) fechar();
+      }}
+      className="m-0 ml-auto h-full max-h-none w-full max-w-none bg-superficie p-0 text-carvao backdrop:bg-carvao/40 sm:max-w-2xl"
+    >
+      <div className="flex h-full flex-col">
+        <header className="flex items-start justify-between gap-4 border-b border-linha px-5 py-4 sm:px-6">
+          <div className="min-w-0">
+            <p className="rotulo text-mineral">Comprove este número</p>
+            <h2 id={tituloId} className="mt-2 font-serif text-xl leading-snug text-carvao">
+              {ev.indicador}
+            </h2>
+            <p className="mt-1 text-sm text-carvao-muted [overflow-wrap:anywhere]">
+              <span className="font-medium tabular-nums text-carvao">{ev.valor_exibido}</span> · {textoPeriodo(ev.periodo)} · {ev.entidade}
+            </p>
+          </div>
+          <button type="button" onClick={fechar} className="rotulo min-h-[44px] min-w-[44px] shrink-0 text-mineral hover:text-carvao" aria-label="Fechar">
+            ✕
+          </button>
+        </header>
+        <div className="flex-1 overflow-y-auto px-5 sm:px-6" tabIndex={0} role="region" aria-label={`Evidência: ${ev.indicador}`}>
+          {montado && <ConteudoEvidencia evidencia={ev} acesso={acesso} endereco={endereco} />}
+        </div>
+        <footer className="flex flex-wrap gap-3 border-t border-linha px-5 py-3 sm:px-6">
+          <button type="button" onClick={fechar} className="rotulo inline-flex min-h-[44px] items-center border border-linha px-4 text-carvao hover:border-carvao">
+            Fechar
+          </button>
+        </footer>
+      </div>
+    </dialog>
   );
 }
 

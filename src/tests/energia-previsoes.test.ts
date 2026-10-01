@@ -82,6 +82,7 @@ import { interpretarCsv, lerCsvPrevisoes } from "@/lib/energia/previsoes-arquivo
  */
 
 /** true = obrigatório no tipo; false = opcional. */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- teste de campo opcional no tipo
 type Mapa<T> = { [K in keyof T]-?: {} extends Pick<T, K> ? false : true };
 
 const raiz = process.cwd();

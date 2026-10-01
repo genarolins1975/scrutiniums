@@ -347,7 +347,8 @@ export function Comparador({
 
       <div className="mt-4" data-multiplos>
         {selecionadas.length === 0 ? (
-          <p className="text-sm text-carvao-muted">{vazio ?? `Nada selecionado. Escolha até ${max} para comparar.`}</p>
+          // div, não p: quem chama pode passar um parágrafo próprio como estado vazio
+          <div className="text-sm text-carvao-muted">{vazio ?? `Nada selecionado. Escolha até ${max} para comparar.`}</div>
         ) : (
           <>
             {dominio && (
