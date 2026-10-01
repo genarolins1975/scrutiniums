@@ -38,7 +38,7 @@ export const MODULOS_ENERGIA: ModuloEnergia[] = [
   { slug: "mercado", href: "/setor-eletrico/mercado", rotulo: "Mercado", resumo: "Ambientes de contratação, agentes e mecanismos de mercado.", integrado: false, secao: "energia:mercado" },
   { slug: "empresas", href: "/setor-eletrico/empresas", rotulo: "Empresas", resumo: "Grupos econômicos, companhias, usinas, linhas e concessões.", integrado: false, secao: "energia:empresas" },
   { slug: "expansao", href: "/setor-eletrico/expansao", rotulo: "Expansão", resumo: "Leilões, projetos, capacidade futura e planejamento.", integrado: false, secao: "energia:expansao" },
-  { slug: "regulacao", href: "/setor-eletrico/regulacao", rotulo: "Regulação", resumo: "ANEEL, CCEE, ONS e MME com linha do tempo e documentos primários.", integrado: false, secao: "energia:regulacao" },
+  { slug: "regulacao", href: "/setor-eletrico/regulacao", rotulo: "Regulação", resumo: "ANEEL, CCEE, ONS e MME com linha do tempo e documentos primários.", integrado: true, secao: "energia:regulacao" },
   { slug: "aprenda", href: "/setor-eletrico/aprenda", rotulo: "Aprenda", resumo: "Base de conhecimento com fonte oficial em cada verbete.", integrado: true, secao: "energia:aprenda" },
   { slug: "dados", href: "/setor-eletrico/dados", rotulo: "Dados", resumo: "Catálogo de datasets, metodologia, qualidade e downloads.", integrado: true, secao: "energia:dados" },
 ];
@@ -168,8 +168,8 @@ export const DESTINOS_NAVEGACAO: DestinoNavegacao[] = [
     pergunta: "Como a transformação do setor se distribui e afeta as emissões?",
     resumo: "Micro e minigeração distribuída no território e intensidade de emissões da geração, com fonte e natureza declaradas.",
     grupo: "empresas-e-futuro",
-    publicado: false,
-    integrado: false,
+    publicado: true,
+    integrado: true,
   },
 
   // 6. Conhecimento e evidência

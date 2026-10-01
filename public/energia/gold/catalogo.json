@@ -1,7 +1,7 @@
 {
  "dominio": "energia",
  "gold": "catalogo.json",
- "gerado_em": "2026-10-01T07:03:15Z",
+ "gerado_em": "2026-10-01T07:42:54Z",
  "versao_pipeline": "energia-0.1.0",
  "disponivel": true,
  "estados": [
@@ -72,12 +72,12 @@
  },
  "contagem": {
   "CATALOGADO": 22,
-  "RECURSO VERIFICADO": 266,
+  "RECURSO VERIFICADO": 267,
   "INTEGRADO": 0,
   "VALIDADO": 5,
-  "PUBLICADO": 120
+  "PUBLICADO": 121
  },
- "total": 413,
+ "total": 415,
  "descontinuados": 12,
  "recursos": {
   "ANEEL": {
@@ -104,8 +104,8 @@
   "ONS": {
    "por_estado": {
     "CATALOGADO": 13043,
-    "RECURSO VERIFICADO": 92,
-    "PUBLICADO": 688
+    "RECURSO VERIFICADO": 94,
+    "PUBLICADO": 686
    },
    "total": 13823,
    "removidos": 0,
@@ -5236,6 +5236,64 @@
    ]
   },
   {
+   "id": "epe:webmap-epe-subsistemas",
+   "slug": "epe-webmap-subsistemas-isolados-territorio",
+   "orgao": "EPE",
+   "titulo": "WebMap EPE: Unidades da federação e Subsistemas do SIN (camada 24) e Sistemas Isolados (camada 27)",
+   "url": "https://gisepeprd2.epe.gov.br/WebMapEPE/",
+   "licenca": "Dados públicos da EPE (WebMap EPE), uso com citação da fonte; direitos da camada: EPE, ONS e IBGE",
+   "descricao": "Correspondência oficial UF → subsistema do SIN (atributos das 27 feições da camada 24) e localidades atendidas por…",
+   "formatos": [],
+   "tema": "rede",
+   "metadados_verificados": true,
+   "etapas": {
+    "catalogado": {
+     "ok": true,
+     "origem": "registro"
+    },
+    "recurso_verificado": {
+     "ok": true
+    },
+    "integrado": {
+     "ok": true
+    },
+    "validado": {
+     "ok": true
+    },
+    "publicado": {
+     "ok": true
+    }
+   },
+   "integracoes": [
+    {
+     "id": "territorio/territorio_epe_webmap",
+     "estado": "PUBLICADO"
+    }
+   ],
+   "modulos": [
+    "territorio"
+   ],
+   "estado": "PUBLICADO",
+   "papeis": [
+    "indicador"
+   ],
+   "usado_em": [
+    "territorio.json"
+   ],
+   "quebras": [],
+   "interno": "territorio_epe_webmap",
+   "familia": "territorio",
+   "paginas": [
+    {
+     "rotulo": "Minha região",
+     "href": "/setor-eletrico/territorio"
+    }
+   ],
+   "downloads": [
+    "/energia/series/territorio_municipios.csv"
+   ]
+  },
+  {
    "id": "epe:webmap-epe-linhas-de-transmissao",
    "slug": "epe-webmap-linhas-transmissao",
    "orgao": "EPE",
@@ -5972,7 +6030,7 @@
    "id": "mme:boletim-de-monitoramento-do-sistema-eletrico",
    "slug": "mme-boletim-monitoramento",
    "orgao": "MME",
-   "titulo": "Boletim Mensal de Monitoramento do Sistema Elétrico (encargos de serviços do sistema e consumo por ambiente)",
+   "titulo": "Boletim de Monitoramento do Sistema Elétrico: edições mensais (encargos de serviços do sistema e consumo por ambiente) e consolidação anual (conferência anual)",
    "url": "https://www.gov.br/mme/pt-br/assuntos/secretarias/secretaria-nacional-energia-eletrica/publicacoes/boletim-de-monitoramento-do-sistema-eletrico",
    "licenca": "Creative Commons Atribuição-SemDerivações 3.0 Não Adaptada (CC BY-ND 3.0), conforme o rodapé do portal gov.br; os números são reproduzidos com atribuição, sem versão alterada do documento",
    "descricao": "",
@@ -6817,6 +6875,7 @@
    "downloads": [
     "/energia/series/carga_verificada_diaria.csv",
     "/energia/series/carga_verificada_horaria.csv",
+    "/energia/series/territorio_areas_alternativas.csv",
     "/energia/series/territorio_areas_carga.csv",
     "/energia/series/transicao_ons_mmgd_diario.csv",
     "/energia/series/transicao_ons_mmgd_mensal.csv"
@@ -6980,6 +7039,7 @@
    ],
    "downloads": [
     "/energia/series/agua_reservatorios.csv",
+    "/energia/series/agua_reservatorios_45d.json",
     "/energia/series/agua_reservatorios_diario.csv"
    ]
   },
@@ -7896,8 +7956,8 @@
     "total": 83,
     "por_estado": {
      "CATALOGADO": 54,
-     "RECURSO VERIFICADO": 1,
-     "PUBLICADO": 28
+     "RECURSO VERIFICADO": 2,
+     "PUBLICADO": 27
     },
     "acessados": 29,
     "ultimo_publicado": "2026-09-30"
@@ -8236,8 +8296,8 @@
     "total": 62,
     "por_estado": {
      "CATALOGADO": 33,
-     "RECURSO VERIFICADO": 1,
-     "PUBLICADO": 28
+     "RECURSO VERIFICADO": 2,
+     "PUBLICADO": 27
     },
     "acessados": 29,
     "ultimo_publicado": "2026-09-30"
@@ -15327,6 +15387,58 @@
    ]
   },
   {
+   "id": "ibge:malhas-municipais-qualidade-maxima",
+   "slug": "ibge-malha-municipal-maxima-territorio",
+   "orgao": "IBGE",
+   "titulo": "Malha municipal do IBGE em qualidade máxima (API de malhas v4, por UF)",
+   "url": "https://servicodados.ibge.gov.br/api/docs/malhas?versao=4",
+   "licenca": "Uso livre com citação da fonte (IBGE)",
+   "descricao": "Polígonos municipais sem generalização, usados só para conferir se a coordenada de cada usina do SIGA cai no município…",
+   "formatos": [],
+   "tema": "contexto",
+   "metadados_verificados": true,
+   "etapas": {
+    "catalogado": {
+     "ok": true,
+     "origem": "registro"
+    },
+    "recurso_verificado": {
+     "ok": true
+    },
+    "validado": {
+     "ok": false
+    }
+   },
+   "integracoes": [
+    {
+     "id": "territorio/territorio_ibge_malha_maxima",
+     "estado": "RECURSO VERIFICADO"
+    }
+   ],
+   "modulos": [
+    "territorio"
+   ],
+   "estado": "RECURSO VERIFICADO",
+   "papeis": [
+    "conferencia"
+   ],
+   "usado_em": [
+    "territorio.json"
+   ],
+   "quebras": [],
+   "interno": "territorio_ibge_malha_maxima",
+   "familia": "territorio",
+   "paginas": [
+    {
+     "rotulo": "Minha região",
+     "href": "/setor-eletrico/territorio"
+    }
+   ],
+   "downloads": [
+    "/energia/series/territorio_usinas.csv"
+   ]
+  },
+  {
    "id": "nasa:power-daily-imerg",
    "slug": "nasa-power-imerg",
    "orgao": "NASA",
@@ -15610,6 +15722,7 @@
     }
    ],
    "downloads": [
+    "/energia/series/agua_bacias_geo.json",
     "/energia/series/agua_clima_pontos.csv"
    ]
   },

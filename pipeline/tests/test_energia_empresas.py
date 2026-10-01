@@ -27,13 +27,36 @@ em nenhuma regra):
   individual inteiro zerado nos dois trimestres e sem consolidado;
 - golds_origem_recorte.json: CEMIG D, CPFL Santa Cruz, CPFL Santa Cruz antiga, RGE Sul e RGE
   antiga nas golds perdas.json, qualidade.json e conta.json de 30/09/2026, com os blocos de
-  proveniência que o índice herda (taxas, separação, distribuidoras, limites, tarifas).
+  proveniência que o índice herda (taxas, separação, distribuidoras, limites, tarifas);
+- dfp_2021_equatorial_go_recorte.zip e dfp_2022_equatorial_go_recorte.zip: DFP 2021 (sha256
+  64b8693b…, escala marcada UNIDADE) e DFP 2022 (sha256 dd67d4fb…, MIL, com o mesmo VL_CONTA de
+  2021 no comparativo) da Equatorial Goiás; dfp_2019_celeo_recorte.zip e dfp_2020_celeo_recorte.zip:
+  DFP 2019 (UNIDADE) e 2020 (MIL) da Celeo Redes; itr_2021_equatorial_go_chesf_recorte.zip: ITR
+  2021 (sha256 c8723d5c…) da Equatorial Goiás (1º trimestre em MIL, 2º e 3º em UNIDADE), da AXIA
+  Energia Nordeste (consolidado de 31/03 e 30/06 com ativo 1 e o 2º trimestre da DRE consolidada
+  com 0 e 1: coluna não preenchida) e o índice com a versão 1 do documento de 30/06/2021 da
+  02.291.077/0001-93 entregue duas vezes; dfp_2025_celgpar_recorte.zip: DFP 2025 (sha256
+  336a92cc…) da CELGPAR, com a DRE e a DFC do individual zeradas e o saldo final de caixa de 2024
+  no comparativo. Só as contas lidas pelo módulo, linhas inalteradas;
+- siget_contratos_recorte.csv, siget_modulos_recorte.csv, siget_linhas_recorte.csv e
+  siget_equipamentos_recorte.csv: SIGET de 29/09/2026, contratos 012/2007 (AXIA Nordeste),
+  011/2007 (ATE VI, CNPJ publicado sem o zero à esquerda), 013/2007 (ATE VII, com obras
+  autorizadas no contrato 060/2001 da COPEL-GT e uma linha repetida por obra), 006/2010 (AXIA,
+  CNPJ publicado com 10 dígitos, transformador reserva) e 032/2018 (sem CNPJ), com todos os
+  módulos, linhas e equipamentos desses contratos; no recorte dos módulos as colunas de texto
+  livre DscEpd, DscObr e DscMdl foram esvaziadas para caber (nenhuma é lida), as demais estão
+  inalteradas.
+
+O teste do HHI contra o SIGA inteiro (test_hhi_publicado_contra_o_siga_original) e os testes que
+leem a gold publicada são pulados quando o bronze ou a gold não existem (no CI sem bronze); os
+recortes acima cobrem os mesmos casos sem o arquivo inteiro.
 """
 import csv
 import io
 import json
 import os
 import re
+import subprocess
 import sys
 import unittest
 import zipfile
@@ -798,6 +821,7 @@ class ProvenienciaDistribuidoras(unittest.TestCase):
         p = r["proveniencia"]
         self.assertEqual(p["distribuidoras_perdas"]["natureza"], "CALCULADO")
         self.assertEqual(p["distribuidoras_pnt"]["natureza"], "ESTIMADO")      # separação estimada pela fonte
+        self.assertEqual(p["distribuidoras_pnt"]["unidade"], "% do mercado de baixa tensão")   # o número copiado é pnt_bt_pct
         self.assertEqual(p["distribuidoras_qualidade"]["natureza"], "CALCULADO")
         self.assertEqual(p["distribuidoras_tarifa"]["natureza"], "CALCULADO")
         self.assertEqual(p["distribuidoras_perdas"]["periodo_referencia"], {"inicio": "2025", "fim": "2025"})
@@ -834,6 +858,397 @@ class CatalogoEEvidencias(unittest.TestCase):
                             if i["controle"]["motivo_parada"] == "pessoa_fisica"))
         slugs = [i["slug"] for i in g["distribuidoras"]["indice"]]
         self.assertEqual(len(slugs), len(set(slugs)))
+
+
+# ============================================================================ P036: transmissão (SIGET)
+def _texto(caminho):
+    """Conteúdo de um arquivo de texto (UTF-8, senão Latin-1, como os recursos da ANEEL)."""
+    with open(caminho, "rb") as f:
+        b = f.read()
+    try:
+        return b.decode("utf-8")
+    except UnicodeDecodeError:
+        return b.decode("latin-1")
+
+
+DOC_MODULO = os.path.join(base.RAIZ, "docs/observatorios/energia/modulos/empresas.md")
+
+
+def _siget_recorte():
+    def le(nome):
+        return list(csv.DictReader(io.StringIO(_texto(os.path.join(DADOS, nome))), delimiter=";"))
+    contratos, oc_ct = ae.le_siget_contratos(le("siget_contratos_recorte.csv"))
+    modulos, oc_md = ae.le_siget_modulos(le("siget_modulos_recorte.csv"))
+    linhas = ae.le_siget_linhas(le("siget_linhas_recorte.csv"))
+    equip = ae.le_siget_equipamentos(le("siget_equipamentos_recorte.csv"))
+    return {"contratos": contratos, "modulos": modulos, "linhas": linhas, "equipamentos": equip,
+            "oc_contratos": oc_ct, "oc_modulos": oc_md}
+
+
+class TransmissaoSiget(unittest.TestCase):
+    """O SIGET liga o módulo ao CNPJ: IdeMdl → IdeCcdProprietario → NumCNPJ do recurso 'SIGET -
+    Contrato Agente'. A primeira versão declarou esse vínculo inexistente (bloqueio falso)."""
+    AXIA, AXIA_NE, ATE_VI, ATE_VII, COPEL_GT = ("00001180000126", "33541368000116", "08635011000150",
+                                                 "08806925000136", "04370282000170")
+
+    @classmethod
+    def setUpClass(cls):
+        cls.sg = _siget_recorte()
+        cls.por, cls.cob = ae.transmissao_por_cnpj(cls.sg["contratos"], cls.sg["modulos"], cls.sg["linhas"], cls.sg["equipamentos"])
+
+    def test_linhas_originais_do_contrato(self):
+        # linha original do recurso de contratos: IdeCcd 6375, contrato 012/2007, CNPJ 33541368000116
+        txt = _texto(os.path.join(DADOS, "siget_contratos_recorte.csv"))
+        self.assertIn('"6375";"CCO-Contrato de Concess', txt)
+        self.assertIn('"012/2007";"14/06/2007";"14/06/2037";"48";"33541368000116";"AXIA Nordeste"', txt)
+        # ATE VI publicada sem o zero à esquerda e AXIA com 10 dígitos: completados para 14
+        self.assertIn('"8635011000150";"ATE VI"', txt)
+        self.assertEqual(self.sg["contratos"]["6376"]["cnpj"], self.ATE_VI)
+        self.assertEqual(self.sg["contratos"]["6523"]["cnpj"], self.AXIA)
+        self.assertIsNone(self.sg["contratos"]["6444"]["cnpj"])                  # contrato sem CNPJ, contado
+        self.assertEqual((self.sg["oc_contratos"]["sem_cnpj"], self.sg["oc_contratos"]["cnpj_sem_zeros"]), (1, 4))
+
+    def test_vinculo_por_cnpj_contra_leitura_independente(self):
+        """Valores escritos aqui, calculados por leitura independente do recorte (csv puro: um
+        módulo conta uma vez, linha ativa com obra em operação ou concluída, transformador
+        principal em operação)."""
+        esperado = {self.AXIA: (14, 1, 99.0, 1, 150.0), self.ATE_VI: (21, 3, 201.0, 1, 450.0),
+                    self.ATE_VII: (23, 2, 119.0, 1, 300.0), self.AXIA_NE: (10, 2, 316.0, 2, 0.0)}
+        for c14, (mods, circ, km, se, mva) in esperado.items():
+            d = self.por[c14]
+            self.assertEqual((d["modulos"], d["circuitos_operacao"], round(d["km_operacao"], 2), len(d["subestacoes"]),
+                              d["mva_operacao"]), (mods, circ, km, se, mva), c14)
+        self.assertEqual((self.cob["modulos"], self.cob["modulos_com_cnpj"]), (68, 68))
+
+    def test_dono_e_o_contrato_proprietario_nao_o_da_obra(self):
+        # quatro linhas de módulos da ATE VII vêm de obras autorizadas no contrato 060/2001 da COPEL-GT:
+        # o módulo é da ATE VII (IdeCcdProprietario), nunca da COPEL-GT
+        self.assertEqual(self.por[self.COPEL_GT]["modulos"], 0)
+        self.assertEqual(self.por[self.COPEL_GT]["contratos"], 1)
+        self.assertEqual(self.sg["oc_modulos"]["proprietario_divergente"], [])
+
+    def test_linha_repetida_reserva_e_implantacao(self):
+        brutas = list(csv.DictReader(io.StringIO(_texto(os.path.join(DADOS, "siget_linhas_recorte.csv"))), delimiter=";"))
+        self.assertEqual(len(brutas) - len({r["IdeMdl"] for r in brutas}), 1)     # o mesmo módulo em duas obras
+        self.assertEqual(self.sg["equipamentos"]["22404"]["finalidade"], "Reserva")  # 50 MVA reserva fora da soma
+        self.assertEqual(self.por[self.AXIA]["mva_operacao"], 150.0)
+        nao_op = sorted(m for m, x in self.sg["modulos"].items() if not x["em_operacao"])
+        self.assertEqual(nao_op, ["44553", "44554", "44555"])
+
+    def test_bloqueio_retirado_e_registro(self):
+        self.assertNotIn("transmissao", {b["id"] for b in mod.BLOQUEIOS})
+        self.assertIn(mod.DS_SIGET, {d["dataset_silver"] for d in mod.REGISTRO["datasets"]})
+        # o documento não repete a limitação inexistente (SIGET sem CNPJ) nas limitações
+        limites = _texto(DOC_MODULO).split("## 5.")[1].split("## 6.")[0]
+        self.assertFalse([l for l in limites.split("\n") if "SIGET" in l and "sem CNPJ" in l])
+        self.assertNotIn("nenhum conjunto aberto liga", _texto(DOC_MODULO))
+        g = os.path.join(base.GOLD, "empresas.json")
+        if os.path.exists(g):
+            self.assertNotIn("nenhum conjunto aberto liga", _texto(g))
+
+    def test_bloco_da_gold_com_o_recorte(self):
+        agentes = {self.AXIA_NE: {"ativo": True, "ramos": ["transmissao"]}, self.ATE_VI: {"ativo": True, "ramos": ["transmissao"]}}
+        cadeia = lambda x: {"topo": self.AXIA if x == self.AXIA_NE else x, "cadeia": [x], "motivo_parada": "sem_declaracao",  # noqa: E731
+                            "pcts": [], "acima": None}
+        vint = {r: {"vintage_id": f"t:{r}", "recurso": r, "url": "https://dadosabertos.aneel.gov.br/", "capturado_em": "2026-09-30T22:21:58Z",
+                    "publicado_em": "2026-09-29T16:35:49Z", "sha256": "0" * 64, "bytes": 1, "arquivo": r} for r in ae.SIGET_RECURSOS}
+        t = mod._bloco_transmissao({**self.sg, "vintages": vint}, agentes, {}, cadeia, {"revisoes": None, "id": None, "sha256": None})
+        b = t["bloco"]
+        self.assertEqual(b["resumo"]["pct_modulos_com_cnpj"], 100.0)
+        self.assertEqual(b["resumo"]["km_circuito_operacao"], 735.0)
+        self.assertEqual(b["maiores"][0]["cnpj"], self.AXIA_NE)
+        g = {x["cnpj"]: x for x in b["grupos"]}
+        self.assertEqual(g[self.AXIA]["km_circuito_operacao"], 415.0)            # AXIA S.A. + AXIA Nordeste
+        self.assertEqual(g[self.AXIA]["subestacoes"], 3)                           # união, sem contar duas vezes
+        self.assertEqual(evid.validar(b["evidencia"]), [])
+        self.assertEqual(b["conferencia_cadastro_agentes"]["com_ramo_transmissao"], 2)
+
+
+# ============================================================================ P038: escala, colunas e fluxos não preenchidos
+def _fin_de(zips):
+    """_financas sobre um silver em memória com os zips do recorte processados pelo código do módulo."""
+    con = base.conecta(":memory:")
+    for ds, rec, arq, univ in zips:
+        caminho = os.path.join(DADOS, arq)
+        vid, _ = base.registra_vintage(con, ds, rec, "https://dados.cvm.gov.br/", "2026-09-30T23:00:00Z", None,
+                                       "0" * 64, os.path.getsize(caminho), "teste", caminho)
+        mod._processa_doc(con, ds, "DFP" if ds == mod.DS_DFP else "ITR", {"vintage_id": vid, "recurso": rec, "arquivo": caminho}, univ)
+    return mod._financas(con, {}, [], {})
+
+
+def _linha_cvm(arq, membro, cnpj_fmt, conta, ordem="ÚLTIMO", dt_refer=None, ini=None):
+    with zipfile.ZipFile(os.path.join(DADOS, arq)) as z:
+        for r in csv.DictReader(io.StringIO(z.read(membro).decode("latin-1")), delimiter=";"):
+            if r["CNPJ_CIA"] == cnpj_fmt and r.get("CD_CONTA") == conta and r["ORDEM_EXERC"] == ordem and (
+                    dt_refer is None or r["DT_REFER"] == dt_refer) and (ini is None or r.get("DT_INI_EXERC") == ini):
+                return r
+    return None
+
+
+EQ_GO, CELEO, CHESF, CELGPAR = "01543032000104", "31001230000107", "33541368000116", "08560444000193"
+
+
+class EscalaTrocadaNaFonte(unittest.TestCase):
+    """Defeito: a DFP 2021 da Equatorial Goiás marca UNIDADE e a DFP 2022 traz o mesmo número em
+    MIL; a DFP 2019 da Celeo Redes marca UNIDADE e a de 2020, MIL. A gold publicava a receita de
+    2021 da Equatorial Goiás como R$ 9.735.479 e o ativo como R$ 18,9 milhões."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.fin = _fin_de([(mod.DS_DFP, "dfp_cia_aberta_2021.zip", "dfp_2021_equatorial_go_recorte.zip", [EQ_GO]),
+                           (mod.DS_DFP, "dfp_cia_aberta_2022.zip", "dfp_2022_equatorial_go_recorte.zip", [EQ_GO]),
+                           (mod.DS_ITR, "itr_cia_aberta_2021.zip", "itr_2021_equatorial_go_chesf_recorte.zip", [EQ_GO]),
+                           (mod.DS_DFP, "dfp_cia_aberta_2019.zip", "dfp_2019_celeo_recorte.zip", [CELEO]),
+                           (mod.DS_DFP, "dfp_cia_aberta_2020.zip", "dfp_2020_celeo_recorte.zip", [CELEO])])
+
+    def test_linhas_originais(self):
+        u = _linha_cvm("dfp_2021_equatorial_go_recorte.zip", "dfp_cia_aberta_DRE_ind_2021.csv", "01.543.032/0001-04", "3.01")
+        p = _linha_cvm("dfp_2022_equatorial_go_recorte.zip", "dfp_cia_aberta_DRE_ind_2022.csv", "01.543.032/0001-04", "3.01", "PENÚLTIMO")
+        self.assertEqual((u["ESCALA_MOEDA"], float(u["VL_CONTA"])), ("UNIDADE", 9735479.0))
+        self.assertEqual((p["ESCALA_MOEDA"], float(p["VL_CONTA"])), ("MIL", 9735479.0))
+        c19 = _linha_cvm("dfp_2019_celeo_recorte.zip", "dfp_cia_aberta_DRE_con_2019.csv", "31.001.230/0001-07", "3.01")
+        c20 = _linha_cvm("dfp_2020_celeo_recorte.zip", "dfp_cia_aberta_DRE_con_2020.csv", "31.001.230/0001-07", "3.01", "PENÚLTIMO")
+        self.assertEqual((c19["ESCALA_MOEDA"], float(c19["VL_CONTA"]), c20["ESCALA_MOEDA"], float(c20["VL_CONTA"])),
+                         ("UNIDADE", 143474.0, "MIL", 143474.0))
+
+    def test_equatorial_goias_2021_convertida_para_mil(self):
+        a = self.fin["anual"][EQ_GO]
+        self.assertEqual(a[("ind", "receita")][2021], 9735479000.0)
+        self.assertEqual(a[("ind", "ativo_total")][2021], 18932354000.0)
+        self.assertEqual(a[("ind", "receita")][2022], 9032297000.0)                 # a referência não muda
+        self.assertEqual(self.fin["escala"]["notas"][(EQ_GO, "ind", "receita", 2021)], 1000.0)
+        # a troca de escala deixa de ser reapresentação; o ativo de 2021 foi reapresentado de fato
+        self.assertEqual(self.fin["anterior"][EQ_GO][("ind", "receita")][2021], a[("ind", "receita")][2021])
+        self.assertEqual(self.fin["anterior"][EQ_GO][("ind", "ativo_total")][2021], 18952943000.0)
+        self.assertGreaterEqual(self.fin["inversoes_escala"], 5)
+
+    def test_itr_2021_por_documento(self):
+        # 1º trimestre marcado MIL (ligado à DFP 2022 pelo comparativo de 31/12/2020): fica; 2º e 3º
+        # marcados UNIDADE, iguais à DFP 2021: convertidos
+        t = self.fin["trimestral"][EQ_GO][("ind", "ativo_total", "saldo")]
+        self.assertEqual((t["2021-03-31"], t["2021-06-30"], t["2021-09-30"]), (16488261000.0, 17403589000.0, 18516717000.0))
+        self.assertNotIn((EQ_GO, "ind", "ITR", "2021-03-31"), self.fin["escala"]["fatores"])
+
+    def test_celeo_2019(self):
+        a = self.fin["anual"][CELEO]
+        self.assertEqual(a[("con", "receita")][2019], 143474000.0)
+        self.assertEqual(self.fin["escala"]["fatores"][(CELEO, "con", "DFP", "2019-12-31")], 1000.0)
+        self.assertEqual(self.fin["escala"]["fatores"][(CELEO, "ind", "DFP", "2019-12-31")], 1000.0)
+        self.assertEqual(self.fin["escala"]["diagnostico"]["conflitos"], [])
+
+    def test_documento_isolado_nao_e_corrigido(self):
+        fin = _fin_de([(mod.DS_DFP, "dfp_cia_aberta_2021.zip", "dfp_2021_equatorial_go_recorte.zip", [EQ_GO])])
+        self.assertEqual(fin["escala"]["fatores"], {})                             # sem comparativo exato, sem prova
+        self.assertEqual(fin["anual"][EQ_GO][("ind", "receita")][2021], 9735479.0)
+
+
+class ColunaNaoPreenchida(unittest.TestCase):
+    """Defeito: o consolidado da AXIA Energia Nordeste (Chesf) no ITR de 2021 tem ativo total 1 (mil)
+    e as demais contas zero; a gold publicava ativo de R$ 1.000, PL zero e receita do trimestre zero."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.fin = _fin_de([(mod.DS_ITR, "itr_cia_aberta_2021.zip", "itr_2021_equatorial_go_chesf_recorte.zip", [CHESF])])
+
+    def test_linhas_originais(self):
+        c = _linha_cvm("itr_2021_equatorial_go_chesf_recorte.zip", "itr_cia_aberta_BPA_con_2021.csv", "33.541.368/0001-16", "1",
+                       dt_refer="2021-06-30")
+        i = _linha_cvm("itr_2021_equatorial_go_chesf_recorte.zip", "itr_cia_aberta_BPA_ind_2021.csv", "33.541.368/0001-16", "1",
+                       dt_refer="2021-06-30")
+        self.assertEqual((c["ESCALA_MOEDA"], float(c["VL_CONTA"]), float(i["VL_CONTA"])), ("MIL", 1.0, 28552507.0))
+
+    def test_ausencia_no_lugar_do_modelo(self):
+        t = self.fin["trimestral"][CHESF]
+        self.assertNotIn("2021-06-30", t.get(("con", "ativo_total", "saldo"), {}))
+        self.assertNotIn("2021-03-31", t.get(("con", "ativo_total", "saldo"), {}))
+        self.assertNotIn("2021-06-30", t.get(("con", "patrimonio_liquido", "saldo"), {}))
+        self.assertNotIn("2021-06-30", t.get(("con", "receita", "trimestre"), {}))
+        self.assertNotIn("2021-06-30", t.get(("con", "lucro_liquido", "trimestre"), {}))
+        # o que a companhia preencheu continua: DRE consolidada acumulada e o individual
+        self.assertEqual(t[("con", "receita", "acumulado_no_ano")]["2021-06-30"], 3577463000.0)
+        self.assertEqual(t[("ind", "ativo_total", "saldo")]["2021-06-30"], 28552507000.0)
+        motivos = {k: m for k, (m, _) in self.fin["nao_preenchidas"].items()}
+        self.assertEqual(motivos[("ITR", CHESF, "con", "U", "saldo", "2021-06-30")], "coluna_nao_preenchida")
+        self.assertEqual(motivos[("ITR", CHESF, "con", "U", "DRE", "2021-04-01/2021-06-30")], "coluna_nao_preenchida")
+        self.assertEqual(self.fin["ativo_invalido"], [])
+
+
+class FluxosNaoPreenchidos(unittest.TestCase):
+    """Defeito: a DRE e a DFC de 2025 da CELGPAR, entregues zeradas, eram publicadas como valores
+    (receita, EBIT, lucro e caixa de investimento iguais a zero) sob a afirmação de que não havia
+    prova de não preenchimento. A prova está no arquivo: saldo inicial de caixa zero contra o saldo
+    final de 2024 de 203.811 mil no comparativo da mesma DFC."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.fin = _fin_de([(mod.DS_DFP, "dfp_cia_aberta_2025.zip", "dfp_2025_celgpar_recorte.zip", [CELGPAR])])
+
+    def test_linhas_originais(self):
+        arq, m = "dfp_2025_celgpar_recorte.zip", "dfp_cia_aberta_DFC_MD_ind_2025.csv"
+        self.assertEqual(float(_linha_cvm(arq, m, "08.560.444/0001-93", "6.05.01")["VL_CONTA"]), 0.0)
+        self.assertEqual(float(_linha_cvm(arq, m, "08.560.444/0001-93", "6.05.02", "PENÚLTIMO")["VL_CONTA"]), 203811.0)
+        self.assertEqual(float(_linha_cvm(arq, "dfp_cia_aberta_DRE_ind_2025.csv", "08.560.444/0001-93", "3.01")["VL_CONTA"]), 0.0)
+
+    def test_dre_e_dfc_viram_ausencia(self):
+        a = self.fin["anual"][CELGPAR]
+        for conta in ("receita", "ebit", "lucro_liquido", "caixa_operacional", "caixa_investimento"):
+            self.assertNotIn(2025, a.get(("ind", conta), {}), conta)
+        self.assertEqual(a[("ind", "ativo_total")][2025], 749830000.0)             # o balanço foi preenchido
+        self.assertEqual(a[("ind", "receita")].get(2024), None)                     # 2024 só como comparativo
+        ult, esc, valores, alertas = mod._exibicao(CELGPAR, a, self.fin)
+        self.assertEqual((ult, esc, valores["receita"], valores["ativo_total"]), (2025, "ind", None, 749830000))
+        self.assertIn("fluxos_nao_preenchidos", alertas)
+        self.assertNotIn("dre_zerada_na_fonte", alertas)
+
+    def test_sem_a_afirmacao_de_falta_de_prova(self):
+        for caminho in ("pipeline/energia/modulos/empresas.py", "docs/observatorios/energia/modulos/empresas.md"):
+            self.assertNotIn("não há prova", _texto(os.path.join(base.RAIZ, caminho)), caminho)
+
+
+class VersoesDistintas(unittest.TestCase):
+    def test_indice_com_a_mesma_versao_duas_vezes(self):
+        with zipfile.ZipFile(os.path.join(DADOS, "itr_2021_equatorial_go_chesf_recorte.zip")) as z:
+            idx = cv.le_indice(z, "ITR", 2021, {"02.291.077/0001-93"})
+        entradas = idx[("02291077000193", "2021-06-30")]
+        self.assertEqual(len(entradas), 2)                                          # duas linhas no índice
+        self.assertEqual(cv.versoes_distintas(entradas), 1)                         # uma versão
+        self.assertEqual(mod._versoes({"versoes": "2", "versoes_distintas": "1"}), 1)
+
+
+# ============================================================================ nomes determinísticos
+_NOMES_SCRIPT = r"""
+import json, sys
+sys.path.insert(0, {raiz!r})
+from pipeline.energia.fontes import aneel_empresas as ae
+from pipeline.energia.modulos import empresas as mod
+pol = ae.le_polimero(lambda: ae.linhas_polimero({parquet!r}))
+X = "00000000000191"
+# mesmo sócio grafado de três formas por declarantes diferentes no mesmo trimestre, e um declarante
+# que se declara com nome próprio diferente do que os terceiros usam
+pol["arvores"][("00000000000272", (2026, 2))] = [{{"raiz": "00000000000272", "nome": "Declarante A", "arestas": [
+    {{"pai": "00000000000272", "socio": X, "nome": "Controladora S/A.", "pct": 100.0, "controlador": True, "perfil": "PJ"}}]}}]
+pol["arvores"][("00000000000353", (2026, 2))] = [{{"raiz": "00000000000353", "nome": "Declarante B", "arestas": [
+    {{"pai": "00000000000353", "socio": X, "nome": "Controladora S.A.", "pct": 100.0, "controlador": True, "perfil": "PJ"}}]}}]
+pol["arvores"][("00000000000434", (2026, 2))] = [{{"raiz": "00000000000434", "nome": "Declarante C", "arestas": [
+    {{"pai": "00000000000434", "socio": X, "nome": "Controladora S/A.", "pct": 100.0, "controlador": True, "perfil": "PJ"}},
+    {{"pai": "00000000000434", "socio": "00000000000272", "nome": "Nome antigo do declarante A", "pct": 0.0, "controlador": False, "perfil": "PJ"}}]}}]
+nomes = mod._nomes({{}}, {{}}, {{}}, ae.nomes_polimero(pol))
+print(json.dumps(nomes, sort_keys=True, ensure_ascii=False))
+"""
+
+
+class NomesDeterministicos(unittest.TestCase):
+    def _roda(self, semente):
+        cod = _NOMES_SCRIPT.format(raiz=base.RAIZ, parquet=os.path.join(DADOS, "polimero_recorte.parquet"))
+        out = subprocess.run([sys.executable, "-c", cod], capture_output=True, text=True, timeout=300,
+                             env={**os.environ, "PYTHONHASHSEED": str(semente)})
+        self.assertEqual(out.returncode, 0, out.stderr[-2000:])
+        return json.loads(out.stdout)
+
+    def test_mesmos_nomes_com_duas_sementes(self):
+        a, b = self._roda(1), self._roda(2)
+        self.assertEqual(a, b)
+        self.assertEqual(a["00000000000191"], "Controladora S/A.")                # o mais frequente no trimestre
+        self.assertEqual(a["00000000000272"], "Declarante A")                      # a própria declaração vence a de terceiros
+        self.assertEqual(a["33050071000158"], next(arv["nome"] for (r, p), arvs in _polimero()["arvores"].items()
+                                                   if r == "33050071000158" and p == (2026, 2) for arv in arvs))
+
+
+# ============================================================================ contrato da gold, documento e métricas
+TIPOS_TS = os.path.join(base.RAIZ, "src/lib/energia/tipos-empresas.ts")
+
+
+def _campos_ts(nome):
+    """({obrigatórios}, {todos}) do primeiro nível de `export type <nome> = ... {` em tipos-empresas.ts."""
+    linhas = _texto(TIPOS_TS).split("\n")
+    i = next(n for n, l in enumerate(linhas) if re.match(rf"export type {nome} = .*\{{\s*$", l))
+    prof, obrig, todos = 1, set(), set()
+    for l in linhas[i + 1:]:
+        sem_coment = re.sub(r"/\*.*?\*/|//.*$", "", l)
+        if prof == 1:
+            m = re.match(r"^\s{2}(\w+)(\??):", sem_coment)
+            if m:
+                todos.add(m.group(1))
+                if not m.group(2):
+                    obrig.add(m.group(1))
+        prof += sem_coment.count("{") - sem_coment.count("}")
+        if prof <= 0:
+            return obrig, todos
+    raise AssertionError(nome)
+
+
+@unittest.skipUnless(os.path.exists(os.path.join(base.GOLD, "empresas.json")), "gold não gerada")
+class ContratoDaGold(unittest.TestCase):
+    """A gold publicada precisa ter os campos do tipo TypeScript, e só eles. Defeito: a gold de
+    01/10/2026 00:53 não tinha a chave 'nota' da conferência SIGA × Agentes de Geração que o tipo
+    declara obrigatória (a gold estava defasada em relação ao código)."""
+
+    @classmethod
+    def setUpClass(cls):
+        with open(os.path.join(base.GOLD, "empresas.json"), encoding="utf-8") as f:
+            cls.g = json.load(f)
+
+    def _confere(self, tipo, obj):
+        obrig, todos = _campos_ts(tipo)
+        self.assertEqual(obrig - set(obj), set(), f"{tipo}: campos do tipo ausentes na gold")
+        self.assertEqual(set(obj) - todos, set(), f"{tipo}: campos da gold fora do tipo")
+
+    def test_campos(self):
+        g = self.g
+        self.assertIn("nota", g["cadastro"]["ativos"]["conferencia_agentes_geracao"])
+        self._confere("ConferenciaAgentes", g["cadastro"]["ativos"]["conferencia_agentes_geracao"])
+        self._confere("Ativos", g["cadastro"]["ativos"])
+        self._confere("ResumoAgentes", g["cadastro"]["agentes"])
+        self._confere("Cadastro", g["cadastro"])
+        self._confere("Transmissao", g["cadastro"]["transmissao"])
+        for x in g["cadastro"]["transmissao"]["maiores"]:
+            self._confere("TransmissaoAgente", x)
+        for x in g["cadastro"]["transmissao"]["grupos"]:
+            self._confere("TransmissaoGrupo", x)
+        self._confere("Financas", g["financas"])
+        self._confere("ExclusoesFinancas", g["financas"]["exclusoes"])
+        for co in g["financas"]["companhias"]:
+            self._confere("Companhia", co)
+        self._confere("Distribuidoras", g["distribuidoras"])
+        self._confere("Controle", g["controle"])
+        self._confere("Datas", g["datas"])
+
+    def test_textos_e_universos(self):
+        a = self.g["cadastro"]["ativos"]
+        tol = a["evidencia"]["reconciliacao"]["tolerancia"]
+        self.assertIn("aceite com pelo menos 98%", tol)
+        self.assertRegex(tol, r"resultado 99,\d\d%")
+        est = {e["estado"]: e for e in a["estados"]}
+        self.assertAlmostEqual(a["pct_usinas_operacao_vinculadas"], 100.0 * est["vinculado"]["usinas_operacao"] / a["operacao"]["usinas"], places=2)
+        self.assertAlmostEqual(a["pct_usinas_vinculadas"], 100.0 * est["vinculado"]["usinas"] / a["usinas"], places=2)
+        self.assertIn("ativos", self.g["cadastro"]["agentes"]["ramos_universo"])
+        self.assertEqual(self.g["proveniencia"]["distribuidoras_pnt"]["unidade"], "% do mercado de baixa tensão")
+        self.assertEqual(self.g["proveniencia"]["distribuidoras_pnt"]["natureza"], "ESTIMADO")
+        self.assertEqual(self.g["proveniencia"]["financas_escala"]["natureza"], "ESTIMADO")
+        self.assertEqual(evid.validar(self.g["cadastro"]["transmissao"]["evidencia"]), [])
+
+    def test_documento_cita_os_numeros_da_gold(self):
+        doc = _texto(DOC_MODULO)
+        br = lambda n: f"{n:,}".replace(",", ".")  # noqa: E731
+        rev = self.g["financas"]["revisoes"]
+        with open(os.path.join(base.SERIES, "empresas_evidencias.json"), encoding="utf-8") as f:
+            n_ev = len(json.load(f)["evidencias"])
+        for n in (rev["valores_reapresentados"], rev["documentos_com_mais_de_uma_versao"], rev["inversoes_de_escala_resolvidas"], n_ev,
+                  self.g["cadastro"]["agentes"]["total"], self.g["cadastro"]["agentes"]["ramos"]["transmissao"],
+                  self.g["cadastro"]["agentes"]["ramos_incluindo_inativos"]["transmissao"],
+                  self.g["cadastro"]["transmissao"]["resumo"]["modulos"], self.g["financas"]["exclusoes"]["escala"]["documentos_corrigidos"]):
+            self.assertIn(br(n), doc, n)
+
+
+class MetricasDeContas(unittest.TestCase):
+    def test_conferencia_so_na_conta_conferida(self):
+        por_id = {m["id"]: m for m in metricas_empresas.METRICAS}
+        com_cemig = [i for i, m in por_id.items() if any("Receita consolidada da CEMIG" in v or "CEMIG consolidado 2024, R$ 39.819.620" in v
+                                                       for v in m["validacoes"])]
+        self.assertEqual(com_cemig, ["empresas_receita"])
+        for i in ("empresas_ebit", "empresas_lucro_liquido", "empresas_caixa", "empresas_patrimonio_liquido", "empresas_lucro_controladores"):
+            self.assertFalse(any("Relida" in v or "Recalculada" in v for v in por_id[i]["validacoes"]), i)
+        self.assertIn("empresas_transmissao_km_circuito", por_id)
 
 
 if __name__ == "__main__":

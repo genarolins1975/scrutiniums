@@ -160,16 +160,23 @@ export function siglaDoCodigo(codigo: string | null | undefined): string | null 
 /* ================================================================ páginas */
 
 export const ROTA_TRANSICAO = "/setor-eletrico/transicao";
-export type PainelTransicao = "p063" | "p064";
+export type PainelTransicao = "p063" | "ons" | "p064";
+
+/** Perguntas da estimativa de energia do ONS (parte do P063) e do achado A11, na página da energia estimada. */
+export const PERGUNTA_ONS = "Quanta energia a MMGD entrega ao SIN, segundo a estimativa do ONS?";
+export const PERGUNTA_A11 = "Quando o ONS passou a incluir a MMGD no Balanço de Energia, o degrau aparece na geração e na carga?";
 
 /**
- * Os dois painéis da especificação (Anexo A), cada um na sua página: o mapa
- * municipal, as séries e as fichas de prova de cada painel, juntos, passariam da
- * meta de cerca de 600 KB de HTML por página (contrato, seção 5.1).
+ * As páginas dos painéis, na ordem das perguntas (a próxima pergunta de cada uma é a
+ * seguinte): o P063 em duas (o cadastro da ANEEL no território e a energia estimada
+ * pelo ONS, com o achado A11) e o P064. O mapa municipal, as séries, as tabelas e as
+ * fichas de prova, juntos numa página, passariam da meta de cerca de 600 KB de HTML
+ * por página (contrato, seção 5.1).
  */
-export const PAINEIS_TRANSICAO: readonly { id: PainelTransicao; slug: string; rotulo: string; pergunta: string }[] = [
-  { id: "p063", slug: "mmgd", rotulo: "MMGD no território", pergunta: "Onde a geração distribuída cresce?" },
-  { id: "p064", slug: "emissoes", rotulo: "Emissões", pergunta: "Como varia a intensidade de emissões?" },
+export const PAINEIS_TRANSICAO: readonly { id: PainelTransicao; slug: string; rotulo: string; pergunta: string; painel: "P063" | "P064" }[] = [
+  { id: "p063", slug: "mmgd", rotulo: "MMGD no território", pergunta: "Onde a geração distribuída cresce?", painel: "P063" },
+  { id: "ons", slug: "energia-estimada", rotulo: "Energia estimada (ONS)", pergunta: PERGUNTA_ONS, painel: "P063" },
+  { id: "p064", slug: "emissoes", rotulo: "Emissões", pergunta: "Como varia a intensidade de emissões?", painel: "P064" },
 ];
 
 export function rotaPainel(id: PainelTransicao): string {
@@ -180,10 +187,6 @@ export function rotaPainel(id: PainelTransicao): string {
 export function perguntaPainel(id: PainelTransicao): string {
   return PAINEIS_TRANSICAO.find((x) => x.id === id)!.pergunta;
 }
-
-/** Perguntas dos dois blocos de apoio da página da MMGD (estimativa de energia do ONS e achado A11). */
-export const PERGUNTA_ONS = "Quanta energia a MMGD entrega ao SIN, segundo a estimativa do ONS?";
-export const PERGUNTA_A11 = "Quando o ONS passou a incluir a MMGD no Balanço de Energia, o degrau aparece na geração e na carga?";
 
 export const FONTE_ANEEL = "ANEEL, Relação de empreendimentos de Mini e Micro Geração Distribuída; IBGE, Estimativas de população (SIDRA 6579)";
 export const FONTE_ANEEL_CADASTRO = "ANEEL, Relação de empreendimentos de Mini e Micro Geração Distribuída";
@@ -229,6 +232,15 @@ export const MEDIDA_MUN: Record<MedidaMun, { rotulo: string; unidade: string; ca
   fora: { rotulo: "Unidades de distribuidora sem conjunto elétrico na UF", unidade: "unidades", casas: 0 },
 };
 
+export const LISTAS_DESTAQUE = ["maior_crescimento_estoque", "maior_w_por_habitante", "maior_potencia", "menor_w_por_habitante"] as const;
+export type ListaDestaque = (typeof LISTAS_DESTAQUE)[number];
+export const ROTULO_DESTAQUE: Record<ListaDestaque, string> = {
+  maior_crescimento_estoque: "Maior crescimento do estoque no ano de referência",
+  maior_w_por_habitante: "Maior potência por habitante",
+  maior_potencia: "Maior potência instalada",
+  menor_w_por_habitante: "Menor potência por habitante",
+};
+
 const leitorUf = tiposUrl.opcao(UFS);
 /** Código IBGE de município (7 dígitos); nenhum vínculo por nome. */
 const leitorIbge: Leitor<string> = { ler: (b) => (/^\d{7}$/.test(b) ? b : undefined), escrever: (v) => v };
@@ -247,6 +259,7 @@ export const ESQUEMA_MMGD = {
   mun: campo(tiposUrl.booleano(), false, { param: "mmgd.mun" }),
   mmed: campo(tiposUrl.opcao(MEDIDAS_MUN), "whab", { param: "mmgd.mmed" }),
   muns: campo(tiposUrl.lista(leitorIbge, { max: LIMITE_COMPARACAO }), [] as string[], { param: "mmgd.msel" }),
+  rank: campo(tiposUrl.opcao(LISTAS_DESTAQUE), "maior_crescimento_estoque", { param: "mmgd.rank" }),
 };
 
 /* ---------- por UF: mapa, barras com referência, tabela ---------- */
@@ -299,7 +312,7 @@ export function colunasUfs(anoReferencia: number, anoPopulacao: number | null): 
     { id: "unidades_por_mil_habitantes", rotulo: "Unidades por mil habitantes", tipo: "numero", casas: 2 },
     { id: "potencia_mw_ano_referencia", rotulo: `Potência conectada em ${anoReferencia}`, tipo: "numero", unidade: "MW", casas: 1 },
     { id: "crescimento_estoque_ano_referencia_pct", rotulo: `Crescimento do estoque em ${anoReferencia}`, tipo: "percentual", casas: 1 },
-    { id: "ucs_recebem_credito", rotulo: "UC que recebem créditos", tipo: "numero", casas: 0 },
+    { id: "ucs_recebem_credito", rotulo: "UC que recebem créditos (soma por empreendimento)", tipo: "numero", casas: 0 },
   ];
 }
 
@@ -390,6 +403,12 @@ export function primeiroAnoCoberto(inicioDeclarado: string): number {
   return inicioDeclarado.slice(5, 10) === "01-01" ? ano : ano + 1;
 }
 
+/** Só o que o histórico por UF desenha: as props do componente cliente viajam no HTML (contrato, seção 5.1). */
+export type UfAnoCompacto = Pick<MmgdUfAno, "uf" | "ano" | "potencia_mw">;
+export function ufAnualCompacto(ufAnual: readonly MmgdUfAno[]): UfAnoCompacto[] {
+  return ufAnual.map((x) => ({ uf: x.uf, ano: x.ano, potencia_mw: x.potencia_mw }));
+}
+
 /**
  * Histórico de conexões por ano (MW) das UF escolhidas, na mesma escala. A gold
  * publica cada UF do primeiro ano com conexão ao ano do cadastro; os anos de outra
@@ -397,10 +416,10 @@ export function primeiroAnoCoberto(inicioDeclarado: string): number {
  * completo e não tem conexão ali); fora da cobertura, ficam ausentes. Nulo
  * publicado continua nulo.
  */
-export function dadosHistoricoUfs(ufAnual: readonly MmgdUfAno[], ufs: readonly string[], primeiroCoberto: number): Record<string, string | number | null>[] {
+export function dadosHistoricoUfs(ufAnual: readonly UfAnoCompacto[], ufs: readonly string[], primeiroCoberto: number): Record<string, string | number | null>[] {
   const escolhidas = ufs.filter((u) => ufAnual.some((x) => x.uf === u));
   if (!escolhidas.length) return [];
-  const porUf = new Map<string, Map<number, MmgdUfAno>>();
+  const porUf = new Map<string, Map<number, UfAnoCompacto>>();
   for (const u of escolhidas) porUf.set(u, new Map());
   let ini = Infinity;
   let fim = -Infinity;
@@ -541,6 +560,11 @@ export function cnpjFormatado(cnpj: string): string {
   return /^\d{14}$/.test(cnpj) ? `${cnpj.slice(0, 2)}.${cnpj.slice(2, 5)}.${cnpj.slice(5, 8)}/${cnpj.slice(8, 12)}-${cnpj.slice(12)}` : cnpj;
 }
 
+/**
+ * Uma linha por distribuidora (CNPJ), só com as colunas da tabela: as props do
+ * componente cliente viajam no HTML (contrato, seção 5.1). UF por ano, municípios e
+ * a área completa dos conjuntos estão no CSV por distribuidora, UF e ano.
+ */
 export function linhasDistribuidoras(ds: readonly MmgdDistribuidora[]) {
   return ds.map((d) => {
     const c = d.classes_fora_da_area;
@@ -559,15 +583,12 @@ export function linhasDistribuidoras(ds: readonly MmgdDistribuidora[]) {
       unidades: d.unidades,
       potencia_mw: d.potencia_mw,
       unidades_sem_potencia: d.unidades_sem_potencia,
-      municipios: d.municipios,
-      unidades_ano_referencia: d.unidades_ano_referencia,
       potencia_mw_ano_referencia: d.potencia_mw_ano_referencia,
-      ufs_area: d.ufs_area_conjuntos ? d.ufs_area_conjuntos.join(", ") : "sem referência",
       unidades_fora_da_area: d.unidades_fora_da_area,
-      potencia_mw_fora_da_area: d.potencia_mw_fora_da_area,
-      ufs_fora_da_area: d.ufs_fora_da_area ? d.ufs_fora_da_area.join(", ") : "",
-      classes_fora_da_area: classes,
-      aviso_total: d.aviso_total ?? "",
+      // texto em vez de célula vazia: sem unidade fora da área não é ausência de dado
+      classes_fora_da_area:
+        d.unidades_fora_da_area === null ? "sem referência de área" : d.unidades_fora_da_area === 0 ? "nenhuma unidade fora da área" : classes || "classes indisponíveis",
+      aviso_total: d.aviso_total ?? "nenhum",
     };
   });
 }
@@ -581,13 +602,8 @@ export function colunasDistribuidoras(anoReferencia: number): ColunaTabela[] {
     { id: "unidades", rotulo: "Unidades", tipo: "numero", casas: 0 },
     { id: "potencia_mw", rotulo: "Potência instalada", tipo: "numero", unidade: "MW", casas: 1 },
     { id: "unidades_sem_potencia", rotulo: "Unidades sem potência informada", tipo: "numero", casas: 0 },
-    { id: "municipios", rotulo: "Municípios", tipo: "numero", casas: 0 },
-    { id: "unidades_ano_referencia", rotulo: `Unidades conectadas em ${anoReferencia}`, tipo: "numero", casas: 0 },
     { id: "potencia_mw_ano_referencia", rotulo: `Potência conectada em ${anoReferencia}`, tipo: "numero", unidade: "MW", casas: 1 },
-    { id: "ufs_area", rotulo: "UF com conjunto elétrico do CNPJ", tipo: "texto" },
     { id: "unidades_fora_da_area", rotulo: "Unidades em UF sem conjunto do CNPJ", tipo: "numero", casas: 0 },
-    { id: "potencia_mw_fora_da_area", rotulo: "Potência em UF sem conjunto do CNPJ", tipo: "numero", unidade: "MW", casas: 3 },
-    { id: "ufs_fora_da_area", rotulo: "UF sem conjunto do CNPJ com unidades", tipo: "texto" },
     { id: "classes_fora_da_area", rotulo: "Classes pelo CEP", tipo: "texto" },
     { id: "aviso_total", rotulo: "Aviso sobre o total", tipo: "texto" },
   ];
@@ -595,16 +611,21 @@ export function colunasDistribuidoras(anoReferencia: number): ColunaTabela[] {
 
 /* ---------- municípios: destaques (gold) e mapa sob demanda (JSON) ---------- */
 
-export const LISTAS_DESTAQUE = ["maior_crescimento_estoque", "maior_w_por_habitante", "maior_potencia", "menor_w_por_habitante"] as const;
-export type ListaDestaque = (typeof LISTAS_DESTAQUE)[number];
-export const ROTULO_DESTAQUE: Record<ListaDestaque, string> = {
-  maior_crescimento_estoque: "Maior crescimento do estoque no ano de referência",
-  maior_w_por_habitante: "Maior potência por habitante",
-  maior_potencia: "Maior potência instalada",
-  menor_w_por_habitante: "Menor potência por habitante",
+export type LinhaDestaque = {
+  id: string;
+  posicao: number;
+  municipio: string;
+  uf: string;
+  unidades: number;
+  potencia_kw: number | null;
+  populacao: number | null;
+  w_por_habitante: number | null;
+  crescimento_estoque_pct: number | null;
+  unidades_distribuidora_fora_da_uf: number | null;
 };
 
-export function linhasDestaque(lista: readonly MmgdMunicipioCurto[]) {
+/** Ranking como a gold o publica (a ordem é a da gold), só com as colunas exibidas. */
+export function linhasDestaque(lista: readonly MmgdMunicipioCurto[]): LinhaDestaque[] {
   return lista.map((x, i) => ({
     id: x.ibge,
     posicao: i + 1,
@@ -614,11 +635,13 @@ export function linhasDestaque(lista: readonly MmgdMunicipioCurto[]) {
     potencia_kw: x.potencia_kw,
     populacao: x.populacao,
     w_por_habitante: x.w_por_habitante,
-    potencia_kw_ano_referencia: x.potencia_kw_ano_referencia,
     crescimento_estoque_pct: x.crescimento_estoque_pct,
     unidades_distribuidora_fora_da_uf: x.unidades_distribuidora_fora_da_uf,
-    unidades_provavel_municipio_errado: x.unidades_provavel_municipio_errado,
   }));
+}
+
+export function listasDestaque(d: BlocoMmgd["municipios_destaque"]): Record<ListaDestaque, LinhaDestaque[]> {
+  return Object.fromEntries(LISTAS_DESTAQUE.map((k) => [k, linhasDestaque(d[k])])) as Record<ListaDestaque, LinhaDestaque[]>;
 }
 
 export type MunicipioMmgd = {
@@ -759,24 +782,30 @@ export function lerCsv(texto: string): Record<string, string>[] {
  * O CSV só tem as combinações com conexão. Dentro da cobertura declarada (a partir
  * de `primeiroCoberto`), ano sem linha é zero real (o cadastro é completo); antes
  * dela, é ausência. Ano com unidade sem potência informada fica nulo (a soma seria
- * parcial), e a contagem dessas unidades sai em `parciais`.
+ * parcial), e a contagem dessas unidades sai em `parciais`; unidades com data
+ * sentinela ("sem_data" no CSV) ficam fora dos anos e são contadas em `semData`.
  */
 export function historicoMunicipiosCsv(
   texto: string,
   ids: readonly string[],
   anoFinal: number,
   primeiroCoberto: number,
-): { linhas: Record<string, string | number | null>[]; parciais: number } {
+): { linhas: Record<string, string | number | null>[]; parciais: number; semData: number } {
   const alvo = new Set(ids);
-  if (!alvo.size) return { linhas: [], parciais: 0 };
+  if (!alvo.size) return { linhas: [], parciais: 0, semData: 0 };
   const soma = new Map<string, Map<number, { kw: number; parcial: boolean }>>();
   let parciais = 0;
+  let semData = 0;
   let ini = Infinity;
   for (const r of lerCsv(texto)) {
     const id = r.codigo_ibge;
     if (!alvo.has(id)) continue;
     const ano = Number(r.ano_conexao);
-    if (!Number.isFinite(ano) || !r.ano_conexao) continue;
+    if (!/^\d{4}$/.test(r.ano_conexao) || !Number.isFinite(ano)) {
+      // "sem_data": data publicada sentinela; a unidade está no total do município, sem ano de conexão
+      semData += Number(r.unidades || "0");
+      continue;
+    }
     const semPot = Number(r.unidades_sem_potencia || "0");
     const kw = r.potencia_kw === "" ? null : Number(r.potencia_kw);
     if (!soma.has(id)) soma.set(id, new Map());
@@ -790,7 +819,7 @@ export function historicoMunicipiosCsv(
     m.set(ano, atual);
     ini = Math.min(ini, ano);
   }
-  if (!Number.isFinite(ini)) return { linhas: [], parciais };
+  if (!Number.isFinite(ini)) return { linhas: [], parciais, semData };
   const linhas: Record<string, string | number | null>[] = [];
   for (let ano = ini; ano <= anoFinal; ano++) {
     const l: Record<string, string | number | null> = { ano: String(ano) };
@@ -801,7 +830,7 @@ export function historicoMunicipiosCsv(
     }
     linhas.push(l);
   }
-  return { linhas, parciais };
+  return { linhas, parciais, semData };
 }
 
 /* ---------- textos derivados (P063) ---------- */
@@ -870,17 +899,20 @@ export function mudancaMmgd(m: Pick<BlocoMmgd, "mensal" | "corte_provisorio" | "
   return partes.join(" ");
 }
 
-/** Texto da limitação territorial das modalidades remotas, com os números publicados do perfil de modalidade. */
-export function textoModalidadesRemotas(perfis: BlocoMmgd["perfis"], potenciaTotal: number | null): string {
+/**
+ * Texto da limitação territorial das modalidades em que o crédito vai para outra
+ * unidade, com os números publicados do perfil de modalidade (nenhuma soma nem
+ * participação refeita aqui).
+ */
+export function textoModalidadesRemotas(perfis: BlocoMmgd["perfis"]): string {
   const remoto = perfis.modalidade.find((p) => p.categoria === "Auto consumo remoto");
   const comp = perfis.modalidade.find((p) => p.categoria === "Compartilhada");
   const partes: string[] = [];
-  if (remoto) partes.push(`autoconsumo remoto (${inteiro(remoto.unidades)} unidades, ${numTexto(remoto.potencia_mw, 1)} MW)`);
-  if (comp) partes.push(`geração compartilhada (${inteiro(comp.unidades)} unidades, ${numTexto(comp.potencia_mw, 1)} MW)`);
+  if (remoto) partes.push(`no autoconsumo remoto (${inteiro(remoto.unidades)} unidades, ${numTexto(remoto.potencia_mw, 1)} MW)`);
+  if (comp) partes.push(`na geração compartilhada (${inteiro(comp.unidades)} unidades, ${numTexto(comp.potencia_mw, 1)} MW)`);
   if (!partes.length) return "";
-  const soma = (remoto?.potencia_mw ?? 0) + (comp?.potencia_mw ?? 0);
-  const fracao = temValor(potenciaTotal) && potenciaTotal > 0 && remoto?.potencia_mw != null && comp?.potencia_mw != null ? (100 * soma) / potenciaTotal : null;
-  return `No ${listaTexto(partes)}${fracao === null ? "" : `, ${pctTexto(fracao, 1)} da potência cadastrada`}, a energia é compensada em outras unidades, que podem ficar em outro município: o mapa mostra onde a unidade geradora está, não onde o crédito é usado.`;
+  const lista = listaTexto(partes);
+  return `${lista.charAt(0).toUpperCase()}${lista.slice(1)}, a energia é compensada em outras unidades, que podem ficar em outro município: o mapa mostra onde a unidade geradora está, não onde o crédito é usado.`;
 }
 
 /* ================================================================ P063: estimativa do ONS */

@@ -62,7 +62,7 @@ export function RegulacaoLimites({
           </select>
         </label>
         <p className="max-w-prose2 text-sm leading-relaxed text-carvao" aria-live="polite" data-resposta-ano={ano}>
-          {respostas[ano]}
+          {ano === anoPadrao ? "Ano da data de referência: os limites dele estão na resposta acima; escolha outro ano para comparar." : respostas[ano]}
         </p>
       </div>
 

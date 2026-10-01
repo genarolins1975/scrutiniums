@@ -2,12 +2,16 @@
 
 Situação de acesso (verificada em 01/10/2026): o portal dadosabertos.ccee.org.br, o servidor
 de arquivos pda-download.ccee.org.br e o site www.ccee.org.br respondem HTTP 403 com a página
-"Acesso bloqueado" a pedidos feitos com o curl (00:11 e 00:38 UTC), e respondem normalmente ao
-cliente HTTP do próprio pipeline (pipeline.common.http_get e http_download, urllib da
-biblioteca padrão, User-Agent do projeto) no mesmo intervalo (00:35 a 00:45 UTC). Nada foi
-alterado para contornar o bloqueio: o coletor usa o mesmo cliente e o mesmo User-Agent de todo
-o pipeline, o mesmo que já coleta o PLD da CCEE no GitHub Actions. Se o portal recusar, a
-falha fica em `coletas` e a gold é montada com o que o silver já tem.
+"Acesso bloqueado" a pedidos feitos com o curl (00:11 e 00:38 UTC), e responderam ao cliente
+HTTP do próprio pipeline (pipeline.common.http_get e http_download, urllib da biblioteca
+padrão, User-Agent do projeto) no mesmo intervalo (00:35 a 00:45 UTC). Nada foi alterado para
+contornar o bloqueio. Ainda assim, a orientação recebida para este ambiente é que a CCEE
+responde 403 pelo firewall da origem e que o bloqueio não deve ser contornado: usar um cliente
+que por acaso passa pelo firewall é uma decisão que cabe ao responsável, não ao coletor. Por
+isso, desde 01/10/2026 nenhuma requisição à CCEE sai deste módulo sem a variável de ambiente
+ENERGIA_CCEE_COLETA=1 (ver `coleta_autorizada`); sem ela, o módulo só relê o que já está no
+bronze (sem rede) e a gold declara a pendência de decisão. As capturas feitas em 01/10/2026
+continuam no bronze, com sha256, e são identificadas na gold (`acesso_ccee`).
 
 Esquema conferido na chegada e falha fechada: cada conjunto declara as colunas esperadas,
 lidas do cabeçalho real dos arquivos e conferidas contra a descrição de cada campo nos
@@ -37,6 +41,18 @@ PORTAL = "https://dadosabertos.ccee.org.br"
 LICENCA = "Creative Commons Attribution 4.0 (CC-BY-4.0), conforme o portal de dados abertos da CCEE"
 SEED_DIR = os.path.join(base.SEED, "ccee_mercado")
 VERSAO_LEITOR = "ccee-mercado-1"
+# Variável que autoriza requisições à CCEE a partir do ambiente em que o pipeline roda. Sem ela
+# (valor "1"), coleta e coleta_infomercado não fazem nenhuma requisição e só relêem o bronze.
+VAR_AUTORIZACAO = "ENERGIA_CCEE_COLETA"
+PENDENCIA_ACESSO = ("Decisão pendente: o portal da CCEE responde HTTP 403 ('Acesso bloqueado') ao curl e respondeu ao cliente "
+                    "do pipeline em 01/10/2026. A orientação recebida é não contornar o bloqueio; os números da CCEE publicados "
+                    "aqui vêm das capturas de 01/10/2026 feitas por esse cliente e só valem como entrega depois que o "
+                    "responsável decidir se essa coleta é aceitável (ou se ela fica só para o GitHub Actions).")
+
+
+def coleta_autorizada(env=None):
+    """True só quando o ambiente autoriza explicitamente requisições à CCEE (ENERGIA_CCEE_COLETA=1)."""
+    return (os.environ if env is None else env).get(VAR_AUTORIZACAO) == "1"
 
 SUBMERCADOS = {"NORTE": "N", "NORDESTE": "NE", "SUL": "S", "SUDESTE": "SE", "SUDESTE/CENTRO-OESTE": "SE",
                "N": "N", "NE": "NE", "S": "S", "SE": "SE"}
@@ -90,7 +106,11 @@ CONJUNTOS = {
         "colunas": ("MES_REFERENCIA", "COD_PERF_AGENTE", "SIGLA_PERFIL_AGENTE", "NOME_EMPRESARIAL", "COD_PARCELA_CARGA",
                     "SIGLA_PARCELA_CARGA", "CNPJ_CARGA", "CIDADE", "ESTADO_UF", "RAMO_ATIVIDADE", "SUBMERCADO",
                     "DATA_MIGRACAO", "COD_PERF_AGENTE_CONECTADO", "SIGLA_PERFIL_AGENTE_CONECTADO", "CAPACIDADE_CARGA",
-                    "CONSUMO_ACL", "CONSUMO_CATIVO_PARC_LIVRE", "CONSUMO_TOTAL"), "leitor": "parcelas"},
+                    "CONSUMO_ACL", "CONSUMO_CATIVO_PARC_LIVRE", "CONSUMO_TOTAL"), "leitor": "parcelas",
+        # versão 2 do leitor (01/10/2026): separa as parcelas das distribuidoras (ACR) das do ACL.
+        # A versão 1 somava as 139 parcelas das distribuidoras ao "consumo ACL"; as séries dela
+        # (sem prefixo) continuam no silver e não são lidas.
+        "versao_leitor": "2"},
     "geracao_submercado": {
         "painel": "P034", "titulo": "Geração das usinas do MRE por submercado",
         "colunas": ("SUBMERCADO", "MES_REFERENCIA", "GERACAO_MRE", "GERACAO_MRE_COTA_GF"), "leitor": "mensal",
@@ -309,49 +329,109 @@ def leitor_desligamentos(linhas, contagem=None):
     return [(k, m, float(n)) for (k, m), n in cont.items()], regs
 
 
-def leitor_parcelas(linhas, contagem=None):
+REF_SEM_DATA = "sem_data"
+CLASSE_DISTRIBUIDOR = "Distribuidor"
+CLASSE_EXPORTADOR = "Exportador"
+SEM_CADASTRO = "sem_cadastro"
+
+
+def leitor_parcelas(linhas, classe_perfil, contagem=None):
     """Parcelas de carga (a unidade de consumo modelada na CCEE, uma ou mais unidades
-    consumidoras ligadas a um perfil de agente), por mês: quantas parcelas, perfis e CNPJ de
-    carga distintos; consumo no ACL e total (MWh); parcelas cuja data de migração cai no próprio
-    mês (migrações efetivadas no mês); e a abertura por submercado e UF."""
+    consumidoras ligadas a um perfil de agente), por mês.
+
+    O conjunto PARCELA_CARGA_CONSUMO traz também as parcelas das distribuidoras (139 em
+    julho de 2026): cada uma é o consumo do ACR de uma área de concessão, na coluna
+    CONSUMO_ACL apesar do nome. Somá-las ao resto, como fazia a versão 1 deste leitor, punha o
+    ACR dentro do "consumo ACL" (51,1 TWh em julho de 2026, contra 21,8 TWh do ACL). A
+    separação é pela classe do perfil no cadastro LISTA_PERFIL_V1 (`classe_perfil`:
+    COD_PERF_AGENTE → classe), não pelo RAMO_ATIVIDADE vazio: em fevereiro de 2025, 215
+    parcelas de consumidores especiais vieram com o ramo vazio. Conferência (no módulo):
+    as parcelas dos perfis Distribuidor somam, mês a mês, o consumo da classe Distribuidor
+    de CONSUMO_CLASSE_AGENTE.
+
+    Séries: '<grupo>|parcelas', '|perfis_com_parcela', '|cnpj_carga', '|migracoes_no_mes',
+    '|consumo_acl_mwh', '|consumo_total_mwh', '|consumo_cativo_parc_livre_mwh', com grupo
+    'acl' (todos os perfis que não são de distribuidora, inclusive exportadores) ou
+    'distribuidor'; 'classe|<classe do perfil>|parcelas' e '|consumo_acl_mwh' (perfil fora
+    do cadastro vigente = 'sem_cadastro'); 'acl|parcelas_sm|<SM>' e 'acl|parcelas_uf|<UF>'.
+    Sem o cadastro de perfis, nada é lido (EsquemaDivergente): parcela sem classificação
+    misturaria os dois ambientes."""
+    if not classe_perfil:
+        raise EsquemaDivergente("cadastro de perfis (LISTA_PERFIL_V1) ausente: as parcelas das distribuidoras não podem ser separadas")
     contagem = contagem if contagem is not None else {}
-    parc, perf, cnpjs, migr, soma = {}, {}, {}, {}, {}
-    por_sm, por_uf = {}, {}
+    conj = {}      # (grupo, medida, mês) → set
+    soma = {}      # (série, mês) → MWh
+
+    def add(k, mes, v):
+        conj.setdefault((k, mes), set()).add(v)
+
     for r in linhas:
         mes = mes_ref(r.get("MES_REFERENCIA"))
         cod = (r.get("COD_PARCELA_CARGA") or "").strip()
         if mes is None or not cod:
             contagem["sem_mes_ou_parcela"] = contagem.get("sem_mes_ou_parcela", 0) + 1
             continue
-        parc.setdefault(mes, set()).add(cod)
-        perf.setdefault(mes, set()).add((r.get("COD_PERF_AGENTE") or "").strip())
+        perfil = (r.get("COD_PERF_AGENTE") or "").strip()
+        classe = classe_perfil.get(perfil)
+        grupo = "distribuidor" if classe == CLASSE_DISTRIBUIDOR else "acl"
+        rotulo = classe or SEM_CADASTRO
+        ramo_vazio = not (r.get("RAMO_ATIVIDADE") or "").strip()
+        if classe is None:
+            contagem["linhas_perfil_sem_cadastro"] = contagem.get("linhas_perfil_sem_cadastro", 0) + 1
+        if ramo_vazio and grupo == "acl":
+            contagem["ramo_vazio_fora_de_distribuidor"] = contagem.get("ramo_vazio_fora_de_distribuidor", 0) + 1
+        if not ramo_vazio and grupo == "distribuidor":
+            contagem["distribuidor_com_ramo"] = contagem.get("distribuidor_com_ramo", 0) + 1
+        add(f"{grupo}|parcelas", mes, cod)
+        add(f"{grupo}|perfis_com_parcela", mes, perfil)
+        add(f"classe|{rotulo}|parcelas", mes, cod)
         cn = entidades.cnpj(r.get("CNPJ_CARGA"))
         if cn:
-            cnpjs.setdefault(mes, set()).add(cn)
+            add(f"{grupo}|cnpj_carga", mes, cn)
         dm = data_br(r.get("DATA_MIGRACAO"))
         if dm and dm[:7] == mes:
-            migr.setdefault(mes, set()).add(cod)
-        sm = SUBMERCADOS.get((r.get("SUBMERCADO") or "").strip().upper())
-        uf = (r.get("ESTADO_UF") or "").strip().upper()
-        if sm:
-            por_sm.setdefault((sm, mes), set()).add(cod)
-        if re.fullmatch(r"[A-Z]{2}", uf):
-            por_uf.setdefault((uf, mes), set()).add(cod)
+            add(f"{grupo}|migracoes_no_mes", mes, cod)
+        if grupo == "acl":
+            sm = SUBMERCADOS.get((r.get("SUBMERCADO") or "").strip().upper())
+            uf = (r.get("ESTADO_UF") or "").strip().upper()
+            if sm:
+                add(f"acl|parcelas_sm|{sm}", mes, cod)
+            if re.fullmatch(r"[A-Z]{2}", uf):
+                add(f"acl|parcelas_uf|{uf}", mes, cod)
         for col, chave in (("CONSUMO_ACL", "consumo_acl_mwh"), ("CONSUMO_TOTAL", "consumo_total_mwh"),
                            ("CONSUMO_CATIVO_PARC_LIVRE", "consumo_cativo_parc_livre_mwh")):
             v = numero(r.get(col))
-            if v is not None:
-                soma[(chave, mes)] = soma.get((chave, mes), 0.0) + v
+            if v is None:
+                continue
+            for serie in ([f"{grupo}|{chave}", f"classe|{rotulo}|{chave}"] if chave == "consumo_acl_mwh" else [f"{grupo}|{chave}"]):
+                soma[(serie, mes)] = soma.get((serie, mes), 0.0) + v
         contagem["linhas"] = contagem.get("linhas", 0) + 1
-    obs = []
-    for mes in parc:
-        obs += [("parcelas", mes, float(len(parc[mes]))), ("perfis_com_parcela", mes, float(len(perf[mes]))),
-                ("cnpj_carga", mes, float(len(cnpjs.get(mes, ())))),
-                ("migracoes_no_mes", mes, float(len(migr.get(mes, ()))))]
+    meses = {m for (_, m) in conj}
+    obs = [(k, m, float(len(v))) for (k, m), v in conj.items()]
+    # contagem zero explícita onde o mês existe e o grupo não tem nenhuma migração
+    for grupo in ("acl", "distribuidor"):
+        for m in meses:
+            if (f"{grupo}|parcelas", m) in conj and (f"{grupo}|migracoes_no_mes", m) not in conj:
+                obs.append((f"{grupo}|migracoes_no_mes", m, 0.0))
     obs += [(k, m, v) for (k, m), v in soma.items()]
-    obs += [(f"parcelas_sm|{sm}", m, float(len(v))) for (sm, m), v in por_sm.items()]
-    obs += [(f"parcelas_uf|{uf}", m, float(len(v))) for (uf, m), v in por_uf.items()]
     return obs
+
+
+def classes_de_perfil(con):
+    """COD_PERF_AGENTE → CLASSE_PERFIL_AGENTE do cadastro LISTA_PERFIL_V1 mais recente no bronze
+    (leitura em fluxo, sem rede). A classe é atributo do perfil: um perfil de distribuidora não
+    muda de classe; perfil encerrado continua no cadastro com status ENCERRADO."""
+    vs = base.vintages_do_dataset(con, dataset("lista_perfil_v1"))
+    if not vs:
+        return {}
+    v = max(vs, key=lambda x: x["capturado_em"])
+    out = {}
+    for r in ckan.le_csv_bronze(v["arquivo"], separador=";"):
+        r = {k.strip().strip('"').lstrip("\ufeff"): val for k, val in r.items()}
+        cod = (r.get("COD_PERF_AGENTE") or "").strip()
+        if cod:
+            out[cod] = (r.get("CLASSE_PERFIL_AGENTE") or "").strip()
+    return out
 
 
 # ---------------------------------------------------------------- coleta
@@ -373,16 +453,25 @@ def metadados(nome, baixar=http_get):
     raise RuntimeError(f"package_show {nome}: {erro}")
 
 
-def _ja_processada(con, ds, vid):
+def versao_leitor(nome):
+    """Versão do leitor de um conjunto: a geral mais a própria do conjunto, quando ele foi
+    corrigido depois (só o conjunto corrigido é relido do bronze)."""
+    extra = CONJUNTOS[nome].get("versao_leitor")
+    return f"{VERSAO_LEITOR}.{extra}" if extra else VERSAO_LEITOR
+
+
+def _ja_processada(con, ds, vid, versao=VERSAO_LEITOR):
     return con.execute("SELECT 1 FROM registros WHERE dataset=? AND chave=? LIMIT 1",
-                       (ds, f"__processada__|{vid}|{VERSAO_LEITOR}")).fetchone() is not None
+                       (ds, f"__processada__|{vid}|{versao}")).fetchone() is not None
 
 
-def processa_vintage(con, nome, v):
+def processa_vintage(con, nome, v, classe_perfil=None):
     """Confere o cabeçalho do arquivo do bronze e grava as observações. Esquema divergente: falha
-    registrada, nada gravado. Retorna o status."""
+    registrada, nada gravado. Retorna o status. `classe_perfil` (parcelas de carga): classe de
+    cada perfil; sem ele, é lida do cadastro de perfis do bronze."""
     spec, ds = CONJUNTOS[nome], dataset(nome)
-    if _ja_processada(con, ds, v["vintage_id"]):
+    versao = versao_leitor(nome)
+    if _ja_processada(con, ds, v["vintage_id"], versao):
         return {"reprocessada": False}
     sep = spec.get("separador", ";")
     linhas = ckan.le_csv_bronze(v["arquivo"], separador=sep)
@@ -410,12 +499,15 @@ def processa_vintage(con, nome, v):
         elif spec["leitor"] == "associados":
             obs, regs = leitor_associados(todas(), contagem)
         elif spec["leitor"] == "perfis":
-            ref = (v.get("publicado_em") or v["capturado_em"])[:10]
+            # o arquivo não traz a data da posição; a referência é a data de modificação que o
+            # portal informa para o recurso (last_modified do CKAN), rotulada como tal na gold.
+            # Data de captura nunca substitui data do dado: sem a do portal, 'sem_data'.
+            ref = (v.get("publicado_em") or "")[:10] or REF_SEM_DATA
             obs = leitor_perfis(todas(), ref, contagem)
         elif spec["leitor"] == "desligamentos":
             obs, regs = leitor_desligamentos(todas(), contagem)
         elif spec["leitor"] == "parcelas":
-            obs = leitor_parcelas(todas(), contagem)
+            obs = leitor_parcelas(todas(), classe_perfil if classe_perfil is not None else classes_de_perfil(con), contagem)
         else:
             raise EsquemaDivergente(f"leitor desconhecido {spec['leitor']}")
     except EsquemaDivergente as e:
@@ -428,16 +520,44 @@ def processa_vintage(con, nome, v):
         # o arquivo de um ano não apague o do outro
         regs = [(ch, f"{campo}|{v['recurso']}" if campo == "meses" else campo, val) for ch, campo, val in regs]
         base.grava_registros(con, ds, v["vintage_id"], regs)
-    marca = [(f"__processada__|{v['vintage_id']}|{VERSAO_LEITOR}", "ok", "1")]
+    marca = [(f"__processada__|{v['vintage_id']}|{versao}", "ok", "1")]
     marca += [(f"__universo__|{v['vintage_id']}", k, str(val)) for k, val in sorted(contagem.items())]
     base.grava_registros(con, ds, v["vintage_id"], marca)
     con.commit()
     return {"reprocessada": True, "novas": novas, "revisoes": rev, "universo": contagem}
 
 
-def coleta(con, baixar_meta=http_get, baixador=http_download, pausa_s=0.5, max_idade_dias=7, nomes=None):
+def reprocessa_bronze(con, nomes=None):
+    """Relê do bronze, sem rede, as vintages ainda não processadas pela versão vigente do leitor
+    de cada conjunto (por exemplo, depois de uma correção de leitor). Nunca lança."""
+    status = {}
+    classes = None
+    for nome in CONJUNTOS:
+        if nomes is not None and nome not in nomes:
+            continue
+        ds, versao = dataset(nome), versao_leitor(nome)
+        st = status.setdefault(nome, {"ok": True, "recursos": {}})
+        for v in sorted(base.vintages_do_dataset(con, ds), key=lambda x: x["capturado_em"]):
+            if _ja_processada(con, ds, v["vintage_id"], versao):
+                continue
+            if CONJUNTOS[nome]["leitor"] == "parcelas" and classes is None:
+                classes = classes_de_perfil(con)
+            try:
+                res = processa_vintage(con, nome, v, classes)
+            except Exception as e:  # arquivo ilegível no bronze: registrado, nada gravado
+                res = {"reprocessada": False, "erro": f"{type(e).__name__}: {e}"[:300]}
+            st["recursos"][v["recurso"]] = res
+            st["ok"] = st["ok"] and "erro" not in res
+    return status
+
+
+def coleta(con, baixar_meta=http_get, baixador=http_download, pausa_s=0.5, max_idade_dias=7, nomes=None, autorizada=None):
     """Coleta todos os conjuntos (ou só os de `nomes`). Nunca lança: falha vira registro em
-    `coletas` e status."""
+    `coletas` e status. Sem autorização explícita (`coleta_autorizada`), não faz nenhuma
+    requisição à CCEE: só relê o bronze (`reprocessa_bronze`)."""
+    if not (coleta_autorizada() if autorizada is None else autorizada):
+        return {"ok": True, "coleta": "suspensa", "motivo": PENDENCIA_ACESSO,
+                "reprocessamento_do_bronze": reprocessa_bronze(con, nomes)}
     status = {}
     for nome, spec in CONJUNTOS.items():
         if nomes is not None and nome not in nomes:
@@ -496,9 +616,11 @@ def situacao(con):
 
 # InfoMercado mensal (PDF da CCEE): publicação oficial independente dos conjuntos abertos, usada
 # para conferir os números calculados. O sumário executivo traz em texto o fator de ajuste do MRE
-# (GSF), a geração do MRE, os agentes contabilizados, o "Consumo/Geração", o total de encargos e o
-# total a liquidar do mês de contabilização; a seção de encargos traz a composição do total e o
-# alívio. A página "Mercado Mensal" da CCEE expõe só a edição mais recente (campo
+# (GSF), a geração do MRE, os agentes contabilizados, o "Consumo/Geração" (lado da geração, não é
+# o consumo), o total de encargos e o total a liquidar do mês de contabilização; a seção de
+# consumo traz "O consumo contabilizou X MW médios" (o consumo sem a exportação) e, em nota, a
+# exportação do mês; a seção do MRE traz, desde 2026, o "ajuste médio do MRE" dos últimos doze
+# meses; a seção de encargos traz a composição do total e o alívio. A página "Mercado Mensal" da CCEE expõe só a edição mais recente (campo
 # url_documento_boletim, com a data de publicação ao lado): o coletor guarda a página no bronze,
 # baixa a edição corrente em cada execução e acumula as edições no silver. As duas edições fixas
 # abaixo (agosto e outubro de 2024) foram localizadas antes, no endereço de documentos da CCEE;
@@ -511,7 +633,7 @@ URL_MERCADO_MENSAL = "https://www.ccee.org.br/web/guest/dados-e-analises/dados-m
 DS_INFOMERCADO = "ccee_infomercado"
 # Versão do extrator do InfoMercado, separada da dos conjuntos: mudar a extração dos PDFs não
 # reprocessa os CSV grandes (parcelas de carga).
-VERSAO_INFOMERCADO = "infomercado-4"
+VERSAO_INFOMERCADO = "infomercado-5"
 MESES_PT = {"janeiro": 1, "fevereiro": 2, "março": 3, "abril": 4, "maio": 5, "junho": 6, "julho": 7, "agosto": 8,
             "setembro": 9, "outubro": 10, "novembro": 11, "dezembro": 12}
 
@@ -553,7 +675,11 @@ def infomercado_valores(texto):
         "gsf_pct": r"[Ff]ator de ajuste do MRE foi de ([\d.,]+)%",
         "geracao_mre_mwmed": r"As usinas do MRE geraram ([\d.,]+) MW médios",
         "agentes_contabilizados": r"([\d.]+) agentes participaram da contabilização",
-        "consumo_mwmed": r"O Consumo/Geração atingiu ([\d.,]+) MW médios",
+        "consumo_geracao_mwmed": r"O Consumo/Geração atingiu ([\d.,]+) MW médios",
+        "consumo_contabilizado_mwmed": r"O consumo contabilizou ([\d.,]+) MW médios",
+        "exportacao_mwmed": r"[Hh]ouve exportação de ([\d.,]+) MW médios",
+        "gsf_12m_pct": r"[Nn]os últimos doze\s+meses,?\s+(?:o\s+)?ajuste médio do MRE (?:é|foi) de ([\d.,]+)%",
+        "acl_variacao_sem_exportacao_pct": r"ACL avançou ([\d.,]+)% sem considerar os efeitos da\s+exportação",
         "encargos_milhoes_rs": r"O total de encargos foi de R\$ ([\d.,]+) milhões",
         "liquidar_bilhoes_rs": r"O total a liquidar foi de R\$ ([\d.,]+) bilhões",
     }
@@ -646,11 +772,70 @@ def _texto_pdf_bronze(arquivo):
             pass
 
 
-def coleta_infomercado(con, baixador=http_download, extrai_texto=_texto_pdf_bronze, baixar_pagina=http_get):
+def _processa_edicao(con, numero, url, v, extrai_texto):
+    """Extrai os números de uma edição do InfoMercado já no bronze e grava no silver. Retorna o
+    item de status (com 'erro' quando nada foi gravado)."""
+    recurso = f"InfoMercado-mensal_{numero}.pdf"
+    item = {}
+    if con.execute("SELECT 1 FROM registros WHERE dataset=? AND chave=? LIMIT 1",
+                   (DS_INFOMERCADO, f"__processada__|{v['vintage_id']}|{VERSAO_INFOMERCADO}")).fetchone():
+        return item
+    try:
+        texto = extrai_texto(v["arquivo"])
+        if texto is None:
+            item["erro"] = "pdftotext ausente: extração adiada"
+            return item
+        vals = infomercado_valores(texto)
+    except Exception as e:  # PDF fora do formato verificado: nada é gravado
+        base.registra_coleta(con, DS_INFOMERCADO, recurso, False, f"extração: {e}"[:500])
+        con.commit()
+        item["erro"] = str(e)[:300]
+        return item
+    if vals["numero"] != numero:
+        base.registra_coleta(con, DS_INFOMERCADO, recurso, False,
+                             f"número da edição no PDF ({vals['numero']}) difere do esperado ({numero})")
+        con.commit()
+        item["erro"] = "edição divergente"
+        return item
+    obs = [(f"im|{vals['numero']}|{k}", vals["mes"], val) for k, val in vals["valores"].items()]
+    ch = f"edicao|{vals['numero']}"
+    regs = [(ch, "mes", vals["mes"]), (ch, "recurso", recurso), (ch, "vintage", v["vintage_id"]), (ch, "url", url),
+            (ch, "rotulos_desconhecidos", json.dumps(vals["rotulos_desconhecidos"], ensure_ascii=False))]
+    regs += [(ch, f"pagina|{k}", str(p)) for k, p in vals["paginas"].items()]
+    regs += [(ch, f"parcelas|{k}", str(n)) for k, n in vals["parcelas"].items()]
+    regs.append((f"__processada__|{v['vintage_id']}|{VERSAO_INFOMERCADO}", "ok", "1"))
+    novas, rev = base.grava_observacoes(con, DS_INFOMERCADO, v["vintage_id"], obs)
+    base.grava_registros(con, DS_INFOMERCADO, v["vintage_id"], regs)
+    con.commit()
+    item.update(medidas=sorted(vals["valores"]), novas=novas, revisoes=rev, rotulos_desconhecidos=vals["rotulos_desconhecidos"])
+    return item
+
+
+def reprocessa_infomercado(con, extrai_texto=_texto_pdf_bronze):
+    """Relê do bronze, sem rede, as edições do InfoMercado ainda não extraídas pela versão vigente
+    do extrator (a mais recente captura de cada edição)."""
+    status = {"ok": True, "edicoes": {}}
+    ultimas = {}
+    for v in base.vintages_do_dataset(con, DS_INFOMERCADO):
+        m = re.fullmatch(r"InfoMercado-mensal_(\d+)\.pdf", v["recurso"])
+        if m and (m.group(1) not in ultimas or v["capturado_em"] > ultimas[m.group(1)]["capturado_em"]):
+            ultimas[m.group(1)] = v
+    for numero, v in sorted(ultimas.items()):
+        item = _processa_edicao(con, numero, v["url"], v, extrai_texto)
+        status["edicoes"][v["recurso"]] = item
+        status["ok"] = status["ok"] and "erro" not in item
+    return status
+
+
+def coleta_infomercado(con, baixador=http_download, extrai_texto=_texto_pdf_bronze, baixar_pagina=http_get, autorizada=None):
     """Baixa as edições do InfoMercado mensal (as fixas de INFOMERCADO e a corrente da página
     Mercado Mensal) para o bronze (sha256, vintage) e grava no silver os números do sumário
     executivo, com a página de cada um. Edição publicada não é atualizada pela CCEE: a recoleta
-    de cada PDF é anual. Nunca lança: falha vira registro em `coletas`."""
+    de cada PDF é anual. Nunca lança: falha vira registro em `coletas`. Sem autorização
+    explícita (`coleta_autorizada`), não faz requisição à CCEE e só relê o bronze."""
+    if not (coleta_autorizada() if autorizada is None else autorizada):
+        return {"ok": True, "coleta": "suspensa", "motivo": PENDENCIA_ACESSO,
+                "reprocessamento_do_bronze": reprocessa_infomercado(con, extrai_texto)}
     status = {"ok": True, "edicoes": {}}
     edicoes = [dict(it, publicado_em=None) for it in INFOMERCADO]
     try:
@@ -678,37 +863,7 @@ def coleta_infomercado(con, baixador=http_download, extrai_texto=_texto_pdf_bron
         if res["status"] == "falha" or not v:
             status["ok"] = False
             continue
-        if con.execute("SELECT 1 FROM registros WHERE dataset=? AND chave=? LIMIT 1",
-                       (DS_INFOMERCADO, f"__processada__|{v['vintage_id']}|{VERSAO_INFOMERCADO}")).fetchone():
-            continue
-        try:
-            texto = extrai_texto(v["arquivo"])
-            if texto is None:
-                item["erro"] = "pdftotext ausente: extração adiada"
-                continue
-            vals = infomercado_valores(texto)
-        except Exception as e:  # PDF fora do formato verificado: nada é gravado
-            base.registra_coleta(con, DS_INFOMERCADO, recurso, False, f"extração: {e}"[:500])
-            con.commit()
-            item["erro"] = str(e)[:300]
+        item.update(_processa_edicao(con, it["numero"], it["url"], v, extrai_texto))
+        if "erro" in item:
             status["ok"] = False
-            continue
-        if vals["numero"] != it["numero"]:
-            base.registra_coleta(con, DS_INFOMERCADO, recurso, False,
-                                 f"número da edição no PDF ({vals['numero']}) difere do esperado ({it['numero']})")
-            con.commit()
-            item["erro"] = "edição divergente"
-            status["ok"] = False
-            continue
-        obs = [(f"im|{vals['numero']}|{k}", vals["mes"], val) for k, val in vals["valores"].items()]
-        ch = f"edicao|{vals['numero']}"
-        regs = [(ch, "mes", vals["mes"]), (ch, "recurso", recurso), (ch, "vintage", v["vintage_id"]), (ch, "url", it["url"]),
-                (ch, "rotulos_desconhecidos", json.dumps(vals["rotulos_desconhecidos"], ensure_ascii=False))]
-        regs += [(ch, f"pagina|{k}", str(p)) for k, p in vals["paginas"].items()]
-        regs += [(ch, f"parcelas|{k}", str(n)) for k, n in vals["parcelas"].items()]
-        regs.append((f"__processada__|{v['vintage_id']}|{VERSAO_INFOMERCADO}", "ok", "1"))
-        novas, rev = base.grava_observacoes(con, DS_INFOMERCADO, v["vintage_id"], obs)
-        base.grava_registros(con, DS_INFOMERCADO, v["vintage_id"], regs)
-        con.commit()
-        item.update(medidas=sorted(vals["valores"]), novas=novas, revisoes=rev, rotulos_desconhecidos=vals["rotulos_desconhecidos"])
     return status

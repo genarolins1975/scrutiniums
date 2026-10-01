@@ -1,14 +1,14 @@
 {
  "dominio": "energia",
  "gold": "publicacao.json",
- "gerado_em": "2026-10-01T07:03:15Z",
+ "gerado_em": "2026-10-01T07:42:54Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "eec0a3121e05+alterado",
+ "versao_codigo": "fa4767ccfa9a+alterado",
  "disponivel": true,
  "referencia": {
   "hoje": "2026-10-01",
   "fuso": "America/Sao_Paulo (UTC−3)",
-  "executado_em": "2026-10-01T07:03:15Z"
+  "executado_em": "2026-10-01T07:42:54Z"
  },
  "regras": {
   "estados": {
@@ -52,11 +52,11 @@
     "periodo_dias_aprox": 366
    }
   },
-  "sla_texto": "Tolerâncias por cadência: diária 2 dias, semanal 7, quinzenal 15, mensal 60, trimestral 90, anual 365. A) Série regular cujo grão corresponde a uma cadência declarada pela fonte: o período seguinte ao último disponível deve chegar até o fim dele mais a tolerância. B) Série publicada em lotes (cadência declarada mais longa que o grão): a próxima remessa até o fim do último período mais um período da cadência declarada e a tolerância. C) Cadência declarada mais curta que o grão (a fonte reescreve o arquivo dentro do período, ou declara só o horário da rotina do portal, como o ONS): vale o grão do dado, como em A. D) Sem série regular (cadastro, vigências, cadência irregular): data de publicação informada pela fonte mais um período da cadência declarada e a tolerância; sem essa data, SEM DADO. Se o arquivo traz período que começa depois da data de modificação informada, essa data não acompanha o conteúdo e vale o fim do último período mais a cadência e a tolerância (publicacao_nao_acompanha_conteudo). Sem frequência declarada em metadado legível, o SLA não é aplicado (SEM SLA), em vez de inventar uma.",
+  "sla_texto": "Tolerâncias por cadência: diária 2 dias, semanal 7, quinzenal 15, mensal 60, trimestral 90, anual 365. A) Série regular cujo grão corresponde a uma cadência declarada pela fonte: o período seguinte ao último disponível deve chegar até o fim dele mais a tolerância. B) Série publicada em lotes (cadência declarada mais longa que o grão): a próxima remessa até o fim do último período mais um período da cadência declarada e a tolerância. C) Cadência declarada mais curta que o grão quando a declaração é a rotina do portal (campo 'Schedule de Atualização' do ONS ou horário do dia, como 'Diariamente, às 12h e 19h'): vale o grão do dado, como em A. E) Cadência declarada mais curta que o grão fora da rotina do portal (a ANEEL declara 'Mensal' para arquivo de grão anual que ela reescreve no ano): a promessa é de arquivo novo na cadência declarada, medida pela data de publicação informada pela fonte mais um período dessa cadência e a tolerância; sem essa data, SEM DADO. D) Sem série regular (cadastro, vigências, cadência irregular): data de publicação informada pela fonte mais um período da cadência declarada e a tolerância; sem essa data, SEM DADO. Se o arquivo traz período que começa depois da data de modificação informada, essa data não acompanha o conteúdo e vale o fim do último período completo mais a cadência e a tolerância (publicacao_nao_acompanha_conteudo). Período corrente parcial (o último período disponível ainda não terminou, como o ano corrente num arquivo anual) é marcado em periodo_parcial e não alonga o prazo: a base é o último período completo. Sem frequência declarada em metadado legível, o SLA não é aplicado (SEM SLA), em vez de inventar uma.",
   "captura_atras_da_fonte": "Arquivo que a fonte modificou (last_modified da listagem do portal, UTC) depois da última captura registrada no silver: o atraso é do pipeline, não da fonte, e aparece em capturas.fonte_mais_nova e nas ressalvas, sem mudar o SLA (que mede a fonte).",
   "falha": "Falha de coleta nunca renova a data do dado: o último período vem das referências do silver, a última captura da última vintage com conteúdo, e a falha aparece separada, com data e motivo. A captura anterior fica preservada no silver (append only) e no bronze com sha256.",
-  "completude": "Completude interna de uma série = referências distintas presentes ÷ esperadas entre a primeira e a última, no passo modal do conjunto. Cobertura do último período = séries com valor na maior referência comparada com a referência anterior.",
-  "revisao": "Revisão = troca de valor de uma mesma (série, referência) entre capturas consecutivas do mesmo arquivo (recurso); a mesma referência com valores diferentes em arquivos diferentes é conflito entre recursos, contado à parte. Publica-se quantas referências e séries mudaram, o período afetado e a maior mudança absoluta (na unidade da série) e relativa, além da data de cada captura que trouxe valores novos.",
+  "completude": "Completude interna de uma série = referências distintas presentes ÷ esperadas entre a primeira e a última, no passo modal do conjunto. Cobertura do último período = séries com valor no último período disponível até hoje (atualidade.ultimo_periodo; referência futura, como limite regulatório de ano seguinte, cenário ou programação, não conta) comparada com as séries no período anterior a ele.",
+  "revisao": "Revisão = troca de valor de uma mesma (série, referência) entre capturas consecutivas do mesmo arquivo (recurso); a mesma referência com valores diferentes em arquivos diferentes é conflito entre recursos, contado à parte. Publica-se quantas observações (pares série e referência) e quantas referências (períodos distintos) mudaram, em quantas séries, o período afetado e a maior mudança absoluta (na unidade da série) e relativa, além da data de cada captura que trouxe valores novos. Em cadastros e atos (registros), a mesma regra: mudança é troca de valor de um campo da mesma chave entre capturas consecutivas do mesmo arquivo; a mesma chave com valor diferente em arquivos diferentes (lista de um ano e a do seguinte, código reutilizado, mudança societária entre edições) é conflito entre recursos, contado à parte; campos que descrevem o arquivo e não o cadastro (data de geração, de processamento, de verificação) são contados em metadado_do_arquivo e não entram nas mudanças.",
   "validacao": "Checagens com resultado aprovado, ressalva, reprovado ou não aplicável; o veredito de um alvo é o pior resultado. Divergência entre total e partes publicados pela própria fonte é ressalva documentada; total calculado pela plataforma que não fecha é reprovado.",
   "horizonte": {
    "ccee_pld_horario": "O PLD de cada hora é publicado pela CCEE na véspera.",
@@ -81,29 +81,31 @@
   }
  },
  "resumo": {
-  "integracoes": 149,
+  "integracoes": 151,
   "por_estado": {
-   "PUBLICADO": 137,
+   "PUBLICADO": 138,
    "VALIDADO": 6,
-   "RECURSO VERIFICADO": 6
+   "RECURSO VERIFICADO": 7
   },
   "por_situacao": {
    "EM DIA": 103,
-   "SEM SLA": 41,
+   "SEM SLA": 43,
    "SEM DADO": 4,
    "ATRASADO": 1
   },
   "com_revisao": 4,
-  "referencias_revisadas": 3057,
+  "observacoes_revisadas": 3057,
+  "referencias_revisadas": 392,
+  "com_mudanca_em_registros": 5,
   "com_falha_recente": 5,
   "captura_atras_da_fonte": 12,
   "descontinuados": 1,
   "validacao": {
-   "aprovado": 2111,
-   "ressalva": 38,
-   "reprovado": 1,
-   "nao_aplicavel": 207,
-   "checagens": 2357
+   "aprovado": 2135,
+   "ressalva": 39,
+   "reprovado": 4,
+   "nao_aplicavel": 213,
+   "checagens": 2391
   },
   "golds": {
    "total": 29,
@@ -115,23 +117,24 @@
    }
   },
   "csv": {
-   "total": 171,
+   "total": 174,
    "por_veredito": {
     "aprovado": 167,
-    "ressalva": 4
+    "ressalva": 4,
+    "reprovado": 3
    }
   },
   "parquet": {
    "arquivos": 25,
    "equivalentes": 25,
-   "bytes": 21273245
+   "bytes": 21276771
   },
-  "duracao_s": 92.2,
+  "duracao_s": 93.3,
   "tempos_s": {
    "golds": 0.7,
-   "csv": 20.0,
-   "parquet": 6.0,
-   "silvers": 62.6
+   "csv": 19.2,
+   "parquet": 10.0,
+   "silvers": 60.2
   }
  },
  "conjuntos": [
@@ -218,14 +221,22 @@
    },
    "revisoes": {
     "registros": {
-     "mudancas": 1,
-     "chaves": 1,
-     "campos": {
-      "resolucao": 1
-     },
-     "apagados_pela_fonte": 0,
-     "por_captura": {
-      "2026-09-30": 1
+     "conflitos_entre_recursos": {
+      "campos": 1,
+      "chaves": 1,
+      "por_campo": {
+       "resolucao": 1
+      },
+      "exemplos": [
+       {
+        "chave": "05965546000109|2021-11-30",
+        "campo": "resolucao",
+        "valores": {
+         "componentes-tarifarias-2020.parquet": "RESOLUÇÃO HOMOLOGATÓRIA Nº 3.001, DE 13 DE DEZEMBRO DE 2021",
+         "componentes-tarifarias-2021.parquet": "RESOLUÇÃO HOMOLOGATÓRIA Nº 2.979, DE 23 DE NOVEMBRO DE 2021"
+        }
+       }
+      ]
      }
     },
     "conflitos_entre_recursos": {
@@ -1009,12 +1020,13 @@
    },
    "atualidade": {
     "situacao": "EM DIA",
-    "caso": "C",
-    "base": "periodo_de_referencia",
-    "cadencia": "anual",
+    "caso": "E",
+    "base": "publicacao_da_fonte",
+    "cadencia": "quinzenal",
     "ultimo_periodo": "2026",
     "fim_ultimo_periodo": "2026-12-31",
-    "prazo_proximo": "2028-12-30",
+    "periodo_parcial": true,
+    "prazo_proximo": "2026-10-18",
     "dias_atraso": 0
    },
    "dado": {
@@ -1235,6 +1247,7 @@
     "expansao"
    ],
    "golds": [
+    "empresas.json",
     "expansao.json"
    ],
    "estado": "PUBLICADO",
@@ -1260,8 +1273,14 @@
     },
     "publicado": {
      "ok": true,
+     "golds": [
+      "expansao.json"
+     ],
      "citado_por": [
       "expansao.json"
+     ],
+     "problemas": [
+      "empresas.json reprovada em proveniencia"
      ]
     }
    },
@@ -1362,6 +1381,7 @@
     "situacao": "SEM SLA",
     "ultimo_periodo": "2026",
     "fim_ultimo_periodo": "2026-12-31",
+    "periodo_parcial": true,
     "motivo_sem_sla": "A fonte não declara frequência de atualização em metadado legível."
    },
    "dado": {
@@ -1372,8 +1392,8 @@
     "series": 76,
     "completude_interna": 0.849493,
     "series_com_lacuna": 13,
-    "series_no_ultimo": 67,
-    "series_no_anterior": 54
+    "series_no_ultimo": 53,
+    "series_no_anterior": 23
    },
    "capturas": {
     "ultima": "2026-09-30T22:22:59Z"
@@ -1714,6 +1734,7 @@
     "transicao"
    ],
    "golds": [
+    "territorio.json",
     "transicao.json"
    ],
    "estado": "PUBLICADO",
@@ -1739,7 +1760,10 @@
      "aprovadas": 3
     },
     "publicado": {
-     "ok": true
+     "ok": true,
+     "citado_por": [
+      "territorio.json"
+     ]
     }
    },
    "ressalvas": [],
@@ -1878,6 +1902,7 @@
     "transicao"
    ],
    "golds": [
+    "territorio.json",
     "transicao.json"
    ],
    "estado": "PUBLICADO",
@@ -1904,6 +1929,7 @@
     "publicado": {
      "ok": true,
      "citado_por": [
+      "territorio.json",
       "transicao.json"
      ]
     }
@@ -2197,12 +2223,13 @@
    },
    "atualidade": {
     "situacao": "EM DIA",
-    "caso": "C",
-    "base": "periodo_de_referencia",
-    "cadencia": "anual",
+    "caso": "E",
+    "base": "publicacao_da_fonte",
+    "cadencia": "mensal",
     "ultimo_periodo": "2026",
     "fim_ultimo_periodo": "2026-12-31",
-    "prazo_proximo": "2028-12-30",
+    "periodo_parcial": true,
+    "prazo_proximo": "2026-12-05",
     "dias_atraso": 0
    },
    "dado": {
@@ -2213,8 +2240,8 @@
     "series": 124354,
     "completude_interna": 0.999725,
     "series_com_lacuna": 124,
-    "series_no_ultimo": 2,
-    "series_no_anterior": 8
+    "series_no_ultimo": 27053,
+    "series_no_anterior": 26890
    },
    "capturas": {
     "ultima": "2026-09-30T22:45:43Z",
@@ -2569,14 +2596,22 @@
    },
    "revisoes": {
     "registros": {
-     "mudancas": 11,
-     "chaves": 11,
-     "campos": {
-      "sigla": 11
-     },
-     "apagados_pela_fonte": 0,
-     "por_captura": {
-      "2026-09-30": 11
+     "conflitos_entre_recursos": {
+      "campos": 11,
+      "chaves": 11,
+      "por_campo": {
+       "sigla": 11
+      },
+      "exemplos": [
+       {
+        "chave": "dist:01543032000104",
+        "campo": "sigla",
+        "valores": {
+         "manif-2023": "Enel GO",
+         "manif-2024": "Equatorial GO"
+        }
+       }
+      ]
      }
     }
    },
@@ -2640,12 +2675,12 @@
    },
    "atualidade": {
     "situacao": "EM DIA",
-    "caso": "C",
-    "base": "periodo_de_referencia",
-    "cadencia": "mensal",
+    "caso": "E",
+    "base": "publicacao_da_fonte",
+    "cadencia": "diaria",
     "ultimo_periodo": "2026-09",
     "fim_ultimo_periodo": "2026-09-30",
-    "prazo_proximo": "2026-12-30",
+    "prazo_proximo": "2026-10-03",
     "dias_atraso": 0
    },
    "dado": {
@@ -2987,7 +3022,8 @@
     "cadencia": "anual",
     "ultimo_periodo": "2026",
     "fim_ultimo_periodo": "2026-12-31",
-    "prazo_proximo": "2028-12-30",
+    "periodo_parcial": true,
+    "prazo_proximo": "2027-12-31",
     "dias_atraso": 0
    },
    "dado": {
@@ -3765,6 +3801,7 @@
     "situacao": "SEM SLA",
     "ultimo_periodo": "2026",
     "fim_ultimo_periodo": "2026-12-31",
+    "periodo_parcial": true,
     "motivo_sem_sla": "A fonte não declara frequência de atualização em metadado legível."
    },
    "dado": {
@@ -3964,7 +4001,8 @@
     "cadencia": "anual",
     "ultimo_periodo": "2026",
     "fim_ultimo_periodo": "2026-12-31",
-    "prazo_proximo": "2028-12-30",
+    "periodo_parcial": true,
+    "prazo_proximo": "2027-12-31",
     "dias_atraso": 0
    },
    "dado": {
@@ -4152,7 +4190,8 @@
     "cadencia": "mensal",
     "ultimo_periodo": "2026-10",
     "fim_ultimo_periodo": "2026-10-31",
-    "prazo_proximo": "2027-01-29",
+    "periodo_parcial": true,
+    "prazo_proximo": "2026-12-30",
     "dias_atraso": 0
    },
    "dado": {
@@ -4163,8 +4202,8 @@
     "series": 1022,
     "completude_interna": 0.991571,
     "series_com_lacuna": 99,
-    "series_no_ultimo": 57,
-    "series_no_anterior": 230
+    "series_no_ultimo": 595,
+    "series_no_anterior": 627
    },
    "capturas": {
     "ultima": "2026-09-30T22:52:53Z",
@@ -4460,17 +4499,17 @@
    },
    "revisoes": {
     "registros": {
-     "mudancas": 15,
-     "chaves": 15,
+     "mudancas": 14,
+     "chaves": 14,
      "campos": {
       "pct": 8,
-      "regime": 6,
-      "data_geracao": 1
+      "regime": 6
      },
      "apagados_pela_fonte": 0,
      "por_captura": {
-      "2026-10-01": 15
-     }
+      "2026-10-01": 14
+     },
+     "metadado_do_arquivo": 1
     }
    },
    "bronze": {
@@ -4559,18 +4598,18 @@
    },
    "revisoes": {
     "registros": {
-     "mudancas": 57,
-     "chaves": 51,
+     "mudancas": 56,
+     "chaves": 50,
      "campos": {
       "ativo": 31,
       "razao_social": 18,
-      "sigla": 7,
-      "data_geracao": 1
+      "sigla": 7
      },
      "apagados_pela_fonte": 1,
      "por_captura": {
-      "2026-10-01": 57
-     }
+      "2026-10-01": 56
+     },
+     "metadado_do_arquivo": 1
     }
    },
    "bronze": {
@@ -4746,9 +4785,9 @@
     }
    },
    "coleta": {
-    "tentativas": 2,
+    "tentativas": 3,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T07:02:51Z",
+    "ultimo_ok": "2026-10-01T07:06:04Z",
     "falhas_consecutivas": 0
    },
    "revisoes": null,
@@ -4837,9 +4876,9 @@
     }
    },
    "coleta": {
-    "tentativas": 4,
+    "tentativas": 8,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T07:02:53Z",
+    "ultimo_ok": "2026-10-01T07:06:06Z",
     "falhas_consecutivas": 0
    },
    "revisoes": null,
@@ -5004,6 +5043,7 @@
     "cadencia": "semanal",
     "ultimo_periodo": "2025-12-31",
     "fim_ultimo_periodo": "2026-12-30",
+    "periodo_parcial": true,
     "prazo_proximo": "2026-10-11",
     "dias_atraso": 0
    },
@@ -5232,7 +5272,8 @@
    },
    "revisoes": {
     "eventos": 2620,
-    "referencias": 2620,
+    "observacoes": 2620,
+    "referencias": 336,
     "series": 19,
     "ref_min": "2026-09-01T11:00",
     "ref_max": "2026-09-26T23:00",
@@ -5381,7 +5422,8 @@
    },
    "revisoes": {
     "eventos": 33,
-    "referencias": 33,
+    "observacoes": 33,
+    "referencias": 17,
     "series": 4,
     "ref_min": "2026-09-01",
     "ref_max": "2026-09-26",
@@ -5791,7 +5833,8 @@
    },
    "revisoes": {
     "eventos": 44,
-    "referencias": 44,
+    "observacoes": 44,
+    "referencias": 9,
     "series": 6,
     "ref_min": "2026-09-19",
     "ref_max": "2026-09-27",
@@ -5944,7 +5987,8 @@
    },
    "revisoes": {
     "eventos": 360,
-    "referencias": 360,
+    "observacoes": 360,
+    "referencias": 30,
     "series": 16,
     "ref_min": "2026-08-29",
     "ref_max": "2026-09-27",
@@ -6181,17 +6225,17 @@
    },
    "revisoes": {
     "registros": {
-     "mudancas": 50,
-     "chaves": 50,
+     "mudancas": 49,
+     "chaves": 49,
      "campos": {
       "ativo": 31,
-      "nome": 18,
-      "gerado_em": 1
+      "nome": 18
      },
      "apagados_pela_fonte": 0,
      "por_captura": {
-      "2026-10-01": 50
-     }
+      "2026-10-01": 49
+     },
+     "metadado_do_arquivo": 1
     }
    },
    "bronze": {
@@ -6317,8 +6361,8 @@
     },
     "integrado": {
      "ok": true,
-     "observacoes": 77512,
-     "registros": 122
+     "observacoes": 110557,
+     "registros": 130
     },
     "validado": {
      "ok": true,
@@ -6360,11 +6404,11 @@
     "formato": "mensal",
     "ref_min": "2019-01",
     "ref_max": "2026-08",
-    "series": 1071,
-    "completude_interna": 0.975031,
-    "series_com_lacuna": 238,
-    "series_no_ultimo": 235,
-    "series_no_anterior": 925
+    "series": 1488,
+    "completude_interna": 0.981882,
+    "series_com_lacuna": 274,
+    "series_no_ultimo": 353,
+    "series_no_anterior": 1326
    },
    "capturas": {
     "ultima": "2026-10-01T00:34:29Z",
@@ -6417,7 +6461,10 @@
      "aprovadas": 5
     },
     "publicado": {
-     "ok": true
+     "ok": true,
+     "citado_por": [
+      "mercado.json"
+     ]
     }
    },
    "ressalvas": [],
@@ -6506,7 +6553,10 @@
      "aprovadas": 5
     },
     "publicado": {
-     "ok": true
+     "ok": true,
+     "citado_por": [
+      "mercado.json"
+     ]
     }
    },
    "ressalvas": [],
@@ -6600,7 +6650,10 @@
      "aprovadas": 5
     },
     "publicado": {
-     "ok": true
+     "ok": true,
+     "citado_por": [
+      "mercado.json"
+     ]
     }
    },
    "ressalvas": [],
@@ -6689,7 +6742,10 @@
      "aprovadas": 5
     },
     "publicado": {
-     "ok": true
+     "ok": true,
+     "citado_por": [
+      "mercado.json"
+     ]
     }
    },
    "ressalvas": [],
@@ -6776,7 +6832,10 @@
      "aprovadas": 5
     },
     "publicado": {
-     "ok": true
+     "ok": true,
+     "citado_por": [
+      "mercado.json"
+     ]
     }
    },
    "ressalvas": [],
@@ -6866,7 +6925,10 @@
      "aprovadas": 5
     },
     "publicado": {
-     "ok": true
+     "ok": true,
+     "citado_por": [
+      "mercado.json"
+     ]
     }
    },
    "ressalvas": [],
@@ -6960,7 +7022,10 @@
      "aprovadas": 5
     },
     "publicado": {
-     "ok": true
+     "ok": true,
+     "citado_por": [
+      "mercado.json"
+     ]
     }
    },
    "ressalvas": [],
@@ -7049,7 +7114,10 @@
      "aprovadas": 5
     },
     "publicado": {
-     "ok": true
+     "ok": true,
+     "citado_por": [
+      "mercado.json"
+     ]
     }
    },
    "ressalvas": [],
@@ -7138,7 +7206,10 @@
      "aprovadas": 5
     },
     "publicado": {
-     "ok": true
+     "ok": true,
+     "citado_por": [
+      "mercado.json"
+     ]
     }
    },
    "ressalvas": [],
@@ -7219,8 +7290,8 @@
     },
     "integrado": {
      "ok": true,
-     "observacoes": 38,
-     "registros": 13
+     "observacoes": 49,
+     "registros": 16
     },
     "validado": {
      "ok": true,
@@ -7251,7 +7322,7 @@
     "formato": "mensal",
     "ref_min": "2024-08",
     "ref_max": "2026-07",
-    "series": 38
+    "series": 49
    },
    "capturas": {
     "ultima": "2026-10-01T06:07:41Z",
@@ -7304,7 +7375,10 @@
      "aprovadas": 5
     },
     "publicado": {
-     "ok": true
+     "ok": true,
+     "citado_por": [
+      "mercado.json"
+     ]
     }
    },
    "ressalvas": [],
@@ -7354,15 +7428,23 @@
    },
    "revisoes": {
     "registros": {
-     "mudancas": 214,
-     "chaves": 184,
-     "campos": {
-      "sigla": 184,
-      "classe": 30
-     },
-     "apagados_pela_fonte": 0,
-     "por_captura": {
-      "2026-10-01": 214
+     "conflitos_entre_recursos": {
+      "campos": 214,
+      "chaves": 184,
+      "por_campo": {
+       "sigla": 184,
+       "classe": 30
+      },
+      "exemplos": [
+       {
+        "chave": "cnpj|00001180000126",
+        "campo": "sigla",
+        "valores": {
+         "lista_agente_associado_2025": "ELETROBRAS-G",
+         "lista_agente_associado_2026": "AXIA SUDESTE"
+        }
+       }
+      ]
      }
     }
    },
@@ -7406,7 +7488,10 @@
      "aprovadas": 5
     },
     "publicado": {
-     "ok": true
+     "ok": true,
+     "citado_por": [
+      "mercado.json"
+     ]
     }
    },
    "ressalvas": [],
@@ -7496,7 +7581,10 @@
      "aprovadas": 5
     },
     "publicado": {
-     "ok": true
+     "ok": true,
+     "citado_por": [
+      "mercado.json"
+     ]
     }
    },
    "ressalvas": [],
@@ -7576,8 +7664,8 @@
     },
     "integrado": {
      "ok": true,
-     "observacoes": 1046,
-     "registros": 6
+     "observacoes": 2612,
+     "registros": 9
     },
     "validado": {
      "ok": true,
@@ -7585,7 +7673,10 @@
      "aprovadas": 5
     },
     "publicado": {
-     "ok": true
+     "ok": true,
+     "citado_por": [
+      "mercado.json"
+     ]
     }
    },
    "ressalvas": [],
@@ -7617,11 +7708,11 @@
     "formato": "mensal",
     "ref_min": "2024-04",
     "ref_max": "2026-07",
-    "series": 38,
+    "series": 94,
     "completude_interna": 1.0,
     "series_com_lacuna": 0,
-    "series_no_ultimo": 38,
-    "series_no_anterior": 38
+    "series_no_ultimo": 92,
+    "series_no_anterior": 94
    },
    "capturas": {
     "ultima": "2026-10-01T00:46:32Z",
@@ -7674,7 +7765,10 @@
      "aprovadas": 5
     },
     "publicado": {
-     "ok": true
+     "ok": true,
+     "citado_por": [
+      "mercado.json"
+     ]
     }
    },
    "ressalvas": [],
@@ -7763,7 +7857,10 @@
      "aprovadas": 5
     },
     "publicado": {
-     "ok": true
+     "ok": true,
+     "citado_por": [
+      "mercado.json"
+     ]
     }
    },
    "ressalvas": [],
@@ -7852,7 +7949,10 @@
      "aprovadas": 5
     },
     "publicado": {
-     "ok": true
+     "ok": true,
+     "citado_por": [
+      "mercado.json"
+     ]
     }
    },
    "ressalvas": [],
@@ -7941,7 +8041,10 @@
      "aprovadas": 5
     },
     "publicado": {
-     "ok": true
+     "ok": true,
+     "citado_por": [
+      "mercado.json"
+     ]
     }
    },
    "ressalvas": [],
@@ -8031,7 +8134,10 @@
      "aprovadas": 4
     },
     "publicado": {
-     "ok": true
+     "ok": true,
+     "citado_por": [
+      "mercado.json"
+     ]
     }
    },
    "ressalvas": [],
@@ -8112,7 +8218,10 @@
      "aprovadas": 4
     },
     "publicado": {
-     "ok": true
+     "ok": true,
+     "citado_por": [
+      "mercado.json"
+     ]
     }
    },
    "ressalvas": [],
@@ -8162,7 +8271,7 @@
    "orgao": "MME",
    "nome": "boletim-de-monitoramento-do-sistema-eletrico",
    "slug": "mme-boletim-monitoramento",
-   "titulo": "Boletim Mensal de Monitoramento do Sistema Elétrico (encargos de serviços do sistema e consumo por ambiente)",
+   "titulo": "Boletim de Monitoramento do Sistema Elétrico: edições mensais (encargos de serviços do sistema e consumo por ambiente) e consolidação anual (conferência anual)",
    "modulos": [
     "mercado"
    ],
@@ -8179,13 +8288,13 @@
     "recurso_verificado": {
      "ok": true,
      "em": "2026-10-01T00:35:02Z",
-     "capturas": 8,
-     "arquivos": 6
+     "capturas": 12,
+     "arquivos": 10
     },
     "integrado": {
      "ok": true,
-     "observacoes": 266,
-     "registros": 12
+     "observacoes": 272,
+     "registros": 15
     },
     "validado": {
      "ok": true,
@@ -8219,27 +8328,27 @@
     "formato": "mensal",
     "ref_min": "2025-02",
     "ref_max": "2026-06",
-    "series": 94,
+    "series": 100,
     "completude_interna": 1.0,
     "series_com_lacuna": 0,
     "series_no_ultimo": 20,
     "series_no_anterior": 24
    },
    "capturas": {
-    "ultima": "2026-10-01T06:01:47Z",
+    "ultima": "2026-10-01T07:37:35Z",
     "ultima_publicacao_fonte": "2026-09-25T18:10:00Z",
     "anteriores_preservadas": 2
    },
    "coleta": {
-    "tentativas": 4,
+    "tentativas": 5,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:35:14Z",
+    "ultimo_ok": "2026-10-01T07:37:35Z",
     "falhas_consecutivas": 0
    },
    "revisoes": null,
    "bronze": {
-    "presentes": 8,
-    "sha256_conferidos": 8
+    "presentes": 12,
+    "sha256_conferidos": 12
    }
   },
   {
@@ -8302,6 +8411,7 @@
     "cadencia": "anual",
     "ultimo_periodo": "2026",
     "fim_ultimo_periodo": "2026-12-31",
+    "periodo_parcial": true,
     "motivo_sem_sla": "Sem série regular de referência e sem data de publicação informada pela fonte: não há como medir atraso sem usar a data da captura."
    },
    "dado": {
@@ -9599,14 +9709,22 @@
    },
    "revisoes": {
     "registros": {
-     "mudancas": 23,
-     "chaves": 22,
-     "campos": {
-      "agente": 23
-     },
-     "apagados_pela_fonte": 0,
-     "por_captura": {
-      "2026-09-30": 23
+     "conflitos_entre_recursos": {
+      "campos": 22,
+      "chaves": 22,
+      "por_campo": {
+       "agente": 22
+      },
+      "exemplos": [
+       {
+        "chave": "CEECVA",
+        "campo": "agente",
+        "valores": {
+         "RESTRICAO_COFF_EOLICA_2021_10": "ENERGISA SOLUÇÕES",
+         "RESTRICAO_COFF_EOLICA_2025_02": "ENERGISA TRANS"
+        }
+       }
+      ]
      }
     }
    },
@@ -9789,16 +9907,24 @@
    },
    "revisoes": {
     "registros": {
-     "mudancas": 266,
-     "chaves": 68,
-     "campos": {
-      "nome": 244,
-      "agente": 18,
-      "uf": 4
-     },
-     "apagados_pela_fonte": 0,
-     "por_captura": {
-      "2026-09-30": 266
+     "conflitos_entre_recursos": {
+      "campos": 79,
+      "chaves": 68,
+      "por_campo": {
+       "nome": 65,
+       "agente": 13,
+       "uf": 1
+      },
+      "exemplos": [
+       {
+        "chave": "CEFFDM",
+        "campo": "agente",
+        "valores": {
+         "RESTRICAO_COFF_FOTOVOLTAICA_2024_04": "CEMIG GT",
+         "RESTRICAO_COFF_FOTOVOLTAICA_2025_01": "VOLTALIA"
+        }
+       }
+      ]
      }
     }
    },
@@ -9955,7 +10081,8 @@
     "cadencia": "semanal",
     "ultimo_periodo": "2026-09-26",
     "fim_ultimo_periodo": "2026-10-02",
-    "prazo_proximo": "2026-10-16",
+    "periodo_parcial": true,
+    "prazo_proximo": "2026-10-09",
     "dias_atraso": 0
    },
    "dado": {
@@ -9981,15 +10108,25 @@
    },
    "revisoes": {
     "registros": {
-     "mudancas": 87,
-     "chaves": 54,
-     "campos": {
-      "nome": 81,
-      "sm": 6
-     },
-     "apagados_pela_fonte": 0,
-     "por_captura": {
-      "2026-09-30": 87
+     "conflitos_entre_recursos": {
+      "campos": 60,
+      "chaves": 54,
+      "por_campo": {
+       "nome": 54,
+       "sm": 6
+      },
+      "exemplos": [
+       {
+        "chave": "usi|106",
+        "campo": "nome",
+        "valores": {
+         "CVU_USINA_TERMICA_2005": "PONTA UBU",
+         "CVU_USINA_TERMICA_2014": "ERB CANDEI",
+         "CVU_USINA_TERMICA_2018": "UT ERB CAN",
+         "CVU_USINA_TERMICA_2021": "ERB CANDEI"
+        }
+       }
+      ]
      }
     }
    },
@@ -10082,20 +10219,26 @@
    },
    "revisoes": {
     "registros": {
-     "mudancas": 467,
-     "chaves": 193,
-     "campos": {
-      "lat_pc": 192,
-      "lon_pc": 192,
-      "lat": 29,
-      "lon": 29,
-      "nome": 20,
-      "ponto": 4,
-      "sm": 1
-     },
-     "apagados_pela_fonte": 0,
-     "por_captura": {
-      "2026-09-30": 467
+     "conflitos_entre_recursos": {
+      "campos": 452,
+      "chaves": 193,
+      "por_campo": {
+       "lat_pc": 189,
+       "lon_pc": 189,
+       "lat": 28,
+       "lon": 28,
+       "nome": 14
+      },
+      "exemplos": [
+       {
+        "chave": "CEECVA",
+        "campo": "lat_pc",
+        "valores": {
+         "FATOR_CAPACIDADE-2_2022_01": "-2.9276583",
+         "FATOR_CAPACIDADE-2_2026_01": "-2.927354948554575"
+        }
+       }
+      ]
      }
     }
    },
@@ -10191,16 +10334,24 @@
    },
    "revisoes": {
     "registros": {
-     "mudancas": 199,
-     "chaves": 30,
-     "campos": {
-      "nome": 85,
-      "parcelas": 74,
-      "cod": 40
-     },
-     "apagados_pela_fonte": 0,
-     "por_captura": {
-      "2026-09-30": 199
+     "conflitos_entre_recursos": {
+      "campos": 80,
+      "chaves": 30,
+      "por_campo": {
+       "nome": 30,
+       "parcelas": 30,
+       "cod": 20
+      },
+      "exemplos": [
+       {
+        "chave": "UTE.CM.CE.029720-8.01",
+        "campo": "cod",
+        "valores": {
+         "GERACAO_TERMICA_DESPACHO-2_2024_12": "620",
+         "GERACAO_TERMICA_DESPACHO_2013": "167"
+        }
+       }
+      ]
      }
     }
    },
@@ -10296,19 +10447,26 @@
    },
    "revisoes": {
     "registros": {
-     "mudancas": 622,
-     "chaves": 550,
-     "campos": {
-      "nome": 610,
-      "sm": 5,
-      "ceg": 3,
-      "mod": 2,
-      "comb": 1,
-      "uf": 1
-     },
-     "apagados_pela_fonte": 0,
-     "por_captura": {
-      "2026-09-30": 622
+     "conflitos_entre_recursos": {
+      "campos": 556,
+      "chaves": 550,
+      "por_campo": {
+       "nome": 544,
+       "sm": 5,
+       "ceg": 3,
+       "mod": 2,
+       "comb": 1
+      },
+      "exemplos": [
+       {
+        "chave": "ALUXG",
+        "campo": "nome",
+        "valores": {
+         "GERACAO_USINA-2_2021": "Xingó",
+         "GERACAO_USINA-2_2026_05": "USINA XINGO"
+        }
+       }
+      ]
      }
     }
    },
@@ -10539,7 +10697,7 @@
     "completude_interna": 1.0,
     "series_com_lacuna": 0,
     "series_no_ultimo": 32,
-    "series_no_anterior": 32
+    "series_no_anterior": 0
    },
    "capturas": {
     "ultima": "2026-10-01T06:32:43Z",
@@ -11725,6 +11883,7 @@
     "situacao": "SEM SLA",
     "ultimo_periodo": "2026-10",
     "fim_ultimo_periodo": "2026-10-31",
+    "periodo_parcial": true,
     "motivo_sem_sla": "A fonte não declara frequência de atualização em metadado legível."
    },
    "dado": {
@@ -13060,12 +13219,13 @@
    },
    "atualidade": {
     "situacao": "EM DIA",
-    "caso": "C",
-    "base": "periodo_de_referencia",
-    "cadencia": "anual",
+    "caso": "E",
+    "base": "publicacao_da_fonte",
+    "cadencia": "trimestral",
     "ultimo_periodo": "2026",
     "fim_ultimo_periodo": "2026-12-31",
-    "prazo_proximo": "2028-12-30",
+    "periodo_parcial": true,
+    "prazo_proximo": "2027-01-20",
     "dias_atraso": 0
    },
    "dado": {
@@ -13179,15 +13339,7 @@
    },
    "revisoes": {
     "registros": {
-     "mudancas": 141,
-     "chaves": 141,
-     "campos": {
-      "gerado_em": 141
-     },
-     "apagados_pela_fonte": 0,
-     "por_captura": {
-      "2026-10-01": 141
-     }
+     "metadado_do_arquivo": 141
     }
    },
    "bronze": {
@@ -13525,6 +13677,152 @@
    }
   },
   {
+   "id": "territorio/territorio_epe_webmap",
+   "orgao": "EPE",
+   "nome": "webmap-epe-subsistemas",
+   "slug": "epe-webmap-subsistemas-isolados-territorio",
+   "titulo": "WebMap EPE: Unidades da federação e Subsistemas do SIN (camada 24) e Sistemas Isolados (camada 27)",
+   "modulos": [
+    "territorio"
+   ],
+   "golds": [
+    "territorio.json"
+   ],
+   "estado": "PUBLICADO",
+   "etapas": {
+    "catalogado": {
+     "ok": true,
+     "origem": "registro",
+     "modulo": "territorio"
+    },
+    "recurso_verificado": {
+     "ok": true,
+     "em": "2026-10-01T07:36:11Z",
+     "capturas": 2,
+     "arquivos": 2
+    },
+    "integrado": {
+     "ok": true,
+     "leitura_do_original": true
+    },
+    "validado": {
+     "ok": true,
+     "resultado": "aprovado",
+     "aprovadas": 3
+    },
+    "publicado": {
+     "ok": true,
+     "citado_por": [
+      "territorio.json"
+     ]
+    }
+   },
+   "ressalvas": [],
+   "uso": {
+    "papeis": [
+     "indicador"
+    ]
+   },
+   "frequencia": {
+    "cadencias": []
+   },
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "motivo_sem_sla": "A fonte não declara frequência de atualização em metadado legível."
+   },
+   "dado": null,
+   "capturas": {
+    "ultima": "2026-10-01T07:36:20Z"
+   },
+   "coleta": {
+    "tentativas": 2,
+    "falhas": 0,
+    "ultimo_ok": "2026-10-01T07:36:20Z",
+    "falhas_consecutivas": 0
+   },
+   "revisoes": null,
+   "bronze": {
+    "presentes": 2,
+    "sha256_conferidos": 2
+   }
+  },
+  {
+   "id": "territorio/territorio_ibge_malha_maxima",
+   "orgao": "IBGE",
+   "nome": "malhas-municipais-qualidade-maxima",
+   "slug": "ibge-malha-municipal-maxima-territorio",
+   "titulo": "Malha municipal do IBGE em qualidade máxima (API de malhas v4, por UF)",
+   "modulos": [
+    "territorio"
+   ],
+   "golds": [
+    "territorio.json"
+   ],
+   "estado": "RECURSO VERIFICADO",
+   "etapas": {
+    "catalogado": {
+     "ok": true,
+     "origem": "registro",
+     "modulo": "territorio"
+    },
+    "recurso_verificado": {
+     "ok": true,
+     "em": "2026-10-01T07:36:22Z",
+     "capturas": 27,
+     "arquivos": 27
+    },
+    "integrado": {
+     "ok": false
+    },
+    "validado": {
+     "ok": false,
+     "resultado": "ressalva",
+     "aprovadas": 2,
+     "ressalvas": 1
+    },
+    "publicado": {
+     "ok": false
+    }
+   },
+   "ressalvas": [],
+   "uso": {
+    "papeis": [
+     "conferencia"
+    ]
+   },
+   "frequencia": {
+    "cadencias": []
+   },
+   "atualidade": {
+    "situacao": "SEM SLA",
+    "motivo_sem_sla": "A fonte não declara frequência de atualização em metadado legível."
+   },
+   "dado": null,
+   "capturas": {
+    "ultima": "2026-10-01T07:37:02Z"
+   },
+   "coleta": {
+    "tentativas": 27,
+    "falhas": 0,
+    "ultimo_ok": "2026-10-01T07:37:02Z",
+    "falhas_consecutivas": 0
+   },
+   "revisoes": null,
+   "bronze": {
+    "presentes": 27,
+    "sha256_conferidos": 27
+   },
+   "validacao": {
+    "itens": [
+     {
+      "tipo": "conteudo",
+      "resultado": "ressalva",
+      "detalhe": "Capturas sem observações nem registros no silver e nenhuma gold cita o conjunto na proveniência: não há como rastrear o uso do conteúdo"
+     }
+    ]
+   }
+  },
+  {
    "id": "territorio/territorio_ons_areas_carga",
    "orgao": "ONS",
    "nome": "carga-energia-verificada",
@@ -13611,8 +13909,8 @@
   {
    "gold": "agua_detalhe.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T06:51:39Z",
-   "bytes": 402900,
+   "gerado_em": "2026-10-01T07:07:11Z",
+   "bytes": 387086,
    "veredito": "aprovado",
    "checagens": {
     "json": "aprovado",
@@ -13628,8 +13926,8 @@
   {
    "gold": "arquivos.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T07:02:17Z",
-   "bytes": 118202,
+   "gerado_em": "2026-10-01T07:42:20Z",
+   "bytes": 125146,
    "veredito": "aprovado",
    "checagens": {
     "json": "aprovado",
@@ -13662,8 +13960,8 @@
   {
    "gold": "carga_detalhe.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T06:24:22Z",
-   "bytes": 436726,
+   "gerado_em": "2026-10-01T07:11:57Z",
+   "bytes": 436969,
    "veredito": "ressalva",
    "checagens": {
     "json": "aprovado",
@@ -13678,32 +13976,26 @@
     {
      "tipo": "tamanho",
      "resultado": "ressalva",
-     "detalhe": "426 KB"
+     "detalhe": "427 KB"
     }
    ]
   },
   {
    "gold": "catalogo.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T06:58:35Z",
-   "bytes": 406868,
-   "veredito": "ressalva",
+   "gerado_em": "2026-10-01T07:03:15Z",
+   "bytes": 406434,
+   "veredito": "aprovado",
    "checagens": {
     "json": "aprovado",
     "esquema": "aprovado",
     "proveniencia": "nao_aplicavel",
     "downloads": "aprovado",
     "datas_futuras": "nao_aplicavel",
-    "drift_esquema": "ressalva",
+    "drift_esquema": "aprovado",
     "tamanho": "aprovado"
    },
-   "problemas": [
-    {
-     "tipo": "drift_esquema",
-     "resultado": "ressalva",
-     "detalhe": "1 campos removidos, 0 com tipo alterado e 0 novos em relação ao último commit"
-    }
-   ]
+   "problemas": []
   },
   {
    "gold": "cmo.json",
@@ -13742,8 +14034,8 @@
   {
    "gold": "empresas.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T00:53:08Z",
-   "bytes": 391796,
+   "gerado_em": "2026-10-01T07:18:43Z",
+   "bytes": 400927,
    "veredito": "reprovado",
    "checagens": {
     "json": "aprovado",
@@ -13758,7 +14050,7 @@
     {
      "tipo": "proveniencia",
      "resultado": "reprovado",
-     "detalhe": "9 de 10 proveniências completas"
+     "detalhe": "11 de 12 proveniências completas"
     }
    ]
   },
@@ -13774,7 +14066,7 @@
     "proveniencia": "aprovado",
     "downloads": "aprovado",
     "datas_futuras": "ressalva",
-    "drift_esquema": "ressalva",
+    "drift_esquema": "aprovado",
     "tamanho": "aprovado"
    },
    "problemas": [
@@ -13782,11 +14074,6 @@
      "tipo": "datas_futuras",
      "resultado": "ressalva",
      "detalhe": "1 proveniências com período além de 2026-10-01 sem regra de horizonte"
-    },
-    {
-     "tipo": "drift_esquema",
-     "resultado": "ressalva",
-     "detalhe": "1 campos removidos, 0 com tipo alterado e 4 novos em relação ao último commit"
     }
    ]
   },
@@ -13810,7 +14097,7 @@
   {
    "gold": "geracao_detalhe.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T07:02:17Z",
+   "gerado_em": "2026-10-01T07:08:35Z",
    "bytes": 492188,
    "veredito": "ressalva",
    "checagens": {
@@ -13819,15 +14106,10 @@
     "proveniencia": "aprovado",
     "downloads": "aprovado",
     "datas_futuras": "aprovado",
-    "drift_esquema": "ressalva",
+    "drift_esquema": "aprovado",
     "tamanho": "ressalva"
    },
    "problemas": [
-    {
-     "tipo": "drift_esquema",
-     "resultado": "ressalva",
-     "detalhe": "1 campos removidos, 0 com tipo alterado e 70 novos em relação ao último commit"
-    },
     {
      "tipo": "tamanho",
      "resultado": "ressalva",
@@ -13878,8 +14160,8 @@
   {
    "gold": "mercado.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T06:22:40Z",
-   "bytes": 436849,
+   "gerado_em": "2026-10-01T07:42:13Z",
+   "bytes": 434097,
    "veredito": "ressalva",
    "checagens": {
     "json": "aprovado",
@@ -13887,14 +14169,19 @@
     "proveniencia": "aprovado",
     "downloads": "aprovado",
     "datas_futuras": "aprovado",
-    "drift_esquema": "aprovado",
+    "drift_esquema": "ressalva",
     "tamanho": "ressalva"
    },
    "problemas": [
     {
+     "tipo": "drift_esquema",
+     "resultado": "ressalva",
+     "detalhe": "14 campos removidos, 6 com tipo alterado e 89 novos em relação ao último commit"
+    },
+    {
      "tipo": "tamanho",
      "resultado": "ressalva",
-     "detalhe": "427 KB"
+     "detalhe": "424 KB"
     }
    ]
   },
@@ -13918,8 +14205,8 @@
   {
    "gold": "metricas.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T07:02:17Z",
-   "bytes": 570414,
+   "gerado_em": "2026-10-01T07:42:20Z",
+   "bytes": 610255,
    "veredito": "ressalva",
    "checagens": {
     "json": "aprovado",
@@ -13934,7 +14221,7 @@
     {
      "tipo": "tamanho",
      "resultado": "ressalva",
-     "detalhe": "557 KB"
+     "detalhe": "596 KB"
     }
    ]
   },
@@ -14038,7 +14325,7 @@
   {
    "gold": "previsoes_desempenho.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T06:58:21Z",
+   "gerado_em": "2026-10-01T07:40:20Z",
    "bytes": 179948,
    "veredito": "aprovado",
    "checagens": {
@@ -14123,8 +14410,8 @@
   {
    "gold": "sintese.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T06:40:21Z",
-   "bytes": 212884,
+   "gerado_em": "2026-10-01T07:41:52Z",
+   "bytes": 338099,
    "veredito": "ressalva",
    "checagens": {
     "json": "aprovado",
@@ -14132,7 +14419,7 @@
     "proveniencia": "ressalva",
     "downloads": "aprovado",
     "datas_futuras": "nao_aplicavel",
-    "drift_esquema": "aprovado",
+    "drift_esquema": "ressalva",
     "tamanho": "aprovado"
    },
    "problemas": [
@@ -14140,25 +14427,36 @@
      "tipo": "proveniencia",
      "resultado": "ressalva",
      "detalhe": "Nenhuma proveniência no formato do contrato (natureza, fonte, limitações) foi encontrada."
+    },
+    {
+     "tipo": "drift_esquema",
+     "resultado": "ressalva",
+     "detalhe": "15 campos removidos, 0 com tipo alterado e 69 novos em relação ao último commit"
     }
    ]
   },
   {
    "gold": "territorio.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T06:48:52Z",
-   "bytes": 360917,
-   "veredito": "aprovado",
+   "gerado_em": "2026-10-01T07:38:19Z",
+   "bytes": 397495,
+   "veredito": "ressalva",
    "checagens": {
     "json": "aprovado",
     "esquema": "aprovado",
     "proveniencia": "aprovado",
     "downloads": "aprovado",
     "datas_futuras": "aprovado",
-    "drift_esquema": "aprovado",
+    "drift_esquema": "ressalva",
     "tamanho": "aprovado"
    },
-   "problemas": []
+   "problemas": [
+    {
+     "tipo": "drift_esquema",
+     "resultado": "ressalva",
+     "detalhe": "39 campos removidos, 0 com tipo alterado e 281 novos em relação ao último commit"
+    }
+   ]
   },
   {
    "gold": "transicao.json",
@@ -14230,6 +14528,17 @@
     ]
    },
    {
+    "arquivo": "empresas_financas_ajustes.csv",
+    "veredito": "reprovado",
+    "problemas": [
+     {
+      "tipo": "esquema",
+      "resultado": "reprovado",
+      "detalhe": "3 linhas com número de colunas diferente do cabeçalho"
+     }
+    ]
+   },
+   {
     "arquivo": "inclusao_sistemas_isolados.csv",
     "veredito": "ressalva",
     "problemas": [
@@ -14237,6 +14546,28 @@
       "tipo": "chaves_unicas",
       "resultado": "ressalva",
       "detalhe": "155 linhas repetem a chave inferida com valores diferentes"
+     }
+    ]
+   },
+   {
+    "arquivo": "mercado_nacional_mensal.csv",
+    "veredito": "reprovado",
+    "problemas": [
+     {
+      "tipo": "esquema",
+      "resultado": "reprovado",
+      "detalhe": "10 linhas com número de colunas diferente do cabeçalho"
+     }
+    ]
+   },
+   {
+    "arquivo": "sintese_regras_diario.csv",
+    "veredito": "reprovado",
+    "problemas": [
+     {
+      "tipo": "esquema",
+      "resultado": "reprovado",
+      "detalhe": "3099 linhas com número de colunas diferente do cabeçalho"
      }
     ]
    }
@@ -14335,7 +14666,7 @@
    {
     "csv": "/energia/series/dados_recursos_ons.csv",
     "parquet": "/energia/series/dados_recursos_ons.parquet",
-    "status": "gerado",
+    "status": "inalterado",
     "bytes_csv": 3850325,
     "bytes_parquet": 620520,
     "linhas": 13823,
@@ -14345,32 +14676,32 @@
    {
     "csv": "/energia/series/empresas_ativos.csv",
     "parquet": "/energia/series/empresas_ativos.parquet",
-    "status": "inalterado",
-    "bytes_csv": 4739908,
-    "bytes_parquet": 672771,
+    "status": "gerado",
+    "bytes_csv": 4739738,
+    "bytes_parquet": 672812,
     "linhas": 25644,
     "equivalente": true,
-    "csv_sha256": "f2f7e222831504db2bc0c7f6f65875f71ad5adddd8a7b889b0c4c220380cfe08"
+    "csv_sha256": "f16e7b087a1e4aed7e53ec2a681bfc62cf852cd179867104bb396dc07b5b86c0"
    },
    {
     "csv": "/energia/series/empresas_financas_anual.csv",
     "parquet": "/energia/series/empresas_financas_anual.parquet",
-    "status": "inalterado",
-    "bytes_csv": 2342360,
-    "bytes_parquet": 183405,
-    "linhas": 23743,
+    "status": "gerado",
+    "bytes_csv": 2345394,
+    "bytes_parquet": 182852,
+    "linhas": 23734,
     "equivalente": true,
-    "csv_sha256": "0d717251ded906d0a27122b3688903288c115e7179db039abe5ae6a46c42095b"
+    "csv_sha256": "4d865048888ea4361bd6130aa31cbcddf2984fb5d1cbfc35efd9ffd689155ec3"
    },
    {
     "csv": "/energia/series/empresas_financas_trimestral.csv",
     "parquet": "/energia/series/empresas_financas_trimestral.parquet",
-    "status": "inalterado",
-    "bytes_csv": 3954077,
-    "bytes_parquet": 242291,
-    "linhas": 40144,
+    "status": "gerado",
+    "bytes_csv": 4008839,
+    "bytes_parquet": 243301,
+    "linhas": 40128,
     "equivalente": true,
-    "csv_sha256": "d34d28089fc0c6c3be6edd3e99dd3888626cf7acf236f478f518866fced1c0c0"
+    "csv_sha256": "2a19561d58b6df96ce2e526f11e837aa6c09997a1b39d591f4a21d0a58a8ef26"
    },
    {
     "csv": "/energia/series/expansao_unidades_ralie.csv",
@@ -14395,7 +14726,7 @@
    {
     "csv": "/energia/series/geracao_cvu_semanal.csv",
     "parquet": "/energia/series/geracao_cvu_semanal.parquet",
-    "status": "gerado",
+    "status": "inalterado",
     "bytes_csv": 2555709,
     "bytes_parquet": 61562,
     "linhas": 29931,
@@ -14475,12 +14806,12 @@
    {
     "csv": "/energia/series/territorio_usinas.csv",
     "parquet": "/energia/series/territorio_usinas.parquet",
-    "status": "inalterado",
-    "bytes_csv": 3328635,
-    "bytes_parquet": 774625,
+    "status": "gerado",
+    "bytes_csv": 3802789,
+    "bytes_parquet": 777653,
     "linhas": 25042,
     "equivalente": true,
-    "csv_sha256": "580d2021a820a4b1764897d7282b2e6ca6b97d63df0e390d1ab44ef18c6cbd29"
+    "csv_sha256": "7f6ef921600ae2c1755a3fe51425e7160a3afeb1f6729185713365a8d4420500"
    },
    {
     "csv": "/energia/series/transicao_mmgd_municipio_ano_fonte.csv",
@@ -14631,7 +14962,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 3,
    "conjuntos_com_evento": 1
   },
@@ -14640,7 +14971,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 30,
    "conjuntos_com_evento": 26
   },
@@ -14649,7 +14980,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 1,
    "conjuntos_com_evento": 1
   },
@@ -14658,7 +14989,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 2,
    "conjuntos_com_evento": 2
   },
@@ -14667,7 +14998,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 1,
    "conjuntos_com_evento": 1
   },
@@ -14676,7 +15007,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 1,
    "conjuntos_com_evento": 1
   },
@@ -14685,7 +15016,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 1,
    "conjuntos_com_evento": 1
   },
@@ -14694,7 +15025,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 2,
    "conjuntos_com_evento": 2
   },
@@ -14703,7 +15034,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 1,
    "conjuntos_com_evento": 1
   },
@@ -14712,7 +15043,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 3,
    "conjuntos_com_evento": 2
   },
@@ -14721,7 +15052,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 1,
    "conjuntos_com_evento": 1
   },
@@ -14730,7 +15061,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 13,
    "conjuntos_com_evento": 1
   },
@@ -14739,7 +15070,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 2,
    "conjuntos_com_evento": 1
   },
@@ -14748,7 +15079,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 2,
    "conjuntos_com_evento": 2
   },
@@ -14757,7 +15088,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 1,
    "conjuntos_com_evento": 1
   },
@@ -14766,7 +15097,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 2,
    "conjuntos_com_evento": 2
   },
@@ -14775,7 +15106,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 1,
    "conjuntos_com_evento": 1
   },
@@ -14784,7 +15115,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 3,
    "conjuntos_com_evento": 2
   },
@@ -14793,7 +15124,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 2,
    "conjuntos_com_evento": 2
   },
@@ -14802,7 +15133,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 15,
    "conjuntos_com_evento": 15
   },
@@ -14811,7 +15142,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 1,
    "conjuntos_com_evento": 1
   },
@@ -14820,7 +15151,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 7,
    "conjuntos_com_evento": 1
   },
@@ -14829,7 +15160,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 12,
    "conjuntos_com_evento": 6
   },
@@ -14838,7 +15169,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 14,
    "conjuntos_com_evento": 2
   },
@@ -14847,7 +15178,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 3,
    "conjuntos_com_evento": 3
   },
@@ -14856,7 +15187,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 9,
    "conjuntos_com_evento": 3
   },
@@ -14865,7 +15196,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 31,
    "conjuntos_com_evento": 4
   },
@@ -14874,7 +15205,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 27,
    "conjuntos_com_evento": 1
   },
@@ -14883,7 +15214,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 7,
    "conjuntos_com_evento": 2
   },
@@ -14892,7 +15223,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 2,
    "conjuntos_com_evento": 1
   },
@@ -14901,7 +15232,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 7,
    "conjuntos_com_evento": 2
   },
@@ -14910,7 +15241,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 3,
    "conjuntos_com_evento": 2
   },
@@ -14919,7 +15250,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 3,
    "conjuntos_com_evento": 3
   },
@@ -14928,7 +15259,7 @@
    "capturas_novas": 0,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 30,
    "conjuntos_com_evento": 3
   },
@@ -14937,7 +15268,7 @@
    "capturas_novas": 7,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 14,
    "conjuntos_com_evento": 6
   },
@@ -14946,7 +15277,7 @@
    "capturas_novas": 3,
    "recapturas_sem_mudanca": 0,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 10,
    "conjuntos_com_evento": 11
   },
@@ -14955,7 +15286,7 @@
    "capturas_novas": 116,
    "recapturas_sem_mudanca": 5,
    "falhas": 0,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 16,
    "conjuntos_com_evento": 11
   },
@@ -14964,18 +15295,18 @@
    "capturas_novas": 2094,
    "recapturas_sem_mudanca": 362,
    "falhas": 2,
-   "referencias_revisadas": 3057,
+   "observacoes_revisadas": 3057,
    "publicacoes_fonte": 47,
    "conjuntos_com_evento": 111
   },
   {
    "dia": "2026-10-01",
-   "capturas_novas": 1252,
-   "recapturas_sem_mudanca": 302,
+   "capturas_novas": 1285,
+   "recapturas_sem_mudanca": 307,
    "falhas": 14,
-   "referencias_revisadas": 0,
+   "observacoes_revisadas": 0,
    "publicacoes_fonte": 6,
-   "conjuntos_com_evento": 71
+   "conjuntos_com_evento": 73
   }
  ],
  "silver_nao_declarados": [
@@ -15228,7 +15559,7 @@
  "eixos": {
   "naturezas": {
    "OBSERVADO": "Medido ou publicado pela fonte como observação.",
-   "ESTIMADO": "Estimado pela fonte (ou pelo observatório, quando a ficha diz).",
+   "ESTIMADO": "Estimado, pela fonte ou pelo observatório: o contrato de proveniência ainda não separa os dois (ver eixos.limitacao_natureza).",
    "CALCULADO": "Calculado pelo observatório a partir de dados da fonte, com fórmula publicada.",
    "PREVISTO": "Previsão de modelo.",
    "CENARIO": "Cenário de planejamento."
@@ -15242,9 +15573,9 @@
   },
   "matriz": {
    "CALCULADO": {
-    "reconciliacao_aprovada": 4,
+    "reconciliacao_aprovada": 3,
     "controles_aprovados": 2,
-    "ressalva": 3
+    "ressalva": 2
    },
    "ESTIMADO": {
     "controles_aprovados": 1
@@ -15254,14 +15585,12 @@
     "reconciliacao_aprovada": 1
    },
    "PREVISTO": {
-    "ressalva": 1,
-    "controles_aprovados": 4,
-    "reconciliacao_aprovada": 8
+    "ressalva": 1
    },
    "SEM_VINCULO": {
-    "reconciliacao_aprovada": 32,
-    "controles_aprovados": 32,
-    "ressalva": 51
+    "reconciliacao_aprovada": 52,
+    "controles_aprovados": 29,
+    "ressalva": 54
    }
   },
   "por_gold": {
@@ -15329,15 +15658,15 @@
    "empresas.json": {
     "naturezas": {
      "OBSERVADO": 4,
-     "CALCULADO": 5,
-     "ESTIMADO": 1
+     "CALCULADO": 6,
+     "ESTIMADO": 2
     },
     "situacoes": {
-     "reconciliacao_aprovada": 1,
+     "reconciliacao_aprovada": 2,
      "controles_aprovados": 1
     },
-    "fichas": 2,
-    "proveniencias": 10
+    "fichas": 3,
+    "proveniencias": 12
    },
    "expansao.json": {
     "naturezas": {
@@ -15400,13 +15729,12 @@
    },
    "mercado.json": {
     "naturezas": {
-     "OBSERVADO": 7,
-     "CALCULADO": 1
+     "CALCULADO": 8
     },
     "situacoes": {
-     "ressalva": 3,
+     "ressalva": 5,
      "reconciliacao_aprovada": 4,
-     "controles_aprovados": 5
+     "controles_aprovados": 3
     },
     "fichas": 12,
     "proveniencias": 8
@@ -15502,23 +15830,25 @@
    "sintese.json": {
     "naturezas": {},
     "situacoes": {
-     "controles_aprovados": 11,
-     "ressalva": 5
+     "reconciliacao_aprovada": 10,
+     "ressalva": 5,
+     "controles_aprovados": 6
     },
-    "fichas": 16,
+    "fichas": 21,
     "proveniencias": 0
    },
    "territorio.json": {
     "naturezas": {
      "CALCULADO": 10,
-     "OBSERVADO": 2
+     "OBSERVADO": 5,
+     "ESTIMADO": 2
     },
     "situacoes": {
      "reconciliacao_aprovada": 2,
      "controles_aprovados": 1
     },
     "fichas": 3,
-    "proveniencias": 12
+    "proveniencias": 17
    },
    "transicao.json": {
     "naturezas": {
@@ -15535,9 +15865,10 @@
     "proveniencias": 6
    }
   },
-  "fichas": 141,
-  "fichas_sem_natureza_vinculada": 115,
-  "regra_vinculo": "A natureza de uma ficha é a declarada na própria ficha (campo natureza), a da proveniência de mesma chave em evidencias e proveniencia, a da proveniência de mesmo indicador na mesma gold, ou a da proveniência mais próxima na estrutura da gold (no mesmo objeto da ficha ou num objeto que a contém); sem nenhuma, SEM_VINCULO: a gold não liga a ficha à série, e a situação da validação é publicada sem a natureza."
+  "fichas": 147,
+  "fichas_sem_natureza_vinculada": 135,
+  "regra_vinculo": "A natureza de uma ficha é a declarada na própria ficha (campo natureza), a da proveniência de mesma chave em evidencias e proveniencia, a da proveniência de mesmo indicador na mesma gold, ou a da única proveniência no mesmo objeto que contém a ficha. A proveniência de um objeto acima na árvore da gold não é herdada: ela pode ser de outra série (a proveniência de topo de uma gold de previsão não diz a natureza de um valor observado). Sem vínculo, SEM_VINCULO: a situação da validação é publicada sem a natureza, e a natureza na ficha é pedido ao integrador.",
+  "limitacao_natureza": "A seção 11.3 separa 'estimado pela fonte' de 'estimado pelo observatório'. O contrato de proveniência compartilhado (pipeline/energia/gold/comum.py, NATUREZAS) tem uma só categoria ESTIMADO, e nenhuma proveniência diz qual dos dois é: o eixo publica ESTIMADO sem a separação, e a mudança está pedida ao integrador (pedido 8 do documento do módulo)."
  },
  "avaliacao": {
   "arquivo": null,
@@ -15602,13 +15933,13 @@
   }
  ],
  "catalogo": {
-  "total": 413,
+  "total": 415,
   "contagem": {
    "CATALOGADO": 22,
-   "RECURSO VERIFICADO": 266,
+   "RECURSO VERIFICADO": 267,
    "INTEGRADO": 0,
    "VALIDADO": 5,
-   "PUBLICADO": 120
+   "PUBLICADO": 121
   },
   "descontinuados": 12,
   "portais": {
@@ -15668,8 +15999,8 @@
    "ONS": {
     "por_estado": {
      "CATALOGADO": 13043,
-     "RECURSO VERIFICADO": 92,
-     "PUBLICADO": 688
+     "RECURSO VERIFICADO": 94,
+     "PUBLICADO": 686
     },
     "total": 13823,
     "removidos": 0,
@@ -16515,7 +16846,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-10-01T05:56:47Z",
-   "validado_em": "2026-10-01T07:03:15Z",
+   "validado_em": "2026-10-01T07:42:54Z",
    "cobertura_historica": {
     "inicio": "2026-10-01",
     "fim": "2026-10-01"
@@ -16532,9 +16863,9 @@
     "sha256": "f92208a1736658fc743037acca6970f11c01e34c212798de8481ba05e369e214"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "fa4767ccfa9a+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:04:47Z",
+    "detectado_em": "2026-10-01T07:44:27Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 1,
@@ -16568,8 +16899,8 @@
     "fim": "2026-10-01"
    },
    "publicado_pela_fonte_em": null,
-   "capturado_em": "2026-10-01T07:02:56Z",
-   "validado_em": "2026-10-01T07:03:15Z",
+   "capturado_em": "2026-10-01T07:37:35Z",
+   "validado_em": "2026-10-01T07:42:54Z",
    "cobertura_historica": {
     "inicio": "2026-09-27",
     "fim": "2026-10-01"
@@ -16580,14 +16911,14 @@
    ],
    "formula": "situação = EM DIA se hoje ≤ fim do período seguinte ao último disponível + tolerância da cadência declarada (diária 2, semanal 7, quinzenal 15, mensal 60, trimestral 90, anual 365 dias); completude interna = referências presentes ÷ esperadas entre a primeira e a última de cada série, no passo modal",
    "snapshot": {
-    "id": "silvers@2026-10-01T07:02:56Z",
-    "sha256": "ee8f55f5ba234d9765dccd36265605cf8b779575673df61b9ba3cd9376d97a9e"
+    "id": "silvers@2026-10-01T07:37:35Z",
+    "sha256": "919777c092024f80b4f047c5acbab3b810405ab248b4197f839e4759b0846b1f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "fa4767ccfa9a+alterado",
    "revisoes_conhecidas": {
     "total": 0,
-    "detectado_em": "2026-10-01T07:03:15Z",
+    "detectado_em": "2026-10-01T07:42:54Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -16616,8 +16947,8 @@
     "fim": "2026-10-01"
    },
    "publicado_pela_fonte_em": null,
-   "capturado_em": "2026-10-01T07:02:56Z",
-   "validado_em": "2026-10-01T07:03:15Z",
+   "capturado_em": "2026-10-01T07:37:35Z",
+   "validado_em": "2026-10-01T07:42:54Z",
    "cobertura_historica": {
     "inicio": "2026-09-27",
     "fim": "2026-10-01"
@@ -16625,16 +16956,16 @@
    "transformacoes": [
     "comparação das vintages no silver (append only)"
    ],
-   "formula": "revisão = troca de valor de uma mesma (série, referência) entre capturas consecutivas; relativa = |novo − anterior| ÷ |anterior|",
+   "formula": "revisão = troca de valor de uma mesma (série, referência) entre capturas consecutivas do mesmo arquivo; observações revisadas = pares (série, referência); referências revisadas = períodos distintos; relativa = |novo − anterior| ÷ |anterior|",
    "snapshot": {
-    "id": "silvers@2026-10-01T07:02:56Z",
-    "sha256": "ee8f55f5ba234d9765dccd36265605cf8b779575673df61b9ba3cd9376d97a9e"
+    "id": "silvers@2026-10-01T07:37:35Z",
+    "sha256": "919777c092024f80b4f047c5acbab3b810405ab248b4197f839e4759b0846b1f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "fa4767ccfa9a+alterado",
    "revisoes_conhecidas": {
     "total": 3057,
-    "detectado_em": "2026-10-01T07:03:15Z",
+    "detectado_em": "2026-10-01T07:42:54Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -16663,8 +16994,8 @@
     "fim": "2026-10-01"
    },
    "publicado_pela_fonte_em": null,
-   "capturado_em": "2026-10-01T07:02:56Z",
-   "validado_em": "2026-10-01T07:03:15Z",
+   "capturado_em": "2026-10-01T07:37:35Z",
+   "validado_em": "2026-10-01T07:42:54Z",
    "cobertura_historica": {
     "inicio": "2026-10-01",
     "fim": "2026-10-01"
@@ -16674,14 +17005,14 @@
    ],
    "formula": "veredito = pior resultado entre as checagens aplicáveis (reprovado > ressalva > aprovado)",
    "snapshot": {
-    "id": "silvers@2026-10-01T07:02:56Z",
-    "sha256": "ee8f55f5ba234d9765dccd36265605cf8b779575673df61b9ba3cd9376d97a9e"
+    "id": "silvers@2026-10-01T07:37:35Z",
+    "sha256": "919777c092024f80b4f047c5acbab3b810405ab248b4197f839e4759b0846b1f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "fa4767ccfa9a+alterado",
    "revisoes_conhecidas": {
     "total": 0,
-    "detectado_em": "2026-10-01T07:03:15Z",
+    "detectado_em": "2026-10-01T07:42:54Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -16695,15 +17026,15 @@
  "evidencias": {
   "conjuntos_publicados": {
    "indicador": "Conjuntos publicados no catálogo",
-   "valor_exibido": "120",
-   "valor_calculo": 120.0,
+   "valor_exibido": "121",
+   "valor_calculo": 121.0,
    "unidade": "conjuntos",
    "periodo": {
     "inicio": "2026-10-01",
     "fim": "2026-10-01"
    },
    "entidade": "catálogo do observatório",
-   "universo": "413 conjuntos catalogados",
+   "universo": "415 conjuntos catalogados",
    "filtros": [],
    "fonte": {
     "orgao": "ONS, ANEEL e CCEE",
@@ -16748,24 +17079,24 @@
    "denominador": null,
    "pesos": null,
    "exclusoes": [],
-   "cobertura": "413 entradas: listagens do ONS, da ANEEL e da CCEE, package_show versionados da CCEE, REGISTRO dos módulos e cadastro manual",
+   "cobertura": "415 entradas: listagens do ONS, da ANEEL e da CCEE, package_show versionados da CCEE, REGISTRO dos módulos e cadastro manual",
    "tratamento_ausencia": "conjunto sem evidência de uma etapa para na etapa anterior",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "eec0a3121e05+alterado",
-    "publicacao": "2026-10-01T07:03:15Z"
+    "codigo": "fa4767ccfa9a+alterado",
+    "publicacao": "2026-10-01T07:42:54Z"
    },
    "revisoes": "Detecção de revisões não disponível para este número.",
    "testes": [
     {
      "nome": "sem checagem reprovada no relatório",
      "resultado": "aprovado",
-     "detalhe": "120 de 120 publicados sem checagem reprovada nos seus conjuntos (dados_validacoes.csv)"
+     "detalhe": "121 de 121 publicados sem checagem reprovada nos seus conjuntos (dados_validacoes.csv)"
     },
     {
      "nome": "consumido por gold íntegra",
      "resultado": "aprovado",
-     "detalhe": "120 de 120 publicados com gold consumidora íntegra na varredura das golds"
+     "detalhe": "121 de 121 publicados com gold consumidora íntegra na varredura das golds"
     }
    ],
    "reconciliacao": null,
@@ -16780,7 +17111,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py dados --sem-coleta",
-   "citacao": "SCRUTINIUMS. Conjuntos publicados no catálogo: 120 conjuntos, catálogo do observatório, 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, ANEEL e CCEE, Listagem de conjuntos (API CKAN package_search) (recurso package_search). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Conjuntos publicados no catálogo: 121 conjuntos, catálogo do observatório, 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, ANEEL e CCEE, Listagem de conjuntos (API CKAN package_search) (recurso package_search). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "conjuntos_atrasados": {
    "indicador": "Conjuntos com atualização atrasada",
@@ -16792,7 +17123,7 @@
     "fim": "2026-10-01"
    },
    "entidade": "conjuntos integrados",
-   "universo": "104 conjuntos com SLA aplicável de 149 integrados",
+   "universo": "104 conjuntos com SLA aplicável de 151 integrados",
    "filtros": [],
    "fonte": {
     "orgao": "Scrutiniums (pipeline do observatório)",
@@ -16800,8 +17131,8 @@
     "recurso": "vintages vigentes de todos os conjuntos integrados; o sha256 é o da lista ordenada conjunto:recurso:sha256 de cada vintage vigente (o mesmo snapshot da proveniência 'saude')",
     "url": "https://github.com/genarolins1975/scrutiniums/tree/main/pipeline/energia",
     "arquivo": "data/energia/silver/*.db",
-    "sha256": "ee8f55f5ba234d9765dccd36265605cf8b779575673df61b9ba3cd9376d97a9e",
-    "capturado_em": "2026-10-01T07:02:56Z",
+    "sha256": "919777c092024f80b4f047c5acbab3b810405ab248b4197f839e4759b0846b1f",
+    "capturado_em": "2026-10-01T07:37:35Z",
     "publicado_em": null
    },
    "extracao_pdf": null,
@@ -16811,7 +17142,7 @@
    "chaves_total": null,
    "consulta": null,
    "manifesto": null,
-   "formula": "contagem de conjuntos com hoje > prazo_proximo (regra de SLA por cadência declarada, casos A a D)",
+   "formula": "contagem de conjuntos com hoje > prazo_proximo (regra de SLA por cadência declarada, casos A a E)",
    "numerador": null,
    "denominador": null,
    "pesos": null,
@@ -16820,20 +17151,25 @@
    "tratamento_ausencia": "sem frequência declarada: SEM SLA; sem período nem data de publicação da fonte: SEM DADO",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "eec0a3121e05+alterado",
-    "publicacao": "2026-10-01T07:03:15Z"
+    "codigo": "fa4767ccfa9a+alterado",
+    "publicacao": "2026-10-01T07:42:54Z"
    },
    "revisoes": "Detecção de revisões não disponível para este número.",
    "testes": [
     {
-     "nome": "prazo vencido em todo atrasado",
+     "nome": "prazo refeito por outra implementação da regra",
      "resultado": "aprovado",
-     "detalhe": "1 de 1 atrasados com prazo anterior a 2026-10-01"
+     "detalhe": "104 de 104 prazos refeitos com aritmética de calendário própria (calendar.monthrange) e a tabela de tolerâncias publicada iguais aos publicados"
     },
     {
-     "nome": "falha não renova a data do dado",
+     "nome": "último período dos conjuntos com falha relido no original do bronze",
      "resultado": "aprovado",
-     "detalhe": "4 conjuntos com falha de coleta registrada: último período publicado igual ao MAX(ref) lido de novo no silver por consulta direta"
+     "detalhe": "4 de 4 conjuntos com falha de coleta registrada: mercado/ccee_consumo_classe_agente: 2026-07 escrito como '202607' no original de 2026-10-01T00:45:34Z (sha256 conferido); mercado/ccee_encargo_ess_ancilar: 2026-07 escrito como '202607' no original de 2026-10-01T00:47:01Z (sha256 conferido); mercado/ccee_lista_perfil_v1: 2026-09-01 igual à data de modificação informada pela fonte (2026-09-01T14:57:51Z) para o original de 2026-10-01T00:45:51Z, que não traz data; ons_carga/openmeteo_temperatura: 2026-09-30 escrito como '2026-09-30' no original de 2026-10-01T00:38:46Z (sha256 conferido)"
+    },
+    {
+     "nome": "consistência interna: atrasado tem prazo vencido",
+     "resultado": "aprovado",
+     "detalhe": "1 de 1 atrasados com prazo anterior a 2026-10-01 (mesma condição que define ATRASADO; não é conferência independente)"
     }
    ],
    "reconciliacao": null,
@@ -16844,7 +17180,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py dados --sem-coleta",
-   "citacao": "SCRUTINIUMS. Conjuntos com atualização atrasada: 1 conjuntos, conjuntos integrados, 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: Scrutiniums (pipeline do observatório), Silvers do domínio Energia (recurso vintages vigentes de todos os conjuntos integrados; o sha256 é o da lista ordenada conjunto:recurso:sha256 de cada vintage vigente (o mesmo snapshot da proveniência 'saude'), capturado em 01/10/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Conjuntos com atualização atrasada: 1 conjuntos, conjuntos integrados, 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: Scrutiniums (pipeline do observatório), Silvers do domínio Energia (recurso vintages vigentes de todos os conjuntos integrados; o sha256 é o da lista ordenada conjunto:recurso:sha256 de cada vintage vigente (o mesmo snapshot da proveniência 'saude'), capturado em 01/10/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "maior_revisao_relativa": {
    "indicador": "Maior revisão relativa detectada (Balanço de Energia nos Subsistemas)",
@@ -16856,7 +17192,7 @@
     "fim": "2026-09-26T08:00"
    },
    "entidade": "série carga.NE de balanco_energia_subsistema_ho",
-   "universo": "2620 referências revisadas no conjunto",
+   "universo": "2620 observações (série, referência) revisadas em 336 referências distintas e 19 séries do conjunto",
    "filtros": [],
    "fonte": {
     "orgao": "ONS",
@@ -16906,10 +17242,10 @@
    "tratamento_ausencia": "referência ausente numa captura não conta como revisão (ausência não é zero)",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "eec0a3121e05+alterado",
-    "publicacao": "2026-10-01T07:03:15Z"
+    "codigo": "fa4767ccfa9a+alterado",
+    "publicacao": "2026-10-01T07:42:54Z"
    },
-   "revisoes": "2.620 observações revisadas pela fonte entre as capturas integradas.",
+   "revisoes": "2620 observações (pares série e referência) revisadas pela fonte entre capturas do mesmo arquivo, em 336 referências distintas.",
    "testes": [
     {
      "nome": "valores relidos nas duas vintages",
@@ -16925,7 +17261,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py dados --sem-coleta",
-   "citacao": "SCRUTINIUMS. Maior revisão relativa detectada (Balanço de Energia nos Subsistemas): 20656,6%, série carga.NE de balanco_energia_subsistema_ho, 26/09/2026 08:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Balanço de Energia nos Subsistemas (recurso BALANCO_ENERGIA_SUBSISTEMA_2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Maior revisão relativa detectada (Balanço de Energia nos Subsistemas): 20656,6%, série carga.NE de balanco_energia_subsistema_ho, 26/09/2026 08:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Balanço de Energia nos Subsistemas (recurso BALANCO_ENERGIA_SUBSISTEMA_2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  }
 }

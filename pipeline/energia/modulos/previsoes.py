@@ -148,7 +148,11 @@ ARQUIVOS_PUBLICOS = {
         "(UTC); atraso_min (minutos depois do prazo, o mesmo da gold); atraso_origem (registrado = gravado pela rodada; calculado "
         "= derivado de emitido_em e prazo porque o registro transcrito não o trazia); modo (agendada, manual ou registro "
         "transcrito de artefato externo); horizonte; entrega; submercado; status; previsao (R$/MWh, vazio = sem número); mudanca "
-        "(diferença para a rodada anterior da mesma entrega); motivo; realizado e erro quando a entrega já terminou; sha256."),
+        "(diferença para a rodada anterior da mesma entrega); motivo; realizado e erro quando a entrega já terminou; sha256; "
+        "versao_codigo (commit do código da rodada; vazio = não registrado); registrado_no_portal_em (dia, em Brasília, em que o "
+        "registro entrou no arquivo do observatório; posterior a emitido_em = registro transcrito, não emissão original); p10 e "
+        "p90 (R$/MWh; vazios = sem faixa publicada); alertas (separados por vírgula); substitui (forecast_id corrigido, só em "
+        "registro de correção); anterior (sha256 do registro anterior no encadeamento; vazio no legado de 27/09/2026)."),
 }
 
 # Resultados do teste retrospectivo retidos (sem liberação registrada): ficam fora do portal,
@@ -932,16 +936,20 @@ def _escreve_emissoes(registros, apur, rodadas):
             mudanca[(grupo["modelo"], grupo["entrega"], grupo["submercado"], x["run_id"])] = x["mudanca"]
     cab = ["forecast_id", "run_id", "tipo", "modelo", "versao_modelo", "origem", "cutoff", "prazo", "emitido_em", "atraso_min",
            "atraso_origem", "modo", "horizonte", "entrega", "submercado", "status", "previsao", "mudanca", "motivo", "realizado",
-           "erro", "sha256"]
+           "erro", "sha256", "versao_codigo", "registrado_no_portal_em", "p10", "p90", "alertas", "substitui", "anterior"]
     rows = []
     for r in registros:
         a = por_id.get(r["forecast_id"]) or {}
         rd = por_run[r["run_id"]]
         mud = mudanca.get((r["modelo"], r["entrega"]["id"], r["submercado"], r["run_id"]))
+        # faixa como gravada no registro (nenhuma é inventada: sem quantis, p10 e p90 ficam vazios)
+        q = r.get("quantis") or {}
         rows.append([r["forecast_id"], r["run_id"], r["tipo"], r["modelo"], r.get("versao_modelo"), r["origem"], r["cutoff"],
                      r.get("prazo"), r["emitido_em"], rd["atraso_min"], rd["atraso_origem"] or "", rd["modo"],
                      r["horizonte"], r["entrega"]["id"], r["submercado"], r["status"], r.get("previsao"), mud, r.get("motivo") or "",
-                     a.get("realizado"), a.get("erro"), r["sha256"]])
+                     a.get("realizado"), a.get("erro"), r["sha256"], r.get("versao_codigo") or "",
+                     r.get("registrado_no_portal_em") or "", q.get("p10"), q.get("p90"), ",".join(r.get("alertas") or []),
+                     r.get("substitui") or "", r.get("anterior") or ""])
     base.escreve_csv(os.path.basename(CSV_EMISSOES), cab, rows)
 
 

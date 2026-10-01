@@ -16,10 +16,12 @@ import { LIMITE_COMPARACAO, alternarSelecao } from "@/lib/energia/tabela";
 import {
   DIMENSOES_PERFIL,
   ESQUEMA_MMGD,
+  LISTAS_DESTAQUE,
   MEDIDAS_MUN,
   MEDIDAS_UF,
   MEDIDA_MUN,
   MEDIDA_UF,
+  ROTULO_DESTAQUE,
   ROTULO_DIMENSAO,
   codigoUf,
   colunasMunicipios,
@@ -33,19 +35,23 @@ import {
   municipiosDoJson,
   numTexto,
   participacaoTexto,
+  pctTexto,
   referenciaUf,
   rotuloMedidaUf,
   siglaDoCodigo,
   valorMunicipio,
   valoresMapaUf,
   type DimensaoPerfil,
+  type LinhaDestaque,
   type LinhaMensal,
+  type ListaDestaque,
   type LinhaUf,
   type MedidaMun,
   type MedidaUf,
   type MunicipioMmgd,
+  type UfAnoCompacto,
 } from "@/lib/energia/transicao";
-import type { BlocoMmgd, MmgdUfAno, MunicipiosMmgdArquivo } from "@/lib/energia/tipos-transicao";
+import type { BlocoMmgd, MunicipiosMmgdArquivo } from "@/lib/energia/tipos-transicao";
 
 /**
  * P063, MMGD no território: o mapa por UF, as barras com a referência nacional, a
@@ -104,7 +110,7 @@ export function TransicaoMmgdUf({
   fonte,
 }: {
   linhas: LinhaUf[];
-  ufAnual: MmgdUfAno[];
+  ufAnual: UfAnoCompacto[];
   anoReferencia: number;
   anoPopulacao: number | null;
   primeiroCoberto: number;
@@ -340,6 +346,55 @@ export function TransicaoMmgdPerfil({ perfis, anoReferencia }: { perfis: BlocoMm
   );
 }
 
+/* ================================================================ destaques municipais */
+
+/**
+ * Rankings municipais publicados na gold (população de pelo menos o mínimo da
+ * gold e potência completa), um por vez, com a lista escolhida na URL (mmgd.rank).
+ */
+export function TransicaoDestaques({ listas, anoReferencia, populacaoMinima }: { listas: Record<ListaDestaque, LinhaDestaque[]>; anoReferencia: number; populacaoMinima: number }) {
+  const [v, definir] = useEstadoUrl(ESQUEMA_MMGD);
+  const linhas = listas[v.rank] ?? [];
+  const opcoes = LISTAS_DESTAQUE.map((k) => [k, ROTULO_DESTAQUE[k]] as const) as readonly (readonly [ListaDestaque, string])[];
+  return (
+    <div className="space-y-3">
+      <TransicaoOpcoes rotulo="Ranking" nome="transicao-mmgd-rank" opcoes={opcoes} valor={v.rank} onMudar={(rank) => definir({ rank })} />
+      <div className="tabela-scroll" tabIndex={0} role="region" aria-label={`${ROTULO_DESTAQUE[v.rank]} (tabela rolável)`}>
+        <table className="w-full min-w-[36rem] border-collapse text-xs tabular-nums">
+          <caption className="pb-2 text-left text-sm font-medium text-carvao">
+            {ROTULO_DESTAQUE[v.rank]}
+            {v.rank === "maior_crescimento_estoque" ? ` (${anoReferencia})` : ""}: municípios com pelo menos {inteiro(populacaoMinima)} habitantes
+          </caption>
+          <thead>
+            <tr>
+              {["Município", "Unidades", "Potência (kW)", "População", "W/hab", `Crescimento do estoque em ${anoReferencia}`, "Distribuidora sem conjunto na UF"].map((c, i) => (
+                <th key={c} scope="col" className={`border-b border-linha px-2 py-1.5 font-medium text-mineral ${i ? "text-right" : "text-left"}`}>
+                  {c}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {linhas.map((x) => (
+              <tr key={x.id} className="border-b border-linha last:border-b-0">
+                <th scope="row" className="px-2 py-1.5 text-left font-normal text-carvao">
+                  {x.posicao}. {x.municipio} ({x.uf})
+                </th>
+                <td className="px-2 py-1.5 text-right text-carvao">{inteiro(x.unidades)}</td>
+                <td className="px-2 py-1.5 text-right text-carvao">{numTexto(x.potencia_kw, 0)}</td>
+                <td className="px-2 py-1.5 text-right text-carvao">{inteiro(x.populacao)}</td>
+                <td className="px-2 py-1.5 text-right text-carvao">{numTexto(x.w_por_habitante, 1)}</td>
+                <td className="px-2 py-1.5 text-right text-carvao">{pctTexto(x.crescimento_estoque_pct, 1)}</td>
+                <td className="px-2 py-1.5 text-right text-carvao">{inteiro(x.unidades_distribuidora_fora_da_uf)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
 /* ================================================================ municípios */
 
 /** Código e nome dos municípios para o comparador; o código IBGE é a chave, o nome só rótulo. */
@@ -535,6 +590,7 @@ export function TransicaoMunicipios({
               Soma das fontes de cada município e ano, lida do CSV municipal por ano e fonte. Dentro da cobertura declarada pela ANEEL (a partir de {primeiroCoberto}), ano sem
               conexão vale zero; antes dela, é lacuna.
               {historico.parciais > 0 ? ` ${inteiro(historico.parciais)} unidades sem potência informada deixam o ano correspondente sem valor.` : ""}
+              {historico.semData > 0 ? ` ${inteiro(historico.semData)} unidades com data de conexão inválida no cadastro estão no total do município, mas fora dos anos.` : ""}
             </p>
           </>
         )}

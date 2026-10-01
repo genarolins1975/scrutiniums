@@ -17,24 +17,35 @@ dicionário de dados do conjunto "Carga de Energia Verificada" (versão de 30/10
       (Perdas Sudeste)
 
 O dicionário diz a que UF cada área geoelétrica corresponde (pelo nome), mas não diz a
-que submercado ela pertence. Essa pertença é PROVADA pelo fechamento: a carga média do
-dia do submercado deve ser igual à soma das áreas geoelétricas que o compõem mais a área
-de perdas do mesmo submercado. A hipótese a conferir vem do mapeamento publicado pelos
-módulos Água e Carga (golds agua_detalhe.json e carga_detalhe.json); este arquivo não
-fixa o resultado, só a lista oficial de áreas e a regra de conferência.
+que submercado ela pertence. A camada oficial da EPE "Unidades da federação e Subsistemas
+do SIN" (WebMap EPE, camada 24, fontes/epe_territorio.py) diz o subsistema de cada UF; a
+soma da carga verificada é a reconciliação independente dessa pertença, área por área. A
+hipótese a conferir vem da camada da EPE (ou, sem ela, do mapeamento publicado pelos
+módulos Água e Carga); este arquivo não fixa o resultado, só a lista oficial de áreas e a
+regra de conferência.
 
 Por que a soma prova a pertença: a carga de cada meia hora do submercado deve ser igual à
-soma das áreas da hipótese naquela meia hora. Mover uma área para outro submercado, ou
-trocar duas áreas de submercados diferentes, desloca o resíduo pela carga (ou pela
-diferença de carga) dessas áreas em CADA meia hora; como as áreas têm perfis diários
-diferentes, mesmo duas áreas de carga média parecida (Acre e Roraima, por exemplo)
-produzem um resíduo que varia ao longo do dia. A prova é feita meia hora a meia hora:
-a hipótese fecha quando a mediana do resíduo absoluto de cada submercado fica dentro da
+soma das áreas geoelétricas da hipótese mais a área de perdas do mesmo submercado naquela
+meia hora. Mover uma área para outro submercado, ou trocar duas áreas de submercados
+diferentes, desloca o resíduo pela carga (ou pela diferença de carga) dessas áreas. A
+hipótese fecha quando a mediana do resíduo absoluto de cada submercado fica dentro da
 tolerância, e uma área fica provada quando, além disso, nenhuma alternativa que a envolva
-(movê-la para outro submercado ou trocá-la com uma área de outro submercado) também
-fecha. A mediana resiste a uma meia hora isolada em consistência (vista no Sudeste em
-13/09/2026, 161 MWmed numa única meia hora). Área com carga zero nos dias conferidos (hoje,
-TOCO) não pode ser provada pela soma e fica declarada como indeterminada.
+(movê-la para outro submercado ou trocá-la com uma área de outro submercado) também fecha.
+
+Por que a mediana por meia hora e não o resíduo das médias do dia: com as médias do dia,
+duas áreas de carga média quase igual no mesmo dia trocam de submercado sem deixar
+resíduo. Em 16/09/2026, Rondônia (753,7 MWmed) e Tocantins Norte (745,9 MWmed) trocadas
+deixam −7,9 MWmed no Sudeste e 6,9 MWmed no Norte, e Rio Grande do Sul (4.296,0) e
+Bahia/Sergipe (4.292,9) trocadas deixam 11,0 MWmed no Nordeste: as duas trocas caberiam na
+tolerância e as quatro áreas ficariam ambíguas naquele dia. Meia hora a meia hora, os
+perfis diários diferentes deixam medianas de 230,7 e 368,1 MWmed. A troca de Acre e
+Roraima, a menor alternativa por meia hora (28,8 e 38,7 MWmed), é reprovada pelas duas
+estatísticas (34,1 a 37,8 MWmed nas médias do dia). A mediana também resiste a uma meia
+hora ainda em consistência no ONS, que desloca a média do dia inteiro (Sudeste em
+13/09/2026: 161 MWmed numa meia hora; resíduo das médias do dia de −3,26 MWmed contra
+mediana de 0,19 MWmed). As duas estatísticas são publicadas para a hipótese e para cada
+alternativa. Área com carga zero nos dias conferidos (hoje, TOCO) não pode ser provada pela
+soma e fica declarada como indeterminada.
 """
 import json
 import math
@@ -72,9 +83,12 @@ UFS = ("AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA", "MG", "MS", "
 # Tolerância da prova (mediana do resíduo absoluto por meia hora, MWmed). Fixada pelos
 # dados conferidos em 13 e 16/09/2026: com a hipótese, a maior mediana foi 7,9 MWmed (no
 # Nordeste, um desvio quase constante ao longo do dia; o módulo Água viu 7,8 MWmed em
-# 10/08/2026); a menor alternativa possível (troca de Acre e Roraima) deu 28,8 MWmed. A
-# gold publica, para cada dia, o ruído da hipótese e o menor sinal das alternativas: se um
-# dia futuro tiver alternativa abaixo da tolerância, as áreas envolvidas ficam ambíguas.
+# 10/08/2026); a menor alternativa possível (troca de Acre e Roraima) deu 28,8 MWmed por
+# meia hora (37,4 MWmed no pior submercado pelo resíduo das médias do dia, estatística que
+# deixaria passar a troca de Rondônia e Tocantins Norte em 16/09/2026, com 7,9 MWmed). A
+# gold publica, para cada dia, o ruído da hipótese e as duas estatísticas de cada
+# alternativa: se um dia futuro tiver alternativa abaixo da tolerância (pela mediana por
+# meia hora, a estatística da prova), as áreas envolvidas ficam ambíguas.
 TOLERANCIA_MWMED = 15.0
 MIN_MEIAS_HORAS = 40     # meias horas comuns às áreas do submercado para o dia valer
 INTERVALOS_DIA = 48
@@ -178,11 +192,14 @@ def confere_fechamento(series, hipotese, tolerancia=TOLERANCIA_MWMED):
     alternativas = []
 
     def fecha_com(nova):
-        piores = []
+        """(maior mediana |resíduo| por meia hora, maior |resíduo das médias do dia|) entre
+        os submercados que a alternativa altera."""
+        piores, medias_dia = [], []
         for sm in {s for s in nova if nova[s] != hipotese[s]}:
             est = _estatistica(_residuos(series, sm, nova[sm]))
             piores.append(est if est is not None else float("inf"))
-        return max(piores) if piores else 0.0
+            medias_dia.append(abs(sum(medias[a] for a in nova[sm]) + medias[_perdas_de(sm)] - medias[_api_de(sm)]))
+        return (max(piores) if piores else 0.0), (max(medias_dia) if medias_dia else 0.0)
 
     for a in positivas:
         for outro in NOME_SUBMERCADO:
@@ -191,7 +208,7 @@ def confere_fechamento(series, hipotese, tolerancia=TOLERANCIA_MWMED):
             nova = {k: list(v) for k, v in hipotese.items()}
             nova[sm_de[a]].remove(a)
             nova[outro].append(a)
-            alternativas.append((fecha_com(nova), (a,), f"{a} no {outro}"))
+            alternativas.append((*fecha_com(nova), (a,), f"{a} no {outro}"))
     for i, a in enumerate(positivas):
         for b in positivas[i + 1:]:
             if sm_de[a] == sm_de[b]:
@@ -201,9 +218,9 @@ def confere_fechamento(series, hipotese, tolerancia=TOLERANCIA_MWMED):
             nova[sm_de[b]].remove(b)
             nova[sm_de[a]].append(b)
             nova[sm_de[b]].append(a)
-            alternativas.append((fecha_com(nova), (a, b), f"troca {a} e {b}"))
-    alternativas.sort(key=lambda x: x[0])
-    ambiguas = {a for est, envolvidas, _ in alternativas if est <= tolerancia for a in envolvidas}
+            alternativas.append((*fecha_com(nova), (a, b), f"troca {a} e {b}"))
+    alternativas.sort(key=lambda x: (x[0], x[3]))
+    ambiguas = {a for est, _md, envolvidas, _ in alternativas if est <= tolerancia for a in envolvidas}
     areas = {}
     for sm, lst in hipotese.items():
         for a in lst:
@@ -216,17 +233,24 @@ def confere_fechamento(series, hipotese, tolerancia=TOLERANCIA_MWMED):
                 areas[a] = {"submercado": sm, "veredito": "ambigua", "carga_mwmed": medias[a]}
             else:
                 areas[a] = {"submercado": sm, "veredito": "provada", "carga_mwmed": medias[a]}
-    menor = alternativas[0] if alternativas else None
+    lista = [{"descricao": d, "envolvidas": list(env), "mediana_abs_mwmed": est, "residuo_medias_dia_mwmed": md}
+             for est, md, env, d in alternativas]
+    menor = lista[0] if lista else None
+    menor_md = min(lista, key=lambda x: (x["residuo_medias_dia_mwmed"], x["descricao"])) if lista else None
     return {"completo": True, "tolerancia_mwmed": tolerancia, "fecha": fecha, "submercados": res, "areas": areas,
             "ruido_mwmed": max(x["mediana_abs_mwmed"] for x in res.values()),
-            "menor_alternativa": {"descricao": menor[2], "mediana_abs_mwmed": menor[0]} if menor else None,
-            "alternativas_avaliadas": len(alternativas), "medias_mwmed": medias}
+            "ruido_medias_dia_mwmed": max(abs(x["residuo_mwmed"]) for x in res.values()),
+            "menor_alternativa": menor, "menor_alternativa_pelas_medias": menor_md,
+            "alternativas": lista, "alternativas_avaliadas": len(lista), "medias_mwmed": medias}
 
 
 def uf_para_submercado(conferencias, hipotese):
-    """{uf: {subsistema, estado, areas}} a partir das conferências dos dias. Estados:
-    - 'provado': todas as áreas da UF com carga provadas no mesmo submercado em todos os
-      dias completos, e nenhuma área indeterminada;
+    """{uf: {subsistema, estado, areas}} a partir das conferências dos dias. Uma área vale
+    como provada quando é provada em todo dia completo em que teve carga: com carga zero
+    num dos dias, vale a prova do outro (o dia sem carga não prova nem reprova); com carga
+    zero em todos, fica indeterminada. Estados:
+    - 'provado': todas as áreas da UF provadas no mesmo submercado, e nenhuma área
+      indeterminada;
     - 'provado_com_area_sem_carga': como acima, mas a UF também tem área sem carga nos
       dias conferidos (o submercado dessa área não é provado pela soma);
     - 'nao_provado': área reprovada ou ambígua, ou nenhum dia completo."""

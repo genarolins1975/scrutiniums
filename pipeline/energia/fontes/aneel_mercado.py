@@ -55,8 +55,15 @@ ENERGIA_TE = "Energia TE (kWh)"
 # no mesmo arquivo); a comparação é sem diferenciar maiúsculas.
 NUM_CONSUMIDORES = "número de consumidores"
 
+# Só as linhas do tipo de mercado "Regular" (sem sistemas isolados e sem compensação de GD),
+# em medidas próprias: servem para detectar mês copiado do anterior (a mesma energia em kWh e o
+# mesmo número de consumidores repetidos exatamente, como as linhas CATIVO Regular da ELEKTRO em
+# junho e julho de 2026). Não entram em nenhuma soma publicada.
+MEDIDAS_REGULAR = ("regular_cativo_mwh", "regular_cativo_uc", "regular_livre_mwh", "regular_livre_uc")
+
 MEDIDAS_SAMP = (
     "livre_mwh", "livre_uc", "livre_mwh_refat", "cativo_mwh", "cativo_uc", "cativo_mwh_refat", "cativo_mwh_tusd",
+    *MEDIDAS_REGULAR,
     *(f"livre_mwh_{v}" for v in sorted(set(DETALHE_LIVRE.values()))),
     *(f"livre_uc_{v}" for v in sorted(set(DETALHE_LIVRE.values()))),
     "livre_mwh_outro", "livre_uc_outro",
@@ -68,10 +75,28 @@ def _texto(v):
 
 
 def classifica_samp(linha, contagem):
-    """(medida, valor) de uma linha do SAMP, ou None quando a linha não entra no módulo.
+    """[(medida, valor)] de uma linha do SAMP, ou None quando a linha não entra no módulo.
 
     kWh viram MWh (÷ 1.000); número de consumidores fica como unidades. Linha de tipo de
-    mercado desconhecido é contada (e fica de fora): sinal de mudança de leiaute."""
+    mercado desconhecido é contada (e fica de fora): sinal de mudança de leiaute. Linha do tipo
+    "Regular" também alimenta as medidas de controle MEDIDAS_REGULAR."""
+    res = _classifica_samp(linha, contagem)
+    if res is None:
+        return None
+    res = res if isinstance(res, list) else [res]
+    if _texto(linha.get("NomTipoMercado")) == "Regular":
+        opcao = _texto(linha.get("DscOpcaoEnergia")).lower()
+        extra = []
+        for medida, v in res:
+            if medida in ("cativo_mwh", "livre_mwh"):
+                extra.append((f"regular_{opcao}_mwh", v))
+            elif medida in ("cativo_uc", "livre_uc"):
+                extra.append((f"regular_{opcao}_uc", v))
+        res = res + extra
+    return res
+
+
+def _classifica_samp(linha, contagem):
     opcao = _texto(linha.get("DscOpcaoEnergia")).upper()
     if opcao not in ("CATIVO", "LIVRE"):
         return None

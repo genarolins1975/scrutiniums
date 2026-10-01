@@ -15,14 +15,21 @@ coordenada. Este arquivo concentra as regras dessas ligações:
 2. grafias antigas: uma tabela explícita, versionada aqui, com a origem de cada linha numa
    Divisão Territorial Brasileira (DTB) do IBGE que trazia o mesmo código com a grafia
    que a fonte ainda usa (o código IBGE não muda quando o nome muda);
-3. ponto → município: ponto em polígono contra a malha publicada (projetada em Albers e
-   simplificada com tolerância de 400 m). Serve só para CONFERIR a declaração da fonte:
-   a coordenada do SIGA é um centróide aproximado e a malha é simplificada, então um
-   ponto perto da divisa pode cair no vizinho. Nunca substitui o município declarado.
+3. ponto → município: ponto em polígono contra a malha municipal do IBGE em qualidade
+   MÁXIMA (API de malhas v4, uma consulta por UF, coordenadas em graus), sem
+   simplificação. A malha publicada pelo observatório para desenhar o mapa parte da
+   qualidade "mínima" do IBGE e ainda é simplificada a 400 m: numa amostra de 25 usinas
+   que ela dava como fora do município declarado, 7 estavam dentro na malha máxima. Por
+   isso a conferência usa a máxima e só recorre à publicada (marcando o resultado como
+   aproximado) quando a máxima de alguma UF não foi capturada. Serve só para CONFERIR a
+   declaração da fonte: a coordenada do SIGA é um centróide aproximado; nunca substitui o
+   município declarado.
 """
+import gzip
 import json
 import re
 import unicodedata
+from collections import defaultdict
 
 from pipeline.energia import geo
 
@@ -66,6 +73,18 @@ TOPONIMOS = (
     ("RN", "Presidente Juscelino", "2410306", DTB_2010),
     ("SP", "Florínia", "3516101", DTB_2010),
 )
+
+
+# Códigos IBGE das UFs (os dois primeiros dígitos do código de município)
+CODIGOS_UF = {
+    "11": "RO", "12": "AC", "13": "AM", "14": "RR", "15": "PA", "16": "AP", "17": "TO",
+    "21": "MA", "22": "PI", "23": "CE", "24": "RN", "25": "PB", "26": "PE", "27": "AL", "28": "SE", "29": "BA",
+    "31": "MG", "32": "ES", "33": "RJ", "35": "SP", "41": "PR", "42": "SC", "43": "RS",
+    "50": "MS", "51": "MT", "52": "GO", "53": "DF",
+}
+URL_MALHA_MAXIMA = ("https://servicodados.ibge.gov.br/api/v4/malhas/estados/{cod}"
+                    "?formato=application/json&intrarregiao=municipio&qualidade=maxima")
+DOC_MALHAS = "https://servicodados.ibge.gov.br/api/docs/malhas?versao=4"
 
 
 def normaliza(texto):
@@ -180,3 +199,75 @@ class IndicePoligonos:
                 if sum(1 for a in aneis if _dentro(x, y, a)) % 2 == 1:
                     out.append(fid)
         return out
+
+
+# ---------------------------------------------------------------- malha de qualidade máxima (graus)
+
+def corpo_sem_gzip(corpo):
+    """A API do IBGE responde com gzip mesmo quando não pedido, e o bronze ainda comprime:
+    abre as camadas gzip sobrepostas (assinatura 1f 8b) até o JSON."""
+    while corpo[:2] == b"\x1f\x8b":
+        corpo = gzip.decompress(corpo)
+    return corpo
+
+
+class PoligonosMaxima:
+    """Ponto em polígono em graus (lon, lat) contra a malha de qualidade máxima de uma UF
+    (TopoJSON da API de malhas v4). Cada município guarda as suas arestas repartidas em
+    faixas horizontais: o teste da paridade só percorre as arestas da faixa do ponto, o
+    que mantém o custo baixo mesmo com dezenas de milhares de vértices por município. Em
+    graus, a reta entre dois vértices consecutivos (poucos metros) é a mesma da projeção."""
+
+    FAIXAS = 64
+    CELULA = 0.25  # graus: grade de caixas para achar os municípios candidatos
+
+    def __init__(self, topo):
+        dec = geo.decodifica_topologia(topo)
+        arcos = dec["arcos"]
+        self.mun = {}
+        self.grade = defaultdict(list)
+        for itens in dec["objetos"].values():
+            for g in itens:
+                aneis = [geo.monta_anel(anel, arcos) for pol in g["poligonos"] for anel in pol]
+                xs = [p[0] for a in aneis for p in a]
+                ys = [p[1] for a in aneis for p in a]
+                if not xs:
+                    continue
+                cx = (min(xs), min(ys), max(xs), max(ys))
+                altura = (cx[3] - cx[1]) / self.FAIXAS or 1e-9
+                faixas = [[] for _ in range(self.FAIXAS)]
+                for anel in aneis:
+                    n = len(anel)
+                    for i in range(n):
+                        x1, y1 = anel[i - 1]
+                        x2, y2 = anel[i]
+                        if y1 == y2:
+                            continue  # aresta horizontal nunca cruza o raio
+                        b0 = min(self.FAIXAS - 1, int((min(y1, y2) - cx[1]) / altura))
+                        b1 = min(self.FAIXAS - 1, int((max(y1, y2) - cx[1]) / altura))
+                        for b in range(b0, b1 + 1):
+                            faixas[b].append((x1, y1, x2, y2))
+                self.mun[g["id"]] = (cx, altura, faixas)
+                for gx in range(int(cx[0] // self.CELULA), int(cx[2] // self.CELULA) + 1):
+                    for gy in range(int(cx[1] // self.CELULA), int(cx[3] // self.CELULA) + 1):
+                        self.grade[(gx, gy)].append(g["id"])
+
+    def contem(self, cod, lon, lat):
+        """True/False quando o município está nesta UF; None quando não está."""
+        x = self.mun.get(cod)
+        if x is None:
+            return None
+        cx, altura, faixas = x
+        if not (cx[0] <= lon <= cx[2] and cx[1] <= lat <= cx[3]):
+            return False
+        b = min(self.FAIXAS - 1, int((lat - cx[1]) / altura))
+        dentro = False
+        for x1, y1, x2, y2 in faixas[b]:
+            if (y1 > lat) != (y2 > lat) and lon < (x2 - x1) * (lat - y1) / (y2 - y1) + x1:
+                dentro = not dentro
+        return dentro
+
+    def localiza(self, lon, lat):
+        """Códigos dos municípios desta UF que contêm o ponto (0 ou 1; 2 só em sobreposição da malha)."""
+        cand = self.grade.get((int(lon // self.CELULA), int(lat // self.CELULA)), ())
+        return [cod for cod in cand if self.contem(cod, lon, lat)]

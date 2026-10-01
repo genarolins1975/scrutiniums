@@ -24,8 +24,30 @@ export type IdFrase = "reservatorios" | "afluencias" | "carga" | "termica" | "pl
 
 export type SituacaoAtualidade = "EM DIA" | "ATRASADO" | "SEM SLA" | "SEM DADO" | string;
 
+/** Componente da série de origem que não é medição, como a gold de origem o declara (seção 11.3). */
+export type ComponenteNatureza = {
+  natureza: Natureza | string;
+  desde: string;
+  descricao: string;
+  /** Caminho na proveniência de origem. */
+  fonte: string;
+  observado_nos_dados_desde?: string;
+};
+
+/** Revisão entre capturas no silver principal (valores na unidade da série). */
+export type RevisaoSerie = {
+  serie: string;
+  ref: string;
+  de: number;
+  para: number;
+  relativa_pct: number | null;
+  capturado_para: string;
+};
+
 export type QualidadeFrase = {
   natureza: Natureza | null;
+  /** Componentes PREVISTO ou ESTIMADO do agregado de origem (vazio quando a origem não declara nenhum). */
+  componentes_natureza: ComponenteNatureza[];
   frequencia: string | null;
   /** Data de referência do dado da frase. */
   referencia: string;
@@ -45,9 +67,15 @@ export type QualidadeFrase = {
   publicado_pela_fonte_em: string | null;
   capturado_em: string | null;
   revisoes: {
+    /** Séries do silver que a frase usa; revisões de outras séries do conjunto não contam. */
+    series_consideradas: string[];
+    /** Referências distintas (dias ou horas) com alguma série usada revisada na janela. */
     referencias_revisadas_na_janela: number;
+    pares_serie_referencia: number;
     /** Até 20 referências (dias ou horas) revisadas entre capturas dentro da janela. */
     revisadas: string[];
+    /** Maior variação relativa, com a série e a referência que a produziram. */
+    maior: RevisaoSerie | null;
     total_no_conjunto: number | null;
     texto: string;
   };
@@ -90,23 +118,63 @@ export type DestaqueVisao = {
   texto: string;
   tipo: "fato";
   estado: EstadoRegra;
-  desde: string | null;
-  dias: number | null;
+  /** Primeiro dia com a condição no episódio. */
+  desde: string;
+  confirmado_em: string;
+  dias: number;
+  /** Dias entre a confirmação e a referência (a caixa mostra os primeiros `novidade_dias`). */
+  dias_desde_confirmacao: number;
   referencia: string;
   normaliza_quando: string;
   frequencia_historica_pct: number;
+  /** Primeiro dia em que a regra é avaliável (não o início comum da série). */
+  historico_avaliavel_desde: string;
+  dias_avaliados: number;
+  valor: ValorRegra | null;
+  /** Caminho da evidência na gold (sintese.json#observar[regra].evidencia_numero). */
+  evidencia_caminho: string;
+  evidencia: Evidencia | null;
   hipoteses_a_verificar: HipoteseVisao[];
   nao_implica: string;
   href: string;
 };
 
+/** Frequência da caixa de destaques num período (dias com ao menos uma regra na caixa). */
+export type FrequenciaPeriodo = {
+  inicio: string;
+  fim: string;
+  dias: number;
+  dias_com_destaque: number;
+  pct_dias_com_destaque: number | null;
+  distribuicao_regras_simultaneas: { regras: number; dias: number }[];
+  pct_dias_por_regra: Record<string, number | null>;
+};
+
+export type FrequenciaConjunta = {
+  criterio: string;
+  /** Meta de materialidade: máximo de dias com destaque no período comum (%). */
+  meta_pct: number;
+  atende_meta: boolean;
+  novidade_dias: number;
+  regras: IdRegra[];
+  /** Período em que todas as regras de sistema são avaliáveis. */
+  periodo_comum: FrequenciaPeriodo;
+  desde_inicio: FrequenciaPeriodo;
+  /** null = sem limite de novidade. */
+  sensibilidade_novidade: { novidade_dias: number | null; pct_periodo_comum: number | null; pct_desde_inicio: number | null }[];
+  calibracao_anterior: { descricao: string; pct_periodo_comum: number | null; distribuicao_regras_simultaneas: { regras: number; dias: number }[] };
+};
+
 export type DestaquesVisao = {
   itens: DestaqueVisao[];
-  outras_regras_em_alerta: string[];
+  /** Regras em alerta fora da caixa: além do limite ou confirmadas há mais de `novidade_dias` dias. */
+  outras_regras_em_alerta: { regra: IdRegra; motivo: string }[];
   limite: number;
+  novidade_dias: number;
   criterio: string;
-  /** Texto de ausência quando nenhuma regra está em alerta; null quando há destaques. */
+  /** Texto de ausência quando nenhuma regra está na caixa; null quando há destaques. */
   vazio: string | null;
+  frequencia_conjunta: FrequenciaConjunta | null;
 };
 
 /* ---------------------------------------------------------------- P005: pequenos múltiplos */
@@ -252,11 +320,20 @@ export type EpisodioRegra = {
   normalizado_em: string | null;
   em_curso: boolean;
   duracao_dias: number;
+  /** Só no episódio em curso: dias entre a confirmação e a referência. */
+  dias_desde_confirmacao?: number;
 };
 
+/** Número avaliado no dia e limiares, na unidade da regra; null é ausência. */
+export type ValorRegra = { valor: number | null; limiar_inferior: number | null; limiar_superior: number | null };
+
 export type HistoricoRegra = {
+  /** Início comum da série reavaliada (01/01/2021). */
   inicio: string;
   fim: string;
+  /** Primeiro e último dia em que a regra tem base para ser avaliada. */
+  primeiro_dia_avaliado: string;
+  ultimo_dia_avaliado: string;
   dias_avaliados: number;
   dias_sem_avaliacao: number;
   dias_com_condicao: number;
@@ -285,7 +362,8 @@ export type HistoricoRegra = {
 
 export type RegistroEmissoes = {
   inicio: string | null;
-  processamentos: number;
+  /** Publicações aceitas (gold em public/energia/gold) registradas no silver. */
+  publicacoes_registradas: number;
   mudancas_de_estado: number;
   emitidos: number;
   referencias_em_alerta: number;
@@ -331,7 +409,7 @@ export type RegraObservar = {
   historico_nao_se_aplica?: string;
   /** Cadeia de um caractere por dia (A, o, ., -), últimos 365 dias avaliados. */
   linha_estado?: { inicio: string | null; estados: string; legenda: Record<string, string> };
-  valor?: { valor: number | null; limiar_inferior: number | null; limiar_superior: number | null };
+  valor?: ValorRegra;
   evidencia_numero?: Evidencia | null;
   evidencia_problemas?: string[];
   alternativas_avaliadas?: {
@@ -341,8 +419,12 @@ export type RegraObservar = {
     pct_dias_exibidos: number | null;
     episodios: number | null;
     pct_dias_com_condicao: number | null;
+    primeiro_dia_avaliado: string | null;
     motivo: string;
   }[];
+  /** Só em pld_defasagem: última tentativa de coleta direta e bloqueios registrados pelo módulo PLD. */
+  coleta_direta?: { tentado_em: string | null; ok: boolean | null; fonte: string } | null;
+  bloqueios_registrados?: { fonte: string; evidencia: string; origem: string }[];
   limites_vigentes?: {
     data: string;
     pld_min: number;
@@ -366,7 +448,8 @@ export type RevisaoMaior = {
   de: number;
   para: number;
   relativa_pct: number | null;
-  unidade: "p.p." | "MW" | "R$";
+  /** Unidade da série: %, % da MLT, MWmês, MWmed ou R$/MWh. */
+  unidade: string;
   capturado_para: string;
 };
 
@@ -375,6 +458,8 @@ export type RevisoesVisao = {
     dataset: string;
     revisoes: number;
     materiais: number;
+    /** Revisões materiais em séries que a página usa (as que contam na regra revisao_material). */
+    materiais_em_series_usadas: number;
     referencias_de: string | null;
     referencias_ate: string | null;
     dias_de_captura: string[];
@@ -390,6 +475,8 @@ export type RevisoesVisao = {
     por_captura: Record<string, number> | null;
     fonte: string;
   }[];
+  /** Séries do silver principal que entram em algum número da página. */
+  series_da_pagina: string[];
   regra_material: string;
   download: Download[];
 };
@@ -416,8 +503,24 @@ export type SinteseVisaoGold = Cabecalho & {
   observar_sem_dado: { id: IdRegra; motivo: string }[];
   alertas_nao_confirmados: { regra: IdRegra; capturado_em: string; referencia: string }[];
   revisoes: RevisoesVisao;
-  origens: { gold: string; disponivel: boolean; gerado_em: string | null; versao_codigo: string | null; lida_do_disco: boolean }[];
-  historico_regras: { inicio: string; regra: string; falso_alarme: string };
+  origens: {
+    gold: string;
+    disponivel: boolean;
+    gerado_em: string | null;
+    versao_codigo: string | null;
+    /** Contexto da execução (igual ou diferente do arquivo publicado) ou arquivo publicado lido pela Visão geral. */
+    origem: string;
+    igual_ao_publicado: boolean;
+    arquivo_publicado_gerado_em: string | null;
+    lida_em: string;
+    idade_horas: number | null;
+  }[];
+  historico_regras: {
+    inicio: string;
+    regra: string;
+    registro_publicacoes: { publicacao_anterior_registrada_nesta_execucao: boolean };
+    falso_alarme: string;
+  };
   validacao: ControleVisao[];
   nota: string;
   downloads: Download[];

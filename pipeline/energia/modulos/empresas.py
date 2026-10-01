@@ -1134,14 +1134,14 @@ def _financas(con, cvm_cad, universo, nomes):
         esc, conta, ordem, c14 = serie.split("|")
         fim = ref.split("/")[-1]
         ini = ref.split("/")[0] if "/" in ref else None
+        if conta in cv.IDS_AUXILIARES:
+            continue    # saldo inicial e final de caixa da DFC: só conferência, nunca série nem contagem
         if (c14, esc, ordem, fim) in zer_dfp:
             nao_apresentados["dfp"] += 1
             continue
         grupo = "saldo" if tipo_conta[conta] == "saldo" else DEMONSTRACAO[conta]
         if ("DFP", c14, esc, ordem, grupo, ref) in nao_preench:
             nao_preenchidos["dfp"] += 1
-            continue
-        if conta in cv.IDS_AUXILIARES:
             continue    # saldo inicial e final de caixa da DFC: só conferência, nunca série
         fator = fatores.get((c14, esc, "DFP", _documento_da_observacao("DFP", ordem, ref)))
         if fator:
@@ -1170,14 +1170,14 @@ def _financas(con, cvm_cad, universo, nomes):
         esc, conta, ordem, c14 = serie.split("|")
         fim = ref.split("/")[-1]
         ini = ref.split("/")[0] if "/" in ref else None
+        if conta in cv.IDS_AUXILIARES:
+            continue    # saldo inicial e final de caixa da DFC: só conferência, nunca série nem contagem
         if (c14, esc, ordem, fim) in zer_itr:
             nao_apresentados["itr"] += 1
             continue
         grupo = "saldo" if tipo_conta[conta] == "saldo" else DEMONSTRACAO[conta]
         if ("ITR", c14, esc, ordem, grupo, ref) in nao_preench:
             nao_preenchidos["itr"] += 1
-            continue
-        if conta in cv.IDS_AUXILIARES:
             continue
         fator = fatores.get((c14, esc, "ITR", fim))
         if fator:

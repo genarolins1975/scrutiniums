@@ -435,6 +435,15 @@ def _estado_capturado(caps, integ_estados):
     return "RECURSO VERIFICADO", False
 
 
+def estados_declarados_do_conjunto(integ_estados, por_integracao, orgao, nome):
+    """{(família, dataset): estado} só dos datasets do silver declarados para o conjunto
+    (orgao, nome). O recurso só herda o estado de captura feita por integração DESTE
+    conjunto: o mesmo arquivo (o dicionário de dados repetido em vários conjuntos do ONS)
+    baixado pela integração de outro conjunto prova só que o arquivo foi acessado."""
+    declarados = {(it.get("familia"), it.get("dataset_silver")) for it in por_integracao.get((orgao, nome), [])}
+    return {k: v for k, v in integ_estados.items() if k in declarados}
+
+
 def recursos_do_conjunto(orgao, pkg, *, integ_estados, capturas, verificacao, registrados):
     """Linhas recurso a recurso de um conjunto listado (presentes e removidos)."""
     nome = pkg.get("name")
@@ -523,8 +532,9 @@ def construir(brutos, publicacao=None, verificacoes=None, recursos_saida=None, c
         ex = ck.extras(pkg)
         desc = ck.descontinuacao(pkg, ex)
         notas = (pkg.get("notes") or "").split("-----")[0].strip()
-        rec = recursos_do_conjunto(orgao, pkg, integ_estados=integ_estados, capturas=capturas,
-                                   verificacao=verificacoes.get(f"{orgao}:{nome}"), registrados=registrados.get(orgao))
+        rec = recursos_do_conjunto(orgao, pkg, integ_estados=estados_declarados_do_conjunto(integ_estados, por_integracao, orgao, nome),
+                                   capturas=capturas, verificacao=verificacoes.get(f"{orgao}:{nome}"),
+                                   registrados=registrados.get(orgao))
         todos_recursos.extend(rec)
         e = {
             "id": f"{orgao.lower()}:{nome}", "slug": None, "orgao": orgao, "nome": nome, "titulo": pkg.get("title"),

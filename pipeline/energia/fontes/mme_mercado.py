@@ -259,3 +259,58 @@ def links_boletins(html, base_url):
         quando = f"{d.group(3)}-{d.group(2)}-{d.group(1)}T{d.group(4)}:{d.group(5)}:00-03:00" if d else None
         out.append((nome, url.rstrip("/") + "/@@download/file", quando))
     return out
+
+
+# ---------------------------------------------------------------- consolidação anual
+
+# Edição especial "Consolidação AAAA" do boletim (página própria em
+# .../boletim-anual-de-monitoramento-do-sistema-eletrico/consolidacao-AAAA, PDF público): é a
+# alternativa oficial às pastas mensais de 2023 a 2025, que o portal restringe por login. Dela
+# o módulo lê dois números de conferência anual, sem substituir nenhuma série: o consumo sem
+# perdas e a parte do ACL e do ACR (seção "Mercado consumidor no SEB", fontes EPE e ONS) e o
+# total anual de encargos de serviços do sistema com a variação contra o ano anterior (seção
+# "Encargos de serviços do sistema", que inclui a resposta da demanda).
+
+def links_consolidacao(html, ano):
+    """[(nome_arquivo, url_download)] dos PDF da consolidação do ano listados na página."""
+    vistos, out = set(), []
+    for m in re.finditer(rf'href="([^"]*/(boletim-especial-consolidacao-{ano}[^"/]*\.pdf))(?:/view)?"', html):
+        url, nome = m.group(1), m.group(2)
+        if nome in vistos:
+            continue
+        vistos.add(nome)
+        if url.startswith("/"):
+            url = "https://www.gov.br" + url
+        out.append((nome, url.rstrip("/") + "/@@download/file"))
+    return out
+
+
+def consolidacao_anual(texto, ano):
+    """Números de conferência da consolidação anual: {'consumo_sem_perdas_gwh', 'acr_pct',
+    'acl_pct', 'ess_bilhoes_rs', 'ess_variacao_pct' (negativo = redução), 'ess_ano_base'} e a
+    página (1 = primeira) de cada um. Falha fechada: sem o cabeçalho da edição do ano, sem a
+    linha do quadro ou com ACR + ACL longe de 100%, nada é extraído."""
+    if not re.search(rf"Consolidação {ano}", texto):
+        raise TabelaNaoReconhecida(f"cabeçalho 'Consolidação {ano}' não encontrado")
+    pag = lambda i: texto.count("\f", 0, i) + 1  # noqa: E731
+    out, paginas = {}, {}
+    m = re.search(r"Consumo sem perdas \(GWh\)\s+Consumo no ACR \(%\)\s+Consumo no ACL \(%\)[^\n]*\n(?:\s*\n)*\s*([\d.]+)\s+([\d,]+)\s+([\d,]+)", texto)
+    if not m:
+        raise TabelaNaoReconhecida("quadro 'Consumo sem perdas (GWh) / Consumo no ACR (%) / Consumo no ACL (%)' não encontrado")
+    out["consumo_sem_perdas_gwh"] = numero_tabela(m.group(1))
+    out["acr_pct"], out["acl_pct"] = numero_tabela(m.group(2)), numero_tabela(m.group(3))
+    for k in ("consumo_sem_perdas_gwh", "acr_pct", "acl_pct"):
+        paginas[k] = pag(m.start())
+    if abs(out["acr_pct"] + out["acl_pct"] - 100.0) > 0.11:
+        raise TabelaNaoReconhecida(f"ACR + ACL = {out['acr_pct'] + out['acl_pct']}% no quadro de consumo")
+    t = re.search(r"consumo de energia elétrica no SEB \(sem perdas\) foi de ([\d.]+) GWh", texto)
+    if t and numero_tabela(t.group(1)) != out["consumo_sem_perdas_gwh"]:
+        raise TabelaNaoReconhecida("consumo sem perdas do texto difere do quadro")
+    e = re.search(r"encargos de serviços do sistema foram de R\$ ([\d,]+) (bilhão|bilhões), o que corresponde a\s+(redução|aumento) de ([\d,]+)% em\s+relação a (\d{4})", texto)
+    if e:
+        out["ess_bilhoes_rs"] = numero_tabela(e.group(1))
+        out["ess_variacao_pct"] = numero_tabela(e.group(4)) * (-1 if e.group(3) == "redução" else 1)
+        out["ess_ano_base"] = float(e.group(5))
+        for k in ("ess_bilhoes_rs", "ess_variacao_pct", "ess_ano_base"):
+            paginas[k] = pag(e.start())
+    return {"valores": out, "paginas": paginas}

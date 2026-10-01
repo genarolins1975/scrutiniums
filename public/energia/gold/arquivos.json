@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "arquivos.json",
- "gerado_em": "2026-10-01T07:11:57Z",
+ "gerado_em": "2026-10-01T07:45:23Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "eec0a3121e05+alterado",
+ "versao_codigo": "fa4767ccfa9a+alterado",
  "disponivel": true,
  "arquivos": {
   "/energia/series/regulacao_limites_pld_atos.csv": {
@@ -507,7 +507,7 @@
    "gold": "mercado.json"
   },
   "/energia/series/mercado_nacional_mensal.csv": {
-   "colunas": "mes; cativo_mwh; livre_mwh; total_mwh (soma das linhas da EPE); livre_pct (100 × livre ÷ total); cativo_uc; livre_uc; total_planilha_mwh e livre_planilha_mwh (total nacional da planilha formatada da EPE, para conferência); diferenca_total_mwh (tabela longa − planilha); preliminar (1 = ano marcado como preliminar pela EPE); samp_livre_uc e samp_livre_mwh (soma das distribuidoras no SAMP da ANEEL: só consumidores livres faturados por distribuidora); samp_distribuidoras (quantas distribuidoras publicaram o mês). Vazio = ausência.",
+   "colunas": "mes; cativo_mwh; livre_mwh; total_mwh (soma das linhas da EPE); livre_pct (100 × livre ÷ total); cativo_uc; livre_uc; total_planilha_mwh e livre_planilha_mwh (total nacional da planilha formatada da EPE, para conferência); diferenca_total_mwh (tabela longa − planilha); preliminar (1 = ano marcado como preliminar pela EPE); samp_livre_uc e samp_livre_mwh (soma das distribuidoras no SAMP da ANEEL: só consumidores livres faturados por distribuidora); samp_distribuidoras (quantas distribuidoras publicaram o mês); samp_completo (1 = publicado por pelo menos 95% da mediana de distribuidoras e nenhuma distribuidora sem as linhas LIVRE que tinha no mês anterior); samp_comparavel (1 = completo e sem linhas Regular repetidas do mês anterior; só esses meses entram na comparação com a EPE); samp_ocorrencias (distribuidoras sem LIVRE e repetições do mês). Vazio = ausência.",
    "modulo": "mercado",
    "gold": "mercado.json"
   },
@@ -517,12 +517,12 @@
    "gold": "mercado.json"
   },
   "/energia/series/mercado_detalhe.json": {
-   "colunas": "JSON lido sob demanda pela página: mcp_submercado_mensal (mes; submercado; be_positivo_mwh e be_negativo_mwh, balanço energético em MWh; resultado_venda_rs e resultado_compra_rs, R$), acr_conta_bandeira_mensal (mes; distribuidoras; ess_eer, ressarcimento_coner, resultado_mcp, ccear_d, receita_faturada_bandeiras, repasse_conta_bandeira em R$ somados no Brasil), risco_hidrologico_acr_mensal (mes; distribuidoras; rh_itaipu, rh_repactuadas, rh_ccgf, previsao_rh, premio_risco, rh_ccgf_repactuadas_liquido, rh_bruto em R$), desligamentos_anual (ano; tipo; classe; desligamentos). R$ e MWh inteiros; null = ausência.",
+   "colunas": "JSON lido sob demanda pela página: mcp_submercado_mensal (mes; submercado; be_positivo_mwh e be_negativo_mwh, balanço energético em MWh; resultado_venda_rs e resultado_compra_rs, R$), acr_conta_bandeira_mensal (mes; distribuidoras; ess_eer, ressarcimento_coner, resultado_mcp, ccear_d, receita_faturada_bandeiras, repasse_conta_bandeira em R$ somados no Brasil), risco_hidrologico_acr_mensal (mes; distribuidoras; rh_itaipu, rh_repactuadas, rh_ccgf, previsao_rh, premio_risco, rh_ccgf_repactuadas_liquido, rh_bruto em R$), desligamentos_anual (ano; tipo; classe; desligamentos; completo, false no ano corrente, que é parcial). R$ e MWh inteiros; null = ausência.",
    "modulo": "mercado",
    "gold": "mercado.json"
   },
   "/energia/series/mercado_distribuidoras_ano.csv": {
-   "colunas": "ano (último ano civil com os 12 meses publicados por quase todas as distribuidoras); cnpj; sigla; nome; meses (meses do ano com linha no SAMP); completo (1 = 12 meses); livre_mwh e cativo_mwh (soma do ano, MWh); livre_pct_faturada (100 × livre ÷ (livre + cativo), só com 12 meses); livre_uc_dez e livre_uc_dez_anterior (unidades consumidoras livres em dezembro do ano e do ano anterior); variacao_livre_uc; livre_uc_incentivada_dez, livre_uc_convencional_dez, livre_uc_autoproducao_dez; cativo_uc_dez. Fonte: ANEEL, SAMP. Vazio = ausência.",
+   "colunas": "ano (último ano civil com os 12 meses publicados por quase todas as distribuidoras); cnpj; sigla; nome; meses (meses do ano com linha no SAMP); completo (1 = 12 meses); livre_mwh e cativo_mwh (soma do ano, MWh); livre_pct_faturada (100 × livre ÷ (livre + cativo), só com 12 meses); livre_uc_dez e livre_uc_dez_anterior (unidades consumidoras livres em dezembro do ano e do ano anterior); variacao_livre_uc; livre_uc_incentivada_dez, livre_uc_convencional_dez, livre_uc_autoproducao_dez; cativo_uc_dez; meses_repetidos (meses do ano em que as linhas Regular da distribuidora repetem exatamente as do mês anterior, com a opção: sinal de mês copiado na fonte). Fonte: ANEEL, SAMP. Vazio = ausência.",
    "modulo": "mercado",
    "gold": "mercado.json"
   },
@@ -537,7 +537,7 @@
    "gold": "mercado.json"
   },
   "/energia/series/mercado_ccee_mensal.csv": {
-   "colunas": "conjunto (nome do conjunto no portal de dados abertos da CCEE); serie (dimensões e coluna de origem separadas por '|', por exemplo 'SE|GERACAO_MRE' ou 'CONSUMO_TOTAL_ACL'); mes (AAAA-MM de referência); valor (como publicado: MWmed nos conjuntos de consumo, geração e garantia física, R$ nos de encargos e liquidação, MWh no balanço do MCP e nas parcelas de carga, contagem nos de agentes e parcelas); unidade. Fonte: CCEE, dados abertos (CC-BY-4.0). Vazio = a fonte não publicou o valor.",
+   "colunas": "conjunto (nome do conjunto no portal de dados abertos da CCEE); serie (dimensões e coluna de origem separadas por '|', por exemplo 'SE|GERACAO_MRE' ou 'CONSUMO_TOTAL_ACL'; nas parcelas de carga, 'acl|...' são os perfis que não são de distribuidora, 'distribuidor|...' os perfis da classe Distribuidor, que são o consumo do ACR, e 'classe|<classe do perfil>|...' a abertura por classe); mes (AAAA-MM de referência); valor (como publicado: MWmed nos conjuntos de consumo, geração e garantia física, R$ nos de encargos e liquidação, MWh no balanço do MCP e nas parcelas de carga, contagem nos de agentes e parcelas); unidade; situacao (rótulo do valor publicado que a gold não exibe como observação: 'zero_nao_confirmado' no pagamento de ESS dentro de sequência repetida de zeros, 'liquidacao_nao_informada' no liquidado e na inadimplência zerados com valor a liquidar positivo; vazio = observação comum). Fonte: CCEE, dados abertos (CC-BY-4.0). Vazio no valor = a fonte não publicou o valor.",
    "modulo": "mercado",
    "gold": "mercado.json"
   },
@@ -912,12 +912,12 @@
    "gold": "previsoes_desempenho.json"
   },
   "/energia/series/previsoes_emissoes.csv": {
-   "colunas": "Uma linha por célula emitida pelo observatório (arquivo imutável, pipeline/energia/previsoes/): forecast_id; run_id; tipo (REFERENCIA_EXPERIMENTAL, RODADA_INTERNA, PUBLICACAO); modelo; versao_modelo; origem; cutoff, prazo e emitido_em (UTC); atraso_min (minutos depois do prazo, o mesmo da gold); atraso_origem (registrado = gravado pela rodada; calculado = derivado de emitido_em e prazo porque o registro transcrito não o trazia); modo (agendada, manual ou registro transcrito de artefato externo); horizonte; entrega; submercado; status; previsao (R$/MWh, vazio = sem número); mudanca (diferença para a rodada anterior da mesma entrega); motivo; realizado e erro quando a entrega já terminou; sha256.",
+   "colunas": "Uma linha por célula emitida pelo observatório (arquivo imutável, pipeline/energia/previsoes/): forecast_id; run_id; tipo (REFERENCIA_EXPERIMENTAL, RODADA_INTERNA, PUBLICACAO); modelo; versao_modelo; origem; cutoff, prazo e emitido_em (UTC); atraso_min (minutos depois do prazo, o mesmo da gold); atraso_origem (registrado = gravado pela rodada; calculado = derivado de emitido_em e prazo porque o registro transcrito não o trazia); modo (agendada, manual ou registro transcrito de artefato externo); horizonte; entrega; submercado; status; previsao (R$/MWh, vazio = sem número); mudanca (diferença para a rodada anterior da mesma entrega); motivo; realizado e erro quando a entrega já terminou; sha256; versao_codigo (commit do código da rodada; vazio = não registrado); registrado_no_portal_em (dia, em Brasília, em que o registro entrou no arquivo do observatório; posterior a emitido_em = registro transcrito, não emissão original); p10 e p90 (R$/MWh; vazios = sem faixa publicada); alertas (separados por vírgula); substitui (forecast_id corrigido, só em registro de correção); anterior (sha256 do registro anterior no encadeamento; vazio no legado de 27/09/2026).",
    "modulo": "previsoes",
    "gold": "previsoes_desempenho.json"
   },
   "/energia/series/dados_conjuntos.csv": {
-   "colunas": "Uma linha por conjunto integrado (família e dataset do silver): estado (CATALOGADO, RECURSO VERIFICADO, INTEGRADO, VALIDADO, PUBLICADO); papeis (uso declarado: indicador, modelo, conferencia, contexto, historico); golds; frequencia_declarada (texto da fonte), campo_frequencia (campo de onde foi lida), caso_sla (A a D, regra em publicacao.json, regras.sla_texto) e cadencia_sla; granularidade, ref_min e ultimo_periodo (maior referência até hoje); prazo_proximo (data até a qual o período seguinte deve chegar) e situacao (EM DIA, ATRASADO, SEM SLA, SEM DADO) com dias_atraso; capturas, primeira_captura e ultima_captura (UTC); ultima_publicacao_fonte (last_modified informado pela fonte, vazio quando não informado); tentativas, falhas, ultima_falha_em e falhas_consecutivas; series, linhas e completude_interna (0 a 1); series_no_ultimo e series_no_anterior; revisoes_eventos, revisoes_referencias, revisoes_series, revisao_ref_min, revisao_ref_max, maior_revisao_abs (unidade da série) e maior_revisao_rel_pct; validacao (aprovado, ressalva, reprovado) e contagem de checagens; originais_ausentes e sha256_divergentes no bronze. Vazio = não se aplica ou não informado.",
+   "colunas": "Uma linha por conjunto integrado (família e dataset do silver): estado (CATALOGADO, RECURSO VERIFICADO, INTEGRADO, VALIDADO, PUBLICADO); papeis (uso declarado: indicador, modelo, conferencia, contexto, historico); golds; frequencia_declarada (texto da fonte), campo_frequencia (campo de onde foi lida), caso_sla (A a E, regra em publicacao.json, regras.sla_texto) e cadencia_sla; granularidade, ref_min e ultimo_periodo (maior referência até hoje); periodo_parcial (1 = o último período ainda não terminou e não alonga o prazo); prazo_proximo (data até a qual o período seguinte deve chegar) e situacao (EM DIA, ATRASADO, SEM SLA, SEM DADO) com dias_atraso; capturas, primeira_captura e ultima_captura (UTC); ultima_publicacao_fonte (last_modified informado pela fonte, vazio quando não informado); tentativas, falhas, ultima_falha_em e falhas_consecutivas; series, linhas e completude_interna (0 a 1); series_no_ultimo e series_no_anterior (séries com valor no ultimo_periodo e no período anterior a ele); revisoes_eventos, revisoes_observacoes (pares série e referência revisados), revisoes_referencias (períodos distintos revisados), revisoes_series, revisao_ref_min, revisao_ref_max, maior_revisao_abs (unidade da série) e maior_revisao_rel_pct; registros_mudancas (campos de cadastro alterados entre capturas do mesmo arquivo) e registros_conflitos (campos com valores diferentes entre arquivos do conjunto); validacao (aprovado, ressalva, reprovado) e contagem de checagens; originais_ausentes e sha256_divergentes no bronze. Vazio = não se aplica ou não informado.",
    "modulo": "dados",
    "gold": "publicacao.json"
   },
@@ -932,7 +932,7 @@
    "gold": "publicacao.json"
   },
   "/energia/series/dados_calendario.csv": {
-   "colunas": "dia (data UTC da captura); familia; dataset; capturas_novas (vintages com conteúdo novo); recapturas_sem_mudanca (downloads idênticos à vintage vigente); falhas (tentativas sem êxito); referencias_revisadas (valores alterados pela captura do dia); publicacoes_fonte (arquivos com last_modified informado pela fonte naquele dia).",
+   "colunas": "dia (data UTC da captura); familia; dataset; capturas_novas (vintages com conteúdo novo); recapturas_sem_mudanca (downloads idênticos à vintage vigente); falhas (tentativas sem êxito); observacoes_revisadas (pares série e referência cujo valor mudou na captura do dia, em relação à captura anterior do mesmo arquivo); publicacoes_fonte (arquivos com last_modified informado pela fonte naquele dia).",
    "modulo": "dados",
    "gold": "publicacao.json"
   },
@@ -957,27 +957,27 @@
    "gold": "publicacao.json"
   },
   "/energia/series/dados_eixos.csv": {
-   "colunas": "Uma linha por ficha 'Comprove este número' publicada: gold; indicador; natureza (da proveniência de mesmo nome, vazio se não houver); situacao_validacao (reconciliacao_aprovada, controles_aprovados, ressalva, divergencia, pendencia); reconciliacao (resultado); testes_aprovados, testes_ressalva, testes_reprovados.",
+   "colunas": "Uma linha por ficha 'Comprove este número' publicada: gold; indicador; natureza (declarada na ficha, ou da proveniência de mesma chave ou de mesmo indicador na mesma gold, ou da proveniência no mesmo objeto da ficha; vazio = sem vínculo); situacao_validacao (reconciliacao_aprovada, controles_aprovados, ressalva, divergencia, pendencia); reconciliacao (resultado); testes_aprovados, testes_ressalva, testes_reprovados.",
    "modulo": "dados",
    "gold": "publicacao.json"
   },
   "/energia/series/territorio_municipios.json": {
-   "colunas": "Índice territorial por município (carregado sob demanda pelo mapa): campos em 'campos'; dist = [índice da distribuidora na gold, estado do vínculo 0/1/2 do módulo Perdas]; conj = conjuntos elétricos (valores na tabela 'conjuntos', do conjunto inteiro); indicadores do próprio município (MMGD, Tarifa Social, Luz para Todos, usinas declaradas só nele, localidades isoladas). Nulo = ausência.",
+   "colunas": "Índice territorial por município (carregado sob demanda pelo mapa): campos em 'campos'; dist = [índice da distribuidora na gold, estado do vínculo 0/1/2 do módulo Perdas]; conj = conjuntos elétricos (valores na tabela 'conjuntos', do conjunto inteiro); sm nulo com sm_estado 'fora_do_sin' = submercado não se aplica (sede ou maior parte da população em sistema isolado); indicadores do próprio município (MMGD, Tarifa Social, Luz para Todos, usinas declaradas só nele sem os registros de até 10 kW, registros de até 10 kW à parte, localidades isoladas e isol_sede = 1 quando a sede é localidade isolada). Nulo = ausência.",
    "modulo": "territorio",
    "gold": "territorio.json"
   },
   "/energia/series/territorio_usinas.json": {
-   "colunas": "Usinas do SIGA como pontos: ceg; nome; tipo; estagio; uf (principal); mw_fiscalizado; mw_outorgado; x e y na grade da malha publicada (Albers, 100 m; nulos sem coordenada); municipios (códigos IBGE declarados pelo SIGA e reconhecidos); n_declarados (municípios que o SIGA declara, reconhecidos ou não: só usina com 1 entra na soma municipal); coord_no_declarado (1 = a coordenada cai num dos municípios declarados, 0 = não, nulo = sem coordenada ou sem município reconhecido).",
+   "colunas": "Usinas do SIGA como pontos: ceg; nome; tipo; estagio; uf (principal); mw_fiscalizado; mw_outorgado; x e y na grade da malha publicada (Albers, 100 m; nulos sem coordenada); municipios (códigos IBGE declarados pelo SIGA e reconhecidos); n_declarados (municípios que o SIGA declara, reconhecidos ou não: só usina com 1 entra na soma municipal); coord_no_declarado (1 = a coordenada cai num dos municípios declarados, 0 = não, nulo = sem coordenada ou sem município reconhecido; conferido na malha de qualidade máxima do IBGE); outorga (Concessão, Autorização ou Registro, como o SIGA publica).",
    "modulo": "territorio",
    "gold": "territorio.json"
   },
   "/energia/series/territorio_municipios.csv": {
-   "colunas": "codigo_ibge; municipio; uf; submercado (da UF) e estado_submercado (provado, provado_com_area_sem_carga, com_localidade_isolada = há localidade do município atendida por sistema isolado, fora do SIN; nao_provado); localidades_isoladas e populacao_isolada (EPE, PASI); distribuidoras (SIGLA:CNPJ:estado, separadas por |; estado 1 = confirmado no cadastro de MMGD, 0 = relação sem confirmação, 2 = só pelo cadastro de MMGD); conjuntos (ids separados por espaço); populacao (IBGE, estimativa); MMGD (unidades, kW, W por habitante); Tarifa Social (faturas e desconto em R$ no mês da CDE; razão proxy em %); Luz para Todos (domicílios atendidos no período); usinas declaradas só no município (contagem e MW por estágio) e usinas declaradas nele e em outros (contagem, potência não somada). Vazio = ausência.",
+   "colunas": "codigo_ibge; municipio; uf; submercado (da UF; vazio quando não se aplica) e estado_submercado (provado, provado_com_area_sem_carga, com_localidade_isolada = há localidade do município em sistema isolado, mas a sede e a maior parte da população estão no SIN; fora_do_sin = a sede é localidade isolada do PASI ou as localidades isoladas somam ao menos 50% da população estimada, e o submercado não se aplica; nao_provado); sede_isolada (1 = a sede é localidade isolada); localidades_isoladas e populacao_isolada (EPE, PASI); distribuidoras (SIGLA:CNPJ:estado, separadas por |; estado 1 = confirmado no cadastro de MMGD, 0 = relação sem confirmação, 2 = só pelo cadastro de MMGD); conjuntos (ids separados por espaço); populacao (IBGE, estimativa); MMGD (unidades, kW, W por habitante); Tarifa Social (faturas e desconto em R$ no mês da CDE; razão proxy em %); Luz para Todos (domicílios atendidos no período); usinas declaradas só no município (contagem e MW por estágio, sem os registros de até 10 kW); registros do SIGA de até 10 kW em operação declarados só no município (contagem e kW); usinas declaradas nele e em outros (contagem, potência não somada). Vazio = ausência.",
    "modulo": "territorio",
    "gold": "territorio.json"
   },
   "/energia/series/territorio_distribuidoras.csv": {
-   "colunas": "cnpj; sigla; nome; municipios por estado do vínculo; ufs; submercados; indicadores da distribuidora inteira com o período de cada um (perdas, DEC e FEC, tarifa B1, MMGD cadastrada, Tarifa Social). Vazio = a fonte não publica para essa distribuidora.",
+   "colunas": "cnpj; sigla; nome; municipios por estado do vínculo; municipios_fora_do_sin e municipios_com_localidade_isolada (entre os de vínculo 1 ou 2); ufs; submercados (só municípios no SIN); indicadores da distribuidora inteira com o período de cada um (perdas, com perdas_ano_parcial = 1 quando o ano não tem os 12 meses; DEC e FEC; tarifa B1; MMGD cadastrada; Tarifa Social). Vazio = a fonte não publica para essa distribuidora.",
    "modulo": "territorio",
    "gold": "territorio.json"
   },
@@ -987,7 +987,7 @@
    "gold": "territorio.json"
   },
   "/energia/series/territorio_usinas.csv": {
-   "colunas": "ceg; nome; tipo; estagio; uf; municipios_siga (texto da fonte); municipios_ibge (códigos reconhecidos); via (nome_atual, grafia_antiga); lat; lon; municipio_da_coordenada (conferência por ponto em polígono na malha simplificada; não substitui o declarado); coord_no_declarado; mw_fiscalizado; mw_outorgado.",
+   "colunas": "ceg; nome; tipo; estagio; uf; municipios_siga (texto da fonte); municipios_ibge (códigos reconhecidos); via (nome_atual, grafia_antiga); lat; lon; municipio_da_coordenada (ponto em polígono na malha municipal do IBGE indicada em malha_conferencia: maxima = qualidade máxima, sem simplificação; simplificada = malha do mapa, aproximada; não substitui o declarado); coord_no_declarado; mw_fiscalizado; mw_outorgado; outorga (Concessão, Autorização, Registro); registro_ate_10kw (1 = registro em operação de até 10 kW, fora da soma de usinas do município).",
    "modulo": "territorio",
    "gold": "territorio.json"
   },
@@ -996,8 +996,13 @@
    "modulo": "territorio",
    "gold": "territorio.json"
   },
+  "/energia/series/territorio_areas_alternativas.csv": {
+   "colunas": "dia; alternativa (mover uma área para outro submercado ou trocar duas áreas de submercados diferentes); areas; mediana_abs_meia_hora_mwmed (maior, entre os submercados alterados, mediana do resíduo absoluto por meia hora: a estatística da prova); residuo_medias_dia_mwmed (maior resíduo absoluto pelas médias do dia, publicado para comparação); tolerancia_mwmed; fecha (1 = a alternativa ficaria dentro da tolerância pela mediana por meia hora).",
+   "modulo": "territorio",
+   "gold": "territorio.json"
+  },
   "/energia/series/sintese_regras_diario.csv": {
-   "colunas": "data (AAAA-MM-DD, data de referência do dado avaliado); regra (id); condicao (1 = condição da regra satisfeita no dia, 0 = não satisfeita, vazio = dia sem dado ou não avaliável); estado (A = alerta exibido, o = condição sem a duração mínima, . = normal, - = sem dado); valor (número avaliado, na unidade da regra; vazio quando a regra avalia vários subsistemas); limiar_inferior e limiar_superior (na mesma unidade; vazio quando não se aplica); detalhe (texto: subsistemas fora da faixa, submercados no limite, capturas)",
+   "colunas": "data (AAAA-MM-DD, data de referência do dado avaliado); regra (id); condicao (1 = condição da regra satisfeita no dia, 0 = não satisfeita, vazio = dia sem dado ou não avaliável); estado (A = alerta exibido, o = condição sem a duração mínima, . = normal, - = sem dado); valor (número avaliado, na unidade da regra: EAR do SIN em % da EAR máxima, ENA do SIN em 30 dias em % da MLT, participação térmica e taxas de restrição em %, carga em MWmed, amplitude entre submercados em R$/MWh, maior número de horas de um submercado no piso ou no teto horário, revisões materiais na janela de 7 dias); limiar_inferior e limiar_superior (na mesma unidade: 5º e 95º percentis nas regras de distribuição, 95º percentil da carga, limiar do dia do descolamento, 24 horas no piso, 0 hora no teto horário; vazio quando não se aplica; a comparação, estrita ou não, é a da condição de cada regra em sintese.json#observar[].condicao); detalhe (texto: faixa do SIN, horas por submercado no piso ou no teto, submercados do descolamento, revisões por captura)",
    "modulo": "visao",
    "gold": "sintese.json"
   },
@@ -1007,12 +1012,12 @@
    "gold": "sintese.json"
   },
   "/energia/series/sintese_multiplos.csv": {
-   "colunas": "d (data); preco_SE, preco_S, preco_NE, preco_N (PLD médio diário, R$/MWh, de pld.json#diario); agua_SIN (EAR do SIN, % da EAR máxima, de hidrologia.json#serie_ear) e agua_p10, agua_p90 (faixa da data, de hidrologia.json#bandas_ear); geracao_termica_7d (participação térmica em 7 dias, %, de geracao.json#serie_termica_7d); carga_SIN e carga_ano_anterior (MWmed, de carga.json#serie; ano anterior = mesma data do calendário, só no mesmo regime); rede_N_NE, rede_N_SE, rede_NE_SE, rede_S_SE (fluxo médio diário, MWmed, positivo da primeira para a segunda ponta, de rede.json#serie_fluxos). Vazio = sem dado naquela data (nunca zero).",
+   "colunas": "d (data); preco_SE, preco_S, preco_NE, preco_N (PLD médio diário, R$/MWh, de pld.json#diario); agua_SIN (EAR do SIN, % da EAR máxima, de hidrologia.json#serie_ear) e agua_p10, agua_p90 (faixa da data, de hidrologia.json#bandas_ear); geracao_termica_7d (participação térmica em 7 dias, %, de geracao.json#serie_termica_7d); carga_SIN e carga_ano_anterior (MWmed, de carga.json#serie; ano anterior = mesmo dia da semana 364 dias antes, só no mesmo regime); rede_N_NE, rede_N_SE, rede_NE_SE, rede_S_SE (fluxo médio diário, MWmed, positivo da primeira para a segunda ponta, de rede.json#serie_fluxos). Vazio = sem dado naquela data (nunca zero).",
    "modulo": "visao",
    "gold": "sintese.json"
   },
   "/energia/series/sintese_revisoes.csv": {
-   "colunas": "dataset; serie; ref; valor_anterior; valor_novo; diferenca (na unidade da série); diferenca_relativa_pct; unidade (p.p., MW ou R$); material (1 quando |diferença| ≥ 1% do valor anterior e ≥ o piso da unidade: 0,1 p.p., 10 MWmed ou MWmês, R$ 0,01/MWh); capturado_anterior; capturado_novo (UTC); dia_captura (Brasília)",
+   "colunas": "dataset; serie; ref; valor_anterior; valor_novo; diferenca (na unidade da série; em p.p. quando a série é percentual); diferenca_relativa_pct; unidade (unidade da série: % ou % da MLT, MWmês para a EAR, MWmed para ENA, carga, balanço e intercâmbio, R$/MWh para PLD e CMO); material (1 quando |diferença| ≥ 1% do valor anterior e ≥ o piso da unidade: 0,1 p.p., 10 MWmed ou MWmês, R$ 0,01/MWh); usada_na_pagina (1 quando a série entra em algum número da Visão geral; só essas contam na regra revisao_material e na qualidade das frases); capturado_anterior; capturado_novo (UTC); dia_captura (Brasília)",
    "modulo": "visao",
    "gold": "sintese.json"
   }

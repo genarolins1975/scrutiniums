@@ -105,6 +105,18 @@ export const ALCANCE_LIMITE: Record<CampoLimite, string> = {
   pld_max_horario: "maior valor do PLD numa hora",
 };
 
+/** Nome com artigo, para frases ("o piso foi fixado ..."). */
+export const ARTIGO_LIMITE: Record<CampoLimite, string> = {
+  pld_min: "o piso",
+  pld_max_estrutural: "o teto estrutural",
+  pld_max_horario: "o teto horário",
+};
+
+/** "pela Resolução ..." ou "pelo Despacho ...": concordância com o tipo do ato. */
+export function porAto(ato: string): string {
+  return /^(Resolução|Retificação|Portaria|Lei|Medida|Nota|REH|REN|REA|RES)\b/i.test(ato) ? `pela ${ato}` : `pelo ${ato}`;
+}
+
 export const COR_LIMITE: Record<CampoLimite, string> = {
   pld_min: "var(--serie-referencia)",
   pld_max_estrutural: "var(--cor-energia)",
@@ -216,19 +228,51 @@ export function respostaLimites(g: Pick<GoldRegulacao, "limites_pld">, ano: numb
   const frase1 =
     `Em ${ano}, o PLD não pode ficar abaixo de ${val("pld_min")} em nenhuma hora (piso) nem passar de ${val("pld_max_horario")} numa hora (teto horário); ` +
     `a média diária dos preços horários fica limitada a ${val("pld_max_estrutural")} (teto estrutural).`;
-  const porAto = new Map<string, CampoLimite[]>();
+  const campoPorAto = new Map<string, CampoLimite[]>();
   for (const c of CAMPOS_LIMITE) {
     const a = v[ATO_CAMPO[c]];
-    if (a) porAto.set(a, [...(porAto.get(a) ?? []), c]);
+    if (a) campoPorAto.set(a, [...(campoPorAto.get(a) ?? []), c]);
   }
-  const atos = Array.from(porAto.entries()).map(([nome, campos]) => {
+  const atos = Array.from(campoPorAto.entries()).map(([nome, campos], i) => {
     const a = atoPorNome(g, nome);
-    const quais = campos.length === 3 ? "os três limites" : campos.map((c) => NOME_LIMITE[c].toLowerCase()).join(" e ");
-    return `${quais} pelo ${nome}, ${textoPublicacao(a?.data_publicacao ?? null)}`;
+    const quais = campos.length === 3 ? "os três limites" : campos.map((c) => ARTIGO_LIMITE[c]).join(" e ");
+    const texto = `${quais} ${campos.length > 1 ? "foram fixados" : "foi fixado"} ${porAto(nome)}, ${textoPublicacao(a?.data_publicacao ?? null)}`;
+    return i === 0 ? texto.charAt(0).toUpperCase() + texto.slice(1) : texto;
   });
   const vig = vs.length > 1 ? vs.map((x) => `de ${dataBR(x.inicio)} a ${dataBR(x.fim)}`).join(" e ") : `de ${dataBR(v.inicio)} a ${dataBR(v.fim)}`;
-  const frase2 = atos.length ? ` Fixados ${atos.join("; ")}; vigência ${vig}.` : "";
+  const frase2 = atos.length ? ` ${atos.join("; ")}; vigência ${vig}.` : "";
   return frase1 + frase2;
+}
+
+/**
+ * Resposta curta do P044 na data de referência da gold: os limites vigentes, o ato que
+ * os fixou (publicação e vigência separadas), a cobertura da série e as atividades da
+ * Agenda Regulatória que podem mudar os limites.
+ */
+export function respostaP044(g: Pick<GoldRegulacao, "limites_pld" | "data_referencia" | "limites_em_revisao">): string {
+  const v = vigenteEm(g.limites_pld.vigencias, g.data_referencia);
+  const anos = anosLimites(g);
+  const cobertura = anos.length ? ` A série integrada cobre ${anos[0]} a ${anos[anos.length - 1]}, com ${g.limites_pld.atos.length} atos lidos.` : "";
+  const rev = g.limites_em_revisao.length
+    ? ` ${g.limites_em_revisao.length} ${pl(g.limites_em_revisao.length, "atividade", "atividades")} da Agenda Regulatória ${pl(g.limites_em_revisao.length, "revisa", "revisam")} a metodologia dos limites (${g.limites_em_revisao.map((a) => `${a.codigo}, prevista para ${a.ano_previsto}`).join("; ")}).`
+    : "";
+  if (!v) return `Em ${dataBR(g.data_referencia)} não há ato de limites do PLD integrado em vigor: os limites ficam sem valor nesta data.${cobertura}${rev}`;
+  return `Em ${dataBR(g.data_referencia)}, ${respostaLimites(g, v.ano).replace(/^Em \d{4}, /, "")}${cobertura}${rev}`;
+}
+
+/** "O que mudou": o ato mais recente e os valores do ano anterior ao lado dos atuais, sem conta. */
+export function oQueMudouLimites(g: Pick<GoldRegulacao, "limites_pld">): string {
+  const atos = g.limites_pld.atos.slice().sort((a, b) => (b.data_publicacao ?? b.vigencia_inicio).localeCompare(a.data_publicacao ?? a.vigencia_inicio));
+  const ultimo = atos[0];
+  const ls = linhasLimites(g);
+  const atual = ls[ls.length - 1];
+  const anterior = ls[ls.length - 2];
+  if (!ultimo || !atual) return "Nenhum ato de limites integrado.";
+  const fmt = (x: number | null) => (x === null ? "sem valor" : reais(x, 2));
+  const comp = anterior
+    ? ` Em ${anterior.rotulo}, piso, teto estrutural e teto horário eram ${fmt(anterior.pld_min)}, ${fmt(anterior.pld_max_estrutural)} e ${fmt(anterior.pld_max_horario)}/MWh; em ${atual.rotulo}, ${fmt(atual.pld_min)}, ${fmt(atual.pld_max_estrutural)} e ${fmt(atual.pld_max_horario)}/MWh (nominais).`
+    : "";
+  return `O ato mais recente é o ${ultimo.ato}, ${textoPublicacao(ultimo.data_publicacao)}, para a vigência de ${dataBR(ultimo.vigencia_inicio)} a ${dataBR(ultimo.vigencia_fim)}.${comp}`;
 }
 
 /** Linhas da tabela completa dos atos (modo Auditar). */
@@ -341,7 +385,7 @@ export function paresRegraIpca(g: Pick<GoldRegulacao, "limites_pld">): { id: str
     .filter((c) => c.conferencia === "regra_ipca")
     .map((c) => ({
       id: `${c.ano}:${c.campo}`,
-      rotulo: `${c.ano}, ${NOME_LIMITE[c.campo as CampoLimite]?.toLowerCase() ?? c.campo}`,
+      rotulo: `${c.ano}, ${ARTIGO_LIMITE[c.campo as CampoLimite]?.replace(/^o /, "") ?? c.campo}`,
       valor: c.valor_ato,
       referencia: c.valor_esperado,
       detalhe: `${c.ato ?? "ato não identificado"}; tolerância ${c.tolerancia}; ${ROTULO_RESULTADO_CONFERENCIA[c.resultado] ?? c.resultado}`,
@@ -378,7 +422,7 @@ export function linhasBandeiras(g: Pick<GoldRegulacao, "bandeiras">): LinhaTabel
       rs_mwh: v.rs_mwh,
       vigencia_inicio: v.vigencia_inicio,
       vigencia_fim: textoFimBandeira(v),
-      origem_fim: v.vigencia_fim_origem ? (ROTULO_ORIGEM_FIM[v.vigencia_fim_origem] ?? v.vigencia_fim_origem) : null,
+      origem_fim: v.vigencia_fim_origem ? (ROTULO_ORIGEM_FIM[v.vigencia_fim_origem] ?? v.vigencia_fim_origem) : "sem fim (nenhum valor posterior na fonte)",
       fim_pelo_adicional: v.fim_pelo_recurso_adicional && v.vigencia_fim_origem === "acionamento_diverge" ? v.fim_pelo_recurso_adicional : null,
       meses_conferidos: v.conferencia_acionamento?.meses_conferidos ?? null,
       meses_divergentes: v.conferencia_acionamento?.meses_divergentes.length ? v.conferencia_acionamento.meses_divergentes.map((m) => `${dataBR(m.competencia)}: ${m.rs_mwh === null ? "sem valor" : `${reais(m.rs_mwh)}/MWh`}`).join("; ") : null,
@@ -422,7 +466,7 @@ export function linhasProcedimentos(itens: readonly Procedimento[]): LinhaTabela
     data_ato_na_pagina: p.data_ato_na_pagina,
     conferencia: ROTULO_CONF_PROCEDIMENTO[p.conferencia] ?? p.conferencia,
     ato_vigente: p.ato_vigente,
-    conferencia_versao: p.conferencia_versao ? (ROTULO_CONF_VERSAO[p.conferencia_versao] ?? p.conferencia_versao) : null,
+    conferencia_versao: p.conferencia_versao ? (ROTULO_CONF_VERSAO[p.conferencia_versao] ?? p.conferencia_versao) : "ato não escreve a versão ou não foi lido",
     versao_no_ato: p.versao_no_ato,
     atos_posteriores: p.atos_posteriores.length
       ? Array.from(new Set(p.atos_posteriores.map((a) => `${a.ato ?? `${a.ato_na_fonte ?? "ato"} (número suspeito, não exibido como ato)`} em ${dataBR(a.data)}`))).join("; ")
@@ -700,7 +744,7 @@ export function faixasLinhaTempo(eventos: readonly EventoRegulatorio[]): FaixaTe
     const vig = { data: e.vigencia_inicio, forma: "cheio" as const, rotulo: mes ? `vigência a partir de ${dataBR(e.vigencia_inicio.slice(0, 7))} (só o mês)` : `vigência a partir de ${dataBR(e.vigencia_inicio)}`, mes };
     return {
       id: e.id,
-      rotulo: e.ato ? abreviarAto(e.ato) : e.titulo,
+      rotulo: rotuloCurtoEvento(e),
       inicio: pub,
       fim: vig,
       traco: pub ? "cheio" : "nenhum",
@@ -708,6 +752,13 @@ export function faixasLinhaTempo(eventos: readonly EventoRegulatorio[]): FaixaTe
       leitura: `${e.titulo}. ${e.ato ?? e.tipo_ato}. ${pub ? pub.rotulo : "publicação não informada"}; ${vig.rotulo}; ${textoDefasagemEvento(e)}.`,
     };
   });
+}
+
+/** Rótulo da coluna estreita do gráfico: o ato abreviado ou, no valor visto só no recurso Acionamento, o mês. */
+export function rotuloCurtoEvento(e: Pick<EventoRegulatorio, "ato" | "titulo" | "tipo_ato" | "vigencia_inicio">): string {
+  if (e.ato) return abreviarAto(e.ato);
+  if (/acionamento/i.test(e.tipo_ato)) return `Acionamento ${dataBR(e.vigencia_inicio.slice(0, 7))}`;
+  return e.titulo;
 }
 
 /** Rótulo curto de ato para a coluna estreita do gráfico ("Resolução Normativa ANEEL nº 1.147, de 9 de..." → "REN nº 1.147/2025"). */
@@ -728,7 +779,7 @@ export function abreviarAto(ato: string): string {
   ];
   const sig = siglas.find(([re]) => re.test(ato))?.[1];
   const numero = /nº\s*([\d.]+)(?:\/(\d{4}))?/i.exec(ato);
-  const anoExtenso = /de\s+\d{1,2}º?\s+de\s+\w+\s+de\s+(\d{4})/i.exec(ato);
+  const anoExtenso = /de\s+\d{1,2}º?\s+de\s+\S+\s+de\s+(\d{4})/i.exec(ato);
   if (!sig || !numero) return ato.length > 28 ? `${ato.slice(0, 27).trimEnd()}…` : ato;
   const ano = numero[2] ?? anoExtenso?.[1] ?? "";
   const orgao = /\bMME\b/.test(ato) ? " MME" : "";
@@ -817,9 +868,14 @@ const PREFIXOS_TEMA = [
   /^proposta de abertura de (consulta|audi[eê]ncia) p[uú]blica\s*/i,
 ];
 
-/** Assunto da consulta sem a fórmula de abertura que se repete em quase todas as atas. */
+/**
+ * Assunto da consulta sem a fórmula de abertura que se repete em quase todas as atas. É
+ * rótulo do observatório, não citação: o travessão que a ata usa como pontuação vira
+ * vírgula ("Energia Eletrica – CEEE-D" vira "Energia Eletrica, CEEE-D"); o texto
+ * integral, sem mudança, está no CSV do painel.
+ */
 export function temaCurto(tema: string): string {
-  let t = tema.trim();
+  let t = tema.trim().replace(/\s+[–—]\s*|\s*[–—]\s+/g, ", ");
   for (const re of PREFIXOS_TEMA) {
     if (re.test(t)) {
       t = t.replace(re, "");
@@ -899,13 +955,13 @@ export function linhasConsultas(itens: readonly ConsultaNaData[]): LinhaTabela[]
     fase: c.fase_atual,
     inicio: c.inicio,
     fim: c.fim,
-    fim_calculado: c.fim ? (c.fim_calculado ? "calculado (início e duração)" : "escrito na ata") : null,
+    fim_calculado: c.fim ? (c.fim_calculado ? "calculado (início e duração)" : "escrito na ata") : "a ata não escreve o fim",
     duracao_dias: c.duracao_dias,
     sessao: c.sessao,
     deliberacao: faseAtual(c)?.data_deliberacao ?? c.deliberacao_abertura.data,
     resultado_data: c.resultado?.data ?? null,
     resultado_ato: c.resultado ? (c.resultado.ato ?? (c.resultado.ato_suspeito ? `número suspeito na ata (${c.resultado.ato_na_ata ?? "sem registro"})` : null)) : null,
-    resultado_forma: c.resultado ? ROTULO_FORMA_RESULTADO[c.resultado.forma] : null,
+    resultado_forma: c.resultado ? ROTULO_FORMA_RESULTADO[c.resultado.forma] : "sem resultado nas atas",
     processo: c.processos.join(", "),
     relator: c.relator,
     agenda: c.agenda_codigos.length ? c.agenda_codigos.join(", ") : null,
@@ -1003,7 +1059,7 @@ export function linhasAgenda(itens: readonly AtividadeAgenda[], limites: readonl
     codigo: i.codigo,
     atividade: i.atividade,
     ano_previsto: String(i.ano_previsto),
-    paineis: i.paineis.length ? i.paineis.map((p) => p.rotulo).join(", ") : null,
+    paineis: i.paineis.length ? i.paineis.map((p) => p.rotulo).join(", ") : "nenhum (sem palavra-chave da regra)",
     limites_pld: lim.has(i.codigo) ? "sim" : "não",
     consultas: i.consultas.length ? i.consultas.join(", ") : null,
   }));
@@ -1023,7 +1079,7 @@ export function respostaAgenda(a: GoldRegulacao["agenda"], limites: GoldRegulaca
   const anos = Object.entries(a.por_ano ?? {}).sort(([x], [y]) => x.localeCompare(y));
   const comConsulta = a.itens.filter((i) => i.consultas.length).length;
   return (
-    `A ${a.portaria ?? "portaria da Agenda Regulatória"} prevê ${a.itens.length} atividades para o biênio` +
+    `A ${a.portaria ?? "portaria da Agenda Regulatória"}, prevê ${a.itens.length} atividades para o biênio` +
     (anos.length ? ` (${anos.map(([ano, n]) => `${n} em ${ano}`).join(" e ")})` : "") +
     `; ${limites.length} ${pl(limites.length, "trata", "tratam")} dos limites do PLD (${limites.map((l) => `${l.codigo}, prevista para ${l.ano_previsto}`).join("; ")}) e ` +
     `${comConsulta} ${pl(comConsulta, "tem", "têm")} consulta que cita o código. O ano é previsão da própria ANEEL, reprogramável` +

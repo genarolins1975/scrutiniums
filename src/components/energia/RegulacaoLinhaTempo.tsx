@@ -130,9 +130,12 @@ export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { event
         </div>
       </div>
 
-      <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta-filtro="p045">
-        {respostaLinhaTempo(r.eventos, eventos.length, filtro.base)}
-      </p>
+      {ativo && (
+        // a resposta do recorte inteiro já está acima do filtro; com filtro, a frase do recorte
+        <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta-filtro="p045" aria-live="polite">
+          {respostaLinhaTempo(r.eventos, eventos.length, filtro.base)}
+        </p>
+      )}
 
       <RegulacaoFaixas
         titulo="Publicação e início de vigência de cada evento"

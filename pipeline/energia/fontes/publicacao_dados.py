@@ -22,6 +22,7 @@ import json
 import os
 import re
 import sys
+from decimal import Decimal, InvalidOperation
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 
@@ -58,10 +59,24 @@ def _linhas_csv(caminho):
                 yield row
 
 
+def float_preserva(texto):
+    """True quando o float64 mais próximo do número escrito no CSV representa exatamente
+    esse número decimal (comparação em Decimal da representação mais curta do float com
+    o texto). '13984.69575', '1.50' e '1e3' preservam; '12345678901234567891.5' (mais de
+    17 dígitos significativos) não: o float guarda 12345678901234567000."""
+    try:
+        return Decimal(repr(float(texto))) == Decimal(texto)
+    except (InvalidOperation, ValueError, OverflowError):
+        return False
+
+
 def tipos_colunas(caminho):
     """Tipo de cada coluna pelo conteúdo inteiro do CSV (uma passada em fluxo):
     int64 quando todo valor é inteiro sem zero à esquerda, float64 quando todo valor é
-    número, texto nos demais e nas colunas de código. Vazio não decide o tipo."""
+    número que o float64 representa sem perda (float_preserva), texto nos demais e nas
+    colunas de código. Uma coluna com um só número que o float64 não guarda exatamente
+    fica como texto: o Parquet não pode arredondar em silêncio o que o CSV publica.
+    Vazio não decide o tipo."""
     it = _linhas_csv(caminho)
     cab = next(it)
     tipo = ["int" if not _CODIGO.search(c) else "str" for c in cab]
@@ -72,8 +87,8 @@ def tipos_colunas(caminho):
             if v == "" or tipo[i] == "str":
                 continue
             if tipo[i] == "int" and not _INT.match(v):
-                tipo[i] = "float" if _FLOAT.match(v) else "str"
-            elif tipo[i] == "float" and not _FLOAT.match(v):
+                tipo[i] = "float" if (_FLOAT.match(v) and float_preserva(v)) else "str"
+            elif tipo[i] == "float" and not (_FLOAT.match(v) and float_preserva(v)):
                 tipo[i] = "str"
     return cab, tipo, n
 
@@ -151,10 +166,20 @@ def _texto_equivalente(valor, t):
     return valor
 
 
+def _decimal_igual(v, orig):
+    try:
+        return Decimal(repr(float(v))) == Decimal(orig)
+    except (InvalidOperation, ValueError):
+        return False
+
+
 def confere_parquet(caminho_csv, caminho_parquet):
     """Relê o Parquet em lotes e compara com o CSV linha a linha. Devolve (ok, detalhe,
-    linhas, divergencias, exemplos). Números do tipo float são comparados como número
-    (float do texto do CSV == valor do Parquet); inteiros e texto, como texto."""
+    linhas, divergencias, exemplos). Inteiros e texto são comparados como texto. Números
+    do tipo float são comparados como DECIMAL: o valor gravado no Parquet, escrito na sua
+    representação mais curta (repr), tem de ser o mesmo número decimal escrito no CSV.
+    Comparar float(texto) com o float gravado seria tautológico (o gravado veio do mesmo
+    float(texto)) e nunca acusaria perda de precisão acima de 17 dígitos significativos."""
     import pyarrow.parquet as pq
     pf = pq.ParquetFile(caminho_parquet)
     cab_pq = pf.schema_arrow.names
@@ -178,7 +203,7 @@ def confere_parquet(caminho_csv, caminho_parquet):
                 orig = row[i] if i < len(row) else ""
                 t = tipos[c]
                 if t == "float":
-                    igual = (v is None and orig == "") or (v is not None and orig != "" and float(orig) == v)
+                    igual = (v is None and orig == "") or (v is not None and orig != "" and _decimal_igual(v, orig))
                 else:
                     igual = _texto_equivalente(v, t) == orig
                 if not igual:

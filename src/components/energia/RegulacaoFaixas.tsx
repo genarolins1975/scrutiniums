@@ -189,7 +189,7 @@ export function RegulacaoFaixas({
                 const y0 = i * alturaLinha;
                 const cy = y0 + alturaLinha / 2;
                 const sA = f.inicio ? diaSerial(f.inicio.data) : null;
-                const sB = f.fim ? (f.fim.mes ? diaSerial(f.fim.data) : diaSerial(f.fim.data)) : null;
+                const sB = f.fim ? diaSerial(f.fim.data) : null;
                 const sel = selecionado === f.id;
                 const espessura = f.traco === "fino" ? 2 : 6;
                 return (

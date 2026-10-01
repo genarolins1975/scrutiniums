@@ -99,7 +99,7 @@ export function RegulacaoAviso({ children, tipo = "nota" }: { children: ReactNod
   return (
     <p
       role={tipo === "alerta" ? "alert" : undefined}
-      className={`border-l-2 pl-3 text-sm leading-relaxed ${tipo === "alerta" ? "border-aviso text-carvao" : "border-mineral text-carvao-muted"}`}
+      className={`border-l-2 pl-3 text-sm leading-relaxed [overflow-wrap:anywhere] ${tipo === "alerta" ? "border-aviso text-carvao" : "border-mineral text-carvao-muted"}`}
     >
       {children}
     </p>

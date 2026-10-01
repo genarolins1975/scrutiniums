@@ -77,28 +77,40 @@ METRICAS = [
        politica_ausencia="Recurso sem captura nem verificação fica CATALOGADO; URL ausente não casa com captura nenhuma.",
        validacoes=["contagem por estado igual à soma das linhas de dados_recursos_<orgao>.csv (teste do módulo)"],
        limitacoes=["URL que muda a cada publicação (token do servidor) quebra o vínculo com a captura anterior.", _PLATAFORMA]),
-    _m(id="dados_situacao_atualidade", titulo="Atualidade do conjunto (SLA pela frequência declarada)",
+    _m(id="dados_situacao_atualidade", titulo="Atualidade do conjunto (SLA pela frequência declarada)", versao_formula="1.1",
        pergunta="O conjunto está em dia com a frequência que a própria fonte promete?",
        definicao=("EM DIA quando hoje não passou do prazo do próximo período; ATRASADO quando passou; SEM SLA quando a fonte não "
                   "declara frequência legível (ou o conjunto foi descontinuado); SEM DADO quando não há período de referência nem "
                   "data de publicação informada pela fonte."),
        unidade="categoria; dias de atraso", grao_geografico="não se aplica", grao_temporal="dia da validação (Brasília)",
        fontes=[F_ONS, F_ANEEL, F_CCEE, F_META, F_SILVERS],
-       formula=("prazo = fim do período seguinte ao último disponível + tolerância (caso A e C); fim do último período + período "
-                "da cadência + tolerância (caso B, e caso D quando a data da fonte não acompanha o conteúdo); publicação informada "
-                "pela fonte + período da cadência + tolerância (caso D). Tolerâncias: diária 2, semanal 7, quinzenal 15, mensal "
-                "60, trimestral 90, anual 365 dias; dias_atraso = hoje − prazo"),
+       formula=("prazo = fim do período seguinte ao último disponível + tolerância (casos A e C); fim do último período completo "
+                "+ período da cadência + tolerância (caso B, e casos D e E quando a data da fonte não acompanha o conteúdo); "
+                "publicação informada pela fonte + período da cadência + tolerância (casos D e E). Caso C só quando a frequência "
+                "declarada é a rotina do portal (campo 'Schedule de Atualização' do ONS ou horário do dia); cadência declarada "
+                "mais curta que o grão fora disso é o caso E. Período corrente parcial (fim depois de hoje) não alonga o prazo: "
+                "a base é o último período completo. Tolerâncias: diária 2, semanal 7, quinzenal 15, mensal 60, trimestral 90, "
+                "anual 365 dias; dias_atraso = hoje − prazo"),
        regra_agregacao="contagem de conjuntos por situação (resumo.por_situacao)",
        dimensoes=["conjunto", "cadência", "caso da regra"],
        regras_comparabilidade=["Atraso de conjunto diário e de conjunto anual não têm a mesma escala: compare dentro da cadência.",
-                               "Caso C usa o grão do dado porque a frequência declarada pelo ONS é o horário da rotina do portal "
-                               "('Diariamente, às 12h e 19h'), não a promessa de um período novo por dia."],
+                               "Caso C usa o grão do dado porque a frequência declarada pelo ONS no campo 'Schedule de "
+                               "Atualização' é o horário da rotina do portal ('Diariamente, às 12h e 19h'), não a promessa de um "
+                               "período novo por dia.",
+                               "Caso E: quando a ANEEL declara 'Mensal', 'Quinzenal' ou 'Trimestral' para um arquivo de grão anual, "
+                               "a promessa é de arquivo novo nessa cadência, medida pela data de publicação da fonte; o grão anual "
+                               "não pode empurrar o prazo para dois anos depois."],
        regra_cobertura="Conjuntos integrados com frequência declarada no portal, nos metadados da fonte (SIDRA, CKAN da CVM e do MME) ou no REGISTRO do módulo.",
        politica_ausencia="Sem frequência declarada não se inventa uma: SEM SLA. A data da captura nunca entra no cálculo.",
-       validacoes=["último período publicado igual ao MAX(ref) relido no silver por consulta direta nos conjuntos com falha de coleta",
-                   "todo ATRASADO tem prazo anterior a hoje (ficha conjuntos_atrasados)"],
+       validacoes=["prazo refeito por outra implementação da regra (aritmética de calendário própria) e comparado com o publicado "
+                   "(ficha conjuntos_atrasados)",
+                   "último período dos conjuntos com falha de coleta procurado no arquivo original do bronze, com sha256 conferido "
+                   "(ficha conjuntos_atrasados)",
+                   "casos A a E com datas escritas no teste do módulo, inclusive período corrente parcial e falha de coleta simulada"],
        limitacoes=["Frequência declarada em texto livre é lida por expressões regulares (ckan_dados.frequencias_canonicas).",
-                   "A data de modificação informada pela CCEE não acompanha o conteúdo dos arquivos: o caso D a substitui pelo fim do último período quando o arquivo traz período posterior a ela.",
+                   "A data de modificação informada pela CCEE não acompanha o conteúdo dos arquivos: os casos D e E a substituem pelo "
+                   "fim do último período completo quando o arquivo traz período posterior a ela; no caso E, sem data utilizável, SEM DADO.",
+                   "No caso E, a data de publicação mede se a fonte reescreveu o arquivo, não se o conteúdo mudou.",
                    _PLATAFORMA]),
     _m(id="dados_completude_interna", titulo="Completude interna das séries de um conjunto",
        pergunta="Há buracos no meio das séries que o conjunto traz?",
@@ -117,19 +129,68 @@ METRICAS = [
        limitacoes=["Não acusa série que começou depois ou terminou antes (usina nova, distribuidora extinta): só lacunas internas.",
                    "Nas séries horárias, a referência é a hora local publicada pela fonte, sem fuso: hora que não existe ou se repete "
                    "numa mudança de horário conta como a fonte a publicou.", _PLATAFORMA]),
-    _m(id="dados_revisoes_alcance", titulo="Alcance das revisões da fonte",
-       pergunta="Quantas referências a fonte mudou depois de publicar, em quantas séries e em que período?",
-       definicao=("Revisão é a troca de valor de uma mesma (série, referência) entre capturas consecutivas do silver. Conta-se "
-                  "eventos, referências e séries afetadas e o intervalo de referências revisadas."),
-       unidade="referências, séries e eventos", grao_geografico="não se aplica", grao_temporal="por conjunto e dia de captura",
-       fontes=[F_SILVERS], formula="revisão ⇔ |valor_novo − valor_anterior| > 1e-9 na mesma (série, referência), capturas em ordem",
-       regra_agregacao="contagem exata por conjunto; calendário por dia da captura que trouxe o valor novo",
+    _m(id="dados_cobertura_ultimo_periodo", titulo="Cobertura do último período disponível",
+       pergunta="Quantas séries do conjunto já têm valor no último período disponível, comparado com o anterior?",
+       definicao=("Séries com valor no último período disponível até hoje (o mesmo período que a atualidade publica) e séries "
+                  "com valor no período anterior a ele, pelo passo do conjunto. Referência futura (limite regulatório de ano "
+                  "seguinte, cenário do PDE, programação do PMO) não é o último período do dado."),
+       unidade="séries", grao_geografico="não se aplica", grao_temporal="por conjunto e publicação", fontes=[F_SILVERS],
+       formula="series_no_ultimo = #{séries com valor em ultimo_periodo}; series_no_anterior = #{séries com valor em ultimo_periodo − passo}",
+       regra_agregacao="contagem por conjunto", dimensoes=["conjunto"],
+       regras_comparabilidade=["Último período ainda aberto (mês ou ano corrente, marcado em periodo_parcial) costuma ter menos "
+                               "séries que o anterior sem que isso seja falha."],
+       regra_cobertura="Séries numéricas do silver com formato de referência regular e passo modal seguido por pelo menos metade dos intervalos.",
+       politica_ausencia="Sem período disponível até hoje: campo ausente; série sem valor no período não é contada (ausência não vira zero).",
+       validacoes=["amostra com referência futura no teste do módulo: a contagem é feita no último período até hoje, não na maior referência"],
+       limitacoes=["Não diz se a série deveria ter valor no período (usina desativada, distribuidora extinta).", _PLATAFORMA]),
+    _m(id="dados_revisoes_alcance", titulo="Alcance das revisões da fonte", versao_formula="1.1",
+       pergunta="Quantas observações e quantos períodos a fonte mudou depois de publicar, em quantas séries?",
+       definicao=("Revisão é a troca de valor de uma mesma (série, referência) entre capturas consecutivas do mesmo arquivo "
+                  "(recurso) do silver. Publica-se, separados: eventos; observações revisadas (pares série e referência); "
+                  "referências revisadas (períodos distintos, em qualquer série); séries afetadas; e o intervalo de referências."),
+       unidade="eventos, observações, referências e séries", grao_geografico="não se aplica", grao_temporal="por conjunto e dia de captura",
+       fontes=[F_SILVERS], formula=("revisão ⇔ |valor_novo − valor_anterior| > 1e-9 na mesma (série, referência, arquivo), capturas em "
+                                    "ordem; observações = #{(série, referência) revisadas}; referências = #{referência revisada}"),
+       regra_agregacao="contagem exata por conjunto; calendário por dia da captura que trouxe o valor novo (observações revisadas)",
        dimensoes=["conjunto", "série", "referência", "dia de captura"],
-       regras_comparabilidade=["Conjunto com mais capturas tem mais oportunidade de revelar revisões."],
+       regras_comparabilidade=["Conjunto com mais capturas tem mais oportunidade de revelar revisões.",
+                               "Observações e referências não se somam: um dia revisado nos quatro subsistemas é 1 referência e 4 observações."],
        regra_cobertura="Conjuntos com pelo menos duas capturas do mesmo arquivo.",
        politica_ausencia="Referência ausente numa captura não é revisão (ausência não vira zero).",
-       validacoes=["revisão sintética conhecida num silver de teste é encontrada com os valores de antes e depois (teste do módulo)"],
+       validacoes=["revisão real da carga diária do Nordeste (26/09/2026) encontrada na amostra com os valores de antes e depois, "
+                   "recontada em Python puro (teste do módulo)",
+                   "amostra com 4 séries revisadas na mesma data: 4 observações e 1 referência (teste do módulo)"],
        limitacoes=["Só há revisão detectável a partir da segunda captura de um mesmo arquivo.", _HISTORICO, _PLATAFORMA]),
+    _m(id="dados_mudancas_registros", titulo="Mudanças da fonte em cadastros e atos",
+       pergunta="Quais campos de cadastro a fonte mudou num arquivo que já tinha publicado?",
+       definicao=("Troca do valor de um campo da mesma chave entre capturas consecutivas do MESMO arquivo (recurso). Campos que "
+                  "descrevem o arquivo e não o cadastro (data de geração, de processamento, de verificação) ficam fora e são "
+                  "contados em metadado_do_arquivo."),
+       unidade="campos alterados; chaves afetadas", grao_geografico="não se aplica", grao_temporal="por conjunto e dia de captura",
+       fontes=[F_SILVERS], formula="mudança ⇔ valor_novo ≠ valor_anterior na mesma (chave, campo, arquivo), capturas em ordem; campo ∉ metadados do arquivo",
+       regra_agregacao="contagem exata por conjunto; por campo e por dia da captura",
+       dimensoes=["conjunto", "campo", "dia de captura"],
+       regras_comparabilidade=["Valor diferente da mesma chave em arquivos diferentes (lista de um ano e a do seguinte, código "
+                               "reutilizado, mudança societária entre edições) não é mudança: é conflito entre recursos."],
+       regra_cobertura="Conjuntos com cadastros ou atos no silver (tabela registros) e pelo menos duas capturas do mesmo arquivo.",
+       politica_ausencia="Campo que a fonte esvaziou conta como mudança e é contado também em apagados_pela_fonte.",
+       validacoes=["amostra com dois arquivos anuais que divergem: zero mudanças e um conflito entre recursos (teste do módulo)",
+                   "amostra com duas capturas do mesmo arquivo e um campo alterado: uma mudança; gerado_em alterado: metadado do arquivo"],
+       limitacoes=["A lista de campos de metadado do arquivo (silver_dados.CAMPOS_METADADO_ARQUIVO) é por nome de campo.",
+                   _HISTORICO, _PLATAFORMA]),
+    _m(id="dados_conflitos_entre_recursos", titulo="Conflitos entre arquivos do mesmo conjunto",
+       pergunta="Arquivos diferentes do mesmo conjunto trazem valores diferentes para a mesma coisa?",
+       definicao=("Mesma (série, referência), nas observações, ou mesmo (chave, campo), nos cadastros, com valores diferentes no "
+                  "valor mais recente de cada arquivo do conjunto (arquivos anuais que se sobrepõem, relatórios de semanas "
+                  "diferentes, listas de anos diferentes). Não é revisão da fonte: o módulo dono decide qual arquivo vale."),
+       unidade="referências (observações) ou campos (cadastros)", grao_geografico="não se aplica", grao_temporal="por publicação",
+       fontes=[F_SILVERS], formula="conflito ⇔ #{valores distintos entre os arquivos} > 1 (observações: diferença > 1e-9)",
+       regra_agregacao="contagem por conjunto, com exemplos", dimensoes=["conjunto"],
+       regras_comparabilidade=["Conjunto com muitos arquivos sobrepostos tem mais oportunidade de conflito."],
+       regra_cobertura="Conjuntos com mais de um arquivo que trazem a mesma chave.",
+       politica_ausencia="Chave presente em um só arquivo não entra.",
+       validacoes=["TUSD da distribuidora 05.965.546/0001-09 em 30/11/2021 nos arquivos 2020 e 2021 da ANEEL: conflito, não revisão (teste do módulo)"],
+       limitacoes=["Compara o valor mais recente de cada arquivo; conflitos que a fonte já desfez não aparecem.", _PLATAFORMA]),
     _m(id="dados_revisao_maior_relativa", titulo="Maior revisão relativa",
        pergunta="Qual foi a maior mudança proporcional que a fonte fez num valor já publicado?",
        definicao="Maior |novo − anterior| ÷ |anterior| entre os eventos de revisão do conjunto, com a série, a referência e as capturas.",
@@ -181,8 +242,11 @@ METRICAS = [
        regras_comparabilidade=["Calculado não quer dizer menos confiável, e observado não quer dizer livre de erro."],
        regra_cobertura="Toda ficha de evidência encontrada nas golds (objeto com valor_exibido, testes e fonte).",
        politica_ausencia="Ficha sem teste nem reconciliação: pendência.",
-       validacoes=["natureza vinculada pela proveniência de mesmo indicador na mesma gold; sem vínculo, SEM_VINCULO declarado"],
-       limitacoes=["A qualidade da reconciliação depende do que cada módulo registrou na ficha.", _PLATAFORMA]),
+       validacoes=["natureza vinculada pela ficha, pela proveniência de mesma chave ou de mesmo indicador, ou pela única "
+                   "proveniência no mesmo objeto da ficha; a de um objeto acima na árvore não é herdada; sem vínculo, SEM_VINCULO"],
+       limitacoes=["A qualidade da reconciliação depende do que cada módulo registrou na ficha.",
+                   "A natureza ESTIMADO não separa 'estimado pela fonte' de 'estimado pelo observatório' (seção 11.3): o contrato de "
+                   "proveniência compartilhado tem uma só categoria; pedido ao integrador.", _PLATAFORMA]),
     _m(id="dados_id_publicacao", titulo="Identificador da publicação", paginas=PAGINA + PAGINA_MET,
        pergunta="Qual é a versão exata dos arquivos que geraram esta página?",
        definicao=("sha256 da lista [caminho, bytes, sha256] de todos os arquivos publicados (golds, séries, Parquet e geometrias), "
@@ -201,16 +265,19 @@ METRICAS = [
     _m(id="dados_equivalencia_parquet", titulo="Equivalência entre CSV e Parquet", paginas=PAGINA,
        pergunta="O arquivo Parquet tem exatamente o mesmo conteúdo do CSV?",
        definicao=("Parquet relido em lotes e comparado com o CSV célula a célula: texto igual, inteiro igual como texto, número "
-                  "igual ao número escrito no CSV e vazio igual a nulo."),
+                  "decimal igual ao número escrito no CSV (Decimal da representação mais curta do float64 = Decimal do texto) e "
+                  "vazio igual a nulo."), versao_formula="1.1",
        unidade="células divergentes", grao_geografico="não se aplica", grao_temporal="por arquivo e publicação",
        fontes=[F_SILVERS], formula="divergências = Σ células com valor Parquet ≠ valor CSV; equivalente ⇔ divergências = 0 e mesmas linhas",
        regra_agregacao="contagem de arquivos equivalentes (resumo.parquet)", dimensoes=["arquivo"],
        regras_comparabilidade=["Colunas de código (CNPJ, IBGE, CEG) ficam como texto para não perder zero à esquerda."],
        regra_cobertura="Todo CSV de public/energia/series com pelo menos 2 MiB.",
        politica_ausencia="Célula vazia do CSV é nulo no Parquet; nunca zero.",
-       validacoes=["CSV com zero à esquerda, vazio e decimal relido idêntico (teste do módulo)"],
-       limitacoes=["Número do CSV com mais de 17 dígitos significativos não é representável em float64; a conferência célula a "
-                   "célula desta publicação acusaria a perda como divergência.",
+       validacoes=["CSV com zero à esquerda, vazio e decimal relido idêntico (teste do módulo)",
+                   "número com mais de 17 dígitos significativos: a coluna fica como texto, e um Parquet gravado em float64 é "
+                   "acusado como divergente (teste do módulo)"],
+       limitacoes=["A comparação de números é decimal: a representação mais curta do float64 gravado tem de ser o mesmo número "
+                   "decimal escrito no CSV ('1.50' = '1.5'); coluna com número que o float64 não guarda exatamente vira texto.",
                    _PLATAFORMA]),
     _m(id="dados_conjuntos_publicados", titulo="Conjuntos publicados no catálogo",
        pergunta="Quantos conjuntos chegaram ao fim da escada, com evidência em cada etapa?",

@@ -1,8 +1,4171 @@
 {
  "dominio": "energia",
  "gold": "mercado.json",
- "gerado_em": "2026-10-01T06:22:40Z",
+ "gerado_em": "2026-10-01T07:42:57Z",
  "descricao": "Tabelas longas do módulo Mercado lidas sob demanda pela página (os mesmos valores da construção da gold; R$ e MWh inteiros).",
+ "parcelas_mensal_detalhe": [
+  {
+   "mes": "2024-04",
+   "consumo_total_mwh": 8018009,
+   "consumo_acl_sem_exportacao_mwh": 8018009,
+   "parcelas_sem_cadastro": 286,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 65,
+     "consumo_mwh": 542924
+    },
+    "Consumidor Especial": {
+     "parcelas": 9280,
+     "consumo_mwh": 804434
+    },
+    "Consumidor Livre": {
+     "parcelas": 5596,
+     "consumo_mwh": 6642015
+    },
+    "Exportador": {
+     "parcelas": 4,
+     "consumo_mwh": 0
+    },
+    "sem_cadastro": {
+     "parcelas": 286,
+     "consumo_mwh": 28637
+    }
+   },
+   "por_submercado": {
+    "SE": 8586,
+    "N": 652,
+    "S": 3819,
+    "NE": 2174
+   },
+   "conferencia": {
+    "ok": false,
+    "classes_acl_mwmed": 27209.1,
+    "parcelas_acl_mwmed": 11136.1,
+    "residuo_acl_mwmed": -16073.02,
+    "classe_distribuidor_mwmed": 45686.6,
+    "parcelas_distribuidor_mwmed": 2125.4,
+    "residuo_distribuidor_mwmed": -43561.24
+   }
+  },
+  {
+   "mes": "2024-05",
+   "consumo_total_mwh": 19799324,
+   "consumo_acl_sem_exportacao_mwh": 19742618,
+   "parcelas_sem_cadastro": 762,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 167,
+     "consumo_mwh": 1694634
+    },
+    "Consumidor Especial": {
+     "parcelas": 22998,
+     "consumo_mwh": 1966375
+    },
+    "Consumidor Livre": {
+     "parcelas": 13848,
+     "consumo_mwh": 16004599
+    },
+    "Exportador": {
+     "parcelas": 7,
+     "consumo_mwh": 56222
+    },
+    "sem_cadastro": {
+     "parcelas": 762,
+     "consumo_mwh": 77010
+    }
+   },
+   "por_submercado": {
+    "SE": 21861,
+    "NE": 4888,
+    "N": 1826,
+    "S": 9207
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 26612.8,
+    "parcelas_acl_mwmed": 26611.3,
+    "residuo_acl_mwmed": -1.44,
+    "classe_distribuidor_mwmed": 44287.1,
+    "parcelas_distribuidor_mwmed": 44287.1,
+    "residuo_distribuidor_mwmed": 0.0
+   }
+  },
+  {
+   "mes": "2024-06",
+   "consumo_total_mwh": 19613923,
+   "consumo_acl_sem_exportacao_mwh": 19217823,
+   "parcelas_sem_cadastro": 811,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 167,
+     "consumo_mwh": 1678429
+    },
+    "Consumidor Especial": {
+     "parcelas": 23410,
+     "consumo_mwh": 1850951
+    },
+    "Consumidor Livre": {
+     "parcelas": 13876,
+     "consumo_mwh": 15597470
+    },
+    "Exportador": {
+     "parcelas": 7,
+     "consumo_mwh": 395683
+    },
+    "sem_cadastro": {
+     "parcelas": 811,
+     "consumo_mwh": 90973
+    }
+   },
+   "por_submercado": {
+    "S": 9331,
+    "NE": 4963,
+    "SE": 22125,
+    "N": 1852
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 27242.4,
+    "parcelas_acl_mwmed": 27241.0,
+    "residuo_acl_mwmed": -1.42,
+    "classe_distribuidor_mwmed": 41040.5,
+    "parcelas_distribuidor_mwmed": 41040.5,
+    "residuo_distribuidor_mwmed": 0.0
+   }
+  },
+  {
+   "mes": "2024-07",
+   "consumo_total_mwh": 21079439,
+   "consumo_acl_sem_exportacao_mwh": 20163093,
+   "parcelas_sem_cadastro": 662,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 167,
+     "consumo_mwh": 1740876
+    },
+    "Consumidor Especial": {
+     "parcelas": 24233,
+     "consumo_mwh": 1941658
+    },
+    "Consumidor Livre": {
+     "parcelas": 13900,
+     "consumo_mwh": 16393656
+    },
+    "Exportador": {
+     "parcelas": 8,
+     "consumo_mwh": 915933
+    },
+    "sem_cadastro": {
+     "parcelas": 662,
+     "consumo_mwh": 86904
+    }
+   },
+   "por_submercado": {
+    "NE": 5410,
+    "S": 9478,
+    "SE": 22199,
+    "N": 1883
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 28333.1,
+    "parcelas_acl_mwmed": 28332.0,
+    "residuo_acl_mwmed": -1.04,
+    "classe_distribuidor_mwmed": 40148.5,
+    "parcelas_distribuidor_mwmed": 40148.5,
+    "residuo_distribuidor_mwmed": 0.0
+   }
+  },
+  {
+   "mes": "2024-08",
+   "consumo_total_mwh": 21147759,
+   "consumo_acl_sem_exportacao_mwh": 20425019,
+   "parcelas_sem_cadastro": 683,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 171,
+     "consumo_mwh": 1741863
+    },
+    "Consumidor Especial": {
+     "parcelas": 24606,
+     "consumo_mwh": 2010463
+    },
+    "Consumidor Livre": {
+     "parcelas": 13954,
+     "consumo_mwh": 16577140
+    },
+    "Exportador": {
+     "parcelas": 8,
+     "consumo_mwh": 722316
+    },
+    "sem_cadastro": {
+     "parcelas": 683,
+     "consumo_mwh": 95553
+    }
+   },
+   "por_submercado": {
+    "SE": 22381,
+    "S": 9683,
+    "NE": 5460,
+    "N": 1898
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 28424.7,
+    "parcelas_acl_mwmed": 28423.8,
+    "residuo_acl_mwmed": -0.86,
+    "classe_distribuidor_mwmed": 40326.5,
+    "parcelas_distribuidor_mwmed": 40326.5,
+    "residuo_distribuidor_mwmed": 0.0
+   }
+  },
+  {
+   "mes": "2024-09",
+   "consumo_total_mwh": 20062342,
+   "consumo_acl_sem_exportacao_mwh": 20041187,
+   "parcelas_sem_cadastro": 692,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 175,
+     "consumo_mwh": 1712828
+    },
+    "Consumidor Especial": {
+     "parcelas": 25088,
+     "consumo_mwh": 2074053
+    },
+    "Consumidor Livre": {
+     "parcelas": 14000,
+     "consumo_mwh": 16160558
+    },
+    "Exportador": {
+     "parcelas": 8,
+     "consumo_mwh": 20762
+    },
+    "sem_cadastro": {
+     "parcelas": 692,
+     "consumo_mwh": 93748
+    }
+   },
+   "por_submercado": {
+    "SE": 22621,
+    "S": 9812,
+    "NE": 5613,
+    "N": 1917
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 27864.7,
+    "parcelas_acl_mwmed": 27863.8,
+    "residuo_acl_mwmed": -0.84,
+    "classe_distribuidor_mwmed": 43805.7,
+    "parcelas_distribuidor_mwmed": 43805.7,
+    "residuo_distribuidor_mwmed": 0.0
+   }
+  },
+  {
+   "mes": "2024-10",
+   "consumo_total_mwh": 20793959,
+   "consumo_acl_sem_exportacao_mwh": 20790718,
+   "parcelas_sem_cadastro": 718,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 177,
+     "consumo_mwh": 1727361
+    },
+    "Consumidor Especial": {
+     "parcelas": 25456,
+     "consumo_mwh": 2240741
+    },
+    "Consumidor Livre": {
+     "parcelas": 14062,
+     "consumo_mwh": 16728017
+    },
+    "Exportador": {
+     "parcelas": 8,
+     "consumo_mwh": 2714
+    },
+    "sem_cadastro": {
+     "parcelas": 718,
+     "consumo_mwh": 94600
+    }
+   },
+   "por_submercado": {
+    "SE": 22825,
+    "S": 9984,
+    "NE": 5678,
+    "N": 1934
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 27949.0,
+    "parcelas_acl_mwmed": 27948.2,
+    "residuo_acl_mwmed": -0.85,
+    "classe_distribuidor_mwmed": 43773.0,
+    "parcelas_distribuidor_mwmed": 43773.0,
+    "residuo_distribuidor_mwmed": -0.0
+   }
+  },
+  {
+   "mes": "2024-11",
+   "consumo_total_mwh": 20239742,
+   "consumo_acl_sem_exportacao_mwh": 20126393,
+   "parcelas_sem_cadastro": 676,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 181,
+     "consumo_mwh": 1684888
+    },
+    "Consumidor Especial": {
+     "parcelas": 25978,
+     "consumo_mwh": 2212214
+    },
+    "Consumidor Livre": {
+     "parcelas": 14095,
+     "consumo_mwh": 16151422
+    },
+    "Exportador": {
+     "parcelas": 8,
+     "consumo_mwh": 112510
+    },
+    "sem_cadastro": {
+     "parcelas": 676,
+     "consumo_mwh": 77869
+    }
+   },
+   "por_submercado": {
+    "SE": 23017,
+    "S": 10215,
+    "NE": 5737,
+    "N": 1969
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 28110.4,
+    "parcelas_acl_mwmed": 28109.6,
+    "residuo_acl_mwmed": -0.77,
+    "classe_distribuidor_mwmed": 43167.9,
+    "parcelas_distribuidor_mwmed": 43167.9,
+    "residuo_distribuidor_mwmed": 0.0
+   }
+  },
+  {
+   "mes": "2024-12",
+   "consumo_total_mwh": 19730807,
+   "consumo_acl_sem_exportacao_mwh": 19730151,
+   "parcelas_sem_cadastro": 832,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 183,
+     "consumo_mwh": 1735576
+    },
+    "Consumidor Especial": {
+     "parcelas": 26480,
+     "consumo_mwh": 2229617
+    },
+    "Consumidor Livre": {
+     "parcelas": 14151,
+     "consumo_mwh": 15695298
+    },
+    "Exportador": {
+     "parcelas": 8,
+     "consumo_mwh": 0
+    },
+    "sem_cadastro": {
+     "parcelas": 832,
+     "consumo_mwh": 69660
+    }
+   },
+   "por_submercado": {
+    "SE": 23421,
+    "S": 10410,
+    "NE": 5810,
+    "N": 2013
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 26519.6,
+    "parcelas_acl_mwmed": 26519.0,
+    "residuo_acl_mwmed": -0.58,
+    "classe_distribuidor_mwmed": 43256.9,
+    "parcelas_distribuidor_mwmed": 43256.9,
+    "residuo_distribuidor_mwmed": -0.0
+   }
+  },
+  {
+   "mes": "2025-01",
+   "consumo_total_mwh": 20927707,
+   "consumo_acl_sem_exportacao_mwh": 20620981,
+   "parcelas_sem_cadastro": 803,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 198,
+     "consumo_mwh": 1805919
+    },
+    "Consumidor Especial": {
+     "parcelas": 26965,
+     "consumo_mwh": 2418396
+    },
+    "Consumidor Livre": {
+     "parcelas": 14141,
+     "consumo_mwh": 16329181
+    },
+    "Exportador": {
+     "parcelas": 11,
+     "consumo_mwh": 306116
+    },
+    "sem_cadastro": {
+     "parcelas": 803,
+     "consumo_mwh": 67486
+    }
+   },
+   "por_submercado": {
+    "NE": 5834,
+    "S": 10587,
+    "SE": 23661,
+    "N": 2036
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 28128.9,
+    "parcelas_acl_mwmed": 28127.8,
+    "residuo_acl_mwmed": -1.08,
+    "classe_distribuidor_mwmed": 44660.8,
+    "parcelas_distribuidor_mwmed": 44660.8,
+    "residuo_distribuidor_mwmed": 0.0
+   }
+  },
+  {
+   "mes": "2025-02",
+   "consumo_total_mwh": 20234314,
+   "consumo_acl_sem_exportacao_mwh": 19656292,
+   "parcelas_sem_cadastro": 810,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 201,
+     "consumo_mwh": 1686999
+    },
+    "Consumidor Especial": {
+     "parcelas": 27291,
+     "consumo_mwh": 2373790
+    },
+    "Consumidor Livre": {
+     "parcelas": 14150,
+     "consumo_mwh": 15531068
+    },
+    "Exportador": {
+     "parcelas": 12,
+     "consumo_mwh": 577476
+    },
+    "sem_cadastro": {
+     "parcelas": 810,
+     "consumo_mwh": 64435
+    }
+   },
+   "por_submercado": {
+    "NE": 5877,
+    "SE": 23827,
+    "N": 2070,
+    "S": 10690
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 30111.2,
+    "parcelas_acl_mwmed": 30109.8,
+    "residuo_acl_mwmed": -1.39,
+    "classe_distribuidor_mwmed": 47941.6,
+    "parcelas_distribuidor_mwmed": 47941.6,
+    "residuo_distribuidor_mwmed": 0.0
+   }
+  },
+  {
+   "mes": "2025-03",
+   "consumo_total_mwh": 21504482,
+   "consumo_acl_sem_exportacao_mwh": 21412204,
+   "parcelas_sem_cadastro": 818,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 208,
+     "consumo_mwh": 1863474
+    },
+    "Consumidor Especial": {
+     "parcelas": 27587,
+     "consumo_mwh": 2564723
+    },
+    "Consumidor Livre": {
+     "parcelas": 14150,
+     "consumo_mwh": 16917824
+    },
+    "Exportador": {
+     "parcelas": 12,
+     "consumo_mwh": 91910
+    },
+    "sem_cadastro": {
+     "parcelas": 818,
+     "consumo_mwh": 66184
+    }
+   },
+   "por_submercado": {
+    "SE": 23970,
+    "S": 10810,
+    "NE": 5894,
+    "N": 2101
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 28904.9,
+    "parcelas_acl_mwmed": 28903.4,
+    "residuo_acl_mwmed": -1.52,
+    "classe_distribuidor_mwmed": 45733.6,
+    "parcelas_distribuidor_mwmed": 45733.6,
+    "residuo_distribuidor_mwmed": 0.0
+   }
+  },
+  {
+   "mes": "2025-04",
+   "consumo_total_mwh": 20270883,
+   "consumo_acl_sem_exportacao_mwh": 20264834,
+   "parcelas_sem_cadastro": 798,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 214,
+     "consumo_mwh": 1749099
+    },
+    "Consumidor Especial": {
+     "parcelas": 27971,
+     "consumo_mwh": 2374742
+    },
+    "Consumidor Livre": {
+     "parcelas": 14190,
+     "consumo_mwh": 16084221
+    },
+    "Exportador": {
+     "parcelas": 12,
+     "consumo_mwh": 5412
+    },
+    "sem_cadastro": {
+     "parcelas": 798,
+     "consumo_mwh": 56773
+    }
+   },
+   "por_submercado": {
+    "SE": 24100,
+    "S": 11037,
+    "NE": 5930,
+    "N": 2118
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 28154.6,
+    "parcelas_acl_mwmed": 28153.1,
+    "residuo_acl_mwmed": -1.47,
+    "classe_distribuidor_mwmed": 42128.0,
+    "parcelas_distribuidor_mwmed": 42128.0,
+    "residuo_distribuidor_mwmed": 0.0
+   }
+  },
+  {
+   "mes": "2025-05",
+   "consumo_total_mwh": 20860744,
+   "consumo_acl_sem_exportacao_mwh": 20826249,
+   "parcelas_sem_cadastro": 788,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 216,
+     "consumo_mwh": 1847174
+    },
+    "Consumidor Especial": {
+     "parcelas": 28308,
+     "consumo_mwh": 2375132
+    },
+    "Consumidor Livre": {
+     "parcelas": 14198,
+     "consumo_mwh": 16543309
+    },
+    "Exportador": {
+     "parcelas": 12,
+     "consumo_mwh": 34173
+    },
+    "sem_cadastro": {
+     "parcelas": 788,
+     "consumo_mwh": 60634
+    }
+   },
+   "por_submercado": {
+    "S": 11195,
+    "N": 2135,
+    "NE": 5946,
+    "SE": 24246
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 28039.7,
+    "parcelas_acl_mwmed": 28038.2,
+    "residuo_acl_mwmed": -1.55,
+    "classe_distribuidor_mwmed": 39853.6,
+    "parcelas_distribuidor_mwmed": 39853.6,
+    "residuo_distribuidor_mwmed": -0.0
+   }
+  },
+  {
+   "mes": "2025-06",
+   "consumo_total_mwh": 20379054,
+   "consumo_acl_sem_exportacao_mwh": 19757700,
+   "parcelas_sem_cadastro": 781,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 217,
+     "consumo_mwh": 1792984
+    },
+    "Consumidor Especial": {
+     "parcelas": 28673,
+     "consumo_mwh": 2201431
+    },
+    "Consumidor Livre": {
+     "parcelas": 14216,
+     "consumo_mwh": 15703278
+    },
+    "Exportador": {
+     "parcelas": 13,
+     "consumo_mwh": 621093
+    },
+    "sem_cadastro": {
+     "parcelas": 781,
+     "consumo_mwh": 60007
+    }
+   },
+   "por_submercado": {
+    "SE": 24459,
+    "S": 11269,
+    "NE": 6010,
+    "N": 2162
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 28305.4,
+    "parcelas_acl_mwmed": 28303.9,
+    "residuo_acl_mwmed": -1.51,
+    "classe_distribuidor_mwmed": 39065.8,
+    "parcelas_distribuidor_mwmed": 39065.8,
+    "residuo_distribuidor_mwmed": 0.0
+   }
+  },
+  {
+   "mes": "2025-07",
+   "consumo_total_mwh": 21821273,
+   "consumo_acl_sem_exportacao_mwh": 20590478,
+   "parcelas_sem_cadastro": 772,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 218,
+     "consumo_mwh": 1867297
+    },
+    "Consumidor Especial": {
+     "parcelas": 28975,
+     "consumo_mwh": 2312851
+    },
+    "Consumidor Livre": {
+     "parcelas": 14211,
+     "consumo_mwh": 16331597
+    },
+    "Exportador": {
+     "parcelas": 13,
+     "consumo_mwh": 1230524
+    },
+    "sem_cadastro": {
+     "parcelas": 772,
+     "consumo_mwh": 78734
+    }
+   },
+   "por_submercado": {
+    "S": 11337,
+    "NE": 6035,
+    "SE": 24647,
+    "N": 2170
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 29330.9,
+    "parcelas_acl_mwmed": 29329.3,
+    "residuo_acl_mwmed": -1.55,
+    "classe_distribuidor_mwmed": 37490.9,
+    "parcelas_distribuidor_mwmed": 37490.9,
+    "residuo_distribuidor_mwmed": 0.0
+   }
+  },
+  {
+   "mes": "2025-08",
+   "consumo_total_mwh": 20971673,
+   "consumo_acl_sem_exportacao_mwh": 20622613,
+   "parcelas_sem_cadastro": 750,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 218,
+     "consumo_mwh": 1872859
+    },
+    "Consumidor Especial": {
+     "parcelas": 29229,
+     "consumo_mwh": 2366798
+    },
+    "Consumidor Livre": {
+     "parcelas": 14214,
+     "consumo_mwh": 16294452
+    },
+    "Exportador": {
+     "parcelas": 13,
+     "consumo_mwh": 348801
+    },
+    "sem_cadastro": {
+     "parcelas": 750,
+     "consumo_mwh": 88503
+    }
+   },
+   "por_submercado": {
+    "S": 11405,
+    "NE": 6069,
+    "SE": 24768,
+    "N": 2182
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 28188.7,
+    "parcelas_acl_mwmed": 28187.4,
+    "residuo_acl_mwmed": -1.33,
+    "classe_distribuidor_mwmed": 38019.7,
+    "parcelas_distribuidor_mwmed": 38019.7,
+    "residuo_distribuidor_mwmed": 0.0
+   }
+  },
+  {
+   "mes": "2025-09",
+   "consumo_total_mwh": 20324383,
+   "consumo_acl_sem_exportacao_mwh": 20287076,
+   "parcelas_sem_cadastro": 743,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 218,
+     "consumo_mwh": 1813296
+    },
+    "Consumidor Especial": {
+     "parcelas": 29469,
+     "consumo_mwh": 2420377
+    },
+    "Consumidor Livre": {
+     "parcelas": 14237,
+     "consumo_mwh": 15965657
+    },
+    "Exportador": {
+     "parcelas": 13,
+     "consumo_mwh": 36978
+    },
+    "sem_cadastro": {
+     "parcelas": 743,
+     "consumo_mwh": 87746
+    }
+   },
+   "por_submercado": {
+    "SE": 24924,
+    "S": 11448,
+    "NE": 6119,
+    "N": 2189
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 28229.3,
+    "parcelas_acl_mwmed": 28227.9,
+    "residuo_acl_mwmed": -1.45,
+    "classe_distribuidor_mwmed": 39842.5,
+    "parcelas_distribuidor_mwmed": 39842.5,
+    "residuo_distribuidor_mwmed": 0.0
+   }
+  },
+  {
+   "mes": "2025-10",
+   "consumo_total_mwh": 21122509,
+   "consumo_acl_sem_exportacao_mwh": 21122084,
+   "parcelas_sem_cadastro": 272,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 224,
+     "consumo_mwh": 1854167
+    },
+    "Consumidor Especial": {
+     "parcelas": 29638,
+     "consumo_mwh": 2569095
+    },
+    "Consumidor Livre": {
+     "parcelas": 14242,
+     "consumo_mwh": 16669733
+    },
+    "Exportador": {
+     "parcelas": 13,
+     "consumo_mwh": 0
+    },
+    "sem_cadastro": {
+     "parcelas": 272,
+     "consumo_mwh": 29090
+    }
+   },
+   "por_submercado": {
+    "SE": 24533,
+    "S": 11512,
+    "NE": 6149,
+    "N": 2195
+   },
+   "conferencia": {
+    "ok": false,
+    "classes_acl_mwmed": 28467.2,
+    "parcelas_acl_mwmed": 28389.9,
+    "residuo_acl_mwmed": -77.27,
+    "classe_distribuidor_mwmed": 40927.2,
+    "parcelas_distribuidor_mwmed": 40927.2,
+    "residuo_distribuidor_mwmed": 0.0
+   }
+  },
+  {
+   "mes": "2025-11",
+   "consumo_total_mwh": 20291440,
+   "consumo_acl_sem_exportacao_mwh": 20290866,
+   "parcelas_sem_cadastro": 267,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 228,
+     "consumo_mwh": 1810222
+    },
+    "Consumidor Especial": {
+     "parcelas": 29792,
+     "consumo_mwh": 2501067
+    },
+    "Consumidor Livre": {
+     "parcelas": 14249,
+     "consumo_mwh": 15953826
+    },
+    "Exportador": {
+     "parcelas": 13,
+     "consumo_mwh": 0
+    },
+    "sem_cadastro": {
+     "parcelas": 267,
+     "consumo_mwh": 25752
+    }
+   },
+   "por_submercado": {
+    "SE": 24605,
+    "S": 11558,
+    "NE": 6171,
+    "N": 2215
+   },
+   "conferencia": {
+    "ok": false,
+    "classes_acl_mwmed": 28248.2,
+    "parcelas_acl_mwmed": 28181.8,
+    "residuo_acl_mwmed": -66.44,
+    "classe_distribuidor_mwmed": 40679.9,
+    "parcelas_distribuidor_mwmed": 40679.9,
+    "residuo_distribuidor_mwmed": 0.0
+   }
+  },
+  {
+   "mes": "2025-12",
+   "consumo_total_mwh": 19944316,
+   "consumo_acl_sem_exportacao_mwh": 19914790,
+   "parcelas_sem_cadastro": 259,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 229,
+     "consumo_mwh": 1828653
+    },
+    "Consumidor Especial": {
+     "parcelas": 30014,
+     "consumo_mwh": 2589535
+    },
+    "Consumidor Livre": {
+     "parcelas": 14287,
+     "consumo_mwh": 15472371
+    },
+    "Exportador": {
+     "parcelas": 14,
+     "consumo_mwh": 29031
+    },
+    "sem_cadastro": {
+     "parcelas": 259,
+     "consumo_mwh": 24232
+    }
+   },
+   "por_submercado": {
+    "SE": 24720,
+    "S": 11624,
+    "NE": 6211,
+    "N": 2248
+   },
+   "conferencia": {
+    "ok": false,
+    "classes_acl_mwmed": 26863.5,
+    "parcelas_acl_mwmed": 26806.2,
+    "residuo_acl_mwmed": -57.34,
+    "classe_distribuidor_mwmed": 44091.7,
+    "parcelas_distribuidor_mwmed": 44091.7,
+    "residuo_distribuidor_mwmed": 0.0
+   }
+  },
+  {
+   "mes": "2026-01",
+   "consumo_total_mwh": 20885505,
+   "consumo_acl_sem_exportacao_mwh": 20772953,
+   "parcelas_sem_cadastro": 184,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 243,
+     "consumo_mwh": 1805586
+    },
+    "Consumidor Especial": {
+     "parcelas": 30545,
+     "consumo_mwh": 2668353
+    },
+    "Consumidor Livre": {
+     "parcelas": 14299,
+     "consumo_mwh": 16281601
+    },
+    "Exportador": {
+     "parcelas": 15,
+     "consumo_mwh": 112101
+    },
+    "sem_cadastro": {
+     "parcelas": 184,
+     "consumo_mwh": 17413
+    }
+   },
+   "por_submercado": {
+    "SE": 25002,
+    "S": 11669,
+    "NE": 6355,
+    "N": 2260
+   },
+   "conferencia": {
+    "ok": false,
+    "classes_acl_mwmed": 28123.7,
+    "parcelas_acl_mwmed": 28071.3,
+    "residuo_acl_mwmed": -52.43,
+    "classe_distribuidor_mwmed": 43432.3,
+    "parcelas_distribuidor_mwmed": 43432.3,
+    "residuo_distribuidor_mwmed": 0.0
+   }
+  },
+  {
+   "mes": "2026-02",
+   "consumo_total_mwh": 19845974,
+   "consumo_acl_sem_exportacao_mwh": 19730384,
+   "parcelas_sem_cadastro": 130,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 246,
+     "consumo_mwh": 1705160
+    },
+    "Consumidor Especial": {
+     "parcelas": 30758,
+     "consumo_mwh": 2536062
+    },
+    "Consumidor Livre": {
+     "parcelas": 14307,
+     "consumo_mwh": 15477017
+    },
+    "Exportador": {
+     "parcelas": 15,
+     "consumo_mwh": 115161
+    },
+    "sem_cadastro": {
+     "parcelas": 130,
+     "consumo_mwh": 12145
+    }
+   },
+   "por_submercado": {
+    "SE": 25041,
+    "S": 11683,
+    "NE": 6467,
+    "N": 2265
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 29531.8,
+    "parcelas_acl_mwmed": 29532.1,
+    "residuo_acl_mwmed": 0.27,
+    "classe_distribuidor_mwmed": 44760.0,
+    "parcelas_distribuidor_mwmed": 44760.0,
+    "residuo_distribuidor_mwmed": 0.0
+   }
+  },
+  {
+   "mes": "2026-03",
+   "consumo_total_mwh": 21939537,
+   "consumo_acl_sem_exportacao_mwh": 21930261,
+   "parcelas_sem_cadastro": 79,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 331,
+     "consumo_mwh": 1935885
+    },
+    "Consumidor Especial": {
+     "parcelas": 30894,
+     "consumo_mwh": 2840886
+    },
+    "Consumidor Livre": {
+     "parcelas": 14256,
+     "consumo_mwh": 17143912
+    },
+    "Exportador": {
+     "parcelas": 15,
+     "consumo_mwh": 8790
+    },
+    "sem_cadastro": {
+     "parcelas": 79,
+     "consumo_mwh": 9578
+    }
+   },
+   "por_submercado": {
+    "SE": 25043,
+    "S": 11725,
+    "NE": 6547,
+    "N": 2260
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 29486.9,
+    "parcelas_acl_mwmed": 29488.0,
+    "residuo_acl_mwmed": 1.04,
+    "classe_distribuidor_mwmed": 44329.8,
+    "parcelas_distribuidor_mwmed": 44329.8,
+    "residuo_distribuidor_mwmed": 0.0
+   }
+  },
+  {
+   "mes": "2026-04",
+   "consumo_total_mwh": 21021242,
+   "consumo_acl_sem_exportacao_mwh": 20947499,
+   "parcelas_sem_cadastro": 65,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 332,
+     "consumo_mwh": 1836905
+    },
+    "Consumidor Especial": {
+     "parcelas": 31192,
+     "consumo_mwh": 2680888
+    },
+    "Consumidor Livre": {
+     "parcelas": 14220,
+     "consumo_mwh": 16421929
+    },
+    "Exportador": {
+     "parcelas": 15,
+     "consumo_mwh": 73046
+    },
+    "sem_cadastro": {
+     "parcelas": 65,
+     "consumo_mwh": 7777
+    }
+   },
+   "por_submercado": {
+    "SE": 25067,
+    "S": 11751,
+    "NE": 6729,
+    "N": 2277
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 29194.7,
+    "parcelas_acl_mwmed": 29195.2,
+    "residuo_acl_mwmed": 0.48,
+    "classe_distribuidor_mwmed": 42839.6,
+    "parcelas_distribuidor_mwmed": 42839.6,
+    "residuo_distribuidor_mwmed": 0.0
+   }
+  },
+  {
+   "mes": "2026-05",
+   "consumo_total_mwh": 21670854,
+   "consumo_acl_sem_exportacao_mwh": 21109479,
+   "parcelas_sem_cadastro": 48,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 334,
+     "consumo_mwh": 1900829
+    },
+    "Consumidor Especial": {
+     "parcelas": 31399,
+     "consumo_mwh": 2588271
+    },
+    "Consumidor Livre": {
+     "parcelas": 14211,
+     "consumo_mwh": 16615422
+    },
+    "Exportador": {
+     "parcelas": 15,
+     "consumo_mwh": 560990
+    },
+    "sem_cadastro": {
+     "parcelas": 48,
+     "consumo_mwh": 4956
+    }
+   },
+   "por_submercado": {
+    "SE": 25148,
+    "S": 11806,
+    "NE": 6763,
+    "N": 2290
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 29126.8,
+    "parcelas_acl_mwmed": 29127.0,
+    "residuo_acl_mwmed": 0.15,
+    "classe_distribuidor_mwmed": 41106.4,
+    "parcelas_distribuidor_mwmed": 41106.4,
+    "residuo_distribuidor_mwmed": 0.0
+   }
+  },
+  {
+   "mes": "2026-06",
+   "consumo_total_mwh": 21066721,
+   "consumo_acl_sem_exportacao_mwh": 20205791,
+   "parcelas_sem_cadastro": 14,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 337,
+     "consumo_mwh": 1877500
+    },
+    "Consumidor Especial": {
+     "parcelas": 32031,
+     "consumo_mwh": 2446419
+    },
+    "Consumidor Livre": {
+     "parcelas": 14217,
+     "consumo_mwh": 15880419
+    },
+    "Exportador": {
+     "parcelas": 18,
+     "consumo_mwh": 860593
+    },
+    "sem_cadastro": {
+     "parcelas": 14,
+     "consumo_mwh": 1452
+    }
+   },
+   "por_submercado": {
+    "SE": 25524,
+    "S": 11923,
+    "NE": 6829,
+    "N": 2341
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 29258.8,
+    "parcelas_acl_mwmed": 29258.9,
+    "residuo_acl_mwmed": 0.07,
+    "classe_distribuidor_mwmed": 39678.0,
+    "parcelas_distribuidor_mwmed": 39678.0,
+    "residuo_distribuidor_mwmed": -0.0
+   }
+  },
+  {
+   "mes": "2026-07",
+   "consumo_total_mwh": 21787647,
+   "consumo_acl_sem_exportacao_mwh": 21096108,
+   "parcelas_sem_cadastro": 0,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 338,
+     "consumo_mwh": 1954289
+    },
+    "Consumidor Especial": {
+     "parcelas": 32171,
+     "consumo_mwh": 2602460
+    },
+    "Consumidor Livre": {
+     "parcelas": 14224,
+     "consumo_mwh": 16539359
+    },
+    "Exportador": {
+     "parcelas": 18,
+     "consumo_mwh": 691229
+    }
+   },
+   "por_submercado": {
+    "SE": 25587,
+    "S": 11951,
+    "NE": 6846,
+    "N": 2367
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 29281.9,
+    "parcelas_acl_mwmed": 29284.1,
+    "residuo_acl_mwmed": 2.15,
+    "classe_distribuidor_mwmed": 39454.3,
+    "parcelas_distribuidor_mwmed": 39454.3,
+    "residuo_distribuidor_mwmed": -0.0
+   }
+  }
+ ],
+ "samp_nacional_mensal": [
+  {
+   "mes": "2019-01",
+   "distribuidoras": 102,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 9879740,
+   "livre_uc": 13207,
+   "cativo_mwh": 27821057,
+   "epe_livre_uc": 13201,
+   "samp_sobre_epe_uc_pct": 100.05,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2019-02",
+   "distribuidoras": 102,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 10437229,
+   "livre_uc": 13163,
+   "cativo_mwh": 28306240,
+   "epe_livre_uc": 13445,
+   "samp_sobre_epe_uc_pct": 97.9,
+   "ocorrencias": [
+    "CEEE-D: unidades livres de 485 para 196"
+   ]
+  },
+  {
+   "mes": "2019-03",
+   "distribuidoras": 104,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 9895120,
+   "livre_uc": 13512,
+   "cativo_mwh": 27472326,
+   "epe_livre_uc": 13569,
+   "samp_sobre_epe_uc_pct": 99.58,
+   "ocorrencias": [
+    "CEEE-D: unidades livres de 196 para 357"
+   ]
+  },
+  {
+   "mes": "2019-04",
+   "distribuidoras": 104,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 10554677,
+   "livre_uc": 13708,
+   "cativo_mwh": 26341299,
+   "epe_livre_uc": 13756,
+   "samp_sobre_epe_uc_pct": 99.65,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2019-05",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 10520163,
+   "livre_uc": 14039,
+   "cativo_mwh": 26678584,
+   "epe_livre_uc": 14031,
+   "samp_sobre_epe_uc_pct": 100.06,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2019-06",
+   "distribuidoras": 104,
+   "completo": false,
+   "comparavel": false,
+   "motivo_incompleto": "distribuidora sem linhas LIVRE depois de tê-las no mês anterior",
+   "livre_mwh": 10624068,
+   "livre_uc": 14166,
+   "cativo_mwh": 24984696,
+   "epe_livre_uc": 14269,
+   "samp_sobre_epe_uc_pct": 99.28,
+   "ocorrencias": [
+    "RGE sem linhas LIVRE (417 unidades livres no mês anterior)",
+    "EQUATORIAL AL: linhas LIVRE Regular iguais às do mês anterior",
+    "RGE SUL: unidades livres de 434 para 872"
+   ]
+  },
+  {
+   "mes": "2019-07",
+   "distribuidoras": 104,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 10084837,
+   "livre_uc": 14283,
+   "cativo_mwh": 24621973,
+   "epe_livre_uc": 14530,
+   "samp_sobre_epe_uc_pct": 98.3,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2019-08",
+   "distribuidoras": 104,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 10590101,
+   "livre_uc": 14965,
+   "cativo_mwh": 25093282,
+   "epe_livre_uc": 14929,
+   "samp_sobre_epe_uc_pct": 100.24,
+   "ocorrencias": [
+    "CERTAJA: linhas LIVRE Regular iguais às do mês anterior",
+    "CEEE-D: unidades livres de 288 para 595"
+   ]
+  },
+  {
+   "mes": "2019-09",
+   "distribuidoras": 104,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 10556824,
+   "livre_uc": 15182,
+   "cativo_mwh": 25709718,
+   "epe_livre_uc": 15309,
+   "samp_sobre_epe_uc_pct": 99.17,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2019-10",
+   "distribuidoras": 104,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 10399201,
+   "livre_uc": 15510,
+   "cativo_mwh": 26950265,
+   "epe_livre_uc": 15540,
+   "samp_sobre_epe_uc_pct": 99.81,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2019-11",
+   "distribuidoras": 104,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 11039794,
+   "livre_uc": 15759,
+   "cativo_mwh": 27693829,
+   "epe_livre_uc": 15779,
+   "samp_sobre_epe_uc_pct": 99.87,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2019-12",
+   "distribuidoras": 104,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 10671708,
+   "livre_uc": 16020,
+   "cativo_mwh": 27101911,
+   "epe_livre_uc": 16093,
+   "samp_sobre_epe_uc_pct": 99.55,
+   "ocorrencias": [
+    "COSERN: unidades livres de 90 para 138"
+   ]
+  },
+  {
+   "mes": "2020-01",
+   "distribuidoras": 104,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 10223541,
+   "livre_uc": 16555,
+   "cativo_mwh": 27121680,
+   "epe_livre_uc": 16540,
+   "samp_sobre_epe_uc_pct": 100.09,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2020-02",
+   "distribuidoras": 104,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 10735126,
+   "livre_uc": 16542,
+   "cativo_mwh": 26898962,
+   "epe_livre_uc": 16975,
+   "samp_sobre_epe_uc_pct": 97.45,
+   "ocorrencias": [
+    "CEEE-D: unidades livres de 675 para 313"
+   ]
+  },
+  {
+   "mes": "2020-03",
+   "distribuidoras": 104,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 10677012,
+   "livre_uc": 17023,
+   "cativo_mwh": 26690179,
+   "epe_livre_uc": 17373,
+   "samp_sobre_epe_uc_pct": 97.99,
+   "ocorrencias": [
+    "CEEE-D: unidades livres de 313 para 515"
+   ]
+  },
+  {
+   "mes": "2020-04",
+   "distribuidoras": 104,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 10694713,
+   "livre_uc": 17611,
+   "cativo_mwh": 25020310,
+   "epe_livre_uc": 17698,
+   "samp_sobre_epe_uc_pct": 99.51,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2020-05",
+   "distribuidoras": 104,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 8703558,
+   "livre_uc": 18004,
+   "cativo_mwh": 23530428,
+   "epe_livre_uc": 18105,
+   "samp_sobre_epe_uc_pct": 99.44,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2020-06",
+   "distribuidoras": 104,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 9216556,
+   "livre_uc": 18410,
+   "cativo_mwh": 23446669,
+   "epe_livre_uc": 18523,
+   "samp_sobre_epe_uc_pct": 99.39,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2020-07",
+   "distribuidoras": 104,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 9781495,
+   "livre_uc": 18824,
+   "cativo_mwh": 23811888,
+   "epe_livre_uc": 19038,
+   "samp_sobre_epe_uc_pct": 98.88,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2020-08",
+   "distribuidoras": 104,
+   "completo": false,
+   "comparavel": false,
+   "motivo_incompleto": "distribuidora sem linhas LIVRE depois de tê-las no mês anterior",
+   "livre_mwh": 10869936,
+   "livre_uc": 19284,
+   "cativo_mwh": 24696336,
+   "epe_livre_uc": 19505,
+   "samp_sobre_epe_uc_pct": 98.87,
+   "ocorrencias": [
+    "CERPRO sem linhas LIVRE (2 unidades livres no mês anterior)",
+    "COOPERZEM sem linhas LIVRE (1 unidade livre no mês anterior)",
+    "CERPALO sem linhas LIVRE (1 unidade livre no mês anterior)"
+   ]
+  },
+  {
+   "mes": "2020-09",
+   "distribuidoras": 104,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 11195350,
+   "livre_uc": 20049,
+   "cativo_mwh": 25377697,
+   "epe_livre_uc": 20043,
+   "samp_sobre_epe_uc_pct": 100.03,
+   "ocorrencias": [
+    "ESS: unidades livres de 206 para 410"
+   ]
+  },
+  {
+   "mes": "2020-10",
+   "distribuidoras": 104,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 11524318,
+   "livre_uc": 20433,
+   "cativo_mwh": 27056141,
+   "epe_livre_uc": 20637,
+   "samp_sobre_epe_uc_pct": 99.01,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2020-11",
+   "distribuidoras": 104,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 11954539,
+   "livre_uc": 20641,
+   "cativo_mwh": 27190362,
+   "epe_livre_uc": 21053,
+   "samp_sobre_epe_uc_pct": 98.04,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2020-12",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 11582156,
+   "livre_uc": 18190,
+   "cativo_mwh": 26998330,
+   "epe_livre_uc": 21298,
+   "samp_sobre_epe_uc_pct": 85.41,
+   "ocorrencias": [
+    "CPFL-PIRATINING: unidades livres de 885 para 12",
+    "CPFL-PAULISTA: unidades livres de 1.953 para 15"
+   ]
+  },
+  {
+   "mes": "2021-01",
+   "distribuidoras": 105,
+   "completo": false,
+   "comparavel": false,
+   "motivo_incompleto": "distribuidora sem linhas LIVRE depois de tê-las no mês anterior",
+   "livre_mwh": 11485289,
+   "livre_uc": 16762,
+   "cativo_mwh": 26256988,
+   "epe_livre_uc": 21960,
+   "samp_sobre_epe_uc_pct": 76.33,
+   "ocorrencias": [
+    "EPB sem linhas LIVRE (97 unidades livres no mês anterior)",
+    "ESE sem linhas LIVRE (93 unidades livres no mês anterior)",
+    "EMR sem linhas LIVRE (72 unidades livres no mês anterior)",
+    "EBO sem linhas LIVRE (27 unidades livres no mês anterior)"
+   ]
+  },
+  {
+   "mes": "2021-02",
+   "distribuidoras": 105,
+   "completo": false,
+   "comparavel": false,
+   "motivo_incompleto": "distribuidora sem linhas LIVRE depois de tê-las no mês anterior",
+   "livre_mwh": 11587132,
+   "livre_uc": 16918,
+   "cativo_mwh": 26044934,
+   "epe_livre_uc": 22757,
+   "samp_sobre_epe_uc_pct": 74.34,
+   "ocorrencias": [
+    "ENEL RJ sem linhas LIVRE (678 unidades livres no mês anterior)",
+    "COORSEL: linhas CATIVO Regular iguais às do mês anterior"
+   ]
+  },
+  {
+   "mes": "2021-03",
+   "distribuidoras": 105,
+   "completo": false,
+   "comparavel": false,
+   "motivo_incompleto": "distribuidora sem linhas LIVRE depois de tê-las no mês anterior",
+   "livre_mwh": 11591010,
+   "livre_uc": 22716,
+   "cativo_mwh": 26570991,
+   "epe_livre_uc": 23472,
+   "samp_sobre_epe_uc_pct": 96.78,
+   "ocorrencias": [
+    "EAC sem linhas LIVRE (34 unidades livres no mês anterior)"
+   ]
+  },
+  {
+   "mes": "2021-04",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 12414818,
+   "livre_uc": 23381,
+   "cativo_mwh": 26414339,
+   "epe_livre_uc": 24082,
+   "samp_sobre_epe_uc_pct": 97.09,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2021-05",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 11740891,
+   "livre_uc": 23805,
+   "cativo_mwh": 24429822,
+   "epe_livre_uc": 23859,
+   "samp_sobre_epe_uc_pct": 99.77,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2021-06",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 11994024,
+   "livre_uc": 24153,
+   "cativo_mwh": 24766772,
+   "epe_livre_uc": 24372,
+   "samp_sobre_epe_uc_pct": 99.1,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2021-07",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 18720802,
+   "livre_uc": 24556,
+   "cativo_mwh": 23881863,
+   "epe_livre_uc": 24693,
+   "samp_sobre_epe_uc_pct": 99.45,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2021-08",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 12182673,
+   "livre_uc": 24953,
+   "cativo_mwh": 24216569,
+   "epe_livre_uc": 25131,
+   "samp_sobre_epe_uc_pct": 99.29,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2021-09",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 12106311,
+   "livre_uc": 24843,
+   "cativo_mwh": 25589226,
+   "epe_livre_uc": 25510,
+   "samp_sobre_epe_uc_pct": 97.39,
+   "ocorrencias": [
+    "EQUATORIAL GO: unidades livres de 533 para 8"
+   ]
+  },
+  {
+   "mes": "2021-10",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 12316905,
+   "livre_uc": 25751,
+   "cativo_mwh": 25613807,
+   "epe_livre_uc": 26237,
+   "samp_sobre_epe_uc_pct": 98.15,
+   "ocorrencias": [
+    "EQUATORIAL GO: unidades livres de 8 para 538"
+   ]
+  },
+  {
+   "mes": "2021-11",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 12482000,
+   "livre_uc": 26050,
+   "cativo_mwh": 24969385,
+   "epe_livre_uc": 26253,
+   "samp_sobre_epe_uc_pct": 99.23,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2021-12",
+   "distribuidoras": 105,
+   "completo": false,
+   "comparavel": false,
+   "motivo_incompleto": "distribuidora sem linhas LIVRE depois de tê-las no mês anterior",
+   "livre_mwh": 12429801,
+   "livre_uc": 26376,
+   "cativo_mwh": 26476127,
+   "epe_livre_uc": 26669,
+   "samp_sobre_epe_uc_pct": 98.9,
+   "ocorrencias": [
+    "COPREL sem linhas LIVRE (10 unidades livres no mês anterior)"
+   ]
+  },
+  {
+   "mes": "2022-01",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 12121150,
+   "livre_uc": 28384,
+   "cativo_mwh": 25497396,
+   "epe_livre_uc": 27194,
+   "samp_sobre_epe_uc_pct": 104.38,
+   "ocorrencias": [
+    "COSERN: unidades livres de 269 para 1.773"
+   ]
+  },
+  {
+   "mes": "2022-02",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 12350034,
+   "livre_uc": 28514,
+   "cativo_mwh": 25526317,
+   "epe_livre_uc": 27523,
+   "samp_sobre_epe_uc_pct": 103.6,
+   "ocorrencias": [
+    "RGE SUL: unidades livres de 1.909 para 3.159",
+    "COSERN: unidades livres de 1.773 para 273"
+   ]
+  },
+  {
+   "mes": "2022-03",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 12262139,
+   "livre_uc": 27816,
+   "cativo_mwh": 26967646,
+   "epe_livre_uc": 27855,
+   "samp_sobre_epe_uc_pct": 99.86,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2022-04",
+   "distribuidoras": 105,
+   "completo": false,
+   "comparavel": false,
+   "motivo_incompleto": "distribuidora sem linhas LIVRE depois de tê-las no mês anterior",
+   "livre_mwh": 13344377,
+   "livre_uc": 28125,
+   "cativo_mwh": 28507551,
+   "epe_livre_uc": 28172,
+   "samp_sobre_epe_uc_pct": 99.83,
+   "ocorrencias": [
+    "COPREL sem linhas LIVRE (12 unidades livres no mês anterior)"
+   ]
+  },
+  {
+   "mes": "2022-05",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 12614873,
+   "livre_uc": 28893,
+   "cativo_mwh": 24676012,
+   "epe_livre_uc": 28492,
+   "samp_sobre_epe_uc_pct": 101.41,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2022-06",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 12656971,
+   "livre_uc": 28853,
+   "cativo_mwh": 23896764,
+   "epe_livre_uc": 28821,
+   "samp_sobre_epe_uc_pct": 100.11,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2022-07",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 13298762,
+   "livre_uc": 29268,
+   "cativo_mwh": 24121450,
+   "epe_livre_uc": 29165,
+   "samp_sobre_epe_uc_pct": 100.35,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2022-08",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 12672684,
+   "livre_uc": 29640,
+   "cativo_mwh": 24367943,
+   "epe_livre_uc": 29505,
+   "samp_sobre_epe_uc_pct": 100.46,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2022-09",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 12978742,
+   "livre_uc": 29990,
+   "cativo_mwh": 24669434,
+   "epe_livre_uc": 29910,
+   "samp_sobre_epe_uc_pct": 100.27,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2022-10",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 12663109,
+   "livre_uc": 32411,
+   "cativo_mwh": 24562635,
+   "epe_livre_uc": 30254,
+   "samp_sobre_epe_uc_pct": 107.13,
+   "ocorrencias": [
+    "RGE SUL: unidades livres de 2.130 para 4.056"
+   ]
+  },
+  {
+   "mes": "2022-11",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 12995326,
+   "livre_uc": 30742,
+   "cativo_mwh": 25199752,
+   "epe_livre_uc": 30633,
+   "samp_sobre_epe_uc_pct": 100.36,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2022-12",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 12676536,
+   "livre_uc": 31414,
+   "cativo_mwh": 25900581,
+   "epe_livre_uc": 31081,
+   "samp_sobre_epe_uc_pct": 101.07,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2023-01",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 12410364,
+   "livre_uc": 31779,
+   "cativo_mwh": 25114511,
+   "epe_livre_uc": 32459,
+   "samp_sobre_epe_uc_pct": 97.91,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2023-02",
+   "distribuidoras": 105,
+   "completo": false,
+   "comparavel": false,
+   "motivo_incompleto": "distribuidora sem linhas LIVRE depois de tê-las no mês anterior",
+   "livre_mwh": 12686304,
+   "livre_uc": 32724,
+   "cativo_mwh": 25627094,
+   "epe_livre_uc": 32940,
+   "samp_sobre_epe_uc_pct": 99.34,
+   "ocorrencias": [
+    "CERCI sem linhas LIVRE (1 unidade livre no mês anterior)",
+    "CELETRO: linhas CATIVO Regular iguais às do mês anterior",
+    "CPFL JAGUARI: unidades livres de 234 para 394"
+   ]
+  },
+  {
+   "mes": "2023-03",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 12802763,
+   "livre_uc": 33085,
+   "cativo_mwh": 26883689,
+   "epe_livre_uc": 33434,
+   "samp_sobre_epe_uc_pct": 98.96,
+   "ocorrencias": [
+    "ELETROCAR: linhas LIVRE Regular iguais às do mês anterior"
+   ]
+  },
+  {
+   "mes": "2023-04",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 13924959,
+   "livre_uc": 33272,
+   "cativo_mwh": 26054830,
+   "epe_livre_uc": 33846,
+   "samp_sobre_epe_uc_pct": 98.3,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2023-05",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 13064718,
+   "livre_uc": 33923,
+   "cativo_mwh": 24631983,
+   "epe_livre_uc": 34400,
+   "samp_sobre_epe_uc_pct": 98.61,
+   "ocorrencias": [
+    "CEEE-D: unidades livres de 574 para 268"
+   ]
+  },
+  {
+   "mes": "2023-06",
+   "distribuidoras": 105,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 13418932,
+   "livre_uc": 37998,
+   "cativo_mwh": 24283342,
+   "epe_livre_uc": 35043,
+   "samp_sobre_epe_uc_pct": 108.43,
+   "ocorrencias": [
+    "CEMIG-D: unidades livres de 3.059 para 5.803",
+    "CEEE-D: unidades livres de 268 para 602"
+   ]
+  },
+  {
+   "mes": "2023-07",
+   "distribuidoras": 104,
+   "completo": false,
+   "comparavel": false,
+   "motivo_incompleto": "distribuidora sem linhas LIVRE depois de tê-las no mês anterior",
+   "livre_mwh": 12908187,
+   "livre_uc": 38262,
+   "cativo_mwh": 23550853,
+   "epe_livre_uc": 35711,
+   "samp_sobre_epe_uc_pct": 107.14,
+   "ocorrencias": [
+    "ENF sem linhas LIVRE (31 unidades livres no mês anterior)"
+   ]
+  },
+  {
+   "mes": "2023-08",
+   "distribuidoras": 104,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 13424539,
+   "livre_uc": 39415,
+   "cativo_mwh": 24175854,
+   "epe_livre_uc": 36436,
+   "samp_sobre_epe_uc_pct": 108.18,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2023-09",
+   "distribuidoras": 103,
+   "completo": false,
+   "comparavel": false,
+   "motivo_incompleto": "distribuidora sem linhas LIVRE depois de tê-las no mês anterior",
+   "livre_mwh": 13789818,
+   "livre_uc": 40453,
+   "cativo_mwh": 25295735,
+   "epe_livre_uc": 37278,
+   "samp_sobre_epe_uc_pct": 108.52,
+   "ocorrencias": [
+    "EBO sem linhas LIVRE (50 unidades livres no mês anterior)"
+   ]
+  },
+  {
+   "mes": "2023-10",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 13712129,
+   "livre_uc": 41792,
+   "cativo_mwh": 26265415,
+   "epe_livre_uc": 37941,
+   "samp_sobre_epe_uc_pct": 110.15,
+   "ocorrencias": [
+    "CETRIL: linhas LIVRE Regular iguais às do mês anterior",
+    "CEEE-D: unidades livres de 410 para 680"
+   ]
+  },
+  {
+   "mes": "2023-11",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 14092707,
+   "livre_uc": 42471,
+   "cativo_mwh": 26841420,
+   "epe_livre_uc": 38569,
+   "samp_sobre_epe_uc_pct": 110.12,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2023-12",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 13953498,
+   "livre_uc": 43267,
+   "cativo_mwh": 34705917,
+   "epe_livre_uc": 39112,
+   "samp_sobre_epe_uc_pct": 110.62,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2024-01",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 13670202,
+   "livre_uc": 44124,
+   "cativo_mwh": 27181859,
+   "epe_livre_uc": 40472,
+   "samp_sobre_epe_uc_pct": 109.02,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2024-02",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 14143754,
+   "livre_uc": 46822,
+   "cativo_mwh": 26455905,
+   "epe_livre_uc": 42553,
+   "samp_sobre_epe_uc_pct": 110.03,
+   "ocorrencias": [
+    "EQUATORIAL PA: linhas CATIVO Regular iguais às do mês anterior"
+   ]
+  },
+  {
+   "mes": "2024-03",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 14315493,
+   "livre_uc": 42738,
+   "cativo_mwh": 27018774,
+   "epe_livre_uc": 43893,
+   "samp_sobre_epe_uc_pct": 97.37,
+   "ocorrencias": [
+    "COSERN: linhas CATIVO Regular iguais às do mês anterior",
+    "CEMIG-D: unidades livres de 8.396 para 3.532"
+   ]
+  },
+  {
+   "mes": "2024-04",
+   "distribuidoras": 103,
+   "completo": false,
+   "comparavel": false,
+   "motivo_incompleto": "distribuidora sem linhas LIVRE depois de tê-las no mês anterior",
+   "livre_mwh": 15177288,
+   "livre_uc": 44706,
+   "cativo_mwh": 26470638,
+   "epe_livre_uc": 45489,
+   "samp_sobre_epe_uc_pct": 98.28,
+   "ocorrencias": [
+    "COOPERALIANÇA sem linhas LIVRE (27 unidades livres no mês anterior)"
+   ]
+  },
+  {
+   "mes": "2024-05",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 15130491,
+   "livre_uc": 46289,
+   "cativo_mwh": 26433532,
+   "epe_livre_uc": 47432,
+   "samp_sobre_epe_uc_pct": 97.59,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2024-06",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 14853905,
+   "livre_uc": 48317,
+   "cativo_mwh": 24747287,
+   "epe_livre_uc": 49257,
+   "samp_sobre_epe_uc_pct": 98.09,
+   "ocorrencias": [
+    "CEDRI: linhas CATIVO Regular iguais às do mês anterior",
+    "CEDRI: linhas LIVRE Regular iguais às do mês anterior",
+    "CEEE-D: unidades livres de 592 para 983"
+   ]
+  },
+  {
+   "mes": "2024-07",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 14696804,
+   "livre_uc": 50390,
+   "cativo_mwh": 23716530,
+   "epe_livre_uc": 51643,
+   "samp_sobre_epe_uc_pct": 97.57,
+   "ocorrencias": [
+    "CERGRAL: linhas LIVRE Regular iguais às do mês anterior"
+   ]
+  },
+  {
+   "mes": "2024-08",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 15439352,
+   "livre_uc": 53744,
+   "cativo_mwh": 24063796,
+   "epe_livre_uc": 54065,
+   "samp_sobre_epe_uc_pct": 99.41,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2024-09",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 15456201,
+   "livre_uc": 56063,
+   "cativo_mwh": 24358145,
+   "epe_livre_uc": 56618,
+   "samp_sobre_epe_uc_pct": 99.02,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2024-10",
+   "distribuidoras": 103,
+   "completo": false,
+   "comparavel": false,
+   "motivo_incompleto": "distribuidora sem linhas LIVRE depois de tê-las no mês anterior",
+   "livre_mwh": 15578016,
+   "livre_uc": 59593,
+   "cativo_mwh": 25488604,
+   "epe_livre_uc": 59156,
+   "samp_sobre_epe_uc_pct": 100.74,
+   "ocorrencias": [
+    "CEDRI sem linhas LIVRE (2 unidades livres no mês anterior)"
+   ]
+  },
+  {
+   "mes": "2024-11",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 16231875,
+   "livre_uc": 61118,
+   "cativo_mwh": 25267008,
+   "epe_livre_uc": 61340,
+   "samp_sobre_epe_uc_pct": 99.64,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2024-12",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 15793273,
+   "livre_uc": 64606,
+   "cativo_mwh": 25124550,
+   "epe_livre_uc": 64449,
+   "samp_sobre_epe_uc_pct": 100.24,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2025-01",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 15257358,
+   "livre_uc": 67333,
+   "cativo_mwh": 24872953,
+   "epe_livre_uc": 66919,
+   "samp_sobre_epe_uc_pct": 100.62,
+   "ocorrencias": [
+    "Neoenergia Brasília: linhas LIVRE Regular iguais às do mês anterior"
+   ]
+  },
+  {
+   "mes": "2025-02",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 16049129,
+   "livre_uc": 70148,
+   "cativo_mwh": 25784121,
+   "epe_livre_uc": 70090,
+   "samp_sobre_epe_uc_pct": 100.08,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2025-03",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 15823702,
+   "livre_uc": 70620,
+   "cativo_mwh": 26346235,
+   "epe_livre_uc": 72428,
+   "samp_sobre_epe_uc_pct": 97.5,
+   "ocorrencias": [
+    "COSERN: linhas CATIVO Regular iguais às do mês anterior",
+    "CEDRAP: linhas CATIVO Regular iguais às do mês anterior"
+   ]
+  },
+  {
+   "mes": "2025-04",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 17144981,
+   "livre_uc": 72552,
+   "cativo_mwh": 24398469,
+   "epe_livre_uc": 74482,
+   "samp_sobre_epe_uc_pct": 97.41,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2025-05",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 16161320,
+   "livre_uc": 74424,
+   "cativo_mwh": 23596099,
+   "epe_livre_uc": 76435,
+   "samp_sobre_epe_uc_pct": 97.37,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2025-06",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 16330724,
+   "livre_uc": 77343,
+   "cativo_mwh": 22517799,
+   "epe_livre_uc": 78738,
+   "samp_sobre_epe_uc_pct": 98.23,
+   "ocorrencias": [
+    "CERIM: linhas LIVRE Regular iguais às do mês anterior",
+    "CEEE-D: unidades livres de 809 para 1.568"
+   ]
+  },
+  {
+   "mes": "2025-07",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 15642083,
+   "livre_uc": 79388,
+   "cativo_mwh": 22529305,
+   "epe_livre_uc": 80486,
+   "samp_sobre_epe_uc_pct": 98.64,
+   "ocorrencias": [
+    "COOPERSUL: linhas LIVRE Regular iguais às do mês anterior"
+   ]
+  },
+  {
+   "mes": "2025-08",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 16384932,
+   "livre_uc": 80191,
+   "cativo_mwh": 22311284,
+   "epe_livre_uc": 82049,
+   "samp_sobre_epe_uc_pct": 97.74,
+   "ocorrencias": [
+    "Neoenergia PE: linhas LIVRE Regular iguais às do mês anterior",
+    "COOPERALIANÇA: linhas LIVRE Regular iguais às do mês anterior"
+   ]
+  },
+  {
+   "mes": "2025-09",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 16448590,
+   "livre_uc": 82441,
+   "cativo_mwh": 22725589,
+   "epe_livre_uc": 83534,
+   "samp_sobre_epe_uc_pct": 98.69,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2025-10",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 16558792,
+   "livre_uc": 84634,
+   "cativo_mwh": 23516994,
+   "epe_livre_uc": 84618,
+   "samp_sobre_epe_uc_pct": 100.02,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2025-11",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 17055340,
+   "livre_uc": 87299,
+   "cativo_mwh": 23305207,
+   "epe_livre_uc": 85619,
+   "samp_sobre_epe_uc_pct": 101.96,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2025-12",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 16399729,
+   "livre_uc": 87958,
+   "cativo_mwh": 24334688,
+   "epe_livre_uc": 86459,
+   "samp_sobre_epe_uc_pct": 101.73,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2026-01",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 16171388,
+   "livre_uc": 87724,
+   "cativo_mwh": 26272023,
+   "epe_livre_uc": 88056,
+   "samp_sobre_epe_uc_pct": 99.62,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2026-02",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 17187092,
+   "livre_uc": 88812,
+   "cativo_mwh": 23745398,
+   "epe_livre_uc": 89546,
+   "samp_sobre_epe_uc_pct": 99.18,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2026-03",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 16389488,
+   "livre_uc": 89782,
+   "cativo_mwh": 24149438,
+   "epe_livre_uc": 89515,
+   "samp_sobre_epe_uc_pct": 100.3,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2026-04",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 17703706,
+   "livre_uc": 90253,
+   "cativo_mwh": 24710389,
+   "epe_livre_uc": 91223,
+   "samp_sobre_epe_uc_pct": 98.94,
+   "ocorrencias": [
+    "EQUATORIAL AL: unidades livres de 602 para 100"
+   ]
+  },
+  {
+   "mes": "2026-05",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": false,
+   "motivo_incompleto": null,
+   "livre_mwh": 17334408,
+   "livre_uc": 91783,
+   "cativo_mwh": 23191908,
+   "epe_livre_uc": 93096,
+   "samp_sobre_epe_uc_pct": 98.59,
+   "ocorrencias": [
+    "CPFL JAGUARI: linhas CATIVO Regular iguais às do mês anterior",
+    "EQUATORIAL AL: unidades livres de 100 para 613"
+   ]
+  },
+  {
+   "mes": "2026-06",
+   "distribuidoras": 103,
+   "completo": true,
+   "comparavel": true,
+   "motivo_incompleto": null,
+   "livre_mwh": 16873249,
+   "livre_uc": 93035,
+   "cativo_mwh": 22266136,
+   "epe_livre_uc": 94720,
+   "samp_sobre_epe_uc_pct": 98.22,
+   "ocorrencias": []
+  },
+  {
+   "mes": "2026-07",
+   "distribuidoras": 103,
+   "completo": false,
+   "comparavel": false,
+   "motivo_incompleto": "distribuidora sem linhas LIVRE depois de tê-las no mês anterior",
+   "livre_mwh": 15247393,
+   "livre_uc": 94934,
+   "cativo_mwh": 22495099,
+   "epe_livre_uc": 96370,
+   "samp_sobre_epe_uc_pct": 98.51,
+   "ocorrencias": [
+    "ELEKTRO sem linhas LIVRE (4.302 unidades livres no mês anterior)",
+    "EQUATORIAL PA sem linhas LIVRE (2.157 unidades livres no mês anterior)",
+    "ELEKTRO: linhas CATIVO Regular iguais às do mês anterior",
+    "CPFL-PIRATINING: unidades livres de 3.217 para 5.351",
+    "EQUATORIAL MA: unidades livres de 1.212 para 9",
+    "CPFL-PAULISTA: unidades livres de 8.443 para 13.695",
+    "CPFL JAGUARI: unidades livres de 738 para 1.159"
+   ]
+  },
+  {
+   "mes": "2026-08",
+   "distribuidoras": 30,
+   "completo": false,
+   "comparavel": false,
+   "motivo_incompleto": "menos distribuidoras que 95% da mediana dos 12 meses anteriores",
+   "livre_mwh": 122875,
+   "livre_uc": 825,
+   "cativo_mwh": 137395,
+   "epe_livre_uc": 96618,
+   "samp_sobre_epe_uc_pct": 0.85,
+   "ocorrencias": [
+    "CPFL-PAULISTA sem linhas LIVRE (13.695 unidades livres no mês anterior)",
+    "ELETROPAULO sem linhas LIVRE (8.269 unidades livres no mês anterior)",
+    "COPEL-DIS sem linhas LIVRE (7.826 unidades livres no mês anterior)",
+    "CEMIG-D sem linhas LIVRE (7.689 unidades livres no mês anterior)",
+    "RGE SUL sem linhas LIVRE (5.581 unidades livres no mês anterior)",
+    "CPFL-PIRATINING sem linhas LIVRE (5.351 unidades livres no mês anterior)",
+    "mais 63 distribuidoras sem linhas LIVRE",
+    "ELETROCAR: unidades livres de 72 para 146"
+   ]
+  }
+ ],
+ "samp_ucs_livres_mensal": [
+  {
+   "mes": "2019-01",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 11003,
+   "livre_uc_convencional": 2122,
+   "livre_uc_autoproducao": 61,
+   "livre_uc_erc": 21,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2019-02",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 10927,
+   "livre_uc_convencional": 2166,
+   "livre_uc_autoproducao": 53,
+   "livre_uc_erc": 17,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2019-03",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 11236,
+   "livre_uc_convencional": 2203,
+   "livre_uc_autoproducao": 54,
+   "livre_uc_erc": 19,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2019-04",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 11336,
+   "livre_uc_convencional": 2290,
+   "livre_uc_autoproducao": 57,
+   "livre_uc_erc": 25,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2019-05",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 11628,
+   "livre_uc_convencional": 2329,
+   "livre_uc_autoproducao": 58,
+   "livre_uc_erc": 24,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2019-06",
+   "completo": false,
+   "comparavel": false,
+   "livre_uc_incentivada": 11680,
+   "livre_uc_convencional": 2404,
+   "livre_uc_autoproducao": 58,
+   "livre_uc_erc": 24,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2019-07",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 11790,
+   "livre_uc_convencional": 2409,
+   "livre_uc_autoproducao": 62,
+   "livre_uc_erc": 22,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2019-08",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 12451,
+   "livre_uc_convencional": 2428,
+   "livre_uc_autoproducao": 63,
+   "livre_uc_erc": 23,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2019-09",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 12606,
+   "livre_uc_convencional": 2479,
+   "livre_uc_autoproducao": 73,
+   "livre_uc_erc": 24,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2019-10",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 12873,
+   "livre_uc_convencional": 2541,
+   "livre_uc_autoproducao": 73,
+   "livre_uc_erc": 23,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2019-11",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 13119,
+   "livre_uc_convencional": 2543,
+   "livre_uc_autoproducao": 71,
+   "livre_uc_erc": 26,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2019-12",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 13334,
+   "livre_uc_convencional": 2589,
+   "livre_uc_autoproducao": 72,
+   "livre_uc_erc": 25,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2020-01",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 13806,
+   "livre_uc_convencional": 2651,
+   "livre_uc_autoproducao": 74,
+   "livre_uc_erc": 24,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2020-02",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 13721,
+   "livre_uc_convencional": 2731,
+   "livre_uc_autoproducao": 72,
+   "livre_uc_erc": 18,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2020-03",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 14184,
+   "livre_uc_convencional": 2748,
+   "livre_uc_autoproducao": 70,
+   "livre_uc_erc": 21,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2020-04",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 14689,
+   "livre_uc_convencional": 2824,
+   "livre_uc_autoproducao": 73,
+   "livre_uc_erc": 25,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2020-05",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 15027,
+   "livre_uc_convencional": 2877,
+   "livre_uc_autoproducao": 74,
+   "livre_uc_erc": 26,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2020-06",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 15349,
+   "livre_uc_convencional": 2959,
+   "livre_uc_autoproducao": 78,
+   "livre_uc_erc": 24,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2020-07",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 15759,
+   "livre_uc_convencional": 2968,
+   "livre_uc_autoproducao": 75,
+   "livre_uc_erc": 22,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2020-08",
+   "completo": false,
+   "comparavel": false,
+   "livre_uc_incentivada": 16194,
+   "livre_uc_convencional": 2991,
+   "livre_uc_autoproducao": 79,
+   "livre_uc_erc": 20,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2020-09",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 16681,
+   "livre_uc_convencional": 3265,
+   "livre_uc_autoproducao": 80,
+   "livre_uc_erc": 23,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2020-10",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 17194,
+   "livre_uc_convencional": 3130,
+   "livre_uc_autoproducao": 80,
+   "livre_uc_erc": 29,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2020-11",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 17312,
+   "livre_uc_convencional": 3224,
+   "livre_uc_autoproducao": 75,
+   "livre_uc_erc": 30,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2020-12",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 15088,
+   "livre_uc_convencional": 3005,
+   "livre_uc_autoproducao": 74,
+   "livre_uc_erc": 23,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2021-01",
+   "completo": false,
+   "comparavel": false,
+   "livre_uc_incentivada": 13717,
+   "livre_uc_convencional": 2959,
+   "livre_uc_autoproducao": 73,
+   "livre_uc_erc": 13,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2021-02",
+   "completo": false,
+   "comparavel": false,
+   "livre_uc_incentivada": 13819,
+   "livre_uc_convencional": 3011,
+   "livre_uc_autoproducao": 75,
+   "livre_uc_erc": 13,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2021-03",
+   "completo": false,
+   "comparavel": false,
+   "livre_uc_incentivada": 19159,
+   "livre_uc_convencional": 3462,
+   "livre_uc_autoproducao": 75,
+   "livre_uc_erc": 20,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2021-04",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 19728,
+   "livre_uc_convencional": 3549,
+   "livre_uc_autoproducao": 78,
+   "livre_uc_erc": 26,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2021-05",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 20131,
+   "livre_uc_convencional": 3564,
+   "livre_uc_autoproducao": 83,
+   "livre_uc_erc": 27,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2021-06",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 20438,
+   "livre_uc_convencional": 3596,
+   "livre_uc_autoproducao": 85,
+   "livre_uc_erc": 34,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2021-07",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 20790,
+   "livre_uc_convencional": 3649,
+   "livre_uc_autoproducao": 86,
+   "livre_uc_erc": 31,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2021-08",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 21085,
+   "livre_uc_convencional": 3754,
+   "livre_uc_autoproducao": 89,
+   "livre_uc_erc": 25,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2021-09",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 20993,
+   "livre_uc_convencional": 3741,
+   "livre_uc_autoproducao": 88,
+   "livre_uc_erc": 21,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2021-10",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 21846,
+   "livre_uc_convencional": 3792,
+   "livre_uc_autoproducao": 88,
+   "livre_uc_erc": 25,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2021-11",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 22087,
+   "livre_uc_convencional": 3851,
+   "livre_uc_autoproducao": 85,
+   "livre_uc_erc": 27,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2021-12",
+   "completo": false,
+   "comparavel": false,
+   "livre_uc_incentivada": 22458,
+   "livre_uc_convencional": 3806,
+   "livre_uc_autoproducao": 88,
+   "livre_uc_erc": 24,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2022-01",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 24422,
+   "livre_uc_convencional": 3861,
+   "livre_uc_autoproducao": 80,
+   "livre_uc_erc": 20,
+   "livre_uc_outro": 1
+  },
+  {
+   "mes": "2022-02",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 24481,
+   "livre_uc_convencional": 3932,
+   "livre_uc_autoproducao": 78,
+   "livre_uc_erc": 22,
+   "livre_uc_outro": 1
+  },
+  {
+   "mes": "2022-03",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 23833,
+   "livre_uc_convencional": 3882,
+   "livre_uc_autoproducao": 81,
+   "livre_uc_erc": 19,
+   "livre_uc_outro": 1
+  },
+  {
+   "mes": "2022-04",
+   "completo": false,
+   "comparavel": false,
+   "livre_uc_incentivada": 24129,
+   "livre_uc_convencional": 3885,
+   "livre_uc_autoproducao": 86,
+   "livre_uc_erc": 24,
+   "livre_uc_outro": 1
+  },
+  {
+   "mes": "2022-05",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 24738,
+   "livre_uc_convencional": 4043,
+   "livre_uc_autoproducao": 88,
+   "livre_uc_erc": 24,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2022-06",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 24765,
+   "livre_uc_convencional": 3979,
+   "livre_uc_autoproducao": 84,
+   "livre_uc_erc": 25,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2022-07",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 25100,
+   "livre_uc_convencional": 4031,
+   "livre_uc_autoproducao": 108,
+   "livre_uc_erc": 29,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2022-08",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 25549,
+   "livre_uc_convencional": 3968,
+   "livre_uc_autoproducao": 95,
+   "livre_uc_erc": 28,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2022-09",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 25917,
+   "livre_uc_convencional": 3932,
+   "livre_uc_autoproducao": 111,
+   "livre_uc_erc": 30,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2022-10",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 28302,
+   "livre_uc_convencional": 3954,
+   "livre_uc_autoproducao": 114,
+   "livre_uc_erc": 41,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2022-11",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 26561,
+   "livre_uc_convencional": 4033,
+   "livre_uc_autoproducao": 113,
+   "livre_uc_erc": 35,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2022-12",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 27030,
+   "livre_uc_convencional": 4043,
+   "livre_uc_autoproducao": 321,
+   "livre_uc_erc": 20,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2023-01",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 27366,
+   "livre_uc_convencional": 4070,
+   "livre_uc_autoproducao": 323,
+   "livre_uc_erc": 20,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2023-02",
+   "completo": false,
+   "comparavel": false,
+   "livre_uc_incentivada": 28314,
+   "livre_uc_convencional": 4075,
+   "livre_uc_autoproducao": 306,
+   "livre_uc_erc": 29,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2023-03",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 28446,
+   "livre_uc_convencional": 4294,
+   "livre_uc_autoproducao": 326,
+   "livre_uc_erc": 18,
+   "livre_uc_outro": 1
+  },
+  {
+   "mes": "2023-04",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 28766,
+   "livre_uc_convencional": 4132,
+   "livre_uc_autoproducao": 346,
+   "livre_uc_erc": 27,
+   "livre_uc_outro": 1
+  },
+  {
+   "mes": "2023-05",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 29104,
+   "livre_uc_convencional": 4411,
+   "livre_uc_autoproducao": 372,
+   "livre_uc_erc": 35,
+   "livre_uc_outro": 1
+  },
+  {
+   "mes": "2023-06",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 30610,
+   "livre_uc_convencional": 4252,
+   "livre_uc_autoproducao": 1751,
+   "livre_uc_erc": 1385,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2023-07",
+   "completo": false,
+   "comparavel": false,
+   "livre_uc_incentivada": 30513,
+   "livre_uc_convencional": 4215,
+   "livre_uc_autoproducao": 1957,
+   "livre_uc_erc": 1577,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2023-08",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 30898,
+   "livre_uc_convencional": 4284,
+   "livre_uc_autoproducao": 2311,
+   "livre_uc_erc": 1922,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2023-09",
+   "completo": false,
+   "comparavel": false,
+   "livre_uc_incentivada": 31582,
+   "livre_uc_convencional": 4360,
+   "livre_uc_autoproducao": 2446,
+   "livre_uc_erc": 2065,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2023-10",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 32681,
+   "livre_uc_convencional": 4423,
+   "livre_uc_autoproducao": 2543,
+   "livre_uc_erc": 2145,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2023-11",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 33102,
+   "livre_uc_convencional": 4435,
+   "livre_uc_autoproducao": 2672,
+   "livre_uc_erc": 2262,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2023-12",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 33727,
+   "livre_uc_convencional": 4455,
+   "livre_uc_autoproducao": 2752,
+   "livre_uc_erc": 2333,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2024-01",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 34373,
+   "livre_uc_convencional": 4504,
+   "livre_uc_autoproducao": 2836,
+   "livre_uc_erc": 2411,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2024-02",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 36548,
+   "livre_uc_convencional": 4885,
+   "livre_uc_autoproducao": 2920,
+   "livre_uc_erc": 2469,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2024-03",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 37526,
+   "livre_uc_convencional": 4738,
+   "livre_uc_autoproducao": 459,
+   "livre_uc_erc": 15,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2024-04",
+   "completo": false,
+   "comparavel": false,
+   "livre_uc_incentivada": 39340,
+   "livre_uc_convencional": 4875,
+   "livre_uc_autoproducao": 476,
+   "livre_uc_erc": 15,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2024-05",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 40903,
+   "livre_uc_convencional": 4865,
+   "livre_uc_autoproducao": 502,
+   "livre_uc_erc": 19,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2024-06",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 42736,
+   "livre_uc_convencional": 4937,
+   "livre_uc_autoproducao": 624,
+   "livre_uc_erc": 20,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2024-07",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 44714,
+   "livre_uc_convencional": 5084,
+   "livre_uc_autoproducao": 576,
+   "livre_uc_erc": 16,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2024-08",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 47584,
+   "livre_uc_convencional": 5335,
+   "livre_uc_autoproducao": 799,
+   "livre_uc_erc": 26,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2024-09",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 49583,
+   "livre_uc_convencional": 5596,
+   "livre_uc_autoproducao": 861,
+   "livre_uc_erc": 23,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2024-10",
+   "completo": false,
+   "comparavel": false,
+   "livre_uc_incentivada": 52616,
+   "livre_uc_convencional": 5909,
+   "livre_uc_autoproducao": 1048,
+   "livre_uc_erc": 20,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2024-11",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 53744,
+   "livre_uc_convencional": 6276,
+   "livre_uc_autoproducao": 1073,
+   "livre_uc_erc": 25,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2024-12",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 57002,
+   "livre_uc_convencional": 6466,
+   "livre_uc_autoproducao": 1117,
+   "livre_uc_erc": 21,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2025-01",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 59405,
+   "livre_uc_convencional": 6761,
+   "livre_uc_autoproducao": 1149,
+   "livre_uc_erc": 18,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2025-02",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 62000,
+   "livre_uc_convencional": 6952,
+   "livre_uc_autoproducao": 1179,
+   "livre_uc_erc": 17,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2025-03",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 62296,
+   "livre_uc_convencional": 7171,
+   "livre_uc_autoproducao": 1134,
+   "livre_uc_erc": 19,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2025-04",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 64177,
+   "livre_uc_convencional": 7192,
+   "livre_uc_autoproducao": 1166,
+   "livre_uc_erc": 17,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2025-05",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 65603,
+   "livre_uc_convencional": 7590,
+   "livre_uc_autoproducao": 1201,
+   "livre_uc_erc": 30,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2025-06",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 68093,
+   "livre_uc_convencional": 7928,
+   "livre_uc_autoproducao": 1299,
+   "livre_uc_erc": 23,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2025-07",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 69814,
+   "livre_uc_convencional": 8241,
+   "livre_uc_autoproducao": 1313,
+   "livre_uc_erc": 20,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2025-08",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 70511,
+   "livre_uc_convencional": 8239,
+   "livre_uc_autoproducao": 1416,
+   "livre_uc_erc": 25,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2025-09",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 72858,
+   "livre_uc_convencional": 8046,
+   "livre_uc_autoproducao": 1511,
+   "livre_uc_erc": 26,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2025-10",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 74675,
+   "livre_uc_convencional": 8412,
+   "livre_uc_autoproducao": 1514,
+   "livre_uc_erc": 33,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2025-11",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 77336,
+   "livre_uc_convencional": 8392,
+   "livre_uc_autoproducao": 1540,
+   "livre_uc_erc": 31,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2025-12",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 77997,
+   "livre_uc_convencional": 8383,
+   "livre_uc_autoproducao": 1555,
+   "livre_uc_erc": 23,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2026-01",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 77565,
+   "livre_uc_convencional": 8475,
+   "livre_uc_autoproducao": 1663,
+   "livre_uc_erc": 21,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2026-02",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 78471,
+   "livre_uc_convencional": 8631,
+   "livre_uc_autoproducao": 1692,
+   "livre_uc_erc": 18,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2026-03",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 79379,
+   "livre_uc_convencional": 8733,
+   "livre_uc_autoproducao": 1654,
+   "livre_uc_erc": 16,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2026-04",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 79379,
+   "livre_uc_convencional": 9052,
+   "livre_uc_autoproducao": 1799,
+   "livre_uc_erc": 23,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2026-05",
+   "completo": true,
+   "comparavel": false,
+   "livre_uc_incentivada": 80568,
+   "livre_uc_convencional": 9190,
+   "livre_uc_autoproducao": 2003,
+   "livre_uc_erc": 22,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2026-06",
+   "completo": true,
+   "comparavel": true,
+   "livre_uc_incentivada": 81537,
+   "livre_uc_convencional": 9579,
+   "livre_uc_autoproducao": 1901,
+   "livre_uc_erc": 18,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2026-07",
+   "completo": false,
+   "comparavel": false,
+   "livre_uc_incentivada": 83372,
+   "livre_uc_convencional": 9585,
+   "livre_uc_autoproducao": 1951,
+   "livre_uc_erc": 26,
+   "livre_uc_outro": null
+  },
+  {
+   "mes": "2026-08",
+   "completo": false,
+   "comparavel": false,
+   "livre_uc_incentivada": 819,
+   "livre_uc_convencional": 6,
+   "livre_uc_autoproducao": null,
+   "livre_uc_erc": null,
+   "livre_uc_outro": null
+  }
+ ],
+ "mme_reconciliacao_ccee": [
+  {
+   "tipo": "deslocamento_hidraulico",
+   "mes": "2026-01",
+   "edicao": "2026-06",
+   "mme_mil_rs": 14634.0,
+   "ccee_mil_rs": 14633.96,
+   "diferenca_mil_rs": -0.04,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "deslocamento_hidraulico",
+   "mes": "2026-02",
+   "edicao": "2026-06",
+   "mme_mil_rs": 23771.0,
+   "ccee_mil_rs": 23770.901,
+   "diferenca_mil_rs": -0.099,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "deslocamento_hidraulico",
+   "mes": "2026-03",
+   "edicao": "2026-06",
+   "mme_mil_rs": 42039.0,
+   "ccee_mil_rs": 42038.762,
+   "diferenca_mil_rs": -0.238,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "deslocamento_hidraulico",
+   "mes": "2026-04",
+   "edicao": "2026-06",
+   "mme_mil_rs": 10863.0,
+   "ccee_mil_rs": 10863.195,
+   "diferenca_mil_rs": 0.195,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "deslocamento_hidraulico",
+   "mes": "2026-05",
+   "edicao": "2026-06",
+   "mme_mil_rs": 12987.0,
+   "ccee_mil_rs": 12987.008,
+   "diferenca_mil_rs": 0.008,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "deslocamento_hidraulico",
+   "mes": "2026-06",
+   "edicao": "2026-06",
+   "mme_mil_rs": 7153.0,
+   "ccee_mil_rs": 7153.001,
+   "diferenca_mil_rs": 0.001,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "importacao",
+   "mes": "2026-01",
+   "edicao": "2026-06",
+   "mme_mil_rs": 0.0,
+   "ccee_mil_rs": 0.0,
+   "diferenca_mil_rs": 0.0,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "importacao",
+   "mes": "2026-02",
+   "edicao": "2026-06",
+   "mme_mil_rs": 59.0,
+   "ccee_mil_rs": 59.045,
+   "diferenca_mil_rs": 0.045,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "importacao",
+   "mes": "2026-03",
+   "edicao": "2026-06",
+   "mme_mil_rs": 3031.0,
+   "ccee_mil_rs": 3030.947,
+   "diferenca_mil_rs": -0.053,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "importacao",
+   "mes": "2026-04",
+   "edicao": "2026-06",
+   "mme_mil_rs": 220.0,
+   "ccee_mil_rs": 219.992,
+   "diferenca_mil_rs": -0.008,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "importacao",
+   "mes": "2026-05",
+   "edicao": "2026-06",
+   "mme_mil_rs": 0.0,
+   "ccee_mil_rs": 0.0,
+   "diferenca_mil_rs": 0.0,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "importacao",
+   "mes": "2026-06",
+   "edicao": "2026-06",
+   "mme_mil_rs": 0.0,
+   "ccee_mil_rs": 0.0,
+   "diferenca_mil_rs": 0.0,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "outros_ancilares",
+   "mes": "2026-01",
+   "edicao": "2026-06",
+   "mme_mil_rs": 0.0,
+   "ccee_mil_rs": 0.0,
+   "diferenca_mil_rs": 0.0,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "outros_ancilares",
+   "mes": "2026-02",
+   "edicao": "2026-06",
+   "mme_mil_rs": 0.0,
+   "ccee_mil_rs": 0.0,
+   "diferenca_mil_rs": 0.0,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "outros_ancilares",
+   "mes": "2026-03",
+   "edicao": "2026-06",
+   "mme_mil_rs": 0.0,
+   "ccee_mil_rs": 0.0,
+   "diferenca_mil_rs": 0.0,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "outros_ancilares",
+   "mes": "2026-04",
+   "edicao": "2026-06",
+   "mme_mil_rs": 0.0,
+   "ccee_mil_rs": 0.0,
+   "diferenca_mil_rs": 0.0,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "outros_ancilares",
+   "mes": "2026-05",
+   "edicao": "2026-06",
+   "mme_mil_rs": 0.0,
+   "ccee_mil_rs": 0.0,
+   "diferenca_mil_rs": 0.0,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "outros_ancilares",
+   "mes": "2026-06",
+   "edicao": "2026-06",
+   "mme_mil_rs": 0.0,
+   "ccee_mil_rs": 0.0,
+   "diferenca_mil_rs": 0.0,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "reserva_operativa",
+   "mes": "2026-01",
+   "edicao": "2026-06",
+   "mme_mil_rs": 0.0,
+   "ccee_mil_rs": 0.0,
+   "diferenca_mil_rs": 0.0,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "reserva_operativa",
+   "mes": "2026-02",
+   "edicao": "2026-06",
+   "mme_mil_rs": 0.0,
+   "ccee_mil_rs": 0.0,
+   "diferenca_mil_rs": 0.0,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "reserva_operativa",
+   "mes": "2026-03",
+   "edicao": "2026-06",
+   "mme_mil_rs": 0.0,
+   "ccee_mil_rs": 0.0,
+   "diferenca_mil_rs": 0.0,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "reserva_operativa",
+   "mes": "2026-04",
+   "edicao": "2026-06",
+   "mme_mil_rs": 0.0,
+   "ccee_mil_rs": 0.0,
+   "diferenca_mil_rs": 0.0,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "reserva_operativa",
+   "mes": "2026-05",
+   "edicao": "2026-06",
+   "mme_mil_rs": 0.0,
+   "ccee_mil_rs": 0.0,
+   "diferenca_mil_rs": 0.0,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "reserva_operativa",
+   "mes": "2026-06",
+   "edicao": "2026-06",
+   "mme_mil_rs": 0.0,
+   "ccee_mil_rs": 0.0,
+   "diferenca_mil_rs": 0.0,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "resposta_demanda",
+   "mes": "2026-01",
+   "edicao": "2026-06",
+   "mme_mil_rs": 5859.0,
+   "ccee_mil_rs": 0.0,
+   "diferenca_mil_rs": -5859.0,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "ressalva"
+  },
+  {
+   "tipo": "resposta_demanda",
+   "mes": "2026-02",
+   "edicao": "2026-06",
+   "mme_mil_rs": 9.0,
+   "ccee_mil_rs": 9.465,
+   "diferenca_mil_rs": 0.465,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "resposta_demanda",
+   "mes": "2026-03",
+   "edicao": "2026-06",
+   "mme_mil_rs": 81.0,
+   "ccee_mil_rs": 81.375,
+   "diferenca_mil_rs": 0.375,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "resposta_demanda",
+   "mes": "2026-04",
+   "edicao": "2026-06",
+   "mme_mil_rs": 57.0,
+   "ccee_mil_rs": 57.385,
+   "diferenca_mil_rs": 0.385,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "resposta_demanda",
+   "mes": "2026-05",
+   "edicao": "2026-06",
+   "mme_mil_rs": 0.0,
+   "ccee_mil_rs": 0.0,
+   "diferenca_mil_rs": 0.0,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "resposta_demanda",
+   "mes": "2026-06",
+   "edicao": "2026-06",
+   "mme_mil_rs": 0.0,
+   "ccee_mil_rs": null,
+   "diferenca_mil_rs": null,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": null
+  },
+  {
+   "tipo": "restricao_operacao",
+   "mes": "2026-01",
+   "edicao": "2026-06",
+   "mme_mil_rs": 63245.0,
+   "ccee_mil_rs": 63245.228,
+   "diferenca_mil_rs": 0.228,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "restricao_operacao",
+   "mes": "2026-02",
+   "edicao": "2026-06",
+   "mme_mil_rs": 116286.0,
+   "ccee_mil_rs": 116285.738,
+   "diferenca_mil_rs": -0.262,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "restricao_operacao",
+   "mes": "2026-03",
+   "edicao": "2026-06",
+   "mme_mil_rs": 260872.0,
+   "ccee_mil_rs": 260872.484,
+   "diferenca_mil_rs": 0.484,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "restricao_operacao",
+   "mes": "2026-04",
+   "edicao": "2026-06",
+   "mme_mil_rs": 108276.0,
+   "ccee_mil_rs": 108276.285,
+   "diferenca_mil_rs": 0.285,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "restricao_operacao",
+   "mes": "2026-05",
+   "edicao": "2026-06",
+   "mme_mil_rs": 84534.0,
+   "ccee_mil_rs": 84534.027,
+   "diferenca_mil_rs": 0.027,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "restricao_operacao",
+   "mes": "2026-06",
+   "edicao": "2026-06",
+   "mme_mil_rs": 49259.0,
+   "ccee_mil_rs": 49258.622,
+   "diferenca_mil_rs": -0.378,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "ro_constrained_off",
+   "mes": "2026-01",
+   "edicao": "2026-06",
+   "mme_mil_rs": 46089.0,
+   "ccee_mil_rs": 46088.677,
+   "diferenca_mil_rs": -0.323,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "ro_constrained_off",
+   "mes": "2026-02",
+   "edicao": "2026-06",
+   "mme_mil_rs": 44589.0,
+   "ccee_mil_rs": 44588.65,
+   "diferenca_mil_rs": -0.35,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "ro_constrained_off",
+   "mes": "2026-03",
+   "edicao": "2026-06",
+   "mme_mil_rs": 79180.0,
+   "ccee_mil_rs": 79180.323,
+   "diferenca_mil_rs": 0.323,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "ro_constrained_off",
+   "mes": "2026-04",
+   "edicao": "2026-06",
+   "mme_mil_rs": 29080.0,
+   "ccee_mil_rs": 29080.416,
+   "diferenca_mil_rs": 0.416,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "ro_constrained_off",
+   "mes": "2026-05",
+   "edicao": "2026-06",
+   "mme_mil_rs": 45132.0,
+   "ccee_mil_rs": 45132.317,
+   "diferenca_mil_rs": 0.317,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "ro_constrained_off",
+   "mes": "2026-06",
+   "edicao": "2026-06",
+   "mme_mil_rs": 33333.0,
+   "ccee_mil_rs": 33332.843,
+   "diferenca_mil_rs": -0.157,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "ro_constrained_on",
+   "mes": "2026-01",
+   "edicao": "2026-06",
+   "mme_mil_rs": 9416.0,
+   "ccee_mil_rs": 9415.949,
+   "diferenca_mil_rs": -0.051,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "ro_constrained_on",
+   "mes": "2026-02",
+   "edicao": "2026-06",
+   "mme_mil_rs": 55595.0,
+   "ccee_mil_rs": 55595.139,
+   "diferenca_mil_rs": 0.139,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "ro_constrained_on",
+   "mes": "2026-03",
+   "edicao": "2026-06",
+   "mme_mil_rs": 55947.0,
+   "ccee_mil_rs": 55947.336,
+   "diferenca_mil_rs": 0.336,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "ro_constrained_on",
+   "mes": "2026-04",
+   "edicao": "2026-06",
+   "mme_mil_rs": 27066.0,
+   "ccee_mil_rs": 27065.518,
+   "diferenca_mil_rs": -0.482,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "ro_constrained_on",
+   "mes": "2026-05",
+   "edicao": "2026-06",
+   "mme_mil_rs": 31212.0,
+   "ccee_mil_rs": 31212.084,
+   "diferenca_mil_rs": 0.084,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "ro_constrained_on",
+   "mes": "2026-06",
+   "edicao": "2026-06",
+   "mme_mil_rs": 5119.0,
+   "ccee_mil_rs": 5118.574,
+   "diferenca_mil_rs": -0.426,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "ro_unit_commitment",
+   "mes": "2026-01",
+   "edicao": "2026-06",
+   "mme_mil_rs": 7741.0,
+   "ccee_mil_rs": 7740.601,
+   "diferenca_mil_rs": -0.399,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "ro_unit_commitment",
+   "mes": "2026-02",
+   "edicao": "2026-06",
+   "mme_mil_rs": 16102.0,
+   "ccee_mil_rs": 16101.949,
+   "diferenca_mil_rs": -0.051,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "ro_unit_commitment",
+   "mes": "2026-03",
+   "edicao": "2026-06",
+   "mme_mil_rs": 125745.0,
+   "ccee_mil_rs": 125744.825,
+   "diferenca_mil_rs": -0.175,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "ro_unit_commitment",
+   "mes": "2026-04",
+   "edicao": "2026-06",
+   "mme_mil_rs": 52130.0,
+   "ccee_mil_rs": 52130.351,
+   "diferenca_mil_rs": 0.351,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "ro_unit_commitment",
+   "mes": "2026-05",
+   "edicao": "2026-06",
+   "mme_mil_rs": 8190.0,
+   "ccee_mil_rs": 8189.626,
+   "diferenca_mil_rs": -0.374,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "ro_unit_commitment",
+   "mes": "2026-06",
+   "edicao": "2026-06",
+   "mme_mil_rs": 10807.0,
+   "ccee_mil_rs": 10807.204,
+   "diferenca_mil_rs": 0.204,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "seguranca_energetica",
+   "mes": "2026-01",
+   "edicao": "2026-06",
+   "mme_mil_rs": 0.0,
+   "ccee_mil_rs": 0.0,
+   "diferenca_mil_rs": 0.0,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "seguranca_energetica",
+   "mes": "2026-02",
+   "edicao": "2026-06",
+   "mme_mil_rs": 0.0,
+   "ccee_mil_rs": 0.0,
+   "diferenca_mil_rs": 0.0,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "seguranca_energetica",
+   "mes": "2026-03",
+   "edicao": "2026-06",
+   "mme_mil_rs": 16446.0,
+   "ccee_mil_rs": 16446.342,
+   "diferenca_mil_rs": 0.342,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "seguranca_energetica",
+   "mes": "2026-04",
+   "edicao": "2026-06",
+   "mme_mil_rs": 662.0,
+   "ccee_mil_rs": 661.902,
+   "diferenca_mil_rs": -0.098,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "seguranca_energetica",
+   "mes": "2026-05",
+   "edicao": "2026-06",
+   "mme_mil_rs": 0.0,
+   "ccee_mil_rs": 0.0,
+   "diferenca_mil_rs": 0.0,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "seguranca_energetica",
+   "mes": "2026-06",
+   "edicao": "2026-06",
+   "mme_mil_rs": 0.0,
+   "ccee_mil_rs": 0.0,
+   "diferenca_mil_rs": 0.0,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "suporte_reativo",
+   "mes": "2026-01",
+   "edicao": "2026-06",
+   "mme_mil_rs": 21087.0,
+   "ccee_mil_rs": 21086.971,
+   "diferenca_mil_rs": -0.029,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "suporte_reativo",
+   "mes": "2026-02",
+   "edicao": "2026-06",
+   "mme_mil_rs": 15515.0,
+   "ccee_mil_rs": 15515.21,
+   "diferenca_mil_rs": 0.21,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "suporte_reativo",
+   "mes": "2026-03",
+   "edicao": "2026-06",
+   "mme_mil_rs": 22024.0,
+   "ccee_mil_rs": 22023.574,
+   "diferenca_mil_rs": -0.426,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "suporte_reativo",
+   "mes": "2026-04",
+   "edicao": "2026-06",
+   "mme_mil_rs": 24534.0,
+   "ccee_mil_rs": 24533.532,
+   "diferenca_mil_rs": -0.468,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "suporte_reativo",
+   "mes": "2026-05",
+   "edicao": "2026-06",
+   "mme_mil_rs": 29002.0,
+   "ccee_mil_rs": 29002.258,
+   "diferenca_mil_rs": 0.258,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "suporte_reativo",
+   "mes": "2026-06",
+   "edicao": "2026-06",
+   "mme_mil_rs": 25561.0,
+   "ccee_mil_rs": 25561.252,
+   "diferenca_mil_rs": 0.252,
+   "tolerancia_mil_rs": 0.5,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "total_sem_resposta_demanda",
+   "mes": "2026-01",
+   "edicao": "2026-06",
+   "mme_mil_rs": 98966.0,
+   "ccee_mil_rs": 98966.159,
+   "diferenca_mil_rs": 0.159,
+   "tolerancia_mil_rs": 6.0,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "total_sem_resposta_demanda",
+   "mes": "2026-02",
+   "edicao": "2026-06",
+   "mme_mil_rs": 155631.0,
+   "ccee_mil_rs": 155630.894,
+   "diferenca_mil_rs": -0.106,
+   "tolerancia_mil_rs": 6.0,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "total_sem_resposta_demanda",
+   "mes": "2026-03",
+   "edicao": "2026-06",
+   "mme_mil_rs": 344412.0,
+   "ccee_mil_rs": 344412.109,
+   "diferenca_mil_rs": 0.109,
+   "tolerancia_mil_rs": 6.0,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "total_sem_resposta_demanda",
+   "mes": "2026-04",
+   "edicao": "2026-06",
+   "mme_mil_rs": 144555.0,
+   "ccee_mil_rs": 144554.907,
+   "diferenca_mil_rs": -0.093,
+   "tolerancia_mil_rs": 6.0,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "total_sem_resposta_demanda",
+   "mes": "2026-05",
+   "edicao": "2026-06",
+   "mme_mil_rs": 126523.0,
+   "ccee_mil_rs": 126523.292,
+   "diferenca_mil_rs": 0.292,
+   "tolerancia_mil_rs": 6.0,
+   "resultado": "aprovado"
+  },
+  {
+   "tipo": "total_sem_resposta_demanda",
+   "mes": "2026-06",
+   "edicao": "2026-06",
+   "mme_mil_rs": 81973.0,
+   "ccee_mil_rs": 81972.874,
+   "diferenca_mil_rs": -0.126,
+   "tolerancia_mil_rs": 6.0,
+   "resultado": "aprovado"
+  }
+ ],
  "mcp_submercado_mensal": [
   {
    "mes": "2023-05",
@@ -4181,739 +8344,862 @@
    "ano": "2010",
    "tipo": "voluntário",
    "classe": "Produtor Independente",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2013",
    "tipo": "compulsório",
    "classe": "Comercializador",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2013",
    "tipo": "compulsório",
    "classe": "Gerador",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2013",
    "tipo": "compulsório",
    "classe": "Produtor Independente",
-   "desligamentos": 4.0
+   "desligamentos": 4,
+   "completo": true
   },
   {
    "ano": "2013",
    "tipo": "voluntário",
    "classe": "Comercializador",
-   "desligamentos": 2.0
+   "desligamentos": 2,
+   "completo": true
   },
   {
    "ano": "2013",
    "tipo": "voluntário",
    "classe": "Consumidor Especial",
-   "desligamentos": 6.0
+   "desligamentos": 6,
+   "completo": true
   },
   {
    "ano": "2013",
    "tipo": "voluntário",
    "classe": "Consumidor Livre",
-   "desligamentos": 6.0
+   "desligamentos": 6,
+   "completo": true
   },
   {
    "ano": "2013",
    "tipo": "voluntário",
    "classe": "Não Agente",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2013",
    "tipo": "voluntário",
    "classe": "Produtor Independente",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2014",
    "tipo": "compulsório",
    "classe": "Comercializador",
-   "desligamentos": 6.0
+   "desligamentos": 6,
+   "completo": true
   },
   {
    "ano": "2014",
    "tipo": "compulsório",
    "classe": "Consumidor Especial",
-   "desligamentos": 3.0
+   "desligamentos": 3,
+   "completo": true
   },
   {
    "ano": "2014",
    "tipo": "compulsório",
    "classe": "Consumidor Livre",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2014",
    "tipo": "compulsório",
    "classe": "Produtor Independente",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2014",
    "tipo": "voluntário",
    "classe": "Autoprodutor",
-   "desligamentos": 2.0
+   "desligamentos": 2,
+   "completo": true
   },
   {
    "ano": "2014",
    "tipo": "voluntário",
    "classe": "Comercializador",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2014",
    "tipo": "voluntário",
    "classe": "Consumidor Especial",
-   "desligamentos": 33.0
+   "desligamentos": 33,
+   "completo": true
   },
   {
    "ano": "2014",
    "tipo": "voluntário",
    "classe": "Consumidor Livre",
-   "desligamentos": 20.0
+   "desligamentos": 20,
+   "completo": true
   },
   {
    "ano": "2014",
    "tipo": "voluntário",
    "classe": "Produtor Independente",
-   "desligamentos": 6.0
+   "desligamentos": 6,
+   "completo": true
   },
   {
    "ano": "2015",
    "tipo": "compulsório",
    "classe": "Comercializador",
-   "desligamentos": 6.0
+   "desligamentos": 6,
+   "completo": true
   },
   {
    "ano": "2015",
    "tipo": "compulsório",
    "classe": "Consumidor Especial",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2015",
    "tipo": "compulsório",
    "classe": "Produtor Independente",
-   "desligamentos": 6.0
+   "desligamentos": 6,
+   "completo": true
   },
   {
    "ano": "2015",
    "tipo": "voluntário",
    "classe": "Autoprodutor",
-   "desligamentos": 2.0
+   "desligamentos": 2,
+   "completo": true
   },
   {
    "ano": "2015",
    "tipo": "voluntário",
    "classe": "Comercializador",
-   "desligamentos": 4.0
+   "desligamentos": 4,
+   "completo": true
   },
   {
    "ano": "2015",
    "tipo": "voluntário",
    "classe": "Consumidor Especial",
-   "desligamentos": 28.0
+   "desligamentos": 28,
+   "completo": true
   },
   {
    "ano": "2015",
    "tipo": "voluntário",
    "classe": "Consumidor Livre",
-   "desligamentos": 17.0
+   "desligamentos": 17,
+   "completo": true
   },
   {
    "ano": "2015",
    "tipo": "voluntário",
    "classe": "Produtor Independente",
-   "desligamentos": 13.0
+   "desligamentos": 13,
+   "completo": true
   },
   {
    "ano": "2016",
    "tipo": "compulsório",
    "classe": "Consumidor Especial",
-   "desligamentos": 2.0
+   "desligamentos": 2,
+   "completo": true
   },
   {
    "ano": "2016",
    "tipo": "compulsório",
    "classe": "Produtor Independente",
-   "desligamentos": 10.0
+   "desligamentos": 10,
+   "completo": true
   },
   {
    "ano": "2016",
    "tipo": "voluntário",
    "classe": "Autoprodutor",
-   "desligamentos": 4.0
+   "desligamentos": 4,
+   "completo": true
   },
   {
    "ano": "2016",
    "tipo": "voluntário",
    "classe": "Comercializador",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2016",
    "tipo": "voluntário",
    "classe": "Consumidor Especial",
-   "desligamentos": 39.0
+   "desligamentos": 39,
+   "completo": true
   },
   {
    "ano": "2016",
    "tipo": "voluntário",
    "classe": "Consumidor Livre",
-   "desligamentos": 17.0
+   "desligamentos": 17,
+   "completo": true
   },
   {
    "ano": "2016",
    "tipo": "voluntário",
    "classe": "Gerador",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2016",
    "tipo": "voluntário",
    "classe": "Não Agente",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2016",
    "tipo": "voluntário",
    "classe": "Produtor Independente",
-   "desligamentos": 7.0
+   "desligamentos": 7,
+   "completo": true
   },
   {
    "ano": "2017",
    "tipo": "compulsório",
    "classe": "Comercializador",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2017",
    "tipo": "compulsório",
    "classe": "Consumidor Especial",
-   "desligamentos": 2.0
+   "desligamentos": 2,
+   "completo": true
   },
   {
    "ano": "2017",
    "tipo": "compulsório",
    "classe": "Distribuidor",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2017",
    "tipo": "compulsório",
    "classe": "Produtor Independente",
-   "desligamentos": 44.0
+   "desligamentos": 44,
+   "completo": true
   },
   {
    "ano": "2017",
    "tipo": "voluntário",
    "classe": "Autoprodutor",
-   "desligamentos": 2.0
+   "desligamentos": 2,
+   "completo": true
   },
   {
    "ano": "2017",
    "tipo": "voluntário",
    "classe": "Comercializador",
-   "desligamentos": 3.0
+   "desligamentos": 3,
+   "completo": true
   },
   {
    "ano": "2017",
    "tipo": "voluntário",
    "classe": "Consumidor Especial",
-   "desligamentos": 71.0
+   "desligamentos": 71,
+   "completo": true
   },
   {
    "ano": "2017",
    "tipo": "voluntário",
    "classe": "Consumidor Livre",
-   "desligamentos": 35.0
+   "desligamentos": 35,
+   "completo": true
   },
   {
    "ano": "2017",
    "tipo": "voluntário",
    "classe": "Distribuidor",
-   "desligamentos": 3.0
+   "desligamentos": 3,
+   "completo": true
   },
   {
    "ano": "2017",
    "tipo": "voluntário",
    "classe": "Produtor Independente",
-   "desligamentos": 26.0
+   "desligamentos": 26,
+   "completo": true
   },
   {
    "ano": "2018",
    "tipo": "compulsório",
    "classe": "Comercializador",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2018",
    "tipo": "compulsório",
    "classe": "Consumidor Livre",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2018",
    "tipo": "compulsório",
    "classe": "Gerador",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2018",
    "tipo": "compulsório",
    "classe": "Produtor Independente",
-   "desligamentos": 32.0
+   "desligamentos": 32,
+   "completo": true
   },
   {
    "ano": "2018",
    "tipo": "voluntário",
    "classe": "Autoprodutor",
-   "desligamentos": 3.0
+   "desligamentos": 3,
+   "completo": true
   },
   {
    "ano": "2018",
    "tipo": "voluntário",
    "classe": "Comercializador",
-   "desligamentos": 3.0
+   "desligamentos": 3,
+   "completo": true
   },
   {
    "ano": "2018",
    "tipo": "voluntário",
    "classe": "Consumidor Especial",
-   "desligamentos": 111.0
+   "desligamentos": 111,
+   "completo": true
   },
   {
    "ano": "2018",
    "tipo": "voluntário",
    "classe": "Consumidor Livre",
-   "desligamentos": 30.0
+   "desligamentos": 30,
+   "completo": true
   },
   {
    "ano": "2018",
    "tipo": "voluntário",
    "classe": "Distribuidor",
-   "desligamentos": 4.0
+   "desligamentos": 4,
+   "completo": true
   },
   {
    "ano": "2018",
    "tipo": "voluntário",
    "classe": "Gerador",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2018",
    "tipo": "voluntário",
    "classe": "Não Agente",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2018",
    "tipo": "voluntário",
    "classe": "Produtor Independente",
-   "desligamentos": 19.0
+   "desligamentos": 19,
+   "completo": true
   },
   {
    "ano": "2019",
    "tipo": "compulsório",
    "classe": "Consumidor Especial",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2019",
    "tipo": "compulsório",
    "classe": "Produtor Independente",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2019",
    "tipo": "voluntário",
    "classe": "Autoprodutor",
-   "desligamentos": 2.0
+   "desligamentos": 2,
+   "completo": true
   },
   {
    "ano": "2019",
    "tipo": "voluntário",
    "classe": "Comercializador",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2019",
    "tipo": "voluntário",
    "classe": "Consumidor Especial",
-   "desligamentos": 105.0
+   "desligamentos": 105,
+   "completo": true
   },
   {
    "ano": "2019",
    "tipo": "voluntário",
    "classe": "Consumidor Livre",
-   "desligamentos": 39.0
+   "desligamentos": 39,
+   "completo": true
   },
   {
    "ano": "2019",
    "tipo": "voluntário",
    "classe": "Distribuidor",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2019",
    "tipo": "voluntário",
    "classe": "Gerador",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2019",
    "tipo": "voluntário",
    "classe": "Não Agente",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2019",
    "tipo": "voluntário",
    "classe": "Produtor Independente",
-   "desligamentos": 15.0
+   "desligamentos": 15,
+   "completo": true
   },
   {
    "ano": "2020",
    "tipo": "compulsório",
    "classe": "Consumidor Especial",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2020",
    "tipo": "compulsório",
    "classe": "Consumidor Livre",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2020",
    "tipo": "voluntário",
    "classe": "Autoprodutor",
-   "desligamentos": 2.0
+   "desligamentos": 2,
+   "completo": true
   },
   {
    "ano": "2020",
    "tipo": "voluntário",
    "classe": "Comercializador",
-   "desligamentos": 6.0
+   "desligamentos": 6,
+   "completo": true
   },
   {
    "ano": "2020",
    "tipo": "voluntário",
    "classe": "Consumidor Especial",
-   "desligamentos": 150.0
+   "desligamentos": 150,
+   "completo": true
   },
   {
    "ano": "2020",
    "tipo": "voluntário",
    "classe": "Consumidor Livre",
-   "desligamentos": 25.0
+   "desligamentos": 25,
+   "completo": true
   },
   {
    "ano": "2020",
    "tipo": "voluntário",
    "classe": "Gerador",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2020",
    "tipo": "voluntário",
    "classe": "Não Agente",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2020",
    "tipo": "voluntário",
    "classe": "Produtor Independente",
-   "desligamentos": 7.0
+   "desligamentos": 7,
+   "completo": true
   },
   {
    "ano": "2021",
    "tipo": "compulsório",
    "classe": "Consumidor Especial",
-   "desligamentos": 3.0
+   "desligamentos": 3,
+   "completo": true
   },
   {
    "ano": "2021",
    "tipo": "compulsório",
    "classe": "Consumidor Livre",
-   "desligamentos": 2.0
+   "desligamentos": 2,
+   "completo": true
   },
   {
    "ano": "2021",
    "tipo": "voluntário",
    "classe": "Autoprodutor",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2021",
    "tipo": "voluntário",
    "classe": "Comercializador",
-   "desligamentos": 2.0
+   "desligamentos": 2,
+   "completo": true
   },
   {
    "ano": "2021",
    "tipo": "voluntário",
    "classe": "Consumidor Especial",
-   "desligamentos": 113.0
+   "desligamentos": 113,
+   "completo": true
   },
   {
    "ano": "2021",
    "tipo": "voluntário",
    "classe": "Consumidor Livre",
-   "desligamentos": 27.0
+   "desligamentos": 27,
+   "completo": true
   },
   {
    "ano": "2021",
    "tipo": "voluntário",
    "classe": "Produtor Independente",
-   "desligamentos": 21.0
+   "desligamentos": 21,
+   "completo": true
   },
   {
    "ano": "2021",
    "tipo": "voluntário",
    "classe": "Transmissor",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2022",
    "tipo": "voluntário",
    "classe": "Comercializador",
-   "desligamentos": 3.0
+   "desligamentos": 3,
+   "completo": true
   },
   {
    "ano": "2022",
    "tipo": "voluntário",
    "classe": "Consumidor Especial",
-   "desligamentos": 146.0
+   "desligamentos": 146,
+   "completo": true
   },
   {
    "ano": "2022",
    "tipo": "voluntário",
    "classe": "Consumidor Livre",
-   "desligamentos": 39.0
+   "desligamentos": 39,
+   "completo": true
   },
   {
    "ano": "2022",
    "tipo": "voluntário",
    "classe": "Não Agente",
-   "desligamentos": 2.0
+   "desligamentos": 2,
+   "completo": true
   },
   {
    "ano": "2022",
    "tipo": "voluntário",
    "classe": "Produtor Independente",
-   "desligamentos": 27.0
+   "desligamentos": 27,
+   "completo": true
   },
   {
    "ano": "2023",
    "tipo": "compulsório",
    "classe": "Produtor Independente",
-   "desligamentos": 10.0
+   "desligamentos": 10,
+   "completo": true
   },
   {
    "ano": "2023",
    "tipo": "voluntário",
    "classe": "Autoprodutor",
-   "desligamentos": 3.0
+   "desligamentos": 3,
+   "completo": true
   },
   {
    "ano": "2023",
    "tipo": "voluntário",
    "classe": "Comercializador",
-   "desligamentos": 18.0
+   "desligamentos": 18,
+   "completo": true
   },
   {
    "ano": "2023",
    "tipo": "voluntário",
    "classe": "Consumidor Especial",
-   "desligamentos": 151.0
+   "desligamentos": 151,
+   "completo": true
   },
   {
    "ano": "2023",
    "tipo": "voluntário",
    "classe": "Consumidor Livre",
-   "desligamentos": 62.0
+   "desligamentos": 62,
+   "completo": true
   },
   {
    "ano": "2023",
    "tipo": "voluntário",
    "classe": "Não Agente",
-   "desligamentos": 3.0
+   "desligamentos": 3,
+   "completo": true
   },
   {
    "ano": "2023",
    "tipo": "voluntário",
    "classe": "Produtor Independente",
-   "desligamentos": 15.0
+   "desligamentos": 15,
+   "completo": true
   },
   {
    "ano": "2024",
    "tipo": "compulsório",
    "classe": "Comercializador",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2024",
    "tipo": "compulsório",
    "classe": "Consumidor Especial",
-   "desligamentos": 2.0
+   "desligamentos": 2,
+   "completo": true
   },
   {
    "ano": "2024",
    "tipo": "compulsório",
    "classe": "Produtor Independente",
-   "desligamentos": 7.0
+   "desligamentos": 7,
+   "completo": true
   },
   {
    "ano": "2024",
    "tipo": "voluntário",
    "classe": "Autoprodutor",
-   "desligamentos": 2.0
+   "desligamentos": 2,
+   "completo": true
   },
   {
    "ano": "2024",
    "tipo": "voluntário",
    "classe": "Comercializador",
-   "desligamentos": 24.0
+   "desligamentos": 24,
+   "completo": true
   },
   {
    "ano": "2024",
    "tipo": "voluntário",
    "classe": "Consumidor Especial",
-   "desligamentos": 193.0
+   "desligamentos": 193,
+   "completo": true
   },
   {
    "ano": "2024",
    "tipo": "voluntário",
    "classe": "Consumidor Livre",
-   "desligamentos": 93.0
+   "desligamentos": 93,
+   "completo": true
   },
   {
    "ano": "2024",
    "tipo": "voluntário",
    "classe": "Não Agente",
-   "desligamentos": 4.0
+   "desligamentos": 4,
+   "completo": true
   },
   {
    "ano": "2024",
    "tipo": "voluntário",
    "classe": "Produtor Independente",
-   "desligamentos": 34.0
+   "desligamentos": 34,
+   "completo": true
   },
   {
    "ano": "2025",
    "tipo": "compulsório",
    "classe": "Comercializador",
-   "desligamentos": 15.0
+   "desligamentos": 15,
+   "completo": true
   },
   {
    "ano": "2025",
    "tipo": "compulsório",
    "classe": "Consumidor Especial",
-   "desligamentos": 2.0
+   "desligamentos": 2,
+   "completo": true
   },
   {
    "ano": "2025",
    "tipo": "compulsório",
    "classe": "Produtor Independente",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": true
   },
   {
    "ano": "2025",
    "tipo": "voluntário",
    "classe": "Autoprodutor",
-   "desligamentos": 2.0
+   "desligamentos": 2,
+   "completo": true
   },
   {
    "ano": "2025",
    "tipo": "voluntário",
    "classe": "Comercializador",
-   "desligamentos": 11.0
+   "desligamentos": 11,
+   "completo": true
   },
   {
    "ano": "2025",
    "tipo": "voluntário",
    "classe": "Consumidor Especial",
-   "desligamentos": 149.0
+   "desligamentos": 149,
+   "completo": true
   },
   {
    "ano": "2025",
    "tipo": "voluntário",
    "classe": "Consumidor Livre",
-   "desligamentos": 92.0
+   "desligamentos": 92,
+   "completo": true
   },
   {
    "ano": "2025",
    "tipo": "voluntário",
    "classe": "Não Agente",
-   "desligamentos": 8.0
+   "desligamentos": 8,
+   "completo": true
   },
   {
    "ano": "2025",
    "tipo": "voluntário",
    "classe": "Produtor Independente",
-   "desligamentos": 16.0
+   "desligamentos": 16,
+   "completo": true
   },
   {
    "ano": "2026",
    "tipo": "compulsório",
    "classe": "Comercializador",
-   "desligamentos": 7.0
+   "desligamentos": 7,
+   "completo": false
   },
   {
    "ano": "2026",
    "tipo": "compulsório",
    "classe": "Consumidor Especial",
-   "desligamentos": 3.0
+   "desligamentos": 3,
+   "completo": false
   },
   {
    "ano": "2026",
    "tipo": "compulsório",
    "classe": "Produtor Independente",
-   "desligamentos": 2.0
+   "desligamentos": 2,
+   "completo": false
   },
   {
    "ano": "2026",
    "tipo": "voluntário",
    "classe": "Autoprodutor",
-   "desligamentos": 1.0
+   "desligamentos": 1,
+   "completo": false
   },
   {
    "ano": "2026",
    "tipo": "voluntário",
    "classe": "Comercializador",
-   "desligamentos": 9.0
+   "desligamentos": 9,
+   "completo": false
   },
   {
    "ano": "2026",
    "tipo": "voluntário",
    "classe": "Consumidor Especial",
-   "desligamentos": 77.0
+   "desligamentos": 77,
+   "completo": false
   },
   {
    "ano": "2026",
    "tipo": "voluntário",
    "classe": "Consumidor Livre",
-   "desligamentos": 105.0
+   "desligamentos": 105,
+   "completo": false
   },
   {
    "ano": "2026",
    "tipo": "voluntário",
    "classe": "Não Agente",
-   "desligamentos": 2.0
+   "desligamentos": 2,
+   "completo": false
   },
   {
    "ano": "2026",
    "tipo": "voluntário",
    "classe": "Produtor Independente",
-   "desligamentos": 12.0
+   "desligamentos": 12,
+   "completo": false
   }
  ]
 }

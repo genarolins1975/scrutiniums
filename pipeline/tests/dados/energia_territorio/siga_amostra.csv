@@ -26,3 +26,7 @@ nucleo_ceg;ceg;nome;tipo;origem;fonte;fase;estagio;outorga;uf;municipios;lat;lon
 345;CGH.PH.MG.000345-0.2;Caboclo;CGH;Hídrica;Potencial hidráulico;Operação;operacao;Registro;MG;Belo Horizonte - MG;-20.495;-43.4828;4420.0;4420.0;1944-12-23;3580.0;;;20227915000141
 27066;CGH.PH.MG.027066-0.2;Funil;CGH;Hídrica;Potencial hidráulico;Operação;operacao;Registro;MG;Belo Horizonte - MG;-20.4767;-43.4464;4230.0;4230.0;1949-12-23;2870.0;;;20227915000141
 27719;CGH.PH.MG.027719-3.2;Salto;CGH;Hídrica;Potencial hidráulico;Operação;operacao;Registro;MG;Belo Horizonte - MG;-20.4942;-43.4506;4505.0;4505.0;1940-12-23;;;;20227915000141
+28609;UTE.PE.SP.028609-5.1;Budai;UTE;Fóssil;Petróleo;Operação;operacao;Registro;SP;Jandira - SP;-23.5167;-46.9157;1070.4;1070.0;2001-01-09;;;;61394243000146
+54942;UFV.RS.PA.054942-8.1;Benedita Damiao Goes;UFV;Solar;Radiação solar;Operação;operacao;Registro;PA;Portel - PA;-1.8436;-50.9843;1.0;1.0;2021-08-30;;;;04895728000180
+55066;UFV.RS.PA.055066-3.1;Helcireni Carvalho da Silva;UFV;Solar;Radiação solar;Operação;operacao;Registro;PA;Portel - PA;-1.8472;-50.9743;1.0;1.0;2021-08-30;;;;04895728000180
+64814;UFV.RS.PA.064814-0.1;Emef Francisco Pereira de Albuquerque;UFV;Solar;Radiação solar;Operação;operacao;Registro;PA;Portel - PA;-2.2524;-50.5578;3.0;3.0;2022-04-06;;;;04895728000180

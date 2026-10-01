@@ -34,8 +34,10 @@ CCEE, package_show da CCEE versionados no repositório (alternativa quando o por
 recusa o pedido), verificação parcial de recursos e metadados de frequência de fontes
 fora dos portais (SIDRA, CVM, MME).
 """
+import calendar
 import json
 import os
+import re
 import sys
 import time
 from collections import Counter, defaultdict
@@ -92,7 +94,8 @@ SITUACOES_VALIDACAO = {
 }
 NATUREZAS = {
     "OBSERVADO": "Medido ou publicado pela fonte como observação.",
-    "ESTIMADO": "Estimado pela fonte (ou pelo observatório, quando a ficha diz).",
+    "ESTIMADO": ("Estimado, pela fonte ou pelo observatório: o contrato de proveniência ainda não separa os dois (ver "
+                 "eixos.limitacao_natureza)."),
     "CALCULADO": "Calculado pelo observatório a partir de dados da fonte, com fórmula publicada.",
     "PREVISTO": "Previsão de modelo.",
     "CENARIO": "Cenário de planejamento.",
@@ -163,13 +166,16 @@ REGISTRO = {
         U["conjuntos"]: (
             "Uma linha por conjunto integrado (família e dataset do silver): estado (CATALOGADO, RECURSO VERIFICADO, INTEGRADO, "
             "VALIDADO, PUBLICADO); papeis (uso declarado: indicador, modelo, conferencia, contexto, historico); golds; "
-            "frequencia_declarada (texto da fonte), campo_frequencia (campo de onde foi lida), caso_sla (A a D, regra em "
+            "frequencia_declarada (texto da fonte), campo_frequencia (campo de onde foi lida), caso_sla (A a E, regra em "
             "publicacao.json, regras.sla_texto) e cadencia_sla; granularidade, ref_min e ultimo_periodo (maior referência até "
-            "hoje); prazo_proximo (data até a qual o período seguinte deve chegar) e situacao (EM DIA, ATRASADO, SEM SLA, "
+            "hoje); periodo_parcial (1 = o último período ainda não terminou e não alonga o prazo); prazo_proximo (data até a qual o período seguinte deve chegar) e situacao (EM DIA, ATRASADO, SEM SLA, "
             "SEM DADO) com dias_atraso; capturas, primeira_captura e ultima_captura (UTC); ultima_publicacao_fonte (last_modified "
             "informado pela fonte, vazio quando não informado); tentativas, falhas, ultima_falha_em e falhas_consecutivas; series, "
-            "linhas e completude_interna (0 a 1); series_no_ultimo e series_no_anterior; revisoes_eventos, revisoes_referencias, "
-            "revisoes_series, revisao_ref_min, revisao_ref_max, maior_revisao_abs (unidade da série) e maior_revisao_rel_pct; "
+            "linhas e completude_interna (0 a 1); series_no_ultimo e series_no_anterior (séries com valor no ultimo_periodo e "
+            "no período anterior a ele); revisoes_eventos, revisoes_observacoes (pares série e referência revisados), "
+            "revisoes_referencias (períodos distintos revisados), revisoes_series, revisao_ref_min, revisao_ref_max, "
+            "maior_revisao_abs (unidade da série) e maior_revisao_rel_pct; registros_mudancas (campos de cadastro alterados "
+            "entre capturas do mesmo arquivo) e registros_conflitos (campos com valores diferentes entre arquivos do conjunto); "
             "validacao (aprovado, ressalva, reprovado) e contagem de checagens; originais_ausentes e sha256_divergentes no bronze. "
             "Vazio = não se aplica ou não informado."),
         U["validacoes"]: (
@@ -183,8 +189,8 @@ REGISTRO = {
             "contagem completa está em dados_conjuntos.csv."),
         U["calendario"]: (
             "dia (data UTC da captura); familia; dataset; capturas_novas (vintages com conteúdo novo); recapturas_sem_mudanca "
-            "(downloads idênticos à vintage vigente); falhas (tentativas sem êxito); referencias_revisadas (valores alterados "
-            "pela captura do dia); publicacoes_fonte (arquivos com last_modified informado pela fonte naquele dia)."),
+            "(downloads idênticos à vintage vigente); falhas (tentativas sem êxito); observacoes_revisadas (pares série e "
+            "referência cujo valor mudou na captura do dia, em relação à captura anterior do mesmo arquivo); publicacoes_fonte (arquivos com last_modified informado pela fonte naquele dia)."),
         U["catalogo"]: (
             "Uma linha por conjunto do catálogo: id (órgão:nome); orgao; nome; titulo; estado; papeis; descontinuado (1/0) e "
             "motivo; frequencia_declarada; recurso_verificado_em (UTC); integracoes (datasets do silver); golds; recursos "
@@ -200,8 +206,8 @@ REGISTRO = {
             "ultima_captura (UTC); datasets_silver (família/dataset que o capturou); verificado_em (requisição parcial, UTC); url.")
           for o in PORTAIS_RECURSOS},
         U["eixos"]: (
-            "Uma linha por ficha 'Comprove este número' publicada: gold; indicador; natureza (da proveniência de mesmo nome, vazio "
-            "se não houver); situacao_validacao (reconciliacao_aprovada, controles_aprovados, ressalva, divergencia, "
+            "Uma linha por ficha 'Comprove este número' publicada: gold; indicador; natureza (declarada na ficha, ou da proveniência de mesma "
+            "chave ou de mesmo indicador na mesma gold, ou da proveniência no mesmo objeto da ficha; vazio = sem vínculo); situacao_validacao (reconciliacao_aprovada, controles_aprovados, ressalva, divergencia, "
             "pendencia); reconciliacao (resultado); testes_aprovados, testes_ressalva, testes_reprovados."),
     },
 }
@@ -287,16 +293,39 @@ def valida_golds(hoje):
                                sem_proveniencia=GOLDS_CONTROLE)
         g, _ = val.le_json_estrito(caminho)
         snap = set()
+        mal_formados = []  # id fora do formato dataset[+dataset]@instante (ex.: cita golds)
         provs = val.proveniencias(g) if g is not None else []
         for p in provs:
             sid = str((p.get("snapshot") or {}).get("id") or "")
-            if sid:
-                snap.add(sid.split("@")[0])
+            if not sid:
+                continue
+            ids = datasets_do_snapshot(sid)
+            if ids is None:
+                mal_formados.append(sid)
+            else:
+                snap.update(ids)
         out[nome] = {"checagens": chks, "veredito": val.veredito(chks), "bytes": os.path.getsize(caminho),
                      "disponivel": isinstance(g, dict) and g.get("disponivel") is True,
                      "gerado_em": g.get("gerado_em") if isinstance(g, dict) else None,
-                     "datasets_citados": sorted(snap), "_gold": g}
+                     "datasets_citados": sorted(snap), "snapshots_sem_dataset": sorted(set(mal_formados))[:5], "_gold": g}
     return out
+
+
+_ID_DATASET = re.compile(r"^[A-Za-z0-9_.\-]+$")
+
+
+def datasets_do_snapshot(sid):
+    """Datasets do silver citados por um snapshot.id de proveniência. O formato é
+    'dataset@instante' (comum.snapshot_de) ou, quando a gold combina vários conjuntos,
+    'a+b+c@instante' (ex.: 'epe_consumo_mensal+epe_consumo_classe@2026-10-01T00:33:34Z'
+    em mercado.json): cada parte antes do '@' é um dataset citado. Devolve None quando o
+    id não segue o formato (parte vazia ou com caractere fora de [A-Za-z0-9_.-]); o
+    vínculo gold → conjunto não é inventado a partir de texto mal formado."""
+    antes = str(sid).split("@", 1)[0].strip()
+    partes = [x.strip() for x in antes.split("+")]
+    if not partes or any(not x or not _ID_DATASET.match(x) for x in partes):
+        return None
+    return partes
 
 
 def valida_csvs(hoje, dicionario):
@@ -421,7 +450,22 @@ def cadencia_do_grao(formato, passo):
     return None
 
 
-def regra_sla(cadencias, regular, cad_grao):
+# Texto de frequência que descreve a ROTINA do portal (horário em que o portal roda a
+# atualização), e não a cadência do dado: o ONS declara no campo "Schedule de Atualização"
+# o texto "Diariamento, as 12h e 19h" para séries mensais e anuais. Só nesse caso a
+# cadência declarada mais curta que o grão é trocada pelo grão do dado (caso C).
+_HORARIO_ROTINA = re.compile(r"\b\d{1,2}\s*h\b", re.I)
+
+
+def rotina_do_portal(freq):
+    """True quando a frequência declarada é a rotina do portal (campo 'Schedule' do CKAN
+    do ONS ou texto com horário do dia, como '12h e 19h'), não uma promessa de período."""
+    campo = str((freq or {}).get("campo") or "")
+    texto = str((freq or {}).get("declarada") or "")
+    return bool(re.search(r"schedule", campo, re.I) or _HORARIO_ROTINA.search(texto))
+
+
+def regra_sla(cadencias, regular, cad_grao, rotina_portal=False):
     """Qual cadência e qual base usar no SLA (seção 'sla_texto' das regras):
 
     A. série regular cujo grão corresponde a uma cadência declarada: o período seguinte
@@ -429,9 +473,14 @@ def regra_sla(cadencias, regular, cad_grao):
     B. série regular publicada em lotes (a fonte declara cadência mais longa que o grão):
        a próxima remessa cobre até o fim do último período mais um período da cadência
        declarada (a mais curta entre as mais longas que o grão);
-    C. série regular com cadência declarada mais curta que o grão (a fonte atualiza o
-       arquivo dentro do período, ou declara o horário da rotina do portal): vale o grão
-       do dado, com a tolerância do grão;
+    C. série regular com cadência declarada mais curta que o grão E a declaração é a
+       rotina do portal (horário de atualização do ONS): vale o grão do dado, com a
+       tolerância do grão;
+    E. série regular com cadência declarada mais curta que o grão fora da rotina do portal
+       (a ANEEL declara "Mensal" para um arquivo de grão anual que ela reescreve a cada
+       mês): a promessa é de arquivo novo nessa cadência, medida pela data de publicação
+       informada pela fonte mais um período da cadência declarada e a tolerância; o grão
+       do dado não pode alongar o prazo para anos depois do que a fonte promete;
     D. sem série regular (cadastro, vigências, cadência irregular): data de publicação
        informada pela fonte mais um período da cadência declarada (a mais longa).
     Devolve (caso, cadência, origem da cadência)."""
@@ -443,7 +492,9 @@ def regra_sla(cadencias, regular, cad_grao):
         mais_longas = [c for c in cadencias if ORDEM_CADENCIA.index(c) > ORDEM_CADENCIA.index(cad_grao)]
         if mais_longas:
             return "B", min(mais_longas, key=ORDEM_CADENCIA.index), "declarada pela fonte, mais longa que o grão (publicação em lotes)"
-        return "C", cad_grao, "grão do dado (a cadência declarada é mais curta que o grão)"
+        if rotina_portal:
+            return "C", cad_grao, "grão do dado (a fonte declara a rotina do portal, mais curta que o grão)"
+        return "E", cadencias[-1], "declarada pela fonte, mais curta que o grão: medida pela data de publicação da fonte"
     return "D", cadencias[-1], "declarada pela fonte (a mais longa, sem série regular de referência)"
 
 
@@ -463,59 +514,90 @@ def _publicacao_atrasada_do_conteudo(ultimo_periodo, formato, pub):
 def atualidade(an, freq, hoje, descontinuado):
     """SLA de atualidade derivado da frequência declarada pela fonte (regra_sla). A
     base é o último período de referência disponível até hoje, nunca a data da captura:
-    falha ou recaptura não renovam o dado. Sem série regular, a base é a data de
-    publicação informada pela própria fonte (last_modified do portal)."""
+    falha ou recaptura não renovam o dado. Sem série regular (ou no caso E), a base é a
+    data de publicação informada pela própria fonte (last_modified do portal).
+
+    Período corrente parcial: quando o último período disponível ainda não terminou (o
+    ano de 2026 num arquivo anual em 01/10/2026), ele é marcado (periodo_parcial) e não
+    alonga o prazo: a base passa a ser o último período completo, e o prazo é o fim do
+    período corrente mais a tolerância."""
     obs = (an or {}).get("observacoes") or {}
     grupos = obs.get("grupos") or []
     principal = next((g for g in grupos if g["formato"] == obs.get("principal")), grupos[0] if grupos else None)
     out = {"situacao": None, "caso": None, "base": None, "cadencia": None, "origem_cadencia": None, "tolerancia_dias": None,
-           "ultimo_periodo": None, "fim_ultimo_periodo": None, "prazo_proximo": None, "dias_atraso": None, "causa": None,
-           "motivo_sem_sla": None, "publicacao_nao_acompanha_conteudo": None}
+           "ultimo_periodo": None, "fim_ultimo_periodo": None, "periodo_parcial": None, "prazo_proximo": None,
+           "dias_atraso": None, "causa": None, "motivo_sem_sla": None, "publicacao_nao_acompanha_conteudo": None}
     formato = principal["formato"] if principal else None
     passo = (principal or {}).get("passo")
     regular = bool(principal and formato in sd.REGULARES and passo and (principal.get("aderencia_passo") or 0) >= 0.5)
+    passo_fim = passo if (regular and formato in ("diaria", "mensal", "anual")) else None
+    fim = None
     if principal:
         ref = principal.get("ref_max_ate_hoje")
         out["ultimo_periodo"] = ref
         if ref:
-            fim = sd.fim_ref(ref, formato, passo if (regular and formato in ("diaria", "mensal", "anual")) else None)
+            fim = sd.fim_ref(ref, formato, passo_fim)
             out["fim_ultimo_periodo"] = fim.isoformat() if fim else None
+    parcial = bool(fim and fim > hoje)
+    if parcial:
+        out["periodo_parcial"] = True
     if descontinuado:
         out.update(situacao="SEM SLA", motivo_sem_sla="Conjunto descontinuado pela fonte: não há atualização a esperar.")
         return out
     if freq["sem_sla"] and not freq["cadencias"]:
         out.update(situacao="SEM SLA", motivo_sem_sla=f"A fonte declara atualização sem cadência: {freq['declarada']!r}.")
         return out
-    caso, cad, origem = regra_sla(freq["cadencias"], regular, cadencia_do_grao(formato, passo) if regular else None)
+    caso, cad, origem = regra_sla(freq["cadencias"], regular, cadencia_do_grao(formato, passo) if regular else None,
+                                  rotina_portal=rotina_do_portal(freq))
     if not cad:
         out.update(situacao="SEM SLA", motivo_sem_sla="A fonte não declara frequência de atualização em metadado legível.")
         return out
     out.update(caso=caso, cadencia=cad, origem_cadencia=origem, tolerancia_dias=TOLERANCIA_DIAS[cad])
     pub = ((an or {}).get("vintages") or {}).get("ultima_publicacao_fonte")
+    pub_util = bool(pub) and not _publicacao_atrasada_do_conteudo(out["ultimo_periodo"], formato, pub)
+    # fim do último período COMPLETO: no período corrente parcial, o anterior a ele
+    if parcial and regular:
+        fim_completo = sd.fim_ref(sd._ref_anterior(out["ultimo_periodo"], formato, passo), formato, passo_fim)
+    elif parcial:
+        # sem passo regular não há "período anterior": vale o início do período corrente
+        fim_completo = sd.inicio_ref(out["ultimo_periodo"], formato)
+    else:
+        fim_completo = fim
     if caso in ("A", "C") and out["ultimo_periodo"]:
         out["base"] = "periodo_de_referencia"
-        prox = sd._ref_anterior(out["ultimo_periodo"], formato, -passo)
-        fim_prox = sd.fim_ref(prox, formato, passo if formato in ("diaria", "mensal", "anual") else None) if prox else None
-        if fim_prox is None:
-            fim_prox = date.fromisoformat(out["fim_ultimo_periodo"]) + timedelta(days=PERIODO_DIAS[cad])
+        if parcial:
+            # o período seguinte ao último completo é o corrente: prazo = fim dele + tolerância
+            fim_prox = fim
+        else:
+            prox = sd._ref_anterior(out["ultimo_periodo"], formato, -passo)
+            fim_prox = sd.fim_ref(prox, formato, passo_fim) if prox else None
+            if fim_prox is None:
+                fim_prox = fim + timedelta(days=PERIODO_DIAS[cad])
         prazo = fim_prox + timedelta(days=TOLERANCIA_DIAS[cad])
     elif caso == "B" and out["ultimo_periodo"]:
         out["base"] = "periodo_de_referencia"
-        prazo = date.fromisoformat(out["fim_ultimo_periodo"]) + timedelta(days=PERIODO_DIAS[cad] + TOLERANCIA_DIAS[cad])
-    elif pub and not _publicacao_atrasada_do_conteudo(out["ultimo_periodo"], formato, pub):
+        prazo = fim_completo + timedelta(days=PERIODO_DIAS[cad] + TOLERANCIA_DIAS[cad])
+    elif caso == "E" and not pub_util:
+        motivo = ("a data de modificação informada pela fonte é anterior ao período mais recente do próprio arquivo"
+                  if pub else "a fonte não informa data de publicação")
+        out.update(situacao="SEM DADO", publicacao_nao_acompanha_conteudo=True if pub else None,
+                   motivo_sem_sla=(f"A fonte declara cadência {cad} mais curta que o grão do dado e {motivo}: não há como medir "
+                                   "a promessa de atualização sem usar a data da captura."))
+        return out
+    elif pub_util:
         out["base"] = "publicacao_da_fonte"
         pubd = datetime.fromisoformat(str(pub)[:19]).date()
         prazo = pubd + timedelta(days=PERIODO_DIAS[cad] + TOLERANCIA_DIAS[cad])
-    elif pub and out["fim_ultimo_periodo"]:
+    elif pub and fim_completo:
         # a data de modificação informada pela fonte é anterior ao período mais recente
         # que o próprio arquivo traz: ela não acompanha o conteúdo (como no PLD da CCEE) e
-        # não serve de base; vale o fim do último período mais a cadência declarada
+        # não serve de base; vale o fim do último período completo mais a cadência declarada
         out["base"] = "periodo_de_referencia"
         out["publicacao_nao_acompanha_conteudo"] = True
-        prazo = date.fromisoformat(out["fim_ultimo_periodo"]) + timedelta(days=PERIODO_DIAS[cad] + TOLERANCIA_DIAS[cad])
-    elif out["fim_ultimo_periodo"] and formato == "intervalo":
+        prazo = fim_completo + timedelta(days=PERIODO_DIAS[cad] + TOLERANCIA_DIAS[cad])
+    elif fim_completo and formato == "intervalo":
         out["base"] = "periodo_de_referencia"
-        prazo = date.fromisoformat(out["fim_ultimo_periodo"]) + timedelta(days=PERIODO_DIAS[cad] + TOLERANCIA_DIAS[cad])
+        prazo = fim_completo + timedelta(days=PERIODO_DIAS[cad] + TOLERANCIA_DIAS[cad])
     else:
         out.update(situacao="SEM DADO", motivo_sem_sla=("Sem série regular de referência e sem data de publicação informada pela "
                                                        "fonte: não há como medir atraso sem usar a data da captura."))
@@ -542,7 +624,7 @@ def _resumo_revisao(an):
     conflitos = (rv or {}).get("conflitos_entre_recursos") or 0
     exemplos_conflito = (rv or {}).get("exemplos_conflito") or []
     rv = rv if rv and rv.get("eventos") else None
-    rr = rr if rr and rr.get("mudancas") else None
+    rr = rr if rr and (rr.get("mudancas") or rr.get("conflitos_entre_recursos") or rr.get("metadado_do_arquivo")) else None
     if not rv and not rr and not conflitos:
         return None
 
@@ -554,12 +636,25 @@ def _resumo_revisao(an):
                 "capturado_de": x["capturado_de"], "capturado_para": x["capturado_para"], "recurso": x["recurso"]}
     out = {}
     if rv:
-        out.update({"eventos": rv["eventos"], "referencias": rv["referencias_revisadas"], "series": rv["series_afetadas"],
+        # observacoes = pares (série, referência) revisados; referencias = períodos
+        # distintos revisados (em qualquer série)
+        out.update({"eventos": rv["eventos"], "observacoes": rv["observacoes_revisadas"], "referencias": rv["referencias_revisadas"],
+                    "series": rv["series_afetadas"],
                     "ref_min": rv["ref_min"], "ref_max": rv["ref_max"], "a_partir_de_zero": rv["a_partir_de_zero"],
                     "maior_abs": ev_(rv["maior_abs"]), "maior_rel": ev_(rv["maior_rel"]), "por_captura": rv["por_captura"]})
     if rr:
-        out["registros"] = {"mudancas": rr["mudancas"], "chaves": rr["chaves_afetadas"], "campos": rr["campos"],
-                            "apagados_pela_fonte": rr["apagados_pela_fonte"], "por_captura": rr["por_captura"]}
+        # mudanças entre capturas do MESMO arquivo; diferenças entre arquivos do conjunto
+        # (anos diferentes, listas de anos diferentes) são conflito entre recursos, à parte
+        reg = {}
+        if rr.get("mudancas"):
+            reg.update({"mudancas": rr["mudancas"], "chaves": rr["chaves_afetadas"], "campos": rr["campos"],
+                        "apagados_pela_fonte": rr["apagados_pela_fonte"], "por_captura": rr["por_captura"]})
+        if rr.get("metadado_do_arquivo"):
+            reg["metadado_do_arquivo"] = rr["metadado_do_arquivo"]
+        if rr.get("conflitos_entre_recursos"):
+            reg["conflitos_entre_recursos"] = {"campos": rr["conflitos_entre_recursos"], "chaves": rr["chaves_em_conflito"],
+                                               "por_campo": rr["campos_em_conflito"], "exemplos": rr["exemplos_conflito"][:1]}
+        out["registros"] = reg
     if conflitos:
         # mesma (série, referência) em arquivos diferentes com valores diferentes: não é
         # revisão da fonte; o módulo dono decide qual arquivo vale
@@ -818,7 +913,8 @@ def publico(x):
 
 def calendario(lista, hoje):
     """Por dia (UTC) e por conjunto: capturas novas, recapturas sem mudança, falhas,
-    referências revisadas e arquivos publicados pela fonte naquele dia."""
+    observações revisadas (eventos de revisão trazidos pela captura do dia: pares série e
+    referência que mudaram) e arquivos publicados pela fonte naquele dia."""
     inicio = (hoje - timedelta(days=JANELA_CALENDARIO_DIAS)).isoformat()
     linhas = []
     total = defaultdict(lambda: Counter())
@@ -835,21 +931,21 @@ def calendario(lista, hoje):
             dias[dia]["falhas"] += falhas
             dias[dia]["_ok"] += ok
         for dia, n in ((an.get("revisoes") or {}).get("por_captura") or {}).items():
-            dias[dia]["referencias_revisadas"] += n
+            dias[dia]["observacoes_revisadas"] += n
         for dia, cnt in dias.items():
             if dia < inicio or dia > hoje.isoformat():
                 continue
             rec = max(0, cnt["_ok"] - cnt["capturas_novas"])
             row = {"dia": dia, "familia": x["familia"], "dataset": x["dataset_silver"], "capturas_novas": cnt["capturas_novas"],
-                   "recapturas_sem_mudanca": rec, "falhas": cnt["falhas"], "referencias_revisadas": cnt["referencias_revisadas"],
+                   "recapturas_sem_mudanca": rec, "falhas": cnt["falhas"], "observacoes_revisadas": cnt["observacoes_revisadas"],
                    "publicacoes_fonte": cnt["publicacoes_fonte"]}
             linhas.append(row)
             t = total[dia]
-            for k in ("capturas_novas", "recapturas_sem_mudanca", "falhas", "referencias_revisadas", "publicacoes_fonte"):
+            for k in ("capturas_novas", "recapturas_sem_mudanca", "falhas", "observacoes_revisadas", "publicacoes_fonte"):
                 t[k] += row[k]
             t["conjuntos_com_evento"] += 1
     agregado = [{"dia": d, **{k: total[d][k] for k in ("capturas_novas", "recapturas_sem_mudanca", "falhas",
-                                                       "referencias_revisadas", "publicacoes_fonte", "conjuntos_com_evento")}}
+                                                       "observacoes_revisadas", "publicacoes_fonte", "conjuntos_com_evento")}}
                 for d in sorted(total)]
     linhas.sort(key=lambda r: (r["dia"], r["familia"], r["dataset"]))
     return agregado, linhas
@@ -860,20 +956,25 @@ def _eh_proveniencia(o):
 
 
 def fichas_com_proveniencia(o, ctx=None, out=None):
-    """[(ficha, proveniência mais próxima)] de uma gold: a proveniência irmã da ficha no
-    mesmo objeto (chave proveniencia ou objeto com natureza, fonte e limitações) ou a do
-    objeto que a contém, subindo na árvore. É o vínculo que a própria gold faz entre o
-    número e a série de onde ele vem."""
+    """[(ficha, proveniência do mesmo objeto)] de uma gold. O vínculo só vale quando a
+    proveniência está no MESMO objeto que contém a ficha (a ficha e uma única
+    proveniência lado a lado, ou numa lista desse objeto): é a gold dizendo que o número
+    e a série são o mesmo indicador. A proveniência de um objeto acima na árvore NÃO é
+    herdada: a proveniência de topo de uma gold de previsão não diz a natureza de uma
+    ficha de valores observados guardada em `evidencias` (o PLD já publicado pela CCEE
+    saía PREVISTO). Objeto com mais de uma proveniência direta é ambíguo e não liga."""
     out = [] if out is None else out
     if isinstance(o, dict):
         if "valor_exibido" in o and "testes" in o and "fonte" in o:
             out.append((o, ctx))
-        local = next((v for v in o.values() if _eh_proveniencia(v)), None)
-        if _eh_proveniencia(o):
-            local = o
-        prox = local or ctx
+        diretas = [v for v in o.values() if _eh_proveniencia(v)]
+        local = o if _eh_proveniencia(o) else (diretas[0] if len(diretas) == 1 else None)
         for v in o.values():
-            fichas_com_proveniencia(v, prox, out)
+            if isinstance(v, list):
+                for item in v:
+                    fichas_com_proveniencia(item, local, out)
+            else:
+                fichas_com_proveniencia(v, local, out)
     elif isinstance(o, list):
         for v in o:
             fichas_com_proveniencia(v, ctx, out)
@@ -918,6 +1019,8 @@ def eixos(golds_res):
         for e, prov in fichas_com_proveniencia(g):
             s = situacao_validacao(e)
             sits[s] += 1
+            # prov = proveniência no mesmo objeto da ficha (fichas_com_proveniencia), nunca
+            # a de um objeto acima na árvore
             natureza = (e.get("natureza") if e.get("natureza") in NATUREZAS else None) or por_chave.get(id(e)) \
                 or por_indicador.get(e.get("indicador")) or (prov or {}).get("natureza")
             matriz[natureza or "SEM_VINCULO"][s] += 1
@@ -933,9 +1036,15 @@ def eixos(golds_res):
             "por_gold": por_gold, "fichas": len(linhas),
             "fichas_sem_natureza_vinculada": sum(1 for x in linhas if not x["natureza"]),
             "regra_vinculo": ("A natureza de uma ficha é a declarada na própria ficha (campo natureza), a da proveniência de mesma chave "
-                              "em evidencias e proveniencia, a da proveniência de mesmo indicador na mesma gold, ou a da proveniência "
-                              "mais próxima na estrutura da gold (no mesmo objeto da ficha ou num objeto que a contém); sem nenhuma, "
-                              "SEM_VINCULO: a gold não liga a ficha à série, e a situação da validação é publicada sem a natureza.")}, linhas
+                              "em evidencias e proveniencia, a da proveniência de mesmo indicador na mesma gold, ou a da única "
+                              "proveniência no mesmo objeto que contém a ficha. A proveniência de um objeto acima na árvore da gold não "
+                              "é herdada: ela pode ser de outra série (a proveniência de topo de uma gold de previsão não diz a "
+                              "natureza de um valor observado). Sem vínculo, SEM_VINCULO: a situação da validação é publicada sem a "
+                              "natureza, e a natureza na ficha é pedido ao integrador."),
+            "limitacao_natureza": ("A seção 11.3 separa 'estimado pela fonte' de 'estimado pelo observatório'. O contrato de proveniência "
+                                   "compartilhado (pipeline/energia/gold/comum.py, NATUREZAS) tem uma só categoria ESTIMADO, e nenhuma "
+                                   "proveniência diz qual dos dois é: o eixo publica ESTIMADO sem a separação, e a mudança está pedida "
+                                   "ao integrador (pedido 8 do documento do módulo).")}, linhas
 
 
 def afirmacoes(cat, golds_res):
@@ -999,24 +1108,27 @@ def escreve_csvs(lista, todas_checagens, cal_linhas, cat, eixos_linhas, descrico
     _csv(CSV["conjuntos"], [
         "id", "familia", "dataset", "orgao", "conjunto", "slug", "modulos", "estado", "papeis", "golds", "frequencia_declarada",
         "campo_frequencia", "caso_sla",
-        "cadencia_sla", "granularidade", "ref_min", "ultimo_periodo", "prazo_proximo", "situacao", "dias_atraso", "capturas",
+        "cadencia_sla", "granularidade", "ref_min", "ultimo_periodo", "periodo_parcial", "prazo_proximo", "situacao", "dias_atraso", "capturas",
         "primeira_captura", "ultima_captura", "ultima_publicacao_fonte", "tentativas", "falhas", "ultima_falha_em",
         "falhas_consecutivas", "series", "linhas", "completude_interna", "series_no_ultimo", "series_no_anterior",
-        "revisoes_eventos", "revisoes_referencias", "revisoes_series", "revisao_ref_min", "revisao_ref_max", "maior_revisao_abs",
-        "maior_revisao_rel_pct", "validacao", "checagens_aprovadas", "checagens_ressalva", "checagens_reprovadas",
+        "revisoes_eventos", "revisoes_observacoes", "revisoes_referencias", "revisoes_series", "revisao_ref_min", "revisao_ref_max", "maior_revisao_abs",
+        "maior_revisao_rel_pct", "registros_mudancas", "registros_conflitos", "validacao", "checagens_aprovadas", "checagens_ressalva", "checagens_reprovadas",
         "originais_ausentes", "sha256_divergentes"], [
         [x["id"], x["familia"], x["dataset_silver"], x["orgao"], x["nome"], x["slug"], "|".join(x["modulos"]), x["estado"],
          "|".join(x["uso"]["papeis"]), "|".join(x["golds"]), _limpa(x["frequencia"].get("declarada")),
          _limpa(x["frequencia"].get("campo")), x["atualidade"].get("caso"), x["atualidade"]["cadencia"],
          (x["dado"] or {}).get("granularidade"), (x["dado"] or {}).get("ref_min"), x["atualidade"]["ultimo_periodo"],
-         x["atualidade"]["prazo_proximo"], x["atualidade"]["situacao"], x["atualidade"]["dias_atraso"],
+         1 if x["atualidade"].get("periodo_parcial") else None, x["atualidade"]["prazo_proximo"], x["atualidade"]["situacao"], x["atualidade"]["dias_atraso"],
          x["capturas"]["vintages"], x["capturas"]["primeira"], x["capturas"]["ultima"], x["capturas"]["ultima_publicacao_fonte"],
          x["coleta"]["tentativas"], x["coleta"]["falhas"], (x["coleta"]["ultima_falha"] or {}).get("tentado_em"),
          x["coleta"]["falhas_consecutivas"], (x["dado"] or {}).get("series"), (x["dado"] or {}).get("linhas"),
          (x["dado"] or {}).get("completude_interna"), (x["dado"] or {}).get("series_no_ultimo"),
-         (x["dado"] or {}).get("series_no_anterior"), (x["revisoes"] or {}).get("eventos"), (x["revisoes"] or {}).get("referencias"),
+         (x["dado"] or {}).get("series_no_anterior"), (x["revisoes"] or {}).get("eventos"), (x["revisoes"] or {}).get("observacoes"),
+         (x["revisoes"] or {}).get("referencias"),
          (x["revisoes"] or {}).get("series"), (x["revisoes"] or {}).get("ref_min"), (x["revisoes"] or {}).get("ref_max"),
          ((x["revisoes"] or {}).get("maior_abs") or {}).get("diferenca"), ((x["revisoes"] or {}).get("maior_rel") or {}).get("relativa_pct"),
+         ((x["revisoes"] or {}).get("registros") or {}).get("mudancas"),
+         (((x["revisoes"] or {}).get("registros") or {}).get("conflitos_entre_recursos") or {}).get("campos"),
          x["validacao"]["resultado"], x["validacao"]["aprovadas"], x["validacao"]["ressalvas"], x["validacao"]["reprovadas"],
          (x["bronze"] or {}).get("ausentes"), (x["bronze"] or {}).get("sha256_divergentes")] for x in lista])
     _csv(CSV["validacoes"], ["id", "alvo", "tipo", "resultado", "detalhe", "criterio", "verificados", "problemas", "exemplos"],
@@ -1031,9 +1143,9 @@ def escreve_csvs(lista, todas_checagens, cal_linhas, cat, eixos_linhas, descrico
     _csv(CSV["revisoes"], ["familia", "dataset", "serie", "ref", "valor_anterior", "valor_novo", "diferenca",
                            "diferenca_relativa_pct", "capturado_anterior", "capturado_novo", "recurso"], rev)
     _csv(CSV["calendario"], ["dia", "familia", "dataset", "capturas_novas", "recapturas_sem_mudanca", "falhas",
-                             "referencias_revisadas", "publicacoes_fonte"],
+                             "observacoes_revisadas", "publicacoes_fonte"],
          [[r["dia"], r["familia"], r["dataset"], r["capturas_novas"], r["recapturas_sem_mudanca"], r["falhas"],
-           r["referencias_revisadas"], r["publicacoes_fonte"]] for r in cal_linhas])
+           r["observacoes_revisadas"], r["publicacoes_fonte"]] for r in cal_linhas])
     _csv(CSV["catalogo"], ["id", "orgao", "nome", "titulo", "estado", "papeis", "descontinuado", "motivo_descontinuacao",
                            "frequencia_declarada", "recurso_verificado_em", "integracoes", "golds", "recursos", "recursos_acessados",
                            "recursos_integrados", "recursos_removidos", "url", "licenca", "metadados_verificados", "descricao"],
@@ -1163,21 +1275,151 @@ def _vigentes(vs):
     return list(ult.values())
 
 
-def _max_ref_direto(familia, dataset, formato, hoje):
-    """Maior referência até hoje lida por consulta direta ao silver (conferência do
-    último período publicado, por caminho diferente da análise de completude)."""
+def formas_do_periodo(ref, formato):
+    """Como um período de referência aparece escrito nos arquivos das fontes (CSV do ONS,
+    da ANEEL e da CCEE, JSON de API): '2026-07' também como '202607', '07/2026' e
+    '2026/07'; '2026-09-30' também como '30/09/2026', '20260930' e '2026/09/30'. Ano
+    sozinho não é procurado (aparece em qualquer arquivo e não prova nada)."""
+    if formato == "mensal" and len(ref) == 7:
+        a, m = ref[:4], ref[5:7]
+        return [ref, f"{a}{m}", f"{m}/{a}", f"{a}/{m}"]
+    if formato == "diaria" and len(ref) == 10:
+        a, m, d = ref[:4], ref[5:7], ref[8:10]
+        return [ref, f"{d}/{m}/{a}", f"{a}{m}{d}", f"{a}/{m}/{d}"]
+    if formato == "horaria" and len(ref) >= 16:
+        a, m, d, h = ref[:4], ref[5:7], ref[8:10], ref[11:16]
+        return [ref[:16], f"{a}-{m}-{d} {h}", f"{d}/{m}/{a} {h}"]
+    return []
+
+
+def _procura_no_original(caminho, formas, bloco=1 << 20):
+    """Primeira forma encontrada no arquivo original (descomprimido em fluxo, sem carregar
+    o arquivo inteiro), ou None. Leitura byte a byte por outro código que não o parser do
+    módulo dono: só procura o texto do período."""
+    import gzip
+    alvos = [f.encode("ascii") for f in formas]
+    maior = max((len(a) for a in alvos), default=0)
+    abre_ = gzip.open if caminho.endswith(".gz") else open
+    resto = b""
+    with abre_(caminho, "rb") as f:
+        for pedaco in iter(lambda: f.read(bloco), b""):
+            janela = resto + pedaco
+            for a, forma in zip(alvos, formas):
+                if a in janela:
+                    return forma
+            resto = janela[-maior:] if maior else b""
+    return None
+
+
+def periodo_no_original(familia, dataset, formato, ultimo, limite_hash=sd.LIMITE_HASH_BYTES):
+    """Conferência do último período publicado pelo ARQUIVO ORIGINAL guardado no bronze, e
+    não pelo silver: acha a captura (vintage) que trouxe esse período, confere que o
+    original está no bronze com o sha256 registrado e procura o texto do período dentro
+    dele. Quando o arquivo não traz data (cadastro de perfis da CCEE), o período só pode
+    vir da data de modificação que a fonte informou para o arquivo (publicado_em da
+    vintage), e isso é dito. Nunca usa a data da captura nem a da tentativa de coleta."""
     con = sd.abre(familia)
     if con is None:
-        return None
+        return {"resultado": "sem_silver"}
     try:
-        lim = sd.limite_hoje(formato, hoje)
-        glob = sd.GLOB_FORMATO.get(formato)
-        if not lim or not glob:
-            return None
-        return con.execute("SELECT MAX(ref) FROM observacoes WHERE dataset=? AND ref <= ? AND ref GLOB ?",
-                           (dataset, lim, glob)).fetchone()[0]
+        vids = [v for (v,) in con.execute(
+            "SELECT DISTINCT vintage_id FROM observacoes WHERE dataset=? AND ref=? LIMIT 20", (dataset, ultimo))]
+        if not vids:
+            return {"resultado": "periodo_ausente_no_silver"}
+        marcas = ",".join("?" * len(vids))
+        vs = con.execute(f"SELECT vintage_id, recurso, capturado_em, arquivo, sha256, publicado_em FROM vintages "
+                         f"WHERE vintage_id IN ({marcas}) ORDER BY capturado_em", vids).fetchall()
     finally:
         con.close()
+    formas = formas_do_periodo(ultimo, formato)
+    ultimo_motivo = {"resultado": "original_ausente"}
+    for vid, rec, cap, arq, sha, pub in vs:
+        caminho = sd._abs(arq) if arq else None
+        if not caminho or not os.path.exists(caminho):
+            continue
+        base_ = {"recurso": rec, "capturado_em": cap, "arquivo": arq}
+        if os.path.getsize(caminho) <= limite_hash and sd.sha256_do_bronze(arq) != sha:
+            ultimo_motivo = {**base_, "resultado": "sha256_divergente"}
+            continue
+        achada = _procura_no_original(caminho, formas) if formas else None
+        if achada:
+            return {**base_, "resultado": "no_original", "forma": achada}
+        if pub and str(pub)[:len(ultimo)] == ultimo:
+            return {**base_, "resultado": "publicacao_da_fonte", "publicado_em": pub}
+        ultimo_motivo = {**base_, "resultado": "nao_encontrado", "formas": formas}
+    return ultimo_motivo
+
+
+def _fim_periodo_calendario(ref, formato, passo):
+    """Fim do período por aritmética de calendário (calendar.monthrange), escrita à parte
+    de silver_dados.fim_ref para refazer o prazo por outro caminho."""
+    if formato == "horaria":
+        return date(int(ref[:4]), int(ref[5:7]), int(ref[8:10]))
+    if formato == "diaria":
+        return date(int(ref[:4]), int(ref[5:7]), int(ref[8:10])) + timedelta(days=(passo or 1) - 1)
+    if formato == "mensal":
+        a, m = int(ref[:4]), int(ref[5:7]) + (passo or 1) - 1
+        a, m = a + (m - 1) // 12, (m - 1) % 12 + 1
+        return date(a, m, calendar.monthrange(a, m)[1])
+    if formato == "anual":
+        return date(int(ref) + (passo or 1) - 1, 12, 31)
+    return None
+
+
+def _seguinte_calendario(ref, formato, passo):
+    """Referência seguinte, por aritmética de calendário (outra implementação)."""
+    if formato == "horaria":
+        dt = datetime(int(ref[:4]), int(ref[5:7]), int(ref[8:10]), int(ref[11:13]), int(ref[14:16])) + timedelta(minutes=passo)
+        return dt.strftime("%Y-%m-%dT%H:%M")
+    if formato == "diaria":
+        return (date(int(ref[:4]), int(ref[5:7]), int(ref[8:10])) + timedelta(days=passo)).isoformat()
+    if formato == "mensal":
+        n = int(ref[:4]) * 12 + int(ref[5:7]) - 1 + passo
+        return f"{n // 12:04d}-{n % 12 + 1:02d}"
+    if formato == "anual":
+        return str(int(ref) + passo)
+    return None
+
+
+def prazo_independente(x, regras_sla, hoje):
+    """Prazo do SLA refeito a partir dos campos publicados e da tabela de tolerâncias
+    publicada (regras.sla), com aritmética de calendário própria: confere a
+    implementação de atualidade() por outro caminho. None quando o caso não se refaz
+    (sem prazo publicado)."""
+    a = x["atualidade"]
+    if not a.get("prazo_proximo") or not a.get("cadencia"):
+        return None
+    an = (x.get("_an") or {}).get("observacoes") or {}
+    gp = next((g for g in an.get("grupos") or [] if g["formato"] == an.get("principal")), {})
+    formato, passo = gp.get("formato"), gp.get("passo") or 1
+    regular = formato in ("horaria", "diaria", "mensal", "trimestral", "anual") and bool(gp.get("passo")) \
+        and (gp.get("aderencia_passo") or 0) >= 0.5
+    tol = regras_sla[a["cadencia"]]["tolerancia_dias"]
+    per = regras_sla[a["cadencia"]]["periodo_dias_aprox"]
+    if a.get("base") == "publicacao_da_fonte":
+        pub = (x.get("capturas") or {}).get("ultima_publicacao_fonte")
+        return (date.fromisoformat(str(pub)[:10]) + timedelta(days=per + tol)).isoformat()
+    ult = a.get("ultimo_periodo")
+    if not ult:
+        return None
+    if formato == "intervalo":
+        return (date.fromisoformat(ult[11:21]) + timedelta(days=per + tol)).isoformat()
+    passo_fim = passo if (regular and formato in ("diaria", "mensal", "anual")) else None
+    fim_ult = _fim_periodo_calendario(ult, formato, passo_fim)
+    if fim_ult is None:
+        return None
+    parcial = fim_ult > hoje
+    if a.get("caso") in ("A", "C"):
+        fim_prox = fim_ult if parcial else _fim_periodo_calendario(_seguinte_calendario(ult, formato, passo), formato, passo_fim)
+        return (fim_prox + timedelta(days=tol)).isoformat()
+    # B, e D ou E com base no período (data da fonte que não acompanha o conteúdo): fim
+    # do último período completo + um período da cadência + tolerância
+    if parcial and regular:
+        fim_ult = _fim_periodo_calendario(_seguinte_calendario(ult, formato, -passo), formato, passo_fim)
+    elif parcial:
+        # sem passo regular: o início do período corrente (date do primeiro dia)
+        fim_ult = date(int(ult[:4]), int(ult[5:7]) if len(ult) >= 7 else 1, int(ult[8:10]) if len(ult) >= 10 else 1)
+    return (fim_ult + timedelta(days=per + tol)).isoformat()
 
 
 def _valor_nas_vintages(familia, dataset, serie, ref, vintage_ids):
@@ -1251,8 +1493,10 @@ def proveniencias(con, lista, cat, hoje, agora):
             periodo={"inicio": ini[:10] if ini else hoje.isoformat(), "fim": hoje.isoformat()},
             cobertura={"inicio": ini[:10] if ini else hoje.isoformat(), "fim": hoje.isoformat()},
             capturado_em=max(caps, default=agora), snapshot=snap_sil, publicado_em=None,
-            revisoes={"total": sum(((x["revisoes"] or {}).get("referencias") or 0) for x in lista), "detectado_em": agora, "exemplos": []},
-            formula="revisão = troca de valor de uma mesma (série, referência) entre capturas consecutivas; relativa = |novo − anterior| ÷ |anterior|",
+            revisoes={"total": sum(((x["revisoes"] or {}).get("observacoes") or 0) for x in lista), "detectado_em": agora, "exemplos": []},
+            formula=("revisão = troca de valor de uma mesma (série, referência) entre capturas consecutivas do mesmo arquivo; "
+                     "observações revisadas = pares (série, referência); referências revisadas = períodos distintos; "
+                     "relativa = |novo − anterior| ÷ |anterior|"),
             transformacoes=["comparação das vintages no silver (append only)"],
             limitacoes=["Só há revisão detectável a partir da segunda captura de um mesmo arquivo.",
                         "A diferença absoluta está na unidade da série e só se compara dentro da mesma série.",
@@ -1312,18 +1556,40 @@ def _evidencia_kpis(con, lista, cat, agora, hoje, todas=(), golds_res=None):
     atrasados = [x for x in lista if x["atualidade"]["situacao"] == "ATRASADO"]
     com_sla = [x for x in lista if x["atualidade"]["situacao"] in ("EM DIA", "ATRASADO")]
     if lista:
-        # caminho independente: o prazo publicado é refeito com a data de hoje e o último
-        # período lido de novo do silver, e a falha de coleta não pode ter mudado o período
+        # (1) prazo refeito por outra implementação da regra (aritmética de calendário
+        # própria, tabela de tolerâncias publicada); (2) último período dos conjuntos com
+        # falha de coleta relido no ARQUIVO ORIGINAL do bronze, não no silver; (3) checagem
+        # de consistência (não é conferência independente): atrasado tem prazo vencido
+        regras_sla = {k: {"tolerancia_dias": TOLERANCIA_DIAS[k], "periodo_dias_aprox": PERIODO_DIAS[k]} for k in TOLERANCIA_DIAS}
+        prazos_ok, prazos_dif, prazos_n = 0, [], 0
+        for x in com_sla:
+            p_ = prazo_independente(x, regras_sla, hoje)
+            if p_ is None:
+                continue
+            prazos_n += 1
+            if p_ == x["atualidade"]["prazo_proximo"]:
+                prazos_ok += 1
+            else:
+                prazos_dif.append({"conjunto": x["id"], "publicado": x["atualidade"]["prazo_proximo"], "refeito": p_})
         incoerentes = [x["id"] for x in atrasados if not x["atualidade"].get("prazo_proximo")
                        or date.fromisoformat(x["atualidade"]["prazo_proximo"]) >= hoje]
-        renovados, conferidos = [], 0
+        originais = []
         for x in lista:
             if not x["coleta"].get("falhas") or not x["atualidade"].get("ultimo_periodo") or not x["dado"]:
                 continue
-            direto = _max_ref_direto(x["familia"], x["dataset_silver"], x["dado"].get("formato"), hoje)
-            conferidos += 1
-            if direto != x["atualidade"]["ultimo_periodo"]:
-                renovados.append({"conjunto": x["id"], "publicado": x["atualidade"]["ultimo_periodo"], "silver": direto})
+            r_ = periodo_no_original(x["familia"], x["dataset_silver"], x["dado"].get("formato"), x["atualidade"]["ultimo_periodo"])
+            originais.append({"conjunto": x["id"], "periodo": x["atualidade"]["ultimo_periodo"],
+                              "ultima_falha": (x["coleta"].get("ultima_falha") or {}).get("tentado_em"), **r_})
+        achados = [o for o in originais if o["resultado"] in ("no_original", "publicacao_da_fonte")]
+        sem_original = [o for o in originais if o["resultado"] in ("original_ausente", "sem_silver")]
+        falhos = [o for o in originais if o not in achados and o not in sem_original]
+        res_orig = "reprovado" if falhos else ("ressalva" if sem_original else "aprovado")
+        det_orig = "; ".join(
+            f"{o['conjunto']}: {o['periodo']} " + (
+                f"escrito como '{o['forma']}' no original de {o['capturado_em']} (sha256 conferido)" if o["resultado"] == "no_original" else
+                f"igual à data de modificação informada pela fonte ({o['publicado_em']}) para o original de {o['capturado_em']}, "
+                "que não traz data" if o["resultado"] == "publicacao_da_fonte" else
+                f"não conferido ({o['resultado']})") for o in originais) or "nenhum conjunto com falha de coleta e período"
         fichas["conjuntos_atrasados"] = ev.construir(
             indicador="Conjuntos com atualização atrasada", valor_exibido=f"{len(atrasados)}", valor_calculo=float(len(atrasados)),
             unidade="conjuntos", periodo={"inicio": hoje.isoformat(), "fim": hoje.isoformat()}, entidade="conjuntos integrados",
@@ -1336,15 +1602,18 @@ def _evidencia_kpis(con, lista, cat, agora, hoje, todas=(), golds_res=None):
                 "capturado_em": max((x["capturas"]["ultima"] for x in lista if x["capturas"]["ultima"]), default=None),
                 "publicado_em": None},
             chaves_origem=[x["id"] for x in atrasados],
-            formula="contagem de conjuntos com hoje > prazo_proximo (regra de SLA por cadência declarada, casos A a D)",
+            formula="contagem de conjuntos com hoje > prazo_proximo (regra de SLA por cadência declarada, casos A a E)",
             cobertura="conjuntos com frequência declarada em metadado legível; sem ela, SEM SLA (não entram)",
             tratamento_ausencia="sem frequência declarada: SEM SLA; sem período nem data de publicação da fonte: SEM DADO",
-            testes=[ev.teste("prazo vencido em todo atrasado", "aprovado" if not incoerentes else "reprovado",
-                             f"{len(atrasados) - len(incoerentes)} de {len(atrasados)} atrasados com prazo anterior a {hoje.isoformat()}"),
-                    ev.teste("falha não renova a data do dado", "aprovado" if not renovados else "reprovado",
-                             (f"{conferidos} conjuntos com falha de coleta registrada: último período publicado igual ao MAX(ref) "
-                              "lido de novo no silver por consulta direta") if not renovados else
-                             f"conjuntos com período diferente do silver: {renovados[:5]}")],
+            testes=[ev.teste("prazo refeito por outra implementação da regra", "aprovado" if not prazos_dif else "reprovado",
+                             (f"{prazos_ok} de {prazos_n} prazos refeitos com aritmética de calendário própria (calendar.monthrange) "
+                              "e a tabela de tolerâncias publicada iguais aos publicados") if not prazos_dif else
+                             f"prazos diferentes: {prazos_dif[:5]}"),
+                    ev.teste("último período dos conjuntos com falha relido no original do bronze", res_orig,
+                             f"{len(achados)} de {len(originais)} conjuntos com falha de coleta registrada: {det_orig}"),
+                    ev.teste("consistência interna: atrasado tem prazo vencido", "aprovado" if not incoerentes else "reprovado",
+                             f"{len(atrasados) - len(incoerentes)} de {len(atrasados)} atrasados com prazo anterior a "
+                             f"{hoje.isoformat()} (mesma condição que define ATRASADO; não é conferência independente)")],
             download=[{"rotulo": "Saúde por conjunto (CSV)", "url": U["conjuntos"]}],
             reproducao="python3 pipeline/energia/executar_modulo.py dados --sem-coleta", versao=versao)
     reprov = [x for x in lista if x["validacao"]["resultado"] == "reprovado"]
@@ -1362,7 +1631,9 @@ def _evidencia_kpis(con, lista, cat, agora, hoje, todas=(), golds_res=None):
             fichas["maior_revisao_relativa"] = ev.construir(
                 indicador=f"Maior revisão relativa detectada ({top['titulo']})", valor_exibido=f"{e['relativa_pct']:.1f}%".replace(".", ","),
                 valor_calculo=e["relativa_pct"], unidade="%", periodo={"inicio": e["ref"], "fim": e["ref"]},
-                entidade=f"série {e['serie']} de {top['dataset_silver']}", universo=f"{top['revisoes']['referencias']} referências revisadas no conjunto",
+                entidade=f"série {e['serie']} de {top['dataset_silver']}",
+                universo=(f"{top['revisoes']['observacoes']} observações (série, referência) revisadas em "
+                          f"{top['revisoes']['referencias']} referências distintas e {top['revisoes']['series']} séries do conjunto"),
                 fonte={"orgao": top["orgao"], "conjunto": top["titulo"], "recurso": e["recurso"], "url": vs[-1].get("url") or "https://dados.ons.org.br/",
                        "arquivo": None, "sha256": None, "capturado_em": None, "publicado_em": None,
                        "arquivos": [ev.arquivo_de_vintage(v) for v in sorted(vs, key=lambda v: v["capturado_em"])]},
@@ -1372,7 +1643,8 @@ def _evidencia_kpis(con, lista, cat, agora, hoje, todas=(), golds_res=None):
                 denominador={"descricao": "|valor anterior|", "valor": abs(e["de"])},
                 cobertura="todas as (série, referência) com mais de um valor entre capturas do silver",
                 tratamento_ausencia="referência ausente numa captura não conta como revisão (ausência não é zero)",
-                revisoes=top["revisoes"]["referencias"],
+                revisoes=(f"{top['revisoes']['observacoes']} observações (pares série e referência) revisadas pela fonte entre "
+                          f"capturas do mesmo arquivo, em {top['revisoes']['referencias']} referências distintas."),
                 testes=[ev.teste("valores relidos nas duas vintages", "aprovado" if confere else "reprovado",
                                  f"consulta direta às observações das vintages de {e['capturado_de']} e {e['capturado_para']}: "
                                  f"{relidos} (esperado {esperado})")],
@@ -1436,13 +1708,19 @@ def construir(con, ctx):
                           "A) Série regular cujo grão corresponde a uma cadência declarada pela fonte: o período seguinte ao último "
                           "disponível deve chegar até o fim dele mais a tolerância. B) Série publicada em lotes (cadência declarada "
                           "mais longa que o grão): a próxima remessa até o fim do último período mais um período da cadência "
-                          "declarada e a tolerância. C) Cadência declarada mais curta que o grão (a fonte reescreve o arquivo dentro "
-                          "do período, ou declara só o horário da rotina do portal, como o ONS): vale o grão do dado, como em A. "
-                          "D) Sem série regular (cadastro, vigências, cadência irregular): data de publicação informada pela fonte "
-                          "mais um período da cadência declarada e a tolerância; sem essa data, SEM DADO. Se o arquivo traz período "
-                          "que começa depois da data de modificação informada, essa data não acompanha o conteúdo e vale o fim do "
-                          "último período mais a cadência e a tolerância (publicacao_nao_acompanha_conteudo). Sem frequência declarada "
-                          "em metadado legível, o SLA não é aplicado (SEM SLA), em vez de inventar uma."),
+                          "declarada e a tolerância. C) Cadência declarada mais curta que o grão quando a declaração é a rotina do "
+                          "portal (campo 'Schedule de Atualização' do ONS ou horário do dia, como 'Diariamente, às 12h e 19h'): vale "
+                          "o grão do dado, como em A. E) Cadência declarada mais curta que o grão fora da rotina do portal (a ANEEL "
+                          "declara 'Mensal' para arquivo de grão anual que ela reescreve no ano): a promessa é de arquivo novo na "
+                          "cadência declarada, medida pela data de publicação informada pela fonte mais um período dessa cadência e a "
+                          "tolerância; sem essa data, SEM DADO. D) Sem série regular (cadastro, vigências, cadência irregular): data "
+                          "de publicação informada pela fonte mais um período da cadência declarada e a tolerância; sem essa data, "
+                          "SEM DADO. Se o arquivo traz período que começa depois da data de modificação informada, essa data não "
+                          "acompanha o conteúdo e vale o fim do último período completo mais a cadência e a tolerância "
+                          "(publicacao_nao_acompanha_conteudo). Período corrente parcial (o último período disponível ainda não "
+                          "terminou, como o ano corrente num arquivo anual) é marcado em periodo_parcial e não alonga o prazo: a "
+                          "base é o último período completo. Sem frequência declarada em metadado legível, o SLA não é aplicado "
+                          "(SEM SLA), em vez de inventar uma."),
             "captura_atras_da_fonte": ("Arquivo que a fonte modificou (last_modified da listagem do portal, UTC) depois da última "
                                        "captura registrada no silver: o atraso é do pipeline, não da fonte, e aparece em "
                                        "capturas.fonte_mais_nova e nas ressalvas, sem mudar o SLA (que mede a fonte)."),
@@ -1450,13 +1728,19 @@ def construir(con, ctx):
                       "captura da última vintage com conteúdo, e a falha aparece separada, com data e motivo. A captura anterior "
                       "fica preservada no silver (append only) e no bronze com sha256."),
             "completude": ("Completude interna de uma série = referências distintas presentes ÷ esperadas entre a primeira e a "
-                           "última, no passo modal do conjunto. Cobertura do último período = séries com valor na maior "
-                           "referência comparada com a referência anterior."),
+                           "última, no passo modal do conjunto. Cobertura do último período = séries com valor no último período "
+                           "disponível até hoje (atualidade.ultimo_periodo; referência futura, como limite regulatório de ano "
+                           "seguinte, cenário ou programação, não conta) comparada com as séries no período anterior a ele."),
             "revisao": ("Revisão = troca de valor de uma mesma (série, referência) entre capturas consecutivas do mesmo arquivo "
                         "(recurso); a mesma referência com valores diferentes em arquivos diferentes é conflito entre recursos, "
-                        "contado à parte. Publica-se quantas "
-                        "referências e séries mudaram, o período afetado e a maior mudança absoluta (na unidade da série) e "
-                        "relativa, além da data de cada captura que trouxe valores novos."),
+                        "contado à parte. Publica-se quantas observações (pares série e referência) e quantas referências "
+                        "(períodos distintos) mudaram, em quantas séries, o período afetado e a maior mudança absoluta (na "
+                        "unidade da série) e relativa, além da data de cada captura que trouxe valores novos. Em cadastros e "
+                        "atos (registros), a mesma regra: mudança é troca de valor de um campo da mesma chave entre capturas "
+                        "consecutivas do mesmo arquivo; a mesma chave com valor diferente em arquivos diferentes (lista de um ano "
+                        "e a do seguinte, código reutilizado, mudança societária entre edições) é conflito entre recursos, contado "
+                        "à parte; campos que descrevem o arquivo e não o cadastro (data de geração, de processamento, de "
+                        "verificação) são contados em metadado_do_arquivo e não entram nas mudanças."),
             "validacao": ("Checagens com resultado aprovado, ressalva, reprovado ou não aplicável; o veredito de um alvo é o pior "
                           "resultado. Divergência entre total e partes publicados pela própria fonte é ressalva documentada; total "
                           "calculado pela plataforma que não fecha é reprovado."),
@@ -1476,7 +1760,11 @@ def construir(con, ctx):
             "por_estado": dict(Counter(x["estado"] for x in lista)),
             "por_situacao": dict(Counter(x["atualidade"]["situacao"] for x in lista)),
             "com_revisao": sum(1 for x in lista if ((x["revisoes"] or {}).get("referencias") or 0) > 0),
+            # pares (série, referência) revisados e, à parte, referências (períodos) distintas
+            # somadas por conjunto (a mesma data em dois conjuntos conta duas vezes)
+            "observacoes_revisadas": sum(((x["revisoes"] or {}).get("observacoes") or 0) for x in lista),
             "referencias_revisadas": sum(((x["revisoes"] or {}).get("referencias") or 0) for x in lista),
+            "com_mudanca_em_registros": sum(1 for x in lista if (((x["revisoes"] or {}).get("registros") or {}).get("mudancas") or 0) > 0),
             "com_falha_recente": sum(1 for x in lista if x["coleta"]["falhas_consecutivas"]),
             "captura_atras_da_fonte": sum(1 for x in lista if x["capturas"].get("fonte_mais_nova")),
             "descontinuados": sum(1 for x in lista if x["descontinuado"]),

@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "empresas.json",
- "gerado_em": "2026-10-01T07:08:50Z",
+ "gerado_em": "2026-10-01T07:18:43Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "eec0a3121e05+alterado",
+ "versao_codigo": "fa4767ccfa9a+alterado",
  "disponivel": true,
  "datas": {
   "siga": "2026-09-30",
@@ -544,8 +544,8 @@
     "tratamento_ausencia": "Usina com proprietário 'Não Informado' entra no denominador e fora do numerador; potência fiscalizada vazia conta como ausente (nunca zero) e fica fora das duas somas.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "eec0a3121e05+alterado",
-     "publicacao": "2026-10-01T07:08:48Z"
+     "codigo": "fa4767ccfa9a+alterado",
+     "publicacao": "2026-10-01T07:18:41Z"
     },
     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
     "testes": [
@@ -572,7 +572,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py empresas --sem-coleta",
-    "citacao": "SCRUTINIUMS. Potência em operação com todos os proprietários identificados por CNPJ: 99,9%, Usinas em operação no SIGA (Brasil), 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SIGA: Sistema de Informações de Geração da ANEEL (recurso siga-empreendimentos-geracao-diario.csv, capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Potência em operação com todos os proprietários identificados por CNPJ: 99,9%, Usinas em operação no SIGA (Brasil), 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SIGA: Sistema de Informações de Geração da ANEEL (recurso siga-empreendimentos-geracao-diario.csv, capturado em 30/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    }
   },
   "proprietarios": [
@@ -1472,8 +1472,8 @@
     "tratamento_ausencia": "Contrato sem CNPJ na fonte (1 em 29/09/2026, sem módulos) fica fora; módulo sem contrato com CNPJ seria contado à parte, nunca ligado por nome.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "eec0a3121e05+alterado",
-     "publicacao": "2026-10-01T07:08:45Z"
+     "codigo": "fa4767ccfa9a+alterado",
+     "publicacao": "2026-10-01T07:18:39Z"
     },
     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
     "testes": [
@@ -1500,7 +1500,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py empresas --sem-coleta",
-    "citacao": "SCRUTINIUMS. Módulos de transmissão do SIGET ligados ao CNPJ da concessionária: 100,00%, Módulos de transmissão registrados no SIGET (Brasil), 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SIGET: Sistema de Gestão da Transmissão (recurso siget-contrato-agente.csv, capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Módulos de transmissão do SIGET ligados ao CNPJ da concessionária: 100,00%, Módulos de transmissão registrados no SIGET (Brasil), 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SIGET: Sistema de Gestão da Transmissão (recurso siget-contrato-agente.csv, capturado em 30/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    }
   }
  },
@@ -9590,7 +9590,7 @@
    "regra_nao_apresentada": "Coluna de demonstração (CNPJ, escopo, exercício corrente ou comparativo, data) com ativo total igual a zero: a CVM preenche com zero as tabelas do escopo que a companhia não apresentou (em geral o consolidado de quem deixou de ter controladas). Todos os valores da coluna viram ausência, nunca zero.",
    "colunas_nao_apresentadas": {
     "documentos": 35,
-    "valores": 453,
+    "valores": 385,
     "exercicio_ou_trimestre": [
      {
       "cnpj": "02998301000181",
@@ -9740,7 +9740,7 @@
    "regra_nao_preenchida": "Coluna não preenchida pela companhia, com prova no próprio arquivo: (1) coluna_nao_preenchida = todos os valores 0 ou ±1 na unidade do documento enquanto o outro escopo da mesma coluna tem valores de pelo menos 1.000 unidades (o modelo preenchido com 1); (2) fluxos_nao_preenchidos = DFC com todas as contas lidas iguais a zero enquanto o arquivo mostra caixa (saldo final do exercício anterior, caixa no balanço ou patrimônio líquido variando com DRE e DFC zeradas), levando junto a DRE zerada do mesmo documento e escopo. Os valores viram ausência, nunca zero.",
    "colunas_nao_preenchidas": {
     "colunas": 13,
-    "valores": 53,
+    "valores": 35,
     "por_motivo": {
      "coluna_nao_preenchida": 3,
      "fluxos_nao_preenchidos": 10
@@ -14696,8 +14696,8 @@
     "tratamento_ausencia": "Parcela sem CNPJ (pessoas físicas, 42,7 MW) fica no denominador e fora dos participantes: o índice é um limite inferior.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "eec0a3121e05+alterado",
-     "publicacao": "2026-10-01T07:08:48Z"
+     "codigo": "fa4767ccfa9a+alterado",
+     "publicacao": "2026-10-01T07:18:41Z"
     },
     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
     "testes": [
@@ -14724,7 +14724,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py empresas --sem-coleta",
-    "citacao": "SCRUTINIUMS. Índice Herfindahl-Hirschman da potência em operação por grupo de controle: 392 pontos (0 a 10.000), Grupos (topo da cadeia de controladores únicos declarada à ANEEL), 01/07/2025 a 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SIGA e Composição Societária (Polímero) (recurso siga-empreendimentos-geracao-diario.csv, capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Índice Herfindahl-Hirschman da potência em operação por grupo de controle: 392 pontos (0 a 10.000), Grupos (topo da cadeia de controladores únicos declarada à ANEEL), 01/07/2025 a 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SIGA e Composição Societária (Polímero) (recurso siga-empreendimentos-geracao-diario.csv, capturado em 30/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    }
   },
   "cobertura": {
@@ -15136,10 +15136,10 @@
  "validacao": {
   "criticas": [],
   "ressalvas": [
-   "35 colunas de demonstração da CVM com ativo total zero tratadas como não apresentadas (453 valores fora das séries)",
+   "35 colunas de demonstração da CVM com ativo total zero tratadas como não apresentadas (385 valores fora das séries)",
    "12 exercícios com data de início inconsistente na fonte aceitos como exercício de 12 meses (nota no CSV anual)",
    "36 valores de exercícios curtos (DFP) e 10 de períodos irregulares (ITR) fora das séries, publicados nos CSV com recorte próprio",
-   "13 colunas de demonstração da CVM não preenchidas pela companhia (prova no próprio arquivo) tratadas como ausência (53 valores)",
+   "13 colunas de demonstração da CVM não preenchidas pela companhia (prova no próprio arquivo) tratadas como ausência (35 valores)",
    "63 documentos da CVM com a marca de escala divergente de outro documento da mesma companhia, convertidos para a escala da DFP mais recente (946 valores; natureza ESTIMADO)",
    "5 saltos de 300 vezes ou mais no ativo total entre exercícios consecutivos sem troca de escala provada (financas.exclusoes.saltos_ativo)"
   ],
@@ -15194,7 +15194,7 @@
    },
    "publicado_pela_fonte_em": "2026-10-01T05:01:19Z",
    "capturado_em": "2026-10-01T07:02:36Z",
-   "validado_em": "2026-10-01T07:08:49Z",
+   "validado_em": "2026-10-01T07:18:43Z",
    "cobertura_historica": {
     "inicio": "2026-10-01",
     "fim": "2026-10-01"
@@ -15206,9 +15206,9 @@
     "sha256": "4c93ee977a89c04c8efd5763a0fc416ef2985fb098ea17acb3b11e6223a4fe40"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "fa4767ccfa9a+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:08:44Z",
+    "detectado_em": "2026-10-01T07:18:38Z",
     "total": 0,
     "vintages_comparadas": 3,
     "arquivos": 2,
@@ -15242,7 +15242,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T10:40:44Z",
    "capturado_em": "2026-09-30T22:18:54Z",
-   "validado_em": "2026-10-01T07:08:49Z",
+   "validado_em": "2026-10-01T07:18:43Z",
    "cobertura_historica": {
     "inicio": "2026-09-30",
     "fim": "2026-09-30"
@@ -15258,9 +15258,9 @@
     "sha256": "d169541d7cbb805f08bd74db3b8283fee946f08b5d217f89e1ab396df6362d35"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "fa4767ccfa9a+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:08:44Z",
+    "detectado_em": "2026-10-01T07:18:38Z",
     "total": 0,
     "vintages_comparadas": 1,
     "arquivos": 1,
@@ -15295,7 +15295,7 @@
    },
    "publicado_pela_fonte_em": "2026-07-14T00:57:03Z",
    "capturado_em": "2026-09-30T23:39:55Z",
-   "validado_em": "2026-10-01T07:08:49Z",
+   "validado_em": "2026-10-01T07:18:43Z",
    "cobertura_historica": {
     "inicio": "2018T1",
     "fim": "2026T2"
@@ -15307,9 +15307,9 @@
     "sha256": "acc4ead9e10e3c206a556173b84455990e4d2604170034eb027a70a0625681d7"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "fa4767ccfa9a+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:08:44Z",
+    "detectado_em": "2026-10-01T07:18:38Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -15346,7 +15346,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T10:40:44Z",
    "capturado_em": "2026-09-30T22:18:54Z",
-   "validado_em": "2026-10-01T07:08:49Z",
+   "validado_em": "2026-10-01T07:18:43Z",
    "cobertura_historica": {
     "inicio": "2026-09-30",
     "fim": "2026-09-30"
@@ -15358,9 +15358,9 @@
     "sha256": "d169541d7cbb805f08bd74db3b8283fee946f08b5d217f89e1ab396df6362d35"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "fa4767ccfa9a+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:08:44Z",
+    "detectado_em": "2026-10-01T07:18:38Z",
     "total": 0,
     "vintages_comparadas": 1,
     "arquivos": 1,
@@ -15395,7 +15395,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-29T16:36:54Z",
    "capturado_em": "2026-09-30T22:21:58Z",
-   "validado_em": "2026-10-01T07:08:45Z",
+   "validado_em": "2026-10-01T07:18:39Z",
    "cobertura_historica": {
     "inicio": "2026-09-29",
     "fim": "2026-09-29"
@@ -15411,9 +15411,9 @@
     "sha256": "ba7b0f28643643812f41a1b5ff52e7ccab85746b1d01665b4c95fc774a126e5b"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "fa4767ccfa9a+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:08:44Z",
+    "detectado_em": "2026-10-01T07:18:39Z",
     "total": 0,
     "vintages_comparadas": 4,
     "arquivos": 4,
@@ -15448,7 +15448,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": null,
-   "validado_em": "2026-10-01T07:08:45Z",
+   "validado_em": "2026-10-01T07:18:39Z",
    "cobertura_historica": {
     "inicio": "2025-01-01",
     "fim": "2026-09-30"
@@ -15460,7 +15460,7 @@
     "sha256": null
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "fa4767ccfa9a+alterado",
    "revisoes_conhecidas": null,
    "limitacoes": [
     "UFs vêm da relação conjunto elétrico × município da ANEEL (módulo Perdas); distribuidoras sem conjuntos vigentes ficam sem UF.",
@@ -15488,7 +15488,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-15T05:01:12Z",
    "capturado_em": "2026-09-30T22:26:40Z",
-   "validado_em": "2026-10-01T07:08:45Z",
+   "validado_em": "2026-10-01T07:18:39Z",
    "cobertura_historica": {
     "inicio": "2003-01",
     "fim": "2026-08"
@@ -15502,7 +15502,7 @@
     "sha256": "1f8e4d44f6170bc91bcf2fa0b6047953394d8e8cf47bf9dfa3b3ed6f40ab63eb"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "fa4767ccfa9a+alterado",
    "revisoes_conhecidas": null,
    "limitacoes": [
     "Valor copiado da gold de origem pelo CNPJ, sem recálculo; valem a definição e as limitações do módulo de origem (proveniência completa na gold de origem)."
@@ -15529,7 +15529,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-15T05:01:12Z",
    "capturado_em": "2026-09-30T22:26:40Z",
-   "validado_em": "2026-10-01T07:08:45Z",
+   "validado_em": "2026-10-01T07:18:39Z",
    "cobertura_historica": {
     "inicio": "2003-01",
     "fim": "2026-08"
@@ -15543,7 +15543,7 @@
     "sha256": "1f8e4d44f6170bc91bcf2fa0b6047953394d8e8cf47bf9dfa3b3ed6f40ab63eb"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "fa4767ccfa9a+alterado",
    "revisoes_conhecidas": null,
    "limitacoes": [
     "Valor copiado da gold de origem pelo CNPJ, sem recálculo; valem a definição e as limitações do módulo de origem (proveniência completa na gold de origem)."
@@ -15570,7 +15570,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-05T05:27:08Z",
    "capturado_em": "2026-09-30T22:45:43Z",
-   "validado_em": "2026-10-01T07:08:45Z",
+   "validado_em": "2026-10-01T07:18:39Z",
    "cobertura_historica": {
     "inicio": "2000-01",
     "fim": "2026-06"
@@ -15584,7 +15584,7 @@
     "sha256": "f38b101a901fcb2bd3eea73da25d0cc26b2a2e2c5f6a63fb5be395fd90585e94"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "fa4767ccfa9a+alterado",
    "revisoes_conhecidas": null,
    "limitacoes": [
     "Valor copiado da gold de origem pelo CNPJ, sem recálculo; valem a definição e as limitações do módulo de origem (proveniência completa na gold de origem)."
@@ -15611,7 +15611,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T10:01:51Z",
    "capturado_em": "2026-09-30T22:48:27Z",
-   "validado_em": "2026-10-01T07:08:45Z",
+   "validado_em": "2026-10-01T07:18:39Z",
    "cobertura_historica": {
     "inicio": "2010-02-03",
     "fim": "2026-09-30"
@@ -15625,7 +15625,7 @@
     "sha256": "8e5b18bfe3afbfa1d418e2f204b755c346efd6cad51a023a86c4045a809ddfb2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "fa4767ccfa9a+alterado",
    "revisoes_conhecidas": null,
    "limitacoes": [
     "Valor copiado da gold de origem pelo CNPJ, sem recálculo; valem a definição e as limitações do módulo de origem (proveniência completa na gold de origem)."
@@ -15652,7 +15652,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T10:35:29Z",
    "capturado_em": "2026-09-30T23:40:58Z",
-   "validado_em": "2026-10-01T07:08:48Z",
+   "validado_em": "2026-10-01T07:18:41Z",
    "cobertura_historica": {
     "inicio": "2010",
     "fim": "2025"
@@ -15675,9 +15675,9 @@
     "sha256": "bd6eb5c27436d75b28a350e14cd825e734681df1823f4f3030daa1947a9fc938"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "fa4767ccfa9a+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:08:44Z",
+    "detectado_em": "2026-10-01T07:18:38Z",
     "total": 0,
     "vintages_comparadas": 17,
     "arquivos": 17,
@@ -15714,7 +15714,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T10:35:29Z",
    "capturado_em": "2026-09-30T23:40:58Z",
-   "validado_em": "2026-10-01T07:08:48Z",
+   "validado_em": "2026-10-01T07:18:41Z",
    "cobertura_historica": {
     "inicio": "2010",
     "fim": "2025"
@@ -15730,9 +15730,9 @@
     "sha256": "bd6eb5c27436d75b28a350e14cd825e734681df1823f4f3030daa1947a9fc938"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "fa4767ccfa9a+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:08:44Z",
+    "detectado_em": "2026-10-01T07:18:38Z",
     "total": 0,
     "vintages_comparadas": 17,
     "arquivos": 17,

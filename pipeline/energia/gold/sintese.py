@@ -170,7 +170,7 @@ def _m_afluencias(v):
     return [
         _t("Nos 30 dias até " + c.data_br(_v(v, "dia")) + ", a energia natural afluente (vazões naturais aos reservatórios, em energia) equivaleu a "),
         _t(f"{nbr(_v(v, 'ena30_pct_mlt'), 1)}% da média de longo termo", evidencia="hidrologia.json#SIN.ena.pct_mlt_30d",
-           href="/setor-eletrico/agua-e-clima#ena"),
+           href="/setor-eletrico/agua-e-clima/afluencia#ena"),
         _t("."),
     ]
 
@@ -181,17 +181,19 @@ def _m_carga(v):
     return [
         _t("A carga do SIN nos 7 dias até " + c.data_br(_v(v, "fim")) + " ficou "),
         _t(f"{nbr(abs(var))}% {lado} dos mesmos dias de {_v(v, 'fim_anterior')[:4]}",
-           evidencia="carga.json#SIN.ult7.variacao_pct", href="/setor-eletrico/carga#comparacao"),
+           evidencia="carga.json#SIN.ult7.variacao_pct", href="/setor-eletrico/carga#nivel"),
         _t("."),
     ]
 
 
 def _m_termica(v):
+    # o total é a geração do balanço do ONS; a solar desse total inclui a MMGD estimada pela
+    # fonte desde 29/04/2023, por isso o texto não chama o total de "verificado"
     return [
         _t("As térmicas responderam por "),
-        _t(f"{nbr(_v(v, 'participacao_7d'))}% da geração verificada nos 7 dias até {c.data_br(_v(v, 'dia'))}",
+        _t(f"{nbr(_v(v, 'participacao_7d'))}% da geração do balanço do ONS nos 7 dias até {c.data_br(_v(v, 'dia'))}",
            evidencia="geracao.json#termica_contexto.participacao_7d", href="/setor-eletrico/geracao#termica"),
-        _t("; nos 12 meses anteriores, a mediana dessa participação foi "),
+        _t(" (a solar desse total inclui a micro e minigeração distribuída estimada pelo ONS); nos 12 meses anteriores, a mediana dessa participação foi "),
         _t(f"{nbr(_v(v, 'mediana_365d'))}%", evidencia="geracao.json#termica_contexto.mediana_365d",
            href="/setor-eletrico/geracao#termica"),
         _t("."),
@@ -205,14 +207,14 @@ def _m_pld(v):
         _t(f"R$ {nbr(_v(v, 'media_se'), 2)}/MWh", evidencia="pld.json#cartoes.SE.media_dia", href="/setor-eletrico/pld#hoje"),
         _t(", "),
         _t(f"{FAIXA_PLD[_v(v, 'faixa')]} da distribuição desde 2021 (percentil {nbr(_v(v, 'percentil'), 1)})",
-           evidencia="pld.json#cartoes.SE.posicao", href="/setor-eletrico/pld#regras"),
+           evidencia="pld.json#cartoes.SE.posicao", href="/setor-eletrico/pld/historico#historico"),
     ]
     if amp <= 1.0:
         trechos.append(_t(", praticamente igual nos quatro submercados."))
     else:
         trechos += [_t(", com diferença de "),
                     _t(f"R$ {nbr(amp, 2)}/MWh entre o maior e o menor submercado",
-                       evidencia="pld.json#amplitude_dia", href="/setor-eletrico/pld#submercados"), _t(".")]
+                       evidencia="pld.json#amplitude_dia", href="/setor-eletrico/pld/diferencas-regionais#diferencas-regionais"), _t(".")]
     return trechos
 
 
@@ -238,6 +240,18 @@ ORIGEM_FRASE = {
     "pld": ("pld.json", "diario", "ccee_pld_horario", ("media_diaria", "posicao_historica"), 1, "/setor-eletrico/pld"),
     "rede": ("rede.json", "fluxo", "intercambio_nacional_ho", ("fluxo",), 30, "/setor-eletrico/rede"),
 }
+# Séries do silver que cada frase usa de fato (as que entram na conta da gold de origem).
+# Revisão de outra série do mesmo conjunto (ENA armazenável, carga do balanço, subsistemas
+# do balanço) não muda o número da frase e não entra na qualidade dela.
+_Q = ("SE", "S", "NE", "N")
+SERIES_FRASE = {
+    "reservatorios": tuple(f"{k}.{sm}" for k in ("ear_mwmes", "ear_max_mwmes") for sm in _Q),
+    "afluencias": tuple(f"{k}.{sm}" for k in ("ena_bruta_mwmed", "ena_bruta_pct_mlt") for sm in _Q),
+    "carga": tuple(f"carga_mwmed.{sm}" for sm in _Q),
+    "termica": tuple(f"{f}.SIN" for f in ("hidraulica", "termica", "eolica", "solar")),
+    "pld": tuple(f"pld.{sm}" for sm in _Q),
+    "rede": tuple(f"fluxo.{p}" for p in ("N_NE", "N_SE", "NE_SE", "S_SE")),
+}
 ORDEM_FRASES = ("reservatorios", "afluencias", "carga", "termica", "pld", "rede")
 
 
@@ -257,32 +271,69 @@ def janela_da_frase(fid, vals):
     return janelas
 
 
+def revisoes_da_frase(fid, vals, revisoes_ds):
+    """Revisões entre capturas que tocam a frase: só as séries que ela usa (SERIES_FRASE) e
+    só as referências dentro das janelas dela. `revisoes_ds` é a lista de revisões do
+    conjunto (dicionários com serie, ref, de, para, relativa_pct, capturado_para), lida do
+    silver pelo módulo. Conta referências distintas (dias ou horas) e pares (série,
+    referência), e devolve a maior variação relativa com a série que a produziu."""
+    janelas = janela_da_frase(fid, vals)
+    usadas = set(SERIES_FRASE[fid])
+    sel = [r for r in revisoes_ds or [] if r["serie"] in usadas and any(a <= r["ref"][:10] <= b for a, b in janelas)]
+    refs = sorted({r["ref"] for r in sel})
+    pares = {(r["serie"], r["ref"]) for r in sel}
+    com_rel = [r for r in sel if r.get("relativa_pct") is not None]
+    maior = max(com_rel, key=lambda r: r["relativa_pct"], default=None)
+    return sel, refs, pares, maior
+
+
+def componentes_natureza(fid, prov, ref):
+    """Componentes da série de origem que não são medição, como a gold de origem os declara
+    (seção 11.3: agregado oficial com MMGD estimada preserva essa informação). A Carga
+    publica `natureza_por_regime` estruturado; a Geração declara a MMGD estimada na solar
+    do balanço nas limitações. Sem declaração na origem, a lista fica vazia (não se supõe)."""
+    prov = prov or {}
+    if prov.get("natureza_por_regime"):
+        rg = next((x for x in prov["natureza_por_regime"] if x["inicio"] <= ref and (x.get("fim") is None or ref <= x["fim"])), None)
+        if rg:
+            return [{**x, "fonte": f"proveniencia.natureza_por_regime[regime {rg['regime']}]"} for x in rg.get("componentes") or []]
+        return []
+    if fid == "termica":
+        for i, t in enumerate(prov.get("limitacoes") or []):
+            if "MMGD" in t and "solar" in t:
+                return [{"natureza": "ESTIMADO", "desde": "2023-04-29",
+                         "descricao": "estimativa da micro e minigeração distribuída somada pelo ONS à geração solar do balanço",
+                         "fonte": f"proveniencia.termica_7d.limitacoes[{i}]"}]
+    return []
+
+
 def qualidade_frase(fid, vals, gold, prov, conjunto, revisoes_ds, hoje):
     """Natureza, defasagem e revisão da frase (P004: qualidade do dado por frase).
 
     `conjunto` é a linha do conjunto em publicacao.json (atualidade pela frequência
-    declarada); `revisoes_ds` é {ref: [variações relativas]} das referências revisadas
-    entre capturas no silver, lido pelo módulo."""
+    declarada); `revisoes_ds` é a lista de revisões do conjunto entre capturas no silver
+    (None quando o silver não foi lido), filtrada aqui pelas séries que a frase usa."""
     ref = ref_da_frase(fid, vals)
     janelas = janela_da_frase(fid, vals)
-    revisadas = sorted({k for k in (revisoes_ds or {}) for a, b in janelas if a <= k[:10] <= b})
     rk = (prov or {}).get("revisoes_conhecidas") or {}
     at = (conjunto or {}).get("atualidade") or {}
-    n_rev = len(revisadas)
+    sel, refs, pares, maior = revisoes_da_frase(fid, vals, revisoes_ds)
+    n_rev = len(refs)
     if revisoes_ds is None:
         txt_rev = "Revisões entre capturas não verificadas nesta execução (silver de origem indisponível)."
     elif n_rev == 0:
-        txt_rev = (f"Nenhuma referência usada nesta frase foi revisada entre as capturas integradas; o conjunto tem "
-                   f"{rk.get('total', 0)} observações revisadas no total.")
+        txt_rev = (f"Nenhuma referência das séries usadas nesta frase foi revisada entre as capturas integradas; o conjunto tem "
+                   f"{rk.get('total', 0)} observações revisadas no total, em todas as séries.")
     else:
-        maior = max(abs(x) for k in revisadas for x in revisoes_ds[k] if x is not None) if any(
-            x is not None for k in revisadas for x in revisoes_ds[k]) else None
-        tipo = "horária" if "T" in revisadas[0] else "diária"
-        txt_rev = (f"{n_rev} {'referência ' + tipo + ' usada nesta frase foi revisada' if n_rev == 1 else 'referências ' + tipo.replace('ária', 'árias') + ' usadas nesta frase foram revisadas'} "
-                   f"pela fonte entre capturas" + (f" (maior variação de {nbr(maior, 2)}% sobre o valor anterior)" if maior is not None else "") +
-                   "; o valor exibido é o da captura mais recente.")
+        tipo = "horária" if "T" in refs[0] else "diária"
+        txt_rev = (f"{n_rev} {'referência ' + tipo + ' das séries usadas nesta frase foi revisada' if n_rev == 1 else 'referências ' + tipo.replace('ária', 'árias') + ' das séries usadas nesta frase foram revisadas'} "
+                   f"pela fonte entre capturas ({len(pares)} {'par' if len(pares) == 1 else 'pares'} de série e referência)"
+                   + (f"; maior variação de {nbr(maior['relativa_pct'], 2)}% sobre o valor anterior, em {maior['serie']} de {maior['ref']}"
+                      if maior else "") + "; o valor exibido é o da captura mais recente.")
+    comps = componentes_natureza(fid, prov, ref)
     return {
         "natureza": (prov or {}).get("natureza"),
+        "componentes_natureza": comps,
         "frequencia": (prov or {}).get("frequencia"),
         "referencia": ref,
         "janelas": [{"inicio": a, "fim": b} for a, b in janelas],
@@ -293,7 +344,9 @@ def qualidade_frase(fid, vals, gold, prov, conjunto, revisoes_ds, hoje):
         if conjunto else None,
         "publicado_pela_fonte_em": (prov or {}).get("publicado_pela_fonte_em"),
         "capturado_em": (prov or {}).get("capturado_em"),
-        "revisoes": {"referencias_revisadas_na_janela": n_rev, "revisadas": revisadas[:20],
+        "revisoes": {"series_consideradas": list(SERIES_FRASE[fid]),
+                     "referencias_revisadas_na_janela": n_rev, "pares_serie_referencia": len(pares), "revisadas": refs[:20],
+                     "maior": ({k: maior[k] for k in ("serie", "ref", "de", "para", "relativa_pct", "capturado_para")} if maior else None),
                      "total_no_conjunto": rk.get("total"), "texto": txt_rev},
     }
 
@@ -310,7 +363,8 @@ def frase(fid, golds, contexto, hoje):
     regra = " ".join(regras[k] for k in chaves_regra if regras.get(k)) or None
     trechos = MODELOS[fid](vals)
     conj = (contexto.get("conjuntos") or {}).get(ds)
-    rev = (contexto.get("revisoes_refs") or {}).get(ds)
+    por_conj = contexto.get("revisoes_por_conjunto")
+    rev = None if por_conj is None else (por_conj.get(ds) or [])
     snap = (prov or {}).get("snapshot") or {}
     return {
         "id": fid, "tipo": "fato", "modelo": fid, "ref": ref_da_frase(fid, vals),
@@ -429,6 +483,9 @@ def resumo_historico(serie, dur_min, dur_ret, sensibilidade=(1, 3, 7, 14)):
                      "por_ano": c.r(len(rk["episodios"]) / anos, 1) if n_av >= 365 else None})
     return {
         "inicio": serie[0][0], "fim": ultimo,
+        # a série começa no início comum (2021), mas cada regra só é avaliável quando a
+        # base dela existe: o texto do histórico usa o primeiro dia avaliado, não o início
+        "primeiro_dia_avaliado": avaliados[0][0], "ultimo_dia_avaliado": avaliados[-1][0],
         "dias_avaliados": n_av, "dias_sem_avaliacao": len(serie) - n_av,
         "dias_com_condicao": sum(1 for x in avaliados if x[1]),
         "pct_dias_com_condicao": c.r(100.0 * sum(1 for x in avaliados if x[1]) / n_av, 1),
@@ -446,6 +503,58 @@ def resumo_historico(serie, dur_min, dur_ret, sensibilidade=(1, 3, 7, 14)):
         "sensibilidade_duracao": sens,
         "ultimos_episodios": [{**e, "duracao_dias": _duracao(e, ultimo)} for e in eps[-5:]],
     }
+
+
+def dias_em_alerta(serie, r):
+    """{dia: dia de confirmação do episódio} para os dias em que o alerta fica exibido (da
+    confirmação até a véspera do retorno, ou até o último dia da série)."""
+    out = {}
+    ultimo = serie[-1][0] if serie else None
+    for e in r["episodios"]:
+        fim = d(e["normalizado_em"]) - timedelta(days=1) if e.get("normalizado_em") else d(ultimo)
+        x = d(e["confirmado_em"])
+        while x <= fim:
+            out[x.isoformat()] = e["confirmado_em"]
+            x += timedelta(days=1)
+    return out
+
+
+# Caixa de destaques (P004): mostra o que mudou. Uma regra em alerta entra na caixa nos
+# primeiros NOVIDADE_DIAS dias depois da confirmação; depois disso continua na lista
+# completa do "o que observar" (P007), com a duração do episódio, mas sai da caixa.
+NOVIDADE_DIAS = 14
+# Critério de materialidade da caixa: no período em que todas as regras de sistema são
+# avaliáveis, a caixa fica ocupada em no máximo um terço dos dias (o normal é vazia).
+META_DIAS_COM_DESTAQUE_PCT = 100.0 / 3
+
+
+def em_destaque(dia, confirmacao, novidade=NOVIDADE_DIAS):
+    """Alerta exibido no dia e confirmado há menos de `novidade` dias (None = sem limite)."""
+    if confirmacao is None:
+        return False
+    return novidade is None or (d(dia) - d(confirmacao)).days < novidade
+
+
+def frequencia_conjunta(alertas, inicio, fim, novidade=NOVIDADE_DIAS):
+    """Quantos dias de [inicio, fim] teriam ao menos uma regra na caixa de destaques.
+    `alertas` = {regra: {dia: confirmação}} (dias_em_alerta). Devolve dias, dias com
+    destaque, percentual, distribuição do número de regras simultâneas e dias por regra."""
+    dias = calendario(inicio, fim)
+    dist, por_regra = {}, {r: 0 for r in alertas}
+    com = 0
+    for dia in dias:
+        k = 0
+        for r, al in alertas.items():
+            if em_destaque(dia, al.get(dia), novidade):
+                k += 1
+                por_regra[r] += 1
+        dist[k] = dist.get(k, 0) + 1
+        com += 1 if k else 0
+    n = len(dias)
+    return {"inicio": inicio, "fim": fim, "dias": n, "dias_com_destaque": com,
+            "pct_dias_com_destaque": c.r(100.0 * com / n, 1) if n else None,
+            "distribuicao_regras_simultaneas": [{"regras": k, "dias": v} for k, v in sorted(dist.items())],
+            "pct_dias_por_regra": {r: c.r(100.0 * v / n, 1) if n else None for r, v in por_regra.items()}}
 
 
 def estado_compacto(serie, r, n=365):
@@ -492,8 +601,16 @@ def _md(dia):
     return "02-28" if md == "02-29" else md
 
 
-def bandas_por_ano(serie, anos, ano_ini=2001):
-    """{ano: {md: (p10, p50, p90, n)}} com os anos completos de ano_ini até o anterior a
+# Quantis das regras de distribuição. A faixa usual das páginas de origem (Água, Geração) é
+# a do 10º ao 90º percentil; o alerta da síntese exige o extremo, do 5º ao 95º, porque com a
+# faixa usual cada regra bilateral marca por construção cerca de um em cada cinco dias e a
+# caixa de destaques ficava ocupada em três de cada quatro dias (ruído, seção 9.1).
+Q_USUAL = (0.1, 0.9)
+Q_EXTREMO = (0.05, 0.95)
+
+
+def bandas_por_ano(serie, anos, ano_ini=2001, q=Q_USUAL):
+    """{ano: {md: (q_inf, p50, q_sup, n)}} com os anos completos de ano_ini até o anterior a
     cada ano (29/02 fora da distribuição), como em gold/hidrologia.py."""
     out = {}
     for a in anos:
@@ -501,7 +618,7 @@ def bandas_por_ano(serie, anos, ano_ini=2001):
         for k, v in serie.items():
             if ano_ini <= int(k[:4]) < a and k[5:10] != "02-29":
                 por_md.setdefault(k[5:10], []).append(v)
-        out[a] = {md: (c.quantil(vs, 0.1), c.quantil(vs, 0.5), c.quantil(vs, 0.9), len(vs)) for md, vs in por_md.items()}
+        out[a] = {md: (c.quantil(vs, q[0]), c.quantil(vs, 0.5), c.quantil(vs, q[1]), len(vs)) for md, vs in por_md.items()}
     return out
 
 
@@ -520,23 +637,24 @@ def ear_sin(ear_mw, ear_max):
     return out
 
 
-def condicoes_ear(ear_pct, inicio, fim, entidades=("SIN",)):
-    """Condição diária da regra ear_faixa: EAR fora da faixa usual da data em alguma das
-    `entidades` (padrão: o SIN; a variante com os quatro subsistemas é publicada como
-    alternativa avaliada). `ear_pct` = {entidade: {dia: % da EAR máxima}}."""
+def condicoes_ear(ear_pct, inicio, fim, entidades=("SIN",), q=Q_USUAL):
+    """Condição diária da regra ear_faixa: EAR fora da faixa da data (quantis `q` do mesmo
+    dia do calendário nos anos anteriores) em alguma das `entidades` (a regra usa o SIN com
+    Q_EXTREMO; a variante com os quatro subsistemas é publicada como alternativa avaliada).
+    `ear_pct` = {entidade: {dia: % da EAR máxima}}."""
     anos = range(int(inicio[:4]), int(fim[:4]) + 1)
-    bandas = {sm: bandas_por_ano(ear_pct[sm], anos) for sm in entidades}
+    bandas = {sm: bandas_por_ano(ear_pct[sm], anos, q=q) for sm in entidades}
     out = []
     for dia in calendario(inicio, fim):
         fora, valores, falta = [], {}, False
         for sm in entidades:
             v = ear_pct[sm].get(dia)
-            p10, _, p90, _ = bandas[sm][int(dia[:4])].get(_md(dia), (None, None, None, 0))
-            fx = faixa(v, p10, p90)
+            p_inf, p50, p_sup, n = bandas[sm][int(dia[:4])].get(_md(dia), (None, None, None, 0))
+            fx = faixa(v, p_inf, p_sup)
             if fx is None:
                 falta = True
                 continue
-            valores[sm] = {"valor": v, "p10": p10, "p90": p90, "faixa": fx}
+            valores[sm] = {"valor": v, "p_inf": p_inf, "p_sup": p_sup, "mediana": p50, "anos": n, "faixa": fx}
             if fx != "dentro":
                 fora.append(sm)
         cond = None if falta else bool(fora)
@@ -577,10 +695,10 @@ def ena_sin(ena_mw, ena_pct):
     return mw, pct
 
 
-def condicoes_ena(e30, inicio, fim, ano_ini=2001, entidades=("SIN",)):
-    """Condição diária da regra ena_faixa: ENA de 30 dias fora do 10º a 90º percentil da
-    mesma janela nos anos anteriores (desde 2001) em alguma das `entidades`, como em
-    hidrologia.json (padrão: o SIN)."""
+def condicoes_ena(e30, inicio, fim, ano_ini=2001, entidades=("SIN",), q=Q_USUAL):
+    """Condição diária da regra ena_faixa: ENA de 30 dias fora dos quantis `q` da mesma
+    janela nos anos anteriores (desde 2001) em alguma das `entidades` (a regra usa o SIN
+    com Q_EXTREMO; com Q_USUAL é a faixa de hidrologia.json)."""
     out = []
     for dia in calendario(inicio, fim):
         fora, valores, falta = [], {}, False
@@ -596,12 +714,12 @@ def condicoes_ena(e30, inicio, fim, ano_ini=2001, entidades=("SIN",)):
                 h = e30[sm].get(fa.isoformat())
                 if h is not None:
                     hist.append(h)
-            p10, p90 = c.quantil(hist, 0.1), c.quantil(hist, 0.9)
-            fx = faixa(v, p10, p90)
+            p_inf, p_sup = c.quantil(hist, q[0]), c.quantil(hist, q[1])
+            fx = faixa(v, p_inf, p_sup)
             if fx is None:
                 falta = True
                 continue
-            valores[sm] = {"valor": v, "p10": p10, "p90": p90, "faixa": fx}
+            valores[sm] = {"valor": v, "p_inf": p_inf, "p_sup": p_sup, "mediana": c.quantil(hist, 0.5), "anos": len(hist), "faixa": fx}
             if fx != "dentro":
                 fora.append(sm)
         out.append((dia, None if falta else bool(fora), {"fora": fora, "valores": valores}))
@@ -622,11 +740,12 @@ def razao_janela(num, den, fim, n=7):
     return 100.0 * sum(num[k] for k in ks) / s_den if s_den > 0 else None
 
 
-def condicoes_janela_movel(num, den, inicio, fim, regime_inicio=None, lados=("acima", "abaixo"), janelas_min=365):
+def condicoes_janela_movel(num, den, inicio, fim, regime_inicio=None, lados=("acima", "abaixo"), janelas_min=365, q=Q_USUAL):
     """Condição de regras de janela móvel de 7 dias contra as janelas terminadas de 7 a
     371 dias antes (as dos 365 dias anteriores sem sobreposição com a atual), como a
-    participação térmica de geracao.json. Fora do regime, ou com menos de `janelas_min`
-    janelas inteiras no mesmo regime, o dia não é avaliado."""
+    participação térmica de geracao.json; fora dos quantis `q` nos `lados` indicados. Fora
+    do regime, ou com menos de `janelas_min` janelas inteiras no mesmo regime, o dia não é
+    avaliado."""
     cache = {}
 
     def r7(k):
@@ -644,10 +763,10 @@ def condicoes_janela_movel(num, den, inicio, fim, regime_inicio=None, lados=("ac
         if v is None or len(hist) < janelas_min:
             out.append((dia, None, {"valor": v, "janelas": len(hist)}))
             continue
-        p10, p50, p90 = c.quantil(hist, 0.1), c.quantil(hist, 0.5), c.quantil(hist, 0.9)
-        fx = faixa(v, p10, p90)
+        p_inf, p50, p_sup = c.quantil(hist, q[0]), c.quantil(hist, 0.5), c.quantil(hist, q[1])
+        fx = faixa(v, p_inf, p_sup)
         cond = fx in lados
-        out.append((dia, cond, {"valor": v, "p10": p10, "p50": p50, "p90": p90, "faixa": fx, "janelas": len(hist)}))
+        out.append((dia, cond, {"valor": v, "p_inf": p_inf, "p50": p50, "p_sup": p_sup, "faixa": fx, "janelas": len(hist)}))
     return out
 
 
@@ -710,14 +829,16 @@ def condicoes_limites(linhas, inicio, fim, tipo):
     out = []
     for dia in calendario(inicio, fim):
         r = por_dia.get(dia)
-        if not r or any(s not in r for s in SMS):
+        campos = ("horas", "horas_no_piso") if tipo == "piso" else ("horas_no_teto_horario", "media_no_teto_estrutural")
+        # submercado ausente ou contagem vazia no CSV é dia sem dado: nulo não vira zero
+        if not r or any(s not in r for s in SMS) or any(r[s].get(k) is None for s in SMS for k in campos):
             out.append((dia, None, {}))
             continue
         if tipo == "piso":
             quais = [s for s in SMS if r[s]["horas"] and r[s]["horas_no_piso"] == r[s]["horas"]]
             det = {"submercados": quais, "horas_no_piso": {s: r[s]["horas_no_piso"] for s in SMS}, "pld_min": r["SE"]["pld_min"]}
         else:
-            quais = [s for s in SMS if (r[s]["horas_no_teto_horario"] or 0) > 0 or r[s]["media_no_teto_estrutural"] == 1]
+            quais = [s for s in SMS if r[s]["horas_no_teto_horario"] > 0 or r[s]["media_no_teto_estrutural"] == 1]
             det = {"submercados": quais, "horas_no_teto_horario": {s: r[s]["horas_no_teto_horario"] for s in SMS},
                    "media_no_teto_estrutural": {s: r[s]["media_no_teto_estrutural"] for s in SMS},
                    "pld_max_horario": r["SE"]["pld_max_horario"], "pld_max_estrutural": r["SE"]["pld_max_estrutural"]}

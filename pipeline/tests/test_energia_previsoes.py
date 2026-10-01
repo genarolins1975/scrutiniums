@@ -1029,6 +1029,32 @@ class EmissoesCsv(unittest.TestCase):
             self.assertEqual(float(ln["atraso_min"]), rd["atraso_min"], ln["forecast_id"])
             self.assertEqual(ln["modo"], rd["modo"], ln["forecast_id"])
 
+    def test_campos_guardados_no_registro_vao_ao_csv(self):
+        """P015 (emissão, entrega, quantis, versão, falha e realizado): o CSV publica, como
+        gravados, versão do código, dia de inclusão no arquivo, P10 e P90, alertas, correção e
+        encadeamento. Valores conferidos nas linhas de jsonl originais, não na função."""
+        registros = arq.le_tudo()
+        rodadas = mod._rodadas(registros)
+        destino = tempfile.mkdtemp()
+        try:
+            with mock.patch.object(base, "SERIES", destino):
+                mod._escreve_emissoes(registros, [], rodadas)
+            with open(os.path.join(destino, "previsoes_emissoes.csv"), encoding="utf-8") as f:
+                linhas = {x["forecast_id"]: x for x in csv.DictReader(f, delimiter=";")}
+        finally:
+            shutil.rmtree(destino)
+        # rodada transcrita de 27/09/2026: sem versão do código, incluída no arquivo em 28/09 (depois da emissão)
+        t = linhas["prosp_2026-09-27_20260927T191013Z:W1:SE"]
+        self.assertEqual((t["versao_codigo"], t["registrado_no_portal_em"], t["p10"], t["p90"], t["anterior"]),
+                         ("", "2026-09-28", "", "", ""))
+        self.assertEqual((t["status"], t["motivo"], t["alertas"]), ("INDISPONIVEL", "SEM_PLD_CAPTURADO_ATE_O_CORTE", "ATRASADO_APOS_08H"))
+        # rodada do observatório de 30/09/2026: versão gravada, sem faixa, encadeada ao registro anterior
+        o = linhas["prosp_2026-09-30_20260930T233117Z:W1:SE:B0"]
+        self.assertEqual((o["versao_codigo"], o["registrado_no_portal_em"], o["p10"], o["p90"]), ("30ad85ccb171+alterado", "2026-09-30", "", ""))
+        self.assertTrue(o["anterior"].startswith("921ad4fc7dc9"), o["anterior"])
+        self.assertEqual(sorted(o["alertas"].split(",")), ["ATRASADO_APOS_08H", "CODIGO_NAO_COMMITADO", "EXECUCAO_MANUAL"])
+        self.assertEqual(o["substitui"], "")
+
 
 if __name__ == "__main__":
     unittest.main()

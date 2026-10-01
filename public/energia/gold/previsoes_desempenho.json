@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "previsoes_desempenho.json",
- "gerado_em": "2026-10-01T06:58:21Z",
+ "gerado_em": "2026-10-01T07:40:20Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "eec0a3121e05+alterado",
+ "versao_codigo": "fa4767ccfa9a+alterado",
  "disponivel": true,
  "paineis": [
   "P013",
@@ -30,7 +30,7 @@
   },
   "publicado_pela_fonte_em": null,
   "capturado_em": "2026-09-30T02:20:14Z",
-  "validado_em": "2026-10-01T06:58:21Z",
+  "validado_em": "2026-10-01T07:40:20Z",
   "cobertura_historica": {
    "inicio": "2021-01-01",
    "fim": "2026-09-30"
@@ -47,9 +47,9 @@
    "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
   },
   "versao_pipeline": "energia-0.1.0",
-  "versao_codigo": "eec0a3121e05+alterado",
+  "versao_codigo": "fa4767ccfa9a+alterado",
   "revisoes_conhecidas": {
-   "detectado_em": "2026-10-01T06:57:22Z",
+   "detectado_em": "2026-10-01T07:39:25Z",
    "total": 0,
    "vintages_comparadas": 8,
    "arquivos": 6,
@@ -1460,7 +1460,7 @@
   "horarios": "Gatilhos às 05h47, 06h17, 06h43, 07h13, 07h37 de Brasília: o primeiro que rodar confere o dado, tenta coletar o que falta antes do corte, espera as 07h00 e emite com o dado como estava no corte; os seguintes ficam na fila do mesmo grupo de concorrência, partem do main atual (não do commit em que o gatilho foi criado), conferem de novo logo antes de emitir e saem ao ver a rodada registrada. O arquivo de emissões é commitado em seguida (prazo 08h00). Pré-carga: coleta noturna das 20h40 (atualizar-energia.yml). Comportamento ainda não comprovado por execução agendada real.",
   "fuso": "America/Sao_Paulo; o cron do GitHub é em UTC e supõe UTC−3 (sem horário de verão desde 2019). Se o horário de verão voltar, o cron precisa mudar; a emissão calcula o corte pelo fuso e marca o atraso de qualquer forma.",
   "inicio_operacao_agendada": null,
-  "verificado_em": "2026-10-01T06:58:15Z",
+  "verificado_em": "2026-10-01T07:40:15Z",
   "dias_vencidos_ate": "2026-09-30",
   "execucoes_agendadas": 0,
   "no_prazo": 0,
@@ -2653,7 +2653,7 @@
     },
     "publicado_pela_fonte_em": null,
     "capturado_em": "2026-09-30T02:20:14Z",
-    "validado_em": "2026-10-01T06:58:16Z",
+    "validado_em": "2026-10-01T07:40:15Z",
     "cobertura_historica": {
      "inicio": "2026-09-30",
      "fim": "2026-09-30"
@@ -2668,9 +2668,9 @@
      "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "eec0a3121e05+alterado",
+    "versao_codigo": "fa4767ccfa9a+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-10-01T06:57:22Z",
+     "detectado_em": "2026-10-01T07:39:25Z",
      "total": 0,
      "vintages_comparadas": 8,
      "arquivos": 6,
@@ -2705,7 +2705,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-27T15:44:02Z",
-   "validado_em": "2026-10-01T06:58:16Z",
+   "validado_em": "2026-10-01T07:40:16Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-30"
@@ -2722,9 +2722,9 @@
     "sha256": "b673ea95d1c4acafa47212954e47da8cec9487d6cdaf336ccd1f4931a846d247"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "fa4767ccfa9a+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:57:22Z",
+    "detectado_em": "2026-10-01T07:39:25Z",
     "total": 0,
     "vintages_comparadas": 8,
     "arquivos": 6,
@@ -4235,8 +4235,8 @@
    "tratamento_ausencia": "Hora não capturada até o corte fica fora e a contagem de horas aparece ao lado; nunca é preenchida.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "eec0a3121e05+alterado",
-    "publicacao": "2026-10-01T06:58:15Z"
+    "codigo": "fa4767ccfa9a+alterado",
+    "publicacao": "2026-10-01T07:40:15Z"
    },
    "revisoes": "Detecção de revisões não disponível para este número.",
    "testes": [
@@ -4263,7 +4263,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado SE: R$ 155,21/MWh, submercado SE, 30/09/2026 07:00 a 30/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado SE: R$ 155,21/MWh, submercado SE, 30/09/2026 07:00 a 30/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "pld_no_corte_S": {
    "indicador": "PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado S",
@@ -4332,8 +4332,8 @@
    "tratamento_ausencia": "Hora não capturada até o corte fica fora e a contagem de horas aparece ao lado; nunca é preenchida.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "eec0a3121e05+alterado",
-    "publicacao": "2026-10-01T06:58:15Z"
+    "codigo": "fa4767ccfa9a+alterado",
+    "publicacao": "2026-10-01T07:40:15Z"
    },
    "revisoes": "Detecção de revisões não disponível para este número.",
    "testes": [
@@ -4360,7 +4360,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado S: R$ 155,21/MWh, submercado S, 30/09/2026 07:00 a 30/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado S: R$ 155,21/MWh, submercado S, 30/09/2026 07:00 a 30/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "pld_no_corte_NE": {
    "indicador": "PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado NE",
@@ -4429,8 +4429,8 @@
    "tratamento_ausencia": "Hora não capturada até o corte fica fora e a contagem de horas aparece ao lado; nunca é preenchida.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "eec0a3121e05+alterado",
-    "publicacao": "2026-10-01T06:58:15Z"
+    "codigo": "fa4767ccfa9a+alterado",
+    "publicacao": "2026-10-01T07:40:15Z"
    },
    "revisoes": "Detecção de revisões não disponível para este número.",
    "testes": [
@@ -4457,7 +4457,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado NE: R$ 140,65/MWh, submercado NE, 30/09/2026 07:00 a 30/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado NE: R$ 140,65/MWh, submercado NE, 30/09/2026 07:00 a 30/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "pld_no_corte_N": {
    "indicador": "PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado N",
@@ -4526,8 +4526,8 @@
    "tratamento_ausencia": "Hora não capturada até o corte fica fora e a contagem de horas aparece ao lado; nunca é preenchida.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "eec0a3121e05+alterado",
-    "publicacao": "2026-10-01T06:58:16Z"
+    "codigo": "fa4767ccfa9a+alterado",
+    "publicacao": "2026-10-01T07:40:15Z"
    },
    "revisoes": "Detecção de revisões não disponível para este número.",
    "testes": [
@@ -4554,7 +4554,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado N: R$ 155,21/MWh, submercado N, 30/09/2026 07:00 a 30/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado N: R$ 155,21/MWh, submercado N, 30/09/2026 07:00 a 30/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "b0_semanal_SE": {
    "indicador": "Referência experimental B0 semanal (W1, W2, W3, W4), submercado SE, rodada de 30/09/2026",
@@ -4623,8 +4623,8 @@
    "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "eec0a3121e05+alterado",
-    "publicacao": "2026-10-01T06:58:16Z"
+    "codigo": "fa4767ccfa9a+alterado",
+    "publicacao": "2026-10-01T07:40:15Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -4660,7 +4660,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. Referência experimental B0 semanal (W1, W2, W3, W4), submercado SE, rodada de 30/09/2026: R$ 124,09/MWh, submercado SE, 19/09/2026 a 25/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Referência experimental B0 semanal (W1, W2, W3, W4), submercado SE, rodada de 30/09/2026: R$ 124,09/MWh, submercado SE, 19/09/2026 a 25/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "b0_semanal_S": {
    "indicador": "Referência experimental B0 semanal (W1, W2, W3, W4), submercado S, rodada de 30/09/2026",
@@ -4729,8 +4729,8 @@
    "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "eec0a3121e05+alterado",
-    "publicacao": "2026-10-01T06:58:16Z"
+    "codigo": "fa4767ccfa9a+alterado",
+    "publicacao": "2026-10-01T07:40:15Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -4766,7 +4766,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. Referência experimental B0 semanal (W1, W2, W3, W4), submercado S, rodada de 30/09/2026: R$ 120,86/MWh, submercado S, 19/09/2026 a 25/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Referência experimental B0 semanal (W1, W2, W3, W4), submercado S, rodada de 30/09/2026: R$ 120,86/MWh, submercado S, 19/09/2026 a 25/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "b0_semanal_NE": {
    "indicador": "Referência experimental B0 semanal (W1, W2, W3, W4), submercado NE, rodada de 30/09/2026",
@@ -4835,8 +4835,8 @@
    "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "eec0a3121e05+alterado",
-    "publicacao": "2026-10-01T06:58:16Z"
+    "codigo": "fa4767ccfa9a+alterado",
+    "publicacao": "2026-10-01T07:40:15Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -4872,7 +4872,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. Referência experimental B0 semanal (W1, W2, W3, W4), submercado NE, rodada de 30/09/2026: R$ 124,09/MWh, submercado NE, 19/09/2026 a 25/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Referência experimental B0 semanal (W1, W2, W3, W4), submercado NE, rodada de 30/09/2026: R$ 124,09/MWh, submercado NE, 19/09/2026 a 25/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "b0_semanal_N": {
    "indicador": "Referência experimental B0 semanal (W1, W2, W3, W4), submercado N, rodada de 30/09/2026",
@@ -4941,8 +4941,8 @@
    "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "eec0a3121e05+alterado",
-    "publicacao": "2026-10-01T06:58:16Z"
+    "codigo": "fa4767ccfa9a+alterado",
+    "publicacao": "2026-10-01T07:40:16Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -4978,7 +4978,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. Referência experimental B0 semanal (W1, W2, W3, W4), submercado N, rodada de 30/09/2026: R$ 124,09/MWh, submercado N, 19/09/2026 a 25/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Referência experimental B0 semanal (W1, W2, W3, W4), submercado N, rodada de 30/09/2026: R$ 124,09/MWh, submercado N, 19/09/2026 a 25/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "b0_mensal_SE": {
    "indicador": "Referência experimental B0 mensal (M1, M2, M3), submercado SE, rodada de 30/09/2026",
@@ -5047,8 +5047,8 @@
    "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "eec0a3121e05+alterado",
-    "publicacao": "2026-10-01T06:58:16Z"
+    "codigo": "fa4767ccfa9a+alterado",
+    "publicacao": "2026-10-01T07:40:16Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -5084,7 +5084,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. Referência experimental B0 mensal (M1, M2, M3), submercado SE, rodada de 30/09/2026: R$ 128,12/MWh, submercado SE, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Referência experimental B0 mensal (M1, M2, M3), submercado SE, rodada de 30/09/2026: R$ 128,12/MWh, submercado SE, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "b0_mensal_S": {
    "indicador": "Referência experimental B0 mensal (M1, M2, M3), submercado S, rodada de 30/09/2026",
@@ -5153,8 +5153,8 @@
    "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "eec0a3121e05+alterado",
-    "publicacao": "2026-10-01T06:58:16Z"
+    "codigo": "fa4767ccfa9a+alterado",
+    "publicacao": "2026-10-01T07:40:16Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -5190,7 +5190,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. Referência experimental B0 mensal (M1, M2, M3), submercado S, rodada de 30/09/2026: R$ 128,10/MWh, submercado S, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Referência experimental B0 mensal (M1, M2, M3), submercado S, rodada de 30/09/2026: R$ 128,10/MWh, submercado S, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "b0_mensal_NE": {
    "indicador": "Referência experimental B0 mensal (M1, M2, M3), submercado NE, rodada de 30/09/2026",
@@ -5259,8 +5259,8 @@
    "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "eec0a3121e05+alterado",
-    "publicacao": "2026-10-01T06:58:16Z"
+    "codigo": "fa4767ccfa9a+alterado",
+    "publicacao": "2026-10-01T07:40:16Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -5296,7 +5296,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. Referência experimental B0 mensal (M1, M2, M3), submercado NE, rodada de 30/09/2026: R$ 125,27/MWh, submercado NE, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Referência experimental B0 mensal (M1, M2, M3), submercado NE, rodada de 30/09/2026: R$ 125,27/MWh, submercado NE, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "b0_mensal_N": {
    "indicador": "Referência experimental B0 mensal (M1, M2, M3), submercado N, rodada de 30/09/2026",
@@ -5365,8 +5365,8 @@
    "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "eec0a3121e05+alterado",
-    "publicacao": "2026-10-01T06:58:16Z"
+    "codigo": "fa4767ccfa9a+alterado",
+    "publicacao": "2026-10-01T07:40:16Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -5402,7 +5402,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. Referência experimental B0 mensal (M1, M2, M3), submercado N, rodada de 30/09/2026: R$ 126,70/MWh, submercado N, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Referência experimental B0 mensal (M1, M2, M3), submercado N, rodada de 30/09/2026: R$ 126,70/MWh, submercado N, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "validacoes": [

@@ -30,8 +30,12 @@ export type ResultadoChecagem = "aprovado" | "ressalva" | "reprovado" | "nao_apl
 export type Veredito = ResultadoChecagem;
 export type Cadencia = "diaria" | "semanal" | "quinzenal" | "mensal" | "trimestral" | "anual";
 export type SituacaoAtualidade = "EM DIA" | "ATRASADO" | "SEM SLA" | "SEM DADO";
-/** Caso da regra de SLA (regras.sla_texto): A grão = cadência; B lotes; C cadência mais curta que o grão; D sem série regular. */
-export type CasoSla = "A" | "B" | "C" | "D";
+/**
+ * Caso da regra de SLA (regras.sla_texto): A grão = cadência; B lotes; C cadência mais curta que o grão quando a
+ * declaração é a rotina do portal (ONS); D sem série regular; E cadência mais curta que o grão fora da rotina do
+ * portal, medida pela data de publicação da fonte.
+ */
+export type CasoSla = "A" | "B" | "C" | "D" | "E";
 export type SituacaoValidacao = "reconciliacao_aprovada" | "controles_aprovados" | "ressalva" | "divergencia" | "pendencia";
 /** Formato da referência temporal observada no silver. */
 export type FormatoRef = "horaria" | "diaria" | "mensal" | "trimestral" | "anual" | "intervalo" | "vigencia" | "nao_temporal" | "misto";
@@ -122,6 +126,8 @@ export type Atualidade = {
   /** Maior referência disponível até hoje (nunca a data da captura). */
   ultimo_periodo?: string;
   fim_ultimo_periodo?: string;
+  /** O último período ainda não terminou (ano ou mês corrente): não alonga o prazo, que parte do último período completo. */
+  periodo_parcial?: true;
   /** Data até a qual o período seguinte deve chegar. */
   prazo_proximo?: string;
   dias_atraso?: number;
@@ -140,8 +146,9 @@ export type DadoConjunto = {
   /** Fração 0 a 1: referências presentes ÷ esperadas entre a primeira e a última de cada série. */
   completude_interna?: number;
   series_com_lacuna?: number;
+  /** Séries com valor em atualidade.ultimo_periodo (último período disponível até hoje, nunca uma referência futura). */
   series_no_ultimo?: number;
-  /** Séries com valor no período anterior ao último (pelo passo da série). */
+  /** Séries com valor no período anterior a atualidade.ultimo_periodo (pelo passo da série). */
   series_no_anterior?: number;
   /** Cadastros: menor fração de chaves com um campo preenchido. */
   preenchimento_minimo?: number;
@@ -162,6 +169,9 @@ export type EventoRevisao = {
 
 export type Revisoes = {
   eventos?: number;
+  /** Pares (série, referência) revisados entre capturas do mesmo arquivo. */
+  observacoes?: number;
+  /** Referências (períodos) distintas revisadas, em qualquer série. */
   referencias?: number;
   series?: number;
   ref_min?: string;
@@ -169,20 +179,32 @@ export type Revisoes = {
   a_partir_de_zero?: number;
   maior_abs?: EventoRevisao | null;
   maior_rel?: EventoRevisao | null;
-  /** Dia da captura (UTC) → referências revisadas. */
+  /** Dia da captura (UTC) → eventos de revisão (observações revisadas) trazidos pela captura. */
   por_captura?: Record<string, number>;
   /** Mesma (série, referência) com valores diferentes em arquivos diferentes: não é revisão da fonte. */
   conflitos_entre_recursos?: {
     referencias: number;
     exemplos: { serie: string; ref: string; valores: Record<string, number> }[];
   };
-  /** Mudanças em cadastros e atos (campos textuais). */
+  /**
+   * Cadastros e atos (campos textuais). Mudança = campo da mesma chave com valor novo entre capturas consecutivas do
+   * MESMO arquivo; valor diferente entre arquivos do conjunto é conflito entre recursos; campos que descrevem o
+   * arquivo (data de geração, de processamento) ficam em metadado_do_arquivo.
+   */
   registros?: {
-    mudancas: number;
-    chaves: number;
-    campos: Record<string, number>;
-    apagados_pela_fonte: number;
-    por_captura: Record<string, number>;
+    mudancas?: number;
+    chaves?: number;
+    campos?: Record<string, number>;
+    apagados_pela_fonte?: number;
+    por_captura?: Record<string, number>;
+    metadado_do_arquivo?: number;
+    conflitos_entre_recursos?: {
+      /** Pares (chave, campo) com valores diferentes entre arquivos. */
+      campos: number;
+      chaves: number;
+      por_campo: Record<string, number>;
+      exemplos: { chave: string; campo: string; valores: Record<string, string> }[];
+    };
   };
 };
 
@@ -277,7 +299,8 @@ export type DiaCalendario = {
   capturas_novas: number;
   recapturas_sem_mudanca: number;
   falhas: number;
-  referencias_revisadas: number;
+  /** Eventos de revisão (pares série e referência que mudaram) trazidos pela captura do dia. */
+  observacoes_revisadas: number;
   publicacoes_fonte: number;
   conjuntos_com_evento: number;
 };
@@ -308,6 +331,8 @@ export type Eixos = {
   fichas: number;
   fichas_sem_natureza_vinculada: number;
   regra_vinculo: string;
+  /** ESTIMADO não separa estimado pela fonte de estimado pelo observatório (seção 11.3): limitação declarada. */
+  limitacao_natureza: string;
 };
 
 export type ResumoRecursos = {
@@ -352,7 +377,12 @@ export type PublicacaoGold = Cabecalho & {
     por_estado: Partial<Record<EstadoDados, number>>;
     por_situacao: Partial<Record<SituacaoAtualidade, number>>;
     com_revisao: number;
+    /** Pares (série, referência) revisados, somados nos conjuntos. */
+    observacoes_revisadas: number;
+    /** Referências distintas revisadas, somadas por conjunto. */
     referencias_revisadas: number;
+    /** Conjuntos com mudança de cadastro entre capturas do mesmo arquivo. */
+    com_mudanca_em_registros: number;
     com_falha_recente: number;
     captura_atras_da_fonte: number;
     descontinuados: number;

@@ -4,20 +4,26 @@ recortadas (pipeline/tests/dados/energia_territorio/, capturadas em 30/09 e 01/1
 O que cada grupo confere:
 - critério de aceite do P002 (nenhum indicador abaixo do grão de origem), na gold e no
   índice municipal publicados: colunas municipais só com grão de município ou referência,
-  nenhum valor de distribuidora copiado para município, conjunto e usina nas suas tabelas,
-  e a soma municipal de usinas refeita a partir do arquivo de usinas sem as usinas de
-  vários municípios;
-- reconciliação por caminho independente: carga das áreas do ONS relida das respostas da
-  API (médias e resíduos calculados à parte, com statistics, escritos aqui como
-  constantes); MMGD por município conferida contra o Parquet original da ANEEL e usinas
-  por município contra o CSV original do SIGA (lidos por outro código em 01/10/2026);
-  contagens da relação contra a gold do módulo Perdas;
+  cada indicador do catálogo presente na tabela publicada do seu grão (e ausente das
+  colunas municipais), nenhum valor de distribuidora copiado para município, município
+  fora do SIN sem submercado (o "não se aplica" não vira valor);
+- reconciliação por caminho independente, com os valores esperados escritos aqui: carga
+  das áreas do ONS relida das respostas da API (médias e resíduos com statistics);
+  MMGD por município contra o Parquet original da ANEEL; usinas e registros de até 10 kW
+  por município contra o CSV original do SIGA; relação município × distribuidora
+  refeita a partir do IndQual Município, dos limites de continuidade de 2026 e do Parquet
+  de MMGD (scripts à parte, sem código do pipeline, em 01/10/2026); camada 24 da EPE;
+- consistência interna (rotulada como tal, não é reconciliação): soma municipal de usinas
+  igual à refeita a partir do arquivo de usinas publicado;
 - robustez: entidade grande (CEMIG-D), pequena (COCEL), multiestadual (ESS, dois
-  submercados), mudança societária (ENF absorvida; código 4314530 da RGE fora da malha),
-  valor extremo (São Paulo com 224 usinas; Tefé com sistema isolado) e ausência (Porto
-  Rico do Maranhão sem vínculo, Luz para Todos nulo, tarifa sem vigência);
-- nulo, zero e não se aplica distintos; troca e movimento de áreas de carga detectados;
-  nome sem igualdade exata fica sem vínculo (nada de semelhança).
+  submercados), distribuidora com a maior parte da área fora do SIN (Âmbar Amazonas),
+  mudança societária (ENF absorvida; código 4314530 da RGE fora da malha), valor extremo
+  (Portel, 5.708 registros de 1 a 3 kW; São Paulo, 222 usinas), sistema isolado (Tefé e
+  Jordão fora do SIN; Itaituba com localidade isolada) e ausência (Porto Rico do Maranhão
+  sem vínculo, Luz para Todos nulo, tarifa sem vigência);
+- nulo, zero e não se aplica distintos; troca e movimento de áreas de carga detectados,
+  inclusive as trocas que passariam pelas médias do dia; nome sem igualdade exata fica
+  sem vínculo (nada de semelhança).
 """
 import copy
 import csv
@@ -32,6 +38,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 
 from pipeline.energia import base, geo, metricas  # noqa: E402
 from pipeline.energia import evidencia as ev  # noqa: E402
+from pipeline.energia.fontes import epe_territorio as et  # noqa: E402
 from pipeline.energia.fontes import ibge_territorio as it  # noqa: E402
 from pipeline.energia.fontes import ons_territorio as ot  # noqa: E402
 from pipeline.energia.modulos import territorio as t  # noqa: E402
@@ -147,16 +154,39 @@ class AreasDeCarga(unittest.TestCase):
         self.assertIsNone(uf["MS"]["subsistema"])
 
     def test_troca_de_areas_de_carga_parecida_e_detectada(self):
-        # Acre (SE) e Roraima (N) têm carga média parecida: na média do dia a troca passaria
-        # na tolerância; meia hora a meia hora não passa (28,8 e 38,7 MWmed, calculados à parte)
-        for dia, sinal in (("2026-09-13", 28.8), ("2026-09-16", 38.7)):
+        # Acre (SE) e Roraima (N): a menor alternativa por meia hora (28,8 e 38,7 MWmed) e
+        # reprovada também pelas médias do dia (37,4 e 37,8 MWmed no pior submercado;
+        # statistics.fmean e statistics.median à parte)
+        for dia, sinal, medias in (("2026-09-13", 28.8, 37.419), ("2026-09-16", 38.7, 37.766)):
             cf = ot.confere_fechamento(self._series(dia), self.hip)
             self.assertEqual(cf["menor_alternativa"]["descricao"], "troca AC e RR")
             self.assertAlmostEqual(cf["menor_alternativa"]["mediana_abs_mwmed"], sinal, delta=0.06)
+            self.assertAlmostEqual(cf["menor_alternativa"]["residuo_medias_dia_mwmed"], medias, delta=0.002)
             self.assertGreater(cf["menor_alternativa"]["mediana_abs_mwmed"], ot.TOLERANCIA_MWMED)
             h = copy.deepcopy(self.hip)
             h["SE"].remove("AC"), h["N"].remove("RR"), h["SE"].append("RR"), h["N"].append("AC")
             self.assertFalse(ot.confere_fechamento(self._series(dia), h)["fecha"])
+
+    def test_media_do_dia_deixaria_passar_troca_que_a_meia_hora_reprova(self):
+        # 16/09: Rondônia (753,66 MWmed) e Tocantins Norte (745,94) trocadas deixam −7,94 no
+        # SE e 6,88 no N pelas médias do dia; Rio Grande do Sul e Bahia/Sergipe, 10,95 no NE
+        # (statistics.fmean à parte). Por meia hora, a mediana passa de 200 MWmed.
+        cf = ot.confere_fechamento(self._series("2026-09-16"), self.hip)
+        alt = {x["descricao"]: x for x in cf["alternativas"]}
+        self.assertAlmostEqual(alt["troca RO e TON"]["residuo_medias_dia_mwmed"], 7.936, delta=0.002)
+        self.assertAlmostEqual(alt["troca RS e BASE"]["residuo_medias_dia_mwmed"], 10.949, delta=0.002)
+        for d in ("troca RO e TON", "troca RS e BASE"):
+            self.assertLess(alt[d]["residuo_medias_dia_mwmed"], ot.TOLERANCIA_MWMED)   # passaria pela média
+            self.assertGreater(alt[d]["mediana_abs_mwmed"], 200)                       # a prova reprova
+        self.assertEqual(cf["menor_alternativa_pelas_medias"]["descricao"], "troca RO e TON")
+        self.assertEqual({a for a, x in cf["areas"].items() if x["veredito"] == "ambigua"}, set())
+        self.assertEqual(cf["alternativas_avaliadas"], 297)
+
+    def test_mediana_resiste_onde_a_media_do_dia_desloca(self):
+        # 13/09, Sudeste: resíduo das médias do dia −3,26 MWmed contra mediana por meia hora 0,19
+        cf = ot.confere_fechamento(self._series("2026-09-13"), self.hip)
+        self.assertAlmostEqual(cf["submercados"]["SE"]["residuo_mwmed"], -3.26, delta=0.006)
+        self.assertAlmostEqual(cf["submercados"]["SE"]["mediana_abs_mwmed"], 0.19, delta=0.006)
 
     def test_alternativa_que_tambem_fecha_deixa_areas_ambiguas(self):
         cf = ot.confere_fechamento(self._series("2026-09-13"), self.hip, tolerancia=40.0)
@@ -188,7 +218,7 @@ class AreasDeCarga(unittest.TestCase):
         d1, d2 = t._dias_para_conferir(dt.date(2026, 10, 1))
         self.assertEqual((d1, d2), ("2026-09-16", "2026-09-13"))       # quarta-feira e domingo
         self.assertEqual(dt.date.fromisoformat(d2).weekday(), 6)
-        d1, d2 = t._dias_para_conferir(dt.date(2026, 10, 4))           # cairia num sábado
+        d1, d2 = t._dias_para_conferir(dt.date(2026, 10, 4))           # cairia num sábado: recua para sexta
         self.assertEqual(dt.date.fromisoformat(d1).weekday(), 4)
 
 
@@ -263,6 +293,25 @@ class Pontos(unittest.TestCase):
         # CGH declarada em Belo Horizonte com coordenada em Ouro Preto
         self.assertEqual(self.poly.localiza(*it.projeta(-43.4828, -20.495, self.origem)), ["3146107"])
 
+    def test_malha_maxima_desfaz_falso_positivo_da_simplificada(self):
+        # UTE Budai (UTE.PE.SP.028609-5.1), declarada em Jandira (SP), coordenada do SIGA
+        # (-23,5167; -46,9157): fora de Jandira na malha simplificada do mapa e dentro na
+        # malha de qualidade máxima do IBGE (recorte de Jandira da API de malhas v4, 2025)
+        with open(os.path.join(DADOS, "malha_maxima_jandira.json"), encoding="utf-8") as f:
+            P = it.PoligonosMaxima(json.load(f))
+        self.assertEqual(P.localiza(-46.9157, -23.5167), ["3525003"])
+        self.assertNotIn("3525003", self.poly.localiza(*it.projeta(-46.9157, -23.5167, self.origem)))
+        self.assertFalse(P.contem("3525003", -46.95, -23.5167))     # 3,4 km a oeste: fora
+        self.assertIsNone(P.contem("3550308", -46.9157, -23.5167))  # município de outra UF: não está no índice
+        self.assertEqual(t.localiza_pontos([(7, -46.9157, -23.5167), (8, -43.87, -20.12)], [P]), {7: ["3525003"]})
+
+    def test_corpo_gzip_em_camadas(self):
+        import gzip as gz
+        corpo = b'{"a": 1}'
+        self.assertEqual(it.corpo_sem_gzip(gz.compress(gz.compress(corpo))), corpo)
+        self.assertEqual(it.corpo_sem_gzip(corpo), corpo)
+        self.assertEqual(set(it.CODIGOS_UF.values()), set(ot.UFS))
+
 
 class Usinas(unittest.TestCase):
     def setUp(self):
@@ -301,6 +350,36 @@ class Usinas(unittest.TestCase):
         self.assertEqual(linhas["CGH.PH.MG.000345-0.2"][11], 0)   # coordenada fora (Ouro Preto)
         self.assertEqual(linhas["PCH.PH.MG.000008-6.1"][11], 1)
 
+    def test_registros_ate_10kw_fora_da_contagem_de_usinas(self):
+        # três registros reais de Portel (PA): UFV de 1, 1 e 3 kW da Equatorial Pará
+        self.assertNotIn("1505809", self.u["op"])
+        n, kw = self.u["registros"]["1505809"]
+        self.assertEqual((n, kw), (3, 5.0))
+        self.assertEqual(self.u["contagem"]["registros_ate_10kw"], 3)
+        # registro acima de 10 kW continua usina: CGH Salto (4.505 kW) em Belo Horizonte e UTE Budai (1.070 kW) em Jandira
+        self.assertEqual(self.u["op"]["3525003"][0], 1)
+        self.assertAlmostEqual(self.u["op"]["3525003"][1], 1.07, places=6)
+        linhas = {x[0]: x for x in self.u["usinas"]}
+        self.assertEqual(linhas["UFV.RS.PA.064814-0.1"][12], "Registro")
+        self.assertEqual(t.registro_ate_10kw({"estagio": "operacao", "outorga": "Registro", "kw_fiscalizado": "10.0"}), True)
+        self.assertEqual(t.registro_ate_10kw({"estagio": "operacao", "outorga": "Registro", "kw_fiscalizado": "10.5"}), False)
+        self.assertEqual(t.registro_ate_10kw({"estagio": "operacao", "outorga": "Autorização", "kw_fiscalizado": "3"}), False)
+        self.assertEqual(t.registro_ate_10kw({"estagio": "operacao", "outorga": "Registro", "kw_fiscalizado": ""}), False)
+
+    def test_conferencia_na_malha_maxima_sobrepoe_a_simplificada(self):
+        malha = _malha()
+        siga = _siga()
+        with open(os.path.join(DADOS, "malha_maxima_jandira.json"), encoding="utf-8") as f:
+            P = it.PoligonosMaxima(json.load(f))
+        pontos = [(i, float(r["lon"]), float(r["lat"])) for i, r in enumerate(siga) if r["lat"] and r["lon"]]
+        u = t.processa_usinas(siga, self.nomes, it.IndicePoligonos(malha["features"]), geo.origem_da_grade(),
+                              achados=t.localiza_pontos(pontos, [P]))
+        budai = next(x for x in u["csv"] if x[0] == "UTE.PE.SP.028609-5.1")
+        self.assertEqual((budai[10], budai[11], budai[16]), ("3525003", 1, "maxima"))
+        simples = next(x for x in self.u["csv"] if x[0] == "UTE.PE.SP.028609-5.1")
+        self.assertEqual((simples[11], simples[16]), (0, "simplificada"))     # falso positivo da malha do mapa
+        self.assertGreaterEqual(u["contagem"]["simplificada_fora_maxima_dentro"], 1)
+
     def test_sem_coordenada_e_sem_municipio(self):
         linhas = {x[0]: x for x in self.u["usinas"]}
         sem = linhas["UTE.AI.PR.028157-3.1"]                 # Bandeirantes - PR, sem coordenada
@@ -312,6 +391,61 @@ class Usinas(unittest.TestCase):
         self.assertIn(("", "Não Informado"), self.u["nao_reconhecidos"])
         self.assertIn(("RJ", "Armação de Búzios"), self.u["nao_reconhecidos"])
         self.assertEqual(self.u["contagem"]["total"], len(_siga()))
+
+
+class SistemaIsolado(unittest.TestCase):
+    """Município com localidade do PASI (ciclo 2025): fora do SIN quando a sede é localidade
+    isolada ou a população isolada é ao menos metade da estimada; senão, aviso. Populações
+    do arquivo do PASI integrado pelo módulo Inclusão (Tefé conferida no WebMap da EPE:
+    AM-096 TEFÉ 73.669 e AM-025 CAIAMBÉ 974) e estimativas do IBGE de 2026."""
+
+    N = {"subsistema": "N", "estado": "provado"}
+    SE = {"subsistema": "SE", "estado": "provado"}
+
+    def test_sede_isolada(self):
+        tefe = [{"nome": "CAIAMBÉ", "populacao": 974.0}, {"nome": "TEFÉ", "populacao": 73669.0}]
+        self.assertEqual(t.estado_submercado_municipio("Tefé", 81046, tefe, self.N), (None, "fora_do_sin", 1))
+        jordao = [{"nome": "JORDÃO", "populacao": 9222.0}]   # Acre: a UF é do Sudeste/Centro-Oeste
+        self.assertEqual(t.estado_submercado_municipio("Jordão", 9972, jordao, self.SE), (None, "fora_do_sin", 1))
+        # a sede decide mesmo sem população publicada
+        self.assertEqual(t.estado_submercado_municipio("Jordão", None, [{"nome": "JORDÃO", "populacao": None}], self.SE)[1], "fora_do_sin")
+
+    def test_maior_parte_da_populacao_isolada(self):
+        careiro = [{"nome": "CAREIRO", "populacao": 19637.0}, {"nome": "PARAUÁ", "populacao": 284.0}]
+        self.assertEqual(t.estado_submercado_municipio("Careiro da Várzea", 20081, careiro, self.N), (None, "fora_do_sin", 0))
+
+    def test_localidade_menor_mantem_submercado_com_aviso(self):
+        itaituba = [{"nome": "CREPURIZAO", "populacao": 10000.0}, {"nome": "AGUA BRANCA", "populacao": 2500.0}]
+        self.assertEqual(t.estado_submercado_municipio("Itaituba", 136990, itaituba, self.N), ("N", "com_localidade_isolada", 0))
+        juruti = [{"nome": "ALCOA PORTO", "populacao": None}, {"nome": "ALCOA BENEFICIAMENTO", "populacao": None}]
+        self.assertEqual(t.estado_submercado_municipio("Juruti", 54546, juruti, self.N), ("N", "com_localidade_isolada", 0))
+
+    def test_sem_localidade_vale_a_uf(self):
+        self.assertEqual(t.estado_submercado_municipio("Manaus", 2327101, [], self.N), ("N", "provado", None))
+        nao = {"subsistema": None, "estado": "nao_provado"}
+        self.assertEqual(t.estado_submercado_municipio("X", 10, [{"nome": "Y", "populacao": 1.0}], nao), (None, "nao_provado", 0))
+
+
+class CamadaEpe(unittest.TestCase):
+    def test_subsistema_por_uf_da_camada_24(self):
+        # resposta real da camada 24 do WebMap da EPE (01/10/2026): Bahia com sigla "BH" e
+        # Distrito Federal com nome "DF"; o mapeamento é o mesmo publicado por Água e Carga
+        with open(os.path.join(DADOS, "epe_camada24_subsistemas.json"), encoding="utf-8") as f:
+            texto = f.read()
+        malha_uf = os.path.join(base.RAIZ, "public", "energia", "geo", "uf.json")
+        nomes_uf = {f["uf"]: f["nome"] for f in _json(malha_uf)["features"]} if os.path.exists(malha_uf) else {
+            "BA": "Bahia", **{uf: uf for uf in ot.UFS if uf != "BA"}}
+        r = et.subsistemas_por_uf(texto, nomes_uf)
+        self.assertEqual(r["mapeamento"], UF_SM)
+        self.assertEqual(r["sem_uf"], [])
+        self.assertEqual([(x["UF_fonte"], x["uf"]) for x in r["ligacoes_pelo_nome"]], [("BH", "BA")])
+
+    def test_sigla_e_nome_desconhecidos_nao_sao_aproximados(self):
+        texto = json.dumps({"features": [{"attributes": {"UF": "XX", "Nome": "BAÍA", "subsistee": "NE"}},
+                                         {"attributes": {"UF": "SP", "Nome": "SÃO PAULO", "subsistee": "SE-CO"}}]})
+        r = et.subsistemas_por_uf(texto, {"BA": "Bahia", "SP": "São Paulo"})
+        self.assertEqual(r["mapeamento"], {"SP": "SE"})
+        self.assertEqual(len(r["sem_uf"]), 1)
 
 
 class Relacao(unittest.TestCase):
@@ -362,8 +496,9 @@ class GoldPublicada(unittest.TestCase):
 
     def test_colunas_municipais_so_do_municipio_ou_referencia(self):
         permitidas = {"pop", "mmgd_un", "mmgd_kw", "mmgd_w_hab", "tsee_faturas", "tsee_desconto", "tsee_proxy_pct",
-                      "tsee_base_pequena", "lpt_dom", "usi_op_n", "usi_op_mw", "usi_cart_n", "usi_cart_mw", "isol_n", "isol_pop"}
-        refs = {"ibge", "nome", "uf", "sm", "sm_estado", "dist", "conj", "usi_multi"}
+                      "tsee_base_pequena", "lpt_dom", "usi_op_n", "usi_op_mw", "usi_cart_n", "usi_cart_mw", "usi_reg_n",
+                      "usi_reg_kw", "isol_n", "isol_pop"}
+        refs = {"ibge", "nome", "uf", "sm", "sm_estado", "dist", "conj", "usi_multi", "isol_sede"}
         self.assertEqual(set(self.m["campos"]), permitidas | refs)
         self.assertEqual({k for k, g in self.m["graos"].items() if g == "municipio"}, permitidas)
         for proibido in ("taxa", "dec", "fec", "tarifa", "pld", "ear", "perdas", "participacao"):
@@ -371,11 +506,24 @@ class GoldPublicada(unittest.TestCase):
         self.assertEqual(set(self.m["conjuntos"]["graos"].values()), {"ref", "conjunto"})
         self.assertEqual(set(self.u["graos"].values()), {"ref", "usina"})
 
-    def test_catalogo_cada_indicador_na_tabela_do_seu_grao(self):
-        tabela = {"submercado": "submercados[]", "uf": "ufs[]", "distribuidora": "distribuidoras[]",
-                  "conjunto": "municipios.conjuntos", "municipio": "municipios.", "usina": "usinas."}
+    def test_catalogo_cada_indicador_publicado_na_tabela_do_seu_grao(self):
+        # Confere a PUBLICAÇÃO (não o texto do campo): o bloco do indicador existe na tabela
+        # do grão na gold, a coluna existe no arquivo do grão, e nenhum indicador de grão
+        # acima do município tem coluna no índice municipal.
+        blocos = {"submercado": set(self.g["submercados"][0]["indicadores"]), "uf": set(self.g["ufs"][0]["indicadores"]),
+                  "distribuidora": set(self.g["distribuidoras"][0]["indicadores"])}
+        colunas = {"municipio": set(self.m["campos"]), "conjunto": set(self.m["conjuntos"]["campos"]), "usina": set(self.u["campos"])}
         for x in self.g["indicadores"]:
-            self.assertTrue(x["campo"].startswith(tabela[x["grao"]]), x["id"])
+            if x["grao"] in blocos:
+                bloco = x["campo"].split(".")[-1]
+                self.assertIn(bloco, blocos[x["grao"]], x["id"])
+                self.assertNotIn(bloco, self.m["campos"], x["id"])
+            else:
+                for col in x["campo"].split(".", 1)[1].replace(" e ", " ").replace("conjuntos[].", "").split():
+                    self.assertIn(col, colunas[x["grao"]], (x["id"], col))
+                    grao_col = (self.m["graos"] if x["grao"] == "municipio" else self.m["conjuntos"]["graos"]
+                                if x["grao"] == "conjunto" else self.u["graos"])[col]
+                    self.assertEqual(grao_col, x["grao"], (x["id"], col))
             if x["grao"] == "distribuidora":
                 self.assertIn("da distribuidora", x["rotulo_no_municipio"])
                 self.assertIn("não do município", x["rotulo_no_municipio"])
@@ -408,13 +556,17 @@ class GoldPublicada(unittest.TestCase):
         self.assertGreater(n, 5000)
         self.assertLessEqual(sum(copias.values()), 5, dict(copias))   # coincidências isoladas, nunca cópia sistemática
 
-    def test_soma_municipal_de_usinas_refeita_pelo_arquivo_de_usinas(self):
+    def test_consistencia_interna_soma_municipal_e_arquivo_de_usinas(self):
+        # CONSISTÊNCIA INTERNA entre dois arquivos publicados (índice municipal e usinas), não
+        # reconciliação com a fonte: a reconciliação está em test_usinas_iguais_ao_csv_original_do_siga
         U = {k: i for i, k in enumerate(self.u["campos"])}
         esperado = defaultdict(float)
         multi_ceg = set()
         for x in self.u["linhas"]:
             cods = x[U["municipios"]]
-            if x[U["estagio"]] == "operacao" and len(cods) == 1 and x[U["n_declarados"]] == 1 and x[U["mw_fiscalizado"]] is not None:
+            pequeno = x[U["outorga"]] == "Registro" and x[U["mw_fiscalizado"]] is not None and x[U["mw_fiscalizado"]] <= 0.010
+            if (x[U["estagio"]] == "operacao" and len(cods) == 1 and x[U["n_declarados"]] == 1
+                    and x[U["mw_fiscalizado"]] is not None and not pequeno):
                 esperado[cods[0]] += x[U["mw_fiscalizado"]]
             if x[U["n_declarados"]] > 1:
                 multi_ceg.add(x[U["ceg"]])
@@ -442,22 +594,51 @@ class GoldPublicada(unittest.TestCase):
             self.assertAlmostEqual(self.col(cod, "mmgd_kw"), kw, delta=0.01, msg=cod)
 
     def test_usinas_iguais_ao_csv_original_do_siga(self):
-        # siga-empreendimentos-geracao-diario.csv (bronze de 30/09/2026): fase Operação e
-        # DscMuninicpios exatamente igual ao município, potência fiscalizada somada
-        orig = {"3144805": (12, 15.943), "2400208": (31, 1243.97), "3106200": (31, 37.045),
-                "3550308": (224, 1012.831), "4205407": (9, 4.902)}
-        for cod, (n, mw) in orig.items():
+        # siga-empreendimentos-geracao-diario.csv (bronze de 30/09/2026) relido por outro
+        # script em 01/10/2026: fase Operação, DscMuninicpios igual ao município, CEG sem
+        # repetição; usinas = sem DscTipoOutorga "Registro" com até 10 kW (MW fiscalizados);
+        # registros de até 10 kW à parte (kW)
+        orig = {"3144805": (12, 15.943, 0, 0.0), "2400208": (31, 1243.97, 0, 0.0), "3106200": (31, 37.045, 0, 0.0),
+                "3550308": (222, 1012.819, 2, 12.0), "4205407": (8, 4.901, 1, 1.0), "1302603": (24, 1298.978, 2, 13.0),
+                "1304203": (5, 31.868, 0, 0.0), "1505809": (0, 0.0, 5708, 5990.0), "5003207": (2, 10.312, 2862, 2862.0),
+                "3525003": (1, 1.07, 0, 0.0)}
+        for cod, (n, mw, nr, kw) in orig.items():
             self.assertEqual(self.col(cod, "usi_op_n"), n, cod)
             self.assertAlmostEqual(self.col(cod, "usi_op_mw"), mw, delta=0.001, msg=cod)
+            self.assertEqual(self.col(cod, "usi_reg_n"), nr, cod)
+            self.assertAlmostEqual(self.col(cod, "usi_reg_kw"), kw, delta=0.001, msg=cod)
+        self.assertEqual(self.g["resumo"]["usinas"]["registros_ate_10kw"], 16035)
+        # o maior número de usinas de um município é o de São Paulo; o de registros, o de Portel
+        U = self.C
+        self.assertEqual(max(self.m["linhas"], key=lambda l: l[U["usi_op_n"]])[0], "3550308")
+        self.assertEqual(max(self.m["linhas"], key=lambda l: l[U["usi_reg_n"]])[0], "1505809")
+        ctl = next(c for c in self.g["controles"] if c["nome"].startswith("Extremos da contagem municipal"))
+        self.assertEqual(ctl["resultado"], "aprovado")
+        self.assertIn("São Paulo (SP) 222", ctl["detalhe"])
+        self.assertIn("Portel (PA) 5708", ctl["detalhe"])
 
-    def test_relacao_igual_a_do_modulo_perdas(self):
+    def test_relacao_igual_a_refeita_dos_arquivos_originais(self):
+        # Reconstrução independente (script à parte, sem código do pipeline, 01/10/2026):
+        # indicadores-continuidade-coletivos-limite.csv (AnoLimiteQualidade = 2026: conjunto →
+        # CNPJ), indqual-municipio.csv (conjunto → município) e
+        # empreendimento-geracao-distribuida.parquet (empreendimentos por CNPJ e município):
+        # vínculo 1 com empreendimento, 0 sem; município fora da relação com distribuidora de
+        # ao menos 10 empreendimentos e 5% do município = vínculo 2. Resultado: 6.259
+        # vínculos na malha (6.044 / 191 / 24), 5.566 municípios com distribuidora, 440
+        # compartilhados, CEMIG-D com 800 (776 + 24), só 2109056 sem vínculo e 4314530 fora da malha.
         r = self.g["resumo"]
         self.assertEqual(r["municipios"], 5571)
         self.assertEqual(r["municipios_compartilhados"], 440)
+        self.assertEqual(r["municipios_com_distribuidora"], 5566)
+        estados = defaultdict(int)
+        for l in self.m["linhas"]:
+            for _i, e in l[self.C["dist"]]:
+                estados[e] += 1
+        self.assertEqual(dict(estados), {1: 6044, 0: 191, 2: 24})
         self.assertEqual([x["codigo"] for x in r["municipios_sem_vinculo"]], ["2109056"])
         self.assertEqual([x["codigo"] for x in r["codigos_da_relacao_fora_da_malha"]], ["4314530"])
         cemig = self.dist["CEMIG-D"]
-        self.assertEqual((cemig["area"]["municipios"], cemig["area"]["confirmados"], cemig["area"]["exclusivos"]), (800, 776, 769))
+        self.assertEqual((cemig["area"]["municipios"], cemig["area"]["confirmados"], cemig["area"]["nao_confirmados"]), (800, 776, 24))
 
     def test_tarifa_da_distribuidora_igual_ao_arquivo_original(self):
         # tarifas-homologadas-distribuidoras-energia-eletrica.csv (bronze de 30/09/2026), linha
@@ -498,10 +679,56 @@ class GoldPublicada(unittest.TestCase):
 
     def test_valores_extremos_e_sistema_isolado(self):
         self.assertEqual(len([i for i, e in self.col("3550308", "dist") if e in (1, 2)]), 2)
-        self.assertEqual(self.col("1304203", "sm_estado"), "com_localidade_isolada")     # Tefé
-        self.assertGreater(self.col("1304203", "isol_pop"), 70000)
+        # Tefé: sede isolada (AM-096 TEFÉ 73.669 e AM-025 CAIAMBÉ 974 hab.): fora do SIN, sem submercado
+        self.assertEqual((self.col("1304203", "sm"), self.col("1304203", "sm_estado"), self.col("1304203", "isol_sede")),
+                         (None, "fora_do_sin", 1))
+        self.assertEqual(self.col("1304203", "isol_pop"), 74643)
+        # Jordão (AC, UF do Sudeste/Centro-Oeste): sede isolada, nunca "SE"
+        self.assertEqual((self.col("1200328", "sm"), self.col("1200328", "sm_estado")), (None, "fora_do_sin"))
+        # Uiramutã: população do PASI (18.849) maior que a estimativa do IBGE (16.809), bases diferentes
+        self.assertEqual(self.col("1400704", "sm_estado"), "fora_do_sin")
+        # Itaituba: duas localidades com 12.500 hab. em 136.990: submercado da UF com aviso
+        self.assertEqual((self.col("1503606", "sm"), self.col("1503606", "sm_estado")), ("N", "com_localidade_isolada"))
         self.assertEqual(self.col("1302603", "sm_estado"), "provado")                   # Manaus, no SIN
         self.assertEqual(self.col("1721000", "sm_estado"), "provado_com_area_sem_carga")  # Palmas (TO)
+        r = self.g["resumo"]["municipios_fora_do_sin"]
+        self.assertEqual((r["total"], r["sede_isolada"], r["so_pela_populacao"]), (73, 71, 2))
+        self.assertEqual(self.g["resumo"]["municipios_por_estado_submercado"]["com_localidade_isolada"], 16)
+        # nenhum município fora do SIN tem submercado
+        self.assertFalse([l[0] for l in self.m["linhas"] if l[self.C["sm_estado"]] == "fora_do_sin" and l[self.C["sm"]] is not None])
+
+    def test_distribuidora_com_area_fora_do_sin(self):
+        amb = self.dist["ÂMBAR AMAZONAS"]
+        self.assertEqual((amb["area"]["confirmados"], amb["area"]["fora_do_sin"], amb["area"]["com_localidade_isolada"]), (58, 49, 3))
+        self.assertEqual(amb["submercados"], [{"sm": "N", "municipios": 9}])     # só os 9 municípios no SIN
+        self.assertTrue(amb["parte_fora_do_sin"])
+        rr = self.dist["ÂMBAR ENERGIA RR"]
+        self.assertEqual((rr["area"]["confirmados"], rr["area"]["fora_do_sin"], rr["submercados"]), (15, 3, [{"sm": "N", "municipios": 12}]))
+        self.assertFalse(self.dist["CEMIG-D"]["parte_fora_do_sin"])
+        # 52 no AM: os 49 da Âmbar com vínculo válido mais Amaturá, Santo Antônio do Içá e São
+        # Paulo de Olivença, ligados à Âmbar só com vínculo 0 (sem confirmação no cadastro de MMGD).
+        # Com localidade isolada, a Âmbar tem 49 + 3 = 52 dos seus 58 municípios válidos.
+        am = next(u for u in self.g["ufs"] if u["uf"] == "AM")
+        self.assertEqual(am["municipios_fora_do_sin"], 52)
+        compat = next(x for x in self.g["compatibilidade"] if (x["de"], x["para"]) == ("municipio", "submercado"))
+        self.assertIn("fora_do_sin", compat["condicao"])
+
+    def test_perdas_faixa_fisica_e_ano_parcial(self):
+        for sigla, taxa in (("CERPRO", -10.44), ("CERTHIL", -17.31), ("COORSEL", -18.24)):
+            p = self.dist[sigla]["indicadores"]["perdas"]
+            self.assertEqual(p["taxa_total_pct"], taxa)                 # como o SAMP publica, sem descarte
+            self.assertTrue(any("faixa física" in x for x in p["ressalvas"]), sigla)
+        coorsel = self.dist["COORSEL"]["indicadores"]["perdas"]
+        self.assertEqual((coorsel["meses"], coorsel["parcial"]), (8, True))
+        self.assertFalse(self.dist["CEMIG-D"]["indicadores"]["perdas"]["parcial"])
+        q = self.dist["CASTRO-DIS"]["indicadores"]["qualidade"]       # 11 meses: o módulo Qualidade não publica
+        self.assertFalse(q["disponivel"])
+        self.assertIn("parcial", q["motivo"])
+        ctl = {c["nome"]: c for c in self.g["controles"]}
+        faixa = ctl["Percentuais da distribuidora na faixa física de 0% a 100%"]
+        self.assertEqual(faixa["resultado"], "ressalva")
+        for sigla in ("CERPRO", "CERTHIL", "COORSEL"):
+            self.assertIn(sigla, faixa["detalhe"])
 
     def test_ausencia_zero_e_nao_se_aplica(self):
         self.assertEqual(self.col("2109056", "dist"), [])                  # Porto Rico do Maranhão: sem vínculo
@@ -536,6 +763,79 @@ class GoldPublicada(unittest.TestCase):
             self.assertTrue(p["limitacoes"], nome)
             self.assertIn(p["natureza"], ("OBSERVADO", "CALCULADO", "ESTIMADO", "PREVISTO", "CENARIO"), nome)
         self.assertFalse([c for c in self.g["controles"] if c["resultado"] == "reprovado"])
+
+    def test_cada_bloco_reapresentado_tem_proveniencia_propria(self):
+        P = self.g["proveniencia"]
+        for k in ("mmgd_ons", "conjuntos", "populacao", "pld_dia", "pld_mes", "ear", "subsistema_uf"):
+            self.assertIn(k, P)
+        self.assertEqual(P["mmgd_ons"]["natureza"], "ESTIMADO")
+        self.assertEqual(P["mmgd_ons"]["fonte"]["orgao"], "ONS")
+        self.assertEqual(P["populacao"]["fonte"]["orgao"], "IBGE")
+        self.assertEqual(P["populacao"]["periodo_referencia"], {"inicio": "2026", "fim": "2026"})
+        self.assertEqual(self.g["referencias"]["populacao_ano"], 2026)
+        self.assertEqual(P["conjuntos"]["periodo_referencia"], {"inicio": "2025", "fim": "2025"})
+
+    def test_natureza_metrica_e_periodo_do_valor_exibido(self):
+        P = self.g["proveniencia"]
+        ind = {x["id"]: x for x in self.g["indicadores"]}
+        # PLD do dia é média de 24 horas: calculado, com a fórmula do PLD diário
+        self.assertEqual(ind["pld_dia"]["natureza"], "CALCULADO")
+        self.assertEqual(P["pld_dia"]["natureza"], "CALCULADO")
+        self.assertIn("PLD_dia", P["pld_dia"]["formula"])
+        self.assertEqual(P["pld_dia"]["periodo_referencia"], {"inicio": "2026-09-30", "fim": "2026-09-30"})
+        self.assertEqual(P["pld_mes"]["periodo_referencia"], {"inicio": "2026-09", "fim": "2026-09"})
+        # EAR do subsistema: observada pelo ONS, sem a fórmula do SIN, métrica própria
+        self.assertEqual((P["ear"]["natureza"], P["ear"]["formula"]), ("OBSERVADO", None))
+        self.assertNotIn("SIN", " ".join(P["ear"]["transformacoes"]))
+        self.assertEqual(ind["ear_pct"]["metrica"], "territorio_ear_subsistema_pct")
+        self.assertEqual(P["ear"]["periodo_referencia"], {"inicio": "2026-09-29", "fim": "2026-09-29"})
+        # período do valor exibido, não a cobertura da fonte
+        self.assertEqual(P["distribuidora_perdas"]["periodo_referencia"], {"inicio": "2025", "fim": "2025"})
+        self.assertEqual(P["isolados"]["periodo_referencia"], {"inicio": "2025", "fim": "2025"})
+        self.assertEqual(P["mmgd_ons"]["periodo_referencia"], {"inicio": "2026-08", "fim": "2026-08"})
+        self.assertNotIn("scrutiniums.com", P["indice"]["fonte"]["url_dataset"])
+
+    def test_evidencia_com_captura_original_e_consulta_atual(self):
+        E = self.g["evidencias"]
+        f = E["municipios_compartilhados"]["fonte"]
+        # captura do IndQual pelo módulo Perdas, não a geração do arquivo intermediário
+        self.assertEqual(f["capturado_em"], "2026-09-30T22:32:46Z")
+        self.assertTrue(f["processado_em"] and f["processado_em"] != f["capturado_em"])
+        u = E["usinas_municipio_reconhecido"]["fonte"]
+        self.assertEqual(u["capturado_em"], "2026-09-30T22:18:54Z")        # captura do SIGA
+        self.assertTrue(u["publicado_em"])
+        self.assertIn("meia_hora.", E["municipios_com_submercado"]["consulta"])
+        self.assertNotIn("carga_global_mwmed", E["municipios_com_submercado"]["consulta"])
+
+    def test_coordenadas_na_malha_maxima(self):
+        U = {k: i for i, k in enumerate(self.u["campos"])}
+        self.assertEqual(self.u["conferencia_coordenada"], "maxima")
+        linhas = {x[0]: x for x in self.u["linhas"]}
+        # amostra do verificador dada como fora na malha simplificada: dentro na máxima
+        for ceg in ("EOL.CV.PB.051574-4.1", "EOL.CV.PI.033014-0.1", "UTE.PE.SP.028609-5.1", "CGH.PH.MS.029104-8.1"):
+            self.assertEqual(linhas[ceg][U["coord_no_declarado"]], 1, ceg)
+        # Tapuirama (CGH.PH.MG.028955-8.1, Uberlândia): fora na malha de 2025 (API v4), dentro na
+        # revisão anterior servida pela API v3; o índice usa a mesma revisão do mapa (2025)
+        self.assertEqual(linhas["CGH.PH.MG.028955-8.1"][U["coord_no_declarado"]], 0)
+        r = self.g["resumo"]["usinas"]
+        self.assertEqual(r["coordenada_fora_na_malha_simplificada"], 1379)
+        self.assertLess(r["coordenada_fora_do_municipio_declarado"], 1379)
+        self.assertEqual(r["coordenada_fora_na_malha_simplificada"] - r["simplificada_fora_maxima_dentro"]
+                         + r["simplificada_dentro_maxima_fora"], r["coordenada_fora_do_municipio_declarado"])
+        self.assertEqual(r["conferencia_coordenada"]["conferencia"], "maxima")
+        self.assertEqual(len(r["conferencia_coordenada"]["arquivos"]), 27)
+
+    def test_areas_publicam_as_duas_estatisticas(self):
+        ac = self.g["areas_carga"]
+        self.assertEqual(ac["mapeamento_epe"], UF_SM)
+        d16 = next(c for c in ac["conferencias"] if c["dia"] == "2026-09-16")
+        self.assertEqual(d16["menor_alternativa"]["descricao"], "troca AC e RR")
+        self.assertEqual(d16["menor_alternativa_pelas_medias"]["descricao"], "troca RO e TON")
+        self.assertEqual(d16["alternativas_que_fechariam_pelas_medias"], ["troca RO e TON", "troca RS e BASE"])
+        with open(os.path.join(base.SERIES, "territorio_areas_alternativas.csv"), encoding="utf-8") as f:
+            alts = list(csv.DictReader(f, delimiter=";"))
+        self.assertEqual(len(alts), 2 * 297)
+        self.assertFalse([a for a in alts if a["fecha"] == "1"])
 
     def test_tamanhos(self):
         self.assertLess(os.path.getsize(GOLD), 400 * 1024)

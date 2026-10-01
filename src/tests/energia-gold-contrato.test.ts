@@ -287,7 +287,10 @@ describe("publicação: saúde, revisões, manifesto e reprodução (módulo dad
     expect(g.resumo.integracoes).toBe(g.conjuntos.length);
   });
 
-  it("falha nunca renova a data do dado: atrasado tem prazo vencido e nenhum período passa de hoje", () => {
+  // Consistência interna da gold (não é conferência independente): a falha simulada no silver e o
+  // período relido no original do bronze estão em pipeline/tests/test_energia_dados.py e na ficha
+  // conjuntos_atrasados.
+  it("consistência da atualidade: atrasado tem prazo vencido, em dia não, e nenhum período passa de hoje", () => {
     const hoje = g.referencia.hoje;
     for (const c of g.conjuntos) {
       const a = c.atualidade;
@@ -296,6 +299,13 @@ describe("publicação: saúde, revisões, manifesto e reprodução (módulo dad
       if (a.situacao === "EM DIA") expect(a.prazo_proximo! >= hoje, c.id).toBe(true);
       if (a.ultimo_periodo && a.ultimo_periodo.length >= 10) expect(a.ultimo_periodo.slice(0, 10) <= hoje, c.id).toBe(true);
       if (a.situacao === "SEM SLA" || a.situacao === "SEM DADO") expect(a.motivo_sem_sla, c.id).toBeTruthy();
+      // período corrente parcial não alonga o prazo: o prazo nunca passa do fim do período
+      // corrente mais a tolerância da cadência
+      if (a.periodo_parcial && (a.caso === "A" || a.caso === "C") && a.cadencia && a.fim_ultimo_periodo && a.prazo_proximo) {
+        const limite = new Date(a.fim_ultimo_periodo + "T00:00:00Z");
+        limite.setUTCDate(limite.getUTCDate() + g.regras.sla[a.cadencia].tolerancia_dias);
+        expect(a.prazo_proximo <= limite.toISOString().slice(0, 10), c.id).toBe(true);
+      }
     }
   });
 
@@ -303,6 +313,8 @@ describe("publicação: saúde, revisões, manifesto e reprodução (módulo dad
     const revisados = g.conjuntos.filter((c) => (c.revisoes?.referencias ?? 0) > 0);
     for (const c of revisados) {
       const r = c.revisoes!;
+      // pares (série, referência) nunca são menos que as referências distintas
+      expect(r.observacoes ?? 0, c.id).toBeGreaterThanOrEqual(r.referencias ?? 0);
       expect(r.ref_min && r.ref_max, c.id).toBeTruthy();
       expect(r.maior_abs, c.id).toBeTruthy();
       expect(Math.abs(r.maior_abs!.para - r.maior_abs!.de - r.maior_abs!.diferenca)).toBeLessThan(1e-4);

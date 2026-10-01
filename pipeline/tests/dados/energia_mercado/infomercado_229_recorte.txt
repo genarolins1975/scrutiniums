@@ -47,7 +47,20 @@ o ambiente de comercialização livre (ACL), avanço de 0,7%.
    de análises, estudos e avaliações para fins de tomada de decisões, definição de estratégias de atuação, assunção de compromissos e obrigações e quaisquer outras finalidades, em qualquer tempo e sob qualquer condição.
    É proibida a reprodução ou utilização total ou parcial do presente sem a identificação da fonte.
                                                                                                                                                                1
-                                                                                                                                                    Tabela 12 – Resultados de Energia de Reserva
+rede básica (50% das perdas).                                                                                              4 Em julho/2026, houve exportação de 929,07 MW médios e não houve importação.
+A geração das usinas participantes do MRE apresentou alta de 8,1% quando
+comparada ao mês de julho do ano anterior. Com geração inferior à garantia física
+(Gráfico 3), o fator de ajuste do MRE foi de 76,83% (Gráfico 4). Nos últimos doze
+meses ajuste médio do MRE é de 92,55%
+Nas tabelas 3 e 4 observa-se a dinâmica do MRE, com relação à transferência de
+energia e ao balanço por submercado.                                                                                  O consumo contabilizou 70.238 MW médios 7 e apresentou alta de 4,3% 8 em
+                                                                                                                      relação ao mesmo período do ano anterior. O ACR registrou crescimento de 5,2%,
+                                                                                                                      enquanto o ACL avançou 3,1% sem considerar os efeitos da exportação.
+                            Tabela 3 – Transferência de energia no MRE (MWm)
+6Os valores de consumo estão no centro de gravidade, isto é, considera consumo já acrescido de eventuais perdas de    8 Houve exportação de energia de 929,1 MW médios em julho/2026 e 1.653,9 MW médios no mesmo mês de 2025.
+rede básica (50% das perdas).                                                                                         Ao considerar estas exportações o SIN cresce 3,2% e o ACL avança 0,7%.
+7
+                                                                                                                                                    Tabela 12 – Resultados de Energia de Reserva
 
 
 Do total de encargos (R$ 64,96 milhões), 57,0% (R$ 37,02 milhões) foi devido a

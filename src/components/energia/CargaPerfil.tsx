@@ -200,7 +200,10 @@ export function CargaPerfil({
         <div>
           <dt className="rotulo text-mineral">Universo</dt>
           <dd className="mt-0.5">
-            {sm === "SIN" ? "SIN" : NOME_REGIAO[sm]}; curva de carga horária e carga verificada do ONS, sempre em gráficos separados
+            {sm === "SIN"
+              ? "SIN"
+              : `${NOME_REGIAO[sm]} na resposta, na curva horária e no mapa do pico; SIN na carga verificada hora a hora, no dia típico e nos picos diários`}
+            ; curva de carga horária e carga verificada do ONS, sempre em gráficos separados
           </dd>
         </div>
         <div>

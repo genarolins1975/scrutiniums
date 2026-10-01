@@ -63,8 +63,10 @@ def silver_de_amostra(*chaves):
     for k in chaves:
         for v in s[k]["vintages"]:
             con.execute("INSERT INTO vintages VALUES (?,?,?,?,?,?,?,?,?,?)", v)
-        for o in s[k]["observacoes"]:
+        for o in s[k].get("observacoes", []):
             con.execute("INSERT INTO observacoes VALUES (?,?,?,?,?)", o)
+        for r in s[k].get("registros", []):
+            con.execute("INSERT INTO registros VALUES (?,?,?,?,?)", r)
     con.commit()
     return con
 
@@ -90,9 +92,10 @@ class TestRevisoes(unittest.TestCase):
         for _, serie, ref, valor, vid in sorted(s["observacoes"], key=lambda o: (o[1], o[2], cap[o[4]])):
             por_chave.setdefault((serie, ref), []).append(valor)
         mudaram = {k: v for k, v in por_chave.items() if len(v) > 1 and abs(v[-1] - v[0]) > 1e-9}
-        self.assertEqual(rv["referencias_revisadas"], len(mudaram))
+        self.assertEqual(rv["observacoes_revisadas"], len(mudaram))
         # 20 a 26/09 mudaram; 27 e 28/09 só existem na segunda captura (referências novas)
-        self.assertEqual(rv["referencias_revisadas"], 7)
+        self.assertEqual(rv["observacoes_revisadas"], 7)
+        self.assertEqual(rv["referencias_revisadas"], 7)  # uma só série: cada par é um dia distinto
         self.assertEqual(rv["series_afetadas"], 1)
         self.assertEqual((rv["ref_min"], rv["ref_max"]), ("2026-09-20", "2026-09-26"))
         m = rv["maior_abs"]
@@ -123,11 +126,52 @@ class TestRevisoes(unittest.TestCase):
         self.assertNotIn("eventos", r)
         self.assertEqual(r["conflitos_entre_recursos"]["referencias"], 2)
 
+    def test_observacoes_e_referencias_revisadas_sao_contagens_diferentes(self):
+        # 25 e 26/09/2026: as quatro séries da carga diária mudaram entre as capturas de 29 e
+        # 30/09 (recontado no energia.db: 33 pares em 17 dias no conjunto inteiro). No recorte,
+        # 8 pares (série, referência) em 2 referências; a do Norte em 24/09 não mudou.
+        con = silver_de_amostra("carga_energia_di_4sub")
+        rv = sd.revisoes(con, "carga_energia_di")
+        self.assertEqual((rv["observacoes_revisadas"], rv["referencias_revisadas"], rv["series_afetadas"]), (8, 2, 4))
+        self.assertEqual((rv["ref_min"], rv["ref_max"]), ("2026-09-25", "2026-09-26"))
+        r = dados._resumo_revisao({"revisoes": rv, "revisoes_registros": None})
+        self.assertEqual((r["observacoes"], r["referencias"]), (8, 2))
+
     def test_ausencia_numa_captura_nao_e_revisao(self):
         # 27 e 28/09 existem só na segunda captura: entraram como referências novas, não como revisão
         con = silver_de_amostra("carga_energia_di")
         rv = sd.revisoes(con, "carga_energia_di")
         self.assertFalse(any(e["ref"] in ("2026-09-27", "2026-09-28") for e in rv["maiores"]))
+
+
+class TestRevisoesRegistros(unittest.TestCase):
+    """Cadastros e atos: mudança só entre capturas do mesmo arquivo (mesma regra das
+    observações); arquivos diferentes são conflito entre recursos."""
+
+    def test_arquivos_anuais_que_divergem_sao_conflito_e_nao_mudanca(self):
+        # aneel_manifestacoes: a distribuidora de CNPJ 01.543.032/0001-04 é 'Enel GO' no arquivo
+        # de 2023 e 'Equatorial GO' no de 2024 (mudança societária entre edições, não revisão)
+        con = silver_de_amostra("aneel_manifestacoes")
+        rr = sd.revisoes_registros(con, "aneel_manifestacoes")
+        self.assertEqual(rr["mudancas"], 0)
+        self.assertEqual(rr["por_captura"], {})
+        self.assertEqual((rr["conflitos_entre_recursos"], rr["chaves_em_conflito"]), (1, 1))
+        self.assertEqual(rr["exemplos_conflito"][0], {"chave": "dist:01543032000104", "campo": "sigla",
+                                                      "valores": {"manif-2023": "Enel GO", "manif-2024": "Equatorial GO"}})
+        r = dados._resumo_revisao({"revisoes": None, "revisoes_registros": rr})
+        self.assertNotIn("mudancas", r["registros"])
+        self.assertEqual(r["registros"]["conflitos_entre_recursos"]["campos"], 1)
+
+    def test_mesmo_arquivo_reeditado_e_mudanca_e_data_de_geracao_e_metadado(self):
+        # agentes-setor-eletrico da ANEEL, edições de 01/09 e 01/10/2026 capturadas em 01/10:
+        # o nome do CNPJ 02.341.470/0001-44 mudou; gerado_em mudou porque o arquivo é outro
+        con = silver_de_amostra("aneel_agentes_mercado")
+        rr = sd.revisoes_registros(con, "aneel_agentes_mercado")
+        self.assertEqual((rr["mudancas"], rr["chaves_afetadas"], rr["campos"]), (1, 1, {"nome": 1}))
+        self.assertEqual(rr["metadado_do_arquivo"], 1)
+        self.assertEqual(rr["por_captura"], {"2026-10-01": 1})
+        self.assertEqual(rr["conflitos_entre_recursos"], 0)
+        self.assertNotIn("gerado_em", rr["campos"])
 
 
 # ---------------------------------------------------------------- completude e grão
@@ -154,6 +198,16 @@ class TestCompletude(unittest.TestCase):
         con = silver_de_amostra("carga_energia_di")
         c = sd.completude(con, "carga_energia_di", hoje=date(2026, 9, 25))
         self.assertEqual(c["grupos"][0]["ref_max_ate_hoje"], "2026-09-25")
+
+    def test_cobertura_no_ultimo_periodo_ate_hoje_e_nao_na_referencia_futura(self):
+        # continuidade da ANEEL: os limites regulatórios vão até 2032; o realizado, até 2026
+        # (recorte com 2 séries realizadas e 1 limite). Na maior referência (2032) só o limite
+        # tem valor: contar ali dava 1 série e sugeria colapso de cobertura.
+        con = silver_de_amostra("aneel_continuidade")
+        g = sd.completude(con, "aneel_continuidade", hoje=date(2026, 10, 1))["grupos"][0]
+        self.assertEqual((g["formato"], g["ref_max"], g["ref_max_ate_hoje"]), ("anual", "2032", "2026"))
+        self.assertEqual((g["ultimo_periodo"], g["series_no_ultimo"]), ("2026", 3))
+        self.assertEqual((g["periodo_anterior"], g["series_no_anterior"]), ("2025", 3))
 
 
 # ---------------------------------------------------------------- SLA de atualidade
@@ -220,6 +274,82 @@ class TestAtualidade(unittest.TestCase):
         a = dados.atualidade(analise("diaria", 1, "2020-01-01"), freq("Diária"), date(2026, 10, 1), True)
         self.assertEqual(a["situacao"], "SEM SLA")  # descontinuado: não há atualização a esperar
 
+    def test_caso_e_cadencia_da_aneel_mais_curta_que_o_grao_anual(self):
+        # continuidade da ANEEL: arquivo de grão anual, 'Frequência de atualização' = 'Mensal',
+        # última modificação informada 05/09/2026 05:27 UTC. Antes, o caso C dava prazo
+        # 30/12/2028 (fim de 2027 + 365 dias) com o ano corrente parcial como último período.
+        an = analise("anual", 1, "2026", pub_fonte="2026-09-05T05:27:08")
+        f = {**freq("Mensal"), "campo": "Frequência de atualização"}
+        a = dados.atualidade(an, f, date(2026, 10, 1), False)
+        self.assertEqual((a["caso"], a["cadencia"], a["base"]), ("E", "mensal", "publicacao_da_fonte"))
+        self.assertEqual(a["prazo_proximo"], "2026-12-05")  # 05/09 + 31 + 60 dias
+        self.assertTrue(a["periodo_parcial"])
+        self.assertEqual(dados.atualidade(an, f, date(2026, 12, 6), False)["situacao"], "ATRASADO")
+        # sem data de publicação, não há como medir a promessa: SEM DADO, nunca o prazo do grão
+        a = dados.atualidade(analise("anual", 1, "2026"), f, date(2026, 10, 1), False)
+        self.assertEqual((a["caso"], a["situacao"], a.get("prazo_proximo")), ("E", "SEM DADO", None))
+        # liberação comercial (Quinzenal) e audiências (Trimestral): datas da listagem de 01/10/2026
+        a = dados.atualidade(analise("anual", 1, "2026", pub_fonte="2026-09-18T20:07:07"), freq("Quinzenal"), date(2026, 10, 1), False)
+        self.assertEqual((a["caso"], a["prazo_proximo"]), ("E", "2026-10-18"))
+        a = dados.atualidade(analise("anual", 1, "2026", pub_fonte="2026-07-22T16:59:53"), freq("Trimestral"), date(2026, 10, 1), False)
+        self.assertEqual((a["caso"], a["prazo_proximo"]), ("E", "2027-01-20"))  # 22/07 + 92 + 90 dias
+
+    def test_caso_c_so_para_a_rotina_do_portal(self):
+        self.assertTrue(dados.rotina_do_portal({"campo": "Schedule de Atualização", "declarada": "Diariamento, as 12h e 19h"}))
+        self.assertTrue(dados.rotina_do_portal({"declarada": "Diariamento, as 12h e 19h"}))
+        self.assertFalse(dados.rotina_do_portal({"campo": "Frequência de atualização", "declarada": "Mensal"}))
+        self.assertFalse(dados.rotina_do_portal({"campo": "Frequencial de atualização", "declarada": "Quinzenal"}))
+
+    def test_periodo_corrente_parcial_nao_alonga_o_prazo(self):
+        # série anual com cadência anual declarada e o ano corrente já no arquivo: o prazo é o
+        # fim de 2026 + 365 dias (31/12/2027), e não o fim de 2027 + 365 (30/12/2028)
+        a = dados.atualidade(analise("anual", 1, "2026"), freq("Anual"), date(2026, 10, 1), False)
+        self.assertEqual((a["caso"], a["periodo_parcial"], a["prazo_proximo"]), ("A", True, "2027-12-31"))
+        # mensal com o mês corrente: prazo = fim de outubro + 60 dias
+        a = dados.atualidade(analise("mensal", 1, "2026-10"), freq("Mensal"), date(2026, 10, 1), False)
+        self.assertEqual((a["periodo_parcial"], a["prazo_proximo"]), (True, "2026-12-30"))
+        # período já encerrado não é parcial
+        a = dados.atualidade(analise("mensal", 1, "2026-09"), freq("Mensal"), date(2026, 10, 1), False)
+        self.assertIsNone(a["periodo_parcial"])
+        self.assertEqual(a["prazo_proximo"], "2026-12-30")
+
+    def test_prazo_refeito_por_outra_implementacao(self):
+        # a conferência da ficha conjuntos_atrasados refaz o prazo com aritmética de calendário
+        # própria; aqui ela é posta contra datas escritas à mão em cada caso
+        regras = {k: {"tolerancia_dias": dados.TOLERANCIA_DIAS[k], "periodo_dias_aprox": dados.PERIODO_DIAS[k]}
+                  for k in dados.TOLERANCIA_DIAS}
+        casos = [(analise("diaria", 1, "2026-09-28"), freq("Diariamento, as 12h e 19h"), "2026-10-01"),
+                 (analise("mensal", 1, "2026-07"), freq("Diariamento, as 12h e 19h"), "2026-10-30"),
+                 (analise("diaria", 1, "2026-08-31"), freq("Mensal"), "2026-11-30"),
+                 (analise("anual", 1, "2026"), freq("Anual"), "2027-12-31"),
+                 (analise("anual", 1, "2026", pub_fonte="2026-09-05T05:27:08"), freq("Mensal"), "2026-12-05"),
+                 (analise("mensal", 2, "2026-09", aderencia=0.2, pub_fonte="2026-05-08T10:00:00"), freq("Mensal"), "2026-12-30")]
+        for an, f, esperado in casos:
+            a = dados.atualidade(an, f, date(2026, 10, 1), False)
+            x = {"atualidade": a, "_an": an, "capturas": {"ultima_publicacao_fonte": an["vintages"]["ultima_publicacao_fonte"]}}
+            self.assertEqual(a["prazo_proximo"], esperado, (a["caso"], f["declarada"]))
+            self.assertEqual(dados.prazo_independente(x, regras, date(2026, 10, 1)), esperado, (a["caso"], f["declarada"]))
+
+    def test_falha_simulada_no_silver_nao_renova_a_data_do_dado(self):
+        # silver real da carga diária do Nordeste; depois da última captura (30/09 02:19 UTC)
+        # registra-se uma falha de coleta. O último período, a última captura e o prazo não mudam.
+        con = silver_de_amostra("carga_energia_di")
+        f = freq("Diariamento, as 12h e 19h")
+        antes = sd.analisa(con, "carga_energia_di", bronze=False, hoje=date(2026, 10, 1))
+        a0 = dados.atualidade(antes, f, date(2026, 10, 1), False)
+        base.registra_coleta(con, "carga_energia_di", "CARGA_ENERGIA_2026", False, "HTTP 503 Service Unavailable")
+        con.commit()
+        depois = sd.analisa(con, "carga_energia_di", bronze=False, hoje=date(2026, 10, 1))
+        a1 = dados.atualidade(depois, f, date(2026, 10, 1), False)
+        self.assertEqual(depois["coletas"]["falhas"], 1)
+        self.assertEqual(a1["ultimo_periodo"], "2026-09-28")
+        self.assertEqual((a1["ultimo_periodo"], a1["prazo_proximo"]), (a0["ultimo_periodo"], a0["prazo_proximo"]))
+        self.assertEqual(depois["vintages"]["ultima_captura"], "2026-09-30T02:19:48Z")
+        # em 03/10 o dia 29/09 já devia ter chegado: atrasado, e a causa é a falha registrada
+        a2 = dados.atualidade(depois, f, date(2026, 10, 3), False)
+        self.assertEqual((a2["situacao"], a2["ultimo_periodo"]), ("ATRASADO", "2026-09-28"))
+        self.assertIn("HTTP 503", a2["causa"])
+
     def test_falha_de_coleta_nao_renova_a_data_do_dado(self):
         coletas = {"ultimo_ok": "2026-09-20T03:00:00Z",
                    "ultima_falha": {"tentado_em": "2026-09-30T03:00:00Z", "detalhe": "HTTP 503", "recurso": "X"}}
@@ -229,6 +359,55 @@ class TestAtualidade(unittest.TestCase):
         # o dia 20/09 devia chegar até 22/09 (tolerância diária de 2 dias): 9 dias de atraso em 01/10
         self.assertEqual((a["prazo_proximo"], a["situacao"], a["dias_atraso"]), ("2026-09-22", "ATRASADO", 9))
         self.assertIn("HTTP 503", a["causa"])
+
+
+class TestPeriodoNoOriginal(unittest.TestCase):
+    """O último período dos conjuntos com falha de coleta é conferido no ARQUIVO ORIGINAL do
+    bronze (sha256 e texto do período), não no silver."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.orig = os.path.join(self.tmp, "consumo_classe_agente_2026.csv.gz")
+        shutil.copy(os.path.join(DADOS, "ccee_consumo_classe_agente_2026_original.csv.gz"), self.orig)
+        s = json_amostra("silver_amostra.json")["ccee_consumo_classe_agente"]
+        self.db = os.path.join(self.tmp, "mercado.db")
+        self.con = base.conecta(self.db)
+        v = list(s["vintages"][0])
+        v[9] = self.orig  # caminho do original copiado do bronze
+        self.con.execute("INSERT INTO vintages VALUES (?,?,?,?,?,?,?,?,?,?)", v)
+        for o in s["observacoes"]:
+            self.con.execute("INSERT INTO observacoes VALUES (?,?,?,?,?)", o)
+        self.con.commit()
+        self._abre = sd.abre
+        import sqlite3
+        sd.abre = lambda familia: sqlite3.connect(self.db)  # a função fecha a conexão que recebe
+
+    def tearDown(self):
+        sd.abre = self._abre
+        self.con.close()
+        shutil.rmtree(self.tmp)
+
+    def test_periodo_escrito_no_original_com_sha256_conferido(self):
+        # o CSV da CCEE escreve o mês como 202607 (MES_REFERENCIA)
+        r = dados.periodo_no_original("mercado", "ccee_consumo_classe_agente", "mensal", "2026-07")
+        self.assertEqual((r["resultado"], r["forma"]), ("no_original", "202607"))
+        self.assertEqual(r["capturado_em"], "2026-10-01T00:45:34Z")
+
+    def test_periodo_ausente_e_original_alterado_sao_acusados(self):
+        self.con.execute("UPDATE observacoes SET ref='2026-08'")
+        self.con.commit()
+        r = dados.periodo_no_original("mercado", "ccee_consumo_classe_agente", "mensal", "2026-08")
+        self.assertEqual(r["resultado"], "nao_encontrado")  # o arquivo não traz agosto
+        self.con.execute("UPDATE observacoes SET ref='2026-07'")
+        self.con.execute("UPDATE vintages SET sha256=?", ("0" * 64,))
+        self.con.commit()
+        r = dados.periodo_no_original("mercado", "ccee_consumo_classe_agente", "mensal", "2026-07")
+        self.assertEqual(r["resultado"], "sha256_divergente")
+
+    def test_formas_do_periodo(self):
+        self.assertEqual(dados.formas_do_periodo("2026-07", "mensal"), ["2026-07", "202607", "07/2026", "2026/07"])
+        self.assertIn("30/09/2026", dados.formas_do_periodo("2026-09-30", "diaria"))
+        self.assertEqual(dados.formas_do_periodo("2026", "anual"), [])
 
 
 # ---------------------------------------------------------------- catálogo recurso a recurso
@@ -257,6 +436,26 @@ class TestCatalogo(unittest.TestCase):
         pkg = self.amostra["CCEE"][0]
         rec = catalogo.recursos_do_conjunto("CCEE", pkg, integ_estados={}, capturas=self.capturas, verificacao=None, registrados={})
         self.assertEqual({x["estado"] for x in rec}, {"RECURSO VERIFICADO"})
+
+    def test_captura_por_dataset_de_outro_conjunto_nao_herda_o_estado(self):
+        # o dataset que capturou os arquivos está PUBLICADO, mas declarado para outro conjunto
+        # (como o dicionário de dados do ONS baixado pela integração de hidrologia e lido também
+        # como recurso de ear-diario-por-subsistema): o recurso fica em RECURSO VERIFICADO
+        pkg = self.amostra["CCEE"][0]
+        integ = {("mercado", "ccee_agente_qtd_contabilizacao"): "PUBLICADO"}
+        por_integracao = {("CCEE", "lista_agente_associado"): [{"familia": "mercado", "dataset_silver": "ccee_agente_qtd_contabilizacao"}]}
+        filtrado = catalogo.estados_declarados_do_conjunto(integ, por_integracao, "CCEE", pkg["name"])
+        self.assertEqual(filtrado, {})
+        rec = catalogo.recursos_do_conjunto("CCEE", pkg, integ_estados=filtrado, capturas=self.capturas, verificacao=None,
+                                            registrados={})
+        self.assertEqual({x["estado"] for x in rec}, {"RECURSO VERIFICADO"})
+        self.assertTrue(all("não declarado para o conjunto" in x["via"] for x in rec))
+        # declarado para o próprio conjunto: herda
+        por_integracao[("CCEE", pkg["name"])] = [{"familia": "mercado", "dataset_silver": "ccee_agente_qtd_contabilizacao"}]
+        filtrado = catalogo.estados_declarados_do_conjunto(integ, por_integracao, "CCEE", pkg["name"])
+        rec = catalogo.recursos_do_conjunto("CCEE", pkg, integ_estados=filtrado, capturas=self.capturas, verificacao=None,
+                                            registrados={})
+        self.assertEqual({x["estado"] for x in rec}, {"PUBLICADO"})
 
     def test_recurso_sem_acesso_fica_catalogado_e_removido_e_marcado(self):
         pkg = self.amostra["CCEE"][1]  # pld_media_diaria: nenhum arquivo capturado nesta amostra
@@ -385,6 +584,35 @@ class TestValidador(unittest.TestCase):
         self.assertEqual(dados.situacao_validacao({"testes": [ev.teste("b", "reprovado", "")], "reconciliacao": None}), "divergencia")
         self.assertEqual(dados.situacao_validacao({"testes": [], "reconciliacao": None}), "pendencia")
 
+    def test_natureza_nao_e_herdada_de_proveniencia_acima_na_arvore(self):
+        # estrutura de previsoes_desempenho.json em 01/10/2026: uma proveniência de topo de
+        # PREVISÃO e, em evidencias, fichas do PLD JÁ PUBLICADO pela CCEE (valor observado)
+        ficha = {"indicador": "PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado SE",
+                 "valor_exibido": "x", "fonte": {"orgao": "CCEE", "recurso": "pld_horario_2026"},
+                 "testes": [ev.teste("a", "aprovado", "")]}
+        prov = {"indicador": "Previsão do PLD: referência experimental B0", "natureza": "PREVISTO", "fonte": {}, "limitacoes": ["x"]}
+        gold = {"proveniencia": prov, "evidencias": {"pld_no_corte_SE": ficha}}
+        eix, linhas = dados.eixos({"previsoes_desempenho.json": {"_gold": gold}})
+        self.assertEqual(linhas[0]["natureza"], None)
+        self.assertEqual(eix["matriz"], {"SEM_VINCULO": {"controles_aprovados": 1}})
+        self.assertIn("limitacao_natureza", eix)
+        # proveniência única no MESMO objeto da ficha: vínculo vale
+        gold2 = {"kpi": {"proveniencia": {**prov, "natureza": "OBSERVADO", "indicador": "PLD"}, "evidencia": ficha}}
+        _, linhas2 = dados.eixos({"g.json": {"_gold": gold2}})
+        self.assertEqual(linhas2[0]["natureza"], "OBSERVADO")
+
+    def test_snapshot_composto_cita_cada_conjunto(self):
+        # ids reais de mercado.json em 01/10/2026
+        self.assertEqual(dados.datasets_do_snapshot("epe_consumo_mensal+epe_consumo_classe@2026-10-01T00:33:34Z"),
+                         ["epe_consumo_mensal", "epe_consumo_classe"])
+        self.assertEqual(dados.datasets_do_snapshot(
+            "ccee_consumo_mensal_ambiente_comercializacao+ccee_consumo_classe_agente@2026-10-01T00:45:34Z"),
+            ["ccee_consumo_mensal_ambiente_comercializacao", "ccee_consumo_classe_agente"])
+        self.assertEqual(dados.datasets_do_snapshot("aneel_conta_bandeira@2026-10-01T00:00:00Z"), ["aneel_conta_bandeira"])
+        # fora do formato (cita golds, parte vazia): nenhum vínculo inventado
+        self.assertIsNone(dados.datasets_do_snapshot("golds:perdas.json@2026-10-01T06:06:09Z,qualidade.json@2026"))
+        self.assertIsNone(dados.datasets_do_snapshot("a++b@2026"))
+
 
 # ---------------------------------------------------------------- Parquet e manifesto
 
@@ -431,6 +659,26 @@ class TestParquetEManifesto(unittest.TestCase):
         self.assertFalse(ok)
         self.assertEqual(div, 1)
         self.assertEqual(ex[0]["coluna"], "slug")
+
+    def test_numero_com_mais_de_17_digitos_nao_perde_precisao_em_silencio(self):
+        c = os.path.join(self.tmp, "precisao.csv")
+        with open(c, "w", encoding="utf-8") as f:
+            f.write("data;valor\n2026-09-26;12345678901234567891.5\n2026-09-27;13984.69575\n")
+        p = c[:-4] + ".parquet"
+        r = pub.csv_para_parquet(c, p, "/energia/series/precisao.csv")
+        self.assertEqual(r["tipos"]["valor"], "str")  # o float64 guardaria 12345678901234567000
+        ok, det, linhas, div, _ = pub.confere_parquet(c, p)
+        self.assertTrue(ok, det)
+        # Parquet gravado em float64 (como a versão anterior fazia): a conferência acusa a perda
+        import pyarrow as pa
+        import pyarrow.parquet as pq
+        pq.write_table(pa.table({"data": ["2026-09-26", "2026-09-27"], "valor": [float("12345678901234567891.5"), 13984.69575]}), p)
+        ok, det, linhas, div, ex = pub.confere_parquet(c, p)
+        self.assertFalse(ok)
+        self.assertEqual((linhas, div), (2, 1))
+        self.assertEqual((ex[0]["linha"], ex[0]["coluna"]), (2, "valor"))
+        self.assertTrue(pub.float_preserva("13984.69575") and pub.float_preserva("1.50") and pub.float_preserva("1e3"))
+        self.assertFalse(pub.float_preserva("12345678901234567891.5"))
 
     def test_id_da_publicacao_e_regra_publicada(self):
         itens = [{"caminho": "/energia/gold/b.json", "bytes": 2, "sha256": "b" * 64},
@@ -527,6 +775,23 @@ class TestGoldPublicada(unittest.TestCase):
                 self.assertLess(a["prazo_proximo"], hoje, x["id"])
             if a.get("ultimo_periodo") and len(a["ultimo_periodo"]) >= 10:
                 self.assertLessEqual(a["ultimo_periodo"][:10], hoje, x["id"])
+
+    def test_registros_sem_metadado_do_arquivo_e_observacoes_ao_menos_referencias(self):
+        for x in self.g["conjuntos"]:
+            r = x.get("revisoes") or {}
+            campos = (r.get("registros") or {}).get("campos") or {}
+            self.assertFalse(set(campos) & sd.CAMPOS_METADADO_ARQUIVO, x["id"])
+            if r.get("eventos"):
+                self.assertGreaterEqual(r["observacoes"], r["referencias"], x["id"])
+                self.assertGreaterEqual(r["eventos"], r["observacoes"], x["id"])
+
+    def test_caso_c_so_com_rotina_do_portal(self):
+        with open(os.path.join(SERIES, "dados_conjuntos.csv"), encoding="utf-8") as f:
+            linhas = {r["id"]: r for r in csv.DictReader(f, delimiter=";")}
+        for x in self.g["conjuntos"]:
+            if x["atualidade"].get("caso") == "C":
+                fr = {"campo": linhas[x["id"]]["campo_frequencia"], "declarada": x["frequencia"].get("declarada")}
+                self.assertTrue(dados.rotina_do_portal(fr), x["id"])
 
     def test_contagens_do_catalogo_fecham(self):
         self.assertEqual(sum(self.cat["contagem"].values()), self.cat["total"])

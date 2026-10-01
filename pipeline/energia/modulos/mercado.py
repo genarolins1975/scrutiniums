@@ -1,32 +1,29 @@
 """Módulo Mercado: livre e regulado, agentes e migração, MRE e GSF, encargos (painéis P032 a P035,
 seção 9.7 da especificação).
 
-O que o módulo publica, com a fonte oficial que de fato responde deste ambiente:
+O que o módulo publica:
 
-* P032, consumo por ambiente de contratação: a série mensal da EPE (consumo de energia
-  elétrica na rede informado pelos agentes ao SAM, cativo e livre, por região, subsistema,
-  classe e UF, desde 2004), conferida mês a mês contra o total nacional que a própria EPE
-  publica na planilha formatada e contra o Boletim Mensal de Monitoramento do MME; e, por
-  distribuidora (CNPJ da fonte), a energia e as unidades consumidoras do mercado livre e do
-  cativo faturadas na rede de cada uma (SAMP da ANEEL, 2019 em diante). O universo é o da
-  EPE: ACL + ACR fecha com o total da EPE e não é igualado à carga do ONS (o MME publica a
-  diferença como "Perdas e Diferenças").
-* P033, agentes e migração: estoque mensal de unidades consumidoras livres (EPE) e sua
-  variação líquida; por distribuidora, as unidades livres por característica (fonte
-  incentivada, autoprodução, ERC, convencional) do SAMP; e o cadastro de agentes da ANEEL
-  (CNPJ e atividades). Agente (pessoa jurídica, CNPJ), perfil (registro de um agente na
-  CCEE) e unidade consumidora (ponto de entrega medido) são coisas distintas: as bases
-  abertas acessíveis têm o primeiro e o terceiro; perfil só existe na CCEE.
-* P034, MRE e GSF: o custo do risco hidrológico alocado às distribuidoras (cotas, usinas
-  repactuadas e Itaipu), apurado pela CCEE e publicado pela ANEEL na base Conta Bandeira,
-  por distribuidora e competência. O fator GSF em si só é publicado pela CCEE: bloqueio
-  externo documentado.
-* P035, encargos e contabilização: encargos de serviços do sistema por tipo, por mês de
-  competência, extraídos do Boletim Mensal do MME (fonte declarada: CCEE), com o
-  reprocessamento entre edições; ESS e encargo de energia de reserva das distribuidoras
-  (Conta Bandeira, ANEEL). A contabilização pública do mercado de curto prazo por
-  submercado (CCEE) tem coletor pronto para o Actions, com esquema documentado e falha
-  fechada.
+* P032, consumo por ambiente de contratação em três universos que não se igualam à carga do
+  ONS: o consumo na rede da EPE (cativo e livre, desde 2004, conferido com a planilha
+  formatada da EPE, com o boletim mensal do MME e com a consolidação anual do MME); o consumo
+  contabilizado pela CCEE por classe de agente (ACR = Distribuidor; ACL = demais classes, sem a
+  exportação, que fica à parte; conferido com o InfoMercado); e o mercado faturado por
+  distribuidora no SAMP da ANEEL (com completude por mês, medida e distribuidora).
+* P033, agentes e migração: agentes contabilizados (CCEE), entradas e saídas de CNPJ na lista
+  de associados, cadastro de perfis (posição, com a data de modificação informada pelo
+  portal), parcelas de carga do ACL (sem as parcelas das distribuidoras, que são o ACR),
+  migrações, desligamentos com sucessão e unidades consumidoras livres (EPE e SAMP).
+* P034, MRE e GSF: fator de ajuste mensal, anual e de 12 meses (razão de energias, conferido
+  com o InfoMercado; o número de 12 meses do InfoMercado diverge e a divergência é publicada) e
+  o risco hidrológico alocado às distribuidoras (Conta Bandeira, ANEEL).
+* P035, encargos e contabilização: ESS por tipo e competência, resposta da demanda, energia de
+  reserva, pagamento e alívio (com controle de sequências repetidas), liquidação (com a grade
+  completa de meses) e resultado do MCP (CCEE); encargos do boletim do MME e a consolidação
+  anual.
+
+Acesso à CCEE: a decisão sobre coletar a CCEE com o cliente do pipeline quando o curl recebe
+403 está pendente (ver fontes/ccee_mercado.py e `acesso_ccee`); até lá, nenhuma requisição
+nova sai deste módulo e os painéis que dependem da CCEE ficam 'pendente_decisao_acesso'.
 
 Fora de escopo, por não haver fonte pública adequada: contratos individuais, preços de PPA e
 curvas a termo. O PLD não é preço contratual do mercado livre e não é usado aqui como tal.
@@ -83,6 +80,12 @@ ANO_INICIAL_SAMP = 2019
 
 URL_MME = ("https://www.gov.br/mme/pt-br/assuntos/secretarias/secretaria-nacional-energia-eletrica/publicacoes/"
            "boletim-de-monitoramento-do-sistema-eletrico")
+# Edição especial anual (consolidação do ano anterior), em página própria e pública.
+URL_MME_ANUAL = ("https://www.gov.br/mme/pt-br/assuntos/secretarias/secretaria-nacional-energia-eletrica/publicacoes/"
+                 "boletim-anual-de-monitoramento-do-sistema-eletrico")
+# Primeiro ano das pastas do boletim mensal no formato atual cuja página é capturada como
+# evidência de acesso (2023 a 2025 redirecionam para o login do portal em 01/10/2026).
+ANO_PASTAS_MME = 2023
 LICENCA_MME = ("Creative Commons Atribuição-SemDerivações 3.0 Não Adaptada (CC BY-ND 3.0), conforme o rodapé do portal "
                "gov.br; os números são reproduzidos com atribuição, sem versão alterada do documento")
 
@@ -128,7 +131,7 @@ REGISTRO = {
          "estado": "UTILIZADO EM INDICADOR", "url": URL_AGENTES, "licenca": LICENCA_ANEEL, "paginas": PAGINA,
          "downloads": [_url(CSV_AGENTES)], "quebras": []},
         {"orgao": "MME", "nome": "boletim-de-monitoramento-do-sistema-eletrico", "slug": "mme-boletim-monitoramento",
-         "dataset_silver": DS_MME, "titulo": "Boletim Mensal de Monitoramento do Sistema Elétrico (encargos de serviços do sistema e consumo por ambiente)",
+         "dataset_silver": DS_MME, "titulo": "Boletim de Monitoramento do Sistema Elétrico: edições mensais (encargos de serviços do sistema e consumo por ambiente) e consolidação anual (conferência anual)",
          "estado": "UTILIZADO EM INDICADOR", "url": URL_MME, "licenca": LICENCA_MME, "paginas": PAGINA,
          "downloads": [_url(CSV_ESS)], "quebras": [
              {"data": "2026-03-01", "descricao": "A edição de março de 2026 publicou o suporte de reativo de março com uma parcela 'vinculada a resposta da demanda' (280 mil R$); as edições de abril a junho retiraram a parcela e o total de março passou de 344.773 para 344.493 mil R$."}]},
@@ -146,13 +149,13 @@ REGISTRO = {
     "arquivos": {
         _url(CSV_CONSUMO): "mes (AAAA-MM); regiao (geográfica); subsistema (SE, S, NE, N ou ISOL = sistemas isolados); classe (Residencial, Industrial, Comercial, Rural, Outros); tipo (cativo ou livre); consumo_mwh (consumo de energia elétrica na rede, MWh, como publicado pela EPE); unidades_consumidoras (número de UCs no mês). Fonte: EPE, dados abertos do consumo mensal (tabela CONSUMO E NUMCONS SAM). Vazio = a fonte não publicou o valor; zero é zero.",
         _url(CSV_CONSUMO_UF): "mes; uf; subsistema; classe; tipo; consumo_mwh; unidades_consumidoras. Fonte: EPE, tabela CONSUMO E NUMCONS SAM UF (até o penúltimo mês publicado). Vazio = ausência.",
-        _url(CSV_NACIONAL): "mes; cativo_mwh; livre_mwh; total_mwh (soma das linhas da EPE); livre_pct (100 × livre ÷ total); cativo_uc; livre_uc; total_planilha_mwh e livre_planilha_mwh (total nacional da planilha formatada da EPE, para conferência); diferenca_total_mwh (tabela longa − planilha); preliminar (1 = ano marcado como preliminar pela EPE); samp_livre_uc e samp_livre_mwh (soma das distribuidoras no SAMP da ANEEL: só consumidores livres faturados por distribuidora); samp_distribuidoras (quantas distribuidoras publicaram o mês). Vazio = ausência.",
+        _url(CSV_NACIONAL): "mes; cativo_mwh; livre_mwh; total_mwh (soma das linhas da EPE); livre_pct (100 × livre ÷ total); cativo_uc; livre_uc; total_planilha_mwh e livre_planilha_mwh (total nacional da planilha formatada da EPE, para conferência); diferenca_total_mwh (tabela longa − planilha); preliminar (1 = ano marcado como preliminar pela EPE); samp_livre_uc e samp_livre_mwh (soma das distribuidoras no SAMP da ANEEL: só consumidores livres faturados por distribuidora); samp_distribuidoras (quantas distribuidoras publicaram o mês); samp_completo (1 = publicado por pelo menos 95% da mediana de distribuidoras e nenhuma distribuidora sem as linhas LIVRE que tinha no mês anterior); samp_comparavel (1 = completo e sem linhas Regular repetidas do mês anterior; só esses meses entram na comparação com a EPE); samp_ocorrencias (distribuidoras sem LIVRE e repetições do mês). Vazio = ausência.",
         _url(CSV_DISTRIB): "cnpj (14 dígitos, da fonte); sigla; mes; livre_mwh (energia TUSD faturada a consumidores livres, MWh, tipos de mercado da competência); livre_mwh_incentivada, livre_mwh_autoproducao, livre_mwh_erc, livre_mwh_convencional, livre_mwh_outro (abertura pela característica do consumidor no SAMP); livre_uc e as mesmas aberturas em unidades consumidoras; livre_mwh_refat (refaturamento de meses anteriores apresentado neste mês, sem atribuição de competência); cativo_mwh (energia TE faturada ao cativo, inclui consumidores com micro e minigeração após a compensação); cativo_uc; cativo_mwh_refat. Fonte: ANEEL, SAMP, arquivos anuais em Parquet. Vazio = a distribuidora não publicou a linha no mês.",
-        _url(JSON_DETALHE): "JSON lido sob demanda pela página: mcp_submercado_mensal (mes; submercado; be_positivo_mwh e be_negativo_mwh, balanço energético em MWh; resultado_venda_rs e resultado_compra_rs, R$), acr_conta_bandeira_mensal (mes; distribuidoras; ess_eer, ressarcimento_coner, resultado_mcp, ccear_d, receita_faturada_bandeiras, repasse_conta_bandeira em R$ somados no Brasil), risco_hidrologico_acr_mensal (mes; distribuidoras; rh_itaipu, rh_repactuadas, rh_ccgf, previsao_rh, premio_risco, rh_ccgf_repactuadas_liquido, rh_bruto em R$), desligamentos_anual (ano; tipo; classe; desligamentos). R$ e MWh inteiros; null = ausência.",
-        _url(CSV_DISTRIB_ANO): "ano (último ano civil com os 12 meses publicados por quase todas as distribuidoras); cnpj; sigla; nome; meses (meses do ano com linha no SAMP); completo (1 = 12 meses); livre_mwh e cativo_mwh (soma do ano, MWh); livre_pct_faturada (100 × livre ÷ (livre + cativo), só com 12 meses); livre_uc_dez e livre_uc_dez_anterior (unidades consumidoras livres em dezembro do ano e do ano anterior); variacao_livre_uc; livre_uc_incentivada_dez, livre_uc_convencional_dez, livre_uc_autoproducao_dez; cativo_uc_dez. Fonte: ANEEL, SAMP. Vazio = ausência.",
+        _url(JSON_DETALHE): "JSON lido sob demanda pela página: mcp_submercado_mensal (mes; submercado; be_positivo_mwh e be_negativo_mwh, balanço energético em MWh; resultado_venda_rs e resultado_compra_rs, R$), acr_conta_bandeira_mensal (mes; distribuidoras; ess_eer, ressarcimento_coner, resultado_mcp, ccear_d, receita_faturada_bandeiras, repasse_conta_bandeira em R$ somados no Brasil), risco_hidrologico_acr_mensal (mes; distribuidoras; rh_itaipu, rh_repactuadas, rh_ccgf, previsao_rh, premio_risco, rh_ccgf_repactuadas_liquido, rh_bruto em R$), desligamentos_anual (ano; tipo; classe; desligamentos; completo, false no ano corrente, que é parcial). R$ e MWh inteiros; null = ausência.",
+        _url(CSV_DISTRIB_ANO): "ano (último ano civil com os 12 meses publicados por quase todas as distribuidoras); cnpj; sigla; nome; meses (meses do ano com linha no SAMP); completo (1 = 12 meses); livre_mwh e cativo_mwh (soma do ano, MWh); livre_pct_faturada (100 × livre ÷ (livre + cativo), só com 12 meses); livre_uc_dez e livre_uc_dez_anterior (unidades consumidoras livres em dezembro do ano e do ano anterior); variacao_livre_uc; livre_uc_incentivada_dez, livre_uc_convencional_dez, livre_uc_autoproducao_dez; cativo_uc_dez; meses_repetidos (meses do ano em que as linhas Regular da distribuidora repetem exatamente as do mês anterior, com a opção: sinal de mês copiado na fonte). Fonte: ANEEL, SAMP. Vazio = ausência.",
         _url(CSV_CB): "cnpj (vazio quando a fonte não identifica a distribuidora); sigla; mes (competência); campos em R$ como publicados: receita_faturada, repasse_conta_bandeira, resultado_mcp, ccear_d, rh_ccgf_repactuadas_liquido, rh_itaipu, rh_repactuadas, rh_ccgf, previsao_rh, premio_risco, ess_eer, ressarcimento_coner; linhas (quantas linhas da fonte foram somadas na mesma distribuidora e competência). Fonte: ANEEL, Bandeiras Tarifárias, recurso Conta Bandeira; os custos são os apurados e informados pela CCEE. Vazio = ausência.",
         _url(CSV_ESS): "edicao (mês de referência do boletim, AAAA-MM); mes (competência, AAAA-MM); tipo (id do encargo); rotulo; nivel (tipo, parcela ou total); valor_mil_rs (mil R$ como publicados); traco (1 = a tabela publicou '-', lido como zero porque a soma do mês fecha); vigente (1 = edição mais recente para o mês). Fonte: MME, Boletim Mensal de Monitoramento do Sistema Elétrico (dados da CCEE).",
-        _url(CSV_CCEE): "conjunto (nome do conjunto no portal de dados abertos da CCEE); serie (dimensões e coluna de origem separadas por '|', por exemplo 'SE|GERACAO_MRE' ou 'CONSUMO_TOTAL_ACL'); mes (AAAA-MM de referência); valor (como publicado: MWmed nos conjuntos de consumo, geração e garantia física, R$ nos de encargos e liquidação, MWh no balanço do MCP e nas parcelas de carga, contagem nos de agentes e parcelas); unidade. Fonte: CCEE, dados abertos (CC-BY-4.0). Vazio = a fonte não publicou o valor.",
+        _url(CSV_CCEE): "conjunto (nome do conjunto no portal de dados abertos da CCEE); serie (dimensões e coluna de origem separadas por '|', por exemplo 'SE|GERACAO_MRE' ou 'CONSUMO_TOTAL_ACL'; nas parcelas de carga, 'acl|...' são os perfis que não são de distribuidora, 'distribuidor|...' os perfis da classe Distribuidor, que são o consumo do ACR, e 'classe|<classe do perfil>|...' a abertura por classe); mes (AAAA-MM de referência); valor (como publicado: MWmed nos conjuntos de consumo, geração e garantia física, R$ nos de encargos e liquidação, MWh no balanço do MCP e nas parcelas de carga, contagem nos de agentes e parcelas); unidade; situacao (rótulo do valor publicado que a gold não exibe como observação: 'zero_nao_confirmado' no pagamento de ESS dentro de sequência repetida de zeros, 'liquidacao_nao_informada' no liquidado e na inadimplência zerados com valor a liquidar positivo; vazio = observação comum). Fonte: CCEE, dados abertos (CC-BY-4.0). Vazio no valor = a fonte não publicou o valor.",
         _url(CSV_DESLIG): "data (dia do desligamento); tipo (voluntario ou compulsorio); cnpj (do agente desligado, 14 dígitos; vazio quando a fonte não traz); agente (nome); classe; sucessao (tipo de sucessão informado pela CCEE); cnpj_sucessor; classe_sucessor; reuniao_cad (reunião do Conselho de Administração que aprovou). Fonte: CCEE, conjuntos DESLIGAMENTO_VOLUNTARIO e DESLIGAMENTO_COMPULSORIO.",
         _url(CSV_AGENTES): "cnpj; nome (razão social); ativo (1 ativo, 0 inativo, vazio sem informação); comercializacao; distribuicao; geracao; transmissao (1 = o cadastro marca a atividade); gerado_em (data de geração do arquivo pela ANEEL). Fonte: ANEEL, cadastro de agentes do setor elétrico. CNPJ é agente (pessoa jurídica), não perfil da CCEE nem unidade consumidora.",
     },
@@ -178,13 +181,23 @@ def _descomprimido(arquivo, sufixo):
             pass
 
 
+# Versão do processamento por dataset, quando um leitor foi corrigido depois: só esse dataset é
+# relido do bronze. SAMP 2 (01/10/2026): medidas de controle das linhas Regular, para detectar
+# mês copiado do anterior.
+VERSOES_DATASET = {DS_SAMP: "mercado-2"}
+
+
+def _versao(ds):
+    return VERSOES_DATASET.get(ds, VERSAO_PARSER)
+
+
 def _ja_processada(con, ds, vid):
     return con.execute("SELECT 1 FROM registros WHERE dataset=? AND chave=? LIMIT 1",
-                       (ds, f"__processada__|{vid}|{VERSAO_PARSER}")).fetchone() is not None
+                       (ds, f"__processada__|{vid}|{_versao(ds)}")).fetchone() is not None
 
 
 def _marca_processada(con, ds, vid, contagem):
-    linhas = [(f"__processada__|{vid}|{VERSAO_PARSER}", "ok", "1")]
+    linhas = [(f"__processada__|{vid}|{_versao(ds)}", "ok", "1")]
     linhas += [(f"__universo__|{vid}", k, str(v)) for k, v in sorted(contagem.items())]
     base.grava_registros(con, ds, vid, linhas)
 
@@ -388,6 +401,31 @@ def _processa_mme(con, v):
     return {"reprocessada": True, "edicao": ed, "novas": novas, "revisoes": rev, "universo": contagem}
 
 
+def _processa_mme_consolidacao(con, v, ano):
+    """Consolidação anual do boletim do MME (PDF público): consumo sem perdas, ACR e ACL (%) e
+    encargos de serviços do sistema do ano, só para conferência anual."""
+    if _ja_processada(con, DS_MME, v["vintage_id"]):
+        return {"reprocessada": False}
+    with _descomprimido(v["arquivo"], ".pdf") as tmp:
+        texto = mm.texto_pdf(tmp)
+    if texto is None:
+        return {"reprocessada": False, "erro": "pdftotext ausente: extração adiada"}
+    try:
+        r = mm.consolidacao_anual(texto, ano)
+    except mm.TabelaNaoReconhecida as e:
+        base.registra_coleta(con, DS_MME, v["recurso"], False, f"consolidação {ano}: {e}"[:500])
+        con.commit()
+        return {"reprocessada": False, "erro": str(e)[:300]}
+    obs = [(f"anual|{k}", str(ano), val) for k, val in r["valores"].items()]
+    regs = [(f"consolidacao|{ano}", "recurso", v["recurso"]), (f"consolidacao|{ano}", "vintage", v["vintage_id"])]
+    regs += [(f"consolidacao|{ano}", f"pagina|{k}", str(pg)) for k, pg in r["paginas"].items()]
+    novas, rev = base.grava_observacoes(con, DS_MME, v["vintage_id"], obs)
+    base.grava_registros(con, DS_MME, v["vintage_id"], regs)
+    _marca_processada(con, DS_MME, v["vintage_id"], {"valores": len(obs)})
+    con.commit()
+    return {"reprocessada": True, "novas": novas, "revisoes": rev, "valores": r["valores"]}
+
+
 def coletar(con, ctx):
     """Coleta todas as fontes do módulo. Falha de uma fonte fica registrada e não interrompe as
     outras; a gold é construída com o que o silver tiver."""
@@ -436,7 +474,9 @@ def coletar(con, ctx):
 
     def mme():
         out = {"edicoes": {}}
-        for ano in (ctx["hoje"].year, ctx["hoje"].year - 1):
+        # pastas mensais: a do ano corrente tem os PDF; as anteriores no formato atual (desde
+        # 2023) são capturadas como evidência de acesso (em 01/10/2026 redirecionam ao login)
+        for ano in range(ctx["hoje"].year, ANO_PASTAS_MME - 1, -1):
             url_pasta = f"{URL_MME}/{ano}"
             corpo, _ = http_get(url_pasta, timeout=60, accept="text/html")
             capturado = base.agora_utc()
@@ -451,6 +491,20 @@ def coletar(con, ctx):
                 if res["vintage"]:
                     item["processamento"] = _processa_mme(con, res["vintage"])
                 out["edicoes"][nome_pdf] = item
+        # consolidação anual do ano anterior (alternativa pública às pastas restritas)
+        ano = ctx["hoje"].year - 1
+        url_pag = f"{URL_MME_ANUAL}/consolidacao-{ano}"
+        corpo, _ = http_get(url_pag, timeout=60, accept="text/html")
+        capturado = base.agora_utc()
+        caminho, sha = base.salva_bronze("mme", DS_MME, f"consolidacao-{ano}", corpo, "html", capturado)
+        base.registra_vintage(con, DS_MME, f"consolidacao-{ano}", url_pag, capturado, None, sha, len(corpo), "coleta_direta", caminho)
+        for nome_pdf, url_pdf in mm.links_consolidacao(corpo.decode("utf-8", errors="replace"), ano):
+            res = ckan.baixar_recurso(con, orgao="MME", dataset=DS_MME, recurso=nome_pdf, url=url_pdf,
+                                      publicado_em=None, ext="pdf", max_idade_dias=90, baixador=http_download)
+            item = {"status": res["status"], "detalhe": res["detalhe"]}
+            if res["vintage"]:
+                item["processamento"] = _processa_mme_consolidacao(con, res["vintage"], ano)
+            out["edicoes"][nome_pdf] = item
         con.commit()
         out["ok"] = all(x["status"] != "falha" for x in out["edicoes"].values())
         return out
@@ -665,6 +719,35 @@ def carga_contexto(obs_mme, agg):
     return out
 
 
+def mme_anual(obs_mme):
+    """{ano: {medida: valor}} da consolidação anual do boletim do MME (séries 'anual|<medida>')."""
+    out = {}
+    for (s_, ref), v in obs_mme.items():
+        if s_.startswith("anual|"):
+            out.setdefault(ref, {})[s_.split("|", 1)[1]] = v
+    return out
+
+
+def reconcilia_consolidacao_consumo(anual_mme, epe_anual):
+    """Participação do ACL no ano: consolidação anual do MME (uma casa decimal) × EPE dados
+    abertos (razão das somas do ano). Diferença acima de 0,05 p.p. é divergência publicada como
+    ressalva (as duas publicações vêm da EPE, com datas de consolidação diferentes)."""
+    out = []
+    for ano, d in sorted(anual_mme.items()):
+        e = next((x for x in epe_anual if x["ano"] == ano), None)
+        if "acl_pct" not in d or not e:
+            continue
+        dif = None if e["livre_pct"] is None else e["livre_pct"] - d["acl_pct"]
+        out.append({"ano": ano, "mme_acl_pct": d["acl_pct"], "mme_consumo_gwh": d.get("consumo_sem_perdas_gwh"),
+                    "epe_livre_pct": c.r(e["livre_pct"], 2), "epe_total_gwh": c.r(e["total_mwh"] / 1000.0, 0) if e["total_mwh"] else None,
+                    "epe_completo": e["completo"], "diferenca_pp": c.r(dif, 2),
+                    "diferenca_total_gwh": c.r(e["total_mwh"] / 1000.0 - d["consumo_sem_perdas_gwh"], 0)
+                    if e["total_mwh"] and d.get("consumo_sem_perdas_gwh") else None,
+                    "tolerancia": "0,05 p.p. (o boletim publica uma casa decimal)",
+                    "resultado": None if dif is None else ("aprovado" if abs(dif) <= 0.05 + 1e-9 else "ressalva")})
+    return out
+
+
 def horas_no_mes(mes):
     """Horas do mês civil. MWmed × horas = MWh; sem horário de verão desde 2019, o mês tem dias × 24 h
     (o período da CCEE usado aqui começa em 2023)."""
@@ -718,23 +801,38 @@ def _snap(con, *datasets):
 
 CLASSE_ACR = "Distribuidor"
 CLASSE_VAREJISTA = "Varejista"
+CLASSE_EXPORTADOR = "Exportador"
 # Resíduo da identidade Σ classes = ACR + ACL (+ Varejista a partir de fevereiro de 2026): as
 # duas tabelas são publicadas pela CCEE com três casas e o resíduo observado de 2023 a 2026
 # ficou entre 0 e 3,97 MW médios (até 0,006% do consumo do mês), sem explicação da fonte.
 # Acima de 5 MW médios a identidade vira ressalva e o mês é conferido no arquivo.
 TOL_IDENTIDADE_CLASSES_MWMED = 5.0
+# "O consumo contabilizou X MW médios" do InfoMercado (MW médios inteiros) contra Σ classes sem a
+# Exportador: o número publicado fecha com o conjunto de ambiente (ACR + ACL + Varejista −
+# exportação: 70.237,9 contra 70.238 em julho de 2026), e o conjunto por classes difere do de
+# ambiente pelo resíduo da identidade acima (até 5 MW médios); somado o arredondamento do PDF
+# (0,5), a tolerância é 5,5 MW médios. Diferenças observadas: 0,8, 0,9 e 2,3 MW médios.
+TOL_CONSUMO_INFOMERCADO_MWMED = TOL_IDENTIDADE_CLASSES_MWMED + 0.5
 
 
 def ccee_consumo(amb, cls):
     """Consumo contabilizado da CCEE por ambiente, mês a mês.
 
-    ACR = classe Distribuidor e ACL = soma das demais classes do conjunto CONSUMO_CLASSE_AGENTE
-    (centro de gravidade). É a definição que fecha com CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO
-    até janeiro de 2026; em fevereiro de 2026 a CCEE trocou a classe Comercializador pela
-    Varejista e o conjunto de ambiente deixou de contar o consumo da Varejista no ACL (a
-    diferença entre os dois conjuntos passou a ser, mês a mês, o consumo dessa classe). Contar
-    pelas classes mantém a série comparável; o valor publicado no conjunto de ambiente segue
-    ao lado. Mês sem classes cai no conjunto de ambiente (origem registrada).
+    ACR = classe Distribuidor; exportação = classe Exportador (energia vendida a outros países,
+    que a CCEE contabiliza como carga do ACL: o conjunto CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO
+    a inclui no ACL); ACL = soma das demais classes do conjunto CONSUMO_CLASSE_AGENTE (centro
+    de gravidade). A participação do ACL no consumo é calculada sem a exportação, como o
+    InfoMercado da CCEE apresenta o consumo ("O consumo contabilizou ...") e o crescimento do
+    ACL "sem considerar os efeitos da exportação"; o total com exportação segue ao lado. Em
+    junho de 2023, por exemplo, a exportação foi de 1.480 MW médios e a participação do ACL é
+    38,39% sem ela e 39,76% com ela.
+
+    Contar pelas classes também atravessa a quebra de fevereiro de 2026: a CCEE trocou a classe
+    Comercializador pela Varejista e o conjunto de ambiente deixou de contar o consumo da
+    Varejista no ACL (a diferença entre os dois conjuntos passou a ser, mês a mês, o consumo
+    dessa classe). O valor publicado no conjunto de ambiente segue ao lado. Mês sem classes cai
+    no conjunto de ambiente (origem registrada), que não separa a exportação: nele, o ACL sem
+    exportação e a participação ficam sem valor.
 
     Retorna (linhas, identidade, classes_mes)."""
     acr_p, acl_p = _serie(amb, "CONSUMO_TOTAL_ACR"), _serie(amb, "CONSUMO_TOTAL_ACL")
@@ -748,19 +846,26 @@ def ccee_consumo(amb, cls):
         tem_pub = mes in acr_p and mes in acl_p
         if cons and CLASSE_ACR in cons and all(v is not None for v in cons.values()):
             acr = cons[CLASSE_ACR]
-            acl = sum(v for k, v in cons.items() if k != CLASSE_ACR)
+            exp = cons.get(CLASSE_EXPORTADOR)
+            acl = sum(v for k, v in cons.items() if k not in (CLASSE_ACR, CLASSE_EXPORTADOR))
+            acl_com = acl + (exp or 0.0)
             origem = "classes"
         elif tem_pub:
-            acr, acl, origem = acr_p[mes], acl_p[mes], "ambiente"
+            acr, acl, exp, acl_com, origem = acr_p[mes], None, None, acl_p[mes], "ambiente"
         else:
             continue
         var = cons.get(CLASSE_VAREJISTA)
         h = horas_no_mes(mes)
-        linhas.append({"mes": mes, "acr_mwmed": c.r(acr, 1), "acl_mwmed": c.r(acl, 1), "total_mwmed": c.r(acr + acl, 1),
-                       "acl_pct": c.r(_pct(acl, acr + acl), 2), "origem": origem,
+        tot = None if acl is None else acr + acl
+        linhas.append({"mes": mes, "acr_mwmed": c.r(acr, 1), "acl_mwmed": c.r(acl, 1), "exportacao_mwmed": c.r(exp, 1),
+                       "total_mwmed": c.r(tot, 1), "total_com_exportacao_mwmed": c.r(acr + acl_com, 1),
+                       "acl_pct": c.r(_pct(acl, tot), 2), "acl_com_exportacao_pct": c.r(_pct(acl_com, acr + acl_com), 2),
+                       "origem": origem,
                        "acr_publicado_mwmed": c.r(acr_p.get(mes), 1), "acl_publicado_mwmed": c.r(acl_p.get(mes), 1),
-                       "varejista_mwmed": c.r(var, 1), "horas": h, "acr_mwh": c.r(acr * h, 0), "acl_mwh": c.r(acl * h, 0),
-                       "_acr": acr, "_acl": acl})
+                       "varejista_mwmed": c.r(var, 1), "horas": h, "acr_mwh": c.r(acr * h, 0),
+                       "acl_mwh": c.r(acl * h, 0) if acl is not None else None,
+                       "exportacao_mwh": c.r(exp * h, 0) if exp is not None else None,
+                       "_acr": acr, "_acl": acl, "_exp": exp})
         if cons and tem_pub and all(v is not None for v in cons.values()):
             soma = sum(cons.values())
             dif = soma - acr_p[mes] - acl_p[mes]
@@ -769,6 +874,17 @@ def ccee_consumo(amb, cls):
                           "diferenca_mwmed": c.r(dif, 3), "varejista_mwmed": c.r(var, 3), "residuo_mwmed": c.r(resid, 3),
                           "ok": abs(resid) <= TOL_IDENTIDADE_CLASSES_MWMED})
     return linhas, ident, classes_mes
+
+
+def variacao_acl_12m(linhas, mes):
+    """Variação do ACL sem exportação e com exportação entre o mês e o mesmo mês do ano anterior
+    (%), como o InfoMercado publica; None se faltar algum dos dois meses."""
+    por = {x["mes"]: x for x in linhas}
+    a, b = por.get(mes), por.get(_mes_mais(mes, -12))
+    if not a or not b or a["_acl"] is None or b["_acl"] is None:
+        return None
+    com = lambda x: x["_acl"] + (x["_exp"] or 0.0)  # noqa: E731
+    return {"sem_exportacao_pct": 100.0 * (a["_acl"] / b["_acl"] - 1), "com_exportacao_pct": 100.0 * (com(a) / com(b) - 1)}
 
 
 def secao_livre_regulado(con, hoje, ev):
@@ -828,14 +944,18 @@ def secao_livre_regulado(con, hoje, ev):
                                  "ponto_conexao_acl_mwmed": c.r(d.get("CONSUMO_PONTO_CONEXAO_CLASSE_ACL"), 1)})
     por_ccee = {x["mes"]: x for x in ccee_mensal}
     j12_ccee = None
-    if ult_ccee and all(m in por_ccee for m in _janela(ult_ccee)):
+    if ult_ccee and all(m in por_ccee and por_ccee[m]["_acl"] is not None for m in _janela(ult_ccee)):
         meses = _janela(ult_ccee)
         acl_mwh = sum(por_ccee[m]["_acl"] * horas_no_mes(m) for m in meses)
         tot_mwh = sum((por_ccee[m]["_acl"] + por_ccee[m]["_acr"]) * horas_no_mes(m) for m in meses)
+        exp_mwh = sum((por_ccee[m]["_exp"] or 0.0) * horas_no_mes(m) for m in meses)
         j12_ccee = {"inicio": meses[0], "fim": meses[-1], "acl_mwh": acl_mwh, "total_mwh": tot_mwh, "acl_pct": _pct(acl_mwh, tot_mwh),
+                    "exportacao_mwh": exp_mwh, "acl_com_exportacao_pct": _pct(acl_mwh + exp_mwh, tot_mwh + exp_mwh),
+                    "meses_exportacao": sum(1 for m in meses if por_ccee[m]["_exp"] is not None),
                     "meses_classes": sum(1 for m in meses if por_ccee[m]["origem"] == "classes")}
+    var_acl = variacao_acl_12m(ccee_mensal, ult_ccee) if ult_ccee else None
     for x in ccee_mensal:
-        x.pop("_acl"), x.pop("_acr")
+        x.pop("_acl"), x.pop("_acr"), x.pop("_exp")
 
     # ---------------- SAMP (distribuidoras)
     samp = secao_samp(con, agg)
@@ -845,6 +965,9 @@ def secao_livre_regulado(con, hoje, ev):
     obs_mme = _vigentes(con, DS_MME)
     rec_mme = reconcilia_mme(obs_mme, agg)
     carga = carga_contexto(obs_mme, agg)
+    rec_consol = reconcilia_consolidacao_consumo(
+        mme_anual(obs_mme), [{"ano": a_, "livre_pct": d["livre_pct"], "total_mwh": d["total_mwh"], "completo": d["completo"]}
+                             for a_, d in anos.items()])
     comparacao = []
     epe_por_mes = {l["mes"]: l for l in nac}
     samp_por_mes = {l["mes"]: l for l in samp["nacional_mensal"]}
@@ -893,7 +1016,8 @@ def secao_livre_regulado(con, hoje, ev):
                                     "periodo": {"inicio": j12["inicio"], "fim": j12["fim"]}}
     if j12_ccee:
         vs_amb = _vintages_ccee(con, "consumo_classe_agente") + _vintages_ccee(con, "consumo_mensal_ambiente_comercializacao")
-        im = [x for x in reconcilia_infomercado(con) if x["medida"] == "consumo_mwmed"]
+        im = [x for x in reconcilia_infomercado(con)
+              if x["medida"] in ("consumo_contabilizado_mwmed", "exportacao_mwmed", "acl_variacao_sem_exportacao_pct")]
         partes = []
         pre = [x for x in ident_classes if not x["varejista_mwmed"]]
         pos = [x for x in ident_classes if x["varejista_mwmed"]]
@@ -903,26 +1027,40 @@ def secao_livre_regulado(con, hoje, ev):
         if pos:
             partes.append(f"de {pos[0]['mes']} em diante o conjunto de ambiente deixou de contar a classe Varejista no ACL e a diferença "
                           f"entre os conjuntos é o consumo dessa classe (maior resíduo {_br(max(abs(x['residuo_mwmed']) for x in pos), 2)} MW médio)")
+        rotulos_im = {"consumo_contabilizado_mwmed": ("'O consumo contabilizou'", "Σ das classes sem a Exportador", 0, " MW médios"),
+                      "exportacao_mwmed": ("exportação", "classe Exportador", 2, " MW médios"),
+                      "acl_variacao_sem_exportacao_pct": ("ACL 'sem considerar os efeitos da exportação', variação em 12 meses", "ACL sem a Exportador", 1, "%")}
         for x in im:
-            partes.append(f"InfoMercado Nº {x['numero']} ({x['mes']}): 'Consumo/Geração' {_br(x['publicado'], 0)} MW médios; soma das classes: {_br(x['calculado'], 0)} MW médios (definição do InfoMercado não detalhada)")
-        rec = evid.reconciliacao("; ".join(partes), "aprovado" if ident_classes and all(x["ok"] for x in ident_classes) else "ressalva",
-                                 f"{_br(TOL_IDENTIDADE_CLASSES_MWMED, 0)} MW médios por mês na identidade entre os conjuntos; 0,5 MW médio no InfoMercado") if partes else None
+            rot, calc, casas, un = rotulos_im[x["medida"]]
+            partes.append(f"InfoMercado Nº {x['numero']} ({x['mes']}), {rot}: {_br(x['publicado'], casas)}{un}; {calc}: "
+                          f"{_br(x['calculado'], casas + 1) if x['calculado'] is not None else 'sem valor'}{un}")
+        ok_rec = bool(ident_classes) and all(x["ok"] for x in ident_classes) and all(x["resultado"] == "aprovado" for x in im)
+        rec = evid.reconciliacao("; ".join(partes), "aprovado" if ok_rec else "ressalva",
+                                 f"{_br(TOL_IDENTIDADE_CLASSES_MWMED, 0)} MW médios por mês na identidade entre os conjuntos; "
+                                 f"{_br(TOL_CONSUMO_INFOMERCADO_MWMED, 1)} MW médios no consumo do InfoMercado; 0,005 MW médio na exportação; "
+                                 "0,05 p.p. na variação") if partes else None
         kpis["participacao_acl_ccee_12m"] = {
-            "valor_pct": c.r(j12_ccee["acl_pct"], 2), "periodo": {"inicio": j12_ccee["inicio"], "fim": j12_ccee["fim"]},
+            "valor_pct": c.r(j12_ccee["acl_pct"], 2), "com_exportacao_pct": c.r(j12_ccee["acl_com_exportacao_pct"], 2),
+            "exportacao_mwh": c.r(j12_ccee["exportacao_mwh"], 0),
+            "periodo": {"inicio": j12_ccee["inicio"], "fim": j12_ccee["fim"]},
+            "variacao_acl_ultimo_mes": None if var_acl is None else {
+                "mes": ult_ccee, "sem_exportacao_pct": c.r(var_acl["sem_exportacao_pct"], 2), "com_exportacao_pct": c.r(var_acl["com_exportacao_pct"], 2)},
             "evidencia": ev(
-                indicador="Participação do ACL no consumo contabilizado pela CCEE (12 meses)",
+                indicador="Participação do ACL no consumo contabilizado pela CCEE, sem a exportação (12 meses)",
                 valor_exibido=f"{_br(j12_ccee['acl_pct'], 1)}%", valor_calculo=j12_ccee["acl_pct"], unidade="%",
                 periodo={"inicio": j12_ccee["inicio"], "fim": j12_ccee["fim"]}, entidade="SIN",
-                universo="consumo dos perfis de agente usado na contabilização do mercado de curto prazo (centro de gravidade), ACR + ACL",
+                universo="consumo dos perfis de agente usado na contabilização do mercado de curto prazo (centro de gravidade), ACR + ACL, sem a exportação a outros países",
                 fonte=_fonte_ev("CCEE", "CONSUMO_CLASSE_AGENTE (conferido com CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO)",
                                 f"{cm.PORTAL}/dataset/consumo_classe_agente", vs_amb),
-                consulta="CONSUMO por CLASSE_AGENTE (MWmed) dos 12 meses: ACR = Distribuidor; ACL = demais classes",
-                formula="100 × Σ(ACL_m × horas_m) ÷ Σ((ACR_m + ACL_m) × horas_m), com ACR = classe Distribuidor e ACL = soma das demais classes",
-                numerador={"descricao": "consumo ACL em 12 meses (MWh)", "valor": c.r(j12_ccee["acl_mwh"], 3)},
-                denominador={"descricao": "consumo ACR + ACL em 12 meses (MWh)", "valor": c.r(j12_ccee["total_mwh"], 3)},
+                consulta="CONSUMO por CLASSE_AGENTE (MWmed) dos 12 meses: ACR = Distribuidor; exportação = Exportador; ACL = demais classes",
+                formula="100 × Σ(ACL_m × horas_m) ÷ Σ((ACR_m + ACL_m) × horas_m), com ACR = classe Distribuidor e ACL = soma das demais classes exceto Exportador",
+                numerador={"descricao": "consumo ACL sem exportação em 12 meses (MWh)", "valor": c.r(j12_ccee["acl_mwh"], 3)},
+                denominador={"descricao": "consumo ACR + ACL sem exportação em 12 meses (MWh)", "valor": c.r(j12_ccee["total_mwh"], 3)},
                 pesos="horas de cada mês (MWmed × horas = MWh)",
+                exclusoes=[f"classe Exportador (energia vendida a outros países, que o conjunto de ambiente soma ao ACL): "
+                           f"{_br(j12_ccee['exportacao_mwh'] / 1e6, 2)} TWh nos 12 meses; com ela, o ACL teria {_br(j12_ccee['acl_com_exportacao_pct'], 2)}% do total"],
                 cobertura=f"SIN; {j12_ccee['meses_classes']} dos 12 meses pelas classes de agente",
-                tratamento_ausencia="janela só é calculada com os 12 meses publicados; mês sem classes usa o conjunto de ambiente",
+                tratamento_ausencia="janela só é calculada com os 12 meses separáveis pelas classes; mês sem a classe Exportador não tem exportação a descontar",
                 testes=[evid.teste("Σ das classes = ACR + ACL publicado (+ Varejista a partir de fevereiro de 2026)",
                                    "aprovado" if ident_classes and all(x["ok"] for x in ident_classes) else "ressalva",
                                    f"{len(ident_classes)} meses; maior resíduo {_br(max((abs(x['residuo_mwmed']) for x in ident_classes), default=0.0), 2)} MW médio")],
@@ -951,7 +1089,9 @@ def secao_livre_regulado(con, hoje, ev):
         "ccee_identidade_classes": [{k: x[k] for k in ("mes", "diferenca_mwmed", "varejista_mwmed", "residuo_mwmed", "ok")} for x in ident_classes],
         "comparacao_universos": comparacao,
         "carga_contexto": carga,
-        "reconciliacao": {"epe_planilha": rec_plan, "mme": rec_mme},
+        "reconciliacao": {"epe_planilha": rec_plan, "mme": rec_mme, "mme_consolidacao_anual": rec_consol,
+                          "infomercado": [x for x in reconcilia_infomercado(con)
+                                          if x["medida"] in ("consumo_contabilizado_mwmed", "exportacao_mwmed", "acl_variacao_sem_exportacao_pct")]},
         "samp": samp,
         "_agg": agg, "_nac": nac,
     }
@@ -1006,13 +1146,34 @@ def reconcilia_infomercado(con):
                        0.006, "0,006 p.p. (o InfoMercado publica duas casas decimais)", None))
         linhas.append(("geracao_mre_mwmed", g("geracao_mre_mwmed"), g_soma, 0.5,
                        "0,5 MW médio (o InfoMercado publica MW médios inteiros)", None))
+        gsf12 = gsf_12m_candidatos(ger, mre, mes)
+        linhas.append(("gsf_12m_pct", g("gsf_12m_pct"), gsf12 and gsf12["razao_energias_pct"], 0.006,
+                       "0,006 p.p. (duas casas decimais publicadas)",
+                       None if not gsf12 else (
+                           "Publicado = 'Nos últimos doze meses ajuste médio do MRE é de X%'; calculado = razão de energias dos 12 meses "
+                           f"({gsf12['inicio']} a {gsf12['fim']}). Nenhuma definição testada reproduz o número publicado: razão de energias "
+                           f"{_br(gsf12['razao_energias_pct'], 2)}%, média simples dos fatores mensais {_br(gsf12['media_simples_pct'], 2)}%, "
+                           f"razão sobre a garantia física sazonalizada {_br(gsf12['razao_gf_sazonalizada_pct'], 2)}%, acumulado do ano "
+                           f"({gsf12['ano_inicio']} a {gsf12['fim']}) {_br(gsf12['acumulado_ano_pct'], 2)}%. A divergência fica publicada; a fonte não informa a janela nem a ponderação.")))
         n_ag = [v for (ss, r), v in qtd.items() if r == mes]
         linhas.append(("agentes_contabilizados", g("agentes_contabilizados"), sum(n_ag) if n_ag else None, 0.0, "0 agente",
                        "O conjunto aberto é a versão vigente da contabilização; o InfoMercado é a publicação do mês e pode não refletir recontabilizações posteriores."))
-        cons = [v for (ss, r), v in cls.items() if r == mes and ss.endswith("|CONSUMO")]
-        linhas.append(("consumo_mwmed", g("consumo_mwmed"), sum(cons) if cons else None, 0.5,
-                       "0,5 MW médio (MW médios inteiros)",
-                       "O InfoMercado chama o número de 'Consumo/Geração' (referido ao centro de gravidade); calculado = soma das classes de agente de CONSUMO_CLASSE_AGENTE (ACR + ACL). A diferença, de cerca de 0,1% a 0,2%, não é explicada pela fonte."))
+        cons = {ss.split("|")[0]: v for (ss, r), v in cls.items() if r == mes and ss.endswith("|CONSUMO")}
+        exp = cons.get(CLASSE_EXPORTADOR)
+        linhas.append(("consumo_contabilizado_mwmed", g("consumo_contabilizado_mwmed"),
+                       sum(v for k, v in cons.items() if k != CLASSE_EXPORTADOR) if cons else None, TOL_CONSUMO_INFOMERCADO_MWMED,
+                       f"{_br(TOL_CONSUMO_INFOMERCADO_MWMED, 1)} MW médios (0,5 do arredondamento a MW médio inteiro e até 5 da diferença entre os conjuntos por classe e por ambiente)",
+                       "Publicado = 'O consumo contabilizou X MW médios' (seção de consumo do InfoMercado, sem a exportação); calculado = soma das classes de CONSUMO_CLASSE_AGENTE menos a classe Exportador. O 'Consumo/Geração' do sumário executivo é outro número (lado da geração) e não é comparado ao consumo."))
+        linhas.append(("exportacao_mwmed", g("exportacao_mwmed"), exp if cons else None, 0.005,
+                       "0,005 MW médio (o InfoMercado publica duas casas decimais)",
+                       "Publicado = nota de rodapé 'houve exportação de X MW médios'; calculado = CONSUMO da classe Exportador."))
+        acl_m = {m: sum(v for (ss, r), v in cls.items() if r == m and ss.endswith("|CONSUMO")
+                        and ss.split("|")[0] not in (CLASSE_ACR, CLASSE_EXPORTADOR)) for m in (mes, _mes_mais(mes, -12))}
+        tem_ambos = all(any(r == m for (_, r) in cls) for m in acl_m)
+        linhas.append(("acl_variacao_sem_exportacao_pct", g("acl_variacao_sem_exportacao_pct"),
+                       100.0 * (acl_m[mes] / acl_m[_mes_mais(mes, -12)] - 1) if tem_ambos and acl_m[_mes_mais(mes, -12)] else None, 0.05,
+                       "0,05 p.p. (o InfoMercado publica uma casa decimal)",
+                       "Publicado = 'o ACL avançou X% sem considerar os efeitos da exportação' (mês contra o mesmo mês do ano anterior); calculado = ACL sem a classe Exportador, pelas classes de agente."))
         for comp, cols in COMPONENTE_PARA_CCEE.items():
             medida = f"encargos_{comp}_milhoes_rs"
             n = int(ed.get(f"parcelas|{medida}") or 1)
@@ -1051,6 +1212,82 @@ def reconcilia_infomercado(con):
     return out
 
 
+def _tem_livre(d):
+    return bool(d) and ((d.get("livre_uc") or 0) > 0 or (d.get("livre_mwh") or 0) > 0)
+
+
+def _repetido(d, d_ant, opcao):
+    """Linhas Regular de uma opção (cativo ou livre) idênticas às do mês anterior: mesma energia
+    (até 0,001 kWh) e mesmo número de consumidores, ambos positivos."""
+    e, u = d.get(f"regular_{opcao}_mwh"), d.get(f"regular_{opcao}_uc")
+    e0, u0 = d_ant.get(f"regular_{opcao}_mwh"), d_ant.get(f"regular_{opcao}_uc")
+    return None not in (e, u, e0, u0) and e > 0 and u > 0 and abs(e - e0) <= 1e-6 and u == u0
+
+
+# Variação abrupta do estoque de unidades livres de uma distribuidora entre dois meses: queda
+# para menos da metade ou alta acima de 50%, com pelo menos 100 unidades num dos meses. O
+# mercado livre nacional cresce cerca de 1% a 2% ao mês; uma variação dessas numa distribuidora
+# grande é reclassificação ou falha de envio (EQUATORIAL MA de 1.212 para 9 e CPFL-PAULISTA de
+# 8.443 para 13.695 em julho de 2026) e tira o mês da comparação com a EPE.
+LIMIAR_VARIACAO_UC = 0.5
+MINIMO_UC_VARIACAO = 100
+
+
+def completude_samp(por, cad):
+    """Completude do SAMP por mês, por medida e por distribuidora (seção 11.7).
+
+    Um mês é `completo` quando (1) foi publicado por pelo menos 95% da mediana de distribuidoras
+    dos 12 meses anteriores e (2) nenhuma distribuidora que tinha linhas LIVRE no mês anterior
+    ficou sem elas no mês (a contagem de distribuidoras não basta: em julho de 2026 todas as
+    103 publicaram alguma linha, mas a ELEKTRO, com 4.302 unidades livres em junho, e a
+    EQUATORIAL PA, com 2.157, vieram sem nenhuma linha LIVRE). Separadamente, `repeticoes`
+    lista as distribuidoras cujas linhas Regular (cativo ou livre) repetem exatamente as do mês
+    anterior (energia em kWh e número de consumidores): é sinal de mês copiado (as linhas CATIVO
+    Regular da ELEKTRO de julho de 2026 são as de junho). Mês com repetição ou com variação
+    abrupta do estoque de unidades livres de uma distribuidora (LIMIAR_VARIACAO_UC) não entra
+    em comparação com a EPE (`comparavel` = completo, sem repetição e sem variação abrupta); no
+    ano de referência, a repetição fica marcada na distribuidora.
+
+    Retorna {mês: {"distribuidoras", "completo", "comparavel", "sem_livre", "repeticoes",
+    "variacoes_abruptas", "motivo"}}."""
+    meses = sorted({m for (_, m) in por})
+    por_mes = {}
+    for (cn, m), d in por.items():
+        por_mes.setdefault(m, {})[cn] = d
+    out = {}
+    for i, m in enumerate(meses):
+        atual = por_mes.get(m, {})
+        ant_mes = _mes_mais(m, -1)
+        ant = por_mes.get(ant_mes, {}) if ant_mes in por_mes else None
+        # mediana dos 12 meses anteriores (no primeiro mês da série, dos 12 seguintes)
+        ref_n = sorted(len(por_mes[x]) for x in (meses[max(0, i - 12):i] if i else meses[1:13]))
+        mediana = ref_n[len(ref_n) // 2] if ref_n else None
+        sem_livre, repet, abrupta = [], [], []
+        if ant is not None:
+            for cn, d0 in sorted(ant.items()):
+                if _tem_livre(d0) and not _tem_livre(atual.get(cn)):
+                    sem_livre.append({"cnpj": cn, "sigla": (cad.get(cn) or {}).get("sigla"),
+                                      "livre_uc_mes_anterior": d0.get("livre_uc"), "presente_no_mes": cn in atual})
+            for cn, d in sorted(atual.items()):
+                d0 = ant.get(cn)
+                if not d0:
+                    continue
+                for opcao in ("cativo", "livre"):
+                    if _repetido(d, d0, opcao):
+                        repet.append({"cnpj": cn, "sigla": (cad.get(cn) or {}).get("sigla"), "opcao": opcao,
+                                      "uc": d.get(f"regular_{opcao}_uc"), "mwh": c.r(d.get(f"regular_{opcao}_mwh"), 3)})
+                u0, u = d0.get("livre_uc") or 0, d.get("livre_uc") or 0
+                if u > 0 and u0 > 0 and max(u, u0) >= MINIMO_UC_VARIACAO and (u < (1 - LIMIAR_VARIACAO_UC) * u0 or u > (1 + LIMIAR_VARIACAO_UC) * u0):
+                    abrupta.append({"cnpj": cn, "sigla": (cad.get(cn) or {}).get("sigla"), "livre_uc_mes_anterior": u0, "livre_uc": u})
+        n_ok = mediana is not None and len(atual) >= 0.95 * mediana
+        completo = n_ok and not sem_livre
+        out[m] = {"distribuidoras": len(atual), "completo": completo, "comparavel": completo and not repet and not abrupta,
+                  "sem_livre": sem_livre, "repeticoes": repet, "variacoes_abruptas": abrupta,
+                  "motivo": None if completo else ("menos distribuidoras que 95% da mediana dos 12 meses anteriores" if not n_ok
+                                                   else "distribuidora sem linhas LIVRE depois de tê-las no mês anterior")}
+    return out
+
+
 def secao_samp(con, agg_epe):
     """Mercado livre e cativo faturado por distribuidora (SAMP)."""
     obs = _vigentes(con, DS_SAMP)
@@ -1059,22 +1296,26 @@ def secao_samp(con, agg_epe):
     for (serie, mes), val in obs.items():
         cn, medida = serie.split("|", 1)
         por.setdefault((cn, mes), {})[medida] = val
+    comp = completude_samp(por, cad)
     meses = sorted({m for (_, m) in por})
     nacional = []
     for mes in meses:
         linhas = [d for (cn, m), d in por.items() if m == mes]
         soma = lambda k: _soma(*[d.get(k) for d in linhas])  # noqa: E731
-        nacional.append({"mes": mes, "distribuidoras": len(linhas), "livre_mwh": soma("livre_mwh"), "livre_uc": soma("livre_uc"),
+        cp = comp[mes]
+        nacional.append({"mes": mes, "distribuidoras": len(linhas), "completo": cp["completo"], "comparavel": cp["comparavel"],
+                         "motivo_incompleto": cp["motivo"],
+                         "distribuidoras_sem_livre": [{"sigla": x["sigla"], "livre_uc_mes_anterior": x["livre_uc_mes_anterior"]} for x in cp["sem_livre"]],
+                         "repeticoes": [{"sigla": x["sigla"], "opcao": x["opcao"], "uc": x["uc"]} for x in cp["repeticoes"]],
+                         "variacoes_abruptas": [{"sigla": x["sigla"], "livre_uc_mes_anterior": x["livre_uc_mes_anterior"], "livre_uc": x["livre_uc"]}
+                                                for x in cp["variacoes_abruptas"]],
+                         "livre_mwh": soma("livre_mwh"), "livre_uc": soma("livre_uc"),
                          "livre_uc_incentivada": soma("livre_uc_incentivada"), "livre_uc_convencional": soma("livre_uc_convencional"),
                          "livre_uc_autoproducao": soma("livre_uc_autoproducao"), "livre_uc_erc": soma("livre_uc_erc"),
                          "livre_uc_outro": soma("livre_uc_outro"), "livre_mwh_incentivada": soma("livre_mwh_incentivada"),
                          "livre_mwh_convencional": soma("livre_mwh_convencional"), "livre_mwh_autoproducao": soma("livre_mwh_autoproducao"),
                          "cativo_mwh": soma("cativo_mwh"), "cativo_uc": soma("cativo_uc"), "livre_mwh_refat": soma("livre_mwh_refat")})
-    # mês publicado por quase todas: só ele entra em comparação com a EPE e no destaque
-    ref_n = sorted(x["distribuidoras"] for x in nacional[-13:-1]) if len(nacional) > 1 else []
-    mediana = ref_n[len(ref_n) // 2] if ref_n else None
     for x in nacional:
-        x["completo"] = mediana is not None and x["distribuidoras"] >= 0.95 * mediana
         e_uc = agg_epe["nac"].get(("livre", "uc"), {}).get(x["mes"])
         x["epe_livre_uc"] = e_uc
         x["samp_sobre_epe_uc_pct"] = c.r(_pct(x["livre_uc"], e_uc), 2)
@@ -1086,6 +1327,10 @@ def secao_samp(con, agg_epe):
     if ano_ref:
         meses_ano = [f"{ano_ref}-{i:02d}" for i in range(1, 13)]
         dez, dez_ant = f"{ano_ref}-12", f"{int(ano_ref) - 1}-12"
+        repet_cn = {}
+        for m in meses_ano:
+            for x in comp.get(m, {}).get("repeticoes", []):
+                repet_cn.setdefault(x["cnpj"], []).append(f"{m} ({x['opcao']})")
         for cn in sorted({cn for (cn, m) in por if m.startswith(ano_ref)}):
             ds = [por.get((cn, m)) for m in meses_ano]
             n = sum(1 for d in ds if d)
@@ -1100,6 +1345,7 @@ def secao_samp(con, agg_epe):
                 "variacao_livre_uc": (fim["livre_uc"] - ini["livre_uc"]) if fim.get("livre_uc") is not None and ini.get("livre_uc") is not None else None,
                 "livre_uc_incentivada_dez": fim.get("livre_uc_incentivada"), "livre_uc_convencional_dez": fim.get("livre_uc_convencional"),
                 "livre_uc_autoproducao_dez": fim.get("livre_uc_autoproducao"), "cativo_uc_dez": fim.get("cativo_uc"),
+                "meses_repetidos": repet_cn.get(cn, []),
                 "completo": n == 12})
         distrib.sort(key=lambda x: -(x["livre_mwh"] or 0))
     return {"nacional_mensal": nacional, "ano_referencia": ano_ref, "distribuidoras": distrib, "_por": por, "_cad": cad}
@@ -1132,7 +1378,65 @@ def fluxos_cnpj(meses_por_cnpj, classe_por_cnpj=None):
     return out
 
 
-def secao_agentes(con, livre, ev):
+CLASSES_COM_PARCELA = ("Consumidor Livre", "Consumidor Especial", "Autoprodutor", CLASSE_EXPORTADOR)
+
+
+def parcelas_de(parc, cls):
+    """Linhas mensais das parcelas de carga a partir das séries do leitor (versão 2) e a
+    conferência com o consumo por classe de agente.
+
+    As parcelas dos perfis Distribuidor ficam em `distribuidoras` (são o ACR) e não entram em
+    `parcelas` nem em `consumo_acl_mwh`. Conferência, mês a mês, em MW médios (MWh ÷ horas):
+    parcelas das distribuidoras = classe Distribuidor; parcelas do ACL = classes Consumidor
+    Livre, Consumidor Especial, Autoprodutor e Exportador (as cargas representadas por
+    comercializador varejista não são parcelas neste conjunto; o consumo delas está na classe
+    Comercializador até janeiro de 2026 e Varejista depois). Tolerância: a mesma da identidade
+    entre os conjuntos de consumo (5 MW médios)."""
+    pm = {}
+    for (s_, mes), v in parc.items():
+        if s_.split("|")[0] in ("acl", "distribuidor", "classe"):
+            pm.setdefault(mes, {})[s_] = v
+    cl = {}
+    for (s_, mes), v in cls.items():
+        classe, col = s_.split("|")
+        if col == "CONSUMO":
+            cl.setdefault(mes, {})[classe] = v
+    out = []
+    for m, d in sorted(pm.items()):
+        h = horas_no_mes(m)
+        g = d.get
+        acl, dist = g("acl|consumo_acl_mwh"), g("distribuidor|consumo_acl_mwh")
+        exp = g(f"classe|{CLASSE_EXPORTADOR}|consumo_acl_mwh")
+        por_classe = {}
+        for k, v in d.items():
+            p = k.split("|")
+            if p[0] == "classe" and p[1] != cm.CLASSE_DISTRIBUIDOR:
+                por_classe.setdefault(p[1], {})["parcelas" if p[2] == "parcelas" else "consumo_mwh"] = c.r(v, 0) if p[2] != "parcelas" else _inteiro(v)
+        c_m = cl.get(m)
+        conf = {"ok": None, "classes_acl_mwmed": None, "parcelas_acl_mwmed": None, "residuo_acl_mwmed": None,
+                "classe_distribuidor_mwmed": None, "parcelas_distribuidor_mwmed": None, "residuo_distribuidor_mwmed": None}
+        if c_m and acl is not None and dist is not None and cm.CLASSE_DISTRIBUIDOR in c_m:
+            ref_acl = sum(v for k, v in c_m.items() if k in CLASSES_COM_PARCELA)
+            ra, rd = acl / h - ref_acl, dist / h - c_m[cm.CLASSE_DISTRIBUIDOR]
+            conf = {"ok": abs(ra) <= TOL_IDENTIDADE_CLASSES_MWMED and abs(rd) <= TOL_IDENTIDADE_CLASSES_MWMED,
+                    "classes_acl_mwmed": c.r(ref_acl, 1), "parcelas_acl_mwmed": c.r(acl / h, 1), "residuo_acl_mwmed": c.r(ra, 2),
+                    "classe_distribuidor_mwmed": c.r(c_m[cm.CLASSE_DISTRIBUIDOR], 1), "parcelas_distribuidor_mwmed": c.r(dist / h, 1),
+                    "residuo_distribuidor_mwmed": c.r(rd, 2)}
+        cont = lambda k: _inteiro(g(k)) if g(k) is not None else (0 if g("acl|parcelas") is not None else None)  # noqa: E731
+        out.append({"mes": m, "parcelas": _inteiro(g("acl|parcelas")), "perfis_com_parcela": _inteiro(g("acl|perfis_com_parcela")),
+                    "cnpj_carga": cont("acl|cnpj_carga"), "migracoes_no_mes": cont("acl|migracoes_no_mes"),
+                    "consumo_acl_mwh": acl, "consumo_total_mwh": g("acl|consumo_total_mwh"),
+                    "exportacao_mwh": exp, "consumo_acl_sem_exportacao_mwh": None if acl is None else acl - (exp or 0.0),
+                    "parcelas_sem_cadastro": cont(f"classe|{cm.SEM_CADASTRO}|parcelas"),
+                    "por_classe_perfil": {k: por_classe[k] for k in sorted(por_classe)},
+                    "distribuidoras": {"parcelas": _inteiro(g("distribuidor|parcelas")), "consumo_mwh": c.r(dist, 0)},
+                    "por_submercado": {k.split("|")[2]: _inteiro(v) for k, v in d.items() if k.startswith("acl|parcelas_sm|")},
+                    "conferencia": conf,
+                    "_uf": {k.split("|")[2]: _inteiro(v) for k, v in d.items() if k.startswith("acl|parcelas_uf|")}})
+    return out
+
+
+def secao_agentes(con, livre, ev, hoje):
     agg = livre["_agg"]
     qtd = _ccee(con, "agente_qtd_contabilizacao")
     por_mes = {}
@@ -1156,8 +1460,15 @@ def secao_agentes(con, livre, ev):
     fluxos = fluxos_cnpj(meses_cnpj, classe_cnpj)
 
     perf = _ccee(con, "lista_perfil_v1")
+    # referência da posição = data de modificação informada pelo portal para o recurso
+    # (last_modified do CKAN); o arquivo não traz data própria e a captura não a substitui
     pos = max((r for (_, r) in perf), default=None)
-    perfis = {"posicao": pos, "por_classe": [], "perfis_por_agente_ativo": {}, "agentes_ativos": None, "perfis_ativos": None}
+    v_perf = (_vintages_ccee(con, "lista_perfil_v1") or [None])[-1]
+    perfis = {"data_modificacao_portal": None if pos in (None, cm.REF_SEM_DATA) else pos,
+              "data_referencia": None,
+              "nota_data": "O arquivo do cadastro não informa a data da posição; a data exibida é a de modificação do recurso informada pelo portal de dados abertos da CCEE (last_modified), que nem sempre acompanha o conteúdo. A data de captura não é usada como data do dado.",
+              "capturado_em": v_perf and v_perf["capturado_em"],
+              "por_classe": [], "perfis_por_agente_ativo": {}, "agentes_ativos": None, "perfis_ativos": None}
     if pos:
         cl = {}
         for (s, r), v in perf.items():
@@ -1165,27 +1476,21 @@ def secao_agentes(con, livre, ev):
                 continue
             partes = s.split("|")
             if partes[0] in ("perfis", "agentes"):
-                cl.setdefault(partes[1], {})[f"{partes[0]}_{partes[2].lower().replace(' ', '_')}"] = v
+                cl.setdefault(partes[1], {})[f"{partes[0]}_{partes[2].lower().replace(' ', '_')}"] = _inteiro(v)
             elif partes[0] == "perfis_por_agente_ativo":
-                perfis["perfis_por_agente_ativo"][partes[1]] = v
+                perfis["perfis_por_agente_ativo"][partes[1]] = _inteiro(v)
             elif s == "agentes_ativos_total":
-                perfis["agentes_ativos"] = v
+                perfis["agentes_ativos"] = _inteiro(v)
             elif s == "perfis_ativos_total":
-                perfis["perfis_ativos"] = v
+                perfis["perfis_ativos"] = _inteiro(v)
         perfis["por_classe"] = [{"classe": k, **d} for k, d in sorted(cl.items())]
 
-    parc = _ccee(con, "parcela_carga_consumo")
-    pm = {}
-    for (s, mes), v in parc.items():
-        pm.setdefault(mes, {})[s] = v
-    parcelas_mensal = [{"mes": m, "parcelas": d.get("parcelas"), "perfis_com_parcela": d.get("perfis_com_parcela"),
-                        "cnpj_carga": d.get("cnpj_carga"), "migracoes_no_mes": d.get("migracoes_no_mes"),
-                        "consumo_acl_mwh": c.r(d.get("consumo_acl_mwh"), 1), "consumo_total_mwh": c.r(d.get("consumo_total_mwh"), 1),
-                        "por_submercado": {k.split("|")[1]: v for k, v in d.items() if k.startswith("parcelas_sm|")}}
-                       for m, d in sorted(pm.items())]
+    parcelas_mensal = parcelas_de(_ccee(con, "parcela_carga_consumo"), _ccee(con, "consumo_classe_agente"))
     ult_parc = parcelas_mensal[-1]["mes"] if parcelas_mensal else None
-    parcelas_uf = sorted(({"uf": k.split("|")[1], "parcelas": v} for k, v in pm.get(ult_parc, {}).items() if k.startswith("parcelas_uf|")),
+    parcelas_uf = sorted(({"uf": uf, "parcelas": v} for uf, v in (parcelas_mensal[-1]["_uf"] if parcelas_mensal else {}).items()),
                          key=lambda x: -x["parcelas"])
+    for x in parcelas_mensal:
+        x.pop("_uf")
 
     deslig = {}
     for nome in ("desligamento_voluntario", "desligamento_compulsorio"):
@@ -1194,7 +1499,16 @@ def secao_agentes(con, livre, ev):
             if partes[0] == "desligamentos":
                 k = (mes[:4], partes[1], partes[2])
                 deslig[k] = deslig.get(k, 0) + v
-    desl_anual = [{"ano": a, "tipo": t, "classe": cl, "desligamentos": n} for (a, t, cl), n in sorted(deslig.items())]
+    desl_anual = [{"ano": a, "tipo": t, "classe": cl, "desligamentos": _inteiro(n)} for (a, t, cl), n in sorted(deslig.items())]
+    # cobertura de cada ano: o arquivo é o histórico até a publicação; o ano corrente é parcial
+    ultima_data = {}
+    for nome in ("desligamento_voluntario", "desligamento_compulsorio"):
+        for ch in base.registros_como_estavam_em(con, cm.dataset(nome)):
+            if ch.startswith("desligamento|"):
+                dia = ch.split("|")[2]
+                ultima_data[dia[:4]] = max(ultima_data.get(dia[:4], ""), dia)
+    desl_cobertura = {a: {"ultima_data": d, "completo": int(a) < hoje.year,
+                          "meses": 12 if int(a) < hoje.year else int(d[5:7])} for a, d in ultima_data.items()}
 
     ucs = agg["nac"].get(("livre", "uc"), {})
     ucs_cat = agg["nac"].get(("cativo", "uc"), {})
@@ -1240,14 +1554,27 @@ def secao_agentes(con, livre, ev):
     if ult_uc:
         v_epe = _vintage(con, DS_EPE, RECURSO_EPE_DA)
         # último mês publicado por quase todas as distribuidoras no SAMP e presente na EPE
-        sm = next((x for x in reversed(livre["samp"]["nacional_mensal"])
-                   if x["completo"] and x["livre_uc"] is not None and ucs.get(x["mes"]) is not None), None)
+        nac_samp = livre["samp"]["nacional_mensal"]
+        sm = next((x for x in reversed(nac_samp)
+                   if x["comparavel"] and x["livre_uc"] is not None and ucs.get(x["mes"]) is not None), None)
+        excluidos = [x for x in nac_samp if sm and x["mes"] > sm["mes"]]
         rec = None
         if sm:
             d = _pct(sm["livre_uc"], ucs[sm["mes"]])
+            def motivo(x):
+                if x["motivo_incompleto"] and x["motivo_incompleto"].startswith("menos distribuidoras"):
+                    return f"{x['distribuidoras']} distribuidoras publicadas, {x['motivo_incompleto']}"
+                partes = [f"{y['sigla']} sem linhas LIVRE ({_ucs_txt(y['livre_uc_mes_anterior'])} no mês anterior)" for y in x["distribuidoras_sem_livre"][:3]]
+                partes += [f"{y['sigla']} com linhas {y['opcao'].upper()} Regular iguais às do mês anterior" for y in x["repeticoes"][:3]]
+                partes += [f"{y['sigla']} de {_br(y['livre_uc_mes_anterior'], 0)} para {_br(y['livre_uc'], 0)} unidades livres" for y in x["variacoes_abruptas"][:3]]
+                return ", ".join(partes)
+            motivos = "; ".join(f"{x['mes']}: {motivo(x)}" for x in excluidos)
             rec = evid.reconciliacao(
-                f"Unidades livres faturadas pelas distribuidoras no SAMP (ANEEL) em {sm['mes']}, último mês publicado por quase todas: "
-                f"{_br(sm['livre_uc'], 0)}, {_br(d, 1)}% das {_br(ucs[sm['mes']], 0)} da EPE no mesmo mês. Universos diferentes: o SAMP não tem o consumidor livre ligado direto à rede básica.",
+                f"Unidades livres faturadas pelas distribuidoras no SAMP (ANEEL) em {sm['mes']}, último mês completo (todas as distribuidoras com as linhas LIVRE "
+                f"do mês anterior), sem linhas repetidas do mês anterior e sem variação abrupta de distribuidora: {_br(sm['livre_uc'], 0)}, "
+                f"{_br(d, 1)}% das {_br(ucs[sm['mes']], 0)} da EPE no mesmo mês. "
+                f"Universos diferentes: o SAMP não tem o consumidor livre ligado direto à rede básica."
+                + (f" Meses posteriores fora da comparação: {motivos}." if motivos else ""),
                 "aprovado" if abs(d - 100) <= 3 else "ressalva", "3% do número da EPE (universos diferentes, publicações independentes)")
         plan_uc = _vigentes(con, DS_EPE_PLAN).get(("plan|livre_uc", ult_uc))
         kpis["ucs_livres"] = {"valor": ucs[ult_uc], "mes": ult_uc,
@@ -1267,23 +1594,39 @@ def secao_agentes(con, livre, ev):
     if parcelas_mensal:
         u = parcelas_mensal[-1]
         vs = _vintages_ccee(con, "parcela_carga_consumo")
-        kpis["parcelas_carga"] = {"valor": u["parcelas"], "mes": u["mes"], "migracoes_no_mes": u["migracoes_no_mes"], "evidencia": ev(
-            indicador="Parcelas de carga no ACL contabilizadas pela CCEE", valor_exibido=_br(u["parcelas"], 0), valor_calculo=u["parcelas"],
-            unidade="parcelas de carga", periodo={"inicio": u["mes"], "fim": u["mes"]}, entidade="CCEE (SIN)",
-            universo="parcelas de carga com consumo no mês (unidade de consumo modelada na CCEE, ligada a um perfil de agente)",
-            fonte=_fonte_ev("CCEE", "PARCELA_CARGA_CONSUMO", f"{cm.PORTAL}/dataset/parcela_carga_consumo", vs),
-            consulta=f"COD_PARCELA_CARGA distintos com MES_REFERENCIA = {u['mes'].replace('-', '')}",
-            formula="contagem de COD_PARCELA_CARGA distintos no mês", cobertura="todas as linhas do mês no arquivo anual",
-            tratamento_ausencia="linha sem código de parcela é contada à parte e não entra",
-            testes=[evid.teste("Parcelas por submercado somam o total", "aprovado" if abs(sum(u["por_submercado"].values()) - u["parcelas"]) <= 0 else "ressalva",
-                               f"{sum(u['por_submercado'].values())} na soma por submercado, {u['parcelas']} no total")],
-            download=[{"rotulo": "Séries mensais da CCEE (CSV)", "url": _url(CSV_CCEE)}],
-            revisoes=c.revisoes_do_dataset(con, cm.dataset("parcela_carga_consumo")))}
+        conf = [x for x in parcelas_mensal if x["conferencia"]["ok"] is not None]
+        falhas = [x["mes"] for x in conf if not x["conferencia"]["ok"]]
+        kpis["parcelas_carga"] = {
+            "valor": u["parcelas"], "mes": u["mes"], "migracoes_no_mes": u["migracoes_no_mes"],
+            "consumo_acl_mwh": _inteiro(u["consumo_acl_mwh"]), "distribuidoras_excluidas": u["distribuidoras"]["parcelas"],
+            "evidencia": ev(
+                indicador="Parcelas de carga dos agentes do ACL na contabilização da CCEE (sem as parcelas das distribuidoras)",
+                valor_exibido=_br(u["parcelas"], 0), valor_calculo=u["parcelas"],
+                unidade="parcelas de carga", periodo={"inicio": u["mes"], "fim": u["mes"]}, entidade="CCEE (SIN)",
+                universo="parcelas de carga com consumo no mês ligadas a perfis que não são da classe Distribuidor (consumidores livres, especiais, autoprodutores e exportadores)",
+                fonte=_fonte_ev("CCEE", "PARCELA_CARGA_CONSUMO (classe do perfil pelo cadastro LISTA_PERFIL_V1)",
+                                f"{cm.PORTAL}/dataset/parcela_carga_consumo", vs + _vintages_ccee(con, "lista_perfil_v1")),
+                consulta=f"COD_PARCELA_CARGA distintos com MES_REFERENCIA = {u['mes'].replace('-', '')} e COD_PERF_AGENTE fora da classe Distribuidor",
+                formula="contagem de COD_PARCELA_CARGA distintos no mês, excluídos os perfis da classe Distribuidor",
+                exclusoes=[f"{_br(u['distribuidoras']['parcelas'], 0)} parcelas dos perfis da classe Distribuidor, que são o consumo do ACR "
+                           f"({_br(u['distribuidoras']['consumo_mwh'], 0)} MWh no mês)"],
+                cobertura="todas as linhas do mês no arquivo anual; as cargas representadas por comercializador varejista não aparecem como parcela neste conjunto",
+                tratamento_ausencia="linha sem código de parcela é contada à parte e não entra; perfil fora do cadastro vigente entra no ACL como 'sem cadastro'",
+                testes=[evid.teste("Parcelas por submercado somam o total do ACL", "aprovado" if abs(sum(u["por_submercado"].values()) - u["parcelas"]) <= 0 else "ressalva",
+                                   f"{sum(u['por_submercado'].values())} na soma por submercado, {u['parcelas']} no total"),
+                        evid.teste("Parcelas das distribuidoras = consumo da classe Distribuidor (CONSUMO_CLASSE_AGENTE); parcelas do ACL = classes Consumidor Livre, Especial, Autoprodutor e Exportador, mês a mês",
+                                   "aprovado" if conf and not falhas else "ressalva",
+                                   f"{len(conf)} meses conferidos com tolerância de {_br(TOL_IDENTIDADE_CLASSES_MWMED, 0)} MW médios; "
+                                   f"no último mês, resíduo de {_br(u['conferencia']['residuo_acl_mwmed'], 2)} MW médios no ACL e "
+                                   f"{_br(u['conferencia']['residuo_distribuidor_mwmed'], 2)} nas distribuidoras"
+                                   + (f"; fora da tolerância: {', '.join(falhas)}" if falhas else ""))],
+                download=[{"rotulo": "Séries mensais da CCEE (CSV)", "url": _url(CSV_CCEE)}],
+                revisoes=c.revisoes_do_dataset(con, cm.dataset("parcela_carga_consumo")))}
     return {"kpis": kpis, "agentes_por_classe_mensal": agentes_mensal, "associados_fluxos": fluxos,
             "perfis": perfis, "parcelas_mensal": parcelas_mensal, "parcelas_uf_ultimo_mes": {"mes": ult_parc, "linhas": parcelas_uf},
-            "desligamentos_anual": desl_anual, "ucs_epe_mensal": ucs_mensal,
+            "desligamentos_anual": desl_anual, "_desligamentos_cobertura": desl_cobertura, "ucs_epe_mensal": ucs_mensal,
             "ucs_livres_por_classe_ultimo_mes": {"mes": ult_uc, "linhas": ucs_classe},
-            "samp_ucs_livres_mensal": [{k: x[k] for k in ("mes", "distribuidoras", "completo", "livre_uc", "livre_uc_incentivada",
+            "samp_ucs_livres_mensal": [{k: x[k] for k in ("mes", "distribuidoras", "completo", "comparavel", "livre_uc", "livre_uc_incentivada",
                                                             "livre_uc_convencional", "livre_uc_autoproducao", "livre_uc_erc",
                                                             "livre_uc_outro", "epe_livre_uc", "samp_sobre_epe_uc_pct")}
                                        for x in livre["samp"]["nacional_mensal"]],
@@ -1316,6 +1659,25 @@ def gsf_mensal(ger_obs, mre_obs, gf_sm_obs):
                     "teo_rs_mwh": c.r(mre_obs.get(("CUSTO_MRE", m)), 4), "valor_alocado_mre_rs": c.r(mre_obs.get(("VALOR_ALOCADO_MRE", m)), 2),
                     "gsf_pct": c.r(_pct(g, gfis2), 3) if g is not None and gfis2 else None, "horas": horas_no_mes(m)})
     return out
+
+
+def gsf_12m_candidatos(ger_obs, mre_obs, mes_fim):
+    """GSF dos 12 meses até `mes_fim` por definições alternativas, para investigar o "ajuste médio
+    do MRE nos últimos doze meses" que o InfoMercado publica desde 2026: razão de energias (a do
+    observatório), média simples dos fatores mensais, razão sobre a garantia física sazonalizada
+    (sem o fator de redução) e acumulado do ano civil. None se faltar algum mês."""
+    linhas = gsf_mensal(ger_obs, mre_obs, {})
+    por = {x["mes"]: x for x in linhas}
+    jan = _janela(mes_fim)
+    if any(m not in por or por[m]["gsf_pct"] is None or por[m]["gf_sazonalizada_mwmed"] is None for m in jan):
+        return None
+    razao = gsf_agregado(linhas, jan)["gsf_pct"]
+    num = sum(por[m]["geracao_mre_mwmed"] * por[m]["horas"] for m in jan)
+    saz = 100.0 * num / sum(por[m]["gf_sazonalizada_mwmed"] * por[m]["horas"] for m in jan)
+    ano = [m for m in jan if m[:4] == mes_fim[:4]]
+    return {"inicio": jan[0], "fim": jan[-1], "razao_energias_pct": razao,
+            "media_simples_pct": sum(por[m]["gsf_pct"] for m in jan) / 12.0, "razao_gf_sazonalizada_pct": saz,
+            "ano_inicio": ano[0], "acumulado_ano_pct": gsf_agregado(linhas, ano)["gsf_pct"]}
 
 
 def gsf_agregado(linhas, meses):
@@ -1363,7 +1725,7 @@ def secao_mre(con, ev):
         for sm in ("SE", "S", "NE", "N"):
             sub.append({"submercado": sm, "geracao_mre_mwmed": c.r(ger.get((f"{sm}|GERACAO_MRE", ult)), 3),
                         "gf_sazonalizada_mwmed": c.r(gfsm.get((f"{sm}|GARANTIA_FISICA_SAZO_MRE_OPCOM", ult)), 3)})
-    rec_im = [x for x in reconcilia_infomercado(con) if x["medida"] in ("gsf_pct", "geracao_mre_mwmed")]
+    rec_im = [x for x in reconcilia_infomercado(con) if x["medida"] in ("gsf_pct", "geracao_mre_mwmed", "gsf_12m_pct")]
     cb = conta_bandeira_nacional(_vigentes(con, DS_CB))
     rh = [{"mes": x["mes"], "distribuidoras": x["distribuidoras"], **{k: x.get(k) for k in (
         "rh_itaipu", "rh_repactuadas", "rh_ccgf", "previsao_rh", "premio_risco", "rh_ccgf_repactuadas_liquido")}} for x in cb]
@@ -1401,7 +1763,23 @@ def secao_mre(con, ev):
             testes=[teste_id], reconciliacao=rec, download=[{"rotulo": "Séries mensais da CCEE (CSV)", "url": _url(CSV_CCEE)}],
             revisoes=c.revisoes_do_dataset(con, cm.dataset("geracao_submercado")))}
     if j12:
-        kpis["gsf_12m"] = {"valor_pct": c.r(j12["gsf_pct"], 3), "periodo": {"inicio": j12["inicio"], "fim": j12["fim"]}, "evidencia": ev(
+        im12 = [x for x in reconcilia_infomercado(con) if x["medida"] == "gsf_12m_pct" and x["mes"] == j12["fim"]]
+        cand = gsf_12m_candidatos(ger, mre, j12["fim"])
+        rec12 = None
+        if im12:
+            x = im12[-1]
+            rec12 = evid.reconciliacao(
+                f"DIVERGÊNCIA NÃO EXPLICADA: o InfoMercado Nº {x['numero']} (página {x['pagina']}) publica 'nos últimos doze meses ajuste médio do MRE é de "
+                f"{_br(x['publicado'], 2)}%'; o observatório calcula {_br(j12['gsf_pct'], 2)}% (razão de energias, {j12['inicio']} a {j12['fim']}). "
+                f"Outras definições testadas: média simples dos fatores mensais {_br(cand['media_simples_pct'], 2)}%, razão sobre a garantia física "
+                f"sazonalizada {_br(cand['razao_gf_sazonalizada_pct'], 2)}%, acumulado de {cand['ano_inicio'][:4]} {_br(cand['acumulado_ano_pct'], 2)}%; "
+                "nenhuma reproduz o número publicado, e a fonte não informa janela nem ponderação. Os fatores mensais conferem com o InfoMercado.",
+                "aprovado" if x["resultado"] == "aprovado" else "ressalva", x["tolerancia"])
+        kpis["gsf_12m"] = {"valor_pct": c.r(j12["gsf_pct"], 3), "periodo": {"inicio": j12["inicio"], "fim": j12["fim"]},
+                           "infomercado_12m": None if not im12 else {"numero": im12[-1]["numero"], "publicado_pct": im12[-1]["publicado"],
+                                                                     "pagina": im12[-1]["pagina"], "resultado": im12[-1]["resultado"]},
+                           "alternativas": None if not cand else {k: c.r(cand[k], 3) for k in ("media_simples_pct", "razao_gf_sazonalizada_pct", "acumulado_ano_pct")},
+                           "evidencia": ev(
             indicador="Fator de ajuste do MRE (GSF) em 12 meses", valor_exibido=f"{_br(j12['gsf_pct'], 1)}%", valor_calculo=j12["gsf_pct"],
             unidade="%", periodo={"inicio": j12["inicio"], "fim": j12["fim"]}, entidade="Mecanismo de Realocação de Energia (SIN)",
             universo="usinas hidrelétricas participantes do MRE",
@@ -1413,6 +1791,7 @@ def secao_mre(con, ev):
             cobertura="12 meses com os quatro submercados", tratamento_ausencia="janela incompleta não é calculada",
             testes=[evid.teste("Agregação ponderada por energia, não média de percentuais", "aprovado",
                                "razão das somas em MWh de geração e de garantia física")],
+            reconciliacao=rec12,
             download=[{"rotulo": "Séries mensais da CCEE (CSV)", "url": _url(CSV_CCEE)}],
             revisoes=c.revisoes_do_dataset(con, cm.dataset("mre_mensal")))}
     v_cb = _vintage(con, DS_CB, "Conta Bandeira")
@@ -1532,12 +1911,17 @@ def mme_vigente(obs_mme):
     return vig, revisoes
 
 
-def linha_liquidacao(mes, pre, pos, ina):
+def linha_liquidacao(mes, pre, pos, ina, presente=True):
     """Liquidação do MCP de um mês. A identidade da fonte é a liquidar = liquidado +
     inadimplência (tolerância de R$ 1). Quando a CCEE publica 0 em liquidado e em inadimplência
-    para um valor a liquidar positivo (março e abril de 2026), a identidade não fecha: o zero não
-    é liquidação nula, é liquidação ainda não informada, e a taxa de inadimplência não é
-    calculada (fica a situação, o número publicado continua no CSV)."""
+    para um valor a liquidar positivo (maio de 2025, março e abril de 2026), a identidade não
+    fecha: o zero não é liquidação nula, é liquidação ainda não informada; liquidado,
+    inadimplência e taxa ficam nulos (o número publicado continua no CSV, com o rótulo). Mês
+    que falta no arquivo (`presente=False`, abril de 2025) é 'mes_ausente_na_fonte', com tudo
+    nulo: a lacuna aparece na série em vez de ser pulada."""
+    if not presente:
+        return {"mes": mes, "a_liquidar": None, "liquidado": None, "inadimplencia": None, "inadimplencia_pct": None,
+                "fecha": None, "situacao": "mes_ausente_na_fonte"}
     fecha = None if None in (pre, pos, ina) else abs(pre - pos - ina) <= 1.0
     if None in (pre, pos, ina):
         situacao = "sem_valor"
@@ -1547,9 +1931,88 @@ def linha_liquidacao(mes, pre, pos, ina):
         situacao = "liquidacao_nao_informada"
     else:
         situacao = "identidade_nao_fecha"
-    return {"mes": mes, "a_liquidar": c.r(pre, 2), "liquidado": c.r(pos, 2), "inadimplencia": c.r(ina, 2),
+    nao_inf = situacao == "liquidacao_nao_informada"
+    return {"mes": mes, "a_liquidar": c.r(pre, 2), "liquidado": None if nao_inf else c.r(pos, 2),
+            "inadimplencia": None if nao_inf else c.r(ina, 2),
             "inadimplencia_pct": c.r(_pct(ina, pre), 2) if situacao == "liquidada" else None,
             "fecha": fecha, "situacao": situacao}
+
+
+def grade_meses(meses):
+    """Todos os meses de calendário entre o primeiro e o último da lista (para a lacuna aparecer)."""
+    if not meses:
+        return []
+    ini, fim, out = min(meses), max(meses), []
+    m = ini
+    while m <= fim:
+        out.append(m)
+        m = _mes_mais(m, 1)
+    return out
+
+
+# Controle de sequências repetidas (seção 11.7): seis meses seguidos com o mesmo valor publicado
+# numa série de pagamento são conferidos antes de ser exibidos como valor observado.
+MIN_SEQUENCIA_REPETIDA = 6
+
+
+def sequencias_repetidas(serie, minimo=MIN_SEQUENCIA_REPETIDA, tolerancia=0.01):
+    """[{inicio, fim, meses, valor}] dos trechos de meses consecutivos com o mesmo valor (até a
+    `tolerancia`, R$ 0,01 nas séries em reais; fatores usam tolerância própria), com pelo menos
+    `minimo` meses. `serie`: {mês: valor}; None interrompe o trecho."""
+    out, atual = [], []
+    for m in grade_meses(list(serie)):
+        v = serie.get(m)
+        if atual and v is not None and serie[atual[-1]] is not None and abs(v - serie[atual[-1]]) <= tolerancia and _mes_mais(atual[-1], 1) == m:
+            atual.append(m)
+            continue
+        if len(atual) >= minimo:
+            out.append({"inicio": atual[0], "fim": atual[-1], "meses": len(atual), "valor": serie[atual[0]]})
+        atual = [m] if v is not None else []
+    if len(atual) >= minimo:
+        out.append({"inicio": atual[0], "fim": atual[-1], "meses": len(atual), "valor": serie[atual[0]]})
+    return out
+
+
+def pagamento_mensal_de(pg, ess_total):
+    """Pagamento de ESS e alívio por mês, com o controle de sequências repetidas.
+
+    PAGAMENTO_ENCARGO_ESS vem 0,00 de fevereiro de 2025 a julho de 2026 (18 meses), com
+    FATOR_AJUSTE_ESS também 0, enquanto o ESS de competência é positivo em todos esses meses.
+    O conjunto é coerente consigo mesmo (alívio total pela sobra do excedente financeiro), mas
+    o InfoMercado de julho de 2026 implica R$ 2,55 milhões pagos (total de encargos menos o
+    alívio), e antes de fevereiro de 2025 o conjunto fechava com o InfoMercado. Trecho de zeros
+    repetidos com ESS positivo vira 'zero_nao_confirmado': o pagamento fica nulo na gold e o
+    zero publicado fica no CSV, com o rótulo."""
+    meses = grade_meses(sorted({r for (_, r) in pg}))
+    serie_ess = {m: pg.get(("PAGAMENTO_ENCARGO_ESS", m)) for m in meses}
+    trechos = [t for t in sequencias_repetidas(serie_ess) if abs(t["valor"]) <= 0.01]
+    suspeitos = set()
+    for t in trechos:
+        ms = grade_meses([t["inicio"], t["fim"]])
+        if all((ess_total.get(m) or 0) > 0 for m in ms):
+            suspeitos |= set(ms)
+            t["situacao"] = "zero_nao_confirmado"
+        else:
+            t["situacao"] = "zero_repetido_coerente_com_ess_nulo"
+    out = []
+    for m in meses:
+        p_ess = pg.get(("PAGAMENTO_ENCARGO_ESS", m))
+        presente = any(r == m for (_, r) in pg)
+        out.append({"mes": m, "pagamento_ess": None if m in suspeitos else c.r(p_ess, 2),
+                    "situacao_pagamento_ess": ("mes_ausente_na_fonte" if not presente else "zero_nao_confirmado" if m in suspeitos
+                                               else ("sem_valor" if p_ess is None else "publicado")),
+                    "pagamento_seguranca_energetica": c.r(pg.get(("PAGAMENTO_ENCARGO_SE", m)), 2),
+                    "recursos_alivio_ess": c.r(pg.get(("RESERVA_ALIVIO_ESS", m)), 2),
+                    "penalidades_alivio_ess": c.r(pg.get(("TOTAL_PENALIDADES_ESS", m)), 2),
+                    "sobra_excedente_financeiro": c.r(pg.get(("SOBRA_EXCED_FINANCEIRO_MA", m)), 2),
+                    "fator_ajuste_ess": c.r(pg.get(("FATOR_AJUSTE_ESS", m)), 4)})
+    controles = {"minimo_meses": MIN_SEQUENCIA_REPETIDA, "series": {}}
+    for col, chave in (("PAGAMENTO_ENCARGO_ESS", "pagamento_ess"), ("PAGAMENTO_ENCARGO_SE", "pagamento_seguranca_energetica"),
+                       ("FATOR_AJUSTE_ESS", "fator_ajuste_ess"), ("RESERVA_ALIVIO_ESS", "recursos_alivio_ess")):
+        tr = trechos if col == "PAGAMENTO_ENCARGO_ESS" else sequencias_repetidas(
+            {m: pg.get((col, m)) for m in meses}, tolerancia=1e-9 if col == "FATOR_AJUSTE_ESS" else 0.01)
+        controles["series"][chave] = tr
+    return out, controles
 
 
 # Linha do boletim do MME → colunas do conjunto da CCEE que a compõem (mil R$ × 1.000 = R$).
@@ -1561,6 +2024,39 @@ MME_PARA_CCEE = {
     "seguranca_energetica": ("ENCARGO_SEG_ENER",), "outros_ancilares": ("OUTROS_SERVICOS_ANCILARES",),
     "importacao": ("ENCARGO_IMPORTACAO",), "reserva_operativa": ("RECEBIMENTO_ENCARGO_RESERVA_OP",),
 }
+
+
+def reconcilia_consolidacao_ess(anual_mme, ess_mensal):
+    """Encargos do ano na consolidação anual do MME ('R$ 1,2 bilhão', uma casa decimal em
+    bilhões, e a variação em % inteiro contra o ano anterior) × soma dos meses do conjunto
+    ENCARGO_ESS_ANCILAR. A consolidação declara que inclui a resposta da demanda: a conta é feita
+    sem e com ela (meses sem valor de resposta da demanda não entram nessa parcela).
+    Tolerâncias: R$ 0,05 bilhão (meia unidade da casa publicada) e 1 p.p. na variação (o
+    boletim publica inteiro sem dizer se arredonda ou trunca)."""
+    por = {x["mes"]: x for x in ess_mensal}
+    out = []
+    for ano, d in sorted(anual_mme.items()):
+        if "ess_bilhoes_rs" not in d:
+            continue
+        base_ano = str(int(d["ess_ano_base"])) if d.get("ess_ano_base") else str(int(ano) - 1)
+
+        def soma(a_, com_rd):
+            ms = [f"{a_}-{i:02d}" for i in range(1, 13)]
+            if any(m not in por or por[m]["total"] is None for m in ms):
+                return None
+            return sum(por[m]["total"] + ((por[m]["resposta_demanda"] or 0.0) if com_rd else 0.0) for m in ms)
+        sem, com = soma(ano, False), soma(ano, True)
+        sem0, com0 = soma(base_ano, False), soma(base_ano, True)
+        var_sem = None if not sem or not sem0 else 100.0 * (sem / sem0 - 1)
+        var_com = None if not com or not com0 else 100.0 * (com / com0 - 1)
+        ok_v = sem is not None and abs(sem / 1e9 - d["ess_bilhoes_rs"]) <= 0.05 + 1e-9
+        ok_p = var_sem is not None and d.get("ess_variacao_pct") is not None and abs(var_sem - d["ess_variacao_pct"]) <= 1.0 + 1e-9
+        out.append({"ano": ano, "ano_base": base_ano, "mme_bilhoes_rs": d["ess_bilhoes_rs"], "mme_variacao_pct": d.get("ess_variacao_pct"),
+                    "ccee_rs": c.r(sem, 2), "ccee_com_resposta_demanda_rs": c.r(com, 2),
+                    "ccee_variacao_pct": c.r(var_sem, 2), "ccee_variacao_com_resposta_demanda_pct": c.r(var_com, 2),
+                    "tolerancia": "R$ 0,05 bilhão no total; 1 p.p. na variação",
+                    "resultado": "aprovado" if ok_v and ok_p else "ressalva"})
+    return out
 
 
 def reconcilia_mme_ccee(vig_mme, ess_mensal):
@@ -1605,14 +2101,13 @@ def secao_encargos(con, ev):
                    "saldo_efetivo_coner": c.r(eer.get(("SALDO_EFETIVO_CONER", m)), 2),
                    "pagamento_liquido_er": c.r(eer.get(("TOTAL_PAGAMENTO_LIQ_ER", m)), 2)} for m in sorted({r for (_, r) in eer})]
     pg = _ccee(con, "encargo_pgto_mensal")
-    pgto_mensal = [{"mes": m, "pagamento_ess": c.r(pg.get(("PAGAMENTO_ENCARGO_ESS", m)), 2),
-                    "pagamento_seguranca_energetica": c.r(pg.get(("PAGAMENTO_ENCARGO_SE", m)), 2),
-                    "recursos_alivio_ess": c.r(pg.get(("RESERVA_ALIVIO_ESS", m)), 2),
-                    "penalidades_alivio_ess": c.r(pg.get(("TOTAL_PENALIDADES_ESS", m)), 2)} for m in sorted({r for (_, r) in pg})]
+    pgto_mensal, controles_pgto = pagamento_mensal_de(pg, {x["mes"]: x["total"] for x in ess_mensal})
     lq = _ccee(con, "sumario_mensal_liquidacao")
     liq_mensal = []
-    for m in sorted({r for (_, r) in lq}):
-        liq_mensal.append(linha_liquidacao(m, *(lq.get((k, m)) for k in ("VALOR_TOTAL_LIQ_PRE", "VALOR_TOTAL_LIQ_POS", "VALOR_INAD"))))
+    presentes = {r for (_, r) in lq}
+    for m in grade_meses(sorted(presentes)):
+        liq_mensal.append(linha_liquidacao(m, *(lq.get((k, m)) for k in ("VALOR_TOTAL_LIQ_PRE", "VALOR_TOTAL_LIQ_POS", "VALOR_INAD")),
+                                           presente=m in presentes))
     mcp = _ccee(con, "sumario_mensal_compra_venda_submercado")
     mcp_mensal = []
     for m in sorted({r for (_, r) in mcp}):
@@ -1633,6 +2128,13 @@ def secao_encargos(con, ev):
                             "publicado_em": v.get("publicado_em"), "capturado_em": v.get("capturado_em"), "sha256": v.get("sha256")})
     mme_linhas = [{"tipo": k[0], "mes": k[1], "valor_mil_rs": val, "edicao": ed} for k, (val, ed) in sorted(vig_mme.items())]
     rec_mme = reconcilia_mme_ccee(vig_mme, ess_mensal)
+    rec_consol = reconcilia_consolidacao_ess(mme_anual(obs_mme), ess_mensal)
+    regs_consol = {ch.split("|")[1]: d for ch, d in regs_mme.items() if ch.startswith("consolidacao|")}
+    for x in rec_consol:
+        d = regs_consol.get(x["ano"], {})
+        v = next((y for y in base.vintages_do_dataset(con, DS_MME) if y["vintage_id"] == d.get("vintage")), {})
+        x.update(recurso=d.get("recurso"), pagina=d.get("pagina|ess_bilhoes_rs"), capturado_em=v.get("capturado_em"), sha256=v.get("sha256"),
+                 url=f"{URL_MME_ANUAL}/consolidacao-{x['ano']}")
     por_ess = {x["mes"]: x for x in ess_mensal}
     cb = conta_bandeira_nacional(_vigentes(con, DS_CB))
     acr = [{"mes": x["mes"], "distribuidoras": x["distribuidoras"], "ess_eer": x.get("ess_eer"), "ressarcimento_coner": x.get("ressarcimento_coner"),
@@ -1734,8 +2236,11 @@ def secao_encargos(con, ev):
                 download=[{"rotulo": "Encargos do boletim do MME (CSV)", "url": _url(CSV_ESS)}],
                 revisoes=f"{len(rev_mme)} revisões entre edições do boletim (ver lista de revisões)")}
     return {"kpis": kpis, "ess_mensal": ess_mensal, "eer_mensal": eer_mensal, "pagamento_mensal": pgto_mensal,
-            "liquidacao_mensal": liq_mensal, "mcp_submercado_mensal": mcp_mensal,
-            "mme": {"edicoes": edicoes, "vigente": mme_linhas, "revisoes": rev_mme, "reconciliacao_ccee": rec_mme},
+            "controles_pagamento": controles_pgto,
+            "liquidacao_mensal": liq_mensal, "lacunas_liquidacao": [x["mes"] for x in liq_mensal if x["situacao"] == "mes_ausente_na_fonte"],
+            "mcp_submercado_mensal": mcp_mensal,
+            "mme": {"edicoes": edicoes, "vigente": mme_linhas, "revisoes": rev_mme, "reconciliacao_ccee": rec_mme,
+                    "consolidacao_anual": rec_consol},
             "acr_conta_bandeira_mensal": acr,
             "reconciliacao_infomercado": [x for x in reconcilia_infomercado(con)
                                           if x["medida"].startswith("encargos_") or x["medida"] in ("pagamento_ess_milhoes_rs", "liquidar_bilhoes_rs")]}
@@ -1746,11 +2251,12 @@ def secao_encargos(con, ev):
 REPRODUCAO = "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta"
 
 DEFINICOES = {
-    "acl": "Ambiente de Contratação Livre: o consumidor (livre ou especial) compra energia de gerador ou comercializador em contrato bilateral negociado livremente.",
+    "acl": "Ambiente de Contratação Livre: o consumidor (livre ou especial) compra energia de gerador ou comercializador em contrato bilateral negociado livremente. No consumo contabilizado pela CCEE, o observatório conta como ACL as classes de agente de consumo (consumidor livre, consumidor especial, autoprodutor, comercializador e varejista) e deixa a exportação à parte.",
+    "exportacao": "Energia vendida a outros países (Argentina e Uruguai), registrada na CCEE pela classe de agente Exportador. O conjunto de consumo por ambiente da CCEE a soma ao ACL; o observatório a publica como componente separado e calcula a participação do ACL no consumo sem ela, como o InfoMercado apresenta o consumo.",
     "acr": "Ambiente de Contratação Regulada: a distribuidora compra em leilões e revende ao consumidor cativo pela tarifa regulada.",
     "agente": "Pessoa jurídica associada à CCEE ou cadastrada na ANEEL, identificada pelo CNPJ. Um agente pode ter vários perfis.",
     "perfil": "Registro contábil de um agente na CCEE (código COD_PERF_AGENTE), com classe e, no caso de geração, tipo de energia. Novo perfil não é empresa nova.",
-    "parcela_de_carga": "Unidade de consumo modelada na CCEE (COD_PARCELA_CARGA), ligada a um perfil de agente; pode reunir uma ou mais unidades consumidoras.",
+    "parcela_de_carga": "Unidade de consumo modelada na CCEE (COD_PARCELA_CARGA), ligada a um perfil de agente; pode reunir uma ou mais unidades consumidoras. O conjunto de parcelas inclui uma parcela por área de distribuidora (perfil da classe Distribuidor), que representa o consumo do ACR e fica fora da contagem do ACL.",
     "unidade_consumidora": "Instalação com um só ponto de entrega e medição individualizada, correspondente a um único consumidor (Resolução ANEEL 83/2004, citada pela EPE). É o que a EPE e o SAMP contam.",
     "migracao": "Entrada de uma parcela de carga no ACL: a CCEE publica a data de migração de cada parcela; aqui conta-se a parcela cuja data de migração cai no próprio mês de referência.",
     "entrada_saida_agente": "Entrada: CNPJ presente na lista de associados da CCEE no mês e ausente no mês anterior; saída: o inverso. Saída não é necessariamente desligamento (pode ser sucessão).",
@@ -1777,8 +2283,17 @@ def _valida(g):
         if l["livre_pct"] is not None and not 0 <= l["livre_pct"] <= 100:
             crit.append(f"EPE {l['mes']}: participação fora de 0 a 100")
     for l in g["livre_regulado"]["ccee_mensal"]:
-        if l["acr_mwmed"] < 0 or l["acl_mwmed"] < 0:
+        if any(l[k] is not None and l[k] < 0 for k in ("acr_mwmed", "acl_mwmed", "exportacao_mwmed")):
             crit.append(f"CCEE {l['mes']}: consumo negativo")
+        if l["acl_pct"] is not None and not 0 <= l["acl_pct"] <= 100:
+            crit.append(f"CCEE {l['mes']}: participação do ACL fora de 0 a 100")
+    for l in g["agentes_migracao"]["parcelas_mensal"]:
+        if l["conferencia"]["ok"] is False:
+            ress.append(f"Parcelas de carga {l['mes']}: soma das parcelas difere do consumo por classe (resíduo de "
+                        f"{_br(l['conferencia']['residuo_acl_mwmed'], 2)} MW médios no ACL e {_br(l['conferencia']['residuo_distribuidor_mwmed'], 2)} nas distribuidoras)")
+    for l in g["encargos"]["liquidacao_mensal"]:
+        if l["situacao"] == "mes_ausente_na_fonte":
+            ress.append(f"Liquidação {l['mes']}: mês ausente do conjunto SUMARIO_MENSAL_LIQUIDACAO")
     for l in g["mre_gsf"]["mensal"]:
         if l["gsf_pct"] is not None and not 20 <= l["gsf_pct"] <= 150:
             ress.append(f"GSF {l['mes']} fora da faixa histórica plausível (20% a 150%): {l['gsf_pct']}; conferir no arquivo original")
@@ -1825,10 +2340,13 @@ def _csvs(livre, agentes, mre, enc, con):
         nac.append([l["mes"], c.r(l["cativo_mwh"], 3), c.r(l["livre_mwh"], 3), c.r(l["total_mwh"], 3), c.r(l["livre_pct"], 4),
                     l["cativo_uc"], l["livre_uc"], c.r(tp, 3), c.r(lp, 3),
                     c.r(l["total_mwh"] - tp, 3) if tp is not None and l["total_mwh"] is not None else None, 1 if l["preliminar"] else 0,
-                    s_.get("livre_uc"), c.r(s_.get("livre_mwh"), 3), s_.get("distribuidoras")])
+                    s_.get("livre_uc"), c.r(s_.get("livre_mwh"), 3), s_.get("distribuidoras"),
+                    None if not s_ else (1 if s_["completo"] else 0), None if not s_ else (1 if s_["comparavel"] else 0),
+                    None if not s_ else "; ".join([f"{x['sigla']} sem LIVRE" for x in s_["distribuidoras_sem_livre"]]
+                                                   + [f"{x['sigla']} {x['opcao']} Regular repetido" for x in s_["repeticoes"]]) or None])
     base.escreve_csv(CSV_NACIONAL, ["mes", "cativo_mwh", "livre_mwh", "total_mwh", "livre_pct", "cativo_uc", "livre_uc", "total_planilha_mwh",
                                     "livre_planilha_mwh", "diferenca_total_mwh", "preliminar", "samp_livre_uc", "samp_livre_mwh",
-                                    "samp_distribuidoras"], nac)
+                                    "samp_distribuidoras", "samp_completo", "samp_comparavel", "samp_ocorrencias"], nac)
     por, cad = livre["samp"]["_por"], livre["samp"]["_cad"]
     meds = ["livre_mwh", "livre_mwh_incentivada", "livre_mwh_autoproducao", "livre_mwh_erc", "livre_mwh_convencional", "livre_mwh_outro",
             "livre_uc", "livre_uc_incentivada", "livre_uc_autoproducao", "livre_uc_erc", "livre_uc_convencional", "livre_uc_outro",
@@ -1868,16 +2386,29 @@ def _csvs(livre, agentes, mre, enc, con):
     base.escreve_csv(CSV_AGENTES, ["cnpj", "nome", "ativo", "comercializacao", "distribuicao", "geracao", "transmissao", "gerado_em"],
                      [[ch.split("|", 1)[1], d.get("nome"), d.get("ativo"), d.get("comercializacao"), d.get("distribuicao"), d.get("geracao"),
                        d.get("transmissao"), gerado] for ch, d in sorted(ag.items()) if ch.startswith("cnpj|")])
+    # rótulo de cada valor publicado que a gold não exibe como observação: zero de pagamento não
+    # confirmado e liquidação não informada (o valor bruto fica aqui, com o rótulo)
+    rotulo = {}
+    for x in enc["pagamento_mensal"]:
+        if x["situacao_pagamento_ess"] == "zero_nao_confirmado":
+            rotulo[("encargo_pgto_mensal", "PAGAMENTO_ENCARGO_ESS", x["mes"])] = "zero_nao_confirmado"
+    for x in enc["liquidacao_mensal"]:
+        if x["situacao"] == "liquidacao_nao_informada":
+            for col in ("VALOR_TOTAL_LIQ_POS", "VALOR_INAD"):
+                rotulo[("sumario_mensal_liquidacao", col, x["mes"])] = "liquidacao_nao_informada"
     cc = []
     for nome, spec in cm.CONJUNTOS.items():
         if spec["leitor"] != "mensal":
             continue
         for (s, mes), v in sorted(_ccee(con, nome).items()):
-            cc.append([nome, s, mes, c.r(v, 6), spec.get("unidade")])
+            cc.append([nome, s, mes, c.r(v, 6), spec.get("unidade"), rotulo.get((nome, s, mes))])
     for nome in ("parcela_carga_consumo", "lista_agente_associado"):
         for (s, mes), v in sorted(_ccee(con, nome).items()):
-            cc.append([nome, s, mes, c.r(v, 6), "MWh" if "mwh" in s else "contagem"])
-    base.escreve_csv(CSV_CCEE, ["conjunto", "serie", "mes", "valor", "unidade"], cc)
+            # parcelas: só as séries do leitor vigente (a versão 1 somava as distribuidoras ao ACL)
+            if nome == "parcela_carga_consumo" and s.split("|")[0] not in ("acl", "distribuidor", "classe"):
+                continue
+            cc.append([nome, s, mes, c.r(v, 6), "MWh" if "mwh" in s else "contagem", None])
+    base.escreve_csv(CSV_CCEE, ["conjunto", "serie", "mes", "valor", "unidade", "situacao"], cc)
     dl = []
     for nome in ("desligamento_voluntario", "desligamento_compulsorio"):
         for ch, d in sorted(base.registros_como_estavam_em(con, cm.dataset(nome)).items()):
@@ -1894,6 +2425,11 @@ def _sentido(atual, anterior, casas=1):
     """'maior que', 'menor que' ou 'igual a', comparando os valores no arredondamento exibido."""
     a, b = round(atual, casas), round(anterior, casas)
     return "maior que" if a > b else ("menor que" if a < b else "igual a")
+
+
+def _ucs_txt(n):
+    """'1 unidade livre' / '4.302 unidades livres'."""
+    return "1 unidade livre" if n == 1 else f"{_br(n, 0)} unidades livres"
 
 
 def _bilhoes(v_rs):
@@ -1922,8 +2458,15 @@ def resposta_p032(lr):
     kc = lr["kpis"].get("participacao_acl_ccee_12m")
     if kc:
         txt += (f" Na contabilização da CCEE, que mede o consumo no centro de gravidade, o ACL teve {_br(kc['valor_pct'], 1)}% "
-                f"de {_mes_br(kc['periodo']['inicio'])} a {_mes_br(kc['periodo']['fim'])}.")
+                f"do consumo de {_mes_br(kc['periodo']['inicio'])} a {_mes_br(kc['periodo']['fim'])}, sem a exportação para outros países")
+        if kc.get("com_exportacao_pct") is not None:
+            txt += f" ({_br(kc['com_exportacao_pct'], 1)}% se a exportação for somada ao ACL, como faz o conjunto de consumo por ambiente)"
+        txt += "."
     return txt
+
+
+def _data_br(iso):
+    return f"{iso[8:10]}/{iso[5:7]}/{iso[:4]}" if iso else None
 
 
 def resposta_p033(am_):
@@ -1937,10 +2480,16 @@ def resposta_p033(am_):
             v = u["variacao_12m"]
             t += f", {_br(abs(v), 0)} {'a mais' if v > 0 else 'a menos'} que 12 meses antes" if v else ", o mesmo número de 12 meses antes"
         partes.append(t + ".")
+    p = am_["kpis"].get("parcelas_carga")
+    if p:
+        partes.append(f"Na CCEE, {_br(p['valor'], 0)} parcelas de carga de agentes do ACL foram contabilizadas em {_mes_br(p['mes'])}, "
+                      f"sem contar as {_br(p['distribuidoras_excluidas'], 0)} parcelas das distribuidoras, que representam o ACR.")
     pf = am_.get("perfis") or {}
     if pf.get("perfis_ativos") is not None and pf.get("agentes_ativos") is not None:
-        partes.append(f"No cadastro da CCEE publicado em {pf['posicao']}, {_br(pf['perfis_ativos'], 0)} perfis ativos pertenciam a "
-                      f"{_br(pf['agentes_ativos'], 0)} agentes: agente, perfil e unidade consumidora são contagens diferentes.")
+        quando = (f"no arquivo com data de modificação de {_data_br(pf['data_modificacao_portal'])} informada pelo portal"
+                  if pf.get("data_modificacao_portal") else "num arquivo sem data informada pelo portal")
+        partes.append(f"No cadastro de perfis da CCEE ({quando}), {_br(pf['perfis_ativos'], 0)} perfis ativos pertenciam a "
+                      f"{_br(pf['agentes_ativos'], 0)} agentes: agente, perfil, parcela de carga e unidade consumidora são contagens diferentes.")
     return " ".join(partes) or None
 
 
@@ -1955,7 +2504,13 @@ def resposta_p034(mg):
     else:
         ref = k["valor_pct"]
     rel = "menos que" if round(ref, 1) < 100 else ("mais que" if round(ref, 1) > 100 else "o mesmo que")
-    return txt + f": no período, as hidrelétricas do MRE geraram {rel} a garantia física ajustada."
+    txt += f": no período, as hidrelétricas do MRE geraram {rel} a garantia física ajustada."
+    im = (k12 or {}).get("infomercado_12m")
+    if im and im.get("resultado") != "aprovado":
+        txt += (f" O InfoMercado Nº {im['numero']} da CCEE publica {_br(im['publicado_pct'], 2)}% como ajuste médio do MRE nos últimos doze "
+                f"meses, número que o observatório não reproduz com os dados abertos por nenhuma das definições testadas; a divergência "
+                f"fica registrada na evidência.")
+    return txt
 
 
 def resposta_p035(en):
@@ -1980,15 +2535,22 @@ def _txt_rd(x):
     return f"{x['mes']}: R$ {_br(x['publicado'], 2)} milhões no InfoMercado, {ccee}"
 
 
-def paineis(g):
+def paineis(g, pendencia_ccee=True):
     """Estado dos dados de cada painel com a verificação do critério de aceite do Anexo A,
     calculado a partir da própria gold (sem estado escrito à mão). É o estado da camada de dados:
-    o painel só é entregue com a página, a inspeção visual e os testes de interface."""
+    o painel só é entregue com a página, a inspeção visual e os testes de interface.
+
+    `pendencia_ccee`: enquanto o responsável não decidir sobre o acesso à CCEE (ver
+    `acesso_ccee`), todo painel que depende de número da CCEE fica 'pendente_decisao_acesso',
+    qualquer que seja o resultado das verificações (que segue em `estado_criterio`)."""
     lr, am_, mg, en = g["livre_regulado"], g["agentes_migracao"], g["mre_gsf"], g["encargos"]
     rec_plan = lr["reconciliacao"]["epe_planilha"]
     ident = lr.get("ccee_identidade_classes") or []
     ident_ok = bool(ident) and all(x["ok"] for x in ident)
     carga = lr.get("carga_contexto") or []
+    im_cons = [x for x in lr["reconciliacao"]["infomercado"] if x["medida"] == "consumo_contabilizado_mwmed"]
+    im_exp = [x for x in lr["reconciliacao"]["infomercado"] if x["medida"] in ("exportacao_mwmed", "acl_variacao_sem_exportacao_pct")]
+    consol = lr["reconciliacao"].get("mme_consolidacao_anual") or []
     c032 = {"criterio": "ACL+ACR reconcilia com o universo escolhido, sem igualar automaticamente à carga do ONS.",
             "verificacoes": [
                 {"nome": "EPE: soma das linhas da tabela longa = total nacional da planilha formatada, mês a mês",
@@ -1996,96 +2558,156 @@ def paineis(g):
                 {"nome": "CCEE: soma das classes de agente = ACR + ACL do conjunto de ambiente (+ classe Varejista a partir de fevereiro de 2026)",
                  "resultado": "aprovado" if ident_ok else "ressalva",
                  "detalhe": f"{len(ident)} meses conferidos (tolerância de {_br(TOL_IDENTIDADE_CLASSES_MWMED, 0)} MW médios)"},
+                {"nome": "CCEE: ACR + ACL sem a exportação = 'O consumo contabilizou' do InfoMercado; exportação e variação do ACL sem exportação conferidas",
+                 "resultado": "aprovado" if im_cons and all(x["resultado"] == "aprovado" for x in im_cons + im_exp) else "ressalva",
+                 "detalhe": "; ".join(f"{x['mes']}: {_br(x['publicado'], 0)} publicado, {_br(x['calculado'], 1)} calculado (MW médios)" for x in im_cons)
+                 or "sem edição conferida"},
                 {"nome": "Consumo na rede não é a carga: o MME publica a diferença como 'Perdas e Diferenças'",
                  "resultado": "aprovado" if carga else "ressalva",
-                 "detalhe": "; ".join(f"{x['mes']}: consumo {_br(x['consumo_sobre_carga_pct'], 1)}% da carga" for x in carga[-3:]) or "sem edição do boletim"}]}
-    agentes_ok = bool(am_["agentes_por_classe_mensal"]) and bool(lr["epe_mensal"]) and bool((am_.get("perfis") or {}).get("posicao"))
+                 "detalhe": "; ".join(f"{x['mes']}: consumo {_br(x['consumo_sobre_carga_pct'], 1)}% da carga" for x in carga[-3:]) or "sem edição do boletim"},
+                {"nome": "Participação do ACL no ano: EPE (dados abertos) × consolidação anual do boletim do MME (divergência entre publicações, documentada)",
+                 "resultado": "aprovado" if consol and all(x["resultado"] == "aprovado" for x in consol) else "ressalva", "essencial": False,
+                 "detalhe": "; ".join(f"{x['ano']}: MME {_br(x['mme_acl_pct'], 1)}% de {_br(x['mme_consumo_gwh'], 0)} GWh; EPE {_br(x['epe_livre_pct'], 2)}% de "
+                                      f"{_br(x['epe_total_gwh'], 0)} GWh ({_br(x['diferenca_pp'], 2)} p.p.)" for x in consol) or "sem consolidação capturada"}]}
+    pf = am_.get("perfis") or {}
+    agentes_ok = bool(am_["agentes_por_classe_mensal"]) and bool(lr["epe_mensal"]) and bool(pf.get("por_classe"))
+    parc = am_["parcelas_mensal"]
+    u_parc = parc[-1] if parc else None
     c033 = {"criterio": "Sem chamar novos perfis de novas empresas; cancelamentos e migrações definidos.",
             "verificacoes": [
-                {"nome": "Agente (CNPJ), perfil (código do perfil na CCEE) e unidade consumidora contados em séries separadas",
+                {"nome": "Agente (CNPJ), perfil (código do perfil na CCEE), parcela de carga e unidade consumidora contados em séries separadas",
                  "resultado": "aprovado" if agentes_ok else "ressalva", "detalhe": "agentes por classe, perfis por classe e status, parcelas de carga e unidades consumidoras (EPE e SAMP)"},
+                {"nome": "Parcelas de carga do ACL sem as parcelas das distribuidoras (ACR), conferidas com o consumo por classe no último mês",
+                 "resultado": "aprovado" if u_parc and u_parc["conferencia_ok"] else "ressalva",
+                 "detalhe": (f"{u_parc['mes']}: {_br(u_parc['parcelas'], 0)} parcelas do ACL, {_br(u_parc['parcelas_distribuidoras'], 0)} das distribuidoras à parte; "
+                             f"resíduo de {_br(am_['parcelas_ultimo_mes']['conferencia']['residuo_acl_mwmed'], 2)} MW médios no ACL; "
+                             f"{sum(1 for x in parc if x['conferencia_ok'] is False)} meses da série fora da tolerância (marcados)") if u_parc else "sem parcelas"},
                 {"nome": "Entrada e saída de agente pelo CNPJ; desligamento pela lista oficial da CCEE (voluntário ou compulsório, com sucessão)",
                  "resultado": "aprovado" if am_["associados_fluxos"] and am_["desligamentos_por_ano"] else "ressalva",
-                 "detalhe": f"{len(am_['associados_fluxos'])} meses de lista de associados; desligamentos de {am_['desligamentos_por_ano'][0]['ano'] if am_['desligamentos_por_ano'] else '?'} a {am_['desligamentos_por_ano'][-1]['ano'] if am_['desligamentos_por_ano'] else '?'} por tipo"},
+                 "detalhe": f"{len(am_['associados_fluxos'])} meses de lista de associados; desligamentos de {am_['desligamentos_por_ano'][0]['ano'] if am_['desligamentos_por_ano'] else '?'} a {am_['desligamentos_por_ano'][-1]['ano'] if am_['desligamentos_por_ano'] else '?'} por tipo, ano corrente marcado como parcial"},
                 {"nome": "Migração definida como parcela de carga com data de migração no mês de referência",
-                 "resultado": "aprovado" if am_["parcelas_mensal"] else "ressalva", "detalhe": f"{len(am_['parcelas_mensal'])} meses"}]}
+                 "resultado": "aprovado" if parc else "ressalva", "detalhe": f"{len(parc)} meses"}]}
     g_im = [x for x in mg["reconciliacao_infomercado"] if x["medida"] == "gsf_pct"]
+    g12 = [x for x in mg["reconciliacao_infomercado"] if x["medida"] == "gsf_12m_pct"]
     c034 = {"criterio": "GSF reconciliado à publicação oficial; garantia física e geração não misturadas.",
             "verificacoes": [
-                {"nome": "GSF calculado × fator publicado no InfoMercado mensal da CCEE",
+                {"nome": "GSF mensal calculado × fator publicado no InfoMercado mensal da CCEE",
                  "resultado": "aprovado" if g_im and all(x["resultado"] == "aprovado" for x in g_im) else "ressalva",
                  "detalhe": "; ".join(f"{x['mes']}: {_br(x['publicado'], 2)}% publicado, {_br(x['calculado'], 2)}% calculado" for x in g_im) or "sem edição conferida"},
+                {"nome": "GSF de 12 meses × 'ajuste médio do MRE nos últimos doze meses' do InfoMercado",
+                 "resultado": "aprovado" if g12 and all(x["resultado"] == "aprovado" for x in g12) else "ressalva",
+                 "detalhe": "; ".join(f"InfoMercado Nº {x['numero']}: {_br(x['publicado'], 2)}% publicado; razão de energias {_br(x['calculado'], 2)}%: "
+                                      "divergência não explicada pela fonte, publicada" for x in g12) or "sem número de 12 meses publicado"},
                 {"nome": "Garantia física (MWmed, CCEE) e geração (MWmed, CCEE) em colunas separadas; o GSF é razão de energias do mesmo perímetro",
                  "resultado": "aprovado", "detalhe": "geracao_mre_mwmed e gf_modulada_fdisp_mwmed publicados lado a lado"}]}
     im_enc = [x for x in en["reconciliacao_infomercado"]
               if x["medida"].startswith("encargos_") and x["medida"] != "encargos_resposta_demanda_milhoes_rs"]
     im_pag = [x for x in en["reconciliacao_infomercado"] if x["medida"] == "pagamento_ess_milhoes_rs"]
-    rec_mme = [x for x in en["mme"]["reconciliacao_ccee"] if x["tipo"] != "resposta_demanda"]
-    rd_div = [x for x in en["mme"]["reconciliacao_ccee"] if x["tipo"] == "resposta_demanda"] + \
+    res_mme = en["mme"]["reconciliacao_ccee_resumo"]
+    rec_mme_falhas = [x for x in res_mme["fora_da_tolerancia"] if x["tipo"] != "resposta_demanda"]
+    rd_div = [x for x in res_mme["fora_da_tolerancia"] if x["tipo"] == "resposta_demanda"] + \
              [x for x in en["reconciliacao_infomercado"] if x["medida"] == "encargos_resposta_demanda_milhoes_rs"]
+    ess_anual = en["mme"].get("consolidacao_anual") or []
+    zeros = [t for t in (en.get("controles_pagamento") or {}).get("series", {}).get("pagamento_ess", []) if t.get("situacao") == "zero_nao_confirmado"]
     c035 = {"criterio": "Nenhuma série inventada de PPA ou curva a termo; preços privados permanecem fora do escopo aberto.",
             "verificacoes": [
                 {"nome": "Nenhum preço de contrato, PPA ou curva a termo publicado; o PLD não é usado como preço contratual",
                  "resultado": "aprovado", "detalhe": "a gold só tem encargos, liquidação e resultado agregado do MCP publicados pela CCEE"},
-                {"nome": "ESS do conjunto aberto × InfoMercado (por componente) e × boletim do MME (por tipo e mês)",
+                {"nome": "ESS do conjunto aberto × InfoMercado (por componente), × boletim do MME (por tipo e mês) e × consolidação anual do MME",
                  "resultado": "aprovado" if im_enc and all(x["resultado"] == "aprovado" for x in im_enc)
-                 and all(x["resultado"] == "aprovado" for x in rec_mme if x["resultado"]) else "ressalva",
+                 and not rec_mme_falhas and all(x["resultado"] == "aprovado" for x in ess_anual) else "ressalva",
                  "detalhe": f"{sum(1 for x in im_enc if x['resultado'] == 'aprovado')} de {len(im_enc)} no InfoMercado; "
-                            f"{sum(1 for x in rec_mme if x['resultado'] == 'aprovado')} de {sum(1 for x in rec_mme if x['resultado'])} no boletim do MME"},
+                            f"{res_mme['tipos']['aprovados']} de {res_mme['tipos']['conferidos']} no boletim do MME; "
+                            + ("; ".join(f"{x['ano']}: R$ {_br(x['mme_bilhoes_rs'], 1)} bilhão e {_br(x['mme_variacao_pct'], 0)}% na consolidação do MME, "
+                                         f"R$ {_br(x['ccee_rs'] / 1e9, 2)} bilhão e {_br(x['ccee_variacao_pct'], 1)}% no conjunto" for x in ess_anual) or "sem consolidação anual")},
                 {"nome": "Competência, pagamento e reprocessamento separados",
                  "resultado": "aprovado", "detalhe": "encargos por mês de competência; pagamento e alívio em série própria; revisões entre edições do boletim e entre capturas"},
+                {"nome": "Liquidação: grade completa de meses, lacuna do arquivo declarada e zeros não informados como nulos",
+                 "resultado": "aprovado", "detalhe": (f"meses ausentes do conjunto: {', '.join(en['lacunas_liquidacao'])}" if en["lacunas_liquidacao"] else "sem lacuna")
+                 + f"; {sum(1 for x in en['liquidacao_mensal'] if x['situacao'] == 'liquidacao_nao_informada')} meses com liquidação não informada"},
+                {"nome": "Pagamento de ESS: sequência repetida de zeros conferida (seção 11.7)",
+                 "resultado": "aprovado" if not zeros else "ressalva", "essencial": False,
+                 "detalhe": "; ".join(f"PAGAMENTO_ENCARGO_ESS = 0 de {t['inicio']} a {t['fim']} ({t['meses']} meses) com ESS positivo: zero não confirmado, publicado como nulo" for t in zeros)
+                 or "sem sequência suspeita"},
                 {"nome": "Pagamento (total menos alívio, InfoMercado) × PAGAMENTO_ENCARGO_ESS + PAGAMENTO_ENCARGO_SE (divergência entre fontes, documentada)",
                  "resultado": "aprovado" if im_pag and all(x["resultado"] == "aprovado" for x in im_pag) else "ressalva", "essencial": False,
                  "detalhe": "; ".join(f"{x['mes']}: InfoMercado R$ {_br(x['publicado'], 2)} milhões, conjunto R$ {_br(x['calculado'], 2) if x['calculado'] is not None else 'sem valor'} milhões"
                                       for x in im_pag) or "sem edição conferida"},
                 {"nome": "Resposta da demanda: conjunto RD_ENCARGOS_CONTAB_MENSAL × boletim do MME e InfoMercado (divergência entre fontes, documentada)",
-                 "resultado": "aprovado" if rd_div and all(x["resultado"] == "aprovado" for x in rd_div) else "ressalva", "essencial": False,
+                 "resultado": "aprovado" if all(x["resultado"] == "aprovado" for x in rd_div) else "ressalva", "essencial": False,
                  "detalhe": "; ".join(_txt_rd(x) for x in rd_div if x["resultado"] != "aprovado") or "todas as conferências dentro da tolerância"}]}
 
-    def estado(cr, resposta):
+    def estado(cr, resposta, depende_ccee):
         """Concluído com limitação quando as verificações essenciais do critério de aceite
         passam; divergência documentada entre fontes (essencial=False) fica visível e não muda
-        o estado."""
-        if resposta is None:
-            return "bloqueado"
+        o estado. A pendência de decisão sobre o acesso à CCEE prevalece sobre o critério."""
         essenciais = [v for v in cr["verificacoes"] if v.setdefault("essencial", True)]
-        return "concluido_com_limitacao" if all(v["resultado"] == "aprovado" for v in essenciais) else "parcial"
+        criterio = "bloqueado" if resposta is None else (
+            "concluido_com_limitacao" if all(v["resultado"] == "aprovado" for v in essenciais) else "parcial")
+        if depende_ccee and pendencia_ccee:
+            return "pendente_decisao_acesso", criterio
+        return criterio, criterio
 
     defs = [
         ("P032", "Livre e regulado", "Como se distribui o consumo entre o mercado livre e o regulado?", resposta_p032(lr), c032,
          ["consumo_epe", "consumo_ccee", "distribuidoras_samp"],
          ["Três universos com perímetros diferentes (consumo na rede da EPE, consumo contabilizado da CCEE no centro de gravidade, mercado faturado das distribuidoras no SAMP): nenhum é igualado à carga do ONS.",
+          "Na CCEE, a participação do ACL é calculada sem a exportação para outros países, que o conjunto de consumo por ambiente soma ao ACL; o valor com exportação segue ao lado.",
           "Os conjuntos abertos da CCEE começam em 2023; antes disso, só a EPE (desde 2004)."]),
         ("P033", "Agentes e migração", "Quem participa do mercado e como a composição mudou?", resposta_p033(am_), c033,
          ["agentes_ccee", "consumo_epe", "distribuidoras_samp"],
-         ["O cadastro de perfis da CCEE é uma posição (sem histórico mensal); a lista de associados mês a mês começa em 2025.",
+         ["O cadastro de perfis da CCEE é uma posição (sem histórico mensal), com a data de modificação informada pelo portal; a lista de associados mês a mês começa em outubro de 2025.",
+          "As parcelas de carga das distribuidoras (uma por área de concessão) são o consumo do ACR e ficam fora da contagem do ACL; as cargas representadas por varejista não são parcelas no conjunto.",
           "Saída da lista de associados não é sinônimo de desligamento (sucessão e mudança de CNPJ também tiram um CNPJ da lista)."]),
         ("P034", "MRE e GSF", "Como foi o ajuste da garantia física das hidrelétricas do MRE?", resposta_p034(mg), c034,
          ["gsf", "risco_hidrologico_acr"],
-         ["O GSF é calculado com a razão que reproduz o fator publicado pela CCEE; a CCEE não o publica como coluna dos dados abertos.",
+         ["O GSF mensal é calculado com a razão que reproduz o fator publicado pela CCEE"
+          + ("; o número de 12 meses do InfoMercado não é reproduzido por nenhuma definição testada e a divergência fica publicada."
+             if g12 and any(x["resultado"] != "aprovado" for x in g12) else "."),
           "A série aberta começa em 2023; o painel não infere exposição financeira de nenhuma usina ou agente."]),
         ("P035", "Encargos e contabilização", "Quais custos públicos aparecem na liquidação do mercado de curto prazo?", resposta_p035(en), c035,
          ["encargos_ccee", "encargos_mme", "risco_hidrologico_acr"],
          ["Os encargos são valores de competência; o pagamento sai depois do alívio com recursos do mercado e aparece em série própria.",
+          *[f"O pagamento de ESS publicado como 0 de {_mes_br(t['inicio'])} a {_mes_br(t['fim'])} não é confirmado por publicação independente e aparece como nulo com rótulo." for t in zeros],
+          *([f"A liquidação de {', '.join(_mes_br(m) for m in en['lacunas_liquidacao'])} não está no conjunto aberto; a lacuna aparece na série."] if en["lacunas_liquidacao"] else []),
           "A resposta da demanda entra no total do InfoMercado e do boletim do MME, mas não é coluna do conjunto aberto de encargos."]),
     ]
+    ccee_prov = {"consumo_ccee", "agentes_ccee", "gsf", "encargos_ccee"}
     out = []
     for pid, titulo, pergunta, resp, cr, prov, lim in defs:
-        out.append({"id": pid, "titulo": titulo, "pergunta": pergunta, "resposta": resp, "estado_dados": estado(cr, resp),
-                    "criterio_aceite": cr["criterio"], "verificacoes": cr["verificacoes"], "proveniencia": prov, "limitacoes": lim})
+        depende = bool(ccee_prov & set(prov))
+        est, crit = estado(cr, resp, depende)
+        if depende and pendencia_ccee:
+            lim = [cm.PENDENCIA_ACESSO] + lim
+        out.append({"id": pid, "titulo": titulo, "pergunta": pergunta, "resposta": resp, "estado_dados": est, "estado_criterio": crit,
+                    "depende_da_ccee": depende, "criterio_aceite": cr["criterio"], "verificacoes": cr["verificacoes"],
+                    "proveniencia": prov, "limitacoes": lim})
     return out
 
 
-def acesso_ccee(con):
-    """Condição de acesso ao portal da CCEE registrada nas coletas: a última tentativa de cada
-    conjunto e o cliente usado. O curl recebe HTTP 403 ('Acesso bloqueado') do firewall da
-    origem; o cliente HTTP do pipeline (urllib, User-Agent do projeto, o mesmo da coleta do PLD
-    no GitHub Actions) recebe as respostas. Nada é alterado para contornar bloqueio: se o portal
-    recusar o cliente do pipeline, a falha fica registrada e a última captura válida segue."""
+def acesso_ccee(con, autorizada=None):
+    """Condição de acesso ao portal da CCEE e a decisão pendente sobre ela.
+
+    O curl recebe HTTP 403 ('Acesso bloqueado') do firewall da origem; o cliente HTTP do
+    pipeline (urllib, User-Agent do projeto, o mesmo da coleta do PLD no GitHub Actions)
+    recebeu as respostas em 01/10/2026. A orientação para este ambiente é não contornar o
+    bloqueio, e usar um cliente que passa pelo firewall não é decisão do coletor: a gold lista
+    as capturas feitas assim (vintages com origem e data) e marca a decisão como pendente. Sem
+    a variável ENERGIA_CCEE_COLETA=1, o módulo não faz nenhuma requisição à CCEE."""
     linhas = con.execute("""SELECT dataset, MAX(tentado_em), SUM(ok), COUNT(*) FROM coletas
                             WHERE dataset LIKE 'ccee_%' GROUP BY dataset ORDER BY dataset""").fetchall()
+    caps = con.execute("""SELECT dataset, COUNT(*), MIN(capturado_em), MAX(capturado_em), GROUP_CONCAT(DISTINCT origem)
+                          FROM vintages WHERE dataset LIKE 'ccee_%' GROUP BY dataset ORDER BY dataset""").fetchall()
+    autorizada = cm.coleta_autorizada() if autorizada is None else autorizada
     return {"cliente": "pipeline.common.http_get e http_download (urllib da biblioteca padrão, User-Agent do projeto)",
             "observacao": "Em 01/10/2026 (05h45 UTC), o curl recebeu HTTP 403 ('Acesso bloqueado') em dadosabertos.ccee.org.br; o cliente do pipeline recebeu HTTP 200 na mesma API (package_show). Nenhum cabeçalho foi trocado para se passar por navegador.",
+            "decisao": {
+                "situacao": "pendente",
+                "pergunta": "A coleta dos conjuntos abertos e do InfoMercado da CCEE pelo cliente HTTP do pipeline (sem disfarce de navegador), quando o curl recebe 403 'Acesso bloqueado' do firewall da origem, é aceitável? Se sim, a partir deste ambiente ou só no GitHub Actions?",
+                "registrada_em": "2026-10-01",
+                "efeito": "Enquanto a decisão estiver pendente, os painéis P032 a P035 ficam 'pendente_decisao_acesso' (os números da CCEE seguem publicados com esta ressalva, a partir das capturas de 01/10/2026) e nenhuma requisição nova é feita à CCEE a partir deste ambiente. Se a decisão for negativa, os números da CCEE saem da gold ou passam a vir só da coleta no GitHub Actions.",
+                "coleta_neste_ambiente": "autorizada (ENERGIA_CCEE_COLETA=1)" if autorizada else "suspensa (variável ENERGIA_CCEE_COLETA ausente): só o bronze já capturado é relido"},
+            "capturas": [{"dataset": d, "vintages": n, "primeira_captura": a, "ultima_captura": b, "origem": o} for d, n, a, b, o in caps],
             "conjuntos": [{"dataset": d, "ultima_tentativa": t, "tentativas_ok": int(ok or 0), "tentativas": n} for d, t, ok, n in linhas]}
 
 
@@ -2110,21 +2732,36 @@ def bloqueios(con, hoje):
     """Partes que dependem de fonte inacessível ou não publicada, com a evidência registrada no
     silver (captura, sha256) e as alternativas tentadas."""
     out = []
-    ano_ant = hoje.year - 1
-    v = base.ultima_vintage(con, DS_MME, f"pasta-{ano_ant}")
-    links = None
-    if v:
+    pastas = []
+    for ano in range(ANO_PASTAS_MME, hoje.year):
+        v = base.ultima_vintage(con, DS_MME, f"pasta-{ano}")
+        if not v:
+            pastas.append({"ano": str(ano), "url": f"{URL_MME}/{ano}", "capturado_em": None, "sha256": None,
+                           "pdfs_encontrados": None, "redireciona_login": None})
+            continue
         with base.abre_bronze(v["arquivo"]) as f:
-            links = len(mm.links_boletins(f.read().decode("utf-8", errors="replace"), v["url"]))
+            html = f.read().decode("utf-8", errors="replace")
+        pastas.append({"ano": str(ano), "url": v["url"], "capturado_em": v["capturado_em"], "sha256": v["sha256"],
+                       "pdfs_encontrados": len(mm.links_boletins(html, v["url"])),
+                       "redireciona_login": "credentials_cookie_auth/require_login" in html})
+    ult = pastas[-1] if pastas else {}
+    restritas = [p["ano"] for p in pastas if p["redireciona_login"]]
+    consol = base.ultima_vintage(con, DS_MME, f"consolidacao-{hoje.year - 1}")
     out.append({
         "id": "boletim_mme_anos_anteriores", "paineis": ["P032", "P035"],
-        "descricao": f"Edições do Boletim Mensal de Monitoramento do MME anteriores a {hoje.year} no formato atual (tabela de encargos por tipo e consumo por ambiente).",
-        "evidencia": {"url": f"{URL_MME}/{ano_ant}", "capturado_em": v and v["capturado_em"], "sha256": v and v["sha256"],
-                      "pdfs_encontrados": links,
-                      "observacao": "A página índice do boletim lista as pastas de 2011 a 2022 e a de 2026; o endereço da pasta do ano anterior devolve uma página genérica do portal, sem nenhum PDF de boletim."},
-        "alternativas": ["Conjunto ENCARGO_ESS_ANCILAR da CCEE (integrado: cobre de 2023 em diante)",
+        "descricao": f"Edições mensais do Boletim de Monitoramento do MME anteriores a {hoje.year} no formato atual (tabela de encargos por tipo e consumo por ambiente).",
+        "evidencia": {"url": ult.get("url") or f"{URL_MME}/{hoje.year - 1}", "capturado_em": ult.get("capturado_em"), "sha256": ult.get("sha256"),
+                      "pdfs_encontrados": ult.get("pdfs_encontrados"),
+                      "observacao": (f"Acesso restrito por login: as páginas das pastas de {', '.join(restritas)} devolvem o formulário de login do portal "
+                                     "(acl_users/credentials_cookie_auth/require_login, com came_from apontando para a própria pasta), sem nenhum PDF; "
+                                     "o acesso não foi tentado por outro caminho. A página índice lista as pastas de 2011 a 2022 (formato antigo) e a de 2026.")
+                      if restritas else "As páginas das pastas anteriores não listam PDF de boletim.",
+                      "pastas": pastas},
+        "alternativas": [f"Boletim especial 'Consolidação {hoje.year - 1}' do MME (página pública, PDF capturado"
+                         + (f" em {consol['capturado_em']}" if consol else "") + "): integrado para a conferência anual do ESS e da participação do ACL",
+                         "Conjunto ENCARGO_ESS_ANCILAR da CCEE (integrado: cobre de 2023 em diante)",
                          "Dados abertos de consumo mensal da EPE (integrados: cobrem de 2004 em diante)"],
-        "efeito": "A série de encargos extraída do boletim cobre só as edições do ano corrente; a série principal de encargos vem da CCEE.",
+        "efeito": "A série de encargos extraída do boletim mensal cobre só as edições do ano corrente; a série principal de encargos vem da CCEE e o ano anterior é conferido com a consolidação anual.",
     })
     return out
 
@@ -2133,6 +2770,7 @@ def bloqueios(con, hoje):
 
 ANOS_UF_NA_GOLD = 10
 DISTRIBUIDORAS_NA_GOLD = 30
+SAMP_MENSAL_DESDE = "2023-01"  # antes disso, no JSON sob demanda e no CSV nacional
 EPE_MENSAL_DESDE = "2015-01"   # antes disso, a gold traz a série anual; o CSV nacional tem todos os meses desde 2004
 
 
@@ -2167,10 +2805,23 @@ def _compacta(g):
     anos = sorted({x["ano"] for x in lr["epe_uf_anual"]})[-ANOS_UF_NA_GOLD:]
     lr["epe_uf_anual"] = [x for x in lr["epe_uf_anual"] if x["ano"] in anos]
     _arredonda_lista(lr["epe_uf_anual"], sufixos_inteiros=("_mwh",))
-    lr["samp_nacional_mensal"] = [{k: x.get(k) for k in ("mes", "distribuidoras", "completo", "livre_mwh", "livre_uc", "cativo_mwh",
-                                                       "cativo_uc", "livre_mwh_refat", "epe_livre_uc", "samp_sobre_epe_uc_pct")}
-                                  for x in lr["samp_nacional_mensal"]]
+    def ocorrencias(x, limite=6):
+        """Ocorrências do mês em texto; com muitas distribuidoras (mês ainda em publicação), as
+        maiores e a contagem do resto (a lista completa está no JSON sob demanda)."""
+        sem = sorted(x["distribuidoras_sem_livre"], key=lambda y: -(y["livre_uc_mes_anterior"] or 0))
+        oc = [f"{y['sigla']} sem linhas LIVRE ({_ucs_txt(y['livre_uc_mes_anterior'])} no mês anterior)" for y in sem[:limite]]
+        if len(sem) > limite:
+            oc.append(f"mais {len(sem) - limite} distribuidoras sem linhas LIVRE")
+        oc += [f"{y['sigla']}: linhas {y['opcao'].upper()} Regular iguais às do mês anterior" for y in x["repeticoes"]]
+        oc += [f"{y['sigla']}: unidades livres de {_br(y['livre_uc_mes_anterior'], 0)} para {_br(y['livre_uc'], 0)}" for y in x["variacoes_abruptas"]]
+        return oc
+    lr["samp_nacional_mensal"] = [{**{k: x.get(k) for k in ("mes", "distribuidoras", "completo", "comparavel", "motivo_incompleto", "livre_mwh",
+                                                          "livre_uc", "cativo_mwh", "epe_livre_uc", "samp_sobre_epe_uc_pct")},
+                                   "ocorrencias": ocorrencias(x)} for x in lr["samp_nacional_mensal"]]
     _arredonda_lista(lr["samp_nacional_mensal"], sufixos_inteiros=("_mwh", "_uc"))
+    samp_nac_completo = lr["samp_nacional_mensal"]
+    lr["samp_nacional_mensal_desde"] = SAMP_MENSAL_DESDE
+    lr["samp_nacional_mensal"] = [x for x in samp_nac_completo if x["mes"] >= SAMP_MENSAL_DESDE]
     linhas = lr["distribuidoras"]["linhas"]
     lr["distribuidoras"] = {"ano": lr["distribuidoras"]["ano"], "total": len(linhas), "na_gold": min(len(linhas), DISTRIBUIDORAS_NA_GOLD),
                             "criterio": f"as {DISTRIBUIDORAS_NA_GOLD} maiores em energia livre faturada no ano; a tabela completa está no CSV",
@@ -2179,11 +2830,32 @@ def _compacta(g):
     _arredonda_lista(lr["distribuidoras"]["linhas"], sufixos_inteiros=("_mwh",))
     _arredonda_lista(lr["comparacao_universos"], sufixos_inteiros=("_mwh",))
     _arredonda_lista(lr["ccee_mensal"], sufixos_inteiros=("_mwh",))
-    am_["samp_ucs_livres_mensal"] = [{k: x.get(k) for k in ("mes", "completo", "livre_uc_incentivada", "livre_uc_convencional",
-                                                         "livre_uc_autoproducao", "livre_uc_erc", "livre_uc_outro")}
-                                     for x in am_["samp_ucs_livres_mensal"]]
-    _arredonda_lista(am_["samp_ucs_livres_mensal"], sufixos_inteiros=("_incentivada", "_convencional", "_autoproducao", "_erc", "_outro"))
-    _arredonda_lista(am_["parcelas_mensal"], sufixos_inteiros=("_mwh",))
+    samp_ucs = [{k: x.get(k) for k in ("mes", "completo", "comparavel", "livre_uc_incentivada", "livre_uc_convencional",
+                                       "livre_uc_autoproducao", "livre_uc_erc", "livre_uc_outro")}
+                for x in am_.pop("samp_ucs_livres_mensal")]
+    _arredonda_lista(samp_ucs, sufixos_inteiros=("_incentivada", "_convencional", "_autoproducao", "_erc", "_outro"))
+    # na gold, a composição do último mês comparável; a série mensal vai para o JSON sob demanda
+    am_["samp_ucs_livres_ultimo_mes"] = next((x for x in reversed(samp_ucs) if x["comparavel"]), None)
+    # parcelas: a gold leva a série que o gráfico usa; a abertura por classe do perfil, por
+    # submercado e a conferência de cada mês vão para o JSON sob demanda
+    parc_det = []
+    for x in am_["parcelas_mensal"]:
+        parc_det.append({"mes": x["mes"], "consumo_total_mwh": _inteiro(x["consumo_total_mwh"]),
+                         "consumo_acl_sem_exportacao_mwh": _inteiro(x["consumo_acl_sem_exportacao_mwh"]),
+                         "parcelas_sem_cadastro": x["parcelas_sem_cadastro"],
+                         "por_classe_perfil": {k: {"parcelas": d.get("parcelas"), "consumo_mwh": _inteiro(d.get("consumo_mwh"))}
+                                               for k, d in x["por_classe_perfil"].items()},
+                         "por_submercado": x["por_submercado"], "conferencia": x["conferencia"]})
+    ult_parc = am_["parcelas_mensal"][-1] if am_["parcelas_mensal"] else None
+    if ult_parc:
+        am_["parcelas_ultimo_mes"] = {"mes": ult_parc["mes"], "por_classe_perfil": parc_det[-1]["por_classe_perfil"],
+                                      "por_submercado": ult_parc["por_submercado"], "conferencia": ult_parc["conferencia"]}
+    am_["parcelas_mensal"] = [{"mes": x["mes"], "parcelas": x["parcelas"], "perfis_com_parcela": x["perfis_com_parcela"],
+                               "cnpj_carga": x["cnpj_carga"], "migracoes_no_mes": x["migracoes_no_mes"],
+                               "consumo_acl_mwh": _inteiro(x["consumo_acl_mwh"]), "exportacao_mwh": _inteiro(x["exportacao_mwh"]),
+                               "parcelas_distribuidoras": x["distribuidoras"]["parcelas"],
+                               "consumo_distribuidoras_mwh": _inteiro(x["distribuidoras"]["consumo_mwh"]),
+                               "conferencia_ok": x["conferencia"]["ok"]} for x in am_["parcelas_mensal"]]
     rh = mg["risco_hidrologico_acr"]
     _arredonda_lista(rh["mensal"], sufixos_inteiros=("rh_itaipu", "rh_repactuadas", "rh_ccgf", "previsao_rh", "premio_risco",
                                                      "rh_ccgf_repactuadas_liquido", "rh_bruto"))
@@ -2193,7 +2865,8 @@ def _compacta(g):
     _arredonda_lista(en["ess_mensal"], sufixos_inteiros=tuple(COLUNAS_ESS.values()) + ("total", "restricao_operacao", "servicos_ancilares",
                                                                                       "resposta_demanda"))
     for k in ("eer_mensal", "pagamento_mensal", "liquidacao_mensal"):
-        _arredonda_lista(en[k], sufixos_inteiros=("energia_reserva", "_coner", "_er", "_ess", "_energetica", "a_liquidar", "liquidado", "inadimplencia"))
+        _arredonda_lista(en[k], sufixos_inteiros=("energia_reserva", "_coner", "_er", "_ess", "_energetica", "a_liquidar", "liquidado",
+                                                  "inadimplencia", "excedente_financeiro"))
     _arredonda_lista(en["mcp_submercado_mensal"], sufixos_inteiros=("_mwh", "_rs"))
     campos_cb = ("ess_eer", "ressarcimento_coner", "resultado_mcp", "ccear_d", "receita_faturada_bandeiras", "repasse_conta_bandeira")
     cb = en["acr_conta_bandeira_mensal"]
@@ -2214,19 +2887,36 @@ def _compacta(g):
         x.pop("colunas_esperadas", None)
     # tabelas que a página mostra só no modo Analisar: vão para um JSON lido sob demanda, e a gold
     # guarda o resumo (séries anuais) e o endereço
-    det = {"mcp_submercado_mensal": en.pop("mcp_submercado_mensal"),
+    mme = en["mme"]
+    rec_mme_ccee = mme.pop("reconciliacao_ccee")
+    tipos = [x for x in rec_mme_ccee if x["tipo"] != "resposta_demanda" and x["resultado"]]
+    rd = [x for x in rec_mme_ccee if x["tipo"] == "resposta_demanda" and x["resultado"]]
+    mme["reconciliacao_ccee_resumo"] = {
+        "tipos": {"conferidos": len(tipos), "aprovados": sum(1 for x in tipos if x["resultado"] == "aprovado")},
+        "resposta_demanda": {"conferidos": len(rd), "aprovados": sum(1 for x in rd if x["resultado"] == "aprovado")},
+        "tolerancia": "0,5 mil R$ por tipo e mês; 6 mil R$ no total sem a resposta da demanda",
+        "fora_da_tolerancia": [x for x in rec_mme_ccee if x["resultado"] not in ("aprovado", None)]}
+    det = {"parcelas_mensal_detalhe": parc_det,
+           "samp_nacional_mensal": samp_nac_completo,
+           "samp_ucs_livres_mensal": samp_ucs,
+           "mme_reconciliacao_ccee": rec_mme_ccee,
+           "mcp_submercado_mensal": en.pop("mcp_submercado_mensal"),
            "acr_conta_bandeira_mensal": en.pop("acr_conta_bandeira_mensal"),
            "risco_hidrologico_acr_mensal": rh.pop("mensal"),
            "desligamentos_anual": am_.pop("desligamentos_anual")}
     tot = {}
+    cob = am_.pop("_desligamentos_cobertura")
     for x in det["desligamentos_anual"]:
         k = (x["ano"], x["tipo"])
         tot[k] = tot.get(k, 0) + x["desligamentos"]
-    am_["desligamentos_por_ano"] = [{"ano": a, "tipo": t, "desligamentos": n} for (a, t), n in sorted(tot.items())]
+        x["completo"] = cob[x["ano"]]["completo"]
+    am_["desligamentos_por_ano"] = [{"ano": a, "tipo": t, "desligamentos": n, "completo": cob[a]["completo"], "meses": cob[a]["meses"],
+                                     "ultima_data": cob[a]["ultima_data"]} for (a, t), n in sorted(tot.items())]
     url = _url(JSON_DETALHE)
-    en["detalhe"] = {"url": url, "tabelas": ["mcp_submercado_mensal", "acr_conta_bandeira_mensal"]}
+    en["detalhe"] = {"url": url, "tabelas": ["mcp_submercado_mensal", "acr_conta_bandeira_mensal", "mme_reconciliacao_ccee"]}
+    lr["detalhe"] = {"url": url, "tabelas": ["samp_nacional_mensal"]}
     rh["detalhe"] = {"url": url, "tabelas": ["risco_hidrologico_acr_mensal"]}
-    am_["detalhe"] = {"url": url, "tabelas": ["desligamentos_anual"]}
+    am_["detalhe"] = {"url": url, "tabelas": ["desligamentos_anual", "parcelas_mensal_detalhe", "samp_ucs_livres_mensal"]}
     return det
 
 
@@ -2238,7 +2928,7 @@ def construir(con, ctx):
         livre = secao_livre_regulado(con, hoje, ev)
     except RuntimeError as e:
         return c.stub(GOLD, str(e))
-    agentes = secao_agentes(con, livre, ev)
+    agentes = secao_agentes(con, livre, ev, hoje)
     mre = secao_mre(con, ev)
     enc = secao_encargos(con, ev)
     situacao = cm.situacao(con)
@@ -2277,57 +2967,102 @@ def construir(con, ctx):
     per_epe = {"inicio": epe_mes[0]["mes"], "fim": epe_mes[-1]["mes"]}
     ccee_cons = livre["ccee_mensal"]
     per_ccee = {"inicio": ccee_cons[0]["mes"], "fim": ccee_cons[-1]["mes"]} if ccee_cons else per_epe
+
+    def periodo_de(*series):
+        """Período de referência derivado das séries publicadas no bloco (união dos meses), e o
+        de cada série, para a proveniência não declarar um período que nenhuma série tem."""
+        partes = {nome: (min(x["mes"] for x in linhas), max(x["mes"] for x in linhas)) for nome, linhas in series if linhas}
+        if not partes:
+            return per_epe, None
+        per = {"inicio": min(a for a, _ in partes.values()), "fim": max(b for _, b in partes.values())}
+        return per, "Períodos por série: " + "; ".join(f"{nome}: {a} a {b}" for nome, (a, b) in partes.items()) + "."
+
+    per_ag, nota_ag = periodo_de(("agentes por classe", agentes["agentes_por_classe_mensal"]), ("lista de associados", agentes["associados_fluxos"]),
+                                 ("parcelas de carga", agentes["parcelas_mensal"]))
+    desl = agentes["desligamentos_por_ano"]
+    cob_ag = {"inicio": min([per_ag["inicio"]] + [f"{x['ano']}-01" for x in desl]), "fim": per_ag["fim"]}
+    if desl:
+        nota_ag += (f" Desligamentos: {desl[0]['ano']} a {desl[-1]['ano']} (ano {desl[-1]['ano']} parcial, até {desl[-1]['ultima_data']})."
+                    if not desl[-1]["completo"] else f" Desligamentos: {desl[0]['ano']} a {desl[-1]['ano']}.")
+    pf = agentes["perfis"]
+    nota_ag += (f" Cadastro de perfis: posição sem data no arquivo; data de modificação informada pelo portal: {pf['data_modificacao_portal'] or 'não informada'}.")
+    per_enc, nota_enc = periodo_de(("ESS", enc["ess_mensal"]), ("energia de reserva", enc["eer_mensal"]), ("pagamento e alívio", enc["pagamento_mensal"]),
+                                   ("liquidação", enc["liquidacao_mensal"]), ("resultado do MCP", detalhe["mcp_submercado_mensal"]))
+    mme_meses = [{"mes": x["mes"]} for x in enc["mme"]["vigente"]]
+    per_mme, _ = periodo_de(("boletim", mme_meses))
+    # limitações que citam números: montadas a partir das próprias conferências da gold
+    lim_consol = [f"A consolidação anual do boletim do MME para {x['ano']} publica outro total ({_br(x['mme_consumo_gwh'], 0)} GWh, ACL {_br(x['mme_acl_pct'], 1)}%) "
+                  f"que os dados abertos da EPE ({_br(x['epe_total_gwh'], 0)} GWh, ACL {_br(x['epe_livre_pct'], 2)}%); a diferença é publicada como divergência "
+                  "em reconciliacao.mme_consolidacao_anual." for x in livre["reconciliacao"]["mme_consolidacao_anual"] if x["resultado"] != "aprovado"]
+    k12 = mre["kpis"].get("gsf_12m") or {}
+    im12 = k12.get("infomercado_12m")
+    lim_gsf12 = [f"O 'ajuste médio do MRE nos últimos doze meses' do InfoMercado Nº {im12['numero']} ({_br(im12['publicado_pct'], 2)}%) não é reproduzido "
+                 f"por nenhuma definição testada (razão de energias {_br(k12['valor_pct'], 2)}%); a divergência fica publicada."] if im12 and im12["resultado"] != "aprovado" else []
+    zeros = [t for t in enc["controles_pagamento"]["series"]["pagamento_ess"] if t.get("situacao") == "zero_nao_confirmado"]
+    im_pag = [x for x in enc["reconciliacao_infomercado"] if x["medida"] == "pagamento_ess_milhoes_rs" and x["resultado"] != "aprovado"]
+    lim_zeros = [f"PAGAMENTO_ENCARGO_ESS vem 0 de {t['inicio']} a {t['fim']} ({t['meses']} meses) com ESS positivo"
+                 + "".join(f"; o InfoMercado de {x['mes']} implica R$ {_br(x['publicado'], 2)} milhões pagos" for x in im_pag if t["inicio"] <= x["mes"] <= t["fim"])
+                 + ": zero não confirmado, nulo na gold e rotulado no CSV." for t in zeros]
+    lacunas = enc["lacunas_liquidacao"]
+    nao_inf = [x["mes"] for x in enc["liquidacao_mensal"] if x["situacao"] == "liquidacao_nao_informada"]
+    lim_liq = [f"Meses ausentes do conjunto SUMARIO_MENSAL_LIQUIDACAO: {', '.join(lacunas)} (aparecem na série como ausentes)." if lacunas else None,
+               f"Meses com liquidado e inadimplência publicados como zero e valor a liquidar positivo ('liquidação não informada', nulos na gold): {', '.join(nao_inf)}." if nao_inf else None]
     fonte_ccee = lambda conj, rec: _fonte("CCEE", conj, rec, f"{cm.PORTAL}/dataset/{conj.split(' ')[0].lower()}", f"{cm.PORTAL}/dataset/{conj.split(' ')[0].lower()}", cm.LICENCA)  # noqa: E731
-    lim_ccee = ["Os conjuntos abertos da CCEE começam em 2023 (a maioria em maio de 2023); antes disso a série não existe neste formato.",
-                "O portal da CCEE respondeu HTTP 403 ('Acesso bloqueado') ao curl e respondeu ao cliente HTTP do pipeline em 01/10/2026; se recusar numa execução, a última captura válida continua publicada e a falha fica registrada.",
+    lim_ccee = [cm.PENDENCIA_ACESSO,
+                "Os conjuntos abertos da CCEE começam em 2023 (a maioria em maio de 2023); antes disso a série não existe neste formato.",
                 "Dados da contabilização podem ser recontabilizados pela CCEE; revisões entre capturas ficam registradas."]
     g["proveniencia"] = {
         "consumo_epe": c.proveniencia(
-            indicador="Consumo de energia elétrica na rede por ambiente (cativo e livre)", natureza="OBSERVADO",
+            indicador="Consumo de energia elétrica na rede por ambiente (cativo e livre)", natureza="CALCULADO",
             fonte=_fonte("EPE", "Consumo mensal de energia elétrica (dados abertos)", f"{RECURSO_EPE_DA}, tabelas CONSUMO E NUMCONS SAM e SAM UF",
                          URL_EPE_PAGINA, URL_EPE_DA, LICENCA_EPE),
             unidade="MWh e unidades consumidoras", frequencia="mensal", periodo=per_epe, cobertura=per_epe,
             capturado_em=c.ultima_captura(snap_epe), snapshot=snap_epe, download=_url(CSV_NACIONAL),
             transformacoes=["soma das linhas por região, subsistema, classe e tipo de consumidor", "participação do livre = 100 × Σ livre ÷ Σ (cativo + livre) de cada período"],
-            formula="livre_pct = 100 × consumo livre ÷ (consumo cativo + consumo livre)",
+            formula="consumo do tipo = Σ Consumo das linhas; livre_pct = 100 × Σ consumo livre ÷ Σ (consumo cativo + consumo livre) do período",
             limitacoes=["É o consumo na rede: não inclui autoprodução sem uso da rede nem perdas; não é a carga do ONS (o MME publica a diferença como 'Perdas e Diferenças').",
                         "Dados do ano corrente são preliminares pela EPE e podem ser revisados; a tabela por UF vai só até o penúltimo mês.",
-                        "Livre inclui consumidores livres e especiais e autoprodutores que compram no ACL; a fonte não separa as categorias."]),
+                        "Livre inclui consumidores livres e especiais e autoprodutores que compram no ACL; a fonte não separa as categorias."] + lim_consol),
         "consumo_ccee": c.proveniencia(
-            indicador="Consumo contabilizado no mercado de curto prazo por ambiente (ACR e ACL)", natureza="OBSERVADO",
+            indicador="Consumo contabilizado no mercado de curto prazo por ambiente (ACR e ACL, exportação à parte)", natureza="CALCULADO",
             fonte=fonte_ccee("consumo_classe_agente", "consumo_classe_agente_AAAA e consumo_mensal_ambiente_comercializacao_AAAA (CSV anuais)"),
             unidade="MWmed (MWh = MWmed × horas do mês)", frequencia="mensal (publicação no mês seguinte + 22 dias úteis)", periodo=per_ccee, cobertura=per_ccee,
             capturado_em=c.ultima_captura(snap_ccee_cons), snapshot=snap_ccee_cons, download=_url(CSV_CCEE),
-            transformacoes=["ACR = consumo da classe Distribuidor; ACL = soma das demais classes de CONSUMO_CLASSE_AGENTE",
-                            "MWmed × horas do mês civil = MWh", "participação do ACL = razão das somas em MWh",
-                            "conferido mês a mês com CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO (Σ classes = ACR + ACL publicado, mais a classe Varejista a partir de fevereiro de 2026)"],
-            formula="acl_pct = 100 × Σ(ACL × horas) ÷ Σ((ACR + ACL) × horas)",
+            transformacoes=["ACR = consumo da classe Distribuidor; exportação = classe Exportador; ACL = soma das demais classes de CONSUMO_CLASSE_AGENTE",
+                            "MWmed × horas do mês civil = MWh", "participação do ACL = razão das somas em MWh, sem a exportação; com exportação, ao lado",
+                            "conferido mês a mês com CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO (Σ classes = ACR + ACL publicado, mais a classe Varejista a partir de fevereiro de 2026) e com o 'consumo contabilizado' do InfoMercado"],
+            formula="acl_pct = 100 × Σ(ACL × horas) ÷ Σ((ACR + ACL) × horas), ACL sem a classe Exportador; acl_com_exportacao_pct = 100 × Σ((ACL + exportação) × horas) ÷ Σ((ACR + ACL + exportação) × horas)",
             limitacoes=lim_ccee + ["Consumo referido ao centro de gravidade (com perdas da rede básica rateadas): é maior que o consumo medido no ponto de conexão e não é comparável ao da EPE sem esse ajuste.",
+                                   "A exportação (classe Exportador) é somada ao ACL no conjunto de ambiente da CCEE; aqui ela é componente separado e a participação do ACL é sem ela.",
                                    "Quebra na fonte em fevereiro de 2026: a classe Comercializador deu lugar à Varejista e o conjunto de ambiente deixou de contar a Varejista no ACL; a série do observatório soma o ACL pelas classes e publica o valor do conjunto de ambiente ao lado."]),
         "distribuidoras_samp": c.proveniencia(
-            indicador="Mercado livre e cativo faturado por distribuidora", natureza="OBSERVADO",
+            indicador="Mercado livre e cativo faturado por distribuidora", natureza="CALCULADO",
             fonte=_fonte("ANEEL", "SAMP: Sistema de Acompanhamento de Informações de Mercado para Regulação Econômica",
                          f"samp-{ANO_INICIAL_SAMP}.parquet a samp-{hoje.year}.parquet (Parquet oficial equivalente ao CSV)", URL_SAMP, URL_SAMP, LICENCA_ANEEL),
-            unidade="MWh e unidades consumidoras", frequencia="mensal", periodo={"inicio": f"{ANO_INICIAL_SAMP}-01", "fim": livre["samp"]["nacional_mensal"][-1]["mes"]},
-            cobertura={"inicio": f"{ANO_INICIAL_SAMP}-01", "fim": livre["samp"]["nacional_mensal"][-1]["mes"]}, capturado_em=c.ultima_captura(snap_samp),
+            unidade="MWh e unidades consumidoras", frequencia="mensal", periodo={"inicio": livre["samp"]["nacional_mensal"][0]["mes"], "fim": livre["samp"]["nacional_mensal"][-1]["mes"]},
+            cobertura={"inicio": livre["samp"]["nacional_mensal"][0]["mes"], "fim": livre["samp"]["nacional_mensal"][-1]["mes"]}, capturado_em=c.ultima_captura(snap_samp),
             snapshot=snap_samp, download=_url(CSV_DISTRIB),
-            transformacoes=["kWh ÷ 1.000 = MWh", "livre: Energia TUSD; cativo: Energia TE; unidades: Número de consumidores; só tipos de mercado da competência (refaturamento à parte)"],
-            formula="livre_pct_faturada = 100 × energia livre ÷ (energia livre + energia cativa faturada) do ano",
+            transformacoes=["kWh ÷ 1.000 = MWh", "livre: Energia TUSD; cativo: Energia TE; unidades: Número de consumidores; só tipos de mercado da competência (refaturamento à parte)",
+                            "completude por mês, medida e distribuidora: distribuidora com linhas LIVRE no mês anterior e sem elas no mês torna o mês incompleto; linhas Regular idênticas às do mês anterior ficam marcadas como repetição"],
+            formula="livre_pct_faturada = 100 × energia livre ÷ (energia livre + energia cativa faturada) do ano; somas nacionais = Σ distribuidoras",
             limitacoes=["Só o que cada distribuidora fatura na sua rede: consumidor livre ligado direto à rede básica não aparece.",
                         "A energia cativa faturada de quem tem micro ou minigeração é a líquida da compensação.",
                         "Refaturamento (correção de meses anteriores) não tem a competência original na fonte e fica em coluna própria.",
+                        "Meses recentes chegam incompletos ou copiados do anterior (julho de 2026: ELEKTRO e EQUATORIAL PA sem linhas LIVRE, linhas CATIVO da ELEKTRO iguais às de junho); só mês completo e sem repetição entra na comparação com a EPE.",
                         "'Fonte incentivada' inclui os consumidores especiais, mas a fonte não separa especial de livre com desconto; 'ERC' não é definido no dicionário."]),
         "agentes_ccee": c.proveniencia(
-            indicador="Agentes, perfis, parcelas de carga, entradas, saídas e desligamentos na CCEE", natureza="OBSERVADO",
+            indicador="Agentes, perfis, parcelas de carga, entradas, saídas e desligamentos na CCEE", natureza="CALCULADO",
             fonte=fonte_ccee("agente_qtd_contabilizacao", "agente_qtd_contabilizacao, lista_agente_associado, lista_perfil_v1, desligamento_voluntario, desligamento_compulsorio, parcela_carga_consumo"),
-            unidade="agentes, perfis, parcelas de carga", frequencia="mensal", periodo=per_ccee, cobertura=per_ccee,
-            capturado_em=c.ultima_captura(snap_ccee_ag), snapshot=snap_ccee_ag, download=_url(CSV_CCEE),
+            unidade="agentes, perfis, parcelas de carga", frequencia="mensal", periodo=per_ag, cobertura=cob_ag,
+            capturado_em=c.ultima_captura(snap_ccee_ag), snapshot=snap_ccee_ag, download=_url(CSV_CCEE), notas_fonte=nota_ag,
             transformacoes=["contagens de códigos distintos por mês", "entradas e saídas de CNPJ entre meses consecutivos da lista de associados",
+                            "parcelas das distribuidoras (perfil da classe Distribuidor no cadastro de perfis) separadas das do ACL",
                             "migrações = parcelas com data de migração no próprio mês de referência"],
-            formula="entradas_m = |CNPJ_m − CNPJ_{m−1}|; saídas_m = |CNPJ_{m−1} − CNPJ_m|",
-            limitacoes=lim_ccee + ["A lista de associados mês a mês só existe a partir de outubro de 2025; o cadastro de perfis é uma posição (sem histórico mensal).",
+            formula="entradas_m = |CNPJ_m − CNPJ_{m−1}|; saídas_m = |CNPJ_{m−1} − CNPJ_m|; parcelas_ACL_m = |parcelas_m de perfis fora da classe Distribuidor|",
+            limitacoes=lim_ccee + ["A lista de associados mês a mês só existe a partir de outubro de 2025; o cadastro de perfis é uma posição (sem histórico mensal) e a data exibida é a de modificação informada pelo portal.",
                                    "Saída da lista de associados não é sinônimo de desligamento: sucessão e mudança de CNPJ também tiram um CNPJ da lista.",
-                                   "Parcela de carga não é unidade consumidora: uma parcela pode reunir várias UCs."]),
+                                   "Parcela de carga não é unidade consumidora: uma parcela pode reunir várias UCs; as cargas representadas por varejista não aparecem como parcela.",
+                                   "O ano corrente dos desligamentos é parcial."]),
         "gsf": c.proveniencia(
             indicador="Fator de ajuste do MRE (GSF)", natureza="CALCULADO",
             fonte=fonte_ccee("mre_mensal", "geracao_submercado_AAAA, mre_mensal_AAAA e garantia_fisica_sazo_mre_submercado_AAAA"),
@@ -2335,52 +3070,60 @@ def construir(con, ctx):
             cobertura={"inicio": mre["mensal"][0]["mes"], "fim": mre["mensal"][-1]["mes"]} if mre["mensal"] else per_ccee,
             capturado_em=c.ultima_captura(snap_ccee_mre), snapshot=snap_ccee_mre, download=_url(CSV_CCEE),
             formula="GSF = 100 × Σ GERACAO_MRE (4 submercados) ÷ GARANTIA_FISICA_MODULADA_FDISP; período = razão das somas em MWh",
-            transformacoes=["conferido contra o fator publicado no InfoMercado mensal da CCEE em cada edição capturada (ver reconciliacao_infomercado)"],
-            limitacoes=lim_ccee + ["A CCEE não publica o GSF como coluna nos dados abertos; o observatório calcula com a mesma razão que reproduz o valor publicado no InfoMercado.",
+            transformacoes=["conferido contra o fator mensal publicado no InfoMercado mensal da CCEE em cada edição capturada (ver reconciliacao_infomercado)"],
+            limitacoes=lim_ccee + ["A CCEE não publica o GSF como coluna nos dados abertos; o observatório calcula com a mesma razão que reproduz o valor mensal publicado no InfoMercado.",
+                                   *lim_gsf12,
                                    "O GSF é do MRE inteiro; a razão por submercado não é publicada e não é calculada.",
                                    "O painel não infere exposição financeira de nenhuma usina ou agente."]),
         "risco_hidrologico_acr": c.proveniencia(
-            indicador="Custo do risco hidrológico alocado às distribuidoras", natureza="OBSERVADO",
+            indicador="Custo do risco hidrológico alocado às distribuidoras", natureza="CALCULADO",
             fonte=_fonte("ANEEL", "Bandeiras Tarifárias", "Bandeira Tarifária - Conta Bandeira (CSV)", URL_BAND, URL_BAND, LICENCA_ANEEL),
             unidade="R$ nominais", frequencia="mensal (competência)", periodo={"inicio": rh_m[0]["mes"], "fim": rh_m[-1]["mes"]} if rh_m else per_epe,
             cobertura={"inicio": rh_m[0]["mes"], "fim": rh_m[-1]["mes"]} if rh_m else per_epe,
             capturado_em=c.ultima_captura(snap_cb), snapshot=snap_cb, download=_url(CSV_CB),
             transformacoes=["soma nacional por competência de todas as linhas (inclusive sem CNPJ)", "linhas repetidas da mesma distribuidora e competência são somadas e contadas"],
+            formula="rh_bruto = Σ distribuidoras (VlrRiscoHidrologicoItaipu + VlrRiscoHidrologicoRepactuadas + VlrRiscoHidrologicoCCGF) na competência; 12 meses e ano = Σ das competências",
             limitacoes=["Valores apurados pela CCEE e publicados pela ANEEL; a ANEEL não informa a data de cada atualização.",
                         "É o risco que cabe ao mercado regulado (cotas, repactuadas, Itaipu), não o resultado das usinas.",
                         "Valores nominais; previsão de risco na tarifa e prêmio de risco têm sinal negativo no arquivo e são publicados em separado."]),
         "encargos_ccee": c.proveniencia(
-            indicador="Encargos de serviços do sistema, energia de reserva, liquidação e resultado do MCP", natureza="OBSERVADO",
-            fonte=fonte_ccee("encargo_ess_ancilar", "encargo_ess_ancilar, reserva_encargo, encargo_pgto_mensal, sumario_mensal_compra_venda_submercado, sumario_mensal_liquidacao"),
-            unidade="R$ nominais e MWh", frequencia="mensal", periodo=per_ccee, cobertura=per_ccee,
+            indicador="Encargos de serviços do sistema, energia de reserva, pagamento, liquidação e resultado do MCP", natureza="CALCULADO",
+            fonte=fonte_ccee("encargo_ess_ancilar", "encargo_ess_ancilar, rd_encargos_contab_mensal, reserva_encargo, encargo_pgto_mensal, sumario_mensal_compra_venda_submercado, sumario_mensal_liquidacao"),
+            unidade="R$ nominais e MWh", frequencia="mensal", periodo=per_enc, cobertura=per_enc, notas_fonte=nota_enc,
             capturado_em=c.ultima_captura(snap_ccee_enc), snapshot=snap_ccee_enc, download=_url(CSV_CCEE),
-            transformacoes=["somas mensais por tipo de encargo; agregados anuais e de 12 meses = soma dos meses"],
-            limitacoes=lim_ccee + ["Competência (mês de referência), pagamento (liquidação) e alívio do ESS são grandezas diferentes e são publicadas separadas."]),
+            transformacoes=["ESS do mês = soma dos nove tipos de encargo (os ressarcimentos detalham os outros serviços ancilares e não são somados de novo)",
+                            "agregados anuais e de 12 meses = soma dos meses", "grade completa de meses na liquidação (mês ausente do arquivo aparece como ausente)",
+                            "controle de sequências repetidas no pagamento (seis meses ou mais com o mesmo valor)"],
+            formula="ESS_m = Σ dos nove tipos de ENCARGO_ESS_ANCILAR; ESS_12m = Σ ESS_m; EER_12m = Σ ENCARGO_ENERGIA_RESERVA; inadimplência = 100 × VALOR_INAD ÷ VALOR_TOTAL_LIQ_PRE",
+            limitacoes=lim_ccee + ["Competência (mês de referência), pagamento (liquidação) e alívio do ESS são grandezas diferentes e são publicadas separadas.",
+                                   *[x for x in lim_liq if x], *lim_zeros]),
         "encargos_mme": c.proveniencia(
-            indicador="Encargos de serviços do sistema por tipo, Boletim Mensal do MME", natureza="OBSERVADO",
-            fonte=_fonte("MME", "Boletim Mensal de Monitoramento do Sistema Elétrico", "PDF de cada edição de 2026 (tabela 'Encargos de Serviços de Sistema')", URL_MME, f"{URL_MME}/{hoje.year}", LICENCA_MME),
-            unidade="mil R$ nominais", frequencia="mensal (edição)", periodo={"inicio": f"{hoje.year}-01", "fim": max((x["mes"] for x in enc["mme"]["vigente"]), default=f"{hoje.year}-01")},
-            cobertura={"inicio": f"{hoje.year}-01", "fim": max((x["mes"] for x in enc["mme"]["vigente"]), default=f"{hoje.year}-01")},
+            indicador="Encargos de serviços do sistema por tipo, Boletim Mensal do MME", natureza="CALCULADO",
+            fonte=_fonte("MME", "Boletim Mensal de Monitoramento do Sistema Elétrico", "PDF de cada edição de 2026 (tabela 'Encargos de Serviços de Sistema') e PDF da Consolidação 2025", URL_MME, f"{URL_MME}/{hoje.year}", LICENCA_MME),
+            unidade="mil R$ nominais", frequencia="mensal (edição) e anual (consolidação)", periodo=per_mme, cobertura=per_mme,
             capturado_em=c.ultima_captura(snap_mme), snapshot=snap_mme, download=_url(CSV_ESS),
-            transformacoes=["extração do texto do PDF (pdftotext -layout) e conferência das somas de cada mês", "vale a edição mais recente de cada mês; revisões entre edições publicadas"],
-            limitacoes=["As edições de 2025 e anteriores do novo formato não estão acessíveis no portal (o endereço devolve página HTML em vez do PDF em 01/10/2026); só as de 2026 foram integradas.",
+            transformacoes=["extração do texto do PDF (pdftotext -layout) e conferência das somas de cada mês", "vale a edição mais recente de cada mês; revisões entre edições publicadas",
+                            "consolidação anual usada só para conferir o total anual de ESS e a participação do ACL"],
+            formula="total do ano no boletim = Σ da linha Total nos meses publicados (edição vigente de cada mês)",
+            limitacoes=["As pastas das edições mensais de 2023 a 2025 no portal do MME exigem login (redirecionam para o formulário de acesso); só as edições de 2026 foram integradas, e o ano anterior é conferido com a consolidação anual pública.",
                         "Traço na tabela é lido como zero só porque a soma do mês fecha com ele."]),
     }
     g["fontes"] = [{"orgao": d["orgao"], "conjunto": d["nome"], "titulo": d["titulo"], "url": d["url"], "licenca": d["licenca"],
                     "dataset_silver": d["dataset_silver"]} for d in REGISTRO["datasets"]]
-    g["paineis"] = paineis(g)
+    g["acesso_ccee"] = acesso_ccee(con)
+    g["paineis"] = paineis(g, pendencia_ccee=g["acesso_ccee"]["decisao"]["situacao"] == "pendente")
     g["bloqueios"] = bloqueios(con, hoje)
     g["pendencias"] = pendencias(con)
-    g["acesso_ccee"] = acesso_ccee(con)
     _csvs(livre, agentes, mre, enc, con)
     base.escreve_gold(JSON_DETALHE, {"dominio": base.DOMINIO, "gold": GOLD, "gerado_em": g["gerado_em"],
                                      "descricao": "Tabelas longas do módulo Mercado lidas sob demanda pela página (os mesmos valores da construção da gold; R$ e MWh inteiros).",
                                      **detalhe}, destino=base.SERIES)
     base.escreve_csv(CSV_DISTRIB_ANO, ["ano", "cnpj", "sigla", "nome", "meses", "completo", "livre_mwh", "cativo_mwh", "livre_pct_faturada",
                                        "livre_uc_dez", "livre_uc_dez_anterior", "variacao_livre_uc", "livre_uc_incentivada_dez",
-                                       "livre_uc_convencional_dez", "livre_uc_autoproducao_dez", "cativo_uc_dez"],
+                                       "livre_uc_convencional_dez", "livre_uc_autoproducao_dez", "cativo_uc_dez", "meses_repetidos"],
                      [[livre["samp"]["ano_referencia"], x["cnpj"], x["sigla"], x["nome"], x["meses"], 1 if x["completo"] else 0, x["livre_mwh"],
                        x["cativo_mwh"], x["livre_pct_faturada"], x["livre_uc_dez"], x["livre_uc_dez_anterior"], x["variacao_livre_uc"],
-                       x["livre_uc_incentivada_dez"], x["livre_uc_convencional_dez"], x["livre_uc_autoproducao_dez"], x["cativo_uc_dez"]]
+                       x["livre_uc_incentivada_dez"], x["livre_uc_convencional_dez"], x["livre_uc_autoproducao_dez"], x["cativo_uc_dez"],
+                       "; ".join(x["meses_repetidos"]) or None]
                       for x in livre["samp"]["distribuidoras"]])
     return g

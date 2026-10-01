@@ -21,6 +21,7 @@ import type {
   AguaAfluencia,
   AguaArmazenamento,
   AguaCapturaAno,
+  AguaClima,
   AguaColunasRegiao,
   AguaConvencaoDefluencia,
   AguaDecomposicaoEar,
@@ -142,6 +143,7 @@ const NOMES: Record<string, string> = {
   "OUTRAS- SUDESTE": "Outras do Sudeste",
 };
 const MINUSCULAS = new Set(["da", "de", "do", "das", "dos", "e"]);
+const ROMANOS = /^(ii|iii|iv|vi|vii|viii|ix|xi|xii)$/i;
 
 /** Nome próprio a partir do texto do ONS: tabela acima ou iniciais maiúsculas (preposições em minúscula). */
 export function nomeProprio(nome: string | null | undefined): string {
@@ -151,7 +153,14 @@ export function nomeProprio(nome: string | null | undefined): string {
   return t
     .toLocaleLowerCase("pt-BR")
     .split(/(\s+)/)
-    .map((p, i) => (i > 0 && MINUSCULAS.has(p) ? p : p.charAt(0).toLocaleUpperCase("pt-BR") + p.slice(1)))
+    .map((p, i) =>
+      i > 0 && MINUSCULAS.has(p)
+        ? p
+        : ROMANOS.test(p)
+          ? p.toLocaleUpperCase("pt-BR")
+          : // inicial maiúscula também depois de ponto e de hífen ("C.Branco-1", "Corumba-3")
+            p.replace(/(^|[.-])([a-z\u00e0-\u00ff])/g, (_, a: string, l: string) => a + l.toLocaleUpperCase("pt-BR")),
+    )
     .join("");
 }
 
@@ -519,7 +528,7 @@ const ROTULO_PARTE: Record<string, string> = { proprio: "própria", jusante: "a 
 export function respostaCapacidade(c: AguaArmazenamento["capacidade"], dia: string): string {
   const sin = c.variacao_desde_inicio_mwmes.SIN;
   const partes = [
-    `De ${dataBR(c.inicio)} a ${dataBR(dia)}, a EAR máxima dos subsistemas mudou em ${plural(c.n_eventos, "dia", "dias")}; ${plural(c.eventos_fechados, "mudança foi atribuída", "mudanças foram atribuídas")} a reservatórios com resíduo dentro da tolerância${c.maior_residuo_mwmes !== null ? ` (maior resíduo: ${num(c.maior_residuo_mwmes, 1)} MWmês)` : ""}.`,
+    `De ${dataBR(c.inicio)} a ${dataBR(dia)}, a EAR máxima de algum subsistema mudou ${plural(c.n_eventos, "vez", "vezes")} (cada mudança é um dia num subsistema); ${plural(c.eventos_fechados, "mudança foi atribuída", "mudanças foram atribuídas")} a reservatórios com resíduo dentro da tolerância${c.maior_residuo_mwmes !== null ? ` (maior resíduo: ${num(c.maior_residuo_mwmes, 1)} MWmês)` : ""}.`,
   ];
   if (sin !== null) partes.push(`No período, a EAR máxima do SIN variou ${sinal(sin, 0)} MWmês: um mesmo percentual de anos diferentes não mede a mesma energia.`);
   return partes.join(" ");
@@ -794,11 +803,13 @@ export function textosMlt(mlt: AguaMlt, anoCorrente: string): string[] {
   if (pmo.comparacao.length) {
     const dc = pmo.dias_coincidentes.map((d) => `${dataBR(d.inicio)} a ${dataBR(d.fim)}`);
     t.push(
-      `O Relatório Executivo do PMO publica a MLT mensal por subsistema: comparada com a MLT implícita do conjunto aberto (tolerância de ${num(pmo.tolerancia_pct, 2)}%, porque o PMO publica MWmed inteiros), ${pmo.meses_coincidentes.length ? `coincide em ${listaTexto(pmo.meses_coincidentes.map(mesAno))}` : "não coincide em nenhum mês inteiro"}${dc.length ? ` e só nos dias ${listaTexto(dc)}` : ""}; diverge em ${listaTexto(pmo.meses_divergentes.map(mesAno))}, com diferença de até ${num(pmo.maior_diferenca_pct, 2)}%.`,
+      `O Relatório Executivo do PMO publica a MLT mensal por subsistema. Comparada com a MLT implícita do conjunto aberto (tolerância de ${num(pmo.tolerancia_pct, 2)}%, porque o PMO publica MWmed inteiros), ${pmo.meses_coincidentes.length ? `coincide nos meses ${listaTexto(pmo.meses_coincidentes.map(mesAno))}` : "não coincide em nenhum mês inteiro"}${dc.length ? `${pmo.meses_coincidentes.length ? " e" : ","} coincide nos dias de ${listaTexto(dc)}` : ""}; diverge em ${listaTexto(pmo.meses_divergentes.map(mesAno))}, com diferença de até ${num(pmo.maior_diferenca_pct, 2)}%.`,
     );
   }
   t.push(
-    `${plural(mlt.revisoes_no_mes.length, "mudança", "mudanças")} da MLT de usinas existentes fora do dia 1º (${listaTexto(mlt.revisoes_no_mes.map((r) => `${dataBR(r.data)}: ${r.classificacao === "retorno_a_versao_anterior" ? "retorno a uma versão anterior" : "versão nova"}, ${plural(r.usinas, "usina", "usinas")}`))}). Comparações longas de % da MLT misturam versões da referência.`,
+    `${plural(mlt.revisoes_no_mes.length, "mudança", "mudanças")} da MLT de usinas existentes fora do dia 1º: ${mlt.revisoes_no_mes
+      .map((r) => `${dataBR(r.data)}, ${r.classificacao === "retorno_a_versao_anterior" ? "retorno a uma versão anterior" : "versão nova"} (${plural(r.usinas, "usina", "usinas")})`)
+      .join("; ")}. Comparações longas de % da MLT misturam versões da referência.`,
   );
   return t;
 }
@@ -1167,7 +1178,7 @@ export const COLUNAS_VALIDACAO: ColunaTabela[] = [
   { id: "correlacao", rotulo: "Correlação mensal", tipo: "numero", casas: 2 },
 ];
 
-export function linhasValidacao(v: NonNullable<import("./tipos-agua").AguaClima>["validacao_estacoes"]): LinhaTabela[] {
+export function linhasValidacao(v: AguaClima["validacao_estacoes"]): LinhaTabela[] {
   return v.bacias.map((b) => ({ id: b.bacia, rotulo: rotuloRecorte("bacia", b.bacia), ...b }));
 }
 
@@ -1178,7 +1189,7 @@ export const COLUNAS_COBERTURA_CHUVA: ColunaTabela[] = [
   { id: "poligonos", rotulo: "Polígonos do ONS", tipo: "texto" },
 ];
 
-export function linhasCoberturaChuva(c: NonNullable<import("./tipos-agua").AguaClima>["cobertura_precipitacao"]): LinhaTabela[] {
+export function linhasCoberturaChuva(c: AguaClima["cobertura_precipitacao"]): LinhaTabela[] {
   return c.map((x) => ({
     id: x.bacia,
     rotulo: rotuloRecorte("bacia", x.bacia),
@@ -1197,7 +1208,7 @@ export const COLUNAS_COBERTURA_TEMPERATURA: ColunaTabela[] = [
   { id: "cobertura_pct", rotulo: "Cobertura", tipo: "percentual", casas: 1 },
 ];
 
-export function linhasCoberturaTemperatura(c: NonNullable<import("./tipos-agua").AguaClima>["cobertura_temperatura"]): LinhaTabela[] {
+export function linhasCoberturaTemperatura(c: AguaClima["cobertura_temperatura"]): LinhaTabela[] {
   return c.map((x) => ({ id: x.uf, ...x, subsistema: x.subsistema ? NOME_REGIAO[x.subsistema] : null }));
 }
 
@@ -1312,15 +1323,18 @@ export function respostaBalanco(r: AguaReservatorio, res: Pick<AguaReservatorios
   }
   const dv = r.dv_obs_hm3;
   const sentido = Number(dv.toFixed(1)) < 0 ? "caiu" : Number(dv.toFixed(1)) > 0 ? "subiu" : "ficou estável, com variação de";
+  // outras estruturas entram na lista da defluência só quando a convenção do reservatório as inclui
+  const outras = r.outras_estruturas_hm3 !== null && r.outras_estruturas_hm3 !== 0 ? r.outras_estruturas_hm3 : null;
+  const dentro = r.convencao_defluencia !== "exclui_outras";
   const saidas = [
     r.turbinado_hm3 !== null ? `${num(r.turbinado_hm3, 1)} turbinados` : null,
     r.vertido_hm3 !== null ? `${num(r.vertido_hm3, 1)} vertidos` : null,
-    r.outras_estruturas_hm3 !== null && r.outras_estruturas_hm3 !== 0
-      ? `${num(r.outras_estruturas_hm3, 1)} por outras estruturas${r.convencao_defluencia === "exclui_outras" ? ", publicados à parte e fora da defluência" : ""}`
-      : null,
+    outras !== null && dentro ? `${num(outras, 1)} por outras estruturas` : null,
   ].filter((x): x is string => x !== null);
   const partes = [
-    `De ${dataBR(res.inicio)} a ${dataBR(res.fim)}, o volume de ${nome} ${sentido} ${num(Math.abs(dv), 1)} hm³ e terminou em ${pct(r.vol_util_pct_fim, 2)} do volume útil. Entraram ${num(r.afluencia_hm3, 1)} hm³ (afluência) e saíram ${num(r.defluencia_hm3, 1)} hm³ (defluência${saidas.length ? `: ${listaTexto(saidas)}` : ""}). O resíduo do balanço, variação observada menos afluência mais defluência, é de ${sinal(r.residuo_hm3, 2)} hm³.`,
+    `De ${dataBR(res.inicio)} a ${dataBR(res.fim)}, o volume de ${nome} ${sentido} ${num(Math.abs(dv), 1)} hm³ e terminou em ${pct(r.vol_util_pct_fim, 2)} do volume útil. Entraram ${num(r.afluencia_hm3, 1)} hm³ (afluência) e saíram ${num(r.defluencia_hm3, 1)} hm³ (defluência${saidas.length ? `: ${listaTexto(saidas)}` : ""})${
+      outras !== null && !dentro ? `; as outras estruturas, que o ONS publica à parte e fora da defluência deste reservatório, somaram ${num(outras, 1)} hm³` : ""
+    }. O resíduo do balanço, variação observada menos afluência mais defluência, é de ${sinal(r.residuo_hm3, 2)} hm³.`,
   ];
   if (r.transferido_hm3 !== null && r.transferido_hm3 !== 0) {
     partes.push(
@@ -1447,4 +1461,124 @@ export function textoFechamento(r: Pick<AguaReservatorios, "n_reservatorios" | "
 /* ---------- textos gerais ---------- */
 
 /** Nenhum texto gerado usa travessão nem hífen solto como pontuação (regra de estilo testada). */
-export const PONTUACAO_PROIBIDA = /\s[–—-]\s|—/;
+export const PONTUACAO_PROIBIDA = /\s[\u2013\u2014-]\s|\u2014/;
+
+/* ---------- conferência com o resumo de operação (hidrologia.json) ---------- */
+
+type ResumoHidrologia = {
+  gerado_em: string;
+  dia_referencia_ear: string;
+  dia_referencia_ena: string;
+  subsistemas: { sm: Regiao; ear: { valor: number | null; dia: string }; ena: { dia: string; pct_mlt_30d: number | null } }[];
+};
+
+export const COLUNAS_RESUMO: ColunaTabela[] = [
+  { id: "regiao", rotulo: "Região", tipo: "texto" },
+  { id: "dia_resumo", rotulo: "Dia da EAR no resumo", tipo: "data" },
+  { id: "ear_resumo", rotulo: "EAR no resumo", tipo: "percentual", casas: 1 },
+  { id: "dia_agua", rotulo: "Dia da EAR nesta página", tipo: "data" },
+  { id: "ear_agua", rotulo: "EAR nesta página", tipo: "percentual", casas: 2 },
+  { id: "dia_ena_resumo", rotulo: "Fim da janela da ENA no resumo", tipo: "data" },
+  { id: "ena_resumo", rotulo: "ENA de 30 dias no resumo", tipo: "numero", unidade: "% da MLT", casas: 1 },
+  { id: "dia_ena_agua", rotulo: "Fim da janela nesta página", tipo: "data" },
+  { id: "ena_agua", rotulo: "ENA de 30 dias nesta página", tipo: "numero", unidade: "% da MLT", casas: 1 },
+];
+
+/** Os dois números lado a lado, cada um com o seu dia (nenhuma diferença é calculada aqui). */
+export function linhasResumo(h: ResumoHidrologia | null, a: AguaArmazenamento, f: AguaAfluencia): LinhaTabela[] {
+  return REGIOES.map((sm) => {
+    const hs = h?.subsistemas.find((x) => x.sm === sm);
+    const ea = a.subsistemas.find((x) => x.sm === sm);
+    const en = f.subsistemas.find((x) => x.sm === sm);
+    return {
+      id: sm,
+      regiao: NOME_REGIAO[sm],
+      dia_resumo: hs?.ear.dia ?? null,
+      ear_resumo: hs?.ear.valor ?? null,
+      dia_agua: ea?.dia ?? null,
+      ear_agua: ea?.ear_pct ?? null,
+      dia_ena_resumo: hs?.ena.dia ?? null,
+      ena_resumo: hs?.ena.pct_mlt_30d ?? null,
+      dia_ena_agua: en?.dia ?? null,
+      ena_agua: en?.pct_mlt_30d ?? null,
+    };
+  });
+}
+
+const ate = (ear: string, ena: string) => (ear === ena ? dataBR(ear) : `${dataBR(ear)} na EAR e ${dataBR(ena)} na ENA`);
+
+export function textoResumo(h: ResumoHidrologia | null, diaEar: string, diaEna: string): string {
+  if (!h) return "O resumo de operação (hidrologia.json), usado pela Visão geral e pelo PLD, não está disponível nesta publicação; os números desta página não dependem dele.";
+  const mesmo = h.dia_referencia_ear === diaEar && h.dia_referencia_ena === diaEna;
+  return [
+    `O resumo de operação usado pela Visão geral e pelo PLD (hidrologia.json, processado em ${dataBR(diaBrasilia(h.gerado_em))}) lê só a captura do silver principal e vai até ${ate(h.dia_referencia_ear, h.dia_referencia_ena)}; esta página usa, em cada ano, a captura mais recente do arquivo do ONS e vai até ${ate(diaEar, diaEna)}.`,
+    mesmo
+      ? "Os dias coincidem: diferença no mesmo dia vem de revisão do ONS entre as capturas, publicada na tabela de revisões."
+      : "Os números diferem porque os dias diferem; no mesmo dia, diferença vem de revisão do ONS entre as capturas, publicada na tabela de revisões.",
+    "As duas publicações usam a mesma regra: SIN como razão de somas e faixa do mesmo dia do calendário em 2001 a 2025.",
+  ].join(" ");
+}
+
+/** "Em 30 dias: SIN −7.888 MWmês (−2,7 p.p.); ..." com os subsistemas e o SIN da gold. */
+export function textoMudancaArmazenamento(lista: readonly EntidadeEar[]): string {
+  const subs = lista.filter((e) => e.tipo === "subsistema");
+  const sin = subs.find((e) => e.id === "SIN");
+  const partes = subs
+    .filter((e) => e.variacao_30d_mwmes !== null)
+    .map((e) => `${e.rotulo} ${sinal(e.variacao_30d_mwmes, 0)} MWmês${e.variacao_30d_pp !== null ? ` (${sinal(e.variacao_30d_pp, 1)} p.p.)` : ""}`);
+  const t = partes.length ? `Em 30 dias: ${partes.join("; ")}.` : "Sem variação de 30 dias publicada.";
+  return sin?.variacao_12m_mwmes !== null && sin?.variacao_12m_mwmes !== undefined ? `${t} Em 12 meses, o SIN variou ${sinal(sin.variacao_12m_mwmes, 0)} MWmês.` : t;
+}
+
+/** "ENA de 30 dias do SIN: 172,3% da MLT; Sudeste/Centro-Oeste 155,8%; ..." a partir das entidades da gold. */
+export function textoMudancaAfluencia(lista: readonly EntidadeEna[]): string {
+  const sin = lista.find((e) => e.id === "SIN");
+  if (!sin || sin.pct_mlt_30d === null) return "Sem ENA de 30 dias do SIN nesta publicação.";
+  const subs = SUBSISTEMAS.map((sm) => lista.find((e) => e.id === sm))
+    .filter((e): e is EntidadeEna => !!e)
+    .map((e) => `${e.rotulo} ${pct(e.pct_mlt_30d, 1)}${e.faixa_30d && e.faixa_30d !== "dentro" ? ` (${ROTULO_FAIXA[e.faixa_30d]})` : ""}`);
+  return `ENA de 30 dias até ${dataBR(sin.dia)}: SIN ${pct(sin.pct_mlt_30d, 1)} da MLT${sin.faixa_30d ? ` (${ROTULO_FAIXA[sin.faixa_30d]})` : ""}; ${subs.join("; ")}.`;
+}
+
+export function textoConferenciaBacias(c: AguaAfluencia["conferencia_bacias_sin"]): string | null {
+  if (!c) return null;
+  return `Soma da ENA bruta das bacias contra a do SIN em ${dataBR(c.dia)}: ${num(c.soma_bacias_mwmed, 3)} e ${num(c.sin_mwmed, 3)} MWmed (diferença de ${sinal(c.diferenca_mwmed, 3)} MWmed; SIN da ${c.captura_sin ?? "captura sem registro"}).`;
+}
+
+/** Bacia padrão do painel de clima: a de maior EAR máxima entre as que têm chuva estimada (a mesma da ficha de prova). */
+export function baciaPadraoChuva(baciasEar: readonly { nome: string; ear_max_mwmes: number | null }[], chuva: readonly AguaPrecipitacaoBacia[]): string {
+  const com = new Set(chuva.map((b) => b.bacia));
+  const x = [...baciasEar].filter((b) => com.has(b.nome)).sort((a, b) => (b.ear_max_mwmes ?? -1) - (a.ear_max_mwmes ?? -1) || a.nome.localeCompare(b.nome))[0];
+  return x?.nome ?? chuva[0]?.bacia ?? "";
+}
+
+/** Nota do número de destaque da temperatura: o sentido da anomalia por extenso. */
+export function notaAnomaliaTemperatura(t: AguaTemperatura, base: string): string {
+  const an = textoAnomaliaGraus(t.anomalia_30d_c);
+  if (!an || t.media_30d_c === null) return "Sem anomalia de 30 dias nesta publicação.";
+  return `${cap(an)} média dos mesmos dias em ${periodoBase(base)}: ${num(t.media_30d_c, 2)} °C contra ${num(t.media_30d_base_c, 2)} °C.`;
+}
+
+/** Nota do número de destaque da chuva: a anomalia por extenso e a média da base. */
+export function notaChuvaBacia(b: AguaPrecipitacaoBacia, base: string): string {
+  const an = textoAnomaliaPct(b.anomalia_30d_pct);
+  if (!an || b.mm_30d === null) return "Sem anomalia de 30 dias nesta publicação.";
+  return `${cap(an)} média dos mesmos dias em ${periodoBase(base)} (${num(b.media_30d_base, 1)} mm)${b.preliminar_30d ? "; janela com dias preliminares (IMERG Late)" : ""}.`;
+}
+
+/** Cobertura espacial do clima, com os cortes de versão de cada produto. */
+export function textoCobertura(c: Pick<AguaClima, "totais" | "base_climatologica" | "corte_imerg_final" | "corte_merra2">): string {
+  return `${num(c.totais.pontos_precipitacao, 0)} pontos de grade de chuva dentro dos contornos das bacias do ONS e ${num(c.totais.celulas_temperatura, 0)} células de temperatura escolhidas pela população. Climatologia de ${periodoBase(c.base_climatologica)}; IMERG Final até ${dataBR(c.corte_imerg_final)} e Late depois; MERRA-2 até ${dataBR(c.corte_merra2)} e GEOS-IT depois.`;
+}
+
+/** Conferência do IMERG com as estações publicadas pelo ONS (2020 e 2021). */
+export function textoValidacao(v: AguaClima["validacao_estacoes"]): string {
+  if (!v.pares) return "Sem pares bacia e mês para conferir o IMERG com estações nesta publicação.";
+  return `Conferência do IMERG com as estações que o ONS publicou em 2020 e 2021: correlação mensal de ${num(v.correlacao_geral, 2)} em ${num(v.pares, 0)} pares bacia e mês, viés geral de ${sinal(v.vies_geral_pct, 1)}% (positivo: o satélite estima mais chuva que as estações). A temperatura não foi conferida com estação: o INMET não respondeu nas tentativas de coleta.`;
+}
+
+/** Reservatórios dos dados hidráulicos sem correspondência no cadastro (sem volume útil, sem balanço). */
+export function textoSemCadastro(nomes: readonly string[]): string {
+  if (!nomes.length) return "Todos os reservatórios dos dados hidráulicos têm correspondência no cadastro do ONS.";
+  return `${plural(nomes.length, "reservatório dos dados hidráulicos não tem", "reservatórios dos dados hidráulicos não têm")} correspondência no cadastro do ONS e, sem volume útil, ficam sem balanço: ${listaTexto([...nomes])}.`;
+}

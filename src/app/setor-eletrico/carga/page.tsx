@@ -139,7 +139,7 @@ export default function CargaPage() {
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
         <CabecalhoModulo
           rotulo="Carga"
-          titulo="Nível e crescimento da carga"
+          titulo="Quanto o sistema está consumindo?"
           referencia={
             <>
               ONS, Carga de Energia Diária, até {dataBR(g.dia_referencia)}; processado em {carimbo(g.gerado_em)}.
@@ -174,7 +174,7 @@ export default function CargaPage() {
                   &ldquo;Mesmos dias da semana&rdquo; compara com a janela deslocada 364 dias (cada dia da semana com o seu par); &ldquo;mesmas datas&rdquo; compara com o mesmo
                   calendário do ano anterior, como a publicação diária do observatório fazia. A variação só existe quando as duas janelas têm todos os dias e estão no mesmo
                   regime do ONS: {g.regimes.map((r) => `${dataBR(r.inicio)}${r.observado_nos_dados ? ` (observado nos dados em ${dataBR(r.observado_nos_dados)})` : ""}`).join(", ")}.
-                  A composição de dias úteis, sábados e domingos ou feriados de cada janela aparece ao lado.
+                  A composição de dias úteis, sábados e domingos ou feriados de cada janela aparece abaixo do gráfico de pontos e na tabela equivalente.
                 </>
               }
               naoConcluir={

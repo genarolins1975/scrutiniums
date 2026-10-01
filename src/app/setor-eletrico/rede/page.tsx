@@ -1,187 +1,298 @@
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
+import { CursorSincronizado } from "@/components/energia/CursorSincronizado";
+import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
+import { Numero } from "@/components/energia/Numero";
+import { RedeCirculacao } from "@/components/energia/RedeCirculacao";
+import { RedeAuditoria, RedeAviso, RedeIndisponivel, RedeNavegacao, RedeRegras, RedeSeguir } from "@/components/energia/RedePagina";
+import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
-import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { Termo } from "@/components/evidencia/Termo";
 import { Unidade } from "@/components/evidencia/Unidade";
-import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
-import { MapaSubmercados } from "@/components/energia/MapaSubmercados";
-import { TabelaDados } from "@/components/energia/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { gold, integra } from "@/lib/energia/gold";
-import { dataBR, num, reais, rotuloRegra } from "@/lib/energia/formato";
+import { carimbo, dataBR, horaLocal, num, rotuloRegra } from "@/lib/energia/formato";
+import { gold, integra, lerGold } from "@/lib/energia/gold";
+import {
+  COLUNAS_COBERTURA,
+  COLUNAS_ESQUEMA_NACIONAL,
+  COLUNAS_ULTIMO_ANO,
+  COR_PAR,
+  FRONTEIRAS,
+  PERGUNTA_MODULO_REDE,
+  curtoFronteira,
+  linhasCobertura,
+  linhasEsquemaNacional,
+  linhasUltimoAno,
+  nomeFronteira,
+  paraTabela,
+  perguntaPainel,
+  rotaPainel,
+  situacaoAtualidade,
+  textoCobertura,
+  textoConferenciaSilver,
+} from "@/lib/energia/rede";
 import { textoAmplitude, textoFluxos30d } from "@/lib/energia/resumos";
+import type { ColunaTabela } from "@/lib/energia/tabela";
+import type { GoldRedeDetalhe } from "@/lib/energia/tipos-rede";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
-  title: "Rede: intercâmbios entre regiões e diferenças de preço",
+  title: "Rede: como a energia circula entre as regiões",
   description:
-    "Fluxos verificados entre os subsistemas (ONS), intercâmbio líquido de cada região e diferença de PLD entre as pontas de cada fronteira (CCEE). Limites de intercâmbio ainda não integrados.",
+    "Energia em cada sentido e saldo de cada fronteira entre subsistemas (ONS), por dia e por hora, com o programa e o PLD da mesma hora (CCEE), exportação e importação brutas por subsistema e histórico mensal desde 2021.",
   alternates: { canonical: "/setor-eletrico/rede" },
 };
 
-const NOME_CURTO: Record<string, string> = { SE: "o Sudeste/Centro-Oeste", S: "o Sul", NE: "o Nordeste", N: "o Norte" };
+const FONTE = "ONS, Intercâmbios Entre Subsistemas (releitura do módulo Rede)";
+/** Anos cujos arquivos de fronteira trazem o programado, lidos do esquema da fonte publicado na gold. */
+const anosComProgramado = (g: GoldRedeDetalhe) =>
+  g.esquema_fonte.intercambio_nacional
+    .filter((x) => x.tem_programado)
+    .map((x) => x.recurso.replace(/\D/g, ""))
+    .join(" e ") || "nenhum ano";
+const COLUNAS_SALDOS: ColunaTabela[] = [
+  { id: "nome", rotulo: "Subsistema", tipo: "texto" },
+  { id: "dia", rotulo: "Saldo no dia (positivo = exporta)", tipo: "numero", unidade: "MWmed", casas: 0 },
+  { id: "media_30d", rotulo: "Média de 30 dias", tipo: "numero", unidade: "MWmed", casas: 0 },
+];
 
 export default function RedePage() {
+  const g = lerGold<GoldRedeDetalhe>("rede_detalhe.json");
+  if (!integra(g)) return <RedeIndisponivel motivo={(g as { motivo?: string } | null)?.motivo} />;
   const r = gold.rede();
   const pld = gold.pld();
-  if (!integra(r)) {
-    return (
-      <>
-        <CabecalhoEnergia atual="rede" />
-        <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 py-14">
-          <Indisponivel titulo="Dados de rede indisponíveis" motivo={r?.motivo ?? "Os dados processados de rede não foram gerados nesta publicação."} />
-        </main>
-      </>
-    );
-  }
-  const seriesFluxo = r.fronteiras.map((f, i) => ({
-    id: f.par,
-    rotulo: `${f.de}→${f.para}`,
-    cor: ["var(--serie-sm-n)", "var(--serie-sm-se)", "var(--serie-sm-ne)", "var(--serie-sm-s)"][i],
-  }));
+  const c = g.circulacao;
+  const ev = g.evidencias;
+  const atual = situacaoAtualidade(g.referencia.dia, g.gerado_em);
+  const versao = g.referencia.dia;
+  const downloads = [
+    ...g.downloads.filter((d) => /fronteiras_diario|subsistemas_diario|horario_20/.test(d.url)),
+    { rotulo: "Janela horária de 7 dias (JSON)", url: c.janela_horaria.url },
+  ];
+  const resumo = c.resumo_30d;
+  // as mesmas linhas nos dois gráficos e na tabela equivalente do último ano
+  const ultimoAno = integra(r) ? linhasUltimoAno(r.serie_fluxos, r.serie_amplitude_pld) : [];
+
   return (
     <>
       <CabecalhoEnergia atual="rede" />
       <MarcaVisita secao="energia:rede" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo rotulo="Rede" titulo="A rede está limitando o sistema?" referencia={<>Intercâmbios (ONS) até {dataBR(r.dia_referencia)} · PLD (CCEE) até {dataBR(r.ultimo_dia_pld)}</>}>
-          Esta página mostra para onde a energia está fluindo entre as regiões e se os preços se separaram. Ela não afirma que a rede atingiu
-          limite: os limites de intercâmbio ainda não estão integrados, e essa é a primeira informação que falta para responder à pergunta do título.
-          Fluxos em <Unidade u="MWmed" />.
+      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-4 sm:px-6">
+        <CabecalhoModulo
+          rotulo="Rede"
+          titulo={PERGUNTA_MODULO_REDE}
+          referencia={
+            <>
+              ONS, intercâmbios entre subsistemas e com outros países, até {horaLocal(g.referencia.ultima_hora_fluxo)}; PLD horário da CCEE até{" "}
+              {g.referencia.ultima_hora_pld ? horaLocal(g.referencia.ultima_hora_pld) : "sem dado"}. Processado em {carimbo(g.gerado_em)}.
+            </>
+          }
+        >
+          A energia passa de uma região para outra pelas linhas de transmissão de fronteira; o ONS publica, hora a hora, o <Termo slug="intercambio">intercâmbio</Termo> verificado em
+          quatro fronteiras entre <Termo slug="submercado">subsistemas</Termo> e, no arquivo de {anosComProgramado(g)}, também o programado. Quatro painéis: como a energia circula, de onde vem a diferença entre os balanços,
+          que evidência de restrição é publicada e quanto o fluxo se afastou do programa. Os limites operativos de cada fronteira não são públicos; por isso nenhum painel diz que a
+          rede estava no limite. Fluxo em <Unidade u="MWmed" />, energia em MWh.
         </CabecalhoModulo>
+        <RedeNavegacao atual="p028" />
         <ModoProfundidade>
-          <Bloco>
+          <Bloco id="circulacao">
             <PainelEvidencia
-              id="fluxos-dia"
-              pergunta={`Fluxos entre subsistemas em ${dataBR(r.dia_referencia)}`}
-              subtitulo="Intercâmbio médio verificado por fronteira · MWmed · e PLD médio diário por submercado"
-              porQueImporta={<>O <Termo slug="intercambio">intercâmbio</Termo> mostra quais regiões exportam e quais importam energia. Ao lado do PLD, mostra se os <Termo slug="submercado">submercados</Termo> tiveram preço igual ou diferente no mesmo dia; a razão de uma diferença não é identificada aqui.</>}
-              oQueMudou={
+              id="p028"
+              pergunta={perguntaPainel("p028")}
+              subtitulo="Energia em cada sentido, saldo por fronteira e subsistema, por dia e por hora · MWh e MWmed"
+              natureza="CALCULADO"
+              porQueImporta={
                 <>
-                  Nos últimos 30 dias:{" "}
-                  {r.fronteiras
-                    .map((f) => {
-                      const [a, b] = [NOME_CURTO[f.de] ?? f.de, NOME_CURTO[f.para] ?? f.para];
-                      const n = f.dias_sentido_canonico_30d;
-                      return n >= 15 ? `${a} enviou energia para ${b} em ${n} de 30 dias` : `${b} enviou energia para ${a} em ${30 - n} de 30 dias`;
-                    })
-                    .join("; ")}
-                  .
+                  O saldo de um dia diz para onde a energia foi no total; a energia em cada sentido mostra quanto passou nos dois sentidos ao longo das horas. Um saldo pequeno
+                  pode esconder muita energia indo e voltando, e é isso que separa uma fronteira de fluxo estável de uma que muda de sentido.
                 </>
               }
-              comoInterpretar={<>A seta aponta o sentido do fluxo médio do dia; a espessura é proporcional ao volume. As caixas trazem o PLD médio do último dia disponível.</>}
-              naoConcluir={<>Sem os limites de transferência, fluxo alto não prova congestionamento, e a página não identifica qual linha ou equipamento restringiu a transferência.</>}
-              proveniencia={r.proveniencia.fluxo}
-              complementares={[
-                ...(integra(pld) ? [{ rotulo: "Sobre o PLD médio", p: pld.proveniencia.diario }] : []),
-                { rotulo: "Sobre a diferença de preço por fronteira", p: r.proveniencia.diferenca },
-              ]}
-            >
-              {integra(pld) ? (
-                <MapaSubmercados
-                  fluxos={r.fronteiras.map((f) => ({ de: f.de, para: f.para, fluxo: f.fluxo_dia }))}
-                  precos={Object.fromEntries(pld.cartoes.map((c) => [c.sm, c.media_dia]))}
-                  diaFluxo={dataBR(r.dia_referencia)}
-                  diaPreco={dataBR(pld.dia_referencia)}
-                />
-              ) : (
-                <Indisponivel titulo="PLD indisponível" motivo="Sem PLD, o mapa mostra só os fluxos na tabela abaixo." />
-              )}
-              <TabelaDados
-                titulo="Intercâmbio por fronteira"
-                colunas={["Fronteira", "Fluxo do dia (MWmed)", "Programado do dia (MWmed)", "Média 30 dias (MWmed)", `Dias com diferença de PLD médio acima de ${reais(r.limiar_diferenca_dia ?? 1, 2)}/MWh (30 dias até ${dataBR(r.dia_referencia)})`]}
-                linhas={r.fronteiras.map((f) => [f.nome, f.fluxo_dia, f.programado_dia, f.fluxo_media_30d, `${f.dias_com_diferenca_30d} de ${f.n_dias_pld_30d}`])}
-              />
-            </PainelEvidencia>
-          </Bloco>
-          <Bloco>
-            <PainelEvidencia
-              id="liquido"
-              pergunta="Quais regiões exportam e quais importam energia?"
-              subtitulo={`Intercâmbio líquido por subsistema · MWmed · balanço de energia do ONS em ${dataBR(r.dia_referencia_liquido)}`}
-              natureza="CALCULADO"
-              porQueImporta={<>O balanço de energia do ONS traz, para cada subsistema, carga, geração por fonte e intercâmbio líquido. Positivo significa exportação líquida no dia; o sinal foi conferido contra os fluxos por fronteira.</>}
-              oQueMudou={<>{r.liquido_subsistemas.map((l) => `${l.nome}: ${num(l.dia, 0)} MWmed no dia, média de 30 dias ${num(l.media_30d, 0)}`).join("; ")}.</>}
+              oQueMudou={<>{atual.texto}</>}
               comoInterpretar={
                 <>
-                  Além dos quatro subsistemas, o balanço do ONS publica um valor de intercâmbio para o <Termo slug="sin">SIN</Termo> inteiro. O que ele representa não foi conferido na documentação do ONS; a plataforma apenas compara esse valor com a soma dos quatro saldos.{" "}
-                  {r.balanco_sin
-                    ? `Em ${dataBR(r.balanco_sin.dia)}, a soma dos quatro saldos foi ${num(r.balanco_sin.soma_saldos, 0)} MWmed e o intercâmbio do SIN no mesmo balanço, ${num(r.balanco_sin.intercambio_sin, 0)} MWmed. Nos 365 dias até essa data, a média diária do intercâmbio do SIN passou de 1 MWmed em módulo em ${r.balanco_sin.dias_sin_nao_nulo_365} dias; nesses dias, os saldos não somam zero. `
-                    : ""}
-                  O dia do balanço pode diferir do dia dos fluxos por fronteira, porque são conjuntos distintos.
+                  Cada fronteira tem um sentido positivo no nome (Norte → Nordeste, Norte → Sudeste/Centro-Oeste, Nordeste → Sudeste/Centro-Oeste e Sul → Sudeste/Centro-Oeste);
+                  saldo negativo é energia no sentido contrário. Energia escondida pelo saldo é o menor dos dois sentidos. Cada valor horário em MWmed vale a mesma quantidade em
+                  MWh. Na escala horária, o PLD de cada região é o da mesma hora do fluxo.
                 </>
               }
-              naoConcluir={<>O saldo não diz por que a região exporta ou importa, nem se as linhas estavam no limite: os limites de intercâmbio não estão integrados.</>}
-              proveniencia={r.proveniencia.saldos ?? r.proveniencia.fluxo}
+              naoConcluir={
+                <>
+                  Que alguma fronteira estava no limite ou congestionada: os limites operativos e as suas vigências não são públicos, e nem a espessura da seta nem a diferença de
+                  preço demonstram saturação. O fluxo de cada linha de transmissão também não é publicado: sentidos opostos em linhas diferentes da mesma fronteira, na mesma hora,
+                  não aparecem.
+                </>
+              }
+              proveniencia={g.proveniencia.fluxo}
+              complementares={[
+                { rotulo: "Exportação e importação por subsistema", p: g.proveniencia.subsistemas },
+                { rotulo: "PLD nas duas pontas na mesma hora", p: g.proveniencia.pld_na_hora },
+              ]}
             >
-              <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                {r.liquido_subsistemas.map((l) => (
-                  <li key={l.sm} className="border border-linha p-4">
-                    <p className="rotulo text-mineral">{l.nome}</p>
-                    <p className="mt-2 font-serif text-2xl tabular-nums text-carvao">{num(l.dia, 0)}</p>
-                    <p className="text-xs text-mineral">MWmed · {l.dia === null ? "sem dado" : l.dia >= 0 ? "exportador no dia" : "importador no dia"}</p>
-                  </li>
-                ))}
-              </ul>
+              <div className="space-y-6">
+                {atual.defasada && <RedeAviso tipo="alerta">{atual.texto}</RedeAviso>}
+                <RedeCirculacao
+                  circulacao={{ diario: c.diario, resumo_30d: c.resumo_30d, mensal: c.mensal, subsistemas_diario: c.subsistemas_diario, janela_horaria: c.janela_horaria }}
+                  fonte={FONTE}
+                  versao={versao}
+                  destaques={
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                      {FRONTEIRAS.map((par) => (
+                        <Numero
+                          key={par}
+                          rotulo={`Energia escondida pelo saldo de 30 dias, ${nomeFronteira(par)}`}
+                          natureza="CALCULADO"
+                          evidencia={ev[`contra_saldo_30d.${par}`] ?? null}
+                          casas={0}
+                          tamanho="medio"
+                          cor={COR_PAR[par]}
+                          motivoAusencia="Sem fluxo publicado na janela de 30 dias."
+                          nota={(() => {
+                            const x = resumo.find((y) => y.par === par);
+                            return x ? `${num(x.liquido_mwh >= 0 ? x.horas_inverso : x.horas_canonico, 0)} de ${num(x.horas, 0)} horas no sentido contrário ao saldo.` : undefined;
+                          })()}
+                          endereco={`${rotaPainel("p028")}#p028`}
+                        />
+                      ))}
+                    </div>
+                  }
+                />
+
+                <RedeAuditoria id="p028-regras" titulo="Regras de leitura publicadas com os dados">
+                  <RedeRegras
+                    regras={(["orientacao", "energia", "bruto_liquido", "nulo", "pld", "limites"] as const).map((k) => ({ rotulo: rotuloRegra(k), texto: g.regras[k] }))}
+                  />
+                </RedeAuditoria>
+
+                <RedeAuditoria id="p028-fonte" titulo="Como cada arquivo anual do ONS publica as fronteiras">
+                  <p className="text-sm text-carvao-muted">
+                    Os arquivos até 2025 usam orientação fixa com valor com sinal; o de 2026 orienta cada linha pelo sentido do fluxo da hora. O módulo converte cada linha para a
+                    orientação do nome da fronteira, verificado e programado com o mesmo sinal. O dicionário do conjunto não descreve a mudança.
+                  </p>
+                  <TabelaInterativa
+                    titulo="Arquivos do conjunto Intercâmbios Entre Subsistemas"
+                    colunas={COLUNAS_ESQUEMA_NACIONAL}
+                    linhas={paraTabela(linhasEsquemaNacional(g.esquema_fonte))}
+                    chaveLinha="id"
+                    colunaRotulo="recurso"
+                    fonte="ONS, Intercâmbios Entre Subsistemas"
+                    versao={versao}
+                    nomeArquivo="rede-esquema-fonte"
+                    chaveUrl="esq"
+                  />
+                </RedeAuditoria>
+
+                <RedeAuditoria id="p028-cobertura" titulo="Cobertura e conferência com o outro coletor">
+                  <p className="text-sm text-carvao-muted">{textoCobertura("Fronteiras", g.cobertura.fronteiras, g.cobertura)}</p>
+                  <TabelaInterativa
+                    titulo="Dias sem as 24 horas nas fronteiras"
+                    colunas={COLUNAS_COBERTURA}
+                    linhas={paraTabela(linhasCobertura(g.cobertura.fronteiras))}
+                    chaveLinha="id"
+                    colunaRotulo="dia"
+                    fonte="ONS, Intercâmbios Entre Subsistemas"
+                    versao={versao}
+                    nomeArquivo="rede-cobertura-fronteiras"
+                    chaveUrl="cob"
+                    semLinhas="Todos os dias têm as 24 horas nas quatro fronteiras."
+                  />
+                  <p className="text-sm text-carvao-muted">{textoConferenciaSilver("Fronteiras", g.conferencia_silver_principal?.ons_rede_intercambio_nacional)}</p>
+                </RedeAuditoria>
+
+                <RedeSeguir ancora="p028" proximo={{ href: `${rotaPainel("p029")}#p029`, pergunta: perguntaPainel("p029") }} downloads={downloads} />
+              </div>
             </PainelEvidencia>
           </Bloco>
-          <Bloco nivel="analisar">
-            <PainelEvidencia
-              id="fluxos-12m"
-              pergunta="Como os fluxos mudaram ao longo do último ano?"
-              subtitulo="Intercâmbio médio diário por fronteira · MWmed · positivo no sentido indicado"
-              porQueImporta={<>Uma janela de 12 meses mostra como o sentido e o volume dos fluxos variam ao longo do ano; a página não atribui essas variações a causas.</>}
-              oQueMudou={<>{textoFluxos30d(r)}</>}
-              comoInterpretar={<>Valores negativos significam fluxo no sentido oposto ao indicado na legenda.</>}
-              naoConcluir={<>Fluxo não é capacidade: sem os limites, não se sabe quanto faltou para o teto em cada dia.</>}
-              proveniencia={r.proveniencia.fluxo}
-            >
-              <GraficoLinhas titulo="Intercâmbio médio diário por fronteira" dados={r.serie_fluxos} chaveX="d" series={seriesFluxo} unidade="MWmed" casas={0} />
-            </PainelEvidencia>
-          </Bloco>
-          <Bloco nivel="analisar">
-            <PainelEvidencia
-              id="amplitude-rede"
-              pergunta="Em que dias os preços dos submercados se separaram?"
-              subtitulo="Diferença entre o maior e o menor PLD médio diário · R$/MWh · último ano"
-              porQueImporta={<>Picos marcam dias em que os PLDs médios dos submercados ficaram mais distantes entre si.</>}
-              oQueMudou={<>{textoAmplitude(r.resumo_amplitude)}</>}
-              comoInterpretar={<>Zero significa médias diárias iguais nos quatro submercados; diferenças de poucas horas podem sumir na média diária.</>}
-              naoConcluir={<>A série não diz qual fronteira causou a separação.</>}
-              proveniencia={r.proveniencia.amplitude}
-            >
-              <GraficoLinhas
-                titulo="Diferença diária entre o maior e o menor PLD"
-                dados={r.serie_amplitude_pld}
-                chaveX="d"
-                series={[{ id: "amplitude", rotulo: "Diferença máx.−mín.", cor: "var(--cor-energia)" }]}
-                unidade="R$/MWh"
-                casas={2}
-                zeroNoEixo
-              />
-            </PainelEvidencia>
-          </Bloco>
-          <Bloco nivel="auditar">
-            <div className="border border-linha bg-superficie p-6">
-              <h2 className="font-serif text-xl text-carvao">Regras e downloads</h2>
-              <dl className="mt-4 grid gap-4 md:grid-cols-2">
-                {Object.entries(r.regras).map(([k, v]) => (
-                  <div key={k}>
-                    <dt className="rotulo text-mineral">{rotuloRegra(k)}</dt>
-                    <dd className="mt-1 text-sm text-carvao">{v}</dd>
-                  </div>
-                ))}
-              </dl>
-              <ul className="mt-4 space-y-1 text-sm">
-                {r.downloads.map((d) => (
-                  <li key={d.url}><a href={d.url} download className="text-energia-dark underline underline-offset-4">{d.rotulo}</a></li>
-                ))}
-              </ul>
-            </div>
-          </Bloco>
+
+          {integra(r) && (
+            <Bloco id="ultimo-ano" nivel="analisar">
+              <PainelEvidencia
+                id="fluxo-e-preco"
+                pergunta="Como o fluxo diário e a diferença entre os preços evoluíram no último ano?"
+                subtitulo={`Fluxo médio diário por fronteira (MWmed) e diferença entre o maior e o menor PLD médio diário (R$/MWh), até ${dataBR(r.dia_referencia)}`}
+                natureza="CALCULADO"
+                porQueImporta={
+                  <>
+                    Um ano de dias mostra como o sentido e o volume dos fluxos variam ao longo das estações e em que dias os preços médios das regiões se separaram, no
+                    mesmo eixo de datas. A página não atribui essas variações a causas.
+                  </>
+                }
+                oQueMudou={
+                  <>
+                    {textoFluxos30d(r)} {textoAmplitude(r.resumo_amplitude)}
+                  </>
+                }
+                comoInterpretar={
+                  <>
+                    Os dois gráficos têm o mesmo eixo de dias e a mesma cruz. A diferença de preço usa o PLD médio de cada dia: separações de poucas horas podem sumir na
+                    média, e a escala horária do painel acima mostra o preço da mesma hora. A tabela traz também o saldo de cada região no balanço de energia do ONS no último dia.
+                  </>
+                }
+                naoConcluir={<>Qual fronteira causou a separação de preços, nem se alguma estava no limite: os limites operativos não são públicos.</>}
+                proveniencia={r.proveniencia.fluxo}
+                complementares={[
+                  { rotulo: "Diferença entre o maior e o menor PLD médio diário", p: r.proveniencia.amplitude },
+                  ...(integra(pld) ? [{ rotulo: "Sobre o PLD médio diário", p: pld.proveniencia.diario }] : []),
+                  ...(r.proveniencia.saldos ? [{ rotulo: "Saldo de cada região no balanço do ONS", p: r.proveniencia.saldos }] : []),
+                ]}
+              >
+                <div className="space-y-6">
+                  <RedeAviso>
+                    Série da rotina diária de operação do observatório (outro coletor), com referência até {dataBR(r.dia_referencia)} para o fluxo e até{" "}
+                    {dataBR(r.ultimo_dia_pld)} para o PLD; o painel acima usa a releitura do módulo, até {dataBR(g.referencia.dia)}.
+                  </RedeAviso>
+                  <CursorSincronizado>
+                    <GraficoLinhas
+                      titulo="Fluxo médio diário por fronteira (positivo no sentido do nome)"
+                      dados={ultimoAno}
+                      chaveX="d"
+                      formatoX="data"
+                      series={FRONTEIRAS.map((p) => ({ id: p, rotulo: nomeFronteira(p), sigla: curtoFronteira(p), cor: COR_PAR[p] }))}
+                      unidade="MWmed"
+                      casas={0}
+                      zeroNoEixo
+                      legendaInterativa
+                    />
+                    <GraficoLinhas
+                      titulo="Diferença entre o maior e o menor PLD médio diário dos quatro submercados"
+                      dados={ultimoAno}
+                      chaveX="d"
+                      formatoX="data"
+                      series={[{ id: "amplitude", rotulo: "Maior menos menor PLD médio", cor: "var(--cor-energia)" }]}
+                      unidade="R$/MWh"
+                      casas={2}
+                      zeroNoEixo
+                    />
+                  </CursorSincronizado>
+                  <TabelaInterativa
+                    titulo="Tabela equivalente: fluxo médio e diferença de preço por dia"
+                    colunas={COLUNAS_ULTIMO_ANO}
+                    linhas={paraTabela(ultimoAno)}
+                    chaveLinha="id"
+                    colunaRotulo="d"
+                    fonte="ONS, Intercâmbios Entre Subsistemas; CCEE, PLD horário"
+                    versao={r.dia_referencia}
+                    nomeArquivo="rede-fluxo-e-preco-ultimo-ano"
+                    chaveUrl="ano"
+                    ordemInicial={{ coluna: "d", direcao: "desc" }}
+                  />
+                  <TabelaInterativa
+                    titulo={`Saldo de cada região no balanço de energia do ONS em ${dataBR(r.dia_referencia_liquido)}`}
+                    colunas={COLUNAS_SALDOS}
+                    linhas={r.liquido_subsistemas.map((l) => ({ id: l.sm, nome: l.nome, dia: l.dia, media_30d: l.media_30d }))}
+                    chaveLinha="id"
+                    colunaRotulo="nome"
+                    fonte="ONS, Balanço de Energia nos Subsistemas"
+                    versao={r.dia_referencia_liquido ?? r.dia_referencia}
+                    nomeArquivo="rede-saldos-balanco"
+                    chaveUrl="sal"
+                    nota="O saldo do balanço é conferido hora a hora com as fronteiras e o exterior no painel Balanço e exterior."
+                  />
+                </div>
+              </PainelEvidencia>
+            </Bloco>
+          )}
         </ModoProfundidade>
       </main>
     </>

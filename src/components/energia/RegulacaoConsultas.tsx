@@ -90,7 +90,7 @@ export function RegulacaoConsultas({
 
   return (
     <div className="space-y-6">
-      <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta-hoje={hoje} aria-live="polite">
+      <p className="max-w-prose2 text-base leading-relaxed text-carvao md:text-lg" data-resposta="p046" data-resposta-hoje={hoje} aria-live="polite">
         {respostaConsultas(consultas, hoje)}
       </p>
       {hoje !== consultas.data_referencia && (
@@ -201,8 +201,8 @@ export function RegulacaoConsultas({
                 </tr>
               </thead>
               <tbody>
-                {selecionada.fases.map((f) => (
-                  <tr key={`${f.fase}:${f.data_deliberacao}`} className={`border-b border-linha align-top ${f === faseAtual(selecionada) ? "text-carvao" : "text-carvao-muted"}`}>
+                {selecionada.fases.map((f, i) => (
+                  <tr key={`${i}:${f.fase}:${f.data_deliberacao}`} className={`border-b border-linha align-top ${f === faseAtual(selecionada) ? "text-carvao" : "text-carvao-muted"}`}>
                     <th scope="row" className="py-1 pr-3 font-normal">
                       {f.fase}
                       {f === faseAtual(selecionada) ? " (atual)" : ""}

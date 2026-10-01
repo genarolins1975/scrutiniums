@@ -12,14 +12,15 @@ carga_detalhe.json;Variação da carga do SIN nos últimos 7 dias contra os mesm
 carga_detalhe.json;Parcela da carga global do SIN atendida por MMGD (estimativa do ONS), último mês completo;;reconciliacao_aprovada;aprovado;2;0;0
 carga_detalhe.json;Pico horário da carga do SIN no dia;;reconciliacao_aprovada;aprovado;1;0;0
 carga_detalhe.json;Erro percentual absoluto médio da decomposição estatística, fora da amostra (SIN);;ressalva;;1;2;0
-conta.json;Tarifa residencial B1 mediana entre distribuidoras;CALCULADO;ressalva;ressalva;2;1;0
+conta.json;Tarifa residencial B1 mediana entre distribuidoras;;ressalva;ressalva;2;1;0
 conta.json;Participação dos encargos setoriais na tarifa B1 residencial;CALCULADO;reconciliacao_aprovada;aprovado;2;0;0
 conta.json;Estimativa sem tributos do valor da energia na fatura (simulador);ESTIMADO;controles_aprovados;;3;0;0
-conta.json;Variação mediana da tarifa B1 residencial em 12 meses;CALCULADO;reconciliacao_aprovada;aprovado;2;0;0
+conta.json;Variação mediana da tarifa B1 residencial em 12 meses;;reconciliacao_aprovada;aprovado;2;0;0
 conta.json;Bandeira tarifária acionada;OBSERVADO;ressalva;aprovado;1;1;0
 conta.json;Repasses da CDE para subsídios tarifários no ano;CALCULADO;ressalva;;2;2;0
 conta.json;Participação das quotas pagas nas tarifas no custeio da CDE;PREVISTO;ressalva;ressalva;2;0;0
 empresas.json;Potência em operação com todos os proprietários identificados por CNPJ;;reconciliacao_aprovada;aprovado;2;0;0
+empresas.json;Módulos de transmissão do SIGET ligados ao CNPJ da concessionária;;reconciliacao_aprovada;aprovado;2;0;0
 empresas.json;Índice Herfindahl-Hirschman da potência em operação por grupo de controle;;controles_aprovados;;2;0;0
 expansao.json;Capacidade instalada em operação;;reconciliacao_aprovada;aprovado;2;0;0
 expansao.json;Potência outorgada com construção não iniciada;;controles_aprovados;;2;0;0
@@ -55,12 +56,12 @@ inclusao.json;Domicílios sem energia elétrica;;controles_aprovados;;2;0;0
 inclusao.json;População das localidades atendidas por sistemas isolados;OBSERVADO;reconciliacao_aprovada;aprovado;2;0;0
 inclusao.json;Domicílios atendidos pelo Luz para Todos;OBSERVADO;ressalva;;3;1;0
 mercado.json;Participação do mercado livre no consumo de energia elétrica na rede (12 meses);;ressalva;ressalva;1;0;0
-mercado.json;Participação do ACL no consumo contabilizado pela CCEE (12 meses);;reconciliacao_aprovada;aprovado;1;0;0
+mercado.json;Participação do ACL no consumo contabilizado pela CCEE, sem a exportação (12 meses);;reconciliacao_aprovada;aprovado;1;0;0
 mercado.json;Agentes que participaram da contabilização da CCEE;;ressalva;ressalva;1;0;0
 mercado.json;Unidades consumidoras no mercado livre;;reconciliacao_aprovada;aprovado;1;0;0
-mercado.json;Parcelas de carga no ACL contabilizadas pela CCEE;;controles_aprovados;;1;0;0
+mercado.json;Parcelas de carga dos agentes do ACL na contabilização da CCEE (sem as parcelas das distribuidoras);;ressalva;;1;1;0
 mercado.json;Fator de ajuste do MRE (GSF);CALCULADO;reconciliacao_aprovada;aprovado;1;0;0
-mercado.json;Fator de ajuste do MRE (GSF) em 12 meses;;controles_aprovados;;1;0;0
+mercado.json;Fator de ajuste do MRE (GSF) em 12 meses;;ressalva;ressalva;1;0;0
 mercado.json;Custo do risco hidrológico alocado às distribuidoras (cotas, repactuadas e Itaipu);;controles_aprovados;;1;0;0
 mercado.json;Encargos de serviços do sistema (ESS) em 12 meses;;ressalva;ressalva;2;0;0
 mercado.json;Encargo de energia de reserva (EER) em 12 meses;;controles_aprovados;;1;0;0
@@ -72,18 +73,18 @@ perdas.json;Perdas não técnicas sobre o mercado de baixa tensão;;ressalva;;3;
 perdas.json;Energia injetada de referência das concessionárias;;ressalva;aprovado;3;2;0
 perdas.json;Taxa de perdas totais acumulada em 2026;;ressalva;;3;2;0
 perdas.json;Associação entre renda média da área e taxa de perdas totais (ρ de Spearman);;ressalva;;3;1;0
-previsoes_desempenho.json;PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado SE;PREVISTO;controles_aprovados;;2;0;0
-previsoes_desempenho.json;PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado S;PREVISTO;controles_aprovados;;2;0;0
-previsoes_desempenho.json;PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado NE;PREVISTO;controles_aprovados;;2;0;0
-previsoes_desempenho.json;PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado N;PREVISTO;controles_aprovados;;2;0;0
-previsoes_desempenho.json;Referência experimental B0 semanal (W1, W2, W3, W4), submercado SE, rodada de 30/09/2026;PREVISTO;reconciliacao_aprovada;aprovado;3;0;0
-previsoes_desempenho.json;Referência experimental B0 semanal (W1, W2, W3, W4), submercado S, rodada de 30/09/2026;PREVISTO;reconciliacao_aprovada;aprovado;3;0;0
-previsoes_desempenho.json;Referência experimental B0 semanal (W1, W2, W3, W4), submercado NE, rodada de 30/09/2026;PREVISTO;reconciliacao_aprovada;aprovado;3;0;0
-previsoes_desempenho.json;Referência experimental B0 semanal (W1, W2, W3, W4), submercado N, rodada de 30/09/2026;PREVISTO;reconciliacao_aprovada;aprovado;3;0;0
-previsoes_desempenho.json;Referência experimental B0 mensal (M1, M2, M3), submercado SE, rodada de 30/09/2026;PREVISTO;reconciliacao_aprovada;aprovado;3;0;0
-previsoes_desempenho.json;Referência experimental B0 mensal (M1, M2, M3), submercado S, rodada de 30/09/2026;PREVISTO;reconciliacao_aprovada;aprovado;3;0;0
-previsoes_desempenho.json;Referência experimental B0 mensal (M1, M2, M3), submercado NE, rodada de 30/09/2026;PREVISTO;reconciliacao_aprovada;aprovado;3;0;0
-previsoes_desempenho.json;Referência experimental B0 mensal (M1, M2, M3), submercado N, rodada de 30/09/2026;PREVISTO;reconciliacao_aprovada;aprovado;3;0;0
+previsoes_desempenho.json;PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado SE;;controles_aprovados;;2;0;0
+previsoes_desempenho.json;PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado S;;controles_aprovados;;2;0;0
+previsoes_desempenho.json;PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado NE;;controles_aprovados;;2;0;0
+previsoes_desempenho.json;PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado N;;controles_aprovados;;2;0;0
+previsoes_desempenho.json;Referência experimental B0 semanal (W1, W2, W3, W4), submercado SE, rodada de 30/09/2026;;reconciliacao_aprovada;aprovado;3;0;0
+previsoes_desempenho.json;Referência experimental B0 semanal (W1, W2, W3, W4), submercado S, rodada de 30/09/2026;;reconciliacao_aprovada;aprovado;3;0;0
+previsoes_desempenho.json;Referência experimental B0 semanal (W1, W2, W3, W4), submercado NE, rodada de 30/09/2026;;reconciliacao_aprovada;aprovado;3;0;0
+previsoes_desempenho.json;Referência experimental B0 semanal (W1, W2, W3, W4), submercado N, rodada de 30/09/2026;;reconciliacao_aprovada;aprovado;3;0;0
+previsoes_desempenho.json;Referência experimental B0 mensal (M1, M2, M3), submercado SE, rodada de 30/09/2026;;reconciliacao_aprovada;aprovado;3;0;0
+previsoes_desempenho.json;Referência experimental B0 mensal (M1, M2, M3), submercado S, rodada de 30/09/2026;;reconciliacao_aprovada;aprovado;3;0;0
+previsoes_desempenho.json;Referência experimental B0 mensal (M1, M2, M3), submercado NE, rodada de 30/09/2026;;reconciliacao_aprovada;aprovado;3;0;0
+previsoes_desempenho.json;Referência experimental B0 mensal (M1, M2, M3), submercado N, rodada de 30/09/2026;;reconciliacao_aprovada;aprovado;3;0;0
 qualidade.json;DEC do Brasil (apurado, ponderado por unidades consumidoras, todas as distribuidoras, inclusive permissionárias);;ressalva;aprovado;4;1;0
 qualidade.json;FEC do Brasil (apurado, ponderado por unidades consumidoras, todas as distribuidoras, inclusive permissionárias);;ressalva;aprovado;4;1;0
 qualidade.json;Conjuntos com DEC anual acima do limite;;controles_aprovados;;3;0;0
@@ -116,22 +117,27 @@ regulacao.json;Piso do PLD (PLD mínimo) vigente;;reconciliacao_aprovada;aprovad
 regulacao.json;Teto horário do PLD vigente;;ressalva;aprovado;3;1;0
 regulacao.json;Teto estrutural do PLD vigente;;ressalva;aprovado;3;1;0
 regulacao.json;Consultas e audiências públicas recebendo contribuições;;ressalva;;3;1;0
-sintese.json;Visão geral, frase 'reservatorios';;controles_aprovados;;2;0;0
-sintese.json;Visão geral, frase 'afluencias';;controles_aprovados;;2;0;0
-sintese.json;Visão geral, frase 'carga';;controles_aprovados;;2;0;0
-sintese.json;Visão geral, frase 'termica';;controles_aprovados;;2;0;0
-sintese.json;Visão geral, frase 'pld';;controles_aprovados;;2;0;0
-sintese.json;Visão geral, frase 'rede';;controles_aprovados;;2;0;0
+sintese.json;Visão geral, frase 'reservatorios';;reconciliacao_aprovada;aprovado;2;0;0
+sintese.json;Visão geral, frase 'afluencias';;reconciliacao_aprovada;aprovado;2;0;0
+sintese.json;Visão geral, frase 'carga';;reconciliacao_aprovada;aprovado;2;0;0
+sintese.json;Visão geral, frase 'termica';;reconciliacao_aprovada;aprovado;2;0;0
+sintese.json;Visão geral, frase 'pld';;reconciliacao_aprovada;aprovado;2;0;0
+sintese.json;Visão geral, frase 'rede';;reconciliacao_aprovada;aprovado;2;0;0
 sintese.json;Tarifa residencial B1 mediana entre distribuidoras;;ressalva;ressalva;2;1;0
 sintese.json;DEC do Brasil (apurado, ponderado por unidades consumidoras, todas as distribuidoras, inclusive permissionárias);;ressalva;aprovado;4;1;0
 sintese.json;FEC do Brasil (apurado, ponderado por unidades consumidoras, todas as distribuidoras, inclusive permissionárias);;ressalva;aprovado;4;1;0
 sintese.json;Taxa de perdas totais na distribuição;;ressalva;;3;2;0
 sintese.json;Unidades consumidoras com Tarifa Social;;ressalva;ressalva;4;1;0
-sintese.json;Regra 'termica' do o que observar;;controles_aprovados;;1;0;0
-sintese.json;Regra 'carga_extrema' do o que observar;;controles_aprovados;;1;0;0
-sintese.json;Regra 'descolamento' do o que observar;;controles_aprovados;;1;0;0
-sintese.json;Regra 'restricao_eolica' do o que observar;;controles_aprovados;;1;0;0
-sintese.json;Regra 'restricao_solar' do o que observar;;controles_aprovados;;1;0;0
+sintese.json;Regra 'ear_faixa' do o que observar;;reconciliacao_aprovada;aprovado;2;0;0
+sintese.json;Regra 'ena_faixa' do o que observar;;reconciliacao_aprovada;aprovado;2;0;0
+sintese.json;Regra 'termica' do o que observar;;controles_aprovados;;2;0;0
+sintese.json;Regra 'carga_extrema' do o que observar;;controles_aprovados;;2;0;0
+sintese.json;Regra 'descolamento' do o que observar;;controles_aprovados;;2;0;0
+sintese.json;Regra 'pld_piso' do o que observar;;reconciliacao_aprovada;aprovado;2;0;0
+sintese.json;Regra 'pld_teto' do o que observar;;reconciliacao_aprovada;aprovado;2;0;0
+sintese.json;Regra 'restricao_eolica' do o que observar;;controles_aprovados;;2;0;0
+sintese.json;Regra 'restricao_solar' do o que observar;;controles_aprovados;;2;0;0
+sintese.json;Regra 'revisao_material' do o que observar;;controles_aprovados;;3;0;0
 territorio.json;Municípios atendidos por mais de uma distribuidora;;reconciliacao_aprovada;aprovado;1;0;0
 territorio.json;Municípios com submercado provado pela carga das áreas do ONS;;reconciliacao_aprovada;aprovado;2;0;0
 territorio.json;Usinas com todos os municípios declarados reconhecidos no cadastro do IBGE;;controles_aprovados;;1;0;0

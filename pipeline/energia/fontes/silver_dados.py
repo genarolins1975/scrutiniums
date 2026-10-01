@@ -302,7 +302,10 @@ def completude(con, dataset, hoje=None):
     esperadas entre a primeira e a última no passo modal do grupo; ela não acusa série
     que começou depois ou terminou antes (usina nova, distribuidora extinta), só
     lacuna no meio. A cobertura do último período conta quantas séries do grupo têm
-    valor na maior referência e na anterior a ela."""
+    valor no último período disponível até `hoje` (o mesmo que a atualidade publica como
+    último período) e no anterior a ele: referência futura (limite regulatório de anos
+    seguintes, cenário do PDE, programação do PMO) não é o último período do dado, e
+    contar as séries nela fazia a cobertura parecer colapsar."""
     grupos = defaultdict(list)
     n_linhas = con.execute("SELECT COUNT(*) FROM observacoes WHERE dataset=?", (dataset,)).fetchone()[0]
     for serie, mn, mx, n in series_e_refs(con, dataset):
@@ -314,6 +317,15 @@ def completude(con, dataset, hoje=None):
     for formato, series in grupos.items():
         g = {"formato": formato, "series": len(series), "ref_min": min(s[1] for s in series),
              "ref_max": max(s[2] for s in series), "refs_presentes": sum(s[3] for s in series)}
+        # último período disponível até hoje: referência futura (limite regulatório de
+        # ano seguinte, programação do dia seguinte) não é dado observado disponível
+        lim = limite_hoje(formato, hoje) if hoje else None
+        if lim and formato in GLOB_FORMATO:
+            g["ref_max_ate_hoje"] = con.execute(
+                "SELECT MAX(ref) FROM observacoes WHERE dataset=? AND ref <= ? AND ref GLOB ?",
+                (dataset, lim, GLOB_FORMATO[formato])).fetchone()[0]
+        else:
+            g["ref_max_ate_hoje"] = None
         if formato in REGULARES:
             maior = max(series, key=lambda s: s[3])
             refs = [r for (r,) in con.execute(
@@ -341,13 +353,14 @@ def completude(con, dataset, hoje=None):
                 g["series_completas"] = completas
                 g["series_com_lacuna"] = len(series) - completas
                 g["piores"] = [{"serie": s, "faltam": f, "esperadas": e} for s, f, e in lacunas[:5]]
-                # cobertura do último período: séries com valor na última referência
-                # e na referência anterior (pelo passo), no mesmo grupo
-                ult = g["ref_max"]
-                ant = _ref_anterior(ult, formato, passo)
+                # cobertura do último período: séries com valor no último período
+                # disponível até hoje e no anterior a ele (pelo passo), no mesmo grupo.
+                # Sem `hoje` (chamada fora da publicação), vale a maior referência.
+                ult = g["ref_max_ate_hoje"] if hoje else g["ref_max"]
+                ant = _ref_anterior(ult, formato, passo) if ult else None
                 g["ultimo_periodo"] = ult
                 g["series_no_ultimo"] = con.execute(
-                    "SELECT COUNT(DISTINCT serie) FROM observacoes WHERE dataset=? AND ref=?", (dataset, ult)).fetchone()[0]
+                    "SELECT COUNT(DISTINCT serie) FROM observacoes WHERE dataset=? AND ref=?", (dataset, ult)).fetchone()[0] if ult else None
                 g["periodo_anterior"] = ant
                 g["series_no_anterior"] = con.execute(
                     "SELECT COUNT(DISTINCT serie) FROM observacoes WHERE dataset=? AND ref=?", (dataset, ant)).fetchone()[0] if ant else None
@@ -357,15 +370,6 @@ def completude(con, dataset, hoje=None):
         else:
             g["granularidade"] = granularidade_rotulo(formato, None)
             g["completude_interna"] = None
-        # último período disponível até hoje: referência futura (limite regulatório de
-        # ano seguinte, programação do dia seguinte) não é dado observado disponível
-        lim = limite_hoje(formato, hoje) if hoje else None
-        if lim and formato in GLOB_FORMATO:
-            g["ref_max_ate_hoje"] = con.execute(
-                "SELECT MAX(ref) FROM observacoes WHERE dataset=? AND ref <= ? AND ref GLOB ?",
-                (dataset, lim, GLOB_FORMATO[formato])).fetchone()[0]
-        else:
-            g["ref_max_ate_hoje"] = None
         saida.append(g)
     saida.sort(key=lambda g: (-g["refs_presentes"], g["formato"]))
     principal = next((g for g in saida if g["formato"] in REGULARES), saida[0])
@@ -414,7 +418,8 @@ def revisoes(con, dataset, limite_eventos=LIMITE_EVENTOS_REVISAO):
         (dataset, dataset),
     )
     n_eventos = 0
-    chaves = set()
+    chaves = set()   # pares (série, referência) revisados: "observações revisadas"
+    refs = set()     # referências (períodos) distintas revisadas, em qualquer série
     series = set()
     ref_min = ref_max = None
     maior_abs = maior_rel = None
@@ -449,6 +454,7 @@ def revisoes(con, dataset, limite_eventos=LIMITE_EVENTOS_REVISAO):
             continue
         n_eventos += 1
         chaves.add((serie, ref))
+        refs.add(ref)
         series.add(serie)
         ref_min = ref if ref_min is None or ref < ref_min else ref_min
         ref_max = ref if ref_max is None or ref > ref_max else ref_max
@@ -470,8 +476,12 @@ def revisoes(con, dataset, limite_eventos=LIMITE_EVENTOS_REVISAO):
     if atual_sr is not None:
         fecha_conflito()
     eventos.sort(key=lambda e: (-(e["relativa"] if e["relativa"] is not None else float("inf")), e["serie"], e["ref"]))
+    # observações revisadas = pares (série, referência); referências revisadas = períodos
+    # distintos. Num conjunto com 4 subsistemas, um dia revisado nos 4 é 1 referência e 4
+    # observações: publicar só os pares como "referências" inflaria o alcance.
     return {
-        "eventos": n_eventos, "referencias_revisadas": len(chaves), "series_afetadas": len(series),
+        "eventos": n_eventos, "observacoes_revisadas": len(chaves), "referencias_revisadas": len(refs),
+        "series_afetadas": len(series),
         "ref_min": ref_min, "ref_max": ref_max, "maior_abs": maior_abs, "maior_rel": maior_rel,
         "a_partir_de_zero": de_zero, "por_captura": dict(sorted(por_captura.items())),
         "maiores": eventos[:limite_eventos], "truncado": n_eventos > limite_eventos,
@@ -479,37 +489,84 @@ def revisoes(con, dataset, limite_eventos=LIMITE_EVENTOS_REVISAO):
     }
 
 
+# Campos de registro que descrevem o ARQUIVO ou o processamento, não o cadastro: a data
+# de geração que a fonte grava em toda linha (DatGeracaoConjuntoDados vira gerado_em ou
+# data_geracao), a data de processamento, a hora da verificação feita pelo próprio
+# pipeline. Trocam a cada nova edição do arquivo sem que nenhum cadastro mude; contá-los
+# como mudança da fonte inflaria a resposta a "o que mudou?" (em aneel_bandeiras_adicional
+# eram 141 "mudanças", todas de gerado_em). São contados à parte, nunca descartados.
+CAMPOS_METADADO_ARQUIVO = frozenset({
+    "gerado_em", "data_geracao", "datas_geracao_distintas", "processado_em", "verificado_em",
+    "din_atualizacao_max", "din_atualizacao_min", "extracao", "atualizacao",
+})
+LIMITE_EXEMPLOS_CONFLITO_REGISTRO = 3
+
+
 def revisoes_registros(con, dataset):
-    """Mudanças em campos textuais (cadastros, atos): chaves e campos alterados, campos
-    apagados pela fonte e o dia de cada captura que trouxe mudança."""
+    """Mudanças em campos textuais (cadastros, atos) entre capturas consecutivas DO MESMO
+    RECURSO (arquivo), a mesma regra das observações numéricas: chaves e campos
+    alterados, campos apagados pela fonte e o dia de cada captura que trouxe mudança.
+
+    O mesmo (chave, campo) com valores diferentes em arquivos diferentes do conjunto
+    (arquivo anual de 2021 contra o de 2026, código reutilizado entre listas, mudança
+    societária entre a lista de um ano e a do seguinte) NÃO é mudança entre capturas:
+    vira conflito entre recursos, contado à parte com exemplos, comparando o valor mais
+    recente de cada arquivo. Campos de metadado do arquivo (CAMPOS_METADADO_ARQUIVO)
+    ficam fora das mudanças e dos conflitos e são contados em `metadado_do_arquivo`."""
     cur = con.execute(
         """WITH rev AS (SELECT chave, campo FROM registros WHERE dataset=? GROUP BY chave, campo HAVING COUNT(*) > 1)
-           SELECT r.chave, r.campo, r.valor, v.capturado_em FROM rev
+           SELECT r.chave, r.campo, r.valor, v.capturado_em, v.recurso FROM rev
            JOIN registros r ON r.dataset=? AND r.chave=rev.chave AND r.campo=rev.campo
            JOIN vintages v ON v.vintage_id=r.vintage_id
-           ORDER BY r.chave, r.campo, v.capturado_em, r.rowid""",
+           ORDER BY r.chave, r.campo, v.recurso, v.capturado_em, r.rowid""",
         (dataset, dataset),
     )
-    mudancas, apagados = 0, 0
+    mudancas, apagados, metadado = 0, 0, 0
     chaves, campos = set(), Counter()
     por_captura = Counter()
-    atual, ant = None, None
-    for ch, campo, valor, cap in cur:
-        k = (ch, campo)
+    conflitos, chaves_conflito, campos_conflito, exemplos = 0, set(), Counter(), []
+    atual, ant = None, None          # (chave, campo, recurso) e o valor da captura anterior
+    atual_cc, ultimo_por_rec = None, {}  # (chave, campo) e o valor mais recente de cada recurso
+
+    def fecha_conflito():
+        nonlocal conflitos
+        if atual_cc is None or atual_cc[1] in CAMPOS_METADADO_ARQUIVO:
+            return
+        if len(set(ultimo_por_rec.values())) > 1:
+            conflitos += 1
+            chaves_conflito.add(atual_cc[0])
+            campos_conflito[atual_cc[1]] += 1
+            if len(exemplos) < LIMITE_EXEMPLOS_CONFLITO_REGISTRO:
+                exemplos.append({"chave": atual_cc[0], "campo": atual_cc[1],
+                                 "valores": {r: v for r, v in sorted(ultimo_por_rec.items())}})
+
+    for ch, campo, valor, cap, rec in cur:
+        if (ch, campo) != atual_cc:
+            fecha_conflito()
+            atual_cc, ultimo_por_rec = (ch, campo), {}
+        ultimo_por_rec[rec] = valor
+        k = (ch, campo, rec)
         if k != atual:
             atual, ant = k, valor
             continue
         if valor == ant:
             continue
         ant = valor
+        if campo in CAMPOS_METADADO_ARQUIVO:
+            metadado += 1
+            continue
         mudancas += 1
         chaves.add(ch)
         campos[campo] += 1
         if valor == "":
             apagados += 1
         por_captura[cap[:10]] += 1
+    fecha_conflito()
     return {"mudancas": mudancas, "chaves_afetadas": len(chaves), "campos": dict(campos.most_common(10)),
-            "apagados_pela_fonte": apagados, "por_captura": dict(sorted(por_captura.items()))}
+            "apagados_pela_fonte": apagados, "por_captura": dict(sorted(por_captura.items())),
+            "metadado_do_arquivo": metadado,
+            "conflitos_entre_recursos": conflitos, "chaves_em_conflito": len(chaves_conflito),
+            "campos_em_conflito": dict(campos_conflito.most_common(5)), "exemplos_conflito": exemplos}
 
 
 def resumo_registros(con, dataset):
