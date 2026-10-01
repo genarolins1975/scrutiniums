@@ -74,3 +74,15 @@ Entre 03h20 e 05h40 UTC os agentes falharam por limite de sessão da conta ("You
 
 Conta de luz e Inclusão concluíram o ciclo (revisões às 06h UTC). Visão geral disparada: wf_5a1e8713-058.
 | Dados e metodologia | nenhuma | todas |
+
+## 01/10/2026: corte da Fase 1 e publicação
+
+Por decisão do responsável ("defina uma fase e coloque em produção"), o trabalho foi recortado na Fase 1 (`FASE_1.md`) e levado à `main` pelo PR #115. Os fluxos de módulos foram encerrados pela interrupção da sessão; nenhum agente fica rodando.
+
+Trabalho parcial dos agentes interrompidos (Visão geral nova, Território, Dados, correções de Expansão, Empresas, Geração e Transição) ficou fora do corte. Depois da integração da Fase 1, ele volta ao branch `claude/new-session-essnx9` num commit próprio ("Fase 2: trabalho parcial dos agentes"), a partir do stash `fase2-wip-agentes`.
+
+Para retomar a Fase 2:
+
+1. Ler `FASE_1.md` (o que ficou de fora e as duas decisões pendentes com o responsável: coleta da CCEE e revisão das interfaces de PLD e Previsões).
+2. Fluxos de módulos: o script está em `~/.claude/projects/.../workflows/scripts/modulos-energia-wf_d8ec3241-4c4.js` da sessão original; numa sessão nova, refazer a partir dos documentos de cada módulo em `modulos/*.md`, que registram fontes, método, estado e pedidos ao integrador.
+3. Pendências conhecidas: P023 e P024 (Geração), Mercado (P032 a P035), Visão geral (P004 a P007), Aprenda (P065, P066), interface nova de Dados e Metodologia (P067 a P070), avaliação (P071), 120 datas cruas em textos de módulos, páginas acima de 600 KB sem compressão (Geração, Território, Qualidade).
