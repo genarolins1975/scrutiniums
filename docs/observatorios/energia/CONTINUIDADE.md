@@ -52,3 +52,23 @@ O contêiner reiniciou e interrompeu os fluxos; o disco sobreviveu (silvers, bro
 | Benchmarks (concluído; docs/observatorios/energia/BENCHMARKS.md) | benchmarks | wf_2a3335e6-649 |
 
 Pendentes de disparo: água e clima e carga (`scratchpad/wave2a.json`), geração, rede e mercado (`scratchpad/wave2b.json`); depois visão geral, aprenda, dados e metodologia, home, integração, auditoria e documentação final. Descoberta de fontes: inventário, ONS e ANEEL distribuição concluídos; tarifas/social, geração/expansão/empresas, outras fontes, benchmarks e crítico interrompidos (os módulos verificam as próprias fontes; benchmarks e crítico ainda precisam rodar).
+
+## 01/10/2026: limite de sessão e segundo reinício
+
+Entre 03h20 e 05h40 UTC os agentes falharam por limite de sessão da conta ("You've hit your session limit · resets 3:20am (UTC)") e o contêiner reiniciou de novo (disco preservado). Às 05h45 UTC os sete fluxos de módulos foram retomados com `resumeFromRunId` e os mesmos argumentos: etapas concluídas voltam do cache e só as interrompidas rodam. Estado na retomada:
+
+| Módulo | Etapas concluídas | Pendentes |
+| --- | --- | --- |
+| Perdas, Qualidade | dados, verificação, correção, interface | revisão |
+| Conta de luz | todas | nenhuma |
+| Inclusão | dados, verificação, correção, interface | revisão |
+| Regulação | dados, verificação, correção | interface, revisão |
+| PLD | dados, verificação, correção | interface, revisão |
+| Previsões | dados, verificação | correção, interface, revisão |
+| Expansão, Empresas | dados, verificação | correção, interface, revisão |
+| Transição | dados, verificação, correção | interface, revisão |
+| Água e clima | dados | verificação em diante |
+| Carga | dados, verificação | correção em diante |
+| Geração, Rede | dados | verificação em diante |
+| Mercado | nenhuma | todas |
+| Dados e metodologia | nenhuma | todas |
