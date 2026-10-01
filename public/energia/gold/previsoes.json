@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "previsoes.json",
- "gerado_em": "2026-09-30T02:20:41Z",
+ "gerado_em": "2026-10-01T02:22:00Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "196905461ac0",
+ "versao_codigo": "d95d8f8b4f9e",
  "disponivel": true,
  "atual": {
   "disponivel": false,

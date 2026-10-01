@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "cmo.json",
- "gerado_em": "2026-09-30T02:20:41Z",
+ "gerado_em": "2026-10-01T02:22:00Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "196905461ac0",
+ "versao_codigo": "d95d8f8b4f9e",
  "disponivel": true,
  "semana_referencia": "2026-10-02",
  "unidade": "R$/MWh",
@@ -1159,7 +1159,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-28T22:00:54.464349",
    "capturado_em": "2026-09-29T02:43:32Z",
-   "validado_em": "2026-09-30T02:20:41Z",
+   "validado_em": "2026-10-01T02:22:00Z",
    "cobertura_historica": {
     "inicio": "2005-01-07",
     "fim": "2026-10-02"
@@ -1171,14 +1171,14 @@
     "sha256": "0c92735cc77edc05022e65b2053fce1cae98f7dd59de17d26ca100638586baab"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "196905461ac0",
+   "versao_codigo": "d95d8f8b4f9e",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T02:20:41Z",
+    "detectado_em": "2026-10-01T02:22:00Z",
     "total": 0,
     "vintages_comparadas": 22,
     "arquivos": 22,
-    "recapturas_sem_mudanca": 2,
-    "ultimo_download_ok": "2026-09-30T02:20:09Z",
+    "recapturas_sem_mudanca": 4,
+    "ultimo_download_ok": "2026-10-01T02:21:25Z",
     "exemplos": []
    },
    "limitacoes": [
