@@ -12,7 +12,7 @@
  * Também ficam aqui as marcas de eixo legíveis (passos 1, 2, 2,5 e 5 vezes
  * potência de 10), usadas pelo histograma e pela dispersão.
  */
-import { num } from "@/lib/energia/formato";
+import { num, unidadeConcordante } from "@/lib/energia/formato";
 
 export type Valor = number | null | undefined;
 
@@ -348,7 +348,7 @@ export function textoValor(v: Valor, casas: number, unidade: string): string {
   if (!unidade) return n;
   if (unidade === "%") return `${n}%`;
   if (unidade === "R$") return `R$ ${n}`;
-  return `${n} ${unidade}`;
+  return `${n} ${unidadeConcordante(r, unidade)}`;
 }
 
 /** Percentual de uma fração 0 a 1, com casas adaptadas (0,4% não vira 0%). */

@@ -18,7 +18,7 @@
  * Três estados distintos, nunca confundidos: número (inclusive zero), ausência
  * (null ou undefined, "sem dado") e "não se aplica" (NAO_SE_APLICA).
  */
-import { num, pct, sinal } from "@/lib/energia/formato";
+import { num, pct, sinal, unidadeConcordante } from "@/lib/energia/formato";
 
 /* ---------- números ---------- */
 
@@ -196,7 +196,7 @@ export function formatarValor(v: number | null | undefined, casas = 1, unidade =
   if (!valido(v)) return SEM_DADO_TEXTO;
   const r = arredonda(v, casas);
   if (unidade === "%") return pct(r, casas);
-  return unidade ? `${num(r, casas)} ${unidade}` : num(r, casas);
+  return unidade ? `${num(r, casas)} ${unidadeConcordante(r, unidade)}` : num(r, casas);
 }
 
 /** Diferença com sinal explícito (+ ou −, tipográfico) e unidade; zero após arredondar não leva sinal. */

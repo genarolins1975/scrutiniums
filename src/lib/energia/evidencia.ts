@@ -392,13 +392,20 @@ export function problemasEvidencia(ev: Evidencia): string[] {
 
 /* ---------------------------------------------------------------- número de destaque */
 
-export type FormatoNumero = "num" | "reais" | "pct";
+/** "variacao" e "variacao_pct": o próprio número de destaque é uma variação e leva sinal
+ * explícito (+ ou −, tipográfico); zero depois de arredondar não leva sinal. */
+export type FormatoNumero = "num" | "reais" | "pct" | "variacao" | "variacao_pct";
 
 /** Valor grande do KPI; ausência vira "sem dado", nunca zero nem traço. */
 export function valorDestaque(v: number | null | undefined, formato: FormatoNumero = "num", casas = 1): string {
   if (v === null || v === undefined || !Number.isFinite(v)) return SEM_DADO;
   if (formato === "reais") return reais(v, casas);
   if (formato === "pct") return pct(v, casas);
+  if (formato === "variacao" || formato === "variacao_pct") {
+    const arred = Number(v.toFixed(casas));
+    const suf = formato === "variacao_pct" ? "%" : "";
+    return arred === 0 ? `${num(0, casas)}${suf}` : sinal(arred, casas, suf);
+  }
   return num(v, casas);
 }
 
@@ -407,7 +414,7 @@ export function valorDestaque(v: number | null | undefined, formato: FormatoNume
 export function unidadeDestaque(unidade: string | null | undefined, formato: FormatoNumero = "num"): string {
   const u = (unidade ?? "").trim();
   if (formato === "reais") return u.replace(/^R\$\s*/, "");
-  if (formato === "pct" && u === "%") return "";
+  if ((formato === "pct" || formato === "variacao_pct") && u === "%") return "";
   return u;
 }
 
