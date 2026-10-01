@@ -18,13 +18,15 @@ Fontes (seção "Fontes verificadas" em docs/observatorios/energia/modulos/carga
 
 Por que dois produtos de carga do ONS convivem aqui sem se misturar: a curva horária é o
 mesmo produto da carga diária (a média das 24 horas é o valor diário) e inclui a MMGD
-estimada desde 29/04/2023 sem publicá-la separada; a carga verificada da API publica a
+estimada (inclusão declarada para 29/04/2023, observada nos dados em 01/05/2023) sem
+publicá-la separada; a carga verificada da API publica a
 MMGD separada, mas a carga global dela é outro conceito (maior que a curva, sobretudo
 à noite). Carga, MMGD e carga líquida só são decompostas dentro da API; a curva nunca
 recebe a MMGD da API subtraída (seria dupla contagem ou mistura de definições).
 """
 import math
 import os
+import statistics
 import sys
 from collections import defaultdict
 from datetime import date, datetime, timedelta
@@ -90,10 +92,13 @@ REGISTRO = {
     "datasets": [
         {"orgao": "ONS", "nome": ons.PACOTE_CURVA, "slug": "ons-curva-carga-horaria", "dataset_silver": DS_CURVA,
          "titulo": "Curva de Carga Horária", "estado": "UTILIZADO EM INDICADOR", "url": ons.URL_CURVA, "licenca": LIC_ONS,
-         "descricao": "Carga horária por subsistema; a média das 24 horas é a Carga de Energia Diária. Inclui a MMGD estimada desde 29/04/2023, sem separá-la.",
+         "descricao": ("Carga horária por subsistema; a média das 24 horas é a Carga de Energia Diária. Inclui a MMGD estimada sem separá-la "
+                       "(inclusão declarada para 29/04/2023 e observada nos dados em 01/05/2023)."),
          "paginas": [PAGINA], "downloads": [_u(CSV["horaria"]), _u(CSV["pico"]), _u(CSV["perfil"])],
          "quebras": [{"data": "2021-03-01", "origem": "FONTE", "descricao": "Passa a incluir a previsão de geração de usinas não despachadas pelo ONS (mesma regra da carga diária)."},
-                     {"data": "2023-04-29", "origem": "FONTE", "descricao": "Passa a incorporar a estimativa de MMGD com base em dados meteorológicos previstos (mesma regra da carga diária)."}]},
+                     {"data": "2023-04-29", "origem": "FONTE", "descricao": ("Passa a incorporar a estimativa de MMGD com base em dados meteorológicos "
+                                                                            "previstos (mesma regra da carga diária): data declarada pelo ONS 29/04/2023, "
+                                                                            "observada nos dados em 01/05/2023 (29 e 30/04/2023 são transição).")}]},
         {"orgao": "ONS", "nome": "carga-energia-verificada", "slug": "ons-carga-verificada-horaria", "dataset_silver": DS_API,
          "titulo": "Carga de Energia Verificada (API semi-horária): carga global, MMGD e carga líquida", "estado": "UTILIZADO EM INDICADOR",
          "url": ons.URL_API_DATASET, "licenca": LIC_ONS,
@@ -120,10 +125,13 @@ REGISTRO = {
          "descricao": "CARGA_ENERGIA_AAAA.csv como publicado hoje: estado de cada dia ausente (célula vazia ou linha ausente) e arquivo obtenível para a evidência.",
          "paginas": [PAGINA], "downloads": ["/energia/series/carga_diaria.csv"], "quebras": []},
         {"orgao": "Open-Meteo", "nome": "historical-weather-api", "slug": "openmeteo-era5-ifs-capitais", "dataset_silver": DS_OPENMETEO,
-         "titulo": "Open-Meteo: temperatura diária ERA5 e ECMWF IFS nas capitais (sensibilidade da decomposição)", "estado": "UTILIZADO EM MODELO",
+         "titulo": "Open-Meteo: temperatura diária ERA5 e ECMWF IFS nas capitais (sensibilidade da decomposição, não calculada)",
+         "estado": "COLETADO, NÃO UTILIZADO",
          "url": clima.URL_OPENMETEO_DOC, "licenca": clima.LICENCA_OPENMETEO, "tema": "hidrologia",
-         "descricao": "Reanálise ERA5 e análise ECMWF IFS (natureza estimada) nos mesmos 27 centroides, produto único em cada série, desde 25/04/2023.",
-         "paginas": [PAGINA], "downloads": [_u(CSV["temperatura"])], "quebras": []},
+         "descricao": ("Reanálise ERA5 e análise ECMWF IFS (natureza estimada) nos mesmos 27 centroides, desde 25/04/2023. Coletado só para "
+                       "parte das capitais (a API tem cota diária por endereço, esgotada no ambiente compartilhado); nenhum número publicado "
+                       "usa este conjunto até a sensibilidade ser calculada com as 27 capitais."),
+         "paginas": [PAGINA], "downloads": [], "quebras": []},
         {"orgao": "Senado Federal", "nome": "legislacao-federal-feriados", "slug": "senado-leis-feriados", "dataset_silver": DS_LEIS,
          "titulo": "Leis federais dos feriados nacionais (metadados de Legislação Federal)", "estado": "UTILIZADO EM MODELO",
          "url": "https://legis.senado.leg.br/", "licenca": cal.LICENCA_SENADO, "tema": "regulacao",
@@ -132,7 +140,8 @@ REGISTRO = {
     "arquivos": {
         _u(CSV["horaria"]): ("data_hora (início da hora, horário de Brasília); SE, S, NE, N = carga horária da Curva de Carga Horária "
                              "do ONS em MWmed; SIN = soma dos quatro na hora (vazio se algum faltar); regime = 1, 2 ou 3 (mudanças de "
-                             "conteúdo do ONS em 01/03/2021 e 29/04/2023). Desde 2019."),
+                             "conteúdo do ONS em 01/03/2021 e na inclusão da MMGD, declarada para 29/04/2023 e observada nos dados em "
+                             "01/05/2023) ou transicao (29 e 30/04/2023, dias sem regime seguro). Desde 2019."),
         _u(CSV["verificada_horaria"]): ("data_hora (início da hora, Brasília); global_<sm>, mmgd_<sm>, liquida_<sm> para sm = SE, S, NE, "
                                         "N e SIN, em MWmed = médias das duas meias horas da API de carga verificada; liquida = global − "
                                         "mmgd (identidade publicada pelo ONS, conferida); vazio = hora sem as duas meias horas. Desde 2024."),
@@ -140,8 +149,11 @@ REGISTRO = {
                                        "global, mesmas horas); pico_global_mwmed e hora_pico_global; pico_liquida_mwmed e hora_pico_liquida "
                                        "(hora de início, Brasília); horas (horas cheias com os dois campos). Desde 15/02/2019."),
         _u(CSV["pico"]): ("data; submercado (SE, S, NE, N, SIN); media_mwmed (média das 24 horas da curva); pico_mwmed (maior valor "
-                          "horário); hora_pico (0 a 23, início da hora); classe_dia (util, sabado, domingo_feriado; vazio antes de "
-                          "2003); regime. Desde 2000."),
+                          "horário); hora_pico (0 a 23, início da hora); horas (horas com valor na curva; no SIN, 24 quando os quatro "
+                          "subsistemas estão completos); classe_dia (util, sabado, domingo_feriado; vazio antes de 2003); regime (1, 2, "
+                          "3 ou transicao em 29 e 30/04/2023). Dia sem as 24 horas fica com média, pico e hora vazios: no início do "
+                          "horário de verão (até 2018) a hora das 00h não existe, e o zero que a fonte põe nessa hora é ausência. "
+                          "Desde 2000."),
         _u(CSV["perfil"]): ("mes (AAAA-MM); submercado; classe_dia (util, sabado, domingo_feriado); hora (0 a 23, início); carga_mwmed "
                             "(Curva de Carga Horária); carga_global_mwmed, mmgd_mwmed, carga_liquida_mwmed (API de carga verificada); "
                             "dias_curva e dias_api (dias completos em cada média). Desde 2019."),
@@ -568,6 +580,12 @@ def coleta_openmeteo(con, status, hoje, pausa_s=None, ufs=None):
     con.commit()
 
 
+def ufs_openmeteo(con):
+    """UFs com temperatura do Open-Meteo no silver (cobertura declarada; não usada)."""
+    rows = con.execute("SELECT DISTINCT serie FROM observacoes WHERE dataset=? AND serie LIKE 't2m_era5.%'", (DS_OPENMETEO,)).fetchall()
+    return sorted(r[0].split(".")[-1] for r in rows)
+
+
 def coletar(con, ctx):
     hoje = ctx.get("hoje") or c.agora_date()
     status = {"ok": True}
@@ -822,7 +840,17 @@ def bloco_anual(diaria, dia_ref):
         out.append(linha)
     f = date.fromisoformat(dia_ref)
     ytd = _dias(f.replace(month=1, day=1).isoformat(), dia_ref)
-    acum = {"inicio": ytd[0], "fim": ytd[-1], "inicio_ant": _desloca(ytd, 364)[0], "fim_ant": _desloca(ytd, 364)[-1], "sm": {}}
+    ant = _desloca(ytd, 364)
+    # composição de calendário das duas janelas (nacional, igual para todo subsistema): com
+    # os mesmos dias da semana, feriados que caem em dia útil num ano e no fim de semana no
+    # outro ainda mudam a composição, e o leitor precisa ver isso ao lado da variação
+    ca, cb = cal.composicao(ytd), cal.composicao(ant)
+    acum = {"inicio": ytd[0], "fim": ytd[-1], "inicio_ant": ant[0], "fim_ant": ant[-1],
+            "classes": ca["classes"], "classes_ant": cb["classes"],
+            "calendario_equivalente": ca["classes"] == cb["classes"] and ca["dias_semana"] == cb["dias_semana"],
+            "eventos": _eventos_curtos(ca["eventos"]), "eventos_ant": _eventos_curtos(cb["eventos"]),
+            "feriados_dia_util": cal.feriados_em_dia_util(ytd), "feriados_dia_util_ant": cal.feriados_em_dia_util(ant),
+            "sm": {}}
     for sm in TODOS:
         x = comparacao(diaria[sm], ytd, _desloca(ytd, 364), "equivalente")
         acum["sm"][sm] = {"media": x["media"], "media_ant": x["media_ant"], "variacao_pct": x["variacao_pct"],
@@ -864,16 +892,18 @@ def bloco_mensal(diaria, dia_ref, meses=36):
 def bloco_revisoes(con_p, dados):
     """Revisões da carga diária entre as vintages do silver principal, e a diferença
     entre a curva horária (captura mais nova) e a carga diária nos últimos dias."""
-    linhas = []
+    linhas, difs = [], []
     for sm in SMS:
         for ref, hist in base.revisoes_da_serie(con_p, DS_DIARIA, f"carga_mwmed.{sm}"):
             for (cap0, v0), (cap1, v1) in zip(hist, hist[1:]):
+                pct = 100 * (v1 / v0 - 1) if v0 and v0 > 0 else None
                 linhas.append({"sm": sm, "dia": ref, "capturado_em": cap1, "capturado_em_ant": cap0, "valor": v1, "valor_ant": v0,
-                               "diferenca": c.r(v1 - v0, 3), "diferenca_pct": c.r(100 * (v1 / v0 - 1), 3) if v0 and v0 > 0 else None,
+                               "diferenca": c.r(v1 - v0, 3), "diferenca_pct": c.r(pct, 3),
                                "situacao": "correcao_de_valor_fora_do_dominio" if v0 is not None and v0 <= 0 else "revisao"})
+                if pct is not None:
+                    difs.append(abs(pct))  # sem arredondar: o resumo usa o valor exato
     vints = _vintages(con_p, DS_DIARIA)
     caps = sorted({v["capturado_em"] for v in vints.values()})
-    difs = [abs(x["diferenca_pct"]) for x in linhas if x["diferenca_pct"] is not None and x["situacao"] == "revisao"]
     # curva horária (captura mais recente) contra a carga diária vigente, dia a dia
     curva_vs = []
     for sm in SMS:
@@ -886,7 +916,10 @@ def bloco_revisoes(con_p, dados):
     return {
         "capturas_diaria": caps,
         "total": len(linhas), "dias_revisados": len({(x["sm"], x["dia"]) for x in linhas}),
-        "mediana_abs_pct": c.r(sorted(difs)[len(difs) // 2], 3) if difs else None,
+        # resumo das revisões com percentual (valor anterior positivo): mediana de verdade,
+        # com n par = média dos dois valores centrais
+        "revisoes_com_percentual": len(difs),
+        "mediana_abs_pct": c.r(statistics.median(difs), 4) if difs else None,
         "max_abs_pct": c.r(max(difs), 3) if difs else None,
         "linhas": linhas,
         "curva_contra_diaria": {"dias_comparados": n_comuns, "dias_diferentes": len(curva_vs),
@@ -1210,6 +1243,9 @@ def bloco_p027(res, temps, dia_ref):
             "contribuicoes": "β × (x − média de x no treino), somadas por grupo, em log × 100 (aproximadamente pontos percentuais)",
             "temperatura": "média diária a 2 m (NASA POWER) nas capitais, ponderada pela população da UF (IBGE); dobras nos tercis da primeira janela de treino; temperatura do dia anterior",
         },
+        # período avaliado = primeiro e último dia efetivamente previsto (o último pode ser
+        # anterior ao último dia de carga, quando a temperatura ainda não foi publicada)
+        "periodo_avaliacao": {"inicio": ps[0]["d"], "fim": ps[-1]["d"], "dias": len(ps)},
         "metricas": metricas, "sensibilidade": sens, "por_origem_sin": por_origem,
         "erros_sin_pct": {"p05": c.r(modelo.quantil(erros, 0.05), 2), "p25": c.r(modelo.quantil(erros, 0.25), 2),
                           "mediana": c.r(modelo.quantil(erros, 0.5), 2), "p75": c.r(modelo.quantil(erros, 0.75), 2),
@@ -1365,7 +1401,7 @@ def bloco_a07(con_p, dados, temps, res):
          f"{c.data_br(ref['inicio'])} a {c.data_br(ref['fim'])} contra {_br(rep['media_ant'])} MWmed de {c.data_br(ref['inicio_anterior'])} "
          f"a {c.data_br(ref['fim_anterior'])}).") if rep else "A janela do diagnóstico não está completa no silver.",
         (f"As duas janelas têm sete dias seguidos, portanto um de cada dia da semana; nenhuma tem feriado nacional nem ponto "
-         f"facultativo; as duas estão no mesmo regime do ONS (desde 29/04/2023). Com os mesmos dias da semana deslocados 364 dias "
+         f"facultativo; as duas estão no mesmo regime do ONS (inclusão da MMGD declarada para 29/04/2023 e observada nos dados em 01/05/2023). Com os mesmos dias da semana deslocados 364 dias "
          f"({c.data_br(dias_e[0])} a {c.data_br(dias_e[-1])}), a variação é {_sinal(sin_b['equivalente']['variacao_pct'], 2)}%.")
         if (sin_b["equivalente"] and not cal_a["eventos"] and not cal_b["eventos"] and not cal_e["eventos"]) else
         "O calendário das janelas não é equivalente; ver composição publicada.",
@@ -1390,18 +1426,27 @@ def bloco_a07(con_p, dados, temps, res):
         cb = lido["contribuicoes_log100"]
         per = (f"de {c.data_br(lido['inicio'])} a {c.data_br(lido['fim'])} contra {c.data_br(lido['inicio_ant'])} a "
                f"{c.data_br(lido['fim_ant'])}")
-        textos.append(f"Na decomposição estatística ({per}; modelo estimado até {c.data_br(lido['ultimo_dia_treino'])}, fora da amostra "
-                      f"em 2026), a diferença de {_br(lido['real_log100'], 1)} pontos de log se divide em calendário "
-                      f"{_br(cb['calendario'], 1)}, temperatura {_br(cb['temperatura'], 1)}, sazonalidade {_br(cb['sazonalidade'], 1)}, "
-                      f"nível e tendência {_br(cb['nivel_tendencia'], 1)} e resíduo {_br(lido['residuo_log100'], 1)}. "
+        # a comparação decomposta pode ter outros dias que a do achado (janela reduzida e
+        # deslocada 364 dias): o texto dá a variação dela e diz que não é a do achado
+        outra = rep and (lido["inicio"], lido["fim"], lido["inicio_ant"], lido["fim_ant"]) != (rep["inicio"], rep["fim"], rep["inicio_ant"], rep["fim_ant"])
+        aviso = (f" Essa variação não é a de {_sinal(rep['variacao_pct'], 2)}% do achado, que compara {rep['dias']} dias de "
+                 f"{c.data_br(rep['inicio'])} a {c.data_br(rep['fim'])} com as mesmas datas de {rep['inicio_ant'][:4]}." if outra else "")
+        textos.append(f"Na decomposição estatística ({per}, {lido['dias']} dias em cada janela; modelo estimado até "
+                      f"{c.data_br(lido['ultimo_dia_treino'])}, fora da amostra em 2026), a carga média do SIN variou "
+                      f"{_sinal(lido['variacao_real_pct'], 2)}%.{aviso} Em log × 100, a diferença de {_br(lido['real_log100'], 1)} se "
+                      f"divide em calendário {_br(cb['calendario'], 1)}, temperatura {_br(cb['temperatura'], 1)}, sazonalidade "
+                      f"{_br(cb['sazonalidade'], 1)}, nível e tendência {_br(cb['nivel_tendencia'], 1)} e resíduo {_br(lido['residuo_log100'], 1)}. "
                       "É associação estatística, não causa: o resíduo é a parte que o modelo não reproduz.")
     r26 = next((x for x in residuos if x["sm"] == "SIN" and x["janela"] == "2026"), None)
     r25 = next((x for x in residuos if x["sm"] == "SIN" and x["janela"] == "2025_mesmas_datas"), None)
     if r26 and r25:
+        # cada janela com as próprias datas e contagem: a de 2026 pode ter menos dias
+        # previstos (temperatura ainda não publicada) que a de 2025
         textos.append(f"Fora da amostra, a carga do SIN ficou {_sinal(r26['residuo_pct'], 1)}% em relação ao previsto de "
-                      f"{c.data_br(r26['inicio'])} a {c.data_br(r26['fim'])} ({r26['dias_acima_p90']} de {r26['dias']} dias acima do "
-                      f"intervalo de 80%) e {_sinal(r25['residuo_pct'], 1)}% nos mesmos dias de 2025 ({r25['dias_abaixo_p10']} de "
-                      f"{r25['dias']} dias abaixo do intervalo).")
+                      f"{c.data_br(r26['inicio'])} a {c.data_br(r26['fim'])} ({r26['dias']} dias previstos, {r26['dias_acima_p90']} acima "
+                      f"e {r26['dias_abaixo_p10']} abaixo do intervalo de 80%) e {_sinal(r25['residuo_pct'], 1)}% de "
+                      f"{c.data_br(r25['inicio'])} a {c.data_br(r25['fim'])} ({r25['dias']} dias previstos, {r25['dias_acima_p90']} acima "
+                      f"e {r25['dias_abaixo_p10']} abaixo do intervalo de 80%).")
     textos.append("Nada aqui atribui a variação à atividade econômica: não há, neste módulo, dado de atividade que sustente essa leitura.")
     return {
         "referencia": ref,
@@ -1422,11 +1467,17 @@ def bloco_a07(con_p, dados, temps, res):
 # Arquivos para download
 # =====================================================================================
 
+def _regime_csv(d):
+    """Regime da coluna `regime` dos CSVs: 1, 2 ou 3, ou "transicao" nos dias entre a
+    inclusão da MMGD declarada e a observada (29 e 30/04/2023, achado A11)."""
+    return "transicao" if d in _TRANSICAO else gcarga.regime_de(d) + 1
+
+
 def escreve_csvs(dados, temps, res, comps_csv, revis, calendario_anos):
     ch = dados["curva_h"]
     horas = sorted(ch["SE"])
     base.escreve_csv(CSV["horaria"], ["data_hora", "SE", "S", "NE", "N", "SIN", "regime"],
-                     [[h] + [c.r(ch[sm].get(h), 3) for sm in TODOS] + [gcarga.regime_de(h[:10]) + 1] for h in horas])
+                     [[h] + [c.r(ch[sm].get(h), 3) for sm in TODOS] + [_regime_csv(h[:10])] for h in horas])
     g, m = dados["api_g"], dados["api_m"]
     hs = sorted(k for k in g["SIN"] if k >= "2024-01-01")
     cab = ["data_hora"] + [f"{x}_{sm}" for sm in TODOS for x in ("global", "mmgd", "liquida")]
@@ -1454,13 +1505,19 @@ def escreve_csvs(dados, temps, res, comps_csv, revis, calendario_anos):
     base.escreve_csv(CSV["verificada_diaria"], ["data", "submercado", "carga_global_mwmed", "mmgd_mwmed", "carga_liquida_mwmed", "mmgd_pct",
                                                 "pico_global_mwmed", "hora_pico_global", "pico_liquida_mwmed", "hora_pico_liquida", "horas"],
                      linhas)
+    # uma linha por dia que a curva traz; dia sem as 24 horas (início do horário de verão)
+    # fica com média, pico e hora vazios e com a contagem de horas, em vez de sumir
     linhas = []
+    dias_com_hora = set().union(*(dados["curva_d"][sm]["horas_dia"] for sm in SMS))
     for sm in TODOS:
         cd = dados["curva_d"][sm]
-        for d in sorted(cd["media_dia"]):
-            linhas.append([d, sm, c.r(cd["media_dia"][d], 3), c.r(cd["pico_dia"].get(d), 3),
-                           int(cd["hora_pico"][d]) if d in cd["hora_pico"] else None, cal.classifica(d), gcarga.regime_de(d) + 1])
-    base.escreve_csv(CSV["pico"], ["data", "submercado", "media_mwmed", "pico_mwmed", "hora_pico", "classe_dia", "regime"], linhas)
+        dias = dias_com_hora if sm == "SIN" else set(cd["horas_dia"]) | set(cd["media_dia"])
+        for d in sorted(dias):
+            n = cd["horas_dia"].get(d)
+            linhas.append([d, sm, c.r(cd["media_dia"].get(d), 3), c.r(cd["pico_dia"].get(d), 3),
+                           int(cd["hora_pico"][d]) if d in cd["hora_pico"] else None, int(n) if n is not None else None,
+                           cal.classifica(d), _regime_csv(d)])
+    base.escreve_csv(CSV["pico"], ["data", "submercado", "media_mwmed", "pico_mwmed", "hora_pico", "horas", "classe_dia", "regime"], linhas)
     meses = sorted({h[:7] for h in ch["SIN"]} | {h[:7] for h in g["SIN"]})
     linhas = []
     for p in perfis(dados, meses):
@@ -1528,6 +1585,18 @@ FONTE_TEMP = _fonte("NASA", "POWER, API diária por ponto (MERRA-2 e GEOS-IT)", 
                     clima.URL_POWER_DOC, clima.LICENCA_POWER, "https://power.larc.nasa.gov/api/temporal/daily/point")
 
 
+# O que se conferiu de cada lei: a norma e a ementa vêm dos metadados abertos do Senado
+# (guardados no bronze). O TEXTO das leis não foi relido: o Planalto respondeu vazio
+# ("Empty reply from server", 30/09/2026 e 01/10/2026 06:03 UTC) e os PDFs de publicação
+# do Senado vieram com 0 byte (HTTP 200, application/pdf) para a Lei nº 9.093/1995 (norma
+# 550969, publicação 14260517) e para a Lei nº 10.607/2002 (norma 552483, publicação
+# 14353189), em 01/10/2026 06:04 UTC. A ementa da Lei nº 9.093/1995 ("Dispõe sobre
+# feriados.") não menciona a Sexta-feira da Paixão.
+TEXTO_LEIS_NAO_CONFERIDO = ("Texto da lei não relido: o Planalto respondeu vazio (30/09 e 01/10/2026) e os PDFs de publicação do "
+                            "Senado vieram com 0 byte (Leis nº 9.093/1995 e 10.607/2002, 01/10/2026). Conferidos só a norma e a "
+                            "ementa nos metadados abertos do Senado.")
+
+
 def _leis(con):
     regs = base.registros_como_estavam_em(con, DS_LEIS)
     out = []
@@ -1535,7 +1604,10 @@ def _leis(con):
         r = regs.get(lei["id"], {})
         v = base.ultima_vintage(con, DS_LEIS, lei["id"])
         out.append({"id": lei["id"], "norma": lei["norma"], "estabelece": lei["estabelece"], "ementa_senado": r.get("ementa"),
-                    "id_senado": r.get("id_senado"), "conferida": r.get("conferida") == "1",
+                    "id_senado": r.get("id_senado"),
+                    # norma e ementa conferidas nos metadados do Senado; o texto, não
+                    "conferida_ementa": r.get("conferida") == "1", "conferida_texto": False,
+                    "texto_situacao": TEXTO_LEIS_NAO_CONFERIDO,
                     "url": cal.URL_SENADO_LISTA.format(numero=lei["numero"], ano=lei["ano"]),
                     "capturado_em": v["capturado_em"] if v else None, "sha256": v["sha256"] if v else None})
     return out
@@ -1593,6 +1665,55 @@ def _arq(v):
     return ev.arquivo_de_vintage(v) if v else None
 
 
+def _existe(caminho):
+    return bool(caminho) and os.path.exists(caminho if os.path.isabs(caminho) else os.path.join(base.RAIZ, caminho))
+
+
+def _arquivo_obtenivel(con, a, notas):
+    """Item de arquivo da evidência com um caminho que existe neste ambiente.
+
+    O silver principal foi restaurado sem o bronze: o caminho gravado na vintage da carga
+    diária pode não existir aqui. Nesse caso procura, no bronze da família (arquivo atual
+    da carga diária, baixado para conferência), uma captura com o MESMO sha256: o arquivo
+    é idêntico byte a byte e ainda se obtém da fonte. Sem ela, o caminho fica vazio e a
+    nota diz que a reprodução parte dos valores daquela captura gravados no silver."""
+    if not a or not a.get("sha256") or _existe(a.get("arquivo")):
+        return a
+    vs = base.vintages_do_dataset(con, DS_DIARIA_FONTE)
+    igual = next((x for x in vs if x["sha256"] == a.get("sha256") and _existe(x.get("arquivo"))), None)
+    cap = c.carimbo_br(a["capturado_em"]) if a.get("capturado_em") else "data não registrada"
+    if igual:
+        notas.append(f"{a.get('recurso')}: o arquivo da captura de {cap} não está no bronze deste ambiente; a recaptura de "
+                     f"{c.carimbo_br(igual['capturado_em'])} do recurso atual da fonte ({igual.get('url')}) tem o mesmo sha256 "
+                     f"({a['sha256'][:12]}…), isto é, é o mesmo arquivo, e está no bronze.")
+        return {**ev.arquivo_de_vintage(igual), "recurso": a.get("recurso")}
+    ano = (a.get("recurso") or "")[-4:]
+    atual = max((x for x in vs if x["recurso"].endswith(ano)), key=lambda x: x["capturado_em"], default=None)
+    extra = (f"; o arquivo atual da fonte já é outro (sha256 {atual['sha256'][:12]}…, capturado em "
+             f"{c.carimbo_br(atual['capturado_em'])})" if atual else "")
+    notas.append(f"{a.get('recurso')}: arquivo da captura de {cap} (sha256 {(a.get('sha256') or '')[:12]}…) indisponível: não está "
+                 f"no bronze deste ambiente{extra}. A reprodução parte dos valores dessa captura gravados no silver principal.")
+    return {**a, "arquivo": None}
+
+
+def _fonte_obtenivel(con, fonte, notas):
+    """Aplica _arquivo_obtenivel ao arquivo principal da fonte e a fonte.arquivos (a nota
+    sai uma vez por arquivo: o principal repete um dos arquivos da lista)."""
+    campos = ("recurso", "arquivo", "sha256", "capturado_em", "publicado_em")
+    arquivos = fonte.get("arquivos")
+    principal = _arquivo_obtenivel(con, {k: fonte.get(k) for k in campos}, [] if arquivos else notas)
+    out = {**fonte, **principal}
+    if arquivos:
+        out["arquivos"] = [_arquivo_obtenivel(con, a, notas) for a in arquivos]
+    return out
+
+
+def _reproducao_silver(notas, consulta):
+    if not notas:
+        return REPRODUCAO
+    return REPRODUCAO + "\n" + f"Arquivo da fonte indisponível neste ambiente para parte das capturas: valores lidos do silver principal ({consulta})."
+
+
 def evidencias(con, con_p, dados, a07, comps, p026, p027, dia_ref):
     out = {}
     rep = a07["reproducao"]
@@ -1607,27 +1728,30 @@ def evidencias(con, con_p, dados, a07, comps, p026, p027, dia_ref):
                                     next((x for x in base.vintages_do_dataset(con_p, DS_DIARIA)
                                           if x["sha256"] == usadas.get("CARGA_ENERGIA_2026", {}).get("sha256")), None))
         fonte["arquivos"] = arquivos
+        notas = []
+        fonte = _fonte_obtenivel(con, fonte, notas)
         ref = a07["referencia"]
+        consulta_a07 = f"base.como_estava_em(con, 'carga_energia_di', 'carga_mwmed.<sm>', '{ref['gerado_em']}')"
         out["a07_reproducao"] = ev.construir(
             indicador="Variação da carga do SIN em 7 dias contra os mesmos dias do ano anterior (reprodução do diagnóstico)",
             valor_exibido=f"{_sinal(rep['variacao_pct'], 1)}%", valor_calculo=100 * (rep["media"] / rep["media_ant"] - 1), unidade="%",
             periodo={"inicio": ref["inicio"], "fim": ref["fim"]}, entidade="SIN (soma de SE/CO, S, NE e N)",
             universo="carga diária dos quatro subsistemas, 7 dias em 2026 e os mesmos 7 dias de 2025",
-            filtros=[f"silver como estava em {ref['gerado_em']} (instante da gold do diagnóstico)"], fonte=fonte,
+            filtros=[f"silver como estava em {ref['gerado_em']} (instante da gold do diagnóstico)"] + notas, fonte=fonte,
             chaves_origem=[f"carga_mwmed.<SE,S,NE,N> em {d}" for d in _dias(ref["inicio"], ref["fim"]) + _dias(ref["inicio_anterior"], ref["fim_anterior"])],
-            consulta=f"base.como_estava_em(con, 'carga_energia_di', 'carga_mwmed.<sm>', '{ref['gerado_em']}')",
+            consulta=consulta_a07,
             formula="100 × (média dos 7 dias de 2026 ÷ média dos mesmos 7 dias de 2025 − 1), SIN = soma dos quatro subsistemas no dia",
             numerador={"descricao": "média do SIN de 22 a 28/09/2026 (MWmed)", "valor": rep["media"]},
             denominador={"descricao": "média do SIN de 22 a 28/09/2025 (MWmed)", "valor": rep["media_ant"]},
             cobertura="7 de 7 dias nos dois períodos, quatro subsistemas", tratamento_ausencia="janela com dia ausente não tem variação",
             revisoes=f"{len(a07['por_captura_2026'])} capturas do arquivo de 2026 comparadas; a de 29/09/2026 não tinha a janela completa e trazia −668,879 MWmed no NE em 26/09.",
-            testes=[ev.teste("mesmo regime metodológico", "aprovado" if rep["mesmo_regime"] else "reprovado", "as duas janelas estão depois de 29/04/2023"),
+            testes=[ev.teste("mesmo regime metodológico", "aprovado" if rep["mesmo_regime"] else "reprovado", "as duas janelas estão depois de 01/05/2023 (inclusão da MMGD observada nos dados; declarada para 29/04/2023)"),
                     ev.teste("mesmos dias da semana", "aprovado" if rep["calendario_equivalente"] else "ressalva", "sete dias seguidos em cada janela"),
                     ev.teste("feriados", "aprovado" if not rep["eventos"] and not rep["eventos_ant"] else "ressalva", "nenhum feriado nacional nem ponto facultativo nas janelas")],
             reconciliacao=ev.reconciliacao(f"Valor publicado pela gold carga.json do commit {ref['commit']} ({ref['gerado_em']}): {_sinal(ref['variacao_publicada_pct'])}%.",
                                            "aprovado" if rep["confere_publicado"] else "reprovado", "0,05 ponto percentual (a gold publicava uma casa decimal)"),
             download=[{"rotulo": "Comparações de carga (CSV)", "url": _u(CSV["comparacoes"])}, {"rotulo": "Revisões da carga diária (CSV)", "url": _u(CSV["revisoes"])}],
-            reproducao=REPRODUCAO)
+            reproducao=_reproducao_silver(notas, consulta_a07))
     sin = next(x for x in comps["subsistemas"] if x["sm"] == "SIN")
     e = sin["janelas"]["7d"]["equivalente"]
     j7 = next(j for j in comps["janelas"] if j["id"] == "7d")
@@ -1639,6 +1763,8 @@ def evidencias(con, con_p, dados, a07, comps, p026, p027, dia_ref):
         recs = sorted({f"CARGA_ENERGIA_{d[:4]}" for d in (e["inicio"], e["fim"], e["inicio_ant"], e["fim_ant"])})
         fonte = ev.fonte_de_vintage("ONS", "Carga de Energia Diária", ons.URL_DIARIA, vd.get(recs[-1]))
         fonte["arquivos"] = [_arq(vd[r]) for r in recs if r in vd]
+        notas = []
+        fonte = _fonte_obtenivel(con, fonte, notas)
         dias_a, dias_b = _dias(e["inicio"], e["fim"]), _dias(e["inicio_ant"], e["fim_ant"])
         ma = sum(dados["diaria"]["SIN"][d] for d in dias_a) / 7
         mb = sum(dados["diaria"]["SIN"][d] for d in dias_b) / 7
@@ -1646,7 +1772,7 @@ def evidencias(con, con_p, dados, a07, comps, p026, p027, dia_ref):
             indicador="Variação da carga do SIN nos últimos 7 dias contra os mesmos dias da semana 52 semanas antes",
             valor_exibido=f"{_sinal(100 * (ma / mb - 1), 1)}%", valor_calculo=100 * (ma / mb - 1), unidade="%",
             periodo={"inicio": e["inicio"], "fim": e["fim"]}, entidade="SIN", universo="quatro subsistemas, dias aceitos pela validação física",
-            fonte=fonte, chaves_origem=[f"carga_mwmed.<SE,S,NE,N> em {d}" for d in dias_a + dias_b],
+            filtros=notas, fonte=fonte, chaves_origem=[f"carga_mwmed.<SE,S,NE,N> em {d}" for d in dias_a + dias_b],
             formula="100 × (média dos 7 dias ÷ média dos 7 dias deslocados 364 dias − 1)",
             numerador={"descricao": f"média do SIN de {c.data_br(e['inicio'])} a {c.data_br(e['fim'])} (MWmed)", "valor": ma},
             denominador={"descricao": f"média do SIN de {c.data_br(e['inicio_ant'])} a {c.data_br(e['fim_ant'])} (MWmed)", "valor": mb},
@@ -1655,7 +1781,8 @@ def evidencias(con, con_p, dados, a07, comps, p026, p027, dia_ref):
             testes=[ev.teste("mesmo regime", "aprovado" if e["mesmo_regime"] else "reprovado", "janelas no mesmo regime do ONS"),
                     ev.teste("mesma composição de dias", "aprovado" if e["calendario_equivalente"] else "ressalva",
                              f"dias úteis {e['classes']['util']} contra {e['classes_ant']['util']}")],
-            download=[{"rotulo": "Comparações de carga (CSV)", "url": _u(CSV["comparacoes"])}], reproducao=REPRODUCAO)
+            download=[{"rotulo": "Comparações de carga (CSV)", "url": _u(CSV["comparacoes"])}],
+            reproducao=_reproducao_silver(notas, "base.serie_vigente(con, 'carga_energia_di', 'carga_mwmed.<sm>')"))
     # MMGD no último mês completo (API), com coerência contra o arquivo do módulo Transição
     mm = [x for x in p026["mmgd_mensal"] if x["sm"] == "SIN" and x["dias"] == x["dias_no_mes"]]
     if mm:
@@ -1708,25 +1835,37 @@ def evidencias(con, con_p, dados, a07, comps, p026, p027, dia_ref):
             download=[{"rotulo": "Pico diário (CSV)", "url": _u(CSV["pico"])}], reproducao=REPRODUCAO)
     if p027:
         mt = p027["metricas"]["SIN"]
+        per = p027["periodo_avaliacao"]
         vd = _vintages(con_p, DS_DIARIA)
-        fonte = ev.fonte_de_vintage("ONS", "Carga de Energia Diária", ons.URL_DIARIA, vd.get(f"CARGA_ENERGIA_{dia_ref[:4]}"))
+        # arquivos de todos os anos usados (treino desde o início do regime e dias previstos)
+        anos = range(int(p027["especificacao"]["inicio_treino"][:4]), int(per["fim"][:4]) + 1)
+        fonte = ev.fonte_de_vintage("ONS", "Carga de Energia Diária", ons.URL_DIARIA, vd.get(f"CARGA_ENERGIA_{per['fim'][:4]}"))
+        fonte["arquivos"] = [_arq(vd[f"CARGA_ENERGIA_{a}"]) for a in anos if f"CARGA_ENERGIA_{a}" in vd]
+        notas = []
+        fonte = _fonte_obtenivel(con, fonte, notas)
+        nominal = {"80": 80.0, "95": 95.0}
+
+        def cobertura_teste(k):
+            v = mt[f"cobertura_{k}_pct"]
+            # a cobertura empírica só é aprovada se alcança a nominal: abaixo dela os
+            # intervalos são estreitos demais, e isso é ressalva publicada, não tolerância
+            return ev.teste(f"cobertura do intervalo de {k}%", "aprovado" if v >= nominal[k] else "ressalva",
+                            f"{_br(v, 1)}% dos dias dentro do intervalo (nominal {k}%)"
+                            + ("" if v >= nominal[k] else "; abaixo da nominal: intervalos mais estreitos que a incerteza real"))
         out["p027_mape_sin"] = ev.construir(
             indicador="Erro percentual absoluto médio da decomposição estatística, fora da amostra (SIN)",
             valor_exibido=f"{_br(mt['mape_pct'], 2)}%", valor_calculo=mt["mape_pct"], unidade="%",
-            periodo={"inicio": modelo.PRIMEIRA_ORIGEM, "fim": dia_ref}, entidade="SIN",
-            universo=f"{mt['dias']} dias previstos em {mt['origens']} origens mensais", fonte=fonte,
+            periodo={"inicio": per["inicio"], "fim": per["fim"]}, entidade="SIN",
+            universo=f"{mt['dias']} dias previstos em {mt['origens']} origens mensais", filtros=notas, fonte=fonte,
             chaves_origem=[f"origem {o['origem']}" for o in p027["por_origem_sin"]],
             formula="média de |real ÷ previsto − 1| × 100 nos dias previstos fora da amostra",
             cobertura=f"{mt['dias']} dias", tratamento_ausencia="dia sem temperatura (ou sem a do dia anterior) fica fora do modelo",
             revisoes="A série é reavaliada a cada publicação com a carga e a temperatura vigentes.",
-            testes=[ev.teste("cobertura do intervalo de 80%", "aprovado" if mt["cobertura_80_pct"] >= 75 else "ressalva",
-                             f"{_br(mt['cobertura_80_pct'], 1)}% dos dias dentro do intervalo"),
-                    ev.teste("cobertura do intervalo de 95%", "aprovado" if mt["cobertura_95_pct"] >= 90 else "ressalva",
-                             f"{_br(mt['cobertura_95_pct'], 1)}% dos dias dentro do intervalo"),
+            testes=[cobertura_teste("80"), cobertura_teste("95"),
                     ev.teste("melhor que a referência ingênua", "aprovado" if mt["mape_referencia_364d_pct"] and mt["mape_pct"] < mt["mape_referencia_364d_pct"] else "ressalva",
                              f"mesmo dia da semana 364 dias antes: {_br(mt['mape_referencia_364d_pct'], 2)}%")],
             download=[{"rotulo": "Decomposição diária (CSV)", "url": _u(CSV["modelo"])}, {"rotulo": "Backtest por origem (CSV)", "url": _u(CSV["backtest"])}],
-            reproducao=REPRODUCAO)
+            reproducao=_reproducao_silver(notas, "base.serie_vigente(con, 'carga_energia_di', 'carga_mwmed.<sm>')"))
     return out
 
 
@@ -1760,8 +1899,19 @@ def _coerencia_transicao(dados, mes):
 # Gold
 # =====================================================================================
 
-LIM_REGIME = ("O ONS mudou o conteúdo da carga em 01/03/2021 (previsão de usinas não despachadas) e em 29/04/2023 (estimativa de "
-              "MMGD com dados meteorológicos previstos); variação que atravessa essas datas não é publicada.")
+LIM_REGIME = ("O ONS mudou o conteúdo da carga em 01/03/2021 (previsão de usinas não despachadas) e na inclusão da estimativa de MMGD "
+              "com dados meteorológicos previstos, declarada para 29/04/2023 e observada nos dados em 01/05/2023 (29 e 30/04/2023 são "
+              "transição); variação que atravessa essas datas ou toca a transição não é publicada.")
+NATUREZA_API = [
+    {"serie": "mmgd", "rotulo": "MMGD (val_cargammgd)", "natureza": "ESTIMADO", "componentes": [],
+     "descricao": "Estimativa do ONS: a micro e minigeração distribuída não é supervisionada nem medida pelo ONS."},
+    {"serie": "liquida", "rotulo": "Carga global líquida de MMGD (val_cargaglobalsmmgd)", "natureza": "OBSERVADO", "componentes": [],
+     "descricao": ("Parcela supervisionada pelo ONS (geração tipo I, IIA, IIB, IIC e intercâmbios) mais a não supervisionada, "
+                   "medida pela CCEE (geração tipo III).")},
+    {"serie": "global", "rotulo": "Carga global (val_cargaglobal)", "natureza": "OBSERVADO",
+     "componentes": [{"natureza": "ESTIMADO", "descricao": "MMGD estimada pelo ONS, somada à carga líquida observada"}],
+     "descricao": "Carga líquida de MMGD (observada) mais a MMGD (estimada): observado com componente estimado."},
+]
 LIM_REVISAO = "Os dados do ONS passam por consistência recorrente e são revisados depois da publicação; os dias mais recentes mudam."
 LIM_CAUSA = "Variação da carga é observação; atribuí-la à atividade econômica exigiria outra evidência, que este módulo não tem."
 
@@ -1803,6 +1953,7 @@ def construir(con, ctx):
     snap_a = c.snapshot_de(con, DS_API)
     snap_t = c.snapshot_de(con, DS_POWER)
     ini_d = min(dados["diaria"]["SIN"])
+    ufs_om = ufs_openmeteo(con)
     prov = {
         "comparacoes": c.proveniencia(
             indicador="Carga diária: comparações com os mesmos dias da semana e com as mesmas datas do ano anterior", natureza="CALCULADO",
@@ -1824,11 +1975,16 @@ def construir(con, ctx):
                             "perfil típico = média por hora dos dias completos de cada classe (útil, sábado, domingo ou feriado) no mês",
                             "série horária no silver desde 2019; agregados diários de todos os anos"],
             limitacoes=[LIM_REGIME, LIM_REVISAO,
-                        "Desde 29/04/2023 a carga inclui uma estimativa de MMGD que o ONS não publica separada neste conjunto: é valor publicado pelo ONS, com componente estimado.",
-                        "Antes de 2019 o horário de verão desloca a hora local; dias de mudança de horário ficam sem média e sem pico (23 horas)."],
+                        ("A carga inclui uma estimativa de MMGD que o ONS não publica separada neste conjunto (inclusão declarada para 29/04/2023 e observada "
+                         "nos dados em 01/05/2023): é valor publicado pelo ONS, com componente estimado."),
+                        ("Antes de 2019 o horário de verão desloca a hora local. No dia de início do horário de verão a hora das 00h não existe: "
+                         "a fonte deixa a célula vazia ou põe zero, e o zero é lido como ausência (a carga de um subsistema inteiro não é "
+                         "zero); esses dias ficam com 23 horas, sem média e sem pico.")]
+                        + [f"Valor não positivo descartado na leitura da curva (ausência, não carga): {sm} em {h.replace('T', ' ')}, "
+                           f"texto da fonte \"{txt}\"." for sm, h, txt in descartes_curva(con)],
             download=_u(CSV["horaria"])),
         "api": c.proveniencia(
-            indicador="Carga global, MMGD estimada e carga líquida de MMGD (carga verificada)", natureza="ESTIMADO", fonte=FONTE_API,
+            indicador="Carga global, MMGD estimada e carga líquida de MMGD (carga verificada)", natureza="OBSERVADO", fonte=FONTE_API,
             unidade="MWmed", frequencia="semi-horária na fonte; horária e diária aqui",
             periodo={"inicio": min(k[:10] for k in dados["api_g"]["SE"]), "fim": p026["ultimo_dia_api"]},
             cobertura={"inicio": min(k[:10] for k in dados["api_g"]["SE"]), "fim": p026["ultimo_dia_api"]},
@@ -1840,7 +1996,9 @@ def construir(con, ctx):
             limitacoes=["A MMGD é estimativa do ONS, não medição: a micro e minigeração não é supervisionada.",
                         "A carga global desta API não é a mesma grandeza da curva de carga (é maior, sobretudo à noite); as duas não se misturam.",
                         "Antes de 15/02/2019 a MMGD vem vazia (ausência, não zero).", LIM_REVISAO],
-            download=_u(CSV["verificada_diaria"]), notas_fonte="Natureza ESTIMADO: a MMGD é estimativa publicada pelo próprio ONS."),
+            download=_u(CSV["verificada_diaria"]),
+            notas_fonte=("Natureza por série (ver natureza_por_serie): a MMGD é estimativa do ONS; a carga líquida de MMGD é supervisão "
+                         "do ONS mais medição da CCEE; a carga global é essa observação somada à estimativa de MMGD.")),
         "temperatura": c.proveniencia(
             indicador="Temperatura diária ponderada pela população, por subsistema", natureza="ESTIMADO", fonte=FONTE_TEMP, unidade="°C",
             frequencia="diária", periodo={"inicio": clima.PRIMEIRO_DIA, "fim": max(temps["series"]["SIN"]["media"])},
@@ -1850,7 +2008,10 @@ def construir(con, ctx):
                             f"peso = população residente estimada da UF em {temps['ano_populacao']} (IBGE, SIDRA 6579)",
                             "dia publicado só com pelo menos 95% do peso com valor"],
             formula="T(subsistema, dia) = Σ peso_UF × T(capital da UF, dia) ÷ Σ pesos com valor",
-            limitacoes=["Reanálise (MERRA-2) e análise (GEOS-IT) de modelo, não observação de estação: o INMET não respondeu e o Open-Meteo recusou por limite diário em 30/09/2026.",
+            limitacoes=["Reanálise (MERRA-2) e análise (GEOS-IT) de modelo, não observação de estação: o INMET não respondeu (resposta vazia em 30/09/2026).",
+                        (f"O Open-Meteo (ERA5 e ECMWF IFS) tem cota diária de pedidos por endereço, esgotada no ambiente compartilhado em 30/09 e "
+                         f"em 01/10/2026: foi coletado para {len(ufs_om)} de {len(clima.CAPITAIS)} capitais e não entra em nenhum número publicado; "
+                         "a sensibilidade da decomposição ao produto de temperatura não foi calculada."),
                         "A troca de MERRA-2 para GEOS-IT no trecho recente pode deslocar o nível da temperatura; o mês de cada fonte é publicado.",
                         "A capital representa a UF, e a população não é a distribuição da carga."],
             download=_u(CSV["temperatura"])),
@@ -1864,10 +2025,13 @@ def construir(con, ctx):
             formula="ln(carga) = constante + tendência + dia da semana + feriados e pontos facultativos + sazonalidade + temperatura (dobras) + temperatura do dia anterior + erro",
             limitacoes=["Decomposição estatística: associação, não causa; não há 'percentual explicado' pela temperatura.",
                         "A temperatura realizada é usada na avaliação (ex post): não é previsão de carga.",
-                        "Treino só desde 29/04/2023 (regime atual); a variante com janela longa usa degrau no regime.",
+                        (f"Treino só desde {c.data_br(a11['inicio_regime_usado'])}, início observado do regime atual (inclusão da MMGD declarada para "
+                         "29/04/2023 e observada nos dados em 01/05/2023); a variante com janela longa usa degrau no regime."),
                         "Os intervalos são empíricos; a cobertura observada fica abaixo da nominal em alguns subsistemas e é publicada."],
             download=_u(CSV["modelo"])),
     }
+    # natureza por série (seção 11.3): um rótulo só não serve aos três campos da API
+    prov["api"]["natureza_por_serie"] = NATUREZA_API
     ev_ = evidencias(con, con_p, dados, a07, comps, p026, p027, dia_ref)
     downloads = [{"rotulo": r, "url": _u(CSV[k])} for k, r in (
         ("comparacoes", "Comparações de carga equivalentes (CSV)"), ("revisoes", "Revisões da carga diária (CSV)"),
@@ -1886,7 +2050,7 @@ def construir(con, ctx):
         "a11_carga": a11,
         "p026": {**p026, "conceitos": CONCEITOS},
         "p027": p027,
-        "calendario": {"leis": _leis(con), "categorias": {"feriado_nacional": "feriado por lei federal", "paixao": "Sexta-feira da Paixão (Lei nº 9.093/1995)",
+        "calendario": {"leis": _leis(con), "categorias": {"feriado_nacional": "feriado por lei federal", "paixao": "Sexta-feira da Paixão (Lei nº 9.093/1995; ementa conferida, texto não relido)",
                                                         "ponto_facultativo": "ponto facultativo federal (portaria anual), não feriado"},
                        "eventos_12m": [{"data": d.isoformat(), "nome": n, "categoria": ct, "base": b}
                                        for a in (int(dia_ref[:4]) - 1, int(dia_ref[:4]), int(dia_ref[:4]) + 1)
@@ -1906,13 +2070,15 @@ def construir(con, ctx):
 CONCEITOS = {
     "carga_curva": ("Carga de energia da Curva de Carga Horária (e da Carga de Energia Diária, que é a média das 24 horas): carga atendida "
                     "pelas usinas despachadas ou programadas pelo ONS, mais a previsão de usinas não despachadas (desde 01/03/2021) e a "
-                    "estimativa de MMGD com dados meteorológicos previstos (desde 29/04/2023). A MMGD está dentro, mas não aparece separada."),
+                    "estimativa de MMGD com dados meteorológicos previstos (declarada para 29/04/2023, observada nos dados em 01/05/2023). A MMGD "
+                    "está dentro, mas não aparece separada."),
     "carga_global": ("Carga global da API de carga verificada: parcela supervisionada pelo ONS (geração tipo I, IIA, IIB, IIC e intercâmbios) "
                      "mais a não supervisionada, medida pela CCEE (geração tipo III), mais a parcela atendida por MMGD."),
     "mmgd": ("Carga atendida por micro e minigeração distribuída: estimativa do ONS (a MMGD não é supervisionada). É energia consumida "
              "junto da carga e suprida pelos painéis e pequenas usinas dos próprios consumidores."),
     "carga_liquida": ("Carga global líquida de MMGD: carga global menos a MMGD, isto é, o que o sistema precisa suprir com as usinas "
                       "supervisionadas e as medidas pela CCEE. Publicada pelo ONS; conferida como carga global − MMGD em cada meia hora."),
-    "dupla_contagem": ("Somar a MMGD da API à curva de carga contaria a MMGD duas vezes (a curva já a inclui desde 29/04/2023); subtraí-la da "
+    "dupla_contagem": ("Somar a MMGD da API à curva de carga contaria a MMGD duas vezes (a curva já a inclui: declarada para 29/04/2023, observada "
+                       "nos dados em 01/05/2023); subtraí-la da "
                        "curva misturaria dois produtos com definições diferentes. Por isso a decomposição horária usa só a API."),
 }

@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "arquivos.json",
- "gerado_em": "2026-10-01T06:06:09Z",
+ "gerado_em": "2026-10-01T06:12:24Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d329b83c69a5+alterado",
+ "versao_codigo": "d4f2c5af5147+alterado",
  "disponivel": true,
  "arquivos": {
   "/energia/series/regulacao_limites_pld_atos.csv": {
@@ -147,7 +147,7 @@
    "gold": "agua_detalhe.json"
   },
   "/energia/series/carga_horaria.csv": {
-   "colunas": "data_hora (início da hora, horário de Brasília); SE, S, NE, N = carga horária da Curva de Carga Horária do ONS em MWmed; SIN = soma dos quatro na hora (vazio se algum faltar); regime = 1, 2 ou 3 (mudanças de conteúdo do ONS em 01/03/2021 e 29/04/2023). Desde 2019.",
+   "colunas": "data_hora (início da hora, horário de Brasília); SE, S, NE, N = carga horária da Curva de Carga Horária do ONS em MWmed; SIN = soma dos quatro na hora (vazio se algum faltar); regime = 1, 2 ou 3 (mudanças de conteúdo do ONS em 01/03/2021 e na inclusão da MMGD, declarada para 29/04/2023 e observada nos dados em 01/05/2023) ou transicao (29 e 30/04/2023, dias sem regime seguro). Desde 2019.",
    "modulo": "carga",
    "gold": "carga_detalhe.json"
   },
@@ -162,7 +162,7 @@
    "gold": "carga_detalhe.json"
   },
   "/energia/series/carga_pico_diario.csv": {
-   "colunas": "data; submercado (SE, S, NE, N, SIN); media_mwmed (média das 24 horas da curva); pico_mwmed (maior valor horário); hora_pico (0 a 23, início da hora); classe_dia (util, sabado, domingo_feriado; vazio antes de 2003); regime. Desde 2000.",
+   "colunas": "data; submercado (SE, S, NE, N, SIN); media_mwmed (média das 24 horas da curva); pico_mwmed (maior valor horário); hora_pico (0 a 23, início da hora); horas (horas com valor na curva; no SIN, 24 quando os quatro subsistemas estão completos); classe_dia (util, sabado, domingo_feriado; vazio antes de 2003); regime (1, 2, 3 ou transicao em 29 e 30/04/2023). Dia sem as 24 horas fica com média, pico e hora vazios: no início do horário de verão (até 2018) a hora das 00h não existe, e o zero que a fonte põe nessa hora é ausência. Desde 2000.",
    "modulo": "carga",
    "gold": "carga_detalhe.json"
   },

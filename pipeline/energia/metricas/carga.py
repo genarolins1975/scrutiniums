@@ -13,12 +13,17 @@ _CURVA = ["ons_curva_carga_ho"]
 _API = ["ons_carga_verificada_ho"]
 _TEMP = ["nasa_power_temperatura", "ibge_populacao_uf_6579", "ibge_centroides_capitais"]
 _LEIS = ["senado_leis_feriados"]
-_REGIME = ("Só compara períodos dentro do mesmo regime do ONS: até 28/02/2021; de 01/03/2021 a 28/04/2023; desde 29/04/2023 "
-           "(com a estimativa de MMGD). Variação que atravessa uma dessas datas não é publicada.")
+_REGIME = ("Só compara períodos dentro do mesmo regime do ONS: até 28/02/2021; de 01/03/2021 a 28/04/2023; desde a inclusão da "
+           "estimativa de MMGD, declarada para 29/04/2023 e observada nos dados em 01/05/2023 (29 e 30/04/2023 são transição e não "
+           "entram em variação). Variação que atravessa uma dessas datas não é publicada.")
 _AUSENCIA = ("Dia em quarentena (validação física) ou ausente fica sem valor: nunca zero, nunca repetido. Janela com dia ausente não "
              "tem média nem variação.")
 _VALIDACAO = ["Validação física antes da publicação: F1 (valor positivo, domínio do dicionário do ONS), F2 (faixa plausível do "
-              "subsistema), F3 (salto sobre a mediana da semana anterior), com conferência na curva horária e quarentena.",
+              "subsistema), F3 (salto sobre a mediana da semana anterior). Valor que viola F2 ou F3 é conferido nos componentes do "
+              "Balanço de Energia nos Subsistemas do ONS (C1: nenhum componente de geração com lacuna no dia e carga do balanço igual "
+              "ao valor); sem confirmação, quarentena. A curva horária não confere: é o mesmo produto em outro grão.",
+              "Registros esperados (A1): todo dia entre o primeiro e o último dia publicado, por subsistema; dia ausente é registrado "
+              "com o estado conferido no arquivo atual da fonte (célula vazia ou linha ausente) e publicado vazio.",
               "Média das 24 horas da curva horária conferida contra a carga diária (tolerância de 0,01 MWmed; os dias que diferem "
               "são publicados em p025.revisoes.curva_contra_diaria)."]
 _CAUSA = "Variação de carga é observação; não é atribuída à atividade econômica sem evidência adicional."
@@ -68,7 +73,8 @@ METRICAS = [
                       "% do valor anterior; correção de valor fora do domínio é marcada à parte."),
         "unidade": "MWmed e %", "grao_geografico": "subsistema", "grao_temporal": "diário, por captura",
         "fontes": _DIARIA, "formula": "diferença = valor(captura k) − valor(captura k − 1); % = 100 × diferença ÷ valor(captura k − 1)",
-        "regra_agregacao": "Sem agregação; resumo por mediana e máximo do valor absoluto das diferenças percentuais.", "versao_formula": "1",
+        "regra_agregacao": ("Sem agregação; resumo por mediana (com número par de revisões, média dos dois valores centrais) e máximo do "
+                            "valor absoluto das diferenças percentuais, só nas revisões com valor anterior positivo."), "versao_formula": "2",
         "natureza_fonte": "OBSERVADO", "natureza_transformacao": "CALCULADO", "dimensoes": ["subsistema", "dia", "captura"],
         "regras_comparabilidade": ["Só compara capturas do mesmo arquivo anual; a percentagem não é calculada quando o valor anterior é zero ou negativo."],
         "regra_cobertura": "Capturas integradas no silver (a primeira captura de cada arquivo não tem revisão).",
@@ -88,9 +94,12 @@ METRICAS = [
         "regra_agregacao": "Máximo diário; distribuição anual = contagem de dias por hora do pico.", "versao_formula": "1",
         "natureza_fonte": "OBSERVADO", "natureza_transformacao": "CALCULADO", "dimensoes": ["dia", "subsistema", "ano"],
         "regras_comparabilidade": [_REGIME, "Antes de 2019 havia horário de verão: a hora local do pico se desloca uma hora nesses meses."],
-        "regra_cobertura": "Dia com as 24 horas (dias de mudança do horário de verão, com 23 horas, ficam sem pico).",
-        "politica_ausencia": "Dia incompleto não tem pico.", "validacoes": _VALIDACAO[1:],
-        "limitacoes": ["Desde 29/04/2023 a curva inclui a MMGD estimada, que desloca a forma da curva ao meio-dia; o pico da carga líquida está no painel de MMGD."],
+        "regra_cobertura": ("Dia com as 24 horas. No início do horário de verão (até 2018) a hora das 00h não existe: a fonte deixa a "
+                            "célula vazia ou põe zero, o zero é lido como ausência, e o dia fica com 23 horas, sem pico e sem média."),
+        "politica_ausencia": "Dia incompleto não tem pico; valor horário zero ou negativo na fonte é ausência (a carga de um subsistema inteiro não é zero).",
+        "validacoes": _VALIDACAO[2:],
+        "limitacoes": ["Desde a inclusão da MMGD estimada (declarada para 29/04/2023, observada nos dados em 01/05/2023) a curva a inclui, o que "
+                       "desloca a forma da curva ao meio-dia; o pico da carga líquida está no painel de MMGD."],
         "gold": _GOLD, "paginas": _PAG,
     },
     {
@@ -105,7 +114,7 @@ METRICAS = [
         "natureza_fonte": "OBSERVADO", "natureza_transformacao": "CALCULADO", "dimensoes": ["mês", "classe do dia", "hora", "subsistema", "série"],
         "regras_comparabilidade": ["Curva (carga) e API (carga global) são produtos diferentes: aparecem lado a lado, nunca subtraídos um do outro.", _REGIME],
         "regra_cobertura": "Dias com as 24 horas; a quantidade de dias de cada média é publicada.",
-        "politica_ausencia": "Classe sem dia completo no mês não tem perfil.", "validacoes": _VALIDACAO[1:],
+        "politica_ausencia": "Classe sem dia completo no mês não tem perfil.", "validacoes": _VALIDACAO[2:],
         "limitacoes": ["Classe de dia pelo calendário nacional: feriados estaduais e municipais não entram."],
         "gold": _GOLD, "paginas": _PAG,
     },
@@ -121,7 +130,8 @@ METRICAS = [
         "regra_agregacao": "Razão de somas de energia nas mesmas horas (nunca média de percentuais).", "versao_formula": "1",
         "natureza_fonte": "ESTIMADO", "natureza_transformacao": "CALCULADO", "dimensoes": ["submercado", "mês", "hora"],
         "regras_comparabilidade": ["Não se aplica à carga diária nem à curva de carga: a carga global da API é outra grandeza (maior, sobretudo à noite).",
-                                   "Nenhuma dupla contagem: a MMGD da API nunca é somada à curva (que já inclui uma estimativa de MMGD desde 29/04/2023) nem subtraída dela."],
+                                   ("Nenhuma dupla contagem: a MMGD da API nunca é somada à curva (que já inclui uma estimativa de MMGD, declarada para 29/04/2023 "
+                                    "e observada nos dados em 01/05/2023) nem subtraída dela.")],
         "regra_cobertura": "Horas com as duas meias horas de carga global e de MMGD; mês completo quando todos os dias têm 24 horas.",
         "politica_ausencia": "Antes de 15/02/2019 a MMGD vem vazia na API: ausência, não zero. Dia em curso na captura é descartado.",
         "validacoes": ["Identidade carga global = líquida + MMGD em cada meia hora (0,01 MWmed).",

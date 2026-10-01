@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "metricas.json",
- "gerado_em": "2026-10-01T06:06:09Z",
+ "gerado_em": "2026-10-01T06:12:24Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d329b83c69a5+alterado",
+ "versao_codigo": "d4f2c5af5147+alterado",
  "disponivel": true,
  "metricas": [
   {
@@ -649,14 +649,15 @@
     "subsistema"
    ],
    "regras_comparabilidade": [
-    "Só compara períodos dentro do mesmo regime do ONS: até 28/02/2021; de 01/03/2021 a 28/04/2023; desde 29/04/2023 (com a estimativa de MMGD). Variação que atravessa uma dessas datas não é publicada.",
+    "Só compara períodos dentro do mesmo regime do ONS: até 28/02/2021; de 01/03/2021 a 28/04/2023; desde a inclusão da estimativa de MMGD, declarada para 29/04/2023 e observada nos dados em 01/05/2023 (29 e 30/04/2023 são transição e não entram em variação). Variação que atravessa uma dessas datas não é publicada.",
     "Ano parcial não é comparado com ano completo; o acumulado do ano usa o mesmo período do ano anterior.",
     "Variação de carga é observação; não é atribuída à atividade econômica sem evidência adicional."
    ],
    "regra_cobertura": "Ano completo = todos os dias com o SIN (quatro subsistemas aceitos).",
    "politica_ausencia": "Dia em quarentena (validação física) ou ausente fica sem valor: nunca zero, nunca repetido. Janela com dia ausente não tem média nem variação.",
    "validacoes": [
-    "Validação física antes da publicação: F1 (valor positivo, domínio do dicionário do ONS), F2 (faixa plausível do subsistema), F3 (salto sobre a mediana da semana anterior), com conferência na curva horária e quarentena.",
+    "Validação física antes da publicação: F1 (valor positivo, domínio do dicionário do ONS), F2 (faixa plausível do subsistema), F3 (salto sobre a mediana da semana anterior). Valor que viola F2 ou F3 é conferido nos componentes do Balanço de Energia nos Subsistemas do ONS (C1: nenhum componente de geração com lacuna no dia e carga do balanço igual ao valor); sem confirmação, quarentena. A curva horária não confere: é o mesmo produto em outro grão.",
+    "Registros esperados (A1): todo dia entre o primeiro e o último dia publicado, por subsistema; dia ausente é registrado com o estado conferido no arquivo atual da fonte (célula vazia ou linha ausente) e publicado vazio.",
     "Média das 24 horas da curva horária conferida contra a carga diária (tolerância de 0,01 MWmed; os dias que diferem são publicados em p025.revisoes.curva_contra_diaria)."
    ],
    "limitacoes": [
@@ -693,7 +694,7 @@
    ],
    "regras_comparabilidade": [
     "Não se aplica à carga diária nem à curva de carga: a carga global da API é outra grandeza (maior, sobretudo à noite).",
-    "Nenhuma dupla contagem: a MMGD da API nunca é somada à curva (que já inclui uma estimativa de MMGD desde 29/04/2023) nem subtraída dela."
+    "Nenhuma dupla contagem: a MMGD da API nunca é somada à curva (que já inclui uma estimativa de MMGD, declarada para 29/04/2023 e observada nos dados em 01/05/2023) nem subtraída dela."
    ],
    "regra_cobertura": "Horas com as duas meias horas de carga global e de MMGD; mês completo quando todos os dias têm 24 horas.",
    "politica_ausencia": "Antes de 15/02/2019 a MMGD vem vazia na API: ausência, não zero. Dia em curso na captura é descartado.",
@@ -739,7 +740,7 @@
    ],
    "regras_comparabilidade": [
     "Curva (carga) e API (carga global) são produtos diferentes: aparecem lado a lado, nunca subtraídos um do outro.",
-    "Só compara períodos dentro do mesmo regime do ONS: até 28/02/2021; de 01/03/2021 a 28/04/2023; desde 29/04/2023 (com a estimativa de MMGD). Variação que atravessa uma dessas datas não é publicada."
+    "Só compara períodos dentro do mesmo regime do ONS: até 28/02/2021; de 01/03/2021 a 28/04/2023; desde a inclusão da estimativa de MMGD, declarada para 29/04/2023 e observada nos dados em 01/05/2023 (29 e 30/04/2023 são transição e não entram em variação). Variação que atravessa uma dessas datas não é publicada."
    ],
    "regra_cobertura": "Dias com as 24 horas; a quantidade de dias de cada média é publicada.",
    "politica_ausencia": "Classe sem dia completo no mês não tem perfil.",
@@ -777,16 +778,16 @@
     "ano"
    ],
    "regras_comparabilidade": [
-    "Só compara períodos dentro do mesmo regime do ONS: até 28/02/2021; de 01/03/2021 a 28/04/2023; desde 29/04/2023 (com a estimativa de MMGD). Variação que atravessa uma dessas datas não é publicada.",
+    "Só compara períodos dentro do mesmo regime do ONS: até 28/02/2021; de 01/03/2021 a 28/04/2023; desde a inclusão da estimativa de MMGD, declarada para 29/04/2023 e observada nos dados em 01/05/2023 (29 e 30/04/2023 são transição e não entram em variação). Variação que atravessa uma dessas datas não é publicada.",
     "Antes de 2019 havia horário de verão: a hora local do pico se desloca uma hora nesses meses."
    ],
-   "regra_cobertura": "Dia com as 24 horas (dias de mudança do horário de verão, com 23 horas, ficam sem pico).",
-   "politica_ausencia": "Dia incompleto não tem pico.",
+   "regra_cobertura": "Dia com as 24 horas. No início do horário de verão (até 2018) a hora das 00h não existe: a fonte deixa a célula vazia ou põe zero, o zero é lido como ausência, e o dia fica com 23 horas, sem pico e sem média.",
+   "politica_ausencia": "Dia incompleto não tem pico; valor horário zero ou negativo na fonte é ausência (a carga de um subsistema inteiro não é zero).",
    "validacoes": [
     "Média das 24 horas da curva horária conferida contra a carga diária (tolerância de 0,01 MWmed; os dias que diferem são publicados em p025.revisoes.curva_contra_diaria)."
    ],
    "limitacoes": [
-    "Desde 29/04/2023 a curva inclui a MMGD estimada, que desloca a forma da curva ao meio-dia; o pico da carga líquida está no painel de MMGD."
+    "Desde a inclusão da MMGD estimada (declarada para 29/04/2023, observada nos dados em 01/05/2023) a curva a inclui, o que desloca a forma da curva ao meio-dia; o pico da carga líquida está no painel de MMGD."
    ],
    "gold": "carga_detalhe.json",
    "paginas": [
@@ -806,8 +807,8 @@
     "carga_energia_di"
    ],
    "formula": "diferença = valor(captura k) − valor(captura k − 1); % = 100 × diferença ÷ valor(captura k − 1)",
-   "regra_agregacao": "Sem agregação; resumo por mediana e máximo do valor absoluto das diferenças percentuais.",
-   "versao_formula": "1",
+   "regra_agregacao": "Sem agregação; resumo por mediana (com número par de revisões, média dos dois valores centrais) e máximo do valor absoluto das diferenças percentuais, só nas revisões com valor anterior positivo.",
+   "versao_formula": "2",
    "natureza_fonte": "OBSERVADO",
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
@@ -856,14 +857,15 @@
     "tipo de comparação (mesmas datas ou equivalente)"
    ],
    "regras_comparabilidade": [
-    "Só compara períodos dentro do mesmo regime do ONS: até 28/02/2021; de 01/03/2021 a 28/04/2023; desde 29/04/2023 (com a estimativa de MMGD). Variação que atravessa uma dessas datas não é publicada.",
+    "Só compara períodos dentro do mesmo regime do ONS: até 28/02/2021; de 01/03/2021 a 28/04/2023; desde a inclusão da estimativa de MMGD, declarada para 29/04/2023 e observada nos dados em 01/05/2023 (29 e 30/04/2023 são transição e não entram em variação). Variação que atravessa uma dessas datas não é publicada.",
     "Feriado nacional que cai em dia útil num ano e no fim de semana no outro torna o calendário não equivalente; o indicador marca calendario_equivalente = falso.",
     "Variação de carga é observação; não é atribuída à atividade econômica sem evidência adicional."
    ],
    "regra_cobertura": "Todos os dias das duas janelas presentes e aceitos pela validação física.",
    "politica_ausencia": "Dia em quarentena (validação física) ou ausente fica sem valor: nunca zero, nunca repetido. Janela com dia ausente não tem média nem variação.",
    "validacoes": [
-    "Validação física antes da publicação: F1 (valor positivo, domínio do dicionário do ONS), F2 (faixa plausível do subsistema), F3 (salto sobre a mediana da semana anterior), com conferência na curva horária e quarentena.",
+    "Validação física antes da publicação: F1 (valor positivo, domínio do dicionário do ONS), F2 (faixa plausível do subsistema), F3 (salto sobre a mediana da semana anterior). Valor que viola F2 ou F3 é conferido nos componentes do Balanço de Energia nos Subsistemas do ONS (C1: nenhum componente de geração com lacuna no dia e carga do balanço igual ao valor); sem confirmação, quarentena. A curva horária não confere: é o mesmo produto em outro grão.",
+    "Registros esperados (A1): todo dia entre o primeiro e o último dia publicado, por subsistema; dia ausente é registrado com o estado conferido no arquivo atual da fonte (célula vazia ou linha ausente) e publicado vazio.",
     "Média das 24 horas da curva horária conferida contra a carga diária (tolerância de 0,01 MWmed; os dias que diferem são publicados em p025.revisoes.curva_contra_diaria)."
    ],
    "limitacoes": [
@@ -4477,7 +4479,7 @@
    "politica_ausencia": "Classe sem linha no mês não é somada (não vira zero).",
    "validacoes": [
     "Classes dentro do domínio do dicionário mais Varejista, Importador e Transmissor (conferidas nos arquivos); outra classe recusa o arquivo.",
-    "Conferido com o InfoMercado de agosto e outubro de 2024 (15.803 e 15.936 no conjunto aberto contra 15.795 e 15.932 publicados: ressalva por recontabilização)."
+    "Conferido com o InfoMercado (agosto e outubro de 2024: 15.803 e 15.936 no conjunto aberto contra 15.795 e 15.932 publicados; julho de 2026: 16.376 contra 16.364): ressalva, o conjunto é a versão vigente da contabilização."
    ],
    "limitacoes": [
     "Os conjuntos abertos da CCEE começam em 2023 (entre maio e dezembro, conforme o conjunto); não há série anterior neste formato no portal de dados abertos.",
@@ -4681,7 +4683,7 @@
    "politica_ausencia": "Mês com algum tipo vazio fica sem total e interrompe a janela.",
    "validacoes": [
     "OUTROS_SERVICOS_ANCILARES = Σ ressarcimentos em todos os meses (diferença de R$ 0,00).",
-    "Componentes e total sem resposta da demanda conferidos com o InfoMercado de agosto e outubro de 2024 (R$ 477,52 e 265,48 milhões; tolerância de R$ 0,06 milhão).",
+    "Componentes e total sem as parcelas fora do conjunto (resposta da demanda, suporte de reativo do sandbox) conferidos com o InfoMercado: R$ 477,52, 265,48 e 63,89 milhões em agosto e outubro de 2024 e julho de 2026 (tolerância de R$ 0,06 milhão no total e R$ 0,005 milhão por parcela publicada).",
     "Tipos por mês conferidos com o Boletim do MME de 2026 (66 de 66 dentro de 0,5 mil R$)."
    ],
    "limitacoes": [
@@ -4802,7 +4804,7 @@
    "regra_cobertura": "Maio de 2023 até o último mês contabilizado, com os quatro submercados.",
    "politica_ausencia": "Mês sem os quatro submercados fica sem GSF; janela incompleta não é calculada.",
    "validacoes": [
-    "Reproduz o fator publicado no InfoMercado mensal: 79,37% em agosto e 73,49% em outubro de 2024 (tolerância de 0,006 p.p.).",
+    "Reproduz o fator publicado no InfoMercado mensal: 79,37% em agosto e 73,49% em outubro de 2024 e 76,83% em julho de 2026 (tolerância de 0,006 p.p.).",
     "Σ garantia física sazonalizada dos submercados = garantia física sazonalizada do MRE (diferença 0)."
    ],
    "limitacoes": [
@@ -4844,7 +4846,7 @@
    "politica_ausencia": "Mês sem os três valores fica sem taxa.",
    "validacoes": [
     "A liquidar = liquidado + inadimplência (tolerância de R$ 1).",
-    "Valor a liquidar conferido com o InfoMercado (R$ 2,14 e 5,84 bilhões em agosto e outubro de 2024)."
+    "Valor a liquidar conferido com o InfoMercado (R$ 2,14 e 5,84 bilhões em agosto e outubro de 2024; R$ 2,13 bilhões em julho de 2026)."
    ],
    "limitacoes": [
     "Maio de 2025, março e abril de 2026 vêm com zeros que não fecham a identidade."
@@ -4925,7 +4927,7 @@
    "regra_cobertura": "Setembro de 2023 até o último mês publicado.",
    "politica_ausencia": "Célula vazia é ausência.",
    "validacoes": [
-    "InfoMercado: total de encargos − alívio = pagamento (R$ 361,54 e 20,87 milhões em agosto e outubro de 2024; tolerância de R$ 0,06 milhão)."
+    "InfoMercado: total de encargos − alívio = pagamento em agosto e outubro de 2024 (R$ 361,54 e 20,87 milhões; tolerância de R$ 0,06 milhão); em julho de 2026 o InfoMercado implica R$ 2,55 milhões e o conjunto traz R$ 0,00 milhão: divergência publicada."
    ],
    "limitacoes": [
     "Os conjuntos abertos da CCEE começam em 2023 (entre maio e dezembro, conforme o conjunto); não há série anterior neste formato no portal de dados abertos."
@@ -5006,7 +5008,7 @@
    "politica_ausencia": "Janela de 12 meses só é calculada com os 12 meses publicados; mês ausente interrompe a janela (nunca é completado, interpolado ou tratado como zero).",
    "validacoes": [
     "Σ classes = ACR + ACL do conjunto de ambiente (mais a classe Varejista a partir de fevereiro de 2026), resíduo até 5 MW médios por mês.",
-    "ACR + ACL conferido com o 'Consumo/Geração' do InfoMercado de agosto e outubro de 2024 (diferença de cerca de 0,1%, publicada como ressalva: a definição do InfoMercado não é detalhada)."
+    "ACR + ACL conferido com o 'Consumo/Geração' do InfoMercado de agosto e outubro de 2024 e julho de 2026 (diferença de 0,1% a 0,2%, publicada como ressalva: a definição do InfoMercado não é detalhada)."
    ],
    "limitacoes": [
     "Os conjuntos abertos da CCEE começam em 2023 (entre maio e dezembro, conforme o conjunto); não há série anterior neste formato no portal de dados abertos.",

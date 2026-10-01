@@ -371,16 +371,20 @@ def _frequencia(it, brutos, seeds, metadados):
         if pkg is not None:
             ex = ck.extras(pkg)
             texto, campo, ref_pub = ex["frequencia_declarada"], ex["campo_frequencia"], ex["referencia_publicacao"]
-            origem = f"campo extra '{campo}' do conjunto no portal ({orgao})" if campo else f"conjunto no portal ({orgao}) sem campo de frequência"
+            origem = "portal"
     m = metadados.get(f"{orgao}:{nome}")
     if texto is None and m:
         texto, campo = m.get("frequencia_declarada"), m.get("campo_frequencia")
-        origem = f"metadados da fonte ({m.get('url_metadados')})"
+        origem = "metadados"
+        extra["url_metadados"] = m.get("url_metadados")
         if m.get("ultimo_periodo_fonte"):
             extra["ultimo_periodo_fonte"] = m["ultimo_periodo_fonte"]
     if texto is None and it.get("frequencia"):
-        texto, campo, origem = it["frequencia"], "frequencia", f"REGISTRO do módulo {it['modulo']}"
+        texto, campo, origem = it["frequencia"], "frequencia", "registro"
+        extra["modulo"] = it["modulo"]
     cad, sem_sla = ck.frequencias_canonicas(texto, ref_pub)
+    # origem: portal (campo extra do conjunto no CKAN), metadados (SIDRA, CKAN da CVM e do
+    # MME) ou registro (declarado no REGISTRO do módulo); None quando ninguém declara
     return {"declarada": texto, "campo": campo, "referencia_publicacao": ref_pub, "origem": origem,
             "cadencias": cad, "sem_sla": sem_sla, **extra}
 
@@ -502,6 +506,8 @@ def atualidade(an, freq, hoje, descontinuado):
 def _resumo_revisao(an):
     rv = (an or {}).get("revisoes")
     rr = (an or {}).get("revisoes_registros")
+    rv = rv if rv and rv.get("eventos") else None
+    rr = rr if rr and rr.get("mudancas") else None
     if not rv and not rr:
         return None
 
@@ -523,38 +529,31 @@ def _resumo_revisao(an):
 
 
 def _etapas(grupo, an, chks, golds_res, brutos, seeds, documento, agora):
+    """Etapas da escada com a evidência de cada uma em campos estruturados (o texto é
+    montado na interface a partir deles; ver tipos-dados.ts). Toda etapa tem `ok`."""
     it = grupo[0]
     orgao, nome = it["orgao"], it["nome"]
     na_listagem = any(p.get("name") == nome for p in (brutos.get(orgao) or {}).get("resultado") or [])
-    no_seed = orgao == "CCEE" and any(p.get("name") == nome for p in seeds)
+    seed = next((p for p in seeds if p.get("name") == nome), None) if orgao == "CCEE" else None
     if na_listagem:
-        cat = {"ok": True, "evidencia": f"Conjunto {nome!r} na listagem package_search do {orgao}",
-               "em": (brutos.get(orgao) or {}).get("colhido_em")}
-    elif no_seed:
-        cat = {"ok": True, "evidencia": f"package_show versionado com sha256 em pipeline/energia/seed ({nome})", "em": None}
+        cat = {"ok": True, "origem": "listagem", "em": (brutos.get(orgao) or {}).get("colhido_em")}
+    elif seed is not None:
+        cat = {"ok": True, "origem": "package_show", "em": seed["_seed"]["capturado_em"], "arquivo": seed["_seed"]["arquivo"]}
     else:
         decl = [g for g in grupo if g.get("url") and g.get("licenca")]
-        cat = {"ok": bool(decl), "em": None,
-               "evidencia": (f"REGISTRO do módulo {decl[0]['modulo']} declara URL ({decl[0]['url']}) e licença" if decl
-                             else "Sem listagem oficial e sem URL ou licença declaradas")}
+        cat = {"ok": bool(decl), "origem": "registro", "modulo": (decl or grupo)[0]["modulo"]}
     vs = (an or {}).get("vintages") or {}
     n = vs.get("n") or 0
-    rec = {"ok": n > 0, "em": vs.get("primeira_captura"),
-           "evidencia": (f"{n} capturas com sha256 de {vs.get('recursos')} arquivo(s); primeira em {vs.get('primeira_captura')}"
-                         if n else f"Nenhuma captura de {it['dataset_silver']} no silver {it['familia']}")}
+    rec = {"ok": n > 0, "via": "captura", "em": vs.get("primeira_captura"), "capturas": n, "arquivos": vs.get("recursos") or 0}
     conteudo = bool((an or {}).get("observacoes")) or bool((an or {}).get("registros"))
-    integ = {"ok": n > 0 and (conteudo or documento), "em": vs.get("primeira_captura"),
-             "evidencia": ((f"{(an['observacoes'] or {}).get('linhas', 0):,} observações".replace(",", ".") if an.get("observacoes") else "")
-                           + (" e " if an.get("observacoes") and an.get("registros") else "")
-                           + (f"{an['registros']['chaves']:,} registros".replace(",", ".") if an.get("registros") else "")
-                           + (f" no silver {it['familia']} (dataset {it['dataset_silver']})" if conteudo else "")
-                           + ("Documento guardado como original para citação" if (documento and not conteudo) else ""))
-             if n else "Sem capturas"}
+    integ = _enxuto({"ok": n > 0 and (conteudo or documento), "em": vs.get("primeira_captura") if n else None,
+                     "observacoes": ((an or {}).get("observacoes") or {}).get("linhas"),
+                     "registros": ((an or {}).get("registros") or {}).get("chaves"),
+                     "documento": True if (documento and not conteudo) else None})
     verd = val.veredito(chks)
     cont = Counter(x["resultado"] for x in chks)
-    valid = {"ok": integ["ok"] and verd in ("aprovado", "ressalva"), "em": agora, "resultado": verd,
-             "evidencia": (f"{len(chks)} checagens automáticas nesta publicação: {cont.get('aprovado', 0)} aprovadas, "
-                           f"{cont.get('ressalva', 0)} com ressalva, {cont.get('reprovado', 0)} reprovadas")}
+    valid = {"ok": integ["ok"] and verd in ("aprovado", "ressalva"), "resultado": verd, "aprovadas": cont.get("aprovado", 0),
+             "ressalvas": cont.get("ressalva", 0), "reprovadas": cont.get("reprovado", 0)}
     golds_decl = sorted({g for x in grupo for g in x["golds"]})
     citam = sorted(n_ for n_, r in golds_res.items() if it["dataset_silver"] in r["datasets_citados"])
     consumidoras = sorted(set(golds_decl) | set(citam))
@@ -575,12 +574,8 @@ def _etapas(grupo, an, chks, golds_res, brutos, seeds, documento, agora):
         else:
             integras.append(gname)
     paginas = [p for x in grupo for p in x.get("paginas", [])]
-    publ = {"ok": valid["ok"] and bool(integras) and (bool(paginas) or bool(set(citam) & set(integras))), "em": agora,
-            "golds": integras,
-            "evidencia": ((f"Alimenta {', '.join(integras)}" + (f" (citado na proveniência de {', '.join(sorted(set(citam) & set(integras)))})"
-                                                               if set(citam) & set(integras) else " (declarado no REGISTRO)"))
-                          if integras else "Nenhuma gold íntegra consome o conjunto")
-            + (f"; problemas: {'; '.join(problemas)}" if problemas else "")}
+    publ = _enxuto({"ok": valid["ok"] and bool(integras) and (bool(paginas) or bool(set(citam) & set(integras))),
+                    "golds": integras, "citado_por": sorted(set(citam) & set(integras)) or None, "problemas": problemas or None})
     return {"catalogado": cat, "recurso_verificado": rec, "integrado": integ, "validado": valid, "publicado": publ}, consumidoras
 
 
@@ -642,12 +637,12 @@ def conjuntos(grupos, analises, golds_res, brutos, seeds, metadados, hoje, agora
             "uso": {"papeis": papeis, "declarado": declarados,
                     "modelos": [{"codigo": m, "estado": mods.get(m)} for m in modelos]},
             "descontinuado": descontinuado, "descontinuacao": pkg_desc,
-            "frequencia": _enxuto({k: v for k, v in freq.items() if k != "campo"}), "atualidade": atual,
-            "dado": (_enxuto({"granularidade": gp.get("granularidade"), "formato": gp["formato"], "ref_min": gp["ref_min"],
-                              "ref_max": gp["ref_max"], "series": obs.get("series"), "linhas": obs.get("linhas"),
-                              "completude_interna": gp.get("completude_interna"), "series_com_lacuna": gp.get("series_com_lacuna"),
-                              "ultimo_periodo": gp.get("ultimo_periodo"), "series_no_ultimo": gp.get("series_no_ultimo"),
-                              "periodo_anterior": gp.get("periodo_anterior"), "series_no_anterior": gp.get("series_no_anterior")})
+            "frequencia": freq, "atualidade": atual,
+            "dado": ({"granularidade": gp.get("granularidade"), "formato": gp["formato"], "ref_min": gp["ref_min"],
+                      "ref_max": gp["ref_max"], "series": obs.get("series"), "linhas": obs.get("linhas"),
+                      "completude_interna": gp.get("completude_interna"), "series_com_lacuna": gp.get("series_com_lacuna"),
+                      "ultimo_periodo": gp.get("ultimo_periodo"), "series_no_ultimo": gp.get("series_no_ultimo"),
+                      "periodo_anterior": gp.get("periodo_anterior"), "series_no_anterior": gp.get("series_no_anterior")}
                      if gp else ({"granularidade": "cadastro (sem período de referência)", "chaves": an["registros"]["chaves"],
                                   "preenchimento_minimo": an["registros"].get("preenchimento_minimo")}
                                  if an and an.get("registros") else None)),
@@ -656,8 +651,7 @@ def conjuntos(grupos, analises, golds_res, brutos, seeds, metadados, hoje, agora
                          "ultima": vs.get("ultima_captura"), "ultima_publicacao_fonte": vs.get("ultima_publicacao_fonte"),
                          "origens": vs.get("origens", {})},
             "coleta": {"tentativas": co.get("tentativas", 0), "falhas": co.get("falhas", 0),
-                       "ultima_tentativa": _enxuto({k: v for k, v in (co.get("ultima_tentativa") or {}).items() if k != "detalhe"}) or None,
-                       "ultimo_ok": co.get("ultimo_ok"),
+                       "ultima_tentativa": co.get("ultima_tentativa"), "ultimo_ok": co.get("ultimo_ok"),
                        "ultima_falha": co.get("ultima_falha"), "falhas_consecutivas": co.get("falhas_consecutivas", 0)},
             "revisoes": rv,
             "bronze": ({"presentes": br.get("arquivos_presentes"), "ausentes": br.get("arquivos_ausentes"),
@@ -671,6 +665,39 @@ def conjuntos(grupos, analises, golds_res, brutos, seeds, metadados, hoje, agora
             "_an": an,
         })
     return out, checagens
+
+
+def publico(x):
+    """Registro de um conjunto como publicado em publicacao.json: sem duplicar o que já
+    está nas etapas (quantidade de capturas, arquivos, primeira captura, linhas e contagem
+    de checagens) e sem chaves de valor None (ausente = não se aplica ou não informado).
+    A versão completa de cada campo está em dados_conjuntos.csv."""
+    vs, co, br = x["capturas"], x["coleta"], x["bronze"]
+    out = {k: x[k] for k in ("id", "familia", "dataset_silver", "orgao", "nome", "catalogo_id", "slug", "titulo", "modulos",
+                             "golds", "paginas", "estado")}
+    if x.get("slugs"):
+        out["slugs"] = x["slugs"]
+    out["etapas"] = x["etapas"]
+    out["ressalvas"] = x["ressalvas"]
+    out["uso"] = _enxuto({"papeis": x["uso"]["papeis"], "declarado": x["uso"]["declarado"], "modelos": x["uso"]["modelos"] or None})
+    out["descontinuado"] = x["descontinuado"]
+    if x.get("descontinuacao"):
+        out["descontinuacao"] = x["descontinuacao"]
+    out["frequencia"] = _enxuto(x["frequencia"])
+    out["atualidade"] = _enxuto(x["atualidade"])
+    out["dado"] = _enxuto({k: v for k, v in (x["dado"] or {}).items() if k not in ("linhas", "chaves", "ultimo_periodo")}) or None
+    out["capturas"] = _enxuto({"ultima": vs.get("ultima"), "ultima_publicacao_fonte": vs.get("ultima_publicacao_fonte"),
+                               "anteriores_preservadas": vs.get("anteriores_preservadas") or None,
+                               "origens": vs.get("origens") if set(vs.get("origens") or {}) - {"coleta_direta"} else None})
+    out["coleta"] = _enxuto({"tentativas": co["tentativas"], "falhas": co["falhas"], "ultimo_ok": co.get("ultimo_ok"),
+                             "ultima_falha": co.get("ultima_falha"), "falhas_consecutivas": co["falhas_consecutivas"]})
+    out["revisoes"] = x["revisoes"]
+    out["bronze"] = (_enxuto({"presentes": br.get("presentes"), "ausentes": br.get("ausentes") or None,
+                              "sha256_conferidos": br.get("sha256_conferidos"), "sha256_divergentes": br.get("sha256_divergentes") or None,
+                              "drift": br.get("drift") or None, "esquema_diferente_entre_recursos": br.get("esquema_diferente_entre_recursos") or None})
+                     if br else None)
+    out["validacao"] = {"resultado": x["validacao"]["resultado"], "itens": x["validacao"]["itens"]}
+    return out
 
 
 # ---------------------------------------------------------------- calendário, eixos, afirmações
@@ -835,7 +862,7 @@ def escreve_csvs(lista, todas_checagens, cal_linhas, cat, eixos_linhas, descrico
         "maior_revisao_rel_pct", "validacao", "checagens_aprovadas", "checagens_ressalva", "checagens_reprovadas",
         "originais_ausentes", "sha256_divergentes"], [
         [x["id"], x["familia"], x["dataset_silver"], x["orgao"], x["nome"], x["slug"], "|".join(x["modulos"]), x["estado"],
-         "|".join(x["uso"]["papeis"]), "|".join(x["golds"]), x["frequencia"]["declarada"], x["atualidade"]["cadencia"],
+         "|".join(x["uso"]["papeis"]), "|".join(x["golds"]), x["frequencia"].get("declarada"), x["atualidade"]["cadencia"],
          (x["dado"] or {}).get("granularidade"), (x["dado"] or {}).get("ref_min"), x["atualidade"]["ultimo_periodo"],
          x["atualidade"]["prazo_proximo"], x["atualidade"]["situacao"], x["atualidade"]["dias_atraso"],
          x["capturas"]["vintages"], x["capturas"]["primeira"], x["capturas"]["ultima"], x["capturas"]["ultima_publicacao_fonte"],
@@ -870,7 +897,9 @@ def escreve_csvs(lista, todas_checagens, cal_linhas, cat, eixos_linhas, descrico
            ((e.get("etapas") or {}).get("recurso_verificado") or {}).get("em") if ((e.get("etapas") or {}).get("recurso_verificado") or {}).get("ok") else None,
            "|".join(f"{i.get('familia')}/{i.get('dataset_silver')}" for i in e.get("integracoes") or []),
            "|".join((e.get("uso") or {}).get("golds") or []), (e.get("recursos_resumo") or {}).get("total"),
-           (e.get("recursos_resumo") or {}).get("acessados"), (e.get("recursos_resumo") or {}).get("integrados"),
+           (e.get("recursos_resumo") or {}).get("acessados"),
+           sum(((e.get("recursos_resumo") or {}).get("por_estado") or {}).get(k, 0) for k in ("INTEGRADO", "VALIDADO", "PUBLICADO"))
+           if e.get("recursos_resumo") else None,
            (e.get("recursos_resumo") or {}).get("removidos"), e.get("url"), _limpa(e.get("licenca")),
            1 if e.get("metadados_verificados") else 0, _limpa((descricoes or {}).get(e["id"]) or e.get("descricao"))]
           for e in cat["entradas"]])
@@ -1129,8 +1158,11 @@ def _evidencia_kpis(con, lista, cat, agora, hoje, todas=(), golds_res=None):
             unidade="conjuntos", periodo={"inicio": hoje.isoformat(), "fim": hoje.isoformat()}, entidade="conjuntos integrados",
             universo=f"{len(com_sla)} conjuntos com SLA aplicável de {len(lista)} integrados", fonte={
                 "orgao": "Scrutiniums (pipeline do observatório)", "conjunto": "Silvers do domínio Energia",
-                "recurso": "vintages, coletas e observações", "url": "https://github.com/genarolins1975/scrutiniums/tree/main/pipeline/energia",
-                "arquivo": None, "sha256": None, "capturado_em": max((x["capturas"]["ultima"] for x in lista if x["capturas"]["ultima"]), default=None),
+                "recurso": ("vintages vigentes de todos os conjuntos integrados; o sha256 é o da lista ordenada "
+                            "conjunto:recurso:sha256 de cada vintage vigente (o mesmo snapshot da proveniência 'saude')"),
+                "url": "https://github.com/genarolins1975/scrutiniums/tree/main/pipeline/energia",
+                "arquivo": "data/energia/silver/*.db", "sha256": _snapshot_silvers(lista)["sha256"],
+                "capturado_em": max((x["capturas"]["ultima"] for x in lista if x["capturas"]["ultima"]), default=None),
                 "publicado_em": None},
             chaves_origem=[x["id"] for x in atrasados],
             formula="contagem de conjuntos com hoje > prazo_proximo (regra de SLA por cadência declarada, casos A a D)",
@@ -1269,7 +1301,7 @@ def construir(con, ctx):
                         "bytes": sum(p.get("bytes_parquet") or 0 for p in parquets)},
             "duracao_s": None,
         },
-        "conjuntos": [{k: v for k, v in x.items() if k != "_an"} for x in lista],
+        "conjuntos": [publico(x) for x in lista],
         "golds": [{"gold": n, "disponivel": r["disponivel"], "gerado_em": r["gerado_em"], "bytes": r["bytes"],
                    "veredito": r["veredito"], "datasets_citados": r["datasets_citados"],
                    "checagens": {k["tipo"]: k["resultado"] for k in r["checagens"]},

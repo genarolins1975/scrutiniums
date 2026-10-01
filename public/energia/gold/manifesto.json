@@ -1,11 +1,11 @@
 {
  "dominio": "energia",
  "gold": "manifesto.json",
- "gerado_em": "2026-10-01T00:53:30Z",
+ "gerado_em": "2026-10-01T06:11:10Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d5dc4fd86561+alterado",
+ "versao_codigo": "d4f2c5af5147+alterado",
  "disponivel": true,
- "id_publicacao": "911c2c0a5dcdbc72ed24f5a43c94612a3b9653aee70aeb1839ce39fab9b98623",
+ "id_publicacao": "d3504f8f98c00d548de715c2e7f3cec07f29617b2164601944f2eb975810653f",
  "regra_id": "sha256 da lista JSON [caminho, bytes, sha256] de todos os arquivos listados, em ordem de caminho (separadores sem espaço, UTF-8): o mesmo conjunto de bytes tem o mesmo id.",
  "completo": false,
  "fora_do_manifesto": [
@@ -28,12 +28,12 @@
  ],
  "repositorio": "https://github.com/genarolins1975/scrutiniums",
  "totais": {
-  "arquivos": 229,
-  "bytes": 181355282,
+  "arquivos": 241,
+  "bytes": 189498835,
   "geometrias": 2,
-  "golds": 24,
-  "series": 181,
-  "parquets": 22
+  "golds": 25,
+  "series": 191,
+  "parquets": 23
  },
  "arquivos": [
   {
@@ -137,6 +137,14 @@
    "disponivel": true
   },
   {
+   "caminho": "/energia/gold/mercado.json",
+   "tipo": "gold",
+   "bytes": 512825,
+   "sha256": "89d46877248d2a4001675a8a87f5811d07d490772e408ddc53104bd9509d4b7b",
+   "gerado_em": "2026-10-01T06:09:13Z",
+   "disponivel": true
+  },
+  {
    "caminho": "/energia/gold/modelos.json",
    "tipo": "gold",
    "bytes": 27096,
@@ -147,9 +155,9 @@
   {
    "caminho": "/energia/gold/perdas.json",
    "tipo": "gold",
-   "bytes": 423592,
-   "sha256": "90371b19e248aac4d0a35adfc6299d222e84038932e45beb829c8cf440c8a64d",
-   "gerado_em": "2026-10-01T00:44:22Z",
+   "bytes": 423909,
+   "sha256": "bb0b8d168b0ddb46aff0bb0def4da54a59060c38d8fabd4996f0630b1fcdfe01",
+   "gerado_em": "2026-10-01T06:06:09Z",
    "disponivel": true
   },
   {
@@ -179,23 +187,23 @@
   {
    "caminho": "/energia/gold/previsoes_desempenho.json",
    "tipo": "gold",
-   "bytes": 289841,
-   "sha256": "4c7525050e986e069fb80c8de65d41af4164bc890f1c0ee127f836cdb699bad3",
-   "gerado_em": "2026-09-30T23:49:53Z",
+   "bytes": 120597,
+   "sha256": "5896530fe6cee6522932f5de31f503cd2ce89bbae972570b6d6112d87ac2414e",
+   "gerado_em": "2026-10-01T00:55:11Z",
    "disponivel": true
   },
   {
    "caminho": "/energia/gold/publicacao.json",
    "tipo": "gold",
-   "bytes": 625809,
-   "sha256": "1e4c7ed76cdbddb7005578ee83c238891455b9d860a1559311d1f47497f8a25d"
+   "bytes": 667887,
+   "sha256": "e559dc5f90fe8b961fb780e74ce9dbfcf19d20e798b78284206b3a20939d575d"
   },
   {
    "caminho": "/energia/gold/qualidade.json",
    "tipo": "gold",
-   "bytes": 373160,
-   "sha256": "ec4da3f320530f69379cff2495591e6cfc603836c2aab1f07dddeae4c2c59c7f",
-   "gerado_em": "2026-10-01T00:20:33Z",
+   "bytes": 389239,
+   "sha256": "9ddaa3861356384e94146029504a149404dd6e5c9ba8f0f402118feb6c23a640",
+   "gerado_em": "2026-10-01T05:53:21Z",
    "disponivel": true
   },
   {
@@ -1045,8 +1053,8 @@
   {
    "caminho": "/energia/series/dados_calendario.csv",
    "tipo": "serie",
-   "bytes": 11740,
-   "sha256": "36cb6eca630c60aa72e0bf0063f72270aee21d631fea5d702454ae6d821ef130",
+   "bytes": 16369,
+   "sha256": "4b755be7afef12ea0e2c81437fb27b0c190d6365cb50e4f6cc627479aa42dedb",
    "colunas": [
     "dia",
     "familia",
@@ -1057,15 +1065,15 @@
     "referencias_revisadas",
     "publicacoes_fonte"
    ],
-   "linhas": 211,
+   "linhas": 295,
    "dicionario": true,
    "parquet": null
   },
   {
    "caminho": "/energia/series/dados_catalogo.csv",
    "tipo": "serie",
-   "bytes": 116732,
-   "sha256": "f5ee99deaa1f7f1cc98e0fa5a10a0acf9bff01f6e8598f3d57718036bfa9b757",
+   "bytes": 271985,
+   "sha256": "e3cc57729f6b1d0f7e2d0948ed339cff62472370d8b7c981b3787ae8b71535dc",
    "colunas": [
     "id",
     "orgao",
@@ -1079,19 +1087,24 @@
     "recurso_verificado_em",
     "integracoes",
     "golds",
+    "recursos",
+    "recursos_acessados",
+    "recursos_integrados",
+    "recursos_removidos",
     "url",
     "licenca",
-    "metadados_verificados"
+    "metadados_verificados",
+    "descricao"
    ],
-   "linhas": 411,
+   "linhas": 416,
    "dicionario": true,
    "parquet": null
   },
   {
    "caminho": "/energia/series/dados_conjuntos.csv",
    "tipo": "serie",
-   "bytes": 42400,
-   "sha256": "b825cfeaa0942a44b83ceabc73791b949316b8036b196452918b93394f5d2b7f",
+   "bytes": 50860,
+   "sha256": "40471a990a7c7a296113a7fbf1f7cade60588c7b4c0897363f33c0afb076e51f",
    "colunas": [
     "id",
     "familia",
@@ -1138,15 +1151,15 @@
     "originais_ausentes",
     "sha256_divergentes"
    ],
-   "linhas": 120,
+   "linhas": 145,
    "dicionario": true,
    "parquet": null
   },
   {
    "caminho": "/energia/series/dados_eixos.csv",
    "tipo": "serie",
-   "bytes": 10923,
-   "sha256": "3fa928a2b3d01594dc68fd75b43dcb2ac678e7936eee0e35a7e728fad7223701",
+   "bytes": 11669,
+   "sha256": "3e291e26011cd6ddc6c628c2c099eb1ba9f6149ca6ad3535aea66d1fe853f59d",
    "colunas": [
     "gold",
     "indicador",
@@ -1157,9 +1170,93 @@
     "testes_ressalva",
     "testes_reprovados"
    ],
-   "linhas": 102,
+   "linhas": 110,
    "dicionario": true,
    "parquet": null
+  },
+  {
+   "caminho": "/energia/series/dados_recursos_aneel.csv",
+   "tipo": "serie",
+   "bytes": 227252,
+   "sha256": "6fe6baca02f0f77130189c42d1a933048f556bb3a57d4597d5a4bef82a8db40e",
+   "colunas": [
+    "orgao",
+    "conjunto",
+    "recurso_id",
+    "recurso",
+    "formato",
+    "publicado_em",
+    "tamanho",
+    "presente",
+    "estado",
+    "via",
+    "capturas",
+    "ultima_captura",
+    "datasets_silver",
+    "verificado_em",
+    "url"
+   ],
+   "linhas": 631,
+   "dicionario": true,
+   "parquet": null
+  },
+  {
+   "caminho": "/energia/series/dados_recursos_ccee.csv",
+   "tipo": "serie",
+   "bytes": 170596,
+   "sha256": "d2d848d22bad33dac12441f5e1cadcbb11c9a82f56d357f97b1e2e2cffcf2785",
+   "colunas": [
+    "orgao",
+    "conjunto",
+    "recurso_id",
+    "recurso",
+    "formato",
+    "publicado_em",
+    "tamanho",
+    "presente",
+    "estado",
+    "via",
+    "capturas",
+    "ultima_captura",
+    "datasets_silver",
+    "verificado_em",
+    "url"
+   ],
+   "linhas": 733,
+   "dicionario": true,
+   "parquet": null
+  },
+  {
+   "caminho": "/energia/series/dados_recursos_ons.csv",
+   "tipo": "serie",
+   "bytes": 3850323,
+   "sha256": "a584f8ec4050f1189d14141afa0dc669375aecf849779f53e84deb180978367c",
+   "colunas": [
+    "orgao",
+    "conjunto",
+    "recurso_id",
+    "recurso",
+    "formato",
+    "publicado_em",
+    "tamanho",
+    "presente",
+    "estado",
+    "via",
+    "capturas",
+    "ultima_captura",
+    "datasets_silver",
+    "verificado_em",
+    "url"
+   ],
+   "linhas": 13823,
+   "dicionario": true,
+   "parquet": "/energia/series/dados_recursos_ons.parquet"
+  },
+  {
+   "caminho": "/energia/series/dados_recursos_ons.parquet",
+   "tipo": "parquet",
+   "bytes": 620514,
+   "sha256": "ee37d208a5bef4a12b4f106d2856890393d097dd5b3b07f651850e146330646f"
   },
   {
    "caminho": "/energia/series/dados_revisoes.csv",
@@ -1186,8 +1283,8 @@
   {
    "caminho": "/energia/series/dados_validacoes.csv",
    "tipo": "serie",
-   "bytes": 472618,
-   "sha256": "c057c21fcbfb8488e1a27511922d220b114adc6523da4bf389443f1a480de244",
+   "bytes": 525734,
+   "sha256": "e53b3258e44517ea0c31b38eb6955524fecf9da123bcd92a747be006cf011fec",
    "colunas": [
     "id",
     "alvo",
@@ -1199,7 +1296,7 @@
     "problemas",
     "exemplos"
    ],
-   "linhas": 2051,
+   "linhas": 2240,
    "dicionario": true,
    "parquet": null
   },
@@ -2451,6 +2548,231 @@
    "parquet": null
   },
   {
+   "caminho": "/energia/series/mercado_agentes_aneel.csv",
+   "tipo": "serie",
+   "bytes": 715137,
+   "sha256": "03a462b4fd988fe0b4583d5efec69bcca4322553238af3068b82a802e1a01956",
+   "colunas": [
+    "cnpj",
+    "nome",
+    "ativo",
+    "comercializacao",
+    "distribuicao",
+    "geracao",
+    "transmissao",
+    "gerado_em"
+   ],
+   "linhas": 9998,
+   "dicionario": true,
+   "parquet": null
+  },
+  {
+   "caminho": "/energia/series/mercado_ccee_desligamentos.csv",
+   "tipo": "serie",
+   "bytes": 294499,
+   "sha256": "cd296dd738459ad53920cf50403a81c40555874cd8f6fc83be8bf51a02843c3a",
+   "colunas": [
+    "data",
+    "tipo",
+    "cnpj",
+    "agente",
+    "classe",
+    "sucessao",
+    "cnpj_sucessor",
+    "classe_sucessor",
+    "reuniao_cad"
+   ],
+   "linhas": 2534,
+   "dicionario": true,
+   "parquet": null
+  },
+  {
+   "caminho": "/energia/series/mercado_ccee_mensal.csv",
+   "tipo": "serie",
+   "bytes": 335438,
+   "sha256": "3c3b479e314866e5b8ef8f0aeefacca97166b4379b5362504c9117b9f150779b",
+   "colunas": [
+    "conjunto",
+    "serie",
+    "mes",
+    "valor",
+    "unidade"
+   ],
+   "linhas": 4791,
+   "dicionario": true,
+   "parquet": null
+  },
+  {
+   "caminho": "/energia/series/mercado_consumo_mensal.csv",
+   "tipo": "serie",
+   "bytes": 967991,
+   "sha256": "490d8fa20292e7b7f0b0fd46bbe416b86f4114cd700a2b984c06da71870bd7f7",
+   "colunas": [
+    "mes",
+    "regiao",
+    "subsistema",
+    "classe",
+    "tipo",
+    "consumo_mwh",
+    "unidades_consumidoras"
+   ],
+   "linhas": 18728,
+   "dicionario": true,
+   "parquet": null
+  },
+  {
+   "caminho": "/energia/series/mercado_consumo_uf.csv",
+   "tipo": "serie",
+   "bytes": 2820146,
+   "sha256": "d334dba0e0e21dbc72f3dccf574d20439334d96114b5858129ec11fd36aec7c4",
+   "colunas": [
+    "mes",
+    "uf",
+    "subsistema",
+    "classe",
+    "tipo",
+    "consumo_mwh",
+    "unidades_consumidoras"
+   ],
+   "linhas": 61218,
+   "dicionario": true,
+   "parquet": "/energia/series/mercado_consumo_uf.parquet"
+  },
+  {
+   "caminho": "/energia/series/mercado_consumo_uf.parquet",
+   "tipo": "parquet",
+   "bytes": 663182,
+   "sha256": "7d912ff3a4c0762ee5191693d219b8b160e7b2c02c6c0d4be5620a7f36b673b1"
+  },
+  {
+   "caminho": "/energia/series/mercado_conta_bandeira.csv",
+   "tipo": "serie",
+   "bytes": 1757185,
+   "sha256": "217ec1ac0e7ec07db8da03b53d30244f0cd94ea794848b77a26455cb43fc96eb",
+   "colunas": [
+    "cnpj",
+    "sigla",
+    "mes",
+    "receita_faturada",
+    "repasse_conta_bandeira",
+    "resultado_mcp",
+    "ccear_d",
+    "rh_ccgf_repactuadas_liquido",
+    "rh_itaipu",
+    "rh_repactuadas",
+    "rh_ccgf",
+    "previsao_rh",
+    "premio_risco",
+    "ess_eer",
+    "ressarcimento_coner",
+    "linhas"
+   ],
+   "linhas": 13727,
+   "dicionario": true,
+   "parquet": null
+  },
+  {
+   "caminho": "/energia/series/mercado_distribuidoras_ano.csv",
+   "tipo": "serie",
+   "bytes": 14443,
+   "sha256": "efc5ec7126ee17a75dae32fe94450ab46be17177bd0f2764c8148cad6091df3d",
+   "colunas": [
+    "ano",
+    "cnpj",
+    "sigla",
+    "nome",
+    "meses",
+    "completo",
+    "livre_mwh",
+    "cativo_mwh",
+    "livre_pct_faturada",
+    "livre_uc_dez",
+    "livre_uc_dez_anterior",
+    "variacao_livre_uc",
+    "livre_uc_incentivada_dez",
+    "livre_uc_convencional_dez",
+    "livre_uc_autoproducao_dez",
+    "cativo_uc_dez"
+   ],
+   "linhas": 103,
+   "dicionario": true,
+   "parquet": null
+  },
+  {
+   "caminho": "/energia/series/mercado_distribuidoras_mensal.csv",
+   "tipo": "serie",
+   "bytes": 922080,
+   "sha256": "57f409e1ec90da76d4df11a70344a18774abbabee0d72f4337baa32cd20a6e80",
+   "colunas": [
+    "cnpj",
+    "sigla",
+    "mes",
+    "livre_mwh",
+    "livre_mwh_incentivada",
+    "livre_mwh_autoproducao",
+    "livre_mwh_erc",
+    "livre_mwh_convencional",
+    "livre_mwh_outro",
+    "livre_uc",
+    "livre_uc_incentivada",
+    "livre_uc_autoproducao",
+    "livre_uc_erc",
+    "livre_uc_convencional",
+    "livre_uc_outro",
+    "livre_mwh_refat",
+    "cativo_mwh",
+    "cativo_uc",
+    "cativo_mwh_refat"
+   ],
+   "linhas": 9487,
+   "dicionario": true,
+   "parquet": null
+  },
+  {
+   "caminho": "/energia/series/mercado_encargos_mme.csv",
+   "tipo": "serie",
+   "bytes": 17100,
+   "sha256": "d3dafbea00c51d072e02fc4c0fdd7d255001f21e3c58cf17c5c725f9bc6e3276",
+   "colunas": [
+    "edicao",
+    "mes",
+    "tipo",
+    "rotulo",
+    "nivel",
+    "valor_mil_rs",
+    "traco",
+    "vigente"
+   ],
+   "linhas": 222,
+   "dicionario": true,
+   "parquet": null
+  },
+  {
+   "caminho": "/energia/series/mercado_nacional_mensal.csv",
+   "tipo": "serie",
+   "bytes": 31072,
+   "sha256": "3f9e5099886c18d779cf3a7ce4f076e6b8e8ab432aff546cbecc6b8e7e85a5e8",
+   "colunas": [
+    "mes",
+    "cativo_mwh",
+    "livre_mwh",
+    "total_mwh",
+    "livre_pct",
+    "cativo_uc",
+    "livre_uc",
+    "total_planilha_mwh",
+    "livre_planilha_mwh",
+    "diferenca_total_mwh",
+    "preliminar",
+    "samp_livre_uc",
+    "samp_livre_mwh",
+    "samp_distribuidoras"
+   ],
+   "linhas": 272,
+   "dicionario": true,
+   "parquet": null
+  },
+  {
    "caminho": "/energia/series/perdas_acumulado_ano.csv",
    "tipo": "serie",
    "bytes": 10562,
@@ -2481,7 +2803,7 @@
    "caminho": "/energia/series/perdas_anual.json",
    "tipo": "serie",
    "bytes": 479296,
-   "sha256": "be2d523223af44b48ac4215f878adb56e541933f4d72fba7369251c0d0139741"
+   "sha256": "f7e079ca605198543021d1e21809a3a8e65f2408fa6d7c68a982b37ca99f2c3b"
   },
   {
    "caminho": "/energia/series/perdas_contexto_social.csv",
@@ -2550,19 +2872,19 @@
    "caminho": "/energia/series/perdas_evidencias.json",
    "tipo": "serie",
    "bytes": 340843,
-   "sha256": "a8e88bb9ec2b042e66909279ea913ba933e14fa2a189339cfa93758eaa243191"
+   "sha256": "86874f9fc6a224ed4d9c418fe45843d0c8c52c4ff4a1dbe968fd43ef0a3bf6c2"
   },
   {
    "caminho": "/energia/series/perdas_evidencias_tarifa.json",
    "tipo": "serie",
    "bytes": 464641,
-   "sha256": "4da5e009e1a1c4b823f160ac8acbf4e9ee54b66be6af0633afce48846e36cb43"
+   "sha256": "25cf2b8866848a2564c378f938458e986d4cbea25a4b69db37dbd9b224d21aef"
   },
   {
    "caminho": "/energia/series/perdas_evidencias_tecnica.json",
    "tipo": "serie",
    "bytes": 193896,
-   "sha256": "8fd6b04c87a76cb14ee57fa86d0275b2cbc79cbb93c1f7b89897426b7c22f77d"
+   "sha256": "62d2ba7a05fce0cd1bef0eea790b6404c9d83fd20049f82eddb4bf9f57146e52"
   },
   {
    "caminho": "/energia/series/perdas_mensal.csv",
@@ -2630,7 +2952,7 @@
    "caminho": "/energia/series/perdas_municipios.json",
    "tipo": "serie",
    "bytes": 565375,
-   "sha256": "55563270692c4de1d99f1443bf8143e5f06c23738b4b75102f7f9224e6eacb89"
+   "sha256": "ca26a40bd3092949748644640517361b5e2bef76ef022afe102afe6abbc15143"
   },
   {
    "caminho": "/energia/series/perdas_nacional.csv",
@@ -2680,7 +3002,7 @@
    "caminho": "/energia/series/perdas_nacional.json",
    "tipo": "serie",
    "bytes": 68187,
-   "sha256": "c921eeceb3e255010d0c70688748ef5988636173d1851602365e2594b9635ca4"
+   "sha256": "be9254b8330880078597858ba4ca58155cc7991039ae6da0a2dee0704ac91531"
   },
   {
    "caminho": "/energia/series/perdas_tarifa_b1.csv",
@@ -2956,108 +3278,6 @@
     "ultimo_fim_treino"
    ],
    "linhas": 13944,
-   "dicionario": true,
-   "parquet": null
-  },
-  {
-   "caminho": "/energia/series/previsoes_backtest_mensal.csv",
-   "tipo": "serie",
-   "bytes": 2054205,
-   "sha256": "a7046fc4ec4498f6049dc7b50c37d200a1b79303936c1262057b4b7dcfb3b6ad",
-   "colunas": [
-    "origem",
-    "horizonte",
-    "submercado",
-    "entrega",
-    "periodo",
-    "realizado",
-    "b0",
-    "s0",
-    "c2p",
-    "c2h",
-    "b0_p10",
-    "b0_p90",
-    "s0_p10",
-    "s0_p90",
-    "c2p_p10",
-    "c2p_p90",
-    "c2h_p10",
-    "c2h_p90",
-    "piso",
-    "teto",
-    "faixa_provisoria"
-   ],
-   "linhas": 20808,
-   "dicionario": true,
-   "parquet": null
-  },
-  {
-   "caminho": "/energia/series/previsoes_backtest_semanal.csv",
-   "tipo": "serie",
-   "bytes": 3439493,
-   "sha256": "5a3a085ffa90561416a19cd5a8d8896c37ebbb1993743c33b2f2b13a65bc2658",
-   "colunas": [
-    "origem",
-    "horizonte",
-    "submercado",
-    "entrega",
-    "periodo",
-    "realizado",
-    "b0",
-    "s0",
-    "c2p",
-    "c2h",
-    "b0_p10",
-    "b0_p90",
-    "s0_p10",
-    "s0_p90",
-    "c2p_p10",
-    "c2p_p90",
-    "c2h_p10",
-    "c2h_p90",
-    "piso",
-    "teto",
-    "faixa_provisoria"
-   ],
-   "linhas": 27744,
-   "dicionario": true,
-   "parquet": "/energia/series/previsoes_backtest_semanal.parquet"
-  },
-  {
-   "caminho": "/energia/series/previsoes_backtest_semanal.parquet",
-   "tipo": "parquet",
-   "bytes": 358360,
-   "sha256": "207484ab2cb64b615da88f60d2604fd075faf75e88c28d400207977a677a5aa6"
-  },
-  {
-   "caminho": "/energia/series/previsoes_desempenho.csv",
-   "tipo": "serie",
-   "bytes": 35606,
-   "sha256": "9d8483f898b774d225e555f8dbe7dde27dad5e368bede112bd0fdfcc6ca08dc4",
-   "colunas": [
-    "modelo",
-    "recorte",
-    "horizonte",
-    "submercado",
-    "periodo",
-    "linhas",
-    "entregas",
-    "origens",
-    "mae",
-    "vies",
-    "rmse",
-    "mae_b0_pareado",
-    "ganho_vs_b0",
-    "ganho_ic90_inf",
-    "ganho_ic90_sup",
-    "skill",
-    "perda_quantilica",
-    "cobertura_p10_p90",
-    "cobertura_p05_p95",
-    "largura_p10_p90",
-    "calibracao"
-   ],
-   "linhas": 296,
    "dicionario": true,
    "parquet": null
   },
@@ -3386,7 +3606,7 @@
    "caminho": "/energia/series/qualidade_distribuidoras_serie.json",
    "tipo": "serie",
    "bytes": 36253,
-   "sha256": "cf8dd48c163f861573bf3e30f2068b4952ad0004184f18d408d718b1c6c6d5a0"
+   "sha256": "96df5083d461983d5ef23969cafc69c917551da91e0782ac30ddf81b6455a4d6"
   },
   {
    "caminho": "/energia/series/qualidade_eventos_emergencia.csv",
@@ -3417,7 +3637,7 @@
    "caminho": "/energia/series/qualidade_mapa.json",
    "tipo": "serie",
    "bytes": 208170,
-   "sha256": "e2d0f5ae5f93e1cb9b6058c01c6900a7e517a716df9f2588d641053481e32e00"
+   "sha256": "7d50dc5632cbb50a6d2e69f06372e78421aa39c4a9412987805a777d184c9411"
   },
   {
    "caminho": "/energia/series/qualidade_municipios.csv",

@@ -494,21 +494,44 @@ def situacao(con):
 
 # ---------------------------------------------------------------- InfoMercado mensal (conferência)
 
-# Edições do InfoMercado mensal (PDF da CCEE) usadas como publicação oficial independente para
-# conferir os números calculados a partir dos conjuntos abertos. A partir de junho de 2024 a CCEE
-# passou a publicar os dados só no portal de dados abertos; estas edições trazem, em texto, o
-# fator de ajuste do MRE (GSF), a geração do MRE, o número de agentes contabilizados, o consumo,
-# o total de encargos e o total a liquidar do mês de contabilização.
+# InfoMercado mensal (PDF da CCEE): publicação oficial independente dos conjuntos abertos, usada
+# para conferir os números calculados. O sumário executivo traz em texto o fator de ajuste do MRE
+# (GSF), a geração do MRE, os agentes contabilizados, o "Consumo/Geração", o total de encargos e o
+# total a liquidar do mês de contabilização; a seção de encargos traz a composição do total e o
+# alívio. A página "Mercado Mensal" da CCEE expõe só a edição mais recente (campo
+# url_documento_boletim, com a data de publicação ao lado): o coletor guarda a página no bronze,
+# baixa a edição corrente em cada execução e acumula as edições no silver. As duas edições fixas
+# abaixo (agosto e outubro de 2024) foram localizadas antes, no endereço de documentos da CCEE;
+# edições intermediárias não são listadas pela página e não foram procuradas por adivinhação de endereço.
 INFOMERCADO = [
     {"numero": "206", "url": "https://www.ccee.org.br/documents/80415/28517714/InfoMercado-mensal_ago_24_206.pdf/1bddcc1f-c240-cbe3-bae9-fc27f2fa98cf"},
     {"numero": "208", "url": "https://www.ccee.org.br/documents/80415/28965781/InfoMercado-mensal_out_24_208.pdf/d07ecb26-422f-f2ff-a5c4-2fab60997420"},
 ]
+URL_MERCADO_MENSAL = "https://www.ccee.org.br/web/guest/dados-e-analises/dados-mercado-mensal"
 DS_INFOMERCADO = "ccee_infomercado"
 # Versão do extrator do InfoMercado, separada da dos conjuntos: mudar a extração dos PDFs não
 # reprocessa os CSV grandes (parcelas de carga).
-VERSAO_INFOMERCADO = "infomercado-2"
+VERSAO_INFOMERCADO = "infomercado-4"
 MESES_PT = {"janeiro": 1, "fevereiro": 2, "março": 3, "abril": 4, "maio": 5, "junho": 6, "julho": 7, "agosto": 8,
             "setembro": 9, "outubro": 10, "novembro": 11, "dezembro": 12}
+
+# Rótulo da parcela no parágrafo "Do total de encargos (...)" → componente. O texto mudou entre
+# 2024 ("restrição da operação", "serviços ancilares") e 2026 ("restrição de operação", "suporte
+# de reativo", deslocamento hidráulico separado por perfis de geração e de consumo, "suporte de
+# reativo vinculado ao sandbox"); rótulo fora desta lista é registrado e impede a conferência do
+# total (nenhum componente é adivinhado).
+COMPONENTES_ENCARGOS = {
+    "restrição da operação": "restricao_operacao", "restrição de operação": "restricao_operacao",
+    "serviços ancilares": "servicos_ancilares", "suporte de reativo": "suporte_reativo",
+    "encargo de importação": "importacao", "importação de energia": "importacao",
+    "deslocamento hidráulico": "deslocamento_hidraulico",
+    "deslocamento hidráulico de perfis de geração": "deslocamento_hidraulico",
+    "deslocamento hidráulico de perfis de consumo": "deslocamento_hidraulico",
+    "segurança energética": "seguranca_energetica", "reserva operativa": "reserva_operativa",
+    "resposta da demanda": "resposta_demanda", "suporte de reativo vinculado ao sandbox": "suporte_reativo_sandbox",
+}
+# Componentes publicados no InfoMercado que não são colunas do conjunto ENCARGO_ESS_ANCILAR.
+COMPONENTES_FORA_DO_CONJUNTO = ("resposta_demanda", "suporte_reativo_sandbox")
 
 
 def _num_br(txt):
@@ -517,9 +540,11 @@ def _num_br(txt):
 
 def infomercado_valores(texto):
     """Valores do sumário executivo de uma edição do InfoMercado mensal (texto do pdftotext).
-    Retorna {"numero", "mes", "valores": {medida: valor}, "paginas": {medida: página}};
-    medida ausente fica de fora. A página (1 = primeira) vem das quebras de página (\\f) que o
-    pdftotext preserva, para a evidência apontar onde o número está no documento."""
+    Retorna {"numero", "mes", "valores": {medida: valor}, "paginas": {medida: página},
+    "rotulos_desconhecidos": [rótulo], "parcelas": {medida: quantas parcelas publicadas somam o
+    componente}}; medida ausente fica de fora. A página (1 = primeira) vem
+    das quebras de página (\f) que o pdftotext preserva, para a evidência apontar onde o número
+    está no documento."""
     cab = re.search(r"Nº\s*(\d+)\s*[–-]\s*Contabilização de ([a-zç]+) de (\d{4})", texto)
     if not cab:
         raise ValueError("cabeçalho 'Nº … – Contabilização de <mês> de <ano>' não encontrado")
@@ -532,37 +557,38 @@ def infomercado_valores(texto):
         "encargos_milhoes_rs": r"O total de encargos foi de R\$ ([\d.,]+) milhões",
         "liquidar_bilhoes_rs": r"O total a liquidar foi de R\$ ([\d.,]+) bilhões",
     }
-    valores, paginas = {}, {}
+    valores, paginas, desconhecidos, parcelas = {}, {}, [], {}
     for k, p in padroes.items():
         m = re.search(p, texto)
         if m:
             valores[k] = _num_br(m.group(1))
             paginas[k] = texto.count("\f", 0, m.start()) + 1
     # composição do total de encargos, no parágrafo da seção de encargos (coluna da direita do
-    # -layout): é ela que mostra que o total do InfoMercado inclui a resposta da demanda, que
-    # não é coluna do conjunto ENCARGO_ESS_ANCILAR
-    par, inicio = _paragrafo_coluna(texto, "Do total de encargos")
+    # -layout): é ela que mostra que o total do InfoMercado inclui parcelas que não são colunas
+    # do conjunto ENCARGO_ESS_ANCILAR (resposta da demanda, suporte de reativo do sandbox)
+    par, inicio = _paragrafo_coluna(texto, "Do total de encargos", linhas=9)
     if par:
         pg = texto.count("\f", 0, inicio) + 1
         m = re.search(r"Do total de encargos \(R\$ ([\d.,]+) milhões\)", par)
         if m:
             valores["encargos_total_detalhe_milhoes_rs"] = _num_br(m.group(1))
             paginas["encargos_total_detalhe_milhoes_rs"] = pg
-        for m in re.finditer(r"\(([\d.,]+) milhões\) (?:foi devido a |de )(restrição da operação|serviços ancilares|"
-                             r"encargo de importação|deslocamento hidráulico|resposta da demanda)", par):
-            k = f"encargos_{COMPONENTES_ENCARGOS[m.group(2)]}_milhoes_rs"
-            valores[k] = _num_br(m.group(1))
+        for m in re.finditer(r"\((?:R\$\s*)?([\d.,]+)\s+milhões\)\s+(?:foi devido a|de)\s+(.+?)(?=,\s*\d|\s+e\s+\d|\.\s|\.$)", par):
+            rot = m.group(2).strip()
+            comp = COMPONENTES_ENCARGOS.get(rot)
+            if comp is None:
+                desconhecidos.append(rot)
+                continue
+            k = f"encargos_{comp}_milhoes_rs"
+            valores[k] = valores.get(k, 0.0) + _num_br(m.group(1))
             paginas[k] = pg
+            parcelas[k] = parcelas.get(k, 0) + 1
         m = re.search(r"Houve R\$ ([\d.,]+) milhões de alívio", par)
         if m:
             valores["alivio_ess_milhoes_rs"] = _num_br(m.group(1))
             paginas["alivio_ess_milhoes_rs"] = pg
-    return {"numero": cab.group(1), "mes": mes, "valores": valores, "paginas": paginas}
-
-
-COMPONENTES_ENCARGOS = {"restrição da operação": "restricao_operacao", "serviços ancilares": "servicos_ancilares",
-                        "encargo de importação": "importacao", "deslocamento hidráulico": "deslocamento_hidraulico",
-                        "resposta da demanda": "resposta_demanda"}
+    return {"numero": cab.group(1), "mes": mes, "valores": valores, "paginas": paginas,
+            "rotulos_desconhecidos": desconhecidos, "parcelas": parcelas}
 
 
 def _paragrafo_coluna(texto, marcador, linhas=7):
@@ -580,6 +606,19 @@ def _paragrafo_coluna(texto, marcador, linhas=7):
             break
         partes.append(trecho)
     return re.sub(r"\s+", " ", " ".join(partes)), i
+
+
+def edicao_corrente(html):
+    """(url do PDF, número da edição, data de publicação 'AAAA-MM-DD' | None) da edição mais
+    recente exposta na página Mercado Mensal; None quando a página não traz o campo."""
+    m = re.search(r'id="url_documento_boletim"[^>]*value="([^"]+\.pdf[^"]*)"', html)
+    if not m:
+        return None
+    url = m.group(1)
+    n = re.search(r"_(\d{3,4})\.pdf", url)
+    d = re.search(r'id="data_publicacao_documento"[^>]*value="(\d{2})/(\d{2})/(\d{2})"', html)
+    quando = f"20{d.group(3)}-{d.group(2)}-{d.group(1)}" if d else None
+    return (url, n.group(1) if n else None, quando)
 
 
 def _texto_pdf_bronze(arquivo):
@@ -607,16 +646,32 @@ def _texto_pdf_bronze(arquivo):
             pass
 
 
-def coleta_infomercado(con, baixador=http_download, extrai_texto=_texto_pdf_bronze):
-    """Baixa as edições do InfoMercado mensal listadas em INFOMERCADO para o bronze (sha256,
-    vintage) e grava no silver os números do sumário executivo, com a página de cada um.
-    São publicações encerradas (a CCEE não atualiza edições antigas): a recoleta é anual.
-    Nunca lança: falha vira registro em `coletas`."""
+def coleta_infomercado(con, baixador=http_download, extrai_texto=_texto_pdf_bronze, baixar_pagina=http_get):
+    """Baixa as edições do InfoMercado mensal (as fixas de INFOMERCADO e a corrente da página
+    Mercado Mensal) para o bronze (sha256, vintage) e grava no silver os números do sumário
+    executivo, com a página de cada um. Edição publicada não é atualizada pela CCEE: a recoleta
+    de cada PDF é anual. Nunca lança: falha vira registro em `coletas`."""
     status = {"ok": True, "edicoes": {}}
-    for it in INFOMERCADO:
+    edicoes = [dict(it, publicado_em=None) for it in INFOMERCADO]
+    try:
+        corpo, _ = baixar_pagina(URL_MERCADO_MENSAL, timeout=60, accept="text/html")
+        capturado = base.agora_utc()
+        caminho, sha = base.salva_bronze("ccee", DS_INFOMERCADO, "pagina-mercado-mensal", corpo, "html", capturado)
+        base.registra_vintage(con, DS_INFOMERCADO, "pagina-mercado-mensal", URL_MERCADO_MENSAL, capturado, None, sha,
+                              len(corpo), "coleta_direta", caminho)
+        base.registra_coleta(con, DS_INFOMERCADO, "pagina-mercado-mensal", True, f"{len(corpo)} bytes")
+        cor = edicao_corrente(corpo.decode("utf-8", errors="replace"))
+        status["edicao_corrente"] = cor and {"url": cor[0], "numero": cor[1], "publicado_em": cor[2]}
+        if cor and cor[1] and cor[1] not in {e["numero"] for e in edicoes}:
+            edicoes.append({"numero": cor[1], "url": cor[0], "publicado_em": cor[2]})
+    except Exception as e:  # página fora do ar: as edições fixas continuam
+        base.registra_coleta(con, DS_INFOMERCADO, "pagina-mercado-mensal", False, str(e)[:300])
+        status["edicao_corrente"] = None
+    con.commit()
+    for it in edicoes:
         recurso = f"InfoMercado-mensal_{it['numero']}.pdf"
         res = ckan.baixar_recurso(con, orgao="CCEE", dataset=DS_INFOMERCADO, recurso=recurso, url=it["url"],
-                                  publicado_em=None, ext="pdf", max_idade_dias=365, baixador=baixador)
+                                  publicado_em=it["publicado_em"], ext="pdf", max_idade_dias=365, baixador=baixador)
         item = {"status": res["status"], "detalhe": res["detalhe"]}
         status["edicoes"][recurso] = item
         v = res["vintage"]
@@ -647,11 +702,13 @@ def coleta_infomercado(con, baixador=http_download, extrai_texto=_texto_pdf_bron
             continue
         obs = [(f"im|{vals['numero']}|{k}", vals["mes"], val) for k, val in vals["valores"].items()]
         ch = f"edicao|{vals['numero']}"
-        regs = [(ch, "mes", vals["mes"]), (ch, "recurso", recurso), (ch, "vintage", v["vintage_id"]), (ch, "url", it["url"])]
+        regs = [(ch, "mes", vals["mes"]), (ch, "recurso", recurso), (ch, "vintage", v["vintage_id"]), (ch, "url", it["url"]),
+                (ch, "rotulos_desconhecidos", json.dumps(vals["rotulos_desconhecidos"], ensure_ascii=False))]
         regs += [(ch, f"pagina|{k}", str(p)) for k, p in vals["paginas"].items()]
+        regs += [(ch, f"parcelas|{k}", str(n)) for k, n in vals["parcelas"].items()]
         regs.append((f"__processada__|{v['vintage_id']}|{VERSAO_INFOMERCADO}", "ok", "1"))
         novas, rev = base.grava_observacoes(con, DS_INFOMERCADO, v["vintage_id"], obs)
         base.grava_registros(con, DS_INFOMERCADO, v["vintage_id"], regs)
         con.commit()
-        item.update(medidas=sorted(vals["valores"]), novas=novas, revisoes=rev)
+        item.update(medidas=sorted(vals["valores"]), novas=novas, revisoes=rev, rotulos_desconhecidos=vals["rotulos_desconhecidos"])
     return status

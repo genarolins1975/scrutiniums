@@ -316,15 +316,127 @@ def _faixa(v, p10, p90):
     return "abaixo" if v < p10 else ("acima" if v > p90 else "dentro")
 
 
-def _bandas_do_dia(serie, dia, ano_ini):
+def _bandas_do_dia(serie, dia, ano_ini, valido=None):
     """p10, p50, p90 e n do valor do mesmo dia do calendário nos anos completos de ano_ini
-    ao ano anterior ao do dia (29/02 fora da distribuição; como referência usa 28/02)."""
+    ao ano anterior ao do dia (29/02 fora da distribuição; como referência usa 28/02).
+    valido(dia_do_ano) → False tira o ano da distribuição (ex.: EAR máxima zero, quando o
+    percentual não se aplica)."""
     ano_ref = int(dia[:4])
     md = _md(dia)
-    vs = [serie[f"{a}-{md}"] for a in range(ano_ini, ano_ref) if f"{a}-{md}" in serie]
+    vs = [serie[f"{a}-{md}"] for a in range(ano_ini, ano_ref)
+          if f"{a}-{md}" in serie and (valido is None or valido(f"{a}-{md}"))]
     if not vs:
         return None, None, None, 0, []
     return c.quantil(vs, 0.1), c.quantil(vs, 0.5), c.quantil(vs, 0.9), len(vs), vs
+
+
+# Com menos de 5 anos na base, p10 e p90 seriam praticamente o mínimo e o máximo de 2 a 4
+# valores: a faixa e o percentil não são publicados (o número de anos é).
+MIN_ANOS_FAIXA = 5
+
+
+def faixa_sazonal(pct, mw, mx, dia, ano_ini, minimo=MIN_ANOS_FAIXA):
+    """Faixa sazonal de um recorte de EAR (subsistema, SIN, REE ou bacia) no dia.
+
+    pct, mw, mx: {dia: valor} do percentual, da EAR em MWmês e da EAR máxima. Regras:
+    - EAR máxima zero no dia (recorte sem armazenamento, só fio d'água): o percentual não
+      se aplica, e faixa, percentil e bandas ficam nulos (nunca 0/0 = 0);
+    - anos da base com EAR máxima zero (reservatório ainda não existia) ficam fora da
+      distribuição pelo mesmo motivo;
+    - menos de `minimo` anos: sem faixa e sem percentil;
+    - periodo_base traz o primeiro e o último ano realmente usados;
+    - capacidade_mudou_na_base sinaliza EAR máxima que variou mais de 5% entre os anos
+      usados ou cuja mediana na base difere da atual em mais de 5%: a faixa em % compara
+      capacidades diferentes (a faixa em MWmês vem ao lado)."""
+    v, m_, x = pct.get(dia), mw.get(dia), mx.get(dia)
+    sem_arm = x is not None and x == 0
+    def ok(k):  # noqa: E306
+        return mx.get(k) is not None and mx[k] > 0
+    p10, p50, p90, n, vs = _bandas_do_dia(pct, dia, ano_ini, ok)
+    q10, q50, q90, _nm, _ = _bandas_do_dia(mw, dia, ano_ini, ok)
+    md = _md(dia)
+    anos = [a for a in range(ano_ini, int(dia[:4])) if f"{a}-{md}" in pct and ok(f"{a}-{md}")]
+    maxs = [mx[f"{a}-{md}"] for a in anos]
+    publica = not sem_arm and v is not None and n >= minimo
+    cap_mudou = bool(maxs and x is not None and x > 0 and (max(maxs) - min(maxs) > 0.05 * x
+                                                            or abs(x - c.quantil(maxs, 0.5)) > 0.05 * x))
+    return {
+        "p10": c.r(p10, 2) if publica else None, "p50": c.r(p50, 2) if publica else None,
+        "p90": c.r(p90, 2) if publica else None, "anos_na_base": 0 if sem_arm else n,
+        "periodo_base": f"{anos[0]}-{anos[-1]}" if anos and not sem_arm else None,
+        "p10_mwmes": c.r(q10, 1) if publica else None, "p50_mwmes": c.r(q50, 1) if publica else None,
+        "p90_mwmes": c.r(q90, 1) if publica else None,
+        "faixa": _faixa(v, p10, p90) if publica else None,
+        "percentil_na_data": c.r(c.percentil_de(v, vs), 1) if publica else None,
+        "ear_max_base_min_mwmes": c.r(min(maxs), 1) if maxs and not sem_arm else None,
+        "ear_max_base_max_mwmes": c.r(max(maxs), 1) if maxs and not sem_arm else None,
+        "capacidade_mudou_na_base": cap_mudou,
+    }
+
+
+def configuracao_ree(max_por_ree, tol_rel=0.005):
+    """Quebra de perímetro dos REE detectada nos próprios arquivos do ONS.
+
+    max_por_ree: {REE: {dia: EAR máxima}}. A configuração é o conjunto de REE publicados
+    no dia; a vigente começa no primeiro dia desde o qual o conjunto é sempre o atual. Os
+    REE novos foram recortados de REE existentes (a soma das capacidades se conserva numa
+    repartição): procura-se o último dia da configuração anterior em que a soma das EAR
+    máximas é a mesma do primeiro dia da atual (dentro de tol_rel) e compara-se cada REE
+    entre esses dois dias. REE cuja EAR máxima mudou (além do arredondamento a MWmês
+    inteiros) e REE novos têm perímetro diferente antes da quebra: a base da faixa
+    sazonal deles começa no primeiro ano completo da configuração atual. Dias entre os
+    dois (perímetro já mudado, REE novos ainda ausentes) ficam listados como transição.
+    Sem dia de soma conservada, todos os REE contam como afetados (conservador)."""
+    por_dia = defaultdict(set)
+    for n_, s in max_por_ree.items():
+        for k, v in s.items():
+            if v is not None:
+                por_dia[k].add(n_)
+    dias = sorted(por_dia)
+    if not dias:
+        return None
+    atual = por_dia[dias[-1]]
+    i = len(dias) - 1
+    while i > 0 and por_dia[dias[i - 1]] == atual:
+        i -= 1
+    inicio = dias[i]
+    ano_cfg = int(inicio[:4]) if inicio[5:] == "01-01" else int(inicio[:4]) + 1
+    if i == 0:
+        return {"inicio_configuracao": inicio, "quebra": None, "ano_inicio_base": {n_: int(inicio[:4]) for n_ in atual},
+                "afetados": [], "novos": [], "transicao": [], "comparacao": []}
+    anterior = por_dia[dias[i - 1]]
+    novos = sorted(atual - anterior)
+    tot_novo = sum(max_por_ree[n_][inicio] for n_ in atual)
+    ref = None
+    for k in reversed(dias[:i]):
+        if por_dia[k] != anterior:
+            break
+        tot = sum(max_por_ree[n_][k] for n_ in anterior)
+        if abs(tot - tot_novo) <= tol_rel * max(tot_novo, 1e-9):
+            ref = k
+            break
+    afetados = set(novos)
+    comp = []
+    for n_ in sorted(atual | anterior):
+        a = max_por_ree.get(n_, {}).get(ref) if ref else None
+        b = max_por_ree.get(n_, {}).get(inicio)
+        mudou = n_ in novos or n_ not in atual or ref is None or a is None or b is None or \
+            abs(b - a) > max(1.0, 0.001 * max(abs(a), abs(b)))
+        if mudou:
+            afetados.add(n_)
+        comp.append({"nome": n_, "ear_max_antes_mwmes": c.r(a, 3), "ear_max_depois_mwmes": c.r(b, 3),
+                     "perimetro_mudou": bool(mudou), "novo": n_ in novos})
+    primeiro = {n_: int(min(max_por_ree[n_])[:4]) for n_ in atual}
+    return {
+        "inicio_configuracao": inicio, "quebra": inicio, "dia_soma_conservada": ref,
+        "transicao": [k for k in dias[:i] if ref and k > ref],
+        "n_antes": len(anterior), "n_depois": len(atual), "novos": novos, "extintos": sorted(anterior - atual),
+        "afetados": sorted(afetados & atual),
+        "soma_ear_max_antes_mwmes": c.r(sum(max_por_ree[n_][ref] for n_ in anterior), 3) if ref else None,
+        "soma_ear_max_depois_mwmes": c.r(tot_novo, 3),
+        "ano_inicio_base": {n_: (max(ano_cfg, primeiro[n_]) if n_ in afetados else primeiro[n_]) for n_ in atual},
+        "comparacao": comp,
+    }
 
 
 def _col(linhas, campos):
@@ -953,15 +1065,77 @@ def _importa_precip_estacoes(con, st):
 
 # ================================================================ construção: P017 armazenamento
 
-def _ear_subsistemas(con_p):
-    mw = {sm: _serie(con_p, DS_EAR_SM, f"ear_mwmes.{sm}") for sm in SMS}
-    mx = {sm: _serie(con_p, DS_EAR_SM, f"ear_max_mwmes.{sm}") for sm in SMS}
-    pct = {sm: _serie(con_p, DS_EAR_SM, f"ear_pct.{sm}") for sm in SMS}
+FONTE_PRINCIPAL = "silver principal"
+FONTE_RECAPTURA = "recaptura do módulo"
+
+
+def series_mais_recentes(fontes, prefixo, nomes):
+    """Séries diárias por subsistema montadas com a captura mais recente de cada ano.
+
+    fontes: [(rótulo, conexão, dataset)]. O ONS publica um arquivo por ano
+    (EAR_DIARIO_SUBSISTEMA_<ano>), e cada captura traz o ano inteiro; o silver principal e
+    a recaptura deste módulo guardam capturas feitas em horários diferentes. Para cada ano
+    vale a fonte cuja última vintage do arquivo daquele ano é a mais recente (empate: a
+    última da lista). Assim a gold nunca mistura, para o mesmo dia, um valor já revisado
+    pelo ONS (recaptura) com um anterior (silver principal), e o destaque do painel usa o
+    dado mais novo que o módulo tem. Devolve ({nome: {dia: valor}}, {ano: escolha}) e,
+    para conferir a revisão entre capturas, os valores de cada fonte."""
+    dados = {}
+    for rot, con, ds in fontes:
+        if con is None:
+            continue
+        dados[rot] = {n: _serie(con, ds, n) for n in nomes}
+    escolha = {}
+    anos = sorted({k[:4] for rot in dados for n in nomes for k in dados[rot][n]})
+    for ano in anos:
+        cands = []
+        for i, (rot, con, ds) in enumerate(fontes):
+            if rot not in dados or not any(k[:4] == ano for k in dados[rot][nomes[0]]):
+                continue
+            v = base.ultima_vintage(con, ds, f"{prefixo}{ano}")
+            cands.append(((v or {}).get("capturado_em") or "", i, rot, v))
+        if cands:
+            cap, _i, rot, v = max(cands)
+            escolha[ano] = {"fonte": rot, "capturado_em": cap or None, "recurso": (v or {}).get("recurso"),
+                            "vintage_id": (v or {}).get("vintage_id")}
+    out = {n: {} for n in nomes}
+    for n in nomes:
+        for ano, e in escolha.items():
+            out[n].update({k: x for k, x in dados[e["fonte"]][n].items() if k[:4] == ano})
+    return out, escolha, dados
+
+
+def _revisoes_entre_capturas(dados, nomes_sm, dias):
+    """Dias em que a captura do silver principal e a recaptura diferem (revisão do ONS
+    entre as capturas), por série, nos dias pedidos. Publicado para que a revisão
+    conhecida fique visível, e não apenas absorvida."""
+    a, b = dados.get(FONTE_PRINCIPAL), dados.get(FONTE_RECAPTURA)
+    if not a or not b:
+        return []
+    out = []
+    for sm, serie in nomes_sm:
+        difs = [(k, b[serie][k] - a[serie][k]) for k in dias if k in a[serie] and k in b[serie]
+                and abs(b[serie][k] - a[serie][k]) > 0.0005]
+        if difs:
+            k, dmax = max(difs, key=lambda x: abs(x[1]))
+            out.append({"sm": sm, "serie": serie.split(".")[0], "dias_revisados": len(difs), "dia_maior": k,
+                        "silver_principal": c.r(a[serie][k], 3), "recaptura": c.r(b[serie][k], 3),
+                        "diferenca": c.r(dmax, 3)})
+    return out
+
+
+def _ear_subsistemas(con_p, con=None):
+    nomes = [f"{p}.{sm}" for p in ("ear_mwmes", "ear_max_mwmes", "ear_pct") for sm in SMS]
+    s, escolha, dados = series_mais_recentes(
+        [(FONTE_PRINCIPAL, con_p, DS_EAR_SM), (FONTE_RECAPTURA, con, DS_EAR_SM_CONF)], "EAR_DIARIO_SUBSISTEMA_", nomes)
+    mw = {sm: s[f"ear_mwmes.{sm}"] for sm in SMS}
+    mx = {sm: s[f"ear_max_mwmes.{sm}"] for sm in SMS}
+    pct = {sm: s[f"ear_pct.{sm}"] for sm in SMS}
     dias_ = sorted(set.intersection(*(set(mw[sm]) & set(mx[sm]) for sm in SMS)))
     mw["SIN"] = {d: sum(mw[sm][d] for sm in SMS) for d in dias_}
     mx["SIN"] = {d: sum(mx[sm][d] for sm in SMS) for d in dias_}
     pct["SIN"] = {d: 100.0 * mw["SIN"][d] / mx["SIN"][d] for d in dias_ if mx["SIN"][d] > 0}
-    return mw, mx, pct, dias_
+    return mw, mx, pct, dias_, escolha, dados
 
 
 def _recortes_ear(con, ds):
@@ -985,31 +1159,28 @@ def _recortes_ena(con, ds):
     return dict(out)
 
 
+def _pct_aplicavel(s, k):
+    """Percentual do dia só quando a EAR máxima é positiva (zero = não se aplica)."""
+    x = s["max"].get(k)
+    return s["pct"].get(k) if x is not None and x > 0 else None
+
+
 def _resumo_ear_recorte(nome_r, s, dia, ano_ini, extra=None):
-    v = s["pct"].get(dia)
+    v = _pct_aplicavel(s, dia)
     mw = s["mw"].get(dia)
     mx = s["max"].get(dia)
-    p10, p50, p90, n, _vs = _bandas_do_dia(s["pct"], dia, ano_ini)
-    q10, q50, q90, nm, _ = _bandas_do_dia(s["mw"], dia, ano_ini)
-    maxs = [s["max"][f"{a}-{_md(dia)}"] for a in range(ano_ini, int(dia[:4])) if f"{a}-{_md(dia)}" in s["max"]]
     d7, d30 = _dmenos(dia, 7), _dmenos(dia, 30)
+    v7, v30 = _pct_aplicavel(s, d7), _pct_aplicavel(s, d30)
     return {
         "nome": nome_r, **(extra or {}),
-        "dia": dia if v is not None else None,
+        "dia": dia if dia in s["mw"] else None,
         "ear_pct": c.r(v, 2), "ear_mwmes": c.r(mw, 1), "ear_max_mwmes": c.r(mx, 1),
         "sem_armazenamento": bool(mx is not None and mx == 0),
-        "variacao_7d_pp": c.r(v - s["pct"][d7], 2) if v is not None and d7 in s["pct"] else None,
-        "variacao_30d_pp": c.r(v - s["pct"][d30], 2) if v is not None and d30 in s["pct"] else None,
+        "variacao_7d_pp": c.r(v - v7, 2) if v is not None and v7 is not None else None,
+        "variacao_30d_pp": c.r(v - v30, 2) if v is not None and v30 is not None else None,
+        # MWmês é estoque: zero publicado com EAR máxima zero é zero de fato
         "variacao_30d_mwmes": c.r(mw - s["mw"][d30], 1) if mw is not None and d30 in s["mw"] else None,
-        "p10": c.r(p10, 2), "p50": c.r(p50, 2), "p90": c.r(p90, 2), "anos_na_base": n,
-        "periodo_base": f"{ano_ini}-{int(dia[:4]) - 1}" if n else None,
-        "p10_mwmes": c.r(q10, 1), "p50_mwmes": c.r(q50, 1), "p90_mwmes": c.r(q90, 1),
-        "faixa": _faixa(v, p10, p90),
-        "percentil_na_data": c.r(c.percentil_de(v, _vs), 1) if v is not None and _vs else None,
-        "ear_max_base_min_mwmes": c.r(min(maxs), 1) if maxs else None,
-        "ear_max_base_max_mwmes": c.r(max(maxs), 1) if maxs else None,
-        "capacidade_mudou_na_base": bool(maxs and mx is not None and (max(maxs) - min(maxs) > 0.05 * max(mx, 1e-9)
-                                                                        or abs(mx - c.quantil(maxs, 0.5)) > 0.05 * max(mx, 1e-9))),
+        **faixa_sazonal(s["pct"], s["mw"], s["max"], dia, ano_ini),
     }
 
 
@@ -1019,13 +1190,15 @@ PASSO_MULTIPLOS = 14
 def _semanal(s, dia, ano_ini, pontos=27):
     """Pequenos múltiplos: um ponto a cada 14 dias no último ano (27 pontos, de d0 até o
     dia de referência), com a faixa da data, em colunas para caber na gold. A data do
-    ponto i é d0 + 14 × i dias."""
+    ponto i é d0 + 14 × i dias. Mesmas regras da faixa do dia (EAR máxima zero e mínimo
+    de anos)."""
     out = {"d0": _dmenos(dia, PASSO_MULTIPLOS * (pontos - 1)), "passo_dias": PASSO_MULTIPLOS,
            "v": [], "p10": [], "p50": [], "p90": []}
     for i in range(pontos - 1, -1, -1):
         d = _dmenos(dia, PASSO_MULTIPLOS * i)
-        p10, p50, p90, n, _ = _bandas_do_dia(s["pct"], d, ano_ini)
-        for k, v in (("v", c.r(s["pct"].get(d), 1)), ("p10", c.r(p10, 1)), ("p50", c.r(p50, 1)), ("p90", c.r(p90, 1))):
+        f = faixa_sazonal(s["pct"], s["mw"], s["max"], d, ano_ini)
+        for k, v in (("v", c.r(_pct_aplicavel(s, d), 1)), ("p10", c.r(f["p10"], 1)), ("p50", c.r(f["p50"], 1)),
+                     ("p90", c.r(f["p90"], 1))):
             out[k].append(v)
     return out
 
@@ -1093,11 +1266,12 @@ def _eventos_capacidade(con, con_p, mx):
 
 
 def _armazenamento(con, con_p, d):
-    mw, mx, pct, dias_ = _ear_subsistemas(con_p)
+    mw, mx, pct, dias_, escolha, dados_cap = _ear_subsistemas(con_p, con)
     if not dias_:
-        raise RuntimeError("EAR por subsistema ausente no silver principal")
+        raise RuntimeError("EAR por subsistema ausente no silver principal e na recaptura")
     dia = dias_[-1]
     d["dia_ear"] = dia
+    d["_captura_ear"] = escolha
     # 1) conferência: percentual publicado × recalculado (MWmês ÷ máxima) em toda a série
     dif_max, n_conf = 0.0, 0
     for sm in SMS:
@@ -1115,14 +1289,12 @@ def _armazenamento(con, con_p, d):
     n_bac_dia = sum(1 for s in bac.values() if dia in s["mw"])
     soma_res = {sm: _serie(con, DS_EAR_RES, f"soma_ear_mwmes.{sm}") for sm in SMS}
     soma_resmax = {sm: _serie(con, DS_EAR_RES, f"soma_earmax_mwmes.{sm}") for sm in SMS}
-    # comparação com o subsistema da MESMA captura: nos anos recapturados na família usa-se
-    # o arquivo por subsistema baixado junto com os por reservatório; nos demais, o silver
-    # principal (arquivos de anos encerrados, que quase não mudam)
-    conf_mw = {sm: _serie(con, DS_EAR_SM_CONF, f"ear_mwmes.{sm}") for sm in SMS}
-    conf_mx = {sm: _serie(con, DS_EAR_SM_CONF, f"ear_max_mwmes.{sm}") for sm in SMS}
-    anos_conf = sorted({k[:4] for sm in SMS for k in conf_mw[sm]})
-    ref_mw = {sm: {**mw[sm], **conf_mw[sm]} for sm in SMS}
-    ref_mx = {sm: {**mx[sm], **conf_mx[sm]} for sm in SMS}
+    # a série por subsistema já é a da captura mais recente de cada ano: nos anos
+    # recapturados pelo módulo (junto com os arquivos por reservatório, REE e bacia) é a
+    # recaptura; nos anos encerrados, o silver principal (arquivos que quase não mudam)
+    anos_conf = sorted(a for a, e in escolha.items() if e["fonte"] == FONTE_RECAPTURA)
+    ref_mw = {sm: mw[sm] for sm in SMS}
+    ref_mx = {sm: mx[sm] for sm in SMS}
     # precisão: até 2017 o ONS publica EAR em MWmês inteiros (por reservatório e por
     # subsistema); a soma de ~100 parcelas arredondadas tem desvio-padrão de cerca de
     # 0,29 × √100 ≈ 2,9 MWmês, daí a tolerância de 10 MWmês (≈ 3,4 desvios). Com três casas
@@ -1161,18 +1333,27 @@ def _armazenamento(con, con_p, d):
                         "soma_max_reservatorios_mwmes": c.r(soma_resmax[sm].get(dia), 3),
                         "max_subsistema_mwmes": c.r(ref_mx[sm].get(dia), 3),
                         "fonte_subsistema": "recaptura" if dia[:4] in anos_conf else "silver principal"})
-    sin_mesma = sum(ref_mw[sm][dia] for sm in SMS) if all(dia in ref_mw[sm] for sm in SMS) else None
+    principal = dados_cap.get(FONTE_PRINCIPAL, {})
+    sin_principal = (sum(principal[f"ear_mwmes.{sm}"][dia] for sm in SMS)
+                     if principal and all(dia in principal.get(f"ear_mwmes.{sm}", {}) for sm in SMS) else None)
     d["_ear_ref_mw"] = ref_mw
     d["_inteiro"] = inteiro
     comparados = sum(x["dias"] for x in tabela)
     fora_tol = sum(x["dias_fora_ear"] for x in tabela)
+    ult30 = [k for k in dias_ if k >= _dmenos(dia, 30)]
     d["reconciliacao_ear"] = {
         "dia": dia,
         "pct_publicado_vs_recalculado_max_pp": c.r(dif_max, 5), "pares_conferidos": n_conf,
         "soma_ree_mwmes": c.r(soma_ree, 3), "n_ree": n_ree_dia,
         "soma_bacias_mwmes": c.r(soma_bac, 3), "n_bacias": n_bac_dia,
         "sin_mwmes": c.r(mw["SIN"][dia], 3),
-        "sin_mesma_captura_mwmes": c.r(sin_mesma, 3),
+        # a mesma captura dos arquivos por REE, bacia e reservatório (recaptura) quando
+        # ela é a mais recente; o silver principal fica ao lado só para expor a revisão
+        "sin_mesma_captura_mwmes": c.r(mw["SIN"][dia], 3) if dia[:4] in anos_conf else None,
+        "sin_silver_principal_mwmes": c.r(sin_principal, 3),
+        "captura_por_ano": [{"ano": int(a), **e} for a, e in sorted(escolha.items()) if a >= str(int(dia[:4]) - 1)],
+        "revisoes_entre_capturas_30d": _revisoes_entre_capturas(
+            dados_cap, [(sm, f"ear_mwmes.{sm}") for sm in SMS], ult30),
         "reservatorios_por_subsistema": rec_res,
         "reservatorios_por_ano": [x for x in tabela if x["dias_fora_ear"] or x["dias_fora_ear_max"]],
         "anos_sem_divergencia": sorted({x["ano"] for x in tabela} - {x["ano"] for x in tabela if x["dias_fora_ear"] or x["dias_fora_ear_max"]}),
@@ -1185,11 +1366,11 @@ def _armazenamento(con, con_p, d):
     um_ano = _dmenos(dia, 365)
     for sm in TODOS:
         v, m_, x = pct[sm].get(dia), mw[sm][dia], mx[sm][dia]
-        p10, p50, p90, n, vs = _bandas_do_dia(pct[sm], dia, ANO_INI_BACIA)
-        q10, q50, q90, _n, _ = _bandas_do_dia(mw[sm], dia, ANO_INI_BACIA)
+        cap = d["_captura_ear"].get(dia[:4], {})
         subs.append({
             "sm": sm, "nome": c.NOME_SUBMERCADO[sm], "dia": dia,
             "natureza": "CALCULADO" if sm == "SIN" else "OBSERVADO",
+            "captura": cap.get("fonte"), "capturado_em": cap.get("capturado_em"),
             "ear_pct": c.r(v, 2), "ear_mwmes": c.r(m_, 1), "ear_max_mwmes": c.r(x, 1),
             "participacao_capacidade_sin_pct": c.r(100.0 * x / mx["SIN"][dia], 1),
             "participacao_armazenado_sin_pct": c.r(100.0 * m_ / mw["SIN"][dia], 1),
@@ -1197,18 +1378,21 @@ def _armazenamento(con, con_p, d):
             "variacao_30d_mwmes": c.r(m_ - mw[sm][_dmenos(dia, 30)], 1) if _dmenos(dia, 30) in mw[sm] else None,
             "variacao_12m_mwmes": c.r(m_ - mw[sm][um_ano], 1) if um_ano in mw[sm] else None,
             "variacao_30d_pp": c.r(v - pct[sm][_dmenos(dia, 30)], 2) if _dmenos(dia, 30) in pct[sm] else None,
-            "p10": c.r(p10, 2), "p50": c.r(p50, 2), "p90": c.r(p90, 2), "anos_na_base": n,
-            "periodo_base": f"{ANO_INI_BACIA}-{int(dia[:4]) - 1}",
-            "p10_mwmes": c.r(q10, 1), "p50_mwmes": c.r(q50, 1), "p90_mwmes": c.r(q90, 1),
-            "faixa": _faixa(v, p10, p90), "percentil_na_data": c.r(c.percentil_de(v, vs), 1),
+            **faixa_sazonal(pct[sm], mw[sm], mx[sm], dia, ANO_INI_BACIA),
         })
     d["_ear"] = (mw, mx, pct, dias_)
-    # 4) séries: fim de mês (estoque) em MWmês desde 2000 e diária dos últimos 365 dias
+    # 4) séries: fim de mês (estoque) em MWmês desde 2000 e diária dos últimos 180 dias.
+    # O ponto do mês é o último dia com dado; o mês corrente (incompleto) e qualquer mês
+    # sem o último dia do calendário são listados à parte, com o dia usado.
     fim_mes = {}
     for k in dias_:
         fim_mes[k[:7]] = k
     mensal = _col([{"m": m, **{sm: c.r(mw[sm][k], 0) for sm in TODOS}, "SIN_max": c.r(mx["SIN"][k], 0)}
                    for m, k in sorted(fim_mes.items())], ("m",) + TODOS + ("SIN_max",))
+    fora_fim = [{"m": m, "d": k} for m, k in sorted(fim_mes.items())
+                if int(k[8:10]) != calendar.monthrange(int(k[:4]), int(k[5:7]))[1]]
+    mensal["meses_sem_ultimo_dia"] = fora_fim
+    mensal["mes_parcial"] = fora_fim[-1] if fora_fim and fora_fim[-1]["m"] == dia[:7] else None
     ini = _dmenos(dia, 179)
     diaria = _col([{"d": k, **{sm: c.r(mw[sm][k], 0) for sm in TODOS}} for k in dias_ if k >= ini], ("d",) + TODOS)
     # 5) capacidade: eventos e atribuição

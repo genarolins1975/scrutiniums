@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "carga_detalhe.json",
- "gerado_em": "2026-10-01T00:04:50Z",
+ "gerado_em": "2026-10-01T06:12:24Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "3e7ff0a36fba+alterado",
+ "versao_codigo": "d4f2c5af5147+alterado",
  "disponivel": true,
  "dia_referencia": "2026-09-28",
  "unidade": "MWmed",
@@ -21,7 +21,8 @@
   {
    "inicio": "2023-04-29",
    "fim": null,
-   "descricao": "Inclui também a estimativa da micro e minigeração distribuída (MMGD), com base em dados meteorológicos previstos."
+   "descricao": "Inclui também a estimativa da micro e minigeração distribuída (MMGD), com base em dados meteorológicos previstos. Data declarada pelo ONS: 29/04/2023; nos dados, a MMGD aparece na carga em 01/05/2023 (29 e 30/04/2023 são transição).",
+   "observado_nos_dados": "2023-05-01"
   }
  ],
  "p025": {
@@ -1238,23 +1239,17 @@
    },
    {
     "ano": 2018,
-    "dias": 365,
-    "completo": true,
+    "dias": 364,
+    "completo": false,
     "regimes": [
      1
     ],
     "SE": 36486.5,
     "S": 11139.6,
-    "NE": 10330.2,
+    "NE": 10347.7,
     "N": 5299.4,
-    "SIN": 63255.7,
-    "variacao_pct": {
-     "SE": 1.04,
-     "S": 1.6,
-     "NE": 1.39,
-     "N": -2.24,
-     "SIN": 0.91
-    }
+    "SIN": 63292.3,
+    "variacao_pct": null
    },
    {
     "ano": 2019,
@@ -1268,13 +1263,7 @@
     "NE": 10604.9,
     "N": 5500.0,
     "SIN": 64581.1,
-    "variacao_pct": {
-     "SE": 1.79,
-     "S": 1.76,
-     "NE": 2.66,
-     "N": 3.79,
-     "SIN": 2.1
-    }
+    "variacao_pct": null
    },
    {
     "ano": 2020,
@@ -1394,6 +1383,120 @@
    "fim": "2026-09-28",
    "inicio_ant": "2025-01-02",
    "fim_ant": "2025-09-29",
+   "classes": {
+    "util": 186,
+    "sabado": 39,
+    "domingo_feriado": 46,
+    "sem_classe": 0
+   },
+   "classes_ant": {
+    "util": 188,
+    "sabado": 39,
+    "domingo_feriado": 44,
+    "sem_classe": 0
+   },
+   "calendario_equivalente": false,
+   "eventos": [
+    [
+     "2026-01-01",
+     "Confraternização Universal",
+     "feriado_nacional"
+    ],
+    [
+     "2026-02-16",
+     "Carnaval (segunda-feira)",
+     "ponto_facultativo"
+    ],
+    [
+     "2026-02-17",
+     "Carnaval (terça-feira)",
+     "ponto_facultativo"
+    ],
+    [
+     "2026-02-18",
+     "Quarta-feira de Cinzas (até as 14h)",
+     "ponto_facultativo"
+    ],
+    [
+     "2026-04-03",
+     "Sexta-feira da Paixão",
+     "paixao"
+    ],
+    [
+     "2026-04-21",
+     "Tiradentes",
+     "feriado_nacional"
+    ],
+    [
+     "2026-05-01",
+     "Dia do Trabalho",
+     "feriado_nacional"
+    ],
+    [
+     "2026-06-04",
+     "Corpus Christi",
+     "ponto_facultativo"
+    ],
+    [
+     "2026-09-07",
+     "Independência do Brasil",
+     "feriado_nacional"
+    ]
+   ],
+   "eventos_ant": [
+    [
+     "2025-03-03",
+     "Carnaval (segunda-feira)",
+     "ponto_facultativo"
+    ],
+    [
+     "2025-03-04",
+     "Carnaval (terça-feira)",
+     "ponto_facultativo"
+    ],
+    [
+     "2025-03-05",
+     "Quarta-feira de Cinzas (até as 14h)",
+     "ponto_facultativo"
+    ],
+    [
+     "2025-04-18",
+     "Sexta-feira da Paixão",
+     "paixao"
+    ],
+    [
+     "2025-04-21",
+     "Tiradentes",
+     "feriado_nacional"
+    ],
+    [
+     "2025-05-01",
+     "Dia do Trabalho",
+     "feriado_nacional"
+    ],
+    [
+     "2025-06-19",
+     "Corpus Christi",
+     "ponto_facultativo"
+    ],
+    [
+     "2025-09-07",
+     "Independência do Brasil",
+     "feriado_nacional"
+    ]
+   ],
+   "feriados_dia_util": [
+    "2026-01-01",
+    "2026-04-03",
+    "2026-04-21",
+    "2026-05-01",
+    "2026-09-07"
+   ],
+   "feriados_dia_util_ant": [
+    "2025-04-18",
+    "2025-04-21",
+    "2025-05-01"
+   ],
    "sm": {
     "SE": {
      "media": 44104.8,
@@ -1981,7 +2084,8 @@
    ],
    "total": 33,
    "dias_revisados": 33,
-   "mediana_abs_pct": 0.023,
+   "revisoes_com_percentual": 32,
+   "mediana_abs_pct": 0.019,
    "max_abs_pct": 4.07,
    "linhas": [
     {
@@ -2349,10 +2453,17 @@
     }
    ],
    "curva_contra_diaria": {
-    "dias_comparados": 38985,
-    "dias_diferentes": 43,
+    "dias_comparados": 38984,
+    "dias_diferentes": 42,
     "tolerancia": "0,01 MWmed",
     "exemplos": [
+     {
+      "sm": "SE",
+      "dia": "2017-11-20",
+      "curva": 34336.672,
+      "diaria": 34498.467,
+      "diferenca": -161.795
+     },
      {
       "sm": "SE",
       "dia": "2017-11-21",
@@ -2492,13 +2603,6 @@
       "curva": 9891.381,
       "diaria": 9890.908,
       "diferenca": 0.473
-     },
-     {
-      "sm": "S",
-      "dia": "2018-11-04",
-      "curva": 7968.199,
-      "diaria": 8314.643,
-      "diferenca": -346.443
      },
      {
       "sm": "S",
@@ -2661,10 +2765,66 @@
      "id": "C1",
      "tipo": "conferencia",
      "critica": false,
-     "descricao": "Valor que viola F2 ou F3 é conferido na média das 24 horas do mesmo dia da Curva de Carga Horária do ONS: diferença de até 0,5% ou 5 MWmed confirma o valor (publicado com ressalva); sem confirmação, quarentena."
+     "descricao": "Valor que viola F2 ou F3 é conferido no Balanço de Energia nos Subsistemas do ONS (outro conjunto): confirmado só se nenhum componente de geração (hidráulica, térmica, eólica, solar) tem lacuna no dia (média abaixo de 25% do menor dia vizinho, quando o vizinho tem pelo menos 100 MWmed e 5% da carga) e se a carga do balanço é igual ao valor (até 0,5% ou 5 MWmed); sem confirmação ou sem balanço, quarentena. A curva horária não confere: é o mesmo produto em outro grão."
+    },
+    {
+     "id": "A1",
+     "tipo": "registros_esperados",
+     "critica": false,
+     "descricao": "Todo dia do calendário entre o primeiro e o último dia publicado é esperado em cada subsistema; dia ausente é registrado com o estado conferido no arquivo atual da fonte e publicado como célula vazia, nunca zero nem interpolado."
     }
    ],
-   "quarentena": [],
+   "quarentena": [
+    {
+     "sm": "NE",
+     "dia": "2018-08-25",
+     "valor": 3969.773875,
+     "regras": [
+      "F2",
+      "F3"
+     ],
+     "situacao": "quarentena",
+     "curva_horaria_media": 3969.774,
+     "conferencia": "lacuna de dado de geração no balanço do ONS (eólica 219,7 MWmed no dia contra 6.686,7 e 6.305,7 nos dias vizinhos): o valor não é carga real",
+     "balanco": {
+      "dia": {
+       "hidraulica": 1507.1,
+       "termica": 2921.9,
+       "eolica": 219.7,
+       "solar": 11.9,
+       "carga": 3969.8,
+       "intercambio": 690.7
+      },
+      "anterior": {
+       "hidraulica": 1792.9,
+       "termica": 2857.2,
+       "eolica": 6686.7,
+       "solar": 238.8,
+       "carga": 10451.2,
+       "intercambio": 1124.3
+      },
+      "seguinte": {
+       "hidraulica": 1570.1,
+       "termica": 2538.4,
+       "eolica": 6305.7,
+       "solar": 238.0,
+       "carga": 9196.7,
+       "intercambio": 1455.3
+      },
+      "lacunas": [
+       {
+        "componente": "eolica",
+        "valor_dia": 219.7,
+        "vizinhos": [
+         6686.7,
+         6305.7
+        ]
+       }
+      ],
+      "geracao_menos_intercambio": 3969.8
+     }
+    }
+   ],
    "atipicos_conferidos": [
     {
      "sm": "S",
@@ -2675,7 +2835,35 @@
      ],
      "situacao": "atipico_conferido",
      "curva_horaria_media": 12307.829,
-     "conferencia": "curva confirma o valor"
+     "conferencia": "componentes de geração do balanço do ONS sem lacuna no dia; geração menos intercâmbio = 12.307,8 MWmed, igual ao valor",
+     "balanco": {
+      "dia": {
+       "hidraulica": 13219.4,
+       "termica": 1542.7,
+       "eolica": 303.5,
+       "solar": 0.0,
+       "carga": 12307.8,
+       "intercambio": 2757.9
+      },
+      "anterior": {
+       "hidraulica": 12466.6,
+       "termica": 1728.0,
+       "eolica": 353.1,
+       "solar": 0.0,
+       "carga": 10872.0,
+       "intercambio": 3675.7
+      },
+      "seguinte": {
+       "hidraulica": 13511.7,
+       "termica": 1464.0,
+       "eolica": 110.2,
+       "solar": 0.0,
+       "carga": 12697.0,
+       "intercambio": 2389.0
+      },
+      "lacunas": [],
+      "geracao_menos_intercambio": 12307.8
+     }
     },
     {
      "sm": "S",
@@ -2686,7 +2874,35 @@
      ],
      "situacao": "atipico_conferido",
      "curva_horaria_media": 12696.979,
-     "conferencia": "curva confirma o valor"
+     "conferencia": "componentes de geração do balanço do ONS sem lacuna no dia; geração menos intercâmbio = 12.697,0 MWmed, igual ao valor",
+     "balanco": {
+      "dia": {
+       "hidraulica": 13511.7,
+       "termica": 1464.0,
+       "eolica": 110.2,
+       "solar": 0.0,
+       "carga": 12697.0,
+       "intercambio": 2389.0
+      },
+      "anterior": {
+       "hidraulica": 13219.4,
+       "termica": 1542.7,
+       "eolica": 303.5,
+       "solar": 0.0,
+       "carga": 12307.8,
+       "intercambio": 2757.9
+      },
+      "seguinte": {
+       "hidraulica": 13732.4,
+       "termica": 1418.4,
+       "eolica": 54.9,
+       "solar": 0.0,
+       "carga": 12378.0,
+       "intercambio": 2827.7
+      },
+      "lacunas": [],
+      "geracao_menos_intercambio": 12697.0
+     }
     },
     {
      "sm": "S",
@@ -2697,19 +2913,35 @@
      ],
      "situacao": "atipico_conferido",
      "curva_horaria_media": 12378.041,
-     "conferencia": "curva confirma o valor"
-    },
-    {
-     "sm": "NE",
-     "dia": "2018-08-25",
-     "valor": 3969.773875,
-     "regras": [
-      "F2",
-      "F3"
-     ],
-     "situacao": "atipico_conferido",
-     "curva_horaria_media": 3969.774,
-     "conferencia": "curva confirma o valor"
+     "conferencia": "componentes de geração do balanço do ONS sem lacuna no dia; geração menos intercâmbio = 12.378,0 MWmed, igual ao valor",
+     "balanco": {
+      "dia": {
+       "hidraulica": 13732.4,
+       "termica": 1418.4,
+       "eolica": 54.9,
+       "solar": 0.0,
+       "carga": 12378.0,
+       "intercambio": 2827.7
+      },
+      "anterior": {
+       "hidraulica": 13511.7,
+       "termica": 1464.0,
+       "eolica": 110.2,
+       "solar": 0.0,
+       "carga": 12697.0,
+       "intercambio": 2389.0
+      },
+      "seguinte": {
+       "hidraulica": 13789.9,
+       "termica": 1581.3,
+       "eolica": 120.7,
+       "solar": 0.0,
+       "carga": 12301.8,
+       "intercambio": 3190.2
+      },
+      "lacunas": [],
+      "geracao_menos_intercambio": 12378.0
+     }
     }
    ],
    "historico_fora_do_dominio": [
@@ -2725,7 +2957,115 @@
      "situacao": "revisado_pela_fonte"
     }
    ],
-   "valores_verificados": 39060
+   "valores_verificados": 39060,
+   "registros_esperados": {
+    "SE": {
+     "inicio": "2000-01-01",
+     "fim": "2026-09-28",
+     "esperados": 9768,
+     "presentes": 9765,
+     "ausentes": 3,
+     "quarentena": 0
+    },
+    "S": {
+     "inicio": "2000-01-01",
+     "fim": "2026-09-28",
+     "esperados": 9768,
+     "presentes": 9765,
+     "ausentes": 3,
+     "quarentena": 0
+    },
+    "NE": {
+     "inicio": "2000-01-01",
+     "fim": "2026-09-28",
+     "esperados": 9768,
+     "presentes": 9765,
+     "ausentes": 3,
+     "quarentena": 1
+    },
+    "N": {
+     "inicio": "2000-01-01",
+     "fim": "2026-09-28",
+     "esperados": 9768,
+     "presentes": 9765,
+     "ausentes": 3,
+     "quarentena": 0
+    }
+   },
+   "ausentes": [
+    {
+     "sm": "SE",
+     "dia": "2013-12-01",
+     "estado": "celula_vazia_na_fonte",
+     "valor_arquivo_atual": null
+    },
+    {
+     "sm": "S",
+     "dia": "2013-12-01",
+     "estado": "celula_vazia_na_fonte",
+     "valor_arquivo_atual": null
+    },
+    {
+     "sm": "NE",
+     "dia": "2013-12-01",
+     "estado": "celula_vazia_na_fonte",
+     "valor_arquivo_atual": null
+    },
+    {
+     "sm": "N",
+     "dia": "2013-12-01",
+     "estado": "celula_vazia_na_fonte",
+     "valor_arquivo_atual": null
+    },
+    {
+     "sm": "SE",
+     "dia": "2014-02-01",
+     "estado": "celula_vazia_na_fonte",
+     "valor_arquivo_atual": null
+    },
+    {
+     "sm": "S",
+     "dia": "2014-02-01",
+     "estado": "celula_vazia_na_fonte",
+     "valor_arquivo_atual": null
+    },
+    {
+     "sm": "NE",
+     "dia": "2014-02-01",
+     "estado": "celula_vazia_na_fonte",
+     "valor_arquivo_atual": null
+    },
+    {
+     "sm": "N",
+     "dia": "2014-02-01",
+     "estado": "celula_vazia_na_fonte",
+     "valor_arquivo_atual": null
+    },
+    {
+     "sm": "SE",
+     "dia": "2015-04-09",
+     "estado": "celula_vazia_na_fonte",
+     "valor_arquivo_atual": null
+    },
+    {
+     "sm": "S",
+     "dia": "2015-04-09",
+     "estado": "celula_vazia_na_fonte",
+     "valor_arquivo_atual": null
+    },
+    {
+     "sm": "NE",
+     "dia": "2015-04-09",
+     "estado": "celula_vazia_na_fonte",
+     "valor_arquivo_atual": null
+    },
+    {
+     "sm": "N",
+     "dia": "2015-04-09",
+     "estado": "celula_vazia_na_fonte",
+     "valor_arquivo_atual": null
+    }
+   ]
   },
   "serie_diaria": {
    "arquivo": "/energia/series/carga_diaria.csv",
@@ -5102,11 +5442,11 @@
   ],
   "textos": [
    "A variação publicada de +10,5% reproduz-se com a carga diária como estava no silver em 29/09/2026, 23:20 (Brasília): +10,54% (média de 83.771 MWmed de 22/09/2026 a 28/09/2026 contra 75.784 MWmed de 22/09/2025 a 28/09/2025).",
-   "As duas janelas têm sete dias seguidos, portanto um de cada dia da semana; nenhuma tem feriado nacional nem ponto facultativo; as duas estão no mesmo regime do ONS (desde 29/04/2023). Com os mesmos dias da semana deslocados 364 dias (23/09/2025 a 29/09/2025), a variação é +11,45%.",
+   "As duas janelas têm sete dias seguidos, portanto um de cada dia da semana; nenhuma tem feriado nacional nem ponto facultativo; as duas estão no mesmo regime do ONS (inclusão da MMGD declarada para 29/04/2023 e observada nos dados em 01/05/2023). Com os mesmos dias da semana deslocados 364 dias (23/09/2025 a 29/09/2025), a variação é +11,45%.",
    "Na carga verificada da API do ONS (outro produto, que separa a MMGD), a carga global do SIN variou +8,28%, a MMGD estimada +14,0% e a carga líquida de MMGD +7,56%; o aumento da MMGD equivale a 1,57 ponto percentual da carga global da semana de 2025. É identidade contábil da fonte, não explicação causal.",
    "A temperatura média ponderada do SIN (NASA POWER, capitais) foi 23,1 °C em 2026 e 22,1 °C nos mesmos dias de 2025, de 22/09/2026 a 27/09/2026 (a temperatura de 28/09/2026 ainda não estava publicada pela NASA POWER na última captura); a fonte é GEOSIT em 2026 e MERRA2 em 2025.",
-   "Na decomposição estatística (de 22/09/2026 a 27/09/2026 contra 23/09/2025 a 28/09/2025; modelo estimado até 31/08/2026, fora da amostra em 2026), a diferença de 10,5 pontos de log se divide em calendário 0,0, temperatura 2,5, sazonalidade 0,0, nível e tendência 2,6 e resíduo 5,3. É associação estatística, não causa: o resíduo é a parte que o modelo não reproduz.",
-   "Fora da amostra, a carga do SIN ficou +2,8% em relação ao previsto de 22/09/2026 a 27/09/2026 (5 de 6 dias acima do intervalo de 80%) e −4,5% nos mesmos dias de 2025 (6 de 7 dias abaixo do intervalo).",
+   "Na decomposição estatística (de 22/09/2026 a 27/09/2026 contra 23/09/2025 a 28/09/2025, 6 dias em cada janela; modelo estimado até 31/08/2026, fora da amostra em 2026), a carga média do SIN variou +11,06%. Essa variação não é a de +10,54% do achado, que compara 7 dias de 22/09/2026 a 28/09/2026 com as mesmas datas de 2025. Em log × 100, a diferença de 10,5 se divide em calendário 0,0, temperatura 2,5, sazonalidade 0,0, nível e tendência 2,6 e resíduo 5,3. É associação estatística, não causa: o resíduo é a parte que o modelo não reproduz.",
+   "Fora da amostra, a carga do SIN ficou +2,8% em relação ao previsto de 22/09/2026 a 27/09/2026 (6 dias previstos, 5 acima e 0 abaixo do intervalo de 80%) e −4,5% de 22/09/2025 a 28/09/2025 (7 dias previstos, 0 acima e 6 abaixo do intervalo de 80%).",
    "Nada aqui atribui a variação à atividade econômica: não há, neste módulo, dado de atividade que sustente essa leitura."
   ]
  },
@@ -17987,11 +18327,11 @@
    "conclusao": "A carga global da API de carga verificada não é a mesma grandeza da curva de carga: difere ano a ano e hora a hora (mais à noite). Carga, MMGD e carga líquida só são decompostas dentro da API; a MMGD da API nunca é subtraída da curva."
   },
   "conceitos": {
-   "carga_curva": "Carga de energia da Curva de Carga Horária (e da Carga de Energia Diária, que é a média das 24 horas): carga atendida pelas usinas despachadas ou programadas pelo ONS, mais a previsão de usinas não despachadas (desde 01/03/2021) e a estimativa de MMGD com dados meteorológicos previstos (desde 29/04/2023). A MMGD está dentro, mas não aparece separada.",
+   "carga_curva": "Carga de energia da Curva de Carga Horária (e da Carga de Energia Diária, que é a média das 24 horas): carga atendida pelas usinas despachadas ou programadas pelo ONS, mais a previsão de usinas não despachadas (desde 01/03/2021) e a estimativa de MMGD com dados meteorológicos previstos (declarada para 29/04/2023, observada nos dados em 01/05/2023). A MMGD está dentro, mas não aparece separada.",
    "carga_global": "Carga global da API de carga verificada: parcela supervisionada pelo ONS (geração tipo I, IIA, IIB, IIC e intercâmbios) mais a não supervisionada, medida pela CCEE (geração tipo III), mais a parcela atendida por MMGD.",
    "mmgd": "Carga atendida por micro e minigeração distribuída: estimativa do ONS (a MMGD não é supervisionada). É energia consumida junto da carga e suprida pelos painéis e pequenas usinas dos próprios consumidores.",
    "carga_liquida": "Carga global líquida de MMGD: carga global menos a MMGD, isto é, o que o sistema precisa suprir com as usinas supervisionadas e as medidas pela CCEE. Publicada pelo ONS; conferida como carga global − MMGD em cada meia hora.",
-   "dupla_contagem": "Somar a MMGD da API à curva de carga contaria a MMGD duas vezes (a curva já a inclui desde 29/04/2023); subtraí-la da curva misturaria dois produtos com definições diferentes. Por isso a decomposição horária usa só a API."
+   "dupla_contagem": "Somar a MMGD da API à curva de carga contaria a MMGD duas vezes (a curva já a inclui: declarada para 29/04/2023, observada nos dados em 01/05/2023); subtraí-la da curva misturaria dois produtos com definições diferentes. Por isso a decomposição horária usa só a API."
   }
  },
  "p027": {
@@ -18122,6 +18462,11 @@
    "intervalo": "quantis empíricos dos erros fora da amostra de origens anteriores (mínimo de 60 dias); antes disso, dos resíduos do treino",
    "contribuicoes": "β × (x − média de x no treino), somadas por grupo, em log × 100 (aproximadamente pontos percentuais)",
    "temperatura": "média diária a 2 m (NASA POWER) nas capitais, ponderada pela população da UF (IBGE); dobras nos tercis da primeira janela de treino; temperatura do dia anterior"
+  },
+  "periodo_avaliacao": {
+   "inicio": "2024-05-01",
+   "fim": "2026-09-27",
+   "dias": 880
   },
   "metricas": {
    "SE": {
@@ -20676,7 +21021,9 @@
     "estabelece": "feriados nacionais de 1º/1, 1º/5, 7/9, 15/11 e 25/12 (redação original)",
     "ementa_senado": "Declara feriados nacionais os dias 1º de janeiro, 1º de maio, 7º de setembro, 15 de novembro e 25 de dezembro.",
     "id_senado": "542212",
-    "conferida": true,
+    "conferida_ementa": true,
+    "conferida_texto": false,
+    "texto_situacao": "Texto da lei não relido: o Planalto respondeu vazio (30/09 e 01/10/2026) e os PDFs de publicação do Senado vieram com 0 byte (Leis nº 9.093/1995 e 10.607/2002, 01/10/2026). Conferidos só a norma e a ementa nos metadados abertos do Senado.",
     "url": "https://legis.senado.leg.br/dadosabertos/legislacao/lista.json?tipo=LEI&numero=662&ano=1949",
     "capturado_em": "2026-09-30T23:32:56Z",
     "sha256": "f5d80c9ba9183164bfede9d8be6c4eb9fca7fb43292581101c1a85fb10621705"
@@ -20687,7 +21034,9 @@
     "estabelece": "nova redação do art. 1º da Lei nº 662/1949: 1º/1, 21/4, 1º/5, 7/9, 2/11, 15/11 e 25/12",
     "ementa_senado": "Dá nova redação ao art. 1º da Lei nº 662, de 6 de abril de 1949, que \"declara feriados nacionais os dias 1º de janeiro, 1º de maio, 7 de setembro, 15 de novembro e 25 de dezembro\", e dá outras providências.",
     "id_senado": "552483",
-    "conferida": true,
+    "conferida_ementa": true,
+    "conferida_texto": false,
+    "texto_situacao": "Texto da lei não relido: o Planalto respondeu vazio (30/09 e 01/10/2026) e os PDFs de publicação do Senado vieram com 0 byte (Leis nº 9.093/1995 e 10.607/2002, 01/10/2026). Conferidos só a norma e a ementa nos metadados abertos do Senado.",
     "url": "https://legis.senado.leg.br/dadosabertos/legislacao/lista.json?tipo=LEI&numero=10607&ano=2002",
     "capturado_em": "2026-09-30T23:32:56Z",
     "sha256": "cfb1abf138ff71e8d6acb8b516361fc46f38a13dc98302fc4fc3032a9859a53f"
@@ -20698,7 +21047,9 @@
     "estabelece": "feriado nacional de 12/10 (Nossa Senhora Aparecida)",
     "ementa_senado": "Declara feriado nacional o dia 12 de outubro consagrado à Nossa Senhora   Aparecida, Padroeira do Brasil.",
     "id_senado": "548678",
-    "conferida": true,
+    "conferida_ementa": true,
+    "conferida_texto": false,
+    "texto_situacao": "Texto da lei não relido: o Planalto respondeu vazio (30/09 e 01/10/2026) e os PDFs de publicação do Senado vieram com 0 byte (Leis nº 9.093/1995 e 10.607/2002, 01/10/2026). Conferidos só a norma e a ementa nos metadados abertos do Senado.",
     "url": "https://legis.senado.leg.br/dadosabertos/legislacao/lista.json?tipo=LEI&numero=6802&ano=1980",
     "capturado_em": "2026-09-30T23:32:58Z",
     "sha256": "1ddc888f9a9fc82c41e09d530353f966558d8f98f569cc634db3792a6d73d341"
@@ -20709,7 +21060,9 @@
     "estabelece": "feriado nacional de 20/11 (Dia Nacional de Zumbi e da Consciência Negra)",
     "ementa_senado": "Declara feriado nacional o Dia Nacional de Zumbi e da Consciência Negra.",
     "id_senado": "38009421",
-    "conferida": true,
+    "conferida_ementa": true,
+    "conferida_texto": false,
+    "texto_situacao": "Texto da lei não relido: o Planalto respondeu vazio (30/09 e 01/10/2026) e os PDFs de publicação do Senado vieram com 0 byte (Leis nº 9.093/1995 e 10.607/2002, 01/10/2026). Conferidos só a norma e a ementa nos metadados abertos do Senado.",
     "url": "https://legis.senado.leg.br/dadosabertos/legislacao/lista.json?tipo=LEI&numero=14759&ano=2023",
     "capturado_em": "2026-09-30T23:32:59Z",
     "sha256": "c2e1227c88a055b168507a7b7e62b5ef00f90c54832ddc4155b5abeee1596153"
@@ -20720,7 +21073,9 @@
     "estabelece": "feriados religiosos declarados em lei municipal, incluída a Sexta-Feira da Paixão",
     "ementa_senado": "Dispõe sobre feriados.",
     "id_senado": "550969",
-    "conferida": true,
+    "conferida_ementa": true,
+    "conferida_texto": false,
+    "texto_situacao": "Texto da lei não relido: o Planalto respondeu vazio (30/09 e 01/10/2026) e os PDFs de publicação do Senado vieram com 0 byte (Leis nº 9.093/1995 e 10.607/2002, 01/10/2026). Conferidos só a norma e a ementa nos metadados abertos do Senado.",
     "url": "https://legis.senado.leg.br/dadosabertos/legislacao/lista.json?tipo=LEI&numero=9093&ano=1995",
     "capturado_em": "2026-09-30T23:33:00Z",
     "sha256": "4dd53b98de8ceaeb373951da0dd105e1b72cfb04a272eb41d67e1df1e24ff96d"
@@ -20728,7 +21083,7 @@
   ],
   "categorias": {
    "feriado_nacional": "feriado por lei federal",
-   "paixao": "Sexta-feira da Paixão (Lei nº 9.093/1995)",
+   "paixao": "Sexta-feira da Paixão (Lei nº 9.093/1995; ementa conferida, texto não relido)",
    "ponto_facultativo": "ponto facultativo federal (portaria anual), não feriado"
   },
   "eventos_12m": [
@@ -21307,7 +21662,9 @@
      "estabelece": "feriados nacionais de 1º/1, 1º/5, 7/9, 15/11 e 25/12 (redação original)",
      "ementa_senado": "Declara feriados nacionais os dias 1º de janeiro, 1º de maio, 7º de setembro, 15 de novembro e 25 de dezembro.",
      "id_senado": "542212",
-     "conferida": true,
+     "conferida_ementa": true,
+     "conferida_texto": false,
+     "texto_situacao": "Texto da lei não relido: o Planalto respondeu vazio (30/09 e 01/10/2026) e os PDFs de publicação do Senado vieram com 0 byte (Leis nº 9.093/1995 e 10.607/2002, 01/10/2026). Conferidos só a norma e a ementa nos metadados abertos do Senado.",
      "url": "https://legis.senado.leg.br/dadosabertos/legislacao/lista.json?tipo=LEI&numero=662&ano=1949",
      "capturado_em": "2026-09-30T23:32:56Z",
      "sha256": "f5d80c9ba9183164bfede9d8be6c4eb9fca7fb43292581101c1a85fb10621705"
@@ -21318,7 +21675,9 @@
      "estabelece": "nova redação do art. 1º da Lei nº 662/1949: 1º/1, 21/4, 1º/5, 7/9, 2/11, 15/11 e 25/12",
      "ementa_senado": "Dá nova redação ao art. 1º da Lei nº 662, de 6 de abril de 1949, que \"declara feriados nacionais os dias 1º de janeiro, 1º de maio, 7 de setembro, 15 de novembro e 25 de dezembro\", e dá outras providências.",
      "id_senado": "552483",
-     "conferida": true,
+     "conferida_ementa": true,
+     "conferida_texto": false,
+     "texto_situacao": "Texto da lei não relido: o Planalto respondeu vazio (30/09 e 01/10/2026) e os PDFs de publicação do Senado vieram com 0 byte (Leis nº 9.093/1995 e 10.607/2002, 01/10/2026). Conferidos só a norma e a ementa nos metadados abertos do Senado.",
      "url": "https://legis.senado.leg.br/dadosabertos/legislacao/lista.json?tipo=LEI&numero=10607&ano=2002",
      "capturado_em": "2026-09-30T23:32:56Z",
      "sha256": "cfb1abf138ff71e8d6acb8b516361fc46f38a13dc98302fc4fc3032a9859a53f"
@@ -21329,7 +21688,9 @@
      "estabelece": "feriado nacional de 12/10 (Nossa Senhora Aparecida)",
      "ementa_senado": "Declara feriado nacional o dia 12 de outubro consagrado à Nossa Senhora   Aparecida, Padroeira do Brasil.",
      "id_senado": "548678",
-     "conferida": true,
+     "conferida_ementa": true,
+     "conferida_texto": false,
+     "texto_situacao": "Texto da lei não relido: o Planalto respondeu vazio (30/09 e 01/10/2026) e os PDFs de publicação do Senado vieram com 0 byte (Leis nº 9.093/1995 e 10.607/2002, 01/10/2026). Conferidos só a norma e a ementa nos metadados abertos do Senado.",
      "url": "https://legis.senado.leg.br/dadosabertos/legislacao/lista.json?tipo=LEI&numero=6802&ano=1980",
      "capturado_em": "2026-09-30T23:32:58Z",
      "sha256": "1ddc888f9a9fc82c41e09d530353f966558d8f98f569cc634db3792a6d73d341"
@@ -21340,7 +21701,9 @@
      "estabelece": "feriado nacional de 20/11 (Dia Nacional de Zumbi e da Consciência Negra)",
      "ementa_senado": "Declara feriado nacional o Dia Nacional de Zumbi e da Consciência Negra.",
      "id_senado": "38009421",
-     "conferida": true,
+     "conferida_ementa": true,
+     "conferida_texto": false,
+     "texto_situacao": "Texto da lei não relido: o Planalto respondeu vazio (30/09 e 01/10/2026) e os PDFs de publicação do Senado vieram com 0 byte (Leis nº 9.093/1995 e 10.607/2002, 01/10/2026). Conferidos só a norma e a ementa nos metadados abertos do Senado.",
      "url": "https://legis.senado.leg.br/dadosabertos/legislacao/lista.json?tipo=LEI&numero=14759&ano=2023",
      "capturado_em": "2026-09-30T23:32:59Z",
      "sha256": "c2e1227c88a055b168507a7b7e62b5ef00f90c54832ddc4155b5abeee1596153"
@@ -21351,7 +21714,9 @@
      "estabelece": "feriados religiosos declarados em lei municipal, incluída a Sexta-Feira da Paixão",
      "ementa_senado": "Dispõe sobre feriados.",
      "id_senado": "550969",
-     "conferida": true,
+     "conferida_ementa": true,
+     "conferida_texto": false,
+     "texto_situacao": "Texto da lei não relido: o Planalto respondeu vazio (30/09 e 01/10/2026) e os PDFs de publicação do Senado vieram com 0 byte (Leis nº 9.093/1995 e 10.607/2002, 01/10/2026). Conferidos só a norma e a ementa nos metadados abertos do Senado.",
      "url": "https://legis.senado.leg.br/dadosabertos/legislacao/lista.json?tipo=LEI&numero=9093&ano=1995",
      "capturado_em": "2026-09-30T23:33:00Z",
      "sha256": "4dd53b98de8ceaeb373951da0dd105e1b72cfb04a272eb41d67e1df1e24ff96d"
@@ -21379,7 +21744,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-29T22:00:43.436290",
    "capturado_em": "2026-09-30T02:19:48Z",
-   "validado_em": "2026-10-01T00:04:48Z",
+   "validado_em": "2026-10-01T06:12:23Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-28"
@@ -21396,9 +21761,9 @@
     "sha256": "b6e8471dc064c63a4db34e9e6e3009a019460c71bff839104a1415ea0dbaefb3"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "3e7ff0a36fba+alterado",
+   "versao_codigo": "d4f2c5af5147+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:04:47Z",
+    "detectado_em": "2026-10-01T06:12:21Z",
     "total": 33,
     "vintages_comparadas": 28,
     "arquivos": 27,
@@ -21508,7 +21873,7 @@
     ]
    },
    "limitacoes": [
-    "O ONS mudou o conteúdo da carga em 01/03/2021 (previsão de usinas não despachadas) e em 29/04/2023 (estimativa de MMGD com dados meteorológicos previstos); variação que atravessa essas datas não é publicada.",
+    "O ONS mudou o conteúdo da carga em 01/03/2021 (previsão de usinas não despachadas) e na inclusão da estimativa de MMGD com dados meteorológicos previstos, declarada para 29/04/2023 e observada nos dados em 01/05/2023 (29 e 30/04/2023 são transição); variação que atravessa essas datas ou toca a transição não é publicada.",
     "Os dados do ONS passam por consistência recorrente e são revisados depois da publicação; os dias mais recentes mudam.",
     "Variação da carga é observação; atribuí-la à atividade econômica exigiria outra evidência, que este módulo não tem.",
     "Mesmos dias da semana não igualam temperatura, chuva nem eventos locais; a decomposição estatística trata a temperatura."
@@ -21535,7 +21900,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:01:09Z",
    "capturado_em": "2026-09-30T23:31:22Z",
-   "validado_em": "2026-10-01T00:04:48Z",
+   "validado_em": "2026-10-01T06:12:23Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-29"
@@ -21552,9 +21917,9 @@
     "sha256": "cfd40a007a991294b117e6c82a8a65277e3cee02939bcbd33a4d60067c214d39"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "3e7ff0a36fba+alterado",
+   "versao_codigo": "d4f2c5af5147+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:04:48Z",
+    "detectado_em": "2026-10-01T06:12:22Z",
     "total": 0,
     "vintages_comparadas": 27,
     "arquivos": 27,
@@ -21563,17 +21928,18 @@
     "exemplos": []
    },
    "limitacoes": [
-    "O ONS mudou o conteúdo da carga em 01/03/2021 (previsão de usinas não despachadas) e em 29/04/2023 (estimativa de MMGD com dados meteorológicos previstos); variação que atravessa essas datas não é publicada.",
+    "O ONS mudou o conteúdo da carga em 01/03/2021 (previsão de usinas não despachadas) e na inclusão da estimativa de MMGD com dados meteorológicos previstos, declarada para 29/04/2023 e observada nos dados em 01/05/2023 (29 e 30/04/2023 são transição); variação que atravessa essas datas ou toca a transição não é publicada.",
     "Os dados do ONS passam por consistência recorrente e são revisados depois da publicação; os dias mais recentes mudam.",
-    "Desde 29/04/2023 a carga inclui uma estimativa de MMGD que o ONS não publica separada neste conjunto: é valor publicado pelo ONS, com componente estimado.",
-    "Antes de 2019 o horário de verão desloca a hora local; dias de mudança de horário ficam sem média e sem pico (23 horas)."
+    "A carga inclui uma estimativa de MMGD que o ONS não publica separada neste conjunto (inclusão declarada para 29/04/2023 e observada nos dados em 01/05/2023): é valor publicado pelo ONS, com componente estimado.",
+    "Antes de 2019 o horário de verão desloca a hora local. No dia de início do horário de verão a hora das 00h não existe: a fonte deixa a célula vazia ou põe zero, e o zero é lido como ausência (a carga de um subsistema inteiro não é zero); esses dias ficam com 23 horas, sem média e sem pico.",
+    "Valor não positivo descartado na leitura da curva (ausência, não carga): S em 2018-11-04 00:00, texto da fonte \"0E-8\"."
    ],
    "download": "/energia/series/carga_horaria.csv",
    "notas_fonte": null
   },
   "api": {
    "indicador": "Carga global, MMGD estimada e carga líquida de MMGD (carga verificada)",
-   "natureza": "ESTIMADO",
+   "natureza": "OBSERVADO",
    "fonte": {
     "orgao": "ONS",
     "dataset": "Carga de Energia Verificada",
@@ -21590,7 +21956,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-10-01T00:04:34Z",
-   "validado_em": "2026-10-01T00:04:48Z",
+   "validado_em": "2026-10-01T06:12:23Z",
    "cobertura_historica": {
     "inicio": "2019-01-01",
     "fim": "2026-09-29"
@@ -21606,9 +21972,9 @@
     "sha256": "6928d877ecd805241b51dba2b91b6a19e7fbd12c72cf4958bd705dcb2db3eff7"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "3e7ff0a36fba+alterado",
+   "versao_codigo": "d4f2c5af5147+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:04:48Z",
+    "detectado_em": "2026-10-01T06:12:23Z",
     "total": 0,
     "vintages_comparadas": 376,
     "arquivos": 376,
@@ -21623,7 +21989,35 @@
     "Os dados do ONS passam por consistência recorrente e são revisados depois da publicação; os dias mais recentes mudam."
    ],
    "download": "/energia/series/carga_verificada_diaria.csv",
-   "notas_fonte": "Natureza ESTIMADO: a MMGD é estimativa publicada pelo próprio ONS."
+   "notas_fonte": "Natureza por série (ver natureza_por_serie): a MMGD é estimativa do ONS; a carga líquida de MMGD é supervisão do ONS mais medição da CCEE; a carga global é essa observação somada à estimativa de MMGD.",
+   "natureza_por_serie": [
+    {
+     "serie": "mmgd",
+     "rotulo": "MMGD (val_cargammgd)",
+     "natureza": "ESTIMADO",
+     "componentes": [],
+     "descricao": "Estimativa do ONS: a micro e minigeração distribuída não é supervisionada nem medida pelo ONS."
+    },
+    {
+     "serie": "liquida",
+     "rotulo": "Carga global líquida de MMGD (val_cargaglobalsmmgd)",
+     "natureza": "OBSERVADO",
+     "componentes": [],
+     "descricao": "Parcela supervisionada pelo ONS (geração tipo I, IIA, IIB, IIC e intercâmbios) mais a não supervisionada, medida pela CCEE (geração tipo III)."
+    },
+    {
+     "serie": "global",
+     "rotulo": "Carga global (val_cargaglobal)",
+     "natureza": "OBSERVADO",
+     "componentes": [
+      {
+       "natureza": "ESTIMADO",
+       "descricao": "MMGD estimada pelo ONS, somada à carga líquida observada"
+      }
+     ],
+     "descricao": "Carga líquida de MMGD (observada) mais a MMGD (estimada): observado com componente estimado."
+    }
+   ]
   },
   "temperatura": {
    "indicador": "Temperatura diária ponderada pela população, por subsistema",
@@ -21644,7 +22038,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T23:33:21Z",
-   "validado_em": "2026-10-01T00:04:48Z",
+   "validado_em": "2026-10-01T06:12:23Z",
    "cobertura_historica": {
     "inicio": "2019-01-01",
     "fim": "2026-09-27"
@@ -21660,9 +22054,9 @@
     "sha256": "66c16d30c194d9e918b143e8fdd1fcdeedb50ed61560625ecdb5e0605d4545a8"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "3e7ff0a36fba+alterado",
+   "versao_codigo": "d4f2c5af5147+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:04:48Z",
+    "detectado_em": "2026-10-01T06:12:23Z",
     "total": 0,
     "vintages_comparadas": 32,
     "arquivos": 32,
@@ -21671,7 +22065,8 @@
     "exemplos": []
    },
    "limitacoes": [
-    "Reanálise (MERRA-2) e análise (GEOS-IT) de modelo, não observação de estação: o INMET não respondeu e o Open-Meteo recusou por limite diário em 30/09/2026.",
+    "Reanálise (MERRA-2) e análise (GEOS-IT) de modelo, não observação de estação: o INMET não respondeu (resposta vazia em 30/09/2026).",
+    "O Open-Meteo (ERA5 e ECMWF IFS) tem cota diária de pedidos por endereço, esgotada no ambiente compartilhado em 30/09 e em 01/10/2026: foi coletado para 15 de 27 capitais e não entra em nenhum número publicado; a sensibilidade da decomposição ao produto de temperatura não foi calculada.",
     "A troca de MERRA-2 para GEOS-IT no trecho recente pode deslocar o nível da temperatura; o mês de cada fonte é publicado.",
     "A capital representa a UF, e a população não é a distribuição da carga."
    ],
@@ -21697,7 +22092,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-29T22:00:43.436290",
    "capturado_em": "2026-09-30T02:19:48Z",
-   "validado_em": "2026-10-01T00:04:48Z",
+   "validado_em": "2026-10-01T06:12:23Z",
    "cobertura_historica": {
     "inicio": "2023-04-29",
     "fim": "2026-09-28"
@@ -21713,9 +22108,9 @@
     "sha256": "b6e8471dc064c63a4db34e9e6e3009a019460c71bff839104a1415ea0dbaefb3"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "3e7ff0a36fba+alterado",
+   "versao_codigo": "d4f2c5af5147+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:04:47Z",
+    "detectado_em": "2026-10-01T06:12:21Z",
     "total": 33,
     "vintages_comparadas": 28,
     "arquivos": 27,
@@ -21827,7 +22222,7 @@
    "limitacoes": [
     "Decomposição estatística: associação, não causa; não há 'percentual explicado' pela temperatura.",
     "A temperatura realizada é usada na avaliação (ex post): não é previsão de carga.",
-    "Treino só desde 29/04/2023 (regime atual); a variante com janela longa usa degrau no regime.",
+    "Treino só desde 01/05/2023, início observado do regime atual (inclusão da MMGD declarada para 29/04/2023 e observada nos dados em 01/05/2023); a variante com janela longa usa degrau no regime.",
     "Os intervalos são empíricos; a cobertura observada fica abaixo da nominal em alguns subsistemas e é publicada."
    ],
    "download": "/energia/series/carga_decomposicao_diaria.csv",
@@ -21847,28 +22242,30 @@
    "entidade": "SIN (soma de SE/CO, S, NE e N)",
    "universo": "carga diária dos quatro subsistemas, 7 dias em 2026 e os mesmos 7 dias de 2025",
    "filtros": [
-    "silver como estava em 2026-09-30T02:20:27Z (instante da gold do diagnóstico)"
+    "silver como estava em 2026-09-30T02:20:27Z (instante da gold do diagnóstico)",
+    "CARGA_ENERGIA_2025: o arquivo da captura de 28/09/2026, 23:42 (Brasília) não está no bronze deste ambiente; a recaptura de 30/09/2026, 21:38 (Brasília) do recurso atual da fonte (https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/carga_energia_di/CARGA_ENERGIA_2025.csv) tem o mesmo sha256 (18d5f6ad9a86…), isto é, é o mesmo arquivo, e está no bronze.",
+    "CARGA_ENERGIA_2026: arquivo da captura de 29/09/2026, 23:19 (Brasília) (sha256 cdb81418d981…) indisponível: não está no bronze deste ambiente; o arquivo atual da fonte já é outro (sha256 45c8cd14bce4…, capturado em 30/09/2026, 21:38 (Brasília)). A reprodução parte dos valores dessa captura gravados no silver principal."
    ],
    "fonte": {
     "orgao": "ONS",
     "conjunto": "Carga de Energia Diária",
     "recurso": "CARGA_ENERGIA_2026",
     "url": "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/carga_energia_di/CARGA_ENERGIA_2026.csv",
-    "arquivo": "data/energia/bronze/ons/carga_energia_di/CARGA_ENERGIA_2026/20260930T021948Z.cdb81418d981.csv.gz",
+    "arquivo": null,
     "sha256": "cdb81418d9810b3d0b6226d261090b1d3fa0b9d9dc9c566e2785ef30dd625d15",
     "capturado_em": "2026-09-30T02:19:48Z",
     "publicado_em": "2026-09-29T22:00:43.436290",
     "arquivos": [
      {
       "recurso": "CARGA_ENERGIA_2025",
-      "arquivo": "data/energia/bronze/ons/carga_energia_di/CARGA_ENERGIA_2025/20260929T024248Z.18d5f6ad9a86.csv.gz",
+      "arquivo": "data/energia/bronze/ons/ons_carga_diaria_conferencia/Carga_Energia-2025/20261001T003803Z.18d5f6ad9a86.csv.gz",
       "sha256": "18d5f6ad9a8648c6758067fddd866ea5ab798a8e42b45679726b0d84a7ff91a6",
-      "capturado_em": "2026-09-29T02:42:48Z",
-      "publicado_em": "2026-01-31T22:01:25.205259"
+      "capturado_em": "2026-10-01T00:38:03Z",
+      "publicado_em": "2026-01-31T22:01:25Z"
      },
      {
       "recurso": "CARGA_ENERGIA_2026",
-      "arquivo": "data/energia/bronze/ons/carga_energia_di/CARGA_ENERGIA_2026/20260930T021948Z.cdb81418d981.csv.gz",
+      "arquivo": null,
       "sha256": "cdb81418d9810b3d0b6226d261090b1d3fa0b9d9dc9c566e2785ef30dd625d15",
       "capturado_em": "2026-09-30T02:19:48Z",
       "publicado_em": "2026-09-29T22:00:43.436290"
@@ -21910,15 +22307,15 @@
    "tratamento_ausencia": "janela com dia ausente não tem variação",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:04:49Z"
+    "codigo": "d4f2c5af5147+alterado",
+    "publicacao": "2026-10-01T06:12:23Z"
    },
    "revisoes": "2 capturas do arquivo de 2026 comparadas; a de 29/09/2026 não tinha a janela completa e trazia −668,879 MWmed no NE em 26/09.",
    "testes": [
     {
      "nome": "mesmo regime metodológico",
      "resultado": "aprovado",
-     "detalhe": "as duas janelas estão depois de 29/04/2023"
+     "detalhe": "as duas janelas estão depois de 01/05/2023 (inclusão da MMGD observada nos dados; declarada para 29/04/2023)"
     },
     {
      "nome": "mesmos dias da semana",
@@ -21946,8 +22343,8 @@
      "url": "/energia/series/carga_revisoes.csv"
     }
    ],
-   "reproducao": "python3 pipeline/energia/executar_modulo.py carga --sem-coleta",
-   "citacao": "SCRUTINIUMS. Variação da carga do SIN em 7 dias contra os mesmos dias do ano anterior (reprodução do diagnóstico): +10,5%, SIN (soma de SE/CO, S, NE e N), 22/09/2026 a 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Diária (recurso CARGA_ENERGIA_2026, capturado em 29/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "reproducao": "python3 pipeline/energia/executar_modulo.py carga --sem-coleta\nArquivo da fonte indisponível neste ambiente para parte das capturas: valores lidos do silver principal (base.como_estava_em(con, 'carga_energia_di', 'carga_mwmed.<sm>', '2026-09-30T02:20:27Z')).",
+   "citacao": "SCRUTINIUMS. Variação da carga do SIN em 7 dias contra os mesmos dias do ano anterior (reprodução do diagnóstico): +10,5%, SIN (soma de SE/CO, S, NE e N), 22/09/2026 a 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Diária (recurso CARGA_ENERGIA_2026, capturado em 29/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "p025_7d_equivalente": {
    "indicador": "Variação da carga do SIN nos últimos 7 dias contra os mesmos dias da semana 52 semanas antes",
@@ -21960,27 +22357,30 @@
    },
    "entidade": "SIN",
    "universo": "quatro subsistemas, dias aceitos pela validação física",
-   "filtros": [],
+   "filtros": [
+    "CARGA_ENERGIA_2025: o arquivo da captura de 28/09/2026, 23:42 (Brasília) não está no bronze deste ambiente; a recaptura de 30/09/2026, 21:38 (Brasília) do recurso atual da fonte (https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/carga_energia_di/CARGA_ENERGIA_2025.csv) tem o mesmo sha256 (18d5f6ad9a86…), isto é, é o mesmo arquivo, e está no bronze.",
+    "CARGA_ENERGIA_2026: arquivo da captura de 29/09/2026, 23:19 (Brasília) (sha256 cdb81418d981…) indisponível: não está no bronze deste ambiente; o arquivo atual da fonte já é outro (sha256 45c8cd14bce4…, capturado em 30/09/2026, 21:38 (Brasília)). A reprodução parte dos valores dessa captura gravados no silver principal."
+   ],
    "fonte": {
     "orgao": "ONS",
     "conjunto": "Carga de Energia Diária",
     "recurso": "CARGA_ENERGIA_2026",
     "url": "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/carga_energia_di/CARGA_ENERGIA_2026.csv",
-    "arquivo": "data/energia/bronze/ons/carga_energia_di/CARGA_ENERGIA_2026/20260930T021948Z.cdb81418d981.csv.gz",
+    "arquivo": null,
     "sha256": "cdb81418d9810b3d0b6226d261090b1d3fa0b9d9dc9c566e2785ef30dd625d15",
     "capturado_em": "2026-09-30T02:19:48Z",
     "publicado_em": "2026-09-29T22:00:43.436290",
     "arquivos": [
      {
       "recurso": "CARGA_ENERGIA_2025",
-      "arquivo": "data/energia/bronze/ons/carga_energia_di/CARGA_ENERGIA_2025/20260929T024248Z.18d5f6ad9a86.csv.gz",
+      "arquivo": "data/energia/bronze/ons/ons_carga_diaria_conferencia/Carga_Energia-2025/20261001T003803Z.18d5f6ad9a86.csv.gz",
       "sha256": "18d5f6ad9a8648c6758067fddd866ea5ab798a8e42b45679726b0d84a7ff91a6",
-      "capturado_em": "2026-09-29T02:42:48Z",
-      "publicado_em": "2026-01-31T22:01:25.205259"
+      "capturado_em": "2026-10-01T00:38:03Z",
+      "publicado_em": "2026-01-31T22:01:25Z"
      },
      {
       "recurso": "CARGA_ENERGIA_2026",
-      "arquivo": "data/energia/bronze/ons/carga_energia_di/CARGA_ENERGIA_2026/20260930T021948Z.cdb81418d981.csv.gz",
+      "arquivo": null,
       "sha256": "cdb81418d9810b3d0b6226d261090b1d3fa0b9d9dc9c566e2785ef30dd625d15",
       "capturado_em": "2026-09-30T02:19:48Z",
       "publicado_em": "2026-09-29T22:00:43.436290"
@@ -22022,8 +22422,8 @@
    "tratamento_ausencia": "dia em quarentena ou ausente anula a comparação",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:04:49Z"
+    "codigo": "d4f2c5af5147+alterado",
+    "publicacao": "2026-10-01T06:12:23Z"
    },
    "revisoes": "33 observações revisadas pela fonte entre as capturas integradas. Mais recentes: carga_mwmed.N em 2026-09-26; carga_mwmed.NE em 2026-09-26; carga_mwmed.S em 2026-09-26; carga_mwmed.SE em 2026-09-26; carga_mwmed.N em 2026-09-25. Verificação em 2026-10-01.",
    "testes": [
@@ -22045,8 +22445,8 @@
      "url": "/energia/series/carga_comparacoes.csv"
     }
    ],
-   "reproducao": "python3 pipeline/energia/executar_modulo.py carga --sem-coleta",
-   "citacao": "SCRUTINIUMS. Variação da carga do SIN nos últimos 7 dias contra os mesmos dias da semana 52 semanas antes: +11,4%, SIN, 22/09/2026 a 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Diária (recurso CARGA_ENERGIA_2026, capturado em 29/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "reproducao": "python3 pipeline/energia/executar_modulo.py carga --sem-coleta\nArquivo da fonte indisponível neste ambiente para parte das capturas: valores lidos do silver principal (base.serie_vigente(con, 'carga_energia_di', 'carga_mwmed.<sm>')).",
+   "citacao": "SCRUTINIUMS. Variação da carga do SIN nos últimos 7 dias contra os mesmos dias da semana 52 semanas antes: +11,4%, SIN, 22/09/2026 a 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Diária (recurso CARGA_ENERGIA_2026, capturado em 29/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "p026_mmgd_mes": {
    "indicador": "Parcela da carga global do SIN atendida por MMGD (estimativa do ONS), último mês completo",
@@ -22127,8 +22527,8 @@
    "tratamento_ausencia": "hora sem as duas meias horas fica fora; dia em curso na captura não entra",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:04:49Z"
+    "codigo": "d4f2c5af5147+alterado",
+    "publicacao": "2026-10-01T06:12:24Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -22155,7 +22555,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py carga --sem-coleta",
-   "citacao": "SCRUTINIUMS. Parcela da carga global do SIN atendida por MMGD (estimativa do ONS), último mês completo: 10,8%, SIN, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Verificada (recurso cargaverificada_SECO_2026-08, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Parcela da carga global do SIN atendida por MMGD (estimativa do ONS), último mês completo: 10,8%, SIN, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Verificada (recurso cargaverificada_SECO_2026-08, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "p026_pico_sin": {
    "indicador": "Pico horário da carga do SIN no dia",
@@ -22242,8 +22642,8 @@
    "tratamento_ausencia": "dia sem as 24 horas não tem pico",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:04:50Z"
+    "codigo": "d4f2c5af5147+alterado",
+    "publicacao": "2026-10-01T06:12:24Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -22265,7 +22665,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py carga --sem-coleta",
-   "citacao": "SCRUTINIUMS. Pico horário da carga do SIN no dia: 98.741 MWmed às 19h, SIN, 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Curva de Carga Horária (recurso CurvaCarga-2026, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Pico horário da carga do SIN no dia: 98.741 MWmed às 19h, SIN, 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Curva de Carga Horária (recurso CurvaCarga-2026, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "p027_mape_sin": {
    "indicador": "Erro percentual absoluto médio da decomposição estatística, fora da amostra (SIN)",
@@ -22274,20 +22674,55 @@
    "unidade": "%",
    "periodo": {
     "inicio": "2024-05-01",
-    "fim": "2026-09-28"
+    "fim": "2026-09-27"
    },
    "entidade": "SIN",
    "universo": "880 dias previstos em 29 origens mensais",
-   "filtros": [],
+   "filtros": [
+    "CARGA_ENERGIA_2023: o arquivo da captura de 28/09/2026, 23:42 (Brasília) não está no bronze deste ambiente; a recaptura de 30/09/2026, 21:38 (Brasília) do recurso atual da fonte (https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/carga_energia_di/CARGA_ENERGIA_2023.csv) tem o mesmo sha256 (65eee344d63d…), isto é, é o mesmo arquivo, e está no bronze.",
+    "CARGA_ENERGIA_2024: o arquivo da captura de 28/09/2026, 23:42 (Brasília) não está no bronze deste ambiente; a recaptura de 30/09/2026, 21:38 (Brasília) do recurso atual da fonte (https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/carga_energia_di/CARGA_ENERGIA_2024.csv) tem o mesmo sha256 (e2efd55f7361…), isto é, é o mesmo arquivo, e está no bronze.",
+    "CARGA_ENERGIA_2025: o arquivo da captura de 28/09/2026, 23:42 (Brasília) não está no bronze deste ambiente; a recaptura de 30/09/2026, 21:38 (Brasília) do recurso atual da fonte (https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/carga_energia_di/CARGA_ENERGIA_2025.csv) tem o mesmo sha256 (18d5f6ad9a86…), isto é, é o mesmo arquivo, e está no bronze.",
+    "CARGA_ENERGIA_2026: arquivo da captura de 29/09/2026, 23:19 (Brasília) (sha256 cdb81418d981…) indisponível: não está no bronze deste ambiente; o arquivo atual da fonte já é outro (sha256 45c8cd14bce4…, capturado em 30/09/2026, 21:38 (Brasília)). A reprodução parte dos valores dessa captura gravados no silver principal."
+   ],
    "fonte": {
     "orgao": "ONS",
     "conjunto": "Carga de Energia Diária",
     "recurso": "CARGA_ENERGIA_2026",
     "url": "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/carga_energia_di/CARGA_ENERGIA_2026.csv",
-    "arquivo": "data/energia/bronze/ons/carga_energia_di/CARGA_ENERGIA_2026/20260930T021948Z.cdb81418d981.csv.gz",
+    "arquivo": null,
     "sha256": "cdb81418d9810b3d0b6226d261090b1d3fa0b9d9dc9c566e2785ef30dd625d15",
     "capturado_em": "2026-09-30T02:19:48Z",
-    "publicado_em": "2026-09-29T22:00:43.436290"
+    "publicado_em": "2026-09-29T22:00:43.436290",
+    "arquivos": [
+     {
+      "recurso": "CARGA_ENERGIA_2023",
+      "arquivo": "data/energia/bronze/ons/ons_carga_diaria_conferencia/Carga_Energia-2023/20261001T003801Z.65eee344d63d.csv.gz",
+      "sha256": "65eee344d63d5d503d639cd740aebd921c87edcb04fab971fdf2279f08876883",
+      "capturado_em": "2026-10-01T00:38:01Z",
+      "publicado_em": "2025-07-28T15:33:48Z"
+     },
+     {
+      "recurso": "CARGA_ENERGIA_2024",
+      "arquivo": "data/energia/bronze/ons/ons_carga_diaria_conferencia/Carga_Energia-2024/20261001T003802Z.e2efd55f7361.csv.gz",
+      "sha256": "e2efd55f73617e1e2f4195681e69677eb785b3b948becd1e92f4f98deb7585b0",
+      "capturado_em": "2026-10-01T00:38:02Z",
+      "publicado_em": "2025-07-28T15:34:13Z"
+     },
+     {
+      "recurso": "CARGA_ENERGIA_2025",
+      "arquivo": "data/energia/bronze/ons/ons_carga_diaria_conferencia/Carga_Energia-2025/20261001T003803Z.18d5f6ad9a86.csv.gz",
+      "sha256": "18d5f6ad9a8648c6758067fddd866ea5ab798a8e42b45679726b0d84a7ff91a6",
+      "capturado_em": "2026-10-01T00:38:03Z",
+      "publicado_em": "2026-01-31T22:01:25Z"
+     },
+     {
+      "recurso": "CARGA_ENERGIA_2026",
+      "arquivo": null,
+      "sha256": "cdb81418d9810b3d0b6226d261090b1d3fa0b9d9dc9c566e2785ef30dd625d15",
+      "capturado_em": "2026-09-30T02:19:48Z",
+      "publicado_em": "2026-09-29T22:00:43.436290"
+     }
+    ]
    },
    "extracao_pdf": null,
    "chaves_origem": [
@@ -22333,20 +22768,20 @@
    "tratamento_ausencia": "dia sem temperatura (ou sem a do dia anterior) fica fora do modelo",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:04:50Z"
+    "codigo": "d4f2c5af5147+alterado",
+    "publicacao": "2026-10-01T06:12:24Z"
    },
    "revisoes": "A série é reavaliada a cada publicação com a carga e a temperatura vigentes.",
    "testes": [
     {
      "nome": "cobertura do intervalo de 80%",
      "resultado": "ressalva",
-     "detalhe": "71,5% dos dias dentro do intervalo"
+     "detalhe": "71,5% dos dias dentro do intervalo (nominal 80%); abaixo da nominal: intervalos mais estreitos que a incerteza real"
     },
     {
      "nome": "cobertura do intervalo de 95%",
-     "resultado": "aprovado",
-     "detalhe": "91,6% dos dias dentro do intervalo"
+     "resultado": "ressalva",
+     "detalhe": "91,6% dos dias dentro do intervalo (nominal 95%); abaixo da nominal: intervalos mais estreitos que a incerteza real"
     },
     {
      "nome": "melhor que a referência ingênua",
@@ -22365,8 +22800,8 @@
      "url": "/energia/series/carga_decomposicao_backtest.csv"
     }
    ],
-   "reproducao": "python3 pipeline/energia/executar_modulo.py carga --sem-coleta",
-   "citacao": "SCRUTINIUMS. Erro percentual absoluto médio da decomposição estatística, fora da amostra (SIN): 2,08%, SIN, 01/05/2024 a 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Diária (recurso CARGA_ENERGIA_2026, capturado em 29/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "reproducao": "python3 pipeline/energia/executar_modulo.py carga --sem-coleta\nArquivo da fonte indisponível neste ambiente para parte das capturas: valores lidos do silver principal (base.serie_vigente(con, 'carga_energia_di', 'carga_mwmed.<sm>')).",
+   "citacao": "SCRUTINIUMS. Erro percentual absoluto médio da decomposição estatística, fora da amostra (SIN): 2,08%, SIN, 01/05/2024 a 27/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Diária (recurso CARGA_ENERGIA_2026, capturado em 29/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "downloads": [

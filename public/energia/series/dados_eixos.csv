@@ -54,16 +54,24 @@ inclusao.json;Peso da energia no orçamento (POF 2017-2018);;reconciliacao_aprov
 inclusao.json;Domicílios sem energia elétrica;;controles_aprovados;;2;0;0
 inclusao.json;População das localidades atendidas por sistemas isolados;;reconciliacao_aprovada;aprovado;2;0;0
 inclusao.json;Domicílios atendidos pelo Luz para Todos;;ressalva;;3;1;0
+mercado.json;Participação do mercado livre no consumo de energia elétrica na rede (12 meses);;ressalva;ressalva;1;0;0
+mercado.json;Participação do ACL no consumo contabilizado pela CCEE (12 meses);;reconciliacao_aprovada;aprovado;1;0;0
+mercado.json;Agentes que participaram da contabilização da CCEE;;ressalva;ressalva;1;0;0
+mercado.json;Unidades consumidoras no mercado livre;;reconciliacao_aprovada;aprovado;1;0;0
+mercado.json;Parcelas de carga no ACL contabilizadas pela CCEE;;controles_aprovados;;1;0;0
+mercado.json;Fator de ajuste do MRE (GSF);CALCULADO;reconciliacao_aprovada;aprovado;1;0;0
+mercado.json;Fator de ajuste do MRE (GSF) em 12 meses;;controles_aprovados;;1;0;0
+mercado.json;Custo do risco hidrológico alocado às distribuidoras (cotas, repactuadas e Itaipu);;controles_aprovados;;1;0;0
+mercado.json;Encargos de serviços do sistema (ESS) em 12 meses;;ressalva;ressalva;2;0;0
+mercado.json;Encargo de energia de reserva (EER) em 12 meses;;controles_aprovados;;1;0;0
+mercado.json;Inadimplência na liquidação financeira do mercado de curto prazo;;reconciliacao_aprovada;aprovado;1;0;0
+mercado.json;Encargos de serviços do sistema no ano, Boletim Mensal do MME;;controles_aprovados;;1;0;0
 perdas.json;Taxa de perdas totais na distribuição;;ressalva;;3;2;0
 perdas.json;Perdas totais de energia na distribuição;;ressalva;;3;2;0
 perdas.json;Perdas não técnicas sobre o mercado de baixa tensão;;ressalva;;3;3;0
 perdas.json;Energia injetada de referência das concessionárias;;ressalva;aprovado;3;2;0
 perdas.json;Taxa de perdas totais acumulada em 2026;;ressalva;;3;2;0
 perdas.json;Associação entre renda média da área e taxa de perdas totais (ρ de Spearman);;ressalva;;3;1;0
-previsoes_desempenho.json;Erro médio absoluto do B0 no horizonte W1 (teste);;reconciliacao_aprovada;aprovado;1;0;0
-previsoes_desempenho.json;Erro médio absoluto do C2-P no horizonte W1 (teste);;reconciliacao_aprovada;aprovado;1;0;0
-previsoes_desempenho.json;Erro médio absoluto do B0 no horizonte M1 (teste);;reconciliacao_aprovada;aprovado;1;0;0
-previsoes_desempenho.json;Erro médio absoluto do C2-P no horizonte M1 (teste);;reconciliacao_aprovada;aprovado;1;0;0
 qualidade.json;DEC do Brasil (apurado, ponderado por unidades consumidoras, todas as distribuidoras, inclusive permissionárias);;ressalva;aprovado;4;1;0
 qualidade.json;FEC do Brasil (apurado, ponderado por unidades consumidoras, todas as distribuidoras, inclusive permissionárias);;ressalva;aprovado;4;1;0
 qualidade.json;Conjuntos com DEC anual acima do limite;;controles_aprovados;;3;0;0

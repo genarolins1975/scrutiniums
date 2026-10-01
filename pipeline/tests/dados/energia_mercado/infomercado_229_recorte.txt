@@ -1,0 +1,62 @@
+ www.ccee.org.br                                                                Nº 229 – Contabilização de julho de 2026                                                                                          0800 881 2233
+
+
+    1. OBJETIVO
+                                                                                                                     Em julho/2026 foi registrada exportação de 929,1 MW médios, enquanto no mesmo
+Este relatório tem como objetivo avaliar as operações de energia elétrica do SIN para                                mês de 2025 foram exportados 1.653,9 MW médios. Desconsiderando as exportações
+o mês de julho de 2026 em comparação com o mesmo período do ano anterior.                                            o ACL avança 5,2% e o SIN ameniza a alta para 3,1%. Não houve importação em
+Estão sendo considerados os principais assuntos relacionados a comercialização                                       julho/2026 e nem no mesmo período de 2025.
+como: consumo, geração, volume de contratos e montantes de energia negociados,
+contabilização e liquidação no Mercado de Curto Prazo (MCP).
+
+                                                                                                                                             O Consumo/Geração atingiu 71.272 MW médios
+    2. SUMÁRIO EXECUTIVO1
+No mês de julho, o consumo e a geração de energia apresentaram crescimento de
+                                                                                                                                             Queda de -6,5% na geração das usinas termelétricas
+3,2% em relação ao mesmo mês do ano anterior, totalizando 71.272 MW médios
+(valor referido ao centro de gravidade).
+                                                                                                                                             As usinas do MRE geraram 39.195 MW médios
+As principais variáveis que influenciaram este resultado foram:
+
+(+) Temperatura: Em julho de 2026 as temperaturas apresentaram anomalias                                                                     Fator de ajuste do MRE foi de 76,83%
+positivas na maior parte do país, o destaque foram as temperaturas elevadas
+observadas na região Sul. A exceção foi uma área que cobre parte do estado de SP e
+                                                                                                                                             Queda de -5,5% na geração das usinas eólicas
+estados do Centro-Oeste, com temperaturas iguais e/ou ligeiramente abaixo da
+média. Em comparação com julho de 2025, as temperaturas estiveram mais elevadas
+na maior parte do país, com destaque para as temperaturas superiores no ciclo                                                               203.360 MW médios de contratos transacionados
+corrente nos estados do Sul e Sudeste. A exceção foi uma pequena parte que cobre
+parte dos estados no CE, PI, MA, PA e MT.                                                                                                   16.364 agentes participaram da contabilização
+
+(=) Economia: O mês de julho de 2026 apresenta um cenário de atividade
+                                                                                                                                            Contabilizados 17.630 MW médios no MCP
+econômica mais moderado, marcado por enfraquecimento da demanda doméstica e
+perda de dinamismo industrial. Na comparação com julho/2025, a produção industrial
+recuou 0,5%, refletindo quedas em importantes segmentos, como químicos (-6,9%),                                                             O total de encargos foi de R$ 65,0 milhões
+alimentícios (-2,6%) e farmacêuticos (-13,7%), além da retração de bens de capital
+(-2,4%), sinalizando menor ritmo de investimentos produtivos.                                                                               O total a liquidar foi de R$ 2,13 bilhões
+
+Neste mês, o ambiente de comercialização regulado (ACR) registrou alta de 5,2% e
+o ambiente de comercialização livre (ACL), avanço de 0,7%.
+
+    1
+        Considera dados da contabilização do mês em análise e a CCEE (ACER) como agente participante
+
+
+   O conteúdo desta publicação foi produzido pela CCEE com base em dados e informações de conhecimento público. É de responsabilidade exclusiva dos agentes e demais interessados a obtenção de outros dados e informações, a realização
+   de análises, estudos e avaliações para fins de tomada de decisões, definição de estratégias de atuação, assunção de compromissos e obrigações e quaisquer outras finalidades, em qualquer tempo e sob qualquer condição.
+   É proibida a reprodução ou utilização total ou parcial do presente sem a identificação da fonte.
+                                                                                                                                                               1
+                                                                                                                                                    Tabela 12 – Resultados de Energia de Reserva
+
+
+Do total de encargos (R$ 64,96 milhões), 57,0% (R$ 37,02 milhões) foi devido a
+restrição de operação, 37,4% (R$ 24,29 milhões) de suporte de reativo, 3,2% (R$
+2,05 milhões) de deslocamento hidráulico de perfis de geração, 1,7% (R$ 1,07
+milhões) de suporte de reativo vinculado ao sandbox e 0,8% (R$ 0,54 milhões) de
+deslocamento hidráulico de perfis de consumo. Houve R$ 62,41 milhões de alívio
+de encargos de serviços do sistema.
+
+                                 Tabela 11 – Encargos de Serviços de Sistema
+
+

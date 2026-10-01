@@ -139,11 +139,11 @@ REGISTRO = {
            "licenca": cm.LICENCA, "paginas": PAGINA, "downloads": [_url(CSV_CCEE)], "quebras": spec.get("quebras", [])}
           for nome, spec in cm.CONJUNTOS.items()],
         {"orgao": "CCEE", "nome": "infomercado-mensal", "slug": "ccee-infomercado-mensal", "dataset_silver": cm.DS_INFOMERCADO,
-         "titulo": "InfoMercado mensal (PDF, edições 206 e 208): sumário executivo usado para conferir os números calculados",
-         "estado": "VALIDADO", "url": "https://www.ccee.org.br/web/guest/dados-e-analises/dados-mercado-mensal",
+         "titulo": "InfoMercado mensal (PDF): sumário executivo e composição dos encargos, usados para conferir os números calculados",
+         "estado": "VALIDADO", "url": cm.URL_MERCADO_MENSAL,
          "licenca": "Publicação da CCEE; números reproduzidos com atribuição, apenas para conferência", "paginas": PAGINA,
          "downloads": [], "quebras": [
-             {"data": "2024-06-01", "descricao": "A partir de junho de 2024 a CCEE passou a publicar os dados do mercado só no portal de dados abertos; as edições em PDF usadas aqui são de agosto e outubro de 2024."}]},
+             {"data": "2026-07-01", "descricao": "O parágrafo de composição dos encargos mudou de rótulos entre 2024 e 2026 (restrição de operação, suporte de reativo, deslocamento hidráulico por perfis de geração e de consumo, suporte de reativo vinculado ao sandbox); o extrator mapeia os rótulos conhecidos e registra os desconhecidos."}]},
     ],
     "arquivos": {
         _url(CSV_CONSUMO): "mes (AAAA-MM); regiao (geográfica); subsistema (SE, S, NE, N ou ISOL = sistemas isolados); classe (Residencial, Industrial, Comercial, Rural, Outros); tipo (cativo ou livre); consumo_mwh (consumo de energia elétrica na rede, MWh, como publicado pela EPE); unidades_consumidoras (número de UCs no mês). Fonte: EPE, dados abertos do consumo mensal (tabela CONSUMO E NUMCONS SAM). Vazio = a fonte não publicou o valor; zero é zero.",
@@ -905,7 +905,7 @@ def secao_livre_regulado(con, hoje, ev):
             partes.append(f"de {pos[0]['mes']} em diante o conjunto de ambiente deixou de contar a classe Varejista no ACL e a diferença "
                           f"entre os conjuntos é o consumo dessa classe (maior resíduo {_br(max(abs(x['residuo_mwmed']) for x in pos), 2)} MW médio)")
         for x in im:
-            partes.append(f"InfoMercado Nº {x['numero']} ({x['mes']}): 'Consumo/Geração' {_br(x['publicado'], 0)} MW médios; ACR + ACL: {_br(x['calculado'], 0)} MW médios (definição do InfoMercado não detalhada)")
+            partes.append(f"InfoMercado Nº {x['numero']} ({x['mes']}): 'Consumo/Geração' {_br(x['publicado'], 0)} MW médios; soma das classes: {_br(x['calculado'], 0)} MW médios (definição do InfoMercado não detalhada)")
         rec = evid.reconciliacao("; ".join(partes), "aprovado" if ident_classes and all(x["ok"] for x in ident_classes) else "ressalva",
                                  f"{_br(TOL_IDENTIDADE_CLASSES_MWMED, 0)} MW médios por mês na identidade entre os conjuntos; 0,5 MW médio no InfoMercado") if partes else None
         kpis["participacao_acl_ccee_12m"] = {
@@ -958,21 +958,30 @@ def secao_livre_regulado(con, hoje, ev):
     }
 
 
+# Componente do total de encargos do InfoMercado → colunas do conjunto ENCARGO_ESS_ANCILAR.
+COMPONENTE_PARA_CCEE = {
+    "restricao_operacao": ("ENCARGO_CONST_ON", "ENCARGO_CONST_OFF", "ENCARGO_REST_OP_UNIT_COMT"),
+    "servicos_ancilares": ("ENCARGO_CS", "OUTROS_SERVICOS_ANCILARES"), "suporte_reativo": ("ENCARGO_CS",),
+    "importacao": ("ENCARGO_IMPORTACAO",), "deslocamento_hidraulico": ("RECEBIMENTO_ENCARGO_DH",),
+    "seguranca_energetica": ("ENCARGO_SEG_ENER",), "reserva_operativa": ("RECEBIMENTO_ENCARGO_RESERVA_OP",),
+}
+
+
 def reconcilia_infomercado(con):
     """Números do InfoMercado mensal da CCEE (publicação oficial, PDF) × os mesmos números
     calculados a partir dos conjuntos abertos, por outro caminho (outro arquivo, outro código).
     Tolerâncias pela precisão publicada no PDF.
 
-    Encargos: o total do InfoMercado inclui a resposta da demanda, que não é coluna do conjunto
-    ENCARGO_ESS_ANCILAR; por isso a conferência é por componente (restrição de operação,
-    serviços ancilares, importação, deslocamento hidráulico) e do total sem a resposta da
-    demanda. O pagamento (total menos o alívio) confere com o conjunto ENCARGO_PGTO_MENSAL."""
+    Encargos: o total do InfoMercado inclui parcelas que não são colunas do conjunto
+    ENCARGO_ESS_ANCILAR (resposta da demanda; em 2026, suporte de reativo do sandbox); por isso
+    a conferência é por componente e do total sem essas parcelas. O pagamento (total menos o
+    alívio) é conferido com o conjunto ENCARGO_PGTO_MENSAL."""
     im = _vigentes(con, cm.DS_INFOMERCADO)
     regs = base.registros_como_estavam_em(con, cm.DS_INFOMERCADO)
     ger = _ccee(con, "geracao_submercado")
     mre = _ccee(con, "mre_mensal")
     qtd = _ccee(con, "agente_qtd_contabilizacao")
-    amb = _ccee(con, "consumo_mensal_ambiente_comercializacao")
+    cls = _ccee(con, "consumo_classe_agente")
     ess = _ccee(con, "encargo_ess_ancilar")
     liq = _ccee(con, "sumario_mensal_liquidacao")
     pgt = _ccee(con, "encargo_pgto_mensal")
@@ -1001,24 +1010,27 @@ def reconcilia_infomercado(con):
         n_ag = [v for (ss, r), v in qtd.items() if r == mes]
         linhas.append(("agentes_contabilizados", g("agentes_contabilizados"), sum(n_ag) if n_ag else None, 0.0, "0 agente",
                        "O conjunto aberto é a versão vigente da contabilização; o InfoMercado é a publicação do mês e pode não refletir recontabilizações posteriores."))
-        a, b = amb.get(("CONSUMO_TOTAL_ACR", mes)), amb.get(("CONSUMO_TOTAL_ACL", mes))
-        linhas.append(("consumo_mwmed", g("consumo_mwmed"), a + b if a is not None and b is not None else None, 0.5,
+        cons = [v for (ss, r), v in cls.items() if r == mes and ss.endswith("|CONSUMO")]
+        linhas.append(("consumo_mwmed", g("consumo_mwmed"), sum(cons) if cons else None, 0.5,
                        "0,5 MW médio (MW médios inteiros)",
-                       "O InfoMercado chama o número de 'Consumo/Geração'; o conjunto aberto separa ACR e ACL e a diferença (cerca de 0,1%) não é explicada pela fonte."))
-        for medida, cols in (("encargos_restricao_operacao_milhoes_rs", ("ENCARGO_CONST_ON", "ENCARGO_CONST_OFF", "ENCARGO_REST_OP_UNIT_COMT")),
-                             ("encargos_servicos_ancilares_milhoes_rs", ("ENCARGO_CS", "OUTROS_SERVICOS_ANCILARES")),
-                             ("encargos_importacao_milhoes_rs", ("ENCARGO_IMPORTACAO",)),
-                             ("encargos_deslocamento_hidraulico_milhoes_rs", ("RECEBIMENTO_ENCARGO_DH",))):
-            linhas.append((medida, g(medida), ess_m(mes, cols), 0.005, "R$ 0,005 milhão (duas casas decimais em milhões)", None))
+                       "O InfoMercado chama o número de 'Consumo/Geração' (referido ao centro de gravidade); calculado = soma das classes de agente de CONSUMO_CLASSE_AGENTE (ACR + ACL). A diferença, de cerca de 0,1% a 0,2%, não é explicada pela fonte."))
+        for comp, cols in COMPONENTE_PARA_CCEE.items():
+            medida = f"encargos_{comp}_milhoes_rs"
+            n = int(ed.get(f"parcelas|{medida}") or 1)
+            linhas.append((medida, g(medida), ess_m(mes, cols), 0.005 * n,
+                           f"R$ {_br(0.005 * n, 3)} milhão ({n} {'parcela publicada' if n == 1 else 'parcelas publicadas'} com duas casas decimais em milhões)",
+                           None if n == 1 else f"Soma de {n} parcelas do texto do InfoMercado (por exemplo, deslocamento hidráulico de perfis de geração e de consumo)."))
         rd_c = rd_mensal_de(_ccee(con, "rd_encargos_contab_mensal")).get(mes)
         linhas.append(("encargos_resposta_demanda_milhoes_rs", g("encargos_resposta_demanda_milhoes_rs"),
                        None if rd_c is None else rd_c[0] / 1e6, 0.005, "R$ 0,005 milhão (duas casas decimais em milhões)",
                        "Calculado = soma dos submercados com valor no conjunto RD_ENCARGOS_CONTAB_MENSAL; mês ausente do arquivo fica sem valor."))
-        tot, rd = g("encargos_total_detalhe_milhoes_rs"), g("encargos_resposta_demanda_milhoes_rs")
-        linhas.append(("encargos_sem_resposta_demanda_milhoes_rs", None if tot is None or rd is None else tot - rd,
+        tot = g("encargos_total_detalhe_milhoes_rs")
+        fora = [g(f"encargos_{k}_milhoes_rs") for k in cm.COMPONENTES_FORA_DO_CONJUNTO if g(f"encargos_{k}_milhoes_rs") is not None]
+        desconhecidos = json.loads(ed.get("rotulos_desconhecidos") or "[]")
+        linhas.append(("encargos_do_conjunto_milhoes_rs", None if tot is None or desconhecidos else tot - sum(fora),
                        ess_m(mes, TIPOS_ESS), 0.06,
-                       "R$ 0,06 milhão (diferença de dois números publicados com uma ou duas casas decimais em milhões)",
-                       "Publicado = total de encargos menos a parcela de resposta da demanda, ambos do próprio InfoMercado; calculado = soma dos tipos do conjunto ENCARGO_ESS_ANCILAR (sem as colunas de ressarcimento, que detalham os outros serviços ancilares)."))
+                       "R$ 0,06 milhão (diferença de números publicados com uma ou duas casas decimais em milhões)",
+                       "Publicado = total de encargos menos as parcelas que não são colunas do conjunto ENCARGO_ESS_ANCILAR (resposta da demanda, suporte de reativo do sandbox), todas do próprio InfoMercado; calculado = soma dos nove tipos do conjunto (sem as colunas de ressarcimento, que detalham os outros serviços ancilares)."))
         alv = g("alivio_ess_milhoes_rs")
         p_ess, p_se = pgt.get(("PAGAMENTO_ENCARGO_ESS", mes)), pgt.get(("PAGAMENTO_ENCARGO_SE", mes))
         linhas.append(("pagamento_ess_milhoes_rs", None if tot is None or alv is None else tot - alv,
@@ -1285,7 +1297,8 @@ def gsf_mensal(ger_obs, mre_obs, gf_sm_obs):
     """GSF (fator de ajuste do MRE) por mês = geração das usinas do MRE no centro de gravidade
     (soma dos submercados) ÷ garantia física modulada ajustada pelo fator de disponibilidade
     (GFIS_2, a garantia física depois do mecanismo de redução). É a razão que reproduz o fator
-    publicado pela CCEE no InfoMercado (79,37% em agosto e 73,49% em outubro de 2024)."""
+    publicado pela CCEE no InfoMercado (79,37% em agosto e 73,49% em outubro de 2024, 76,83% em
+    julho de 2026)."""
     meses = sorted({r for (_, r) in ger_obs})
     out = []
     for m in meses:
@@ -1635,13 +1648,13 @@ def secao_encargos(con, ev):
             vs = _vintages_ccee(con, "encargo_ess_ancilar")
             ok_mme = [x for x in rec_mme if x["resultado"] is not None]
             rec = None
-            im = [x for x in reconcilia_infomercado(con) if x["medida"] == "encargos_sem_resposta_demanda_milhoes_rs"]
+            im = [x for x in reconcilia_infomercado(con) if x["medida"] == "encargos_do_conjunto_milhoes_rs"]
             partes = []
             if ok_mme:
                 n_ok = sum(1 for x in ok_mme if x["resultado"] == "aprovado")
                 partes.append(f"Boletim Mensal do MME (edições de 2026, fonte declarada CCEE): {n_ok} de {len(ok_mme)} valores por tipo e mês coincidem com o conjunto aberto (tolerância de 0,5 mil R$)")
             for x in im:
-                partes.append(f"InfoMercado Nº {x['numero']} ({x['mes']}): R$ {_br(x['publicado'], 2)} milhões sem a resposta da demanda; conjunto aberto: R$ {_br(x['calculado'], 2)} milhões")
+                partes.append(f"InfoMercado Nº {x['numero']} ({x['mes']}): R$ {_br(x['publicado'], 2)} milhões sem as parcelas fora do conjunto; conjunto aberto: R$ {_br(x['calculado'], 2)} milhões")
             if partes:
                 aprov = all(x["resultado"] == "aprovado" for x in ok_mme) and all(x["resultado"] == "aprovado" for x in im)
                 rec = evid.reconciliacao("; ".join(partes), "aprovado" if aprov else "ressalva",
@@ -1959,6 +1972,15 @@ def resposta_p035(en):
     return " ".join(partes) or None
 
 
+def _txt_rd(x):
+    """Texto de uma divergência da resposta da demanda, com a unidade de cada publicação."""
+    if "mme_mil_rs" in x:
+        ccee = "sem valor no conjunto" if x["ccee_mil_rs"] is None else f"{_br(x['ccee_mil_rs'], 1)} mil R$ no conjunto"
+        return f"{x['mes']}: {_br(x['mme_mil_rs'], 0)} mil R$ no boletim do MME, {ccee}"
+    ccee = "sem valor no conjunto" if x["calculado"] is None else f"R$ {_br(x['calculado'], 2)} milhões no conjunto"
+    return f"{x['mes']}: R$ {_br(x['publicado'], 2)} milhões no InfoMercado, {ccee}"
+
+
 def paineis(g):
     """Estado de cada painel com a verificação do critério de aceite do Anexo A, calculado a
     partir da própria gold (sem estado escrito à mão)."""
@@ -1996,7 +2018,8 @@ def paineis(g):
                 {"nome": "Garantia física (MWmed, CCEE) e geração (MWmed, CCEE) em colunas separadas; o GSF é razão de energias do mesmo perímetro",
                  "resultado": "aprovado", "detalhe": "geracao_mre_mwmed e gf_modulada_fdisp_mwmed publicados lado a lado"}]}
     im_enc = [x for x in en["reconciliacao_infomercado"]
-              if (x["medida"].startswith("encargos_") and x["medida"] != "encargos_resposta_demanda_milhoes_rs") or x["medida"] == "pagamento_ess_milhoes_rs"]
+              if x["medida"].startswith("encargos_") and x["medida"] != "encargos_resposta_demanda_milhoes_rs"]
+    im_pag = [x for x in en["reconciliacao_infomercado"] if x["medida"] == "pagamento_ess_milhoes_rs"]
     rec_mme = [x for x in en["mme"]["reconciliacao_ccee"] if x["tipo"] != "resposta_demanda"]
     rd_div = [x for x in en["mme"]["reconciliacao_ccee"] if x["tipo"] == "resposta_demanda"] + \
              [x for x in en["reconciliacao_infomercado"] if x["medida"] == "encargos_resposta_demanda_milhoes_rs"]
@@ -2011,10 +2034,13 @@ def paineis(g):
                             f"{sum(1 for x in rec_mme if x['resultado'] == 'aprovado')} de {sum(1 for x in rec_mme if x['resultado'])} no boletim do MME"},
                 {"nome": "Competência, pagamento e reprocessamento separados",
                  "resultado": "aprovado", "detalhe": "encargos por mês de competência; pagamento e alívio em série própria; revisões entre edições do boletim e entre capturas"},
+                {"nome": "Pagamento (total menos alívio, InfoMercado) × PAGAMENTO_ENCARGO_ESS + PAGAMENTO_ENCARGO_SE (divergência entre fontes, documentada)",
+                 "resultado": "aprovado" if im_pag and all(x["resultado"] == "aprovado" for x in im_pag) else "ressalva", "essencial": False,
+                 "detalhe": "; ".join(f"{x['mes']}: InfoMercado R$ {_br(x['publicado'], 2)} milhões, conjunto R$ {_br(x['calculado'], 2) if x['calculado'] is not None else 'sem valor'} milhões"
+                                      for x in im_pag) or "sem edição conferida"},
                 {"nome": "Resposta da demanda: conjunto RD_ENCARGOS_CONTAB_MENSAL × boletim do MME e InfoMercado (divergência entre fontes, documentada)",
                  "resultado": "aprovado" if rd_div and all(x["resultado"] == "aprovado" for x in rd_div) else "ressalva", "essencial": False,
-                 "detalhe": "; ".join(f"{x['mes']}: fonte {_br(x.get('mme_mil_rs', x.get('publicado')), 2)}, CCEE {_br(x.get('ccee_mil_rs', x.get('calculado')), 2)}"
-                                      for x in rd_div if x["resultado"] != "aprovado") or "todas as conferências dentro da tolerância"}]}
+                 "detalhe": "; ".join(_txt_rd(x) for x in rd_div if x["resultado"] != "aprovado") or "todas as conferências dentro da tolerância"}]}
 
     def estado(cr, resposta):
         """Concluído com limitação quando as verificações essenciais do critério de aceite
@@ -2050,6 +2076,36 @@ def paineis(g):
     return out
 
 
+def acesso_ccee(con):
+    """Condição de acesso ao portal da CCEE registrada nas coletas: a última tentativa de cada
+    conjunto e o cliente usado. O curl recebe HTTP 403 ('Acesso bloqueado') do firewall da
+    origem; o cliente HTTP do pipeline (urllib, User-Agent do projeto, o mesmo da coleta do PLD
+    no GitHub Actions) recebe as respostas. Nada é alterado para contornar bloqueio: se o portal
+    recusar o cliente do pipeline, a falha fica registrada e a última captura válida segue."""
+    linhas = con.execute("""SELECT dataset, MAX(tentado_em), SUM(ok), COUNT(*) FROM coletas
+                            WHERE dataset LIKE 'ccee_%' GROUP BY dataset ORDER BY dataset""").fetchall()
+    return {"cliente": "pipeline.common.http_get e http_download (urllib da biblioteca padrão, User-Agent do projeto)",
+            "observacao": "Em 01/10/2026 (05h45 UTC), o curl recebeu HTTP 403 ('Acesso bloqueado') em dadosabertos.ccee.org.br; o cliente do pipeline recebeu HTTP 200 na mesma API (package_show). Nenhum cabeçalho foi trocado para se passar por navegador.",
+            "conjuntos": [{"dataset": d, "ultima_tentativa": t, "tentativas_ok": int(ok or 0), "tentativas": n} for d, t, ok, n in linhas]}
+
+
+def pendencias(con):
+    """Fontes públicas acessíveis que responderiam a perguntas além das publicadas e ainda não
+    foram integradas (trabalho a fazer, não bloqueio)."""
+    pag = base.ultima_vintage(con, cm.DS_INFOMERCADO, "pagina-mercado-mensal")
+    return [
+        {"id": "infomercado_dados_gerais", "paineis": ["P032", "P034", "P035"],
+         "descricao": "Planilhas 'InfoMercado Dados Gerais' da CCEE (uma por ano, de 2013 a maio de 2024), que estenderiam antes de 2023 as séries de consumo por ambiente, GSF e encargos.",
+         "evidencia": {"url": cm.URL_MERCADO_MENSAL, "capturado_em": pag and pag["capturado_em"], "sha256": pag and pag["sha256"],
+                       "observacao": "A página Mercado Mensal lista as planilhas (Dados Gerais e Dados Individuais) e a edição corrente do InfoMercado em PDF; os conjuntos abertos usados aqui começam em 2023."},
+         "efeito": "GSF, consumo contabilizado por ambiente e encargos da CCEE não têm série anterior a 2023 neste observatório; o consumo cativo e livre da EPE cobre desde 2004 e o risco hidrológico do ACR (Conta Bandeira) desde 2015."},
+        {"id": "historico_perfis", "paineis": ["P033"],
+         "descricao": "Fluxo mensal de perfis (entradas e encerramentos): o cadastro LISTA_PERFIL_V1 é uma posição; o conjunto LISTA_PERFIL (2024 e 2025) traz o status no mês de referência e não foi integrado.",
+         "evidencia": {"url": f"{cm.PORTAL}/dataset/lista_perfil", "observacao": "Metadados versionados em pipeline/energia/seed/ccee_mercado/."},
+         "efeito": "O painel publica o estoque de perfis por classe e status, sem série mensal de entradas e saídas de perfis."},
+    ]
+
+
 def bloqueios(con, hoje):
     """Partes que dependem de fonte inacessível ou não publicada, com a evidência registrada no
     silver (captura, sha256) e as alternativas tentadas."""
@@ -2069,14 +2125,6 @@ def bloqueios(con, hoje):
         "alternativas": ["Conjunto ENCARGO_ESS_ANCILAR da CCEE (integrado: cobre de 2023 em diante)",
                          "Dados abertos de consumo mensal da EPE (integrados: cobrem de 2004 em diante)"],
         "efeito": "A série de encargos extraída do boletim cobre só as edições do ano corrente; a série principal de encargos vem da CCEE.",
-    })
-    out.append({
-        "id": "ccee_historico_antes_2023", "paineis": ["P032", "P034", "P035"],
-        "descricao": "Séries de consumo por ambiente, GSF e encargos da CCEE anteriores a 2023 (antes do portal de dados abertos).",
-        "evidencia": {"url": cm.PORTAL, "observacao": "Os conjuntos abertos usados começam em 2023 (a maioria em maio ou julho de 2023); o InfoMercado mensal em PDF deixou de trazer os dados a partir de junho de 2024 e as planilhas históricas não estão no portal de dados abertos."},
-        "alternativas": ["EPE para o consumo cativo e livre desde 2004 (integrado)",
-                         "Conta Bandeira da ANEEL para o risco hidrológico alocado às distribuidoras desde 2015 (integrado)"],
-        "efeito": "O GSF e os encargos da CCEE não têm série anterior a 2023 neste observatório.",
     })
     return out
 
@@ -2273,7 +2321,7 @@ def construir(con, ctx):
             cobertura={"inicio": mre["mensal"][0]["mes"], "fim": mre["mensal"][-1]["mes"]} if mre["mensal"] else per_ccee,
             capturado_em=c.ultima_captura(snap_ccee_mre), snapshot=snap_ccee_mre, download=_url(CSV_CCEE),
             formula="GSF = 100 × Σ GERACAO_MRE (4 submercados) ÷ GARANTIA_FISICA_MODULADA_FDISP; período = razão das somas em MWh",
-            transformacoes=["conferido contra o fator publicado no InfoMercado mensal da CCEE (agosto e outubro de 2024)"],
+            transformacoes=["conferido contra o fator publicado no InfoMercado mensal da CCEE em cada edição capturada (ver reconciliacao_infomercado)"],
             limitacoes=lim_ccee + ["A CCEE não publica o GSF como coluna nos dados abertos; o observatório calcula com a mesma razão que reproduz o valor publicado no InfoMercado.",
                                    "O GSF é do MRE inteiro; a razão por submercado não é publicada e não é calculada.",
                                    "O painel não infere exposição financeira de nenhuma usina ou agente."]),
@@ -2308,6 +2356,8 @@ def construir(con, ctx):
                     "dataset_silver": d["dataset_silver"]} for d in REGISTRO["datasets"]]
     g["paineis"] = paineis(g)
     g["bloqueios"] = bloqueios(con, hoje)
+    g["pendencias"] = pendencias(con)
+    g["acesso_ccee"] = acesso_ccee(con)
     _csvs(livre, agentes, mre, enc, con)
     base.escreve_csv(CSV_DISTRIB_ANO, ["ano", "cnpj", "sigla", "nome", "meses", "completo", "livre_mwh", "cativo_mwh", "livre_pct_faturada",
                                        "livre_uc_dez", "livre_uc_dez_anterior", "variacao_livre_uc", "livre_uc_incentivada_dez",

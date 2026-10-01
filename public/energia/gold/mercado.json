@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "mercado.json",
- "gerado_em": "2026-10-01T06:01:58Z",
+ "gerado_em": "2026-10-01T06:09:13Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "802c51897680+alterado",
+ "versao_codigo": "d4f2c5af5147+alterado",
  "disponivel": true,
  "referencias": {
   "hoje": "2026-10-01",
@@ -108,8 +108,8 @@
      "tratamento_ausencia": "mês sem cativo ou sem livre interrompe a janela (sem preenchimento)",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "802c51897680+alterado",
-      "publicacao": "2026-10-01T06:02:00Z"
+      "codigo": "d4f2c5af5147+alterado",
+      "publicacao": "2026-10-01T06:09:15Z"
      },
      "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
@@ -135,7 +135,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Participação do mercado livre no consumo de energia elétrica na rede (12 meses): 45,3%, Brasil (SIN e sistemas isolados), 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: EPE, Consumo mensal de energia elétrica (dados abertos) (recurso Dados_abertos_Consumo_Mensal.xlsx, capturado em 30/09/2026). Versão energia-0.1.0, código 802c51897680+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Participação do mercado livre no consumo de energia elétrica na rede (12 meses): 45,3%, Brasil (SIN e sistemas isolados), 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: EPE, Consumo mensal de energia elétrica (dados abertos) (recurso Dados_abertos_Consumo_Mensal.xlsx, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "consumo_livre_12m": {
@@ -252,8 +252,8 @@
      "tratamento_ausencia": "janela só é calculada com os 12 meses publicados; mês sem classes usa o conjunto de ambiente",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "802c51897680+alterado",
-      "publicacao": "2026-10-01T06:02:00Z"
+      "codigo": "d4f2c5af5147+alterado",
+      "publicacao": "2026-10-01T06:09:15Z"
      },
      "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
@@ -264,7 +264,7 @@
       }
      ],
      "reconciliacao": {
-      "descricao": "Até 2026-01, Σ das classes = ACR + ACL do conjunto CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO (maior resíduo 0,94 MW médio); de 2026-02 em diante o conjunto de ambiente deixou de contar a classe Varejista no ACL e a diferença entre os conjuntos é o consumo dessa classe (maior resíduo 3,97 MW médio); InfoMercado Nº 206 (2024-08): 'Consumo/Geração' 69.986 MW médios; ACR + ACL: 69.907 MW médios (definição do InfoMercado não detalhada); InfoMercado Nº 208 (2024-10): 'Consumo/Geração' 73.244 MW médios; ACR + ACL: 73.153 MW médios (definição do InfoMercado não detalhada)",
+      "descricao": "Até 2026-01, Σ das classes = ACR + ACL do conjunto CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO (maior resíduo 0,94 MW médio); de 2026-02 em diante o conjunto de ambiente deixou de contar a classe Varejista no ACL e a diferença entre os conjuntos é o consumo dessa classe (maior resíduo 3,97 MW médio); InfoMercado Nº 206 (2024-08): 'Consumo/Geração' 69.986 MW médios; soma das classes: 69.907 MW médios (definição do InfoMercado não detalhada); InfoMercado Nº 208 (2024-10): 'Consumo/Geração' 73.244 MW médios; soma das classes: 73.153 MW médios (definição do InfoMercado não detalhada); InfoMercado Nº 229 (2026-07): 'Consumo/Geração' 71.272 MW médios; soma das classes: 71.165 MW médios (definição do InfoMercado não detalhada)",
       "resultado": "aprovado",
       "tolerancia": "5 MW médios por mês na identidade entre os conjuntos; 0,5 MW médio no InfoMercado"
      },
@@ -275,7 +275,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Participação do ACL no consumo contabilizado pela CCEE (12 meses): 42,8%, SIN, 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, CONSUMO_CLASSE_AGENTE (conferido com CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO) (recurso consumo_classe_agente_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 802c51897680+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Participação do ACL no consumo contabilizado pela CCEE (12 meses): 42,8%, SIN, 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, CONSUMO_CLASSE_AGENTE (conferido com CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO) (recurso consumo_classe_agente_2026, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    }
   },
@@ -7941,8 +7941,8 @@
      "tratamento_ausencia": "classe sem linha no mês não é somada (não vira zero)",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "802c51897680+alterado",
-      "publicacao": "2026-10-01T06:02:00Z"
+      "codigo": "d4f2c5af5147+alterado",
+      "publicacao": "2026-10-01T06:09:15Z"
      },
      "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
@@ -7953,7 +7953,7 @@
       }
      ],
      "reconciliacao": {
-      "descricao": "InfoMercado mensal Nº 208 (2024-10): 15.932 agentes; conjunto aberto: 15.936",
+      "descricao": "InfoMercado mensal Nº 229 (2026-07): 16.364 agentes; conjunto aberto: 16.376",
       "resultado": "ressalva",
       "tolerancia": "0 agente"
      },
@@ -7964,7 +7964,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Agentes que participaram da contabilização da CCEE: 16.376 agentes, CCEE (SIN), 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, AGENTE_QTD_CONTABILIZACAO (recurso agente_qtd_contabilizacao_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 802c51897680+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Agentes que participaram da contabilização da CCEE: 16.376 agentes, CCEE (SIN), 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, AGENTE_QTD_CONTABILIZACAO (recurso agente_qtd_contabilizacao_2026, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "ucs_livres": {
@@ -8007,8 +8007,8 @@
      "tratamento_ausencia": "linha sem número de consumidores não entra na soma",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "802c51897680+alterado",
-      "publicacao": "2026-10-01T06:02:00Z"
+      "codigo": "d4f2c5af5147+alterado",
+      "publicacao": "2026-10-01T06:09:15Z"
      },
      "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
@@ -8030,7 +8030,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Unidades consumidoras no mercado livre: 96.618 unidades consumidoras, Brasil, 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: EPE, Consumo mensal de energia elétrica (dados abertos) (recurso Dados_abertos_Consumo_Mensal.xlsx, capturado em 30/09/2026). Versão energia-0.1.0, código 802c51897680+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Unidades consumidoras no mercado livre: 96.618 unidades consumidoras, Brasil, 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: EPE, Consumo mensal de energia elétrica (dados abertos) (recurso Dados_abertos_Consumo_Mensal.xlsx, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "parcelas_carga": {
@@ -8096,8 +8096,8 @@
      "tratamento_ausencia": "linha sem código de parcela é contada à parte e não entra",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "802c51897680+alterado",
-      "publicacao": "2026-10-01T06:02:00Z"
+      "codigo": "d4f2c5af5147+alterado",
+      "publicacao": "2026-10-01T06:09:15Z"
      },
      "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
@@ -8115,7 +8115,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Parcelas de carga no ACL contabilizadas pela CCEE: 46.890 parcelas de carga, CCEE (SIN), 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PARCELA_CARGA_CONSUMO (recurso parcela_carga_consumo_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 802c51897680+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Parcelas de carga no ACL contabilizadas pela CCEE: 46.890 parcelas de carga, CCEE (SIN), 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PARCELA_CARGA_CONSUMO (recurso parcela_carga_consumo_2026, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    }
   },
@@ -8551,13 +8551,13 @@
     "entradas": 27,
     "saidas": 36,
     "por_classe": {
-     "Consumidor Livre": {
-      "entradas": 11,
-      "saidas": 16
-     },
      "Produtor Independente": {
       "entradas": 10,
       "saidas": 1
+     },
+     "Consumidor Livre": {
+      "entradas": 11,
+      "saidas": 16
      },
      "Comercializador": {
       "entradas": 2,
@@ -8579,13 +8579,13 @@
     "entradas": 43,
     "saidas": 29,
     "por_classe": {
-     "Produtor Independente": {
-      "entradas": 15,
-      "saidas": 2
-     },
      "Consumidor Livre": {
       "entradas": 13,
       "saidas": 7
+     },
+     "Produtor Independente": {
+      "entradas": 15,
+      "saidas": 2
      },
      "Consumidor Especial": {
       "entradas": 11,
@@ -8607,21 +8607,21 @@
     "entradas": 64,
     "saidas": 33,
     "por_classe": {
-     "Comercializador": {
-      "entradas": 6,
-      "saidas": 0
+     "Consumidor Especial": {
+      "entradas": 21,
+      "saidas": 20
      },
      "Consumidor Livre": {
       "entradas": 24,
       "saidas": 6
      },
-     "Consumidor Especial": {
-      "entradas": 21,
-      "saidas": 20
-     },
      "Produtor Independente": {
       "entradas": 12,
       "saidas": 7
+     },
+     "Comercializador": {
+      "entradas": 6,
+      "saidas": 0
      },
      "Distribuidor": {
       "entradas": 1,
@@ -8643,13 +8643,13 @@
       "entradas": 42,
       "saidas": 19
      },
-     "Comercializador": {
-      "entradas": 3,
-      "saidas": 0
-     },
      "Produtor Independente": {
       "entradas": 11,
       "saidas": 3
+     },
+     "Comercializador": {
+      "entradas": 3,
+      "saidas": 0
      },
      "Autoprodutor": {
       "entradas": 1,
@@ -8691,10 +8691,6 @@
       "entradas": 13,
       "saidas": 3
      },
-     "Consumidor Especial": {
-      "entradas": 16,
-      "saidas": 45
-     },
      "Consumidor Livre": {
       "entradas": 18,
       "saidas": 18
@@ -8702,6 +8698,10 @@
      "Comercializador": {
       "entradas": 3,
       "saidas": 4
+     },
+     "Consumidor Especial": {
+      "entradas": 16,
+      "saidas": 45
      },
      "Autoprodutor": {
       "entradas": 0,
@@ -8743,13 +8743,13 @@
       "entradas": 19,
       "saidas": 4
      },
-     "Consumidor Livre": {
-      "entradas": 19,
-      "saidas": 17
-     },
      "Consumidor Especial": {
       "entradas": 18,
       "saidas": 18
+     },
+     "Consumidor Livre": {
+      "entradas": 19,
+      "saidas": 17
      },
      "Comercializador": {
       "entradas": 0,
@@ -8771,13 +8771,13 @@
       "entradas": 19,
       "saidas": 25
      },
-     "Produtor Independente": {
-      "entradas": 20,
-      "saidas": 1
-     },
      "Comercializador": {
       "entradas": 2,
       "saidas": 3
+     },
+     "Produtor Independente": {
+      "entradas": 20,
+      "saidas": 1
      },
      "Autoprodutor": {
       "entradas": 0,
@@ -8795,13 +8795,13 @@
       "entradas": 25,
       "saidas": 14
      },
-     "Produtor Independente": {
-      "entradas": 11,
-      "saidas": 0
-     },
      "Consumidor Especial": {
       "entradas": 18,
       "saidas": 27
+     },
+     "Produtor Independente": {
+      "entradas": 11,
+      "saidas": 0
      },
      "Autoprodutor": {
       "entradas": 1,
@@ -11185,8 +11185,8 @@
      "tratamento_ausencia": "mês sem os quatro submercados fica sem GSF",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "802c51897680+alterado",
-      "publicacao": "2026-10-01T06:02:01Z"
+      "codigo": "d4f2c5af5147+alterado",
+      "publicacao": "2026-10-01T06:09:16Z"
      },
      "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
@@ -11197,7 +11197,7 @@
       }
      ],
      "reconciliacao": {
-      "descricao": "InfoMercado Nº 206 (2024-08): 79,37% publicado, 79,37% calculado; InfoMercado Nº 208 (2024-10): 73,49% publicado, 73,48% calculado",
+      "descricao": "InfoMercado Nº 206 (2024-08): 79,37% publicado, 79,37% calculado; InfoMercado Nº 208 (2024-10): 73,49% publicado, 73,48% calculado; InfoMercado Nº 229 (2026-07): 76,83% publicado, 76,83% calculado",
       "resultado": "aprovado",
       "tolerancia": "0,006 p.p. (o InfoMercado publica duas casas decimais)"
      },
@@ -11208,7 +11208,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Fator de ajuste do MRE (GSF): 76,8%, Mecanismo de Realocação de Energia (SIN), 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, GERACAO_SUBMERCADO e MRE_MENSAL (recurso mre_mensal_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 802c51897680+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Fator de ajuste do MRE (GSF): 76,8%, Mecanismo de Realocação de Energia (SIN), 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, GERACAO_SUBMERCADO e MRE_MENSAL (recurso mre_mensal_2026, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "gsf_12m": {
@@ -11317,8 +11317,8 @@
      "tratamento_ausencia": "janela incompleta não é calculada",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "802c51897680+alterado",
-      "publicacao": "2026-10-01T06:02:01Z"
+      "codigo": "d4f2c5af5147+alterado",
+      "publicacao": "2026-10-01T06:09:16Z"
      },
      "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
@@ -11336,7 +11336,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Fator de ajuste do MRE (GSF) em 12 meses: 80,4%, Mecanismo de Realocação de Energia (SIN), 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, GERACAO_SUBMERCADO e MRE_MENSAL (recurso mre_mensal_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 802c51897680+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Fator de ajuste do MRE (GSF) em 12 meses: 80,4%, Mecanismo de Realocação de Energia (SIN), 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, GERACAO_SUBMERCADO e MRE_MENSAL (recurso mre_mensal_2026, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "risco_hidrologico_acr_12m": {
@@ -11381,8 +11381,8 @@
      "tratamento_ausencia": "campo vazio não entra na soma",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "802c51897680+alterado",
-      "publicacao": "2026-10-01T06:02:01Z"
+      "codigo": "d4f2c5af5147+alterado",
+      "publicacao": "2026-10-01T06:09:16Z"
      },
      "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
@@ -11400,7 +11400,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Custo do risco hidrológico alocado às distribuidoras (cotas, repactuadas e Itaipu): R$ 8,41 bilhões, distribuidoras (mercado regulado), 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Bandeiras Tarifárias: Conta Bandeira (recurso Bandeira Tarifária - Conta Bandeira, capturado em 01/10/2026). Versão energia-0.1.0, código 802c51897680+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Custo do risco hidrológico alocado às distribuidoras (cotas, repactuadas e Itaipu): R$ 8,41 bilhões, distribuidoras (mercado regulado), 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Bandeiras Tarifárias: Conta Bandeira (recurso Bandeira Tarifária - Conta Bandeira, capturado em 01/10/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    }
   },
@@ -12154,6 +12154,34 @@
     "nota": null,
     "recurso": "InfoMercado-mensal_208.pdf",
     "url": "https://www.ccee.org.br/documents/80415/28965781/InfoMercado-mensal_out_24_208.pdf/d07ecb26-422f-f2ff-a5c4-2fab60997420",
+    "pagina": "1",
+    "resultado": "aprovado"
+   },
+   {
+    "numero": "229",
+    "mes": "2026-07",
+    "medida": "gsf_pct",
+    "publicado": 76.83,
+    "calculado": 76.825,
+    "diferenca": -0.005,
+    "tolerancia": "0,006 p.p. (o InfoMercado publica duas casas decimais)",
+    "nota": null,
+    "recurso": "InfoMercado-mensal_229.pdf",
+    "url": "https://www.ccee.org.br/documents/80415/35773859/InfoMercado-mensal_JUL_26_229.pdf/92b947aa-21df-f603-a4dc-87876f30a94a",
+    "pagina": "1",
+    "resultado": "aprovado"
+   },
+   {
+    "numero": "229",
+    "mes": "2026-07",
+    "medida": "geracao_mre_mwmed",
+    "publicado": 39195.0,
+    "calculado": 39194.6914,
+    "diferenca": -0.3086,
+    "tolerancia": "0,5 MW médio (o InfoMercado publica MW médios inteiros)",
+    "nota": null,
+    "recurso": "InfoMercado-mensal_229.pdf",
+    "url": "https://www.ccee.org.br/documents/80415/35773859/InfoMercado-mensal_JUL_26_229.pdf/92b947aa-21df-f603-a4dc-87876f30a94a",
     "pagina": "1",
     "resultado": "aprovado"
    }
@@ -13039,8 +13067,8 @@
      "tratamento_ausencia": "mês com tipo vazio fica sem total e interrompe a janela",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "802c51897680+alterado",
-      "publicacao": "2026-10-01T06:02:02Z"
+      "codigo": "d4f2c5af5147+alterado",
+      "publicacao": "2026-10-01T06:09:17Z"
      },
      "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
@@ -13056,7 +13084,7 @@
       }
      ],
      "reconciliacao": {
-      "descricao": "Boletim Mensal do MME (edições de 2026, fonte declarada CCEE): 70 de 71 valores por tipo e mês coincidem com o conjunto aberto (tolerância de 0,5 mil R$); InfoMercado Nº 206 (2024-08): R$ 477,51 milhões sem a resposta da demanda; conjunto aberto: R$ 477,52 milhões; InfoMercado Nº 208 (2024-10): R$ 265,48 milhões sem a resposta da demanda; conjunto aberto: R$ 265,48 milhões",
+      "descricao": "Boletim Mensal do MME (edições de 2026, fonte declarada CCEE): 70 de 71 valores por tipo e mês coincidem com o conjunto aberto (tolerância de 0,5 mil R$); InfoMercado Nº 206 (2024-08): R$ 477,51 milhões sem as parcelas fora do conjunto; conjunto aberto: R$ 477,52 milhões; InfoMercado Nº 208 (2024-10): R$ 265,48 milhões sem as parcelas fora do conjunto; conjunto aberto: R$ 265,48 milhões; InfoMercado Nº 229 (2026-07): R$ 63,89 milhões sem as parcelas fora do conjunto; conjunto aberto: R$ 63,89 milhões",
       "resultado": "ressalva",
       "tolerancia": "0,5 mil R$ por tipo e mês no boletim do MME; R$ 0,06 milhão por mês no InfoMercado"
      },
@@ -13071,7 +13099,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Encargos de serviços do sistema (ESS) em 12 meses: R$ 1,60 bilhão, SIN, 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, ENCARGO_ESS_ANCILAR (recurso encargo_ess_ancilar_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 802c51897680+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Encargos de serviços do sistema (ESS) em 12 meses: R$ 1,60 bilhão, SIN, 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, ENCARGO_ESS_ANCILAR (recurso encargo_ess_ancilar_2026, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "eer_12m": {
@@ -13146,8 +13174,8 @@
      "tratamento_ausencia": "mês ausente interrompe a janela",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "802c51897680+alterado",
-      "publicacao": "2026-10-01T06:02:02Z"
+      "codigo": "d4f2c5af5147+alterado",
+      "publicacao": "2026-10-01T06:09:17Z"
      },
      "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
@@ -13165,7 +13193,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Encargo de energia de reserva (EER) em 12 meses: R$ 10,20 bilhões, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, RESERVA_ENCARGO (recurso reserva_encargo_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 802c51897680+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Encargo de energia de reserva (EER) em 12 meses: R$ 10,20 bilhões, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, RESERVA_ENCARGO (recurso reserva_encargo_2026, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "inadimplencia_ultimo_mes": {
@@ -13246,8 +13274,8 @@
      "tratamento_ausencia": "mês sem os dois valores fica sem taxa",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "802c51897680+alterado",
-      "publicacao": "2026-10-01T06:02:02Z"
+      "codigo": "d4f2c5af5147+alterado",
+      "publicacao": "2026-10-01T06:09:17Z"
      },
      "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
@@ -13258,7 +13286,7 @@
       }
      ],
      "reconciliacao": {
-      "descricao": "InfoMercado Nº 206 (2024-08): R$ 2,14 bilhões a liquidar; conjunto aberto: R$ 2,143 bilhões; InfoMercado Nº 208 (2024-10): R$ 5,84 bilhões a liquidar; conjunto aberto: R$ 5,838 bilhões",
+      "descricao": "InfoMercado Nº 206 (2024-08): R$ 2,14 bilhões a liquidar; conjunto aberto: R$ 2,143 bilhões; InfoMercado Nº 208 (2024-10): R$ 5,84 bilhões a liquidar; conjunto aberto: R$ 5,838 bilhões; InfoMercado Nº 229 (2026-07): R$ 2,13 bilhões a liquidar; conjunto aberto: R$ 2,131 bilhões",
       "resultado": "aprovado",
       "tolerancia": "R$ 0,005 bilhão (duas casas decimais em bilhões)"
      },
@@ -13269,7 +13297,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Inadimplência na liquidação financeira do mercado de curto prazo: 20,4%, MCP (SIN), 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, SUMARIO_MENSAL_LIQUIDACAO (recurso sumario_mensal_liquidacao_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 802c51897680+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Inadimplência na liquidação financeira do mercado de curto prazo: 20,4%, MCP (SIN), 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, SUMARIO_MENSAL_LIQUIDACAO (recurso sumario_mensal_liquidacao_2026, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "ess_mme_ano": {
@@ -13327,8 +13355,8 @@
      "tratamento_ausencia": "meses posteriores à edição (publicados como 0) não entram",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "802c51897680+alterado",
-      "publicacao": "2026-10-01T06:02:02Z"
+      "codigo": "d4f2c5af5147+alterado",
+      "publicacao": "2026-10-01T06:09:17Z"
      },
      "revisoes": "8 revisões entre edições do boletim (ver lista de revisões)",
      "testes": [
@@ -13346,7 +13374,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Encargos de serviços do sistema no ano, Boletim Mensal do MME: R$ 958,1 milhões, SIN, 01/2026 a 06/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: MME, Boletim Mensal de Monitoramento do Sistema Elétrico (recurso boletim-mensal-junho-2026.pdf, capturado em 30/09/2026). Versão energia-0.1.0, código 802c51897680+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Encargos de serviços do sistema no ano, Boletim Mensal do MME: R$ 958,1 milhões, SIN, 01/2026 a 06/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: MME, Boletim Mensal de Monitoramento do Sistema Elétrico (recurso boletim-mensal-junho-2026.pdf, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    }
   },
@@ -17941,7 +17969,7 @@
     "publicado": 447.78,
     "calculado": 447.7795,
     "diferenca": -0.0005,
-    "tolerancia": "R$ 0,005 milhão (duas casas decimais em milhões)",
+    "tolerancia": "R$ 0,005 milhão (1 parcela publicada com duas casas decimais em milhões)",
     "nota": null,
     "recurso": "InfoMercado-mensal_206.pdf",
     "url": "https://www.ccee.org.br/documents/80415/28517714/InfoMercado-mensal_ago_24_206.pdf/1bddcc1f-c240-cbe3-bae9-fc27f2fa98cf",
@@ -17955,7 +17983,7 @@
     "publicado": 16.2,
     "calculado": 16.1964,
     "diferenca": -0.0036,
-    "tolerancia": "R$ 0,005 milhão (duas casas decimais em milhões)",
+    "tolerancia": "R$ 0,005 milhão (1 parcela publicada com duas casas decimais em milhões)",
     "nota": null,
     "recurso": "InfoMercado-mensal_206.pdf",
     "url": "https://www.ccee.org.br/documents/80415/28517714/InfoMercado-mensal_ago_24_206.pdf/1bddcc1f-c240-cbe3-bae9-fc27f2fa98cf",
@@ -17969,7 +17997,7 @@
     "publicado": 9.9,
     "calculado": 9.8987,
     "diferenca": -0.0013,
-    "tolerancia": "R$ 0,005 milhão (duas casas decimais em milhões)",
+    "tolerancia": "R$ 0,005 milhão (1 parcela publicada com duas casas decimais em milhões)",
     "nota": null,
     "recurso": "InfoMercado-mensal_206.pdf",
     "url": "https://www.ccee.org.br/documents/80415/28517714/InfoMercado-mensal_ago_24_206.pdf/1bddcc1f-c240-cbe3-bae9-fc27f2fa98cf",
@@ -17983,7 +18011,7 @@
     "publicado": 3.64,
     "calculado": 3.6414,
     "diferenca": 0.0014,
-    "tolerancia": "R$ 0,005 milhão (duas casas decimais em milhões)",
+    "tolerancia": "R$ 0,005 milhão (1 parcela publicada com duas casas decimais em milhões)",
     "nota": null,
     "recurso": "InfoMercado-mensal_206.pdf",
     "url": "https://www.ccee.org.br/documents/80415/28517714/InfoMercado-mensal_ago_24_206.pdf/1bddcc1f-c240-cbe3-bae9-fc27f2fa98cf",
@@ -18007,12 +18035,12 @@
    {
     "numero": "206",
     "mes": "2024-08",
-    "medida": "encargos_sem_resposta_demanda_milhoes_rs",
+    "medida": "encargos_do_conjunto_milhoes_rs",
     "publicado": 477.51,
     "calculado": 477.516,
     "diferenca": 0.006,
-    "tolerancia": "R$ 0,06 milhão (diferença de dois números publicados com uma ou duas casas decimais em milhões)",
-    "nota": "Publicado = total de encargos menos a parcela de resposta da demanda, ambos do próprio InfoMercado; calculado = soma dos tipos do conjunto ENCARGO_ESS_ANCILAR (sem as colunas de ressarcimento, que detalham os outros serviços ancilares).",
+    "tolerancia": "R$ 0,06 milhão (diferença de números publicados com uma ou duas casas decimais em milhões)",
+    "nota": "Publicado = total de encargos menos as parcelas que não são colunas do conjunto ENCARGO_ESS_ANCILAR (resposta da demanda, suporte de reativo do sandbox), todas do próprio InfoMercado; calculado = soma dos nove tipos do conjunto (sem as colunas de ressarcimento, que detalham os outros serviços ancilares).",
     "recurso": "InfoMercado-mensal_206.pdf",
     "url": "https://www.ccee.org.br/documents/80415/28517714/InfoMercado-mensal_ago_24_206.pdf/1bddcc1f-c240-cbe3-bae9-fc27f2fa98cf",
     "pagina": "10",
@@ -18053,7 +18081,7 @@
     "publicado": 198.1,
     "calculado": 198.1047,
     "diferenca": 0.0047,
-    "tolerancia": "R$ 0,005 milhão (duas casas decimais em milhões)",
+    "tolerancia": "R$ 0,005 milhão (1 parcela publicada com duas casas decimais em milhões)",
     "nota": null,
     "recurso": "InfoMercado-mensal_208.pdf",
     "url": "https://www.ccee.org.br/documents/80415/28965781/InfoMercado-mensal_out_24_208.pdf/d07ecb26-422f-f2ff-a5c4-2fab60997420",
@@ -18067,7 +18095,7 @@
     "publicado": 16.71,
     "calculado": 16.714,
     "diferenca": 0.004,
-    "tolerancia": "R$ 0,005 milhão (duas casas decimais em milhões)",
+    "tolerancia": "R$ 0,005 milhão (1 parcela publicada com duas casas decimais em milhões)",
     "nota": null,
     "recurso": "InfoMercado-mensal_208.pdf",
     "url": "https://www.ccee.org.br/documents/80415/28965781/InfoMercado-mensal_out_24_208.pdf/d07ecb26-422f-f2ff-a5c4-2fab60997420",
@@ -18081,7 +18109,7 @@
     "publicado": 25.22,
     "calculado": 25.2167,
     "diferenca": -0.0033,
-    "tolerancia": "R$ 0,005 milhão (duas casas decimais em milhões)",
+    "tolerancia": "R$ 0,005 milhão (1 parcela publicada com duas casas decimais em milhões)",
     "nota": null,
     "recurso": "InfoMercado-mensal_208.pdf",
     "url": "https://www.ccee.org.br/documents/80415/28965781/InfoMercado-mensal_out_24_208.pdf/d07ecb26-422f-f2ff-a5c4-2fab60997420",
@@ -18095,7 +18123,7 @@
     "publicado": 25.44,
     "calculado": 25.444,
     "diferenca": 0.004,
-    "tolerancia": "R$ 0,005 milhão (duas casas decimais em milhões)",
+    "tolerancia": "R$ 0,005 milhão (1 parcela publicada com duas casas decimais em milhões)",
     "nota": null,
     "recurso": "InfoMercado-mensal_208.pdf",
     "url": "https://www.ccee.org.br/documents/80415/28965781/InfoMercado-mensal_out_24_208.pdf/d07ecb26-422f-f2ff-a5c4-2fab60997420",
@@ -18119,12 +18147,12 @@
    {
     "numero": "208",
     "mes": "2024-10",
-    "medida": "encargos_sem_resposta_demanda_milhoes_rs",
+    "medida": "encargos_do_conjunto_milhoes_rs",
     "publicado": 265.48,
     "calculado": 265.4793,
     "diferenca": -0.0007,
-    "tolerancia": "R$ 0,06 milhão (diferença de dois números publicados com uma ou duas casas decimais em milhões)",
-    "nota": "Publicado = total de encargos menos a parcela de resposta da demanda, ambos do próprio InfoMercado; calculado = soma dos tipos do conjunto ENCARGO_ESS_ANCILAR (sem as colunas de ressarcimento, que detalham os outros serviços ancilares).",
+    "tolerancia": "R$ 0,06 milhão (diferença de números publicados com uma ou duas casas decimais em milhões)",
+    "nota": "Publicado = total de encargos menos as parcelas que não são colunas do conjunto ENCARGO_ESS_ANCILAR (resposta da demanda, suporte de reativo do sandbox), todas do próprio InfoMercado; calculado = soma dos nove tipos do conjunto (sem as colunas de ressarcimento, que detalham os outros serviços ancilares).",
     "recurso": "InfoMercado-mensal_208.pdf",
     "url": "https://www.ccee.org.br/documents/80415/28965781/InfoMercado-mensal_out_24_208.pdf/d07ecb26-422f-f2ff-a5c4-2fab60997420",
     "pagina": "10",
@@ -18155,6 +18183,90 @@
     "nota": null,
     "recurso": "InfoMercado-mensal_208.pdf",
     "url": "https://www.ccee.org.br/documents/80415/28965781/InfoMercado-mensal_out_24_208.pdf/d07ecb26-422f-f2ff-a5c4-2fab60997420",
+    "pagina": "1",
+    "resultado": "aprovado"
+   },
+   {
+    "numero": "229",
+    "mes": "2026-07",
+    "medida": "encargos_restricao_operacao_milhoes_rs",
+    "publicado": 37.02,
+    "calculado": 37.0161,
+    "diferenca": -0.0039,
+    "tolerancia": "R$ 0,005 milhão (1 parcela publicada com duas casas decimais em milhões)",
+    "nota": null,
+    "recurso": "InfoMercado-mensal_229.pdf",
+    "url": "https://www.ccee.org.br/documents/80415/35773859/InfoMercado-mensal_JUL_26_229.pdf/92b947aa-21df-f603-a4dc-87876f30a94a",
+    "pagina": "10",
+    "resultado": "aprovado"
+   },
+   {
+    "numero": "229",
+    "mes": "2026-07",
+    "medida": "encargos_suporte_reativo_milhoes_rs",
+    "publicado": 24.29,
+    "calculado": 24.2893,
+    "diferenca": -0.0007,
+    "tolerancia": "R$ 0,005 milhão (1 parcela publicada com duas casas decimais em milhões)",
+    "nota": null,
+    "recurso": "InfoMercado-mensal_229.pdf",
+    "url": "https://www.ccee.org.br/documents/80415/35773859/InfoMercado-mensal_JUL_26_229.pdf/92b947aa-21df-f603-a4dc-87876f30a94a",
+    "pagina": "10",
+    "resultado": "aprovado"
+   },
+   {
+    "numero": "229",
+    "mes": "2026-07",
+    "medida": "encargos_deslocamento_hidraulico_milhoes_rs",
+    "publicado": 2.59,
+    "calculado": 2.5843,
+    "diferenca": -0.0057,
+    "tolerancia": "R$ 0,010 milhão (2 parcelas publicadas com duas casas decimais em milhões)",
+    "nota": "Soma de 2 parcelas do texto do InfoMercado (por exemplo, deslocamento hidráulico de perfis de geração e de consumo).",
+    "recurso": "InfoMercado-mensal_229.pdf",
+    "url": "https://www.ccee.org.br/documents/80415/35773859/InfoMercado-mensal_JUL_26_229.pdf/92b947aa-21df-f603-a4dc-87876f30a94a",
+    "pagina": "10",
+    "resultado": "aprovado"
+   },
+   {
+    "numero": "229",
+    "mes": "2026-07",
+    "medida": "encargos_do_conjunto_milhoes_rs",
+    "publicado": 63.89,
+    "calculado": 63.8896,
+    "diferenca": -0.0004,
+    "tolerancia": "R$ 0,06 milhão (diferença de números publicados com uma ou duas casas decimais em milhões)",
+    "nota": "Publicado = total de encargos menos as parcelas que não são colunas do conjunto ENCARGO_ESS_ANCILAR (resposta da demanda, suporte de reativo do sandbox), todas do próprio InfoMercado; calculado = soma dos nove tipos do conjunto (sem as colunas de ressarcimento, que detalham os outros serviços ancilares).",
+    "recurso": "InfoMercado-mensal_229.pdf",
+    "url": "https://www.ccee.org.br/documents/80415/35773859/InfoMercado-mensal_JUL_26_229.pdf/92b947aa-21df-f603-a4dc-87876f30a94a",
+    "pagina": "10",
+    "resultado": "aprovado"
+   },
+   {
+    "numero": "229",
+    "mes": "2026-07",
+    "medida": "pagamento_ess_milhoes_rs",
+    "publicado": 2.55,
+    "calculado": 0.0011,
+    "diferenca": -2.5489,
+    "tolerancia": "R$ 0,06 milhão (diferença de dois números publicados com uma ou duas casas decimais em milhões)",
+    "nota": "Publicado = total de encargos menos o alívio, ambos do InfoMercado; calculado = PAGAMENTO_ENCARGO_ESS + PAGAMENTO_ENCARGO_SE do conjunto ENCARGO_PGTO_MENSAL (pagamento, não competência).",
+    "recurso": "InfoMercado-mensal_229.pdf",
+    "url": "https://www.ccee.org.br/documents/80415/35773859/InfoMercado-mensal_JUL_26_229.pdf/92b947aa-21df-f603-a4dc-87876f30a94a",
+    "pagina": "10",
+    "resultado": "ressalva"
+   },
+   {
+    "numero": "229",
+    "mes": "2026-07",
+    "medida": "liquidar_bilhoes_rs",
+    "publicado": 2.13,
+    "calculado": 2.1315,
+    "diferenca": 0.0015,
+    "tolerancia": "R$ 0,005 bilhão (duas casas decimais em bilhões)",
+    "nota": null,
+    "recurso": "InfoMercado-mensal_229.pdf",
+    "url": "https://www.ccee.org.br/documents/80415/35773859/InfoMercado-mensal_JUL_26_229.pdf/92b947aa-21df-f603-a4dc-87876f30a94a",
     "pagina": "1",
     "resultado": "aprovado"
    }
@@ -18543,7 +18655,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T13:51:24Z",
    "capturado_em": "2026-10-01T00:33:34Z",
-   "validado_em": "2026-10-01T06:02:02Z",
+   "validado_em": "2026-10-01T06:09:17Z",
    "cobertura_historica": {
     "inicio": "2004-01",
     "fim": "2026-08"
@@ -18558,9 +18670,9 @@
     "sha256": "a771bd8a47d7ed3651f3e7f875ba7e0213daa6c813e1745a782427c0cfee425a"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "802c51897680+alterado",
+   "versao_codigo": "d4f2c5af5147+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:02:02Z",
+    "detectado_em": "2026-10-01T06:09:17Z",
     "total": 0,
     "exemplos": []
    },
@@ -18591,7 +18703,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-01T14:58:17Z",
    "capturado_em": "2026-10-01T00:45:34Z",
-   "validado_em": "2026-10-01T06:02:02Z",
+   "validado_em": "2026-10-01T06:09:17Z",
    "cobertura_historica": {
     "inicio": "2023-05",
     "fim": "2026-07"
@@ -18608,9 +18720,9 @@
     "sha256": "4d0593bfe44499ad91f7d3979da82b1aea60ad3bdf41e3c4c93be69be4c0f11a"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "802c51897680+alterado",
+   "versao_codigo": "d4f2c5af5147+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:02:02Z",
+    "detectado_em": "2026-10-01T06:09:17Z",
     "total": 0,
     "exemplos": []
    },
@@ -18643,7 +18755,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-15T05:20:19Z",
    "capturado_em": "2026-10-01T00:34:29Z",
-   "validado_em": "2026-10-01T06:02:02Z",
+   "validado_em": "2026-10-01T06:09:17Z",
    "cobertura_historica": {
     "inicio": "2019-01",
     "fim": "2026-08"
@@ -18658,9 +18770,9 @@
     "sha256": "e026223f29321e9e71964f3804d33621895635ec507c4ce64eefeaf8e7a32e8e"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "802c51897680+alterado",
+   "versao_codigo": "d4f2c5af5147+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:02:02Z",
+    "detectado_em": "2026-10-01T06:09:17Z",
     "total": 0,
     "vintages_comparadas": 9,
     "arquivos": 9,
@@ -18696,7 +18808,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-03T18:27:55Z",
    "capturado_em": "2026-10-01T00:46:32Z",
-   "validado_em": "2026-10-01T06:02:02Z",
+   "validado_em": "2026-10-01T06:09:17Z",
    "cobertura_historica": {
     "inicio": "2023-05",
     "fim": "2026-07"
@@ -18712,9 +18824,9 @@
     "sha256": "7472efc0c2c6ad4bd152008008dd6a2ee84df0597ba6b74b97a2678188869c57"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "802c51897680+alterado",
+   "versao_codigo": "d4f2c5af5147+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:02:02Z",
+    "detectado_em": "2026-10-01T06:09:17Z",
     "total": 0,
     "exemplos": []
    },
@@ -18748,7 +18860,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-01T14:54:33Z",
    "capturado_em": "2026-10-01T00:46:55Z",
-   "validado_em": "2026-10-01T06:02:02Z",
+   "validado_em": "2026-10-01T06:09:17Z",
    "cobertura_historica": {
     "inicio": "2023-05",
     "fim": "2026-07"
@@ -18762,9 +18874,9 @@
     "sha256": "cd86ed9c2635fc432fab5bd66b22daa2bf5fc8c5b59d6f0309733700047612cc"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "802c51897680+alterado",
+   "versao_codigo": "d4f2c5af5147+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:02:02Z",
+    "detectado_em": "2026-10-01T06:09:17Z",
     "total": 0,
     "exemplos": []
    },
@@ -18798,7 +18910,7 @@
    },
    "publicado_pela_fonte_em": "2026-10-01T05:01:17Z",
    "capturado_em": "2026-10-01T06:01:29Z",
-   "validado_em": "2026-10-01T06:02:02Z",
+   "validado_em": "2026-10-01T06:09:17Z",
    "cobertura_historica": {
     "inicio": "2015-01",
     "fim": "2026-07"
@@ -18813,9 +18925,9 @@
     "sha256": "a3fe614dc30f9173af4a99bc08dc7054b818cf16124310fde84b907c33aab9aa"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "802c51897680+alterado",
+   "versao_codigo": "d4f2c5af5147+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:02:02Z",
+    "detectado_em": "2026-10-01T06:09:17Z",
     "total": 0,
     "vintages_comparadas": 3,
     "arquivos": 2,
@@ -18850,7 +18962,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-28T14:48:53Z",
    "capturado_em": "2026-10-01T05:53:11Z",
-   "validado_em": "2026-10-01T06:02:02Z",
+   "validado_em": "2026-10-01T06:09:17Z",
    "cobertura_historica": {
     "inicio": "2023-05",
     "fim": "2026-07"
@@ -18864,9 +18976,9 @@
     "sha256": "0580d275b809eef615f6ca1ed6d9f44b0747bebdf0b05654ff38dab2b465ac8c"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "802c51897680+alterado",
+   "versao_codigo": "d4f2c5af5147+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:02:02Z",
+    "detectado_em": "2026-10-01T06:09:17Z",
     "total": 0,
     "exemplos": []
    },
@@ -18898,7 +19010,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-25T18:10:00Z",
    "capturado_em": "2026-10-01T06:01:47Z",
-   "validado_em": "2026-10-01T06:02:02Z",
+   "validado_em": "2026-10-01T06:09:17Z",
    "cobertura_historica": {
     "inicio": "2026-01",
     "fim": "2026-06"
@@ -18913,9 +19025,9 @@
     "sha256": "da460fdea2849880e40776b181ebe5f094a0d45b0317c3009cd1d93ca54ebc8c"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "802c51897680+alterado",
+   "versao_codigo": "d4f2c5af5147+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:02:02Z",
+    "detectado_em": "2026-10-01T06:09:17Z",
     "total": 0,
     "vintages_comparadas": 8,
     "arquivos": 6,
@@ -19119,7 +19231,7 @@
   {
    "orgao": "CCEE",
    "conjunto": "infomercado-mensal",
-   "titulo": "InfoMercado mensal (PDF, edições 206 e 208): sumário executivo usado para conferir os números calculados",
+   "titulo": "InfoMercado mensal (PDF): sumário executivo e composição dos encargos, usados para conferir os números calculados",
    "url": "https://www.ccee.org.br/web/guest/dados-e-analises/dados-mercado-mensal",
    "licenca": "Publicação da CCEE; números reproduzidos com atribuição, apenas para conferência",
    "dataset_silver": "ccee_infomercado"
@@ -19211,7 +19323,7 @@
     {
      "nome": "GSF calculado × fator publicado no InfoMercado mensal da CCEE",
      "resultado": "aprovado",
-     "detalhe": "2024-08: 79,37% publicado, 79,37% calculado; 2024-10: 73,49% publicado, 73,48% calculado",
+     "detalhe": "2024-08: 79,37% publicado, 79,37% calculado; 2024-10: 73,49% publicado, 73,48% calculado; 2026-07: 76,83% publicado, 76,83% calculado",
      "essencial": true
     },
     {
@@ -19247,7 +19359,7 @@
     {
      "nome": "ESS do conjunto aberto × InfoMercado (por componente) e × boletim do MME (por tipo e mês)",
      "resultado": "aprovado",
-     "detalhe": "12 de 12 no InfoMercado; 66 de 66 no boletim do MME",
+     "detalhe": "14 de 14 no InfoMercado; 66 de 66 no boletim do MME",
      "essencial": true
     },
     {
@@ -19257,10 +19369,16 @@
      "essencial": true
     },
     {
+     "nome": "Pagamento (total menos alívio, InfoMercado) × PAGAMENTO_ENCARGO_ESS + PAGAMENTO_ENCARGO_SE (divergência entre fontes, documentada)",
+     "resultado": "ressalva",
+     "essencial": false,
+     "detalhe": "2024-08: InfoMercado R$ 361,54 milhões, conjunto R$ 361,54 milhões; 2024-10: InfoMercado R$ 20,87 milhões, conjunto R$ 20,86 milhões; 2026-07: InfoMercado R$ 2,55 milhões, conjunto R$ 0,00 milhões"
+    },
+    {
      "nome": "Resposta da demanda: conjunto RD_ENCARGOS_CONTAB_MENSAL × boletim do MME e InfoMercado (divergência entre fontes, documentada)",
      "resultado": "ressalva",
      "essencial": false,
-     "detalhe": "2026-01: fonte 5.859,00, CCEE 0,00; 2026-06: fonte 0,00, CCEE None; 2024-10: fonte 3,32, CCEE None"
+     "detalhe": "2026-01: 5.859 mil R$ no boletim do MME, 0,0 mil R$ no conjunto; 2026-06: 0 mil R$ no boletim do MME, sem valor no conjunto; 2024-10: R$ 3,32 milhões no InfoMercado, sem valor no conjunto"
     }
    ],
    "proveniencia": [
@@ -19294,24 +19412,150 @@
     "Dados abertos de consumo mensal da EPE (integrados: cobrem de 2004 em diante)"
    ],
    "efeito": "A série de encargos extraída do boletim cobre só as edições do ano corrente; a série principal de encargos vem da CCEE."
-  },
+  }
+ ],
+ "pendencias": [
   {
-   "id": "ccee_historico_antes_2023",
+   "id": "infomercado_dados_gerais",
    "paineis": [
     "P032",
     "P034",
     "P035"
    ],
-   "descricao": "Séries de consumo por ambiente, GSF e encargos da CCEE anteriores a 2023 (antes do portal de dados abertos).",
+   "descricao": "Planilhas 'InfoMercado Dados Gerais' da CCEE (uma por ano, de 2013 a maio de 2024), que estenderiam antes de 2023 as séries de consumo por ambiente, GSF e encargos.",
    "evidencia": {
-    "url": "https://dadosabertos.ccee.org.br",
-    "observacao": "Os conjuntos abertos usados começam em 2023 (a maioria em maio ou julho de 2023); o InfoMercado mensal em PDF deixou de trazer os dados a partir de junho de 2024 e as planilhas históricas não estão no portal de dados abertos."
+    "url": "https://www.ccee.org.br/web/guest/dados-e-analises/dados-mercado-mensal",
+    "capturado_em": "2026-10-01T06:07:41Z",
+    "sha256": "b27398273a6558c0449393092d791ad83906d416050859c1abd074e4699cbdf5",
+    "observacao": "A página Mercado Mensal lista as planilhas (Dados Gerais e Dados Individuais) e a edição corrente do InfoMercado em PDF; os conjuntos abertos usados aqui começam em 2023."
    },
-   "alternativas": [
-    "EPE para o consumo cativo e livre desde 2004 (integrado)",
-    "Conta Bandeira da ANEEL para o risco hidrológico alocado às distribuidoras desde 2015 (integrado)"
+   "efeito": "GSF, consumo contabilizado por ambiente e encargos da CCEE não têm série anterior a 2023 neste observatório; o consumo cativo e livre da EPE cobre desde 2004 e o risco hidrológico do ACR (Conta Bandeira) desde 2015."
+  },
+  {
+   "id": "historico_perfis",
+   "paineis": [
+    "P033"
    ],
-   "efeito": "O GSF e os encargos da CCEE não têm série anterior a 2023 neste observatório."
+   "descricao": "Fluxo mensal de perfis (entradas e encerramentos): o cadastro LISTA_PERFIL_V1 é uma posição; o conjunto LISTA_PERFIL (2024 e 2025) traz o status no mês de referência e não foi integrado.",
+   "evidencia": {
+    "url": "https://dadosabertos.ccee.org.br/dataset/lista_perfil",
+    "observacao": "Metadados versionados em pipeline/energia/seed/ccee_mercado/."
+   },
+   "efeito": "O painel publica o estoque de perfis por classe e status, sem série mensal de entradas e saídas de perfis."
   }
- ]
+ ],
+ "acesso_ccee": {
+  "cliente": "pipeline.common.http_get e http_download (urllib da biblioteca padrão, User-Agent do projeto)",
+  "observacao": "Em 01/10/2026 (05h45 UTC), o curl recebeu HTTP 403 ('Acesso bloqueado') em dadosabertos.ccee.org.br; o cliente do pipeline recebeu HTTP 200 na mesma API (package_show). Nenhum cabeçalho foi trocado para se passar por navegador.",
+  "conjuntos": [
+   {
+    "dataset": "ccee_agente_qtd_contabilizacao",
+    "ultima_tentativa": "2026-10-01T00:45:39Z",
+    "tentativas_ok": 4,
+    "tentativas": 4
+   },
+   {
+    "dataset": "ccee_consumo_classe_agente",
+    "ultima_tentativa": "2026-10-01T00:45:34Z",
+    "tentativas_ok": 4,
+    "tentativas": 5
+   },
+   {
+    "dataset": "ccee_consumo_mensal_ambiente_comercializacao",
+    "ultima_tentativa": "2026-10-01T00:45:29Z",
+    "tentativas_ok": 4,
+    "tentativas": 4
+   },
+   {
+    "dataset": "ccee_desligamento_compulsorio",
+    "ultima_tentativa": "2026-10-01T00:45:55Z",
+    "tentativas_ok": 1,
+    "tentativas": 1
+   },
+   {
+    "dataset": "ccee_desligamento_voluntario",
+    "ultima_tentativa": "2026-10-01T00:45:53Z",
+    "tentativas_ok": 1,
+    "tentativas": 1
+   },
+   {
+    "dataset": "ccee_encargo_ess_ancilar",
+    "ultima_tentativa": "2026-10-01T00:47:01Z",
+    "tentativas_ok": 4,
+    "tentativas": 8
+   },
+   {
+    "dataset": "ccee_encargo_pgto_mensal",
+    "ultima_tentativa": "2026-10-01T00:47:10Z",
+    "tentativas_ok": 4,
+    "tentativas": 4
+   },
+   {
+    "dataset": "ccee_garantia_fisica_sazo_mre_submercado",
+    "ultima_tentativa": "2026-10-01T00:46:51Z",
+    "tentativas_ok": 4,
+    "tentativas": 4
+   },
+   {
+    "dataset": "ccee_geracao_submercado",
+    "ultima_tentativa": "2026-10-01T00:46:45Z",
+    "tentativas_ok": 4,
+    "tentativas": 4
+   },
+   {
+    "dataset": "ccee_infomercado",
+    "ultima_tentativa": "2026-10-01T06:08:32Z",
+    "tentativas_ok": 5,
+    "tentativas": 5
+   },
+   {
+    "dataset": "ccee_lista_agente_associado",
+    "ultima_tentativa": "2026-10-01T00:45:46Z",
+    "tentativas_ok": 2,
+    "tentativas": 2
+   },
+   {
+    "dataset": "ccee_lista_perfil_v1",
+    "ultima_tentativa": "2026-10-01T00:47:38Z",
+    "tentativas_ok": 1,
+    "tentativas": 3
+   },
+   {
+    "dataset": "ccee_mre_mensal",
+    "ultima_tentativa": "2026-10-01T00:46:55Z",
+    "tentativas_ok": 4,
+    "tentativas": 4
+   },
+   {
+    "dataset": "ccee_parcela_carga_consumo",
+    "ultima_tentativa": "2026-10-01T00:46:35Z",
+    "tentativas_ok": 3,
+    "tentativas": 3
+   },
+   {
+    "dataset": "ccee_rd_encargos_contab_mensal",
+    "ultima_tentativa": "2026-10-01T05:53:11Z",
+    "tentativas_ok": 3,
+    "tentativas": 3
+   },
+   {
+    "dataset": "ccee_reserva_encargo",
+    "ultima_tentativa": "2026-10-01T00:47:05Z",
+    "tentativas_ok": 4,
+    "tentativas": 4
+   },
+   {
+    "dataset": "ccee_sumario_mensal_compra_venda_submercado",
+    "ultima_tentativa": "2026-10-01T00:47:15Z",
+    "tentativas_ok": 4,
+    "tentativas": 4
+   },
+   {
+    "dataset": "ccee_sumario_mensal_liquidacao",
+    "ultima_tentativa": "2026-10-01T00:47:20Z",
+    "tentativas_ok": 4,
+    "tentativas": 4
+   }
+  ]
+ }
 }
