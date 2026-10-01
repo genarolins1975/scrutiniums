@@ -1428,15 +1428,28 @@ def _armazenamento(con, con_p, d):
             "inicio": dias_[0],
         },
     }
-    # 6) REE e bacias
+    # 6) REE e bacias. REE: a configuração mudou no fim de 2017 (9 → 12 REE; SUL, PARANA e
+    # NORTE perderam Iguaçu, Paranapanema e Manaus-Amapá): a base de cada REE afetado
+    # começa no primeiro ano completo do perímetro atual (configuracao_ree)
     d["_ree"], d["_bac"] = ree, bac
+    cfg = configuracao_ree({n_: s["max"] for n_, s in ree.items()}) if ree else None
+    d["_cfg_ree"] = cfg
+    ini_ree = (cfg or {}).get("ano_inicio_base", {})
     lst_ree, lst_bac = [], []
     for n_, s in sorted(ree.items()):
-        lst_ree.append({**_resumo_ear_recorte(n_, s, dia, ANO_INI_REE), "semanal": _semanal(s, dia, ANO_INI_REE)})
+        a0 = ini_ree.get(n_, ANO_INI_REE)
+        lst_ree.append({**_resumo_ear_recorte(n_, s, dia, a0, {"perimetro_desde": a0,
+                                                               "perimetro_mudou_em": (cfg or {}).get("quebra")
+                                                               if n_ in (cfg or {}).get("afetados", []) else None}),
+                        "semanal": _semanal(s, dia, a0)})
     for n_, s in sorted(bac.items()):
         lst_bac.append({**_resumo_ear_recorte(n_, s, dia, ANO_INI_BACIA), "semanal": _semanal(s, dia, ANO_INI_BACIA)})
     d["armazenamento"]["ree"] = lst_ree
     d["armazenamento"]["bacias"] = lst_bac
+    if cfg:
+        d["armazenamento"]["configuracao_ree"] = {k: cfg[k] for k in (
+            "inicio_configuracao", "quebra", "dia_soma_conservada", "transicao", "n_antes", "n_depois", "novos",
+            "afetados", "soma_ear_max_antes_mwmes", "soma_ear_max_depois_mwmes", "comparacao") if k in cfg}
     return d
 
 
