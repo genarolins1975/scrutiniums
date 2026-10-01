@@ -87,8 +87,10 @@ export type EvidenciaDocumental = {
   /** Trecho literal do texto oficial; null quando o texto não foi encontrado na captura. */
   trecho: string | null;
   capturado_em: string | null;
-  versao?: string | null;
-  data_documento?: string | null;
+  versao: string | null;
+  data_documento: string | null;
+  /** Observação da plataforma sobre o documento (não é citação); null quando não há. */
+  constatacao: string | null;
 };
 
 export type LinhaA11 = {
@@ -155,7 +157,9 @@ export type ComparacaoDozeMeses = {
   atual: { inicio: string; fim: string; dias: number };
   anterior: { inicio: string; fim: string; dias: number };
   mesmo_regime_mmgd: boolean;
+  /** null quando a categoria não existia antes ou teve mudança de universo na fonte (ver variacao_suprimida). */
   variacao_pct: PorCategoria<number | null>;
+  variacao_suprimida: Partial<Record<CategoriaGeracao, { motivo: string; datas: string[] }>>;
   variacao_total_sem_mmgd_pct: number | null;
   anterior_mwmed: PorCategoria<number | null>;
 };
@@ -246,9 +250,6 @@ export type UniversoMatriz = {
     identificadores_sem_valor: number;
     por_categoria: Partial<Record<CategoriaGeracao, number>>;
     exemplos: string[];
-    mesmo_mes_ano_anterior: string;
-    /** Ordem de grandeza do que falta: as mesmas usinas no mesmo mês do ano anterior. Nunca somado aos totais. */
-    geracao_mesmas_usinas_ano_anterior_mwmed: number | null;
   } | null;
   linhas_sem_id_ons_por_arquivo: Record<string, number>;
   mudancas_de_rotulo: {

@@ -20,7 +20,11 @@ _GRUPO = ("Grupo = topo da cadeia de controladores únicos declarada à ANEEL na
           "para em controle compartilhado, controlador pessoa física, controlador sem CNPJ, declarações que discordam "
           "sobre o controlador (menos de 90% de concordância) ou agente sem declaração nos quatro trimestres até o de "
           "referência.")
-_AUSENCIA_CVM = "Conta não publicada no documento fica ausente (nunca zero); exercício irregular (menos de 12 meses) fica fora da série anual."
+_AUSENCIA_CVM = ("Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a "
+                 "zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de "
+                 "ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e "
+                 "vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício "
+                 "inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.")
 _ESCOPO = ("Consolidado e individual são séries separadas do mesmo CNPJ; nenhum valor é somado entre companhias (a "
            "controladora já consolida as controladas).")
 _COBERTURA_CVM = ("Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com "
@@ -45,6 +49,7 @@ def _conta_cvm(mid, titulo, pergunta, definicao, codigo, tipo, lim):
         "politica_ausencia": _AUSENCIA_CVM,
         "validacoes": ["Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
                        "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
+                       "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
                        "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."],
         "limitacoes": lim + ["Demonstrações societárias (CVM), não regulatórias (ANEEL)."],
         "gold": _GOLD, "paginas": _PAG_ENT,
@@ -180,10 +185,11 @@ METRICAS = [
         "natureza_fonte": "OBSERVADO",
         "natureza_transformacao": "CALCULADO",
         "dimensoes": ["nível (proprietário, grupo, controle)", "tipo de usina"],
-        "regras_comparabilidade": [_FRONTEIRA, "Não é o mercado relevante de uma análise concorrencial (energia vendida, submercado, contratos). Faixas descritivas das diretrizes do CADE e dos EUA de 2010: < 1.500, 1.500 a 2.500, > 2.500."],
+        "regras_comparabilidade": [_FRONTEIRA, "Não é o mercado relevante de uma análise concorrencial (energia vendida, submercado, contratos). Faixas descritivas do Guia para Análise de Atos de Concentração Horizontal do CADE (2016): abaixo de 1.500 não concentrado, de 1.500 a 2.500 moderadamente concentrado, acima de 2.500 altamente concentrado. As diretrizes americanas de 2010, com os mesmos limiares, foram substituídas em 2023 por outras com limiares diferentes."],
         "regra_cobertura": "Potência da fronteira; a parcela fora é publicada.",
         "politica_ausencia": "Participante sem CNPJ não entra no numerador: o HHI é limite inferior.",
-        "validacoes": ["Soma das cotas ≤ 100%; HHI entre 0 e 10.000.", "Recalculado nos testes a partir do CSV de grupos."],
+        "validacoes": ["Soma das cotas ≤ 100%; HHI entre 0 e 10.000.",
+                       "Recalculado nos testes por caminho independente: o SIGA original relido por outro parser (recorte de 14 usinas com valores escritos no teste e, quando o bronze existe, o arquivo inteiro: HHI 135,3 e CR4 18,21% por proprietário direto; HHI 392,1 por grupo com o mapa proprietário → grupo publicado)."],
         "limitacoes": ["Por proprietário direto subestima a concentração (sociedades de propósito específico contam separadas)."],
         "gold": _GOLD, "paginas": _PAG,
     },
@@ -196,17 +202,24 @@ METRICAS = [
         "grao_geografico": "distribuidora (CNPJ)",
         "grao_temporal": "ano de referência de cada módulo; tarifa vigente na data da gold de conta",
         "fontes": ["aneel_samp_balanco", "aneel_continuidade", "aneel_tarifas_aplicacao", "aneel_polimero", "cvm_cad_cia_aberta"],
-        "formula": "cópia pelo CNPJ canônico (14 dígitos) do valor publicado na gold de origem",
+        "formula": "cópia pelo CNPJ canônico (14 dígitos) do valor publicado na gold de origem; a fórmula de cada número é a do módulo de origem (proveniências distribuidoras_perdas, distribuidoras_pnt, distribuidoras_qualidade e distribuidoras_tarifa na gold)",
         "regra_agregacao": "Nenhuma: um valor por distribuidora, o mesmo da página de origem.",
         "versao_formula": "1",
-        "natureza_fonte": "OBSERVADO",
-        "natureza_transformacao": "OBSERVADO",
+        # natureza herdada das golds de origem: taxa de perdas, DEC, FEC, limites e tarifa são
+        # CALCULADOS pelos módulos de origem; as perdas não técnicas são ESTIMADAS pela fonte
+        "natureza_fonte": "CALCULADO",
+        "natureza_transformacao": "CALCULADO",
+        "naturezas_por_campo": {"perdas.taxa_total_pct": "CALCULADO", "perdas.pnt_bt_pct": "ESTIMADO",
+                                "qualidade.dec": "CALCULADO", "qualidade.fec": "CALCULADO",
+                                "qualidade.dec_limite": "CALCULADO", "qualidade.fec_limite": "CALCULADO",
+                                "tarifa.total": "CALCULADO"},
         "dimensoes": ["distribuidora", "módulo de origem"],
         "regras_comparabilidade": ["Pares: mesma classificação (concessionária ou permissionária) e mesmo porte do ranking de continuidade.", "Anos de referência podem diferir entre módulos; cada bloco traz o seu."],
         "regra_cobertura": "CNPJ presente no SAMP, na continuidade ou nas tarifas; índice com os campos ausentes onde a gold de origem não tem o dado.",
         "politica_ausencia": "Módulo sem dado para a distribuidora = bloco nulo (nunca zero).",
         "validacoes": ["Slug único por distribuidora; aliases só sem colisão.", "Valores iguais aos da gold de origem (teste por CNPJ)."],
-        "limitacoes": ["Distribuidora encerrada (fim de série no SAMP) aparece como inativa com os dados históricos disponíveis."],
+        "limitacoes": ["Distribuidora encerrada (fim de série no SAMP) aparece como inativa com os dados históricos disponíveis.",
+                       "O índice traz um ano de referência por módulo; a evolução própria vem das séries das golds de origem (perdas_anual.json, qualidade_distribuidoras_serie.json, conta_historico_b1.json) pelo mesmo CNPJ, indicadas em distribuidoras.series_evolucao e indice[].evolucao."],
         "gold": _GOLD, "paginas": _PAG_ENT,
     },
     _conta_cvm("empresas_receita", "Receita líquida (companhia aberta)", "Quanto a companhia faturou no período?",
@@ -217,6 +230,21 @@ METRICAS = [
                ["EBITDA não é conta padronizada e não é publicado pelo observatório."]),
     _conta_cvm("empresas_lucro_liquido", "Lucro ou prejuízo do período", "Quanto a companhia lucrou?",
                "Conta 3.11 da DRE padronizada da CVM; no consolidado inclui a parcela dos não controladores (3.11.02).", "3.11", "fluxo", []),
+    _conta_cvm("empresas_lucro_controladores", "Lucro atribuído aos sócios da controladora", "Quanto do lucro consolidado pertence aos acionistas da companhia?",
+               "Conta 3.11.01 da DRE consolidada padronizada da CVM (o lucro sem a parcela dos sócios não controladores).", "3.11.01", "fluxo",
+               ["Só existe no consolidado; no individual o lucro inteiro (3.11) é da companhia."]),
+    _conta_cvm("empresas_caixa", "Caixa e equivalentes de caixa", "Quanto a companhia tinha em caixa e equivalentes no fim do período?",
+               "Conta 1.01.01 do balanço patrimonial ativo.", "1.01.01", "saldo",
+               ["Aplicações financeiras fora de equivalentes de caixa ficam em outras contas do ativo."]),
+    _conta_cvm("empresas_emprestimos_cp", "Empréstimos e financiamentos no passivo circulante", "Quanto vence em até 12 meses em empréstimos, financiamentos e debêntures?",
+               "Conta 2.01.04 do balanço patrimonial passivo (inclui debêntures).", "2.01.04", "saldo",
+               ["Arrendamentos entram só quando a companhia os classifica nessa conta."]),
+    _conta_cvm("empresas_emprestimos_lp", "Empréstimos e financiamentos no passivo não circulante", "Quanto vence depois de 12 meses em empréstimos, financiamentos e debêntures?",
+               "Conta 2.02.01 do balanço patrimonial passivo (inclui debêntures).", "2.02.01", "saldo",
+               ["Arrendamentos entram só quando a companhia os classifica nessa conta."]),
+    _conta_cvm("empresas_caixa_operacional", "Caixa líquido das atividades operacionais", "Quanto caixa as operações geraram (ou consumiram) no período?",
+               "Conta 6.01 da demonstração dos fluxos de caixa (método direto ou indireto). No ITR, acumulada desde janeiro.", "6.01", "fluxo",
+               ["Método direto e indireto chegam ao mesmo total, mas as linhas internas diferem e não são publicadas aqui."]),
     _conta_cvm("empresas_patrimonio_liquido", "Patrimônio líquido", "Qual o patrimônio líquido no fim do período?",
                "Conta 2.03 do balanço patrimonial passivo.", "2.03", "saldo", []),
     _conta_cvm("empresas_ativo_total", "Ativo total", "Qual o ativo total no fim do período?", "Conta 1 do balanço patrimonial ativo.", "1", "saldo", []),

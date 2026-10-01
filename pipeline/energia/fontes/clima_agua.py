@@ -300,14 +300,16 @@ def le_power(dados):
     return out, d.get("header", {}), d.get("messages") or []
 
 
-def janelas(hoje):
-    """Duas janelas por ponto: histórico (recolhido a cada 30 dias) e recente (a cada
-    poucos dias), com sobreposição: o recente sobrepõe o histórico onde os dois existem.
-    O IMERG Final chega com 3,5 meses de atraso e o MERRA-2 com cerca de um mês, então os
-    últimos meses mudam de versão (Late → Final, GEOS-IT → MERRA-2)."""
+def janelas(hoje, tipo="temp"):
+    """Duas janelas por ponto: histórico (recolhido a cada 30 dias) e recente, com
+    sobreposição: o recente sobrepõe o histórico onde os dois existem. O IMERG Final chega
+    com 3,5 meses de atraso e o MERRA-2 com cerca de um mês, então os últimos meses mudam de
+    versão (Late → Final, GEOS-IT → MERRA-2). A janela recente da temperatura é recolhida a
+    cada 2 dias (a carga usa a série); a da chuva, a cada 7 dias (são ~580 pontos e o IMERG
+    no POWER já chega com cerca de duas semanas de atraso)."""
     fim_hist = (hoje - timedelta(days=180)).isoformat()
     ini_rec = (hoje - timedelta(days=240)).isoformat()
-    return {"historico": (fim_hist, 30), "recente": (ini_rec, 3)}
+    return {"historico": (fim_hist, 30), "recente": (ini_rec, 2 if tipo == "temp" else 7)}
 
 
 def media_ponderada(valores_pesos):

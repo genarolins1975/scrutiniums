@@ -77,6 +77,8 @@ CSV_CONTEXTO = "perdas_contexto_social.csv"
 CSV_ACUM = "perdas_acumulado_ano.csv"
 JSON_ANUAL = "perdas_anual.json"
 JSON_EVID = "perdas_evidencias.json"
+JSON_EVID_TARIFA = "perdas_evidencias_tarifa.json"
+JSON_EVID_TECNICA = "perdas_evidencias_tecnica.json"
 JSON_MUN = "perdas_municipios.json"
 JSON_NACIONAL = "perdas_nacional.json"
 
@@ -125,6 +127,8 @@ REGISTRO = {
         _url(CSV_CONTEXTO): "cnpj; sigla; municipios_confirmados; municipios_exclusivos; populacao_confirmados (Censo 2022, municípios inteiros, sem rateio); populacao_exclusivos; cobertura_exclusivos_pct; renda_media_pc_confirmados_rs (média domiciliar per capita, ponderada por moradores); renda_media_pc_exclusivos_rs; area_km2_confirmados.",
         _url(CSV_ACUM): "nivel (universo ou distribuidora); chave (universo ou CNPJ); sigla; ano (ano aberto); mes_fim (último mês do recorte janeiro..mes_fim, o mesmo para todas); meses_ou_n (meses publicados da distribuidora ou número de distribuidoras somadas); comparavel (1 = completa e sem alerta nos dois anos, sem quebra de escala nem absorção entre os dois recortes); perdas_totais_mwh; injetada_referencia_mwh; taxa_total_pct; pnt_bt_pct; os mesmos campos do mesmo período do ano anterior (sufixo _ano_anterior); alertas. Agregado por universo = Σ numeradores ÷ Σ denominadores das distribuidoras comparáveis. Vazio = ausência.",
         _url(JSON_EVID): "Evidência 'Comprove este número' da taxa de perdas totais do ano de referência de cada distribuidora (CNPJ → objeto de pipeline/energia/evidencia.py), lida sob demanda.",
+        _url(JSON_EVID_TARIFA): "Evidência 'Comprove este número' das componentes de perdas na tarifa residencial B1 do processo apresentado de cada distribuidora (vigente ou último já iniciado), com o arquivo anual de componentes tarifárias e o sha256 de onde o valor foi lido (CNPJ → evidência), lida sob demanda.",
+        _url(JSON_EVID_TECNICA): "Evidência 'Comprove este número' do percentual técnico regulatório implícito no trecho de referência mais recente de cada distribuidora (CNPJ → evidência), com as razões mensais mínima e máxima do trecho, lida sob demanda.",
         _url(JSON_ANUAL): "Série anual por distribuidora (mesmos campos do CSV anual, em listas), para leitura sob demanda pela página.",
         _url(JSON_NACIONAL): "Série nacional completa (concessionárias, permissionárias e todas), com os mesmos campos da linha nacional da gold (que traz só as concessionárias): cobertura, marca de universo e comparação com o ano anterior nas mesmas distribuidoras; lida sob demanda.",
         _url(JSON_MUN): "Município IBGE → [índice da distribuidora, estado do vínculo: 0 relação sem confirmação, 1 relação confirmada pelo cadastro de MMGD, 2 só pelo cadastro de MMGD]; para o mapa.",
@@ -410,6 +414,31 @@ def coletar(con, ctx):
 
 
 # ======================================================================= leitura do silver
+_COLS_VINTAGE = ["vintage_id", "recurso", "url", "capturado_em", "publicado_em", "sha256", "bytes", "origem", "arquivo"]
+
+
+def _vintage_da_observacao(con, dataset, serie, ref):
+    """Vintage (arquivo do bronze com sha256) em que o valor vigente de (série, referência) foi
+    lido. O silver só grava valor novo ou alterado: a vintage é a da captura que trouxe o valor."""
+    row = con.execute(
+        """SELECT v.vintage_id, v.recurso, v.url, v.capturado_em, v.publicado_em, v.sha256, v.bytes, v.origem, v.arquivo
+           FROM observacoes o JOIN vintages v ON v.vintage_id=o.vintage_id
+           WHERE o.dataset=? AND o.serie=? AND o.ref=? ORDER BY v.capturado_em DESC LIMIT 1""",
+        (dataset, serie, ref)).fetchone()
+    return dict(zip(_COLS_VINTAGE, row)) if row else None
+
+
+def _vintages_recentes(con, dataset):
+    """Vintage mais recente de cada recurso de dados de um conjunto (evidência que usa vários
+    arquivos). Dicionários de dados ficam de fora: documentam o conjunto, nenhum número sai deles."""
+    rows = con.execute(
+        """SELECT vintage_id, recurso, url, capturado_em, publicado_em, sha256, bytes, origem, arquivo FROM vintages v
+           WHERE dataset=? AND capturado_em = (SELECT MAX(capturado_em) FROM vintages w WHERE w.dataset=v.dataset AND w.recurso=v.recurso)
+           ORDER BY recurso""", (dataset,)).fetchall()
+    return [dict(zip(_COLS_VINTAGE, r)) for r in rows
+            if not str(r[1]).lower().startswith("dicion") and not str(r[1]).lower().endswith(".pdf")]
+
+
 def _observacoes_vigentes(con, dataset):
     """{(serie, ref): valor} com a vintage mais recente de cada (serie, ref), numa só consulta."""
     out = {}
@@ -1030,6 +1059,8 @@ def construir(con, ctx):
     # vigência de tarifa se confere na data civil de Brasília (as datas das REH são locais; o
     # `hoje` do contexto é a data UTC, que vira o dia às 21h de Brasília)
     hoje_iso = (ctx.get("hoje_brasilia") or _hoje_brasilia()).isoformat()
+    # dados das evidências por distribuidora do percentual técnico (P057) e da tarifa (P058)
+    dados_ev_tecnica, dados_ev_tarifa = {}, {}
     for cnpj in sorted(cadastro, key=lambda x: (cadastro[x]["sigla"] or cadastro[x]["nome"])):
         cad = cadastro[cnpj]
         m = mensal[cnpj]
@@ -1117,11 +1148,19 @@ def construir(con, ctx):
                            (s["reh"] or {}).get("resolucao"), (s["reh"] or {}).get("inicio_vigencia"), s["dia_inicio_prorata"],
                            s["classe"], s["troca_pp"]])
         segs_ref = [x for x in segs if x["classe"] == "referencia"]
+        if segs_ref:
+            s_ult = segs_ref[-1]
+            meses_s = [c for c in comps if s_ult["inicio"] <= c <= s_ult["fim"]]
+            # razões mensais sem arredondamento: o trecho existe porque, arredondadas a 0,001 p.p., são iguais
+            razoes = [100.0 * m[c]["perdas_tecnicas"] / m[c]["injetada"] for c in meses_s
+                      if m[c].get("perdas_tecnicas") is not None and m[c].get("injetada")]
+            dados_ev_tecnica[cnpj] = {"seg": s_ult, "meses": meses_s, "razoes": razoes, "n_ref": len(segs_ref)}
         # tarifa: só processo com início ≤ hoje ≤ fim; sem processo vigente, o último já iniciado
         # com a situação "vigencia_encerrada" e a data de fim (nunca apresentado como vigente)
         tarifa = None
         p, situacao = ap.tarifa_vigente(procs_be, hoje_iso)
         if p:
+            dados_ev_tarifa[cnpj] = {"p": p, "situacao": situacao}
             tarifa = {"resolucao": p["resolucao"], "inicio": p["inicio"], "fim": p["fim"], "situacao": situacao,
                       **{k: _r(v, 2) for k, v in p["resumo"].items()},
                       "n_processos": len({x["inicio"] for x in procs_be})}
@@ -1571,6 +1610,114 @@ def construir(con, ctx):
             download=[{"rotulo": "Balanço mensal (CSV)", "url": _url(CSV_MENSAL)}], reproducao=reproducao)
     base.escreve_gold(JSON_EVID, {"gerado_em": base.agora_utc(), "ano": ano_ref, "evidencias": evid_dist}, destino=base.SERIES)
 
+    # percentual técnico regulatório implícito (P057): o trecho de referência mais recente
+    evid_tec = {}
+    for d in distribuidoras:
+        x = dados_ev_tecnica.get(d["cnpj"])
+        if not x:
+            continue
+        s, razoes = x["seg"], x["razoes"]
+        amp = max(razoes) - min(razoes) if razoes else None
+        testes_t = [
+            evid.teste("trecho_de_referencia", "aprovado" if s["meses"] >= ap.MIN_MESES_REFERENCIA else "reprovado",
+                       f"{s['meses']} meses seguidos com a mesma razão (referência a partir de {ap.MIN_MESES_REFERENCIA}); "
+                       f"{x['n_ref']} trechos de referência na série da distribuidora"),
+            evid.teste("razao_constante", "aprovado" if razoes and len(razoes) == s["meses"] else "reprovado",
+                       (f"razões mensais sem arredondamento de {_num_br(min(razoes), 5)}% a {_num_br(max(razoes), 5)}% "
+                        f"(amplitude {_num_br(amp, 5)} p.p.), todas iguais a {_num_br(s['pct'], 3)}% em 0,001 p.p.") if razoes else "sem razões mensais"),
+            evid.teste("resolucao_associada", "aprovado" if s.get("reh") else "ressalva",
+                       (f"{s['reh']['resolucao']}, início de vigência em {s['reh']['inicio_vigencia']}; troca de "
+                        f"{_num_br(s['troca_pp'], 3)} p.p. contra o trecho anterior") if s.get("reh") else
+                       "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; "
+                       "o percentual é inferido da série, não lido de um ato"),
+            evid.teste("unitarios", "aprovado", "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e "
+                       "ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"),
+        ]
+        evid_tec[d["cnpj"]] = evid.construir(
+            indicador="Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+            valor_exibido=_pct_br(s["pct"], 3), valor_calculo=s["pct"], unidade="% da energia injetada publicada",
+            periodo={"inicio": s["inicio"], "fim": s["fim"]}, entidade=f"{d['sigla'] or d['nome']} (CNPJ {d['cnpj_formatado']})",
+            universo=f"um trecho de {s['meses']} meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+            fonte=fonte_ev,
+            chaves_origem=[f"numerador: NumCPFCNPJ = {int(d['cnpj'])}, competências {s['inicio']} a {s['fim']}, "
+                           f"DscModalidadeBalanco = '{ap.MOD_PERDA_MED}', DscCctBalanco = '{ap.CCT_TECNICAS}'",
+                           f"denominador: mesmas competências, linha '{ap.MOD_INJETADA}' publicada"],
+            formula="100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em "
+                    f"todos os meses do trecho (inferência do observatório; trecho de {ap.MIN_MESES_REFERENCIA} meses ou mais)",
+            cobertura=f"{s['meses']} meses seguidos, de {s['inicio']} a {s['fim']}",
+            tratamento_ausencia="Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+            revisoes=snap_samp.get("revisoes"), testes=testes_t,
+            download=[{"rotulo": "Percentual técnico regulatório implícito (CSV)", "url": _url(CSV_PT)}], reproducao=reproducao)
+    base.escreve_gold(JSON_EVID_TECNICA, {"gerado_em": base.agora_utc(), "evidencias": evid_tec}, destino=base.SERIES)
+
+    # componentes de perdas na tarifa B1 (P058): o arquivo anual de onde o processo foi lido
+    evid_tar = {}
+    for d in distribuidoras:
+        x = dados_ev_tarifa.get(d["cnpj"])
+        if not x or not d.get("tarifa"):
+            continue
+        p, sit, t = x["p"], x["situacao"], d["tarifa"]
+        r_ = p["resumo"]
+        vint_t = _vintage_da_observacao(con, DS_TARIFA, f"BE.TUSD_PT.{d['cnpj']}", p["inicio"])
+        testes_c = [
+            evid.teste("vigencia", "aprovado" if sit == "vigente" else "ressalva",
+                       f"início {p['inicio']} ≤ {hoje_iso} ≤ fim {p['fim']}" if sit == "vigente" else
+                       f"vigência encerrada em {p['fim']}; nenhum processo vigente em {hoje_iso} no arquivo da fonte"),
+            evid.teste("soma_das_componentes", "aprovado",
+                       f"TUSD_PT {_num_br(r_['pt'], 2)} + TUSD_PNT {_num_br(r_['pnt'], 2)} + Rede Básica (TUSD_Per_RB_D + TE_Per_RB) "
+                       f"{_num_br(r_['rede_basica'], 2)} = {_num_br(r_['perdas'], 2)} R$/MWh"),
+            evid.teste("unitarios", "aprovado", "pipeline/tests/test_energia_perdas.py: TarifaB1.test_componentes_de_perdas_da_reh_3459_2025 e "
+                       "ReferenciaRegulatoriaETarifa.test_tarifa_vencida_nao_e_vigente"),
+        ]
+        evid_tar[d["cnpj"]] = evid.construir(
+            indicador="Componentes de perdas na tarifa residencial B1", valor_exibido=f"{_num_br(r_['perdas'], 2)} R$/MWh",
+            valor_calculo=_r(r_["perdas"], 6), unidade="R$/MWh", periodo={"inicio": p["inicio"], "fim": p["fim"] or p["inicio"]},
+            entidade=f"{d['sigla'] or d['nome']} (CNPJ {d['cnpj_formatado']})",
+            universo=(f"um processo tarifário ({p.get('resolucao') or 'resolução não informada'}), {'vigente' if sit == 'vigente' else 'com vigência encerrada'} "
+                      f"em {hoje_iso}"),
+            filtros=["DscBaseTarifaria = 'Base Econômica'", "DscSubGrupoTarifario = 'B1'", "DscModalidadeTarifaria = 'Convencional'",
+                     "DscSubClasseConsumidor = 'Residencial'", "DscDetalheConsumidor = 'Não se aplica'", "DscUnidade = 'R$/MWh'"],
+            fonte=evid.fonte_de_vintage("ANEEL", "Componentes Tarifárias", URL_TARIFA, vint_t),
+            chaves_origem=[f"NumCPFCNPJ = {int(d['cnpj'])}, DatInicioVigencia = {p['inicio']}, DscComponenteTarifario em "
+                           f"{', '.join(ap.COMPONENTES_PERDAS)} (e TUSD, TE para a participação)"],
+            formula="TUSD_PT + TUSD_PNT + TUSD_Per_RB_D + TE_Per_RB (R$/MWh, sem tributos); participação = 100 × soma ÷ (TUSD + TE)",
+            numerador=None, denominador=None,
+            cobertura=f"processo de {p['inicio']} a {p['fim']}; {t['n_processos']} processos da distribuidora nos arquivos de 2012 a 2026",
+            tratamento_ausencia="Processo sem alguma das quatro componentes ou sem TUSD e TE não tem resumo e não é apresentado.",
+            revisoes=snap_tarifa.get("revisoes"), testes=testes_c,
+            download=[{"rotulo": "Componentes de perdas na tarifa B1 (CSV)", "url": _url(CSV_TARIFA)}], reproducao=reproducao)
+    base.escreve_gold(JSON_EVID_TARIFA, {"gerado_em": base.agora_utc(), "consultada_em": hoje_iso, "evidencias": evid_tar}, destino=base.SERIES)
+
+    # associação descritiva com a renda (P058): ρ de Spearman com a taxa de perdas totais
+    evid_assoc = None
+    if rho_tot is not None:
+        arquivos_assoc = [evid.arquivo_de_vintage(v_samp)] + [evid.arquivo_de_vintage(v) for ds in (DS_IBGE, DS_LIMITES, DS_INDQUAL, DS_MMGD)
+                                                                for v in _vintages_recentes(con, ds)]
+        cnpjs_assoc = [x[0] for x in pontos]
+        evid_assoc = evid.construir(
+            indicador="Associação entre renda média da área e taxa de perdas totais (ρ de Spearman)",
+            valor_exibido=_num_br(rho_tot, 3), valor_calculo=_r(rho_tot, 6), unidade="ρ de Spearman (adimensional, de −1 a 1)",
+            periodo={"inicio": f"{ano_assoc}-01", "fim": f"{ano_assoc}-12"}, entidade="Concessionárias de distribuição (Brasil)",
+            universo=(f"{n_tot} concessionárias com {ano_assoc} completo, sem alerta e com território na relação de "
+                      f"{rel_assoc['ano'] if rel_assoc else ano_assoc}"),
+            fonte={**fonte_ev, "arquivos": arquivos_assoc},
+            consulta=(f"concessionárias válidas em {ano_assoc} (12 meses, sem alerta) com municípios confirmados na relação conjunto × "
+                      f"distribuidora de {ano_assoc}; renda: IBGE, tabela 10295, rendimento nominal médio domiciliar per capita × moradores. "
+                      f"Os {len(cnpjs_assoc)} CNPJs e os pares (renda, taxa) estão em associacao.pontos da gold perdas.json"),
+            formula=("ρ = correlação de Pearson entre os postos (empates com posto médio) da renda média domiciliar per capita dos "
+                     "municípios confirmados da área (ponderada por moradores) e da taxa de perdas totais do mesmo ano"),
+            exclusoes=[f"{x['sigla'] or x['cnpj']}: {x['motivo']}" for x in excluidas_assoc],
+            cobertura=f"{n_tot} concessionárias; vínculos confirmados pelo cadastro de MMGD em {confirmacao_assoc.get('mmgd', 0)}, pela UF principal em {confirmacao_assoc.get('uf_principal', 0)}",
+            tratamento_ausencia="Concessionária sem renda na área ou fora da comparação no ano não entra; nada é imputado.",
+            revisoes=snap_samp.get("revisoes"),
+            testes=[evid.teste("postos_sem_arredondamento", "aprovado", "postos calculados sobre a renda e a taxa sem arredondamento (o arredondamento criaria empates)"),
+                    evid.teste("territorio_do_ano_das_perdas", "aprovado", f"perdas e território de {ano_assoc}; Censo de 2022"),
+                    evid.teste("confirmacao_dos_vinculos", "ressalva" if confirmacao_assoc.get("uf_principal") else "aprovado",
+                               f"{confirmacao_assoc.get('uf_principal', 0)} concessionárias incorporadas depois (sem empreendimento no cadastro atual de MMGD) entram pelos vínculos da UF principal"),
+                    evid.teste("unitarios", "aprovado", "pipeline/tests/test_energia_perdas.py: test_spearman_com_empates, TerritorioDoAnoDasPerdas e "
+                               "GoldPublicada.test_associacao_usa_territorio_do_ano_das_perdas")],
+            download=[{"rotulo": "Contexto social por distribuidora (CSV)", "url": _url(CSV_CONTEXTO)}], reproducao=reproducao)
+
     # ---------------------------------------------------------------- bloqueios e decisões
     bloqueios = [
         {"item": "Perda não técnica regulatória e custo total reconhecido em reais por processo tarifário (P057, P058)",
@@ -1672,7 +1819,7 @@ def construir(con, ctx):
         "bloqueios": bloqueios, "decisoes": decisoes,
         "proveniencia": prov,
         "evidencias": {"taxa_nacional": evid_nac, "perdas_nacional": evid_vol, "pnt_bt_nacional": evid_pnt,
-                       "injetada_2024": evid_2024, "acumulado": evid_acum},
+                       "injetada_2024": evid_2024, "acumulado": evid_acum, "associacao": evid_assoc},
         "downloads": [
             {"rotulo": "Perdas por distribuidora e ano (CSV)", "url": _url(CSV_ANUAL)},
             {"rotulo": "Balanço mensal por distribuidora, para auditoria (CSV)", "url": _url(CSV_MENSAL)},
@@ -1684,7 +1831,8 @@ def construir(con, ctx):
             {"rotulo": "Acumulado do ano aberto e mesmo período do ano anterior (CSV)", "url": _url(CSV_ACUM)},
         ],
         "series": {"anual": _url(JSON_ANUAL), "municipios": _url(JSON_MUN), "evidencias": _url(JSON_EVID),
-                   "nacional": _url(JSON_NACIONAL)},
+                   "nacional": _url(JSON_NACIONAL), "evidencias_tarifa": _url(JSON_EVID_TARIFA),
+                   "evidencias_tecnica": _url(JSON_EVID_TECNICA)},
     }
     return _sem_privados(gold)
 
@@ -1720,6 +1868,13 @@ def _pct_br(v, casas=1):
     if v is None:
         return None
     return f"{v:.{casas}f}%".replace(".", ",")
+
+
+def _num_br(v, casas=2):
+    """Número no formato brasileiro com sinal de menos tipográfico ("−0,606"); None fica None."""
+    if v is None:
+        return None
+    return f"{v:.{casas}f}".replace("-", "\u2212").replace(".", ",")
 
 
 def _mwh3(kwh):

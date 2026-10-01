@@ -95,7 +95,7 @@ export function InclusaoClassesPof({ orc, fonte }: { orc: OrcamentoBase; fonte: 
         series={medidas.map((m, i) => ({ id: m.id, rotulo: m.rotulo, cor: CORES_MEDIDAS[i] }))}
         unidade="%"
         casas={2}
-        referencias={refTotal !== null ? [{ valor: refTotal, rotulo: `${medidas[0].rotulo}, todas as famílias de ${nome(principal)}` }] : []}
+        referencias={refTotal !== null ? [{ valor: refTotal, rotulo: `${medidas[0].rotulo}, todas as famílias (${nome(principal)})` }] : []}
         altura={320}
       />
       {ters.length > 1 && (
@@ -189,7 +189,7 @@ export function InclusaoUfsPof({ orc, fonte }: { orc: OrcamentoBase; fonte: stri
         cores={CORES_MAPA}
         classificacao={classes}
         unidade={ehReais ? "R$ por família e mês (15/01/2018)" : "%"}
-        casas={ehReais ? 2 : 2}
+        casas={2}
         rotuloRegiao={{ singular: "UF", plural: "UF" }}
         selecionado={sel ? codigoUf(sel) : null}
         onSelecionar={(id) => definir({ uf: siglaDoCodigo(id) ?? "" })}

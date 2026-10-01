@@ -512,9 +512,20 @@ export type PerdasGold = Cabecalho & {
     pnt_bt_nacional: EvidenciaPerdas;
     injetada_2024: EvidenciaPerdas | null;
     acumulado: EvidenciaPerdas | null;
+    /** ρ de Spearman entre a renda média da área e a taxa de perdas totais (P058). */
+    associacao: EvidenciaPerdas | null;
   };
   downloads: Download[];
-  series: { anual: string; municipios: string; evidencias: string; nacional: string };
+  series: {
+    anual: string;
+    municipios: string;
+    evidencias: string;
+    nacional: string;
+    /** Evidência das componentes de perdas na tarifa B1, por CNPJ (P058). */
+    evidencias_tarifa: string;
+    /** Evidência do percentual técnico do trecho de referência mais recente, por CNPJ (P057). */
+    evidencias_tecnica: string;
+  };
 };
 
 /* ---------- arquivos sob demanda (public/energia/series) ---------- */
@@ -589,5 +600,18 @@ export type MunicipiosPerdas = {
 export type EvidenciasDistribuidoras = {
   gerado_em: string;
   ano: number;
+  evidencias: Record<string, EvidenciaPerdas>;
+};
+
+/**
+ * public/energia/series/perdas_evidencias_tarifa.json (componentes de perdas na tarifa B1 do
+ * processo apresentado, com o arquivo anual de onde o valor foi lido) e
+ * perdas_evidencias_tecnica.json (percentual técnico do trecho de referência mais recente):
+ * CNPJ → evidência, lidos sob demanda ao escolher uma distribuidora.
+ */
+export type EvidenciasPorDistribuidora = {
+  gerado_em: string;
+  /** Só na tarifa: data (Brasília) em que a vigência foi conferida. */
+  consultada_em?: string;
   evidencias: Record<string, EvidenciaPerdas>;
 };

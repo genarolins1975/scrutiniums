@@ -1,4 +1,4 @@
-ano;tipo;linhas;kw_liberado;kw_com_data_outorgada;kw_com_atraso;kw_antecipado;mediana_atraso_dias_ponderada
+ano;tipo;linhas;kw_liberado;kw_com_data_outorgada;kw_depois_do_prazo;kw_antes_do_prazo;mediana_desvio_dias_ponderada
 2014;CGH;9;20966.0;13126.0;11126.0;2000.0;228
 2014;EOL;169;2785954.0;2785954.0;2351754.0;434200.0;461
 2014;PCH;18;126669.0;121869.0;64135.0;57734.0;49

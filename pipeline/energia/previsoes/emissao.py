@@ -154,7 +154,10 @@ def _celulas_b0(origem, info, lim):
             calib[(h, sm)] = {"status": av.calibracao(res, g.CALIBRACAO_N_MIN),
                               "cobertura_p10_p90": None if res.get("cobertura_p10_p90") is None else round(res["cobertura_p10_p90"], 4),
                               "entregas": res.get("entregas_com_quantis"),
-                              "fonte": "teste retrospectivo sob LAT1D, período de teste (entregas desde 01/01/2025), dado como estava no corte"}
+                              "fonte": "teste retrospectivo sob LAT1D, período de teste (entregas desde 01/01/2025), dado como estava no corte",
+                              # marca da regra de comparação: registros sem ela foram gravados
+                              # com a comparação estrita anterior a 01/10/2026 (ver avaliacao.py)
+                              "comparacao": av.COMPARACAO}
     return por_celula, calib
 
 

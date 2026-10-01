@@ -6,6 +6,7 @@ import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { Termo } from "@/components/evidencia/Termo";
 import { PerdasCusto } from "@/components/energia/PerdasCusto";
+import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { PerdasContexto } from "@/components/energia/PerdasContexto";
 import { PerdasAuditoria } from "@/components/energia/PerdasAuditoria";
 import { PerdasNavegacao, RodapePainel, Recorte, Resposta } from "@/components/energia/PerdasPainel";
@@ -76,8 +77,9 @@ export default function PerdasCustoContextoPage() {
               porQueImporta={<>É a parte da tarifa residencial que remunera as perdas reconhecidas no processo tarifário de cada distribuidora: o consumidor regular paga por ela.</>}
               oQueMudou={
                 <>
-                  {custo.filter((l) => l.situacao === "vigencia_encerrada").length} distribuidoras só têm processo com vigência encerrada no arquivo da fonte em {dataBR(g.referencia.tarifa_consultada_em)}:
-                  a tarifa em vigor delas é desconhecida até a próxima publicação e elas não entram no gráfico.
+                  {custo.filter((l) => l.situacao === "vigencia_encerrada" && l.ativa).length} distribuidoras ativas só têm processo com vigência encerrada no arquivo da fonte em{" "}
+                  {dataBR(g.referencia.tarifa_consultada_em)}: a tarifa em vigor delas é desconhecida até a próxima publicação e elas não entram no gráfico. Outras{" "}
+                  {custo.filter((l) => l.situacao === "vigencia_encerrada" && !l.ativa).length} têm o último processo encerrado porque a série delas no SAMP também terminou.
                 </>
               }
               comoInterpretar={
@@ -99,10 +101,10 @@ export default function PerdasCustoContextoPage() {
                 universo={`${custo.length} distribuidoras com tarifa residencial B1 nos arquivos de componentes tarifárias`}
                 unidade="R$/MWh nominais, sem tributos"
               />
-              <PerdasCusto linhas={custo} ids={ids} rotulos={rotulos} consultadaEm={g.referencia.tarifa_consultada_em} versao={versao} />
+              <PerdasCusto linhas={custo} urlEvidencias={g.series.evidencias_tarifa} ids={ids} rotulos={rotulos} consultadaEm={g.referencia.tarifa_consultada_em} versao={versao} />
               {bloqueioRegulatorio && (
                 <p className="mt-3 max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-bloqueio="custo-total">
-                  Custo total reconhecido em reais por processo: bloqueado pela mesma razão da referência regulatória ({bloqueioRegulatorio.dependencia.toLowerCase()}).
+                  Custo total reconhecido em reais por processo: bloqueado pela mesma razão da referência regulatória. Dependência: {bloqueioRegulatorio.dependencia}
                 </p>
               )}
               <RodapePainel
@@ -136,7 +138,9 @@ export default function PerdasCustoContextoPage() {
                 </>
               }
             >
-              <Resposta>{respostaAssociacao(assoc)}</Resposta>
+              <Resposta prova={g.evidencias.associacao ? <ComproveNumero evidencia={g.evidencias.associacao} rotulo="Comprove o ρ da taxa de perdas totais" /> : undefined}>
+                {respostaAssociacao(assoc)}
+              </Resposta>
               <Recorte
                 periodo={`${assoc.ano_perdas} (perdas e território); Censo de 2022`}
                 universo={`${assoc.n_taxa_total} concessionárias com ${assoc.ano_perdas} completo e sem alerta; ${assoc.n_pnt_bt} delas com a separação fechando`}

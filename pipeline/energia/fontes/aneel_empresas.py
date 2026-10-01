@@ -18,12 +18,13 @@ semelhança de nome, regra de pipeline/energia/entidades.py):
   usa o SIGA diário como base (mesmo arquivo da potência, mesma data) e este conjunto como
   conferência independente dos vínculos.
 * Composição Societária, Polímero (composicao-societaria-polimero.parquet): árvores
-  societárias declaradas pelos agentes à ANEEL por trimestre (REN 948/2021), com o sócio, o
-  percentual sobre o nível acima e a marca de controlador. Lida em lotes do Parquet, só com as
+  societárias declaradas pelos agentes à ANEEL por trimestre, com o sócio, o percentual sobre
+  o nível acima e a marca de controlador. Lida em lotes do Parquet, só com as
   colunas necessárias (o CSV equivalente tem mais de 200 MB).
 """
 import collections
 import re
+import unicodedata
 
 from pipeline.energia import entidades
 
@@ -341,6 +342,56 @@ JANELA_TRIMESTRES = 4
 LIMIAR_CONCORDANCIA = 0.9
 
 
+# Nome de sócio sem CNPJ só é republicado em dois casos. (1) Perfil PJ com o indicador
+# IdcEmpresaEstrangeira = SIM: a própria fonte declara que é pessoa jurídica estrangeira (em
+# 30/09/2026, todas as 137.875 linhas PJ sem documento do Polímero tinham esse indicador e
+# nenhuma linha PF ou DC o tinha). (2) Rótulo coletivo desta lista fechada, comparado depois de
+# tirar acentos, caixa e espaços repetidos: ações em tesouraria, pulverizadas, minoritários,
+# "demais acionistas" e afins, que não identificam ninguém. O perfil DC ("Demais
+# Controladores", segundo o dicionário) mistura esses rótulos com empresas, fundos, governos,
+# espólios e nomes de pessoas declaradas sem CPF; como a fonte não separa pessoa de empresa
+# nesse perfil, todo nome DC fora da lista sai como MARCADOR_SEM_DOCUMENTO. Pessoa física
+# (PF) nunca tem o nome republicado.
+ROTULOS_COLETIVOS = frozenset({
+    "acoes em tesouraria", "acoes tesouraria", "tesouraria", "cotas em tesouraria", "autodetencao",
+    "acoes pulverizadas", "acoes/participacoes pulverizadas", "acionistas pulverizados", "acionista pulverizados",
+    "cotistas pulverizados", "free float", "mercado (free float)", "acoes no mercado", "acoes b3",
+    "acoes na bolsa (b3)", "demais acionistas", "demais controladores", "demais quotistas",
+    "demais participacoes minoritarias", "minoritarios", "acionistas minoritarios", "acionista minoritarios",
+    "participacao minoritaria", "outros", "diversos", "administradores", "administracao",
+    "conselheiros e diretores", "cooperados", "empregados e aposentados",
+})
+MARCADOR_PF = "pessoa física"
+MARCADOR_SEM_DOCUMENTO = "sócio sem documento"
+
+
+def _rotulo_normalizado(nome):
+    s = unicodedata.normalize("NFKD", nome or "")
+    s = "".join(ch for ch in s if not unicodedata.combining(ch)).lower()
+    return " ".join(s.split()).strip(" .,;:-")
+
+
+def nome_publicavel(aresta):
+    """Nome do sócio que pode ser republicado, ou None (regra em ROTULOS_COLETIVOS): com CNPJ;
+    pessoa jurídica estrangeira declarada pela fonte; rótulo coletivo da lista fechada."""
+    nome = aresta.get("nome")
+    if not nome:
+        return None
+    if aresta.get("socio"):
+        return nome
+    if aresta.get("perfil") == "PJ" and aresta.get("empresa_estrangeira"):
+        return nome
+    if _rotulo_normalizado(nome) in ROTULOS_COLETIVOS:
+        return nome
+    return None
+
+
+def rotulo_socio(aresta):
+    """O que os arquivos publicam no lugar do nome: o nome, quando publicável; senão um
+    marcador neutro (pessoa física ou sócio sem documento)."""
+    return nome_publicavel(aresta) or (MARCADOR_PF if aresta.get("perfil") == "PF" else MARCADOR_SEM_DOCUMENTO)
+
+
 def _chave_socio(doc, nome, perfil):
     """Chave do sócio: CNPJ (14 dígitos) quando a fonte o publica; pessoa física vem com o
     CPF mascarado ('***') e demais controladores (ações pulverizadas, fundos sem CNPJ,
@@ -457,6 +508,7 @@ def le_polimero(abrir_linhas, janela=None):
             "perfil": perfil,
             "governo": texto(r.get("IdcGoverno")) == "SIM",
             "estrangeira": texto(r.get("IdcEmpresaEstrangeira")) == "SIM" or texto(r.get("IdcPessoaEstrangeira")) == "SIM",
+            "empresa_estrangeira": texto(r.get("IdcEmpresaEstrangeira")) == "SIM",
             "nivel": r.get("NumNivelCadeiaSocietaria"),
         })
     return {"arvores": dict(arvores), "eventos": {k: sorted(v) for k, v in eventos.items()},
@@ -588,7 +640,7 @@ MOTIVOS_TOPO = {
     "sem_controlador": "nenhum sócio marcado como controlador",
     "compartilhado": "mais de um sócio marcado como controlador (controle compartilhado)",
     "pessoa_fisica": "controlador único é pessoa física (CPF mascarado pela fonte)",
-    "sem_cnpj": "controlador único sem CNPJ publicado (empresa estrangeira, governo ou fundo sem CNPJ)",
+    "sem_cnpj": "controlador único sem CNPJ publicado (empresa estrangeira, governo, fundo ou sócio declarado sem documento)",
     "ciclo": "a cadeia de controladores volta a um nó já visitado",
 }
 
@@ -618,15 +670,16 @@ def controlador_direto(g, x):
 def cadeia_de_controle(g, x, limite=25):
     """Sobe pelos controladores únicos declarados a partir de x. Retorna {"topo": CNPJ do
     último nó com CNPJ, "cadeia": [x, ..., topo], "motivo_parada": chave de MOTIVOS_TOPO,
-    "acima": nome do controlador não identificável (pessoa física, estrangeira) quando há,
+    "acima": nome do controlador sem CNPJ quando publicável (nome_publicavel), senão None,
     "pcts": [participação de cada controlador sobre o nó abaixo]}."""
     cadeia, pcts, vistos = [x], [], {x}
     atual = x
     for _ in range(limite):
         prox, motivo, aresta = controlador_direto(g, atual)
         if prox is None:
-            # nome de pessoa física não é republicado: o motivo já diz que o controlador é PF
-            acima = aresta["nome"] if aresta and aresta.get("perfil") != "PF" else None
+            # só nome publicável (nome_publicavel): pessoa física e sócio DC sem documento não
+            # são nomeados; o motivo de parada já diz por que a cadeia termina ali
+            acima = nome_publicavel(aresta) if aresta else None
             return {"topo": atual, "cadeia": cadeia, "motivo_parada": motivo, "pcts": pcts, "acima": acima}
         if prox in vistos:
             return {"topo": atual, "cadeia": cadeia, "motivo_parada": "ciclo", "pcts": pcts, "acima": None}

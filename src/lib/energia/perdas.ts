@@ -22,6 +22,7 @@ import type {
   Associacao,
   Distribuidora,
   EstadoDecomposicao,
+  EstadoReconciliacao,
   LinhaAnualPerdas,
   LinhaNacional,
   MunicipiosPerdas,
@@ -57,6 +58,24 @@ export const ROTULO_ORIGEM: Record<OrigemInjetada, string> = {
   publicada: "linha publicada",
   requerida: "fornecida + irregular + perdas (leiaute de 2024)",
   mista: "mista (dois leiautes no ano)",
+};
+
+export const ROTULO_RECONCILIACAO: Record<EstadoReconciliacao, string> = {
+  fecha: "fecha (até 1 kWh por linha)",
+  residuo_pequeno: "resíduo pequeno (até 0,1% da injetada)",
+  residuo_relevante: "resíduo relevante",
+  sem_componentes: "sem componentes para fechar",
+};
+
+export const ROTULO_DEFINICAO: Record<keyof PerdasGold["definicoes"], string> = {
+  perdas_totais: "Perdas totais",
+  perdas_tecnicas: "Perdas técnicas",
+  perdas_nao_tecnicas: "Perdas não técnicas",
+  energia_injetada: "Energia injetada",
+  mercado_bt: "Mercado de baixa tensão",
+  residuo: "Resíduo do balanço",
+  tecnica_regulatoria: "Percentual técnico regulatório implícito",
+  custo_tarifa: "Custo das perdas na tarifa",
 };
 
 export const ROTULO_GRUPO: Record<Distribuidora["grupo"], string> = {
@@ -102,7 +121,11 @@ export function rotuloDistribuidora(d: Pick<Distribuidora, "sigla" | "nome">): s
 export type DistribuidoraLeve = Pick<
   Distribuidora,
   "cnpj" | "cnpj_formatado" | "sigla" | "nome" | "grupo" | "primeira_competencia" | "ultima_competencia" | "ativa" | "referencia" | "variacao" | "parcial"
-> & { territorio: Pick<Territorio, "ufs" | "municipios" | "exclusivos" | "compartilhados" | "nao_confirmados"> | null };
+> & {
+  territorio: Pick<Territorio, "ufs" | "municipios" | "exclusivos" | "compartilhados" | "nao_confirmados"> | null;
+  /** Competências (AAAA-MM) de absorção provável de outras distribuidoras, observadas no SAMP. */
+  absorcoes: string[];
+};
 
 export function leve(d: Distribuidora): DistribuidoraLeve {
   const t = d.territorio;
@@ -119,7 +142,26 @@ export function leve(d: Distribuidora): DistribuidoraLeve {
     variacao: d.variacao,
     parcial: d.parcial,
     territorio: t ? { ufs: t.ufs, municipios: t.municipios, exclusivos: t.exclusivos, compartilhados: t.compartilhados, nao_confirmados: t.nao_confirmados } : null,
+    absorcoes: d.eventos.filter((e) => e.tipo === "absorcao_provavel").map((e) => e.competencia),
   };
+}
+
+/**
+ * Aviso de território para o período do mapa: a área de cada distribuidora vem da relação
+ * conjunto × município de um ano só (a mais recente). Para um ano anterior, a distribuidora
+ * que absorveu outra depois dele aparece com o território de hoje, maior que o que atendia;
+ * o aviso nomeia essas distribuidoras em vez de deixar a cor sugerir uma área que não existia.
+ */
+export function avisoTerritorio(distribuidoras: readonly Pick<DistribuidoraLeve, "sigla" | "nome" | "absorcoes">[], periodo: PeriodoPerdas, anoRelacao: number | null): string | null {
+  if (anoRelacao === null) return null;
+  const depois = distribuidoras
+    .flatMap((d) => d.absorcoes.filter((c) => Number(c.slice(0, 4)) > periodo.ano).map((c) => ({ rotulo: rotuloDistribuidora(d), c })))
+    .sort((a, b) => a.c.localeCompare(b.c) || a.rotulo.localeCompare(b.rotulo, "pt-BR"));
+  const base = `Território: municípios da relação de ${anoRelacao}.`;
+  if (!depois.length) return base;
+  return `${base} Depois de ${periodo.ano}, ${depois.map((x) => `${x.rotulo} absorveu outra distribuidora (${mesAno(x.c)})`).join("; ")}: no mapa de ${periodo.ano}, a área ${
+    depois.length === 1 ? "dela inclui municípios que ela" : "delas inclui municípios que elas"
+  } ainda não atendia${depois.length === 1 ? "" : "m"}, e a distribuidora absorvida, sem área na relação atual, só aparece na tabela.`;
 }
 
 /* ------------------------------------------------------------------ recorte por distribuidora */
@@ -265,7 +307,8 @@ export function motivoForaTotal(a: RecortePerdas): string | null {
     if (!a.completo) return `${a.meses} meses publicados no recorte`;
     return "sem o mesmo recorte comparável no ano anterior (mês faltando, alerta ou mudança de escala)";
   }
-  if (!a.completo) return `ano incompleto: ${plural(a.meses, "mês publicado", "meses publicados")}`;
+  // completo no pipeline = 12 meses com perdas e injetada em todos; 12 meses sem uma delas também fica fora
+  if (!a.completo) return a.meses < 12 ? `ano incompleto: ${plural(a.meses, "mês publicado", "meses publicados")}` : "perdas ou energia injetada ausentes em algum dos 12 meses";
   if (a.alertas.length) return `alerta físico: ${ROTULO_ALERTA[a.alertas[0]]}`;
   if (a.injetada_mwh === null || a.perdas_totais_mwh === null) return "injetada ou perdas ausentes em algum mês";
   return null;
@@ -1093,6 +1136,8 @@ export function respostaRegulatorio(linhas: readonly LinhaRegulatorio[], bloquea
 export type LinhaCusto = {
   id: string;
   rotulo: string;
+  /** Série ainda publicada no SAMP (falso: distribuidora encerrada ou incorporada). */
+  ativa: boolean;
   resolucao: string | null;
   inicio: string;
   fim: string | null;
@@ -1114,6 +1159,7 @@ export function linhasCusto(distribuidoras: readonly Distribuidora[]): LinhaCust
     out.push({
       id: d.cnpj,
       rotulo: rotuloDistribuidora(d),
+      ativa: d.ativa,
       resolucao: t.resolucao,
       inicio: t.inicio,
       fim: t.fim,
@@ -1141,7 +1187,12 @@ export function respostaCusto(linhas: readonly LinhaCusto[], consultadaEm: strin
   const partes = [
     `Na tarifa residencial B1 vigente em ${dataBR(consultadaEm)}, sem tributos, as componentes de perdas (técnicas, não técnicas e na Rede Básica) vão de ${num(porRs[0].perdas, 2)} R$/MWh (${porRs[0].rotulo}) a ${num(porRs[porRs.length - 1].perdas, 2)} R$/MWh (${porRs[porRs.length - 1].rotulo}) em ${plural(vig.length, "distribuidora", "distribuidoras")}; em participação na tarifa, de ${num(pmin.participacao_perdas_pct, 2)}% (${pmin.rotulo}) a ${num(pmax.participacao_perdas_pct, 2)}% (${pmax.rotulo}).`,
   ];
-  if (enc) partes.push(`${plural(enc, "distribuidora só tem", "distribuidoras só têm")} processo com vigência encerrada no arquivo da fonte e fica fora da faixa.`);
+  const encAtivas = linhas.filter((l) => l.situacao === "vigencia_encerrada" && l.ativa).length;
+  if (encAtivas)
+    partes.push(
+      `${plural(encAtivas, "distribuidora ativa só tem", "distribuidoras ativas só têm")} processo com vigência encerrada no arquivo da fonte: a tarifa em vigor ${encAtivas === 1 ? "dela" : "delas"} é desconhecida até a próxima publicação, e ${encAtivas === 1 ? "ela fica" : "elas ficam"} fora da faixa.`,
+    );
+  if (enc > encAtivas) partes.push(`Outras ${num(enc - encAtivas, 0)} têm o último processo encerrado porque a série delas no SAMP também terminou.`);
   return partes.join(" ");
 }
 

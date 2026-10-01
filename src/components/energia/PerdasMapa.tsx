@@ -6,6 +6,7 @@ import {
   agruparPorChave,
   ajusteNaTela,
   aplicarZoom,
+  caixaDeFeatures,
   caixaDoCaminho,
   caixaDoZoom,
   centroDaCaixa,
@@ -64,6 +65,8 @@ export type PerdasMapaProps = {
   selecionado: string | null;
   onSelecionar: (id: string | null) => void;
   urlMunicipios: string;
+  /** Aviso sobre o território usado no período (relação de um ano só; absorções posteriores). */
+  avisoTerritorio?: string | null;
 };
 
 type Carga =
@@ -145,7 +148,7 @@ const CamadaContornos = memo(function CamadaContornos({ geo }: { geo: CamadaGeo 
 type Dica = { tipo: "area" | "mun"; id: string; x?: number; y?: number; origem: "ponteiro" | "toque" | "teclado" };
 type ItemBusca = { id: string; nome: string; uf: string; tipo: "dist" | "mun" };
 
-export function PerdasMapa({ titulo, entidades, valores, medida, periodo, selecionado, onSelecionar, urlMunicipios }: PerdasMapaProps) {
+export function PerdasMapa({ titulo, entidades, valores, medida, periodo, selecionado, onSelecionar, urlMunicipios, avisoTerritorio }: PerdasMapaProps) {
   const uid = useId().replace(/:/g, "");
 
   /* carga da malha e da relação município × distribuidora */
@@ -337,9 +340,20 @@ export function PerdasMapa({ titulo, entidades, valores, medida, periodo, seleci
 
   /* zoom */
   const caixaSel = useMemo(() => {
-    const g = selecionado ? porGrupo.get(selecionado) : null;
-    return g ? caixaDoCaminho(g.d) : null;
-  }, [selecionado, porGrupo]);
+    if (!selecionado) return null;
+    const g = porGrupo.get(selecionado);
+    if (g) return caixaDoCaminho(g.d);
+    // distribuidora sem município só dela: enquadra os municípios que divide com outras
+    return caixaDeFeatures(featuresDe([...(areas?.compartilhadosDe.get(selecionado) ?? []), ...(areas?.naoConfirmadosDe.get(selecionado) ?? [])]));
+  }, [selecionado, porGrupo, areas, porMunicipio]); // eslint-disable-line react-hooks/exhaustive-deps
+  /* distribuidoras com valor no período e nenhum município na relação usada: só na tabela */
+  const semArea = useMemo(
+    () =>
+      areas
+        ? entidades.filter((e) => valores[e.id] && valores[e.id].estado !== "sem-dado" && !areas.exclusivos.has(e.id) && !areas.compartilhadosDe.has(e.id) && !areas.naoConfirmadosDe.has(e.id))
+        : [],
+    [areas, entidades, valores],
+  );
   function zoomPor(fator: number) {
     if (!base || !zAtual) return;
     const z = aplicarZoom(base, zAtual, fator, ESCALA_MAXIMA, fator > 1 && caixaSel ? centroDaCaixa(caixaSel) : null);
@@ -718,6 +732,13 @@ export function PerdasMapa({ titulo, entidades, valores, medida, periodo, seleci
             ` ${plural(areas.compartilhados.length, "município atendido", "municípios atendidos")} por mais de uma distribuidora (pontilhado), ${plural(areas.soNaoConfirmados.length, "município", "municípios")} só com vínculo não confirmado e ${plural(areas.semVinculo.length, "município", "municípios")} sem distribuidora (contorno tracejado).`}
           {areas && areas.foraDaMalha.length > 0 && ` Código da relação ausente da malha do IBGE: ${areas.foraDaMalha.join(", ")}.`}
         </p>
+        {avisoTerritorio && <p data-aviso="territorio">{avisoTerritorio}</p>}
+        {semArea.length > 0 && (
+          <p data-sem-area={semArea.length}>
+            {plural(semArea.length, "distribuidora com dado neste período não tem", "distribuidoras com dado neste período não têm")} município na relação de {mun?.ano_relacao ?? "ano não informado"} e{" "}
+            {semArea.length === 1 ? "não aparece" : "não aparecem"} no mapa (estão na tabela): {semArea.map((e) => e.rotulo).join(", ")}.
+          </p>
+        )}
         {geo && (
           <p>
             Malha municipal do IBGE{geo.malha.revisao ? `, revisão de ${geo.malha.revisao}` : ""}, capturada em {carimbo(geo.capturado_em)}; projeção {geo.projecao.nome} (áreas proporcionais às reais). Relação município × distribuidora de {mun?.ano_relacao ?? "ano não informado"}.

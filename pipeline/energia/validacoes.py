@@ -73,6 +73,13 @@ HORIZONTE_SILVER = {
         "O dicionário do conjunto (versão 1.0, 01/03/2023) define DatSubsidio como competência do repasse de custeio homologado "
         "em ato normativo, com tipo de montante que inclui Previsão: competências futuras são repasses homologados, não observação.")},
     "regulacao_documentos": {"sem_limite": True, "motivo": "Atos normativos: o período é de vigência, que pode se estender ao futuro."},
+    "ons_cvu_termica": {"folga_dias": 14, "motivo": "O CVU é publicado por semana operativa, inclusive a semana seguinte à publicação."},
+}
+# Arquivos publicados cuja coluna de tempo legitimamente passa de hoje, com a razão.
+HORIZONTE_CSV = {
+    "carga_calendario.csv": {"sem_limite": True, "motivo": "Calendário de feriados e dias especiais: datas futuras por definição."},
+    "cmo_semanal.csv": {"folga_dias": 14, "motivo": "CMO semanal publicado para a semana operativa seguinte."},
+    "pld_cmo_semanal.csv": {"folga_dias": 14, "motivo": "CMO semanal publicado para a semana operativa seguinte."},
 }
 
 
@@ -356,7 +363,7 @@ _ID = re.compile(r"^(data|data_hora\w*|dia|mes|ano\w*|competencia|periodo\w*|sem
 _NUMERO = re.compile(r"^-?\d+(\.\d+)?([eE][-+]?\d+)?$")
 
 
-def valida_csv(caminho, url, *, dicionario=(), hoje=None, isentos_datas=("previsoes_",)):
+def valida_csv(caminho, url, *, dicionario=(), hoje=None, isentos_datas=("previsoes_",), regras_horizonte=None):
     """Checagens de um CSV publicado (separador ';', ponto decimal, vazio = ausência).
     Leitura em fluxo; a chave inferida guarda só um hash por linha."""
     hoje = hoje or hoje_brasilia()
@@ -451,16 +458,20 @@ def valida_csv(caminho, url, *, dicionario=(), hoje=None, isentos_datas=("previs
                             criterio="chave inferida única"))
     # datas além de hoje nas colunas de tempo
     futuras = []
-    if not any(nome.startswith(p) for p in isentos_datas):
+    regra = (regras_horizonte if regras_horizonte is not None else HORIZONTE_CSV).get(nome) or {}
+    folga = regra.get("folga_dias", 1)
+    if not any(nome.startswith(p) for p in isentos_datas) and not regra.get("sem_limite"):
         for i, v in max_tempo.items():
             d = _data_inicio_periodo(v)
-            if d and d > hoje + timedelta(days=1):
+            if d and d > hoje + timedelta(days=folga):
                 futuras.append({"coluna": cab[i], "maximo": v})
     out.append(checagem(f"{pref}:datas_futuras", nome, "datas_futuras",
                         "ressalva" if futuras else ("aprovado" if tempo else "nao_aplicavel"),
                         (f"Colunas de tempo com valores além de {hoje.isoformat()}: {futuras}" if futuras else
-                         ("Nenhuma data além do dia seguinte" if tempo else "Sem coluna de tempo reconhecida")),
-                        criterio="colunas data, dia, mês, competência, semana operativa ou ano até o dia seguinte à validação",
+                         (f"Datas futuras legítimas: {regra['motivo']}" if regra.get("motivo") and tempo else
+                          "Nenhuma data além do dia seguinte" if tempo else "Sem coluna de tempo reconhecida")),
+                        criterio="colunas data, dia, mês, competência, semana operativa ou ano até o dia seguinte à validação "
+                                 "(ou a folga de publicação registrada para o arquivo)",
                         verificados=len(tempo), problemas=len(futuras), exemplos=futuras))
     tem_dic = url in dicionario
     out.append(checagem(f"{pref}:dicionario", nome, "dicionario", "aprovado" if tem_dic else "ressalva",

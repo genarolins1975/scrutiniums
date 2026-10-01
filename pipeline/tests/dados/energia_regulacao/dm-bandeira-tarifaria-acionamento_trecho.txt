@@ -1,0 +1,15 @@
+Quais são as bandeiras?
+Bandeira verde: Condições favoráveis de geração de energia. A tarifa não sofre nenhum acréscimo.
+Bandeira amarela: Condições de geração menos favoráveis.
+
+Dicionário Versão: 1.0
+Data: 1-3-2023
+
+Bandeira vermelha - Patamar 1: Condições mais custosas de geração.
+Bandeira vermelha - Patamar 2: Condições ainda mais custosas de geração.
+Bandeira escassez hídrica: Tarifa criada para a seca de 2021 (vigência: setembro/21 a abril/22).
+Mensalmente são observadas as condições de geração como previsão do Preço de Liquidação de Diferenças – PLD e Risco Hidrológico, e a ANEEL, com base
+em critérios regulamentados, aciona a bandeira tarifária a ser aplicada no mês conforme os adicionais pré-definidos em Resolução.
+
+Metadados
+Nome do ar

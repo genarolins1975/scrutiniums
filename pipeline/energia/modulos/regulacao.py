@@ -182,13 +182,18 @@ def _escreve_csv(ctx, nome, cab, linhas):
 def _data_escrita(texto, iso):
     """A data `iso` está escrita no texto? Regra própria da evidência, independente da leitura
     do período: 'dd/mm/aaaa', ou o dia (com ou sem zero e ordinal) seguido, a até 30
-    caracteres sem ponto final, do nome do mês; e o ano aparece em algum lugar do texto."""
+    caracteres sem ponto final nem outro número, do nome do mês; e o ano aparece em algum
+    lugar do texto."""
     d = date.fromisoformat(iso)
     t = re.sub(r"\s+", " ", (texto or "").replace("\xa0", " "))
     if f"{d.day:02d}/{d.month:02d}/{d.year}" in t:
         return True
     nomes = "|".join(k for k, v in ar.MESES.items() if v == d.month)
-    return bool(re.search(rf"(?<!\d)0?{d.day}\s*[º°]?(?!\d)[^.;]{{0,30}}?\b(?:{nomes})\b", t, re.I)) and str(d.year) in t
+    # entre o dia e o mês não pode haver outro número, salvo o par "D e|a|até D" de uma faixa
+    # ("entre os dias 7 e 30 de abril"); assim "3 de setembro a 2 de outubro" não escreve 3 de outubro
+    padrao = (rf"(?<!\d)0?{d.day}\s*[º°]?(?!\d)(?:\s+(?:a|e|até)\s+\d{{1,2}}\s*[º°]?(?!\d))?[^.;\d]{{0,30}}?"
+              rf"\b(?:{nomes})\b")
+    return bool(re.search(padrao, t, re.I)) and str(d.year) in t
 
 
 def _bytes_bronze(arquivo):
@@ -492,6 +497,12 @@ def _fonte(orgao, dataset, recurso, url_dataset, url_primaria, licenca):
 
 # ======================================================================= P044: limites do PLD
 
+def _mes_extenso(mes):
+    """'2019-09' → 'setembro de 2019'."""
+    nome = next(k for k, v in ar.MESES.items() if v == int(mes[5:7]) and k != "marco")
+    return f"{nome} de {mes[:4]}"
+
+
 def _base_art23(textos):
     """Valores-base do art. 23, § 1º, da REN nº 1.032/2022 lidos no texto do ato guardado no
     bronze: {pld_max_estrutural, pld_max_horario, mes_base 'AAAA-MM'}; None sem o texto."""
@@ -615,8 +626,9 @@ def _conferencias_limites(atos, conf, docs, textos, atas, ipca):
                 continue
             esperado = round(lit[campo] * i1 / i0, 4)
             add("art23_literal", a_ref, campo, atual, esperado, "informativa (não é critério de aprovação)", "ressalva",
-                f"aplicação literal do art. 23, § 1º: {rg.numero_br(lit[campo])} (preços de {lit['mes_base']}) × IPCA nov/{ano - 1} "
-                f"({rg.numero_br(i1)}) ÷ IPCA {lit['mes_base']} ({rg.numero_br(i0)}) = {rg.numero_br(esperado, 4)}; o ato publicou "
+                f"aplicação literal do art. 23, § 1º: {rg.numero_br(lit[campo])} (preços de {_mes_extenso(lit['mes_base'])}) × IPCA "
+                f"nov/{ano - 1} ({rg.numero_br(i1)}) ÷ IPCA {_mes_extenso(lit['mes_base'])} ({rg.numero_br(i0)}) = "
+                f"{rg.numero_br(esperado, 4)}; o ato publicou "
                 f"{rg.numero_br(atual)} (diferença {rg.numero_br(atual - esperado, 2)}). Os atos encadeiam o teto publicado no ano "
                 "anterior (conferência regra_ipca)")
     # o valor original de 2023 (antes da retificação) reproduz a atualização a partir dos tetos
@@ -1194,10 +1206,13 @@ def construir(con, ctx):
                             "último dia do último mês com acionamento no recurso 'Bandeira Tarifária - Acionamento', conferido com a "
                             "vigência escrita no dicionário desse recurso"],
             limitacoes=["A fonte informa a data de vigência, não a de publicação do ato; o texto das resoluções não foi lido.",
-                        "Os valores vigentes de Amarela, Vermelha P1 e Vermelha P2 ficam sem fim: não há valor posterior no recurso "
-                        "Adicional e os patamares continuam sendo acionados no recurso Acionamento.",
-                        "O fim de patamar extinto tem grão mensal: o recurso Acionamento é mensal e não informa o dia (o valor de "
-                        "abril de 2022 da escassez hídrica, metade do adicional, indica acionamento em parte do mês).",
+                        "Valores sem fim (" + (", ".join(x["patamar"] for x in band["vigencias"] if x["vigencia_fim"] is None) or "nenhum")
+                        + "): não há valor posterior no recurso Adicional e o patamar não foi extinto.",
+                        "O fim de patamar extinto tem grão mensal: o recurso Acionamento é mensal e não informa o dia"
+                        + "".join(f" ({x['patamar']}: R$ {rg.numero_br(x['ultimo_acionamento']['rs_mwh'])}/MWh em "
+                                  f"{x['ultimo_acionamento']['competencia']}, contra adicional de R$ {rg.numero_br(x['rs_mwh'])}/MWh)"
+                                  for x in band["vigencias"] if x.get("ultimo_acionamento") and x["ultimo_acionamento"].get("rs_mwh") is not None)
+                        + ".",
                         f"Arquivo gerado pela fonte em {band['gerado_pela_fonte_em'] or 'data não informada'} (Adicional) e "
                         f"{band.get('acionamento_gerado_pela_fonte_em') or 'data não informada'} (Acionamento); resolução posterior não "
                         "aparece até a ANEEL atualizar o recurso."],
@@ -1255,9 +1270,10 @@ def construir(con, ctx):
                             "mesmo processo, ou, na falta de número, pelo processo"],
             limitacoes=["Só entram consultas cuja abertura foi deliberada em reunião pública registrada nas atas; a cobertura anual "
                         "frente ao total publicado pela ANEEL está em 'cobertura'"
-                        + (f": consultas públicas de {cons['cobertura_faixa']['consultas']['min_pct']}% a "
-                           f"{cons['cobertura_faixa']['consultas']['max_pct']}% por ano e audiências públicas de "
-                           f"{cons['cobertura_faixa']['audiencias']['min_pct']}% a {cons['cobertura_faixa']['audiencias']['max_pct']}% "
+                        + (f": consultas públicas de {rg.numero_br(cons['cobertura_faixa']['consultas']['min_pct'], 1)}% a "
+                           f"{rg.numero_br(cons['cobertura_faixa']['consultas']['max_pct'], 1)}% por ano e audiências públicas de "
+                           f"{rg.numero_br(cons['cobertura_faixa']['audiencias']['min_pct'], 1)}% a "
+                           f"{rg.numero_br(cons['cobertura_faixa']['audiencias']['max_pct'], 1)}% "
                            f"por ano entre {cons['cobertura_faixa']['consultas']['de']} e {cons['cobertura_faixa']['consultas']['ate']}."
                            if (cons.get("cobertura_faixa") or {}).get("consultas") and (cons.get("cobertura_faixa") or {}).get("audiencias")
                            else "."),

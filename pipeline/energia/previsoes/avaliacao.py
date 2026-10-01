@@ -43,6 +43,33 @@ REPLICAS = 1000
 SEMENTE = 20260930
 AMOSTRA_MINIMA_REGIME = 10  # entregas distintas
 
+# Tolerância das comparações entre realizado, quantis e limites de preço (R$/MWh). O
+# realizado vem da diferença de somas acumuladas de dezenas de milhares de horas e o piso
+# médio vem da média dos pisos diários: as duas contas arredondam de forma diferente e,
+# numa semana inteira no piso de 2025, dão 58,59999999962747 e 58,60000000000001 para o
+# mesmo R$ 58,60/MWh. Com comparação estrita, essa célula contava como abaixo do P10
+# embora o realizado fosse igual ao limite inferior da faixa (a cobertura é inclusiva).
+# 1e-6 fica mais de três ordens de grandeza acima desse ruído binário (maior diferença
+# observada no recálculo independente do B0: 3,7e-10) e quatro abaixo da precisão publicada
+# do PLD (R$ 0,01/MWh): nenhuma célula realmente fora da faixa passa a contar como dentro.
+TOL_COMPARACAO = 1e-6
+COMPARACAO = "realizado comparado aos quantis com tolerância de 1e-6 R$/MWh (faixa inclusiva)"
+
+
+def abaixo(y, limite, tol=TOL_COMPARACAO):
+    """y está abaixo do limite além do ruído de ponto flutuante?"""
+    return y < limite - tol
+
+
+def acima(y, limite, tol=TOL_COMPARACAO):
+    """y está acima do limite além do ruído de ponto flutuante?"""
+    return y > limite + tol
+
+
+def dentro(y, lo, hi, tol=TOL_COMPARACAO):
+    """lo ≤ y ≤ hi, inclusive, com a mesma tolerância das duas pontas."""
+    return not abaixo(y, lo, tol) and not acima(y, hi, tol)
+
 
 class Linha:
     """Uma célula do teste retrospectivo: origem × horizonte × submercado."""
@@ -216,7 +243,8 @@ def resumo(linhas, mod, freq, calibrar=True):
     if not usa:
         return {**out, "mae": None, "vies": None, "rmse": None}
     erros = [ln.prev[mod] - ln.y for ln in usa]
-    out["mae"] = sum(abs(e) for e in erros) / len(erros)
+    out["soma_erro_abs"] = sum(abs(e) for e in erros)  # numerador do MAE (evidência)
+    out["mae"] = out["soma_erro_abs"] / len(erros)
     out["vies"] = sum(erros) / len(erros)
     out["rmse"] = (sum(e * e for e in erros) / len(erros)) ** 0.5
     if mod != "B0":
@@ -245,13 +273,15 @@ def resumo(linhas, mod, freq, calibrar=True):
         for ln in comq:
             pin.append(sum(mp.pinball(ln.y, ln.q[mod][r], nv) for r, nv in zip(mp.ROTULOS_NIVEIS, mp.NIVEIS)) / len(mp.NIVEIS))
         out["perda_quantilica"] = sum(pin) / len(pin)
-        dentro80 = [1 if ln.q[mod]["p10"] <= ln.y <= ln.q[mod]["p90"] else 0 for ln in comq]
-        dentro90 = [1 if ln.q[mod]["p05"] <= ln.y <= ln.q[mod]["p95"] else 0 for ln in comq]
+        # faixa inclusiva com tolerância (ver TOL_COMPARACAO): realizado igual ao piso que
+        # limitou o P10 conta como coberto, não como abaixo
+        dentro80 = [1 if dentro(ln.y, ln.q[mod]["p10"], ln.q[mod]["p90"]) else 0 for ln in comq]
+        dentro90 = [1 if dentro(ln.y, ln.q[mod]["p05"], ln.q[mod]["p95"]) else 0 for ln in comq]
         out["cobertura_p10_p90"] = sum(dentro80) / len(dentro80)
         out["cobertura_p05_p95"] = sum(dentro90) / len(dentro90)
         out["largura_p10_p90"] = sum(ln.q[mod]["p90"] - ln.q[mod]["p10"] for ln in comq) / len(comq)
-        out["abaixo_p10"] = sum(1 for ln in comq if ln.y < ln.q[mod]["p10"]) / len(comq)
-        out["acima_p90"] = sum(1 for ln in comq if ln.y > ln.q[mod]["p90"]) / len(comq)
+        out["abaixo_p10"] = sum(1 for ln in comq if abaixo(ln.y, ln.q[mod]["p10"])) / len(comq)
+        out["acima_p90"] = sum(1 for ln in comq if acima(ln.y, ln.q[mod]["p90"])) / len(comq)
         # cobertura por entrega distinta: média, entre entregas, da fração de origens
         # cujo intervalo conteve o realizado (cada entrega pesa igual)
         por_ent = defaultdict(list)

@@ -16,6 +16,7 @@ import { QualidadeConjuntos } from "@/components/energia/QualidadeConjuntos";
 import { QualidadeLimites } from "@/components/energia/QualidadeLimites";
 import { QualidadeLinkPainel } from "@/components/energia/QualidadeLinkPainel";
 import { QualidadeMapa } from "@/components/energia/QualidadeMapa";
+import { QualidadeTabela } from "@/components/energia/QualidadeTabela";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
@@ -23,41 +24,26 @@ import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { montaHistograma } from "@/lib/energia/distribuicao";
-import { carimbo, dataBR, mesAno, num, pct } from "@/lib/energia/formato";
+import { carimbo, dataBR, mesAno, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
-  COLUNAS_ATENDIMENTO,
-  COLUNAS_CAUDA,
   COLUNAS_COMP_ANUAL,
-  COLUNAS_DIST_P051,
-  COLUNAS_ESCOPOS,
-  COLUNAS_EVENTOS,
-  COLUNAS_MATRIZ,
   COR_PARCELA,
+  FONTE_CONTINUIDADE,
   ORDEM_PARCELAS,
-  ORDEM_TIPOS,
   ROTULO_PARCELA_CURTO,
   anoBrasil,
   arquivoConjuntosDoAno,
   avisoDefasagem,
-  colunasCompensacaoDistribuidoras,
   histogramaDeFaixas,
   horasEMinutos,
   itensLimite,
-  linhasAtendimentoDistribuidoras,
+  pctCobertura,
   linhasBrasilAnual,
   linhasBrasilMensal,
-  linhasCauda,
   linhasCompensacaoAnual,
-  linhasCompensacaoDistribuidoras,
   linhasCompensacaoMensal,
-  linhasCompensacaoTipo,
-  linhasDistribuidorasP051,
-  linhasEscopos,
-  linhasEventos,
   linhasHistoricoConjuntos,
-  linhasLimites,
-  linhasMatriz,
   linhasOuvidoriaNacional,
   linhasParcelas,
   linhasReclamacoesNacional,
@@ -74,10 +60,11 @@ import {
   respostaP053,
   respostaP054,
   rotuloDistribuidora,
+  tabelaQualidade,
   textoAtualidade,
+  type IdTabela,
 } from "@/lib/energia/qualidade";
-import type { ColunaTabela } from "@/lib/energia/tabela";
-import type { QualidadeGold, TipoCompensacao } from "@/lib/energia/tipos-qualidade";
+import type { QualidadeGold } from "@/lib/energia/tipos-qualidade";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -87,7 +74,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "/setor-eletrico/qualidade" },
 };
 
-const FONTE_CONTINUIDADE = "ANEEL, Indicadores Coletivos de Continuidade (DEC e FEC)";
 const URL_SERIE = "/energia/series/qualidade_distribuidoras_serie.json";
 const URL_MUNICIPIOS = "/energia/series/qualidade_municipios.csv";
 
@@ -171,63 +157,6 @@ function tamanho(url: string): string {
   }
 }
 
-const COLUNAS_MENSAL: ColunaTabela[] = [
-  { id: "m", rotulo: "Mês", tipo: "texto" },
-  { id: "situacao", rotulo: "Situação", tipo: "texto", categorica: true },
-  { id: "dec_publicado", rotulo: "DEC publicado", tipo: "numero", unidade: "h", casas: 2 },
-  { id: "fec_publicado", rotulo: "FEC publicado", tipo: "numero", unidade: "interrupções", casas: 2 },
-  { id: "ucs", rotulo: "UCs com DEC", tipo: "numero", casas: 0 },
-  { id: "conjuntos", rotulo: "Conjuntos", tipo: "numero", casas: 0 },
-];
-
-const COLUNAS_IDENTIDADE: ColunaTabela[] = [
-  { id: "ano", rotulo: "Ano", tipo: "texto" },
-  { id: "conjunto_meses", rotulo: "Conjunto-meses", tipo: "numero", casas: 0 },
-  { id: "pct_dec", rotulo: "DEC = IP + IND", tipo: "percentual", casas: 2 },
-  { id: "pct_fec", rotulo: "FEC = IP + IND", tipo: "percentual", casas: 2 },
-];
-
-const COLUNAS_DGC: ColunaTabela[] = [
-  { id: "ano", rotulo: "Ano", tipo: "texto" },
-  { id: "comparados", rotulo: "Distribuidoras comparadas", tipo: "numero", casas: 0 },
-  { id: "ate_1_centesimo", rotulo: "Até 0,01 de diferença", tipo: "numero", casas: 0 },
-  { id: "exatos", rotulo: "Iguais em duas casas", tipo: "numero", casas: 0 },
-  { id: "maior", rotulo: "Maior diferença", tipo: "numero", casas: 3 },
-  { id: "divergentes", rotulo: "Divergentes (publicado × calculado)", tipo: "texto" },
-];
-
-const COLUNAS_DIVULGADO: ColunaTabela[] = [
-  { id: "ano", rotulo: "Ano", tipo: "texto" },
-  { id: "valor_uc", rotulo: "Valor a UCs (gold)", tipo: "numero", unidade: "R$", casas: 2 },
-  { id: "divulgado_valor", rotulo: "Divulgado pela ANEEL", tipo: "numero", unidade: "R$", casas: 0 },
-  { id: "dentro_valor", rotulo: "Dentro da precisão divulgada (R$ 0,5 milhão)", tipo: "texto", categorica: true },
-  { id: "quantidade_uc", rotulo: "Compensações a UCs (gold)", tipo: "numero", casas: 0 },
-  { id: "divulgado_qt", rotulo: "Divulgado pela ANEEL", tipo: "numero", casas: 0 },
-  { id: "dentro_qt", rotulo: "Dentro da precisão divulgada (50 mil)", tipo: "texto", categorica: true },
-];
-
-const COLUNAS_TIPO_ANO = (rotulos: Record<TipoCompensacao, string>): ColunaTabela[] => [
-  { id: "ano", rotulo: "Ano", tipo: "texto" },
-  { id: "situacao", rotulo: "Situação", tipo: "texto", categorica: true },
-  ...ORDEM_TIPOS.map((t) => ({ id: t, rotulo: rotulos[t], tipo: "numero" as const, unidade: "R$", casas: 2 })),
-];
-
-const COLUNAS_VALIDACAO: ColunaTabela[] = [
-  { id: "nome", rotulo: "Controle", tipo: "texto" },
-  { id: "resultado", rotulo: "Resultado", tipo: "texto", categorica: true },
-  { id: "critico", rotulo: "Crítico", tipo: "texto", categorica: true },
-  { id: "detalhe", rotulo: "Detalhe", tipo: "texto" },
-];
-
-const COLUNAS_CONTROLES: ColunaTabela[] = [
-  { id: "dataset", rotulo: "Conjunto", tipo: "texto", categorica: true },
-  { id: "recurso", rotulo: "Recurso", tipo: "texto" },
-  { id: "publicado_em", rotulo: "Publicado pela fonte", tipo: "texto" },
-  { id: "capturado_em", rotulo: "Capturado", tipo: "texto" },
-  { id: "versao", rotulo: "Regra de importação", tipo: "texto" },
-  { id: "sha256", rotulo: "sha256", tipo: "texto" },
-];
-
 export default function QualidadePage() {
   const g = lerGold<QualidadeGold>("qualidade.json");
   if (!integra(g)) {
@@ -283,6 +212,7 @@ export default function QualidadePage() {
   const conjuntosDownloads = [2000, 2010, 2020].map((d) => arquivoConjuntosDoAno(d));
   const tamanhos = Object.fromEntries(conjuntosDownloads.map((u) => [u, tamanho(u)]));
   const exemploDec = a?.dec ?? null;
+  const n = (id: IdTabela) => tabelaQualidade(id, g).linhas.length;
 
   return (
     <>
@@ -316,8 +246,8 @@ export default function QualidadePage() {
           </h2>
           <ul className="mt-2 grid gap-3 text-sm leading-relaxed text-carvao md:grid-cols-3">
             <li>
-              <strong className="font-medium">DEC em horas e centésimos de hora.</strong> {g.regras.centesimos}
-              {exemploDec !== null && ` Assim, os ${num(exemploDec, 2)} h do Brasil em ${ref} são ${horasEMinutos(exemploDec)}.`}
+              <strong className="font-medium">Horas com centésimos, não minutos.</strong> {g.regras.centesimos}
+              {exemploDec !== null && ` Assim, as ${num(exemploDec, 2)} h do Brasil em ${ref} são ${horasEMinutos(exemploDec)}.`}
             </li>
             <li>
               <strong className="font-medium">FEC em interrupções por unidade consumidora.</strong> Média de vezes em que cada unidade ficou sem energia por 3 minutos ou mais; também com
@@ -570,35 +500,11 @@ export default function QualidadePage() {
                       altura={220}
                     />
                   </CursorSincronizado>
-                  <TabelaInterativa
-                    titulo="Meses publicados, com a situação de cada um"
-                    colunas={COLUNAS_MENSAL}
-                    linhas={mensal.map((m) => ({ ...m, id: String(m.m) }))}
-                    chaveLinha="id"
-                    colunaRotulo="m"
-                    fonte={FONTE_CONTINUIDADE}
-                    versao={g.ultimo_mes_completo}
-                    nomeArquivo="qualidade-brasil-mensal"
-                    chaveUrl="tmes"
-                    ordemInicial={{ coluna: "m", direcao: "desc" }}
-                  />
+                  <QualidadeTabela tabela="mensal" titulo="Meses publicados, com a situação de cada um" linhas={n("mensal")} chaveUrl="tmes" />
                 </Analise>
 
                 <Analise titulo={`Todas as distribuidoras em ${ref}: duração, frequência e expurgos`}>
-                  <TabelaInterativa
-                    titulo={`DEC, FEC e parcelas por distribuidora, ${ref}`}
-                    colunas={COLUNAS_DIST_P051}
-                    linhas={linhasDistribuidorasP051(g)}
-                    chaveLinha="id"
-                    colunaRotulo="sigla"
-                    fonte={FONTE_CONTINUIDADE}
-                    versao={String(ref)}
-                    nomeArquivo="qualidade-distribuidoras"
-                    chaveUrl="tdist"
-                    ordemInicial={{ coluna: "dec", direcao: "desc" }}
-                    dicaBusca="Sigla ou CNPJ"
-                    nota="Distribuidora com menos de 12 meses publicados fica sem valor anual (ausência, nunca soma de meses)."
-                  />
+                  <QualidadeTabela tabela="dist-p051" titulo={`DEC, FEC e parcelas por distribuidora, ${ref}`} linhas={n("dist-p051")} chaveUrl="tdist" />
                 </Analise>
 
                 <Analise titulo="Todos os conjuntos de um ano">
@@ -623,15 +529,7 @@ export default function QualidadePage() {
                       <strong className="font-medium text-carvao">Ano corrente:</strong> {g.regras.parcial} {g.parcial?.aviso}
                     </li>
                   </ul>
-                  <TabelaInterativa
-                    titulo="Identidade do apurado: DEC e FEC iguais às parcelas internas (IP + IND), por ano"
-                    colunas={COLUNAS_IDENTIDADE}
-                    linhas={g.brasil.identidade_apurado.map((x) => ({ id: String(x.ano), ano: String(x.ano), conjunto_meses: x.conjunto_meses, pct_dec: x.pct_dec_igual_ip_mais_ind, pct_fec: x.pct_fec_igual_ip_mais_ind }))}
-                    chaveLinha="id"
-                    fonte={FONTE_CONTINUIDADE}
-                    versao={String(ref)}
-                    nomeArquivo="qualidade-identidade-apurado"
-                  />
+                  <QualidadeTabela tabela="identidade" titulo="Identidade do apurado: DEC e FEC iguais às parcelas internas (IP + IND), por ano" linhas={n("identidade")} chaveUrl="tide" />
                   <ul className="space-y-1 text-sm">
                     {["/energia/series/qualidade_brasil.csv", "/energia/series/qualidade_distribuidoras_anual.csv", "/energia/series/qualidade_distribuidoras_mensal.csv", "/energia/series/qualidade_conjuntos_mensal.csv", URL_MUNICIPIOS, ...conjuntosDownloads].map((u) => (
                       <li key={u}>
@@ -656,8 +554,9 @@ export default function QualidadePage() {
               natureza="CALCULADO"
               porQueImporta={
                 <>
-                  A ANEEL fixa um limite anual de DEC e de FEC para cada conjunto na revisão tarifária. Ficar acima do limite pesa no ranking e em incentivos regulatórios; a distância ao
-                  limite mostra quem está perto, quem passou e por quanto.
+                  A ANEEL fixa limites de DEC e de FEC para cada <Termo slug="conjunto-eletrico">conjunto</Termo> com a periodicidade das revisões tarifárias. Segundo a ANEEL, o
+                  descumprimento traz consequências à distribuidora, como plano de resultados e limitação de proventos aos acionistas, e o ranking da continuidade parte da distância ao
+                  limite: ela mostra quem está perto, quem passou e por quanto.
                 </>
               }
               oQueMudou={mudancaP052(c)}
@@ -696,10 +595,9 @@ export default function QualidadePage() {
                   ano={ref}
                   itensDec={itensLimite(g, "dec")}
                   itensFec={itensLimite(g, "fec")}
-                  linhas={linhasLimites(g)}
+                  classes={Object.fromEntries(g.distribuidoras.map((d) => [d.cnpj, d.classificacao]))}
+                  totalLinhas={n("limites")}
                   urlSerie={URL_SERIE}
-                  fonte={FONTE_CONTINUIDADE}
-                  versao={String(ref)}
                 />
                 <div className="space-y-3 border-t border-linha pt-5">
                   <h3 className="font-serif text-lg text-carvao">A distribuição dos conjuntos: as médias não escondem as caudas</h3>
@@ -748,43 +646,12 @@ export default function QualidadePage() {
                 </Analise>
 
                 <Analise titulo="Limite apertado ou folgado: faixa do limite × distância a ele">
-                  <TabelaInterativa
-                    titulo={`Conjuntos por faixa de limite de DEC e por razão DEC ÷ limite, ${c.ano}`}
-                    colunas={COLUNAS_MATRIZ}
-                    linhas={linhasMatriz(c)}
-                    chaveLinha="id"
-                    colunaRotulo="faixa"
-                    fonte={FONTE_CONTINUIDADE}
-                    versao={String(c.ano)}
-                    nomeArquivo="qualidade-matriz-limite-razao"
-                  />
+                  <QualidadeTabela tabela="matriz" titulo={`Conjuntos por faixa de limite de DEC e por razão DEC ÷ limite, ${c.ano}`} linhas={n("matriz")} chaveUrl="tmat" />
                 </Analise>
 
                 <Analise titulo="As pontas: os conjuntos mais distantes do limite e os de maior DEC">
-                  <TabelaInterativa
-                    titulo={`25 conjuntos com maior razão DEC ÷ limite, ${c.ano}`}
-                    colunas={COLUNAS_CAUDA}
-                    linhas={linhasCauda(c.cauda_razao_dec)}
-                    chaveLinha="id"
-                    colunaRotulo="nome"
-                    fonte={FONTE_CONTINUIDADE}
-                    versao={String(c.ano)}
-                    nomeArquivo="qualidade-cauda-razao"
-                    chaveUrl="tcr"
-                    ordemInicial={{ coluna: "razao_dec", direcao: "desc" }}
-                  />
-                  <TabelaInterativa
-                    titulo={`25 conjuntos com maior DEC, ${c.ano}`}
-                    colunas={COLUNAS_CAUDA}
-                    linhas={linhasCauda(c.cauda_dec)}
-                    chaveLinha="id"
-                    colunaRotulo="nome"
-                    fonte={FONTE_CONTINUIDADE}
-                    versao={String(c.ano)}
-                    nomeArquivo="qualidade-cauda-dec"
-                    chaveUrl="tcd"
-                    ordemInicial={{ coluna: "dec", direcao: "desc" }}
-                  />
+                  <QualidadeTabela tabela="cauda-razao" titulo={`Conjuntos com maior razão DEC ÷ limite, ${c.ano}`} linhas={n("cauda-razao")} chaveUrl="tcr" />
+                  <QualidadeTabela tabela="cauda-dec" titulo={`Conjuntos com maior DEC, ${c.ano}`} linhas={n("cauda-dec")} chaveUrl="tcd" />
                 </Analise>
 
                 <Auditoria titulo="DGC calculado × DGC publicado no ranking da ANEEL">
@@ -792,23 +659,7 @@ export default function QualidadePage() {
                     {g.regras.limite} Tolerância de 0,01, a precisão do DGC publicado. As divergências não foram explicadas caso a caso; as hipóteses estão no documento do módulo e não são
                     afirmadas aqui.
                   </p>
-                  <TabelaInterativa
-                    titulo="Reconciliação do DGC por ano"
-                    colunas={COLUNAS_DGC}
-                    linhas={g.reconciliacao.dgc.map((r) => ({
-                      id: String(r.ano),
-                      ano: String(r.ano),
-                      comparados: r.comparados,
-                      ate_1_centesimo: r.ate_1_centesimo,
-                      exatos: r.exatos_2_casas,
-                      maior: r.maior_diferenca,
-                      divergentes: r.divergentes.map((d) => `${d.sigla_ranking ?? d.empresa}: ${num(d.dgc_publicado, 2)} × ${num(d.dgc_calculado, 3)}`).join("; ") || "nenhuma",
-                    }))}
-                    chaveLinha="id"
-                    fonte="ANEEL, ranking da continuidade; cálculo do observatório"
-                    versao={String(ref)}
-                    nomeArquivo="qualidade-reconciliacao-dgc"
-                  />
+                  <QualidadeTabela tabela="dgc" titulo="Reconciliação do DGC por ano" linhas={n("dgc")} chaveUrl="tdgc" />
                 </Auditoria>
                 <Seguir ancora="limites" href="#compensacoes" pergunta="Quando o limite individual é violado, quanto a distribuidora paga? Veja as compensações." />
               </div>
@@ -928,18 +779,7 @@ export default function QualidadePage() {
                     orientacao="horizontal"
                     rotulosValor
                   />
-                  <TabelaInterativa
-                    titulo="Valor por tipo de violação e ano"
-                    colunas={COLUNAS_TIPO_ANO(comp.rotulos_tipo)}
-                    linhas={linhasCompensacaoTipo(g).map((l) => ({ ...l, id: String(l.ano) }))}
-                    chaveLinha="id"
-                    colunaRotulo="ano"
-                    fonte="ANEEL, compensações por violação de limites de continuidade"
-                    versao={String(comp.ano_referencia)}
-                    nomeArquivo="qualidade-compensacoes-tipo"
-                    ordemInicial={{ coluna: "ano", direcao: "desc" }}
-                    nota="Tipo não publicado no ano é ausência: trimestral e anual de unidades consumidoras deixaram de ser publicadas em 2022; DISE aparece em 2026."
-                  />
+                  <QualidadeTabela tabela="comp-tipo" titulo="Valor por tipo de violação e ano" linhas={n("comp-tipo")} chaveUrl="tctp" />
                 </Analise>
 
                 <Analise titulo={`Distribuição entre as distribuidoras em ${comp.ano_referencia}`}>
@@ -955,19 +795,7 @@ export default function QualidadePage() {
                     cor="var(--cor-energia)"
                     nota="Normalização para comparar tamanhos; não é o crédito de cada consumidor."
                   />
-                  <TabelaInterativa
-                    titulo={`Compensações por distribuidora, ${comp.ano_referencia}`}
-                    colunas={colunasCompensacaoDistribuidoras(comp.rotulos_tipo)}
-                    linhas={linhasCompensacaoDistribuidoras(g)}
-                    chaveLinha="id"
-                    colunaRotulo="sigla"
-                    fonte="ANEEL, compensações por violação de limites de continuidade"
-                    versao={String(comp.ano_referencia)}
-                    nomeArquivo="qualidade-compensacoes-distribuidoras"
-                    chaveUrl="tcd2"
-                    ordemInicial={{ coluna: "valor", direcao: "desc" }}
-                    dicaBusca="Sigla ou CNPJ"
-                  />
+                  <QualidadeTabela tabela="comp-dist" titulo={`Compensações por distribuidora, ${comp.ano_referencia}`} linhas={n("comp-dist")} chaveUrl="tcdi" />
                 </Analise>
 
                 <Auditoria titulo="Conferência com o total divulgado pela ANEEL">
@@ -975,26 +803,7 @@ export default function QualidadePage() {
                     A ANEEL divulga o total anual pago a unidades consumidoras na notícia do ranking (bilhões com três casas, milhões de compensações com uma). Diferença fora da precisão
                     fica marcada e não foi explicada; a hipótese de revisão dos envios depois da divulgação não está verificada.
                   </p>
-                  <TabelaInterativa
-                    titulo="Total de compensações a UCs: gold × divulgado"
-                    colunas={COLUNAS_DIVULGADO}
-                    linhas={comp.anual
-                      .filter((x) => x.divulgado_aneel)
-                      .map((x) => ({
-                        id: String(x.ano),
-                        ano: String(x.ano),
-                        valor_uc: x.valor_uc,
-                        divulgado_valor: x.divulgado_aneel!.valor,
-                        dentro_valor: x.divulgado_aneel!.dentro_da_precisao_valor === null ? "sem divulgação" : x.divulgado_aneel!.dentro_da_precisao_valor ? "sim" : "não",
-                        quantidade_uc: x.quantidade_uc,
-                        divulgado_qt: x.divulgado_aneel!.quantidade,
-                        dentro_qt: x.divulgado_aneel!.dentro_da_precisao_quantidade === null ? "sem divulgação" : x.divulgado_aneel!.dentro_da_precisao_quantidade ? "sim" : "não",
-                      }))}
-                    chaveLinha="id"
-                    fonte="ANEEL, compensações (dados abertos) e notícia anual do ranking"
-                    versao={String(comp.ano_referencia)}
-                    nomeArquivo="qualidade-compensacoes-divulgado"
-                  />
+                  <QualidadeTabela tabela="divulgado" titulo="Total de compensações a UCs: gold × divulgado" linhas={n("divulgado")} chaveUrl="tdiv" />
                 </Auditoria>
                 <Seguir ancora="compensacoes" href="#atendimento" pergunta="E o atendimento ao consumidor? Veja reclamações, pesquisa e recuperação da rede." />
               </div>
@@ -1024,8 +833,8 @@ export default function QualidadePage() {
               naoConcluir={
                 <>
                   Número de reclamações sem a base de unidades consumidoras não compara distribuidoras. Reclamações dependem dos canais e da prática de registro, e a ligação sobre falta de
-                  energia conta como reclamação: a taxa acompanha as interrupções. O IASC tem margem de erro amostral e não é publicado com intervalo. A base de eventos de emergência só
-                  existe desde {evt.inicio_min ? evt.inicio_min.slice(0, 4) : "2026"}.
+                  energia conta como reclamação: a taxa acompanha as interrupções. O IASC tem margem de erro amostral e não é publicado com intervalo. A base de eventos de emergência
+                  começa em {evt.inicio_min ? mesAno(evt.inicio_min.slice(0, 7)) : "data não publicada"}: não há série anterior para comparar.
                 </>
               }
               proveniencia={prov.reclamacoes}
@@ -1048,7 +857,7 @@ export default function QualidadePage() {
                   }
                   universo={
                     <>
-                      {rec ? `${rec.distribuidoras} distribuidoras com os 12 meses enviados (${pct((rec.cobertura_ucs ?? 0) * 100, 1)} das UCs)` : "sem universo no ano"}; IASC com{" "}
+                      {rec ? `${rec.distribuidoras} distribuidoras com os 12 meses enviados (${pctCobertura(rec.cobertura_ucs)} das UCs)` : "sem universo no ano"}; IASC com{" "}
                       {num(at.iasc.entrevistas, 0)} entrevistas
                     </>
                   }
@@ -1105,8 +914,8 @@ export default function QualidadePage() {
                   <Histograma
                     titulo={`Distribuidoras por IASC, ${at.iasc.ano ?? ""}`}
                     dados={histIasc}
-                    rotuloX="IASC"
-                    unidade="0 a 100"
+                    rotuloX="IASC (escala de 0 a 100)"
+                    unidade="pontos"
                     casas={1}
                     contagem={{ singular: "distribuidora", plural: "distribuidoras" }}
                     periodo={String(at.iasc.ano ?? "")}
@@ -1116,17 +925,7 @@ export default function QualidadePage() {
                 </div>
 
                 <Analise titulo="Indicadores de atendimento, cada um com o seu escopo">
-                  <TabelaInterativa
-                    titulo="Indicadores nacionais de atendimento por ano"
-                    colunas={COLUNAS_ESCOPOS}
-                    linhas={linhasEscopos(g)}
-                    chaveLinha="id"
-                    colunaRotulo="indicador"
-                    fonte="ANEEL: manifestações, Ouvidoria Setorial e atendimento emergencial"
-                    versao={String(ref)}
-                    nomeArquivo="qualidade-atendimento-nacional"
-                    chaveUrl="tesc"
-                  />
+                  <QualidadeTabela tabela="escopos" titulo="Indicadores nacionais de atendimento por ano" linhas={n("escopos")} chaveUrl="tesc" />
                   <GraficoBarras
                     titulo="Reclamações na Ouvidoria Setorial da ANEEL por 100 mil unidades consumidoras"
                     dados={linhasOuvidoriaNacional(g)}
@@ -1143,7 +942,7 @@ export default function QualidadePage() {
 
                 <Analise titulo="Atendimento telefônico das distribuidoras obrigadas">
                   <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-                    Só as distribuidoras com central obrigatória ({tel ? `${tel.distribuidoras} em ${ref}, ${pct((tel.cobertura_ucs ?? 0) * 100, 1)} das UCs` : "universo do ano não publicado"}).
+                    Só as distribuidoras com central obrigatória ({tel ? `${tel.distribuidoras} em ${ref}, ${pctCobertura(tel.cobertura_ucs)} das UCs` : "universo do ano não publicado"}).
                     Padrões: INS de ao menos {num(at.telefonico.padroes.ins_min_pct, 0)}%, IAb de até {num(at.telefonico.padroes.iab_max_pct, 0)}% e ICO de até{" "}
                     {num(at.telefonico.padroes.ico_max_pct, 0)}%. INS e IAb não se agregam (a fonte não publica os numeradores): o gráfico conta os meses dentro do padrão.
                   </p>
@@ -1184,18 +983,7 @@ export default function QualidadePage() {
                     empilhado
                     altura={280}
                   />
-                  <TabelaInterativa
-                    titulo="Eventos em situação de emergência com maior CHI"
-                    colunas={COLUNAS_EVENTOS}
-                    linhas={linhasEventos(g)}
-                    chaveLinha="id"
-                    colunaRotulo="sigla"
-                    fonte="ANEEL, Evento Situação de Emergência"
-                    versao={evt.inicio_max?.slice(0, 10) ?? String(ref)}
-                    nomeArquivo="qualidade-eventos-emergencia"
-                    ordemInicial={{ coluna: "chi_evento", direcao: "desc" }}
-                    nota="CHI: consumidores × horas interrompidas. Evento que atravessa o mês aparece em mais de uma competência; nada é somado entre registros."
-                  />
+                  <QualidadeTabela tabela="eventos" titulo="Eventos em situação de emergência com maior CHI" linhas={n("eventos")} chaveUrl="tevt" />
                   {evt.datas_invalidas.length > 0 && (
                     <p className="text-sm text-carvao-muted">
                       Datas mantidas como publicadas, sem duração: {evt.datas_invalidas.map((d) => `${d.sigla ?? "distribuidora não identificada"}, evento ${d.codigo} (${d.motivo})`).join("; ")}.
@@ -1204,20 +992,7 @@ export default function QualidadePage() {
                 </Analise>
 
                 <Analise titulo={`Atendimento por distribuidora, ${ref}`}>
-                  <TabelaInterativa
-                    titulo={`Reclamações, IASC, TMAE e atendimento telefônico por distribuidora, ${ref}`}
-                    colunas={COLUNAS_ATENDIMENTO}
-                    linhas={linhasAtendimentoDistribuidoras(g)}
-                    chaveLinha="id"
-                    colunaRotulo="sigla"
-                    fonte="ANEEL: manifestações, Ouvidoria, IASC, atendimento emergencial e telefônico"
-                    versao={String(ref)}
-                    nomeArquivo="qualidade-atendimento-distribuidoras"
-                    chaveUrl="tat"
-                    ordemInicial={{ coluna: "rec_mil", direcao: "desc" }}
-                    dicaBusca="Sigla ou categoria do IASC"
-                    nota="Reclamações por mil UCs só com os 12 meses enviados pela distribuidora; Ouvidoria por 100 mil UCs; IASC com a amostra ao lado."
-                  />
+                  <QualidadeTabela tabela="atendimento" titulo={`Reclamações, IASC, TMAE e atendimento telefônico por distribuidora, ${ref}`} linhas={n("atendimento")} chaveUrl="tat" />
                 </Analise>
 
                 <Auditoria titulo="Quem ficou fora de cada universo">
@@ -1256,37 +1031,8 @@ export default function QualidadePage() {
                 Cada controle roda antes de qualquer arquivo ser escrito; reprovação crítica impede a publicação e mantém a anterior. Ressalva não descarta dado: o valor fica como a fonte
                 publicou e o caso fica listado.
               </p>
-              <TabelaInterativa
-                titulo="Controles de validação"
-                colunas={COLUNAS_VALIDACAO}
-                linhas={g.validacao.map((x, i) => ({ id: String(i), nome: x.nome, resultado: x.resultado, critico: x.critico ? "sim" : "não", detalhe: x.detalhe }))}
-                chaveLinha="id"
-                colunaRotulo="nome"
-                fonte="Pipeline do observatório (pipeline/energia/modulos/qualidade.py)"
-                versao={g.gerado_em.slice(0, 10)}
-                nomeArquivo="qualidade-validacao"
-                chaveUrl="tval"
-                tamanhoPagina={50}
-              />
-              <TabelaInterativa
-                titulo="Arquivos importados (bronze com sha256)"
-                colunas={COLUNAS_CONTROLES}
-                linhas={g.controles.map((x, i) => ({
-                  id: String(i),
-                  dataset: x.dataset,
-                  recurso: x.recurso,
-                  publicado_em: x.publicado_em ? carimbo(x.publicado_em) : "não informado pela fonte",
-                  capturado_em: carimbo(x.capturado_em),
-                  versao: x.versao_importacao ?? "não registrada",
-                  sha256: x.sha256,
-                }))}
-                chaveLinha="id"
-                colunaRotulo="recurso"
-                fonte="ANEEL e IBGE (arquivos originais)"
-                versao={g.gerado_em.slice(0, 10)}
-                nomeArquivo="qualidade-arquivos"
-                chaveUrl="tarq"
-              />
+              <QualidadeTabela tabela="validacao" titulo="Controles de validação" linhas={n("validacao")} chaveUrl="tval" />
+              <QualidadeTabela tabela="arquivos" titulo="Arquivos importados (bronze com sha256)" linhas={n("arquivos")} chaveUrl="tarq" />
               {g.mapa.correspondencia.codigos_sem_ibge.length > 0 && (
                 <p className="text-sm text-carvao-muted">
                   Códigos da base IndQual Município fora do cadastro do IBGE, fora do mapa:{" "}

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
 import { ContaComposicao } from "@/components/energia/ContaComposicao";
@@ -304,25 +305,19 @@ export default function ContaDeLuzPage() {
                     tamanho="medio"
                     endereco="/setor-eletrico/conta-de-luz#tarifa"
                   />
-                  <Numero
-                    rotulo="Custo de 200 kWh/mês na tarifa mediana"
-                    natureza="CALCULADO"
-                    valor={t.resumo.perfis_mediana["200"]}
-                    formato="reais"
-                    casas={2}
-                    unidade="R$/mês"
-                    periodo={dataBR(ref)}
-                    nota="200 × mediana ÷ 1000, publicado na gold; a prova da mediana está ao lado."
-                    tamanho="medio"
-                  />
+                  {/* O custo do perfil escolhido fica na resposta logo abaixo, que segue o perfil da URL; um
+                      segundo destaque fixo em 200 kWh contradiria a escolha de 100 ou 300 kWh e não tem
+                      evidência própria na gold (a da mediana prova a tarifa, não o custo do perfil). */}
                 </div>
                 <ContaTarifas vigentes={t.vigentes} resumo={t.resumo} dataReferencia={ref} fonte={FONTE_TARIFAS} />
 
                 <div data-nivel="analisar" className="space-y-3 border-t border-linha pt-5">
                   <h3 className="font-serif text-lg text-carvao">Como a tarifa de cada distribuidora evoluiu diante da mediana?</h3>
                   <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-                    Tarifa vigente no dia 1º de cada mês. A mediana só aparece nos meses em que pelo menos 80% do maior número mensal de distribuidoras tinha tarifa (o arquivo
-                    começa em fevereiro de 2010 com poucas empresas). Incorporações aparecem como linhas verticais; todas as mudanças da distribuidora em destaque estão na tabela.
+                    Tarifa vigente no dia 1º de cada mês. O arquivo começa em {t.evolucao[0] ? mesAno(`${t.evolucao[0][0]}-01`) : "mês não publicado"} com poucas
+                    distribuidoras, e a mediana só aparece quando a cobertura passa do mínimo da regra (a partir de{" "}
+                    {evolucao[0] ? mesAno(`${evolucao[0].m}-01`) : "nenhum mês"}; regra nas limitações da evolução mensal, em Sobre este dado). Incorporações aparecem como
+                    linhas verticais; todas as mudanças da distribuidora em destaque estão na tabela.
                   </p>
                   <ContaHistorico evolucao={evolucao} entidades={entidades} historicoUrl={t.historico_url} ultimoIpca={ultimoIpca} fonte={FONTE_TARIFAS} dataReferencia={ref} />
                 </div>
@@ -334,7 +329,7 @@ export default function ContaDeLuzPage() {
                     {num(g.universo_tarifas.modalidade_nao_convencional ?? null, 0)} de outras modalidades, {num(g.universo_tarifas.detalhe_especifico ?? null, 0)} com detalhe
                     específico). {g.regras.zero_publicado} {g.regras.unidade}
                   </p>
-                  <ContaSobDemanda rotulo="a lista de distribuidoras sem tarifa vigente" detalhe={`${linhasSemVigente.length} linhas`}>
+                  <ContaSobDemanda chaveUrl="semvig" rotulo="a lista de distribuidoras sem tarifa vigente" detalhe={`${linhasSemVigente.length} linhas`}>
                     <TabelaInterativa
                       titulo="Distribuidoras com tarifa B1 no conjunto e sem vigência na data"
                       colunas={COLUNAS_SEM_VIGENTE}
@@ -422,16 +417,8 @@ export default function ContaDeLuzPage() {
                     tamanho="medio"
                     endereco="/setor-eletrico/conta-de-luz#composicao"
                   />
-                  <Numero
-                    rotulo="Componentes CDE na média das distribuidoras"
-                    natureza="CALCULADO"
-                    valor={comp.cde.razao_de_somas_pct}
-                    formato="pct"
-                    casas={1}
-                    periodo={dataBR(ref)}
-                    nota={`Razão de somas entre ${comp.cde.n} distribuidoras (${num(comp.cde.media_rs_mwh, 2)} R$/MWh em média); dentro dos encargos. Prova: download da composição por distribuidora.`}
-                    tamanho="medio"
-                  />
+                  {/* A parcela CDE média está na resposta acima e na linha "Dos encargos: componentes CDE" da
+                      tabela de decomposição; a gold não traz evidência própria para ela, então não vira destaque. */}
                 </div>
                 <ContaComposicao
                   composicao={{
@@ -467,7 +454,7 @@ export default function ContaDeLuzPage() {
                     Classificação: {comp.classificacao}. Fora da tarifa homologada: {comp.excluidos.join(", ")}.
                   </p>
                   <p className="text-sm text-carvao-muted">Regra de atípico: {comp.regra_atipico}. Cada valor abaixo foi conferido no arquivo original da ANEEL e mantido.</p>
-                  <ContaSobDemanda rotulo="as componentes atípicas" detalhe={`${linhasAtipicas.length} linhas`}>
+                  <ContaSobDemanda chaveUrl="atip" rotulo="as componentes atípicas" detalhe={`${linhasAtipicas.length} linhas`}>
                     <TabelaInterativa
                       titulo="Componentes atípicas na vigência atual"
                       colunas={COLUNAS_ATIPICAS}
@@ -518,7 +505,7 @@ export default function ContaDeLuzPage() {
               oQueMudou={
                 <>
                   Desde {dataBR(sim.regras.desconto_social_desde)}, o Desconto Social isenta das quotas da CDE o consumo de até {sim.regras.desconto_social_limite_kwh} kWh no mês;
-                  a Tarifa Social dá desconto de 100% até {sim.regras.tarifa_social_limite_kwh} kWh. Bandeira do mês publicado:{" "}
+                  a Tarifa Social dá desconto integral até {sim.regras.tarifa_social_limite_kwh} kWh. Bandeira do mês publicado:{" "}
                   {sim.bandeira_vigente?.bandeira ? `${minuscula(sim.bandeira_vigente.bandeira)} (${mesAno(`${sim.bandeira_vigente.mes}-01`)})` : "não publicada"}.
                 </>
               }
@@ -609,7 +596,7 @@ export default function ContaDeLuzPage() {
                     Casos calculados pelo pipeline para {rotuloDistribuidora(sim.casos_referencia.sigla, sim.casos_referencia.cnpj)} ({sim.casos_referencia.criterio}); o simulador
                     desta página reproduz cada um (teste automatizado). Sem valor: simulação indisponível para a classe.
                   </p>
-                  <ContaSobDemanda rotulo="os casos de referência do simulador" detalhe={`${linhasCasos.length} casos`}>
+                  <ContaSobDemanda chaveUrl="casos" rotulo="os casos de referência do simulador" detalhe={`${linhasCasos.length} casos`}>
                     <TabelaInterativa
                       titulo="Casos de referência do simulador"
                       colunas={COLUNAS_CASOS}
@@ -732,7 +719,12 @@ export default function ContaDeLuzPage() {
                   ))}
                 </ul>
                 <p className="mt-2 text-xs text-mineral">
-                  Gerado por {g.versao_pipeline} (código {g.versao_codigo ?? "sem versão"}) em {carimbo(g.gerado_em)}. Método completo: docs/observatorios/energia/modulos/conta.md.
+                  Gerado por {g.versao_pipeline} (código {g.versao_codigo ?? "sem versão"}) em {carimbo(g.gerado_em)}. Método completo no documento do módulo
+                  (docs/observatorios/energia/modulos/conta.md), na pasta de documentação indicada em{" "}
+                  <Link href="/setor-eletrico/metodologia" className="text-energia-dark underline underline-offset-4">
+                    Metodologia
+                  </Link>
+                  .
                 </p>
               </div>
             </section>

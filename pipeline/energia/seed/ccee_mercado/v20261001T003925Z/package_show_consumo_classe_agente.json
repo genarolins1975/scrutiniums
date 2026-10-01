@@ -1,0 +1,176 @@
+{
+ "result": {
+  "author": "CCEE-GAIM",
+  "author_email": "",
+  "creator_user_id": "08bb46ea-324c-47b2-84b7-76a0ebb05a3f",
+  "extras": [
+   {
+    "key": "Frequência de Atualização",
+    "value": "Mensal"
+   },
+   {
+    "key": "Referência de Publicação",
+    "value": "MS+22du"
+   },
+   {
+    "key": "Termo Legal",
+    "value": "O acesso a este site e/ou a utilização de conteúdos, dados e bases de dados nele disponibilizados se sujeita ao aceite dos termos e condições da licença aberta Creative Commons Attribution 4.0 International (CC-BY-4.0), bem como aos Termos de Uso do site e do aplicativo mobile (App) da CCEE (Link - https://www.ccee.org.br/en/web/guest/termos-de-uso). Ao utilizar esses recursos, você concorda em cumprir todos os requisitos dessa licença, que permitem que os reutilizadores distribuam, modifiquem, adaptem e desenvolvam o material sobre os dados, desde que seja atribuído o crédito apropriado ao criador (CCEE) e que sejam informadas as alterações. O Material Licenciado é disponibilizado no \"estado em que se encontra\" e \"como disponível\" apenas para fins informativos, sendo possível a interrupção da disponibilidade do conjunto de dados a qualquer momento e por qualquer motivo, sendo a sua utilização de livre iniciativa, não sendo atribuível qualquer tipo de responsabilização à CCEE por seu uso."
+   }
+  ],
+  "groups": [],
+  "id": "b912da2a-4cbe-40e0-9623-324efccedae8",
+  "isopen": true,
+  "license_id": "CC-BY-4.0",
+  "license_title": "Creative Commons Attribution 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "maintainer": "CCEE-GAIM",
+  "maintainer_email": "",
+  "metadata_created": "2023-06-22T20:18:50.372983",
+  "metadata_modified": "2026-09-01T17:54:32.456706",
+  "name": "consumo_classe_agente",
+  "notes": "Dados de consumo utilizados na contabilização do MCP - Mercado de Curto Prazo consolidados no mês de referência.",
+  "num_resources": 4,
+  "num_tags": 4,
+  "organization": {
+   "approval_status": "approved",
+   "created": "2023-03-02T11:15:44.108398",
+   "description": "O Infomercado é uma organização que agrupa os principais conjuntos de dados referentes ao resultado da contabilização do mercado de energia brasileiro.\r\n\r\nAs partes interessadas poderão acessar conjuntos de dados relacionados aos seguintes assuntos: geração; consumo; MRE; contratos; PLD; e demais temas do Mercado de Curto Prazo - MCP.\r\n\r\nOs conjuntos de dados do informercado, seus recursos e APIs são atualizados periodicamente nesse portal de dados, para o mês de referência relativo à finalização da liquidação do MCP (não são considerados eventos de recontabilização).\r\n\r\nPara consulta ao acervo de dados públicos, a parte interessada poderá consultar o portal da CCEE > dados e análises.",
+   "id": "e898a06e-6d25-486f-ba0e-209f66c975ce",
+   "image_url": "https://www.ccee.org.br/documents/20121/1583681/icon_pda-infomercado.svg/029872ce-13b0-9153-3d63-0501ca687dff?t=1724955920662",
+   "is_organization": true,
+   "name": "infomercado",
+   "state": "active",
+   "title": "Infomercado",
+   "type": "organization"
+  },
+  "owner_org": "e898a06e-6d25-486f-ba0e-209f66c975ce",
+  "private": false,
+  "relationships_as_object": [],
+  "relationships_as_subject": [],
+  "resources": [
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2023-06-22T20:19:25.365046",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os dados de consumo no centro de gravidade, no ponto de conexão por ambiente (ACL e ACR) e o número de agentes. Os dados estão consolidados no mês de referência e dividos por classe de agente.    \r\n \r\n **Campos contidos nesse Dataset:**    \r\n\r\n * **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.  \r\n * **CLASSE_AGENTE** : Corresponde a classe de atividade no mercado de energia. Domínios possíveis: Autoprodutor, Consumidor Especial, Consumidor Livre, Distribuidor, Gerador, Comercializador, Exportador e Produtor Independente.  \r\n * **CONSUMO** : Consumo no centro de gravidade por classe de perfil de agente (TRCa,s,j) [MWmed]  \r\n * **CONSUMO_PONTO_CONEXAO_CLASSE_ACR** : Consumo no ponto de conexão por ambiente e classe de perfil de Agente no ACR (MED_Cc,j) [MWmed]  \r\n * **CONSUMO_PONTO_CONEXAO_CLASSE_ACL** : Consumo no ponto de conexão por ambiente e classe de perfil de Agente no ACL (MED_Cc,j) [MWmed]",
+    "format": "CSV",
+    "hash": "",
+    "id": "5e477df5-e232-4792-a80d-386fb06337a3",
+    "last_modified": "2024-04-11T10:19:56.968000",
+    "metadata_modified": "2025-11-21T00:55:30.445350",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "consumo_classe_agente_2023",
+    "package_id": "b912da2a-4cbe-40e0-9623-324efccedae8",
+    "position": 0,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/-n5_1_weREm7l5mGJIAaew/content",
+    "url_type": ""
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2024-03-06T20:18:36.963765",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os dados de consumo no centro de gravidade, no ponto de conexão por ambiente (ACL e ACR) e o número de agentes. Os dados estão consolidados no mês de referência e dividos por classe de agente.    \n \n **Campos contidos nesse Dataset:**    \n * **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.  \n * **CLASSE_AGENTE** : Corresponde a classe de atividade no mercado de energia. Domínios possíveis: Autoprodutor, Consumidor Especial, Consumidor Livre, Distribuidor, Gerador, Comercializador, Exportador e Produtor Independente.  \n * **CONSUMO** : Consumo no centro de gravidade por classe de perfil de agente (TRCa,s,j) [MWmed]  \n * **CONSUMO_PONTO_CONEXAO_CLASSE_ACR** : Consumo no ponto de conexão por ambiente e classe de perfil de Agente no ACR (MED_Cc,j) [MWmed]  \n * **CONSUMO_PONTO_CONEXAO_CLASSE_ACL** : Consumo no ponto de conexão por ambiente e classe de perfil de Agente no ACL (MED_Cc,j) [MWmed]",
+    "format": "CSV",
+    "hash": "",
+    "id": "97071cee-17d9-4477-b338-9a610892c8da",
+    "last_modified": "2025-01-31T20:09:50.169000",
+    "metadata_modified": "2025-01-31T23:09:50.302395",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "consumo_classe_agente_2024",
+    "package_id": "b912da2a-4cbe-40e0-9623-324efccedae8",
+    "position": 1,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/1SiUHj3ESOONs8VbRrTRkQ/content",
+    "url_type": ""
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2025-03-05T23:17:12.019806",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os dados de consumo no centro de gravidade, no ponto de conexão por ambiente (ACL e ACR) e o número de agentes. Os dados estão consolidados no mês de referência e dividos por classe de agente.    \n \n **Campos contidos nesse Dataset:**    \n * **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.  \n * **CLASSE_AGENTE** : Corresponde a classe de atividade no mercado de energia. Domínios possíveis: Autoprodutor, Consumidor Especial, Consumidor Livre, Distribuidor, Gerador, Comercializador, Exportador e Produtor Independente.  \n * **CONSUMO** : Consumo no centro de gravidade por classe de perfil de agente (TRCa,s,j) [MWmed]  \n * **CONSUMO_PONTO_CONEXAO_CLASSE_ACR** : Consumo no ponto de conexão por ambiente e classe de perfil de Agente no ACR (MED_Cc,j) [MWmed]  \n * **CONSUMO_PONTO_CONEXAO_CLASSE_ACL** : Consumo no ponto de conexão por ambiente e classe de perfil de Agente no ACL (MED_Cc,j) [MWmed]",
+    "format": "CSV",
+    "hash": "",
+    "id": "f4d315a8-7394-4289-a927-4ddf50b2245e",
+    "last_modified": "2026-02-02T17:38:30.143000",
+    "metadata_modified": "2026-02-02T20:40:09.944640",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "consumo_classe_agente_2025",
+    "package_id": "b912da2a-4cbe-40e0-9623-324efccedae8",
+    "position": 2,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/gD01pLqRRoiaQM08zr_xGw/content",
+    "url_type": null
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2026-03-04T21:07:13.711400",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os dados de consumo no centro de gravidade, no ponto de conexão por ambiente (ACL e ACR) e o número de agentes. Os dados estão consolidados no mês de referência e dividos por classe de agente.    \n \n **Campos contidos nesse Dataset:**    \n * **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.  \n * **CLASSE_AGENTE** : Corresponde a classe de atividade no mercado de energia. Domínios possíveis: Autoprodutor, Consumidor Especial, Consumidor Livre, Distribuidor, Gerador, Comercializador, Exportador e Produtor Independente.  \n * **CONSUMO** : Consumo no centro de gravidade por classe de perfil de agente (TRCa,s,j) [MWmed]  \n * **CONSUMO_PONTO_CONEXAO_CLASSE_ACR** : Consumo no ponto de conexão por ambiente e classe de perfil de Agente no ACR (MED_Cc,j) [MWmed]  \n * **CONSUMO_PONTO_CONEXAO_CLASSE_ACL** : Consumo no ponto de conexão por ambiente e classe de perfil de Agente no ACL (MED_Cc,j) [MWmed]",
+    "format": "CSV",
+    "hash": "",
+    "id": "730e32b5-2945-4251-bea7-0f16e034f43e",
+    "last_modified": "2026-09-01T14:54:32.372000",
+    "metadata_modified": "2026-09-01T17:54:32.461958",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "consumo_classe_agente_2026",
+    "package_id": "b912da2a-4cbe-40e0-9623-324efccedae8",
+    "position": 3,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/8OCQv_xpSPypgbm6LIgZTw/content",
+    "url_type": null
+   }
+  ],
+  "state": "active",
+  "tags": [
+   {
+    "display_name": "acl",
+    "id": "f8fb6153-868b-41d8-8994-48afb86632f4",
+    "name": "acl",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "acr",
+    "id": "fdb6955a-89b5-460a-a0ad-e39923c42068",
+    "name": "acr",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "consumo",
+    "id": "cdf18cbb-5072-4d0e-9184-150957ce92a8",
+    "name": "consumo",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "dados gerais",
+    "id": "608eaa47-92c5-460b-a3d0-2069bff3b41d",
+    "name": "dados gerais",
+    "state": "active",
+    "vocabulary_id": null
+   }
+  ],
+  "title": "CONSUMO_CLASSE_AGENTE",
+  "type": "dataset",
+  "url": "",
+  "version": ""
+ }
+}

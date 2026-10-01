@@ -71,6 +71,20 @@ export function vezes(x: number): string {
   return Math.abs(x) >= 2 ? "vezes" : "vez";
 }
 
+/**
+ * Cobertura (fração de 0 a 1) em percentual sem arredondar para 100%: 0,9996 vira
+ * "99,96%", nunca "100,0%", que diria que ninguém ficou de fora.
+ */
+export function pctCobertura(v: number | null | undefined): string {
+  if (v === null || v === undefined || !Number.isFinite(v)) return "sem dado";
+  const x = v * 100;
+  for (const casas of [1, 2, 3]) {
+    const t = pct(x, casas);
+    if (x >= 100 || Math.round(x * 10 ** casas) < 100 * 10 ** casas) return t;
+  }
+  return pct(x, 3);
+}
+
 /** Lista em português: "a", "a e b", "a, b e c". */
 export function listaPt(itens: readonly string[]): string {
   if (itens.length <= 1) return itens[0] ?? "";
@@ -106,6 +120,11 @@ export const INDICADORES = ["dec", "fec"] as const;
 export type Indicador = (typeof INDICADORES)[number];
 /** `?ind=`: DEC ou FEC no painel de limites. */
 export const CAMPO_IND = campo(tiposUrl.opcao(INDICADORES), "dec" as Indicador, { param: "ind" });
+
+export const CLASSES = ["concessionaria", "permissionaria"] as const;
+export type ClasseDistribuidora = (typeof CLASSES)[number];
+/** `?cls=`: grupo de distribuidoras no gráfico de pontos (concessionárias ou permissionárias). */
+export const CAMPO_CLASSE = campo(tiposUrl.opcao(CLASSES), "concessionaria" as ClasseDistribuidora, { param: "cls" });
 
 /** Põe a distribuidora em destaque (primeira da lista), sem repetir e sem passar de quatro. */
 export function destacar(lista: readonly string[], id: string): string[] {
@@ -522,7 +541,7 @@ export function mudancaP052(c: Conjuntos): string {
   if (h.length < 2) return "Sem histórico suficiente de conjuntos com limite.";
   const maior = h.reduce((m, x) => ((x.pct_acima_limite_dec ?? -1) > (m.pct_acima_limite_dec ?? -1) ? x : m));
   const ult = h[h.length - 1];
-  return `De ${h[0].ano} a ${ult.ano}, a fração de conjuntos acima do limite de DEC teve o máximo em ${maior.ano} (${pct(maior.pct_acima_limite_dec, 1)}) e fechou ${ult.ano} em ${pct(ult.pct_acima_limite_dec, 1)}. Os limites também mudam: caem a cada revisão tarifária da distribuidora.`;
+  return `De ${h[0].ano} a ${ult.ano}, a fração de conjuntos acima do limite de DEC teve o máximo em ${maior.ano} (${pct(maior.pct_acima_limite_dec, 1)}) e fechou ${ult.ano} em ${pct(ult.pct_acima_limite_dec, 1)}. O limite de cada conjunto também muda de um ano para outro, então a fração acima dele mistura desempenho e meta.`;
 }
 
 /** Itens do gráfico de pontos realizado × limite (um por distribuidora, ano de referência). */
@@ -893,7 +912,7 @@ export function respostaP054(g: QualidadeGold): string {
     partes.push(
       `Em ${ref}, as distribuidoras registraram ${num(rec.por_ucs, 1)} reclamações por mil unidades consumidoras` +
         (rec.interrupcao_por_mil_uc !== null ? `, ${num(rec.interrupcao_por_mil_uc, 1)} delas sobre interrupção` : "") +
-        ` (${rec.distribuidoras} distribuidoras com os 12 meses enviados, ${pct((rec.cobertura_ucs ?? 0) * 100, 1)} das UCs).`,
+        ` (${rec.distribuidoras} distribuidoras com os 12 meses enviados, ${pctCobertura(rec.cobertura_ucs)} das UCs).`,
     );
   } else if (rec) partes.push(`Reclamações nas distribuidoras em ${ref}: sem taxa (${rec.motivo_ausencia ?? "universo vazio"}).`);
   if (ouv && ouv.por_ucs !== null) partes.push(`Na Ouvidoria Setorial da ANEEL, segunda instância, foram ${num(ouv.por_ucs, 1)} reclamações por 100 mil unidades consumidoras.`);
@@ -919,11 +938,16 @@ export function mudancaP054(g: QualidadeGold): string {
   }
   const semTaxa = at.reclamacoes_distribuidora.find((x) => x.por_ucs === null && x.motivo_ausencia);
   if (semTaxa) partes.push(`${semTaxa.ano}: sem taxa, ${semTaxa.motivo_ausencia}.`);
-  const tm = at.tmae.filter((x) => x.tmae_min !== null);
+  // anos cheios se comparam entre si; o ano corrente aparece à parte, com o número de meses
+  const tm = at.tmae.filter((x) => x.tmae_min !== null && x.completo);
+  const tmParcial = at.tmae.find((x) => x.tmae_min !== null && !x.completo);
   if (tm.length >= 2) {
     const a = tm[0];
     const b = tm[tm.length - 1];
-    partes.push(`Tempo médio de atendimento emergencial: ${num(a.tmae_min, 0)} min em ${a.ano}; ${num(b.tmae_min, 0)} min em ${b.ano}${b.completo ? "" : ` (parcial, ${b.meses} meses)`}.`);
+    partes.push(
+      `Tempo médio de atendimento emergencial: ${num(a.tmae_min, 0)} min em ${a.ano} e ${num(b.tmae_min, 0)} min em ${b.ano}` +
+        (tmParcial ? `; ${tmParcial.ano} tem só ${tmParcial.meses} meses (${num(tmParcial.tmae_min, 0)} min), sem comparação com ano cheio.` : "."),
+    );
   }
   return partes.join(" ") || "Sem série de atendimento com mais de um ano.";
 }
@@ -1115,4 +1139,299 @@ export function carregarUmaVez<T>(url: string, ler: (r: Response) => Promise<T>)
     p.catch(() => cache.delete(url));
   }
   return p;
+}
+
+/* ---------------------------------------------------------------- tabelas abertas sob demanda */
+
+/**
+ * Tabelas de análise e auditoria que a página não manda prontas no HTML (contrato,
+ * seção 5.1: o peso da página). Cada uma é montada no navegador, quando a pessoa a abre,
+ * a partir da própria gold publicada (/energia/gold/qualidade.json) e destas mesmas
+ * funções: o que a tabela mostra e exporta é o que o teste confere contra os CSV.
+ */
+export const TABELAS_SOB_DEMANDA = [
+  "dist-p051",
+  "limites",
+  "mensal",
+  "identidade",
+  "matriz",
+  "cauda-razao",
+  "cauda-dec",
+  "dgc",
+  "comp-tipo",
+  "comp-dist",
+  "divulgado",
+  "escopos",
+  "eventos",
+  "atendimento",
+  "validacao",
+  "arquivos",
+] as const;
+export type IdTabela = (typeof TABELAS_SOB_DEMANDA)[number];
+
+export type DefinicaoTabela = {
+  colunas: ColunaTabela[];
+  linhas: LinhaTabela[];
+  colunaRotulo?: string;
+  fonte: string;
+  versao: string;
+  nomeArquivo: string;
+  ordemInicial?: { coluna: string; direcao: "asc" | "desc" };
+  dicaBusca?: string;
+  nota?: string;
+};
+
+export const FONTE_CONTINUIDADE = "ANEEL, Indicadores Coletivos de Continuidade (DEC e FEC)";
+const FONTE_COMPENSACOES = "ANEEL, compensações por violação de limites de continuidade";
+const FONTE_ATENDIMENTO = "ANEEL: manifestações, Ouvidoria, IASC, atendimento emergencial e telefônico";
+
+const COLUNAS_MENSAL: ColunaTabela[] = [
+  { id: "m", rotulo: "Mês", tipo: "texto" },
+  { id: "situacao", rotulo: "Situação", tipo: "texto", categorica: true },
+  { id: "dec_publicado", rotulo: "DEC publicado", tipo: "numero", unidade: "h", casas: 2 },
+  { id: "fec_publicado", rotulo: "FEC publicado", tipo: "numero", unidade: "interrupções", casas: 2 },
+  { id: "ucs", rotulo: "UCs com DEC", tipo: "numero", casas: 0 },
+  { id: "conjuntos", rotulo: "Conjuntos", tipo: "numero", casas: 0 },
+];
+
+const COLUNAS_IDENTIDADE: ColunaTabela[] = [
+  { id: "ano", rotulo: "Ano", tipo: "texto" },
+  { id: "conjunto_meses", rotulo: "Conjunto-meses", tipo: "numero", casas: 0 },
+  { id: "pct_dec", rotulo: "DEC = IP + IND", tipo: "percentual", casas: 2 },
+  { id: "pct_fec", rotulo: "FEC = IP + IND", tipo: "percentual", casas: 2 },
+];
+
+const COLUNAS_DGC: ColunaTabela[] = [
+  { id: "ano", rotulo: "Ano", tipo: "texto" },
+  { id: "comparados", rotulo: "Distribuidoras comparadas", tipo: "numero", casas: 0 },
+  { id: "ate_1_centesimo", rotulo: "Até 0,01 de diferença", tipo: "numero", casas: 0 },
+  { id: "exatos", rotulo: "Iguais em duas casas", tipo: "numero", casas: 0 },
+  { id: "maior", rotulo: "Maior diferença", tipo: "numero", casas: 3 },
+  { id: "divergentes", rotulo: "Divergentes (publicado × calculado)", tipo: "texto" },
+];
+
+const COLUNAS_DIVULGADO: ColunaTabela[] = [
+  { id: "ano", rotulo: "Ano", tipo: "texto" },
+  { id: "valor_uc", rotulo: "Valor a UCs (gold)", tipo: "numero", unidade: "R$", casas: 2 },
+  { id: "divulgado_valor", rotulo: "Divulgado pela ANEEL", tipo: "numero", unidade: "R$", casas: 0 },
+  { id: "dentro_valor", rotulo: "Dentro da precisão divulgada (R$ 0,5 milhão)", tipo: "texto", categorica: true },
+  { id: "quantidade_uc", rotulo: "Compensações a UCs (gold)", tipo: "numero", casas: 0 },
+  { id: "divulgado_qt", rotulo: "Divulgado pela ANEEL (quantidade)", tipo: "numero", casas: 0 },
+  { id: "dentro_qt", rotulo: "Dentro da precisão divulgada (50 mil)", tipo: "texto", categorica: true },
+];
+
+const COLUNAS_VALIDACAO: ColunaTabela[] = [
+  { id: "nome", rotulo: "Controle", tipo: "texto" },
+  { id: "resultado", rotulo: "Resultado", tipo: "texto", categorica: true },
+  { id: "critico", rotulo: "Crítico", tipo: "texto", categorica: true },
+  { id: "detalhe", rotulo: "Detalhe", tipo: "texto" },
+];
+
+const COLUNAS_ARQUIVOS: ColunaTabela[] = [
+  { id: "dataset", rotulo: "Conjunto", tipo: "texto", categorica: true },
+  { id: "recurso", rotulo: "Recurso", tipo: "texto" },
+  { id: "publicado_em", rotulo: "Publicado pela fonte", tipo: "texto" },
+  { id: "capturado_em", rotulo: "Capturado", tipo: "texto" },
+  { id: "versao", rotulo: "Regra de importação", tipo: "texto" },
+  { id: "sha256", rotulo: "sha256", tipo: "texto" },
+];
+
+const simNao = (v: boolean | null) => (v === null ? "sem divulgação" : v ? "sim" : "não");
+
+/** Definição (colunas, linhas, fonte, arquivo) de cada tabela aberta sob demanda. */
+export function tabelaQualidade(id: IdTabela, g: QualidadeGold): DefinicaoTabela {
+  const ref = String(g.ano_referencia);
+  const c = g.conjuntos;
+  const comp = g.compensacoes;
+  switch (id) {
+    case "dist-p051":
+      return {
+        colunas: COLUNAS_DIST_P051,
+        linhas: linhasDistribuidorasP051(g),
+        colunaRotulo: "sigla",
+        fonte: FONTE_CONTINUIDADE,
+        versao: ref,
+        nomeArquivo: "qualidade-distribuidoras",
+        ordemInicial: { coluna: "dec", direcao: "desc" },
+        dicaBusca: "Sigla ou CNPJ",
+        nota: "Distribuidora com menos de 12 meses publicados fica sem valor anual (ausência, nunca soma de meses).",
+      };
+    case "limites":
+      return {
+        colunas: COLUNAS_LIMITES,
+        linhas: linhasLimites(g),
+        colunaRotulo: "sigla",
+        fonte: FONTE_CONTINUIDADE,
+        versao: ref,
+        nomeArquivo: "qualidade-limites-distribuidoras",
+        ordemInicial: { coluna: "razao_dec", direcao: "desc" },
+        dicaBusca: "Sigla ou CNPJ",
+        nota: "DGC (desempenho global de continuidade) = média simples de DEC ÷ limite e FEC ÷ limite, como no ranking da ANEEL; o publicado tem duas casas.",
+      };
+    case "mensal":
+      return {
+        colunas: COLUNAS_MENSAL,
+        linhas: linhasBrasilMensal(g).map((m) => ({ ...m, id: String(m.m) })),
+        colunaRotulo: "m",
+        fonte: FONTE_CONTINUIDADE,
+        versao: g.ultimo_mes_completo,
+        nomeArquivo: "qualidade-brasil-mensal",
+        ordemInicial: { coluna: "m", direcao: "desc" },
+      };
+    case "identidade":
+      return {
+        colunas: COLUNAS_IDENTIDADE,
+        linhas: g.brasil.identidade_apurado.map((x) => ({
+          id: String(x.ano),
+          ano: String(x.ano),
+          conjunto_meses: x.conjunto_meses,
+          pct_dec: x.pct_dec_igual_ip_mais_ind,
+          pct_fec: x.pct_fec_igual_ip_mais_ind,
+        })),
+        fonte: FONTE_CONTINUIDADE,
+        versao: ref,
+        nomeArquivo: "qualidade-identidade-apurado",
+      };
+    case "matriz":
+      return { colunas: COLUNAS_MATRIZ, linhas: linhasMatriz(c), colunaRotulo: "faixa", fonte: FONTE_CONTINUIDADE, versao: String(c.ano), nomeArquivo: "qualidade-matriz-limite-razao" };
+    case "cauda-razao":
+      return {
+        colunas: COLUNAS_CAUDA,
+        linhas: linhasCauda(c.cauda_razao_dec),
+        colunaRotulo: "nome",
+        fonte: FONTE_CONTINUIDADE,
+        versao: String(c.ano),
+        nomeArquivo: "qualidade-cauda-razao",
+        ordemInicial: { coluna: "razao_dec", direcao: "desc" },
+      };
+    case "cauda-dec":
+      return {
+        colunas: COLUNAS_CAUDA,
+        linhas: linhasCauda(c.cauda_dec),
+        colunaRotulo: "nome",
+        fonte: FONTE_CONTINUIDADE,
+        versao: String(c.ano),
+        nomeArquivo: "qualidade-cauda-dec",
+        ordemInicial: { coluna: "dec", direcao: "desc" },
+      };
+    case "dgc":
+      return {
+        colunas: COLUNAS_DGC,
+        linhas: g.reconciliacao.dgc.map((r) => ({
+          id: String(r.ano),
+          ano: String(r.ano),
+          comparados: r.comparados,
+          ate_1_centesimo: r.ate_1_centesimo,
+          exatos: r.exatos_2_casas,
+          maior: r.maior_diferenca,
+          divergentes: r.divergentes.map((d) => `${d.sigla_ranking ?? d.empresa}: ${num(d.dgc_publicado, 2)} × ${num(d.dgc_calculado, 3)}`).join("; ") || "nenhuma",
+        })),
+        fonte: "ANEEL, ranking da continuidade; cálculo do observatório",
+        versao: ref,
+        nomeArquivo: "qualidade-reconciliacao-dgc",
+      };
+    case "comp-tipo":
+      return {
+        colunas: [
+          { id: "ano", rotulo: "Ano", tipo: "texto" },
+          { id: "situacao", rotulo: "Situação", tipo: "texto", categorica: true },
+          ...ORDEM_TIPOS.map((t) => ({ id: t, rotulo: comp.rotulos_tipo[t], tipo: "numero" as const, unidade: "R$", casas: 2 })),
+        ],
+        linhas: linhasCompensacaoTipo(g).map((l) => ({ ...l, id: String(l.ano) })),
+        colunaRotulo: "ano",
+        fonte: FONTE_COMPENSACOES,
+        versao: String(comp.ano_referencia),
+        nomeArquivo: "qualidade-compensacoes-tipo",
+        ordemInicial: { coluna: "ano", direcao: "desc" },
+        nota: "Tipo não publicado no ano é ausência: trimestral e anual de unidades consumidoras deixaram de ser publicadas em 2022; DISE aparece em 2026.",
+      };
+    case "comp-dist":
+      return {
+        colunas: colunasCompensacaoDistribuidoras(comp.rotulos_tipo),
+        linhas: linhasCompensacaoDistribuidoras(g),
+        colunaRotulo: "sigla",
+        fonte: FONTE_COMPENSACOES,
+        versao: String(comp.ano_referencia),
+        nomeArquivo: "qualidade-compensacoes-distribuidoras",
+        ordemInicial: { coluna: "valor", direcao: "desc" },
+        dicaBusca: "Sigla ou CNPJ",
+      };
+    case "divulgado":
+      return {
+        colunas: COLUNAS_DIVULGADO,
+        linhas: comp.anual
+          .filter((x) => x.divulgado_aneel)
+          .map((x) => ({
+            id: String(x.ano),
+            ano: String(x.ano),
+            valor_uc: x.valor_uc,
+            divulgado_valor: x.divulgado_aneel!.valor,
+            dentro_valor: simNao(x.divulgado_aneel!.dentro_da_precisao_valor),
+            quantidade_uc: x.quantidade_uc,
+            divulgado_qt: x.divulgado_aneel!.quantidade,
+            dentro_qt: simNao(x.divulgado_aneel!.dentro_da_precisao_quantidade),
+          })),
+        fonte: "ANEEL, compensações (dados abertos) e notícia anual do ranking",
+        versao: String(comp.ano_referencia),
+        nomeArquivo: "qualidade-compensacoes-divulgado",
+      };
+    case "escopos":
+      return {
+        colunas: COLUNAS_ESCOPOS,
+        linhas: linhasEscopos(g),
+        colunaRotulo: "indicador",
+        fonte: "ANEEL: manifestações, Ouvidoria Setorial e atendimento emergencial",
+        versao: ref,
+        nomeArquivo: "qualidade-atendimento-nacional",
+      };
+    case "eventos":
+      return {
+        colunas: COLUNAS_EVENTOS,
+        linhas: linhasEventos(g),
+        colunaRotulo: "sigla",
+        fonte: "ANEEL, Evento Situação de Emergência",
+        versao: g.atendimento.eventos_emergencia.inicio_max?.slice(0, 10) ?? ref,
+        nomeArquivo: "qualidade-eventos-emergencia",
+        ordemInicial: { coluna: "chi_evento", direcao: "desc" },
+        nota: "CHI: consumidores × horas interrompidas. Evento que atravessa o mês aparece em mais de uma competência; nada é somado entre registros.",
+      };
+    case "atendimento":
+      return {
+        colunas: COLUNAS_ATENDIMENTO,
+        linhas: linhasAtendimentoDistribuidoras(g),
+        colunaRotulo: "sigla",
+        fonte: FONTE_ATENDIMENTO,
+        versao: ref,
+        nomeArquivo: "qualidade-atendimento-distribuidoras",
+        ordemInicial: { coluna: "rec_mil", direcao: "desc" },
+        dicaBusca: "Sigla ou categoria do IASC",
+        nota: "Reclamações por mil UCs só com os 12 meses enviados pela distribuidora; Ouvidoria por 100 mil UCs; IASC com a amostra ao lado.",
+      };
+    case "validacao":
+      return {
+        colunas: COLUNAS_VALIDACAO,
+        linhas: g.validacao.map((x, i) => ({ id: String(i), nome: x.nome, resultado: x.resultado, critico: x.critico ? "sim" : "não", detalhe: x.detalhe })),
+        colunaRotulo: "nome",
+        fonte: "Pipeline do observatório (pipeline/energia/modulos/qualidade.py)",
+        versao: g.gerado_em.slice(0, 10),
+        nomeArquivo: "qualidade-validacao",
+      };
+    case "arquivos":
+      return {
+        colunas: COLUNAS_ARQUIVOS,
+        linhas: g.controles.map((x, i) => ({
+          id: String(i),
+          dataset: x.dataset,
+          recurso: x.recurso,
+          publicado_em: x.publicado_em ?? "não informado pela fonte",
+          capturado_em: x.capturado_em,
+          versao: x.versao_importacao ?? "não registrada",
+          sha256: x.sha256,
+        })),
+        colunaRotulo: "recurso",
+        fonte: "ANEEL e IBGE (arquivos originais)",
+        versao: g.gerado_em.slice(0, 10),
+        nomeArquivo: "qualidade-arquivos",
+      };
+  }
 }

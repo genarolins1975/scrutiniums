@@ -78,7 +78,7 @@ export function PerdasComposicao({ linhas, ids, rotulos, motivos, anoRef, taxaNa
           { id: "nao_tecnica", rotulo: "Não técnicas", cor: "var(--serie-termica)" },
         ]}
         unidade="% da energia injetada"
-        casas={1}
+        casas={2}
         orientacao="horizontal"
         empilhado
         rotulosValor
@@ -109,7 +109,7 @@ export function PerdasComposicao({ linhas, ids, rotulos, motivos, anoRef, taxaNa
                     { id: "tecnica", rotulo: "Técnicas", cor: "var(--escala-seq-4)", tracejada: true },
                   ]}
                   unidade="% da energia injetada"
-                  casas={1}
+                  casas={2}
                   zeroNoEixo
                   altura={240}
                 />
@@ -120,7 +120,7 @@ export function PerdasComposicao({ linhas, ids, rotulos, motivos, anoRef, taxaNa
                   formatoX="texto"
                   series={[{ id: "pnt_bt", rotulo: "Não técnicas", cor: "var(--serie-termica)" }]}
                   unidade="% do mercado de baixa tensão"
-                  casas={1}
+                  casas={2}
                   zeroNoEixo
                   altura={240}
                 />

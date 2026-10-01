@@ -2,7 +2,7 @@ import { Bloco } from "@/components/energia/CabecalhoModulo";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { LINK_PERDAS } from "@/components/energia/PerdasPainel";
 import { carimbo, num } from "@/lib/energia/formato";
-import { ROTULO_ALERTA, ROTULO_DECOMPOSICAO } from "@/lib/energia/perdas";
+import { ROTULO_ALERTA, ROTULO_DECOMPOSICAO, ROTULO_DEFINICAO, ROTULO_RECONCILIACAO } from "@/lib/energia/perdas";
 import type { PerdasGold } from "@/lib/energia/tipos-perdas";
 
 /**
@@ -27,7 +27,7 @@ export function PerdasAuditoria({ g }: { g: PerdasGold }) {
             <h3 className="rotulo text-mineral">Balanço e alertas</h3>
             <p>
               {num(qual.agentes_no_arquivo, 0)} agentes no arquivo, {num(qual.agentes_com_balanco_de_distribuicao, 0)} com balanço de distribuição e {num(qual.agentes_ano_completos, 0)} agentes-ano
-              completos. Fechamento do balanço anual: {Object.entries(qual.reconciliacao).map(([k, n]) => `${k.replace(/_/g, " ")} ${num(n ?? 0, 0)}`).join(", ")} (limite de alerta: resíduo acima
+              completos. Fechamento do balanço anual: {Object.entries(qual.reconciliacao).map(([k, n]) => `${ROTULO_RECONCILIACAO[k as keyof typeof ROTULO_RECONCILIACAO] ?? k} ${num(n ?? 0, 0)}`).join("; ")} (limite de alerta: resíduo acima
               de {num(qual.limite_residuo_balanco_pct, 0)}% da injetada).
             </p>
             <p>Alertas que tiram o agente-ano das comparações: {Object.entries(qual.alertas).map(([k, n]) => `${ROTULO_ALERTA[k as keyof typeof ROTULO_ALERTA] ?? k} (${num(n ?? 0, 0)})`).join("; ")}.</p>
@@ -64,7 +64,7 @@ export function PerdasAuditoria({ g }: { g: PerdasGold }) {
             <dl className="mt-2 space-y-2 text-sm leading-relaxed">
               {Object.entries(g.definicoes).map(([k, t]) => (
                 <div key={k}>
-                  <dt className="font-medium text-carvao">{k.replace(/_/g, " ")}</dt>
+                  <dt className="font-medium text-carvao">{ROTULO_DEFINICAO[k as keyof typeof ROTULO_DEFINICAO] ?? k}</dt>
                   <dd className="text-carvao-muted">{t}</dd>
                 </div>
               ))}

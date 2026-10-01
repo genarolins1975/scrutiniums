@@ -1124,11 +1124,19 @@ def bloco_a11(con, D, cat_dia, horas, rec, dias_ok, mmgd_api):
          "capturado_em": _captura_dic(con, "geracao-usina-2")},
         {"orgao": "ONS", "documento": "Dicionário de dados e descrição do Balanço de Energia nos Subsistemas",
          "url": (dic.get("balanco-energia-subsistema") or {}).get("url"),
-         "trecho": ("O dicionário (versão " + str((leitura_bal.get("versoes") or [{}])[-1].get("versao")) + ", " +
-                    str(leitura_bal.get("data_documento")) + ") e a descrição do conjunto não mencionam a MMGD.")
-         if leitura_bal and not leitura_bal.get("menciona_mmgd") and notas_bal and "MMGD" not in notas_bal.upper() else None,
+         "trecho": _trecho(notas_bal, "A oferta é representada"),
+         "versao": (leitura_bal.get("versoes") or [{}])[-1].get("versao"), "data_documento": leitura_bal.get("data_documento"),
          "capturado_em": _captura_dic(con, "balanco-energia-subsistema")},
     ]
+    # constatação da plataforma (não é citação): o que os textos oficiais dizem ou não dizem
+    for e in evid_doc:
+        e.setdefault("versao", None)
+        e.setdefault("data_documento", None)
+    evid_doc[3]["constatacao"] = (
+        "Nem o dicionário nem a descrição do conjunto mencionam a MMGD." if leitura_bal and not leitura_bal.get("menciona_mmgd")
+        and notas_bal and "MMGD" not in notas_bal.upper() else None)
+    for e in evid_doc[:3]:
+        e["constatacao"] = None
     # Confirmação: modalidade MMGD começa em 29/04/2023, a documentação oficial declara a
     # inclusão e a natureza de previsão, e a solar do balanço fecha com a soma das usinas
     # em todos os dias da janela de 7 dias antes a 7 dias depois da quebra
@@ -1301,18 +1309,17 @@ def bloco_matriz(con, D, cat_dia, nat_dia, rotulos, horas, cache, rec, ok, hoje)
     # identificadores com linhas e nenhuma hora com valor no último mês completo: ausência na
     # fonte. A geração das mesmas usinas no mesmo mês do ano anterior dá a ordem de grandeza
     # do que falta (referência publicada à parte, nunca somada aos totais)
+    # (não se estima o que falta: os identificadores mudam entre anos e a fonte não informa a
+    # geração dessas usinas; a lacuna é publicada como contagem e as comparações das
+    # categorias afetadas são suprimidas)
     meses_ok = [m for m in meses if sum(1 for d in ok if d[:7] == m) == og.dias_do_mes(m)]
     lacuna = None
     if meses_ok:
         mref = meses_ok[-1]
         ids_v = sorted(i for (m, cat), ids in vazios.items() if m == mref for i in ids)
-        mant = f"{int(mref[:4]) - 1}{mref[4:]}"
-        e_ant = sum(D["u"].get((f"u|{i}", mant), 0.0) for i in ids_v)
         lacuna = {"mes": mref, "identificadores_sem_valor": len(ids_v),
                   "por_categoria": dict(Counter(og.categoria(cad.get(i, {}).get("tipo"), cad.get(i, {}).get("comb"), cad.get(i, {}).get("mod")) for i in ids_v)),
-                  "exemplos": [cad.get(i, {}).get("nome") or i for i in ids_v[:15]],
-                  "mesmo_mes_ano_anterior": mant,
-                  "geracao_mesmas_usinas_ano_anterior_mwmed": c.r(e_ant / (24 * og.dias_do_mes(mant)), 1) if ids_v else None}
+                  "exemplos": [cad.get(i, {}).get("nome") or i for i in ids_v[:15]]}
     rels_u = relatorios(con, _ds("usina"))
     sem_id = {og.periodo_do_arquivo(r_ + ".parquet"): x.get("sem_id_ons") for r_, x in rels_u.items() if x and x.get("sem_id_ons")}
     saltos = []
@@ -2274,7 +2281,8 @@ LIMITACOES_USINA = [
     "Os grupos de pequenas usinas Tipo III e de MMGD são previsões e estimativas do ONS, não medição; a natureza de cada parcela é publicada separadamente.",
     "Desde 29/04/2023 a Geração por Usina inclui a estimativa de MMGD (fotovoltaica); comparações que atravessam a data usam o perímetro sem MMGD.",
     "O tipo da usina define a fonte (como no Balanço): conjuntos híbridos rotulados com combustível fotovoltaico dentro de usinas eólicas contam como eólica.",
-    "Os grupos térmicos Tipo III ('Outras Multi-Combustível') não têm combustível identificado na fonte e ficam numa categoria própria, explícita.",
+    "Os grupos térmicos Tipo III ('Outras Multi-Combustível') não têm combustível identificado na fonte e ficam numa categoria própria, explícita; a categoria Biomassa cobre só as usinas com combustível declarado.",
+    "Mudanças de universo na fonte (rótulos que aparecem ou somem, saltos no número de usinas com dado, identificadores com todas as horas vazias) estão em 'quebras'; a variação de 12 meses de categoria com salto de universo é suprimida.",
     "Dados em processo de consistência recorrente do ONS, sujeitos a revisão; revisões entre capturas são detectadas e publicadas.",
 ]
 
@@ -2538,8 +2546,10 @@ def quebras(con, a11, matriz):
         if n_ >= 10 and (i == 0 or tot_sv[i - 1] < 10):
             out.append({"data": f"{sv['meses'][i]}-01", "tipo": "identificadores_sem_valor", "origem": "DADO", "trecho_fonte": None,
                         "categorias": sorted(k for k in sv if k != "meses" and sv[k][i]),
-                        "descricao": (f"{n_} usinas passam a vir com todas as horas vazias em {c.mes_br(sv['meses'][i])}: ausência na fonte, "
-                                      "fora dos totais; participações das categorias afetadas ficam subestimadas.")})
+                        "descricao": (f"{n_} identificadores passam a vir com todas as horas vazias em {c.mes_br(sv['meses'][i])}: "
+                                      "ausência na fonte, fora dos totais. Podem ser identificadores substituídos por outros ou "
+                                      "usinas sem dado; a fonte não diz qual. Só a contagem de identificadores com valor "
+                                      "(saltos de universo) suspende comparações.")})
     for x in uni["saltos_de_universo"]:
         out.append({"data": f"{x['mes']}-01", "tipo": "salto_de_universo", "origem": "DADO", "trecho_fonte": None, "categorias": [x["categoria"]],
                     "descricao": f"{ROTULO_CAT[x['categoria']]}: usinas com dado passam de {x['identificadores_antes']} para {x['identificadores_depois']} em {c.mes_br(x['mes'])}."})
@@ -2650,6 +2660,23 @@ def construir(con, ctx):
                                                "Geração em teste antes da operação comercial infla o fator de capacidade do mês de entrada; usina-meses acima de 100% são contados nos controles.",
                                                "A capacidade do SIGA (ANEEL) é contexto regulatório de outro universo e não é somada nem comparada usina a usina."],
                                    download=CSV["capacidade_fonte"])
+    lista_quebras = quebras(con, a11, matriz)
+    comp = matriz.get("comparacao_12m")
+    if comp:
+        # categoria com mudança de universo na fonte dentro das duas janelas não tem variação
+        # comparável: o valor sai de variacao_pct e a razão fica registrada
+        ini, fim_ = comp["anterior"]["inicio"], comp["atual"]["fim"]
+        afetadas = defaultdict(list)
+        for q in lista_quebras:
+            if q["tipo"] == "salto_de_universo" and ini < q["data"] <= fim_:
+                for cat in q["categorias"]:
+                    afetadas[cat].append(q["data"])
+        comp["variacao_suprimida"] = {}
+        for cat, datas in afetadas.items():
+            if cat in comp["variacao_pct"] and comp["variacao_pct"][cat] is not None:
+                comp["variacao_suprimida"][cat] = {"motivo": "salto no número de usinas com dado na fonte dentro das janelas comparadas",
+                                                   "datas": sorted(set(datas))}
+                comp["variacao_pct"][cat] = None
     gold = {
         **c.cabecalho(GOLD),
         "paineis": ["P021", "P022", "P023", "P024"],
@@ -2667,7 +2694,7 @@ def construir(con, ctx):
             "janelas": "Janelas diárias (7, 30 e 365 dias) terminam no último dia completo; os painéis mensais (térmica, restrições, capacidade) usam os últimos 12 meses completos de cada conjunto.",
         },
         "a11": a11,
-        "quebras": quebras(con, a11, matriz),
+        "quebras": lista_quebras,
         "matriz": _sem_privados({k: v for k, v in matriz.items() if not k.startswith("_")}),
         "termica": _sem_privados({k: v for k, v in termica.items()}) if termica else None,
         "restricoes": {"eolica": _sem_privados(eol) if eol else None, "solar": _sem_privados(sol) if sol else None},

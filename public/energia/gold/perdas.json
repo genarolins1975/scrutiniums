@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "perdas.json",
- "gerado_em": "2026-10-01T00:02:25Z",
+ "gerado_em": "2026-10-01T00:44:22Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "3e7ff0a36fba+alterado",
+ "versao_codigo": "d5dc4fd86561+alterado",
  "disponivel": true,
  "referencia": {
   "ano": 2025,
@@ -14970,7 +14970,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-15T05:01:12Z",
    "capturado_em": "2026-09-30T22:26:40Z",
-   "validado_em": "2026-10-01T00:02:25Z",
+   "validado_em": "2026-10-01T00:44:22Z",
    "cobertura_historica": {
     "inicio": "2003-01",
     "fim": "2026-08"
@@ -14985,9 +14985,9 @@
     "sha256": "1f8e4d44f6170bc91bcf2fa0b6047953394d8e8cf47bf9dfa3b3ed6f40ab63eb"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "3e7ff0a36fba+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:02:23Z",
+    "detectado_em": "2026-10-01T00:44:20Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -15024,7 +15024,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-15T05:01:12Z",
    "capturado_em": "2026-09-30T22:26:40Z",
-   "validado_em": "2026-10-01T00:02:25Z",
+   "validado_em": "2026-10-01T00:44:22Z",
    "cobertura_historica": {
     "inicio": "2003-01",
     "fim": "2026-08"
@@ -15039,9 +15039,9 @@
     "sha256": "1f8e4d44f6170bc91bcf2fa0b6047953394d8e8cf47bf9dfa3b3ed6f40ab63eb"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "3e7ff0a36fba+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:02:23Z",
+    "detectado_em": "2026-10-01T00:44:20Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -15077,7 +15077,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-15T05:01:12Z",
    "capturado_em": "2026-09-30T22:26:40Z",
-   "validado_em": "2026-10-01T00:02:25Z",
+   "validado_em": "2026-10-01T00:44:22Z",
    "cobertura_historica": {
     "inicio": "2003-01",
     "fim": "2026-08"
@@ -15095,9 +15095,9 @@
     "sha256": "1f8e4d44f6170bc91bcf2fa0b6047953394d8e8cf47bf9dfa3b3ed6f40ab63eb"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "3e7ff0a36fba+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:02:23Z",
+    "detectado_em": "2026-10-01T00:44:20Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -15136,7 +15136,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-15T05:01:12Z",
    "capturado_em": "2026-09-30T22:26:40Z",
-   "validado_em": "2026-10-01T00:02:25Z",
+   "validado_em": "2026-10-01T00:44:22Z",
    "cobertura_historica": {
     "inicio": "2003-01",
     "fim": "2026-08"
@@ -15150,9 +15150,9 @@
     "sha256": "1f8e4d44f6170bc91bcf2fa0b6047953394d8e8cf47bf9dfa3b3ed6f40ab63eb"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "3e7ff0a36fba+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:02:23Z",
+    "detectado_em": "2026-10-01T00:44:20Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -15187,7 +15187,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-15T05:01:12Z",
    "capturado_em": "2026-09-30T22:26:40Z",
-   "validado_em": "2026-10-01T00:02:25Z",
+   "validado_em": "2026-10-01T00:44:22Z",
    "cobertura_historica": {
     "inicio": "2003-01",
     "fim": "2026-03"
@@ -15199,9 +15199,9 @@
     "sha256": "1f8e4d44f6170bc91bcf2fa0b6047953394d8e8cf47bf9dfa3b3ed6f40ab63eb"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "3e7ff0a36fba+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:02:23Z",
+    "detectado_em": "2026-10-01T00:44:20Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -15238,7 +15238,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T05:32:55Z",
    "capturado_em": "2026-09-30T22:31:18Z",
-   "validado_em": "2026-10-01T00:02:25Z",
+   "validado_em": "2026-10-01T00:44:22Z",
    "cobertura_historica": {
     "inicio": "2012-02-03",
     "fim": "2026-09-30"
@@ -15253,9 +15253,9 @@
     "sha256": "383dddecd3d2fe676d91488c3cf8caddd19ae57b08a22d7816f2a043cdd96da3"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "3e7ff0a36fba+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:02:24Z",
+    "detectado_em": "2026-10-01T00:44:20Z",
     "total": 12,
     "vintages_comparadas": 16,
     "arquivos": 16,
@@ -15352,7 +15352,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-09T11:06:11Z",
    "capturado_em": "2026-09-30T22:32:46Z",
-   "validado_em": "2026-10-01T00:02:25Z",
+   "validado_em": "2026-10-01T00:44:22Z",
    "cobertura_historica": {
     "inicio": "2026",
     "fim": "2026"
@@ -15364,9 +15364,9 @@
     "sha256": "807880726cd25465c1117a1cbabdd4d95267b7631f60b360fd9f7fe33f6020e8"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "3e7ff0a36fba+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:02:24Z",
+    "detectado_em": "2026-10-01T00:44:21Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -15401,7 +15401,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T22:34:16Z",
-   "validado_em": "2026-10-01T00:02:25Z",
+   "validado_em": "2026-10-01T00:44:22Z",
    "cobertura_historica": {
     "inicio": "2022-08-01",
     "fim": "2022-08-01"
@@ -15413,9 +15413,9 @@
     "sha256": "710ac364472539b1cd632a4d42caea8ed7d63ecf3d25b18716e2f0d04893d65b"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "3e7ff0a36fba+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:02:24Z",
+    "detectado_em": "2026-10-01T00:44:21Z",
     "total": 0,
     "vintages_comparadas": 3,
     "arquivos": 3,
@@ -15475,8 +15475,8 @@
    "tratamento_ausencia": "Mês sem a linha na fonte deixa a soma anual ausente; nada é completado nem vira zero.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:02:25Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -15518,7 +15518,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Taxa de perdas totais na distribuição: 14,7%, Concessionárias de distribuição (Brasil), 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Taxa de perdas totais na distribuição: 14,7%, Concessionárias de distribuição (Brasil), 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "perdas_nacional": {
    "indicador": "Perdas totais de energia na distribuição",
@@ -15556,8 +15556,8 @@
    "tratamento_ausencia": "Mês sem a linha na fonte deixa a soma anual ausente; nada é completado nem vira zero.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:02:25Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -15599,7 +15599,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Perdas totais de energia na distribuição: 90,4 TWh, Concessionárias de distribuição (Brasil), 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Perdas totais de energia na distribuição: 90,4 TWh, Concessionárias de distribuição (Brasil), 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "pnt_bt_nacional": {
    "indicador": "Perdas não técnicas sobre o mercado de baixa tensão",
@@ -15643,8 +15643,8 @@
    "tratamento_ausencia": "Mês sem a linha na fonte deixa a soma anual ausente; nada é completado nem vira zero. Distribuidora sem a técnica ou a não técnica em algum mês fica fora do numerador e do denominador.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:02:25Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -15691,7 +15691,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Perdas não técnicas sobre o mercado de baixa tensão: 15,0%, 18 concessionárias com separação técnica e não técnica publicada (não é a perda não técnica de todas as 51 concessionárias válidas), 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Perdas não técnicas sobre o mercado de baixa tensão: 15,0%, 18 concessionárias com separação técnica e não técnica publicada (não é a perda não técnica de todas as 51 concessionárias válidas), 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "injetada_2024": {
    "indicador": "Energia injetada de referência das concessionárias",
@@ -15729,8 +15729,8 @@
    "tratamento_ausencia": "Mês sem a linha na fonte deixa a soma anual ausente; nada é completado nem vira zero.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:02:25Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -15776,7 +15776,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Energia injetada de referência das concessionárias: 605,2 TWh, Concessionárias de distribuição (Brasil), 01/2024 a 12/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Energia injetada de referência das concessionárias: 605,2 TWh, Concessionárias de distribuição (Brasil), 01/2024 a 12/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "acumulado": {
    "indicador": "Taxa de perdas totais acumulada em 2026",
@@ -15820,8 +15820,8 @@
    "tratamento_ausencia": "Mês sem a linha na fonte deixa a soma anual ausente; nada é completado nem vira zero. Ano aberto: só compara com o mesmo período do ano anterior.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:02:25Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -15859,7 +15859,130 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Taxa de perdas totais acumulada em 2026: 14,8%, Concessionárias de distribuição (Brasil), 01/2026 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Taxa de perdas totais acumulada em 2026: 14,8%, Concessionárias de distribuição (Brasil), 01/2026 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "associacao": {
+   "indicador": "Associação entre renda média da área e taxa de perdas totais (ρ de Spearman)",
+   "valor_exibido": "−0,606",
+   "valor_calculo": -0.606079,
+   "unidade": "ρ de Spearman (adimensional, de −1 a 1)",
+   "periodo": {
+    "inicio": "2022-01",
+    "fim": "2022-12"
+   },
+   "entidade": "Concessionárias de distribuição (Brasil)",
+   "universo": "52 concessionárias com 2022 completo, sem alerta e com território na relação de 2022",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z",
+    "arquivos": [
+     {
+      "recurso": "samp-balanco.parquet",
+      "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+      "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+      "capturado_em": "2026-09-30T22:26:40Z",
+      "publicado_em": "2026-09-15T05:01:12Z"
+     },
+     {
+      "recurso": "10295",
+      "arquivo": "data/energia/bronze/ibge/ibge_censo2022_municipio/10295/20260930T223415Z.14a5b09dc8e5.json.gz",
+      "sha256": "14a5b09dc8e572b2ba5483711af1d49d5365b2c12741003ff5b42fc68c15d799",
+      "capturado_em": "2026-09-30T22:34:15Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "4714",
+      "arquivo": "data/energia/bronze/ibge/ibge_censo2022_municipio/4714/20260930T223414Z.2087cc9901fc.json.gz",
+      "sha256": "2087cc9901fc3d4598e78a6bc3a1929ede140209da98f2217d164aa752e16ed1",
+      "capturado_em": "2026-09-30T22:34:14Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "localidades",
+      "arquivo": "data/energia/bronze/ibge/ibge_censo2022_municipio/localidades/20260930T223416Z.d07362079fba.json.gz",
+      "sha256": "d07362079fbab429bab2e9b833628b58419ce1d183630bc94808faf167097635",
+      "capturado_em": "2026-09-30T22:34:16Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "indicadores-continuidade-coletivos-limite",
+      "arquivo": "data/energia/bronze/aneel/aneel_continuidade_limites/indicadores-continuidade-coletivos-limite/20260930T223221Z.3c2738be016f.csv.gz",
+      "sha256": "3c2738be016fc1c526c9a2458ce5b68db3f15819dbbd0afa080a366212f7e07b",
+      "capturado_em": "2026-09-30T22:32:21Z",
+      "publicado_em": "2026-09-05T05:27:08Z"
+     },
+     {
+      "recurso": "indqual-municipio",
+      "arquivo": "data/energia/bronze/aneel/aneel_indqual_municipio/indqual-municipio/20260930T223246Z.4063c5ba8dda.csv.gz",
+      "sha256": "4063c5ba8ddaaabf27dad1a115eaa5a3f509f6ed3d22ac5c25c20f0d21365e09",
+      "capturado_em": "2026-09-30T22:32:46Z",
+      "publicado_em": "2026-09-09T11:06:11Z"
+     },
+     {
+      "recurso": "empreendimento-geracao-distribuida.parquet",
+      "arquivo": "data/energia/bronze/aneel/aneel_mmgd_municipio/empreendimento-geracao-distribuida.parquet/20260930T223401Z.8d53e3da748a.parquet.gz",
+      "sha256": "8d53e3da748a1f44cf521094275fa85964e6e808d0fdff0f1a3959a4de151d5f",
+      "capturado_em": "2026-09-30T22:34:01Z",
+      "publicado_em": "2026-09-29T12:07:03Z"
+     }
+    ]
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "concessionárias válidas em 2022 (12 meses, sem alerta) com municípios confirmados na relação conjunto × distribuidora de 2022; renda: IBGE, tabela 10295, rendimento nominal médio domiciliar per capita × moradores. Os 52 CNPJs e os pares (renda, taxa) estão em associacao.pontos da gold perdas.json",
+   "manifesto": null,
+   "formula": "ρ = correlação de Pearson entre os postos (empates com posto médio) da renda média domiciliar per capita dos municípios confirmados da área (ponderada por moradores) e da taxa de perdas totais do mesmo ano",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "52 concessionárias; vínculos confirmados pelo cadastro de MMGD em 50, pela UF principal em 2",
+   "tratamento_ausencia": "Concessionária sem renda na área ou fora da comparação no ano não entra; nada é imputado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "postos_sem_arredondamento",
+     "resultado": "aprovado",
+     "detalhe": "postos calculados sobre a renda e a taxa sem arredondamento (o arredondamento criaria empates)"
+    },
+    {
+     "nome": "territorio_do_ano_das_perdas",
+     "resultado": "aprovado",
+     "detalhe": "perdas e território de 2022; Censo de 2022"
+    },
+    {
+     "nome": "confirmacao_dos_vinculos",
+     "resultado": "ressalva",
+     "detalhe": "2 concessionárias incorporadas depois (sem empreendimento no cadastro atual de MMGD) entram pelos vínculos da UF principal"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: test_spearman_com_empates, TerritorioDoAnoDasPerdas e GoldPublicada.test_associacao_usa_territorio_do_ano_das_perdas"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Contexto social por distribuidora (CSV)",
+     "url": "/energia/series/perdas_contexto_social.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Associação entre renda média da área e taxa de perdas totais (ρ de Spearman): −0,606 ρ de Spearman (adimensional, de −1 a 1), Concessionárias de distribuição (Brasil), 01/2022 a 12/2022. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "downloads": [
@@ -15900,6 +16023,8 @@
   "anual": "/energia/series/perdas_anual.json",
   "municipios": "/energia/series/perdas_municipios.json",
   "evidencias": "/energia/series/perdas_evidencias.json",
-  "nacional": "/energia/series/perdas_nacional.json"
+  "nacional": "/energia/series/perdas_nacional.json",
+  "evidencias_tarifa": "/energia/series/perdas_evidencias_tarifa.json",
+  "evidencias_tecnica": "/energia/series/perdas_evidencias_tecnica.json"
  }
 }

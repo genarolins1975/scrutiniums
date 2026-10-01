@@ -103,7 +103,7 @@ _CANON = (("diaria", re.compile(r"di[aá]ri|todos os dias|15 em 15 min|hor[aá]r
           ("mensal", re.compile(r"mensal|ms\+", re.I)),
           ("trimestral", re.compile(r"trimestr", re.I)),
           ("anual", re.compile(r"anual", re.I)))
-_SEM_SLA = re.compile(r"sob demanda|conforme|sem atualiza|eventual|irregular", re.I)
+_SEM_SLA = re.compile(r"sob demanda|conforme|sem atualiza|eventual|irregular|[úu]nica|n[ãa]o aplic", re.I)
 
 
 def frequencias_canonicas(*textos):
@@ -310,7 +310,9 @@ def escolhe_recurso(pkg):
         cand.append(((r.get("last_modified") or r.get("metadata_modified") or ""), fmt == "CSV", r))
     if not cand:
         return None
-    cand.sort(key=lambda x: (x[0], x[1]), reverse=True)
+    # mesmo dia de publicação: o CSV primeiro (o ONS publica CSV, XLSX e Parquet do mesmo
+    # ano com segundos de diferença)
+    cand.sort(key=lambda x: (x[0][:10], x[1], x[0]), reverse=True)
     return cand[0][2]
 
 
@@ -375,8 +377,13 @@ def detecta_formato(corpo):
     return "CSV", [c.strip().strip('"').strip() for c in linhas[0].split(sep)]
 
 
+# Requisições de verificação por portal (host) numa execução: a primeira rodada cobre o
+# catálogo em poucos dias, sem rajada de centenas de pedidos ao mesmo servidor.
+LIMITE_POR_HOST = 80
+
+
 def verifica_recursos(con, alvos, *, abrir=_range_get, max_idade_dias=MAX_IDADE_VERIFICACAO_DIAS, pausa_s=0.3,
-                      limite=None):
+                      limite=None, limite_por_host=LIMITE_POR_HOST):
     """Verifica os recursos de `alvos` = [(chave, recurso_dict_ou_url, contexto)] pela
     política de reverificação e grava o resultado como registros (histórico por chave).
     O conjunto de resultados da rodada vira uma vintage (JSON no bronze, com sha256)."""
@@ -384,6 +391,9 @@ def verifica_recursos(con, alvos, *, abrir=_range_get, max_idade_dias=MAX_IDADE_
     agora_dt = datetime.now(timezone.utc)
     resultados = []
     feitos = 0
+    por_host = {}
+    # nunca verificados primeiro, depois os de verificação mais antiga
+    alvos = sorted(alvos, key=lambda a: (vigentes.get(a[0]) or {}).get("verificado_em") or "")
     for chave, rec, ctx in alvos:
         url = rec.get("url") if isinstance(rec, dict) else rec
         lm = (rec.get("last_modified") or rec.get("metadata_modified")) if isinstance(rec, dict) else None
@@ -400,6 +410,10 @@ def verifica_recursos(con, alvos, *, abrir=_range_get, max_idade_dias=MAX_IDADE_
             continue
         if limite is not None and feitos >= limite:
             break
+        host = re.sub(r"^https?://([^/]+).*$", r"\1", url or "")
+        if por_host.get(host, 0) >= limite_por_host:
+            continue
+        por_host[host] = por_host.get(host, 0) + 1
         r = verifica_url(url, abrir=abrir)
         feitos += 1
         r.update({"chave": chave, "recurso": (rec.get("name") if isinstance(rec, dict) else None),

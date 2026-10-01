@@ -481,11 +481,14 @@ def lote_sem_vencedor(vencedor):
 def le_leiloes_transmissao(linhas):
     """Resultado dos leilões de transmissão (um lote por linha).
 
-    km, MVA, investimento e RAP ficam em campos separados. Em lote contratado, 0 em
-    MVA ou km é um lote sem aquela instalação (ex.: lote 15 do 001/2024, só de linha,
-    com 0 MVA) e é mantido como 0. Em lote sem vencedor ('SEM LANCE', 'SEM INSCRITO
-    APTO', 'NÃO LEILOADO') os zeros de km, MVA, prazo, RAP vencedora e deságio são
-    marcadores da fonte e viram ausência (None). PctDesagio vem como fração (0,08 = 8%)."""
+    km, MVA, investimento e RAP ficam em campos separados. Em lote sem vencedor ('SEM
+    LANCE', 'SEM INSCRITO APTO', 'NÃO LEILOADO') os zeros de km, MVA, prazo, RAP
+    vencedora e deságio são marcadores da fonte e viram ausência (None). Em lote
+    contratado, 0 km só é real quando a descrição do empreendimento não cita linha
+    ('LT' ou extensão em km), e 0 MVA só quando não cita MVA: o lote 3 do 001/2001,
+    'LT Itumbiara - Marimbondo 500 kV, 212 km', contratado, vem com 0 km (campo não
+    preenchido, vira ausência); o lote 15 do 001/2024, só de linha, tem 0 MVA real.
+    PctDesagio vem como fração (0,08 = 8%)."""
     out = []
     for r in linhas:
         sem = lote_sem_vencedor(r.get("NomVencedorLeilao"))
@@ -508,6 +511,12 @@ def le_leiloes_transmissao(linhas):
             for campo in ("km", "mva", "prazo_meses", "rap_vencedor_rs", "desagio_fracao"):
                 if x[campo] == 0:
                     x[campo] = None
+        else:
+            desc = (x["empreendimento"] or "").upper()
+            if x["km"] == 0 and re.search(r"\bLT\b|\d\s*KM\b", desc):
+                x["km"] = None
+            if x["mva"] == 0 and "MVA" in desc:
+                x["mva"] = None
         out.append(x)
     return out
 

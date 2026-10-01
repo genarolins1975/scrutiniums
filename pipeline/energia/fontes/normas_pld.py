@@ -66,7 +66,7 @@ LICENCA_PR = ("Documento público do ONS (Procedimentos de Rede, aprovados pela 
 def _pr(sub, tipo, revisao, vigencia, titulo, aprovacao):
     return {
         "orgao": "ONS",
-        "titulo": f"Procedimentos de Rede, Submódulo {sub} – {titulo} ({tipo}, revisão {revisao}, vigência {vigencia})",
+        "titulo": f"Procedimentos de Rede, Submódulo {sub}: {titulo} ({tipo}, revisão {revisao}, vigência {vigencia})",
         "url": _URL_PR_PDF.format(arquivo=f"{sub}-{tipo[:2].upper()}_{revisao}"), "url_oficial": URL_PR_PAGINA, "ext": "pdf",
         "licenca": LICENCA_PR,
         "nota": (f"PDF do submódulo {sub}, revisão {revisao} ({aprovacao}), baixado pelo endereço do botão \"Baixar\" da "

@@ -24,6 +24,7 @@ import {
   recortesDoPeriodo,
   respostaDistribuidora,
   respostaMapa,
+  avisoTerritorio,
   rotuloDistribuidora,
   serieComparacao,
   valoresDoPeriodo,
@@ -54,6 +55,8 @@ export type PerdasExploradorProps = {
   acumulado: AcumuladoAno | null;
   urls: { anual: string; municipios: string; evidencias: string };
   versao: string;
+  /** Ano da relação conjunto × município que desenha as áreas (gold.mapa.ano_relacao). */
+  anoRelacao: number | null;
 };
 
 const SELECT =
@@ -79,7 +82,7 @@ function useJsonSobDemanda<T>(url: string, pedir: boolean): [Carga<T>, () => voi
   return [carga, () => setTentativa((t) => t + 1)];
 }
 
-export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, acumulado, urls, versao }: PerdasExploradorProps) {
+export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, acumulado, urls, versao, anoRelacao }: PerdasExploradorProps) {
   const ids = useMemo(() => distribuidoras.map((d) => d.cnpj), [distribuidoras]);
   const chaveIds = ids.join(",");
   const chavePeriodos = periodos.map((p) => p.id).join(",");
@@ -226,6 +229,7 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
           selecionado={sel?.cnpj ?? null}
           onSelecionar={selecionar}
           urlMunicipios={urls.municipios}
+          avisoTerritorio={avisoTerritorio(distribuidoras, periodo, anoRelacao)}
         />
       ) : (
         <div className="flex h-[380px] items-center justify-center border border-linha bg-superficie px-6 text-center text-sm text-carvao-muted sm:h-[540px]">
@@ -290,7 +294,7 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
                     { id: "brasil", rotulo: "Concessionárias (agregado)", sigla: "Agregado", cor: "var(--serie-referencia)", tracejada: true },
                   ]}
                   unidade="%"
-                  casas={1}
+                  casas={2}
                   zeroNoEixo
                   marcos={historico.mudancas.map((a) => ({ x: String(a), rotulo: `${a}: quebra de escala ou absorção` }))}
                   altura={260}
@@ -356,7 +360,7 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
                     { id: "brasil", rotulo: "Concessionárias (agregado)", sigla: "Agregado", cor: "var(--serie-referencia)", tracejada: true },
                   ]}
                   unidade="%"
-                  casas={1}
+                  casas={2}
                   zeroNoEixo
                   legendaInterativa
                   escalaAoOcultar="manter"

@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "expansao.json",
- "gerado_em": "2026-09-30T23:13:02Z",
+ "gerado_em": "2026-10-01T00:52:00Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "883727b9c73e+alterado",
+ "versao_codigo": "d5dc4fd86561+alterado",
  "disponivel": true,
  "referencias": {
   "siga": "2026-09-30",
@@ -12,25 +12,30 @@
   "liberacoes_arquivo": "2026-09-18",
   "liberacoes_ultima_data": "2026-09-16",
   "atos": "2026-09-25",
-  "leiloes_transmissao": "2026-09-01",
+  "leiloes_transmissao": "2024-09-27",
+  "leiloes_transmissao_publicado_em": "2026-09-01",
   "siget": "2026-09-29",
+  "rede_epe_capturada_em": "2026-10-01T00:45:40Z",
   "pde": "PDE 2035"
  },
  "regras": {
-  "estagio": "Estágio = fase do SIGA: Operação; Construção; Construção não iniciada (outorgado sem obra). Encerramentos vêm dos atos de revogação (autorização) e extinção (concessão) publicados desde 2015.",
+  "estagio": "Estágio = fase do SIGA: Operação; Construção; Construção não iniciada (outorgado sem obra). Encerramentos vêm dos atos de revogação (autorização) e extinção (concessão) publicados desde 2015, com a potência uma vez por usina; outorga encerrada não é usina retirada (parte segue em operação no SIGA).",
+  "encerramentos": "Atos com objeto 'Autorização - Revogação' ou 'Concessão - Extinção'. A potência conta uma vez por usina (núcleo do CEG) em cada ano e uma vez por usina no total, pelo maior valor conferido entre os atos da usina; a contagem de atos fica à parte. A potência de cada ato é conferida contra o cadastro da mesma usina (SIGA e RALIE histórico) e o limite legal do tipo (CGH até 5 MW): valor em kW no campo de MW é corrigido pelo cadastro quando há confirmação independente, e sai da soma quando não há. Ato sem núcleo do CEG na fonte não pode ser ligado a nenhuma usina: cada um conta como uma unidade, sem deduplicação. Outorga encerrada não significa usina retirada: parte das usinas segue em operação no SIGA (conversão de regime, por exemplo de concessão para registro, ou nova outorga).",
   "outorga": "Outorga não é capacidade que certamente entrará: o desfecho das usinas que passaram pelo RALIE é publicado ao lado da carteira.",
   "potencia": "Potência em MW (fiscalizada para usinas em operação; outorgada para a carteira). MW é potência, não energia: não equivale a energia firme nem a garantia física.",
   "previsao": "Previsão de operação comercial = campo DatPrevisaoOpComercialSFG do RALIE (previsão da fiscalização da ANEEL por unidade geradora), sempre com a data da fotografia em que foi registrada.",
   "confiabilidade": "Para cada fotografia mensal S (última do mês), potência das unidades com previsão em (S, S + 365 dias] e quanto dela foi liberada para operação comercial até S + 365 dias, depois disso ou não foi liberada até a data do arquivo de liberações. Só janelas encerradas pelo menos 15 dias antes dessa data.",
-  "deslizamento": "Variação da previsão da mesma unidade entre a fotografia mensal S e a do mesmo mês do ano seguinte, ponderada pela potência (positivo = adiada).",
-  "atraso_realizado": "Data de liberação comercial realizada menos a data outorgada da unidade no arquivo de liberações (cronograma outorgado vigente na publicação), mediana ponderada por kW.",
+  "deslizamento": "Variação da previsão da mesma unidade entre a fotografia mensal S e a do mesmo mês do ano seguinte, ponderada pela potência (positivo = adiada); publicada também sem as unidades em data em bloco, porque a data convencional anda cerca de um ano a cada ano junto com a fotografia.",
+  "data_em_bloco": "Data em bloco: previsão atribuída a pelo menos 100 usinas distintas na mesma fotografia (o maior complexo do RALIE tem 41 usinas). É a data convencional que a fiscalização atribui em lote e que anda com a fotografia, cerca de 5 anos depois dela; não é cronograma de obra.",
+  "desvio_prazo_vigente": "Data de liberação comercial realizada menos a data outorgada da unidade no arquivo de liberações (prazo vigente na publicação, sem data-base), mediana ponderada por kW. Não é atraso: em autorizações recentes a data outorgada é um prazo limite.",
   "transmissao": "km de circuito de linhas novas e MVA de transformação nova (módulos de obras do tipo Instalação no SIGET) e investimento e RAP dos leilões ficam em campos separados; nunca são somados entre si. No SIGET cada circuito é um módulo: linha de circuito duplo ou bipolo conta a extensão de cada circuito.",
   "cenario": "PDE 2035 é CENÁRIO de uma edição específica (data-base janeiro de 2025), mostrado em camada separada do realizado (SIGA) e da carteira (RALIE)."
  },
  "ressalvas": [
   "10 usinas na fase Operação com potência fiscalizada zero ou vazia no SIGA (mantidas; somam 0 kW).",
   "1 usina com potência fiscalizada mais de 20% acima da outorgada (valor da fonte mantido).",
-  "Reconciliação com o agregado oficial por UF (2026-06) com resíduo acima de 1% em: AM, MS (diferença não explicada pelas liberações do intervalo; valores da fonte mantidos)."
+  "Reconciliação com o agregado oficial por UF (2026-06) com resíduo acima de 1% em: AM, MS (diferença não explicada pelas liberações do intervalo; valores da fonte mantidos).",
+  "4 atos de encerramento com a potência em kW no campo de MW (corrigidos pelo cadastro da usina) e 1 ato com potência divergente por fator 1.000 sem confirmação (fora da soma): ver estagios.encerramentos.potencia_conferida."
  ],
  "capacidade_instalada": {
   "data_referencia": "2026-09-30",
@@ -1250,6 +1255,7 @@
    }
   ],
   "encerramentos": {
+   "regra": "Atos com objeto 'Autorização - Revogação' ou 'Concessão - Extinção'. A potência conta uma vez por usina (núcleo do CEG) em cada ano e uma vez por usina no total, pelo maior valor conferido entre os atos da usina; a contagem de atos fica à parte. A potência de cada ato é conferida contra o cadastro da mesma usina (SIGA e RALIE histórico) e o limite legal do tipo (CGH até 5 MW): valor em kW no campo de MW é corrigido pelo cadastro quando há confirmação independente, e sai da soma quando não há. Ato sem núcleo do CEG na fonte não pode ser ligado a nenhuma usina: cada um conta como uma unidade, sem deduplicação. Outorga encerrada não significa usina retirada: parte das usinas segue em operação no SIGA (conversão de regime, por exemplo de concessão para registro, ou nova outorga).",
    "desde": "2015",
    "por_ano": [
     {
@@ -1258,8 +1264,17 @@
      "revogacoes": 37,
      "extincoes": 20,
      "usinas": 55,
-     "mw_declarado": 942.5,
+     "mw_usinas": 765.1,
+     "usinas_sem_potencia": 0,
+     "usinas_com_ato_em_ano_anterior": 0,
+     "mw_usinas_com_ato_em_ano_anterior": 0.0,
+     "usinas_em_operacao_no_siga": 23,
+     "mw_usinas_em_operacao_no_siga": 66.0,
+     "atos_sem_chave_de_usina": 0,
+     "mw_atos_sem_chave_de_usina": 0.0,
      "atos_sem_potencia": 0,
+     "atos_potencia_corrigida": 0,
+     "atos_potencia_fora_da_soma": 0,
      "ano_parcial": false
     },
     {
@@ -1268,8 +1283,17 @@
      "revogacoes": 75,
      "extincoes": 18,
      "usinas": 93,
-     "mw_declarado": 3191.9,
+     "mw_usinas": 3191.8,
+     "usinas_sem_potencia": 0,
+     "usinas_com_ato_em_ano_anterior": 1,
+     "mw_usinas_com_ato_em_ano_anterior": 27.0,
+     "usinas_em_operacao_no_siga": 28,
+     "mw_usinas_em_operacao_no_siga": 80.5,
+     "atos_sem_chave_de_usina": 0,
+     "mw_atos_sem_chave_de_usina": 0.0,
      "atos_sem_potencia": 0,
+     "atos_potencia_corrigida": 0,
+     "atos_potencia_fora_da_soma": 0,
      "ano_parcial": false
     },
     {
@@ -1278,8 +1302,17 @@
      "revogacoes": 79,
      "extincoes": 22,
      "usinas": 101,
-     "mw_declarado": 2684.0,
+     "mw_usinas": 2684.0,
+     "usinas_sem_potencia": 0,
+     "usinas_com_ato_em_ano_anterior": 0,
+     "mw_usinas_com_ato_em_ano_anterior": 0.0,
+     "usinas_em_operacao_no_siga": 29,
+     "mw_usinas_em_operacao_no_siga": 67.5,
+     "atos_sem_chave_de_usina": 0,
+     "mw_atos_sem_chave_de_usina": 0.0,
      "atos_sem_potencia": 0,
+     "atos_potencia_corrigida": 0,
+     "atos_potencia_fora_da_soma": 0,
      "ano_parcial": false
     },
     {
@@ -1288,8 +1321,17 @@
      "revogacoes": 101,
      "extincoes": 30,
      "usinas": 131,
-     "mw_declarado": 3926.6,
+     "mw_usinas": 3926.6,
+     "usinas_sem_potencia": 0,
+     "usinas_com_ato_em_ano_anterior": 0,
+     "mw_usinas_com_ato_em_ano_anterior": 0.0,
+     "usinas_em_operacao_no_siga": 20,
+     "mw_usinas_em_operacao_no_siga": 346.7,
+     "atos_sem_chave_de_usina": 0,
+     "mw_atos_sem_chave_de_usina": 0.0,
      "atos_sem_potencia": 0,
+     "atos_potencia_corrigida": 0,
+     "atos_potencia_fora_da_soma": 0,
      "ano_parcial": false
     },
     {
@@ -1298,8 +1340,17 @@
      "revogacoes": 70,
      "extincoes": 9,
      "usinas": 79,
-     "mw_declarado": 1482.6,
+     "mw_usinas": 1482.6,
+     "usinas_sem_potencia": 0,
+     "usinas_com_ato_em_ano_anterior": 7,
+     "mw_usinas_com_ato_em_ano_anterior": 161.0,
+     "usinas_em_operacao_no_siga": 23,
+     "mw_usinas_em_operacao_no_siga": 57.3,
+     "atos_sem_chave_de_usina": 0,
+     "mw_atos_sem_chave_de_usina": 0.0,
      "atos_sem_potencia": 0,
+     "atos_potencia_corrigida": 0,
+     "atos_potencia_fora_da_soma": 0,
      "ano_parcial": false
     },
     {
@@ -1308,8 +1359,17 @@
      "revogacoes": 30,
      "extincoes": 9,
      "usinas": 39,
-     "mw_declarado": 1214.4,
+     "mw_usinas": 1214.4,
+     "usinas_sem_potencia": 0,
+     "usinas_com_ato_em_ano_anterior": 0,
+     "mw_usinas_com_ato_em_ano_anterior": 0.0,
+     "usinas_em_operacao_no_siga": 12,
+     "mw_usinas_em_operacao_no_siga": 29.9,
+     "atos_sem_chave_de_usina": 0,
+     "mw_atos_sem_chave_de_usina": 0.0,
      "atos_sem_potencia": 0,
+     "atos_potencia_corrigida": 0,
+     "atos_potencia_fora_da_soma": 0,
      "ano_parcial": false
     },
     {
@@ -1318,8 +1378,17 @@
      "revogacoes": 15,
      "extincoes": 10,
      "usinas": 24,
-     "mw_declarado": 377.3,
+     "mw_usinas": 376.6,
+     "usinas_sem_potencia": 0,
+     "usinas_com_ato_em_ano_anterior": 4,
+     "mw_usinas_com_ato_em_ano_anterior": 8.2,
+     "usinas_em_operacao_no_siga": 11,
+     "mw_usinas_em_operacao_no_siga": 26.0,
+     "atos_sem_chave_de_usina": 0,
+     "mw_atos_sem_chave_de_usina": 0.0,
      "atos_sem_potencia": 0,
+     "atos_potencia_corrigida": 0,
+     "atos_potencia_fora_da_soma": 0,
      "ano_parcial": false
     },
     {
@@ -1328,8 +1397,17 @@
      "revogacoes": 88,
      "extincoes": 14,
      "usinas": 76,
-     "mw_declarado": 5444.3,
+     "mw_usinas": 2301.2,
+     "usinas_sem_potencia": 1,
+     "usinas_com_ato_em_ano_anterior": 2,
+     "mw_usinas_com_ato_em_ano_anterior": 18.9,
+     "usinas_em_operacao_no_siga": 23,
+     "mw_usinas_em_operacao_no_siga": 626.2,
+     "atos_sem_chave_de_usina": 0,
+     "mw_atos_sem_chave_de_usina": 0.0,
      "atos_sem_potencia": 0,
+     "atos_potencia_corrigida": 3,
+     "atos_potencia_fora_da_soma": 1,
      "ano_parcial": false
     },
     {
@@ -1338,8 +1416,17 @@
      "revogacoes": 328,
      "extincoes": 7,
      "usinas": 335,
-     "mw_declarado": 14236.5,
+     "mw_usinas": 13501.2,
+     "usinas_sem_potencia": 0,
+     "usinas_com_ato_em_ano_anterior": 4,
+     "mw_usinas_com_ato_em_ano_anterior": 568.8,
+     "usinas_em_operacao_no_siga": 14,
+     "mw_usinas_em_operacao_no_siga": 879.7,
+     "atos_sem_chave_de_usina": 0,
+     "mw_atos_sem_chave_de_usina": 0.0,
      "atos_sem_potencia": 0,
+     "atos_potencia_corrigida": 1,
+     "atos_potencia_fora_da_soma": 0,
      "ano_parcial": false
     },
     {
@@ -1348,8 +1435,17 @@
      "revogacoes": 130,
      "extincoes": 6,
      "usinas": 136,
-     "mw_declarado": 5008.1,
+     "mw_usinas": 5008.1,
+     "usinas_sem_potencia": 0,
+     "usinas_com_ato_em_ano_anterior": 1,
+     "mw_usinas_com_ato_em_ano_anterior": 23.1,
+     "usinas_em_operacao_no_siga": 3,
+     "mw_usinas_em_operacao_no_siga": 6.6,
+     "atos_sem_chave_de_usina": 0,
+     "mw_atos_sem_chave_de_usina": 0.0,
      "atos_sem_potencia": 0,
+     "atos_potencia_corrigida": 0,
+     "atos_potencia_fora_da_soma": 0,
      "ano_parcial": false
     },
     {
@@ -1358,8 +1454,17 @@
      "revogacoes": 525,
      "extincoes": 16,
      "usinas": 534,
-     "mw_declarado": 22744.2,
+     "mw_usinas": 22727.3,
+     "usinas_sem_potencia": 0,
+     "usinas_com_ato_em_ano_anterior": 1,
+     "mw_usinas_com_ato_em_ano_anterior": 25.0,
+     "usinas_em_operacao_no_siga": 10,
+     "mw_usinas_em_operacao_no_siga": 48.4,
+     "atos_sem_chave_de_usina": 27,
+     "mw_atos_sem_chave_de_usina": 908.5,
      "atos_sem_potencia": 0,
+     "atos_potencia_corrigida": 0,
+     "atos_potencia_fora_da_soma": 0,
      "ano_parcial": false
     },
     {
@@ -1368,49 +1473,179 @@
      "revogacoes": 895,
      "extincoes": 8,
      "usinas": 903,
-     "mw_declarado": 38361.6,
+     "mw_usinas": 38361.6,
+     "usinas_sem_potencia": 0,
+     "usinas_com_ato_em_ano_anterior": 11,
+     "mw_usinas_com_ato_em_ano_anterior": 381.3,
+     "usinas_em_operacao_no_siga": 9,
+     "mw_usinas_em_operacao_no_siga": 186.2,
+     "atos_sem_chave_de_usina": 293,
+     "mw_atos_sem_chave_de_usina": 12538.4,
      "atos_sem_potencia": 0,
+     "atos_potencia_corrigida": 0,
+     "atos_potencia_fora_da_soma": 0,
      "ano_parcial": true
     }
    ],
    "por_tipo": [
     {
      "tipo": "UFV",
-     "atos": 1678,
-     "mw_declarado": 71658.5
+     "usinas": 1648,
+     "mw_usinas": 70462.6
     },
     {
      "tipo": "UTE",
-     "atos": 228,
-     "mw_declarado": 13442.5
+     "usinas": 220,
+     "mw_usinas": 11051.2
     },
     {
      "tipo": "EOL",
-     "atos": 326,
-     "mw_declarado": 11085.2
+     "usinas": 316,
+     "mw_usinas": 10806.2
     },
     {
      "tipo": "PCH",
-     "atos": 255,
-     "mw_declarado": 1664.8
+     "usinas": 237,
+     "mw_usinas": 1584.1
     },
     {
      "tipo": "UHE",
-     "atos": 44,
-     "mw_declarado": 1122.8
+     "usinas": 44,
+     "mw_usinas": 519.0
     },
     {
      "tipo": "CGH",
-     "atos": 14,
-     "mw_declarado": 750.5
+     "usinas": 13,
+     "mw_usinas": 14.6
     }
    ],
    "sem_data_publicacao": {
     "atos": 3,
-    "mw_declarado": 110.4
+    "usinas": 3,
+    "mw_usinas": 110.4
    },
-   "total_atos": 2545,
-   "total_mw_declarado": 99724.3
+   "total": {
+    "atos": 2545,
+    "usinas": 2478,
+    "mw_usinas": 94437.6,
+    "usinas_sem_potencia": 1
+   },
+   "repeticoes": {
+    "usinas_com_mais_de_um_ato": 67,
+    "atos_alem_do_primeiro": 67,
+    "mw_que_a_soma_por_ato_repetiria": 2413.1
+   },
+   "potencia_conferida": {
+    "regra": "valor do ato conferido contra a potência outorgada da mesma usina no SIGA e no RALIE histórico (fator 1.000) e contra o limite legal de 5 MW da CGH",
+    "atos_com_cadastro": 1811,
+    "atos_sem_cadastro": 734,
+    "atos_sem_potencia": 0,
+    "corrigidas_kw": [
+     {
+      "chave": "37726:2022-08-15:Autorização - Revogação:",
+      "publicacao": "2022-08-15",
+      "nome": "Sucundurí - Powertech",
+      "nucleo": 37726,
+      "tipo": "UTE",
+      "mw_no_ato": 561.0,
+      "mw_usado": 0.561,
+      "kw_cadastro": 561.0,
+      "cadastro": "SIGA, potência outorgada",
+      "motivo": "o valor do ato (561) é igual ao do cadastro em kW (561 kW, SIGA, potência outorgada) e outro ato de outorga da mesma usina cita 0.56 MW"
+     },
+     {
+      "chave": "37731:2022-08-15:Autorização - Revogação:",
+      "publicacao": "2022-08-15",
+      "nome": "Axinim - Powertech",
+      "nucleo": 37731,
+      "tipo": "UTE",
+      "mw_no_ato": 975.0,
+      "mw_usado": 0.975,
+      "kw_cadastro": 975.0,
+      "cadastro": "SIGA, potência outorgada",
+      "motivo": "o valor do ato (975) é igual ao do cadastro em kW (975 kW, SIGA, potência outorgada) e outro ato de outorga da mesma usina cita 0.97 MW"
+     },
+     {
+      "chave": "1486:2022-08-16:Concessão - Extinção:",
+      "publicacao": "2022-08-16",
+      "nome": "Monjolinho",
+      "nucleo": 1486,
+      "tipo": "UHE",
+      "mw_no_ato": 600.0,
+      "mw_usado": 0.6,
+      "kw_cadastro": 600.0,
+      "cadastro": "SIGA, potência outorgada",
+      "motivo": "o valor do ato (600) é igual ao do cadastro em kW (600 kW, SIGA, potência outorgada) e, lido como MW, excede o limite legal de 5 MW do tipo CGH"
+     },
+     {
+      "chave": "2758:2023-12-08:Concessão - Extinção:",
+      "publicacao": "2023-12-08",
+      "nome": "Paina (Socavão)",
+      "nucleo": 2758,
+      "tipo": "CGH",
+      "mw_no_ato": 736.0,
+      "mw_usado": 0.736,
+      "kw_cadastro": 736.0,
+      "cadastro": "SIGA, potência outorgada",
+      "motivo": "o valor do ato (736) é igual ao do cadastro em kW (736 kW, SIGA, potência outorgada) e, lido como MW, excede o limite legal de 5 MW do tipo CGH"
+     }
+    ],
+    "fora_da_soma": [
+     {
+      "chave": "1286:2022-11-09:Concessão - Extinção:",
+      "publicacao": "2022-11-09",
+      "nome": "Jurupará",
+      "nucleo": 1286,
+      "tipo": "UHE",
+      "mw_no_ato": 4.4,
+      "mw_usado": null,
+      "kw_cadastro": 4.4,
+      "cadastro": "SIGA, potência outorgada",
+      "motivo": "o valor do ato (4.4 MW) e o do cadastro (4.4 kW, SIGA, potência outorgada) diferem por fator 1.000 sem confirmação independente de qual lado está certo"
+     }
+    ],
+    "mw_no_ato_dos_atos_corrigidos_ou_fora": 2876.4
+   },
+   "usinas_em_operacao_no_siga": {
+    "nota": "Usinas com ato de encerramento cujo núcleo do CEG segue na fase Operação do SIGA na data do arquivo: a outorga encerrada não retirou a usina (conversão de regime, como concessão extinta e registro em operação, ou nova outorga). Não são usinas desativadas.",
+    "atos": 215,
+    "usinas": 196,
+    "mw_usinas_nos_atos": 1843.0,
+    "por_outorga_no_siga": [
+     {
+      "outorga": "Registro",
+      "usinas": 165,
+      "mw_fiscalizado_siga": 405.2
+     },
+     {
+      "outorga": "Autorização",
+      "usinas": 27,
+      "mw_fiscalizado_siga": 1511.1
+     },
+     {
+      "outorga": "Concessão",
+      "usinas": 4,
+      "mw_fiscalizado_siga": 52.8
+     }
+    ]
+   },
+   "sem_chave_de_usina": {
+    "nota": "Atos sem núcleo nem código do CEG na fonte: não se ligam a nenhuma usina do SIGA ou do RALIE e cada um conta como uma unidade (sem deduplicação).",
+    "atos": 320,
+    "mw_usado": 13446.8,
+    "por_ano": [
+     {
+      "ano": "2025",
+      "atos": 27,
+      "mw_usado": 908.5
+     },
+     {
+      "ano": "2026",
+      "atos": 293,
+      "mw_usado": 12538.4
+     }
+    ]
+   }
   },
   "ralie": {
    "data_ralie": "2026-09-18",
@@ -3825,39 +4060,55 @@
      "data": "2031-09-13",
      "ugs": 38568,
      "usinas": 1099,
-     "mw": 45112.9
+     "mw": 45112.9,
+     "em_bloco": true
     },
     {
      "data": "2031-08-10",
      "ugs": 9673,
      "usinas": 167,
-     "mw": 7036.6
+     "mw": 7036.6,
+     "em_bloco": true
     },
     {
      "data": "2031-09-15",
      "ugs": 997,
      "usinas": 109,
-     "mw": 502.5
+     "mw": 502.5,
+     "em_bloco": true
     },
     {
      "data": "2029-02-28",
      "ugs": 492,
      "usinas": 2,
-     "mw": 100.0
+     "mw": 100.0,
+     "em_bloco": false
     },
     {
      "data": "2027-01-15",
      "ugs": 454,
      "usinas": 26,
-     "mw": 1160.4
+     "mw": 1160.4,
+     "em_bloco": false
     },
     {
      "data": "2032-09-12",
      "ugs": 364,
      "usinas": 27,
-     "mw": 886.0
+     "mw": 886.0,
+     "em_bloco": false
     }
    ],
+   "datas_em_bloco": {
+    "regra": "Data em bloco: previsão atribuída a pelo menos 100 usinas distintas na mesma fotografia (o maior complexo do RALIE tem 41 usinas). É a data convencional que a fiscalização atribui em lote e que anda com a fotografia, cerca de 5 anos depois dela; não é cronograma de obra.",
+    "datas": [
+     "2031-08-10",
+     "2031-09-13",
+     "2031-09-15"
+    ],
+    "ugs": 49238,
+    "mw": 52652.0
+   },
    "proximos_24_meses": [
     {
      "mes": "2026-09",
@@ -4081,7 +4332,13 @@
     "mw_previsao_apos_outorgado": 63198.8,
     "mw_previsao_ate_outorgado": 6753.8,
     "pct_mw_apos_outorgado": 90.3,
-    "mediana_dias_ponderada": 1231
+    "mediana_dias_ponderada": 1231,
+    "sem_datas_em_bloco": {
+     "mw_com_previsao": 17300.6,
+     "mw_previsao_apos_outorgado": 10546.8,
+     "pct_mw_apos_outorgado": 61.0,
+     "mediana_dias_ponderada": 151
+    }
    }
   },
   "por_situacao_cronograma": [
@@ -5252,7 +5509,17 @@
     "pct_adiada": 56.7,
     "pct_mantida": 11.9,
     "pct_antecipada": 31.4,
-    "mediana_dias_ponderada": 48
+    "mediana_dias_ponderada": 48,
+    "pct_mw_em_data_em_bloco": 0.0,
+    "pct_mw_bloco_nas_duas": 0.0,
+    "sem_datas_em_bloco": {
+     "ugs": 15820,
+     "mw": 35094.3,
+     "pct_adiada": 56.7,
+     "pct_mantida": 11.9,
+     "pct_antecipada": 31.4,
+     "mediana_dias_ponderada": 48
+    }
    },
    {
     "ralie": "2021-07-23",
@@ -5262,7 +5529,17 @@
     "pct_adiada": 52.0,
     "pct_mantida": 11.3,
     "pct_antecipada": 36.7,
-    "mediana_dias_ponderada": 6
+    "mediana_dias_ponderada": 6,
+    "pct_mw_em_data_em_bloco": 0.0,
+    "pct_mw_bloco_nas_duas": 0.0,
+    "sem_datas_em_bloco": {
+     "ugs": 16377,
+     "mw": 35220.5,
+     "pct_adiada": 52.0,
+     "pct_mantida": 11.3,
+     "pct_antecipada": 36.7,
+     "mediana_dias_ponderada": 6
+    }
    },
    {
     "ralie": "2021-08-19",
@@ -5272,7 +5549,17 @@
     "pct_adiada": 44.3,
     "pct_mantida": 13.0,
     "pct_antecipada": 42.8,
-    "mediana_dias_ponderada": 0
+    "mediana_dias_ponderada": 0,
+    "pct_mw_em_data_em_bloco": 0.0,
+    "pct_mw_bloco_nas_duas": 0.0,
+    "sem_datas_em_bloco": {
+     "ugs": 18228,
+     "mw": 35376.1,
+     "pct_adiada": 44.3,
+     "pct_mantida": 13.0,
+     "pct_antecipada": 42.8,
+     "mediana_dias_ponderada": 0
+    }
    },
    {
     "ralie": "2021-09-17",
@@ -5282,7 +5569,17 @@
     "pct_adiada": 44.3,
     "pct_mantida": 12.5,
     "pct_antecipada": 43.2,
-    "mediana_dias_ponderada": 0
+    "mediana_dias_ponderada": 0,
+    "pct_mw_em_data_em_bloco": 0.0,
+    "pct_mw_bloco_nas_duas": 0.0,
+    "sem_datas_em_bloco": {
+     "ugs": 17662,
+     "mw": 36477.8,
+     "pct_adiada": 44.3,
+     "pct_mantida": 12.5,
+     "pct_antecipada": 43.2,
+     "mediana_dias_ponderada": 0
+    }
    },
    {
     "ralie": "2021-11-23",
@@ -5292,7 +5589,17 @@
     "pct_adiada": 38.7,
     "pct_mantida": 12.7,
     "pct_antecipada": 48.6,
-    "mediana_dias_ponderada": 0
+    "mediana_dias_ponderada": 0,
+    "pct_mw_em_data_em_bloco": 23.6,
+    "pct_mw_bloco_nas_duas": 0.0,
+    "sem_datas_em_bloco": {
+     "ugs": 16743,
+     "mw": 30515.9,
+     "pct_adiada": 32.1,
+     "pct_mantida": 16.6,
+     "pct_antecipada": 51.3,
+     "mediana_dias_ponderada": -1
+    }
    },
    {
     "ralie": "2021-12-22",
@@ -5302,7 +5609,17 @@
     "pct_adiada": 52.0,
     "pct_mantida": 10.9,
     "pct_antecipada": 37.1,
-    "mediana_dias_ponderada": 11
+    "mediana_dias_ponderada": 11,
+    "pct_mw_em_data_em_bloco": 22.8,
+    "pct_mw_bloco_nas_duas": 0.0,
+    "sem_datas_em_bloco": {
+     "ugs": 16650,
+     "mw": 30627.1,
+     "pct_adiada": 37.9,
+     "pct_mantida": 14.1,
+     "pct_antecipada": 48.0,
+     "mediana_dias_ponderada": 0
+    }
    },
    {
     "ralie": "2022-01-17",
@@ -5312,7 +5629,17 @@
     "pct_adiada": 56.3,
     "pct_mantida": 9.8,
     "pct_antecipada": 34.0,
-    "mediana_dias_ponderada": 80
+    "mediana_dias_ponderada": 80,
+    "pct_mw_em_data_em_bloco": 25.4,
+    "pct_mw_bloco_nas_duas": 0.0,
+    "sem_datas_em_bloco": {
+     "ugs": 16113,
+     "mw": 29776.2,
+     "pct_adiada": 41.3,
+     "pct_mantida": 13.1,
+     "pct_antecipada": 45.6,
+     "mediana_dias_ponderada": 0
+    }
    },
    {
     "ralie": "2022-02-15",
@@ -5322,7 +5649,17 @@
     "pct_adiada": 53.6,
     "pct_mantida": 9.3,
     "pct_antecipada": 37.1,
-    "mediana_dias_ponderada": 22
+    "mediana_dias_ponderada": 22,
+    "pct_mw_em_data_em_bloco": 21.8,
+    "pct_mw_bloco_nas_duas": 0.0,
+    "sem_datas_em_bloco": {
+     "ugs": 18814,
+     "mw": 33627.9,
+     "pct_adiada": 40.6,
+     "pct_mantida": 12.0,
+     "pct_antecipada": 47.4,
+     "mediana_dias_ponderada": 0
+    }
    },
    {
     "ralie": "2022-03-15",
@@ -5332,7 +5669,17 @@
     "pct_adiada": 52.2,
     "pct_mantida": 8.8,
     "pct_antecipada": 39.0,
-    "mediana_dias_ponderada": 22
+    "mediana_dias_ponderada": 22,
+    "pct_mw_em_data_em_bloco": 24.3,
+    "pct_mw_bloco_nas_duas": 0.0,
+    "sem_datas_em_bloco": {
+     "ugs": 22907,
+     "mw": 34889.6,
+     "pct_adiada": 36.8,
+     "pct_mantida": 11.7,
+     "pct_antecipada": 51.5,
+     "mediana_dias_ponderada": -7
+    }
    },
    {
     "ralie": "2022-04-20",
@@ -5342,7 +5689,17 @@
     "pct_adiada": 50.6,
     "pct_mantida": 8.5,
     "pct_antecipada": 40.9,
-    "mediana_dias_ponderada": 22
+    "mediana_dias_ponderada": 22,
+    "pct_mw_em_data_em_bloco": 23.9,
+    "pct_mw_bloco_nas_duas": 0.0,
+    "sem_datas_em_bloco": {
+     "ugs": 24982,
+     "mw": 39217.0,
+     "pct_adiada": 35.1,
+     "pct_mantida": 11.2,
+     "pct_antecipada": 53.7,
+     "mediana_dias_ponderada": -37
+    }
    },
    {
     "ralie": "2022-05-17",
@@ -5352,7 +5709,17 @@
     "pct_adiada": 52.5,
     "pct_mantida": 7.0,
     "pct_antecipada": 40.4,
-    "mediana_dias_ponderada": 43
+    "mediana_dias_ponderada": 43,
+    "pct_mw_em_data_em_bloco": 26.2,
+    "pct_mw_bloco_nas_duas": 0.0,
+    "sem_datas_em_bloco": {
+     "ugs": 28761,
+     "mw": 44166.0,
+     "pct_adiada": 35.7,
+     "pct_mantida": 9.5,
+     "pct_antecipada": 54.8,
+     "mediana_dias_ponderada": -47
+    }
    },
    {
     "ralie": "2022-06-13",
@@ -5362,7 +5729,17 @@
     "pct_adiada": 58.7,
     "pct_mantida": 5.8,
     "pct_antecipada": 35.5,
-    "mediana_dias_ponderada": 120
+    "mediana_dias_ponderada": 120,
+    "pct_mw_em_data_em_bloco": 27.0,
+    "pct_mw_bloco_nas_duas": 0.0,
+    "sem_datas_em_bloco": {
+     "ugs": 27578,
+     "mw": 44487.9,
+     "pct_adiada": 43.4,
+     "pct_mantida": 8.0,
+     "pct_antecipada": 48.6,
+     "mediana_dias_ponderada": 0
+    }
    },
    {
     "ralie": "2022-07-15",
@@ -5372,7 +5749,17 @@
     "pct_adiada": 64.5,
     "pct_mantida": 5.8,
     "pct_antecipada": 29.6,
-    "mediana_dias_ponderada": 235
+    "mediana_dias_ponderada": 235,
+    "pct_mw_em_data_em_bloco": 31.6,
+    "pct_mw_bloco_nas_duas": 0.0,
+    "sem_datas_em_bloco": {
+     "ugs": 25580,
+     "mw": 42077.7,
+     "pct_adiada": 48.2,
+     "pct_mantida": 8.5,
+     "pct_antecipada": 43.3,
+     "mediana_dias_ponderada": 0
+    }
    },
    {
     "ralie": "2022-08-15",
@@ -5382,7 +5769,17 @@
     "pct_adiada": 66.6,
     "pct_mantida": 4.9,
     "pct_antecipada": 28.5,
-    "mediana_dias_ponderada": 319
+    "mediana_dias_ponderada": 319,
+    "pct_mw_em_data_em_bloco": 34.5,
+    "pct_mw_bloco_nas_duas": 0.0,
+    "sem_datas_em_bloco": {
+     "ugs": 28014,
+     "mw": 43730.7,
+     "pct_adiada": 49.0,
+     "pct_mantida": 7.5,
+     "pct_antecipada": 43.5,
+     "mediana_dias_ponderada": 0
+    }
    },
    {
     "ralie": "2022-09-28",
@@ -5392,7 +5789,17 @@
     "pct_adiada": 65.0,
     "pct_mantida": 8.7,
     "pct_antecipada": 26.4,
-    "mediana_dias_ponderada": 319
+    "mediana_dias_ponderada": 319,
+    "pct_mw_em_data_em_bloco": 36.6,
+    "pct_mw_bloco_nas_duas": 0.0,
+    "sem_datas_em_bloco": {
+     "ugs": 30844,
+     "mw": 47020.9,
+     "pct_adiada": 44.7,
+     "pct_mantida": 13.7,
+     "pct_antecipada": 41.6,
+     "mediana_dias_ponderada": 0
+    }
    },
    {
     "ralie": "2022-10-18",
@@ -5402,7 +5809,17 @@
     "pct_adiada": 75.9,
     "pct_mantida": 7.0,
     "pct_antecipada": 17.1,
-    "mediana_dias_ponderada": 357
+    "mediana_dias_ponderada": 357,
+    "pct_mw_em_data_em_bloco": 61.7,
+    "pct_mw_bloco_nas_duas": 29.9,
+    "sem_datas_em_bloco": {
+     "ugs": 16745,
+     "mw": 25364.5,
+     "pct_adiada": 64.9,
+     "pct_mantida": 12.7,
+     "pct_antecipada": 22.4,
+     "mediana_dias_ponderada": 132
+    }
    },
    {
     "ralie": "2022-11-14",
@@ -5412,7 +5829,17 @@
     "pct_adiada": 77.3,
     "pct_mantida": 8.8,
     "pct_antecipada": 13.9,
-    "mediana_dias_ponderada": 340
+    "mediana_dias_ponderada": 340,
+    "pct_mw_em_data_em_bloco": 61.7,
+    "pct_mw_bloco_nas_duas": 27.9,
+    "sem_datas_em_bloco": {
+     "ugs": 18263,
+     "mw": 26076.1,
+     "pct_adiada": 67.9,
+     "pct_mantida": 17.8,
+     "pct_antecipada": 14.3,
+     "mediana_dias_ponderada": 143
+    }
    },
    {
     "ralie": "2022-12-31",
@@ -5422,7 +5849,17 @@
     "pct_adiada": 66.7,
     "pct_mantida": 8.6,
     "pct_antecipada": 24.7,
-    "mediana_dias_ponderada": 274
+    "mediana_dias_ponderada": 274,
+    "pct_mw_em_data_em_bloco": 67.5,
+    "pct_mw_bloco_nas_duas": 34.0,
+    "sem_datas_em_bloco": {
+     "ugs": 16095,
+     "mw": 23434.1,
+     "pct_adiada": 53.4,
+     "pct_mantida": 26.5,
+     "pct_antecipada": 20.0,
+     "mediana_dias_ponderada": 33
+    }
    },
    {
     "ralie": "2023-01-17",
@@ -5432,7 +5869,17 @@
     "pct_adiada": 72.5,
     "pct_mantida": 8.1,
     "pct_antecipada": 19.4,
-    "mediana_dias_ponderada": 285
+    "mediana_dias_ponderada": 285,
+    "pct_mw_em_data_em_bloco": 61.9,
+    "pct_mw_bloco_nas_duas": 40.6,
+    "sem_datas_em_bloco": {
+     "ugs": 18383,
+     "mw": 28607.0,
+     "pct_adiada": 63.3,
+     "pct_mantida": 21.2,
+     "pct_antecipada": 15.5,
+     "mediana_dias_ponderada": 168
+    }
    },
    {
     "ralie": "2023-02-16",
@@ -5442,7 +5889,17 @@
     "pct_adiada": 69.4,
     "pct_mantida": 7.4,
     "pct_antecipada": 23.3,
-    "mediana_dias_ponderada": 293
+    "mediana_dias_ponderada": 293,
+    "pct_mw_em_data_em_bloco": 60.4,
+    "pct_mw_bloco_nas_duas": 43.9,
+    "sem_datas_em_bloco": {
+     "ugs": 17476,
+     "mw": 30220.3,
+     "pct_adiada": 69.1,
+     "pct_mantida": 18.4,
+     "pct_antecipada": 12.4,
+     "mediana_dias_ponderada": 158
+    }
    },
    {
     "ralie": "2023-03-15",
@@ -5452,7 +5909,17 @@
     "pct_adiada": 82.9,
     "pct_mantida": 5.3,
     "pct_antecipada": 11.8,
-    "mediana_dias_ponderada": 368
+    "mediana_dias_ponderada": 368,
+    "pct_mw_em_data_em_bloco": 60.1,
+    "pct_mw_bloco_nas_duas": 43.5,
+    "sem_datas_em_bloco": {
+     "ugs": 17409,
+     "mw": 31154.6,
+     "pct_adiada": 73.1,
+     "pct_mantida": 13.3,
+     "pct_antecipada": 13.6,
+     "mediana_dias_ponderada": 199
+    }
    },
    {
     "ralie": "2023-04-16",
@@ -5462,7 +5929,17 @@
     "pct_adiada": 81.1,
     "pct_mantida": 5.7,
     "pct_antecipada": 13.2,
-    "mediana_dias_ponderada": 362
+    "mediana_dias_ponderada": 362,
+    "pct_mw_em_data_em_bloco": 69.9,
+    "pct_mw_bloco_nas_duas": 56.5,
+    "sem_datas_em_bloco": {
+     "ugs": 16429,
+     "mw": 31049.4,
+     "pct_adiada": 68.6,
+     "pct_mantida": 18.9,
+     "pct_antecipada": 12.5,
+     "mediana_dias_ponderada": 156
+    }
    },
    {
     "ralie": "2023-05-15",
@@ -5472,7 +5949,17 @@
     "pct_adiada": 64.2,
     "pct_mantida": 14.7,
     "pct_antecipada": 21.1,
-    "mediana_dias_ponderada": 360
+    "mediana_dias_ponderada": 360,
+    "pct_mw_em_data_em_bloco": 70.5,
+    "pct_mw_bloco_nas_duas": 55.6,
+    "sem_datas_em_bloco": {
+     "ugs": 18241,
+     "mw": 31495.1,
+     "pct_adiada": 38.5,
+     "pct_mantida": 49.8,
+     "pct_antecipada": 11.8,
+     "mediana_dias_ponderada": 0
+    }
    },
    {
     "ralie": "2023-06-30",
@@ -5482,7 +5969,17 @@
     "pct_adiada": 69.3,
     "pct_mantida": 12.0,
     "pct_antecipada": 18.7,
-    "mediana_dias_ponderada": 336
+    "mediana_dias_ponderada": 336,
+    "pct_mw_em_data_em_bloco": 72.8,
+    "pct_mw_bloco_nas_duas": 62.5,
+    "sem_datas_em_bloco": {
+     "ugs": 16403,
+     "mw": 31282.8,
+     "pct_adiada": 45.0,
+     "pct_mantida": 44.0,
+     "pct_antecipada": 11.0,
+     "mediana_dias_ponderada": 0
+    }
    },
    {
     "ralie": "2023-07-20",
@@ -5492,7 +5989,17 @@
     "pct_adiada": 72.9,
     "pct_mantida": 11.7,
     "pct_antecipada": 15.4,
-    "mediana_dias_ponderada": 361
+    "mediana_dias_ponderada": 361,
+    "pct_mw_em_data_em_bloco": 72.8,
+    "pct_mw_bloco_nas_duas": 60.1,
+    "sem_datas_em_bloco": {
+     "ugs": 15406,
+     "mw": 28532.4,
+     "pct_adiada": 42.7,
+     "pct_mantida": 43.1,
+     "pct_antecipada": 14.2,
+     "mediana_dias_ponderada": 0
+    }
    },
    {
     "ralie": "2023-08-16",
@@ -5502,7 +6009,17 @@
     "pct_adiada": 83.6,
     "pct_mantida": 7.9,
     "pct_antecipada": 8.5,
-    "mediana_dias_ponderada": 300
+    "mediana_dias_ponderada": 300,
+    "pct_mw_em_data_em_bloco": 76.7,
+    "pct_mw_bloco_nas_duas": 68.4,
+    "sem_datas_em_bloco": {
+     "ugs": 16362,
+     "mw": 29192.8,
+     "pct_adiada": 53.8,
+     "pct_mantida": 33.3,
+     "pct_antecipada": 12.9,
+     "mediana_dias_ponderada": 37
+    }
    },
    {
     "ralie": "2023-09-16",
@@ -5512,7 +6029,17 @@
     "pct_adiada": 86.3,
     "pct_mantida": 7.7,
     "pct_antecipada": 6.0,
-    "mediana_dias_ponderada": 367
+    "mediana_dias_ponderada": 367,
+    "pct_mw_em_data_em_bloco": 77.5,
+    "pct_mw_bloco_nas_duas": 71.0,
+    "sem_datas_em_bloco": {
+     "ugs": 16462,
+     "mw": 29692.6,
+     "pct_adiada": 52.0,
+     "pct_mantida": 34.4,
+     "pct_antecipada": 13.7,
+     "mediana_dias_ponderada": 21
+    }
    },
    {
     "ralie": "2023-10-20",
@@ -5522,7 +6049,17 @@
     "pct_adiada": 86.6,
     "pct_mantida": 7.7,
     "pct_antecipada": 5.6,
-    "mediana_dias_ponderada": 366
+    "mediana_dias_ponderada": 366,
+    "pct_mw_em_data_em_bloco": 78.9,
+    "pct_mw_bloco_nas_duas": 72.3,
+    "sem_datas_em_bloco": {
+     "ugs": 17322,
+     "mw": 30217.0,
+     "pct_adiada": 50.5,
+     "pct_mantida": 36.7,
+     "pct_antecipada": 12.8,
+     "mediana_dias_ponderada": 6
+    }
    },
    {
     "ralie": "2023-11-17",
@@ -5532,7 +6069,17 @@
     "pct_adiada": 81.6,
     "pct_mantida": 7.0,
     "pct_antecipada": 11.4,
-    "mediana_dias_ponderada": 295
+    "mediana_dias_ponderada": 295,
+    "pct_mw_em_data_em_bloco": 78.1,
+    "pct_mw_bloco_nas_duas": 59.7,
+    "sem_datas_em_bloco": {
+     "ugs": 17859,
+     "mw": 30735.8,
+     "pct_adiada": 50.9,
+     "pct_mantida": 32.0,
+     "pct_antecipada": 17.0,
+     "mediana_dias_ponderada": 28
+    }
    },
    {
     "ralie": "2023-12-31",
@@ -5542,7 +6089,17 @@
     "pct_adiada": 89.2,
     "pct_mantida": 5.6,
     "pct_antecipada": 5.3,
-    "mediana_dias_ponderada": 401
+    "mediana_dias_ponderada": 401,
+    "pct_mw_em_data_em_bloco": 79.8,
+    "pct_mw_bloco_nas_duas": 61.9,
+    "sem_datas_em_bloco": {
+     "ugs": 17400,
+     "mw": 30018.3,
+     "pct_adiada": 56.6,
+     "pct_mantida": 27.5,
+     "pct_antecipada": 16.0,
+     "mediana_dias_ponderada": 32
+    }
    },
    {
     "ralie": "2024-01-31",
@@ -5552,7 +6109,17 @@
     "pct_adiada": 84.9,
     "pct_mantida": 9.9,
     "pct_antecipada": 5.1,
-    "mediana_dias_ponderada": 346
+    "mediana_dias_ponderada": 346,
+    "pct_mw_em_data_em_bloco": 79.7,
+    "pct_mw_bloco_nas_duas": 63.1,
+    "sem_datas_em_bloco": {
+     "ugs": 19783,
+     "mw": 29903.9,
+     "pct_adiada": 56.0,
+     "pct_mantida": 30.6,
+     "pct_antecipada": 13.3,
+     "mediana_dias_ponderada": 32
+    }
    },
    {
     "ralie": "2024-02-16",
@@ -5562,7 +6129,17 @@
     "pct_adiada": 91.6,
     "pct_mantida": 5.2,
     "pct_antecipada": 3.2,
-    "mediana_dias_ponderada": 371
+    "mediana_dias_ponderada": 371,
+    "pct_mw_em_data_em_bloco": 79.9,
+    "pct_mw_bloco_nas_duas": 67.7,
+    "sem_datas_em_bloco": {
+     "ugs": 19791,
+     "mw": 29522.6,
+     "pct_adiada": 61.6,
+     "pct_mantida": 26.0,
+     "pct_antecipada": 12.4,
+     "mediana_dias_ponderada": 73
+    }
    },
    {
     "ralie": "2024-03-21",
@@ -5572,7 +6149,17 @@
     "pct_adiada": 87.0,
     "pct_mantida": 8.9,
     "pct_antecipada": 4.1,
-    "mediana_dias_ponderada": 365
+    "mediana_dias_ponderada": 365,
+    "pct_mw_em_data_em_bloco": 79.7,
+    "pct_mw_bloco_nas_duas": 67.3,
+    "sem_datas_em_bloco": {
+     "ugs": 20216,
+     "mw": 29553.7,
+     "pct_adiada": 62.5,
+     "pct_mantida": 20.9,
+     "pct_antecipada": 16.6,
+     "mediana_dias_ponderada": 117
+    }
    },
    {
     "ralie": "2024-04-18",
@@ -5582,7 +6169,17 @@
     "pct_adiada": 91.3,
     "pct_mantida": 3.9,
     "pct_antecipada": 4.8,
-    "mediana_dias_ponderada": 369
+    "mediana_dias_ponderada": 369,
+    "pct_mw_em_data_em_bloco": 80.0,
+    "pct_mw_bloco_nas_duas": 67.5,
+    "sem_datas_em_bloco": {
+     "ugs": 18005,
+     "mw": 28511.5,
+     "pct_adiada": 64.3,
+     "pct_mantida": 19.4,
+     "pct_antecipada": 16.3,
+     "mediana_dias_ponderada": 109
+    }
    },
    {
     "ralie": "2024-05-23",
@@ -5592,7 +6189,17 @@
     "pct_adiada": 91.0,
     "pct_mantida": 3.6,
     "pct_antecipada": 5.4,
-    "mediana_dias_ponderada": 368
+    "mediana_dias_ponderada": 368,
+    "pct_mw_em_data_em_bloco": 80.0,
+    "pct_mw_bloco_nas_duas": 65.0,
+    "sem_datas_em_bloco": {
+     "ugs": 18125,
+     "mw": 28351.1,
+     "pct_adiada": 64.9,
+     "pct_mantida": 18.0,
+     "pct_antecipada": 17.1,
+     "mediana_dias_ponderada": 123
+    }
    },
    {
     "ralie": "2024-06-20",
@@ -5602,7 +6209,17 @@
     "pct_adiada": 91.6,
     "pct_mantida": 3.4,
     "pct_antecipada": 5.0,
-    "mediana_dias_ponderada": 366
+    "mediana_dias_ponderada": 366,
+    "pct_mw_em_data_em_bloco": 80.2,
+    "pct_mw_bloco_nas_duas": 67.4,
+    "sem_datas_em_bloco": {
+     "ugs": 18324,
+     "mw": 27370.2,
+     "pct_adiada": 65.2,
+     "pct_mantida": 17.0,
+     "pct_antecipada": 17.7,
+     "mediana_dias_ponderada": 117
+    }
    },
    {
     "ralie": "2024-07-19",
@@ -5612,7 +6229,17 @@
     "pct_adiada": 92.3,
     "pct_mantida": 2.5,
     "pct_antecipada": 5.2,
-    "mediana_dias_ponderada": 374
+    "mediana_dias_ponderada": 374,
+    "pct_mw_em_data_em_bloco": 79.9,
+    "pct_mw_bloco_nas_duas": 65.8,
+    "sem_datas_em_bloco": {
+     "ugs": 16284,
+     "mw": 27488.6,
+     "pct_adiada": 70.2,
+     "pct_mantida": 12.4,
+     "pct_antecipada": 17.5,
+     "mediana_dias_ponderada": 123
+    }
    },
    {
     "ralie": "2024-08-23",
@@ -5622,7 +6249,17 @@
     "pct_adiada": 86.3,
     "pct_mantida": 2.5,
     "pct_antecipada": 11.3,
-    "mediana_dias_ponderada": 361
+    "mediana_dias_ponderada": 361,
+    "pct_mw_em_data_em_bloco": 80.7,
+    "pct_mw_bloco_nas_duas": 68.6,
+    "sem_datas_em_bloco": {
+     "ugs": 16137,
+     "mw": 26320.7,
+     "pct_adiada": 63.9,
+     "pct_mantida": 12.5,
+     "pct_antecipada": 23.6,
+     "mediana_dias_ponderada": 116
+    }
    },
    {
     "ralie": "2024-09-19",
@@ -5632,7 +6269,17 @@
     "pct_adiada": 90.5,
     "pct_mantida": 1.9,
     "pct_antecipada": 7.6,
-    "mediana_dias_ponderada": 367
+    "mediana_dias_ponderada": 367,
+    "pct_mw_em_data_em_bloco": 80.7,
+    "pct_mw_bloco_nas_duas": 65.9,
+    "sem_datas_em_bloco": {
+     "ugs": 16506,
+     "mw": 25747.5,
+     "pct_adiada": 67.4,
+     "pct_mantida": 9.7,
+     "pct_antecipada": 22.9,
+     "mediana_dias_ponderada": 117
+    }
    },
    {
     "ralie": "2024-10-15",
@@ -5642,7 +6289,17 @@
     "pct_adiada": 90.9,
     "pct_mantida": 2.9,
     "pct_antecipada": 6.2,
-    "mediana_dias_ponderada": 364
+    "mediana_dias_ponderada": 364,
+    "pct_mw_em_data_em_bloco": 80.8,
+    "pct_mw_bloco_nas_duas": 69.9,
+    "sem_datas_em_bloco": {
+     "ugs": 16997,
+     "mw": 26290.4,
+     "pct_adiada": 69.0,
+     "pct_mantida": 14.9,
+     "pct_antecipada": 16.1,
+     "mediana_dias_ponderada": 123
+    }
    },
    {
     "ralie": "2024-11-21",
@@ -5652,7 +6309,17 @@
     "pct_adiada": 84.2,
     "pct_mantida": 10.1,
     "pct_antecipada": 5.6,
-    "mediana_dias_ponderada": 368
+    "mediana_dias_ponderada": 368,
+    "pct_mw_em_data_em_bloco": 73.6,
+    "pct_mw_bloco_nas_duas": 63.7,
+    "sem_datas_em_bloco": {
+     "ugs": 24094,
+     "mw": 35112.7,
+     "pct_adiada": 46.8,
+     "pct_mantida": 38.3,
+     "pct_antecipada": 14.9,
+     "mediana_dias_ponderada": 0
+    }
    },
    {
     "ralie": "2024-12-31",
@@ -5662,7 +6329,17 @@
     "pct_adiada": 80.9,
     "pct_mantida": 11.8,
     "pct_antecipada": 7.3,
-    "mediana_dias_ponderada": 296
+    "mediana_dias_ponderada": 296,
+    "pct_mw_em_data_em_bloco": 71.6,
+    "pct_mw_bloco_nas_duas": 62.7,
+    "sem_datas_em_bloco": {
+     "ugs": 23024,
+     "mw": 32170.8,
+     "pct_adiada": 44.8,
+     "pct_mantida": 41.4,
+     "pct_antecipada": 13.8,
+     "mediana_dias_ponderada": 0
+    }
    },
    {
     "ralie": "2025-01-24",
@@ -5672,7 +6349,17 @@
     "pct_adiada": 85.1,
     "pct_mantida": 9.7,
     "pct_antecipada": 5.3,
-    "mediana_dias_ponderada": 368
+    "mediana_dias_ponderada": 368,
+    "pct_mw_em_data_em_bloco": 72.7,
+    "pct_mw_bloco_nas_duas": 66.1,
+    "sem_datas_em_bloco": {
+     "ugs": 15999,
+     "mw": 27279.6,
+     "pct_adiada": 51.2,
+     "pct_mantida": 35.1,
+     "pct_antecipada": 13.7,
+     "mediana_dias_ponderada": 27
+    }
    },
    {
     "ralie": "2025-02-20",
@@ -5682,7 +6369,17 @@
     "pct_adiada": 85.5,
     "pct_mantida": 7.0,
     "pct_antecipada": 7.5,
-    "mediana_dias_ponderada": 364
+    "mediana_dias_ponderada": 364,
+    "pct_mw_em_data_em_bloco": 75.5,
+    "pct_mw_bloco_nas_duas": 66.9,
+    "sem_datas_em_bloco": {
+     "ugs": 13938,
+     "mw": 24166.3,
+     "pct_adiada": 58.3,
+     "pct_mantida": 28.1,
+     "pct_antecipada": 13.6,
+     "mediana_dias_ponderada": 48
+    }
    },
    {
     "ralie": "2025-03-21",
@@ -5692,7 +6389,17 @@
     "pct_adiada": 84.7,
     "pct_mantida": 11.1,
     "pct_antecipada": 4.2,
-    "mediana_dias_ponderada": 366
+    "mediana_dias_ponderada": 366,
+    "pct_mw_em_data_em_bloco": 75.9,
+    "pct_mw_bloco_nas_duas": 64.7,
+    "sem_datas_em_bloco": {
+     "ugs": 11174,
+     "mw": 21758.2,
+     "pct_adiada": 48.0,
+     "pct_mantida": 46.2,
+     "pct_antecipada": 5.8,
+     "mediana_dias_ponderada": 0
+    }
    },
    {
     "ralie": "2025-04-22",
@@ -5702,7 +6409,17 @@
     "pct_adiada": 84.1,
     "pct_mantida": 11.2,
     "pct_antecipada": 4.7,
-    "mediana_dias_ponderada": 360
+    "mediana_dias_ponderada": 360,
+    "pct_mw_em_data_em_bloco": 76.5,
+    "pct_mw_bloco_nas_duas": 66.3,
+    "sem_datas_em_bloco": {
+     "ugs": 10897,
+     "mw": 21089.7,
+     "pct_adiada": 46.3,
+     "pct_mantida": 47.6,
+     "pct_antecipada": 6.1,
+     "mediana_dias_ponderada": 0
+    }
    },
    {
     "ralie": "2025-05-26",
@@ -5712,7 +6429,17 @@
     "pct_adiada": 83.4,
     "pct_mantida": 11.4,
     "pct_antecipada": 5.2,
-    "mediana_dias_ponderada": 364
+    "mediana_dias_ponderada": 364,
+    "pct_mw_em_data_em_bloco": 75.1,
+    "pct_mw_bloco_nas_duas": 64.3,
+    "sem_datas_em_bloco": {
+     "ugs": 11296,
+     "mw": 21049.8,
+     "pct_adiada": 48.7,
+     "pct_mantida": 45.9,
+     "pct_antecipada": 5.5,
+     "mediana_dias_ponderada": 0
+    }
    },
    {
     "ralie": "2025-06-18",
@@ -5722,7 +6449,17 @@
     "pct_adiada": 82.8,
     "pct_mantida": 13.9,
     "pct_antecipada": 3.3,
-    "mediana_dias_ponderada": 365
+    "mediana_dias_ponderada": 365,
+    "pct_mw_em_data_em_bloco": 74.6,
+    "pct_mw_bloco_nas_duas": 64.6,
+    "sem_datas_em_bloco": {
+     "ugs": 11041,
+     "mw": 21469.1,
+     "pct_adiada": 47.7,
+     "pct_mantida": 45.9,
+     "pct_antecipada": 6.4,
+     "mediana_dias_ponderada": 0
+    }
    },
    {
     "ralie": "2025-07-17",
@@ -5732,7 +6469,17 @@
     "pct_adiada": 89.1,
     "pct_mantida": 6.3,
     "pct_antecipada": 4.6,
-    "mediana_dias_ponderada": 358
+    "mediana_dias_ponderada": 358,
+    "pct_mw_em_data_em_bloco": 81.0,
+    "pct_mw_bloco_nas_duas": 69.4,
+    "sem_datas_em_bloco": {
+     "ugs": 7654,
+     "mw": 14611.4,
+     "pct_adiada": 60.5,
+     "pct_mantida": 33.1,
+     "pct_antecipada": 6.4,
+     "mediana_dias_ponderada": 90
+    }
    },
    {
     "ralie": "2025-08-22",
@@ -5742,7 +6489,17 @@
     "pct_adiada": 90.0,
     "pct_mantida": 6.0,
     "pct_antecipada": 4.0,
-    "mediana_dias_ponderada": 368
+    "mediana_dias_ponderada": 368,
+    "pct_mw_em_data_em_bloco": 78.1,
+    "pct_mw_bloco_nas_duas": 62.6,
+    "sem_datas_em_bloco": {
+     "ugs": 6311,
+     "mw": 14866.2,
+     "pct_adiada": 60.3,
+     "pct_mantida": 27.3,
+     "pct_antecipada": 12.4,
+     "mediana_dias_ponderada": 94
+    }
    },
    {
     "ralie": "2025-09-22",
@@ -5752,422 +6509,1186 @@
     "pct_adiada": 90.9,
     "pct_mantida": 5.3,
     "pct_antecipada": 3.7,
-    "mediana_dias_ponderada": 367
+    "mediana_dias_ponderada": 367,
+    "pct_mw_em_data_em_bloco": 81.1,
+    "pct_mw_bloco_nas_duas": 67.1,
+    "sem_datas_em_bloco": {
+     "ugs": 5625,
+     "mw": 12400.7,
+     "pct_adiada": 64.5,
+     "pct_mantida": 28.3,
+     "pct_antecipada": 7.2,
+     "mediana_dias_ponderada": 108
+    }
    }
   ],
-  "atraso_realizado": [
+  "datas_em_bloco_por_fotografia": [
    {
-    "ano": "2014",
-    "unidades_ou_grupos": 276,
-    "mw_liberado": 7455.3,
-    "pct_mw_com_atraso": 54.9,
-    "pct_mw_antecipado": 39.5,
-    "mediana_dias_ponderada": 7,
-    "ano_parcial": false
+    "ralie": "2021-06-30",
+    "datas": 0,
+    "ugs": 0,
+    "mw": 0.0,
+    "maior": null
    },
    {
-    "ano": "2015",
-    "unidades_ou_grupos": 278,
-    "mw_liberado": 6786.3,
-    "pct_mw_com_atraso": 75.5,
-    "pct_mw_antecipado": 23.0,
-    "mediana_dias_ponderada": 121,
-    "ano_parcial": false
+    "ralie": "2021-07-23",
+    "datas": 0,
+    "ugs": 0,
+    "mw": 0.0,
+    "maior": null
    },
    {
-    "ano": "2016",
-    "unidades_ou_grupos": 345,
-    "mw_liberado": 9538.5,
-    "pct_mw_com_atraso": 71.2,
-    "pct_mw_antecipado": 23.8,
-    "mediana_dias_ponderada": 48,
-    "ano_parcial": false
+    "ralie": "2021-08-19",
+    "datas": 0,
+    "ugs": 0,
+    "mw": 0.0,
+    "maior": null
    },
    {
-    "ano": "2017",
-    "unidades_ou_grupos": 413,
-    "mw_liberado": 7455.8,
-    "pct_mw_com_atraso": 72.7,
-    "pct_mw_antecipado": 27.3,
-    "mediana_dias_ponderada": 110,
-    "ano_parcial": false
+    "ralie": "2021-09-17",
+    "datas": 0,
+    "ugs": 0,
+    "mw": 0.0,
+    "maior": null
    },
    {
-    "ano": "2018",
-    "unidades_ou_grupos": 269,
-    "mw_liberado": 7321.0,
-    "pct_mw_com_atraso": 75.5,
-    "pct_mw_antecipado": 23.8,
-    "mediana_dias_ponderada": 246,
-    "ano_parcial": false
+    "ralie": "2021-11-23",
+    "datas": 0,
+    "ugs": 0,
+    "mw": 0.0,
+    "maior": null
    },
    {
-    "ano": "2019",
-    "unidades_ou_grupos": 432,
-    "mw_liberado": 7437.2,
-    "pct_mw_com_atraso": 59.3,
-    "pct_mw_antecipado": 40.5,
-    "mediana_dias_ponderada": 26,
-    "ano_parcial": false
+    "ralie": "2021-12-22",
+    "datas": 0,
+    "ugs": 0,
+    "mw": 0.0,
+    "maior": null
    },
    {
-    "ano": "2020",
-    "unidades_ou_grupos": 2176,
-    "mw_liberado": 4932.3,
-    "pct_mw_com_atraso": 50.8,
-    "pct_mw_antecipado": 47.0,
-    "mediana_dias_ponderada": 2,
-    "ano_parcial": false
+    "ralie": "2022-01-17",
+    "datas": 0,
+    "ugs": 0,
+    "mw": 0.0,
+    "maior": null
    },
    {
-    "ano": "2021",
-    "unidades_ou_grupos": 2811,
-    "mw_liberado": 7606.6,
-    "pct_mw_com_atraso": 46.7,
-    "pct_mw_antecipado": 53.3,
-    "mediana_dias_ponderada": -61,
-    "ano_parcial": false
+    "ralie": "2022-02-15",
+    "datas": 0,
+    "ugs": 0,
+    "mw": 0.0,
+    "maior": null
    },
    {
-    "ano": "2022",
-    "unidades_ou_grupos": 9319,
-    "mw_liberado": 8079.6,
-    "pct_mw_com_atraso": 53.8,
-    "pct_mw_antecipado": 45.7,
-    "mediana_dias_ponderada": 29,
-    "ano_parcial": false
+    "ralie": "2022-03-15",
+    "datas": 0,
+    "ugs": 0,
+    "mw": 0.0,
+    "maior": null
    },
    {
-    "ano": "2023",
-    "unidades_ou_grupos": 9691,
-    "mw_liberado": 10325.7,
-    "pct_mw_com_atraso": 63.8,
-    "pct_mw_antecipado": 36.1,
-    "mediana_dias_ponderada": 87,
-    "ano_parcial": false
+    "ralie": "2022-04-20",
+    "datas": 0,
+    "ugs": 0,
+    "mw": 0.0,
+    "maior": null
    },
    {
-    "ano": "2024",
-    "unidades_ou_grupos": 18026,
-    "mw_liberado": 10790.2,
-    "pct_mw_com_atraso": 48.8,
-    "pct_mw_antecipado": 51.2,
-    "mediana_dias_ponderada": -39,
-    "ano_parcial": false
+    "ralie": "2022-05-17",
+    "datas": 0,
+    "ugs": 0,
+    "mw": 0.0,
+    "maior": null
    },
    {
-    "ano": "2025",
-    "unidades_ou_grupos": 5091,
-    "mw_liberado": 7466.5,
-    "pct_mw_com_atraso": 55.6,
-    "pct_mw_antecipado": 44.3,
-    "mediana_dias_ponderada": 86,
-    "ano_parcial": false
+    "ralie": "2022-06-13",
+    "datas": 0,
+    "ugs": 0,
+    "mw": 0.0,
+    "maior": null
    },
    {
-    "ano": "2026",
-    "unidades_ou_grupos": 9429,
-    "mw_liberado": 5166.7,
-    "pct_mw_com_atraso": 26.3,
-    "pct_mw_antecipado": 66.7,
-    "mediana_dias_ponderada": -1209,
-    "ano_parcial": true
+    "ralie": "2022-07-15",
+    "datas": 0,
+    "ugs": 0,
+    "mw": 0.0,
+    "maior": null
+   },
+   {
+    "ralie": "2022-08-15",
+    "datas": 0,
+    "ugs": 0,
+    "mw": 0.0,
+    "maior": null
+   },
+   {
+    "ralie": "2022-09-28",
+    "datas": 0,
+    "ugs": 0,
+    "mw": 0.0,
+    "maior": null
+   },
+   {
+    "ralie": "2022-10-18",
+    "datas": 4,
+    "ugs": 28883,
+    "mw": 40134.9,
+    "maior": {
+     "data": "2027-10-13",
+     "usinas": 402,
+     "dias_depois_da_fotografia": 1821
+    }
+   },
+   {
+    "ralie": "2022-11-14",
+    "datas": 4,
+    "ugs": 29362,
+    "mw": 38396.6,
+    "maior": {
+     "data": "2027-11-06",
+     "usinas": 412,
+     "dias_depois_da_fotografia": 1818
+    }
+   },
+   {
+    "ralie": "2022-12-31",
+    "datas": 3,
+    "ugs": 32615,
+    "mw": 44189.6,
+    "maior": {
+     "data": "2027-12-13",
+     "usinas": 634,
+     "dias_depois_da_fotografia": 1808
+    }
+   },
+   {
+    "ralie": "2023-01-17",
+    "datas": 2,
+    "ugs": 35644,
+    "mw": 45844.6,
+    "maior": {
+     "data": "2028-01-11",
+     "usinas": 865,
+     "dias_depois_da_fotografia": 1820
+    }
+   },
+   {
+    "ralie": "2023-02-16",
+    "datas": 2,
+    "ugs": 34109,
+    "mw": 44434.0,
+    "maior": {
+     "data": "2028-02-07",
+     "usinas": 820,
+     "dias_depois_da_fotografia": 1817
+    }
+   },
+   {
+    "ralie": "2023-03-15",
+    "datas": 2,
+    "ugs": 33377,
+    "mw": 43533.0,
+    "maior": {
+     "data": "2028-03-07",
+     "usinas": 937,
+     "dias_depois_da_fotografia": 1819
+    }
+   },
+   {
+    "ralie": "2023-04-16",
+    "datas": 3,
+    "ugs": 55959,
+    "mw": 70017.7,
+    "maior": {
+     "data": "2028-04-08",
+     "usinas": 1018,
+     "dias_depois_da_fotografia": 1819
+    }
+   },
+   {
+    "ralie": "2023-05-15",
+    "datas": 3,
+    "ugs": 60510,
+    "mw": 74245.7,
+    "maior": {
+     "data": "2028-05-09",
+     "usinas": 1260,
+     "dias_depois_da_fotografia": 1821
+    }
+   },
+   {
+    "ralie": "2023-06-30",
+    "datas": 4,
+    "ugs": 85668,
+    "mw": 83946.6,
+    "maior": {
+     "data": "2028-07-08",
+     "usinas": 1132,
+     "dias_depois_da_fotografia": 1835
+    }
+   },
+   {
+    "ralie": "2023-07-20",
+    "datas": 2,
+    "ugs": 71492,
+    "mw": 76852.2,
+    "maior": {
+     "data": "2028-07-08",
+     "usinas": 1607,
+     "dias_depois_da_fotografia": 1815
+    }
+   },
+   {
+    "ralie": "2023-08-16",
+    "datas": 3,
+    "ugs": 99689,
+    "mw": 96529.5,
+    "maior": {
+     "data": "2028-10-15",
+     "usinas": 1965,
+     "dias_depois_da_fotografia": 1887
+    }
+   },
+   {
+    "ralie": "2023-09-16",
+    "datas": 3,
+    "ugs": 110736,
+    "mw": 105703.7,
+    "maior": {
+     "data": "2028-09-07",
+     "usinas": 2003,
+     "dias_depois_da_fotografia": 1818
+    }
+   },
+   {
+    "ralie": "2023-10-20",
+    "datas": 2,
+    "ugs": 111912,
+    "mw": 113083.0,
+    "maior": {
+     "data": "2028-10-08",
+     "usinas": 2268,
+     "dias_depois_da_fotografia": 1815
+    }
+   },
+   {
+    "ralie": "2023-11-17",
+    "datas": 2,
+    "ugs": 109607,
+    "mw": 110914.2,
+    "maior": {
+     "data": "2029-01-15",
+     "usinas": 2255,
+     "dias_depois_da_fotografia": 1886
+    }
+   },
+   {
+    "ralie": "2023-12-31",
+    "datas": 3,
+    "ugs": 113274,
+    "mw": 117995.0,
+    "maior": {
+     "data": "2029-01-10",
+     "usinas": 2149,
+     "dias_depois_da_fotografia": 1837
+    }
+   },
+   {
+    "ralie": "2024-01-31",
+    "datas": 4,
+    "ugs": 114062,
+    "mw": 120957.6,
+    "maior": {
+     "data": "2029-01-28",
+     "usinas": 2131,
+     "dias_depois_da_fotografia": 1824
+    }
+   },
+   {
+    "ralie": "2024-02-16",
+    "datas": 3,
+    "ugs": 114716,
+    "mw": 122102.8,
+    "maior": {
+     "data": "2029-02-05",
+     "usinas": 2265,
+     "dias_depois_da_fotografia": 1816
+    }
+   },
+   {
+    "ralie": "2024-03-21",
+    "datas": 3,
+    "ugs": 110415,
+    "mw": 120950.3,
+    "maior": {
+     "data": "2029-03-10",
+     "usinas": 2348,
+     "dias_depois_da_fotografia": 1815
+    }
+   },
+   {
+    "ralie": "2024-04-18",
+    "datas": 3,
+    "ugs": 109502,
+    "mw": 118781.8,
+    "maior": {
+     "data": "2029-04-09",
+     "usinas": 2319,
+     "dias_depois_da_fotografia": 1817
+    }
+   },
+   {
+    "ralie": "2024-05-23",
+    "datas": 2,
+    "ugs": 102130,
+    "mw": 113667.6,
+    "maior": {
+     "data": "2029-05-08",
+     "usinas": 2368,
+     "dias_depois_da_fotografia": 1811
+    }
+   },
+   {
+    "ralie": "2024-06-20",
+    "datas": 3,
+    "ugs": 108981,
+    "mw": 116486.1,
+    "maior": {
+     "data": "2029-06-09",
+     "usinas": 2311,
+     "dias_depois_da_fotografia": 1815
+    }
+   },
+   {
+    "ralie": "2024-07-19",
+    "datas": 2,
+    "ugs": 105612,
+    "mw": 112831.8,
+    "maior": {
+     "data": "2029-07-04",
+     "usinas": 2339,
+     "dias_depois_da_fotografia": 1811
+    }
+   },
+   {
+    "ralie": "2024-08-23",
+    "datas": 3,
+    "ugs": 108176,
+    "mw": 118167.8,
+    "maior": {
+     "data": "2029-08-11",
+     "usinas": 2323,
+     "dias_depois_da_fotografia": 1814
+    }
+   },
+   {
+    "ralie": "2024-09-19",
+    "datas": 4,
+    "ugs": 107774,
+    "mw": 116149.5,
+    "maior": {
+     "data": "2029-09-09",
+     "usinas": 2132,
+     "dias_depois_da_fotografia": 1816
+    }
+   },
+   {
+    "ralie": "2024-10-15",
+    "datas": 3,
+    "ugs": 108093,
+    "mw": 117803.5,
+    "maior": {
+     "data": "2029-10-09",
+     "usinas": 2226,
+     "dias_depois_da_fotografia": 1820
+    }
+   },
+   {
+    "ralie": "2024-11-21",
+    "datas": 2,
+    "ugs": 91487,
+    "mw": 97041.8,
+    "maior": {
+     "data": "2029-11-06",
+     "usinas": 2054,
+     "dias_depois_da_fotografia": 1811
+    }
+   },
+   {
+    "ralie": "2024-12-31",
+    "datas": 2,
+    "ugs": 94147,
+    "mw": 102293.4,
+    "maior": {
+     "data": "2030-02-15",
+     "usinas": 2134,
+     "dias_depois_da_fotografia": 1872
+    }
+   },
+   {
+    "ralie": "2025-01-24",
+    "datas": 3,
+    "ugs": 92619,
+    "mw": 99902.8,
+    "maior": {
+     "data": "2030-01-09",
+     "usinas": 1899,
+     "dias_depois_da_fotografia": 1811
+    }
+   },
+   {
+    "ralie": "2025-02-20",
+    "datas": 3,
+    "ugs": 94696,
+    "mw": 104971.0,
+    "maior": {
+     "data": "2030-02-11",
+     "usinas": 1896,
+     "dias_depois_da_fotografia": 1817
+    }
+   },
+   {
+    "ralie": "2025-03-21",
+    "datas": 3,
+    "ugs": 93689,
+    "mw": 103361.9,
+    "maior": {
+     "data": "2030-03-10",
+     "usinas": 2001,
+     "dias_depois_da_fotografia": 1815
+    }
+   },
+   {
+    "ralie": "2025-04-22",
+    "datas": 3,
+    "ugs": 93868,
+    "mw": 102830.0,
+    "maior": {
+     "data": "2030-04-13",
+     "usinas": 1812,
+     "dias_depois_da_fotografia": 1817
+    }
+   },
+   {
+    "ralie": "2025-05-26",
+    "datas": 4,
+    "ugs": 93496,
+    "mw": 103362.4,
+    "maior": {
+     "data": "2030-05-11",
+     "usinas": 1901,
+     "dias_depois_da_fotografia": 1811
+    }
+   },
+   {
+    "ralie": "2025-06-18",
+    "datas": 3,
+    "ugs": 91952,
+    "mw": 101335.6,
+    "maior": {
+     "data": "2030-06-10",
+     "usinas": 1890,
+     "dias_depois_da_fotografia": 1818
+    }
+   },
+   {
+    "ralie": "2025-07-17",
+    "datas": 3,
+    "ugs": 90972,
+    "mw": 98960.1,
+    "maior": {
+     "data": "2030-07-13",
+     "usinas": 1827,
+     "dias_depois_da_fotografia": 1822
+    }
+   },
+   {
+    "ralie": "2025-08-22",
+    "datas": 3,
+    "ugs": 93596,
+    "mw": 97637.6,
+    "maior": {
+     "data": "2030-08-07",
+     "usinas": 1826,
+     "dias_depois_da_fotografia": 1811
+    }
+   },
+   {
+    "ralie": "2025-09-22",
+    "datas": 2,
+    "ugs": 91799,
+    "mw": 94018.2,
+    "maior": {
+     "data": "2030-09-11",
+     "usinas": 1856,
+     "dias_depois_da_fotografia": 1815
+    }
+   },
+   {
+    "ralie": "2025-10-27",
+    "datas": 3,
+    "ugs": 95524,
+    "mw": 101927.1,
+    "maior": {
+     "data": "2030-10-08",
+     "usinas": 1860,
+     "dias_depois_da_fotografia": 1807
+    }
+   },
+   {
+    "ralie": "2025-11-24",
+    "datas": 3,
+    "ugs": 85993,
+    "mw": 98585.9,
+    "maior": {
+     "data": "2030-11-09",
+     "usinas": 1957,
+     "dias_depois_da_fotografia": 1811
+    }
+   },
+   {
+    "ralie": "2025-12-31",
+    "datas": 2,
+    "ugs": 73566,
+    "mw": 81552.7,
+    "maior": {
+     "data": "2030-12-08",
+     "usinas": 1731,
+     "dias_depois_da_fotografia": 1803
+    }
+   },
+   {
+    "ralie": "2026-01-24",
+    "datas": 2,
+    "ugs": 72558,
+    "mw": 73031.2,
+    "maior": {
+     "data": "2031-01-12",
+     "usinas": 1351,
+     "dias_depois_da_fotografia": 1814
+    }
+   },
+   {
+    "ralie": "2026-02-22",
+    "datas": 2,
+    "ugs": 73299,
+    "mw": 74836.2,
+    "maior": {
+     "data": "2031-02-10",
+     "usinas": 1427,
+     "dias_depois_da_fotografia": 1814
+    }
+   },
+   {
+    "ralie": "2026-03-20",
+    "datas": 2,
+    "ugs": 60172,
+    "mw": 69089.4,
+    "maior": {
+     "data": "2031-03-11",
+     "usinas": 1391,
+     "dias_depois_da_fotografia": 1817
+    }
+   },
+   {
+    "ralie": "2026-04-16",
+    "datas": 2,
+    "ugs": 60020,
+    "mw": 69266.1,
+    "maior": {
+     "data": "2031-04-08",
+     "usinas": 1339,
+     "dias_depois_da_fotografia": 1818
+    }
+   },
+   {
+    "ralie": "2026-05-22",
+    "datas": 2,
+    "ugs": 58632,
+    "mw": 64668.3,
+    "maior": {
+     "data": "2031-05-10",
+     "usinas": 1352,
+     "dias_depois_da_fotografia": 1814
+    }
+   },
+   {
+    "ralie": "2026-06-22",
+    "datas": 2,
+    "ugs": 58347,
+    "mw": 64164.8,
+    "maior": {
+     "data": "2031-06-10",
+     "usinas": 1211,
+     "dias_depois_da_fotografia": 1814
+    }
+   },
+   {
+    "ralie": "2026-07-28",
+    "datas": 2,
+    "ugs": 58134,
+    "mw": 63561.6,
+    "maior": {
+     "data": "2031-07-06",
+     "usinas": 1352,
+     "dias_depois_da_fotografia": 1804
+    }
+   },
+   {
+    "ralie": "2026-08-22",
+    "datas": 2,
+    "ugs": 49689,
+    "mw": 53597.0,
+    "maior": {
+     "data": "2031-08-10",
+     "usinas": 949,
+     "dias_depois_da_fotografia": 1814
+    }
+   },
+   {
+    "ralie": "2026-09-18",
+    "datas": 3,
+    "ugs": 49238,
+    "mw": 52652.0,
+    "maior": {
+     "data": "2031-09-13",
+     "usinas": 1099,
+     "dias_depois_da_fotografia": 1821
+    }
    }
   ],
+  "desvio_prazo_vigente": {
+   "definicao": "Data de liberação comercial menos a data outorgada da unidade no arquivo de liberações, que é o prazo vigente na publicação do arquivo, sem data-base. Mede a distância a um prazo (em autorizações recentes, um prazo limite anos à frente), não atraso em relação a uma promessa datada; o que atrasou em relação à previsão com data-base está em 'confiabilidade'.",
+   "por_ano": [
+    {
+     "ano": "2014",
+     "unidades_ou_grupos": 276,
+     "mw_liberado": 7455.3,
+     "pct_mw_depois_do_prazo": 54.9,
+     "pct_mw_antes_do_prazo": 39.5,
+     "mediana_desvio_dias_ponderada": 7,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2015",
+     "unidades_ou_grupos": 278,
+     "mw_liberado": 6786.3,
+     "pct_mw_depois_do_prazo": 75.5,
+     "pct_mw_antes_do_prazo": 23.0,
+     "mediana_desvio_dias_ponderada": 121,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2016",
+     "unidades_ou_grupos": 345,
+     "mw_liberado": 9538.5,
+     "pct_mw_depois_do_prazo": 71.2,
+     "pct_mw_antes_do_prazo": 23.8,
+     "mediana_desvio_dias_ponderada": 48,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2017",
+     "unidades_ou_grupos": 413,
+     "mw_liberado": 7455.8,
+     "pct_mw_depois_do_prazo": 72.7,
+     "pct_mw_antes_do_prazo": 27.3,
+     "mediana_desvio_dias_ponderada": 110,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2018",
+     "unidades_ou_grupos": 269,
+     "mw_liberado": 7321.0,
+     "pct_mw_depois_do_prazo": 75.5,
+     "pct_mw_antes_do_prazo": 23.8,
+     "mediana_desvio_dias_ponderada": 246,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2019",
+     "unidades_ou_grupos": 432,
+     "mw_liberado": 7437.2,
+     "pct_mw_depois_do_prazo": 59.3,
+     "pct_mw_antes_do_prazo": 40.5,
+     "mediana_desvio_dias_ponderada": 26,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2020",
+     "unidades_ou_grupos": 2176,
+     "mw_liberado": 4932.3,
+     "pct_mw_depois_do_prazo": 50.8,
+     "pct_mw_antes_do_prazo": 47.0,
+     "mediana_desvio_dias_ponderada": 2,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2021",
+     "unidades_ou_grupos": 2811,
+     "mw_liberado": 7606.6,
+     "pct_mw_depois_do_prazo": 46.7,
+     "pct_mw_antes_do_prazo": 53.3,
+     "mediana_desvio_dias_ponderada": -61,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2022",
+     "unidades_ou_grupos": 9319,
+     "mw_liberado": 8079.6,
+     "pct_mw_depois_do_prazo": 53.8,
+     "pct_mw_antes_do_prazo": 45.7,
+     "mediana_desvio_dias_ponderada": 29,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2023",
+     "unidades_ou_grupos": 9691,
+     "mw_liberado": 10325.7,
+     "pct_mw_depois_do_prazo": 63.8,
+     "pct_mw_antes_do_prazo": 36.1,
+     "mediana_desvio_dias_ponderada": 87,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2024",
+     "unidades_ou_grupos": 18026,
+     "mw_liberado": 10790.2,
+     "pct_mw_depois_do_prazo": 48.8,
+     "pct_mw_antes_do_prazo": 51.2,
+     "mediana_desvio_dias_ponderada": -39,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2025",
+     "unidades_ou_grupos": 5091,
+     "mw_liberado": 7466.5,
+     "pct_mw_depois_do_prazo": 55.6,
+     "pct_mw_antes_do_prazo": 44.3,
+     "mediana_desvio_dias_ponderada": 86,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2026",
+     "unidades_ou_grupos": 9429,
+     "mw_liberado": 5166.7,
+     "pct_mw_depois_do_prazo": 26.3,
+     "pct_mw_antes_do_prazo": 66.7,
+     "mediana_desvio_dias_ponderada": -1209,
+     "ano_parcial": true
+    }
+   ]
+  },
   "data_liberacoes": "2026-09-18"
  },
  "transmissao": {
   "leiloes": {
-   "data_referencia": "2026-09-01T05:01:33Z",
+   "publicado_em": "2026-09-01T05:01:33Z",
+   "periodo": {
+    "inicio": "1999-12-03",
+    "fim": "2024-09-27"
+   },
    "por_ano": [
     {
      "ano": "1999",
-     "lotes": 1,
+     "lotes_ofertados": 1,
+     "lotes_contratados": 1,
+     "lotes_sem_vencedor": 0,
      "km": 505.4,
      "mva": 0.0,
      "investimento_previsto_rs_mi": 208.0,
      "rap_edital_rs_mi": 45.3,
      "rap_vencedor_rs_mi": 41.7,
      "desagio_agregado_pct": 8.0,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 0.0,
+     "rap_edital_sem_vencedor_rs_mi": 0.0
     },
     {
      "ano": "2000",
-     "lotes": 8,
+     "lotes_ofertados": 8,
+     "lotes_contratados": 8,
+     "lotes_sem_vencedor": 0,
      "km": 5087.5,
      "mva": 5046.0,
      "investimento_previsto_rs_mi": 3041.7,
      "rap_edital_rs_mi": 616.2,
      "rap_vencedor_rs_mi": 588.9,
      "desagio_agregado_pct": 4.4,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 0.0,
+     "rap_edital_sem_vencedor_rs_mi": 0.0
     },
     {
      "ano": "2001",
-     "lotes": 7,
+     "lotes_ofertados": 7,
+     "lotes_contratados": 5,
+     "lotes_sem_vencedor": 2,
      "km": 711.1,
      "mva": 1200.0,
-     "investimento_previsto_rs_mi": 556.2,
-     "rap_edital_rs_mi": 123.6,
+     "investimento_previsto_rs_mi": 398.9,
+     "rap_edital_rs_mi": 83.9,
      "rap_vencedor_rs_mi": 81.4,
      "desagio_agregado_pct": 3.0,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 157.4,
+     "rap_edital_sem_vencedor_rs_mi": 39.7
     },
     {
      "ano": "2002",
-     "lotes": 8,
+     "lotes_ofertados": 8,
+     "lotes_contratados": 8,
+     "lotes_sem_vencedor": 0,
      "km": 1868.8,
      "mva": 0.0,
      "investimento_previsto_rs_mi": 935.4,
      "rap_edital_rs_mi": 213.9,
      "rap_vencedor_rs_mi": 192.9,
      "desagio_agregado_pct": 9.8,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 0.0,
+     "rap_edital_sem_vencedor_rs_mi": 0.0
     },
     {
      "ano": "2003",
-     "lotes": 7,
+     "lotes_ofertados": 7,
+     "lotes_contratados": 7,
+     "lotes_sem_vencedor": 0,
      "km": 1803.5,
      "mva": 1500.0,
      "investimento_previsto_rs_mi": 1776.9,
      "rap_edital_rs_mi": 410.2,
      "rap_vencedor_rs_mi": 249.3,
      "desagio_agregado_pct": 39.2,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 0.0,
+     "rap_edital_sem_vencedor_rs_mi": 0.0
     },
     {
      "ano": "2004",
-     "lotes": 13,
+     "lotes_ofertados": 13,
+     "lotes_contratados": 13,
+     "lotes_sem_vencedor": 0,
      "km": 3760.0,
      "mva": 3433.2,
      "investimento_previsto_rs_mi": 3170.1,
      "rap_edital_rs_mi": 646.7,
      "rap_vencedor_rs_mi": 398.4,
      "desagio_agregado_pct": 38.4,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 0.0,
+     "rap_edital_sem_vencedor_rs_mi": 0.0
     },
     {
      "ano": "2005",
-     "lotes": 7,
+     "lotes_ofertados": 7,
+     "lotes_contratados": 7,
+     "lotes_sem_vencedor": 0,
      "km": 3165.8,
      "mva": 4450.0,
      "investimento_previsto_rs_mi": 2873.2,
      "rap_edital_rs_mi": 511.5,
      "rap_vencedor_rs_mi": 289.9,
      "desagio_agregado_pct": 43.3,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 0.0,
+     "rap_edital_sem_vencedor_rs_mi": 0.0
     },
     {
      "ano": "2006",
-     "lotes": 13,
+     "lotes_ofertados": 13,
+     "lotes_contratados": 13,
+     "lotes_sem_vencedor": 0,
      "km": 3451.5,
      "mva": 8204.0,
      "investimento_previsto_rs_mi": 1800.4,
      "rap_edital_rs_mi": 322.8,
      "rap_vencedor_rs_mi": 159.8,
      "desagio_agregado_pct": 50.5,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 0.0,
+     "rap_edital_sem_vencedor_rs_mi": 0.0
     },
     {
      "ano": "2007",
-     "lotes": 7,
+     "lotes_ofertados": 7,
+     "lotes_contratados": 7,
+     "lotes_sem_vencedor": 0,
      "km": 2332.0,
      "mva": 683.3,
      "investimento_previsto_rs_mi": 1051.2,
      "rap_edital_rs_mi": 148.6,
      "rap_vencedor_rs_mi": 67.1,
      "desagio_agregado_pct": 54.8,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 0.0,
+     "rap_edital_sem_vencedor_rs_mi": 0.0
     },
     {
      "ano": "2008",
-     "lotes": 29,
+     "lotes_ofertados": 29,
+     "lotes_contratados": 28,
+     "lotes_sem_vencedor": 1,
      "km": 10700.4,
      "mva": 39369.9,
-     "investimento_previsto_rs_mi": 9704.9,
-     "rap_edital_rs_mi": 1400.7,
+     "investimento_previsto_rs_mi": 9638.9,
+     "rap_edital_rs_mi": 1391.6,
      "rap_vencedor_rs_mi": 1210.8,
      "desagio_agregado_pct": 13.0,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 66.0,
+     "rap_edital_sem_vencedor_rs_mi": 9.1
     },
     {
      "ano": "2009",
-     "lotes": 20,
+     "lotes_ofertados": 20,
+     "lotes_contratados": 20,
+     "lotes_sem_vencedor": 0,
      "km": 3898.5,
      "mva": 12446.9,
      "investimento_previsto_rs_mi": 3137.3,
      "rap_edital_rs_mi": 400.2,
      "rap_vencedor_rs_mi": 305.0,
      "desagio_agregado_pct": 23.8,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 0.0,
+     "rap_edital_sem_vencedor_rs_mi": 0.0
     },
     {
      "ano": "2010",
-     "lotes": 21,
+     "lotes_ofertados": 21,
+     "lotes_contratados": 19,
+     "lotes_sem_vencedor": 2,
      "km": 1833.7,
      "mva": 4566.0,
-     "investimento_previsto_rs_mi": 1896.0,
-     "rap_edital_rs_mi": 232.0,
+     "investimento_previsto_rs_mi": 1768.0,
+     "rap_edital_rs_mi": 216.4,
      "rap_vencedor_rs_mi": 129.3,
      "desagio_agregado_pct": 40.3,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 128.0,
+     "rap_edital_sem_vencedor_rs_mi": 15.6
     },
     {
      "ano": "2011",
-     "lotes": 24,
+     "lotes_ofertados": 24,
+     "lotes_contratados": 23,
+     "lotes_sem_vencedor": 1,
      "km": 4695.0,
      "mva": 17903.3,
-     "investimento_previsto_rs_mi": 5225.0,
-     "rap_edital_rs_mi": 630.5,
+     "investimento_previsto_rs_mi": 5208.0,
+     "rap_edital_rs_mi": 628.5,
      "rap_vencedor_rs_mi": 452.8,
      "desagio_agregado_pct": 28.0,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 17.0,
+     "rap_edital_sem_vencedor_rs_mi": 2.0
     },
     {
      "ano": "2012",
-     "lotes": 23,
+     "lotes_ofertados": 23,
+     "lotes_contratados": 20,
+     "lotes_sem_vencedor": 3,
      "km": 4274.2,
      "mva": 7674.3,
-     "investimento_previsto_rs_mi": 8720.8,
-     "rap_edital_rs_mi": 998.9,
+     "investimento_previsto_rs_mi": 8326.8,
+     "rap_edital_rs_mi": 954.9,
      "rap_vencedor_rs_mi": 705.2,
      "desagio_agregado_pct": 26.1,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 394.0,
+     "rap_edital_sem_vencedor_rs_mi": 43.9
     },
     {
      "ano": "2013",
-     "lotes": 39,
+     "lotes_ofertados": 39,
+     "lotes_contratados": 25,
+     "lotes_sem_vencedor": 14,
      "km": 4770.6,
      "mva": 8459.2,
-     "investimento_previsto_rs_mi": 15861.6,
-     "rap_edital_rs_mi": 1884.1,
+     "investimento_previsto_rs_mi": 13700.6,
+     "rap_edital_rs_mi": 1648.3,
      "rap_vencedor_rs_mi": 1288.0,
      "desagio_agregado_pct": 21.9,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 2161.0,
+     "rap_edital_sem_vencedor_rs_mi": 235.9
     },
     {
      "ano": "2014",
-     "lotes": 22,
+     "lotes_ofertados": 22,
+     "lotes_contratados": 12,
+     "lotes_sem_vencedor": 10,
      "km": 1981.0,
      "mva": 5217.8,
-     "investimento_previsto_rs_mi": 10675.5,
-     "rap_edital_rs_mi": 1268.0,
+     "investimento_previsto_rs_mi": 7000.7,
+     "rap_edital_rs_mi": 835.6,
      "rap_vencedor_rs_mi": 726.8,
      "desagio_agregado_pct": 13.0,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 3674.7,
+     "rap_edital_sem_vencedor_rs_mi": 432.4
     },
     {
      "ano": "2015",
-     "lotes": 28,
+     "lotes_ofertados": 28,
+     "lotes_contratados": 11,
+     "lotes_sem_vencedor": 17,
      "km": 5596.0,
      "mva": 18435.0,
-     "investimento_previsto_rs_mi": 24159.3,
-     "rap_edital_rs_mi": 4065.2,
+     "investimento_previsto_rs_mi": 13287.0,
+     "rap_edital_rs_mi": 2254.6,
      "rap_vencedor_rs_mi": 2006.2,
      "desagio_agregado_pct": 11.0,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 10872.3,
+     "rap_edital_sem_vencedor_rs_mi": 1810.6
     },
     {
      "ano": "2016",
-     "lotes": 48,
+     "lotes_ofertados": 48,
+     "lotes_contratados": 35,
+     "lotes_sem_vencedor": 13,
      "km": 9658.8,
      "mva": 14982.6,
-     "investimento_previsto_rs_mi": 24816.1,
-     "rap_edital_rs_mi": 5169.0,
+     "investimento_previsto_rs_mi": 18474.0,
+     "rap_edital_rs_mi": 3820.9,
      "rap_vencedor_rs_mi": 3487.5,
      "desagio_agregado_pct": 8.7,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 6342.1,
+     "rap_edital_sem_vencedor_rs_mi": 1348.1
     },
     {
      "ano": "2017",
-     "lotes": 46,
+     "lotes_ofertados": 46,
+     "lotes_contratados": 42,
+     "lotes_sem_vencedor": 4,
      "km": 11997.4,
      "mva": 27641.3,
-     "investimento_previsto_rs_mi": 21910.1,
-     "rap_edital_rs_mi": 4262.4,
+     "investimento_previsto_rs_mi": 21476.5,
+     "rap_edital_rs_mi": 4168.1,
      "rap_vencedor_rs_mi": 2586.8,
      "desagio_agregado_pct": 37.9,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 433.7,
+     "rap_edital_sem_vencedor_rs_mi": 94.2
     },
     {
      "ano": "2018",
-     "lotes": 36,
+     "lotes_ofertados": 36,
+     "lotes_contratados": 36,
+     "lotes_sem_vencedor": 0,
      "km": 9824.7,
      "mva": 30289.4,
      "investimento_previsto_rs_mi": 19185.1,
      "rap_edital_rs_mi": 3147.8,
      "rap_vencedor_rs_mi": 1604.8,
      "desagio_agregado_pct": 49.0,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 0.0,
+     "rap_edital_sem_vencedor_rs_mi": 0.0
     },
     {
      "ano": "2019",
-     "lotes": 12,
+     "lotes_ofertados": 12,
+     "lotes_contratados": 12,
+     "lotes_sem_vencedor": 0,
      "km": 2321.2,
      "mva": 8746.7,
      "investimento_previsto_rs_mi": 4220.1,
      "rap_edital_rs_mi": 719.7,
      "rap_vencedor_rs_mi": 285.7,
      "desagio_agregado_pct": 60.3,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 0.0,
+     "rap_edital_sem_vencedor_rs_mi": 0.0
     },
     {
      "ano": "2020",
-     "lotes": 10,
+     "lotes_ofertados": 10,
+     "lotes_contratados": 10,
+     "lotes_sem_vencedor": 0,
      "km": 1959.4,
      "mva": 6420.0,
      "investimento_previsto_rs_mi": 7346.4,
      "rap_edital_rs_mi": 1022.2,
      "rap_vencedor_rs_mi": 457.5,
      "desagio_agregado_pct": 55.2,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 0.0,
+     "rap_edital_sem_vencedor_rs_mi": 0.0
     },
     {
      "ano": "2021",
-     "lotes": 10,
+     "lotes_ofertados": 10,
+     "lotes_contratados": 10,
+     "lotes_sem_vencedor": 0,
      "km": 1417.0,
      "mva": 3350.0,
      "investimento_previsto_rs_mi": 4186.1,
      "rap_edital_rs_mi": 588.5,
      "rap_vencedor_rs_mi": 297.7,
      "desagio_agregado_pct": 49.4,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 0.0,
+     "rap_edital_sem_vencedor_rs_mi": 0.0
     },
     {
      "ano": "2022",
-     "lotes": 19,
+     "lotes_ofertados": 19,
+     "lotes_contratados": 19,
+     "lotes_sem_vencedor": 0,
      "km": 6135.0,
      "mva": 9830.0,
      "investimento_previsto_rs_mi": 18801.8,
      "rap_edital_rs_mi": 2845.3,
      "rap_vencedor_rs_mi": 1580.2,
      "desagio_agregado_pct": 44.5,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 0.0,
+     "rap_edital_sem_vencedor_rs_mi": 0.0
     },
     {
      "ano": "2023",
-     "lotes": 12,
+     "lotes_ofertados": 12,
+     "lotes_contratados": 12,
+     "lotes_sem_vencedor": 0,
      "km": 9187.0,
      "mva": 10240.0,
      "investimento_previsto_rs_mi": 37497.3,
      "rap_edital_rs_mi": 6412.6,
      "rap_vencedor_rs_mi": 3643.5,
      "desagio_agregado_pct": 43.2,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 0.0,
+     "rap_edital_sem_vencedor_rs_mi": 0.0
     },
     {
      "ano": "2024",
-     "lotes": 18,
+     "lotes_ofertados": 18,
+     "lotes_contratados": 18,
+     "lotes_sem_vencedor": 0,
      "km": 7247.0,
      "mva": 10200.0,
      "investimento_previsto_rs_mi": 21504.7,
      "rap_edital_rs_mi": 3542.8,
      "rap_vencedor_rs_mi": 2053.2,
      "desagio_agregado_pct": 42.0,
-     "lotes_sem_investimento": 0
+     "lotes_sem_investimento": 0,
+     "investimento_ofertado_sem_vencedor_rs_mi": 0.0,
+     "rap_edital_sem_vencedor_rs_mi": 0.0
     }
    ],
    "lotes": 488,
+   "lotes_contratados": 421,
+   "lotes_sem_vencedor": 67,
+   "sem_vencedor_por_rotulo": {
+    "NÃO LEILOADO": 5,
+    "SEM INSCRITO APTO": 7,
+    "SEM LANCE": 55
+   },
+   "regra_sem_vencedor": "Lote com vencedor 'SEM LANCE', 'SEM INSCRITO APTO' ou 'NÃO LEILOADO' não foi contratado: fica fora de lotes contratados, km, MVA, investimento e RAP, e o 0 que a fonte publica em km, MVA, prazo e RAP vencedora é tratado como ausência.",
    "ultimo_leilao": {
     "leilao": "002/2024",
     "data": "2024-09-27"
@@ -6190,13 +7711,20 @@
    "data_referencia": "2026-09-29",
    "definicao_km": "km de circuito: soma de NumEtnLinTms (extensão da linha, em km) de cada módulo de linha distinto; no SIGET cada circuito é um módulo, então linha de circuito duplo ou bipolo conta cada circuito",
    "modulos_lt_fora_do_limite": 0,
+   "modulos_em_mais_de_um_empreendimento": {
+    "regra": "contado uma vez, no empreendimento cuja obra de Instalação tem a data de operação mais antiga (empate: menor número)",
+    "modulos_lt": 6,
+    "modulos_tr": 7,
+    "km_lt": 697.7,
+    "mva_tr": 175.0
+   },
    "por_situacao": [
     {
      "situacao": "Em Operação",
      "empreendimentos": 2024,
      "obras": 14798,
-     "km_lt_novas": 131550.5,
-     "mva_tr_novos": 283280.2
+     "km_lt_novas": 130852.8,
+     "mva_tr_novos": 283105.2
     },
     {
      "situacao": "Em andamento",
@@ -6730,9 +8258,9 @@
     {
      "ano": "2009",
      "km_lt_novas": 4972.0,
-     "mva_tr_novos": 8379.3,
+     "mva_tr_novos": 8279.3,
      "modulos_lt": 43,
-     "modulos_tr": 42
+     "modulos_tr": 41
     },
     {
      "ano": "2010",
@@ -6750,16 +8278,16 @@
     },
     {
      "ano": "2012",
-     "km_lt_novas": 4500.3,
+     "km_lt_novas": 4385.3,
      "mva_tr_novos": 19424.7,
-     "modulos_lt": 52,
+     "modulos_lt": 51,
      "modulos_tr": 71
     },
     {
      "ano": "2013",
-     "km_lt_novas": 10314.9,
+     "km_lt_novas": 10161.0,
      "mva_tr_novos": 18327.5,
-     "modulos_lt": 72,
+     "modulos_lt": 70,
      "modulos_tr": 79
     },
     {
@@ -6792,9 +8320,9 @@
     },
     {
      "ano": "2018",
-     "km_lt_novas": 4339.5,
+     "km_lt_novas": 4005.2,
      "mva_tr_novos": 14968.0,
-     "modulos_lt": 34,
+     "modulos_lt": 33,
      "modulos_tr": 64
     },
     {
@@ -6813,9 +8341,9 @@
     },
     {
      "ano": "2021",
-     "km_lt_novas": 9659.2,
+     "km_lt_novas": 9569.7,
      "mva_tr_novos": 20245.7,
-     "modulos_lt": 92,
+     "modulos_lt": 91,
      "modulos_tr": 73
     },
     {
@@ -6834,9 +8362,9 @@
     },
     {
      "ano": "2024",
-     "km_lt_novas": 6965.1,
+     "km_lt_novas": 6960.1,
      "mva_tr_novos": 18853.0,
-     "modulos_lt": 70,
+     "modulos_lt": 69,
      "modulos_tr": 82
     },
     {
@@ -6855,6 +8383,1252 @@
     }
    ]
   },
+  "contratos_assinados": {
+   "data_referencia": "2026-09-29",
+   "regra": "Data de assinatura publicada pela fonte (DatAsnCcd). km e MVA: módulos de linha e transformadores de obras de Instalação dos empreendimentos do objeto original do contrato (linhas com a mesma data de fim do contrato); reforço incorporado depois, com prazo próprio, fica fora. Contrato sem empreendimento cadastrado no SIGET tem km e MVA ausentes, não zero. Um contrato pode vir de leilão, de relicitação ou de outra origem: o SIGET não informa o leilão nem a RAP de lance.",
+   "nota_zero": "O recurso lista todos os contratos de concessão de transmissão cadastrados no SIGET: ano do período sem contrato assinado aparece com 0 contratos (zero observado, não ausência).",
+   "por_ano": [
+    {
+     "ano": "1995",
+     "contratos": 1,
+     "contratos_sem_empreendimento": 0,
+     "empreendimentos": 1,
+     "km_lt_novas": 0.0,
+     "mva_tr_novos": 0.0,
+     "ano_parcial": false
+    },
+    {
+     "ano": "1996",
+     "contratos": 1,
+     "contratos_sem_empreendimento": 1,
+     "empreendimentos": 0,
+     "km_lt_novas": 0.0,
+     "mva_tr_novos": 0.0,
+     "ano_parcial": false
+    },
+    {
+     "ano": "1997",
+     "contratos": 1,
+     "contratos_sem_empreendimento": 0,
+     "empreendimentos": 9,
+     "km_lt_novas": 294.9,
+     "mva_tr_novos": 100.0,
+     "ano_parcial": false
+    },
+    {
+     "ano": "1998",
+     "contratos": 0,
+     "contratos_sem_empreendimento": 0,
+     "empreendimentos": 0,
+     "km_lt_novas": 0.0,
+     "mva_tr_novos": 0.0,
+     "ano_parcial": false
+    },
+    {
+     "ano": "1999",
+     "contratos": 0,
+     "contratos_sem_empreendimento": 0,
+     "empreendimentos": 0,
+     "km_lt_novas": 0.0,
+     "mva_tr_novos": 0.0,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2000",
+     "contratos": 6,
+     "contratos_sem_empreendimento": 2,
+     "empreendimentos": 22,
+     "km_lt_novas": 1686.8,
+     "mva_tr_novos": 900.0,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2001",
+     "contratos": 5,
+     "contratos_sem_empreendimento": 3,
+     "empreendimentos": 6,
+     "km_lt_novas": 0.0,
+     "mva_tr_novos": 750.0,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2002",
+     "contratos": 10,
+     "contratos_sem_empreendimento": 3,
+     "empreendimentos": 14,
+     "km_lt_novas": 809.2,
+     "mva_tr_novos": 150.0,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2003",
+     "contratos": 0,
+     "contratos_sem_empreendimento": 0,
+     "empreendimentos": 0,
+     "km_lt_novas": 0.0,
+     "mva_tr_novos": 0.0,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2004",
+     "contratos": 7,
+     "contratos_sem_empreendimento": 5,
+     "empreendimentos": 9,
+     "km_lt_novas": 1006.6,
+     "mva_tr_novos": 1500.0,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2005",
+     "contratos": 12,
+     "contratos_sem_empreendimento": 2,
+     "empreendimentos": 31,
+     "km_lt_novas": 2256.4,
+     "mva_tr_novos": 4540.0,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2006",
+     "contratos": 7,
+     "contratos_sem_empreendimento": 0,
+     "empreendimentos": 20,
+     "km_lt_novas": 2817.3,
+     "mva_tr_novos": 4500.0,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2007",
+     "contratos": 12,
+     "contratos_sem_empreendimento": 0,
+     "empreendimentos": 39,
+     "km_lt_novas": 4069.4,
+     "mva_tr_novos": 11504.0,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2008",
+     "contratos": 19,
+     "contratos_sem_empreendimento": 0,
+     "empreendimentos": 56,
+     "km_lt_novas": 8496.0,
+     "mva_tr_novos": 11616.6,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2009",
+     "contratos": 27,
+     "contratos_sem_empreendimento": 2,
+     "empreendimentos": 62,
+     "km_lt_novas": 13209.2,
+     "mva_tr_novos": 15916.7,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2010",
+     "contratos": 20,
+     "contratos_sem_empreendimento": 1,
+     "empreendimentos": 52,
+     "km_lt_novas": 2846.1,
+     "mva_tr_novos": 8349.3,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2011",
+     "contratos": 17,
+     "contratos_sem_empreendimento": 0,
+     "empreendimentos": 45,
+     "km_lt_novas": 1586.2,
+     "mva_tr_novos": 8074.3,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2012",
+     "contratos": 23,
+     "contratos_sem_empreendimento": 1,
+     "empreendimentos": 61,
+     "km_lt_novas": 4715.1,
+     "mva_tr_novos": 12921.3,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2013",
+     "contratos": 18,
+     "contratos_sem_empreendimento": 1,
+     "empreendimentos": 1938,
+     "km_lt_novas": 37926.5,
+     "mva_tr_novos": 71653.9,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2014",
+     "contratos": 14,
+     "contratos_sem_empreendimento": 4,
+     "empreendimentos": 38,
+     "km_lt_novas": 7364.0,
+     "mva_tr_novos": 9900.0,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2015",
+     "contratos": 4,
+     "contratos_sem_empreendimento": 2,
+     "empreendimentos": 6,
+     "km_lt_novas": 111.0,
+     "mva_tr_novos": 1800.0,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2016",
+     "contratos": 20,
+     "contratos_sem_empreendimento": 3,
+     "empreendimentos": 39,
+     "km_lt_novas": 3730.0,
+     "mva_tr_novos": 9561.0,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2017",
+     "contratos": 52,
+     "contratos_sem_empreendimento": 1,
+     "empreendimentos": 92,
+     "km_lt_novas": 12177.7,
+     "mva_tr_novos": 19817.6,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2018",
+     "contratos": 30,
+     "contratos_sem_empreendimento": 6,
+     "empreendimentos": 51,
+     "km_lt_novas": 6466.5,
+     "mva_tr_novos": 17736.7,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2019",
+     "contratos": 12,
+     "contratos_sem_empreendimento": 0,
+     "empreendimentos": 40,
+     "km_lt_novas": 5563.1,
+     "mva_tr_novos": 6320.0,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2020",
+     "contratos": 10,
+     "contratos_sem_empreendimento": 2,
+     "empreendimentos": 29,
+     "km_lt_novas": 1564.2,
+     "mva_tr_novos": 5605.0,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2021",
+     "contratos": 11,
+     "contratos_sem_empreendimento": 1,
+     "empreendimentos": 43,
+     "km_lt_novas": 1953.2,
+     "mva_tr_novos": 4791.7,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2022",
+     "contratos": 16,
+     "contratos_sem_empreendimento": 1,
+     "empreendimentos": 32,
+     "km_lt_novas": 4625.2,
+     "mva_tr_novos": 5550.0,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2023",
+     "contratos": 15,
+     "contratos_sem_empreendimento": 0,
+     "empreendimentos": 46,
+     "km_lt_novas": 5944.2,
+     "mva_tr_novos": 3433.3,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2024",
+     "contratos": 21,
+     "contratos_sem_empreendimento": 2,
+     "empreendimentos": 45,
+     "km_lt_novas": 7975.9,
+     "mva_tr_novos": 10616.7,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2025",
+     "contratos": 0,
+     "contratos_sem_empreendimento": 0,
+     "empreendimentos": 0,
+     "km_lt_novas": 0.0,
+     "mva_tr_novos": 0.0,
+     "ano_parcial": false
+    },
+    {
+     "ano": "2026",
+     "contratos": 22,
+     "contratos_sem_empreendimento": 4,
+     "empreendimentos": 27,
+     "km_lt_novas": 1800.4,
+     "mva_tr_novos": 3983.3,
+     "ano_parcial": true
+    }
+   ],
+   "depois_do_ultimo_leilao_do_arquivo": {
+    "ultimo_leilao": "2024-09-27",
+    "contratos": [
+     {
+      "contrato": "6875",
+      "numero": "019/2024",
+      "assinatura": "2024-12-09",
+      "agente": "GRAUNA",
+      "empreendimentos": 2,
+      "km_lt_novas": 477.0,
+      "mva_tr_novos": 0.0
+     },
+     {
+      "contrato": "6876",
+      "numero": "020/2024",
+      "assinatura": "2024-12-09",
+      "agente": "JURUA",
+      "empreendimentos": null,
+      "km_lt_novas": null,
+      "mva_tr_novos": null
+     },
+     {
+      "contrato": "6877",
+      "numero": "021/2024",
+      "assinatura": "2024-12-09",
+      "agente": "CT2",
+      "empreendimentos": 1,
+      "km_lt_novas": 0.0,
+      "mva_tr_novos": 466.7
+     },
+     {
+      "contrato": "6880",
+      "numero": "001/2026",
+      "assinatura": "2026-02-23",
+      "agente": "IEPSA",
+      "empreendimentos": 1,
+      "km_lt_novas": 11.6,
+      "mva_tr_novos": 0.0
+     },
+     {
+      "contrato": "6881",
+      "numero": "002/2026",
+      "assinatura": "2026-02-23",
+      "agente": "Rialma VII",
+      "empreendimentos": 4,
+      "km_lt_novas": 336.5,
+      "mva_tr_novos": 0.0
+     },
+     {
+      "contrato": "6882",
+      "numero": "003/2026",
+      "assinatura": "2026-02-23",
+      "agente": "CPFL Transmissão",
+      "empreendimentos": 1,
+      "km_lt_novas": 63.0,
+      "mva_tr_novos": 300.0
+     },
+     {
+      "contrato": "6883",
+      "numero": "004/2026",
+      "assinatura": "2026-02-23",
+      "agente": "Guaporé Sul",
+      "empreendimentos": 1,
+      "km_lt_novas": 348.5,
+      "mva_tr_novos": 800.0
+     },
+     {
+      "contrato": "6884",
+      "numero": "005/2026",
+      "assinatura": "2026-02-23",
+      "agente": "EDP MATRINCHA 2",
+      "empreendimentos": 3,
+      "km_lt_novas": 285.0,
+      "mva_tr_novos": 350.0
+     },
+     {
+      "contrato": "6885",
+      "numero": "006/2026",
+      "assinatura": "2026-02-23",
+      "agente": "Nova Ponte",
+      "empreendimentos": 1,
+      "km_lt_novas": 0.0,
+      "mva_tr_novos": 0.0
+     },
+     {
+      "contrato": "6886",
+      "numero": "007/2026",
+      "assinatura": "2026-02-23",
+      "agente": "Paracatu",
+      "empreendimentos": 1,
+      "km_lt_novas": 0.0,
+      "mva_tr_novos": 0.0
+     },
+     {
+      "contrato": "6887",
+      "numero": "008/2026",
+      "assinatura": "2026-02-23",
+      "agente": "Carnauba",
+      "empreendimentos": 1,
+      "km_lt_novas": 0.0,
+      "mva_tr_novos": 0.0
+     },
+     {
+      "contrato": "6888",
+      "numero": "009/2026",
+      "assinatura": "2026-02-23",
+      "agente": "Seridó",
+      "empreendimentos": 1,
+      "km_lt_novas": 0.0,
+      "mva_tr_novos": 0.0
+     },
+     {
+      "contrato": "6889",
+      "numero": "010/2026",
+      "assinatura": "2026-06-03",
+      "agente": "LOBO-GUARÁ",
+      "empreendimentos": null,
+      "km_lt_novas": null,
+      "mva_tr_novos": null
+     },
+     {
+      "contrato": "6891",
+      "numero": "018/2026",
+      "assinatura": "2026-06-10",
+      "agente": "TRANSNORTE",
+      "empreendimentos": 1,
+      "km_lt_novas": 0.0,
+      "mva_tr_novos": 0.0
+     },
+     {
+      "contrato": "6890",
+      "numero": "011/2026",
+      "assinatura": "2026-06-26",
+      "agente": "COLIBRI SUL",
+      "empreendimentos": 1,
+      "km_lt_novas": 143.0,
+      "mva_tr_novos": 0.0
+     },
+     {
+      "contrato": "6892",
+      "numero": "012/2026",
+      "assinatura": "2026-06-26",
+      "agente": "COLIBRI A",
+      "empreendimentos": 1,
+      "km_lt_novas": 0.0,
+      "mva_tr_novos": 0.0
+     },
+     {
+      "contrato": "6893",
+      "numero": "013/2026",
+      "assinatura": "2026-06-26",
+      "agente": "COLIBRI B",
+      "empreendimentos": 1,
+      "km_lt_novas": 0.0,
+      "mva_tr_novos": 0.0
+     },
+     {
+      "contrato": "6894",
+      "numero": "016/2026",
+      "assinatura": "2026-06-26",
+      "agente": "BR2ET",
+      "empreendimentos": 1,
+      "km_lt_novas": 73.4,
+      "mva_tr_novos": 0.0
+     },
+     {
+      "contrato": "6895",
+      "numero": "014/2026",
+      "assinatura": "2026-06-26",
+      "agente": "COLIBRI C",
+      "empreendimentos": 1,
+      "km_lt_novas": 0.0,
+      "mva_tr_novos": 0.0
+     },
+     {
+      "contrato": "6896",
+      "numero": "015/2026",
+      "assinatura": "2026-06-26",
+      "agente": "COLIBRI D",
+      "empreendimentos": 1,
+      "km_lt_novas": 0.0,
+      "mva_tr_novos": 0.0
+     },
+     {
+      "contrato": "6898",
+      "numero": "017/2026",
+      "assinatura": "2026-06-26",
+      "agente": "CASTANHEIRA",
+      "empreendimentos": 2,
+      "km_lt_novas": 505.0,
+      "mva_tr_novos": 1200.0
+     },
+     {
+      "contrato": "6899",
+      "numero": "021/2026",
+      "assinatura": "2026-08-09",
+      "agente": "AXIA ENERGIA JAURU",
+      "empreendimentos": null,
+      "km_lt_novas": null,
+      "mva_tr_novos": null
+     },
+     {
+      "contrato": "6900",
+      "numero": "020/2026",
+      "assinatura": "2026-09-08",
+      "agente": "AE VALE DO PARAÍBA",
+      "empreendimentos": null,
+      "km_lt_novas": null,
+      "mva_tr_novos": null
+     },
+     {
+      "contrato": "6901",
+      "numero": "019/2026",
+      "assinatura": "2026-09-08",
+      "agente": "AE NAVIRAÍ TRANSMISS",
+      "empreendimentos": null,
+      "km_lt_novas": null,
+      "mva_tr_novos": null
+     },
+     {
+      "contrato": "6902",
+      "numero": "022/2026",
+      "assinatura": "2026-09-10",
+      "agente": "TESP",
+      "empreendimentos": 4,
+      "km_lt_novas": 34.4,
+      "mva_tr_novos": 1333.3
+     }
+    ]
+   }
+  },
+  "rede_epe": {
+   "fonte": "EPE, WebMap (serviço ArcGIS SMA/WMS_Webmap_EPE)",
+   "servico": "https://gisepeprd2.epe.gov.br/arcgis/rest/services/SMA/WMS_Webmap_EPE/MapServer",
+   "webmap": "https://gisepeprd2.epe.gov.br/WebMapEPE/",
+   "data_do_dado": null,
+   "nota_data": "O serviço não informa a data de atualização das camadas; vale a data de captura e o ano mais recente presente.",
+   "definicao_km": "Comprimento da geometria publicada (generalizada pelo servidor a 0,005 grau), por feição. Cada feição é em geral um circuito, mas há feições com dois circuitos no mesmo traçado ('C1 e C2'): não é km de circuito do SIGET e as duas medidas não se somam nem se subtraem.",
+   "generalizacao_grau": 0.005,
+   "existente": {
+    "camada": "Linhas de Transmissão - Base Existente",
+    "id_camada": 21,
+    "capturado_em": "2026-10-01T00:45:40Z",
+    "sha256": "a475463324b73b70b849e05ae42ab6e8ddc68f970220b087d5ce4db49f434792",
+    "linhas": 2189,
+    "contagem_informada": 2189,
+    "km_geometria": 196882.3,
+    "km_campo_fonte_plausivel": 197414.7,
+    "campo_extensao_fora_de_escala": {
+     "linhas": 0,
+     "exemplos": []
+    },
+    "diferenca_relativa_mediana_geometria_x_campo_pct": 0.52,
+    "ano_min": 1968,
+    "ano_max": 2026,
+    "por_tensao": [
+     {
+      "tensao_kv": 800.0,
+      "linhas": 4,
+      "km": 9257.2
+     },
+     {
+      "tensao_kv": 765.0,
+      "linhas": 9,
+      "km": 2693.1
+     },
+     {
+      "tensao_kv": 600.0,
+      "linhas": 8,
+      "km": 12808.9
+     },
+     {
+      "tensao_kv": 525.0,
+      "linhas": 97,
+      "km": 11017.4
+     },
+     {
+      "tensao_kv": 500.0,
+      "linhas": 508,
+      "km": 70253.2
+     },
+     {
+      "tensao_kv": 440.0,
+      "linhas": 68,
+      "km": 7067.5
+     },
+     {
+      "tensao_kv": 345.0,
+      "linhas": 192,
+      "km": 11061.3
+     },
+     {
+      "tensao_kv": 230.0,
+      "linhas": 1297,
+      "km": 72703.7
+     },
+     {
+      "tensao_kv": 132.0,
+      "linhas": 1,
+      "km": 15.9
+     },
+     {
+      "tensao_kv": null,
+      "linhas": 5,
+      "km": 4.0
+     }
+    ],
+    "por_ano": [
+     {
+      "ano": null,
+      "linhas": 531,
+      "km": 28834.0
+     },
+     {
+      "ano": 1968,
+      "linhas": 2,
+      "km": 299.6
+     },
+     {
+      "ano": 1969,
+      "linhas": 1,
+      "km": 199.6
+     },
+     {
+      "ano": 1970,
+      "linhas": 2,
+      "km": 397.2
+     },
+     {
+      "ano": 1971,
+      "linhas": 1,
+      "km": 17.3
+     },
+     {
+      "ano": 1973,
+      "linhas": 5,
+      "km": 379.6
+     },
+     {
+      "ano": 1974,
+      "linhas": 1,
+      "km": 0.0
+     },
+     {
+      "ano": 1975,
+      "linhas": 2,
+      "km": 0.6
+     },
+     {
+      "ano": 1976,
+      "linhas": 3,
+      "km": 231.2
+     },
+     {
+      "ano": 1977,
+      "linhas": 2,
+      "km": 243.4
+     },
+     {
+      "ano": 1979,
+      "linhas": 4,
+      "km": 0.2
+     },
+     {
+      "ano": 1980,
+      "linhas": 2,
+      "km": 0.9
+     },
+     {
+      "ano": 1981,
+      "linhas": 1,
+      "km": 0.3
+     },
+     {
+      "ano": 1982,
+      "linhas": 1,
+      "km": 0.6
+     },
+     {
+      "ano": 1984,
+      "linhas": 1,
+      "km": 68.9
+     },
+     {
+      "ano": 1988,
+      "linhas": 1,
+      "km": 122.0
+     },
+     {
+      "ano": 1989,
+      "linhas": 7,
+      "km": 1557.0
+     },
+     {
+      "ano": 1990,
+      "linhas": 1,
+      "km": 110.1
+     },
+     {
+      "ano": 1992,
+      "linhas": 5,
+      "km": 414.7
+     },
+     {
+      "ano": 1993,
+      "linhas": 3,
+      "km": 59.4
+     },
+     {
+      "ano": 1994,
+      "linhas": 2,
+      "km": 1.5
+     },
+     {
+      "ano": 1995,
+      "linhas": 4,
+      "km": 3.3
+     },
+     {
+      "ano": 1996,
+      "linhas": 2,
+      "km": 68.4
+     },
+     {
+      "ano": 1997,
+      "linhas": 2,
+      "km": 60.7
+     },
+     {
+      "ano": 1998,
+      "linhas": 4,
+      "km": 656.8
+     },
+     {
+      "ano": 1999,
+      "linhas": 22,
+      "km": 2408.8
+     },
+     {
+      "ano": 2000,
+      "linhas": 15,
+      "km": 1661.2
+     },
+     {
+      "ano": 2001,
+      "linhas": 17,
+      "km": 1462.9
+     },
+     {
+      "ano": 2002,
+      "linhas": 52,
+      "km": 3206.3
+     },
+     {
+      "ano": 2003,
+      "linhas": 43,
+      "km": 5354.4
+     },
+     {
+      "ano": 2004,
+      "linhas": 28,
+      "km": 2753.6
+     },
+     {
+      "ano": 2005,
+      "linhas": 37,
+      "km": 2596.9
+     },
+     {
+      "ano": 2006,
+      "linhas": 41,
+      "km": 3484.1
+     },
+     {
+      "ano": 2007,
+      "linhas": 21,
+      "km": 918.4
+     },
+     {
+      "ano": 2008,
+      "linhas": 36,
+      "km": 4040.7
+     },
+     {
+      "ano": 2009,
+      "linhas": 60,
+      "km": 4959.4
+     },
+     {
+      "ano": 2010,
+      "linhas": 51,
+      "km": 3951.6
+     },
+     {
+      "ano": 2011,
+      "linhas": 55,
+      "km": 4849.8
+     },
+     {
+      "ano": 2012,
+      "linhas": 69,
+      "km": 4984.6
+     },
+     {
+      "ano": 2013,
+      "linhas": 64,
+      "km": 11657.5
+     },
+     {
+      "ano": 2014,
+      "linhas": 83,
+      "km": 5183.3
+     },
+     {
+      "ano": 2015,
+      "linhas": 78,
+      "km": 10806.0
+     },
+     {
+      "ano": 2016,
+      "linhas": 64,
+      "km": 7043.3
+     },
+     {
+      "ano": 2017,
+      "linhas": 42,
+      "km": 6980.8
+     },
+     {
+      "ano": 2018,
+      "linhas": 42,
+      "km": 4323.2
+     },
+     {
+      "ano": 2019,
+      "linhas": 82,
+      "km": 12228.5
+     },
+     {
+      "ano": 2020,
+      "linhas": 78,
+      "km": 7860.6
+     },
+     {
+      "ano": 2021,
+      "linhas": 112,
+      "km": 11707.2
+     },
+     {
+      "ano": 2022,
+      "linhas": 127,
+      "km": 10944.6
+     },
+     {
+      "ano": 2023,
+      "linhas": 103,
+      "km": 8978.1
+     },
+     {
+      "ano": 2024,
+      "linhas": 79,
+      "km": 6900.4
+     },
+     {
+      "ano": 2025,
+      "linhas": 67,
+      "km": 7434.5
+     },
+     {
+      "ano": 2026,
+      "linhas": 31,
+      "km": 4474.5
+     }
+    ],
+    "por_uf": [
+     {
+      "uf": "MG",
+      "km": 22823.7
+     },
+     {
+      "uf": "SP",
+      "km": 20205.7
+     },
+     {
+      "uf": "BA",
+      "km": 16955.9
+     },
+     {
+      "uf": "MT",
+      "km": 15262.7
+     },
+     {
+      "uf": "PR",
+      "km": 14923.8
+     },
+     {
+      "uf": "PA",
+      "km": 13471.4
+     },
+     {
+      "uf": "RS",
+      "km": 13226.1
+     },
+     {
+      "uf": "GO",
+      "km": 12936.2
+     },
+     {
+      "uf": "MA",
+      "km": 7608.6
+     },
+     {
+      "uf": "TO",
+      "km": 6781.4
+     },
+     {
+      "uf": "CE",
+      "km": 6546.0
+     },
+     {
+      "uf": "RO",
+      "km": 6385.1
+     },
+     {
+      "uf": "PE",
+      "km": 6019.8
+     },
+     {
+      "uf": "PI",
+      "km": 5531.4
+     },
+     {
+      "uf": "SC",
+      "km": 5461.1
+     },
+     {
+      "uf": "MS",
+      "km": 3616.4
+     },
+     {
+      "uf": "RN",
+      "km": 3582.4
+     },
+     {
+      "uf": "RJ",
+      "km": 3490.4
+     },
+     {
+      "uf": "PB",
+      "km": 2018.2
+     },
+     {
+      "uf": "AM",
+      "km": 1897.2
+     },
+     {
+      "uf": "ES",
+      "km": 1746.2
+     },
+     {
+      "uf": "AL",
+      "km": 1652.1
+     },
+     {
+      "uf": "SE",
+      "km": 1421.5
+     },
+     {
+      "uf": "RR",
+      "km": 1153.8
+     },
+     {
+      "uf": "AC",
+      "km": 1049.2
+     },
+     {
+      "uf": "AP",
+      "km": 602.0
+     },
+     {
+      "uf": "DF",
+      "km": 415.7
+     }
+    ],
+    "km_fora_de_uf": 98.3
+   },
+   "planejada": {
+    "camada": "Linhas de Transmissão - Expansão Planejada",
+    "id_camada": 10,
+    "capturado_em": "2026-10-01T00:46:47Z",
+    "sha256": "7af9583fea375354bd877e6e71637a54359c02f0ac4536043c8d5dc178712614",
+    "linhas": 437,
+    "contagem_informada": 437,
+    "km_geometria": 34515.1,
+    "km_campo_fonte_plausivel": 33411.6,
+    "campo_extensao_fora_de_escala": {
+     "linhas": 7,
+     "exemplos": [
+      {
+       "nome": "LT 500 kV PECÉM IV - Parnaíba III, C1 e C2 (CS)",
+       "extensao_fonte": 332617.80805815,
+       "km_geometria": 332.4
+      },
+      {
+       "nome": "LT 500 kV Açu III - PECÉM IV, C1 e C2 (CS)",
+       "extensao_fonte": 295992.82154712,
+       "km_geometria": 296.7
+      },
+      {
+       "nome": "LT 500 kV Jaguaruana II - PECEM IV, C1",
+       "extensao_fonte": 194969.40410047,
+       "km_geometria": 195.4
+      },
+      {
+       "nome": "LT 500 kV Angicos - Jaguaruana II, C1",
+       "extensao_fonte": 158303.48521969,
+       "km_geometria": 158.4
+      },
+      {
+       "nome": "LT 500 kV TIANGUA II - PARNAIBA III, C2",
+       "extensao_fonte": 108654.24327657,
+       "km_geometria": 108.9
+      }
+     ]
+    },
+    "diferenca_relativa_mediana_geometria_x_campo_pct": 0.57,
+    "ano_min": 2024,
+    "ano_max": 2038,
+    "por_tensao": [
+     {
+      "tensao_kv": 800.0,
+      "linhas": 1,
+      "km": 1454.2
+     },
+     {
+      "tensao_kv": 600.0,
+      "linhas": 1,
+      "km": 2593.0
+     },
+     {
+      "tensao_kv": 525.0,
+      "linhas": 20,
+      "km": 2232.2
+     },
+     {
+      "tensao_kv": 500.0,
+      "linhas": 161,
+      "km": 18545.5
+     },
+     {
+      "tensao_kv": 440.0,
+      "linhas": 4,
+      "km": 36.1
+     },
+     {
+      "tensao_kv": 345.0,
+      "linhas": 21,
+      "km": 353.4
+     },
+     {
+      "tensao_kv": 230.0,
+      "linhas": 229,
+      "km": 9300.6
+     }
+    ],
+    "por_ano": [
+     {
+      "ano": null,
+      "linhas": 137,
+      "km": 5380.6
+     },
+     {
+      "ano": 2024,
+      "linhas": 1,
+      "km": 0.2
+     },
+     {
+      "ano": 2025,
+      "linhas": 13,
+      "km": 553.5
+     },
+     {
+      "ano": 2026,
+      "linhas": 31,
+      "km": 1403.1
+     },
+     {
+      "ano": 2027,
+      "linhas": 18,
+      "km": 2441.7
+     },
+     {
+      "ano": 2028,
+      "linhas": 6,
+      "km": 830.1
+     },
+     {
+      "ano": 2029,
+      "linhas": 75,
+      "km": 9250.7
+     },
+     {
+      "ano": 2030,
+      "linhas": 28,
+      "km": 3740.6
+     },
+     {
+      "ano": 2031,
+      "linhas": 14,
+      "km": 612.2
+     },
+     {
+      "ano": 2032,
+      "linhas": 14,
+      "km": 711.0
+     },
+     {
+      "ano": 2033,
+      "linhas": 10,
+      "km": 695.5
+     },
+     {
+      "ano": 2034,
+      "linhas": 19,
+      "km": 4143.9
+     },
+     {
+      "ano": 2035,
+      "linhas": 7,
+      "km": 540.3
+     },
+     {
+      "ano": 2036,
+      "linhas": 6,
+      "km": 944.3
+     },
+     {
+      "ano": 2037,
+      "linhas": 52,
+      "km": 2121.5
+     },
+     {
+      "ano": 2038,
+      "linhas": 6,
+      "km": 1145.8
+     }
+    ],
+    "por_uf": [
+     {
+      "uf": "MG",
+      "km": 5842.1
+     },
+     {
+      "uf": "BA",
+      "km": 5069.0
+     },
+     {
+      "uf": "GO",
+      "km": 2588.1
+     },
+     {
+      "uf": "PA",
+      "km": 2025.2
+     },
+     {
+      "uf": "SP",
+      "km": 1995.0
+     },
+     {
+      "uf": "PR",
+      "km": 1741.5
+     },
+     {
+      "uf": "CE",
+      "km": 1626.5
+     },
+     {
+      "uf": "PI",
+      "km": 1472.1
+     },
+     {
+      "uf": "SC",
+      "km": 1433.5
+     },
+     {
+      "uf": "RS",
+      "km": 1361.6
+     },
+     {
+      "uf": "MA",
+      "km": 1297.6
+     },
+     {
+      "uf": "MS",
+      "km": 1257.4
+     },
+     {
+      "uf": "TO",
+      "km": 1002.0
+     },
+     {
+      "uf": "RN",
+      "km": 834.5
+     },
+     {
+      "uf": "PB",
+      "km": 810.9
+     },
+     {
+      "uf": "PE",
+      "km": 789.4
+     },
+     {
+      "uf": "MT",
+      "km": 678.1
+     },
+     {
+      "uf": "AC",
+      "km": 641.9
+     },
+     {
+      "uf": "AM",
+      "km": 483.0
+     },
+     {
+      "uf": "RJ",
+      "km": 468.9
+     },
+     {
+      "uf": "ES",
+      "km": 351.5
+     },
+     {
+      "uf": "AL",
+      "km": 342.0
+     },
+     {
+      "uf": "AP",
+      "km": 215.6
+     },
+     {
+      "uf": "SE",
+      "km": 116.8
+     },
+     {
+      "uf": "RO",
+      "km": 71.3
+     }
+    ],
+    "km_fora_de_uf": 0.0
+   }
+  },
   "geracao_e_rede_por_uf": [
    {
     "uf": "AL",
@@ -6862,7 +9636,9 @@
     "mw_previsto_24_meses": 0.0,
     "km_lt_em_andamento_toca_uf": 1018.1,
     "mva_tr_em_andamento": 2500.0,
-    "empreendimentos_transmissao_em_andamento": 11
+    "empreendimentos_transmissao_em_andamento": 11,
+    "km_rede_existente_epe": 1652.1,
+    "km_rede_planejada_epe": 342.0
    },
    {
     "uf": "AM",
@@ -6870,7 +9646,9 @@
     "mw_previsto_24_meses": 683.1,
     "km_lt_em_andamento_toca_uf": 37.9,
     "mva_tr_em_andamento": 750.0,
-    "empreendimentos_transmissao_em_andamento": 3
+    "empreendimentos_transmissao_em_andamento": 3,
+    "km_rede_existente_epe": 1897.2,
+    "km_rede_planejada_epe": 483.0
    },
    {
     "uf": "AP",
@@ -6878,7 +9656,9 @@
     "mw_previsto_24_meses": 7.5,
     "km_lt_em_andamento_toca_uf": 0.0,
     "mva_tr_em_andamento": 0.0,
-    "empreendimentos_transmissao_em_andamento": 0
+    "empreendimentos_transmissao_em_andamento": 0,
+    "km_rede_existente_epe": 602.0,
+    "km_rede_planejada_epe": 215.6
    },
    {
     "uf": "BA",
@@ -6886,7 +9666,9 @@
     "mw_previsto_24_meses": 431.0,
     "km_lt_em_andamento_toca_uf": 5610.5,
     "mva_tr_em_andamento": 3196.7,
-    "empreendimentos_transmissao_em_andamento": 27
+    "empreendimentos_transmissao_em_andamento": 27,
+    "km_rede_existente_epe": 16955.9,
+    "km_rede_planejada_epe": 5069.0
    },
    {
     "uf": "CE",
@@ -6894,7 +9676,9 @@
     "mw_previsto_24_meses": 268.8,
     "km_lt_em_andamento_toca_uf": 2801.4,
     "mva_tr_em_andamento": 2700.0,
-    "empreendimentos_transmissao_em_andamento": 18
+    "empreendimentos_transmissao_em_andamento": 18,
+    "km_rede_existente_epe": 6546.0,
+    "km_rede_planejada_epe": 1626.5
    },
    {
     "uf": "ES",
@@ -6902,7 +9686,9 @@
     "mw_previsto_24_meses": 0.0,
     "km_lt_em_andamento_toca_uf": 518.0,
     "mva_tr_em_andamento": 133.3,
-    "empreendimentos_transmissao_em_andamento": 4
+    "empreendimentos_transmissao_em_andamento": 4,
+    "km_rede_existente_epe": 1746.2,
+    "km_rede_planejada_epe": 351.5
    },
    {
     "uf": "GO",
@@ -6910,7 +9696,9 @@
     "mw_previsto_24_meses": 605.2,
     "km_lt_em_andamento_toca_uf": 945.0,
     "mva_tr_em_andamento": 755.0,
-    "empreendimentos_transmissao_em_andamento": 7
+    "empreendimentos_transmissao_em_andamento": 7,
+    "km_rede_existente_epe": 12936.2,
+    "km_rede_planejada_epe": 2588.1
    },
    {
     "uf": "MA",
@@ -6918,7 +9706,9 @@
     "mw_previsto_24_meses": 0.0,
     "km_lt_em_andamento_toca_uf": 1061.3,
     "mva_tr_em_andamento": 1850.0,
-    "empreendimentos_transmissao_em_andamento": 8
+    "empreendimentos_transmissao_em_andamento": 8,
+    "km_rede_existente_epe": 7608.6,
+    "km_rede_planejada_epe": 1297.6
    },
    {
     "uf": "MG",
@@ -6926,7 +9716,9 @@
     "mw_previsto_24_meses": 3010.7,
     "km_lt_em_andamento_toca_uf": 8005.5,
     "mva_tr_em_andamento": 6191.5,
-    "empreendimentos_transmissao_em_andamento": 30
+    "empreendimentos_transmissao_em_andamento": 30,
+    "km_rede_existente_epe": 22823.7,
+    "km_rede_planejada_epe": 5842.1
    },
    {
     "uf": "MS",
@@ -6934,7 +9726,9 @@
     "mw_previsto_24_meses": 600.0,
     "km_lt_em_andamento_toca_uf": 75.0,
     "mva_tr_em_andamento": 425.0,
-    "empreendimentos_transmissao_em_andamento": 3
+    "empreendimentos_transmissao_em_andamento": 3,
+    "km_rede_existente_epe": 3616.4,
+    "km_rede_planejada_epe": 1257.4
    },
    {
     "uf": "MT",
@@ -6942,7 +9736,9 @@
     "mw_previsto_24_meses": 110.3,
     "km_lt_em_andamento_toca_uf": 801.1,
     "mva_tr_em_andamento": 3100.0,
-    "empreendimentos_transmissao_em_andamento": 13
+    "empreendimentos_transmissao_em_andamento": 13,
+    "km_rede_existente_epe": 15262.7,
+    "km_rede_planejada_epe": 678.1
    },
    {
     "uf": "PA",
@@ -6950,7 +9746,9 @@
     "mw_previsto_24_meses": 1571.9,
     "km_lt_em_andamento_toca_uf": 881.0,
     "mva_tr_em_andamento": 650.0,
-    "empreendimentos_transmissao_em_andamento": 4
+    "empreendimentos_transmissao_em_andamento": 4,
+    "km_rede_existente_epe": 13471.4,
+    "km_rede_planejada_epe": 2025.2
    },
    {
     "uf": "PB",
@@ -6958,7 +9756,9 @@
     "mw_previsto_24_meses": 1130.9,
     "km_lt_em_andamento_toca_uf": 747.3,
     "mva_tr_em_andamento": 750.0,
-    "empreendimentos_transmissao_em_andamento": 5
+    "empreendimentos_transmissao_em_andamento": 5,
+    "km_rede_existente_epe": 2018.2,
+    "km_rede_planejada_epe": 810.9
    },
    {
     "uf": "PE",
@@ -6966,7 +9766,9 @@
     "mw_previsto_24_meses": 238.8,
     "km_lt_em_andamento_toca_uf": 1827.8,
     "mva_tr_em_andamento": 3200.0,
-    "empreendimentos_transmissao_em_andamento": 16
+    "empreendimentos_transmissao_em_andamento": 16,
+    "km_rede_existente_epe": 6019.8,
+    "km_rede_planejada_epe": 789.4
    },
    {
     "uf": "PI",
@@ -6974,7 +9776,9 @@
     "mw_previsto_24_meses": 1090.6,
     "km_lt_em_andamento_toca_uf": 4112.9,
     "mva_tr_em_andamento": 131.2,
-    "empreendimentos_transmissao_em_andamento": 17
+    "empreendimentos_transmissao_em_andamento": 17,
+    "km_rede_existente_epe": 5531.4,
+    "km_rede_planejada_epe": 1472.1
    },
    {
     "uf": "PR",
@@ -6982,7 +9786,9 @@
     "mw_previsto_24_meses": 46.6,
     "km_lt_em_andamento_toca_uf": 1601.5,
     "mva_tr_em_andamento": 1722.0,
-    "empreendimentos_transmissao_em_andamento": 14
+    "empreendimentos_transmissao_em_andamento": 14,
+    "km_rede_existente_epe": 14923.8,
+    "km_rede_planejada_epe": 1741.5
    },
    {
     "uf": "RJ",
@@ -6990,7 +9796,9 @@
     "mw_previsto_24_meses": 87.2,
     "km_lt_em_andamento_toca_uf": 742.0,
     "mva_tr_em_andamento": 3750.0,
-    "empreendimentos_transmissao_em_andamento": 6
+    "empreendimentos_transmissao_em_andamento": 6,
+    "km_rede_existente_epe": 3490.4,
+    "km_rede_planejada_epe": 468.9
    },
    {
     "uf": "RN",
@@ -6998,7 +9806,9 @@
     "mw_previsto_24_meses": 703.7,
     "km_lt_em_andamento_toca_uf": 481.0,
     "mva_tr_em_andamento": 1000.0,
-    "empreendimentos_transmissao_em_andamento": 6
+    "empreendimentos_transmissao_em_andamento": 6,
+    "km_rede_existente_epe": 3582.4,
+    "km_rede_planejada_epe": 834.5
    },
    {
     "uf": "RO",
@@ -7006,7 +9816,9 @@
     "mw_previsto_24_meses": 30.0,
     "km_lt_em_andamento_toca_uf": 348.5,
     "mva_tr_em_andamento": 1310.0,
-    "empreendimentos_transmissao_em_andamento": 5
+    "empreendimentos_transmissao_em_andamento": 5,
+    "km_rede_existente_epe": 6385.1,
+    "km_rede_planejada_epe": 71.3
    },
    {
     "uf": "RR",
@@ -7014,7 +9826,9 @@
     "mw_previsto_24_meses": 0.0,
     "km_lt_em_andamento_toca_uf": 0.0,
     "mva_tr_em_andamento": 300.0,
-    "empreendimentos_transmissao_em_andamento": 2
+    "empreendimentos_transmissao_em_andamento": 2,
+    "km_rede_existente_epe": 1153.8,
+    "km_rede_planejada_epe": 0.0
    },
    {
     "uf": "RS",
@@ -7022,7 +9836,9 @@
     "mw_previsto_24_meses": 52.1,
     "km_lt_em_andamento_toca_uf": 870.0,
     "mva_tr_em_andamento": 1954.3,
-    "empreendimentos_transmissao_em_andamento": 15
+    "empreendimentos_transmissao_em_andamento": 15,
+    "km_rede_existente_epe": 13226.1,
+    "km_rede_planejada_epe": 1361.6
    },
    {
     "uf": "SC",
@@ -7030,7 +9846,9 @@
     "mw_previsto_24_meses": 125.2,
     "km_lt_em_andamento_toca_uf": 1923.6,
     "mva_tr_em_andamento": 5233.0,
-    "empreendimentos_transmissao_em_andamento": 9
+    "empreendimentos_transmissao_em_andamento": 9,
+    "km_rede_existente_epe": 5461.1,
+    "km_rede_planejada_epe": 1433.5
    },
    {
     "uf": "SE",
@@ -7038,7 +9856,9 @@
     "mw_previsto_24_meses": 0.0,
     "km_lt_em_andamento_toca_uf": 275.9,
     "mva_tr_em_andamento": 450.0,
-    "empreendimentos_transmissao_em_andamento": 3
+    "empreendimentos_transmissao_em_andamento": 3,
+    "km_rede_existente_epe": 1421.5,
+    "km_rede_planejada_epe": 116.8
    },
    {
     "uf": "SP",
@@ -7046,7 +9866,9 @@
     "mw_previsto_24_meses": 46.2,
     "km_lt_em_andamento_toca_uf": 1603.6,
     "mva_tr_em_andamento": 11059.2,
-    "empreendimentos_transmissao_em_andamento": 39
+    "empreendimentos_transmissao_em_andamento": 39,
+    "km_rede_existente_epe": 20205.7,
+    "km_rede_planejada_epe": 1995.0
    },
    {
     "uf": "TO",
@@ -7054,206 +9876,296 @@
     "mw_previsto_24_meses": 0.0,
     "km_lt_em_andamento_toca_uf": 548.0,
     "mva_tr_em_andamento": 0.0,
-    "empreendimentos_transmissao_em_andamento": 2
+    "empreendimentos_transmissao_em_andamento": 2,
+    "km_rede_existente_epe": 6781.4,
+    "km_rede_planejada_epe": 1002.0
    }
   ],
   "serie_anual": [
    {
     "ano": "2005",
-    "mw_geracao_liberada": 933.4,
+    "mw_geracao_liberada": 2425.2,
+    "fonte_mw_geracao_liberada": "resumo anual oficial (campo em MW)",
+    "cobertura_detalhado_pct": 38.5,
     "km_lt_energizados": null,
     "mva_tr_energizados": null,
-    "km_leiloados": 3165.8,
-    "mva_leiloados": 4450.0,
+    "km_contratados_leilao": 3165.8,
+    "mva_contratados_leilao": 4450.0,
+    "km_contratos_assinados_siget": 2256.4,
+    "mva_contratos_assinados_siget": 4540.0,
     "ano_parcial": false
    },
    {
     "ano": "2006",
-    "mw_geracao_liberada": 2373.7,
+    "mw_geracao_liberada": 3389.2,
+    "fonte_mw_geracao_liberada": "resumo anual oficial (campo em MW)",
+    "cobertura_detalhado_pct": 70.0,
     "km_lt_energizados": null,
     "mva_tr_energizados": null,
-    "km_leiloados": 3451.5,
-    "mva_leiloados": 8204.0,
+    "km_contratados_leilao": 3451.5,
+    "mva_contratados_leilao": 8204.0,
+    "km_contratos_assinados_siget": 2817.3,
+    "mva_contratos_assinados_siget": 4500.0,
     "ano_parcial": false
    },
    {
     "ano": "2007",
-    "mw_geracao_liberada": 623.0,
+    "mw_geracao_liberada": 3321.9,
+    "fonte_mw_geracao_liberada": "resumo anual oficial (campo em MW)",
+    "cobertura_detalhado_pct": 18.8,
     "km_lt_energizados": null,
     "mva_tr_energizados": null,
-    "km_leiloados": 2332.0,
-    "mva_leiloados": 683.3,
+    "km_contratados_leilao": 2332.0,
+    "mva_contratados_leilao": 683.3,
+    "km_contratos_assinados_siget": 4069.4,
+    "mva_contratos_assinados_siget": 11504.0,
     "ano_parcial": false
    },
    {
     "ano": "2008",
-    "mw_geracao_liberada": 1721.9,
+    "mw_geracao_liberada": 2156.0,
+    "fonte_mw_geracao_liberada": "resumo anual oficial (campo em MW)",
+    "cobertura_detalhado_pct": 79.9,
     "km_lt_energizados": 3369.5,
     "mva_tr_energizados": 6865.0,
-    "km_leiloados": 10700.4,
-    "mva_leiloados": 39369.9,
+    "km_contratados_leilao": 10700.4,
+    "mva_contratados_leilao": 39369.9,
+    "km_contratos_assinados_siget": 8496.0,
+    "mva_contratos_assinados_siget": 11616.6,
     "ano_parcial": false
    },
    {
     "ano": "2009",
-    "mw_geracao_liberada": 3325.8,
+    "mw_geracao_liberada": 3556.4,
+    "fonte_mw_geracao_liberada": "resumo anual oficial (campo em MW)",
+    "cobertura_detalhado_pct": 93.5,
     "km_lt_energizados": 4972.0,
-    "mva_tr_energizados": 8379.3,
-    "km_leiloados": 3898.5,
-    "mva_leiloados": 12446.9,
+    "mva_tr_energizados": 8279.3,
+    "km_contratados_leilao": 3898.5,
+    "mva_contratados_leilao": 12446.9,
+    "km_contratos_assinados_siget": 13209.2,
+    "mva_contratos_assinados_siget": 15916.7,
     "ano_parcial": false
    },
    {
     "ano": "2010",
-    "mw_geracao_liberada": 6117.0,
+    "mw_geracao_liberada": 6149.3,
+    "fonte_mw_geracao_liberada": "resumo anual oficial (campo em MW)",
+    "cobertura_detalhado_pct": 99.5,
     "km_lt_energizados": 3534.0,
     "mva_tr_energizados": 11542.9,
-    "km_leiloados": 1833.7,
-    "mva_leiloados": 4566.0,
+    "km_contratados_leilao": 1833.7,
+    "mva_contratados_leilao": 4566.0,
+    "km_contratos_assinados_siget": 2846.1,
+    "mva_contratos_assinados_siget": 8349.3,
     "ano_parcial": false
    },
    {
     "ano": "2011",
-    "mw_geracao_liberada": 3057.5,
+    "mw_geracao_liberada": 4199.3,
+    "fonte_mw_geracao_liberada": "resumo anual oficial (campo em MW)",
+    "cobertura_detalhado_pct": 72.8,
     "km_lt_energizados": 5802.2,
     "mva_tr_energizados": 8212.9,
-    "km_leiloados": 4695.0,
-    "mva_leiloados": 17903.3,
+    "km_contratados_leilao": 4695.0,
+    "mva_contratados_leilao": 17903.3,
+    "km_contratos_assinados_siget": 1586.2,
+    "mva_contratos_assinados_siget": 8074.3,
     "ano_parcial": false
    },
    {
     "ano": "2012",
-    "mw_geracao_liberada": 3574.3,
-    "km_lt_energizados": 4500.3,
+    "mw_geracao_liberada": 3982.9,
+    "fonte_mw_geracao_liberada": "resumo anual oficial (campo em MW)",
+    "cobertura_detalhado_pct": 89.7,
+    "km_lt_energizados": 4385.3,
     "mva_tr_energizados": 19424.7,
-    "km_leiloados": 4274.2,
-    "mva_leiloados": 7674.3,
+    "km_contratados_leilao": 4274.2,
+    "mva_contratados_leilao": 7674.3,
+    "km_contratos_assinados_siget": 4715.1,
+    "mva_contratos_assinados_siget": 12921.3,
     "ano_parcial": false
    },
    {
     "ano": "2013",
-    "mw_geracao_liberada": 5947.5,
-    "km_lt_energizados": 10314.9,
+    "mw_geracao_liberada": 5889.0,
+    "fonte_mw_geracao_liberada": "resumo anual oficial (campo em MW)",
+    "cobertura_detalhado_pct": 101.0,
+    "km_lt_energizados": 10161.0,
     "mva_tr_energizados": 18327.5,
-    "km_leiloados": 4770.6,
-    "mva_leiloados": 8459.2,
+    "km_contratados_leilao": 4770.6,
+    "mva_contratados_leilao": 8459.2,
+    "km_contratos_assinados_siget": 37926.5,
+    "mva_contratos_assinados_siget": 71653.9,
     "ano_parcial": false
    },
    {
     "ano": "2014",
     "mw_geracao_liberada": 7455.3,
+    "fonte_mw_geracao_liberada": "resumo anual oficial (campo em kW), igual à soma do arquivo detalhado",
+    "cobertura_detalhado_pct": 100.0,
     "km_lt_energizados": 9803.5,
     "mva_tr_energizados": 17478.6,
-    "km_leiloados": 1981.0,
-    "mva_leiloados": 5217.8,
+    "km_contratados_leilao": 1981.0,
+    "mva_contratados_leilao": 5217.8,
+    "km_contratos_assinados_siget": 7364.0,
+    "mva_contratos_assinados_siget": 9900.0,
     "ano_parcial": false
    },
    {
     "ano": "2015",
     "mw_geracao_liberada": 6786.3,
+    "fonte_mw_geracao_liberada": "resumo anual oficial (campo em kW), igual à soma do arquivo detalhado",
+    "cobertura_detalhado_pct": 100.0,
     "km_lt_energizados": 4414.5,
     "mva_tr_energizados": 19461.0,
-    "km_leiloados": 5596.0,
-    "mva_leiloados": 18435.0,
+    "km_contratados_leilao": 5596.0,
+    "mva_contratados_leilao": 18435.0,
+    "km_contratos_assinados_siget": 111.0,
+    "mva_contratos_assinados_siget": 1800.0,
     "ano_parcial": false
    },
    {
     "ano": "2016",
     "mw_geracao_liberada": 9538.5,
+    "fonte_mw_geracao_liberada": "resumo anual oficial (campo em kW), igual à soma do arquivo detalhado",
+    "cobertura_detalhado_pct": 100.0,
     "km_lt_energizados": 6248.0,
     "mva_tr_energizados": 13112.3,
-    "km_leiloados": 9658.8,
-    "mva_leiloados": 14982.6,
+    "km_contratados_leilao": 9658.8,
+    "mva_contratados_leilao": 14982.6,
+    "km_contratos_assinados_siget": 3730.0,
+    "mva_contratos_assinados_siget": 9561.0,
     "ano_parcial": false
    },
    {
     "ano": "2017",
     "mw_geracao_liberada": 7455.8,
+    "fonte_mw_geracao_liberada": "resumo anual oficial (campo em kW), igual à soma do arquivo detalhado",
+    "cobertura_detalhado_pct": 100.0,
     "km_lt_energizados": 7415.9,
     "mva_tr_energizados": 13180.3,
-    "km_leiloados": 11997.4,
-    "mva_leiloados": 27641.3,
+    "km_contratados_leilao": 11997.4,
+    "mva_contratados_leilao": 27641.3,
+    "km_contratos_assinados_siget": 12177.7,
+    "mva_contratos_assinados_siget": 19817.6,
     "ano_parcial": false
    },
    {
     "ano": "2018",
     "mw_geracao_liberada": 7321.0,
-    "km_lt_energizados": 4339.5,
+    "fonte_mw_geracao_liberada": "resumo anual oficial (campo em kW), igual à soma do arquivo detalhado",
+    "cobertura_detalhado_pct": 100.0,
+    "km_lt_energizados": 4005.2,
     "mva_tr_energizados": 14968.0,
-    "km_leiloados": 9824.7,
-    "mva_leiloados": 30289.4,
+    "km_contratados_leilao": 9824.7,
+    "mva_contratados_leilao": 30289.4,
+    "km_contratos_assinados_siget": 6466.5,
+    "mva_contratos_assinados_siget": 17736.7,
     "ano_parcial": false
    },
    {
     "ano": "2019",
     "mw_geracao_liberada": 7437.2,
+    "fonte_mw_geracao_liberada": "resumo anual oficial (campo em kW), igual à soma do arquivo detalhado",
+    "cobertura_detalhado_pct": 100.0,
     "km_lt_energizados": 11520.4,
     "mva_tr_energizados": 16265.2,
-    "km_leiloados": 2321.2,
-    "mva_leiloados": 8746.7,
+    "km_contratados_leilao": 2321.2,
+    "mva_contratados_leilao": 8746.7,
+    "km_contratos_assinados_siget": 5563.1,
+    "mva_contratos_assinados_siget": 6320.0,
     "ano_parcial": false
    },
    {
     "ano": "2020",
     "mw_geracao_liberada": 4932.3,
+    "fonte_mw_geracao_liberada": "resumo anual oficial (campo em kW), igual à soma do arquivo detalhado",
+    "cobertura_detalhado_pct": 100.0,
     "km_lt_energizados": 9008.8,
     "mva_tr_energizados": 18351.3,
-    "km_leiloados": 1959.4,
-    "mva_leiloados": 6420.0,
+    "km_contratados_leilao": 1959.4,
+    "mva_contratados_leilao": 6420.0,
+    "km_contratos_assinados_siget": 1564.2,
+    "mva_contratos_assinados_siget": 5605.0,
     "ano_parcial": false
    },
    {
     "ano": "2021",
     "mw_geracao_liberada": 7606.6,
-    "km_lt_energizados": 9659.2,
+    "fonte_mw_geracao_liberada": "resumo anual oficial (campo em kW), igual à soma do arquivo detalhado",
+    "cobertura_detalhado_pct": 100.0,
+    "km_lt_energizados": 9569.7,
     "mva_tr_energizados": 20245.7,
-    "km_leiloados": 1417.0,
-    "mva_leiloados": 3350.0,
+    "km_contratados_leilao": 1417.0,
+    "mva_contratados_leilao": 3350.0,
+    "km_contratos_assinados_siget": 1953.2,
+    "mva_contratos_assinados_siget": 4791.7,
     "ano_parcial": false
    },
    {
     "ano": "2022",
     "mw_geracao_liberada": 8079.6,
+    "fonte_mw_geracao_liberada": "resumo anual oficial (campo em kW), igual à soma do arquivo detalhado",
+    "cobertura_detalhado_pct": 100.0,
     "km_lt_energizados": 11685.7,
     "mva_tr_energizados": 25919.7,
-    "km_leiloados": 6135.0,
-    "mva_leiloados": 9830.0,
+    "km_contratados_leilao": 6135.0,
+    "mva_contratados_leilao": 9830.0,
+    "km_contratos_assinados_siget": 4625.2,
+    "mva_contratos_assinados_siget": 5550.0,
     "ano_parcial": false
    },
    {
     "ano": "2023",
     "mw_geracao_liberada": 10325.7,
+    "fonte_mw_geracao_liberada": "resumo anual oficial (campo em kW), igual à soma do arquivo detalhado",
+    "cobertura_detalhado_pct": 100.0,
     "km_lt_energizados": 8076.6,
     "mva_tr_energizados": 19757.7,
-    "km_leiloados": 9187.0,
-    "mva_leiloados": 10240.0,
+    "km_contratados_leilao": 9187.0,
+    "mva_contratados_leilao": 10240.0,
+    "km_contratos_assinados_siget": 5944.2,
+    "mva_contratos_assinados_siget": 3433.3,
     "ano_parcial": false
    },
    {
     "ano": "2024",
     "mw_geracao_liberada": 10790.2,
-    "km_lt_energizados": 6965.1,
+    "fonte_mw_geracao_liberada": "resumo anual oficial (campo em kW), igual à soma do arquivo detalhado",
+    "cobertura_detalhado_pct": 100.0,
+    "km_lt_energizados": 6960.1,
     "mva_tr_energizados": 18853.0,
-    "km_leiloados": 7247.0,
-    "mva_leiloados": 10200.0,
+    "km_contratados_leilao": 7247.0,
+    "mva_contratados_leilao": 10200.0,
+    "km_contratos_assinados_siget": 7975.9,
+    "mva_contratos_assinados_siget": 10616.7,
     "ano_parcial": false
    },
    {
     "ano": "2025",
     "mw_geracao_liberada": 7466.5,
+    "fonte_mw_geracao_liberada": "resumo anual oficial (campo em kW), igual à soma do arquivo detalhado",
+    "cobertura_detalhado_pct": 100.0,
     "km_lt_energizados": 7647.4,
     "mva_tr_energizados": 11534.7,
-    "km_leiloados": null,
-    "mva_leiloados": null,
+    "km_contratados_leilao": null,
+    "mva_contratados_leilao": null,
+    "km_contratos_assinados_siget": 0.0,
+    "mva_contratos_assinados_siget": 0.0,
     "ano_parcial": false
    },
    {
     "ano": "2026",
     "mw_geracao_liberada": 5166.7,
+    "fonte_mw_geracao_liberada": "resumo anual oficial (campo em kW), igual à soma do arquivo detalhado",
+    "cobertura_detalhado_pct": 100.0,
     "km_lt_energizados": 4975.7,
     "mva_tr_energizados": 8213.3,
-    "km_leiloados": null,
-    "mva_leiloados": null,
+    "km_contratados_leilao": null,
+    "mva_contratados_leilao": null,
+    "km_contratos_assinados_siget": 1800.4,
+    "mva_contratos_assinados_siget": 3983.3,
     "ano_parcial": true
    }
   ]
@@ -8135,7 +11047,9 @@
     "relatorio_gw": 249,
     "diferenca_gw": 0.37,
     "tolerancia_gw": 0.5,
-    "resultado": "aprovada"
+    "resultado": "aprovada",
+    "conferencia_de": "valor e universo",
+    "ressalva": null
    },
    {
     "descricao": "Soma das categorias da Figura 3-25 em dez/2035 contra o total rotulado no relatório (359 GW, p. 97)",
@@ -8143,7 +11057,9 @@
     "relatorio_gw": 359,
     "diferenca_gw": 0.01,
     "tolerancia_gw": 0.5,
-    "resultado": "aprovada"
+    "resultado": "aprovada",
+    "conferencia_de": "valor e universo",
+    "ressalva": null
    },
    {
     "descricao": "Soma das fontes da Figura 3-6 em 2025 contra 'aproximadamente 251 GW' do texto (p. 72)",
@@ -8151,7 +11067,9 @@
     "relatorio_gw": 251,
     "diferenca_gw": 0.53,
     "tolerancia_gw": 1.0,
-    "resultado": "aprovada"
+    "resultado": "aprovada",
+    "conferencia_de": "valor (não de universo)",
+    "ressalva": "O texto da p. 72 descreve cerca de 251 GW de oferta centralizada, mas a Figura 3-6 inclui a MMGD na coluna Solar (p. 73): 40,024 GW de MMGD em dez/2025 pela Figura 3-25. Sem ela a figura somaria 211,51 GW. O total confere em valor; o universo do texto e o da figura são diferentes."
    }
   ],
   "atualizacao_planilhas": {
@@ -8204,7 +11122,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T10:40:44Z",
    "capturado_em": "2026-09-30T22:18:54Z",
-   "validado_em": "2026-09-30T23:13:02Z",
+   "validado_em": "2026-10-01T00:52:00Z",
    "cobertura_historica": {
     "inicio": "2026-09-30",
     "fim": "2026-09-30"
@@ -8219,9 +11137,9 @@
     "sha256": "d169541d7cbb805f08bd74db3b8283fee946f08b5d217f89e1ab396df6362d35"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "883727b9c73e+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:13:02Z",
+    "detectado_em": "2026-10-01T00:52:00Z",
     "total": 0,
     "vintages_comparadas": 1,
     "arquivos": 1,
@@ -8233,7 +11151,7 @@
     "Potência em MW não é energia: a produção depende do fator de capacidade de cada fonte, e a garantia física (quando existe) é outra grandeza.",
     "Usina multiestadual é atribuída à UF principal informada pelo SIGA; a potência não é dividida entre UFs.",
     "O SIGA marca usina sem data de entrada em operação com 1900-01-03 e localização não informada com 0: os dois viram ausência.",
-    "O dicionário do SIGA descreve fases desde antes da outorga até a revogação, mas o arquivo aberto traz só Operação, Construção e Construção não iniciada: usina revogada ou extinta sai do arquivo e é contada pelos atos de outorga.",
+    "O dicionário do SIGA descreve fases desde antes da outorga até a revogação, mas o arquivo aberto traz só Operação, Construção e Construção não iniciada. Usina com outorga revogada ou extinta pode sair do arquivo ou continuar nele: centenas de usinas com ato de encerramento seguem na fase Operação (conversão de regime ou nova outorga), então estágios e encerramentos não são disjuntos.",
     "Reconciliação com os agregados publicados pela ANEEL (por tipo e por UF) mostrada ao lado; os agregados têm mês de referência anterior ao SIGA."
    ],
    "download": "/energia/series/expansao_capacidade_uf_fonte.csv",
@@ -8258,7 +11176,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T10:40:44Z",
    "capturado_em": "2026-09-30T22:18:54Z",
-   "validado_em": "2026-09-30T23:13:02Z",
+   "validado_em": "2026-10-01T00:52:00Z",
    "cobertura_historica": {
     "inicio": "2026-09-30",
     "fim": "2026-09-30"
@@ -8273,9 +11191,9 @@
     "sha256": "d169541d7cbb805f08bd74db3b8283fee946f08b5d217f89e1ab396df6362d35"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "883727b9c73e+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:13:02Z",
+    "detectado_em": "2026-10-01T00:52:00Z",
     "total": 0,
     "vintages_comparadas": 1,
     "arquivos": 1,
@@ -8287,7 +11205,7 @@
     "Potência em MW não é energia: a produção depende do fator de capacidade de cada fonte, e a garantia física (quando existe) é outra grandeza.",
     "Usina multiestadual é atribuída à UF principal informada pelo SIGA; a potência não é dividida entre UFs.",
     "O SIGA marca usina sem data de entrada em operação com 1900-01-03 e localização não informada com 0: os dois viram ausência.",
-    "O dicionário do SIGA descreve fases desde antes da outorga até a revogação, mas o arquivo aberto traz só Operação, Construção e Construção não iniciada: usina revogada ou extinta sai do arquivo e é contada pelos atos de outorga.",
+    "O dicionário do SIGA descreve fases desde antes da outorga até a revogação, mas o arquivo aberto traz só Operação, Construção e Construção não iniciada. Usina com outorga revogada ou extinta pode sair do arquivo ou continuar nele: centenas de usinas com ato de encerramento seguem na fase Operação (conversão de regime ou nova outorga), então estágios e encerramentos não são disjuntos.",
     "Potência fiscalizada de usina em construção é a parcela que já opera (ex.: parque com unidades liberadas)."
    ],
    "download": "/energia/series/expansao_usinas_siga.csv",
@@ -8312,24 +11230,26 @@
    },
    "publicado_pela_fonte_em": "2026-09-25T18:14:51Z",
    "capturado_em": "2026-09-30T22:21:26Z",
-   "validado_em": "2026-09-30T23:13:02Z",
+   "validado_em": "2026-10-01T00:52:00Z",
    "cobertura_historica": {
     "inicio": "2015",
     "fim": "2026-09-25"
    },
    "transformacoes": [
     "filtro DscObjeto igual a um dos rótulos da fonte 'Autorização - Revogação' ou 'Concessão - Extinção'",
-    "contagem por ano de publicação; soma da potência declarada no ato"
+    "conferência da potência de cada ato contra o cadastro da usina (SIGA, RALIE histórico) e o limite legal da CGH",
+    "potência uma vez por usina (núcleo do CEG) em cada ano e no total, pelo maior valor conferido",
+    "contagem de atos à parte"
    ],
-   "formula": "MW(ano) = Σ MdaPotenciaInstaladaMW dos atos de encerramento publicados no ano",
+   "formula": "MW(ano) = Σ por usina com ato no ano de max(potência conferida dos atos da usina no ano)",
    "snapshot": {
     "id": "aneel_atos_outorga_geracao@2026-09-30T22:21:26Z",
     "sha256": "0da8e26db84d3c522d694bf98850457b1c0c82df6158c9d4690fa10a9904dc61"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "883727b9c73e+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:13:02Z",
+    "detectado_em": "2026-10-01T00:52:00Z",
     "total": 0,
     "vintages_comparadas": 1,
     "arquivos": 1,
@@ -8341,7 +11261,10 @@
     "O conjunto de atos começa em 2015; encerramentos anteriores não constam.",
     "Ato sem data de publicação na fonte fica fora da série anual e é contado à parte (sem_data_publicacao).",
     "Revogação de DRO, DRI e DRS (registros anteriores à outorga) não entra.",
-    "A potência é a declarada no ato; atos sem potência contam como ato, não como 0 MW.",
+    "A potência é a declarada no ato, que às vezes vem em kW no campo de MW: corrigida pelo cadastro quando há confirmação, fora da soma quando não há (potencia_conferida). Atos sem potência contam como ato, não como 0 MW.",
+    "Outorga encerrada não é usina retirada: 196 usinas com ato de encerramento seguem na fase Operação do SIGA (usinas_em_operacao_no_siga).",
+    "320 atos não têm núcleo nem código do CEG na fonte e não são deduplicados (sem_chave_de_usina).",
+    "Usina com atos em anos diferentes aparece em cada um desses anos; o total conta a usina uma vez.",
     "O ano corrente é parcial."
    ],
    "download": "/energia/series/expansao_encerramentos_outorga.csv",
@@ -8366,7 +11289,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-18T21:17:26Z",
    "capturado_em": "2026-09-30T22:20:52Z",
-   "validado_em": "2026-09-30T23:13:02Z",
+   "validado_em": "2026-10-01T00:52:00Z",
    "cobertura_historica": {
     "inicio": "2021-06-17",
     "fim": "2026-09-18"
@@ -8381,9 +11304,9 @@
     "sha256": "37c206fc0b79e067183992c8ee84e009aa9ee6771113407d2ed05cf42a54faf6"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "883727b9c73e+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:13:02Z",
+    "detectado_em": "2026-10-01T00:52:00Z",
     "total": 0,
     "vintages_comparadas": 5,
     "arquivos": 5,
@@ -8419,7 +11342,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-18T21:17:26Z",
    "capturado_em": "2026-09-30T22:20:52Z",
-   "validado_em": "2026-09-30T23:13:02Z",
+   "validado_em": "2026-10-01T00:52:00Z",
    "cobertura_historica": {
     "inicio": "2021-06-17",
     "fim": "2026-09-18"
@@ -8435,9 +11358,9 @@
     "sha256": "37c206fc0b79e067183992c8ee84e009aa9ee6771113407d2ed05cf42a54faf6"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "883727b9c73e+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:13:02Z",
+    "detectado_em": "2026-10-01T00:52:00Z",
     "total": 0,
     "vintages_comparadas": 5,
     "arquivos": 5,
@@ -8451,7 +11374,7 @@
     "Outorga não é capacidade que certamente entrará; MW outorgado não é energia firme.",
     "O dicionário do recurso de unidades geradoras (versão 1.0, 16/06/2026) tem descrições deslocadas uma linha (ex.: DatLiberOpTesteRealizado descrito como descida do rotor); a leitura segue o nome do campo: DatUGInicioOpComerOutorgado é a data outorgada de operação comercial e DatPrevisaoOpComercialSFG a previsão da fiscalização.",
     "Usinas em operação parcial que seguem no RALIE contam como em implantação.",
-    "Sem desfecho não significa abandono: pode ser mudança de CEG, saída do acompanhamento ou ato fora do conjunto de atos."
+    "Sem desfecho não significa abandono: pode ser mudança de CEG, saída do acompanhamento, ato fora do conjunto de atos ou ato de revogação publicado sem núcleo nem código do CEG (320 atos, 13.446,8 MW em 30/09/2026, quase todos de 2025 e 2026), que não se liga a nenhuma usina do RALIE."
    ],
    "download": "/energia/series/expansao_trajetorias_ralie.csv",
    "notas_fonte": null
@@ -8475,7 +11398,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-18T21:17:26Z",
    "capturado_em": "2026-09-30T22:20:52Z",
-   "validado_em": "2026-09-30T23:13:02Z",
+   "validado_em": "2026-10-01T00:52:00Z",
    "cobertura_historica": {
     "inicio": "2021-06-17",
     "fim": "2026-09-18"
@@ -8491,9 +11414,9 @@
     "sha256": "37c206fc0b79e067183992c8ee84e009aa9ee6771113407d2ed05cf42a54faf6"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "883727b9c73e+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:13:02Z",
+    "detectado_em": "2026-10-01T00:52:00Z",
     "total": 0,
     "vintages_comparadas": 5,
     "arquivos": 5,
@@ -8512,8 +11435,8 @@
    "download": "/energia/series/expansao_confiabilidade_previsoes.csv",
    "notas_fonte": null
   },
-  "atraso_realizado": {
-   "indicador": "Atraso realizado da liberação comercial em relação à data outorgada",
+  "desvio_prazo_vigente": {
+   "indicador": "Desvio da liberação comercial em relação ao prazo outorgado vigente (não é atraso com data-base)",
    "natureza": "CALCULADO",
    "fonte": {
     "orgao": "ANEEL",
@@ -8531,24 +11454,24 @@
    },
    "publicado_pela_fonte_em": "2026-09-18T20:07:07Z",
    "capturado_em": "2026-09-30T22:21:15Z",
-   "validado_em": "2026-09-30T23:13:02Z",
+   "validado_em": "2026-10-01T00:52:00Z",
    "cobertura_historica": {
     "inicio": "2014",
     "fim": "2026-09-16"
    },
    "transformacoes": [
-    "atraso = DatLiberOpComerRealizado − DatUGInicioOpComerOutorgado",
+    "desvio = DatLiberOpComerRealizado − DatUGInicioOpComerOutorgado",
     "mediana ponderada pela potência liberada"
    ],
-   "formula": "mediana ponderada de (realizado − outorgado) com peso MdaPotenciaLiberadaComercial",
+   "formula": "mediana ponderada de (realizado − outorgado vigente) com peso MdaPotenciaLiberadaComercial",
    "snapshot": {
     "id": "aneel_liberacao_comercial@2026-09-30T22:21:15Z",
     "sha256": "7f2c5d02aa1d1fa87d33a136983e562f32490795ed6bbe5c0ad6966add0b648e"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "883727b9c73e+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:13:02Z",
+    "detectado_em": "2026-10-01T00:52:00Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -8557,7 +11480,7 @@
     "exemplos": []
    },
    "limitacoes": [
-    "A data outorgada é a vigente na publicação do arquivo: se o cronograma foi alterado por ato posterior, o atraso é medido contra a data alterada.",
+    "Não é atraso: a data outorgada é a vigente na publicação do arquivo, sem data-base; se o cronograma foi alterado por ato posterior, o desvio é medido contra a data alterada. O que atrasou em relação a uma previsão datada está na confiabilidade das previsões.",
     "Em autorizações recentes (sobretudo solares) a data outorgada é um prazo limite anos à frente; liberação muito antes dela aparece como atraso negativo grande, que é antecipação em relação ao prazo, não em relação a uma previsão.",
     "Antes de 2014 o arquivo detalhado não cobre toda a potência liberada no ano (nota da ANEEL).",
     "O ano corrente é parcial."
@@ -8579,18 +11502,19 @@
    "unidade": "km, MVA, R$ milhões (nominais) e %",
    "frequencia": "mensal segundo o dicionário",
    "periodo_referencia": {
-    "inicio": "1999",
-    "fim": "2024"
+    "inicio": "1999-12-03",
+    "fim": "2024-09-27"
    },
    "publicado_pela_fonte_em": "2026-09-01T05:01:33Z",
    "capturado_em": "2026-09-30T22:21:32Z",
-   "validado_em": "2026-09-30T23:13:02Z",
+   "validado_em": "2026-10-01T00:52:00Z",
    "cobertura_historica": {
     "inicio": "1999",
-    "fim": "2026-09-01"
+    "fim": "2024-09-27"
    },
    "transformacoes": [
-    "soma por ano do leilão de km, MVA, investimento previsto e RAP",
+    "lotes sem vencedor ('SEM LANCE', 'SEM INSCRITO APTO', 'NÃO LEILOADO') separados; zeros-marcadores viram ausência",
+    "soma por ano do leilão de km, MVA, investimento previsto e RAP dos lotes contratados",
     "deságio agregado pela RAP"
    ],
    "formula": "deságio(ano) = 100 × (1 − Σ RAP vencedora ÷ Σ RAP do edital), lotes com as duas",
@@ -8599,9 +11523,9 @@
     "sha256": "a0671f9f513cbd2caeb80077ecf84f9335dc42238007264d9c9300dd5e5c57e5"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "883727b9c73e+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:13:02Z",
+    "detectado_em": "2026-10-01T00:52:00Z",
     "total": 0,
     "vintages_comparadas": 1,
     "arquivos": 1,
@@ -8610,7 +11534,8 @@
     "exemplos": []
    },
    "limitacoes": [
-    "O arquivo publicado termina no leilão 002/2024 (27/09/2024); ano sem linha aparece como ausência, não como ano sem leilão.",
+    "O arquivo publicado termina no leilão 002/2024 (27/09/2024); ano sem linha aparece como ausência, não como ano sem leilão. Os contratos de concessão assinados depois disso estão em contratos_assinados (SIGET), sem RAP nem deságio.",
+    "67 lotes sem vencedor ficam fora de lotes contratados, km, MVA, investimento e RAP; o investimento e a RAP do edital deles saem à parte, como ofertados.",
     "Reais nominais da data de cada leilão, sem correção monetária: anos não são comparáveis em valor real.",
     "Investimento é o previsto no edital, não o realizado.",
     "km, MVA e reais são grandezas diferentes e nunca somadas."
@@ -8636,8 +11561,8 @@
     "fim": "2026-09-29"
    },
    "publicado_pela_fonte_em": "2026-09-29T16:36:54Z",
-   "capturado_em": "2026-09-30T22:22:38Z",
-   "validado_em": "2026-09-30T23:13:02Z",
+   "capturado_em": "2026-10-01T00:45:14Z",
+   "validado_em": "2026-10-01T00:52:00Z",
    "cobertura_historica": {
     "inicio": "2005",
     "fim": "2026-09-29"
@@ -8649,18 +11574,18 @@
    ],
    "formula": "km novos(empreendimento) = Σ NumEtnLinTms dos módulos LT distintos com obra de Instalação",
    "snapshot": {
-    "id": "aneel_siget@2026-09-30T22:22:38Z",
-    "sha256": "6a7d8ce143d41e9e55d0aae364fefdc81d6d6f188edcf45f80bb3905536b9df1"
+    "id": "aneel_siget@2026-10-01T00:45:14Z",
+    "sha256": "7974247e4631ce5b8af8053b978c1d3eb7707aa80fa1aa88951600f98ac29082"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "883727b9c73e+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:13:02Z",
+    "detectado_em": "2026-10-01T00:52:00Z",
     "total": 0,
-    "vintages_comparadas": 4,
-    "arquivos": 4,
+    "vintages_comparadas": 5,
+    "arquivos": 5,
     "recapturas_sem_mudanca": 0,
-    "ultimo_download_ok": "2026-09-30T22:22:38Z",
+    "ultimo_download_ok": "2026-10-01T00:45:14Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -8668,9 +11593,170 @@
     "As datas de previsão informadas pelas transmissoras não estão no arquivo aberto do SIGET: o atraso em andamento é medido contra o ato legal, não contra a previsão.",
     "Linha interestadual aparece nas duas UFs na tabela por UF: a soma das UFs supera o total nacional.",
     "Reatores e capacitores (Mvar) não entram no MVA de transformação.",
-    "Sem geometria pública verificada das linhas (SIGEL da ANEEL não respondeu): o mapa é por UF."
+    "Um módulo listado em mais de um empreendimento conta uma vez, no empreendimento da obra mais antiga.",
+    "O SIGET não tem coordenadas: o território das obras é a UF das subestações. A geometria das linhas vem do WebMap da EPE (rede_epe), sem chave comum com o SIGET; o SIGEL da ANEEL não respondeu."
    ],
    "download": "/energia/series/expansao_obras_transmissao.csv",
+   "notas_fonte": null
+  },
+  "previsoes": {
+   "indicador": "Previsões de operação comercial da fiscalização (atuais, próximos 24 meses e revisões entre fotografias)",
+   "natureza": "PREVISTO",
+   "fonte": {
+    "orgao": "ANEEL",
+    "dataset": "RALIE: Relatório de Acompanhamento da Expansão da Oferta de Geração",
+    "recurso": "ralie-usina-atual.csv, ralie-unidade-geradora-atual.csv, ralie-leilao-atual.csv, ralie-usina-historico.parquet, ralie-unidade-geradora-historico.parquet",
+    "url_dataset": "https://dadosabertos.aneel.gov.br/dataset/ralie-relatorio-de-acompanhamento-da-expansao-da-oferta-de-geracao-de-energia-eletrica",
+    "licenca": "Open Data Commons Open Database License (ODbL)",
+    "url_primaria": "https://dadosabertos.aneel.gov.br/dataset/ralie-relatorio-de-acompanhamento-da-expansao-da-oferta-de-geracao-de-energia-eletrica"
+   },
+   "unidade": "MW, dias e %",
+   "frequencia": "mensal segundo o dicionário; cada previsão tem a data da fotografia (DatRalie) em que foi publicada",
+   "periodo_referencia": {
+    "inicio": "2026-09-18",
+    "fim": "2026-09-18"
+   },
+   "publicado_pela_fonte_em": "2026-09-18T21:17:26Z",
+   "capturado_em": "2026-09-30T22:20:52Z",
+   "validado_em": "2026-10-01T00:52:00Z",
+   "cobertura_historica": {
+    "inicio": "2021-06-17",
+    "fim": "2026-09-18"
+   },
+   "transformacoes": [
+    "previsão DatPrevisaoOpComercialSFG por unidade, com data-base = DatRalie da fotografia",
+    "soma da potência unitária por ano e mês previstos",
+    "datas em bloco marcadas e excluídas nas versões 'sem datas em bloco'"
+   ],
+   "formula": "MW(período previsto) = Σ MdaPotenciaUnitaria das unidades com previsão no período ÷ 1.000; deslizamento = previsão(S + 12 meses) − previsão(S)",
+   "snapshot": {
+    "id": "aneel_ralie@2026-09-30T22:20:52Z",
+    "sha256": "37c206fc0b79e067183992c8ee84e009aa9ee6771113407d2ed05cf42a54faf6"
+   },
+   "versao_pipeline": "energia-0.1.0",
+   "versao_codigo": "d5dc4fd86561+alterado",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-10-01T00:52:00Z",
+    "total": 0,
+    "vintages_comparadas": 5,
+    "arquivos": 5,
+    "recapturas_sem_mudanca": 0,
+    "ultimo_download_ok": "2026-09-30T22:20:54Z",
+    "exemplos": []
+   },
+   "limitacoes": [
+    "Previsão da fiscalização da ANEEL, não do empreendedor nem do observatório; muda a cada fotografia.",
+    "Data em bloco: previsão atribuída a pelo menos 100 usinas distintas na mesma fotografia (o maior complexo do RALIE tem 41 usinas). É a data convencional que a fiscalização atribui em lote e que anda com a fotografia, cerca de 5 anos depois dela; não é cronograma de obra.",
+    "O deslizamento só contém unidades que seguem em implantação 12 meses depois (viés de sobrevivência)."
+   ],
+   "download": "/energia/series/expansao_unidades_ralie.csv",
+   "notas_fonte": null
+  },
+  "contratos_transmissao": {
+   "indicador": "Contratos de concessão de transmissão por data de assinatura",
+   "natureza": "CALCULADO",
+   "fonte": {
+    "orgao": "ANEEL",
+    "dataset": "Sistema de Gestão da Transmissão (SIGET)",
+    "recurso": "siget-contrato-agente.csv, siget-contrato-empreendimento-obra-modulo.csv",
+    "url_dataset": "https://dadosabertos.aneel.gov.br/dataset/sistema-de-gestao-da-transmissao-siget",
+    "licenca": "Open Data Commons Open Database License (ODbL)",
+    "url_primaria": "https://dadosabertos.aneel.gov.br/dataset/sistema-de-gestao-da-transmissao-siget"
+   },
+   "unidade": "contratos, km de circuito e MVA",
+   "frequencia": "diária segundo o dicionário; capturado no máximo uma vez por semana",
+   "periodo_referencia": {
+    "inicio": "1995",
+    "fim": "2026-09-29"
+   },
+   "publicado_pela_fonte_em": "2026-09-29T16:36:54Z",
+   "capturado_em": "2026-10-01T00:45:14Z",
+   "validado_em": "2026-10-01T00:52:00Z",
+   "cobertura_historica": {
+    "inicio": "1995",
+    "fim": "2026-09-29"
+   },
+   "transformacoes": [
+    "DatAsnCcd do contrato",
+    "vínculo IdeCcd com o arquivo de obras",
+    "km e MVA de obras de Instalação do objeto original (mesmo fim de contrato)"
+   ],
+   "formula": "km(ano) = Σ NumEtnLinTms dos módulos LT de Instalação dos contratos assinados no ano (objeto original)",
+   "snapshot": {
+    "id": "aneel_siget@2026-10-01T00:45:14Z",
+    "sha256": "7974247e4631ce5b8af8053b978c1d3eb7707aa80fa1aa88951600f98ac29082"
+   },
+   "versao_pipeline": "energia-0.1.0",
+   "versao_codigo": "d5dc4fd86561+alterado",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-10-01T00:52:00Z",
+    "total": 0,
+    "vintages_comparadas": 5,
+    "arquivos": 5,
+    "recapturas_sem_mudanca": 0,
+    "ultimo_download_ok": "2026-10-01T00:45:14Z",
+    "exemplos": []
+   },
+   "limitacoes": [
+    "Contrato não é leilão: pode vir de leilão, relicitação ou outra origem, e o SIGET não informa o leilão, a RAP de lance nem o deságio.",
+    "Contrato sem empreendimento cadastrado no SIGET tem km e MVA ausentes.",
+    "Reforço incorporado depois a contrato antigo, com prazo próprio, fica fora das somas."
+   ],
+   "download": "/energia/series/expansao_contratos_transmissao.csv",
+   "notas_fonte": null
+  },
+  "rede_epe": {
+   "indicador": "Linhas de transmissão existentes e planejadas por UF, tensão e ano",
+   "natureza": "CALCULADO",
+   "fonte": {
+    "orgao": "EPE",
+    "dataset": "WebMap da EPE: linhas de transmissão",
+    "recurso": "camadas 21 (Base Existente) e 10 (Expansão Planejada) do serviço SMA/WMS_Webmap_EPE",
+    "url_dataset": "https://gisepeprd2.epe.gov.br/WebMapEPE/",
+    "url_primaria": "https://gisepeprd2.epe.gov.br/arcgis/rest/services/SMA/WMS_Webmap_EPE/MapServer",
+    "licenca": "Creative Commons Atribuição 4.0 Internacional (CC BY 4.0), conforme o rodapé do portal da EPE"
+   },
+   "unidade": "km (comprimento da geometria)",
+   "frequencia": "não informada pela EPE; capturado no máximo uma vez por mês",
+   "periodo_referencia": {
+    "inicio": null,
+    "fim": "2026-10-01T00:45:40Z"
+   },
+   "publicado_pela_fonte_em": null,
+   "capturado_em": "2026-10-01T00:46:47Z",
+   "validado_em": "2026-10-01T00:52:00Z",
+   "cobertura_historica": {
+    "inicio": null,
+    "fim": "2026-10-01T00:45:40Z"
+   },
+   "transformacoes": [
+    "geometria generalizada pelo servidor (0,005 grau)",
+    "comprimento geodésico de cada feição",
+    "km por UF pelo ponto médio de cada segmento na malha de UF do IBGE"
+   ],
+   "formula": "km(UF) = Σ comprimento dos segmentos cujo ponto médio está na UF",
+   "snapshot": {
+    "id": "epe_webmap_rede@2026-10-01T00:46:47Z",
+    "sha256": "c32b9326655da2ecc3acb22ecf2e24f97d385fbc4f9ff7caeceaabeef06d3b5a"
+   },
+   "versao_pipeline": "energia-0.1.0",
+   "versao_codigo": "d5dc4fd86561+alterado",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-10-01T00:52:00Z",
+    "total": 0,
+    "vintages_comparadas": 2,
+    "arquivos": 2,
+    "recapturas_sem_mudanca": 0,
+    "ultimo_download_ok": "2026-10-01T00:46:47Z",
+    "exemplos": []
+   },
+   "limitacoes": [
+    "O serviço não informa a data de atualização das camadas: vale a data de captura.",
+    "O campo Extensao da camada planejada tem valores fora de escala (em metros em parte das feições): o comprimento publicado é o da geometria.",
+    "km por feição (traçado), não km de circuito do SIGET: as duas medidas não se somam.",
+    "Sem chave comum com o SIGET ou com os leilões: a ligação é territorial (UF), não por empreendimento."
+   ],
+   "download": "/energia/series/expansao_rede_epe.json",
    "notas_fonte": null
   },
   "cenarios": {
@@ -8692,7 +11778,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T22:22:59Z",
-   "validado_em": "2026-09-30T23:13:02Z",
+   "validado_em": "2026-10-01T00:52:00Z",
    "cobertura_historica": {
     "inicio": "2025",
     "fim": "2035"
@@ -8706,9 +11792,9 @@
     "sha256": "f3c3178071b54b7726abda5cf49cda2a114e73173c0e658bacb6c4a367592d9b"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "883727b9c73e+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:13:02Z",
+    "detectado_em": "2026-10-01T00:52:00Z",
     "total": 0,
     "vintages_comparadas": 3,
     "arquivos": 3,
@@ -8767,10 +11853,10 @@
    "tratamento_ausencia": "potência vazia não soma e não vira zero exibido; núcleo de CEG repetido na fonte conta uma vez",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "883727b9c73e+alterado",
-    "publicacao": "2026-09-30T23:13:02Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:52:01Z"
    },
-   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
     {
      "nome": "potência não negativa",
@@ -8799,7 +11885,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
-   "citacao": "SCRUTINIUMS. Capacidade instalada em operação: 220.659 MW, Brasil (Sistema Interligado e sistemas isolados), 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SIGA: Sistema de Informações de Geração da ANEEL (recurso siga-empreendimentos-geracao-diario.csv, capturado em 30/09/2026). Versão energia-0.1.0, código 883727b9c73e+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Capacidade instalada em operação: 220.659 MW, Brasil (Sistema Interligado e sistemas isolados), 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SIGA: Sistema de Informações de Geração da ANEEL (recurso siga-empreendimentos-geracao-diario.csv, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "outorgado_sem_obra": {
    "indicador": "Potência outorgada com construção não iniciada",
@@ -8842,10 +11928,10 @@
    "tratamento_ausencia": "potência vazia não soma",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "883727b9c73e+alterado",
-    "publicacao": "2026-09-30T23:13:02Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:52:01Z"
    },
-   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
     {
      "nome": "estágios disjuntos e exaustivos",
@@ -8866,7 +11952,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
-   "citacao": "SCRUTINIUMS. Potência outorgada com construção não iniciada: 87.267 MW, Brasil, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SIGA: Sistema de Informações de Geração da ANEEL (recurso siga-empreendimentos-geracao-diario.csv, capturado em 30/09/2026). Versão energia-0.1.0, código 883727b9c73e+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Potência outorgada com construção não iniciada: 87.267 MW, Brasil, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SIGA: Sistema de Informações de Geração da ANEEL (recurso siga-empreendimentos-geracao-diario.csv, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "ralie_em_implantacao": {
    "indicador": "Potência das unidades geradoras em implantação acompanhadas pelo RALIE",
@@ -8907,10 +11993,10 @@
    "tratamento_ausencia": "unidade sem potência não soma; unidade sem previsão da fiscalização é contada à parte, com a justificativa publicada",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "883727b9c73e+alterado",
-    "publicacao": "2026-09-30T23:13:02Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:52:01Z"
    },
-   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
     {
      "nome": "chave única por unidade",
@@ -8939,7 +12025,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
-   "citacao": "SCRUTINIUMS. Potência das unidades geradoras em implantação acompanhadas pelo RALIE: 95.888 MW, Brasil, 18/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, RALIE: Relatório de Acompanhamento da Expansão da Oferta de Geração (recurso ralie-unidade-geradora-atual.csv, capturado em 30/09/2026). Versão energia-0.1.0, código 883727b9c73e+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Potência das unidades geradoras em implantação acompanhadas pelo RALIE: 95.888 MW, Brasil, 18/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, RALIE: Relatório de Acompanhamento da Expansão da Oferta de Geração (recurso ralie-unidade-geradora-atual.csv, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "coorte_inicial_operacao": {
    "indicador": "Potência da primeira fotografia do RALIE que entrou em operação",
@@ -9023,10 +12109,10 @@
    "tratamento_ausencia": "usina sem operação nem ato de encerramento fica em 'sem desfecho', nunca em operação",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "883727b9c73e+alterado",
-    "publicacao": "2026-09-30T23:13:02Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:52:01Z"
    },
-   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
     {
      "nome": "desfechos exaustivos e disjuntos",
@@ -9042,12 +12128,12 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
-   "citacao": "SCRUTINIUMS. Potência da primeira fotografia do RALIE que entrou em operação: 68,3%, usinas presentes na primeira fotografia do RALIE, 17/06/2021 a 18/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, RALIE: Relatório de Acompanhamento da Expansão da Oferta de Geração (recurso ralie-unidade-geradora-historico.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código 883727b9c73e+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Potência da primeira fotografia do RALIE que entrou em operação: 68,3%, usinas presentes na primeira fotografia do RALIE, 17/06/2021 a 18/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, RALIE: Relatório de Acompanhamento da Expansão da Oferta de Geração (recurso ralie-unidade-geradora-historico.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "confiabilidade_ultima": {
    "indicador": "Potência prometida para os 12 meses seguintes que foi liberada no prazo",
    "valor_exibido": "50,5%",
-   "valor_calculo": 50.4661363145713,
+   "valor_calculo": 50.466136314571294,
    "unidade": "% do MW prometido",
    "periodo": {
     "inicio": "2025-08-22",
@@ -9097,7 +12183,7 @@
    },
    "denominador": {
     "descricao": "kW com previsão dentro da janela na fotografia",
-    "valor": 11369043.42
+    "valor": 11369043.420000002
    },
    "pesos": null,
    "exclusoes": [
@@ -9107,10 +12193,10 @@
    "tratamento_ausencia": "unidade sem liberação no arquivo conta como não liberada; nenhuma previsão é reconstruída com o estoque atual",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "883727b9c73e+alterado",
-    "publicacao": "2026-09-30T23:13:02Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:52:01Z"
    },
-   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
     {
      "nome": "partição da potência prometida",
@@ -9131,71 +12217,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
-   "citacao": "SCRUTINIUMS. Potência prometida para os 12 meses seguintes que foi liberada no prazo: 50,5%, unidades geradoras com previsão da fiscalização dentro da janela, 22/08/2025 a 22/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, RALIE: Relatório de Acompanhamento da Expansão da Oferta de Geração (recurso ralie-unidade-geradora-historico.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código 883727b9c73e+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
-  },
-  "atraso_realizado_ultimo_ano": {
-   "indicador": "Atraso mediano da liberação comercial em relação à data outorgada",
-   "valor_exibido": "86 dias",
-   "valor_calculo": 86,
-   "unidade": "dias",
-   "periodo": {
-    "inicio": "2025-01-01",
-    "fim": "2025-12-31"
-   },
-   "entidade": "unidades geradoras liberadas para operação comercial no ano",
-   "universo": "7.466,5 MW liberados em 5.091 linhas do arquivo",
-   "filtros": [],
-   "fonte": {
-    "orgao": "ANEEL",
-    "conjunto": "Liberação para operação comercial de empreendimentos de geração",
-    "recurso": "unidades-geradoras-liberadas-operacao-comercial-detalhado.csv",
-    "url": "https://dadosabertos.aneel.gov.br/dataset/2b2ace01-5692-4636-8c99-2a84ff094f4f/resource/75419902-c692-498b-a6ef-85f6d4beb5b2/download/unidades-geradoras-liberadas-operacao-comercial-detalhado.csv",
-    "arquivo": "data/energia/bronze/aneel/aneel_liberacao_comercial/unidades-geradoras-liberadas-operacao-comercial-detalhado.csv/20260930T222113Z.5725c5fef333.csv.gz",
-    "sha256": "5725c5fef3330c5fdc916bed8e73a99cf7ab85f22d4d2829e5bf1c3afd03b5fc",
-    "capturado_em": "2026-09-30T22:21:13Z",
-    "publicado_em": "2026-09-18T20:07:07Z"
-   },
-   "extracao_pdf": null,
-   "chaves_origem": [],
-   "chaves_total": null,
-   "consulta": "linhas do arquivo detalhado com DatLiberOpComerRealizado em 2025 e DatUGInicioOpComerOutorgado preenchida",
-   "manifesto": {
-    "rotulo": "Liberações por ano e tipo (CSV)",
-    "url": "/energia/series/expansao_liberacoes_anuais.csv"
-   },
-   "formula": "mediana ponderada por kW de (DatLiberOpComerRealizado − DatUGInicioOpComerOutorgado), em dias",
-   "numerador": null,
-   "denominador": null,
-   "pesos": "MdaPotenciaLiberadaComercial (kW) de cada linha",
-   "exclusoes": [],
-   "cobertura": "usinas acompanhadas pela fiscalização (o arquivo não cobre todo o SIGA)",
-   "tratamento_ausencia": "linha sem data outorgada fica fora da mediana e da parcela com atraso",
-   "versao": {
-    "pipeline": "energia-0.1.0",
-    "codigo": "883727b9c73e+alterado",
-    "publicacao": "2026-09-30T23:13:02Z"
-   },
-   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
-   "testes": [
-    {
-     "nome": "ano completo",
-     "resultado": "aprovado",
-     "detalhe": "o ano corrente, parcial, não é usado como destaque"
-    }
-   ],
-   "reconciliacao": {
-    "descricao": "potência liberada somada por ano e tipo contra o resumo anual oficial: 70 de 70 grupos desde 2014 iguais",
-    "resultado": "aprovado",
-    "tolerancia": "0,5 kW por grupo (arredondamento a duas casas)"
-   },
-   "download": [
-    {
-     "rotulo": "Liberações comerciais e atraso por ano (CSV)",
-     "url": "/energia/series/expansao_liberacoes_anuais.csv"
-    }
-   ],
-   "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
-   "citacao": "SCRUTINIUMS. Atraso mediano da liberação comercial em relação à data outorgada: 86 dias, unidades geradoras liberadas para operação comercial no ano, 01/01/2025 a 31/12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Liberação para operação comercial de empreendimentos de geração (recurso unidades-geradoras-liberadas-operacao-comercial-detalhado.csv, capturado em 30/09/2026). Versão energia-0.1.0, código 883727b9c73e+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Potência prometida para os 12 meses seguintes que foi liberada no prazo: 50,5%, unidades geradoras com previsão da fiscalização dentro da janela, 22/08/2025 a 22/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, RALIE: Relatório de Acompanhamento da Expansão da Oferta de Geração (recurso ralie-unidade-geradora-historico.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "transmissao_em_andamento": {
    "indicador": "Linhas de transmissão novas em empreendimentos em andamento",
@@ -9255,10 +12277,10 @@
    "tratamento_ausencia": "módulo sem extensão informada não soma; MVA e km nunca são somados entre si",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "883727b9c73e+alterado",
-    "publicacao": "2026-09-30T23:13:02Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:52:01Z"
    },
-   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
     {
      "nome": "extensão física",
@@ -9279,10 +12301,10 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
-   "citacao": "SCRUTINIUMS. Linhas de transmissão novas em empreendimentos em andamento: 25.947 km, Rede Básica e demais instalações cadastradas no SIGET, 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Sistema de Gestão da Transmissão (SIGET) (recurso siget-contrato-empreendimento-obra-modulo.csv, capturado em 30/09/2026). Versão energia-0.1.0, código 883727b9c73e+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Linhas de transmissão novas em empreendimentos em andamento: 25.947 km, Rede Básica e demais instalações cadastradas no SIGET, 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Sistema de Gestão da Transmissão (SIGET) (recurso siget-contrato-empreendimento-obra-modulo.csv, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "leiloes_ultimo_ano": {
-   "indicador": "Extensão de linhas leiloadas no ano",
+   "indicador": "Extensão de linhas contratadas em leilão no ano",
    "valor_exibido": "7.247 km",
    "valor_calculo": 7246.96,
    "unidade": "km",
@@ -9290,8 +12312,8 @@
     "inicio": "2024-01-01",
     "fim": "2024-12-31"
    },
-   "entidade": "lotes de transmissão leiloados no ano",
-   "universo": "18 lotes",
+   "entidade": "lotes de transmissão contratados em leilão no ano",
+   "universo": "18 lotes contratados de 18 ofertados",
    "filtros": [],
    "fonte": {
     "orgao": "ANEEL",
@@ -9327,19 +12349,21 @@
    "chaves_total": null,
    "consulta": null,
    "manifesto": null,
-   "formula": "Σ MdaExtensaoLinhaTransmissaoKm dos lotes do ano",
+   "formula": "Σ MdaExtensaoLinhaTransmissaoKm dos lotes contratados do ano",
    "numerador": null,
    "denominador": null,
    "pesos": null,
-   "exclusoes": [],
+   "exclusoes": [
+    "0 lotes sem vencedor no ano (SEM LANCE, SEM INSCRITO APTO ou NÃO LEILOADO)"
+   ],
    "cobertura": "leilões de transmissão desde 1999; o arquivo termina no leilão 002/2024",
-   "tratamento_ausencia": "lote só de subestação tem 0 km publicado pela fonte e soma 0; ano sem linha no arquivo é ausência, não zero",
+   "tratamento_ausencia": "lote contratado só de subestação tem 0 km publicado pela fonte e soma 0; em lote sem vencedor o 0 é marcador e fica fora; ano sem linha no arquivo é ausência, não zero",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "883727b9c73e+alterado",
-    "publicacao": "2026-09-30T23:13:02Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:52:01Z"
    },
-   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
     {
      "nome": "deságio publicado confere com a RAP",
@@ -9360,7 +12384,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
-   "citacao": "SCRUTINIUMS. Extensão de linhas leiloadas no ano: 7.247 km, lotes de transmissão leiloados no ano, 01/01/2024 a 31/12/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Resultado de leilões de geração e transmissão de energia elétrica (recurso resultado-leiloes-transmissao.csv, capturado em 30/09/2026). Versão energia-0.1.0, código 883727b9c73e+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Extensão de linhas contratadas em leilão no ano: 7.247 km, lotes de transmissão contratados em leilão no ano, 01/01/2024 a 31/12/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Resultado de leilões de geração e transmissão de energia elétrica (recurso resultado-leiloes-transmissao.csv, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "pde_capacidade_2035": {
    "indicador": "Capacidade instalada nacional em 2035 no Cenário de Referência do PDE 2035 (CENÁRIO)",
@@ -9408,8 +12432,8 @@
    "tratamento_ausencia": "célula vazia não soma",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "883727b9c73e+alterado",
-    "publicacao": "2026-09-30T23:13:02Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:52:01Z"
    },
    "revisoes": "Edição fixa aprovada: o caderno de dados é recapturado mensalmente e uma mudança de sha256 fica registrada como nova vintage.",
    "testes": [
@@ -9431,7 +12455,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
-   "citacao": "SCRUTINIUMS. Capacidade instalada nacional em 2035 no Cenário de Referência do PDE 2035 (CENÁRIO): 359 GW, matriz elétrica nacional (inclui MMGD, baterias e resposta da demanda), 12/2035. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: EPE, Plano Decenal de Expansão de Energia 2035 (recurso pde2035_dados_relatorio_final.zip, capturado em 30/09/2026). Versão energia-0.1.0, código 883727b9c73e+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Capacidade instalada nacional em 2035 no Cenário de Referência do PDE 2035 (CENÁRIO): 359 GW, matriz elétrica nacional (inclui MMGD, baterias e resposta da demanda), 12/2035. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: EPE, Plano Decenal de Expansão de Energia 2035 (recurso pde2035_dados_relatorio_final.zip, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "downloads": [
@@ -9478,6 +12502,14 @@
   {
    "rotulo": "Empreendimentos de transmissão do SIGET (CSV)",
    "url": "/energia/series/expansao_obras_transmissao.csv"
+  },
+  {
+   "rotulo": "Contratos de concessão de transmissão por data de assinatura (CSV)",
+   "url": "/energia/series/expansao_contratos_transmissao.csv"
+  },
+  {
+   "rotulo": "Linhas de transmissão existentes e planejadas do WebMap da EPE (JSON)",
+   "url": "/energia/series/expansao_rede_epe.json"
   },
   {
    "rotulo": "PDE 2035: figuras usadas (CSV)",

@@ -4,7 +4,8 @@ import { useMemo } from "react";
 import { GraficoPontos } from "@/components/energia/GraficoPontos";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
-import { useSelecaoPerdas } from "@/components/energia/PerdasSelecao";
+import { useEvidenciaPerdas, useSelecaoPerdas } from "@/components/energia/PerdasSelecao";
+import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { dataBR, mesAno, num, sinal } from "@/lib/energia/formato";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import { degrausRegulatorio, rotuloResolucao, type LinhaRegulatorio } from "@/lib/energia/perdas";
@@ -35,15 +36,18 @@ const COLUNAS: ColunaTabela[] = [
 
 export type PerdasRegulatorioProps = {
   linhas: LinhaRegulatorio[];
+  /** perdas_evidencias_tecnica.json, lido só quando há distribuidora escolhida. */
+  urlEvidencias: string;
   segmentos: Record<string, SegmentoTecnico[]>;
   ids: string[];
   rotulos: Record<string, string>;
   versao: string;
 };
 
-export function PerdasRegulatorio({ linhas, segmentos, ids, rotulos, versao }: PerdasRegulatorioProps) {
+export function PerdasRegulatorio({ linhas, urlEvidencias, segmentos, ids, rotulos, versao }: PerdasRegulatorioProps) {
   const [sel, selecionar] = useSelecaoPerdas(ids);
   const linhaSel = sel ? linhas.find((l) => l.id === sel) ?? null : null;
+  const [prova, tentarProva] = useEvidenciaPerdas(urlEvidencias, linhaSel ? linhaSel.id : null);
   const degraus = useMemo(() => (sel && segmentos[sel] ? degrausRegulatorio(segmentos[sel]) : []), [sel, segmentos]);
   const itens = useMemo(
     () =>
@@ -103,6 +107,19 @@ export function PerdasRegulatorio({ linhas, segmentos, ids, rotulos, versao }: P
               {linhaSel.resolucao ? `; a troca coincide com o início de vigência da ${rotuloResolucao(linhaSel.resolucao)} em ${dataBR(linhaSel.inicio_vigencia)}` : ""}.
               {linhaSel.n_segmentos > (segmentos[sel]?.length ?? 0) ? ` A gold traz os ${segmentos[sel]?.length ?? 0} trechos mais recentes de ${linhaSel.n_segmentos}; os demais estão no arquivo para download.` : ""}
             </p>
+            <div className="mt-1">
+              {prova.estado === "pronta" ? (
+                <ComproveNumero evidencia={prova.evidencia} rotulo="Comprove este percentual" endereco={`https://scrutiniums.com/setor-eletrico/perdas/regulatorio?d=${linhaSel.id}#regulatorio`} />
+              ) : prova.estado === "carregando" ? (
+                <span role="status" className="text-xs text-carvao-muted">
+                  Carregando a evidência do trecho.
+                </span>
+              ) : prova.estado === "erro" ? (
+                <button type="button" className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4" onClick={tentarProva}>
+                  A evidência não carregou ({prova.erro}); tentar de novo
+                </button>
+              ) : null}
+            </div>
             {degraus.length > 0 && (
               <div className="mt-3">
                 <GraficoLinhas

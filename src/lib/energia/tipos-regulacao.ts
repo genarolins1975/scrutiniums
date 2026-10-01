@@ -27,7 +27,10 @@ export type TipoConferencia =
   | "deliberacao_na_ata"
   | "valor_na_ata"
   | "piso_teo"
-  | "regra_ipca";
+  /** Teto publicado no ano anterior encadeado pela variação do IPCA de novembro (prática dos atos). */
+  | "regra_ipca"
+  /** Aplicação literal do art. 23, § 1º, da REN nº 1.032/2022 (base de setembro de 2019): informativa, sempre "ressalva". */
+  | "art23_literal";
 
 export type ConferenciaAto = {
   conferencia: TipoConferencia;
@@ -112,7 +115,7 @@ export type LimitesPld = {
   vigencias: VigenciaLimites[];
   vigente_hoje: LimitesVigentes & { data: string };
   conferencias: Partial<Record<TipoConferencia, ContagemConferencias>>;
-  /** Conferências numéricas (regra do IPCA, piso = TEO, valor na ata). */
+  /** Conferências numéricas (encadeamento pelo IPCA, aplicação literal do art. 23, piso = TEO, valor na ata). */
   conferencias_detalhe: ConferenciaDetalhe[];
   pendencias: Pendencia[];
   bloqueios: Bloqueio[];
@@ -135,21 +138,59 @@ export type VigenciaBandeira = {
   ato: string | null;
   patamar: "Amarela" | "Vermelha P1" | "Vermelha P2" | "Escassez Hídrica" | string;
   vigencia_inicio: string;
-  /** Véspera do valor seguinte do mesmo patamar; null = sem valor posterior na fonte. */
+  /** null = valor sem término na fonte (patamar ainda acionado e sem valor posterior). */
   vigencia_fim: string | null;
+  /**
+   * valor_seguinte = véspera do valor seguinte do mesmo patamar; ultimo_acionamento = patamar
+   * extinto, fim no último dia do último mês com acionamento (grão mensal); null = sem fim.
+   */
+  vigencia_fim_origem: "valor_seguinte" | "ultimo_acionamento" | null;
+  /** Último mês com o patamar no recurso Acionamento (só patamar extinto). */
+  ultimo_acionamento: { competencia: string; rs_mwh: number | null } | null;
+  /** Primeira resolução posterior do recurso Adicional que fixou os patamares sem este. */
+  resolucao_seguinte_sem_patamar: { ato: string | null; vigencia_inicio: string } | null;
+  /** Conferência do fim com a vigência escrita no dicionário do recurso Acionamento. */
+  conferencia_fim: { resultado: "aprovado" | "reprovado" | "nao_executada"; detalhe: string } | null;
   rs_mwh: number | null;
 };
 
-export type Bandeiras = { vigencias: VigenciaBandeira[]; gerado_pela_fonte_em: string | null };
+export type Bandeiras = {
+  vigencias: VigenciaBandeira[];
+  gerado_pela_fonte_em: string | null;
+  acionamento_gerado_pela_fonte_em: string | null;
+  acionamento_meses: number;
+  acionamento_periodo: { inicio: string; fim: string } | null;
+};
+
+export type ConferenciaProcedimento = "confirmada_por_ato_integrado" | "sem_conferencia_externa" | "pagina_possivelmente_desatualizada";
+
+export type AtoProcedimento = {
+  ato: string | null;
+  /** Data da deliberação (ata) ou do ato (anexo de Resolução Normativa lida). */
+  data: string;
+  /** "ata da reunião pública da Diretoria" ou "texto do ato (<documento>, sha256 ...)". */
+  fonte: string;
+  trecho: string;
+  /** Versão escrita na decisão ("aprovar a versão 2.7 do Submódulo 7.3"), quando houver. */
+  versao_aprovada: string | null;
+};
 
 export type Procedimento = {
   conjunto: "PRODIST" | "PRORET";
   modulo: string;
   titulo: string | null;
-  versao: string | null;
-  /** Resolução que aprovou a versão vigente, lida do nome do arquivo publicado pela página oficial. */
-  ato: string | null;
+  /** Versão e ato lidos do nome do arquivo que a página oficial publica como versão vigente. */
+  versao_na_pagina: string | null;
+  ato_na_pagina: string | null;
   ano_ato: number | null;
+  numero_ato: number | null;
+  /** Data da deliberação do ato da página (atas) ou do ato lido; null quando desconhecida. */
+  data_ato_na_pagina: string | null;
+  conferencia: ConferenciaProcedimento;
+  /** null quando há ato posterior que aprova nova versão: a versão vigente não é conhecida. */
+  ato_vigente: string | null;
+  atos_posteriores: AtoProcedimento[];
+  confirmacoes: AtoProcedimento[];
   url_vigente: string | null;
   url_versoes: string | null;
   observacao: string | null;
@@ -159,6 +200,8 @@ export type Procedimentos = {
   itens: Procedimento[];
   verificado_em: { prodist: string | null; proret: string | null };
   paginas: { PRODIST: string; PRORET: string };
+  contagem_conferencia: Record<ConferenciaProcedimento, number>;
+  regra_conferencia: string;
 };
 
 /* ---------------------------------------------------------------- P045: linha do tempo */
@@ -224,7 +267,15 @@ export type SituacaoConsulta =
   | "encerrada_aguardando"
   | "resultado_em_pauta"
   | "decidida"
-  | "prazo_nao_datado";
+  /** A ata informa só a duração, sem início nem fim. */
+  | "prazo_nao_datado"
+  /** Audiência com data de sessão e sem período de contribuições na ata. */
+  | "sessao_sem_periodo"
+  /** A ata não informa período, duração nem sessão. */
+  | "sem_periodo_na_ata";
+
+/** datas_explicitas = as duas datas escritas na ata; inicio_e_duracao = fim calculado. */
+export type OrigemJanela = "datas_explicitas" | "inicio_e_duracao";
 
 export type FaseConsulta = {
   fase: "abertura" | "2ª fase" | "3ª fase" | "reabertura" | "prorrogação";
@@ -232,7 +283,10 @@ export type FaseConsulta = {
   reuniao: string;
   inicio: string | null;
   fim: string | null;
-  /** Só quando a ata informa a duração sem datas. */
+  janela_origem: OrigemJanela | null;
+  /** true = fim calculado do início e da duração escritos na ata, contando o dia do início. */
+  fim_calculado: boolean;
+  /** Duração declarada na decisão, quando houver (com ou sem datas). */
   duracao_dias: number | null;
   /** Data de sessão presencial ou virtual de audiência, quando informada. */
   sessao: string | null;
@@ -255,13 +309,20 @@ export type Consulta = {
   id: string;
   /** Tipo do aviso na ata (a decisão pode instaurar consulta com audiência). */
   modalidade: "Consulta Pública" | "Audiência Pública";
+  /** Número do rótulo: o da ata ou, quando suspeito, o único outro número que o processo cita. */
   numero: number;
+  /** NumAtoAdministrativo da linha de abertura, como a fonte registra. */
+  numero_na_ata: number;
   ano: number;
   rotulo: string;
-  /** Vezes em que outra linha das atas cita "nº N/AAAA" (confirma o número). */
+  /** Vezes em que outra linha do mesmo processo cita "nº N/AAAA" (confirma o número). */
   numero_citado: number;
   /** O mesmo número e ano aparecem em outro processo; as aberturas ficam separadas. */
   numero_em_conflito: boolean;
+  /** Acima do total anual publicado (ano completo) ou não citado pelo próprio processo, que cita outro. */
+  numero_suspeito: boolean;
+  motivo_numero_suspeito: string | null;
+  numero_citado_no_processo: number | null;
   tema: string;
   processos: string[];
   relator: string | null;
@@ -271,7 +332,11 @@ export type Consulta = {
   /** Janela da fase deliberada por último; null quando a ata não a data. */
   inicio: string | null;
   fim: string | null;
+  janela_origem: OrigemJanela | null;
+  fim_calculado: boolean;
   duracao_dias: number | null;
+  /** Data de sessão da audiência na fase atual, quando informada. */
+  sessao: string | null;
   /** Situação na data de referência da gold (recalcular com `situacaoConsulta`). */
   situacao: SituacaoConsulta;
   situacao_rotulo: string;
@@ -290,6 +355,8 @@ export type CoberturaConsultas = {
   gerado_em: string | null;
 };
 
+export type FaixaCobertura = { de: number; ate: number; min_pct: number; max_pct: number } | null;
+
 export type Consultas = {
   disponivel: boolean;
   motivo?: string;
@@ -302,6 +369,11 @@ export type Consultas = {
   total_historico?: number;
   contagem_por_situacao: Partial<Record<SituacaoConsulta, number>>;
   cobertura: CoberturaConsultas[];
+  /** Menor e maior cobertura anual (%) por modalidade entre 2020 e 2025. */
+  cobertura_faixa?: { consultas: FaixaCobertura; audiencias: FaixaCobertura };
+  numeros_suspeitos?: number;
+  /** Atas com as duas datas e a duração: quantas contam o dia do início (inclusiva) e quantas não. */
+  convencao_contagem_prazo?: { inclusiva: number; exclusiva: number; outra: number; casos: number };
   situacoes: Record<SituacaoConsulta, string>;
   regra_situacao?: string;
 };
@@ -403,17 +475,24 @@ export function faseAtual(c: Pick<Consulta, "fases">): FaseConsulta | null {
 /**
  * Situação de uma consulta na data `hoje` (AAAA-MM-DD, horário de Brasília):
  * 1. resultado deliberado → decidida;
- * 2. fase deliberada por último sem datas → prazo_nao_datado (nunca "aberta");
- * 3. antes do início → a_abrir; entre início e fim, inclusive → aberta;
- * 4. depois do fim: resultado levado à pauta sem decisão → resultado_em_pauta; senão encerrada_aguardando.
+ * 2. resultado levado à reunião, sem decisão, depois da deliberação da fase atual → resultado_em_pauta;
+ * 3. fase atual sem janela: só duração → prazo_nao_datado; só sessão → sessao_sem_periodo;
+ *    nada → sem_periodo_na_ata (nunca "aberta");
+ * 4. antes do início → a_abrir; entre início e fim, inclusive → aberta;
+ * 5. depois do fim → encerrada_aguardando.
  */
 export function situacaoConsulta(c: Pick<Consulta, "fases" | "resultado">, hoje: string): SituacaoConsulta {
   if (c.resultado?.decidido) return "decidida";
   const f = faseAtual(c);
-  if (!f || !f.inicio || !f.fim) return "prazo_nao_datado";
+  if (c.resultado && f && c.resultado.data > f.data_deliberacao) return "resultado_em_pauta";
+  if (!f || !f.inicio || !f.fim) {
+    if (f?.duracao_dias) return "prazo_nao_datado";
+    if (f?.sessao) return "sessao_sem_periodo";
+    return "sem_periodo_na_ata";
+  }
   if (hoje < f.inicio) return "a_abrir";
   if (hoje <= f.fim) return "aberta";
-  return c.resultado ? "resultado_em_pauta" : "encerrada_aguardando";
+  return "encerrada_aguardando";
 }
 
 /** Data de hoje no horário de Brasília (UTC−3 fixo desde 2019, sem horário de verão). */

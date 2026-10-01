@@ -147,7 +147,8 @@ export function ContaTarifas({ vigentes, resumo, dataReferencia, fonte }: ContaT
 
       {destaque && !naRanking && (
         <p className="text-sm text-carvao-muted" role="status">
-          A distribuidora escolhida não tem tarifa B1 vigente em {dataBR(dataReferencia)} e não entra no ranking; o histórico e o motivo estão abaixo.
+          A distribuidora escolhida não tem tarifa B1 vigente em {dataBR(dataReferencia)} e não entra no ranking; o histórico dela aparece no modo Analisar e o motivo,
+          na lista de distribuidoras sem tarifa vigente do modo Auditar.
         </p>
       )}
 

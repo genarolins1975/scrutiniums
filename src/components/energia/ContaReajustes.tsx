@@ -158,7 +158,7 @@ export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte }: Cont
         </div>
       )}
 
-      <ContaSobDemanda rotulo="a tabela da janela com a variação real" detalhe={`${linhas.length} distribuidoras, ordenável e exportável`}>
+      <ContaSobDemanda chaveUrl="reaj" rotulo="a tabela da janela com a variação real" detalhe={`${linhas.length} distribuidoras, ordenável e exportável`}>
         <TabelaInterativa
           titulo={`Variação em ${janela.meses} meses e IPCA de ${pct(janela.ipca_pct, 2)}`}
           colunas={COLUNAS_JANELA}
@@ -178,7 +178,7 @@ export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte }: Cont
       </ContaSobDemanda>
 
       <div data-nivel="analisar">
-        <ContaSobDemanda rotulo="a última mudança de cada distribuidora" detalhe={`${ultimasLinhas.length} distribuidoras`}>
+        <ContaSobDemanda chaveUrl="ult" rotulo="a última mudança de cada distribuidora" detalhe={`${ultimasLinhas.length} distribuidoras`}>
           <TabelaInterativa
             titulo="Última mudança da tarifa B1 de cada distribuidora do ranking"
             colunas={COLUNAS_ULTIMOS}
@@ -193,7 +193,7 @@ export function ContaReajustes({ janelas, ultimos, dataReferencia, fonte }: Cont
             selecionado={v.dist[0] && ultimasLinhas.some((l) => l.id === v.dist[0]) ? v.dist[0] : null}
             onSelecionar={selecionar}
             dicaBusca="Sigla ou ato"
-            nota="O conjunto não informa se o ato é reajuste, revisão periódica ou extraordinária; o histórico completo de cada distribuidora está no painel de tarifas."
+            nota="O conjunto não informa se o ato é reajuste, revisão periódica ou extraordinária; o histórico completo de cada distribuidora está no histórico da tarifa B1, na página principal da Conta de luz (modo Analisar)."
           />
         </ContaSobDemanda>
       </div>

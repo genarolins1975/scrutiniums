@@ -112,6 +112,30 @@ export function listaTexto(itens: readonly string[]): string {
 
 const leitorUf = tiposUrl.opcao(UFS);
 
+/* ---------- páginas ---------- */
+
+export const ROTA_INCLUSAO = "/setor-eletrico/inclusao-energetica";
+export type PainelInclusao = "p059" | "p060" | "p061" | "p062";
+/** As quatro páginas de painel, na ordem das perguntas (a próxima pergunta de cada uma é a seguinte). */
+export const PAINEIS_INCLUSAO: readonly { id: PainelInclusao; slug: string; rotulo: string; titulo: string }[] = [
+  { id: "p059", slug: "tarifa-social", rotulo: "Tarifa Social", titulo: "Tarifa Social de Energia Elétrica" },
+  { id: "p060", slug: "cobertura", rotulo: "Cobertura potencial", titulo: "Cobertura potencial da Tarifa Social" },
+  { id: "p061", slug: "orcamento", rotulo: "Peso no orçamento", titulo: "Peso da energia no orçamento das famílias" },
+  { id: "p062", slug: "acesso", rotulo: "Acesso e sistemas isolados", titulo: "Acesso à energia e sistemas isolados" },
+];
+export function rotaPainel(id: PainelInclusao): string {
+  const p = PAINEIS_INCLUSAO.find((x) => x.id === id);
+  return p ? `${ROTA_INCLUSAO}/${p.slug}` : ROTA_INCLUSAO;
+}
+
+export const FONTE_SCS = "ANEEL, SCS: Sistema de Controle de Subvenções e Programas Sociais";
+export const FONTE_CDE = "ANEEL, Beneficiários da CDE";
+export const FONTE_COB = "ANEEL, Beneficiários da CDE; MDS, Cadastro Único (MI Social)";
+export const FONTE_POF = "IBGE, POF 2017-2018 (microdados e tabela 6715)";
+export const FONTE_PNAD = "IBGE, PNAD Contínua anual (tabelas 6731, 6737 e 6738)";
+export const FONTE_PASI = "EPE, PASI (Localização Geográfica por ciclo)";
+export const FONTE_LPT = "MME, Luz para Todos (dados abertos)";
+
 /* ================================================================ P059: Tarifa Social */
 
 export const MEDIDAS_TSEE = ["uc", "part", "dmr"] as const;
@@ -404,7 +428,8 @@ export function respostaTarifaSocial(t: TarifaSocial): string {
   const k = t.kpis;
   const n = t.distribuidoras.length;
   const partes = [
-    `Em ${mes(k.uc_tsee.mes)}, último mês completo do SCS, ${inteiro(k.uc_tsee.valor)} unidades consumidoras de ${n} distribuidoras tinham Tarifa Social, ${pct(k.participacao_pct.valor, 1)} das UC residenciais`,
+    `Em ${mes(k.uc_tsee.mes)}, último mês completo do SCS, ${inteiro(k.uc_tsee.valor)} unidades consumidoras de ${n} distribuidoras tinham Tarifa Social` +
+      (k.participacao_pct.valor === null ? " (participação nas UC residenciais sem dado)" : `, ${pct(k.participacao_pct.valor, 1)} das UC residenciais`),
   ];
   const v = k.variacao_12m_pct;
   if (v.valor !== null && v.comparavel) partes[0] += ` (${v.valor >= 0 ? "alta" : "queda"} de ${pct(Math.abs(v.valor), 1)} sobre ${mes(v.mes_base)})`;

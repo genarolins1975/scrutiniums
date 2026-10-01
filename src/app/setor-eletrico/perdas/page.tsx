@@ -203,7 +203,7 @@ export default function PerdasPage() {
                 <>
                   Cada área tem a cor do valor da distribuidora inteira: o mapa não mostra perda por município. A taxa compara distribuidoras de tamanhos diferentes; o volume mostra onde a energia perdida
                   se concentra. O denominador é a energia injetada de referência (desde 2024, fornecida + irregular + perdas, porque a linha publicada deixou de fechar o balanço). Hachura cruzada é valor
-                  publicado fora da comparação (ano incompleto ou alerta físico), com o motivo na tabela; hachura simples é ausência.
+                  publicado fora da comparação (ano incompleto ou alerta físico), com o motivo na tabela; hachura simples é ausência. As áreas vêm da relação de municípios mais recente: em anos anteriores, quem absorveu outra distribuidora depois aparece com o território de hoje, e o aviso abaixo do mapa diz quem.
                 </>
               }
               naoConcluir={
@@ -222,6 +222,7 @@ export default function PerdasPage() {
                 acumulado={g.acumulado}
                 urls={{ anual: g.series.anual, municipios: g.series.municipios, evidencias: g.series.evidencias }}
                 versao={versao}
+                anoRelacao={g.mapa.ano_relacao}
               />
               <div className="mt-4 flex flex-wrap items-center gap-x-6 text-sm text-carvao-muted">
                 <span>Agregados nacionais:</span>

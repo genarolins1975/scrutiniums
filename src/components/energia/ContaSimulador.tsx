@@ -56,6 +56,9 @@ const REGRAS_DA_CLASSE: Record<ClasseSimuladorId, string[]> = {
   desconto_social: ["desconto_social", "custo_disponibilidade", "bandeira", "exclusoes"],
 };
 
+/** Select ocupa a largura da coluna: sem isso, a opção mais longa define a largura e a página rola de lado no celular. */
+const CLASSE_SELECT = "min-h-[44px] w-full min-w-0 max-w-full border border-linha bg-superficie px-2 text-sm text-carvao";
+
 const ROTULO_ESTADO: Record<EstadoRegra, string> = {
   CONFERIDA: "conferida no texto oficial",
   PARCIAL: "parcialmente conferida (há leitura declarada)",
@@ -79,10 +82,16 @@ export function ContaSimulador({ simulador: s, evidencia, dataReferencia }: Cont
   const dist = porCnpj.get(cnpj) ?? null;
   const pedidaFora = v.dist.length > 0 && !escolhida;
 
-  const bandVig = s.bandeira_vigente?.bandeira ?? null;
-  const patamarVigente = s.bandeiras.find((b) => b.bandeira === bandVig) ?? null;
-  const nomeBandeira = v.bandeira === "vigente" ? (patamarVigente?.bandeira ?? "Verde") : v.bandeira;
-  const adicional = s.bandeiras.find((b) => b.bandeira === nomeBandeira)?.rs_mwh ?? null;
+  // "Do mês publicado" usa o acionamento do mês (nome e valor publicados), o mesmo
+  // da evidência do pipeline, e não o patamar da tabela de adicionais: nos meses em
+  // que os dois recursos divergem, vale o acionado. Sem acionamento publicado, a
+  // bandeira fica fora da estimativa e isso é dito (nunca vira verde).
+  const vig = s.bandeira_vigente;
+  const nomeBandeira: string | null = v.bandeira === "vigente" ? (vig?.bandeira ?? null) : v.bandeira;
+  const adicional: number | null =
+    v.bandeira === "vigente" ? (vig?.bandeira ? (vig.rs_mwh ?? null) : null) : (s.bandeiras.find((b) => b.bandeira === v.bandeira)?.rs_mwh ?? null);
+  const semBandeira = nomeBandeira === null || adicional === null;
+  const rotuloBandeira = nomeBandeira === null ? "não publicada" : minuscula(nomeBandeira);
   const classe = s.classes.find((c) => c.id === v.classe) ?? s.classes[0];
   const sigla = dist ? rotuloDistribuidora(dist.sigla, dist.cnpj) : cnpj;
 
@@ -118,7 +127,9 @@ export function ContaSimulador({ simulador: s, evidencia, dataReferencia }: Cont
     v.classe === CASO_EVIDENCIA.classe &&
     v.kwh === CASO_EVIDENCIA.kwh &&
     v.ligacao === CASO_EVIDENCIA.ligacao &&
-    nomeBandeira === (patamarVigente?.bandeira ?? null);
+    !!vig?.bandeira &&
+    nomeBandeira === vig.bandeira &&
+    adicional === vig.rs_mwh;
 
   const regrasAplicadas = REGRAS_DA_CLASSE[v.classe].map((id) => s.regras_texto.find((x) => x.id === id)).filter((x): x is Simulador["regras_texto"][number] => !!x);
 
@@ -131,16 +142,16 @@ export function ContaSimulador({ simulador: s, evidencia, dataReferencia }: Cont
   return (
     <div className="space-y-5">
       <p className="max-w-prose2 text-base leading-relaxed text-carvao" aria-live="polite" data-resposta="p049">
-        {respostaSimulacao(r, sigla, classe.rotulo, v.kwh, nomeBandeira, s.rotulo)}
+        {respostaSimulacao(r, sigla, classe.rotulo, v.kwh, semBandeira ? null : nomeBandeira, s.rotulo)}
       </p>
 
-      <form className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" onSubmit={(e) => e.preventDefault()} aria-label="Parâmetros da simulação">
-        <label className="flex flex-col gap-1 text-sm text-carvao">
+      <form className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" onSubmit={(e) => e.preventDefault()} aria-label="Parâmetros da simulação">
+        <label className="flex min-w-0 flex-col gap-1 text-sm text-carvao">
           <span className="rotulo text-mineral">Distribuidora</span>
           <select
             value={cnpj}
             onChange={(e) => definir({ dist: destacar(v.dist, e.target.value) })}
-            className="min-h-[44px] border border-linha bg-superficie px-2 text-sm text-carvao"
+            className={CLASSE_SELECT}
           >
             {s.distribuidoras.map((d) => (
               <option key={d.cnpj} value={d.cnpj}>
@@ -150,12 +161,12 @@ export function ContaSimulador({ simulador: s, evidencia, dataReferencia }: Cont
             ))}
           </select>
         </label>
-        <label className="flex flex-col gap-1 text-sm text-carvao">
+        <label className="flex min-w-0 flex-col gap-1 text-sm text-carvao">
           <span className="rotulo text-mineral">Classe</span>
           <select
             value={v.classe}
             onChange={(e) => definir({ classe: e.target.value as ClasseSimuladorId })}
-            className="min-h-[44px] border border-linha bg-superficie px-2 text-sm text-carvao"
+            className={CLASSE_SELECT}
           >
             {s.classes.map((c) => (
               <option key={c.id} value={c.id}>
@@ -164,7 +175,7 @@ export function ContaSimulador({ simulador: s, evidencia, dataReferencia }: Cont
             ))}
           </select>
         </label>
-        <div className="flex flex-col gap-1 text-sm text-carvao">
+        <div className="flex min-w-0 flex-col gap-1 text-sm text-carvao">
           <label htmlFor="conta-skwh" className="rotulo text-mineral">
             Consumo no mês (kWh)
           </label>
@@ -196,12 +207,12 @@ export function ContaSimulador({ simulador: s, evidencia, dataReferencia }: Cont
             />
           </div>
         </div>
-        <label className="flex flex-col gap-1 text-sm text-carvao">
+        <label className="flex min-w-0 flex-col gap-1 text-sm text-carvao">
           <span className="rotulo text-mineral">Ligação</span>
           <select
             value={v.ligacao}
             onChange={(e) => definir({ ligacao: e.target.value as Ligacao })}
-            className="min-h-[44px] border border-linha bg-superficie px-2 text-sm text-carvao"
+            className={CLASSE_SELECT}
           >
             {LIGACOES.map((l) => (
               <option key={l} value={l}>
@@ -210,16 +221,18 @@ export function ContaSimulador({ simulador: s, evidencia, dataReferencia }: Cont
             ))}
           </select>
         </label>
-        <label className="flex flex-col gap-1 text-sm text-carvao">
+        <label className="flex min-w-0 flex-col gap-1 text-sm text-carvao">
           <span className="rotulo text-mineral">Bandeira</span>
           <select
             value={v.bandeira}
             onChange={(e) => definir({ bandeira: e.target.value as typeof v.bandeira })}
-            className="min-h-[44px] border border-linha bg-superficie px-2 text-sm text-carvao"
+            className={CLASSE_SELECT}
           >
             <option value="vigente">
               Do mês publicado
-              {s.bandeira_vigente?.bandeira ? ` (${s.bandeira_vigente.bandeira}, ${mesAno(`${s.bandeira_vigente.mes}-01`)})` : ""}
+              {vig?.bandeira
+                ? ` (${vig.bandeira}, ${mesAno(`${vig.mes}-01`)}${vig.rs_mwh === null ? ", sem valor publicado" : vig.rs_mwh === 0 ? ", sem acréscimo" : `, ${reais(vig.rs_mwh / 1000, 5)}/kWh`})`
+                : " (não publicada)"}
             </option>
             {s.bandeiras.map((b) => (
               <option key={b.bandeira} value={b.bandeira}>
@@ -229,6 +242,12 @@ export function ContaSimulador({ simulador: s, evidencia, dataReferencia }: Cont
           </select>
         </label>
       </form>
+
+      {v.bandeira === "vigente" && vig?.aviso && (
+        <p role="status" className="text-sm text-carvao-muted">
+          {vig.aviso}
+        </p>
+      )}
 
       {pedidaFora && (
         <p role="status" className="text-sm text-carvao-muted">
@@ -246,7 +265,7 @@ export function ContaSimulador({ simulador: s, evidencia, dataReferencia }: Cont
             <p className="mt-2 font-serif text-xl text-carvao-muted">Simulação indisponível</p>
           )}
           <p className="mt-2 text-xs leading-relaxed text-carvao-muted">
-            {r.disponivel ? s.rotulo : r.motivo}. Tarifas da vigência iniciada em {dist ? dataBR(dist.inicio) : "sem data"} ({dist?.ato ?? "sem ato"}).
+            {r.disponivel ? s.rotulo.replace(/\.\s*$/, "") : r.motivo}. Tarifas da vigência iniciada em {dist ? dataBR(dist.inicio) : "sem data"} ({dist?.ato ?? "sem ato"}).
           </p>
           {ehCasoEvidencia && evidencia && (
             <div className="mt-2">
@@ -290,11 +309,11 @@ export function ContaSimulador({ simulador: s, evidencia, dataReferencia }: Cont
                     ))}
                     <tr className="border-b border-linha">
                       <th scope="row" className="py-2 pr-3 text-left font-normal text-carvao">
-                        Bandeira {minuscula(nomeBandeira)} sobre o consumo sujeito
+                        {semBandeira ? "Bandeira: adicional não publicado, fora da estimativa" : `Bandeira ${rotuloBandeira} sobre o consumo sujeito`}
                       </th>
                       <td className="py-2 pr-3 text-right">{num(r.kwh_bandeira, 0)}</td>
                       <td className="py-2 pr-3 text-right">{adicional === null ? "sem valor" : num(adicional / 1000, 5)}</td>
-                      <td className="py-2 text-right">{reais(r.bandeira)}</td>
+                      <td className="py-2 text-right">{semBandeira ? "sem valor" : reais(r.bandeira)}</td>
                     </tr>
                     <tr className="font-medium">
                       <th scope="row" className="py-2 pr-3 text-left text-carvao">
@@ -334,7 +353,7 @@ export function ContaSimulador({ simulador: s, evidencia, dataReferencia }: Cont
         series={[
           {
             id: "total",
-            rotulo: `Com bandeira ${minuscula(nomeBandeira)}`,
+            rotulo: semBandeira ? "Bandeira não publicada (igual à linha sem bandeira)" : `Com bandeira ${rotuloBandeira}`,
             cor: "var(--cor-energia)",
           },
           {
@@ -384,7 +403,7 @@ export function ContaSimulador({ simulador: s, evidencia, dataReferencia }: Cont
                   {c.r.disponivel ? (
                     <>
                       <td className="py-2 pr-3 text-right">{reais(c.r.energia)}</td>
-                      <td className="py-2 pr-3 text-right">{reais(c.r.bandeira)}</td>
+                      <td className="py-2 pr-3 text-right">{semBandeira ? "sem valor" : reais(c.r.bandeira)}</td>
                       <td className="py-2 text-right">{reais(c.r.total)}</td>
                     </>
                   ) : (
@@ -409,7 +428,7 @@ export function ContaSimulador({ simulador: s, evidencia, dataReferencia }: Cont
                 Estado: {ROTULO_ESTADO[s.estado_regras[rg.id] ?? rg.estado]}.{" "}
                 {rg.partes
                   .filter((p) => p.estado !== "CONFERIDA")
-                  .map((p) => `Leitura declarada: ${p.texto.charAt(0).toLowerCase()}${p.texto.slice(1)}${p.motivo ? ` (${p.motivo})` : ""}.`)
+                  .map((p) => `Leitura declarada, não conferida: “${p.texto}”${p.motivo ? ` (${p.motivo})` : ""}.`)
                   .join(" ")}
               </p>
             </li>

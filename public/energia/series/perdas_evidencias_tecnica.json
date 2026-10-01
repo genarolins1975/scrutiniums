@@ -1,0 +1,3680 @@
+{
+ "gerado_em": "2026-10-01T00:44:22Z",
+ "evidencias": {
+  "05965546000109": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "11,500%",
+   "valor_calculo": 11.5,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2019-02",
+    "fim": "2023-12"
+   },
+   "entidade": "CEA (CNPJ 05.965.546/0001-09)",
+   "universo": "um trecho de 59 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 5965546000109, competências 2019-02 a 2023-12, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "59 meses seguidos, de 2019-02 a 2023-12",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "59 meses seguidos com a mesma razão (referência a partir de 6); 3 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 11,50000% a 11,50000% (amplitude 0,00000 p.p.), todas iguais a 11,500% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 11,500%, CEA (CNPJ 05.965.546/0001-09), 02/2019 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "50105865000190": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "11,880%",
+   "valor_calculo": 11.88,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2022-02",
+    "fim": "2024-05"
+   },
+   "entidade": "CEDRI (CNPJ 50.105.865/0001-90)",
+   "universo": "um trecho de 28 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 50105865000190, competências 2022-02 a 2024-05, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "28 meses seguidos, de 2022-02 a 2024-05",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "28 meses seguidos com a mesma razão (referência a partir de 6); 2 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 11,87996% a 11,88004% (amplitude 0,00008 p.p.), todas iguais a 11,880% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 11,880%, CEDRI (CNPJ 50.105.865/0001-90), 02/2022 a 05/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "08467115000100": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "8,030%",
+   "valor_calculo": 8.03,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2022-03",
+    "fim": "2023-01"
+   },
+   "entidade": "CEEE-D (CNPJ 08.467.115/0001-00)",
+   "universo": "um trecho de 11 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 8467115000100, competências 2022-03 a 2023-01, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "11 meses seguidos, de 2022-03 a 2023-01",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "11 meses seguidos com a mesma razão (referência a partir de 6); 4 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 8,03000% a 8,03000% (amplitude 0,00000 p.p.), todas iguais a 8,030% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 8,030%, CEEE-D (CNPJ 08.467.115/0001-00), 03/2022 a 01/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "83878892000155": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "5,430%",
+   "valor_calculo": 5.43,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2006-01",
+    "fim": "2006-09"
+   },
+   "entidade": "CELESC (CNPJ 83.878.892/0001-55)",
+   "universo": "um trecho de 9 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 83878892000155, competências 2006-01 a 2006-09, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "9 meses seguidos, de 2006-01 a 2006-09",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "9 meses seguidos com a mesma razão (referência a partir de 6); 4 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 5,43000% a 5,43000% (amplitude 0,00000 p.p.), todas iguais a 5,430% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 5,430%, CELESC (CNPJ 83.878.892/0001-55), 01/2006 a 09/2006. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "08336783000190": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "6,110%",
+   "valor_calculo": 6.11,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2015-01",
+    "fim": "2015-07"
+   },
+   "entidade": "CELESC-DIS (CNPJ 08.336.783/0001-90)",
+   "universo": "um trecho de 7 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 8336783000190, competências 2015-01 a 2015-07, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "7 meses seguidos, de 2015-01 a 2015-07",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "7 meses seguidos com a mesma razão (referência a partir de 6); 7 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 6,11000% a 6,11000% (amplitude 0,00000 p.p.), todas iguais a 6,110% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 6,110%, CELESC-DIS (CNPJ 08.336.783/0001-90), 01/2015 a 07/2015. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "87776043000141": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "1,000%",
+   "valor_calculo": 1.0,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2021-02",
+    "fim": "2024-08"
+   },
+   "entidade": "CELETRO (CNPJ 87.776.043/0001-41)",
+   "universo": "um trecho de 43 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 87776043000141, competências 2021-02 a 2024-08, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "43 meses seguidos, de 2021-02 a 2024-08",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "43 meses seguidos com a mesma razão (referência a partir de 6); 1 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 0,99999% a 1,00000% (amplitude 0,00001 p.p.), todas iguais a 1,000% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 1,000%, CELETRO (CNPJ 87.776.043/0001-41), 02/2021 a 08/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "06981180000116": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "8,014%",
+   "valor_calculo": 8.014,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2023-06",
+    "fim": "2023-12"
+   },
+   "entidade": "CEMIG-D (CNPJ 06.981.180/0001-16)",
+   "universo": "um trecho de 7 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 6981180000116, competências 2023-06 a 2023-12, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "7 meses seguidos, de 2023-06 a 2023-12",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "7 meses seguidos com a mesma razão (referência a partir de 6); 3 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 8,01360% a 8,01360% (amplitude 0,00000 p.p.), todas iguais a 8,014% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "aprovado",
+     "detalhe": "RESOLUÇÃO HOMOLOGATÓRIA Nº 3.202, DE 24 DE MAIO DE 2023, início de vigência em 2023-05-28; troca de −0,752 p.p. contra o trecho anterior"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 8,014%, CEMIG-D (CNPJ 06.981.180/0001-16), 06/2023 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "52777034000190": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "5,890%",
+   "valor_calculo": 5.89,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2019-04",
+    "fim": "2023-12"
+   },
+   "entidade": "CEMIRIM (CNPJ 52.777.034/0001-90)",
+   "universo": "um trecho de 57 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 52777034000190, competências 2019-04 a 2023-12, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "57 meses seguidos, de 2019-04 a 2023-12",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "57 meses seguidos com a mesma razão (referência a partir de 6); 2 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 5,89000% a 5,89000% (amplitude 0,00001 p.p.), todas iguais a 5,890% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 5,890%, CEMIRIM (CNPJ 52.777.034/0001-90), 04/2019 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "28610236000169": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "8,000%",
+   "valor_calculo": 8.0,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2020-02",
+    "fim": "2024-09"
+   },
+   "entidade": "CERAL ARARUAMA (CNPJ 28.610.236/0001-69)",
+   "universo": "um trecho de 56 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 28610236000169, competências 2020-02 a 2024-09, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "56 meses seguidos, de 2020-02 a 2024-09",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "56 meses seguidos com a mesma razão (referência a partir de 6); 1 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 7,99997% a 8,00004% (amplitude 0,00007 p.p.), todas iguais a 8,000% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 8,000%, CERAL ARARUAMA (CNPJ 28.610.236/0001-69), 02/2020 a 09/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "86433042000131": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "10,090%",
+   "valor_calculo": 10.09,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2017-02",
+    "fim": "2017-07"
+   },
+   "entidade": "CERBRANORTE (CNPJ 86.433.042/0001-31)",
+   "universo": "um trecho de 6 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 86433042000131, competências 2017-02 a 2017-07, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "6 meses seguidos, de 2017-02 a 2017-07",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "6 meses seguidos com a mesma razão (referência a partir de 6); 1 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 10,09000% a 10,09000% (amplitude 0,00000 p.p.), todas iguais a 10,090% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 10,090%, CERBRANORTE (CNPJ 86.433.042/0001-31), 02/2017 a 07/2017. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "13107842000199": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "10,214%",
+   "valor_calculo": 10.214,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2025-01",
+    "fim": "2025-11"
+   },
+   "entidade": "CERCOS (CNPJ 13.107.842/0001-99)",
+   "universo": "um trecho de 11 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 13107842000199, competências 2025-01 a 2025-11, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "11 meses seguidos, de 2025-01 a 2025-11",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "11 meses seguidos com a mesma razão (referência a partir de 6); 1 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 10,21397% a 10,21402% (amplitude 0,00006 p.p.), todas iguais a 10,214% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 10,214%, CERCOS (CNPJ 13.107.842/0001-99), 01/2025 a 11/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "82574864000181": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "14,810%",
+   "valor_calculo": 14.81,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2023-09",
+    "fim": "2024-08"
+   },
+   "entidade": "CEREJ (CNPJ 82.574.864/0001-81)",
+   "universo": "um trecho de 12 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 82574864000181, competências 2023-09 a 2024-08, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "12 meses seguidos, de 2023-09 a 2024-08",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "12 meses seguidos com a mesma razão (referência a partir de 6); 6 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 14,80999% a 14,81001% (amplitude 0,00001 p.p.), todas iguais a 14,810% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "aprovado",
+     "detalhe": "RESOLUÇÃO HOMOLOGATÓRIA Nº 3.271, DE 26 DE SETEMBRO DE 2023, início de vigência em 2023-09-30; troca de 1,020 p.p. contra o trecho anterior"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 14,810%, CEREJ (CNPJ 82.574.864/0001-81), 09/2023 a 08/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "31465487000101": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "7,090%",
+   "valor_calculo": 7.09,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2019-06",
+    "fim": "2022-03"
+   },
+   "entidade": "CERES (CNPJ 31.465.487/0001-01)",
+   "universo": "um trecho de 34 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 31465487000101, competências 2019-06 a 2022-03, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "34 meses seguidos, de 2019-06 a 2022-03",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "34 meses seguidos com a mesma razão (referência a partir de 6); 3 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 7,08998% a 7,09003% (amplitude 0,00005 p.p.), todas iguais a 7,090% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,090%, CERES (CNPJ 31.465.487/0001-01), 06/2019 a 03/2022. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "97505838000179": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "4,000%",
+   "valor_calculo": 4.0,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2023-10",
+    "fim": "2025-02"
+   },
+   "entidade": "CERFOX (CNPJ 97.505.838/0001-79)",
+   "universo": "um trecho de 17 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 97505838000179, competências 2023-10 a 2025-02, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "17 meses seguidos, de 2023-10 a 2025-02",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "17 meses seguidos com a mesma razão (referência a partir de 6); 2 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 3,99999% a 4,00001% (amplitude 0,00002 p.p.), todas iguais a 4,000% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 4,000%, CERFOX (CNPJ 97.505.838/0001-79), 10/2023 a 02/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "50235449000107": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "10,380%",
+   "valor_calculo": 10.38,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2018-09",
+    "fim": "2023-12"
+   },
+   "entidade": "CERIM (CNPJ 50.235.449/0001-07)",
+   "universo": "um trecho de 64 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 50235449000107, competências 2018-09 a 2023-12, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "64 meses seguidos, de 2018-09 a 2023-12",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "64 meses seguidos com a mesma razão (referência a partir de 6); 2 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 10,37999% a 10,38001% (amplitude 0,00002 p.p.), todas iguais a 10,380% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 10,380%, CERIM (CNPJ 50.235.449/0001-07), 09/2018 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "97081434000103": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "10,000%",
+   "valor_calculo": 10.0,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2010-06",
+    "fim": "2011-03"
+   },
+   "entidade": "CERMISSÕES (CNPJ 97.081.434/0001-03)",
+   "universo": "um trecho de 10 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 97081434000103, competências 2010-06 a 2011-03, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "10 meses seguidos, de 2010-06 a 2011-03",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "10 meses seguidos com a mesma razão (referência a partir de 6); 1 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 9,99999% a 10,00000% (amplitude 0,00001 p.p.), todas iguais a 10,000% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 10,000%, CERMISSÕES (CNPJ 97.081.434/0001-03), 06/2010 a 03/2011. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "85318640000105": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "7,380%",
+   "valor_calculo": 7.38,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2023-01",
+    "fim": "2023-12"
+   },
+   "entidade": "CERPALO (CNPJ 85.318.640/0001-05)",
+   "universo": "um trecho de 12 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 85318640000105, competências 2023-01 a 2023-12, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "12 meses seguidos, de 2023-01 a 2023-12",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "12 meses seguidos com a mesma razão (referência a partir de 6); 3 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 7,37999% a 7,38000% (amplitude 0,00001 p.p.), todas iguais a 7,380% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,380%, CERPALO (CNPJ 85.318.640/0001-05), 01/2023 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "86512670000102": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "7,590%",
+   "valor_calculo": 7.59,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2024-01",
+    "fim": "2024-11"
+   },
+   "entidade": "CERSUL (CNPJ 86.512.670/0001-02)",
+   "universo": "um trecho de 11 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 86512670000102, competências 2024-01 a 2024-11, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "11 meses seguidos, de 2024-01 a 2024-11",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "11 meses seguidos com a mesma razão (referência a partir de 6); 6 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 7,59000% a 7,59000% (amplitude 0,00001 p.p.), todas iguais a 7,590% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,590%, CERSUL (CNPJ 86.512.670/0001-02), 01/2024 a 11/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "97839922000129": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "6,420%",
+   "valor_calculo": 6.42,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2019-09",
+    "fim": "2025-02"
+   },
+   "entidade": "CERTAJA (CNPJ 97.839.922/0001-29)",
+   "universo": "um trecho de 66 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 97839922000129, competências 2019-09 a 2025-02, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "66 meses seguidos, de 2019-09 a 2025-02",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "66 meses seguidos com a mesma razão (referência a partir de 6); 2 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 6,42000% a 6,42001% (amplitude 0,00001 p.p.), todas iguais a 6,420% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 6,420%, CERTAJA (CNPJ 97.839.922/0001-29), 09/2019 a 02/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "55188502000180": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "10,000%",
+   "valor_calculo": 10.0,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2024-03",
+    "fim": "2024-08"
+   },
+   "entidade": "CERVAM (CNPJ 55.188.502/0001-80)",
+   "universo": "um trecho de 6 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 55188502000180, competências 2024-03 a 2024-08, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "6 meses seguidos, de 2024-03 a 2024-08",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "6 meses seguidos com a mesma razão (referência a partir de 6); 3 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 9,99999% a 10,00001% (amplitude 0,00003 p.p.), todas iguais a 10,000% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 10,000%, CERVAM (CNPJ 55.188.502/0001-80), 03/2024 a 08/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "01377555000110": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "9,040%",
+   "valor_calculo": 9.04,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2022-01",
+    "fim": "2023-12"
+   },
+   "entidade": "CHESP (CNPJ 01.377.555/0001-10)",
+   "universo": "um trecho de 24 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 1377555000110, competências 2022-01 a 2023-12, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "24 meses seguidos, de 2022-01 a 2023-12",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "24 meses seguidos com a mesma razão (referência a partir de 6); 1 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 9,04000% a 9,04000% (amplitude 0,00001 p.p.), todas iguais a 9,040% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 9,040%, CHESP (CNPJ 01.377.555/0001-10), 01/2022 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "95824322000161": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "20,360%",
+   "valor_calculo": 20.36,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2023-08",
+    "fim": "2024-06"
+   },
+   "entidade": "COOPERLUZ (CNPJ 95.824.322/0001-61)",
+   "universo": "um trecho de 11 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 95824322000161, competências 2023-08 a 2024-06, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "11 meses seguidos, de 2023-08 a 2024-06",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "11 meses seguidos com a mesma razão (referência a partir de 6); 6 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 20,35999% a 20,36000% (amplitude 0,00001 p.p.), todas iguais a 20,360% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "aprovado",
+     "detalhe": "RESOLUÇÃO HOMOLOGATÓRIA Nº 3.232, DE 25 DE JULHO DE 2023, início de vigência em 2023-07-30; troca de 4,460 p.p. contra o trecho anterior"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 20,360%, COOPERLUZ (CNPJ 95.824.322/0001-61), 08/2023 a 06/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "87462750000163": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "7,500%",
+   "valor_calculo": 7.5,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2023-12",
+    "fim": "2024-10"
+   },
+   "entidade": "COOPERSUL (CNPJ 87.462.750/0001-63)",
+   "universo": "um trecho de 11 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 87462750000163, competências 2023-12 a 2024-10, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "11 meses seguidos, de 2023-12 a 2024-10",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "11 meses seguidos com a mesma razão (referência a partir de 6); 2 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 7,49998% a 7,50002% (amplitude 0,00004 p.p.), todas iguais a 7,500% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,500%, COOPERSUL (CNPJ 87.462.750/0001-63), 12/2023 a 10/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "53859112000169": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "6,850%",
+   "valor_calculo": 6.85,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2021-03",
+    "fim": "2023-12"
+   },
+   "entidade": "CPFL JAGUARI (CNPJ 53.859.112/0001-69)",
+   "universo": "um trecho de 34 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 53859112000169, competências 2021-03 a 2023-12, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "34 meses seguidos, de 2021-03 a 2023-12",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "34 meses seguidos com a mesma razão (referência a partir de 6); 2 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 6,85000% a 6,85000% (amplitude 0,00000 p.p.), todas iguais a 6,850% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "aprovado",
+     "detalhe": "RESOLUÇÃO HOMOLOGATÓRIA Nº 2.837, DE 16 DE MARÇO DE 2021, início de vigência em 2021-03-22; troca de −0,290 p.p. contra o trecho anterior"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 6,850%, CPFL JAGUARI (CNPJ 53.859.112/0001-69), 03/2021 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "33050196000188": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "5,231%",
+   "valor_calculo": 5.231,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2023-04",
+    "fim": "2023-12"
+   },
+   "entidade": "CPFL-PAULISTA (CNPJ 33.050.196/0001-88)",
+   "universo": "um trecho de 9 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 33050196000188, competências 2023-04 a 2023-12, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "9 meses seguidos, de 2023-04 a 2023-12",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "9 meses seguidos com a mesma razão (referência a partir de 6); 3 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 5,23100% a 5,23100% (amplitude 0,00000 p.p.), todas iguais a 5,231% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "aprovado",
+     "detalhe": "RESOLUÇÃO HOMOLOGATÓRIA Nº 3.183, DE 4 DE ABRIL DE 2023, início de vigência em 2023-04-08; troca de −0,769 p.p. contra o trecho anterior"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 5,231%, CPFL-PAULISTA (CNPJ 33.050.196/0001-88), 04/2023 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "04172213000151": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "4,750%",
+   "valor_calculo": 4.75,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2019-10",
+    "fim": "2023-09"
+   },
+   "entidade": "CPFL-PIRATINING (CNPJ 04.172.213/0001-51)",
+   "universo": "um trecho de 48 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 4172213000151, competências 2019-10 a 2023-09, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "48 meses seguidos, de 2019-10 a 2023-09",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "48 meses seguidos com a mesma razão (referência a partir de 6); 2 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 4,75000% a 4,75000% (amplitude 0,00000 p.p.), todas iguais a 4,750% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "aprovado",
+     "detalhe": "RESOLUÇÃO HOMOLOGATÓRIA Nº 2.627, DE 22 DE OUTUBRO DE 2019, início de vigência em 2019-10-23; troca de −0,770 p.p. contra o trecho anterior"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 4,750%, CPFL-PIRATINING (CNPJ 04.172.213/0001-51), 10/2019 a 09/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "83855973000130": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "7,280%",
+   "valor_calculo": 7.28,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2023-12",
+    "fim": "2024-11"
+   },
+   "entidade": "DCELT (CNPJ 83.855.973/0001-30)",
+   "universo": "um trecho de 12 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 83855973000130, competências 2023-12 a 2024-11, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "12 meses seguidos, de 2023-12 a 2024-11",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "12 meses seguidos com a mesma razão (referência a partir de 6); 10 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 7,28000% a 7,28025% (amplitude 0,00025 p.p.), todas iguais a 7,280% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,280%, DCELT (CNPJ 83.855.973/0001-30), 12/2023 a 11/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "95289500000100": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "4,990%",
+   "valor_calculo": 4.99,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2023-01",
+    "fim": "2025-06"
+   },
+   "entidade": "DEMEI (CNPJ 95.289.500/0001-00)",
+   "universo": "um trecho de 30 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 95289500000100, competências 2023-01 a 2025-06, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "30 meses seguidos, de 2023-01 a 2025-06",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "30 meses seguidos com a mesma razão (referência a partir de 6); 2 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 4,99000% a 4,99000% (amplitude 0,00001 p.p.), todas iguais a 4,990% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 4,990%, DEMEI (CNPJ 95.289.500/0001-00), 01/2023 a 06/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "23664303000104": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "4,430%",
+   "valor_calculo": 4.43,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2021-04",
+    "fim": "2025-10"
+   },
+   "entidade": "DMED (CNPJ 23.664.303/0001-04)",
+   "universo": "um trecho de 55 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 23664303000104, competências 2021-04 a 2025-10, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "55 meses seguidos, de 2021-04 a 2025-10",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "55 meses seguidos com a mesma razão (referência a partir de 6); 5 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 4,43000% a 4,43000% (amplitude 0,00000 p.p.), todas iguais a 4,430% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 4,430%, DMED (CNPJ 23.664.303/0001-04), 04/2021 a 10/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "86531175000140": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "3,750%",
+   "valor_calculo": 3.75,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2024-01",
+    "fim": "2025-05"
+   },
+   "entidade": "EFLUL (CNPJ 86.531.175/0001-40)",
+   "universo": "um trecho de 17 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 86531175000140, competências 2024-01 a 2025-05, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "17 meses seguidos, de 2024-01 a 2025-05",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "17 meses seguidos com a mesma razão (referência a partir de 6); 2 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 3,75000% a 3,75001% (amplitude 0,00001 p.p.), todas iguais a 3,750% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 3,750%, EFLUL (CNPJ 86.531.175/0001-40), 01/2024 a 05/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "02328280000197": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "5,778%",
+   "valor_calculo": 5.778,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2025-01",
+    "fim": "2026-03"
+   },
+   "entidade": "ELEKTRO (CNPJ 02.328.280/0001-97)",
+   "universo": "um trecho de 15 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 2328280000197, competências 2025-01 a 2026-03, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "15 meses seguidos, de 2025-01 a 2026-03",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "15 meses seguidos com a mesma razão (referência a partir de 6); 10 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 5,77760% a 5,77760% (amplitude 0,00000 p.p.), todas iguais a 5,778% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 5,778%, ELEKTRO (CNPJ 02.328.280/0001-97), 01/2025 a 03/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "88446034000155": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "6,600%",
+   "valor_calculo": 6.6,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2025-06",
+    "fim": "2026-03"
+   },
+   "entidade": "ELETROCAR (CNPJ 88.446.034/0001-55)",
+   "universo": "um trecho de 10 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 88446034000155, competências 2025-06 a 2026-03, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "10 meses seguidos, de 2025-06 a 2026-03",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "10 meses seguidos com a mesma razão (referência a partir de 6); 7 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 6,60000% a 6,60000% (amplitude 0,00000 p.p.), todas iguais a 6,600% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 6,600%, ELETROCAR (CNPJ 88.446.034/0001-55), 06/2025 a 03/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "61695227000193": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "5,052%",
+   "valor_calculo": 5.052,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2025-08",
+    "fim": "2026-03"
+   },
+   "entidade": "ELETROPAULO (CNPJ 61.695.227/0001-93)",
+   "universo": "um trecho de 8 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 61695227000193, competências 2025-08 a 2026-03, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "8 meses seguidos, de 2025-08 a 2026-03",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "8 meses seguidos com a mesma razão (referência a partir de 6); 8 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 5,05210% a 5,05210% (amplitude 0,00000 p.p.), todas iguais a 5,052% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 5,052%, ELETROPAULO (CNPJ 61.695.227/0001-93), 08/2025 a 03/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "27485069000109": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "9,084%",
+   "valor_calculo": 9.084,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2022-10",
+    "fim": "2026-03"
+   },
+   "entidade": "ELFSM (CNPJ 27.485.069/0001-09)",
+   "universo": "um trecho de 42 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 27485069000109, competências 2022-10 a 2026-03, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "42 meses seguidos, de 2022-10 a 2026-03",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "42 meses seguidos com a mesma razão (referência a partir de 6); 4 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 9,08400% a 9,08400% (amplitude 0,00000 p.p.), todas iguais a 9,084% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "aprovado",
+     "detalhe": "RESOLUÇÃO HOMOLOGATÓRIA Nº 3.105, DE 20 DE SETEMBRO DE 2022, início de vigência em 2022-09-22; troca de 2,997 p.p. contra o trecho anterior"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 9,084%, ELFSM (CNPJ 27.485.069/0001-09), 10/2022 a 03/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "07047251000170": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "9,220%",
+   "valor_calculo": 9.22,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2023-01",
+    "fim": "2026-02"
+   },
+   "entidade": "ENEL CE (CNPJ 07.047.251/0001-70)",
+   "universo": "um trecho de 38 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 7047251000170, competências 2023-01 a 2026-02, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "38 meses seguidos, de 2023-01 a 2026-02",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "38 meses seguidos com a mesma razão (referência a partir de 6); 1 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 9,22000% a 9,22000% (amplitude 0,00000 p.p.), todas iguais a 9,220% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 9,220%, ENEL CE (CNPJ 07.047.251/0001-70), 01/2023 a 02/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "33050071000158": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "8,001%",
+   "valor_calculo": 8.001,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2023-01",
+    "fim": "2026-01"
+   },
+   "entidade": "ENEL RJ (CNPJ 33.050.071/0001-58)",
+   "universo": "um trecho de 37 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 33050071000158, competências 2023-01 a 2026-01, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "37 meses seguidos, de 2023-01 a 2026-01",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "37 meses seguidos com a mesma razão (referência a partir de 6); 8 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 8,00100% a 8,00100% (amplitude 0,00000 p.p.), todas iguais a 8,001% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 8,001%, ENEL RJ (CNPJ 33.050.071/0001-58), 01/2023 a 01/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "12272084000100": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "10,340%",
+   "valor_calculo": 10.34,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2019-01",
+    "fim": "2023-12"
+   },
+   "entidade": "EQUATORIAL AL (CNPJ 12.272.084/0001-00)",
+   "universo": "um trecho de 60 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 12272084000100, competências 2019-01 a 2023-12, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "60 meses seguidos, de 2019-01 a 2023-12",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "60 meses seguidos com a mesma razão (referência a partir de 6); 4 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 10,34000% a 10,34000% (amplitude 0,00000 p.p.), todas iguais a 10,340% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 10,340%, EQUATORIAL AL (CNPJ 12.272.084/0001-00), 01/2019 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "01543032000104": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "9,460%",
+   "valor_calculo": 9.46,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2022-01",
+    "fim": "2023-12"
+   },
+   "entidade": "EQUATORIAL GO (CNPJ 01.543.032/0001-04)",
+   "universo": "um trecho de 24 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 1543032000104, competências 2022-01 a 2023-12, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "24 meses seguidos, de 2022-01 a 2023-12",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "24 meses seguidos com a mesma razão (referência a partir de 6); 1 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 9,46000% a 9,46000% (amplitude 0,00000 p.p.), todas iguais a 9,460% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 9,460%, EQUATORIAL GO (CNPJ 01.543.032/0001-04), 01/2022 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "06272793000184": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "10,814%",
+   "valor_calculo": 10.814,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2021-08",
+    "fim": "2023-12"
+   },
+   "entidade": "EQUATORIAL MA (CNPJ 06.272.793/0001-84)",
+   "universo": "um trecho de 29 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 6272793000184, competências 2021-08 a 2023-12, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "29 meses seguidos, de 2021-08 a 2023-12",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "29 meses seguidos com a mesma razão (referência a partir de 6); 4 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 10,81400% a 10,81400% (amplitude 0,00000 p.p.), todas iguais a 10,814% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "aprovado",
+     "detalhe": "RESOLUÇÃO HOMOLOGATÓRIA Nº 2.925, DE 24 DE AGOSTO DE 2021, início de vigência em 2021-08-28; troca de −1,129 p.p. contra o trecho anterior"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 10,814%, EQUATORIAL MA (CNPJ 06.272.793/0001-84), 08/2021 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "04895728000180": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "11,648%",
+   "valor_calculo": 11.648,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2022-01",
+    "fim": "2023-07"
+   },
+   "entidade": "EQUATORIAL PA (CNPJ 04.895.728/0001-80)",
+   "universo": "um trecho de 19 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 4895728000180, competências 2022-01 a 2023-07, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "19 meses seguidos, de 2022-01 a 2023-07",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "19 meses seguidos com a mesma razão (referência a partir de 6); 5 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 11,64800% a 11,64800% (amplitude 0,00000 p.p.), todas iguais a 11,648% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 11,648%, EQUATORIAL PA (CNPJ 04.895.728/0001-80), 01/2022 a 07/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "06840748000189": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "12,170%",
+   "valor_calculo": 12.17,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2018-12",
+    "fim": "2023-12"
+   },
+   "entidade": "EQUATORIAL PI (CNPJ 06.840.748/0001-89)",
+   "universo": "um trecho de 61 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 6840748000189, competências 2018-12 a 2023-12, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "61 meses seguidos, de 2018-12 a 2023-12",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "61 meses seguidos com a mesma razão (referência a partir de 6); 1 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 12,17000% a 12,17000% (amplitude 0,00000 p.p.), todas iguais a 12,170% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "aprovado",
+     "detalhe": "RESOLUÇÃO HOMOLOGATÓRIA Nº 2.490, DE 27 DE NOVEMBRO DE 2018, início de vigência em 2018-12-02; troca de −0,950 p.p. contra o trecho anterior"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 12,170%, EQUATORIAL PI (CNPJ 06.840.748/0001-89), 12/2018 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "05914650000166": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "11,150%",
+   "valor_calculo": 11.15,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2015-09",
+    "fim": "2017-12"
+   },
+   "entidade": "ERO (CNPJ 05.914.650/0001-66)",
+   "universo": "um trecho de 28 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 5914650000166, competências 2015-09 a 2017-12, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "28 meses seguidos, de 2015-09 a 2017-12",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "28 meses seguidos com a mesma razão (referência a partir de 6); 5 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 11,15000% a 11,15000% (amplitude 0,00000 p.p.), todas iguais a 11,150% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 11,150%, ERO (CNPJ 05.914.650/0001-66), 09/2015 a 12/2017. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "91982348000187": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "4,320%",
+   "valor_calculo": 4.32,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2025-01",
+    "fim": "2026-03"
+   },
+   "entidade": "HIDROPAN (CNPJ 91.982.348/0001-87)",
+   "universo": "um trecho de 15 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 91982348000187, competências 2025-01 a 2026-03, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "15 meses seguidos, de 2025-01 a 2026-03",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "15 meses seguidos com a mesma razão (referência a partir de 6); 3 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 4,32000% a 4,32000% (amplitude 0,00001 p.p.), todas iguais a 4,320% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 4,320%, HIDROPAN (CNPJ 91.982.348/0001-87), 01/2025 a 03/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "60444437000146": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "7,090%",
+   "valor_calculo": 7.09,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2020-02",
+    "fim": "2023-12"
+   },
+   "entidade": "LIGHT SESA (CNPJ 60.444.437/0001-46)",
+   "universo": "um trecho de 47 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 60444437000146, competências 2020-02 a 2023-12, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "47 meses seguidos, de 2020-02 a 2023-12",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "47 meses seguidos com a mesma razão (referência a partir de 6); 1 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 7,09000% a 7,09000% (amplitude 0,00000 p.p.), todas iguais a 7,090% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,090%, LIGHT SESA (CNPJ 60.444.437/0001-46), 02/2020 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "02016439000138": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "8,660%",
+   "valor_calculo": 8.66,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2010-01",
+    "fim": "2011-10"
+   },
+   "entidade": "RGE (CNPJ 02.016.439/0001-38)",
+   "universo": "um trecho de 22 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 2016439000138, competências 2010-01 a 2011-10, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "22 meses seguidos, de 2010-01 a 2011-10",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "22 meses seguidos com a mesma razão (referência a partir de 6); 1 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 8,66000% a 8,66000% (amplitude 0,00000 p.p.), todas iguais a 8,660% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 8,660%, RGE (CNPJ 02.016.439/0001-38), 01/2010 a 10/2011. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "13255658000196": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "11,470%",
+   "valor_calculo": 11.47,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2024-04",
+    "fim": "2024-09"
+   },
+   "entidade": "SULGIPE (CNPJ 13.255.658/0001-96)",
+   "universo": "um trecho de 6 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 13255658000196, competências 2024-04 a 2024-09, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "6 meses seguidos, de 2024-04 a 2024-09",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "6 meses seguidos com a mesma razão (referência a partir de 6); 2 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 11,47000% a 11,47000% (amplitude 0,00000 p.p.), todas iguais a 11,470% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 11,470%, SULGIPE (CNPJ 13.255.658/0001-96), 04/2024 a 09/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "89889604000144": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "8,490%",
+   "valor_calculo": 8.49,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2023-01",
+    "fim": "2023-11"
+   },
+   "entidade": "UHENPAL (CNPJ 89.889.604/0001-44)",
+   "universo": "um trecho de 11 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 89889604000144, competências 2023-01 a 2023-11, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "11 meses seguidos, de 2023-01 a 2023-11",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "11 meses seguidos com a mesma razão (referência a partir de 6); 1 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 8,49000% a 8,49000% (amplitude 0,00001 p.p.), todas iguais a 8,490% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 8,490%, UHENPAL (CNPJ 89.889.604/0001-44), 01/2023 a 11/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "02341467000120": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "7,770%",
+   "valor_calculo": 7.77,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2021-11",
+    "fim": "2025-06"
+   },
+   "entidade": "ÂMBAR AMAZONAS (CNPJ 02.341.467/0001-20)",
+   "universo": "um trecho de 44 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 2341467000120, competências 2021-11 a 2025-06, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "44 meses seguidos, de 2021-11 a 2025-06",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "44 meses seguidos com a mesma razão (referência a partir de 6); 2 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 7,77000% a 7,77000% (amplitude 0,00000 p.p.), todas iguais a 7,770% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "aprovado",
+     "detalhe": "RESOLUÇÃO HOMOLOGATÓRIA Nº 2.967, DE 26 DE OUTUBRO DE 2021, início de vigência em 2021-11-01; troca de 0,020 p.p. contra o trecho anterior"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,770%, ÂMBAR AMAZONAS (CNPJ 02.341.467/0001-20), 11/2021 a 06/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "02341470000144": {
+   "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
+   "valor_exibido": "7,620%",
+   "valor_calculo": 7.62,
+   "unidade": "% da energia injetada publicada",
+   "periodo": {
+    "inicio": "2023-05",
+    "fim": "2025-03"
+   },
+   "entidade": "ÂMBAR ENERGIA RR (CNPJ 02.341.470/0001-44)",
+   "universo": "um trecho de 23 meses com a mesma razão perdas técnicas ÷ energia injetada publicada",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ANEEL",
+    "conjunto": "SAMP Balanço",
+    "recurso": "samp-balanco.parquet",
+    "url": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
+    "arquivo": "data/energia/bronze/aneel/aneel_samp_balanco/samp-balanco.parquet/20260930T222640Z.964387ddebfa.parquet.gz",
+    "sha256": "964387ddebfacb836b06b89f3a6d3b352ca8779b8c871b52a54a06ef87e75062",
+    "capturado_em": "2026-09-30T22:26:40Z",
+    "publicado_em": "2026-09-15T05:01:12Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "numerador: NumCPFCNPJ = 2341470000144, competências 2023-05 a 2025-03, DscModalidadeBalanco = 'Perdas na Distribuição (valor medido)', DscCctBalanco = 'Perdas Técnicas'",
+    "denominador: mesmas competências, linha 'Energia Injetada Total' publicada"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "100 × perdas técnicas medidas ÷ energia injetada publicada, mês a mês, arredondada a 0,001 p.p. e igual em todos os meses do trecho (inferência do observatório; trecho de 6 meses ou mais)",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "23 meses seguidos, de 2023-05 a 2025-03",
+   "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:44:22Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "trecho_de_referencia",
+     "resultado": "aprovado",
+     "detalhe": "23 meses seguidos com a mesma razão (referência a partir de 6); 9 trechos de referência na série da distribuidora"
+    },
+    {
+     "nome": "razao_constante",
+     "resultado": "aprovado",
+     "detalhe": "razões mensais sem arredondamento de 7,61986% a 7,62000% (amplitude 0,00014 p.p.), todas iguais a 7,620% em 0,001 p.p."
+    },
+    {
+     "nome": "resolucao_associada",
+     "resultado": "ressalva",
+     "detalhe": "nenhuma resolução homologatória com início de vigência no mês da troca e troca de ao menos 0,02 p.p.; o percentual é inferido da série, não lido de um ato"
+    },
+    {
+     "nome": "unitarios",
+     "resultado": "aprovado",
+     "detalhe": "pipeline/tests/test_energia_perdas.py: PercentualTecnicoRegulatorio e ReferenciaRegulatoriaETarifa.test_reh_so_com_troca_real_de_percentual"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Percentual técnico regulatório implícito (CSV)",
+     "url": "/energia/series/perdas_tecnicas_regulatorias.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,620%, ÂMBAR ENERGIA RR (CNPJ 02.341.470/0001-44), 05/2023 a 03/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  }
+ }
+}

@@ -70,7 +70,7 @@ export function PerdasContexto({ pontos, linhas, ids, rotulos, ano, rho, versao 
         titulo={`Renda média da área e ${y === "taxa" ? "taxa de perdas totais" : "perdas não técnicas"}, concessionárias, ${ano}`}
         pontos={pts}
         eixoX={{ rotulo: "Renda média domiciliar per capita dos municípios da área", unidade: "R$ de 2022 por mês", casas: 0 }}
-        eixoY={{ rotulo: y === "taxa" ? "Perdas totais" : "Perdas não técnicas", unidade: y === "taxa" ? "% da energia injetada" : "% do mercado de baixa tensão", casas: 1 }}
+        eixoY={{ rotulo: y === "taxa" ? "Perdas totais" : "Perdas não técnicas", unidade: y === "taxa" ? "% da energia injetada" : "% do mercado de baixa tensão", casas: 2 }}
         rodape={{
           periodo: `${ano} (perdas do ano do Censo e território da relação de ${ano})`,
           avisoCausalidade: "Associação entre áreas não é causalidade nem descreve cada família; perdas não técnicas não são atribuídas à população da área.",

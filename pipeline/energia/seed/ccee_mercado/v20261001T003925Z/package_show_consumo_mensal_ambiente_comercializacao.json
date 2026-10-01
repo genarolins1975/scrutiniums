@@ -1,0 +1,176 @@
+{
+ "result": {
+  "author": "CCEE-GAIM",
+  "author_email": "",
+  "creator_user_id": "08bb46ea-324c-47b2-84b7-76a0ebb05a3f",
+  "extras": [
+   {
+    "key": "Frequência de Atualização",
+    "value": "Mensal"
+   },
+   {
+    "key": "Referência de Publicação",
+    "value": "MS+22du"
+   },
+   {
+    "key": "Termo Legal",
+    "value": "O acesso a este site e/ou a utilização de conteúdos, dados e bases de dados nele disponibilizados se sujeita ao aceite dos termos e condições da licença aberta Creative Commons Attribution 4.0 International (CC-BY-4.0), bem como aos Termos de Uso do site e do aplicativo mobile (App) da CCEE (Link - https://www.ccee.org.br/en/web/guest/termos-de-uso). Ao utilizar esses recursos, você concorda em cumprir todos os requisitos dessa licença, que permitem que os reutilizadores distribuam, modifiquem, adaptem e desenvolvam o material sobre os dados, desde que seja atribuído o crédito apropriado ao criador (CCEE) e que sejam informadas as alterações. O Material Licenciado é disponibilizado no \"estado em que se encontra\" e \"como disponível\" apenas para fins informativos, sendo possível a interrupção da disponibilidade do conjunto de dados a qualquer momento e por qualquer motivo, sendo a sua utilização de livre iniciativa, não sendo atribuível qualquer tipo de responsabilização à CCEE por seu uso."
+   }
+  ],
+  "groups": [],
+  "id": "7aad511d-fc1f-4bdb-9eca-47f32570db97",
+  "isopen": true,
+  "license_id": "CC-BY-4.0",
+  "license_title": "Creative Commons Attribution 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "maintainer": "CCEE-GAIM",
+  "maintainer_email": "",
+  "metadata_created": "2023-06-26T13:57:19.272260",
+  "metadata_modified": "2026-09-01T17:58:17.665371",
+  "name": "consumo_mensal_ambiente_comercializacao",
+  "notes": "Dados de consumo utilizados na contabilização do MCP - Mercado de Curto Prazo totalizados por ambiente de contratação livre e regulado (ACL e ACR) consolidados no mês de referência.",
+  "num_resources": 4,
+  "num_tags": 4,
+  "organization": {
+   "approval_status": "approved",
+   "created": "2023-03-02T11:15:44.108398",
+   "description": "O Infomercado é uma organização que agrupa os principais conjuntos de dados referentes ao resultado da contabilização do mercado de energia brasileiro.\r\n\r\nAs partes interessadas poderão acessar conjuntos de dados relacionados aos seguintes assuntos: geração; consumo; MRE; contratos; PLD; e demais temas do Mercado de Curto Prazo - MCP.\r\n\r\nOs conjuntos de dados do informercado, seus recursos e APIs são atualizados periodicamente nesse portal de dados, para o mês de referência relativo à finalização da liquidação do MCP (não são considerados eventos de recontabilização).\r\n\r\nPara consulta ao acervo de dados públicos, a parte interessada poderá consultar o portal da CCEE > dados e análises.",
+   "id": "e898a06e-6d25-486f-ba0e-209f66c975ce",
+   "image_url": "https://www.ccee.org.br/documents/20121/1583681/icon_pda-infomercado.svg/029872ce-13b0-9153-3d63-0501ca687dff?t=1724955920662",
+   "is_organization": true,
+   "name": "infomercado",
+   "state": "active",
+   "title": "Infomercado",
+   "type": "organization"
+  },
+  "owner_org": "e898a06e-6d25-486f-ba0e-209f66c975ce",
+  "private": false,
+  "relationships_as_object": [],
+  "relationships_as_subject": [],
+  "resources": [
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2023-06-26T13:57:51.527079",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os dados com o consumo total no Ambiente de Contratação Livre e Regulado (ACL e ACR). Os dados estão consolidados no mês de referência.  \n  \n**Campos contidos nesse Dataset:**  \n  \n* **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.  \n* **CONSUMO_TOTAL_ACR** : Consumo Total do perfil de agente “a”, por submercado “s”, no período de comercialização “j” sumarizado por mês de referência e pertencente ao ACR - Ambiente de Contratação Regulado. (TRCa,s,j) [MWmed]  \n* **CONSUMO_TOTAL_ACL** : Consumo Total do perfil de agente “a”, por submercado “s”, no período de comercialização “j” sumarizado por mês de referência e pertencente ao ACL - Ambiente de Contratação Livre. (TRCa,s,j) [MWmed] ",
+    "format": "CSV",
+    "hash": "",
+    "id": "047855cf-7e60-4e50-ac8c-e50f6957fb53",
+    "last_modified": "2024-02-01T11:23:13.806000",
+    "metadata_modified": "2025-11-21T00:35:28.900582",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "consumo_mensal_ambiente_comercializacao_2023",
+    "package_id": "7aad511d-fc1f-4bdb-9eca-47f32570db97",
+    "position": 0,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/accYpCCVSG2oI4cFB3s1Ow/content",
+    "url_type": ""
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2024-03-04T01:21:19.896291",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os dados com o consumo total no Ambiente de Contratação Livre e Regulado (ACL e ACR). Os dados estão consolidados no mês de referência.  \n  \n**Campos contidos nesse Dataset:**  \n  \n* **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.  \n* **CONSUMO_TOTAL_ACR** : Consumo Total do perfil de agente “a”, por submercado “s”, no período de comercialização “j” sumarizado por mês de referência e pertencente ao ACR - Ambiente de Contratação Regulado. (TRCa,s,j) [MWmed]  \n* **CONSUMO_TOTAL_ACL** : Consumo Total do perfil de agente “a”, por submercado “s”, no período de comercialização “j” sumarizado por mês de referência e pertencente ao ACL - Ambiente de Contratação Livre. (TRCa,s,j) [MWmed] ",
+    "format": "CSV",
+    "hash": "",
+    "id": "649edf83-0d29-495c-a5de-38f22d9841b4",
+    "last_modified": "2025-01-31T20:09:08.124000",
+    "metadata_modified": "2025-01-31T23:09:08.231432",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "consumo_mensal_ambiente_comercializacao_2024",
+    "package_id": "7aad511d-fc1f-4bdb-9eca-47f32570db97",
+    "position": 1,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/oJyB5LmmSLWNhY9ISha9mA/content",
+    "url_type": null
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2025-03-05T23:58:29.252229",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os dados com o consumo total no Ambiente de Contratação Livre e Regulado (ACL e ACR). Os dados estão consolidados no mês de referência.  \n  \n**Campos contidos nesse Dataset:**  \n  \n* **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.  \n* **CONSUMO_TOTAL_ACR** : Consumo Total do perfil de agente “a”, por submercado “s”, no período de comercialização “j” sumarizado por mês de referência e pertencente ao ACR - Ambiente de Contratação Regulado. (TRCa,s,j) [MWmed]  \n* **CONSUMO_TOTAL_ACL** : Consumo Total do perfil de agente “a”, por submercado “s”, no período de comercialização “j” sumarizado por mês de referência e pertencente ao ACL - Ambiente de Contratação Livre. (TRCa,s,j) [MWmed] ",
+    "format": "CSV",
+    "hash": "",
+    "id": "89777031-1c92-4304-8c57-6e5b33d5c18a",
+    "last_modified": "2026-02-02T17:36:19.317000",
+    "metadata_modified": "2026-02-02T20:36:19.446724",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "consumo_mensal_ambiente_comercializacao_2025",
+    "package_id": "7aad511d-fc1f-4bdb-9eca-47f32570db97",
+    "position": 2,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/G4F1gVSmRvCEZwOOMM_DsQ/content",
+    "url_type": null
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2026-03-04T21:10:40.069358",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar os dados com o consumo total no Ambiente de Contratação Livre e Regulado (ACL e ACR). Os dados estão consolidados no mês de referência.  \n  \n**Campos contidos nesse Dataset:**  \n  \n* **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.  \n* **CONSUMO_TOTAL_ACR** : Consumo Total do perfil de agente “a”, por submercado “s”, no período de comercialização “j” sumarizado por mês de referência e pertencente ao ACR - Ambiente de Contratação Regulado. (TRCa,s,j) [MWmed]  \n* **CONSUMO_TOTAL_ACL** : Consumo Total do perfil de agente “a”, por submercado “s”, no período de comercialização “j” sumarizado por mês de referência e pertencente ao ACL - Ambiente de Contratação Livre. (TRCa,s,j) [MWmed] ",
+    "format": "CSV",
+    "hash": "",
+    "id": "ddf4a3a9-92ba-4e14-8192-a7b5b64fe4b9",
+    "last_modified": "2026-09-01T14:58:17.568000",
+    "metadata_modified": "2026-09-01T17:58:17.670172",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "consumo_mensal_ambiente_comercializacao_2026",
+    "package_id": "7aad511d-fc1f-4bdb-9eca-47f32570db97",
+    "position": 3,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/3jpZ-Ep_QiW9YxKHtN3neQ/content",
+    "url_type": null
+   }
+  ],
+  "state": "active",
+  "tags": [
+   {
+    "display_name": "acl",
+    "id": "f8fb6153-868b-41d8-8994-48afb86632f4",
+    "name": "acl",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "acr",
+    "id": "fdb6955a-89b5-460a-a0ad-e39923c42068",
+    "name": "acr",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "consumo",
+    "id": "cdf18cbb-5072-4d0e-9184-150957ce92a8",
+    "name": "consumo",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "dados gerais",
+    "id": "608eaa47-92c5-460b-a3d0-2069bff3b41d",
+    "name": "dados gerais",
+    "state": "active",
+    "vocabulary_id": null
+   }
+  ],
+  "title": "CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO",
+  "type": "dataset",
+  "url": "",
+  "version": ""
+ }
+}

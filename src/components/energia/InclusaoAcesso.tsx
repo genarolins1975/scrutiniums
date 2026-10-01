@@ -281,7 +281,7 @@ export function InclusaoLpt({ lpt, fonte }: { lpt: Pick<LuzParaTodos, "serie_anu
     <div className="space-y-5">
       <InclusaoOpcoes rotulo="Programa" nome="inclusao-ac-prog" opcoes={OPCOES_PROG} valor={v.prog} onMudar={(prog) => definir({ prog })} />
       <GraficoBarras
-        titulo={`Domicílios atendidos por ano do atendimento: ${rotProg.toLowerCase()} (MME, até ${mes(lpt.ultimo_mes)})`}
+        titulo={`Domicílios atendidos por ano do atendimento, ${v.prog === "total" ? "todos os programas" : `programa ${rotProg}`} (MME, até ${mes(lpt.ultimo_mes)})`}
         dados={dados}
         chaveCategoria="id"
         chaveRotulo="rotulo"

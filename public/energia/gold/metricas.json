@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "metricas.json",
- "gerado_em": "2026-10-01T00:36:37Z",
+ "gerado_em": "2026-10-01T00:49:24Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "6d3bc3a2f759+alterado",
+ "versao_codigo": "d5dc4fd86561+alterado",
  "disponivel": true,
  "metricas": [
   {
@@ -1289,13 +1289,61 @@
     "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
    ],
    "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
-   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero); exercício irregular (menos de 12 meses) fica fora da série anual.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
    "validacoes": [
     "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
     "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
     "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
    ],
    "limitacoes": [
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+   ],
+   "gold": "empresas.json",
+   "paginas": [
+    "/setor-eletrico/empresas",
+    "/setor-eletrico/empresas/[entidade]"
+   ],
+   "arquivo": "pipeline/energia/metricas/empresas.py"
+  },
+  {
+   "id": "empresas_caixa",
+   "titulo": "Caixa e equivalentes de caixa",
+   "pergunta": "Quanto a companhia tinha em caixa e equivalentes no fim do período?",
+   "definicao": "Conta 1.01.01 do balanço patrimonial ativo.",
+   "unidade": "R$ nominais",
+   "grao_geografico": "companhia aberta (CNPJ), consolidado ou individual",
+   "grao_temporal": "fim do exercício (DFP) e fim do trimestre (ITR)",
+   "fontes": [
+    "cvm_cad_cia_aberta",
+    "cvm_dfp",
+    "cvm_itr"
+   ],
+   "formula": "VL_CONTA da conta 1.01.01 × escala (MIL = 1.000; UNIDADE = 1), maior versão do documento",
+   "regra_agregacao": "Nenhuma agregação entre companhias. Saldo no fim do período; não se soma no tempo.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "companhia",
+    "escopo",
+    "periodo",
+    "documento"
+   ],
+   "regras_comparabilidade": [
+    "Consolidado e individual são séries separadas do mesmo CNPJ; nenhum valor é somado entre companhias (a controladora já consolida as controladas).",
+    "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
+   ],
+   "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
+   "validacoes": [
+    "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
+    "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
+    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+   ],
+   "limitacoes": [
+    "Aplicações financeiras fora de equivalentes de caixa ficam em outras contas do ativo.",
     "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
    ],
    "gold": "empresas.json",
@@ -1334,14 +1382,62 @@
     "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
    ],
    "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
-   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero); exercício irregular (menos de 12 meses) fica fora da série anual.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
    "validacoes": [
     "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
     "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
     "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
    ],
    "limitacoes": [
     "Inclui aquisições, aplicações financeiras e resgates; não é o investimento em ativos da concessão, que não tem conta fixa.",
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+   ],
+   "gold": "empresas.json",
+   "paginas": [
+    "/setor-eletrico/empresas",
+    "/setor-eletrico/empresas/[entidade]"
+   ],
+   "arquivo": "pipeline/energia/metricas/empresas.py"
+  },
+  {
+   "id": "empresas_caixa_operacional",
+   "titulo": "Caixa líquido das atividades operacionais",
+   "pergunta": "Quanto caixa as operações geraram (ou consumiram) no período?",
+   "definicao": "Conta 6.01 da demonstração dos fluxos de caixa (método direto ou indireto). No ITR, acumulada desde janeiro.",
+   "unidade": "R$ nominais",
+   "grao_geografico": "companhia aberta (CNPJ), consolidado ou individual",
+   "grao_temporal": "exercício social (DFP) e trimestre (ITR)",
+   "fontes": [
+    "cvm_cad_cia_aberta",
+    "cvm_dfp",
+    "cvm_itr"
+   ],
+   "formula": "VL_CONTA da conta 6.01 × escala (MIL = 1.000; UNIDADE = 1), maior versão do documento",
+   "regra_agregacao": "Nenhuma agregação entre companhias. Fluxo: valor do período publicado (exercício, trimestre ou acumulado no ano); o 4º trimestre não é deduzido por diferença.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "companhia",
+    "escopo",
+    "periodo",
+    "documento"
+   ],
+   "regras_comparabilidade": [
+    "Consolidado e individual são séries separadas do mesmo CNPJ; nenhum valor é somado entre companhias (a controladora já consolida as controladas).",
+    "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
+   ],
+   "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
+   "validacoes": [
+    "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
+    "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
+    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+   ],
+   "limitacoes": [
+    "Método direto e indireto chegam ao mesmo total, mas as linhas internas diferem e não são publicadas aqui.",
     "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
    ],
    "gold": "empresas.json",
@@ -1567,11 +1663,20 @@
     "aneel_polimero",
     "cvm_cad_cia_aberta"
    ],
-   "formula": "cópia pelo CNPJ canônico (14 dígitos) do valor publicado na gold de origem",
+   "formula": "cópia pelo CNPJ canônico (14 dígitos) do valor publicado na gold de origem; a fórmula de cada número é a do módulo de origem (proveniências distribuidoras_perdas, distribuidoras_pnt, distribuidoras_qualidade e distribuidoras_tarifa na gold)",
    "regra_agregacao": "Nenhuma: um valor por distribuidora, o mesmo da página de origem.",
    "versao_formula": "1",
-   "natureza_fonte": "OBSERVADO",
-   "natureza_transformacao": "OBSERVADO",
+   "natureza_fonte": "CALCULADO",
+   "natureza_transformacao": "CALCULADO",
+   "naturezas_por_campo": {
+    "perdas.taxa_total_pct": "CALCULADO",
+    "perdas.pnt_bt_pct": "ESTIMADO",
+    "qualidade.dec": "CALCULADO",
+    "qualidade.fec": "CALCULADO",
+    "qualidade.dec_limite": "CALCULADO",
+    "qualidade.fec_limite": "CALCULADO",
+    "tarifa.total": "CALCULADO"
+   },
    "dimensoes": [
     "distribuidora",
     "módulo de origem"
@@ -1587,7 +1692,8 @@
     "Valores iguais aos da gold de origem (teste por CNPJ)."
    ],
    "limitacoes": [
-    "Distribuidora encerrada (fim de série no SAMP) aparece como inativa com os dados históricos disponíveis."
+    "Distribuidora encerrada (fim de série no SAMP) aparece como inativa com os dados históricos disponíveis.",
+    "O índice traz um ano de referência por módulo; a evolução própria vem das séries das golds de origem (perdas_anual.json, qualidade_distribuidoras_serie.json, conta_historico_b1.json) pelo mesmo CNPJ, indicadas em distribuidoras.series_evolucao e indice[].evolucao."
    ],
    "gold": "empresas.json",
    "paginas": [
@@ -1625,10 +1731,11 @@
     "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
    ],
    "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
-   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero); exercício irregular (menos de 12 meses) fica fora da série anual.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
    "validacoes": [
     "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
     "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
     "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
    ],
    "limitacoes": [
@@ -1671,14 +1778,109 @@
     "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
    ],
    "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
-   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero); exercício irregular (menos de 12 meses) fica fora da série anual.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
    "validacoes": [
     "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
     "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
     "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
    ],
    "limitacoes": [
     "EBITDA não é conta padronizada e não é publicado pelo observatório.",
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+   ],
+   "gold": "empresas.json",
+   "paginas": [
+    "/setor-eletrico/empresas",
+    "/setor-eletrico/empresas/[entidade]"
+   ],
+   "arquivo": "pipeline/energia/metricas/empresas.py"
+  },
+  {
+   "id": "empresas_emprestimos_cp",
+   "titulo": "Empréstimos e financiamentos no passivo circulante",
+   "pergunta": "Quanto vence em até 12 meses em empréstimos, financiamentos e debêntures?",
+   "definicao": "Conta 2.01.04 do balanço patrimonial passivo (inclui debêntures).",
+   "unidade": "R$ nominais",
+   "grao_geografico": "companhia aberta (CNPJ), consolidado ou individual",
+   "grao_temporal": "fim do exercício (DFP) e fim do trimestre (ITR)",
+   "fontes": [
+    "cvm_cad_cia_aberta",
+    "cvm_dfp",
+    "cvm_itr"
+   ],
+   "formula": "VL_CONTA da conta 2.01.04 × escala (MIL = 1.000; UNIDADE = 1), maior versão do documento",
+   "regra_agregacao": "Nenhuma agregação entre companhias. Saldo no fim do período; não se soma no tempo.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "companhia",
+    "escopo",
+    "periodo",
+    "documento"
+   ],
+   "regras_comparabilidade": [
+    "Consolidado e individual são séries separadas do mesmo CNPJ; nenhum valor é somado entre companhias (a controladora já consolida as controladas).",
+    "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
+   ],
+   "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
+   "validacoes": [
+    "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
+    "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
+    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+   ],
+   "limitacoes": [
+    "Arrendamentos entram só quando a companhia os classifica nessa conta.",
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+   ],
+   "gold": "empresas.json",
+   "paginas": [
+    "/setor-eletrico/empresas",
+    "/setor-eletrico/empresas/[entidade]"
+   ],
+   "arquivo": "pipeline/energia/metricas/empresas.py"
+  },
+  {
+   "id": "empresas_emprestimos_lp",
+   "titulo": "Empréstimos e financiamentos no passivo não circulante",
+   "pergunta": "Quanto vence depois de 12 meses em empréstimos, financiamentos e debêntures?",
+   "definicao": "Conta 2.02.01 do balanço patrimonial passivo (inclui debêntures).",
+   "unidade": "R$ nominais",
+   "grao_geografico": "companhia aberta (CNPJ), consolidado ou individual",
+   "grao_temporal": "fim do exercício (DFP) e fim do trimestre (ITR)",
+   "fontes": [
+    "cvm_cad_cia_aberta",
+    "cvm_dfp",
+    "cvm_itr"
+   ],
+   "formula": "VL_CONTA da conta 2.02.01 × escala (MIL = 1.000; UNIDADE = 1), maior versão do documento",
+   "regra_agregacao": "Nenhuma agregação entre companhias. Saldo no fim do período; não se soma no tempo.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "companhia",
+    "escopo",
+    "periodo",
+    "documento"
+   ],
+   "regras_comparabilidade": [
+    "Consolidado e individual são séries separadas do mesmo CNPJ; nenhum valor é somado entre companhias (a controladora já consolida as controladas).",
+    "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
+   ],
+   "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
+   "validacoes": [
+    "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
+    "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
+    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+   ],
+   "limitacoes": [
+    "Arrendamentos entram só quando a companhia os classifica nessa conta.",
     "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
    ],
    "gold": "empresas.json",
@@ -1711,13 +1913,13 @@
    ],
    "regras_comparabilidade": [
     "Fronteira: potência fiscalizada das usinas em fase Operação no SIGA cujas participações publicadas somam 100% (tolerância de 0,005 p.p. por parcela), Brasil, na data do SIGA; exclui micro e minigeração distribuída.",
-    "Não é o mercado relevante de uma análise concorrencial (energia vendida, submercado, contratos). Faixas descritivas das diretrizes do CADE e dos EUA de 2010: < 1.500, 1.500 a 2.500, > 2.500."
+    "Não é o mercado relevante de uma análise concorrencial (energia vendida, submercado, contratos). Faixas descritivas do Guia para Análise de Atos de Concentração Horizontal do CADE (2016): abaixo de 1.500 não concentrado, de 1.500 a 2.500 moderadamente concentrado, acima de 2.500 altamente concentrado. As diretrizes americanas de 2010, com os mesmos limiares, foram substituídas em 2023 por outras com limiares diferentes."
    ],
    "regra_cobertura": "Potência da fronteira; a parcela fora é publicada.",
    "politica_ausencia": "Participante sem CNPJ não entra no numerador: o HHI é limite inferior.",
    "validacoes": [
     "Soma das cotas ≤ 100%; HHI entre 0 e 10.000.",
-    "Recalculado nos testes a partir do CSV de grupos."
+    "Recalculado nos testes por caminho independente: o SIGA original relido por outro parser (recorte de 14 usinas com valores escritos no teste e, quando o bronze existe, o arquivo inteiro: HHI 135,3 e CR4 18,21% por proprietário direto; HHI 392,1 por grupo com o mapa proprietário → grupo publicado)."
    ],
    "limitacoes": [
     "Por proprietário direto subestima a concentração (sociedades de propósito específico contam separadas)."
@@ -1725,6 +1927,53 @@
    "gold": "empresas.json",
    "paginas": [
     "/setor-eletrico/empresas"
+   ],
+   "arquivo": "pipeline/energia/metricas/empresas.py"
+  },
+  {
+   "id": "empresas_lucro_controladores",
+   "titulo": "Lucro atribuído aos sócios da controladora",
+   "pergunta": "Quanto do lucro consolidado pertence aos acionistas da companhia?",
+   "definicao": "Conta 3.11.01 da DRE consolidada padronizada da CVM (o lucro sem a parcela dos sócios não controladores).",
+   "unidade": "R$ nominais",
+   "grao_geografico": "companhia aberta (CNPJ), consolidado ou individual",
+   "grao_temporal": "exercício social (DFP) e trimestre (ITR)",
+   "fontes": [
+    "cvm_cad_cia_aberta",
+    "cvm_dfp",
+    "cvm_itr"
+   ],
+   "formula": "VL_CONTA da conta 3.11.01 × escala (MIL = 1.000; UNIDADE = 1), maior versão do documento",
+   "regra_agregacao": "Nenhuma agregação entre companhias. Fluxo: valor do período publicado (exercício, trimestre ou acumulado no ano); o 4º trimestre não é deduzido por diferença.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "companhia",
+    "escopo",
+    "periodo",
+    "documento"
+   ],
+   "regras_comparabilidade": [
+    "Consolidado e individual são séries separadas do mesmo CNPJ; nenhum valor é somado entre companhias (a controladora já consolida as controladas).",
+    "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
+   ],
+   "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
+   "validacoes": [
+    "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
+    "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
+    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+   ],
+   "limitacoes": [
+    "Só existe no consolidado; no individual o lucro inteiro (3.11) é da companhia.",
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+   ],
+   "gold": "empresas.json",
+   "paginas": [
+    "/setor-eletrico/empresas",
+    "/setor-eletrico/empresas/[entidade]"
    ],
    "arquivo": "pipeline/energia/metricas/empresas.py"
   },
@@ -1757,10 +2006,11 @@
     "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
    ],
    "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
-   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero); exercício irregular (menos de 12 meses) fica fora da série anual.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
    "validacoes": [
     "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
     "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
     "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
    ],
    "limitacoes": [
@@ -1802,10 +2052,11 @@
     "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
    ],
    "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
-   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero); exercício irregular (menos de 12 meses) fica fora da série anual.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
    "validacoes": [
     "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
     "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
     "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
    ],
    "limitacoes": [
@@ -1847,10 +2098,11 @@
     "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
    ],
    "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
-   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero); exercício irregular (menos de 12 meses) fica fora da série anual.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
    "validacoes": [
     "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
     "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
     "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
    ],
    "limitacoes": [
@@ -7320,10 +7572,12 @@
    "politica_ausencia": "Valor vazio na fonte fica vazio; a bandeira verde não tem adicional e não consta do recurso.",
    "validacoes": [
     "fim de vigência = véspera do valor seguinte do mesmo patamar",
+    "patamar extinto (ausente da resolução seguinte e sem acionamento depois) termina no último mês com acionamento no recurso 'Bandeira Tarifária - Acionamento', conferido com a vigência escrita no dicionário desse recurso",
     "valor positivo"
    ],
    "limitacoes": [
-    "A data de publicação das resoluções não é informada pela fonte."
+    "A data de publicação das resoluções não é informada pela fonte.",
+    "Fim de patamar extinto com grão mensal (o recurso Acionamento é mensal)."
    ],
    "arquivo": "pipeline/energia/metricas/regulacao.py"
   },
@@ -7372,9 +7626,9 @@
    ],
    "versao_formula": "1.0",
    "id": "regulacao_cobertura_consultas",
-   "titulo": "Cobertura das consultas reconstituídas das atas",
-   "pergunta": "Que parte das consultas públicas do ano aparece nas atas da Diretoria?",
-   "definicao": "Consultas públicas com abertura deliberada nas atas do ano, frente ao total anual de consultas públicas publicado pela ANEEL no conjunto 'Audiências e Consultas Públicas'.",
+   "titulo": "Cobertura das consultas e audiências reconstituídas das atas",
+   "pergunta": "Que parte das consultas e das audiências públicas do ano aparece nas atas da Diretoria?",
+   "definicao": "Por modalidade: consultas públicas com abertura deliberada nas atas do ano frente ao total anual de consultas públicas, e audiências públicas com abertura deliberada nas atas frente ao total anual de audiências, ambos publicados pela ANEEL no conjunto 'Audiências e Consultas Públicas'. As duas razões são publicadas separadas (cobertura e cobertura_faixa na gold).",
    "unidade": "consultas",
    "grao_geografico": "ANEEL",
    "grao_temporal": "ano",
@@ -7382,16 +7636,18 @@
     "aneel_pautas_atas_diretoria",
     "aneel_audiencias_consultas"
    ],
-   "numerador": "aberturas de consulta pública nas atas do ano",
-   "denominador": "total anual de consultas públicas publicado pela ANEEL",
+   "numerador": "aberturas da modalidade nas atas do ano",
+   "denominador": "total anual da modalidade publicado pela ANEEL",
    "regra_agregacao": "contagem por ano",
    "natureza_fonte": "OBSERVADO",
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
-    "ano"
+    "ano",
+    "modalidade"
    ],
    "regras_comparabilidade": [
-    "O ano em curso é parcial e o total anual foi gerado pela fonte em data anterior à das atas."
+    "O ano em curso é parcial e o total anual foi gerado pela fonte em data anterior à das atas.",
+    "A cobertura das audiências é menor que a das consultas (faixas anuais em consultas.cobertura_faixa da gold): a contagem de abertas mistura as duas modalidades e herda a cobertura de cada uma."
    ],
    "regra_cobertura": "2018 em diante.",
    "politica_ausencia": "Ano sem total publicado fica fora.",
@@ -7410,9 +7666,9 @@
    ],
    "versao_formula": "1.0",
    "id": "regulacao_conferencia_ipca_teto",
-   "titulo": "Teto refeito pela variação do IPCA",
-   "pergunta": "O teto publicado bate com a regra de atualização pelo IPCA?",
-   "definicao": "Teto do ano anterior multiplicado pela razão entre o número-índice do IPCA de novembro do ano anterior e o de novembro de dois anos antes; comparado ao teto publicado.",
+   "titulo": "Teto publicado no ano anterior encadeado pela variação do IPCA",
+   "pergunta": "O teto publicado bate com o encadeamento anual pelo IPCA que os atos da ANEEL praticam?",
+   "definicao": "Teto publicado no ano anterior multiplicado pela razão entre o número-índice do IPCA de novembro do ano anterior e o de novembro de dois anos antes; comparado ao teto publicado. É a prática dos atos, não o texto literal do art. 23, § 1º, da REN nº 1.032/2022, que manda atualizar a partir dos valores de setembro de 2019; a aplicação literal é calculada à parte (conferência informativa art23_literal) e difere dos valores publicados.",
    "unidade": "R$/MWh",
    "grao_geografico": "Sistema Interligado Nacional",
    "grao_temporal": "ano",
@@ -7436,10 +7692,12 @@
    "regra_cobertura": "Pares de anos consecutivos com os dois tetos e os dois índices.",
    "politica_ausencia": "Índice ausente: conferência registrada como não executada.",
    "validacoes": [
-    "tolerância de R$ 0,011/MWh: dois arredondamentos a centavos (valor anterior multiplicado pelo fator anual e valor atual)"
+    "tolerância de R$ 0,011/MWh: dois arredondamentos a centavos (valor anterior multiplicado pelo fator anual e valor atual)",
+    "aplicação literal do art. 23, § 1º, calculada e publicada como ressalva informativa, sem ser critério de aprovação"
    ],
    "limitacoes": [
-    "A regra reproduz os atos de 2022 a 2026; o ponto de partida de 2021 depende do valor de 2020, não integrado."
+    "O encadeamento reproduz os atos de 2022 a 2026; o ponto de partida de 2021 depende do valor de 2020, não integrado.",
+    "O texto do art. 23, § 1º, não enuncia o encadeamento: a conta literal (base de setembro de 2019) difere dos atos em dezenas de centavos por MWh."
    ],
    "arquivo": "pipeline/energia/metricas/regulacao.py"
   },
@@ -7471,10 +7729,11 @@
     "Depende das atas publicadas; a contagem de um dia não se compara com totais anuais."
    ],
    "regra_cobertura": "Avisos deliberados em reunião pública registrada no conjunto de pautas e atas (desde set/2017).",
-   "politica_ausencia": "Fase sem datas na ata fica como prazo não datado e não entra na contagem de abertas.",
+   "politica_ausencia": "Fase sem janela na ata (só duração, só sessão de audiência ou nada) não entra na contagem de abertas; fase com início e duração escritos tem o fim calculado (contando o dia do início) e rotulado.",
    "validacoes": [
     "nenhuma consulta com fim anterior à data de referência aparece como aberta",
-    "período lido por expressões regulares testadas em amostras reais das atas"
+    "período lido por expressões regulares testadas em frases reais das atas (por extenso, numéricas, 'entre os dias', 'com início em ... até')",
+    "datas da janela das abertas reencontradas no texto integral da decisão por regra independente"
    ],
    "limitacoes": [
     "Prorrogação decidida fora da reunião pública não aparece.",

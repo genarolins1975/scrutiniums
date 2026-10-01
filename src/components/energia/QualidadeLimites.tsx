@@ -3,19 +3,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { GraficoPontos, type ParEntidade } from "@/components/energia/GraficoPontos";
-import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
+import { QualidadeTabela } from "@/components/energia/QualidadeTabela";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
-import {
-  CAMPO_DIST,
-  CAMPO_IND,
-  COLUNAS_LIMITES,
-  INDICADORES,
-  carregarUmaVez,
-  destacar,
-  respostaHistoricoDistribuidora,
-  type Indicador,
-} from "@/lib/energia/qualidade";
-import type { LinhaTabela } from "@/lib/energia/tabela";
+import { CAMPO_CLASSE, CAMPO_DIST, CAMPO_IND, CLASSES, INDICADORES, carregarUmaVez, destacar, respostaHistoricoDistribuidora, type Indicador } from "@/lib/energia/qualidade";
 import type { QualidadeSeriesDistribuidorasGold } from "@/lib/energia/tipos-qualidade";
 
 /**
@@ -23,13 +13,15 @@ import type { QualidadeSeriesDistribuidorasGold } from "@/lib/energia/tipos-qual
  * losango é o limite do mesmo ano, com a diferença escrita), o histórico da
  * distribuidora escolhida e a tabela equivalente com DGC calculado ao lado do publicado.
  *
- * Estado na URL: `?ind=` (DEC ou FEC) e `?dist=` (a primeira é a escolhida). Escolher
- * um ponto, uma linha da tabela ou uma distribuidora nos pequenos múltiplos dá no mesmo;
- * o voltar desfaz. O histórico (2015 em diante) vem do arquivo de séries por
- * distribuidora, buscado só quando há uma escolhida.
+ * Estado na URL: `?ind=` (DEC ou FEC), `?cls=` (concessionárias ou permissionárias, cada
+ * grupo com cerca de metade das distribuidoras: porte e regulação parecidos dentro do
+ * grupo, e o gráfico fica legível no celular) e `?dist=` (a primeira é a escolhida).
+ * Escolher um ponto, uma linha da tabela ou uma distribuidora nos pequenos múltiplos dá
+ * no mesmo; o voltar desfaz. O histórico (2015 em diante) vem do arquivo de séries por
+ * distribuidora, buscado só quando há uma escolhida; a tabela com DGC abre sob demanda.
  */
 
-const ESQUEMA = { ind: CAMPO_IND, dist: CAMPO_DIST };
+const ESQUEMA = { ind: CAMPO_IND, cls: CAMPO_CLASSE, dist: CAMPO_DIST };
 
 const ROTULO_IND: Record<Indicador, { nome: string; unidade: string; titulo: string }> = {
   dec: { nome: "DEC", unidade: "h", titulo: "DEC apurado e limite anual por distribuidora" },
@@ -40,18 +32,18 @@ export function QualidadeLimites({
   ano,
   itensDec,
   itensFec,
-  linhas,
+  classes,
+  totalLinhas,
   urlSerie,
-  fonte,
-  versao,
 }: {
   ano: number;
   itensDec: ParEntidade[];
   itensFec: ParEntidade[];
-  linhas: LinhaTabela[];
+  /** Classificação (Concessionária ou Permissionária) de cada CNPJ. */
+  classes: Record<string, string | null>;
+  /** Linhas da tabela com DGC (todas as distribuidoras do ano). */
+  totalLinhas: number;
   urlSerie: string;
-  fonte: string;
-  versao: string;
 }) {
   const [v, definir] = useEstadoUrl(ESQUEMA);
   const [serie, setSerie] = useState<QualidadeSeriesDistribuidorasGold | null>(null);
@@ -59,7 +51,10 @@ export function QualidadeLimites({
   const sel = v.dist[0] ?? null;
   const ind = v.ind;
   const r = ROTULO_IND[ind];
-  const itens = ind === "dec" ? itensDec : itensFec;
+  const rotuloClasse = v.cls === "permissionaria" ? "Permissionária" : "Concessionária";
+  // distribuidora escolhida em outro painel aparece mesmo se for da outra classe
+  const itens = (ind === "dec" ? itensDec : itensFec).filter((i) => classes[i.id] === rotuloClasse || i.id === sel);
+  const semClasse = itensDec.filter((i) => classes[i.id] !== "Concessionária" && classes[i.id] !== "Permissionária").length;
   const nomes = useMemo(() => new Map(itensDec.map((i) => [i.id, i.rotulo])), [itensDec]);
 
   useEffect(() => {
@@ -87,23 +82,40 @@ export function QualidadeLimites({
 
   return (
     <div className="space-y-5">
-      <div role="radiogroup" aria-label="Indicador do gráfico" className="flex flex-wrap gap-2">
-        {INDICADORES.map((i) => (
-          <button
-            key={i}
-            type="button"
-            role="radio"
-            aria-checked={ind === i}
-            onClick={() => definir({ ind: i })}
-            className={`rotulo min-h-[44px] border px-4 ${ind === i ? "border-energia bg-energia text-superficie" : "border-linha bg-superficie text-carvao hover:border-energia"}`}
-          >
-            {ROTULO_IND[i].nome}
-          </button>
-        ))}
+      <div className="flex flex-wrap gap-x-6 gap-y-2">
+        <div role="radiogroup" aria-label="Indicador do gráfico" className="flex flex-wrap gap-2">
+          {INDICADORES.map((i) => (
+            <button
+              key={i}
+              type="button"
+              role="radio"
+              aria-checked={ind === i}
+              onClick={() => definir({ ind: i })}
+              className={`rotulo min-h-[44px] border px-4 ${ind === i ? "border-energia bg-energia text-superficie" : "border-linha bg-superficie text-carvao hover:border-energia"}`}
+            >
+              {ROTULO_IND[i].nome}
+            </button>
+          ))}
+        </div>
+        <div role="radiogroup" aria-label="Grupo de distribuidoras" className="flex flex-wrap gap-2">
+          {CLASSES.map((c) => (
+            <button
+              key={c}
+              type="button"
+              role="radio"
+              aria-checked={v.cls === c}
+              onClick={() => definir({ cls: c })}
+              className={`rotulo min-h-[44px] border px-4 ${v.cls === c ? "border-energia bg-energia text-superficie" : "border-linha bg-superficie text-carvao hover:border-energia"}`}
+            >
+              {c === "concessionaria" ? "Concessionárias" : "Permissionárias"}
+            </button>
+          ))}
+        </div>
       </div>
+      {semClasse > 0 && <p className="text-xs text-carvao-muted">{semClasse} distribuidoras sem classificação publicada ficam só na tabela.</p>}
 
       <GraficoPontos
-        titulo={`${r.titulo}, ${ano}`}
+        titulo={`${r.titulo}, ${v.cls === "permissionaria" ? "permissionárias" : "concessionárias"}, ${ano}`}
         itens={itens}
         unidade={r.unidade}
         casas={2}
@@ -154,21 +166,13 @@ export function QualidadeLimites({
         )}
       </section>
 
-      <TabelaInterativa
+      <QualidadeTabela
+        tabela="limites"
         titulo={`Realizado, limite e DGC por distribuidora, ${ano}`}
-        colunas={COLUNAS_LIMITES}
-        linhas={linhas}
-        chaveLinha="id"
-        colunaRotulo="sigla"
-        fonte={fonte}
-        versao={versao}
-        nomeArquivo="qualidade-limites-distribuidoras"
+        linhas={totalLinhas}
         chaveUrl="tlim"
-        ordemInicial={{ coluna: ind === "dec" ? "razao_dec" : "razao_fec", direcao: "desc" }}
         selecionado={sel}
         onSelecionar={selecionar}
-        dicaBusca="Sigla ou CNPJ"
-        nota="DGC (desempenho global de continuidade) = média simples de DEC ÷ limite e FEC ÷ limite, como no ranking da ANEEL; o publicado tem duas casas."
       />
     </div>
   );

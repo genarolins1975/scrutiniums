@@ -32,7 +32,7 @@ import { carimbo, dataBR, mesAno, num, pct, reais } from "@/lib/energia/formato"
 import { integra, lerGold } from "@/lib/energia/gold";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { ContaGold } from "@/lib/energia/tipos-conta";
-import { Auditoria, FONTE_TARIFAS, ROTA_CONTA, Recorte, Seguir } from "../partes";
+import { Auditoria, FONTE_TARIFAS, ROTA_CONTA, ROTA_REAJUSTES, Recorte, Seguir } from "../partes";
 
 /**
  * P050 do módulo Conta de luz em página própria: "O que mudou e quem financia os
@@ -47,7 +47,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Conta de luz: reajustes, bandeiras e subsídios",
   description:
-    "Variação da tarifa B1 residencial de cada distribuidora contra o IPCA em 12, 60 e 120 meses, bandeiras tarifárias acionadas desde 2015, subsídios tarifários por categoria e orçamento anual da CDE.",
+    "Variação da tarifa B1 residencial de cada distribuidora contra o IPCA no mesmo período, bandeiras tarifárias acionadas mês a mês, subsídios tarifários por categoria e orçamento anual da CDE.",
   alternates: { canonical: "/setor-eletrico/conta-de-luz/reajustes-e-subsidios" },
 };
 
@@ -113,7 +113,12 @@ export default function ContaReajustesPage() {
   }));
   const linhasCdeAno = cde ? linhasCde(cde) : [];
   const rotuloGrupoCde = new Map((cde?.grupos ?? []).map((x) => [x.id, x.rotulo]));
-  const ultimoEvento = reaj.ultimos[0] ?? null;
+  // a mudança mais recente pela data (a ordem do arquivo não é contrato)
+  const ultimoEvento = reaj.ultimos.reduce<(typeof reaj.ultimos)[number] | null>((m, u) => (m === null || u[2] > m[2] ? u : m), null);
+  const subUltimo = sub.anual.at(-1) ?? null;
+  const adicionalVigente = band.vigente?.rs_mwh ?? null;
+  const janelasMeses = (reaj.comparacao_inflacao?.janelas ?? []).map((j) => j.meses);
+  const listaPt = (xs: string[]) => (xs.length > 1 ? `${xs.slice(0, -1).join(", ")} e ${xs[xs.length - 1]}` : (xs[0] ?? ""));
   const patamarExemplo = band.patamares.find((p) => p.rs_mwh !== null && p.rs_mwh > 0 && p.rs_kwh !== null) ?? null;
   const contagemUltimoAno =
     Object.entries(band.contagem_por_ano)
@@ -137,7 +142,7 @@ export default function ContaReajustesPage() {
           referencia={
             <>
               Tarifas de aplicação da ANEEL até {dataBR(ref)}; IPCA até {ultimoIpca ? mesAno(`${ultimoIpca}-01`) : "mês não publicado"}; bandeira de{" "}
-              {band.vigente ? mesAno(`${band.vigente.mes}-01`) : "mês não publicado"}; subsídios até {sub.anual.at(-1)?.ano ?? "sem dado"} e orçamento da CDE de{" "}
+              {band.vigente ? mesAno(`${band.vigente.mes}-01`) : "mês não publicado"}; subsídios até {subUltimo ? `${subUltimo.ano}${subUltimo.parcial ? ` (${subUltimo.meses} ${subUltimo.meses === 1 ? "mês" : "meses"}, parcial)` : ""}` : "sem dado"} e orçamento da CDE de{" "}
               {cde?.ultimo_ano ?? "sem dado"}. Processado em {carimbo(g.gerado_em)}.
             </>
           }
@@ -175,7 +180,12 @@ export default function ContaReajustesPage() {
                 pergunta="A tarifa subiu mais que a inflação?"
                 subtitulo="Variação da tarifa B1 residencial de aplicação e IPCA no mesmo período · %"
                 natureza="CALCULADO"
-                porQueImporta={<>Compara a variação da tarifa de cada distribuidora com a inflação medida pelo IPCA nos mesmos meses, em janelas de 12, 60 e 120 meses.</>}
+                porQueImporta={
+                  <>
+                    Compara a variação da tarifa de cada distribuidora com a inflação medida pelo IPCA nos mesmos meses
+                    {janelasMeses.length ? `, em janelas de ${listaPt(janelasMeses.map(String))} meses` : ""}.
+                  </>
+                }
                 oQueMudou={
                   ultimoEvento ? (
                     <>
@@ -222,21 +232,16 @@ export default function ContaReajustesPage() {
                       casas={2}
                       evidencia={reaj.evidencia}
                       motivoAusencia="Sem IPCA ou sem tarifa nas duas datas da janela."
-                      nota={janela12 ? `${janela12.n} distribuidoras; IPCA do mesmo período: ${pct(janela12.ipca_pct, 2)}.` : undefined}
+                      nota={
+                        janela12
+                          ? `${janela12.n} distribuidoras. IPCA de ${mesAno(`${janela12.ipca_meses[0]}-01`)} a ${mesAno(`${janela12.ipca_meses[1]}-01`)}: ${pct(janela12.ipca_pct, 2)}, pela razão dos números-índice do IBGE (SIDRA, tabela 1737), na fórmula desta prova e conferido contra a variação publicada no modo Auditar.`
+                          : undefined
+                      }
                       tamanho="medio"
-                      endereco="/setor-eletrico/conta-de-luz#reajustes"
+                      endereco={`${ROTA_REAJUSTES}#reajustes`}
                     />
-                    <Numero
-                      rotulo="IPCA no mesmo período"
-                      natureza="CALCULADO"
-                      valor={janela12?.ipca_pct ?? null}
-                      formato="pct"
-                      casas={2}
-                      periodo={janela12 ? `${mesAno(`${janela12.ipca_meses[0]}-01`)} a ${mesAno(`${janela12.ipca_meses[1]}-01`)}` : undefined}
-                      motivoAusencia="IPCA não publicado para a janela."
-                      nota="Razão dos números-índice do IBGE (SIDRA, tabela 1737); conferência com a variação publicada no modo Auditar."
-                      tamanho="medio"
-                    />
+                    {/* O IPCA da janela não ganha destaque próprio: a gold não traz evidência só para ele, e ele
+                        já está na nota acima, na resposta, na linha de referência do gráfico e na conferência. */}
                   </div>
                   <ContaReajustes janelas={reaj.comparacao_inflacao?.janelas ?? []} ultimos={reaj.ultimos} dataReferencia={ref} fonte={FONTE_TARIFAS} />
                   <div className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
@@ -331,13 +336,14 @@ export default function ContaReajustesPage() {
                       <Numero
                         rotulo={`Adicional de ${band.vigente?.bandeira ? minuscula(band.vigente.bandeira) : "bandeira"} em ${band.vigente ? mesAno(`${band.vigente.mes}-01`) : "mês não publicado"}`}
                         natureza="OBSERVADO"
-                        valor={band.vigente?.rs_mwh ?? null}
-                        formato="num"
-                        casas={2}
-                        unidade="R$/MWh"
+                        valor={adicionalVigente === null ? null : adicionalVigente / 1000}
+                        formato="reais"
+                        casas={5}
+                        unidade="R$/kWh"
                         evidencia={band.evidencia}
+                        nota={adicionalVigente !== null ? `${num(adicionalVigente, 2)} R$/MWh no arquivo da ANEEL, dividido por 1000.` : undefined}
                         tamanho="medio"
-                        endereco="/setor-eletrico/conta-de-luz#bandeiras"
+                        endereco={`${ROTA_REAJUSTES}#bandeiras`}
                       />
                       <table className="mt-3 w-full border-collapse text-sm tabular-nums">
                         <caption className="text-left text-xs text-mineral">Patamares vigentes na data</caption>
@@ -388,7 +394,7 @@ export default function ContaReajustesPage() {
                         </tbody>
                       </table>
                     </div>
-                    <ContaSobDemanda rotulo="a tabela mês a mês das bandeiras" detalhe={`${band.acionamento.length} meses`}>
+                    <ContaSobDemanda chaveUrl="band" rotulo="a tabela mês a mês das bandeiras" detalhe={`${band.acionamento.length} meses`}>
                       <TabelaInterativa
                         titulo="Bandeira acionada por mês"
                         colunas={COLUNAS_BANDEIRAS}
@@ -478,12 +484,12 @@ export default function ContaReajustesPage() {
                       natureza="CALCULADO"
                       valor={sub.evidencia && sub.evidencia.valor_calculo !== null ? sub.evidencia.valor_calculo / 1e9 : null}
                       formato="reais"
-                      casas={2}
+                      casas={1}
                       unidade="bilhões"
                       evidencia={sub.evidencia}
                       tamanho="medio"
                       motivoAusencia="Sem ano completo publicado."
-                      endereco="/setor-eletrico/conta-de-luz#subsidios"
+                      endereco={`${ROTA_REAJUSTES}#subsidios`}
                     />
                     <Numero
                       rotulo={`Quotas nas receitas da CDE ${cde?.ultimo_ano ?? ""}`.trim()}
@@ -495,7 +501,7 @@ export default function ContaReajustesPage() {
                       tamanho="medio"
                       motivoAusencia="Orçamento não publicado."
                       nota="Orçamento aprovado ou previsto pela ANEEL, não execução."
-                      endereco="/setor-eletrico/conta-de-luz#subsidios"
+                      endereco={`${ROTA_REAJUSTES}#subsidios`}
                     />
                   </div>
                   <GraficoBarras
@@ -540,7 +546,7 @@ export default function ContaReajustesPage() {
                         casas={2}
                         altura={340}
                       />
-                      <ContaSobDemanda rotulo="a tabela do orçamento da CDE por ano" detalhe={`${linhasCdeAno.length} anos, exportável`}>
+                      <ContaSobDemanda chaveUrl="cde" rotulo="a tabela do orçamento da CDE por ano" detalhe={`${linhasCdeAno.length} anos, exportável`}>
                         <TabelaInterativa
                           titulo="Orçamento da CDE por ano: despesas, receitas, quotas e Tarifa Social"
                           colunas={[
@@ -620,7 +626,7 @@ export default function ContaReajustesPage() {
                     </>
                   )}
                   <div data-nivel="analisar">
-                    <ContaSobDemanda rotulo="os subsídios por distribuidora" detalhe={`${linhasSubDist.length} distribuidoras, exportável`}>
+                    <ContaSobDemanda chaveUrl="sub" rotulo="os subsídios por distribuidora" detalhe={`${linhasSubDist.length} distribuidoras, exportável`}>
                       <TabelaInterativa
                         titulo={`Subsídios tarifários por distribuidora em ${sub.ultimo_ano_completo ?? "último ano completo"}`}
                         colunas={COLUNAS_SUB_DIST}
@@ -656,7 +662,7 @@ export default function ContaReajustesPage() {
                               ”: diferença de {reais(r.diferenca_rs === null ? null : r.diferenca_rs / 1e6, 1)} milhões, tolerância de{" "}
                               {reais(r.tolerancia_rs === null ? null : r.tolerancia_rs / 1e6, 0)} milhões (
                               {r.confere === null ? "sem conferência" : r.confere ? "confere" : "não confere"}
-                              ). {r.acesso}.
+                              ). Como a fonte foi lida: {r.acesso.replace(/\.\s*$/, "")}.
                             </li>
                           ))}
                         </ul>
@@ -667,7 +673,7 @@ export default function ContaReajustesPage() {
                       </>
                     )}
                   </Auditoria>
-                  <Seguir ancora="subsidios" href="/setor-eletrico/pld" pergunta="O que é o PLD e por que ele não é a conta de luz?" />
+                  <Seguir ancora="subsidios" href="/setor-eletrico/pld" pergunta="Como funciona e como varia o PLD, que não é a tarifa da conta?" />
                 </div>
               </PainelEvidencia>
             </div>

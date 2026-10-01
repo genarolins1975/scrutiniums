@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "pld_detalhe.json",
- "gerado_em": "2026-10-01T00:36:37Z",
+ "gerado_em": "2026-10-01T00:40:05Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "6d3bc3a2f759+alterado",
+ "versao_codigo": "d5dc4fd86561+alterado",
  "disponivel": true,
  "unidade": "R$/MWh nominais, salvo onde indicado",
  "fuso": "Horário de Brasília (UTC−3, sem horário de verão no período integrado)",
@@ -158,7 +158,7 @@
     "texto": "Premissas, critérios e metodologias para estudos energéticos 2.4 Critérios 2024.12 19/12/2024 […] 2024.12 Despacho ANEEL 3.806/2024 16/12/2024",
     "documento": "ons_pr_submodulo_2_4",
     "dispositivo": "cabeçalho (revisão e vigência) e tabela de revisões",
-    "origem": "Procedimentos de Rede, Submódulo 2.4 – Premissas, critérios e metodologias para estudos energéticos (Critérios, revisão 2024.12, vigência 19/12/2024), cabeçalho (revisão e vigência) e tabela de revisões",
+    "origem": "Procedimentos de Rede, Submódulo 2.4: Premissas, critérios e metodologias para estudos energéticos (Critérios, revisão 2024.12, vigência 19/12/2024), cabeçalho (revisão e vigência) e tabela de revisões",
     "url": "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-rede/vigentes"
    },
    {
@@ -167,7 +167,7 @@
     "texto": "2.4.3.1 Os custos marginais de operação semanais são calculados diretamente pelo modelo para otimização da operação de curto prazo com base em usinas individualizadas para cada semana operativa do PMO,",
     "documento": "ons_pr_submodulo_2_4",
     "dispositivo": "item 2.4.3.1",
-    "origem": "Procedimentos de Rede, Submódulo 2.4 – Premissas, critérios e metodologias para estudos energéticos (Critérios, revisão 2024.12, vigência 19/12/2024), item 2.4.3.1",
+    "origem": "Procedimentos de Rede, Submódulo 2.4: Premissas, critérios e metodologias para estudos energéticos (Critérios, revisão 2024.12, vigência 19/12/2024), item 2.4.3.1",
     "url": "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-rede/vigentes"
    },
    {
@@ -176,7 +176,7 @@
     "texto": "2.5.1.1 O modelo de despacho hidrotérmico de curtíssimo prazo no processo de programação diária eletroenergética recebe a função de custo futuro do modelo de curto prazo, inclui como dados de entrada a previsão de vazões, a previsão de carga, a previsão da geração eólica e a rede elétrica e, resulta no valor do custo marginal de operação (CMO) semi-horário, conforme processo descrito no Submódulo 4.5 – Programação Diária da Operação.",
     "documento": "ons_pr_submodulo_2_4",
     "dispositivo": "item 2.5.1.1",
-    "origem": "Procedimentos de Rede, Submódulo 2.4 – Premissas, critérios e metodologias para estudos energéticos (Critérios, revisão 2024.12, vigência 19/12/2024), item 2.5.1.1",
+    "origem": "Procedimentos de Rede, Submódulo 2.4: Premissas, critérios e metodologias para estudos energéticos (Critérios, revisão 2024.12, vigência 19/12/2024), item 2.5.1.1",
     "url": "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-rede/vigentes"
    },
    {
@@ -185,7 +185,7 @@
     "texto": "2.5.1.2 O modelo de despacho hidrotérmico de curtíssimo prazo é executado diariamente em D-1, com horizonte de D até o final da semana operativa, em que é feita a consulta à função de custo futuro do modelo de curto prazo, conforme mostrado na Figura 1.",
     "documento": "ons_pr_submodulo_2_4",
     "dispositivo": "item 2.5.1.2",
-    "origem": "Procedimentos de Rede, Submódulo 2.4 – Premissas, critérios e metodologias para estudos energéticos (Critérios, revisão 2024.12, vigência 19/12/2024), item 2.5.1.2",
+    "origem": "Procedimentos de Rede, Submódulo 2.4: Premissas, critérios e metodologias para estudos energéticos (Critérios, revisão 2024.12, vigência 19/12/2024), item 2.5.1.2",
     "url": "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-rede/vigentes"
    },
    {
@@ -194,7 +194,7 @@
     "texto": "2.5.1.3 O primeiro dia (D) é detalhado em 48 intervalos semi-horários, considerando a Rede de Transmissão. Os demais dias da semana operativa (D+1 até D+6) são divididos em patamares de carga.",
     "documento": "ons_pr_submodulo_2_4",
     "dispositivo": "item 2.5.1.3",
-    "origem": "Procedimentos de Rede, Submódulo 2.4 – Premissas, critérios e metodologias para estudos energéticos (Critérios, revisão 2024.12, vigência 19/12/2024), item 2.5.1.3",
+    "origem": "Procedimentos de Rede, Submódulo 2.4: Premissas, critérios e metodologias para estudos energéticos (Critérios, revisão 2024.12, vigência 19/12/2024), item 2.5.1.3",
     "url": "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-rede/vigentes"
    },
    {
@@ -203,7 +203,7 @@
     "texto": "Programação mensal da operação energética 4.3 Procedimental 2024.10 30/10/2024 […] 2024.10 Resolução Normativa ANEEL nº 1.104/2024 22/10/2024",
     "documento": "ons_pr_submodulo_4_3",
     "dispositivo": "cabeçalho (revisão e vigência) e tabela de revisões",
-    "origem": "Procedimentos de Rede, Submódulo 4.3 – Programação mensal da operação energética (Procedimental, revisão 2024.10, vigência 30/10/2024), cabeçalho (revisão e vigência) e tabela de revisões",
+    "origem": "Procedimentos de Rede, Submódulo 4.3: Programação mensal da operação energética (Procedimental, revisão 2024.10, vigência 30/10/2024), cabeçalho (revisão e vigência) e tabela de revisões",
     "url": "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-rede/vigentes"
    },
    {
@@ -212,7 +212,7 @@
     "texto": "1.4.1. O ONS incorpora as informações consistidas nos arquivos de dados do modelo de otimização de curto prazo, executa o modelo e obtém os seguintes resultados: (a) Custo Marginal de Operação (CMO) médio semanal, por subsistema, por patamar de carga;",
     "documento": "ons_pr_submodulo_4_3",
     "dispositivo": "item 1.4.1, alínea (a)",
-    "origem": "Procedimentos de Rede, Submódulo 4.3 – Programação mensal da operação energética (Procedimental, revisão 2024.10, vigência 30/10/2024), item 1.4.1, alínea (a)",
+    "origem": "Procedimentos de Rede, Submódulo 4.3: Programação mensal da operação energética (Procedimental, revisão 2024.10, vigência 30/10/2024), item 1.4.1, alínea (a)",
     "url": "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-rede/vigentes"
    },
    {
@@ -221,7 +221,7 @@
     "texto": "1.5.2. Caso o ONS não obtenha os resultados do modelo de curto prazo até as 12h00 de sexta-feira […] são utilizados os resultados válidos mais recentes disponíveis.",
     "documento": "ons_pr_submodulo_4_3",
     "dispositivo": "item 1.5.2 (a nota de rodapé 1 trata de feriados)",
-    "origem": "Procedimentos de Rede, Submódulo 4.3 – Programação mensal da operação energética (Procedimental, revisão 2024.10, vigência 30/10/2024), item 1.5.2 (a nota de rodapé 1 trata de feriados)",
+    "origem": "Procedimentos de Rede, Submódulo 4.3: Programação mensal da operação energética (Procedimental, revisão 2024.10, vigência 30/10/2024), item 1.5.2 (a nota de rodapé 1 trata de feriados)",
     "url": "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-rede/vigentes"
    },
    {
@@ -230,7 +230,7 @@
     "texto": "1.6.2. O ONS disponibiliza o PMO e suas revisões semanais a todos os agentes envolvidos, com horizonte de análise mensal, discretizado em base semanal para o primeiro mês, que pode ser estendido por um período variável, desde que resguardada a base mensal.",
     "documento": "ons_pr_submodulo_4_3",
     "dispositivo": "item 1.6.2",
-    "origem": "Procedimentos de Rede, Submódulo 4.3 – Programação mensal da operação energética (Procedimental, revisão 2024.10, vigência 30/10/2024), item 1.6.2",
+    "origem": "Procedimentos de Rede, Submódulo 4.3: Programação mensal da operação energética (Procedimental, revisão 2024.10, vigência 30/10/2024), item 1.6.2",
     "url": "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-rede/vigentes"
    },
    {
@@ -239,7 +239,7 @@
     "texto": "1.7.1.3. As versões dos modelos computacionais utilizados pelo ONS são aquelas validadas com a participação dos agentes e homologadas pela ANEEL, por meio de ato específico.",
     "documento": "ons_pr_submodulo_4_3",
     "dispositivo": "item 1.7.1.3",
-    "origem": "Procedimentos de Rede, Submódulo 4.3 – Programação mensal da operação energética (Procedimental, revisão 2024.10, vigência 30/10/2024), item 1.7.1.3",
+    "origem": "Procedimentos de Rede, Submódulo 4.3: Programação mensal da operação energética (Procedimental, revisão 2024.10, vigência 30/10/2024), item 1.7.1.3",
     "url": "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-rede/vigentes"
    },
    {
@@ -248,7 +248,7 @@
     "texto": "Programação Diária da Operação 4.5 Procedimental 2025.02 01/03/2025 […] 2025.02 Resolução Normativa ANEEL nº 1.112/2025 11/02/2025",
     "documento": "ons_pr_submodulo_4_5",
     "dispositivo": "cabeçalho (revisão e vigência) e tabela de revisões",
-    "origem": "Procedimentos de Rede, Submódulo 4.5 – Programação Diária da Operação (Procedimental, revisão 2025.02, vigência 01/03/2025), cabeçalho (revisão e vigência) e tabela de revisões",
+    "origem": "Procedimentos de Rede, Submódulo 4.5: Programação Diária da Operação (Procedimental, revisão 2025.02, vigência 01/03/2025), cabeçalho (revisão e vigência) e tabela de revisões",
     "url": "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-rede/vigentes"
    },
    {
@@ -257,7 +257,7 @@
     "texto": "2.3.1. O ONS atualiza os arquivos de dados do modelo de curtíssimo prazo e executa o modelo para definição dos valores de despacho de geração das usinas hidráulicas, usinas termelétricas e os intercâmbios entre subsistemas e o Custo Marginal de Operação (CMO) em base semi-horária.",
     "documento": "ons_pr_submodulo_4_5",
     "dispositivo": "item 2.3.1",
-    "origem": "Procedimentos de Rede, Submódulo 4.5 – Programação Diária da Operação (Procedimental, revisão 2025.02, vigência 01/03/2025), item 2.3.1",
+    "origem": "Procedimentos de Rede, Submódulo 4.5: Programação Diária da Operação (Procedimental, revisão 2025.02, vigência 01/03/2025), item 2.3.1",
     "url": "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-rede/vigentes"
    },
    {
@@ -266,7 +266,7 @@
     "texto": "2.3.3. Após execução do modelo de curtíssimo prazo, o ONS encaminha o deck de dados e os resultados para CCEE.",
     "documento": "ons_pr_submodulo_4_5",
     "dispositivo": "item 2.3.3",
-    "origem": "Procedimentos de Rede, Submódulo 4.5 – Programação Diária da Operação (Procedimental, revisão 2025.02, vigência 01/03/2025), item 2.3.3",
+    "origem": "Procedimentos de Rede, Submódulo 4.5: Programação Diária da Operação (Procedimental, revisão 2025.02, vigência 01/03/2025), item 2.3.3",
     "url": "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-rede/vigentes"
    },
    {
@@ -275,7 +275,7 @@
     "texto": "2.4.1. Na inviabilidade do ONS obter, até às 16h00min do dia D-1 […] os resultados do modelo de curtíssimo prazo para a elaboração da programação do dia D, são consideradas as seguintes ações do Plano de Contingência para a definição das propostas de geração:",
     "documento": "ons_pr_submodulo_4_5",
     "dispositivo": "item 2.4.1 (a marca da nota de rodapé 1 fica entre as partes)",
-    "origem": "Procedimentos de Rede, Submódulo 4.5 – Programação Diária da Operação (Procedimental, revisão 2025.02, vigência 01/03/2025), item 2.4.1 (a marca da nota de rodapé 1 fica entre as partes)",
+    "origem": "Procedimentos de Rede, Submódulo 4.5: Programação Diária da Operação (Procedimental, revisão 2025.02, vigência 01/03/2025), item 2.4.1 (a marca da nota de rodapé 1 fica entre as partes)",
     "url": "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-rede/vigentes"
    },
    {
@@ -284,7 +284,7 @@
     "texto": "O dia “D-1” refere-se ao dia anterior ao da programação, ou seja, data de processamento do modelo de curtíssimo prazo para a elaboração da programação diária da operação eletroenergética do dia seguinte. O dia “D” refere-se ao dia a ser programado.",
     "documento": "ons_pr_submodulo_4_5",
     "dispositivo": "nota de rodapé 1",
-    "origem": "Procedimentos de Rede, Submódulo 4.5 – Programação Diária da Operação (Procedimental, revisão 2025.02, vigência 01/03/2025), nota de rodapé 1",
+    "origem": "Procedimentos de Rede, Submódulo 4.5: Programação Diária da Operação (Procedimental, revisão 2025.02, vigência 01/03/2025), nota de rodapé 1",
     "url": "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-rede/vigentes"
    },
    {
@@ -293,7 +293,7 @@
     "texto": "o ONS considera os resultados do modelo de curto prazo (DECOMP) que forneceu a Função de Custo Futuro para a semana operativa do dia D.",
     "documento": "ons_pr_submodulo_4_5",
     "dispositivo": "item 2.4.1, alínea (c), (1), (i)",
-    "origem": "Procedimentos de Rede, Submódulo 4.5 – Programação Diária da Operação (Procedimental, revisão 2025.02, vigência 01/03/2025), item 2.4.1, alínea (c), (1), (i)",
+    "origem": "Procedimentos de Rede, Submódulo 4.5: Programação Diária da Operação (Procedimental, revisão 2025.02, vigência 01/03/2025), item 2.4.1, alínea (c), (1), (i)",
     "url": "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-rede/vigentes"
    },
    {
@@ -302,7 +302,7 @@
     "texto": "Trata-se de interstício de tempo que, do ponto de vista da modelagem do DESSEM,",
     "documento": "ons_pr_submodulo_4_5",
     "dispositivo": "nota de rodapé 2",
-    "origem": "Procedimentos de Rede, Submódulo 4.5 – Programação Diária da Operação (Procedimental, revisão 2025.02, vigência 01/03/2025), nota de rodapé 2",
+    "origem": "Procedimentos de Rede, Submódulo 4.5: Programação Diária da Operação (Procedimental, revisão 2025.02, vigência 01/03/2025), nota de rodapé 2",
     "url": "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-rede/vigentes"
    },
    {
@@ -434,7 +434,7 @@
    },
    "ons_pr_submodulo_2_4": {
     "orgao": "ONS",
-    "titulo": "Procedimentos de Rede, Submódulo 2.4 – Premissas, critérios e metodologias para estudos energéticos (Critérios, revisão 2024.12, vigência 19/12/2024)",
+    "titulo": "Procedimentos de Rede, Submódulo 2.4: Premissas, critérios e metodologias para estudos energéticos (Critérios, revisão 2024.12, vigência 19/12/2024)",
     "url": "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-rede/vigentes",
     "url_copia": "https://proxyportais.ons.org.br/ons.portalempregado.proxy/garapi/api/processo/retornarpdf?url=/sites/soumaisons/portalgar/ecmpdf/Subm%C3%B3dulo%202.4-CR_2024.12.pdf",
     "licenca": "Documento público do ONS (Procedimentos de Rede, aprovados pela ANEEL). Os termos de uso do portal do ONS não foram relidos nesta integração; o uso aqui é a citação literal de passagens com indicação da fonte (Lei nº 9.610/1998, art. 46, III).",
@@ -445,7 +445,7 @@
    },
    "ons_pr_submodulo_4_3": {
     "orgao": "ONS",
-    "titulo": "Procedimentos de Rede, Submódulo 4.3 – Programação mensal da operação energética (Procedimental, revisão 2024.10, vigência 30/10/2024)",
+    "titulo": "Procedimentos de Rede, Submódulo 4.3: Programação mensal da operação energética (Procedimental, revisão 2024.10, vigência 30/10/2024)",
     "url": "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-rede/vigentes",
     "url_copia": "https://proxyportais.ons.org.br/ons.portalempregado.proxy/garapi/api/processo/retornarpdf?url=/sites/soumaisons/portalgar/ecmpdf/Subm%C3%B3dulo%204.3-PR_2024.10.pdf",
     "licenca": "Documento público do ONS (Procedimentos de Rede, aprovados pela ANEEL). Os termos de uso do portal do ONS não foram relidos nesta integração; o uso aqui é a citação literal de passagens com indicação da fonte (Lei nº 9.610/1998, art. 46, III).",
@@ -456,7 +456,7 @@
    },
    "ons_pr_submodulo_4_5": {
     "orgao": "ONS",
-    "titulo": "Procedimentos de Rede, Submódulo 4.5 – Programação Diária da Operação (Procedimental, revisão 2025.02, vigência 01/03/2025)",
+    "titulo": "Procedimentos de Rede, Submódulo 4.5: Programação Diária da Operação (Procedimental, revisão 2025.02, vigência 01/03/2025)",
     "url": "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-rede/vigentes",
     "url_copia": "https://proxyportais.ons.org.br/ons.portalempregado.proxy/garapi/api/processo/retornarpdf?url=/sites/soumaisons/portalgar/ecmpdf/Subm%C3%B3dulo%204.5-PR_2025.02.pdf",
     "licenca": "Documento público do ONS (Procedimentos de Rede, aprovados pela ANEEL). Os termos de uso do portal do ONS não foram relidos nesta integração; o uso aqui é a citação literal de passagens com indicação da fonte (Lei nº 9.610/1998, art. 46, III).",
@@ -18376,7 +18376,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:00:52Z",
    "capturado_em": "2026-09-30T22:06:13Z",
-   "validado_em": "2026-10-01T00:36:35Z",
+   "validado_em": "2026-10-01T00:40:03Z",
    "cobertura_historica": {
     "inicio": "2020-01-01T00:00",
     "fim": "2026-10-01T23:30"
@@ -18393,9 +18393,9 @@
     "sha256": "85e6f360396ec924e3dea1a16adc5d29357d54b2441b83fa6f9acfef484d517f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:36:19Z",
+    "detectado_em": "2026-10-01T00:39:46Z",
     "total": 0,
     "vintages_comparadas": 7,
     "arquivos": 7,
@@ -18432,7 +18432,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:00:52Z",
    "capturado_em": "2026-09-30T22:06:13Z",
-   "validado_em": "2026-10-01T00:36:35Z",
+   "validado_em": "2026-10-01T00:40:03Z",
    "cobertura_historica": {
     "inicio": "2020-01-01T00:00",
     "fim": "2026-10-01T23:30"
@@ -18446,9 +18446,9 @@
     "sha256": "85e6f360396ec924e3dea1a16adc5d29357d54b2441b83fa6f9acfef484d517f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:36:19Z",
+    "detectado_em": "2026-10-01T00:39:46Z",
     "total": 0,
     "vintages_comparadas": 7,
     "arquivos": 7,
@@ -18503,7 +18503,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:14Z",
-   "validado_em": "2026-10-01T00:36:35Z",
+   "validado_em": "2026-10-01T00:40:03Z",
    "cobertura_historica": {
     "inicio": "2023-10-07",
     "fim": "2026-10-02"
@@ -18519,9 +18519,9 @@
     "sha256": "0c92735cc77edc05022e65b2053fce1cae98f7dd59de17d26ca100638586baab"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:36:19Z",
+    "detectado_em": "2026-10-01T00:39:47Z",
     "total": 0,
     "vintages_comparadas": 22,
     "arquivos": 22,
@@ -18635,7 +18635,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:14Z",
-   "validado_em": "2026-10-01T00:36:35Z",
+   "validado_em": "2026-10-01T00:40:03Z",
    "cobertura_historica": {
     "inicio": "2021-01-01T00:00",
     "fim": "2026-09-30T23:00"
@@ -18651,9 +18651,9 @@
     "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:36:19Z",
+    "detectado_em": "2026-10-01T00:39:47Z",
     "total": 0,
     "vintages_comparadas": 8,
     "arquivos": 6,
@@ -18710,7 +18710,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:14Z",
-   "validado_em": "2026-10-01T00:36:35Z",
+   "validado_em": "2026-10-01T00:40:03Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-30"
@@ -18726,9 +18726,9 @@
     "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:36:19Z",
+    "detectado_em": "2026-10-01T00:39:47Z",
     "total": 0,
     "vintages_comparadas": 8,
     "arquivos": 6,
@@ -18767,7 +18767,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:14Z",
-   "validado_em": "2026-10-01T00:36:35Z",
+   "validado_em": "2026-10-01T00:40:03Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-30"
@@ -18783,9 +18783,9 @@
     "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:36:19Z",
+    "detectado_em": "2026-10-01T00:39:47Z",
     "total": 0,
     "vintages_comparadas": 8,
     "arquivos": 6,
@@ -18892,7 +18892,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:14Z",
-   "validado_em": "2026-10-01T00:36:35Z",
+   "validado_em": "2026-10-01T00:40:03Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-30"
@@ -18908,9 +18908,9 @@
     "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:36:19Z",
+    "detectado_em": "2026-10-01T00:39:47Z",
     "total": 0,
     "vintages_comparadas": 8,
     "arquivos": 6,
@@ -18947,7 +18947,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:14Z",
-   "validado_em": "2026-10-01T00:36:35Z",
+   "validado_em": "2026-10-01T00:40:03Z",
    "cobertura_historica": {
     "inicio": "2021-01-01T00:00",
     "fim": "2026-09-30T23:00"
@@ -18962,9 +18962,9 @@
     "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:36:19Z",
+    "detectado_em": "2026-10-01T00:39:47Z",
     "total": 0,
     "vintages_comparadas": 8,
     "arquivos": 6,
@@ -19014,7 +19014,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:08Z",
-   "validado_em": "2026-10-01T00:36:35Z",
+   "validado_em": "2026-10-01T00:40:03Z",
    "cobertura_historica": {
     "inicio": "2021-01-01T00:00",
     "fim": "2026-09-28T23:00"
@@ -19029,9 +19029,9 @@
     "sha256": "cc661040c697757661b1c94d38a802ccc10c0d9b8c1403082731a53f2994d931"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:36:22Z",
+    "detectado_em": "2026-10-01T00:39:50Z",
     "total": 0,
     "vintages_comparadas": 7,
     "arquivos": 6,
@@ -19066,7 +19066,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:00:46Z",
    "capturado_em": "2026-09-30T22:06:43Z",
-   "validado_em": "2026-10-01T00:36:35Z",
+   "validado_em": "2026-10-01T00:40:03Z",
    "cobertura_historica": {
     "inicio": "2005-01-07",
     "fim": "2026-10-02"
@@ -19082,9 +19082,9 @@
     "sha256": "c7b5fe550dbb5b44b839999c3c68e1e5b34a31efbf36427bdfca2e300931ad89"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:36:19Z",
+    "detectado_em": "2026-10-01T00:39:46Z",
     "total": 0,
     "vintages_comparadas": 44,
     "arquivos": 44,
@@ -19119,7 +19119,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:14Z",
-   "validado_em": "2026-10-01T00:36:35Z",
+   "validado_em": "2026-10-01T00:40:03Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-30"
@@ -19134,9 +19134,9 @@
     "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:36:19Z",
+    "detectado_em": "2026-10-01T00:39:47Z",
     "total": 0,
     "vintages_comparadas": 8,
     "arquivos": 6,
@@ -19240,7 +19240,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:14Z",
-   "validado_em": "2026-10-01T00:36:35Z",
+   "validado_em": "2026-10-01T00:40:03Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-30"
@@ -19256,9 +19256,9 @@
     "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:36:19Z",
+    "detectado_em": "2026-10-01T00:39:47Z",
     "total": 0,
     "vintages_comparadas": 8,
     "arquivos": 6,

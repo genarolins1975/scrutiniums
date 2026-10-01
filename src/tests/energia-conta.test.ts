@@ -711,3 +711,103 @@ describe.skipIf(!disponivel)("páginas renderizadas no servidor", () => {
     expect(Buffer.byteLength(htmlP050, "utf-8")).toBeLessThan(400_000);
   });
 });
+
+/**
+ * Revisão da interface (30/09/2026). Cada caso protege um defeito encontrado e
+ * corrigido na revisão: destaque sem prova, citação apontando para a página
+ * errada, número fixo em texto, ausência dita como zero e controle que estoura a
+ * largura da página no celular.
+ */
+describe.skipIf(!disponivel)("revisão da interface: defeitos corrigidos não voltam", () => {
+  const fontes = {
+    principal: ler("src/app/setor-eletrico/conta-de-luz/page.tsx"),
+    p050: ler("src/app/setor-eletrico/conta-de-luz/reajustes-e-subsidios/page.tsx"),
+  };
+  const html = renderToStaticMarkup(createElement(ContaDeLuzPage));
+  const htmlP050 = renderToStaticMarkup(createElement(ContaReajustesPage));
+  const blocosNumero = (src: string) => Array.from(src.matchAll(/<Numero\b[\s\S]*?\/>/g)).map((m) => m[0]);
+
+  it('todo destaque (Numero) das duas páginas leva a evidência do "Comprove este número"', () => {
+    for (const [nome, src] of Object.entries(fontes)) {
+      const blocos = blocosNumero(src);
+      expect(blocos.length, nome).toBeGreaterThan(0);
+      for (const b of blocos) expect(b, `${nome}: ${b.slice(0, 80)}`).toMatch(/\bevidencia=\{/);
+    }
+  });
+
+  it("a citação de cada destaque aponta para a página e a âncora onde o número está", () => {
+    for (const b of blocosNumero(fontes.principal)) {
+      const m = b.match(/endereco="\/setor-eletrico\/conta-de-luz#([a-z0-9-]+)"/);
+      expect(m, b.slice(0, 80)).toBeTruthy();
+      expect(html).toContain(`id="${m![1]}"`);
+    }
+    for (const b of blocosNumero(fontes.p050)) {
+      const m = b.match(/endereco=\{`\$\{ROTA_REAJUSTES\}#([a-z0-9-]+)`\}/);
+      expect(m, b.slice(0, 80)).toBeTruthy();
+      expect(htmlP050).toContain(`id="${m![1]}"`);
+    }
+  });
+
+  it("o valor do destaque é o valor exibido da sua evidência", () => {
+    // reais() escreve espaço não separável entre "R$" e o número; a evidência, espaço comum
+    const esp = (t: string) => t.replace(/\s/g, " ");
+    const sub = gold.subsidios.evidencia!;
+    expect(esp(htmlP050)).toContain(esp(reais(sub.valor_calculo! / 1e9, 1)));
+    expect(esp(sub.valor_exibido)).toContain(esp(reais(sub.valor_calculo! / 1e9, 1)));
+    const band = gold.bandeiras.evidencia!;
+    expect(esp(band.valor_exibido)).toContain(esp(reais(band.valor_calculo! / 1000, 5)));
+    expect(esp(htmlP050)).toContain(esp(reais(band.valor_calculo! / 1000, 5)));
+  });
+
+  it("textos das páginas sem número fixo de regra: limites e janelas vêm da gold", () => {
+    // regra de cobertura da mediana, início do arquivo e janelas de comparação não ficam escritos no código
+    expect(fontes.principal).not.toMatch(/80% do maior número|fevereiro de 2010|desconto de 100%/);
+    expect(fontes.p050).not.toMatch(/janelas de 12, 60 e 120|desde 2015/);
+    // observações do simulador seguem o limite publicado: com outro limite, outro texto
+    const s = gold.simulador;
+    const alvo = s.distribuidoras.find((d) => d.cnpj === s.casos_referencia.cnpj)!;
+    const outro = { ...s.regras, tarifa_social_limite_kwh: 50 };
+    const r = simular(alvo.tarifas, "tarifa_social", 120, "monofasico", 18.85, outro);
+    expect(r.disponivel).toBe(true);
+    if (r.disponivel) {
+      const texto = [...r.linhas.map((l) => l.rotulo), ...r.observacoes].join(" ");
+      expect(texto).toContain("50 kWh");
+      expect(texto).not.toContain("80 kWh");
+    }
+  });
+
+  it("bandeira sem adicional publicado é dita como ausente, nunca como 'sem acréscimo'", () => {
+    const s = gold.simulador;
+    const alvo = s.distribuidoras.find((d) => d.cnpj === s.casos_referencia.cnpj)!;
+    const r = simular(alvo.tarifas, "residencial", 150, "monofasico", null, s.regras);
+    const t = respostaSimulacao(r, "X", "Residencial (B1)", 150, null, s.rotulo);
+    expect(t).toContain("não está publicado");
+    expect(t).not.toContain("sem acréscimo");
+    // e o rótulo de estimativa não ganha ponto duplo ao lado da vigência
+    expect(html).not.toContain("iluminação pública.. ");
+  });
+
+  it("controles de formulário do simulador ocupam a coluna (a opção mais longa não alarga a página no celular)", () => {
+    const sim = ler("src/components/energia/ContaSimulador.tsx");
+    const selects = Array.from(sim.matchAll(/<select[\s\S]*?<\/select>/g)).map((m) => m[0]);
+    expect(selects.length).toBeGreaterThan(0);
+    for (const sel of selects) expect(sel).toContain("className={CLASSE_SELECT}");
+    expect(sim).toMatch(/const CLASSE_SELECT = "[^"]*\bw-full\b[^"]*\bmin-w-0\b/);
+    // largura mínima fixa só em tabela que mora dentro de um contêiner rolável (.tabela-scroll ainda aberto)
+    const arquivos = [
+      "src/components/energia/ContaComposicao.tsx",
+      "src/components/energia/ContaSimulador.tsx",
+      "src/components/energia/ContaBandeiras.tsx",
+      "src/app/setor-eletrico/conta-de-luz/reajustes-e-subsidios/page.tsx",
+    ];
+    for (const f of arquivos) {
+      const src = ler(f);
+      for (const m of Array.from(src.matchAll(/min-w-\[\d+px\]/g))) {
+        const antes = src.slice(0, m.index);
+        const rolavel = antes.lastIndexOf('className="tabela-scroll');
+        expect(rolavel, `${f}: ${m[0]}`).toBeGreaterThan(-1);
+        expect(antes.slice(rolavel), `${f}: ${m[0]} fora do contêiner rolável`).not.toContain("</div>");
+      }
+    }
+  });
+});

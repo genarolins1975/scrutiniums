@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "arquivos.json",
- "gerado_em": "2026-10-01T00:36:37Z",
+ "gerado_em": "2026-10-01T00:40:05Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "6d3bc3a2f759+alterado",
+ "versao_codigo": "d5dc4fd86561+alterado",
  "disponivel": true,
  "arquivos": {
   "/energia/series/regulacao_limites_pld_atos.csv": {
@@ -52,7 +52,7 @@
    "gold": "agua_detalhe.json"
   },
   "/energia/series/agua_temperatura_uf_diario.csv": {
-   "colunas": "Temperatura do ar a 2 m por unidade da federação, diária desde 2019. Colunas: data; uf; subsistema; temp_media_c; temp_max_c; temp_min_c; celulas_com_dado; populacao_uf (Censo 2022). ESTIMADO por reanálise.",
+   "colunas": "Temperatura do ar a 2 m por unidade da federação, diária desde 2019. Colunas: data; uf; subsistema (mapeamento de 2026); temp_media_c; temp_max_c; temp_min_c (°C, células MERRA-2 mais populosas da UF ponderadas pela população); populacao_uf (Censo 2022). ESTIMADO por reanálise. Ausência = vazio.",
    "modulo": "agua",
    "gold": "agua_detalhe.json"
   },

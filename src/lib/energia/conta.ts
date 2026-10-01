@@ -519,7 +519,8 @@ export function nomeLigacao(l: Ligacao): string {
 /**
  * Estimativa mensal SEM TRIBUTOS para uma unidade de baixa tensão, com as regras
  * publicadas em `simulador.regras` (espelho de `simular` do pipeline; mesma ordem de
- * linhas e mesmos textos de observação). R$/MWh ÷ 1000 = R$/kWh.
+ * linhas e as mesmas observações, com os limites de kWh lidos de `regras` em vez de
+ * escritos no texto). R$/MWh ÷ 1000 = R$/kWh.
  */
 export function simular(
   tarifas: TarifasSim,
@@ -584,12 +585,15 @@ export function simular(
     const lim = regras.tarifa_social_limite_kwh;
     const q1 = Math.min(kwh, lim);
     linha(`Faixa 01, até ${lim} kWh`, q1, t1);
-    linha("Desconto de 100% na faixa 01 (custeado pela CDE)", q1, t1, -1);
+    // desconto integral da faixa 01 (regra conferida em simulador.regras_texto); o limite vem da gold, nunca do código
+    linha("Desconto integral na faixa 01 (custeado pela CDE)", q1, t1, -1);
     if (kwh > lim) linha(`Faixa 02, acima de ${lim} kWh, sem desconto`, kwh - lim, t2);
-    obs.push("Custo de disponibilidade não aplicado: gratuidade até 80 kWh inclusive em ligação trifásica (ANEEL); acima de 80 kWh a regra do mínimo não foi conferida.");
+    obs.push(
+      `Custo de disponibilidade não aplicado: gratuidade até ${lim} kWh inclusive em ligação trifásica (ANEEL); acima de ${lim} kWh a regra do mínimo não foi conferida.`,
+    );
     fat = kwh;
     kwhBandeira = Math.max(kwh - lim, 0);
-    if (kwhBandeira < kwh) obs.push("Bandeira aplicada só sobre a parcela acima de 80 kWh (leitura da página oficial da ANEEL).");
+    if (kwhBandeira < kwh) obs.push(`Bandeira aplicada só sobre a parcela acima de ${lim} kWh (leitura da página oficial da ANEEL).`);
   } else {
     return {
       disponivel: false,
@@ -812,13 +816,19 @@ export function respostaComposicao(comp: Composicao): string {
   return `Na média simples das ${m.n} distribuidoras com componentes publicadas (tarifa média de ${reais(m.total_rs_mwh / 1000, 4)}/kWh), a tarifa B1 se divide em ${lista}.${reduz}${cde}`;
 }
 
-/** P049: o resultado da simulação em uma frase, sempre com o rótulo de estimativa. */
-export function respostaSimulacao(r: ResultadoSimulacao, sigla: string, rotuloClasse: string, kwh: number, bandeira: string, rotuloEstimativa: string): string {
+/**
+ * P049: o resultado da simulação em uma frase, sempre com o rótulo de estimativa.
+ * `bandeira` null quer dizer adicional não publicado: a frase diz que a bandeira
+ * ficou fora, em vez de chamar a ausência de "sem acréscimo".
+ */
+export function respostaSimulacao(r: ResultadoSimulacao, sigla: string, rotuloClasse: string, kwh: number, bandeira: string | null, rotuloEstimativa: string): string {
   if (!r.disponivel) return `Simulação indisponível para ${sigla} (${rotuloClasse}): ${r.motivo}.`;
   const band =
-    r.bandeira > 0
-      ? `, dos quais ${reais(r.bandeira)} de bandeira ${minuscula(bandeira)} sobre ${num(r.kwh_bandeira, 0)} kWh`
-      : `, sem acréscimo de bandeira (${minuscula(bandeira)})`;
+    bandeira === null
+      ? ", sem a bandeira, cujo adicional não está publicado para o mês"
+      : r.bandeira > 0
+        ? `, dos quais ${reais(r.bandeira)} de bandeira ${minuscula(bandeira)} sobre ${num(r.kwh_bandeira, 0)} kWh`
+        : `, sem acréscimo de bandeira (${minuscula(bandeira)})`;
   return `Para ${num(kwh, 0)} kWh no mês na ${sigla}, classe ${minuscula(rotuloClasse)}, a estimativa é de ${reais(r.total)}${band}. ${rotuloEstimativa}`;
 }
 

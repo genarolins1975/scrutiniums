@@ -32,7 +32,7 @@ import os
 import subprocess
 import sys
 from collections import defaultdict
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 
@@ -113,35 +113,81 @@ REGISTRO = {
                        "coleta, que os campos usados pelo modelo C2-H (EAR em % e ENA bruta em % da MLT) continuam definidos."),
          "paginas": PAGINAS, "downloads": [], "quebras": []},
     ],
-    "arquivos": {
-        CSV_SEMANAL: (
-            "origem (dia da rodada, Brasília; corte às 07h00); horizonte (W1 a W4); submercado; entrega (sábado de início da "
-            "semana, de sábado 00h a sábado 00h, fim excluído); periodo (desenvolvimento = entrega termina até 01/01/2025; teste = "
-            "começa em 01/01/2025 ou depois; fronteira = atravessa a virada); realizado (média das 168 horas do PLD, vazio se a "
-            "semana não está completa); b0, s0, c2p, c2h = previsões em R$/MWh nominais depois da restrição de preço (vazio = "
-            "modelo sem previsão naquela célula); *_p10 e *_p90 = quantis empíricos (vazio sem 24 entregas de resíduos); piso e "
-            "teto = faixa média [PLD mínimo, teto estrutural] dos atos publicados até a origem; faixa_provisoria = 1 quando o ato "
-            "do ano da entrega ainda não tinha saído. Teste retrospectivo sob a hipótese LAT1D; não é previsão emitida."),
-        CSV_MENSAL: "Mesmas colunas do arquivo semanal, para os horizontes M1 a M3 (entrega = AAAA-MM, mês civil).",
-        CSV_DESEMPENHO: (
-            "modelo; recorte (celula = horizonte e submercado; horizonte = submercados juntos; frequencia = horizontes juntos); "
-            "horizonte; submercado; periodo; linhas (células avaliadas); entregas (entregas distintas); origens; mae, vies (média "
-            "de previsão − realizado), rmse em R$/MWh; mae_b0_pareado e ganho_vs_b0 (MAE do B0 − MAE do modelo nas mesmas "
-            "células; positivo = melhor que B0); ganho_ic90_inf e ganho_ic90_sup (bootstrap de blocos de origens); skill (1 − "
-            "MAE/MAE do B0); perda_quantilica (média da perda nos níveis 5 a 95%); cobertura_p10_p90, cobertura_p05_p95 (fração "
-            "0 a 1); largura_p10_p90 (R$/MWh); calibracao (estado pela regra da governança; n = entregas distintas)."),
-        CSV_AJUSTES: (
-            "origem_ajuste (domingo); modelo (C2-P, C2-H); horizonte; submercado; ok (1 = ajustado; 0 = treino insuficiente); "
-            "lambda (ZERO = correção desligada); entregas_treino; linhas_treino; coef_* = coeficiente de cada variável na unidade "
-            "original (R$/MWh por R$/MWh, ou por ponto percentual); escala_* = escala RMS no treino; ultimo_fim_treino = fim da "
-            "última entrega usada no treino (sempre até o domingo menos 1 dia)."),
-        CSV_EMISSOES: (
-            "Uma linha por célula emitida pelo observatório (arquivo imutável, pipeline/energia/previsoes/): forecast_id; run_id; "
-            "tipo (REFERENCIA_EXPERIMENTAL, RODADA_INTERNA, PUBLICACAO); modelo; versao_modelo; origem; cutoff, prazo e emitido_em "
-            "(UTC); atraso_min; modo (agendada ou manual); horizonte; entrega; submercado; status; previsao (R$/MWh, vazio = sem "
-            "número); motivo; realizado e erro quando a entrega já terminou; sha256."),
-    },
+    # preenchido abaixo: os CSV do teste retrospectivo só entram no portal com a publicação liberada
+    "arquivos": {},
 }
+
+ARQUIVOS_P016 = {
+    CSV_SEMANAL: (
+        "origem (dia da rodada, Brasília; corte às 07h00); horizonte (W1 a W4); submercado; entrega (sábado de início da "
+        "semana, de sábado 00h a sábado 00h, fim excluído); periodo (desenvolvimento = entrega termina até 01/01/2025; teste = "
+        "começa em 01/01/2025 ou depois; fronteira = atravessa a virada); realizado (média das 168 horas do PLD, vazio se a "
+        "semana não está completa); b0, s0, c2p, c2h = previsões em R$/MWh nominais depois da restrição de preço (vazio = "
+        "modelo sem previsão naquela célula); *_p10 e *_p90 = quantis empíricos (vazio sem 24 entregas de resíduos); piso e "
+        "teto = faixa média [PLD mínimo, teto estrutural] dos atos publicados até a origem; faixa_provisoria = 1 quando o ato "
+        "do ano da entrega ainda não tinha saído. Teste retrospectivo sob a hipótese LAT1D; não é previsão emitida."),
+    CSV_MENSAL: "Mesmas colunas do arquivo semanal, para os horizontes M1 a M3 (entrega = AAAA-MM, mês civil).",
+    CSV_DESEMPENHO: (
+        "modelo; recorte (celula = horizonte e submercado; horizonte = submercados juntos; frequencia = horizontes juntos); "
+        "horizonte; submercado; periodo; linhas (células avaliadas); entregas (entregas distintas); origens; mae, vies (média "
+        "de previsão − realizado), rmse em R$/MWh; mae_b0_pareado e ganho_vs_b0 (MAE do B0 − MAE do modelo nas mesmas "
+        "células; positivo = melhor que B0); ganho_ic90_inf e ganho_ic90_sup (bootstrap de blocos de origens); skill (1 − "
+        "MAE/MAE do B0); perda_quantilica (média da perda nos níveis 5 a 95%); cobertura_p10_p90, cobertura_p05_p95 (fração "
+        "0 a 1); largura_p10_p90 (R$/MWh); calibracao (estado pela regra da governança; n = entregas distintas)."),
+}
+# coeficientes do C2 por origem de ajuste: configuração dos modelos (P014), não desempenho
+ARQUIVOS_PUBLICOS = {
+    CSV_AJUSTES: (
+        "origem_ajuste (domingo); modelo (C2-P, C2-H); horizonte; submercado; ok (1 = ajustado; 0 = treino insuficiente); "
+        "lambda (ZERO = correção desligada); entregas_treino; linhas_treino; coef_* = coeficiente de cada variável na unidade "
+        "original (R$/MWh por R$/MWh, ou por ponto percentual); escala_* = escala RMS no treino; ultimo_fim_treino = fim da "
+        "última entrega usada no treino (sempre até o domingo menos 1 dia)."),
+    CSV_EMISSOES: (
+        "Uma linha por célula emitida pelo observatório (arquivo imutável, pipeline/energia/previsoes/): forecast_id; run_id; "
+        "tipo (REFERENCIA_EXPERIMENTAL, RODADA_INTERNA, PUBLICACAO); modelo; versao_modelo; origem; cutoff, prazo e emitido_em "
+        "(UTC); atraso_min; modo (agendada ou manual); horizonte; entrega; submercado; status; previsao (R$/MWh, vazio = sem "
+        "número); motivo; realizado e erro quando a entrega já terminou; sha256."),
+}
+
+# Resultados do teste retrospectivo retidos (sem liberação registrada): ficam fora do portal,
+# em data/energia (não versionado nem servido), para a revisão do responsável. A mesma
+# execução os reproduz (python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta).
+DIR_INTERNO = os.path.join(base.DADOS, "previsoes", "validacao_interna")
+JSON_INTERNO = "previsoes_desempenho_interno.json"
+
+
+def publicacao_desempenho(registro):
+    """(publicar, situação) dos números de desempenho do teste retrospectivo (P016).
+
+    A regra do registro de modelos diz que números de desempenho só entram no portal depois
+    da liberação formal pelo responsável pela plataforma. A leitura de que ela alcança só o
+    artefato de pesquisa (campo `escopo`) foi escrita pelo implementador em 30/09/2026 e não
+    foi ratificada; a especificação (seção 12.4) proíbe autoatribuir essa autorização. Então
+    `publicar = true` só vale com a decisão do responsável registrada, com nome e data, em
+    `validacao_observatorio.decisao_publicacao`; sem ela, os números ficam retidos."""
+    vo = registro.get("validacao_observatorio") or {}
+    dec = vo.get("decisao_publicacao") or {}
+    decidida = bool(dec.get("decidido_por") and dec.get("decidido_em") and dec.get("estado") == "LIBERADA")
+    if vo.get("publicar") is True and decidida:
+        return True, {"estado": "LIBERADA", "decisao": dec}
+    motivo = ("Números de desempenho do teste retrospectivo retidos: a regra do registro de modelos só os admite no portal "
+              "depois da liberação formal pelo responsável pela plataforma, e essa decisão ainda não foi registrada com nome e "
+              "data. A interpretação de que a retenção alcança só o artefato de pesquisa é do implementador (30/09/2026) e "
+              "aguarda ratificação. O cálculo está pronto e é reproduzível; os resultados ficam fora do portal até a decisão.")
+    if vo.get("publicar") is True and not decidida:
+        motivo = ("validacao_observatorio.publicar = true sem decisão do responsável registrada com nome e data: tratado como "
+                  "retido. " + motivo)
+    return False, {"estado": "RETIDA", "motivo": motivo, "decisao": dec or None}
+
+
+def _publicar_no_registro():
+    try:
+        return publicacao_desempenho(em.le_registro())[0]
+    except (OSError, ValueError):
+        return False
+
+
+REGISTRO["arquivos"] = {**ARQUIVOS_PUBLICOS, **(ARQUIVOS_P016 if _publicar_no_registro() else {})}
 
 
 # ---------------------------------------------------------------- coleta (dicionários do ONS)
@@ -232,8 +278,10 @@ def _media_direta(pontos, ini, fim):
 # ---------------------------------------------------------------- métricas
 
 def _metricas(linhas):
-    """Por célula (horizonte × submercado), por horizonte e por frequência, nos dois períodos."""
-    celulas, horizontes, frequencias = [], [], []
+    """Por célula (horizonte × submercado), por horizonte e por frequência, nos dois períodos.
+    Devolve também os resultados sem arredondamento por (modelo, horizonte, período), para a
+    evidência (valor de cálculo e numerador reais) e para a reconciliação com o CSV."""
+    celulas, horizontes, frequencias, brutos = [], [], [], {}
     idx = defaultdict(list)
     for ln in linhas:
         idx[(ln.h, ln.sm, ln.periodo())].append(ln)
@@ -246,13 +294,14 @@ def _metricas(linhas):
                     res = av.resumo(idx[(h, sm, per)], mod, fr)
                     celulas.append(_linha_metrica(mod, "celula", h, sm, per, res, av.calibracao(res, g.CALIBRACAO_N_MIN)))
                 res = av.resumo(todas_h, mod, fr)
+                brutos[(mod, h, per)] = res
                 horizontes.append(_linha_metrica(mod, "horizonte", h, None, per, res))
         for fr, hs in (("W", cal.HORIZONTES_W), ("M", cal.HORIZONTES_M)):
             todas = [ln for h in hs for sm in cal.SUBMERCADOS for ln in idx[(h, sm, per)]]
             for mod in MODELOS_TESTE:
                 res = av.resumo(todas, mod, fr)
                 frequencias.append(_linha_metrica(mod, "frequencia", fr, None, per, res))
-    return celulas, horizontes, frequencias
+    return celulas, horizontes, frequencias, brutos
 
 
 def _selecao(frequencias):
@@ -365,9 +414,11 @@ def _g23(ajustes, linhas):
                 continue
             f = fora[(mod, ln.freq)]
             f["previsoes"] += 1
-            f["abaixo_do_piso"] += ln.lo is not None and b < ln.lo
-            f["acima_do_teto"] += ln.hi is not None and b > ln.hi
-            f["negativas"] += b < 0
+            # mesma tolerância da cobertura: com λ = ZERO a previsão bruta é o próprio B0, e um
+            # B0 de semana inteira no piso sai 58,5999999996 contra piso médio 58,60000000000001
+            f["abaixo_do_piso"] += ln.lo is not None and av.abaixo(b, ln.lo)
+            f["acima_do_teto"] += ln.hi is not None and av.acima(b, ln.hi)
+            f["negativas"] += av.abaixo(b, 0.0)
     caso = []
     for ln in linhas:
         if ln.origem == date(2024, 11, 30) and ln.freq == "M":
@@ -419,14 +470,23 @@ def _rodadas(registros):
     return sorted(out, key=lambda x: x["emitido_em"], reverse=True)
 
 
-def _rotina(rodadas, hoje):
+def ultimo_dia_vencido(agora):
+    """Último dia de origem cuja rodada já venceu no instante `agora` (UTC com fuso): o dia
+    de Brasília, se o prazo das 08h00 já passou; senão, a véspera. A data UTC não serve:
+    depois das 21h de Brasília ela já é o dia seguinte, cuja rodada nem começou."""
+    hoje = cal.origem_de(agora)
+    return hoje if agora >= cal.prazo_de(hoje) else hoje - timedelta(days=1)
+
+
+def _rotina(rodadas, agora):
     agendadas = [r for r in rodadas if r["modo"] == "agendada"]
     inicio = min((r["origem"] for r in agendadas), default=None)
     faltantes = []
+    ate = ultimo_dia_vencido(agora)
     if inicio:
         d = date.fromisoformat(inicio)
         feitas = {r["origem"] for r in agendadas if not r["falha"]}
-        while d <= hoje:
+        while d <= ate:
             if d.isoformat() not in feitas:
                 faltantes.append(d.isoformat())
             d += timedelta(days=1)
@@ -436,11 +496,14 @@ def _rotina(rodadas, hoje):
         "workflow": WORKFLOW, "cron_utc": crons,
         "horarios": (f"Gatilhos às {', '.join(_hora_brasilia(x) for x in crons)} de Brasília: o primeiro que rodar confere o dado, "
                      "tenta coletar o que falta antes do corte, espera as 07h00 e emite com o dado como estava no corte; os "
-                     "seguintes veem a rodada registrada e saem. O arquivo de emissões é commitado em seguida (prazo 08h00). "
-                     "Pré-carga: coleta noturna das 20h40 (atualizar-energia.yml)."),
+                     "seguintes ficam na fila do mesmo grupo de concorrência, partem do main atual (não do commit em que o "
+                     "gatilho foi criado), conferem de novo logo antes de emitir e saem ao ver a rodada registrada. O arquivo "
+                     "de emissões é commitado em seguida (prazo 08h00). Pré-carga: coleta noturna das 20h40 "
+                     "(atualizar-energia.yml). Comportamento ainda não comprovado por execução agendada real."),
         "fuso": "America/Sao_Paulo; o cron do GitHub é em UTC e supõe UTC−3 (sem horário de verão desde 2019). Se o horário de "
                 "verão voltar, o cron precisa mudar; a emissão calcula o corte pelo fuso e marca o atraso de qualquer forma.",
         "inicio_operacao_agendada": inicio,
+        "verificado_em": cal.utc_iso(agora), "dias_vencidos_ate": ate.isoformat(),
         "execucoes_agendadas": len(agendadas), "no_prazo": len(no_prazo),
         "atrasadas": sum(1 for r in agendadas if r["no_prazo"] is False and not r["falha"]),
         "falhas": sum(1 for r in agendadas if r["falha"]), "dias_sem_rodada": faltantes[-60:],
@@ -451,7 +514,8 @@ def _rotina(rodadas, hoje):
                     f"{len(agendadas)} execuções agendadas registradas desde {c.data_br(inicio)}, {len(no_prazo)} no prazo; "
                     + ("rotina comprovada no período." if (len(no_prazo) >= 7 and not faltantes) else
                        "ainda não há sete rodadas no prazo sem dia faltante; a rotina não é declarada comprovada.")),
-        "criterio_comprovacao": "Pelo menos sete rodadas agendadas consecutivas no prazo, sem dia faltante desde o início da operação agendada.",
+        "criterio_comprovacao": ("Pelo menos sete rodadas agendadas no prazo, sem dia faltante desde o início da operação agendada. "
+                                 "Dia faltante é dia de Brasília cujo prazo das 08h00 já passou sem rodada agendada registrada."),
     }
 
 
@@ -631,7 +695,7 @@ def _fichas(registro, ajustes, reex):
 
 # ---------------------------------------------------------------- CSV
 
-def _escreve_backtest(linhas, freq, nome):
+def _escreve_backtest(linhas, freq, nome, destino=None):
     cab = ["origem", "horizonte", "submercado", "entrega", "periodo", "realizado", "b0", "s0", "c2p", "c2h",
            "b0_p10", "b0_p90", "s0_p10", "s0_p90", "c2p_p10", "c2p_p90", "c2h_p10", "c2h_p90", "piso", "teto", "faixa_provisoria"]
     rows = []
@@ -641,11 +705,11 @@ def _escreve_backtest(linhas, freq, nome):
                      _r(ln.prev.get("S0")), _r(ln.prev.get("C2-P")), _r(ln.prev.get("C2-H"))]
                     + [_r((q.get(m) or {}).get(r)) for m in MODELOS_TESTE for r in ("p10", "p90")]
                     + [_r(ln.lo), _r(ln.hi), 1 if ln.provisoria else 0])
-    base.escreve_csv(os.path.basename(nome), cab, rows)
+    base.escreve_csv(os.path.basename(nome), cab, rows, destino)
     return len(rows)
 
 
-def _escreve_desempenho(celulas, horizontes, frequencias):
+def _escreve_desempenho(celulas, horizontes, frequencias, destino=None):
     cab = ["modelo", "recorte", "horizonte", "submercado", "periodo", "linhas", "entregas", "origens", "mae", "vies", "rmse",
            "mae_b0_pareado", "ganho_vs_b0", "ganho_ic90_inf", "ganho_ic90_sup", "skill", "perda_quantilica", "cobertura_p10_p90",
            "cobertura_p05_p95", "largura_p10_p90", "calibracao"]
@@ -655,7 +719,7 @@ def _escreve_desempenho(celulas, horizontes, frequencias):
         rows.append([x["modelo"], x["recorte"], x["horizonte"], x["submercado"] or "", x["periodo"], x["linhas"], x["entregas"],
                      x["origens"], x["mae"], x["vies"], x["rmse"], x["mae_b0_pareado"], x["ganho_vs_b0"], ic[0], ic[1], x["skill"],
                      x["perda_quantilica"], x["cobertura_p10_p90"], x["cobertura_p05_p95"], x["largura_p10_p90"], x.get("calibracao") or ""])
-    base.escreve_csv(os.path.basename(CSV_DESEMPENHO), cab, rows)
+    base.escreve_csv(os.path.basename(CSV_DESEMPENHO), cab, rows, destino)
 
 
 def _escreve_ajustes(ajustes):
@@ -804,34 +868,136 @@ def _revisoes_hidro(cp):
 
 # ---------------------------------------------------------------- evidência
 
-def _evidencia_mae(met, snap, periodo, h, mod, info):
-    if met is None or met.get("mae") is None:
+TOL_CSV_MAE = 0.01  # R$/MWh: o CSV grava previsão e realizado com 2 casas; cada um muda até 0,005,
+#                    o erro absoluto de cada célula até 0,01, e a média também
+COLUNAS_CSV = {"B0": "b0", "S0": "s0", "C2-P": "c2p", "C2-H": "c2h"}
+
+
+def _reconcilia_csv(caminhos):
+    """Releitura dos CSV do teste retrospectivo por outro leitor (csv da biblioteca padrão,
+    sem os objetos do cálculo): por (modelo, horizonte, período), número de células, MAE e
+    células com o realizado dentro de [P10, P90] nos valores gravados (2 casas)."""
+    import csv as _csv
+    acc = defaultdict(lambda: {"linhas": 0, "soma": 0.0, "com_quantis": 0, "cobertos": 0})
+    for caminho in caminhos:
+        with open(caminho, encoding="utf-8") as f:
+            for row in _csv.DictReader(f, delimiter=";"):
+                if row["periodo"] not in ("desenvolvimento", "teste") or row["realizado"] == "":
+                    continue
+                y = float(row["realizado"])
+                for mod, col in COLUNAS_CSV.items():
+                    if row[col] == "":
+                        continue
+                    a_ = acc[(mod, row["horizonte"], row["periodo"])]
+                    a_["linhas"] += 1
+                    a_["soma"] += abs(float(row[col]) - y)
+                    if row[f"{col}_p10"] != "" and row[f"{col}_p90"] != "":
+                        a_["com_quantis"] += 1
+                        a_["cobertos"] += float(row[f"{col}_p10"]) <= y <= float(row[f"{col}_p90"])
+    return {k: {**x, "mae": x["soma"] / x["linhas"] if x["linhas"] else None} for k, x in acc.items()}
+
+
+def _ambiguas_no_csv(linhas):
+    """Células em que o arredondamento a 2 casas do CSV pode trocar o lado do realizado em
+    relação a P10 ou P90: distância exata entre 1e-6 e 0,01 R$/MWh, ou distância de ruído
+    binário (até 1e-6) com arredondamentos diferentes. Igualdade de ponto flutuante (realizado
+    no piso que limitou o quantil) não é ambígua: nos dois caminhos ela conta como coberta."""
+    out = defaultdict(int)
+    for ln in linhas:
+        if ln.y is None:
+            continue
+        for mod, q in ln.q.items():
+            for r in ("p10", "p90"):
+                d = abs(ln.y - q[r])
+                if (av.TOL_COMPARACAO < d <= 0.01) or (d <= av.TOL_COMPARACAO and round(ln.y, 2) != round(q[r], 2)):
+                    out[(mod, ln.h, ln.periodo())] += 1
+                    break
+    return out
+
+
+def _confere_csv(brutos, rec, amb):
+    """Compara cálculo e CSV: mesmas células, MAE dentro de TOL_CSV_MAE e células cobertas
+    iguais a menos das ambíguas pelo arredondamento. Devolve (teste, divergências)."""
+    div, maior_mae, n = [], 0.0, 0
+    for (mod, h, per), res in sorted(brutos.items()):
+        if per not in ("desenvolvimento", "teste") or not res.get("linhas"):
+            continue
+        n += 1
+        rc = rec.get((mod, h, per)) or {"linhas": 0, "mae": None, "com_quantis": 0, "cobertos": 0}
+        if rc["linhas"] != res["linhas"] or rc["mae"] is None:
+            div.append(f"{mod} {h} {per}: {rc['linhas']} células no CSV contra {res['linhas']}")
+            continue
+        maior_mae = max(maior_mae, abs(rc["mae"] - res["mae"]))
+        if abs(rc["mae"] - res["mae"]) > TOL_CSV_MAE:
+            div.append(f"{mod} {h} {per}: MAE {rc['mae']:.4f} no CSV contra {res['mae']:.4f}")
+        if res.get("linhas_com_quantis"):
+            cob = round(res["cobertura_p10_p90"] * res["linhas_com_quantis"])
+            if rc["com_quantis"] != res["linhas_com_quantis"] or abs(rc["cobertos"] - cob) > amb.get((mod, h, per), 0):
+                div.append(f"{mod} {h} {per}: {rc['cobertos']} de {rc['com_quantis']} células cobertas no CSV contra {cob} de "
+                           f"{res['linhas_com_quantis']} (ambíguas pelo arredondamento: {amb.get((mod, h, per), 0)})")
+    teste = ev.teste("MAE e cobertura P10 a P90 refeitos por outro leitor a partir dos CSV do teste retrospectivo",
+                     "aprovado" if not div else "reprovado",
+                     (f"{n} recortes (modelo × horizonte × período); maior diferença de MAE {maior_mae:.4f} R$/MWh (tolerância "
+                      f"{TOL_CSV_MAE} pelas 2 casas do CSV); células cobertas iguais a menos das ambíguas pelo arredondamento"
+                      + ("; divergências: " + " | ".join(div[:3]) if div else "")))
+    return teste, div
+
+
+def _evidencia_mae(res, rc, snap, periodo, h, mod, info, csv_url, publicar):
+    """Evidência do MAE de um modelo num horizonte: valor de cálculo e numerador sem
+    arredondamento; reconciliação própria do número (releitura do CSV) e, para o B0, também o
+    recálculo hora a hora."""
+    if res is None or res.get("mae") is None:
         return None
+    nome_csv = os.path.basename(csv_url)
+    dif = abs(rc["mae"] - res["mae"]) if rc and rc.get("mae") is not None else None
+    ok = dif is not None and rc["linhas"] == res["linhas"] and dif <= TOL_CSV_MAE
+    texto = (f"MAE refeito por outro leitor a partir de {nome_csv} (previsão e realizado gravados com 2 casas): "
+             + (f"{rc['mae']:.4f} R$/MWh em {rc['linhas']} células, diferença {dif:.4f}" if dif is not None else "sem linhas no CSV"))
+    testes = [ev.teste("Treino e quantis só com entregas encerradas antes do corte (LAT1D)", "aprovado",
+                       "conferido em cada ajuste (ultimo_fim_treino)"),
+              ev.teste("Valor fixo de reimplementação independente", "aprovado",
+                       "pipeline/tests/test_energia_previsoes.py: MAE do B0 e do C2-P em W1 no teste, universo de 30/09/2026, "
+                       "conferidos contra valores obtidos por código escrito à parte")]
+    if mod == "B0":
+        texto += ("; B0 refeito hora a hora por outro caminho (sem somas acumuladas) em todas as origens e, no teste Python, por "
+                  "awk sobre o arquivo original da CCEE")
+    else:
+        texto += (f"; a previsão do {mod} não tem segunda implementação no pipeline: esta conferência cobre a publicação (cálculo "
+                  "contra CSV), e o valor do modelo é conferido no teste Python contra uma reimplementação independente")
     return ev.construir(
         indicador=f"Erro médio absoluto do {mod} no horizonte {h} ({periodo})",
-        valor_exibido=f"R$ {met['mae']:.2f}/MWh".replace(".", ","),
-        valor_calculo=met["mae"], unidade="R$/MWh",
+        valor_exibido=f"R$ {res['mae']:.2f}/MWh".replace(".", ","),
+        valor_calculo=res["mae"], unidade="R$/MWh",
         periodo={"inicio": "2025-01-01" if periodo == "teste" else "2022-01-01",
                  "fim": (info.ultima_hora.get("SE") or "")[:10] if periodo == "teste" else "2024-12-31"},
-        entidade="quatro submercados (SE, S, NE, N)", universo=f"{met['linhas']} células, {met['entregas']} entregas distintas",
+        entidade="quatro submercados (SE, S, NE, N)", universo=f"{res['linhas']} células, {res['entregas']} entregas distintas",
         fonte=_fonte_ccee(snap), chaves_origem=[f"pld.{sm}" for sm in cal.SUBMERCADOS],
-        consulta=("previsoes_backtest_semanal.csv (ou _mensal): linhas com horizonte = "
-                  f"{h}, periodo = {periodo}, coluna {mod.lower().replace('-', '')} e realizado preenchidos"),
+        consulta=(f"{nome_csv}: linhas com horizonte = {h}, periodo = {periodo}, coluna {COLUNAS_CSV[mod]} e realizado preenchidos"
+                  + ("" if publicar else " (arquivo retido fora do portal até a liberação)")),
         formula="MAE = média de |previsão − realizado| sobre as células (origem × submercado) do horizonte",
-        numerador={"descricao": "soma de |previsão − realizado| (R$/MWh)", "valor": _r(met["mae"] * met["linhas"], 2)},
-        denominador={"descricao": "células avaliadas", "valor": met["linhas"]},
-        cobertura=f"origens diárias; {met['entregas']} entregas distintas com realizado completo",
+        numerador={"descricao": "soma de |previsão − realizado| (R$/MWh)", "valor": res["soma_erro_abs"]},
+        denominador={"descricao": "células avaliadas", "valor": res["linhas"]},
+        cobertura=f"origens diárias; {res['entregas']} entregas distintas com realizado completo",
         tratamento_ausencia="célula sem previsão ou sem realizado completo fica fora (nunca vira zero)",
         revisoes=snap.get("revisoes"),
-        testes=[ev.teste("Treino e quantis só com entregas encerradas antes do corte (LAT1D)", "aprovado",
-                         "conferido em cada ajuste (ultimo_fim_treino)")],
-        reconciliacao=ev.reconciliacao("B0 refeito hora a hora por outro caminho e, no teste Python, por awk sobre o arquivo original "
-                                       "da CCEE", "aprovado", "1e-6 R$/MWh no recálculo; 0,0001 R$/MWh contra o awk"),
-        download=[{"rotulo": "Teste retrospectivo semanal (CSV)", "url": CSV_SEMANAL},
-                  {"rotulo": "Teste retrospectivo mensal (CSV)", "url": CSV_MENSAL},
-                  {"rotulo": "Métricas (CSV)", "url": CSV_DESEMPENHO}],
+        testes=testes,
+        reconciliacao=ev.reconciliacao(texto, "aprovado" if ok else "reprovado",
+                                       f"{TOL_CSV_MAE} R$/MWh contra o CSV (2 casas); 1e-6 R$/MWh no recálculo hora a hora do B0"),
+        download=_downloads_p016(publicar),
         reproducao="python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
     )
+
+
+def _downloads_p016(publicar):
+    """Arquivos do teste retrospectivo: no portal quando liberados; senão, o caminho local em
+    data/energia (fora do portal), gerado pela mesma execução."""
+    itens = [("Teste retrospectivo semanal (CSV)", CSV_SEMANAL), ("Teste retrospectivo mensal (CSV)", CSV_MENSAL),
+             ("Métricas (CSV)", CSV_DESEMPENHO)]
+    if publicar:
+        return [{"rotulo": r, "url": u} for r, u in itens]
+    rel = os.path.relpath(DIR_INTERNO, base.RAIZ)
+    return [{"rotulo": f"{r}, retido fora do portal até a liberação", "url": f"{rel}/{os.path.basename(u)}"} for r, u in itens]
 
 
 # ---------------------------------------------------------------- construção da gold
@@ -859,14 +1025,23 @@ def construir(con, ctx):
     criticas, testes, conf = _valida(linhas, ajustes, info, cp, lim_final)
     if criticas:
         return c.stub(GOLD, "validação crítica: " + "; ".join(criticas))
-    celulas, horizontes, frequencias = _metricas(linhas)
+    publicar, situacao = publicacao_desempenho(registro)
+    destino = None if publicar else DIR_INTERNO
+    celulas, horizontes, frequencias, brutos = _metricas(linhas)
     selecao = _selecao(frequencias)
     limiares, regimes = _regimes(linhas)
     g23 = _g23([a for a in ajustes if a["k"] == 1], linhas)
-    n_sem = _escreve_backtest(linhas, "W", CSV_SEMANAL)
-    n_men = _escreve_backtest(linhas, "M", CSV_MENSAL)
-    _escreve_desempenho(celulas, horizontes, frequencias)
+    n_sem = _escreve_backtest(linhas, "W", CSV_SEMANAL, destino)
+    n_men = _escreve_backtest(linhas, "M", CSV_MENSAL, destino)
+    _escreve_desempenho(celulas, horizontes, frequencias, destino)
     _escreve_ajustes(ajustes)
+    dir_csv = destino or base.SERIES
+    rec_csv = _reconcilia_csv([os.path.join(dir_csv, os.path.basename(x)) for x in (CSV_SEMANAL, CSV_MENSAL)])
+    teste_csv, div_csv = _confere_csv(brutos, rec_csv, _ambiguas_no_csv(linhas))
+    testes.append(teste_csv)
+    if div_csv:
+        return c.stub(GOLD, "validação crítica: CSV do teste retrospectivo não confere com o cálculo: " + "; ".join(div_csv[:3]))
+    retirados = [] if publicar else _retira_do_portal()
     ultima_entrega = max((ln.fim for ln in linhas if ln.y is not None and ln.periodo() == "teste"), default=None)
     del linhas
     sensib = _sensibilidade(info, lim, origens)
@@ -893,21 +1068,46 @@ def construir(con, ctx):
         err = [a["erro"] for a in maturadas]
         prosp_met = {"entregas_apuradas": len({(a["entrega"], a["submercado"]) for a in maturadas}), "celulas": len(maturadas),
                      "mae": _r(sum(abs(e) for e in err) / len(err)), "vies": _r(sum(err) / len(err))}
-    rotina = _rotina(rodadas, ctx.get("hoje") or date.today())
+    rotina = _rotina(rodadas, ctx.get("agora") or datetime.now(timezone.utc))
     atual = _previsao_atual(registros, registro, rodadas)
     atual["ja_publicado_no_corte"] = _ja_publicado(cp, next((r for r in rodadas if r["run_id"] == atual.get("run_id")), None))
+    recalib = _calibracao_regra_antiga(registros, cp, lim)
+    status_novo = {x["forecast_id"]: x["status_recalculado"] for x in recalib["por_registro"]}
+    for cel in atual.get("celulas") or []:
+        if cel["forecast_id"] in status_novo:
+            cel["calibracao_recalculada"] = status_novo[cel["forecast_id"]]
     fichas = _fichas(registro, ajustes, reex)
 
-    publicar = (registro.get("validacao_observatorio") or {}).get("publicar", True)
     kpis = {}
-    if publicar:
-        for per in ("teste",):
-            for h in ("W1", "M1"):
-                for mod in ("B0", "C2-P"):
-                    met = next((x for x in horizontes if x["modelo"] == mod and x["horizonte"] == h and x["periodo"] == per), None)
-                    e_ = _evidencia_mae(met, snap_pld, per, h, mod, info)
-                    if e_:
-                        kpis[f"mae_{mod.lower().replace('-', '')}_{h.lower()}_{per}"] = e_
+    for per in ("teste",):
+        for h in ("W1", "M1"):
+            for mod in ("B0", "C2-P"):
+                e_ = _evidencia_mae(brutos.get((mod, h, per)), rec_csv.get((mod, h, per)), snap_pld, per, h, mod, info,
+                                    CSV_SEMANAL if _freq(h) == "W" else CSV_MENSAL, publicar)
+                if e_:
+                    kpis[f"mae_{mod.lower().replace('-', '')}_{h.lower()}_{per}"] = e_
+    resultados = {
+        "desempenho": {"publicado": True, "por_horizonte": _enxuto(horizontes), "por_frequencia": _enxuto(frequencias),
+                       "por_celula": _enxuto([x for x in celulas if x["periodo"] == "teste"]),
+                       "por_celula_nota": ("Na gold, só o período de teste por célula; o desenvolvimento por célula está em "
+                                           "previsoes_desempenho.csv.")},
+        "selecao": {"regra": REGRA_SELECAO, "por_frequencia": selecao,
+                    "contaminacao": ("O desenvolvimento é exploratório: a pesquisa examinou 2023 e 2024 antes de definir os candidatos. O "
+                                     "teste final (entregas desde 01/01/2025) não foi usado em nenhuma escolha de configuração, mas o "
+                                     "mesmo autor escreveu o código e viu os resultados ao depurá-lo.")},
+        "regimes": {"nota": NOTA_REGIMES, "limiares": limiares, "resultados": regimes},
+        "sensibilidade_latencia": {"descricao": ("MAE no período de teste com o dado disponível 1, 2 ou 3 dias depois do fim do período "
+                                                 "(LAT1D é a regra; LAT2D e LAT3D simulam atraso de publicação)."), "resultados": sensib},
+        "g23_r1": g23,
+        "evidencias": kpis,
+        "prospectivo_metricas": prosp_met,
+        "calibracao_regra_antiga": recalib,
+    }
+    if not publicar:
+        base.escreve_gold(JSON_INTERNO, {**c.cabecalho(JSON_INTERNO), "publicado_no_portal": False, "situacao": situacao,
+                                         "aviso": ("Resultados retidos: não publicar no portal sem a decisão do responsável registrada "
+                                                   "no registro de modelos (validacao_observatorio.decisao_publicacao)."),
+                                         "validacoes": testes, **resultados}, destino=DIR_INTERNO)
     fonte_ccee = {"orgao": "CCEE", "dataset": "PLD_HORARIO", "recurso": "pld_horario_2021 a pld_horario_2026", "url_dataset": URL_CCEE,
                   "url_primaria": URL_CCEE, "licenca": c.LICENCA_CCEE}
     prov = c.proveniencia(
@@ -928,8 +1128,11 @@ def construir(con, ctx):
             "O período de desenvolvimento (2022 a 2024) já tinha sido examinado pela pesquisa antes da definição dos candidatos.",
             "Origens diárias vizinhas preveem a mesma entrega: o tamanho efetivo é o número de entregas distintas.",
             "Prospectivo ainda sem entrega apurada: nenhuma conclusão sobre desempenho em operação real.",
-        ],
-        download=CSV_DESEMPENHO)
+        ] + ([] if publicar else [
+            "Números de desempenho do teste retrospectivo retidos fora do portal até a decisão do responsável pela plataforma "
+            "(regra do registro de modelos); esta gold traz o arquivo de emissões, a rotina, a referência experimental B0 e as "
+            "fichas, sem MAE, ganho, cobertura nem calibração numérica."]),
+        download=CSV_DESEMPENHO if publicar else CSV_EMISSOES)
     gold = {
         **c.cabecalho(GOLD),
         "paineis": ["P013", "P014", "P015", "P016"],
@@ -958,6 +1161,9 @@ def construir(con, ctx):
             "dicionarios_ons": _dicionarios(con),
             "ultima_entrega_apurada_teste": ultima_entrega.isoformat() if ultima_entrega else None,
             "linhas_csv": {"semanal": n_sem, "mensal": n_men},
+            # último dia de EAR e ENA no dado usado (o ONS publica às 19h até o dia anterior; o
+            # arquivo capturado pode ser de um dia antes do que o portal já tinha)
+            "ultimo_dia_ear": _ultimo_dia(info.ear), "ultimo_dia_ena": _ultimo_dia(info.ena),
             "configuracao_sha256": mp.sha_configuracao(),
             "configuracao_registrada_sha256": (registro.get("validacao_observatorio") or {}).get("configuracao_sha256"),
         },
@@ -965,48 +1171,119 @@ def construir(con, ctx):
                      "avaliado": m["codigo"] in MODELOS_TESTE,
                      "motivo_sem_avaliacao": None if m["codigo"] in MODELOS_TESTE else m.get("motivo_sem_implementacao")}
                     for m in registro["modelos"]],
-        "desempenho": ({"publicado": True, "por_horizonte": _enxuto(horizontes), "por_frequencia": _enxuto(frequencias),
-                        "por_celula": _enxuto([x for x in celulas if x["periodo"] == "teste"]),
-                        "por_celula_nota": ("Na gold, só o período de teste por célula; o desenvolvimento por célula está em "
-                                            "previsoes_desempenho.csv.")}
-                       if publicar else {"publicado": False, "motivo": "Publicação suspensa pelo responsável (validacao_observatorio.publicar = false)."}),
-        "selecao": ({"regra": REGRA_SELECAO,
-                     "por_frequencia": selecao,
-                     "contaminacao": ("O desenvolvimento é exploratório: a pesquisa examinou 2023 e 2024 antes de definir os candidatos. O teste "
-                                      "final (entregas desde 01/01/2025) não foi usado em nenhuma escolha de configuração, mas o mesmo autor "
-                                      "escreveu o código e viu os resultados ao depurá-lo.")} if publicar else None),
-        "regimes": {"nota": NOTA_REGIMES, "limiares": limiares, "resultados": regimes} if publicar else None,
-        "sensibilidade_latencia": ({"descricao": ("MAE no período de teste com o dado disponível 1, 2 ou 3 dias depois do fim do período "
-                                                  "(LAT1D é a regra; LAT2D e LAT3D simulam atraso de publicação)."), "resultados": sensib}
-                                   if publicar else None),
+        "publicacao_desempenho": _bloco_publicacao(situacao, publicar, retirados),
+        "desempenho": (resultados["desempenho"] if publicar else
+                       {"publicado": False, "motivo": situacao["motivo"],
+                        "calculado": ("Teste retrospectivo completo calculado e validado nesta execução (ver validacoes); resultados "
+                                      "fora do portal, em " + os.path.relpath(DIR_INTERNO, base.RAIZ) + ", até a decisão.")}),
+        "selecao": resultados["selecao"] if publicar else None,
+        "regimes": resultados["regimes"] if publicar else None,
+        "sensibilidade_latencia": resultados["sensibilidade_latencia"] if publicar else None,
         "g23_r1": g23 if publicar else None,
         "prospectivo": {
             "rodadas": rodadas[:LIMITE_RODADAS], "total_rodadas": len(rodadas), "registros": len(registros),
             "registros_por_tipo": {t: sum(1 for r in registros if r["tipo"] == t) for t in g.TIPOS_REGISTRO},
-            "apuracoes": apur[-LIMITE_APURACOES:], "apuracoes_total": len(apur), "metricas": prosp_met,
+            "apuracoes": apur[-LIMITE_APURACOES:], "apuracoes_total": len(apur), "metricas": prosp_met if publicar else None,
             "leitura": ("Nenhuma entrega prevista pelo arquivo terminou ainda: não há desempenho prospectivo, e nada pode ser concluído "
                         "sobre a operação real." if not maturadas else
                         f"{prosp_met['celulas']} células apuradas; amostra prospectiva curta, sem inferência de ganho."),
             "revisoes_entre_rodadas": _revisoes(registros, atual.get("run_id"), LIMITE_SEQUENCIA),
             "reexecucao": reex,
+            "calibracao_regra_antiga": recalib if publicar else _sem_coberturas(recalib),
         },
         "rotina": rotina,
         "previsao_atual": atual,
         "fichas": fichas,
-        "governanca": _governanca(registro, g23, rotina, atual, conf),
-        "evidencias": kpis,
+        "governanca": _governanca(registro, g23, rotina, atual, conf, situacao),
+        "evidencias": kpis if publicar else {},
         "validacoes": testes,
-        "downloads": [{"rotulo": "Teste retrospectivo semanal (CSV)", "url": CSV_SEMANAL},
-                      {"rotulo": "Teste retrospectivo mensal (CSV)", "url": CSV_MENSAL},
-                      {"rotulo": "Métricas de desempenho (CSV)", "url": CSV_DESEMPENHO},
-                      {"rotulo": "Coeficientes do C2 por origem de ajuste (CSV)", "url": CSV_AJUSTES},
-                      {"rotulo": "Emissões registradas (CSV)", "url": CSV_EMISSOES}],
+        "downloads": (([{"rotulo": "Teste retrospectivo semanal (CSV)", "url": CSV_SEMANAL},
+                        {"rotulo": "Teste retrospectivo mensal (CSV)", "url": CSV_MENSAL},
+                        {"rotulo": "Métricas de desempenho (CSV)", "url": CSV_DESEMPENHO}] if publicar else [])
+                      + [{"rotulo": "Coeficientes do C2 por origem de ajuste (CSV)", "url": CSV_AJUSTES},
+                         {"rotulo": "Emissões registradas (CSV)", "url": CSV_EMISSOES}]),
     }
     return gold
 
 
-def _governanca(registro, g23, rotina, atual, conf):
+def _ultimo_dia(series):
+    """Menor, entre os submercados, do último dia com valor (o dia até onde todos têm dado)."""
+    ultimos = [max(d) for d in series.values() if d]
+    return min(ultimos).isoformat() if ultimos else None
+
+
+def _bloco_publicacao(situacao, publicar, retirados):
+    """Estado da publicação dos números de desempenho, com a decisão pendente explícita."""
+    out = {"estado": situacao["estado"], "publicado": publicar,
+           "regra": ("Registro de modelos, publicacao_resultados.motivo: números de desempenho só entram no portal depois da "
+                     "liberação formal pelo responsável pela plataforma."),
+           "decisao": situacao.get("decisao")}
+    if not publicar:
+        out.update(
+            motivo=situacao["motivo"],
+            interpretacao_do_implementador=("O campo publicacao_resultados.escopo (retenção só do artefato de pesquisa) e o antigo "
+                                            "validacao_observatorio.publicar = true foram escritos pelo implementador do módulo em "
+                                            "30/09/2026, sem decisão do responsável. Não valem como autorização (seção 12.4)."),
+            para_liberar=("O responsável registra em validacao_observatorio.decisao_publicacao: estado LIBERADA, decidido_por, "
+                          "decidido_em e o escopo decidido; e troca publicar para true. A próxima execução publica os números."),
+            arquivos_retirados_do_portal=retirados or None)
+    return out
+
+
+def _retira_do_portal():
+    """Com a publicação retida, os CSV do teste retrospectivo publicados antes não podem
+    continuar no portal (eles próprios são números de desempenho)."""
+    fora = []
+    for url in ARQUIVOS_P016:
+        caminho = os.path.join(base.SERIES, os.path.basename(url))
+        if os.path.exists(caminho):
+            os.remove(caminho)
+            fora.append(url)
+    return fora
+
+
+def _sem_coberturas(recalib):
+    """Bloco da recalibração sem os valores de cobertura (números de desempenho retidos)."""
+    return {**recalib, "por_registro": [{k: x for k, x in r.items() if not k.startswith("cobertura")} for r in recalib["por_registro"]]}
+
+
+def _calibracao_regra_antiga(registros, cp, lim):
+    """Registros B0 gravados antes da correção da comparação (sem calibracao.comparacao)
+    guardam a cobertura calculada com comparação estrita: realizado no piso contava como
+    abaixo do P10. O registro é imutável e não é reescrito. Aqui a calibração de cada rodada
+    afetada é refeita com a regra corrigida e o dado como estava no corte daquela rodada."""
+    afetados = [r for r in registros if r.get("modelo") == "B0" and r.get("tipo") == "REFERENCIA_EXPERIMENTAL"
+                and (r.get("calibracao") or {}).get("cobertura_p10_p90") is not None
+                and not (r.get("calibracao") or {}).get("comparacao")]
+    por_run = defaultdict(list)
+    for r in afetados:
+        por_run[(r["run_id"], r["origem"], r["cutoff"])].append(r)
+    detalhe = []
+    for (run_id, origem, cutoff), rs in sorted(por_run.items()):
+        info_c = v.Informacao(cp, cutoff)
+        _, calib = em._celulas_b0(date.fromisoformat(origem), info_c, lim)
+        for r in sorted(rs, key=lambda x: (cal.HORIZONTES.index(x["horizonte"]), cal.SUBMERCADOS.index(x["submercado"]))):
+            novo, gr = calib[(r["horizonte"], r["submercado"])], r["calibracao"]
+            detalhe.append({"forecast_id": r["forecast_id"], "run_id": run_id, "horizonte": r["horizonte"], "submercado": r["submercado"],
+                            "status_gravado": gr.get("status"), "status_recalculado": novo["status"],
+                            "cobertura_gravada": gr.get("cobertura_p10_p90"), "cobertura_recalculada": novo["cobertura_p10_p90"],
+                            "entregas": novo["entregas"]})
+    mudou = [x for x in detalhe if x["cobertura_gravada"] != x["cobertura_recalculada"]]
+    return {
+        "descricao": ("Registros emitidos antes de 01/10/2026 gravaram calibracao.cobertura_p10_p90 com comparação estrita em ponto "
+                      "flutuante: numa semana inteira no piso, o realizado (58,5999999996) ficava abaixo do P10 limitado ao piso "
+                      "(58,60000000000001) e a célula contava como descoberta. O registro é imutável e continua como foi gravado; a "
+                      "calibração refeita com a regra corrigida (tolerância de 1e-6 R$/MWh, faixa inclusiva) e com o dado como estava "
+                      "no corte de cada rodada fica ao lado."),
+        "rodadas": sorted({x["run_id"] for x in detalhe}), "registros": len(detalhe),
+        "cobertura_diferente": len(mudou), "status_diferente": sum(1 for x in detalhe if x["status_gravado"] != x["status_recalculado"]),
+        "por_registro": detalhe,
+    }
+
+
+def _governanca(registro, g23, rotina, atual, conf, situacao):
     pend = {p["id"]: p for p in registro.get("pendencias", [])}
+    publicado = situacao["estado"] == "LIBERADA"
     ref = next(m for m in registro["modelos"] if m["codigo"] == "B0")["referencia_experimental"]
     itens = [
         {"item": "B0 como referência experimental identificada (seção 12.4)",
@@ -1015,19 +1292,26 @@ def _governanca(registro, g23, rotina, atual, conf):
                       "cada registro guarda capturado_em ≤ corte.",
          "responsavel": "regra da especificação (sem aprovação adicional)"},
         {"item": "Faixas de incerteza publicáveis", "estado": "não atendido",
-         "evidencia": "Nenhum segmento CALIBRADO no período de teste (ver por_celula.calibracao).",
+         "evidencia": ("Nenhum segmento do B0 CALIBRADO no período de teste: nenhum alcança 100 entregas distintas (ver "
+                       + ("desempenho.por_celula.calibracao)." if publicado else "previsao_atual.celulas[].calibracao).")),
          "responsavel": "método (aguarda amostra e calibração)"},
         {"item": "Gate V dos candidatos (pesquisa → validação)", "estado": "decisão pendente",
          "evidencia": ("Teste retrospectivo fora da amostra, comparação pareada com bootstrap por blocos, calibração medida e limitações "
-                       "publicadas nesta gold; falta revisão independente ACEITO sem bloqueante."),
+                       + ("publicadas nesta gold" if publicado else "calculados e validados, com os números retidos fora do portal")
+                       + "; falta revisão independente ACEITO sem bloqueante."),
          "responsavel": "revisor independente"},
         {"item": "Liberação de número em rodada interna dos C2 (início do prospectivo)", "estado": "decisão pendente",
          "evidencia": "publicacao_resultados.liberada = false no registro de modelos.", "responsavel": "responsável pela plataforma"},
+        {"item": "Publicação dos números de desempenho do teste retrospectivo do observatório (P016)",
+         "estado": "liberada" if publicado else "decisão pendente",
+         "evidencia": (f"Decisão registrada: {situacao.get('decisao')}" if publicado else situacao["motivo"]),
+         "responsavel": "responsável pela plataforma"},
         {"item": "G4", "estado": pend.get("G4", {}).get("estado"), "evidencia": pend.get("G4", {}).get("descricao"),
          "responsavel": pend.get("G4", {}).get("responsavel")},
         {"item": "G23-R1", "estado": pend.get("G23-R1", {}).get("estado"),
          "evidencia": (f"Coeficiente de d7 − B0 acima de 1 em {g23['coeficiente_d7']['acima_de_1']} de {g23['coeficiente_d7']['ajustes_ok']} "
-                       "ajustes; previsões brutas fora da faixa contadas por modelo e frequência.") if g23 else pend.get("G23-R1", {}).get("descricao"),
+                       "ajustes (coeficientes por origem em previsoes_ajustes_c2.csv); previsões brutas fora da faixa contadas por "
+                       "modelo e frequência" + ("." if publicado else " nos resultados retidos.")) if g23 else pend.get("G23-R1", {}).get("descricao"),
          "responsavel": pend.get("G23-R1", {}).get("responsavel")},
         {"item": "Gate P (validação → produção)", "estado": "não aplicável ainda",
          "evidencia": "Exige período prospectivo com rodadas registradas antes do realizado (proposta: 12 origens semanais) e aprovação do dono.",

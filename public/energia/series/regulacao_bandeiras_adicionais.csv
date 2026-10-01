@@ -1,28 +1,28 @@
-ato;patamar;vigencia_inicio;vigencia_fim;rs_mwh
-REH nº 1.859/2015;Amarela;2015-03-02;2016-01-31;25.0
-REH nº 1.859/2015;Vermelha P1;2015-03-02;2016-01-31;55.0
-REH nº 2.016/2016;Amarela;2016-02-01;2017-01-31;15.0
-REH nº 2.016/2016;Vermelha P1;2016-02-01;2017-01-31;30.0
-REH nº 2.016/2016;Vermelha P2;2016-02-01;2017-01-31;45.0
-REH nº 2.203/2017;Amarela;2017-02-01;2018-04-30;20.0
-REH nº 2.203/2017;Vermelha P1;2017-02-01;2018-04-30;30.0
-REH nº 2.203/2017;Vermelha P2;2017-02-01;2018-04-30;35.0
-REH nº 2.392/2018;Amarela;2018-05-01;2019-05-31;10.0
-REH nº 2.392/2018;Vermelha P1;2018-05-01;2019-05-31;30.0
-REH nº 2.392/2018;Vermelha P2;2018-05-01;2019-05-31;50.0
-REH nº 2.551/2019;Amarela;2019-06-01;2019-10-31;15.0
-REH nº 2.551/2019;Vermelha P1;2019-06-01;2019-10-31;40.0
-REH nº 2.551/2019;Vermelha P2;2019-06-01;2019-10-31;60.0
-REH nº 2.628/2019;Amarela;2019-11-01;2021-06-30;13.43
-REH nº 2.628/2019;Vermelha P1;2019-11-01;2021-06-30;41.69
-REH nº 2.628/2019;Vermelha P2;2019-11-01;2021-06-30;62.43
-REH nº 2.888/2021;Amarela;2021-07-01;2022-06-30;18.74
-REH nº 2.888/2021;Vermelha P1;2021-07-01;2022-06-30;39.71
-REH nº 2.888/2021;Vermelha P2;2021-07-01;2022-06-30;94.92
-RES CREG nº 3/2021;Escassez Hídrica;2021-09-01;;142.0
-REH nº 3.051/2022;Amarela;2022-07-01;2024-03-31;29.89
-REH nº 3.051/2022;Vermelha P1;2022-07-01;2024-03-31;65.0
-REH nº 3.051/2022;Vermelha P2;2022-07-01;2024-03-31;97.95
-REH nº 3.306/2024;Amarela;2024-04-01;;18.85
-REH nº 3.306/2024;Vermelha P1;2024-04-01;;44.63
-REH nº 3.306/2024;Vermelha P2;2024-04-01;;78.77
+ato;patamar;vigencia_inicio;vigencia_fim;vigencia_fim_origem;ultimo_acionamento;ultimo_acionamento_rs_mwh;rs_mwh
+REH nº 1.859/2015;Amarela;2015-03-02;2016-01-31;valor_seguinte;;;25.0
+REH nº 1.859/2015;Vermelha P1;2015-03-02;2016-01-31;valor_seguinte;;;55.0
+REH nº 2.016/2016;Amarela;2016-02-01;2017-01-31;valor_seguinte;;;15.0
+REH nº 2.016/2016;Vermelha P1;2016-02-01;2017-01-31;valor_seguinte;;;30.0
+REH nº 2.016/2016;Vermelha P2;2016-02-01;2017-01-31;valor_seguinte;;;45.0
+REH nº 2.203/2017;Amarela;2017-02-01;2018-04-30;valor_seguinte;;;20.0
+REH nº 2.203/2017;Vermelha P1;2017-02-01;2018-04-30;valor_seguinte;;;30.0
+REH nº 2.203/2017;Vermelha P2;2017-02-01;2018-04-30;valor_seguinte;;;35.0
+REH nº 2.392/2018;Amarela;2018-05-01;2019-05-31;valor_seguinte;;;10.0
+REH nº 2.392/2018;Vermelha P1;2018-05-01;2019-05-31;valor_seguinte;;;30.0
+REH nº 2.392/2018;Vermelha P2;2018-05-01;2019-05-31;valor_seguinte;;;50.0
+REH nº 2.551/2019;Amarela;2019-06-01;2019-10-31;valor_seguinte;;;15.0
+REH nº 2.551/2019;Vermelha P1;2019-06-01;2019-10-31;valor_seguinte;;;40.0
+REH nº 2.551/2019;Vermelha P2;2019-06-01;2019-10-31;valor_seguinte;;;60.0
+REH nº 2.628/2019;Amarela;2019-11-01;2021-06-30;valor_seguinte;;;13.43
+REH nº 2.628/2019;Vermelha P1;2019-11-01;2021-06-30;valor_seguinte;;;41.69
+REH nº 2.628/2019;Vermelha P2;2019-11-01;2021-06-30;valor_seguinte;;;62.43
+REH nº 2.888/2021;Amarela;2021-07-01;2022-06-30;valor_seguinte;;;18.74
+REH nº 2.888/2021;Vermelha P1;2021-07-01;2022-06-30;valor_seguinte;;;39.71
+REH nº 2.888/2021;Vermelha P2;2021-07-01;2022-06-30;valor_seguinte;;;94.92
+RES CREG nº 3/2021;Escassez Hídrica;2021-09-01;2022-04-30;ultimo_acionamento;2022-04;71.0;142.0
+REH nº 3.051/2022;Amarela;2022-07-01;2024-03-31;valor_seguinte;;;29.89
+REH nº 3.051/2022;Vermelha P1;2022-07-01;2024-03-31;valor_seguinte;;;65.0
+REH nº 3.051/2022;Vermelha P2;2022-07-01;2024-03-31;valor_seguinte;;;97.95
+REH nº 3.306/2024;Amarela;2024-04-01;;;;;18.85
+REH nº 3.306/2024;Vermelha P1;2024-04-01;;;;;44.63
+REH nº 3.306/2024;Vermelha P2;2024-04-01;;;;;78.77

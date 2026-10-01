@@ -225,7 +225,7 @@ export function InclusaoMunicipiosCobertura({ csvUrl, mes: mesRef, fonte }: { cs
     return (
       <div className="flex flex-wrap items-center gap-3 border border-dashed border-linha px-4 py-3">
         <p className="max-w-prose2 text-sm text-carvao-muted">
-          O mapa municipal usa a malha de municípios do IBGE (cerca de 1,3 MB) e o CSV de municípios (cerca de 450 KB); ele só é baixado quando pedido.
+          O mapa municipal usa a malha de municípios do IBGE e o CSV de municípios, os dois arquivos mais pesados do módulo; eles só são baixados quando pedidos.
         </p>
         <button
           type="button"

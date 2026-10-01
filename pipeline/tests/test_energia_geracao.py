@@ -418,6 +418,23 @@ class GoldPublicada(unittest.TestCase):
             if x["fator_capacidade_pct"] is not None:
                 self.assertTrue(0 <= x["fator_capacidade_pct"] <= 100, x)
 
+    def test_valor_extremo_contado_nao_descartado(self):
+        # usina-mês com fator de capacidade acima de 100% (unidade em teste, potência do ato abaixo da
+        # geração bruta das nucleares) fica na conta e é listada; o agregado da categoria segue físico
+        p = self.g["capacidade"]["pareamento"]["fc_acima_de_100"]
+        self.assertGreater(p["n"], 0)
+        self.assertGreater(p["por_categoria"].get("nuclear", 0), 0)
+        self.assertTrue(all(x["fc_pct"] > 100 for x in p["exemplos"]))
+        controle = [c_ for c_ in self.g["controles"] if c_["nome"].startswith("Fator de capacidade mensal acima")]
+        self.assertEqual(controle[0]["resultado"], "ressalva")
+
+    def test_comparacao_suprimida_com_salto_de_universo(self):
+        comp = self.g["matriz"]["comparacao_12m"]
+        for cat, info in comp["variacao_suprimida"].items():
+            self.assertIsNone(comp["variacao_pct"][cat])
+            saltos = [q for q in self.g["quebras"] if q["tipo"] == "salto_de_universo" and cat in q["categorias"]]
+            self.assertTrue(set(info["datas"]) <= {q["data"] for q in saltos})
+
     def test_evidencias_validas(self):
         self.assertGreaterEqual(len(self.g["evidencias"]), 10)
         for k, e in self.g["evidencias"].items():

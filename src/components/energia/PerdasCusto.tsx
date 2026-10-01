@@ -3,7 +3,8 @@
 import { useMemo } from "react";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
-import { useSelecaoPerdas } from "@/components/energia/PerdasSelecao";
+import { useEvidenciaPerdas, useSelecaoPerdas } from "@/components/energia/PerdasSelecao";
+import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { dataBR, num } from "@/lib/energia/formato";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import { rotuloResolucao, type LinhaCusto } from "@/lib/energia/perdas";
@@ -35,13 +36,15 @@ const COLUNAS: ColunaTabela[] = [
 
 export type PerdasCustoProps = {
   linhas: LinhaCusto[];
+  /** perdas_evidencias_tarifa.json, lido só quando há distribuidora escolhida. */
+  urlEvidencias: string;
   ids: string[];
   rotulos: Record<string, string>;
   consultadaEm: string;
   versao: string;
 };
 
-export function PerdasCusto({ linhas, ids, rotulos, consultadaEm, versao }: PerdasCustoProps) {
+export function PerdasCusto({ linhas, urlEvidencias, ids, rotulos, consultadaEm, versao }: PerdasCustoProps) {
   const [sel, selecionar] = useSelecaoPerdas(ids);
   const vigentes = useMemo(() => linhas.filter((l) => l.situacao === "vigente"), [linhas]);
   const dados = useMemo(() => vigentes.map((l) => ({ id: l.id, rotulo: l.rotulo, pt: l.pt, pnt: l.pnt, rede_basica: l.rede_basica })), [vigentes]);
@@ -50,7 +53,7 @@ export function PerdasCusto({ linhas, ids, rotulos, consultadaEm, versao }: Perd
       linhas.map((l) => ({
         id: l.id,
         rotulo: l.rotulo,
-        situacao: l.situacao === "vigente" ? "vigente" : `vigência encerrada em ${dataBR(l.fim)}`,
+        situacao: l.situacao === "vigente" ? "vigente" : l.ativa ? "vigência encerrada, distribuidora ativa" : "vigência encerrada, série encerrada no SAMP",
         reh: rotuloResolucao(l.resolucao),
         inicio: l.inicio,
         fim: l.fim,
@@ -65,6 +68,7 @@ export function PerdasCusto({ linhas, ids, rotulos, consultadaEm, versao }: Perd
     [linhas],
   );
   const linhaSel = sel ? linhas.find((l) => l.id === sel) ?? null : null;
+  const [prova, tentarProva] = useEvidenciaPerdas(urlEvidencias, linhaSel ? linhaSel.id : null);
   return (
     <div className="space-y-5">
       <GraficoBarras
@@ -91,11 +95,26 @@ export function PerdasCusto({ linhas, ids, rotulos, consultadaEm, versao }: Perd
         ) : !linhaSel ? (
           <p>{rotulos[sel] ?? sel}: sem processo tarifário com tarifa residencial B1 convencional nos arquivos de componentes tarifárias de 2012 a 2026.</p>
         ) : (
+          <>
           <p data-resposta="custo-distribuidora">
             {`${linhaSel.rotulo}, ${rotuloResolucao(linhaSel.resolucao) ?? "resolução não informada"} (${dataBR(linhaSel.inicio)} a ${dataBR(linhaSel.fim)}): `}
             {linhaSel.situacao === "vigente" ? "vigente na data da consulta. " : `vigência encerrada em ${dataBR(linhaSel.fim)}, sem processo seguinte no arquivo da fonte em ${dataBR(consultadaEm)}; não é a tarifa em vigor. `}
             {`Técnicas ${num(linhaSel.pt, 2)}, não técnicas ${num(linhaSel.pnt, 2)} e Rede Básica ${num(linhaSel.rede_basica, 2)} R$/MWh: perdas de ${num(linhaSel.perdas, 2)} R$/MWh, ${num(linhaSel.participacao_perdas_pct, 2)}% da tarifa B1 sem tributos (${num(linhaSel.total, 2)} R$/MWh).`}
           </p>
+          <div className="mt-1">
+            {prova.estado === "pronta" ? (
+              <ComproveNumero evidencia={prova.evidencia} rotulo="Comprove este valor" endereco={`https://scrutiniums.com/setor-eletrico/perdas/custo-e-contexto?d=${linhaSel.id}#custo`} />
+            ) : prova.estado === "carregando" ? (
+              <span role="status" className="text-xs text-carvao-muted">
+                Carregando a evidência do processo tarifário.
+              </span>
+            ) : prova.estado === "erro" ? (
+              <button type="button" className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4" onClick={tentarProva}>
+                A evidência não carregou ({prova.erro}); tentar de novo
+              </button>
+            ) : null}
+          </div>
+          </>
         )}
       </div>
       <TabelaInterativa

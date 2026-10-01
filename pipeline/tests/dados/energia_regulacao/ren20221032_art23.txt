@@ -1,0 +1,18 @@
+Art. 23. A vigência dos limites máximos do PLD dar-se-á da seguinte forma:
+I - a partir de 1º de janeiro de 2020 para o PLDmax_estrutural; e
+II - na mesma data de implementação do PLD horário no Mercado de Curto Prazo para o
+PLDmax_horário.
+§ 1º Os limites máximos do PLD serão atualizados pela ANEEL anualmente pela variação do
+Índice Nacional de Preços ao Consumidor Amplo (IPCA) a partir dos seguintes valores, a preços de
+setembro de 2019:
+I - R$ 556,58 / MWh, para o para o PLDmax_estrutural; e
+II - R$ 1.141,85 / MWh, para o para o PLDmax_horário.
+§ 2º A atualização de que trata o § 1º ocorrerá anualmente em dezembro para utilização em
+janeiro do ano subsequente, sendo a primeira atualização em dezembro de 2019.
+§ 3º A partir da vigência do PLDmax_horário, caso a média diária dos PLDs horários for
+superior ao PLDmax_estrutural, a CCEE deve ajustar a série de PLDs horários até que a média de seus
+valores seja igual ao PLDmax_estrutural.
+§ 4º Respeitado o valor do PLDmin, o ajuste na curva diária de PLDs horários deve ser
+realizado de forma uniforme e proporcional.
+§ 5º O ajuste de que tratam os §§ 3º e 4º deve ser realizado para cada submercado, de forma
+independente.

@@ -15,9 +15,19 @@ em nenhuma regra):
   SP, Cooperativa Aliança, CERAN, Light SESA, RGE Sul) no 1º e no 2º trimestre de 2026;
 - dfp_2024_recorte.zip, dfp_2025_recorte.zip, itr_2025_recorte.zip, cad_cia_aberta_recorte.csv:
   linhas originais (Latin-1) da CVM de CEMIG, CEMIG Distribuição e CPFL Energia, nos mesmos
-  membros e cabeçalhos dos zips oficiais;
+  membros e cabeçalhos dos zips oficiais; o cadastro tem também a linha original da Suzano
+  (setor Papel e Celulose, registro ativo);
+- dfp_2025_casos_recorte.zip: DFP 2025 original (sha256 336a92cc…) da Rio Paranapanema Energia,
+  que entrega o consolidado inteiro com zero e o individual preenchido, e da Ferreira Gomes
+  Energia, que publica DT_INI_EXERC = 1º de dezembro num exercício inteiro; só as contas lidas
+  pelo módulo, linhas inalteradas;
+- dfp_2019_light_recorte.zip: DFP 2019 original (sha256 bc82a116…) da Light SESA, com DT_INI_EXERC
+  2019-12-01 e o comparativo de 2018;
+- itr_2026_celgpar_recorte.zip: ITR 2026 original (sha256 8d055a5a…) da CELGPAR, com o
+  individual inteiro zerado nos dois trimestres e sem consolidado;
 - golds_origem_recorte.json: CEMIG D, CPFL Santa Cruz, CPFL Santa Cruz antiga, RGE Sul e RGE
-  antiga nas golds perdas.json, qualidade.json e conta.json de 30/09/2026.
+  antiga nas golds perdas.json, qualidade.json e conta.json de 30/09/2026, com os blocos de
+  proveniência que o índice herda (taxas, separação, distribuidoras, limites, tarifas).
 """
 import csv
 import io
@@ -57,6 +67,54 @@ def _agentes_geracao():
 def _polimero():
     caminho = os.path.join(DADOS, "polimero_recorte.parquet")
     return ae.le_polimero(lambda: ae.linhas_polimero(caminho))
+
+
+BRONZE_SIGA = os.path.join(base.RAIZ, "data/energia/bronze/aneel/aneel_siga/siga-empreendimentos-geracao-diario.csv/"
+                           "20260930T221854Z.139603153f57.csv.gz")
+_ITEM = re.compile(r"(?:^|, )(\d+(?:\.\d+)?)% para ")
+_CNPJ_FMT = re.compile(r"(\d{2})\.(\d{3})\.(\d{3})/(\d{4})-(\d{2})")
+
+
+def _particao_independente(linhas):
+    """Partição da potência em operação por CNPJ, sem o código do módulo: cada item começa em
+    '<pct>% para ', o documento é o último CNPJ formatado do item, soma válida dentro de
+    0,005 p.p. por item e normalização pela soma. Retorna ({cnpj: kW}, kW sem documento, kW
+    da fronteira, usinas da fronteira)."""
+    vistos, partes = set(), {}
+    sem_doc = fronteira = 0.0
+    usinas = 0
+    for r in linhas:
+        nuc = int(r["IdeNucleoCEG"])
+        if nuc in vistos:
+            continue
+        vistos.add(nuc)
+        kw_txt = (r["MdaPotenciaFiscalizadaKw"] or "").strip()
+        if r["DscFaseUsina"] != "Operação" or not kw_txt:
+            continue
+        kw = float(kw_txt.replace(".", "").replace(",", "."))
+        texto = r["DscPropriRegimePariticipacao"] or ""
+        inicios = list(_ITEM.finditer(texto))
+        itens = []
+        for i, m in enumerate(inicios):
+            corpo = texto[m.end():inicios[i + 1].start() if i + 1 < len(inicios) else len(texto)]
+            docs = _CNPJ_FMT.findall(corpo)
+            itens.append((float(m.group(1)), "".join(docs[-1]) if docs else None))
+        soma = sum(p for p, _ in itens)
+        if not itens or kw <= 0 or abs(soma - 100.0) > 0.005 * len(itens) + 1e-9:
+            continue
+        fronteira += kw
+        usinas += 1
+        for p, c14 in itens:
+            if c14:
+                partes[c14] = partes.get(c14, 0.0) + kw * p / soma
+            else:
+                sem_doc += kw * p / soma
+    return partes, sem_doc, fronteira, usinas
+
+
+def _hhi_independente(partes, total):
+    cotas = sorted((100.0 * v / total for v in partes.values() if v > 0), reverse=True)
+    return sum(x * x for x in cotas), sum(cotas[:4]), sum(cotas[:10]), len(cotas)
 
 
 def _silver_cvm():
@@ -157,8 +215,9 @@ class ConferenciaAgentesGeracao(unittest.TestCase):
         self.assertEqual(oc["data_geracao"], "2026-09-01")
         self.assertEqual(oc["cpf_mascarado"], 1)
         comp = ae.compara_vinculos(usinas, ag)
-        # Salto Claudelino mudou de proprietário entre 01/09 e 30/09 (CNPJ diferente nos dois
-        # arquivos); Frascal trocou um dos seis sócios; as demais batem CNPJ a CNPJ
+        # Salto Claudelino e Frascal têm CNPJ diferente nas duas fontes (SIGA de 30/09, Agentes
+        # de Geração de 01/09); a causa não foi verificada: pode ser mudança de proprietário
+        # entre as datas ou divergência de cadastro. As demais batem CNPJ a CNPJ
         self.assertEqual(comp["cnpj_diferentes"], 2)
         self.assertEqual({e["nucleo"] for e in comp["exemplos"]}, {"2592", "31041"})
         self.assertEqual(comp["percentual_diferente"], 0)
@@ -334,18 +393,56 @@ class Concentracao(unittest.TestCase):
         self.assertEqual(mod._faixa_hhi(2500.0), "moderado")
         self.assertEqual(mod._faixa_hhi(2500.1), "alto")
 
-    @unittest.skipUnless(os.path.exists(os.path.join(base.GOLD, "empresas.json"))
-                         and os.path.exists(os.path.join(base.SERIES, "empresas_grupos.csv")), "gold não gerada")
-    def test_hhi_publicado_recalculado_do_csv(self):
-        """Caminho independente: HHI por grupo refeito a partir das cotas do CSV publicado."""
+    def test_hhi_do_recorte_por_parser_independente(self):
+        """O SIGA do recorte relido por outro parser (csv + expressão por item '% para' e o
+        último CNPJ formatado do item) dá a mesma partição e o mesmo HHI que o módulo; os
+        números esperados estão escritos aqui (calculados à mão a partir do arquivo)."""
+        partes, sem_doc, fronteira, usinas = _particao_independente(_csv("siga_recorte.csv"))
+        self.assertEqual((fronteira, usinas, sem_doc), (13769380.0, 10, 360.0))
+        hhi, cr4, cr10, n = _hhi_independente(partes, fronteira)
+        self.assertAlmostEqual(hhi, 6756.4949, places=3)          # Belo Monte domina o recorte
+        self.assertAlmostEqual(cr4, 95.5234, places=3)
+        self.assertEqual(n, 26)
+        at = mod._ativos(_siga()[0], None, {})
+        self.assertEqual(at["fronteira"]["kw_valido"], fronteira)
+        conc = mod._concentracao({k: d["kw_prop"] for k, d in at["donos"].items()}, at["fronteira"]["kw_valido"])
+        self.assertAlmostEqual(conc["hhi"], hhi, delta=0.05)
+        self.assertAlmostEqual(conc["cr4"], cr4, delta=0.005)
+        for c14, kw in partes.items():
+            self.assertAlmostEqual(at["donos"][c14]["kw_prop"], kw, places=6, msg=c14)
+
+    @unittest.skipUnless(os.path.exists(os.path.join(base.GOLD, "empresas.json")) and os.path.exists(BRONZE_SIGA)
+                         and os.path.exists(os.path.join(base.SERIES, "empresas_proprietarios.csv")), "bronze ou gold ausente")
+    def test_hhi_publicado_contra_o_siga_original(self):
+        """Caminho independente sobre o arquivo inteiro do SIGA de 30/09/2026 (sha256
+        139603153f57…): partição por proprietário direto relida por outro parser; o nível de
+        grupo agrega essa partição pelo mapa proprietário → grupo publicado (testa partição e
+        agregação; a derivação da cadeia é testada em PolimeroSemanticaEControle)."""
+        import gzip
         with open(os.path.join(base.GOLD, "empresas.json"), encoding="utf-8") as f:
             g = json.load(f)
-        with open(os.path.join(base.SERIES, "empresas_grupos.csv"), encoding="utf-8") as f:
-            cotas = [float(r["participacao_pct"]) for r in csv.DictReader(f, delimiter=";") if r["participacao_pct"]]
-        hhi = sum(s * s for s in cotas)
-        # cotas com 4 casas no CSV: erro de arredondamento abaixo de 0,1 ponto
-        self.assertAlmostEqual(hhi, g["controle"]["concentracao"]["grupo_proporcional"]["hhi"], delta=0.1)
-        self.assertLessEqual(sum(cotas), 100.0 + 1e-6)
+        with gzip.open(BRONZE_SIGA, "rt", encoding="utf-8-sig") as f:
+            partes, sem_doc, fronteira, usinas = _particao_independente(csv.DictReader(f, delimiter=";"))
+        # números do arquivo de 30/09/2026, escritos aqui
+        self.assertEqual((fronteira, usinas, round(sem_doc)), (220501811.0, 22665, 42660))
+        hhi, cr4, cr10, n = _hhi_independente(partes, fronteira)
+        self.assertEqual((round(hhi, 1), round(cr4, 2), round(cr10, 2), n), (135.3, 18.21, 31.78, 4691))
+        pub = g["controle"]["concentracao"]["proprietario_direto"]
+        self.assertEqual((pub["hhi"], pub["cr4"], pub["cr10"], pub["participantes"]), (135.3, 18.21, 31.78, 4691))
+        self.assertEqual(g["controle"]["fronteira"]["mw"], round(fronteira / 1000.0, 1))
+        with open(os.path.join(base.SERIES, "empresas_proprietarios.csv"), encoding="utf-8") as f:
+            grupo = {r["cnpj"]: r["grupo_cnpj"] for r in csv.DictReader(f, delimiter=";")}
+        por_grupo = {}
+        for c14, kw in partes.items():
+            por_grupo[grupo[c14]] = por_grupo.get(grupo[c14], 0.0) + kw
+        hhi_g, cr4_g, cr10_g, n_g = _hhi_independente(por_grupo, fronteira)
+        self.assertEqual((round(hhi_g, 1), round(cr4_g, 2), round(cr10_g, 2), n_g), (392.1, 29.65, 46.72, 3284))
+        pub = g["controle"]["concentracao"]["grupo_proporcional"]
+        self.assertEqual((pub["hhi"], pub["cr4"], pub["cr10"], pub["participantes"]), (392.1, 29.65, 46.72, 3284))
+        # EOL: a fronteira tem 34.936.645 kW; o SIGA tem 34.936.651 kW em operação, e a diferença
+        # é a Ventos do Brejo A-6 (6 kW, proprietário 'Não Informado')
+        eol = next(t for t in g["controle"]["concentracao"]["por_tipo"] if t["tipo"] == "EOL")
+        self.assertEqual(eol["mw"], 34936.6)
 
 
 # ============================================================================ P037: distribuidoras
@@ -438,9 +535,21 @@ class ReconciliacaoCvm(unittest.TestCase):
         self.assertEqual(tri, 10786295000.0)
         self.assertEqual(t[("con", "receita", "acumulado_no_ano")]["2025-06-30"], acum)
         self.assertEqual(acum, 20630526000.0)
-        # 1º trimestre: o trimestre é o acumulado (mesmas datas), publicado uma vez como trimestre
+        # 1º trimestre: o trimestre é o acumulado (mesmas datas); a DRE sai nos dois recortes
         self.assertEqual(t[("con", "receita", "trimestre")]["2025-03-31"], 9844231000.0)
+        self.assertEqual(t[("con", "receita", "acumulado_no_ano")]["2025-03-31"], 9844231000.0)
         self.assertNotIn("2025-12-31", t[("con", "receita", "trimestre")])   # 4º trimestre não é deduzido
+
+    def test_dfc_do_itr_sempre_acumulada(self):
+        # a DFC do ITR é acumulada desde janeiro: o 1º trimestre entra na série acumulada e não
+        # existe série 'trimestre' de caixa (o 2º e o 3º trimestres não são três meses)
+        t = self.fin["trimestral"][CPFL]
+        q1 = self._bruto("itr_2025_recorte.zip", "itr_cia_aberta_DFC_MI_con_2025.csv", "02.429.144/0001-93", "6.01",
+                         ini="2025-01-01", fim="2025-03-31")
+        self.assertEqual(q1, 2093648000.0)
+        self.assertEqual(t[("con", "caixa_operacional", "acumulado_no_ano")]["2025-03-31"], q1)
+        self.assertIn("2025-06-30", t[("con", "caixa_operacional", "acumulado_no_ano")])
+        self.assertFalse(any(k[1].startswith("caixa_") and k[2] == "trimestre" for k in t))
 
     def test_comparativo_da_dfp_seguinte(self):
         # a DFP de 2025 reapresenta 2024: para a receita consolidada da CEMIG, sem mudança
@@ -470,6 +579,233 @@ class ReconciliacaoCvm(unittest.TestCase):
         self.assertEqual([(v["conta"], v["valor"]) for v in vals], [("receita", 1500.5)])
         self.assertEqual(oc["escala_desconhecida"], 1)
         self.assertEqual(oc["versoes_descartadas"], 1)                 # versão 1 com a 2 presente
+
+
+class CvmColunasZeradasEDataDeInicio(unittest.TestCase):
+    """Casos reais da CVM que a primeira versão publicava errado: consolidado entregue com zero
+    (virava receita e ativo zero na gold) e data de início mal preenchida (o exercício sumia)."""
+    RIO_P, FERREIRA, LIGHT, CELGPAR = "02998301000181", "12489315000123", "60444437000146", "08560444000193"
+
+    @classmethod
+    def setUpClass(cls):
+        con = base.conecta(":memory:")
+        for ds, rec, arq, univ in ((mod.DS_DFP, "dfp_cia_aberta_2025.zip", "dfp_2025_casos_recorte.zip", [cls.RIO_P, cls.FERREIRA]),
+                                   (mod.DS_DFP, "dfp_cia_aberta_2019.zip", "dfp_2019_light_recorte.zip", [cls.LIGHT]),
+                                   (mod.DS_ITR, "itr_cia_aberta_2026.zip", "itr_2026_celgpar_recorte.zip", [cls.CELGPAR])):
+            caminho = os.path.join(DADOS, arq)
+            vid, _ = base.registra_vintage(con, ds, rec, "https://dados.cvm.gov.br/", "2026-09-30T23:00:00Z", None,
+                                           "0" * 64, os.path.getsize(caminho), "teste", caminho)
+            mod._processa_doc(con, ds, "DFP" if ds == mod.DS_DFP else "ITR",
+                              {"vintage_id": vid, "recurso": rec, "arquivo": caminho}, univ)
+        cls.fin = mod._financas(con, {}, [], {})
+
+    def _linha(self, arq, membro, cnpj_fmt, conta, ordem="ÚLTIMO"):
+        with zipfile.ZipFile(os.path.join(DADOS, arq)) as z:
+            for r in csv.DictReader(io.StringIO(z.read(membro).decode("latin-1")), delimiter=";"):
+                if r["CNPJ_CIA"] == cnpj_fmt and r["CD_CONTA"] == conta and r["ORDEM_EXERC"] == ordem:
+                    return r
+        return None
+
+    def test_consolidado_zerado_e_ausencia_nunca_zero(self):
+        # a fonte: consolidado de 2025 com ativo total e receita iguais a zero, individual preenchido
+        con_at = self._linha("dfp_2025_casos_recorte.zip", "dfp_cia_aberta_BPA_con_2025.csv", "02.998.301/0001-81", "1")
+        ind_at = self._linha("dfp_2025_casos_recorte.zip", "dfp_cia_aberta_BPA_ind_2025.csv", "02.998.301/0001-81", "1")
+        self.assertEqual((float(con_at["VL_CONTA"]), float(ind_at["VL_CONTA"])), (0.0, 3986965.0))
+        a = self.fin["anual"][self.RIO_P]
+        self.assertFalse(any(esc == "con" for esc, _ in a))                       # nada do consolidado
+        self.assertEqual(a[("ind", "receita")][2025], 1259476000.0)
+        self.assertEqual(a[("ind", "ativo_total")][2025], 3986965000.0)
+        z = self.fin["zeradas"]["DFP"]
+        self.assertEqual(z[(self.RIO_P, "con", "U", "2025-12-31")], "escopo_nao_apresentado")
+        self.assertEqual(z[(self.RIO_P, "con", "P", "2024-12-31")], "escopo_nao_apresentado")   # comparativo também
+        self.assertNotIn(("ind", "receita"), {k for k in self.fin["anterior"][self.RIO_P] if k[0] == "con"})
+        ult, esc, valores, alertas = mod._exibicao(self.RIO_P, a, self.fin)
+        self.assertEqual((ult, esc), (2025, "ind"))
+        self.assertEqual((valores["receita"], valores["ativo_total"]), (1259476000, 3986965000))
+        self.assertIn("consolidado_nao_apresentado", alertas)
+        self.assertEqual(self.fin["ativo_invalido"], [])
+
+    def test_demonstracao_zerada_sem_outro_escopo(self):
+        # CELGPAR, ITR 2026: individual inteiro zerado, sem consolidado; vira ausência
+        self.assertEqual(self.fin["zeradas"]["ITR"][(self.CELGPAR, "ind", "U", "2026-03-31")], "demonstracao_zerada")
+        self.assertEqual(self.fin["zeradas"]["ITR"][(self.CELGPAR, "ind", "U", "2026-06-30")], "demonstracao_zerada")
+        self.assertNotIn(self.CELGPAR, self.fin["trimestral"])
+
+    def test_inicio_inconsistente_light_2019(self):
+        linha = self._linha("dfp_2019_light_recorte.zip", "dfp_cia_aberta_DRE_ind_2019.csv", "60.444.437/0001-46", "3.01")
+        self.assertEqual((linha["DT_INI_EXERC"], linha["DT_FIM_EXERC"], float(linha["VL_CONTA"])), ("2019-12-01", "2019-12-31", 11912106.0))
+        anterior = self._linha("dfp_2019_light_recorte.zip", "dfp_cia_aberta_BPA_ind_2019.csv", "60.444.437/0001-46", "1", "PENÚLTIMO")
+        self.assertGreater(float(anterior["VL_CONTA"]), 0)                      # a companhia existia em 31/12/2018
+        self.assertEqual(self.fin["anual"][self.LIGHT][("ind", "receita")][2019], 11912106000.0)
+        self.assertEqual(self.fin["nota_inicio"][(self.LIGHT, "ind", "receita", 2019)], "2019-12-01")
+
+    def test_inicio_inconsistente_ferreira_gomes_2025(self):
+        a = self.fin["anual"][self.FERREIRA]
+        self.assertEqual(a[("ind", "receita")][2025], 256519000.0)               # UHE de 252 MW, receita anual
+        self.assertEqual(a[("ind", "caixa_investimento")][2025], 759000.0)
+        ult, esc, valores, alertas = mod._exibicao(self.FERREIRA, a, self.fin)
+        self.assertEqual((ult, esc, valores["receita"]), (2025, "ind", 256519000))
+        self.assertIn("inicio_inconsistente_na_fonte", alertas)
+        # o comparativo de 2024 também tem início em 1º de dezembro, mas o documento de 2025 não
+        # prova que a companhia existia em 31/12/2023: fica fora do comparativo, nunca vira zero
+        self.assertNotIn(2024, self.fin["anterior"][self.FERREIRA].get(("ind", "receita"), {}))
+
+    def test_exercicio_curto_de_fato_fica_fora_da_serie(self):
+        # sem balanço positivo no fim do ano anterior: exercício de constituição, fora da série
+        dfp = {("ind|receita|U|00000000000100", "2017-06-02/2017-12-31"): 5.0,
+               ("ind|ativo_total|U|00000000000100", "2017-12-31"): 10.0}
+        con = base.conecta(":memory:")
+        vid, _ = base.registra_vintage(con, mod.DS_DFP, "dfp_cia_aberta_2017.zip", "u", "2026-09-30T23:00:00Z", None, "0" * 64, 1, "t", "x")
+        base.grava_observacoes(con, mod.DS_DFP, vid, [(k[0], k[1], v) for k, v in dfp.items()])
+        fin = mod._financas(con, {}, [], {})
+        self.assertNotIn(("ind", "receita"), fin["anual"]["00000000000100"])
+        self.assertEqual(fin["irregulares_dfp"], [("00000000000100", "ind", "receita", "2017-06-02", "2017-12-31", 5.0)])
+
+    def test_exercicio_mais_recente_antes_do_escopo(self):
+        # consolidado até 2010 e individual até 2023 (caso real da UPTICK): exibe 2023 individual
+        d = {("con", "receita"): {2010: 1.0}, ("ind", "receita"): {2010: 2.0, 2023: 3.0}}
+        fin = {"zeradas": {"DFP": {}}, "nota_inicio": {}}
+        ult, esc, valores, _ = mod._exibicao("02162616000194", d, fin)
+        self.assertEqual((ult, esc, valores["receita"]), (2023, "ind", 3))
+        d[("con", "receita")][2023] = 9.0
+        self.assertEqual(mod._exibicao("02162616000194", d, fin)[:2], (2023, "con"))
+
+
+class NomesDeSocios(unittest.TestCase):
+    """Nome de pessoa nunca é republicado: só com CNPJ, pessoa jurídica estrangeira declarada
+    pela fonte ou rótulo coletivo da lista fechada (os nomes abaixo são fictícios)."""
+
+    def test_regra(self):
+        pf = {"socio": None, "nome": "Fulano de Tal", "perfil": "PF"}
+        dc_pessoa = {"socio": None, "nome": "Beltrano Sicrano", "perfil": "DC"}
+        dc_coletivo = {"socio": None, "nome": "Ações em  Tesouraria", "perfil": "DC"}
+        pj_estrangeira = {"socio": None, "nome": "Empresa Exterior S.A.", "perfil": "PJ", "empresa_estrangeira": True}
+        pj_sem_marca = {"socio": None, "nome": "Empresa Sem Marca", "perfil": "PJ", "empresa_estrangeira": False}
+        pj = {"socio": "00000000000100", "nome": "Empresa Nacional", "perfil": "PJ"}
+        self.assertEqual(ae.rotulo_socio(pf), ae.MARCADOR_PF)
+        self.assertEqual(ae.rotulo_socio(dc_pessoa), ae.MARCADOR_SEM_DOCUMENTO)
+        self.assertEqual(ae.rotulo_socio(dc_coletivo), "Ações em  Tesouraria")
+        self.assertEqual(ae.rotulo_socio(pj_estrangeira), "Empresa Exterior S.A.")
+        self.assertEqual(ae.rotulo_socio(pj_sem_marca), ae.MARCADOR_SEM_DOCUMENTO)
+        self.assertEqual(ae.rotulo_socio(pj), "Empresa Nacional")
+        # o controlador sem CNPJ acima do topo segue a mesma regra
+        g = {"origem": {"00000000000100": "propria"},
+             "socios": {"00000000000100": [{**dc_pessoa, "pai": "00000000000100", "pct": 100.0, "controlador": True}]}}
+        r = ae.cadeia_de_controle(g, "00000000000100")
+        self.assertEqual((r["motivo_parada"], r["acima"]), ("sem_cnpj", None))
+
+    def test_marca_de_empresa_estrangeira_lida_do_polimero(self):
+        pol = _polimero()
+        arv = pol["arvores"][("33050071000158", (2026, 2))][0]
+        americas = next(a for a in arv["arestas"] if a["nome"] == "Enel Americas S.A.")
+        self.assertEqual((americas["socio"], americas["perfil"], americas["empresa_estrangeira"]), (None, "PJ", True))
+
+    @unittest.skipUnless(os.path.exists(os.path.join(base.SERIES, "empresas_cadeia_societaria.csv")), "CSV não gerado")
+    def test_arquivos_publicados_sem_nome_de_pessoa(self):
+        marcadores = {ae.MARCADOR_PF, ae.MARCADOR_SEM_DOCUMENTO}
+        with open(os.path.join(base.SERIES, "empresas_cadeia_societaria.csv"), encoding="utf-8") as f:
+            linhas = list(csv.DictReader(f, delimiter=";"))
+        pj_estrangeiras = set()
+        for r in linhas:
+            if r["socio_cnpj"]:
+                continue
+            nome = r["socio_nome"]
+            if nome in marcadores:
+                continue
+            if r["perfil"] == "PJ":
+                pj_estrangeiras.add(nome)
+                continue
+            self.assertIn(ae._rotulo_normalizado(nome), ae.ROTULOS_COLETIVOS, f"nome sem CNPJ publicado: perfil {r['perfil']}")
+        self.assertTrue(all(r["socio_nome"] == ae.MARCADOR_PF for r in linhas if r["perfil"] == "PF"))
+        with open(os.path.join(base.SERIES, "empresas_cadeia.json"), encoding="utf-8") as f:
+            ar = json.load(f)["arestas"]
+        for socio, nome in zip(ar["socio"], ar["nome"]):
+            if socio is None and nome not in marcadores:
+                self.assertTrue(nome in pj_estrangeiras or ae._rotulo_normalizado(nome) in ae.ROTULOS_COLETIVOS)
+
+
+class RegistroECatalogo(unittest.TestCase):
+    def test_estado_declarado_e_papel_no_catalogo(self):
+        # o catálogo deriva o estado de evidências e lê o estado declarado no REGISTRO como
+        # papel; a conferência (Agentes de Geração) precisa sair como 'conferencia', os demais
+        # como 'indicador', e nenhum valor fora desses dois
+        from pipeline.energia import catalogo
+        papeis = {d["dataset_silver"]: catalogo.papel(d["estado"]) for d in mod.REGISTRO["datasets"]}
+        self.assertEqual(papeis.pop(mod.DS_AGGER), "conferencia")
+        self.assertEqual(set(papeis.values()), {"indicador"})
+        self.assertTrue(set(d["estado"] for d in mod.REGISTRO["datasets"]) <= {"UTILIZADO EM INDICADOR", "UTILIZADO EM VALIDAÇÃO"})
+
+    def test_quebra_do_polimero_sem_norma_nao_conferida(self):
+        q = next(d for d in mod.REGISTRO["datasets"] if d["dataset_silver"] == mod.DS_POLIMERO)["quebras"][0]
+        self.assertNotIn("REN", q["descricao"])
+        for n in ("14", "162", "1.117"):
+            self.assertIn(n, q["descricao"])
+
+    @unittest.skipUnless(os.path.exists(os.path.join(base.GOLD, "empresas.json")), "gold não gerada")
+    def test_quebra_bate_com_os_declarantes_da_gold(self):
+        with open(os.path.join(base.GOLD, "empresas.json"), encoding="utf-8") as f:
+            per = {p["trimestre"]: p["declarantes"] for p in json.load(f)["controle"]["polimero"]["periodos"]}
+        self.assertEqual((per["2020T2"], per["2020T3"], per["2020T4"]), (14, 162, 1117))
+
+    def test_ebitda_e_decisao_de_metodo_nao_bloqueio(self):
+        self.assertNotIn("ebitda", {b["id"] for b in mod.BLOQUEIOS})
+        self.assertIn("ebitda", {d["id"] for d in mod.DECISOES_METODO})
+
+    def test_toda_conta_publicada_tem_metrica(self):
+        ids = {m["id"] for m in metricas_empresas.METRICAS}
+        for ct in [c_["id"] for c_ in cv.CONTAS] + [cv.DIVIDA_BRUTA["id"]]:
+            self.assertIn(f"empresas_{ct}", ids)
+
+
+class ListadasCvm(unittest.TestCase):
+    def test_companhia_aberta_de_outro_setor(self):
+        # Suzano (Papel e Celulose) é aberta e ativa: o silver guarda só o setor elétrico, a
+        # leitura do cadastro inteiro precisa reconhecê-la
+        caminho = os.path.join(DADOS, "cad_cia_aberta_recorte.csv")
+        cad, _ = cv.le_cadastro(_csv("cad_cia_aberta_recorte.csv", enc="latin-1"))
+        so_energia = {k: r for k, r in cad.items() if r["setor"] in cv.SETORES_ENERGIA}
+        listadas, origem = mod._listadas_cvm({"arquivo": caminho}, so_energia)
+        self.assertEqual(origem, "cadastro_completo")
+        self.assertIn("16404287000155", listadas)
+        self.assertNotIn("16404287000155", so_energia)
+        self.assertIn(CEMIG, listadas)
+        _, origem = mod._listadas_cvm(None, so_energia)
+        self.assertEqual(origem, "silver_setor_eletrico")
+
+
+class ContagemSobControle(unittest.TestCase):
+    def test_usinas_sob_controle_com_o_mesmo_criterio_dos_mw(self):
+        usinas, _ = _siga()
+        at = mod._ativos(usinas, None, {})
+        fora = {k for k, u in usinas.items() if u["fase"] != "Operação"}
+        self.assertTrue(fora)                                          # construção e não iniciada no recorte
+        for k in fora:
+            for c14, pct, _ in mod._agrega_por_cnpj(usinas[k]["proprietarios"] or []):
+                d = at["donos"][c14]
+                self.assertLessEqual(d["usinas_controle"], d["usinas_operacao"], c14)
+                if d["usinas_operacao"] == 0:
+                    self.assertEqual((d["usinas_controle"], d["kw_controle"]), (0, 0.0))
+        for d in at["donos"].values():
+            self.assertEqual(d["usinas_controle"] > 0, d["kw_controle"] > 0)
+
+
+class ProvenienciaDistribuidoras(unittest.TestCase):
+    def test_natureza_herdada_e_periodo_do_dado(self):
+        with open(os.path.join(DADOS, "golds_origem_recorte.json"), encoding="utf-8") as f:
+            golds = json.load(f)
+        cadeia = lambda x: {"topo": x, "cadeia": [x], "motivo_parada": "sem_declaracao", "pcts": [], "acima": None}  # noqa: E731
+        r = mod._indice_distribuidoras(golds, {}, {}, cadeia, {}, {})
+        p = r["proveniencia"]
+        self.assertEqual(p["distribuidoras_perdas"]["natureza"], "CALCULADO")
+        self.assertEqual(p["distribuidoras_pnt"]["natureza"], "ESTIMADO")      # separação estimada pela fonte
+        self.assertEqual(p["distribuidoras_qualidade"]["natureza"], "CALCULADO")
+        self.assertEqual(p["distribuidoras_tarifa"]["natureza"], "CALCULADO")
+        self.assertEqual(p["distribuidoras_perdas"]["periodo_referencia"], {"inicio": "2025", "fim": "2025"})
+        self.assertEqual(p["distribuidoras_tarifa"]["periodo_referencia"], {"inicio": "2026-09-30", "fim": "2026-09-30"})
+        # data de geração das golds não é período do dado
+        for k, v in p.items():
+            per = v["periodo_referencia"]
+            self.assertNotIn("T", per["inicio"] + per["fim"], k)
 
 
 # ============================================================================ catálogo e evidências

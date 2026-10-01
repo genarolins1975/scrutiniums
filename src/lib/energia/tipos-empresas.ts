@@ -32,7 +32,7 @@ export type MotivoParada =
   | "sem_cnpj"
   | "ciclo";
 
-/** Faixa descritiva do HHI (diretrizes de concentração horizontal de 2010): < 1.500, 1.500 a 2.500, > 2.500. */
+/** Faixa descritiva do HHI (Guia para Análise de Atos de Concentração Horizontal do CADE, 2016): < 1.500, 1.500 a 2.500, > 2.500. */
 export type FaixaHhi = "nao_concentrado" | "moderado" | "alto";
 
 export type EscopoCvm = "con" | "ind";
@@ -71,6 +71,8 @@ export type Datas = {
   cadastro_agentes: string | null;
   /** Trimestre de referência do grafo societário (ex.: "2026T2"). */
   polimero_referencia: string | null;
+  /** Trimestres cujas declarações formam o grafo vigente (a última de cada agente na janela). */
+  polimero_janela: string[];
   cvm_cadastro_capturado_em: string | null;
 };
 
@@ -128,6 +130,8 @@ export type ConferenciaAgentes = {
   so_no_siga: number;
   so_em_agentes: number;
   data: string | null;
+  /** O que se sabe sobre as divergências (a causa não é verificada). */
+  nota: string;
   exemplos: {
     nucleo: string;
     motivo: "cnpj" | "percentual";
@@ -148,7 +152,7 @@ export type Ativos = {
   proprietarios_no_cadastro: number;
   proprietarios_fora_do_cadastro: number;
   por_regime: RegimeResumo[];
-  /** As 25 maiores usinas em operação sem vínculo completo; a lista inteira está no CSV de ativos. */
+  /** As 20 maiores usinas em operação sem vínculo completo; a lista inteira está no CSV de ativos. */
   sem_vinculo: UsinaSemVinculo[];
   sem_vinculo_total: number;
   conferencia_agentes_geracao: ConferenciaAgentes | null;
@@ -174,7 +178,7 @@ export type Proprietario = {
 export type Cadastro = {
   agentes: ResumoAgentes;
   ativos: Ativos;
-  /** Os 50 maiores proprietários diretos por capacidade proporcional. */
+  /** Os 40 maiores proprietários diretos por capacidade proporcional (todos no CSV de proprietários). */
   proprietarios: Proprietario[];
 };
 
@@ -226,11 +230,11 @@ export type ControleDistribuidora = {
   /** Topo da cadeia de controladores únicos; null quando a própria distribuidora é o topo. */
   topo: string | null;
   topo_nome: string | null;
-  /** CNPJs da distribuidora até o topo, em ordem. */
+  /** CNPJs da distribuidora até o topo, em ordem (nomes em empresas_cadeia.json, nos[cnpj][0]). */
   cadeia: string[];
-  cadeia_nomes: (string | null)[];
   motivo_parada: MotivoParada;
-  /** Controlador não identificável acima do topo (empresa estrangeira sem CNPJ); pessoa física nunca é nomeada. */
+  /** Controlador sem CNPJ acima do topo, só quando é pessoa jurídica estrangeira declarada pela fonte ou rótulo
+   * coletivo; pessoa física e sócio declarado sem documento nunca são nomeados (null). */
   acima: string | null;
 };
 
@@ -244,7 +248,7 @@ export type Distribuidora = {
   conflito_classificacao: boolean;
   ufs: string[];
   ativa: boolean;
-  fontes: { samp: boolean; tarifas: boolean; continuidade: boolean };
+  /** Presença em cada base: perdas (SAMP), qualidade (continuidade) e tarifa (tarifas) não nulos. */
   perdas: ReferenciaPerdas | null;
   qualidade: ReferenciaQualidade | null;
   tarifa: ReferenciaTarifa | null;
@@ -255,11 +259,23 @@ export type Distribuidora = {
   slug: string;
   /** Slugs de outras siglas publicadas pelas fontes (sem colisão), para gerar rotas de apoio. */
   slugs_alternativos: string[];
+  /** Evolução própria: "primeiro/último" ano (perdas, qualidade) ou data de vigência (tarifa) da série da gold de
+   * origem para este CNPJ; módulo sem série para o CNPJ fica ausente. Ler em Distribuidoras.series_evolucao. */
+  evolucao: Partial<Record<ModuloEvolucao, string>>;
 };
+
+export type ModuloEvolucao = "perdas" | "qualidade" | "tarifa";
+
+/** Arquivo de série histórica por distribuidora publicado pela gold de origem, indexado pelo CNPJ. */
+export type SerieEvolucao = { url: string; chave: string; campos: string[]; unidade: string | Record<string, string> };
 
 export type Distribuidoras = {
   regra_universo: string;
   golds_origem: Record<"perdas.json" | "qualidade.json" | "conta.json", { gerado_em: string | null; disponivel: boolean }>;
+  /** Onde ler a evolução própria de cada distribuidora (null quando a gold de origem não publica a série). */
+  series_evolucao: Record<ModuloEvolucao, SerieEvolucao | null>;
+  /** Regra de pares para comparação. */
+  pares: string;
   resumo: {
     distribuidoras: number;
     ativas: number;
@@ -272,6 +288,7 @@ export type Distribuidoras = {
     companhias_abertas: number;
     conflitos_classificacao: number;
     sem_uf: number;
+    com_evolucao: Record<ModuloEvolucao, number>;
   };
   indice: Distribuidora[];
 };
@@ -299,10 +316,12 @@ export type Companhia = {
   /** Primeiro e último exercício com DFP; null sem DFP. */
   anos: [number, number] | null;
   ultimo_exercicio: number | null;
-  /** Escopo dos valores exibidos: consolidado quando a companhia o publica, senão individual. */
+  /** Escopo dos valores exibidos: no último exercício (entre os dois escopos), consolidado quando apresentado, senão individual. */
   escopo_exibido: EscopoCvm | null;
-  /** Último exercício, em R$; null sem DFP. Nunca somar entre companhias. */
+  /** Último exercício, em R$ inteiros; null sem DFP. Nunca somar entre companhias. */
   valores: Record<ContaDestaque, number | null> | null;
+  /** Avisos sobre o exercício exibido (vazio quando não há). */
+  alertas: AlertaCompanhia[];
   ultimo_trimestre: string | null;
   /** Primeira companhia aberta na cadeia de controle declarada à ANEEL (ela consolida esta). */
   controladora_aberta: { cnpj: string; nome: string | null } | null;
@@ -336,7 +355,35 @@ export type Financas = {
     observacoes_revisadas_entre_capturas: number;
     regra: string;
   };
+  /** O que saiu das séries financeiras e por quê. */
+  exclusoes: ExclusoesFinancas;
   companhias: Companhia[];
+};
+
+/** consolidado_nao_apresentado: o consolidado do exercício veio com ativo total zero e o individual é exibido;
+ * inicio_inconsistente_na_fonte: DT_INI_EXERC mal preenchida num exercício inteiro (valor aceito, data na nota do CSV);
+ * dre_zerada_na_fonte: receita, resultado e lucro iguais a zero com balanço positivo (publicado como a fonte entregou). */
+export type AlertaCompanhia = "consolidado_nao_apresentado" | "inicio_inconsistente_na_fonte" | "dre_zerada_na_fonte";
+
+export type ExclusoesFinancas = {
+  regra_nao_apresentada: string;
+  colunas_nao_apresentadas: {
+    /** Colunas (CNPJ, escopo, ordem do exercício, data) com ativo total ≤ 0, inclusive comparativos. */
+    documentos: number;
+    valores: number;
+    /** Só as colunas do exercício ou do trimestre corrente do documento. */
+    exercicio_ou_trimestre: {
+      cnpj: string;
+      escopo: EscopoCvm;
+      data: string;
+      documento: "DFP" | "ITR";
+      motivo: "escopo_nao_apresentado" | "demonstracao_zerada";
+    }[];
+  };
+  regra_inicio: string;
+  inicio_inconsistente: { cnpj: string; ano: number; dt_ini_publicada: string }[];
+  exercicios_irregulares: { valores: number; companhias: number; recorte_csv: "exercicio_irregular" };
+  periodos_irregulares_itr: { valores: number; companhias: number; recorte_csv: "periodo_irregular" };
 };
 
 /* ---------------------------------------------------------------- P039: controle e concentração */
@@ -397,6 +444,7 @@ export type Grupo = {
   empresas_com_usinas: number;
   motivo_parada: MotivoParada;
   acima: string | null;
+  /** Companhia aberta com registro ATIVO no cadastro inteiro da CVM (qualquer setor de atividade). */
   listada_cvm: boolean;
 };
 
@@ -425,6 +473,16 @@ export type Controle = {
 
 export type Bloqueio = { id: string; painel: string; descricao: string; evidencia: string; alternativa: string };
 
+/** Escolha de método (o insumo existe; a medida não é publicada nesta fase, com o motivo). */
+export type DecisaoMetodo = {
+  id: string;
+  painel: string;
+  decisao: string;
+  insumo_disponivel: string;
+  motivo: string;
+  como_mudar: string;
+};
+
 export type EmpresasGold = Cabecalho & {
   datas: Datas;
   definicoes: Definicoes;
@@ -438,12 +496,18 @@ export type EmpresasGold = Cabecalho & {
     identidades: { particao_grupos: boolean; particao_fronteira: boolean };
   };
   bloqueios: Bloqueio[];
+  decisoes_metodo: DecisaoMetodo[];
   proveniencia: {
     cadastro_agentes: Proveniencia;
     ativos: Proveniencia;
     controle: Proveniencia;
     concentracao: Proveniencia;
+    /** Identidade do índice (OBSERVADO); os números copiados têm proveniência própria, com a natureza herdada da origem. */
     distribuidoras: Proveniencia;
+    distribuidoras_perdas: Proveniencia | null;
+    distribuidoras_pnt: Proveniencia | null;
+    distribuidoras_qualidade: Proveniencia | null;
+    distribuidoras_tarifa: Proveniencia | null;
     financas: Proveniencia;
   };
   downloads: Download[];
@@ -482,6 +546,7 @@ export type CadeiaSocietaria = {
     pai: string[];
     /** null = sócio sem CNPJ (pessoa física, fundo, ações pulverizadas). */
     socio: (string | null)[];
+    /** Nome só com CNPJ, pessoa jurídica estrangeira declarada pela fonte ou rótulo coletivo; senão "pessoa física" ou "sócio sem documento". */
     nome: (string | null)[];
     controlador: (0 | 1)[];
     /** Participação direta do sócio no pai (%); null quando só há o percentual relativo ao declarante. */
@@ -497,7 +562,7 @@ export type SeriesFinanceiras = {
     string,
     {
       anual: Partial<Record<EscopoCvm, Partial<Record<ContaCvm, [number, number | null][]>>>>;
-      /** Chave "conta:recorte", recorte = trimestre | saldo | acumulado_no_ano. */
+      /** Chave "conta:recorte": DRE em trimestre, balanço em saldo, DFC em acumulado_no_ano (desde o 1º trimestre). */
       trimestral: Partial<Record<EscopoCvm, Record<string, [string, number | null][]>>>;
     }
   >;

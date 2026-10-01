@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "geracao_detalhe.json",
- "gerado_em": "2026-10-01T00:36:40Z",
+ "gerado_em": "2026-10-01T00:45:37Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "6d3bc3a2f759+alterado",
+ "versao_codigo": "d5dc4fd86561+alterado",
  "disponivel": true,
  "paineis": [
   "P021",
@@ -133,14 +133,20 @@
     "documento": "Descrição do conjunto Carga de Energia (portal de dados abertos)",
     "url": "https://dados.ons.org.br/dataset/carga-energia",
     "trecho": "A partir de 29/04/2023, além dos dados anteriormente considerados, passou a ser incorporado o valor estimado da micro e minigeração distribuída (MMGD), com base em dados meteorológicos previstos.",
-    "capturado_em": "2026-10-01T00:04:00Z"
+    "capturado_em": "2026-10-01T00:04:00Z",
+    "versao": null,
+    "data_documento": null,
+    "constatacao": null
    },
    {
     "orgao": "ONS",
     "documento": "Descrição do conjunto Geração por Usina em Base Horária (portal de dados abertos)",
     "url": "https://dados.ons.org.br/dataset/geracao-usina-2",
     "trecho": "Os grupos de pequenas usinas são formados por usinas Tipo III, que não possuem relacionamento com o ONS, e os dados são referentes a previsões de geração.",
-    "capturado_em": "2026-10-01T00:04:00Z"
+    "capturado_em": "2026-10-01T00:04:00Z",
+    "versao": null,
+    "data_documento": null,
+    "constatacao": null
    },
    {
     "orgao": "ONS",
@@ -149,14 +155,18 @@
     "trecho": "Os grupos de pequenas usinas são formados por usinas Tipo III, que não possuem relacionamento com o ONS, e os dados são referentes a previsões de geração.",
     "versao": "1.2",
     "data_documento": "09-06-2023",
-    "capturado_em": "2026-09-30T23:55:23Z"
+    "capturado_em": "2026-09-30T23:55:23Z",
+    "constatacao": null
    },
    {
     "orgao": "ONS",
     "documento": "Dicionário de dados e descrição do Balanço de Energia nos Subsistemas",
     "url": "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/balanco_energia_subsistema_ho/DicionarioDados_Balanco_Energia_Subsistema.pdf",
-    "trecho": "O dicionário (versão 1.0, 02-05-2023) e a descrição do conjunto não mencionam a MMGD.",
-    "capturado_em": "2026-09-30T23:55:29Z"
+    "trecho": "A oferta é representada pelos valores de geração das usinas hidráulicas, térmicas, eólicas e fotovoltaicas, em MWmed.",
+    "versao": "1.0",
+    "data_documento": "02-05-2023",
+    "capturado_em": "2026-09-30T23:55:29Z",
+    "constatacao": "Nem o dicionário nem a descrição do conjunto mencionam a MMGD."
    }
   ],
   "tabela": [
@@ -674,7 +684,7 @@
     "eolica",
     "solar_centralizada"
    ],
-   "descricao": "26 usinas passam a vir com todas as horas vazias em jan/2025: ausência na fonte, fora dos totais; participações das categorias afetadas ficam subestimadas."
+   "descricao": "26 identificadores passam a vir com todas as horas vazias em jan/2025: ausência na fonte, fora dos totais. Podem ser identificadores substituídos por outros ou usinas sem dado; a fonte não diz qual. Só a contagem de identificadores com valor (saltos de universo) suspende comparações."
   },
   {
    "data": "2025-04-01",
@@ -831,7 +841,7 @@
     "hidraulica",
     "outros"
    ],
-   "descricao": "85 usinas passam a vir com todas as horas vazias em mai/2026: ausência na fonte, fora dos totais; participações das categorias afetadas ficam subestimadas."
+   "descricao": "85 identificadores passam a vir com todas as horas vazias em mai/2026: ausência na fonte, fora dos totais. Podem ser identificadores substituídos por outros ou usinas sem dado; a fonte não diz qual. Só a contagem de identificadores com valor (saltos de universo) suspende comparações."
   },
   {
    "data": "2026-05-01",
@@ -1525,9 +1535,9 @@
     "nuclear": 4.8,
     "gas": 18.1,
     "carvao": 2.0,
-    "oleo": -34.8,
-    "biomassa": -70.7,
-    "outros": -18.2,
+    "oleo": null,
+    "biomassa": null,
+    "outros": null,
     "termica_sem_combustivel": -1.8,
     "nao_mapeada": null
    },
@@ -1545,6 +1555,34 @@
     "outros": 761.9,
     "termica_sem_combustivel": 1496.4,
     "nao_mapeada": 0.0
+   },
+   "variacao_suprimida": {
+    "outros": {
+     "motivo": "salto no número de usinas com dado na fonte dentro das janelas comparadas",
+     "datas": [
+      "2025-04-01",
+      "2026-01-01",
+      "2026-03-01",
+      "2026-05-01"
+     ]
+    },
+    "oleo": {
+     "motivo": "salto no número de usinas com dado na fonte dentro das janelas comparadas",
+     "datas": [
+      "2025-10-01",
+      "2025-11-01",
+      "2026-04-01"
+     ]
+    },
+    "biomassa": {
+     "motivo": "salto no número de usinas com dado na fonte dentro das janelas comparadas",
+     "datas": [
+      "2025-10-01",
+      "2026-01-01",
+      "2026-04-01",
+      "2026-05-01"
+     ]
+    }
    }
   },
   "mensal_sin": {
@@ -6348,9 +6386,7 @@
      "TROPIC BIO I",
      "TROPIC BIO II",
      "PCH VERDE 08"
-    ],
-    "mesmo_mes_ano_anterior": "2025-08",
-    "geracao_mesmas_usinas_ano_anterior_mwmed": 58.5
+    ]
    },
    "linhas_sem_id_ons_por_arquivo": {
     "2026-05": 87048,
@@ -18347,7 +18383,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:08:20Z",
    "capturado_em": "2026-09-30T23:49:22Z",
-   "validado_em": "2026-10-01T00:36:37Z",
+   "validado_em": "2026-10-01T00:45:35Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-29"
@@ -18364,9 +18400,9 @@
     "sha256": "26913bd28573aec98fb9d9784ab93f4676a9709d710b17188ca9346a4fcbb9b0"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:36:37Z",
+    "detectado_em": "2026-10-01T00:45:35Z",
     "total": 0,
     "vintages_comparadas": 58,
     "arquivos": 58,
@@ -18378,7 +18414,8 @@
     "Os grupos de pequenas usinas Tipo III e de MMGD são previsões e estimativas do ONS, não medição; a natureza de cada parcela é publicada separadamente.",
     "Desde 29/04/2023 a Geração por Usina inclui a estimativa de MMGD (fotovoltaica); comparações que atravessam a data usam o perímetro sem MMGD.",
     "O tipo da usina define a fonte (como no Balanço): conjuntos híbridos rotulados com combustível fotovoltaico dentro de usinas eólicas contam como eólica.",
-    "Os grupos térmicos Tipo III ('Outras Multi-Combustível') não têm combustível identificado na fonte e ficam numa categoria própria, explícita.",
+    "Os grupos térmicos Tipo III ('Outras Multi-Combustível') não têm combustível identificado na fonte e ficam numa categoria própria, explícita; a categoria Biomassa cobre só as usinas com combustível declarado.",
+    "Mudanças de universo na fonte (rótulos que aparecem ou somem, saltos no número de usinas com dado, identificadores com todas as horas vazias) estão em 'quebras'; a variação de 12 meses de categoria com salto de universo é suprimida.",
     "Dados em processo de consistência recorrente do ONS, sujeitos a revisão; revisões entre capturas são detectadas e publicadas."
    ],
    "download": "/energia/series/geracao_matriz_diaria.csv",
@@ -18403,7 +18440,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:08:20Z",
    "capturado_em": "2026-09-30T23:49:22Z",
-   "validado_em": "2026-10-01T00:36:38Z",
+   "validado_em": "2026-10-01T00:45:36Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-29"
@@ -18418,9 +18455,9 @@
     "sha256": "26913bd28573aec98fb9d9784ab93f4676a9709d710b17188ca9346a4fcbb9b0"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:36:38Z",
+    "detectado_em": "2026-10-01T00:45:36Z",
     "total": 0,
     "vintages_comparadas": 58,
     "arquivos": 58,
@@ -18453,7 +18490,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:09:35Z",
    "capturado_em": "2026-09-30T23:42:05Z",
-   "validado_em": "2026-10-01T00:36:39Z",
+   "validado_em": "2026-10-01T00:45:37Z",
    "cobertura_historica": {
     "inicio": "2013-01",
     "fim": "2026-08"
@@ -18469,9 +18506,9 @@
     "sha256": "bb7b86ff2d7d594fa8b4171aa1391cff65f6a3c7b452263f181dcbc5a8b53da4"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:36:39Z",
+    "detectado_em": "2026-10-01T00:45:37Z",
     "total": 0,
     "vintages_comparadas": 66,
     "arquivos": 66,
@@ -18507,7 +18544,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:01:15Z",
    "capturado_em": "2026-09-30T23:40:58Z",
-   "validado_em": "2026-10-01T00:36:40Z",
+   "validado_em": "2026-10-01T00:45:37Z",
    "cobertura_historica": {
     "inicio": "2005-01-01",
     "fim": "2026-10-02"
@@ -18522,9 +18559,9 @@
     "sha256": "703c3042e7fef9376f30b0f20ac207da8d769e2e01ef2586ae227a5c533312b6"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:36:40Z",
+    "detectado_em": "2026-10-01T00:45:37Z",
     "total": 0,
     "vintages_comparadas": 22,
     "arquivos": 22,
@@ -18558,7 +18595,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:09:53Z",
    "capturado_em": "2026-09-30T23:46:02Z",
-   "validado_em": "2026-10-01T00:36:40Z",
+   "validado_em": "2026-10-01T00:45:37Z",
    "cobertura_historica": {
     "inicio": "2021-10",
     "fim": "2026-08"
@@ -18574,9 +18611,9 @@
     "sha256": "26aa945d1a72b31ffec4527ee544d38064b3fc8f5b20dd845dd3054d0dedba08"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:36:40Z",
+    "detectado_em": "2026-10-01T00:45:37Z",
     "total": 0,
     "vintages_comparadas": 60,
     "arquivos": 60,
@@ -18612,7 +18649,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:08:57Z",
    "capturado_em": "2026-09-30T23:47:51Z",
-   "validado_em": "2026-10-01T00:36:40Z",
+   "validado_em": "2026-10-01T00:45:37Z",
    "cobertura_historica": {
     "inicio": "2024-04",
     "fim": "2026-08"
@@ -18628,9 +18665,9 @@
     "sha256": "6cdb8c306a22f66a5cba2b460de72c878cc293f2b44a1f70516ce5ec23aa0f87"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:36:40Z",
+    "detectado_em": "2026-10-01T00:45:37Z",
     "total": 0,
     "vintages_comparadas": 30,
     "arquivos": 30,
@@ -18666,7 +18703,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:00:59Z",
    "capturado_em": "2026-09-30T23:41:04Z",
-   "validado_em": "2026-10-01T00:36:40Z",
+   "validado_em": "2026-10-01T00:45:37Z",
    "cobertura_historica": {
     "inicio": "2021-01",
     "fim": "2026-08"
@@ -18682,9 +18719,9 @@
     "sha256": "a69dcef972246e71ef049e451994b4fc672ff3505aa415218ff847093d61366f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "d5dc4fd86561+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:36:40Z",
+    "detectado_em": "2026-10-01T00:45:37Z",
     "total": 0,
     "vintages_comparadas": 1,
     "arquivos": 1,
@@ -18761,8 +18798,8 @@
    "tratamento_ausencia": "dia sem as 24 horas em todos os subsistemas fica fora do numerador e do denominador",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "6d3bc3a2f759+alterado",
-    "publicacao": "2026-10-01T00:36:27Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:45:23Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -18784,7 +18821,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py geracao --sem-coleta",
-   "citacao": "SCRUTINIUMS. Geração do SIN nos últimos 30 dias (todas as categorias, com MMGD): 82.216 MWmed, SIN, 31/08/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Geração por Usina em Base Horária (recurso não identificado). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
+   "citacao": "SCRUTINIUMS. Geração do SIN nos últimos 30 dias (todas as categorias, com MMGD): 82.216 MWmed, SIN, 31/08/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Geração por Usina em Base Horária (recurso não identificado). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
   },
   "matriz_30d_eolica": {
    "indicador": "Participação de Eólica na geração do SIN, últimos 30 dias",
@@ -18844,8 +18881,8 @@
    "tratamento_ausencia": "dia incompleto fica fora; categoria sem linha conta zero energia no período",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "6d3bc3a2f759+alterado",
-    "publicacao": "2026-10-01T00:36:28Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:45:25Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -18867,7 +18904,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py geracao --sem-coleta",
-   "citacao": "SCRUTINIUMS. Participação de Eólica na geração do SIN, últimos 30 dias: 18,4%, SIN, 31/08/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Geração por Usina em Base Horária (recurso não identificado). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
+   "citacao": "SCRUTINIUMS. Participação de Eólica na geração do SIN, últimos 30 dias: 18,4%, SIN, 31/08/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Geração por Usina em Base Horária (recurso não identificado). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
   },
   "matriz_30d_solar_mmgd": {
    "indicador": "Participação de Solar MMGD (estimativa do ONS) na geração do SIN, últimos 30 dias",
@@ -18927,8 +18964,8 @@
    "tratamento_ausencia": "dia incompleto fica fora; categoria sem linha conta zero energia no período",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "6d3bc3a2f759+alterado",
-    "publicacao": "2026-10-01T00:36:29Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:45:26Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -18950,7 +18987,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py geracao --sem-coleta",
-   "citacao": "SCRUTINIUMS. Participação de Solar MMGD (estimativa do ONS) na geração do SIN, últimos 30 dias: 11,3%, SIN, 31/08/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Geração por Usina em Base Horária (recurso não identificado). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
+   "citacao": "SCRUTINIUMS. Participação de Solar MMGD (estimativa do ONS) na geração do SIN, últimos 30 dias: 11,3%, SIN, 31/08/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Geração por Usina em Base Horária (recurso não identificado). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
   },
   "matriz_30d_gas": {
    "indicador": "Participação de Gás natural na geração do SIN, últimos 30 dias",
@@ -19010,8 +19047,8 @@
    "tratamento_ausencia": "dia incompleto fica fora; categoria sem linha conta zero energia no período",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "6d3bc3a2f759+alterado",
-    "publicacao": "2026-10-01T00:36:30Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:45:27Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -19033,7 +19070,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py geracao --sem-coleta",
-   "citacao": "SCRUTINIUMS. Participação de Gás natural na geração do SIN, últimos 30 dias: 5,0%, SIN, 31/08/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Geração por Usina em Base Horária (recurso não identificado). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
+   "citacao": "SCRUTINIUMS. Participação de Gás natural na geração do SIN, últimos 30 dias: 5,0%, SIN, 31/08/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Geração por Usina em Base Horária (recurso não identificado). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
   },
   "a11_mmgd_primeiro_dia": {
    "indicador": "MMGD estimada pelo ONS no primeiro dia em que aparece na Geração por Usina",
@@ -19071,8 +19108,8 @@
    "tratamento_ausencia": "sem linha da modalidade antes de 29/04/2023: ausência, não zero",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "6d3bc3a2f759+alterado",
-    "publicacao": "2026-10-01T00:36:32Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:45:28Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -19094,7 +19131,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py geracao --sem-coleta",
-   "citacao": "SCRUTINIUMS. MMGD estimada pelo ONS no primeiro dia em que aparece na Geração por Usina: 2.446 MWmed, SIN, 29/04/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Geração por Usina em Base Horária (recurso GERACAO_USINA-2_2023_04, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
+   "citacao": "SCRUTINIUMS. MMGD estimada pelo ONS no primeiro dia em que aparece na Geração por Usina: 2.446 MWmed, SIN, 29/04/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Geração por Usina em Base Horária (recurso GERACAO_USINA-2_2023_04, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
   },
   "termica_12m_total": {
    "indicador": "Geração térmica despachada pelo ONS, últimos 12 meses completos",
@@ -19224,8 +19261,8 @@
    "tratamento_ausencia": "usina sem linha no mês não soma; vazio da fonte é ausência",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "6d3bc3a2f759+alterado",
-    "publicacao": "2026-10-01T00:36:32Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:45:29Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -19252,7 +19289,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py geracao --sem-coleta",
-   "citacao": "SCRUTINIUMS. Geração térmica despachada pelo ONS, últimos 12 meses completos: 8.033 MWmed, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Geração Térmica por Motivo de Despacho (recurso não identificado). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
+   "citacao": "SCRUTINIUMS. Geração térmica despachada pelo ONS, últimos 12 meses completos: 8.033 MWmed, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Geração Térmica por Motivo de Despacho (recurso não identificado). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
   },
   "termica_12m_inflexibilidade": {
    "indicador": "Parcela da geração térmica por inflexibilidade declarada pelo agente, últimos 12 meses completos",
@@ -19382,8 +19419,8 @@
    "tratamento_ausencia": "motivo sem coluna no período é 'não se aplica', não zero",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "6d3bc3a2f759+alterado",
-    "publicacao": "2026-10-01T00:36:33Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:45:30Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -19410,7 +19447,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py geracao --sem-coleta",
-   "citacao": "SCRUTINIUMS. Parcela da geração térmica por inflexibilidade declarada pelo agente, últimos 12 meses completos: 61,1%, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Geração Térmica por Motivo de Despacho (recurso não identificado). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
+   "citacao": "SCRUTINIUMS. Parcela da geração térmica por inflexibilidade declarada pelo agente, últimos 12 meses completos: 61,1%, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Geração Térmica por Motivo de Despacho (recurso não identificado). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
   },
   "restricao_eolica_12m_energia": {
    "indicador": "Energia não gerada estimada por restrição de operação (eólicas), últimos 12 meses completos",
@@ -19534,8 +19571,8 @@
    "tratamento_ausencia": "meia hora sem limitação não tem corte; limitada sem referência fica fora e é contada",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "6d3bc3a2f759+alterado",
-    "publicacao": "2026-10-01T00:36:33Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:45:30Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -19562,7 +19599,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py geracao --sem-coleta",
-   "citacao": "SCRUTINIUMS. Energia não gerada estimada por restrição de operação (eólicas), últimos 12 meses completos: 28.923 GWh, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Restrição de Operação por Constrained-off de Usinas Eólicas (recurso não identificado). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
+   "citacao": "SCRUTINIUMS. Energia não gerada estimada por restrição de operação (eólicas), últimos 12 meses completos: 28.923 GWh, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Restrição de Operação por Constrained-off de Usinas Eólicas (recurso não identificado). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
   },
   "restricao_eolica_12m_taxa": {
    "indicador": "Taxa de restrição (eólicas), últimos 12 meses completos",
@@ -19692,8 +19729,8 @@
    "tratamento_ausencia": "meia hora sem limitação não tem corte; limitada sem referência fica fora e é contada",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "6d3bc3a2f759+alterado",
-    "publicacao": "2026-10-01T00:36:33Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:45:30Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -19720,7 +19757,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py geracao --sem-coleta",
-   "citacao": "SCRUTINIUMS. Taxa de restrição (eólicas), últimos 12 meses completos: 21,3%, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Restrição de Operação por Constrained-off de Usinas Eólicas (recurso não identificado). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
+   "citacao": "SCRUTINIUMS. Taxa de restrição (eólicas), últimos 12 meses completos: 21,3%, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Restrição de Operação por Constrained-off de Usinas Eólicas (recurso não identificado). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
   },
   "restricao_solar_12m_energia": {
    "indicador": "Energia não gerada estimada por restrição de operação (fotovoltaicas), últimos 12 meses completos",
@@ -19844,8 +19881,8 @@
    "tratamento_ausencia": "meia hora sem limitação não tem corte; limitada sem referência fica fora e é contada",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "6d3bc3a2f759+alterado",
-    "publicacao": "2026-10-01T00:36:33Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:45:30Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -19872,7 +19909,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py geracao --sem-coleta",
-   "citacao": "SCRUTINIUMS. Energia não gerada estimada por restrição de operação (fotovoltaicas), últimos 12 meses completos: 12.376 GWh, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Restrição de Operação por Constrained-off de Usinas Fotovoltaicas (recurso não identificado). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
+   "citacao": "SCRUTINIUMS. Energia não gerada estimada por restrição de operação (fotovoltaicas), últimos 12 meses completos: 12.376 GWh, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Restrição de Operação por Constrained-off de Usinas Fotovoltaicas (recurso não identificado). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
   },
   "restricao_solar_12m_taxa": {
    "indicador": "Taxa de restrição (fotovoltaicas), últimos 12 meses completos",
@@ -20002,8 +20039,8 @@
    "tratamento_ausencia": "meia hora sem limitação não tem corte; limitada sem referência fica fora e é contada",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "6d3bc3a2f759+alterado",
-    "publicacao": "2026-10-01T00:36:33Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:45:30Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -20030,7 +20067,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py geracao --sem-coleta",
-   "citacao": "SCRUTINIUMS. Taxa de restrição (fotovoltaicas), últimos 12 meses completos: 25,7%, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Restrição de Operação por Constrained-off de Usinas Fotovoltaicas (recurso não identificado). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
+   "citacao": "SCRUTINIUMS. Taxa de restrição (fotovoltaicas), últimos 12 meses completos: 25,7%, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Restrição de Operação por Constrained-off de Usinas Fotovoltaicas (recurso não identificado). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
   },
   "capacidade_12m_fc_eolica": {
    "indicador": "Fator de capacidade de Eólica, últimos 12 meses completos",
@@ -20167,8 +20204,8 @@
    "tratamento_ausencia": "usina sem unidade pareada fica fora do numerador e do denominador",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "6d3bc3a2f759+alterado",
-    "publicacao": "2026-10-01T00:36:35Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:45:32Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -20190,7 +20227,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py geracao --sem-coleta",
-   "citacao": "SCRUTINIUMS. Fator de capacidade de Eólica, últimos 12 meses completos: 36,5%, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Geração por Usina em Base Horária (recurso não identificado). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
+   "citacao": "SCRUTINIUMS. Fator de capacidade de Eólica, últimos 12 meses completos: 36,5%, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Geração por Usina em Base Horária (recurso não identificado). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
   },
   "capacidade_12m_fc_solar_centralizada": {
    "indicador": "Fator de capacidade de Solar centralizada, últimos 12 meses completos",
@@ -20327,8 +20364,8 @@
    "tratamento_ausencia": "usina sem unidade pareada fica fora do numerador e do denominador",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "6d3bc3a2f759+alterado",
-    "publicacao": "2026-10-01T00:36:36Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:45:33Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -20350,7 +20387,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py geracao --sem-coleta",
-   "citacao": "SCRUTINIUMS. Fator de capacidade de Solar centralizada, últimos 12 meses completos: 20,8%, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Geração por Usina em Base Horária (recurso não identificado). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
+   "citacao": "SCRUTINIUMS. Fator de capacidade de Solar centralizada, últimos 12 meses completos: 20,8%, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Geração por Usina em Base Horária (recurso não identificado). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
   },
   "capacidade_retrato_total": {
    "indicador": "Potência instalada das usinas despachadas pelo ONS em operação comercial",
@@ -20388,8 +20425,8 @@
    "tratamento_ausencia": "unidade sem data de entrada em operação comercial fica fora",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "6d3bc3a2f759+alterado",
-    "publicacao": "2026-10-01T00:36:36Z"
+    "codigo": "d5dc4fd86561+alterado",
+    "publicacao": "2026-10-01T00:45:33Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -20407,7 +20444,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py geracao --sem-coleta",
-   "citacao": "SCRUTINIUMS. Potência instalada das usinas despachadas pelo ONS em operação comercial: 200.657 MW, SIN, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Capacidade Instalada de Geração (recurso CAPACIDADE_GERACAO, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
+   "citacao": "SCRUTINIUMS. Potência instalada das usinas despachadas pelo ONS em operação comercial: 200.657 MW, SIN, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Capacidade Instalada de Geração (recurso CAPACIDADE_GERACAO, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/geracao."
   }
  },
  "fontes": [

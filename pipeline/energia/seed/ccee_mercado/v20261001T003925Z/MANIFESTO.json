@@ -1,0 +1,164 @@
+{
+ "descricao": "Metadados oficiais (package_show) dos conjuntos de mercado do portal de dados abertos da CCEE usados pelo módulo Mercado: documentam o esquema (descrição de cada campo) que o coletor confere na chegada.",
+ "capturado_em": "2026-10-01T00:41:56Z",
+ "canal": "GET à API CKAN pública do portal (package_show?id=...) com o cliente HTTP do pipeline (pipeline.common.http_get, User-Agent do projeto), a partir do ambiente de construção.",
+ "transformacao": "De cada resposta foi mantido só o campo result, envolvido em {\"result\": ...} e reserializado em JSON com chaves ordenadas, indentação de 1 espaço e UTF-8 sem escape; o sha256 é o do arquivo reserializado.",
+ "origem": "https://dadosabertos.ccee.org.br/api/3/action/package_show",
+ "licenca": "CC-BY-4.0 (conforme o portal)",
+ "arquivos": [
+  {
+   "arquivo": "package_show_consumo_mensal_ambiente_comercializacao.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=consumo_mensal_ambiente_comercializacao",
+   "sha256": "3c5cc37e00ab0b7dfb936af44753d9dcfcdcbf7dc77c423a910140239cb0a1e6",
+   "bytes": 10275,
+   "capturado_em": "2026-10-01T00:39:26Z"
+  },
+  {
+   "arquivo": "package_show_consumo_classe_agente.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=consumo_classe_agente",
+   "sha256": "ccc2712a7b2ed7e5157f763c40bbd4c8bde581ac0803c1ebb48995531bc45623",
+   "bytes": 10828,
+   "capturado_em": "2026-10-01T00:39:28Z"
+  },
+  {
+   "arquivo": "package_show_agente_qtd_contabilizacao.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=agente_qtd_contabilizacao",
+   "sha256": "963ba4671a3ac892a34a294572b37748c797feffba46e480d9e69637c911c518",
+   "bytes": 9117,
+   "capturado_em": "2026-10-01T00:39:29Z"
+  },
+  {
+   "arquivo": "package_show_lista_agente_associado.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=lista_agente_associado",
+   "sha256": "f094d1eaefedabc6a41124cd9f0f08f24cbc088c25efd26135481596d4b5821c",
+   "bytes": 8450,
+   "capturado_em": "2026-10-01T00:39:31Z"
+  },
+  {
+   "arquivo": "package_show_lista_perfil.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=lista_perfil",
+   "sha256": "14839bb53612698c746415586c412c596bf1aa0e38438f0c1e66b349aa81abe0",
+   "bytes": 8522,
+   "capturado_em": "2026-10-01T00:39:33Z"
+  },
+  {
+   "arquivo": "package_show_desligamento_voluntario.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=desligamento_voluntario",
+   "sha256": "61ad2238a21f420db3512e6dbbaf6deb0762ddb8a2bbedabfd85669a200864f4",
+   "bytes": 5984,
+   "capturado_em": "2026-10-01T00:39:34Z"
+  },
+  {
+   "arquivo": "package_show_desligamento_compulsorio.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=desligamento_compulsorio",
+   "sha256": "fba0d5d447dabe9b87eb668589efb933d242ab0c7887a404df95f07598659d93",
+   "bytes": 5503,
+   "capturado_em": "2026-10-01T00:39:35Z"
+  },
+  {
+   "arquivo": "package_show_parcela_carga_consumo.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=parcela_carga_consumo",
+   "sha256": "e4e879cfc30b573d728a2eef41353a388e5be6dd7c02e7d4af6405d2b1439190",
+   "bytes": 12393,
+   "capturado_em": "2026-10-01T00:39:37Z"
+  },
+  {
+   "arquivo": "package_show_fator_ajuste_gf.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=fator_ajuste_gf",
+   "sha256": "186546970358bbc3e52342501f48098689fb35e911726c24c30523a271777e50",
+   "bytes": 6415,
+   "capturado_em": "2026-10-01T00:39:39Z"
+  },
+  {
+   "arquivo": "package_show_mre_mensal.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=mre_mensal",
+   "sha256": "ed4bded7cb1431484d45a67ddf02910a3b9def6c1bbae57c9bd3cec53aca875c",
+   "bytes": 16596,
+   "capturado_em": "2026-10-01T00:39:40Z"
+  },
+  {
+   "arquivo": "package_show_encargo_ess_ancilar.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=encargo_ess_ancilar",
+   "sha256": "43d3bb49a9b9fe19ca1ec48e6e6b5a6ede22d12c3867909068c12c75a50f104e",
+   "bytes": 21894,
+   "capturado_em": "2026-10-01T00:39:41Z"
+  },
+  {
+   "arquivo": "package_show_reserva_encargo.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=reserva_encargo",
+   "sha256": "cd672519dd72e2d741dbdb68da1dfe0ca02563648b82d6ccabe3300036d718a1",
+   "bytes": 11448,
+   "capturado_em": "2026-10-01T00:39:43Z"
+  },
+  {
+   "arquivo": "package_show_sumario_mensal_compra_venda_submercado.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=sumario_mensal_compra_venda_submercado",
+   "sha256": "50b740f7be98e965531bf0b9dd6a7cac9695a9777391a8ffa144daa8eb439f94",
+   "bytes": 12020,
+   "capturado_em": "2026-10-01T00:39:45Z"
+  },
+  {
+   "arquivo": "package_show_sumario_mensal_liquidacao.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=sumario_mensal_liquidacao",
+   "sha256": "c4bf808b7f759c2f213dd9a7b561dbc29d50f523bc7b5769ca7db273abdfa4f8",
+   "bytes": 9542,
+   "capturado_em": "2026-10-01T00:39:46Z"
+  },
+  {
+   "arquivo": "package_show_encargo_pgto_mensal.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=encargo_pgto_mensal",
+   "sha256": "005e6f03b62f06b92bda12e07ec97ceb84388862b4e55c27d8dc43c0b1fb4302",
+   "bytes": 13072,
+   "capturado_em": "2026-10-01T00:39:48Z"
+  },
+  {
+   "arquivo": "package_show_varejista_consumidor.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=varejista_consumidor",
+   "sha256": "bce6a419830f6967a4d68866146d604f395b340d60fc7f1920c1568272de5274",
+   "bytes": 10674,
+   "capturado_em": "2026-10-01T00:39:49Z"
+  },
+  {
+   "arquivo": "package_show_repasse_risco_hidrologico.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=repasse_risco_hidrologico",
+   "sha256": "a3b4a601437c51309612edc94ba00d9974612768d3c18de15f1b92a8789aa40c",
+   "bytes": 10669,
+   "capturado_em": "2026-10-01T00:39:50Z"
+  },
+  {
+   "arquivo": "package_show_garantia_fisica_sazo_mre_submercado.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=garantia_fisica_sazo_mre_submercado",
+   "sha256": "bd846883576d23a5bb716ab35db66da518b3b64056c17814b2dd979626caafc7",
+   "bytes": 9647,
+   "capturado_em": "2026-10-01T00:39:53Z"
+  },
+  {
+   "arquivo": "package_show_mre_horario.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=mre_horario",
+   "sha256": "ea77a1c4a7895d8516aa2239ecfbc9cc60ab25c88806c097c2817e1d37dc5fc5",
+   "bytes": 14115,
+   "capturado_em": "2026-10-01T00:40:12Z"
+  },
+  {
+   "arquivo": "package_show_geracao_submercado.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=geracao_submercado",
+   "sha256": "9168427b06fdb5342e0d621c9656c8527f659b05e1caa53babd17ad1da1d4828",
+   "bytes": 9672,
+   "capturado_em": "2026-10-01T00:40:14Z"
+  },
+  {
+   "arquivo": "package_show_sazonalizacao_mre_gf_fator_ajuste.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=sazonalizacao_mre_gf_fator_ajuste",
+   "sha256": "9a823272bc131fb98ff710aba8c897100809b70dfad7f6510662ff7a5e596b97",
+   "bytes": 11045,
+   "capturado_em": "2026-10-01T00:40:16Z"
+  },
+  {
+   "arquivo": "package_show_lista_perfil_v1.json",
+   "url": "https://dadosabertos.ccee.org.br/api/3/action/package_show?id=lista_perfil_v1",
+   "sha256": "2d773e94893fa7bafd541e5dfaace8e80226215b0f1d2715c21d572624c6e206",
+   "bytes": 8782,
+   "capturado_em": "2026-10-01T00:41:55Z"
+  }
+ ]
+}

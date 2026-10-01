@@ -253,6 +253,19 @@ REGISTRO = {
 }
 
 INTEGRADOR_VERSAO = "1"
+# Versão do integrador por recurso: subir a versão de um recurso reintegra só as
+# vintages dele (sem reler o Parquet histórico de 40 MB). Versão 3 dos atos: potência
+# citada nos demais atos de outorga do mesmo núcleo, para conferir a do encerramento.
+# Versão 4 dos leilões: lote sem vencedor marcado e zeros-marcadores como ausência; em
+# lote contratado, 0 km com linha descrita (ou 0 MVA com MVA descrito) vira ausência.
+# Versão 3 das obras do SIGET: data de fim do contrato em cada linha. (A versão 2 ficou
+# marcada sem efeito: reintegrar a mesma vintage não reescrevia as linhas, o que
+# _limpa_integracao_antiga corrige.)
+VERSAO_INTEGRADOR_RECURSO = {
+    "atos-outorgas-aneel.csv": "3",
+    "resultado-leiloes-transmissao.csv": "4",
+    "siget-contrato-empreendimento-obra-modulo.csv": "3",
+}
 DS_INTEGRACAO = "_integracao_expansao"
 MESES_JANELA = 12
 
@@ -324,16 +337,83 @@ def _baixa_epe(con, baixador=http_download):
     return st
 
 
-def _integrado(con, vid):
+def _versao_integrador(rec):
+    return VERSAO_INTEGRADOR_RECURSO.get(rec, INTEGRADOR_VERSAO)
+
+
+def _baixa_rede_epe(con, baixar=http_get, agora=None, intervalo_dias=30):
+    """Camadas de linhas de transmissão do WebMap da EPE (existente e planejada), pela
+    consulta pública do serviço ArcGIS, paginada. As páginas de cada camada viram um
+    único GeoJSON no bronze (sha256 e vintage), com as URLs consultadas e a contagem
+    informada pelo serviço; a contagem é conferida contra as feições recebidas."""
+    agora = agora or datetime.now(timezone.utc)
+    st = {"dataset": DS_REDE_EPE, "novas": 0, "identicas": 0, "puladas": 0, "falhas": []}
+    for camada, meta in er.CAMADAS.items():
+        rec = f"linhas-transmissao-{camada}.geojson"
+        ultima = base.ultima_vintage(con, DS_REDE_EPE, rec)
+        ok_em = _ultima_coleta_ok(con, DS_REDE_EPE, rec)
+        if ultima and ok_em and agora - ok_em < timedelta(days=intervalo_dias):
+            st["puladas"] += 1
+            continue
+        try:
+            corpo, _ = baixar(er.url_contagem(camada), timeout=60)
+            contagem = json.loads(corpo)["count"]
+            paginas, urls = [], []
+            for offset in range(0, contagem, er.PAGINA):
+                url = er.url_consulta(camada, offset)
+                corpo, _ = baixar(url, timeout=180, accept="*/*")
+                paginas.append(corpo)
+                urls.append(url)
+                time.sleep(0.3)
+            feicoes = er.le_paginas(paginas)
+            if len(feicoes) != contagem:
+                raise ValueError(f"{len(feicoes)} feições recebidas para {contagem} informadas pelo serviço")
+        except Exception as e:  # serviço fora do ar ou resposta inesperada: registrada, sem dado inventado
+            base.registra_coleta(con, DS_REDE_EPE, rec, False, f"consulta: {e}")
+            con.commit()
+            st["falhas"].append(f"{rec}: {str(e)[:200]}")
+            continue
+        capturado = base.agora_utc()
+        doc = {"type": "FeatureCollection", "camada": meta["titulo"], "servico": er.SERVICO, "id_camada": meta["id"],
+               "contagem_informada": contagem, "consultas": urls, "features": feicoes}
+        corpo = json.dumps(doc, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+        arquivo, sha = base.salva_bronze("epe", DS_REDE_EPE, rec, corpo, "json", capturado)
+        if ultima and ultima["sha256"] == sha:
+            base.registra_coleta(con, DS_REDE_EPE, rec, True, f"{len(corpo)} bytes, idêntico à vintage {ultima['vintage_id']}")
+            st["identicas"] += 1
+        else:
+            base.registra_vintage(con, DS_REDE_EPE, rec, er.SERVICO + f"/{meta['id']}", capturado, None, sha, len(corpo),
+                                  "coleta_direta", arquivo)
+            base.registra_coleta(con, DS_REDE_EPE, rec, True, f"{len(corpo)} bytes, {contagem} feições")
+            st["novas"] += 1
+        con.commit()
+    return st
+
+
+def _integrado(con, vid, rec=None):
     row = con.execute("SELECT valor FROM registros WHERE dataset=? AND chave=? AND campo='versao'",
                       (DS_INTEGRACAO, vid)).fetchone()
-    return bool(row) and row[0] == INTEGRADOR_VERSAO
+    return bool(row) and row[0] == _versao_integrador(rec)
 
 
-def _marca_integrado(con, vid, detalhe):
+def _limpa_integracao_antiga(con, ds, vid):
+    """Vintage já integrada por uma versão anterior do integrador: apaga as linhas que
+    ela gerou antes de reintegrar. grava_registros e grava_observacoes usam INSERT OR
+    IGNORE com a vintage na chave primária, então a mesma vintage não seria
+    reescrita. Só a vintage vigente do recurso é reintegrada (não há vintage
+    posterior calculada sobre a antiga)."""
+    row = con.execute("SELECT valor FROM registros WHERE dataset=? AND chave=? AND campo='versao'",
+                      (DS_INTEGRACAO, vid)).fetchone()
+    if not row:
+        return
+    con.execute("DELETE FROM registros WHERE dataset=? AND vintage_id=?", (ds, vid))
+    con.execute("DELETE FROM observacoes WHERE dataset=? AND vintage_id=?", (ds, vid))
+
+
+def _marca_integrado(con, vid, detalhe, rec=None):
     con.execute("DELETE FROM registros WHERE dataset=? AND chave=?", (DS_INTEGRACAO, vid))
     con.executemany("INSERT INTO registros VALUES(?,?,?,?,?)",
-                    [(DS_INTEGRACAO, vid, "versao", INTEGRADOR_VERSAO, vid),
+                    [(DS_INTEGRACAO, vid, "versao", _versao_integrador(rec), vid),
                      (DS_INTEGRACAO, vid, "integrado_em", base.agora_utc(), vid),
                      (DS_INTEGRACAO, vid, "detalhe", json.dumps(detalhe, ensure_ascii=False)[:2000], vid)])
 
@@ -474,11 +554,16 @@ def _integra(con, ds, rec, v):
         linhas = [(f"resumido.{t}", ano, val) for ano, tipos in res.items() for t, val in tipos.items()]
         return {"observacoes": base.grava_observacoes(con, ds, v["vintage_id"], linhas)}
     if rec == "atos-outorgas-aneel.csv":
-        enc = ax.le_encerramentos(_le_csv(v))
+        refs = {}
+        enc = ax.le_encerramentos(_le_csv(v), referencias=refs)
         est = {}
         for x in enc:
             ident = x["nucleo"] if x["nucleo"] is not None else (x["ceg"] or x["nome"] or "?")
             k = f"{ident}:{x['publicacao']}:{x['objeto']}:{x['numero'] or ''}"
+            # potência citada nos demais atos de outorga da mesma usina (corroboração
+            # independente na conferência de unidade da potência do encerramento)
+            x["outros_atos"] = sorted(refs.get(x["nucleo"], []), key=lambda z: (z[1] or "", z[0] or "")) \
+                if x["nucleo"] is not None else []
             est[k] = x
         return {"encerramentos": len(est),
                 "registros": _grava_estado(con, ds, v["vintage_id"], "enc:", {k: _compacto(x) for k, x in est.items()})}
@@ -504,7 +589,7 @@ def _integra(con, ds, rec, v):
                 k: x[k] for k in ("contrato", "empreendimento_ons", "nome_empreendimento", "situacao_empreendimento",
                                   "oper_efetiva_empreendimento", "conclusao_ato_legal", "oper_ato_legal")})
             e.setdefault("obras", []).append([obra, mdl, x["situacao_obra"], x["tipo_obra"], x["oper_obra"],
-                                              x["tipo_modulo"], x["modulo"]])
+                                              x["tipo_modulo"], x["modulo"], x["fim_contrato_linha"]])
         for e in est.values():
             e["obras"].sort(key=lambda z: (z[0], z[1]))
         return {"obras_modulos": len(ob), "empreendimentos": len(est),
@@ -522,6 +607,10 @@ def _integra(con, ds, rec, v):
         lt = ax.le_siget_linhas(_le_csv(v))
         return {"linhas": len(lt),
                 "registros": _grava_estado(con, ds, v["vintage_id"], "lt:", {k: _compacto(x) for k, x in lt.items()})}
+    if rec == "siget-contrato-agente.csv":
+        cc = ax.le_siget_contratos(_le_csv(v))
+        return {"contratos": len(cc),
+                "registros": _grava_estado(con, ds, v["vintage_id"], "ccd:", {k: _compacto(x) for k, x in cc.items()})}
     if rec == "siget-contrato-moduloequipamento-subestacao.csv":
         eq = ax.le_siget_equipamentos(_le_csv(v))
         return {"equipamentos": len(eq),
@@ -565,10 +654,12 @@ def coletar(con, ctx):
         for cj in CONJUNTOS:
             status["conjuntos"].append(_baixa_conjunto(con, cj))
         status["conjuntos"].append(_baixa_epe(con))
+        status["conjuntos"].append(_baixa_rede_epe(con))
     for ds in sorted({cj["dataset"] for cj in CONJUNTOS} | {DS_PDE}):
         for rec, v in ckan.vintages_vigentes(con, ds).items():
-            if _integrado(con, v["vintage_id"]):
+            if _integrado(con, v["vintage_id"], rec):
                 continue
+            _limpa_integracao_antiga(con, ds, v["vintage_id"])
             try:
                 det = _integra(con, ds, rec, v)
             except Exception as e:  # arquivo com esquema inesperado: registrado, sem número inventado
@@ -577,7 +668,7 @@ def coletar(con, ctx):
                 con.commit()
                 continue
             if det is not None:
-                _marca_integrado(con, v["vintage_id"], det)
+                _marca_integrado(con, v["vintage_id"], det, rec)
             status["integracoes"][rec] = det
             con.commit()
     status["ok"] = not any(s["falhas"] for s in status["conjuntos"]) and \
@@ -690,8 +781,7 @@ def _bloco_capacidade(siga, agreg, lib_linhas, data_siga):
             agrupa(lambda u: (u.get("uf"), u.get("tipo"), u.get("origem"), u.get("fonte"))).items(),
             key=lambda kv: tuple(v or "" for v in kv[0])):
         csv_linhas.append([uf, tipo, origem, fonte, x["usinas"], _mw(x["kw_f"]), _mw(x["kw_o"])])
-    _csv(os.path.basename(DOWNLOADS["capacidade_uf"]),
-         ["uf", "tipo", "origem", "fonte", "usinas", "mw_fiscalizado", "mw_outorgado"], csv_linhas)
+    _csv(os.path.basename(DOWNLOADS["capacidade_uf"]), _cabecalho("capacidade_uf"), csv_linhas)
 
     # reconciliação: agregado oficial mais recente por tipo (empreendimentos em operação)
     # e por UF (capacidade instalada por UF) contra o SIGA, com as liberações comerciais
@@ -769,6 +859,12 @@ def _csv(nome, cabecalho, linhas):
         if isinstance(v, str):
             return v.replace(";", ",").replace("\r", " ").replace("\n", " ").strip()
         return v
+    chave = next((k for k in COLUNAS if os.path.basename(DOWNLOADS[k]) == nome), None)
+    if chave is not None and list(cabecalho) != _cabecalho(chave):
+        raise ValueError(f"{nome}: cabeçalho diferente da descrição publicada em arquivos.json")
+    for lin in linhas:
+        if len(lin) != len(cabecalho):
+            raise ValueError(f"{nome}: linha com {len(lin)} campos para {len(cabecalho)} colunas")
     return base.escreve_csv(nome, cabecalho, [[limpa(v) for v in lin] for lin in linhas])
 
 
@@ -778,7 +874,7 @@ def _fim_do_mes(ref):
     return (prox - timedelta(days=1)).isoformat()
 
 
-def _bloco_estagios(siga, encerramentos, ralie_us, ralie_ug, ralie_leilao, data_siga, data_ralie):
+def _bloco_estagios(siga, encerramentos, ralie_us, ralie_ug, ralie_leilao, data_siga, data_ralie, ralie_kw_hist=None):
     """P040: estágios do SIGA, encerramentos de outorga e o detalhe do RALIE."""
     g = defaultdict(lambda: {"usinas": 0, "kw_o": 0.0, "kw_f": 0.0})
     gt = defaultdict(lambda: {"usinas": 0, "kw_o": 0.0, "kw_f": 0.0})
@@ -811,31 +907,6 @@ def _bloco_estagios(siga, encerramentos, ralie_us, ralie_ug, ralie_leilao, data_
             linha[f"{e}_usinas"] = x["usinas"]
             linha[f"{e}_mw_outorgado"] = _r(_mw(x["kw_o"]))
         por_uf.append(linha)
-
-    # encerramentos de outorga (atos da ANEEL)
-    por_ano = defaultdict(lambda: {"atos": 0, "usinas": set(), "mw": 0.0, "mw_sem_valor": 0, "revogacao": 0, "extincao": 0})
-    por_tipo_enc = defaultdict(lambda: {"atos": 0, "mw": 0.0})
-    sem_data = {"atos": 0, "mw": 0.0}
-    for x in encerramentos.values():
-        ano = (x.get("publicacao") or "")[:4]
-        por_tipo_enc[x.get("tipo_geracao")]["atos"] += 1
-        por_tipo_enc[x.get("tipo_geracao")]["mw"] += x.get("mw") or 0
-        if not ano:
-            # ato sem data de publicação na fonte: fora da série anual, contado à parte
-            sem_data["atos"] += 1
-            sem_data["mw"] += x.get("mw") or 0
-            continue
-        a = por_ano[ano]
-        a["atos"] += 1
-        a[x.get("encerramento")] += 1
-        a["usinas"].add(x.get("nucleo") or x.get("ceg") or x.get("nome"))
-        if x.get("mw") is None:
-            a["mw_sem_valor"] += 1
-        else:
-            a["mw"] += x["mw"]
-    enc_ano = [{"ano": a, "atos": x["atos"], "revogacoes": x["revogacao"], "extincoes": x["extincao"],
-                "usinas": len(x["usinas"]), "mw_declarado": _r(x["mw"]), "atos_sem_potencia": x["mw_sem_valor"],
-                "ano_parcial": a == data_siga[:4]} for a, x in sorted(por_ano.items())]
 
     # RALIE atual
     kw_ug = defaultdict(float)
@@ -881,13 +952,184 @@ def _bloco_estagios(siga, encerramentos, ralie_us, ralie_ug, ralie_leilao, data_
     }
     return {
         "data_referencia": data_siga, "resumo": resumo, "por_tipo": por_tipo, "por_uf": por_uf,
-        "encerramentos": {"desde": min((x["ano"] for x in enc_ano), default=None), "por_ano": enc_ano,
-                          "por_tipo": [{"tipo": t, "atos": x["atos"], "mw_declarado": _r(x["mw"])}
-                                       for t, x in sorted(por_tipo_enc.items(), key=lambda kv: -kv[1]["mw"])],
-                          "sem_data_publicacao": {"atos": sem_data["atos"], "mw_declarado": _r(sem_data["mw"])},
-                          "total_atos": sum(x["atos"] for x in enc_ano) + sem_data["atos"],
-                          "total_mw_declarado": _r(sum(x["mw"] for x in por_ano.values()) + sem_data["mw"])},
+        "encerramentos": _bloco_encerramentos(encerramentos, siga, ralie_kw_hist, data_siga),
         "ralie": ralie,
+    }
+
+
+REGRA_ENCERRAMENTOS = (
+    "Atos com objeto 'Autorização - Revogação' ou 'Concessão - Extinção'. A potência conta uma vez por usina (núcleo do "
+    "CEG) em cada ano e uma vez por usina no total, pelo maior valor conferido entre os atos da usina; a contagem de atos "
+    "fica à parte. A potência de cada ato é conferida contra o cadastro da mesma usina (SIGA e RALIE histórico) e o "
+    "limite legal do tipo (CGH até 5 MW): valor em kW no campo de MW é corrigido pelo cadastro quando há confirmação "
+    "independente, e sai da soma quando não há. Ato sem núcleo do CEG na fonte não pode ser ligado a nenhuma usina: "
+    "cada um conta como uma unidade, sem deduplicação. Outorga encerrada não significa usina retirada: parte das "
+    "usinas segue em operação no SIGA (conversão de regime, por exemplo de concessão para registro, ou nova outorga).")
+
+
+def _maxn(a, b):
+    """Maior de dois valores ignorando ausência (None só se os dois forem None)."""
+    if a is None:
+        return b
+    if b is None:
+        return a
+    return max(a, b)
+
+
+def _confere_atos(encerramentos, siga, ralie_kw_hist):
+    """Conferência de unidade da potência de cada ato de encerramento (ax.confere_potencia_ato)."""
+    out = {}
+    for k, x in encerramentos.items():
+        n = x.get("nucleo")
+        s_ = siga.get(str(n)) if n is not None else None
+        refs = []
+        if s_ and s_.get("kw_outorgado"):
+            refs.append(("SIGA, potência outorgada", s_["kw_outorgado"]))
+        if n is not None:
+            refs += [("RALIE histórico, potência outorgada", kw) for kw in (ralie_kw_hist or {}).get(int(n), ())]
+        tipo = (s_ or {}).get("tipo") or x.get("tipo_geracao")
+        outros = [z[2] for z in (x.get("outros_atos") or []) if len(z) > 2]
+        r = ax.confere_potencia_ato(x.get("mw"), tipo, refs, outros)
+        r["com_cadastro"] = bool(refs)
+        out[k] = r
+    return out
+
+
+def _bloco_encerramentos(encerramentos, siga, ralie_kw_hist, data_siga):
+    """P040: encerramentos de outorga (atos da ANEEL), uma vez por usina, com a potência
+    conferida e a situação da usina no SIGA. Escreve o CSV por ato."""
+    conf = _confere_atos(encerramentos, siga, ralie_kw_hist)
+
+    def usina(k, x):
+        return f"n:{int(x['nucleo'])}" if x.get("nucleo") is not None else f"ato:{k}"
+
+    atos = sorted(encerramentos.items(), key=lambda kv: (kv[1].get("publicacao") or "9999", kv[0]))
+    primeiro_ano = {}
+    for k, x in atos:
+        a = (x.get("publicacao") or "")[:4]
+        if a:
+            primeiro_ano.setdefault(usina(k, x), a)
+    por_ano = defaultdict(lambda: {"atos": 0, "revogacao": 0, "extincao": 0, "usinas": {}, "atos_sem_chave": 0,
+                                   "mw_sem_chave": 0.0, "atos_sem_potencia": 0, "corrigidas": 0, "fora_da_soma": 0})
+    por_usina = {}
+    sem_data = {"atos": 0, "usinas": {}}
+    repetido = {}
+    vistos = set()
+    for k, x in atos:
+        u = usina(k, x)
+        c_ = conf[k]
+        repetido[k] = u in vistos
+        vistos.add(u)
+        mw = c_["mw_usado"]
+        por_usina[u] = _maxn(por_usina.get(u), mw)
+        ano = (x.get("publicacao") or "")[:4]
+        if not ano:
+            sem_data["atos"] += 1
+            sem_data["usinas"][u] = _maxn(sem_data["usinas"].get(u), mw)
+            continue
+        a = por_ano[ano]
+        a["atos"] += 1
+        a[x.get("encerramento")] += 1
+        a["usinas"][u] = _maxn(a["usinas"].get(u), mw)
+        if x.get("nucleo") is None:
+            a["atos_sem_chave"] += 1
+            a["mw_sem_chave"] += mw or 0
+        if x.get("mw") is None:
+            a["atos_sem_potencia"] += 1
+        a["corrigidas"] += c_["situacao"] == "corrigida_kw"
+        a["fora_da_soma"] += c_["situacao"] == "fora_da_soma"
+
+    def fase_de(u):
+        return (siga.get(u[2:]) or {}).get("fase") if u.startswith("n:") else None
+
+    enc_ano = []
+    for a, x in sorted(por_ano.items()):
+        us = x["usinas"]
+        rep_ = {u: m for u, m in us.items() if primeiro_ano.get(u, a) < a}
+        op = {u: m for u, m in us.items() if fase_de(u) == "Operação"}
+        enc_ano.append({
+            "ano": a, "atos": x["atos"], "revogacoes": x["revogacao"], "extincoes": x["extincao"],
+            "usinas": len(us), "mw_usinas": _r(sum(m or 0 for m in us.values())),
+            "usinas_sem_potencia": sum(1 for m in us.values() if m is None),
+            "usinas_com_ato_em_ano_anterior": len(rep_), "mw_usinas_com_ato_em_ano_anterior": _r(sum(m or 0 for m in rep_.values())),
+            "usinas_em_operacao_no_siga": len(op), "mw_usinas_em_operacao_no_siga": _r(sum(m or 0 for m in op.values())),
+            "atos_sem_chave_de_usina": x["atos_sem_chave"], "mw_atos_sem_chave_de_usina": _r(x["mw_sem_chave"]),
+            "atos_sem_potencia": x["atos_sem_potencia"], "atos_potencia_corrigida": x["corrigidas"],
+            "atos_potencia_fora_da_soma": x["fora_da_soma"], "ano_parcial": a == (data_siga or "")[:4]})
+
+    # repetição: soma por ato contra soma por usina (o que a regra antiga publicava a mais)
+    mw_por_ato = sum((conf[k]["mw_usado"] or 0) for k, _ in atos)
+    n_atos_usina = defaultdict(int)
+    for k, x in atos:
+        n_atos_usina[usina(k, x)] += 1
+    # tipo: o do ato (rótulo da fonte), uma vez por usina
+    por_tipo = defaultdict(dict)
+    for k, x in atos:
+        u = usina(k, x)
+        t = x.get("tipo_geracao")
+        por_tipo[t][u] = _maxn(por_tipo[t].get(u), conf[k]["mw_usado"])
+    # usinas com outorga encerrada que seguem em operação no SIGA
+    op_us = {u for u in por_usina if fase_de(u) == "Operação"}
+    por_outorga = defaultdict(lambda: {"usinas": 0, "mw_fiscalizado": 0.0})
+    for u in op_us:
+        s_ = siga.get(u[2:]) or {}
+        g = por_outorga[s_.get("outorga") or "(vazio)"]
+        g["usinas"] += 1
+        g["mw_fiscalizado"] += (s_.get("kw_fiscalizado") or 0) / 1000
+    sem_chave = [(k, x) for k, x in atos if x.get("nucleo") is None]
+    sc_ano = defaultdict(lambda: {"atos": 0, "mw": 0.0})
+    for k, x in sem_chave:
+        sc_ano[(x.get("publicacao") or "")[:4] or None]["atos"] += 1
+        sc_ano[(x.get("publicacao") or "")[:4] or None]["mw"] += conf[k]["mw_usado"] or 0
+    lista_conf = [{"chave": k, "publicacao": x.get("publicacao"), "nome": x.get("nome"), "nucleo": x.get("nucleo"),
+                   "tipo": x.get("tipo_geracao"), "mw_no_ato": x.get("mw"), "mw_usado": _r(conf[k]["mw_usado"], 6),
+                   "kw_cadastro": conf[k]["ref_kw"], "cadastro": conf[k]["ref_origem"], "motivo": conf[k]["motivo"]}
+                  for k, x in atos if conf[k]["situacao"] in ("corrigida_kw", "fora_da_soma")]
+
+    # CSV por ato
+    linhas = []
+    for k, x in atos:
+        s_ = siga.get(str(x["nucleo"])) if x.get("nucleo") is not None else None
+        linhas.append([x.get("publicacao"), x.get("encerramento"), x.get("nucleo"), x.get("ceg"), x.get("nome"),
+                       x.get("tipo_geracao"), x.get("uf"), x.get("mw"), conf[k]["mw_usado"], conf[k]["situacao"],
+                       conf[k]["motivo"], "sim" if repetido[k] else "não", (s_ or {}).get("fase"), (s_ or {}).get("outorga"),
+                       x.get("assunto"), x.get("ato"), x.get("numero"), x.get("agente")])
+    _csv(os.path.basename(DOWNLOADS["encerramentos"]), _cabecalho("encerramentos"), linhas)
+
+    total_usinas = len(por_usina)
+    return {
+        "regra": REGRA_ENCERRAMENTOS,
+        "desde": min((x["ano"] for x in enc_ano), default=None),
+        "por_ano": enc_ano,
+        "por_tipo": [{"tipo": t, "usinas": len(us), "mw_usinas": _r(sum(m or 0 for m in us.values()))}
+                     for t, us in sorted(por_tipo.items(), key=lambda kv: -sum(m or 0 for m in kv[1].values()))],
+        "sem_data_publicacao": {"atos": sem_data["atos"], "usinas": len(sem_data["usinas"]),
+                                "mw_usinas": _r(sum(m or 0 for m in sem_data["usinas"].values()))},
+        "total": {"atos": len(atos), "usinas": total_usinas, "mw_usinas": _r(sum(m or 0 for m in por_usina.values())),
+                  "usinas_sem_potencia": sum(1 for m in por_usina.values() if m is None)},
+        "repeticoes": {"usinas_com_mais_de_um_ato": sum(1 for n in n_atos_usina.values() if n > 1),
+                       "atos_alem_do_primeiro": sum(n - 1 for n in n_atos_usina.values() if n > 1),
+                       "mw_que_a_soma_por_ato_repetiria": _r(mw_por_ato - sum(m or 0 for m in por_usina.values()))},
+        "potencia_conferida": {
+            "regra": "valor do ato conferido contra a potência outorgada da mesma usina no SIGA e no RALIE histórico (fator 1.000) e contra o limite legal de 5 MW da CGH",
+            "atos_com_cadastro": sum(1 for c_ in conf.values() if c_["com_cadastro"]),
+            "atos_sem_cadastro": sum(1 for c_ in conf.values() if not c_["com_cadastro"] and c_["situacao"] != "sem_potencia"),
+            "atos_sem_potencia": sum(1 for c_ in conf.values() if c_["situacao"] == "sem_potencia"),
+            "corrigidas_kw": [z for z in lista_conf if conf[z["chave"]]["situacao"] == "corrigida_kw"],
+            "fora_da_soma": [z for z in lista_conf if conf[z["chave"]]["situacao"] == "fora_da_soma"],
+            "mw_no_ato_dos_atos_corrigidos_ou_fora": _r(sum(z["mw_no_ato"] or 0 for z in lista_conf)),
+        },
+        "usinas_em_operacao_no_siga": {
+            "nota": "Usinas com ato de encerramento cujo núcleo do CEG segue na fase Operação do SIGA na data do arquivo: a outorga encerrada não retirou a usina (conversão de regime, como concessão extinta e registro em operação, ou nova outorga). Não são usinas desativadas.",
+            "atos": sum(1 for k, x in atos if fase_de(usina(k, x)) == "Operação"),
+            "usinas": len(op_us), "mw_usinas_nos_atos": _r(sum(por_usina[u] or 0 for u in op_us)),
+            "por_outorga_no_siga": [{"outorga": o, "usinas": g["usinas"], "mw_fiscalizado_siga": _r(g["mw_fiscalizado"])}
+                                    for o, g in sorted(por_outorga.items(), key=lambda kv: -kv[1]["usinas"])]},
+        "sem_chave_de_usina": {
+            "nota": "Atos sem núcleo nem código do CEG na fonte: não se ligam a nenhuma usina do SIGA ou do RALIE e cada um conta como uma unidade (sem deduplicação).",
+            "atos": len(sem_chave), "mw_usado": _r(sum(conf[k]["mw_usado"] or 0 for k, _ in sem_chave)),
+            "por_ano": [{"ano": a, "atos": v["atos"], "mw_usado": _r(v["mw"])}
+                        for a, v in sorted(sc_ano.items(), key=lambda kv: kv[0] or "")]},
     }
 
 
@@ -932,17 +1174,33 @@ def _atraso_realizado(lib_linhas, desde="2014"):
     return out
 
 
+REGRA_DATA_EM_BLOCO = (f"Data em bloco: previsão atribuída a pelo menos {ax.MINIMO_USINAS_DATA_EM_BLOCO} usinas distintas na "
+                       "mesma fotografia (o maior complexo do RALIE tem 41 usinas). É a data convencional que a fiscalização "
+                       "atribui em lote e que anda com a fotografia, cerca de 5 anos depois dela; não é cronograma de obra.")
+
+
+def datas_em_bloco_atual(ralie_ug, minimo=None):
+    """Datas em bloco da fotografia atual (CSV do RALIE), pela mesma regra do histórico."""
+    minimo = minimo or ax.MINIMO_USINAS_DATA_EM_BLOCO
+    usinas = defaultdict(set)
+    for k, x in ralie_ug.items():
+        if x.get("previsao_sfg"):
+            usinas[x["previsao_sfg"]].add(k.split(":")[0])
+    return {d for d, ns in usinas.items() if len(ns) >= minimo}
+
+
 def _bloco_cronograma(con, ralie_us, ralie_ug, lib_linhas, lib_idx, data_ralie, data_lib, pf_ug, mensais):
     """P041: previsões atuais (com data-base = fotografia do RALIE), confiabilidade das
     previsões passadas, revisões entre fotografias e atraso realizado."""
     base_d = date.fromisoformat(data_ralie)
+    bloco_atual = datas_em_bloco_atual(ralie_ug)
     # ---- previsões atuais por ano e viabilidade
     por_ano = defaultdict(lambda: defaultdict(float))
     n_ano = defaultdict(int)
     sem_prev = defaultdict(lambda: {"ugs": 0, "kw": 0.0})
     datas = defaultdict(lambda: {"ugs": 0, "usinas": set(), "kw": 0.0})
     prox = defaultdict(lambda: defaultdict(float))
-    atraso_prev = []
+    atraso_prev, atraso_livre = [], []
     for k, x in ralie_ug.items():
         n = k.split(":")[0]
         u = ralie_us.get(n, {})
@@ -962,7 +1220,10 @@ def _bloco_cronograma(con, ralie_us, ralie_ug, lib_linhas, lib_idx, data_ralie, 
         if p <= (base_d + timedelta(days=730)).isoformat():
             prox[p[:7]][viab] += kw
         if x.get("comercial_outorgado"):
-            atraso_prev.append(((date.fromisoformat(p) - date.fromisoformat(x["comercial_outorgado"])).days, kw))
+            par = ((date.fromisoformat(p) - date.fromisoformat(x["comercial_outorgado"])).days, kw)
+            atraso_prev.append(par)
+            if p not in bloco_atual:
+                atraso_livre.append(par)
     viabs = ("Alta", "Média", "Baixa")
     previsoes_ano = [{"ano": a, "ugs": n_ano[a], "mw": _r(_mw(sum(v.values()))),
                       "por_viabilidade": {vb: _r(_mw(v.get(vb, 0.0))) for vb in viabs}}
@@ -974,8 +1235,12 @@ def _bloco_cronograma(con, ralie_us, ralie_ug, lib_linhas, lib_idx, data_ralie, 
         "por_ano": previsoes_ano,
         "sem_previsao": [{"justificativa": j, "ugs": x["ugs"], "mw": _r(_mw(x["kw"]))}
                          for j, x in sorted(sem_prev.items(), key=lambda kv: -kv[1]["kw"])],
-        "datas_mais_frequentes": [{"data": d, "ugs": x["ugs"], "usinas": len(x["usinas"]), "mw": _r(_mw(x["kw"]))}
+        "datas_mais_frequentes": [{"data": d, "ugs": x["ugs"], "usinas": len(x["usinas"]), "mw": _r(_mw(x["kw"])),
+                                   "em_bloco": d in bloco_atual}
                                   for d, x in blocos],
+        "datas_em_bloco": {"regra": REGRA_DATA_EM_BLOCO, "datas": sorted(bloco_atual),
+                           "ugs": sum(datas[d]["ugs"] for d in bloco_atual),
+                           "mw": _r(_mw(sum(datas[d]["kw"] for d in bloco_atual)))},
         "proximos_24_meses": [{"mes": m, "mw": _r(_mw(sum(v.values())), 2),
                                "por_viabilidade": {vb: _r(_mw(v.get(vb, 0.0)), 2) for vb in viabs}}
                               for m, v in sorted(prox.items())],
@@ -985,6 +1250,14 @@ def _bloco_cronograma(con, ralie_us, ralie_ug, lib_linhas, lib_idx, data_ralie, 
             "mw_previsao_ate_outorgado": _r(_mw(sum(k for d, k in atraso_prev if d <= 0))),
             "pct_mw_apos_outorgado": _pct(sum(k for d, k in atraso_prev if d > 0), kw_prev_total),
             "mediana_dias_ponderada": ax.mediana_ponderada(atraso_prev),
+            # o mesmo cálculo sem as unidades em data em bloco (previsão convencional):
+            # a parcela depois da data outorgada continua alta sem elas, então ela não se
+            # explica só pela convenção
+            "sem_datas_em_bloco": {
+                "mw_com_previsao": _r(_mw(sum(k for _, k in atraso_livre))),
+                "mw_previsao_apos_outorgado": _r(_mw(sum(k for d, k in atraso_livre if d > 0))),
+                "pct_mw_apos_outorgado": _pct(sum(k for d, k in atraso_livre if d > 0), sum(k for _, k in atraso_livre)),
+                "mediana_dias_ponderada": ax.mediana_ponderada(atraso_livre)},
         },
     }
     # ---- maiores usinas classificadas como atrasadas pela fiscalização
@@ -1015,7 +1288,9 @@ def _bloco_cronograma(con, ralie_us, ralie_ug, lib_linhas, lib_idx, data_ralie, 
     lib_tab = ax.tabela_liberacoes(lib_idx)
     ugm = ax.ug_mensal(pf_ug, mensais)
     conf = ax.confiabilidade_previsoes(ugm, lib_tab, mensais, data_lib, horizonte_dias=365, folga_dias=15)
-    desl = ax.deslizamento_previsoes(ugm, mensais, meses=MESES_JANELA)
+    blocos_hist = ax.datas_em_bloco(ugm, mensais)
+    desl = ax.deslizamento_previsoes(ugm, mensais, meses=MESES_JANELA,
+                                     blocos={d: set(v) for d, v in blocos_hist.items()})
     del ugm
     confiab = [{"ralie": x["ralie"], "fim_janela": x["fim_janela"], "ugs": x["ugs"],
                 "mw_prometido": _r(_mw(x["kw_prometido"])), "mw_no_prazo": _r(_mw(x["kw_no_prazo"])),
@@ -1024,36 +1299,52 @@ def _bloco_cronograma(con, ralie_us, ralie_ug, lib_linhas, lib_idx, data_ralie, 
                 "pct_depois": _pct(x["kw_depois"], x["kw_prometido"]),
                 "pct_nao_liberado": _pct(x["kw_nao_liberado"], x["kw_prometido"]),
                 "ugs_excluidas_ja_liberadas": x["ugs_excluidas_ja_liberadas"]} for x in conf]
-    desliz = [{"ralie": x["ralie"], "ralie_seguinte": x["ralie_seguinte"], "ugs": x["ugs"], "mw": _r(_mw(x["kw"])),
-               "pct_adiada": _pct(x["kw_adiada"], x["kw"]), "pct_mantida": _pct(x["kw_mantida"], x["kw"]),
-               "pct_antecipada": _pct(x["kw_antecipada"], x["kw"]),
-               "mediana_dias_ponderada": x["mediana_dias_ponderada"]} for x in desl]
+    desliz = []
+    for x in desl:
+        sb = x["sem_bloco"]
+        desliz.append({"ralie": x["ralie"], "ralie_seguinte": x["ralie_seguinte"], "ugs": x["ugs"], "mw": _r(_mw(x["kw"])),
+                       "pct_adiada": _pct(x["kw_adiada"], x["kw"]), "pct_mantida": _pct(x["kw_mantida"], x["kw"]),
+                       "pct_antecipada": _pct(x["kw_antecipada"], x["kw"]),
+                       "mediana_dias_ponderada": x["mediana_dias_ponderada"],
+                       "pct_mw_em_data_em_bloco": _pct(x["kw_data_em_bloco"], x["kw"]),
+                       "pct_mw_bloco_nas_duas": _pct(x["kw_bloco_nas_duas"], x["kw"]),
+                       "sem_datas_em_bloco": {"ugs": sb["ugs"], "mw": _r(_mw(sb["kw"])),
+                                              "pct_adiada": _pct(sb["kw_adiada"], sb["kw"]),
+                                              "pct_mantida": _pct(sb["kw_mantida"], sb["kw"]),
+                                              "pct_antecipada": _pct(sb["kw_antecipada"], sb["kw"]),
+                                              "mediana_dias_ponderada": sb["mediana_dias_ponderada"]}})
+    blocos_serie = []
+    for d in mensais:
+        b = blocos_hist.get(d) or {}
+        maior = max(b.items(), key=lambda kv: kv[1]["usinas"], default=None)
+        blocos_serie.append({"ralie": d, "datas": len(b), "ugs": sum(v["ugs"] for v in b.values()),
+                             "mw": _r(_mw(sum(v["kw"] for v in b.values()))),
+                             "maior": {"data": maior[0], "usinas": maior[1]["usinas"],
+                                       "dias_depois_da_fotografia": (date.fromisoformat(maior[0]) - date.fromisoformat(d)).days}
+                             if maior else None})
     csv_conf = []
     for x in conf:
         csv_conf.append([x["ralie"], x["fim_janela"], "TOTAL", x["ugs"], x["kw_prometido"], x["kw_no_prazo"],
                          x["kw_depois"], x["kw_nao_liberado"], x["ugs_excluidas_ja_liberadas"]])
         for t, y in sorted(x["por_tipo"].items()):
-            csv_conf.append([x["ralie"], x["fim_janela"], t, None, y["kw_prometido"], y["kw_no_prazo"], None, None, None])
-    _csv(os.path.basename(DOWNLOADS["confiabilidade"]),
-                     ["ralie", "fim_janela", "tipo", "ugs", "kw_prometido", "kw_no_prazo", "kw_depois", "kw_nao_liberado",
-                      "ugs_excluidas_ja_liberadas"], csv_conf)
+            csv_conf.append([x["ralie"], x["fim_janela"], t, y["ugs"], y["kw_prometido"], y["kw_no_prazo"], y["kw_depois"],
+                             y["kw_nao_liberado"], y["ugs_excluidas_ja_liberadas"]])
+    _csv(os.path.basename(DOWNLOADS["confiabilidade"]), _cabecalho("confiabilidade"), csv_conf)
     ultima_conf = conf[-1] if conf else None
     por_tipo_ult = []
     if ultima_conf:
         for t, y in sorted(ultima_conf["por_tipo"].items(), key=lambda kv: -kv[1]["kw_prometido"]):
             por_tipo_ult.append({"tipo": t, "mw_prometido": _r(_mw(y["kw_prometido"])), "mw_no_prazo": _r(_mw(y["kw_no_prazo"])),
                                  "pct_no_prazo": _pct(y["kw_no_prazo"], y["kw_prometido"])})
-    # ---- atraso realizado (liberações)
+    # ---- desvio da liberação comercial em relação ao prazo outorgado vigente
     atr = _atraso_realizado(lib_linhas)
-    _csv(os.path.basename(DOWNLOADS["liberacoes"]),
-                     ["ano", "tipo", "linhas", "kw_liberado", "kw_com_data_outorgada", "kw_com_atraso", "kw_antecipado",
-                      "mediana_atraso_dias_ponderada"],
-                     [[x["ano"], x["tipo"], x["linhas"], x["kw"], x["kw_com_data_outorgada"], x["kw_com_atraso"],
-                       x["kw_antecipado"], x["mediana_dias"]] for x in atr])
-    atraso_ano = [{"ano": x["ano"], "unidades_ou_grupos": x["linhas"], "mw_liberado": _r(_mw(x["kw"])),
-                   "pct_mw_com_atraso": _pct(x["kw_com_atraso"], x["kw_com_data_outorgada"]),
-                   "pct_mw_antecipado": _pct(x["kw_antecipado"], x["kw_com_data_outorgada"]),
-                   "mediana_dias_ponderada": x["mediana_dias"], "ano_parcial": x["ano"] == data_lib[:4]}
+    _csv(os.path.basename(DOWNLOADS["liberacoes"]), _cabecalho("liberacoes"),
+         [[x["ano"], x["tipo"], x["linhas"], x["kw"], x["kw_com_data_outorgada"], x["kw_com_atraso"],
+           x["kw_antecipado"], x["mediana_dias"]] for x in atr])
+    desvio_ano = [{"ano": x["ano"], "unidades_ou_grupos": x["linhas"], "mw_liberado": _r(_mw(x["kw"])),
+                   "pct_mw_depois_do_prazo": _pct(x["kw_com_atraso"], x["kw_com_data_outorgada"]),
+                   "pct_mw_antes_do_prazo": _pct(x["kw_antecipado"], x["kw_com_data_outorgada"]),
+                   "mediana_desvio_dias_ponderada": x["mediana_dias"], "ano_parcial": x["ano"] == data_lib[:4]}
                   for x in atr if x["tipo"] == "TOTAL"]
     # ---- histórico próprio (capturas do RALIE atual pelo observatório)
     caps = con.execute("SELECT capturado_em FROM vintages WHERE dataset=? AND recurso=? ORDER BY capturado_em",
@@ -1073,9 +1364,16 @@ def _bloco_cronograma(con, ralie_us, ralie_ug, lib_linhas, lib_idx, data_ralie, 
         "confiabilidade": confiab,
         "confiabilidade_ultima_por_tipo": por_tipo_ult,
         "deslizamento": desliz,
-        "atraso_realizado": atraso_ano,
+        "datas_em_bloco_por_fotografia": blocos_serie,
+        "desvio_prazo_vigente": {
+            "definicao": ("Data de liberação comercial menos a data outorgada da unidade no arquivo de liberações, que é o prazo "
+                          "vigente na publicação do arquivo, sem data-base. Mede a distância a um prazo (em autorizações recentes, "
+                          "um prazo limite anos à frente), não atraso em relação a uma promessa datada; o que atrasou em relação "
+                          "à previsão com data-base está em 'confiabilidade'."),
+            "por_ano": desvio_ano},
         "data_liberacoes": data_lib,
         "_conf": conf,
+        "_bloco_atual": bloco_atual,
     }
 
 
@@ -1147,20 +1445,35 @@ def _bloco_coortes(desf, primeira_global):
     return out
 
 
-def _bloco_leiloes(lotes, data_ref):
-    """Leilões de transmissão por ano: km, MVA, investimento e RAP em campos separados.
-    Deságio agregado do ano = 1 − Σ RAP vencedora / Σ RAP do edital (lotes com as duas)."""
-    por = defaultdict(lambda: {"lotes": 0, "km": 0.0, "mva": 0.0, "inv": 0.0, "edital": 0.0, "venc": 0.0,
-                               "edital_par": 0.0, "venc_par": 0.0, "sem_inv": 0})
+def _bloco_leiloes(lotes, publicado_em):
+    """Leilões de transmissão por ano: km, MVA, investimento e RAP em campos separados,
+    só dos lotes contratados; lotes sem vencedor ('SEM LANCE', 'SEM INSCRITO APTO', 'NÃO
+    LEILOADO') são contados à parte, com o investimento e a RAP do edital como valores
+    ofertados e não contratados. Deságio agregado do ano = 1 − Σ RAP vencedora / Σ RAP
+    do edital (lotes contratados com as duas)."""
+    por = defaultdict(lambda: {"lotes": 0, "contratados": 0, "sem_vencedor": 0, "km": 0.0, "mva": 0.0, "inv": 0.0,
+                               "edital": 0.0, "venc": 0.0, "edital_par": 0.0, "venc_par": 0.0, "sem_inv": 0,
+                               "inv_sem": 0.0, "edital_sem": 0.0, "km_ausente": 0, "mva_ausente": 0})
     inconsist = []
+    rotulos_sem = defaultdict(int)
     for k, x in lotes.items():
         ano = x.get("ano") or (x.get("data") or "")[:4]
         if not ano:
             continue
         a = por[ano]
         a["lotes"] += 1
+        sem = bool(x.get("sem_vencedor")) if "sem_vencedor" in x else ax.lote_sem_vencedor(x.get("vencedor"))
+        if sem:
+            a["sem_vencedor"] += 1
+            rotulos_sem[(x.get("vencedor") or "").upper()] += 1
+            a["inv_sem"] += x.get("investimento_rs") or 0
+            a["edital_sem"] += x.get("rap_edital_rs") or 0
+            continue
+        a["contratados"] += 1
         a["km"] += x.get("km") or 0
         a["mva"] += x.get("mva") or 0
+        a["km_ausente"] += x.get("km") is None
+        a["mva_ausente"] += x.get("mva") is None
         if x.get("investimento_rs") is None:
             a["sem_inv"] += 1
         a["inv"] += x.get("investimento_rs") or 0
@@ -1173,24 +1486,104 @@ def _bloco_leiloes(lotes, data_ref):
             if x.get("desagio_fracao") is not None and abs(calc - x["desagio_fracao"]) > 0.006:
                 inconsist.append({"lote": k, "desagio_fonte_pct": _r(100 * x["desagio_fracao"], 2),
                                   "desagio_calculado_pct": _r(100 * calc, 2)})
-    anos = [{"ano": a, "lotes": x["lotes"], "km": _r(x["km"]), "mva": _r(x["mva"]),
+    anos = [{"ano": a, "lotes_ofertados": x["lotes"], "lotes_contratados": x["contratados"],
+             "lotes_sem_vencedor": x["sem_vencedor"], "km": _r(x["km"]), "mva": _r(x["mva"]),
              "investimento_previsto_rs_mi": _r(x["inv"] / 1e6), "rap_edital_rs_mi": _r(x["edital"] / 1e6),
              "rap_vencedor_rs_mi": _r(x["venc"] / 1e6),
              "desagio_agregado_pct": _r(100 * (1 - x["venc_par"] / x["edital_par"]), 1) if x["edital_par"] else None,
-             "lotes_sem_investimento": x["sem_inv"]} for a, x in sorted(por.items())]
+             "lotes_sem_investimento": x["sem_inv"],
+             # lotes contratados com km ou MVA não informados pela fonte (0 com a
+             # instalação descrita): a soma do ano não os inclui
+             "lotes_km_nao_informado": x["km_ausente"], "lotes_mva_nao_informado": x["mva_ausente"],
+             "investimento_ofertado_sem_vencedor_rs_mi": _r(x["inv_sem"] / 1e6),
+             "rap_edital_sem_vencedor_rs_mi": _r(x["edital_sem"] / 1e6)} for a, x in sorted(por.items())]
     linhas = []
     for k, x in sorted(lotes.items(), key=lambda kv: (kv[1].get("data") or "", kv[0])):
+        sem = bool(x.get("sem_vencedor")) if "sem_vencedor" in x else ax.lote_sem_vencedor(x.get("vencedor"))
         linhas.append([x.get("ano"), x.get("data"), x.get("leilao"), x.get("lote"), x.get("empreendimento"), x.get("uf"),
                        x.get("prazo_meses"), x.get("km"), x.get("mva"), x.get("investimento_rs"), x.get("rap_edital_rs"),
                        x.get("rap_vencedor_rs"), None if x.get("desagio_fracao") is None else 100 * x["desagio_fracao"],
-                       x.get("vencedor")])
-    _csv(os.path.basename(DOWNLOADS["leiloes"]),
-                     ["ano", "data", "leilao", "lote", "empreendimento", "uf", "prazo_meses", "km", "mva", "investimento_rs",
-                      "rap_edital_rs", "rap_vencedor_rs", "desagio_pct", "vencedor"], linhas)
+                       x.get("vencedor"), "não" if sem else "sim"])
+    _csv(os.path.basename(DOWNLOADS["leiloes"]), _cabecalho("leiloes"), linhas)
     ult = max(lotes.values(), key=lambda x: (x.get("data") or "", x.get("leilao") or ""), default={})
-    return {"data_referencia": data_ref, "por_ano": anos, "lotes": len(lotes),
+    datas = sorted(x.get("data") for x in lotes.values() if x.get("data"))
+    return {"publicado_em": publicado_em,
+            "periodo": {"inicio": datas[0] if datas else None, "fim": datas[-1] if datas else None},
+            "por_ano": anos, "lotes": len(lotes),
+            "lotes_contratados": sum(x["lotes_contratados"] for x in anos),
+            "lotes_sem_vencedor": sum(x["lotes_sem_vencedor"] for x in anos),
+            "sem_vencedor_por_rotulo": dict(sorted(rotulos_sem.items())),
+            "regra_sem_vencedor": "Lote com vencedor 'SEM LANCE', 'SEM INSCRITO APTO' ou 'NÃO LEILOADO' não foi contratado: fica fora de lotes contratados, km, MVA, investimento e RAP, e o 0 que a fonte publica em km, MVA, prazo e RAP vencedora é tratado como ausência.",
+            "regra_zero": "Em lote contratado, 0 km só conta como zero quando a descrição do empreendimento não cita linha (LT ou extensão em km), e 0 MVA só quando não cita MVA; nos demais casos o campo não foi preenchido pela fonte e fica fora da soma do ano (lotes_km_nao_informado, lotes_mva_nao_informado).",
+            "lotes_km_nao_informado": sum(x["lotes_km_nao_informado"] for x in anos),
+            "lotes_mva_nao_informado": sum(x["lotes_mva_nao_informado"] for x in anos),
             "ultimo_leilao": {"leilao": ult.get("leilao"), "data": ult.get("data")},
             "desagio_inconsistente": inconsist[:20], "desagio_inconsistente_total": len(inconsist)}
+
+
+def _bloco_rede_epe(vig_rede):
+    """P042: território da rede pelo WebMap da EPE (linhas existentes e da expansão
+    planejada). Comprimento pela geometria (o campo Extensao da camada planejada tem
+    valores fora de escala, conferidos feição por feição); km por UF pelo ponto médio de
+    cada segmento na malha de UF do IBGE; ano 0 da fonte vira ausência. Escreve o JSON
+    do mapa (caminho SVG na grade da malha de UF)."""
+    v_ex = (vig_rede or {}).get("linhas-transmissao-existente.geojson")
+    v_pl = (vig_rede or {}).get("linhas-transmissao-planejada.geojson")
+    if not v_ex or not v_pl:
+        return None
+    with open(os.path.join(base.RAIZ, "public", "energia", "geo", "uf.json"), encoding="utf-8") as f:
+        malha = json.load(f)
+    loc = er.LocalizadorUF(malha)
+    out = {"fonte": "EPE, WebMap (serviço ArcGIS SMA/WMS_Webmap_EPE)", "servico": er.SERVICO, "webmap": er.URL_WEBMAP,
+           "data_do_dado": None,
+           "nota_data": "O serviço não informa a data de atualização das camadas; vale a data de captura e o ano mais recente presente.",
+           "definicao_km": ("Comprimento da geometria publicada (generalizada pelo servidor a 0,005 grau), por feição. Cada feição "
+                            "é em geral um circuito, mas há feições com dois circuitos no mesmo traçado ('C1 e C2'): não é km de "
+                            "circuito do SIGET e as duas medidas não se somam nem se subtraem."),
+           "generalizacao_grau": er.GENERALIZACAO_GRAU}
+    pontos = []
+    for camada, v in (("existente", v_ex), ("planejada", v_pl)):
+        with base.abre_bronze(v["arquivo"]) as f:
+            doc = json.loads(f.read())
+        regs = er.normaliza(doc.get("features") or [], camada)
+        km_uf = er.km_por_uf(regs, loc)
+        por_t, por_a = defaultdict(lambda: [0, 0.0]), defaultdict(lambda: [0, 0.0])
+        for r in regs:
+            t = r["tensao_kv"] if r["tensao_kv"] else None
+            por_t[t][0] += 1
+            por_t[t][1] += r["km_geometria"]
+            por_a[r["ano"]][0] += 1
+            por_a[r["ano"]][1] += r["km_geometria"]
+            pontos.append([camada, r["nome"], t, r["ano"], c.r(r["km_geometria"], 1), er.caminho_svg(r["geom"], loc)])
+        fora = [r for r in regs if r["extensao_fonte_km"] is not None and not (0 <= r["extensao_fonte_km"] <= er.LIMITE_KM)]
+        rel = sorted(abs(r["km_geometria"] - r["extensao_fonte_km"]) / r["extensao_fonte_km"] for r in regs
+                     if r["extensao_fonte_km"] and 0 < r["extensao_fonte_km"] <= er.LIMITE_KM and r["km_geometria"] > 1)
+        anos = [r["ano"] for r in regs if r["ano"]]
+        out[camada] = {
+            "camada": doc.get("camada"), "id_camada": doc.get("id_camada"), "capturado_em": v["capturado_em"],
+            "sha256": v["sha256"], "linhas": len(regs), "contagem_informada": doc.get("contagem_informada"),
+            "km_geometria": _r(sum(r["km_geometria"] for r in regs)),
+            "km_campo_fonte_plausivel": _r(sum(r["extensao_fonte_km"] for r in regs if r["extensao_fonte_km"] is not None
+                                              and 0 <= r["extensao_fonte_km"] <= er.LIMITE_KM)),
+            "campo_extensao_fora_de_escala": {"linhas": len(fora), "exemplos": [
+                {"nome": r["nome"], "extensao_fonte": r["extensao_fonte_km"], "km_geometria": _r(r["km_geometria"])}
+                for r in sorted(fora, key=lambda z: -z["extensao_fonte_km"])[:5]]},
+            "diferenca_relativa_mediana_geometria_x_campo_pct": _r(100 * rel[len(rel) // 2], 2) if rel else None,
+            "ano_min": min(anos) if anos else None, "ano_max": max(anos) if anos else None,
+            "por_tensao": [{"tensao_kv": t, "linhas": n, "km": _r(k)}
+                           for t, (n, k) in sorted(por_t.items(), key=lambda kv: -(kv[0] or 0))],
+            "por_ano": [{"ano": a, "linhas": n, "km": _r(k)} for a, (n, k) in sorted(por_a.items(), key=lambda kv: kv[0] or 0)],
+            "por_uf": [{"uf": u, "km": _r(k)} for u, k in sorted(km_uf.items(), key=lambda kv: -kv[1]) if u],
+            "km_fora_de_uf": _r(km_uf.get(None, 0.0)),
+        }
+        out[camada]["_km_uf"] = km_uf
+    base.escreve_gold(os.path.basename(DOWNLOADS["rede_epe"]), {
+        "colunas": ["camada", "nome", "tensao_kv", "ano", "km_geometria", "d"], "linhas": pontos,
+        "viewBox": malha.get("viewBox"), "projecao": malha.get("projecao"),
+        "fonte": "EPE, WebMap: camadas 21 (Linhas de Transmissão - Base Existente) e 10 (Linhas de Transmissão - Expansão Planejada)",
+        "nota": "Caminho SVG na mesma grade da malha de UF (public/energia/geo/uf.json). Ano e tensão vazios = 0 na fonte."},
+        destino=base.SERIES)
+    return out
 
 
 def _bloco_obras(epds, lts, eqps, resol, data_siget):
@@ -1203,8 +1596,16 @@ def _bloco_obras(epds, lts, eqps, resol, data_siget):
     Cada módulo de linha do SIGET é um circuito (NumCcuLinTms) com a extensão da linha
     (NumEtnLinTms, em km: o bipolo Xingu × Terminal Rio aparece como dois módulos de
     2.539 km). A soma é, portanto, km de circuito: linha de circuito duplo ou bipolo
-    conta cada circuito."""
+    conta cada circuito.
+
+    Um mesmo módulo de linha ou de transformação pode aparecer em mais de um
+    empreendimento (o módulo 2791, LT 230 kV Cascavel Oeste × Foz do Iguaçu Norte, de
+    115 km, está nos empreendimentos 485 e 1203). Cada módulo é contado uma vez, no
+    empreendimento cuja obra de Instalação tem a data de operação mais antiga (empate:
+    menor número de empreendimento); o outro registra o módulo em
+    modulos_em_outro_empreendimento."""
     hoje = data_siget
+    dono, usos = _dono_dos_modulos(epds)
     obras_resol = set()
     for x in resol.values():
         obras_resol.update(x.get("obras") or [])
@@ -1218,13 +1619,17 @@ def _bloco_obras(epds, lts, eqps, resol, data_siget):
         km = mva = 0.0
         ufs = set()
         vistos_lt, vistos_tr = set(), set()
-        n_obras, n_resol, outras = set(), 0, 0
-        for obra, mdl, sit_obra, tipo_obra, oper_obra, tipo_mdl, nome_mdl in e.get("obras", []):
+        n_obras, n_resol, outras, em_outro = set(), 0, 0, set()
+        for o in e.get("obras", []):
+            obra, mdl, sit_obra, tipo_obra, oper_obra, tipo_mdl, nome_mdl = o[:7]
             n_obras.add(obra)
             if obra in obras_resol:
                 n_resol += 1
             if tipo_obra != "Instalação":
                 outras += 1
+                continue
+            if tipo_mdl in ("LT", "ME") and dono.get((tipo_mdl, mdl), eid) != eid:
+                em_outro.add((tipo_mdl, mdl))
                 continue
             if tipo_mdl == "LT" and mdl in lts and mdl not in vistos_lt:
                 vistos_lt.add(mdl)
@@ -1262,24 +1667,31 @@ def _bloco_obras(epds, lts, eqps, resol, data_siget):
                                         if uf in (lts[m].get("uf_origem"), lts[m].get("uf_destino")))
                 uf_and[uf]["mva"] += sum(eqps[m]["mva"] for m in vistos_tr if eqps[m].get("uf") == uf)
                 uf_and[uf]["empreendimentos"].add(eid)
-        emp.append({"id": eid, "ons": e.get("empreendimento_ons"), "nome": e.get("nome_empreendimento"), "situacao": sit,
+        emp.append({"id": eid, "ons": e.get("empreendimento_ons"), "contrato": e.get("contrato"),
+                    "nome": e.get("nome_empreendimento"), "situacao": sit,
                     "oper_ato_legal": legal, "oper_efetiva": efetiva, "atraso_dias": atraso, "prazo_legal_vencido": vencido,
                     "dias_desde_prazo_legal": dias_vencido, "km_lt": km, "mva_tr": mva, "ufs": sorted(ufs),
-                    "obras": len(n_obras), "obras_outras": outras, "obras_resolucao": n_resol})
+                    "obras": len(n_obras), "obras_outras": outras, "obras_resolucao": n_resol,
+                    "modulos_em_outro_empreendimento": len(em_outro)})
     andamento = [x for x in emp if x["situacao"] == "Em andamento"]
     venc = [x for x in andamento if x["prazo_legal_vencido"]]
-    linhas = [[x["id"], x["ons"], x["nome"], x["situacao"], x["oper_ato_legal"], x["oper_efetiva"], x["atraso_dias"],
-               "sim" if x["prazo_legal_vencido"] else "não", x["km_lt"], x["mva_tr"], "|".join(x["ufs"]), x["obras"],
-               x["obras_resolucao"]] for x in sorted(emp, key=lambda z: (z["situacao"], z["oper_ato_legal"] or ""))]
-    _csv(os.path.basename(DOWNLOADS["obras"]),
-                     ["empreendimento", "empreendimento_ons", "nome", "situacao", "oper_ato_legal", "oper_efetiva",
-                      "atraso_dias", "prazo_legal_vencido", "km_lt", "mva_tr", "ufs", "obras", "obras_resolucao"], linhas)
+    linhas = [[x["id"], x["ons"], x["contrato"], x["nome"], x["situacao"], x["oper_ato_legal"], x["oper_efetiva"],
+               x["atraso_dias"], "sim" if x["prazo_legal_vencido"] else "não", x["km_lt"], x["mva_tr"],
+               x["modulos_em_outro_empreendimento"], "|".join(x["ufs"]), x["obras"], x["obras_resolucao"]]
+              for x in sorted(emp, key=lambda z: (z["situacao"], z["oper_ato_legal"] or ""))]
+    _csv(os.path.basename(DOWNLOADS["obras"]), _cabecalho("obras"), linhas)
+    compart = {k for k, es in usos.items() if len(es) > 1}
     maiores_venc = sorted(venc, key=lambda x: -(x["dias_desde_prazo_legal"] or 0))[:20]
     return {
         "data_referencia": data_siget,
         "definicao_km": KM_CIRCUITO,
         "modulos_lt_fora_do_limite": sum(1 for x in lts.values() if x.get("km") is not None
                                          and not (0 <= x["km"] <= LIMITE_KM_CIRCUITO)),
+        "modulos_em_mais_de_um_empreendimento": {
+            "regra": "contado uma vez, no empreendimento cuja obra de Instalação tem a data de operação mais antiga (empate: menor número)",
+            "modulos_lt": sum(1 for t, _ in compart if t == "LT"), "modulos_tr": sum(1 for t, _ in compart if t == "ME"),
+            "km_lt": _r(sum(lts[m].get("km") or 0 for t, m in compart if t == "LT" and m in lts)),
+            "mva_tr": _r(sum((eqps[m].get("mva") or 0) for t, m in compart if t == "ME" and m in eqps))},
         "por_situacao": [{"situacao": s, "empreendimentos": x["empreendimentos"], "obras": x["obras"],
                           "km_lt_novas": _r(x["km"]), "mva_tr_novos": _r(x["mva"])}
                          for s, x in sorted(por_sit.items(), key=lambda kv: -kv[1]["empreendimentos"])],
@@ -1299,6 +1711,92 @@ def _bloco_obras(epds, lts, eqps, resol, data_siget):
                              "modulos_lt": x["modulos_lt"], "modulos_tr": x["modulos_tr"]}
                             for a, x in sorted(entrada.items()) if a >= "2005"],
         "_emp": emp,
+    }
+
+
+def _dono_dos_modulos(epds):
+    """({(tipo, módulo): empreendimento}, {(tipo, módulo): empreendimentos}) para os
+    módulos LT e ME de obras de Instalação: o dono é o empreendimento cuja obra tem a
+    data de operação mais antiga (sem data por último; empate pelo menor número)."""
+    cand, usos = {}, defaultdict(set)
+    for eid, e in epds.items():
+        for o in e.get("obras", []):
+            obra, mdl, sit_obra, tipo_obra, oper_obra, tipo_mdl = o[:6]
+            if tipo_obra != "Instalação" or tipo_mdl not in ("LT", "ME"):
+                continue
+            chave = (oper_obra or "9999-99-99", int(eid) if str(eid).isdigit() else 10 ** 12, str(eid))
+            k = (tipo_mdl, mdl)
+            usos[k].add(eid)
+            if k not in cand or chave < cand[k][0]:
+                cand[k] = (chave, eid)
+    return {k: v[1] for k, v in cand.items()}, usos
+
+
+def _bloco_contratos(contratos, epds, lts, eqps, ultimo_leilao_data, data_siget):
+    """Contratos de concessão de transmissão por data de assinatura (SIGET, recurso
+    'Contrato Agente'), com km de circuito e MVA novos do objeto original de cada
+    contrato: linhas do arquivo de obras cujo fim de contrato é igual ao do contrato.
+    Reforços incorporados depois a contratos antigos (com prazo próprio) ficam fora das
+    somas e são contados. Sem RAP nem deságio: o SIGET não publica o resultado do leilão.
+    Camada que cobre o período depois do último leilão do arquivo de leilões."""
+    por_ccd = defaultdict(lambda: {"epds": set(), "proprio": set(), "lt": set(), "me": set()})
+    for eid, e in epds.items():
+        c_ = e.get("contrato")
+        if not c_ or c_ not in contratos:
+            continue
+        fim_ccd = contratos[c_].get("fim")
+        for o in e.get("obras", []):
+            obra, mdl, sit_obra, tipo_obra, oper_obra, tipo_mdl, nome_mdl = o[:7]
+            fim_l = o[7] if len(o) > 7 else None
+            if fim_l and fim_ccd and fim_l != fim_ccd:
+                por_ccd[c_]["proprio"].add(eid)
+                continue
+            por_ccd[c_]["epds"].add(eid)
+            if tipo_obra == "Instalação" and tipo_mdl == "LT" and mdl in lts:
+                por_ccd[c_]["lt"].add(mdl)
+            elif tipo_obra == "Instalação" and tipo_mdl == "ME" and mdl in eqps and eqps[mdl].get("mva"):
+                por_ccd[c_]["me"].add(mdl)
+    linhas, por_ano = [], defaultdict(lambda: {"contratos": 0, "sem_empreendimento": 0, "epds": 0, "km": 0.0, "mva": 0.0})
+    for k, c_ in sorted(contratos.items(), key=lambda kv: (kv[1].get("assinatura") or "", kv[0])):
+        x = por_ccd.get(k)
+        tem = bool(x and x["epds"])
+        km = sum(lts[m].get("km") or 0 for m in x["lt"]) if tem else None
+        mva = sum(eqps[m]["mva"] for m in x["me"]) if tem else None
+        linhas.append([k, c_.get("numero"), c_.get("assinatura"), c_.get("fim"), c_.get("cnpj"), c_.get("agente"),
+                       len(x["epds"]) if tem else None, km, mva, len(x["proprio"] - x["epds"]) if x else 0])
+        a = (c_.get("assinatura") or "")[:4]
+        if not a:
+            continue
+        g = por_ano[a]
+        g["contratos"] += 1
+        if tem:
+            g["epds"] += len(x["epds"])
+            g["km"] += km
+            g["mva"] += mva
+        else:
+            g["sem_empreendimento"] += 1
+    _csv(os.path.basename(DOWNLOADS["contratos"]), _cabecalho("contratos"), linhas)
+    # o recurso lista todos os contratos de concessão cadastrados: ano dentro do período
+    # sem contrato assinado é zero observado (2025 em 30/09/2026), não ausência
+    if por_ano:
+        for a in range(int(min(por_ano)), int(max(por_ano)) + 1):
+            por_ano[str(a)]
+    depois = [z for z in linhas if (z[2] or "") > (ultimo_leilao_data or "")]
+    return {
+        "data_referencia": data_siget,
+        "regra": ("Data de assinatura publicada pela fonte (DatAsnCcd). km e MVA: módulos de linha e transformadores de "
+                  "obras de Instalação dos empreendimentos do objeto original do contrato (linhas com a mesma data de fim "
+                  "do contrato); reforço incorporado depois, com prazo próprio, fica fora. Contrato sem empreendimento "
+                  "cadastrado no SIGET tem km e MVA ausentes, não zero. Um contrato pode vir de leilão, de relicitação ou de "
+                  "outra origem: o SIGET não informa o leilão nem a RAP de lance."),
+        "nota_zero": "O recurso lista todos os contratos de concessão de transmissão cadastrados no SIGET: ano do período sem contrato assinado aparece com 0 contratos (zero observado, não ausência).",
+        "por_ano": [{"ano": a, "contratos": g["contratos"], "contratos_sem_empreendimento": g["sem_empreendimento"],
+                     "empreendimentos": g["epds"], "km_lt_novas": _r(g["km"]), "mva_tr_novos": _r(g["mva"]),
+                     "ano_parcial": a == (data_siget or "")[:4]} for a, g in sorted(por_ano.items())],
+        "depois_do_ultimo_leilao_do_arquivo": {
+            "ultimo_leilao": ultimo_leilao_data,
+            "contratos": [{"contrato": z[0], "numero": z[1], "assinatura": z[2], "agente": z[5], "empreendimentos": z[6],
+                           "km_lt_novas": _r(z[7]), "mva_tr_novos": _r(z[8])} for z in depois]},
     }
 
 
@@ -1385,6 +1883,7 @@ def _bloco_cenarios(con, pde_obs, siga, ralie_us, ralie_ug, html_pagina, vint_pd
     soma25 = sum(v for k, v in p25.items() if k != "ref" and v is not None)
     soma35 = sum(v for k, v in p35.items() if k != "ref" and v is not None)
     soma36 = None
+    mmgd25 = p25.get("MMGD (GW)")
     f36 = figs.get("fig_3_6")
     if f36:
         l25 = next((x for x in f36["linhas"] if x["ref"] == "2025"), None)
@@ -1401,13 +1900,24 @@ def _bloco_cenarios(con, pde_obs, siga, ralie_us, ralie_ug, html_pagina, vint_pd
         "conferencia_relatorio": [
             {"descricao": "Soma das categorias da Figura 3-25 em dez/2025 contra o total rotulado no relatório (249 GW, p. 97)",
              "calculado_gw": c.r(soma25, 2), "relatorio_gw": 249, "diferenca_gw": c.r(soma25 - 249, 2), "tolerancia_gw": 0.5,
-             "resultado": "aprovada" if abs(soma25 - 249) <= 0.5 else "divergente"},
+             "resultado": "aprovada" if abs(soma25 - 249) <= 0.5 else "divergente",
+             "conferencia_de": "valor e universo", "ressalva": None},
             {"descricao": "Soma das categorias da Figura 3-25 em dez/2035 contra o total rotulado no relatório (359 GW, p. 97)",
              "calculado_gw": c.r(soma35, 2), "relatorio_gw": 359, "diferenca_gw": c.r(soma35 - 359, 2), "tolerancia_gw": 0.5,
-             "resultado": "aprovada" if abs(soma35 - 359) <= 0.5 else "divergente"},
+             "resultado": "aprovada" if abs(soma35 - 359) <= 0.5 else "divergente",
+             "conferencia_de": "valor e universo", "ressalva": None},
         ] + ([{"descricao": "Soma das fontes da Figura 3-6 em 2025 contra 'aproximadamente 251 GW' do texto (p. 72)",
                "calculado_gw": c.r(soma36, 2), "relatorio_gw": 251, "diferenca_gw": c.r(soma36 - 251, 2), "tolerancia_gw": 1.0,
-               "resultado": "aprovada" if abs(soma36 - 251) <= 1.0 else "divergente"}] if soma36 is not None else []),
+               "resultado": "aprovada" if abs(soma36 - 251) <= 1.0 else "divergente",
+               # o valor confere, o universo não: o texto fala em oferta centralizada e a
+               # figura põe a MMGD na coluna Solar (p. 73)
+               "conferencia_de": "valor (não de universo)",
+               "ressalva": (f"O texto da p. 72 descreve cerca de 251 GW de oferta centralizada, mas a Figura 3-6 inclui a MMGD na "
+                            f"coluna Solar (p. 73): {_milhar(mmgd25, 3)} GW de MMGD em dez/2025 pela Figura 3-25. Sem ela a "
+                            f"figura somaria {_milhar(soma36 - mmgd25, 2)} GW. O total confere em valor; o universo do texto "
+                            "e o da figura são diferentes.") if mmgd25 is not None else
+                           "A Figura 3-6 inclui a MMGD na coluna Solar (p. 73), e o texto da p. 72 fala em oferta centralizada: o total confere em valor, não em universo."}]
+           if soma36 is not None else []),
         "atualizacao_planilhas": (_meta(con, DS_PDE, "pde2035") or {}).get("atualizacao"),
         "vintage": {"arquivo": (vint_pde or {}).get("arquivo"), "sha256": (vint_pde or {}).get("sha256"),
                     "capturado_em": (vint_pde or {}).get("capturado_em")},
@@ -1513,6 +2023,22 @@ def _conferencias(con, ralie_ug, pf_ug, data_ralie, lib_linhas):
     return {"ralie_csv_x_parquet": ralie, "liberacoes_detalhado_x_resumo": lib}
 
 
+# Ano a partir do qual o resumo anual de liberações publica o campo MdaSomaPotenciaMW
+# em kW (70 de 70 grupos de ano e tipo iguais à soma do arquivo detalhado em kW, desde
+# 2014). Antes disso o campo está em MW: o detalhado, em kW, soma de 0% a 101% do
+# resumo lido como MW (cobertura publicada por ano na série anual).
+ANO_RESUMO_EM_KW = "2014"
+
+
+def _resumo_liberacoes_mw(con):
+    """{ano: MW liberado para operação comercial} do resumo anual oficial, convertido."""
+    out = defaultdict(float)
+    for s_, pts in _series(con, DS_LIB, "resumido.").items():
+        for ano, v in pts:
+            out[ano] += v if ano < ANO_RESUMO_EM_KW else v / 1000.0
+    return dict(out)
+
+
 def _contagem(n, singular, plural):
     return f"{_milhar(n)} {singular if n == 1 else plural}"
 
@@ -1550,7 +2076,8 @@ def construir(con, ctx):
         siga[k] = u
     if not siga:
         return c.stub(GOLD, "SIGA ausente no silver da família aneel_geracao")
-    vig = {ds: ckan.vintages_vigentes(con, ds) for ds in (DS_SIGA, DS_RALIE, DS_LIB, DS_ATOS, DS_LEILOES, DS_SIGET, DS_AGREG, DS_PDE)}
+    vig = {ds: ckan.vintages_vigentes(con, ds) for ds in (DS_SIGA, DS_RALIE, DS_LIB, DS_ATOS, DS_LEILOES, DS_SIGET, DS_AGREG, DS_PDE,
+                                                          DS_REDE_EPE)}
     meta_siga = _meta(con, DS_SIGA, "siga-empreendimentos-geracao-diario.csv")
     data_siga = meta_siga.get("data_geracao")
     ralie_us = _estado(con, DS_RALIE, "usina:")
@@ -1581,6 +2108,7 @@ def construir(con, ctx):
     pf_us = ax.abre_parquet(_bytes_bronze(v_us_hist))
     datas_hist = ax.datas_ralie(pf_us)
     mensais = ax.ultimo_por_mes(datas_hist)
+    ralie_kw_hist = ax.potencias_outorgadas_historicas(pf_us)
 
     conferencias = _conferencias(con, ralie_ug, pf_ug, data_ralie, lib_linhas)
     capacidade = _bloco_capacidade(siga, agreg, lib_linhas, data_siga)
@@ -1595,7 +2123,15 @@ def construir(con, ctx):
     for nome, x in conferencias.items():
         if x["resultado"] != "aprovada":
             ressalvas.append(f"Conferência {nome.replace('_', ' ')} divergente: ver conferencias.{nome}.")
-    estagios = _bloco_estagios(siga, encerramentos, ralie_us, ralie_ug, ralie_lei, data_siga, data_ralie)
+    estagios = _bloco_estagios(siga, encerramentos, ralie_us, ralie_ug, ralie_lei, data_siga, data_ralie, ralie_kw_hist)
+    del ralie_kw_hist
+    enc = estagios["encerramentos"]
+    pc_ = enc["potencia_conferida"]
+    if pc_["corrigidas_kw"] or pc_["fora_da_soma"]:
+        ressalvas.append(
+            f"{_contagem(len(pc_['corrigidas_kw']), 'ato', 'atos')} de encerramento com a potência em kW no campo de MW "
+            f"(corrigidos pelo cadastro da usina) e {_contagem(len(pc_['fora_da_soma']), 'ato', 'atos')} com potência "
+            "divergente por fator 1.000 sem confirmação (fora da soma): ver estagios.encerramentos.potencia_conferida.")
     # data de corte das liberações para a janela de confiabilidade: data de geração do
     # arquivo publicada pela ANEEL (last_modified do recurso)
     cronograma = _bloco_cronograma(con, ralie_us, ralie_ug, lib_linhas, lib_idx, data_ralie, data_lib_arquivo, pf_ug, mensais)
@@ -1619,11 +2155,16 @@ def construir(con, ctx):
                                         for k, v in sorted(sd.items(), key=lambda kv: -kv[1]["usinas"])]
     estagios["historico_mensal"] = _historico_mensal(con, mensais)
     leiloes = _bloco_leiloes(lotes, (vig[DS_LEILOES].get("resultado-leiloes-transmissao.csv") or {}).get("publicado_em"))
+    contratos_siget = _estado(con, DS_SIGET, "ccd:")
     data_siget = ((vig[DS_SIGET].get("siget-contrato-empreendimento-obra-modulo.csv") or {}).get("publicado_em") or "")[:10] \
         or hoje.isoformat()
     obras = _bloco_obras(epds, lts, eqps, resol, data_siget)
     emp_siget = obras.pop("_emp")
+    contratos = _bloco_contratos(contratos_siget, epds, lts, eqps, leiloes["periodo"]["fim"], data_siget) \
+        if contratos_siget else None
+    rede_epe = _bloco_rede_epe(vig[DS_REDE_EPE])
     conf_bruta = cronograma.pop("_conf")
+    bloco_atual = cronograma.pop("_bloco_atual")
 
     # geração e rede por UF (campos separados; nada é somado entre si)
     ger_uf = defaultdict(lambda: {"kw": 0.0, "kw24": 0.0})
@@ -1637,24 +2178,42 @@ def construir(con, ctx):
         if x.get("previsao_sfg") and x["previsao_sfg"] <= lim24:
             ger_uf[uf]["kw24"] += x.get("kw") or 0
     rede_uf = {r["uf"]: r for r in obras["em_andamento_por_uf"]}
+    epe_pl = (rede_epe or {}).get("planejada", {}).pop("_km_uf", None) if rede_epe else None
+    epe_ex = (rede_epe or {}).get("existente", {}).pop("_km_uf", None) if rede_epe else None
     ger_rede = [{"uf": uf, "mw_ugs_em_implantacao": _r(_mw(ger_uf[uf]["kw"])),
                  "mw_previsto_24_meses": _r(_mw(ger_uf[uf]["kw24"])),
                  "km_lt_em_andamento_toca_uf": (rede_uf.get(uf) or {}).get("km_lt_toca_uf", 0.0),
                  "mva_tr_em_andamento": (rede_uf.get(uf) or {}).get("mva_tr", 0.0),
-                 "empreendimentos_transmissao_em_andamento": (rede_uf.get(uf) or {}).get("empreendimentos", 0)}
+                 "empreendimentos_transmissao_em_andamento": (rede_uf.get(uf) or {}).get("empreendimentos", 0),
+                 # traçado da EPE dentro da UF (existente e planejado): ausência sem a camada
+                 "km_rede_existente_epe": _r((epe_ex or {}).get(uf, 0.0)) if epe_ex is not None else None,
+                 "km_rede_planejada_epe": _r((epe_pl or {}).get(uf, 0.0)) if epe_pl is not None else None}
                 for uf in sorted(set(ger_uf) | set(rede_uf))]
     lib_ano = defaultdict(float)
     for x in lib_linhas:
         if x["realizado"]:
             lib_ano[x["realizado"][:4]] += x["kw"] or 0
+    resumo_mw = _resumo_liberacoes_mw(con)
     ent = {x["ano"]: x for x in obras["entrada_por_ano"]}
     lei = {x["ano"]: x for x in leiloes["por_ano"]}
-    serie_anual = [{"ano": a, "mw_geracao_liberada": _r(_mw(lib_ano.get(a))) if a in lib_ano else None,
-                    "km_lt_energizados": (ent.get(a) or {}).get("km_lt_novas"),
-                    "mva_tr_energizados": (ent.get(a) or {}).get("mva_tr_novos"),
-                    "km_leiloados": (lei.get(a) or {}).get("km"), "mva_leiloados": (lei.get(a) or {}).get("mva"),
-                    "ano_parcial": a == hoje.isoformat()[:4]}
-                   for a in [str(y) for y in range(2005, hoje.year + 1)]]
+    ass = {x["ano"]: x for x in (contratos or {}).get("por_ano", [])}
+    serie_anual = []
+    for a in [str(y) for y in range(2005, hoje.year + 1)]:
+        mw_res = resumo_mw.get(a)
+        serie_anual.append({
+            "ano": a,
+            # resumo anual oficial (MW até 2013, kW desde 2014, convertido): o arquivo
+            # detalhado não cobre toda a potência antes de 2014
+            "mw_geracao_liberada": _r(mw_res) if mw_res is not None else None,
+            "fonte_mw_geracao_liberada": ("resumo anual oficial (campo em MW)" if a < ANO_RESUMO_EM_KW else
+                                          "resumo anual oficial (campo em kW), igual à soma do arquivo detalhado") if mw_res is not None else None,
+            "cobertura_detalhado_pct": _pct(_mw(lib_ano.get(a, 0.0)), mw_res) if mw_res else None,
+            "km_lt_energizados": (ent.get(a) or {}).get("km_lt_novas"),
+            "mva_tr_energizados": (ent.get(a) or {}).get("mva_tr_novos"),
+            "km_contratados_leilao": (lei.get(a) or {}).get("km"), "mva_contratados_leilao": (lei.get(a) or {}).get("mva"),
+            "km_contratos_assinados_siget": (ass.get(a) or {}).get("km_lt_novas"),
+            "mva_contratos_assinados_siget": (ass.get(a) or {}).get("mva_tr_novos"),
+            "ano_parcial": a == hoje.isoformat()[:4]})
 
     html_pde = None
     v_html = vig[DS_PDE].get("pde2035_pagina.html")
@@ -1664,21 +2223,25 @@ def construir(con, ctx):
     cenarios = _bloco_cenarios(con, pde_obs, siga, ralie_us, ralie_ug, html_pde,
                                vig[DS_PDE].get("pde2035_dados_relatorio_final.zip"))
 
-    _escreve_csvs(siga, ralie_us, ralie_ug, ralie_lei, desf, encerramentos, cenarios, data_ralie)
+    _escreve_csvs(siga, ralie_us, ralie_ug, ralie_lei, desf, cenarios, data_ralie, bloco_atual)
 
     gold = {
         **c.cabecalho(GOLD),
         "referencias": {"siga": data_siga, "ralie": data_ralie, "ralie_historico_desde": datas_hist[0],
                         "liberacoes_arquivo": data_lib_arquivo, "liberacoes_ultima_data": data_lib,
                         "atos": ((vig[DS_ATOS].get("atos-outorgas-aneel.csv") or {}).get("publicado_em") or "")[:10] or None,
-                        "leiloes_transmissao": (leiloes["data_referencia"] or "")[:10] or None, "siget": data_siget,
+                        "leiloes_transmissao": leiloes["periodo"]["fim"],
+                        "leiloes_transmissao_publicado_em": (leiloes["publicado_em"] or "")[:10] or None,
+                        "siget": data_siget,
+                        "rede_epe_capturada_em": ((rede_epe or {}).get("existente") or {}).get("capturado_em"),
                         "pde": "PDE 2035"},
         "regras": REGRAS,
         "ressalvas": ressalvas,
         "capacidade_instalada": capacidade,
         "estagios": estagios,
         "cronograma": cronograma,
-        "transmissao": {"leiloes": leiloes, "obras": obras, "geracao_e_rede_por_uf": ger_rede, "serie_anual": serie_anual},
+        "transmissao": {"leiloes": leiloes, "obras": obras, "contratos_assinados": contratos, "rede_epe": rede_epe,
+                        "geracao_e_rede_por_uf": ger_rede, "serie_anual": serie_anual},
         "cenarios": cenarios,
         "conferencias": conferencias,
     }
@@ -1696,24 +2259,28 @@ def construir(con, ctx):
         ("encerramentos", "Atos de revogação e extinção de outorga (CSV)"),
         ("leiloes", "Leilões de transmissão por lote (CSV)"),
         ("obras", "Empreendimentos de transmissão do SIGET (CSV)"),
+        ("contratos", "Contratos de concessão de transmissão por data de assinatura (CSV)"),
+        ("rede_epe", "Linhas de transmissão existentes e planejadas do WebMap da EPE (JSON)"),
         ("pde", "PDE 2035: figuras usadas (CSV)"))]
     return gold
 
 
 REGRAS = {
-    "estagio": "Estágio = fase do SIGA: Operação; Construção; Construção não iniciada (outorgado sem obra). Encerramentos vêm dos atos de revogação (autorização) e extinção (concessão) publicados desde 2015.",
+    "estagio": "Estágio = fase do SIGA: Operação; Construção; Construção não iniciada (outorgado sem obra). Encerramentos vêm dos atos de revogação (autorização) e extinção (concessão) publicados desde 2015, com a potência uma vez por usina; outorga encerrada não é usina retirada (parte segue em operação no SIGA).",
+    "encerramentos": REGRA_ENCERRAMENTOS,
     "outorga": "Outorga não é capacidade que certamente entrará: o desfecho das usinas que passaram pelo RALIE é publicado ao lado da carteira.",
     "potencia": "Potência em MW (fiscalizada para usinas em operação; outorgada para a carteira). MW é potência, não energia: não equivale a energia firme nem a garantia física.",
     "previsao": "Previsão de operação comercial = campo DatPrevisaoOpComercialSFG do RALIE (previsão da fiscalização da ANEEL por unidade geradora), sempre com a data da fotografia em que foi registrada.",
     "confiabilidade": "Para cada fotografia mensal S (última do mês), potência das unidades com previsão em (S, S + 365 dias] e quanto dela foi liberada para operação comercial até S + 365 dias, depois disso ou não foi liberada até a data do arquivo de liberações. Só janelas encerradas pelo menos 15 dias antes dessa data.",
-    "deslizamento": "Variação da previsão da mesma unidade entre a fotografia mensal S e a do mesmo mês do ano seguinte, ponderada pela potência (positivo = adiada).",
-    "atraso_realizado": "Data de liberação comercial realizada menos a data outorgada da unidade no arquivo de liberações (cronograma outorgado vigente na publicação), mediana ponderada por kW.",
+    "deslizamento": "Variação da previsão da mesma unidade entre a fotografia mensal S e a do mesmo mês do ano seguinte, ponderada pela potência (positivo = adiada); publicada também sem as unidades em data em bloco, porque a data convencional anda cerca de um ano a cada ano junto com a fotografia.",
+    "data_em_bloco": REGRA_DATA_EM_BLOCO,
+    "desvio_prazo_vigente": "Data de liberação comercial realizada menos a data outorgada da unidade no arquivo de liberações (prazo vigente na publicação, sem data-base), mediana ponderada por kW. Não é atraso: em autorizações recentes a data outorgada é um prazo limite.",
     "transmissao": "km de circuito de linhas novas e MVA de transformação nova (módulos de obras do tipo Instalação no SIGET) e investimento e RAP dos leilões ficam em campos separados; nunca são somados entre si. No SIGET cada circuito é um módulo: linha de circuito duplo ou bipolo conta a extensão de cada circuito.",
     "cenario": "PDE 2035 é CENÁRIO de uma edição específica (data-base janeiro de 2025), mostrado em camada separada do realizado (SIGA) e da carteira (RALIE).",
 }
 
 
-def _escreve_csvs(siga, ralie_us, ralie_ug, ralie_lei, desf, encerramentos, cenarios, data_ralie):
+def _escreve_csvs(siga, ralie_us, ralie_ug, ralie_lei, desf, cenarios, data_ralie, bloco_atual=()):
     """CSV de download. Toda previsão sai com a data-base (a fotografia do RALIE em que
     foi registrada): previsão sem data-base não permite medir atraso."""
     linhas = []
@@ -1728,11 +2295,7 @@ def _escreve_csvs(siga, ralie_us, ralie_ug, ralie_lei, desf, encerramentos, cena
             pontos.append([int(k), u.get("nome"), u.get("tipo"), u.get("estagio"), u.get("uf"),
                            c.r(_mw(u.get("kw_outorgado")), 3), c.r(_mw(u.get("kw_fiscalizado")), 3),
                            round(u["lat"], 5), round(u["lon"], 5)])
-    _csv(os.path.basename(DOWNLOADS["usinas"]),
-                     ["nucleo_ceg", "ceg", "nome", "tipo", "origem", "fonte", "fase", "estagio", "outorga", "uf", "municipios",
-                      "lat", "lon", "kw_outorgado", "kw_fiscalizado", "entrada_operacao", "garantia_fisica_kwmed",
-                      "vigencia_inicio", "vigencia_fim", "cnpjs_proprietarios"],
-                     linhas)
+    _csv(os.path.basename(DOWNLOADS["usinas"]), _cabecalho("usinas"), linhas)
     base.escreve_gold(os.path.basename(DOWNLOADS["pontos"]),
                       {"colunas": ["nucleo", "nome", "tipo", "estagio", "uf", "mw_outorgado", "mw_fiscalizado", "lat", "lon"],
                        "linhas": pontos, "fonte": "ANEEL, SIGA (siga-empreendimentos-geracao-diario.csv)",
@@ -1761,20 +2324,16 @@ def _escreve_csvs(siga, ralie_us, ralie_ug, ralie_lei, desf, encerramentos, cena
                      n_ug.get(n), u.get("situacao_obra"), u.get("viabilidade"), u.get("situacao_cronograma"),
                      u.get("justificativa_previsao"), pmin.get(n), pmax.get(n), omax.get(n), atraso,
                      "|".join(sorted(lei.get(n, []))), (siga.get(n) or {}).get("fase")])
-    _csv(os.path.basename(DOWNLOADS["carteira"]),
-                     ["data_base_ralie", "nucleo_ceg", "ceg", "nome", "tipo", "uf", "kw_outorgado", "kw_ugs_em_implantacao", "ugs", "situacao_obra",
-                      "viabilidade", "situacao_cronograma", "justificativa_previsao", "previsao_min", "previsao_max",
-                      "outorgado_max", "atraso_previsto_dias", "leiloes", "fase_siga"], cart)
+    _csv(os.path.basename(DOWNLOADS["carteira"]), _cabecalho("carteira"), cart)
     ugl = []
     for k in sorted(ralie_ug, key=lambda s: tuple(int(p) for p in s.split(":"))):
         n, ug = k.split(":")
         x = ralie_ug[k]
         u = ralie_us.get(n, {})
+        p = x.get("previsao_sfg")
         ugl.append([data_ralie, int(n), int(ug), u.get("tipo"), u.get("uf"), x.get("kw"), x.get("comercial_outorgado"),
-                    x.get("previsao_sfg"), x.get("teste_realizado")])
-    _csv(os.path.basename(DOWNLOADS["unidades"]),
-                     ["data_base_ralie", "nucleo_ceg", "ug", "tipo", "uf", "kw", "comercial_outorgado", "previsao_sfg",
-                      "teste_realizado"], ugl)
+                    p, None if not p else ("sim" if p in bloco_atual else "não"), x.get("teste_realizado")])
+    _csv(os.path.basename(DOWNLOADS["unidades"]), _cabecalho("unidades"), ugl)
     tr = []
     for n in sorted(desf):
         x = desf[n]
@@ -1783,25 +2342,13 @@ def _escreve_csvs(siga, ralie_us, ralie_ug, ralie_lei, desf, encerramentos, cena
                    x.get("prev_ultima"), x.get("outorgado_ultima"), x.get("mudancas_previsao"), x.get("ugs_primeira"),
                    x.get("ugs_primeira_liberadas"), x.get("kw_primeira_liberado"), x.get("ultima_liberacao"),
                    x.get("desfecho"), x.get("data_encerramento"), "sim" if x.get("encerramento_sem_data") else "não"])
-    _csv(os.path.basename(DOWNLOADS["trajetorias"]),
-                     ["nucleo_ceg", "ceg", "nome", "tipo", "uf", "primeira_fotografia", "ultima_fotografia",
-                      "kw_outorgado_primeira", "previsao_primeira", "outorgado_primeira", "previsao_ultima", "outorgado_ultima",
-                      "mudancas_previsao", "ugs_primeira", "ugs_primeira_liberadas", "kw_primeira_liberado", "ultima_liberacao",
-                      "desfecho", "data_encerramento", "encerramento_sem_data"], tr)
-    enc = []
-    for k, x in sorted(encerramentos.items(), key=lambda kv: (kv[1].get("publicacao") or "", kv[0])):
-        enc.append([x.get("publicacao"), x.get("encerramento"), x.get("nucleo"), x.get("ceg"), x.get("nome"),
-                    x.get("tipo_geracao"), x.get("uf"), x.get("mw"), x.get("assunto"), x.get("ato"), x.get("numero"),
-                    x.get("agente")])
-    _csv(os.path.basename(DOWNLOADS["encerramentos"]),
-                     ["publicacao", "encerramento", "nucleo_ceg", "ceg", "nome", "tipo", "uf", "mw", "assunto", "ato", "numero",
-                      "agente"], enc)
+    _csv(os.path.basename(DOWNLOADS["trajetorias"]), _cabecalho("trajetorias"), tr)
     pde = []
     for chave, f in cenarios["figuras"].items():
         for lin in f["linhas"]:
             for col in f["colunas"]:
                 pde.append([f["aba"], f["titulo"], lin["ref"], col, lin.get(col), f["unidade"]])
-    _csv(os.path.basename(DOWNLOADS["pde"]), ["figura", "titulo", "referencia", "serie", "valor", "unidade"], pde)
+    _csv(os.path.basename(DOWNLOADS["pde"]), _cabecalho("pde"), pde)
 
 
 FONTE_SIGA = {"orgao": "ANEEL", "dataset": "SIGA: Sistema de Informações de Geração da ANEEL",
@@ -1835,7 +2382,7 @@ def _proveniencias(con, g, vig):
         "Potência em MW não é energia: a produção depende do fator de capacidade de cada fonte, e a garantia física (quando existe) é outra grandeza.",
         "Usina multiestadual é atribuída à UF principal informada pelo SIGA; a potência não é dividida entre UFs.",
         "O SIGA marca usina sem data de entrada em operação com 1900-01-03 e localização não informada com 0: os dois viram ausência.",
-        "O dicionário do SIGA descreve fases desde antes da outorga até a revogação, mas o arquivo aberto traz só Operação, Construção e Construção não iniciada: usina revogada ou extinta sai do arquivo e é contada pelos atos de outorga.",
+        "O dicionário do SIGA descreve fases desde antes da outorga até a revogação, mas o arquivo aberto traz só Operação, Construção e Construção não iniciada. Usina com outorga revogada ou extinta pode sair do arquivo ou continuar nele: centenas de usinas com ato de encerramento seguem na fase Operação (conversão de regime ou nova outorga), então estágios e encerramentos não são disjuntos.",
     ]
     hist = g["cronograma"]["historico_fonte"]
     lim_ralie = [
@@ -1864,12 +2411,17 @@ def _proveniencias(con, g, vig):
                                periodo={"inicio": g["estagios"]["encerramentos"]["desde"], "fim": ref["atos"]},
                                cobertura={"inicio": "2015", "fim": ref["atos"]},
                                transformacoes=["filtro DscObjeto igual a um dos rótulos da fonte 'Autorização - Revogação' ou 'Concessão - Extinção'",
-                                               "contagem por ano de publicação; soma da potência declarada no ato"],
-                               formula="MW(ano) = Σ MdaPotenciaInstaladaMW dos atos de encerramento publicados no ano",
+                                               "conferência da potência de cada ato contra o cadastro da usina (SIGA, RALIE histórico) e o limite legal da CGH",
+                                               "potência uma vez por usina (núcleo do CEG) em cada ano e no total, pelo maior valor conferido",
+                                               "contagem de atos à parte"],
+                               formula="MW(ano) = Σ por usina com ato no ano de max(potência conferida dos atos da usina no ano)",
                                limitacoes=["O conjunto de atos começa em 2015; encerramentos anteriores não constam.",
                                            "Ato sem data de publicação na fonte fica fora da série anual e é contado à parte (sem_data_publicacao).",
                                            "Revogação de DRO, DRI e DRS (registros anteriores à outorga) não entra.",
-                                           "A potência é a declarada no ato; atos sem potência contam como ato, não como 0 MW.",
+                                           "A potência é a declarada no ato, que às vezes vem em kW no campo de MW: corrigida pelo cadastro quando há confirmação, fora da soma quando não há (potencia_conferida). Atos sem potência contam como ato, não como 0 MW.",
+                                           f"Outorga encerrada não é usina retirada: {g['estagios']['encerramentos']['usinas_em_operacao_no_siga']['usinas']} usinas com ato de encerramento seguem na fase Operação do SIGA (usinas_em_operacao_no_siga).",
+                                           f"{g['estagios']['encerramentos']['sem_chave_de_usina']['atos']} atos não têm núcleo nem código do CEG na fonte e não são deduplicados (sem_chave_de_usina).",
+                                           "Usina com atos em anos diferentes aparece em cada um desses anos; o total conta a usina uma vez.",
                                            "O ano corrente é parcial."],
                                download=DOWNLOADS["encerramentos"]),
         "ralie": _prov(con, DS_RALIE, FONTE_RALIE, indicador="Carteira em implantação (RALIE atual)", natureza="CALCULADO",
@@ -1889,7 +2441,9 @@ def _proveniencias(con, g, vig):
                                          "classificação em ordem: em implantação; operação; outorga encerrada; sem desfecho"],
                          formula="pct(desfecho) = 100 × Σ kW outorgado na primeira fotografia das usinas com o desfecho ÷ Σ kW da coorte",
                          limitacoes=lim_ralie + ["Usinas em operação parcial que seguem no RALIE contam como em implantação.",
-                                                 "Sem desfecho não significa abandono: pode ser mudança de CEG, saída do acompanhamento ou ato fora do conjunto de atos."],
+                                                 "Sem desfecho não significa abandono: pode ser mudança de CEG, saída do acompanhamento, ato fora do conjunto de atos ou "
+                                                 f"ato de revogação publicado sem núcleo nem código do CEG ({g['estagios']['encerramentos']['sem_chave_de_usina']['atos']} atos, "
+                                                 f"{_milhar(g['estagios']['encerramentos']['sem_chave_de_usina']['mw_usado'] or 0, 1)} MW em 30/09/2026, quase todos de 2025 e 2026), que não se liga a nenhuma usina do RALIE."],
                          download=DOWNLOADS["trajetorias"]),
         "confiabilidade": _prov(con, DS_RALIE, FONTE_RALIE, indicador="Confiabilidade das previsões de operação comercial em 12 meses",
                                 natureza="CALCULADO", unidade="MW e %", frequencia="mensal (última fotografia do mês)",
@@ -1902,25 +2456,26 @@ def _proveniencias(con, g, vig):
                                 limitacoes=lim_ralie + ["Unidade renumerada pela fonte entre a fotografia e a liberação aparece como não liberada.",
                                                         "A data-base de cada previsão é a fotografia do RALIE; nenhuma previsão é reconstruída com o estoque atual."],
                                 download=DOWNLOADS["confiabilidade"]),
-        "atraso_realizado": _prov(con, DS_LIB, FONTE_LIB, indicador="Atraso realizado da liberação comercial em relação à data outorgada",
+        "desvio_prazo_vigente": _prov(con, DS_LIB, FONTE_LIB, indicador="Desvio da liberação comercial em relação ao prazo outorgado vigente (não é atraso com data-base)",
                                   natureza="CALCULADO", unidade="dias (mediana ponderada por kW) e %", frequencia="quinzenal segundo o dicionário",
                                   periodo={"inicio": "2014", "fim": ref["liberacoes_ultima_data"]},
                                   cobertura={"inicio": "2014", "fim": ref["liberacoes_ultima_data"]},
-                                  transformacoes=["atraso = DatLiberOpComerRealizado − DatUGInicioOpComerOutorgado", "mediana ponderada pela potência liberada"],
-                                  formula="mediana ponderada de (realizado − outorgado) com peso MdaPotenciaLiberadaComercial",
-                                  limitacoes=["A data outorgada é a vigente na publicação do arquivo: se o cronograma foi alterado por ato posterior, o atraso é medido contra a data alterada.",
+                                  transformacoes=["desvio = DatLiberOpComerRealizado − DatUGInicioOpComerOutorgado", "mediana ponderada pela potência liberada"],
+                                  formula="mediana ponderada de (realizado − outorgado vigente) com peso MdaPotenciaLiberadaComercial",
+                                  limitacoes=["Não é atraso: a data outorgada é a vigente na publicação do arquivo, sem data-base; se o cronograma foi alterado por ato posterior, o desvio é medido contra a data alterada. O que atrasou em relação a uma previsão datada está na confiabilidade das previsões.",
                                               "Em autorizações recentes (sobretudo solares) a data outorgada é um prazo limite anos à frente; liberação muito antes dela aparece como atraso negativo grande, que é antecipação em relação ao prazo, não em relação a uma previsão.",
                                               "Antes de 2014 o arquivo detalhado não cobre toda a potência liberada no ano (nota da ANEEL).",
                                               "O ano corrente é parcial."],
                                   download=DOWNLOADS["liberacoes"]),
         "leiloes": _prov(con, DS_LEILOES, FONTE_LEILOES, indicador="Leilões de transmissão por ano", natureza="CALCULADO",
                          unidade="km, MVA, R$ milhões (nominais) e %", frequencia="mensal segundo o dicionário",
-                         periodo={"inicio": (g["transmissao"]["leiloes"]["por_ano"] or [{}])[0].get("ano"),
-                                  "fim": (g["transmissao"]["leiloes"]["por_ano"] or [{}])[-1].get("ano")},
+                         periodo=g["transmissao"]["leiloes"]["periodo"],
                          cobertura={"inicio": "1999", "fim": ref["leiloes_transmissao"]},
-                         transformacoes=["soma por ano do leilão de km, MVA, investimento previsto e RAP", "deságio agregado pela RAP"],
+                         transformacoes=["lotes sem vencedor ('SEM LANCE', 'SEM INSCRITO APTO', 'NÃO LEILOADO') separados; zeros-marcadores viram ausência",
+                                         "soma por ano do leilão de km, MVA, investimento previsto e RAP dos lotes contratados", "deságio agregado pela RAP"],
                          formula="deságio(ano) = 100 × (1 − Σ RAP vencedora ÷ Σ RAP do edital), lotes com as duas",
-                         limitacoes=[f"O arquivo publicado termina no leilão {g['transmissao']['leiloes']['ultimo_leilao']['leilao']} ({c.data_br(g['transmissao']['leiloes']['ultimo_leilao']['data'])}); ano sem linha aparece como ausência, não como ano sem leilão.",
+                         limitacoes=[f"O arquivo publicado termina no leilão {g['transmissao']['leiloes']['ultimo_leilao']['leilao']} ({c.data_br(g['transmissao']['leiloes']['ultimo_leilao']['data'])}); ano sem linha aparece como ausência, não como ano sem leilão. Os contratos de concessão assinados depois disso estão em contratos_assinados (SIGET), sem RAP nem deságio.",
+                                     f"{g['transmissao']['leiloes']['lotes_sem_vencedor']} lotes sem vencedor ficam fora de lotes contratados, km, MVA, investimento e RAP; o investimento e a RAP do edital deles saem à parte, como ofertados.",
                                      "Reais nominais da data de cada leilão, sem correção monetária: anos não são comparáveis em valor real.",
                                      "Investimento é o previsto no edital, não o realizado.", "km, MVA e reais são grandezas diferentes e nunca somadas."],
                          download=DOWNLOADS["leiloes"]),
@@ -1935,8 +2490,54 @@ def _proveniencias(con, g, vig):
                                    "As datas de previsão informadas pelas transmissoras não estão no arquivo aberto do SIGET: o atraso em andamento é medido contra o ato legal, não contra a previsão.",
                                    "Linha interestadual aparece nas duas UFs na tabela por UF: a soma das UFs supera o total nacional.",
                                    "Reatores e capacitores (Mvar) não entram no MVA de transformação.",
-                                   "Sem geometria pública verificada das linhas (SIGEL da ANEEL não respondeu): o mapa é por UF."],
+                                   "Um módulo listado em mais de um empreendimento conta uma vez, no empreendimento da obra mais antiga.",
+                                   "O SIGET não tem coordenadas: o território das obras é a UF das subestações. A geometria das linhas vem do WebMap da EPE (rede_epe), sem chave comum com o SIGET; o SIGEL da ANEEL não respondeu."],
                        download=DOWNLOADS["obras"]),
+        "previsoes": _prov(con, DS_RALIE, FONTE_RALIE, indicador="Previsões de operação comercial da fiscalização (atuais, próximos 24 meses e revisões entre fotografias)",
+                           natureza="PREVISTO", unidade="MW, dias e %",
+                           frequencia="mensal segundo o dicionário; cada previsão tem a data da fotografia (DatRalie) em que foi publicada",
+                           periodo={"inicio": ref["ralie"], "fim": ref["ralie"]},
+                           cobertura={"inicio": ref["ralie_historico_desde"], "fim": ref["ralie"]},
+                           transformacoes=["previsão DatPrevisaoOpComercialSFG por unidade, com data-base = DatRalie da fotografia",
+                                           "soma da potência unitária por ano e mês previstos", "datas em bloco marcadas e excluídas nas versões 'sem datas em bloco'"],
+                           formula="MW(período previsto) = Σ MdaPotenciaUnitaria das unidades com previsão no período ÷ 1.000; deslizamento = previsão(S + 12 meses) − previsão(S)",
+                           limitacoes=["Previsão da fiscalização da ANEEL, não do empreendedor nem do observatório; muda a cada fotografia.",
+                                       REGRA_DATA_EM_BLOCO,
+                                       "O deslizamento só contém unidades que seguem em implantação 12 meses depois (viés de sobrevivência)."],
+                           download=DOWNLOADS["unidades"]),
+        "contratos_transmissao": _prov(con, DS_SIGET, {**FONTE_SIGET, "recurso": "siget-contrato-agente.csv, siget-contrato-empreendimento-obra-modulo.csv"},
+                                       indicador="Contratos de concessão de transmissão por data de assinatura", natureza="CALCULADO",
+                                       unidade="contratos, km de circuito e MVA", frequencia="diária segundo o dicionário; capturado no máximo uma vez por semana",
+                                       periodo={"inicio": ((g["transmissao"]["contratos_assinados"] or {}).get("por_ano") or [{}])[0].get("ano"),
+                                                "fim": ref["siget"]},
+                                       cobertura={"inicio": ((g["transmissao"]["contratos_assinados"] or {}).get("por_ano") or [{}])[0].get("ano"),
+                                                  "fim": ref["siget"]},
+                                       transformacoes=["DatAsnCcd do contrato", "vínculo IdeCcd com o arquivo de obras",
+                                                       "km e MVA de obras de Instalação do objeto original (mesmo fim de contrato)"],
+                                       formula="km(ano) = Σ NumEtnLinTms dos módulos LT de Instalação dos contratos assinados no ano (objeto original)",
+                                       limitacoes=["Contrato não é leilão: pode vir de leilão, relicitação ou outra origem, e o SIGET não informa o leilão, a RAP de lance nem o deságio.",
+                                                   "Contrato sem empreendimento cadastrado no SIGET tem km e MVA ausentes.",
+                                                   "Reforço incorporado depois a contrato antigo, com prazo próprio, fica fora das somas."],
+                                       download=DOWNLOADS["contratos"]),
+        **({"rede_epe": _prov(con, DS_REDE_EPE, {"orgao": "EPE", "dataset": "WebMap da EPE: linhas de transmissão",
+                                                 "recurso": "camadas 21 (Base Existente) e 10 (Expansão Planejada) do serviço SMA/WMS_Webmap_EPE",
+                                                 "url_dataset": er.URL_WEBMAP, "url_primaria": er.SERVICO, "licenca": LICENCA_EPE},
+                              indicador="Linhas de transmissão existentes e planejadas por UF, tensão e ano", natureza="CALCULADO",
+                              unidade="km (comprimento da geometria)", frequencia="não informada pela EPE; capturado no máximo uma vez por mês",
+                              # período do conteúdo: anos de operação (existente) e previstos (planejada);
+                              # a data de atualização das camadas não é informada pela EPE
+                              periodo={"inicio": str(g["transmissao"]["rede_epe"]["existente"]["ano_min"]),
+                                       "fim": str(g["transmissao"]["rede_epe"]["planejada"]["ano_max"])},
+                              cobertura={"inicio": str(g["transmissao"]["rede_epe"]["existente"]["ano_min"]),
+                                         "fim": str(g["transmissao"]["rede_epe"]["planejada"]["ano_max"])},
+                              transformacoes=["geometria generalizada pelo servidor (0,005 grau)", "comprimento geodésico de cada feição",
+                                              "km por UF pelo ponto médio de cada segmento na malha de UF do IBGE"],
+                              formula="km(UF) = Σ comprimento dos segmentos cujo ponto médio está na UF",
+                              limitacoes=["O serviço não informa a data de atualização das camadas: vale a data de captura.",
+                                          "O campo Extensao da camada planejada tem valores fora de escala (em metros em parte das feições): o comprimento publicado é o da geometria.",
+                                          "km por feição (traçado), não km de circuito do SIGET: as duas medidas não se somam.",
+                                          "Sem chave comum com o SIGET ou com os leilões: a ligação é territorial (UF), não por empreendimento."],
+                              download=DOWNLOADS["rede_epe"])} if g["transmissao"].get("rede_epe") else {}),
         "cenarios": _prov(con, DS_PDE, FONTE_PDE, indicador="PDE 2035: capacidade, expansão indicativa, transmissão e geração",
                           natureza="CENARIO", unidade="GW, MW, km, MVA, R$ bilhões e TWh (por figura)", frequencia="por edição",
                           periodo={"inicio": "2025", "fim": "2035"}, cobertura={"inicio": "2025", "fim": "2035"},
@@ -2119,34 +2720,6 @@ def _evidencias(g, vig, siga, ralie_ug, desf, conf_bruta, emp_siget, lotes, pde_
                     ev.teste("data-base conhecida", "aprovado", "cada previsão é lida da fotografia DatRalie em que foi publicada")],
             download=[{"rotulo": "Confiabilidade das previsões (CSV)", "url": DOWNLOADS["confiabilidade"]}], reproducao=REPRODUCAO)
 
-    # ---- atraso realizado no último ano completo
-    atr = [x for x in g["cronograma"]["atraso_realizado"] if not x["ano_parcial"]]
-    if atr:
-        u = atr[-1]
-        out["atraso_realizado_ultimo_ano"] = ev.construir(
-            indicador="Atraso mediano da liberação comercial em relação à data outorgada",
-            valor_exibido=None if u["mediana_dias_ponderada"] is None else f"{u['mediana_dias_ponderada']} dias",
-            valor_calculo=u["mediana_dias_ponderada"], unidade="dias",
-            periodo={"inicio": f"{u['ano']}-01-01", "fim": f"{u['ano']}-12-31"},
-            entidade="unidades geradoras liberadas para operação comercial no ano",
-            universo=f"{_milhar(u['mw_liberado'], 1)} MW liberados em {_milhar(u['unidades_ou_grupos'])} linhas do arquivo",
-            fonte=ev.fonte_de_vintage("ANEEL", FONTE_LIB["dataset"], URL_LIB, v_lib),
-            consulta=f"linhas do arquivo detalhado com DatLiberOpComerRealizado em {u['ano']} e DatUGInicioOpComerOutorgado preenchida",
-            manifesto={"rotulo": "Liberações por ano e tipo (CSV)", "url": DOWNLOADS["liberacoes"]},
-            formula="mediana ponderada por kW de (DatLiberOpComerRealizado − DatUGInicioOpComerOutorgado), em dias",
-            pesos="MdaPotenciaLiberadaComercial (kW) de cada linha",
-            cobertura="usinas acompanhadas pela fiscalização (o arquivo não cobre todo o SIGA)",
-            tratamento_ausencia="linha sem data outorgada fica fora da mediana e da parcela com atraso",
-            revisoes=prov["atraso_realizado"]["revisoes_conhecidas"],
-            testes=[ev.teste("ano completo", "aprovado", "o ano corrente, parcial, não é usado como destaque")],
-            reconciliacao=ev.reconciliacao(
-                f"potência liberada somada por ano e tipo contra o resumo anual oficial: {g['conferencias']['liberacoes_detalhado_x_resumo']['iguais']} de "
-                f"{g['conferencias']['liberacoes_detalhado_x_resumo']['grupos_ano_tipo']} grupos desde 2014 iguais",
-                "aprovado" if g["conferencias"]["liberacoes_detalhado_x_resumo"]["resultado"] == "aprovada" else "reprovado",
-                f"{TOLERANCIA_RESUMO_KW:g} kW por grupo (arredondamento a duas casas)".replace(".", ",")),
-            download=[{"rotulo": "Liberações comerciais e atraso por ano (CSV)", "url": DOWNLOADS["liberacoes"]}],
-            reproducao=REPRODUCAO)
-
     # ---- transmissão em andamento (SIGET)
     anda = [x for x in emp_siget if x["situacao"] == "Em andamento"]
     km_anda = sum(x["km_lt"] for x in anda)
@@ -2175,16 +2748,19 @@ def _evidencias(g, vig, siga, ralie_ug, desf, conf_bruta, emp_siget, lotes, pde_
     if lei:
         u = lei[-1]
         do_ano = sorted((k, x) for k, x in lotes.items() if (x.get("ano") or (x.get("data") or "")[:4]) == u["ano"])
-        km_ano = sum(x.get("km") or 0 for _, x in do_ano)
+        contratados = [(k, x) for k, x in do_ano if not ax.lote_sem_vencedor(x.get("vencedor"))]
+        km_ano = sum(x.get("km") or 0 for _, x in contratados)
         out["leiloes_ultimo_ano"] = ev.construir(
-            indicador="Extensão de linhas leiloadas no ano", valor_exibido=f"{_milhar(km_ano)} km", valor_calculo=km_ano,
+            indicador="Extensão de linhas contratadas em leilão no ano", valor_exibido=f"{_milhar(km_ano)} km", valor_calculo=km_ano,
             unidade="km", periodo={"inicio": f"{u['ano']}-01-01", "fim": f"{u['ano']}-12-31"},
-            entidade="lotes de transmissão leiloados no ano", universo=f"{u['lotes']} lotes",
+            entidade="lotes de transmissão contratados em leilão no ano",
+            universo=f"{u['lotes_contratados']} lotes contratados de {u['lotes_ofertados']} ofertados",
             fonte=ev.fonte_de_vintage("ANEEL", FONTE_LEILOES["dataset"], URL_LEILOES, v_lei),
-            chaves_origem=[f"leilão {x.get('leilao')}, lote {x.get('lote')}" for _, x in do_ano],
-            formula="Σ MdaExtensaoLinhaTransmissaoKm dos lotes do ano",
+            chaves_origem=[f"leilão {x.get('leilao')}, lote {x.get('lote')}" for _, x in contratados],
+            formula="Σ MdaExtensaoLinhaTransmissaoKm dos lotes contratados do ano",
+            exclusoes=[f"{u['lotes_sem_vencedor']} lotes sem vencedor no ano (SEM LANCE, SEM INSCRITO APTO ou NÃO LEILOADO)"],
             cobertura=f"leilões de transmissão desde 1999; o arquivo termina no leilão {g['transmissao']['leiloes']['ultimo_leilao']['leilao']}",
-            tratamento_ausencia="lote só de subestação tem 0 km publicado pela fonte e soma 0; ano sem linha no arquivo é ausência, não zero",
+            tratamento_ausencia="lote contratado sem linha descrita tem 0 km real e soma 0; 0 km com linha descrita é campo não preenchido e fica fora; em lote sem vencedor o 0 é marcador e fica fora; ano sem linha no arquivo é ausência, não zero",
             revisoes=prov["leiloes"]["revisoes_conhecidas"],
             testes=[ev.teste("deságio publicado confere com a RAP", "aprovado" if not g["transmissao"]["leiloes"]["desagio_inconsistente_total"] else "ressalva",
                              f"{g['transmissao']['leiloes']['desagio_inconsistente_total']} de {g['transmissao']['leiloes']['lotes']} lotes com deságio publicado diferente de 1 − RAP vencedora ÷ RAP do edital (tolerância 0,6 ponto percentual)"),

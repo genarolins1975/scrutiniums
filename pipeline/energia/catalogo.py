@@ -215,6 +215,37 @@ def integrados_de_modulos():
     return _MODULOS
 
 
+MODULOS_IGNORADOS = []
+
+
+def modulos_validos():
+    """Módulos com REGISTRO e construir(), tolerando módulo incompleto de outro autor (em
+    construção, sem construir): ele fica de fora e é listado em MODULOS_IGNORADOS, em vez
+    de derrubar o catálogo inteiro como modulos.descobrir() faria."""
+    import importlib
+    import pkgutil
+    from pipeline.energia import modulos
+    MODULOS_IGNORADOS.clear()
+    mods = []
+    for info in pkgutil.iter_modules([modulos.AQUI]):
+        if info.name.startswith("_"):
+            continue
+        try:
+            m = importlib.import_module(f"pipeline.energia.modulos.{info.name}")
+        except Exception as e:  # erro de importação de módulo alheio
+            MODULOS_IGNORADOS.append({"modulo": info.name, "motivo": f"importação falhou: {type(e).__name__}: {e}"[:200]})
+            continue
+        reg = getattr(m, "REGISTRO", None)
+        if reg is None:
+            continue
+        faltam = [k for k in modulos.CAMPOS_OBRIGATORIOS if k not in reg]
+        if faltam or not callable(getattr(m, "construir", None)):
+            MODULOS_IGNORADOS.append({"modulo": info.name, "motivo": f"REGISTRO sem {faltam}" if faltam else "sem construir(con, ctx)"})
+            continue
+        mods.append(m)
+    return sorted(mods, key=lambda m: (m.REGISTRO["ordem"], m.REGISTRO["id"]))
+
+
 def integracoes():
     """Uma linha por (família, dataset do silver, módulo): golds de operação e REGISTRO
     de cada módulo temático. Genérico: um módulo novo aparece sem editar este arquivo."""
@@ -225,8 +256,7 @@ def integracoes():
                     "estado_declarado": d["estado"], "modelos": list(d.get("modelos", [])), "titulo": d.get("titulo"),
                     "url": URL_DATASET[orgao] + nome, "licenca": None, "quebras": QUEBRAS.get((orgao, nome), []),
                     "descricao": "", "tema": None, "formatos": []})
-    from pipeline.energia import modulos
-    for m in modulos.descobrir():
+    for m in modulos_validos():
         r = m.REGISTRO
         for d in r["datasets"]:
             out.append({"orgao": d["orgao"], "nome": d["nome"], "slug": d.get("slug"), "dataset_silver": d.get("dataset_silver"),

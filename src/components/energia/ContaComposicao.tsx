@@ -204,7 +204,7 @@ export function ContaComposicao({ composicao, vigentes, referencia, dataReferenc
         </p>
       </div>
 
-      <ContaSobDemanda rotulo="a composição de todas as distribuidoras" detalhe={`${comp.distribuidoras.length} linhas, ordenáveis por grupo e exportáveis`}>
+      <ContaSobDemanda chaveUrl="comp" rotulo="a composição de todas as distribuidoras" detalhe={`${comp.distribuidoras.length} linhas, ordenáveis por grupo e exportáveis`}>
         <TabelaComposicao
           comp={comp}
           vigentes={vigentes}

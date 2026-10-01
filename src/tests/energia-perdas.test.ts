@@ -12,12 +12,13 @@ import { problemasEvidencia, type Evidencia } from "@/lib/energia/evidencia";
 import { gerarCsv } from "@/lib/energia/tabela";
 import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import type { CamadaGeo } from "@/lib/energia/geo";
-import type { EvidenciasDistribuidoras, MunicipiosPerdas, PerdasGold, SerieAnualPerdas } from "@/lib/energia/tipos-perdas";
+import type { EvidenciasDistribuidoras, EvidenciasPorDistribuidora, MunicipiosPerdas, PerdasGold, SerieAnualPerdas } from "@/lib/energia/tipos-perdas";
 import {
   CAMPOS_ANUAIS,
   MEDIDAS,
   ORDEM_MEDIDAS,
   ajustaConsulta,
+  avisoTerritorio,
   classeDoValor,
   classificacaoMedida,
   colunasDoPeriodo,
@@ -76,6 +77,8 @@ const g = json<PerdasGold>("public/energia/gold/perdas.json");
 const anual = json<SerieAnualPerdas>("public/energia/series/perdas_anual.json");
 const mun = json<MunicipiosPerdas>("public/energia/series/perdas_municipios.json");
 const evDist = json<EvidenciasDistribuidoras>("public/energia/series/perdas_evidencias.json");
+const evTarifa = json<EvidenciasPorDistribuidora>("public/energia/series/perdas_evidencias_tarifa.json");
+const evTecnica = json<EvidenciasPorDistribuidora>("public/energia/series/perdas_evidencias_tecnica.json");
 const malha = json<CamadaGeo>("public/energia/geo/municipios.json");
 const ref = g.referencia.ano;
 const porSigla = (s: string) => {
@@ -132,6 +135,10 @@ describe("contrato da gold de perdas", () => {
   it("evidências da gold e por distribuidora passam na validação de 'Comprove este número'", () => {
     for (const [k, ev] of Object.entries(g.evidencias)) if (ev) expect(problemasEvidencia(ev as Evidencia), k).toEqual([]);
     for (const [k, ev] of Object.entries(evDist.evidencias)) expect(problemasEvidencia(ev as Evidencia), k).toEqual([]);
+    for (const [k, ev] of Object.entries(evTarifa.evidencias)) expect(problemasEvidencia(ev as Evidencia), `tarifa ${k}`).toEqual([]);
+    for (const [k, ev] of Object.entries(evTecnica.evidencias)) expect(problemasEvidencia(ev as Evidencia), `técnica ${k}`).toEqual([]);
+    expect(g.evidencias.associacao).not.toBeNull();
+    expect(g.evidencias.associacao!.valor_exibido).toBe("−0,606");
     // valor exibido sai do valor sem arredondamento, com um só arredondamento
     expect(g.evidencias.taxa_nacional.valor_exibido).toBe("14,7%");
     expect(g.evidencias.taxa_nacional.valor_calculo).toBeCloseTo(14.748264, 6);
@@ -294,6 +301,30 @@ describe("mapa, tabela e exportação com as mesmas linhas e números", () => {
     expect(fora + semSeparacao + linhas.length).toBe(g.distribuidoras.filter((d) => d.referencia && validoTotal(recorteDaReferencia(d)!)).length);
   });
 
+  it("as provas por distribuidora comprovam o mesmo número que a tabela mostra", () => {
+    const custo = linhasCusto(g.distribuidoras);
+    expect(Object.keys(evTarifa.evidencias).sort()).toEqual(custo.map((l) => l.id).sort());
+    for (const l of custo) {
+      const ev = evTarifa.evidencias[l.id];
+      expect(ev.valor_calculo!, l.rotulo).toBeCloseTo(l.perdas, 2);
+      expect(ev.periodo.inicio, l.rotulo).toBe(l.inicio);
+      // o arquivo de onde o valor foi lido é um dos anuais de componentes, com sha256
+      expect(ev.fonte.recurso ?? "", l.rotulo).toMatch(/^componentes-tarifarias-\d{4}\.parquet$/);
+    }
+    expect(evTarifa.evidencias[CEMIG].valor_exibido).toBe("65,44 R$/MWh");
+    const reg = linhasRegulatorio(g.distribuidoras);
+    expect(Object.keys(evTecnica.evidencias).sort()).toEqual(reg.map((l) => l.id).sort());
+    for (const l of reg) {
+      const ev = evTecnica.evidencias[l.id];
+      expect(ev.valor_calculo, l.rotulo).toBe(l.atual);
+      expect([ev.periodo.inicio, ev.periodo.fim], l.rotulo).toEqual([l.inicio, l.fim]);
+    }
+    expect(evTecnica.evidencias[CEMIG].valor_exibido).toBe("8,014%");
+    // a associação comprova o ρ publicado no painel, com o mesmo n
+    expect(g.evidencias.associacao!.valor_calculo!).toBeCloseTo(g.associacao.spearman_taxa_total!, 3);
+    expect(g.evidencias.associacao!.universo).toContain(`${g.associacao.n_taxa_total} concessionárias`);
+  });
+
   it("custo: as três componentes somam a componente de perdas publicada; o gráfico só tem processos vigentes", () => {
     const custo = linhasCusto(g.distribuidoras);
     for (const l of custo) expect(Math.abs(l.pt + l.pnt + l.rede_basica - l.perdas), l.rotulo).toBeLessThanOrEqual(0.011);
@@ -382,9 +413,12 @@ describe("textos derivados dos números", () => {
     expect(respostaRegulatorio([], false)).toBe("Nenhum percentual técnico regulatório foi identificado na série do SAMP.");
     const custo = linhasCusto(g.distribuidoras);
     const enc = custo.filter((l) => l.situacao === "vigencia_encerrada").length;
+    const encAtivas = g.distribuidoras.filter((d) => d.ativa && d.tarifa?.situacao === "vigencia_encerrada").length;
+    expect(encAtivas).toBe(23); // conferido no documento do módulo (21 permissionárias, ELFSM e CERNHE)
     const tc = respostaCusto(custo, "2026-09-30");
     expect(tc).toContain(`em ${custo.length - enc} distribuidoras`);
-    expect(tc).toContain(`${enc} distribuidoras só têm processo com vigência encerrada`);
+    expect(tc).toContain("23 distribuidoras ativas só têm processo com vigência encerrada no arquivo da fonte");
+    expect(tc).toContain(`Outras ${enc - 23} têm o último processo encerrado`);
     const ta = respostaAssociacao(g.associacao);
     expect(ta).toContain("a associação é forte (ρ de Spearman = −0,606, 52 concessionárias): renda média maior aparece com valores menores.");
     expect(ta).toContain("a associação é moderada (ρ de Spearman = −0,377, 46 concessionárias)");
@@ -393,6 +427,19 @@ describe("textos derivados dos números", () => {
     const serie = g.nacional.filter((l) => !l.parcial && l.taxa_total_pct !== null);
     const max = Math.max(...serie.map((l) => l.taxa_total_pct!));
     expect(ev).toContain(`${textoNumero(max, MEDIDAS.taxa)} (${serie.find((l) => l.taxa_total_pct === max)!.ano})`);
+  });
+
+  it("aviso de território: só a relação mais recente desenha as áreas; absorções posteriores ao período são nomeadas", () => {
+    const anoRel = g.mapa.ano_relacao;
+    expect(avisoTerritorio(leves, pRef, anoRel)).toBe("Território: municípios da relação de 2026.");
+    const p2010 = periodos.find((p) => p.id === "2010")!;
+    const aviso = avisoTerritorio(leves, p2010, anoRel)!;
+    // RGE SUL absorveu a RGE em jun/2019; CPFL JAGUARI e ESS absorveram outras em 2018 (eventos do SAMP)
+    expect(aviso).toContain("RGE SUL absorveu outra distribuidora (jun/2019)");
+    expect(aviso).toContain("CPFL JAGUARI absorveu outra distribuidora (mar/2018)");
+    expect(aviso).toContain("ESS absorveu outra distribuidora (jul/2018)");
+    expect(avisoTerritorio(leves, periodos.find((p) => p.id === "2020")!, anoRel)).toBe("Território: municípios da relação de 2026.");
+    expect(avisoTerritorio(leves, pRef, null)).toBeNull();
   });
 
   it("regras de redação: mudança decidida nas casas publicadas, intensidade do ρ e sinal tipográfico", () => {
@@ -468,6 +515,7 @@ describe("páginas renderizadas no servidor", () => {
     expect(conteudo(paginas.composicao)).toContain("Comprove");
     expect(paginas.regulatorio).toContain('data-bloqueio="regulatorio"');
     expect(paginas.custo).toContain('data-bloqueio="custo-total"');
+    expect(conteudo(paginas.custo)).toContain("Comprove o ρ da taxa de perdas totais");
     for (const [k, h] of Object.entries(paginas)) {
       expect(conteudo(h), k).toContain("Próxima pergunta");
       expect(conteudo(h), k).toContain("Copiar link deste painel");

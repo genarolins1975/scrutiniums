@@ -35,19 +35,26 @@ export type Referencias = {
   liberacoes_arquivo: string;
   liberacoes_ultima_data: string | null;
   atos: string | null;
+  /** Data do último lote do arquivo de leilões (período do dado, não publicação). */
   leiloes_transmissao: string | null;
+  /** Data de modificação do arquivo de leilões informada pela ANEEL. */
+  leiloes_transmissao_publicado_em: string | null;
   siget: string;
+  /** Captura das camadas do WebMap da EPE (o serviço não informa data do dado). */
+  rede_epe_capturada_em: string | null;
   pde: string;
 };
 
 export type Regras = {
   estagio: string;
+  encerramentos: string;
   outorga: string;
   potencia: string;
   previsao: string;
   confiabilidade: string;
   deslizamento: string;
-  atraso_realizado: string;
+  data_em_bloco: string;
+  desvio_prazo_vigente: string;
   transmissao: string;
   cenario: string;
 };
@@ -139,25 +146,70 @@ export type EstagiosLinha = {
   construcao_nao_iniciada_mw_outorgado: number;
 };
 
+/** Encerramentos de um ano: potência uma vez por usina (núcleo do CEG); atos contados à parte. */
 export type EncerramentosAno = {
   ano: string;
   atos: number;
   revogacoes: number;
   extincoes: number;
   usinas: number;
-  mw_declarado: number | null;
+  mw_usinas: number;
+  usinas_sem_potencia: number;
+  /** Usinas do ano que já tinham ato de encerramento em ano anterior (aparecem nos dois anos). */
+  usinas_com_ato_em_ano_anterior: number;
+  mw_usinas_com_ato_em_ano_anterior: number;
+  /** Usinas do ano que seguem na fase Operação do SIGA: outorga encerrada, usina não retirada. */
+  usinas_em_operacao_no_siga: number;
+  mw_usinas_em_operacao_no_siga: number;
+  atos_sem_chave_de_usina: number;
+  mw_atos_sem_chave_de_usina: number;
   atos_sem_potencia: number;
+  atos_potencia_corrigida: number;
+  atos_potencia_fora_da_soma: number;
   ano_parcial: boolean;
 };
 
+/** Ato cuja potência foi corrigida (kW no campo de MW) ou ficou fora da soma. */
+export type AtoPotenciaConferida = {
+  chave: string;
+  publicacao: string | null;
+  nome: string | null;
+  nucleo: number | null;
+  tipo: string | null;
+  mw_no_ato: number | null;
+  /** Potência somada; null = fora da soma. */
+  mw_usado: number | null;
+  kw_cadastro: number | null;
+  cadastro: string | null;
+  motivo: string | null;
+};
+
 export type Encerramentos = {
+  regra: string;
   desde: string | null;
   por_ano: EncerramentosAno[];
-  por_tipo: { tipo: string | null; atos: number; mw_declarado: number | null }[];
+  por_tipo: { tipo: string | null; usinas: number; mw_usinas: number }[];
   /** Atos sem data de publicação na fonte: fora da série anual, contados à parte (e no total). */
-  sem_data_publicacao: { atos: number; mw_declarado: number | null };
-  total_atos: number;
-  total_mw_declarado: number | null;
+  sem_data_publicacao: { atos: number; usinas: number; mw_usinas: number };
+  total: { atos: number; usinas: number; mw_usinas: number; usinas_sem_potencia: number };
+  repeticoes: { usinas_com_mais_de_um_ato: number; atos_alem_do_primeiro: number; mw_que_a_soma_por_ato_repetiria: number };
+  potencia_conferida: {
+    regra: string;
+    atos_com_cadastro: number;
+    atos_sem_cadastro: number;
+    atos_sem_potencia: number;
+    corrigidas_kw: AtoPotenciaConferida[];
+    fora_da_soma: AtoPotenciaConferida[];
+    mw_no_ato_dos_atos_corrigidos_ou_fora: number;
+  };
+  usinas_em_operacao_no_siga: {
+    nota: string;
+    atos: number;
+    usinas: number;
+    mw_usinas_nos_atos: number;
+    por_outorga_no_siga: { outorga: string; usinas: number; mw_fiscalizado_siga: number }[];
+  };
+  sem_chave_de_usina: { nota: string; atos: number; mw_usado: number; por_ano: { ano: string | null; atos: number; mw_usado: number }[] };
 };
 
 /** Agregado do RALIE atual: potência outorgada das usinas e das unidades listadas. */
@@ -235,7 +287,9 @@ export type PrevisoesAtuais = {
   data_ralie: string;
   por_ano: { ano: string; ugs: number; mw: number; por_viabilidade: PorViabilidade }[];
   sem_previsao: { justificativa: string; ugs: number; mw: number }[];
-  datas_mais_frequentes: { data: string; ugs: number; usinas: number; mw: number }[];
+  /** em_bloco: data atribuída a 100 usinas ou mais na fotografia (convencional). */
+  datas_mais_frequentes: { data: string; ugs: number; usinas: number; mw: number; em_bloco: boolean }[];
+  datas_em_bloco: { regra: string; datas: string[]; ugs: number; mw: number };
   proximos_24_meses: { mes: string; mw: number; por_viabilidade: PorViabilidade }[];
   atraso_previsto: {
     mw_com_previsao: number;
@@ -243,6 +297,13 @@ export type PrevisoesAtuais = {
     mw_previsao_ate_outorgado: number;
     pct_mw_apos_outorgado: number | null;
     mediana_dias_ponderada: number | null;
+    /** O mesmo cálculo sem as unidades em data em bloco. */
+    sem_datas_em_bloco: {
+      mw_com_previsao: number;
+      mw_previsao_apos_outorgado: number;
+      pct_mw_apos_outorgado: number | null;
+      mediana_dias_ponderada: number | null;
+    };
   };
 };
 
@@ -288,15 +349,35 @@ export type Deslizamento = {
   pct_mantida: number | null;
   pct_antecipada: number | null;
   mediana_dias_ponderada: number | null;
+  /** Potência com previsão em data em bloco em S ou em S + 12 meses. */
+  pct_mw_em_data_em_bloco: number | null;
+  pct_mw_bloco_nas_duas: number | null;
+  sem_datas_em_bloco: {
+    ugs: number;
+    mw: number;
+    pct_adiada: number | null;
+    pct_mantida: number | null;
+    pct_antecipada: number | null;
+    mediana_dias_ponderada: number | null;
+  };
 };
 
-export type AtrasoRealizadoAno = {
+export type DatasEmBlocoFotografia = {
+  ralie: string;
+  datas: number;
+  ugs: number;
+  mw: number;
+  maior: { data: string; usinas: number; dias_depois_da_fotografia: number } | null;
+};
+
+/** Liberação comercial menos a data outorgada vigente (sem data-base): desvio, não atraso. */
+export type DesvioPrazoAno = {
   ano: string;
   unidades_ou_grupos: number;
   mw_liberado: number;
-  pct_mw_com_atraso: number | null;
-  pct_mw_antecipado: number | null;
-  mediana_dias_ponderada: number | null;
+  pct_mw_depois_do_prazo: number | null;
+  pct_mw_antes_do_prazo: number | null;
+  mediana_desvio_dias_ponderada: number | null;
   ano_parcial: boolean;
 };
 
@@ -316,15 +397,19 @@ export type Cronograma = {
   confiabilidade: ConfiabilidadeFotografia[];
   confiabilidade_ultima_por_tipo: { tipo: string; mw_prometido: number; mw_no_prazo: number; pct_no_prazo: number | null }[];
   deslizamento: Deslizamento[];
-  atraso_realizado: AtrasoRealizadoAno[];
+  datas_em_bloco_por_fotografia: DatasEmBlocoFotografia[];
+  desvio_prazo_vigente: { definicao: string; por_ano: DesvioPrazoAno[] };
   data_liberacoes: string;
 };
 
 // ------------------------------------------------------------------ geração e transmissão (P042)
 
+/** km, MVA, investimento e RAP só dos lotes contratados; lotes sem vencedor à parte. */
 export type LeilaoAno = {
   ano: string;
-  lotes: number;
+  lotes_ofertados: number;
+  lotes_contratados: number;
+  lotes_sem_vencedor: number;
   km: number;
   mva: number;
   investimento_previsto_rs_mi: number;
@@ -332,12 +417,21 @@ export type LeilaoAno = {
   rap_vencedor_rs_mi: number;
   desagio_agregado_pct: number | null;
   lotes_sem_investimento: number;
+  investimento_ofertado_sem_vencedor_rs_mi: number;
+  rap_edital_sem_vencedor_rs_mi: number;
 };
 
 export type Leiloes = {
-  data_referencia: string | null;
+  /** Data de modificação do arquivo informada pela ANEEL (publicação, não período do dado). */
+  publicado_em: string | null;
+  /** Período do dado: primeiro e último lote do arquivo. */
+  periodo: { inicio: string | null; fim: string | null };
   por_ano: LeilaoAno[];
   lotes: number;
+  lotes_contratados: number;
+  lotes_sem_vencedor: number;
+  sem_vencedor_por_rotulo: Record<string, number>;
+  regra_sem_vencedor: string;
   /** Último leilão presente no arquivo aberto: anos posteriores são ausência, não zero. */
   ultimo_leilao: { leilao: string | null; data: string | null };
   desagio_inconsistente: { lote: string; desagio_fonte_pct: number | null; desagio_calculado_pct: number | null }[];
@@ -349,6 +443,8 @@ export type ObrasTransmissao = {
   /** Definição da extensão: km de circuito (circuito duplo e bipolo contam cada circuito). */
   definicao_km: string;
   modulos_lt_fora_do_limite: number;
+  /** Módulos listados em mais de um empreendimento: contados uma vez. */
+  modulos_em_mais_de_um_empreendimento: { regra: string; modulos_lt: number; modulos_tr: number; km_lt: number; mva_tr: number };
   por_situacao: { situacao: string; empreendimentos: number; obras: number; km_lt_novas: number; mva_tr_novos: number }[];
   em_andamento: {
     empreendimentos: number;
@@ -389,21 +485,91 @@ export type GeracaoERedeUf = {
   km_lt_em_andamento_toca_uf: number;
   mva_tr_em_andamento: number;
   empreendimentos_transmissao_em_andamento: number;
+  /** km de traçado das linhas da EPE dentro da UF; null sem a camada. */
+  km_rede_existente_epe: number | null;
+  km_rede_planejada_epe: number | null;
 };
 
 export type SerieAnualExpansao = {
   ano: string;
+  /** Resumo anual oficial de liberações (MW até 2013, kW desde 2014, convertido). */
   mw_geracao_liberada: number | null;
+  fonte_mw_geracao_liberada: string | null;
+  /** Soma do arquivo detalhado ÷ resumo oficial: cobertura do detalhado (100 desde 2014). */
+  cobertura_detalhado_pct: number | null;
   km_lt_energizados: number | null;
   mva_tr_energizados: number | null;
-  km_leiloados: number | null;
-  mva_leiloados: number | null;
+  km_contratados_leilao: number | null;
+  mva_contratados_leilao: number | null;
+  /** Contratos de concessão assinados no ano (SIGET); 0 = nenhum contrato no ano. */
+  km_contratos_assinados_siget: number | null;
+  mva_contratos_assinados_siget: number | null;
   ano_parcial: boolean;
+};
+
+export type ContratoAssinado = {
+  contrato: string;
+  numero: string | null;
+  assinatura: string | null;
+  agente: string | null;
+  empreendimentos: number | null;
+  km_lt_novas: number | null;
+  mva_tr_novos: number | null;
+};
+
+export type ContratosAssinados = {
+  data_referencia: string;
+  regra: string;
+  nota_zero: string;
+  por_ano: {
+    ano: string;
+    contratos: number;
+    contratos_sem_empreendimento: number;
+    empreendimentos: number;
+    km_lt_novas: number;
+    mva_tr_novos: number;
+    ano_parcial: boolean;
+  }[];
+  depois_do_ultimo_leilao_do_arquivo: { ultimo_leilao: string | null; contratos: ContratoAssinado[] };
+};
+
+export type CamadaRedeEpe = {
+  camada: string;
+  id_camada: number;
+  capturado_em: string;
+  sha256: string;
+  linhas: number;
+  contagem_informada: number;
+  km_geometria: number;
+  km_campo_fonte_plausivel: number;
+  campo_extensao_fora_de_escala: { linhas: number; exemplos: { nome: string | null; extensao_fonte: number; km_geometria: number }[] };
+  diferenca_relativa_mediana_geometria_x_campo_pct: number | null;
+  ano_min: number | null;
+  ano_max: number | null;
+  por_tensao: { tensao_kv: number | null; linhas: number; km: number }[];
+  por_ano: { ano: number | null; linhas: number; km: number }[];
+  por_uf: { uf: string; km: number }[];
+  km_fora_de_uf: number;
+};
+
+/** Linhas de transmissão do WebMap da EPE (geometria; sem data do dado informada pela EPE). */
+export type RedeEpe = {
+  fonte: string;
+  servico: string;
+  webmap: string;
+  data_do_dado: null;
+  nota_data: string;
+  definicao_km: string;
+  generalizacao_grau: number;
+  existente: CamadaRedeEpe;
+  planejada: CamadaRedeEpe;
 };
 
 export type Transmissao = {
   leiloes: Leiloes;
   obras: ObrasTransmissao;
+  contratos_assinados: ContratosAssinados | null;
+  rede_epe: RedeEpe | null;
   geracao_e_rede_por_uf: GeracaoERedeUf[];
   serie_anual: SerieAnualExpansao[];
 };
@@ -455,6 +621,9 @@ export type Cenarios = {
     diferenca_gw: number | null;
     tolerancia_gw: number;
     resultado: "aprovada" | "divergente";
+    /** "valor e universo" ou "valor (não de universo)". */
+    conferencia_de: string;
+    ressalva: string | null;
   }[];
   atualizacao_planilhas: Record<string, string | null> | null;
   vintage: { arquivo: string | null; sha256: string | null; capturado_em: string | null };
@@ -495,7 +664,6 @@ export type ChaveEvidenciaExpansao =
   | "ralie_em_implantacao"
   | "coorte_inicial_operacao"
   | "confiabilidade_ultima"
-  | "atraso_realizado_ultimo_ano"
   | "transmissao_em_andamento"
   | "leiloes_ultimo_ano"
   | "pde_capacidade_2035";
@@ -507,9 +675,12 @@ export type ChaveProvenienciaExpansao =
   | "ralie"
   | "coortes"
   | "confiabilidade"
-  | "atraso_realizado"
+  | "desvio_prazo_vigente"
   | "leiloes"
   | "obras"
+  | "previsoes"
+  | "contratos_transmissao"
+  | "rede_epe"
   | "cenarios";
 
 // ------------------------------------------------------------------ gold
@@ -525,7 +696,8 @@ export type ExpansaoGold = Cabecalho & {
   transmissao: Transmissao;
   cenarios: Cenarios;
   conferencias: Conferencias;
-  proveniencia: Record<ChaveProvenienciaExpansao, Proveniencia>;
+  /** rede_epe só existe quando as camadas da EPE estão no bronze. */
+  proveniencia: Record<Exclude<ChaveProvenienciaExpansao, "rede_epe">, Proveniencia> & { rede_epe?: Proveniencia };
   /** Fichas dos números de destaque; uma ficha some quando a série de origem não existe. */
   evidencias: Partial<Record<ChaveEvidenciaExpansao, EvidenciaExpansao>>;
   downloads: Download[];
@@ -535,6 +707,16 @@ export type ExpansaoGold = Cabecalho & {
 export type PontosUsinas = {
   colunas: ["nucleo", "nome", "tipo", "estagio", "uf", "mw_outorgado", "mw_fiscalizado", "lat", "lon"];
   linhas: [number, string | null, string | null, Estagio, string | null, number | null, number | null, number, number][];
+  fonte: string;
+  nota: string;
+};
+
+/** public/energia/series/expansao_rede_epe.json (carregado sob demanda pelo mapa da rede). */
+export type LinhasRedeEpe = {
+  colunas: ["camada", "nome", "tensao_kv", "ano", "km_geometria", "d"];
+  linhas: ["existente" | "planejada", string | null, number | null, number | null, number | null, string][];
+  viewBox: string;
+  projecao: Record<string, unknown>;
   fonte: string;
   nota: string;
 };

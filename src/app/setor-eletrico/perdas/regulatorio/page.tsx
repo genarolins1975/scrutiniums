@@ -117,11 +117,18 @@ export default function PerdasRegulatorioPage() {
               )}
               <Resposta>{respostaRegulatorio(regulatorio, !!bloqueioRegulatorio)}</Resposta>
               <Recorte
-                periodo={`trechos de 2003 a ${mesAno(g.referencia.ultima_competencia)}; os três mais recentes de cada distribuidora`}
+                periodo={`trechos de ${mesAno(g.proveniencia.tecnica_regulatoria.periodo_referencia.inicio)} a ${mesAno(g.proveniencia.tecnica_regulatoria.periodo_referencia.fim)}; os três mais recentes de cada distribuidora`}
                 universo={`${regulatorio.length} distribuidoras com ao menos um trecho de 6 meses ou mais`}
                 unidade="% da energia injetada publicada"
               />
-              <PerdasRegulatorio linhas={regulatorio} segmentos={segmentosPorDistribuidora(g.distribuidoras)} ids={ids} rotulos={rotulos} versao={versao} />
+              <PerdasRegulatorio
+                linhas={regulatorio}
+                urlEvidencias={g.series.evidencias_tecnica}
+                segmentos={segmentosPorDistribuidora(g.distribuidoras)}
+                ids={ids}
+                rotulos={rotulos}
+                versao={versao}
+              />
               <RodapePainel
                 ancora="regulatorio"
                 proxima={{ pergunta: "Quanto as perdas pesam na tarifa residencial?", href: "/setor-eletrico/perdas/custo-e-contexto" }}
