@@ -184,7 +184,9 @@ describe("cabeçalho renderizado no servidor", () => {
         expect(h, d.rotulo).toContain(d.rotulo);
       }
     }
-    expect(h).toContain("Em preparação, ainda sem página:");
+    // o aviso só existe enquanto houver destino sem página; com todos publicados, não pode sobrar
+    if (DESTINOS_NAVEGACAO.some((d) => !d.publicado)) expect(h).toContain("Em preparação, ainda sem página:");
+    else expect(h).not.toContain("Em preparação, ainda sem página:");
   });
 
   it("nav nomeada, seis grupos como disclosure e o botão Menu", () => {
