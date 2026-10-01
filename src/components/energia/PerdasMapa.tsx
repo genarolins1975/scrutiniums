@@ -544,7 +544,8 @@ export function PerdasMapa({ titulo, entidades, valores, medida, periodo, seleci
             onPointerDown={(e) => e.preventDefault()}
             className="absolute left-0 right-0 top-full z-30 mt-1 max-h-72 overflow-y-auto border border-linha bg-superficie shadow-[0_6px_20px_rgba(26,29,33,0.12)]"
           >
-            {resultados.itens.map((it, i) => (
+            {/* a lista existe sempre (aria-controls aponta para ela); as opções só quando aberta */}
+            {aberta && resultados.itens.map((it, i) => (
               <li
                 key={`${it.tipo}-${it.id}`}
                 id={`${uid}-op-${i}`}
@@ -563,7 +564,7 @@ export function PerdasMapa({ titulo, entidades, valores, medida, periodo, seleci
                 {it.tipo === "dist" && <span className="whitespace-nowrap tabular-nums text-carvao-muted">{valores[it.id]?.estado === "valor" ? valorDe(it.id) : ""}</span>}
               </li>
             ))}
-            {resultados.itens.length === 0 && (
+            {aberta && resultados.itens.length === 0 && (
               <li role="presentation" className="px-3 py-2 text-xs text-carvao-muted">
                 {geo || !consulta ? "Nenhum resultado para essa busca." : "A lista de municípios chega com a malha; distribuidoras já podem ser buscadas."}
               </li>

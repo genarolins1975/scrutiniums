@@ -232,6 +232,17 @@ def vintages(con, dataset):
     return base.vintages_do_dataset(con, dataset)
 
 
+def coletas_por_dia(con, dataset):
+    """{dia UTC: [tentativas ok, falhas]} do log de coletas (calendário de atualização)."""
+    out = {}
+    for dia, ok, n in con.execute(
+        "SELECT substr(tentado_em, 1, 10), ok, COUNT(*) FROM coletas WHERE dataset=? GROUP BY 1, 2", (dataset,)
+    ):
+        par = out.setdefault(dia, [0, 0])
+        par[0 if ok else 1] += n
+    return out
+
+
 def resumo_vintages(vs):
     """Capturas por recurso: vigente (mais recente), anteriores preservadas, publicação
     informada pela fonte (last_modified do CKAN, quando há)."""
@@ -261,7 +272,31 @@ def series_e_refs(con, dataset):
     )
 
 
-def completude(con, dataset):
+GLOB_FORMATO = {
+    "horaria": "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T*",
+    "diaria": "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]",
+    "mensal": "[0-9][0-9][0-9][0-9]-[0-9][0-9]",
+    "anual": "[0-9][0-9][0-9][0-9]",
+    "intervalo": "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/*",
+}
+
+
+def limite_hoje(formato, hoje):
+    """Maior referência possível até `hoje` no formato (comparação lexicográfica)."""
+    if formato == "horaria":
+        return f"{hoje.isoformat()}T23:59"
+    if formato in ("diaria",):
+        return hoje.isoformat()
+    if formato == "intervalo":
+        return f"{hoje.isoformat()}/9999-12-31"
+    if formato == "mensal":
+        return hoje.isoformat()[:7]
+    if formato == "anual":
+        return str(hoje.year)
+    return None
+
+
+def completude(con, dataset, hoje=None):
     """Grão, cobertura e completude interna das séries do dataset, por formato de
     referência. Completude interna de uma série = referências distintas presentes ÷
     esperadas entre a primeira e a última no passo modal do grupo; ela não acusa série
@@ -322,6 +357,15 @@ def completude(con, dataset):
         else:
             g["granularidade"] = granularidade_rotulo(formato, None)
             g["completude_interna"] = None
+        # último período disponível até hoje: referência futura (limite regulatório de
+        # ano seguinte, programação do dia seguinte) não é dado observado disponível
+        lim = limite_hoje(formato, hoje) if hoje else None
+        if lim and formato in GLOB_FORMATO:
+            g["ref_max_ate_hoje"] = con.execute(
+                "SELECT MAX(ref) FROM observacoes WHERE dataset=? AND ref <= ? AND ref GLOB ?",
+                (dataset, lim, GLOB_FORMATO[formato])).fetchone()[0]
+        else:
+            g["ref_max_ate_hoje"] = None
         saida.append(g)
     saida.sort(key=lambda g: (-g["refs_presentes"], g["formato"]))
     principal = next((g for g in saida if g["formato"] in REGULARES), saida[0])
@@ -538,10 +582,16 @@ def cabecalho_bronze(caminho):
     return [c.strip().strip('"').strip() for c in linha.split(sep)]
 
 
-def confere_bronze(vs, limite_hash=LIMITE_HASH_BYTES, recalcular=True):
+def confere_bronze(vs, limite_hash=LIMITE_HASH_BYTES, recalcular=True, cache=None, validade_dias=30, agora=None):
     """Para a vintage vigente e a anterior de cada recurso: arquivo presente no bronze,
     sha256 recalculado (até `limite_hash` bytes comprimidos) e cabeçalho do CSV.
-    Devolve o resumo e as diferenças de cabeçalho entre capturas do mesmo recurso."""
+    Devolve o resumo e as diferenças de cabeçalho entre capturas do mesmo recurso.
+
+    `cache` ({arquivo: {sha256, bytes, mtime, conferido_em}}) evita recalcular, a cada
+    execução, o hash de um original que não mudou de tamanho nem de data desde a última
+    conferência (o bronze é imutável: o nome do arquivo leva o sha256); a conferência
+    é refeita depois de `validade_dias`."""
+    agora = agora or datetime.now(timezone.utc)
     por_rec = defaultdict(list)
     for v in vs:
         por_rec[v["recurso"]].append(v)
@@ -564,7 +614,20 @@ def confere_bronze(vs, limite_hash=LIMITE_HASH_BYTES, recalcular=True):
             presentes += 1
             tam = os.path.getsize(_abs(arq))
             if recalcular and tam <= limite_hash:
-                sha = sha256_do_bronze(arq)
+                mtime = int(os.path.getmtime(_abs(arq)))
+                c = (cache or {}).get(arq)
+                sha = None
+                if c and c.get("bytes") == tam and c.get("mtime") == mtime and c.get("conferido_em"):
+                    try:
+                        idade = agora - datetime.fromisoformat(c["conferido_em"].replace("Z", "+00:00"))
+                        if idade < timedelta(days=validade_dias):
+                            sha = c.get("sha256")
+                    except ValueError:
+                        sha = None
+                if sha is None:
+                    sha = sha256_do_bronze(arq)
+                    if cache is not None:
+                        cache[arq] = {"sha256": sha, "bytes": tam, "mtime": mtime, "conferido_em": base.agora_utc()}
                 conferidos += 1
                 if sha != v["sha256"]:
                     divergentes += 1
@@ -603,7 +666,7 @@ def confere_bronze(vs, limite_hash=LIMITE_HASH_BYTES, recalcular=True):
 # ---------------------------------------------------------------- dataset inteiro
 
 
-def analisa(con, dataset, *, regra_horizonte=None, bronze=True, recalcular_hash=True):
+def analisa(con, dataset, *, regra_horizonte=None, bronze=True, recalcular_hash=True, hoje=None, cache_hash=None):
     """Tudo o que a página Dados precisa saber de um dataset do silver. `regra_horizonte`
     vem de validacoes.HORIZONTE_SILVER (folga de publicação da fonte, séries isentas)."""
     regra = regra_horizonte or {}
@@ -614,12 +677,13 @@ def analisa(con, dataset, *, regra_horizonte=None, bronze=True, recalcular_hash=
         "dataset": dataset,
         "vintages": resumo_vintages(vs),
         "coletas": resumo_coletas(con, dataset),
-        "observacoes": completude(con, dataset) if tem_obs else None,
+        "observacoes": completude(con, dataset, hoje) if tem_obs else None,
         "registros": resumo_registros(con, dataset) if tem_reg else None,
         "revisoes": revisoes(con, dataset) if tem_obs else None,
         "revisoes_registros": revisoes_registros(con, dataset) if tem_reg else None,
         "horizonte": horizonte(con, dataset, regra.get("folga_dias", 0), regra.get("series_like")) if tem_obs else None,
-        "bronze": confere_bronze(vs, recalcular=recalcular_hash) if bronze and vs else None,
+        "bronze": confere_bronze(vs, recalcular=recalcular_hash, cache=cache_hash) if bronze and vs else None,
+        "coletas_por_dia": coletas_por_dia(con, dataset),
         "_vintages": vs,
     }
     return out

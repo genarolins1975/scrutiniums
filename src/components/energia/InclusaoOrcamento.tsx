@@ -58,7 +58,7 @@ const OPCOES_LIM: readonly (readonly [LimiarPof, string])[] = [
 
 export function InclusaoClassesPof({ orc, fonte }: { orc: OrcamentoBase; fonte: string }) {
   const [v, definir] = useEstadoUrl(ESQUEMA_ORCAMENTO);
-  const ters = v.ter.length ? v.ter : ["BR"];
+  const ters = useMemo(() => (v.ter.length ? v.ter : ["BR"]), [v.ter]);
   const principal = ters[0];
   const medidas = MEDIDAS_BASE[v.base];
   const medidaComp: MedidaPof = medidas[0].id;

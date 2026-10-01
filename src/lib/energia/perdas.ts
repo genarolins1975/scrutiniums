@@ -648,7 +648,7 @@ export function respostaMapa(a: {
   const e = extremos(valores, rotulos);
   const fora = Object.values(valores).filter((v) => v.estado === "fora").length;
   const quando = periodo.tipo === "acumulado" ? `De janeiro a ${MESES_LONGOS[(a.acumulado?.mes_fim ?? 1) - 1]} de ${periodo.ano}` : `Em ${periodo.ano}`;
-  if (!e) return `${quando}, nenhuma distribuidora tem ${medida.rotulo.toLowerCase()} comparável.`;
+  if (!e) return `${quando}, nenhuma distribuidora entra na comparação de ${medida.rotulo.toLowerCase()}.`;
   const partes: string[] = [];
   if (medida.id === "variacao") {
     let sobe = 0;
@@ -670,11 +670,15 @@ export function respostaMapa(a: {
       partes.push(`Nas mesmas ${num(m.n_total, 0)} concessionárias válidas nos dois anos, a taxa agregada ${fraseMudanca(m.taxa_total_pct[0], m.taxa_total_pct[1])}.`);
     }
   } else {
-    const sujeito = e.n === 1 ? "1 distribuidora tem" : `${num(e.n, 0)} distribuidoras têm`;
-    const qual = medida.id === "volume" ? "as perdas totais vão" : `a ${medida.rotulo.toLowerCase()} vai`;
-    partes.push(
-      `${quando}, ${sujeito} ${medida.rotulo.toLowerCase()} comparável: ${qual} de ${textoNumero(e.min.v, medida)} (${e.min.rotulo}) a ${textoNumero(e.max.v, medida)} (${e.max.rotulo})${medida.denominador ? `, sobre ${medida.denominador}` : ""}.`,
-    );
+    const quantas = e.n === 1 ? "1 distribuidora entra" : `${num(e.n, 0)} distribuidoras entram`;
+    const FRASE: Record<Exclude<IdMedida, "variacao">, [string, string]> = {
+      taxa: ["a taxa de perdas totais vai", " da energia injetada de referência"],
+      volume: ["as perdas totais vão", ""],
+      tecnica: ["as perdas técnicas vão", " da energia injetada de referência"],
+      pnt_bt: ["as perdas não técnicas vão", " do mercado de baixa tensão medido"],
+    };
+    const [sujeito, base] = FRASE[medida.id];
+    partes.push(`${quando}, ${quantas} na comparação: ${sujeito} de ${textoNumero(e.min.v, medida)} (${e.min.rotulo}) a ${textoNumero(e.max.v, medida)} (${e.max.rotulo})${base}.`);
     const ag = agregadoNacional(medida.id, periodo, nacional, a.acumulado);
     if (ag) partes.push(ag);
   }

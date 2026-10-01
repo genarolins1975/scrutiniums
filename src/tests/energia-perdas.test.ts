@@ -344,9 +344,11 @@ describe("textos derivados dos números", () => {
       .sort((a, b) => a.v - b.v);
     const valores = valoresDoPeriodo(leves, recortesDoPeriodo(leves, pRef, null)!, "taxa", pRef);
     const t = respostaMapa({ periodo: pRef, medida: MEDIDAS.taxa, valores, rotulos, nacional: g.nacional.find((l) => l.ano === ref)!, acumulado: g.acumulado });
-    expect(t).toContain(`${validos.length} distribuidoras têm taxa de perdas totais comparável`);
-    expect(t).toContain(`de ${textoNumero(validos[0].v, MEDIDAS.taxa)} (${validos[0].s})`);
-    expect(t).toContain(`a ${textoNumero(validos.at(-1)!.v, MEDIDAS.taxa)} (${validos.at(-1)!.s})`);
+    expect(t).toContain(
+      `Em 2025, ${validos.length} distribuidoras entram na comparação: a taxa de perdas totais vai de ${textoNumero(validos[0].v, MEDIDAS.taxa)} (${validos[0].s}) a ${textoNumero(validos.at(-1)!.v, MEDIDAS.taxa)} (${validos.at(-1)!.s}) da energia injetada de referência.`,
+    );
+    expect(t).toContain("Em 2025, 83 distribuidoras entram na comparação: a taxa de perdas totais vai de 3,25% (EFLUL) a 43,19% (ÂMBAR AMAZONAS)");
+    expect(t).toContain("20 distribuidoras publicaram valores que ficam fora da comparação");
     expect(t).toContain("Somadas, as 51 concessionárias válidas perderam 14,75% da energia injetada.");
     // variação: contagem de altas e quedas conferida pelo campo publicado
     const vv = valoresDoPeriodo(leves, recortesDoPeriodo(leves, pRef, null)!, "variacao", pRef);
