@@ -281,7 +281,12 @@ def parse_despacho(planilha):
         return out
     cab = linhas[k][1]
     col_dia = next(c for c, v in cab.items() if _sem_acento(v) == "dia")
-    dmeses = _meses_posicionais(_colunas_de_mes(cab), f"margem de operação diária {ano}", out["problemas"])
+    cols_d = _colunas_de_mes(cab)
+    dmeses = _meses_posicionais(cols_d, f"margem de operação diária {ano}", out["problemas"])
+    # colunas de mês à direita das 12 principais: valores diários de outra publicação
+    # (só os dias que mudaram), lidos pelo rótulo do mês
+    dextras = cols_d[12:] if tem_anterior else []
+    anteriores_d = {}
     for _, cel in linhas[k + 1:]:
         d = numero(cel.get(col_dia))
         if d is None or not float(d).is_integer() or not 1 <= d <= 31:
@@ -301,7 +306,77 @@ def parse_despacho(planilha):
                 out["descartes"].append({"data": f"{ano}-{mes:02d}-{dia:02d}", "valor": v, "motivo": "fora do domínio"})
                 continue
             out["om_diario"][date(ano, mes, dia).isoformat()] = v
+        for col, mes in dextras:
+            v = numero(cel.get(col))
+            if v is not None:
+                anteriores_d[(mes, dia)] = v
+    if anteriores_d:
+        _revisoes_diarias(out, linhas, j, k, dextras, anteriores_d)
     return out
+
+
+def _rotulo_bloco_direita(linhas, ini, fim, coluna_minima):
+    """(célula, texto) do rótulo de publicação acima do bloco diário da direita, se houver:
+    texto com "anterior" ou "atual" nas linhas entre o fator mensal e o cabeçalho diário."""
+    for r, cel in linhas[ini:fim]:
+        for col in sorted(cel, key=_ordem_col):
+            t = _sem_acento(cel[col])
+            if _ordem_col(col) >= coluna_minima and numero(cel[col]) is None and ("anterior" in t or "atual" in t):
+                return f"{col}{r}", cel[col].strip()
+    return None, None
+
+
+def _revisoes_diarias(out, linhas, j, k, dextras, anteriores):
+    """Valores diários de outra publicação, à direita do bloco diário principal.
+
+    A planilha declara uma publicação anterior (rótulo "anterior" no topo) e, nas de 2023 e
+    2024, não rotula o bloco diário da direita: ele é lido como a publicação anterior, como o
+    bloco mensal da direita. Nas de 2020 e 2022 a célula acima dele diz "Publicação atual
+    (com correção)", o que contradiz o rótulo do topo e o mensal (o principal é o corrigido).
+    Nesse caso o rótulo não decide sozinho: o bloco só é lido como publicação anterior se,
+    em todo mês com valor mensal anterior declarado, trocar os diários principais pelos da
+    direita move a média do mês no mesmo sentido em que o mensal anterior difere do mensal
+    corrigido. Se não, nada é lido como revisão e o bloco fica registrado como problema.
+    Dia inexistente no calendário no bloco anterior é descartado, nunca lido como revisão."""
+    ano = out["ano"]
+    primeira = min(_ordem_col(c) for c, _ in dextras)
+    celula, rotulo = _rotulo_bloco_direita(linhas, j + 2, k, primeira)
+    datas = sorted(f"{ano}-{m:02d}-{d:02d}" for m, d in anteriores)
+    resumo = (f"{len(anteriores)} valores diários à direita do bloco principal ({datas[0][5:]} a {datas[-1][5:]})")
+    if rotulo and "atual" in _sem_acento(rotulo):
+        mensal_ant = {int(r["periodo"][5:7]): r["anterior"] for r in out["revisoes"] if r["serie"] == "margem_operacao_mensal"}
+        sentidos = []
+        for mes in sorted({m for m, _ in anteriores}):
+            atual_m = out["om_mensal"].get(f"{ano}-{mes:02d}")
+            if mes not in mensal_ant or atual_m is None:
+                continue
+            princ = {int(x[8:]): v for x, v in out["om_diario"].items() if x[5:7] == f"{mes:02d}"}
+            if not princ:
+                continue
+            troca = {**princ, **{d: v for (m, d), v in anteriores.items() if m == mes and d in princ}}
+            delta_d = sum(troca.values()) / len(troca) - sum(princ.values()) / len(princ)
+            delta_m = mensal_ant[mes] - atual_m
+            sentidos.append((mes, delta_d, delta_m, delta_d * delta_m > 0))
+        if not sentidos or not all(ok for *_, ok in sentidos):
+            out["problemas"].append(
+                f"margem de operação diária {ano}: {resumo}, sob o rótulo \"{rotulo}\" (célula {celula}); a troca pelos "
+                "diários principais não acompanha a correção declarada no mensal em todos os meses comparáveis "
+                f"({', '.join(f'{MESES[m - 1]}: média diária {dd:+.5f}, mensal {dm:+.4f}' for m, dd, dm, _ in sentidos) or 'nenhum mês comparável'}); "
+                "não lidos como revisão nem como fator diário")
+            return
+        out["problemas"].append(
+            f"margem de operação diária {ano}: o rótulo \"{rotulo}\" (célula {celula}) chama de atual o bloco diário da direita, "
+            "mas o topo da planilha declara a publicação anterior (com erros) e o mensal principal é o corrigido; lidos como "
+            f"publicação anterior os {resumo}, porque a troca pelos diários principais move a média de cada mês no sentido "
+            f"da correção do mensal ({', '.join(f'{MESES[m - 1]}: média diária {dd:+.5f}, mensal {dm:+.4f}' for m, dd, dm, _ in sentidos)})")
+    for (mes, dia), v in sorted(anteriores.items()):
+        data_txt = f"{ano}-{mes:02d}-{dia:02d}"
+        if dia > calendar.monthrange(ano, mes)[1]:
+            out["descartes"].append({"data": data_txt, "valor": v,
+                                     "motivo": "data inexistente no calendário (valor da publicação anterior)"})
+            continue
+        out["revisoes"].append({"serie": "margem_operacao_diaria", "periodo": data_txt, "anterior": v,
+                                "atual": out["om_diario"].get(data_txt)})
 
 
 def _texto_html(corpo):
