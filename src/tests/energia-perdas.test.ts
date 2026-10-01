@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -7,6 +7,8 @@ import PerdasPage from "@/app/setor-eletrico/perdas/page";
 import PerdasComposicaoPage from "@/app/setor-eletrico/perdas/composicao/page";
 import PerdasRegulatorioPage from "@/app/setor-eletrico/perdas/regulatorio/page";
 import PerdasCustoContextoPage from "@/app/setor-eletrico/perdas/custo-e-contexto/page";
+import { PerdasAuditoria } from "@/components/energia/PerdasAuditoria";
+import { ReferenciaPerdas } from "@/components/energia/PerdasPainel";
 import { CONCEITOS as CONCEITOS_PERDAS } from "@/lib/energia/conteudo/conceitos-perdas";
 import { problemasEvidencia, type Evidencia } from "@/lib/energia/evidencia";
 import { gerarCsv } from "@/lib/energia/tabela";
@@ -14,7 +16,13 @@ import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
 import type { CamadaGeo } from "@/lib/energia/geo";
 import type { EvidenciasDistribuidoras, EvidenciasPorDistribuidora, MunicipiosPerdas, PerdasGold, SerieAnualPerdas } from "@/lib/energia/tipos-perdas";
 import {
+  ANO_LEIAUTE_SAMP,
   CAMPOS_ANUAIS,
+  anosSerieNacional,
+  fraseCoberturaSeparacao,
+  linhasNacionais,
+  linhasSeparacaoNacional,
+  marcaLeiauteSeparacao,
   MEDIDAS,
   ORDEM_MEDIDAS,
   ajustaConsulta,
@@ -548,5 +556,105 @@ describe("páginas renderizadas no servidor", () => {
       custo: JSON.stringify(linhasCusto(g.distribuidoras)).length + JSON.stringify(g.associacao.pontos).length * 2 + JSON.stringify(rotulos).length * 2,
     };
     for (const k of Object.keys(paginas) as (keyof typeof paginas)[]) expect(paginas[k].length + props[k], k).toBeLessThan(450_000);
+  });
+});
+
+describe("revisão de interface: anos, ligações e ausência", () => {
+  const paginas = {
+    "/setor-eletrico/perdas": renderToStaticMarkup(createElement(PerdasPage)),
+    "/setor-eletrico/perdas/composicao": renderToStaticMarkup(createElement(PerdasComposicaoPage)),
+    "/setor-eletrico/perdas/regulatorio": renderToStaticMarkup(createElement(PerdasRegulatorioPage)),
+    "/setor-eletrico/perdas/custo-e-contexto": renderToStaticMarkup(createElement(PerdasCustoContextoPage)),
+  };
+  const idsDe = (h: string) => new Set(Array.from(h.matchAll(/\bid="([^"]+)"/g), (m) => m[1]));
+  const ids = Object.fromEntries(Object.entries(paginas).map(([r, h]) => [r, idsDe(h)])) as Record<string, Set<string>>;
+  /** page.tsx da rota, aceitando um segmento dinâmico no fim (verbetes em /aprenda/[conceito]). */
+  const paginaExiste = (rota: string) => {
+    if (existsSync(join(raiz, "src/app", rota, "page.tsx"))) return true;
+    const pai = join(raiz, "src/app", rota, "..");
+    return existsSync(pai) && readdirSync(pai).some((d) => d.startsWith("[") && existsSync(join(pai, d, "page.tsx")));
+  };
+  /** Destino interno quebrado: página inexistente, arquivo ausente ou âncora que a página de perdas não tem. */
+  const quebrado = (href: string, origem: string): string | null => {
+    const [caminhoQuery, ancora] = href.replace(/&amp;/g, "&").split("#");
+    const caminho = caminhoQuery.split("?")[0];
+    if (caminho.startsWith("/energia/")) return existsSync(join(raiz, "public", caminho)) ? null : "arquivo ausente";
+    const alvo = caminho || origem;
+    if (caminho && !paginaExiste(caminho)) return "página inexistente";
+    if (ancora && ids[alvo] && !ids[alvo].has(ancora)) return `âncora #${ancora} ausente em ${alvo}`;
+    return null;
+  };
+
+  it("todo link interno das quatro páginas e dos verbetes aponta para página, arquivo e âncora existentes", () => {
+    for (const [rota, h] of Object.entries(paginas)) {
+      const corpo = h.slice(h.indexOf('id="conteudo"'));
+      for (const m of Array.from(corpo.matchAll(/href="([^"]+)"/g))) {
+        if (m[1].startsWith("http")) continue;
+        expect(quebrado(m[1], rota), `${rota} → ${m[1]}`).toBeNull();
+      }
+    }
+    // verbetes: o "veja no portal" do percentual regulatório apontava para #regulatorio na página do mapa
+    for (const c of CONCEITOS_PERDAS) for (const v of c.vejaNoPortal) expect(quebrado(v.href, "/setor-eletrico/perdas"), `${c.slug} → ${v.href}`).toBeNull();
+    // âncoras dos links montados no cliente (painel da distribuidora escolhida e "Comprove" com endereço)
+    expect(ids["/setor-eletrico/perdas/composicao"].has("composicao")).toBe(true);
+    expect(ids["/setor-eletrico/perdas/regulatorio"].has("regulatorio")).toBe(true);
+    expect(ids["/setor-eletrico/perdas/custo-e-contexto"].has("custo")).toBe(true);
+    expect(ids["/setor-eletrico/perdas"].has("resumo")).toBe(true);
+  });
+
+  it("anos de período, título e marca saem da gold: série, Censo, relação e leiaute", () => {
+    expect(anosSerieNacional(g.nacional)).toEqual({ inicio: 2003, fim: 2025 });
+    // a marca de leiaute é a mesma que a limitação publicada pelo pipeline cita
+    expect(g.proveniencia.taxas.limitacoes.join(" ")).toContain(`A partir de ${ANO_LEIAUTE_SAMP} (leiaute da REN 1.003/2022)`);
+    expect(marcaLeiauteSeparacao(g.nacional, "tecnica")).toEqual([{ x: "2024", rotulo: "2024: leiaute novo; 32 de 51 publicam a técnica" }]);
+    expect(marcaLeiauteSeparacao(g.nacional, "pnt_bt")).toEqual([{ x: "2024", rotulo: "2024: leiaute novo; 31 de 51 com a separação fechando" }]);
+    // contagens publicadas no lugar de "cerca de metade"
+    expect(fraseCoberturaSeparacao(g.nacional, ref)).toBe(
+      "em 2023, 48 de 50 concessionárias válidas publicaram a técnica nos 12 meses e 46 tiveram a separação fechando; em 2024, 32 de 51 e 31; em 2025, 18 de 51 e 18.",
+    );
+    // o texto da página diz as contagens; "cerca de metade" só resta na limitação escrita pelo pipeline na gold
+    const comp = paginas["/setor-eletrico/perdas/composicao"].replace(/<[^>]+>/g, "");
+    expect(comp).toContain(fraseCoberturaSeparacao(g.nacional, ref)!);
+    expect(comp).not.toContain("metade deixa de publicar");
+    // a tabela de contexto diz a relação da gold (a do mapa), e a dispersão, a da associação
+    const custo = paginas["/setor-eletrico/perdas/custo-e-contexto"];
+    expect(custo).toContain(`relação de ${g.mapa.ano_relacao} (a mesma do mapa; a dispersão usa a de ${g.associacao.ano_relacao})`);
+  });
+
+  it("ano nas tabelas da série nacional é texto (sem separador de milhar)", () => {
+    expect(linhasNacionais(g.nacional)[0][0]).toBe("2003");
+    expect(linhasSeparacaoNacional(g.nacional)[0][0]).toBe("2003");
+  });
+
+  it("ausência não vira zero nem frase quebrada: auditoria, referência sem ano aberto e acumulado sem ano anterior", () => {
+    const semContagem = { ...g, qualidade: { ...g.qualidade, alertas: { ...g.qualidade.alertas, perda_total_negativa: null } } } as unknown as PerdasGold;
+    const aud = renderToStaticMarkup(createElement(PerdasAuditoria, { g: semContagem })).replace(/<[^>]+>/g, "");
+    expect(aud).toContain("perda total negativa (sem dado)");
+    expect(aud).not.toContain("perda total negativa (0)");
+
+    const semAberto = { ...g, referencia: { ...g.referencia, ano_parcial: null, ultima_competencia_parcial: null } } as PerdasGold;
+    const linha = renderToStaticMarkup(createElement(ReferenciaPerdas, { g: semAberto })).replace(/<[^>]+>/g, "");
+    expect(linha).toContain("ANEEL, SAMP Balanço: anos completos de 2003 a 2025; componentes tarifárias");
+    expect(linha).not.toMatch(/ e +até/);
+
+    const pAcum = periodos.find((p) => p.tipo === "acumulado")!;
+    const acum = g.acumulado!;
+    const semAnterior = {
+      ...acum,
+      agregados: acum.agregados.map((a) => ({ ...a, anterior: { ...a.anterior, taxa_total_pct: null, perdas_totais_mwh: null } })),
+    };
+    const recs = recortesDoPeriodo(leves, pAcum, null)!;
+    for (const m of ["taxa", "volume"] as const) {
+      const t = respostaMapa({ periodo: pAcum, medida: MEDIDAS[m], valores: valoresDoPeriodo(leves, recs, m, pAcum), rotulos, nacional: null, acumulado: semAnterior });
+      expect(t, m).toContain("Somadas, as");
+      expect(t, m).not.toContain("sem dado");
+      expect(t, m).not.toContain("contra");
+    }
+  });
+
+  it("o bloqueio regulatório descreve acesso recusado, não ausência de publicação", () => {
+    const r = respostaRegulatorio(linhasRegulatorio(g.distribuidoras), true);
+    expect(r).toContain("recusaram o acesso automatizado");
+    expect(r).not.toContain("a ANEEL não publica");
   });
 });

@@ -1,15 +1,15 @@
 import { Bloco } from "@/components/energia/CabecalhoModulo";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { LINK_PERDAS } from "@/components/energia/PerdasPainel";
-import { carimbo, num } from "@/lib/energia/formato";
-import { ROTULO_ALERTA, ROTULO_DECOMPOSICAO, ROTULO_DEFINICAO, ROTULO_RECONCILIACAO } from "@/lib/energia/perdas";
+import { carimbo } from "@/lib/energia/formato";
+import { ROTULO_ALERTA, ROTULO_DECOMPOSICAO, ROTULO_DEFINICAO, ROTULO_RECONCILIACAO, numOu, pctOu } from "@/lib/energia/perdas";
 import type { PerdasGold } from "@/lib/energia/tipos-perdas";
 
 /**
  * Bloco "Auditar" comum às páginas do módulo Perdas: fechamento do balanço e alertas,
  * decomposição, mudanças de universo, conferência com o relatório da ANEEL, definições,
  * decisões de método, bloqueios externos, arquivos e o comando de reprodução, todos lidos
- * da gold (nenhum número escrito aqui).
+ * da gold (nenhum número escrito aqui; contagem ausente aparece como "sem dado", nunca zero).
  */
 export function PerdasAuditoria({ g }: { g: PerdasGold }) {
   const ev = g.evidencias;
@@ -26,14 +26,14 @@ export function PerdasAuditoria({ g }: { g: PerdasGold }) {
           <div className="space-y-2 text-sm leading-relaxed text-carvao">
             <h3 className="rotulo text-mineral">Balanço e alertas</h3>
             <p>
-              {num(qual.agentes_no_arquivo, 0)} agentes no arquivo, {num(qual.agentes_com_balanco_de_distribuicao, 0)} com balanço de distribuição e {num(qual.agentes_ano_completos, 0)} agentes-ano
-              completos. Fechamento do balanço anual: {Object.entries(qual.reconciliacao).map(([k, n]) => `${ROTULO_RECONCILIACAO[k as keyof typeof ROTULO_RECONCILIACAO] ?? k} ${num(n ?? 0, 0)}`).join("; ")} (limite de alerta: resíduo acima
-              de {num(qual.limite_residuo_balanco_pct, 0)}% da injetada).
+              {numOu(qual.agentes_no_arquivo, 0)} agentes no arquivo, {numOu(qual.agentes_com_balanco_de_distribuicao, 0)} com balanço de distribuição e {numOu(qual.agentes_ano_completos, 0)} agentes-ano
+              completos. Fechamento do balanço anual: {Object.entries(qual.reconciliacao).map(([k, n]) => `${ROTULO_RECONCILIACAO[k as keyof typeof ROTULO_RECONCILIACAO] ?? k} ${numOu(n, 0)}`).join("; ")} (limite de alerta: resíduo acima
+              de {pctOu(qual.limite_residuo_balanco_pct, 0)} da injetada).
             </p>
-            <p>Alertas que tiram o agente-ano das comparações: {Object.entries(qual.alertas).map(([k, n]) => `${ROTULO_ALERTA[k as keyof typeof ROTULO_ALERTA] ?? k} (${num(n ?? 0, 0)})`).join("; ")}.</p>
+            <p>Alertas que tiram o agente-ano das comparações: {Object.entries(qual.alertas).map(([k, n]) => `${ROTULO_ALERTA[k as keyof typeof ROTULO_ALERTA] ?? k} (${numOu(n, 0)})`).join("; ")}.</p>
             <p>
               Decomposição total = técnica + não técnica:{" "}
-              {Object.entries(qual.decomposicao).map(([k, n]) => `${ROTULO_DECOMPOSICAO[k as keyof typeof ROTULO_DECOMPOSICAO] ?? k} ${num(n ?? 0, 0)}`).join("; ")}.
+              {Object.entries(qual.decomposicao).map(([k, n]) => `${ROTULO_DECOMPOSICAO[k as keyof typeof ROTULO_DECOMPOSICAO] ?? k} ${numOu(n, 0)}`).join("; ")}.
             </p>
             <p>
               Mudanças de universo observadas na energia: {qual.mudancas_de_universo.absorcoes} absorções e {qual.mudancas_de_universo.sucessoes} sucessões prováveis,{" "}
@@ -48,10 +48,10 @@ export function PerdasAuditoria({ g }: { g: PerdasGold }) {
           <div className="space-y-2 text-sm leading-relaxed text-carvao">
             <h3 className="rotulo text-mineral">Conferência com o relatório da ANEEL</h3>
             <p>
-              {rel.documento}. Relatório: taxa total {num(rel.valores_relatorio.taxa_total_pct, 1)}% (base {rel.valores_relatorio.base}), técnicas {num(rel.valores_relatorio.perdas_tecnicas_twh, 1)}{" "}
-              TWh ({num(rel.valores_relatorio.taxa_tecnica_pct, 1)}%), não técnicas {num(rel.valores_relatorio.pnt_twh, 1)} TWh ({num(rel.valores_relatorio.pnt_injetada_pct, 1)}%). Observatório: taxa
-              total {num(rel.valores_observatorio.taxa_total_pct, 2)}% (base {rel.valores_observatorio.base}), injetada de referência {num(rel.valores_observatorio.injetada_twh, 1)} TWh (publicada{" "}
-              {num(rel.valores_observatorio.injetada_publicada_twh, 1)} TWh).
+              {rel.documento}. Relatório: taxa total {pctOu(rel.valores_relatorio.taxa_total_pct, 1)} (base {rel.valores_relatorio.base}), técnicas {numOu(rel.valores_relatorio.perdas_tecnicas_twh, 1)}{" "}
+              TWh ({pctOu(rel.valores_relatorio.taxa_tecnica_pct, 1)}), não técnicas {numOu(rel.valores_relatorio.pnt_twh, 1)} TWh ({pctOu(rel.valores_relatorio.pnt_injetada_pct, 1)}). Observatório: taxa
+              total {pctOu(rel.valores_observatorio.taxa_total_pct, 2)} (base {rel.valores_observatorio.base}), injetada de referência {numOu(rel.valores_observatorio.injetada_twh, 1)} TWh (publicada{" "}
+              {numOu(rel.valores_observatorio.injetada_publicada_twh, 1)} TWh).
             </p>
             <p>{rel.leitura}</p>
             <p className="text-xs text-carvao-muted">{rel.acesso}</p>

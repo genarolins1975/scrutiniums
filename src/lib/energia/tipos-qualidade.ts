@@ -129,7 +129,10 @@ export type CompensacaoDistribuidora = {
   quantidade: number | null;
   /** Valor anual ÷ UCs médias: normalização para comparar, não é o crédito de cada consumidor. */
   valor_por_uc: number | null;
+  /** Por tipo, unidades consumidoras e geradoras somadas. */
   valor_por_tipo: Partial<Record<TipoCompensacao, number | null>>;
+  /** Por tipo, só unidades consumidoras; tipo sem linha de UC no ano fica fora (ausência, não zero). */
+  valor_uc_por_tipo: Partial<Record<TipoCompensacao, number | null>>;
 };
 
 export type IascDistribuidora = {
@@ -299,7 +302,24 @@ export type CompensacaoAnual = {
     dentro_da_precisao_valor: boolean | null;
     dentro_da_precisao_quantidade: boolean | null;
   } | null;
-  por_tipo: Partial<Record<TipoCompensacao, { valor: number | null; quantidade: number | null }>>;
+  /**
+   * Por tipo: soma UC + UG e cada unidade à parte. `*_uc` e `*_ug` são null quando a unidade
+   * não tem nenhuma linha do tipo no ano: desde 2022 os tipos trimestral e anual de UC não são
+   * publicados e os de UG vêm com zero, então a soma sozinha mostraria zero onde há ausência.
+   */
+  por_tipo: Partial<
+    Record<
+      TipoCompensacao,
+      {
+        valor: number | null;
+        quantidade: number | null;
+        valor_uc: number | null;
+        quantidade_uc: number | null;
+        valor_ug: number | null;
+        quantidade_ug: number | null;
+      }
+    >
+  >;
 };
 
 export type CompensacaoMensal = { m: string; valor: number | null; quantidade: number | null; completo: boolean };
@@ -528,7 +548,17 @@ export type QualidadeGold = Cabecalho & {
   parcial: ParcialAno | null;
   unidades: { dec: string; fec: string; tmae: string; compensacao: string; iasc: string };
   regras: Record<
-    "agregacao" | "limite" | "apurado" | "centesimos" | "compensacao" | "parcial" | "universo" | "numcon" | "limite_centesimos",
+    | "agregacao"
+    | "limite"
+    | "apurado"
+    | "centesimos"
+    | "compensacao"
+    | "parcial"
+    | "universo"
+    | "numcon"
+    | "limite_centesimos"
+    | "mes_completo"
+    | "mes_completo_compensacao",
     string
   >;
   parcelas: {

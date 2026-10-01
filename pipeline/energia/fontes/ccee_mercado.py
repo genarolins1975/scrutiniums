@@ -56,11 +56,12 @@ CONJUNTOS = {
     "consumo_mensal_ambiente_comercializacao": {
         "painel": "P032", "titulo": "Consumo mensal por ambiente de contratação (ACR e ACL), contabilização do MCP",
         "colunas": ("MES_REFERENCIA", "CONSUMO_TOTAL_ACR", "CONSUMO_TOTAL_ACL"), "leitor": "mensal", "dims": (),
-        "unidade": "MWmed"},
+        "unidade": "MWmed", "quebras": [{"data": "2026-02-01", "descricao": "A classe de agente Comercializador deu lugar à classe Varejista; o conjunto CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO deixou de contar o consumo da Varejista no ACL (cerca de 2.500 MW médios), enquanto CONSUMO_CLASSE_AGENTE o publica como classe própria. O observatório soma o ACL pelas classes para manter a série comparável."}],},
     "consumo_classe_agente": {
         "painel": "P032", "titulo": "Consumo por classe de agente e ambiente (centro de gravidade e ponto de conexão)",
         "colunas": ("MES_REFERENCIA", "CLASSE_AGENTE", "CONSUMO", "CONSUMO_PONTO_CONEXAO_CLASSE_ACR",
-                    "CONSUMO_PONTO_CONEXAO_CLASSE_ACL"), "leitor": "mensal", "dims": ("CLASSE_AGENTE",), "unidade": "MWmed"},
+                    "CONSUMO_PONTO_CONEXAO_CLASSE_ACL"), "leitor": "mensal", "dims": ("CLASSE_AGENTE",), "unidade": "MWmed",
+        "quebras": [{"data": "2026-02-01", "descricao": "A classe de agente Comercializador deu lugar à classe Varejista; o conjunto CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO deixou de contar o consumo da Varejista no ACL (cerca de 2.500 MW médios), enquanto CONSUMO_CLASSE_AGENTE o publica como classe própria. O observatório soma o ACL pelas classes para manter a série comparável."}],},
     "agente_qtd_contabilizacao": {
         "painel": "P033", "titulo": "Quantidade de agentes na contabilização por classe",
         "colunas": ("MES_REFERENCIA", "CLASSE", "QUANTIDADE_AGENTE_CONTABILIZACAO"), "leitor": "mensal",
@@ -112,6 +113,10 @@ CONJUNTOS = {
                     "RESSARCIMENTO_CUSTO_OP_MNT_EQUIP_CAG", "RESSARCIMENTO_CUSTO_IMPL_OP_MNT_SEP",
                     "RESSARCIMENTO_CUSTO_EMERGENCIAL", "RESSARCIMENTO_DIST_IMPL_OP_MNT"),
         "leitor": "mensal", "dims": (), "unidade": "R$"},
+    "rd_encargos_contab_mensal": {
+        "painel": "P035", "titulo": "Encargo de resposta da demanda contabilizado (repasse como ESS), por submercado",
+        "colunas": ("MES_REFERENCIA", "SUBMERCADO", "RECEBIMENTO_ENCARGO_RD"), "leitor": "mensal",
+        "dims": ("SUBMERCADO",), "unidade": "R$"},
     "reserva_encargo": {
         "painel": "P035", "titulo": "Encargo de energia de reserva e conta CONER",
         "colunas": ("MES_REFERENCIA", "ENCARGO_ENERGIA_RESERVA", "TOTAL_PAGAMENTO_LIQ_ER", "FUNDO_GARANTIA_OPER_CONTR_ER",
@@ -430,10 +435,13 @@ def processa_vintage(con, nome, v):
     return {"reprocessada": True, "novas": novas, "revisoes": rev, "universo": contagem}
 
 
-def coleta(con, baixar_meta=http_get, baixador=http_download, pausa_s=0.5, max_idade_dias=7):
-    """Coleta todos os conjuntos. Nunca lança: falha vira registro em `coletas` e status."""
+def coleta(con, baixar_meta=http_get, baixador=http_download, pausa_s=0.5, max_idade_dias=7, nomes=None):
+    """Coleta todos os conjuntos (ou só os de `nomes`). Nunca lança: falha vira registro em
+    `coletas` e status."""
     status = {}
     for nome, spec in CONJUNTOS.items():
+        if nomes is not None and nome not in nomes:
+            continue
         ds = dataset(nome)
         st = {"ok": False, "recursos": {}}
         status[nome] = st
@@ -496,6 +504,9 @@ INFOMERCADO = [
     {"numero": "208", "url": "https://www.ccee.org.br/documents/80415/28965781/InfoMercado-mensal_out_24_208.pdf/d07ecb26-422f-f2ff-a5c4-2fab60997420"},
 ]
 DS_INFOMERCADO = "ccee_infomercado"
+# Versão do extrator do InfoMercado, separada da dos conjuntos: mudar a extração dos PDFs não
+# reprocessa os CSV grandes (parcelas de carga).
+VERSAO_INFOMERCADO = "infomercado-2"
 MESES_PT = {"janeiro": 1, "fevereiro": 2, "março": 3, "abril": 4, "maio": 5, "junho": 6, "julho": 7, "agosto": 8,
             "setembro": 9, "outubro": 10, "novembro": 11, "dezembro": 12}
 
@@ -527,7 +538,48 @@ def infomercado_valores(texto):
         if m:
             valores[k] = _num_br(m.group(1))
             paginas[k] = texto.count("\f", 0, m.start()) + 1
+    # composição do total de encargos, no parágrafo da seção de encargos (coluna da direita do
+    # -layout): é ela que mostra que o total do InfoMercado inclui a resposta da demanda, que
+    # não é coluna do conjunto ENCARGO_ESS_ANCILAR
+    par, inicio = _paragrafo_coluna(texto, "Do total de encargos")
+    if par:
+        pg = texto.count("\f", 0, inicio) + 1
+        m = re.search(r"Do total de encargos \(R\$ ([\d.,]+) milhões\)", par)
+        if m:
+            valores["encargos_total_detalhe_milhoes_rs"] = _num_br(m.group(1))
+            paginas["encargos_total_detalhe_milhoes_rs"] = pg
+        for m in re.finditer(r"\(([\d.,]+) milhões\) (?:foi devido a |de )(restrição da operação|serviços ancilares|"
+                             r"encargo de importação|deslocamento hidráulico|resposta da demanda)", par):
+            k = f"encargos_{COMPONENTES_ENCARGOS[m.group(2)]}_milhoes_rs"
+            valores[k] = _num_br(m.group(1))
+            paginas[k] = pg
+        m = re.search(r"Houve R\$ ([\d.,]+) milhões de alívio", par)
+        if m:
+            valores["alivio_ess_milhoes_rs"] = _num_br(m.group(1))
+            paginas["alivio_ess_milhoes_rs"] = pg
     return {"numero": cab.group(1), "mes": mes, "valores": valores, "paginas": paginas}
+
+
+COMPONENTES_ENCARGOS = {"restrição da operação": "restricao_operacao", "serviços ancilares": "servicos_ancilares",
+                        "encargo de importação": "importacao", "deslocamento hidráulico": "deslocamento_hidraulico",
+                        "resposta da demanda": "resposta_demanda"}
+
+
+def _paragrafo_coluna(texto, marcador, linhas=7):
+    """Parágrafo que começa no marcador, lido só na coluna em que ele está (o -layout põe duas
+    colunas lado a lado na mesma linha). Retorna (texto em uma linha, posição do marcador)."""
+    i = texto.find(marcador)
+    if i < 0:
+        return None, -1
+    ini_linha = texto.rfind("\n", 0, i) + 1
+    col = i - ini_linha
+    partes = []
+    for l in texto[ini_linha:].splitlines()[:linhas]:
+        trecho = l[max(0, col - 3):].strip()
+        if not trecho:
+            break
+        partes.append(trecho)
+    return re.sub(r"\s+", " ", " ".join(partes)), i
 
 
 def _texto_pdf_bronze(arquivo):
@@ -571,7 +623,8 @@ def coleta_infomercado(con, baixador=http_download, extrai_texto=_texto_pdf_bron
         if res["status"] == "falha" or not v:
             status["ok"] = False
             continue
-        if _ja_processada(con, DS_INFOMERCADO, v["vintage_id"]):
+        if con.execute("SELECT 1 FROM registros WHERE dataset=? AND chave=? LIMIT 1",
+                       (DS_INFOMERCADO, f"__processada__|{v['vintage_id']}|{VERSAO_INFOMERCADO}")).fetchone():
             continue
         try:
             texto = extrai_texto(v["arquivo"])
@@ -596,7 +649,7 @@ def coleta_infomercado(con, baixador=http_download, extrai_texto=_texto_pdf_bron
         ch = f"edicao|{vals['numero']}"
         regs = [(ch, "mes", vals["mes"]), (ch, "recurso", recurso), (ch, "vintage", v["vintage_id"]), (ch, "url", it["url"])]
         regs += [(ch, f"pagina|{k}", str(p)) for k, p in vals["paginas"].items()]
-        regs.append((f"__processada__|{v['vintage_id']}|{VERSAO_LEITOR}", "ok", "1"))
+        regs.append((f"__processada__|{v['vintage_id']}|{VERSAO_INFOMERCADO}", "ok", "1"))
         novas, rev = base.grava_observacoes(con, DS_INFOMERCADO, v["vintage_id"], obs)
         base.grava_registros(con, DS_INFOMERCADO, v["vintage_id"], regs)
         con.commit()

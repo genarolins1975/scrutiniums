@@ -1,6 +1,9 @@
 import type { ReactNode } from "react";
 import { PerdasLinkConsulta } from "@/components/energia/PerdasLinkConsulta";
 import { PerdasLinkPainel } from "@/components/energia/PerdasLinkPainel";
+import { carimbo, dataBR, mesAno } from "@/lib/energia/formato";
+import { anosSerieNacional } from "@/lib/energia/perdas";
+import type { PerdasGold } from "@/lib/energia/tipos-perdas";
 
 /**
  * Peças comuns às páginas do módulo Perdas (componentes de servidor): navegação entre os
@@ -44,6 +47,26 @@ export function PerdasNavegacao({ atual }: { atual: IdPaginaPerdas }) {
         })}
       </ul>
     </nav>
+  );
+}
+
+/**
+ * Linha de referência do cabeçalho, a mesma nas quatro páginas: anos completos da série do
+ * SAMP, o ano aberto (só quando a fonte já publicou algum mês dele), a data em que a
+ * vigência tarifária foi conferida e o ano do Censo, todos lidos da gold. Sem ano aberto,
+ * a frase não fica com um "e  até" solto.
+ */
+export function ReferenciaPerdas({ g }: { g: PerdasGold }) {
+  const r = g.referencia;
+  const anos = anosSerieNacional(g.nacional);
+  const serie = anos ? (anos.inicio === anos.fim ? `ano completo de ${anos.fim}` : `anos completos de ${anos.inicio} a ${anos.fim}`) : `anos completos até ${r.ano}`;
+  const aberto = r.ano_parcial !== null && r.ultima_competencia_parcial ? ` e ${r.ano_parcial} até ${mesAno(r.ultima_competencia_parcial)}` : "";
+  const censo = g.proveniencia.contexto.periodo_referencia.inicio.slice(0, 4);
+  return (
+    <>
+      ANEEL, SAMP Balanço: {serie}
+      {aberto}; componentes tarifárias com vigência conferida em {dataBR(r.tarifa_consultada_em)}; Censo {censo} do IBGE. Processado em {carimbo(g.gerado_em)}.
+    </>
   );
 }
 

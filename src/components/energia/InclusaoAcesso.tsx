@@ -359,6 +359,7 @@ export function InclusaoIsolados({
         fonte={fonte}
         versao={si.ciclo}
         nomeArquivo={`inclusao-sistemas-isolados-uf-${si.ciclo}`}
+        chaveUrl="ac.isouf"
         ordemInicial={{ coluna: "populacao", direcao: "desc" }}
         nota="População ausente na fonte não vira zero: a soma usa só as localidades que informam, e a última coluna conta as que não informam."
       />
@@ -387,8 +388,12 @@ export function InclusaoIsolados({
           </button>
         )}
         {erro && (
-          <p role="alert" className="text-sm text-carvao">
-            Não foi possível carregar a lista completa ({erro}); ela também está no CSV de sistemas isolados.
+          <p role="alert" className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">
+            Não foi possível carregar a lista completa ({erro}). Ela também está em{" "}
+            <a href="/energia/series/inclusao_sistemas_isolados.csv" download className="text-energia-dark underline underline-offset-4">
+              inclusao_sistemas_isolados.csv
+            </a>
+            .
           </p>
         )}
       </div>

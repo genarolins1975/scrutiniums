@@ -17,6 +17,7 @@ import {
   linhasHistogramaMunicipios,
   mes,
   mudancaCobertura,
+  numTexto,
   respostaCobertura,
   rotaPainel,
 } from "@/lib/energia/inclusao";
@@ -82,7 +83,7 @@ export default function CoberturaPage() {
               naoConcluir={
                 <>
                   Não é a proporção de famílias elegíveis atendidas e não diz quantas famílias estão fora: fatura não é família, a família pode não ser titular da conta, o numerador
-                  inclui quem recebe pelo BPC ou por equipamento médico (por isso a razão passa de 100 em alguns municípios) e famílias sem ligação à rede contam só no denominador.
+                  inclui quem recebe pelo BPC ou por equipamento médico (o que permite à razão passar de 100 sem erro de cálculo) e famílias sem ligação à rede contam só no denominador.
                 </>
               }
               proveniencia={c.proveniencia.cobertura}
@@ -108,7 +109,7 @@ export default function CoberturaPage() {
                   }
                   unidade="faturas (ou UC na série do SCS) por 100 famílias"
                 />
-                <div className="grid gap-4 sm:grid-cols-2">
+                <div className="grid gap-4 md:grid-cols-[minmax(0,22rem)_1fr]">
                   <Numero
                     rotulo="Por 100 famílias com cadastro atualizado"
                     natureza="CALCULADO"
@@ -119,16 +120,23 @@ export default function CoberturaPage() {
                     motivoAusencia="Sem cruzamento nesta publicação."
                     endereco={`${rotaPainel("p060")}#p060`}
                   />
-                  <Numero
-                    rotulo="Por 100 famílias cadastradas (todas)"
-                    natureza="CALCULADO"
-                    valor={c.brasil?.razao_cadastradas_pct ?? null}
-                    casas={1}
-                    unidade="faturas por 100 famílias"
-                    periodo={mes(c.brasil?.mes)}
-                    tamanho="medio"
-                    nota={`Mesmo numerador; denominador com ${inteiro(c.brasil?.familias_cadastradas)} famílias em vez de ${inteiro(c.brasil?.familias_atualizadas)}. Prova no CSV de municípios.`}
-                  />
+                  {/* a outra ponta da faixa não tem ficha própria na gold: fica como leitura de sensibilidade, não como número de destaque sem prova */}
+                  {c.brasil && (
+                    <div className="space-y-2 border border-linha bg-superficie p-5 text-sm leading-relaxed text-carvao">
+                      <p className="rotulo text-mineral">Sensibilidade ao denominador</p>
+                      <p>
+                        Com todas as famílias cadastradas nessa renda ({inteiro(c.brasil.familias_cadastradas)} em vez de {inteiro(c.brasil.familias_atualizadas)} com cadastro atualizado), o
+                        mesmo numerador dá {numTexto(c.brasil.razao_cadastradas_pct, 1)} faturas por 100 famílias em {mes(c.brasil.mes)}. As duas razões são as pontas da faixa no gráfico por UF.
+                      </p>
+                      <p className="text-carvao-muted">
+                        As famílias cadastradas por município estão em{" "}
+                        <a href="/energia/series/inclusao_municipios.csv" download className="text-energia-dark underline underline-offset-4 hover:text-carvao">
+                          inclusao_municipios.csv
+                        </a>
+                        , que soma o total nacional.
+                      </p>
+                    </div>
+                  )}
                 </div>
                 <InclusaoCoberturaUf ufs={c.ufs} mes={c.brasil?.mes ?? mesMapa} fonte={FONTE_COB} />
 
@@ -192,7 +200,7 @@ export default function CoberturaPage() {
                 <InclusaoSeguir
                   ancora="p060"
                   href={rotaPainel("p061")}
-                  pergunta="Para quem a conta de luz pesa mais no orçamento?"
+                  pergunta={g.orcamento.pergunta}
                   downloads={downloads(["/energia/series/inclusao_municipios.csv", "/energia/series/inclusao_cobertura_mensal.csv"])}
                 />
               </div>

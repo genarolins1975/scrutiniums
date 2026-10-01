@@ -9,10 +9,10 @@ import { PerdasCusto } from "@/components/energia/PerdasCusto";
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { PerdasContexto } from "@/components/energia/PerdasContexto";
 import { PerdasAuditoria } from "@/components/energia/PerdasAuditoria";
-import { PerdasNavegacao, RodapePainel, Recorte, Resposta } from "@/components/energia/PerdasPainel";
+import { PerdasNavegacao, ReferenciaPerdas, RodapePainel, Recorte, Resposta } from "@/components/energia/PerdasPainel";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { integra, lerGold } from "@/lib/energia/gold";
-import { carimbo, dataBR, mesAno } from "@/lib/energia/formato";
+import { dataBR, mesAno } from "@/lib/energia/formato";
 import type { PerdasGold } from "@/lib/energia/tipos-perdas";
 import { linhasContexto, linhasCusto, pontosAssociacao, respostaAssociacao, respostaCusto, rotuloDistribuidora } from "@/lib/energia/perdas";
 
@@ -44,6 +44,11 @@ export default function PerdasCustoContextoPage() {
   const custo = linhasCusto(g.distribuidoras);
   const bloqueioRegulatorio = g.bloqueios.find((b) => b.item.includes("P057")) ?? null;
   const assoc = g.associacao;
+  // anos lidos da gold: arquivos de componentes tarifárias lidos, Censo e relação que desenha o território
+  const pt = g.proveniencia.tarifa.periodo_referencia;
+  const anosTarifa = `${pt.inicio.slice(0, 4)} a ${pt.fim.slice(0, 4)}`;
+  const censo = g.proveniencia.contexto.periodo_referencia.inicio.slice(0, 4);
+  const anoRelacaoAssoc = assoc.ano_relacao ?? assoc.ano_perdas;
 
   return (
     <>
@@ -53,12 +58,7 @@ export default function PerdasCustoContextoPage() {
         <CabecalhoModulo
           rotulo="Perdas de energia · custo e contexto"
           titulo="Qual é a dimensão econômica e territorial das perdas?"
-          referencia={
-            <>
-              ANEEL, SAMP Balanço: anos completos até {g.referencia.ano} e {g.referencia.ano_parcial ?? ""} até {g.referencia.ultima_competencia_parcial ? mesAno(g.referencia.ultima_competencia_parcial) : "sem mês publicado"}; componentes tarifárias com vigência conferida em{" "}
-              {dataBR(g.referencia.tarifa_consultada_em)}; Censo 2022 do IBGE. Processado em {carimbo(g.gerado_em)}.
-            </>
-          }
+          referencia={<ReferenciaPerdas g={g} />}
         >
           As perdas reconhecidas no processo tarifário entram na tarifa de quem consome na área: o consumidor regular paga pela parte que a ANEEL considera eficiente das{" "}
           <Termo slug="perdas-tecnicas">técnicas</Termo> e das <Termo slug="perdas-nao-tecnicas">não técnicas</Termo>. Esta página mostra quanto isso pesa na tarifa residencial e que
@@ -97,14 +97,18 @@ export default function PerdasCustoContextoPage() {
             >
               <Resposta>{respostaCusto(custo, g.referencia.tarifa_consultada_em)}</Resposta>
               <Recorte
-                periodo={`processos tarifários de ${dataBR(custo.map((l) => l.inicio).sort()[0])} até a consulta em ${dataBR(g.referencia.tarifa_consultada_em)}`}
+                periodo={custo.length ? `processos tarifários de ${dataBR(custo.map((l) => l.inicio).sort()[0])} até a consulta em ${dataBR(g.referencia.tarifa_consultada_em)}` : `nenhum processo na consulta de ${dataBR(g.referencia.tarifa_consultada_em)}`}
                 universo={`${custo.length} distribuidoras com tarifa residencial B1 nos arquivos de componentes tarifárias`}
                 unidade="R$/MWh nominais, sem tributos"
               />
-              <PerdasCusto linhas={custo} urlEvidencias={g.series.evidencias_tarifa} ids={ids} rotulos={rotulos} consultadaEm={g.referencia.tarifa_consultada_em} versao={versao} />
+              <PerdasCusto linhas={custo} urlEvidencias={g.series.evidencias_tarifa} ids={ids} rotulos={rotulos} consultadaEm={g.referencia.tarifa_consultada_em} anosArquivos={anosTarifa} versao={versao} />
               {bloqueioRegulatorio && (
                 <p className="mt-3 max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-bloqueio="custo-total">
-                  Custo total reconhecido em reais por processo: bloqueado pela mesma razão da referência regulatória. Dependência: {bloqueioRegulatorio.dependencia}
+                  Custo total reconhecido em reais por processo: bloqueado pela mesma razão da referência regulatória (evidência e endereços tentados no{" "}
+                  <a href="/setor-eletrico/perdas/regulatorio#regulatorio" className="text-energia-dark underline underline-offset-4 hover:text-carvao">
+                    painel Realizado e regulatório
+                  </a>{" "}
+                  e no bloco &quot;Como esses números foram conferidos?&quot;, no nível Auditar). Dependência: {bloqueioRegulatorio.dependencia.replace(/aos hosts acima/, "aos endereços tentados")}
                 </p>
               )}
               <RodapePainel
@@ -119,12 +123,17 @@ export default function PerdasCustoContextoPage() {
             <PainelEvidencia
               id="painel-contexto"
               pergunta="Que características das áreas aparecem associadas às perdas?"
-              subtitulo={`Renda média dos municípios da área (Censo 2022) e perdas de ${assoc.ano_perdas} · concessionárias`}
+              subtitulo={`Renda média dos municípios da área (Censo ${censo}) e perdas de ${assoc.ano_perdas} · concessionárias`}
               natureza="CALCULADO"
               proveniencia={g.proveniencia.contexto}
               complementares={[{ rotulo: "Área de atuação por municípios", p: g.proveniencia.territorio }]}
               porQueImporta={<>Ajuda a ler as diferenças entre áreas sem atribuir a elas uma causa: a própria ANEEL usa características socioeconômicas das áreas ao calcular as referências de perdas não técnicas.</>}
-              oQueMudou={<>A associação usa o ano do Censo (2022) para as perdas e para o território, para que as três grandezas descrevam o mesmo ano; não muda a cada publicação do SAMP.</>}
+              oQueMudou={
+                <>
+                  A associação usa as perdas de {assoc.ano_perdas} e o território da relação de {anoRelacaoAssoc} com a renda do Censo {censo}, para que as três grandezas descrevam o mesmo ano; não muda
+                  a cada publicação do SAMP.
+                </>
+              }
               comoInterpretar={
                 <>
                   Cada ponto é uma concessionária: renda média domiciliar per capita dos municípios da área, ponderada pelos moradores, contra a taxa do mesmo ano. O ρ de Spearman compara postos e não supõe
@@ -142,9 +151,9 @@ export default function PerdasCustoContextoPage() {
                 {respostaAssociacao(assoc)}
               </Resposta>
               <Recorte
-                periodo={`${assoc.ano_perdas} (perdas e território); Censo de 2022`}
+                periodo={`${assoc.ano_perdas} (perdas), relação de ${anoRelacaoAssoc} (território); Censo de ${censo}`}
                 universo={`${assoc.n_taxa_total} concessionárias com ${assoc.ano_perdas} completo e sem alerta; ${assoc.n_pnt_bt} delas com a separação fechando`}
-                unidade="R$ de 2022 por mês; % da energia injetada; % do mercado de baixa tensão"
+                unidade={`R$ de ${censo} por mês; % da energia injetada; % do mercado de baixa tensão`}
               />
               <PerdasContexto
                 pontos={pontosAssociacao(assoc, rotulos)}
@@ -152,6 +161,9 @@ export default function PerdasCustoContextoPage() {
                 ids={ids}
                 rotulos={rotulos}
                 ano={assoc.ano_perdas}
+                anoRelacao={anoRelacaoAssoc}
+                anoRelacaoTabela={g.mapa.ano_relacao}
+                censo={censo}
                 rho={{ taxa: assoc.spearman_taxa_total, n_taxa: assoc.n_taxa_total, pnt_bt: assoc.spearman_pnt_bt, n_pnt_bt: assoc.n_pnt_bt }}
                 versao={versao}
               />

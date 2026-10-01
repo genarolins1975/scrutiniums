@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "qualidade.json",
- "gerado_em": "2026-10-01T00:20:33Z",
+ "gerado_em": "2026-10-01T05:53:21Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "6d3bc3a2f759+alterado",
+ "versao_codigo": "802c51897680+alterado",
  "disponivel": true,
  "ano_referencia": 2025,
  "ultimo_mes_completo": "2026-06",
@@ -46,7 +46,9 @@
   "parcial": "Ano corrente só é comparado com os mesmos meses do ano anterior, e só com os meses nacionais completos nos dois anos.",
   "universo": "Brasil = todas as distribuidoras com indicadores publicados, inclusive permissionárias; o número que a ANEEL divulga cobre só as concessionárias e vai em dec_concessionarias e fec_concessionarias.",
   "numcon": "Distribuidora-mês com NumCon implausível (média de até 1 UC por conjunto, ou queda ou pico isolado de mais da metade) fica fora do Brasil; com mais de um conjunto, o DEC e o FEC da distribuidora no mês ficam ausentes.",
-  "limite_centesimos": "Conjunto acima do limite: DEC anual maior que o limite, os dois em centésimos como a ANEEL publica; igual ao limite não é transgressão."
+  "limite_centesimos": "Conjunto acima do limite: DEC anual maior que o limite, os dois em centésimos como a ANEEL publica; igual ao limite não é transgressão.",
+  "mes_completo": "Um mês nacional só entra em gráfico, ano e comparação quando as unidades consumidoras com DEC chegam a 99% do máximo dos 12 meses anteriores; antes disso o valor publicado fica na tabela, marcado como incompleto.",
+  "mes_completo_compensacao": "Um mês de compensação só entra em gráfico e ano quando as distribuidoras que informaram somam ao menos 99% do máximo informado nos 12 meses anteriores; antes disso o valor publicado fica na tabela, marcado como incompleto."
  },
  "parcelas": {
   "rotulos": {
@@ -1326,6 +1328,10 @@
     "valor_por_tipo": {
      "mensal": 126879998.63,
      "dicri": 1433018.02
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 125583193.5,
+     "dicri": 1433018.02
     }
    },
    "iasc": {
@@ -1408,6 +1414,10 @@
     "quantidade": 3215902.0,
     "valor_por_uc": 12.66,
     "valor_por_tipo": {
+     "mensal": 97608989.63,
+     "dicri": 3475794.34
+    },
+    "valor_uc_por_tipo": {
      "mensal": 97608989.63,
      "dicri": 3475794.34
     }
@@ -1494,6 +1504,10 @@
     "valor_por_tipo": {
      "mensal": 54614989.36,
      "dicri": 2686096.66
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 54537315.98,
+     "dicri": 2682963.07
     }
    },
    "iasc": {
@@ -1580,6 +1594,10 @@
      "trimestral": 0.0,
      "anual": 0.0,
      "dicri": 1906748.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 42581866.83,
+     "dicri": 1883209.42
     }
    },
    "iasc": {
@@ -1664,6 +1682,10 @@
     "valor_por_tipo": {
      "mensal": 32015625.55,
      "dicri": 1049783.73
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 30974903.18,
+     "dicri": 973611.1
     }
    },
    "iasc": {
@@ -1746,6 +1768,10 @@
     "quantidade": 976995.0,
     "valor_por_uc": 7.35,
     "valor_por_tipo": {
+     "mensal": 27348773.63,
+     "dicri": 1297138.83
+    },
+    "valor_uc_por_tipo": {
      "mensal": 27348773.63,
      "dicri": 1297138.83
     }
@@ -1832,6 +1858,10 @@
     "valor_por_tipo": {
      "mensal": 35007298.37,
      "dicri": 589600.46
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 35007298.37,
+     "dicri": 589600.46
     }
    },
    "iasc": {
@@ -1916,6 +1946,10 @@
     "valor_por_tipo": {
      "mensal": 22367250.37,
      "dicri": 585749.14
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 22343371.14,
+     "dicri": 585370.52
     }
    },
    "iasc": {
@@ -2000,6 +2034,10 @@
     "valor_por_tipo": {
      "mensal": 111167861.93,
      "dicri": 128568.27
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 110676889.34,
+     "dicri": 128568.27
     }
    },
    "iasc": {
@@ -2082,6 +2120,10 @@
     "quantidade": 532049.0,
     "valor_por_uc": 3.97,
     "valor_por_tipo": {
+     "mensal": 13137904.41,
+     "dicri": 501516.17
+    },
+    "valor_uc_por_tipo": {
      "mensal": 13137904.41,
      "dicri": 501516.17
     }
@@ -2168,6 +2210,10 @@
     "valor_por_tipo": {
      "mensal": 42297310.84,
      "dicri": 1382894.92
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 41058589.33,
+     "dicri": 1289132.22
     }
    },
    "iasc": {
@@ -2271,6 +2317,10 @@
     "valor_por_tipo": {
      "mensal": 24440610.46,
      "dicri": 1705943.17
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 23151081.86,
+     "dicri": 1597127.96
     }
    },
    "iasc": {
@@ -2355,6 +2405,10 @@
     "valor_por_tipo": {
      "mensal": 21184182.43,
      "dicri": 780553.07
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 21167435.13,
+     "dicri": 780545.86
     }
    },
    "iasc": {
@@ -2439,6 +2493,10 @@
     "valor_por_tipo": {
      "mensal": 21016273.66,
      "dicri": 1007116.06
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 19598824.78,
+     "dicri": 915877.77
     }
    },
    "iasc": {
@@ -2523,6 +2581,10 @@
     "valor_por_tipo": {
      "mensal": 38121530.75,
      "dicri": 1963417.43
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 38075077.79,
+     "dicri": 1963417.43
     }
    },
    "iasc": {
@@ -2605,6 +2667,10 @@
     "quantidade": 554257.0,
     "valor_por_uc": 10.57,
     "valor_por_tipo": {
+     "mensal": 21337542.33,
+     "dicri": 1704974.8
+    },
+    "valor_uc_por_tipo": {
      "mensal": 21337542.33,
      "dicri": 1704974.8
     }
@@ -2691,6 +2757,10 @@
     "valor_por_tipo": {
      "mensal": 22914739.55,
      "dicri": 583857.6
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 22914739.55,
+     "dicri": 583857.6
     }
    },
    "iasc": {
@@ -2775,6 +2845,10 @@
     "valor_por_tipo": {
      "mensal": 8085548.68,
      "dicri": 212595.4
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 7977636.25,
+     "dicri": 211410.83
     }
    },
    "iasc": {
@@ -2858,6 +2932,10 @@
     "valor_por_uc": 4.32,
     "valor_por_tipo": {
      "mensal": 7899099.31,
+     "dicri": 188064.14
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 7892689.16,
      "dicri": 188064.14
     }
    },
@@ -2962,6 +3040,10 @@
     "valor_por_tipo": {
      "mensal": 18085590.96,
      "dicri": 615892.95
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 18085590.96,
+     "dicri": 615892.95
     }
    },
    "iasc": {
@@ -3046,6 +3128,10 @@
     "valor_por_tipo": {
      "mensal": 52344789.77,
      "dicri": 1758500.28
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 52132044.8,
+     "dicri": 1758500.27
     }
    },
    "iasc": {
@@ -3128,6 +3214,10 @@
     "quantidade": 181392.0,
     "valor_por_uc": 3.33,
     "valor_por_tipo": {
+     "mensal": 5192993.69,
+     "dicri": 41625.89
+    },
+    "valor_uc_por_tipo": {
      "mensal": 5192993.69,
      "dicri": 41625.89
     }
@@ -3214,6 +3304,10 @@
     "valor_por_tipo": {
      "mensal": 13472755.09,
      "dicri": 3703796.16
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 12398212.82,
+     "dicri": 3262396.83
     }
    },
    "iasc": {
@@ -3298,6 +3392,10 @@
     "valor_por_tipo": {
      "mensal": 11925607.49,
      "dicri": 535369.07
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 11820288.45,
+     "dicri": 531494.81
     }
    },
    "iasc": {
@@ -3380,6 +3478,10 @@
     "quantidade": 255087.0,
     "valor_por_uc": 6.35,
     "valor_por_tipo": {
+     "mensal": 7183451.0,
+     "dicri": 359435.12
+    },
+    "valor_uc_por_tipo": {
      "mensal": 7183451.0,
      "dicri": 359435.12
     }
@@ -3466,6 +3568,10 @@
     "valor_por_tipo": {
      "mensal": 22312335.3,
      "dicri": 709688.01
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 22309178.64,
+     "dicri": 709688.01
     }
    },
    "iasc": {
@@ -3548,6 +3654,10 @@
     "quantidade": 515138.0,
     "valor_por_uc": 42.18,
     "valor_por_tipo": {
+     "mensal": 38048386.66,
+     "dicri": 181119.18
+    },
+    "valor_uc_por_tipo": {
      "mensal": 38048386.66,
      "dicri": 181119.18
     }
@@ -3634,6 +3744,10 @@
     "valor_por_tipo": {
      "mensal": 2781568.34,
      "dicri": 26490.17
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 2781568.34,
+     "dicri": 26490.17
     }
    },
    "iasc": {
@@ -3717,6 +3831,10 @@
     "valor_por_uc": 3.22,
     "valor_por_tipo": {
      "mensal": 2821259.21,
+     "dicri": 35476.01
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 2821259.2,
      "dicri": 35476.01
     }
    },
@@ -3845,6 +3963,10 @@
     "valor_por_tipo": {
      "mensal": 14939268.71,
      "dicri": 719556.16
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 14939268.71,
+     "dicri": 719556.16
     }
    },
    "iasc": {
@@ -3929,6 +4051,10 @@
     "valor_por_tipo": {
      "mensal": 12402942.14,
      "dicri": 115213.36
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 12402942.14,
+     "dicri": 115213.36
     }
    },
    "iasc": {
@@ -4011,6 +4137,10 @@
     "quantidade": 117456.0,
     "valor_por_uc": 4.57,
     "valor_por_tipo": {
+     "mensal": 2498129.38,
+     "dicri": 257276.33
+    },
+    "valor_uc_por_tipo": {
      "mensal": 2498129.38,
      "dicri": 257276.33
     }
@@ -4116,6 +4246,10 @@
     "valor_por_tipo": {
      "mensal": 2736359.88,
      "dicri": 125500.66
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 2675977.9,
+     "dicri": 124097.42
     }
    },
    "iasc": {
@@ -4243,6 +4377,10 @@
     "valor_por_tipo": {
      "mensal": 3564031.59,
      "dicri": 52471.72
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 3564031.59,
+     "dicri": 52471.72
     }
    },
    "iasc": {
@@ -4325,6 +4463,10 @@
     "quantidade": 0.0,
     "valor_por_uc": 0.0,
     "valor_por_tipo": {
+     "mensal": 0.0,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 0.0,
      "dicri": 0.0
     }
@@ -4411,6 +4553,10 @@
     "valor_por_tipo": {
      "mensal": 557921.7,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 557921.7,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -4493,6 +4639,10 @@
     "quantidade": 5305.0,
     "valor_por_uc": 0.93,
     "valor_por_tipo": {
+     "mensal": 149992.54,
+     "dicri": 11456.87
+    },
+    "valor_uc_por_tipo": {
      "mensal": 149992.54,
      "dicri": 11456.87
     }
@@ -4579,6 +4729,10 @@
     "valor_por_tipo": {
      "mensal": 266211.77,
      "dicri": 11287.12
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 266211.77,
+     "dicri": 11287.12
     }
    },
    "iasc": {
@@ -4661,6 +4815,10 @@
     "quantidade": 6107.0,
     "valor_por_uc": 1.61,
     "valor_por_tipo": {
+     "mensal": 142910.69,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 142910.69,
      "dicri": 0.0
     }
@@ -4747,6 +4905,10 @@
     "valor_por_tipo": {
      "mensal": 243178.39,
      "dicri": 4648.38
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 189899.48,
+     "dicri": 4648.38
     }
    },
    "iasc": {
@@ -4831,6 +4993,10 @@
     "valor_por_tipo": {
      "mensal": 170067.47,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 170067.47,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -4903,6 +5069,10 @@
     "quantidade": 7883.0,
     "valor_por_uc": 2.49,
     "valor_por_tipo": {
+     "mensal": 125087.72,
+     "dicri": 23199.1
+    },
+    "valor_uc_por_tipo": {
      "mensal": 125087.72,
      "dicri": 23199.1
     }
@@ -4979,6 +5149,10 @@
     "valor_por_tipo": {
      "mensal": 112706.64,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 112706.64,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -5053,6 +5227,10 @@
     "valor_por_tipo": {
      "mensal": 319826.92,
      "dicri": 13334.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 296248.13,
+     "dicri": 13334.0
     }
    },
    "iasc": {
@@ -5125,6 +5303,10 @@
     "quantidade": 1367.0,
     "valor_por_uc": 1.49,
     "valor_por_tipo": {
+     "mensal": 60833.56,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 60833.56,
      "dicri": 0.0
     }
@@ -5201,6 +5383,10 @@
     "valor_por_tipo": {
      "mensal": 27921.34,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 27921.34,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -5273,6 +5459,10 @@
     "quantidade": 2413.0,
     "valor_por_uc": 1.13,
     "valor_por_tipo": {
+     "mensal": 40598.2,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 40598.2,
      "dicri": 0.0
     }
@@ -5349,6 +5539,10 @@
     "valor_por_tipo": {
      "mensal": 101668.85,
      "dicri": 191153.4
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 101668.85,
+     "dicri": 191153.4
     }
    },
    "iasc": {
@@ -5421,6 +5615,10 @@
     "quantidade": 4.0,
     "valor_por_uc": 0.02,
     "valor_por_tipo": {
+     "mensal": 493.46,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 493.46,
      "dicri": 0.0
     }
@@ -5497,6 +5695,10 @@
     "valor_por_tipo": {
      "mensal": 3892.11,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 3892.11,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -5569,6 +5771,10 @@
     "quantidade": 77.0,
     "valor_por_uc": 0.13,
     "valor_por_tipo": {
+     "mensal": 3094.08,
+     "dicri": 289.06
+    },
+    "valor_uc_por_tipo": {
      "mensal": 3094.08,
      "dicri": 289.06
     }
@@ -5645,6 +5851,10 @@
     "valor_por_tipo": {
      "mensal": 2186.37,
      "dicri": 1780.63
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 2186.37,
+     "dicri": 1780.63
     }
    },
    "iasc": {
@@ -5717,6 +5927,10 @@
     "quantidade": 864.0,
     "valor_por_uc": 2.72,
     "valor_por_tipo": {
+     "mensal": 57973.19,
+     "dicri": 7304.98
+    },
+    "valor_uc_por_tipo": {
      "mensal": 57973.19,
      "dicri": 7304.98
     }
@@ -5793,6 +6007,10 @@
     "valor_por_tipo": {
      "mensal": 28145.89,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 28145.89,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -5865,6 +6083,10 @@
     "quantidade": 947.0,
     "valor_por_uc": 0.32,
     "valor_por_tipo": {
+     "mensal": 6546.98,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 6546.98,
      "dicri": 0.0
     }
@@ -5941,6 +6163,10 @@
     "valor_por_tipo": {
      "mensal": 16485.69,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 16485.69,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -6013,6 +6239,10 @@
     "quantidade": 295.0,
     "valor_por_uc": 0.51,
     "valor_por_tipo": {
+     "mensal": 9625.76,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 9625.76,
      "dicri": 0.0
     }
@@ -6089,6 +6319,10 @@
     "valor_por_tipo": {
      "mensal": 207330.46,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 207330.46,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -6161,6 +6395,10 @@
     "quantidade": 0.0,
     "valor_por_uc": 0.0,
     "valor_por_tipo": {
+     "mensal": 0.0,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 0.0,
      "dicri": 0.0
     }
@@ -6237,6 +6475,10 @@
     "valor_por_tipo": {
      "mensal": 26408.04,
      "dicri": 115.87
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 26408.04,
+     "dicri": 115.87
     }
    },
    "iasc": {
@@ -6309,6 +6551,10 @@
     "quantidade": 60.0,
     "valor_por_uc": 0.16,
     "valor_por_tipo": {
+     "mensal": 2890.22,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 2890.22,
      "dicri": 0.0
     }
@@ -6385,6 +6631,10 @@
     "valor_por_tipo": {
      "mensal": 739.59,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 739.59,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -6457,6 +6707,10 @@
     "quantidade": 204.0,
     "valor_por_uc": 1.85,
     "valor_por_tipo": {
+     "mensal": 32058.36,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 32058.36,
      "dicri": 0.0
     }
@@ -6533,6 +6787,10 @@
     "valor_por_tipo": {
      "mensal": 10188.28,
      "dicri": 3968.58
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 10188.28,
+     "dicri": 3968.58
     }
    },
    "iasc": {
@@ -6605,6 +6863,10 @@
     "quantidade": 0.0,
     "valor_por_uc": 0.0,
     "valor_por_tipo": {
+     "mensal": 0.0,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 0.0,
      "dicri": 0.0
     }
@@ -6681,6 +6943,10 @@
     "valor_por_tipo": {
      "mensal": 24.1,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 24.1,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -6753,6 +7019,10 @@
     "quantidade": 697.0,
     "valor_por_uc": 3.25,
     "valor_por_tipo": {
+     "mensal": 51375.64,
+     "dicri": 1082.43
+    },
+    "valor_uc_por_tipo": {
      "mensal": 51375.64,
      "dicri": 1082.43
     }
@@ -6829,6 +7099,10 @@
     "valor_por_tipo": {
      "mensal": 0.0,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 0.0,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -6901,6 +7175,10 @@
     "quantidade": 7.0,
     "valor_por_uc": 0.03,
     "valor_por_tipo": {
+     "mensal": 509.07,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 509.07,
      "dicri": 0.0
     }
@@ -6977,6 +7255,10 @@
     "valor_por_tipo": {
      "mensal": 490374.08,
      "dicri": 86.25
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 490374.08,
+     "dicri": 86.25
     }
    },
    "iasc": {
@@ -7049,6 +7331,10 @@
     "quantidade": 397.0,
     "valor_por_uc": 2.81,
     "valor_por_tipo": {
+     "mensal": 37095.94,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 37095.94,
      "dicri": 0.0
     }
@@ -7125,6 +7411,10 @@
     "valor_por_tipo": {
      "mensal": 0.0,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 0.0,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -7197,6 +7487,10 @@
     "quantidade": 30.0,
     "valor_por_uc": 0.23,
     "valor_por_tipo": {
+     "mensal": 2755.9,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 2755.9,
      "dicri": 0.0
     }
@@ -7273,6 +7567,10 @@
     "valor_por_tipo": {
      "mensal": 5121.37,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 5121.37,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -7332,6 +7630,10 @@
     "quantidade": 1.0,
     "valor_por_uc": 0.0,
     "valor_por_tipo": {
+     "mensal": 18.2,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 18.2,
      "dicri": 0.0
     }
@@ -7408,6 +7710,10 @@
     "valor_por_tipo": {
      "mensal": 4239.07,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 4239.07,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -7482,6 +7788,10 @@
     "valor_por_tipo": {
      "mensal": 24613.01,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 24613.01,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -7554,6 +7864,10 @@
     "quantidade": 3379.0,
     "valor_por_uc": 10.55,
     "valor_por_tipo": {
+     "mensal": 84928.52,
+     "dicri": 16.31
+    },
+    "valor_uc_por_tipo": {
      "mensal": 84928.52,
      "dicri": 16.31
     }
@@ -7695,6 +8009,10 @@
     "valor_por_tipo": {
      "mensal": 1132.1,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 1132.1,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -7767,6 +8085,10 @@
     "quantidade": 220.0,
     "valor_por_uc": 4.33,
     "valor_por_tipo": {
+     "mensal": 28656.58,
+     "dicri": 4825.62
+    },
+    "valor_uc_por_tipo": {
      "mensal": 28656.58,
      "dicri": 4825.62
     }
@@ -7843,6 +8165,10 @@
     "valor_por_tipo": {
      "mensal": 1318.89,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 1318.89,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -7915,6 +8241,10 @@
     "quantidade": 36.0,
     "valor_por_uc": 0.72,
     "valor_por_tipo": {
+     "mensal": 5188.7,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 5188.7,
      "dicri": 0.0
     }
@@ -7991,6 +8321,10 @@
     "valor_por_tipo": {
      "mensal": 430.89,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 430.89,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -8063,6 +8397,10 @@
     "quantidade": 0.0,
     "valor_por_uc": 0.0,
     "valor_por_tipo": {
+     "mensal": 0.0,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 0.0,
      "dicri": 0.0
     }
@@ -8139,6 +8477,10 @@
     "valor_por_tipo": {
      "mensal": 44730.68,
      "dicri": 36217.64
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 44730.68,
+     "dicri": 36217.64
     }
    },
    "iasc": {
@@ -8211,6 +8553,10 @@
     "quantidade": 0.0,
     "valor_por_uc": 0.0,
     "valor_por_tipo": {
+     "mensal": 0.0,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 0.0,
      "dicri": 0.0
     }
@@ -8287,6 +8633,10 @@
     "valor_por_tipo": {
      "mensal": 0.0,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 0.0,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -8359,6 +8709,10 @@
     "quantidade": 0.0,
     "valor_por_uc": 0.0,
     "valor_por_tipo": {
+     "mensal": 0.0,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 0.0,
      "dicri": 0.0
     }
@@ -8435,6 +8789,10 @@
     "valor_por_tipo": {
      "mensal": 0.0,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 0.0,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -8507,6 +8865,10 @@
     "quantidade": 0.0,
     "valor_por_uc": 0.0,
     "valor_por_tipo": {
+     "mensal": 0.0,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 0.0,
      "dicri": 0.0
     }
@@ -8583,6 +8945,10 @@
     "valor_por_tipo": {
      "mensal": 29741.05,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 29741.05,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -8655,6 +9021,10 @@
     "quantidade": 0.0,
     "valor_por_uc": 0.0,
     "valor_por_tipo": {
+     "mensal": 0.0,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 0.0,
      "dicri": 0.0
     }
@@ -8731,6 +9101,10 @@
     "valor_por_tipo": {
      "mensal": 999.75,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 999.75,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -8803,6 +9177,10 @@
     "quantidade": 0.0,
     "valor_por_uc": 0.0,
     "valor_por_tipo": {
+     "mensal": 0.0,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 0.0,
      "dicri": 0.0
     }
@@ -8879,6 +9257,10 @@
     "valor_por_tipo": {
      "mensal": 0.0,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 0.0,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -8951,6 +9333,10 @@
     "quantidade": 282.0,
     "valor_por_uc": 7.86,
     "valor_por_tipo": {
+     "mensal": 15947.7,
+     "dicri": 11741.78
+    },
+    "valor_uc_por_tipo": {
      "mensal": 15947.7,
      "dicri": 11741.78
     }
@@ -9027,6 +9413,10 @@
     "valor_por_tipo": {
      "mensal": 5433.92,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 5433.92,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -9101,6 +9491,10 @@
     "valor_por_tipo": {
      "mensal": 137.9,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 17.37,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -9173,6 +9567,10 @@
     "quantidade": 0.0,
     "valor_por_uc": 0.0,
     "valor_por_tipo": {
+     "mensal": 0.0,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 0.0,
      "dicri": 0.0
     }
@@ -9249,6 +9647,10 @@
     "valor_por_tipo": {
      "mensal": 0.0,
      "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
+     "mensal": 0.0,
+     "dicri": 0.0
     }
    },
    "iasc": {
@@ -9321,6 +9723,10 @@
     "quantidade": 0.0,
     "valor_por_uc": 0.0,
     "valor_por_tipo": {
+     "mensal": 0.0,
+     "dicri": 0.0
+    },
+    "valor_uc_por_tipo": {
      "mensal": 0.0,
      "dicri": 0.0
     }
@@ -10521,15 +10927,27 @@
     "por_tipo": {
      "mensal": {
       "valor": 290953702.1,
-      "quantidade": 68377721.0
+      "quantidade": 68377721.0,
+      "valor_uc": 290953702.1,
+      "valor_ug": null,
+      "quantidade_uc": 68377721.0,
+      "quantidade_ug": null
      },
      "trimestral": {
       "valor": 40514727.75,
-      "quantidade": 21500661.0
+      "quantidade": 21500661.0,
+      "valor_uc": 40514727.75,
+      "valor_ug": null,
+      "quantidade_uc": 21500661.0,
+      "quantidade_ug": null
      },
      "anual": {
       "valor": 68836266.39,
-      "quantidade": 15260861.0
+      "quantidade": 15260861.0,
+      "valor_uc": 68836266.39,
+      "valor_ug": null,
+      "quantidade_uc": 15260861.0,
+      "quantidade_ug": null
      }
     }
    },
@@ -10547,19 +10965,35 @@
     "por_tipo": {
      "mensal": {
       "valor": 306163098.79,
-      "quantidade": 66072683.0
+      "quantidade": 66072683.0,
+      "valor_uc": 306163098.79,
+      "valor_ug": null,
+      "quantidade_uc": 66072683.0,
+      "quantidade_ug": null
      },
      "trimestral": {
       "valor": 42038692.24,
-      "quantidade": 19146588.0
+      "quantidade": 19146588.0,
+      "valor_uc": 42038692.24,
+      "valor_ug": null,
+      "quantidade_uc": 19146588.0,
+      "quantidade_ug": null
      },
      "anual": {
       "valor": 69950279.0,
-      "quantidade": 12888549.0
+      "quantidade": 12888549.0,
+      "valor_uc": 69950279.0,
+      "valor_ug": null,
+      "quantidade_uc": 12888549.0,
+      "quantidade_ug": null
      },
      "dicri": {
       "valor": 19940804.02,
-      "quantidade": 9174806.0
+      "quantidade": 9174806.0,
+      "valor_uc": 19940804.02,
+      "valor_ug": null,
+      "quantidade_uc": 9174806.0,
+      "quantidade_ug": null
      }
     }
    },
@@ -10577,19 +11011,35 @@
     "por_tipo": {
      "mensal": {
       "valor": 265667894.2,
-      "quantidade": 67605143.0
+      "quantidade": 67605143.0,
+      "valor_uc": 265667894.2,
+      "valor_ug": null,
+      "quantidade_uc": 67605143.0,
+      "quantidade_ug": null
      },
      "trimestral": {
       "valor": 37215695.55,
-      "quantidade": 20079636.0
+      "quantidade": 20079636.0,
+      "valor_uc": 37215695.55,
+      "valor_ug": null,
+      "quantidade_uc": 20079636.0,
+      "quantidade_ug": null
      },
      "anual": {
       "valor": 61929261.8,
-      "quantidade": 13720401.0
+      "quantidade": 13720401.0,
+      "valor_uc": 61929261.8,
+      "valor_ug": null,
+      "quantidade_uc": 13720401.0,
+      "quantidade_ug": null
      },
      "dicri": {
       "valor": 14614076.99,
-      "quantidade": 3381948.0
+      "quantidade": 3381948.0,
+      "valor_uc": 14614076.99,
+      "valor_ug": null,
+      "quantidade_uc": 3381948.0,
+      "quantidade_ug": null
      }
     }
    },
@@ -10607,19 +11057,35 @@
     "por_tipo": {
      "mensal": {
       "valor": 279715915.33,
-      "quantidade": 69487162.0
+      "quantidade": 69487162.0,
+      "valor_uc": 279715915.33,
+      "valor_ug": null,
+      "quantidade_uc": 69487162.0,
+      "quantidade_ug": null
      },
      "trimestral": {
       "valor": 38304872.31,
-      "quantidade": 20565598.0
+      "quantidade": 20565598.0,
+      "valor_uc": 38304872.31,
+      "valor_ug": null,
+      "quantidade_uc": 20565598.0,
+      "quantidade_ug": null
      },
      "anual": {
       "valor": 55326713.87,
-      "quantidade": 13048014.0
+      "quantidade": 13048014.0,
+      "valor_uc": 55326713.87,
+      "valor_ug": null,
+      "quantidade_uc": 13048014.0,
+      "quantidade_ug": null
      },
      "dicri": {
       "valor": 18540070.3,
-      "quantidade": 7199567.0
+      "quantidade": 7199567.0,
+      "valor_uc": 18540070.3,
+      "valor_ug": null,
+      "quantidade_uc": 7199567.0,
+      "quantidade_ug": null
      }
     }
    },
@@ -10637,19 +11103,35 @@
     "por_tipo": {
      "mensal": {
       "valor": 451485630.17,
-      "quantidade": 78596581.0
+      "quantidade": 78596581.0,
+      "valor_uc": 451485630.17,
+      "valor_ug": null,
+      "quantidade_uc": 78596581.0,
+      "quantidade_ug": null
      },
      "trimestral": {
       "valor": 64764554.88,
-      "quantidade": 23696994.0
+      "quantidade": 23696994.0,
+      "valor_uc": 64764554.88,
+      "valor_ug": null,
+      "quantidade_uc": 23696994.0,
+      "quantidade_ug": null
      },
      "anual": {
       "valor": 103357670.46,
-      "quantidade": 16108827.0
+      "quantidade": 16108827.0,
+      "valor_uc": 103357670.46,
+      "valor_ug": null,
+      "quantidade_uc": 16108827.0,
+      "quantidade_ug": null
      },
      "dicri": {
       "valor": 40343733.52,
-      "quantidade": 7052066.0
+      "quantidade": 7052066.0,
+      "valor_uc": 40343733.52,
+      "valor_ug": null,
+      "quantidade_uc": 7052066.0,
+      "quantidade_ug": null
      }
     }
    },
@@ -10667,19 +11149,35 @@
     "por_tipo": {
      "mensal": {
       "valor": 406402327.21,
-      "quantidade": 73619069.0
+      "quantidade": 73619069.0,
+      "valor_uc": 406402327.21,
+      "valor_ug": null,
+      "quantidade_uc": 73619069.0,
+      "quantidade_ug": null
      },
      "trimestral": {
       "valor": 60507035.43,
-      "quantidade": 20866225.0
+      "quantidade": 20866225.0,
+      "valor_uc": 60507035.43,
+      "valor_ug": null,
+      "quantidade_uc": 20866225.0,
+      "quantidade_ug": null
      },
      "anual": {
       "valor": 90036494.07,
-      "quantidade": 13972748.0
+      "quantidade": 13972748.0,
+      "valor_uc": 90036494.07,
+      "valor_ug": null,
+      "quantidade_uc": 13972748.0,
+      "quantidade_ug": null
      },
      "dicri": {
       "valor": 26492686.72,
-      "quantidade": 4299165.0
+      "quantidade": 4299165.0,
+      "valor_uc": 26492686.72,
+      "valor_ug": null,
+      "quantidade_uc": 4299165.0,
+      "quantidade_ug": null
      }
     }
    },
@@ -10697,19 +11195,35 @@
     "por_tipo": {
      "mensal": {
       "valor": 344114549.68,
-      "quantidade": 67041086.0
+      "quantidade": 67041086.0,
+      "valor_uc": 344114549.68,
+      "valor_ug": null,
+      "quantidade_uc": 67041086.0,
+      "quantidade_ug": null
      },
      "trimestral": {
       "valor": 54376255.04,
-      "quantidade": 18901298.0
+      "quantidade": 18901298.0,
+      "valor_uc": 54376255.04,
+      "valor_ug": null,
+      "quantidade_uc": 18901298.0,
+      "quantidade_ug": null
      },
      "anual": {
       "valor": 69525813.99,
-      "quantidade": 11763492.0
+      "quantidade": 11763492.0,
+      "valor_uc": 69525813.99,
+      "valor_ug": null,
+      "quantidade_uc": 11763492.0,
+      "quantidade_ug": null
      },
      "dicri": {
       "valor": 17516180.85,
-      "quantidade": 1937122.0
+      "quantidade": 1937122.0,
+      "valor_uc": 17516180.85,
+      "valor_ug": null,
+      "quantidade_uc": 1937122.0,
+      "quantidade_ug": null
      }
     }
    },
@@ -10727,19 +11241,35 @@
     "por_tipo": {
      "mensal": {
       "valor": 345427172.54,
-      "quantidade": 57582619.0
+      "quantidade": 57582619.0,
+      "valor_uc": 344537047.77,
+      "valor_ug": 890124.77,
+      "quantidade_uc": 57582335.0,
+      "quantidade_ug": 284.0
      },
      "trimestral": {
       "valor": 49323871.29,
-      "quantidade": 14641132.0
+      "quantidade": 14641132.0,
+      "valor_uc": 49101887.92,
+      "valor_ug": 221983.37,
+      "quantidade_uc": 14640999.0,
+      "quantidade_ug": 133.0
      },
      "anual": {
       "valor": 61850867.22,
-      "quantidade": 9273817.0
+      "quantidade": 9273817.0,
+      "valor_uc": 61694873.89,
+      "valor_ug": 155993.33,
+      "quantidade_uc": 9273735.0,
+      "quantidade_ug": 82.0
      },
      "dicri": {
       "valor": 30255960.43,
-      "quantidade": 1998831.0
+      "quantidade": 1998831.0,
+      "valor_uc": 30072426.64,
+      "valor_ug": 183533.79,
+      "quantidade_uc": 1989938.0,
+      "quantidade_ug": 8893.0
      }
     }
    },
@@ -10757,19 +11287,35 @@
     "por_tipo": {
      "mensal": {
       "valor": 447256406.61,
-      "quantidade": 56074624.0
+      "quantidade": 56074624.0,
+      "valor_uc": 446103928.48,
+      "valor_ug": 1152478.13,
+      "quantidade_uc": 56074264.0,
+      "quantidade_ug": 360.0
      },
      "trimestral": {
       "valor": 76212629.74,
-      "quantidade": 14384022.0
+      "quantidade": 14384022.0,
+      "valor_uc": 75922568.04,
+      "valor_ug": 290061.7,
+      "quantidade_uc": 14383875.0,
+      "quantidade_ug": 147.0
      },
      "anual": {
       "valor": 89228744.34,
-      "quantidade": 8885120.0
+      "quantidade": 8885120.0,
+      "valor_uc": 88937035.89,
+      "valor_ug": 291708.45,
+      "quantidade_uc": 8885021.0,
+      "quantidade_ug": 99.0
      },
      "dicri": {
       "valor": 32295838.14,
-      "quantidade": 1985676.0
+      "quantidade": 1985676.0,
+      "valor_uc": 32248353.95,
+      "valor_ug": 47484.19,
+      "quantidade_uc": 1985661.0,
+      "quantidade_ug": 15.0
      }
     }
    },
@@ -10787,19 +11333,35 @@
     "por_tipo": {
      "mensal": {
       "valor": 455628435.4,
-      "quantidade": 56054380.0
+      "quantidade": 56054380.0,
+      "valor_uc": 454110639.47,
+      "valor_ug": 1517795.93,
+      "quantidade_uc": 56053884.0,
+      "quantidade_ug": 496.0
      },
      "trimestral": {
       "valor": 76909115.51,
-      "quantidade": 13707654.0
+      "quantidade": 13707654.0,
+      "valor_uc": 76309110.66,
+      "valor_ug": 600004.85,
+      "quantidade_uc": 13707453.0,
+      "quantidade_ug": 201.0
      },
      "anual": {
       "valor": 81709745.01,
-      "quantidade": 8463384.0
+      "quantidade": 8463384.0,
+      "valor_uc": 81299733.8,
+      "valor_ug": 410011.21,
+      "quantidade_uc": 8463271.0,
+      "quantidade_ug": 113.0
      },
      "dicri": {
       "valor": 25833417.6,
-      "quantidade": 1457362.0
+      "quantidade": 1457362.0,
+      "valor_uc": 25419159.69,
+      "valor_ug": 414257.91,
+      "quantidade_uc": 1457349.0,
+      "quantidade_ug": 13.0
      }
     }
    },
@@ -10817,19 +11379,35 @@
     "por_tipo": {
      "mensal": {
       "valor": 526657487.33,
-      "quantidade": 57233036.0
+      "quantidade": 57233036.0,
+      "valor_uc": 523592971.82,
+      "valor_ug": 3064515.51,
+      "quantidade_uc": 57219093.0,
+      "quantidade_ug": 13943.0
      },
      "trimestral": {
       "valor": 81804755.28,
-      "quantidade": 13029053.0
+      "quantidade": 13029053.0,
+      "valor_uc": 79941277.65,
+      "valor_ug": 1863477.63,
+      "quantidade_uc": 13025966.0,
+      "quantidade_ug": 3087.0
      },
      "anual": {
       "valor": 94632759.05,
-      "quantidade": 9406704.0
+      "quantidade": 9406704.0,
+      "valor_uc": 91709726.57,
+      "valor_ug": 2923032.48,
+      "quantidade_uc": 8771943.0,
+      "quantidade_ug": 634761.0
      },
      "dicri": {
       "valor": 27863065.07,
-      "quantidade": 1259969.0
+      "quantidade": 1259969.0,
+      "valor_uc": 27826558.06,
+      "valor_ug": 36507.01,
+      "quantidade_uc": 1259819.0,
+      "quantidade_ug": 150.0
      }
     }
    },
@@ -10847,19 +11425,35 @@
     "por_tipo": {
      "mensal": {
       "valor": 748669987.18,
-      "quantidade": 19255418.0
+      "quantidade": 19255418.0,
+      "valor_uc": 742645479.44,
+      "valor_ug": 6024507.74,
+      "quantidade_uc": 19233850.0,
+      "quantidade_ug": 21568.0
      },
      "trimestral": {
       "valor": 0.0,
-      "quantidade": 0.0
+      "quantidade": 0.0,
+      "valor_uc": null,
+      "valor_ug": 0.0,
+      "quantidade_uc": null,
+      "quantidade_ug": 0.0
      },
      "anual": {
       "valor": 0.0,
-      "quantidade": 0.0
+      "quantidade": 0.0,
+      "valor_uc": null,
+      "valor_ug": 0.0,
+      "quantidade_uc": null,
+      "quantidade_ug": 0.0
      },
      "dicri": {
       "valor": 24402396.38,
-      "quantidade": 872409.0
+      "quantidade": 872409.0,
+      "valor_uc": 24252572.37,
+      "valor_ug": 149824.01,
+      "quantidade_uc": 871643.0,
+      "quantidade_ug": 766.0
      }
     }
    },
@@ -10882,19 +11476,35 @@
     "por_tipo": {
      "mensal": {
       "valor": 1043591499.65,
-      "quantidade": 21124051.0
+      "quantidade": 21124051.0,
+      "valor_uc": 1032610175.17,
+      "valor_ug": 10981324.48,
+      "quantidade_uc": 21084897.0,
+      "quantidade_ug": 39154.0
      },
      "trimestral": {
       "valor": 0.0,
-      "quantidade": 0.0
+      "quantidade": 0.0,
+      "valor_uc": null,
+      "valor_ug": 0.0,
+      "quantidade_uc": null,
+      "quantidade_ug": 0.0
      },
      "anual": {
       "valor": 0.0,
-      "quantidade": 0.0
+      "quantidade": 0.0,
+      "valor_uc": null,
+      "valor_ug": 0.0,
+      "quantidade_uc": null,
+      "quantidade_ug": 0.0
      },
      "dicri": {
       "valor": 49574266.54,
-      "quantidade": 1250199.0
+      "quantidade": 1250199.0,
+      "valor_uc": 48989326.88,
+      "valor_ug": 584939.66,
+      "quantidade_uc": 1247142.0,
+      "quantidade_ug": 3057.0
      }
     }
    },
@@ -10917,19 +11527,35 @@
     "por_tipo": {
      "mensal": {
       "valor": 1076519462.13,
-      "quantidade": 25978362.0
+      "quantidade": 25978362.0,
+      "valor_uc": 1064219056.41,
+      "valor_ug": 12300405.72,
+      "quantidade_uc": 25637892.0,
+      "quantidade_ug": 340470.0
      },
      "trimestral": {
       "valor": 0.0,
-      "quantidade": 0.0
+      "quantidade": 0.0,
+      "valor_uc": null,
+      "valor_ug": 0.0,
+      "quantidade_uc": null,
+      "quantidade_ug": 0.0
      },
      "anual": {
       "valor": 0.0,
-      "quantidade": 0.0
+      "quantidade": 0.0,
+      "valor_uc": null,
+      "valor_ug": 0.0,
+      "quantidade_uc": null,
+      "quantidade_ug": 0.0
      },
      "dicri": {
       "valor": 58323137.19,
-      "quantidade": 1682205.0
+      "quantidade": 1682205.0,
+      "valor_uc": 57646067.12,
+      "valor_ug": 677070.07,
+      "quantidade_uc": 1671614.0,
+      "quantidade_ug": 10591.0
      }
     }
    },
@@ -10952,19 +11578,35 @@
     "por_tipo": {
      "mensal": {
       "valor": 984242573.98,
-      "quantidade": 20934651.0
+      "quantidade": 20934651.0,
+      "valor_uc": 975312225.57,
+      "valor_ug": 8930348.41,
+      "quantidade_uc": 20881875.0,
+      "quantidade_ug": 52776.0
      },
      "trimestral": {
       "valor": 0.0,
-      "quantidade": 0.0
+      "quantidade": 0.0,
+      "valor_uc": null,
+      "valor_ug": 0.0,
+      "quantidade_uc": null,
+      "quantidade_ug": 0.0
      },
      "anual": {
       "valor": 0.0,
-      "quantidade": 0.0
+      "quantidade": 0.0,
+      "valor_uc": null,
+      "valor_ug": 0.0,
+      "quantidade_uc": null,
+      "quantidade_ug": 0.0
      },
      "dicri": {
       "valor": 32743349.3,
-      "quantidade": 907964.0
+      "quantidade": 907964.0,
+      "valor_uc": 31898441.06,
+      "valor_ug": 844908.24,
+      "quantidade_uc": 896792.0,
+      "quantidade_ug": 11172.0
      }
     }
    },
@@ -10982,19 +11624,35 @@
     "por_tipo": {
      "mensal": {
       "valor": 521910218.4,
-      "quantidade": 11521131.0
+      "quantidade": 11521131.0,
+      "valor_uc": 507516437.8,
+      "valor_ug": 14393780.6,
+      "quantidade_uc": 11441007.0,
+      "quantidade_ug": 80124.0
      },
      "trimestral": {
       "valor": 0.0,
-      "quantidade": 0.0
+      "quantidade": 0.0,
+      "valor_uc": null,
+      "valor_ug": 0.0,
+      "quantidade_uc": null,
+      "quantidade_ug": 0.0
      },
      "dicri": {
       "valor": 15220087.71,
-      "quantidade": 451581.0
+      "quantidade": 451581.0,
+      "valor_uc": 15047245.51,
+      "valor_ug": 172842.2,
+      "quantidade_uc": 449584.0,
+      "quantidade_ug": 1997.0
      },
      "dise": {
       "valor": 20329872.61,
-      "quantidade": 360833.0
+      "quantidade": 360833.0,
+      "valor_uc": 19646440.9,
+      "valor_ug": 683431.71,
+      "quantidade_uc": 355666.0,
+      "quantidade_ug": 5167.0
      }
     }
    }
@@ -13014,8 +13672,8 @@
    "tratamento_ausencia": "Mês incompleto não fecha o ano; nulo nunca vira zero nem é interpolado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "6d3bc3a2f759+alterado",
-    "publicacao": "2026-10-01T00:20:33Z"
+    "codigo": "802c51897680+alterado",
+    "publicacao": "2026-10-01T05:53:21Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -13061,7 +13719,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py qualidade --sem-coleta (a partir do silver data/energia/silver/aneel_qualidade.db); os CSV em /energia/series/qualidade_*.csv permitem refazer cada soma e cada média ponderada sem o pipeline.",
-   "citacao": "SCRUTINIUMS. DEC do Brasil (apurado, ponderado por unidades consumidoras; todas as distribuidoras, inclusive permissionárias): 9,33 h, Brasil, 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Indicadores Coletivos de Continuidade (DEC e FEC) (recurso cont-2020-2029, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. DEC do Brasil (apurado, ponderado por unidades consumidoras; todas as distribuidoras, inclusive permissionárias): 9,33 h, Brasil, 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Indicadores Coletivos de Continuidade (DEC e FEC) (recurso cont-2020-2029, capturado em 30/09/2026). Versão energia-0.1.0, código 802c51897680+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "fec_brasil": {
    "indicador": "FEC do Brasil (apurado, ponderado por unidades consumidoras; todas as distribuidoras, inclusive permissionárias)",
@@ -13129,8 +13787,8 @@
    "tratamento_ausencia": "Mês incompleto não fecha o ano; nulo nunca vira zero nem é interpolado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "6d3bc3a2f759+alterado",
-    "publicacao": "2026-10-01T00:20:33Z"
+    "codigo": "802c51897680+alterado",
+    "publicacao": "2026-10-01T05:53:21Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -13176,7 +13834,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py qualidade --sem-coleta (a partir do silver data/energia/silver/aneel_qualidade.db); os CSV em /energia/series/qualidade_*.csv permitem refazer cada soma e cada média ponderada sem o pipeline.",
-   "citacao": "SCRUTINIUMS. FEC do Brasil (apurado, ponderado por unidades consumidoras; todas as distribuidoras, inclusive permissionárias): 4,69 interrupções por unidade consumidora, Brasil, 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Indicadores Coletivos de Continuidade (DEC e FEC) (recurso cont-2020-2029, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. FEC do Brasil (apurado, ponderado por unidades consumidoras; todas as distribuidoras, inclusive permissionárias): 4,69 interrupções por unidade consumidora, Brasil, 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Indicadores Coletivos de Continuidade (DEC e FEC) (recurso cont-2020-2029, capturado em 30/09/2026). Versão energia-0.1.0, código 802c51897680+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "conjuntos_acima_limite": {
    "indicador": "Conjuntos com DEC anual acima do limite",
@@ -13297,8 +13955,8 @@
    "tratamento_ausencia": "Sem limite para o ano: fora do denominador (não conta como dentro nem como acima).",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "6d3bc3a2f759+alterado",
-    "publicacao": "2026-10-01T00:20:33Z"
+    "codigo": "802c51897680+alterado",
+    "publicacao": "2026-10-01T05:53:21Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -13326,7 +13984,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py qualidade --sem-coleta (a partir do silver data/energia/silver/aneel_qualidade.db); os CSV em /energia/series/qualidade_*.csv permitem refazer cada soma e cada média ponderada sem o pipeline.",
-   "citacao": "SCRUTINIUMS. Conjuntos com DEC anual acima do limite: 25,7%, Brasil, 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Indicadores Coletivos de Continuidade (DEC e FEC): valores e limites (recurso cont-2020-2029, limite, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Conjuntos com DEC anual acima do limite: 25,7%, Brasil, 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Indicadores Coletivos de Continuidade (DEC e FEC): valores e limites (recurso cont-2020-2029, limite, capturado em 30/09/2026). Versão energia-0.1.0, código 802c51897680+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "compensacoes_ano": {
    "indicador": "Compensações pagas a unidades consumidoras por violação dos limites individuais de continuidade",
@@ -13382,8 +14040,8 @@
    "tratamento_ausencia": "Distribuidora sem linha no mês não soma nada (não é tratada como zero pago).",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "6d3bc3a2f759+alterado",
-    "publicacao": "2026-10-01T00:20:33Z"
+    "codigo": "802c51897680+alterado",
+    "publicacao": "2026-10-01T05:53:21Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -13415,7 +14073,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py qualidade --sem-coleta (a partir do silver data/energia/silver/aneel_qualidade.db); os CSV em /energia/series/qualidade_*.csv permitem refazer cada soma e cada média ponderada sem o pipeline.",
-   "citacao": "SCRUTINIUMS. Compensações pagas a unidades consumidoras por violação dos limites individuais de continuidade: R$ 1.007.210.667, Brasil, 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Indicadores Coletivos de Continuidade (DEC e FEC): compensações (recurso comp-2020-2029, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Compensações pagas a unidades consumidoras por violação dos limites individuais de continuidade: R$ 1.007.210.667, Brasil, 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Indicadores Coletivos de Continuidade (DEC e FEC): compensações (recurso comp-2020-2029, capturado em 30/09/2026). Versão energia-0.1.0, código 802c51897680+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "reclamacoes_distribuidora": {
    "indicador": "Reclamações no 1º nível (atendimento da distribuidora), taxa nacional",
@@ -13528,8 +14186,8 @@
    "tratamento_ausencia": "Distribuidora sem os 12 meses enviados fica fora do numerador e do denominador; ausência não é zero reclamação.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "6d3bc3a2f759+alterado",
-    "publicacao": "2026-10-01T00:20:33Z"
+    "codigo": "802c51897680+alterado",
+    "publicacao": "2026-10-01T05:53:21Z"
    },
    "revisoes": "Detecção de revisões não disponível para este número.",
    "testes": [
@@ -13552,7 +14210,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py qualidade --sem-coleta (a partir do silver data/energia/silver/aneel_qualidade.db); os CSV em /energia/series/qualidade_*.csv permitem refazer cada soma e cada média ponderada sem o pipeline.",
-   "citacao": "SCRUTINIUMS. Reclamações no 1º nível (atendimento da distribuidora), taxa nacional: 400,9 reclamações por mil UCs no ano, Brasil (distribuidoras com contagem e UCs no ano), 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Manifestações no 1° e 2° nível da Distribuidora (recurso manif-2025, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Reclamações no 1º nível (atendimento da distribuidora), taxa nacional: 400,9 reclamações por mil UCs no ano, Brasil (distribuidoras com contagem e UCs no ano), 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Manifestações no 1° e 2° nível da Distribuidora (recurso manif-2025, capturado em 30/09/2026). Versão energia-0.1.0, código 802c51897680+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "ouvidoria_aneel": {
    "indicador": "Reclamações na Ouvidoria Setorial da ANEEL, taxa nacional",
@@ -13665,8 +14323,8 @@
    "tratamento_ausencia": "Distribuidora sem nenhuma solicitação registrada no ano fica fora (zero ou CNPJ não vinculado não se distinguem); a cobertura em UCs é publicada.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "6d3bc3a2f759+alterado",
-    "publicacao": "2026-10-01T00:20:33Z"
+    "codigo": "802c51897680+alterado",
+    "publicacao": "2026-10-01T05:53:21Z"
    },
    "revisoes": "Detecção de revisões não disponível para este número.",
    "testes": [
@@ -13689,7 +14347,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py qualidade --sem-coleta (a partir do silver data/energia/silver/aneel_qualidade.db); os CSV em /energia/series/qualidade_*.csv permitem refazer cada soma e cada média ponderada sem o pipeline.",
-   "citacao": "SCRUTINIUMS. Reclamações na Ouvidoria Setorial da ANEEL, taxa nacional: 197,3 reclamações por 100 mil UCs no ano, Brasil (distribuidoras com contagem e UCs no ano), 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Ouvidoria Setorial ANEEL (recurso ouv-2025, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Reclamações na Ouvidoria Setorial da ANEEL, taxa nacional: 197,3 reclamações por 100 mil UCs no ano, Brasil (distribuidoras com contagem e UCs no ano), 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Ouvidoria Setorial ANEEL (recurso ouv-2025, capturado em 30/09/2026). Versão energia-0.1.0, código 802c51897680+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "proveniencia": {
@@ -13712,7 +14370,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-05T05:27:08Z",
    "capturado_em": "2026-09-30T22:45:43Z",
-   "validado_em": "2026-10-01T00:20:33Z",
+   "validado_em": "2026-10-01T05:53:20Z",
    "cobertura_historica": {
     "inicio": "2000-01",
     "fim": "2026-06"
@@ -13726,9 +14384,9 @@
     "sha256": "f38b101a901fcb2bd3eea73da25d0cc26b2a2e2c5f6a63fb5be395fd90585e94"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "802c51897680+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:20:13Z",
+    "detectado_em": "2026-10-01T05:52:43Z",
     "total": 0,
     "vintages_comparadas": 10,
     "arquivos": 10,
@@ -13739,7 +14397,7 @@
    "limitacoes": [
     "DEC em horas e centésimos de hora; FEC em número de interrupções e centésimos. 1,50 h é uma hora e meia.",
     "O DEC é uma média por unidade consumidora: não descreve o tempo sem energia de cada pessoa; parte das UCs fica muito acima e parte muito abaixo da média.",
-    "Interrupções de até 3 minutos não entram no DEC e no FEC; as expurgadas (situação de emergência, dia crítico, origem externa, ONS) ficam fora do apurado e aparecem nas parcelas.",
+    "Interrupções de menos de 3 minutos não entram no DEC e no FEC; as expurgadas (situação de emergência, dia crítico, origem externa, ONS) ficam fora do apurado e aparecem nas parcelas.",
     "Os valores são apurados e enviados pelas próprias distribuidoras à ANEEL; a fonte pode revisar meses já publicados."
    ],
    "download": "/energia/series/qualidade_conjuntos_anual_2020_2029.csv",
@@ -13764,7 +14422,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-05T05:27:08Z",
    "capturado_em": "2026-09-30T22:45:43Z",
-   "validado_em": "2026-10-01T00:20:33Z",
+   "validado_em": "2026-10-01T05:53:20Z",
    "cobertura_historica": {
     "inicio": "2000-01",
     "fim": "2026-06"
@@ -13780,9 +14438,9 @@
     "sha256": "f38b101a901fcb2bd3eea73da25d0cc26b2a2e2c5f6a63fb5be395fd90585e94"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "802c51897680+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:20:13Z",
+    "detectado_em": "2026-10-01T05:52:43Z",
     "total": 0,
     "vintages_comparadas": 10,
     "arquivos": 10,
@@ -13793,7 +14451,7 @@
    "limitacoes": [
     "DEC em horas e centésimos de hora; FEC em número de interrupções e centésimos. 1,50 h é uma hora e meia.",
     "O DEC é uma média por unidade consumidora: não descreve o tempo sem energia de cada pessoa; parte das UCs fica muito acima e parte muito abaixo da média.",
-    "Interrupções de até 3 minutos não entram no DEC e no FEC; as expurgadas (situação de emergência, dia crítico, origem externa, ONS) ficam fora do apurado e aparecem nas parcelas.",
+    "Interrupções de menos de 3 minutos não entram no DEC e no FEC; as expurgadas (situação de emergência, dia crítico, origem externa, ONS) ficam fora do apurado e aparecem nas parcelas.",
     "Os valores são apurados e enviados pelas próprias distribuidoras à ANEEL; a fonte pode revisar meses já publicados.",
     "Mês nacional publicado antes de todas as distribuidoras enviarem fica marcado como incompleto e não entra no ano nem no acumulado do ano corrente.",
     "O DEC e o FEC do Brasil publicados aqui cobrem todas as distribuidoras com indicadores, inclusive as permissionárias; o número que a ANEEL divulga cobre só as concessionárias e aparece ao lado (dec_concessionarias), reconciliado com a divulgação de 2023 a 2025.",
@@ -13822,7 +14480,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-05T05:27:08Z",
    "capturado_em": "2026-09-30T22:45:43Z",
-   "validado_em": "2026-10-01T00:20:33Z",
+   "validado_em": "2026-10-01T05:53:21Z",
    "cobertura_historica": {
     "inicio": "2000",
     "fim": "2025"
@@ -13838,9 +14496,9 @@
     "sha256": "f38b101a901fcb2bd3eea73da25d0cc26b2a2e2c5f6a63fb5be395fd90585e94"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "802c51897680+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:20:13Z",
+    "detectado_em": "2026-10-01T05:52:43Z",
     "total": 0,
     "vintages_comparadas": 10,
     "arquivos": 10,
@@ -13875,7 +14533,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-05T05:27:08Z",
    "capturado_em": "2026-09-30T22:45:43Z",
-   "validado_em": "2026-10-01T00:20:33Z",
+   "validado_em": "2026-10-01T05:53:21Z",
    "cobertura_historica": {
     "inicio": "2011",
     "fim": "2026-06"
@@ -13890,9 +14548,9 @@
     "sha256": "f38b101a901fcb2bd3eea73da25d0cc26b2a2e2c5f6a63fb5be395fd90585e94"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "802c51897680+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:20:13Z",
+    "detectado_em": "2026-10-01T05:52:43Z",
     "total": 0,
     "vintages_comparadas": 10,
     "arquivos": 10,
@@ -13930,7 +14588,7 @@
    },
    "publicado_pela_fonte_em": "2026-06-26T16:05:35Z",
    "capturado_em": "2026-09-30T22:26:50Z",
-   "validado_em": "2026-10-01T00:20:33Z",
+   "validado_em": "2026-10-01T05:53:21Z",
    "cobertura_historica": {
     "inicio": "2006",
     "fim": "2025"
@@ -13944,9 +14602,9 @@
     "sha256": "b99e276d082fabc55ff239bcb391565a52e3360bbb331365f1babfff942e0cc1"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "802c51897680+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:20:33Z",
+    "detectado_em": "2026-10-01T05:53:20Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -13980,7 +14638,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-26T03:28:08Z",
    "capturado_em": "2026-09-30T22:29:38Z",
-   "validado_em": "2026-10-01T00:20:33Z",
+   "validado_em": "2026-10-01T05:53:21Z",
    "cobertura_historica": {
     "inicio": "2023",
     "fim": "2026"
@@ -13997,9 +14655,9 @@
     "sha256": "632925f462c20537eb1ff6ac2edbe86fa3109784643183ec6616c0edbc87ed2b"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "802c51897680+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:20:33Z",
+    "detectado_em": "2026-10-01T05:53:20Z",
     "total": 0,
     "vintages_comparadas": 5,
     "arquivos": 5,
@@ -14036,7 +14694,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T10:01:48Z",
    "capturado_em": "2026-09-30T22:53:53Z",
-   "validado_em": "2026-10-01T00:20:33Z",
+   "validado_em": "2026-10-01T05:53:21Z",
    "cobertura_historica": {
     "inicio": "2023",
     "fim": "2026"
@@ -14052,9 +14710,9 @@
     "sha256": "dda40f4479f0b1f8462510abdd0ff2516e2bf06a09c288ab91bf2d3250b7bcba"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "802c51897680+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:20:33Z",
+    "detectado_em": "2026-10-01T05:53:20Z",
     "total": 0,
     "vintages_comparadas": 5,
     "arquivos": 5,
@@ -14087,7 +14745,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-05T05:06:39Z",
    "capturado_em": "2026-09-30T22:54:22Z",
-   "validado_em": "2026-10-01T00:20:33Z",
+   "validado_em": "2026-10-01T05:53:21Z",
    "cobertura_historica": {
     "inicio": "2015-01",
     "fim": "2026-08"
@@ -14102,9 +14760,9 @@
     "sha256": "02876a99c19bfb94fe8e25d1010a3c33d829ff87f8c0fb1c0ada28cd4ac503e5"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "802c51897680+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:20:33Z",
+    "detectado_em": "2026-10-01T05:53:20Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -14137,7 +14795,7 @@
    },
    "publicado_pela_fonte_em": "2026-08-15T08:32:27Z",
    "capturado_em": "2026-09-30T22:54:38Z",
-   "validado_em": "2026-10-01T00:20:33Z",
+   "validado_em": "2026-10-01T05:53:21Z",
    "cobertura_historica": {
     "inicio": "2026-01",
     "fim": "2026-07"
@@ -14152,9 +14810,9 @@
     "sha256": "82776f6d57ffd3f08921a4f961af837cbc9e184ceea52cdbcb513d6ac81c7248"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "802c51897680+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:20:33Z",
+    "detectado_em": "2026-10-01T05:53:20Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -14188,7 +14846,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-05T10:00:20Z",
    "capturado_em": "2026-10-01T00:06:49Z",
-   "validado_em": "2026-10-01T00:20:33Z",
+   "validado_em": "2026-10-01T05:53:21Z",
    "cobertura_historica": {
     "inicio": "2014-01",
     "fim": "2026-08"
@@ -14204,9 +14862,9 @@
     "sha256": "bd33ebb34d49f69d305426f0072ea8d0a63001cbbe0a7328102b33b95b146335"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "802c51897680+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:20:33Z",
+    "detectado_em": "2026-10-01T05:53:21Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -14242,7 +14900,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-09T11:06:11Z",
    "capturado_em": "2026-09-30T22:54:47Z",
-   "validado_em": "2026-10-01T00:20:33Z",
+   "validado_em": "2026-10-01T05:53:21Z",
    "cobertura_historica": {
     "inicio": "2025",
     "fim": "2025"
@@ -14256,9 +14914,9 @@
     "sha256": "807880726cd25465c1117a1cbabdd4d95267b7631f60b360fd9f7fe33f6020e8"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "802c51897680+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:20:33Z",
+    "detectado_em": "2026-10-01T05:53:20Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -14293,7 +14951,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-10-01T00:06:59Z",
-   "validado_em": "2026-10-01T00:20:33Z",
+   "validado_em": "2026-10-01T05:53:21Z",
    "cobertura_historica": {
     "inicio": "2021",
     "fim": "2025"
@@ -14307,9 +14965,9 @@
     "sha256": "7b0fa9a51b5b728767129afa8b0a76153649da1ec16d4eeb1116c30a979a631a"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "6d3bc3a2f759+alterado",
+   "versao_codigo": "802c51897680+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:20:33Z",
+    "detectado_em": "2026-10-01T05:53:20Z",
     "total": 0,
     "vintages_comparadas": 9,
     "arquivos": 5,

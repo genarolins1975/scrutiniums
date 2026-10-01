@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "arquivos.json",
- "gerado_em": "2026-10-01T00:40:05Z",
+ "gerado_em": "2026-10-01T06:02:05Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d5dc4fd86561+alterado",
+ "versao_codigo": "802c51897680+alterado",
  "disponivel": true,
  "arquivos": {
   "/energia/series/regulacao_limites_pld_atos.csv": {
@@ -22,12 +22,12 @@
    "gold": "regulacao.json"
   },
   "/energia/series/regulacao_bandeiras_adicionais.csv": {
-   "colunas": "ato (resolução, como a fonte escreve); patamar (Amarela, Vermelha P1, Vermelha P2, Escassez Hídrica); vigencia_inicio; vigencia_fim (véspera do valor seguinte do mesmo patamar; vazio = sem valor posterior na fonte); rs_mwh (adicional em R$/MWh). A bandeira verde não tem adicional e não consta do recurso.",
+   "colunas": "ato (resolução, como a fonte escreve); patamar (Amarela, Vermelha P1, Vermelha P2, Escassez Hídrica); vigencia_inicio; vigencia_fim (vazio = valor sem término na fonte); vigencia_fim_origem (valor_seguinte = véspera do valor seguinte do mesmo patamar; ultimo_acionamento = patamar extinto, fim no último dia do último mês com acionamento no recurso Acionamento, grão mensal); ultimo_acionamento (AAAA-MM); ultimo_acionamento_rs_mwh (valor do mês no recurso Acionamento); rs_mwh (adicional em R$/MWh). A bandeira verde não tem adicional e não consta do recurso Adicional.",
    "modulo": "regulacao",
    "gold": "regulacao.json"
   },
   "/energia/series/regulacao_procedimentos_vigentes.csv": {
-   "colunas": "conjunto (PRODIST ou PRORET); modulo; titulo; versao; ato (resolução que aprovou a versão vigente, lida do nome do arquivo publicado pela página oficial); ano_ato; url_vigente; url_versoes; observacao (nota da própria página); verificado_em.",
+   "colunas": "conjunto (PRODIST ou PRORET); modulo; titulo; versao_na_pagina e ato_na_pagina (lidos do nome do arquivo que a página oficial publica como versão vigente); ano_ato; conferencia (confirmada_por_ato_integrado, sem_conferencia_externa ou pagina_possivelmente_desatualizada); ato_vigente (vazio quando há ato posterior que aprova nova versão: a versão vigente não é conhecida); atos_posteriores (ato, data e fonte: ata da Diretoria ou anexo de Resolução Normativa lida); url_vigente; url_versoes; observacao (nota da própria página); verificado_em.",
    "modulo": "regulacao",
    "gold": "regulacao.json"
   },
@@ -37,7 +37,7 @@
    "gold": "regulacao.json"
   },
   "/energia/series/regulacao_consultas.csv": {
-   "colunas": "id; modalidade (tipo do aviso na ata); numero; ano; numero_citado (vezes em que outra linha da ata cita 'nº N/AAAA'); numero_em_conflito (1 = o mesmo número e ano aparecem em outro processo); processos; data_deliberacao; reuniao; relator; tema (assunto da pauta); fase_atual; inicio; fim (janela da fase atual; vazio = a ata não data a fase); duracao_dias (quando a ata só informa a duração); situacao (derivada da data de referência); data_referencia; resultado_data; resultado_ato; resultado_julgamento; vinculo_resultado (numero_citado ou processo); decisao_abertura (primeira frase da decisão).",
+   "colunas": "id (modalidade, NumAtoAdministrativo e ano da abertura; estável); modalidade (tipo do aviso na ata); numero (o da ata ou, quando suspeito, o único outro número citado pelo mesmo processo); numero_na_ata (NumAtoAdministrativo da abertura); ano; numero_citado (vezes em que outra linha do mesmo processo cita 'nº N/AAAA'); numero_em_conflito (1 = o mesmo número e ano aparecem em outro processo); numero_suspeito (1 = acima do total anual publicado pela ANEEL em ano completo, ou não citado pelo próprio processo, que cita outro); motivo_numero_suspeito; processos; data_deliberacao; reuniao; relator; tema (assunto da pauta); fase_atual; inicio; fim (janela da fase atual; vazio = a ata não data a fase); janela_origem (datas_explicitas ou inicio_e_duracao); fim_calculado (1 = fim calculado de início e duração, contando o dia do início); duracao_dias (declarada na ata); sessao (data de sessão de audiência); situacao (derivada da data de referência); data_referencia; resultado_data; resultado_ato; resultado_julgamento; vinculo_resultado (numero_citado ou processo); decisao_abertura (primeira frase da decisão).",
    "modulo": "regulacao",
    "gold": "regulacao.json"
   },
@@ -45,6 +45,51 @@
    "colunas": "codigo; atividade; ano_previsto (para edição da norma, como no Anexo I da Portaria nº 7.030/2025); paineis_relacionados (regra por palavra-chave do texto); consultas_citando_codigo; versao_da_agenda.",
    "modulo": "regulacao",
    "gold": "regulacao.json"
+  },
+  "/energia/series/pld_cmo_horario.csv": {
+   "colunas": "data_hora_local (início da hora, Brasília); CMO_SE, CMO_S, CMO_NE, CMO_N = CMO do DESSEM (ONS) na hora, média simples das duas meias horas que começam em HH:00 e HH:30, em R$/MWh (vazio quando alguma das duas meias horas não foi publicada); PLD_SE, PLD_S, PLD_NE, PLD_N = PLD horário da CCEE em R$/MWh nominais (vazio = ausência).",
+   "modulo": "pld",
+   "gold": "pld_detalhe.json"
+  },
+  "/energia/series/pld_cmo_semanal.csv": {
+   "colunas": "semana_inicio (sábado) e semana_fim (sexta) da semana operativa; sm; decomp_media_semanal e decomp_leve, decomp_media_patamar, decomp_pesada = CMO semanal do DECOMP (ONS) como publicado; dessem_media = média das meias horas do DESSEM na semana (vazio se faltar alguma), dessem_meias_horas = quantas havia (336 na semana completa); pld_media = média das horas do PLD na semana (vazio se faltar alguma), pld_horas = quantas havia (168). R$/MWh.",
+   "modulo": "pld",
+   "gold": "pld_detalhe.json"
+  },
+  "/energia/series/pld_limites_diario.csv": {
+   "colunas": "data; sm; pld_media_dia (média das 24 horas, vazio se faltar hora); horas; horas_no_piso e horas_no_teto_horario (PLD igual ao limite ao centavo: |PLD − limite| ≤ R$ 0,005/MWh); horas_um_centavo_acima_do_piso (PLD exatamente um centavo acima do piso, classe à parte); media_no_teto_estrutural (1 = média diária a até R$ 0,01/MWh do teto estrutural, 0 = não, vazio sem limite ou sem média); pld_min, pld_max_horario, pld_max_estrutural vigentes no dia e o ato de cada um (vazios quando os atos não estão disponíveis). R$/MWh nominais.",
+   "modulo": "pld",
+   "gold": "pld_detalhe.json"
+  },
+  "/energia/series/pld_mensal.csv": {
+   "colunas": "mes (AAAA-MM); sm; parcial (1 = mês sem todos os dias completos); horas; media_temporal (média simples das horas, R$/MWh nominais); horas_com_carga (horas com carga publicada e positiva); horas_carga_nao_positiva (horas com carga publicada menor ou igual a zero, retiradas do peso); media_ponderada_carga (Σ PLD × carga ÷ Σ carga do subsistema ONS nas horas com carga positiva, R$/MWh); mesmas_horas (1 = as duas médias usam as mesmas horas); ipca_indice (IBGE, dez/1993 = 100); media_temporal_real (R$/MWh em reais do mes_base_real pelo IPCA; vazio sem índice do mês); mes_base_real.",
+   "modulo": "pld",
+   "gold": "pld_detalhe.json"
+  },
+  "/energia/series/pld_hora_dia.json": {
+   "colunas": "Mapa hora × dia do PLD dos últimos 90 dias até o dia de referência: dias (AAAA-MM-DD, datas corridas), e por submercado uma matriz [dia][hora 0 a 23] em R$/MWh nominais; null = hora sem PLD publicado (dia ausente fica todo null).",
+   "modulo": "pld",
+   "gold": "pld_detalhe.json"
+  },
+  "/energia/series/pld_evidencias.json": {
+   "colunas": "Fichas \"Comprove este número\" dos agregados do módulo (objeto de pipeline/energia/evidencia.py por chave), lidas sob demanda pela interface; a gold traz só o índice.",
+   "modulo": "pld",
+   "gold": "pld_detalhe.json"
+  },
+  "/energia/series/pld_separacao_diaria.csv": {
+   "colunas": "data; par (A_B); horas (horas com PLD nos dois submercados); horas_separadas (|PLD_A − PLD_B| > R$ 0,01/MWh); dif_media (média de PLD_A − PLD_B, R$/MWh); dif_abs_max; fronteira (se o par tem fronteira monitorada pelo ONS, na orientação canônica); fluxo_medio_mwmed (média do fluxo verificado nas horas com fluxo, positivo da primeira para a segunda ponta da fronteira; vazio sem fronteira ou sem dado); horas_com_fluxo.",
+   "modulo": "pld",
+   "gold": "pld_detalhe.json"
+  },
+  "/energia/series/pld_amplitude_diaria.csv": {
+   "colunas": "data; horas (horas com os quatro submercados); horas_com_separacao (maior − menor > R$ 0,01/MWh); amplitude_media e amplitude_max (maior menos menor PLD entre os quatro submercados na mesma hora, R$/MWh); hora_amplitude_max.",
+   "modulo": "pld",
+   "gold": "pld_detalhe.json"
+  },
+  "/energia/series/pld_sazonal.csv": {
+   "colunas": "sm; mes (1 a 12); n_dias e anos (dias completos do mesmo mês em anos anteriores ao ano de referência); p10, p25, p50, p75, p90 da média diária do PLD nesses dias (R$/MWh nominais, quantil tipo 7).",
+   "modulo": "pld",
+   "gold": "pld_detalhe.json"
   },
   "/energia/series/clima_diario.csv": {
    "colunas": "Temperatura do ar a 2 m por subsistema e SIN, diária desde 2001 (NASA POWER, MERRA-2 e GEOS-IT; ESTIMADO por reanálise). Colunas: data (AAAA-MM-DD, dia em hora solar local); recorte (SE, S, NE, N, SIN); temp_media_c, temp_max_c, temp_min_c (°C; média do dia e extremos horários do dia na célula, ponderados pela população); cobertura_pop_pct (% da população do recorte representada por células com dado no dia); ufs_com_dado; fonte_versao (MERRA-2 até o fim da série MERRA-2 no POWER; GEOS-IT depois, marcado como preliminar); preliminar (1 = últimos 60 dias, sujeitos a troca GEOS-IT → MERRA-2). Ausência = campo vazio.",
@@ -302,7 +347,62 @@
    "gold": "rede_detalhe.json"
   },
   "/energia/series/expansao_usinas_siga.csv": {
-   "colunas": "nucleo_ceg; ceg; nome; tipo; origem; fonte; fase (SIGA); estagio; outorga; uf; municipios; lat; lon (grau decimal, vazio = não informado ou 0 na fonte); kw_outorgado; kw_fiscalizado; entrada_operacao (vazio = sem data, inclui o marcador 1900-01-03 do SIGA); garantia_fisica_kwmed (vazio = sem garantia física registrada); vigencia_inicio; vigencia_fim; cnpjs_proprietarios (14 dígitos, separados por |)",
+   "colunas": "nucleo_ceg; ceg; nome; tipo; origem; fonte; fase (fase do SIGA); estagio; outorga; uf; municipios; lat (grau decimal; vazio = não informado ou 0 na fonte); lon (grau decimal; vazio = não informado ou 0 na fonte); kw_outorgado; kw_fiscalizado; entrada_operacao (vazio = sem data, inclui o marcador 1900-01-03 do SIGA); garantia_fisica_kwmed (vazio = sem garantia física registrada); vigencia_inicio; vigencia_fim; cnpjs_proprietarios (14 dígitos, separados por |)",
+   "modulo": "expansao",
+   "gold": "expansao.json"
+  },
+  "/energia/series/expansao_capacidade_uf_fonte.csv": {
+   "colunas": "uf (UF principal); tipo; origem; fonte (DscFonteCombustivel); usinas; mw_fiscalizado (usinas na fase Operação); mw_outorgado (vazio = campo não informado pela fonte)",
+   "modulo": "expansao",
+   "gold": "expansao.json"
+  },
+  "/energia/series/expansao_carteira_ralie.csv": {
+   "colunas": "data_base_ralie (fotografia DatRalie em que as previsões foram registradas); nucleo_ceg; ceg; nome; tipo; uf; kw_outorgado; kw_ugs_em_implantacao; ugs; situacao_obra; viabilidade; situacao_cronograma; justificativa_previsao; previsao_min (previsão SFG de operação comercial das unidades); previsao_max; outorgado_max; atraso_previsto_dias (previsao_max menos outorgado_max; vazio sem previsão); leiloes; fase_siga",
+   "modulo": "expansao",
+   "gold": "expansao.json"
+  },
+  "/energia/series/expansao_unidades_ralie.csv": {
+   "colunas": "data_base_ralie (fotografia DatRalie); nucleo_ceg; ug; tipo; uf; kw (potência unitária); comercial_outorgado; previsao_sfg (vazio = sem previsão da fiscalização); previsao_em_bloco (sim = data atribuída a 100 usinas ou mais na mesma fotografia (convencional)); teste_realizado",
+   "modulo": "expansao",
+   "gold": "expansao.json"
+  },
+  "/energia/series/expansao_trajetorias_ralie.csv": {
+   "colunas": "nucleo_ceg; ceg; nome; tipo; uf; primeira_fotografia; ultima_fotografia; kw_outorgado_primeira; previsao_primeira; outorgado_primeira; previsao_ultima; outorgado_ultima; mudancas_previsao; ugs_primeira; ugs_primeira_liberadas; kw_primeira_liberado; ultima_liberacao; desfecho; data_encerramento (vazio = sem ato datado); encerramento_sem_data (sim = ato de encerramento sem data de publicação na fonte)",
+   "modulo": "expansao",
+   "gold": "expansao.json"
+  },
+  "/energia/series/expansao_confiabilidade_previsoes.csv": {
+   "colunas": "ralie (fotografia mensal S); fim_janela (S + 365 dias); tipo (TOTAL ou tipo de geração); ugs; kw_prometido; kw_no_prazo; kw_depois; kw_nao_liberado; ugs_excluidas_ja_liberadas (unidades já liberadas antes de S, fora do denominador)",
+   "modulo": "expansao",
+   "gold": "expansao.json"
+  },
+  "/energia/series/expansao_liberacoes_anuais.csv": {
+   "colunas": "ano (ano da liberação comercial); tipo (TOTAL ou tipo de geração); linhas (linhas do arquivo detalhado); kw_liberado; kw_com_data_outorgada; kw_depois_do_prazo (liberação depois da data outorgada vigente na publicação); kw_antes_do_prazo; mediana_desvio_dias_ponderada (liberação menos data outorgada vigente, ponderada por kW; desvio em relação a um prazo, não atraso com data-base)",
+   "modulo": "expansao",
+   "gold": "expansao.json"
+  },
+  "/energia/series/expansao_encerramentos_outorga.csv": {
+   "colunas": "publicacao (vazio = ato sem data de publicação na fonte); encerramento (revogacao ou extincao); nucleo_ceg (vazio = ato sem chave de usina na fonte); ceg; nome; tipo; uf; mw_no_ato (MdaPotenciaInstaladaMW como publicado); mw_usado (potência somada; vazio = fora da soma); conferencia_potencia (conferida, corrigida_kw, fora_da_soma ou sem_potencia); motivo_conferencia; ato_repetido (sim = a usina já tinha ato de encerramento anterior (a potência conta uma vez)); fase_siga (fase da usina no SIGA na data do arquivo; Operação = outorga encerrada com usina ainda em operação); outorga_siga; assunto; ato; numero; agente",
+   "modulo": "expansao",
+   "gold": "expansao.json"
+  },
+  "/energia/series/expansao_leiloes_transmissao.csv": {
+   "colunas": "ano; data; leilao; lote; empreendimento; uf; prazo_meses (vazio em lote sem vencedor); km (vazio em lote sem vencedor (0 da fonte é marcador)); mva (vazio em lote sem vencedor); investimento_rs (previsto no edital); rap_edital_rs; rap_vencedor_rs (vazio em lote sem vencedor); desagio_pct; vencedor; contratado (não = SEM LANCE, SEM INSCRITO APTO ou NÃO LEILOADO; reais nominais da data do leilão)",
+   "modulo": "expansao",
+   "gold": "expansao.json"
+  },
+  "/energia/series/expansao_obras_transmissao.csv": {
+   "colunas": "empreendimento; empreendimento_ons; contrato (IdeCcd); nome; situacao; oper_ato_legal; oper_efetiva; atraso_dias (efetiva menos ato legal); prazo_legal_vencido; km_lt (km de circuito de linhas novas atribuídas a este empreendimento); mva_tr (MVA de transformadores novos atribuídos a este empreendimento); modulos_em_outro_empreendimento (módulos também listados aqui, contados no empreendimento da obra mais antiga); ufs; obras; obras_resolucao",
+   "modulo": "expansao",
+   "gold": "expansao.json"
+  },
+  "/energia/series/expansao_contratos_transmissao.csv": {
+   "colunas": "contrato (IdeCcd); numero (NumCnaCcd); assinatura (DatAsnCcd); fim (DatFimCcd); cnpj (14 dígitos); agente; empreendimentos (vazio = contrato sem empreendimento cadastrado no SIGET); km_lt_novas (km de circuito do objeto original (linhas com o mesmo fim do contrato); vazio = sem empreendimento); mva_tr_novos; empreendimentos_com_prazo_proprio (reforços incorporados com outra data de fim, fora das somas)",
+   "modulo": "expansao",
+   "gold": "expansao.json"
+  },
+  "/energia/series/expansao_pde2035.csv": {
+   "colunas": "figura; titulo; referencia (ano ou mês); serie; valor; unidade (PDE 2035, CENÁRIO)",
    "modulo": "expansao",
    "gold": "expansao.json"
   },
@@ -311,53 +411,8 @@
    "modulo": "expansao",
    "gold": "expansao.json"
   },
-  "/energia/series/expansao_capacidade_uf_fonte.csv": {
-   "colunas": "uf; tipo; origem; fonte (DscFonteCombustivel); usinas; mw_fiscalizado; mw_outorgado (usinas do SIGA na fase Operação, atribuídas à UF principal; vazio = campo não informado pela fonte)",
-   "modulo": "expansao",
-   "gold": "expansao.json"
-  },
-  "/energia/series/expansao_carteira_ralie.csv": {
-   "colunas": "usinas do RALIE atual: data_base_ralie (fotografia DatRalie em que as previsões foram registradas); nucleo_ceg; ceg; nome; tipo; uf; kw_outorgado; kw_ugs_em_implantacao; ugs; situacao_obra; viabilidade; situacao_cronograma; justificativa_previsao; previsao_min; previsao_max (previsão SFG de operação comercial das unidades); outorgado_max; atraso_previsto_dias (previsao_max menos outorgado_max; vazio sem previsão); leiloes; fase_siga",
-   "modulo": "expansao",
-   "gold": "expansao.json"
-  },
-  "/energia/series/expansao_unidades_ralie.csv": {
-   "colunas": "unidades geradoras do RALIE atual: data_base_ralie (fotografia DatRalie); nucleo_ceg; ug; tipo; uf; kw (potência unitária); comercial_outorgado; previsao_sfg (vazio = sem previsão da fiscalização); teste_realizado",
-   "modulo": "expansao",
-   "gold": "expansao.json"
-  },
-  "/energia/series/expansao_trajetorias_ralie.csv": {
-   "colunas": "usinas que passaram pelo RALIE desde jun/2021: nucleo_ceg; ceg; nome; tipo; uf; primeira_fotografia; ultima_fotografia; kw_outorgado_primeira; previsao_primeira; outorgado_primeira; previsao_ultima; outorgado_ultima; mudancas_previsao; ugs_primeira; ugs_primeira_liberadas; kw_primeira_liberado; ultima_liberacao; desfecho; data_encerramento (vazio = sem ato datado); encerramento_sem_data (sim = ato de encerramento sem data de publicação na fonte)",
-   "modulo": "expansao",
-   "gold": "expansao.json"
-  },
-  "/energia/series/expansao_confiabilidade_previsoes.csv": {
-   "colunas": "ralie; fim_janela; tipo (TOTAL ou tipo de geração); ugs; kw_prometido; kw_no_prazo; kw_depois; kw_nao_liberado; ugs_excluidas_ja_liberadas",
-   "modulo": "expansao",
-   "gold": "expansao.json"
-  },
-  "/energia/series/expansao_liberacoes_anuais.csv": {
-   "colunas": "ano; tipo; ugs; kw_liberado; kw_com_atraso; mediana_atraso_dias_ponderada (liberação comercial realizada menos data outorgada, ponderada por kW)",
-   "modulo": "expansao",
-   "gold": "expansao.json"
-  },
-  "/energia/series/expansao_encerramentos_outorga.csv": {
-   "colunas": "publicacao; encerramento (revogacao ou extincao); nucleo_ceg; ceg; nome; tipo; uf; mw (potência declarada no ato); assunto; ato; numero; agente",
-   "modulo": "expansao",
-   "gold": "expansao.json"
-  },
-  "/energia/series/expansao_leiloes_transmissao.csv": {
-   "colunas": "ano; data; leilao; lote; empreendimento; uf; prazo_meses; km; mva; investimento_rs; rap_edital_rs; rap_vencedor_rs; desagio_pct; vencedor (reais nominais da data do leilão)",
-   "modulo": "expansao",
-   "gold": "expansao.json"
-  },
-  "/energia/series/expansao_obras_transmissao.csv": {
-   "colunas": "empreendimento; empreendimento_ons; nome; situacao; oper_ato_legal; oper_efetiva; atraso_dias (efetiva menos ato legal); prazo_legal_vencido; km_lt (km de circuito de linhas novas); mva_tr (MVA de transformadores novos); ufs; obras; origem_resolucao",
-   "modulo": "expansao",
-   "gold": "expansao.json"
-  },
-  "/energia/series/expansao_pde2035.csv": {
-   "colunas": "figura; titulo; referencia (ano ou mês); serie; valor; unidade (PDE 2035, CENÁRIO)",
+  "/energia/series/expansao_rede_epe.json": {
+   "colunas": "JSON colunar das linhas de transmissão do WebMap da EPE: camada (existente ou planejada); nome; tensao_kv (vazio = 0 na fonte); ano (operação ou previsto; vazio = 0 na fonte); km_geometria (comprimento da geometria generalizada); d (caminho SVG na grade da malha de UF de public/energia/geo/uf.json)",
    "modulo": "expansao",
    "gold": "expansao.json"
   },
@@ -411,6 +466,56 @@
    "modulo": "transicao",
    "gold": "transicao.json"
   },
+  "/energia/series/mercado_consumo_mensal.csv": {
+   "colunas": "mes (AAAA-MM); regiao (geográfica); subsistema (SE, S, NE, N ou ISOL = sistemas isolados); classe (Residencial, Industrial, Comercial, Rural, Outros); tipo (cativo ou livre); consumo_mwh (consumo de energia elétrica na rede, MWh, como publicado pela EPE); unidades_consumidoras (número de UCs no mês). Fonte: EPE, dados abertos do consumo mensal (tabela CONSUMO E NUMCONS SAM). Vazio = a fonte não publicou o valor; zero é zero.",
+   "modulo": "mercado",
+   "gold": "mercado.json"
+  },
+  "/energia/series/mercado_consumo_uf.csv": {
+   "colunas": "mes; uf; subsistema; classe; tipo; consumo_mwh; unidades_consumidoras. Fonte: EPE, tabela CONSUMO E NUMCONS SAM UF (até o penúltimo mês publicado). Vazio = ausência.",
+   "modulo": "mercado",
+   "gold": "mercado.json"
+  },
+  "/energia/series/mercado_nacional_mensal.csv": {
+   "colunas": "mes; cativo_mwh; livre_mwh; total_mwh (soma das linhas da EPE); livre_pct (100 × livre ÷ total); cativo_uc; livre_uc; total_planilha_mwh e livre_planilha_mwh (total nacional da planilha formatada da EPE, para conferência); diferenca_total_mwh (tabela longa − planilha); preliminar (1 = ano marcado como preliminar pela EPE); samp_livre_uc e samp_livre_mwh (soma das distribuidoras no SAMP da ANEEL: só consumidores livres faturados por distribuidora); samp_distribuidoras (quantas distribuidoras publicaram o mês). Vazio = ausência.",
+   "modulo": "mercado",
+   "gold": "mercado.json"
+  },
+  "/energia/series/mercado_distribuidoras_mensal.csv": {
+   "colunas": "cnpj (14 dígitos, da fonte); sigla; mes; livre_mwh (energia TUSD faturada a consumidores livres, MWh, tipos de mercado da competência); livre_mwh_incentivada, livre_mwh_autoproducao, livre_mwh_erc, livre_mwh_convencional, livre_mwh_outro (abertura pela característica do consumidor no SAMP); livre_uc e as mesmas aberturas em unidades consumidoras; livre_mwh_refat (refaturamento de meses anteriores apresentado neste mês, sem atribuição de competência); cativo_mwh (energia TE faturada ao cativo, inclui consumidores com micro e minigeração após a compensação); cativo_uc; cativo_mwh_refat. Fonte: ANEEL, SAMP, arquivos anuais em Parquet. Vazio = a distribuidora não publicou a linha no mês.",
+   "modulo": "mercado",
+   "gold": "mercado.json"
+  },
+  "/energia/series/mercado_distribuidoras_ano.csv": {
+   "colunas": "ano (último ano civil com os 12 meses publicados por quase todas as distribuidoras); cnpj; sigla; nome; meses (meses do ano com linha no SAMP); completo (1 = 12 meses); livre_mwh e cativo_mwh (soma do ano, MWh); livre_pct_faturada (100 × livre ÷ (livre + cativo), só com 12 meses); livre_uc_dez e livre_uc_dez_anterior (unidades consumidoras livres em dezembro do ano e do ano anterior); variacao_livre_uc; livre_uc_incentivada_dez, livre_uc_convencional_dez, livre_uc_autoproducao_dez; cativo_uc_dez. Fonte: ANEEL, SAMP. Vazio = ausência.",
+   "modulo": "mercado",
+   "gold": "mercado.json"
+  },
+  "/energia/series/mercado_conta_bandeira.csv": {
+   "colunas": "cnpj (vazio quando a fonte não identifica a distribuidora); sigla; mes (competência); campos em R$ como publicados: receita_faturada, repasse_conta_bandeira, resultado_mcp, ccear_d, rh_ccgf_repactuadas_liquido, rh_itaipu, rh_repactuadas, rh_ccgf, previsao_rh, premio_risco, ess_eer, ressarcimento_coner; linhas (quantas linhas da fonte foram somadas na mesma distribuidora e competência). Fonte: ANEEL, Bandeiras Tarifárias, recurso Conta Bandeira; os custos são os apurados e informados pela CCEE. Vazio = ausência.",
+   "modulo": "mercado",
+   "gold": "mercado.json"
+  },
+  "/energia/series/mercado_encargos_mme.csv": {
+   "colunas": "edicao (mês de referência do boletim, AAAA-MM); mes (competência, AAAA-MM); tipo (id do encargo); rotulo; nivel (tipo, parcela ou total); valor_mil_rs (mil R$ como publicados); traco (1 = a tabela publicou '-', lido como zero porque a soma do mês fecha); vigente (1 = edição mais recente para o mês). Fonte: MME, Boletim Mensal de Monitoramento do Sistema Elétrico (dados da CCEE).",
+   "modulo": "mercado",
+   "gold": "mercado.json"
+  },
+  "/energia/series/mercado_ccee_mensal.csv": {
+   "colunas": "conjunto (nome do conjunto no portal de dados abertos da CCEE); serie (dimensões e coluna de origem separadas por '|', por exemplo 'SE|GERACAO_MRE' ou 'CONSUMO_TOTAL_ACL'); mes (AAAA-MM de referência); valor (como publicado: MWmed nos conjuntos de consumo, geração e garantia física, R$ nos de encargos e liquidação, MWh no balanço do MCP e nas parcelas de carga, contagem nos de agentes e parcelas); unidade. Fonte: CCEE, dados abertos (CC-BY-4.0). Vazio = a fonte não publicou o valor.",
+   "modulo": "mercado",
+   "gold": "mercado.json"
+  },
+  "/energia/series/mercado_ccee_desligamentos.csv": {
+   "colunas": "data (dia do desligamento); tipo (voluntario ou compulsorio); cnpj (do agente desligado, 14 dígitos; vazio quando a fonte não traz); agente (nome); classe; sucessao (tipo de sucessão informado pela CCEE); cnpj_sucessor; classe_sucessor; reuniao_cad (reunião do Conselho de Administração que aprovou). Fonte: CCEE, conjuntos DESLIGAMENTO_VOLUNTARIO e DESLIGAMENTO_COMPULSORIO.",
+   "modulo": "mercado",
+   "gold": "mercado.json"
+  },
+  "/energia/series/mercado_agentes_aneel.csv": {
+   "colunas": "cnpj; nome (razão social); ativo (1 ativo, 0 inativo, vazio sem informação); comercializacao; distribuicao; geracao; transmissao (1 = o cadastro marca a atividade); gerado_em (data de geração do arquivo pela ANEEL). Fonte: ANEEL, cadastro de agentes do setor elétrico. CNPJ é agente (pessoa jurídica), não perfil da CCEE nem unidade consumidora.",
+   "modulo": "mercado",
+   "gold": "mercado.json"
+  },
   "/energia/series/perdas_distribuidoras.csv": {
    "colunas": "cnpj; sigla; nome; classificacao; ano; meses (competências publicadas no ano); completo (12 meses); injetada_publicada_mwh; injetada_referencia_mwh (denominador; ver origem_injetada); origem_injetada (publicada, requerida ou mista); perdas_totais_mwh (valor medido da fonte); taxa_total_pct (perdas totais ÷ injetada de referência); perdas_tecnicas_mwh (estimativa regulatória publicada pela fonte, só a do valor medido); taxa_tecnica_pct (sobre a injetada de referência); pnt_mwh (linha publicada 'Perdas Não-Técnicas', valor medido); pnt_injetada_pct; mercado_bt_mwh (energia medida em BT: cativo, consumo próprio e livre); pnt_bt_pct; perdas_totais_faturado_mwh; taxa_total_faturado_pct; perdas_linha_antiga_mwh (linha antiga Perdas do SAMP, base não identificada pela fonte; nunca somada à série medida); residuo_mwh (injetada publicada − fornecida − irregular − perdas); residuo_pct_injetada; reconciliacao (fecha, residuo_pequeno, residuo_relevante, sem_componentes); alertas (perda_total_negativa, perda_total_maior_que_injetada, fornecida_maior_que_injetada, balanco_nao_fecha, injetada_nao_positiva, representacoes_conflitantes: fora de agregados e comparações); taxa_tecnica_injetada_publicada_pct (técnica sobre a injetada publicada, a base em que a fonte aplica o percentual regulatório); residuo_decomposicao_mwh (perdas totais − técnicas − não técnicas); decomposicao (fecha, diferenca_pequena, nao_fecha, sem_separacao; nao_fecha fica fora dos agregados de técnica e não técnica); variacao_injetada_ano_anterior_pct; quebra_escala_ano_anterior (1 = injetada de referência mudou mais de 30% entre dois anos completos); absorcao_ano_anterior (1 = absorção provável observada no SAMP entre os dois anos); vazio no primeiro ano da série. Energia em MWh; percentuais em %. Somas sobre os meses publicados no ano (coluna meses); só completo = 1 entra em agregados e comparações, e nada é escalado para 12 meses. Vazio = ausência (a fonte não publicou o componente em algum dos meses presentes); zero é zero.",
    "modulo": "perdas",
@@ -453,6 +558,16 @@
   },
   "/energia/series/perdas_evidencias.json": {
    "colunas": "Evidência 'Comprove este número' da taxa de perdas totais do ano de referência de cada distribuidora (CNPJ → objeto de pipeline/energia/evidencia.py), lida sob demanda.",
+   "modulo": "perdas",
+   "gold": "perdas.json"
+  },
+  "/energia/series/perdas_evidencias_tarifa.json": {
+   "colunas": "Evidência 'Comprove este número' das componentes de perdas na tarifa residencial B1 do processo apresentado de cada distribuidora (vigente ou último já iniciado), com o arquivo anual de componentes tarifárias e o sha256 de onde o valor foi lido (CNPJ → evidência), lida sob demanda.",
+   "modulo": "perdas",
+   "gold": "perdas.json"
+  },
+  "/energia/series/perdas_evidencias_tecnica.json": {
+   "colunas": "Evidência 'Comprove este número' do percentual técnico regulatório implícito no trecho de referência mais recente de cada distribuidora (CNPJ → evidência), com as razões mensais mínima e máxima do trecho, lida sob demanda.",
    "modulo": "perdas",
    "gold": "perdas.json"
   },
@@ -692,17 +807,17 @@
    "gold": "empresas.json"
   },
   "/energia/series/empresas_proprietarios.csv": {
-   "colunas": "Um CNPJ por linha (proprietário direto no SIGA): cnpj; nome; no_cadastro_agentes (1/0); usinas (todas as fases); usinas_operacao; mw_bruto_operacao (potência fiscalizada somada das usinas em operação em que tem qualquer participação; soma bruta, não usar em agregados); mw_proporcional (Σ potência fiscalizada × participação, só usinas em operação com soma válida); mw_controle_direto (Σ potência das usinas em operação em que tem mais de 50%); usinas_controle_direto; grupo_cnpj; grupo_nome; regimes. MW = kW ÷ 1.000.",
+   "colunas": "Um CNPJ por linha (proprietário direto no SIGA): cnpj; nome; no_cadastro_agentes (1/0); usinas (todas as fases); usinas_operacao; mw_bruto_operacao (potência fiscalizada somada das usinas em operação em que tem qualquer participação; soma bruta, não usar em agregados); mw_proporcional (Σ potência fiscalizada × participação, só usinas em operação com soma válida); mw_controle_direto (Σ potência das usinas em operação em que tem mais de 50%); usinas_controle_direto (usinas em operação com potência fiscalizada em que tem mais de 50%: mesmo critério de mw_controle_direto); grupo_cnpj; grupo_nome; regimes. MW = kW ÷ 1.000.",
    "modulo": "empresas",
    "gold": "empresas.json"
   },
   "/energia/series/empresas_grupos.csv": {
-   "colunas": "Um grupo por linha (topo de cadeia de controle): grupo_cnpj; nome; empresas_com_usinas (proprietários diretos no grupo); usinas_controle; mw_controle (Σ potência das usinas em operação cujo proprietário majoritário pertence ao grupo); mw_proporcional (Σ potência × participação detida por empresas do grupo; partição da potência sem dupla contagem); participacao_pct (mw_proporcional ÷ fronteira × 100); motivo_parada (por que a cadeia termina ali); acima (controlador não identificável acima do topo, quando declarado); listada_cvm (1/0).",
+   "colunas": "Um grupo por linha (topo de cadeia de controle): grupo_cnpj; nome; empresas_com_usinas (proprietários diretos no grupo); usinas_controle; mw_controle (Σ potência das usinas em operação cujo proprietário majoritário pertence ao grupo); mw_proporcional (Σ potência × participação detida por empresas do grupo; partição da potência sem dupla contagem); participacao_pct (mw_proporcional ÷ fronteira × 100); motivo_parada (por que a cadeia termina ali); acima (controlador sem CNPJ acima do topo, só quando é pessoa jurídica estrangeira declarada pela fonte ou rótulo coletivo; vazio nos demais casos, inclusive pessoa física); listada_cvm (1 = companhia aberta com registro ATIVO no cadastro da CVM, de qualquer setor de atividade; 0 = sem registro ativo).",
    "modulo": "empresas",
    "gold": "empresas.json"
   },
   "/energia/series/empresas_cadeia_societaria.csv": {
-   "colunas": "Arestas do grafo societário vigente (Polímero, trimestre de referência): pai_cnpj; pai_nome; socio_cnpj (vazio = pessoa física, fundo ou ente sem CNPJ); socio_nome (vazio para pessoa física); perfil (PJ, PF, DC); controlador (1/0); pct_direto (participação do sócio no pai, %; vazio quando a fonte só permite o percentual em relação ao agente declarante e o pai aparece em mais de um caminho); origem (propria = declarada pelo próprio pai; terceiros = lida nas árvores de outros agentes); declaracao (trimestre da declaração usada); concordancia (listas que concordam sobre o controlador ÷ listas); primeiro_trimestre; ultimo_trimestre (vigência da aresta em toda a base).",
+   "colunas": "Arestas do grafo societário vigente (Polímero, trimestre de referência): pai_cnpj; pai_nome; socio_cnpj (vazio = pessoa física, fundo ou ente sem CNPJ); socio_nome (nome só quando o sócio tem CNPJ, é pessoa jurídica estrangeira declarada pela fonte ou é rótulo coletivo de uma lista fechada, como ações em tesouraria ou pulverizadas; senão o marcador 'pessoa física' ou 'sócio sem documento': nenhum nome de pessoa é republicado); perfil (PJ, PF, DC = demais controladores); controlador (1/0); pct_direto (participação do sócio no pai, %; vazio quando a fonte só permite o percentual em relação ao agente declarante e o pai aparece em mais de um caminho); origem (propria = declarada pelo próprio pai; terceiros = lida nas árvores de outros agentes); declaracao (trimestre da declaração usada); concordancia (listas que concordam sobre o controlador ÷ listas); primeiro_trimestre; ultimo_trimestre (vigência da aresta em toda a base).",
    "modulo": "empresas",
    "gold": "empresas.json"
   },
@@ -712,22 +827,22 @@
    "gold": "empresas.json"
   },
   "/energia/series/empresas_companhias_cvm.csv": {
-   "colunas": "Universo financeiro, uma companhia por linha: cnpj; cd_cvm (registro vigente ou mais recente); codigos_cvm (todos os registros do CNPJ); companhia (denominação na CVM); situacao; setor (setor de atividade declarado à CVM); categoria; controle_acionario; distribuidora_slug (quando é distribuidora do índice); controladora_aberta_cnpj (primeira companhia aberta na cadeia de controle declarada à ANEEL: ela consolida esta); controla_abertas_cnpj (separadas por |).",
+   "colunas": "Universo financeiro, uma companhia por linha: cnpj; cd_cvm (registro vigente ou mais recente); codigos_cvm (todos os registros do CNPJ); companhia (denominação na CVM); situacao; setor (setor de atividade declarado à CVM); categoria; controle_acionario; distribuidora_slug (quando é distribuidora do índice); controladora_aberta_cnpj (primeira companhia aberta com registro ativo na CVM, de qualquer setor, na cadeia de controle declarada à ANEEL: ela consolida esta); controla_abertas_cnpj (separadas por |).",
    "modulo": "empresas",
    "gold": "empresas.json"
   },
   "/energia/series/empresas_financas_anual.csv": {
-   "colunas": "DFP, formato longo, um valor por linha: cnpj; escopo (consolidado ou individual, nunca somados); conta (id); cd_conta (código do plano padronizado da CVM; divida_bruta = 2.01.04 + 2.02.01); periodo_inicio (vazio em saldo); periodo_fim; recorte (exercicio ou saldo); valor_rs (R$ nominais, escala da fonte convertida); versao (maior versão do documento no arquivo); recebido_cvm_em (data de recebimento do documento na CVM); reapresentado_rs (valor do mesmo exercício como apresentado no comparativo da DFP seguinte, só quando difere em mais de R$ 1 mil). Nome da companhia em empresas_companhias_cvm.csv. Vazio = conta não publicada.",
+   "colunas": "DFP, formato longo, um valor por linha: cnpj; escopo (consolidado ou individual, nunca somados); conta (id); cd_conta (código do plano padronizado da CVM; divida_bruta = 2.01.04 + 2.02.01); periodo_inicio (vazio em saldo); periodo_fim; recorte (exercicio = exercício social de 12 meses, que entra nas séries; saldo; exercicio_irregular = período publicado com início depois de 1º de janeiro numa companhia sem balanço positivo no fim do ano anterior, como o exercício de constituição: fica só neste CSV, com as datas da fonte, fora das séries); valor_rs (R$ nominais, escala da fonte convertida); versao (maior versão do documento no arquivo); recebido_cvm_em (data de recebimento do documento na CVM); reapresentado_rs (valor do mesmo exercício como apresentado no comparativo da DFP seguinte, só quando difere em mais de R$ 1 mil); nota (inicio_inconsistente_na_fonte:AAAA-MM-DD = a companhia publicou DT_INI_EXERC diferente de 1º de janeiro num exercício encerrado em 31/12 tendo balanço positivo no fim do ano anterior no mesmo documento; o valor é tratado como o exercício de 12 meses e a data publicada fica na nota). Demonstração com ativo total igual a zero (a CVM preenche com zero o consolidado que a companhia deixou de apresentar) é tratada como não apresentada: os valores dela não aparecem (lista em financas.exclusoes da gold). Nome da companhia em empresas_companhias_cvm.csv. Vazio = conta não publicada.",
    "modulo": "empresas",
    "gold": "empresas.json"
   },
   "/energia/series/empresas_financas_trimestral.csv": {
-   "colunas": "ITR, formato longo: cnpj; escopo; conta; cd_conta; periodo_inicio; periodo_fim; recorte (trimestre = três meses; acumulado_no_ano = janeiro até o fim do trimestre; saldo = balanço no fim do trimestre); valor_rs; versao; recebido_cvm_em. O 4º trimestre não tem ITR (vem na DFP anual); nada é deduzido por diferença.",
+   "colunas": "ITR, formato longo: cnpj; escopo; conta; cd_conta; periodo_inicio; periodo_fim; recorte (trimestre = três meses da DRE; acumulado_no_ano = janeiro até o fim do trimestre, na DRE e sempre na DFC, que a CVM publica acumulada; no 1º trimestre a DRE aparece nos dois recortes com o mesmo valor, porque o trimestre e o acumulado coincidem; saldo = balanço no fim do trimestre; periodo_irregular = fluxo com início fora dessas regras, com as datas da fonte, fora das séries); valor_rs; versao; recebido_cvm_em. O 4º trimestre não tem ITR (vem na DFP anual); nada é deduzido por diferença. Demonstração com ativo total igual a zero é tratada como não apresentada, como no CSV anual.",
    "modulo": "empresas",
    "gold": "empresas.json"
   },
   "/energia/series/empresas_financas.json": {
-   "colunas": "Séries por companhia para leitura sob demanda, em R$ milhões com 3 casas (exato para a escala MIL da fonte): {cnpj: {anual: {con|ind: {conta: [[ano, valor], ...]}}, trimestral: {con|ind: {'conta:recorte': [[AAAA-MM-DD, valor], ...]}}}}. Recorte trimestre (DRE, três meses), saldo (balanço) ou acumulado_no_ano (fluxo de caixa). Mesmos valores dos CSV.",
+   "colunas": "Séries por companhia para leitura sob demanda, em R$ milhões com 3 casas (exato para a escala MIL da fonte): {cnpj: {anual: {con|ind: {conta: [[ano, valor], ...]}}, trimestral: {con|ind: {'conta:recorte': [[AAAA-MM-DD, valor], ...]}}}}. Recorte trimestre (DRE, três meses), saldo (balanço) ou acumulado_no_ano (DFC, de janeiro ao fim do trimestre, inclusive o 1º trimestre). Mesmos valores dos CSV.",
    "modulo": "empresas",
    "gold": "empresas.json"
   },
@@ -737,7 +852,7 @@
    "gold": "empresas.json"
   },
   "/energia/series/empresas_cadeia.json": {
-   "colunas": "Grafo societário vigente para a árvore interativa: nos {cnpj: [nome, controlador_direto_cnpj|null, motivo_parada|null]} e arestas colunares (pai, socio, nome, controlador, pct_direto) dos nós que estão numa cadeia de usina ou distribuidora.",
+   "colunas": "Grafo societário vigente para a árvore interativa: nos {cnpj: [nome, controlador_direto_cnpj|null, motivo_parada|null]} e arestas colunares (pai, socio, nome, controlador, pct_direto) dos nós que estão numa cadeia de usina ou distribuidora. Em nome, sócio sem CNPJ só aparece com o nome quando é pessoa jurídica estrangeira declarada pela fonte ou rótulo coletivo; senão 'pessoa física' ou 'sócio sem documento'.",
    "modulo": "empresas",
    "gold": "empresas.json"
   },
@@ -745,21 +860,6 @@
    "colunas": "Evidência 'Comprove este número' da receita do último exercício de cada companhia do universo CVM (CNPJ → objeto de pipeline/energia/evidencia.py), lida sob demanda.",
    "modulo": "empresas",
    "gold": "empresas.json"
-  },
-  "/energia/series/previsoes_backtest_semanal.csv": {
-   "colunas": "origem (dia da rodada, Brasília; corte às 07h00); horizonte (W1 a W4); submercado; entrega (sábado de início da semana, de sábado 00h a sábado 00h, fim excluído); periodo (desenvolvimento = entrega termina até 01/01/2025; teste = começa em 01/01/2025 ou depois; fronteira = atravessa a virada); realizado (média das 168 horas do PLD, vazio se a semana não está completa); b0, s0, c2p, c2h = previsões em R$/MWh nominais depois da restrição de preço (vazio = modelo sem previsão naquela célula); *_p10 e *_p90 = quantis empíricos (vazio sem 24 entregas de resíduos); piso e teto = faixa média [PLD mínimo, teto estrutural] dos atos publicados até a origem; faixa_provisoria = 1 quando o ato do ano da entrega ainda não tinha saído. Teste retrospectivo sob a hipótese LAT1D; não é previsão emitida.",
-   "modulo": "previsoes",
-   "gold": "previsoes_desempenho.json"
-  },
-  "/energia/series/previsoes_backtest_mensal.csv": {
-   "colunas": "Mesmas colunas do arquivo semanal, para os horizontes M1 a M3 (entrega = AAAA-MM, mês civil).",
-   "modulo": "previsoes",
-   "gold": "previsoes_desempenho.json"
-  },
-  "/energia/series/previsoes_desempenho.csv": {
-   "colunas": "modelo; recorte (celula = horizonte e submercado; horizonte = submercados juntos; frequencia = horizontes juntos); horizonte; submercado; periodo; linhas (células avaliadas); entregas (entregas distintas); origens; mae, vies (média de previsão − realizado), rmse em R$/MWh; mae_b0_pareado e ganho_vs_b0 (MAE do B0 − MAE do modelo nas mesmas células; positivo = melhor que B0); ganho_ic90_inf e ganho_ic90_sup (bootstrap de blocos de origens); skill (1 − MAE/MAE do B0); perda_quantilica (média da perda nos níveis 5 a 95%); cobertura_p10_p90, cobertura_p05_p95 (fração 0 a 1); largura_p10_p90 (R$/MWh); calibracao (estado pela regra da governança; n = entregas distintas).",
-   "modulo": "previsoes",
-   "gold": "previsoes_desempenho.json"
   },
   "/energia/series/previsoes_ajustes_c2.csv": {
    "colunas": "origem_ajuste (domingo); modelo (C2-P, C2-H); horizonte; submercado; ok (1 = ajustado; 0 = treino insuficiente); lambda (ZERO = correção desligada); entregas_treino; linhas_treino; coef_* = coeficiente de cada variável na unidade original (R$/MWh por R$/MWh, ou por ponto percentual); escala_* = escala RMS no treino; ultimo_fim_treino = fim da última entrega usada no treino (sempre até o domingo menos 1 dia).",
@@ -771,50 +871,50 @@
    "modulo": "previsoes",
    "gold": "previsoes_desempenho.json"
   },
-  "/energia/series/pld_cmo_horario.csv": {
-   "colunas": "data_hora_local (início da hora, Brasília); CMO_SE, CMO_S, CMO_NE, CMO_N = CMO do DESSEM (ONS) na hora, média simples das duas meias horas que começam em HH:00 e HH:30, em R$/MWh (vazio quando alguma das duas meias horas não foi publicada); PLD_SE, PLD_S, PLD_NE, PLD_N = PLD horário da CCEE em R$/MWh nominais (vazio = ausência).",
-   "modulo": "pld",
-   "gold": "pld_detalhe.json"
+  "/energia/series/dados_conjuntos.csv": {
+   "colunas": "Uma linha por conjunto integrado (família e dataset do silver): estado (CATALOGADO, RECURSO VERIFICADO, INTEGRADO, VALIDADO, PUBLICADO); papeis (uso declarado: indicador, modelo, conferencia, contexto, historico); golds; frequencia_declarada (texto da fonte) e cadencia_sla; granularidade, ref_min e ultimo_periodo (maior referência até hoje); prazo_proximo (data até a qual o período seguinte deve chegar) e situacao (EM DIA, ATRASADO, SEM SLA, SEM DADO) com dias_atraso; capturas, primeira_captura e ultima_captura (UTC); ultima_publicacao_fonte (last_modified informado pela fonte, vazio quando não informado); tentativas, falhas, ultima_falha_em e falhas_consecutivas; series, linhas e completude_interna (0 a 1); series_no_ultimo e series_no_anterior; revisoes_eventos, revisoes_referencias, revisoes_series, revisao_ref_min, revisao_ref_max, maior_revisao_abs (unidade da série) e maior_revisao_rel_pct; validacao (aprovado, ressalva, reprovado) e contagem de checagens; originais_ausentes e sha256_divergentes no bronze. Vazio = não se aplica ou não informado.",
+   "modulo": "dados",
+   "gold": "publicacao.json"
   },
-  "/energia/series/pld_cmo_semanal.csv": {
-   "colunas": "semana_inicio (sábado) e semana_fim (sexta) da semana operativa; sm; decomp_media_semanal e decomp_leve, decomp_media_patamar, decomp_pesada = CMO semanal do DECOMP (ONS) como publicado; dessem_media = média das meias horas do DESSEM na semana (vazio se faltar alguma), dessem_meias_horas = quantas havia (336 na semana completa); pld_media = média das horas do PLD na semana (vazio se faltar alguma), pld_horas = quantas havia (168). R$/MWh.",
-   "modulo": "pld",
-   "gold": "pld_detalhe.json"
+  "/energia/series/dados_validacoes.csv": {
+   "colunas": "Uma linha por checagem automática: id; alvo (gold, CSV, conjunto ou identidade); tipo; resultado (aprovado, ressalva, reprovado, nao_aplicavel); detalhe; criterio; verificados (itens conferidos); problemas; exemplos (JSON com até 5 casos).",
+   "modulo": "dados",
+   "gold": "publicacao.json"
   },
-  "/energia/series/pld_limites_diario.csv": {
-   "colunas": "data; sm; pld_media_dia (média das 24 horas, vazio se faltar hora); horas; horas_no_piso e horas_no_teto_horario (PLD igual ao limite ao centavo: |PLD − limite| ≤ R$ 0,005/MWh); horas_um_centavo_acima_do_piso (PLD exatamente um centavo acima do piso, classe à parte); media_no_teto_estrutural (1 = média diária a até R$ 0,01/MWh do teto estrutural, 0 = não, vazio sem limite ou sem média); pld_min, pld_max_horario, pld_max_estrutural vigentes no dia e o ato de cada um (vazios quando os atos não estão disponíveis). R$/MWh nominais.",
-   "modulo": "pld",
-   "gold": "pld_detalhe.json"
+  "/energia/series/dados_revisoes.csv": {
+   "colunas": "Revisões da fonte detectadas entre capturas: familia; dataset; serie; ref (período de referência revisado); valor_anterior e valor_novo (unidade da série); diferenca; diferenca_relativa_pct (vazio quando o valor anterior é zero); capturado_anterior e capturado_novo (UTC); recurso. Até 300 maiores revisões relativas por conjunto; a contagem completa está em dados_conjuntos.csv.",
+   "modulo": "dados",
+   "gold": "publicacao.json"
   },
-  "/energia/series/pld_mensal.csv": {
-   "colunas": "mes (AAAA-MM); sm; parcial (1 = mês sem todos os dias completos); horas; media_temporal (média simples das horas, R$/MWh nominais); horas_com_carga (horas com carga publicada e positiva); horas_carga_nao_positiva (horas com carga publicada menor ou igual a zero, retiradas do peso); media_ponderada_carga (Σ PLD × carga ÷ Σ carga do subsistema ONS nas horas com carga positiva, R$/MWh); mesmas_horas (1 = as duas médias usam as mesmas horas); ipca_indice (IBGE, dez/1993 = 100); media_temporal_real (R$/MWh em reais do mes_base_real pelo IPCA; vazio sem índice do mês); mes_base_real.",
-   "modulo": "pld",
-   "gold": "pld_detalhe.json"
+  "/energia/series/dados_calendario.csv": {
+   "colunas": "dia (data UTC da captura); familia; dataset; capturas_novas (vintages com conteúdo novo); recapturas_sem_mudanca (downloads idênticos à vintage vigente); falhas (tentativas sem êxito); referencias_revisadas (valores alterados pela captura do dia); publicacoes_fonte (arquivos com last_modified informado pela fonte naquele dia).",
+   "modulo": "dados",
+   "gold": "publicacao.json"
   },
-  "/energia/series/pld_hora_dia.json": {
-   "colunas": "Mapa hora × dia do PLD dos últimos 90 dias até o dia de referência: dias (AAAA-MM-DD, datas corridas), e por submercado uma matriz [dia][hora 0 a 23] em R$/MWh nominais; null = hora sem PLD publicado (dia ausente fica todo null).",
-   "modulo": "pld",
-   "gold": "pld_detalhe.json"
+  "/energia/series/dados_catalogo.csv": {
+   "colunas": "Uma linha por conjunto do catálogo: id (órgão:nome); orgao; nome; titulo; estado; papeis; descontinuado (1/0) e motivo; frequencia_declarada; recurso_verificado_em (UTC); integracoes (datasets do silver); golds; recursos (arquivos na listagem atual), recursos_acessados (baixados com sha256 ou lidos por requisição parcial), recursos_integrados e recursos_removidos (sumiram da listagem); url; licenca; metadados_verificados (0 = cadastro manual); descricao (texto integral da fonte, com ';' trocado por ',').",
+   "modulo": "dados",
+   "gold": "publicacao.json"
   },
-  "/energia/series/pld_evidencias.json": {
-   "colunas": "Fichas \"Comprove este número\" dos agregados do módulo (objeto de pipeline/energia/evidencia.py por chave), lidas sob demanda pela interface; a gold traz só o índice.",
-   "modulo": "pld",
-   "gold": "pld_detalhe.json"
+  "/energia/series/dados_recursos_ons.csv": {
+   "colunas": "Uma linha por recurso (arquivo) de cada conjunto da listagem do portal ONS: orgao; conjunto (nome no portal); recurso_id; recurso (nome); formato; publicado_em (last_modified informado pela fonte; vazio quando não informado); tamanho (bytes, quando a fonte informa); presente (1 = na listagem atual, 0 = removido ou renomeado pela fonte); estado (CATALOGADO, RECURSO VERIFICADO, INTEGRADO, VALIDADO, PUBLICADO; o recurso capturado por integração declarada herda o estado dela); via (como o estado foi obtido); capturas (vintages com sha256 nos silvers); ultima_captura (UTC); datasets_silver (família/dataset que o capturou); verificado_em (requisição parcial, UTC); url.",
+   "modulo": "dados",
+   "gold": "publicacao.json"
   },
-  "/energia/series/pld_separacao_diaria.csv": {
-   "colunas": "data; par (A_B); horas (horas com PLD nos dois submercados); horas_separadas (|PLD_A − PLD_B| > R$ 0,01/MWh); dif_media (média de PLD_A − PLD_B, R$/MWh); dif_abs_max; fronteira (se o par tem fronteira monitorada pelo ONS, na orientação canônica); fluxo_medio_mwmed (média do fluxo verificado nas horas com fluxo, positivo da primeira para a segunda ponta da fronteira; vazio sem fronteira ou sem dado); horas_com_fluxo.",
-   "modulo": "pld",
-   "gold": "pld_detalhe.json"
+  "/energia/series/dados_recursos_aneel.csv": {
+   "colunas": "Uma linha por recurso (arquivo) de cada conjunto da listagem do portal ANEEL: orgao; conjunto (nome no portal); recurso_id; recurso (nome); formato; publicado_em (last_modified informado pela fonte; vazio quando não informado); tamanho (bytes, quando a fonte informa); presente (1 = na listagem atual, 0 = removido ou renomeado pela fonte); estado (CATALOGADO, RECURSO VERIFICADO, INTEGRADO, VALIDADO, PUBLICADO; o recurso capturado por integração declarada herda o estado dela); via (como o estado foi obtido); capturas (vintages com sha256 nos silvers); ultima_captura (UTC); datasets_silver (família/dataset que o capturou); verificado_em (requisição parcial, UTC); url.",
+   "modulo": "dados",
+   "gold": "publicacao.json"
   },
-  "/energia/series/pld_amplitude_diaria.csv": {
-   "colunas": "data; horas (horas com os quatro submercados); horas_com_separacao (maior − menor > R$ 0,01/MWh); amplitude_media e amplitude_max (maior menos menor PLD entre os quatro submercados na mesma hora, R$/MWh); hora_amplitude_max.",
-   "modulo": "pld",
-   "gold": "pld_detalhe.json"
+  "/energia/series/dados_recursos_ccee.csv": {
+   "colunas": "Uma linha por recurso (arquivo) de cada conjunto da listagem do portal CCEE: orgao; conjunto (nome no portal); recurso_id; recurso (nome); formato; publicado_em (last_modified informado pela fonte; vazio quando não informado); tamanho (bytes, quando a fonte informa); presente (1 = na listagem atual, 0 = removido ou renomeado pela fonte); estado (CATALOGADO, RECURSO VERIFICADO, INTEGRADO, VALIDADO, PUBLICADO; o recurso capturado por integração declarada herda o estado dela); via (como o estado foi obtido); capturas (vintages com sha256 nos silvers); ultima_captura (UTC); datasets_silver (família/dataset que o capturou); verificado_em (requisição parcial, UTC); url.",
+   "modulo": "dados",
+   "gold": "publicacao.json"
   },
-  "/energia/series/pld_sazonal.csv": {
-   "colunas": "sm; mes (1 a 12); n_dias e anos (dias completos do mesmo mês em anos anteriores ao ano de referência); p10, p25, p50, p75, p90 da média diária do PLD nesses dias (R$/MWh nominais, quantil tipo 7).",
-   "modulo": "pld",
-   "gold": "pld_detalhe.json"
+  "/energia/series/dados_eixos.csv": {
+   "colunas": "Uma linha por ficha 'Comprove este número' publicada: gold; indicador; natureza (da proveniência de mesmo nome, vazio se não houver); situacao_validacao (reconciliacao_aprovada, controles_aprovados, ressalva, divergencia, pendencia); reconciliacao (resultado); testes_aprovados, testes_ressalva, testes_reprovados.",
+   "modulo": "dados",
+   "gold": "publicacao.json"
   }
  }
 }

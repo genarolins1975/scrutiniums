@@ -8,17 +8,22 @@ import { Numero } from "@/components/energia/Numero";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { carimbo, num, pct } from "@/lib/energia/formato";
+import { carimbo, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
+  classesRenda,
   codigoUf,
   FONTE_POF,
   inteiro,
+  minusculaInicial,
   mudancaOrcamento,
+  nomePof,
   orcamentoBase,
   mes,
+  pctTexto,
   respostaOrcamento,
   rotaPainel,
+  textoPrecisaoPof,
 } from "@/lib/energia/inclusao";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { InclusaoGold } from "@/lib/energia/tipos-inclusao";
@@ -57,6 +62,12 @@ export default function OrcamentoPage() {
 
   const o = g.orcamento;
   const pofTotal = o.linhas.find((l) => l.territorio === "BR" && l.classe === "7999");
+  const per = o.proveniencia.microdados.periodo_referencia;
+  const periodoPof = `${mes(per.inicio)} a ${mes(per.fim)}`;
+  // unidade dos valores em reais como a proveniência a publica (a parte antes de "; %", com a data de referência dos preços)
+  const unidadeReais = o.proveniencia.microdados.unidade.split(";")[0].trim();
+  const anoPublicacao = g.gerado_em.slice(0, 4);
+  const classeBaixa = classesRenda(o)[0];
   const downloads = (urls: string[]) => g.downloads.filter((d) => urls.includes(d.url));
 
   return (
@@ -69,7 +80,7 @@ export default function OrcamentoPage() {
           titulo="Peso da energia no orçamento das famílias"
           referencia={
             <>
-              IBGE, Pesquisa de Orçamentos Familiares 2017-2018: microdados ({o.proveniencia.microdados.fonte.recurso}) e tabela 6715 do SIDRA. Estatística histórica, sem atualização
+              IBGE, Pesquisa de Orçamentos Familiares ({nomePof(o)}): microdados ({o.proveniencia.microdados.fonte.recurso}) e tabela 6715 do SIDRA. Estatística histórica, sem atualização
               modelada. Processado em {carimbo(g.gerado_em)}.
             </>
           }
@@ -83,7 +94,7 @@ export default function OrcamentoPage() {
             <PainelEvidencia
               id="p061"
               pergunta={o.pergunta}
-              subtitulo="Energia elétrica na despesa total e na renda das famílias, por classe de rendimento · POF 2017-2018 · %"
+              subtitulo={`Energia elétrica na despesa total e na renda das famílias, por classe de rendimento · ${nomePof(o)} · %`}
               natureza="ESTIMADO"
               porQueImporta={
                 <>
@@ -96,13 +107,14 @@ export default function OrcamentoPage() {
                 <>
                   Razão de médias é a despesa média com energia dividida pela despesa média total (a &ldquo;distribuição&rdquo; que o IBGE publica). Média das participações calcula a
                   participação em cada família e tira a média ponderada. As duas respondem a perguntas diferentes e aparecem lado a lado; a mediana mostra a família típica. Precisão pelo
-                  plano amostral (estrato e unidade primária): CV de 15% a 30% pede cautela, acima de 30% o valor é suprimido.
+                  plano amostral (estrato e unidade primária): {textoPrecisaoPof(o.regra_precisao)}
                 </>
               }
               naoConcluir={
                 <>
-                  Não representa 2026: os preços e a Tarifa Social mudaram desde 2018, e nenhuma atualização modelada é publicada. Não existe recorte municipal: a amostra não permite.
-                  Os limiares de {o.limiares_pct.map((x) => pct(x, 0)).join(", ")} não definem pobreza energética; são sensibilidade.
+                  Não representa {anoPublicacao}: os preços e a Tarifa Social mudaram desde {per.fim.slice(0, 4)}, e nenhuma atualização modelada é publicada. Não existe recorte municipal: a
+                  amostra não permite.
+                  Os limiares de {o.limiares_pct.map((x) => pctTexto(x, 0)).join(", ")} não definem pobreza energética; são sensibilidade.
                 </>
               }
               proveniencia={o.proveniencia.microdados}
@@ -113,7 +125,7 @@ export default function OrcamentoPage() {
                   {respostaOrcamento(o)}
                 </p>
                 <InclusaoRecorte
-                  periodo={`${mes(o.proveniencia.microdados.periodo_referencia.inicio)} a ${mes(o.proveniencia.microdados.periodo_referencia.fim)}; ${o.referencia}`}
+                  periodo={`${periodoPof}; ${o.referencia}`}
                   universo={
                     <>
                       {inteiro(pofTotal?.n_amostra)} famílias na amostra, que representam {inteiro(pofTotal?.familias)} famílias; Brasil e grandes regiões por classe; UF só no total
@@ -122,7 +134,7 @@ export default function OrcamentoPage() {
                   unidade="% da despesa total ou da renda; R$ por família e mês"
                 />
                 <p className="border-l-2 border-mineral pl-3 text-sm leading-relaxed text-carvao-muted">
-                  Estatística histórica: a POF mais recente publicada pelo IBGE é a de 2017-2018. O painel mostra o que ela mediu e não projeta o resultado para hoje.
+                  Estatística histórica: a POF mais recente publicada pelo IBGE é a {nomePof(o)}. O painel mostra o que ela mediu e não projeta o resultado para hoje.
                 </p>
                 <div className="grid gap-4 sm:grid-cols-3">
                   <Numero
@@ -144,15 +156,15 @@ export default function OrcamentoPage() {
                     endereco={`${rotaPainel("p061")}#p061`}
                   />
                   <Numero
-                    rotulo={`Média das participações na renda, ${o.classes[1]?.rotulo.toLowerCase() ?? "classe mais baixa"}`}
+                    rotulo={`Média das participações na renda, ${classeBaixa ? minusculaInicial(classeBaixa.rotulo) : "classe mais baixa"}`}
                     natureza="ESTIMADO"
                     evidencia={o.evidencias.media_razoes_renda_classe_baixa}
                     formato="pct"
                     casas={1}
                     tamanho="medio"
                     nota={
-                      o.classes[1] && o.sensibilidade_media_razoes_renda[o.classes[1].codigo]
-                        ? `Mediana ${pct(o.sensibilidade_media_razoes_renda[o.classes[1].codigo].mediana_renda_pct, 2)}: a média é sensível a poucas famílias.`
+                      classeBaixa && o.sensibilidade_media_razoes_renda[classeBaixa.codigo]
+                        ? `Mediana ${pctTexto(o.sensibilidade_media_razoes_renda[classeBaixa.codigo].mediana_renda_pct, 2)}: a média é sensível às famílias que declaram renda menor que a despesa com energia.`
                         : undefined
                     }
                     endereco={`${rotaPainel("p061")}#p061`}
@@ -161,7 +173,7 @@ export default function OrcamentoPage() {
                 <InclusaoClassesPof orc={orcamentoBase(o, (l) => !codigoUf(l.territorio))} fonte={FONTE_POF} />
 
                 <InclusaoAnalise titulo="Por UF, só no total das famílias">
-                  <InclusaoUfsPof orc={orcamentoBase(o, (l) => !!codigoUf(l.territorio))} fonte={FONTE_POF} />
+                  <InclusaoUfsPof orc={orcamentoBase(o, (l) => !!codigoUf(l.territorio))} fonte={FONTE_POF} periodo={periodoPof} unidadeReais={unidadeReais} />
                 </InclusaoAnalise>
 
                 <InclusaoAuditoria titulo="Conferência com a tabela 6715 e sensibilidade da média na renda">
@@ -189,6 +201,7 @@ export default function OrcamentoPage() {
                     fonte={FONTE_POF}
                     versao={o.referencia}
                     nomeArquivo="inclusao-pof-conferencia-6715"
+                    chaveUrl="pof.conf"
                   />
                   <TabelaInterativa
                     titulo="Média das participações na renda: mediana e sensibilidade, Brasil"
@@ -213,6 +226,7 @@ export default function OrcamentoPage() {
                     fonte={FONTE_POF}
                     versao={o.referencia}
                     nomeArquivo="inclusao-pof-sensibilidade-renda"
+                    chaveUrl="pof.sens"
                   />
                   {o.diagnostico_microdados && (
                     <p className="text-sm text-carvao-muted">
@@ -225,7 +239,7 @@ export default function OrcamentoPage() {
                   )}
                 </InclusaoAuditoria>
 
-                <InclusaoSeguir ancora="p061" href={rotaPainel("p062")} pergunta="Quem ainda não tem acesso adequado à energia?" downloads={downloads(["/energia/series/inclusao_pof.csv"])} />
+                <InclusaoSeguir ancora="p061" href={rotaPainel("p062")} pergunta={g.acesso.pergunta} downloads={downloads(["/energia/series/inclusao_pof.csv"])} />
               </div>
             </PainelEvidencia>
           </Bloco>

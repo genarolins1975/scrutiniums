@@ -13,6 +13,15 @@ import { problemasEvidencia, type Evidencia } from "@/lib/energia/evidencia";
 import { pct } from "@/lib/energia/formato";
 import {
   CODIGO_UF,
+  ESQUEMA_COBERTURA,
+  LIMIARES_POF,
+  maiorCvPnad,
+  minusculaInicial,
+  mudancaOrcamento,
+  rotulosEstadoPof,
+  textoCusteioTarifaSocial,
+  textoPrecisaoPnad,
+  textoPrecisaoPof,
   COLUNAS_SERIE_TSEE,
   COLUNAS_UFS_TSEE,
   dadosClassesPof,
@@ -52,6 +61,7 @@ import {
   valoresMapaTsee,
 } from "@/lib/energia/inclusao";
 import { DESTINOS_NAVEGACAO } from "@/lib/energia/navegacao";
+import { conceito } from "@/lib/energia/conteudo/conceitos";
 import { matrizExportacao } from "@/lib/energia/tabela";
 import type { InclusaoGold, SerieCdeUf, SerieCoberturaMensal } from "@/lib/energia/tipos-inclusao";
 
@@ -503,3 +513,156 @@ describe("páginas renderizadas no servidor", () => {
     for (const h of Object.values(html)) expect(h).toContain('aria-current="page"');
   });
 });
+
+/**
+ * Revisão de interface: cada defeito corrigido tem um teste que o pegaria de volta
+ * (texto com número fixo, direção afirmada sem conferir o número, KPI sem prova,
+ * rótulo que perde a grafia de "R$", filtro fora da URL).
+ */
+describe("revisão de interface: textos e números vêm da gold", () => {
+  it("P061: a direção 'pesou mais/menos' sai da comparação dos números publicados", () => {
+    const g2 = gold();
+    const baixa = G.orcamento.classes.find((c) => c.codigo !== "7999")!.codigo;
+    const lb = g2.orcamento.linhas.find((l) => l.territorio === "BR" && l.classe === baixa)!;
+    expect(respostaOrcamento(G.orcamento)).toContain("pesou mais nas famílias de menor renda");
+    lb.microdados.razao_medias_pct = [1.2, 1, "publicado"];
+    const r = respostaOrcamento(g2.orcamento);
+    expect(r).toContain("pesou menos nas famílias de menor renda");
+    expect(r).not.toContain("pesou mais");
+    lb.microdados.razao_medias_pct = [null, null, "suprimido"];
+    const r2 = respostaOrcamento(g2.orcamento);
+    expect(r2).not.toMatch(/pesou (mais|menos)/);
+    expect(r2).toContain("sem dado");
+  });
+
+  it("P061: 'a participação média é maior' só quando é maior nas duas linhas", () => {
+    expect(respostaOrcamento(G.orcamento)).toContain("a participação média é maior");
+    const g2 = gold();
+    const t = g2.orcamento.linhas.find((l) => l.territorio === "BR" && l.classe === "7999")!;
+    t.microdados.media_razoes_desp_pct = [1.0, 1, "publicado"];
+    expect(respostaOrcamento(g2.orcamento)).not.toContain("é maior");
+  });
+
+  it("P061: rótulo de classe entra na frase sem perder a grafia de R$", () => {
+    expect(minusculaInicial("Até R$ 1.908")).toBe("até R$ 1.908");
+    for (const x of [respostaOrcamento(G.orcamento), mudancaOrcamento(G.orcamento)]) {
+      expect(x).not.toMatch(/r\$/);
+      expect(x).toContain("R$ 1.908");
+    }
+  });
+
+  it("P061: limites de precisão e limiares vêm da gold", () => {
+    const r = { cautela_cv_pct: 10, suprime_cv_pct: 25 };
+    expect(textoPrecisaoPof(r)).toContain("10%");
+    expect(textoPrecisaoPof(r)).toContain("25%");
+    expect(rotulosEstadoPof(r).suprimido).toContain("25%");
+    expect(textoPrecisaoPof(G.orcamento.regra_precisao)).toContain(pct(G.orcamento.regra_precisao.suprime_cv_pct, 0));
+    // as opções do limiar na URL são as mesmas que a gold publica
+    expect(LIMIARES_POF.map(Number)).toEqual(G.orcamento.limiares_pct);
+  });
+
+  it("P062: a frase de precisão cita o maior CV publicado, lido da gold", () => {
+    const a = { ano_referencia: G.acesso.ano_referencia, pnad_serie: G.acesso.pnad_serie, pnad_situacao: G.acesso.pnad_situacao };
+    const m = maiorCvPnad(a)!;
+    let maior = 0;
+    for (const l of [...a.pnad_serie.filter((x) => x.ano === a.ano_referencia), ...a.pnad_situacao]) {
+      if (!CODIGO_UF[l.territorio]) continue;
+      for (const v of [l.cv_pct_com_energia, l.cv_pct_rede_geral, l.cv_pct_integral]) if (typeof v === "number" && v > maior) maior = v;
+    }
+    expect(m.cv).toBe(maior);
+    expect(textoPrecisaoPnad(a)).toContain(pct(maior, 1));
+    const g2 = gold();
+    g2.acesso.pnad_situacao[0] = { ...g2.acesso.pnad_situacao.find((l) => CODIGO_UF[l.territorio])!, cv_pct_integral: 77.7 };
+    expect(textoPrecisaoPnad({ ano_referencia: g2.acesso.ano_referencia, pnad_serie: g2.acesso.pnad_serie, pnad_situacao: g2.acesso.pnad_situacao })).toContain("77,7%");
+  });
+
+  it("P059: o evento do 'o que mudou' vem da gold, não de uma data no código", () => {
+    const g2 = gold();
+    const ev = g2.tarifa_social.eventos.find((e) => e.data.startsWith("2025-07"))!;
+    ev.data = "2025-09-01";
+    ev.rotulo = "Evento de teste";
+    const m = mudancaTarifaSocial(g2.tarifa_social);
+    expect(m).toContain("Evento de teste");
+    expect(m).toContain("set/2025");
+    // evento no dia 1: o arquivo do mês não mistura regras
+    expect(m).not.toContain("mistura faturas");
+  });
+
+  it("P059: o ano em curso do custeio é dito orçado, nunca realizado", () => {
+    const c = G.tarifa_social.custeio_cde!;
+    const x = textoCusteioTarifaSocial(c);
+    expect(x).toContain(`Em ${c.ano_corrente}, ano em curso, o valor orçado`);
+    expect(x).not.toContain(`Em ${c.ano_corrente}, a Tarifa Social foi`);
+  });
+
+  it("P060: o total de famílias cadastradas citado na página é a soma do CSV de municípios", () => {
+    const linhas = municipiosDoCsv(ler("public/energia/series/inclusao_municipios.csv"));
+    const soma = linhas.reduce((s, l) => s + (l.cadastradas ?? 0), 0);
+    expect(soma).toBe(G.cobertura.brasil!.familias_cadastradas);
+    // a seleção municipal vai para a URL, como a da UF
+    expect(ESQUEMA_COBERTURA.msel).toBeDefined();
+  });
+});
+
+describe("revisão de interface: páginas", () => {
+  const paginas = { sintese: Sintese, p059: PaginaTarifa, p060: PaginaCobertura, p061: PaginaOrcamento, p062: PaginaAcesso };
+  const html = Object.fromEntries(Object.entries(paginas).map(([k, p]) => [k, renderToStaticMarkup(createElement(p))]));
+  const MARCA_NUMERO = 'class="relative flex h-full flex-col border border-linha bg-superficie p-5"';
+
+  /** Conteúdo de cada bloco Numero (div com a classe do componente), pela contagem de div abertos e fechados. */
+  function blocosNumero(h: string): string[] {
+    const out: string[] = [];
+    let i = h.indexOf(MARCA_NUMERO);
+    while (i >= 0) {
+      const ini = h.lastIndexOf("<div", i);
+      let prof = 0;
+      let j = ini;
+      const re = /<div\b|<\/div>/g;
+      re.lastIndex = ini;
+      let mm: RegExpExecArray | null;
+      while ((mm = re.exec(h))) {
+        prof += mm[0] === "</div>" ? -1 : 1;
+        if (prof === 0) {
+          j = re.lastIndex;
+          break;
+        }
+      }
+      out.push(h.slice(ini, j));
+      i = h.indexOf(MARCA_NUMERO, j);
+    }
+    return out;
+  }
+
+  it("todo número de destaque tem 'Comprove este número' (ou declara ausência)", () => {
+    for (const [k, h] of Object.entries(html)) {
+      const blocos = blocosNumero(h);
+      expect(blocos.length, k).toBeGreaterThan(0);
+      for (const b of blocos) expect(b.includes("Comprove este número") || b.includes("sem dado"), `${k}: ${b.slice(0, 160)}`).toBe(true);
+    }
+  });
+
+  it("nenhum ano, período ou limite da fonte escrito à mão onde a gold o publica", () => {
+    // o ano da frase é o da publicação, e o código das páginas não escreve ano à mão
+    expect(html.p061).toContain(`Não representa ${G.gerado_em.slice(0, 4)}`);
+    expect(ler("src/app/setor-eletrico/inclusao-energetica/orcamento/page.tsx")).not.toMatch(/Não representa 20\d\d|jul\/2017|15\/01\/2018/);
+    expect(html.p062).not.toContain("o CV passa de 5%");
+    // o limite de base pequena aparece só pelas limitações da gold, não escrito no componente
+    expect(ler("src/components/energia/InclusaoCobertura.tsx")).not.toMatch(/\b50 famílias|\b2 anos/);
+    for (const h of Object.values(html)) expect(h).not.toMatch(/r\$ \d/);
+  });
+
+  it("todo href interno das páginas aponta para página existente ou arquivo publicado", () => {
+    for (const [k, h] of Object.entries(html)) {
+      const hrefs = Array.from(principalDe(h).matchAll(/href="(\/[^"#?]*)/g)).map((x) => x[1]);
+      for (const href of Array.from(new Set(hrefs))) {
+        const arquivo = existsSync(join(raiz, "public", href));
+        const pagina = existsSync(join(raiz, "src/app", href, "page.tsx"));
+        // verbete: rota dinâmica /setor-eletrico/aprenda/[conceito], gerada só para os slugs do catálogo
+        const verbete = /^\/setor-eletrico\/aprenda\/[^/]+$/.test(href) && !!conceito(href.split("/").at(-1)!);
+        expect(arquivo || pagina || verbete, `${k}: ${href}`).toBe(true);
+      }
+    }
+  });
+  const principalDe = (h: string) => h.slice(h.indexOf("<main"));
+});
+

@@ -780,6 +780,15 @@ export function arquivoConjuntosDoAno(ano: number): string {
 /* ---------------------------------------------------------------- P053: compensações */
 
 export const ORDEM_TIPOS: TipoCompensacao[] = ["mensal", "trimestral", "anual", "dicri", "dise"];
+export const ROTULO_TIPO_CURTO: Record<TipoCompensacao, string> = { mensal: "mensal", trimestral: "trimestral", anual: "anual", dicri: "DICRI", dise: "DISE" };
+/** Rótulo das barras por tipo: curto o bastante para caber no celular; a definição completa fica na tabela por tipo. */
+const ROTULO_TIPO_BARRA: Record<TipoCompensacao, string> = {
+  mensal: "Mensal (DIC, FIC, DMIC)",
+  trimestral: "Trimestral (DIC, FIC)",
+  anual: "Anual (DIC, FIC)",
+  dicri: "DICRI (dia crítico)",
+  dise: "DISE (emergência)",
+};
 
 /** P053: total pago a unidades consumidoras no ano de referência, unidades geradoras à parte e concentração. */
 export function respostaP053(g: QualidadeGold): string {
@@ -845,25 +854,87 @@ export function linhasCompensacaoMensal(g: QualidadeGold): LinhaTabela[] {
   }));
 }
 
-/** Valor por tipo de violação em cada ano: tipo não publicado no ano é ausência, nunca zero. */
+/**
+ * Valor pago a unidades consumidoras por tipo de violação em cada ano. Só UC, o universo do
+ * total que a ANEEL divulga: desde 2022 os tipos trimestral e anual de UC não são publicados e
+ * os de unidades geradoras vêm com zero, então a soma UC + UG mostraria zero onde há ausência.
+ * Tipo sem linha de UC no ano é ausência, nunca zero.
+ */
 export function linhasCompensacaoTipo(g: QualidadeGold): LinhaTabela[] {
   return g.compensacoes.anual.map((a) => {
     const l: LinhaTabela = { ano: String(a.ano), situacao: a.completo ? "ano completo" : "parcial" };
-    for (const t of ORDEM_TIPOS) l[t] = a.por_tipo[t]?.valor ?? null;
+    for (const t of ORDEM_TIPOS) l[t] = a.por_tipo[t]?.valor_uc ?? null;
+    l.valor_ug = a.valor_ug;
     return l;
   });
 }
 
-/** Composição do ano de referência por tipo (barras), só com os tipos publicados no ano. */
+/**
+ * Composição do ano de referência por tipo (barras), só unidades consumidoras. Entram os tipos
+ * com alguma linha no ano; o que só tem linha de unidade geradora fica como barra ausente
+ * (hachura), não como zero.
+ */
 export function linhasTipoAnoReferencia(g: QualidadeGold): LinhaTabela[] {
   const a = g.compensacoes.anual.find((x) => x.ano === g.compensacoes.ano_referencia);
   if (!a) return [];
-  return ORDEM_TIPOS.filter((t) => a.por_tipo[t] !== undefined).map((t) => ({
-    id: t,
-    tipo: g.compensacoes.rotulos_tipo[t],
-    valor_mi: a.por_tipo[t]?.valor === null || a.por_tipo[t]?.valor === undefined ? null : a.por_tipo[t]!.valor! / 1e6,
-    quantidade: a.por_tipo[t]?.quantidade ?? null,
-  }));
+  return ORDEM_TIPOS.filter((t) => a.por_tipo[t] !== undefined).map((t) => {
+    const p = a.por_tipo[t]!;
+    return {
+      id: t,
+      tipo: ROTULO_TIPO_BARRA[t],
+      valor_mi: p.valor_uc === null ? null : p.valor_uc / 1e6,
+      quantidade: p.quantidade_uc,
+    };
+  });
+}
+
+/** Trechos contínuos de anos: [2011, 2012, 2013, 2016] vira [[2011, 2013], [2016, 2016]]. */
+function trechosDeAnos(anos: readonly number[]): [number, number][] {
+  const out: [number, number][] = [];
+  for (const a of [...anos].sort((x, y) => x - y)) {
+    const u = out[out.length - 1];
+    if (u && a === u[1] + 1) u[1] = a;
+    else out.push([a, a]);
+  }
+  return out;
+}
+
+/**
+ * Em que anos cada tipo tem valor publicado para unidades consumidoras, dito a partir da
+ * própria série (nenhum ano escrito à mão): "trimestral de 2011 a 2021; DISE desde 2026".
+ */
+export function notaTiposCompensacao(g: QualidadeGold): string {
+  const anos = g.compensacoes.anual.map((a) => a.ano);
+  if (!anos.length) return "Sem série de compensações por tipo.";
+  const ultimo = Math.max(...anos);
+  const partes = ORDEM_TIPOS.map((t) => {
+    const com = g.compensacoes.anual.filter((a) => a.por_tipo[t]?.valor_uc !== null && a.por_tipo[t]?.valor_uc !== undefined).map((a) => a.ano);
+    if (!com.length) return `${ROTULO_TIPO_CURTO[t]}: nenhum ano`;
+    const txt = trechosDeAnos(com).map(([i, f]) => (f === ultimo && i !== f ? `desde ${i}` : i === f ? String(i) : `de ${i} a ${f}`));
+    return `${ROTULO_TIPO_CURTO[t]} ${listaPt(txt)}`;
+  });
+  return `Valores pagos a unidades consumidoras. Tipo sem valor publicado no ano é ausência, não zero. Anos com valor por tipo: ${partes.join("; ")}. Unidades geradoras na última coluna, somadas.`;
+}
+
+/**
+ * Tipos com linha no ano de referência mas sem valor para unidades consumidoras, em uma frase:
+ * diz se a fonte trouxe o tipo só para unidades geradoras e com que valor (lido da gold). Vazio
+ * quando todos os tipos do ano têm valor de UC.
+ */
+export function notaTiposSemUc(g: QualidadeGold): string {
+  const ano = g.compensacoes.ano_referencia;
+  const a = g.compensacoes.anual.find((x) => x.ano === ano);
+  if (!a) return "";
+  const sem = ORDEM_TIPOS.filter((t) => a.por_tipo[t] !== undefined && a.por_tipo[t]!.valor_uc === null);
+  if (!sem.length) return "";
+  const nomes = listaPt(sem.map((t) => ROTULO_TIPO_CURTO[t]));
+  const ug = sem.map((t) => a.por_tipo[t]!.valor_ug);
+  const origem = ug.every((v) => v === 0)
+    ? "a fonte traz esses tipos só para unidades geradoras, com valor zero"
+    : ug.every((v) => v !== null)
+      ? `a fonte traz esses tipos só para unidades geradoras (${listaPt(sem.map((t, i) => `${ROTULO_TIPO_CURTO[t]}: ${reaisMilhoes(ug[i], 2)}`))})`
+      : "a fonte não traz valor de unidade consumidora para esses tipos";
+  return `${ano}: ${nomes} sem valor publicado para unidades consumidoras; a barra hachurada é ausência, não zero (${origem}).`;
 }
 
 /** Compensações por distribuidora no ano de referência (valor total, por tipo e normalizado por UC). */
@@ -881,7 +952,8 @@ export function linhasCompensacaoDistribuidoras(g: QualidadeGold): LinhaTabela[]
         valor_por_uc: c.valor_por_uc,
         ucs: d.ucs,
       };
-      for (const t of ORDEM_TIPOS) l[t] = c.valor_por_tipo[t] ?? null;
+      // por tipo, só unidades consumidoras (o "valor no ano" soma UC e UG)
+      for (const t of ORDEM_TIPOS) l[t] = c.valor_uc_por_tipo[t] ?? null;
       return l;
     });
 }
@@ -890,11 +962,11 @@ export function colunasCompensacaoDistribuidoras(rotulos: Record<TipoCompensacao
   return [
     { id: "sigla", rotulo: "Distribuidora", tipo: "texto" },
     { id: "classificacao", rotulo: "Classificação", tipo: "texto", categorica: true },
-    { id: "valor", rotulo: "Valor no ano", tipo: "numero", unidade: "R$", casas: 2 },
-    { id: "quantidade", rotulo: "Compensações no ano", tipo: "numero", casas: 0 },
+    { id: "valor", rotulo: "Valor no ano (UC e UG)", tipo: "numero", unidade: "R$", casas: 2 },
+    { id: "quantidade", rotulo: "Compensações no ano (UC e UG)", tipo: "numero", casas: 0 },
     { id: "valor_por_uc", rotulo: "Valor ÷ UCs (normalização)", tipo: "numero", unidade: "R$ por UC", casas: 2 },
     { id: "ucs", rotulo: "UCs (média do ano)", tipo: "numero", casas: 0 },
-    ...ORDEM_TIPOS.map((t) => ({ id: t, rotulo: rotulos[t], tipo: "numero" as const, unidade: "R$", casas: 2 })),
+    ...ORDEM_TIPOS.map((t) => ({ id: t, rotulo: `${rotulos[t]}, só UC`, tipo: "numero" as const, unidade: "R$", casas: 2 })),
   ];
 }
 
@@ -987,7 +1059,7 @@ export function linhasEscopos(g: QualidadeGold): LinhaTabela[] {
       valor: o.por_ucs,
       unidade: "por 100 mil UCs",
       base: o.total,
-      motivo: o.motivo_ausencia ?? (o.completo ? "" : `ano parcial (até ${o.meses_max ?? "?"} meses): sem taxa anual`),
+      motivo: o.motivo_ausencia ?? (o.completo ? "" : `ano parcial (${o.meses_max !== null ? `até ${o.meses_max} meses` : "meses não informados"}): sem taxa anual`),
     });
   }
   for (const t of at.tmae) {
@@ -1117,8 +1189,18 @@ export const COLUNAS_ATENDIMENTO: ColunaTabela[] = [
   { id: "tel_ins_min", rotulo: "Pior INS mensal", tipo: "percentual", casas: 1 },
   { id: "tel_meses_ins", rotulo: "Meses com INS no padrão", tipo: "texto" },
   { id: "tel_oferecidas_mil", rotulo: "Chamadas oferecidas", tipo: "numero", unidade: "por mil UCs", casas: 0 },
-  { id: "eventos_2026", rotulo: "Eventos de emergência em 2026", tipo: "numero", casas: 0 },
+  { id: "eventos_2026", rotulo: "Eventos de emergência declarados", tipo: "numero", casas: 0 },
 ];
+
+/**
+ * Colunas da tabela de atendimento por distribuidora: o rótulo da contagem de eventos diz o
+ * período da base publicada (datas da gold), não um ano escrito à mão.
+ */
+export function colunasAtendimento(g: QualidadeGold): ColunaTabela[] {
+  const e = g.atendimento.eventos_emergencia;
+  const periodo = e.inicio_min && e.inicio_max ? `, início de ${dataBR(e.inicio_min.slice(0, 10))} a ${dataBR(e.inicio_max.slice(0, 10))}` : "";
+  return COLUNAS_ATENDIMENTO.map((c) => (c.id === "eventos_2026" ? { ...c, rotulo: `Eventos de emergência declarados${periodo}` } : c));
+}
 
 /* ---------------------------------------------------------------- carga sob demanda no navegador */
 
@@ -1212,10 +1294,10 @@ const COLUNAS_DGC: ColunaTabela[] = [
 
 const COLUNAS_DIVULGADO: ColunaTabela[] = [
   { id: "ano", rotulo: "Ano", tipo: "texto" },
-  { id: "valor_uc", rotulo: "Valor a UCs (gold)", tipo: "numero", unidade: "R$", casas: 2 },
+  { id: "valor_uc", rotulo: "Valor a UCs (soma dos dados abertos)", tipo: "numero", unidade: "R$", casas: 2 },
   { id: "divulgado_valor", rotulo: "Divulgado pela ANEEL", tipo: "numero", unidade: "R$", casas: 0 },
   { id: "dentro_valor", rotulo: "Dentro da precisão divulgada (R$ 0,5 milhão)", tipo: "texto", categorica: true },
-  { id: "quantidade_uc", rotulo: "Compensações a UCs (gold)", tipo: "numero", casas: 0 },
+  { id: "quantidade_uc", rotulo: "Compensações a UCs (soma dos dados abertos)", tipo: "numero", casas: 0 },
   { id: "divulgado_qt", rotulo: "Divulgado pela ANEEL (quantidade)", tipo: "numero", casas: 0 },
   { id: "dentro_qt", rotulo: "Dentro da precisão divulgada (50 mil)", tipo: "texto", categorica: true },
 ];
@@ -1335,7 +1417,8 @@ export function tabelaQualidade(id: IdTabela, g: QualidadeGold): DefinicaoTabela
         colunas: [
           { id: "ano", rotulo: "Ano", tipo: "texto" },
           { id: "situacao", rotulo: "Situação", tipo: "texto", categorica: true },
-          ...ORDEM_TIPOS.map((t) => ({ id: t, rotulo: comp.rotulos_tipo[t], tipo: "numero" as const, unidade: "R$", casas: 2 })),
+          ...ORDEM_TIPOS.map((t) => ({ id: t, rotulo: `${comp.rotulos_tipo[t]}, só UC`, tipo: "numero" as const, unidade: "R$", casas: 2 })),
+          { id: "valor_ug", rotulo: "Unidades geradoras, todos os tipos", tipo: "numero" as const, unidade: "R$", casas: 2 },
         ],
         linhas: linhasCompensacaoTipo(g).map((l) => ({ ...l, id: String(l.ano) })),
         colunaRotulo: "ano",
@@ -1343,7 +1426,7 @@ export function tabelaQualidade(id: IdTabela, g: QualidadeGold): DefinicaoTabela
         versao: String(comp.ano_referencia),
         nomeArquivo: "qualidade-compensacoes-tipo",
         ordemInicial: { coluna: "ano", direcao: "desc" },
-        nota: "Tipo não publicado no ano é ausência: trimestral e anual de unidades consumidoras deixaram de ser publicadas em 2022; DISE aparece em 2026.",
+        nota: notaTiposCompensacao(g),
       };
     case "comp-dist":
       return {
@@ -1397,7 +1480,7 @@ export function tabelaQualidade(id: IdTabela, g: QualidadeGold): DefinicaoTabela
       };
     case "atendimento":
       return {
-        colunas: COLUNAS_ATENDIMENTO,
+        colunas: colunasAtendimento(g),
         linhas: linhasAtendimentoDistribuidoras(g),
         colunaRotulo: "sigla",
         fonte: FONTE_ATENDIMENTO,

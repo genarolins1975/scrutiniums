@@ -142,7 +142,7 @@ METRICAS = [
         "regra_cobertura": "Conjuntos com as parcelas IP e IND informadas entram no total.",
         "politica_ausencia": "Parcela não informada não é zero: fica fora do numerador e do denominador daquela parcela.",
         "validacoes": ["Soma dos grupos = total de todas as parcelas publicadas.", "Apurado = IP + IND desde 2022."],
-        "limitacoes": ["Interrupções de até 3 minutos e as de responsabilidade do consumidor não são publicadas em nenhuma parcela."],
+        "limitacoes": ["Interrupções de menos de 3 minutos e as de responsabilidade do consumidor não são publicadas em nenhuma parcela."],
         "gold": _GOLD, "paginas": _PAG,
     },
     {

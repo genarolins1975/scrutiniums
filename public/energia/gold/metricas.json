@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "metricas.json",
- "gerado_em": "2026-10-01T00:49:24Z",
+ "gerado_em": "2026-10-01T06:02:05Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d5dc4fd86561+alterado",
+ "versao_codigo": "802c51897680+alterado",
  "disponivel": true,
  "metricas": [
   {
@@ -2140,56 +2140,18 @@
    ],
    "regras_comparabilidade": [
     "Toda previsão tem data-base: a fotografia do RALIE (DatRalie) em que foi publicada. Nenhuma promessa antiga é reconstruída com o estoque atual; o histórico publicado pela ANEEL começa em 17/06/2021 e o histórico próprio do observatório, na primeira captura do RALIE atual.",
-    "É atraso previsto, não atraso realizado: a previsão muda a cada fotografia."
+    "É atraso previsto, não atraso realizado: a previsão muda a cada fotografia.",
+    "Data em bloco: previsão atribuída a pelo menos 100 usinas distintas na mesma fotografia (o maior complexo do RALIE tem 41 usinas). Ela anda com a fotografia, cerca de 5 anos depois dela (13/09/2031 na fotografia de 18/09/2026), e por isso os números saem também sem essas unidades."
    ],
-   "regra_cobertura": "Unidades com as duas datas preenchidas na fotografia mais recente.",
+   "regra_cobertura": "Unidades com as duas datas preenchidas na fotografia mais recente; publicado com e sem as unidades em data em bloco. Unidades sem previsão ficam fora do denominador.",
    "politica_ausencia": "Unidade sem previsão ou sem data outorgada fica fora (nunca atraso zero).",
    "validacoes": [
-    "Data-base publicada em cada linha do CSV (data_base_ralie)."
+    "Data-base publicada em cada linha do CSV (data_base_ralie).",
+    "Marca de data em bloco por unidade no CSV (previsao_em_bloco)."
    ],
    "limitacoes": [
-    "Datas atribuídas em bloco a milhares de unidades sem licença, sem acesso à rede ou com revogação em avaliação (ex.: 13/09/2031 na fotografia de 18/09/2026) indicam previsão convencional da fiscalização, não cronograma de obra."
-   ],
-   "gold": "expansao.json",
-   "paginas": [
-    "/setor-eletrico/expansao"
-   ],
-   "arquivo": "pipeline/energia/metricas/expansao.py"
-  },
-  {
-   "id": "expansao_atraso_realizado",
-   "titulo": "Atraso realizado da liberação comercial",
-   "pergunta": "Com que atraso, em relação à data outorgada, a potência entrou em operação comercial?",
-   "definicao": "Para cada linha do arquivo detalhado de liberações para operação comercial: data de liberação realizada menos data outorgada de início da operação comercial da unidade; por ano da liberação, mediana ponderada por kW liberado e parcelas da potência com atraso e antecipada.",
-   "unidade": "dias e % do MW liberado com data outorgada",
-   "grao_geografico": "Brasil; tipo de geração",
-   "grao_temporal": "ano da liberação comercial (desde 2014)",
-   "fontes": [
-    "aneel_liberacao_comercial"
-   ],
-   "numerador": "Σ kW liberado depois da data outorgada",
-   "denominador": "Σ kW liberado com data outorgada preenchida",
-   "formula": "atraso = DatLiberOpComerRealizado − DatUGInicioOpComerOutorgado; mediana ponderada por MdaPotenciaLiberadaComercial",
-   "regra_agregacao": "Mediana ponderada por potência; percentuais como razão de somas.",
-   "versao_formula": "1",
-   "natureza_fonte": "OBSERVADO",
-   "natureza_transformacao": "CALCULADO",
-   "dimensoes": [
-    "ano",
-    "tipo de geração"
-   ],
-   "regras_comparabilidade": [
-    "O ano corrente é parcial e é marcado (ano_parcial); não compete com anos completos.",
-    "Antes de 2014 o arquivo detalhado não cobre toda a potência liberada (nota do dicionário da ANEEL): a série começa em 2014."
-   ],
-   "regra_cobertura": "Usinas acompanhadas pela fiscalização (o arquivo não cobre todo o SIGA).",
-   "politica_ausencia": "Linha sem data outorgada fica fora da mediana e das parcelas.",
-   "validacoes": [
-    "Potência em kW do campo MdaPotenciaLiberadaComercial (o campo unitário mistura MW e kW em linhas antigas)."
-   ],
-   "limitacoes": [
-    "A data outorgada é a vigente na publicação: cronograma alterado por ato posterior é medido contra a data alterada.",
-    "Em autorizações recentes (sobretudo solares) a data outorgada é um prazo limite anos à frente: atraso negativo grande é antecipação em relação ao prazo, não a uma previsão."
+    "Datas atribuídas em bloco a milhares de unidades sem licença, sem acesso à rede ou com revogação em avaliação (ex.: 13/09/2031 na fotografia de 18/09/2026) indicam previsão convencional da fiscalização, não cronograma de obra.",
+    "A parcela depois da data outorgada não se explica só pela data em bloco: sem ela, continua acima da metade da potência com previsão (61,0% em 18/09/2026)."
    ],
    "gold": "expansao.json",
    "paginas": [
@@ -2285,6 +2247,45 @@
    "arquivo": "pipeline/energia/metricas/expansao.py"
   },
   {
+   "id": "expansao_contratos_transmissao",
+   "titulo": "Contratos de concessão de transmissão assinados por ano",
+   "pergunta": "Quanta rede foi contratada depois do último leilão presente no arquivo de leilões?",
+   "definicao": "Contratos de concessão de transmissão por ano de assinatura (DatAsnCcd do recurso 'SIGET - Contrato Agente'), com km de circuito e MVA de transformação das obras de Instalação do objeto original de cada contrato (linhas do arquivo de obras com a mesma data de fim do contrato).",
+   "unidade": "contratos, km de circuito e MVA",
+   "grao_geografico": "Brasil; contrato (CSV)",
+   "grao_temporal": "ano de assinatura do contrato",
+   "fontes": [
+    "aneel_siget"
+   ],
+   "formula": "km(ano) = Σ NumEtnLinTms dos módulos LT de obras de Instalação dos contratos assinados no ano (objeto original); MVA(ano) = Σ MdaPotAtvMdlEqp dos transformadores",
+   "regra_agregacao": "Somas por ano de assinatura, cada grandeza no seu campo.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "ano de assinatura",
+    "contrato"
+   ],
+   "regras_comparabilidade": [
+    "Contrato não é leilão: pode vir de leilão, relicitação ou outra origem; não tem RAP de lance nem deságio.",
+    "km de circuito: no SIGET cada circuito é um módulo de linha com a extensão da linha (NumEtnLinTms), então linha de circuito duplo ou bipolo conta cada circuito."
+   ],
+   "regra_cobertura": "Todos os contratos de concessão cadastrados no SIGET (413 em 29/09/2026); ano do período sem contrato é zero observado.",
+   "politica_ausencia": "Contrato sem empreendimento cadastrado tem km e MVA ausentes, não zero.",
+   "validacoes": [
+    "Contratos assinados em 28/06/2024 (15) e 09/12/2024 (3) iguais ao número de lotes dos leilões 001/2024 (15) e 002/2024 (3)."
+   ],
+   "limitacoes": [
+    "Reforço incorporado depois a contrato antigo, com prazo próprio, fica fora das somas.",
+    "O SIGET não informa o leilão de origem: a ligação com o arquivo de leilões é só temporal."
+   ],
+   "gold": "expansao.json",
+   "paginas": [
+    "/setor-eletrico/expansao"
+   ],
+   "arquivo": "pipeline/energia/metricas/expansao.py"
+  },
+  {
    "id": "expansao_desfecho_coortes",
    "titulo": "Desfecho das usinas que passaram pelo RALIE",
    "pergunta": "Das usinas que estavam em implantação, quantas entraram em operação, tiveram a outorga encerrada ou saíram sem desfecho?",
@@ -2322,7 +2323,7 @@
    ],
    "limitacoes": [
     "Usina em operação parcial que segue no RALIE conta como em implantação.",
-    "Sem desfecho não é abandono: pode ser mudança de CEG, saída do acompanhamento ou ato fora do conjunto."
+    "Sem desfecho não é abandono: pode ser mudança de CEG, saída do acompanhamento, ato fora do conjunto ou ato de revogação publicado sem núcleo nem código do CEG (320 atos e 13.446,8 MW em 30/09/2026, 293 de 2026 e 27 de 2025), que não se liga a nenhuma usina do RALIE."
    ],
    "gold": "expansao.json",
    "paginas": [
@@ -2333,8 +2334,8 @@
   {
    "id": "expansao_deslizamento_previsoes",
    "titulo": "Revisão das previsões em 12 meses",
-   "pergunta": "As previsões de operação comercial costumam ser adiadas?",
-   "definicao": "Para a mesma unidade presente nas fotografias mensais S e S + 12 meses com previsão preenchida nas duas: variação da previsão em dias (positivo = adiada), com a parcela da potência adiada, mantida e antecipada e a mediana ponderada por kW.",
+   "pergunta": "Quanto a previsão da fiscalização para a mesma unidade muda em 12 meses, sem contar a data convencional que anda com a fotografia?",
+   "definicao": "Para a mesma unidade presente nas fotografias mensais S e S + 12 meses com previsão preenchida nas duas: variação da previsão em dias (positivo = adiada), com a parcela da potência adiada, mantida e antecipada e a mediana ponderada por kW. Publicada com todas as unidades e sem as unidades cuja previsão é data em bloco em S ou em S + 12 meses, com a parcela da potência em data em bloco de cada par: o adiamento dessas unidades é o deslocamento da data convencional, não revisão de cronograma de obra.",
    "unidade": "% do MW e dias",
    "grao_geografico": "Brasil",
    "grao_temporal": "par de fotografias mensais com 12 meses de distância",
@@ -2362,7 +2363,51 @@
    ],
    "limitacoes": [
     "Viés de sobrevivência: o par só contém unidades que não entraram em operação no intervalo.",
-    "Datas atribuídas em bloco a milhares de unidades sem licença, sem acesso à rede ou com revogação em avaliação (ex.: 13/09/2031 na fotografia de 18/09/2026) indicam previsão convencional da fiscalização, não cronograma de obra."
+    "Datas atribuídas em bloco a milhares de unidades sem licença, sem acesso à rede ou com revogação em avaliação (ex.: 13/09/2031 na fotografia de 18/09/2026) indicam previsão convencional da fiscalização, não cronograma de obra.",
+    "Data em bloco: previsão atribuída a pelo menos 100 usinas distintas na mesma fotografia (o maior complexo do RALIE tem 41 usinas). Ela anda com a fotografia, cerca de 5 anos depois dela (13/09/2031 na fotografia de 18/09/2026), e por isso os números saem também sem essas unidades.",
+    "Mesmo sem as datas em bloco, a revisão mede a mudança da previsão da fiscalização, não a causa do atraso."
+   ],
+   "gold": "expansao.json",
+   "paginas": [
+    "/setor-eletrico/expansao"
+   ],
+   "arquivo": "pipeline/energia/metricas/expansao.py"
+  },
+  {
+   "id": "expansao_desvio_prazo_vigente",
+   "titulo": "Desvio da liberação comercial em relação ao prazo outorgado vigente",
+   "pergunta": "Em relação ao prazo outorgado em vigor na publicação, quando a potência foi liberada para operação comercial?",
+   "definicao": "Para cada linha do arquivo detalhado de liberações para operação comercial: data de liberação realizada menos a data outorgada de início da operação comercial da unidade, como publicada no arquivo (prazo vigente, sem data-base); por ano da liberação, mediana ponderada por kW e parcelas da potência liberada depois e antes do prazo. Não é atraso: em autorizações recentes a data outorgada é um prazo limite anos à frente. O que atrasou em relação a uma previsão datada está em expansao_confiabilidade_previsoes.",
+   "unidade": "dias e % do MW liberado com data outorgada",
+   "grao_geografico": "Brasil; tipo de geração",
+   "grao_temporal": "ano da liberação comercial (desde 2014)",
+   "fontes": [
+    "aneel_liberacao_comercial"
+   ],
+   "numerador": "Σ kW liberado depois da data outorgada vigente",
+   "denominador": "Σ kW liberado com data outorgada preenchida",
+   "formula": "desvio = DatLiberOpComerRealizado − DatUGInicioOpComerOutorgado; mediana ponderada por MdaPotenciaLiberadaComercial",
+   "regra_agregacao": "Mediana ponderada por potência; percentuais como razão de somas.",
+   "versao_formula": "2",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "ano",
+    "tipo de geração"
+   ],
+   "regras_comparabilidade": [
+    "O ano corrente é parcial e é marcado (ano_parcial); não compete com anos completos.",
+    "Antes de 2014 o arquivo detalhado não cobre toda a potência liberada (nota do dicionário da ANEEL): a série começa em 2014.",
+    "Não é publicado como destaque nem chamado de atraso: falta data-base à data outorgada."
+   ],
+   "regra_cobertura": "Usinas acompanhadas pela fiscalização (o arquivo não cobre todo o SIGA).",
+   "politica_ausencia": "Linha sem data outorgada fica fora da mediana e das parcelas.",
+   "validacoes": [
+    "Potência em kW do campo MdaPotenciaLiberadaComercial (o campo unitário mistura MW e kW em linhas antigas)."
+   ],
+   "limitacoes": [
+    "A data outorgada é a vigente na publicação: cronograma alterado por ato posterior é medido contra a data alterada.",
+    "Em autorizações recentes (sobretudo solares) a data outorgada é um prazo limite: em 2026, parcial, a mediana é de 1.209 dias antes do prazo."
    ],
    "gold": "expansao.json",
    "paginas": [
@@ -2374,35 +2419,43 @@
    "id": "expansao_encerramentos_outorga",
    "titulo": "Encerramentos de outorga (revogação e extinção)",
    "pergunta": "Quanta potência outorgada foi revogada ou extinta, e quando?",
-   "definicao": "Atos da ANEEL do conjunto 'Atos de Outorgas de Geração' cujo objeto é revogação de autorização ou extinção de concessão, contados por ano de publicação, com a soma da potência declarada no ato (MdaPotenciaInstaladaMW).",
-   "unidade": "atos, usinas e MW declarado",
+   "definicao": "Atos da ANEEL do conjunto 'Atos de Outorgas de Geração' cujo objeto é revogação de autorização ou extinção de concessão. A potência conta uma vez por usina (núcleo do CEG) em cada ano de publicação e uma vez por usina no total, pelo maior valor conferido entre os atos da usina; a contagem de atos fica à parte. A potência de cada ato (MdaPotenciaInstaladaMW) é conferida contra a potência outorgada da mesma usina no SIGA e no RALIE histórico e contra o limite legal da CGH (5 MW).",
+   "unidade": "atos, usinas e MW",
    "grao_geografico": "Brasil; tipo de geração",
    "grao_temporal": "ano de publicação do ato",
    "fontes": [
-    "aneel_atos_outorga_geracao"
+    "aneel_atos_outorga_geracao",
+    "aneel_siga",
+    "aneel_ralie"
    ],
-   "formula": "MW(ano) = Σ MdaPotenciaInstaladaMW dos atos de encerramento publicados no ano",
-   "regra_agregacao": "Contagem de atos e de usinas distintas (núcleo do CEG) e soma da potência declarada por ano.",
-   "versao_formula": "1",
+   "formula": "MW(ano) = Σ por usina com ato no ano de max(potência conferida dos atos da usina no ano); MW(total) = Σ por usina de max(potência conferida de todos os atos da usina)",
+   "regra_agregacao": "Uma vez por usina (núcleo do CEG) por ano e no total; atos contados à parte. Ato sem núcleo do CEG conta como uma unidade (não pode ser deduplicado).",
+   "versao_formula": "2",
    "natureza_fonte": "OBSERVADO",
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
     "ano",
     "tipo de encerramento",
-    "tipo de geração"
+    "tipo de geração",
+    "situação no SIGA"
    ],
    "regras_comparabilidade": [
     "O ano corrente é parcial e é marcado (ano_parcial); não compete com anos completos.",
-    "Revogação de registros anteriores à outorga (DRO, DRI, DRS) não entra: não é outorga de usina."
+    "Revogação de registros anteriores à outorga (DRO, DRI, DRS) não entra: não é outorga de usina.",
+    "Usina com atos em anos diferentes aparece em cada um desses anos; o total conta a usina uma vez."
    ],
-   "regra_cobertura": "Atos publicados desde 2015 (início do conjunto).",
-   "politica_ausencia": "Ato sem potência conta como ato, não como 0 MW (contado em atos_sem_potencia).",
+   "regra_cobertura": "Atos publicados desde 2015 (início do conjunto). Outorga encerrada não é usina retirada: os atos de usinas que seguem na fase Operação do SIGA são contados à parte (conversão de regime ou nova outorga).",
+   "politica_ausencia": "Ato sem potência conta como ato, não como 0 MW. Potência com divergência de fator 1.000 sem confirmação de qual lado está certo sai da soma e é listada.",
    "validacoes": [
-    "Ruído de ponto flutuante da fonte arredondado a 1 kW."
+    "Ruído de ponto flutuante da fonte arredondado a 1 kW.",
+    "Valor do ato igual ao do cadastro da usina em kW (fator 1.000): corrigido pelo cadastro quando o valor como MW excede o limite legal do tipo ou outro ato de outorga da mesma usina cita a potência do cadastro; fora da soma quando não há confirmação.",
+    "Repetição medida: usinas com mais de um ato e MW que a soma por ato repetiria."
    ],
    "limitacoes": [
     "Encerramentos anteriores a 2015 não constam do conjunto.",
-    "O ano corrente é parcial e é marcado (ano_parcial); não compete com anos completos."
+    "O ano corrente é parcial e é marcado (ano_parcial); não compete com anos completos.",
+    "Atos sem núcleo nem código do CEG na fonte (320 em 30/09/2026, quase todos de 2025 e 2026) não se ligam a nenhuma usina e não são deduplicados.",
+    "Usina sem cadastro no SIGA nem no RALIE (734 atos em 30/09/2026) só tem a potência do ato e o limite do tipo como controle."
    ],
    "gold": "expansao.json",
    "paginas": [
@@ -2414,15 +2467,16 @@
    "id": "expansao_geracao_e_rede_por_uf",
    "titulo": "Geração em implantação e rede em obra por UF",
    "pergunta": "A expansão da geração em cada UF vem acompanhada de obras de rede?",
-   "definicao": "Por UF, lado a lado e sem soma entre si: MW das unidades do RALIE em implantação (e com previsão nos 24 meses seguintes), km de circuito de linhas em obra que tocam a UF e MVA de transformação em obra na UF.",
+   "definicao": "Por UF, lado a lado e sem soma entre si: MW das unidades do RALIE em implantação (e com previsão nos 24 meses seguintes), km de circuito de linhas em obra que tocam a UF e MVA de transformação em obra na UF (SIGET), e km de traçado das linhas existentes e planejadas dentro da UF (WebMap da EPE).",
    "unidade": "MW, km de circuito, MVA e empreendimentos (campos separados)",
    "grao_geografico": "UF",
    "grao_temporal": "fotografias mais recentes do RALIE e do SIGET",
    "fontes": [
     "aneel_ralie",
-    "aneel_siget"
+    "aneel_siget",
+    "epe_webmap_rede"
    ],
-   "formula": "campos independentes: Σ MdaPotenciaUnitaria (RALIE) por UF; Σ km dos módulos LT em andamento com subestação na UF; Σ MVA em andamento na UF",
+   "formula": "campos independentes: Σ MdaPotenciaUnitaria (RALIE) por UF; Σ km dos módulos LT em andamento com subestação na UF; Σ MVA em andamento na UF; Σ km das linhas da EPE dentro da UF",
    "regra_agregacao": "Cada grandeza agregada separadamente; nenhuma razão entre MW e km.",
    "versao_formula": "1",
    "natureza_fonte": "OBSERVADO",
@@ -2452,7 +2506,7 @@
    "id": "expansao_leiloes_transmissao",
    "titulo": "Leilões de transmissão por ano",
    "pergunta": "Quanta rede foi contratada em leilão e a que preço?",
-   "definicao": "Soma por ano do leilão da extensão de linhas (km), da transformação (MVA), do investimento previsto e da receita anual permitida (RAP) do edital e do vencedor dos lotes de transmissão; deságio agregado pela RAP.",
+   "definicao": "Soma por ano do leilão da extensão de linhas (km), da transformação (MVA), do investimento previsto e da receita anual permitida (RAP) do edital e do vencedor dos lotes contratados; deságio agregado pela RAP. Lotes sem vencedor ('SEM LANCE', 'SEM INSCRITO APTO', 'NÃO LEILOADO') são contados à parte, com investimento e RAP do edital como valores ofertados e não contratados.",
    "unidade": "km, MVA, R$ milhões nominais e %",
    "grao_geografico": "Brasil; lote (CSV)",
    "grao_temporal": "ano do leilão",
@@ -2463,21 +2517,22 @@
    "denominador": "Σ RAP do edital dos mesmos lotes",
    "formula": "deságio(ano) = 100 × (1 − Σ RAP vencedora ÷ Σ RAP do edital)",
    "regra_agregacao": "Somas por grandeza, cada uma no seu campo; deságio como razão de somas, nunca média de deságios.",
-   "versao_formula": "1",
+   "versao_formula": "2",
    "natureza_fonte": "OBSERVADO",
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
     "ano",
     "leilão",
     "lote",
-    "UF"
+    "UF",
+    "contratado ou sem vencedor"
    ],
    "regras_comparabilidade": [
     "Reais nominais da data de cada leilão, sem correção monetária.",
     "km, MVA e reais nunca são somados entre si."
    ],
    "regra_cobertura": "Lotes de leilões de transmissão desde 1999 até o último leilão presente no arquivo.",
-   "politica_ausencia": "Ano sem linha no arquivo é ausência, não zero; lote só de subestação tem 0 km publicado pela fonte.",
+   "politica_ausencia": "Ano sem linha no arquivo é ausência, não zero. Em lote sem vencedor, o 0 de km, MVA, prazo e RAP vencedora é marcador da fonte e vira ausência. Em lote contratado, 0 km só é zero quando a descrição não cita linha (LT ou km), e 0 MVA só quando não cita MVA; nos demais casos é campo não preenchido, fora da soma e contado (29 lotes sem km e 27 sem MVA em 30/09/2026).",
    "validacoes": [
     "Deságio publicado (PctDesagio, fração) conferido contra 1 − RAP vencedora ÷ RAP do edital com tolerância de 0,6 ponto percentual (arredondamento da fonte em duas casas); divergências publicadas."
    ],
@@ -2503,7 +2558,7 @@
     "aneel_siget"
    ],
    "formula": "km(emp) = Σ NumEtnLinTms dos módulos LT distintos com obra de Instalação; MVA(emp) = Σ MdaPotAtvMdlEqp dos transformadores de potência",
-   "regra_agregacao": "Somas por grandeza e situação; atraso realizado por ano como mediana e percentis de (efetiva − ato legal).",
+   "regra_agregacao": "Somas por grandeza e situação; módulo listado em mais de um empreendimento conta uma vez, no empreendimento da obra de Instalação mais antiga; atraso realizado por ano como mediana e percentis de (efetiva − ato legal).",
    "versao_formula": "1",
    "natureza_fonte": "OBSERVADO",
    "natureza_transformacao": "CALCULADO",
@@ -2525,7 +2580,7 @@
    "limitacoes": [
     "km de circuito: no SIGET cada circuito é um módulo de linha com a extensão da linha (NumEtnLinTms), então linha de circuito duplo ou bipolo conta cada circuito.",
     "A previsão informada pela transmissora não está no arquivo aberto: o atraso em andamento é medido contra o ato legal.",
-    "Sem geometria pública verificada das linhas: a territorialização é por UF das subestações."
+    "O SIGET não tem coordenadas: a territorialização das obras é por UF das subestações; a geometria das linhas vem do WebMap da EPE (expansao_rede_epe), sem chave comum com o SIGET."
    ],
    "gold": "expansao.json",
    "paginas": [
@@ -2561,7 +2616,7 @@
    "politica_ausencia": "Célula vazia na planilha é ausência.",
    "validacoes": [
     "Soma da Figura 3-25 igual aos totais rotulados no relatório (249 GW em 2025 e 359 GW em 2035) com tolerância de 0,5 GW.",
-    "Soma da Figura 3-6 em 2025 igual a cerca de 251 GW do texto com tolerância de 1 GW."
+    "Soma da Figura 3-6 em 2025 igual a cerca de 251 GW do texto com tolerância de 1 GW: conferência de valor, não de universo (o texto fala em oferta centralizada e a figura inclui a MMGD na coluna Solar)."
    ],
    "limitacoes": [
     "PDE 2035 é cenário de planejamento de uma edição específica (data-base das premissas janeiro de 2025, aprovado pela Portaria MME nº 923/2026), nunca realizado nem previsão; é publicado com selo CENÁRIO em camada separada."
@@ -2597,7 +2652,7 @@
     "Outorga não é capacidade que certamente entrará: parte da carteira é revogada ou sai do acompanhamento sem operar (ver o desfecho das coortes do RALIE).",
     "MW é potência instalada ou outorgada, não energia: a produção depende do fator de capacidade de cada fonte, e garantia física ou energia firme são outras grandezas."
    ],
-   "regra_cobertura": "Fases presentes no arquivo aberto do SIGA; usina revogada ou extinta sai do arquivo e é contada pelos atos de outorga.",
+   "regra_cobertura": "Fases presentes no arquivo aberto do SIGA. Usina com outorga revogada ou extinta pode sair do arquivo ou continuar nele: em 30/09/2026, 196 usinas com ato de encerramento seguem na fase Operação (165 sob registro). Estágios e encerramentos não são disjuntos.",
    "politica_ausencia": "Fase não prevista é preservada como 'outro' com o rótulo original, nunca descartada.",
    "validacoes": [
     "Soma das usinas nos estágios igual ao número de núcleos de CEG do arquivo."
@@ -2732,6 +2787,47 @@
    ],
    "limitacoes": [
     "O resíduo não identifica a usina responsável: aponta onde conferir."
+   ],
+   "gold": "expansao.json",
+   "paginas": [
+    "/setor-eletrico/expansao"
+   ],
+   "arquivo": "pipeline/energia/metricas/expansao.py"
+  },
+  {
+   "id": "expansao_rede_epe",
+   "titulo": "Linhas de transmissão existentes e planejadas por UF (WebMap da EPE)",
+   "pergunta": "Onde estão as linhas de transmissão existentes e as da expansão planejada?",
+   "definicao": "Comprimento das linhas das camadas 21 (Base Existente) e 10 (Expansão Planejada) do WebMap da EPE, pela geometria publicada (generalizada pelo servidor a 0,005 grau), por tensão, ano e UF; cada segmento vai para a UF do seu ponto médio na malha de UF do IBGE.",
+   "unidade": "km de traçado por feição",
+   "grao_geografico": "UF; linha (JSON do mapa)",
+   "grao_temporal": "ano de operação (existente) ou previsto (planejada), na data de captura",
+   "fontes": [
+    "epe_webmap_rede"
+   ],
+   "formula": "km(UF) = Σ comprimento geodésico dos segmentos cujo ponto médio está na UF",
+   "regra_agregacao": "Soma de comprimento por UF, tensão e ano.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "camada",
+    "UF",
+    "tensão",
+    "ano"
+   ],
+   "regras_comparabilidade": [
+    "km por feição (traçado; há feições com dois circuitos), não km de circuito do SIGET: as duas medidas não se somam.",
+    "A camada planejada é planejamento da EPE, não obra contratada."
+   ],
+   "regra_cobertura": "Feições das duas camadas na data de captura (contagem conferida contra a informada pelo serviço).",
+   "politica_ausencia": "Ano 0 e tensão 0 da fonte viram ausência; segmento fora da malha de UF fica em km_fora_de_uf.",
+   "validacoes": [
+    "Comprimento da geometria comparado ao campo Extensao feição por feição (mediana de 0,5% de diferença); campo acima de 3.000 km tratado como fora de escala (7 feições da camada planejada, em metros)."
+   ],
+   "limitacoes": [
+    "O serviço não informa a data de atualização das camadas.",
+    "Sem chave comum com o SIGET ou com os leilões: a ligação é territorial."
    ],
    "gold": "expansao.json",
    "paginas": [
@@ -5975,21 +6071,106 @@
     "/setor-eletrico/pld/modelos"
    ],
    "versao_formula": "1.0",
-   "id": "previsao_cobertura_p10_p90",
-   "titulo": "Cobertura da faixa P10 a P90",
-   "pergunta": "A faixa que deveria conter o realizado em 80% dos casos conteve quantas vezes?",
-   "definicao": "Fração das células em que o realizado ficou entre o quantil de 10% e o de 90% (inclusive). O estado de calibração usa entregas distintas como tamanho de amostra (regra da governança: 75% a 85% com n ≥ 100).",
+   "id": "previsao_brutas_fora_da_faixa",
+   "titulo": "Previsões brutas fora da faixa de preço (G23-R1)",
+   "pergunta": "Quantas previsões do C2 sairiam abaixo do piso, acima do teto ou negativas sem a restrição de preço?",
+   "definicao": "Por modelo e frequência: previsões brutas (antes da restrição à faixa [piso, teto estrutural] médios dos atos publicados até a origem) abaixo do piso ou acima do teto por mais de 1e-6 R$/MWh, e negativas. O total é o número de previsões brutas calculadas.",
+   "unidade": "contagem de células",
+   "grao_geografico": "os quatro submercados juntos",
+   "grao_temporal": "frequência (semanal, mensal)",
+   "fontes": [
+    "ccee_pld_horario",
+    "ear_subsistema_di",
+    "ena_subsistema_di",
+    "regulatorio:limites_pld"
+   ],
+   "numerador": "previsões brutas fora da faixa",
+   "denominador": "previsões brutas calculadas",
+   "formula": "n(bruta < piso − ε), n(bruta > teto + ε), n(bruta < −ε), ε = 1e-6 R$/MWh",
+   "regra_agregacao": "contagem",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "modelo",
+    "frequência"
+   ],
+   "regras_comparabilidade": [
+    "A previsão publicada é sempre a restrita; a bruta só documenta o comportamento do modelo."
+   ],
+   "regra_cobertura": "Todas as células com previsão bruta do C2.",
+   "politica_ausencia": "Célula sem previsão bruta não entra.",
+   "validacoes": [
+    "mesma tolerância da cobertura: B0 no piso com λ = ZERO não conta como abaixo do piso"
+   ],
+   "limitacoes": [
+    "Faixa provisória (ato do ano seguinte ainda não publicado) usa os limites vigentes na origem."
+   ],
+   "arquivo": "pipeline/energia/metricas/previsoes.py"
+  },
+  {
+   "gold": "previsoes_desempenho.json",
+   "paginas": [
+    "/setor-eletrico/pld/previsoes",
+    "/setor-eletrico/pld/modelos"
+   ],
+   "versao_formula": "1.0",
+   "id": "previsao_cobertura_p05_p95",
+   "titulo": "Cobertura da faixa P5 a P95",
+   "pergunta": "A faixa que deveria conter o realizado em 90% dos casos conteve quantas vezes?",
+   "definicao": "Fração das células em que o realizado ficou entre o quantil de 5% e o de 95% (inclusive), com a mesma tolerância de 1e-6 R$/MWh da faixa P10 a P90.",
    "unidade": "fração de 0 a 1",
    "grao_geografico": "submercado ou os quatro juntos",
    "grao_temporal": "horizonte e período",
    "fontes": [
     "ccee_pld_horario"
    ],
-   "numerador": "células com P10 ≤ realizado ≤ P90",
+   "numerador": "células com P5 − 1e-6 ≤ realizado ≤ P95 + 1e-6",
    "denominador": "células com quantis",
-   "formula": "cobertura = n(P10 ≤ y ≤ P90) ÷ n",
+   "formula": "cobertura90 = n(P5 − ε ≤ y ≤ P95 + ε) ÷ n, ε = 1e-6 R$/MWh",
    "regra_agregacao": "razão de contagens",
-   "natureza_fonte": "CALCULADO",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "modelo",
+    "horizonte (W1 a W4, M1 a M3)",
+    "submercado",
+    "período (desenvolvimento, teste)"
+   ],
+   "regras_comparabilidade": [
+    "Nominal 90%; não entra na regra de calibração, que usa a faixa P10 a P90."
+   ],
+   "regra_cobertura": "Células com quantis.",
+   "politica_ausencia": "Célula sem previsão ou sem realizado completo fica fora do cálculo; ausência nunca vira zero.",
+   "validacoes": [
+    "P5 ≤ P10 ≤ P90 ≤ P95 em toda célula"
+   ],
+   "limitacoes": [
+    "Origens diárias vizinhas preveem a mesma entrega: o tamanho efetivo é o número de entregas distintas, publicado ao lado."
+   ],
+   "arquivo": "pipeline/energia/metricas/previsoes.py"
+  },
+  {
+   "gold": "previsoes_desempenho.json",
+   "paginas": [
+    "/setor-eletrico/pld/previsoes",
+    "/setor-eletrico/pld/modelos"
+   ],
+   "versao_formula": "1.0",
+   "id": "previsao_cobertura_p10_p90",
+   "titulo": "Cobertura da faixa P10 a P90",
+   "pergunta": "A faixa que deveria conter o realizado em 80% dos casos conteve quantas vezes?",
+   "definicao": "Fração das células em que o realizado ficou entre o quantil de 10% e o de 90% (inclusive). O estado de calibração usa entregas distintas como tamanho de amostra (regra da governança: 75% a 85% com n ≥ 100). A comparação usa tolerância de 1e-6 R$/MWh: realizado igual ao piso que limitou o P10 conta como coberto (as duas contas diferem só por ruído de ponto flutuante, da ordem de 1e-10).",
+   "unidade": "fração de 0 a 1",
+   "grao_geografico": "submercado ou os quatro juntos",
+   "grao_temporal": "horizonte e período",
+   "fontes": [
+    "ccee_pld_horario"
+   ],
+   "numerador": "células com P10 − 1e-6 ≤ realizado ≤ P90 + 1e-6",
+   "denominador": "células com quantis",
+   "formula": "cobertura = n(P10 − ε ≤ y ≤ P90 + ε) ÷ n, ε = 1e-6 R$/MWh",
+   "regra_agregacao": "razão de contagens",
+   "natureza_fonte": "OBSERVADO",
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
     "modelo",
@@ -6003,11 +6184,57 @@
    "regra_cobertura": "Células com quantis.",
    "politica_ausencia": "Célula sem previsão ou sem realizado completo fica fora do cálculo; ausência nunca vira zero.",
    "validacoes": [
-    "calibração só com n ≥ 100 entregas distintas"
+    "calibração só com n ≥ 100 entregas distintas",
+    "cobertura refeita por outro leitor a partir do CSV do teste retrospectivo (células cobertas iguais a menos das ambíguas pelo arredondamento a 2 casas)",
+    "realizado no piso com P10 limitado ao piso conta como coberto (teste com a semana de 04/01/2025)"
    ],
    "limitacoes": [
     "Origens diárias vizinhas preveem a mesma entrega: o tamanho efetivo é o número de entregas distintas, publicado ao lado.",
-    "Faixa não calibrada não é publicada na previsão atual."
+    "Faixa não calibrada não é publicada na previsão atual.",
+    "Registros do arquivo emitidos antes de 01/10/2026 gravaram a cobertura com comparação estrita; o valor refeito com a regra corrigida aparece ao lado, sem reescrever o registro."
+   ],
+   "arquivo": "pipeline/energia/metricas/previsoes.py"
+  },
+  {
+   "gold": "previsoes_desempenho.json",
+   "paginas": [
+    "/setor-eletrico/pld/previsoes",
+    "/setor-eletrico/pld/modelos"
+   ],
+   "versao_formula": "1.0",
+   "id": "previsao_coeficiente_d7_acima_de_1",
+   "titulo": "Ajustes do C2 com coeficiente de d7 − B0 acima de 1 (G23-R1)",
+   "pergunta": "Com que frequência o C2 amplifica o sinal dos últimos 7 dias?",
+   "definicao": "Por segmento (modelo × horizonte × submercado): ajustes semanais concluídos em que o coeficiente da variável média dos 7 últimos dias − B0, na unidade original, passou de 1; fração sobre os ajustes concluídos; também o maior coeficiente e quantos ajustes escolheram λ = ZERO (correção desligada).",
+   "unidade": "contagem e fração de 0 a 1",
+   "grao_geografico": "submercado",
+   "grao_temporal": "origem de ajuste (domingo)",
+   "fontes": [
+    "ccee_pld_horario",
+    "ear_subsistema_di",
+    "ena_subsistema_di"
+   ],
+   "numerador": "ajustes com coeficiente de d7 − B0 > 1",
+   "denominador": "ajustes concluídos (ok)",
+   "formula": "fração = n(coef_d7 > 1) ÷ n(ajustes ok)",
+   "regra_agregacao": "contagem por segmento; total = soma das contagens",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "modelo",
+    "horizonte",
+    "submercado"
+   ],
+   "regras_comparabilidade": [
+    "Ajustes de domingos vizinhos compartilham quase todo o treino: não são casos independentes."
+   ],
+   "regra_cobertura": "Ajustes com treino suficiente (52 semanas ou 24 meses).",
+   "politica_ausencia": "Segmento sem ajuste concluído: fração nula (null), nunca zero.",
+   "validacoes": [
+    "coeficientes por origem publicados em previsoes_ajustes_c2.csv"
+   ],
+   "limitacoes": [
+    "Coeficiente acima de 1 indica amplificação possível, não erro por si só."
    ],
    "arquivo": "pipeline/energia/metricas/previsoes.py"
   },
@@ -6032,7 +6259,7 @@
    "denominador": "células avaliadas",
    "formula": "MAE = Σ |ŷ − y| ÷ n",
    "regra_agregacao": "média simples das células (cada origem pesa igual)",
-   "natureza_fonte": "CALCULADO",
+   "natureza_fonte": "OBSERVADO",
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
     "modelo",
@@ -6063,6 +6290,90 @@
     "/setor-eletrico/pld/modelos"
    ],
    "versao_formula": "1.0",
+   "id": "previsao_fracao_abaixo_p10",
+   "titulo": "Fração do realizado abaixo do P10",
+   "pergunta": "Quantas vezes o preço ficou abaixo da ponta inferior da faixa?",
+   "definicao": "Fração das células com quantis em que o realizado ficou abaixo do P10 por mais de 1e-6 R$/MWh. Nominal 10%; com a cobertura e a fração acima do P90 soma 1.",
+   "unidade": "fração de 0 a 1",
+   "grao_geografico": "submercado ou os quatro juntos",
+   "grao_temporal": "horizonte e período",
+   "fontes": [
+    "ccee_pld_horario"
+   ],
+   "numerador": "células com realizado < P10 − 1e-6",
+   "denominador": "células com quantis",
+   "formula": "abaixo_p10 = n(y < P10 − ε) ÷ n",
+   "regra_agregacao": "razão de contagens",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "modelo",
+    "horizonte (W1 a W4, M1 a M3)",
+    "submercado",
+    "período (desenvolvimento, teste)"
+   ],
+   "regras_comparabilidade": [
+    "Assimetria entre abaixo do P10 e acima do P90 indica faixa deslocada, não só estreita."
+   ],
+   "regra_cobertura": "Células com quantis.",
+   "politica_ausencia": "Célula sem previsão ou sem realizado completo fica fora do cálculo; ausência nunca vira zero.",
+   "validacoes": [
+    "abaixo_p10 + cobertura_p10_p90 + acima_p90 = 1"
+   ],
+   "limitacoes": [
+    "Origens diárias vizinhas preveem a mesma entrega: o tamanho efetivo é o número de entregas distintas, publicado ao lado."
+   ],
+   "arquivo": "pipeline/energia/metricas/previsoes.py"
+  },
+  {
+   "gold": "previsoes_desempenho.json",
+   "paginas": [
+    "/setor-eletrico/pld/previsoes",
+    "/setor-eletrico/pld/modelos"
+   ],
+   "versao_formula": "1.0",
+   "id": "previsao_fracao_acima_p90",
+   "titulo": "Fração do realizado acima do P90",
+   "pergunta": "Quantas vezes o preço ficou acima da ponta superior da faixa?",
+   "definicao": "Fração das células com quantis em que o realizado ficou acima do P90 por mais de 1e-6 R$/MWh. Nominal 10%.",
+   "unidade": "fração de 0 a 1",
+   "grao_geografico": "submercado ou os quatro juntos",
+   "grao_temporal": "horizonte e período",
+   "fontes": [
+    "ccee_pld_horario"
+   ],
+   "numerador": "células com realizado > P90 + 1e-6",
+   "denominador": "células com quantis",
+   "formula": "acima_p90 = n(y > P90 + ε) ÷ n",
+   "regra_agregacao": "razão de contagens",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "modelo",
+    "horizonte (W1 a W4, M1 a M3)",
+    "submercado",
+    "período (desenvolvimento, teste)"
+   ],
+   "regras_comparabilidade": [
+    "Ver a fração abaixo do P10 junto."
+   ],
+   "regra_cobertura": "Células com quantis.",
+   "politica_ausencia": "Célula sem previsão ou sem realizado completo fica fora do cálculo; ausência nunca vira zero.",
+   "validacoes": [
+    "abaixo_p10 + cobertura_p10_p90 + acima_p90 = 1"
+   ],
+   "limitacoes": [
+    "Origens diárias vizinhas preveem a mesma entrega: o tamanho efetivo é o número de entregas distintas, publicado ao lado."
+   ],
+   "arquivo": "pipeline/energia/metricas/previsoes.py"
+  },
+  {
+   "gold": "previsoes_desempenho.json",
+   "paginas": [
+    "/setor-eletrico/pld/previsoes",
+    "/setor-eletrico/pld/modelos"
+   ],
+   "versao_formula": "1.0",
    "id": "previsao_ganho_sobre_b0",
    "titulo": "Ganho de MAE sobre a persistência (B0)",
    "pergunta": "O modelo erra menos que repetir o último período?",
@@ -6075,7 +6386,7 @@
    ],
    "formula": "ganho = Σ(|ŷ_B0 − y| − |ŷ_m − y|) ÷ n pareadas; IC = percentis 5 e 95 das médias reamostradas por bloco",
    "regra_agregacao": "média das diferenças pareadas; blocos mantêm juntas todas as células das mesmas origens",
-   "natureza_fonte": "CALCULADO",
+   "natureza_fonte": "OBSERVADO",
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
     "modelo",
@@ -6117,7 +6428,7 @@
    ],
    "formula": "largura = Σ (P90 − P10) ÷ n",
    "regra_agregacao": "média simples",
-   "natureza_fonte": "CALCULADO",
+   "natureza_fonte": "OBSERVADO",
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
     "modelo",
@@ -6145,6 +6456,45 @@
     "/setor-eletrico/pld/modelos"
    ],
    "versao_formula": "1.0",
+   "id": "previsao_limiares_de_regime",
+   "titulo": "Limiares dos regimes de preço, armazenamento e extremo",
+   "pergunta": "Onde termina o preço intermediário e começa o alto, e o armazenamento baixo ou alto?",
+   "definicao": "Fixados no período de desenvolvimento, por submercado e frequência, e aplicados sem mudança ao teste: percentil 75 do B0 (preço alto acima dele), percentil 90 do realizado (extremo acima dele), percentis 33 e 67 da EAR do último dia elegível (armazenamento baixo, médio e alto). Percentil tipo 7 (interpolação linear).",
+   "unidade": "R$/MWh (B0 e realizado); % da capacidade (EAR)",
+   "grao_geografico": "submercado",
+   "grao_temporal": "frequência",
+   "fontes": [
+    "ccee_pld_horario",
+    "ear_subsistema_di"
+   ],
+   "formula": "limiar = quantil tipo 7 dos valores do desenvolvimento no submercado e frequência",
+   "regra_agregacao": "percentil empírico",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "submercado",
+    "frequência"
+   ],
+   "regras_comparabilidade": [
+    "O nível de preço subiu depois de 2024: no teste, a maior parte das células cai em preço alto."
+   ],
+   "regra_cobertura": "Células do desenvolvimento com o valor presente.",
+   "politica_ausencia": "Sem valores no desenvolvimento: limiar nulo e regime não atribuído.",
+   "validacoes": [
+    "limiares calculados só com o desenvolvimento"
+   ],
+   "limitacoes": [
+    "Grupos com menos de 10 entregas são marcados."
+   ],
+   "arquivo": "pipeline/energia/metricas/previsoes.py"
+  },
+  {
+   "gold": "previsoes_desempenho.json",
+   "paginas": [
+    "/setor-eletrico/pld/previsoes",
+    "/setor-eletrico/pld/modelos"
+   ],
+   "versao_formula": "1.0",
    "id": "previsao_perda_quantilica",
    "titulo": "Perda quantílica média",
    "pergunta": "Quão boa é a distribuição prevista, e não só o ponto?",
@@ -6157,7 +6507,7 @@
    ],
    "formula": "PQ = média_células( média_τ( máx(τ(y − q_τ), (τ − 1)(y − q_τ)) ) )",
    "regra_agregacao": "média simples",
-   "natureza_fonte": "CALCULADO",
+   "natureza_fonte": "OBSERVADO",
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
     "modelo",
@@ -6200,7 +6550,7 @@
    "denominador": "número de horas da entrega",
    "formula": "realizado = Σ PLD_h ÷ horas da entrega",
    "regra_agregacao": "média por duração (todas as horas têm 1 hora)",
-   "natureza_fonte": "CALCULADO",
+   "natureza_fonte": "OBSERVADO",
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
     "submercado",
@@ -6318,6 +6668,131 @@
     "/setor-eletrico/pld/modelos"
    ],
    "versao_formula": "1.0",
+   "id": "previsao_rmse",
+   "titulo": "Raiz do erro quadrático médio (RMSE)",
+   "pergunta": "Quanto a previsão errou, pesando mais os erros grandes?",
+   "definicao": "Raiz quadrada da média de (previsão − realizado)² sobre as células avaliadas do recorte.",
+   "unidade": "R$/MWh",
+   "grao_geografico": "submercado ou os quatro juntos",
+   "grao_temporal": "horizonte e período",
+   "fontes": [
+    "ccee_pld_horario"
+   ],
+   "numerador": "Σ (previsão − realizado)²",
+   "denominador": "células avaliadas",
+   "formula": "RMSE = √(Σ (ŷ − y)² ÷ n)",
+   "regra_agregacao": "média simples dos quadrados das células, depois a raiz",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "modelo",
+    "horizonte (W1 a W4, M1 a M3)",
+    "submercado",
+    "período (desenvolvimento, teste)"
+   ],
+   "regras_comparabilidade": [
+    "RMSE ≥ MAE sempre; a distância entre os dois indica erros grandes concentrados (extremos)."
+   ],
+   "regra_cobertura": "Células com previsão e realizado completo.",
+   "politica_ausencia": "Célula sem previsão ou sem realizado completo fica fora do cálculo; ausência nunca vira zero.",
+   "validacoes": [
+    "mesmas células do MAE"
+   ],
+   "limitacoes": [
+    "O teste retrospectivo é reconstrução sob a hipótese LAT1D (período usado só depois de terminado há 1 dia); a CCEE não informa quando publicou cada hora do passado (achado A09).",
+    "Origens diárias vizinhas preveem a mesma entrega: o tamanho efetivo é o número de entregas distintas, publicado ao lado."
+   ],
+   "arquivo": "pipeline/energia/metricas/previsoes.py"
+  },
+  {
+   "gold": "previsoes_desempenho.json",
+   "paginas": [
+    "/setor-eletrico/pld/previsoes",
+    "/setor-eletrico/pld/modelos"
+   ],
+   "versao_formula": "1.0",
+   "id": "previsao_skill_mae_sobre_b0",
+   "titulo": "Habilidade relativa ao B0 (skill de MAE)",
+   "pergunta": "Que fração do erro da persistência o modelo elimina?",
+   "definicao": "1 − MAE do modelo ÷ MAE do B0, nas mesmas células: 0 = igual à persistência, positivo = melhor, negativo = pior. Sem valor quando o MAE do B0 é zero.",
+   "unidade": "fração (adimensional)",
+   "grao_geografico": "submercado ou os quatro juntos",
+   "grao_temporal": "horizonte e período",
+   "fontes": [
+    "ccee_pld_horario"
+   ],
+   "numerador": "MAE do modelo nas células pareadas",
+   "denominador": "MAE do B0 nas mesmas células",
+   "formula": "skill = 1 − MAE_m ÷ MAE_B0",
+   "regra_agregacao": "razão de médias nas mesmas células (não é média de razões)",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "modelo",
+    "horizonte (W1 a W4, M1 a M3)",
+    "submercado",
+    "período (desenvolvimento, teste)"
+   ],
+   "regras_comparabilidade": [
+    "Só compara com o B0 nas mesmas células; não aprova o modelo."
+   ],
+   "regra_cobertura": "Células com previsão do modelo e do B0 e realizado completo.",
+   "politica_ausencia": "MAE do B0 zero ou nenhuma célula pareada: sem valor (null), nunca zero.",
+   "validacoes": [
+    "mesmas células do ganho sobre o B0"
+   ],
+   "limitacoes": [
+    "Origens diárias vizinhas preveem a mesma entrega: o tamanho efetivo é o número de entregas distintas, publicado ao lado."
+   ],
+   "arquivo": "pipeline/energia/metricas/previsoes.py"
+  },
+  {
+   "gold": "previsoes_desempenho.json",
+   "paginas": [
+    "/setor-eletrico/pld/previsoes",
+    "/setor-eletrico/pld/modelos"
+   ],
+   "versao_formula": "1.0",
+   "id": "previsao_tamanho_amostra",
+   "titulo": "Tamanho da amostra da avaliação",
+   "pergunta": "Sobre quantos casos cada métrica foi calculada?",
+   "definicao": "Contagens publicadas ao lado de cada métrica: células avaliadas (origem × submercado), entregas distintas (tamanho efetivo, usado na calibração), origens, células e entregas com quantis, células pareadas com o B0.",
+   "unidade": "contagem",
+   "grao_geografico": "submercado ou os quatro juntos",
+   "grao_temporal": "horizonte e período",
+   "fontes": [
+    "ccee_pld_horario"
+   ],
+   "formula": "contagem de células, de entregas distintas e de origens distintas no recorte",
+   "regra_agregacao": "contagem",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "modelo",
+    "horizonte (W1 a W4, M1 a M3)",
+    "submercado",
+    "período (desenvolvimento, teste)"
+   ],
+   "regras_comparabilidade": [
+    "Células não são casos independentes: compare amostras pelo número de entregas distintas."
+   ],
+   "regra_cobertura": "Todas as células do recorte com previsão e realizado completo.",
+   "politica_ausencia": "Célula sem previsão ou sem realizado completo fica fora do cálculo; ausência nunca vira zero.",
+   "validacoes": [
+    "28 células por origem"
+   ],
+   "limitacoes": [
+    "Origens diárias vizinhas preveem a mesma entrega: o tamanho efetivo é o número de entregas distintas, publicado ao lado."
+   ],
+   "arquivo": "pipeline/energia/metricas/previsoes.py"
+  },
+  {
+   "gold": "previsoes_desempenho.json",
+   "paginas": [
+    "/setor-eletrico/pld/previsoes",
+    "/setor-eletrico/pld/modelos"
+   ],
+   "versao_formula": "1.0",
    "id": "previsao_vies",
    "titulo": "Viés da previsão",
    "pergunta": "A previsão tende a ficar acima ou abaixo do realizado?",
@@ -6332,7 +6807,7 @@
    "denominador": "células avaliadas",
    "formula": "viés = Σ (ŷ − y) ÷ n",
    "regra_agregacao": "média simples das células",
-   "natureza_fonte": "CALCULADO",
+   "natureza_fonte": "OBSERVADO",
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
     "modelo",
@@ -6856,7 +7331,7 @@
     "Apurado = IP + IND desde 2022."
    ],
    "limitacoes": [
-    "Interrupções de até 3 minutos e as de responsabilidade do consumidor não são publicadas em nenhuma parcela."
+    "Interrupções de menos de 3 minutos e as de responsabilidade do consumidor não são publicadas em nenhuma parcela."
    ],
    "gold": "qualidade.json",
    "paginas": [

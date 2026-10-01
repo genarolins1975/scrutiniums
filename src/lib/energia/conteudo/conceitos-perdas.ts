@@ -21,6 +21,8 @@ const DOC_S5 = 'Página "Perdas de Energia" (Assuntos, Distribuição), publicad
 const s5 = (trecho: string, parafrase?: string): FonteOficial => ({ orgao: "ANEEL", documento: DOC_S5, url: URL_S5, trecho, parafrase });
 
 const VEJA = [{ rotulo: "Perdas de energia", href: "/setor-eletrico/perdas" }];
+// técnicas e não técnicas têm painel próprio; a âncora #composicao só existe nessa página
+const VEJA_COMPOSICAO = [...VEJA, { rotulo: "Técnicas e não técnicas", href: "/setor-eletrico/perdas/composicao#composicao" }];
 
 export const CONCEITOS: Conceito[] = [
   {
@@ -68,7 +70,7 @@ export const CONCEITOS: Conceito[] = [
       ),
     ],
     limitacoes: ["Não se pode concluir que toda perda técnica possa ser eliminada: ela decorre da física da rede."],
-    vejaNoPortal: VEJA,
+    vejaNoPortal: VEJA_COMPOSICAO,
   },
   {
     slug: "perdas-nao-tecnicas",
@@ -91,7 +93,7 @@ export const CONCEITOS: Conceito[] = [
       "Incluem erros de medição e de faturamento: não são sinônimo de furto.",
       "Uma taxa alta numa área não atribui responsabilidade às famílias que moram nela.",
     ],
-    vejaNoPortal: VEJA,
+    vejaNoPortal: VEJA_COMPOSICAO,
   },
   {
     slug: "percentual-regulatorio-de-perdas",
@@ -113,6 +115,6 @@ export const CONCEITOS: Conceito[] = [
       ),
     ],
     limitacoes: ["Parâmetro regulatório não é perda realizada nem obrigação de perda zero."],
-    vejaNoPortal: [{ rotulo: "Realizado e regulatório", href: "/setor-eletrico/perdas#regulatorio" }],
+    vejaNoPortal: [{ rotulo: "Realizado e regulatório", href: "/setor-eletrico/perdas/regulatorio#regulatorio" }],
   },
 ];

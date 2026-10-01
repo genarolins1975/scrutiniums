@@ -102,6 +102,10 @@ LICENCA_GOVBR = ("Conteúdo público do portal gov.br da ANEEL; reprodução com
 TOL_DEC_FEC = 0.005
 TOL_COMP_RS = 0.5e6
 TOL_COMP_QTD = 0.05e6
+# Mês completo: universo com dado no mês (UCs com DEC no Brasil; distribuidoras que informaram
+# compensações) em ao menos esta fração do máximo dos 12 meses anteriores. Publicado na gold
+# (regras.mes_completo*) para a página citar a regra sem número escrito à mão.
+TOL_MES_COMPLETO = 0.99
 
 ANO_INICIO_CONT = 2000       # primeiro ano do Parquet de continuidade por conjunto e mês
 ANO_INICIO_PARCELAS = 2010   # parcelas desagregadas atuais (IP, IND, INE...) começam aqui
@@ -853,7 +857,7 @@ def dgc(dec, fec, lim_dec, lim_fec):
     return (rd + rf) / 2
 
 
-def mes_completo(n, n_ref, tolerancia=0.99):
+def mes_completo(n, n_ref, tolerancia=TOL_MES_COMPLETO):
     """Mês completo: universo com dado (UCs no Brasil; distribuidoras nas compensações)
     ≥ 99% do máximo dos 12 meses anteriores. A fonte publica um mês novo antes de todas as
     distribuidoras enviarem; o mês parcial não entra em ano nem em comparação."""
@@ -1573,6 +1577,9 @@ def construir(con, ctx):
                 comp_anual[ano][medida] += v
                 comp_dist[c14][ano][medida] += v
                 comp_dist[c14][ano][f"{medida}.{tipo}"] += v
+                # por unidade: desde 2022 os tipos trimestral e anual só vêm de unidades
+                # geradoras (com zero); a soma UC + UG por tipo não distingue isso da ausência de UC
+                comp_dist[c14][ano][f"{medida}.{unid}.{tipo}"] += v
                 if len(ref) == 7 and ref[4] == "-" and ref[5:].isdigit():   # AAAA-MM (não AAAA-Tn)
                     comp_mensal[ref][medida] += v
                     comp_meses[c14].add(ref)
@@ -2064,7 +2071,9 @@ def montar_gold(con, ctx, v):
             "cobertura_min": _r(x["cobertura_min"], 4),
             "compensacao": ({"ano": v["comp_ano_ref"], "valor": _r(cd.get("valor"), 2), "quantidade": _r(cd.get("quantidade"), 0),
                              "valor_por_uc": _r(por_mil(cd.get("valor"), ucs, 1.0), 2),
-                             "valor_por_tipo": {t: _r(cd.get(f"valor.{t}"), 2) for t in v["tipos"] if cd.get(f"valor.{t}") is not None}}
+                             "valor_por_tipo": {t: _r(cd.get(f"valor.{t}"), 2) for t in v["tipos"] if cd.get(f"valor.{t}") is not None},
+                             # só unidades consumidoras: tipo sem linha de UC no ano fica fora (ausência, não zero)
+                             "valor_uc_por_tipo": {t: _r(cd.get(f"valor.uc.{t}"), 2) for t in v["tipos"] if cd.get(f"valor.uc.{t}") is not None}}
                             if cd else None),
             "iasc": ({"ano": ia_ano, "valor": _r(ia.get("iasc", {}).get(f"{ia_ano:04d}"), 2),
                       "amostra": _r(ia.get("amostra", {}).get(f"{ia_ano:04d}"), 0),
@@ -2135,7 +2144,11 @@ def montar_gold(con, ctx, v):
             vv = s_.get(f"valor.uc.{t}", 0) + s_.get(f"valor.ug.{t}", 0)
             qq = s_.get(f"quantidade.uc.{t}", 0) + s_.get(f"quantidade.ug.{t}", 0)
             if any(f"{m}.{u}.{t}" in s_ for m in ("valor", "quantidade") for u in ("uc", "ug")):
-                por_tipo[t] = {"valor": _r(vv, 2), "quantidade": _r(qq, 0)}
+                # UC e UG também separados: desde 2022 os tipos trimestral e anual de UC não são
+                # publicados e os de UG vêm com zero; a soma sozinha mostraria zero onde há ausência
+                por_tipo[t] = {"valor": _r(vv, 2), "quantidade": _r(qq, 0),
+                               **{f"{m}_{u}": (_r(s_[f"{m}.{u}.{t}"], 2 if m == "valor" else 0) if f"{m}.{u}.{t}" in s_ else None)
+                                  for m in ("valor", "quantidade") for u in ("uc", "ug")}}
         ucs_br = next((x["ucs_media"] for x in br_anual if x["ano"] == a), None)
 
         def soma_unid(medida, unid):
@@ -2338,7 +2351,7 @@ def montar_gold(con, ctx, v):
     lim_comum = [
         "DEC em horas e centésimos de hora; FEC em número de interrupções e centésimos. 1,50 h é uma hora e meia.",
         "O DEC é uma média por unidade consumidora: não descreve o tempo sem energia de cada pessoa; parte das UCs fica muito acima e parte muito abaixo da média.",
-        "Interrupções de até 3 minutos não entram no DEC e no FEC; as expurgadas (situação de emergência, dia crítico, origem externa, ONS) ficam fora do apurado e aparecem nas parcelas.",
+        "Interrupções de menos de 3 minutos não entram no DEC e no FEC; as expurgadas (situação de emergência, dia crítico, origem externa, ONS) ficam fora do apurado e aparecem nas parcelas.",
         "Os valores são apurados e enviados pelas próprias distribuidoras à ANEEL; a fonte pode revisar meses já publicados.",
     ]
     snap_iasc, snap_manif, snap_ouv = c.snapshot_de(con, DS_IASC), c.snapshot_de(con, DS_MANIF), c.snapshot_de(con, DS_OUV)
@@ -2771,6 +2784,10 @@ def montar_gold(con, ctx, v):
             "universo": "Brasil = todas as distribuidoras com indicadores publicados, inclusive permissionárias; o número que a ANEEL divulga cobre só as concessionárias e vai em dec_concessionarias e fec_concessionarias.",
             "numcon": "Distribuidora-mês com NumCon implausível (média de até 1 UC por conjunto, ou queda ou pico isolado de mais da metade) fica fora do Brasil; com mais de um conjunto, o DEC e o FEC da distribuidora no mês ficam ausentes.",
             "limite_centesimos": "Conjunto acima do limite: DEC anual maior que o limite, os dois em centésimos como a ANEEL publica; igual ao limite não é transgressão.",
+            "mes_completo": (f"Um mês nacional só entra em gráfico, ano e comparação quando as unidades consumidoras com DEC chegam a "
+                             f"{fmt_br(100 * TOL_MES_COMPLETO, 0)}% do máximo dos 12 meses anteriores; antes disso o valor publicado fica na tabela, marcado como incompleto."),
+            "mes_completo_compensacao": (f"Um mês de compensação só entra em gráfico e ano quando as distribuidoras que informaram somam ao menos "
+                                         f"{fmt_br(100 * TOL_MES_COMPLETO, 0)}% do máximo informado nos 12 meses anteriores; antes disso o valor publicado fica na tabela, marcado como incompleto."),
         },
         "parcelas": {"rotulos": fq.ROTULO_GRUPO, "definicao": fq.PARCELAS, "grupos": {k: list(vv) for k, vv in fq.GRUPOS_PARCELAS.items()}},
         "brasil": {"anual": br_anual, "mensal": v["brasil_mensal"], "identidade_apurado": ident,

@@ -136,6 +136,8 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
     [distribuidoras],
   );
   const nComparaveis = valores ? Object.values(valores).filter((x) => x.estado === "valor").length : null;
+  // quantas têm algum valor publicado no período (comparável ou fora): o universo do período, não o da série inteira
+  const nComDado = valores ? Object.values(valores).filter((x) => x.estado !== "sem-dado").length : null;
   const disponiveis = medidasDoPeriodo(periodo);
   const consultaPadrao = periodo.id === String(anoRef) && medida.id === "taxa" && !sel;
 
@@ -179,7 +181,7 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
         </div>
       </div>
       <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">{medida.explicacao}</p>
-      <div className="flex flex-wrap items-center gap-2 text-xs text-carvao-muted" aria-label="Consulta aplicada">
+      <div role="group" className="flex flex-wrap items-center gap-2 text-xs text-carvao-muted" aria-label="Consulta aplicada">
         <span className="rotulo text-mineral">Consulta</span>
         <span className="border border-linha bg-superficie px-2 py-1">Período: {periodo.rotulo}</span>
         <span className="border border-linha bg-superficie px-2 py-1">Medida: {medida.rotulo}</span>
@@ -204,7 +206,7 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
         ) : cargaAnual.estado === "erro" ? (
           <p className="text-sm text-carvao">
             Não foi possível carregar a série anual ({cargaAnual.erro}).{" "}
-            <button type="button" className="rotulo text-energia-dark underline underline-offset-4" onClick={tentarAnual}>
+            <button type="button" className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-energia" onClick={tentarAnual}>
               Tentar de novo
             </button>
           </p>
@@ -214,8 +216,8 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
           </p>
         )}
         <p className="mt-1 text-xs text-mineral">
-          Período: {periodo.rotulo}. Universo: {distribuidoras.length} distribuidoras com balanço no SAMP
-          {nComparaveis !== null ? `, ${nComparaveis} comparáveis nesta medida` : ""}. Unidade: {medida.unidade}.
+          Período: {periodo.rotulo}. Universo: {distribuidoras.length} distribuidoras com balanço no SAMP em algum ano
+          {nComDado !== null && nComparaveis !== null ? `; ${nComDado} com valor publicado neste período, ${nComparaveis} delas comparáveis nesta medida` : ""}. Unidade: {medida.unidade}.
         </p>
       </div>
 
@@ -310,7 +312,7 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
             ) : cargaAnual.estado === "erro" ? (
               <p className="text-sm text-carvao">
                 O histórico não carregou ({cargaAnual.erro}).{" "}
-                <button type="button" className="rotulo text-energia-dark underline underline-offset-4" onClick={tentarAnual}>
+                <button type="button" className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-energia" onClick={tentarAnual}>
                   Tentar de novo
                 </button>
               </p>

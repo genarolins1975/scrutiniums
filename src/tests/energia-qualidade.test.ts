@@ -31,6 +31,7 @@ import {
   linhasBrasilMensal,
   linhasCompensacaoAnual,
   linhasCompensacaoMensal,
+  linhasCompensacaoTipo,
   linhasDistribuidorasP051,
   linhasEscopos,
   linhasLimites,
@@ -38,11 +39,14 @@ import {
   linhasParcelas,
   linhasReclamacoesNacional,
   linhasSerieDistribuidoras,
+  linhasTipoAnoReferencia,
   maioresDistribuidoras,
   mudancaP051,
   mudancaP053,
   mudancaP054,
   municipiosDoCsv,
+  notaTiposCompensacao,
+  notaTiposSemUc,
   pctCobertura,
   textoAtualidade,
   reaisMilhoes,
@@ -369,6 +373,59 @@ describe.skipIf(!disponivel || !existsSync(caminhoMunicipios))("gráfico, tabela
     }
   });
 
+  it("P053 por tipo: só unidades consumidoras, conferido com o CSV; tipo sem linha de UC é ausência, nunca zero", () => {
+    // releitura própria do CSV: soma por ano e tipo, separando UC e UG
+    const uc = new Map<string, number>();
+    const ug = new Map<string, number>();
+    for (const l of linhasCsv("qualidade_compensacoes.csv")) {
+      const k = `${l.competencia.slice(0, 4)}|${l.tipo}`;
+      const m = l.unidade === "uc" ? uc : ug;
+      m.set(k, (m.get(k) ?? 0) + Number(l.valor_rs || 0));
+    }
+    const linhas = linhasCompensacaoTipo(gold);
+    for (const a of gold.compensacoes.anual) {
+      const l = linhas.find((x) => x.ano === String(a.ano))!;
+      for (const t of ["mensal", "trimestral", "anual", "dicri", "dise"] as const) {
+        const k = `${a.ano}|${t}`;
+        if (uc.has(k)) expect(Math.abs((l[t] as number) - uc.get(k)!), k).toBeLessThanOrEqual(1);
+        else expect(l[t], k).toBeNull();
+        if (ug.has(k) && a.por_tipo[t]) expect(Math.abs((a.por_tipo[t]!.valor_ug ?? NaN) - ug.get(k)!), k).toBeLessThanOrEqual(1);
+      }
+    }
+    // composição do ano de referência: as barras somam o total a UCs (o número do destaque)
+    const ref = gold.compensacoes.anual.find((x) => x.ano === gold.compensacoes.ano_referencia)!;
+    const barras = linhasTipoAnoReferencia(gold);
+    const soma = barras.reduce((s2, b) => s2 + ((b.valor_mi as number | null) ?? 0), 0);
+    expect(Math.abs(soma - (ref.valor_uc ?? 0) / 1e6)).toBeLessThanOrEqual(1e-6);
+    // tipo publicado só para unidades geradoras: barra nula e frase que diz isso
+    for (const b of barras) if (ref.por_tipo[b.id as "mensal"]!.valor_uc === null) expect(b.valor_mi, String(b.id)).toBeNull();
+    const semUc = barras.filter((b) => b.valor_mi === null);
+    if (semUc.length) expect(notaTiposSemUc(gold)).toMatch(/barra hachurada é ausência, não zero/);
+    else expect(notaTiposSemUc(gold)).toBe("");
+    // por distribuidora: as colunas por tipo são só UC e somam o valor de UC do CSV
+    const ucDist = new Map<string, number>();
+    for (const l of linhasCsv("qualidade_compensacoes.csv")) {
+      if (l.unidade !== "uc" || Number(l.competencia.slice(0, 4)) !== gold.compensacoes.ano_referencia) continue;
+      ucDist.set(l.cnpj, (ucDist.get(l.cnpj) ?? 0) + Number(l.valor_rs || 0));
+    }
+    for (const l of tabelaQualidade("comp-dist", gold).linhas) {
+      const somaTipos = (["mensal", "trimestral", "anual", "dicri", "dise"] as const).reduce((s2, t) => s2 + ((l[t] as number | null) ?? 0), 0);
+      expect(Math.abs(somaTipos - (ucDist.get(String(l.id)) ?? 0)), String(l.id)).toBeLessThanOrEqual(1);
+    }
+  });
+
+  it("P053 por tipo: a nota dos anos com valor sai da série (mutação muda o texto)", () => {
+    const anosCom = (t: "trimestral" | "dise") => gold.compensacoes.anual.filter((a) => a.por_tipo[t]?.valor_uc != null).map((a) => a.ano);
+    const nota = notaTiposCompensacao(gold);
+    const tri = anosCom("trimestral");
+    if (tri.length) expect(nota).toContain(String(tri[0]));
+    const g2 = copia();
+    const ultimo = g2.compensacoes.anual[g2.compensacoes.anual.length - 1];
+    ultimo.por_tipo.trimestral = { valor: 1, quantidade: 1, valor_uc: 1, quantidade_uc: 1, valor_ug: null, quantidade_ug: null };
+    expect(notaTiposCompensacao(g2)).not.toBe(nota);
+    expect(notaTiposCompensacao(g2)).toContain(`trimestral de ${tri[0]} a ${tri[tri.length - 1]} e ${ultimo.ano}`);
+  });
+
   it("tabelas sob demanda: cada uma tem linhas com id único, colunas existentes nas linhas e exportação com uma linha por linha", () => {
     for (const id of TABELAS_SOB_DEMANDA) {
       const t = tabelaQualidade(id, gold);
@@ -632,6 +689,33 @@ describe.skipIf(!disponivel)("página renderizada no servidor", () => {
     expect(pagina).toMatch(/export const dynamic = "force-static"/);
     expect(pagina).toMatch(/lerGold<QualidadeGold>\("qualidade\.json"\)/);
     expect(ler("src/lib/energia/qualidade.ts")).not.toContain("—");
+  });
+
+  it("regras com número vêm da gold: mês completo, início das parcelas e das concessionárias", () => {
+    const esc = (x: string) => x.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;").replace(/</g, "&lt;");
+    expect(html).toContain(esc(gold.regras.mes_completo));
+    expect(html).toContain(esc(gold.regras.mes_completo_compensacao));
+    // nenhum ano nem percentual de regra escrito à mão no código da página e dos componentes do módulo
+    for (const f of [
+      "src/app/setor-eletrico/qualidade/page.tsx",
+      "src/components/energia/QualidadeMapa.tsx",
+      "src/components/energia/QualidadeComparador.tsx",
+      "src/components/energia/QualidadeLimites.tsx",
+      "src/components/energia/QualidadeConjuntos.tsx",
+      "src/components/energia/QualidadeTabela.tsx",
+    ]) {
+      const codigo = ler(f)
+        .split("\n")
+        .filter((l) => !/^\s*(\/\/|\*|\/\*)/.test(l))
+        .join("\n");
+      expect(codigo, f).not.toMatch(/\b(19|20)\d{2}\b/);
+      expect(codigo, f).not.toMatch(/\b99 ?%/);
+    }
+    // a ligação sobre falta de energia é descrita como parte da taxa, sem dizer que a taxa "acompanha" as interrupções
+    expect(html).not.toContain("a taxa acompanha as interrupções");
+    // termo interno do processamento não aparece no texto da página
+    const conteudo = html.slice(html.indexOf("<main"));
+    expect(conteudo).not.toMatch(/\bgold\b/i);
   });
 
   it("peso do HTML do servidor abaixo da meta do contrato (600 KB)", () => {

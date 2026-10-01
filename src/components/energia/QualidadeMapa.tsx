@@ -7,6 +7,7 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { quebrasFixas } from "@/lib/energia/escalas";
 import { URL_GEO } from "@/lib/energia/geo";
+import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
 import {
   CAMPO_DIST,
   CAMPO_MEDIDA,
@@ -147,7 +148,9 @@ export function QualidadeMapa({
   const med = ROTULO_MEDIDA[v.med];
   const selecionar = (id: string | null) => definir({ mun: id ?? "" });
 
-  const cnpjsSel = selecionado ? selecionado.cnpjs.slice(0, 4) : [];
+  // os pequenos múltiplos e a comparação aceitam no máximo LIMITE_COMPARACAO distribuidoras
+  const cnpjsSel = selecionado ? selecionado.cnpjs.slice(0, LIMITE_COMPARACAO) : [];
+  const foraDaComparacao = selecionado ? Math.max(0, selecionado.cnpjs.length - LIMITE_COMPARACAO) : 0;
   const dadosDec = useMemo(() => (serie && cnpjsSel.length ? linhasSerieDistribuidoras(serie, cnpjsSel, "dec") : []), [serie, cnpjsSel.join(",")]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -235,15 +238,21 @@ export function QualidadeMapa({
                 <dd className="text-carvao-muted">{selecionado.cnpjs.length ? selecionado.cnpjs.map(rotuloCnpj).join(", ") : "nenhuma com conjunto ativo no ano"}</dd>
               </div>
             </dl>
-            {selecionado.cnpjs.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                <button type="button" className={BOTAO} onClick={() => definir({ dist: selecionado.cnpjs.slice(0, 4) })}>
-                  Comparar {selecionado.cnpjs.length === 1 ? "esta distribuidora" : "estas distribuidoras"} nos pequenos múltiplos
+            <div className="flex flex-wrap gap-2">
+              {selecionado.cnpjs.length > 0 && (
+                <button type="button" className={BOTAO} onClick={() => definir({ dist: cnpjsSel })}>
+                  Comparar {cnpjsSel.length === 1 ? "esta distribuidora" : "estas distribuidoras"} nos pequenos múltiplos
                 </button>
-                <button type="button" className={BOTAO} onClick={() => selecionar(null)}>
-                  Limpar município
-                </button>
-              </div>
+              )}
+              <button type="button" className={BOTAO} onClick={() => selecionar(null)}>
+                Limpar município
+              </button>
+            </div>
+            {foraDaComparacao > 0 && (
+              <p className="text-xs text-carvao-muted">
+                A comparação aceita até {LIMITE_COMPARACAO} distribuidoras: entram as {LIMITE_COMPARACAO} primeiras da lista; {foraDaComparacao}{" "}
+                {foraDaComparacao === 1 ? "fica" : "ficam"} só na lista acima.
+              </p>
             )}
             {selecionado.cnpjs.length > 0 &&
               (serie ? (

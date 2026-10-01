@@ -46,7 +46,7 @@ import type {
   Acesso,
 } from "./tipos-inclusao";
 import { campo, tiposUrl } from "./estadoUrl";
-import { AUSENTE, mesAno, num, pct, reais } from "./formato";
+import { mesAno, num, pct, reais } from "./formato";
 import { LIMITE_COMPARACAO, type ColunaTabela } from "./tabela";
 
 /* ================================================================ comum */
@@ -82,14 +82,53 @@ export const NOME_TERRITORIO: Readonly<Record<string, string>> = {
 };
 export const TERRITORIOS_POF = ["BR", "RG-N", "RG-NE", "RG-SE", "RG-S", "RG-CO"] as const;
 
-/** "2025-05" → "mai/2025"; ausência → "–". */
+/**
+ * Ausência dentro de frase. O traço de AUSENTE (formato.ts) serve às células de tabela; no meio
+ * de um texto ele se leria como pontuação ("SCS de – a –"), então as funções de
+ * texto deste arquivo dizem "sem dado".
+ */
+export const SEM_DADO = "sem dado";
+const temValor = (v: number | null | undefined): v is number => v !== null && v !== undefined && Number.isFinite(v);
+
+/** "2025-05" → "mai/2025"; ausência → "sem dado". */
 export function mes(m: string | null | undefined): string {
-  return m ? mesAno(m) : AUSENTE;
+  return m ? mesAno(m) : SEM_DADO;
 }
 
-/** Inteiro em pt-BR (contagens de UC, faturas, famílias, domicílios e pessoas). */
+/** Inteiro em pt-BR (contagens de UC, faturas, famílias, domicílios e pessoas); ausência → "sem dado". */
 export function inteiro(v: number | null | undefined): string {
-  return num(v, 0);
+  return temValor(v) ? num(v, 0) : SEM_DADO;
+}
+
+/** Percentual, número e reais para frases: como pct, num e reais, com ausência → "sem dado". */
+export function pctTexto(v: number | null | undefined, casas = 1): string {
+  return temValor(v) ? pct(v, casas) : SEM_DADO;
+}
+export function numTexto(v: number | null | undefined, casas = 1): string {
+  return temValor(v) ? num(v, casas) : SEM_DADO;
+}
+export function reaisTexto(v: number | null | undefined, casas = 2): string {
+  return temValor(v) ? reais(v, casas) : SEM_DADO;
+}
+
+/**
+ * Primeira letra minúscula, o resto intacto: o rótulo de classe da POF ("Até R$ 1.908")
+ * entra no meio da frase sem virar "até r$ 1.908".
+ */
+export function minusculaInicial(s: string): string {
+  return s ? s.charAt(0).toLocaleLowerCase("pt-BR") + s.slice(1) : s;
+}
+
+/**
+ * Compara dois valores no arredondamento em que aparecem no texto: "maior", "menor"
+ * ou "igual". Ausência em qualquer lado → null (o texto não afirma direção).
+ */
+export function comparaArredondado(a: number | null | undefined, b: number | null | undefined, casas: number): "maior" | "menor" | "igual" | null {
+  if (!temValor(a) || !temValor(b)) return null;
+  const f = 10 ** casas;
+  const ra = Math.round(a * f);
+  const rb = Math.round(b * f);
+  return ra > rb ? "maior" : ra < rb ? "menor" : "igual";
 }
 
 /** Conversão de unidade (não é cálculo): valor ÷ 1 milhão; ausência continua ausência. */
@@ -437,37 +476,67 @@ export function respostaTarifaSocial(t: TarifaSocial): string {
   const mapa = t.cde_meses.find((m) => m.mes === t.mes_mapa);
   if (k.faturas_cde_mapa && mapa) {
     partes.push(
-      `No arquivo de Beneficiários da CDE de ${mes(mapa.mes)}, o mais recente com todas as distribuidoras, foram ${inteiro(k.faturas_cde_mapa.valor)} faturas com desconto, em média ${reais(mapa.desconto_medio_por_fatura_reais)} por fatura.`,
+      `No arquivo de Beneficiários da CDE de ${mes(mapa.mes)}, o mais recente com todas as distribuidoras, foram ${inteiro(k.faturas_cde_mapa.valor)} faturas com desconto, em média ${reaisTexto(mapa.desconto_medio_por_fatura_reais)} por fatura.`,
     );
   }
   return partes.join(" ");
 }
 
-/** "O que mudou" do P059: a regra nova aparece no desconto médio por fatura da CDE. */
+/**
+ * "O que mudou" do P059: o evento regulatório mais recente da gold que cai dentro da
+ * série da CDE (com um mês com valor antes dele) aparece no desconto médio por
+ * fatura. O evento vem da gold, nunca de uma data escrita aqui: com outro evento
+ * publicado, o texto acompanha.
+ */
 export function mudancaTarifaSocial(t: TarifaSocial): string {
   const comValor = t.cde_meses.filter((m) => m.original_no_bronze && m.desconto_medio_por_fatura_reais !== null);
-  const evento = t.eventos.find((e) => e.data >= "2025-07-01" && e.data < "2025-08-01");
+  const evento = [...t.eventos]
+    .sort((a, b) => (a.data < b.data ? -1 : 1))
+    .reverse()
+    .find((e) => {
+      const m = e.data.slice(0, 7);
+      return comValor.some((x) => x.mes === m) && comValor.some((x) => x.mes < m);
+    });
   const antes = evento ? [...comValor].reverse().find((m) => m.mes < evento.data.slice(0, 7)) : undefined;
   const depois = evento ? comValor.find((m) => m.mes === evento.data.slice(0, 7)) : undefined;
   const ultimo = [...comValor].reverse().find((m) => m.completo);
   const partes: string[] = [];
   if (evento && antes && depois) {
     partes.push(
-      `${evento.rotulo}: o desconto médio por fatura passou de ${reais(antes.desconto_medio_por_fatura_reais)} em ${mes(antes.mes)} para ${reais(depois.desconto_medio_por_fatura_reais)} em ${mes(depois.mes)}`,
+      `${evento.rotulo}: o desconto médio por fatura passou de ${reaisTexto(antes.desconto_medio_por_fatura_reais)} em ${mes(antes.mes)} para ${reaisTexto(depois.desconto_medio_por_fatura_reais)} em ${mes(depois.mes)}`,
     );
-    if (ultimo && ultimo.mes !== depois.mes) partes[0] += ` e estava em ${reais(ultimo.desconto_medio_por_fatura_reais)} em ${mes(ultimo.mes)}`;
-    partes[0] += ` (${mes(depois.mes)} mistura faturas emitidas antes e depois da mudança).`;
+    if (ultimo && ultimo.mes !== depois.mes) partes[0] += ` e estava em ${reaisTexto(ultimo.desconto_medio_por_fatura_reais)} em ${mes(ultimo.mes)}`;
+    // evento depois do dia 1: o arquivo do mês tem faturas emitidas antes e depois dele
+    partes[0] += evento.data.slice(8, 10) > "01" ? ` (${mes(depois.mes)} mistura faturas emitidas antes e depois da mudança).` : ".";
   }
   const sondados = t.cde_meses.filter((m) => !m.original_no_bronze);
   if (sondados.length) {
     partes.push(
-      `Os arquivos de ${listaTexto(sondados.map((m) => mes(m.mes)))} ainda não trazem todas as distribuidoras (cobertura de ${listaTexto(sondados.map((m) => pct(m.cobertura_scs_pct, 2)))}) e publicam só a cobertura.`,
+      `Os arquivos de ${listaTexto(sondados.map((m) => mes(m.mes)))} ainda não trazem todas as distribuidoras (cobertura de ${listaTexto(sondados.map((m) => pctTexto(m.cobertura_scs_pct, 2)))}) e publicam só a cobertura.`,
     );
   }
   const k = t.kpis.dmr_12m_reais;
   partes.push(
-    `Nos 12 meses até ${mes(k.fim)}, a DMR somou ${reaisGrandes(k.valor)}${k.meses_incompletos ? ` (${k.meses_incompletos} ${k.meses_incompletos === 1 ? "mês incompleto" : "meses incompletos"} na soma)` : ""}.`,
+    `De ${mes(k.inicio)} a ${mes(k.fim)}, a DMR somou ${reaisGrandes(k.valor)}${k.meses_incompletos ? ` (${k.meses_incompletos} ${k.meses_incompletos === 1 ? "mês incompleto" : "meses incompletos"} na soma)` : ""}.`,
   );
+  return partes.join(" ");
+}
+
+/**
+ * Custeio da Tarifa Social na CDE: as limitações da fonte e o peso no último ano
+ * fechado e, à parte, no ano em curso, que só pode ser valor orçado (a fonte não
+ * separa orçado de executado). O ano em curso nunca é dito como realizado.
+ */
+export function textoCusteioTarifaSocial(c: NonNullable<TarifaSocial["custeio_cde"]>): string {
+  const partes = [...c.proveniencia.limitacoes];
+  const fechado = [...c.linhas].reverse().find((l) => l.ano !== c.ano_corrente);
+  const corrente = c.linhas.find((l) => l.ano === c.ano_corrente);
+  if (fechado) {
+    partes.push(`Em ${fechado.ano}, a Tarifa Social foi ${pctTexto(fechado.tarifa_social_pct_despesa, 1)} da despesa da CDE (${reaisGrandes(fechado.tarifa_social_reais)}).`);
+  }
+  if (corrente) {
+    partes.push(`Em ${corrente.ano}, ano em curso, o valor orçado é ${pctTexto(corrente.tarifa_social_pct_despesa, 1)} da despesa prevista (${reaisGrandes(corrente.tarifa_social_reais)}).`);
+  }
   return partes.join(" ");
 }
 
@@ -481,6 +550,8 @@ export const ESQUEMA_COBERTURA = {
   uf: campo(tiposUrl.texto({ max: 2 }), "", { param: "cob.uf" }),
   den: campo(tiposUrl.opcao(DENOMINADORES), "atualizadas", { param: "cob.den" }),
   mun: campo(tiposUrl.booleano(), false, { param: "cob.mun" }),
+  /** Município selecionado no mapa e na tabela municipais (código IBGE de 7 dígitos da malha). */
+  msel: campo(tiposUrl.texto({ max: 7 }), "", { param: "cob.msel" }),
 };
 
 export function linhasCoberturaUf(ufs: readonly CoberturaUf[]) {
@@ -552,10 +623,10 @@ export function respostaCobertura(c: Cobertura): string {
   const menor = ord[0];
   const maior = ord.at(-1);
   let t =
-    `Proxy, não lacuna: em ${mes(b.mes)} havia ${num(b.razao_atualizadas_pct, 1)} faturas com Tarifa Social para cada 100 famílias do Cadastro Único com renda por pessoa até meio salário mínimo e cadastro atualizado ` +
-    `(${num(b.razao_cadastradas_pct, 1)} contando todas as cadastradas nessa renda).`;
+    `Proxy, não lacuna: em ${mes(b.mes)} havia ${numTexto(b.razao_atualizadas_pct, 1)} faturas com Tarifa Social para cada 100 famílias do Cadastro Único com renda por pessoa até meio salário mínimo e cadastro atualizado ` +
+    `(${numTexto(b.razao_cadastradas_pct, 1)} contando todas as cadastradas nessa renda).`;
   if (menor && maior && menor !== maior) {
-    t += ` Entre as UF, a razão vai de ${num(menor.razao_atualizadas_pct, 1)} (${menor.nome}) a ${num(maior.razao_atualizadas_pct, 1)} (${maior.nome}).`;
+    t += ` Entre as UF, a razão vai de ${numTexto(menor.razao_atualizadas_pct, 1)} (${menor.nome}) a ${numTexto(maior.razao_atualizadas_pct, 1)} (${maior.nome}).`;
   }
   return t;
 }
@@ -566,14 +637,14 @@ export function mudancaCobertura(c: Cobertura): string {
   const partes: string[] = [];
   if (u) {
     partes.push(
-      `Na série mensal com o numerador do SCS (UC, meses completos, ${c.serie_mensal_meses} meses), o último ponto é ${mes(u.m)}: ${num(u.razao_atualizadas_pct, 1)} UC por 100 famílias atualizadas e ${num(u.razao_cadastradas_pct, 1)} por 100 cadastradas.`,
+      `Na série mensal com o numerador do SCS (UC, meses completos, ${c.serie_mensal_meses} meses), o último ponto é ${mes(u.m)}: ${numTexto(u.razao_atualizadas_pct, 1)} UC por 100 famílias atualizadas e ${numTexto(u.razao_cadastradas_pct, 1)} por 100 cadastradas.`,
     );
   }
   if (b) partes.push(`O ponto de ${mes(b.mes)} usa faturas da CDE, outra unidade: as duas séries não se emendam.`);
   const d = c.distribuicao_municipal;
   if (d) {
     partes.push(
-      `Nos municípios, a mediana é ${num(d.quantis.p50, 1)} e metade fica entre ${num(d.quantis.p25, 1)} e ${num(d.quantis.p75, 1)}; ${inteiro(d.acima_de_100)} passam de 100, o que a composição do numerador explica.`,
+      `Nos municípios, a mediana é ${numTexto(d.quantis.p50, 1)} e metade fica entre ${numTexto(d.quantis.p25, 1)} e ${numTexto(d.quantis.p75, 1)}; ${inteiro(d.acima_de_100)} passam de 100, o que a proxy admite sem erro de cálculo: o numerador inclui beneficiários fora do critério de renda do denominador.`,
     );
   }
   return partes.join(" ");
@@ -642,7 +713,7 @@ export const COLUNAS_MUNICIPIOS: ColunaTabela[] = [
  */
 export type OrcamentoBase = Pick<
   Orcamento,
-  "classes" | "medidas" | "medidas_uf" | "limiares_pct" | "linhas" | "referencia" | "formato_microdados" | "sensibilidade_media_razoes_renda"
+  "classes" | "medidas" | "medidas_uf" | "limiares_pct" | "linhas" | "referencia" | "formato_microdados" | "sensibilidade_media_razoes_renda" | "regra_precisao"
 >;
 
 export function orcamentoBase(orc: Orcamento, linhas: (l: LinhaPof) => boolean = () => true): OrcamentoBase {
@@ -655,6 +726,7 @@ export function orcamentoBase(orc: Orcamento, linhas: (l: LinhaPof) => boolean =
     referencia: orc.referencia,
     formato_microdados: orc.formato_microdados,
     sensibilidade_media_razoes_renda: orc.sensibilidade_media_razoes_renda,
+    regra_precisao: orc.regra_precisao,
   };
 }
 
@@ -674,14 +746,27 @@ export const ESQUEMA_ORCAMENTO = {
   uf: campo(tiposUrl.texto({ max: 2 }), "", { param: "pof.uf" }),
 };
 
-export const ROTULO_ESTADO_POF: Record<string, string> = {
-  publicado: "CV até 15%",
-  cautela: "cautela: CV de 15% a 30%",
-  suprimido: "suprimido: CV acima de 30%",
-  sem_erro_padrao: "sem erro-padrão (mediana)",
-  zero_na_amostra: "zero na amostra",
-  ausente: "ausente",
-};
+/**
+ * Rótulo do estado de precisão de cada estimativa, com os limites de CV da regra
+ * publicada na gold (`regra_precisao`): mudar a regra no pipeline muda o rótulo.
+ */
+export function rotulosEstadoPof(regra: Orcamento["regra_precisao"]): Record<string, string> {
+  const c = pct(regra.cautela_cv_pct, 0);
+  const s = pct(regra.suprime_cv_pct, 0);
+  return {
+    publicado: `CV até ${c}`,
+    cautela: `cautela: CV de ${c} a ${s}`,
+    suprimido: `suprimido: CV acima de ${s}`,
+    sem_erro_padrao: "sem erro-padrão (mediana)",
+    zero_na_amostra: "zero na amostra",
+    ausente: "ausente",
+  };
+}
+
+/** Frase da regra de precisão para notas de tabela e "Como interpretar". */
+export function textoPrecisaoPof(regra: Orcamento["regra_precisao"]): string {
+  return `CV de ${pct(regra.cautela_cv_pct, 0)} a ${pct(regra.suprime_cv_pct, 0)}: cautela; acima de ${pct(regra.suprime_cv_pct, 0)}: suprimido (sem dado).`;
+}
 
 /** [valor, CV, estado] de uma medida; medida não publicada no território = ausente. */
 export function estimativa(l: LinhaPof | undefined, m: MedidaPof): EstimativaPof {
@@ -734,6 +819,7 @@ export function dadosComparacaoPof(orc: OrcamentoBase, territorios: readonly str
 
 /** Tabela completa de um território: todas as medidas, CV e estado, por classe (total incluído). */
 export function linhasTabelaPof(orc: OrcamentoBase, territorio: string) {
+  const rotulos = rotulosEstadoPof(orc.regra_precisao);
   return orc.classes.map((c) => {
     const l = linhaPof(orc, territorio, c.codigo);
     const linha: Record<string, string | number | null> = {
@@ -746,7 +832,7 @@ export function linhasTabelaPof(orc: OrcamentoBase, territorio: string) {
       const [v, cv, est] = estimativa(l, m.id);
       linha[m.id] = v;
       linha[`${m.id}__cv`] = cv;
-      linha[`${m.id}__estado`] = ROTULO_ESTADO_POF[est] ?? est;
+      linha[`${m.id}__estado`] = rotulos[est] ?? est;
     }
     return linha;
   });
@@ -771,6 +857,7 @@ export function colunasTabelaPof(orc: OrcamentoBase): ColunaTabela[] {
 export function linhasLimiaresPof(orc: OrcamentoBase, territorio: string, limiar: LimiarPof) {
   const mr = `acima_${limiar}_renda_pct` as MedidaPof;
   const md = `acima_${limiar}_desp_pct` as MedidaPof;
+  const rotulos = rotulosEstadoPof(orc.regra_precisao);
   return orc.classes.map((c) => {
     const l = linhaPof(orc, territorio, c.codigo);
     const [vr, cvr, er] = estimativa(l, mr);
@@ -780,10 +867,10 @@ export function linhasLimiaresPof(orc: OrcamentoBase, territorio: string, limiar
       classe: c.rotulo,
       renda: vr,
       renda_cv: cvr,
-      renda_estado: ROTULO_ESTADO_POF[er] ?? er,
+      renda_estado: rotulos[er] ?? er,
       despesa: vd,
       despesa_cv: cvd,
-      despesa_estado: ROTULO_ESTADO_POF[ed] ?? ed,
+      despesa_estado: rotulos[ed] ?? ed,
     };
   });
 }
@@ -800,6 +887,7 @@ export const COLUNAS_LIMIARES: ColunaTabela[] = [
 
 /** UF (só o total: a amostra por classe nas UF é pequena demais). */
 export function linhasUfsPof(orc: OrcamentoBase) {
+  const rotulos = rotulosEstadoPof(orc.regra_precisao);
   return orc.linhas
     .filter((l) => l.classe === "7999" && codigoUf(l.territorio))
     .map((l) => {
@@ -808,7 +896,7 @@ export function linhasUfsPof(orc: OrcamentoBase) {
         const [v, cv, est] = estimativa(l, m);
         linha[m] = v;
         linha[`${m}__cv`] = cv;
-        linha[`${m}__estado`] = ROTULO_ESTADO_POF[est] ?? est;
+        linha[`${m}__estado`] = rotulos[est] ?? est;
       }
       return linha;
     });
@@ -840,7 +928,17 @@ export function valoresMapaPof(orc: OrcamentoBase, medida: MedidaMapaPof): Recor
   return out;
 }
 
-/** Resposta curta do P061: classe mais baixa contra o total, nas duas medidas lado a lado. */
+/** Nome curto da pesquisa ("POF 2017-2018"), sem a data de referência dos valores. */
+export function nomePof(orc: Pick<OrcamentoBase, "referencia">): string {
+  return orc.referencia.split(" (")[0] || orc.referencia;
+}
+
+/**
+ * Resposta curta do P061: classe mais baixa contra o total, nas duas medidas. A
+ * direção ("pesou mais", "pesou menos", "pesou o mesmo") e a comparação entre as
+ * medidas saem dos números publicados, no arredondamento em que aparecem; sem um
+ * dos números, o texto não afirma direção.
+ */
 export function respostaOrcamento(orc: OrcamentoBase): string {
   const classes = classesRenda(orc);
   const baixa = classes[0];
@@ -849,12 +947,26 @@ export function respostaOrcamento(orc: OrcamentoBase): string {
   const b = baixa ? linhaPof(orc, "BR", baixa.codigo) : undefined;
   const a = alta ? linhaPof(orc, "BR", alta.codigo) : undefined;
   if (!t || !b || !baixa) return "Sem dado: a POF não foi processada nesta publicação.";
-  const rm = (l: LinhaPof | undefined) => pct(estimativa(l, "razao_medias_pct")[0], 1);
-  const mr = (l: LinhaPof | undefined) => pct(estimativa(l, "media_razoes_desp_pct")[0], 1);
-  let s =
-    `Na POF 2017-2018, a energia elétrica pesou mais nas famílias de menor renda: ${rm(b)} da despesa total das famílias com rendimento ${baixa.rotulo.toLowerCase()} (razão de médias), contra ${rm(t)} no conjunto das famílias`;
-  if (a && alta) s += ` e ${rm(a)} na classe ${alta.rotulo.toLowerCase()}`;
-  s += `. Medida família a família, a participação média é maior: ${mr(b)} e ${mr(t)}.`;
+  const rmV = (l: LinhaPof | undefined) => estimativa(l, "razao_medias_pct")[0];
+  const mrV = (l: LinhaPof | undefined) => estimativa(l, "media_razoes_desp_pct")[0];
+  const rm = (l: LinhaPof | undefined) => pctTexto(rmV(l), 1);
+  const mr = (l: LinhaPof | undefined) => pctTexto(mrV(l), 1);
+  const dir = comparaArredondado(rmV(b), rmV(t), 1);
+  const abertura =
+    dir === "maior"
+      ? "a energia elétrica pesou mais nas famílias de menor renda"
+      : dir === "menor"
+        ? "a energia elétrica pesou menos nas famílias de menor renda"
+        : dir === "igual"
+          ? "a energia elétrica pesou o mesmo nas famílias de menor renda e no conjunto"
+          : "o peso da energia elétrica nas famílias de menor renda não tem as duas estimativas para comparar";
+  let s = `Na ${nomePof(orc)}, ${abertura}: ${rm(b)} da despesa total das famílias com rendimento ${minusculaInicial(baixa.rotulo)} (razão de médias), contra ${rm(t)} no conjunto das famílias`;
+  if (a && alta) s += ` e ${rm(a)} na classe ${minusculaInicial(alta.rotulo)}`;
+  const db = comparaArredondado(mrV(b), rmV(b), 1);
+  const dt = comparaArredondado(mrV(t), rmV(t), 1);
+  // só afirma "maior" ou "menor" quando a relação vale nas duas linhas comparadas
+  const rel = db !== null && db === dt ? (db === "maior" ? "maior" : db === "menor" ? "menor" : "a mesma") : null;
+  s += rel ? `. Medida família a família, a participação média é ${rel}: ${mr(b)} e ${mr(t)}.` : `. Medida família a família, a participação média é ${mr(b)} e ${mr(t)}.`;
   return s;
 }
 
@@ -863,11 +975,13 @@ export function mudancaOrcamento(orc: OrcamentoBase): string {
   const baixa = classes[0];
   const s = baixa ? orc.sensibilidade_media_razoes_renda[baixa.codigo] : undefined;
   const partes = [
-    `A estatística é de ${orc.referencia}: a POF seguinte ainda não foi publicada pelo IBGE e nenhuma atualização modelada é publicada aqui.`,
+    `A estatística é da ${orc.referencia}: a pesquisa seguinte ainda não foi publicada pelo IBGE e nenhuma atualização modelada é publicada aqui.`,
   ];
   if (s && baixa) {
+    const dir = comparaArredondado(s.media_sem_energia_acima_da_renda_pct, s.media_razoes_renda_pct, 2);
+    const verbo = dir === "menor" ? "cai para" : dir === "maior" ? "sobe para" : dir === "igual" ? "fica em" : "seria";
     partes.push(
-      `Na renda da classe ${baixa.rotulo.toLowerCase()}, a média das participações (${pct(s.media_razoes_renda_pct, 2)}) depende de poucas famílias com renda declarada quase nula: a mediana é ${pct(s.mediana_renda_pct, 2)} e, sem as ${inteiro(s.familias_amostra_energia_acima_da_renda)} famílias da amostra com energia acima da renda, a média cai para ${pct(s.media_sem_energia_acima_da_renda_pct, 2)}.`,
+      `Na renda da classe ${minusculaInicial(baixa.rotulo)}, a média das participações (${pctTexto(s.media_razoes_renda_pct, 2)}) é sensível às famílias que declaram renda menor que a própria despesa com energia: a mediana é ${pctTexto(s.mediana_renda_pct, 2)} e, sem as ${inteiro(s.familias_amostra_energia_acima_da_renda)} famílias da amostra nessa situação, a média ${verbo} ${pctTexto(s.media_sem_energia_acima_da_renda_pct, 2)}.`,
     );
   }
   return partes.join(" ");
@@ -1099,9 +1213,9 @@ export function respostaAcesso(a: Acesso): string {
           ? "um número sem dado de domicílios"
           : `${inteiro(br.domicilios_sem_energia_mil)} mil domicílios`;
     partes.push(
-      `Em ${a.ano_referencia}, ${sem} (${pct(br.pct_sem_energia, 1)}) não tinham energia elétrica de nenhuma fonte, segundo a PNAD Contínua${rural ? `; na área rural, ${pct(rural.pct_sem_energia, 1)}` : ""}.`,
+      `Em ${a.ano_referencia}, ${sem} (${pctTexto(br.pct_sem_energia, 1)}) não tinham energia elétrica de nenhuma fonte, segundo a PNAD Contínua${rural ? `; na área rural, ${pctTexto(rural.pct_sem_energia, 1)}` : ""}.`,
     );
-    partes.push(`Entre os domicílios ligados à rede geral, ${pct(br.pct_integral_entre_rede, 1)} tinham fornecimento em tempo integral.`);
+    partes.push(`Entre os domicílios ligados à rede geral, ${pctTexto(br.pct_integral_entre_rede, 1)} tinham fornecimento em tempo integral.`);
   }
   const si = a.sistemas_isolados;
   const c = si?.ciclos.find((x) => x.ciclo === si.ciclo);
@@ -1126,7 +1240,7 @@ export function mudancaAcesso(a: Acesso): string {
   const partes: string[] = [];
   if (prim && ult && prim !== ult) {
     partes.push(
-      `Domicílios sem energia: ${prim.domicilios_sem_energia_mil === null ? "sem dado" : `${inteiro(prim.domicilios_sem_energia_mil)} mil`} em ${prim.ano} e ${ult.domicilios_sem_energia_mil === null ? "sem dado" : `${inteiro(ult.domicilios_sem_energia_mil)} mil`} em ${ult.ano}; rede em tempo integral entre os ligados, ${pct(prim.pct_integral_entre_rede, 1)} e ${pct(ult.pct_integral_entre_rede, 1)}.`,
+      `Domicílios sem energia: ${prim.domicilios_sem_energia_mil === null ? "sem dado" : `${inteiro(prim.domicilios_sem_energia_mil)} mil`} em ${prim.ano} e ${ult.domicilios_sem_energia_mil === null ? "sem dado" : `${inteiro(ult.domicilios_sem_energia_mil)} mil`} em ${ult.ano}; rede em tempo integral entre os ligados, ${pctTexto(prim.pct_integral_entre_rede, 1)} e ${pctTexto(ult.pct_integral_entre_rede, 1)}.`,
     );
   }
   const lacunas = anosComLacunas(serieBr.map((l) => l.ano)).filter((x) => !x.publicado);
@@ -1141,4 +1255,38 @@ export function mudancaAcesso(a: Acesso): string {
   const ultAno = lpt?.serie_anual.filter((x) => !x.parcial).at(-1);
   if (lpt && ultAno) partes.push(`Luz para Todos: ${inteiro(ultAno.total)} domicílios atendidos em ${ultAno.ano}, o último ano completo do arquivo.`);
   return partes.join(" ");
+}
+
+const ROTULO_CV_PNAD: Record<"cv_pct_com_energia" | "cv_pct_rede_geral" | "cv_pct_integral", string> = {
+  cv_pct_com_energia: "domicílios com energia",
+  cv_pct_rede_geral: "ligados à rede geral",
+  cv_pct_integral: "rede em tempo integral",
+};
+
+/**
+ * Maior coeficiente de variação publicado pelo IBGE entre as UF no ano de
+ * referência, no total e por situação: quanto a precisão cai nos recortes
+ * pequenos, lido da gold (nunca um limite escrito no texto).
+ */
+export function maiorCvPnad(acesso: AcessoPnad): { cv: number; uf: string; indicador: string; situacao: string } | null {
+  const linhas = [...acesso.pnad_serie.filter((l) => l.ano === acesso.ano_referencia), ...acesso.pnad_situacao].filter((l) => codigoUf(l.territorio));
+  let melhor: { cv: number; uf: string; indicador: string; situacao: string } | null = null;
+  for (const l of linhas) {
+    for (const k of Object.keys(ROTULO_CV_PNAD) as (keyof typeof ROTULO_CV_PNAD)[]) {
+      const v = l[k];
+      if (typeof v === "number" && Number.isFinite(v) && (!melhor || v > melhor.cv)) {
+        melhor = { cv: v, uf: l.territorio, indicador: ROTULO_CV_PNAD[k], situacao: l.situacao === "total" ? "todos os domicílios" : `área ${l.situacao}` };
+      }
+    }
+  }
+  return melhor;
+}
+
+/** Frase do "O que não permite concluir" do P062 sobre precisão amostral. */
+export function textoPrecisaoPnad(acesso: AcessoPnad): string {
+  const m = maiorCvPnad(acesso);
+  const base = "Domicílio sem energia não tem erro-padrão publicado (é a diferença entre duas estimativas).";
+  return m
+    ? `${base} Nos recortes pequenos a precisão cai: o maior coeficiente de variação publicado em ${acesso.ano_referencia} entre as UF é ${pctTexto(m.cv, 1)} (${m.indicador}, ${m.uf}, ${m.situacao}).`
+    : base;
 }

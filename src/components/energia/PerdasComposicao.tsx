@@ -47,9 +47,12 @@ export function PerdasComposicao({ linhas, ids, rotulos, motivos, anoRef, taxaNa
 
   const [anual, setAnual] = useState<SerieAnualPerdas | null>(null);
   const [erro, setErro] = useState<string | null>(null);
+  const [tentativa, setTentativa] = useState(0);
   useEffect(() => {
     if (!sel) return;
     let vivo = true;
+    // nova escolha ou nova tentativa: o erro anterior não fica preso na tela
+    setErro(null);
     carregarJson<SerieAnualPerdas>(urlAnual).then(
       (a) => vivo && setAnual(a),
       (e: unknown) => vivo && setErro(e instanceof Error ? e.message : String(e)),
@@ -57,7 +60,7 @@ export function PerdasComposicao({ linhas, ids, rotulos, motivos, anoRef, taxaNa
     return () => {
       vivo = false;
     };
-  }, [sel, urlAnual]);
+  }, [sel, urlAnual, tentativa]);
   const historico = useMemo(() => (sel && anual ? historicoDistribuidora(anual.distribuidoras[sel] ?? []) : null), [sel, anual]);
 
   const dados = useMemo(() => linhas.map((l) => ({ id: l.id, rotulo: l.rotulo, tecnica: l.tecnica, nao_tecnica: l.nao_tecnica })), [linhas]);
@@ -126,7 +129,16 @@ export function PerdasComposicao({ linhas, ids, rotulos, motivos, anoRef, taxaNa
                 />
               </div>
             ) : erro ? (
-              <p className="mt-2 text-carvao">A série anual não carregou ({erro}).</p>
+              <p className="mt-2 text-carvao">
+                A série anual não carregou ({erro}).{" "}
+                <button
+                  type="button"
+                  className="rotulo inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-energia"
+                  onClick={() => setTentativa((t) => t + 1)}
+                >
+                  Tentar de novo
+                </button>
+              </p>
             ) : (
               <p role="status" className="mt-2 text-xs text-carvao-muted">
                 Carregando a série anual.
@@ -148,7 +160,7 @@ export function PerdasComposicao({ linhas, ids, rotulos, motivos, anoRef, taxaNa
         linhas={linhasTabela}
         chaveLinha="id"
         colunaRotulo="rotulo"
-        fonte="ANEEL, SAMP Balanço (perdas técnicas e não técnicas, valor medido)"
+        fonte="ANEEL, SAMP Balanço (linhas de valor medido; a técnica é o percentual regulatório aplicado à injetada, estimativa da fonte, e a não técnica herda essa estimativa)"
         versao={versao}
         nomeArquivo={`perdas-composicao-${anoRef}`}
         chaveUrl="comp"
@@ -156,7 +168,7 @@ export function PerdasComposicao({ linhas, ids, rotulos, motivos, anoRef, taxaNa
         onSelecionar={selecionar}
         ordemInicial={{ coluna: "total", direcao: "desc" }}
         dicaBusca="Sigla ou nome"
-        nota={<>Técnicas e não técnicas sobre a energia injetada de referência; a soma delas reproduz a taxa total quando a decomposição fecha. A última coluna mostra a diferença em MWh no ano.</>}
+        nota={<>Técnicas e não técnicas sobre a energia injetada de referência; a soma delas reproduz a taxa total quando a decomposição fecha. A coluna &quot;Total − técnica − não técnica&quot; mostra a diferença em MWh no ano, e a coluna &quot;Decomposição&quot;, a regra de fechamento atendida.</>}
       />
     </div>
   );

@@ -21,10 +21,18 @@ Uso (indicador, entrada de modelo, conferência, contexto) é um eixo separado d
 o PLD e a EAR e a ENA alimentam indicadores publicados e também modelos de previsão,
 que estão em PESQUISA. O estado antigo "UTILIZADO EM MODELO" escondia essa diferença.
 
-Fontes: listagem package_search do ONS e da ANEEL (colhida e versionada pelo módulo
-dados em data/energia/silver/publicacao.db), package_show da CCEE versionados em
-pipeline/energia/seed (o portal responde 403 a este ambiente), REGISTRO dos módulos
-(pipeline/energia/modulos) e o relatório de validação da gold publicacao.json.
+Recurso a recurso: cada arquivo (recurso CKAN) de cada conjunto listado recebe o seu
+próprio estado (CATALOGADO, RECURSO VERIFICADO, ou o estado da integração que o
+capturou), e o recurso que sumiu da listagem fica marcado como removido pela fonte.
+O catálogo publicado leva o resumo por conjunto e, para a CCEE, a lista de recursos;
+a tabela completa de recursos de cada portal sai em public/energia/series/
+dados_recursos_<orgao>.csv (módulo dados).
+
+Fontes: listagem package_search do ONS, da ANEEL e da CCEE (colhida e versionada pelo
+módulo dados em data/energia/silver/publicacao.db), package_show da CCEE versionados
+em pipeline/energia/seed/ccee_* (usados quando a listagem da CCEE falha), REGISTRO dos
+módulos (pipeline/energia/modulos), capturas registradas nos silvers e o relatório de
+validação da gold publicacao.json.
 """
 import json
 import os
@@ -147,12 +155,9 @@ TEMAS = [
     ("empresas", ["agentes", "societ", "cde", "subsid", "beneficiar"]),
     ("mercado", ["sumario", "compra_venda", "contabiliza", "mre", "gsf", "encargo"]),
 ]
-SEEDS_CCEE = (
-    ("ccee_pld_horario", "package_show.json"),
-    ("ccee_documentos", "package_show_pld_horario_submercado.json"),
-    ("ccee_documentos", "package_show_sumario_be_horario_submercado.json"),
-    ("ccee_documentos", "package_show_sumario_mensal_compra_venda_submercado.json"),
-)
+# Tamanho da descrição no catálogo publicado (a íntegra fica em dados_catalogo.csv).
+MAX_DESCRICAO = 240
+ORDEM_RECURSO = ["CATALOGADO", "RECURSO VERIFICADO", "INTEGRADO", "VALIDADO", "PUBLICADO"]
 
 
 def tema(nome, titulo):
@@ -322,88 +327,254 @@ def brutos_locais():
 
 
 def pacotes_seed_ccee():
-    out = []
-    for pasta, arquivo in SEEDS_CCEE:
-        raiz = os.path.join(base.SEED, pasta)
-        if not os.path.isdir(raiz):
-            continue
-        for versao in sorted(os.listdir(raiz)):
-            caminho = os.path.join(raiz, versao, arquivo)
-            if os.path.exists(caminho):
-                with open(caminho, "rb") as f:
-                    corpo = f.read()
-                pkg = json.loads(corpo.decode("utf-8"))["result"]
-                m = re.match(r"v(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z", versao)
-                cap = f"{m.group(1)}-{m.group(2)}-{m.group(3)}T{m.group(4)}:{m.group(5)}:{m.group(6)}Z" if m else None
-                out.append({**pkg, "_seed": {"arquivo": os.path.relpath(caminho, base.RAIZ), "sha256": base.sha256_bytes(corpo),
-                                              "capturado_em": cap}})
-    return out
+    """package_show da CCEE versionados no repositório, um por conjunto: a versão mais
+    recente de cada nome, com a lista de todas as versões guardadas (arquivo, sha256,
+    captura) para a auditoria."""
+    from pipeline.energia.fontes import ckan_dados as ck
+    por_nome = {}
+    for pasta, versao, arquivo in ck.seeds_ccee():
+        caminho = os.path.join(base.SEED, pasta, versao, arquivo)
+        with open(caminho, "rb") as f:
+            corpo = f.read()
+        pkg = json.loads(corpo.decode("utf-8"))["result"]
+        try:
+            with open(os.path.join(base.SEED, pasta, versao, "MANIFESTO.json"), encoding="utf-8") as f:
+                manifesto = json.load(f)
+        except (OSError, ValueError):
+            manifesto = {}
+        cap = ck._captura_do_seed(manifesto, arquivo, versao)
+        info = {"arquivo": os.path.relpath(caminho, base.RAIZ), "sha256": base.sha256_bytes(corpo), "capturado_em": cap}
+        nome = pkg.get("name")
+        atual = por_nome.get(nome)
+        versoes = (atual or {}).get("_seed_versoes", []) + [info]
+        if atual is None or (cap or "") >= (atual["_seed"]["capturado_em"] or ""):
+            por_nome[nome] = {**pkg, "_seed": info, "_seed_versoes": versoes}
+        else:
+            atual["_seed_versoes"] = versoes
+    return [por_nome[n] for n in sorted(por_nome)]
 
 
 def _formatos(pkg):
     return sorted({(r.get("format") or "").upper() for r in pkg.get("resources", []) if r.get("format")})
 
 
-def construir(brutos, publicacao=None, verificacoes=None):
+# ---------------------------------------------------------------- recursos (arquivos) de cada conjunto
+
+
+def normaliza_url(url):
+    """URL comparável entre a listagem do portal e a captura registrada no silver:
+    esquema e host em minúsculas, caminho sem codificação percentual e sem barra final."""
+    from urllib.parse import unquote, urlsplit
+    if not url:
+        return None
+    try:
+        p = urlsplit(str(url).strip())
+    except ValueError:
+        return str(url).strip()
+    caminho = unquote(p.path).rstrip("/")
+    return f"{p.scheme.lower()}://{p.netloc.lower()}{caminho}" + (f"?{p.query}" if p.query else "")
+
+
+def indice_capturas(familias=None):
+    """Capturas registradas em todos os silvers (somente leitura): {url normalizada:
+    [{familia, dataset, recurso, capturas, ultima}]}. É a prova de que o pipeline
+    baixou aquele arquivo com sha256 (base.registra_vintage)."""
+    import sqlite3
+    out = {}
+    if not os.path.isdir(base.SILVER):
+        return out
+    nomes = sorted(n[:-3] for n in os.listdir(base.SILVER) if n.endswith(".db"))
+    for fam in nomes:
+        if familias is not None and fam not in familias:
+            continue
+        con = sqlite3.connect(f"file:{os.path.join(base.SILVER, fam + '.db')}?mode=ro", uri=True, timeout=60)
+        try:
+            linhas = con.execute("SELECT dataset, recurso, url, COUNT(*), MAX(capturado_em) FROM vintages "
+                                 "WHERE url IS NOT NULL GROUP BY dataset, recurso, url").fetchall()
+        except sqlite3.Error:
+            linhas = []
+        finally:
+            con.close()
+        for ds, rec, url, n, ult in linhas:
+            u = normaliza_url(url)
+            if u:
+                out.setdefault(u, []).append({"familia": fam, "dataset": ds, "recurso": rec, "capturas": n, "ultima": ult})
+    return out
+
+
+def ler_recursos_registrados():
+    """{orgao: {chave 'conjunto/recurso_id': campos}} dos recursos registrados a cada
+    listagem (silver `publicacao`). Recurso com presente = '0' sumiu da listagem: foi
+    removido ou renomeado pela fonte."""
+    caminho = os.path.join(base.SILVER, "publicacao.db")
+    if not os.path.exists(caminho):
+        return {}
+    import sqlite3
+    from pipeline.energia.fontes import ckan_dados as ck
+    con = sqlite3.connect(f"file:{caminho}?mode=ro", uri=True, timeout=60)
+    out = {}
+    try:
+        for orgao, ds in ck.DS_RECURSOS.items():
+            out[orgao] = base.registros_como_estavam_em(con, ds)
+    except sqlite3.Error:
+        pass
+    finally:
+        con.close()
+    return out
+
+
+def _estado_capturado(caps, integ_estados):
+    """Estado de um recurso capturado: o da integração declarada que o capturou (o
+    recurso herda a validação e a publicação do conjunto do silver); captura por
+    dataset não declarado para o conjunto prova só que o arquivo foi acessado."""
+    melhores = [integ_estados[(c["familia"], c["dataset"])] for c in caps if (c["familia"], c["dataset"]) in integ_estados]
+    melhores = [m for m in melhores if m in ORDEM_RECURSO]
+    if melhores:
+        return max(melhores, key=ORDEM_RECURSO.index), True
+    return "RECURSO VERIFICADO", False
+
+
+def recursos_do_conjunto(orgao, pkg, *, integ_estados, capturas, verificacao, registrados):
+    """Linhas recurso a recurso de um conjunto listado (presentes e removidos)."""
+    nome = pkg.get("name")
+    linhas = []
+    vistos = set()
+    for r in pkg.get("resources") or []:
+        rid = r.get("id")
+        vistos.add(f"{nome}/{rid}")
+        caps = capturas.get(normaliza_url(r.get("url"))) or []
+        if caps:
+            estado, declarado = _estado_capturado(caps, integ_estados)
+            via = "captura com sha256" + ("" if declarado else " (dataset não declarado para o conjunto)")
+        elif verificacao and verificacao.get("recurso_id") == rid and verificacao.get("resultado") == "ok" \
+                and str(verificacao.get("http_status")) in ("200", "206"):
+            estado, via = "RECURSO VERIFICADO", "requisição parcial (64 KB)"
+        else:
+            estado, via = "CATALOGADO", None
+        linhas.append({
+            "orgao": orgao, "conjunto": nome, "recurso_id": rid, "recurso": r.get("name"),
+            "formato": (r.get("format") or "").upper() or None, "publicado_em": r.get("last_modified") or r.get("metadata_modified"),
+            "tamanho": r.get("size"), "url": r.get("url"), "presente": True, "estado": estado, "via": via,
+            "capturas": sum(c["capturas"] for c in caps), "ultima_captura": max((c["ultima"] for c in caps), default=None),
+            "datasets_silver": sorted({f"{c['familia']}/{c['dataset']}" for c in caps}),
+            "verificado_em": verificacao.get("verificado_em") if (verificacao and verificacao.get("recurso_id") == rid) else None,
+        })
+    for ch, campos in sorted((registrados or {}).items()):
+        if not ch.startswith(f"{nome}/") or ch in vistos or campos.get("presente") != "0":
+            continue
+        linhas.append({
+            "orgao": orgao, "conjunto": nome, "recurso_id": ch.split("/", 1)[1], "recurso": campos.get("nome"),
+            "formato": campos.get("formato"), "publicado_em": campos.get("last_modified"), "tamanho": campos.get("tamanho"),
+            "url": campos.get("url"), "presente": False, "estado": "CATALOGADO", "via": "removido da listagem pela fonte",
+            "capturas": 0, "ultima_captura": None, "datasets_silver": [], "verificado_em": None,
+        })
+    return linhas
+
+
+def resumo_recursos(linhas):
+    presentes = [x for x in linhas if x["presente"]]
+    cont = {s: 0 for s in ORDEM_RECURSO}
+    for x in presentes:
+        cont[x["estado"]] += 1
+    pubs = sorted(str(x["publicado_em"])[:10] for x in presentes if x.get("publicado_em"))
+    return {"total": len(presentes), "por_estado": {k: v for k, v in cont.items() if v},
+            "integrados": sum(cont[s] for s in ORDEM_RECURSO[2:]),
+            "acessados": sum(cont[s] for s in ORDEM_RECURSO[1:]),
+            "removidos": len(linhas) - len(presentes),
+            "ultimo_publicado": pubs[-1] if pubs else None}
+
+
+def _enxuto(d):
+    """Sem chaves de valor None (o leitor trata chave ausente como não informado)."""
+    return {k: v for k, v in d.items() if v is not None}
+
+
+# ---------------------------------------------------------------- construção
+
+
+def construir(brutos, publicacao=None, verificacoes=None, recursos_saida=None, capturas=None, registrados=None):
     """Catálogo publicado em catalogo.json. `publicacao` é a gold publicacao.json (lida
     do disco quando omitida): traz o estado de cada integração com as evidências e o
     relatório de validação. `verificacoes`: {chave: resultado} das verificações de
-    recurso (lidas do silver `publicacao` quando omitidas)."""
+    recurso (lidas do silver `publicacao` quando omitidas). `capturas` e `registrados`
+    (lidos dos silvers quando omitidos) dão o estado recurso a recurso. Com
+    `recursos_saida` (lista), recebe a tabela completa de recursos de todos os portais."""
     from pipeline.energia.fontes import ckan_dados as ck
     if publicacao is None:
         publicacao = base.le_gold("publicacao.json") or {}
     if verificacoes is None:
         verificacoes = ler_verificacoes()
+    if capturas is None:
+        capturas = indice_capturas()
+    if registrados is None:
+        registrados = ler_recursos_registrados()
     por_integracao = {}
     for it in (publicacao.get("conjuntos") or []):
         por_integracao.setdefault((it.get("orgao"), it.get("nome")), []).append(it)
+    integ_estados = {(it.get("familia"), it.get("dataset_silver")): it.get("estado") for it in (publicacao.get("conjuntos") or [])}
     mods = estados_modelos()
     entradas, status = [], {}
     presentes = set()
+    todos_recursos = []
 
     def entrada_base(orgao, pkg, *, verificado=True, origem_catalogo, catalogado_em):
         nome = pkg.get("name")
         ex = ck.extras(pkg)
         desc = ck.descontinuacao(pkg, ex)
         notas = (pkg.get("notes") or "").split("-----")[0].strip()
-        return {
+        rec = recursos_do_conjunto(orgao, pkg, integ_estados=integ_estados, capturas=capturas,
+                                   verificacao=verificacoes.get(f"{orgao}:{nome}"), registrados=registrados.get(orgao))
+        todos_recursos.extend(rec)
+        e = {
             "id": f"{orgao.lower()}:{nome}", "slug": None, "orgao": orgao, "nome": nome, "titulo": pkg.get("title"),
             "url": URL_DATASET.get(orgao, "") + nome if orgao in URL_DATASET else None,
             "licenca": pkg.get("license_title") or pkg.get("license_id"), "modificado_na_fonte": pkg.get("metadata_modified"),
-            "descricao": notas[:600], "n_recursos": pkg.get("num_resources") or len(pkg.get("resources", [])),
+            "descricao": _corta(notas), "n_recursos": pkg.get("num_resources") or len(pkg.get("resources", [])),
             "formatos": _formatos(pkg), "tema": tema(nome or "", pkg.get("title") or ""),
-            "frequencia_declarada": ex["frequencia_declarada"], "campo_frequencia": ex["campo_frequencia"],
-            "referencia_publicacao": ex["referencia_publicacao"],
+            "frequencia_declarada": ex["frequencia_declarada"], "referencia_publicacao": ex["referencia_publicacao"],
             "metadados_verificados": verificado, "descontinuado": bool(desc), "descontinuacao": desc,
             "etapas": {"catalogado": {"ok": True, "evidencia": origem_catalogo, "em": catalogado_em}},
+            "recursos_resumo": resumo_recursos(rec),
         }
+        if orgao == "CCEE":
+            e["recursos"] = [_enxuto({"nome": x["recurso"], "formato": x["formato"],
+                                      "publicado_em": str(x["publicado_em"])[:10] if x.get("publicado_em") else None,
+                                      "estado": x["estado"], "capturas": x["capturas"] or None,
+                                      "removido": True if not x["presente"] else None}) for x in rec]
+        if pkg.get("_seed_versoes"):
+            e["metadados_versionados"] = pkg["_seed_versoes"]
+        return e
 
+    seeds = pacotes_seed_ccee()
+    seed_por_nome = {p.get("name"): p for p in seeds}
     for orgao in ("ONS", "ANEEL", "CCEE"):
         b = brutos.get(orgao) or {}
         res = b.get("resultado") or []
         for pkg in res:
+            if orgao == "CCEE" and pkg.get("name") in seed_por_nome:
+                pkg = {**pkg, "_seed_versoes": seed_por_nome[pkg["name"]]["_seed_versoes"]}
             e = entrada_base(orgao, pkg, origem_catalogo=f"Listagem package_search da API CKAN ({orgao}) colhida pelo pipeline",
                              catalogado_em=b.get("colhido_em"))
             entradas.append(e)
             presentes.add((orgao, pkg.get("name")))
         if orgao != "CCEE" or res:
             status[orgao] = {"colhido_em": b.get("colhido_em"), "conjuntos": len(res), "erro": b.get("erro"),
-                             "origem": "API CKAN package_search"}
+                             "origem": "API CKAN package_search",
+                             "recursos": sum(len(p.get("resources") or []) for p in res)}
     if not (brutos.get("CCEE") or {}).get("resultado"):
-        seeds = pacotes_seed_ccee()
+        # a listagem da CCEE falhou nesta execução: os package_show versionados no
+        # repositório dão o catálogo recurso a recurso dos conjuntos que guardam
         for pkg in seeds:
             s = pkg["_seed"]
             e = entrada_base("CCEE", pkg, origem_catalogo=(f"package_show versionado em {s['arquivo']} (sha256 {s['sha256'][:12]}…), "
                                                            f"capturado em {s['capturado_em']}"), catalogado_em=s["capturado_em"])
-            e["recursos"] = [{"nome": r.get("name"), "formato": (r.get("format") or "").upper() or None, "url": r.get("url"),
-                              "publicado_em": r.get("last_modified"), "estado": "CATALOGADO", "capturas": 0}
-                             for r in pkg.get("resources", [])]
             entradas.append(e)
             presentes.add(("CCEE", pkg.get("name")))
         erro_ccee = (brutos.get("CCEE") or {}).get("erro") or ultima_falha_ccee()
         status["CCEE"] = {"colhido_em": None, "conjuntos": len(seeds), "erro": erro_ccee,
-                          "origem": "package_show versionados no repositório (pipeline/energia/seed), recurso a recurso",
-                          "seed_capturado_em": sorted({p["_seed"]["capturado_em"] for p in seeds})}
+                          "origem": "package_show versionados no repositório (pipeline/energia/seed/ccee_*), recurso a recurso",
+                          "seed_capturado_em": sorted({p["_seed"]["capturado_em"] for p in seeds}),
+                          "recursos": sum(len(p.get("resources") or []) for p in seeds)}
     # conjuntos integrados fora das listagens (IBGE, CVM, EPE, MCTI, NASA, atos normativos)
     for it in integracoes():
         chave = (it["orgao"], it["nome"])
@@ -413,14 +584,13 @@ def construir(brutos, publicacao=None, verificacoes=None):
         entradas.append({
             "id": f"{it['orgao'].lower()}:{it['nome']}", "slug": None, "orgao": it["orgao"], "nome": it["nome"],
             "titulo": it.get("titulo"), "url": it.get("url"), "licenca": it.get("licenca"), "modificado_na_fonte": None,
-            "descricao": (it.get("descricao") or "")[:600], "n_recursos": None, "formatos": it.get("formatos") or [],
+            "descricao": _corta(it.get("descricao") or ""), "n_recursos": None, "formatos": it.get("formatos") or [],
             "tema": it.get("tema") or tema(it["nome"], it.get("titulo") or ""), "frequencia_declarada": it.get("frequencia"),
-            "campo_frequencia": "REGISTRO do módulo" if it.get("frequencia") else None, "referencia_publicacao": None,
+            "referencia_publicacao": None,
             "metadados_verificados": True, "descontinuado": bool(it.get("descontinuado")),
             "descontinuacao": {"motivo": "declarado pelo módulo", "evidencia": it.get("estado_declarado")} if it.get("descontinuado") else None,
             "etapas": {"catalogado": {"ok": bool(it.get("url") and it.get("licenca")),
-                                      "evidencia": f"REGISTRO do módulo {it['modulo']}: URL e licença declaradas na integração",
-                                      "em": None}},
+                                      "evidencia": f"REGISTRO do módulo {it['modulo']}: URL e licença declaradas na integração"}},
         })
     # integrações: etapas vindas da gold publicacao.json (uma linha por dataset do silver)
     regs = {}
@@ -430,26 +600,26 @@ def construir(brutos, publicacao=None, verificacoes=None):
         chave = (e["orgao"], e["nome"])
         lista = por_integracao.get(chave) or []
         declaradas = regs.get(chave) or []
-        e["integracoes"] = [{"slug": x.get("slug"), "dataset_silver": x.get("dataset_silver"), "familia": x.get("familia"),
+        e["integracoes"] = [{"dataset_silver": x.get("dataset_silver"), "familia": x.get("familia"),
                              "modulos": x.get("modulos"), "estado": x.get("estado")} for x in lista]
         if declaradas and not lista:
-            e["integracoes"] = [{"slug": d.get("slug"), "dataset_silver": d.get("dataset_silver"), "familia": d.get("familia"),
+            e["integracoes"] = [{"dataset_silver": d.get("dataset_silver"), "familia": d.get("familia"),
                                  "modulos": [d["modulo"]], "estado": None} for d in declaradas]
         ets = dict(e["etapas"])
         if lista:
             melhor = max(lista, key=lambda x: ESTADOS.index(x.get("estado") or "CATALOGADO"))
             for nome in ETAPAS[1:]:
-                ets[nome] = (melhor.get("etapas") or {}).get(nome) or {"ok": False, "evidencia": None}
+                ets[nome] = (melhor.get("etapas") or {}).get(nome) or {"ok": False}
             e["ressalvas"] = sorted({r for x in lista for r in (x.get("ressalvas") or [])})
         else:
             v = verificacoes.get(f"{e['orgao']}:{e['nome']}")
-            ets["recurso_verificado"] = _etapa_verificacao(v)
+            ets["recurso_verificado"] = _etapa_verificacao(v, e.get("recursos_resumo"))
             for nome in ETAPAS[2:]:
-                ets[nome] = {"ok": False, "evidencia": None}
+                ets[nome] = {"ok": False}
             e["ressalvas"] = []
             if declaradas:
                 e["ressalvas"].append("Declarado no REGISTRO de módulo, mas sem estado calculado nesta publicação (gold publicacao.json ausente ou anterior à declaração).")
-        e["etapas"] = ets
+        e["etapas"] = {k: _enxuto({kk: vv for kk, vv in v.items() if kk not in ("cabecalho",)}) for k, v in ets.items()}
         e["estado"] = estado_por_etapas(ets)
         e["ressalvas"] = e.get("ressalvas", []) + saltos(ets)
         golds = sorted({g for d in declaradas for g in d.get("golds", [])})
@@ -463,7 +633,7 @@ def construir(brutos, publicacao=None, verificacoes=None):
                     "declarado": sorted({d.get("estado_declarado") for d in declaradas if d.get("estado_declarado")}),
                     "golds": golds, "paginas": paginas,
                     "modelos": [{"codigo": m, "estado": mods.get(m)} for m in modelos]}
-        # compatibilidade com leitores anteriores (página inicial, datasets.ts)
+        # campos lidos pela página inicial, por datasets.ts e pelos testes de reauditoria
         e["usado_em"] = golds if e["estado"] != "CATALOGADO" else []
         e["modelos"] = modelos
         e["quebras"] = [q for d in declaradas for q in d.get("quebras", [])] or QUEBRAS.get(chave, [])
@@ -473,24 +643,31 @@ def construir(brutos, publicacao=None, verificacoes=None):
         e["familia"] = primeira.get("familia")
         e["paginas"] = paginas
         e["downloads"] = sorted({u for d in declaradas for u in d.get("downloads", [])})
-        if e.get("recursos"):
-            _estado_recursos_ccee(e, lista)
+        for k in ("slug", "interno", "familia", "descontinuacao", "referencia_publicacao", "modificado_na_fonte",
+                  "frequencia_declarada", "n_recursos"):
+            if e.get(k) is None:
+                e.pop(k, None)
     with open(os.path.join(AQUI, "catalogo_manual.json"), encoding="utf-8") as f:
         for m in json.load(f)["entradas"]:
             v = verificacoes.get(f"MANUAL:{m['id']}")
-            entradas.append({**m, "estado": "CATALOGADO", "usado_em": [], "modelos": [], "quebras": [], "metadados_verificados": False,
-                             "descontinuado": False, "descontinuacao": None, "slug": None, "integracoes": [], "ressalvas": [],
-                             "frequencia_declarada": None, "campo_frequencia": None, "referencia_publicacao": None,
+            entradas.append({**m, "descricao": _corta(m.get("descricao") or ""), "estado": "CATALOGADO", "usado_em": [], "modelos": [],
+                             "quebras": [], "metadados_verificados": False, "descontinuado": False, "integracoes": [], "ressalvas": [],
                              "uso": {"papeis": [], "declarado": [], "golds": [], "paginas": [], "modelos": []},
-                             "etapas": {"catalogado": {"ok": True, "evidencia": "Cadastro manual em pipeline/energia/catalogo_manual.json (metadados não verificados na fonte)", "em": None},
-                                        "recurso_verificado": {"ok": False, "evidencia": None}, "integrado": {"ok": False, "evidencia": None},
-                                        "validado": {"ok": False, "evidencia": None}, "publicado": {"ok": False, "evidencia": None}},
+                             "etapas": {"catalogado": {"ok": True, "evidencia": "Cadastro manual em pipeline/energia/catalogo_manual.json (metadados não verificados na fonte)"},
+                                        "recurso_verificado": {"ok": False}, "integrado": {"ok": False},
+                                        "validado": {"ok": False}, "publicado": {"ok": False}},
                              "endereco_verificado": ({"http_status": v.get("http_status"), "resultado": v.get("resultado"),
                                                       "verificado_em": v.get("verificado_em"), "detalhe": v.get("detalhe")} if v else None)})
     entradas.sort(key=lambda e: (-ESTADOS.index(e["estado"]), e["orgao"], e.get("titulo") or ""))
     contagem = {s: 0 for s in ESTADOS}
     for e in entradas:
         contagem[e["estado"]] += 1
+    if recursos_saida is not None:
+        recursos_saida.extend(todos_recursos)
+    rec_cont = {}
+    for x in todos_recursos:
+        if x["presente"]:
+            rec_cont.setdefault(x["orgao"], {s: 0 for s in ORDEM_RECURSO})[x["estado"]] += 1
     return {
         "dominio": base.DOMINIO, "gold": "catalogo.json",
         # mesmo instante da publicação que trouxe as evidências: o catálogo reconstruído
@@ -501,35 +678,42 @@ def construir(brutos, publicacao=None, verificacoes=None):
         "eixos": {"estado": "Até onde o conjunto chegou na escada catalogado → publicado, cada etapa com evidência.",
                   "uso": "Para que o conjunto é usado (indicador, entrada de modelo, conferência, contexto, histórico); "
                          "modelos aparecem com o seu estado (PESQUISA, VALIDACAO, PRODUCAO, APOSENTADO)."},
+        "regra_recurso": ("Cada recurso (arquivo) de um conjunto listado tem estado próprio: o recurso capturado com sha256 por uma "
+                          "integração declarada herda o estado dessa integração; capturado por outro dataset ou lido por requisição "
+                          "parcial está RECURSO VERIFICADO; os demais estão CATALOGADO. Recurso que sumiu da listagem fica como removido "
+                          "pela fonte. A tabela completa está em dados_recursos_<órgão>.csv."),
         "portais": status, "contagem": contagem, "total": len(entradas),
         "descontinuados": sum(1 for e in entradas if e.get("descontinuado")),
+        "recursos": {o: {"por_estado": {k: v for k, v in c.items() if v}, "total": sum(c.values()),
+                         "removidos": sum(1 for x in todos_recursos if x["orgao"] == o and not x["presente"]),
+                         "download": f"/energia/series/dados_recursos_{o.lower()}.csv"}
+                     for o, c in sorted(rec_cont.items())},
         "entradas": entradas,
     }
 
 
-def _etapa_verificacao(v):
+def _corta(texto, n=MAX_DESCRICAO):
+    t = " ".join(str(texto or "").split())
+    if len(t) <= n:
+        return t
+    corte = t[:n].rsplit(" ", 1)[0]
+    return corte.rstrip(",;:.") + "…"
+
+
+def _etapa_verificacao(v, resumo=None):
+    """Etapa 'recurso verificado' de um conjunto sem integração: verificação parcial
+    registrada no silver ou recurso baixado com sha256 por algum dataset."""
+    if resumo and resumo.get("acessados") and not (v and v.get("resultado") == "ok"):
+        return {"ok": True, "evidencia": f"{resumo['acessados']} recurso(s) do conjunto baixados com sha256 por dataset de outro conjunto"}
     if not v:
-        return {"ok": False, "evidencia": None}
+        return {"ok": False}
     ok = v.get("resultado") == "ok" and str(v.get("http_status")) in ("200", "206")
     cab = v.get("cabecalho")
     return {"ok": ok, "em": v.get("verificado_em"),
             "evidencia": (f"Recurso {v.get('recurso')!r} lido por requisição parcial: HTTP {v.get('http_status')}, formato "
                           f"{v.get('formato_detectado')}" + (f", {len(cab.split(' | '))} colunas no cabeçalho" if cab else "")
                           + (f", {int(v['bytes_total']):,} bytes".replace(",", ".") if str(v.get("bytes_total") or "").isdigit() else ""))
-            if ok else f"Verificação sem êxito: {v.get('detalhe') or v.get('http_status')}",
-            "recurso": v.get("recurso"), "url": v.get("url"), "formato_detectado": v.get("formato_detectado"),
-            "cabecalho": cab.split(" | ") if cab else None}
-
-
-def _estado_recursos_ccee(e, integracoes_):
-    """CCEE recurso a recurso: o recurso com capturas no silver herda o estado da integração."""
-    caps = {}
-    for it in integracoes_:
-        for r, n in (it.get("recursos_capturados") or {}).items():
-            caps[r] = (n, it.get("estado"))
-    for r in e["recursos"]:
-        if r["nome"] in caps:
-            r["capturas"], r["estado"] = caps[r["nome"]][0], caps[r["nome"]][1]
+            if ok else f"Verificação sem êxito: {v.get('detalhe') or v.get('http_status')}"}
 
 
 def ler_verificacoes():

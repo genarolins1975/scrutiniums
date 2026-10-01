@@ -7,10 +7,10 @@ import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { Termo } from "@/components/evidencia/Termo";
 import { PerdasRegulatorio } from "@/components/energia/PerdasRegulatorio";
 import { PerdasAuditoria } from "@/components/energia/PerdasAuditoria";
-import { PerdasNavegacao, RodapePainel, Recorte, Resposta } from "@/components/energia/PerdasPainel";
+import { PerdasNavegacao, ReferenciaPerdas, RodapePainel, Recorte, Resposta } from "@/components/energia/PerdasPainel";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { integra, lerGold } from "@/lib/energia/gold";
-import { carimbo, dataBR, mesAno } from "@/lib/energia/formato";
+import { dataBR, mesAno, num } from "@/lib/energia/formato";
 import type { PerdasGold } from "@/lib/energia/tipos-perdas";
 import { linhasRegulatorio, respostaRegulatorio, rotuloDistribuidora, segmentosPorDistribuidora } from "@/lib/energia/perdas";
 
@@ -41,6 +41,9 @@ export default function PerdasRegulatorioPage() {
   const versao = `SAMP até ${mesAno(g.referencia.ultima_competencia)}, gold de ${dataBR(g.gerado_em)}`;
   const regulatorio = linhasRegulatorio(g.distribuidoras);
   const bloqueioRegulatorio = g.bloqueios.find((b) => b.item.includes("P057")) ?? null;
+  const segmentos = segmentosPorDistribuidora(g.distribuidoras);
+  // quantos trechos a gold traz por distribuidora (os demais ficam no CSV), lido dos dados
+  const maxTrechos = Math.max(0, ...Object.values(segmentos).map((s) => s.length));
 
   return (
     <>
@@ -50,16 +53,11 @@ export default function PerdasRegulatorioPage() {
         <CabecalhoModulo
           rotulo="Perdas de energia · realizado e regulatório"
           titulo="Quanto o realizado diverge da referência regulatória?"
-          referencia={
-            <>
-              ANEEL, SAMP Balanço: anos completos até {g.referencia.ano} e {g.referencia.ano_parcial ?? ""} até {g.referencia.ultima_competencia_parcial ? mesAno(g.referencia.ultima_competencia_parcial) : "sem mês publicado"}; componentes tarifárias com vigência conferida em{" "}
-              {dataBR(g.referencia.tarifa_consultada_em)}; Censo 2022 do IBGE. Processado em {carimbo(g.gerado_em)}.
-            </>
-          }
+          referencia={<ReferenciaPerdas g={g} />}
         >
           A ANEEL define, a cada revisão tarifária, os <Termo slug="percentual-regulatorio-de-perdas">percentuais regulatórios</Termo> de perdas técnicas e não técnicas que a tarifa reconhece.
-          Comparar a perda realizada com eles diz quanto da perda a tarifa cobre; parte dessa comparação depende de uma base que a ANEEL não publica em formato aberto, e a página mostra o que dá para
-          medir e o que está bloqueado.
+          Comparar a perda realizada com eles diz quanto da perda a tarifa cobre; a referência de perdas não técnicas não está no portal de dados abertos e os endereços da ANEEL que a publicam
+          recusaram o acesso automatizado, e a página mostra o que dá para medir e o que está bloqueado.
         </CabecalhoModulo>
         <PerdasNavegacao atual="regulatorio" />
 
@@ -117,14 +115,14 @@ export default function PerdasRegulatorioPage() {
               )}
               <Resposta>{respostaRegulatorio(regulatorio, !!bloqueioRegulatorio)}</Resposta>
               <Recorte
-                periodo={`trechos de ${mesAno(g.proveniencia.tecnica_regulatoria.periodo_referencia.inicio)} a ${mesAno(g.proveniencia.tecnica_regulatoria.periodo_referencia.fim)}; os três mais recentes de cada distribuidora`}
+                periodo={`trechos de ${mesAno(g.proveniencia.tecnica_regulatoria.periodo_referencia.inicio)} a ${mesAno(g.proveniencia.tecnica_regulatoria.periodo_referencia.fim)}; até ${num(maxTrechos, 0)} mais recentes de cada distribuidora (os demais no CSV)`}
                 universo={`${regulatorio.length} distribuidoras com ao menos um trecho de 6 meses ou mais`}
                 unidade="% da energia injetada publicada"
               />
               <PerdasRegulatorio
                 linhas={regulatorio}
                 urlEvidencias={g.series.evidencias_tecnica}
-                segmentos={segmentosPorDistribuidora(g.distribuidoras)}
+                segmentos={segmentos}
                 ids={ids}
                 rotulos={rotulos}
                 versao={versao}

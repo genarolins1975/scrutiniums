@@ -10,16 +10,21 @@ import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { TabelaDados } from "@/components/energia/TabelaDados";
 import { PerdasComposicao } from "@/components/energia/PerdasComposicao";
 import { PerdasAuditoria } from "@/components/energia/PerdasAuditoria";
-import { PerdasNavegacao, RodapePainel, Recorte, Resposta } from "@/components/energia/PerdasPainel";
+import { PerdasNavegacao, ReferenciaPerdas, RodapePainel, Recorte, Resposta } from "@/components/energia/PerdasPainel";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { integra, lerGold } from "@/lib/energia/gold";
-import { carimbo, dataBR, mesAno, num } from "@/lib/energia/formato";
+import { dataBR, mesAno } from "@/lib/energia/formato";
 import type { PerdasGold } from "@/lib/energia/tipos-perdas";
 import {
+  ANO_LEIAUTE_SAMP,
+  anosSerieNacional,
+  fraseCoberturaSeparacao,
   linhaNacional,
   linhasComposicao,
   linhasSeparacaoNacional,
+  marcaLeiauteSeparacao,
   motivosComposicao,
+  numOu,
   respostaComposicao,
   rotuloDistribuidora,
   serieNacional,
@@ -55,6 +60,8 @@ export default function PerdasComposicaoPage() {
   const versao = `SAMP até ${mesAno(g.referencia.ultima_competencia)}, gold de ${dataBR(g.gerado_em)}`;
   const composicao = linhasComposicao(g.distribuidoras);
   const uf = g.universo_fixo;
+  const inicioSerie = anosSerieNacional(g.nacional)?.inicio ?? ref;
+  const cobertura = fraseCoberturaSeparacao(g.nacional, ref);
 
   return (
     <>
@@ -64,12 +71,7 @@ export default function PerdasComposicaoPage() {
         <CabecalhoModulo
           rotulo="Perdas de energia · técnicas e não técnicas"
           titulo="Qual parte das perdas é técnica e qual é não técnica?"
-          referencia={
-            <>
-              ANEEL, SAMP Balanço: anos completos até {g.referencia.ano} e {g.referencia.ano_parcial ?? ""} até {g.referencia.ultima_competencia_parcial ? mesAno(g.referencia.ultima_competencia_parcial) : "sem mês publicado"}; componentes tarifárias com vigência conferida em{" "}
-              {dataBR(g.referencia.tarifa_consultada_em)}; Censo 2022 do IBGE. Processado em {carimbo(g.gerado_em)}.
-            </>
-          }
+          referencia={<ReferenciaPerdas g={g} />}
         >
           Pela definição da ANEEL, a perda total se divide em <Termo slug="perdas-tecnicas">técnica</Termo>, inevitável no transporte da energia, e{" "}
           <Termo slug="perdas-nao-tecnicas">não técnica</Termo>, a diferença entre a total e a técnica. As duas são estimativas: a técnica do SAMP é o percentual regulatório aplicado à energia
@@ -94,8 +96,10 @@ export default function PerdasComposicaoPage() {
               }
               oQueMudou={
                 <>
-                  A fonte deixou de publicar a separação para cerca de metade das distribuidoras a partir de 2024: em {ref}, só {nac?.n_com_pnt_bt ?? 0} de {nac?.n_distribuidoras ?? 0} concessionárias
-                  válidas. Nas mesmas {uf.n_distribuidoras} concessionárias de {uf.anos[0]} a {uf.anos[uf.anos.length - 1]}, a série de universo fixo mostra a tendência sem mudança de composição.
+                  Com o leiaute novo do SAMP, a partir de {ANO_LEIAUTE_SAMP}, menos distribuidoras publicam a separação: {cobertura ?? `sem linha nacional das concessionárias em ${ref}.`}{" "}
+                  {uf.anos.length > 1
+                    ? `Nas mesmas ${uf.n_distribuidoras} concessionárias de ${uf.anos[0]} a ${uf.anos[uf.anos.length - 1]}, a série de universo fixo mostra a tendência sem mudança de composição.`
+                    : "Sem série de universo fixo com mais de um ano."}
                 </>
               }
               comoInterpretar={
@@ -106,14 +110,14 @@ export default function PerdasComposicaoPage() {
               }
               naoConcluir={
                 <>
-                  Que perda não técnica seja só furto (inclui erros de medição, leitura e faturamento); que a tendência nacional da separação depois de 2024 valha para todas as distribuidoras (só o universo
+                  Que perda não técnica seja só furto (inclui erros de medição, leitura e faturamento); que a tendência nacional da separação depois de {ANO_LEIAUTE_SAMP} valha para todas as distribuidoras (só o universo
                   fixo é comparável); que toda perda técnica possa ser eliminada.
                 </>
               }
             >
               <Resposta prova={<ComproveNumero evidencia={ev.pnt_bt_nacional} rotulo={`Comprove a não técnica de ${ref}`} />}>{respostaComposicao(g)}</Resposta>
               <Recorte
-                periodo={`${ref} (barras e tabela); 2003 a ${ref} (série nacional)`}
+                periodo={`${ref} (barras e tabela); ${inicioSerie} a ${ref} (série nacional)`}
                 universo={`concessionárias e permissionárias com o ano completo, sem alerta e com a decomposição fechando (${composicao.linhas.length} distribuidoras nas barras)`}
                 unidade="% da energia injetada de referência; não técnica também em % do mercado de baixa tensão medido"
               />
@@ -142,7 +146,7 @@ export default function PerdasComposicaoPage() {
                     unidade="% da energia injetada"
                     casas={2}
                     zeroNoEixo
-                    marcos={[{ x: "2024", rotulo: "2024: metade deixa de publicar" }]}
+                    marcos={marcaLeiauteSeparacao(g.nacional, "tecnica")}
                     altura={240}
                   />
                   <GraficoLinhas
@@ -154,7 +158,7 @@ export default function PerdasComposicaoPage() {
                     unidade="% do mercado de baixa tensão"
                     casas={2}
                     zeroNoEixo
-                    marcos={[{ x: "2024", rotulo: "2024: metade deixa de publicar" }]}
+                    marcos={marcaLeiauteSeparacao(g.nacional, "pnt_bt")}
                     altura={240}
                   />
                 </div>
@@ -186,11 +190,11 @@ export default function PerdasComposicaoPage() {
                           <th scope="row" className="px-2 py-1 text-left font-normal">
                             {l.ano}
                           </th>
-                          <td className="px-2 py-1">{num(l.taxa_total_pct, 2)}</td>
-                          <td className="px-2 py-1">{num(l.taxa_tecnica_pct, 2)}</td>
-                          <td className="px-2 py-1">{num(l.pnt_bt_pct, 2)}</td>
-                          <td className="px-2 py-1">{l.pnt_mwh === null ? "sem dado" : num(l.pnt_mwh / 1000, 0)}</td>
-                          <td className="px-2 py-1">{num(l.cobertura_bt_pct, 1)}</td>
+                          <td className="px-2 py-1">{numOu(l.taxa_total_pct, 2)}</td>
+                          <td className="px-2 py-1">{numOu(l.taxa_tecnica_pct, 2)}</td>
+                          <td className="px-2 py-1">{numOu(l.pnt_bt_pct, 2)}</td>
+                          <td className="px-2 py-1">{numOu(l.pnt_mwh === null ? null : l.pnt_mwh / 1000, 0)}</td>
+                          <td className="px-2 py-1">{numOu(l.cobertura_bt_pct, 1)}</td>
                         </tr>
                       ))}
                     </tbody>

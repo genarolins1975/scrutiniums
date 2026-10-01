@@ -101,7 +101,7 @@ export function InclusaoCoberturaUf({ ufs, mes: mesRef, fonte }: { ufs: Cobertur
         selecionado={sel}
         onSelecionar={selecionar}
         dicaBusca="Nome ou sigla da UF"
-        nota="Numerador e denominador do mesmo mês. Famílias atualizadas: cadastro revisto nos últimos 2 anos, requisito da concessão."
+        nota="Numerador e denominador do mesmo mês. Famílias atualizadas: cadastro dentro do prazo de atualização exigido para a concessão (requisitos na regra de elegibilidade, modo Auditar)."
       />
     </div>
   );
@@ -183,8 +183,9 @@ export function InclusaoMunicipiosCobertura({ csvUrl, mes: mesRef, fonte }: { cs
   const [v, definir] = useEstadoUrl(ESQUEMA_COBERTURA);
   const [dados, setDados] = useState<{ geo: CamadaGeo; mun: MunicipioCobertura[] } | null>(null);
   const [erro, setErro] = useState<string | null>(null);
-  const [sel, setSel] = useState<string | null>(null);
   const ativo = v.mun;
+  // seleção municipal na URL (cob.msel), como a da UF: o link copiado e o voltar do navegador trazem o mesmo município
+  const selecionar = (id: string | null) => definir({ msel: id ?? "" });
 
   useEffect(() => {
     if (!ativo || dados) return;
@@ -214,12 +215,13 @@ export function InclusaoMunicipiosCobertura({ csvUrl, mes: mesRef, fonte }: { cs
         atualizadas: m.atualizadas,
         razao_atualizadas: m.razao_atualizadas,
         razao_cadastradas: m.razao_cadastradas,
-        base: m.base_pequena ? "menos de 50 famílias (fora da distribuição)" : "50 famílias ou mais",
+        base: m.base_pequena ? "base pequena (fora da distribuição)" : "base suficiente",
       };
     });
     const semGeometria = dados.mun.filter((m) => !cod7.has(m.cod6)).length;
     return { valores, linhas, semGeometria, classes: quebrasFixas(CORTES, Object.values(valores), { casas: 0 }) };
   }, [dados, v.den]);
+  const sel = montado && v.msel && montado.linhas.some((l) => l.id === v.msel) ? v.msel : null;
 
   if (!ativo) {
     return (
@@ -267,10 +269,10 @@ export function InclusaoMunicipiosCobertura({ csvUrl, mes: mesRef, fonte }: { cs
         casas={1}
         rotuloRegiao={{ singular: "município", plural: "municípios" }}
         selecionado={sel}
-        onSelecionar={setSel}
+        onSelecionar={selecionar}
         corNaoSeAplica="var(--mapa-nao-se-aplica)"
         periodo={mes(mesRef)}
-        nota={`Cinza liso: menos de 50 famílias no denominador, fora da distribuição. Município da fatura é o da unidade consumidora; o do cadastro é o da residência declarada.${montado.semGeometria ? ` ${montado.semGeometria} municípios do CSV sem polígono na malha ficam só na tabela.` : ""}`}
+        nota={`Cinza liso: base pequena no denominador, fora da distribuição (o limite está nas limitações de \u201cSobre este dado\u201d). Município da fatura é o da unidade consumidora; o do cadastro é o da residência declarada.${montado.semGeometria ? ` ${montado.semGeometria} municípios do CSV sem polígono na malha ficam só na tabela.` : ""}`}
       />
       <TabelaInterativa
         titulo={`Municípios: faturas e famílias, ${mes(mesRef)} (proxy)`}
@@ -284,7 +286,7 @@ export function InclusaoMunicipiosCobertura({ csvUrl, mes: mesRef, fonte }: { cs
         chaveUrl="cob.mtab"
         ordemInicial={{ coluna: "razao_atualizadas", direcao: "asc" }}
         selecionado={sel}
-        onSelecionar={setSel}
+        onSelecionar={selecionar}
         dicaBusca="Nome do município"
         nota="Ordem inicial: menor razão primeiro. Razão baixa não prova exclusão: famílias não titulares da conta e sem ligação à rede contam no denominador."
       />

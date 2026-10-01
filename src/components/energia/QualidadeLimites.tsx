@@ -82,33 +82,28 @@ export function QualidadeLimites({
 
   return (
     <div className="space-y-5">
+      {/* rádios nativos: setas, Tab e leitor de tela funcionam sem código próprio */}
       <div className="flex flex-wrap gap-x-6 gap-y-2">
         <div role="radiogroup" aria-label="Indicador do gráfico" className="flex flex-wrap gap-2">
           {INDICADORES.map((i) => (
-            <button
+            <label
               key={i}
-              type="button"
-              role="radio"
-              aria-checked={ind === i}
-              onClick={() => definir({ ind: i })}
-              className={`rotulo min-h-[44px] border px-4 ${ind === i ? "border-energia bg-energia text-superficie" : "border-linha bg-superficie text-carvao hover:border-energia"}`}
+              className={`rotulo inline-flex min-h-[44px] cursor-pointer items-center gap-2 border px-4 focus-within:ring-2 focus-within:ring-energia ${ind === i ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted hover:border-energia"}`}
             >
+              <input type="radio" name="qualidade-limites-indicador" value={i} checked={ind === i} onChange={() => definir({ ind: i })} className="h-4 w-4 accent-energia" />
               {ROTULO_IND[i].nome}
-            </button>
+            </label>
           ))}
         </div>
         <div role="radiogroup" aria-label="Grupo de distribuidoras" className="flex flex-wrap gap-2">
           {CLASSES.map((c) => (
-            <button
+            <label
               key={c}
-              type="button"
-              role="radio"
-              aria-checked={v.cls === c}
-              onClick={() => definir({ cls: c })}
-              className={`rotulo min-h-[44px] border px-4 ${v.cls === c ? "border-energia bg-energia text-superficie" : "border-linha bg-superficie text-carvao hover:border-energia"}`}
+              className={`rotulo inline-flex min-h-[44px] cursor-pointer items-center gap-2 border px-4 focus-within:ring-2 focus-within:ring-energia ${v.cls === c ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted hover:border-energia"}`}
             >
+              <input type="radio" name="qualidade-limites-classe" value={c} checked={v.cls === c} onChange={() => definir({ cls: c })} className="h-4 w-4 accent-energia" />
               {c === "concessionaria" ? "Concessionárias" : "Permissionárias"}
-            </button>
+            </label>
           ))}
         </div>
       </div>

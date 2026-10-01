@@ -12,18 +12,21 @@ import { TabelaDados } from "@/components/energia/TabelaDados";
 import { PerdasExplorador } from "@/components/energia/PerdasExplorador";
 import { PerdasAuditoria } from "@/components/energia/PerdasAuditoria";
 import { PerdasLinkConsulta } from "@/components/energia/PerdasLinkConsulta";
-import { LINK_PERDAS, PAGINAS_PERDAS, PerdasNavegacao, RodapePainel, Recorte, Resposta } from "@/components/energia/PerdasPainel";
+import { LINK_PERDAS, PAGINAS_PERDAS, PerdasNavegacao, ReferenciaPerdas, RodapePainel, Recorte, Resposta } from "@/components/energia/PerdasPainel";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { integra, lerGold } from "@/lib/energia/gold";
-import { carimbo, dataBR, mesAno, num } from "@/lib/energia/formato";
+import { dataBR, mesAno, num } from "@/lib/energia/formato";
 import type { PerdasGold } from "@/lib/energia/tipos-perdas";
 import {
+  ANO_LEIAUTE_SAMP,
+  anosSerieNacional,
   fraseMudanca,
   leve,
   linhaNacional,
   linhasCusto,
   linhasNacionais,
   linhasRegulatorio,
+  pctOu,
   periodosDisponiveis,
   respostaComposicao,
   respostaCusto,
@@ -39,7 +42,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Perdas de energia na distribuição",
   description:
-    "Onde se perde energia em cada distribuidora, quanto e como evoluiu: mapa das áreas de atuação, taxa com denominador explícito, comparação de até quatro distribuidoras e a série desde 2003, com a fonte da ANEEL.",
+    "Onde se perde energia em cada distribuidora, quanto e como evoluiu: mapa das áreas de atuação, taxa com denominador explícito, comparação de até quatro distribuidoras e a série anual do SAMP, com a fonte da ANEEL.",
   alternates: { canonical: "/setor-eletrico/perdas" },
 };
 
@@ -63,9 +66,15 @@ export default function PerdasPage() {
   const versao = `SAMP até ${mesAno(g.referencia.ultima_competencia)}, gold de ${dataBR(g.gerado_em)}`;
   const bloqueioGeometria = g.bloqueios.find((b) => b.item.includes("P055")) ?? null;
   const bloqueioRegulatorio = g.bloqueios.find((b) => b.item.includes("P057")) ?? null;
+  // o item do bloqueio entra no meio da frase: sem o ID do painel e com inicial minúscula
+  const itemGeometria = bloqueioGeometria ? bloqueioGeometria.item.replace(/ \(P055\)$/, "").replace(/^./, (c) => c.toLowerCase()) : "";
   const mesFimAcum = g.acumulado ? mesAno(`${g.acumulado.ano}-${String(g.acumulado.mes_fim).padStart(2, "0")}`) : null;
   const periodos = periodosDisponiveis(g);
   const rotuloAcumulado = periodos.find((p) => p.tipo === "acumulado")?.rotulo ?? null;
+  // anos da série e do mapa lidos da gold, nunca escritos à mão
+  const anos = anosSerieNacional(g.nacional);
+  const inicioSerie = anos?.inicio ?? ref;
+  const periodoMapa = `${inicioSerie} a ${ref}${g.acumulado ? ` e ${g.acumulado.ano} até ${mesFimAcum}` : ""}`;
   // respostas das outras páginas, para a abertura dizer o essencial de cada painel
   const outras = [
     { pagina: PAGINAS_PERDAS[1], pergunta: "Qual parte das perdas é técnica e qual é não técnica?", resposta: respostaComposicao(g) },
@@ -81,16 +90,12 @@ export default function PerdasPage() {
         <CabecalhoModulo
           rotulo="Perdas de energia"
           titulo="Onde se perde energia, quanto e com que efeito econômico?"
-          referencia={
-            <>
-              ANEEL, SAMP Balanço: anos completos até {g.referencia.ano} e {g.referencia.ano_parcial ?? ""} até {g.referencia.ultima_competencia_parcial ? mesAno(g.referencia.ultima_competencia_parcial) : "sem mês publicado"}; componentes tarifárias com vigência conferida em{" "}
-              {dataBR(g.referencia.tarifa_consultada_em)}; Censo 2022 do IBGE. Processado em {carimbo(g.gerado_em)}.
-            </>
-          }
+          referencia={<ReferenciaPerdas g={g} />}
         >
           Parte da energia que entra na rede de cada distribuidora não chega a ser entregue como consumo medido: são as <Termo slug="perdas-de-energia">perdas</Termo>. Uma parte vem da física das
           redes (<Termo slug="perdas-tecnicas">perdas técnicas</Termo>); outra, de furto, fraude e erros de medição e faturamento (<Termo slug="perdas-nao-tecnicas">perdas não técnicas</Termo>). Aqui estão
-          volume, taxa, trajetória, composição, referência regulatória e custo na tarifa de cada distribuidora, com o denominador de cada taxa escrito.
+          volume, taxa, trajetória, composição, o percentual técnico regulatório e o custo das perdas na tarifa de cada distribuidora, com o denominador de cada taxa escrito; a comparação com a
+          referência de perdas não técnicas está bloqueada, com a evidência no painel Realizado e regulatório.
         </CabecalhoModulo>
         <PerdasNavegacao atual="mapa" />
 
@@ -115,7 +120,7 @@ export default function PerdasPage() {
                   periodo={String(ref)}
                   variacao={
                     nac?.mesmas_ano_anterior
-                      ? { valor: variacaoMesmas(nac.mesmas_ano_anterior.taxa_total_pct), casas: 2, sufixo: " p.p.", referencia: `nas mesmas ${nac.mesmas_ano_anterior.n_total} concessionárias em ${ref - 1}` }
+                      ? { valor: variacaoMesmas(nac.mesmas_ano_anterior.taxa_total_pct), casas: 2, sufixo: " p.p.", referencia: `contra ${ref - 1}, nas mesmas ${nac.mesmas_ano_anterior.n_total} concessionárias` }
                       : undefined
                   }
                   nota={<>da energia injetada de referência</>}
@@ -129,7 +134,7 @@ export default function PerdasPage() {
                   unidade="TWh"
                   casas={1}
                   periodo={String(ref)}
-                  nota={<>soma das perdas medidas das {nac?.n_distribuidoras ?? "sem dado"} concessionárias válidas</>}
+                  nota={nac ? <>soma das perdas medidas das {num(nac.n_distribuidoras, 0)} concessionárias válidas</> : <>sem soma nacional publicada para {ref}</>}
                   endereco="https://scrutiniums.com/setor-eletrico/perdas#resumo"
                 />
                 <Numero
@@ -143,11 +148,11 @@ export default function PerdasPage() {
                   nota={
                     nac ? (
                       <>
-                        só {nac.n_com_pnt_bt} de {nac.n_distribuidoras} concessionárias ({num(nac.cobertura_bt_pct, 1)}% do mercado de baixa tensão) publicaram a separação fechando
+                        só {nac.n_com_pnt_bt} de {nac.n_distribuidoras} concessionárias ({pctOu(nac.cobertura_bt_pct, 1)} do mercado de baixa tensão) publicaram a separação fechando
                       </>
                     ) : undefined
                   }
-                  endereco="https://scrutiniums.com/setor-eletrico/perdas#composicao"
+                  endereco="https://scrutiniums.com/setor-eletrico/perdas#resumo"
                 />
                 <Numero
                   rotulo={rotuloAcumulado ? `Perdas totais, ${rotuloAcumulado}` : "Acumulado do ano aberto"}
@@ -173,7 +178,7 @@ export default function PerdasPage() {
             <PainelEvidencia
               id="painel-mapa"
               pergunta="Onde estão as perdas e como evoluíram?"
-              subtitulo="Perdas por área de distribuidora · taxa, volume, técnicas, não técnicas e variação · 2003 a 2025 e ano aberto"
+              subtitulo={`Perdas por área de distribuidora · taxa, volume, técnicas, não técnicas e variação · ${periodoMapa}`}
               natureza="CALCULADO"
               proveniencia={g.proveniencia.taxas}
               complementares={[
@@ -202,7 +207,7 @@ export default function PerdasPage() {
               comoInterpretar={
                 <>
                   Cada área tem a cor do valor da distribuidora inteira: o mapa não mostra perda por município. A taxa compara distribuidoras de tamanhos diferentes; o volume mostra onde a energia perdida
-                  se concentra. O denominador é a energia injetada de referência (desde 2024, fornecida + irregular + perdas, porque a linha publicada deixou de fechar o balanço). Hachura cruzada é valor
+                  se concentra. O denominador é a energia injetada de referência (desde {ANO_LEIAUTE_SAMP}, fornecida + irregular + perdas, porque a linha publicada deixou de fechar o balanço). Hachura cruzada é valor
                   publicado fora da comparação (ano incompleto ou alerta físico), com o motivo na tabela; hachura simples é ausência. As áreas vêm da relação de municípios mais recente: em anos anteriores, quem absorveu outra distribuidora depois aparece com o território de hoje, e o aviso abaixo do mapa diz quem.
                 </>
               }
@@ -232,7 +237,7 @@ export default function PerdasPage() {
               </div>
               {bloqueioGeometria && (
                 <p className="mt-3 max-w-prose2 text-xs leading-relaxed text-carvao-muted" data-bloqueio="geometria">
-                  Limitação declarada: {bloqueioGeometria.item.replace(/ \(P055\)$/, "")} não está acessível ({bloqueioGeometria.evidencia}). A área é desenhada pelos municípios do IBGE ligados à
+                  Limitação declarada: o {itemGeometria} não está acessível ({bloqueioGeometria.evidencia.replace(/\.\s*$/, "")}). A área é desenhada pelos municípios do IBGE ligados à
                   distribuidora pela relação oficial da ANEEL; limites dentro de municípios compartilhados e a área em km² da concessão não podem ser lidos aqui.
                 </p>
               )}
@@ -250,11 +255,11 @@ export default function PerdasPage() {
           <Bloco id="evolucao">
             <PainelEvidencia
               id="painel-evolucao"
-              pergunta="Como a taxa de perdas das concessionárias evoluiu desde 2003?"
+              pergunta={`Como a taxa de perdas das concessionárias evoluiu desde ${inicioSerie}?`}
               subtitulo="Perdas totais das concessionárias · % da energia injetada de referência · anos completos"
               natureza="CALCULADO"
               proveniencia={g.proveniencia.taxas}
-              porQueImporta={<>A série longa separa tendência de oscilação de um ano e mostra a quebra de 2024, quando o SAMP mudou de leiaute.</>}
+              porQueImporta={<>A série longa separa tendência de oscilação de um ano e mostra a quebra de {ANO_LEIAUTE_SAMP}, quando o SAMP mudou de leiaute.</>}
               oQueMudou={
                 <>
                   {nac && nac.taxa_total_pct !== null ? `Em ${ref}, ${num(nac.taxa_total_pct, 2)}% em ${nac.n_distribuidoras} concessionárias somadas.` : `Sem soma em ${ref}.`} Cada linha da tabela diz se o
@@ -264,15 +269,15 @@ export default function PerdasPage() {
               comoInterpretar={
                 <>
                   Taxa agregada = 100 × soma das perdas ÷ soma da energia injetada das concessionárias com os 12 meses e sem alerta, nunca média de percentuais. Quando o universo muda, a diferença entre dois
-                  anos mistura composição e variação.
+                  anos mistura composição e variação. A marca de {ANO_LEIAUTE_SAMP} indica o leiaute novo do SAMP, com outro denominador.
                 </>
               }
-              naoConcluir={<>Que a queda ou a alta de um ano para o outro seja da mesma rede: distribuidoras entram, saem e são incorporadas, e 2024 trouxe um denominador novo.</>}
+              naoConcluir={<>Que a queda ou a alta de um ano para o outro seja da mesma rede: distribuidoras entram, saem e são incorporadas, e {ANO_LEIAUTE_SAMP} trouxe um denominador novo.</>}
             >
               <Resposta prova={<ComproveNumero evidencia={ev.taxa_nacional} rotulo={`Comprove a taxa de ${ref}`} />}>
                 {respostaEvolucao(g.nacional, ref)}
               </Resposta>
-              <Recorte periodo={`2003 a ${ref}, anos completos`} universo="concessionárias com os 12 meses e sem alerta físico em cada ano" unidade="% da energia injetada de referência" />
+              <Recorte periodo={`${inicioSerie} a ${ref}, anos completos`} universo="concessionárias com os 12 meses e sem alerta físico em cada ano" unidade="% da energia injetada de referência" />
               <GraficoLinhas
                 titulo="Taxa de perdas totais das concessionárias por ano"
                 dados={serieNacional(g.nacional)}
@@ -282,7 +287,7 @@ export default function PerdasPage() {
                 unidade="%"
                 casas={2}
                 zeroNoEixo
-                marcos={[{ x: "2024", rotulo: "2024: leiaute da REN 1.003/2022" }]}
+                marcos={[{ x: String(ANO_LEIAUTE_SAMP), rotulo: `${ANO_LEIAUTE_SAMP}: leiaute da REN 1.003/2022` }]}
                 altura={280}
               />
               <TabelaDados

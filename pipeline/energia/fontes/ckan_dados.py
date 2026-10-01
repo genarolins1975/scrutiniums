@@ -51,12 +51,29 @@ DS_SEED_CCEE = "catalogo_ccee_seed"
 DS_VERIFICACAO = "verificacao_recursos"
 DS_METADADOS = "metadados_fontes"
 META = os.path.join(base.DADOS, "meta")
-SEEDS_CCEE = (
-    ("ccee_pld_horario", "package_show.json"),
-    ("ccee_documentos", "package_show_pld_horario_submercado.json"),
-    ("ccee_documentos", "package_show_sumario_be_horario_submercado.json"),
-    ("ccee_documentos", "package_show_sumario_mensal_compra_venda_submercado.json"),
-)
+PREFIXO_SEED_CCEE = "ccee_"
+
+
+def seeds_ccee(raiz_seed=None):
+    """[(pasta, versao, arquivo)] de todo package_show da CCEE versionado no repositório
+    (pipeline/energia/seed/ccee_*/v*/package_show*.json), em ordem de pasta, versão e
+    arquivo. Genérico: o package_show que um módulo (Mercado, PLD) versionar numa pasta
+    ccee_* entra no catálogo sem editar este arquivo."""
+    raiz_seed = raiz_seed or base.SEED
+    out = []
+    if not os.path.isdir(raiz_seed):
+        return out
+    for pasta in sorted(os.listdir(raiz_seed)):
+        if not pasta.startswith(PREFIXO_SEED_CCEE) or not os.path.isdir(os.path.join(raiz_seed, pasta)):
+            continue
+        for versao in sorted(os.listdir(os.path.join(raiz_seed, pasta))):
+            d = os.path.join(raiz_seed, pasta, versao)
+            if not os.path.isdir(d):
+                continue
+            for arquivo in sorted(os.listdir(d)):
+                if arquivo.startswith("package_show") and arquivo.endswith(".json"):
+                    out.append((pasta, versao, arquivo))
+    return out
 # Reverificação de um recurso já verificado: semanal (catálogos mudam devagar; o
 # portal não precisa de 160 requisições por dia), ou antes se a fonte mudou o recurso.
 MAX_IDADE_VERIFICACAO_DIAS = 7
@@ -244,34 +261,43 @@ def importa_seed_ccee(con):
     MANIFESTO). Registra cada arquivo como vintage de origem `seed` e os conjuntos e
     recursos como registros. Retorna (status, pacotes)."""
     pacotes, status = [], []
-    for pasta, arquivo in SEEDS_CCEE:
+    for pasta, versao, arquivo in seeds_ccee():
         raiz = os.path.join(base.SEED, pasta)
-        if not os.path.isdir(raiz):
+        caminho = os.path.join(raiz, versao, arquivo)
+        try:
+            with open(os.path.join(raiz, versao, "MANIFESTO.json"), encoding="utf-8") as f:
+                manifesto = json.load(f)
+        except (OSError, ValueError):
+            manifesto = {}
+        with open(caminho, "rb") as f:
+            corpo = f.read()
+        sha = base.sha256_bytes(corpo)
+        declarado = _sha_no_manifesto(manifesto, arquivo)
+        if declarado and declarado != sha:
+            base.registra_coleta(con, DS_SEED_CCEE, arquivo, False, "seed com sha256 divergente do MANIFESTO")
+            status.append({"arquivo": f"{pasta}/{versao}/{arquivo}", "ok": False})
             continue
-        for versao in sorted(os.listdir(raiz)):
-            caminho = os.path.join(raiz, versao, arquivo)
-            if not os.path.exists(caminho):
-                continue
-            manifesto = json.load(open(os.path.join(raiz, versao, "MANIFESTO.json"), encoding="utf-8"))
-            corpo = open(caminho, "rb").read()
-            sha = base.sha256_bytes(corpo)
-            declarado = _sha_no_manifesto(manifesto, arquivo)
-            if declarado and declarado != sha:
-                base.registra_coleta(con, DS_SEED_CCEE, arquivo, False, "seed com sha256 divergente do MANIFESTO")
-                status.append({"arquivo": arquivo, "ok": False})
-                continue
-            pkg = json.loads(corpo.decode("utf-8"))["result"]
-            cap = manifesto.get("capturado_em") or versao[1:].replace("T", "")
-            cap = _instante_da_versao(versao) if not str(cap).endswith("Z") else cap
-            rel = os.path.relpath(caminho, base.RAIZ)
-            vid, nova = base.registra_vintage(con, DS_SEED_CCEE, arquivo, _url_do_seed(manifesto, arquivo, pkg), cap, None,
-                                              sha, len(corpo), "seed", rel)
-            if nova:
-                registra_pacotes(con, "CCEE_SEED", vid, [pkg], listagem_completa=False)
-            pacotes.append({**pkg, "_seed": {"arquivo": rel, "sha256": sha, "capturado_em": cap, "sha256_no_manifesto": declarado}})
-            status.append({"arquivo": arquivo, "ok": True, "vintage_nova": nova})
+        pkg = json.loads(corpo.decode("utf-8"))["result"]
+        cap = _captura_do_seed(manifesto, arquivo, versao)
+        rel = os.path.relpath(caminho, base.RAIZ)
+        vid, nova = base.registra_vintage(con, DS_SEED_CCEE, arquivo, _url_do_seed(manifesto, arquivo, pkg), cap, None,
+                                          sha, len(corpo), "seed", rel)
+        if nova:
+            registra_pacotes(con, "CCEE_SEED", vid, [pkg], listagem_completa=False)
+        pacotes.append({**pkg, "_seed": {"arquivo": rel, "sha256": sha, "capturado_em": cap, "sha256_no_manifesto": declarado}})
+        status.append({"arquivo": f"{pasta}/{versao}/{arquivo}", "ok": True, "vintage_nova": nova})
     con.commit()
     return status, pacotes
+
+
+def _captura_do_seed(manifesto, arquivo, versao):
+    """Instante de captura de um package_show versionado: o do próprio arquivo no
+    MANIFESTO (quando registrado), senão o da pasta (MANIFESTO ou nome da versão)."""
+    for a in manifesto.get("arquivos") or []:
+        if a.get("arquivo") == arquivo and str(a.get("capturado_em") or "").endswith("Z"):
+            return a["capturado_em"]
+    cap = manifesto.get("capturado_em")
+    return cap if str(cap or "").endswith("Z") else _instante_da_versao(versao)
 
 
 def _sha_no_manifesto(manifesto, arquivo):

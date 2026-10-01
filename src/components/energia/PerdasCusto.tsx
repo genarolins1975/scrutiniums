@@ -7,7 +7,7 @@ import { useEvidenciaPerdas, useSelecaoPerdas } from "@/components/energia/Perda
 import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { dataBR, num } from "@/lib/energia/formato";
 import type { ColunaTabela } from "@/lib/energia/tabela";
-import { rotuloResolucao, type LinhaCusto } from "@/lib/energia/perdas";
+import { pctOu, rotuloResolucao, type LinhaCusto } from "@/lib/energia/perdas";
 
 /**
  * Custo unitário das perdas na tarifa residencial B1 (P058): as três componentes de perdas
@@ -41,10 +41,12 @@ export type PerdasCustoProps = {
   ids: string[];
   rotulos: Record<string, string>;
   consultadaEm: string;
+  /** Anos dos arquivos de componentes tarifárias lidos (proveniência da gold), ex.: "2012 a 2026". */
+  anosArquivos: string;
   versao: string;
 };
 
-export function PerdasCusto({ linhas, urlEvidencias, ids, rotulos, consultadaEm, versao }: PerdasCustoProps) {
+export function PerdasCusto({ linhas, urlEvidencias, ids, rotulos, consultadaEm, anosArquivos, versao }: PerdasCustoProps) {
   const [sel, selecionar] = useSelecaoPerdas(ids);
   const vigentes = useMemo(() => linhas.filter((l) => l.situacao === "vigente"), [linhas]);
   const dados = useMemo(() => vigentes.map((l) => ({ id: l.id, rotulo: l.rotulo, pt: l.pt, pnt: l.pnt, rede_basica: l.rede_basica })), [vigentes]);
@@ -93,13 +95,13 @@ export function PerdasCusto({ linhas, urlEvidencias, ids, rotulos, consultadaEm,
         {!sel ? (
           <p className="text-carvao-muted">Escolha uma barra, uma linha da tabela ou uma área do mapa para ler a componente de perdas da tarifa de uma distribuidora.</p>
         ) : !linhaSel ? (
-          <p>{rotulos[sel] ?? sel}: sem processo tarifário com tarifa residencial B1 convencional nos arquivos de componentes tarifárias de 2012 a 2026.</p>
+          <p>{rotulos[sel] ?? sel}: sem processo tarifário com tarifa residencial B1 convencional nos arquivos de componentes tarifárias de {anosArquivos}.</p>
         ) : (
           <>
           <p data-resposta="custo-distribuidora">
             {`${linhaSel.rotulo}, ${rotuloResolucao(linhaSel.resolucao) ?? "resolução não informada"} (${dataBR(linhaSel.inicio)} a ${dataBR(linhaSel.fim)}): `}
             {linhaSel.situacao === "vigente" ? "vigente na data da consulta. " : `vigência encerrada em ${dataBR(linhaSel.fim)}, sem processo seguinte no arquivo da fonte em ${dataBR(consultadaEm)}; não é a tarifa em vigor. `}
-            {`Técnicas ${num(linhaSel.pt, 2)}, não técnicas ${num(linhaSel.pnt, 2)} e Rede Básica ${num(linhaSel.rede_basica, 2)} R$/MWh: perdas de ${num(linhaSel.perdas, 2)} R$/MWh, ${num(linhaSel.participacao_perdas_pct, 2)}% da tarifa B1 sem tributos (${num(linhaSel.total, 2)} R$/MWh).`}
+            {`Técnicas ${num(linhaSel.pt, 2)}, não técnicas ${num(linhaSel.pnt, 2)} e Rede Básica ${num(linhaSel.rede_basica, 2)} R$/MWh: perdas de ${num(linhaSel.perdas, 2)} R$/MWh, ${pctOu(linhaSel.participacao_perdas_pct, 2)} da tarifa B1 sem tributos (${num(linhaSel.total, 2)} R$/MWh).`}
           </p>
           <div className="mt-1">
             {prova.estado === "pronta" ? (

@@ -11,7 +11,7 @@ import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { carimbo, dataBR, num, pct, reais } from "@/lib/energia/formato";
+import { carimbo, dataBR, pct } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
   COLUNAS_DISTRIBUIDORAS,
@@ -27,9 +27,12 @@ import {
   marcosEventos,
   mes,
   mudancaTarifaSocial,
+  numTexto,
   reaisGrandes,
+  reaisTexto,
   respostaTarifaSocial,
   rotaPainel,
+  textoCusteioTarifaSocial,
   ufsAtingidasPorAusencia,
 } from "@/lib/energia/inclusao";
 import type { ColunaTabela } from "@/lib/energia/tabela";
@@ -220,7 +223,7 @@ export default function TarifaSocialPage() {
                     casas={0}
                     unidade="R$"
                     tamanho="medio"
-                    nota={`${reais(k.dmr_por_uc_reais.valor)} por UC; ${num(k.kwh_por_uc.valor, 1)} kWh por UC no mês.`}
+                    nota={`${reaisTexto(k.dmr_por_uc_reais.valor)} por UC; ${numTexto(k.kwh_por_uc.valor, 1)} kWh por UC no mês.`}
                     endereco={`${rotaPainel("p059")}#p059`}
                   />
                   <Numero
@@ -231,7 +234,7 @@ export default function TarifaSocialPage() {
                     unidade="faturas"
                     tamanho="medio"
                     motivoAusencia="Nenhum arquivo da CDE com todas as distribuidoras."
-                    nota={cdeMapa ? `${reais(cdeMapa.desconto_medio_por_fatura_reais)} de desconto médio por fatura.` : undefined}
+                    nota={cdeMapa ? `${reaisTexto(cdeMapa.desconto_medio_por_fatura_reais)} de desconto médio por fatura.` : undefined}
                     endereco={`${rotaPainel("p059")}#p059`}
                   />
                 </div>
@@ -270,6 +273,7 @@ export default function TarifaSocialPage() {
                   fonte={FONTE_CDE}
                   versao={g.referencias.cde_mes_mais_recente ?? mesMapa}
                   nomeArquivo="inclusao-cde-meses"
+                  chaveUrl="ts.cde"
                   tamanhoPagina={25}
                   nota={t.regras.mes_cde_sem_original}
                 />
@@ -364,12 +368,7 @@ export default function TarifaSocialPage() {
                       altura={280}
                     />
                   )}
-                  {custeio && (
-                    <p className="max-w-prose2 text-sm text-carvao-muted">
-                      {custeio.proveniencia.limitacoes.join(" ")} Em {custeio.linhas.at(-1)?.ano}, a Tarifa Social é {pct(custeio.linhas.at(-1)?.tarifa_social_pct_despesa, 1)} da despesa da
-                      CDE ({reaisGrandes(custeio.linhas.at(-1)?.tarifa_social_reais)}).
-                    </p>
-                  )}
+                  {custeio && <p className="max-w-prose2 text-sm text-carvao-muted">{textoCusteioTarifaSocial(custeio)}</p>}
                   <TabelaInterativa
                     titulo="Série mensal nacional do SCS, todos os meses publicados na gold"
                     colunas={COLUNAS_SERIE_TSEE}
@@ -412,6 +411,7 @@ export default function TarifaSocialPage() {
                         fonte={`${FONTE_SCS}; ${FONTE_CDE}`}
                         versao={conf.mes}
                         nomeArquivo="inclusao-conferencia-scs-cde"
+                        chaveUrl="ts.conf"
                         ordemInicial={{ coluna: "diferenca_pct", direcao: "desc" }}
                       />
                     </>
@@ -433,6 +433,7 @@ export default function TarifaSocialPage() {
                       fonte={FONTE_SCS}
                       versao={t.mes_referencia}
                       nomeArquivo="inclusao-incorporacoes-scs"
+                      chaveUrl="ts.inc"
                     />
                   )}
                   {t.siglas_de_outra_fonte.length > 0 && (
@@ -470,6 +471,7 @@ export default function TarifaSocialPage() {
                         fonte="ANEEL, Tarifa Social de Energia Elétrica: Beneficiários (descontinuado)"
                         versao={antiga.comparacao_scs.at(-1)?.m ?? ""}
                         nomeArquivo="inclusao-serie-antiga-contra-scs"
+                        chaveUrl="ts.ant"
                         nota="Trimestre que repete a contagem de outro no arquivo original fica marcado e fora da estatística de concordância."
                       />
                     </>
@@ -479,7 +481,7 @@ export default function TarifaSocialPage() {
                 <InclusaoSeguir
                   ancora="p059"
                   href={rotaPainel("p060")}
-                  pergunta="Quantas famílias elegíveis pela renda o benefício pode não estar alcançando?"
+                  pergunta={`${g.cobertura.pergunta} Faturas por 100 famílias elegíveis pela renda (proxy)`}
                   downloads={downloads([
                     "/energia/series/inclusao_tsee_mensal.csv",
                     "/energia/series/inclusao_tsee_distribuidoras.csv",

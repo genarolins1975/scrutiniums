@@ -58,7 +58,9 @@ PAGINAS = [{"rotulo": "Dados e metodologia", "href": "/setor-eletrico/dados"},
 CSV = {
     "conjuntos": "dados_conjuntos.csv", "validacoes": "dados_validacoes.csv", "revisoes": "dados_revisoes.csv",
     "calendario": "dados_calendario.csv", "catalogo": "dados_catalogo.csv", "eixos": "dados_eixos.csv",
+    "recursos_ons": "dados_recursos_ons.csv", "recursos_aneel": "dados_recursos_aneel.csv", "recursos_ccee": "dados_recursos_ccee.csv",
 }
+PORTAIS_RECURSOS = ("ONS", "ANEEL", "CCEE")
 U = {k: f"/energia/series/{v}" for k, v in CSV.items()}
 # saídas deste módulo não são validadas por ele mesmo (o relatório não se autovalida;
 # o teste pipeline/tests/test_energia_dados.py cobre o formato)
@@ -75,7 +77,6 @@ LIMIAR_PARQUET = 2 * 1024 * 1024
 # mais a tolerância da cadência declarada pela fonte.
 TOLERANCIA_DIAS = {"diaria": 2, "semanal": 7, "quinzenal": 15, "mensal": 60, "trimestral": 90, "anual": 365}
 PERIODO_DIAS = {"diaria": 1, "semanal": 7, "quinzenal": 15, "mensal": 31, "trimestral": 92, "anual": 366}
-CADENCIA_DO_GRAO = {"horaria": "diaria", "diaria": "diaria", "mensal": "mensal", "trimestral": "trimestral", "anual": "anual"}
 JANELA_CALENDARIO_DIAS = 120
 LICENCA_PROPRIA = ("Sem licença declarada no repositório para os metadados do pipeline; os dados de origem seguem a licença "
                    "de cada fonte, registrada no catálogo.")
@@ -104,8 +105,10 @@ AFIRMACOES = [
     {"id": "despacho_termico", "tema": "Geração térmica por motivo de despacho", "conjuntos": ["ons:geracao-termica-despacho-2"]},
     {"id": "pld_horario", "tema": "PLD horário", "conjuntos": ["ccee:pld_horario"]},
     {"id": "cmo", "tema": "CMO semanal e semi-horário", "conjuntos": ["ons:cmo-semanal", "ons:cmo-semi-horario"]},
-    {"id": "mercado_ccee", "tema": "Mercado de curto prazo (CCEE)",
-     "conjuntos": ["ccee:pld_horario_submercado", "ccee:sumario_be_horario_submercado", "ccee:sumario_mensal_compra_venda_submercado"]},
+    # conjuntos da CCEE além do PLD: a lista sai do catálogo (todo conjunto da CCEE que
+    # chegou pelo menos a INTEGRADO), sem cópia à mão de quais o módulo Mercado integrou
+    {"id": "mercado_ccee", "tema": "Conjuntos da CCEE integrados (mercado de curto prazo e cadastro de agentes)",
+     "conjuntos": "CCEE_INTEGRADOS"},
 ]
 
 REGISTRO = {
@@ -130,13 +133,22 @@ REGISTRO = {
          "descricao": ("Resposta completa da API (conjuntos, recursos, frequência de atualização declarada, situação e "
                        "descontinuação), versionada com sha256 a cada mudança."),
          "paginas": PAGINAS, "downloads": [U["catalogo"]], "quebras": []},
+        {"orgao": "CCEE", "nome": "api-package-search", "slug": "ccee-catalogo-ckan", "dataset_silver": ck.CATALOGOS["CCEE"]["dataset"],
+         "titulo": "Listagem dos conjuntos do portal de dados abertos da CCEE (API CKAN package_search)",
+         "estado": "UTILIZADO EM INDICADOR", "url": ck.CATALOGOS["CCEE"]["url"], "licenca": c.LICENCA_CCEE, "tema": "mercado",
+         "formatos": ["JSON"],
+         "descricao": ("Resposta completa da API (conjuntos e recursos, com data de modificação de cada arquivo), versionada com "
+                       "sha256 a cada mudança: base do catálogo da CCEE recurso a recurso. Pedida pelo cliente HTTP do pipeline "
+                       "com o User-Agent do projeto; quando o portal recusa, a falha fica registrada e valem os package_show "
+                       "versionados no repositório."),
+         "paginas": PAGINAS, "downloads": [U["catalogo"], U["recursos_ccee"]], "quebras": []},
         {"orgao": "CCEE", "nome": "package-show-versionados", "slug": "ccee-package-show-versionados", "dataset_silver": ck.DS_SEED_CCEE,
          "titulo": "Metadados oficiais (package_show) de conjuntos da CCEE versionados no repositório",
          "estado": "UTILIZADO EM INDICADOR", "url": "https://dadosabertos.ccee.org.br/", "licenca": c.LICENCA_CCEE, "tema": "mercado",
          "formatos": ["JSON"],
-         "descricao": ("PLD_HORARIO, PLD_HORARIO_SUBMERCADO, SUMARIO_BE_HORARIO_SUBMERCADO e SUMARIO_MENSAL_COMPRA_VENDA_SUBMERCADO, "
-                       "capturados em 27 e 28/09/2026 e conferidos por sha256: o catálogo da CCEE recurso a recurso enquanto o "
-                       "portal responder 403 ao ambiente de construção."),
+         "descricao": ("Todo package_show guardado em pipeline/energia/seed/ccee_* (PLD_HORARIO, conjuntos do mercado de curto "
+                       "prazo e os do módulo Mercado), conferido por sha256 com o MANIFESTO da pasta: alternativa do catálogo da "
+                       "CCEE quando a listagem do portal falha, e histórico dos metadados de cada conjunto."),
          "paginas": PAGINAS, "downloads": [U["catalogo"]], "quebras": []},
     ],
     "arquivos": {
@@ -166,8 +178,18 @@ REGISTRO = {
             "pela captura do dia); publicacoes_fonte (arquivos com last_modified informado pela fonte naquele dia)."),
         U["catalogo"]: (
             "Uma linha por conjunto do catálogo: id (órgão:nome); orgao; nome; titulo; estado; papeis; descontinuado (1/0) e "
-            "motivo; frequencia_declarada; recurso_verificado_em (UTC); integracoes (datasets do silver); golds; url; licenca; "
-            "metadados_verificados (0 = cadastro manual)."),
+            "motivo; frequencia_declarada; recurso_verificado_em (UTC); integracoes (datasets do silver); golds; recursos "
+            "(arquivos na listagem atual), recursos_acessados (baixados com sha256 ou lidos por requisição parcial), "
+            "recursos_integrados e recursos_removidos (sumiram da listagem); url; licenca; metadados_verificados (0 = cadastro "
+            "manual); descricao (texto integral da fonte, com ';' trocado por ',')."),
+        **{U[f"recursos_{o.lower()}"]: (
+            f"Uma linha por recurso (arquivo) de cada conjunto da listagem do portal {o}: orgao; conjunto (nome no portal); "
+            "recurso_id; recurso (nome); formato; publicado_em (last_modified informado pela fonte; vazio quando não informado); "
+            "tamanho (bytes, quando a fonte informa); presente (1 = na listagem atual, 0 = removido ou renomeado pela fonte); "
+            "estado (CATALOGADO, RECURSO VERIFICADO, INTEGRADO, VALIDADO, PUBLICADO; o recurso capturado por integração "
+            "declarada herda o estado dela); via (como o estado foi obtido); capturas (vintages com sha256 nos silvers); "
+            "ultima_captura (UTC); datasets_silver (família/dataset que o capturou); verificado_em (requisição parcial, UTC); url.")
+          for o in PORTAIS_RECURSOS},
         U["eixos"]: (
             "Uma linha por ficha 'Comprove este número' publicada: gold; indicador; natureza (da proveniência de mesmo nome, vazio "
             "se não houver); situacao_validacao (reconciliacao_aprovada, controles_aprovados, ressalva, divergencia, "
@@ -216,6 +238,12 @@ def coletar(con, ctx):
     con.commit()
     status["ok"] = all((v.get("ok", True) if isinstance(v, dict) else True) for k, v in status.items() if k in ("ONS", "ANEEL"))
     return status
+
+
+def _enxuto(d):
+    """Dicionário sem as chaves de valor None (chave ausente = não se aplica ou não
+    informado; o tipo em src/lib/energia/tipos-dados.ts marca esses campos como opcionais)."""
+    return {k: v for k, v in (d or {}).items() if v is not None}
 
 
 def _horas_desde(iso):
@@ -357,62 +385,103 @@ def _frequencia(it, brutos, seeds, metadados):
             "cadencias": cad, "sem_sla": sem_sla, **extra}
 
 
-def _cadencia_sla(freq, formato):
-    cads = freq["cadencias"]
-    if not cads:
-        return None
-    alvo = CADENCIA_DO_GRAO.get(formato)
-    if alvo in cads:
-        return alvo
-    return cads[-1]  # a mais longa declarada: SLA nunca mais exigente que a fonte promete
+ORDEM_CADENCIA = ["diaria", "semanal", "quinzenal", "mensal", "trimestral", "anual"]
+
+
+def cadencia_do_grao(formato, passo):
+    """Cadência natural de uma série regular pelo seu grão: dado horário ou diário
+    chega a cada dia, mensal a cada mês, e assim por diante (None se não há)."""
+    if formato == "horaria":
+        return "diaria"
+    if formato == "diaria":
+        return {1: "diaria", 7: "semanal", 14: "quinzenal", 15: "quinzenal"}.get(passo or 1)
+    if formato == "mensal":
+        return {1: "mensal", 3: "trimestral", 12: "anual"}.get(passo or 1)
+    if formato == "trimestral":
+        return "trimestral"
+    if formato == "anual":
+        return "anual" if (passo or 1) == 1 else None
+    return None
+
+
+def regra_sla(cadencias, regular, cad_grao):
+    """Qual cadência e qual base usar no SLA (seção 'sla_texto' das regras):
+
+    A. série regular cujo grão corresponde a uma cadência declarada: o período seguinte
+       deve chegar até o fim dele mais a tolerância dessa cadência;
+    B. série regular publicada em lotes (a fonte declara cadência mais longa que o grão):
+       a próxima remessa cobre até o fim do último período mais um período da cadência
+       declarada (a mais curta entre as mais longas que o grão);
+    C. série regular com cadência declarada mais curta que o grão (a fonte atualiza o
+       arquivo dentro do período, ou declara o horário da rotina do portal): vale o grão
+       do dado, com a tolerância do grão;
+    D. sem série regular (cadastro, vigências, cadência irregular): data de publicação
+       informada pela fonte mais um período da cadência declarada (a mais longa).
+    Devolve (caso, cadência, origem da cadência)."""
+    if not cadencias:
+        return None, None, None
+    if regular and cad_grao:
+        if cad_grao in cadencias:
+            return "A", cad_grao, "declarada pela fonte e igual ao grão do dado"
+        mais_longas = [c for c in cadencias if ORDEM_CADENCIA.index(c) > ORDEM_CADENCIA.index(cad_grao)]
+        if mais_longas:
+            return "B", min(mais_longas, key=ORDEM_CADENCIA.index), "declarada pela fonte, mais longa que o grão (publicação em lotes)"
+        return "C", cad_grao, "grão do dado (a cadência declarada é mais curta que o grão)"
+    return "D", cadencias[-1], "declarada pela fonte (a mais longa, sem série regular de referência)"
 
 
 def atualidade(an, freq, hoje, descontinuado):
-    """SLA de atualidade derivado da frequência declarada. Base: o último período de
-    referência disponível até hoje (nunca a data da captura: falha ou recaptura não
-    renovam o dado); cadastro sem período usa a data de publicação informada pela fonte."""
+    """SLA de atualidade derivado da frequência declarada pela fonte (regra_sla). A
+    base é o último período de referência disponível até hoje, nunca a data da captura:
+    falha ou recaptura não renovam o dado. Sem série regular, a base é a data de
+    publicação informada pela própria fonte (last_modified do portal)."""
     obs = (an or {}).get("observacoes") or {}
     grupos = obs.get("grupos") or []
     principal = next((g for g in grupos if g["formato"] == obs.get("principal")), grupos[0] if grupos else None)
-    out = {"situacao": None, "base": None, "cadencia": None, "tolerancia_dias": None, "ultimo_periodo": None,
-           "fim_ultimo_periodo": None, "prazo_proximo": None, "dias_atraso": None, "causa": None, "motivo_sem_sla": None}
+    out = {"situacao": None, "caso": None, "base": None, "cadencia": None, "origem_cadencia": None, "tolerancia_dias": None,
+           "ultimo_periodo": None, "fim_ultimo_periodo": None, "prazo_proximo": None, "dias_atraso": None, "causa": None,
+           "motivo_sem_sla": None}
+    formato = principal["formato"] if principal else None
+    passo = (principal or {}).get("passo")
+    regular = bool(principal and formato in sd.REGULARES and passo and (principal.get("aderencia_passo") or 0) >= 0.5)
     if principal:
         ref = principal.get("ref_max_ate_hoje")
-        formato = principal["formato"]
         out["ultimo_periodo"] = ref
         if ref:
-            fim = sd.fim_ref(ref, formato, principal.get("passo") if formato in ("diaria", "mensal", "anual") else None)
+            fim = sd.fim_ref(ref, formato, passo if (regular and formato in ("diaria", "mensal", "anual")) else None)
             out["fim_ultimo_periodo"] = fim.isoformat() if fim else None
-    else:
-        formato = None
     if descontinuado:
         out.update(situacao="SEM SLA", motivo_sem_sla="Conjunto descontinuado pela fonte: não há atualização a esperar.")
         return out
-    cad = _cadencia_sla(freq, formato)
-    if freq["sem_sla"] and not cad:
+    if freq["sem_sla"] and not freq["cadencias"]:
         out.update(situacao="SEM SLA", motivo_sem_sla=f"A fonte declara atualização sem cadência: {freq['declarada']!r}.")
         return out
+    caso, cad, origem = regra_sla(freq["cadencias"], regular, cadencia_do_grao(formato, passo) if regular else None)
     if not cad:
         out.update(situacao="SEM SLA", motivo_sem_sla="A fonte não declara frequência de atualização em metadado legível.")
         return out
-    out["cadencia"], out["tolerancia_dias"] = cad, TOLERANCIA_DIAS[cad]
-    if principal and out["ultimo_periodo"] and formato in sd.REGULARES + ("intervalo",):
+    out.update(caso=caso, cadencia=cad, origem_cadencia=origem, tolerancia_dias=TOLERANCIA_DIAS[cad])
+    pub = ((an or {}).get("vintages") or {}).get("ultima_publicacao_fonte")
+    if caso in ("A", "C") and out["ultimo_periodo"]:
         out["base"] = "periodo_de_referencia"
-        ref = out["ultimo_periodo"]
-        if formato == "intervalo":
+        prox = sd._ref_anterior(out["ultimo_periodo"], formato, -passo)
+        fim_prox = sd.fim_ref(prox, formato, passo if formato in ("diaria", "mensal", "anual") else None) if prox else None
+        if fim_prox is None:
             fim_prox = date.fromisoformat(out["fim_ultimo_periodo"]) + timedelta(days=PERIODO_DIAS[cad])
-        else:
-            passo = principal.get("passo") or 1
-            prox = sd._ref_anterior(ref, formato, -passo) if formato != "trimestral" else None
-            fim_prox = sd.fim_ref(prox, formato, passo) if prox else (
-                date.fromisoformat(out["fim_ultimo_periodo"]) + timedelta(days=PERIODO_DIAS[cad]))
         prazo = fim_prox + timedelta(days=TOLERANCIA_DIAS[cad])
-    elif (an or {}).get("vintages", {}).get("ultima_publicacao_fonte"):
+    elif caso == "B" and out["ultimo_periodo"]:
+        out["base"] = "periodo_de_referencia"
+        prazo = date.fromisoformat(out["fim_ultimo_periodo"]) + timedelta(days=PERIODO_DIAS[cad] + TOLERANCIA_DIAS[cad])
+    elif pub:
         out["base"] = "publicacao_da_fonte"
-        pubd = datetime.fromisoformat(an["vintages"]["ultima_publicacao_fonte"][:19]).date()
+        pubd = datetime.fromisoformat(str(pub)[:19]).date()
         prazo = pubd + timedelta(days=PERIODO_DIAS[cad] + TOLERANCIA_DIAS[cad])
+    elif out["fim_ultimo_periodo"] and formato == "intervalo":
+        out["base"] = "periodo_de_referencia"
+        prazo = date.fromisoformat(out["fim_ultimo_periodo"]) + timedelta(days=PERIODO_DIAS[cad] + TOLERANCIA_DIAS[cad])
     else:
-        out.update(situacao="SEM DADO", motivo_sem_sla="Sem período de referência nem data de publicação informada pela fonte.")
+        out.update(situacao="SEM DADO", motivo_sem_sla=("Sem série regular de referência e sem data de publicação informada pela "
+                                                       "fonte: não há como medir atraso sem usar a data da captura."))
         return out
     out["prazo_proximo"] = prazo.isoformat()
     if hoje <= prazo:
@@ -558,29 +627,27 @@ def conjuntos(grupos, analises, golds_res, brutos, seeds, metadados, hoje, agora
         br = (an or {}).get("bronze") or {}
         co = (an or {}).get("coletas") or {}
         vs = (an or {}).get("vintages") or {}
-        recursos_capturados = None
-        if it["orgao"] == "CCEE" and an:
-            recursos_capturados = dict(Counter(v["recurso"] for v in an["_vintages"]))
         cont = Counter(x["resultado"] for x in chks)
+        slugs = sorted({x["slug"] for x in grupo if x.get("slug")})
         out.append({
             "id": chave, "familia": fam, "dataset_silver": ds, "orgao": it["orgao"], "nome": it["nome"],
             "catalogo_id": f"{it['orgao'].lower()}:{it['nome']}",
             "slug": next((x["slug"] for x in grupo if x.get("slug")), None),
-            "slugs": sorted({x["slug"] for x in grupo if x.get("slug")}),
+            **({"slugs": slugs} if len(slugs) > 1 else {}),
             "titulo": next((x["titulo"] for x in grupo if x.get("titulo")), it["nome"]),
             "modulos": sorted({x["modulo"] for x in grupo}), "golds": consumidoras,
             "paginas": [p for i_, x in enumerate(grupo) for p in x.get("paginas", []) if p not in
                         [q for y in grupo[:i_] for q in y.get("paginas", [])]],
-            "estado": estado, "etapas": etapas, "ressalvas": ressalvas[:8],
+            "estado": estado, "etapas": {k: _enxuto(v) for k, v in etapas.items()}, "ressalvas": ressalvas[:8],
             "uso": {"papeis": papeis, "declarado": declarados,
                     "modelos": [{"codigo": m, "estado": mods.get(m)} for m in modelos]},
             "descontinuado": descontinuado, "descontinuacao": pkg_desc,
-            "frequencia": freq, "atualidade": atual,
-            "dado": ({"granularidade": gp.get("granularidade"), "formato": gp["formato"], "ref_min": gp["ref_min"],
-                      "ref_max": gp["ref_max"], "series": obs.get("series"), "linhas": obs.get("linhas"),
-                      "completude_interna": gp.get("completude_interna"), "series_com_lacuna": gp.get("series_com_lacuna"),
-                      "ultimo_periodo": gp.get("ultimo_periodo"), "series_no_ultimo": gp.get("series_no_ultimo"),
-                      "periodo_anterior": gp.get("periodo_anterior"), "series_no_anterior": gp.get("series_no_anterior")}
+            "frequencia": _enxuto({k: v for k, v in freq.items() if k != "campo"}), "atualidade": atual,
+            "dado": (_enxuto({"granularidade": gp.get("granularidade"), "formato": gp["formato"], "ref_min": gp["ref_min"],
+                              "ref_max": gp["ref_max"], "series": obs.get("series"), "linhas": obs.get("linhas"),
+                              "completude_interna": gp.get("completude_interna"), "series_com_lacuna": gp.get("series_com_lacuna"),
+                              "ultimo_periodo": gp.get("ultimo_periodo"), "series_no_ultimo": gp.get("series_no_ultimo"),
+                              "periodo_anterior": gp.get("periodo_anterior"), "series_no_anterior": gp.get("series_no_anterior")})
                      if gp else ({"granularidade": "cadastro (sem período de referência)", "chaves": an["registros"]["chaves"],
                                   "preenchimento_minimo": an["registros"].get("preenchimento_minimo")}
                                  if an and an.get("registros") else None)),
@@ -589,18 +656,18 @@ def conjuntos(grupos, analises, golds_res, brutos, seeds, metadados, hoje, agora
                          "ultima": vs.get("ultima_captura"), "ultima_publicacao_fonte": vs.get("ultima_publicacao_fonte"),
                          "origens": vs.get("origens", {})},
             "coleta": {"tentativas": co.get("tentativas", 0), "falhas": co.get("falhas", 0),
-                       "ultima_tentativa": co.get("ultima_tentativa"), "ultimo_ok": co.get("ultimo_ok"),
+                       "ultima_tentativa": _enxuto({k: v for k, v in (co.get("ultima_tentativa") or {}).items() if k != "detalhe"}) or None,
+                       "ultimo_ok": co.get("ultimo_ok"),
                        "ultima_falha": co.get("ultima_falha"), "falhas_consecutivas": co.get("falhas_consecutivas", 0)},
             "revisoes": rv,
             "bronze": ({"presentes": br.get("arquivos_presentes"), "ausentes": br.get("arquivos_ausentes"),
                         "sha256_conferidos": br.get("sha256_conferidos"), "sha256_divergentes": br.get("sha256_divergentes"),
                         "drift": br.get("drift_total"), "esquema_diferente_entre_recursos": br.get("recursos_com_esquema_diferente_total")}
                        if br else None),
-            "validacao": {"resultado": val.veredito(chks), "executado_em": agora, "aprovadas": cont.get("aprovado", 0),
+            "validacao": {"resultado": val.veredito(chks), "aprovadas": cont.get("aprovado", 0),
                           "ressalvas": cont.get("ressalva", 0), "reprovadas": cont.get("reprovado", 0),
                           "itens": [{"tipo": x["tipo"], "resultado": x["resultado"], "detalhe": x["detalhe"]}
                                     for x in chks if x["resultado"] in ("ressalva", "reprovado")][:4]},
-            "recursos_capturados": recursos_capturados,
             "_an": an,
         })
     return out, checagens
@@ -714,25 +781,38 @@ def afirmacoes(cat, golds_res):
     por_id = {e["id"]: e for e in cat["entradas"]}
     out = []
     for a in AFIRMACOES:
-        ents = [por_id[i] for i in a["conjuntos"] if i in por_id]
+        if a["conjuntos"] == "CCEE_INTEGRADOS":
+            ids = sorted(e["id"] for e in cat["entradas"] if e["orgao"] == "CCEE" and e["estado"] not in ("CATALOGADO", "RECURSO VERIFICADO")
+                         and e["id"] not in ("ccee:pld_horario", "ccee:api-package-search", "ccee:package-show-versionados"))
+        else:
+            ids = a["conjuntos"]
+        ents = [por_id[i] for i in ids if i in por_id]
         estados = [e["estado"] for e in ents]
         item = {"id": a["id"], "tema": a["tema"], "conjuntos": [{"id": e["id"], "estado": e["estado"], "titulo": e.get("titulo"),
-                                                                    "paginas": e.get("paginas") or []} for e in ents],
-                "ausentes_no_catalogo": [i for i in a["conjuntos"] if i not in por_id]}
+                                                                    "paginas": (e.get("uso") or {}).get("paginas") or []} for e in ents],
+                "ausentes_no_catalogo": [i for i in ids if i not in por_id]}
         if a.get("gold_achado"):
             gname, achado = a["gold_achado"]
             g = (golds_res.get(gname) or {}).get("_gold") or {}
             ac = ((g.get("achados") or {}).get(achado) or {}) if isinstance(g, dict) else {}
-            item["achado"] = {"id": achado, "gold": gname, "status": ac.get("status"), "conclusao": ac.get("conclusao")} if ac else None
+            item["achado"] = ({"id": achado, "gold": gname, "status": ac.get("status"), "conclusao": ac.get("conclusao"),
+                               "correcao_metodologia": ac.get("correcao_metodologia")} if ac else None)
         if not ents:
             texto = f"{a['tema']}: nenhum conjunto correspondente no catálogo desta publicação."
         elif all(s == "PUBLICADO" for s in estados):
-            texto = f"{a['tema']}: integrado, validado e publicado ({', '.join(e['id'] for e in ents)})."
+            texto = (f"{a['tema']}: integrado, validado e publicado ({', '.join(e['id'] for e in ents)})." if len(ents) <= 4 else
+                     f"{a['tema']}: {len(ents)} conjuntos integrados, validados e publicados.")
+        elif len(ents) > 4:
+            cont = Counter(estados)
+            texto = f"{a['tema']}: {len(ents)} conjuntos; " + ", ".join(f"{n} {s_.lower()}" for s_, n in sorted(
+                cont.items(), key=lambda kv: -catalogo.ESTADOS.index(kv[0]))) + "."
         else:
             partes = [f"{e['id']} está {e['estado'].lower()}" for e in ents]
             texto = f"{a['tema']}: " + "; ".join(partes) + "."
         if item.get("achado") and item["achado"].get("conclusao"):
             texto += f" Achado {item['achado']['id']} ({item['achado']['status']}): {item['achado']['conclusao']}"
+            if item["achado"].get("correcao_metodologia"):
+                item["correcao_metodologia"] = item["achado"]["correcao_metodologia"]
         item["texto"] = texto
         out.append(item)
     return out
@@ -745,7 +825,7 @@ def _csv(nome, cabecalho, linhas):
     base.escreve_csv(nome, cabecalho, linhas)
 
 
-def escreve_csvs(lista, todas_checagens, cal_linhas, cat, eixos_linhas):
+def escreve_csvs(lista, todas_checagens, cal_linhas, cat, eixos_linhas, descricoes=None):
     _csv(CSV["conjuntos"], [
         "id", "familia", "dataset", "orgao", "conjunto", "slug", "modulos", "estado", "papeis", "golds", "frequencia_declarada",
         "cadencia_sla", "granularidade", "ref_min", "ultimo_periodo", "prazo_proximo", "situacao", "dias_atraso", "capturas",
@@ -783,18 +863,49 @@ def escreve_csvs(lista, todas_checagens, cal_linhas, cat, eixos_linhas):
          [[r["dia"], r["familia"], r["dataset"], r["capturas_novas"], r["recapturas_sem_mudanca"], r["falhas"],
            r["referencias_revisadas"], r["publicacoes_fonte"]] for r in cal_linhas])
     _csv(CSV["catalogo"], ["id", "orgao", "nome", "titulo", "estado", "papeis", "descontinuado", "motivo_descontinuacao",
-                           "frequencia_declarada", "recurso_verificado_em", "integracoes", "golds", "url", "licenca",
-                           "metadados_verificados"],
+                           "frequencia_declarada", "recurso_verificado_em", "integracoes", "golds", "recursos", "recursos_acessados",
+                           "recursos_integrados", "recursos_removidos", "url", "licenca", "metadados_verificados", "descricao"],
          [[e["id"], e["orgao"], e.get("nome"), _limpa(e.get("titulo")), e["estado"], "|".join((e.get("uso") or {}).get("papeis") or []),
            1 if e.get("descontinuado") else 0, _limpa(((e.get("descontinuacao") or {}).get("motivo"))), _limpa(e.get("frequencia_declarada")),
            ((e.get("etapas") or {}).get("recurso_verificado") or {}).get("em") if ((e.get("etapas") or {}).get("recurso_verificado") or {}).get("ok") else None,
            "|".join(f"{i.get('familia')}/{i.get('dataset_silver')}" for i in e.get("integracoes") or []),
-           "|".join((e.get("uso") or {}).get("golds") or []), e.get("url"), _limpa(e.get("licenca")),
-           1 if e.get("metadados_verificados") else 0] for e in cat["entradas"]])
+           "|".join((e.get("uso") or {}).get("golds") or []), (e.get("recursos_resumo") or {}).get("total"),
+           (e.get("recursos_resumo") or {}).get("acessados"), (e.get("recursos_resumo") or {}).get("integrados"),
+           (e.get("recursos_resumo") or {}).get("removidos"), e.get("url"), _limpa(e.get("licenca")),
+           1 if e.get("metadados_verificados") else 0, _limpa((descricoes or {}).get(e["id"]) or e.get("descricao"))]
+          for e in cat["entradas"]])
     _csv(CSV["eixos"], ["gold", "indicador", "natureza", "situacao_validacao", "reconciliacao", "testes_aprovados",
                         "testes_ressalva", "testes_reprovados"],
          [[r["gold"], _limpa(r["indicador"]), r["natureza"], r["situacao_validacao"], r["reconciliacao"], r["testes_aprovados"],
            r["testes_ressalva"], r["testes_reprovados"]] for r in eixos_linhas])
+
+
+def _descricoes(brutos, seeds):
+    """{id do catálogo: descrição completa da fonte} (o catálogo JSON leva só o início)."""
+    out = {}
+    for orgao in ("ONS", "ANEEL", "CCEE"):
+        for p in ((brutos.get(orgao) or {}).get("resultado") or []) + (seeds if orgao == "CCEE" else []):
+            notas = " ".join(str(p.get("notes") or "").split("-----")[0].split())
+            out.setdefault(f"{orgao.lower()}:{p.get('name')}", notas)
+    for it in catalogo.integracoes():
+        out.setdefault(f"{it['orgao'].lower()}:{it['nome']}", " ".join(str(it.get("descricao") or "").split()))
+    return out
+
+
+def escreve_csv_recursos(recursos):
+    """dados_recursos_<orgao>.csv: o catálogo recurso a recurso de cada portal."""
+    por_orgao = defaultdict(list)
+    for x in recursos:
+        por_orgao[x["orgao"]].append(x)
+    for o in PORTAIS_RECURSOS:
+        linhas = sorted(por_orgao.get(o, []), key=lambda x: (x["conjunto"] or "", x["recurso"] or "", x["recurso_id"] or ""))
+        _csv(CSV[f"recursos_{o.lower()}"], ["orgao", "conjunto", "recurso_id", "recurso", "formato", "publicado_em", "tamanho",
+                                             "presente", "estado", "via", "capturas", "ultima_captura", "datasets_silver",
+                                             "verificado_em", "url"],
+             [[x["orgao"], _limpa(x["conjunto"]), x["recurso_id"], _limpa(x["recurso"]), x["formato"], x["publicado_em"],
+               x["tamanho"] if str(x.get("tamanho") or "").isdigit() else None, 1 if x["presente"] else 0, x["estado"],
+               _limpa(x["via"]), x["capturas"], x["ultima_captura"], "|".join(x["datasets_silver"]) or None,
+               x["verificado_em"], _limpa(x["url"])] for x in linhas])
 
 
 def _limpa(t):
@@ -867,101 +978,99 @@ def _vigentes(vs):
     return list(ult.values())
 
 
+def _max_ref_direto(familia, dataset, formato, hoje):
+    """Maior referência até hoje lida por consulta direta ao silver (conferência do
+    último período publicado, por caminho diferente da análise de completude)."""
+    con = sd.abre(familia)
+    if con is None:
+        return None
+    try:
+        lim = sd.limite_hoje(formato, hoje)
+        glob = sd.GLOB_FORMATO.get(formato)
+        if not lim or not glob:
+            return None
+        return con.execute("SELECT MAX(ref) FROM observacoes WHERE dataset=? AND ref <= ? AND ref GLOB ?",
+                           (dataset, lim, glob)).fetchone()[0]
+    finally:
+        con.close()
+
+
 def _fonte_catalogo(con):
-    v_ons = base.ultima_vintage(con, ck.CATALOGOS["ONS"]["dataset"], "package_search")
-    v_aneel = base.ultima_vintage(con, ck.CATALOGOS["ANEEL"]["dataset"], "package_search")
-    return v_ons, v_aneel
+    return [v for v in (base.ultima_vintage(con, ck.CATALOGOS[o]["dataset"], "package_search") for o in ("ONS", "ANEEL", "CCEE")) if v]
 
 
-def proveniencias(con, lista, cat, hoje, agora):
-    snap_ons = c.snapshot_de(con, ck.CATALOGOS["ONS"]["dataset"])
-    snap_sil = _snapshot_silvers(lista)
-    caps = [x["capturas"]["ultima"] for x in lista if x["capturas"]["ultima"]]
-    ini = min((x["capturas"]["primeira"] for x in lista if x["capturas"]["primeira"]), default=None)
-    fonte_portais = {"orgao": "ONS e ANEEL", "dataset": "Listagem de conjuntos dos portais de dados abertos (API CKAN package_search)",
-                     "recurso": "package_search?rows=1000", "url_dataset": ck.CATALOGOS["ONS"]["url"],
-                     "url_primaria": ck.CATALOGOS["ANEEL"]["url"],
-                     "licenca": f"{c.LICENCA_ONS}; ANEEL: Open Data Commons Open Database License (ODbL)"}
-    fonte_silver = {"orgao": "Scrutiniums (pipeline do observatório)", "dataset": "Silvers e golds do domínio Energia",
-                    "recurso": "data/energia/silver/*.db e public/energia/gold/*.json",
-                    "url_dataset": "https://github.com/genarolins1975/scrutiniums/tree/main/pipeline/energia",
-                    "url_primaria": "https://github.com/genarolins1975/scrutiniums/tree/main/public/energia", "licenca": LICENCA_PROPRIA}
-    snap_cat = snap_ons if snap_ons.get("id") else snap_sil
-    return {
-        "catalogo": c.proveniencia(
-            indicador="Estado de cada conjunto no catálogo (catalogado, recurso verificado, integrado, validado, publicado)",
-            natureza="CALCULADO", fonte=fonte_portais, unidade="conjuntos", frequencia="a cada execução do pipeline",
-            periodo={"inicio": hoje.isoformat(), "fim": hoje.isoformat()}, cobertura={"inicio": hoje.isoformat(), "fim": hoje.isoformat()},
-            capturado_em=snap_cat.get("capturas", [{}])[-1].get("capturado_em") if snap_cat.get("capturas") else max(caps, default=agora),
-            snapshot=snap_cat,
-            formula="estado = última etapa alcançada em sequência; cada etapa exige a evidência descrita em criterios_estado",
-            transformacoes=["listagem CKAN versionada com sha256", "verificação parcial de recursos (Range 64 KB)",
-                            "etapas por integração calculadas dos silvers e do relatório de validação"],
-            limitacoes=["A CCEE responde 403 a este ambiente: o catálogo dela vem dos package_show versionados em 27 e 28/09/2026.",
-                        "Recurso verificado lê só os primeiros 64 KB de um arquivo por conjunto; não atesta o arquivo inteiro.",
-                        "Entradas manuais (EPE, MME, ANA, INMET, B3, ANP, IBGE) têm metadados não verificados na fonte."],
-            download=U["catalogo"], validado_em=agora),
-        "saude": c.proveniencia(
-            indicador="Atualidade, completude, capturas e falhas por conjunto integrado", natureza="CALCULADO",
-            fonte=fonte_silver, unidade="por conjunto", frequencia="a cada execução do pipeline",
-            periodo={"inicio": ini[:10] if ini else hoje.isoformat(), "fim": hoje.isoformat()},
-            cobertura={"inicio": ini[:10] if ini else hoje.isoformat(), "fim": hoje.isoformat()},
-            capturado_em=max(caps, default=agora), snapshot=snap_sil, publicado_em=None, revisoes={"total": 0, "detectado_em": agora, "exemplos": []},
-            formula=("situação = EM DIA se hoje ≤ fim do período seguinte ao último disponível + tolerância da cadência declarada "
-                     "(diária 2, semanal 7, quinzenal 15, mensal 60, trimestral 90, anual 365 dias); completude interna = referências "
-                     "presentes ÷ esperadas entre a primeira e a última de cada série, no passo modal"),
-            transformacoes=["leitura somente leitura dos silvers", "agregação por conjunto"],
-            limitacoes=["A frequência só é usada quando declarada em metadado legível da fonte; sem ela o SLA não é aplicado.",
-                        "Os silvers deste ambiente foram reconstruídos em 29 e 30/09/2026: o histórico de capturas e revisões começa aí.",
-                        "Completude interna não acusa série que começa depois ou termina antes; só lacunas entre a primeira e a última referência."],
-            download=U["conjuntos"], validado_em=agora),
-        "revisoes": c.proveniencia(
-            indicador="Revisões da fonte entre capturas: alcance e magnitude", natureza="CALCULADO", fonte=fonte_silver,
-            unidade="unidade de cada série (diferença absoluta) e % (diferença relativa)", frequencia="a cada execução do pipeline",
-            periodo={"inicio": ini[:10] if ini else hoje.isoformat(), "fim": hoje.isoformat()},
-            cobertura={"inicio": ini[:10] if ini else hoje.isoformat(), "fim": hoje.isoformat()},
-            capturado_em=max(caps, default=agora), snapshot=snap_sil, publicado_em=None,
-            revisoes={"total": sum(((x["revisoes"] or {}).get("referencias") or 0) for x in lista), "detectado_em": agora, "exemplos": []},
-            formula="revisão = troca de valor de uma mesma (série, referência) entre capturas consecutivas; relativa = |novo − anterior| ÷ |anterior|",
-            transformacoes=["comparação das vintages no silver (append only)"],
-            limitacoes=["Só há revisão detectável a partir da segunda captura de um mesmo arquivo.",
-                        "A diferença absoluta está na unidade da série e só se compara dentro da mesma série.",
-                        "Mudança a partir de zero não tem diferença relativa e é contada à parte."],
-            download=U["revisoes"], validado_em=agora),
-        "validacao": c.proveniencia(
-            indicador="Resultado das validações automáticas da publicação", natureza="CALCULADO", fonte=fonte_silver,
-            unidade="checagens", frequencia="a cada execução do pipeline", periodo={"inicio": hoje.isoformat(), "fim": hoje.isoformat()},
-            cobertura={"inicio": hoje.isoformat(), "fim": hoje.isoformat()}, capturado_em=max(caps, default=agora), snapshot=snap_sil,
-            publicado_em=None, revisoes={"total": 0, "detectado_em": agora, "exemplos": []},
-            formula="veredito = pior resultado entre as checagens aplicáveis (reprovado > ressalva > aprovado)",
-            transformacoes=["pipeline/energia/validacoes.py sobre todas as golds, CSV e conjuntos"],
-            limitacoes=["A chave única dos CSV é inferida pelo nome e pelo tipo das colunas; ressalva de chave pede conferência humana.",
-                        "Identidades de agregação são as declaradas em validacoes.IDENTIDADES; arquivo sem identidade declarada não é testado nesse eixo."],
-            download=U["validacoes"], validado_em=agora),
-    }
-
-
-def _evidencia_kpis(con, lista, cat, agora, hoje):
-    """Fichas 'Comprove este número' dos números principais da página."""
+def _evidencia_kpis(con, lista, cat, agora, hoje, todas=(), golds_res=None):
+    """Fichas 'Comprove este número' dos números principais da página. Cada teste
+    confere o número por um caminho diferente do que o calculou (relatório de
+    checagens, golds publicadas, vintages do silver), não repete a fórmula."""
     fichas = {}
-    v_ons, v_aneel = _fonte_catalogo(con)
+    golds_res = golds_res or {}
+    vint = _fonte_catalogo(con)
     versao = {"pipeline": base.VERSAO_PIPELINE, "codigo": base.versao_codigo(), "publicacao": agora}
-    if v_ons and v_aneel:
-        n_pub = sum(1 for e in cat["entradas"] if e["estado"] == "PUBLICADO")
-        fonte = {"orgao": "ONS e ANEEL", "conjunto": "Listagem de conjuntos (API CKAN package_search)", "recurso": "package_search",
+    reprovados_por_alvo = Counter(k["alvo"] for k in todas if k["resultado"] == "reprovado")
+    if vint:
+        pubs = [e for e in cat["entradas"] if e["estado"] == "PUBLICADO"]
+        n_pub = len(pubs)
+        # caminho independente: para cada publicado, (a) nenhuma checagem reprovada no
+        # relatório para os seus conjuntos do silver e (b) alguma gold que o consome
+        # está íntegra na varredura das golds
+        sem_reprov = sum(1 for e in pubs if not any(reprovados_por_alvo.get(f"{i_.get('familia')}/{i_.get('dataset_silver')}")
+                                                     for i_ in e.get("integracoes") or []))
+        com_gold = sum(1 for e in pubs if any((golds_res.get(g) or {}).get("disponivel")
+                                              for g in ((e.get("uso") or {}).get("golds") or []) + ["publicacao.json"]
+                                              if g in golds_res or g == "publicacao.json"))
+        fonte = {"orgao": "ONS, ANEEL e CCEE", "conjunto": "Listagem de conjuntos (API CKAN package_search)", "recurso": "package_search",
                  "url": ck.CATALOGOS["ONS"]["url"], "arquivo": None, "sha256": None, "capturado_em": None, "publicado_em": None,
-                 "arquivos": [ev.arquivo_de_vintage(v_ons), ev.arquivo_de_vintage(v_aneel)]}
+                 "arquivos": [ev.arquivo_de_vintage(v) for v in vint]}
         fichas["conjuntos_publicados"] = ev.construir(
             indicador="Conjuntos publicados no catálogo", valor_exibido=f"{n_pub}", valor_calculo=float(n_pub), unidade="conjuntos",
             periodo={"inicio": hoje.isoformat(), "fim": hoje.isoformat()}, entidade="catálogo do observatório",
             universo=f"{cat['total']} conjuntos catalogados", fonte=fonte,
             consulta="entradas de catalogo.json com estado = PUBLICADO",
             formula="contagem de conjuntos cuja escada catalogado → publicado chega ao fim com evidência em cada etapa",
-            cobertura=f"{cat['total']} entradas: listagens do ONS e da ANEEL, package_show da CCEE, REGISTRO dos módulos e cadastro manual",
+            cobertura=(f"{cat['total']} entradas: listagens do ONS, da ANEEL e da CCEE, package_show versionados da CCEE, REGISTRO "
+                       "dos módulos e cadastro manual"),
             tratamento_ausencia="conjunto sem evidência de uma etapa para na etapa anterior",
-            testes=[ev.teste("escada sem salto", "aprovado" if all(not catalogo.saltos(e.get("etapas") or {}) for e in cat["entradas"] if e["estado"] == "PUBLICADO") else "reprovado",
-                             "nenhum conjunto publicado pulou etapa")],
-            download=[{"rotulo": "Catálogo (CSV)", "url": U["catalogo"]}],
+            testes=[ev.teste("sem checagem reprovada no relatório", "aprovado" if sem_reprov == n_pub else "reprovado",
+                             f"{sem_reprov} de {n_pub} publicados sem checagem reprovada nos seus conjuntos (dados_validacoes.csv)"),
+                    ev.teste("consumido por gold íntegra", "aprovado" if com_gold == n_pub else "reprovado",
+                             f"{com_gold} de {n_pub} publicados com gold consumidora íntegra na varredura das golds")],
+            download=[{"rotulo": "Catálogo (CSV)", "url": U["catalogo"]}, {"rotulo": "Validações (CSV)", "url": U["validacoes"]}],
+            reproducao="python3 pipeline/energia/executar_modulo.py dados --sem-coleta", versao=versao)
+    atrasados = [x for x in lista if x["atualidade"]["situacao"] == "ATRASADO"]
+    com_sla = [x for x in lista if x["atualidade"]["situacao"] in ("EM DIA", "ATRASADO")]
+    if lista:
+        # caminho independente: o prazo publicado é refeito com a data de hoje e o último
+        # período lido de novo do silver, e a falha de coleta não pode ter mudado o período
+        incoerentes = [x["id"] for x in atrasados if not x["atualidade"].get("prazo_proximo")
+                       or date.fromisoformat(x["atualidade"]["prazo_proximo"]) >= hoje]
+        renovados, conferidos = [], 0
+        for x in lista:
+            if not x["coleta"].get("falhas") or not x["atualidade"].get("ultimo_periodo") or not x["dado"]:
+                continue
+            direto = _max_ref_direto(x["familia"], x["dataset_silver"], x["dado"].get("formato"), hoje)
+            conferidos += 1
+            if direto != x["atualidade"]["ultimo_periodo"]:
+                renovados.append({"conjunto": x["id"], "publicado": x["atualidade"]["ultimo_periodo"], "silver": direto})
+        fichas["conjuntos_atrasados"] = ev.construir(
+            indicador="Conjuntos com atualização atrasada", valor_exibido=f"{len(atrasados)}", valor_calculo=float(len(atrasados)),
+            unidade="conjuntos", periodo={"inicio": hoje.isoformat(), "fim": hoje.isoformat()}, entidade="conjuntos integrados",
+            universo=f"{len(com_sla)} conjuntos com SLA aplicável de {len(lista)} integrados", fonte={
+                "orgao": "Scrutiniums (pipeline do observatório)", "conjunto": "Silvers do domínio Energia",
+                "recurso": "vintages, coletas e observações", "url": "https://github.com/genarolins1975/scrutiniums/tree/main/pipeline/energia",
+                "arquivo": None, "sha256": None, "capturado_em": max((x["capturas"]["ultima"] for x in lista if x["capturas"]["ultima"]), default=None),
+                "publicado_em": None},
+            chaves_origem=[x["id"] for x in atrasados],
+            formula="contagem de conjuntos com hoje > prazo_proximo (regra de SLA por cadência declarada, casos A a D)",
+            cobertura="conjuntos com frequência declarada em metadado legível; sem ela, SEM SLA (não entram)",
+            tratamento_ausencia="sem frequência declarada: SEM SLA; sem período nem data de publicação da fonte: SEM DADO",
+            testes=[ev.teste("prazo vencido em todo atrasado", "aprovado" if not incoerentes else "reprovado",
+                             f"{len(atrasados) - len(incoerentes)} de {len(atrasados)} atrasados com prazo anterior a {hoje.isoformat()}"),
+                    ev.teste("falha não renova a data do dado", "aprovado" if not renovados else "reprovado",
+                             (f"{conferidos} conjuntos com falha de coleta registrada: último período publicado igual ao MAX(ref) "
+                              "lido de novo no silver por consulta direta") if not renovados else
+                             f"conjuntos com período diferente do silver: {renovados[:5]}")],
+            download=[{"rotulo": "Saúde por conjunto (CSV)", "url": U["conjuntos"]}],
             reproducao="python3 pipeline/energia/executar_modulo.py dados --sem-coleta", versao=versao)
     reprov = [x for x in lista if x["validacao"]["resultado"] == "reprovado"]
     rv = [x for x in lista if (x["revisoes"] or {}).get("maior_rel")]
@@ -1039,10 +1148,15 @@ def construir(con, ctx):
             "uso": ("Uso é eixo separado do estado: indicador, modelo (com o estado do modelo no registro), conferência, contexto ou "
                     "histórico. Um conjunto que alimenta modelo em PESQUISA não é 'utilizado em modelo' em produção."),
             "sla": {k: {"tolerancia_dias": TOLERANCIA_DIAS[k], "periodo_dias_aprox": PERIODO_DIAS[k]} for k in TOLERANCIA_DIAS},
-            "sla_texto": ("O período seguinte ao último disponível deve chegar até o fim dele mais a tolerância da cadência declarada "
-                          "pela fonte (diária 2 dias, semanal 7, quinzenal 15, mensal 60, trimestral 90, anual 365). A cadência é a "
-                          "declarada pela fonte que corresponde ao grão do dado; se nenhuma corresponde, a mais longa declarada. Sem "
-                          "frequência declarada em metadado legível, o SLA não é aplicado (SEM SLA), em vez de inventar uma."),
+            "sla_texto": ("Tolerâncias por cadência: diária 2 dias, semanal 7, quinzenal 15, mensal 60, trimestral 90, anual 365. "
+                          "A) Série regular cujo grão corresponde a uma cadência declarada pela fonte: o período seguinte ao último "
+                          "disponível deve chegar até o fim dele mais a tolerância. B) Série publicada em lotes (cadência declarada "
+                          "mais longa que o grão): a próxima remessa até o fim do último período mais um período da cadência "
+                          "declarada e a tolerância. C) Cadência declarada mais curta que o grão (a fonte reescreve o arquivo dentro "
+                          "do período, ou declara só o horário da rotina do portal, como o ONS): vale o grão do dado, como em A. "
+                          "D) Sem série regular (cadastro, vigências, cadência irregular): data de publicação informada pela fonte "
+                          "mais um período da cadência declarada e a tolerância; sem essa data, SEM DADO. Sem frequência declarada "
+                          "em metadado legível, o SLA não é aplicado (SEM SLA), em vez de inventar uma."),
             "falha": ("Falha de coleta nunca renova a data do dado: o último período vem das referências do silver, a última "
                       "captura da última vintage com conteúdo, e a falha aparece separada, com data e motivo. A captura anterior "
                       "fica preservada no silver (append only) e no bronze com sha256."),
@@ -1136,20 +1250,28 @@ def construir(con, ctx):
                       {"rotulo": "Natureza e situação da validação por ficha (CSV)", "url": U["eixos"]},
                       {"rotulo": "Manifesto da publicação (JSON)", "url": f"/energia/gold/{MANIFESTO}"}],
     })
-    cat = catalogo.construir(brutos, publicacao=g, verificacoes=verificacoes)
+    recursos = []
+    cat = catalogo.construir(brutos, publicacao=g, verificacoes=verificacoes, recursos_saida=recursos)
+    ccee = [e for e in cat["entradas"] if e["orgao"] == "CCEE"]
     g["catalogo"] = {"total": cat["total"], "contagem": cat["contagem"], "descontinuados": cat["descontinuados"],
-                     "portais": cat["portais"],
-                     "ccee": [{"id": e["id"], "titulo": e["titulo"], "estado": e["estado"], "frequencia_declarada": e.get("frequencia_declarada"),
-                               "referencia_publicacao": e.get("referencia_publicacao"), "recursos": e.get("recursos") or []}
-                              for e in cat["entradas"] if e["orgao"] == "CCEE"],
+                     "portais": cat["portais"], "recursos": cat["recursos"],
+                     "ccee": {"conjuntos": len(ccee), "por_estado": dict(Counter(e["estado"] for e in ccee)),
+                              "recursos": cat["recursos"].get("CCEE"),
+                              "integrados": [{"id": e["id"], "titulo": e["titulo"], "estado": e["estado"],
+                                              "recursos": e.get("recursos_resumo"), "modulos": sorted({m for i in e.get("integracoes") or []
+                                                                                                       for m in (i.get("modulos") or [])})}
+                                             for e in ccee if e["estado"] not in ("CATALOGADO", "RECURSO VERIFICADO")]},
                      "descontinuados_lista": [{"id": e["id"], "titulo": e["titulo"], "motivo": (e.get("descontinuacao") or {}).get("motivo"),
                                                "evidencia": (e.get("descontinuacao") or {}).get("evidencia"), "estado": e["estado"]}
-                                              for e in cat["entradas"] if e.get("descontinuado")]}
+                                              for e in cat["entradas"] if e.get("descontinuado")],
+                     "recursos_removidos": [{"orgao": x["orgao"], "conjunto": x["conjunto"], "recurso": x["recurso"],
+                                             "publicado_em": x["publicado_em"]} for x in recursos if not x["presente"]][:50]}
+    escreve_csv_recursos(recursos)
     g["afirmacoes"] = afirmacoes(cat, golds_res)
     g["proveniencia"] = proveniencias(con, lista, cat, hoje, agora)
-    fichas, _ = _evidencia_kpis(con, lista, cat, agora, hoje)
+    fichas, _ = _evidencia_kpis(con, lista, cat, agora, hoje, todas=todas, golds_res=golds_res)
     g["evidencias"] = fichas
-    escreve_csvs(lista, todas, cal_linhas, cat, eixos_linhas)
+    escreve_csvs(lista, todas, cal_linhas, cat, eixos_linhas, descricoes=_descricoes(brutos, seeds))
     base.escreve_gold("catalogo.json", cat)
     g["resumo"]["duracao_s"] = round(time.time() - t0, 1)
     g["resumo"]["tempos_s"] = tempos

@@ -9,7 +9,7 @@ import { Numero } from "@/components/energia/Numero";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { carimbo, num, pct } from "@/lib/energia/formato";
+import { carimbo, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
   colunasLpt,
@@ -20,8 +20,10 @@ import {
   linhasLptAnual,
   mes,
   mudancaAcesso,
+  pctTexto,
   respostaAcesso,
   rotaPainel,
+  textoPrecisaoPnad,
 } from "@/lib/energia/inclusao";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { InclusaoGold } from "@/lib/energia/tipos-inclusao";
@@ -118,8 +120,8 @@ export default function AcessoPage() {
               }
               naoConcluir={
                 <>
-                  A carga do SIN não mede acesso: sistemas isolados e domicílios sem ligação ficam fora dela. Ligação feita não garante serviço confiável depois. Domicílio sem energia
-                  não tem erro-padrão publicado, e em UF pequenas o CV passa de 5%. Localidade isolada não é localidade sem energia.
+                  A carga do SIN não mede acesso: sistemas isolados e domicílios sem ligação ficam fora dela. Ligação feita não garante serviço confiável depois.{" "}
+                  {textoPrecisaoPnad({ ano_referencia: a.ano_referencia, pnad_serie: a.pnad_serie, pnad_situacao: a.pnad_situacao })} Localidade isolada não é localidade sem energia.
                 </>
               }
               proveniencia={a.proveniencia.pnad}
@@ -143,7 +145,8 @@ export default function AcessoPage() {
                   universo={<>Domicílios particulares permanentes do Brasil, regiões e UF; localidades isoladas do planejamento da EPE; atendimentos homologados pelo MME</>}
                   unidade="domicílios (mil e %); pessoas; domicílios atendidos"
                 />
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {/* três números com ficha de prova; o tempo integral (tabela 6738) não tem ficha própria na gold e entra como nota, não como número de destaque */}
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   <Numero
                     rotulo={`Sem energia de nenhuma fonte, ${a.ano_referencia}`}
                     natureza="ESTIMADO"
@@ -152,18 +155,12 @@ export default function AcessoPage() {
                     unidade="mil domicílios"
                     tamanho="medio"
                     motivoAusencia="Sem estimativa nesta publicação."
-                    nota={brPnad ? `${pct(brPnad.pct_sem_energia, 1)} dos domicílios.` : undefined}
+                    nota={
+                      brPnad
+                        ? `${pctTexto(brPnad.pct_sem_energia, 1)} dos domicílios. Entre os ligados à rede geral, ${pctTexto(brPnad.pct_integral_entre_rede, 1)} têm fornecimento em tempo integral (CV ${pctTexto(brPnad.cv_pct_integral, 1)}, tabela 6738 do IBGE, no CSV da PNAD).`
+                        : undefined
+                    }
                     endereco={`${rotaPainel("p062")}#p062`}
-                  />
-                  <Numero
-                    rotulo="Rede em tempo integral, entre os ligados"
-                    natureza="ESTIMADO"
-                    valor={brPnad?.pct_integral_entre_rede ?? null}
-                    formato="pct"
-                    casas={1}
-                    periodo={a.ano_referencia}
-                    tamanho="medio"
-                    nota={brPnad ? `CV ${pct(brPnad.cv_pct_integral, 1)}; publicado pelo IBGE (tabela 6738).` : undefined}
                   />
                   <Numero
                     rotulo={`Pessoas em localidades isoladas, ciclo ${si?.ciclo ?? ""}`.trim()}
@@ -216,6 +213,7 @@ export default function AcessoPage() {
                       fonte={FONTE_PASI}
                       versao={si.ciclo}
                       nomeArquivo="inclusao-pasi-ciclos"
+                      chaveUrl="ac.cic"
                       nota="Sair da lista de um ciclo para o seguinte costuma indicar interligação ao SIN, mas o PASI não informa o motivo em cada caso. O primeiro ciclo não tem anterior: saídas sem dado."
                     />
                   </>
@@ -240,6 +238,7 @@ export default function AcessoPage() {
                         fonte={FONTE_LPT}
                         versao={lpt.ultimo_mes}
                         nomeArquivo="inclusao-luz-para-todos-municipios-desde-2023"
+                        chaveUrl="ac.mun"
                         ordemInicial={{ coluna: "domicilios", direcao: "desc" }}
                       />
                       <TabelaInterativa
@@ -251,6 +250,7 @@ export default function AcessoPage() {
                         fonte={FONTE_LPT}
                         versao={lpt.ultimo_mes}
                         nomeArquivo="inclusao-luz-para-todos-anual"
+                        chaveUrl="ac.ano"
                         nota="Sem dado: nenhuma linha do programa no ano. Zero: linhas com quantidade zero no arquivo do MME."
                       />
                       <TabelaInterativa
@@ -262,12 +262,13 @@ export default function AcessoPage() {
                         fonte={FONTE_LPT}
                         versao={lpt.ultimo_mes}
                         nomeArquivo="inclusao-luz-para-todos-recursos-uf"
+                        chaveUrl="ac.rec"
                         nota="R$ correntes, sem correção pela inflação. Os recursos por contrato e o valor anual da CDE para o programa são grandezas diferentes."
                       />
                     </>
                   )}
                   <GraficoBarras
-                    titulo="Valores anuais da CDE para o Luz para Todos e para a CCC (R$ bilhões correntes)"
+                    titulo={`Valores anuais da CDE para o Luz para Todos e para a CCC, ${a.universalizacao.luz_para_todos_cde[0]?.ano ?? "sem dado"} a ${a.universalizacao.luz_para_todos_cde.at(-1)?.ano ?? "sem dado"} (R$ bilhões correntes; o ano em curso é orçado)`}
                     dados={a.universalizacao.luz_para_todos_cde.map((l) => {
                       const ccc = a.universalizacao.ccc_cde.find((x) => x.ano === l.ano)?.valor_reais ?? null;
                       return {

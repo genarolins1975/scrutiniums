@@ -23,7 +23,9 @@ import {
   linhasLimiaresPof,
   linhasTabelaPof,
   linhasUfsPof,
+  nomePof,
   siglaDoCodigo,
+  textoPrecisaoPof,
   valoresMapaPof,
   type BasePof,
   type LimiarPof,
@@ -88,7 +90,7 @@ export function InclusaoClassesPof({ orc, fonte }: { orc: OrcamentoBase; fonte: 
         {() => null}
       </Comparador>
       <GraficoBarras
-        titulo={`Energia elétrica ${v.base === "despesa" ? "na despesa total" : "na renda"} por classe de rendimento, ${nome(principal)} (POF 2017-2018)`}
+        titulo={`Energia elétrica ${v.base === "despesa" ? "na despesa total" : "na renda"} por classe de rendimento, ${nome(principal)} (${nomePof(orc)})`}
         dados={dados}
         chaveCategoria="id"
         chaveRotulo="rotulo"
@@ -140,14 +142,15 @@ export function InclusaoClassesPof({ orc, fonte }: { orc: OrcamentoBase; fonte: 
           fonte={fonte}
           versao={orc.referencia}
           nomeArquivo={`inclusao-pof-limiar-${v.lim}-${principal}`}
-          nota="CV de 15% a 30%: cautela; acima de 30%: suprimido (sem dado). Zero na amostra não prova zero na população."
+          chaveUrl="pof.limt"
+          nota={`${textoPrecisaoPof(orc.regra_precisao)} Zero na amostra não prova zero na população.`}
         />
       </div>
 
       <div data-nivel="analisar" className="space-y-3 border-t border-linha pt-5">
         <h3 className="font-serif text-lg text-carvao">Todas as medidas de {nome(principal)}, com a precisão de cada uma</h3>
         <TabelaInterativa
-          titulo={`POF 2017-2018: energia no orçamento, ${nome(principal)}, por classe de rendimento`}
+          titulo={`${nomePof(orc)}: energia no orçamento, ${nome(principal)}, por classe de rendimento`}
           colunas={colunas}
           linhas={tabela}
           chaveLinha="id"
@@ -155,6 +158,7 @@ export function InclusaoClassesPof({ orc, fonte }: { orc: OrcamentoBase; fonte: 
           fonte={fonte}
           versao={orc.referencia}
           nomeArquivo={`inclusao-pof-${principal}`}
+          chaveUrl="pof.med"
           nota={orc.formato_microdados}
         />
       </div>
@@ -170,7 +174,7 @@ const OPCOES_MAPA: readonly (readonly [MedidaMapaPof, string])[] = [
 ];
 const CORES_MAPA = ["var(--escala-seq-1)", "var(--escala-seq-2)", "var(--escala-seq-3)", "var(--escala-seq-4)", "var(--escala-seq-5)"];
 
-export function InclusaoUfsPof({ orc, fonte }: { orc: OrcamentoBase; fonte: string }) {
+export function InclusaoUfsPof({ orc, fonte, periodo, unidadeReais }: { orc: OrcamentoBase; fonte: string; periodo: string; unidadeReais: string }) {
   const [v, definir] = useEstadoUrl(ESQUEMA_ORCAMENTO);
   const valores = useMemo(() => valoresMapaPof(orc, v.mapa), [orc, v.mapa]);
   const ehReais = v.mapa === "energia_media";
@@ -183,22 +187,22 @@ export function InclusaoUfsPof({ orc, fonte }: { orc: OrcamentoBase; fonte: stri
     <div className="space-y-5">
       <InclusaoOpcoes rotulo="Mapa" nome="inclusao-pof-mapa" opcoes={OPCOES_MAPA} valor={v.mapa} onMudar={(mapa) => definir({ mapa })} />
       <MapaCoropletico
-        titulo={`${rotulo} por UF, todas as classes de rendimento (POF 2017-2018)`}
+        titulo={`${rotulo} por UF, todas as classes de rendimento (${nomePof(orc)})`}
         fonteGeometria={URL_GEO.uf}
         valores={valores}
         cores={CORES_MAPA}
         classificacao={classes}
-        unidade={ehReais ? "R$ por família e mês (15/01/2018)" : "%"}
+        unidade={ehReais ? unidadeReais : "%"}
         casas={2}
         rotuloRegiao={{ singular: "UF", plural: "UF" }}
         selecionado={sel ? codigoUf(sel) : null}
         onSelecionar={(id) => definir({ uf: siglaDoCodigo(id) ?? "" })}
         rotulos
-        periodo="jul/2017 a jul/2018"
+        periodo={periodo}
         nota="Estimativa amostral por UF, só no total (a amostra por classe nas UF é pequena demais). Sem mapa municipal: a POF não permite."
       />
       <TabelaInterativa
-        titulo="POF 2017-2018 por UF (todas as classes), com coeficiente de variação"
+        titulo={`${nomePof(orc)} por UF (todas as classes), com coeficiente de variação`}
         colunas={colunas}
         linhas={linhas}
         chaveLinha="id"
@@ -211,7 +215,7 @@ export function InclusaoUfsPof({ orc, fonte }: { orc: OrcamentoBase; fonte: stri
         selecionado={sel}
         onSelecionar={(id) => definir({ uf: id ?? "" })}
         dicaBusca="Nome ou sigla da UF"
-        nota="Valor com CV acima de 30% fica sem dado (suprimido); de 15% a 30%, a coluna de precisão diz cautela."
+        nota={`${textoPrecisaoPof(orc.regra_precisao)} A coluna de precisão diz o estado de cada valor.`}
       />
     </div>
   );

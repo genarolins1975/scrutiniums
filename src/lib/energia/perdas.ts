@@ -36,6 +36,22 @@ import type { ColunaTabela, LinhaTabela } from "./tabela";
 import { classeDe, quebrasFixas, type Classificacao } from "./escalas";
 import { dataBR, mesAno, num, plural } from "./formato";
 
+/* ------------------------------------------------------------------ números com ausência escrita */
+
+/**
+ * Número em pt-BR em que a ausência vira "sem dado": o formato compartilhado devolve um
+ * traço ("–"), que no meio de uma frase ou de uma célula do módulo parece pontuação e
+ * pode ser lido como zero. Os textos e tabelas de perdas usam estes dois.
+ */
+export function numOu(v: number | null | undefined, casas: number): string {
+  return v === null || v === undefined || !Number.isFinite(v) ? "sem dado" : num(v, casas);
+}
+
+/** Percentual com o símbolo, ou "sem dado" (nunca "–%"). */
+export function pctOu(v: number | null | undefined, casas: number): string {
+  return v === null || v === undefined || !Number.isFinite(v) ? "sem dado" : `${num(v, casas)}%`;
+}
+
 /* ------------------------------------------------------------------ rótulos */
 
 export const ROTULO_ALERTA: Record<AlertaAnual, string> = {
@@ -733,10 +749,12 @@ function agregadoNacional(medida: IdMedida, periodo: PeriodoPerdas, nacional: Li
   if (periodo.tipo === "acumulado") {
     const c = acumulado?.agregados.find((x) => x.universo === "concessionarias");
     if (!c) return null;
+    // sem o mesmo período do ano anterior, a frase para no valor atual (nada de "contra sem dado")
+    const contra = (v: number | null, texto: (x: number) => string) => (v === null ? "" : `, contra ${texto(v)} no mesmo período de ${periodo.ano - 1}`);
     if (medida === "taxa" && c.atual.taxa_total_pct !== null)
-      return `Somadas, as ${num(c.n_distribuidoras, 0)} concessionárias comparáveis perderam ${num(c.atual.taxa_total_pct, 2)}% da energia injetada, contra ${num(c.anterior.taxa_total_pct, 2)}% no mesmo período de ${periodo.ano - 1}.`;
+      return `Somadas, as ${num(c.n_distribuidoras, 0)} concessionárias comparáveis perderam ${num(c.atual.taxa_total_pct, 2)}% da energia injetada${contra(c.anterior.taxa_total_pct, (x) => `${num(x, 2)}%`)}.`;
     if (medida === "volume" && c.atual.perdas_totais_mwh !== null)
-      return `Somadas, as ${num(c.n_distribuidoras, 0)} concessionárias comparáveis perderam ${num(c.atual.perdas_totais_mwh / 1000, 0)} GWh, contra ${num((c.anterior.perdas_totais_mwh ?? NaN) / 1000, 0)} GWh no mesmo período de ${periodo.ano - 1}.`;
+      return `Somadas, as ${num(c.n_distribuidoras, 0)} concessionárias comparáveis perderam ${num(c.atual.perdas_totais_mwh / 1000, 0)} GWh${contra(c.anterior.perdas_totais_mwh, (x) => `${num(x / 1000, 0)} GWh`)}.`;
     return null;
   }
   if (!nacional || nacional.parcial) return null;
@@ -745,9 +763,9 @@ function agregadoNacional(medida: IdMedida, periodo: PeriodoPerdas, nacional: Li
   if (medida === "volume" && nacional.perdas_totais_mwh !== null)
     return `Somadas, as ${num(nacional.n_distribuidoras, 0)} concessionárias válidas perderam ${num(nacional.perdas_totais_mwh / 1000, 0)} GWh.`;
   if (medida === "tecnica" && nacional.taxa_tecnica_pct !== null)
-    return `Nas ${num(nacional.n_com_tecnica, 0)} concessionárias que publicam a técnica (${num(nacional.cobertura_tecnica_pct, 1)}% da energia injetada das válidas), a técnica soma ${num(nacional.taxa_tecnica_pct, 2)}% da injetada.`;
+    return `Nas ${num(nacional.n_com_tecnica, 0)} concessionárias que publicam a técnica (${pctOu(nacional.cobertura_tecnica_pct, 1)} da energia injetada das válidas), a técnica soma ${num(nacional.taxa_tecnica_pct, 2)}% da injetada.`;
   if (medida === "pnt_bt" && nacional.pnt_bt_pct !== null)
-    return `Nas ${num(nacional.n_com_pnt_bt, 0)} concessionárias com a separação fechando (${num(nacional.cobertura_bt_pct, 1)}% do mercado de baixa tensão das válidas), a não técnica soma ${num(nacional.pnt_bt_pct, 2)}% do mercado de baixa tensão.`;
+    return `Nas ${num(nacional.n_com_pnt_bt, 0)} concessionárias com a separação fechando (${pctOu(nacional.cobertura_bt_pct, 1)} do mercado de baixa tensão das válidas), a não técnica soma ${num(nacional.pnt_bt_pct, 2)}% do mercado de baixa tensão.`;
   return null;
 }
 
@@ -793,6 +811,46 @@ export function respostaDistribuidora(d: DistribuidoraLeve, anoRef: number): str
 }
 
 /* ------------------------------------------------------------------ séries */
+
+/**
+ * Primeiro ano em que o SAMP traz o leiaute da REN 1.003/2022 (competências de 2024 em
+ * diante): é a marca de mudança metodológica dos gráficos da série nacional. Não é número
+ * de dado; o teste confere que a limitação publicada pelo pipeline na gold cita o mesmo ano.
+ */
+export const ANO_LEIAUTE_SAMP = 2024;
+
+/** Primeiro e último ano completo da série nacional publicada (para período e títulos, sem ano escrito à mão). */
+export function anosSerieNacional(nacional: readonly LinhaNacional[]): { inicio: number; fim: number } | null {
+  const anos = nacional.filter((l) => !l.parcial && l.universo === "concessionarias").map((l) => l.ano);
+  if (!anos.length) return null;
+  return { inicio: Math.min(...anos), fim: Math.max(...anos) };
+}
+
+/**
+ * Quantas concessionárias válidas publicaram cada parte da separação nos três últimos anos
+ * completos até o de referência, lido da série nacional: substitui "cerca de metade" por
+ * contagens publicadas. Ano sem linha fica de fora da frase, nunca vira zero.
+ */
+export function fraseCoberturaSeparacao(nacional: readonly LinhaNacional[], anoRef: number): string | null {
+  const linhas = [anoRef - 2, anoRef - 1, anoRef]
+    .map((a) => nacional.find((l) => l.ano === a && l.universo === "concessionarias" && !l.parcial))
+    .filter((l): l is LinhaNacional => !!l);
+  if (!linhas.length) return null;
+  const partes = linhas.map((l, i) =>
+    i === 0
+      ? `em ${l.ano}, ${num(l.n_com_tecnica, 0)} de ${num(l.n_distribuidoras, 0)} concessionárias válidas publicaram a técnica nos 12 meses e ${num(l.n_com_pnt_bt, 0)} tiveram a separação fechando`
+      : `em ${l.ano}, ${num(l.n_com_tecnica, 0)} de ${num(l.n_distribuidoras, 0)} e ${num(l.n_com_pnt_bt, 0)}`,
+  );
+  return `${partes.join("; ")}.`;
+}
+
+/** Rótulo da marca de mudança de leiaute num gráfico da separação, com a contagem do próprio ano. */
+export function marcaLeiauteSeparacao(nacional: readonly LinhaNacional[], medida: "tecnica" | "pnt_bt"): { x: string; rotulo: string }[] {
+  const l = nacional.find((x) => x.ano === ANO_LEIAUTE_SAMP && x.universo === "concessionarias" && !x.parcial);
+  if (!l) return [];
+  const n = medida === "tecnica" ? `${num(l.n_com_tecnica, 0)} de ${num(l.n_distribuidoras, 0)} publicam a técnica` : `${num(l.n_com_pnt_bt, 0)} de ${num(l.n_distribuidoras, 0)} com a separação fechando`;
+  return [{ x: String(ANO_LEIAUTE_SAMP), rotulo: `${ANO_LEIAUTE_SAMP}: leiaute novo; ${n}` }];
+}
 
 /** Série nacional das concessionárias para o gráfico: só anos completos; ausência fica null. */
 export function serieNacional(nacional: readonly LinhaNacional[]): { ano: string; taxa: number | null; tecnica: number | null; pnt_bt: number | null }[] {
@@ -1008,12 +1066,12 @@ export function respostaComposicao(g: Pick<PerdasGold, "nacional" | "referencia"
   const partes: string[] = [];
   if (l.taxa_tecnica_pct !== null) {
     partes.push(
-      `Em ${l.ano}, ${num(l.n_com_tecnica, 0)} das ${num(l.n_distribuidoras, 0)} concessionárias válidas publicaram a perda técnica nos 12 meses (${num(l.cobertura_tecnica_pct, 1)}% da energia injetada); nelas, a técnica foi ${num(l.taxa_tecnica_pct, 2)}% da energia injetada.`,
+      `Em ${l.ano}, ${num(l.n_com_tecnica, 0)} das ${num(l.n_distribuidoras, 0)} concessionárias válidas publicaram a perda técnica nos 12 meses (${pctOu(l.cobertura_tecnica_pct, 1)} da energia injetada); nelas, a técnica foi ${num(l.taxa_tecnica_pct, 2)}% da energia injetada.`,
     );
   } else partes.push(`Em ${l.ano}, nenhuma concessionária válida publicou a perda técnica nos 12 meses.`);
   if (l.pnt_bt_pct !== null) {
     partes.push(
-      `A não técnica, em ${num(l.n_com_pnt_bt, 0)} concessionárias com a separação fechando (${num(l.cobertura_bt_pct, 1)}% do mercado de baixa tensão), foi ${num(l.pnt_bt_pct, 2)}% do mercado de baixa tensão.`,
+      `A não técnica, em ${num(l.n_com_pnt_bt, 0)} concessionárias com a separação fechando (${pctOu(l.cobertura_bt_pct, 1)} do mercado de baixa tensão), foi ${num(l.pnt_bt_pct, 2)}% do mercado de baixa tensão.`,
     );
   }
   const uf = g.universo_fixo;
@@ -1115,7 +1173,7 @@ export function respostaRegulatorio(linhas: readonly LinhaRegulatorio[], bloquea
   const partes: string[] = [];
   if (bloqueada)
     partes.push(
-      "A diferença entre a perda não técnica realizada e a referência regulatória não pode ser medida com as bases abertas acessíveis: a ANEEL não publica os percentuais regulatórios de perdas não técnicas em recurso aberto que um programa consiga ler.",
+      "A diferença entre a perda não técnica realizada e a referência regulatória não pode ser medida com as bases abertas acessíveis: o portal de dados abertos da ANEEL não traz os percentuais regulatórios de perdas não técnicas, e os endereços da ANEEL que os publicam em relatório e memória de cálculo recusaram o acesso automatizado nesta coleta (endereços tentados e respostas no quadro de bloqueio do painel Realizado e regulatório).",
     );
   if (!linhas.length) {
     partes.push("Nenhum percentual técnico regulatório foi identificado na série do SAMP.");
@@ -1349,7 +1407,8 @@ export function linhasNacionais(nacional: readonly LinhaNacional[]): (string | n
       const m = l.mesmas_ano_anterior;
       const par = m?.taxa_total_pct;
       return [
-        l.ano,
+        // ano como texto: como número, a tabela o formataria com separador de milhar ("2.003")
+        String(l.ano),
         l.n_distribuidoras,
         l.n_publicadas,
         l.perdas_totais_mwh === null ? null : l.perdas_totais_mwh / 1000,
@@ -1370,7 +1429,7 @@ export function linhasSeparacaoNacional(nacional: readonly LinhaNacional[]): (st
     .filter((l) => !l.parcial)
     .sort((a, b) => a.ano - b.ano)
     .map((l) => [
-      l.ano,
+      String(l.ano),
       l.n_com_tecnica,
       l.cobertura_tecnica_pct,
       l.taxa_tecnica_pct,

@@ -22,9 +22,10 @@ export function QualidadeConjuntos({ anoInicial, anoFinal, tamanhos, fonte }: { 
   const [erro, setErro] = useState<string | null>(null);
   const arquivo = arquivoConjuntosDoAno(v.ano);
 
-  // um link com ?cano= já é um pedido explícito
+  // um link com ?cano= ou com o recorte da tabela (tcj.*) já é um pedido explícito
   useEffect(() => {
-    if (new URLSearchParams(window.location.search).has("cano")) setPedido(true);
+    const p = new URLSearchParams(window.location.search);
+    if (p.has("cano") || Array.from(p.keys()).some((k) => k.startsWith("tcj."))) setPedido(true);
   }, []);
 
   useEffect(() => {

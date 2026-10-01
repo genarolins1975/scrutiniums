@@ -25,8 +25,9 @@ import type { SegmentoTecnico } from "@/lib/energia/tipos-perdas";
 
 const COLUNAS: ColunaTabela[] = [
   { id: "rotulo", rotulo: "Distribuidora", tipo: "texto" },
-  { id: "inicio", rotulo: "Início do trecho", tipo: "texto" },
-  { id: "fim", rotulo: "Fim do trecho", tipo: "texto" },
+  // AAAA-MM como data: ordena pelo tempo (como texto, "abr/2025" viria antes de "jan/2020")
+  { id: "inicio", rotulo: "Início do trecho", tipo: "data" },
+  { id: "fim", rotulo: "Fim do trecho", tipo: "data" },
   { id: "meses", rotulo: "Meses", tipo: "numero", casas: 0 },
   { id: "pct", rotulo: "Percentual técnico", tipo: "numero", unidade: "% da injetada publicada", casas: 3 },
   { id: "troca_pp", rotulo: "Troca contra o trecho anterior", tipo: "numero", unidade: "p.p.", casas: 3 },
@@ -67,8 +68,8 @@ export function PerdasRegulatorio({ linhas, urlEvidencias, segmentos, ids, rotul
           id: `${cnpj}-${s.inicio}`,
           cnpj,
           rotulo: rotulos[cnpj] ?? cnpj,
-          inicio: mesAno(s.inicio),
-          fim: mesAno(s.fim),
+          inicio: s.inicio,
+          fim: s.fim,
           meses: s.meses,
           pct: s.pct,
           troca_pp: s.troca_pp,

@@ -8,7 +8,7 @@ import { Numero } from "@/components/energia/Numero";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
-import { PAINEIS_INCLUSAO, mes, respostaAcesso, respostaCobertura, respostaOrcamento, respostaTarifaSocial, rotaPainel, type PainelInclusao } from "@/lib/energia/inclusao";
+import { PAINEIS_INCLUSAO, mes, nomePof, respostaAcesso, respostaCobertura, respostaOrcamento, respostaTarifaSocial, rotaPainel, type PainelInclusao } from "@/lib/energia/inclusao";
 import type { InclusaoGold } from "@/lib/energia/tipos-inclusao";
 
 export const dynamic = "force-static";
@@ -64,7 +64,7 @@ function Cartao({
         </div>
         <p>
           <Link href={rotaPainel(id)} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-            Abrir o painel {p.rotulo.toLowerCase()}: mapa, séries, tabelas e dados
+            Abrir o painel {p.rotulo}: mapa, séries, tabelas e dados
           </Link>
         </p>
       </div>
@@ -95,7 +95,7 @@ export default function InclusaoEnergeticaPage() {
           referencia={
             <>
               SCS da ANEEL até {mes(g.referencias.scs_ultimo_mes_no_arquivo)} (arquivo gerado pela fonte em {dataBR(geracaoScs)}); Beneficiários da CDE até{" "}
-              {mes(g.referencias.cde_mes_mais_recente)}; Cadastro Único de {mes(c.brasil?.mes)}; POF 2017-2018; PNAD Contínua {a.ano_referencia}; PASI ciclo {si?.ciclo ?? "sem dado"};
+              {mes(g.referencias.cde_mes_mais_recente)}; Cadastro Único de {mes(c.brasil?.mes)}; {nomePof(o)}; PNAD Contínua {a.ano_referencia}; PASI ciclo {si?.ciclo ?? "sem dado"};
               Luz para Todos até {mes(lpt?.ultimo_mes)}. Processado em {carimbo(g.gerado_em)}.
             </>
           }
@@ -185,7 +185,7 @@ export default function InclusaoEnergeticaPage() {
               />
             }
             recorte={<p>{o.referencia}; Brasil e grandes regiões por classe de rendimento, UF só no total; nada municipal.</p>}
-            limite="o peso da conta hoje: a POF é de 2017-2018 e nenhuma atualização modelada é publicada."
+            limite={`o peso da conta hoje: a pesquisa é a ${nomePof(o)} e nenhuma atualização modelada é publicada.`}
           />
           <Cartao
             id="p062"
