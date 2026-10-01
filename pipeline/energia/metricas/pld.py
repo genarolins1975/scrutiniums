@@ -2,9 +2,13 @@
 public/energia/gold/pld_detalhe.json. A fórmula roda em pipeline/energia/modulos/pld_detalhe.py;
 a interface só lê o valor calculado.
 
-Convenções comuns: horário de Brasília; PLD em R$/MWh nominais; tolerância monetária de
-R$ 0,01/MWh (um centavo, a precisão de publicação do PLD e dos limites), com a contagem
-de meio centavo publicada como sensibilidade; hora h = intervalo [h:00, h+1:00).
+Convenções comuns: horário de Brasília; PLD em R$/MWh nominais; hora h = intervalo
+[h:00, h+1:00). Na hora, "no limite" é igualdade ao centavo (|PLD − limite| ≤ R$ 0,005/MWh,
+o PLD e os limites são publicados em centavos); a média diária frente ao teto estrutural usa
+R$ 0,01/MWh (erro de arredondamento da média); a separação entre submercados é diferença de
+mais de um centavo. Natureza da fonte: o CMO do ONS (DECOMP e DESSEM) é ESTIMADO pela fonte
+(resultado de modelo, "Este CMO é estimado pelo modelo DESSEM"); o PLD publicado pela CCEE é
+OBSERVADO (preço oficial de liquidação). Métrica que combina os dois herda ESTIMADO.
 """
 
 GOLD = "pld_detalhe.json"
@@ -62,34 +66,39 @@ METRICAS = [
        dimensoes=["submercado", "semana operativa"],
        regras_comparabilidade=["Média temporal: não é preço ponderado pela carga."],
        regra_cobertura="Semana com as 168 horas.", politica_ausencia=_AUS_PLD,
-       validacoes=["reconciliação com a média das sete médias diárias da mesma semana"],
+       validacoes=["168 horas de sábado 00h a sexta 23h", "reconciliação por releitura do arquivo original da CCEE com leitor independente"],
        limitacoes=["Valores nominais."]),
     _m(id="pld_diferenca_pld_cmo", titulo="Diferença entre PLD e CMO no mesmo intervalo",
        pergunta="Quanto o PLD se afastou do CMO publicado pelo ONS no mesmo intervalo?",
        definicao="PLD menos CMO na mesma hora (DESSEM) ou na mesma semana operativa (DECOMP e média do DESSEM), em R$/MWh. Resumida por ano e submercado nas horas com o PLD entre os limites (fora de dias com a média no teto estrutural) e nas horas no piso.",
        unidade="R$/MWh", grao_geografico="submercado e subsistema de mesmo nome", grao_temporal="hora e semana operativa",
        fontes=[F_PLD, F_SH, F_SEM, F_LIM], formula="Δ = PLD − CMO do mesmo intervalo; média, média do módulo e mediana do módulo por ano",
-       regra_agregacao="média simples das diferenças horárias", natureza_fonte="OBSERVADO", natureza_transformacao="CALCULADO",
+       regra_agregacao="média simples das diferenças horárias", natureza_fonte="ESTIMADO", natureza_transformacao="CALCULADO",
        dimensoes=["submercado", "ano", "situação do PLD frente aos limites"],
        regras_comparabilidade=["Só entre o mesmo intervalo de tempo.", "Diferença absoluta; nenhuma razão ou multiplicador (achado A01)."],
        regra_cobertura="Horas com PLD e CMO do DESSEM na hora.", politica_ausencia="Hora sem um dos dois fica fora e é contada em horas_sem_cmo.",
        validacoes=["situação frente aos limites só quando os atos estão disponíveis"],
-       limitacoes=["CMO e PLD não são automaticamente equivalentes: modelo, configuração e limites diferem.", _NAO_CAUSAL]),
+       limitacoes=["Um dos termos (o CMO) é estimado por modelo pelo ONS; o PLD é o preço publicado pela CCEE.",
+                   "CMO e PLD não são automaticamente equivalentes: modelo, configuração e limites diferem.", _NAO_CAUSAL]),
     _m(id="pld_horas_piso", titulo="Horas com o PLD no piso",
        pergunta="Com que frequência o PLD ficou no limite mínimo?",
-       definicao="Fração das horas do ano em que o PLD ficou a até R$ 0,01/MWh do mínimo vigente no dia, segundo os atos anuais da ANEEL.",
+       definicao=("Fração das horas do ano em que o PLD foi igual ao mínimo vigente no dia, ao centavo (|PLD − mínimo| ≤ R$ 0,005/MWh), "
+                  "segundo os atos anuais da ANEEL. Horas exatamente um centavo acima do piso ficam numa classe à parte."),
        unidade="fração das horas (a ficha de evidência exibe em % das horas)", grao_geografico="submercado", grao_temporal="ano civil (parcial marcado)",
-       fontes=[F_PLD, F_LIM], numerador="horas com |PLD − mínimo vigente| ≤ 0,01", denominador="horas com limites vigentes conhecidos",
+       fontes=[F_PLD, F_LIM], numerador="horas com |PLD − mínimo vigente| ≤ 0,005", denominador="horas com limites vigentes conhecidos",
        formula="frac_piso = horas_piso ÷ horas_com_limite", regra_agregacao="contagem de horas",
        natureza_fonte="OBSERVADO", natureza_transformacao="CALCULADO", dimensoes=["submercado", "ano", "dia (calendário)"],
        regras_comparabilidade=["Cada ano tem o seu piso; frações de anos diferentes comparam regimes diferentes.", "Ano parcial marcado."],
        regra_cobertura="Horas com PLD e com ato vigente no dia.", politica_ausencia="Dia sem ato vigente conta como sem limite e sai do denominador.",
-       validacoes=["nenhuma hora abaixo do piso", "sensibilidade com tolerância de meio centavo", "menor valor observado conferido com o piso do ato (sem substituí-lo)",
-                   "limites vigentes de cada dia iguais aos de limites_em do módulo Regulação (outro código)"],
-       limitacoes=["O menor valor observado nunca substitui o piso regulatório.", "Depende dos atos integrados pelo módulo Regulação."]),
+       validacoes=["nenhuma hora abaixo do piso", "sensibilidade com R$ 0,01/MWh na hora e classe à parte para o centavo vizinho",
+                   "menor valor observado conferido com o piso do ato (sem substituí-lo)",
+                   "limites vigentes de cada dia iguais aos de limites_em do módulo Regulação (mesma regra em outro módulo)",
+                   "trecho e valor do ato vigente conferidos no PDF do ato", "recontagem por releitura do arquivo original da CCEE"],
+       limitacoes=["O menor valor observado nunca substitui o piso regulatório.",
+                   "Depende dos atos integrados pelo módulo Regulação; três atos (2021 e 2023) têm os valores lidos em voto ou nota técnica do processo, não no texto do ato."]),
     _m(id="pld_horas_teto_horario", titulo="Horas com o PLD no teto horário",
        pergunta="Com que frequência o PLD encostou no máximo horário?",
-       definicao="Fração das horas do ano com |PLD − máximo horário vigente| ≤ R$ 0,01/MWh.",
+       definicao="Fração das horas do ano com o PLD igual ao máximo horário vigente ao centavo (|PLD − máximo horário| ≤ R$ 0,005/MWh).",
        unidade="fração das horas", grao_geografico="submercado", grao_temporal="ano civil",
        fontes=[F_PLD, F_LIM], numerador="horas no teto horário", denominador="horas com limites vigentes conhecidos",
        formula="frac_teto = horas_teto ÷ horas_com_limite", regra_agregacao="contagem de horas",
@@ -111,7 +120,7 @@ METRICAS = [
        pergunta="Quando o piso vale para todo o sistema ao mesmo tempo?",
        definicao="Número de horas do ano em que 0, 1, 2, 3 ou 4 submercados estavam no piso; empate no piso = os quatro no piso.",
        unidade="horas", grao_geografico="sistema (quatro submercados)", grao_temporal="ano",
-       fontes=[F_PLD, F_LIM], formula="k_h = nº de submercados com |PLD − mínimo| ≤ 0,01 na hora h", regra_agregacao="contagem",
+       fontes=[F_PLD, F_LIM], formula="k_h = nº de submercados com |PLD − mínimo| ≤ 0,005 na hora h", regra_agregacao="contagem",
        natureza_fonte="OBSERVADO", natureza_transformacao="CALCULADO", dimensoes=["ano", "quantidade de submercados no piso"],
        regras_comparabilidade=["Horas empatadas no piso têm diferença de preço zero por construção dos limites."],
        regra_cobertura="Horas com os quatro submercados.", politica_ausencia=_AUS_PLD, validacoes=["soma das classes igual às horas do ano"],
@@ -127,15 +136,22 @@ METRICAS = [
        limitacoes=["Valores nominais."]),
     _m(id="pld_media_mensal_ponderada_carga", titulo="PLD médio mensal ponderado pela carga",
        pergunta="Qual foi o PLD médio do mês pesando cada hora pela carga do subsistema?",
-       definicao="Soma do PLD vezes a carga verificada do subsistema na mesma hora, dividida pela soma da carga.",
+       definicao=("Soma do PLD vezes a carga verificada do subsistema na mesma hora, dividida pela soma da carga, nas horas com carga "
+                  "publicada e positiva."),
        unidade="R$/MWh", grao_geografico="submercado (peso: subsistema de mesmo nome)", grao_temporal="mês",
-       fontes=[F_PLD, F_BAL], numerador="Σ PLD_h × carga_h", denominador="Σ carga_h", formula="Σ PLD_h × carga_h ÷ Σ carga_h",
+       fontes=[F_PLD, F_BAL], numerador="Σ PLD_h × carga_h (carga_h > 0)", denominador="Σ carga_h (carga_h > 0)",
+       formula="Σ PLD_h × carga_h ÷ Σ carga_h nas horas com carga_h > 0",
        regra_agregacao="média ponderada pela energia (MWmed numa hora = MWh)", natureza_fonte="OBSERVADO", natureza_transformacao="CALCULADO",
        dimensoes=["submercado", "mês"],
        regras_comparabilidade=["Só é comparada com a média temporal quando as duas usam as mesmas horas (campo mesmas_horas)."],
-       regra_cobertura="Horas com PLD e carga.", politica_ausencia="Hora sem carga fica fora da ponderada; mesmas_horas indica a diferença de cobertura.",
-       validacoes=["numerador e denominador publicados na evidência"],
-       limitacoes=["Carga do subsistema do ONS, não consumo contabilizado na CCEE; correspondência subsistema e submercado pelo nome."]),
+       regra_cobertura="Horas com PLD e carga positiva.",
+       politica_ausencia=("Hora sem carga fica fora da ponderada; hora com carga ≤ 0 (valor fisicamente impossível) também sai do peso e é "
+                          "listada como ressalva; mesmas_horas indica a diferença de cobertura."),
+       validacoes=["controle físico: carga > 0 em toda hora usada como peso", "numerador e denominador publicados na evidência",
+                   "magnitude e alcance das revisões da carga por mês, com o efeito na ponderada",
+                   "reconciliação por releitura dos arquivos originais da CCEE e do ONS"],
+       limitacoes=["Carga do subsistema do ONS, não consumo contabilizado na CCEE; correspondência subsistema e submercado pelo nome.",
+                   "A carga é revista pelo ONS depois de publicada; a ponderada dos meses recentes pode mudar."]),
     _m(id="pld_media_mensal_real", titulo="PLD médio mensal em moeda constante",
        pergunta="Quanto valeria o PLD médio de cada mês em reais de hoje?",
        definicao="Média temporal do mês multiplicada pelo IPCA do mês-base e dividida pelo IPCA do mês.",
@@ -166,7 +182,8 @@ METRICAS = [
        validacoes=["limites do regime listados com o ato"], limitacoes=["Valores nominais."]),
     _m(id="pld_perfil_hora_mes", titulo="Perfil hora a hora por mês",
        pergunta="Em que horas do dia o PLD costuma ser mais alto em cada mês?",
-       definicao="Média do PLD em cada hora do dia (0 a 23) dentro de cada um dos últimos 12 meses.",
+       definicao=("Média do PLD em cada hora do dia (0 a 23) dentro de cada um dos últimos 12 meses; o detalhe hora × dia dos últimos "
+                  "90 dias vai em arquivo próprio (pld_hora_dia.json)."),
        unidade="R$/MWh", grao_geografico="submercado", grao_temporal="hora do dia × mês", fontes=[F_PLD],
        formula="média de PLD_h com hora do dia = k no mês m", regra_agregacao="média temporal",
        natureza_fonte="OBSERVADO", natureza_transformacao="CALCULADO", dimensoes=["submercado", "mês", "hora do dia"],

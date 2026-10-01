@@ -1,0 +1,249 @@
+ano;tipo_usina;combustivel;modalidade;categoria;natureza;mwh
+2021;EOLIELÉTRICA;Eólica;Conjunto de Usinas;eolica;verificada;66185687.73
+2022;EOLIELÉTRICA;Eólica;Conjunto de Usinas;eolica;verificada;74537886.674
+2023;EOLIELÉTRICA;Eólica;Conjunto de Usinas;eolica;verificada;88513238.799
+2024;EOLIELÉTRICA;Eólica;Conjunto de Usinas;eolica;verificada;100479178.028
+2025;EOLIELÉTRICA;Eólica;Conjunto de Usinas;eolica;verificada;109601155.899
+2026;EOLIELÉTRICA;Eólica;Conjunto de Usinas;eolica;verificada;76253860.618
+2021;EOLIELÉTRICA;Eólica;Pequenas Usinas (Tipo III);eolica;grupo_tipo3;3034617.505
+2022;EOLIELÉTRICA;Eólica;Pequenas Usinas (Tipo III);eolica;grupo_tipo3;3354159.373
+2023;EOLIELÉTRICA;Eólica;Pequenas Usinas (Tipo III);eolica;grupo_tipo3;3485923.719
+2024;EOLIELÉTRICA;Eólica;Pequenas Usinas (Tipo III);eolica;grupo_tipo3;3881904.047
+2025;EOLIELÉTRICA;Eólica;Pequenas Usinas (Tipo III);eolica;grupo_tipo3;4048750.872
+2026;EOLIELÉTRICA;Eólica;Pequenas Usinas (Tipo III);eolica;grupo_tipo3;2401842.763
+2021;EOLIELÉTRICA;Eólica;TIPO I;eolica;verificada;1270475.635
+2022;EOLIELÉTRICA;Eólica;TIPO I;eolica;verificada;980296.738
+2023;EOLIELÉTRICA;Eólica;TIPO I;eolica;verificada;991254.116
+2024;EOLIELÉTRICA;Eólica;TIPO I;eolica;verificada;855894.377
+2025;EOLIELÉTRICA;Eólica;TIPO I;eolica;verificada;759448.022
+2026;EOLIELÉTRICA;Eólica;TIPO I;eolica;verificada;455059.467
+2021;EOLIELÉTRICA;Eólica;TIPO II-B;eolica;verificada;477359.991
+2022;EOLIELÉTRICA;Eólica;TIPO II-B;eolica;verificada;447884.903
+2023;EOLIELÉTRICA;Eólica;TIPO II-B;eolica;verificada;431171.226
+2024;EOLIELÉTRICA;Eólica;TIPO II-B;eolica;verificada;423809.929
+2025;EOLIELÉTRICA;Eólica;TIPO II-B;eolica;verificada;382846.67
+2026;EOLIELÉTRICA;Eólica;TIPO II-B;eolica;verificada;293044.011
+2021;EOLIELÉTRICA;Eólica;TIPO II-C;eolica;verificada;124856.765
+2022;EOLIELÉTRICA;Eólica;TIPO II-C;eolica;verificada;250740.713
+2023;EOLIELÉTRICA;Eólica;TIPO II-C;eolica;verificada;253874.937
+2024;EOLIELÉTRICA;Eólica;TIPO II-C;eolica;verificada;348408.317
+2025;EOLIELÉTRICA;Eólica;TIPO II-C;eolica;verificada;274834.789
+2021;EOLIELÉTRICA;Fotovoltaica;Conjunto de Usinas;eolica;verificada;1391492.17
+2022;EOLIELÉTRICA;Fotovoltaica;Conjunto de Usinas;eolica;verificada;1642934.239
+2023;EOLIELÉTRICA;Fotovoltaica;Conjunto de Usinas;eolica;verificada;1702155.838
+2024;EOLIELÉTRICA;Fotovoltaica;Conjunto de Usinas;eolica;verificada;1508737.536
+2025;EOLIELÉTRICA;Fotovoltaica;Conjunto de Usinas;eolica;verificada;422715.084
+2021;FOTOVOLTAICA;Fotovoltaica;Conjunto de Usinas;solar_centralizada;verificada;6752043.372
+2022;FOTOVOLTAICA;Fotovoltaica;Conjunto de Usinas;solar_centralizada;verificada;11134277.328
+2023;FOTOVOLTAICA;Fotovoltaica;Conjunto de Usinas;solar_centralizada;verificada;19222542.521
+2024;FOTOVOLTAICA;Fotovoltaica;Conjunto de Usinas;solar_centralizada;verificada;27326435.726
+2025;FOTOVOLTAICA;Fotovoltaica;Conjunto de Usinas;solar_centralizada;verificada;31788535.843
+2026;FOTOVOLTAICA;Fotovoltaica;Conjunto de Usinas;solar_centralizada;verificada;27606794.172
+2023;FOTOVOLTAICA;Fotovoltaica;Pequenas Usinas (MMGD);solar_mmgd;grupo_mmgd;22975296.623
+2024;FOTOVOLTAICA;Fotovoltaica;Pequenas Usinas (MMGD);solar_mmgd;grupo_mmgd;45024545.324
+2025;FOTOVOLTAICA;Fotovoltaica;Pequenas Usinas (MMGD);solar_mmgd;grupo_mmgd;59223868.443
+2026;FOTOVOLTAICA;Fotovoltaica;Pequenas Usinas (MMGD);solar_mmgd;grupo_mmgd;48021005.608
+2021;FOTOVOLTAICA;Fotovoltaica;Pequenas Usinas (Tipo III);solar_centralizada;grupo_tipo3;592170.146
+2022;FOTOVOLTAICA;Fotovoltaica;Pequenas Usinas (Tipo III);solar_centralizada;grupo_tipo3;683424.441
+2023;FOTOVOLTAICA;Fotovoltaica;Pequenas Usinas (Tipo III);solar_centralizada;grupo_tipo3;725981.308
+2024;FOTOVOLTAICA;Fotovoltaica;Pequenas Usinas (Tipo III);solar_centralizada;grupo_tipo3;852625.541
+2025;FOTOVOLTAICA;Fotovoltaica;Pequenas Usinas (Tipo III);solar_centralizada;grupo_tipo3;596460.503
+2026;FOTOVOLTAICA;Fotovoltaica;Pequenas Usinas (Tipo III);solar_centralizada;grupo_tipo3;229638.097
+2021;FOTOVOLTAICA;Fotovoltaica;TIPO II-B;solar_centralizada;verificada;74479.925
+2022;FOTOVOLTAICA;Fotovoltaica;TIPO II-B;solar_centralizada;verificada;76146.459
+2023;FOTOVOLTAICA;Fotovoltaica;TIPO II-B;solar_centralizada;verificada;70245.349
+2024;FOTOVOLTAICA;Fotovoltaica;TIPO II-B;solar_centralizada;verificada;228254.001
+2025;FOTOVOLTAICA;Fotovoltaica;TIPO II-B;solar_centralizada;verificada;223776.698
+2026;FOTOVOLTAICA;Fotovoltaica;TIPO II-B;solar_centralizada;verificada;171872.95
+2021;FOTOVOLTAICA;Fotovoltaica;TIPO II-C;solar_centralizada;verificada;15410.774
+2022;FOTOVOLTAICA;Fotovoltaica;TIPO II-C;solar_centralizada;verificada;176523.602
+2023;FOTOVOLTAICA;Fotovoltaica;TIPO II-C;solar_centralizada;verificada;15220.686
+2021;HIDROELÉTRICA;Hidráulica;Conjunto de Usinas;hidraulica;verificada;1753954.134
+2022;HIDROELÉTRICA;Hidráulica;Conjunto de Usinas;hidraulica;verificada;1918542.979
+2023;HIDROELÉTRICA;Hidráulica;Conjunto de Usinas;hidraulica;verificada;2094407.557
+2024;HIDROELÉTRICA;Hidráulica;Conjunto de Usinas;hidraulica;verificada;1891690.652
+2025;HIDROELÉTRICA;Hidráulica;Conjunto de Usinas;hidraulica;verificada;1454825.993
+2026;HIDROELÉTRICA;Hidráulica;Conjunto de Usinas;hidraulica;verificada;318592.422
+2021;HIDROELÉTRICA;Hidráulica;Pequenas Usinas (Tipo III);hidraulica;grupo_tipo3;18324027.727
+2022;HIDROELÉTRICA;Hidráulica;Pequenas Usinas (Tipo III);hidraulica;grupo_tipo3;23750240.109
+2023;HIDROELÉTRICA;Hidráulica;Pequenas Usinas (Tipo III);hidraulica;grupo_tipo3;24606213.051
+2024;HIDROELÉTRICA;Hidráulica;Pequenas Usinas (Tipo III);hidraulica;grupo_tipo3;23473529.34
+2025;HIDROELÉTRICA;Hidráulica;Pequenas Usinas (Tipo III);hidraulica;grupo_tipo3;22139853.293
+2026;HIDROELÉTRICA;Hidráulica;Pequenas Usinas (Tipo III);hidraulica;grupo_tipo3;18069083.99
+2021;HIDROELÉTRICA;Hidráulica;TIPO I;hidraulica;verificada;350904983.111
+2022;HIDROELÉTRICA;Hidráulica;TIPO I;hidraulica;verificada;410463092.255
+2023;HIDROELÉTRICA;Hidráulica;TIPO I;hidraulica;verificada;413754417.908
+2024;HIDROELÉTRICA;Hidráulica;TIPO I;hidraulica;verificada;401564884.615
+2025;HIDROELÉTRICA;Hidráulica;TIPO I;hidraulica;verificada;379032879.638
+2026;HIDROELÉTRICA;Hidráulica;TIPO I;hidraulica;verificada;293803196.453
+2021;HIDROELÉTRICA;Hidráulica;TIPO II-A;hidraulica;verificada;457738.242
+2022;HIDROELÉTRICA;Hidráulica;TIPO II-A;hidraulica;verificada;743206.692
+2023;HIDROELÉTRICA;Hidráulica;TIPO II-A;hidraulica;verificada;1101494.598
+2024;HIDROELÉTRICA;Hidráulica;TIPO II-A;hidraulica;verificada;888650.708
+2025;HIDROELÉTRICA;Hidráulica;TIPO II-A;hidraulica;verificada;896187.158
+2026;HIDROELÉTRICA;Hidráulica;TIPO II-A;hidraulica;verificada;804653.502
+2021;HIDROELÉTRICA;Hidráulica;TIPO II-B;hidraulica;verificada;245152.149
+2022;HIDROELÉTRICA;Hidráulica;TIPO II-B;hidraulica;verificada;343070.798
+2023;HIDROELÉTRICA;Hidráulica;TIPO II-B;hidraulica;verificada;359688.443
+2024;HIDROELÉTRICA;Hidráulica;TIPO II-B;hidraulica;verificada;308031.623
+2025;HIDROELÉTRICA;Hidráulica;TIPO II-B;hidraulica;verificada;111978.715
+2026;HIDROELÉTRICA;Hidráulica;TIPO II-B;hidraulica;verificada;102337.58
+2025;HIDROELÉTRICA;Hidráulica;TIPO II-C;hidraulica;verificada;111688.8
+2026;HIDROELÉTRICA;Hidráulica;TIPO II-C;hidraulica;verificada;91759.2
+2021;HIDROELÉTRICA;Hidráulica;TIPO III;hidraulica;verificada;1109047.19
+2022;HIDROELÉTRICA;Hidráulica;TIPO III;hidraulica;verificada;735189.485
+2023;HIDROELÉTRICA;Hidráulica;TIPO III;hidraulica;verificada;202977.96
+2024;HIDROELÉTRICA;Hidráulica;TIPO III;hidraulica;verificada;184979.112
+2025;HIDROELÉTRICA;Hidráulica;TIPO III;hidraulica;verificada;556.104
+2026;HIDROELÉTRICA;Hidráulica;TIPO III;hidraulica;verificada;0.0
+2021;NUCLEAR;Nuclear;TIPO I;nuclear;verificada;14695346.292
+2022;NUCLEAR;Nuclear;TIPO I;nuclear;verificada;14550864.474
+2023;NUCLEAR;Nuclear;TIPO I;nuclear;verificada;14503722.891
+2024;NUCLEAR;Nuclear;TIPO I;nuclear;verificada;15729283.222
+2025;NUCLEAR;Nuclear;TIPO I;nuclear;verificada;15809435.304
+2026;NUCLEAR;Nuclear;TIPO I;nuclear;verificada;10557389.518
+2021;TÉRMICA;Biomassa;Conjunto de Usinas;biomassa;verificada;3983197.077
+2022;TÉRMICA;Biomassa;Conjunto de Usinas;biomassa;verificada;4534397.253
+2023;TÉRMICA;Biomassa;Conjunto de Usinas;biomassa;verificada;5415261.187
+2024;TÉRMICA;Biomassa;Conjunto de Usinas;biomassa;verificada;5911733.394
+2025;TÉRMICA;Biomassa;Conjunto de Usinas;biomassa;verificada;3805631.058
+2026;TÉRMICA;Biomassa;Conjunto de Usinas;biomassa;verificada;599578.84
+2021;TÉRMICA;Biomassa;Pequenas Usinas (Tipo III);biomassa;grupo_tipo3;75795.677
+2022;TÉRMICA;Biomassa;TIPO I;biomassa;verificada;161240.051
+2023;TÉRMICA;Biomassa;TIPO I;biomassa;verificada;272932.583
+2024;TÉRMICA;Biomassa;TIPO I;biomassa;verificada;292999.682
+2025;TÉRMICA;Biomassa;TIPO I;biomassa;verificada;286197.583
+2026;TÉRMICA;Biomassa;TIPO I;biomassa;verificada;194153.253
+2021;TÉRMICA;Biomassa;TIPO II-A;biomassa;verificada;629073.364
+2022;TÉRMICA;Biomassa;TIPO II-A;biomassa;verificada;270479.73
+2023;TÉRMICA;Biomassa;TIPO II-A;biomassa;verificada;304647.263
+2024;TÉRMICA;Biomassa;TIPO II-A;biomassa;verificada;332798.39
+2025;TÉRMICA;Biomassa;TIPO II-A;biomassa;verificada;626471.173
+2026;TÉRMICA;Biomassa;TIPO II-A;biomassa;verificada;409626.396
+2021;TÉRMICA;Biomassa;TIPO II-B;biomassa;verificada;1602612.376
+2022;TÉRMICA;Biomassa;TIPO II-B;biomassa;verificada;1569431.947
+2023;TÉRMICA;Biomassa;TIPO II-B;biomassa;verificada;1659412.684
+2024;TÉRMICA;Biomassa;TIPO II-B;biomassa;verificada;1617559.737
+2025;TÉRMICA;Biomassa;TIPO II-B;biomassa;verificada;227637.707
+2026;TÉRMICA;Biomassa;TIPO II-B;biomassa;verificada;163280.066
+2021;TÉRMICA;Biomassa;TIPO II-C;biomassa;verificada;318412.138
+2022;TÉRMICA;Biomassa;TIPO II-C;biomassa;verificada;118976.567
+2023;TÉRMICA;Biomassa;TIPO II-C;biomassa;verificada;199315.438
+2024;TÉRMICA;Biomassa;TIPO II-C;biomassa;verificada;203394.793
+2025;TÉRMICA;Biomassa;TIPO II-C;biomassa;verificada;676853.708
+2026;TÉRMICA;Biomassa;TIPO II-C;biomassa;verificada;299334.021
+2021;TÉRMICA;Biomassa;TIPO III;biomassa;verificada;1559906.776
+2022;TÉRMICA;Biomassa;TIPO III;biomassa;verificada;1319146.613
+2023;TÉRMICA;Biomassa;TIPO III;biomassa;verificada;1069874.089
+2024;TÉRMICA;Biomassa;TIPO III;biomassa;verificada;1140871.289
+2025;TÉRMICA;Biomassa;TIPO III;biomassa;verificada;656334.003
+2026;TÉRMICA;Biomassa;TIPO III;biomassa;verificada;0.0
+2021;TÉRMICA;Carvão;TIPO I;carvao;verificada;16489487.868
+2022;TÉRMICA;Carvão;TIPO I;carvao;verificada;6888975.003
+2023;TÉRMICA;Carvão;TIPO I;carvao;verificada;7586882.071
+2024;TÉRMICA;Carvão;TIPO I;carvao;verificada;9106320.701
+2025;TÉRMICA;Carvão;TIPO I;carvao;verificada;10106435.863
+2026;TÉRMICA;Carvão;TIPO I;carvao;verificada;6926644.582
+2021;TÉRMICA;Carvão;TIPO II-A;carvao;verificada;0.005
+2022;TÉRMICA;Carvão;TIPO II-A;carvao;verificada;6576.342
+2023;TÉRMICA;Carvão;TIPO II-A;carvao;verificada;45738.284
+2024;TÉRMICA;Carvão;TIPO II-A;carvao;verificada;2592.143
+2025;TÉRMICA;Carvão;TIPO II-A;carvao;verificada;0.0
+2026;TÉRMICA;Carvão;TIPO II-A;carvao;verificada;0.0
+2021;TÉRMICA;Gás;TIPO I;gas;verificada;67908177.258
+2022;TÉRMICA;Gás;TIPO I;gas;verificada;23360007.577
+2023;TÉRMICA;Gás;TIPO I;gas;verificada;19417594.574
+2024;TÉRMICA;Gás;TIPO I;gas;verificada;30519201.744
+2025;TÉRMICA;Gás;TIPO I;gas;verificada;36882863.386
+2026;TÉRMICA;Gás;TIPO I;gas;verificada;26856159.638
+2021;TÉRMICA;Gás;TIPO II-A;gas;verificada;180665.927
+2022;TÉRMICA;Gás;TIPO II-A;gas;verificada;89451.236
+2023;TÉRMICA;Gás;TIPO II-A;gas;verificada;225521.361
+2024;TÉRMICA;Gás;TIPO II-A;gas;verificada;311146.413
+2025;TÉRMICA;Gás;TIPO II-A;gas;verificada;311987.927
+2026;TÉRMICA;Gás;TIPO II-A;gas;verificada;106939.399
+2021;TÉRMICA;Gás;TIPO II-B;gas;verificada;810434.563
+2022;TÉRMICA;Gás;TIPO II-B;gas;verificada;903164.249
+2023;TÉRMICA;Gás;TIPO II-B;gas;verificada;772915.632
+2024;TÉRMICA;Gás;TIPO II-B;gas;verificada;777763.128
+2025;TÉRMICA;Gás;TIPO II-B;gas;verificada;853419.261
+2026;TÉRMICA;Gás;TIPO II-B;gas;verificada;599570.421
+2022;TÉRMICA;Multi-Combustível Diesel/Óleo;TIPO I;oleo;verificada;8852.71
+2023;TÉRMICA;Multi-Combustível Diesel/Óleo;TIPO I;oleo;verificada;63302.488
+2024;TÉRMICA;Multi-Combustível Diesel/Óleo;TIPO I;oleo;verificada;51464.071
+2025;TÉRMICA;Multi-Combustível Diesel/Óleo;TIPO I;oleo;verificada;22776.143
+2026;TÉRMICA;Multi-Combustível Diesel/Óleo;TIPO I;oleo;verificada;27032.311
+2021;TÉRMICA;Outras Multi-Combustível;Pequenas Usinas (Tipo III);termica_sem_combustivel;grupo_tipo3;13093059.477
+2022;TÉRMICA;Outras Multi-Combustível;Pequenas Usinas (Tipo III);termica_sem_combustivel;grupo_tipo3;14462705.241
+2023;TÉRMICA;Outras Multi-Combustível;Pequenas Usinas (Tipo III);termica_sem_combustivel;grupo_tipo3;14780203.32
+2024;TÉRMICA;Outras Multi-Combustível;Pequenas Usinas (Tipo III);termica_sem_combustivel;grupo_tipo3;13756957.622
+2025;TÉRMICA;Outras Multi-Combustível;Pequenas Usinas (Tipo III);termica_sem_combustivel;grupo_tipo3;13309722.323
+2026;TÉRMICA;Outras Multi-Combustível;Pequenas Usinas (Tipo III);termica_sem_combustivel;grupo_tipo3;8758480.898
+2021;TÉRMICA;Resíduos Industriais;Conjunto de Usinas;outros;verificada;1081903.646
+2022;TÉRMICA;Resíduos Industriais;Conjunto de Usinas;outros;verificada;879155.94
+2023;TÉRMICA;Resíduos Industriais;Conjunto de Usinas;outros;verificada;970276.132
+2024;TÉRMICA;Resíduos Industriais;Conjunto de Usinas;outros;verificada;1057198.097
+2025;TÉRMICA;Resíduos Industriais;Conjunto de Usinas;outros;verificada;603990.212
+2026;TÉRMICA;Resíduos Industriais;Conjunto de Usinas;outros;verificada;95763.872
+2021;TÉRMICA;Resíduos Industriais;TIPO I;outros;verificada;2499045.844
+2022;TÉRMICA;Resíduos Industriais;TIPO I;outros;verificada;2941664.247
+2023;TÉRMICA;Resíduos Industriais;TIPO I;outros;verificada;2495481.427
+2024;TÉRMICA;Resíduos Industriais;TIPO I;outros;verificada;2274908.72
+2025;TÉRMICA;Resíduos Industriais;TIPO I;outros;verificada;2692647.379
+2026;TÉRMICA;Resíduos Industriais;TIPO I;outros;verificada;1716248.571
+2021;TÉRMICA;Resíduos Industriais;TIPO II-B;outros;verificada;3000618.115
+2022;TÉRMICA;Resíduos Industriais;TIPO II-B;outros;verificada;3286597.675
+2023;TÉRMICA;Resíduos Industriais;TIPO II-B;outros;verificada;3119827.599
+2024;TÉRMICA;Resíduos Industriais;TIPO II-B;outros;verificada;3128837.881
+2025;TÉRMICA;Resíduos Industriais;TIPO II-B;outros;verificada;3055493.081
+2026;TÉRMICA;Resíduos Industriais;TIPO II-B;outros;verificada;2024701.94
+2021;TÉRMICA;Resíduos Industriais;TIPO II-C;outros;verificada;1898474.865
+2022;TÉRMICA;Resíduos Industriais;TIPO II-C;outros;verificada;456820.844
+2023;TÉRMICA;Resíduos Industriais;TIPO II-C;outros;verificada;0.0
+2025;TÉRMICA;Resíduos Industriais;TIPO II-C;outros;verificada;74944.252
+2026;TÉRMICA;Resíduos Industriais;TIPO II-C;outros;verificada;73893.415
+2021;TÉRMICA;Resíduos Industriais;TIPO III;outros;verificada;660423.145
+2022;TÉRMICA;Resíduos Industriais;TIPO III;outros;verificada;320377.056
+2023;TÉRMICA;Resíduos Industriais;TIPO III;outros;verificada;348910.8
+2024;TÉRMICA;Resíduos Industriais;TIPO III;outros;verificada;337439.76
+2025;TÉRMICA;Resíduos Industriais;TIPO III;outros;verificada;955.92
+2026;TÉRMICA;Resíduos Industriais;TIPO III;outros;verificada;0.0
+2021;TÉRMICA;Óleo Combustível;TIPO I;oleo;verificada;9143308.169
+2022;TÉRMICA;Óleo Combustível;TIPO I;oleo;verificada;729112.705
+2023;TÉRMICA;Óleo Combustível;TIPO I;oleo;verificada;522896.375
+2024;TÉRMICA;Óleo Combustível;TIPO I;oleo;verificada;689075.317
+2025;TÉRMICA;Óleo Combustível;TIPO I;oleo;verificada;116198.435
+2026;TÉRMICA;Óleo Combustível;TIPO I;oleo;verificada;48637.783
+2021;TÉRMICA;Óleo Combustível;TIPO II-A;oleo;verificada;94290.865
+2022;TÉRMICA;Óleo Combustível;TIPO II-A;oleo;verificada;0.0
+2023;TÉRMICA;Óleo Combustível;TIPO II-A;oleo;verificada;697.39
+2024;TÉRMICA;Óleo Combustível;TIPO II-A;oleo;verificada;0.0
+2025;TÉRMICA;Óleo Combustível;TIPO II-A;oleo;verificada;0.0
+2026;TÉRMICA;Óleo Combustível;TIPO II-A;oleo;verificada;0.0
+2021;TÉRMICA;Óleo Combustível;TIPO II-B;oleo;verificada;0.0
+2022;TÉRMICA;Óleo Combustível;TIPO II-B;oleo;verificada;23131.359
+2023;TÉRMICA;Óleo Combustível;TIPO II-B;oleo;verificada;2096.755
+2024;TÉRMICA;Óleo Combustível;TIPO II-B;oleo;verificada;15572.416
+2025;TÉRMICA;Óleo Combustível;TIPO II-B;oleo;verificada;3065.512
+2026;TÉRMICA;Óleo Combustível;TIPO II-B;oleo;verificada;3012.478
+2021;TÉRMICA;Óleo Combustível;TIPO III;oleo;verificada;0.0
+2021;TÉRMICA;Óleo Diesel;Pequenas Usinas (Tipo III);oleo;grupo_tipo3;33202.879
+2021;TÉRMICA;Óleo Diesel;TIPO I;oleo;verificada;2908680.446
+2022;TÉRMICA;Óleo Diesel;TIPO I;oleo;verificada;823882.383
+2023;TÉRMICA;Óleo Diesel;TIPO I;oleo;verificada;60636.694
+2024;TÉRMICA;Óleo Diesel;TIPO I;oleo;verificada;157001.492
+2025;TÉRMICA;Óleo Diesel;TIPO I;oleo;verificada;81548.727
+2026;TÉRMICA;Óleo Diesel;TIPO I;oleo;verificada;190611.301
+2021;TÉRMICA;Óleo Diesel;TIPO II-A;oleo;verificada;218326.449
+2022;TÉRMICA;Óleo Diesel;TIPO II-A;oleo;verificada;7254.673
+2023;TÉRMICA;Óleo Diesel;TIPO II-A;oleo;verificada;0.0
+2024;TÉRMICA;Óleo Diesel;TIPO II-A;oleo;verificada;15.593
+2025;TÉRMICA;Óleo Diesel;TIPO II-A;oleo;verificada;0.0
+2026;TÉRMICA;Óleo Diesel;TIPO II-A;oleo;verificada;0.0
+2021;TÉRMICA;Óleo Diesel;TIPO II-B;oleo;verificada;0.0
+2022;TÉRMICA;Óleo Diesel;TIPO II-B;oleo;verificada;0.0
+2023;TÉRMICA;Óleo Diesel;TIPO II-B;oleo;verificada;0.0
+2024;TÉRMICA;Óleo Diesel;TIPO II-B;oleo;verificada;0.0
+2025;TÉRMICA;Óleo Diesel;TIPO II-B;oleo;verificada;0.0
+2021;TÉRMICA;Óleo Diesel;TIPO III;oleo;verificada;0.0
+2022;TÉRMICA;Óleo Diesel;TIPO III;oleo;verificada;0.0

@@ -214,17 +214,27 @@ def controle_numcon(ucs_total, nconj_total, fator=2.0):
 
     Regras (sobre a soma do NumCon dos conjuntos da distribuidora no mês):
     * no máximo 1 UC por conjunto em média (NumCon = 1 em todos os conjuntos);
-    * queda: menos da metade do mês anterior E do seguinte que existirem;
-    * pico: mais do dobro do mês anterior E do seguinte.
-    Exigir os dois vizinhos separa o mês isolado de uma mudança de patamar (incorporação,
-    cisão), em que o mês seguinte continua no nível novo."""
+    * queda: menos da metade dos dois meses de referência;
+    * pico: mais do dobro dos dois meses de referência.
+    Os meses de referência são o anterior e o seguinte; na ponta da série (primeiro ou
+    último mês publicado), os dois mais próximos do lado que existe. Exigir os dois separa o
+    mês isolado de uma mudança de patamar (incorporação, cisão), em que o mês seguinte
+    continua no nível novo; na ponta, separa o mês fora do nível dos dois vizinhos de um
+    vizinho que é ele mesmo o mês suspeito (como fevereiro e abril ao lado do março de 1 UC
+    por conjunto)."""
     refs = sorted(r for r, v in ucs_total.items() if v)
     out = {}
     for i, r in enumerate(refs):
         u, n = ucs_total[r], nconj_total.get(r)
-        viz = [ucs_total[x] for x in (refs[i - 1] if i > 0 else None, refs[i + 1] if i + 1 < len(refs) else None) if x]
+        if 0 < i < len(refs) - 1:
+            idx = (i - 1, i + 1)
+        elif i == 0:
+            idx = (1, 2)
+        else:
+            idx = (i - 1, i - 2)
+        viz = [ucs_total[refs[j]] for j in idx if 0 <= j < len(refs) and j != i]
         if n and u <= n:
-            out[r] = f"NumCon médio de {u / n:.2f} UC por conjunto ({int(n)} conjuntos, {int(u)} UCs)"
+            out[r] = f"NumCon médio de {u / n:.2f} UC por conjunto ({int(n)} conjuntos, {int(u)} UCs)".replace(".", ",")
         elif viz and all(u * fator < v for v in viz):
             out[r] = f"NumCon de {int(u)} UCs, menos da metade dos meses vizinhos ({', '.join(str(int(v)) for v in viz)})"
         elif viz and all(u > fator * v for v in viz):

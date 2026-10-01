@@ -1393,8 +1393,11 @@ def _restricoes(con, hoje):
                 acum_ok += 1 if abs(soma - hva[m]) <= 0.01 else 0
         for m in sorted(an):
             atls_rows.append([fl, "AN", m, an.get(m), hva.get(m), _r(atls_horas_implicitas(an.get(m), hva.get(m)), 3), None])
+        # período de observação implícito diferente das horas do calendário em mais de meia hora
+        # (nos dados atuais, sempre exatamente uma hora: fevereiros com uma a mais, outubros e
+        # novembros com uma a menos); registrado, sem causa atribuída
         denom_dif = [m for m in meses if atls_horas_implicitas(me.get(m), hv.get(m)) is not None
-                     and abs(atls_horas_implicitas(me[m], hv[m]) - horas_calendario(m)) > 1.5]
+                     and abs(atls_horas_implicitas(me[m], hv[m]) - horas_calendario(m)) > 0.5]
         atls1_com_horas = [m for m in meses if me.get(m) is not None and me[m] >= 1 and (hv.get(m) or 0) > 0]
         ult12 = meses[-12:]
         d = DEFINICOES_ATLS.get(fl)
@@ -2160,7 +2163,7 @@ def _evidencias(gold, con, con_p, fluxo, dia_ref, ressalvas):
             testes=[ev.teste("Acumulado anual publicado = soma dos meses", "aprovado" if cf["acumulado_anual_confere"] == cf["acumulado_anual_meses"] else "ressalva",
                              f"{cf['acumulado_anual_confere']} de {cf['acumulado_anual_meses']} meses"),
                     ev.teste("ATLS publicado = 1 − horas ÷ horas do mês", "aprovado" if not cf["meses_denominador_diferente_do_calendario"] else "ressalva",
-                             f"{len(cf['meses_denominador_diferente_do_calendario'])} mês(es) com período de observação diferente do calendário em mais de 1,5 h"
+                             f"{len(cf['meses_denominador_diferente_do_calendario'])} mês(es) com período de observação implícito diferente das horas do calendário em mais de 0,5 h"
                              + (f": {', '.join(cf['meses_denominador_diferente_do_calendario'][:6])}" if cf["meses_denominador_diferente_do_calendario"] else ""))],
             reconciliacao=ev.reconciliacao("Horas mensais contra o acumulado no ano publicado pelo próprio ONS (outra série do mesmo arquivo)",
                                            "aprovado" if cf["acumulado_anual_confere"] == cf["acumulado_anual_meses"] else "ressalva",

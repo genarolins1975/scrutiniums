@@ -290,6 +290,50 @@ class BeneficiariosCDE(unittest.TestCase):
         self.assertIsNone(fa.mes_do_recurso("Dicionário de dados"))
 
 
+class DescontoLiquidoMunicipio(unittest.TestCase):
+    """Beneficiários da CDE, recorte real de mar/2026 (89 linhas SubsBaixaRenda): desconto líquido só das
+    subclasses 3.2 a 3.6 e município inexistente fora do mapa. Valores esperados somados direto nas linhas
+    do recorte, sem as funções do módulo."""
+
+    @classmethod
+    def setUpClass(cls):
+        agg = fa.agrega_cde_zip(_dados("cde_amostra_01mar2026.zip"))
+        # mesmas chaves que o silver guarda (observacoes_cde → _cde_por_mes)
+        cls.chaves = {}
+        for serie, _, v in fa.observacoes_cde(agg, "2026-03"):
+            p = serie.split(".")
+            cls.chaves.setdefault((p[0], p[1], ".".join(p[2:-2]), p[-2]), {})[p[-1]] = v
+        with open(_dados("mds_municipios_rr_recorte.csv"), encoding="utf-8") as f:
+            cls.rr = {cod for cod, *_ in fm.le_municipios(f.read())}
+
+    def test_desconto_liquido_exclui_outras_subclasses(self):
+        r = mod.resumo_cde_mes(self.chaves)
+        # subclasses 3.2 a 3.6, tipos 1 a 4: R$ 1.445,69; tipo 1: 29 faturas e R$ 1.554,23
+        self.assertAlmostEqual(r["desconto_liquido_reais"], 1445.69, places=2)
+        self.assertAlmostEqual(r["desconto_faturas_reais"], 1554.23, places=2)
+        self.assertEqual(r["faturas_tsee"], 29)
+        # 56 linhas de outras subclasses (3.1, 3.7 a 3.9, 3.11 a 3.34) somam R$ -247.951,54 e ficam à parte
+        self.assertAlmostEqual(r["desconto_fora_das_subclasses_reais"], -247951.54, places=2)
+        self.assertEqual(r["linhas_fora_das_subclasses"], 56)
+        # a soma de todas as chaves (o defeito) daria R$ -246.505,85
+        self.assertNotAlmostEqual(r["desconto_liquido_reais"], sum(v.get("valor", 0) for v in self.chaves.values()), places=0)
+
+    def test_municipio_inexistente(self):
+        self.assertEqual(len(self.rr), 15)  # Roraima tem 15 municípios no MI Social
+        self.assertIsNone(mod.municipio_do_mapa("1403205", self.rr))     # 140320 não existe
+        self.assertEqual(mod.municipio_do_mapa("1400100", self.rr), "140010")  # Boa Vista
+        self.assertEqual(mod.municipio_do_mapa("1403205", None), "140320")     # sem lista, só o formato
+        self.assertIsNone(mod.municipio_do_mapa("invalido", self.rr))
+        r = mod.resumo_cde_mes({k: v for k, v in self.chaves.items() if k[1].startswith("14")}, self.rr)
+        # 29 faturas em Roraima no recorte: 20 em municípios existentes e 9 no código 1403205
+        self.assertEqual(r["faturas_tsee"], 29)
+        self.assertEqual(r["por_uf"]["RR"]["faturas"], 20)
+        self.assertEqual((r["faturas_municipio_inexistente"], r["faturas_municipio_invalido"]), (9, 9))
+        self.assertEqual(dict(r["codigos_inexistentes"]), {"1403205": 9})
+        # identidade: UF + fora do mapa = total
+        self.assertEqual(sum(u["faturas"] for u in r["por_uf"].values()) + r["faturas_municipio_invalido"], r["faturas_tsee"])
+
+
 class SerieAntiga(unittest.TestCase):
     def test_leitura_e_repeticao_de_2018(self):
         with open(_dados("tarifa_social_antiga_arquivada.csv"), encoding="utf-8-sig") as f:
@@ -746,6 +790,12 @@ class Gold(unittest.TestCase):
         self.assertTrue(cob["brasil"]["proxy"])
         self.assertFalse(any("fora" in k for k in cob["brasil"]))  # nenhuma contagem de "famílias fora"
         self.assertLessEqual(cob["brasil"]["razao_cadastradas_pct"], cob["brasil"]["razao_atualizadas_pct"])
+        # série mensal longa fora da gold, no JSON sob demanda, com o último ponto na gold
+        with open(os.path.join(RAIZ, "public", "energia", "series", "inclusao_cobertura_mensal.json"), encoding="utf-8") as f:
+            serie = json.load(f)["serie"]
+        self.assertEqual(cob["serie_mensal_json"], "/energia/series/inclusao_cobertura_mensal.json")
+        self.assertEqual(len(serie), cob["serie_mensal_meses"])
+        self.assertEqual(serie[-1], cob["serie_mensal_ultimo"])
         # o numerador são faturas: a ficha não pode chamar a unidade de UC
         evid = cob["brasil"]["evidencia"]
         self.assertTrue(evid["unidade"].startswith("faturas"))
@@ -801,6 +851,13 @@ class Gold(unittest.TestCase):
         self.assertEqual(c25["localidades"], 160)
         vibra = next(d for d in iso["por_distribuidora"] if d["distribuidora"] == "VIBRA ENERGIA")
         self.assertEqual((vibra["populacao"], vibra["localidades_sem_populacao"]), (None, 2))
+        # ficha da população: 1.964.825 pessoas (soma das 158 informadas), PA-101 e PA-102 fora da soma,
+        # reconciliada com o caderno em PDF (1,965 milhão; 160 localidades)
+        evp = iso["evidencia_populacao"]
+        self.assertEqual(ev.validar(evp), [])
+        self.assertEqual(evp["valor_calculo"], 1964825)
+        self.assertEqual(evp["exclusoes"], ["PA-101: população não informada", "PA-102: população não informada"])
+        self.assertEqual(evp["reconciliacao"]["resultado"], "aprovado")
         lpt = ac["universalizacao"]["luz_para_todos"]
         self.assertEqual(sum(u["total"] for u in lpt["por_uf"]), lpt["evidencia_total"]["valor_calculo"])
         anos = {a["ano"]: a for a in lpt["serie_anual"]}

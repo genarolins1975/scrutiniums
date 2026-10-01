@@ -374,15 +374,26 @@ def le_liberacao_resumida(linhas):
 
 # -------------------------------------------------------------------- atos de outorga
 
-def le_encerramentos(linhas):
+def le_encerramentos(linhas, referencias=None):
     """Atos de revogação ou extinção de outorga de geração (desde 2015) → lista.
 
     MdaPotenciaInstaladaMW é a potência declarada no ato (MW); ruído de ponto
-    flutuante da fonte é arredondado a 3 casas (1 kW)."""
+    flutuante da fonte é arredondado a 3 casas (1 kW). O campo não é confiável em
+    todas as linhas: há atos com o valor em kW (Axinim - Powertech, 975 no ato e
+    975 kW no SIGA), conferidos depois por `confere_potencia_ato`.
+
+    `referencias` (dict opcional) recebe, na mesma passagem, a potência citada nos
+    demais atos de outorga do mesmo núcleo do CEG ({núcleo: [[objeto, data, mw]]}),
+    usada como corroboração independente nessa conferência."""
     out = []
     for r in linhas:
         tipo = OBJETOS_ENCERRAMENTO.get(texto(r.get("DscObjeto")) or "")
         if not tipo:
+            if referencias is not None:
+                n, mw_ref = nucleo(r.get("IdeNucleoCEG")), numero(r.get("MdaPotenciaInstaladaMW"))
+                if n is not None and mw_ref:
+                    referencias.setdefault(n, []).append(
+                        [texto(r.get("DscObjeto")), data_iso(r.get("DatPublicacao")), round(mw_ref, 3)])
             continue
         mw = numero(r.get("MdaPotenciaInstaladaMW"))
         out.append({
@@ -397,17 +408,88 @@ def le_encerramentos(linhas):
     return out
 
 
+# Limite legal de potência por tipo usado na conferência dos atos: central geradora
+# hidrelétrica (CGH) é aproveitamento de até 5.000 kW (Lei nº 9.074/1995, art. 8º, na
+# redação da Lei nº 13.360/2016). Os demais tipos não têm teto legal que sirva de
+# controle (UTE, UFV e EOL vão de centenas de kW a milhares de MW).
+LIMITE_MW_TIPO = {"CGH": 5.0}
+# Fator 1.000: o valor do ato, lido como MW, coincide (até 1%) com a potência do
+# cadastro em kW. Margem de 1% cobre o arredondamento a 3 casas dos dois lados.
+TOLERANCIA_FATOR_MIL = 0.01
+
+
+def confere_potencia_ato(mw_ato, tipo, ref_kw, outros_atos_mw=()):
+    """Confere a potência declarada num ato de encerramento contra o cadastro da mesma
+    usina (núcleo do CEG) e o limite legal do tipo.
+
+    `ref_kw`: [(origem, kW)] do cadastro (SIGA, potência outorgada; RALIE histórico).
+    `outros_atos_mw`: MW citado nos demais atos de outorga do mesmo núcleo.
+
+    Retorna {situacao, mw_usado, ref_kw, ref_origem, motivo}:
+    - 'sem_potencia': ato sem valor (não soma, conta como ato);
+    - 'conferida': sem divergência de fator 1.000 com o cadastro (ou sem cadastro) e
+      dentro do limite do tipo; mw_usado = valor do ato;
+    - 'corrigida_kw': o valor do ato é igual ao do cadastro em kW e há confirmação
+      independente de que o ato está em kW (o valor como MW excede o limite legal do
+      tipo, ou outro ato de outorga do mesmo núcleo cita a potência do cadastro em
+      MW); mw_usado = cadastro ÷ 1.000, com o rótulo da correção;
+    - 'fora_da_soma': divergência de fator 1.000 sem confirmação de qual lado está
+      certo, ou valor acima do limite do tipo sem cadastro para corrigir; mw_usado =
+      None (o ato conta, a potência fica fora da soma e é listada à parte)."""
+    if mw_ato is None:
+        return {"situacao": "sem_potencia", "mw_usado": None, "ref_kw": None, "ref_origem": None, "motivo": None}
+    limite = LIMITE_MW_TIPO.get(tipo or "")
+    acima_limite = limite is not None and mw_ato > limite
+    for origem, kw in ref_kw:
+        if not kw or kw <= 0:
+            continue
+        if abs(mw_ato - kw) <= TOLERANCIA_FATOR_MIL * kw:
+            mw_cad = kw / 1000
+            confirma = [m for m in outros_atos_mw if m and abs(m - mw_cad) <= 0.05 * mw_cad]
+            if acima_limite:
+                motivo = (f"o valor do ato ({mw_ato:g}) é igual ao do cadastro em kW ({kw:g} kW, {origem}) e, lido como MW, "
+                          f"excede o limite legal de {limite:g} MW do tipo {tipo}")
+                return {"situacao": "corrigida_kw", "mw_usado": round(mw_cad, 6), "ref_kw": kw, "ref_origem": origem,
+                        "motivo": motivo}
+            if confirma:
+                motivo = (f"o valor do ato ({mw_ato:g}) é igual ao do cadastro em kW ({kw:g} kW, {origem}) e outro ato de "
+                          f"outorga da mesma usina cita {confirma[0]:g} MW")
+                return {"situacao": "corrigida_kw", "mw_usado": round(mw_cad, 6), "ref_kw": kw, "ref_origem": origem,
+                        "motivo": motivo}
+            motivo = (f"o valor do ato ({mw_ato:g} MW) e o do cadastro ({kw:g} kW, {origem}) diferem por fator 1.000 "
+                      "sem confirmação independente de qual lado está certo")
+            return {"situacao": "fora_da_soma", "mw_usado": None, "ref_kw": kw, "ref_origem": origem, "motivo": motivo}
+    if acima_limite:
+        return {"situacao": "fora_da_soma", "mw_usado": None, "ref_kw": None, "ref_origem": None,
+                "motivo": f"{mw_ato:g} MW excede o limite legal de {limite:g} MW do tipo {tipo} e não há cadastro para conferir"}
+    return {"situacao": "conferida", "mw_usado": mw_ato, "ref_kw": None, "ref_origem": None, "motivo": None}
+
+
 # ----------------------------------------------------------------- leilões transmissão
+
+# Rótulos que a fonte põe no campo do vencedor quando o lote não foi contratado. Nesses
+# lotes a ANEEL publica 0 em km, MVA, prazo, RAP vencedora e deságio como marcador (o
+# lote 2 do leilão 001/2001, "LT Ouro Preto 2 - Vitória 345 kV, 370 km", vem com 0 km):
+# o zero vira ausência, e investimento e RAP do edital ficam como valores ofertados.
+SEM_VENCEDOR = {"SEM LANCE", "SEM INSCRITO APTO", "NÃO LEILOADO", "NAO LEILOADO"}
+
+
+def lote_sem_vencedor(vencedor):
+    return (texto(vencedor) or "").upper() in SEM_VENCEDOR
+
 
 def le_leiloes_transmissao(linhas):
     """Resultado dos leilões de transmissão (um lote por linha).
 
-    km, MVA, investimento e RAP ficam em campos separados; 0 em MVA ou km é um lote
-    sem aquela instalação (ex.: lote só de linha), não ausência, e é mantido como 0.
-    PctDesagio vem como fração (0,08 = 8%)."""
+    km, MVA, investimento e RAP ficam em campos separados. Em lote contratado, 0 em
+    MVA ou km é um lote sem aquela instalação (ex.: lote 15 do 001/2024, só de linha,
+    com 0 MVA) e é mantido como 0. Em lote sem vencedor ('SEM LANCE', 'SEM INSCRITO
+    APTO', 'NÃO LEILOADO') os zeros de km, MVA, prazo, RAP vencedora e deságio são
+    marcadores da fonte e viram ausência (None). PctDesagio vem como fração (0,08 = 8%)."""
     out = []
     for r in linhas:
-        out.append({
+        sem = lote_sem_vencedor(r.get("NomVencedorLeilao"))
+        x = {
             "ano": texto(r.get("AnoLeilao")), "data": data_iso(r.get("DatLeilao")),
             "leilao": texto(r.get("NumLeilao")), "lote": texto(r.get("NumLoteLeilao")),
             "empreendimento": texto(r.get("NomEmpreendimento")), "uf": texto(r.get("SigUFPrincipal")),
@@ -420,7 +502,13 @@ def le_leiloes_transmissao(linhas):
             "rap_vencedor_rs": numero(r.get("VlrRAPVencedorLeilao")),
             "desagio_fracao": numero(r.get("PctDesagio")),
             "vencedor": texto(r.get("NomVencedorLeilao")),
-        })
+            "sem_vencedor": sem,
+        }
+        if sem:
+            for campo in ("km", "mva", "prazo_meses", "rap_vencedor_rs", "desagio_fracao"):
+                if x[campo] == 0:
+                    x[campo] = None
+        out.append(x)
     return out
 
 
@@ -444,7 +532,28 @@ def le_siget_obras(linhas):
             "oper_obra": data_iso(r.get("DatOprComObr")), "tipo_obra": texto(r.get("DscTipObr")),
             "modulo": texto(r.get("NomMdl")), "tipo_modulo": texto(r.get("SigTipMdl")),
             "classificacao": texto(r.get("SglClfMdl")),
+            # fim do contrato na linha: igual ao do contrato para o objeto original; reforço
+            # incorporado depois a um contrato antigo traz o próprio prazo (contrato 6427
+            # tem 18 datas de fim diferentes)
+            "fim_contrato_linha": data_iso(r.get("DatFimCcd")),
         }
+    return out
+
+
+def le_siget_contratos(linhas):
+    """Contratos de concessão de transmissão (recurso 'SIGET - Contrato Agente') →
+    {IdeCcd: registro}, com a data de assinatura (DatAsnCcd) e a de fim (DatFimCcd)
+    publicadas pela fonte. O CNPJ vem sem zeros à esquerda em parte das linhas
+    ('8635011000150') e é normalizado para 14 dígitos."""
+    out = {}
+    for r in linhas:
+        k = texto(r.get("IdeCcd"))
+        if not k:
+            continue
+        out[k] = {"numero": texto(r.get("NumCnaCcd")), "tipo": texto(r.get("IdcTipoCcd")),
+                  "assinatura": data_iso(r.get("DatAsnCcd")), "fim": data_iso(r.get("DatFimCcd")),
+                  "cnpj": entidades.cnpj(r.get("NumCNPJ")), "agente": texto(r.get("DscRazaoSocial")),
+                  "uf_agente": uf_valida(r.get("SigUF"))}
     return out
 
 
@@ -668,11 +777,19 @@ def confiabilidade_previsoes(ugm, lib_tab, mensais, corte, horizonte_dias=365, f
 
         por_tipo = {}
         for tipo in pc.unique(y["SigTipoGeracao"]).to_pylist():
+            # mesma partição do total, dentro do tipo: no prazo + depois + não liberada
             yt = y.filter(pc.equal(y["SigTipoGeracao"], tipo))
-            kt = pc.sum(yt["MdaPotenciaUnitaria"]).as_py() or 0.0
-            kp = pc.sum(yt.filter(pc.fill_null(pc.less_equal(yt["lib"], pa.scalar(fim, pa.date32())), False))
-                        ["MdaPotenciaUnitaria"]).as_py() or 0.0
-            por_tipo[tipo] = {"kw_prometido": kt, "kw_no_prazo": kp}
+            lib_t = yt["lib"]
+            fim_s = pa.scalar(fim, pa.date32())
+
+            def soma_t(mask, yt=yt):
+                return pc.sum(yt.filter(mask)["MdaPotenciaUnitaria"]).as_py() or 0.0
+
+            por_tipo[tipo] = {"ugs": yt.num_rows, "kw_prometido": pc.sum(yt["MdaPotenciaUnitaria"]).as_py() or 0.0,
+                              "kw_no_prazo": soma_t(pc.fill_null(pc.less_equal(lib_t, fim_s), False)),
+                              "kw_depois": soma_t(pc.fill_null(pc.greater(lib_t, fim_s), False)),
+                              "kw_nao_liberado": soma_t(pc.is_null(lib_t)),
+                              "ugs_excluidas_ja_liberadas": excl.filter(pc.equal(excl["SigTipoGeracao"], tipo)).num_rows}
         kw = pc.sum(y["MdaPotenciaUnitaria"]).as_py() or 0.0
         out.append({
             "ralie": s, "fim_janela": fim.isoformat(), "ugs": y.num_rows,
@@ -684,12 +801,49 @@ def confiabilidade_previsoes(ugm, lib_tab, mensais, corte, horizonte_dias=365, f
     return out
 
 
-def deslizamento_previsoes(ugm, mensais, meses=12):
+# Data em bloco: previsão atribuída a pelo menos 100 usinas distintas na mesma
+# fotografia. O maior complexo do RALIE tem 41 usinas (Santa Luzia, 2024), então uma
+# data compartilhada por mais que o dobro disso não é o cronograma de um complexo: é a
+# data convencional que a fiscalização atribui em lote a usinas sem obra, licença ou
+# acesso, e que anda junto com a fotografia (cerca de 5 anos depois dela: 2029-07-04 na
+# fotografia de 19/07/2024, 2031-09-13 na de 18/09/2026). Nas 64 fotografias mensais
+# até set/2026, datas com 100 usinas ou mais estão todas a 3, 4, 5 ou 6 anos da
+# fotografia (menos alguns dias).
+MINIMO_USINAS_DATA_EM_BLOCO = 100
+
+
+def datas_em_bloco(ugm, datas, minimo_usinas=MINIMO_USINAS_DATA_EM_BLOCO):
+    """{fotografia: {previsão: {usinas, ugs, kw}}} das datas em bloco de cada fotografia
+    pedida (previsão atribuída a pelo menos `minimo_usinas` usinas distintas)."""
+    pa, pc, _ = _pa()
+    out = {}
+    for s in datas:
+        x = ugm.filter(pc.equal(ugm["DatRalie"], pa.scalar(date.fromisoformat(s), pa.date32())))
+        x = x.filter(pc.is_valid(x["DatPrevisaoOpComercialSFG"]))
+        if x.num_rows == 0:
+            out[s] = {}
+            continue
+        g = x.group_by(["DatPrevisaoOpComercialSFG"]).aggregate(
+            [("IdeNucleoCEG", "count_distinct"), ("IdeNucleoCEG", "count"), ("MdaPotenciaUnitaria", "sum")])
+        out[s] = {r["DatPrevisaoOpComercialSFG"].isoformat(): {"usinas": r["IdeNucleoCEG_count_distinct"],
+                                                               "ugs": r["IdeNucleoCEG_count"],
+                                                               "kw": r["MdaPotenciaUnitaria_sum"] or 0.0}
+                  for r in g.to_pylist() if r["IdeNucleoCEG_count_distinct"] >= minimo_usinas}
+    return out
+
+
+def deslizamento_previsoes(ugm, mensais, meses=12, blocos=None):
     """Revisão da previsão de operação comercial de uma mesma unidade entre a fotografia
     mensal S e a fotografia do mês S + `meses`: variação em dias (positivo = adiada),
-    ponderada pela potência. Só unidades presentes nas duas com previsão preenchida."""
+    ponderada pela potência. Só unidades presentes nas duas com previsão preenchida.
+
+    Com `blocos` ({fotografia: conjunto de datas em bloco}), cada par também sai sem as
+    unidades cuja previsão é data em bloco em S ou em S + `meses`: a data em bloco anda
+    com a fotografia (cerca de um ano a cada ano), e o 'adiamento' dessas unidades é a
+    convenção, não revisão de cronograma de obra."""
     pa, pc, _ = _pa()
     por_mes = {d[:7]: d for d in mensais}
+    blocos = blocos or {}
     out = []
     for s in mensais:
         a, m = int(s[:4]), int(s[5:7]) + meses
@@ -709,14 +863,35 @@ def deslizamento_previsoes(ugm, mensais, meses=12):
         p1 = j["DatPrevisaoOpComercialSFG"].to_pylist()
         p2 = j["prev2"].to_pylist()
         kw = j["MdaPotenciaUnitaria"].to_pylist()
-        pares = [((b - a_).days, k) for a_, b, k in zip(p1, p2, kw)]
+        b1 = {d for d in blocos.get(s, ())}
+        b2 = {d for d in blocos.get(s2, ())}
+        pares, livres = [], []
+        kw_bloco = kw_bloco_nas_duas = 0.0
+        for a_, b, k in zip(p1, p2, kw):
+            par = ((b - a_).days, k)
+            pares.append(par)
+            em1, em2 = a_.isoformat() in b1, b.isoformat() in b2
+            if em1 or em2:
+                kw_bloco += k or 0
+                if em1 and em2:
+                    kw_bloco_nas_duas += k or 0
+            else:
+                livres.append(par)
         tot = sum(k or 0 for _, k in pares)
+        tot_l = sum(k or 0 for _, k in livres)
         out.append({
             "ralie": s, "ralie_seguinte": s2, "ugs": j.num_rows, "kw": tot,
             "kw_adiada": sum(k or 0 for d, k in pares if d > 0),
             "kw_mantida": sum(k or 0 for d, k in pares if d == 0),
             "kw_antecipada": sum(k or 0 for d, k in pares if d < 0),
             "mediana_dias_ponderada": mediana_ponderada(pares),
+            # parcela em data em bloco (em S ou em S + meses) e o mesmo par sem ela
+            "kw_data_em_bloco": kw_bloco, "kw_bloco_nas_duas": kw_bloco_nas_duas,
+            "sem_bloco": {"ugs": len(livres), "kw": tot_l,
+                          "kw_adiada": sum(k or 0 for d, k in livres if d > 0),
+                          "kw_mantida": sum(k or 0 for d, k in livres if d == 0),
+                          "kw_antecipada": sum(k or 0 for d, k in livres if d < 0),
+                          "mediana_dias_ponderada": mediana_ponderada(livres)},
         })
     return out
 
@@ -800,3 +975,15 @@ def ugs_da_primeira_aparicao(pf_ug):
                               j["MdaPotenciaUnitaria"].to_pylist()):
             out.setdefault(n_, []).append((u_, k_))
     return out
+
+
+def potencias_outorgadas_historicas(pf_usina):
+    """{núcleo: [kW outorgado distintos]} de todas as fotografias do Parquet histórico de
+    usinas do RALIE: cadastro de potência das usinas que já saíram do SIGA aberto, usado
+    para conferir a potência declarada nos atos de encerramento."""
+    out = {}
+    for t in _lotes(pf_usina, ["IdeNucleoCEG", "MdaPotenciaOutorgadaKw"]):
+        for n, kw in zip(t["IdeNucleoCEG"].to_pylist(), t["MdaPotenciaOutorgadaKw"].to_pylist()):
+            if n is not None and kw:
+                out.setdefault(n, set()).add(kw)
+    return {n: sorted(v) for n, v in out.items()}

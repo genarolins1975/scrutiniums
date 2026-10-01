@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { MENSAGEM_COPIA, copiarComFallback, type ResultadoCopia } from "@/lib/energia/evidencia";
 
 /**
@@ -35,11 +35,7 @@ export function ContaLinkPainel({ ancora, rotulo = "Copiar link deste painel" }:
 
   return (
     <span className="inline-flex flex-wrap items-center gap-x-3 gap-y-1">
-      <button
-        type="button"
-        onClick={copiar}
-        className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline underline-offset-4 hover:text-carvao"
-      >
+      <button type="button" onClick={copiar} className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline underline-offset-4 hover:text-carvao">
         {rotulo}
       </button>
       <input
@@ -54,5 +50,32 @@ export function ContaLinkPainel({ ancora, rotulo = "Copiar link deste painel" }:
         {estado ? MENSAGEM_COPIA[estado] : ""}
       </span>
     </span>
+  );
+}
+
+/**
+ * Link para outra página da Conta de luz que leva junto a escolha de
+ * distribuidoras (?dist=) feita nesta: quem escolheu a CEMIG-D no ranking chega à
+ * página de reajustes com a CEMIG-D em destaque. O endereço é montado na hora do
+ * toque, do foco ou do ponteiro, porque a escolha muda sem recarregar a página;
+ * sem JavaScript, o link vale como está.
+ */
+export function ContaLinkFiltros({ href, children, className, manter = ["dist"] }: { href: string; children: ReactNode; className?: string; manter?: string[] }) {
+  const [alvo, setAlvo] = useState(href);
+  const atualizar = () => {
+    const atual = new URLSearchParams(window.location.search);
+    const [base, ancora] = href.split("#");
+    const q = new URLSearchParams();
+    for (const k of manter) {
+      const v = atual.get(k);
+      if (v) q.set(k, v);
+    }
+    const busca = q.toString();
+    setAlvo(`${base}${busca ? `?${busca}` : ""}${ancora ? `#${ancora}` : ""}`);
+  };
+  return (
+    <a href={alvo} className={className} onPointerEnter={atualizar} onPointerDown={atualizar} onFocus={atualizar}>
+      {children}
+    </a>
   );
 }

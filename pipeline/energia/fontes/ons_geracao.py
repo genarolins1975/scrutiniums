@@ -386,8 +386,8 @@ COLS_TERMICA = ["din_instante", "id_subsistema", "nom_usina", "cod_usinaplanejam
 def chave_termica(ceg, cod):
     """Identidade da usina na térmica por motivo: CEG da ANEEL; sem CEG, o código da usina
     nos modelos do ONS; sem os dois, a linha fica num balde explícito."""
-    if ceg and ceg != "-":
-        return ceg
+    if ceg_valido(ceg):
+        return ceg_valido(ceg)
     if cod not in (None, ""):
         return f"cod:{int(cod)}"
     return "sem_identificador"
@@ -422,7 +422,7 @@ def agrega_termica(tabelas):
         cod = pc.cast(cod_col, pa.int64()) if cod_col is not None else pa.nulls(n, pa.int64())
         ceg_l, cod_l = ceg.to_pylist(), cod.to_pylist()
         chaves = [chave_termica(a, b) for a, b in zip(ceg_l, cod_l)]
-        rel["sem_ceg"] += sum(1 for a in ceg_l if not a or a == "-")
+        rel["sem_ceg"] += sum(1 for a in ceg_l if not ceg_valido(a))
         mes = pc.utf8_slice_codeunits(dia, 0, 7)
         cols = {"dia": dia, "mes": mes, "sm": sm, "ch": pa.array(chaves, pa.string())}
         somas = []
@@ -457,7 +457,7 @@ def agrega_termica(tabelas):
         sms = sm.to_pylist()
         for i in range(n):
             k = chaves[i]
-            reg = cadastro.setdefault(k, {"nome": nomes[i], "sm": sms[i], "ceg": ceg_l[i] if ceg_l[i] != "-" else "",
+            reg = cadastro.setdefault(k, {"nome": nomes[i], "sm": sms[i], "ceg": ceg_valido(ceg_l[i]),
                                           "cod": cod_l[i], "combustivel": ""})
             reg["nome"], reg["sm"] = nomes[i], sms[i]
             if cod_l[i] is not None:
@@ -814,6 +814,15 @@ def le_capacidade(tabelas):
                 "agente": (d["nom_agenteproprietario"][i] or "").strip(),
             }
     return out, rel
+
+
+CEG_AUSENTE = {"", "-", "ND", "NA", "N/A", "NULL"}
+
+
+def ceg_valido(ceg):
+    """CEG publicado, ou '' quando a fonte marca a ausência ('-' nos conjuntos, 'ND')."""
+    c_ = (ceg or "").strip()
+    return "" if c_.upper() in CEG_AUSENTE else c_
 
 
 def ceg_base(ceg):

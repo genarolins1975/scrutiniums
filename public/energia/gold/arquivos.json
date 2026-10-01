@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "arquivos.json",
- "gerado_em": "2026-10-01T00:07:23Z",
+ "gerado_em": "2026-10-01T00:36:37Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "3e7ff0a36fba+alterado",
+ "versao_codigo": "6d3bc3a2f759+alterado",
  "disponivel": true,
  "arquivos": {
   "/energia/series/regulacao_limites_pld_atos.csv": {
@@ -45,41 +45,6 @@
    "colunas": "codigo; atividade; ano_previsto (para edição da norma, como no Anexo I da Portaria nº 7.030/2025); paineis_relacionados (regra por palavra-chave do texto); consultas_citando_codigo; versao_da_agenda.",
    "modulo": "regulacao",
    "gold": "regulacao.json"
-  },
-  "/energia/series/pld_cmo_horario.csv": {
-   "colunas": "data_hora_local (início da hora, Brasília); CMO_SE, CMO_S, CMO_NE, CMO_N = CMO do DESSEM (ONS) na hora, média simples das duas meias horas que começam em HH:00 e HH:30, em R$/MWh (vazio quando alguma das duas meias horas não foi publicada); PLD_SE, PLD_S, PLD_NE, PLD_N = PLD horário da CCEE em R$/MWh nominais (vazio = ausência).",
-   "modulo": "pld",
-   "gold": "pld_detalhe.json"
-  },
-  "/energia/series/pld_cmo_semanal.csv": {
-   "colunas": "semana_inicio (sábado) e semana_fim (sexta) da semana operativa; sm; decomp_media_semanal e decomp_leve, decomp_media_patamar, decomp_pesada = CMO semanal do DECOMP (ONS) como publicado; dessem_media = média das meias horas do DESSEM na semana (vazio se faltar alguma), dessem_meias_horas = quantas havia (336 na semana completa); pld_media = média das horas do PLD na semana (vazio se faltar alguma), pld_horas = quantas havia (168). R$/MWh.",
-   "modulo": "pld",
-   "gold": "pld_detalhe.json"
-  },
-  "/energia/series/pld_limites_diario.csv": {
-   "colunas": "data; sm; pld_media_dia (média das 24 horas, vazio se faltar hora); horas; horas_no_piso e horas_no_teto_horario (|PLD − limite| ≤ R$ 0,01/MWh); media_no_teto_estrutural (1 = média diária a até R$ 0,01/MWh do teto estrutural, 0 = não, vazio sem limite ou sem média); pld_min, pld_max_horario, pld_max_estrutural vigentes no dia e o ato de cada um (vazios quando os atos não estão disponíveis). R$/MWh nominais.",
-   "modulo": "pld",
-   "gold": "pld_detalhe.json"
-  },
-  "/energia/series/pld_mensal.csv": {
-   "colunas": "mes (AAAA-MM); sm; parcial (1 = mês sem todos os dias completos); horas; media_temporal (média simples das horas, R$/MWh nominais); horas_com_carga; media_ponderada_carga (Σ PLD × carga ÷ Σ carga do subsistema ONS nas horas com carga, R$/MWh); mesmas_horas (1 = as duas médias usam as mesmas horas); ipca_indice (IBGE, dez/1993 = 100); media_temporal_real (R$/MWh em reais do mes_base_real pelo IPCA; vazio sem índice do mês); mes_base_real.",
-   "modulo": "pld",
-   "gold": "pld_detalhe.json"
-  },
-  "/energia/series/pld_separacao_diaria.csv": {
-   "colunas": "data; par (A_B); horas (horas com PLD nos dois submercados); horas_separadas (|PLD_A − PLD_B| > R$ 0,01/MWh); dif_media (média de PLD_A − PLD_B, R$/MWh); dif_abs_max; fronteira (se o par tem fronteira monitorada pelo ONS, na orientação canônica); fluxo_medio_mwmed (média do fluxo verificado nas horas com fluxo, positivo da primeira para a segunda ponta da fronteira; vazio sem fronteira ou sem dado); horas_com_fluxo.",
-   "modulo": "pld",
-   "gold": "pld_detalhe.json"
-  },
-  "/energia/series/pld_amplitude_diaria.csv": {
-   "colunas": "data; horas (horas com os quatro submercados); horas_com_separacao (maior − menor > R$ 0,01/MWh); amplitude_media e amplitude_max (maior menos menor PLD entre os quatro submercados na mesma hora, R$/MWh); hora_amplitude_max.",
-   "modulo": "pld",
-   "gold": "pld_detalhe.json"
-  },
-  "/energia/series/pld_sazonal.csv": {
-   "colunas": "sm; mes (1 a 12); n_dias e anos (dias completos do mesmo mês em anos anteriores ao ano de referência); p10, p25, p50, p75, p90 da média diária do PLD nesses dias (R$/MWh nominais, quantil tipo 7).",
-   "modulo": "pld",
-   "gold": "pld_detalhe.json"
   },
   "/energia/series/clima_diario.csv": {
    "colunas": "Temperatura do ar a 2 m por subsistema e SIN, diária desde 2001 (NASA POWER, MERRA-2 e GEOS-IT; ESTIMADO por reanálise). Colunas: data (AAAA-MM-DD, dia em hora solar local); recorte (SE, S, NE, N, SIN); temp_media_c, temp_max_c, temp_min_c (°C; média do dia e extremos horários do dia na célula, ponderados pela população); cobertura_pop_pct (% da população do recorte representada por células com dado no dia); ufs_com_dado; fonte_versao (MERRA-2 até o fim da série MERRA-2 no POWER; GEOS-IT depois, marcado como preliminar); preliminar (1 = últimos 60 dias, sujeitos a troca GEOS-IT → MERRA-2). Ausência = campo vazio.",
@@ -132,7 +97,7 @@
    "gold": "agua_detalhe.json"
   },
   "/energia/series/agua_reservatorios_diario.csv": {
-   "colunas": "Dados hidráulicos diários dos reservatórios com volume útil, últimos 365 dias. Colunas: data; id; vol_util_pct; dv_hm3; q_afluente, q_defluente, q_turbinada, q_vertida, q_outras, q_transferida, q_evaporacao, q_natural, q_incremental (m³/s); residuo_hm3. Ausência = vazio.",
+   "colunas": "Dados hidráulicos diários dos reservatórios com volume útil, últimos 365 dias. Colunas: data; id; vol_util_pct; dv_hm3; q_afluente, q_defluente, q_turbinada, q_vertida, q_outras, q_transferida, q_natural (m³/s); residuo_hm3. Ausência = vazio.",
    "modulo": "agua",
    "gold": "agua_detalhe.json"
   },
@@ -247,7 +212,7 @@
    "gold": "geracao_detalhe.json"
   },
   "/energia/series/geracao_capacidade_usina_mensal.csv": {
-   "colunas": "mes; id_ons; nome; categoria; geracao_mwh; horas_com_valor; potencia_operacional_mw (média do mês pelas datas de entrada e desativação das unidades); fator_capacidade_pct; casamento (ceg, ceg_base, conjunto). Últimos 24 meses, só usinas pareadas.",
+   "colunas": "mes; grupo (ceg:<CEG>, base:<CEG sem versão> ou cju:<conjunto>); identificadores (id_ons da Geração por Usina somados no grupo); nome; categoria; geracao_mwh; horas_com_valor; potencia_operacional_mw (média do mês pelas datas de entrada e desativação das unidades); fator_capacidade_pct; casamento. Últimos 24 meses, só grupos pareados.",
    "modulo": "geracao",
    "gold": "geracao_detalhe.json"
   },
@@ -402,7 +367,7 @@
    "gold": "transicao.json"
   },
   "/energia/series/transicao_mmgd_municipios.csv": {
-   "colunas": "codigo_ibge; municipio; uf; unidades e potencia_kw no cadastro vigente; populacao_estimada e ano_populacao (IBGE, SIDRA 6579); w_por_habitante = potencia_kw × 1000 ÷ população; unidades_por_mil_habitantes; ano_referencia (último ano completo antes da data do cadastro); unidades_ano_referencia e potencia_kw_ano_referencia = conectadas no ano; potencia_kw_estoque_ano_anterior = conectadas até 31/12 do ano anterior; crescimento_estoque_pct = potência do ano ÷ estoque anterior × 100 (vazio quando o estoque anterior é zero). Vazio = ausência (sem população publicada).",
+   "colunas": "codigo_ibge; municipio; uf; unidades e potencia_kw no cadastro vigente; populacao_estimada e ano_populacao (IBGE, SIDRA 6579); w_por_habitante = potencia_kw × 1000 ÷ população; unidades_por_mil_habitantes; ano_referencia (último ano completo antes da data do cadastro); unidades_ano_referencia e potencia_kw_ano_referencia = conectadas no ano; potencia_kw_estoque_ano_anterior = conectadas até 31/12 do ano anterior; crescimento_estoque_pct = potência do ano ÷ estoque anterior × 100 (vazio quando o estoque anterior é zero); unidades_distribuidora_fora_da_uf e potencia_kw_distribuidora_fora_da_uf = unidades do município cuja distribuidora (CNPJ) não tem conjunto elétrico na UF do município (base de continuidade da ANEEL), provável código de município errado na origem, sinalizadas e não corrigidas (já incluídas em unidades e potencia_kw; vazio = conferência indisponível). Vazio = ausência (sem população publicada).",
    "modulo": "transicao",
    "gold": "transicao.json"
   },
@@ -412,7 +377,7 @@
    "gold": "transicao.json"
   },
   "/energia/series/transicao_mmgd_distribuidoras.csv": {
-   "colunas": "cnpj (14 dígitos, chave da distribuidora); sigla e nome como publicados (a sigla pode mudar para o mesmo CNPJ); uf do município da unidade; ano_conexao; unidades; potencia_kw.",
+   "colunas": "cnpj (14 dígitos, chave da distribuidora); sigla e nome como publicados (a sigla pode mudar para o mesmo CNPJ); uf do município da unidade; ano_conexao; unidades; potencia_kw; uf_na_area_da_distribuidora = sim quando o CNPJ tem conjunto elétrico nessa UF na base de continuidade da ANEEL, nao quando não tem (provável código de município errado na origem), vazio quando não há referência.",
    "modulo": "transicao",
    "gold": "transicao.json"
   },
@@ -677,7 +642,7 @@
    "gold": "inclusao.json"
   },
   "/energia/series/inclusao_acesso_pnad.csv": {
-   "colunas": "territorio; ano; situacao (total, urbana, rural); pct_com_energia; cv_pct_com_energia; pct_rede_geral; cv_pct_rede_geral; pct_integral_entre_rede (percentual dos domicílios ligados à rede geral com fornecimento em tempo integral); cv_pct_integral; domicilios_mil; domicilios_com_energia_mil; domicilios_sem_energia_mil (diferença calculada; vazio com estado menos_de_1_mil quando as duas estimativas arredondadas em milhares coincidem); domicilios_sem_energia_estado (calculado, menos_de_1_mil, ausente). Vazio = ausência.",
+   "colunas": "territorio; ano; situacao (total, urbana, rural); pct_com_energia; cv_pct_com_energia; pct_sem_energia (100 menos pct_com_energia, uma casa, como na gold; 0,0 quer dizer menos de 0,05%); pct_rede_geral; cv_pct_rede_geral; pct_integral_entre_rede (percentual dos domicílios ligados à rede geral com fornecimento em tempo integral); cv_pct_integral; domicilios_mil; domicilios_com_energia_mil; domicilios_sem_energia_mil (diferença calculada; vazio com estado menos_de_1_mil quando as duas estimativas arredondadas em milhares coincidem); domicilios_sem_energia_estado (calculado, menos_de_1_mil, ausente). Vazio = ausência.",
    "modulo": "inclusao",
    "gold": "inclusao.json"
   },
@@ -688,6 +653,11 @@
   },
   "/energia/series/inclusao_cde_mensal_uf.json": {
    "colunas": "JSON lido sob demanda pela página: {gerado_em, fonte, unidades, meses, ufs, completo, faturas_tsee, desconto_faturas_reais}; faturas_tsee e desconto_faturas_reais são listas por UF (ordem de ufs) com um valor por mês (ordem de meses); null = UF sem fatura no mês. Mesmos números de inclusao_cde_mensal_uf.csv.",
+   "modulo": "inclusao",
+   "gold": "inclusao.json"
+  },
+  "/energia/series/inclusao_cobertura_mensal.json": {
+   "colunas": "JSON lido sob demanda pela página: {gerado_em, natureza_da_medida, unidade, campos, serie}; serie é a lista de {m, uc_tsee, familias_atualizadas, familias_cadastradas, razao_atualizadas_pct, razao_cadastradas_pct}, os mesmos números de inclusao_cobertura_mensal.csv. PROXY. null = ausência.",
    "modulo": "inclusao",
    "gold": "inclusao.json"
   },
@@ -800,6 +770,51 @@
    "colunas": "Uma linha por célula emitida pelo observatório (arquivo imutável, pipeline/energia/previsoes/): forecast_id; run_id; tipo (REFERENCIA_EXPERIMENTAL, RODADA_INTERNA, PUBLICACAO); modelo; versao_modelo; origem; cutoff, prazo e emitido_em (UTC); atraso_min; modo (agendada ou manual); horizonte; entrega; submercado; status; previsao (R$/MWh, vazio = sem número); motivo; realizado e erro quando a entrega já terminou; sha256.",
    "modulo": "previsoes",
    "gold": "previsoes_desempenho.json"
+  },
+  "/energia/series/pld_cmo_horario.csv": {
+   "colunas": "data_hora_local (início da hora, Brasília); CMO_SE, CMO_S, CMO_NE, CMO_N = CMO do DESSEM (ONS) na hora, média simples das duas meias horas que começam em HH:00 e HH:30, em R$/MWh (vazio quando alguma das duas meias horas não foi publicada); PLD_SE, PLD_S, PLD_NE, PLD_N = PLD horário da CCEE em R$/MWh nominais (vazio = ausência).",
+   "modulo": "pld",
+   "gold": "pld_detalhe.json"
+  },
+  "/energia/series/pld_cmo_semanal.csv": {
+   "colunas": "semana_inicio (sábado) e semana_fim (sexta) da semana operativa; sm; decomp_media_semanal e decomp_leve, decomp_media_patamar, decomp_pesada = CMO semanal do DECOMP (ONS) como publicado; dessem_media = média das meias horas do DESSEM na semana (vazio se faltar alguma), dessem_meias_horas = quantas havia (336 na semana completa); pld_media = média das horas do PLD na semana (vazio se faltar alguma), pld_horas = quantas havia (168). R$/MWh.",
+   "modulo": "pld",
+   "gold": "pld_detalhe.json"
+  },
+  "/energia/series/pld_limites_diario.csv": {
+   "colunas": "data; sm; pld_media_dia (média das 24 horas, vazio se faltar hora); horas; horas_no_piso e horas_no_teto_horario (PLD igual ao limite ao centavo: |PLD − limite| ≤ R$ 0,005/MWh); horas_um_centavo_acima_do_piso (PLD exatamente um centavo acima do piso, classe à parte); media_no_teto_estrutural (1 = média diária a até R$ 0,01/MWh do teto estrutural, 0 = não, vazio sem limite ou sem média); pld_min, pld_max_horario, pld_max_estrutural vigentes no dia e o ato de cada um (vazios quando os atos não estão disponíveis). R$/MWh nominais.",
+   "modulo": "pld",
+   "gold": "pld_detalhe.json"
+  },
+  "/energia/series/pld_mensal.csv": {
+   "colunas": "mes (AAAA-MM); sm; parcial (1 = mês sem todos os dias completos); horas; media_temporal (média simples das horas, R$/MWh nominais); horas_com_carga (horas com carga publicada e positiva); horas_carga_nao_positiva (horas com carga publicada menor ou igual a zero, retiradas do peso); media_ponderada_carga (Σ PLD × carga ÷ Σ carga do subsistema ONS nas horas com carga positiva, R$/MWh); mesmas_horas (1 = as duas médias usam as mesmas horas); ipca_indice (IBGE, dez/1993 = 100); media_temporal_real (R$/MWh em reais do mes_base_real pelo IPCA; vazio sem índice do mês); mes_base_real.",
+   "modulo": "pld",
+   "gold": "pld_detalhe.json"
+  },
+  "/energia/series/pld_hora_dia.json": {
+   "colunas": "Mapa hora × dia do PLD dos últimos 90 dias até o dia de referência: dias (AAAA-MM-DD, datas corridas), e por submercado uma matriz [dia][hora 0 a 23] em R$/MWh nominais; null = hora sem PLD publicado (dia ausente fica todo null).",
+   "modulo": "pld",
+   "gold": "pld_detalhe.json"
+  },
+  "/energia/series/pld_evidencias.json": {
+   "colunas": "Fichas \"Comprove este número\" dos agregados do módulo (objeto de pipeline/energia/evidencia.py por chave), lidas sob demanda pela interface; a gold traz só o índice.",
+   "modulo": "pld",
+   "gold": "pld_detalhe.json"
+  },
+  "/energia/series/pld_separacao_diaria.csv": {
+   "colunas": "data; par (A_B); horas (horas com PLD nos dois submercados); horas_separadas (|PLD_A − PLD_B| > R$ 0,01/MWh); dif_media (média de PLD_A − PLD_B, R$/MWh); dif_abs_max; fronteira (se o par tem fronteira monitorada pelo ONS, na orientação canônica); fluxo_medio_mwmed (média do fluxo verificado nas horas com fluxo, positivo da primeira para a segunda ponta da fronteira; vazio sem fronteira ou sem dado); horas_com_fluxo.",
+   "modulo": "pld",
+   "gold": "pld_detalhe.json"
+  },
+  "/energia/series/pld_amplitude_diaria.csv": {
+   "colunas": "data; horas (horas com os quatro submercados); horas_com_separacao (maior − menor > R$ 0,01/MWh); amplitude_media e amplitude_max (maior menos menor PLD entre os quatro submercados na mesma hora, R$/MWh); hora_amplitude_max.",
+   "modulo": "pld",
+   "gold": "pld_detalhe.json"
+  },
+  "/energia/series/pld_sazonal.csv": {
+   "colunas": "sm; mes (1 a 12); n_dias e anos (dias completos do mesmo mês em anos anteriores ao ano de referência); p10, p25, p50, p75, p90 da média diária do PLD nesses dias (R$/MWh nominais, quantil tipo 7).",
+   "modulo": "pld",
+   "gold": "pld_detalhe.json"
   }
  }
 }

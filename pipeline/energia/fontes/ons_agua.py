@@ -246,8 +246,8 @@ def parse_ear_reservatorio(linhas, diario_desde=None):
       * earmax_proprio.<cod> e earmax_jusante.<cod>: SÓ no primeiro dia do arquivo e nos
         dias em que o valor muda (série em degraus: o valor vale desde a data). É assim
         que as mudanças de capacidade entram no silver sem 1,5 milhão de linhas diárias;
-      * ear_proprio.<cod>, ear_jusante.<cod> (MWmês) e ear_pct.<cod>: diários, só a partir
-        de `diario_desde` (janela publicada);
+      * ear_proprio.<cod> e ear_jusante.<cod> (MWmês): diários, só a partir de
+        `diario_desde` (janela publicada) e só para reservatórios com EAR máxima positiva;
     - presenca: {cod: (primeiro_dia, ultimo_dia)} no arquivo (entrada e saída de reservatórios);
     - atributos: {cod: {campo: valor}} do último dia do arquivo;
     - soma: {(sm, ref): (ear, earmax)} reconstituída pela regra do ONS (próprio no
@@ -282,10 +282,11 @@ def parse_ear_reservatorio(linhas, diario_desde=None):
             s = soma[(sj, ref)]
             s[0] += ej or 0.0
             s[1] += mj or 0.0
-        if diario_desde and ref >= diario_desde:
+        if diario_desde and ref >= diario_desde and ((mp or 0) > 0 or (mj or 0) > 0):
+            # só reservatórios com capacidade: a fio d'água tem EAR zero por definição
             obs.append((f"ear_proprio.{cod}", ref, ep))
-            obs.append((f"ear_jusante.{cod}", ref, ej))
-            obs.append((f"ear_pct.{cod}", ref, num(r.get("ear_reservatorio_percentual"))))
+            if sj:
+                obs.append((f"ear_jusante.{cod}", ref, ej))
     for cod, dias_ in por_res.items():
         ant = (None, None)
         for i, ref in enumerate(sorted(dias_)):
@@ -353,8 +354,10 @@ def parse_ena_reservatorio(linhas):
 
 # ---------------------------------------------------------------- dados hidráulicos por reservatório
 
-# séries guardadas no silver (nível e uso consuntivo ficam só no bronze: não entram no
-# balanço publicado e dobrariam o tamanho do silver da família)
+# séries guardadas no silver. Nível, uso consuntivo, evaporação e vazão incremental ficam
+# só no bronze: não entram no fechamento publicado pelo ONS (afluência − defluência =
+# variação do volume) e, guardadas diariamente para 177 reservatórios, fariam o silver da
+# família crescer cerca de 260 mil linhas por ano a mais.
 CAMPOS_HIDRO = {
     "vol_util_pct": "val_volumeutilcon",
     "q_afluente": "val_vazaoafluente",
@@ -364,8 +367,6 @@ CAMPOS_HIDRO = {
     "q_outras": "val_vazaooutrasestruturas",
     "q_transferida": "val_vazaotransferida",
     "q_natural": "val_vazaonatural",
-    "q_incremental": "val_vazaoincremental",
-    "q_evaporacao": "val_vazaoevaporacaoliquida",
 }
 COLS_HIDRO = ["id_subsistema", "tip_reservatorio", "nom_bacia", "nom_ree", "id_reservatorio", "nom_reservatorio",
               "num_ordemcs", "cod_usina", "din_instante"] + list(CAMPOS_HIDRO.values())
@@ -456,3 +457,48 @@ def parse_precipitacao_estacoes(linhas, localiza):
         obs.append((f"n_estacoes.{b}", mes, float(len(vs))))
     resumo = {"estacoes": len(coords), "estacoes_em_bacia": sum(1 for b in bacia_de.values() if b)}
     return obs, resumo
+
+
+# ---------------------------------------------------------------- MLT publicada nos relatórios do PMO
+
+MESES_PT = {"janeiro": 1, "fevereiro": 2, "março": 3, "marco": 3, "abril": 4, "maio": 5, "junho": 6, "julho": 7,
+            "agosto": 8, "setembro": 9, "outubro": 10, "novembro": 11, "dezembro": 12}
+SM_PMO = {"SE/CO": "SE", "S": "S", "NE": "NE", "N": "N"}
+
+
+def parse_mlt_pmo(texto):
+    """Tabela "MLT das ENAs (MWmed)" do Relatório Executivo do PMO (texto do pdftotext
+    -layout). Devolve {"pagina", "edicao", "valores": [(AAAA-MM, sm, MWmed)]} ou None.
+
+    Por que este documento: os dicionários do ONS não dizem qual MLT o conjunto diário de
+    ENA usa; o relatório do PMO publica a MLT mensal por subsistema em MWmed, e a
+    comparação com a MLT implícita do conjunto aberto mostra se as duas são a mesma
+    versão. Os números vêm com ponto de milhar ("65.813" = 65 813 MWmed)."""
+    import re
+    linhas = texto.split("\n")
+    pagina = 1
+    edicao = None
+    for i, ln in enumerate(linhas):
+        pagina += ln.count("\f")
+        if edicao is None:
+            m = re.search(r"PMO\s+([A-ZÇÃ]+)\s+(\d{4})\s*\|\s*SEMANA OPERATIVA DE ([\d/]+) A ([\d/]+)", ln.replace("\f", ""), re.I)
+            if m:
+                edicao = {"mes": m.group(1).lower(), "ano": int(m.group(2)), "semana": f"{m.group(3)} a {m.group(4)}"}
+        if "MLT das ENAs" not in ln:
+            continue
+        cab = linhas[i + 1].split()
+        meses = [w.lower() for w in cab[1:] if w.lower() in MESES_PT]
+        if len(meses) != 2 or edicao is None:
+            return None
+        ano = edicao["ano"]
+        m1 = MESES_PT[meses[0]]
+        m2 = MESES_PT[meses[1]]
+        refs = [f"{ano}-{m1:02d}", f"{ano + (1 if m2 < m1 else 0)}-{m2:02d}"]
+        valores = []
+        for ln2 in linhas[i + 2:i + 8]:
+            partes = ln2.split()
+            if len(partes) == 3 and partes[0] in SM_PMO:
+                for ref, v in zip(refs, partes[1:]):
+                    valores.append((ref, SM_PMO[partes[0]], float(v.replace(".", "").replace(",", "."))))
+        return {"pagina": pagina, "edicao": edicao, "valores": valores} if len(valores) == 8 else None
+    return None

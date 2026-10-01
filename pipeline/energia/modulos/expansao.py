@@ -33,6 +33,7 @@ from pipeline.energia import base  # noqa: E402
 from pipeline.energia import evidencia as ev  # noqa: E402
 from pipeline.energia.fontes import aneel_expansao as ax  # noqa: E402
 from pipeline.energia.fontes import ckan, epe_pde  # noqa: E402
+from pipeline.energia.fontes import epe_rede_expansao as er  # noqa: E402
 from pipeline.energia.gold import comum as c  # noqa: E402
 
 GOLD = "expansao.json"
@@ -50,6 +51,7 @@ DS_LEILOES = "aneel_leiloes_transmissao"
 DS_SIGET = "aneel_siget"
 DS_AGREG = "aneel_capacidade_agregada"
 DS_PDE = "epe_pde"
+DS_REDE_EPE = "epe_webmap_rede"
 
 URL_SIGA = "https://dadosabertos.aneel.gov.br/dataset/siga-sistema-de-informacoes-de-geracao-da-aneel"
 URL_RALIE = "https://dadosabertos.aneel.gov.br/dataset/ralie-relatorio-de-acompanhamento-da-expansao-da-oferta-de-geracao-de-energia-eletrica"
@@ -64,6 +66,7 @@ URL_PDE_DADOS = ("https://www.epe.gov.br/sites-pt/publicacoes-dados-abertos/publ
                  "PDE%202035_Dados_Relat%C3%B3rio%20Final.zip")
 URL_PDE_RELATORIO = ("https://www.epe.gov.br/sites-pt/publicacoes-dados-abertos/publicacoes/Documents/"
                      "PDE%202035_Relat%C3%B3rio%20Final_Aprovado.pdf")
+URL_REDE_EPE = er.SERVICO
 
 # Conjuntos CKAN e recursos exatos (nome do arquivo na URL). intervalo_dias: menor
 # intervalo entre downloads; recursos que a ANEEL regrava todo dia (SIGA diário,
@@ -86,7 +89,7 @@ CONJUNTOS = [
     {"dataset": DS_SIGET, "nome": "sistema-de-gestao-da-transmissao-siget", "intervalo_dias": 7,
      "arquivos": ["siget-contrato-empreendimento-obra-modulo.csv", "siget-resolucao-empreendimento-obra-modulo.csv",
                   "siget-contrato-modulolinhatransmissao-subestacaoorigem-subestacaodestino.csv",
-                  "siget-contrato-moduloequipamento-subestacao.csv"]},
+                  "siget-contrato-moduloequipamento-subestacao.csv", "siget-contrato-agente.csv"]},
     {"dataset": DS_AGREG, "nome": "capacidade-instalada-por-unidade-da-federacao", "intervalo_dias": 1,
      "arquivos": ["capacidade-instalada-geracao-uf.csv"]},
     {"dataset": DS_AGREG, "nome": "empreendimentos-em-operacao", "intervalo_dias": 1,
@@ -112,7 +115,82 @@ DOWNLOADS = {
     "obras": "/energia/series/expansao_obras_transmissao.csv",
     "pde": "/energia/series/expansao_pde2035.csv",
     "capacidade_uf": "/energia/series/expansao_capacidade_uf_fonte.csv",
+    "contratos": "/energia/series/expansao_contratos_transmissao.csv",
+    "rede_epe": "/energia/series/expansao_rede_epe.json",
 }
+
+# Colunas de cada CSV de download, com a nota de unidade ou ausência. A mesma lista
+# escreve o cabeçalho do arquivo e a descrição publicada em arquivos.json: as duas não
+# podem divergir (teste ContratoDosArquivos).
+COLUNAS = {
+    "usinas": [("nucleo_ceg", None), ("ceg", None), ("nome", None), ("tipo", None), ("origem", None), ("fonte", None),
+               ("fase", "fase do SIGA"), ("estagio", None), ("outorga", None), ("uf", None), ("municipios", None),
+               ("lat", "grau decimal; vazio = não informado ou 0 na fonte"), ("lon", "grau decimal; vazio = não informado ou 0 na fonte"),
+               ("kw_outorgado", None), ("kw_fiscalizado", None),
+               ("entrada_operacao", "vazio = sem data, inclui o marcador 1900-01-03 do SIGA"),
+               ("garantia_fisica_kwmed", "vazio = sem garantia física registrada"), ("vigencia_inicio", None),
+               ("vigencia_fim", None), ("cnpjs_proprietarios", "14 dígitos, separados por |")],
+    "capacidade_uf": [("uf", "UF principal"), ("tipo", None), ("origem", None), ("fonte", "DscFonteCombustivel"), ("usinas", None),
+                      ("mw_fiscalizado", "usinas na fase Operação"), ("mw_outorgado", "vazio = campo não informado pela fonte")],
+    "carteira": [("data_base_ralie", "fotografia DatRalie em que as previsões foram registradas"), ("nucleo_ceg", None), ("ceg", None),
+                 ("nome", None), ("tipo", None), ("uf", None), ("kw_outorgado", None), ("kw_ugs_em_implantacao", None), ("ugs", None),
+                 ("situacao_obra", None), ("viabilidade", None), ("situacao_cronograma", None), ("justificativa_previsao", None),
+                 ("previsao_min", "previsão SFG de operação comercial das unidades"), ("previsao_max", None), ("outorgado_max", None),
+                 ("atraso_previsto_dias", "previsao_max menos outorgado_max; vazio sem previsão"), ("leiloes", None), ("fase_siga", None)],
+    "unidades": [("data_base_ralie", "fotografia DatRalie"), ("nucleo_ceg", None), ("ug", None), ("tipo", None), ("uf", None),
+                 ("kw", "potência unitária"), ("comercial_outorgado", None),
+                 ("previsao_sfg", "vazio = sem previsão da fiscalização"),
+                 ("previsao_em_bloco", "sim = data atribuída a 100 usinas ou mais na mesma fotografia (convencional)"),
+                 ("teste_realizado", None)],
+    "trajetorias": [("nucleo_ceg", None), ("ceg", None), ("nome", None), ("tipo", None), ("uf", None), ("primeira_fotografia", None),
+                    ("ultima_fotografia", None), ("kw_outorgado_primeira", None), ("previsao_primeira", None),
+                    ("outorgado_primeira", None), ("previsao_ultima", None), ("outorgado_ultima", None), ("mudancas_previsao", None),
+                    ("ugs_primeira", None), ("ugs_primeira_liberadas", None), ("kw_primeira_liberado", None), ("ultima_liberacao", None),
+                    ("desfecho", None), ("data_encerramento", "vazio = sem ato datado"),
+                    ("encerramento_sem_data", "sim = ato de encerramento sem data de publicação na fonte")],
+    "confiabilidade": [("ralie", "fotografia mensal S"), ("fim_janela", "S + 365 dias"), ("tipo", "TOTAL ou tipo de geração"),
+                       ("ugs", None), ("kw_prometido", None), ("kw_no_prazo", None), ("kw_depois", None), ("kw_nao_liberado", None),
+                       ("ugs_excluidas_ja_liberadas", "unidades já liberadas antes de S, fora do denominador")],
+    "liberacoes": [("ano", "ano da liberação comercial"), ("tipo", "TOTAL ou tipo de geração"), ("linhas", "linhas do arquivo detalhado"),
+                   ("kw_liberado", None), ("kw_com_data_outorgada", None),
+                   ("kw_depois_do_prazo", "liberação depois da data outorgada vigente na publicação"),
+                   ("kw_antes_do_prazo", None),
+                   ("mediana_desvio_dias_ponderada", "liberação menos data outorgada vigente, ponderada por kW; desvio em relação a um prazo, não atraso com data-base")],
+    "encerramentos": [("publicacao", "vazio = ato sem data de publicação na fonte"), ("encerramento", "revogacao ou extincao"),
+                      ("nucleo_ceg", "vazio = ato sem chave de usina na fonte"), ("ceg", None), ("nome", None), ("tipo", None),
+                      ("uf", None), ("mw_no_ato", "MdaPotenciaInstaladaMW como publicado"),
+                      ("mw_usado", "potência somada; vazio = fora da soma"),
+                      ("conferencia_potencia", "conferida, corrigida_kw, fora_da_soma ou sem_potencia"),
+                      ("motivo_conferencia", None),
+                      ("ato_repetido", "sim = a usina já tinha ato de encerramento anterior (a potência conta uma vez)"),
+                      ("fase_siga", "fase da usina no SIGA na data do arquivo; Operação = outorga encerrada com usina ainda em operação"),
+                      ("outorga_siga", None), ("assunto", None), ("ato", None), ("numero", None), ("agente", None)],
+    "leiloes": [("ano", None), ("data", None), ("leilao", None), ("lote", None), ("empreendimento", None), ("uf", None),
+                ("prazo_meses", "vazio em lote sem vencedor"), ("km", "vazio em lote sem vencedor (0 da fonte é marcador)"),
+                ("mva", "vazio em lote sem vencedor"), ("investimento_rs", "previsto no edital"), ("rap_edital_rs", None),
+                ("rap_vencedor_rs", "vazio em lote sem vencedor"), ("desagio_pct", None), ("vencedor", None),
+                ("contratado", "não = SEM LANCE, SEM INSCRITO APTO ou NÃO LEILOADO; reais nominais da data do leilão")],
+    "obras": [("empreendimento", None), ("empreendimento_ons", None), ("contrato", "IdeCcd"), ("nome", None), ("situacao", None),
+              ("oper_ato_legal", None), ("oper_efetiva", None), ("atraso_dias", "efetiva menos ato legal"),
+              ("prazo_legal_vencido", None), ("km_lt", "km de circuito de linhas novas atribuídas a este empreendimento"),
+              ("mva_tr", "MVA de transformadores novos atribuídos a este empreendimento"),
+              ("modulos_em_outro_empreendimento", "módulos também listados aqui, contados no empreendimento da obra mais antiga"),
+              ("ufs", None), ("obras", None), ("obras_resolucao", None)],
+    "contratos": [("contrato", "IdeCcd"), ("numero", "NumCnaCcd"), ("assinatura", "DatAsnCcd"), ("fim", "DatFimCcd"),
+                  ("cnpj", "14 dígitos"), ("agente", None), ("empreendimentos", "vazio = contrato sem empreendimento cadastrado no SIGET"),
+                  ("km_lt_novas", "km de circuito do objeto original (linhas com o mesmo fim do contrato); vazio = sem empreendimento"),
+                  ("mva_tr_novos", None), ("empreendimentos_com_prazo_proprio", "reforços incorporados com outra data de fim, fora das somas")],
+    "pde": [("figura", None), ("titulo", None), ("referencia", "ano ou mês"), ("serie", None), ("valor", None),
+            ("unidade", "PDE 2035, CENÁRIO")],
+}
+
+
+def _cabecalho(chave):
+    return [c for c, _ in COLUNAS[chave]]
+
+
+def _descricao(chave):
+    return "; ".join(f"{c} ({n})" if n else c for c, n in COLUNAS[chave])
 
 REGISTRO = {
     "id": "expansao", "gold": GOLD, "familia": FAMILIA, "ordem": 30,
@@ -144,7 +222,7 @@ REGISTRO = {
         {"orgao": "ANEEL", "nome": "sistema-de-gestao-da-transmissao-siget", "slug": "aneel-siget",
          "dataset_silver": DS_SIGET, "titulo": "SIGET: empreendimentos, obras e módulos de transmissão",
          "estado": "UTILIZADO EM INDICADOR", "url": URL_SIGET, "licenca": LICENCA_ANEEL, "paginas": PAGINAS,
-         "downloads": [DOWNLOADS["obras"]], "quebras": []},
+         "downloads": [DOWNLOADS["obras"], DOWNLOADS["contratos"]], "quebras": []},
         {"orgao": "ANEEL", "nome": "capacidade-instalada-por-unidade-da-federacao", "slug": "aneel-capacidade-uf",
          "dataset_silver": DS_AGREG, "titulo": "Capacidade instalada por UF (usada para reconciliar o SIGA)",
          "estado": "INTEGRADO", "url": URL_CAP_UF, "licenca": LICENCA_ANEEL, "paginas": PAGINAS,
@@ -159,20 +237,18 @@ REGISTRO = {
          "downloads": [DOWNLOADS["pde"]], "formatos": ["XLSX", "PDF"],
          "descricao": "Planilhas por capítulo do PDE 2035 (aprovado pela Portaria MME nº 923/2026). Cenário de planejamento, nunca realizado.",
          "quebras": []},
+        {"orgao": "EPE", "nome": "webmap-epe-linhas-de-transmissao", "slug": "epe-webmap-linhas-transmissao",
+         "dataset_silver": DS_REDE_EPE,
+         "titulo": "WebMap da EPE: linhas de transmissão existentes e da expansão planejada (geometria)",
+         "estado": "UTILIZADO EM INDICADOR", "url": er.URL_WEBMAP, "licenca": LICENCA_EPE, "paginas": PAGINAS,
+         "downloads": [DOWNLOADS["rede_epe"]], "formatos": ["GeoJSON"],
+         "descricao": "Camadas 21 (base existente) e 10 (expansão planejada) do serviço ArcGIS SMA/WMS_Webmap_EPE, consultadas pela interface pública /query. O serviço não informa a data de atualização das camadas.",
+         "quebras": []},
     ],
     "arquivos": {
-        DOWNLOADS["usinas"]: "nucleo_ceg; ceg; nome; tipo; origem; fonte; fase (SIGA); estagio; outorga; uf; municipios; lat; lon (grau decimal, vazio = não informado ou 0 na fonte); kw_outorgado; kw_fiscalizado; entrada_operacao (vazio = sem data, inclui o marcador 1900-01-03 do SIGA); garantia_fisica_kwmed (vazio = sem garantia física registrada); vigencia_inicio; vigencia_fim; cnpjs_proprietarios (14 dígitos, separados por |)",
+        **{DOWNLOADS[k]: _descricao(k) for k in COLUNAS},
         DOWNLOADS["pontos"]: "JSON colunar com as usinas do SIGA que têm coordenada oficial: nucleo, nome, tipo, estagio, uf, mw_outorgado, mw_fiscalizado, lat, lon",
-        DOWNLOADS["capacidade_uf"]: "uf; tipo; origem; fonte (DscFonteCombustivel); usinas; mw_fiscalizado; mw_outorgado (usinas do SIGA na fase Operação, atribuídas à UF principal; vazio = campo não informado pela fonte)",
-        DOWNLOADS["carteira"]: "usinas do RALIE atual: data_base_ralie (fotografia DatRalie em que as previsões foram registradas); nucleo_ceg; ceg; nome; tipo; uf; kw_outorgado; kw_ugs_em_implantacao; ugs; situacao_obra; viabilidade; situacao_cronograma; justificativa_previsao; previsao_min; previsao_max (previsão SFG de operação comercial das unidades); outorgado_max; atraso_previsto_dias (previsao_max menos outorgado_max; vazio sem previsão); leiloes; fase_siga",
-        DOWNLOADS["unidades"]: "unidades geradoras do RALIE atual: data_base_ralie (fotografia DatRalie); nucleo_ceg; ug; tipo; uf; kw (potência unitária); comercial_outorgado; previsao_sfg (vazio = sem previsão da fiscalização); teste_realizado",
-        DOWNLOADS["trajetorias"]: "usinas que passaram pelo RALIE desde jun/2021: nucleo_ceg; ceg; nome; tipo; uf; primeira_fotografia; ultima_fotografia; kw_outorgado_primeira; previsao_primeira; outorgado_primeira; previsao_ultima; outorgado_ultima; mudancas_previsao; ugs_primeira; ugs_primeira_liberadas; kw_primeira_liberado; ultima_liberacao; desfecho; data_encerramento (vazio = sem ato datado); encerramento_sem_data (sim = ato de encerramento sem data de publicação na fonte)",
-        DOWNLOADS["confiabilidade"]: "ralie; fim_janela; tipo (TOTAL ou tipo de geração); ugs; kw_prometido; kw_no_prazo; kw_depois; kw_nao_liberado; ugs_excluidas_ja_liberadas",
-        DOWNLOADS["liberacoes"]: "ano; tipo; ugs; kw_liberado; kw_com_atraso; mediana_atraso_dias_ponderada (liberação comercial realizada menos data outorgada, ponderada por kW)",
-        DOWNLOADS["encerramentos"]: "publicacao; encerramento (revogacao ou extincao); nucleo_ceg; ceg; nome; tipo; uf; mw (potência declarada no ato); assunto; ato; numero; agente",
-        DOWNLOADS["leiloes"]: "ano; data; leilao; lote; empreendimento; uf; prazo_meses; km; mva; investimento_rs; rap_edital_rs; rap_vencedor_rs; desagio_pct; vencedor (reais nominais da data do leilão)",
-        DOWNLOADS["obras"]: "empreendimento; empreendimento_ons; nome; situacao; oper_ato_legal; oper_efetiva; atraso_dias (efetiva menos ato legal); prazo_legal_vencido; km_lt (km de circuito de linhas novas); mva_tr (MVA de transformadores novos); ufs; obras; origem_resolucao",
-        DOWNLOADS["pde"]: "figura; titulo; referencia (ano ou mês); serie; valor; unidade (PDE 2035, CENÁRIO)",
+        DOWNLOADS["rede_epe"]: "JSON colunar das linhas de transmissão do WebMap da EPE: camada (existente ou planejada); nome; tensao_kv (vazio = 0 na fonte); ano (operação ou previsto; vazio = 0 na fonte); km_geometria (comprimento da geometria generalizada); d (caminho SVG na grade da malha de UF de public/energia/geo/uf.json)",
     },
 }
 

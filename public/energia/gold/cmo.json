@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "cmo.json",
- "gerado_em": "2026-09-30T02:20:41Z",
+ "gerado_em": "2026-10-01T00:24:35Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "196905461ac0",
+ "versao_codigo": "6d3bc3a2f759+alterado",
  "disponivel": true,
  "semana_referencia": "2026-10-02",
  "unidade": "R$/MWh",
@@ -1142,7 +1142,7 @@
  "proveniencia": {
   "cmo": {
    "indicador": "Custo Marginal de Operação semanal por subsistema",
-   "natureza": "OBSERVADO",
+   "natureza": "ESTIMADO",
    "fonte": {
     "orgao": "ONS",
     "dataset": "CMO Semanal",
@@ -1159,7 +1159,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-28T22:00:54.464349",
    "capturado_em": "2026-09-29T02:43:32Z",
-   "validado_em": "2026-09-30T02:20:41Z",
+   "validado_em": "2026-10-01T00:24:35Z",
    "cobertura_historica": {
     "inicio": "2005-01-07",
     "fim": "2026-10-02"
@@ -1171,9 +1171,9 @@
     "sha256": "0c92735cc77edc05022e65b2053fce1cae98f7dd59de17d26ca100638586baab"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "196905461ac0",
+   "versao_codigo": "6d3bc3a2f759+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T02:20:41Z",
+    "detectado_em": "2026-10-01T00:24:35Z",
     "total": 0,
     "vintages_comparadas": 22,
     "arquivos": 22,
@@ -1184,7 +1184,7 @@
    "limitacoes": [
     "Valor estimado pelo modelo DECOMP e publicado pelo ONS: é resultado de modelo da fonte, não medição.",
     "CMO não é PLD: o PLD é calculado pela CCEE em base horária e aplica limites regulatórios.",
-    "O dicionário de dados do ONS indica a unidade da média semanal como R$/MW e a dos patamares como R$/MWh; a Scrutiniums trata ambas como R$/MWh.",
+    "O dicionário de dados do ONS indica a unidade da média semanal como R$/MW e a dos patamares como R$/MWh. A média semanal é exibida em R$/MWh porque fica entre o menor e o maior patamar em todas as 4540 semanas-subsistema conferidas (achado A03); R$/MW seria custo por potência e não é equivalente.",
     "A data de referência é a da semana operativa informada pelo ONS; semanas futuras podem já estar publicadas."
    ],
    "download": "/energia/series/cmo_semanal.csv",

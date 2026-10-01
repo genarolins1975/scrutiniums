@@ -4,7 +4,9 @@ Fonte escolhida em 30/09/2026, com a evidência no documento do módulo:
 - INMET (observação de estação, fonte preferida) não respondeu: portal, API e arquivos
   históricos devolveram resposta vazia ("Empty reply from server");
 - Open-Meteo (reanálise ERA5) respondeu HTTP 429 "Daily API request limit exceeded" a
-  partir do endereço compartilhado do ambiente;
+  partir do endereço compartilhado do ambiente em 30/09/2026: era a cota diária do
+  endereço, não bloqueio (em 01/10/2026, depois da virada da cota às 0h UTC, respondeu
+  HTTP 200). Passou a ser coletado como fonte de sensibilidade (ver abaixo);
 - NOAA GSOD (observação sinótica) não tem arquivos de 2026 (a lista de estações termina
   em 24/08/2025);
 - NASA POWER (API diária por ponto, https://power.larc.nasa.gov) respondeu. É reanálise
@@ -17,6 +19,22 @@ município da capital publicado pelo IBGE (API de malhas v3, metadados); tempera
 subsistema = média das capitais ponderada pela população residente estimada da UF
 (IBGE, SIDRA 6579, último ano). A capital representa a UF, o que é uma aproximação: o
 interior pode ser mais quente ou mais frio, e a carga não se distribui como a população.
+
+Sensibilidade ao produto de temperatura (Open-Meteo, coletado desde 01/10/2026): a NASA
+POWER troca de produto no trecho recente (MERRA-2 até o último mês que a reanálise
+alcançou, GEOS-IT depois), e o modelo treinado com MERRA-2 é aplicado a dias em GEOS-IT;
+comparar 2026 (GEOS-IT) com 2025 (MERRA-2) mistura dois produtos. Para medir o efeito,
+os mesmos 27 centroides são pedidos ao Open-Meteo (API de arquivo histórico) em dois
+modelos, cada um de produto único nos dois anos:
+- `era5`: reanálise ERA5 do ECMWF/Copernicus (grade de 0,25°), com defasagem de cerca
+  de uma semana (em 01/10/2026, o último dia com valor era 23/09/2026);
+- `ecmwf_ifs`: análise operacional do ECMWF IFS (cerca de 9 km), com defasagem de um
+  dia; é o mesmo sistema nos dois anos, sujeito às mudanças de ciclo do modelo.
+Média diária do Open-Meteo = média das 24 horas no fuso America/Sao_Paulo (pedido com
+`timezone`); valor nulo é ausência. Os pedidos começam em 25/04/2023 (o treino começa em
+01/05/2023 e usa a temperatura do dia anterior); a API conta como várias chamadas um
+pedido longo, então a coleta pausa entre os pontos e, depois da primeira captura, pede
+só o trecho recente.
 
 UFs por subsistema: conferido em 30/09/2026 pela própria API de carga verificada do ONS,
 somando as áreas geoelétricas de 20/09/2026: SE/CO = SP, MG, RJ, ES, GO, DF, MT, MS, AC,
@@ -33,6 +51,13 @@ URL_POWER = ("https://power.larc.nasa.gov/api/temporal/daily/point?parameters=T2
 URL_POWER_DOC = "https://power.larc.nasa.gov/docs/services/api/temporal/daily/"
 LICENCA_POWER = ("Dados da NASA de acesso livre e sem restrição de uso, com pedido de citação do projeto POWER "
                  "(NASA Langley Research Center, Prediction Of Worldwide Energy Resources)")
+URL_OPENMETEO = ("https://archive-api.open-meteo.com/v1/archive?latitude={lat}&longitude={lon}&start_date={inicio}"
+                 "&end_date={fim}&daily=temperature_2m_mean,temperature_2m_max&timezone=America%2FSao_Paulo&models={modelos}")
+URL_OPENMETEO_DOC = "https://open-meteo.com/en/docs/historical-weather-api"
+LICENCA_OPENMETEO = ("Open-Meteo: Creative Commons Attribution 4.0 (CC BY 4.0); ERA5 e IFS contêm informação modificada do "
+                     "Copernicus Climate Change Service e do ECMWF")
+MODELOS_OPENMETEO = ("era5", "ecmwf_ifs")
+PRIMEIRO_DIA_OPENMETEO = "2023-04-25"
 URL_CENTROIDE = "https://servicodados.ibge.gov.br/api/v3/malhas/municipios/{codigo}/metadados"
 URL_MUNICIPIO = "https://servicodados.ibge.gov.br/api/v1/localidades/municipios/{codigo}"
 URL_SIDRA_POP = "https://apisidra.ibge.gov.br/values/t/6579/n3/all/v/9324/p/last"
@@ -139,4 +164,31 @@ def temperatura_ponderada(por_uf, pesos_sm, minimo_cobertura=0.95):
             peso += w
         if peso >= minimo_cobertura:
             out[d] = soma / peso
+    return out
+
+
+def url_openmeteo(lat, lon, inicio, fim, modelos=MODELOS_OPENMETEO):
+    return URL_OPENMETEO.format(lat=f"{lat:.4f}", lon=f"{lon:.4f}", inicio=inicio, fim=fim, modelos=",".join(modelos))
+
+
+def parse_openmeteo(texto, modelos=MODELOS_OPENMETEO):
+    """{modelo: {dia_iso: (média, máxima)}} da resposta diária do Open-Meteo com vários
+    modelos (chaves `temperature_2m_mean_<modelo>`). Nulo é ausência; dia sem nenhum
+    dos dois valores não entra. Resposta de erro (`"error": true`) levanta ValueError."""
+    d = json.loads(texto if isinstance(texto, str) else texto.decode("utf-8"))
+    if d.get("error"):
+        raise ValueError(f"Open-Meteo: {d.get('reason')}")
+    diario = d.get("daily") or {}
+    dias = diario.get("time") or []
+    out = {}
+    for m in modelos:
+        med = diario.get(f"temperature_2m_mean_{m}") or diario.get("temperature_2m_mean" if len(modelos) == 1 else "") or []
+        mx = diario.get(f"temperature_2m_max_{m}") or diario.get("temperature_2m_max" if len(modelos) == 1 else "") or []
+        serie = {}
+        for i, dia in enumerate(dias):
+            a = med[i] if i < len(med) else None
+            b = mx[i] if i < len(mx) else None
+            if a is not None or b is not None:
+                serie[dia] = (None if a is None else float(a), None if b is None else float(b))
+        out[m] = serie
     return out

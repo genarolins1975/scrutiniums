@@ -43,7 +43,7 @@ import type {
 } from "./tipos-conta";
 import { campo, tiposUrl, type Leitor } from "./estadoUrl";
 import { AUSENTE, dataBR, mesAno, num, pct, reais } from "./formato";
-import { LIMITE_COMPARACAO } from "./tabela";
+import { LIMITE_COMPARACAO, type ColunaTabela } from "./tabela";
 
 /* ---------- identidade visual (só tokens; cor nunca é o único portador) ---------- */
 
@@ -190,6 +190,54 @@ export function linhasRanking(vigentes: readonly TarifaVigente[], perfil: Perfil
     }));
 }
 
+/** Colunas da tabela do ranking (P047): a mesma matriz vai para a tela e para a exportação. */
+export const COLUNAS_RANKING: ColunaTabela[] = [
+  { id: "posicao", rotulo: "Posição (1 = menor)", tipo: "numero", casas: 0 },
+  { id: "sigla", rotulo: "Distribuidora", tipo: "texto" },
+  { id: "nome", rotulo: "Razão social", tipo: "texto" },
+  { id: "id", rotulo: "CNPJ", tipo: "texto" },
+  { id: "te", rotulo: "TE", tipo: "numero", unidade: "R$/MWh", casas: 2 },
+  { id: "tusd", rotulo: "TUSD", tipo: "numero", unidade: "R$/MWh", casas: 2 },
+  {
+    id: "total",
+    rotulo: "TE + TUSD",
+    tipo: "numero",
+    unidade: "R$/MWh",
+    casas: 2,
+  },
+  {
+    id: "custo_100",
+    rotulo: "100 kWh",
+    tipo: "numero",
+    unidade: "R$/mês",
+    casas: 2,
+  },
+  {
+    id: "custo_200",
+    rotulo: "200 kWh",
+    tipo: "numero",
+    unidade: "R$/mês",
+    casas: 2,
+  },
+  {
+    id: "custo_300",
+    rotulo: "300 kWh",
+    tipo: "numero",
+    unidade: "R$/mês",
+    casas: 2,
+  },
+  {
+    id: "be_total",
+    rotulo: "Base econômica (TE + TUSD)",
+    tipo: "numero",
+    unidade: "R$/MWh",
+    casas: 2,
+  },
+  { id: "inicio", rotulo: "Início da vigência", tipo: "data" },
+  { id: "fim", rotulo: "Fim da vigência", tipo: "data" },
+  { id: "ato", rotulo: "Ato da ANEEL", tipo: "texto" },
+];
+
 export type LinhaEvolucao = {
   m: string;
   n: number;
@@ -207,7 +255,14 @@ export type LinhaEvolucao = {
 export function linhasEvolucao(evolucao: readonly PontoEvolucao[]): LinhaEvolucao[] {
   const i0 = evolucao.findIndex((p) => p[2] !== null);
   if (i0 < 0) return [];
-  return evolucao.slice(i0).map(([m, n, mediana, p25, p75, real]) => ({ m, n, mediana, p25, p75, real }));
+  return evolucao.slice(i0).map(([m, n, mediana, p25, p75, real]) => ({
+    m,
+    n,
+    mediana,
+    p25,
+    p75,
+    real,
+  }));
 }
 
 /**
@@ -222,12 +277,11 @@ export function tarifaNaData(vigencias: readonly VigenciaB1[], dia: string): num
 }
 
 /** Série mensal (dia 1º) de cada distribuidora escolhida, nos mesmos meses da evolução. */
-export function linhasHistorico(
-  evolucao: readonly LinhaEvolucao[],
-  historicos: Record<string, readonly VigenciaB1[]>,
-): (LinhaEvolucao & Record<string, number | string | null>)[] {
+export function linhasHistorico(evolucao: readonly LinhaEvolucao[], historicos: Record<string, readonly VigenciaB1[]>): (LinhaEvolucao & Record<string, number | string | null>)[] {
   return evolucao.map((p) => {
-    const linha: LinhaEvolucao & Record<string, number | string | null> = { ...p };
+    const linha: LinhaEvolucao & Record<string, number | string | null> = {
+      ...p,
+    };
     for (const [cnpj, vig] of Object.entries(historicos)) linha[cnpj] = tarifaNaData(vig, `${p.m}-01`);
     return linha;
   });
@@ -274,7 +328,7 @@ export type LinhaComposicao = {
   id: string;
   sigla: string;
   posicao: number | null;
-  total: number;
+  total: number | null;
   cde: number | null;
 } & Record<GrupoComponenteId, number | null>;
 
@@ -285,7 +339,7 @@ export type LinhaComposicao = {
  */
 export function linhasComposicao(
   comp: Composicao,
-  vigentes: readonly TarifaVigente[],
+  vigentes: readonly Pick<TarifaVigente, "cnpj" | "posicao">[],
   unidade: UnidadeComposicao,
   ordem: "posicao" | GrupoComponenteId = "posicao",
 ): LinhaComposicao[] {
@@ -314,6 +368,86 @@ export function linhasComposicao(
   });
 }
 
+/** Identificador da barra da composição média no gráfico (não é distribuidora: não seleciona). */
+export const ID_MEDIA = "media";
+
+/**
+ * Distribuidoras do gráfico de composição quando ninguém foi escolhido: a de
+ * referência (tarifa mais próxima da mediana, a mesma da evidência), a de menor e a
+ * de maior tarifa do ranking, só as que têm composição publicada.
+ */
+export function idsComposicaoPadrao(comp: Composicao, vigentes: readonly Pick<TarifaVigente, "cnpj" | "posicao">[], referencia: string | null): string[] {
+  const com = new Set(comp.distribuidoras.map((d) => d.cnpj));
+  const ord = [...vigentes].filter((v) => com.has(v.cnpj)).sort((a, b) => a.posicao - b.posicao);
+  const ids = [referencia, ord[0]?.cnpj, ord[ord.length - 1]?.cnpj].filter((x): x is string => !!x && com.has(x));
+  return Array.from(new Set(ids));
+}
+
+/**
+ * Linhas do gráfico de composição: a média (que fecha com o total) e as
+ * distribuidoras pedidas, cada uma igual à sua linha na tabela completa.
+ */
+export function linhasComposicaoGrafico(
+  comp: Composicao,
+  vigentes: readonly Pick<TarifaVigente, "cnpj" | "posicao">[],
+  unidade: UnidadeComposicao,
+  ids: readonly string[],
+): LinhaComposicao[] {
+  const todas = linhasComposicao(comp, vigentes, unidade);
+  const porId = new Map(todas.map((l) => [l.id, l]));
+  const out: LinhaComposicao[] = [];
+  const m = comp.media;
+  if (m) {
+    const l = {
+      id: ID_MEDIA,
+      sigla: `Média de ${m.n}`,
+      posicao: null,
+      total: m.total_rs_mwh,
+      cde: unidade === "rs" ? m.cde_rs_mwh : m.cde_pct,
+    } as LinhaComposicao;
+    for (const g of ORDEM_GRUPOS) l[g] = unidade === "rs" ? m.grupos_rs_mwh[g] : m.grupos_pct[g];
+    out.push(l);
+  }
+  for (const id of ids) {
+    const l = porId.get(id);
+    if (l) out.push(l);
+  }
+  return out;
+}
+
+/** Colunas da tabela de composição (P048), na unidade exibida. */
+export function colunasComposicao(rotulo: ReadonlyMap<string, string>, emPct: boolean): ColunaTabela[] {
+  const tipo: ColunaTabela["tipo"] = emPct ? "percentual" : "numero";
+  const unidade = emPct ? undefined : "R$/MWh";
+  const casas = emPct ? 1 : 2;
+  return [
+    { id: "posicao", rotulo: "Posição no ranking", tipo: "numero", casas: 0 },
+    { id: "sigla", rotulo: "Distribuidora", tipo: "texto" },
+    { id: "id", rotulo: "CNPJ", tipo: "texto" },
+    {
+      id: "total",
+      rotulo: "TE + TUSD",
+      tipo: "numero",
+      unidade: "R$/MWh",
+      casas: 2,
+    },
+    ...ORDEM_GRUPOS.map((g) => ({
+      id: g,
+      rotulo: rotulo.get(g) ?? g,
+      tipo,
+      unidade,
+      casas,
+    })),
+    {
+      id: "cde",
+      rotulo: "Componentes CDE (dentro dos encargos)",
+      tipo,
+      unidade,
+      casas,
+    },
+  ];
+}
+
 export type LinhaGrupo = {
   id: GrupoComponenteId;
   grupo: string;
@@ -326,7 +460,7 @@ export type LinhaGrupo = {
 
 /** Tabela de decomposição: média (fecha com o total), mediana (não fecha) e a distribuidora em destaque. */
 export function linhasGrupos(comp: Composicao, cnpjDestaque: string | null): LinhaGrupo[] {
-  const d = cnpjDestaque ? comp.distribuidoras.find((x) => x.cnpj === cnpjDestaque) ?? null : null;
+  const d = cnpjDestaque ? (comp.distribuidoras.find((x) => x.cnpj === cnpjDestaque) ?? null) : null;
   const rotulo = new Map(comp.grupos.map((g) => [g.id, g.rotulo]));
   return ORDEM_GRUPOS.map((g) => ({
     id: g,
@@ -341,7 +475,12 @@ export function linhasGrupos(comp: Composicao, cnpjDestaque: string | null): Lin
 
 /* ---------- P049: simulador (reaplica a fórmula publicada) ---------- */
 
-export type LinhaMemoria = { rotulo: string; kwh: number; rs_kwh: number; valor: number };
+export type LinhaMemoria = {
+  rotulo: string;
+  kwh: number;
+  rs_kwh: number;
+  valor: number;
+};
 
 export type ResultadoSimulacao =
   | { disponivel: false; motivo: string }
@@ -368,7 +507,11 @@ export function tarifaDaChave(tarifas: TarifasSim, chave: ChaveTarifa): number |
   return te + tusd;
 }
 
-const NOMES_LIGACAO: Record<Ligacao, string> = { monofasico: "monofásica", bifasico: "bifásica", trifasico: "trifásica" };
+const NOMES_LIGACAO: Record<Ligacao, string> = {
+  monofasico: "monofásica",
+  bifasico: "bifásica",
+  trifasico: "trifásica",
+};
 export function nomeLigacao(l: Ligacao): string {
   return NOMES_LIGACAO[l];
 }
@@ -388,7 +531,11 @@ export function simular(
 ): ResultadoSimulacao {
   if (!Number.isFinite(kwh) || kwh < 0) return { disponivel: false, motivo: "consumo inválido" };
   const minimo = regras.custo_disponibilidade_kwh[ligacao];
-  if (minimo === undefined) return { disponivel: false, motivo: `tipo de ligação desconhecido: ${ligacao}` };
+  if (minimo === undefined)
+    return {
+      disponivel: false,
+      motivo: `tipo de ligação desconhecido: ${ligacao}`,
+    };
   const adic = adicionalRsMwh ?? 0;
   const linhas: LinhaMemoria[] = [];
   const obs: string[] = [];
@@ -402,7 +549,11 @@ export function simular(
   const nomeLig = `ligação ${NOMES_LIGACAO[ligacao]}`;
   if (classe === "residencial" || classe === "rural" || classe === "demais") {
     const t = tarifaDaChave(tarifas, classe);
-    if (t === null) return { disponivel: false, motivo: "tarifa da classe não publicada para esta distribuidora na vigência" };
+    if (t === null)
+      return {
+        disponivel: false,
+        motivo: "tarifa da classe não publicada para esta distribuidora na vigência",
+      };
     fat = Math.max(kwh, minimo);
     linha("Energia faturada (TE + TUSD)", fat, t);
     if (fat > kwh) obs.push(`Consumo abaixo do custo de disponibilidade: faturados ${minimo} kWh (${nomeLig}).`);
@@ -410,7 +561,11 @@ export function simular(
   } else if (classe === "desconto_social") {
     const t1 = tarifaDaChave(tarifas, "ds1");
     const t2 = tarifaDaChave(tarifas, "ds2");
-    if (t1 === null || t2 === null) return { disponivel: false, motivo: "tarifas do Desconto Social não publicadas para esta distribuidora na vigência" };
+    if (t1 === null || t2 === null)
+      return {
+        disponivel: false,
+        motivo: "tarifas do Desconto Social não publicadas para esta distribuidora na vigência",
+      };
     const lim = regras.desconto_social_limite_kwh;
     fat = Math.max(kwh, minimo);
     linha(`Faixa 01, até ${lim} kWh, sem quotas da CDE`, Math.min(fat, lim), t1);
@@ -421,7 +576,11 @@ export function simular(
   } else if (classe === "tarifa_social") {
     const t1 = tarifaDaChave(tarifas, "ts1");
     const t2 = tarifaDaChave(tarifas, "ts2");
-    if (t1 === null || t2 === null) return { disponivel: false, motivo: "tarifas da Tarifa Social não publicadas para esta distribuidora na vigência" };
+    if (t1 === null || t2 === null)
+      return {
+        disponivel: false,
+        motivo: "tarifas da Tarifa Social não publicadas para esta distribuidora na vigência",
+      };
     const lim = regras.tarifa_social_limite_kwh;
     const q1 = Math.min(kwh, lim);
     linha(`Faixa 01, até ${lim} kWh`, q1, t1);
@@ -432,12 +591,41 @@ export function simular(
     kwhBandeira = Math.max(kwh - lim, 0);
     if (kwhBandeira < kwh) obs.push("Bandeira aplicada só sobre a parcela acima de 80 kWh (leitura da página oficial da ANEEL).");
   } else {
-    return { disponivel: false, motivo: `classe desconhecida: ${String(classe)}` };
+    return {
+      disponivel: false,
+      motivo: `classe desconhecida: ${String(classe)}`,
+    };
   }
   const energia = linhas.reduce((s, l) => s + l.valor, 0);
   const bandeira = (kwhBandeira * adic) / 1000;
-  return { disponivel: true, motivo: null, linhas, energia, bandeira, kwh_bandeira: kwhBandeira, kwh_faturado: fat, total: energia + bandeira, observacoes: obs };
+  return {
+    disponivel: true,
+    motivo: null,
+    linhas,
+    energia,
+    bandeira,
+    kwh_bandeira: kwhBandeira,
+    kwh_faturado: fat,
+    total: energia + bandeira,
+    observacoes: obs,
+  };
 }
+
+/**
+ * Caso que a evidência "Comprove este número" do simulador prova (tipos-conta:
+ * "caso residencial de 150 kWh na distribuidora de referência com a bandeira do
+ * mês", ligação monofásica). O teste confere que `simular` reproduz o valor da
+ * evidência com estes parâmetros; se o pipeline mudar o caso, o teste falha.
+ */
+export const CASO_EVIDENCIA_SIMULADOR: {
+  classe: ClasseSimuladorId;
+  kwh: number;
+  ligacao: Ligacao;
+} = {
+  classe: "residencial",
+  kwh: 150,
+  ligacao: "monofasico",
+};
 
 /** Curva do custo estimado contra o consumo (0 a `ate` kWh, passo `passo`) para o gráfico do simulador. */
 export function curvaSimulacao(
@@ -452,21 +640,57 @@ export function curvaSimulacao(
   const out: { kwh: string; total: number | null; energia: number | null }[] = [];
   for (let q = 0; q <= ate; q += passo) {
     const r = simular(tarifas, classe, q, ligacao, adicionalRsMwh, regras);
-    out.push({ kwh: String(q), total: r.disponivel ? r.total : null, energia: r.disponivel ? r.energia : null });
+    out.push({
+      kwh: String(q),
+      total: r.disponivel ? r.total : null,
+      energia: r.disponivel ? r.energia : null,
+    });
   }
   return out;
 }
 
 /* ---------- P050: reajustes, bandeiras, subsídios e CDE ---------- */
 
-export type LinhaJanela = { id: string; sigla: string; variacao: number | null; real: number | null };
+/** Colunas da tabela de variação contra o IPCA (P050). */
+export const COLUNAS_JANELA: ColunaTabela[] = [
+  { id: "sigla", rotulo: "Distribuidora", tipo: "texto" },
+  { id: "id", rotulo: "CNPJ", tipo: "texto" },
+  {
+    id: "variacao",
+    rotulo: "Variação da tarifa B1",
+    tipo: "percentual",
+    casas: 2,
+  },
+  {
+    id: "real",
+    rotulo: "Variação real (descontado o IPCA)",
+    tipo: "percentual",
+    casas: 2,
+  },
+];
+
+export type LinhaJanela = {
+  id: string;
+  sigla: string;
+  variacao: number | null;
+  real: number | null;
+};
 
 /** Distribuidoras da janela na ordem publicada (variação crescente). */
 export function linhasJanela(j: JanelaInflacao): LinhaJanela[] {
-  return j.distribuidoras.map(([cnpj, sigla, variacao, real]) => ({ id: cnpj, sigla: rotuloDistribuidora(sigla, cnpj), variacao, real }));
+  return j.distribuidoras.map(([cnpj, sigla, variacao, real]) => ({
+    id: cnpj,
+    sigla: rotuloDistribuidora(sigla, cnpj),
+    variacao,
+    real,
+  }));
 }
 
-export type CelulaBandeira = { mes: string; bandeira: string | null; rs_mwh: number | null } | null;
+export type CelulaBandeira = {
+  mes: string;
+  bandeira: string | null;
+  rs_mwh: number | null;
+} | null;
 
 /** Grade ano × mês do acionamento publicado; mês não publicado fica null (nunca preenchido). */
 export function gradeBandeiras(acionamento: Bandeiras["acionamento"]): { ano: string; meses: CelulaBandeira[] }[] {
@@ -488,7 +712,9 @@ const emBilhoes = (v: number | null | undefined): number | null => (v === null |
 /** Categorias na ordem de exibição: a do dicionário publicado na gold. */
 export function categoriasSubsidio(s: Subsidios): string[] {
   const doDicionario = s.categorias.map((c) => c.categoria);
-  const extras = Array.from(new Set(s.anual.flatMap((a) => Object.keys(a.categorias)))).filter((c) => !doDicionario.includes(c)).sort();
+  const extras = Array.from(new Set(s.anual.flatMap((a) => Object.keys(a.categorias))))
+    .filter((c) => !doDicionario.includes(c))
+    .sort();
   return [...doDicionario, ...extras];
 }
 
@@ -528,8 +754,16 @@ export function linhasCde(f: FinanciamentoCde): Record<string, string | number |
 
 /* ---------- respostas curtas (regras determinísticas) ---------- */
 
-const rsKwh = (rsMwh: number | null | undefined, casas = 4) =>
-  rsMwh === null || rsMwh === undefined || !Number.isFinite(rsMwh) ? AUSENTE : `${reais(rsMwh / 1000, casas)}/kWh`;
+const rsKwh = (rsMwh: number | null | undefined, casas = 4) => (rsMwh === null || rsMwh === undefined || !Number.isFinite(rsMwh) ? AUSENTE : `${reais(rsMwh / 1000, casas)}/kWh`);
+
+/**
+ * Minúscula para usar um rótulo no meio da frase sem estragar siglas: só a palavra
+ * escrita como nome próprio ("Vermelha", "Residencial") vira minúscula; sigla e
+ * código ("P1", "B1", "B", "CDE") ficam como estão.
+ */
+export function minuscula(s: string): string {
+  return s.replace(/[A-Za-zÀ-ÖØ-öø-ÿ]+/g, (w) => (/^[A-ZÀ-ÖØ-Þ][a-zß-öø-ÿ]+$/.test(w) ? w.toLowerCase() : w));
+}
 
 /** Variação com verbo: "subiu 11,18%", "caiu 2,10%", "ficou estável (0,00%)". */
 export function verboVariacao(v: number | null | undefined, casas = 2): string {
@@ -568,14 +802,12 @@ export function respostaHistorico(sigla: string, eventos: readonly EventoB1[], v
 export function respostaComposicao(comp: Composicao): string {
   const m = comp.media;
   if (!m || m.total_rs_mwh === null) return "Sem composição publicada na data: o conjunto de componentes não cobre as tarifas vigentes.";
-  const rot = new Map(comp.grupos.map((g) => [g.id, g.rotulo.toLowerCase()]));
+  const rot = new Map(comp.grupos.map((g) => [g.id, minuscula(g.rotulo)]));
   const positivos = ORDEM_GRUPOS.filter((g) => (m.grupos_pct[g] ?? 0) > 0).sort((a, b) => (m.grupos_pct[b] ?? 0) - (m.grupos_pct[a] ?? 0));
   const negativos = ORDEM_GRUPOS.filter((g) => (m.grupos_pct[g] ?? 0) < 0);
   const partes = positivos.map((g) => `${rot.get(g)} ${pct(m.grupos_pct[g], 1)}`);
-  const lista = partes.length > 1 ? `${partes.slice(0, -1).join(", ")} e ${partes[partes.length - 1]}` : partes[0] ?? "";
-  const reduz = negativos.length
-    ? ` Itens com valor negativo reduzem a tarifa: ${negativos.map((g) => `${rot.get(g)} ${pct(m.grupos_pct[g], 1)}`).join(" e ")}.`
-    : "";
+  const lista = partes.length > 1 ? `${partes.slice(0, -1).join(", ")} e ${partes[partes.length - 1]}` : (partes[0] ?? "");
+  const reduz = negativos.length ? ` Itens com valor negativo reduzem a tarifa: ${negativos.map((g) => `${rot.get(g)} ${pct(m.grupos_pct[g], 1)}`).join(" e ")}.` : "";
   const cde = m.cde_pct !== null ? ` As componentes CDE somam ${pct(m.cde_pct, 1)} da tarifa e já estão dentro dos encargos.` : "";
   return `Na média simples das ${m.n} distribuidoras com componentes publicadas (tarifa média de ${reais(m.total_rs_mwh / 1000, 4)}/kWh), a tarifa B1 se divide em ${lista}.${reduz}${cde}`;
 }
@@ -583,15 +815,20 @@ export function respostaComposicao(comp: Composicao): string {
 /** P049: o resultado da simulação em uma frase, sempre com o rótulo de estimativa. */
 export function respostaSimulacao(r: ResultadoSimulacao, sigla: string, rotuloClasse: string, kwh: number, bandeira: string, rotuloEstimativa: string): string {
   if (!r.disponivel) return `Simulação indisponível para ${sigla} (${rotuloClasse}): ${r.motivo}.`;
-  const band = r.bandeira > 0 ? `, dos quais ${reais(r.bandeira)} de bandeira ${bandeira.toLowerCase()} sobre ${num(r.kwh_bandeira, 0)} kWh` : `, sem acréscimo de bandeira (${bandeira.toLowerCase()})`;
-  return `Para ${num(kwh, 0)} kWh no mês na ${sigla}, classe ${rotuloClasse.toLowerCase()}, a estimativa é de ${reais(r.total)}${band}. ${rotuloEstimativa}`;
+  const band =
+    r.bandeira > 0
+      ? `, dos quais ${reais(r.bandeira)} de bandeira ${minuscula(bandeira)} sobre ${num(r.kwh_bandeira, 0)} kWh`
+      : `, sem acréscimo de bandeira (${minuscula(bandeira)})`;
+  return `Para ${num(kwh, 0)} kWh no mês na ${sigla}, classe ${minuscula(rotuloClasse)}, a estimativa é de ${reais(r.total)}${band}. ${rotuloEstimativa}`;
 }
 
 /** P050: variação da tarifa B1 na janela contra o IPCA do mesmo período. */
 export function respostaReajustes(j: JanelaInflacao): string {
   if (j.mediana_pct === null || j.ipca_pct === null) return `Sem comparação com o IPCA na janela de ${j.meses} meses: falta índice ou tarifa nas duas datas.`;
   const fora = j.excluidas_sem_tarifa_nas_duas_datas + j.excluidas_mudanca_perimetro.length;
-  const foraTxt = fora ? ` Ficam fora ${fora} distribuidoras (sem tarifa numa das datas ou com área alterada por incorporação).` : "";
+  const foraTxt = fora
+    ? ` ${fora === 1 ? "Fica fora 1 distribuidora" : `Ficam fora ${fora} distribuidoras`} (sem tarifa numa das datas ou com área alterada por incorporação).`
+    : "";
   return (
     `De ${dataBR(j.de)} a ${dataBR(j.ate)} (${j.meses} meses), a tarifa B1 residencial ${verboVariacao(j.mediana_pct)} na mediana de ${j.n} distribuidoras, ` +
     `contra IPCA de ${pct(j.ipca_pct, 2)}: ${j.acima_ipca} ficaram acima da inflação e ${j.abaixo_ou_igual_ipca} abaixo ou igual.${foraTxt}`
@@ -604,18 +841,22 @@ export function respostaBandeira(b: Bandeiras): string {
   const publicados = b.acionamento.filter((a) => a.bandeira !== null);
   const comAcrescimo = publicados.filter((a) => a.bandeira !== "Verde").length;
   const inicio = b.acionamento[0]?.m;
-  const historico = inicio ? ` De ${mesAno(`${inicio}-01`)} a ${mesAno(`${b.acionamento[b.acionamento.length - 1].m}-01`)}, ${comAcrescimo} dos ${publicados.length} meses publicados tiveram bandeira diferente da verde.` : "";
+  const historico = inicio
+    ? ` De ${mesAno(`${inicio}-01`)} a ${mesAno(`${b.acionamento[b.acionamento.length - 1].m}-01`)}, ${comAcrescimo} dos ${publicados.length} meses publicados tiveram bandeira diferente da verde.`
+    : "";
   if (!v || !v.bandeira) return `O conjunto de bandeiras não traz acionamento publicado.${historico}`;
   const valor = v.bandeira === "Verde" ? "sem acréscimo" : `acréscimo de ${rsKwh(v.rs_mwh, 5)} consumido`;
   const aviso = v.aviso ? ` ${v.aviso}` : "";
-  return `A bandeira de ${mesAno(`${v.mes}-01`)} é ${v.bandeira.toLowerCase()}: ${valor}, fora dos sistemas isolados.${historico}${aviso}`;
+  return `A bandeira de ${mesAno(`${v.mes}-01`)} é ${minuscula(v.bandeira)}: ${valor}, fora dos sistemas isolados.${historico}${aviso}`;
 }
 
 /** P050: subsídios do último ano completo e a maior categoria. */
 export function respostaSubsidios(s: Subsidios): string {
   const ano = s.anual.find((a) => a.ano === s.ultimo_ano_completo);
   if (!ano || ano.soma_categorias === null) return "Sem ano completo de subsídios tarifários publicado.";
-  const cats = Object.entries(ano.categorias).filter((e): e is [string, number] => e[1] !== null).sort((a, b) => b[1] - a[1]);
+  const cats = Object.entries(ano.categorias)
+    .filter((e): e is [string, number] => e[1] !== null)
+    .sort((a, b) => b[1] - a[1]);
   const maior = cats[0];
   const maiorTxt = maior ? `; a maior categoria foi ${maior[0]} (${reais(maior[1] / BI, 2)} bilhões)` : "";
   return `Em ${ano.ano}, os repasses homologados da CDE às distribuidoras para cobrir descontos a categorias de usuários somaram ${reais(ano.soma_categorias / BI, 2)} bilhões${maiorTxt}. Não são transferências a famílias.`;
@@ -635,4 +876,55 @@ export function respostaCde(f: FinanciamentoCde | null): string {
 /** Mesmo texto para o leitor de tela e para o rótulo do período no painel. */
 export function periodoReferencia(g: Pick<ContaGold, "data_referencia" | "gerado_pela_fonte_em">): string {
   return `vigente em ${dataBR(g.data_referencia)} (arquivo gerado pela ANEEL em ${dataBR(g.gerado_pela_fonte_em)})`;
+}
+
+/**
+ * P047, "o que mudou": a mediana da data contra a do dia 1º do último mês da
+ * evolução, com o motivo da diferença de cobertura (distribuidoras fora do ranking).
+ */
+export function mudancaTarifa(dataReferencia: string, resumo: ResumoTarifas, evolucao: readonly LinhaEvolucao[]): string {
+  const ult = [...evolucao].reverse().find((p) => p.mediana !== null);
+  const hoje = `Em ${dataBR(dataReferencia)}, a mediana é ${num(resumo.mediana, 2)} R$/MWh entre ${resumo.n} distribuidoras com tarifa vigente.`;
+  const antes = ult ? ` No dia 1º de ${mesAno(`${ult.m}-01`)}, era ${num(ult.mediana, 2)} R$/MWh entre ${ult.n}.` : "";
+  const fora = resumo.fora_vigencia_recente + resumo.fora_sem_tarifa_ha_mais_de_90_dias;
+  const motivo = fora
+    ? ` Ficam fora do ranking ${resumo.fora_vigencia_recente} com a vigência encerrada há até 90 dias (a tarifa seguinte ainda não está no arquivo) e ${resumo.fora_sem_tarifa_ha_mais_de_90_dias} sem tarifa há mais de 90 dias; por isso as duas medianas não comparam o mesmo conjunto.`
+    : "";
+  return `${hoje}${antes}${motivo}`;
+}
+
+/** P050, "o que mudou" nos subsídios: categoria com a maior variação absoluta entre os dois últimos anos completos. */
+export function mudancaSubsidios(s: Subsidios): string {
+  const completos = s.anual.filter((a) => !a.parcial);
+  if (completos.length < 2) return "Menos de dois anos completos publicados: sem comparação anual.";
+  const [a0, a1] = completos.slice(-2);
+  let maior: { cat: string; de: number; para: number } | null = null;
+  for (const cat of categoriasSubsidio(s)) {
+    const de = a0.categorias[cat];
+    const para = a1.categorias[cat];
+    if (de === null || de === undefined || para === null || para === undefined) continue;
+    if (!maior || Math.abs(para - de) > Math.abs(maior.para - maior.de)) maior = { cat, de, para };
+  }
+  const total =
+    a0.soma_categorias !== null && a1.soma_categorias !== null
+      ? ` O total passou de ${reais(a0.soma_categorias / BI, 2)} bilhões para ${reais(a1.soma_categorias / BI, 2)} bilhões.`
+      : "";
+  if (!maior) return `Sem categoria com valor nos dois anos (${a0.ano} e ${a1.ano}).${total}`;
+  return `De ${a0.ano} para ${a1.ano}, a maior mudança foi em ${maior.cat}: de ${reais(maior.de / BI, 2)} bilhões para ${reais(maior.para / BI, 2)} bilhões.${total}`;
+}
+
+/**
+ * P048, "o que mudou": distribuidoras com valor negativo em componente de custo
+ * (lido como crédito) na vigência atual, contra a faixa histórica do código.
+ */
+export function mudancaComposicao(comp: Composicao): string {
+  const cr = comp.creditos;
+  const valores = cr.distribuidoras.map((d) => d.valor).filter((v): v is number => v !== null && Number.isFinite(v));
+  if (!cr.distribuidoras.length) return "Nenhum valor negativo em componente de custo na vigência atual.";
+  const faixa = cr.faixa_historica;
+  const historico = faixa
+    ? `, quando a faixa histórica do código, em ${faixa.n} vigências iniciadas até ${dataBR(faixa.vigencias_iniciadas_ate)}, ia de ${num(faixa.minimo, 2)} a ${num(faixa.maximo, 2)} R$/MWh`
+    : "";
+  const intervalo = valores.length ? ` (de ${num(Math.min(...valores), 2)} a ${num(Math.max(...valores), 2)} R$/MWh)` : "";
+  return `${cr.distribuidoras.length} distribuidoras têm valor negativo em ${cr.codigos.join(", ")} na vigência atual${intervalo}${historico}. O valor fica no grupo créditos: ${cr.leitura}.`;
 }

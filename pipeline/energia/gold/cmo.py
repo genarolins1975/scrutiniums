@@ -1,9 +1,12 @@
 """Gold do CMO semanal (ONS, estimado pelo modelo DECOMP).
 
-O CMO é publicado pelo ONS por semana operativa, subsistema e patamar de carga.
-Para a Scrutiniums é OBSERVADO (valor oficial), com a nota de que é saída de modelo
-da própria fonte. CMO não é PLD: o PLD aplica limites regulatórios e é calculado
-pela CCEE em base horária (DESSEM); a comparação exibida é descritiva.
+O CMO é publicado pelo ONS por semana operativa, subsistema e patamar de carga. A
+natureza é ESTIMADO (estimado pela fonte, seção 11.3 da especificação): é resultado do
+modelo DECOMP, calculado na elaboração do PMO e de suas revisões semanais, e semanas
+futuras já aparecem publicadas. Valor oficial não é o mesmo que valor observado. CMO não
+é PLD: o PLD aplica limites regulatórios e é calculado pela CCEE em base horária; a
+comparação exibida é descritiva. A mesma natureza está no catálogo de métricas
+(pipeline/energia/metricas/pld.py) e na gold pld_detalhe.json.
 """
 import os
 import sys
@@ -57,7 +60,7 @@ def construir(con):
                       for k in semanas])
     meta = c.meta_ons(DS)
     prov = c.proveniencia(
-        indicador="Custo Marginal de Operação semanal por subsistema", natureza="OBSERVADO",
+        indicador="Custo Marginal de Operação semanal por subsistema", natureza="ESTIMADO",
         fonte=c.fonte_ons("cmo-semanal", DS, "CMO Semanal"),
         unidade="R$/MWh", frequencia="semana operativa", periodo={"inicio": semanas[0], "fim": ultima},
         cobertura={"inicio": semanas[0], "fim": ultima}, capturado_em=c.ultima_captura(snap), snapshot=snap,

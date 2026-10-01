@@ -17,7 +17,7 @@ ESTIMADA por reanálise. A agregação espacial é explícita:
 - chuva: média, ponderada pela área (cosseno da latitude), de pontos numa grade
   regular dentro de cada polígono de bacia do ONS (Contornos das Bacias
   Hidrográficas); grade de 1°, adensada para 0,5° ou 0,25° em bacias pequenas até
-  haver ao menos MIN_PONTOS pontos;
+  haver ao menos MIN_PONTOS pontos (0,1°, a resolução do IMERG, no limite);
 - temperatura: por unidade da federação, média das células MERRA-2 mais populosas
   (sedes municipais do IBGE, população do Censo 2022) até cobrir metade da população
   do estado; por subsistema, média dos estados ponderada pela população.
@@ -45,7 +45,7 @@ PRECIP_INICIO = "2001-01-01"   # início do IMERG no POWER
 TEMP_INICIO = "2001-01-01"     # mesmo início, para anomalias com a mesma base
 FILL = -999.0
 MIN_PONTOS = 5
-PASSOS = (1.0, 0.5, 0.25)
+PASSOS = (1.0, 0.5, 0.25, 0.1)  # 0,1° = resolução nativa do IMERG
 # MERRA-2: grade de 0,5° em latitude por 0,625° em longitude (centros em múltiplos)
 MERRA_DLAT, MERRA_DLON = 0.5, 0.625
 COBERTURA_UF = 0.5

@@ -106,6 +106,9 @@ export type MesCde = {
   distribuidoras: number | null;
   /** % das UC do SCS de referência em distribuidoras presentes no arquivo. */
   cobertura_scs_pct: number | null;
+  /** Distribuidoras do SCS de referência sem fatura no arquivo, com as UC que tinham no SCS (maiores primeiro). */
+  distribuidoras_ausentes: { cnpj: string; sigla: string | null; uc_scs_referencia: number }[];
+  /** Cobertura de pelo menos 99,5%: mês comparável na série nacional e por UF. */
   completo: boolean;
   original_no_bronze: boolean;
   uso: string[];
@@ -261,6 +264,25 @@ export type RegraElegibilidade = {
   por_que_proxy: string[];
 };
 
+/** Numerador do SCS (meses completos) contra o total nacional do Cadastro Único (PROXY). */
+export type PontoCoberturaMensal = {
+  m: string;
+  uc_tsee: number;
+  familias_atualizadas: number | null;
+  familias_cadastradas: number | null;
+  razao_atualizadas_pct: number | null;
+  razao_cadastradas_pct: number | null;
+};
+
+/** JSON sob demanda `serie_mensal_json`. */
+export type SerieCoberturaMensal = {
+  gerado_em: string;
+  natureza_da_medida: "PROXY";
+  unidade: string;
+  campos: string[];
+  serie: PontoCoberturaMensal[];
+};
+
 export type CoberturaUf = {
   uf: string;
   nome: string;
@@ -300,15 +322,11 @@ export type Cobertura = {
     sem_fatura_no_arquivo: number;
     faturas_sem_cadastro_mds: number;
   } | null;
-  /** Numerador do SCS (meses completos) contra o total nacional do Cadastro Único. */
-  serie_mensal: {
-    m: string;
-    uc_tsee: number;
-    familias_atualizadas: number | null;
-    familias_cadastradas: number | null;
-    razao_atualizadas_pct: number | null;
-    razao_cadastradas_pct: number | null;
-  }[];
+  /** Endereço do JSON (SerieCoberturaMensal) com a série mensal nacional, lido sob demanda. */
+  serie_mensal_json: string;
+  /** Último ponto da série e número de meses, para o texto do painel sem carregar o JSON. */
+  serie_mensal_ultimo: PontoCoberturaMensal | null;
+  serie_mensal_meses: number;
   faixa_de_sensibilidade: string;
   proveniencia: { cobertura: Proveniencia };
 };
@@ -474,6 +492,8 @@ export type SistemasIsolados = {
   /** Todas as localidades do ciclo, sob demanda: { ciclo, campos, localidades: listas na ordem de `campos` }. */
   pontos_json: string;
   conferencia_pdf: ConferenciaCaderno | null;
+  /** "Comprove este número" da população do ciclo mais recente (soma das informadas; reconciliada com o caderno em PDF). */
+  evidencia_populacao: Evidencia | null;
   proveniencia: Proveniencia;
 };
 

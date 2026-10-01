@@ -24,7 +24,11 @@ export type ParcialAno = {
   ano: number;
   /** AAAA-MM do último mês nacional completo do ano corrente. */
   ate_mes: string;
+  /** Meses somados: só os nacionais completos no ano corrente e no anterior. */
   meses: number;
+  meses_incluidos: string[];
+  /** Mês parcial não entra em comparação; fica listado com o motivo. */
+  meses_excluidos: { m: string; motivo: string }[];
   dec: number | null;
   fec: number | null;
   dec_mesmos_meses_ano_anterior: number | null;
@@ -52,6 +56,12 @@ export type BrasilAnual = {
   parcelas_fec: Parcelas | null;
   ucs_media: number | null;
   conjuntos: number;
+  /** Só concessionárias: o universo do número nacional que a ANEEL divulga. null em ano
+   * incompleto ou quando alguma distribuidora do ano não tem classificação publicada. */
+  dec_concessionarias: number | null;
+  fec_concessionarias: number | null;
+  concessionarias: number | null;
+  sem_classificacao: number;
 };
 
 export type BrasilMensal = {
@@ -78,6 +88,39 @@ export type SerieDistribuidora = {
   fec: (number | null)[];
   dec_limite: (number | null)[];
   fec_limite: (number | null)[];
+};
+
+/** Incorporação ou cessão de área detectada (variação de UCs com continuidade territorial). */
+export type QuebraPerimetro = {
+  ano: number;
+  conjuntos_antes: number;
+  conjuntos_depois: number;
+  ucs_antes: number | null;
+  ucs_depois: number | null;
+  variacao_ucs_pct: number | null;
+  outras: {
+    cnpj: string;
+    sigla: string | null;
+    /** origem: distribuidora que perdeu a área; destino: a que recebeu. */
+    papel: "origem" | "destino";
+    municipios_em_comum: number;
+    ucs_ano_anterior: number | null;
+    ucs_no_ano: number | null;
+  }[];
+};
+
+/** Resumo anual do atendimento telefônico (só as 40 distribuidoras obrigadas). */
+export type TelefonicoDistribuidora = {
+  ano: number;
+  meses: number;
+  meses_ins_ok: number;
+  meses_iab_ok: number;
+  meses_ico_ok: number;
+  ins_min_pct: number | null;
+  /** Σ ocupadas ÷ Σ oferecidas no ano (só com 12 meses). */
+  ico_anual_pct: number | null;
+  chamadas_oferecidas: number | null;
+  oferecidas_por_mil_uc: number | null;
 };
 
 export type CompensacaoDistribuidora = {
@@ -154,7 +197,10 @@ export type Distribuidora = {
   tmae_min: number | null;
   /** null quando a base de eventos não foi integrada; 0 = nenhum evento publicado. */
   eventos_emergencia_2026: number | null;
-  serie: SerieDistribuidora;
+  /** null = distribuidora não obrigada a publicar (até 60 mil UCs). */
+  telefonico: TelefonicoDistribuidora | null;
+  /** Quebras de perímetro nos anos da série (a série fica em qualidade_distribuidoras_serie.json). */
+  quebras_perimetro: QuebraPerimetro[];
 };
 
 export type Quantis = {
@@ -213,6 +259,8 @@ export type Conjuntos = {
   com_limite: number;
   acima_limite_dec: number;
   acima_limite_fec: number;
+  /** DEC anual igual ao limite em centésimos (não é transgressão). */
+  iguais_limite_dec: number;
   acima_algum_limite: number;
   pct_acima_limite_dec: number | null;
   ucs_com_limite: number | null;
@@ -236,9 +284,21 @@ export type CompensacaoAnual = {
   completo: boolean;
   valor: number | null;
   quantidade: number | null;
+  /** Unidades consumidoras: o universo do total que a ANEEL divulga. */
+  valor_uc: number | null;
+  quantidade_uc: number | null;
   /** null nos anos sem nenhuma linha de unidade geradora na fonte (antes de 2018). */
   valor_ug: number | null;
+  quantidade_ug: number | null;
   valor_por_uc: number | null;
+  /** Total divulgado pela ANEEL (só UC) e se valor_uc e quantidade_uc ficam dentro da precisão
+   * divulgada (R$ 0,5 milhão; 50 mil); null sem divulgação lida para o ano. */
+  divulgado_aneel: {
+    valor: number | null;
+    quantidade: number | null;
+    dentro_da_precisao_valor: boolean | null;
+    dentro_da_precisao_quantidade: boolean | null;
+  } | null;
   por_tipo: Partial<Record<TipoCompensacao, { valor: number | null; quantidade: number | null }>>;
 };
 
@@ -283,6 +343,8 @@ export type TaxaNacional = {
   distribuidoras_sem_12_meses: number;
   /** Lista das distribuidoras fora (vazia em ano parcial). */
   fora_meses_incompletos: { cnpj: string; sigla: string | null; meses: number }[];
+  /** Motivo quando nenhuma distribuidora entra no universo (total, UCs e taxa null, nunca zero). */
+  motivo_ausencia: string | null;
 };
 
 export type ReclamacoesNacional = TaxaNacional & {
@@ -326,7 +388,37 @@ export type Atendimento = {
   };
   reclamacoes_distribuidora: ReclamacoesNacional[];
   ouvidoria_aneel: OuvidoriaNacional[];
-  tmae: { ano: number; distribuidoras: number; ocorrencias: number | null; tmae_min: number | null }[];
+  tmae: {
+    ano: number;
+    distribuidoras: number;
+    ocorrencias: number | null;
+    tmae_min: number | null;
+    meses: number;
+    /** false no ano corrente: média dos meses publicados, não ano cheio. */
+    completo: boolean;
+    periodo: { inicio: string; fim: string } | null;
+  }[];
+  telefonico: {
+    padroes: { ins_min_pct: number; iab_max_pct: number; ico_max_pct: number };
+    anual: {
+      ano: number;
+      completo: boolean;
+      meses: number;
+      distribuidoras: number;
+      distribuidora_meses: number;
+      /** % dos distribuidora-meses dentro do padrão (INS e IAb não se agregam: numeradores não publicados). */
+      pct_meses_ins_ok: number | null;
+      pct_meses_iab_ok: number | null;
+      pct_meses_ico_ok: number | null;
+      /** Σ ocupadas ÷ Σ oferecidas. */
+      ico_pct: number | null;
+      chamadas_oferecidas: number | null;
+      chamadas_atendidas: number | null;
+      chamadas_abandonadas: number | null;
+      /** UCs das obrigadas ÷ UCs de todas as distribuidoras (ano completo). */
+      cobertura_ucs: number | null;
+    }[];
+  };
   eventos_emergencia: {
     /** Eventos distintos (CNPJ, código). */
     total: number;
@@ -351,17 +443,52 @@ export type Atendimento = {
   }[];
 };
 
-/** Relação do município com os conjuntos ATIVOS no ano de referência (com DEC publicado). */
-export type RelacaoMunicipio = "conjunto_exclusivo" | "conjunto_compartilhado" | "varios_conjuntos" | "sem_conjunto_ativo";
+/** Relação do município com os conjuntos ATIVOS no ano de referência (com DEC publicado).
+ * sem_relacao_na_fonte: município do IBGE que a base da ANEEL não cita. codigo_sem_ibge (só no
+ * CSV e em mapa.por_relacao): código da base da ANEEL que não existe no cadastro do IBGE. */
+export type RelacaoMunicipio =
+  | "conjunto_exclusivo"
+  | "conjunto_compartilhado"
+  | "varios_conjuntos"
+  | "sem_conjunto_ativo"
+  | "sem_relacao_na_fonte";
+
+export type CodigoSemIbge = {
+  codigo: string;
+  conjuntos: number[];
+  conjuntos_ativos: number;
+  dec_min: number | null;
+  dec_max: number | null;
+  municipios_ibge_nos_mesmos_conjuntos: number;
+  exemplos_municipios: string[];
+};
 
 export type MapaResumo = {
   ano: number;
   municipios_com_relacao: number;
   municipios_com_valor: number;
-  por_relacao: Partial<Record<RelacaoMunicipio, number>>;
+  por_relacao: Partial<Record<RelacaoMunicipio | "codigo_sem_ibge", number>>;
   /** URL do JSON com as linhas por município (/energia/series/qualidade_mapa.json), lido sob demanda. */
   arquivo: string;
+  /** Correspondência dos códigos com o cadastro do IBGE e com a malha (null = não conferido). */
+  correspondencia: {
+    cadastro_ibge: number | null;
+    codigos_na_fonte: number;
+    codigos_sem_ibge: CodigoSemIbge[];
+    ibge_sem_relacao: { codigo: string; nome: string | null; uf: string | null }[];
+    ibge_fora_da_malha: string[] | null;
+    malha_fora_do_ibge: string[] | null;
+  };
   regra: string;
+};
+
+/** Controle físico, de domínio, de identidade ou de correspondência executado na construção. */
+export type ValidacaoQualidade = {
+  nome: string;
+  resultado: "aprovado" | "ressalva" | "reprovado";
+  /** Reprovação crítica derruba a publicação (a sentinela mantém a anterior). */
+  critico: boolean;
+  detalhe: string;
 };
 
 export type ReconciliacaoDgcAno = {
@@ -400,13 +527,22 @@ export type QualidadeGold = Cabecalho & {
   ultimo_mes_completo: string;
   parcial: ParcialAno | null;
   unidades: { dec: string; fec: string; tmae: string; compensacao: string; iasc: string };
-  regras: Record<"agregacao" | "limite" | "apurado" | "centesimos" | "compensacao" | "parcial", string>;
+  regras: Record<
+    "agregacao" | "limite" | "apurado" | "centesimos" | "compensacao" | "parcial" | "universo" | "numcon" | "limite_centesimos",
+    string
+  >;
   parcelas: {
     rotulos: Record<GrupoParcela, string>;
     definicao: Record<string, string>;
     grupos: Record<GrupoParcela, string[]>;
   };
-  brasil: { anual: BrasilAnual[]; mensal: BrasilMensal[]; identidade_apurado: IdentidadeApurado[] };
+  brasil: {
+    anual: BrasilAnual[];
+    mensal: BrasilMensal[];
+    identidade_apurado: IdentidadeApurado[];
+    /** Rótulo dos dois universos do Brasil (o principal inclui as permissionárias). */
+    universo: { principal: string; concessionarias: string };
+  };
   distribuidoras: Distribuidora[];
   conjuntos: Conjuntos;
   compensacoes: Compensacoes;
@@ -415,6 +551,8 @@ export type QualidadeGold = Cabecalho & {
   reconciliacao: { dgc: ReconciliacaoDgcAno[] };
   /** Resultado da importação de cada arquivo vigente (modo Auditar). */
   controles: ControleImportacao[];
+  /** Controles executados nesta construção (seção 5.2 do contrato e 11.7 da especificação). */
+  validacao: ValidacaoQualidade[];
   /** "Comprove este número" (pipeline/energia/evidencia.py). Uma chave some quando o número não
    * existe no ano de referência (ex.: taxa nacional de ano incompleto). */
   evidencias: Partial<
@@ -438,6 +576,7 @@ export type QualidadeGold = Cabecalho & {
     | "ouvidoria_aneel"
     | "atendimento_emergencial"
     | "eventos"
+    | "telefonico"
     | "mapa"
     | "ranking",
     Proveniencia
@@ -451,13 +590,27 @@ export type QualidadeGold = Cabecalho & {
  * dec_max, fec_min, fec_max]. Os valores são dos conjuntos inteiros que atendem o município
  * (IndQual Município, conjuntos com DEC no ano): nunca um DEC medido no município.
  */
-export type LinhaMapaQualidade = [string, 0 | 1 | 2 | 3, number, number | null, number | null, number | null, number | null];
+export type LinhaMapaQualidade = [string, 0 | 1 | 2 | 3 | 4, number, number | null, number | null, number | null, number | null];
 
 export type QualidadeMapaGold = Cabecalho & {
   ano: number;
   colunas: ["cod_ibge", "relacao", "n_conjuntos", "dec_min", "dec_max", "fec_min", "fec_max"];
-  relacoes: [RelacaoMunicipio, RelacaoMunicipio, RelacaoMunicipio, RelacaoMunicipio];
+  relacoes: [RelacaoMunicipio, RelacaoMunicipio, RelacaoMunicipio, RelacaoMunicipio, RelacaoMunicipio];
+  /** Uma linha por município do cadastro do IBGE. */
   linhas: LinhaMapaQualidade[];
+  /** Códigos da base da ANEEL fora do cadastro do IBGE: não vão ao mapa. */
+  codigos_sem_ibge: CodigoSemIbge[];
+};
+
+/**
+ * Séries anuais por distribuidora (public/energia/series/qualidade_distribuidoras_serie.json),
+ * compacto e lido sob demanda pelos pequenos múltiplos.
+ */
+export type QualidadeSeriesDistribuidorasGold = Cabecalho & {
+  ano_referencia: number;
+  anos_na_serie: number;
+  unidades: QualidadeGold["unidades"];
+  distribuidoras: Record<string, SerieDistribuidora & { quebras: number[] }>;
 };
 
 /** Natureza declarada de cada bloco (conferida com a proveniência na gold). */
@@ -470,7 +623,8 @@ export const NATUREZA_BLOCO: Record<keyof QualidadeGold["proveniencia"], Naturez
   reclamacoes: "CALCULADO",
   ouvidoria_aneel: "CALCULADO",
   atendimento_emergencial: "CALCULADO",
-  eventos: "OBSERVADO",
+  eventos: "CALCULADO",
+  telefonico: "CALCULADO",
   mapa: "CALCULADO",
   ranking: "OBSERVADO",
 };

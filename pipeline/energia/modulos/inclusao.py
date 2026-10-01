@@ -230,7 +230,8 @@ REGISTRO = {
             "média das participações na renda sem as famílias com energia acima da renda, número e peso % dessas famílias, "
             "soma das 3 maiores parcelas da média em ponto percentual). Valores em R$ de 15/01/2018 ou %."),
         "/energia/series/inclusao_acesso_pnad.csv": (
-            "territorio; ano; situacao (total, urbana, rural); pct_com_energia; cv_pct_com_energia; pct_rede_geral; cv_pct_rede_geral; "
+            "territorio; ano; situacao (total, urbana, rural); pct_com_energia; cv_pct_com_energia; pct_sem_energia (100 menos pct_com_energia, "
+            "uma casa, como na gold; 0,0 quer dizer menos de 0,05%); pct_rede_geral; cv_pct_rede_geral; "
             "pct_integral_entre_rede (percentual dos domicílios ligados à rede geral com fornecimento em tempo integral); cv_pct_integral; "
             "domicilios_mil; domicilios_com_energia_mil; domicilios_sem_energia_mil (diferença calculada; vazio com estado menos_de_1_mil "
             "quando as duas estimativas arredondadas em milhares coincidem); domicilios_sem_energia_estado (calculado, menos_de_1_mil, ausente). Vazio = ausência."),
@@ -242,6 +243,10 @@ REGISTRO = {
             "JSON lido sob demanda pela página: {gerado_em, fonte, unidades, meses, ufs, completo, faturas_tsee, desconto_faturas_reais}; "
             "faturas_tsee e desconto_faturas_reais são listas por UF (ordem de ufs) com um valor por mês (ordem de meses); null = UF sem "
             "fatura no mês. Mesmos números de inclusao_cde_mensal_uf.csv."),
+        "/energia/series/inclusao_cobertura_mensal.json": (
+            "JSON lido sob demanda pela página: {gerado_em, natureza_da_medida, unidade, campos, serie}; serie é a lista de "
+            "{m, uc_tsee, familias_atualizadas, familias_cadastradas, razao_atualizadas_pct, razao_cadastradas_pct}, os mesmos "
+            "números de inclusao_cobertura_mensal.csv. PROXY. null = ausência."),
         "/energia/series/inclusao_sistemas_isolados_pontos.json": (
             "JSON para o mapa, lido sob demanda: {ciclo, gerado_em, fonte, campos, localidades}; cada localidade é uma lista na ordem "
             "de campos (sigla, nome, uf, municipio, distribuidora, populacao em pessoas, previsao_interligacao, programa, latitude, longitude). "
@@ -1142,6 +1147,7 @@ def _rotulo_csv(u):
         "/energia/series/inclusao_cde_mensal_uf.csv": "Tarifa Social: faturas e desconto por mês e UF (Beneficiários da CDE)",
         "/energia/series/inclusao_cde_mensal_uf.json": "Tarifa Social: faturas e desconto por mês e UF (JSON do gráfico)",
         "/energia/series/inclusao_cobertura_mensal.csv": "Cobertura potencial nacional por mês (proxy)",
+        "/energia/series/inclusao_cobertura_mensal.json": "Cobertura potencial nacional por mês (JSON do gráfico, proxy)",
         "/energia/series/inclusao_tsee_antiga.csv": "Série antiga da ANEEL por região (descontinuada)",
         "/energia/series/inclusao_cde_custeio.csv": "CDE: custeio anual por rubrica",
         "/energia/series/inclusao_pof.csv": "POF 2017-2018: energia no orçamento das famílias",
@@ -1564,8 +1570,13 @@ def _bloco_tarifa_social(con, scs):
         if mes in no_bronze and ref < mes and (mes_mapa is None or mes <= mes_mapa):
             uso.append("série mensal depois do fim do SCS")
         cob = i.get("cobertura_scs")
+        # distribuidoras do SCS de referência sem fatura (tipo 1) no arquivo: o que falta para a cobertura
+        presentes = {cn for (cn, _, _, tf) in cde[mes] if tf == "1"}
+        ausentes = sorted((cn for cn in meses_por.get(ref, {}) if cn not in presentes), key=lambda cn: -meses_por[ref][cn])
         linha = {"mes": mes, "distribuidoras": i.get("distribuidoras"),
                  "cobertura_scs_pct": _r(100 * cob, 2) if cob is not None else None,
+                 "distribuidoras_ausentes": [{"cnpj": cn, "sigla": sigla.get(cn) or siglas_cde.get(cn), "uc_scs_referencia": meses_por[ref][cn]}
+                                             for cn in ausentes],
                  "completo": (cob or 0) >= COBERTURA_MINIMA, "original_no_bronze": mes in no_bronze, "uso": uso,
                  "sha256": i.get("sha256"), "recurso": i.get("recurso")}
         rs = resumos.get(mes)
@@ -1679,7 +1690,7 @@ def _bloco_tarifa_social(con, scs):
     # série mensal da CDE por UF (só meses com o original no bronze): faturas e desconto das faturas
     meses_serie_cde = sorted(resumos)
     serie_cde_uf = {"meses": meses_serie_cde, "ufs": list(UF_NOME),
-                    "completo": [bool((infos.get(m) or {}).get("cobertura_scs", 0) >= COBERTURA_MINIMA) for m in meses_serie_cde],
+                    "completo": [bool(((infos.get(m) or {}).get("cobertura_scs") or 0) >= COBERTURA_MINIMA) for m in meses_serie_cde],
                     "faturas_tsee": [[(resumos[m]["por_uf"].get(uf) or {}).get("faturas") for m in meses_serie_cde] for uf in UF_NOME],
                     "desconto_faturas_reais": [[_r((resumos[m]["por_uf"].get(uf) or {}).get("valor"), 2) for m in meses_serie_cde]
                                                for uf in UF_NOME]}
@@ -2106,6 +2117,12 @@ def _bloco_cobertura(con, ctx):
                       "familias_cadastradas": br_cad.get(mes),
                       "razao_atualizadas_pct": _r(100 * l["uc_tsee"] / br_at[mes], 2) if br_at.get(mes) else None,
                       "razao_cadastradas_pct": _r(100 * l["uc_tsee"] / br_cad[mes], 2) if br_cad.get(mes) else None})
+    # série longa (desde abr/2015) lida sob demanda pela página; a gold leva o endereço e o último ponto
+    base.escreve_gold("inclusao_cobertura_mensal.json",
+                      {"gerado_em": base.agora_utc(), "natureza_da_medida": "PROXY",
+                       "unidade": "UC com Tarifa Social (SCS, meses completos) por 100 famílias do Cadastro Único com renda per capita até meio salário mínimo",
+                       "campos": ["m", "uc_tsee", "familias_atualizadas", "familias_cadastradas", "razao_atualizadas_pct", "razao_cadastradas_pct"],
+                       "serie": serie}, destino=base.SERIES)
     base.escreve_csv("inclusao_cobertura_mensal.csv",
                      ["mes", "uc_tsee_scs", "familias_ate_meio_sm_atualizadas", "familias_ate_meio_sm",
                       "razao_proxy_atualizadas_pct", "razao_proxy_cadastradas_pct"],
@@ -2249,7 +2266,9 @@ def _bloco_cobertura(con, ctx):
         "natureza_da_medida": "PROXY",
         "regra_elegibilidade": REGRA_ELEGIBILIDADE,
         "brasil": brasil, "ufs": ufs, "distribuicao_municipal": distribuicao,
-        "serie_mensal": serie,
+        "serie_mensal_json": "/energia/series/inclusao_cobertura_mensal.json",
+        "serie_mensal_ultimo": serie[-1] if serie else None,
+        "serie_mensal_meses": len(serie),
         "faixa_de_sensibilidade": "Denominador com todas as famílias cadastradas (limite inferior da razão) e só com as atualizadas (limite superior): não é intervalo estatístico, é sensibilidade à definição do denominador.",
         "proveniencia": {"cobertura": prov},
     }
@@ -2713,6 +2732,50 @@ def _conferencia_caderno(con, regs, locs):
             "tolerancia": "localidades: igualdade; população: 0,0005 milhão de pessoas (o caderno escreve três casas decimais)"}
 
 
+def _evidencia_isolados(con, locais, ciclo, resumo, conf_pdf):
+    """Ficha "Comprove este número" da população dos sistemas isolados no ciclo mais recente.
+    O número vem da exportação XLSX do PASI (soma só das populações informadas, nunca zero
+    no lugar da ausência); o caderno em PDF do mesmo ciclo é a reconciliação por outro
+    produto da EPE, com a precisão que o texto do caderno permite."""
+    v = base.ultima_vintage(con, DS_PASI, f"localizacao_ciclo_{ciclo}")
+    if not v or not locais:
+        return None
+    agg = soma_populacao(locais)
+    sem_pop = sorted(l["sigla"] for l in locais if l["populacao"] is None)
+    por_uf = collections.defaultdict(float)
+    for l in locais:
+        if l["populacao"] is not None:
+            por_uf[l["uf"]] += l["populacao"]
+    testes = [
+        ev.teste("soma das UF igual ao total do ciclo", "aprovado" if abs(sum(por_uf.values()) - (agg["populacao"] or 0)) < 0.5 else "reprovado",
+                 f"{numero_exibido(sum(por_uf.values()))} pessoas somando {len(por_uf)} UF"),
+        ev.teste("população ausente não vira zero", "aprovado",
+                 f"{len(sem_pop)} localidades sem população ({', '.join(sem_pop) or 'nenhuma'}) ficam fora da soma e contadas à parte"),
+    ]
+    rec = None
+    if conf_pdf:
+        rec = ev.reconciliacao(
+            f"{conf_pdf['documento']}, página {conf_pdf['pagina']} (sha256 {conf_pdf['sha256']}): o texto do caderno dá "
+            f"{numero_exibido(conf_pdf['localidades_pdf'])} localidades e {str(conf_pdf['populacao_milhoes_pdf']).replace('.', ',')} milhões de pessoas; "
+            f"a exportação dá {numero_exibido(conf_pdf['localidades_xlsx'])} localidades e {numero_exibido(conf_pdf['populacao_xlsx'])} pessoas. "
+            f"Extração: {conf_pdf['extracao']}",
+            conf_pdf["resultado"], conf_pdf["tolerancia"])
+    c_ult = next((r for r in resumo if r["ciclo"] == ciclo), {})
+    return _evidencia(
+        valor=agg["populacao"], unidade="pessoas", periodo=ciclo, entidade="Brasil, sistemas isolados",
+        universo=f"{len(locais)} localidades do ciclo {ciclo} do PASI ({len(locais) - len(sem_pop)} com população informada)",
+        fonte=ev.fonte_de_vintage("EPE", "PASI: Localização Geográfica das localidades isoladas", fe.URL_DOWNLOADS, v),
+        formula="Σ população informada pelas distribuidoras para cada localidade do ciclo (coluna População da exportação)",
+        chaves_origem=[f"{v['recurso']}: {len(locais)} linhas (uma por localidade)"],
+        exclusoes=[f"{s}: população não informada" for s in sem_pop],
+        cobertura=f"{len(locais)} localidades em {len({l['uf'] for l in locais})} UF; "
+                  f"{c_ult.get('sairam_da_lista', 0)} saíram da lista desde o ciclo anterior",
+        tratamento_ausencia="Localidade sem população na fonte fica fora da soma e é contada à parte; o total nunca a trata como zero.",
+        testes=testes, reconciliacao=rec, revisoes=c.snapshot_de(con, DS_PASI).get("revisoes"),
+        download=["/energia/series/inclusao_sistemas_isolados.csv"], casas=0,
+        indicador="População das localidades atendidas por sistemas isolados")
+
+
 def domicilios_sem_energia(tot_mil, com_mil):
     """(valor, estado) dos domicílios sem energia, em mil: diferença de duas estimativas
     publicadas arredondadas em milhares. Diferença zero não prova zero: a verdadeira fica
@@ -2762,10 +2825,10 @@ def _bloco_acesso(con, ctx):
     situacao = [l for t in terrs for s in ("urbana", "rural") for l in [linha(t, ult, s)] if l
                 and (t == "BR" or t.startswith("RG-") or s == "rural")]
     base.escreve_csv("inclusao_acesso_pnad.csv",
-                     ["territorio", "ano", "situacao", "pct_com_energia", "cv_pct_com_energia", "pct_rede_geral",
+                     ["territorio", "ano", "situacao", "pct_com_energia", "cv_pct_com_energia", "pct_sem_energia", "pct_rede_geral",
                       "cv_pct_rede_geral", "pct_integral_entre_rede", "cv_pct_integral", "domicilios_mil",
                       "domicilios_com_energia_mil", "domicilios_sem_energia_mil", "domicilios_sem_energia_estado"],
-                     [[l["territorio"], l["ano"], l["situacao"], l["pct_com_energia"], l["cv_pct_com_energia"], l["pct_rede_geral"],
+                     [[l["territorio"], l["ano"], l["situacao"], l["pct_com_energia"], l["cv_pct_com_energia"], l["pct_sem_energia"], l["pct_rede_geral"],
                        l["cv_pct_rede_geral"], l["pct_integral_entre_rede"], l["cv_pct_integral"], l["domicilios_mil"],
                        l["domicilios_com_energia_mil"], l["domicilios_sem_energia_mil"], l["domicilios_sem_energia_estado"]]
                       for t in terrs for a in anos for s in ("total", "urbana", "rural") for l in [linha(t, a, s)] if l])
@@ -2874,13 +2937,15 @@ def _bloco_acesso(con, ctx):
                         "Sair da lista de um ciclo para o seguinte costuma indicar interligação ao SIN, mas o PASI não informa o motivo em cada caso.",
                         "Localidade isolada tem energia (em geral térmica a óleo diesel); isolamento não é falta de acesso, é acesso fora do SIN com custo subsidiado pela CCC."],
             download="/energia/series/inclusao_sistemas_isolados.csv")
+        conf_pdf = _conferencia_caderno(con, regs, locs)
         isolados = {"ciclo": ultc, "ciclos": resumo,
                     "por_uf": [{"uf": uf, "nome": UF_NOME.get(uf), **v} for uf, v in sorted(por_uf.items(), key=lambda x: -(x[1]["populacao"] or 0))],
                     "por_distribuidora": [{"distribuidora": d, **v} for d, v in sorted(por_dist.items(), key=lambda x: -(x[1]["populacao"] or 0))],
                     # gold: as 25 mais populosas; todas, com coordenadas, no JSON sob demanda e no CSV
                     "localidades_mais_populosas": sorted(locs[ultc], key=lambda x: -(x["populacao"] or 0))[:25],
                     "pontos_json": "/energia/series/inclusao_sistemas_isolados_pontos.json",
-                    "conferencia_pdf": _conferencia_caderno(con, regs, locs),
+                    "conferencia_pdf": conf_pdf,
+                    "evidencia_populacao": _evidencia_isolados(con, locs[ultc], ultc, resumo, conf_pdf),
                     "proveniencia": prov_i}
     custeio = ctx.get("custeio") or {}
     lpt = _bloco_luz_para_todos(con)

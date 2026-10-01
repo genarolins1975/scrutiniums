@@ -52,6 +52,9 @@ DS_IBGE_POP = "ibge_populacao_uf_6579"   # população estimada por UF (SIDRA 65
 DS_LEIS = "senado_leis_feriados"         # metadados das leis de feriados (Senado)
 DS_CONTROLE = "ons_carga_controle"       # marca de importação e controles de cada vintage
 DS_DIARIA = "carga_energia_di"           # silver principal (só leitura)
+DS_BALANCO = gcarga.DS_BALANCO           # balanço de energia (componentes por dia), conferência de atípicos
+DS_DIARIA_FONTE = gcarga.DS_DIARIA_FONTE # arquivo atual da carga diária, conferência de ausências
+DS_OPENMETEO = "openmeteo_temperatura"   # ERA5 e ECMWF IFS nas capitais (sensibilidade da temperatura)
 
 SMS = ons.SMS
 TODOS = SMS + ("SIN",)
@@ -104,6 +107,22 @@ REGISTRO = {
         {"orgao": "IBGE", "nome": "sidra-6579", "slug": "ibge-populacao-uf-6579-carga", "dataset_silver": DS_IBGE_POP,
          "titulo": "População residente estimada por UF (SIDRA 6579), peso da temperatura", "estado": "UTILIZADO EM MODELO",
          "url": clima.URL_SIDRA_TABELA, "licenca": clima.LICENCA_IBGE, "tema": "outros",
+         "paginas": [PAGINA], "downloads": [_u(CSV["temperatura"])], "quebras": []},
+        {"orgao": "ONS", "nome": ons.PACOTE_BALANCO, "slug": "ons-balanco-subsistema-conferencia-carga", "dataset_silver": DS_BALANCO,
+         "titulo": "Balanço de Energia nos Subsistemas: componentes diários para conferir carga atípica", "estado": "UTILIZADO EM VALIDAÇÃO",
+         "url": ons.URL_BALANCO, "licenca": LIC_ONS,
+         "descricao": ("Geração hidráulica, térmica, eólica e solar, carga e intercâmbio por subsistema (média diária das horas). "
+                       "Conferência independente da carga diária atípica: lacuna de um componente de geração denuncia erro de dado."),
+         "paginas": [PAGINA], "downloads": ["/energia/series/carga_diaria.csv"], "quebras": []},
+        {"orgao": "ONS", "nome": "carga-energia", "slug": "ons-carga-energia-arquivo-atual-conferencia", "dataset_silver": DS_DIARIA_FONTE,
+         "titulo": "Carga de Energia Diária, arquivo atual da fonte (conferência de ausências e reprodução)", "estado": "UTILIZADO EM VALIDAÇÃO",
+         "url": ons.URL_DIARIA, "licenca": LIC_ONS,
+         "descricao": "CARGA_ENERGIA_AAAA.csv como publicado hoje: estado de cada dia ausente (célula vazia ou linha ausente) e arquivo obtenível para a evidência.",
+         "paginas": [PAGINA], "downloads": ["/energia/series/carga_diaria.csv"], "quebras": []},
+        {"orgao": "Open-Meteo", "nome": "historical-weather-api", "slug": "openmeteo-era5-ifs-capitais", "dataset_silver": DS_OPENMETEO,
+         "titulo": "Open-Meteo: temperatura diária ERA5 e ECMWF IFS nas capitais (sensibilidade da decomposição)", "estado": "UTILIZADO EM MODELO",
+         "url": clima.URL_OPENMETEO_DOC, "licenca": clima.LICENCA_OPENMETEO, "tema": "hidrologia",
+         "descricao": "Reanálise ERA5 e análise ECMWF IFS (natureza estimada) nos mesmos 27 centroides, produto único em cada série, desde 25/04/2023.",
          "paginas": [PAGINA], "downloads": [_u(CSV["temperatura"])], "quebras": []},
         {"orgao": "Senado Federal", "nome": "legislacao-federal-feriados", "slug": "senado-leis-feriados", "dataset_silver": DS_LEIS,
          "titulo": "Leis federais dos feriados nacionais (metadados de Legislação Federal)", "estado": "UTILIZADO EM MODELO",
@@ -369,11 +388,152 @@ def coleta_leis(con, status):
     con.commit()
 
 
+def importa_balanco(con, vint):
+    """Médias diárias dos componentes do balanço de uma vintage (idempotente)."""
+    vid = vint["vintage_id"]
+    if _importada(con, vid):
+        return None
+    novas, revs = base.grava_observacoes(con, DS_BALANCO, vid, ons.agrega_balanco(ckan.le_csv_bronze(vint["arquivo"], separador=";")))
+    cvid = _registra_controle(con, vid)
+    base.grava_registros(con, DS_CONTROLE, cvid, [(vid, "importada", "1"), (vid, "novas", novas), (vid, "revisoes", revs)])
+    con.commit()
+    return novas, revs
+
+
+def coleta_balanco(con, status):
+    """BALANCO_ENERGIA_SUBSISTEMA_AAAA.csv de todos os anos (cerca de 4,5 MB cada): a
+    conferência de um atípico precisa do ano do dia, e a validação roda no histórico
+    inteiro. Recoleta pelo last_modified ou a cada 30 dias."""
+    def filtro(r):
+        nome = (r.get("url") or "").rsplit("/", 1)[-1]
+        return ((r.get("format") or "").upper() == "CSV" and nome.startswith("BALANCO_ENERGIA_SUBSISTEMA_")
+                and nome[27:31].isdigit())
+
+    st, _meta, vints = ckan.coleta_pacote(con, orgao="ONS", nome=ons.PACOTE_BALANCO, dataset=DS_BALANCO,
+                                          filtro_recurso=filtro, ext_de=lambda r: "csv", max_idade_dias=30)
+    status["balanco"] = st
+    for rec in sorted(vints):
+        try:
+            importa_balanco(con, vints[rec])
+        except Exception as e:
+            status.setdefault("falhas", []).append(f"balanço {rec}: {e}"[:300])
+
+
+def importa_diaria_fonte(con, vint):
+    """Valores e células vazias do arquivo atual da carga diária (idempotente). Uma célula
+    que deixa de vir vazia numa captura posterior é apagada do registro (histórico fica)."""
+    vid = vint["vintage_id"]
+    if _importada(con, vid):
+        return None
+    valores, vazias = ons.le_diaria_fonte(ckan.le_csv_bronze(vint["arquivo"], separador=";"))
+    novas, revs = base.grava_observacoes(con, DS_DIARIA_FONTE, vid, [(f"carga_mwmed.{sm}", d, v) for (sm, d), v in valores.items()])
+    anos = {d[:4] for (_, d) in list(valores) + list(vazias)}
+    conhecidas = base.registros_como_estavam_em(con, DS_DIARIA_FONTE)
+    linhas = [(f"{sm}|{d}", "celula_vazia", "1") for sm, d in sorted(vazias)]
+    linhas += [(ch, "celula_vazia", None) for ch, campos in conhecidas.items()
+               if "celula_vazia" in campos and ch.split("|")[-1][:4] in anos and tuple(ch.split("|")) not in vazias]
+    base.grava_registros(con, DS_DIARIA_FONTE, vid, linhas)
+    cvid = _registra_controle(con, vid)
+    base.grava_registros(con, DS_CONTROLE, cvid, [(vid, "importada", "1"), (vid, "novas", novas), (vid, "revisoes", revs),
+                                                  (vid, "linhas_com_valor", len(valores)), (vid, "celulas_vazias", len(vazias))])
+    con.commit()
+    return novas, revs
+
+
+def coleta_diaria_fonte(con, status):
+    def filtro(r):
+        nome = (r.get("url") or "").rsplit("/", 1)[-1]
+        return (r.get("format") or "").upper() == "CSV" and nome.startswith("CARGA_ENERGIA_") and nome[14:18].isdigit()
+
+    st, _meta, vints = ckan.coleta_pacote(con, orgao="ONS", nome="carga-energia", dataset=DS_DIARIA_FONTE,
+                                          filtro_recurso=filtro, ext_de=lambda r: "csv", max_idade_dias=30)
+    status["diaria_fonte"] = st
+    for rec in sorted(vints):
+        try:
+            importa_diaria_fonte(con, vints[rec])
+        except Exception as e:
+            status.setdefault("falhas", []).append(f"diária {rec}: {e}"[:300])
+
+
+def _ultimo_dia_openmeteo(con, uf):
+    """Menor, entre os modelos, do último dia com valor (o trecho recente recomeça dele)."""
+    ults = []
+    for m in clima.MODELOS_OPENMETEO:
+        row = con.execute("SELECT MAX(ref) FROM observacoes WHERE dataset=? AND serie=?", (DS_OPENMETEO, f"t2m_{m}.{uf}")).fetchone()
+        if row and row[0]:
+            ults.append(row[0])
+    return min(ults) if ults else None
+
+
+def importa_openmeteo(con, vint, uf):
+    vid = vint["vintage_id"]
+    if _importada(con, vid):
+        return None
+    por_modelo = clima.parse_openmeteo(le_bronze(vint["arquivo"]))
+    linhas = []
+    for m, serie in por_modelo.items():
+        for d, (t, tx) in serie.items():
+            linhas.append((f"t2m_{m}.{uf}", d, t))
+            linhas.append((f"t2m_max_{m}.{uf}", d, tx))
+    novas, revs = base.grava_observacoes(con, DS_OPENMETEO, vid, linhas)
+    cvid = _registra_controle(con, vid)
+    base.grava_registros(con, DS_CONTROLE, cvid, [(vid, "importada", "1"), (vid, "novas", novas), (vid, "revisoes", revs)]
+                         + [(vid, f"ultimo_dia_{m}", max(sv) if sv else "") for m, sv in por_modelo.items()])
+    con.commit()
+    return novas, revs
+
+
+def coleta_openmeteo(con, status, hoje, pausa_s=None, ufs=None):
+    """ERA5 e ECMWF IFS nos 27 centroides. A primeira captura de cada ponto pede desde
+    25/04/2023 (recurso `_base`, cerca de 90 chamadas na conta da API por modelo); as
+    seguintes pedem só o trecho recente (45 dias, ou desde o último dia com valor), para
+    caber na cota por minuto e por hora do endereço compartilhado. Resposta de erro da
+    API (cota) é falha registrada: o ponto fica para a próxima coleta, nada é inventado."""
+    import time as _time
+    st = {"novas": 0, "identicas": 0, "puladas": 0, "falhas": []}
+    pontos = centroides(con)
+    fim = (hoje - timedelta(days=1)).isoformat()
+    for uf, (lat, lon, _, _, _) in sorted(pontos.items()):
+        if ufs and uf not in ufs:
+            continue
+        rec_base = f"openmeteo_{uf}_base"
+        vb = base.ultima_vintage(con, DS_OPENMETEO, rec_base)
+        if vb is None or not _importada(con, vb["vintage_id"]):
+            rec, ini, idade, forcar = rec_base, clima.PRIMEIRO_DIA_OPENMETEO, 3650, vb is not None
+            pausa = 30 if pausa_s is None else pausa_s
+        else:
+            ult = _ultimo_dia_openmeteo(con, uf) or clima.PRIMEIRO_DIA_OPENMETEO
+            ini = min((hoje - timedelta(days=45)).isoformat(), (date.fromisoformat(ult) + timedelta(days=1)).isoformat())
+            rec = f"openmeteo_{uf}_recente"
+            vr = base.ultima_vintage(con, DS_OPENMETEO, rec)
+            idade, forcar = 1, vr is not None and not _importada(con, vr["vintage_id"])
+            pausa = 3 if pausa_s is None else pausa_s
+        res = ckan.baixar_recurso(con, orgao="OPENMETEO", dataset=DS_OPENMETEO, recurso=rec,
+                                  url=clima.url_openmeteo(lat, lon, ini, fim), publicado_em=None, ext="json",
+                                  max_idade_dias=idade, forcar=forcar)
+        chave = {"nova": "novas", "identica": "identicas", "pulada": "puladas"}.get(res["status"])
+        if chave:
+            st[chave] += 1
+        else:
+            st["falhas"].append(f"{rec}: {res['detalhe']}"[:200])
+        if res["vintage"] and res["status"] != "falha":
+            try:
+                importa_openmeteo(con, res["vintage"], uf)
+            except ValueError as e:  # corpo de erro da API com HTTP 200: fica para a próxima coleta
+                st["falhas"].append(f"{rec}: {e}"[:200])
+        if res["status"] in ("nova", "identica", "falha"):
+            _time.sleep(pausa)
+    status["openmeteo"] = st
+    con.commit()
+
+
 def coletar(con, ctx):
     hoje = ctx.get("hoje") or c.agora_date()
     status = {"ok": True}
     for nome, fn in (("curva", lambda: coleta_curva(con, status)), ("api", lambda: coleta_api(con, status, hoje)),
                      ("ibge", lambda: coleta_ibge(con, status)), ("power", lambda: coleta_power(con, status, hoje)),
+                     ("balanco", lambda: coleta_balanco(con, status)), ("diaria_fonte", lambda: coleta_diaria_fonte(con, status)),
+                     ("openmeteo", lambda: coleta_openmeteo(con, status, hoje)),
                      ("leis", lambda: coleta_leis(con, status))):
         try:
             fn()

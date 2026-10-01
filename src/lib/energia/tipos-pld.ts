@@ -27,6 +27,18 @@ export type SituacaoHora =
 /** Fichas no contrato compartilhado (pipeline/energia/evidencia.py e src/lib/energia/evidencia.ts). */
 export type EvidenciaPld = Evidencia;
 
+/**
+ * public/energia/series/pld_evidencias.json: as fichas completas, lidas sob demanda pela
+ * interface; a gold traz só o índice (`PldDetalheGold.evidencias`).
+ */
+export type PldEvidenciasArquivo = { gerado_em: string; gold: "pld_detalhe.json"; evidencias: Record<string, EvidenciaPld> };
+
+/**
+ * public/energia/series/pld_hora_dia.json: mapa hora × dia dos últimos 90 dias corridos.
+ * `SE[i][h]` = PLD do dia `dias[i]` na hora h (0 a 23); null = hora sem PLD publicado.
+ */
+export type PldHoraDiaArquivo = { gerado_em: string; unidade: string; fuso: string; dias: string[] } & SerieSm<(number | null)[][]>;
+
 /* ---------- P008: conceito e fontes textuais ---------- */
 
 /**
@@ -34,13 +46,22 @@ export type EvidenciaPld = Evidencia;
  * entram quando conferidas literalmente no documento baixado; o arquivo, o sha256 e a
  * captura ficam em `documentos_normativos[documento]`.
  */
+/** Documentos normativos e técnicos citados (fontes/normas_pld.py). */
+export type DocumentoNormativoId =
+  | "decreto_5163_2004"
+  | "ren_aneel_957_2021"
+  | "ons_pr_submodulo_2_4"
+  | "ons_pr_submodulo_4_3"
+  | "ons_pr_submodulo_4_5"
+  | "cepel_dessem_manual_metodologia";
+
 export type FonteTextual = {
   id: string;
   orgao: string;
   texto: string | null;
   origem: string;
   url?: string | null;
-  documento?: "decreto_5163_2004" | "ren_aneel_957_2021";
+  documento?: DocumentoNormativoId;
   dispositivo?: string;
   capturado_em?: string | null;
   sha256?: string | null;
@@ -88,7 +109,7 @@ export type ExemploLiquidacao = {
 
 export type ConceitoPld = {
   fontes_textuais: FonteTextual[];
-  documentos_normativos: Record<"decreto_5163_2004" | "ren_aneel_957_2021", DocumentoNormativo>;
+  documentos_normativos: Record<DocumentoNormativoId, DocumentoNormativo>;
   normas_nao_conferidas: { id: string; documento: string; dispositivo: string; motivo: string }[];
   /** Os atos anuais de limites, com trecho literal, ficam em `limites.atos`. */
   atos_de_limites: "limites.atos";
@@ -112,8 +133,12 @@ export type ProdutoPreco = {
   url: string;
   /** Intervalo a que cada valor se refere. */
   entrega: string;
-  /** Quando o valor é calculado, só quando a fonte informa (null: não informado). */
+  /** Quando o valor é calculado, montado só com passagens conferidas dos Procedimentos de Rede do ONS e do manual do DESSEM (null: não conferido). */
   momento_do_calculo: string | null;
+  /** Motivo publicado quando `momento_do_calculo` é null. */
+  momento_do_calculo_motivo: string | null;
+  /** Ids de `conceito.fontes_textuais` que sustentam a descrição do produto. */
+  fontes_normativas: string[];
   deck_versao: string;
 };
 
@@ -195,6 +220,8 @@ export type BlocoCmoPld = {
 
 /* ---------- P010: limites, piso e tetos ---------- */
 
+export type NivelConferencia = "texto_do_ato" | "documento_oficial_do_processo";
+
 export type AtoLimite = {
   ano: number | null;
   ato: string;
@@ -209,6 +236,24 @@ export type AtoLimite = {
   pld_min: number | null;
   pld_max_horario: number | null;
   pld_max_estrutural: number | null;
+  /** Nível de conferência registrado pelo módulo Regulação; null = sem registro. */
+  nivel_conferencia: NivelConferencia | null;
+  nivel_descricao: string | null;
+  /** Documento em que os valores foram lidos (id de pipeline/energia/regulatorio/documentos.json). */
+  documento_valores: string | null;
+  documento_titulo: string | null;
+  documento_url: string | null;
+  documento_copia: string | null;
+  documento_sha256: string | null;
+  dou: string | null;
+};
+
+export type ConferenciaAtos = {
+  por_nivel: Partial<Record<NivelConferencia | "sem_registro", number>>;
+  atos_lidos_em_documento_do_processo: string[];
+  atos_sem_registro_de_conferencia: string[];
+  pendencias: { ano: number | null; item: string | null; situacao: string | null }[];
+  leitura: string;
 };
 
 export type RegimeLimites = {
@@ -236,7 +281,11 @@ export type PermanenciaAnual = {
   horas_sem_limite: number;
   controle_abaixo_do_piso: number;
   controle_acima_do_teto: number;
-  sensibilidade_meio_centavo: { horas_piso: number; horas_teto_horario: number };
+  /** Horas com o PLD exatamente um centavo acima do piso: preço diferente do piso, classe à parte. */
+  horas_um_centavo_acima_do_piso: number;
+  horas_um_centavo_abaixo_do_teto_horario: number;
+  /** Contagem com R$ 0,01/MWh na hora (juntaria o centavo vizinho ao limite). */
+  sensibilidade_um_centavo: { horas_piso: number; horas_teto_horario: number };
   dias: number;
   dias_teto_estrutural: number;
   dias_teto_estrutural_com_hora_acima: number;
@@ -267,8 +316,10 @@ export type BlocoLimitesDisponivel = {
   disponivel: true;
   origem: string;
   conferido_em: string | null;
-  tolerancia: { valor: number; unidade: string; regra: string; justificativa: string };
+  /** `hora`: igualdade ao centavo na hora; `media_diaria`: teto estrutural sobre a média das 24 horas. */
+  tolerancia: { hora: number; media_diaria: number; sensibilidade_hora: number; unidade: string; regra: string; justificativa: string };
   atos: AtoLimite[];
+  conferencia_atos: ConferenciaAtos;
   rejeitados: { ato: string | null; motivo: string }[];
   regimes: RegimeLimites[];
   permanencia_anual: PermanenciaAnual[];
@@ -359,10 +410,36 @@ export type RegimeDistribuicao = Quantis & {
   frac_teto_horario: number | null;
 };
 
+/** Magnitude e alcance das revisões da carga do ONS num mês, com o efeito na média ponderada publicada. */
+export type RevisaoCarga = {
+  sm: Submercado;
+  mes: string;
+  horas_revisadas: number;
+  max_abs_mwmed: number | null;
+  quando_max: string;
+  media_abs_mwmed: number | null;
+  max_rel: number | null;
+  horas_com_troca_de_sinal: number;
+  capturas: string[];
+  ponderada_primeira_captura: number | null;
+  ponderada_vigente: number | null;
+  efeito_na_ponderada: number | null;
+};
+
 export type BlocoHistorico = {
   mensal: { meses: string[]; dias_completos: number[]; parcial: boolean[] } & SerieSm<MensalSm>;
+  /** Mapa hora × dia dos últimos 90 dias em arquivo próprio (PldHoraDiaArquivo), lido sob demanda. */
+  hora_dia: { url: string; inicio: string; fim: string; dias: number; dias_completos_no_recorte: number; nota: string };
   deflator: { indice: string; mes_base: string | null; indice_base: number | null; ultimo_mes_do_indice: string | null; regra: string };
-  ponderacao: { peso: string; ressalva: string; ultima_hora_com_carga: string | null };
+  ponderacao: {
+    peso: string;
+    ressalva: string;
+    ultima_hora_com_carga: string | null;
+    controle_fisico: string;
+    /** Horas com carga ≤ 0 retiradas do peso (ressalva visível); vazio quando não houve. */
+    horas_retiradas: { sm: Submercado; mes: string; horas: number; exemplos: { hora: string; carga_mwmed: number | null }[] }[];
+    revisoes_carga: RevisaoCarga[];
+  };
   sazonal_mes: SazonalMes[];
   posicao_referencia: PosicaoReferencia[];
   mes_corrente: MesCorrente[];
@@ -595,7 +672,14 @@ export type PldDetalheGold = Cabecalho & {
     ultima_hora_fluxo: string | null;
     ultimo_mes_ipca: string | null;
   };
-  tolerancias: { monetaria: number; sensibilidade: number; fluxo_nulo_mwmed: number; unidade: string };
+  tolerancias: {
+    hora_no_limite: number;
+    media_diaria_teto_estrutural: number;
+    separacao: number;
+    sensibilidade_hora: number;
+    fluxo_nulo_mwmed: number;
+    unidade: string;
+  };
   conceito: ConceitoPld;
   cmo_pld: BlocoCmoPld;
   limites: BlocoLimites;
@@ -605,20 +689,27 @@ export type PldDetalheGold = Cabecalho & {
   achados: Achados;
   cobertura: { cmo_semi_horario: CoberturaDessemAno[]; importacao_cmo_semi_horario: Record<string, RelatorioImportacao | null> };
   metricas: Record<"cmo_pld" | "limites" | "historico" | "regional" | "achados", string[]>;
+  /** Proveniência de cada métrica: `calculo` (natureza da transformação) e `fonte` (natureza do dado de origem, quando publicada). */
+  metricas_proveniencia: Record<string, { calculo: string; fonte: string | null }>;
   controles: Controle[];
   proveniencia: {
+    /** Natureza ESTIMADO: resultado do modelo DESSEM, não medição. */
     cmo_semi_horario: Proveniencia;
     cmo_horario: Proveniencia;
     comparacao_semanal: Proveniencia;
+    relacao_pld_cmo: Proveniencia;
     historico_mensal: Proveniencia;
     sazonal: Proveniencia;
+    distribuicao: Proveniencia;
     regional: Proveniencia;
     fluxos: Proveniencia;
     a02: Proveniencia;
+    a09: Proveniencia;
     /** Presente só quando os atos de limites estão disponíveis. */
     limites?: Proveniencia;
   };
-  evidencias: Record<string, EvidenciaPld>;
+  /** Índice das fichas; as fichas completas ficam em `arquivo` (PldEvidenciasArquivo), lidas sob demanda. */
+  evidencias: { arquivo: string; indice: Record<string, { indicador: string; valor_exibido: string; entidade: string }> };
   snapshots: Record<
     "cmo_semi_horario" | "cmo_semanal_original" | "dicionarios" | "ipca" | "normas" | "pld" | "cmo_semanal" | "balanco" | "intercambio",
     SnapshotResumo

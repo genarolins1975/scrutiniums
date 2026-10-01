@@ -15,13 +15,19 @@ _AUSENCIA_MMGD = ("Combinação sem registro no cadastro = zero empreendimentos 
                   "ausente em um registro não vira zero: a unidade conta e a potência fica fora da soma, contada no controle; "
                   "data sentinela (ano < 2000) = sem ano de conexão, no estoque e fora das séries por ano.")
 _VALIDACOES_MMGD = ["Código de empreendimento único no arquivo (repetição derruba a publicação).",
-                    "Identidade de agregação: soma por município = soma por UF e mês = soma por distribuidora = linhas do arquivo.",
+                    "Identidade de agregação: soma por município = soma por UF e mês = soma por distribuidora = soma por distribuidora e município = linhas do arquivo.",
+                    "Identidade de estoque: estoque acumulado por data de conexão (séries anual e mensal) + unidades com data sentinela = total do cadastro, em unidades (exato) e kW (0,01 kW); diferença derruba a publicação.",
+                    "Área da distribuidora: unidades em UF onde o CNPJ da distribuidora não tem conjunto elétrico (base de continuidade da ANEEL) são contadas por município e sinalizadas, sem correção.",
                     "Potência não negativa; datas não posteriores à data de geração do conjunto.",
                     "Data de conexão conferida com DatConexao do recurso técnico fotovoltaico, pelo código.",
                     "Parquet e CSV oficiais do mesmo conjunto conferidos entre si por UF e ano (30/09/2026)."]
 _LIM_MMGD = ["O cadastro é o vigente na data do arquivo; unidades desativadas não aparecem no histórico.",
-             "Meses recentes provisórios por registro tardio (a ANEEL avisa de inserção mais lenta após a migração de sistema em 2025).",
-             "Duplicidade candidata medida e não removida (CPF e CEP de pessoa física vêm tarjados)."]
+             "Meses recentes provisórios: conexões desses meses ainda podem entrar em capturas seguintes; a queda nos meses finais do arquivo não tem causa atribuída.",
+             "Duplicidade candidata medida e não removida (CPF e CEP de pessoa física vêm tarjados).",
+             "Há unidades com município de outra área de concessão (provável código de município errado na origem): ficam no município publicado, sinalizadas, e podem inflar números municipais."]
+_NATUREZA_MCTI = ("Fator estimado pelo MCTI (emissões calculadas a partir do consumo de combustível e de fatores metodológicos, "
+                  "divididas pela geração do ONS), não medido; a plataforma publica o valor oficial sem alteração, por isso a "
+                  "transformação também é ESTIMADO (da fonte) e não CALCULADO.")
 _REGRA_ANO = "Ano parcial (o da data do cadastro) não entra em comparação de crescimento; usa-se o último ano completo."
 
 METRICAS = [
@@ -88,8 +94,10 @@ METRICAS = [
                                    "Não indica renda nem quem se beneficia da geração."],
         "regra_cobertura": "Municípios com população estimada publicada; sem população = razão ausente.",
         "politica_ausencia": "Município sem população publicada: razão ausente (não zero). Município sem MMGD: zero real.",
-        "validacoes": ["Soma municipal da população igual à da UF publicada pelo IBGE (conferida no teste com amostra real)."],
-        "limitacoes": ["População é estimativa do IBGE para 1º de julho do ano, não contagem censitária.", _CAPACIDADE],
+        "validacoes": ["Soma municipal da população igual à da UF publicada pelo IBGE (conferida no teste com amostra real).",
+                       "Município com unidades de distribuidora sem conjunto elétrico na UF fica sinalizado, com a contagem e os kW dessas unidades."],
+        "limitacoes": ["População é estimativa do IBGE para 1º de julho do ano, não contagem censitária.", _CAPACIDADE,
+                       "Em município sinalizado, a razão inclui unidades provavelmente cadastradas com o município errado e pode estar inflada (ex.: São Caetano de Odivelas, PA, com 185 de 249 unidades da Neoenergia PE)."],
         "gold": _GOLD, "paginas": _PAG,
     },
     {
@@ -136,8 +144,8 @@ METRICAS = [
         "regras_comparabilidade": ["Estoque anterior zero: crescimento ausente (não infinito).", "Ranking municipal só com população ≥ 100 mil."],
         "regra_cobertura": "Territórios com estoque anterior positivo.",
         "politica_ausencia": "Estoque anterior zero ou sem data: ausente.",
-        "validacoes": ["Soma das parcelas por ano reproduz o estoque na data do cadastro (identidade de agregação)."],
-        "limitacoes": ["Registro tardio pode subestimar o ano de referência até a captura seguinte.", _CAPACIDADE],
+        "validacoes": ["Identidade de estoque: estoque acumulado por ano de conexão + unidades sem data = total do cadastro (o estoque por ano não alcança o total sem os registros de data sentinela)."],
+        "limitacoes": ["Conexões do ano de referência ainda não cadastradas o subestimariam até a captura seguinte.", _CAPACIDADE],
         "gold": _GOLD, "paginas": _PAG,
     },
     {
@@ -207,10 +215,10 @@ METRICAS = [
         "natureza_fonte": "ESTIMADO",
         "natureza_transformacao": "CALCULADO",
         "dimensoes": ["mês"],
-        "regras_comparabilidade": ["Perímetros diferentes (SIN × Brasil); registro tardio infla a razão nos meses recentes."],
+        "regras_comparabilidade": ["Perímetros diferentes (SIN × Brasil); conexões ainda não cadastradas nos meses recentes inflariam a razão."],
         "regra_cobertura": "Meses completos da estimativa do ONS e não provisórios no cadastro da ANEEL (anteriores aos 6 meses que precedem a data do cadastro).",
-        "politica_ausencia": "Mês incompleto no ONS ou provisório no cadastro: razão ausente (o denominador ainda cresce com o registro tardio).",
-        "validacoes": ["Estoque mensal reproduz o total cadastrado na data do cadastro."],
+        "politica_ausencia": "Mês incompleto no ONS ou provisório no cadastro: razão ausente (o denominador ainda pode crescer em capturas seguintes).",
+        "validacoes": ["Identidade de estoque: estoque mensal acumulado até a data do cadastro + unidades sem data de conexão = total cadastrado (unidades exatas; 0,01 kW). O denominador usa o estoque com data, que não inclui as unidades de data sentinela."],
         "limitacoes": ["Não é fator de capacidade e não deve ser usado para estimar geração municipal."],
         "gold": _GOLD, "paginas": _PAG,
     },
@@ -225,8 +233,8 @@ METRICAS = [
         "fontes": _MCTI,
         "regra_agregacao": "Nenhuma: valores oficiais como publicados. O anual oficial é o do MCTI, não média dos meses.",
         "versao_formula": "1",
-        "natureza_fonte": "OBSERVADO",
-        "natureza_transformacao": "OBSERVADO",
+        "natureza_fonte": "ESTIMADO",
+        "natureza_transformacao": "ESTIMADO",
         "dimensoes": ["mês", "ano"],
         "regras_comparabilidade": ["Não comparar com margem de operação ou de construção.", "CO2, não CO2e.",
                                    "Fator nacional: não existe versão municipal nem horária."],
@@ -235,7 +243,7 @@ METRICAS = [
         "validacoes": ["0 ≤ fator < 2 tCO2/MWh.", "12 meses em cada ano com fator anual.",
                        "Anual publicado comparado à média simples dos 12 meses publicados, tolerância 0,0001 tCO2/MWh (arredondamento da quarta casa); ano fora vira ressalva, sem ajuste.",
                        "Valores da página vigente comparados aos do site institucional anterior do MCTI (2006 a 2021); diferenças publicadas."],
-        "limitacoes": ["Base de usinas do ONS ampliada a partir de jan/2025 (nota técnica NT_FE_jun25): comparações que atravessam jan/2025 misturam bases.",
+        "limitacoes": [_NATUREZA_MCTI, "Base de usinas do ONS ampliada a partir de jan/2025 (nota técnica NT_FE_jun25): comparações que atravessam jan/2025 misturam bases.",
                        "Emissões da operação das usinas, só CO2; não é ciclo de vida nem CO2e.",
                        "A página vigente do MCTI pode responder com desafio de verificação humana; o pipeline não contorna e mantém a última captura válida."],
         "gold": _GOLD, "paginas": _PAG,
@@ -251,15 +259,15 @@ METRICAS = [
         "fontes": _MCTI,
         "regra_agregacao": "Nenhuma: valores oficiais.",
         "versao_formula": "1",
-        "natureza_fonte": "OBSERVADO",
-        "natureza_transformacao": "OBSERVADO",
+        "natureza_fonte": "ESTIMADO",
+        "natureza_transformacao": "ESTIMADO",
         "dimensoes": ["dia", "mês", "ano", "método"],
         "regras_comparabilidade": ["Uso exclusivo em projetos de MDL; não é intensidade média da eletricidade consumida."],
         "regra_cobertura": "Despacho: diário e mensal de 2006 ao último mês publicado. Simples ajustado: anual de 2006 ao último ano publicado.",
         "politica_ausencia": "Dia inexistente no calendário (ex.: 29/02 em ano não bissexto, preenchido com 0 na planilha) é descartado.",
         "validacoes": ["Média simples dos fatores diários comparada ao mensal publicado.",
                        "Leitura do mês pela posição quando o rótulo da coluna diverge (registrado em problemas de leitura)."],
-        "limitacoes": ["Método do MDL; não descreve o sistema médio."],
+        "limitacoes": [_NATUREZA_MCTI, "Método do MDL; não descreve o sistema médio."],
         "gold": _GOLD, "paginas": _PAG,
     },
     {
@@ -273,14 +281,14 @@ METRICAS = [
         "fontes": _MCTI,
         "regra_agregacao": "Nenhuma: valor oficial.",
         "versao_formula": "1",
-        "natureza_fonte": "OBSERVADO",
-        "natureza_transformacao": "OBSERVADO",
+        "natureza_fonte": "ESTIMADO",
+        "natureza_transformacao": "ESTIMADO",
         "dimensoes": ["ano"],
         "regras_comparabilidade": ["Não comparar com o fator médio."],
         "regra_cobertura": "Anos com valor publicado; o ano corrente fica ausente com a nota da fonte (\"será disponibilizado no início\" do ano seguinte).",
         "politica_ausencia": "Texto no lugar do valor (\"a ser publicado\") = ausência com a nota da fonte.",
         "validacoes": ["0 ≤ fator < 2 tCO2/MWh.", "Valor atípico conferido na planilha original antes de publicar (ex.: 0,0028 em 2017, célula G4 da planilha do MCTI)."],
-        "limitacoes": ["Método do MDL.", "Revisões declaradas pela fonte (valor anterior e corrigido) publicadas junto da série."],
+        "limitacoes": [_NATUREZA_MCTI, "Método do MDL.", "Revisões declaradas pela fonte (valor anterior e corrigido) publicadas junto da série."],
         "gold": _GOLD, "paginas": _PAG,
     },
 ]

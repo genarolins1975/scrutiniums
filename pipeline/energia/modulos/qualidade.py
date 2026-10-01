@@ -577,6 +577,14 @@ def importa_telefonico(con, vint):
             "observacoes_novas": novas, "revisoes": revis}
 
 
+def uf_ibge(m):
+    """UF de um município da API de localidades: pela microrregião ou, quando ela vem nula
+    (município instalado depois da extinção das microrregiões, como Boa Esperança do Norte,
+    MT, em 2025), pela região imediata."""
+    return ((((m.get("microrregiao") or {}).get("mesorregiao") or {}).get("UF") or {}).get("sigla")
+            or (((m.get("regiao-imediata") or {}).get("regiao-intermediaria") or {}).get("UF") or {}).get("sigla"))
+
+
 def importa_ibge(con, vint):
     """Cadastro de municípios do IBGE (API de localidades v1): código, nome e UF."""
     with base.abre_bronze(vint["arquivo"]) as f:
@@ -584,10 +592,8 @@ def importa_ibge(con, vint):
     regs = []
     for m in dados:
         cod = str(m.get("id") or "")
-        uf = (((m.get("microrregiao") or {}).get("mesorregiao") or {}).get("UF") or {}).get("sigla") \
-            or (((m.get("regiao-imediata") or {}).get("regiao-intermediaria") or {}).get("UF") or {}).get("sigla")
         if len(cod) == 7 and cod.isdigit():
-            regs += [(f"mun:{cod}", "nome", m.get("nome")), (f"mun:{cod}", "uf", uf)]
+            regs += [(f"mun:{cod}", "nome", m.get("nome")), (f"mun:{cod}", "uf", uf_ibge(m))]
     if len(regs) < 2 * 5000:
         raise ValueError(f"cadastro do IBGE com {len(regs) // 2} municípios: resposta incompleta")
     novas, revis = base.grava_registros(con, DS_IBGE, vint["vintage_id"], regs)
@@ -1138,7 +1144,7 @@ def validar_dados(*, br_m, conj_ano, limites, dist, comp_anual, iasc, ultimo_mes
 
 
 def controles_adicionais(*, identidade, ucs_iguais, numcon_suspeito, sigla, nie_maior, sem_grupo, parcelas,
-                         correspondencia, ico_acima_100, quebras):
+                         correspondencia, ico_acima_100, quebras, ico_identidade=(0, 0), conflitos_tel=0):
     """Controles de identidade, plausibilidade e correspondência (seção 11.7), com o mesmo
     formato de validar_dados. Cada veredito sai de uma conta feita nesta construção."""
     out = []
@@ -1194,6 +1200,10 @@ def controles_adicionais(*, identidade, ucs_iguais, numcon_suspeito, sigla, nie_
     else:
         item("Códigos da base IndQual Município no cadastro de municípios do IBGE", "ressalva", False,
              "cadastro do IBGE ainda não coletado: correspondência não conferida")
+    item("Atendimento telefônico: chave (CNPJ, ano, mês) única e ICO publicado = chamadas ocupadas ÷ oferecidas",
+         "aprovado" if not (conflitos_tel or ico_identidade[1]) else "ressalva", False,
+         f"{conflitos_tel} chaves repetidas com valor diferente; {ico_identidade[1]} de {ico_identidade[0]} linhas com ICO diferente "
+         "da razão das contagens (tolerância 1e-6 ponto percentual)")
     item("ICO (chamadas ocupadas ÷ oferecidas) até 100%", "aprovado" if not ico_acima_100 else "ressalva", False,
          (f"{len(ico_acima_100)} distribuidora-meses com mais chamadas ocupadas que oferecidas na fonte (publicados como estão): "
           + ", ".join(ico_acima_100[:5])) if ico_acima_100 else "nenhum")
@@ -1670,6 +1680,7 @@ def construir(con, ctx):
     tel_nac = collections.defaultdict(lambda: collections.defaultdict(float))
     tel_meses_nac = collections.defaultdict(set)
     ico_acima_100 = []
+    ico_identidade = [0, 0]   # [linhas conferidas, linhas com ICO diferente de ocupadas ÷ oferecidas]
     for ch, campos in sorted(tel.items()):
         c14 = ch[1:]
         sg = sigla(c14) or fq.sigla_valida((tel_regs.get(f"dist:{c14}") or {}).get("sigla"))
@@ -1685,6 +1696,11 @@ def construir(con, ctx):
                             v["oferecidas_cheio"], v["ocupadas_cheio"], v["atendidas_cheio"], v["abandonadas_cheio"]])
             if v["ico"] is not None and v["ico"] > 100:
                 ico_acima_100.append(f"{sg or c14} {r}")
+            # identidade publicada: ICO = ocupadas ÷ oferecidas (regulado)
+            if v["ico"] is not None and v["oferecidas"]:
+                ico_identidade[0] += 1
+                if abs(v["ico"] - 100 * (v["ocupadas"] or 0) / v["oferecidas"]) > 1e-6:
+                    ico_identidade[1] += 1
             a = int(r[:4])
             t = tel_ano.setdefault((c14, a), collections.defaultdict(float))
             t["meses"] += 1
@@ -1818,7 +1834,8 @@ def construir(con, ctx):
     validacao += controles_adicionais(
         identidade=identidade, ucs_iguais=ucs_iguais, numcon_suspeito=numcon_suspeito, sigla=sigla,
         nie_maior=nie_maior, sem_grupo=sem_grupo, parcelas=br_parc_ok, correspondencia=correspondencia,
-        ico_acima_100=ico_acima_100, quebras=quebras)
+        ico_acima_100=ico_acima_100, quebras=quebras, ico_identidade=ico_identidade,
+        conflitos_tel=sum(int((x.get("detalhe") or {}).get("conflitos") or 0) for x in _controles(con) if x["dataset"] == DS_TEL))
     criticas = [x for x in validacao if x["resultado"] == "reprovado" and x["critico"]]
     if criticas:
         return c.stub(GOLD, "validação crítica reprovada: " + "; ".join(f"{x['nome']}: {x['detalhe']}" for x in criticas))
@@ -2756,7 +2773,9 @@ def montar_gold(con, ctx, v):
             "limite_centesimos": "Conjunto acima do limite: DEC anual maior que o limite, os dois em centésimos como a ANEEL publica; igual ao limite não é transgressão.",
         },
         "parcelas": {"rotulos": fq.ROTULO_GRUPO, "definicao": fq.PARCELAS, "grupos": {k: list(vv) for k, vv in fq.GRUPOS_PARCELAS.items()}},
-        "brasil": {"anual": br_anual, "mensal": v["brasil_mensal"], "identidade_apurado": ident},
+        "brasil": {"anual": br_anual, "mensal": v["brasil_mensal"], "identidade_apurado": ident,
+                   "universo": {"principal": "Todas as distribuidoras com indicadores publicados, inclusive permissionárias (dec, fec).",
+                                "concessionarias": "Só concessionárias (dec_concessionarias, fec_concessionarias): o universo do DEC e do FEC nacionais que a ANEEL divulga; de 2019 em diante, quando todas as distribuidoras do ano têm classificação publicada."}},
         "distribuidoras": distribuidoras,
         "conjuntos": conjuntos,
         "compensacoes": compensacoes,

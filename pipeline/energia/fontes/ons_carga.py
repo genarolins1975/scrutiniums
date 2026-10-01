@@ -39,6 +39,24 @@ Grão guardado no silver (a curva completa e as respostas da API ficam no bronze
 sha256): curva horária desde 2019 e agregados diários de todos os anos (média, pico e
 hora do pico, por subsistema e SIN); API por hora cheia (carga global e MMGD; a líquida
 é a diferença publicada pelo ONS, com a identidade conferida na ingestão).
+
+Por ser o mesmo produto da carga diária, a curva horária NÃO serve para conferir um
+valor diário atípico: se o valor diário está errado, a média das 24 horas repete o erro
+(foi o que aconteceu com o Nordeste em 25/08/2018, ver docs/.../modulos/carga.md). A
+conferência usa outros dois conjuntos do ONS, lidos aqui:
+
+3. Balanço de Energia nos Subsistemas (dados.ons.org.br/dataset/balanco-energia-subsistema,
+   BALANCO_ENERGIA_SUBSISTEMA_AAAA.csv desde 2000): geração hidráulica, térmica, eólica e
+   solar, carga e intercâmbio por subsistema e hora. A carga do balanço é a mesma da
+   carga diária (carga = Σ geração − intercâmbio), mas os COMPONENTES são outra
+   informação: um valor diário que cai porque um componente de geração sumiu do dado
+   (lacuna) aparece como um componente que vai a quase zero no dia e volta no seguinte.
+   Guardamos a média diária de cada componente.
+
+4. Carga de Energia Diária, arquivo atual da fonte (CARGA_ENERGIA_AAAA.csv): baixado
+   para conferir no arquivo original o estado de cada dia ausente da série (célula
+   vazia, linha ausente ou valor presente que o silver principal não tem) e para dar à
+   evidência um arquivo que ainda se obtém.
 """
 import json
 import re
@@ -223,3 +241,75 @@ def observacoes_api(horas):
             yield f"global_ho.{sm}", hora, round(a["global_mwh"], 4)
         if a["n_mmgd"] == 2:
             yield f"mmgd_ho.{sm}", hora, round(a["mmgd_mwh"], 4)
+
+
+# ---------------------------------------------------------------- balanço de energia (CSV)
+
+PACOTE_BALANCO = "balanco-energia-subsistema"
+URL_BALANCO = "https://dados.ons.org.br/dataset/balanco-energia-subsistema"
+URL_DIC_BALANCO = ("https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/balanco_energia_subsistema_ho/"
+                   "DicionarioDados_Balanco_Energia_Subsistema.pdf")
+# componente publicado → coluna do CSV (dicionário do balanço; MWmed na hora)
+COMPONENTES_BALANCO = (("hidraulica", "val_gerhidraulica"), ("termica", "val_gertermica"),
+                       ("eolica", "val_gereolica"), ("solar", "val_gersolar"),
+                       ("carga", "val_carga"), ("intercambio", "val_intercambio"))
+GERACAO_BALANCO = ("hidraulica", "termica", "eolica", "solar")
+
+
+def _num(v):
+    s = (v or "").strip()
+    if not s:
+        return None
+    try:
+        return float(s.replace(",", "."))
+    except ValueError:
+        return None
+
+
+def agrega_balanco(linhas):
+    """Linhas do CSV do balanço (dicts) → observações diárias por subsistema:
+    `<componente>_dia.<sm>` = média das horas com valor no dia (MWmed) e
+    `horas_<componente>.<sm>` = quantas horas tinham valor. Célula vazia é ausência
+    (não entra na média nem vira zero). Só os quatro subsistemas (o arquivo não traz SIN)."""
+    acc = defaultdict(lambda: [0.0, 0])
+    for r in linhas:
+        sm = (r.get("id_subsistema") or "").strip().upper()
+        inst = (r.get("din_instante") or "").strip()
+        if sm not in SMS or len(inst) < 10:
+            continue
+        dia = inst[:10]
+        for comp, col in COMPONENTES_BALANCO:
+            v = _num(r.get(col))
+            if v is None:
+                continue
+            a = acc[(comp, sm, dia)]
+            a[0] += v
+            a[1] += 1
+    for (comp, sm, dia), (soma, n) in acc.items():
+        yield f"{comp}_dia.{sm}", dia, soma / n
+        yield f"horas_{comp}.{sm}", dia, float(n)
+
+
+# ---------------------------------------------------------------- carga diária (arquivo da fonte)
+
+URL_S3_DIARIA = "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/carga_energia_di/"
+
+
+def le_diaria_fonte(linhas):
+    """Linhas do CARGA_ENERGIA_AAAA.csv → ({(sm, dia): valor}, {(sm, dia)} com célula
+    vazia). Distingue valor ausente na linha (célula vazia) de linha inexistente, que é
+    o que a conferência de ausência precisa publicar. O arquivo de 2013 tem uma linha
+    extra do Sul em "2013-02-02 00:00:01" com valor vazio, além da linha das 00:00:00 com
+    valor: célula vazia só conta quando o dia não tem nenhuma linha com valor."""
+    valores, vazias = {}, set()
+    for r in linhas:
+        sm = (r.get("id_subsistema") or "").strip().upper()
+        dia = (r.get("din_instante") or "").strip()[:10]
+        if sm not in SMS or len(dia) != 10:
+            continue
+        v = _num(r.get("val_cargaenergiamwmed"))
+        if v is None:
+            vazias.add((sm, dia))
+        else:
+            valores[(sm, dia)] = v
+    return valores, {k for k in vazias if k not in valores}

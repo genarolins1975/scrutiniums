@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "transicao.json",
- "gerado_em": "2026-09-30T23:09:55Z",
+ "gerado_em": "2026-10-01T00:28:23Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "883727b9c73e+alterado",
+ "versao_codigo": "6d3bc3a2f759+alterado",
  "disponivel": true,
  "paineis": [
   "P063",
@@ -14,9 +14,12 @@
   "capacidade_nao_e_energia": "Potência instalada cadastrada (kW, MW) é capacidade; energia gerada (MWh, MWmed) só aparece na estimativa do ONS, em bloco separado.",
   "cadastro_x_estimativa": "Cadastro regulatório da ANEEL e estimativa operacional do ONS são grandezas diferentes: nunca somadas, só comparadas por razão rotulada.",
   "ano_de_conexao": "Ano e mês vêm da data de conexão publicada (DthAtualizaCadastralEmpreend, conferida com DatConexao do recurso técnico).",
-  "provisorio": "Os 6 meses anteriores à data do cadastro são provisórios (registro tardio).",
+  "provisorio": "Os 6 meses anteriores à data do cadastro são provisórios: conexões desses meses ainda podem entrar em capturas seguintes; a queda nesses meses não tem causa atribuída.",
   "ano_referencia": "Comparações de crescimento usam o último ano completo antes da data do cadastro; o ano corrente é parcial e não entra em ranking.",
   "por_habitante": "Por habitante usa a população estimada pelo IBGE; rankings só com população de pelo menos 100.000.",
+  "participacoes": "Participações em % com duas casas; abaixo de 0,01% (e diferente de zero), com dois algarismos significativos.",
+  "series_com_zero": "Séries anual e mensal do cadastro trazem todos os anos e meses entre a primeira conexão e a data do cadastro; sem conexão = zero explícito.",
+  "distribuidora_fora_da_uf": "Unidades em UF onde a distribuidora (CNPJ) não tem conjunto elétrico ficam no município publicado, sinalizadas e contadas, sem correção.",
   "fator_medio_nao_marginal": "Fator médio (inventários) e fatores de margem (MDL) são séries separadas e não se substituem.",
   "co2_nao_co2e": "Os fatores do MCTI são de CO2, em tCO2/MWh; não são CO2 equivalente.",
   "sem_intensidade_local": "Não há intensidade de emissão municipal nem horária: o fator oficial é nacional (SIN) e mensal."
@@ -36,6 +39,7 @@
    "populacao_brasil": 214211951,
    "w_por_habitante_brasil": 251.9,
    "unidades_sem_data": 46,
+   "ultima_data_conexao": "2026-08-31",
    "potencia_mw_ano_referencia": 9633.532,
    "unidades_ano_referencia": 909965
   },
@@ -79,8 +83,8 @@
     "tratamento_ausencia": "registro com data sentinela (ano 1900) conta no estoque, sem ano de conexão; potência ausente não vira zero",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "883727b9c73e+alterado",
-     "publicacao": "2026-09-30T23:09:54Z"
+     "codigo": "6d3bc3a2f759+alterado",
+     "publicacao": "2026-10-01T00:28:22Z"
     },
     "revisoes": "Uma única captura do cadastro integrada até aqui: as revisões por registro tardio serão medidas a partir da próxima captura.",
     "testes": [
@@ -121,7 +125,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py transicao --sem-coleta (silver data/energia/silver/aneel_mmgd.db)",
-    "citacao": "SCRUTINIUMS. Unidades de micro e minigeração distribuída no cadastro da ANEEL: 4.656.839 empreendimentos, Brasil, 01/01/2004 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Relação de empreendimentos de Mini e Micro Geração Distribuída (recurso empreendimento-geracao-distribuida.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código 883727b9c73e+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Unidades de micro e minigeração distribuída no cadastro da ANEEL: 4.656.839 empreendimentos, Brasil, 01/01/2004 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Relação de empreendimentos de Mini e Micro Geração Distribuída (recurso empreendimento-geracao-distribuida.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    },
    "potencia": {
     "indicador": "Potência instalada de micro e minigeração distribuída no cadastro da ANEEL",
@@ -162,8 +166,8 @@
     "tratamento_ausencia": "registro com data sentinela (ano 1900) conta no estoque, sem ano de conexão; potência ausente não vira zero",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "883727b9c73e+alterado",
-     "publicacao": "2026-09-30T23:09:54Z"
+     "codigo": "6d3bc3a2f759+alterado",
+     "publicacao": "2026-10-01T00:28:22Z"
     },
     "revisoes": "Uma única captura do cadastro integrada até aqui: as revisões por registro tardio serão medidas a partir da próxima captura.",
     "testes": [
@@ -204,7 +208,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py transicao --sem-coleta (silver data/energia/silver/aneel_mmgd.db)",
-    "citacao": "SCRUTINIUMS. Potência instalada de micro e minigeração distribuída no cadastro da ANEEL: 53.965,6 MW, Brasil, 01/01/2004 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Relação de empreendimentos de Mini e Micro Geração Distribuída (recurso empreendimento-geracao-distribuida.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código 883727b9c73e+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Potência instalada de micro e minigeração distribuída no cadastro da ANEEL: 53.965,6 MW, Brasil, 01/01/2004 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Relação de empreendimentos de Mini e Micro Geração Distribuída (recurso empreendimento-geracao-distribuida.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    }
   },
   "fontes": [
@@ -371,6 +375,42 @@
       "potencia_mw": 0.024
      }
     },
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "parcial": false
+   },
+   {
+    "ano": 2005,
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "por_fonte": {},
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "parcial": false
+   },
+   {
+    "ano": 2006,
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "por_fonte": {},
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "parcial": false
+   },
+   {
+    "ano": 2007,
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "por_fonte": {},
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "parcial": false
+   },
+   {
+    "ano": 2008,
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "por_fonte": {},
     "acumulado_unidades": 1,
     "acumulado_mw": 0.024,
     "parcial": false
@@ -817,6 +857,479 @@
     "m": "2004-06",
     "unidades": 1,
     "potencia_mw": 0.024,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2004-07",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2004-08",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2004-09",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2004-10",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2004-11",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2004-12",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2005-01",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2005-02",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2005-03",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2005-04",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2005-05",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2005-06",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2005-07",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2005-08",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2005-09",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2005-10",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2005-11",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2005-12",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2006-01",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2006-02",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2006-03",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2006-04",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2006-05",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2006-06",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2006-07",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2006-08",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2006-09",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2006-10",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2006-11",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2006-12",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2007-01",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2007-02",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2007-03",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2007-04",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2007-05",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2007-06",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2007-07",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2007-08",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2007-09",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2007-10",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2007-11",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2007-12",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2008-01",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2008-02",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2008-03",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2008-04",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2008-05",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2008-06",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2008-07",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2008-08",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2008-09",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2008-10",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2008-11",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2008-12",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2009-01",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2009-02",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2009-03",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2009-04",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
+    "acumulado_mw": 0.024,
+    "provisorio": false
+   },
+   {
+    "m": "2009-05",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 1,
     "acumulado_mw": 0.024,
     "provisorio": false
    },
@@ -824,6 +1337,23 @@
     "m": "2009-06",
     "unidades": 4,
     "potencia_mw": 0.023,
+    "acumulado_unidades": 5,
+    "acumulado_mw": 0.048,
+    "provisorio": false
+   },
+   {
+    "m": "2009-07",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 5,
+    "acumulado_mw": 0.048,
+    "provisorio": false
+   },
+   {
+    "m": "2009-08",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 5,
     "acumulado_mw": 0.048,
     "provisorio": false
    },
@@ -831,6 +1361,7 @@
     "m": "2009-09",
     "unidades": 18,
     "potencia_mw": 0.152,
+    "acumulado_unidades": 23,
     "acumulado_mw": 0.199,
     "provisorio": false
    },
@@ -838,6 +1369,39 @@
     "m": "2009-10",
     "unidades": 1,
     "potencia_mw": 0.01,
+    "acumulado_unidades": 24,
+    "acumulado_mw": 0.209,
+    "provisorio": false
+   },
+   {
+    "m": "2009-11",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 24,
+    "acumulado_mw": 0.209,
+    "provisorio": false
+   },
+   {
+    "m": "2009-12",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 24,
+    "acumulado_mw": 0.209,
+    "provisorio": false
+   },
+   {
+    "m": "2010-01",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 24,
+    "acumulado_mw": 0.209,
+    "provisorio": false
+   },
+   {
+    "m": "2010-02",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 24,
     "acumulado_mw": 0.209,
     "provisorio": false
    },
@@ -845,6 +1409,7 @@
     "m": "2010-03",
     "unidades": 2,
     "potencia_mw": 0.035,
+    "acumulado_unidades": 26,
     "acumulado_mw": 0.244,
     "provisorio": false
    },
@@ -852,6 +1417,31 @@
     "m": "2010-04",
     "unidades": 1,
     "potencia_mw": 0.001,
+    "acumulado_unidades": 27,
+    "acumulado_mw": 0.245,
+    "provisorio": false
+   },
+   {
+    "m": "2010-05",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 27,
+    "acumulado_mw": 0.245,
+    "provisorio": false
+   },
+   {
+    "m": "2010-06",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 27,
+    "acumulado_mw": 0.245,
+    "provisorio": false
+   },
+   {
+    "m": "2010-07",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 27,
     "acumulado_mw": 0.245,
     "provisorio": false
    },
@@ -859,6 +1449,7 @@
     "m": "2010-08",
     "unidades": 1,
     "potencia_mw": 0.006,
+    "acumulado_unidades": 28,
     "acumulado_mw": 0.251,
     "provisorio": false
    },
@@ -866,6 +1457,23 @@
     "m": "2010-09",
     "unidades": 1,
     "potencia_mw": 0.006,
+    "acumulado_unidades": 29,
+    "acumulado_mw": 0.257,
+    "provisorio": false
+   },
+   {
+    "m": "2010-10",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 29,
+    "acumulado_mw": 0.257,
+    "provisorio": false
+   },
+   {
+    "m": "2010-11",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 29,
     "acumulado_mw": 0.257,
     "provisorio": false
    },
@@ -873,6 +1481,15 @@
     "m": "2010-12",
     "unidades": 1,
     "potencia_mw": 0.008,
+    "acumulado_unidades": 30,
+    "acumulado_mw": 0.265,
+    "provisorio": false
+   },
+   {
+    "m": "2011-01",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 30,
     "acumulado_mw": 0.265,
     "provisorio": false
    },
@@ -880,6 +1497,15 @@
     "m": "2011-02",
     "unidades": 3,
     "potencia_mw": 0.013,
+    "acumulado_unidades": 33,
+    "acumulado_mw": 0.278,
+    "provisorio": false
+   },
+   {
+    "m": "2011-03",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 33,
     "acumulado_mw": 0.278,
     "provisorio": false
    },
@@ -887,6 +1513,15 @@
     "m": "2011-04",
     "unidades": 1,
     "potencia_mw": 0.003,
+    "acumulado_unidades": 34,
+    "acumulado_mw": 0.281,
+    "provisorio": false
+   },
+   {
+    "m": "2011-05",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 34,
     "acumulado_mw": 0.281,
     "provisorio": false
    },
@@ -894,6 +1529,7 @@
     "m": "2011-06",
     "unidades": 3,
     "potencia_mw": 0.03,
+    "acumulado_unidades": 37,
     "acumulado_mw": 0.312,
     "provisorio": false
    },
@@ -901,6 +1537,15 @@
     "m": "2011-07",
     "unidades": 1,
     "potencia_mw": 0.01,
+    "acumulado_unidades": 38,
+    "acumulado_mw": 0.322,
+    "provisorio": false
+   },
+   {
+    "m": "2011-08",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 38,
     "acumulado_mw": 0.322,
     "provisorio": false
    },
@@ -908,6 +1553,7 @@
     "m": "2011-09",
     "unidades": 1,
     "potencia_mw": 0.004,
+    "acumulado_unidades": 39,
     "acumulado_mw": 0.326,
     "provisorio": false
    },
@@ -915,6 +1561,23 @@
     "m": "2011-10",
     "unidades": 31,
     "potencia_mw": 0.215,
+    "acumulado_unidades": 70,
+    "acumulado_mw": 0.541,
+    "provisorio": false
+   },
+   {
+    "m": "2011-11",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 70,
+    "acumulado_mw": 0.541,
+    "provisorio": false
+   },
+   {
+    "m": "2011-12",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 70,
     "acumulado_mw": 0.541,
     "provisorio": false
    },
@@ -922,6 +1585,7 @@
     "m": "2012-01",
     "unidades": 1,
     "potencia_mw": 0.002,
+    "acumulado_unidades": 71,
     "acumulado_mw": 0.543,
     "provisorio": false
    },
@@ -929,6 +1593,7 @@
     "m": "2012-02",
     "unidades": 1,
     "potencia_mw": 0.403,
+    "acumulado_unidades": 72,
     "acumulado_mw": 0.946,
     "provisorio": false
    },
@@ -936,6 +1601,23 @@
     "m": "2012-03",
     "unidades": 2,
     "potencia_mw": 0.003,
+    "acumulado_unidades": 74,
+    "acumulado_mw": 0.949,
+    "provisorio": false
+   },
+   {
+    "m": "2012-04",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 74,
+    "acumulado_mw": 0.949,
+    "provisorio": false
+   },
+   {
+    "m": "2012-05",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 74,
     "acumulado_mw": 0.949,
     "provisorio": false
    },
@@ -943,6 +1625,7 @@
     "m": "2012-06",
     "unidades": 1,
     "potencia_mw": 0.003,
+    "acumulado_unidades": 75,
     "acumulado_mw": 0.952,
     "provisorio": false
    },
@@ -950,6 +1633,15 @@
     "m": "2012-07",
     "unidades": 1,
     "potencia_mw": 0.003,
+    "acumulado_unidades": 76,
+    "acumulado_mw": 0.955,
+    "provisorio": false
+   },
+   {
+    "m": "2012-08",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 76,
     "acumulado_mw": 0.955,
     "provisorio": false
    },
@@ -957,6 +1649,7 @@
     "m": "2012-09",
     "unidades": 26,
     "potencia_mw": 0.139,
+    "acumulado_unidades": 102,
     "acumulado_mw": 1.094,
     "provisorio": false
    },
@@ -964,6 +1657,7 @@
     "m": "2012-10",
     "unidades": 1,
     "potencia_mw": 0.002,
+    "acumulado_unidades": 103,
     "acumulado_mw": 1.096,
     "provisorio": false
    },
@@ -971,6 +1665,7 @@
     "m": "2012-11",
     "unidades": 1,
     "potencia_mw": 0.01,
+    "acumulado_unidades": 104,
     "acumulado_mw": 1.106,
     "provisorio": false
    },
@@ -978,6 +1673,15 @@
     "m": "2012-12",
     "unidades": 2,
     "potencia_mw": 0.01,
+    "acumulado_unidades": 106,
+    "acumulado_mw": 1.116,
+    "provisorio": false
+   },
+   {
+    "m": "2013-01",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 106,
     "acumulado_mw": 1.116,
     "provisorio": false
    },
@@ -985,6 +1689,7 @@
     "m": "2013-02",
     "unidades": 1,
     "potencia_mw": 0.003,
+    "acumulado_unidades": 107,
     "acumulado_mw": 1.119,
     "provisorio": false
    },
@@ -992,6 +1697,7 @@
     "m": "2013-03",
     "unidades": 1,
     "potencia_mw": 0.002,
+    "acumulado_unidades": 108,
     "acumulado_mw": 1.121,
     "provisorio": false
    },
@@ -999,6 +1705,7 @@
     "m": "2013-04",
     "unidades": 2,
     "potencia_mw": 0.016,
+    "acumulado_unidades": 110,
     "acumulado_mw": 1.137,
     "provisorio": false
    },
@@ -1006,6 +1713,7 @@
     "m": "2013-05",
     "unidades": 6,
     "potencia_mw": 0.172,
+    "acumulado_unidades": 116,
     "acumulado_mw": 1.309,
     "provisorio": false
    },
@@ -1013,6 +1721,7 @@
     "m": "2013-06",
     "unidades": 4,
     "potencia_mw": 0.062,
+    "acumulado_unidades": 120,
     "acumulado_mw": 1.371,
     "provisorio": false
    },
@@ -1020,6 +1729,7 @@
     "m": "2013-07",
     "unidades": 4,
     "potencia_mw": 0.057,
+    "acumulado_unidades": 124,
     "acumulado_mw": 1.428,
     "provisorio": false
    },
@@ -1027,6 +1737,7 @@
     "m": "2013-08",
     "unidades": 21,
     "potencia_mw": 0.429,
+    "acumulado_unidades": 145,
     "acumulado_mw": 1.857,
     "provisorio": false
    },
@@ -1034,6 +1745,7 @@
     "m": "2013-09",
     "unidades": 9,
     "potencia_mw": 0.061,
+    "acumulado_unidades": 154,
     "acumulado_mw": 1.918,
     "provisorio": false
    },
@@ -1041,6 +1753,7 @@
     "m": "2013-10",
     "unidades": 11,
     "potencia_mw": 0.092,
+    "acumulado_unidades": 165,
     "acumulado_mw": 2.01,
     "provisorio": false
    },
@@ -1048,6 +1761,7 @@
     "m": "2013-11",
     "unidades": 6,
     "potencia_mw": 0.03,
+    "acumulado_unidades": 171,
     "acumulado_mw": 2.04,
     "provisorio": false
    },
@@ -1055,6 +1769,7 @@
     "m": "2013-12",
     "unidades": 15,
     "potencia_mw": 0.087,
+    "acumulado_unidades": 186,
     "acumulado_mw": 2.127,
     "provisorio": false
    },
@@ -1062,6 +1777,7 @@
     "m": "2014-01",
     "unidades": 10,
     "potencia_mw": 0.055,
+    "acumulado_unidades": 196,
     "acumulado_mw": 2.182,
     "provisorio": false
    },
@@ -1069,6 +1785,7 @@
     "m": "2014-02",
     "unidades": 20,
     "potencia_mw": 0.312,
+    "acumulado_unidades": 216,
     "acumulado_mw": 2.494,
     "provisorio": false
    },
@@ -1076,6 +1793,7 @@
     "m": "2014-03",
     "unidades": 10,
     "potencia_mw": 0.508,
+    "acumulado_unidades": 226,
     "acumulado_mw": 3.002,
     "provisorio": false
    },
@@ -1083,6 +1801,7 @@
     "m": "2014-04",
     "unidades": 13,
     "potencia_mw": 0.458,
+    "acumulado_unidades": 239,
     "acumulado_mw": 3.46,
     "provisorio": false
    },
@@ -1090,6 +1809,7 @@
     "m": "2014-05",
     "unidades": 20,
     "potencia_mw": 0.12,
+    "acumulado_unidades": 259,
     "acumulado_mw": 3.58,
     "provisorio": false
    },
@@ -1097,6 +1817,7 @@
     "m": "2014-06",
     "unidades": 15,
     "potencia_mw": 0.083,
+    "acumulado_unidades": 274,
     "acumulado_mw": 3.663,
     "provisorio": false
    },
@@ -1104,6 +1825,7 @@
     "m": "2014-07",
     "unidades": 33,
     "potencia_mw": 0.791,
+    "acumulado_unidades": 307,
     "acumulado_mw": 4.454,
     "provisorio": false
    },
@@ -1111,6 +1833,7 @@
     "m": "2014-08",
     "unidades": 20,
     "potencia_mw": 0.238,
+    "acumulado_unidades": 327,
     "acumulado_mw": 4.692,
     "provisorio": false
    },
@@ -1118,6 +1841,7 @@
     "m": "2014-09",
     "unidades": 36,
     "potencia_mw": 0.405,
+    "acumulado_unidades": 363,
     "acumulado_mw": 5.097,
     "provisorio": false
    },
@@ -1125,6 +1849,7 @@
     "m": "2014-10",
     "unidades": 31,
     "potencia_mw": 0.178,
+    "acumulado_unidades": 394,
     "acumulado_mw": 5.275,
     "provisorio": false
    },
@@ -1132,6 +1857,7 @@
     "m": "2014-11",
     "unidades": 36,
     "potencia_mw": 0.176,
+    "acumulado_unidades": 430,
     "acumulado_mw": 5.451,
     "provisorio": false
    },
@@ -1139,6 +1865,7 @@
     "m": "2014-12",
     "unidades": 32,
     "potencia_mw": 0.282,
+    "acumulado_unidades": 462,
     "acumulado_mw": 5.733,
     "provisorio": false
    },
@@ -1146,6 +1873,7 @@
     "m": "2015-01",
     "unidades": 53,
     "potencia_mw": 0.479,
+    "acumulado_unidades": 515,
     "acumulado_mw": 6.212,
     "provisorio": false
    },
@@ -1153,6 +1881,7 @@
     "m": "2015-02",
     "unidades": 37,
     "potencia_mw": 0.46,
+    "acumulado_unidades": 552,
     "acumulado_mw": 6.672,
     "provisorio": false
    },
@@ -1160,6 +1889,7 @@
     "m": "2015-03",
     "unidades": 48,
     "potencia_mw": 0.308,
+    "acumulado_unidades": 600,
     "acumulado_mw": 6.98,
     "provisorio": false
    },
@@ -1167,6 +1897,7 @@
     "m": "2015-04",
     "unidades": 53,
     "potencia_mw": 0.381,
+    "acumulado_unidades": 653,
     "acumulado_mw": 7.361,
     "provisorio": false
    },
@@ -1174,6 +1905,7 @@
     "m": "2015-05",
     "unidades": 89,
     "potencia_mw": 0.577,
+    "acumulado_unidades": 742,
     "acumulado_mw": 7.938,
     "provisorio": false
    },
@@ -1181,6 +1913,7 @@
     "m": "2015-06",
     "unidades": 60,
     "potencia_mw": 0.64,
+    "acumulado_unidades": 802,
     "acumulado_mw": 8.578,
     "provisorio": false
    },
@@ -1188,6 +1921,7 @@
     "m": "2015-07",
     "unidades": 108,
     "potencia_mw": 1.388,
+    "acumulado_unidades": 910,
     "acumulado_mw": 9.966,
     "provisorio": false
    },
@@ -1195,6 +1929,7 @@
     "m": "2015-08",
     "unidades": 129,
     "potencia_mw": 0.891,
+    "acumulado_unidades": 1039,
     "acumulado_mw": 10.857,
     "provisorio": false
    },
@@ -1202,6 +1937,7 @@
     "m": "2015-09",
     "unidades": 127,
     "potencia_mw": 2.241,
+    "acumulado_unidades": 1166,
     "acumulado_mw": 13.098,
     "provisorio": false
    },
@@ -1209,6 +1945,7 @@
     "m": "2015-10",
     "unidades": 153,
     "potencia_mw": 2.616,
+    "acumulado_unidades": 1319,
     "acumulado_mw": 15.714,
     "provisorio": false
    },
@@ -1216,6 +1953,7 @@
     "m": "2015-11",
     "unidades": 178,
     "potencia_mw": 2.663,
+    "acumulado_unidades": 1497,
     "acumulado_mw": 18.377,
     "provisorio": false
    },
@@ -1223,6 +1961,7 @@
     "m": "2015-12",
     "unidades": 247,
     "potencia_mw": 2.455,
+    "acumulado_unidades": 1744,
     "acumulado_mw": 20.832,
     "provisorio": false
    },
@@ -1230,6 +1969,7 @@
     "m": "2016-01",
     "unidades": 266,
     "potencia_mw": 2.578,
+    "acumulado_unidades": 2010,
     "acumulado_mw": 23.41,
     "provisorio": false
    },
@@ -1237,6 +1977,7 @@
     "m": "2016-02",
     "unidades": 329,
     "potencia_mw": 2.995,
+    "acumulado_unidades": 2339,
     "acumulado_mw": 26.405,
     "provisorio": false
    },
@@ -1244,6 +1985,7 @@
     "m": "2016-03",
     "unidades": 400,
     "potencia_mw": 3.893,
+    "acumulado_unidades": 2739,
     "acumulado_mw": 30.299,
     "provisorio": false
    },
@@ -1251,6 +1993,7 @@
     "m": "2016-04",
     "unidades": 399,
     "potencia_mw": 9.172,
+    "acumulado_unidades": 3138,
     "acumulado_mw": 39.471,
     "provisorio": false
    },
@@ -1258,6 +2001,7 @@
     "m": "2016-05",
     "unidades": 516,
     "potencia_mw": 5.233,
+    "acumulado_unidades": 3654,
     "acumulado_mw": 44.704,
     "provisorio": false
    },
@@ -1265,6 +2009,7 @@
     "m": "2016-06",
     "unidades": 912,
     "potencia_mw": 7.198,
+    "acumulado_unidades": 4566,
     "acumulado_mw": 51.902,
     "provisorio": false
    },
@@ -1272,6 +2017,7 @@
     "m": "2016-07",
     "unidades": 490,
     "potencia_mw": 5.4,
+    "acumulado_unidades": 5056,
     "acumulado_mw": 57.302,
     "provisorio": false
    },
@@ -1279,6 +2025,7 @@
     "m": "2016-08",
     "unidades": 572,
     "potencia_mw": 5.06,
+    "acumulado_unidades": 5628,
     "acumulado_mw": 62.363,
     "provisorio": false
    },
@@ -1286,6 +2033,7 @@
     "m": "2016-09",
     "unidades": 545,
     "potencia_mw": 6.576,
+    "acumulado_unidades": 6173,
     "acumulado_mw": 68.939,
     "provisorio": false
    },
@@ -1293,6 +2041,7 @@
     "m": "2016-10",
     "unidades": 490,
     "potencia_mw": 6.649,
+    "acumulado_unidades": 6663,
     "acumulado_mw": 75.588,
     "provisorio": false
    },
@@ -1300,6 +2049,7 @@
     "m": "2016-11",
     "unidades": 528,
     "potencia_mw": 6.742,
+    "acumulado_unidades": 7191,
     "acumulado_mw": 82.33,
     "provisorio": false
    },
@@ -1307,6 +2057,7 @@
     "m": "2016-12",
     "unidades": 795,
     "potencia_mw": 13.292,
+    "acumulado_unidades": 7986,
     "acumulado_mw": 95.622,
     "provisorio": false
    },
@@ -1314,6 +2065,7 @@
     "m": "2017-01",
     "unidades": 622,
     "potencia_mw": 12.63,
+    "acumulado_unidades": 8608,
     "acumulado_mw": 108.252,
     "provisorio": false
    },
@@ -1321,6 +2073,7 @@
     "m": "2017-02",
     "unidades": 646,
     "potencia_mw": 7.567,
+    "acumulado_unidades": 9254,
     "acumulado_mw": 115.819,
     "provisorio": false
    },
@@ -1328,6 +2081,7 @@
     "m": "2017-03",
     "unidades": 822,
     "potencia_mw": 8.577,
+    "acumulado_unidades": 10076,
     "acumulado_mw": 124.396,
     "provisorio": false
    },
@@ -1335,6 +2089,7 @@
     "m": "2017-04",
     "unidades": 678,
     "potencia_mw": 8.619,
+    "acumulado_unidades": 10754,
     "acumulado_mw": 133.015,
     "provisorio": false
    },
@@ -1342,6 +2097,7 @@
     "m": "2017-05",
     "unidades": 895,
     "potencia_mw": 13.117,
+    "acumulado_unidades": 11649,
     "acumulado_mw": 146.132,
     "provisorio": false
    },
@@ -1349,6 +2105,7 @@
     "m": "2017-06",
     "unidades": 1089,
     "potencia_mw": 10.952,
+    "acumulado_unidades": 12738,
     "acumulado_mw": 157.084,
     "provisorio": false
    },
@@ -1356,6 +2113,7 @@
     "m": "2017-07",
     "unidades": 1118,
     "potencia_mw": 12.4,
+    "acumulado_unidades": 13856,
     "acumulado_mw": 169.484,
     "provisorio": false
    },
@@ -1363,6 +2121,7 @@
     "m": "2017-08",
     "unidades": 1321,
     "potencia_mw": 16.691,
+    "acumulado_unidades": 15177,
     "acumulado_mw": 186.175,
     "provisorio": false
    },
@@ -1370,6 +2129,7 @@
     "m": "2017-09",
     "unidades": 1150,
     "potencia_mw": 15.784,
+    "acumulado_unidades": 16327,
     "acumulado_mw": 201.959,
     "provisorio": false
    },
@@ -1377,6 +2137,7 @@
     "m": "2017-10",
     "unidades": 1320,
     "potencia_mw": 16.444,
+    "acumulado_unidades": 17647,
     "acumulado_mw": 218.403,
     "provisorio": false
    },
@@ -1384,6 +2145,7 @@
     "m": "2017-11",
     "unidades": 1779,
     "potencia_mw": 19.882,
+    "acumulado_unidades": 19426,
     "acumulado_mw": 238.285,
     "provisorio": false
    },
@@ -1391,6 +2153,7 @@
     "m": "2017-12",
     "unidades": 1778,
     "potencia_mw": 36.87,
+    "acumulado_unidades": 21204,
     "acumulado_mw": 275.155,
     "provisorio": false
    },
@@ -1398,6 +2161,7 @@
     "m": "2018-01",
     "unidades": 1907,
     "potencia_mw": 21.325,
+    "acumulado_unidades": 23111,
     "acumulado_mw": 296.479,
     "provisorio": false
    },
@@ -1405,6 +2169,7 @@
     "m": "2018-02",
     "unidades": 1682,
     "potencia_mw": 28.54,
+    "acumulado_unidades": 24793,
     "acumulado_mw": 325.02,
     "provisorio": false
    },
@@ -1412,6 +2177,7 @@
     "m": "2018-03",
     "unidades": 2152,
     "potencia_mw": 26.301,
+    "acumulado_unidades": 26945,
     "acumulado_mw": 351.321,
     "provisorio": false
    },
@@ -1419,6 +2185,7 @@
     "m": "2018-04",
     "unidades": 2030,
     "potencia_mw": 25.695,
+    "acumulado_unidades": 28975,
     "acumulado_mw": 377.016,
     "provisorio": false
    },
@@ -1426,6 +2193,7 @@
     "m": "2018-05",
     "unidades": 2381,
     "potencia_mw": 30.078,
+    "acumulado_unidades": 31356,
     "acumulado_mw": 407.094,
     "provisorio": false
    },
@@ -1433,6 +2201,7 @@
     "m": "2018-06",
     "unidades": 2419,
     "potencia_mw": 36.386,
+    "acumulado_unidades": 33775,
     "acumulado_mw": 443.48,
     "provisorio": false
    },
@@ -1440,6 +2209,7 @@
     "m": "2018-07",
     "unidades": 2653,
     "potencia_mw": 34.419,
+    "acumulado_unidades": 36428,
     "acumulado_mw": 477.9,
     "provisorio": false
    },
@@ -1447,6 +2217,7 @@
     "m": "2018-08",
     "unidades": 3314,
     "potencia_mw": 51.287,
+    "acumulado_unidades": 39742,
     "acumulado_mw": 529.186,
     "provisorio": false
    },
@@ -1454,6 +2225,7 @@
     "m": "2018-09",
     "unidades": 3150,
     "potencia_mw": 42.131,
+    "acumulado_unidades": 42892,
     "acumulado_mw": 571.317,
     "provisorio": false
    },
@@ -1461,6 +2233,7 @@
     "m": "2018-10",
     "unidades": 4196,
     "potencia_mw": 49.484,
+    "acumulado_unidades": 47088,
     "acumulado_mw": 620.801,
     "provisorio": false
    },
@@ -1468,6 +2241,7 @@
     "m": "2018-11",
     "unidades": 4666,
     "potencia_mw": 58.049,
+    "acumulado_unidades": 51754,
     "acumulado_mw": 678.85,
     "provisorio": false
    },
@@ -1475,6 +2249,7 @@
     "m": "2018-12",
     "unidades": 4788,
     "potencia_mw": 61.118,
+    "acumulado_unidades": 56542,
     "acumulado_mw": 739.968,
     "provisorio": false
    },
@@ -1482,6 +2257,7 @@
     "m": "2019-01",
     "unidades": 5802,
     "potencia_mw": 86.403,
+    "acumulado_unidades": 62344,
     "acumulado_mw": 826.371,
     "provisorio": false
    },
@@ -1489,6 +2265,7 @@
     "m": "2019-02",
     "unidades": 6021,
     "potencia_mw": 82.69,
+    "acumulado_unidades": 68365,
     "acumulado_mw": 909.062,
     "provisorio": false
    },
@@ -1496,6 +2273,7 @@
     "m": "2019-03",
     "unidades": 6232,
     "potencia_mw": 87.038,
+    "acumulado_unidades": 74597,
     "acumulado_mw": 996.1,
     "provisorio": false
    },
@@ -1503,6 +2281,7 @@
     "m": "2019-04",
     "unidades": 8034,
     "potencia_mw": 111.7,
+    "acumulado_unidades": 82631,
     "acumulado_mw": 1107.799,
     "provisorio": false
    },
@@ -1510,6 +2289,7 @@
     "m": "2019-05",
     "unidades": 9494,
     "potencia_mw": 133.708,
+    "acumulado_unidades": 92125,
     "acumulado_mw": 1241.507,
     "provisorio": false
    },
@@ -1517,6 +2297,7 @@
     "m": "2019-06",
     "unidades": 7981,
     "potencia_mw": 106.811,
+    "acumulado_unidades": 100106,
     "acumulado_mw": 1348.318,
     "provisorio": false
    },
@@ -1524,6 +2305,7 @@
     "m": "2019-07",
     "unidades": 10508,
     "potencia_mw": 162.534,
+    "acumulado_unidades": 110614,
     "acumulado_mw": 1510.852,
     "provisorio": false
    },
@@ -1531,6 +2313,7 @@
     "m": "2019-08",
     "unidades": 10891,
     "potencia_mw": 162.47,
+    "acumulado_unidades": 121505,
     "acumulado_mw": 1673.322,
     "provisorio": false
    },
@@ -1538,6 +2321,7 @@
     "m": "2019-09",
     "unidades": 10763,
     "potencia_mw": 157.49,
+    "acumulado_unidades": 132268,
     "acumulado_mw": 1830.812,
     "provisorio": false
    },
@@ -1545,6 +2329,7 @@
     "m": "2019-10",
     "unidades": 13470,
     "potencia_mw": 183.849,
+    "acumulado_unidades": 145738,
     "acumulado_mw": 2014.661,
     "provisorio": false
    },
@@ -1552,6 +2337,7 @@
     "m": "2019-11",
     "unidades": 13456,
     "potencia_mw": 188.492,
+    "acumulado_unidades": 159194,
     "acumulado_mw": 2203.153,
     "provisorio": false
    },
@@ -1559,6 +2345,7 @@
     "m": "2019-12",
     "unidades": 18294,
     "potencia_mw": 265.058,
+    "acumulado_unidades": 177488,
     "acumulado_mw": 2468.211,
     "provisorio": false
    },
@@ -1566,6 +2353,7 @@
     "m": "2020-01",
     "unidades": 17884,
     "potencia_mw": 243.426,
+    "acumulado_unidades": 195372,
     "acumulado_mw": 2711.636,
     "provisorio": false
    },
@@ -1573,6 +2361,7 @@
     "m": "2020-02",
     "unidades": 18294,
     "potencia_mw": 282.308,
+    "acumulado_unidades": 213666,
     "acumulado_mw": 2993.944,
     "provisorio": false
    },
@@ -1580,6 +2369,7 @@
     "m": "2020-03",
     "unidades": 21217,
     "potencia_mw": 313.973,
+    "acumulado_unidades": 234883,
     "acumulado_mw": 3307.917,
     "provisorio": false
    },
@@ -1587,6 +2377,7 @@
     "m": "2020-04",
     "unidades": 16773,
     "potencia_mw": 273.942,
+    "acumulado_unidades": 251656,
     "acumulado_mw": 3581.858,
     "provisorio": false
    },
@@ -1594,6 +2385,7 @@
     "m": "2020-05",
     "unidades": 14347,
     "potencia_mw": 251.52,
+    "acumulado_unidades": 266003,
     "acumulado_mw": 3833.378,
     "provisorio": false
    },
@@ -1601,6 +2393,7 @@
     "m": "2020-06",
     "unidades": 15751,
     "potencia_mw": 258.527,
+    "acumulado_unidades": 281754,
     "acumulado_mw": 4091.905,
     "provisorio": false
    },
@@ -1608,6 +2401,7 @@
     "m": "2020-07",
     "unidades": 17707,
     "potencia_mw": 295.185,
+    "acumulado_unidades": 299461,
     "acumulado_mw": 4387.09,
     "provisorio": false
    },
@@ -1615,6 +2409,7 @@
     "m": "2020-08",
     "unidades": 17592,
     "potencia_mw": 267.431,
+    "acumulado_unidades": 317053,
     "acumulado_mw": 4654.521,
     "provisorio": false
    },
@@ -1622,6 +2417,7 @@
     "m": "2020-09",
     "unidades": 17488,
     "potencia_mw": 277.108,
+    "acumulado_unidades": 334541,
     "acumulado_mw": 4931.629,
     "provisorio": false
    },
@@ -1629,6 +2425,7 @@
     "m": "2020-10",
     "unidades": 19416,
     "potencia_mw": 302.837,
+    "acumulado_unidades": 353957,
     "acumulado_mw": 5234.466,
     "provisorio": false
    },
@@ -1636,6 +2433,7 @@
     "m": "2020-11",
     "unidades": 22499,
     "potencia_mw": 337.284,
+    "acumulado_unidades": 376456,
     "acumulado_mw": 5571.75,
     "provisorio": false
    },
@@ -1643,6 +2441,7 @@
     "m": "2020-12",
     "unidades": 25766,
     "potencia_mw": 361.191,
+    "acumulado_unidades": 402222,
     "acumulado_mw": 5932.941,
     "provisorio": false
    },
@@ -1650,6 +2449,7 @@
     "m": "2021-01",
     "unidades": 22432,
     "potencia_mw": 326.346,
+    "acumulado_unidades": 424654,
     "acumulado_mw": 6259.287,
     "provisorio": false
    },
@@ -1657,6 +2457,7 @@
     "m": "2021-02",
     "unidades": 26137,
     "potencia_mw": 320.901,
+    "acumulado_unidades": 450791,
     "acumulado_mw": 6580.188,
     "provisorio": false
    },
@@ -1664,6 +2465,7 @@
     "m": "2021-03",
     "unidades": 35824,
     "potencia_mw": 488.315,
+    "acumulado_unidades": 486615,
     "acumulado_mw": 7068.502,
     "provisorio": false
    },
@@ -1671,6 +2473,7 @@
     "m": "2021-04",
     "unidades": 30197,
     "potencia_mw": 368.66,
+    "acumulado_unidades": 516812,
     "acumulado_mw": 7437.162,
     "provisorio": false
    },
@@ -1678,6 +2481,7 @@
     "m": "2021-05",
     "unidades": 33333,
     "potencia_mw": 437.337,
+    "acumulado_unidades": 550145,
     "acumulado_mw": 7874.499,
     "provisorio": false
    },
@@ -1685,6 +2489,7 @@
     "m": "2021-06",
     "unidades": 31193,
     "potencia_mw": 422.012,
+    "acumulado_unidades": 581338,
     "acumulado_mw": 8296.51,
     "provisorio": false
    },
@@ -1692,6 +2497,7 @@
     "m": "2021-07",
     "unidades": 35221,
     "potencia_mw": 456.387,
+    "acumulado_unidades": 616559,
     "acumulado_mw": 8752.897,
     "provisorio": false
    },
@@ -1699,6 +2505,7 @@
     "m": "2021-08",
     "unidades": 39842,
     "potencia_mw": 494.74,
+    "acumulado_unidades": 656401,
     "acumulado_mw": 9247.638,
     "provisorio": false
    },
@@ -1706,6 +2513,7 @@
     "m": "2021-09",
     "unidades": 40411,
     "potencia_mw": 475.211,
+    "acumulado_unidades": 696812,
     "acumulado_mw": 9722.849,
     "provisorio": false
    },
@@ -1713,6 +2521,7 @@
     "m": "2021-10",
     "unidades": 42226,
     "potencia_mw": 494.596,
+    "acumulado_unidades": 739038,
     "acumulado_mw": 10217.445,
     "provisorio": false
    },
@@ -1720,6 +2529,7 @@
     "m": "2021-11",
     "unidades": 53480,
     "potencia_mw": 622.232,
+    "acumulado_unidades": 792518,
     "acumulado_mw": 10839.677,
     "provisorio": false
    },
@@ -1727,6 +2537,7 @@
     "m": "2021-12",
     "unidades": 63642,
     "potencia_mw": 758.529,
+    "acumulado_unidades": 856160,
     "acumulado_mw": 11598.206,
     "provisorio": false
    },
@@ -1734,6 +2545,7 @@
     "m": "2022-01",
     "unidades": 48003,
     "potencia_mw": 479.622,
+    "acumulado_unidades": 904163,
     "acumulado_mw": 12077.829,
     "provisorio": false
    },
@@ -1741,6 +2553,7 @@
     "m": "2022-02",
     "unidades": 56595,
     "potencia_mw": 570.99,
+    "acumulado_unidades": 960758,
     "acumulado_mw": 12648.818,
     "provisorio": false
    },
@@ -1748,6 +2561,7 @@
     "m": "2022-03",
     "unidades": 65125,
     "potencia_mw": 706.89,
+    "acumulado_unidades": 1025883,
     "acumulado_mw": 13355.709,
     "provisorio": false
    },
@@ -1755,6 +2569,7 @@
     "m": "2022-04",
     "unidades": 60494,
     "potencia_mw": 632.667,
+    "acumulado_unidades": 1086377,
     "acumulado_mw": 13988.376,
     "provisorio": false
    },
@@ -1762,6 +2577,7 @@
     "m": "2022-05",
     "unidades": 67695,
     "potencia_mw": 710.274,
+    "acumulado_unidades": 1154072,
     "acumulado_mw": 14698.65,
     "provisorio": false
    },
@@ -1769,6 +2585,7 @@
     "m": "2022-06",
     "unidades": 67780,
     "potencia_mw": 725.778,
+    "acumulado_unidades": 1221852,
     "acumulado_mw": 15424.428,
     "provisorio": false
    },
@@ -1776,6 +2593,7 @@
     "m": "2022-07",
     "unidades": 69322,
     "potencia_mw": 773.937,
+    "acumulado_unidades": 1291174,
     "acumulado_mw": 16198.364,
     "provisorio": false
    },
@@ -1783,6 +2601,7 @@
     "m": "2022-08",
     "unidades": 68601,
     "potencia_mw": 792.129,
+    "acumulado_unidades": 1359775,
     "acumulado_mw": 16990.493,
     "provisorio": false
    },
@@ -1790,6 +2609,7 @@
     "m": "2022-09",
     "unidades": 65045,
     "potencia_mw": 787.834,
+    "acumulado_unidades": 1424820,
     "acumulado_mw": 17778.328,
     "provisorio": false
    },
@@ -1797,6 +2617,7 @@
     "m": "2022-10",
     "unidades": 65713,
     "potencia_mw": 717.456,
+    "acumulado_unidades": 1490533,
     "acumulado_mw": 18495.783,
     "provisorio": false
    },
@@ -1804,6 +2625,7 @@
     "m": "2022-11",
     "unidades": 76202,
     "potencia_mw": 878.694,
+    "acumulado_unidades": 1566735,
     "acumulado_mw": 19374.477,
     "provisorio": false
    },
@@ -1811,6 +2633,7 @@
     "m": "2022-12",
     "unidades": 97851,
     "potencia_mw": 1105.267,
+    "acumulado_unidades": 1664586,
     "acumulado_mw": 20479.744,
     "provisorio": false
    },
@@ -1818,6 +2641,7 @@
     "m": "2023-01",
     "unidades": 103441,
     "potencia_mw": 1075.718,
+    "acumulado_unidades": 1768027,
     "acumulado_mw": 21555.462,
     "provisorio": false
    },
@@ -1825,6 +2649,7 @@
     "m": "2023-02",
     "unidades": 86364,
     "potencia_mw": 938.824,
+    "acumulado_unidades": 1854391,
     "acumulado_mw": 22494.285,
     "provisorio": false
    },
@@ -1832,6 +2657,7 @@
     "m": "2023-03",
     "unidades": 83368,
     "potencia_mw": 1020.422,
+    "acumulado_unidades": 1937759,
     "acumulado_mw": 23514.708,
     "provisorio": false
    },
@@ -1839,6 +2665,7 @@
     "m": "2023-04",
     "unidades": 54683,
     "potencia_mw": 749.016,
+    "acumulado_unidades": 1992442,
     "acumulado_mw": 24263.724,
     "provisorio": false
    },
@@ -1846,6 +2673,7 @@
     "m": "2023-05",
     "unidades": 55838,
     "potencia_mw": 885.943,
+    "acumulado_unidades": 2048280,
     "acumulado_mw": 25149.667,
     "provisorio": false
    },
@@ -1853,6 +2681,7 @@
     "m": "2023-06",
     "unidades": 37362,
     "potencia_mw": 557.178,
+    "acumulado_unidades": 2085642,
     "acumulado_mw": 25706.845,
     "provisorio": false
    },
@@ -1860,6 +2689,7 @@
     "m": "2023-07",
     "unidades": 37279,
     "potencia_mw": 504.076,
+    "acumulado_unidades": 2122921,
     "acumulado_mw": 26210.921,
     "provisorio": false
    },
@@ -1867,6 +2697,7 @@
     "m": "2023-08",
     "unidades": 39454,
     "potencia_mw": 548.863,
+    "acumulado_unidades": 2162375,
     "acumulado_mw": 26759.784,
     "provisorio": false
    },
@@ -1874,6 +2705,7 @@
     "m": "2023-09",
     "unidades": 37503,
     "potencia_mw": 538.076,
+    "acumulado_unidades": 2199878,
     "acumulado_mw": 27297.86,
     "provisorio": false
    },
@@ -1881,6 +2713,7 @@
     "m": "2023-10",
     "unidades": 45050,
     "potencia_mw": 596.029,
+    "acumulado_unidades": 2244928,
     "acumulado_mw": 27893.889,
     "provisorio": false
    },
@@ -1888,6 +2721,7 @@
     "m": "2023-11",
     "unidades": 53618,
     "potencia_mw": 617.617,
+    "acumulado_unidades": 2298546,
     "acumulado_mw": 28511.506,
     "provisorio": false
    },
@@ -1895,6 +2729,7 @@
     "m": "2023-12",
     "unidades": 61546,
     "potencia_mw": 715.32,
+    "acumulado_unidades": 2360092,
     "acumulado_mw": 29226.825,
     "provisorio": false
    },
@@ -1902,6 +2737,7 @@
     "m": "2024-01",
     "unidades": 70254,
     "potencia_mw": 809.482,
+    "acumulado_unidades": 2430346,
     "acumulado_mw": 30036.307,
     "provisorio": false
    },
@@ -1909,6 +2745,7 @@
     "m": "2024-02",
     "unidades": 70421,
     "potencia_mw": 750.42,
+    "acumulado_unidades": 2500767,
     "acumulado_mw": 30786.727,
     "provisorio": false
    },
@@ -1916,6 +2753,7 @@
     "m": "2024-03",
     "unidades": 77039,
     "potencia_mw": 874.252,
+    "acumulado_unidades": 2577806,
     "acumulado_mw": 31660.98,
     "provisorio": false
    },
@@ -1923,6 +2761,7 @@
     "m": "2024-04",
     "unidades": 81177,
     "potencia_mw": 893.503,
+    "acumulado_unidades": 2658983,
     "acumulado_mw": 32554.483,
     "provisorio": false
    },
@@ -1930,6 +2769,7 @@
     "m": "2024-05",
     "unidades": 78392,
     "potencia_mw": 875.326,
+    "acumulado_unidades": 2737375,
     "acumulado_mw": 33429.809,
     "provisorio": false
    },
@@ -1937,6 +2777,7 @@
     "m": "2024-06",
     "unidades": 73481,
     "potencia_mw": 886.487,
+    "acumulado_unidades": 2810856,
     "acumulado_mw": 34316.296,
     "provisorio": false
    },
@@ -1944,6 +2785,7 @@
     "m": "2024-07",
     "unidades": 78483,
     "potencia_mw": 970.166,
+    "acumulado_unidades": 2889339,
     "acumulado_mw": 35286.462,
     "provisorio": false
    },
@@ -1951,6 +2793,7 @@
     "m": "2024-08",
     "unidades": 75021,
     "potencia_mw": 949.134,
+    "acumulado_unidades": 2964360,
     "acumulado_mw": 36235.595,
     "provisorio": false
    },
@@ -1958,6 +2801,7 @@
     "m": "2024-09",
     "unidades": 68808,
     "potencia_mw": 818.876,
+    "acumulado_unidades": 3033168,
     "acumulado_mw": 37054.471,
     "provisorio": false
    },
@@ -1965,6 +2809,7 @@
     "m": "2024-10",
     "unidades": 76553,
     "potencia_mw": 920.624,
+    "acumulado_unidades": 3109721,
     "acumulado_mw": 37975.095,
     "provisorio": false
    },
@@ -1972,6 +2817,7 @@
     "m": "2024-11",
     "unidades": 77144,
     "potencia_mw": 861.776,
+    "acumulado_unidades": 3186865,
     "acumulado_mw": 38836.871,
     "provisorio": false
    },
@@ -1979,6 +2825,7 @@
     "m": "2024-12",
     "unidades": 89666,
     "potencia_mw": 1061.603,
+    "acumulado_unidades": 3276531,
     "acumulado_mw": 39898.474,
     "provisorio": false
    },
@@ -1986,6 +2833,7 @@
     "m": "2025-01",
     "unidades": 88210,
     "potencia_mw": 994.937,
+    "acumulado_unidades": 3364741,
     "acumulado_mw": 40893.41,
     "provisorio": false
    },
@@ -1993,6 +2841,7 @@
     "m": "2025-02",
     "unidades": 86378,
     "potencia_mw": 904.213,
+    "acumulado_unidades": 3451119,
     "acumulado_mw": 41797.623,
     "provisorio": false
    },
@@ -2000,6 +2849,7 @@
     "m": "2025-03",
     "unidades": 85960,
     "potencia_mw": 919.022,
+    "acumulado_unidades": 3537079,
     "acumulado_mw": 42716.645,
     "provisorio": false
    },
@@ -2007,6 +2857,7 @@
     "m": "2025-04",
     "unidades": 80177,
     "potencia_mw": 853.27,
+    "acumulado_unidades": 3617256,
     "acumulado_mw": 43569.915,
     "provisorio": false
    },
@@ -2014,6 +2865,7 @@
     "m": "2025-05",
     "unidades": 80445,
     "potencia_mw": 798.735,
+    "acumulado_unidades": 3697701,
     "acumulado_mw": 44368.65,
     "provisorio": false
    },
@@ -2021,6 +2873,7 @@
     "m": "2025-06",
     "unidades": 67990,
     "potencia_mw": 739.096,
+    "acumulado_unidades": 3765691,
     "acumulado_mw": 45107.746,
     "provisorio": false
    },
@@ -2028,6 +2881,7 @@
     "m": "2025-07",
     "unidades": 74369,
     "potencia_mw": 824.351,
+    "acumulado_unidades": 3840060,
     "acumulado_mw": 45932.097,
     "provisorio": false
    },
@@ -2035,6 +2889,7 @@
     "m": "2025-08",
     "unidades": 64811,
     "potencia_mw": 719.788,
+    "acumulado_unidades": 3904871,
     "acumulado_mw": 46651.885,
     "provisorio": false
    },
@@ -2042,6 +2897,7 @@
     "m": "2025-09",
     "unidades": 66006,
     "potencia_mw": 673.228,
+    "acumulado_unidades": 3970877,
     "acumulado_mw": 47325.113,
     "provisorio": false
    },
@@ -2049,6 +2905,7 @@
     "m": "2025-10",
     "unidades": 67656,
     "potencia_mw": 787.663,
+    "acumulado_unidades": 4038533,
     "acumulado_mw": 48112.776,
     "provisorio": false
    },
@@ -2056,6 +2913,7 @@
     "m": "2025-11",
     "unidades": 69348,
     "potencia_mw": 690.894,
+    "acumulado_unidades": 4107881,
     "acumulado_mw": 48803.67,
     "provisorio": false
    },
@@ -2063,6 +2921,7 @@
     "m": "2025-12",
     "unidades": 78615,
     "potencia_mw": 728.336,
+    "acumulado_unidades": 4186496,
     "acumulado_mw": 49532.005,
     "provisorio": false
    },
@@ -2070,6 +2929,7 @@
     "m": "2026-01",
     "unidades": 74142,
     "potencia_mw": 729.732,
+    "acumulado_unidades": 4260638,
     "acumulado_mw": 50261.738,
     "provisorio": false
    },
@@ -2077,6 +2937,7 @@
     "m": "2026-02",
     "unidades": 75686,
     "potencia_mw": 666.333,
+    "acumulado_unidades": 4336324,
     "acumulado_mw": 50928.071,
     "provisorio": false
    },
@@ -2084,6 +2945,7 @@
     "m": "2026-03",
     "unidades": 88089,
     "potencia_mw": 766.473,
+    "acumulado_unidades": 4424413,
     "acumulado_mw": 51694.544,
     "provisorio": false
    },
@@ -2091,6 +2953,7 @@
     "m": "2026-04",
     "unidades": 88690,
     "potencia_mw": 862.353,
+    "acumulado_unidades": 4513103,
     "acumulado_mw": 52556.897,
     "provisorio": true
    },
@@ -2098,6 +2961,7 @@
     "m": "2026-05",
     "unidades": 61991,
     "potencia_mw": 689.543,
+    "acumulado_unidades": 4575094,
     "acumulado_mw": 53246.44,
     "provisorio": true
    },
@@ -2105,6 +2969,7 @@
     "m": "2026-06",
     "unidades": 49475,
     "potencia_mw": 459.996,
+    "acumulado_unidades": 4624569,
     "acumulado_mw": 53706.435,
     "provisorio": true
    },
@@ -2112,6 +2977,7 @@
     "m": "2026-07",
     "unidades": 29314,
     "potencia_mw": 234.889,
+    "acumulado_unidades": 4653883,
     "acumulado_mw": 53941.324,
     "provisorio": true
    },
@@ -2119,6 +2985,15 @@
     "m": "2026-08",
     "unidades": 2910,
     "potencia_mw": 23.525,
+    "acumulado_unidades": 4656793,
+    "acumulado_mw": 53964.849,
+    "provisorio": true
+   },
+   {
+    "m": "2026-09",
+    "unidades": 0,
+    "potencia_mw": 0.0,
+    "acumulado_unidades": 4656793,
     "acumulado_mw": 53964.849,
     "provisorio": true
    }
@@ -2696,6 +3571,42 @@
    },
    {
     "uf": "AP",
+    "ano": 2011,
+    "unidades": 0,
+    "potencia_mw": 0.0
+   },
+   {
+    "uf": "AP",
+    "ano": 2012,
+    "unidades": 0,
+    "potencia_mw": 0.0
+   },
+   {
+    "uf": "AP",
+    "ano": 2013,
+    "unidades": 0,
+    "potencia_mw": 0.0
+   },
+   {
+    "uf": "AP",
+    "ano": 2014,
+    "unidades": 0,
+    "potencia_mw": 0.0
+   },
+   {
+    "uf": "AP",
+    "ano": 2015,
+    "unidades": 0,
+    "potencia_mw": 0.0
+   },
+   {
+    "uf": "AP",
+    "ano": 2016,
+    "unidades": 0,
+    "potencia_mw": 0.0
+   },
+   {
+    "uf": "AP",
     "ano": 2017,
     "unidades": 8,
     "potencia_mw": 0.555
@@ -2759,6 +3670,12 @@
     "ano": 2012,
     "unidades": 1,
     "potencia_mw": 0.403
+   },
+   {
+    "uf": "BA",
+    "ano": 2013,
+    "unidades": 0,
+    "potencia_mw": 0.0
    },
    {
     "uf": "BA",
@@ -3752,9 +4669,27 @@
    },
    {
     "uf": "PI",
+    "ano": 2011,
+    "unidades": 0,
+    "potencia_mw": 0.0
+   },
+   {
+    "uf": "PI",
     "ano": 2012,
     "unidades": 1,
     "potencia_mw": 0.003
+   },
+   {
+    "uf": "PI",
+    "ano": 2013,
+    "unidades": 0,
+    "potencia_mw": 0.0
+   },
+   {
+    "uf": "PI",
+    "ano": 2014,
+    "unidades": 0,
+    "potencia_mw": 0.0
    },
    {
     "uf": "PI",
@@ -3932,6 +4867,36 @@
    },
    {
     "uf": "RJ",
+    "ano": 2005,
+    "unidades": 0,
+    "potencia_mw": 0.0
+   },
+   {
+    "uf": "RJ",
+    "ano": 2006,
+    "unidades": 0,
+    "potencia_mw": 0.0
+   },
+   {
+    "uf": "RJ",
+    "ano": 2007,
+    "unidades": 0,
+    "potencia_mw": 0.0
+   },
+   {
+    "uf": "RJ",
+    "ano": 2008,
+    "unidades": 0,
+    "potencia_mw": 0.0
+   },
+   {
+    "uf": "RJ",
+    "ano": 2009,
+    "unidades": 0,
+    "potencia_mw": 0.0
+   },
+   {
+    "uf": "RJ",
     "ano": 2010,
     "unidades": 1,
     "potencia_mw": 0.006
@@ -3941,6 +4906,12 @@
     "ano": 2011,
     "unidades": 1,
     "potencia_mw": 0.005
+   },
+   {
+    "uf": "RJ",
+    "ano": 2012,
+    "unidades": 0,
+    "potencia_mw": 0.0
    },
    {
     "uf": "RJ",
@@ -4118,6 +5089,24 @@
    },
    {
     "uf": "RO",
+    "ano": 2010,
+    "unidades": 0,
+    "potencia_mw": 0.0
+   },
+   {
+    "uf": "RO",
+    "ano": 2011,
+    "unidades": 0,
+    "potencia_mw": 0.0
+   },
+   {
+    "uf": "RO",
+    "ano": 2012,
+    "unidades": 0,
+    "potencia_mw": 0.0
+   },
+   {
+    "uf": "RO",
     "ano": 2013,
     "unidades": 1,
     "potencia_mw": 0.015
@@ -4261,6 +5250,12 @@
     "potencia_mw": 36.024
    },
    {
+    "uf": "RR",
+    "ano": 2026,
+    "unidades": 0,
+    "potencia_mw": 0.0
+   },
+   {
     "uf": "RS",
     "ano": 2009,
     "unidades": 2,
@@ -4271,6 +5266,18 @@
     "ano": 2010,
     "unidades": 1,
     "potencia_mw": 0.005
+   },
+   {
+    "uf": "RS",
+    "ano": 2011,
+    "unidades": 0,
+    "potencia_mw": 0.0
+   },
+   {
+    "uf": "RS",
+    "ano": 2012,
+    "unidades": 0,
+    "potencia_mw": 0.0
    },
    {
     "uf": "RS",
@@ -4622,6 +5629,18 @@
    },
    {
     "uf": "TO",
+    "ano": 2012,
+    "unidades": 0,
+    "potencia_mw": 0.0
+   },
+   {
+    "uf": "TO",
+    "ano": 2013,
+    "unidades": 0,
+    "potencia_mw": 0.0
+   },
+   {
+    "uf": "TO",
     "ano": 2014,
     "unidades": 3,
     "potencia_mw": 0.021
@@ -4714,6 +5733,14 @@
     "municipios": 396,
     "uf_principal": "PR",
     "unidades_fora_uf_principal": 268,
+    "ufs_area_conjuntos": [
+     "PR",
+     "SC",
+     "SP"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "PR",
@@ -4739,6 +5766,16 @@
     "municipios": 783,
     "uf_principal": "MG",
     "unidades_fora_uf_principal": 9,
+    "ufs_area_conjuntos": [
+     "BA",
+     "GO",
+     "MG"
+    ],
+    "unidades_fora_da_area": 9,
+    "potencia_mw_fora_da_area": 0.19,
+    "ufs_fora_da_area": [
+     "DF"
+    ],
     "ufs": [
      {
       "uf": "MG",
@@ -4764,6 +5801,14 @@
     "municipios": 143,
     "uf_principal": "MT",
     "unidades_fora_uf_principal": 1,
+    "ufs_area_conjuntos": [
+     "MT"
+    ],
+    "unidades_fora_da_area": 1,
+    "potencia_mw_fora_da_area": 0.005,
+    "ufs_fora_da_area": [
+     "PI"
+    ],
     "ufs": [
      {
       "uf": "MT",
@@ -4789,6 +5834,14 @@
     "municipios": 257,
     "uf_principal": "SP",
     "unidades_fora_uf_principal": 2,
+    "ufs_area_conjuntos": [
+     "SP"
+    ],
+    "unidades_fora_da_area": 2,
+    "potencia_mw_fora_da_area": 1.5,
+    "ufs_fora_da_area": [
+     "PR"
+    ],
     "ufs": [
      {
       "uf": "SP",
@@ -4814,6 +5867,35 @@
     "municipios": 539,
     "uf_principal": "BA",
     "unidades_fora_uf_principal": 880,
+    "ufs_area_conjuntos": [
+     "BA"
+    ],
+    "unidades_fora_da_area": 880,
+    "potencia_mw_fora_da_area": 7.369,
+    "ufs_fora_da_area": [
+     "AC",
+     "AL",
+     "AM",
+     "CE",
+     "ES",
+     "GO",
+     "MA",
+     "MG",
+     "MS",
+     "MT",
+     "PA",
+     "PB",
+     "PE",
+     "PI",
+     "PR",
+     "RJ",
+     "RN",
+     "RO",
+     "RS",
+     "SC",
+     "SP",
+     "TO"
+    ],
     "ufs": [
      {
       "uf": "BA",
@@ -4923,6 +6005,12 @@
     "municipios": 383,
     "uf_principal": "RS",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "RS"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RS",
@@ -4944,6 +6032,29 @@
     "municipios": 279,
     "uf_principal": "GO",
     "unidades_fora_uf_principal": 55,
+    "ufs_area_conjuntos": [
+     "GO"
+    ],
+    "unidades_fora_da_area": 55,
+    "potencia_mw_fora_da_area": 0.655,
+    "ufs_fora_da_area": [
+     "AL",
+     "AP",
+     "CE",
+     "DF",
+     "MA",
+     "MG",
+     "MS",
+     "MT",
+     "PE",
+     "PI",
+     "PR",
+     "RO",
+     "RS",
+     "SC",
+     "SP",
+     "TO"
+    ],
     "ufs": [
      {
       "uf": "GO",
@@ -5029,6 +6140,17 @@
     "municipios": 286,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 406,
+    "ufs_area_conjuntos": [
+     "PR",
+     "SC"
+    ],
+    "unidades_fora_da_area": 3,
+    "potencia_mw_fora_da_area": 0.057,
+    "ufs_fora_da_area": [
+     "MG",
+     "MS",
+     "PA"
+    ],
     "ufs": [
      {
       "uf": "SC",
@@ -5066,6 +6188,31 @@
     "municipios": 248,
     "uf_principal": "CE",
     "unidades_fora_uf_principal": 146,
+    "ufs_area_conjuntos": [
+     "CE"
+    ],
+    "unidades_fora_da_area": 146,
+    "potencia_mw_fora_da_area": 1.36,
+    "ufs_fora_da_area": [
+     "BA",
+     "GO",
+     "MA",
+     "MG",
+     "MS",
+     "MT",
+     "PA",
+     "PB",
+     "PE",
+     "PI",
+     "PR",
+     "RJ",
+     "RN",
+     "RS",
+     "SC",
+     "SE",
+     "SP",
+     "TO"
+    ],
     "ufs": [
      {
       "uf": "CE",
@@ -5159,6 +6306,12 @@
     "municipios": 75,
     "uf_principal": "MS",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "MS"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "MS",
@@ -5180,6 +6333,27 @@
     "municipios": 325,
     "uf_principal": "PA",
     "unidades_fora_uf_principal": 585,
+    "ufs_area_conjuntos": [
+     "PA"
+    ],
+    "unidades_fora_da_area": 585,
+    "potencia_mw_fora_da_area": 10.043,
+    "ufs_fora_da_area": [
+     "AL",
+     "AP",
+     "BA",
+     "CE",
+     "GO",
+     "MA",
+     "MG",
+     "MS",
+     "PB",
+     "PI",
+     "PR",
+     "RS",
+     "SP",
+     "TO"
+    ],
     "ufs": [
      {
       "uf": "PA",
@@ -5257,6 +6431,17 @@
     "municipios": 236,
     "uf_principal": "SP",
     "unidades_fora_uf_principal": 10018,
+    "ufs_area_conjuntos": [
+     "MS",
+     "SP"
+    ],
+    "unidades_fora_da_area": 13,
+    "potencia_mw_fora_da_area": 0.1,
+    "ufs_fora_da_area": [
+     "BA",
+     "MG",
+     "RS"
+    ],
     "ufs": [
      {
       "uf": "SP",
@@ -5294,6 +6479,33 @@
     "municipios": 261,
     "uf_principal": "PE",
     "unidades_fora_uf_principal": 913,
+    "ufs_area_conjuntos": [
+     "BA",
+     "PB",
+     "PE",
+     "PI"
+    ],
+    "unidades_fora_da_area": 425,
+    "potencia_mw_fora_da_area": 4.737,
+    "ufs_fora_da_area": [
+     "AL",
+     "CE",
+     "ES",
+     "GO",
+     "MA",
+     "MG",
+     "MS",
+     "MT",
+     "PA",
+     "PR",
+     "RN",
+     "RO",
+     "RS",
+     "SC",
+     "SE",
+     "SP",
+     "TO"
+    ],
     "ufs": [
      {
       "uf": "PE",
@@ -5391,6 +6603,12 @@
     "municipios": 75,
     "uf_principal": "ES",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "ES"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "ES",
@@ -5412,6 +6630,16 @@
     "municipios": 305,
     "uf_principal": "MA",
     "unidades_fora_uf_principal": 297,
+    "ufs_area_conjuntos": [
+     "MA"
+    ],
+    "unidades_fora_da_area": 297,
+    "potencia_mw_fora_da_area": 3.407,
+    "ufs_fora_da_area": [
+     "AL",
+     "PA",
+     "PI"
+    ],
     "ufs": [
      {
       "uf": "MA",
@@ -5445,6 +6673,23 @@
     "municipios": 181,
     "uf_principal": "RN",
     "unidades_fora_uf_principal": 48,
+    "ufs_area_conjuntos": [
+     "RN"
+    ],
+    "unidades_fora_da_area": 48,
+    "potencia_mw_fora_da_area": 0.992,
+    "ufs_fora_da_area": [
+     "BA",
+     "GO",
+     "MA",
+     "MG",
+     "MT",
+     "PE",
+     "PR",
+     "SC",
+     "SP",
+     "TO"
+    ],
     "ufs": [
      {
       "uf": "RN",
@@ -5506,6 +6751,19 @@
     "municipios": 85,
     "uf_principal": "RJ",
     "unidades_fora_uf_principal": 22,
+    "ufs_area_conjuntos": [
+     "MG",
+     "RJ"
+    ],
+    "unidades_fora_da_area": 12,
+    "potencia_mw_fora_da_area": 0.161,
+    "ufs_fora_da_area": [
+     "BA",
+     "PR",
+     "RN",
+     "SP",
+     "TO"
+    ],
     "ufs": [
      {
       "uf": "RJ",
@@ -5551,6 +6809,13 @@
     "municipios": 30,
     "uf_principal": "SP",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "PR",
+     "SP"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SP",
@@ -5572,6 +6837,28 @@
     "municipios": 453,
     "uf_principal": "PI",
     "unidades_fora_uf_principal": 1370,
+    "ufs_area_conjuntos": [
+     "PI"
+    ],
+    "unidades_fora_da_area": 1370,
+    "potencia_mw_fora_da_area": 24.751,
+    "ufs_fora_da_area": [
+     "AL",
+     "AP",
+     "BA",
+     "GO",
+     "MA",
+     "MG",
+     "MS",
+     "PA",
+     "PB",
+     "PE",
+     "PR",
+     "RO",
+     "SC",
+     "SP",
+     "TO"
+    ],
     "ufs": [
      {
       "uf": "PI",
@@ -5653,6 +6940,14 @@
     "municipios": 35,
     "uf_principal": "RJ",
     "unidades_fora_uf_principal": 18,
+    "ufs_area_conjuntos": [
+     "MG",
+     "RJ",
+     "SP"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RJ",
@@ -5678,6 +6973,14 @@
     "municipios": 53,
     "uf_principal": "RO",
     "unidades_fora_uf_principal": 1,
+    "ufs_area_conjuntos": [
+     "RO"
+    ],
+    "unidades_fora_da_area": 1,
+    "potencia_mw_fora_da_area": 0.005,
+    "ufs_fora_da_area": [
+     "PR"
+    ],
     "ufs": [
      {
       "uf": "RO",
@@ -5703,6 +7006,13 @@
     "municipios": 139,
     "uf_principal": "TO",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "PA",
+     "TO"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "TO",
@@ -5724,6 +7034,12 @@
     "municipios": 72,
     "uf_principal": "RS",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "RS"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RS",
@@ -5745,6 +7061,14 @@
     "municipios": 98,
     "uf_principal": "SP",
     "unidades_fora_uf_principal": 4876,
+    "ufs_area_conjuntos": [
+     "MG",
+     "PR",
+     "SP"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SP",
@@ -5774,6 +7098,18 @@
     "municipios": 224,
     "uf_principal": "PB",
     "unidades_fora_uf_principal": 4,
+    "ufs_area_conjuntos": [
+     "CE",
+     "MA",
+     "PB",
+     "PI",
+     "RN"
+    ],
+    "unidades_fora_da_area": 4,
+    "potencia_mw_fora_da_area": 0.027,
+    "ufs_fora_da_area": [
+     "PE"
+    ],
     "ufs": [
      {
       "uf": "PB",
@@ -5799,6 +7135,23 @@
     "municipios": 211,
     "uf_principal": "AL",
     "unidades_fora_uf_principal": 307,
+    "ufs_area_conjuntos": [
+     "AL",
+     "PE"
+    ],
+    "unidades_fora_da_area": 307,
+    "potencia_mw_fora_da_area": 2.496,
+    "ufs_fora_da_area": [
+     "BA",
+     "MA",
+     "PA",
+     "PB",
+     "PI",
+     "PR",
+     "RN",
+     "SP",
+     "TO"
+    ],
     "ufs": [
      {
       "uf": "AL",
@@ -5856,6 +7209,19 @@
     "municipios": 88,
     "uf_principal": "MG",
     "unidades_fora_uf_principal": 5506,
+    "ufs_area_conjuntos": [
+     "MG",
+     "RJ"
+    ],
+    "unidades_fora_da_area": 10,
+    "potencia_mw_fora_da_area": 0.094,
+    "ufs_fora_da_area": [
+     "PR",
+     "RS",
+     "SC",
+     "SE",
+     "SP"
+    ],
     "ufs": [
      {
       "uf": "MG",
@@ -5901,6 +7267,17 @@
     "municipios": 6,
     "uf_principal": "DF",
     "unidades_fora_uf_principal": 292,
+    "ufs_area_conjuntos": [
+     "DF"
+    ],
+    "unidades_fora_da_area": 292,
+    "potencia_mw_fora_da_area": 4.526,
+    "ufs_fora_da_area": [
+     "GO",
+     "MG",
+     "PI",
+     "SP"
+    ],
     "ufs": [
      {
       "uf": "DF",
@@ -5938,6 +7315,17 @@
     "municipios": 53,
     "uf_principal": "SP",
     "unidades_fora_uf_principal": 7,
+    "ufs_area_conjuntos": [
+     "SP"
+    ],
+    "unidades_fora_da_area": 7,
+    "potencia_mw_fora_da_area": 0.035,
+    "ufs_fora_da_area": [
+     "MG",
+     "PE",
+     "PR",
+     "RN"
+    ],
     "ufs": [
      {
       "uf": "SP",
@@ -5975,6 +7363,12 @@
     "municipios": 24,
     "uf_principal": "SP",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SP"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SP",
@@ -5996,6 +7390,12 @@
     "municipios": 58,
     "uf_principal": "AM",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "AM"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "AM",
@@ -6017,6 +7417,12 @@
     "municipios": 63,
     "uf_principal": "SE",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SE"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SE",
@@ -6038,6 +7444,19 @@
     "municipios": 84,
     "uf_principal": "SP",
     "unidades_fora_uf_principal": 2714,
+    "ufs_area_conjuntos": [
+     "MG",
+     "PR",
+     "SP"
+    ],
+    "unidades_fora_da_area": 5,
+    "potencia_mw_fora_da_area": 0.041,
+    "ufs_fora_da_area": [
+     "BA",
+     "PE",
+     "RS",
+     "SC"
+    ],
     "ufs": [
      {
       "uf": "SP",
@@ -6083,6 +7502,12 @@
     "municipios": 22,
     "uf_principal": "AC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "AC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "AC",
@@ -6104,6 +7529,18 @@
     "municipios": 32,
     "uf_principal": "AP",
     "unidades_fora_uf_principal": 20,
+    "ufs_area_conjuntos": [
+     "AP"
+    ],
+    "unidades_fora_da_area": 20,
+    "potencia_mw_fora_da_area": 0.167,
+    "ufs_fora_da_area": [
+     "AL",
+     "BA",
+     "PA",
+     "PE",
+     "PI"
+    ],
     "ufs": [
      {
       "uf": "AP",
@@ -6145,6 +7582,12 @@
     "municipios": 16,
     "uf_principal": "ES",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "ES"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "ES",
@@ -6166,6 +7609,12 @@
     "municipios": 15,
     "uf_principal": "RR",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "RR"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RR",
@@ -6187,6 +7636,12 @@
     "municipios": 40,
     "uf_principal": "RS",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "RS"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RS",
@@ -6208,6 +7663,16 @@
     "municipios": 72,
     "uf_principal": "RS",
     "unidades_fora_uf_principal": 7,
+    "ufs_area_conjuntos": [
+     "PB",
+     "PR",
+     "RS"
+    ],
+    "unidades_fora_da_area": 1,
+    "potencia_mw_fora_da_area": 0.025,
+    "ufs_fora_da_area": [
+     "BA"
+    ],
     "ufs": [
      {
       "uf": "RS",
@@ -6237,6 +7702,13 @@
     "municipios": 11,
     "uf_principal": "RS",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "PR",
+     "RS"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RS",
@@ -6258,6 +7730,12 @@
     "municipios": 24,
     "uf_principal": "RS",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "RS"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RS",
@@ -6279,6 +7757,12 @@
     "municipios": 10,
     "uf_principal": "SP",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SP"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SP",
@@ -6300,6 +7784,12 @@
     "municipios": 8,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -6321,6 +7811,12 @@
     "municipios": 10,
     "uf_principal": "GO",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "GO"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "GO",
@@ -6342,6 +7838,12 @@
     "municipios": 33,
     "uf_principal": "RS",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "RS"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RS",
@@ -6363,6 +7865,14 @@
     "municipios": 14,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "AL",
+     "SC",
+     "SP"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -6384,6 +7894,12 @@
     "municipios": 2,
     "uf_principal": "RS",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "RS"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RS",
@@ -6405,6 +7921,12 @@
     "municipios": 27,
     "uf_principal": "RS",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "RS"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RS",
@@ -6426,6 +7948,13 @@
     "municipios": 14,
     "uf_principal": "SE",
     "unidades_fora_uf_principal": 255,
+    "ufs_area_conjuntos": [
+     "BA",
+     "SE"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SE",
@@ -6451,6 +7980,12 @@
     "municipios": 5,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -6472,6 +8007,15 @@
     "municipios": 14,
     "uf_principal": "SP",
     "unidades_fora_uf_principal": 2,
+    "ufs_area_conjuntos": [
+     "SP"
+    ],
+    "unidades_fora_da_area": 2,
+    "potencia_mw_fora_da_area": 0.135,
+    "ufs_fora_da_area": [
+     "MG",
+     "PB"
+    ],
     "ufs": [
      {
       "uf": "SP",
@@ -6501,6 +8045,12 @@
     "municipios": 1,
     "uf_principal": "MG",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "MG"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "MG",
@@ -6522,6 +8072,14 @@
     "municipios": 19,
     "uf_principal": "RS",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "PB",
+     "PI",
+     "RS"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RS",
@@ -6543,6 +8101,12 @@
     "municipios": 31,
     "uf_principal": "RS",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "RS"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RS",
@@ -6564,6 +8128,12 @@
     "municipios": 20,
     "uf_principal": "RS",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "RS"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RS",
@@ -6585,6 +8155,12 @@
     "municipios": 5,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -6606,6 +8182,12 @@
     "municipios": 11,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -6627,6 +8209,12 @@
     "municipios": 2,
     "uf_principal": "PR",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "PR"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "PR",
@@ -6648,6 +8236,12 @@
     "municipios": 5,
     "uf_principal": "RJ",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "RJ"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RJ",
@@ -6669,6 +8263,12 @@
     "municipios": 2,
     "uf_principal": "RS",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "RS"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RS",
@@ -6690,6 +8290,12 @@
     "municipios": 5,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -6711,6 +8317,12 @@
     "municipios": 2,
     "uf_principal": "RS",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "RS"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RS",
@@ -6732,6 +8344,12 @@
     "municipios": 15,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -6753,6 +8371,12 @@
     "municipios": 8,
     "uf_principal": "SP",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SP"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SP",
@@ -6774,6 +8398,12 @@
     "municipios": 12,
     "uf_principal": "RS",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "RS"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RS",
@@ -6795,6 +8425,12 @@
     "municipios": 2,
     "uf_principal": "SP",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SP"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SP",
@@ -6816,6 +8452,12 @@
     "municipios": 9,
     "uf_principal": "RS",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "RS"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RS",
@@ -6837,6 +8479,12 @@
     "municipios": 7,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -6858,6 +8506,12 @@
     "municipios": 4,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -6879,6 +8533,12 @@
     "municipios": 4,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -6900,6 +8560,12 @@
     "municipios": 12,
     "uf_principal": "RS",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "RS"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RS",
@@ -6921,6 +8587,12 @@
     "municipios": 3,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -6942,6 +8614,12 @@
     "municipios": 4,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -6963,6 +8641,12 @@
     "municipios": 6,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -6984,6 +8668,12 @@
     "municipios": 1,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -7003,6 +8693,12 @@
     "municipios": 29,
     "uf_principal": "RS",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "RS"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RS",
@@ -7024,6 +8720,12 @@
     "municipios": 1,
     "uf_principal": "PR",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "PR"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "PR",
@@ -7045,6 +8747,12 @@
     "municipios": 2,
     "uf_principal": "PR",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "PR"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "PR",
@@ -7066,6 +8774,12 @@
     "municipios": 3,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -7087,6 +8801,12 @@
     "municipios": 1,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -7108,6 +8828,12 @@
     "municipios": 6,
     "uf_principal": "SP",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SP"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SP",
@@ -7129,6 +8855,12 @@
     "municipios": 7,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -7150,6 +8882,12 @@
     "municipios": 3,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -7171,6 +8909,12 @@
     "municipios": 5,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -7192,6 +8936,12 @@
     "municipios": 3,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -7213,6 +8963,12 @@
     "municipios": 2,
     "uf_principal": "RS",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "RS"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RS",
@@ -7234,6 +8990,14 @@
     "municipios": 8,
     "uf_principal": "SP",
     "unidades_fora_uf_principal": 1,
+    "ufs_area_conjuntos": [
+     "SP"
+    ],
+    "unidades_fora_da_area": 1,
+    "potencia_mw_fora_da_area": 0.005,
+    "ufs_fora_da_area": [
+     "PB"
+    ],
     "ufs": [
      {
       "uf": "SP",
@@ -7259,6 +9023,12 @@
     "municipios": 2,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -7280,6 +9050,12 @@
     "municipios": 5,
     "uf_principal": "SP",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SP"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SP",
@@ -7301,6 +9077,14 @@
     "municipios": 4,
     "uf_principal": "SP",
     "unidades_fora_uf_principal": 1,
+    "ufs_area_conjuntos": [
+     "SP"
+    ],
+    "unidades_fora_da_area": 1,
+    "potencia_mw_fora_da_area": 0.011,
+    "ufs_fora_da_area": [
+     "BA"
+    ],
     "ufs": [
      {
       "uf": "SP",
@@ -7326,6 +9110,12 @@
     "municipios": 3,
     "uf_principal": "PR",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "PR"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "PR",
@@ -7347,6 +9137,13 @@
     "municipios": 3,
     "uf_principal": "RJ",
     "unidades_fora_uf_principal": 4,
+    "ufs_area_conjuntos": [
+     "MG",
+     "RJ"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RJ",
@@ -7372,6 +9169,12 @@
     "municipios": 4,
     "uf_principal": "RJ",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "RJ"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RJ",
@@ -7393,6 +9196,12 @@
     "municipios": 4,
     "uf_principal": "RS",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "RS"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "RS",
@@ -7414,6 +9223,12 @@
     "municipios": 3,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -7435,6 +9250,12 @@
     "municipios": 1,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -7456,6 +9277,12 @@
     "municipios": 2,
     "uf_principal": "SP",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SP"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SP",
@@ -7477,6 +9304,12 @@
     "municipios": 1,
     "uf_principal": "SE",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SE"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SE",
@@ -7498,6 +9331,12 @@
     "municipios": 8,
     "uf_principal": "SP",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SP"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SP",
@@ -7519,6 +9358,12 @@
     "municipios": 5,
     "uf_principal": "SP",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SP"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SP",
@@ -7540,6 +9385,12 @@
     "municipios": 4,
     "uf_principal": "SP",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SP"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SP",
@@ -7561,6 +9412,12 @@
     "municipios": 2,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -7582,6 +9439,12 @@
     "municipios": 1,
     "uf_principal": "SC",
     "unidades_fora_uf_principal": 0,
+    "ufs_area_conjuntos": [
+     "SC"
+    ],
+    "unidades_fora_da_area": 0,
+    "potencia_mw_fora_da_area": 0.0,
+    "ufs_fora_da_area": [],
     "ufs": [
      {
       "uf": "SC",
@@ -7644,7 +9507,7 @@
      "categoria": "Serviço Público",
      "unidades": 410,
      "potencia_mw": 59.361,
-     "participacao_unidades_pct": 0.01,
+     "participacao_unidades_pct": 0.0088,
      "unidades_ano_referencia": 62,
      "potencia_mw_ano_referencia": 8.346
     },
@@ -7652,7 +9515,7 @@
      "categoria": "Iluminação pública",
      "unidades": 232,
      "potencia_mw": 10.682,
-     "participacao_unidades_pct": 0.0,
+     "participacao_unidades_pct": 0.005,
      "unidades_ano_referencia": 60,
      "potencia_mw_ano_referencia": 1.024
     },
@@ -7660,7 +9523,7 @@
      "categoria": "Consumo Próprio",
      "unidades": 45,
      "potencia_mw": 4.826,
-     "participacao_unidades_pct": 0.0,
+     "participacao_unidades_pct": 0.00097,
      "unidades_ano_referencia": 8,
      "potencia_mw_ano_referencia": 1.621
     }
@@ -7746,7 +9609,7 @@
      "categoria": "nao_informado",
      "unidades": 231,
      "potencia_mw": 4.56,
-     "participacao_unidades_pct": 0.0,
+     "participacao_unidades_pct": 0.005,
      "unidades_ano_referencia": 0,
      "potencia_mw_ano_referencia": 0.0
     }
@@ -7763,7 +9626,10 @@
      "populacao": 3009996,
      "w_por_habitante": 196.0,
      "potencia_kw_ano_referencia": 107547.23,
-     "crescimento_estoque_pct": 25.1
+     "crescimento_estoque_pct": 25.1,
+     "unidades_distribuidora_fora_da_uf": 10,
+     "potencia_kw_distribuidora_fora_da_uf": 198.71,
+     "sinal_distribuidora_fora_da_uf": true
     },
     {
      "ibge": "5103403",
@@ -7774,7 +9640,10 @@
      "populacao": 698917,
      "w_por_habitante": 720.8,
      "potencia_kw_ano_referencia": 105709.98,
-     "crescimento_estoque_pct": 28.9
+     "crescimento_estoque_pct": 28.9,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "5002704",
@@ -7785,7 +9654,10 @@
      "populacao": 970843,
      "w_por_habitante": 450.3,
      "potencia_kw_ano_referencia": 78428.97,
-     "crescimento_estoque_pct": 23.5
+     "crescimento_estoque_pct": 23.5,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "4108304",
@@ -7796,7 +9668,10 @@
      "populacao": 299112,
      "w_por_habitante": 1343.8,
      "potencia_kw_ano_referencia": 35555.94,
-     "crescimento_estoque_pct": 10.5
+     "crescimento_estoque_pct": 10.5,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "3304557",
@@ -7807,7 +9682,10 @@
      "populacao": 6731133,
      "w_por_habitante": 57.1,
      "potencia_kw_ano_referencia": 71391.3,
-     "crescimento_estoque_pct": 25.0
+     "crescimento_estoque_pct": 25.0,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "5208707",
@@ -7818,7 +9696,10 @@
      "populacao": 1511709,
      "w_por_habitante": 243.6,
      "potencia_kw_ano_referencia": 64070.62,
-     "crescimento_estoque_pct": 23.2
+     "crescimento_estoque_pct": 23.2,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "2211001",
@@ -7829,7 +9710,10 @@
      "populacao": 908012,
      "w_por_habitante": 405.1,
      "potencia_kw_ano_referencia": 50547.47,
-     "crescimento_estoque_pct": 17.1
+     "crescimento_estoque_pct": 17.1,
+     "unidades_distribuidora_fora_da_uf": 110,
+     "potencia_kw_distribuidora_fora_da_uf": 1080.4,
+     "sinal_distribuidora_fora_da_uf": true
     },
     {
      "ibge": "1302603",
@@ -7840,7 +9724,10 @@
      "populacao": 2327101,
      "w_por_habitante": 154.5,
      "potencia_kw_ano_referencia": 39199.71,
-     "crescimento_estoque_pct": 13.2
+     "crescimento_estoque_pct": 13.2,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "2304400",
@@ -7851,7 +9738,10 @@
      "populacao": 2582360,
      "w_por_habitante": 128.4,
      "potencia_kw_ano_referencia": 49932.21,
-     "crescimento_estoque_pct": 19.4
+     "crescimento_estoque_pct": 19.4,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "4115200",
@@ -7862,7 +9752,10 @@
      "populacao": 432635,
      "w_por_habitante": 741.1,
      "potencia_kw_ano_referencia": 26920.37,
-     "crescimento_estoque_pct": 9.8
+     "crescimento_estoque_pct": 9.8,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "4106902",
@@ -7873,7 +9766,10 @@
      "populacao": 1832183,
      "w_por_habitante": 166.8,
      "potencia_kw_ano_referencia": 26631.9,
-     "crescimento_estoque_pct": 10.2
+     "crescimento_estoque_pct": 10.2,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "1501402",
@@ -7884,7 +9780,10 @@
      "populacao": 1396157,
      "w_por_habitante": 189.0,
      "potencia_kw_ano_referencia": 53099.52,
-     "crescimento_estoque_pct": 27.4
+     "crescimento_estoque_pct": 27.4,
+     "unidades_distribuidora_fora_da_uf": 165,
+     "potencia_kw_distribuidora_fora_da_uf": 1346.72,
+     "sinal_distribuidora_fora_da_uf": true
     },
     {
      "ibge": "3550308",
@@ -7895,7 +9794,10 @@
      "populacao": 11911337,
      "w_por_habitante": 21.7,
      "potencia_kw_ano_referencia": 49120.49,
-     "crescimento_estoque_pct": 30.5
+     "crescimento_estoque_pct": 30.5,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "4113700",
@@ -7906,7 +9808,10 @@
      "populacao": 584465,
      "w_por_habitante": 407.5,
      "potencia_kw_ano_referencia": 24503.35,
-     "crescimento_estoque_pct": 12.4
+     "crescimento_estoque_pct": 12.4,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "3170206",
@@ -7917,7 +9822,10 @@
      "populacao": 768339,
      "w_por_habitante": 275.6,
      "potencia_kw_ano_referencia": 8809.36,
-     "crescimento_estoque_pct": 4.8
+     "crescimento_estoque_pct": 4.8,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     }
    ],
    "maior_w_por_habitante": [
@@ -7930,7 +9838,10 @@
      "populacao": 299112,
      "w_por_habitante": 1343.8,
      "potencia_kw_ano_referencia": 35555.94,
-     "crescimento_estoque_pct": 10.5
+     "crescimento_estoque_pct": 10.5,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "4127700",
@@ -7941,7 +9852,10 @@
      "populacao": 162658,
      "w_por_habitante": 1228.0,
      "potencia_kw_ano_referencia": 19384.29,
-     "crescimento_estoque_pct": 11.4
+     "crescimento_estoque_pct": 11.4,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "4128104",
@@ -7952,7 +9866,10 @@
      "populacao": 124077,
      "w_por_habitante": 1172.4,
      "potencia_kw_ano_referencia": 16557.75,
-     "crescimento_estoque_pct": 14.0
+     "crescimento_estoque_pct": 14.0,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "5107925",
@@ -7963,7 +9880,10 @@
      "populacao": 128727,
      "w_por_habitante": 1034.7,
      "potencia_kw_ano_referencia": 20680.5,
-     "crescimento_estoque_pct": 19.5
+     "crescimento_estoque_pct": 19.5,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "4108403",
@@ -7974,7 +9894,10 @@
      "populacao": 103424,
      "w_por_habitante": 892.2,
      "potencia_kw_ano_referencia": 9791.45,
-     "crescimento_estoque_pct": 12.6
+     "crescimento_estoque_pct": 12.6,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "4104303",
@@ -7985,7 +9908,10 @@
      "populacao": 104881,
      "w_por_habitante": 821.2,
      "potencia_kw_ano_referencia": 11077.49,
-     "crescimento_estoque_pct": 16.0
+     "crescimento_estoque_pct": 16.0,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "5107958",
@@ -7996,7 +9922,10 @@
      "populacao": 116637,
      "w_por_habitante": 795.0,
      "potencia_kw_ano_referencia": 16462.44,
-     "crescimento_estoque_pct": 23.1
+     "crescimento_estoque_pct": 23.1,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "4115200",
@@ -8007,7 +9936,10 @@
      "populacao": 432635,
      "w_por_habitante": 741.1,
      "potencia_kw_ano_referencia": 26920.37,
-     "crescimento_estoque_pct": 9.8
+     "crescimento_estoque_pct": 9.8,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "5107602",
@@ -8018,7 +9950,10 @@
      "populacao": 268202,
      "w_por_habitante": 740.2,
      "potencia_kw_ano_referencia": 46143.26,
-     "crescimento_estoque_pct": 33.1
+     "crescimento_estoque_pct": 33.1,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "3508504",
@@ -8029,7 +9964,10 @@
      "populacao": 100422,
      "w_por_habitante": 721.3,
      "potencia_kw_ano_referencia": 15038.06,
-     "crescimento_estoque_pct": 27.4
+     "crescimento_estoque_pct": 27.4,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "5103403",
@@ -8040,7 +9978,10 @@
      "populacao": 698917,
      "w_por_habitante": 720.8,
      "potencia_kw_ano_referencia": 105709.98,
-     "crescimento_estoque_pct": 28.9
+     "crescimento_estoque_pct": 28.9,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "3143906",
@@ -8051,7 +9992,10 @@
      "populacao": 108716,
      "w_por_habitante": 697.8,
      "potencia_kw_ano_referencia": 16564.14,
-     "crescimento_estoque_pct": 34.9
+     "crescimento_estoque_pct": 34.9,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "5003702",
@@ -8062,7 +10006,10 @@
      "populacao": 266950,
      "w_por_habitante": 690.8,
      "potencia_kw_ano_referencia": 29809.21,
-     "crescimento_estoque_pct": 20.6
+     "crescimento_estoque_pct": 20.6,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "5107909",
@@ -8073,7 +10020,10 @@
      "populacao": 231452,
      "w_por_habitante": 670.7,
      "potencia_kw_ano_referencia": 30666.23,
-     "crescimento_estoque_pct": 26.7
+     "crescimento_estoque_pct": 26.7,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "3204906",
@@ -8084,7 +10034,10 @@
      "populacao": 135450,
      "w_por_habitante": 631.6,
      "potencia_kw_ano_referencia": 22699.99,
-     "crescimento_estoque_pct": 40.3
+     "crescimento_estoque_pct": 40.3,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     }
    ],
    "menor_w_por_habitante": [
@@ -8097,7 +10050,10 @@
      "populacao": 286201,
      "w_por_habitante": 10.4,
      "potencia_kw_ano_referencia": 619.55,
-     "crescimento_estoque_pct": 32.0
+     "crescimento_estoque_pct": 32.0,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "3513801",
@@ -8108,7 +10064,10 @@
      "populacao": 403802,
      "w_por_habitante": 12.9,
      "potencia_kw_ano_referencia": 1239.87,
-     "crescimento_estoque_pct": 45.8
+     "crescimento_estoque_pct": 45.8,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "3529401",
@@ -8119,7 +10078,10 @@
      "populacao": 429064,
      "w_por_habitante": 15.3,
      "potencia_kw_ano_referencia": 1414.94,
-     "crescimento_estoque_pct": 36.1
+     "crescimento_estoque_pct": 36.1,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "3300456",
@@ -8130,7 +10092,10 @@
      "populacao": 518442,
      "w_por_habitante": 16.4,
      "potencia_kw_ano_referencia": 1623.31,
-     "crescimento_estoque_pct": 25.9
+     "crescimento_estoque_pct": 25.9,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "3522505",
@@ -8141,7 +10106,10 @@
      "populacao": 243967,
      "w_por_habitante": 16.8,
      "potencia_kw_ano_referencia": 1061.91,
-     "crescimento_estoque_pct": 43.9
+     "crescimento_estoque_pct": 43.9,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "3516309",
@@ -8152,7 +10120,10 @@
      "populacao": 171806,
      "w_por_habitante": 17.5,
      "potencia_kw_ano_referencia": 671.82,
-     "crescimento_estoque_pct": 38.5
+     "crescimento_estoque_pct": 38.5,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "3515004",
@@ -8163,7 +10134,10 @@
      "populacao": 260113,
      "w_por_habitante": 18.4,
      "potencia_kw_ano_referencia": 937.82,
-     "crescimento_estoque_pct": 30.1
+     "crescimento_estoque_pct": 30.1,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "3551009",
@@ -8174,7 +10148,10 @@
      "populacao": 338253,
      "w_por_habitante": 19.2,
      "potencia_kw_ano_referencia": 1582.38,
-     "crescimento_estoque_pct": 42.9
+     "crescimento_estoque_pct": 42.9,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "3510609",
@@ -8185,7 +10162,10 @@
      "populacao": 398772,
      "w_por_habitante": 21.2,
      "potencia_kw_ano_referencia": 1430.31,
-     "crescimento_estoque_pct": 27.6
+     "crescimento_estoque_pct": 27.6,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "3550308",
@@ -8196,7 +10176,10 @@
      "populacao": 11911337,
      "w_por_habitante": 21.7,
      "potencia_kw_ano_referencia": 49120.49,
-     "crescimento_estoque_pct": 30.5
+     "crescimento_estoque_pct": 30.5,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "3534401",
@@ -8207,7 +10190,10 @@
      "populacao": 761441,
      "w_por_habitante": 22.3,
      "potencia_kw_ano_referencia": 2652.21,
-     "crescimento_estoque_pct": 29.7
+     "crescimento_estoque_pct": 29.7,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "3548708",
@@ -8218,7 +10204,10 @@
      "populacao": 842558,
      "w_por_habitante": 26.1,
      "potencia_kw_ano_referencia": 5595.37,
-     "crescimento_estoque_pct": 44.2
+     "crescimento_estoque_pct": 44.2,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "3547809",
@@ -8229,7 +10218,10 @@
      "populacao": 784290,
      "w_por_habitante": 29.3,
      "potencia_kw_ano_referencia": 4384.71,
-     "crescimento_estoque_pct": 37.2
+     "crescimento_estoque_pct": 37.2,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "3513504",
@@ -8240,7 +10232,10 @@
      "populacao": 114681,
      "w_por_habitante": 31.9,
      "potencia_kw_ano_referencia": 617.98,
-     "crescimento_estoque_pct": 26.3
+     "crescimento_estoque_pct": 26.3,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "3305109",
@@ -8251,7 +10246,10 @@
      "populacao": 466487,
      "w_por_habitante": 32.0,
      "potencia_kw_ano_referencia": 2225.98,
-     "crescimento_estoque_pct": 18.9
+     "crescimento_estoque_pct": 18.9,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     }
    ],
    "maior_crescimento_estoque": [
@@ -8264,7 +10262,10 @@
      "populacao": 113042,
      "w_por_habitante": 116.4,
      "potencia_kw_ano_referencia": 8271.94,
-     "crescimento_estoque_pct": 222.0
+     "crescimento_estoque_pct": 222.0,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "5217609",
@@ -8275,7 +10276,10 @@
      "populacao": 113950,
      "w_por_habitante": 168.0,
      "potencia_kw_ano_referencia": 8630.3,
-     "crescimento_estoque_pct": 86.0
+     "crescimento_estoque_pct": 86.0,
+     "unidades_distribuidora_fora_da_uf": 1,
+     "potencia_kw_distribuidora_fora_da_uf": 4.36,
+     "sinal_distribuidora_fora_da_uf": true
     },
     {
      "ibge": "1100205",
@@ -8286,7 +10290,10 @@
      "populacao": 520379,
      "w_por_habitante": 388.0,
      "potencia_kw_ano_referencia": 71519.86,
-     "crescimento_estoque_pct": 65.0
+     "crescimento_estoque_pct": 65.0,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "1600600",
@@ -8297,7 +10304,10 @@
      "populacao": 119224,
      "w_por_habitante": 188.3,
      "potencia_kw_ano_referencia": 7637.5,
-     "crescimento_estoque_pct": 60.6
+     "crescimento_estoque_pct": 60.6,
+     "unidades_distribuidora_fora_da_uf": 2,
+     "potencia_kw_distribuidora_fora_da_uf": 13.5,
+     "sinal_distribuidora_fora_da_uf": true
     },
     {
      "ibge": "3543303",
@@ -8308,7 +10318,10 @@
      "populacao": 119023,
      "w_por_habitante": 47.3,
      "potencia_kw_ano_referencia": 1694.92,
-     "crescimento_estoque_pct": 57.5
+     "crescimento_estoque_pct": 57.5,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "3200607",
@@ -8319,7 +10332,10 @@
      "populacao": 104304,
      "w_por_habitante": 329.5,
      "potencia_kw_ano_referencia": 11158.06,
-     "crescimento_estoque_pct": 57.2
+     "crescimento_estoque_pct": 57.2,
+     "unidades_distribuidora_fora_da_uf": 1,
+     "potencia_kw_distribuidora_fora_da_uf": 5.0,
+     "sinal_distribuidora_fora_da_uf": true
     },
     {
      "ibge": "1100122",
@@ -8330,7 +10346,10 @@
      "populacao": 140800,
      "w_por_habitante": 616.5,
      "potencia_kw_ano_referencia": 27312.82,
-     "crescimento_estoque_pct": 53.0
+     "crescimento_estoque_pct": 53.0,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "2306405",
@@ -8341,7 +10360,10 @@
      "populacao": 137795,
      "w_por_habitante": 125.1,
      "potencia_kw_ano_referencia": 5381.68,
-     "crescimento_estoque_pct": 51.1
+     "crescimento_estoque_pct": 51.1,
+     "unidades_distribuidora_fora_da_uf": 2,
+     "potencia_kw_distribuidora_fora_da_uf": 12.6,
+     "sinal_distribuidora_fora_da_uf": true
     },
     {
      "ibge": "1600303",
@@ -8352,7 +10374,10 @@
      "populacao": 491987,
      "w_por_habitante": 263.9,
      "potencia_kw_ano_referencia": 39600.91,
-     "crescimento_estoque_pct": 50.2
+     "crescimento_estoque_pct": 50.2,
+     "unidades_distribuidora_fora_da_uf": 31,
+     "potencia_kw_distribuidora_fora_da_uf": 352.15,
+     "sinal_distribuidora_fora_da_uf": true
     },
     {
      "ibge": "3302502",
@@ -8363,7 +10388,10 @@
      "populacao": 244166,
      "w_por_habitante": 97.5,
      "potencia_kw_ano_referencia": 6693.95,
-     "crescimento_estoque_pct": 47.5
+     "crescimento_estoque_pct": 47.5,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "2412005",
@@ -8374,7 +10402,10 @@
      "populacao": 125691,
      "w_por_habitante": 189.9,
      "potencia_kw_ano_referencia": 6894.05,
-     "crescimento_estoque_pct": 47.1
+     "crescimento_estoque_pct": 47.1,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "5205109",
@@ -8385,7 +10416,10 @@
      "populacao": 124683,
      "w_por_habitante": 394.1,
      "potencia_kw_ano_referencia": 14601.4,
-     "crescimento_estoque_pct": 45.9
+     "crescimento_estoque_pct": 45.9,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "3513801",
@@ -8396,7 +10430,10 @@
      "populacao": 403802,
      "w_por_habitante": 12.9,
      "potencia_kw_ano_referencia": 1239.87,
-     "crescimento_estoque_pct": 45.8
+     "crescimento_estoque_pct": 45.8,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "3152501",
@@ -8407,7 +10444,10 @@
      "populacao": 163439,
      "w_por_habitante": 217.8,
      "potencia_kw_ano_referencia": 10309.4,
-     "crescimento_estoque_pct": 45.2
+     "crescimento_estoque_pct": 45.2,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     },
     {
      "ibge": "3548708",
@@ -8418,7 +10458,10 @@
      "populacao": 842558,
      "w_por_habitante": 26.1,
      "potencia_kw_ano_referencia": 5595.37,
-     "crescimento_estoque_pct": 44.2
+     "crescimento_estoque_pct": 44.2,
+     "unidades_distribuidora_fora_da_uf": 0,
+     "potencia_kw_distribuidora_fora_da_uf": 0.0,
+     "sinal_distribuidora_fora_da_uf": false
     }
    ],
    "populacao_minima_ranking": 100000
@@ -8444,6 +10487,24 @@
     "diferenca_kw_municipio_uf": 0.0,
     "resultado": "aprovada"
    },
+   "identidade_estoque": {
+    "unidades_total": 4656839,
+    "unidades_sem_data": 46,
+    "unidades_com_data_serie_anual": 4656793,
+    "unidades_com_data_serie_mensal": 4656793,
+    "potencia_kw_total": 53965592.59,
+    "potencia_kw_sem_data": 743.18,
+    "potencia_kw_com_data_serie_anual": 53964849.41,
+    "potencia_kw_com_data_serie_mensal": 53964849.41,
+    "diferenca_unidades": 0,
+    "diferenca_kw": 0.0,
+    "tolerancia_kw": 0.01,
+    "regra": "estoque acumulado até a data do cadastro (série anual e série mensal) + unidades sem data de conexão = total do cadastro",
+    "resultado": "aprovada"
+   },
+   "data_conexao_minima": "2004-06-26",
+   "data_conexao_maxima": "2026-08-31",
+   "periodo_referencia_publicado": "09/2026",
    "datas_sentinela": 46,
    "datas_ausentes": 0,
    "potencia_sem_data_kw": 743.18,
@@ -8467,6 +10528,444 @@
     "maior_grupo": 48,
     "participacao_unidades_pct": 1.05,
     "tratamento": "medida e publicada, não removida: CPF e CEP de pessoa física vêm tarjados e unidades iguais do mesmo titular podem ser legítimas"
+   },
+   "distribuidora_fora_da_uf": {
+    "disponivel": true,
+    "unidades": 4497,
+    "potencia_kw": 62891.78,
+    "participacao_unidades_pct": 0.1,
+    "municipios_sinalizados": 677,
+    "distribuidoras_com_unidades_fora": 26,
+    "distribuidoras_sem_referencia": 0,
+    "unidades_sem_referencia": 0,
+    "distribuidoras_com_area": 117,
+    "maiores_municipios": [
+     {
+      "ibge": "2704302",
+      "unidades": 279,
+      "potencia_kw": 3130.31
+     },
+     {
+      "ibge": "1507102",
+      "unidades": 185,
+      "potencia_kw": 1830.21
+     },
+     {
+      "ibge": "1501402",
+      "unidades": 165,
+      "potencia_kw": 1346.72
+     },
+     {
+      "ibge": "5200050",
+      "unidades": 160,
+      "potencia_kw": 1183.92
+     },
+     {
+      "ibge": "2700300",
+      "unidades": 140,
+      "potencia_kw": 1238.99
+     },
+     {
+      "ibge": "3100302",
+      "unidades": 126,
+      "potencia_kw": 1168.24
+     },
+     {
+      "ibge": "2702405",
+      "unidades": 123,
+      "potencia_kw": 688.81
+     },
+     {
+      "ibge": "5200134",
+      "unidades": 113,
+      "potencia_kw": 1113.86
+     },
+     {
+      "ibge": "2211001",
+      "unidades": 110,
+      "potencia_kw": 1080.4
+     },
+     {
+      "ibge": "3501707",
+      "unidades": 110,
+      "potencia_kw": 1874.99
+     }
+    ],
+    "por_distribuidora": [
+     {
+      "cnpj": "06840748000189",
+      "unidades": 1370,
+      "potencia_kw": 24750.69,
+      "ufs_fora": [
+       "AL",
+       "AP",
+       "BA",
+       "GO",
+       "MA",
+       "MG",
+       "MS",
+       "PA",
+       "PB",
+       "PE",
+       "PR",
+       "RO",
+       "SC",
+       "SP",
+       "TO"
+      ]
+     },
+     {
+      "cnpj": "15139629000194",
+      "unidades": 880,
+      "potencia_kw": 7368.76,
+      "ufs_fora": [
+       "AC",
+       "AL",
+       "AM",
+       "CE",
+       "ES",
+       "GO",
+       "MA",
+       "MG",
+       "MS",
+       "MT",
+       "PA",
+       "PB",
+       "PE",
+       "PI",
+       "PR",
+       "RJ",
+       "RN",
+       "RO",
+       "RS",
+       "SC",
+       "SP",
+       "TO"
+      ]
+     },
+     {
+      "cnpj": "04895728000180",
+      "unidades": 585,
+      "potencia_kw": 10042.63,
+      "ufs_fora": [
+       "AL",
+       "AP",
+       "BA",
+       "CE",
+       "GO",
+       "MA",
+       "MG",
+       "MS",
+       "PB",
+       "PI",
+       "PR",
+       "RS",
+       "SP",
+       "TO"
+      ]
+     },
+     {
+      "cnpj": "10835932000108",
+      "unidades": 425,
+      "potencia_kw": 4736.58,
+      "ufs_fora": [
+       "AL",
+       "CE",
+       "ES",
+       "GO",
+       "MA",
+       "MG",
+       "MS",
+       "MT",
+       "PA",
+       "PR",
+       "RN",
+       "RO",
+       "RS",
+       "SC",
+       "SE",
+       "SP",
+       "TO"
+      ]
+     },
+     {
+      "cnpj": "12272084000100",
+      "unidades": 307,
+      "potencia_kw": 2495.93,
+      "ufs_fora": [
+       "BA",
+       "MA",
+       "PA",
+       "PB",
+       "PI",
+       "PR",
+       "RN",
+       "SP",
+       "TO"
+      ]
+     },
+     {
+      "cnpj": "06272793000184",
+      "unidades": 297,
+      "potencia_kw": 3406.68,
+      "ufs_fora": [
+       "AL",
+       "PA",
+       "PI"
+      ]
+     },
+     {
+      "cnpj": "07522669000192",
+      "unidades": 292,
+      "potencia_kw": 4525.91,
+      "ufs_fora": [
+       "GO",
+       "MG",
+       "PI",
+       "SP"
+      ]
+     },
+     {
+      "cnpj": "07047251000170",
+      "unidades": 146,
+      "potencia_kw": 1359.92,
+      "ufs_fora": [
+       "BA",
+       "GO",
+       "MA",
+       "MG",
+       "MS",
+       "MT",
+       "PA",
+       "PB",
+       "PE",
+       "PI",
+       "PR",
+       "RJ",
+       "RN",
+       "RS",
+       "SC",
+       "SE",
+       "SP",
+       "TO"
+      ]
+     },
+     {
+      "cnpj": "01543032000104",
+      "unidades": 55,
+      "potencia_kw": 654.81,
+      "ufs_fora": [
+       "AL",
+       "AP",
+       "CE",
+       "DF",
+       "MA",
+       "MG",
+       "MS",
+       "MT",
+       "PE",
+       "PI",
+       "PR",
+       "RO",
+       "RS",
+       "SC",
+       "SP",
+       "TO"
+      ]
+     },
+     {
+      "cnpj": "08324196000181",
+      "unidades": 48,
+      "potencia_kw": 992.38,
+      "ufs_fora": [
+       "BA",
+       "GO",
+       "MA",
+       "MG",
+       "MT",
+       "PE",
+       "PR",
+       "SC",
+       "SP",
+       "TO"
+      ]
+     },
+     {
+      "cnpj": "05965546000109",
+      "unidades": 20,
+      "potencia_kw": 167.13,
+      "ufs_fora": [
+       "AL",
+       "BA",
+       "PA",
+       "PE",
+       "PI"
+      ]
+     },
+     {
+      "cnpj": "02328280000197",
+      "unidades": 13,
+      "potencia_kw": 99.85,
+      "ufs_fora": [
+       "BA",
+       "MG",
+       "RS"
+      ]
+     },
+     {
+      "cnpj": "33050071000158",
+      "unidades": 12,
+      "potencia_kw": 160.62,
+      "ufs_fora": [
+       "BA",
+       "PR",
+       "RN",
+       "SP",
+       "TO"
+      ]
+     },
+     {
+      "cnpj": "19527639000158",
+      "unidades": 10,
+      "potencia_kw": 93.74,
+      "ufs_fora": [
+       "PR",
+       "RS",
+       "SC",
+       "SE",
+       "SP"
+      ]
+     },
+     {
+      "cnpj": "06981180000116",
+      "unidades": 9,
+      "potencia_kw": 189.75,
+      "ufs_fora": [
+       "DF"
+      ]
+     },
+     {
+      "cnpj": "04172213000151",
+      "unidades": 7,
+      "potencia_kw": 34.5,
+      "ufs_fora": [
+       "MG",
+       "PE",
+       "PR",
+       "RN"
+      ]
+     },
+     {
+      "cnpj": "53859112000169",
+      "unidades": 5,
+      "potencia_kw": 41.48,
+      "ufs_fora": [
+       "BA",
+       "PE",
+       "RS",
+       "SC"
+      ]
+     },
+     {
+      "cnpj": "09095183000140",
+      "unidades": 4,
+      "potencia_kw": 27.49,
+      "ufs_fora": [
+       "PE"
+      ]
+     },
+     {
+      "cnpj": "08336783000190",
+      "unidades": 3,
+      "potencia_kw": 57.0,
+      "ufs_fora": [
+       "MG",
+       "MS",
+       "PA"
+      ]
+     },
+     {
+      "cnpj": "33050196000188",
+      "unidades": 2,
+      "potencia_kw": 1500.0,
+      "ufs_fora": [
+       "PR"
+      ]
+     },
+     {
+      "cnpj": "52777034000190",
+      "unidades": 2,
+      "potencia_kw": 135.0,
+      "ufs_fora": [
+       "MG",
+       "PB"
+      ]
+     },
+     {
+      "cnpj": "03467321000199",
+      "unidades": 1,
+      "potencia_kw": 5.0,
+      "ufs_fora": [
+       "PI"
+      ]
+     },
+     {
+      "cnpj": "05914650000166",
+      "unidades": 1,
+      "potencia_kw": 5.0,
+      "ufs_fora": [
+       "PR"
+      ]
+     },
+     {
+      "cnpj": "53176038000186",
+      "unidades": 1,
+      "potencia_kw": 4.68,
+      "ufs_fora": [
+       "PB"
+      ]
+     },
+     {
+      "cnpj": "60196987000193",
+      "unidades": 1,
+      "potencia_kw": 11.25,
+      "ufs_fora": [
+       "BA"
+      ]
+     },
+     {
+      "cnpj": "90660754000160",
+      "unidades": 1,
+      "potencia_kw": 25.0,
+      "ufs_fora": [
+       "BA"
+      ]
+     }
+    ],
+    "referencia": {
+     "regra": "UF atendida = UF de algum município de algum conjunto elétrico do CNPJ, em qualquer ano da base (1990 a 2032); comparação só por CNPJ e código IBGE, sem nome",
+     "conjuntos_com_cnpj": 16311,
+     "conjuntos_com_municipio": 15162,
+     "arquivos": [
+      {
+       "arquivo": "indicadores-continuidade-coletivos-limite",
+       "sha256": "3c2738be016fc1c526c9a2458ce5b68db3f15819dbbd0afa080a366212f7e07b",
+       "capturado_em": "2026-10-01T00:18:12Z",
+       "publicado_em": "2026-09-05T05:27:08Z"
+      },
+      {
+       "arquivo": "indqual-municipio",
+       "sha256": "4063c5ba8ddaaabf27dad1a115eaa5a3f509f6ed3d22ac5c25c20f0d21365e09",
+       "capturado_em": "2026-10-01T00:18:20Z",
+       "publicado_em": "2026-09-09T11:06:11Z"
+      }
+     ],
+     "urls": [
+      "https://dadosabertos.aneel.gov.br/dataset/indicadores-coletivos-de-continuidade-dec-e-fec",
+      "https://dadosabertos.aneel.gov.br/dataset/indqual-municipio"
+     ]
+    },
+    "tratamento": "sinalizadas, não corrigidas nem removidas: o código de município é o publicado pela ANEEL"
    },
    "data_de_conexao": {
     "ufv_na_relacao": 4655916,
@@ -8502,7 +11001,7 @@
     },
     "publicado_pela_fonte_em": "2026-09-29T12:07:03Z",
     "capturado_em": "2026-09-30T22:22:34Z",
-    "validado_em": "2026-09-30T23:09:54Z",
+    "validado_em": "2026-10-01T00:28:22Z",
     "cobertura_historica": {
      "inicio": "2008-12-01",
      "fim": "2026-09-29"
@@ -8519,9 +11018,9 @@
      "sha256": "289f0a9661b05aa08afa8c8edad455ae2e0faad38aef28d8257d037bc30459ef"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "883727b9c73e+alterado",
+    "versao_codigo": "6d3bc3a2f759+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-09-30T23:09:54Z",
+     "detectado_em": "2026-10-01T00:28:22Z",
      "total": 0,
      "vintages_comparadas": 2,
      "arquivos": 2,
@@ -8532,10 +11031,11 @@
     "limitacoes": [
      "Capacidade cadastrada (kW instalados) não é energia gerada: a geração depende de sol, perdas e uso, e não é publicada por unidade.",
      "O cadastro é o vigente na data do arquivo: unidades desativadas e excluídas não aparecem no histórico; a série por ano é das unidades que continuam cadastradas.",
-     "Os meses mais recentes são provisórios: a ANEEL recebe o registro depois da conexão e suspendeu a atualização de 23/09/2025 a 13/11/2025 na troca de sistema, com inserção mais lenta depois. Aqui, os 6 meses anteriores à data do cadastro ficam marcados como provisórios.",
+     "Os meses mais recentes são provisórios: o arquivo reúne as conexões que as distribuidoras enviaram até a data do cadastro, e conexões desses meses ainda podem entrar em capturas seguintes (a magnitude só é medida comparando capturas). Aqui, os 6 meses anteriores à data do cadastro ficam marcados como provisórios, e a queda das conexões nesses meses não tem causa atribuída. A ANEEL declara, para outro período, a suspensão da atualização de 23/09/2025 a 13/11/2025 na troca de sistema e a inserção mais lenta nos meses seguintes.",
      "O local é o município da unidade consumidora com geração; na modalidade de autoconsumo remoto o crédito é usado em outras unidades, possivelmente em outro município.",
      "Potência por habitante relaciona o território, não a renda de quem instalou: nada aqui permite inferir renda ou perfil de um beneficiário individual.",
-     "Duplicidade candidata (mesmos atributos observáveis e códigos distintos) é medida e não removida; a proporção está nos controles."
+     "Duplicidade candidata (mesmos atributos observáveis e códigos distintos) é medida e não removida; a proporção está nos controles.",
+     "4.497 unidades (62,9 MW) estão cadastradas em 677 municípios de UF onde a distribuidora informada (CNPJ) não tem nenhum conjunto elétrico na base de continuidade da ANEEL; é provável erro de código de município na origem (há municípios homônimos em outras UFs). Não são corrigidas nem removidas: cada município traz a contagem e a potência dessas unidades, e o município fica sinalizado no mapa e no CSV."
     ],
     "download": "/energia/series/transicao_mmgd_municipio_ano_fonte.csv",
     "notas_fonte": "O presente documento trata de dados referentes às conexões de microgeração e minigeração distribuída (MMGD) por meio de unidades consumidoras, conforme regulamentado no art. 655-W da Resolução Normativa ANEEL 1.000/2021. A relação dos empreendimentos é classificada pelas variáveis que compõem sua identificação, quais sejam: distribuidora conectada, o código do empreendimento, o núcleo numérico do código do empreendimento, o nome do titular, a classe de produção, subgrupo, a quantidade de unidades consumidoras que recebem os créditos excedentes de energia, a data da conexão, o tipo de unidade produtora, a fonte, a potência instalada, o município e unidade de federação onde está localizada.\n\nOs dados são expressos em quantidades e potência instalada em kW (quilowatt). A quantidade corresponde ao número de empreendimentos de MMGD conectados no período especificado. A potência instalada é definida pelo somatório da potência elétrica ativa nominal das unidades geradoras.\n\n### Obs: a atualização dos dados foi suspensa entre 23/09/2025 e 13/11/2025, em decorrência do processo de migração dos dados do sistema SISGD para um novo sistema desenvolvido para recebimento dos dados encaminhados pelas distribuidoras, denominado sistema MMGD. A migração foi realizada e as distribuidoras já estão enviando os dados no novo sistema. Como o novo sistema exige uma qualidade maior para aceite dos dados encaminhados (por meio de regras de validação automatizadas), nos primeiros meses, deve ser observado menor velocidade na inserção de dados de conexões de MMGD, o que deve se normalizar a partir do trabalho das distribuidoras no sentido de fazer os envios de forma tempestiva e correta, que está sendo acompanhado pela ANEEL por meio de ações orientativas e fiscalizatórias."
@@ -8559,7 +11059,7 @@
     },
     "publicado_pela_fonte_em": "2026-09-29T12:07:03Z",
     "capturado_em": "2026-09-30T22:22:34Z",
-    "validado_em": "2026-09-30T23:09:55Z",
+    "validado_em": "2026-10-01T00:28:22Z",
     "cobertura_historica": {
      "inicio": "2026-09-29",
      "fim": "2026-09-29"
@@ -8573,9 +11073,9 @@
      "sha256": "289f0a9661b05aa08afa8c8edad455ae2e0faad38aef28d8257d037bc30459ef"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "883727b9c73e+alterado",
+    "versao_codigo": "6d3bc3a2f759+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-09-30T23:09:54Z",
+     "detectado_em": "2026-10-01T00:28:22Z",
      "total": 0,
      "vintages_comparadas": 2,
      "arquivos": 2,
@@ -8585,8 +11085,10 @@
     },
     "limitacoes": [
      "Capacidade cadastrada (kW instalados) não é energia gerada: a geração depende de sol, perdas e uso, e não é publicada por unidade.",
+     "4.497 unidades (62,9 MW) estão cadastradas em 677 municípios de UF onde a distribuidora informada (CNPJ) não tem nenhum conjunto elétrico na base de continuidade da ANEEL; é provável erro de código de município na origem (há municípios homônimos em outras UFs). Não são corrigidas nem removidas: cada município traz a contagem e a potência dessas unidades, e o município fica sinalizado no mapa e no CSV.",
+     "Em município sinalizado, a potência por habitante inclui as unidades de distribuidora sem conjunto na UF e pode estar inflada; a contagem e os kW dessas unidades estão no CSV municipal para refazer a razão sem elas.",
      "População estimada pelo IBGE para 2026 (data de referência 1º de julho), não o Censo.",
-     "Rankings por habitante só entre municípios com pelo menos 100.000 habitantes estimados: com denominador pequeno. uma única minigeração domina a razão."
+     "Rankings por habitante só entre municípios com pelo menos 100.000 habitantes estimados: com denominador pequeno, uma única minigeração domina a razão."
     ],
     "download": "/energia/series/transicao_mmgd_municipios.csv",
     "notas_fonte": null
@@ -10161,85 +12663,221 @@
     {
      "d": "2023-04-22",
      "solar_balanco_sin_mwmed": 1908.0,
+     "carga_balanco_sin_mwmed": 61545.0,
      "mmgd_ons_sin_mwmed": 3615.0
     },
     {
      "d": "2023-04-23",
      "solar_balanco_sin_mwmed": 1356.0,
+     "carga_balanco_sin_mwmed": 57976.0,
      "mmgd_ons_sin_mwmed": 3541.0
     },
     {
      "d": "2023-04-24",
      "solar_balanco_sin_mwmed": 2086.0,
+     "carga_balanco_sin_mwmed": 68575.0,
      "mmgd_ons_sin_mwmed": 3758.0
     },
     {
      "d": "2023-04-25",
      "solar_balanco_sin_mwmed": 2113.0,
+     "carga_balanco_sin_mwmed": 71130.0,
      "mmgd_ons_sin_mwmed": 3436.0
     },
     {
      "d": "2023-04-26",
      "solar_balanco_sin_mwmed": 2120.0,
+     "carga_balanco_sin_mwmed": 72621.0,
      "mmgd_ons_sin_mwmed": 3122.0
     },
     {
      "d": "2023-04-27",
      "solar_balanco_sin_mwmed": 1891.0,
+     "carga_balanco_sin_mwmed": 73881.0,
      "mmgd_ons_sin_mwmed": 3283.0
     },
     {
      "d": "2023-04-28",
      "solar_balanco_sin_mwmed": 1991.0,
+     "carga_balanco_sin_mwmed": 72889.0,
      "mmgd_ons_sin_mwmed": 3534.0
     },
     {
      "d": "2023-04-29",
      "solar_balanco_sin_mwmed": 4377.0,
+     "carga_balanco_sin_mwmed": 68158.0,
      "mmgd_ons_sin_mwmed": 3528.0
     },
     {
      "d": "2023-04-30",
      "solar_balanco_sin_mwmed": 4623.0,
+     "carga_balanco_sin_mwmed": 62116.0,
      "mmgd_ons_sin_mwmed": 3561.0
     },
     {
      "d": "2023-05-01",
      "solar_balanco_sin_mwmed": 4626.0,
+     "carga_balanco_sin_mwmed": 62227.0,
      "mmgd_ons_sin_mwmed": 3516.0
     },
     {
      "d": "2023-05-02",
      "solar_balanco_sin_mwmed": 4888.0,
+     "carga_balanco_sin_mwmed": 73025.0,
      "mmgd_ons_sin_mwmed": 3428.0
     },
     {
      "d": "2023-05-03",
      "solar_balanco_sin_mwmed": 4760.0,
+     "carga_balanco_sin_mwmed": 74393.0,
      "mmgd_ons_sin_mwmed": 3188.0
     },
     {
      "d": "2023-05-04",
      "solar_balanco_sin_mwmed": 4956.0,
+     "carga_balanco_sin_mwmed": 74914.0,
      "mmgd_ons_sin_mwmed": 3353.0
     },
     {
      "d": "2023-05-05",
      "solar_balanco_sin_mwmed": 5097.0,
+     "carga_balanco_sin_mwmed": 75327.0,
      "mmgd_ons_sin_mwmed": 3415.0
     },
     {
      "d": "2023-05-06",
      "solar_balanco_sin_mwmed": 5210.0,
+     "carga_balanco_sin_mwmed": 69043.0,
      "mmgd_ons_sin_mwmed": 3541.0
     }
    ],
    "degrau_solar_mwmed": 2386.0,
    "mmgd_ons_no_dia_mwmed": 3528.0,
+   "diferenca_degrau_solar_e_mmgd_mwmed": 1142.0,
    "solar_media_7d_antes": 1924.0,
    "solar_media_depois": 4817.0,
    "diferenca_medias_solar": 2893.0,
    "mmgd_ons_media_depois": 3441.0,
+   "pares_mesmo_dia_da_semana": [
+    {
+     "d": "2023-04-29",
+     "dia_da_semana": "sábado",
+     "d_comparacao": "2023-04-15",
+     "solar_d": 4377.0,
+     "solar_comparacao": 2238.0,
+     "carga_d": 68158.0,
+     "carga_comparacao": 68169.0,
+     "diferenca_solar": 2139.0,
+     "diferenca_carga": -10.0,
+     "mmgd_ons_d": 3528.0,
+     "feriado": null,
+     "entra_na_mediana": true
+    },
+    {
+     "d": "2023-04-30",
+     "dia_da_semana": "domingo",
+     "d_comparacao": "2023-04-16",
+     "solar_d": 4623.0,
+     "solar_comparacao": 2087.0,
+     "carga_d": 62116.0,
+     "carga_comparacao": 61866.0,
+     "diferenca_solar": 2535.0,
+     "diferenca_carga": 250.0,
+     "mmgd_ons_d": 3561.0,
+     "feriado": null,
+     "entra_na_mediana": true
+    },
+    {
+     "d": "2023-05-01",
+     "dia_da_semana": "segunda",
+     "d_comparacao": "2023-04-17",
+     "solar_d": 4626.0,
+     "solar_comparacao": 2139.0,
+     "carga_d": 62227.0,
+     "carga_comparacao": 72519.0,
+     "diferenca_solar": 2487.0,
+     "diferenca_carga": -10292.0,
+     "mmgd_ons_d": 3516.0,
+     "feriado": "Dia do Trabalho",
+     "entra_na_mediana": false
+    },
+    {
+     "d": "2023-05-02",
+     "dia_da_semana": "terça",
+     "d_comparacao": "2023-04-18",
+     "solar_d": 4888.0,
+     "solar_comparacao": 2073.0,
+     "carga_d": 73025.0,
+     "carga_comparacao": 74594.0,
+     "diferenca_solar": 2814.0,
+     "diferenca_carga": -1568.0,
+     "mmgd_ons_d": 3428.0,
+     "feriado": null,
+     "entra_na_mediana": true
+    },
+    {
+     "d": "2023-05-03",
+     "dia_da_semana": "quarta",
+     "d_comparacao": "2023-04-19",
+     "solar_d": 4760.0,
+     "solar_comparacao": 1893.0,
+     "carga_d": 74393.0,
+     "carga_comparacao": 73525.0,
+     "diferenca_solar": 2867.0,
+     "diferenca_carga": 868.0,
+     "mmgd_ons_d": 3188.0,
+     "feriado": null,
+     "entra_na_mediana": true
+    },
+    {
+     "d": "2023-05-04",
+     "dia_da_semana": "quinta",
+     "d_comparacao": "2023-04-20",
+     "solar_d": 4956.0,
+     "solar_comparacao": 1960.0,
+     "carga_d": 74914.0,
+     "carga_comparacao": 71213.0,
+     "diferenca_solar": 2996.0,
+     "diferenca_carga": 3701.0,
+     "mmgd_ons_d": 3353.0,
+     "feriado": null,
+     "entra_na_mediana": true
+    },
+    {
+     "d": "2023-05-05",
+     "dia_da_semana": "sexta",
+     "d_comparacao": "2023-04-21",
+     "solar_d": 5097.0,
+     "solar_comparacao": 1745.0,
+     "carga_d": 75327.0,
+     "carga_comparacao": 62001.0,
+     "diferenca_solar": 3352.0,
+     "diferenca_carga": 13326.0,
+     "mmgd_ons_d": 3415.0,
+     "feriado": "Tiradentes",
+     "entra_na_mediana": false
+    },
+    {
+     "d": "2023-05-06",
+     "dia_da_semana": "sábado",
+     "d_comparacao": "2023-04-22",
+     "solar_d": 5210.0,
+     "solar_comparacao": 1908.0,
+     "carga_d": 69043.0,
+     "carga_comparacao": 61545.0,
+     "diferenca_solar": 3302.0,
+     "diferenca_carga": 7498.0,
+     "mmgd_ons_d": 3541.0,
+     "feriado": null,
+     "entra_na_mediana": true
+    }
+   ],
+   "mediana_diferenca_solar_mwmed": 2840.0,
+   "mediana_diferenca_carga_mwmed": 559.0,
+   "mediana_mmgd_ons_mwmed": 3478.0,
+   "pares_na_mediana": 6,
+   "regra_pares": "cada dia de 29/04 a 06/05/2023 menos o mesmo dia da semana 14 dias antes (médias de 24 horas); pares com feriado nacional (21/04 e 01/05) ficam fora da mediana",
+   "degrau_na_carga": false,
    "documento": {
     "orgao": "ONS",
     "titulo": "Energia Agora: Balanço de Energia (texto de apresentação da página)",
@@ -10247,7 +12885,7 @@
     "consultado_em": "2026-09-30",
     "trecho": "A partir de 29/04/2023, o valor estimado da micro e minigeração distribuída (MMGD) também passou a incorporar os dados de geração e carga apresentados nesta página."
    },
-   "leitura": "O ONS declara, na página do Balanço de Energia, que a estimativa de MMGD passou a compor os dados de geração e carga a partir de 29/04/2023. No dado, a solar do SIN no balanço sobe de um dia para o outro na mesma data. A estimativa de MMGD da API de carga verificada, como está publicada hoje, não é igual ao degrau: as duas vêm de processos diferentes do ONS (previsão meteorológica na programação, dados verificados e revisados na API), e a comparação mostra ordem de grandeza, não identidade."
+   "leitura": "O ONS declara, na página do Balanço de Energia, que a estimativa de MMGD passou a compor os dados de geração e carga a partir de 29/04/2023. No dado, a solar do SIN no balanço sobe 2.386 MWmed de 28/04 para 29/04/2023; a MMGD estimada pela API de carga verificada, como publicada hoje, é 3.528 MWmed em 29/04/2023, 1.142 MWmed acima do degrau. A fonte não publica explicação para essa diferença. Comparando cada dia de 29/04 a 06/05 com o mesmo dia da semana 14 dias antes (6 pares, sem feriados), a mediana das diferenças é 2.840 MWmed na solar e 559 MWmed na carga, para 3.478 MWmed de MMGD estimada nos mesmos dias: na carga do balanço não aparece degrau do tamanho da MMGD estimada."
   },
   "documentos": [
    {
@@ -10284,8 +12922,8 @@
      "fim": "2026-09-29"
     },
     "publicado_pela_fonte_em": null,
-    "capturado_em": "2026-09-30T22:28:48Z",
-    "validado_em": "2026-09-30T23:09:55Z",
+    "capturado_em": "2026-10-01T00:18:22Z",
+    "validado_em": "2026-10-01T00:28:23Z",
     "cobertura_historica": {
      "inicio": "2019-02-15",
      "fim": "2026-09-29"
@@ -10298,18 +12936,18 @@
     ],
     "formula": "MWmed = Σ(val_cargammgd × 0,5) ÷ Σ horas; participação = 100 × Σ(val_cargammgd) ÷ Σ(val_cargaglobal)",
     "snapshot": {
-     "id": "ons_carga_verificada_mmgd@2026-09-30T22:28:48Z",
-     "sha256": "a9a69fd8cf9a7c918b31755448e2ed1c3b844125da08dcd6ee9d803eba6be575"
+     "id": "ons_carga_verificada_mmgd@2026-10-01T00:18:22Z",
+     "sha256": "32fe3cbd34f97e38ed83446d1aca21ad2d4139970c6aba0423ec4c189a47ad16"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "883727b9c73e+alterado",
+    "versao_codigo": "6d3bc3a2f759+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-09-30T23:09:55Z",
+     "detectado_em": "2026-10-01T00:28:23Z",
      "total": 0,
-     "vintages_comparadas": 372,
-     "arquivos": 372,
+     "vintages_comparadas": 376,
+     "arquivos": 376,
      "recapturas_sem_mudanca": 0,
-     "ultimo_download_ok": "2026-09-30T22:28:48Z",
+     "ultimo_download_ok": "2026-10-01T00:18:22Z",
      "exemplos": []
     },
     "limitacoes": [
@@ -10340,8 +12978,8 @@
      "fim": "2026-09"
     },
     "publicado_pela_fonte_em": null,
-    "capturado_em": "2026-09-30T22:28:48Z",
-    "validado_em": "2026-09-30T23:09:55Z",
+    "capturado_em": "2026-10-01T00:18:22Z",
+    "validado_em": "2026-10-01T00:28:23Z",
     "cobertura_historica": {
      "inicio": "2019-02",
      "fim": "2026-09"
@@ -10351,23 +12989,23 @@
     ],
     "formula": "razão = 100 × MMGD estimada no SIN (MWmed) ÷ capacidade cadastrada (MW)",
     "snapshot": {
-     "id": "ons_carga_verificada_mmgd@2026-09-30T22:28:48Z",
-     "sha256": "a9a69fd8cf9a7c918b31755448e2ed1c3b844125da08dcd6ee9d803eba6be575"
+     "id": "ons_carga_verificada_mmgd@2026-10-01T00:18:22Z",
+     "sha256": "32fe3cbd34f97e38ed83446d1aca21ad2d4139970c6aba0423ec4c189a47ad16"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "883727b9c73e+alterado",
+    "versao_codigo": "6d3bc3a2f759+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-09-30T23:09:55Z",
+     "detectado_em": "2026-10-01T00:28:23Z",
      "total": 0,
-     "vintages_comparadas": 372,
-     "arquivos": 372,
+     "vintages_comparadas": 376,
+     "arquivos": 376,
      "recapturas_sem_mudanca": 0,
-     "ultimo_download_ok": "2026-09-30T22:28:48Z",
+     "ultimo_download_ok": "2026-10-01T00:18:22Z",
      "exemplos": []
     },
     "limitacoes": [
      "Não é fator de capacidade medido: compara uma estimativa do ONS (SIN) com um cadastro da ANEEL (Brasil) e herda as limitações das duas.",
-     "Registro tardio na ANEEL aumentaria a razão nos meses recentes: meses provisórios do cadastro e meses incompletos do ONS não têm razão calculada."
+     "Conexões ainda não cadastradas na ANEEL aumentariam a razão nos meses recentes: meses provisórios do cadastro e meses incompletos do ONS não têm razão calculada."
     ],
     "download": "/energia/series/transicao_ons_mmgd_mensal.csv",
     "notas_fonte": null
@@ -10375,7 +13013,7 @@
   },
   "evidencia": {
    "indicador": "MMGD estimada pelo ONS no SIN, média do mês",
-   "valor_exibido": "8.968",
+   "valor_exibido": "8.967,9",
    "valor_calculo": 8967.926945295705,
    "unidade": "MWmed",
    "periodo": {
@@ -10452,10 +13090,10 @@
    "tratamento_ausencia": "meia hora sem valor fica fora da soma e das horas; dia incompleto não entra no SIN; dia em curso na captura não é verificado",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "883727b9c73e+alterado",
-    "publicacao": "2026-09-30T23:09:55Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:28:23Z"
    },
-   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
     {
      "nome": "campo vazio é ausência",
@@ -10484,7 +13122,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py transicao --sem-coleta (silver data/energia/silver/aneel_mmgd.db)",
-   "citacao": "SCRUTINIUMS. MMGD estimada pelo ONS no SIN, média do mês: 8.968 MWmed, SIN, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Verificada (recurso carga_verificada_SECO_2026-08, capturado em 30/09/2026). Versão energia-0.1.0, código 883727b9c73e+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. MMGD estimada pelo ONS no SIN, média do mês: 8.967,9 MWmed, SIN, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Verificada (recurso carga_verificada_SECO_2026-08, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "emissoes": {
@@ -13024,6 +15662,307 @@
     "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
    },
    {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-01-19",
+    "anterior": 0.469375843054396,
+    "atual": 0.4697520877545251,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-01-31",
+    "anterior": 0.38275020505301616,
+    "atual": 0.41442015988962905,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-03-19",
+    "anterior": 0.350640170971155,
+    "atual": 0.348751234369829,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-03-20",
+    "anterior": 0.324366136118351,
+    "atual": 0.32247319570322935,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-03-31",
+    "anterior": 0.3139389234803625,
+    "atual": 0.31451660792747854,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-05-31",
+    "anterior": 0.3635,
+    "atual": 0.4123671336788738,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-06-29",
+    "anterior": 0.4413086672849669,
+    "atual": 0.4605011189462813,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-07-25",
+    "anterior": 0.587708875667956,
+    "atual": 0.5872575903814641,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-07-29",
+    "anterior": 0.5804075247158124,
+    "atual": 0.5801092429204635,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-08-07",
+    "anterior": 0.658241594789146,
+    "atual": 0.658356858061488,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-08-08",
+    "anterior": 0.6390021761936953,
+    "atual": 0.6390650914669074,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-08-09",
+    "anterior": 0.6420542881840762,
+    "atual": 0.6419555180967844,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-08-12",
+    "anterior": 0.6228178393724965,
+    "atual": 0.6226325554651645,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-08-14",
+    "anterior": 0.599406078307331,
+    "atual": 0.5987675124380868,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-08-15",
+    "anterior": 0.6122023652192804,
+    "atual": 0.6117818066147406,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-08-16",
+    "anterior": 0.611489160909238,
+    "atual": 0.6110766181904445,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-08-19",
+    "anterior": 0.6347632363895762,
+    "atual": 0.63485197202162,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-08-23",
+    "anterior": 0.6402302173957409,
+    "atual": 0.6402691930348063,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-08-27",
+    "anterior": 0.568002815000744,
+    "atual": 0.5673720062036709,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-08-28",
+    "anterior": 0.5544238498378368,
+    "atual": 0.553815327904887,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-08-29",
+    "anterior": 0.5741049847586736,
+    "atual": 0.5736772706004285,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-08-30",
+    "anterior": 0.5700977301918102,
+    "atual": 0.569648469479258,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-08-31",
+    "anterior": 0.5700977301918102,
+    "atual": 0.5557177781399852,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-09-02",
+    "anterior": 0.5062022481339548,
+    "atual": 0.5067915962485702,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-09-03",
+    "anterior": 0.512288876498137,
+    "atual": 0.5128484304632512,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-09-04",
+    "anterior": 0.5020918630225064,
+    "atual": 0.5026224498182741,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-09-05",
+    "anterior": 0.528821646913634,
+    "atual": 0.5294860052496635,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-09-06",
+    "anterior": 0.5425453638332981,
+    "atual": 0.5432076397700826,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-09-09",
+    "anterior": 0.5926636020332218,
+    "atual": 0.5936179064293853,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-09-10",
+    "anterior": 0.6118362138313805,
+    "atual": 0.6128604945286942,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-09-11",
+    "anterior": 0.6430514884141603,
+    "atual": 0.6439652240257807,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-09-12",
+    "anterior": 0.6367676104544272,
+    "atual": 0.637835826035642,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-09-13",
+    "anterior": 0.6465198660986774,
+    "atual": 0.6475966427011581,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-09-14",
+    "anterior": 0.6672632670185327,
+    "atual": 0.6684743818825514,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-09-16",
+    "anterior": 0.6678558054657477,
+    "atual": 0.668902372317844,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-09-19",
+    "anterior": 0.6235668872770035,
+    "atual": 0.6243704369076378,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-09-20",
+    "anterior": 0.6250827746769492,
+    "atual": 0.6258800341790896,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-09-23",
+    "anterior": 0.5890008881922114,
+    "atual": 0.5896920339612981,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-09-24",
+    "anterior": 0.60095844562036,
+    "atual": 0.6017188747998514,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-09-25",
+    "anterior": 0.6215410226041861,
+    "atual": 0.6224384090552975,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-09-26",
+    "anterior": 0.611084092383498,
+    "atual": 0.6124168362065716,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-09-27",
+    "anterior": 0.618805627032237,
+    "atual": 0.6196160009374573,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2024-09-30",
+    "anterior": 0.6669472871035743,
+    "atual": 0.6676819852076233,
+    "arquivo": "Despacho_2024_jandezcomcorrees_FE_MC.xlsx"
+   },
+   {
     "serie": "margem_construcao",
     "periodo": "2022",
     "anterior": 0.027,
@@ -13045,6 +15984,27 @@
     "arquivo": "Margemdeconstruo_2023corrigido.xlsx"
    },
    {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2023-05-31",
+    "anterior": 0.338910512050935,
+    "atual": 0.35461656896743443,
+    "arquivo": "Margemdeconstruo_2023corrigido.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2023-07-31",
+    "anterior": 0.5578864649493954,
+    "atual": 0.46222186928230735,
+    "arquivo": "Margemdeconstruo_2023corrigido.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2023-12-31",
+    "anterior": 0.5252045088707245,
+    "atual": 0.5296863131512021,
+    "arquivo": "Margemdeconstruo_2023corrigido.xlsx"
+   },
+   {
     "serie": "margem_operacao_mensal",
     "periodo": "2020-09",
     "anterior": 0.3285,
@@ -13063,6 +16023,251 @@
     "periodo": "2020-12",
     "anterior": 0.6078,
     "atual": 0.6106,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-09-14",
+    "anterior": 0.3099,
+    "atual": 0.3107,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-09-15",
+    "anterior": 0.2779,
+    "atual": 0.2804,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-09-16",
+    "anterior": 0.317,
+    "atual": 0.3192,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-10-02",
+    "anterior": 0.5437,
+    "atual": 0.5439,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-10-07",
+    "anterior": 0.6225,
+    "atual": 0.6228,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-10-08",
+    "anterior": 0.5966,
+    "atual": 0.5969,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-10-14",
+    "anterior": 0.5737,
+    "atual": 0.5738,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-10-20",
+    "anterior": 0.5986,
+    "atual": 0.5991,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-10-21",
+    "anterior": 0.6096,
+    "atual": 0.6102,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-10-22",
+    "anterior": 0.5643,
+    "atual": 0.5652,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-10-23",
+    "anterior": 0.5262,
+    "atual": 0.5273,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-10-24",
+    "anterior": 0.5328,
+    "atual": 0.5336,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-10-27",
+    "anterior": 0.5582,
+    "atual": 0.5592,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-10-28",
+    "anterior": 0.5566,
+    "atual": 0.5575,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-10-29",
+    "anterior": 0.5623,
+    "atual": 0.5633,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-12-01",
+    "anterior": 0.5409,
+    "atual": 0.5472,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-12-02",
+    "anterior": 0.5447,
+    "atual": 0.551,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-12-03",
+    "anterior": 0.5511,
+    "atual": 0.5573,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-12-04",
+    "anterior": 0.5428,
+    "atual": 0.549,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-12-05",
+    "anterior": 0.5359,
+    "atual": 0.5429,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-12-06",
+    "anterior": 0.514,
+    "atual": 0.5197,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-12-07",
+    "anterior": 0.5496,
+    "atual": 0.5547,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-12-08",
+    "anterior": 0.553,
+    "atual": 0.5593,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-12-09",
+    "anterior": 0.6264,
+    "atual": 0.6296,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-12-10",
+    "anterior": 0.6285,
+    "atual": 0.6312,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-12-11",
+    "anterior": 0.6274,
+    "atual": 0.6299,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-12-12",
+    "anterior": 0.6195,
+    "atual": 0.6231,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-12-13",
+    "anterior": 0.6202,
+    "atual": 0.6222,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-12-14",
+    "anterior": 0.6268,
+    "atual": 0.6301,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-12-15",
+    "anterior": 0.6298,
+    "atual": 0.6325,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-12-16",
+    "anterior": 0.6316,
+    "atual": 0.6347,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-12-17",
+    "anterior": 0.6231,
+    "atual": 0.6261,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-12-18",
+    "anterior": 0.6255,
+    "atual": 0.6285,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-12-21",
+    "anterior": 0.6343,
+    "atual": 0.6365,
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
+   },
+   {
+    "serie": "margem_operacao_diaria",
+    "periodo": "2020-12-22",
+    "anterior": 0.6343,
+    "atual": 0.6375,
     "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
    }
   ],
@@ -13299,6 +16504,30 @@
     "arquivo": "Despacho_2025_jandez_corrigidacomMO.xlsx"
    },
    {
+    "data": "2023-04-31",
+    "valor": 0.314484473309007,
+    "motivo": "data inexistente no calendário (valor da publicação anterior)",
+    "arquivo": "Margemdeconstruo_2023corrigido.xlsx"
+   },
+   {
+    "data": "2023-06-31",
+    "valor": 0.468417674218943,
+    "motivo": "data inexistente no calendário (valor da publicação anterior)",
+    "arquivo": "Margemdeconstruo_2023corrigido.xlsx"
+   },
+   {
+    "data": "2023-09-31",
+    "valor": 0.4787748001139709,
+    "motivo": "data inexistente no calendário (valor da publicação anterior)",
+    "arquivo": "Margemdeconstruo_2023corrigido.xlsx"
+   },
+   {
+    "data": "2023-11-31",
+    "valor": 0.481288901306364,
+    "motivo": "data inexistente no calendário (valor da publicação anterior)",
+    "arquivo": "Margemdeconstruo_2023corrigido.xlsx"
+   },
+   {
     "data": "2019-09-31",
     "valor": 0.0,
     "motivo": "data inexistente no calendário",
@@ -13307,12 +16536,20 @@
   ],
   "problemas_de_leitura": [
    {
+    "texto": "margem de operação diária 2022: 1 valor diário à direita do bloco principal (01/07), sob o rótulo \"Publicação atual com correção\" (célula P14); trocar os diários principais por eles não move a média do mês no sentido da correção declarada no mensal (julho: média diária +0,00022, mensal −0,3767); não lidos como revisão nem como fator diário",
+    "arquivo": "Margemdeconstruo_2022corrigido.xlsx"
+   },
+   {
     "texto": "margem de operação diária 2015: coluna I rotulada maio na posição de julho; lida pela posição",
     "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2015.xlsx"
    },
    {
     "texto": "margem de operação diária 2016: coluna I rotulada maio na posição de julho; lida pela posição",
     "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2016.xlsx"
+   },
+   {
+    "texto": "margem de operação diária 2020: o rótulo \"Publicação atual (com correção)\" (célula P14) chama de atual o bloco diário da direita, mas o topo da planilha declara a publicação anterior (com erros) e o mensal principal é o corrigido; lidos como publicação anterior os 35 valores diários à direita do bloco principal (14/09 a 22/12), porque trocar os diários principais por eles move a média de cada mês no sentido da correção do mensal (setembro: média diária −0,00018, mensal −0,0002; outubro: média diária −0,00025, mensal −0,0003; dezembro: média diária −0,00270, mensal −0,0028)",
+    "arquivo": "fatores-de-emissao-de-co2-pela-geracao-de-energia-eletrica-no-sistema-interligado-nacional-do-brasil-ano-base-2020-com-correcoes-de-setembro-a-dezembro.xlsx"
    }
   ],
   "consistencia_diaria_mensal": {
@@ -13324,9 +16561,9 @@
   "acesso": {
    "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/sirene/dados-e-ferramentas/fatores-de-emissao",
    "situacao": "acessivel",
-   "tentado_em": "2026-09-30T22:48:13Z",
-   "detalhe": "23 planilhas publicadas, 13 âncoras ocultas ignoradas, 1 notas técnicas; listagem nova",
-   "ultimo_acesso_ok": "2026-09-30T22:48:13Z",
+   "tentado_em": "2026-10-01T00:18:26Z",
+   "detalhe": "23 planilhas publicadas, 13 âncoras ocultas ignoradas, 1 notas técnicas",
+   "ultimo_acesso_ok": "2026-10-01T00:18:26Z",
    "bloqueios_registrados": [],
    "familias_usadas": [
     "atual"
@@ -13525,7 +16762,7 @@
   "proveniencia": {
    "medio": {
     "indicador": "Fator médio de emissão de CO2 do SIN (inventários)",
-    "natureza": "OBSERVADO",
+    "natureza": "ESTIMADO",
     "fonte": {
      "orgao": "MCTI",
      "dataset": "Fatores de emissão de CO2 pela geração de energia elétrica no SIN",
@@ -13542,7 +16779,7 @@
     },
     "publicado_pela_fonte_em": null,
     "capturado_em": "2026-09-30T22:49:08Z",
-    "validado_em": "2026-09-30T23:09:55Z",
+    "validado_em": "2026-10-01T00:28:23Z",
     "cobertura_historica": {
      "inicio": "2006-01",
      "fim": "2026-08"
@@ -13558,14 +16795,14 @@
      "sha256": "ce020b6e9fe69af47873516bfea01c38a50f929436a7d931e78d866b65a624b9"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "883727b9c73e+alterado",
+    "versao_codigo": "6d3bc3a2f759+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-09-30T23:09:55Z",
+     "detectado_em": "2026-10-01T00:28:23Z",
      "total": 0,
      "vintages_comparadas": 42,
      "arquivos": 42,
-     "recapturas_sem_mudanca": 1,
-     "ultimo_download_ok": "2026-09-30T22:49:08Z",
+     "recapturas_sem_mudanca": 2,
+     "ultimo_download_ok": "2026-10-01T00:18:26Z",
      "exemplos": []
     },
     "limitacoes": [
@@ -13579,11 +16816,11 @@
      "4 valores da página vigente diferem do publicado no site institucional anterior para o mesmo período; vale a publicação vigente e as diferenças ficam listadas."
     ],
     "download": "/energia/series/transicao_mcti_fatores.csv",
-    "notas_fonte": "Calculado pelo MCTI com dados de geração do ONS; publicado pela fonte."
+    "notas_fonte": "Natureza ESTIMADO: estimativa publicada pelo próprio MCTI (emissões calculadas a partir do consumo de combustível e de fatores metodológicos, divididas pela geração do ONS), não medição. Valor oficial, publicado pela plataforma sem alteração."
    },
    "mdl": {
     "indicador": "Fatores de margem do MDL: margem de operação (despacho e simples ajustado) e margem de construção",
-    "natureza": "OBSERVADO",
+    "natureza": "ESTIMADO",
     "fonte": {
      "orgao": "MCTI",
      "dataset": "Fatores de emissão de CO2 pela geração de energia elétrica no SIN",
@@ -13600,7 +16837,7 @@
     },
     "publicado_pela_fonte_em": null,
     "capturado_em": "2026-09-30T22:49:08Z",
-    "validado_em": "2026-09-30T23:09:55Z",
+    "validado_em": "2026-10-01T00:28:23Z",
     "cobertura_historica": {
      "inicio": "2006-01",
      "fim": "2026-08"
@@ -13614,14 +16851,14 @@
      "sha256": "ce020b6e9fe69af47873516bfea01c38a50f929436a7d931e78d866b65a624b9"
     },
     "versao_pipeline": "energia-0.1.0",
-    "versao_codigo": "883727b9c73e+alterado",
+    "versao_codigo": "6d3bc3a2f759+alterado",
     "revisoes_conhecidas": {
-     "detectado_em": "2026-09-30T23:09:55Z",
+     "detectado_em": "2026-10-01T00:28:23Z",
      "total": 0,
      "vintages_comparadas": 42,
      "arquivos": 42,
-     "recapturas_sem_mudanca": 1,
-     "ultimo_download_ok": "2026-09-30T22:49:08Z",
+     "recapturas_sem_mudanca": 2,
+     "ultimo_download_ok": "2026-10-01T00:18:26Z",
      "exemplos": []
     },
     "limitacoes": [
@@ -13631,7 +16868,7 @@
      "Base de usinas do ONS ampliada (termelétricas a biomassa e conjuntos de usinas solares e eólicas, de emissão nula); metodologia mantida. Valores a partir de jan/2025 podem ser menores por causa da base, não só da operação."
     ],
     "download": "/energia/series/transicao_mcti_fatores.csv",
-    "notas_fonte": null
+    "notas_fonte": "Natureza ESTIMADO: estimativa publicada pelo próprio MCTI (emissões calculadas a partir do consumo de combustível e de fatores metodológicos, divididas pela geração do ONS), não medição. Valor oficial, publicado pela plataforma sem alteração."
    }
   },
   "evidencia": {
@@ -13672,10 +16909,10 @@
    "tratamento_ausencia": "ano sem planilha acessível fica sem valor; ano corrente parcial não tem fator anual; nada é estimado para preencher",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "883727b9c73e+alterado",
-    "publicacao": "2026-09-30T23:09:55Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:28:23Z"
    },
-   "revisoes": "11 revisões declaradas pelo MCTI nas planilhas usadas; 4 valores da página vigente diferentes do site institucional anterior (listados em divergencias_entre_publicacoes).",
+   "revisoes": "92 revisões declaradas pelo MCTI nas planilhas do MDL usadas, com valor anterior e corrigido (81 na margem de operação diária, 9 na margem de operação mensal, 2 na margem de construção); 4 valores da página vigente diferentes do site institucional anterior (listados em divergencias_entre_publicacoes).",
    "testes": [
     {
      "nome": "domínio do fator",
@@ -13700,7 +16937,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py transicao --sem-coleta (silver data/energia/silver/aneel_mmgd.db)",
-   "citacao": "SCRUTINIUMS. Fator médio anual de emissão de CO2 do SIN (inventários): 0,0461 tCO2/MWh, SIN, 01/01/2025 a 31/12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: MCTI, Fatores de emissão de CO2 pela geração de energia elétrica no SIN (recurso Inventários Corporativos - 2026 (Inventario_2026_janago.xlsx), capturado em 30/09/2026). Versão energia-0.1.0, código 883727b9c73e+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Fator médio anual de emissão de CO2 do SIN (inventários): 0,0461 tCO2/MWh, SIN, 01/01/2025 a 31/12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: MCTI, Fatores de emissão de CO2 pela geração de energia elétrica no SIN (recurso Inventários Corporativos - 2026 (Inventario_2026_janago.xlsx), capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "evidencia_mensal": {
    "indicador": "Fator médio mensal de emissão de CO2 do SIN (inventários)",
@@ -13740,10 +16977,10 @@
    "tratamento_ausencia": "mês sem valor publicado fica sem valor; nada é interpolado",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "883727b9c73e+alterado",
-    "publicacao": "2026-09-30T23:09:55Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:28:23Z"
    },
-   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
     {
      "nome": "domínio do fator",
@@ -13759,7 +16996,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py transicao --sem-coleta (silver data/energia/silver/aneel_mmgd.db)",
-   "citacao": "SCRUTINIUMS. Fator médio mensal de emissão de CO2 do SIN (inventários): 0,0471 tCO2/MWh, SIN, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: MCTI, Fatores de emissão de CO2 pela geração de energia elétrica no SIN (recurso Inventários Corporativos - 2026 (Inventario_2026_janago.xlsx), capturado em 30/09/2026). Versão energia-0.1.0, código 883727b9c73e+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Fator médio mensal de emissão de CO2 do SIN (inventários): 0,0471 tCO2/MWh, SIN, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: MCTI, Fatores de emissão de CO2 pela geração de energia elétrica no SIN (recurso Inventários Corporativos - 2026 (Inventario_2026_janago.xlsx), capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "downloads": [

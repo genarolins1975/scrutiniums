@@ -17,6 +17,7 @@ import os
 import sys
 import tempfile
 import unittest
+from collections import Counter
 from datetime import date
 from unittest import mock
 
@@ -367,11 +368,19 @@ class FatoresMCTI(unittest.TestCase):
         self.assertEqual(p["om_mensal"]["2021-01"], 0.6001)
 
     def test_revisao_declarada_pela_fonte(self):
+        """Recorte das primeiras linhas da planilha de 2020: as revisões mensais e, no bloco
+        diário, os valores da publicação anterior que caem nessas linhas (valores lidos na
+        planilha: coluna principal × coluna da direita)."""
         p = mcti.parse_despacho(mcti.le_xlsx(_xlsx("mcti_despacho_2020_recorte.xlsx")))
         self.assertEqual(p["revisoes"], [
             {"serie": "margem_operacao_mensal", "periodo": "2020-09", "anterior": 0.3285, "atual": 0.3287},
             {"serie": "margem_operacao_mensal", "periodo": "2020-10", "anterior": 0.572, "atual": 0.5723},
-            {"serie": "margem_operacao_mensal", "periodo": "2020-12", "anterior": 0.6078, "atual": 0.6106}])
+            {"serie": "margem_operacao_mensal", "periodo": "2020-12", "anterior": 0.6078, "atual": 0.6106},
+            {"serie": "margem_operacao_diaria", "periodo": "2020-10-02", "anterior": 0.5437, "atual": 0.5439},
+            {"serie": "margem_operacao_diaria", "periodo": "2020-12-01", "anterior": 0.5409, "atual": 0.5472},
+            {"serie": "margem_operacao_diaria", "periodo": "2020-12-02", "anterior": 0.5447, "atual": 0.551},
+            {"serie": "margem_operacao_diaria", "periodo": "2020-12-03", "anterior": 0.5511, "atual": 0.5573},
+            {"serie": "margem_operacao_diaria", "periodo": "2020-12-04", "anterior": 0.5428, "atual": 0.549}])
         self.assertEqual(p["bm"], 0.0979)
 
     def test_metodo_simples_ajustado_da_pagina_html(self):
@@ -659,6 +668,393 @@ class ImportacaoEGold(_Ambiente):
         b, motivo = transicao._bloco_mmgd(self.con, date(2026, 9, 30))
         self.assertIsNone(b)
         self.assertIn("validação crítica", motivo)
+
+
+# ---------------------------------------------------------------------------
+# Defeitos apontados pela verificação de 30/09/2026 (um teste por defeito)
+# ---------------------------------------------------------------------------
+
+class RevisoesDiariasMCTI(unittest.TestCase):
+    """Valores diários da publicação anterior, à direita do bloco diário principal.
+    Recortes das linhas 1 a 47 (todo o bloco diário) das planilhas da página vigente;
+    valores esperados lidos no XML das planilhas originais."""
+
+    def test_2024_le_os_diarios_da_publicacao_anterior(self):
+        p = mcti.parse_despacho(mcti.le_xlsx(_xlsx("mcti_despacho_2024_correcoes_recorte.xlsx")))
+        diarias = [r for r in p["revisoes"] if r["serie"] == "margem_operacao_diaria"]
+        mensais = [r for r in p["revisoes"] if r["serie"] == "margem_operacao_mensal"]
+        self.assertEqual(len(diarias), 43)
+        self.assertEqual(len(mensais), 5)
+        r = next(x for x in diarias if x["periodo"] == "2024-09-02")  # células X18 (anterior) e K18 (atual)
+        self.assertAlmostEqual(r["anterior"], 0.5062, delta=5e-5)
+        self.assertAlmostEqual(r["atual"], 0.5068, delta=5e-5)
+        self.assertEqual(p["problemas"], [])  # sem rótulo contraditório nesta planilha
+        self.assertTrue(all(x["atual"] is not None for x in diarias))
+
+    def test_2020_rotulo_contraditorio_resolvido_pelo_dado_e_registrado(self):
+        """P1 diz "Publicação anterior (com erros)" e P14, acima do bloco diário da direita,
+        "Publicação atual (com correção)". Trocar os diários principais pelos da direita
+        move a média de cada mês no sentido do mensal anterior: o bloco é a publicação
+        anterior, e a escolha fica em problemas_de_leitura."""
+        p = mcti.parse_despacho(mcti.le_xlsx(_xlsx("mcti_despacho_2020_correcoes_diario_recorte.xlsx")))
+        diarias = {r["periodo"]: r for r in p["revisoes"] if r["serie"] == "margem_operacao_diaria"}
+        self.assertEqual(len(diarias), 35)
+        self.assertEqual((diarias["2020-12-01"]["anterior"], diarias["2020-12-01"]["atual"]), (0.5409, 0.5472))
+        self.assertEqual(p["om_diario"]["2020-12-01"], 0.5472)  # o principal continua sendo o valor vigente
+        self.assertEqual(len(p["problemas"]), 1)
+        texto = p["problemas"][0]
+        for trecho in ("P14", "Publicação atual (com correção)", "lidos como publicação anterior", "dezembro"):
+            self.assertIn(trecho, texto)
+
+    def test_2022_bloco_rotulado_atual_que_nao_acompanha_o_mensal_nao_vira_revisao(self):
+        """Na de 2022 o bloco da direita tem um único valor (01/07: 0,4186, igual ao mensal
+        corrigido de julho) sob "Publicação atual com correção": não é diário anterior."""
+        p = mcti.parse_despacho(mcti.le_xlsx(_xlsx("mcti_margem_construcao_2022_recorte.xlsx")))
+        self.assertFalse([r for r in p["revisoes"] if r["serie"] == "margem_operacao_diaria"])
+        self.assertAlmostEqual(p["om_diario"]["2022-07-01"], 0.41189015010815511, places=12)
+        self.assertTrue(any("não lidos como revisão" in x and "P14" in x for x in p["problemas"]))
+
+    def test_2023_dia_inexistente_da_publicacao_anterior_e_descartado(self):
+        p = mcti.parse_despacho(mcti.le_xlsx(_xlsx("mcti_margem_construcao_2023_recorte.xlsx")))
+        diarias = sorted(r["periodo"] for r in p["revisoes"] if r["serie"] == "margem_operacao_diaria")
+        self.assertEqual(diarias, ["2023-05-31", "2023-07-31", "2023-12-31"])
+        anteriores = sorted(d["data"] for d in p["descartes"] if "publicação anterior" in d["motivo"])
+        self.assertEqual(anteriores, ["2023-04-31", "2023-06-31", "2023-09-31", "2023-11-31"])
+
+
+class BlocoEmissoesRevisoes(_Ambiente):
+    def _grava(self, recurso, arquivo, capturado):
+        transicao._grava_mcti(self.con, recurso, URL_ATUAL + recurso.split("_", 1)[1] + ".xlsx", _xlsx(arquivo), "xlsx", "teste",
+                              capturado=capturado)
+
+    def test_revisoes_diarias_na_gold_e_natureza_estimada(self):
+        self._grava("atual_Inventario_2026_janago", "mcti_inventario_2026_janago.xlsx", "2026-09-30T22:48:14Z")
+        self._grava("atual_Despacho_2024_jandezcomcorrees_FE_MC", "mcti_despacho_2024_correcoes_recorte.xlsx", "2026-09-30T22:48:15Z")
+        b = transicao._bloco_emissoes(self.con)
+        por_serie = Counter(r["serie"] for r in b["revisoes_declaradas_pela_fonte"])
+        self.assertEqual(por_serie, {"margem_operacao_diaria": 43, "margem_operacao_mensal": 5})
+        self.assertIn("48 revisões", b["evidencia"]["revisoes"])
+        self.assertIn("43 na margem de operação diária", b["evidencia"]["revisoes"])
+        # fatores do MCTI são estimados pela fonte (emissões calculadas), não medidos
+        self.assertEqual(b["proveniencia"]["medio"]["natureza"], "ESTIMADO")
+        self.assertEqual(b["proveniencia"]["mdl"]["natureza"], "ESTIMADO")
+        self.assertIn("sem alteração", b["proveniencia"]["medio"]["notas_fonte"])
+
+    def test_releitura_refaz_as_anotacoes_de_vintage_lida_por_versao_anterior(self):
+        """Vintage gravada antes da leitura dos diários (versão 1: só revisões mensais e sem
+        a marca de versão) é relida do bronze: as anotações são refeitas, os valores não."""
+        self._grava("atual_Despacho_2024_jandezcomcorrees_FE_MC", "mcti_despacho_2024_correcoes_recorte.xlsx", "2026-09-30T22:48:15Z")
+        vid = base.ultima_vintage(self.con, transicao.DS_MCTI, "atual_Despacho_2024_jandezcomcorrees_FE_MC")["vintage_id"]
+        regs = base.registros_como_estavam_em(self.con, transicao.DS_MCTI_META)["atual_Despacho_2024_jandezcomcorrees_FE_MC"]
+        antigas = [r for r in json.loads(regs["revisoes_declaradas"]) if r["serie"] != "margem_operacao_diaria"]
+        self.con.execute("DELETE FROM registros WHERE dataset=? AND vintage_id=?", (transicao.DS_CONTROLE, vid))
+        self.con.execute("UPDATE registros SET valor=? WHERE dataset=? AND campo='revisoes_declaradas' AND vintage_id=?",
+                         (json.dumps(antigas), transicao.DS_MCTI_META, vid))
+        n_obs = self.con.execute("SELECT COUNT(*) FROM observacoes WHERE vintage_id=?", (vid,)).fetchone()[0]
+        r = transicao.releitura_mcti(self.con)
+        self.assertEqual(r, {"relidas": 1, "com_valor_divergente": []})
+        regs = base.registros_como_estavam_em(self.con, transicao.DS_MCTI_META)["atual_Despacho_2024_jandezcomcorrees_FE_MC"]
+        self.assertEqual(len(json.loads(regs["revisoes_declaradas"])), 48)
+        self.assertEqual(self.con.execute("SELECT COUNT(*) FROM observacoes WHERE vintage_id=?", (vid,)).fetchone()[0], n_obs)
+        self.assertEqual(transicao.releitura_mcti(self.con)["relidas"], 0)  # versão em dia: nada a reler
+
+
+class DesafioMCTIGuardado(unittest.TestCase):
+    def test_amostras_do_desafio_tem_support_id(self):
+        """As duas respostas de verificação humana guardadas como evidência do bloqueio."""
+        for arquivo, sid in (("mcti_desafio_waf_recorte.html", "11080339514068322584"),
+                             ("mcti_desafio_waf_pagina_20261001.html", "11080339521002698785")):
+            with open(os.path.join(DADOS, arquivo), "rb") as f:
+                self.assertEqual(mcti.desafio_waf(f.read()), sid)
+
+
+def _csv_gz(nome):
+    with gzip.open(os.path.join(DADOS, nome), "rt", encoding="latin-1", newline="") as f:
+        return list(csv.DictReader(f, delimiter=";"))
+
+
+CNPJ_NEO_PE = "10835932000108"
+CNPJ_COELBA = "15139629000194"
+CNPJ_EQ_PA = "04895728000180"
+CNPJ_EQ_GO = "01543032000104"
+CNPJ_ENEL_CE = "07047251000170"
+
+
+class AreaDistribuidora(unittest.TestCase):
+    """Unidades em UF onde a distribuidora (CNPJ) não tem conjunto elétrico. Recortes reais:
+    linhas da relação de MMGD de São Caetano de Odivelas (1507102, PA) e Abadia de Goiás
+    (5200050, GO) e, para os cinco CNPJs presentes, um conjunto por UF da base de
+    continuidade com as linhas do indqual-municipio desses conjuntos. Valores esperados de
+    agregação própria (pyarrow group_by) sobre o Parquet oficial completo de 29/09/2026."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.area = mmgd.area_distribuidoras(mmgd.conjuntos_limite(_csv_gz("aneel_conjuntos_limite_recorte.csv.gz")),
+                                            mmgd.conjuntos_municipio(_csv_gz("aneel_indqual_municipio_recorte.csv.gz")))
+        ag = mmgd.agrega(mmgd.linhas_parquet(os.path.join(DADOS, "mmgd_municipios_area_recorte.parquet")))
+        cls.dmun = {k: (q, kw) for k, (q, kw) in ag.dist_municipio.items()}
+
+    def test_area_pela_base_de_conjuntos(self):
+        """UFs com conjunto de cada CNPJ (iguais às da base completa de 01/10/2026)."""
+        self.assertEqual({cn: sorted(u) for cn, u in self.area.items()},
+                         {CNPJ_NEO_PE: ["BA", "PB", "PE", "PI"], CNPJ_COELBA: ["BA"], CNPJ_EQ_PA: ["PA"],
+                          CNPJ_EQ_GO: ["GO"], CNPJ_ENEL_CE: ["CE"]})
+
+    def test_unidades_fora_da_area_por_municipio(self):
+        fora = transicao._fora_da_area(self.dmun, self.area)
+        q, kw = fora["por_mun"]["1507102"]  # 185 da Neoenergia PE; as 64 da Equatorial PA estão na área
+        self.assertEqual(q, 185)
+        self.assertAlmostEqual(kw, 1830.21, delta=0.005)
+        q, kw = fora["por_mun"]["5200050"]  # COELBA 157 (1.169,92 kW), Neoenergia PE 1 (5), ENEL CE 2 (9)
+        self.assertEqual(q, 160)
+        self.assertAlmostEqual(kw, 1183.92, delta=0.005)
+        self.assertEqual(fora["por_dist"][CNPJ_COELBA]["GO"][0], 157)
+        self.assertEqual(sorted(fora["por_dist"][CNPJ_NEO_PE]), ["GO", "PA"])
+        self.assertNotIn(CNPJ_EQ_PA, fora["por_dist"])
+        self.assertNotIn(CNPJ_EQ_GO, fora["por_dist"])
+        self.assertEqual((fora["unidades"], fora["sem_referencia"]), (345, {}))
+        # o total do município não muda: as unidades ficam no município publicado
+        self.assertEqual(sum(q for (cn, m), (q, _) in self.dmun.items() if m == "1507102"), 249)
+
+    def test_cnpj_sem_conjunto_na_base_nao_e_sinalizado(self):
+        dmun = dict(self.dmun)
+        dmun[("99999999000199", "1507102")] = (3, 10.0)  # CNPJ sem nenhum conjunto: falta referência, não área
+        fora = transicao._fora_da_area(dmun, self.area)
+        self.assertEqual(fora["sem_referencia"], {"99999999000199": 3})
+        self.assertEqual(fora["por_mun"]["1507102"][0], 185)
+
+
+class AreaDistribuidoraNaGold(_Ambiente):
+    def test_gold_sinaliza_o_municipio_sem_corrigir_e_publica_no_csv(self):
+        caminho = os.path.join(DADOS, "mmgd_municipios_area_recorte.parquet")
+        arq, sha, n = base.salva_bronze_arquivo("aneel", transicao.DS_MMGD, transicao.RECURSO_PARQUET, caminho, "parquet",
+                                                "2026-09-30T22:22:34Z")
+        base.registra_vintage(self.con, transicao.DS_MMGD, transicao.RECURSO_PARQUET, "https://x", "2026-09-30T22:22:34Z", None,
+                              sha, n, "teste", arq)
+        transicao._importa_mmgd(self.con, base.ultima_vintage(self.con, transicao.DS_MMGD, transicao.RECURSO_PARQUET), None)
+        b, motivo = transicao._bloco_mmgd(self.con, date(2026, 9, 30))
+        self.assertIsNone(motivo)
+        self.assertFalse(b["controles"]["distribuidora_fora_da_uf"]["disponivel"])  # sem os conjuntos: declarado, não zero
+        self.assertIsNone(next(x for x in b["_municipios"] if x["ibge"] == "1507102")["unidades_distribuidora_fora_da_uf"])
+        for ds, rec, nome in ((transicao.DS_AREA_LIM, transicao.RECURSO_LIM, "aneel_conjuntos_limite_recorte.csv.gz"),
+                              (transicao.DS_AREA_MUN, transicao.RECURSO_MUN, "aneel_indqual_municipio_recorte.csv.gz")):
+            with open(os.path.join(DADOS, nome), "rb") as f:
+                corpo = gzip.decompress(f.read())
+            a, sh = base.salva_bronze("aneel", ds, rec, corpo, "csv", "2026-10-01T00:18:12Z")
+            base.registra_vintage(self.con, ds, rec, "https://x", "2026-10-01T00:18:12Z", None, sh, len(corpo), "teste", a)
+            transicao._processa_area(self.con, ds, base.ultima_vintage(self.con, ds, rec))
+        b, motivo = transicao._bloco_mmgd(self.con, date(2026, 9, 30))
+        self.assertIsNone(motivo)
+        sc = next(x for x in b["_municipios"] if x["ibge"] == "1507102")
+        self.assertEqual((sc["unidades"], sc["unidades_distribuidora_fora_da_uf"], sc["sinal_distribuidora_fora_da_uf"]), (249, 185, True))
+        self.assertAlmostEqual(sc["potencia_kw"], 2613.05, delta=0.005)
+        ctl = b["controles"]["distribuidora_fora_da_uf"]
+        self.assertEqual((ctl["unidades"], ctl["municipios_sinalizados"]), (345, 2))
+        neo = next(d for d in b["distribuidoras"] if d["cnpj"] == CNPJ_NEO_PE)
+        self.assertEqual((neo["ufs_fora_da_area"], neo["unidades_fora_da_area"]), (["GO", "PA"], 186))
+        self.assertTrue(any("município" in t and "sinalizado" in t for t in b["proveniencia"]["cadastro"]["limitacoes"]))
+        self.assertTrue(any("inflada" in t for t in b["proveniencia"]["por_habitante"]["limitacoes"]))
+        transicao._escreve_csvs_mmgd(b)
+        with open(os.path.join(base.SERIES, "transicao_mmgd_municipios.csv"), encoding="utf-8") as f:
+            linha = next(x for x in csv.DictReader(f, delimiter=";") if x["codigo_ibge"] == "1507102")
+        self.assertEqual((linha["unidades"], linha["unidades_distribuidora_fora_da_uf"]), ("249", "185"))
+        with open(os.path.join(base.SERIES, "transicao_mmgd_distribuidoras.csv"), encoding="utf-8") as f:
+            ufs = {(x["cnpj"], x["uf"]): x["uf_na_area_da_distribuidora"] for x in csv.DictReader(f, delimiter=";")}
+        self.assertEqual((ufs[(CNPJ_COELBA, "GO")], ufs[(CNPJ_EQ_GO, "GO")]), ("nao", "sim"))
+
+
+class EntidadeGrande(_Ambiente):
+    """CEMIG-D e SP no recorte do agregado (silver vigente da vintage de 29/09/2026: linhas
+    da CEMIG-D em dist_uf_ano e de SP em uf_mes_fonte). Valores esperados conferidos por
+    caminho independente: soma Decimal sobre o CSV oficial completo (4.656.839 linhas) e
+    filtro pyarrow sobre o Parquet oficial."""
+
+    def setUp(self):
+        super().setUp()
+        with gzip.open(os.path.join(DADOS, "mmgd_agregados_grandes_20260929.json.gz"), "rt", encoding="utf-8") as f:
+            self.recorte = json.load(f)
+        vid, _ = base.registra_vintage(self.con, transicao.DS_MMGD, transicao.RECURSO_PARQUET, "https://x",
+                                       self.recorte["capturado_em"], None, self.recorte["sha256_arquivo"], 0, "teste", None)
+        base.grava_observacoes(self.con, transicao.DS_MMGD, vid,
+                               [(s, r, v) for s, linhas in self.recorte["series"].items() for r, v in linhas])
+
+    def test_cemig_d(self):
+        dist = transicao._par(self.con, "dist_uf_ano", 3)
+        self.assertAlmostEqual(sum(k for _, k in dist.values()), 5840077.77, delta=0.005)
+        (d,) = transicao._tabela_distribuidoras(dist, {}, {}, 2025, {}, None)
+        self.assertEqual(d["cnpj"], "06981180000116")
+        self.assertEqual(d["unidades"], 426729)
+        self.assertEqual(d["potencia_mw"], 5840.078)
+        self.assertIsNone(d["unidades_fora_da_area"])  # sem referência de área: ausente, não zero
+
+    def test_sao_paulo(self):
+        ufm = transicao._par(self.con, "uf_mes_fonte", 3)
+        self.assertAlmostEqual(sum(k for _, k in ufm.values()), 7610299.55, delta=0.005)
+        ufs, uf_anual = transicao._tabela_ufs(ufm, {}, {}, 2025, 2026, 7610299.55)
+        self.assertEqual([(u["uf"], u["unidades"], u["potencia_mw"]) for u in ufs], [("SP", 787146, 7610.3)])
+        anos = [x["ano"] for x in uf_anual]
+        self.assertEqual(anos, list(range(anos[0], 2027)))  # sem buraco até o ano do cadastro
+        self.assertEqual(sum(x["unidades"] for x in uf_anual) + sum(
+            q for (_, mes, _), (q, _) in ufm.items() if mes == mmgd.SEM_DATA), 787146)
+
+
+def _con_balanco():
+    """Silver principal em memória com o recorte do arquivo do ONS no S3
+    (BALANCO_ENERGIA_SUBSISTEMA_2023.csv, linhas do SIN de 15/04 a 06/05/2023)."""
+    con = base.conecta(":memory:")
+    vid, _ = base.registra_vintage(con, transicao.DS_BAL, "BALANCO_ENERGIA_SUBSISTEMA_2023.csv", "https://x",
+                                   "2026-09-30T21:00:00Z", None, "0" * 64, 0, "teste", None)
+    obs = []
+    with gzip.open(os.path.join(DADOS, "ons_balanco_sin_20230415_20230506.csv.gz"), "rt", encoding="utf-8") as f:
+        for r in csv.DictReader(f, delimiter=";"):
+            ref = r["din_instante"][:16].replace(" ", "T")
+            obs += [("solar.SIN", ref, float(r["val_gersolar"])), ("carga.SIN", ref, float(r["val_carga"]))]
+    base.grava_observacoes(con, transicao.DS_BAL, vid, obs)
+    return con
+
+
+def _series_ons_mmgd():
+    with open(os.path.join(DADOS, "ons_mmgd_diario_20230415_20230506.json"), encoding="utf-8") as f:
+        dados = json.load(f)["series"]
+    series = {}
+    for sm in ons.AREAS:
+        for s in ("mmgd_mwh", "horas_mmgd"):
+            series[(s, sm)] = dict(dados[f"{s}.{sm}"])
+    return series
+
+
+class ConferenciaQuebra2023(unittest.TestCase):
+    """Achado A11 com o recorte real do balanço (S3 do ONS) e da MMGD da API. Valores
+    esperados: médias de 24 horas com Decimal sobre o CSV do S3 (solar 1.991,3 e 4.376,6;
+    carga 68.169 em 15/04 e 68.158 em 29/04) e MMGD da API (3.528,0 em 29/04)."""
+
+    def test_degrau_na_solar_sem_degrau_na_carga_e_sem_causa_inventada(self):
+        con_p = _con_balanco()
+        q = transicao._conferencia_quebra(None, con_p, _series_ons_mmgd())
+        dia = {x["d"]: x for x in q["dias"]}
+        self.assertEqual((dia["2023-04-28"]["solar_balanco_sin_mwmed"], dia["2023-04-29"]["solar_balanco_sin_mwmed"]), (1991, 4377))
+        self.assertEqual(q["degrau_solar_mwmed"], 2386)
+        self.assertEqual(q["mmgd_ons_no_dia_mwmed"], 3528)
+        self.assertEqual(q["diferenca_degrau_solar_e_mmgd_mwmed"], 1142)
+        par = {p["d"]: p for p in q["pares_mesmo_dia_da_semana"]}
+        self.assertEqual((par["2023-04-29"]["carga_comparacao"], par["2023-04-29"]["carga_d"]), (68169, 68158))
+        self.assertEqual((par["2023-04-30"]["carga_comparacao"], par["2023-04-30"]["carga_d"]), (61866, 62116))
+        self.assertFalse(par["2023-05-01"]["entra_na_mediana"])  # Dia do Trabalho
+        self.assertFalse(par["2023-05-05"]["entra_na_mediana"])  # comparado a 21/04, Tiradentes
+        self.assertEqual(q["pares_na_mediana"], 6)
+        self.assertEqual((q["mediana_diferenca_solar_mwmed"], q["mediana_diferenca_carga_mwmed"]), (2840, 559))
+        self.assertIs(q["degrau_na_carga"], False)
+        self.assertIn("não aparece degrau", q["leitura"])
+        self.assertIn("não publica explicação", q["leitura"])
+        for proibido in ("processo", "meteorol", "porque"):
+            self.assertNotIn(proibido, q["leitura"].lower())
+
+    def test_sem_balanco_nao_ha_conclusao(self):
+        q = transicao._conferencia_quebra(None, None, _series_ons_mmgd())
+        self.assertIsNone(q["degrau_solar_mwmed"])
+        self.assertIsNone(q["degrau_na_carga"])
+        self.assertIn("não foi feita", q["leitura"])
+
+
+class EstoqueEZeros(_Ambiente):
+    """Identidade de estoque, zeros explícitos nas séries e participações pequenas."""
+    _importa = ImportacaoEGold._importa
+    _ibge = ImportacaoEGold._ibge
+
+    def test_identidade_de_estoque_e_series_sem_buraco(self):
+        self._ibge()
+        self._importa(PARQUET, "2026-09-29T15:00:00Z")
+        b, motivo = transicao._bloco_mmgd(self.con, date(2026, 9, 30))
+        self.assertIsNone(motivo)
+        ie = b["controles"]["identidade_estoque"]
+        # a amostra tem 274 unidades, 4 com data sentinela (1900)
+        self.assertEqual((ie["unidades_total"], ie["unidades_sem_data"]), (274, 4))
+        self.assertEqual((ie["unidades_com_data_serie_anual"], ie["unidades_com_data_serie_mensal"]), (270, 270))
+        self.assertEqual((ie["diferenca_unidades"], ie["resultado"]), (0, "aprovada"))
+        self.assertEqual(b["anual"][-1]["acumulado_unidades"] + b["resumo"]["unidades_sem_data"], b["resumo"]["unidades"])
+        anos = [a["ano"] for a in b["anual"]]
+        self.assertEqual(anos, list(range(anos[0], 2027)))
+        meses = [m["m"] for m in b["mensal"]]
+        self.assertEqual(meses, list(transicao._meses(meses[0], "2026-09")))
+        zeros = [m for m in b["mensal"] if m["unidades"] == 0]
+        self.assertTrue(zeros)  # a amostra tem meses sem conexão: zero explícito, estoque repetido
+        i = meses.index(zeros[0]["m"])
+        self.assertEqual(b["mensal"][i]["acumulado_unidades"], b["mensal"][i - 1]["acumulado_unidades"])
+
+    def test_estoque_que_nao_fecha_derruba_a_publicacao(self):
+        self._ibge()
+        self._importa(PARQUET, "2026-09-29T15:00:00Z")
+        vid = base.ultima_vintage(self.con, transicao.DS_MMGD, transicao.RECURSO_PARQUET)["vintage_id"]
+        ref = self.con.execute("SELECT ref FROM observacoes WHERE dataset=? AND serie='kw.uf_mes_fonte' AND vintage_id=? "
+                               "AND ref NOT LIKE '%sem_data%' LIMIT 1", (transicao.DS_MMGD, vid)).fetchone()[0]
+        self.con.execute("UPDATE observacoes SET valor=valor+10 WHERE dataset=? AND serie='kw.uf_mes_fonte' AND ref=? AND vintage_id=?",
+                         (transicao.DS_MMGD, ref, vid))
+        b, motivo = transicao._bloco_mmgd(self.con, date(2026, 9, 30))
+        self.assertIsNone(b)
+        self.assertIn("estoque", motivo)
+
+    def test_participacao_pequena_nao_vira_zero(self):
+        """Contagens por classe do cadastro de 29/09/2026: iluminação pública 232, consumo
+        próprio 45, serviço público 410 e residencial 3.726.947 unidades em 4.656.839."""
+        self.assertEqual(transicao._pct(232, 4656839), 0.005)
+        self.assertEqual(transicao._pct(45, 4656839), 0.00097)
+        self.assertEqual(transicao._pct(410, 4656839), 0.0088)
+        self.assertEqual(transicao._pct(3726947, 4656839), 80.03)
+        self.assertEqual(transicao._pct(0, 4656839), 0.0)
+        self.assertIsNone(transicao._pct(1, 0))
+
+
+class PublicacaoAtual(unittest.TestCase):
+    """Coerência da publicação vigente (gold e CSV em public/energia): pula se a gold não
+    estiver disponível. Os valores de 29/09/2026 só são conferidos para esse cadastro."""
+
+    @classmethod
+    def setUpClass(cls):
+        raiz = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        cls.series = os.path.join(raiz, "public", "energia", "series")
+        caminho = os.path.join(raiz, "public", "energia", "gold", "transicao.json")
+        cls.g = None
+        if os.path.exists(caminho):
+            with open(caminho, encoding="utf-8") as f:
+                cls.g = json.load(f)
+
+    def setUp(self):
+        if not (self.g and self.g.get("disponivel")):
+            self.skipTest("gold de transição indisponível")
+
+    def test_evidencia_ons_com_a_mesma_precisao_do_kpi(self):
+        o = self.g["ons_mmgd"]
+        self.assertEqual(o["evidencia"]["valor_exibido"], transicao._br(o["ultimo_mes_completo"]["SIN"], 1))
+        self.assertAlmostEqual(o["evidencia"]["valor_calculo"], o["ultimo_mes_completo"]["SIN"], delta=0.05)
+
+    def test_natureza_dos_fatores_do_mcti(self):
+        from pipeline.energia.metricas import transicao as mt
+        e = self.g["emissoes"]
+        self.assertEqual((e["proveniencia"]["medio"]["natureza"], e["proveniencia"]["mdl"]["natureza"]), ("ESTIMADO", "ESTIMADO"))
+        mcti_m = [m for m in mt.METRICAS if m["id"].startswith("mcti_")]
+        self.assertEqual(len(mcti_m), 3)
+        self.assertTrue(all(m["natureza_fonte"] == "ESTIMADO" for m in mcti_m))
+        self.assertEqual(self.g["ons_mmgd"]["proveniencia"]["estimativa"]["natureza"], "ESTIMADO")  # mesmo critério
+
+    def test_texto_da_quebra_sem_causa_e_identidade_publicada(self):
+        q = self.g["ons_mmgd"]["conferencia_quebra_2023"]
+        self.assertNotIn("processos diferentes", q["leitura"])
+        self.assertIn("não publica explicação", q["leitura"])
+        self.assertEqual(self.g["mmgd"]["controles"]["identidade_estoque"]["resultado"], "aprovada")
+
+    def test_valores_do_cadastro_de_29_09_2026(self):
+        if self.g["mmgd"]["data_cadastro"] != "2026-09-29":
+            self.skipTest("valores conferidos para o cadastro de 29/09/2026")
+        r = self.g["mmgd"]["resumo"]
+        self.assertEqual((r["unidades"], r["potencia_kw"], r["ultima_data_conexao"]), (4656839, 53965592.59, "2026-08-31"))
+        with open(os.path.join(self.series, "transicao_mmgd_municipios.csv"), encoding="utf-8") as f:
+            sc = next(x for x in csv.DictReader(f, delimiter=";") if x["codigo_ibge"] == "1507102")
+        self.assertEqual((sc["unidades"], sc["potencia_kw"], sc["unidades_distribuidora_fora_da_uf"],
+                          sc["potencia_kw_distribuidora_fora_da_uf"]), ("249", "2613.05", "185", "1830.21"))
+        cemig = next(d for d in self.g["mmgd"]["distribuidoras"] if d["cnpj"] == "06981180000116")
+        self.assertEqual((cemig["unidades"], cemig["potencia_mw"]), (426729, 5840.078))
+        sp = next(u for u in self.g["mmgd"]["ufs"] if u["uf"] == "SP")
+        self.assertEqual((sp["unidades"], sp["potencia_mw"]), (787146, 7610.3))
 
 
 if __name__ == "__main__":

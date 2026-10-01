@@ -93,10 +93,16 @@ export type MmgdResumo = {
   w_por_habitante_brasil: number | null;
   /** Registros com data sentinela: no estoque, sem ano de conexão. */
   unidades_sem_data: number;
+  /** Maior data de conexão válida no arquivo (o arquivo pode não ter conexões até a data do cadastro). */
+  ultima_data_conexao: string | null;
   potencia_mw_ano_referencia: number | null;
   unidades_ano_referencia: number | null;
 };
 
+/**
+ * Participações em %: duas casas; abaixo de 0,01% (e diferente de zero), dois algarismos
+ * significativos (ex.: 0,005), para que categoria pequena não apareça como zero.
+ */
 export type MmgdFonte = {
   fonte: FonteMmgd;
   rotulo: string;
@@ -107,6 +113,7 @@ export type MmgdFonte = {
 
 export type MmgdFonteDetalhe = { tipo: string; descricao: string; unidades: number; potencia_kw: number };
 
+/** Um item por ano, da primeira conexão ao ano do cadastro; ano sem conexão vem com zero explícito. */
 export type MmgdAno = {
   ano: number;
   unidades: number;
@@ -118,12 +125,14 @@ export type MmgdAno = {
   parcial: boolean;
 };
 
+/** Um item por mês, da primeira conexão ao mês do cadastro; mês sem conexão vem com zero explícito. */
 export type MmgdMes = {
   m: string;
   unidades: number;
   potencia_mw: number;
+  acumulado_unidades: number;
   acumulado_mw: number;
-  /** Mês posterior a `corte_provisorio`: registro tardio ainda esperado. */
+  /** Mês posterior a `corte_provisorio`: conexões do mês ainda podem entrar em capturas seguintes. */
   provisorio: boolean;
 };
 
@@ -141,6 +150,7 @@ export type MmgdUf = {
   ucs_recebem_credito: number;
 };
 
+/** Por UF, do primeiro ano com conexão na UF ao ano do cadastro, com zero explícito. */
 export type MmgdUfAno = { uf: string; ano: number; unidades: number; potencia_mw: number };
 
 export type MmgdDistribuidora = {
@@ -156,6 +166,13 @@ export type MmgdDistribuidora = {
   municipios: number;
   uf_principal: string;
   unidades_fora_uf_principal: number;
+  /** UFs com conjunto elétrico do CNPJ na base de continuidade da ANEEL; null sem referência. */
+  ufs_area_conjuntos: string[] | null;
+  /** Unidades e potência em UF fora dessa área (provável código de município errado na origem). */
+  unidades_fora_da_area: number | null;
+  potencia_mw_fora_da_area: number | null;
+  /** UFs com unidades da distribuidora fora da área dos seus conjuntos; null sem referência. */
+  ufs_fora_da_area: string[] | null;
   ufs: { uf: string; unidades: number }[];
 };
 
@@ -178,13 +195,61 @@ export type MmgdMunicipioCurto = {
   w_por_habitante: number | null;
   potencia_kw_ano_referencia: number;
   crescimento_estoque_pct: number | null;
+  /** Unidades do município cuja distribuidora (CNPJ) não tem conjunto elétrico na UF; null = conferência indisponível. */
+  unidades_distribuidora_fora_da_uf: number | null;
+  potencia_kw_distribuidora_fora_da_uf: number | null;
+  sinal_distribuidora_fora_da_uf: boolean | null;
 };
+
+export type ControleForaDaArea =
+  | { disponivel: false; motivo: string }
+  | {
+      disponivel: true;
+      unidades: number;
+      potencia_kw: number;
+      participacao_unidades_pct: number | null;
+      municipios_sinalizados: number;
+      distribuidoras_com_unidades_fora: number;
+      distribuidoras_sem_referencia: number;
+      unidades_sem_referencia: number;
+      distribuidoras_com_area: number;
+      maiores_municipios: { ibge: string; unidades: number; potencia_kw: number }[];
+      por_distribuidora: { cnpj: string; unidades: number; potencia_kw: number; ufs_fora: string[] }[];
+      referencia: {
+        regra: string;
+        conjuntos_com_cnpj: number;
+        conjuntos_com_municipio: number;
+        arquivos: { arquivo: string; sha256: string; capturado_em: string; publicado_em: string | null }[];
+        urls: string[];
+      };
+      tratamento: string;
+    };
 
 export type MmgdControles = {
   linhas_do_arquivo: number;
   codigos_distintos: number;
   codigos_repetidos: number;
   identidade_agregacao: { unidades: number; diferenca_kw_municipio_uf: number; resultado: string };
+  /** Estoque por data (séries anual e mensal) + unidades sem data = total do cadastro. */
+  identidade_estoque: {
+    unidades_total: number;
+    unidades_sem_data: number;
+    unidades_com_data_serie_anual: number;
+    unidades_com_data_serie_mensal: number;
+    potencia_kw_total: number;
+    potencia_kw_sem_data: number;
+    potencia_kw_com_data_serie_anual: number;
+    potencia_kw_com_data_serie_mensal: number;
+    diferenca_unidades: number;
+    diferenca_kw: number;
+    tolerancia_kw: number;
+    regra: string;
+    resultado: "aprovada" | "reprovada";
+  };
+  data_conexao_minima: string | null;
+  data_conexao_maxima: string | null;
+  /** AnmPeriodoReferencia publicado no arquivo (ex.: "09/2026"). */
+  periodo_referencia_publicado: string | null;
   datas_sentinela: number;
   datas_ausentes: number;
   potencia_sem_data_kw: number;
@@ -201,6 +266,7 @@ export type MmgdControles = {
   uf_publicada_diverge_do_municipio: number;
   uf_do_codigo_empreendimento_diverge: number;
   sigla_distribuidora_ausente: number;
+  distribuidora_fora_da_uf: ControleForaDaArea;
   duplicidade_candidata: {
     grupos: number;
     linhas_extras: number;
@@ -277,11 +343,11 @@ export type MunicipiosMmgdArquivo = {
   campos: [
     "ibge", "nome", "uf", "unidades", "potencia_kw", "populacao", "w_por_habitante", "unidades_por_mil_habitantes",
     "unidades_ano_referencia", "potencia_kw_ano_referencia", "potencia_kw_estoque_ano_anterior", "crescimento_estoque_pct",
-    "fonte_principal",
+    "fonte_principal", "unidades_distribuidora_fora_da_uf", "potencia_kw_distribuidora_fora_da_uf",
   ];
   linhas: [
     string, string | null, string | null, number, number, number | null, number | null, number | null,
-    number, number, number, number | null, FonteMmgd | null,
+    number, number, number, number | null, FonteMmgd | null, number | null, number | null,
   ][];
 };
 
@@ -302,7 +368,7 @@ export type OnsMmgdMes = {
   carga_global_sin_mwmed: number | null;
   /** Capacidade cadastrada na ANEEL (Brasil): média do estoque no início e no fim do mês. */
   capacidade_aneel_mw: number | null;
-  /** Mês posterior ao corte provisório do cadastro: o estoque ainda cresce com registro tardio. */
+  /** Mês posterior ao corte provisório do cadastro: o estoque ainda pode crescer em capturas seguintes. */
   capacidade_aneel_provisoria: boolean;
   /**
    * 100 × MWmed estimado (SIN) ÷ capacidade cadastrada; só em mês completo do ONS e não
@@ -324,13 +390,42 @@ export type DocumentoFonte = { orgao: string; titulo: string; url: string; consu
 
 export type ConferenciaQuebra2023 = {
   janela: { inicio: string; fim: string };
-  dias: { d: string; solar_balanco_sin_mwmed: number | null; mmgd_ons_sin_mwmed: number | null }[];
+  dias: {
+    d: string;
+    solar_balanco_sin_mwmed: number | null;
+    carga_balanco_sin_mwmed: number | null;
+    mmgd_ons_sin_mwmed: number | null;
+  }[];
   degrau_solar_mwmed: number | null;
   mmgd_ons_no_dia_mwmed: number | null;
+  /** MMGD estimada em 29/04/2023 menos o degrau da solar; a fonte não explica a diferença. */
+  diferenca_degrau_solar_e_mmgd_mwmed: number | null;
   solar_media_7d_antes: number | null;
   solar_media_depois: number | null;
   diferenca_medias_solar: number | null;
   mmgd_ons_media_depois: number | null;
+  /** Cada dia de 29/04 a 06/05/2023 contra o mesmo dia da semana 14 dias antes. */
+  pares_mesmo_dia_da_semana: {
+    d: string;
+    dia_da_semana: string;
+    d_comparacao: string;
+    solar_d: number | null;
+    solar_comparacao: number | null;
+    carga_d: number | null;
+    carga_comparacao: number | null;
+    diferenca_solar: number | null;
+    diferenca_carga: number | null;
+    mmgd_ons_d: number | null;
+    feriado: string | null;
+    entra_na_mediana: boolean;
+  }[];
+  mediana_diferenca_solar_mwmed: number | null;
+  mediana_diferenca_carga_mwmed: number | null;
+  mediana_mmgd_ons_mwmed: number | null;
+  pares_na_mediana: number;
+  regra_pares: string;
+  /** Mediana da carga chega à metade da MMGD estimada; null sem dado. */
+  degrau_na_carga: boolean | null;
   documento: DocumentoFonte;
   leitura: string;
 };
@@ -386,7 +481,7 @@ export type BlocoEmissoes = {
     dentro_da_tolerancia: boolean;
   }[];
   revisoes_declaradas_pela_fonte: {
-    serie: "margem_operacao_mensal" | "margem_construcao";
+    serie: "margem_operacao_diaria" | "margem_operacao_mensal" | "margem_construcao";
     periodo: string;
     anterior: number;
     atual: number | null;
@@ -463,6 +558,9 @@ export type RegrasTransicao = {
   fator_medio_nao_marginal: string;
   co2_nao_co2e: string;
   sem_intensidade_local: string;
+  participacoes: string;
+  series_com_zero: string;
+  distribuidora_fora_da_uf: string;
 };
 
 export type GoldTransicao = Cabecalho & {
@@ -484,5 +582,6 @@ export const NATUREZA_BLOCO: Record<"cadastro" | "por_habitante" | "estimativa_o
   por_habitante: "CALCULADO",
   estimativa_ons: "ESTIMADO",
   razao: "CALCULADO",
-  fator_mcti: "OBSERVADO",
+  /** Estimado pelo MCTI (emissões calculadas, não medidas); publicado sem alteração. */
+  fator_mcti: "ESTIMADO",
 };

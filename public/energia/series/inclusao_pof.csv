@@ -13,6 +13,10 @@ BR;7999;acima_5_renda_pct;19.2502;0.2927;1.5203;microdados;publicado
 BR;7999;acima_5_desp_pct;24.7559;0.3459;1.3971;microdados;publicado
 BR;7999;acima_10_renda_pct;4.7905;0.1552;3.2406;microdados;publicado
 BR;7999;acima_10_desp_pct;5.6035;0.1744;3.113;microdados;publicado
+BR;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;3.5199;0.0328;;microdados;sensibilidade
+BR;7999;sens_renda_familias_energia_acima_da_renda_n;40.0;;;microdados;sensibilidade
+BR;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0726;;;microdados;sensibilidade
+BR;7999;sens_media_razoes_renda_3_maiores_pp;0.1124;;;microdados;sensibilidade
 BR;7999;energia_media;115.36;;0.8;SIDRA 6715;publicado
 BR;7999;despesa_media;4649.03;;;SIDRA 6715;publicado
 BR;7999;razao_medias_pct;2.5;;;SIDRA 6715;publicado
@@ -31,6 +35,10 @@ BR;47558;acima_5_renda_pct;42.8379;0.6586;1.5374;microdados;publicado
 BR;47558;acima_5_desp_pct;39.6433;0.6465;1.6309;microdados;publicado
 BR;47558;acima_10_renda_pct;15.4625;0.5078;3.2842;microdados;publicado
 BR;47558;acima_10_desp_pct;12.2412;0.4819;3.9369;microdados;publicado
+BR;47558;sens_media_razoes_renda_sem_acima_da_renda_pct;6.0123;0.0997;;microdados;sensibilidade
+BR;47558;sens_renda_familias_energia_acima_da_renda_n;40.0;;;microdados;sensibilidade
+BR;47558;sens_renda_familias_energia_acima_da_renda_peso_pct;0.2993;;;microdados;sensibilidade
+BR;47558;sens_media_razoes_renda_3_maiores_pp;0.4635;;;microdados;sensibilidade
 BR;47558;energia_media;65.62;;1.4;SIDRA 6715;publicado
 BR;47558;despesa_media;1500.73;;;SIDRA 6715;publicado
 BR;47558;razao_medias_pct;4.4;;;SIDRA 6715;publicado
@@ -49,6 +57,10 @@ BR;47559;acima_5_renda_pct;23.2447;0.5839;2.5118;microdados;publicado
 BR;47559;acima_5_desp_pct;31.7705;0.6292;1.9805;microdados;publicado
 BR;47559;acima_10_renda_pct;3.3445;0.2267;6.7794;microdados;publicado
 BR;47559;acima_10_desp_pct;6.5881;0.3284;4.9853;microdados;publicado
+BR;47559;sens_media_razoes_renda_sem_acima_da_renda_pct;3.7076;0.0396;;microdados;sensibilidade
+BR;47559;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+BR;47559;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+BR;47559;sens_media_razoes_renda_3_maiores_pp;0.0193;;;microdados;sensibilidade
 BR;47559;energia_media;88.14;;1.1;SIDRA 6715;publicado
 BR;47559;despesa_media;2350.74;;;SIDRA 6715;publicado
 BR;47559;razao_medias_pct;3.7;;;SIDRA 6715;publicado
@@ -67,6 +79,10 @@ BR;47560;acima_5_renda_pct;12.59;0.3973;3.156;microdados;publicado
 BR;47560;acima_5_desp_pct;23.0668;0.5201;2.2546;microdados;publicado
 BR;47560;acima_10_renda_pct;1.2053;0.1126;9.3458;microdados;publicado
 BR;47560;acima_10_desp_pct;3.6282;0.2118;5.8375;microdados;publicado
+BR;47560;sens_media_razoes_renda_sem_acima_da_renda_pct;2.9559;0.025;;microdados;sensibilidade
+BR;47560;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+BR;47560;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+BR;47560;sens_media_razoes_renda_3_maiores_pp;0.0176;;;microdados;sensibilidade
 BR;47560;energia_media;117.64;;0.8;SIDRA 6715;publicado
 BR;47560;despesa_media;3705.24;;;SIDRA 6715;publicado
 BR;47560;razao_medias_pct;3.2;;;SIDRA 6715;publicado
@@ -85,6 +101,10 @@ BR;47561;acima_5_renda_pct;3.7277;0.2979;7.9916;microdados;publicado
 BR;47561;acima_5_desp_pct;11.138;0.4983;4.474;microdados;publicado
 BR;47561;acima_10_renda_pct;0.2631;0.0531;20.2042;microdados;cautela
 BR;47561;acima_10_desp_pct;1.425;0.1618;11.3517;microdados;publicado
+BR;47561;sens_media_razoes_renda_sem_acima_da_renda_pct;2.1429;0.0217;;microdados;sensibilidade
+BR;47561;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+BR;47561;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+BR;47561;sens_media_razoes_renda_3_maiores_pp;0.0227;;;microdados;sensibilidade
 BR;47561;energia_media;152.75;;1.0;SIDRA 6715;publicado
 BR;47561;despesa_media;6326.5;;;SIDRA 6715;publicado
 BR;47561;razao_medias_pct;2.4;;;SIDRA 6715;publicado
@@ -103,6 +123,10 @@ BR;47562;acima_5_renda_pct;1.3213;0.2198;16.6358;microdados;cautela
 BR;47562;acima_5_desp_pct;6.443;0.5858;9.0926;microdados;publicado
 BR;47562;acima_10_renda_pct;;0.0363;61.1637;microdados;suprimido
 BR;47562;acima_10_desp_pct;0.8806;0.1697;19.269;microdados;cautela
+BR;47562;sens_media_razoes_renda_sem_acima_da_renda_pct;1.6185;0.0265;;microdados;sensibilidade
+BR;47562;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+BR;47562;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+BR;47562;sens_media_razoes_renda_3_maiores_pp;0.0372;;;microdados;sensibilidade
 BR;47562;energia_media;183.86;;1.7;SIDRA 6715;publicado
 BR;47562;despesa_media;9401.98;;;SIDRA 6715;publicado
 BR;47562;razao_medias_pct;2.0;;;SIDRA 6715;publicado
@@ -121,6 +145,10 @@ BR;47563;acima_5_renda_pct;;0.1363;33.0441;microdados;suprimido
 BR;47563;acima_5_desp_pct;2.7113;0.3963;14.6184;microdados;publicado
 BR;47563;acima_10_renda_pct;0.0;0.0;;microdados;zero_na_amostra
 BR;47563;acima_10_desp_pct;;0.1996;31.6298;microdados;suprimido
+BR;47563;sens_media_razoes_renda_sem_acima_da_renda_pct;1.1719;0.0284;;microdados;sensibilidade
+BR;47563;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+BR;47563;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+BR;47563;sens_media_razoes_renda_3_maiores_pp;0.0576;;;microdados;sensibilidade
 BR;47563;energia_media;208.94;;2.6;SIDRA 6715;publicado
 BR;47563;despesa_media;14872.3;;;SIDRA 6715;publicado
 BR;47563;razao_medias_pct;1.4;;;SIDRA 6715;publicado
@@ -139,6 +167,10 @@ BR;47564;acima_5_renda_pct;0.0;0.0;;microdados;zero_na_amostra
 BR;47564;acima_5_desp_pct;1.3765;0.3614;26.2519;microdados;cautela
 BR;47564;acima_10_renda_pct;0.0;0.0;;microdados;zero_na_amostra
 BR;47564;acima_10_desp_pct;;0.0541;54.0082;microdados;suprimido
+BR;47564;sens_media_razoes_renda_sem_acima_da_renda_pct;0.7311;0.0268;;microdados;sensibilidade
+BR;47564;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+BR;47564;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+BR;47564;sens_media_razoes_renda_3_maiores_pp;0.034;;;microdados;sensibilidade
 BR;47564;energia_media;260.14;;3.6;SIDRA 6715;publicado
 BR;47564;despesa_media;27866.89;;;SIDRA 6715;publicado
 BR;47564;razao_medias_pct;0.9;;;SIDRA 6715;publicado
@@ -157,6 +189,10 @@ RG-N;7999;acima_5_renda_pct;31.9514;0.92;2.8794;microdados;publicado
 RG-N;7999;acima_5_desp_pct;37.1744;1.0124;2.7233;microdados;publicado
 RG-N;7999;acima_10_renda_pct;11.0182;0.5717;5.1886;microdados;publicado
 RG-N;7999;acima_10_desp_pct;12.0449;0.6265;5.2011;microdados;publicado
+RG-N;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;4.8041;0.1252;;microdados;sensibilidade
+RG-N;7999;sens_renda_familias_energia_acima_da_renda_n;13.0;;;microdados;sensibilidade
+RG-N;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.268;;;microdados;sensibilidade
+RG-N;7999;sens_media_razoes_renda_3_maiores_pp;0.639;;;microdados;sensibilidade
 RG-N;7999;energia_media;122.21;;;SIDRA 6715;publicado
 RG-N;7999;despesa_media;3178.63;;;SIDRA 6715;publicado
 RG-N;7999;razao_medias_pct;3.8;;;SIDRA 6715;publicado
@@ -174,6 +210,10 @@ RG-N;47558;acima_5_renda_pct;45.5807;1.4917;3.2728;microdados;publicado
 RG-N;47558;acima_5_desp_pct;41.0427;1.452;3.5379;microdados;publicado
 RG-N;47558;acima_10_renda_pct;20.6947;1.0854;5.2448;microdados;publicado
 RG-N;47558;acima_10_desp_pct;16.6861;1.0489;6.2858;microdados;publicado
+RG-N;47558;sens_media_razoes_renda_sem_acima_da_renda_pct;6.7427;0.2721;;microdados;sensibilidade
+RG-N;47558;sens_renda_familias_energia_acima_da_renda_n;13.0;;;microdados;sensibilidade
+RG-N;47558;sens_renda_familias_energia_acima_da_renda_peso_pct;0.6789;;;microdados;sensibilidade
+RG-N;47558;sens_media_razoes_renda_3_maiores_pp;1.6187;;;microdados;sensibilidade
 RG-N;47558;energia_media;71.64;;;SIDRA 6715;publicado
 RG-N;47558;despesa_media;1499.19;;;SIDRA 6715;publicado
 RG-N;47558;razao_medias_pct;4.8;;;SIDRA 6715;publicado
@@ -191,6 +231,10 @@ RG-N;47559;acima_5_renda_pct;29.3165;1.7087;5.8284;microdados;publicado
 RG-N;47559;acima_5_desp_pct;35.569;1.8436;5.1833;microdados;publicado
 RG-N;47559;acima_10_renda_pct;7.5399;1.1286;14.9685;microdados;publicado
 RG-N;47559;acima_10_desp_pct;10.8848;1.2717;11.6833;microdados;publicado
+RG-N;47559;sens_media_razoes_renda_sem_acima_da_renda_pct;4.132;0.1527;;microdados;sensibilidade
+RG-N;47559;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-N;47559;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-N;47559;sens_media_razoes_renda_3_maiores_pp;0.1522;;;microdados;sensibilidade
 RG-N;47559;energia_media;97.05;;;SIDRA 6715;publicado
 RG-N;47559;despesa_media;2385.33;;;SIDRA 6715;publicado
 RG-N;47559;razao_medias_pct;4.1;;;SIDRA 6715;publicado
@@ -208,6 +252,10 @@ RG-N;47560;acima_5_renda_pct;24.7748;1.5632;6.3096;microdados;publicado
 RG-N;47560;acima_5_desp_pct;37.9795;2.0754;5.4647;microdados;publicado
 RG-N;47560;acima_10_renda_pct;4.6177;0.6961;15.0755;microdados;cautela
 RG-N;47560;acima_10_desp_pct;9.0873;0.9876;10.8676;microdados;publicado
+RG-N;47560;sens_media_razoes_renda_sem_acima_da_renda_pct;3.5994;0.1287;;microdados;sensibilidade
+RG-N;47560;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-N;47560;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-N;47560;sens_media_razoes_renda_3_maiores_pp;0.1623;;;microdados;sensibilidade
 RG-N;47560;energia_media;139.12;;;SIDRA 6715;publicado
 RG-N;47560;despesa_media;3498.41;;;SIDRA 6715;publicado
 RG-N;47560;razao_medias_pct;4.0;;;SIDRA 6715;publicado
@@ -225,6 +273,10 @@ RG-N;47561;acima_5_renda_pct;14.5808;1.8846;12.9256;microdados;publicado
 RG-N;47561;acima_5_desp_pct;29.6755;2.8854;9.7232;microdados;publicado
 RG-N;47561;acima_10_renda_pct;;0.4689;39.2173;microdados;suprimido
 RG-N;47561;acima_10_desp_pct;7.1861;1.4769;20.5525;microdados;cautela
+RG-N;47561;sens_media_razoes_renda_sem_acima_da_renda_pct;2.9151;0.1237;;microdados;sensibilidade
+RG-N;47561;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-N;47561;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-N;47561;sens_media_razoes_renda_3_maiores_pp;0.1911;;;microdados;sensibilidade
 RG-N;47561;energia_media;207.08;;;SIDRA 6715;publicado
 RG-N;47561;despesa_media;5588.64;;;SIDRA 6715;publicado
 RG-N;47561;razao_medias_pct;3.7;;;SIDRA 6715;publicado
@@ -242,6 +294,10 @@ RG-N;47562;acima_5_renda_pct;;3.5938;32.0482;microdados;suprimido
 RG-N;47562;acima_5_desp_pct;28.948;4.2252;14.5958;microdados;publicado
 RG-N;47562;acima_10_renda_pct;;0.6981;99.5525;microdados;suprimido
 RG-N;47562;acima_10_desp_pct;;1.9295;33.7722;microdados;suprimido
+RG-N;47562;sens_media_razoes_renda_sem_acima_da_renda_pct;2.5985;0.1895;;microdados;sensibilidade
+RG-N;47562;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-N;47562;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-N;47562;sens_media_razoes_renda_3_maiores_pp;0.3622;;;microdados;sensibilidade
 RG-N;47562;energia_media;295.77;;;SIDRA 6715;publicado
 RG-N;47562;despesa_media;9175.59;;;SIDRA 6715;publicado
 RG-N;47562;razao_medias_pct;3.2;;;SIDRA 6715;publicado
@@ -259,6 +315,10 @@ RG-N;47563;acima_5_renda_pct;;1.4506;66.063;microdados;suprimido
 RG-N;47563;acima_5_desp_pct;;6.3253;30.4585;microdados;suprimido
 RG-N;47563;acima_10_renda_pct;0.0;0.0;;microdados;zero_na_amostra
 RG-N;47563;acima_10_desp_pct;;3.2194;59.114;microdados;suprimido
+RG-N;47563;sens_media_razoes_renda_sem_acima_da_renda_pct;2.0545;0.2216;;microdados;sensibilidade
+RG-N;47563;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-N;47563;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-N;47563;sens_media_razoes_renda_3_maiores_pp;0.7642;;;microdados;sensibilidade
 RG-N;47563;energia_media;384.74;;;SIDRA 6715;publicado
 RG-N;47563;despesa_media;13948.44;;;SIDRA 6715;publicado
 RG-N;47563;razao_medias_pct;2.8;;;SIDRA 6715;publicado
@@ -276,6 +336,10 @@ RG-N;47564;acima_5_renda_pct;0.0;0.0;;microdados;zero_na_amostra
 RG-N;47564;acima_5_desp_pct;18.5759;4.9295;26.5372;microdados;cautela
 RG-N;47564;acima_10_renda_pct;0.0;0.0;;microdados;zero_na_amostra
 RG-N;47564;acima_10_desp_pct;;0.9254;100.7632;microdados;suprimido
+RG-N;47564;sens_media_razoes_renda_sem_acima_da_renda_pct;1.389;0.1327;;microdados;sensibilidade
+RG-N;47564;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-N;47564;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-N;47564;sens_media_razoes_renda_3_maiores_pp;0.2327;;;microdados;sensibilidade
 RG-N;47564;energia_media;450.44;;;SIDRA 6715;publicado
 RG-N;47564;despesa_media;18315.29;;;SIDRA 6715;publicado
 RG-N;47564;razao_medias_pct;2.5;;;SIDRA 6715;publicado
@@ -293,6 +357,10 @@ RG-NE;7999;acima_5_renda_pct;18.234;0.3904;2.1408;microdados;publicado
 RG-NE;7999;acima_5_desp_pct;22.3045;0.4407;1.9758;microdados;publicado
 RG-NE;7999;acima_10_renda_pct;4.5981;0.1957;4.2561;microdados;publicado
 RG-NE;7999;acima_10_desp_pct;4.5422;0.1866;4.1076;microdados;publicado
+RG-NE;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;3.3705;0.0415;;microdados;sensibilidade
+RG-NE;7999;sens_renda_familias_energia_acima_da_renda_n;9.0;;;microdados;sensibilidade
+RG-NE;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0448;;;microdados;sensibilidade
+RG-NE;7999;sens_media_razoes_renda_3_maiores_pp;0.0553;;;microdados;sensibilidade
 RG-NE;7999;energia_media;80.11;;;SIDRA 6715;publicado
 RG-NE;7999;despesa_media;3166.07;;;SIDRA 6715;publicado
 RG-NE;7999;razao_medias_pct;2.5;;;SIDRA 6715;publicado
@@ -310,6 +378,10 @@ RG-NE;47558;acima_5_renda_pct;33.0584;0.7355;2.2249;microdados;publicado
 RG-NE;47558;acima_5_desp_pct;31.755;0.6853;2.1581;microdados;publicado
 RG-NE;47558;acima_10_renda_pct;10.2622;0.435;4.2392;microdados;publicado
 RG-NE;47558;acima_10_desp_pct;7.6881;0.3611;4.6973;microdados;publicado
+RG-NE;47558;sens_media_razoes_renda_sem_acima_da_renda_pct;4.8161;0.0853;;microdados;sensibilidade
+RG-NE;47558;sens_renda_familias_energia_acima_da_renda_n;9.0;;;microdados;sensibilidade
+RG-NE;47558;sens_renda_familias_energia_acima_da_renda_peso_pct;0.1116;;;microdados;sensibilidade
+RG-NE;47558;sens_media_razoes_renda_3_maiores_pp;0.1377;;;microdados;sensibilidade
 RG-NE;47558;energia_media;48.64;;;SIDRA 6715;publicado
 RG-NE;47558;despesa_media;1354.98;;;SIDRA 6715;publicado
 RG-NE;47558;razao_medias_pct;3.6;;;SIDRA 6715;publicado
@@ -327,6 +399,10 @@ RG-NE;47559;acima_5_renda_pct;13.2602;0.6147;4.636;microdados;publicado
 RG-NE;47559;acima_5_desp_pct;23.7084;0.8301;3.5011;microdados;publicado
 RG-NE;47559;acima_10_renda_pct;1.4396;0.2066;14.3538;microdados;publicado
 RG-NE;47559;acima_10_desp_pct;3.8649;0.339;8.7704;microdados;publicado
+RG-NE;47559;sens_media_razoes_renda_sem_acima_da_renda_pct;2.869;0.0433;;microdados;sensibilidade
+RG-NE;47559;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-NE;47559;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-NE;47559;sens_media_razoes_renda_3_maiores_pp;0.0286;;;microdados;sensibilidade
 RG-NE;47559;energia_media;67.59;;;SIDRA 6715;publicado
 RG-NE;47559;despesa_media;2151.78;;;SIDRA 6715;publicado
 RG-NE;47559;razao_medias_pct;3.1;;;SIDRA 6715;publicado
@@ -344,6 +420,10 @@ RG-NE;47560;acima_5_renda_pct;7.1496;0.4316;6.0372;microdados;publicado
 RG-NE;47560;acima_5_desp_pct;14.139;0.584;4.1303;microdados;publicado
 RG-NE;47560;acima_10_renda_pct;0.5756;0.107;18.5952;microdados;cautela
 RG-NE;47560;acima_10_desp_pct;2.0511;0.2064;10.0643;microdados;publicado
+RG-NE;47560;sens_media_razoes_renda_sem_acima_da_renda_pct;2.3703;0.0316;;microdados;sensibilidade
+RG-NE;47560;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-NE;47560;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-NE;47560;sens_media_razoes_renda_3_maiores_pp;0.0248;;;microdados;sensibilidade
 RG-NE;47560;energia_media;92.62;;;SIDRA 6715;publicado
 RG-NE;47560;despesa_media;3583.07;;;SIDRA 6715;publicado
 RG-NE;47560;razao_medias_pct;2.6;;;SIDRA 6715;publicado
@@ -361,6 +441,10 @@ RG-NE;47561;acima_5_renda_pct;2.9458;0.4963;16.8476;microdados;cautela
 RG-NE;47561;acima_5_desp_pct;8.1503;0.787;9.6561;microdados;publicado
 RG-NE;47561;acima_10_renda_pct;;0.0936;48.0418;microdados;suprimido
 RG-NE;47561;acima_10_desp_pct;0.9691;0.2596;26.7884;microdados;cautela
+RG-NE;47561;sens_media_razoes_renda_sem_acima_da_renda_pct;1.9101;0.0394;;microdados;sensibilidade
+RG-NE;47561;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-NE;47561;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-NE;47561;sens_media_razoes_renda_3_maiores_pp;0.0316;;;microdados;sensibilidade
 RG-NE;47561;energia_media;137.42;;;SIDRA 6715;publicado
 RG-NE;47561;despesa_media;6326.94;;;SIDRA 6715;publicado
 RG-NE;47561;razao_medias_pct;2.2;;;SIDRA 6715;publicado
@@ -378,6 +462,10 @@ RG-NE;47562;acima_5_renda_pct;;0.3492;38.3809;microdados;suprimido
 RG-NE;47562;acima_5_desp_pct;5.3516;1.1479;21.4508;microdados;cautela
 RG-NE;47562;acima_10_renda_pct;0.0;0.0;;microdados;zero_na_amostra
 RG-NE;47562;acima_10_desp_pct;;0.4063;59.9791;microdados;suprimido
+RG-NE;47562;sens_media_razoes_renda_sem_acima_da_renda_pct;1.6387;0.0608;;microdados;sensibilidade
+RG-NE;47562;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-NE;47562;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-NE;47562;sens_media_razoes_renda_3_maiores_pp;0.068;;;microdados;sensibilidade
 RG-NE;47562;energia_media;187.01;;;SIDRA 6715;publicado
 RG-NE;47562;despesa_media;9389.06;;;SIDRA 6715;publicado
 RG-NE;47562;razao_medias_pct;2.0;;;SIDRA 6715;publicado
@@ -395,6 +483,10 @@ RG-NE;47563;acima_5_renda_pct;;0.5394;59.4007;microdados;suprimido
 RG-NE;47563;acima_5_desp_pct;3.2121;0.8969;27.9219;microdados;cautela
 RG-NE;47563;acima_10_renda_pct;0.0;0.0;;microdados;zero_na_amostra
 RG-NE;47563;acima_10_desp_pct;;0.109;100.3311;microdados;suprimido
+RG-NE;47563;sens_media_razoes_renda_sem_acima_da_renda_pct;1.203;0.0644;;microdados;sensibilidade
+RG-NE;47563;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-NE;47563;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-NE;47563;sens_media_razoes_renda_3_maiores_pp;0.1018;;;microdados;sensibilidade
 RG-NE;47563;energia_media;214.09;;;SIDRA 6715;publicado
 RG-NE;47563;despesa_media;14487.53;;;SIDRA 6715;publicado
 RG-NE;47563;razao_medias_pct;1.5;;;SIDRA 6715;publicado
@@ -412,6 +504,10 @@ RG-NE;47564;acima_5_renda_pct;0.0;0.0;;microdados;zero_na_amostra
 RG-NE;47564;acima_5_desp_pct;;0.4628;64.2537;microdados;suprimido
 RG-NE;47564;acima_10_renda_pct;0.0;0.0;;microdados;zero_na_amostra
 RG-NE;47564;acima_10_desp_pct;0.0;0.0;;microdados;zero_na_amostra
+RG-NE;47564;sens_media_razoes_renda_sem_acima_da_renda_pct;0.9234;0.0525;;microdados;sensibilidade
+RG-NE;47564;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-NE;47564;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-NE;47564;sens_media_razoes_renda_3_maiores_pp;0.0754;;;microdados;sensibilidade
 RG-NE;47564;energia_media;314.02;;;SIDRA 6715;publicado
 RG-NE;47564;despesa_media;24303.39;;;SIDRA 6715;publicado
 RG-NE;47564;razao_medias_pct;1.3;;;SIDRA 6715;publicado
@@ -429,6 +525,10 @@ RG-SE;7999;acima_5_renda_pct;17.8928;0.522;2.9175;microdados;publicado
 RG-SE;7999;acima_5_desp_pct;24.0114;0.6399;2.6649;microdados;publicado
 RG-SE;7999;acima_10_renda_pct;4.0973;0.271;6.6137;microdados;publicado
 RG-SE;7999;acima_10_desp_pct;5.0449;0.2857;5.6636;microdados;publicado
+RG-SE;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;3.3647;0.053;;microdados;sensibilidade
+RG-SE;7999;sens_renda_familias_energia_acima_da_renda_n;6.0;;;microdados;sensibilidade
+RG-SE;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0339;;;microdados;sensibilidade
+RG-SE;7999;sens_media_razoes_renda_3_maiores_pp;0.1903;;;microdados;sensibilidade
 RG-SE;7999;energia_media;125.53;;;SIDRA 6715;publicado
 RG-SE;7999;despesa_media;5415.49;;;SIDRA 6715;publicado
 RG-SE;7999;razao_medias_pct;2.3;;;SIDRA 6715;publicado
@@ -446,6 +546,10 @@ RG-SE;47558;acima_5_renda_pct;49.7211;1.4395;2.8952;microdados;publicado
 RG-SE;47558;acima_5_desp_pct;46.5881;1.5303;3.2847;microdados;publicado
 RG-SE;47558;acima_10_renda_pct;18.3692;1.2149;6.6139;microdados;publicado
 RG-SE;47558;acima_10_desp_pct;15.4403;1.1755;7.6132;microdados;publicado
+RG-SE;47558;sens_media_razoes_renda_sem_acima_da_renda_pct;6.6399;0.2059;;microdados;sensibilidade
+RG-SE;47558;sens_renda_familias_energia_acima_da_renda_n;6.0;;;microdados;sensibilidade
+RG-SE;47558;sens_renda_familias_energia_acima_da_renda_peso_pct;0.2041;;;microdados;sensibilidade
+RG-SE;47558;sens_media_razoes_renda_3_maiores_pp;1.1458;;;microdados;sensibilidade
 RG-SE;47558;energia_media;78.69;;;SIDRA 6715;publicado
 RG-SE;47558;despesa_media;1620.26;;;SIDRA 6715;publicado
 RG-SE;47558;razao_medias_pct;4.9;;;SIDRA 6715;publicado
@@ -463,6 +567,10 @@ RG-SE;47559;acima_5_renda_pct;26.435;1.1443;4.3286;microdados;publicado
 RG-SE;47559;acima_5_desp_pct;34.115;1.1795;3.4574;microdados;publicado
 RG-SE;47559;acima_10_renda_pct;3.7545;0.4335;11.5471;microdados;publicado
 RG-SE;47559;acima_10_desp_pct;6.5757;0.5308;8.0715;microdados;publicado
+RG-SE;47559;sens_media_razoes_renda_sem_acima_da_renda_pct;4.0135;0.0761;;microdados;sensibilidade
+RG-SE;47559;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-SE;47559;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-SE;47559;sens_media_razoes_renda_3_maiores_pp;0.0475;;;microdados;sensibilidade
 RG-SE;47559;energia_media;95.63;;;SIDRA 6715;publicado
 RG-SE;47559;despesa_media;2458.4;;;SIDRA 6715;publicado
 RG-SE;47559;razao_medias_pct;3.9;;;SIDRA 6715;publicado
@@ -480,6 +588,10 @@ RG-SE;47560;acima_5_renda_pct;13.0768;0.7067;5.4043;microdados;publicado
 RG-SE;47560;acima_5_desp_pct;24.2572;0.8998;3.7094;microdados;publicado
 RG-SE;47560;acima_10_renda_pct;1.0639;0.1937;18.2088;microdados;cautela
 RG-SE;47560;acima_10_desp_pct;3.2621;0.3554;10.8961;microdados;publicado
+RG-SE;47560;sens_media_razoes_renda_sem_acima_da_renda_pct;3.0357;0.0427;;microdados;sensibilidade
+RG-SE;47560;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-SE;47560;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-SE;47560;sens_media_razoes_renda_3_maiores_pp;0.0367;;;microdados;sensibilidade
 RG-SE;47560;energia_media;121.42;;;SIDRA 6715;publicado
 RG-SE;47560;despesa_media;3740.46;;;SIDRA 6715;publicado
 RG-SE;47560;razao_medias_pct;3.2;;;SIDRA 6715;publicado
@@ -497,6 +609,10 @@ RG-SE;47561;acima_5_renda_pct;3.184;0.4795;15.0591;microdados;cautela
 RG-SE;47561;acima_5_desp_pct;10.0447;0.7734;7.7;microdados;publicado
 RG-SE;47561;acima_10_renda_pct;;0.0599;37.2192;microdados;suprimido
 RG-SE;47561;acima_10_desp_pct;1.0259;0.2289;22.3074;microdados;cautela
+RG-SE;47561;sens_media_razoes_renda_sem_acima_da_renda_pct;2.1008;0.0338;;microdados;sensibilidade
+RG-SE;47561;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-SE;47561;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-SE;47561;sens_media_razoes_renda_3_maiores_pp;0.0328;;;microdados;sensibilidade
 RG-SE;47561;energia_media;149.07;;;SIDRA 6715;publicado
 RG-SE;47561;despesa_media;6412.59;;;SIDRA 6715;publicado
 RG-SE;47561;razao_medias_pct;2.3;;;SIDRA 6715;publicado
@@ -514,6 +630,10 @@ RG-SE;47562;acima_5_renda_pct;;0.2226;34.6847;microdados;suprimido
 RG-SE;47562;acima_5_desp_pct;4.8288;0.842;17.4381;microdados;cautela
 RG-SE;47562;acima_10_renda_pct;0.0;0.0;;microdados;zero_na_amostra
 RG-SE;47562;acima_10_desp_pct;;0.1838;55.7666;microdados;suprimido
+RG-SE;47562;sens_media_razoes_renda_sem_acima_da_renda_pct;1.5172;0.038;;microdados;sensibilidade
+RG-SE;47562;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-SE;47562;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-SE;47562;sens_media_razoes_renda_3_maiores_pp;0.0674;;;microdados;sensibilidade
 RG-SE;47562;energia_media;172.18;;;SIDRA 6715;publicado
 RG-SE;47562;despesa_media;9527.33;;;SIDRA 6715;publicado
 RG-SE;47562;razao_medias_pct;1.8;;;SIDRA 6715;publicado
@@ -531,6 +651,10 @@ RG-SE;47563;acima_5_renda_pct;;0.1263;90.0237;microdados;suprimido
 RG-SE;47563;acima_5_desp_pct;;0.4285;32.3259;microdados;suprimido
 RG-SE;47563;acima_10_renda_pct;0.0;0.0;;microdados;zero_na_amostra
 RG-SE;47563;acima_10_desp_pct;;0.2715;44.7173;microdados;suprimido
+RG-SE;47563;sens_media_razoes_renda_sem_acima_da_renda_pct;1.0941;0.0395;;microdados;sensibilidade
+RG-SE;47563;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-SE;47563;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-SE;47563;sens_media_razoes_renda_3_maiores_pp;0.0547;;;microdados;sensibilidade
 RG-SE;47563;energia_media;194.27;;;SIDRA 6715;publicado
 RG-SE;47563;despesa_media;14922.15;;;SIDRA 6715;publicado
 RG-SE;47563;razao_medias_pct;1.3;;;SIDRA 6715;publicado
@@ -548,6 +672,10 @@ RG-SE;47564;acima_5_renda_pct;0.0;0.0;;microdados;zero_na_amostra
 RG-SE;47564;acima_5_desp_pct;;0.3047;62.4722;microdados;suprimido
 RG-SE;47564;acima_10_renda_pct;0.0;0.0;;microdados;zero_na_amostra
 RG-SE;47564;acima_10_desp_pct;0.0;0.0;;microdados;zero_na_amostra
+RG-SE;47564;sens_media_razoes_renda_sem_acima_da_renda_pct;0.6457;0.0363;;microdados;sensibilidade
+RG-SE;47564;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-SE;47564;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-SE;47564;sens_media_razoes_renda_3_maiores_pp;0.0413;;;microdados;sensibilidade
 RG-SE;47564;energia_media;239.06;;;SIDRA 6715;publicado
 RG-SE;47564;despesa_media;29358.03;;;SIDRA 6715;publicado
 RG-SE;47564;razao_medias_pct;0.8;;;SIDRA 6715;publicado
@@ -565,6 +693,10 @@ RG-S;7999;acima_5_renda_pct;18.3421;0.7909;4.3122;microdados;publicado
 RG-S;7999;acima_5_desp_pct;24.9231;0.8518;3.4176;microdados;publicado
 RG-S;7999;acima_10_renda_pct;4.0013;0.4513;11.28;microdados;publicado
 RG-S;7999;acima_10_desp_pct;5.9919;0.6185;10.3218;microdados;publicado
+RG-S;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;3.5395;0.1099;;microdados;sensibilidade
+RG-S;7999;sens_renda_familias_energia_acima_da_renda_n;8.0;;;microdados;sensibilidade
+RG-S;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.1497;;;microdados;sensibilidade
+RG-S;7999;sens_media_razoes_renda_3_maiores_pp;0.1951;;;microdados;sensibilidade
 RG-S;7999;energia_media;132.03;;;SIDRA 6715;publicado
 RG-S;7999;despesa_media;5102.73;;;SIDRA 6715;publicado
 RG-S;7999;razao_medias_pct;2.6;;;SIDRA 6715;publicado
@@ -582,6 +714,10 @@ RG-S;47558;acima_5_renda_pct;55.7084;2.4637;4.4225;microdados;publicado
 RG-S;47558;acima_5_desp_pct;45.9568;2.4174;5.2601;microdados;publicado
 RG-S;47558;acima_10_renda_pct;20.3124;2.3633;11.6348;microdados;publicado
 RG-S;47558;acima_10_desp_pct;15.3553;2.2658;14.7556;microdados;publicado
+RG-S;47558;sens_media_razoes_renda_sem_acima_da_renda_pct;7.6677;0.542;;microdados;sensibilidade
+RG-S;47558;sens_renda_familias_energia_acima_da_renda_n;8.0;;;microdados;sensibilidade
+RG-S;47558;sens_renda_familias_energia_acima_da_renda_peso_pct;0.9875;;;microdados;sensibilidade
+RG-S;47558;sens_media_razoes_renda_3_maiores_pp;1.287;;;microdados;sensibilidade
 RG-S;47558;energia_media;81.87;;;SIDRA 6715;publicado
 RG-S;47558;despesa_media;1644.89;;;SIDRA 6715;publicado
 RG-S;47558;razao_medias_pct;5.0;;;SIDRA 6715;publicado
@@ -599,6 +735,10 @@ RG-S;47559;acima_5_renda_pct;30.2161;1.6128;5.3376;microdados;publicado
 RG-S;47559;acima_5_desp_pct;38.5961;1.6952;4.392;microdados;publicado
 RG-S;47559;acima_10_renda_pct;3.2595;0.5262;16.1444;microdados;cautela
 RG-S;47559;acima_10_desp_pct;10.351;1.3826;13.3575;microdados;publicado
+RG-S;47559;sens_media_razoes_renda_sem_acima_da_renda_pct;4.22;0.0959;;microdados;sensibilidade
+RG-S;47559;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-S;47559;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-S;47559;sens_media_razoes_renda_3_maiores_pp;0.0914;;;microdados;sensibilidade
 RG-S;47559;energia_media;101.56;;;SIDRA 6715;publicado
 RG-S;47559;despesa_media;2422.14;;;SIDRA 6715;publicado
 RG-S;47559;razao_medias_pct;4.2;;;SIDRA 6715;publicado
@@ -616,6 +756,10 @@ RG-S;47560;acima_5_renda_pct;12.3995;0.7343;5.9218;microdados;publicado
 RG-S;47560;acima_5_desp_pct;24.8763;1.1169;4.4898;microdados;publicado
 RG-S;47560;acima_10_renda_pct;0.9568;0.1808;18.8924;microdados;cautela
 RG-S;47560;acima_10_desp_pct;4.5781;0.5118;11.1783;microdados;publicado
+RG-S;47560;sens_media_razoes_renda_sem_acima_da_renda_pct;3.0912;0.0451;;microdados;sensibilidade
+RG-S;47560;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-S;47560;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-S;47560;sens_media_razoes_renda_3_maiores_pp;0.0362;;;microdados;sensibilidade
 RG-S;47560;energia_media;124.78;;;SIDRA 6715;publicado
 RG-S;47560;despesa_media;3738.27;;;SIDRA 6715;publicado
 RG-S;47560;razao_medias_pct;3.3;;;SIDRA 6715;publicado
@@ -633,6 +777,10 @@ RG-S;47561;acima_5_renda_pct;2.8206;0.4327;15.3391;microdados;cautela
 RG-S;47561;acima_5_desp_pct;12.1259;0.9359;7.7183;microdados;publicado
 RG-S;47561;acima_10_renda_pct;;0.1421;48.7036;microdados;suprimido
 RG-S;47561;acima_10_desp_pct;1.3987;0.3018;21.58;microdados;cautela
+RG-S;47561;sens_media_razoes_renda_sem_acima_da_renda_pct;2.2046;0.036;;microdados;sensibilidade
+RG-S;47561;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-S;47561;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-S;47561;sens_media_razoes_renda_3_maiores_pp;0.0811;;;microdados;sensibilidade
 RG-S;47561;energia_media;157.36;;;SIDRA 6715;publicado
 RG-S;47561;despesa_media;6086.27;;;SIDRA 6715;publicado
 RG-S;47561;razao_medias_pct;2.6;;;SIDRA 6715;publicado
@@ -650,6 +798,10 @@ RG-S;47562;acima_5_renda_pct;;0.3521;35.5538;microdados;suprimido
 RG-S;47562;acima_5_desp_pct;7.2092;1.0507;14.5742;microdados;publicado
 RG-S;47562;acima_10_renda_pct;0.0;0.0;;microdados;zero_na_amostra
 RG-S;47562;acima_10_desp_pct;;0.4241;34.6958;microdados;suprimido
+RG-S;47562;sens_media_razoes_renda_sem_acima_da_renda_pct;1.6424;0.04;;microdados;sensibilidade
+RG-S;47562;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-S;47562;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-S;47562;sens_media_razoes_renda_3_maiores_pp;0.0339;;;microdados;sensibilidade
 RG-S;47562;energia_media;185.95;;;SIDRA 6715;publicado
 RG-S;47562;despesa_media;9112.46;;;SIDRA 6715;publicado
 RG-S;47562;razao_medias_pct;2.0;;;SIDRA 6715;publicado
@@ -667,6 +819,10 @@ RG-S;47563;acima_5_renda_pct;;0.4113;71.4306;microdados;suprimido
 RG-S;47563;acima_5_desp_pct;;0.6572;34.6144;microdados;suprimido
 RG-S;47563;acima_10_renda_pct;0.0;0.0;;microdados;zero_na_amostra
 RG-S;47563;acima_10_desp_pct;;0.3278;100.0291;microdados;suprimido
+RG-S;47563;sens_media_razoes_renda_sem_acima_da_renda_pct;1.1859;0.0439;;microdados;sensibilidade
+RG-S;47563;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-S;47563;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-S;47563;sens_media_razoes_renda_3_maiores_pp;0.0615;;;microdados;sensibilidade
 RG-S;47563;energia_media;210.65;;;SIDRA 6715;publicado
 RG-S;47563;despesa_media;15654.65;;;SIDRA 6715;publicado
 RG-S;47563;razao_medias_pct;1.3;;;SIDRA 6715;publicado
@@ -684,6 +840,10 @@ RG-S;47564;acima_5_renda_pct;0.0;0.0;;microdados;zero_na_amostra
 RG-S;47564;acima_5_desp_pct;;1.4563;85.1671;microdados;suprimido
 RG-S;47564;acima_10_renda_pct;0.0;0.0;;microdados;zero_na_amostra
 RG-S;47564;acima_10_desp_pct;0.0;0.0;;microdados;zero_na_amostra
+RG-S;47564;sens_media_razoes_renda_sem_acima_da_renda_pct;0.7303;0.056;;microdados;sensibilidade
+RG-S;47564;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-S;47564;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-S;47564;sens_media_razoes_renda_3_maiores_pp;0.1037;;;microdados;sensibilidade
 RG-S;47564;energia_media;237.69;;;SIDRA 6715;publicado
 RG-S;47564;despesa_media;24688.38;;;SIDRA 6715;publicado
 RG-S;47564;razao_medias_pct;1.0;;;SIDRA 6715;publicado
@@ -701,6 +861,10 @@ RG-CO;7999;acima_5_renda_pct;20.193;0.8383;4.1515;microdados;publicado
 RG-CO;7999;acima_5_desp_pct;25.1627;0.921;3.6602;microdados;publicado
 RG-CO;7999;acima_10_renda_pct;5.0716;0.4215;8.3114;microdados;publicado
 RG-CO;7999;acima_10_desp_pct;5.4831;0.4481;8.172;microdados;publicado
+RG-CO;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;3.6539;0.0955;;microdados;sensibilidade
+RG-CO;7999;sens_renda_familias_energia_acima_da_renda_n;4.0;;;microdados;sensibilidade
+RG-CO;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0464;;;microdados;sensibilidade
+RG-CO;7999;sens_media_razoes_renda_3_maiores_pp;0.0554;;;microdados;sensibilidade
 RG-CO;7999;energia_media;136.2;;;SIDRA 6715;publicado
 RG-CO;7999;despesa_media;5762.12;;;SIDRA 6715;publicado
 RG-CO;7999;razao_medias_pct;2.4;;;SIDRA 6715;publicado
@@ -718,6 +882,10 @@ RG-CO;47558;acima_5_renda_pct;52.9151;1.9918;3.7641;microdados;publicado
 RG-CO;47558;acima_5_desp_pct;48.986;2.0664;4.2184;microdados;publicado
 RG-CO;47558;acima_10_renda_pct;20.3175;1.73;8.5149;microdados;publicado
 RG-CO;47558;acima_10_desp_pct;15.2166;1.6658;10.9469;microdados;publicado
+RG-CO;47558;sens_media_razoes_renda_sem_acima_da_renda_pct;7.4509;0.326;;microdados;sensibilidade
+RG-CO;47558;sens_renda_familias_energia_acima_da_renda_n;4.0;;;microdados;sensibilidade
+RG-CO;47558;sens_renda_familias_energia_acima_da_renda_peso_pct;0.261;;;microdados;sensibilidade
+RG-CO;47558;sens_media_razoes_renda_3_maiores_pp;0.3121;;;microdados;sensibilidade
 RG-CO;47558;energia_media;84.77;;;SIDRA 6715;publicado
 RG-CO;47558;despesa_media;1730.03;;;SIDRA 6715;publicado
 RG-CO;47558;razao_medias_pct;4.9;;;SIDRA 6715;publicado
@@ -735,6 +903,10 @@ RG-CO;47559;acima_5_renda_pct;28.0118;1.6835;6.0098;microdados;publicado
 RG-CO;47559;acima_5_desp_pct;35.9087;1.8911;5.2663;microdados;publicado
 RG-CO;47559;acima_10_renda_pct;4.6514;0.7395;15.8975;microdados;cautela
 RG-CO;47559;acima_10_desp_pct;6.5309;0.8403;12.8672;microdados;publicado
+RG-CO;47559;sens_media_razoes_renda_sem_acima_da_renda_pct;4.1238;0.1136;;microdados;sensibilidade
+RG-CO;47559;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-CO;47559;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-CO;47559;sens_media_razoes_renda_3_maiores_pp;0.1272;;;microdados;sensibilidade
 RG-CO;47559;energia_media;98.42;;;SIDRA 6715;publicado
 RG-CO;47559;despesa_media;2418.64;;;SIDRA 6715;publicado
 RG-CO;47559;razao_medias_pct;4.1;;;SIDRA 6715;publicado
@@ -752,6 +924,10 @@ RG-CO;47560;acima_5_renda_pct;14.6796;1.1352;7.7331;microdados;publicado
 RG-CO;47560;acima_5_desp_pct;23.4553;1.1186;4.7689;microdados;publicado
 RG-CO;47560;acima_10_renda_pct;1.6208;0.3335;20.5742;microdados;cautela
 RG-CO;47560;acima_10_desp_pct;3.6664;0.522;14.2382;microdados;publicado
+RG-CO;47560;sens_media_razoes_renda_sem_acima_da_renda_pct;3.1771;0.0653;;microdados;sensibilidade
+RG-CO;47560;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-CO;47560;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-CO;47560;sens_media_razoes_renda_3_maiores_pp;0.0626;;;microdados;sensibilidade
 RG-CO;47560;energia_media;126.42;;;SIDRA 6715;publicado
 RG-CO;47560;despesa_media;3879.4;;;SIDRA 6715;publicado
 RG-CO;47560;razao_medias_pct;3.3;;;SIDRA 6715;publicado
@@ -769,6 +945,10 @@ RG-CO;47561;acima_5_renda_pct;4.8191;0.8078;16.762;microdados;cautela
 RG-CO;47561;acima_5_desp_pct;10.3068;1.2242;11.8775;microdados;publicado
 RG-CO;47561;acima_10_renda_pct;;0.2132;49.1718;microdados;suprimido
 RG-CO;47561;acima_10_desp_pct;1.597;0.4472;28.005;microdados;cautela
+RG-CO;47561;sens_media_razoes_renda_sem_acima_da_renda_pct;2.2184;0.065;;microdados;sensibilidade
+RG-CO;47561;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-CO;47561;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-CO;47561;sens_media_razoes_renda_3_maiores_pp;0.0567;;;microdados;sensibilidade
 RG-CO;47561;energia_media;160.11;;;SIDRA 6715;publicado
 RG-CO;47561;despesa_media;6810.14;;;SIDRA 6715;publicado
 RG-CO;47561;razao_medias_pct;2.4;;;SIDRA 6715;publicado
@@ -786,6 +966,10 @@ RG-CO;47562;acima_5_renda_pct;;0.9512;31.3941;microdados;suprimido
 RG-CO;47562;acima_5_desp_pct;7.1845;1.3483;18.7666;microdados;cautela
 RG-CO;47562;acima_10_renda_pct;;0.3238;76.1454;microdados;suprimido
 RG-CO;47562;acima_10_desp_pct;;0.6618;33.9187;microdados;suprimido
+RG-CO;47562;sens_media_razoes_renda_sem_acima_da_renda_pct;1.7799;0.0777;;microdados;sensibilidade
+RG-CO;47562;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-CO;47562;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-CO;47562;sens_media_razoes_renda_3_maiores_pp;0.1084;;;microdados;sensibilidade
 RG-CO;47562;energia_media;203.39;;;SIDRA 6715;publicado
 RG-CO;47562;despesa_media;9396.2;;;SIDRA 6715;publicado
 RG-CO;47562;razao_medias_pct;2.2;;;SIDRA 6715;publicado
@@ -803,6 +987,10 @@ RG-CO;47563;acima_5_renda_pct;;0.2179;78.2259;microdados;suprimido
 RG-CO;47563;acima_5_desp_pct;;1.3574;35.1913;microdados;suprimido
 RG-CO;47563;acima_10_renda_pct;0.0;0.0;;microdados;zero_na_amostra
 RG-CO;47563;acima_10_desp_pct;;0.2637;102.0605;microdados;suprimido
+RG-CO;47563;sens_media_razoes_renda_sem_acima_da_renda_pct;1.1871;0.053;;microdados;sensibilidade
+RG-CO;47563;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-CO;47563;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-CO;47563;sens_media_razoes_renda_3_maiores_pp;0.2562;;;microdados;sensibilidade
 RG-CO;47563;energia_media;210.92;;;SIDRA 6715;publicado
 RG-CO;47563;despesa_media;14215.67;;;SIDRA 6715;publicado
 RG-CO;47563;razao_medias_pct;1.5;;;SIDRA 6715;publicado
@@ -820,6 +1008,10 @@ RG-CO;47564;acima_5_renda_pct;0.0;0.0;;microdados;zero_na_amostra
 RG-CO;47564;acima_5_desp_pct;;0.8418;46.5398;microdados;suprimido
 RG-CO;47564;acima_10_renda_pct;0.0;0.0;;microdados;zero_na_amostra
 RG-CO;47564;acima_10_desp_pct;;0.3458;64.2216;microdados;suprimido
+RG-CO;47564;sens_media_razoes_renda_sem_acima_da_renda_pct;0.8138;0.0835;;microdados;sensibilidade
+RG-CO;47564;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+RG-CO;47564;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+RG-CO;47564;sens_media_razoes_renda_3_maiores_pp;0.1656;;;microdados;sensibilidade
 RG-CO;47564;energia_media;293.94;;;SIDRA 6715;publicado
 RG-CO;47564;despesa_media;29583.74;;;SIDRA 6715;publicado
 RG-CO;47564;razao_medias_pct;1.0;;;SIDRA 6715;publicado
@@ -837,6 +1029,10 @@ RO;7999;acima_5_renda_pct;27.3763;1.6989;6.2057;microdados;publicado
 RO;7999;acima_5_desp_pct;40.2126;2.5152;6.2548;microdados;publicado
 RO;7999;acima_10_renda_pct;6.9847;0.8109;11.6094;microdados;publicado
 RO;7999;acima_10_desp_pct;14.8684;1.7447;11.7344;microdados;publicado
+RO;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;4.4299;0.2018;;microdados;sensibilidade
+RO;7999;sens_renda_familias_energia_acima_da_renda_n;2.0;;;microdados;sensibilidade
+RO;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.192;;;microdados;sensibilidade
+RO;7999;sens_media_razoes_renda_3_maiores_pp;0.3574;;;microdados;sensibilidade
 RO;7999;energia_media;118.61;;;SIDRA 6715;publicado
 RO;7999;despesa_media;3157.71;;;SIDRA 6715;publicado
 RO;7999;razao_medias_pct;3.8;;;SIDRA 6715;publicado
@@ -875,6 +1071,10 @@ AC;7999;acima_5_renda_pct;24.3135;1.7752;7.3013;microdados;publicado
 AC;7999;acima_5_desp_pct;28.112;1.9571;6.9617;microdados;publicado
 AC;7999;acima_10_renda_pct;9.5481;1.4734;15.4315;microdados;cautela
 AC;7999;acima_10_desp_pct;4.9197;0.8121;16.5081;microdados;cautela
+AC;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;4.0554;0.2846;;microdados;sensibilidade
+AC;7999;sens_renda_familias_energia_acima_da_renda_n;1.0;;;microdados;sensibilidade
+AC;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.1026;;;microdados;sensibilidade
+AC;7999;sens_media_razoes_renda_3_maiores_pp;0.3647;;;microdados;sensibilidade
 AC;7999;energia_media;110.7;;;SIDRA 6715;publicado
 AC;7999;despesa_media;3651.59;;;SIDRA 6715;publicado
 AC;7999;razao_medias_pct;3.0;;;SIDRA 6715;publicado
@@ -913,6 +1113,10 @@ AM;7999;acima_5_renda_pct;31.0234;1.3964;4.5011;microdados;publicado
 AM;7999;acima_5_desp_pct;35.7652;1.6714;4.6732;microdados;publicado
 AM;7999;acima_10_renda_pct;12.5566;0.9533;7.592;microdados;publicado
 AM;7999;acima_10_desp_pct;12.2568;1.0318;8.418;microdados;publicado
+AM;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;4.8419;0.2038;;microdados;sensibilidade
+AM;7999;sens_renda_familias_energia_acima_da_renda_n;4.0;;;microdados;sensibilidade
+AM;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.2809;;;microdados;sensibilidade
+AM;7999;sens_media_razoes_renda_3_maiores_pp;0.2923;;;microdados;sensibilidade
 AM;7999;energia_media;135.36;;;SIDRA 6715;publicado
 AM;7999;despesa_media;3218.87;;;SIDRA 6715;publicado
 AM;7999;razao_medias_pct;4.2;;;SIDRA 6715;publicado
@@ -951,6 +1155,10 @@ RR;7999;acima_5_renda_pct;44.4936;2.343;5.266;microdados;publicado
 RR;7999;acima_5_desp_pct;58.2832;2.1452;3.6807;microdados;publicado
 RR;7999;acima_10_renda_pct;15.8737;1.716;10.8102;microdados;publicado
 RR;7999;acima_10_desp_pct;23.8947;2.561;10.7177;microdados;publicado
+RR;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;6.18;0.3133;;microdados;sensibilidade
+RR;7999;sens_renda_familias_energia_acima_da_renda_n;1.0;;;microdados;sensibilidade
+RR;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.1063;;;microdados;sensibilidade
+RR;7999;sens_media_razoes_renda_3_maiores_pp;0.3891;;;microdados;sensibilidade
 RR;7999;energia_media;183.59;;;SIDRA 6715;publicado
 RR;7999;despesa_media;3346.81;;;SIDRA 6715;publicado
 RR;7999;razao_medias_pct;5.5;;;SIDRA 6715;publicado
@@ -989,6 +1197,10 @@ PA;7999;acima_5_renda_pct;33.1515;1.7548;5.2933;microdados;publicado
 PA;7999;acima_5_desp_pct;35.988;1.8598;5.1678;microdados;publicado
 PA;7999;acima_10_renda_pct;11.1835;1.073;9.5945;microdados;publicado
 PA;7999;acima_10_desp_pct;11.5983;1.1264;9.7115;microdados;publicado
+PA;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;4.8684;0.2388;;microdados;sensibilidade
+PA;7999;sens_renda_familias_energia_acima_da_renda_n;4.0;;;microdados;sensibilidade
+PA;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.3693;;;microdados;sensibilidade
+PA;7999;sens_media_razoes_renda_3_maiores_pp;1.3596;;;microdados;sensibilidade
 PA;7999;energia_media;114.59;;;SIDRA 6715;publicado
 PA;7999;despesa_media;3124.69;;;SIDRA 6715;publicado
 PA;7999;razao_medias_pct;3.7;;;SIDRA 6715;publicado
@@ -1027,6 +1239,10 @@ AP;7999;acima_5_renda_pct;32.5181;2.3249;7.1495;microdados;publicado
 AP;7999;acima_5_desp_pct;31.5705;2.4251;7.6815;microdados;publicado
 AP;7999;acima_10_renda_pct;10.6992;1.3955;13.043;microdados;publicado
 AP;7999;acima_10_desp_pct;7.2277;1.0637;14.7167;microdados;publicado
+AP;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;4.4086;0.2674;;microdados;sensibilidade
+AP;7999;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+AP;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+AP;7999;sens_media_razoes_renda_3_maiores_pp;0.257;;;microdados;sensibilidade
 AP;7999;energia_media;155.42;;;SIDRA 6715;publicado
 AP;7999;despesa_media;4451.32;;;SIDRA 6715;publicado
 AP;7999;razao_medias_pct;3.5;;;SIDRA 6715;publicado
@@ -1065,6 +1281,10 @@ TO;7999;acima_5_renda_pct;33.3587;1.7532;5.2557;microdados;publicado
 TO;7999;acima_5_desp_pct;43.1574;2.1219;4.9167;microdados;publicado
 TO;7999;acima_10_renda_pct;11.2145;1.3109;11.6894;microdados;publicado
 TO;7999;acima_10_desp_pct;12.6235;1.5362;12.1694;microdados;publicado
+TO;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;4.9977;0.237;;microdados;sensibilidade
+TO;7999;sens_renda_familias_energia_acima_da_renda_n;1.0;;;microdados;sensibilidade
+TO;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0801;;;microdados;sensibilidade
+TO;7999;sens_media_razoes_renda_3_maiores_pp;0.2862;;;microdados;sensibilidade
 TO;7999;energia_media;109.7;;;SIDRA 6715;publicado
 TO;7999;despesa_media;2552.53;;;SIDRA 6715;publicado
 TO;7999;razao_medias_pct;4.3;;;SIDRA 6715;publicado
@@ -1103,6 +1323,10 @@ MA;7999;acima_5_renda_pct;28.3838;1.2038;4.2412;microdados;publicado
 MA;7999;acima_5_desp_pct;31.4369;1.5241;4.8483;microdados;publicado
 MA;7999;acima_10_renda_pct;9.4812;0.8871;9.3565;microdados;publicado
 MA;7999;acima_10_desp_pct;8.0825;0.7333;9.0725;microdados;publicado
+MA;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;4.5818;0.1612;;microdados;sensibilidade
+MA;7999;sens_renda_familias_energia_acima_da_renda_n;3.0;;;microdados;sensibilidade
+MA;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.1702;;;microdados;sensibilidade
+MA;7999;sens_media_razoes_renda_3_maiores_pp;0.209;;;microdados;sensibilidade
 MA;7999;energia_media;87.63;;;SIDRA 6715;publicado
 MA;7999;despesa_media;2620.93;;;SIDRA 6715;publicado
 MA;7999;razao_medias_pct;3.3;;;SIDRA 6715;publicado
@@ -1141,6 +1365,10 @@ PI;7999;acima_5_renda_pct;17.042;1.0715;6.2874;microdados;publicado
 PI;7999;acima_5_desp_pct;25.4787;1.5966;6.2665;microdados;publicado
 PI;7999;acima_10_renda_pct;3.6927;0.4838;13.103;microdados;publicado
 PI;7999;acima_10_desp_pct;4.7114;0.6681;14.1808;microdados;publicado
+PI;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;3.257;0.112;;microdados;sensibilidade
+PI;7999;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+PI;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+PI;7999;sens_media_razoes_renda_3_maiores_pp;0.0863;;;microdados;sensibilidade
 PI;7999;energia_media;88.95;;;SIDRA 6715;publicado
 PI;7999;despesa_media;2841.37;;;SIDRA 6715;publicado
 PI;7999;razao_medias_pct;3.1;;;SIDRA 6715;publicado
@@ -1179,6 +1407,10 @@ CE;7999;acima_5_renda_pct;22.6597;1.0346;4.566;microdados;publicado
 CE;7999;acima_5_desp_pct;30.1332;1.1807;3.9181;microdados;publicado
 CE;7999;acima_10_renda_pct;5.5198;0.5122;9.2785;microdados;publicado
 CE;7999;acima_10_desp_pct;5.7188;0.5607;9.8051;microdados;publicado
+CE;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;3.8691;0.1086;;microdados;sensibilidade
+CE;7999;sens_renda_familias_energia_acima_da_renda_n;1.0;;;microdados;sensibilidade
+CE;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0428;;;microdados;sensibilidade
+CE;7999;sens_media_razoes_renda_3_maiores_pp;0.1005;;;microdados;sensibilidade
 CE;7999;energia_media;82.92;;;SIDRA 6715;publicado
 CE;7999;despesa_media;2830.34;;;SIDRA 6715;publicado
 CE;7999;razao_medias_pct;2.9;;;SIDRA 6715;publicado
@@ -1217,6 +1449,10 @@ RN;7999;acima_5_renda_pct;13.6271;1.3384;9.8219;microdados;publicado
 RN;7999;acima_5_desp_pct;12.3007;1.0071;8.1874;microdados;publicado
 RN;7999;acima_10_renda_pct;3.4277;0.6159;17.9677;microdados;cautela
 RN;7999;acima_10_desp_pct;2.1845;0.4352;19.9206;microdados;cautela
+RN;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;2.9236;0.1047;;microdados;sensibilidade
+RN;7999;sens_renda_familias_energia_acima_da_renda_n;1.0;;;microdados;sensibilidade
+RN;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0417;;;microdados;sensibilidade
+RN;7999;sens_media_razoes_renda_3_maiores_pp;0.1223;;;microdados;sensibilidade
 RN;7999;energia_media;83.7;;;SIDRA 6715;publicado
 RN;7999;despesa_media;3910.53;;;SIDRA 6715;publicado
 RN;7999;razao_medias_pct;2.1;;;SIDRA 6715;publicado
@@ -1255,6 +1491,10 @@ PB;7999;acima_5_renda_pct;22.4173;1.2;5.353;microdados;publicado
 PB;7999;acima_5_desp_pct;29.2705;1.3076;4.4673;microdados;publicado
 PB;7999;acima_10_renda_pct;5.3182;0.5459;10.2639;microdados;publicado
 PB;7999;acima_10_desp_pct;6.6649;0.6144;9.2188;microdados;publicado
+PB;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;3.7742;0.121;;microdados;sensibilidade
+PB;7999;sens_renda_familias_energia_acima_da_renda_n;1.0;;;microdados;sensibilidade
+PB;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0456;;;microdados;sensibilidade
+PB;7999;sens_media_razoes_renda_3_maiores_pp;0.1224;;;microdados;sensibilidade
 PB;7999;energia_media;82.94;;;SIDRA 6715;publicado
 PB;7999;despesa_media;2893.59;;;SIDRA 6715;publicado
 PB;7999;razao_medias_pct;2.9;;;SIDRA 6715;publicado
@@ -1293,6 +1533,10 @@ PE;7999;acima_5_renda_pct;15.5494;0.8366;5.3804;microdados;publicado
 PE;7999;acima_5_desp_pct;19.2533;1.1426;5.9344;microdados;publicado
 PE;7999;acima_10_renda_pct;3.3146;0.4025;12.1435;microdados;publicado
 PE;7999;acima_10_desp_pct;3.8351;0.4249;11.0792;microdados;publicado
+PE;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;3.0396;0.1007;;microdados;sensibilidade
+PE;7999;sens_renda_familias_energia_acima_da_renda_n;1.0;;;microdados;sensibilidade
+PE;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0233;;;microdados;sensibilidade
+PE;7999;sens_media_razoes_renda_3_maiores_pp;0.2995;;;microdados;sensibilidade
 PE;7999;energia_media;81.81;;;SIDRA 6715;publicado
 PE;7999;despesa_media;3442.75;;;SIDRA 6715;publicado
 PE;7999;razao_medias_pct;2.4;;;SIDRA 6715;publicado
@@ -1331,6 +1575,10 @@ AL;7999;acima_5_renda_pct;28.6184;1.6266;5.6839;microdados;publicado
 AL;7999;acima_5_desp_pct;36.2377;1.7518;4.8342;microdados;publicado
 AL;7999;acima_10_renda_pct;9.0366;1.0517;11.6382;microdados;publicado
 AL;7999;acima_10_desp_pct;9.6155;1.1134;11.5792;microdados;publicado
+AL;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;4.5184;0.2021;;microdados;sensibilidade
+AL;7999;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+AL;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+AL;7999;sens_media_razoes_renda_3_maiores_pp;0.1697;;;microdados;sensibilidade
 AL;7999;energia_media;81.09;;;SIDRA 6715;publicado
 AL;7999;despesa_media;2417.84;;;SIDRA 6715;publicado
 AL;7999;razao_medias_pct;3.4;;;SIDRA 6715;publicado
@@ -1369,6 +1617,10 @@ SE;7999;acima_5_renda_pct;9.5299;0.8393;8.8066;microdados;publicado
 SE;7999;acima_5_desp_pct;13.5238;1.2748;9.4266;microdados;publicado
 SE;7999;acima_10_renda_pct;1.3927;0.3052;21.9105;microdados;cautela
 SE;7999;acima_10_desp_pct;1.9189;0.4459;23.2384;microdados;cautela
+SE;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;2.4664;0.0684;;microdados;sensibilidade
+SE;7999;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+SE;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+SE;7999;sens_media_razoes_renda_3_maiores_pp;0.0522;;;microdados;sensibilidade
 SE;7999;energia_media;77.73;;;SIDRA 6715;publicado
 SE;7999;despesa_media;3924.18;;;SIDRA 6715;publicado
 SE;7999;razao_medias_pct;2.0;;;SIDRA 6715;publicado
@@ -1407,6 +1659,10 @@ BA;7999;acima_5_renda_pct;12.5801;0.8379;6.6604;microdados;publicado
 BA;7999;acima_5_desp_pct;14.1507;0.7968;5.6307;microdados;publicado
 BA;7999;acima_10_renda_pct;2.7093;0.3437;12.6873;microdados;publicado
 BA;7999;acima_10_desp_pct;2.1457;0.2822;13.1508;microdados;publicado
+BA;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;2.7145;0.0733;;microdados;sensibilidade
+BA;7999;sens_renda_familias_energia_acima_da_renda_n;2.0;;;microdados;sensibilidade
+BA;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0348;;;microdados;sensibilidade
+BA;7999;sens_media_razoes_renda_3_maiores_pp;0.0583;;;microdados;sensibilidade
 BA;7999;energia_media;71.21;;;SIDRA 6715;publicado
 BA;7999;despesa_media;3423.63;;;SIDRA 6715;publicado
 BA;7999;razao_medias_pct;2.1;;;SIDRA 6715;publicado
@@ -1445,6 +1701,10 @@ MG;7999;acima_5_renda_pct;14.9381;0.6595;4.4151;microdados;publicado
 MG;7999;acima_5_desp_pct;22.2598;1.0058;4.5186;microdados;publicado
 MG;7999;acima_10_renda_pct;2.4358;0.2691;11.0474;microdados;publicado
 MG;7999;acima_10_desp_pct;3.8756;0.4039;10.4226;microdados;publicado
+MG;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;3.2094;0.0686;;microdados;sensibilidade
+MG;7999;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+MG;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+MG;7999;sens_media_razoes_renda_3_maiores_pp;0.0708;;;microdados;sensibilidade
 MG;7999;energia_media;107.03;;;SIDRA 6715;publicado
 MG;7999;despesa_media;4390.72;;;SIDRA 6715;publicado
 MG;7999;razao_medias_pct;2.4;;;SIDRA 6715;publicado
@@ -1483,6 +1743,10 @@ ES;7999;acima_5_renda_pct;26.8652;1.1095;4.1299;microdados;publicado
 ES;7999;acima_5_desp_pct;36.55;1.3372;3.6585;microdados;publicado
 ES;7999;acima_10_renda_pct;6.9982;0.5756;8.2252;microdados;publicado
 ES;7999;acima_10_desp_pct;9.481;0.6049;6.3802;microdados;publicado
+ES;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;4.2128;0.1145;;microdados;sensibilidade
+ES;7999;sens_renda_familias_energia_acima_da_renda_n;1.0;;;microdados;sensibilidade
+ES;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0347;;;microdados;sensibilidade
+ES;7999;sens_media_razoes_renda_3_maiores_pp;0.2826;;;microdados;sensibilidade
 ES;7999;energia_media;131.53;;;SIDRA 6715;publicado
 ES;7999;despesa_media;4041.14;;;SIDRA 6715;publicado
 ES;7999;razao_medias_pct;3.3;;;SIDRA 6715;publicado
@@ -1521,6 +1785,10 @@ RJ;7999;acima_5_renda_pct;29.5475;1.4765;4.997;microdados;publicado
 RJ;7999;acima_5_desp_pct;38.6591;1.6015;4.1425;microdados;publicado
 RJ;7999;acima_10_renda_pct;9.038;0.9537;10.5526;microdados;publicado
 RJ;7999;acima_10_desp_pct;10.9424;0.98;8.9559;microdados;publicado
+RJ;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;4.5342;0.1627;;microdados;sensibilidade
+RJ;7999;sens_renda_familias_energia_acima_da_renda_n;4.0;;;microdados;sensibilidade
+RJ;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.1095;;;microdados;sensibilidade
+RJ;7999;sens_media_razoes_renda_3_maiores_pp;0.587;;;microdados;sensibilidade
 RJ;7999;energia_media;148.41;;;SIDRA 6715;publicado
 RJ;7999;despesa_media;4611.78;;;SIDRA 6715;publicado
 RJ;7999;razao_medias_pct;3.2;;;SIDRA 6715;publicado
@@ -1559,6 +1827,10 @@ SP;7999;acima_5_renda_pct;14.0136;0.7708;5.5003;microdados;publicado
 SP;7999;acima_5_desp_pct;18.1205;0.9467;5.2243;microdados;publicado
 SP;7999;acima_10_renda_pct;2.7199;0.3394;12.4788;microdados;publicado
 SP;7999;acima_10_desp_pct;2.9396;0.3465;11.7858;microdados;publicado
+SP;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;2.9159;0.0736;;microdados;sensibilidade
+SP;7999;sens_renda_familias_energia_acima_da_renda_n;1.0;;;microdados;sensibilidade
+SP;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0206;;;microdados;sensibilidade
+SP;7999;sens_media_razoes_renda_3_maiores_pp;0.1856;;;microdados;sensibilidade
 SP;7999;energia_media;124.74;;;SIDRA 6715;publicado
 SP;7999;despesa_media;6312.16;;;SIDRA 6715;publicado
 SP;7999;razao_medias_pct;2.0;;;SIDRA 6715;publicado
@@ -1597,6 +1869,10 @@ PR;7999;acima_5_renda_pct;20.3412;1.7171;8.4415;microdados;publicado
 PR;7999;acima_5_desp_pct;28.382;1.7762;6.2581;microdados;publicado
 PR;7999;acima_10_renda_pct;5.4649;1.045;19.1223;microdados;cautela
 PR;7999;acima_10_desp_pct;9.5303;1.5172;15.9202;microdados;cautela
+PR;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;3.9647;0.2705;;microdados;sensibilidade
+PR;7999;sens_renda_familias_energia_acima_da_renda_n;7.0;;;microdados;sensibilidade
+PR;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.361;;;microdados;sensibilidade
+PR;7999;sens_media_razoes_renda_3_maiores_pp;0.5243;;;microdados;sensibilidade
 PR;7999;energia_media;124.23;;;SIDRA 6715;publicado
 PR;7999;despesa_media;5115.09;;;SIDRA 6715;publicado
 PR;7999;razao_medias_pct;2.4;;;SIDRA 6715;publicado
@@ -1635,6 +1911,10 @@ SC;7999;acima_5_renda_pct;18.1106;1.2602;6.9582;microdados;publicado
 SC;7999;acima_5_desp_pct;23.9001;1.2883;5.3905;microdados;publicado
 SC;7999;acima_10_renda_pct;2.7554;0.3546;12.8703;microdados;publicado
 SC;7999;acima_10_desp_pct;3.8882;0.4372;11.2449;microdados;publicado
+SC;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;3.3901;0.1101;;microdados;sensibilidade
+SC;7999;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+SC;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+SC;7999;sens_media_razoes_renda_3_maiores_pp;0.2062;;;microdados;sensibilidade
 SC;7999;energia_media;138.43;;;SIDRA 6715;publicado
 SC;7999;despesa_media;4931.18;;;SIDRA 6715;publicado
 SC;7999;razao_medias_pct;2.8;;;SIDRA 6715;publicado
@@ -1673,6 +1953,10 @@ RS;7999;acima_5_renda_pct;16.5775;0.8738;5.2708;microdados;publicado
 RS;7999;acima_5_desp_pct;22.2487;1.105;4.9665;microdados;publicado
 RS;7999;acima_10_renda_pct;3.3644;0.5188;15.4187;microdados;cautela
 RS;7999;acima_10_desp_pct;3.8994;0.4931;12.6461;microdados;publicado
+RS;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;3.2264;0.084;;microdados;sensibilidade
+RS;7999;sens_renda_familias_energia_acima_da_renda_n;1.0;;;microdados;sensibilidade
+RS;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0394;;;microdados;sensibilidade
+RS;7999;sens_media_razoes_renda_3_maiores_pp;0.1672;;;microdados;sensibilidade
 RS;7999;energia_media;135.56;;;SIDRA 6715;publicado
 RS;7999;despesa_media;5195.32;;;SIDRA 6715;publicado
 RS;7999;razao_medias_pct;2.6;;;SIDRA 6715;publicado
@@ -1711,6 +1995,10 @@ MS;7999;acima_5_renda_pct;13.42;0.9413;7.014;microdados;publicado
 MS;7999;acima_5_desp_pct;17.6195;1.0608;6.0204;microdados;publicado
 MS;7999;acima_10_renda_pct;2.599;0.4424;17.0232;microdados;cautela
 MS;7999;acima_10_desp_pct;2.6153;0.447;17.0915;microdados;cautela
+MS;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;2.8297;0.0937;;microdados;sensibilidade
+MS;7999;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+MS;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+MS;7999;sens_media_razoes_renda_3_maiores_pp;0.0519;;;microdados;sensibilidade
 MS;7999;energia_media;110.88;;;SIDRA 6715;publicado
 MS;7999;despesa_media;4903.67;;;SIDRA 6715;publicado
 MS;7999;razao_medias_pct;2.3;;;SIDRA 6715;publicado
@@ -1749,6 +2037,10 @@ MT;7999;acima_5_renda_pct;27.3008;1.3696;5.0168;microdados;publicado
 MT;7999;acima_5_desp_pct;35.1003;2.0245;5.7678;microdados;publicado
 MT;7999;acima_10_renda_pct;8.0411;0.8782;10.9219;microdados;publicado
 MT;7999;acima_10_desp_pct;11.2908;1.4904;13.2001;microdados;publicado
+MT;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;4.549;0.1919;;microdados;sensibilidade
+MT;7999;sens_renda_familias_energia_acima_da_renda_n;1.0;;;microdados;sensibilidade
+MT;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0657;;;microdados;sensibilidade
+MT;7999;sens_media_razoes_renda_3_maiores_pp;0.197;;;microdados;sensibilidade
 MT;7999;energia_media;162.89;;;SIDRA 6715;publicado
 MT;7999;despesa_media;4739.83;;;SIDRA 6715;publicado
 MT;7999;razao_medias_pct;3.4;;;SIDRA 6715;publicado
@@ -1787,6 +2079,10 @@ GO;7999;acima_5_renda_pct;23.0831;1.7432;7.5521;microdados;publicado
 GO;7999;acima_5_desp_pct;29.0177;1.7764;6.1216;microdados;publicado
 GO;7999;acima_10_renda_pct;5.4767;0.8162;14.9023;microdados;publicado
 GO;7999;acima_10_desp_pct;5.0184;0.6338;12.6289;microdados;publicado
+GO;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;3.9692;0.1756;;microdados;sensibilidade
+GO;7999;sens_renda_familias_energia_acima_da_renda_n;0.0;;;microdados;sensibilidade
+GO;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.0;;;microdados;sensibilidade
+GO;7999;sens_media_razoes_renda_3_maiores_pp;0.1263;;;microdados;sensibilidade
 GO;7999;energia_media;135.85;;;SIDRA 6715;publicado
 GO;7999;despesa_media;4872.92;;;SIDRA 6715;publicado
 GO;7999;razao_medias_pct;2.8;;;SIDRA 6715;publicado
@@ -1825,6 +2121,10 @@ DF;7999;acima_5_renda_pct;11.3942;1.0884;9.5525;microdados;publicado
 DF;7999;acima_5_desp_pct;11.514;1.1052;9.5988;microdados;publicado
 DF;7999;acima_10_renda_pct;2.9953;0.5091;16.9966;microdados;cautela
 DF;7999;acima_10_desp_pct;2.6161;0.4904;18.7473;microdados;cautela
+DF;7999;sens_media_razoes_renda_sem_acima_da_renda_pct;2.6352;0.1982;;microdados;sensibilidade
+DF;7999;sens_renda_familias_energia_acima_da_renda_n;3.0;;;microdados;sensibilidade
+DF;7999;sens_renda_familias_energia_acima_da_renda_peso_pct;0.179;;;microdados;sensibilidade
+DF;7999;sens_media_razoes_renda_3_maiores_pp;0.2363;;;microdados;sensibilidade
 DF;7999;energia_media;130.03;;;SIDRA 6715;publicado
 DF;7999;despesa_media;9874.73;;;SIDRA 6715;publicado
 DF;7999;razao_medias_pct;1.3;;;SIDRA 6715;publicado

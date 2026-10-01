@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "rede_detalhe.json",
- "gerado_em": "2026-10-01T00:07:08Z",
+ "gerado_em": "2026-10-01T00:09:14Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "3e7ff0a36fba+alterado",
+ "versao_codigo": "6d3bc3a2f759+alterado",
  "disponivel": true,
  "referencia": {
   "dia": "2026-09-29",
@@ -15669,7 +15669,10 @@
      "conferencias": {
       "acumulado_anual_confere": 40,
       "acumulado_anual_meses": 40,
-      "meses_denominador_diferente_do_calendario": [],
+      "meses_denominador_diferente_do_calendario": [
+       "2017-10",
+       "2018-11"
+      ],
       "meses_atls_1_com_horas": []
      }
     },
@@ -15832,7 +15835,14 @@
      "conferencias": {
       "acumulado_anual_confere": 77,
       "acumulado_anual_meses": 77,
-      "meses_denominador_diferente_do_calendario": [],
+      "meses_denominador_diferente_do_calendario": [
+       "2021-02",
+       "2021-11",
+       "2022-02",
+       "2022-11",
+       "2023-02",
+       "2024-02"
+      ],
       "meses_atls_1_com_horas": []
      }
     },
@@ -15859,7 +15869,10 @@
      "conferencias": {
       "acumulado_anual_confere": 15,
       "acumulado_anual_meses": 15,
-      "meses_denominador_diferente_do_calendario": [],
+      "meses_denominador_diferente_do_calendario": [
+       "2019-02",
+       "2020-02"
+      ],
       "meses_atls_1_com_horas": []
      }
     },
@@ -16197,7 +16210,12 @@
      "conferencias": {
       "acumulado_anual_confere": 67,
       "acumulado_anual_meses": 67,
-      "meses_denominador_diferente_do_calendario": [],
+      "meses_denominador_diferente_do_calendario": [
+       "2022-02",
+       "2023-02",
+       "2023-11",
+       "2024-02"
+      ],
       "meses_atls_1_com_horas": []
      }
     },
@@ -16360,7 +16378,19 @@
      "conferencias": {
       "acumulado_anual_confere": 115,
       "acumulado_anual_meses": 115,
-      "meses_denominador_diferente_do_calendario": [],
+      "meses_denominador_diferente_do_calendario": [
+       "2017-02",
+       "2018-02",
+       "2018-11",
+       "2019-11",
+       "2020-02",
+       "2020-10",
+       "2020-11",
+       "2021-02",
+       "2021-11",
+       "2022-02",
+       "2023-02"
+      ],
       "meses_atls_1_com_horas": []
      }
     },
@@ -16523,7 +16553,12 @@
      "conferencias": {
       "acumulado_anual_confere": 67,
       "acumulado_anual_meses": 67,
-      "meses_denominador_diferente_do_calendario": [],
+      "meses_denominador_diferente_do_calendario": [
+       "2021-11",
+       "2022-02",
+       "2022-11",
+       "2023-02"
+      ],
       "meses_atls_1_com_horas": []
      }
     },
@@ -16707,7 +16742,11 @@
      "conferencias": {
       "acumulado_anual_confere": 86,
       "acumulado_anual_meses": 86,
-      "meses_denominador_diferente_do_calendario": [],
+      "meses_denominador_diferente_do_calendario": [
+       "2020-02",
+       "2022-11",
+       "2023-02"
+      ],
       "meses_atls_1_com_horas": []
      }
     },
@@ -16754,7 +16793,11 @@
      "conferencias": {
       "acumulado_anual_confere": 57,
       "acumulado_anual_meses": 57,
-      "meses_denominador_diferente_do_calendario": [],
+      "meses_denominador_diferente_do_calendario": [
+       "2018-02",
+       "2018-11",
+       "2020-02"
+      ],
       "meses_atls_1_com_horas": []
      }
     },
@@ -16917,7 +16960,19 @@
      "conferencias": {
       "acumulado_anual_confere": 115,
       "acumulado_anual_meses": 115,
-      "meses_denominador_diferente_do_calendario": [],
+      "meses_denominador_diferente_do_calendario": [
+       "2017-02",
+       "2017-10",
+       "2018-02",
+       "2018-11",
+       "2019-11",
+       "2020-10",
+       "2021-02",
+       "2021-11",
+       "2022-11",
+       "2023-11",
+       "2024-02"
+      ],
       "meses_atls_1_com_horas": []
      }
     },
@@ -17091,7 +17146,11 @@
      "conferencias": {
       "acumulado_anual_confere": 65,
       "acumulado_anual_meses": 65,
-      "meses_denominador_diferente_do_calendario": [],
+      "meses_denominador_diferente_do_calendario": [
+       "2022-11",
+       "2023-02",
+       "2024-02"
+      ],
       "meses_atls_1_com_horas": []
      }
     }
@@ -21500,7 +21559,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:04:30Z",
    "capturado_em": "2026-10-01T00:03:37Z",
-   "validado_em": "2026-10-01T00:07:10Z",
+   "validado_em": "2026-10-01T00:09:16Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-29"
@@ -21516,9 +21575,9 @@
     "sha256": "51fbc1898fd83f1d92731b28c6453e06b61c9de873716400e275d616f162e4fc"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "3e7ff0a36fba+alterado",
+   "versao_codigo": "6d3bc3a2f759+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:07:09Z",
+    "detectado_em": "2026-10-01T00:09:15Z",
     "total": 0,
     "vintages_comparadas": 6,
     "arquivos": 6,
@@ -21554,7 +21613,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:04:30Z",
    "capturado_em": "2026-10-01T00:03:37Z",
-   "validado_em": "2026-10-01T00:07:10Z",
+   "validado_em": "2026-10-01T00:09:16Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-29"
@@ -21570,9 +21629,9 @@
     "sha256": "51fbc1898fd83f1d92731b28c6453e06b61c9de873716400e275d616f162e4fc"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "3e7ff0a36fba+alterado",
+   "versao_codigo": "6d3bc3a2f759+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:07:09Z",
+    "detectado_em": "2026-10-01T00:09:15Z",
     "total": 0,
     "vintages_comparadas": 6,
     "arquivos": 6,
@@ -21607,7 +21666,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:14Z",
-   "validado_em": "2026-10-01T00:07:10Z",
+   "validado_em": "2026-10-01T00:09:16Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-30"
@@ -21622,9 +21681,9 @@
     "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "3e7ff0a36fba+alterado",
+   "versao_codigo": "6d3bc3a2f759+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:07:10Z",
+    "detectado_em": "2026-10-01T00:09:16Z",
     "total": 0,
     "vintages_comparadas": 8,
     "arquivos": 6,
@@ -21659,7 +21718,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:00:43Z",
    "capturado_em": "2026-10-01T00:03:47Z",
-   "validado_em": "2026-10-01T00:07:10Z",
+   "validado_em": "2026-10-01T00:09:16Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-29"
@@ -21675,9 +21734,9 @@
     "sha256": "c29d7c2abb99fb25c4d30a62eb89f8d35b0d5372ad40d0d4c60f57cf494f111e"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "3e7ff0a36fba+alterado",
+   "versao_codigo": "6d3bc3a2f759+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:07:10Z",
+    "detectado_em": "2026-10-01T00:09:16Z",
     "total": 0,
     "vintages_comparadas": 6,
     "arquivos": 6,
@@ -21713,7 +21772,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:04:20Z",
    "capturado_em": "2026-10-01T00:03:41Z",
-   "validado_em": "2026-10-01T00:07:10Z",
+   "validado_em": "2026-10-01T00:09:16Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-29"
@@ -21728,9 +21787,9 @@
     "sha256": "a31925a4403a7c9469ea377f4d1509662c53846e0ade03487517541df0383193"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "3e7ff0a36fba+alterado",
+   "versao_codigo": "6d3bc3a2f759+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:07:09Z",
+    "detectado_em": "2026-10-01T00:09:15Z",
     "total": 0,
     "vintages_comparadas": 6,
     "arquivos": 6,
@@ -21765,7 +21824,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:02:53Z",
    "capturado_em": "2026-10-01T00:03:49Z",
-   "validado_em": "2026-10-01T00:07:10Z",
+   "validado_em": "2026-10-01T00:09:16Z",
    "cobertura_historica": {
     "inicio": "2017-01",
     "fim": "2026-07"
@@ -21781,9 +21840,9 @@
     "sha256": "9b4b9fffcc4f879c362a0112adfa483393c4ed84e4b355d4c769d1da98d0c072"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "3e7ff0a36fba+alterado",
+   "versao_codigo": "6d3bc3a2f759+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:07:10Z",
+    "detectado_em": "2026-10-01T00:09:16Z",
     "total": 0,
     "vintages_comparadas": 1,
     "arquivos": 1,
@@ -21818,7 +21877,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:04:38Z",
    "capturado_em": "2026-10-01T00:03:50Z",
-   "validado_em": "2026-10-01T00:07:10Z",
+   "validado_em": "2026-10-01T00:09:16Z",
    "cobertura_historica": {
     "inicio": "2007-01-01",
     "fim": "2026-09-29"
@@ -21834,9 +21893,9 @@
     "sha256": "b8cfbacc4befd56079e63464996e9fdf282ade70c78a7f3a47e483348eecc9ce"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "3e7ff0a36fba+alterado",
+   "versao_codigo": "6d3bc3a2f759+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:07:10Z",
+    "detectado_em": "2026-10-01T00:09:16Z",
     "total": 0,
     "vintages_comparadas": 1,
     "arquivos": 1,
@@ -21871,7 +21930,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:04:30Z",
    "capturado_em": "2026-10-01T00:03:37Z",
-   "validado_em": "2026-10-01T00:07:10Z",
+   "validado_em": "2026-10-01T00:09:17Z",
    "cobertura_historica": {
     "inicio": "2026-01-01",
     "fim": "2026-09-29"
@@ -21887,9 +21946,9 @@
     "sha256": "51fbc1898fd83f1d92731b28c6453e06b61c9de873716400e275d616f162e4fc"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "3e7ff0a36fba+alterado",
+   "versao_codigo": "6d3bc3a2f759+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:07:09Z",
+    "detectado_em": "2026-10-01T00:09:15Z",
     "total": 0,
     "vintages_comparadas": 6,
     "arquivos": 6,
@@ -21946,8 +22005,8 @@
    "tratamento_ausencia": "Hora sem valor fica fora das somas; nenhuma hora é preenchida.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:07:11Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:09:17Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -21978,7 +22037,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py rede --sem-coleta; some as colunas fluxo_N_NE positivas e negativas de rede_horario_2026.csv nos 30 dias",
-   "citacao": "SCRUTINIUMS. Energia no sentido contrário ao saldo em 30 dias: 0 MWh, Fronteira Norte → Nordeste, 31/08/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbios Entre Subsistemas (recurso INTERCAMBIO_NACIONAL_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
+   "citacao": "SCRUTINIUMS. Energia no sentido contrário ao saldo em 30 dias: 0 MWh, Fronteira Norte → Nordeste, 31/08/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbios Entre Subsistemas (recurso INTERCAMBIO_NACIONAL_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
   },
   "contra_saldo_30d.N_SE": {
    "indicador": "Energia no sentido contrário ao saldo em 30 dias",
@@ -22018,8 +22077,8 @@
    "tratamento_ausencia": "Hora sem valor fica fora das somas; nenhuma hora é preenchida.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:07:11Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:09:17Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -22050,7 +22109,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py rede --sem-coleta; some as colunas fluxo_N_SE positivas e negativas de rede_horario_2026.csv nos 30 dias",
-   "citacao": "SCRUTINIUMS. Energia no sentido contrário ao saldo em 30 dias: 143.979 MWh, Fronteira Norte → Sudeste/Centro-Oeste, 31/08/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbios Entre Subsistemas (recurso INTERCAMBIO_NACIONAL_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
+   "citacao": "SCRUTINIUMS. Energia no sentido contrário ao saldo em 30 dias: 143.979 MWh, Fronteira Norte → Sudeste/Centro-Oeste, 31/08/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbios Entre Subsistemas (recurso INTERCAMBIO_NACIONAL_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
   },
   "contra_saldo_30d.NE_SE": {
    "indicador": "Energia no sentido contrário ao saldo em 30 dias",
@@ -22090,8 +22149,8 @@
    "tratamento_ausencia": "Hora sem valor fica fora das somas; nenhuma hora é preenchida.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:07:12Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:09:18Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -22122,7 +22181,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py rede --sem-coleta; some as colunas fluxo_NE_SE positivas e negativas de rede_horario_2026.csv nos 30 dias",
-   "citacao": "SCRUTINIUMS. Energia no sentido contrário ao saldo em 30 dias: 0 MWh, Fronteira Nordeste → Sudeste/Centro-Oeste, 31/08/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbios Entre Subsistemas (recurso INTERCAMBIO_NACIONAL_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
+   "citacao": "SCRUTINIUMS. Energia no sentido contrário ao saldo em 30 dias: 0 MWh, Fronteira Nordeste → Sudeste/Centro-Oeste, 31/08/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbios Entre Subsistemas (recurso INTERCAMBIO_NACIONAL_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
   },
   "contra_saldo_30d.S_SE": {
    "indicador": "Energia no sentido contrário ao saldo em 30 dias",
@@ -22162,8 +22221,8 @@
    "tratamento_ausencia": "Hora sem valor fica fora das somas; nenhuma hora é preenchida.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:07:12Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:09:18Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -22194,7 +22253,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py rede --sem-coleta; some as colunas fluxo_S_SE positivas e negativas de rede_horario_2026.csv nos 30 dias",
-   "citacao": "SCRUTINIUMS. Energia no sentido contrário ao saldo em 30 dias: 233.099 MWh, Fronteira Sul → Sudeste/Centro-Oeste, 31/08/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbios Entre Subsistemas (recurso INTERCAMBIO_NACIONAL_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
+   "citacao": "SCRUTINIUMS. Energia no sentido contrário ao saldo em 30 dias: 233.099 MWh, Fronteira Sul → Sudeste/Centro-Oeste, 31/08/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbios Entre Subsistemas (recurso INTERCAMBIO_NACIONAL_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
   },
   "a05_perimetro_sul": {
    "indicador": "Horas em que o intercâmbio do Sul no balanço não inclui o exterior",
@@ -22281,8 +22340,8 @@
    "tratamento_ausencia": "Hora com parcela ausente fica fora da conta.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:07:14Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:09:19Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -22313,7 +22372,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py rede --sem-coleta; filtrar rede_balanco_residuos.csv por identidade=perimetro e sm=S",
-   "citacao": "SCRUTINIUMS. Horas em que o intercâmbio do Sul no balanço não inclui o exterior: 213 horas, Subsistema Sul, 01/01/2021 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Balanço de Energia nos Subsistemas (recurso BALANCO_ENERGIA_SUBSISTEMA_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
+   "citacao": "SCRUTINIUMS. Horas em que o intercâmbio do Sul no balanço não inclui o exterior: 213 horas, Subsistema Sul, 01/01/2021 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Balanço de Energia nos Subsistemas (recurso BALANCO_ENERGIA_SUBSISTEMA_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
   },
   "a05_balanco_sin": {
    "indicador": "Horas em que geração menos carga difere do intercâmbio no balanço do SIN",
@@ -22399,8 +22458,8 @@
    "tratamento_ausencia": "Hora com parcela ausente fica fora da conta (não vira zero).",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:07:15Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:09:20Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -22427,7 +22486,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py rede --sem-coleta; filtrar rede_balanco_residuos.csv por identidade=balanco e sm=SIN",
-   "citacao": "SCRUTINIUMS. Horas em que geração menos carga difere do intercâmbio no balanço do SIN: 2.472 horas, Sistema Interligado Nacional, 01/01/2021 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Balanço de Energia nos Subsistemas (recurso BALANCO_ENERGIA_SUBSISTEMA_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
+   "citacao": "SCRUTINIUMS. Horas em que geração menos carga difere do intercâmbio no balanço do SIN: 2.472 horas, Sistema Interligado Nacional, 01/01/2021 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Balanço de Energia nos Subsistemas (recurso BALANCO_ENERGIA_SUBSISTEMA_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
   },
   "exterior_12m": {
    "indicador": "Saldo do intercâmbio internacional em 12 meses (positivo = exportação)",
@@ -22513,8 +22572,8 @@
    "tratamento_ausencia": "Hora ausente no arquivo do ONS fica fora da soma.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:07:15Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:09:21Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -22536,7 +22595,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py rede --sem-coleta; somar liquido_mwh dos países em rede_exterior_mensal.csv nos 12 meses",
-   "citacao": "SCRUTINIUMS. Saldo do intercâmbio internacional em 12 meses (positivo = exportação): 2.754.057 MWh, Brasil (SIN) com Argentina, Uruguai e Paraguai, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbio do SIN com Outros Países (recurso INTERCAMBIO_INTERNACIONAL_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
+   "citacao": "SCRUTINIUMS. Saldo do intercâmbio internacional em 12 meses (positivo = exportação): 2.754.057 MWh, Brasil (SIN) com Argentina, Uruguai e Paraguai, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbio do SIN com Outros Países (recurso INTERCAMBIO_INTERNACIONAL_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
   },
   "atls_12m.FBTA": {
    "indicador": "Horas acima do limite sistêmico em 12 meses (ATLS)",
@@ -22576,8 +22635,8 @@
    "tratamento_ausencia": "Mês não publicado fica fora da soma.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:07:15Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:09:21Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -22588,8 +22647,8 @@
     },
     {
      "nome": "ATLS publicado = 1 − horas ÷ horas do mês",
-     "resultado": "aprovado",
-     "detalhe": "0 mês(es) com período de observação diferente do calendário em mais de 1,5 h"
+     "resultado": "ressalva",
+     "detalhe": "6 mês(es) com período de observação implícito diferente das horas do calendário em mais de 0,5 h: 2021-02, 2021-11, 2022-02, 2022-11, 2023-02, 2024-02"
     }
    ],
    "reconciliacao": {
@@ -22604,7 +22663,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py rede --sem-coleta; somar horas_violacao de rede_atls.csv",
-   "citacao": "SCRUTINIUMS. Horas acima do limite sistêmico em 12 meses (ATLS): 22,0 horas, Fluxo FBTA, 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Indicadores de confiabilidade da rede básica: ATLS (atendimento aos limites sistêmicos) (recurso IND_CONFIARB_ATLS, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
+   "citacao": "SCRUTINIUMS. Horas acima do limite sistêmico em 12 meses (ATLS): 22,0 horas, Fluxo FBTA, 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Indicadores de confiabilidade da rede básica: ATLS (atendimento aos limites sistêmicos) (recurso IND_CONFIARB_ATLS, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
   },
   "atls_12m.FJUSC": {
    "indicador": "Horas acima do limite sistêmico em 12 meses (ATLS)",
@@ -22644,8 +22703,8 @@
    "tratamento_ausencia": "Mês não publicado fica fora da soma.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:07:15Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:09:21Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -22657,7 +22716,7 @@
     {
      "nome": "ATLS publicado = 1 − horas ÷ horas do mês",
      "resultado": "aprovado",
-     "detalhe": "0 mês(es) com período de observação diferente do calendário em mais de 1,5 h"
+     "detalhe": "0 mês(es) com período de observação implícito diferente das horas do calendário em mais de 0,5 h"
     }
    ],
    "reconciliacao": {
@@ -22672,7 +22731,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py rede --sem-coleta; somar horas_violacao de rede_atls.csv",
-   "citacao": "SCRUTINIUMS. Horas acima do limite sistêmico em 12 meses (ATLS): 0,9 horas, Fluxo FJUSC, 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Indicadores de confiabilidade da rede básica: ATLS (atendimento aos limites sistêmicos) (recurso IND_CONFIARB_ATLS, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
+   "citacao": "SCRUTINIUMS. Horas acima do limite sistêmico em 12 meses (ATLS): 0,9 horas, Fluxo FJUSC, 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Indicadores de confiabilidade da rede básica: ATLS (atendimento aos limites sistêmicos) (recurso IND_CONFIARB_ATLS, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
   },
   "atls_12m.FNEN": {
    "indicador": "Horas acima do limite sistêmico em 12 meses (ATLS)",
@@ -22712,8 +22771,8 @@
    "tratamento_ausencia": "Mês não publicado fica fora da soma.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:07:15Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:09:21Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -22725,7 +22784,7 @@
     {
      "nome": "ATLS publicado = 1 − horas ÷ horas do mês",
      "resultado": "aprovado",
-     "detalhe": "0 mês(es) com período de observação diferente do calendário em mais de 1,5 h"
+     "detalhe": "0 mês(es) com período de observação implícito diferente das horas do calendário em mais de 0,5 h"
     }
    ],
    "reconciliacao": {
@@ -22740,7 +22799,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py rede --sem-coleta; somar horas_violacao de rede_atls.csv",
-   "citacao": "SCRUTINIUMS. Horas acima do limite sistêmico em 12 meses (ATLS): 0,0 horas, Fluxo FNEN (Fluxo da Interligação Nordeste-Norte), 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Indicadores de confiabilidade da rede básica: ATLS (atendimento aos limites sistêmicos) (recurso IND_CONFIARB_ATLS, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
+   "citacao": "SCRUTINIUMS. Horas acima do limite sistêmico em 12 meses (ATLS): 0,0 horas, Fluxo FNEN (Fluxo da Interligação Nordeste-Norte), 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Indicadores de confiabilidade da rede básica: ATLS (atendimento aos limites sistêmicos) (recurso IND_CONFIARB_ATLS, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
   },
   "atls_12m.FNESE": {
    "indicador": "Horas acima do limite sistêmico em 12 meses (ATLS)",
@@ -22780,8 +22839,8 @@
    "tratamento_ausencia": "Mês não publicado fica fora da soma.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:07:15Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:09:21Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -22792,8 +22851,8 @@
     },
     {
      "nome": "ATLS publicado = 1 − horas ÷ horas do mês",
-     "resultado": "aprovado",
-     "detalhe": "0 mês(es) com período de observação diferente do calendário em mais de 1,5 h"
+     "resultado": "ressalva",
+     "detalhe": "4 mês(es) com período de observação implícito diferente das horas do calendário em mais de 0,5 h: 2022-02, 2023-02, 2023-11, 2024-02"
     }
    ],
    "reconciliacao": {
@@ -22808,7 +22867,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py rede --sem-coleta; somar horas_violacao de rede_atls.csv",
-   "citacao": "SCRUTINIUMS. Horas acima do limite sistêmico em 12 meses (ATLS): 10,2 horas, Fluxo FNESE (Fluxo da Interligação Nordeste-Sudeste/Centro-Oeste), 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Indicadores de confiabilidade da rede básica: ATLS (atendimento aos limites sistêmicos) (recurso IND_CONFIARB_ATLS, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
+   "citacao": "SCRUTINIUMS. Horas acima do limite sistêmico em 12 meses (ATLS): 10,2 horas, Fluxo FNESE (Fluxo da Interligação Nordeste-Sudeste/Centro-Oeste), 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Indicadores de confiabilidade da rede básica: ATLS (atendimento aos limites sistêmicos) (recurso IND_CONFIARB_ATLS, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
   },
   "atls_12m.FNS": {
    "indicador": "Horas acima do limite sistêmico em 12 meses (ATLS)",
@@ -22848,8 +22907,8 @@
    "tratamento_ausencia": "Mês não publicado fica fora da soma.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:07:15Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:09:21Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -22860,8 +22919,8 @@
     },
     {
      "nome": "ATLS publicado = 1 − horas ÷ horas do mês",
-     "resultado": "aprovado",
-     "detalhe": "0 mês(es) com período de observação diferente do calendário em mais de 1,5 h"
+     "resultado": "ressalva",
+     "detalhe": "11 mês(es) com período de observação implícito diferente das horas do calendário em mais de 0,5 h: 2017-02, 2018-02, 2018-11, 2019-11, 2020-02, 2020-10"
     }
    ],
    "reconciliacao": {
@@ -22876,7 +22935,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py rede --sem-coleta; somar horas_violacao de rede_atls.csv",
-   "citacao": "SCRUTINIUMS. Horas acima do limite sistêmico em 12 meses (ATLS): 2,3 horas, Fluxo FNS (Fluxo sentido Norte-Sul), 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Indicadores de confiabilidade da rede básica: ATLS (atendimento aos limites sistêmicos) (recurso IND_CONFIARB_ATLS, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
+   "citacao": "SCRUTINIUMS. Horas acima do limite sistêmico em 12 meses (ATLS): 2,3 horas, Fluxo FNS (Fluxo sentido Norte-Sul), 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Indicadores de confiabilidade da rede básica: ATLS (atendimento aos limites sistêmicos) (recurso IND_CONFIARB_ATLS, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
   },
   "atls_12m.FNS+NESE": {
    "indicador": "Horas acima do limite sistêmico em 12 meses (ATLS)",
@@ -22916,8 +22975,8 @@
    "tratamento_ausencia": "Mês não publicado fica fora da soma.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:07:15Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:09:21Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -22928,8 +22987,8 @@
     },
     {
      "nome": "ATLS publicado = 1 − horas ÷ horas do mês",
-     "resultado": "aprovado",
-     "detalhe": "0 mês(es) com período de observação diferente do calendário em mais de 1,5 h"
+     "resultado": "ressalva",
+     "detalhe": "4 mês(es) com período de observação implícito diferente das horas do calendário em mais de 0,5 h: 2021-11, 2022-02, 2022-11, 2023-02"
     }
    ],
    "reconciliacao": {
@@ -22944,7 +23003,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py rede --sem-coleta; somar horas_violacao de rede_atls.csv",
-   "citacao": "SCRUTINIUMS. Horas acima do limite sistêmico em 12 meses (ATLS): 8,9 horas, Fluxo FNS+NESE, 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Indicadores de confiabilidade da rede básica: ATLS (atendimento aos limites sistêmicos) (recurso IND_CONFIARB_ATLS, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
+   "citacao": "SCRUTINIUMS. Horas acima do limite sistêmico em 12 meses (ATLS): 8,9 horas, Fluxo FNS+NESE, 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Indicadores de confiabilidade da rede básica: ATLS (atendimento aos limites sistêmicos) (recurso IND_CONFIARB_ATLS, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
   },
   "atls_12m.RSE": {
    "indicador": "Horas acima do limite sistêmico em 12 meses (ATLS)",
@@ -22984,8 +23043,8 @@
    "tratamento_ausencia": "Mês não publicado fica fora da soma.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:07:15Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:09:21Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -22996,8 +23055,8 @@
     },
     {
      "nome": "ATLS publicado = 1 − horas ÷ horas do mês",
-     "resultado": "aprovado",
-     "detalhe": "0 mês(es) com período de observação diferente do calendário em mais de 1,5 h"
+     "resultado": "ressalva",
+     "detalhe": "11 mês(es) com período de observação implícito diferente das horas do calendário em mais de 0,5 h: 2017-02, 2017-10, 2018-02, 2018-11, 2019-11, 2020-10"
     }
    ],
    "reconciliacao": {
@@ -23012,7 +23071,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py rede --sem-coleta; somar horas_violacao de rede_atls.csv",
-   "citacao": "SCRUTINIUMS. Horas acima do limite sistêmico em 12 meses (ATLS): 6,4 horas, Fluxo RSE (Recebimento pelo Sudeste), 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Indicadores de confiabilidade da rede básica: ATLS (atendimento aos limites sistêmicos) (recurso IND_CONFIARB_ATLS, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
+   "citacao": "SCRUTINIUMS. Horas acima do limite sistêmico em 12 meses (ATLS): 6,4 horas, Fluxo RSE (Recebimento pelo Sudeste), 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Indicadores de confiabilidade da rede básica: ATLS (atendimento aos limites sistêmicos) (recurso IND_CONFIARB_ATLS, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
   },
   "atls_12m.RSUL": {
    "indicador": "Horas acima do limite sistêmico em 12 meses (ATLS)",
@@ -23052,8 +23111,8 @@
    "tratamento_ausencia": "Mês não publicado fica fora da soma.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:07:15Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:09:21Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -23064,8 +23123,8 @@
     },
     {
      "nome": "ATLS publicado = 1 − horas ÷ horas do mês",
-     "resultado": "aprovado",
-     "detalhe": "0 mês(es) com período de observação diferente do calendário em mais de 1,5 h"
+     "resultado": "ressalva",
+     "detalhe": "3 mês(es) com período de observação implícito diferente das horas do calendário em mais de 0,5 h: 2022-11, 2023-02, 2024-02"
     }
    ],
    "reconciliacao": {
@@ -23080,7 +23139,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py rede --sem-coleta; somar horas_violacao de rede_atls.csv",
-   "citacao": "SCRUTINIUMS. Horas acima do limite sistêmico em 12 meses (ATLS): 31,5 horas, Fluxo RSUL (Recebimento pela Região Sul), 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Indicadores de confiabilidade da rede básica: ATLS (atendimento aos limites sistêmicos) (recurso IND_CONFIARB_ATLS, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
+   "citacao": "SCRUTINIUMS. Horas acima do limite sistêmico em 12 meses (ATLS): 31,5 horas, Fluxo RSUL (Recebimento pela Região Sul), 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Indicadores de confiabilidade da rede básica: ATLS (atendimento aos limites sistêmicos) (recurso IND_CONFIARB_ATLS, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
   },
   "ens_12m": {
    "indicador": "Energia não suprida em interrupções de carga, 12 meses",
@@ -23172,8 +23231,8 @@
    "tratamento_ausencia": "Registro sem energia informada fica fora da soma.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:07:15Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:09:21Z"
    },
    "revisoes": "Detecção de revisões não disponível para este número.",
    "testes": [
@@ -23195,7 +23254,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py rede --sem-coleta; somar energia_nao_suprida_mwh de rede_interrupcoes_carga.csv no período",
-   "citacao": "SCRUTINIUMS. Energia não suprida em interrupções de carga, 12 meses: 30.734,6 MWh, Sistema Interligado Nacional, 30/09/2025 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Interrupção de Carga (recurso INTERRUPCAO_CARGA, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
+   "citacao": "SCRUTINIUMS. Energia não suprida em interrupções de carga, 12 meses: 30.734,6 MWh, Sistema Interligado Nacional, 30/09/2025 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Interrupção de Carga (recurso INTERRUPCAO_CARGA, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
   },
   "desvio_medio.N_NE": {
    "indicador": "Desvio absoluto médio entre verificado e programado",
@@ -23242,8 +23301,8 @@
    "tratamento_ausencia": "Hora sem programado ou sem verificado fica fora.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:07:16Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:09:21Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -23266,7 +23325,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py rede --sem-coleta; média de |desvio_mwmed| em rede_programado_horario.csv para o par",
-   "citacao": "SCRUTINIUMS. Desvio absoluto médio entre verificado e programado: 914 MWmed, Fronteira Norte → Nordeste, 01/01/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbios Entre Subsistemas (recurso INTERCAMBIO_NACIONAL_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
+   "citacao": "SCRUTINIUMS. Desvio absoluto médio entre verificado e programado: 914 MWmed, Fronteira Norte → Nordeste, 01/01/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbios Entre Subsistemas (recurso INTERCAMBIO_NACIONAL_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
   },
   "desvio_medio.N_SE": {
    "indicador": "Desvio absoluto médio entre verificado e programado",
@@ -23313,8 +23372,8 @@
    "tratamento_ausencia": "Hora sem programado ou sem verificado fica fora.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:07:16Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:09:21Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -23337,7 +23396,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py rede --sem-coleta; média de |desvio_mwmed| em rede_programado_horario.csv para o par",
-   "citacao": "SCRUTINIUMS. Desvio absoluto médio entre verificado e programado: 867 MWmed, Fronteira Norte → Sudeste/Centro-Oeste, 01/01/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbios Entre Subsistemas (recurso INTERCAMBIO_NACIONAL_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
+   "citacao": "SCRUTINIUMS. Desvio absoluto médio entre verificado e programado: 867 MWmed, Fronteira Norte → Sudeste/Centro-Oeste, 01/01/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbios Entre Subsistemas (recurso INTERCAMBIO_NACIONAL_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
   },
   "desvio_medio.NE_SE": {
    "indicador": "Desvio absoluto médio entre verificado e programado",
@@ -23384,8 +23443,8 @@
    "tratamento_ausencia": "Hora sem programado ou sem verificado fica fora.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:07:16Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:09:21Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -23408,7 +23467,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py rede --sem-coleta; média de |desvio_mwmed| em rede_programado_horario.csv para o par",
-   "citacao": "SCRUTINIUMS. Desvio absoluto médio entre verificado e programado: 839 MWmed, Fronteira Nordeste → Sudeste/Centro-Oeste, 01/01/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbios Entre Subsistemas (recurso INTERCAMBIO_NACIONAL_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
+   "citacao": "SCRUTINIUMS. Desvio absoluto médio entre verificado e programado: 839 MWmed, Fronteira Nordeste → Sudeste/Centro-Oeste, 01/01/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbios Entre Subsistemas (recurso INTERCAMBIO_NACIONAL_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
   },
   "desvio_medio.S_SE": {
    "indicador": "Desvio absoluto médio entre verificado e programado",
@@ -23455,8 +23514,8 @@
    "tratamento_ausencia": "Hora sem programado ou sem verificado fica fora.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:07:16Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:09:21Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -23479,7 +23538,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py rede --sem-coleta; média de |desvio_mwmed| em rede_programado_horario.csv para o par",
-   "citacao": "SCRUTINIUMS. Desvio absoluto médio entre verificado e programado: 853 MWmed, Fronteira Sul → Sudeste/Centro-Oeste, 01/01/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbios Entre Subsistemas (recurso INTERCAMBIO_NACIONAL_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
+   "citacao": "SCRUTINIUMS. Desvio absoluto médio entre verificado e programado: 853 MWmed, Fronteira Sul → Sudeste/Centro-Oeste, 01/01/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbios Entre Subsistemas (recurso INTERCAMBIO_NACIONAL_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
   },
   "desvio_medio.ARGENTINA": {
    "indicador": "Desvio absoluto médio entre verificado e programado",
@@ -23526,8 +23585,8 @@
    "tratamento_ausencia": "Hora sem programado ou sem verificado fica fora.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:07:17Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:09:22Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -23554,7 +23613,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py rede --sem-coleta; média de |desvio_mwmed| em rede_programado_horario.csv para o par",
-   "citacao": "SCRUTINIUMS. Desvio absoluto médio entre verificado e programado: 40 MWmed, Argentina, 01/01/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbio do SIN com Outros Países (recurso INTERCAMBIO_INTERNACIONAL_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
+   "citacao": "SCRUTINIUMS. Desvio absoluto médio entre verificado e programado: 40 MWmed, Argentina, 01/01/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbio do SIN com Outros Países (recurso INTERCAMBIO_INTERNACIONAL_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
   },
   "desvio_medio.URUGUAI": {
    "indicador": "Desvio absoluto médio entre verificado e programado",
@@ -23601,8 +23660,8 @@
    "tratamento_ausencia": "Hora sem programado ou sem verificado fica fora.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "3e7ff0a36fba+alterado",
-    "publicacao": "2026-10-01T00:07:17Z"
+    "codigo": "6d3bc3a2f759+alterado",
+    "publicacao": "2026-10-01T00:09:22Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -23629,7 +23688,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py rede --sem-coleta; média de |desvio_mwmed| em rede_programado_horario.csv para o par",
-   "citacao": "SCRUTINIUMS. Desvio absoluto médio entre verificado e programado: 3 MWmed, Uruguai, 01/01/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbio do SIN com Outros Países (recurso INTERCAMBIO_INTERNACIONAL_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
+   "citacao": "SCRUTINIUMS. Desvio absoluto médio entre verificado e programado: 3 MWmed, Uruguai, 01/01/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbio do SIN com Outros Países (recurso INTERCAMBIO_INTERNACIONAL_2026, capturado em 30/09/2026). Versão energia-0.1.0, código 6d3bc3a2f759+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico/rede."
   }
  }
 }

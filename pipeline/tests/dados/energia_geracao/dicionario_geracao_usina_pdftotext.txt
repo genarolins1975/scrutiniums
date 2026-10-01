@@ -1,0 +1,58 @@
+                                                                                                                    Data: 09-06-2023 - Página 1
+
+GERAÇÃO POR USINA EM BASE HORÁRIA
+
+
+Descrição do Dado: Geração verificada de usinas, conjuntos de usinas e grupos de pequenas usinas em base horária. Os Conjuntos são formados
+por usinas classificadas na modalidade Tipo II-C, conforme Submódulo 7.2 dos Procedimentos de Rede e são estabelecidos em Ajustamentos
+Operativos, disponíveis no MPO. Os grupos de pequenas usinas são formados por usinas Tipo III, que não possuem relacionamento com o ONS, e
+os dados são referentes a previsões de geração.
+
+
+ Descrição                             Código                   Tipo de Dado   Formato         Permite       Permite         Permite
+                                                                                               valor         valor           valor
+                                                                                               nulo          zerado          negativo
+
+ Data de referência                    din_instante             DATETIME       YYYY-MM-DD      Não           ----            ----
+                                                                               HH:MM:SS
+
+ Subsistema da Usina                   id_subsistema            TEXTO          3 POSIÇÕES      Não           ----            ----
+
+ Nome do Subsistema                    nom_subsistema           TEXTO          20 POSIÇÕES     Não           ----            ----
+
+ Estado onde está localizado a Usina   id_estado                TEXTO          2 POSIÇÕES      Não           ----            ----
+
+ Nome do Estado                        nom_estado               TEXTO          30 POSIÇÕES     Não           ----            ----
+
+ Modalidade de Operação da Usina       cod_modalidadeoperacao   TEXTO          20 POSIÇÕES     Sim           ----            ----
+
+ Tipo da Usina                         nom_tipousina            TEXTO          30 POSIÇÕES     Não           ----            ----
+
+ Tipo de Combustível                   nom_tipocombustivel      TEXTO          50 POSIÇÕES     Não           ----            ----
+                                                                                                   Data: 09-06-2023 - Página 2
+
+Descrição                          Código        Tipo de Dado   Formato           Permite   Permite         Permite
+                                                                                  valor     valor           valor
+                                                                                  nulo      zerado          negativo
+
+Nome da Usina                      nom_usina     TEXTO          60 POSIÇÕES       Não       ----            ----
+
+Identificador ONS                  id_ons        TEXTO          ATÉ 32 POSIÇÕES   Não       ----            ----
+
+Código Único do Empreendimento     ceg           TEXTO          30 POSIÇÕES       Sim       ----            ----
+de Geração (CEG), estabelecido
+pela ANEEL
+
+Geração de Energia na unidade de   val_geracao   FLOAT          20 POSIÇÕES       Não       Sim             Não
+medida MWmed
+                                                                                                                Data: 09-06-2023 - Página 3
+
+Evoluções do Conjunto de Dados:
+
+Versão 1.0    Criação do Dicionário de dados
+
+Versão 1.1    Evolução do Dicionário de Dados para incorporar informações que apoiem o processo de validação e checagem de qualidade de
+              dados. Informações sobre os dados com conteúdo nulas ou vazio; dados numéricos negativos e de numéricos de valor zero.
+
+Versão 1.2    Criação de nova coluna chamada “Identificador ONS" (id_ons)
+

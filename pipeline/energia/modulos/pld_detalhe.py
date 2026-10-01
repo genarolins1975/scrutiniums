@@ -27,6 +27,7 @@ máximos. A comparação publicada é sempre entre o mesmo intervalo (a mesma ho
 mesma semana operativa de sábado a sexta) e em diferença absoluta (R$/MWh), nunca em
 razão ou multiplicador (achado A01).
 """
+import calendar
 import csv
 import hashlib
 import io
@@ -142,6 +143,12 @@ REGISTRO = {
          "estado": "INTEGRADO", "url": normas_pld.URL_PR_PAGINA, "licenca": normas_pld.LICENCA_PR, "tema": "normas", "formatos": ["PDF"],
          "descricao": ("Horizonte, discretização e momento de execução dos modelos de curto e curtíssimo prazo do ONS, citados no "
                        "painel CMO e formação de preço; cada passagem é conferida no PDF baixado."),
+         "paginas": [{"rotulo": "PLD: CMO e formação de preço", "href": "/setor-eletrico/pld"}], "downloads": [], "quebras": []},
+        {"orgao": "CEPEL", "nome": "dessem-manual-metodologia", "slug": "cepel-dessem-manual-metodologia", "dataset_silver": DS_NORMAS,
+         "titulo": "Modelo DESSEM: Manual de Metodologia (novembro de 2022)", "estado": "INTEGRADO", "url": normas_pld.URL_DESSEM_MANUAL,
+         "licenca": normas_pld.DOCUMENTOS["cepel_dessem_manual_metodologia"]["licenca"], "tema": "normas", "formatos": ["PDF"],
+         "descricao": ("Uso do DESSEM pelo ONS e pela CCEE e cálculo do CMO do submercado (média dos custos marginais das barras "
+                       "ponderada pelas cargas), citados no painel CMO e formação de preço; cada passagem é conferida no PDF baixado."),
          "paginas": [{"rotulo": "PLD: CMO e formação de preço", "href": "/setor-eletrico/pld"}], "downloads": [], "quebras": []},
         {"orgao": "ONS", "nome": PACOTE_BAL, "slug": "ons-balanco-subsistema-conferencia-pld", "dataset_silver": DS_BAL_CONF,
          "titulo": "Balanço de Energia nos Subsistemas: cópia própria para reconciliar o PLD ponderado pela carga",
@@ -586,7 +593,7 @@ def coletar(con, ctx):
     # 5. Textos normativos do P008 (fora do CKAN): bronze com sha256, vintage e conferência
     status["normas"] = {}
     for doc_id, doc in normas_pld.DOCUMENTOS.items():
-        orgao = {"ONS": "ONS", "ANEEL": "ANEEL"}.get(doc["orgao"], "camara-dos-deputados")
+        orgao = {"ONS": "ONS", "ANEEL": "ANEEL", "CEPEL": "CEPEL"}.get(doc["orgao"], "camara-dos-deputados")
         res = ckan.baixar_recurso(con, orgao=orgao, dataset=DS_NORMAS, recurso=doc_id, url=doc["url"], publicado_em=None,
                                   ext=doc["ext"], max_idade_dias=30)
         status["normas"][doc_id] = res["status"]
@@ -599,9 +606,10 @@ def coletar(con, ctx):
             except Exception as e:
                 base.registra_coleta(con, DS_NORMAS, rec, False, f"importação: {e}")
                 falha(f"{rec} importação: {e}")
-    # 6. Manuais dos modelos (CEPEL): tentativa registrada, sem contorno. Hoje o servidor
-    # responde 403; o registro em `coletas` é a evidência do bloqueio citada na gold.
-    status["cepel"] = _tenta_cepel(con)
+    # 6. Manuais dos modelos (CEPEL): o do DESSEM entra com as normas (passo 5); os do DECOMP
+    # e do NEWAVE são procurados na lista pública de arquivos do site a cada coleta, e o
+    # resultado fica em `coletas` (evidência citada na gold)
+    status["cepel"] = busca_manuais_cepel(con)
 
     # 7. Balanço de energia do ONS (carga horária): cópia própria do arquivo anual, relida por
     # leitor independente só para reconciliar a média ponderada das fichas de evidência
@@ -635,20 +643,30 @@ def coletar(con, ctx):
     return status
 
 
-def _tenta_cepel(con, url=normas_pld.URL_CEPEL):
-    """GET na página do CEPEL (manuais do NEWAVE, do DECOMP e do DESSEM). O resultado vai
-    para `coletas` (recurso 'cepel') e a gold o cita; bloqueio não é contornado."""
-    try:
-        req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            detalhe, ok = f"HTTP {resp.status}", True
-    except urllib.error.HTTPError as e:
-        detalhe, ok = f"HTTP {e.code}", False
-    except Exception as e:  # sem rede: registrado como falha de acesso
-        detalhe, ok = f"{type(e).__name__}: {str(e)[:150]}", False
-    base.registra_coleta(con, DS_NORMAS, "cepel", ok, f"{url} {detalhe}")
+MODELOS_SEM_MANUAL = ("DECOMP", "NEWAVE")
+
+
+def busca_manuais_cepel(con, termos=MODELOS_SEM_MANUAL):
+    """Procura PDFs com o nome do modelo na lista pública de arquivos do site do CEPEL
+    (API do WordPress do próprio site, a mesma que a busca do site usa). O resultado vai
+    para `coletas` (recurso 'cepel_<modelo>'): quantos PDFs e quais. Nada é contornado."""
+    out = {}
+    for termo in termos:
+        url = normas_pld.URL_CEPEL_MIDIA.format(termo=termo)
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "application/json"})
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                itens = json.loads(resp.read().decode("utf-8"))
+            pdfs = [x.get("source_url") for x in itens if str(x.get("source_url") or "").lower().endswith(".pdf")]
+            detalhe, ok = f"{len(pdfs)} PDFs com '{termo}' na lista pública de arquivos" + (f": {'; '.join(pdfs[:5])}" if pdfs else ""), True
+        except urllib.error.HTTPError as e:
+            detalhe, ok = f"HTTP {e.code} na lista pública de arquivos", False
+        except Exception as e:  # sem rede: registrado como falha de acesso
+            detalhe, ok = f"{type(e).__name__}: {str(e)[:150]}", False
+        base.registra_coleta(con, DS_NORMAS, f"cepel_{termo.lower()}", ok, f"{url} {detalhe}")
+        out[termo] = detalhe
     con.commit()
-    return detalhe
+    return out
 
 
 
@@ -785,6 +803,18 @@ def situacao_hora(valor, lim, tol=TOL_HORA):
     if mn is None or mh is None:
         return "sem_limite"
     return "entre"
+
+
+def a_um_centavo(valor, lim):
+    """'piso' ou 'teto_horario' quando o PLD da hora está exatamente um centavo do limite
+    (acima do piso ou abaixo do teto): preço diferente do limite, contado à parte."""
+    if valor is None:
+        return None
+    for campo, nome in (("pld_min", "piso"), ("pld_max_horario", "teto_horario")):
+        x = lim.get(campo)
+        if x is not None and MEIO_CENTAVO + EPS < abs(valor - x) <= TOL + EPS:
+            return nome
+    return None
 
 
 def situacao_dia_estrutural(media_dia, lim, tol=TOL):
@@ -960,6 +990,9 @@ def momento_do_calculo(ids_conferidos):
         if {"pr45_prazo_16h", "pr45_envio_ccee"} <= ids:
             dessem += ("; os resultados devem estar prontos até as 16h00 de D-1 e o deck e os resultados são encaminhados à CCEE "
                        "(Submódulo 4.5, itens 2.3.3 e 2.4.1)")
+        if "dessem_uso_ons_ccee" in ids:
+            dessem += ("; o mesmo modelo é usado oficialmente pelo ONS desde janeiro de 2020 e pela CCEE desde janeiro de 2021 para o "
+                       "preço horário do dia seguinte (Manual de Metodologia do DESSEM, CEPEL, seção 1)")
         dessem += "."
     if "pr43_versoes_modelos" in ids:
         versao = ("As versões dos modelos usados pelo ONS são as validadas com os agentes e homologadas pela ANEEL por ato "
@@ -1120,7 +1153,7 @@ def _fonte_atos(atos, recurso=None):
             "recurso": recurso or "pipeline/energia/regulatorio/limites_pld.json",
             "url_dataset": ultimo["url"], "url_primaria": ultimo["url"], "licenca": "Ato normativo público da ANEEL",
             "urls_extras": [{"orgao": "ANEEL", "dataset": a["ato"], "url_dataset": a["url"], "url_primaria": a["url"],
-                             "nivel_conferencia": a.get("nivel_conferencia")} for a in atos if a is not ultimo]}
+                             "nivel_conferencia": a.get("nivel_conferencia")} for a in atos]}
 
 
 def _corr(xs, ys):
@@ -1180,7 +1213,7 @@ def _texto_revisoes(rev):
 
 def _evidencia(*, indicador, valor_exibido, valor, unidade, periodo, entidade, universo, filtros, fonte, arquivos, consulta,
                formula, numerador=None, denominador=None, pesos=None, exclusoes=(), cobertura, tratamento_ausencia,
-               revisoes, testes, reconciliacao, download, reproducao):
+               revisoes, testes, reconciliacao, download, reproducao, extracao_pdf=None):
     """Objeto "Comprove este número" (seção 11.5) pelo construtor compartilhado
     pipeline/energia/evidencia.py, que valida o contrato (arquivo com sha256 e captura,
     teste executado, reconciliação com tolerância e unidade) e recusa o que não comprova."""
@@ -1194,7 +1227,7 @@ def _evidencia(*, indicador, valor_exibido, valor, unidade, periodo, entidade, u
                         entidade=entidade, universo=universo, filtros=filtros, fonte=f, consulta=consulta, formula=formula,
                         numerador=numerador, denominador=denominador, pesos=pesos, exclusoes=exclusoes, cobertura=cobertura,
                         tratamento_ausencia=tratamento_ausencia, revisoes=_texto_revisoes(revisoes), testes=testes,
-                        reconciliacao=reconciliacao, download=download, reproducao=reproducao)
+                        reconciliacao=reconciliacao, download=download, reproducao=reproducao, extracao_pdf=extracao_pdf)
 
 
 def _escreve_csv(d, nome, cabecalho, linhas):
@@ -1289,7 +1322,7 @@ def _bloco_cmo_pld(d):
             elif s == "piso":
                 a["n_piso"] += 1
                 mn = lim_dia[h[:10]]["pld_min"]
-                a["piso_cmo_ate"] += cm <= mn + TOL + EPS
+                a["piso_cmo_ate"] += cm <= mn + TOL_HORA + EPS
                 a["piso_cmo_acima1"] += cm > mn + 1.0
     relacao = []
     for (ano, sm), a in sorted(acc.items()):
@@ -1393,7 +1426,10 @@ def _bloco_cmo_pld(d):
                  + "São três produtos diferentes (modelo, resolução e regras de cálculo); a diferença não é explicada por estes dados.")
         semana_ref = {"inicio": col["inicio"][i], "fim": ref_sem, "por_sm": por_sm, "texto": texto}
 
-    # janela horária recente para os painéis alinhados
+    mom = d.get("momento") or momento_do_calculo(())
+    sem_pr = ("Não informado: as passagens dos Procedimentos de Rede do ONS que descrevem o momento de execução do modelo não "
+              "foram conferidas nesta construção (documento não coletado ou passagem não encontrada).")
+    versao_ons = mom["versao"] or "não identificados por valor no conjunto do ONS"
     return {
         "produtos": [
             {"id": "decomp_semanal", "rotulo": "CMO semanal (DECOMP)", "orgao": "ONS", "modelo": "DECOMP",
@@ -1402,19 +1438,27 @@ def _bloco_cmo_pld(d):
              "unidade_no_dicionario": d["dicionario"].get("cmo_semanal:val_cmomediasemanal", {}).get("unidade"),
              "unidade_patamares_no_dicionario": d["dicionario"].get("cmo_semanal:val_cmoleve", {}).get("unidade"),
              "descricao_fonte": d["notas"].get("semanal"), "url": URL_SEM,
-             "entrega": "semana operativa de sábado a sexta", "momento_do_calculo": None,
-             "deck_versao": "não identificados por valor no conjunto do ONS"},
+             "entrega": "semana operativa de sábado a sexta", "momento_do_calculo": mom["decomp_semanal"],
+             "momento_do_calculo_motivo": None if mom["decomp_semanal"] else sem_pr,
+             "fontes_normativas": ["pr24_cmo_semanal", "pr43_cmo_semanal", "pr43_prazo_sexta", "pr43_horizonte", "pr45_decomp",
+                                   "dessem_acoplamento"],
+             "deck_versao": versao_ons},
             {"id": "dessem_semi_horario", "rotulo": "CMO semi-horário (DESSEM)", "orgao": "ONS", "modelo": "DESSEM",
              "resolucao": "meia hora; o instante publicado marca o início da meia hora",
-             "grao_geografico": "subsistema: média dos CMOs das barras do subsistema ponderada pelas cargas (descrição do ONS)",
+             "grao_geografico": "subsistema: média dos CMOs das barras do subsistema ponderada pelas cargas (descrição do ONS; Manual de Metodologia do DESSEM, CEPEL, seção 22.6)",
              "unidade_no_dicionario": d["dicionario"].get("cmo_semi_horario:val_cmo", {}).get("unidade"),
              "descricao_fonte": d["notas"].get("semi_horario"), "url": URL_SH,
-             "entrega": "meia hora", "momento_do_calculo": None,
-             "deck_versao": "não identificados por valor no conjunto do ONS"},
+             "entrega": "meia hora", "momento_do_calculo": mom["dessem_semi_horario"],
+             "momento_do_calculo_motivo": None if mom["dessem_semi_horario"] else sem_pr,
+             "fontes_normativas": ["pr24_cmo_semi_horario", "pr24_execucao_d1", "pr24_48_intervalos", "pr45_cmo_semi_horario",
+                                   "pr45_prazo_16h", "pr45_dia_d1", "pr45_envio_ccee", "pr45_dessem", "dessem_uso_ons_ccee",
+                                   "dessem_resultado_cmo", "dessem_cmo_duais", "dessem_cmo_submercado", "dessem_acoplamento"],
+             "deck_versao": versao_ons},
             {"id": "pld_horario", "rotulo": "PLD horário", "orgao": "CCEE", "modelo": "NEWAVE, DECOMP e DESSEM, segundo a CCEE",
              "resolucao": "hora (HORA 0 a 23, horário de Brasília)", "grao_geografico": "submercado",
              "unidade_no_dicionario": "R$/MWh", "descricao_fonte": d["notas"].get("ccee_pld"), "url": c.FONTE_CCEE_PLD["url_dataset"],
              "entrega": "hora", "momento_do_calculo": "diariamente, para cada hora do dia seguinte (descrição oficial da CCEE)",
+             "momento_do_calculo_motivo": None, "fontes_normativas": ["ccee_pld", "d5163_art57_p1", "ren957_art78"],
              "deck_versao": "não identificados por valor no conjunto da CCEE"},
         ],
         "nao_equivalencia": [
@@ -1445,9 +1489,10 @@ def _bloco_limites(d):
     if not d["atos"]:
         # o CSV diário sai do mesmo jeito, com as colunas de limite vazias (ausência declarada)
         _escreve_csv(d, "pld_limites_diario.csv", ["data", "sm", "pld_media_dia", "horas", "horas_no_piso", "horas_no_teto_horario",
-                                                    "media_no_teto_estrutural", "pld_min", "pld_max_horario", "pld_max_estrutural",
-                                                    "ato_pld_min", "ato_pld_max_horario", "ato_pld_max_estrutural"],
-                         [[dia, sm, sum(d["pld"][sm][f"{dia}T{i:02d}:00"] for i in range(24)) / 24, 24] + [None] * 9
+                                                    "horas_um_centavo_acima_do_piso", "media_no_teto_estrutural", "pld_min",
+                                                    "pld_max_horario", "pld_max_estrutural", "ato_pld_min", "ato_pld_max_horario",
+                                                    "ato_pld_max_estrutural"],
+                         [[dia, sm, sum(d["pld"][sm][f"{dia}T{i:02d}:00"] for i in range(24)) / 24, 24] + [None] * 10
                           for dia in sorted(d["dias_completos_set"]) for sm in SM])
         return {"disponivel": False, "motivo": d["limites_motivo"], "origem": None,
                 "dependencia": ("Arquivo pipeline/energia/regulatorio/limites_pld.json e função limites_pld() do módulo "
@@ -1482,11 +1527,12 @@ def _bloco_limites(d):
                         "horas_quatro_no_piso": k_no_piso.get(4, 0), "frac_quatro_no_piso": c.r(k_no_piso.get(4, 0) / len(horas_ano), 4) if horas_ano else None})
         for sm in SM:
             hs = [h for h in pld[sm] if h[:4] == ano and h <= ultima_hora]
-            cont, sens = defaultdict(int), defaultdict(int)
+            cont, sens, viz = defaultdict(int), defaultdict(int), defaultdict(int)
             for h in hs:
                 l_ = lim_dia.get(h[:10], {})
                 cont[situacao_hora(pld[sm][h], l_)] += 1
                 sens[situacao_hora(pld[sm][h], l_, tol=TOL_SENS)] += 1
+                viz[a_um_centavo(pld[sm][h], l_)] += 1
             dias_ano = sorted(x for x in dias if x[:4] == ano)
             est = defaultdict(int)
             for dia in dias_ano:
@@ -1499,6 +1545,7 @@ def _bloco_limites(d):
                     est["no_teto_com_hora_acima"] += 1
                 diario_csv.append([dia, sm, media, 24, sum(1 for v in vals if situacao_hora(v, l_) == "piso"),
                                    sum(1 for v in vals if situacao_hora(v, l_) == "teto_horario"),
+                                   sum(1 for v in vals if a_um_centavo(v, l_) == "piso"),
                                    None if e is None else int(e == "no_teto"), l_.get("pld_min"), l_.get("pld_max_horario"),
                                    l_.get("pld_max_estrutural"), l_.get("ato_pld_min"), l_.get("ato_pld_max_horario"),
                                    l_.get("ato_pld_max_estrutural")])
@@ -1511,7 +1558,8 @@ def _bloco_limites(d):
                 "horas_teto_horario": cont["teto_horario"], "frac_teto_horario": c.r(cont["teto_horario"] / n_lim, 4) if n_lim else None,
                 "horas_entre": cont["entre"], "horas_sem_limite": cont["sem_limite"],
                 "controle_abaixo_do_piso": cont["abaixo_do_piso"], "controle_acima_do_teto": cont["acima_do_teto"],
-                "sensibilidade_meio_centavo": {"horas_piso": sens["piso"], "horas_teto_horario": sens["teto_horario"]},
+                "horas_um_centavo_acima_do_piso": viz["piso"], "horas_um_centavo_abaixo_do_teto_horario": viz["teto_horario"],
+                "sensibilidade_um_centavo": {"horas_piso": sens["piso"], "horas_teto_horario": sens["teto_horario"]},
                 "dias": len(dias_ano), "dias_teto_estrutural": est["no_teto"],
                 "dias_teto_estrutural_com_hora_acima": est["no_teto_com_hora_acima"], "controle_dias_acima_estrutural": est["acima"],
                 "dias_sem_teto_estrutural": est[None],
@@ -1525,12 +1573,13 @@ def _bloco_limites(d):
                 conferencias.append({
                     "ano": int(ano), "sm": sm, "menor_observado": c.r(menor), "maior_observado": c.r(maior),
                     "pld_min_atos": sorted(mins), "pld_max_horario_atos": sorted(maxs),
-                    "menor_igual_ao_piso": any(abs(menor - m) <= TOL + EPS for m in mins) if mins else None,
-                    "maior_igual_ao_teto_horario": any(abs(maior - m) <= TOL + EPS for m in maxs) if maxs else None,
+                    "menor_igual_ao_piso": any(abs(menor - m) <= TOL_HORA + EPS for m in mins) if mins else None,
+                    "maior_igual_ao_teto_horario": any(abs(maior - m) <= TOL_HORA + EPS for m in maxs) if maxs else None,
                 })
     _escreve_csv(d, "pld_limites_diario.csv", ["data", "sm", "pld_media_dia", "horas", "horas_no_piso", "horas_no_teto_horario",
-                                                "media_no_teto_estrutural", "pld_min", "pld_max_horario", "pld_max_estrutural",
-                                                "ato_pld_min", "ato_pld_max_horario", "ato_pld_max_estrutural"], diario_csv)
+                                                "horas_um_centavo_acima_do_piso", "media_no_teto_estrutural", "pld_min",
+                                                "pld_max_horario", "pld_max_estrutural", "ato_pld_min", "ato_pld_max_horario",
+                                                "ato_pld_max_estrutural"], diario_csv)
     # calendário dos últimos 366 dias completos (o histórico inteiro está no CSV)
     ult = sorted(dias)[-366:]
     cal = {"dias": ult}
@@ -1551,15 +1600,39 @@ def _bloco_limites(d):
                    "dias_sem_teto_estrutural_vigente": sem_est}
     return {
         "disponivel": True, "origem": d["limites_origem"], "conferido_em": d["limites_conferido_em"],
-        "tolerancia": {"valor": TOL, "unidade": "R$/MWh",
-                       "regra": ("Hora no piso: |PLD − mínimo vigente| ≤ R$ 0,01/MWh. Hora no teto horário: |PLD − máximo horário| ≤ R$ 0,01/MWh. "
-                                 "Dia no teto estrutural: |média das 24 horas − máximo estrutural| ≤ R$ 0,01/MWh."),
-                       "justificativa": ("PLD e limites são publicados em centavos; a média de 24 valores arredondados ao centavo "
-                                         "erra no máximo R$ 0,005/MWh. A contagem com tolerância de meio centavo é publicada como sensibilidade.")},
+        "tolerancia": {"hora": TOL_HORA, "media_diaria": TOL, "sensibilidade_hora": TOL_SENS, "unidade": "R$/MWh",
+                       "regra": ("Hora no piso: PLD igual ao mínimo vigente ao centavo (|PLD − mínimo| ≤ R$ 0,005/MWh). Hora no teto "
+                                 "horário: PLD igual ao máximo horário ao centavo. Dia no teto estrutural: |média das 24 horas − máximo "
+                                 "estrutural| ≤ R$ 0,01/MWh. Hora exatamente um centavo acima do piso (ou abaixo do teto horário) é preço "
+                                 "diferente do limite e fica numa classe à parte."),
+                       "justificativa": ("PLD horário e limites são publicados em centavos: na hora, a igualdade é exata ao centavo e o "
+                                         "meio centavo só absorve a representação binária do número. A média diária de 24 valores "
+                                         "arredondados ao centavo erra até R$ 0,005/MWh e é comparada a um limite também arredondado; "
+                                         "por isso o teto estrutural usa R$ 0,01/MWh. A contagem horária com R$ 0,01/MWh (que juntaria "
+                                         "o centavo vizinho ao limite) é publicada como sensibilidade.")},
         "atos": d["atos"], "rejeitados": d["atos_rejeitados"], "regimes": regimes,
+        "conferencia_atos": _resumo_conferencia(d["atos"], d.get("pendencias_limites")),
         "permanencia_anual": perm, "empates_piso": empates, "conferencias": conferencias, "calendario": cal,
         "regra_menor_observado": "O menor valor observado aparece só como conferência do ato; nunca substitui o piso regulatório.",
         "nota_teto_estrutural": _nota_estrutural(perm),
+    }
+
+
+def _resumo_conferencia(atos, pendencias=None):
+    """Quantos atos foram conferidos no texto do próprio ato e quais só em documento do
+    processo (voto ou nota técnica), com as pendências registradas pelo módulo Regulação."""
+    por_nivel = defaultdict(list)
+    for a in atos:
+        por_nivel[a.get("nivel_conferencia") or "sem_registro"].append(a["ato"])
+    sec = por_nivel.get("documento_oficial_do_processo", [])
+    return {
+        "por_nivel": {k: len(v) for k, v in sorted(por_nivel.items())},
+        "atos_lidos_em_documento_do_processo": sec,
+        "atos_sem_registro_de_conferencia": por_nivel.get("sem_registro", []),
+        "pendencias": [{"ano": p_.get("ano"), "item": p_.get("item"), "situacao": p_.get("situacao")} for p_ in (pendencias or [])],
+        "leitura": (f"{len(atos) - len(sec) - len(por_nivel.get('sem_registro', []))} de {len(atos)} atos com os valores lidos no texto do "
+                    f"próprio ato; {len(sec)} com o texto integral inacessível e os valores lidos em voto ou nota técnica da ANEEL do "
+                    "mesmo processo" + (f" ({'; '.join(sec)})" if sec else "") + "."),
     }
 
 
@@ -1597,26 +1670,33 @@ def _bloco_historico(d):
     mensal = {"meses": meses, "dias_completos": [dias_por_mes.get(m, 0) for m in meses],
               "parcial": [mes_parcial(m, dias_por_mes.get(m, 0)) for m in meses],
               **{sm: {"horas": [], "temporal": [], "horas_com_carga": [], "ponderada_carga": [], "mesmas_horas": [], "real": []} for sm in SM}}
-    csv_m = []
+    csv_m, retiradas = [], []
+    pond_mes = {}
     for i, mes in enumerate(meses):
         for sm in SM:
             hs = horas_mes[sm][mes]
             vals = [pld[sm][h] for h in hs]
             temporal = sum(vals) / len(vals) if vals else None
-            com_carga = [(pld[sm][h], carga[sm][h]) for h in hs if carga[sm].get(h) is not None]
-            pond = media_ponderada(com_carga)
+            # peso: só carga publicada e positiva (controle físico); a carga ≤ 0 sai e é listada
+            validos, fora = pesos_validos([(h, pld[sm][h], carga[sm].get(h)) for h in hs])
+            pond = media_ponderada([(p_, w_) for _, p_, w_ in validos])
+            pond_mes[(sm, mes)] = pond
+            if fora:
+                retiradas.append({"sm": sm, "mes": mes, "horas": len(fora),
+                                  "exemplos": [{"hora": k, "carga_mwmed": c.r(w_, 3)} for k, _, w_ in fora[:5]]})
             real = deflaciona(temporal, ipca.get(mes), i_base)
             col = mensal[sm]
             col["horas"].append(len(vals))
             col["temporal"].append(c.r(temporal))
-            col["horas_com_carga"].append(len(com_carga))
+            col["horas_com_carga"].append(len(validos))
             col["ponderada_carga"].append(c.r(pond))
-            col["mesmas_horas"].append(len(com_carga) == len(vals))
+            col["mesmas_horas"].append(len(validos) == len(vals))
             col["real"].append(c.r(real))
-            csv_m.append([mes, sm, int(mensal["parcial"][i]), len(vals), temporal, len(com_carga), pond,
-                          int(len(com_carga) == len(vals)), ipca.get(mes), real, base_real])
-    _escreve_csv(d, "pld_mensal.csv", ["mes", "sm", "parcial", "horas", "media_temporal", "horas_com_carga", "media_ponderada_carga",
-                                        "mesmas_horas", "ipca_indice", "media_temporal_real", "mes_base_real"], csv_m)
+            csv_m.append([mes, sm, int(mensal["parcial"][i]), len(vals), temporal, len(validos), len(fora), pond,
+                          int(len(validos) == len(vals)), ipca.get(mes), real, base_real])
+    _escreve_csv(d, "pld_mensal.csv", ["mes", "sm", "parcial", "horas", "media_temporal", "horas_com_carga", "horas_carga_nao_positiva",
+                                        "media_ponderada_carga", "mesmas_horas", "ipca_indice", "media_temporal_real", "mes_base_real"], csv_m)
+    revisoes_carga = _revisoes_carga(d, pond_mes)
 
     ano_ref = int(dia_ref[:4])
     sazonal, csv_s = [], []
@@ -1688,6 +1768,7 @@ def _bloco_historico(d):
     ult_carga = max((max(carga[sm]) for sm in SM if carga[sm]), default=None)
     return {
         "mensal": mensal,
+        "hora_dia": _hora_dia(d),
         "deflator": {"indice": "IPCA, número-índice (base dezembro de 1993 = 100), IBGE tabela 1737", "mes_base": base_real,
                      "indice_base": i_base, "ultimo_mes_do_indice": max(ipca) if ipca else None,
                      "regra": "valor em reais do mês-base = valor nominal do mês × índice do mês-base ÷ índice do mês. Mês sem índice publicado fica sem valor real."},
@@ -1695,13 +1776,65 @@ def _bloco_historico(d):
                        "ressalva": ("A carga é publicada por subsistema do ONS e o PLD por submercado da CCEE; os quatro se correspondem pelo nome "
                                     "(Sudeste/Centro-Oeste, Sul, Nordeste, Norte), mas a correspondência de perímetro não é conferida por estes dados. "
                                     "A carga do balanço é a carga do sistema, não o consumo contabilizado na CCEE."),
-                       "ultima_hora_com_carga": ult_carga},
+                       "ultima_hora_com_carga": ult_carga,
+                       "controle_fisico": ("Carga ≤ 0 numa hora não é peso válido (a carga é energia consumida): a hora sai da média "
+                                           "ponderada, o mês fica com mesmas_horas = false e a hora é listada em horas_retiradas."),
+                       "horas_retiradas": retiradas,
+                       "revisoes_carga": revisoes_carga},
         "sazonal_mes": sazonal,
         "posicao_referencia": posicao,
         "mes_corrente": mes_corrente,
         "regimes": regimes,
         "perfil_hora_mes": perfil,
     }
+
+
+def _revisoes_carga(d, pond_mes):
+    """Magnitude e alcance das revisões da carga do ONS por submercado e mês (seção 11.6):
+    horas revisadas, maior e média variação, troca de sinal e o efeito na média ponderada
+    publicada (ponderada com os valores vigentes menos a ponderada com o primeiro valor
+    capturado de cada hora revista, com o mesmo controle físico nas duas)."""
+    pld, carga = d["pld"], d["carga"]
+    out = []
+    for sm in SM:
+        por_mes = defaultdict(dict)
+        for ref, hist in (d.get("historico_carga") or {}).get(sm, []):
+            por_mes[ref[:7]][ref] = hist
+        for mes in sorted(por_mes):
+            mag = magnitude_revisoes(por_mes[mes])
+            if not mag["horas_revisadas"]:
+                continue
+            primeira = dict(carga[sm])
+            for ref, hist in por_mes[mes].items():
+                primeira[ref] = hist[0][1]
+            hs = [h for h in pld[sm] if h[:7] == mes and h <= d["ultima_hora"]]
+            ok_, _ = pesos_validos([(h, pld[sm][h], primeira.get(h)) for h in hs])
+            p_primeira = media_ponderada([(p_, w_) for _, p_, w_ in ok_])
+            p_vig = pond_mes.get((sm, mes))
+            out.append({"sm": sm, "mes": mes, "horas_revisadas": mag["horas_revisadas"],
+                        "max_abs_mwmed": c.r(mag["max_abs"], 3), "quando_max": mag["quando_max"],
+                        "media_abs_mwmed": c.r(mag["media_abs"], 3), "max_rel": c.r(mag["max_rel"], 4),
+                        "horas_com_troca_de_sinal": mag["horas_com_troca_de_sinal"], "capturas": mag["capturas"],
+                        "ponderada_primeira_captura": c.r(p_primeira), "ponderada_vigente": c.r(p_vig),
+                        "efeito_na_ponderada": c.r(p_vig - p_primeira) if p_vig is not None and p_primeira is not None else None})
+    return out
+
+
+DIAS_HORA_DIA = 90
+
+
+def _hora_dia(d):
+    """Mapa hora × dia (P011) dos últimos DIAS_HORA_DIA dias corridos até o dia de
+    referência, em JSON sob demanda (contrato 5.1): a gold só aponta o arquivo."""
+    fim = date.fromisoformat(d["dia_ref"])
+    dias_ = [(fim - timedelta(days=DIAS_HORA_DIA - 1 - i)).isoformat() for i in range(DIAS_HORA_DIA)]
+    dado = {"gerado_em": base.agora_utc(), "unidade": "R$/MWh nominais", "fuso": "horário de Brasília", "dias": dias_,
+            **{sm: [[c.r(d["pld"][sm].get(f"{dia}T{h:02d}:00")) for h in range(24)] for dia in dias_] for sm in SM}}
+    base.escreve_gold("pld_hora_dia.json", dado, destino=d.get("destino_csv") or base.SERIES)
+    presentes = sum(1 for dia in dias_ if all(f"{dia}T{h:02d}:00" in d["pld"]["SE"] for h in range(24)))
+    return {"url": "/energia/series/pld_hora_dia.json", "inicio": dias_[0], "fim": dias_[-1], "dias": DIAS_HORA_DIA,
+            "dias_completos_no_recorte": presentes,
+            "nota": "Recorte hora × dia dos últimos 90 dias, lido sob demanda; o histórico horário inteiro está em pld_cmo_horario.csv."}
 
 
 def _periodos(d):
@@ -1747,7 +1880,7 @@ def _bloco_regional(d):
                               "frac_separadas": c.r(sep / len(hs), 4), "dif_media": c.r(c.media([x for _, x in difs])),
                               "dif_abs_media": c.r(c.media(ab)), "dif_abs_p95": c.r(c.quantil(ab, 0.95)),
                               "dif_max": c.r(dm), "quando_max": hm,
-                              "horas_diferenca_de_um_centavo": sum(1 for x in ab if TOL_SENS < x <= TOL + EPS),
+                              "horas_diferenca_de_um_centavo": sum(1 for x in ab if MEIO_CENTAVO < x <= TOL + EPS),
                               "horas_acima_1": sum(1 for x in ab if x > 1.0 + EPS), "horas_acima_10": sum(1 for x in ab if x > 10.0 + EPS)})
         for a, b in FRONTEIRAS:
             f = fluxo.get(f"{a}_{b}", {})
@@ -2163,7 +2296,7 @@ def _conceito(d, con=None):
         "normas_nao_conferidas": nao_conferidas,
         "atos_de_limites": "limites.atos",
         "exemplo_liquidacao": _exemplo(d, citadas),
-        "bloqueios": [{"fonte": "CCEE: regras de comercialização (módulo Preço de Liquidação das Diferenças) e painéis de preços",
+        "bloqueios": [_bloqueio_cepel(con)] + [{"fonte": "CCEE: regras de comercialização (módulo Preço de Liquidação das Diferenças) e painéis de preços",
                        "url": "https://www.ccee.org.br/precos/painel-precos",
                        "evidencia": "HTTP 403 com página \"Acesso bloqueado\" do firewall da origem em 30/09/2026, também para o portal de dados abertos e para o servidor de download",
                        "consequencia": ("A regra algébrica de cálculo e de contabilização não é citada. Os textos usam o Decreto nº 5.163/2004, "
@@ -2173,6 +2306,24 @@ def _conceito(d, con=None):
                        "consequencia": ("A REN nº 957/2021 é lida da cópia do Internet Archive do mesmo endereço oficial, de "
                                         + normas_pld.COPIA_REN957_EM[:10] + ", com sha256 registrado; nenhuma alteração posterior à cópia está coberta.")}],
     }
+
+
+def _bloqueio_cepel(con):
+    """Manuais de metodologia do DECOMP e do NEWAVE: busca registrada na coleta. O manual
+    do DESSEM está integrado (normas); os dois outros não foram localizados publicamente."""
+    linhas = []
+    if con is not None:
+        for termo in MODELOS_SEM_MANUAL:
+            row = con.execute("SELECT tentado_em, ok, detalhe FROM coletas WHERE dataset=? AND recurso=? ORDER BY rowid DESC LIMIT 1",
+                              (DS_NORMAS, f"cepel_{termo.lower()}")).fetchone()
+            linhas.append(f"{termo}: " + (f"busca de {row[0]}, {row[2].split(' ', 1)[-1]}" if row else "nenhuma busca registrada"))
+    return {"fonte": "CEPEL: manuais de metodologia do DECOMP e do NEWAVE", "url": normas_pld.URL_CEPEL,
+            "evidencia": ("; ".join(linhas) or "nenhuma busca registrada nesta base") + ". O manual de metodologia do DESSEM está "
+                         "publicado no mesmo site e foi integrado.",
+            "consequencia": ("A formulação do DECOMP e do NEWAVE não é citada de documento do desenvolvedor. O uso dos dois modelos pelo "
+                             "ONS (horizonte, discretização, prazos, acoplamento pela função de custo futuro) vem dos Procedimentos de Rede "
+                             "do ONS (Submódulos 2.4, 4.3 e 4.5) e do manual do DESSEM, com cada passagem conferida no PDF baixado; o "
+                             "painel Entenda o preço fica com limitação declarada.")}
 
 
 def _cobertura_dessem(sh):
@@ -2244,11 +2395,24 @@ def construir(con, ctx):
     atos, rejeitados = normaliza_atos(dado) if dado else ([], [])
     if dado and not atos:
         motivo = "nenhum ato válido no arquivo de limites"
+    pendencias_limites = []
+    if atos:
+        # nível de conferência de cada ato (texto do ato ou documento do processo): sem ele a
+        # gold não distingue o ato lido do valor tirado do voto ou da nota técnica
+        atos = enriquece_atos(atos, ctx.get("conferencia_limites"), ctx.get("documentos_regulacao"))
+        try:
+            from pipeline.energia import regulatorio
+            pendencias_limites = (ctx.get("conferencia_limites") or regulatorio.conferencia_limites()).get("pendencias") or []
+        except Exception:
+            pendencias_limites = []
     todos_dias = [(date.fromisoformat(INICIO) + timedelta(days=i)).isoformat()
                   for i in range((date.fromisoformat(dia_ref) - date.fromisoformat(INICIO)).days + 1)]
     lim_dia = {dia: limites_vigentes(atos, dia) for dia in todos_dias} if atos else {}
-    # reconciliação por outro código: a regra de vigência do módulo Regulação (limites_em)
-    # aplicada aos mesmos atos tem de dar os mesmos limites e atos em cada dia
+    # conferência entre módulos: a regra de vigência do módulo Regulação (limites_em) aplicada
+    # aos mesmos atos tem de dar os mesmos limites e atos em cada dia. É a MESMA regra escrita
+    # em outro arquivo (mesmo filtro, mesmo desempate): prova que os dois módulos leem os atos
+    # do mesmo jeito, não que a regra está certa. A conferência dos valores contra o texto do
+    # ato vigente é feita à parte (_confere_ato_vigente).
     rec_lim = None
     if atos and origem and origem.startswith("pipeline.energia.regulatorio"):
         try:
@@ -2283,10 +2447,13 @@ def construir(con, ctx):
         pass
 
     cmo_h = {sm: cmo_horario(sh[sm]) for sm in SM}
+    citadas_ids = {x["id"] for x in _normas(con)[0]}
     d = {"pld": pld, "sh": sh, "cmo_h": cmo_h, "dec": dec, "carga": carga, "fluxo": fluxo, "ipca": ipca,
          "horas_comuns": horas_comuns, "dias_completos_set": set(dias_completos), "dia_ref": dia_ref, "ultima_hora": ultima_hora,
          "diario": diario, "atos": atos, "atos_rejeitados": rejeitados, "lim_dia": lim_dia, "limites_motivo": motivo,
          "limites_origem": origem, "limites_conferido_em": dado.get("conferido_em") if isinstance(dado, dict) else None,
+         "pendencias_limites": pendencias_limites, "momento": momento_do_calculo(citadas_ids),
+         "historico_carga": {sm: base.revisoes_da_serie(cp, DS_BAL, f"carga.{sm}") for sm in SM},
          "dicionario": dicionario, "notas": notas, "destino_csv": ctx.get("destino_csv")}
 
     # CSV horário alinhado (CMO do DESSEM na hora e PLD)
@@ -2343,11 +2510,27 @@ def construir(con, ctx):
         controle("PLD dentro dos limites dos atos", False, f"não executado: {motivo}", ressalva=True)
     if rec_lim is not None:
         controle("Limites vigentes por dia: mesma leitura do módulo Regulação (limites_em)", rec_lim.get("divergentes") == 0,
-                 (f"{rec_lim['dias']} dias conferidos, {rec_lim['divergentes']} divergentes" if rec_lim.get("divergentes") is not None
+                 (f"{rec_lim['dias']} dias conferidos, {rec_lim['divergentes']} divergentes; é a mesma regra de vigência escrita no módulo "
+                  "Regulação: confere que os dois módulos leem os atos do mesmo jeito, não é conferência independente da regra (o valor "
+                  "do ato vigente é conferido no PDF do ato em outro controle)" if rec_lim.get("divergentes") is not None
                   else f"não executado: {rec_lim.get('erro')}"), ressalva=rec_lim.get("divergentes") is None)
     eq = bloco_cmo["equivalencia_csv"]
     controle("Equivalência gold e CSV semanal", eq["divergentes"] == 0 and eq["celulas"] > 0,
              f"{eq['celulas']} células (semana, submercado e produto) relidas do CSV pld_cmo_semanal.csv, {eq['divergentes']} divergentes")
+    ret = bloco_hist["ponderacao"]["horas_retiradas"]
+    controle("Carga do ONS usada como peso: valores positivos", not ret,
+             ("nenhuma hora com carga menor ou igual a zero nos meses publicados" if not ret else
+              "horas com carga menor ou igual a zero retiradas da média ponderada: "
+              + "; ".join(f"{x['sm']} {x['mes']}: {x['horas']}" for x in ret)), ressalva=True)
+    pubs = _publicacoes_conferidas(con, DS_SH)
+    controle("Data de publicação do CMO semi-horário conferida no S3 (ETag igual ao MD5 do arquivo capturado)",
+             pubs["conferida"] == pubs["arquivos"] and pubs["arquivos"] > 0,
+             f"{pubs['conferida']} de {pubs['arquivos']} arquivos vigentes conferidos; {pubs['nao_conferida']} não conferidos "
+             f"(publicação desconhecida); {pubs['sem_registro']} sem conferência registrada", ressalva=True)
+    ato_ref = _confere_ato_vigente(d, ctx)
+    if ato_ref is not None:
+        controle("Ato vigente do piso no dia de referência: trecho e valor conferidos no PDF do ato", ato_ref["confere"],
+                 ato_ref["detalhe"], ressalva=not ato_ref.get("arquivo"))
 
     # proveniências
     cap_pld = c.ultima_captura(snap_pld)
@@ -2355,21 +2538,40 @@ def construir(con, ctx):
     lim_ccee = ["A CCEE não informa a data de publicação de cada hora; ver achado A09.",
                 "O portal da CCEE respondeu HTTP 403 (Acesso bloqueado) ao ambiente de construção; o PLD vem das capturas integradas pelo pipeline de operação."]
     periodo_sh = {"inicio": min(sh["SE"]), "fim": max(sh["SE"])}
+    lim_dessem = ["Valor estimado pelo modelo DESSEM e publicado pelo ONS (\"Este CMO é estimado pelo modelo DESSEM\", descrição do "
+                  "conjunto): é resultado de modelo da fonte, não medição.",
+                  "O ONS avisa que os dados passam por consistência recorrente e podem mudar depois de publicados; revisões são detectadas entre capturas.",
+                  "O conjunto não identifica deck, versão nem revisão do modelo de cada valor.",
+                  "Há dias sem nenhuma meia hora publicada (ver cobertura)."]
+    if d["momento"]["dessem_semi_horario"]:
+        lim_dessem.append("O CMO de um dia é calculado na véspera (D-1) para a programação do dia D (Procedimentos de Rede, Submódulo 2.4, "
+                          "item 2.5.1.2): por isso o arquivo já traz o dia seguinte, que é valor programado, não realizado.")
+    lim_pond = [bloco_hist["ponderacao"]["ressalva"],
+                "Mês parcial marcado; a ponderada usa só as horas com carga publicada e positiva (campo mesmas_horas).",
+                "Moeda constante é perspectiva adicional; o IPCA mede preços ao consumidor, não custos de energia."]
+    if ret:
+        lim_pond.append("Ressalva: o ONS publicou carga menor ou igual a zero em algumas horas; elas saíram da média ponderada ("
+                        + "; ".join(f"{x['sm']} {x['mes']}: {x['horas']} horas" for x in ret) + ").")
+    rc = bloco_hist["ponderacao"]["revisoes_carga"]
+    if rc:
+        lim_pond.append("A carga do ONS foi revista entre capturas em " + "; ".join(
+            f"{x['sm']} {x['mes']} ({x['horas_revisadas']} horas, até {_num_br(x['max_abs_mwmed'], 1)} MWmed"
+            + (f", efeito de {_br(x['efeito_na_ponderada'])}/MWh na ponderada" if x["efeito_na_ponderada"] is not None else "") + ")"
+            for x in rc) + "; ver ponderacao.revisoes_carga.")
+    fonte_rel = _fonte_composta(c.FONTE_CCEE_PLD, FONTE_SH, *([_fonte_atos(atos)] if atos else []))
     prov = {
         "cmo_semi_horario": c.proveniencia(
-            indicador="CMO semi-horário por subsistema (DESSEM)", natureza="OBSERVADO", fonte=FONTE_SH, unidade="R$/MWh",
+            indicador="CMO semi-horário por subsistema (DESSEM)", natureza="ESTIMADO", fonte=FONTE_SH, unidade="R$/MWh",
             frequencia="semi-horária", periodo=periodo_sh, cobertura=periodo_sh, capturado_em=c.ultima_captura(snap_sh), snapshot=snap_sh,
-            transformacoes=["leitura do CSV anual do ONS", "instante local (início da meia hora) em AAAA-MM-DDTHH:MM", "vazio mantido como ausência e zero como zero"],
-            limitacoes=["Resultado de modelo publicado pelo ONS (DESSEM), não medição.",
-                        "O ONS avisa que os dados passam por consistência recorrente e podem mudar depois de publicados; revisões são detectadas entre capturas.",
-                        "O conjunto não identifica deck, versão nem revisão do modelo de cada valor.",
-                        "Há dias sem nenhuma meia hora publicada (ver cobertura)."],
-            download="/energia/series/pld_cmo_horario.csv", notas_fonte=notas["semi_horario"]),
+            transformacoes=["leitura do CSV anual do ONS", "instante local (início da meia hora) em AAAA-MM-DDTHH:MM", "vazio mantido como ausência e zero como zero",
+                            "data de publicação = Last-Modified do objeto no S3 do ONS, conferido pelo ETag igual ao MD5 do arquivo capturado"],
+            limitacoes=lim_dessem, download="/energia/series/pld_cmo_horario.csv", notas_fonte=notas["semi_horario"]),
         "cmo_horario": c.proveniencia(
             indicador="CMO do DESSEM na hora (média das duas meias horas)", natureza="CALCULADO", fonte=FONTE_SH, unidade="R$/MWh",
             frequencia="horária", periodo=periodo_sh, cobertura=periodo_sh, capturado_em=c.ultima_captura(snap_sh), snapshot=snap_sh,
             transformacoes=["média simples das meias horas que começam em h:00 e h:30"], formula="CMO_h = (CMO_{h:00} + CMO_{h:30}) ÷ 2",
-            limitacoes=["Hora com uma meia hora ausente fica sem valor.",
+            limitacoes=["Calculado sobre valores estimados pelo modelo DESSEM (natureza da fonte: estimado).",
+                        "Hora com uma meia hora ausente fica sem valor.",
                         "A média alinha a resolução com o PLD horário, mas não torna o CMO do ONS igual à base de cálculo da CCEE."],
             download="/energia/series/pld_cmo_horario.csv"),
         "comparacao_semanal": c.proveniencia(
@@ -2380,21 +2582,30 @@ def construir(con, ctx):
             snapshot=snap_sem, publicacao_informada=False,
             transformacoes=["DECOMP: valor semanal como publicado", "DESSEM: média das 336 meias horas da semana", "PLD: média das 168 horas da semana"],
             formula="DESSEM_sem = Σ CMO_meia ÷ 336; PLD_sem = Σ PLD_h ÷ 168; diferenças em R$/MWh (nunca razão)",
-            limitacoes=comum_lim + lim_ccee + ["Os três valores são produtos diferentes (modelo, resolução e regras de cálculo); a diferença entre eles não é explicada por estes dados.",
+            limitacoes=comum_lim + lim_ccee + ["Os dois CMO são estimados por modelo pelo ONS (DECOMP e DESSEM); o PLD é o preço publicado pela CCEE.",
+                                               "Os três valores são produtos diferentes (modelo, resolução e regras de cálculo); a diferença entre eles não é explicada por estes dados.",
                                                "Semana com meia hora ou hora ausente fica sem média."],
             download="/energia/series/pld_cmo_semanal.csv", notas_fonte=notas["semanal"]),
+        "relacao_pld_cmo": c.proveniencia(
+            indicador="Diferença entre o PLD e o CMO do DESSEM na mesma hora, por ano, submercado e situação frente aos limites",
+            natureza="CALCULADO", fonte=fonte_rel, unidade="R$/MWh", frequencia="horária; resumo anual",
+            periodo={"inicio": INICIO + "T00:00", "fim": ultima_hora}, cobertura={"inicio": INICIO + "T00:00", "fim": ultima_hora},
+            capturado_em=cap_pld, snapshot=snap_pld, publicacao_informada=False,
+            transformacoes=["CMO do DESSEM na hora (média das duas meias horas)", "situação do PLD na hora pelos limites vigentes (igualdade ao centavo)",
+                            "horas entre os limites em dia com a média no teto estrutural ficam numa classe à parte"],
+            formula="Δ_h = PLD_h − CMO_h; média, média do módulo e mediana do módulo por ano e submercado",
+            limitacoes=comum_lim + lim_ccee + ["O CMO é estimado por modelo do ONS; o PLD é o preço publicado pela CCEE com limites: as séries não são equivalentes.",
+                                               "Estatística descritiva: a diferença não é explicada por estes dados."],
+            download="/energia/series/pld_cmo_horario.csv"),
         "historico_mensal": c.proveniencia(
             indicador="PLD médio mensal: média temporal, média ponderada pela carga e média temporal em moeda constante",
             natureza="CALCULADO", fonte=_fonte_composta(c.FONTE_CCEE_PLD, FONTE_BAL, FONTE_IPCA), unidade="R$/MWh",
             frequencia="mensal", periodo={"inicio": INICIO[:7], "fim": dia_ref[:7]}, cobertura={"inicio": INICIO, "fim": dia_ref},
             capturado_em=cap_pld, snapshot=snap_pld, publicacao_informada=False,
-            transformacoes=["média simples das horas do mês", "média ponderada pela carga verificada do subsistema na mesma hora",
+            transformacoes=["média simples das horas do mês", "média ponderada pela carga verificada do subsistema na mesma hora (só carga positiva)",
                             "deflação pelo IPCA para reais do mês-base"],
-            formula="temporal = Σ PLD_h ÷ n; ponderada = Σ PLD_h × carga_h ÷ Σ carga_h; real = temporal × IPCA(base) ÷ IPCA(mês)",
-            limitacoes=comum_lim + lim_ccee + [bloco_hist["ponderacao"]["ressalva"],
-                                               "Mês parcial marcado; a ponderada usa só as horas com carga publicada (campo mesmas_horas).",
-                                               "Moeda constante é perspectiva adicional; o IPCA mede preços ao consumidor, não custos de energia."],
-            download="/energia/series/pld_mensal.csv"),
+            formula="temporal = Σ PLD_h ÷ n; ponderada = Σ PLD_h × carga_h ÷ Σ carga_h nas horas com carga_h > 0; real = temporal × IPCA(base) ÷ IPCA(mês)",
+            limitacoes=comum_lim + lim_ccee + lim_pond, download="/energia/series/pld_mensal.csv"),
         "sazonal": c.proveniencia(
             indicador="Percentis sazonais da média diária do PLD (mesmo mês e mesma semana ISO de anos anteriores)",
             natureza="CALCULADO", fonte=c.FONTE_CCEE_PLD, unidade="R$/MWh", frequencia="diária",
@@ -2405,6 +2616,17 @@ def construir(con, ctx):
             limitacoes=comum_lim + lim_ccee + ["Poucos anos de PLD horário (desde 2021): cada mês de referência tem no máximo cinco anos anteriores.",
                                                "Anos diferentes têm limites regulatórios diferentes; ver distribuição por regime."],
             download="/energia/series/pld_sazonal.csv"),
+        "distribuicao": c.proveniencia(
+            indicador="Distribuição do PLD horário por regime anual de limites e perfil hora × mês (com o mapa hora × dia sob demanda)",
+            natureza="CALCULADO", fonte=_fonte_composta(c.FONTE_CCEE_PLD, *([_fonte_atos(atos)] if atos else [])),
+            unidade="R$/MWh", frequencia="horária; resumo anual e mensal",
+            periodo={"inicio": INICIO, "fim": dia_ref}, cobertura={"inicio": INICIO, "fim": dia_ref}, capturado_em=cap_pld,
+            snapshot=snap_pld, publicacao_informada=False,
+            transformacoes=["quantis tipo 7 dos valores horários de cada ano", "média por hora do dia em cada um dos últimos 12 meses",
+                            "mapa hora × dia dos últimos 90 dias em arquivo próprio"],
+            formula="quantis tipo 7 de PLD_h no ano; perfil(m, k) = média de PLD_h com hora do dia = k no mês m",
+            limitacoes=comum_lim + lim_ccee + ["Ano e mês parciais marcados.", "Estatística descritiva: não identifica causa."],
+            download="/energia/series/pld_hora_dia.json"),
         "regional": c.proveniencia(
             indicador="Diferenças de PLD entre submercados na mesma hora (amplitude, separação por par, matriz)",
             natureza="CALCULADO", fonte=c.FONTE_CCEE_PLD, unidade="R$/MWh; frequência em fração das horas", frequencia="horária",
@@ -2433,26 +2655,40 @@ def construir(con, ctx):
             transformacoes=["releitura do CSV original por leitor independente", "conferência célula a célula com o Parquet oficial",
                             "sequências de zeros exatos com semanas consecutivas"],
             formula="sequência = semanas consecutivas (passo de 7 dias) com média semanal = 0; mínimo de 4",
-            limitacoes=["Zero é valor publicado pelo ONS; o conjunto não informa a razão.", "Semana ausente interrompe a sequência."],
+            limitacoes=["O CMO semanal é estimado pelo modelo DECOMP e publicado pelo ONS (natureza da fonte: estimado).",
+                        "Zero é valor publicado pelo ONS; o conjunto não informa a razão.", "Semana ausente interrompe a sequência."],
             download="/energia/series/pld_cmo_semanal.csv"),
+        "a09": c.proveniencia(
+            indicador="Primeira captura completa de cada dia do PLD e folga da hipótese LAT1D", natureza="CALCULADO",
+            fonte=c.FONTE_CCEE_PLD, unidade="horas", frequencia="diária",
+            periodo={"inicio": (a09["dias_com_captura_direta"][0]["dia"] if a09["dias_com_captura_direta"] else dia_ref), "fim": dia_ref},
+            cobertura={"inicio": INICIO, "fim": dia_ref}, capturado_em=cap_pld, snapshot=snap_pld, publicacao_informada=False,
+            transformacoes=["primeira vintage que contém cada hora do dia", "instante em que LAT1D permite usar o dia (D+2 às 00h de Brasília)"],
+            formula="folga = (início do dia D + 2 dias) − primeira captura completa do dia",
+            limitacoes=["Primeira captura observada não é publicação; a CCEE não informa a data de publicação de cada hora.",
+                        "Só os dias com captura direta entram; a amostra é curta."],
+            download=None),
     }
     if bloco_lim.get("disponivel"):
-        fonte_aneel = {"orgao": "ANEEL", "dataset": "Atos anuais de limites do PLD (via módulo Regulação)",
-                       "recurso": "pipeline/energia/regulatorio/limites_pld.json", "url_dataset": atos[0]["url"], "url_primaria": atos[0]["url"],
-                       "licenca": "Ato normativo público da ANEEL"}
+        conf_txt = bloco_lim["conferencia_atos"]["leitura"]
         prov["limites"] = c.proveniencia(
             indicador="Permanência do PLD no piso e nos tetos por submercado e ano", natureza="CALCULADO",
-            fonte=_fonte_composta(c.FONTE_CCEE_PLD, fonte_aneel), unidade="horas, dias e fração", frequencia="horária e diária",
+            fonte=_fonte_composta(c.FONTE_CCEE_PLD, _fonte_atos(atos)), unidade="horas, dias e fração", frequencia="horária e diária",
             periodo={"inicio": INICIO, "fim": dia_ref}, cobertura={"inicio": INICIO, "fim": dia_ref}, capturado_em=cap_pld,
             snapshot=snap_pld, publicacao_informada=False,
-            transformacoes=["limites vigentes em cada dia pelos atos (campo a campo, ato mais recente)", "tolerância de R$ 0,01/MWh"],
-            formula="frac_piso = horas com |PLD − mínimo| ≤ 0,01 ÷ horas; dia no teto estrutural: |média diária − máximo estrutural| ≤ 0,01",
-            limitacoes=comum_lim + lim_ccee + ["Os atos vêm do módulo Regulação; a conferência no ato primário é responsabilidade daquele módulo e está registrada em cada ato.",
+            transformacoes=["limites vigentes em cada dia pelos atos (campo a campo, ato mais recente)",
+                            "hora no limite: igualdade ao centavo (R$ 0,005/MWh); média diária no teto estrutural: R$ 0,01/MWh",
+                            "hora um centavo acima do piso contada à parte"],
+            formula=("frac_piso = horas com |PLD − mínimo| ≤ 0,005 ÷ horas com limites; dia no teto estrutural: "
+                     "|média diária − máximo estrutural| ≤ 0,01"),
+            limitacoes=comum_lim + lim_ccee + [f"Atos do módulo Regulação, com o nível de conferência de cada um em limites.atos: {conf_txt}",
                                                "O menor valor observado não é usado como piso."],
             download="/energia/series/pld_limites_diario.csv")
 
     evid = _evidencias(d, bloco_cmo, bloco_lim, bloco_hist, bloco_reg, a02, snap_pld, snap_sh, snap_sem, snap_bal, snap_a02, controles,
-                       cp=cp, con=con)
+                       cp=cp, con=con, ato_ref=ato_ref)
+    base.escreve_gold("pld_evidencias.json", {"gerado_em": base.agora_utc(), "gold": GOLD, "evidencias": evid},
+                      destino=d.get("destino_csv") or base.SERIES)
 
     g = {
         **c.cabecalho(GOLD),
@@ -2462,7 +2698,8 @@ def construir(con, ctx):
                        "ultima_semana_decomp": max(dec["SE"]["media"]), "ultima_hora_carga": bloco_hist["ponderacao"]["ultima_hora_com_carga"],
                        "ultima_hora_fluxo": max(fluxo["S_SE"]) if fluxo["S_SE"] else None,
                        "ultimo_mes_ipca": max(ipca) if ipca else None},
-        "tolerancias": {"monetaria": TOL, "sensibilidade": TOL_SENS, "fluxo_nulo_mwmed": FLUXO_NULO, "unidade": "R$/MWh"},
+        "tolerancias": {"hora_no_limite": TOL_HORA, "media_diaria_teto_estrutural": TOL, "separacao": TOL, "sensibilidade_hora": TOL_SENS,
+                        "fluxo_nulo_mwmed": FLUXO_NULO, "unidade": "R$/MWh"},
         "conceito": conceito,
         "cmo_pld": bloco_cmo,
         "limites": bloco_lim,
@@ -2491,9 +2728,16 @@ def construir(con, ctx):
             "regional": ["pld_amplitude_horaria", "pld_separacao_par", "pld_diferenca_media_par", "pld_sentido_fluxo_separacao"],
             "achados": ["pld_sequencia_zero_cmo_semanal", "pld_folga_lat1d"],
         },
+        # proveniência de cada métrica: `calculo` descreve o número publicado (natureza da
+        # transformação) e `fonte`, quando a gold tem a proveniência do dado de origem, a
+        # natureza da fonte; as duas têm de coincidir com o catálogo (teste)
+        "metricas_proveniencia": {k: {"calculo": v[0], "fonte": v[1]} for k, v in METRICA_PROVENIENCIA.items()
+                                  if v[0] in prov},
         "controles": controles,
         "proveniencia": prov,
-        "evidencias": evid,
+        "evidencias": {"arquivo": "/energia/series/pld_evidencias.json",
+                       "indice": {k: {"indicador": e["indicador"], "valor_exibido": e["valor_exibido"], "entidade": e["entidade"]}
+                                  for k, e in evid.items()}},
         "snapshots": {k: _snap_resumo(v) for k, v in (("cmo_semi_horario", snap_sh), ("cmo_semanal_original", snap_a02),
                                                       ("dicionarios", snap_dic), ("ipca", snap_ipca), ("normas", snap_normas), ("pld", snap_pld),
                                                       ("cmo_semanal", snap_sem), ("balanco", snap_bal), ("intercambio", snap_int))},
@@ -2503,24 +2747,243 @@ def construir(con, ctx):
             ("/energia/series/pld_limites_diario.csv", "PLD diário com horas no piso e nos tetos e limites vigentes (CSV)"),
             ("/energia/series/pld_mensal.csv", "PLD mensal: temporal, ponderado pela carga e em moeda constante (CSV)"),
             ("/energia/series/pld_sazonal.csv", "Percentis sazonais da média diária por mês (CSV)"),
+            ("/energia/series/pld_hora_dia.json", "Mapa hora × dia do PLD, últimos 90 dias (JSON)"),
             ("/energia/series/pld_separacao_diaria.csv", "Separação diária por par de submercados e fluxo na fronteira (CSV)"),
             ("/energia/series/pld_amplitude_diaria.csv", "Amplitude diária entre submercados (CSV)"))],
     }
     return g
 
 
+# Métrica → (proveniência do cálculo publicado, proveniência do dado de origem quando a
+# gold a publica). A natureza_transformacao do catálogo tem de ser a natureza da primeira
+# e a natureza_fonte, a da segunda (teste test_metricas_e_naturezas_coincidem).
+METRICA_PROVENIENCIA = {
+    "pld_cmo_dessem_hora": ("cmo_horario", "cmo_semi_horario"),
+    "pld_cmo_dessem_semana": ("comparacao_semanal", "cmo_semi_horario"),
+    "pld_pld_semana": ("comparacao_semanal", None),
+    "pld_diferenca_pld_cmo": ("relacao_pld_cmo", "cmo_semi_horario"),
+    "pld_horas_piso": ("limites", None),
+    "pld_horas_teto_horario": ("limites", None),
+    "pld_dias_teto_estrutural": ("limites", None),
+    "pld_empates_piso": ("limites", None),
+    "pld_media_mensal_temporal": ("historico_mensal", None),
+    "pld_media_mensal_ponderada_carga": ("historico_mensal", None),
+    "pld_media_mensal_real": ("historico_mensal", None),
+    "pld_percentil_sazonal": ("sazonal", None),
+    "pld_quantis_regime": ("distribuicao", None),
+    "pld_perfil_hora_mes": ("distribuicao", None),
+    "pld_amplitude_horaria": ("regional", None),
+    "pld_separacao_par": ("regional", None),
+    "pld_diferenca_media_par": ("regional", None),
+    "pld_sentido_fluxo_separacao": ("fluxos", None),
+    "pld_sequencia_zero_cmo_semanal": ("a02", None),
+    "pld_folga_lat1d": ("a09", None),
+}
+
+
+def paginas_pdf(bruto):
+    """Texto de cada página de um PDF (pdftotext em fluxo de leitura, páginas separadas
+    pelo caractere de quebra de página). Sem a ferramenta: None."""
+    exe = shutil.which("pdftotext")
+    if not exe:
+        return None
+    fd, tmp = tempfile.mkstemp(suffix=".pdf")
+    os.close(fd)
+    try:
+        with open(tmp, "wb") as f:
+            f.write(bruto)
+        saida = subprocess.run([exe, tmp, "-"], capture_output=True, timeout=120).stdout.decode("utf-8", errors="replace")
+    finally:
+        os.remove(tmp)
+    return saida.split("\f")
+
+
+def confere_ato_no_texto(ato, paginas):
+    """(confere, página, detalhe): o trecho literal do ato (partes separadas por " […] ") e o
+    valor do piso escrito como no ato (R$ 57,31/MWh) aparecem no texto extraído do PDF;
+    a página é a que contém a parte do trecho com o valor do piso."""
+    if not paginas:
+        return False, None, "texto do PDF não extraído (pdftotext ausente ou arquivo ilegível)"
+    texto = normas_pld.normaliza(" ".join(paginas))
+    trecho = ato.get("trecho") or ""
+    partes = normas_pld.partes(trecho)
+    faltam = [p_ for p_ in partes if normas_pld.normaliza(p_) not in texto]
+    valor = "R$ " + _num_br(ato["pld_min"]) + "/MWh" if ato.get("pld_min") is not None else None
+    tem_valor = bool(valor) and valor in texto
+    com_valor = next((p_ for p_ in partes if valor and valor in p_), None)
+    pagina = pagina_do_trecho(paginas, com_valor) if com_valor else None
+    ok = bool(partes) and not faltam and tem_valor
+    detalhe = (f"{len(partes) - len(faltam)} de {len(partes)} partes do trecho literal encontradas no texto extraído; piso "
+               f"{valor or 'sem valor'} {'presente' if tem_valor else 'ausente'} no texto" + (f" (página {pagina})" if pagina else ""))
+    return ok, pagina, detalhe
+
+
+def _vintage_regulacao(doc_id, ctx):
+    """Vintage do documento no silver do módulo Regulação (só leitura): arquivo no bronze,
+    sha256 e captura. None quando o silver ou o arquivo não estão neste ambiente."""
+    caminho = ctx.get("regulacao_db") if "regulacao_db" in ctx else os.path.join(base.SILVER, "regulacao.db")
+    if not doc_id or not caminho or not os.path.exists(caminho):
+        return None
+    try:
+        con = sqlite3.connect(f"file:{caminho}?mode=ro", uri=True, timeout=30)
+        try:
+            row = con.execute("""SELECT arquivo, sha256, capturado_em FROM vintages WHERE dataset='regulacao_documentos' AND recurso=?
+                                 ORDER BY capturado_em DESC LIMIT 1""", (doc_id,)).fetchone()
+        finally:
+            con.close()
+    except sqlite3.Error:
+        return None
+    if not row or not row[0] or not os.path.exists(os.path.join(base.RAIZ, row[0])):
+        return None
+    return {"arquivo": row[0], "sha256": row[1], "capturado_em": row[2]}
+
+
+def _confere_ato_vigente(d, ctx):
+    """Ato que fixa o piso no dia de referência, conferido no PDF do próprio ato (cópia
+    baixada pelo módulo Regulação, sha256 igual ao registrado em documentos.json): é o
+    segundo arquivo das fichas de horas no piso. None quando não há limites."""
+    if not d["atos"]:
+        return None
+    nome = d["lim_dia"].get(d["dia_ref"], {}).get("ato_pld_min")
+    ato = next((a for a in d["atos"] if a["ato"] == nome), None)
+    if not ato:
+        return {"confere": False, "detalhe": "nenhum ato vigente informa o piso no dia de referência", "arquivo": None, "ato": None}
+    base_ = {"ato": ato["ato"], "url": ato["url"], "documento": ato.get("documento_valores"), "nivel_conferencia": ato.get("nivel_conferencia"),
+             "publicado_em": ato.get("data_publicacao"), "edicao": ato.get("dou") or (f"publicado em {ato['data_publicacao']}"
+                                                                                     if ato.get("data_publicacao") else None),
+             "titulo": ato.get("documento_titulo") or ato["ato"], "arquivo": None, "sha256": None, "capturado_em": None, "pagina": None}
+    vint = _vintage_regulacao(ato.get("documento_valores"), ctx)
+    if not vint:
+        return {**base_, "confere": False,
+                "detalhe": (f"PDF de {ato['ato']} ({ato.get('documento_valores') or 'documento não identificado'}) não disponível neste "
+                            "ambiente: conferência no ato não executada nesta construção")}
+    with base.abre_bronze(vint["arquivo"]) as f:
+        bruto = f.read()
+    sha = hashlib.sha256(bruto).hexdigest()
+    paginas = (ctx.get("ler_pdf") or paginas_pdf)(bruto)
+    ok, pagina, detalhe = confere_ato_no_texto(ato, paginas)
+    sha_ok = sha == (ato.get("documento_sha256") or sha)
+    if not sha_ok:
+        detalhe += f"; sha256 do arquivo ({sha[:12]}…) diferente do registrado em documentos.json"
+    return {**base_, **vint, "sha256": sha, "pagina": pagina, "confere": ok and sha_ok, "detalhe": detalhe}
+
+
+def _publicacoes_conferidas(con, dataset):
+    """Contagem das vintages vigentes do dataset com a data de publicação conferida no S3."""
+    regs = base.registros_como_estavam_em(con, DS_CONTROLE)
+    out = {"arquivos": 0, "conferida": 0, "nao_conferida": 0, "sem_registro": 0}
+    for v in ckan.vintages_vigentes(con, dataset).values():
+        out["arquivos"] += 1
+        r_ = regs.get(f"publicacao_s3:{v['vintage_id']}", {}).get("resultado")
+        out[r_ if r_ in ("conferida", "nao_conferida") else "sem_registro"] += 1
+    return out
+
+
+def _arquivo_local_pld(cp, ano):
+    """Arquivo original do PLD do ano mais recente disponível neste ambiente (bronze do
+    pipeline de operação ou captura versionada no repositório), para a releitura."""
+    vs = cp.execute("""SELECT recurso, capturado_em, sha256, origem, arquivo FROM vintages WHERE dataset=? AND recurso=?
+                       ORDER BY capturado_em DESC""", (DS_PLD, f"pld_horario_{ano}")).fetchall()
+    for i, (rec, cap, sha, origem, arq) in enumerate(vs):
+        if arq and os.path.exists(arq if os.path.isabs(arq) else os.path.join(base.RAIZ, arq)):
+            return {"recurso": rec, "capturado_em": cap, "sha256": sha, "origem": origem, "arquivo": arq, "vigente": i == 0}
+    return None
+
+
+def _le_original(arquivo):
+    """Linhas de um CSV original (gzip ou não) por csv.reader, sem os parsers do silver."""
+    with base.abre_bronze(arquivo) as f:
+        return list(csv.reader(io.TextIOWrapper(f, encoding="utf-8-sig", newline=""), delimiter=";"))
+
+
+def _pld_relido(cache, cp, sm, horas):
+    """{hora: PLD} relido dos arquivos originais dos anos das horas, e os arquivos usados."""
+    vals, arquivos = {}, []
+    for ano in sorted({h[:4] for h in horas}):
+        if ("pld", ano) not in cache:
+            loc = _arquivo_local_pld(cp, ano)
+            cache[("pld", ano)] = (loc, releitura_pld(_le_original(loc["arquivo"])) if loc else None)
+        loc, dado = cache[("pld", ano)]
+        if loc:
+            arquivos.append(loc)
+            serie = (dado or {}).get(sm, {})
+            vals.update({h: serie[h] for h in horas if h[:4] == ano and h in serie})
+    return vals, arquivos
+
+
+def _ons_relido(con, dataset, recurso, campo, sm, inicio, fim):
+    """Valores de um CSV original do ONS (vintage mais recente do recurso) relidos por
+    leitor próprio; (valores, vintage) ou ({}, None) sem o arquivo neste ambiente."""
+    v = base.ultima_vintage(con, dataset, recurso)
+    if not v or not v.get("arquivo") or not os.path.exists(os.path.join(base.RAIZ, v["arquivo"])):
+        return {}, None
+    return releitura_ons(_le_original(v["arquivo"]), campo, sm, inicio, fim), v
+
+
+def _origem_txt(arquivos):
+    return "; ".join(f"{a['recurso']} capturado em {a['capturado_em']}" + ("" if a.get("vigente", True) else " (não é a captura vigente)")
+                     for a in arquivos)
+
+
+def _reconcilia(rotulo, horas, relidos, arquivos, calc, valor, silver, tolerancia, tol_txt, fmt):
+    """Reconciliação por releitura do arquivo original: refaz `calc` com os valores relidos.
+    Arquivo ausente: None (o motivo vira teste com ressalva). Horas faltando no arquivo
+    (captura mais antiga que a vigente): refeito nas horas presentes contra o silver nas
+    mesmas horas, com ressalva. Todas presentes: compara com o número publicado."""
+    if not arquivos:
+        return None, ev.teste("releitura do arquivo original", "ressalva",
+                              f"{rotulo}: nenhum arquivo original disponível neste ambiente; reconciliação por releitura não executada")
+    faltam = [h for h in horas if h not in relidos]
+    if faltam:
+        presentes = [h for h in horas if h in relidos]
+        if not presentes:
+            return ev.reconciliacao(f"releitura de {_origem_txt(arquivos)}: nenhuma das {len(horas)} horas do número está no arquivo",
+                                    "ressalva", tol_txt), None
+        x, y = calc({h: relidos[h] for h in presentes}), calc({h: silver[h] for h in presentes})
+        return ev.reconciliacao(
+            f"releitura de {_origem_txt(arquivos)} por leitor independente: {len(faltam)} de {len(horas)} horas não estão no arquivo "
+            f"(capturadas depois); nas {len(presentes)} horas presentes o arquivo dá {fmt(x)} e o silver dá {fmt(y)}",
+            "ressalva" if abs(x - y) <= tolerancia else "reprovado", tol_txt), None
+    x = calc(relidos)
+    return ev.reconciliacao(f"releitura de {_origem_txt(arquivos)} por leitor independente (sem o parser que alimenta o silver): {fmt(x)}",
+                            "aprovado" if abs(x - valor) <= tolerancia else "reprovado", tol_txt), None
+
+
+def _revisoes_recorte(con, dataset, series, filtro, unidade):
+    """Revisões só das séries e referências que entram no número (não do conjunto inteiro):
+    quantas observações mudaram entre capturas e a magnitude da maior mudança."""
+    hist = {}
+    for serie in series:
+        for ref, h in base.revisoes_da_serie(con, dataset, serie):
+            if filtro(ref) and len({v for _, v in h}) > 1:
+                hist[f"{serie} em {ref}"] = h
+    vint = con.execute("SELECT COUNT(*) FROM vintages WHERE dataset=?", (dataset,)).fetchone()[0]
+    mag = magnitude_revisoes(hist)
+    alvo = ", ".join(series)
+    if not mag["horas_revisadas"]:
+        return f"Nenhuma revisão de {alvo} no período do número entre as {vint} capturas integradas do conjunto."
+    return (f"{mag['horas_revisadas']} observações de {alvo} no período do número foram revistas pela fonte entre as {vint} capturas "
+            f"integradas; maior alteração de {_num_br(mag['max_abs'], 3)} {unidade} ({mag['quando_max']}), média de "
+            f"{_num_br(mag['media_abs'], 3)} {unidade}" + (f"; {mag['horas_com_troca_de_sinal']} com troca de sinal" if mag["horas_com_troca_de_sinal"] else "") + ".")
+
+
 def _evidencias(d, bloco_cmo, bloco_lim, bloco_hist, bloco_reg, a02, snap_pld, snap_sh, snap_sem, snap_bal, snap_a02, controles,
-                cp=None, con=None):
+                cp=None, con=None, ato_ref=None):
     """Fichas "Comprove este número" dos agregados principais de cada painel, no contrato
-    de pipeline/energia/evidencia.py. Cada ficha tem ao menos um teste executado nesta
-    construção; a reconciliação, quando existe, refaz o número por outro caminho."""
+    de pipeline/energia/evidencia.py. Os testes são verificações executadas nesta construção
+    (nenhum resultado escrito à mão). A reconciliação refaz o número a partir do arquivo
+    original publicado pela fonte, relido por leitor próprio (não pelo parser que alimenta o
+    silver); sem o arquivo neste ambiente, a reconciliação fica None e o motivo vira teste
+    com ressalva. A ficha da sequência A02 reconcilia CSV contra Parquet oficial."""
     pld, dia_ref = d["pld"], d["dia_ref"]
-    rev_pld = (snap_pld.get("revisoes") or {}).get("total")
     ctrl = lambda nome: [ev.teste(x["nome"], x["resultado"], x["detalhe"]) for x in controles if x["nome"].startswith(nome)]  # noqa: E731
+    veredito = lambda ok: "aprovado" if ok else "reprovado"  # noqa: E731
+    cache = {}
     out = {}
     ano = dia_ref[:4]
     arq_pld = _arquivos_snap(snap_pld, {f"pld_horario_{ano}"}, cp, DS_PLD)
     reproduzir = "python3 pipeline/energia/executar_modulo.py pld --sem-coleta"
+    media = lambda vs: sum(vs.values()) / len(vs)  # noqa: E731
     # P009: médias da semana de referência
     sr = bloco_cmo.get("semana_referencia")
     if sr:
@@ -2531,8 +2994,14 @@ def _evidencias(d, bloco_cmo, bloco_lim, bloco_hist, bloco_reg, a02, snap_pld, s
         for x in sr["por_sm"]:
             sm = x["sm"]
             soma = sum(pld[sm][h] for h in horas)
-            outra = sum(sum(pld[sm][h] for h in horas[i * 24:(i + 1) * 24]) / 24 for i in range(7)) / 7
             v = soma / 168
+            presentes = sum(1 for h in horas if h in pld[sm])
+            grade = (datetime.fromisoformat(horas[0]).weekday() == 5 and datetime.fromisoformat(horas[-1]).weekday() == 4
+                     and horas[-1].endswith("T23:00") and len(set(horas)) == 168)
+            fora_lim = [h for h in horas if situacao_hora(pld[sm][h], d["lim_dia"].get(h[:10], {})) in ("abaixo_do_piso", "acima_do_teto")]
+            relidos, arqs = _pld_relido(cache, cp, sm, horas)
+            rec, falta = _reconcilia("PLD da semana", horas, relidos, arqs, media, v, pld[sm], 1e-6, "R$ 0,000001/MWh",
+                                     lambda z: f"{_num_br(z, 6)} R$/MWh")
             out[f"pld_semana_{sm}"] = _evidencia(
                 indicador=f"PLD médio da semana operativa de {c.data_br(sr['inicio'])} a {c.data_br(sr['fim'])}",
                 valor_exibido=_br(v) + "/MWh", valor=v, unidade="R$/MWh", periodo={"inicio": horas[0], "fim": horas[-1]},
@@ -2542,65 +3011,93 @@ def _evidencias(d, bloco_cmo, bloco_lim, bloco_hist, bloco_reg, a02, snap_pld, s
                 consulta=f"PLD_HORARIO, SUBMERCADO={c.NOME_SUBMERCADO[sm].split('/')[0].upper()}, horas de {horas[0]} a {horas[-1]} (horário de Brasília)",
                 formula="PLD_semana = Σ PLD_h ÷ 168",
                 numerador={"descricao": "soma do PLD das 168 horas (R$/MWh × h)", "valor": c.r(soma, 4)},
-                denominador={"descricao": "horas", "valor": 168}, cobertura="168 de 168 horas",
-                tratamento_ausencia="semana com hora ausente não recebe média", revisoes=rev_pld,
-                testes=[ev.teste("semana completa", "aprovado", "168 horas presentes, uma por hora de sábado a sexta")],
-                reconciliacao=ev.reconciliacao(
-                    f"média das sete médias diárias da mesma semana (outra ordem de soma): {_num_br(outra, 6)} R$/MWh",
-                    "aprovado" if abs(outra - v) <= 1e-6 else "reprovado", "0,000001 R$/MWh"),
+                denominador={"descricao": "horas", "valor": 168}, cobertura=f"{presentes} de 168 horas",
+                tratamento_ausencia="semana com hora ausente não recebe média",
+                revisoes=_revisoes_recorte(cp, DS_PLD, [f"pld.{sm}"], lambda r_: horas[0] <= r_ <= horas[-1], "R$/MWh"),
+                testes=[ev.teste("168 horas presentes, de sábado 00h a sexta 23h", veredito(presentes == 168 and grade),
+                                 f"{presentes} horas com PLD; primeira {horas[0]}, última {horas[-1]}"),
+                        ev.teste("PLD dentro dos limites vigentes em todas as horas", veredito(not fora_lim) if d["lim_dia"] else "ressalva",
+                                 (f"{len(fora_lim)} horas abaixo do piso ou acima do teto horário" if d["lim_dia"] else "limites indisponíveis"))]
+                       + ([falta] if falta else []),
+                reconciliacao=rec,
                 download=[{"rotulo": "CSV semanal (DECOMP, DESSEM e PLD)", "url": "/energia/series/pld_cmo_semanal.csv"},
                           {"rotulo": "CSV horário (CMO e PLD)", "url": "/energia/series/pld_cmo_horario.csv"}],
                 reproducao=reproduzir + "\nFiltrar pld_cmo_horario.csv pelas horas da semana e tirar a média da coluna PLD_" + sm + ".")
             soma_m = sum(d["sh"][sm][k] for k in meias)
-            outra_m = sum(sum(d["sh"][sm][k] for k in meias[i * 48:(i + 1) * 48]) / 48 for i in range(7)) / 7
             vm = soma_m / 336
+            na_grade = sum(1 for k in meias if k in d["sh"][sm])
+            rec_sh = ([f"CMO_SEMIHORARIO_{a_}" for a_ in sorted({meias[0][:4], meias[-1][:4]})])
+            relidos_m, vints = {}, []
+            for recurso in rec_sh:
+                vals_, v_ = _ons_relido(con, DS_SH, recurso, "val_cmo", sm, meias[0], meias[-1])
+                relidos_m.update(vals_)
+                if v_:
+                    vints.append({**v_, "vigente": True})
+            rec_m, falta_m = _reconcilia("CMO do DESSEM da semana", meias, relidos_m, vints, media, vm, d["sh"][sm], 1e-6,
+                                         "R$ 0,000001/MWh", lambda z: f"{_num_br(z, 6)} R$/MWh")
             out[f"dessem_semana_{sm}"] = _evidencia(
                 indicador=f"CMO médio do DESSEM na semana operativa de {c.data_br(sr['inicio'])} a {c.data_br(sr['fim'])}",
                 valor_exibido=_br(vm) + "/MWh", valor=vm, unidade="R$/MWh", periodo={"inicio": meias[0], "fim": meias[-1]},
                 entidade=c.NOME_SUBMERCADO[sm], universo="336 meias horas da semana operativa",
                 filtros=[f"subsistema {sm}", f"semana operativa que termina em {c.data_br(sr['fim'])}"], fonte=FONTE_SH,
-                arquivos=_arquivos_snap(snap_sh, {f"CMO_SEMIHORARIO_{sr['fim'][:4]}", f"CMO_SEMIHORARIO_{sr['inicio'][:4]}"}, con, DS_SH),
+                arquivos=_arquivos_snap(snap_sh, set(rec_sh), con, DS_SH),
                 consulta=f"CMO_SEMIHORARIO, id_subsistema={sm}, din_instante de {meias[0]} a {meias[-1]}",
                 formula="DESSEM_semana = Σ CMO_meia ÷ 336",
                 numerador={"descricao": "soma do CMO das 336 meias horas", "valor": c.r(soma_m, 4)},
-                denominador={"descricao": "meias horas", "valor": 336}, cobertura="336 de 336 meias horas",
+                denominador={"descricao": "meias horas", "valor": 336}, cobertura=f"{na_grade} de 336 meias horas",
                 tratamento_ausencia="semana com meia hora ausente não recebe média",
-                revisoes=(snap_sh.get("revisoes") or {}).get("total"),
+                revisoes=_revisoes_recorte(con, DS_SH, [f"cmo_sh.{sm}"], lambda r_: meias[0] <= r_ <= meias[-1], "R$/MWh"),
                 testes=ctrl("CMO semi-horário: esquema") + [ev.teste(
-                    "produto diferente do CMO semanal", "aprovado",
-                    f"o CMO semanal do DECOMP da mesma semana é {_br(x['decomp'])}/MWh; a diferença é publicada, não reconciliada")],
-                reconciliacao=ev.reconciliacao(
-                    f"média das sete médias diárias de 48 meias horas: {_num_br(outra_m, 6)} R$/MWh",
-                    "aprovado" if abs(outra_m - vm) <= 1e-6 else "reprovado", "0,000001 R$/MWh"),
+                    "336 meias horas na grade de 30 minutos", veredito(na_grade == 336),
+                    f"{na_grade} instantes da grade de {meias[0]} a {meias[-1]} com valor publicado")] + ([falta_m] if falta_m else []),
+                reconciliacao=rec_m,
                 download=[{"rotulo": "CSV semanal (DECOMP, DESSEM e PLD)", "url": "/energia/series/pld_cmo_semanal.csv"}],
                 reproducao=reproduzir + "\nSomar as meias horas da semana no arquivo CMO_SEMIHORARIO do ano e dividir por 336.")
     # P010: permanência no piso no ano de referência
     if bloco_lim.get("disponivel"):
         atos_ano = ", ".join(sorted({a["ato"] for a in d["atos"] if str(a.get("ano")) == ano}))
+        item_ato, extracao = None, None
+        if ato_ref and ato_ref.get("arquivo"):
+            item_ato = {"recurso": f"{ato_ref['ato']} ({ato_ref['documento']}.pdf)", "arquivo": ato_ref["arquivo"], "sha256": ato_ref["sha256"],
+                        "capturado_em": ato_ref["capturado_em"], "publicado_em": ato_ref["publicado_em"], "url": ato_ref["url"],
+                        "nivel_conferencia": ato_ref["nivel_conferencia"]}
+            extracao = {"documento": ato_ref["titulo"], "edicao": ato_ref["edicao"] or "edição não registrada",
+                        "pagina": f"página {ato_ref['pagina']} do PDF" if ato_ref.get("pagina") else "página não identificada",
+                        "conferencia": f"{ato_ref['detalhe']}; nível de conferência do módulo Regulação: {ato_ref['nivel_conferencia']}"}
         for x in bloco_lim["permanencia_anual"]:
             if str(x["ano"]) != ano or not x["horas_com_limite"]:
                 continue
             sm = x["sm"]
             v = 100 * x["horas_piso"] / x["horas_com_limite"]
-            sens = x["sensibilidade_meio_centavo"]["horas_piso"]
+            hs = [h for h in pld[sm] if h[:4] == ano and h <= d["ultima_hora"]]
+            relidos, arqs = _pld_relido(cache, cp, sm, hs)
+
+            def conta_piso(vals_):
+                return sum(1 for h, p_ in vals_.items() if situacao_hora(p_, d["lim_dia"].get(h[:10], {})) == "piso")
+            rec, falta = _reconcilia("Horas no piso", hs, relidos, arqs, conta_piso, x["horas_piso"], pld[sm], 0, "0 hora (contagem exata)",
+                                     lambda z: f"{z} horas no piso")
+            testes = ctrl("PLD dentro dos limites") + ctrl("Limites vigentes por dia")
+            if ato_ref is not None:
+                testes.append(ev.teste("ato vigente conferido no PDF", veredito(ato_ref["confere"]) if ato_ref.get("arquivo") else "ressalva",
+                                       f"{ato_ref.get('ato') or 'sem ato'}: {ato_ref['detalhe']}"))
             out[f"piso_{ano}_{sm}"] = _evidencia(
                 indicador=f"Horas de {ano} com o PLD no piso", valor_exibido=_num_br(v, 2) + "%", valor=v, unidade="% das horas",
                 periodo={"inicio": f"{ano}-01-01T00:00", "fim": d["ultima_hora"]}, entidade=c.NOME_SUBMERCADO[sm],
                 universo=f"horas de {ano} com PLD publicado e limites vigentes até o dia de referência",
                 filtros=[f"ano {ano}" + (" (parcial)" if x["parcial"] else ""), f"submercado {c.NOME_SUBMERCADO[sm]}"],
-                fonte=_fonte_composta(c.FONTE_CCEE_PLD, {"orgao": "ANEEL", "dataset": "Atos anuais de limites do PLD", "recurso": atos_ano,
-                                                         "url_dataset": d["atos"][0]["url"], "url_primaria": d["atos"][0]["url"], "licenca": ""}),
-                arquivos=arq_pld,
-                consulta=f"PLD_HORARIO, submercado {c.NOME_SUBMERCADO[sm]}, ano {ano}; mínimo vigente por dia segundo {atos_ano}",
-                formula="100 × nº de horas com |PLD − mínimo vigente| ≤ R$ 0,01/MWh ÷ nº de horas com limites vigentes",
+                fonte=_fonte_composta(c.FONTE_CCEE_PLD, _fonte_atos([a for a in d["atos"] if str(a.get("ano")) == ano] or d["atos"], atos_ano)),
+                arquivos=arq_pld + ([item_ato] if item_ato else []), extracao_pdf=extracao,
+                consulta=(f"PLD_HORARIO, submercado {c.NOME_SUBMERCADO[sm]}, ano {ano}; mínimo vigente por dia segundo {atos_ano}"
+                          + (f" ({ato_ref['url']})" if ato_ref and ato_ref.get("url") else "")),
+                formula="100 × nº de horas com PLD igual ao mínimo vigente ao centavo (|PLD − mínimo| ≤ R$ 0,005/MWh) ÷ nº de horas com limites vigentes",
                 numerador={"descricao": "horas no piso", "valor": x["horas_piso"]},
                 denominador={"descricao": "horas com limites vigentes", "valor": x["horas_com_limite"]},
+                exclusoes=[f"{x['horas_um_centavo_acima_do_piso']} horas exatamente um centavo acima do piso, contadas à parte",
+                           f"sensibilidade com R$ 0,01/MWh na hora: {x['sensibilidade_um_centavo']['horas_piso']} horas"],
                 cobertura=f"{x['horas']} horas; {x['horas_sem_limite']} sem limite vigente",
                 tratamento_ausencia="hora sem PLD não entra; dia sem ato vigente conta como sem limite e fica fora do denominador",
-                revisoes=rev_pld, testes=ctrl("PLD dentro dos limites") + ctrl("Limites vigentes por dia"),
-                reconciliacao=ev.reconciliacao(
-                    f"contagem com tolerância de meio centavo: {sens} horas no piso", "aprovado" if sens == x["horas_piso"] else "ressalva",
-                    "R$ 0,005/MWh (a regra publicada usa R$ 0,01/MWh)"),
+                revisoes=_revisoes_recorte(cp, DS_PLD, [f"pld.{sm}"], lambda r_: r_[:4] == ano, "R$/MWh"),
+                testes=testes + ([falta] if falta else []), reconciliacao=rec,
                 download=[{"rotulo": "CSV diário de limites", "url": "/energia/series/pld_limites_diario.csv"}],
                 reproducao=reproduzir + "\nSomar horas_no_piso de pld_limites_diario.csv no ano e submercado e dividir pelas horas.")
     # P011: média mensal ponderada pela carga do último mês completo com carga em todas as horas
@@ -2615,34 +3112,51 @@ def _evidencias(d, bloco_cmo, bloco_lim, bloco_hist, bloco_reg, a02, snap_pld, s
         num = sum(pld[sm][h] * d["carga"][sm][h] for h in hs)
         den = sum(d["carga"][sm][h] for h in hs)
         v = num / den
-        # outro caminho: somas diárias de numerador e denominador, agregadas no fim
-        dias = defaultdict(lambda: [0.0, 0.0])
-        for h in hs:
-            dias[h[:10]][0] += pld[sm][h] * d["carga"][sm][h]
-            dias[h[:10]][1] += d["carga"][sm][h]
-        outra = sum(a for a, _ in dias.values()) / sum(b for _, b in dias.values())
         cargas = [d["carga"][sm][h] for h in hs]
+        horas_mes = calendar.monthrange(int(mes[:4]), int(mes[5:7]))[1] * 24
+        # releitura: PLD do arquivo da CCEE e carga do arquivo do ONS baixado por este módulo
+        relidos, arqs = _pld_relido(cache, cp, sm, hs)
+        carga_rel, v_bal = _ons_relido(con, DS_BAL_CONF, f"BALANCO_ENERGIA_SUBSISTEMA_{mes[:4]}", "val_carga", sm, hs[0], hs[-1])
+        dif_carga = [h for h in hs if h in carga_rel and abs(carga_rel[h] - d["carga"][sm][h]) > 1e-6]
+        testes = [ev.teste("todas as horas do mês com PLD e carga", veredito(len(hs) == horas_mes),
+                           f"{len(hs)} de {horas_mes} horas do mês com PLD e carga publicada"),
+                  ev.teste("carga positiva em todas as horas usadas como peso", veredito(min(cargas) > 0),
+                           f"menor carga horária do mês: {_num_br(min(cargas), 1)} MWmed")] + ctrl("Carga do ONS usada como peso")
+        if not arqs or not v_bal:
+            rec = None
+            testes.append(ev.teste("releitura dos arquivos originais", "ressalva",
+                                   ("arquivo da CCEE" if not arqs else "arquivo do balanço do ONS") + " não disponível neste ambiente; "
+                                   "reconciliação por releitura não executada"))
+        else:
+            faltam = [h for h in hs if h not in relidos or h not in carga_rel]
+            pares_ = [(relidos[h], carga_rel[h]) for h in hs if h in relidos and h in carga_rel and carga_rel[h] > 0]
+            x_ = media_ponderada(pares_)
+            origem = _origem_txt(arqs + [{**v_bal, "vigente": True}])
+            if faltam or dif_carga:
+                rec = ev.reconciliacao(
+                    f"releitura de {origem} por leitor independente: {_num_br(x_, 6) if x_ is not None else 'sem valor'} R$/MWh; "
+                    f"{len(faltam)} horas ausentes nos arquivos relidos e {len(dif_carga)} horas com carga diferente da usada (captura "
+                    "posterior com revisão do ONS)", "ressalva", "R$ 0,000001/MWh (mesmos números somados em outra ordem)")
+            else:
+                rec = ev.reconciliacao(f"releitura de {origem} por leitor independente (sem os parsers que alimentam o silver): "
+                                       f"{_num_br(x_, 6)} R$/MWh", veredito(x_ is not None and abs(x_ - v) <= 1e-6),
+                                       "R$ 0,000001/MWh (mesmos números somados em outra ordem)")
+        rv_carga = _revisoes_recorte(cp, DS_BAL, [f"carga.{sm}"], lambda r_: r_[:7] == mes, "MWmed")
+        rv_pld = _revisoes_recorte(cp, DS_PLD, [f"pld.{sm}"], lambda r_: r_[:7] == mes, "R$/MWh")
         out[f"ponderada_{mes}_{sm}"] = _evidencia(
             indicador=f"PLD médio de {c.mes_br(mes)} ponderado pela carga", valor_exibido=_br(v) + "/MWh", valor=v, unidade="R$/MWh",
-            periodo={"inicio": hs[0], "fim": hs[-1]}, entidade=c.NOME_SUBMERCADO[sm], universo="horas do mês com PLD e carga",
+            periodo={"inicio": hs[0], "fim": hs[-1]}, entidade=c.NOME_SUBMERCADO[sm], universo="horas do mês com PLD e carga positiva",
             filtros=[f"mês {mes}", f"submercado {c.NOME_SUBMERCADO[sm]} e subsistema {sm} do ONS"],
             fonte=_fonte_composta(c.FONTE_CCEE_PLD, FONTE_BAL),
             arquivos=_arquivos_snap(snap_pld, {f"pld_horario_{mes[:4]}"}, cp, DS_PLD)
                      + _arquivos_snap(snap_bal, {f"BALANCO_ENERGIA_SUBSISTEMA_{mes[:4]}"}, cp, DS_BAL),
             consulta=f"PLD_HORARIO submercado {c.NOME_SUBMERCADO[sm]} e BALANCO_ENERGIA_SUBSISTEMA id_subsistema={sm} (val_carga), horas de {mes}",
-            formula="Σ PLD_h × carga_h ÷ Σ carga_h", numerador={"descricao": "Σ PLD × carga (R$)", "valor": c.r(num, 2)},
+            formula="Σ PLD_h × carga_h ÷ Σ carga_h (carga_h > 0)", numerador={"descricao": "Σ PLD × carga (R$)", "valor": c.r(num, 2)},
             denominador={"descricao": "Σ carga (MWh)", "valor": c.r(den, 3)},
-            pesos="carga verificada do subsistema na hora (MWmed; numa hora, MWmed equivale a MWh)",
-            cobertura=f"{len(hs)} horas, todas com carga",
-            tratamento_ausencia="hora sem carga fica fora da ponderada (campo mesmas_horas no CSV mensal)",
-            revisoes={"PLD": rev_pld, "carga": (snap_bal.get("revisoes") or {}).get("total")},
-            testes=[ev.teste("mesmas horas da média temporal", "aprovado", f"{len(hs)} horas com PLD e carga, mês completo"),
-                    ev.teste("carga positiva", "aprovado" if min(cargas) > 0 else "reprovado",
-                             f"menor carga horária do mês: {_num_br(min(cargas), 1)} MWmed"),
-                    ev.teste("média temporal do mesmo mês (medida diferente, publicada ao lado)", "aprovado",
-                             f"{_br(mh[sm]['temporal'][cand[-1]])}/MWh")],
-            reconciliacao=ev.reconciliacao(f"somas diárias de numerador e denominador agregadas no fim: {_num_br(outra, 6)} R$/MWh",
-                                           "aprovado" if abs(outra - v) <= 1e-6 else "reprovado", "0,000001 R$/MWh"),
+            pesos="carga verificada do subsistema na hora (MWmed; numa hora, MWmed equivale a MWh); hora com carga ≤ 0 sai do peso",
+            cobertura=f"{len(hs)} horas, todas com carga positiva",
+            tratamento_ausencia="hora sem carga ou com carga ≤ 0 fica fora da ponderada (campo mesmas_horas no CSV mensal)",
+            revisoes=f"PLD: {rv_pld} Carga: {rv_carga}", testes=testes, reconciliacao=rec,
             download=[{"rotulo": "CSV mensal", "url": "/energia/series/pld_mensal.csv"}],
             reproducao=reproduzir + "\nCruzar pld_cmo_horario.csv (PLD) com a carga horária do balanço do ONS na mesma hora e aplicar a fórmula.")
     # P012: separação nos últimos 12 meses por par
@@ -2654,8 +3168,16 @@ def _evidencias(d, bloco_cmo, bloco_lim, bloco_hist, bloco_reg, a02, snap_pld, s
         a, b = x["par"].split("_")
         v = 100 * x["horas_separadas"] / x["horas"]
         mt = bloco_reg["matriz"]["frac_separadas"][SM.index(a)][SM.index(b)]
-        # outro caminho: contagem pelas diferenças arredondadas ao centavo (|Δ| ≥ 2 centavos)
-        outra = sum(1 for h in h12 if round(abs(pld[a][h] - pld[b][h]) * 100) >= 2)
+        ra, arqs = _pld_relido(cache, cp, a, h12)
+        rb, _ = _pld_relido(cache, cp, b, h12)
+        juntos = {h: (ra[h], rb[h]) for h in h12 if h in ra and h in rb}
+        silver_ab = {h: (pld[a][h], pld[b][h]) for h in h12}
+
+        def conta_sep(vals_):
+            return sum(1 for pa, pb in vals_.values() if separado(pa, pb))
+        rec, falta = _reconcilia("Separação 12 meses", h12, juntos, arqs, conta_sep, x["horas_separadas"], silver_ab, 0,
+                                 "0 hora (contagem exata)", lambda z: f"{z} horas separadas")
+        comuns_ok = len(h12) == x["horas"] and all(h in pld[s_] for s_ in SM for h in h12)
         out[f"separacao_12m_{x['par']}"] = _evidencia(
             indicador="Frequência de separação de preços nos últimos 12 meses", valor_exibido=_num_br(v, 2) + "%", valor=v,
             unidade="% das horas", periodo={"inicio": per["inicio"], "fim": per["fim"]},
@@ -2667,13 +3189,14 @@ def _evidencias(d, bloco_cmo, bloco_lim, bloco_hist, bloco_reg, a02, snap_pld, s
             formula="100 × horas com |PLD_A − PLD_B| > R$ 0,01/MWh ÷ horas",
             numerador={"descricao": "horas separadas", "valor": x["horas_separadas"]},
             denominador={"descricao": "horas", "valor": x["horas"]}, cobertura=f"{x['horas']} horas",
-            tratamento_ausencia="hora sem um dos submercados não entra", revisoes=rev_pld,
-            testes=[ev.teste("mesma hora nos dois submercados", "aprovado", f"{x['horas']} horas comuns aos quatro submercados"),
-                    ev.teste("matriz de separação", "aprovado" if mt is not None and abs(mt - x["frac_separadas"]) < 1e-12 else "reprovado",
-                             f"a matriz 12m publica {_pct(mt, 2)} para o par")],
-            reconciliacao=ev.reconciliacao(
-                f"contagem pelas diferenças arredondadas ao centavo (|Δ| de 2 centavos ou mais): {outra} horas",
-                "aprovado" if outra == x["horas_separadas"] else "reprovado", "0 hora (contagem exata)"),
+            exclusoes=[f"{x['horas_diferenca_de_um_centavo']} horas com diferença de exatamente um centavo, fora da separação"],
+            tratamento_ausencia="hora sem um dos submercados não entra",
+            revisoes=_revisoes_recorte(cp, DS_PLD, [f"pld.{a}", f"pld.{b}"], lambda r_: per["inicio"] <= r_ <= per["fim"], "R$/MWh"),
+            testes=[ev.teste("horas com os quatro submercados", veredito(comuns_ok),
+                             f"{len(h12)} horas no período, {x['horas']} na contagem publicada, todas com PLD nos quatro submercados"),
+                    ev.teste("matriz de separação", veredito(mt is not None and abs(mt - x["frac_separadas"]) < 1e-12),
+                             f"a matriz 12m publica {_pct(mt, 2)} para o par")] + ([falta] if falta else []),
+            reconciliacao=rec,
             download=[{"rotulo": "CSV diário de separação", "url": "/energia/series/pld_separacao_diaria.csv"}],
             reproducao=reproduzir + "\nSomar horas_separadas do par nos últimos 365 dias de pld_separacao_diaria.csv e dividir pelas horas.")
     # A02

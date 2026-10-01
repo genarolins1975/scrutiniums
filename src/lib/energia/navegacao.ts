@@ -124,8 +124,8 @@ export const DESTINOS_NAVEGACAO: DestinoNavegacao[] = [
     pergunta: "Quanto custa a energia ao consumidor e o que compõe a conta?",
     resumo: "Tarifas de aplicação por distribuidora, componentes da conta, bandeiras e simulação por perfil de consumo.",
     grupo: "consumidor-e-territorio",
-    publicado: false,
-    integrado: false,
+    publicado: true,
+    integrado: true,
   },
   {
     slug: "perdas",
@@ -134,8 +134,8 @@ export const DESTINOS_NAVEGACAO: DestinoNavegacao[] = [
     pergunta: "Onde se perde energia, quanto e com que efeito econômico?",
     resumo: "Perdas técnicas e não técnicas por distribuidora, o realizado diante da referência regulatória e o custo que chega à tarifa.",
     grupo: "consumidor-e-territorio",
-    publicado: false,
-    integrado: false,
+    publicado: true,
+    integrado: true,
   },
   {
     slug: "qualidade",
@@ -144,8 +144,8 @@ export const DESTINOS_NAVEGACAO: DestinoNavegacao[] = [
     pergunta: "Com que frequência e por quanto tempo falta energia?",
     resumo: "Duração e frequência das interrupções por distribuidora, limites regulatórios e compensações publicadas.",
     grupo: "consumidor-e-territorio",
-    publicado: false,
-    integrado: false,
+    publicado: true,
+    integrado: true,
   },
   {
     slug: "inclusao-energetica",
@@ -154,8 +154,8 @@ export const DESTINOS_NAVEGACAO: DestinoNavegacao[] = [
     pergunta: "Quem tem acesso adequado e para quem a energia pesa mais?",
     resumo: "Tarifa Social, universalização do acesso, sistemas isolados e o peso da energia no orçamento das famílias.",
     grupo: "consumidor-e-territorio",
-    publicado: false,
-    integrado: false,
+    publicado: true,
+    integrado: true,
   },
 
   // 5. Empresas e futuro

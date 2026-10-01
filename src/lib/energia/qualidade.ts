@@ -1,0 +1,1118 @@
+/**
+ * Módulo Qualidade do serviço de distribuição (P051 a P054), lado da interface:
+ * lógica pura, sem React, testada em node (src/tests/energia-qualidade.test.ts).
+ *
+ * O que fica aqui e por quê:
+ *  - as respostas curtas e os textos de "o que mudou" de cada painel, montados por
+ *    regra a partir dos números da gold (nenhuma frase traz número fixo; quando o
+ *    número falta, a frase diz que falta e por quê);
+ *  - as linhas que alimentam gráfico, tabela e exportação de cada painel: o gráfico,
+ *    a tabela equivalente e o CSV saem da MESMA lista, então mostram as mesmas linhas;
+ *  - a leitura dos arquivos de download (municípios e conjuntos), que a página só
+ *    busca no navegador quando o mapa ou o explorador de conjuntos aparece (contrato,
+ *    seção 5.1), e a conversão de horas decimais em horas e minutos.
+ *
+ * Nenhuma fórmula do indicador é refeita aqui: DEC, FEC, limites, razões, taxas e
+ * compensações vêm prontos do pipeline (pipeline/energia/modulos/qualidade.py). As
+ * únicas contas são de exibição: horas decimais em minutos (9,33 h são 9 h 20 min, nunca
+ * 9 h 33 min), reais em milhões e classes de histograma de valores já publicados.
+ */
+import type { DistribuicaoHistograma } from "./distribuicao";
+import { campo, tiposUrl, type Leitor } from "./estadoUrl";
+import { dataBR, mesAno, num, pct } from "./formato";
+import { LIMITE_COMPARACAO, type ColunaTabela, type LinhaTabela } from "./tabela";
+import type {
+  BrasilAnual,
+  Conjuntos,
+  Distribuidora,
+  FaixaHistograma,
+  GrupoParcela,
+  ParcialAno,
+  QualidadeGold,
+  QualidadeSeriesDistribuidorasGold,
+  Quantis,
+  RelacaoMunicipio,
+  TipoCompensacao,
+} from "./tipos-qualidade";
+
+/* ---------------------------------------------------------------- unidades */
+
+/**
+ * Horas decimais em horas e minutos: a ANEEL publica o DEC em horas e centésimos de
+ * hora, então 9,33 h são 9 h e 0,33 × 60 = 19,8 min, arredondados para 20 min.
+ * Ler "9,33" como 9 h 33 min é o erro que o critério de aceite do P051 proíbe.
+ */
+export function horasEMinutos(h: number | null | undefined): string {
+  if (h === null || h === undefined || !Number.isFinite(h) || h < 0) return "sem dado";
+  const total = Math.round(h * 60);
+  const horas = Math.floor(total / 60);
+  const minutos = total % 60;
+  if (horas === 0) return `${minutos} min`;
+  if (minutos === 0) return `${horas.toLocaleString("pt-BR")} h`;
+  return `${horas.toLocaleString("pt-BR")} h ${minutos} min`;
+}
+
+/** Reais em milhões, com uma casa ("R$ 1.007,2 milhões"); ausência é "sem dado". */
+export function reaisMilhoes(v: number | null | undefined, casas = 1): string {
+  if (v === null || v === undefined || !Number.isFinite(v)) return "sem dado";
+  return `R$ ${num(v / 1e6, casas)} milhões`;
+}
+
+/** Comparação de dois números na precisão exibida: "abaixo", "acima" ou "igual". */
+export function comparaNaPrecisao(a: number, b: number, casas: number): "abaixo" | "acima" | "igual" {
+  const f = 10 ** casas;
+  const x = Math.round(a * f);
+  const y = Math.round(b * f);
+  return x < y ? "abaixo" : x > y ? "acima" : "igual";
+}
+
+/** "vez" abaixo de 2 e "vezes" a partir de 2 (0,86 vez o limite; 2,5 vezes o limite). */
+export function vezes(x: number): string {
+  return Math.abs(x) >= 2 ? "vezes" : "vez";
+}
+
+/** Lista em português: "a", "a e b", "a, b e c". */
+export function listaPt(itens: readonly string[]): string {
+  if (itens.length <= 1) return itens[0] ?? "";
+  return `${itens.slice(0, -1).join(", ")} e ${itens[itens.length - 1]}`;
+}
+
+/** Nome exibido de uma distribuidora: sigla publicada pela ANEEL; sem sigla, o nome do IASC; sem os dois, o CNPJ. */
+export function rotuloDistribuidora(d: { sigla: string | null; nome_comercial?: string | null; cnpj: string }): string {
+  return d.sigla ?? d.nome_comercial ?? `CNPJ ${d.cnpj}`;
+}
+
+/* ---------------------------------------------------------------- estado na URL */
+
+const leitorCnpj: Leitor<string> = { ler: (b) => (/^\d{14}$/.test(b) ? b : undefined), escrever: (v) => v };
+const leitorMunicipio: Leitor<string> = { ler: (b) => (/^\d{7}$/.test(b) ? b : undefined), escrever: (v) => v };
+
+/**
+ * `?dist=` guarda até quatro distribuidoras (CNPJ), a primeira em destaque. Os painéis
+ * leem o mesmo parâmetro: escolher um ponto no gráfico de limites marca a mesma linha
+ * nas tabelas, abre o histórico dela e entra na comparação dos pequenos múltiplos; o
+ * voltar do navegador desfaz a escolha.
+ */
+export const CAMPO_DIST = campo(tiposUrl.lista(leitorCnpj, { max: LIMITE_COMPARACAO }), [] as string[], { param: "dist" });
+/** `?mun=`: município escolhido no mapa (código IBGE de 7 dígitos), o mesmo na tabela e no histórico. */
+export const CAMPO_MUN = campo(leitorMunicipio, "", { param: "mun" });
+
+export const MEDIDAS_MAPA = ["dec_max", "dec_min", "fec_max", "fec_min"] as const;
+export type MedidaMapa = (typeof MEDIDAS_MAPA)[number];
+/** `?med=`: medida colorida no mapa municipal. */
+export const CAMPO_MEDIDA = campo(tiposUrl.opcao(MEDIDAS_MAPA), "dec_max" as MedidaMapa, { param: "med" });
+
+export const INDICADORES = ["dec", "fec"] as const;
+export type Indicador = (typeof INDICADORES)[number];
+/** `?ind=`: DEC ou FEC no painel de limites. */
+export const CAMPO_IND = campo(tiposUrl.opcao(INDICADORES), "dec" as Indicador, { param: "ind" });
+
+/** Põe a distribuidora em destaque (primeira da lista), sem repetir e sem passar de quatro. */
+export function destacar(lista: readonly string[], id: string): string[] {
+  return [id, ...lista.filter((x) => x !== id)].slice(0, LIMITE_COMPARACAO);
+}
+
+/* ---------------------------------------------------------------- atalhos da gold */
+
+export function anoBrasil(g: QualidadeGold, ano: number): BrasilAnual | null {
+  return g.brasil.anual.find((a) => a.ano === ano) ?? null;
+}
+
+const ROTULO_UNIDADE: Record<Indicador, string> = { dec: "h", fec: "interrupções" };
+export function unidadeIndicador(ind: Indicador): string {
+  return ROTULO_UNIDADE[ind];
+}
+
+/* ---------------------------------------------------------------- atualidade */
+
+/**
+ * Aviso de fonte defasada. Os indicadores de continuidade têm frequência mensal; a
+ * ANEEL republica o conjunto inteiro a cada mês. Mais de 60 dias entre a última
+ * publicação da fonte e o processamento quer dizer que pelo menos uma publicação
+ * mensal esperada não aconteceu: o painel continua com a última versão validada e diz
+ * isso. Sem data de publicação informada pela fonte, não há aviso (nunca se usa a data
+ * de captura no lugar).
+ */
+export function avisoDefasagem(publicadoEm: string | null, processadoEm: string, limiteDias = 60): string | null {
+  if (!publicadoEm) return null;
+  const dias = Math.floor((Date.parse(processadoEm) - Date.parse(publicadoEm)) / 86_400_000);
+  if (!Number.isFinite(dias) || dias <= limiteDias) return null;
+  return `A última publicação da ANEEL usada aqui é de ${dataBR(publicadoEm.slice(0, 10))}, ${dias} dias antes deste processamento: a fonte mensal deixou de publicar ao menos uma atualização esperada, e o painel mostra a última versão validada.`;
+}
+
+/** Período e defasagem da série mensal: último mês publicado e último mês nacional completo. */
+export function textoAtualidade(g: QualidadeGold): string {
+  const ult = g.brasil.mensal.at(-1);
+  const incompletos = g.brasil.mensal.filter((m) => !m.completo && m.m > g.ultimo_mes_completo).map((m) => mesAno(m.m));
+  const partes = [`Ano completo mais recente: ${g.ano_referencia}.`, `Último mês nacional completo: ${mesAno(g.ultimo_mes_completo)}.`];
+  if (ult && ult.m > g.ultimo_mes_completo && incompletos.length) {
+    partes.push(
+      `A ANEEL já publicou ${listaPt(incompletos)}, mas sem todas as distribuidoras: ${incompletos.length === 1 ? "esse mês fica" : "esses meses ficam"} fora de totais e comparações até completar.`,
+    );
+  }
+  return partes.join(" ");
+}
+
+/* ---------------------------------------------------------------- P051: duração e frequência */
+
+/** P051: DEC e FEC do Brasil no ano de referência, os dois universos e o acumulado do ano corrente. */
+export function respostaP051(g: QualidadeGold): string {
+  const ref = g.ano_referencia;
+  const a = anoBrasil(g, ref);
+  if (!a || a.dec === null || a.fec === null) return `Sem DEC e FEC nacionais para ${ref}: o ano não tem os 12 meses nacionais completos publicados.`;
+  const ant = anoBrasil(g, ref - 1);
+  let comparacao = "";
+  if (ant && ant.dec !== null && ant.fec !== null) {
+    const sd = comparaNaPrecisao(a.dec, ant.dec, 2);
+    const sf = comparaNaPrecisao(a.fec, ant.fec, 2);
+    const rel = (s: "abaixo" | "acima" | "igual") => (s === "igual" ? "iguais às" : s === "abaixo" ? "abaixo das" : "acima das");
+    comparacao =
+      sd === sf
+        ? `, ${rel(sd)} ${num(ant.dec, 2)} h e ${num(ant.fec, 2)} interrupções de ${ref - 1}`
+        : `; a duração ficou ${rel(sd)} ${num(ant.dec, 2)} h de ${ref - 1} e a frequência ${rel(sf)} ${num(ant.fec, 2)} interrupções`;
+  }
+  const conc =
+    a.dec_concessionarias !== null && a.fec_concessionarias !== null
+      ? ` Só as concessionárias, o universo do número que a ANEEL divulga: ${num(a.dec_concessionarias, 2)} h e ${num(a.fec_concessionarias, 2)} interrupções.`
+      : "";
+  return (
+    `Em ${ref}, cada unidade consumidora ficou em média ${num(a.dec, 2)} horas sem energia (${horasEMinutos(a.dec)}) ` +
+    `e teve ${num(a.fec, 2)} interrupções, considerando todas as distribuidoras${comparacao}.${conc}${respostaParcial(g.parcial)}`
+  );
+}
+
+/** Acumulado do ano corrente: só meses nacionais completos nos dois anos; nunca comparado a ano cheio. */
+export function respostaParcial(p: ParcialAno | null): string {
+  if (!p || p.dec === null || p.dec_mesmos_meses_ano_anterior === null) return "";
+  const meses = listaPt(p.meses_incluidos.map((m) => mesAno(m).slice(0, 3)));
+  const s = comparaNaPrecisao(p.dec, p.dec_mesmos_meses_ano_anterior, 2);
+  const fora = p.meses_excluidos.length ? ` (${listaPt(p.meses_excluidos.map((m) => mesAno(m.m)))} fora, incompleto)` : "";
+  return ` Em ${p.ano}, somando ${meses}${fora}, foram ${num(p.dec, 2)} h, ${s === "igual" ? "iguais às" : s === "abaixo" ? "abaixo das" : "acima das"} ${num(p.dec_mesmos_meses_ano_anterior, 2)} h dos mesmos meses de ${p.ano - 1}.`;
+}
+
+/** P051, "o que mudou": a série longa e a parte expurgada do ano de referência. */
+export function mudancaP051(g: QualidadeGold): string {
+  const ref = g.ano_referencia;
+  const a = anoBrasil(g, ref);
+  const completos = g.brasil.anual.filter((x) => x.completo && x.dec !== null);
+  if (!a || a.dec === null || !completos.length) return "Sem série anual completa publicada.";
+  const maior = completos.reduce((m, x) => ((x.dec ?? -1) > (m.dec ?? -1) ? x : m));
+  const expurgo =
+    a.dec_todas_parcelas !== null
+      ? ` Somando as interrupções que a regra exclui do apurado (emergência, dia crítico, origem externa e cortes pedidos pelo ONS), cada unidade ficou ${num(a.dec_todas_parcelas, 2)} h sem energia em ${ref}.`
+      : "";
+  return `De ${completos[0].ano} a ${ref}, o maior DEC apurado nacional foi o de ${maior.ano} (${num(maior.dec, 2)} h); ${ref} fechou com ${num(a.dec, 2)} h.${expurgo}`;
+}
+
+/** Linhas anuais do Brasil (2001 em diante): gráfico, tabela e exportação usam esta lista. */
+export function linhasBrasilAnual(g: QualidadeGold): LinhaTabela[] {
+  return g.brasil.anual
+    .filter((a) => a.completo)
+    .map((a) => ({
+      ano: String(a.ano),
+      dec: a.dec,
+      dec_limite: a.dec_limite,
+      fec: a.fec,
+      fec_limite: a.fec_limite,
+      dec_concessionarias: a.dec_concessionarias,
+      fec_concessionarias: a.fec_concessionarias,
+      dec_todas_parcelas: a.dec_todas_parcelas,
+      ucs_media: a.ucs_media,
+      conjuntos: a.conjuntos,
+    }));
+}
+
+/** Meses do Brasil: o mês publicado antes de todas as distribuidoras enviarem fica fora do gráfico, com marca na tabela. */
+export function linhasBrasilMensal(g: QualidadeGold): LinhaTabela[] {
+  return g.brasil.mensal.map((m) => ({
+    m: m.m,
+    dec: m.completo ? m.dec : null,
+    fec: m.completo ? m.fec : null,
+    dec_publicado: m.dec,
+    fec_publicado: m.fec,
+    ucs: m.ucs,
+    conjuntos: m.conjuntos,
+    situacao: m.completo ? "completo" : "incompleto (envio parcial das distribuidoras)",
+  }));
+}
+
+export const ORDEM_PARCELAS: GrupoParcela[] = ["apurado", "emergencia", "dia_critico", "externa", "ons"];
+export const COR_PARCELA: Record<GrupoParcela, string> = {
+  apurado: "var(--cor-energia)",
+  emergencia: "var(--serie-termica)",
+  dia_critico: "var(--serie-solar)",
+  externa: "var(--serie-sm-se)",
+  ons: "var(--serie-referencia)",
+};
+export const ROTULO_PARCELA_CURTO: Record<GrupoParcela, string> = {
+  apurado: "Apurado (interna, IP + IND)",
+  emergencia: "Situação de emergência",
+  dia_critico: "Dia crítico",
+  externa: "Origem externa",
+  ons: "Corte pedido pelo ONS",
+};
+
+/** Parcelas do DEC nacional por ano (2010 em diante, quando a fonte publica a desagregação atual). */
+export function linhasParcelas(g: QualidadeGold): LinhaTabela[] {
+  return g.brasil.anual
+    .filter((a) => a.completo && a.parcelas_dec)
+    .map((a) => ({ ano: String(a.ano), ...a.parcelas_dec!, total: a.dec_todas_parcelas }));
+}
+
+/** Distribuidoras do ano de referência para a tabela do P051 (duração, frequência e expurgos). */
+export function linhasDistribuidorasP051(g: QualidadeGold): LinhaTabela[] {
+  return g.distribuidoras.map((d) => ({
+    id: d.cnpj,
+    sigla: rotuloDistribuidora(d),
+    cnpj: d.cnpj,
+    classificacao: d.classificacao ?? "sem classificação publicada",
+    meses: d.meses,
+    ucs: d.ucs,
+    conjuntos: d.conjuntos,
+    dec: d.dec,
+    fec: d.fec,
+    dec_todas: d.dec_todas_parcelas,
+    pct_expurgado: d.pct_dec_expurgado,
+    emergencia: d.parcelas_dec.emergencia,
+    dia_critico: d.parcelas_dec.dia_critico,
+    quebra: d.quebras_perimetro.length ? d.quebras_perimetro.map((q) => String(q.ano)).join(", ") : "nenhuma",
+  }));
+}
+
+export const COLUNAS_DIST_P051: ColunaTabela[] = [
+  { id: "sigla", rotulo: "Distribuidora", tipo: "texto" },
+  { id: "classificacao", rotulo: "Classificação", tipo: "texto", categorica: true },
+  { id: "ucs", rotulo: "UCs (média do ano)", tipo: "numero", casas: 0 },
+  { id: "conjuntos", rotulo: "Conjuntos", tipo: "numero", casas: 0 },
+  { id: "meses", rotulo: "Meses publicados", tipo: "numero", casas: 0 },
+  { id: "dec", rotulo: "DEC apurado", tipo: "numero", unidade: "h", casas: 2 },
+  { id: "fec", rotulo: "FEC apurado", tipo: "numero", unidade: "interrupções", casas: 2 },
+  { id: "dec_todas", rotulo: "DEC de todas as origens", tipo: "numero", unidade: "h", casas: 2 },
+  { id: "pct_expurgado", rotulo: "Parte expurgada do DEC", tipo: "percentual", casas: 1 },
+  { id: "emergencia", rotulo: "DEC em emergência", tipo: "numero", unidade: "h", casas: 2 },
+  { id: "dia_critico", rotulo: "DEC em dia crítico", tipo: "numero", unidade: "h", casas: 2 },
+  { id: "quebra", rotulo: "Quebra de perímetro (ano)", tipo: "texto" },
+  { id: "cnpj", rotulo: "CNPJ", tipo: "texto" },
+];
+
+/** As maiores distribuidoras em unidades consumidoras: seleção inicial dos pequenos múltiplos. */
+export function maioresDistribuidoras(g: QualidadeGold, n = LIMITE_COMPARACAO): string[] {
+  return [...g.distribuidoras]
+    .filter((d) => d.ucs !== null)
+    .sort((a, b) => (b.ucs ?? 0) - (a.ucs ?? 0) || (a.cnpj < b.cnpj ? -1 : 1))
+    .slice(0, n)
+    .map((d) => d.cnpj);
+}
+
+/**
+ * Pequenos múltiplos: uma linha por ano com o DEC (ou FEC) e o limite de cada
+ * distribuidora escolhida, nas colunas `<ind>_<cnpj>` e `lim_<cnpj>`. Ano sem valor
+ * fica nulo (lacuna), nunca zero.
+ */
+export function linhasSerieDistribuidoras(serie: QualidadeSeriesDistribuidorasGold, cnpjs: readonly string[], ind: Indicador): LinhaTabela[] {
+  const anos = new Set<number>();
+  for (const c of cnpjs) for (const a of serie.distribuidoras[c]?.anos ?? []) anos.add(a);
+  return Array.from(anos)
+    .sort((a, b) => a - b)
+    .map((ano) => {
+      const l: LinhaTabela = { ano: String(ano) };
+      for (const c of cnpjs) {
+        const s = serie.distribuidoras[c];
+        const i = s ? s.anos.indexOf(ano) : -1;
+        l[`${ind}_${c}`] = i >= 0 ? s![ind][i] : null;
+        l[`lim_${c}`] = i >= 0 ? s![ind === "dec" ? "dec_limite" : "fec_limite"][i] : null;
+      }
+      return l;
+    });
+}
+
+/* ---------------------------------------------------------------- mapa municipal */
+
+export type MunicipioQualidade = {
+  cod: string;
+  nome: string;
+  uf: string;
+  conjuntos: string[];
+  relacao: RelacaoMunicipio;
+  dec_min: number | null;
+  dec_max: number | null;
+  fec_min: number | null;
+  fec_max: number | null;
+  cnpjs: string[];
+};
+
+/**
+ * CSV com ";" como o pipeline escreve (aspas duplas só em campo com separador, aspas
+ * ou quebra de linha; BOM opcional). Vazio é ausência e fica como texto vazio.
+ */
+export function lerCsv(texto: string): Record<string, string>[] {
+  const linhas: string[][] = [];
+  let campoAtual = "";
+  let linha: string[] = [];
+  let aspas = false;
+  const t = texto.replace(/^﻿/, "");
+  for (let i = 0; i < t.length; i++) {
+    const c = t[i];
+    if (aspas) {
+      if (c === '"') {
+        if (t[i + 1] === '"') {
+          campoAtual += '"';
+          i++;
+        } else aspas = false;
+      } else campoAtual += c;
+    } else if (c === '"') aspas = true;
+    else if (c === ";") {
+      linha.push(campoAtual);
+      campoAtual = "";
+    } else if (c === "\n" || c === "\r") {
+      if (c === "\r" && t[i + 1] === "\n") i++;
+      linha.push(campoAtual);
+      campoAtual = "";
+      if (linha.length > 1 || linha[0] !== "") linhas.push(linha);
+      linha = [];
+    } else campoAtual += c;
+  }
+  if (campoAtual !== "" || linha.length) {
+    linha.push(campoAtual);
+    linhas.push(linha);
+  }
+  const [cab, ...resto] = linhas;
+  if (!cab) return [];
+  return resto.map((l) => Object.fromEntries(cab.map((k, i) => [k, l[i] ?? ""])));
+}
+
+const numeroOuNulo = (s: string | undefined): number | null => {
+  if (s === undefined || s.trim() === "") return null;
+  const v = Number(s);
+  return Number.isFinite(v) ? v : null;
+};
+
+const RELACOES: readonly RelacaoMunicipio[] = ["conjunto_exclusivo", "conjunto_compartilhado", "varios_conjuntos", "sem_conjunto_ativo", "sem_relacao_na_fonte"];
+
+/**
+ * Municípios do CSV de download (qualidade_municipios.csv): só os que existem no
+ * cadastro do IBGE (no_ibge = 1). Os códigos da base da ANEEL fora do IBGE ficam fora do
+ * mapa e são listados na gold (mapa.correspondencia.codigos_sem_ibge).
+ */
+export function municipiosDoCsv(texto: string): MunicipioQualidade[] {
+  return lerCsv(texto)
+    .filter((l) => l.no_ibge === "1")
+    .map((l) => ({
+      cod: l.cod_ibge,
+      nome: l.municipio,
+      uf: l.uf,
+      conjuntos: l.conjuntos ? l.conjuntos.split(" ").filter(Boolean) : [],
+      relacao: (RELACOES as readonly string[]).includes(l.relacao) ? (l.relacao as RelacaoMunicipio) : "sem_relacao_na_fonte",
+      dec_min: numeroOuNulo(l.dec_min_h),
+      dec_max: numeroOuNulo(l.dec_max_h),
+      fec_min: numeroOuNulo(l.fec_min),
+      fec_max: numeroOuNulo(l.fec_max),
+      cnpjs: l.cnpjs ? l.cnpjs.split(" ").filter(Boolean) : [],
+    }));
+}
+
+export const ROTULO_RELACAO: Record<RelacaoMunicipio, string> = {
+  conjunto_exclusivo: "um conjunto, só deste município",
+  conjunto_compartilhado: "um conjunto, compartilhado com outros municípios",
+  varios_conjuntos: "vários conjuntos",
+  sem_conjunto_ativo: "sem conjunto com DEC no ano",
+  sem_relacao_na_fonte: "não citado na base da ANEEL",
+};
+
+export const ROTULO_MEDIDA: Record<MedidaMapa, { rotulo: string; unidade: string; curto: string }> = {
+  dec_max: { rotulo: "Maior DEC entre os conjuntos que atendem o município", unidade: "h", curto: "DEC, maior conjunto" },
+  dec_min: { rotulo: "Menor DEC entre os conjuntos que atendem o município", unidade: "h", curto: "DEC, menor conjunto" },
+  fec_max: { rotulo: "Maior FEC entre os conjuntos que atendem o município", unidade: "interrupções", curto: "FEC, maior conjunto" },
+  fec_min: { rotulo: "Menor FEC entre os conjuntos que atendem o município", unidade: "interrupções", curto: "FEC, menor conjunto" },
+};
+
+/**
+ * Cortes fixos (não quantis) para o mapa: a mesma régua em qualquer recorte, para o
+ * leitor comparar cores entre medidas de DEC (horas) e entre medidas de FEC.
+ */
+export const CORTES_MAPA: Record<Indicador, number[]> = { dec: [5, 10, 20, 40], fec: [3, 5, 10, 20] };
+export const CORES_MAPA = ["var(--escala-seq-1)", "var(--escala-seq-2)", "var(--escala-seq-3)", "var(--escala-seq-4)", "var(--escala-seq-5)"];
+
+/** Valores do mapa para a medida escolhida: ausência fica nula (hachura), nunca zero. */
+export function valoresMapa(municipios: readonly MunicipioQualidade[], medida: MedidaMapa): Record<string, number | null> {
+  const out: Record<string, number | null> = {};
+  for (const m of municipios) out[m.cod] = m[medida];
+  return out;
+}
+
+/** Linhas da tabela sincronizada com o mapa (as mesmas que viram CSV e XLSX). */
+export function linhasMunicipios(municipios: readonly MunicipioQualidade[], rotuloCnpj: (c: string) => string): LinhaTabela[] {
+  return municipios.map((m) => ({
+    id: m.cod,
+    municipio: m.nome,
+    uf: m.uf,
+    relacao: ROTULO_RELACAO[m.relacao],
+    n_conjuntos: m.conjuntos.length,
+    dec_min: m.dec_min,
+    dec_max: m.dec_max,
+    fec_min: m.fec_min,
+    fec_max: m.fec_max,
+    distribuidoras: m.cnpjs.map(rotuloCnpj).join(", "),
+    cod_ibge: m.cod,
+  }));
+}
+
+export const COLUNAS_MUNICIPIOS: ColunaTabela[] = [
+  { id: "municipio", rotulo: "Município", tipo: "texto" },
+  { id: "uf", rotulo: "UF", tipo: "texto", categorica: true },
+  { id: "relacao", rotulo: "Relação com os conjuntos", tipo: "texto", categorica: true },
+  { id: "n_conjuntos", rotulo: "Conjuntos citados", tipo: "numero", casas: 0 },
+  { id: "dec_min", rotulo: "DEC do menor conjunto", tipo: "numero", unidade: "h", casas: 2 },
+  { id: "dec_max", rotulo: "DEC do maior conjunto", tipo: "numero", unidade: "h", casas: 2 },
+  { id: "fec_min", rotulo: "FEC do menor conjunto", tipo: "numero", unidade: "interrupções", casas: 2 },
+  { id: "fec_max", rotulo: "FEC do maior conjunto", tipo: "numero", unidade: "interrupções", casas: 2 },
+  { id: "distribuidoras", rotulo: "Distribuidoras", tipo: "texto" },
+  { id: "cod_ibge", rotulo: "Código IBGE", tipo: "texto", buscavel: true },
+];
+
+/** O município escolhido no mapa, em uma frase: intervalo dos conjuntos, nunca um DEC "do município". */
+export function respostaMunicipio(m: MunicipioQualidade, ano: number): string {
+  const lugar = `${m.nome} (${m.uf})`;
+  const dec = (a: number | null, b: number | null) => (a === b ? `${num(a, 2)} h` : `de ${num(a, 2)} a ${num(b, 2)} h`);
+  const fec = (a: number | null, b: number | null) => (a === b ? `${num(a, 2)} interrupções` : `de ${num(a, 2)} a ${num(b, 2)} interrupções`);
+  switch (m.relacao) {
+    case "sem_relacao_na_fonte":
+      return `${lugar} não aparece na base IndQual Município da ANEEL: nenhum conjunto é atribuído a ele, e o mapa fica sem valor.`;
+    case "sem_conjunto_ativo":
+      return `${lugar} é citado na base da ANEEL, mas nenhum dos conjuntos ligados a ele publicou DEC com 12 meses em ${ano}: sem valor no mapa.`;
+    case "conjunto_exclusivo":
+      return `${lugar} é atendido por um conjunto que só atende este município (${m.conjuntos[0] ?? "código não publicado"}): DEC de ${num(m.dec_max, 2)} h (${horasEMinutos(m.dec_max)}) e FEC de ${num(m.fec_max, 2)} interrupções em ${ano}.`;
+    case "conjunto_compartilhado":
+      return `${lugar} é atendido por um conjunto (${m.conjuntos[0] ?? "código não publicado"}) que também atende outros municípios: DEC de ${num(m.dec_max, 2)} h e FEC de ${num(m.fec_max, 2)} interrupções em ${ano}, valores do conjunto inteiro, não medidos só no município.`;
+    default:
+      return `${lugar} é atendido por ${m.conjuntos.length} conjuntos. Em ${ano}, o DEC anual desses conjuntos vai ${dec(m.dec_min, m.dec_max)} e o FEC ${fec(m.fec_min, m.fec_max)}; a base não informa quantas unidades de cada conjunto ficam no município, então nenhuma média municipal é calculada.`;
+  }
+}
+
+/* ---------------------------------------------------------------- P052: realizado e limites */
+
+/** P052: conjuntos acima do limite, peso em UCs, Brasil diante do limite agregado e as caudas. */
+export function respostaP052(g: QualidadeGold): string {
+  const c = g.conjuntos;
+  const a = anoBrasil(g, c.ano);
+  const q = c.quantis_razao_dec;
+  const ant = c.historico.find((h) => h.ano === c.ano - 1);
+  const partes = [
+    `Em ${c.ano}, ${num(c.acima_limite_dec, 0)} dos ${num(c.com_limite, 0)} conjuntos com limite (${pct(c.pct_acima_limite_dec, 1)}) ficaram acima do limite anual de DEC, com ${pct(c.pct_ucs_acima_limite_dec, 1)} das unidades consumidoras` +
+      (ant ? `, contra ${pct(ant.pct_acima_limite_dec, 1)} dos conjuntos em ${ant.ano}` : "") +
+      `; ${num(c.acima_limite_fec, 0)} passaram do limite de FEC.`,
+  ];
+  if (a && a.dec !== null && a.dec_limite !== null && a.razao_dec !== null) {
+    const s = comparaNaPrecisao(a.dec, a.dec_limite, 2);
+    partes.push(
+      `No Brasil, o DEC apurado (${num(a.dec, 2)} h) ficou ${s === "igual" ? "igual ao" : s === "abaixo" ? "abaixo do" : "acima do"} limite agregado (${num(a.dec_limite, 2)} h), ${num(a.razao_dec, 3)} ${vezes(a.razao_dec)} o limite.`,
+    );
+  }
+  if (q.p50 !== null && q.p90 !== null) {
+    partes.push(
+      `A média esconde as pontas: metade dos conjuntos ficou abaixo de ${num(q.p50, 2)} ${vezes(q.p50)} o próprio limite e um em cada dez ficou acima de ${num(q.p90, 2)} ${vezes(q.p90)}.`,
+    );
+  }
+  return partes.join(" ");
+}
+
+/** P052, "o que mudou": trajetória da fração de conjuntos acima do limite. */
+export function mudancaP052(c: Conjuntos): string {
+  const h = c.historico.filter((x) => x.pct_acima_limite_dec !== null);
+  if (h.length < 2) return "Sem histórico suficiente de conjuntos com limite.";
+  const maior = h.reduce((m, x) => ((x.pct_acima_limite_dec ?? -1) > (m.pct_acima_limite_dec ?? -1) ? x : m));
+  const ult = h[h.length - 1];
+  return `De ${h[0].ano} a ${ult.ano}, a fração de conjuntos acima do limite de DEC teve o máximo em ${maior.ano} (${pct(maior.pct_acima_limite_dec, 1)}) e fechou ${ult.ano} em ${pct(ult.pct_acima_limite_dec, 1)}. Os limites também mudam: caem a cada revisão tarifária da distribuidora.`;
+}
+
+/** Itens do gráfico de pontos realizado × limite (um por distribuidora, ano de referência). */
+export function itensLimite(g: QualidadeGold, ind: Indicador): { id: string; rotulo: string; valor: number | null; referencia: number | null; detalhe?: string }[] {
+  return g.distribuidoras.map((d) => {
+    const valor = ind === "dec" ? d.dec : d.fec;
+    const ref = ind === "dec" ? d.dec_limite : d.fec_limite;
+    const notas = [
+      d.meses < 12 ? `${d.meses} meses publicados: sem valor anual` : null,
+      d.cobertura_limite !== null && d.cobertura_limite < 1 ? `limite cobre ${pct(d.cobertura_limite * 100, 0)} das UCs` : null,
+      d.quebras_perimetro.some((q) => q.ano === g.ano_referencia) ? "perímetro mudou no ano (incorporação)" : null,
+    ].filter(Boolean) as string[];
+    return {
+      id: d.cnpj,
+      rotulo: rotuloDistribuidora(d),
+      valor,
+      referencia: ref,
+      detalhe: notas.length ? notas.join("; ") : undefined,
+    };
+  });
+}
+
+/** Tabela do P052: realizado, limite, razão e DGC (calculado ao lado do publicado no ranking). */
+export function linhasLimites(g: QualidadeGold): LinhaTabela[] {
+  return g.distribuidoras.map((d) => ({
+    id: d.cnpj,
+    sigla: rotuloDistribuidora(d),
+    classificacao: d.classificacao ?? "sem classificação publicada",
+    dec: d.dec,
+    dec_limite: d.dec_limite,
+    razao_dec: d.razao_dec,
+    fec: d.fec,
+    fec_limite: d.fec_limite,
+    razao_fec: d.razao_fec,
+    situacao: situacaoLimite(d),
+    dgc_calculado: d.dgc_calculado,
+    dgc_publicado: d.dgc_publicado,
+    posicao: d.posicao_ranking,
+    porte: d.porte_ranking ?? "fora do ranking",
+    cobertura_limite: d.cobertura_limite === null ? null : d.cobertura_limite * 100,
+    cnpj: d.cnpj,
+  }));
+}
+
+/** Situação diante dos dois limites agregados, decidida nas duas casas que a ANEEL publica. */
+export function situacaoLimite(d: Pick<Distribuidora, "dec" | "fec" | "dec_limite" | "fec_limite">): string {
+  if (d.dec === null || d.fec === null || d.dec_limite === null || d.fec_limite === null) return "sem valor anual ou sem limite";
+  const sd = comparaNaPrecisao(d.dec, d.dec_limite, 2) === "acima";
+  const sf = comparaNaPrecisao(d.fec, d.fec_limite, 2) === "acima";
+  if (sd && sf) return "acima dos dois limites";
+  if (sd) return "acima do limite de DEC";
+  if (sf) return "acima do limite de FEC";
+  return "dentro dos dois limites";
+}
+
+export const COLUNAS_LIMITES: ColunaTabela[] = [
+  { id: "sigla", rotulo: "Distribuidora", tipo: "texto" },
+  { id: "situacao", rotulo: "Situação", tipo: "texto", categorica: true },
+  { id: "dec", rotulo: "DEC apurado", tipo: "numero", unidade: "h", casas: 2 },
+  { id: "dec_limite", rotulo: "Limite de DEC", tipo: "numero", unidade: "h", casas: 2 },
+  { id: "razao_dec", rotulo: "DEC ÷ limite", tipo: "numero", casas: 3 },
+  { id: "fec", rotulo: "FEC apurado", tipo: "numero", unidade: "interrupções", casas: 2 },
+  { id: "fec_limite", rotulo: "Limite de FEC", tipo: "numero", unidade: "interrupções", casas: 2 },
+  { id: "razao_fec", rotulo: "FEC ÷ limite", tipo: "numero", casas: 3 },
+  { id: "dgc_calculado", rotulo: "DGC calculado", tipo: "numero", casas: 3 },
+  { id: "dgc_publicado", rotulo: "DGC no ranking da ANEEL", tipo: "numero", casas: 2 },
+  { id: "posicao", rotulo: "Posição no ranking", tipo: "numero", casas: 0 },
+  { id: "porte", rotulo: "Porte no ranking", tipo: "texto", categorica: true },
+  { id: "classificacao", rotulo: "Classificação", tipo: "texto", categorica: true },
+  { id: "cobertura_limite", rotulo: "UCs com limite", tipo: "percentual", casas: 0 },
+  { id: "cnpj", rotulo: "CNPJ", tipo: "texto" },
+];
+
+/** Histórico de uma distribuidora (série sob demanda), em uma frase com o último ano e a quebra de perímetro. */
+export function respostaHistoricoDistribuidora(
+  rotulo: string,
+  s: { anos: number[]; dec: (number | null)[]; fec: (number | null)[]; dec_limite: (number | null)[]; fec_limite: (number | null)[]; quebras: number[] } | undefined,
+  ind: Indicador,
+): string {
+  if (!s || !s.anos.length) return `${rotulo}: sem série anual publicada.`;
+  const v = s[ind];
+  const l = s[ind === "dec" ? "dec_limite" : "fec_limite"];
+  const nome = ind === "dec" ? "DEC" : "FEC";
+  const un = ind === "dec" ? "h" : "interrupções";
+  let acima = 0;
+  let comparados = 0;
+  for (let i = 0; i < s.anos.length; i++) {
+    const x = v[i];
+    const y = l[i];
+    if (x === null || y === null) continue;
+    comparados++;
+    if (comparaNaPrecisao(x, y, 2) === "acima") acima++;
+  }
+  const i = s.anos.length - 1;
+  const ult = v[i] !== null && l[i] !== null ? ` Em ${s.anos[i]}: ${num(v[i], 2)} ${un} para um limite de ${num(l[i], 2)} ${un}.` : "";
+  const quebra = s.quebras.length ? ` O perímetro mudou em ${listaPt(s.quebras.map(String))} (incorporação): antes e depois não são a mesma área.` : "";
+  return `${rotulo}: ${nome} acima do limite em ${acima} de ${comparados} anos com valor e limite, de ${s.anos[0]} a ${s.anos[i]}.${ult}${quebra}`;
+}
+
+/**
+ * Histograma da razão apurado ÷ limite a partir das faixas publicadas na gold (os 3.146
+ * conjuntos ficam no CSV). A última faixa é aberta na fonte ("3 ou mais"); ela fecha no
+ * máximo publicado, para o desenho ter largura, e o rótulo diz o máximo. Os quantis são
+ * os da gold, não recalculados.
+ */
+export function histogramaDeFaixas(faixas: readonly FaixaHistograma[], q: Quantis): DistribuicaoHistograma {
+  const classes = faixas.map((f, i) => {
+    const ultima = i === faixas.length - 1;
+    const fim = f.ate ?? (q.max !== null && q.max > f.de ? q.max : f.de + (faixas[i - 1] ? f.de - faixas[i - 1].de : 1));
+    return { inicio: f.de, fim, contagem: f.conjuntos, fechadaDireita: ultima };
+  });
+  const larguras = classes.map((c) => c.fim - c.inicio);
+  const n = classes.reduce((s, c) => s + c.contagem, 0);
+  return {
+    classes,
+    massas: [],
+    resumo: { n, semDado: 0, min: q.min, p10: q.p10, p25: q.p25, mediana: q.p50, p75: q.p75, p90: q.p90, max: q.max },
+    foraDasClasses: { abaixo: 0, acima: 0 },
+    larguraReferencia: Math.min(...larguras),
+    larguraUniforme: larguras.every((w) => Math.abs(w - larguras[0]) < 1e-9),
+  };
+}
+
+/** Série histórica dos conjuntos acima do limite (gráfico e tabela). */
+export function linhasHistoricoConjuntos(c: Conjuntos): LinhaTabela[] {
+  return c.historico.map((h) => ({
+    ano: String(h.ano),
+    pct_acima: h.pct_acima_limite_dec,
+    pct_ucs_acima: h.pct_ucs_acima_limite_dec,
+    acima: h.acima_limite_dec,
+    com_limite: h.com_limite,
+    razao_p50: h.razao_p50,
+    razao_p90: h.razao_p90,
+    dec_p50: h.dec_p50,
+    dec_p90: h.dec_p90,
+  }));
+}
+
+/** Matriz faixa de limite × faixa da razão (contagem de conjuntos), para a tabela. */
+export function linhasMatriz(c: Conjuntos): LinhaTabela[] {
+  return c.matriz_limite_razao_dec.map((m) => ({
+    id: `${m.limite_de}`,
+    faixa: m.limite_ate === null ? `${num(m.limite_de, 0)} h ou mais` : `${num(m.limite_de, 0)} a menos de ${num(m.limite_ate, 0)} h`,
+    r0: m["razao_0_0.5"],
+    r1: m["razao_0.5_1.0"],
+    r2: m["razao_1.0_1.5"],
+    r3: m["razao_1.5_mais"],
+    total: m["razao_0_0.5"] + m["razao_0.5_1.0"] + m["razao_1.0_1.5"] + m["razao_1.5_mais"],
+  }));
+}
+
+export const COLUNAS_MATRIZ: ColunaTabela[] = [
+  { id: "faixa", rotulo: "Limite de DEC do conjunto", tipo: "texto" },
+  { id: "r0", rotulo: "Até metade do limite", tipo: "numero", casas: 0 },
+  { id: "r1", rotulo: "Da metade até o limite", tipo: "numero", casas: 0 },
+  { id: "r2", rotulo: "De 1 a 1,5 vez o limite", tipo: "numero", casas: 0 },
+  { id: "r3", rotulo: "1,5 vez o limite ou mais", tipo: "numero", casas: 0 },
+  { id: "total", rotulo: "Conjuntos", tipo: "numero", casas: 0 },
+];
+
+/** Caudas publicadas (25 maiores razões e 25 maiores DEC). */
+export function linhasCauda(itens: Conjuntos["cauda_dec"]): LinhaTabela[] {
+  return itens.map((x) => ({
+    id: String(x.conjunto),
+    conjunto: String(x.conjunto),
+    nome: x.nome,
+    sigla: x.sigla,
+    dec: x.dec,
+    dec_limite: x.dec_limite,
+    razao_dec: x.razao_dec,
+    fec: x.fec,
+    fec_limite: x.fec_limite,
+    ucs: x.ucs,
+  }));
+}
+
+export const COLUNAS_CAUDA: ColunaTabela[] = [
+  { id: "nome", rotulo: "Conjunto", tipo: "texto" },
+  { id: "conjunto", rotulo: "Código", tipo: "texto" },
+  { id: "sigla", rotulo: "Distribuidora", tipo: "texto", categorica: true },
+  { id: "dec", rotulo: "DEC", tipo: "numero", unidade: "h", casas: 2 },
+  { id: "dec_limite", rotulo: "Limite de DEC", tipo: "numero", unidade: "h", casas: 2 },
+  { id: "razao_dec", rotulo: "DEC ÷ limite", tipo: "numero", casas: 3 },
+  { id: "fec", rotulo: "FEC", tipo: "numero", unidade: "interrupções", casas: 2 },
+  { id: "fec_limite", rotulo: "Limite de FEC", tipo: "numero", unidade: "interrupções", casas: 2 },
+  { id: "ucs", rotulo: "UCs (média do ano)", tipo: "numero", casas: 0 },
+];
+
+/* ---------------------------------------------------------------- explorador de conjuntos (CSV sob demanda) */
+
+/** Linhas dos conjuntos de um ano, lidas do CSV anual por década (o mesmo arquivo de download). */
+export function conjuntosDoCsv(texto: string, ano: number): LinhaTabela[] {
+  return lerCsv(texto)
+    .filter((l) => Number(l.ano) === ano)
+    .map((l) => {
+      const acima = l.acima_limite_dec === "1" ? "acima do limite" : l.acima_limite_dec === "0" ? "até o limite" : "sem limite ou sem 12 meses";
+      return {
+        id: l.conjunto,
+        conjunto: l.conjunto,
+        nome: l.nome,
+        sigla: l.sigla,
+        meses: numeroOuNulo(l.meses),
+        dec: numeroOuNulo(l.dec_h),
+        dec_limite: numeroOuNulo(l.dec_limite_h),
+        razao_dec: numeroOuNulo(l.razao_dec),
+        fec: numeroOuNulo(l.fec_interrupcoes),
+        fec_limite: numeroOuNulo(l.fec_limite_interrupcoes),
+        razao_fec: numeroOuNulo(l.razao_fec),
+        ucs: numeroOuNulo(l.ucs_media),
+        situacao_dec: acima,
+      };
+    });
+}
+
+export const COLUNAS_CONJUNTOS: ColunaTabela[] = [
+  { id: "nome", rotulo: "Conjunto", tipo: "texto" },
+  { id: "conjunto", rotulo: "Código", tipo: "texto" },
+  { id: "sigla", rotulo: "Distribuidora", tipo: "texto", categorica: true },
+  { id: "situacao_dec", rotulo: "DEC diante do limite", tipo: "texto", categorica: true },
+  { id: "meses", rotulo: "Meses", tipo: "numero", casas: 0 },
+  { id: "dec", rotulo: "DEC", tipo: "numero", unidade: "h", casas: 2 },
+  { id: "dec_limite", rotulo: "Limite de DEC", tipo: "numero", unidade: "h", casas: 2 },
+  { id: "razao_dec", rotulo: "DEC ÷ limite", tipo: "numero", casas: 3 },
+  { id: "fec", rotulo: "FEC", tipo: "numero", unidade: "interrupções", casas: 2 },
+  { id: "fec_limite", rotulo: "Limite de FEC", tipo: "numero", unidade: "interrupções", casas: 2 },
+  { id: "razao_fec", rotulo: "FEC ÷ limite", tipo: "numero", casas: 3 },
+  { id: "ucs", rotulo: "UCs (média do ano)", tipo: "numero", casas: 0 },
+];
+
+/** Arquivo anual por década que contém o ano (o pipeline publica 2000-2009, 2010-2019 e 2020-2029). */
+export function arquivoConjuntosDoAno(ano: number): string {
+  const d = Math.floor(ano / 10) * 10;
+  return `/energia/series/qualidade_conjuntos_anual_${d}_${d + 9}.csv`;
+}
+
+/* ---------------------------------------------------------------- P053: compensações */
+
+export const ORDEM_TIPOS: TipoCompensacao[] = ["mensal", "trimestral", "anual", "dicri", "dise"];
+
+/** P053: total pago a unidades consumidoras no ano de referência, unidades geradoras à parte e concentração. */
+export function respostaP053(g: QualidadeGold): string {
+  const c = g.compensacoes;
+  const a = c.anual.find((x) => x.ano === c.ano_referencia);
+  if (!a || a.valor_uc === null) return `Sem total de compensações para ${c.ano_referencia}: o ano não tem os 12 meses informados pelas distribuidoras.`;
+  const ant = c.anual.find((x) => x.ano === c.ano_referencia - 1 && x.completo);
+  let comp = "";
+  if (ant && ant.valor_uc !== null) {
+    const s = comparaNaPrecisao(a.valor_uc / 1e6, ant.valor_uc / 1e6, 1);
+    comp = s === "igual" ? `, o mesmo de ${ant.ano}` : `, ${s === "abaixo" ? "menos" : "mais"} que os ${reaisMilhoes(ant.valor_uc)} de ${ant.ano}`;
+  }
+  const qt = a.quantidade_uc !== null ? ` em ${num(a.quantidade_uc / 1e6, 1)} milhões de compensações` : "";
+  const ug = a.valor_ug !== null ? ` Unidades geradoras receberam ${reaisMilhoes(a.valor_ug, 2)} à parte.` : "";
+  const conc = c.concentracao_5_maiores_pct !== null ? ` As cinco distribuidoras que mais pagaram somam ${pct(c.concentracao_5_maiores_pct, 1)} do total do ano.` : "";
+  return `Em ${a.ano}, as distribuidoras informaram ${reaisMilhoes(a.valor_uc)} pagos a unidades consumidoras${qt}, por violação de limites individuais de continuidade (valores nominais da competência)${comp}.${ug}${conc}`;
+}
+
+/** P053, "o que mudou": maior ano da série e o acumulado do ano corrente, marcado como parcial. */
+export function mudancaP053(g: QualidadeGold): string {
+  const c = g.compensacoes;
+  const completos = c.anual.filter((x) => x.completo && x.valor_uc !== null);
+  if (!completos.length) return "Sem anos completos de compensação publicados.";
+  const maior = completos.reduce((m, x) => ((x.valor_uc ?? -1) > (m.valor_uc ?? -1) ? x : m));
+  const parcial = c.anual.find((x) => !x.completo);
+  const p = parcial && c.ultimo_mes_completo ? ` Em ${parcial.ano}, até ${mesAno(c.ultimo_mes_completo)}: ${reaisMilhoes(parcial.valor_uc)} a unidades consumidoras, soma parcial que não se compara a um ano cheio.` : "";
+  return `Na série desde ${completos[0].ano}, o maior total pago a unidades consumidoras foi o de ${maior.ano} (${reaisMilhoes(maior.valor_uc)}), em reais de cada ano, sem correção pela inflação.${p}`;
+}
+
+/** Anos completos de compensação (gráfico, tabela e exportação): unidades consumidoras e geradoras separadas. */
+export function linhasCompensacaoAnual(g: QualidadeGold): LinhaTabela[] {
+  return g.compensacoes.anual.map((a) => ({
+    ano: String(a.ano),
+    situacao: a.completo ? "ano completo" : `parcial até ${g.compensacoes.ultimo_mes_completo ? mesAno(g.compensacoes.ultimo_mes_completo) : "mês não informado"}`,
+    valor_uc_mi: a.completo && a.valor_uc !== null ? a.valor_uc / 1e6 : null,
+    valor_uc: a.valor_uc,
+    quantidade_uc: a.quantidade_uc,
+    valor_ug: a.valor_ug,
+    quantidade_ug: a.quantidade_ug,
+    valor_por_uc: a.valor_por_uc,
+  }));
+}
+
+export const COLUNAS_COMP_ANUAL: ColunaTabela[] = [
+  { id: "ano", rotulo: "Ano", tipo: "texto" },
+  { id: "situacao", rotulo: "Situação", tipo: "texto", categorica: true },
+  { id: "valor_uc", rotulo: "Valor a unidades consumidoras", tipo: "numero", unidade: "R$", casas: 2 },
+  { id: "quantidade_uc", rotulo: "Compensações a unidades consumidoras", tipo: "numero", casas: 0 },
+  { id: "valor_ug", rotulo: "Valor a unidades geradoras", tipo: "numero", unidade: "R$", casas: 2 },
+  { id: "quantidade_ug", rotulo: "Compensações a unidades geradoras", tipo: "numero", casas: 0 },
+  { id: "valor_por_uc", rotulo: "Valor ÷ UCs (normalização)", tipo: "numero", unidade: "R$ por UC", casas: 2 },
+];
+
+/** Meses de compensação: mês ainda incompleto fica fora do gráfico (o valor publicado segue na tabela, marcado). */
+export function linhasCompensacaoMensal(g: QualidadeGold): LinhaTabela[] {
+  return g.compensacoes.mensal.map((m) => ({
+    m: m.m,
+    valor_mi: m.completo && m.valor !== null ? m.valor / 1e6 : null,
+    quantidade_mil: m.completo && m.quantidade !== null ? m.quantidade / 1e3 : null,
+    valor_publicado: m.valor,
+    quantidade_publicada: m.quantidade,
+    situacao: m.completo ? "completo" : "incompleto (nem todas as distribuidoras informaram)",
+  }));
+}
+
+/** Valor por tipo de violação em cada ano: tipo não publicado no ano é ausência, nunca zero. */
+export function linhasCompensacaoTipo(g: QualidadeGold): LinhaTabela[] {
+  return g.compensacoes.anual.map((a) => {
+    const l: LinhaTabela = { ano: String(a.ano), situacao: a.completo ? "ano completo" : "parcial" };
+    for (const t of ORDEM_TIPOS) l[t] = a.por_tipo[t]?.valor ?? null;
+    return l;
+  });
+}
+
+/** Composição do ano de referência por tipo (barras), só com os tipos publicados no ano. */
+export function linhasTipoAnoReferencia(g: QualidadeGold): LinhaTabela[] {
+  const a = g.compensacoes.anual.find((x) => x.ano === g.compensacoes.ano_referencia);
+  if (!a) return [];
+  return ORDEM_TIPOS.filter((t) => a.por_tipo[t] !== undefined).map((t) => ({
+    id: t,
+    tipo: g.compensacoes.rotulos_tipo[t],
+    valor_mi: a.por_tipo[t]?.valor === null || a.por_tipo[t]?.valor === undefined ? null : a.por_tipo[t]!.valor! / 1e6,
+    quantidade: a.por_tipo[t]?.quantidade ?? null,
+  }));
+}
+
+/** Compensações por distribuidora no ano de referência (valor total, por tipo e normalizado por UC). */
+export function linhasCompensacaoDistribuidoras(g: QualidadeGold): LinhaTabela[] {
+  return g.distribuidoras
+    .filter((d) => d.compensacao)
+    .map((d) => {
+      const c = d.compensacao!;
+      const l: LinhaTabela = {
+        id: d.cnpj,
+        sigla: rotuloDistribuidora(d),
+        classificacao: d.classificacao ?? "sem classificação publicada",
+        valor: c.valor,
+        quantidade: c.quantidade,
+        valor_por_uc: c.valor_por_uc,
+        ucs: d.ucs,
+      };
+      for (const t of ORDEM_TIPOS) l[t] = c.valor_por_tipo[t] ?? null;
+      return l;
+    });
+}
+
+export function colunasCompensacaoDistribuidoras(rotulos: Record<TipoCompensacao, string>): ColunaTabela[] {
+  return [
+    { id: "sigla", rotulo: "Distribuidora", tipo: "texto" },
+    { id: "classificacao", rotulo: "Classificação", tipo: "texto", categorica: true },
+    { id: "valor", rotulo: "Valor no ano", tipo: "numero", unidade: "R$", casas: 2 },
+    { id: "quantidade", rotulo: "Compensações no ano", tipo: "numero", casas: 0 },
+    { id: "valor_por_uc", rotulo: "Valor ÷ UCs (normalização)", tipo: "numero", unidade: "R$ por UC", casas: 2 },
+    { id: "ucs", rotulo: "UCs (média do ano)", tipo: "numero", casas: 0 },
+    ...ORDEM_TIPOS.map((t) => ({ id: t, rotulo: rotulos[t], tipo: "numero" as const, unidade: "R$", casas: 2 })),
+  ];
+}
+
+/* ---------------------------------------------------------------- P054: atendimento e resiliência */
+
+/** P054: reclamações por exposição, Ouvidoria, IASC com a amostra e tempo de atendimento emergencial. */
+export function respostaP054(g: QualidadeGold): string {
+  const ref = g.ano_referencia;
+  const at = g.atendimento;
+  const rec = at.reclamacoes_distribuidora.find((x) => x.ano === ref);
+  const ouv = at.ouvidoria_aneel.find((x) => x.ano === ref);
+  const tmae = at.tmae.find((x) => x.ano === ref && x.completo);
+  const partes: string[] = [];
+  if (rec && rec.por_ucs !== null) {
+    partes.push(
+      `Em ${ref}, as distribuidoras registraram ${num(rec.por_ucs, 1)} reclamações por mil unidades consumidoras` +
+        (rec.interrupcao_por_mil_uc !== null ? `, ${num(rec.interrupcao_por_mil_uc, 1)} delas sobre interrupção` : "") +
+        ` (${rec.distribuidoras} distribuidoras com os 12 meses enviados, ${pct((rec.cobertura_ucs ?? 0) * 100, 1)} das UCs).`,
+    );
+  } else if (rec) partes.push(`Reclamações nas distribuidoras em ${ref}: sem taxa (${rec.motivo_ausencia ?? "universo vazio"}).`);
+  if (ouv && ouv.por_ucs !== null) partes.push(`Na Ouvidoria Setorial da ANEEL, segunda instância, foram ${num(ouv.por_ucs, 1)} reclamações por 100 mil unidades consumidoras.`);
+  if (at.iasc.ano !== null && at.iasc.quantis.p50 !== null) {
+    partes.push(
+      `Na pesquisa IASC de ${at.iasc.ano}, com ${num(at.iasc.entrevistas, 0)} entrevistas em ${at.iasc.distribuidoras} distribuidoras, o índice mediano foi ${num(at.iasc.quantis.p50, 1)} de 100.`,
+    );
+  }
+  if (tmae && tmae.tmae_min !== null) partes.push(`O atendimento a uma ocorrência emergencial levou em média ${num(tmae.tmae_min, 0)} minutos (${horasEMinutos(tmae.tmae_min / 60)}) da reclamação ao restabelecimento.`);
+  return partes.join(" ") || "Sem indicadores de atendimento publicados para o ano de referência.";
+}
+
+/** P054, "o que mudou": evolução das taxas (anos completos) e o ano corrente sem taxa. */
+export function mudancaP054(g: QualidadeGold): string {
+  const at = g.atendimento;
+  const anos = at.reclamacoes_distribuidora.filter((x) => x.por_ucs !== null);
+  const partes: string[] = [];
+  if (anos.length >= 2) {
+    const a = anos[0];
+    const b = anos[anos.length - 1];
+    const s = comparaNaPrecisao(b.por_ucs!, a.por_ucs!, 1);
+    partes.push(`Reclamações por mil UCs nas distribuidoras: ${num(a.por_ucs, 1)} em ${a.ano} e ${num(b.por_ucs, 1)} em ${b.ano} (${s === "igual" ? "estável" : s === "abaixo" ? "queda" : "alta"}).`);
+  }
+  const semTaxa = at.reclamacoes_distribuidora.find((x) => x.por_ucs === null && x.motivo_ausencia);
+  if (semTaxa) partes.push(`${semTaxa.ano}: sem taxa, ${semTaxa.motivo_ausencia}.`);
+  const tm = at.tmae.filter((x) => x.tmae_min !== null);
+  if (tm.length >= 2) {
+    const a = tm[0];
+    const b = tm[tm.length - 1];
+    partes.push(`Tempo médio de atendimento emergencial: ${num(a.tmae_min, 0)} min em ${a.ano}; ${num(b.tmae_min, 0)} min em ${b.ano}${b.completo ? "" : ` (parcial, ${b.meses} meses)`}.`);
+  }
+  return partes.join(" ") || "Sem série de atendimento com mais de um ano.";
+}
+
+/** Indicadores nacionais de atendimento, cada um com o seu escopo e a sua unidade (nunca somados entre si). */
+export function linhasEscopos(g: QualidadeGold): LinhaTabela[] {
+  const at = g.atendimento;
+  const out: LinhaTabela[] = [];
+  for (const r of at.reclamacoes_distribuidora) {
+    out.push({
+      id: `rec-${r.ano}`,
+      indicador: "Reclamações na distribuidora (1º nível)",
+      escopo: "todas as reclamações registradas pelas distribuidoras com os 12 meses enviados",
+      ano: String(r.ano),
+      valor: r.por_ucs,
+      unidade: "por mil UCs",
+      base: r.total,
+      motivo: r.motivo_ausencia ?? (r.completo ? "" : "ano parcial"),
+    });
+    out.push({
+      id: `rec-int-${r.ano}`,
+      indicador: "Reclamações de interrupção (1º nível)",
+      escopo: "tipologia de interrupção do fornecimento (REN 1.000/2021)",
+      ano: String(r.ano),
+      valor: r.interrupcao_por_mil_uc,
+      unidade: "por mil UCs",
+      base: r.interrupcao,
+      motivo: r.motivo_ausencia ?? (r.completo ? "" : "ano parcial"),
+    });
+  }
+  for (const o of at.ouvidoria_aneel) {
+    out.push({
+      id: `ouv-${o.ano}`,
+      indicador: "Reclamações na Ouvidoria Setorial da ANEEL",
+      escopo: "segunda instância: depois do atendimento na distribuidora",
+      ano: String(o.ano),
+      valor: o.por_ucs,
+      unidade: "por 100 mil UCs",
+      base: o.total,
+      motivo: o.motivo_ausencia ?? (o.completo ? "" : `ano parcial (até ${o.meses_max ?? "?"} meses): sem taxa anual`),
+    });
+  }
+  for (const t of at.tmae) {
+    out.push({
+      id: `tmae-${t.ano}`,
+      indicador: "Tempo médio de atendimento emergencial (TMAE)",
+      escopo: "ocorrências emergenciais com os três tempos informados (preparação, deslocamento e execução)",
+      ano: String(t.ano),
+      valor: t.tmae_min,
+      unidade: "minutos",
+      base: t.ocorrencias,
+      motivo: t.completo ? "" : `parcial: ${t.meses} meses${t.periodo ? ` (${mesAno(t.periodo.inicio)} a ${mesAno(t.periodo.fim)})` : ""}`,
+    });
+  }
+  return out;
+}
+
+export const COLUNAS_ESCOPOS: ColunaTabela[] = [
+  { id: "indicador", rotulo: "Indicador", tipo: "texto", categorica: true },
+  { id: "ano", rotulo: "Ano", tipo: "texto", categorica: true },
+  { id: "valor", rotulo: "Valor", tipo: "numero", casas: 1 },
+  { id: "unidade", rotulo: "Unidade", tipo: "texto" },
+  { id: "base", rotulo: "Contagem na base", tipo: "numero", casas: 0 },
+  { id: "escopo", rotulo: "Escopo", tipo: "texto" },
+  { id: "motivo", rotulo: "Ausência ou parcial", tipo: "texto" },
+];
+
+/** Taxas nacionais de reclamação por ano para as barras (ano parcial fica sem barra: taxa ausente, com motivo). */
+export function linhasReclamacoesNacional(g: QualidadeGold): LinhaTabela[] {
+  return g.atendimento.reclamacoes_distribuidora.map((r) => ({
+    ano: String(r.ano),
+    total: r.por_ucs,
+    interrupcao: r.interrupcao_por_mil_uc,
+    n2: r.n2_por_mil_uc,
+  }));
+}
+
+export function linhasOuvidoriaNacional(g: QualidadeGold): LinhaTabela[] {
+  return g.atendimento.ouvidoria_aneel.map((o) => ({ ano: String(o.ano), total: o.por_ucs, procedentes: o.procedentes_por_100mil_uc }));
+}
+
+/** Atendimento telefônico: % dos distribuidora-meses dentro de cada padrão (INS e IAb não se agregam). */
+export function linhasTelefonico(g: QualidadeGold): LinhaTabela[] {
+  return g.atendimento.telefonico.anual.map((t) => ({
+    ano: String(t.ano),
+    ins: t.pct_meses_ins_ok,
+    iab: t.pct_meses_iab_ok,
+    ico: t.pct_meses_ico_ok,
+    meses: t.meses,
+    distribuidoras: t.distribuidoras,
+    ico_nacional: t.ico_pct,
+    situacao: t.completo ? "ano completo" : `parcial, ${t.meses} meses`,
+  }));
+}
+
+/** Parcelas de emergência e dia crítico (resiliência) por ano, 2010 em diante. */
+export function linhasResiliencia(g: QualidadeGold): LinhaTabela[] {
+  return g.atendimento.resiliencia_parcelas
+    .filter((r) => r.dec_emergencia !== null || r.dec_dia_critico !== null)
+    .map((r) => ({ ano: String(r.ano), emergencia: r.dec_emergencia, dia_critico: r.dec_dia_critico, apurado: r.dec_apurado, todas: r.dec_todas_parcelas }));
+}
+
+/** Eventos em situação de emergência com maior CHI (consumidores × horas interrompidas). */
+export function linhasEventos(g: QualidadeGold): LinhaTabela[] {
+  return g.atendimento.eventos_emergencia.maiores_chi.map((e) => ({
+    id: `${e.cnpj ?? ""}|${e.codigo}|${e.competencia}`,
+    sigla: e.sigla ?? (e.cnpj ? `CNPJ ${e.cnpj}` : "sem distribuidora identificada"),
+    codigo: e.codigo,
+    competencia: e.competencia,
+    inicio: e.inicio,
+    fim: e.fim,
+    duracao_h: e.duracao_h,
+    chi_evento: e.chi_evento,
+    chi_limite: e.chi_limite,
+    razao_chi: e.razao_chi,
+    origem: e.origem,
+  }));
+}
+
+export const COLUNAS_EVENTOS: ColunaTabela[] = [
+  { id: "sigla", rotulo: "Distribuidora", tipo: "texto", categorica: true },
+  { id: "codigo", rotulo: "Código do evento", tipo: "texto" },
+  { id: "competencia", rotulo: "Competência", tipo: "texto" },
+  { id: "inicio", rotulo: "Início", tipo: "texto" },
+  { id: "fim", rotulo: "Fim", tipo: "texto" },
+  { id: "duracao_h", rotulo: "Duração", tipo: "numero", unidade: "h", casas: 1 },
+  { id: "chi_evento", rotulo: "CHI do evento", tipo: "numero", unidade: "consumidor × hora", casas: 0 },
+  { id: "chi_limite", rotulo: "CHI limite", tipo: "numero", unidade: "consumidor × hora", casas: 0 },
+  { id: "razao_chi", rotulo: "CHI ÷ limite", tipo: "numero", casas: 2 },
+  { id: "origem", rotulo: "Origem declarada", tipo: "texto", categorica: true },
+];
+
+/** Atendimento por distribuidora (ano de referência), cada medida com a sua exposição. */
+export function linhasAtendimentoDistribuidoras(g: QualidadeGold): LinhaTabela[] {
+  return g.distribuidoras.map((d) => ({
+    id: d.cnpj,
+    sigla: rotuloDistribuidora(d),
+    classificacao: d.classificacao ?? "sem classificação publicada",
+    ucs: d.ucs,
+    iasc: d.iasc?.valor ?? null,
+    iasc_amostra: d.iasc?.amostra ?? null,
+    iasc_categoria: d.iasc?.categoria ?? "fora da pesquisa no ano",
+    rec_mil: d.reclamacoes?.n1_por_mil_uc ?? null,
+    rec_int_mil: d.reclamacoes?.interrupcao_n1_por_mil_uc ?? null,
+    rec_n2_mil: d.reclamacoes?.n2_por_mil_uc ?? null,
+    ouv_100mil: d.reclamacoes?.ouvidoria_aneel_por_100mil_uc ?? null,
+    tmae: d.tmae_min,
+    tel_ins_min: d.telefonico?.ins_min_pct ?? null,
+    tel_meses_ins: d.telefonico ? `${d.telefonico.meses_ins_ok} de ${d.telefonico.meses}` : "não obrigada",
+    tel_oferecidas_mil: d.telefonico?.oferecidas_por_mil_uc ?? null,
+    eventos_2026: d.eventos_emergencia_2026,
+  }));
+}
+
+export const COLUNAS_ATENDIMENTO: ColunaTabela[] = [
+  { id: "sigla", rotulo: "Distribuidora", tipo: "texto" },
+  { id: "classificacao", rotulo: "Classificação", tipo: "texto", categorica: true },
+  { id: "ucs", rotulo: "UCs (média do ano)", tipo: "numero", casas: 0 },
+  { id: "iasc", rotulo: "IASC", tipo: "numero", unidade: "0 a 100", casas: 2 },
+  { id: "iasc_amostra", rotulo: "Entrevistas do IASC", tipo: "numero", casas: 0 },
+  { id: "iasc_categoria", rotulo: "Categoria do IASC", tipo: "texto", categorica: true },
+  { id: "rec_mil", rotulo: "Reclamações na distribuidora", tipo: "numero", unidade: "por mil UCs", casas: 1 },
+  { id: "rec_int_mil", rotulo: "Reclamações de interrupção", tipo: "numero", unidade: "por mil UCs", casas: 1 },
+  { id: "rec_n2_mil", rotulo: "Reclamações no 2º nível", tipo: "numero", unidade: "por mil UCs", casas: 2 },
+  { id: "ouv_100mil", rotulo: "Ouvidoria da ANEEL", tipo: "numero", unidade: "por 100 mil UCs", casas: 1 },
+  { id: "tmae", rotulo: "TMAE", tipo: "numero", unidade: "min", casas: 0 },
+  { id: "tel_ins_min", rotulo: "Pior INS mensal", tipo: "percentual", casas: 1 },
+  { id: "tel_meses_ins", rotulo: "Meses com INS no padrão", tipo: "texto" },
+  { id: "tel_oferecidas_mil", rotulo: "Chamadas oferecidas", tipo: "numero", unidade: "por mil UCs", casas: 0 },
+  { id: "eventos_2026", rotulo: "Eventos de emergência em 2026", tipo: "numero", casas: 0 },
+];
+
+/* ---------------------------------------------------------------- carga sob demanda no navegador */
+
+const cache = new Map<string, Promise<unknown>>();
+
+/**
+ * Busca um arquivo publicado uma única vez por visita (todas as instâncias da página
+ * compartilham a mesma promessa). Falha não fica em cache: a próxima tentativa refaz.
+ */
+export function carregarUmaVez<T>(url: string, ler: (r: Response) => Promise<T>): Promise<T> {
+  let p = cache.get(url) as Promise<T> | undefined;
+  if (!p) {
+    p = fetch(url).then((r) => {
+      if (!r.ok) throw new Error(`HTTP ${r.status} ao buscar ${url}`);
+      return ler(r);
+    });
+    cache.set(url, p);
+    p.catch(() => cache.delete(url));
+  }
+  return p;
+}

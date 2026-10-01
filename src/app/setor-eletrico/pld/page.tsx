@@ -112,7 +112,8 @@ export default function PldPage() {
     cmo: integra(cmo)
       ? {
           texto: `CMO semanal publicado pelo ONS para a semana operativa de ${dataBR(cmo.semana_referencia)}: ${cmo.ultima_semana.map((s) => `${s.sm === "SE" ? "SE/CO" : s.sm} ${reais(s.semanal)}`).join("; ")} por MWh.`,
-          natureza: "OBSERVADO",
+          // natureza vem da proveniência da gold (ESTIMADO: resultado do modelo DECOMP), nunca escrita aqui
+          natureza: cmo.proveniencia.cmo.natureza,
           historico: { rotulo: "Série do CMO", href: "#cmo" },
         }
       : null,

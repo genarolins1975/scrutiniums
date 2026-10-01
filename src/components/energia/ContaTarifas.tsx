@@ -6,8 +6,7 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { dataBR } from "@/lib/energia/formato";
-import { CAMPO_DIST, destacar, linhasRanking, remover, respostaTarifa, type Perfil } from "@/lib/energia/conta";
-import type { ColunaTabela } from "@/lib/energia/tabela";
+import { CAMPO_DIST, COLUNAS_RANKING, destacar, linhasRanking, remover, respostaTarifa, type Perfil } from "@/lib/energia/conta";
 import type { ResumoTarifas, TarifaVigente } from "@/lib/energia/tipos-conta";
 
 /**
@@ -22,26 +21,13 @@ import type { ResumoTarifas, TarifaVigente } from "@/lib/energia/tipos-conta";
 
 const ESQUEMA = {
   dist: CAMPO_DIST,
-  perfil: campo(tiposUrl.opcao(["100", "200", "300"] as const), "200", { param: "perfil" }),
-  leitura: campo(tiposUrl.opcao(["perfil", "tarifa"] as const), "perfil", { param: "leitura" }),
+  perfil: campo(tiposUrl.opcao(["100", "200", "300"] as const), "200", {
+    param: "perfil",
+  }),
+  leitura: campo(tiposUrl.opcao(["perfil", "tarifa"] as const), "perfil", {
+    param: "leitura",
+  }),
 };
-
-const COLUNAS: ColunaTabela[] = [
-  { id: "posicao", rotulo: "Posição (1 = menor)", tipo: "numero", casas: 0 },
-  { id: "sigla", rotulo: "Distribuidora", tipo: "texto" },
-  { id: "nome", rotulo: "Razão social", tipo: "texto" },
-  { id: "id", rotulo: "CNPJ", tipo: "texto" },
-  { id: "te", rotulo: "TE", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "tusd", rotulo: "TUSD", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "total", rotulo: "TE + TUSD", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "custo_100", rotulo: "100 kWh", tipo: "numero", unidade: "R$/mês", casas: 2 },
-  { id: "custo_200", rotulo: "200 kWh", tipo: "numero", unidade: "R$/mês", casas: 2 },
-  { id: "custo_300", rotulo: "300 kWh", tipo: "numero", unidade: "R$/mês", casas: 2 },
-  { id: "be_total", rotulo: "Base econômica (TE + TUSD)", tipo: "numero", unidade: "R$/MWh", casas: 2 },
-  { id: "inicio", rotulo: "Início da vigência", tipo: "data" },
-  { id: "fim", rotulo: "Fim da vigência", tipo: "data" },
-  { id: "ato", rotulo: "Ato da ANEEL", tipo: "texto" },
-];
 
 export type ContaTarifasProps = {
   vigentes: TarifaVigente[];
@@ -74,7 +60,10 @@ export function ContaTarifas({ vigentes, resumo, dataReferencia, fonte }: ContaT
         <div role="radiogroup" aria-label="Perfil de consumo" className="flex flex-wrap items-center gap-2">
           <span className="rotulo text-mineral">Perfil</span>
           {(["100", "200", "300"] as const).map((p) => (
-            <label key={p} className={`inline-flex min-h-[44px] cursor-pointer items-center gap-2 border px-3 text-sm ${v.perfil === p ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted"}`}>
+            <label
+              key={p}
+              className={`inline-flex min-h-[44px] cursor-pointer items-center gap-2 border px-3 text-sm ${v.perfil === p ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted"}`}
+            >
               <input type="radio" name="conta-perfil" value={p} checked={v.perfil === p} onChange={() => definir({ perfil: p })} className="accent-energia" />
               {p} kWh/mês
             </label>
@@ -88,7 +77,10 @@ export function ContaTarifas({ vigentes, resumo, dataReferencia, fonte }: ContaT
               ["tarifa", "Tarifa TE + TUSD (R$/MWh)"],
             ] as const
           ).map(([id, rot]) => (
-            <label key={id} className={`inline-flex min-h-[44px] cursor-pointer items-center gap-2 border px-3 text-sm ${v.leitura === id ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted"}`}>
+            <label
+              key={id}
+              className={`inline-flex min-h-[44px] cursor-pointer items-center gap-2 border px-3 text-sm ${v.leitura === id ? "border-energia bg-energia-fundo text-carvao" : "border-linha bg-superficie text-carvao-muted"}`}
+            >
               <input type="radio" name="conta-leitura" value={id} checked={v.leitura === id} onChange={() => definir({ leitura: id })} className="accent-energia" />
               {rot}
             </label>
@@ -102,11 +94,22 @@ export function ContaTarifas({ vigentes, resumo, dataReferencia, fonte }: ContaT
           dados={linhas}
           chaveCategoria="id"
           chaveRotulo="sigla"
-          series={[{ id: "custo", rotulo: `Custo de ${perfil} kWh`, cor: "var(--cor-energia)" }]}
+          series={[
+            {
+              id: "custo",
+              rotulo: `Custo de ${perfil} kWh`,
+              cor: "var(--cor-energia)",
+            },
+          ]}
           unidade="R$/mês"
           casas={2}
           orientacao="horizontal"
-          referencias={[{ valor: resumo.perfis_mediana[chavePerfil] ?? NaN, rotulo: "Mediana entre distribuidoras" }].filter((r) => Number.isFinite(r.valor))}
+          referencias={[
+            {
+              valor: resumo.perfis_mediana[chavePerfil] ?? NaN,
+              rotulo: "Mediana entre distribuidoras",
+            },
+          ].filter((r) => Number.isFinite(r.valor))}
           selecionado={naRanking ? destaque : null}
           onSelecionar={selecionar}
           alturaCategoria={44}
@@ -120,7 +123,11 @@ export function ContaTarifas({ vigentes, resumo, dataReferencia, fonte }: ContaT
           chaveRotulo="sigla"
           series={[
             { id: "te", rotulo: "TE (energia)", cor: "var(--serie-comp-1)" },
-            { id: "tusd", rotulo: "TUSD (uso da rede)", cor: "var(--serie-solar)" },
+            {
+              id: "tusd",
+              rotulo: "TUSD (uso da rede)",
+              cor: "var(--serie-solar)",
+            },
           ]}
           empilhado
           unidade="R$/MWh"
@@ -146,7 +153,7 @@ export function ContaTarifas({ vigentes, resumo, dataReferencia, fonte }: ContaT
 
       <TabelaInterativa
         titulo="Tarifas B1 residenciais vigentes e custo por perfil"
-        colunas={COLUNAS}
+        colunas={COLUNAS_RANKING}
         linhas={linhas}
         chaveLinha="id"
         colunaRotulo="sigla"

@@ -158,7 +158,13 @@ TIPOS_FASE = {
 }
 DELIBERADO = ("Deliberado", "Parcialmente Deliberado")
 _REF_PART = re.compile(r"(Consulta|Audiência)\s+Pública\s+(?:n[º°o.]*\s*)?([\d.]+)\s*/\s*(\d{4})", re.I)
-_RESULTADO = re.compile(r"Resultados?\s+d[ao]s?\s+(?:[\wçãéíóú]+\s+){0,3}?(Consulta|Audiência)\s+Pública\s+(?:n[º°o.]*\s*)?([\d.]+)\s*/\s*(\d{4})", re.I)
+# "Resultado da Consulta Pública nº 21/2025", "Resultado da Segunda Fase da Consulta Pública nº 37/2020",
+# "Resultados da Primeira e da Segunda Fase da Consulta Pública nº 33/2019", "Resultado da abertura da
+# Consulta Pública nº 35/2019". Entre "Resultado" e a modalidade só entram palavras de fase (lista fechada):
+# "Resultado parcial" e "Resultado da Revisão Tarifária ..." não são resultado da consulta citada depois.
+_PALAVRA_FASE = r"(?:d[ao]s?|e|primeira|segunda|terceira|[123]ª|fases?|abertura|reabertura)"
+_RESULTADO = re.compile(r"Resultados?\s+d[ao]s?\s+(?:" + _PALAVRA_FASE + r"\s+){0,7}?(Consulta|Audiência)\s+Pública\s+"
+                        r"(?:n[º°o.]*\s*)?([\d.]+)\s*/\s*(\d{4})", re.I)
 
 
 def _int(v):
@@ -199,24 +205,54 @@ def _limpa_datas(t):
     return re.sub(r"\s+", " ", t)
 
 
+# Abertura de uma faixa de datas. As atas usam várias redações para o mesmo período; todas
+# vieram de decisões reais (exemplos nos testes):
+#   "no período de 3 de setembro a 2 de outubro de 2026", "entre 4 e 13 de fevereiro de 2022",
+#   "entre os dias 30 de julho e 14 de setembro de 2026", "de 30/09/2026 a 14/11/2026",
+#   "com início em 12 de maio até 27 de junho de 2022",
+#   "iniciando em 30 de março e finalizando em 13 de abril de 2022",
+#   "com início em 14 de setembro e término em 28 de outubro de 2017",
+#   "no período de 13 de dezembro a e 11 de fevereiro de 2024" (erro de digitação da fonte).
+_ABRE_FAIXA = (r"(?:\bde|\bentre(?:\s+os\s+dias)?|\bdo\s+dia|\bcom\s+início\s+em|\biniciando\s+em|\binício\s+em"
+               r"|\ba\s+partir\s+de)")
+_LIGA_FAIXA = (r"(?:a\s+e|a|até|e\s+término\s+em|e\s+terminando\s+em|e\s+finalizando\s+em|e\s+encerramento\s+em"
+               r"|e\s+fim\s+em|e)")
 _FAIXA = re.compile(
-    r"(?:de|entre)\s+(\d{1,2})(?:\s+(?:de\s+)?" + _MES + r")?(?:\s+de\s+(\d{4}))?\s*,?\s+(?:a|até|e)\s+"
+    _ABRE_FAIXA + r"\s+(\d{1,2})(?:\s+(?:de\s+)?" + _MES + r")?(?:\s+de\s+(\d{4}))?\s*,?\s+" + _LIGA_FAIXA + r"\s+"
     r"(?:o\s+dia\s+)?(\d{1,2})\s+(?:de\s+)?" + _MES + r"(?:\s+de\s+(\d{4}))?", re.I)
-_DURACAO = re.compile(r"(?:prazo|duração|período)\s+de\s+(\d{1,3})\s*(?:\([^)]*\)\s*)?dias", re.I)
+_FAIXA_NUM = re.compile(
+    _ABRE_FAIXA + r"\s+(\d{1,2})/(\d{1,2})/(\d{4})\s*,?\s+" + _LIGA_FAIXA + r"\s+(?:o\s+dia\s+)?(\d{1,2})/(\d{1,2})/(\d{4})",
+    re.I)
+_DURACAO = re.compile(r"(?:prazo|duração|período(?:\s+de\s+contribuições)?|\bpor)\s+(?:de\s+)?(\d{1,3})\s*(?:\([^)]*\)\s*)?dias",
+                      re.I)
+# Início sem fim: "a partir de 8 de junho de 2026", "a contar do dia 18 de agosto de 2021",
+# "iniciando em 7 de abril de 2022", "(início em 26 de outubro de 2017"
+_INICIO = re.compile(r"(?:\ba\s+partir\s+d[eo]|\ba\s+contar\s+d[eo]|\biniciando\s+em|\bcom\s+início\s+em|\binício\s+em)\s+"
+                     r"(?:o\s+)?(?:dia\s+)?(\d{1,2})\s+(?:de\s+)?" + _MES + r"(?:\s+de\s+(\d{4}))?", re.I)
 _SESSAO = re.compile(r"(?:realizar-se|realizada|a ser realizada)?\s*(?:no dia|em)\s+(\d{1,2})\s+de\s+" + _MES + r"\s+de\s+(\d{4})", re.I)
 
 
+def _janela_plausivel(ini, fim, dr):
+    """Janela de contribuições plausível para uma decisão tomada em `dr`: início ≤ fim, termina
+    no máximo 7 dias antes da reunião, começa no máximo 60 dias antes dela (uma prorrogação
+    repete a data de início já transcorrida) e dura até 400 dias. Descarta períodos de
+    referência citados no texto, como "de 1º de janeiro a 31 de dezembro de 2024"."""
+    return (ini <= fim and fim >= dr - timedelta(days=7) and ini >= dr - timedelta(days=60)
+            and (fim - ini).days <= 400)
+
+
 def periodos_da_decisao(texto, data_reuniao):
-    """Janelas de contribuição citadas numa decisão: lista de dicts {inicio, fim, trecho}.
+    """Janelas de contribuição escritas com as duas datas numa decisão: lista de dicts
+    {inicio, fim, trecho, origem='datas_explicitas'}.
 
     Regras (testadas em pipeline/tests/test_energia_regulacao.py):
-    * "de D [de MÊS] [de AAAA] a|até D de MÊS [de AAAA]" e "entre ... e ...";
+    * por extenso: abertura ("de", "entre [os dias]", "do dia", "com início em", "iniciando em",
+      "a partir de") + D [de MÊS] [de AAAA] + ligação ("a", "até", "e", "e término em",
+      "e finalizando em") + D de MÊS [de AAAA];
+    * numérica: a mesma abertura e ligação com dd/mm/aaaa nas duas pontas;
     * mês ou ano omitidos no início herdam os do fim; ano omitido no fim é o da reunião,
       ou o seguinte quando o mês do fim é anterior ao mês da reunião;
-    * janela aceita só se início ≤ fim, termina no máximo 7 dias antes da reunião, começa no
-      máximo 60 dias antes dela (uma prorrogação repete a data de início já transcorrida) e
-      dura no máximo 400 dias; isso descarta períodos de referência citados no texto, como
-      "de 1º de janeiro a 31 de dezembro de 2024".
+    * a janela só é aceita se for plausível (`_janela_plausivel`).
     """
     t = _limpa_datas(texto)
     dr = date.fromisoformat(data_reuniao)
@@ -231,17 +267,80 @@ def periodos_da_decisao(texto, data_reuniao):
             ini, fim = date(ano1, mes1, int(d1)), date(ano2, mes2, int(d2))
         except ValueError:
             continue
-        if not (ini <= fim and fim >= dr - timedelta(days=7) and ini >= dr - timedelta(days=60)
-                and (fim - ini).days <= 400):
+        if _janela_plausivel(ini, fim, dr):
+            out.append({"inicio": ini.isoformat(), "fim": fim.isoformat(), "trecho": m.group(0).strip(),
+                        "origem": "datas_explicitas", "pos": m.start()})
+    for m in _FAIXA_NUM.finditer(t):
+        d1, m1, a1, d2, m2, a2 = (int(x) for x in m.groups())
+        try:
+            ini, fim = date(a1, m1, d1), date(a2, m2, d2)
+        except ValueError:
             continue
-        out.append({"inicio": ini.isoformat(), "fim": fim.isoformat(), "trecho": m.group(0).strip()})
+        if _janela_plausivel(ini, fim, dr):
+            out.append({"inicio": ini.isoformat(), "fim": fim.isoformat(), "trecho": m.group(0).strip(),
+                        "origem": "datas_explicitas", "pos": m.start()})
+    out.sort(key=lambda j: j["pos"])
+    return [{k: v for k, v in j.items() if k != "pos"} for j in out]
+
+
+def fim_pela_duracao(inicio, dias):
+    """Último dia de um prazo de `dias` dias que começa em `inicio` (AAAA-MM-DD), contando o
+    dia do início (convenção das atas: "15 dias, com início em 1 de novembro e término em 15 de
+    novembro"; a adesão das atas que trazem as duas datas e a duração é medida na gold)."""
+    return (date.fromisoformat(inicio) + timedelta(days=dias - 1)).isoformat()
+
+
+def inicio_e_duracao(texto, data_reuniao):
+    """Janelas derivadas quando a decisão dá o início e a duração, sem a data final ("pelo
+    prazo de 93 dias, a partir de 8 de junho de 2026"): lista de dicts {inicio, fim, duracao_dias,
+    trecho, origem='inicio_e_duracao'}. O fim é CALCULADO por `fim_pela_duracao` e assim
+    rotulado; nunca substitui uma data escrita. A duração tem de estar na mesma oração do
+    início (até 150 caracteres antes ou 80 depois, sem ponto final no meio). Início citado
+    dentro de uma faixa com as duas datas é ignorado (a faixa já vale)."""
+    t = _limpa_datas(texto)
+    dr = date.fromisoformat(data_reuniao)
+    faixas = [(m.start(), m.end()) for r in (_FAIXA, _FAIXA_NUM) for m in r.finditer(t)]
+    duracoes = [(m.start(), m.end(), int(m.group(1))) for m in _DURACAO.finditer(t)]
+    out = []
+    for m in _INICIO.finditer(t):
+        if any(a <= m.start() < b for a, b in faixas):
+            continue
+        d, mes, ano = int(m.group(1)), MESES[m.group(2).lower()], m.group(3)
+        ano = int(ano) if ano else (dr.year + 1 if mes < dr.month - 1 else dr.year)
+        try:
+            ini = date(ano, mes, d)
+        except ValueError:
+            continue
+        perto = [(abs(m.start() - b) if b <= m.start() else abs(a - m.end()), a, b, n) for a, b, n in duracoes
+                 if (m.start() - 150 <= b <= m.start() or m.end() <= a <= m.end() + 80)
+                 and "." not in t[min(b, m.end()):max(a, m.start())]]
+        if not perto:
+            continue
+        _, a, b, n = min(perto)
+        if not 1 <= n <= 400:
+            continue
+        fim = date.fromisoformat(fim_pela_duracao(ini.isoformat(), n))
+        if _janela_plausivel(ini, fim, dr):
+            trecho = t[min(a, m.start()):max(b, m.end())].strip()
+            out.append({"inicio": ini.isoformat(), "fim": fim.isoformat(), "duracao_dias": n, "trecho": trecho,
+                        "origem": "inicio_e_duracao"})
     return out
 
 
 def duracao_da_decisao(texto):
-    """Duração em dias quando a decisão informa só o prazo ("prazo de 45 dias"); None se não informa."""
+    """Duração em dias quando a decisão informa o prazo ("prazo de 45 dias"); None se não informa."""
     m = _DURACAO.search(_limpa_datas(texto))
     return int(m.group(1)) if m else None
+
+
+def janelas_da_decisao(texto, data_reuniao):
+    """(janelas, origem): as janelas com as duas datas escritas, quando houver; senão as
+    derivadas de início e duração; senão ([], None)."""
+    j = periodos_da_decisao(texto, data_reuniao)
+    if j:
+        return j, "datas_explicitas"
+    j = inicio_e_duracao(texto, data_reuniao)
+    return (j, "inicio_e_duracao") if j else ([], None)
 
 
 def sessao_da_decisao(texto, data_reuniao):
@@ -281,6 +380,9 @@ def ata_relevante(a):
         return True
     if "Agenda Regulatória" in a["assunto"]:
         return True
+    # aprovação de versões do PRODIST e do PRORET (conferência da versão vigente das páginas oficiais)
+    if re.search(r"PRODIST|Procedimentos de Distribuição|PRORET|Procedimentos de Regulação Tarifária", txt):
+        return True
     return tipo in ("Resolução Normativa", "Resolução Homologatória", "Portaria") and a["resultado"] in DELIBERADO
 
 
@@ -292,16 +394,69 @@ def _decidiu(a):
     return a["resultado"] in DELIBERADO
 
 
-def consultas_das_atas(atas):
+_RESULTADO_ALT = re.compile(
+    r"(?:(?:Fechamento|Encerramento)\b[^.]{0,60}?|após\s+(?:a\s+)?(?:realização|análise\s+das\s+contribuições\s+recebidas)\s+)"
+    r"(?:d|n)[ao]s?\s+(?:[\wçãéíóú]+\s+){0,3}?(Consulta|Audiência)\s+Pública\s+(?:n[º°o.]*\s*)?([\d.]+)\s*/\s*(\d{4})", re.I)
+# A oração do resultado termina onde começa a descrição do objeto ("instituída com vistas a ...").
+_FIM_CLAUSULA = re.compile(r",?\s+(?:instituíd|instaurad|com\s+vistas?|que\s+trat|referente|visando|para\s)", re.I)
+
+
+def _sig(modalidade):
+    return "CP" if modalidade.lower().startswith("consulta") else "AP"
+
+
+def _refs(texto):
+    """[(sig, número, ano)] das citações 'Consulta|Audiência Pública nº N/AAAA' num texto."""
+    return [(_sig(r[0]), _int(r[1]), int(r[2])) for r in _REF_PART.findall(texto or "")]
+
+
+def alvos_do_resultado(assunto):
+    """Consultas cujo resultado a linha de pauta delibera: [(sig, número, ano)].
+
+    O assunto começa pelo resultado ("Resultado da Audiência Pública nº 33/2019 e da Consulta
+    Pública nº 34/2019 (Segunda Fase da Audiência Pública nº 33/2019), instituídas com vistas
+    a ...") ou registra o encerramento ("Encerramento, por perda de objeto, da Consulta
+    Pública nº 41/2021", "Fechamento da segunda fase da Audiência Pública nº 032/2018", "...
+    após a análise das contribuições recebidas na Consulta Pública nº 38/2024"). Entram
+    todas as consultas citadas na oração do resultado, até a descrição do objeto; citações
+    posteriores (normas e consultas mencionadas no objeto) ficam de fora."""
+    m = _RESULTADO.search(assunto or "") or _RESULTADO_ALT.search(assunto or "")
+    if not m:
+        return []
+    fim = _FIM_CLAUSULA.search(assunto, m.end())
+    clausula = assunto[m.start():fim.start() if fim else len(assunto)]
+    return list(dict.fromkeys(_refs(clausula)))
+
+
+def _fase(nome, a, janelas, origem, sessao=None):
+    """Registro de uma fase (abertura, 2ª fase, prorrogação...) com a janela lida da decisão."""
+    return {"fase": nome, "data_deliberacao": a["data"], "reuniao": a["reuniao"],
+            "inicio": min((j["inicio"] for j in janelas), default=None),
+            "fim": max((j["fim"] for j in janelas), default=None), "janelas": len(janelas),
+            "janela_origem": origem, "fim_calculado": origem == "inicio_e_duracao",
+            "trecho_periodo": " […] ".join(j["trecho"] for j in janelas) or None,
+            "duracao_dias": duracao_da_decisao(a["decisao"]), "sessao": sessao, "chave": chave_ata(a)}
+
+
+def consultas_das_atas(atas, totais=None):
     """Consultas e audiências públicas reconstituídas das atas: {id: consulta}.
 
     Identidade: (modalidade, número, ano). O número é o NumAtoAdministrativo da linha de
-    abertura, que é o número do aviso (conferido nas linhas que citam 'Consulta Pública nº
-    N/AAAA'); o ano é o da reunião que deliberou a abertura. Fases, reaberturas e
-    prorrogações entram pela citação explícita 'nº N/AAAA'; na falta dela, pelo
-    NumAtoAdministrativo da linha com o mesmo processo. Resultado entra só pela citação
-    explícita 'Resultado da Consulta Pública nº N/AAAA'."""
+    abertura, que costuma ser o número do aviso (conferido nas linhas que citam 'Consulta
+    Pública nº N/AAAA'); o ano é o da reunião que deliberou a abertura.
+
+    Número suspeito (`numero_suspeito`): acima do total anual da modalidade publicado pela
+    ANEEL (`totais` = {('CP', 2020): 78, ...}, só anos completos), ou nunca citado por outra
+    linha do mesmo processo enquanto o processo cita outro número da mesma modalidade e ano. Quando o processo cita um
+    único outro número que não é o de outra consulta já reconstituída, ele é adotado como
+    `numero_citado_no_processo` e serve de vínculo, só para linhas do mesmo processo.
+
+    Fases, reaberturas e prorrogações entram pela citação explícita 'nº N/AAAA'; na falta
+    dela, pelo NumAtoAdministrativo da linha com o mesmo processo. Resultado entra pela
+    citação explícita de todas as consultas da oração do resultado (`alvos_do_resultado`),
+    preferindo a consulta do mesmo processo; sem número citado, pelo processo."""
     cons, por_processo = {}, {}
+    totais = totais or {}
     ordenadas = sorted(atas, key=lambda a: (a["data"], _int(a["ordem"]) or 0))
     for a in ordenadas:
         mod = TIPOS_ABERTURA.get(a["tipo_ato"])
@@ -309,7 +464,7 @@ def consultas_das_atas(atas):
         if not mod or not n or not _decidiu(a):
             continue
         ano = int(a["data"][:4])
-        cid = f"{'CP' if mod.startswith('Consulta') else 'AP'}-{n}-{ano}"
+        cid = f"{_sig(mod)}-{n}-{ano}"
         procs = processos(a["processo"])
         if cid in cons and not set(procs) & set(cons[cid]["processos"]):
             # mesmo número e ano em processos diferentes: a fonte repete o número; as duas
@@ -319,85 +474,129 @@ def consultas_das_atas(atas):
             while f"{cid}-{k}" in cons:
                 k += 1
             cid = f"{cid}-{k}"
-        janelas = periodos_da_decisao(a["decisao"], a["data"])
+        janelas, origem = janelas_da_decisao(a["decisao"], a["data"])
         c = cons.setdefault(cid, {
-            "id": cid, "modalidade": mod, "numero": n, "ano": ano, "tema": a["assunto"],
+            "id": cid, "modalidade": mod, "numero": n, "numero_na_ata": n, "ano": ano, "tema": a["assunto"],
             "processos": procs, "relator": a["relator"] or None,
             "abertura": {"data": a["data"], "reuniao": a["reuniao"], "decisao": limpa_decisao(a["decisao"]),
                          "tipo_ato": a["tipo_ato"], "chave": chave_ata(a)},
+            "texto_integral": a["assunto"] + " " + a["decisao"],
             "fases": [], "resultado": None, "citacoes_numero": 0,
-            "numero_em_conflito": cid != f"{'CP' if mod.startswith('Consulta') else 'AP'}-{n}-{ano}"})
-        c["fases"].append({"fase": "abertura", "data_deliberacao": a["data"], "reuniao": a["reuniao"],
-                           "inicio": min((j["inicio"] for j in janelas), default=None),
-                           "fim": max((j["fim"] for j in janelas), default=None),
-                           "janelas": len(janelas), "trecho_periodo": " […] ".join(j["trecho"] for j in janelas) or None,
-                           "duracao_dias": None if janelas else duracao_da_decisao(a["decisao"]),
-                           "sessao": sessao_da_decisao(a["decisao"], a["data"]) if mod.startswith("Audiência") else None,
-                           "chave": chave_ata(a)})
+            "numero_suspeito": False, "motivo_numero_suspeito": None, "numero_citado_no_processo": None,
+            "numero_em_conflito": cid != f"{_sig(mod)}-{n}-{ano}"})
+        c["fases"].append(_fase("abertura", a, janelas, origem,
+                                sessao_da_decisao(a["decisao"], a["data"]) if mod.startswith("Audiência") else None))
         for p in c["processos"]:
             por_processo.setdefault(p, set()).add(cid)
+
+    # 1) citações: conferem o número da abertura só quando vêm do mesmo processo (ou de linha
+    # sem processo); citação vinda de outro processo é de outra consulta com o mesmo número.
+    # O que cada processo cita fica guardado para a conferência de plausibilidade.
+    citados_no_processo = {}
     for a in ordenadas:
-        # citações explícitas conferem o número; fases e resultados se ligam a elas
-        refs = [(("CP" if r[0].lower().startswith("consulta") else "AP"), _int(r[1]), int(r[2]))
-                for r in _REF_PART.findall(a["assunto"] + " " + a["decisao"])]
+        refs = _refs(a["assunto"] + " " + a["decisao"])
+        procs = processos(a["processo"])
         for sig, n, ano in refs:
             cid = f"{sig}-{n}-{ano}"
-            if cid in cons and chave_ata(a) != cons[cid]["abertura"]["chave"]:
+            if (cid in cons and chave_ata(a) != cons[cid]["abertura"]["chave"]
+                    and (not procs or set(procs) & set(cons[cid]["processos"]))):
                 cons[cid]["citacoes_numero"] += 1
+        for p in procs:
+            citados_no_processo.setdefault(p, set()).update(refs)
+
+    # 2) plausibilidade do número e número alternativo citado pelo próprio processo
+    apelidos = {}
+    for cid, c in cons.items():
+        sig = _sig(c["modalidade"])
+        total = totais.get((sig, c["ano"]))
+        alternativos = sorted({n for p in c["processos"] for s, n, ano in citados_no_processo.get(p, ())
+                               if s == sig and ano == c["ano"] and n and n != c["numero_na_ata"]
+                               and not ({x for x in por_processo.get(p, ())} & {f"{sig}-{n}-{ano}"})})
+        motivos = []
+        if total is not None and c["numero_na_ata"] > total:
+            motivos.append(f"número {c['numero_na_ata']} acima do total anual publicado pela ANEEL ({int(total)} em {c['ano']})")
+        if c["citacoes_numero"] == 0 and alternativos:
+            motivos.append(f"nenhuma outra linha do mesmo processo cita nº {c['numero_na_ata']}/{c['ano']}; o processo cita "
+                           + ", ".join(f"nº {n}/{c['ano']}" for n in alternativos))
+        if not motivos:
+            continue
+        c["numero_suspeito"], c["motivo_numero_suspeito"] = True, "; ".join(motivos)
+        if len(alternativos) == 1 and f"{sig}-{alternativos[0]}-{c['ano']}" not in cons:
+            c["numero_citado_no_processo"] = alternativos[0]
+            c["numero"] = alternativos[0]
+            apelidos[(sig, alternativos[0], c["ano"])] = cid
+
+    def resolve(sig, n, ano, procs, data):
+        """(id, vínculo) da consulta citada por (sig, n, ano) numa linha com os processos `procs`
+        deliberada em `data`:
+        1. a do mesmo processo com aquele número (o da abertura ou o citado no processo);
+        2. senão, quando o processo da linha tem uma única consulta aberta antes, ela, pelo
+           processo (revisões tarifárias registram o aviso como audiência e o citam como
+           consulta, com outro número);
+        3. senão, se o processo da linha não tem consulta reconstituída, a do número citado;
+        4. senão nenhuma (número de outro processo e processo com mais de uma consulta)."""
+        cid = f"{sig}-{n}-{ano}"
+        for x in (cid, apelidos.get((sig, n, ano))):
+            if x in cons and set(procs) & set(cons[x]["processos"]):
+                return x, "numero_citado"
+        mesmos = {y for p in procs for y in por_processo.get(p, ()) if cons[y]["abertura"]["data"] <= data}
+        if len(mesmos) == 1:
+            return mesmos.pop(), "processo"
+        if not mesmos and cid in cons:
+            return cid, "numero_citado"
+        return None, None
+
+    def registra_resultado(cid, a, vinculo):
+        n_ato = _int(a["num_ato"])
+        ato = f"{a['tipo_ato']} nº {numero_ato(n_ato)}/{a['data'][:4]}" if a["tipo_ato"] and n_ato else None
+        res = {"data": a["data"], "reuniao": a["reuniao"], "resultado_julgamento": a["resultado"],
+               "decidido": _decidiu(a), "ato": ato, "decisao": limpa_decisao(a["decisao"]), "chave": chave_ata(a),
+               "vinculo": vinculo}
+        atual = cons[cid]["resultado"]
+        # a última deliberação decide; 'retirado de pauta' não apaga uma decisão já tomada, e
+        # um vínculo só pelo processo não substitui um resultado que cita o número da consulta
+        if atual is not None and vinculo == "processo" and atual["vinculo"] == "numero_citado":
+            return
+        if atual is None or (res["decidido"] or not atual["decidido"]):
+            cons[cid]["resultado"] = res
+
+    # 3) fases e resultados citados por número
+    for a in ordenadas:
+        procs = processos(a["processo"])
         tf = TIPOS_FASE.get(a["tipo_ato"])
         if tf and _decidiu(a):
-            sig = "CP" if tf[0].startswith("Consulta") else "AP"
-            alvo = [f"{sig}-{n}-{ano}" for s, n, ano in refs if s == sig and f"{sig}-{n}-{ano}" in cons]
+            sig = _sig(tf[0])
+            alvo = [resolve(s, n, ano, procs, a["data"])[0] for s, n, ano in _refs(a["assunto"] + " " + a["decisao"])
+                    if s == sig]
+            alvo = [x for x in alvo if x]
             if not alvo:
                 n = _int(a["num_ato"])
-                alvo = [cid for p in processos(a["processo"]) for cid in por_processo.get(p, ())
-                        if cons[cid]["numero"] == n and cid.startswith(sig)]
-            janelas = periodos_da_decisao(a["decisao"], a["data"])
+                alvo = [cid for p in procs for cid in por_processo.get(p, ())
+                        if n in (cons[cid]["numero_na_ata"], cons[cid]["numero"]) and cid.startswith(sig)]
+            janelas, origem = janelas_da_decisao(a["decisao"], a["data"])
             for cid in dict.fromkeys(alvo):
-                cons[cid]["fases"].append({
-                    "fase": tf[1], "data_deliberacao": a["data"], "reuniao": a["reuniao"],
-                    "inicio": min((j["inicio"] for j in janelas), default=None),
-                    "fim": max((j["fim"] for j in janelas), default=None), "janelas": len(janelas),
-                    "trecho_periodo": " […] ".join(j["trecho"] for j in janelas) or None,
-                    "duracao_dias": None if janelas else duracao_da_decisao(a["decisao"]), "sessao": None,
-                    "chave": chave_ata(a)})
+                cons[cid]["fases"].append(_fase(tf[1], a, janelas, origem))
         # linha de aviso (abertura, fase, prorrogação) nunca é resultado, mesmo quando o assunto
         # repete "Resultado da Consulta Pública nº ..." (acontece na fonte)
-        m = None if (a["tipo_ato"] in TIPOS_ABERTURA or tf) else _RESULTADO.search(a["assunto"])
-        if m:
-            sig = "CP" if m.group(1).lower().startswith("consulta") else "AP"
-            cid = f"{sig}-{_int(m.group(2))}-{int(m.group(3))}"
-            if cid in cons:
-                n_ato = _int(a["num_ato"])
-                ato = f"{a['tipo_ato']} nº {numero_ato(n_ato)}/{a['data'][:4]}" if a["tipo_ato"] and n_ato else None
-                res = {"data": a["data"], "reuniao": a["reuniao"], "resultado_julgamento": a["resultado"],
-                       "decidido": _decidiu(a), "ato": ato, "decisao": limpa_decisao(a["decisao"]), "chave": chave_ata(a),
-                       "vinculo": "numero_citado"}
-                atual = cons[cid]["resultado"]
-                # a última deliberação decide; 'retirado de pauta' não apaga uma decisão já tomada
-                if atual is None or (res["decidido"] or not atual["decidido"]):
-                    cons[cid]["resultado"] = res
-    # Resultado sem número citado ("Resultado da Revisão Tarifária Periódica de 2026 da ..."):
+        if a["tipo_ato"] in TIPOS_ABERTURA or tf:
+            continue
+        for sig, n, ano in alvos_do_resultado(a["assunto"]):
+            cid, vinculo = resolve(sig, n, ano, procs, a["data"])
+            if cid:
+                registra_resultado(cid, a, vinculo)
+
+    # 4) resultado sem número citado ("Resultado da Revisão Tarifária Periódica de 2026 da ..."):
     # liga pelo número do processo, chave exata do SEI, quando um único aviso aberto antes
     # tem o mesmo processo e ainda não tem resultado pela citação explícita.
     for a in ordenadas:
-        if (not re.match(r"\s*Resultados?\b", a["assunto"]) or _RESULTADO.search(a["assunto"])
+        if (not re.match(r"\s*Resultados?\b", a["assunto"]) or alvos_do_resultado(a["assunto"])
                 or a["tipo_ato"] in TIPOS_ABERTURA or a["tipo_ato"] in TIPOS_FASE):
             continue
         alvo = {cid for p in processos(a["processo"]) for cid in por_processo.get(p, ())
                 if cons[cid]["abertura"]["data"] < a["data"]}
         alvo = [cid for cid in alvo if cons[cid]["resultado"] is None or cons[cid]["resultado"]["vinculo"] == "processo"]
-        if len(alvo) != 1:
-            continue
-        cid = alvo[0]
-        n_ato = _int(a["num_ato"])
-        ato = f"{a['tipo_ato']} nº {numero_ato(n_ato)}/{a['data'][:4]}" if a["tipo_ato"] and n_ato else None
-        res = {"data": a["data"], "reuniao": a["reuniao"], "resultado_julgamento": a["resultado"],
-               "decidido": _decidiu(a), "ato": ato, "decisao": limpa_decisao(a["decisao"]), "chave": chave_ata(a),
-               "vinculo": "processo"}
-        atual = cons[cid]["resultado"]
-        if atual is None or (res["decidido"] or not atual["decidido"]):
-            cons[cid]["resultado"] = res
+        if len(alvo) == 1:
+            registra_resultado(alvo[0], a, "processo")
     return cons
 
 
@@ -412,7 +611,9 @@ SITUACOES = {
     "encerrada_aguardando": "Contribuições encerradas, sem resultado deliberado em reunião pública registrada",
     "resultado_em_pauta": "Resultado levado à reunião, sem decisão (retirado de pauta ou pedido de vista)",
     "decidida": "Resultado deliberado pela Diretoria",
-    "prazo_nao_datado": "A ata informa só a duração, sem data de encerramento; situação não derivável",
+    "prazo_nao_datado": "A ata informa a duração, mas não a data de início nem a de encerramento; situação não derivável",
+    "sessao_sem_periodo": "Audiência com data de sessão, sem período de contribuições na ata; situação não derivável",
+    "sem_periodo_na_ata": "A ata não informa período, duração nem sessão; situação não derivável",
 }
 
 
@@ -423,7 +624,8 @@ def fase_atual(consulta):
 
 def janela_vigente(consulta):
     """Janela datada da fase deliberada por último; None quando essa fase não traz datas
-    (uma fase posterior sem data não deixa a janela anterior valer em seu lugar)."""
+    (uma fase posterior sem data não deixa a janela anterior valer em seu lugar). A janela
+    pode ter o fim calculado (início e duração escritos na ata; `fim_calculado`)."""
     f = fase_atual(consulta)
     return f if f and f.get("inicio") and f.get("fim") else None
 
@@ -432,21 +634,31 @@ def situacao(consulta, hoje):
     """Situação derivada da data `hoje` (AAAA-MM-DD, horário de Brasília). Regra única,
     repetida sem alteração em src/lib/energia/tipos-regulacao.ts (situacaoConsulta):
     1. resultado deliberado → decidida;
-    2. fase deliberada por último sem datas → prazo_nao_datado (nunca 'aberta');
-    3. hoje antes do início → a_abrir; entre início e fim (inclusive) → aberta;
-    4. depois do fim: resultado levado à pauta sem decisão → resultado_em_pauta; senão
-       encerrada_aguardando."""
+    2. resultado levado à reunião, sem decisão, depois da deliberação da fase atual →
+       resultado_em_pauta (levar o resultado à Diretoria prova que as contribuições
+       daquela fase acabaram, mesmo quando a ata não datou a fase);
+    3. fase atual sem janela: só a duração → prazo_nao_datado; só a sessão da audiência →
+       sessao_sem_periodo; nada → sem_periodo_na_ata (nunca 'aberta');
+    4. hoje antes do início → a_abrir; entre início e fim (inclusive) → aberta;
+    5. depois do fim → encerrada_aguardando."""
     res = consulta.get("resultado")
     if res and res.get("decidido"):
         return "decidida"
+    f = fase_atual(consulta)
+    if res and f and res["data"] > f["data_deliberacao"]:
+        return "resultado_em_pauta"
     j = janela_vigente(consulta)
     if not j:
-        return "prazo_nao_datado"
+        if f and f.get("duracao_dias"):
+            return "prazo_nao_datado"
+        if f and f.get("sessao"):
+            return "sessao_sem_periodo"
+        return "sem_periodo_na_ata"
     if hoje < j["inicio"]:
         return "a_abrir"
     if hoje <= j["fim"]:
         return "aberta"
-    return "resultado_em_pauta" if res else "encerrada_aguardando"
+    return "encerrada_aguardando"
 
 
 # ------------------------------------------------------------------ agenda regulatória
@@ -598,6 +810,106 @@ def revisao_da_agenda(dados):
     return {"aprovada_por": m.group(1), "atualizada_por": m.group(2), "trecho": normaliza(m.group(0))}
 
 
+_CONJ_PROC = re.compile(r"Procedimentos de Distribuição|PRODIST|Procedimentos de Regulação Tarifária|PRORET")
+_NUM_PROC = re.compile(r"\b(\d{1,2}(?:\.\d{1,2})?(?:\s?[A-Z])?)\b")
+
+
+def canonico_procedimento(nome):
+    """'Submódulo 2.1 A' → 'submódulo 2.1a'; 'Módulos 11' → 'módulo 11' (para comparar nomes)."""
+    t = re.sub(r"\s+", "", (nome or "").lower()).replace("módulos", "módulo").replace("submódulos", "submódulo")
+    return re.sub(r"^(sub)?módulo", lambda m: m.group(0) + " ", t)
+
+
+def aprovacoes_de_procedimentos(atas):
+    """Decisões da Diretoria que aprovam versão, revisão ou alteração de módulos do PRODIST ou
+    submódulos do PRORET: [{conjunto, modulo, ato, numero, ano, data, fonte='ata', trecho}].
+
+    Leitura: cada menção a "Procedimentos de Distribuição", "PRODIST", "Procedimentos de
+    Regulação Tarifária" ou "PRORET" na decisão é ligada ao "aprovar" mais próximo antes dela
+    (até 220 caracteres, sem ';' e sem atravessar a menção anterior); os números que seguem
+    a palavra "Módulo(s)" ou "Submódulo(s)" nesse trecho, sem os parênteses, são os itens
+    aprovados ("aprovar novas versões dos Módulos 1, 4, 6, 8 e 11 dos Procedimentos de
+    Distribuição"). Só linhas deliberadas."""
+    out = []
+    for a in atas:
+        if not _decidiu(a):
+            continue
+        d = (a["decisao"] or "").replace("\xa0", " ")
+        ult = 0
+        for m in _CONJ_PROC.finditer(d):
+            janela = d[max(ult, m.start() - 220):m.start()]
+            ult = m.end()
+            k = janela.rfind("aprovar")
+            if k < 0 or ";" in janela[k:]:
+                continue
+            seg = re.sub(r"\([^)]*\)", " ", janela[k:])
+            mk = re.search(r"(Subm[óo]dulos?|M[óo]dulos?)\s", seg)
+            if not mk:
+                continue
+            tipo = "Submódulo" if mk.group(1).lower().startswith("sub") else "Módulo"
+            conjunto = "PRORET" if m.group(0) in ("PRORET", "Procedimentos de Regulação Tarifária") else "PRODIST"
+            nums = [x.replace(" ", "") for x in _NUM_PROC.findall(seg[mk.end():])]
+            mv = re.search(r"\bvers(?:ão|ões)\s+(\d+(?:\.\d+)*[A-Z]?)\b", seg)
+            n_ato = _int(a["num_ato"])
+            for n in dict.fromkeys(nums):
+                out.append({"conjunto": conjunto, "modulo": f"{tipo} {n}", "ato": f"{a['tipo_ato']} nº {numero_ato(n_ato)}/{a['data'][:4]}"
+                            if a["tipo_ato"] and n_ato else None, "numero": n_ato, "ano": int(a["data"][:4]),
+                            "tipo_ato": a["tipo_ato"], "data": a["data"], "fonte": "ata da reunião pública da Diretoria",
+                            "versao_aprovada": mv.group(1) if mv and len(nums) == 1 else None,
+                            "trecho": normaliza(janela[k:] + m.group(0))})
+    return out
+
+
+_ANEXO_PROC = re.compile(r"Anexo\s+[IVXLC]+\s*[-–]\s*(Subm[óo]dulo|M[óo]dulo)\s+([\d.]+\s?[A-Z]?)\s*[-–]\s*([^\n]+)")
+
+
+def anexos_de_procedimentos(texto, titulos):
+    """Módulos que um ato publica em anexo ("Anexo V - Módulo 11 - FATURA DE ENERGIA ELÉTRICA E
+    INFORMAÇÕES SUPLEMENTARES"): [{modulo, titulo_no_ato, trecho}]. Só entra o anexo cujo título
+    começa como o título do item na página oficial (`titulos` = {'módulo 11': 'Fatura de
+    Energia Elétrica e Informações Suplementares'}), para não confundir com módulos de outros
+    procedimentos (Regras de Transmissão, Procedimentos de Rede)."""
+    out = []
+    for m in _ANEXO_PROC.finditer(texto or ""):
+        nome = f"{'Submódulo' if m.group(1).lower().startswith('sub') else 'Módulo'} {m.group(2).strip()}"
+        tit_pag = titulos.get(canonico_procedimento(nome))
+        tit_ato = normaliza(m.group(3))
+        if tit_pag and tit_ato.lower()[:20] == normaliza(tit_pag).lower()[:20]:
+            out.append({"modulo": nome, "titulo_no_ato": tit_ato, "trecho": normaliza(m.group(0))})
+    return out
+
+
+def confere_versao(item, evidencias, data_ato_pagina):
+    """Confronta a versão vigente que a página oficial publica com os atos integrados.
+
+    `evidencias`: [{ato, numero, ano, data, fonte, trecho}] de atos que aprovaram nova versão
+    do mesmo módulo. `data_ato_pagina`: data da deliberação do ato citado no nome do arquivo
+    (None quando desconhecida; aí só conta ato de ano posterior). Devolve {situacao, ato_vigente,
+    atos_posteriores, confirmacoes}:
+    * pagina_possivelmente_desatualizada: há ato posterior ao da página que aprova nova versão;
+      o ato da página não é afirmado como vigente (ato_vigente = None);
+    * confirmada_por_ato_integrado: um ato integrado aprova este módulo e é o mesmo da página;
+    * sem_conferencia_externa: nenhum ato integrado trata do módulo depois do ato da página."""
+    num_pag, ano_pag = item.get("numero_ato"), item.get("ano_ato")
+
+    def mesmo(e):
+        return e.get("numero") == num_pag and e.get("ano") == ano_pag
+
+    def posterior(e):
+        if mesmo(e) or not ano_pag:
+            return False
+        return e["data"] > data_ato_pagina if data_ato_pagina else e["data"][:4] > str(ano_pag)
+    post = [e for e in evidencias if posterior(e)]
+    conf = [e for e in evidencias if mesmo(e)]
+    if post:
+        sit, vig = "pagina_possivelmente_desatualizada", None
+    elif conf:
+        sit, vig = "confirmada_por_ato_integrado", item.get("ato")
+    else:
+        sit, vig = "sem_conferencia_externa", item.get("ato")
+    return {"situacao": sit, "ato_vigente": vig, "atos_posteriores": post, "confirmacoes": conf}
+
+
 # ------------------------------------------------------------------ bandeiras e IPCA
 
 PATAMARES = ("Amarela", "Vermelha P1", "Vermelha P2", "Escassez Hídrica")
@@ -619,21 +931,84 @@ def bandeiras_adicional(linhas):
     return out
 
 
-def vigencias_bandeiras(linhas):
-    """Tabela de vigências por patamar: cada valor vale da sua data até a véspera do
-    próximo valor do mesmo patamar; o último fica sem fim (a fonte não informa término)."""
+def bandeiras_acionamento(linhas):
+    """[{competencia: 'AAAA-MM', patamar, rs_mwh}] do recurso 'Bandeira Tarifária - Acionamento'
+    (um registro por mês de competência; a bandeira verde vem com valor zero, que é zero de
+    fato: não há adicional). Valor vazio é ausência."""
+    out = []
+    for r in linhas:
+        g = lambda k: (r.get(k) or "").strip().strip('"')  # noqa: E731
+        comp, pat, v = g("DatCompetencia")[:7], g("NomBandeiraAcionada"), g("VlrAdicionalBandeira")
+        if not re.match(r"^\d{4}-\d{2}$", comp) or not pat:
+            continue
+        try:
+            val = float(v.replace(".", "").replace(",", ".")) if v else None
+        except ValueError:
+            val = None
+        out.append({"competencia": comp, "patamar": pat, "rs_mwh": val, "gerado_em": g("DatGeracaoConjuntoDados")[:10]})
+    return sorted(out, key=lambda x: x["competencia"])
+
+
+def vigencia_no_dicionario(texto):
+    """{patamar: (inicio 'AAAA-MM', fim 'AAAA-MM')} das vigências que o dicionário do recurso
+    Acionamento escreve ("Bandeira escassez hídrica: Tarifa criada para a seca de 2021
+    (vigência: setembro/21 a abril/22)")."""
+    out = {}
+    t = re.sub(r"\s+", " ", texto or "")
+    for m in re.finditer(r"Bandeira ([\wÀ-ú ]+?):[^()]{0,120}\(vigência:\s*" + _MES + r"\s*/\s*(\d{2})\s+a\s+" + _MES
+                         + r"\s*/\s*(\d{2})\)", t, re.I):
+        nome = m.group(1).strip().lower()
+        pat = next((p for p in PATAMARES if p.lower() == nome), None)
+        if pat:
+            out[pat] = (f"20{m.group(3)}-{MESES[m.group(2).lower()]:02d}", f"20{m.group(5)}-{MESES[m.group(4).lower()]:02d}")
+    return out
+
+
+def _ultimo_dia(mes):
+    a, mm = int(mes[:4]), int(mes[5:7])
+    return (date(a + (mm == 12), mm % 12 + 1, 1) - timedelta(days=1)).isoformat()
+
+
+def vigencias_bandeiras(linhas, acionamentos=None):
+    """Tabela de vigências por patamar.
+
+    * Cada valor vale da sua data até a véspera do próximo valor do mesmo patamar
+      (vigencia_fim_origem = 'valor_seguinte').
+    * O último valor de um patamar fica aberto, salvo quando o patamar foi extinto: uma
+      resolução posterior do mesmo recurso fixou os demais patamares sem ele, e o recurso
+      Acionamento não registra o patamar depois do mês anterior à vigência dessa resolução.
+      Aí o fim é o último dia do último mês com acionamento (vigencia_fim_origem =
+      'ultimo_acionamento'; o recurso é mensal e não informa o dia).
+    * Sem o recurso Acionamento, o último valor fica sem fim (a fonte Adicional não informa
+      término)."""
     por_patamar = {}
     for r in linhas:
         if r["vigencia_inicio"] and r["patamar"]:
             por_patamar.setdefault(r["patamar"], []).append(r)
+    resolucoes = {}
+    for r in linhas:
+        if r["vigencia_inicio"] and r["patamar"]:
+            resolucoes.setdefault((r["vigencia_inicio"], r["ato"]), set()).add(r["patamar"])
+    ult_acion = {}
+    for x in acionamentos or []:
+        ult_acion[x["patamar"]] = x  # ordenados por competência: fica o último
     out = []
     for pat, rs in por_patamar.items():
         rs = sorted(rs, key=lambda x: x["vigencia_inicio"])
         for i, r in enumerate(rs):
-            fim = None
+            fim, origem, ultimo, extinto_por = None, None, None, None
             if i + 1 < len(rs):
                 fim = (date.fromisoformat(rs[i + 1]["vigencia_inicio"]) - timedelta(days=1)).isoformat()
-            out.append({**r, "vigencia_fim": fim})
+                origem = "valor_seguinte"
+            elif acionamentos:
+                ua = ult_acion.get(pat)
+                depois = sorted((v, ato) for (v, ato), pats in resolucoes.items() if v > r["vigencia_inicio"] and pat not in pats)
+                if ua and depois and ua["competencia"] < depois[0][0][:7]:
+                    fim, origem = _ultimo_dia(ua["competencia"]), "ultimo_acionamento"
+                    ultimo = {"competencia": ua["competencia"], "rs_mwh": ua["rs_mwh"]}
+                    extinto_por = {"ato": depois[0][1], "vigencia_inicio": depois[0][0]}
+            out.append({**r, "vigencia_fim": fim, "vigencia_fim_origem": origem, "ultimo_acionamento": ultimo,
+                        "resolucao_seguinte_sem_patamar": extinto_por})
     ordem = {p: i for i, p in enumerate(PATAMARES)}
     return sorted(out, key=lambda x: (x["vigencia_inicio"], ordem.get(x["patamar"], 99)))
 

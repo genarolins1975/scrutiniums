@@ -204,8 +204,10 @@ def parse_despacho(planilha):
     diária, de uma planilha anual do MDL.
 
     Retorna {"ano", "bm": v|None, "bm_nota": texto|None, "om_mensal": {"AAAA-MM": v},
-    "om_diario": {"AAAA-MM-DD": v}, "revisoes": [{mes, anterior, atual}], "notas": [...],
-    "descartes": [...]}."""
+    "om_diario": {"AAAA-MM-DD": v}, "revisoes": [{serie, periodo, anterior, atual}], "notas": [...],
+    "descartes": [...], "problemas": [...]}. As revisões declaradas pela fonte vêm das colunas à
+    direita de cada bloco (margem de construção, mensal e diário) quando a planilha declara uma
+    publicação anterior; ver _revisoes_diarias para o bloco diário."""
     nome_aba, linhas = next(iter(planilha.items()))
     out = {"ano": None, "bm": None, "bm_nota": None, "om_mensal": {}, "om_diario": {}, "revisoes": [],
            "notas": [], "descartes": [], "problemas": [], "aba": nome_aba}

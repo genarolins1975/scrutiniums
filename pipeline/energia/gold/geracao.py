@@ -4,12 +4,15 @@ Regras publicadas:
 - geração diária por fonte (CALCULADO): média das 24 horas verificadas, em MWmed;
 - participação: geração da fonte ÷ soma de hidráulica, térmica, eólica e solar
   verificadas;
-- quebra de regime em 29/04/2023 (leitura a partir do dado, não conferida em documento
-  do ONS): a solar do SIN no balanço mais que dobra de um dia para o outro, na mesma
-  data em que o ONS passa a incluir na carga a estimativa de MMGD; comparações de
-  composição só dentro do mesmo regime;
-- "hidráulica, eólica e solar" não é chamada de participação renovável: o conjunto não
-  separa a térmica por combustível;
+- quebra de regime em 29/04/2023 (achado A11, fechado com a fonte primária no módulo
+  Geração detalhe, pipeline/energia/modulos/geracao_detalhe.py): a descrição oficial do
+  conjunto Carga de Energia declara a incorporação do valor estimado da MMGD a partir
+  dessa data; no conjunto Geração por Usina a MMGD aparece como grupo próprio
+  ("Pequenas Usinas (MMGD)") na mesma data, e a solar do balanço é igual, dia a dia, à
+  soma das usinas fotovoltaicas desse conjunto com a MMGD. A solar do balanço inclui a
+  MMGD estimada desde então; comparações de composição só dentro do mesmo regime;
+- "hidráulica, eólica e solar" não é chamada de participação renovável: o balanço não
+  separa a térmica por combustível (a separação está em geracao_detalhe.json);
 - despacho térmico em contexto: participação térmica dos últimos 7 dias comparada à
   distribuição das participações térmicas em janelas móveis de 7 dias nos 365 dias
   anteriores (percentil e mediana).
@@ -27,7 +30,8 @@ DS = "balanco_energia_subsistema_ho"
 FONTES = ("hidraulica", "termica", "eolica", "solar")
 NOME_FONTE = {"hidraulica": "Hidráulica", "termica": "Térmica", "eolica": "Eólica", "solar": "Solar"}
 REGIOES = ("SIN",) + c.ORDEM_SM
-# Quebra de regime do balanço identificada no próprio dado (ver regra "regime").
+# Quebra de regime do balanço declarada pelo ONS (descrição do conjunto Carga de Energia) e
+# conferida contra a Geração por Usina no módulo Geração detalhe (achado A11).
 INICIO_REGIME_ATUAL = "2023-04-29"
 
 REGRAS = {
@@ -35,7 +39,7 @@ REGRAS = {
     "participacao": "Participação = geração da fonte ÷ soma da geração verificada hidráulica, térmica, eólica e solar.",
     # texto montado em construir() a partir do degrau medido na série (_texto_regime)
     "regime": None,
-    "hes": "Hidráulica, eólica e solar somadas. Não é chamada de participação renovável porque o conjunto não separa a térmica por combustível.",
+    "hes": "Hidráulica, eólica e solar somadas. Não é chamada de participação renovável porque o balanço não separa a térmica por combustível; a separação por combustível está no painel de matriz efetiva (Geração por Usina).",
     "termica_contexto": "Participação térmica dos últimos 7 dias comparada às participações térmicas de todas as janelas móveis de 7 dias dos 365 dias anteriores: percentil e mediana.",
 }
 
@@ -55,18 +59,22 @@ def _degrau_solar(diario):
         return None
 
 
+DOC_A11 = ("A descrição oficial do conjunto Carga de Energia do ONS declara que, a partir de 29/04/2023, passou a ser incorporado "
+           "o valor estimado da micro e minigeração distribuída (MMGD), com base em dados meteorológicos previstos. No conjunto "
+           "Geração por Usina, a MMGD aparece na mesma data como grupo próprio (\"Pequenas Usinas (MMGD)\", previsão do ONS), e a "
+           "solar do balanço é igual, dia a dia, à soma das usinas fotovoltaicas desse conjunto com a MMGD (conferência no painel "
+           "de matriz efetiva).")
+
+
 def _texto_regime(dg):
-    """Regra da quebra, com os números do dado. A relação com a MMGD é leitura da plataforma."""
+    """Regra da quebra, com os números do dado e a confirmação documental (achado A11)."""
     if not dg:
-        return ("Leitura da Scrutiniums, não conferida em documento do ONS: a plataforma trata 29/04/2023 como quebra de regime do balanço, "
-                "data em que o ONS passa a incluir na carga a estimativa de micro e minigeração distribuída. Os valores da véspera e do dia "
-                "não estão na série desta publicação. Comparações de composição só são feitas dentro do mesmo regime.")
-    return (f"Leitura da Scrutiniums a partir do dado, não conferida em documento do ONS: de {c.data_br(dg['antes'])} para "
-            f"{c.data_br(dg['depois'])}, a geração solar do SIN no balanço passa de {_n(dg['solar_sin_antes'])} para "
-            f"{_n(dg['solar_sin_depois'])} MWmed (média diária); no Sul, de {_n(dg['solar_s_antes'], 1)} para {_n(dg['solar_s_depois'], 1)} MWmed. "
-            "Na mesma data, o ONS passa a incluir na carga a estimativa de micro e minigeração distribuída, conforme a descrição do conjunto "
-            "de carga; a plataforma lê o salto da solar como a inclusão dessa estimativa no balanço. Por isso trata 29/04/2023 como quebra "
-            "de regime: comparações de composição só são feitas dentro do mesmo regime.")
+        return (DOC_A11 + " Os valores da véspera e do dia não estão na série desta publicação. A solar do balanço inclui a MMGD "
+                "estimada desde 29/04/2023; comparações de composição só são feitas dentro do mesmo regime.")
+    return (f"De {c.data_br(dg['antes'])} para {c.data_br(dg['depois'])}, a geração solar do SIN no balanço passa de "
+            f"{_n(dg['solar_sin_antes'])} para {_n(dg['solar_sin_depois'])} MWmed (média diária); no Sul, de "
+            f"{_n(dg['solar_s_antes'], 1)} para {_n(dg['solar_s_depois'], 1)} MWmed. " + DOC_A11 +
+            " A solar do balanço inclui a MMGD estimada desde então; comparações de composição só são feitas dentro do mesmo regime.")
 
 
 def construir(con):
@@ -158,8 +166,8 @@ def construir(con):
                      [[k] + [diario[(f, rg)].get(k) for rg in REGIOES for f in FONTES] for k in dias])
     meta = c.meta_ons(DS)
     lim = [
-        "O balanço não separa a geração térmica por combustível. A separação exige o conjunto Geração por Usina, catalogado e ainda não integrado.",
-        "Quebra de regime em 29/04/2023, identificada no dado e não conferida em documento do ONS: a solar do SIN no balanço mais que dobra de um dia para o outro, na mesma data em que o ONS passa a incluir na carga a estimativa de micro e minigeração distribuída; comparações de composição que atravessam a data não são homogêneas.",
+        "O balanço não separa a geração térmica por combustível; a separação por combustível, com a MMGD como categoria própria, está no painel de matriz efetiva (conjunto Geração por Usina, geracao_detalhe.json).",
+        "Quebra de regime em 29/04/2023, declarada pelo ONS na descrição do conjunto Carga de Energia: a partir dessa data a estimativa de micro e minigeração distribuída (MMGD) entra na solar do balanço (conferido dia a dia contra a Geração por Usina); comparações de composição que atravessam a data não são homogêneas.",
         "Dados em processo de consistência recorrente do ONS, sujeitos a revisão.",
     ]
     prov = c.proveniencia(

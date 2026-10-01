@@ -70,7 +70,7 @@ ANO_MINIMO_VALIDO = 2000
 INICIO_COBERTURA_DECLARADA = "2008-12"
 
 # Colunas lidas do Parquet (as de dado pessoal ficam de fora de propósito).
-COLUNAS = ["DatGeracaoConjuntoDados", "NumCNPJDistribuidora", "SigAgente", "NomAgente", "DscClasseConsumo",
+COLUNAS = ["DatGeracaoConjuntoDados", "AnmPeriodoReferencia", "NumCNPJDistribuidora", "SigAgente", "NomAgente", "DscClasseConsumo",
            "DscSubGrupoTarifario", "CodUFibge", "SigUF", "CodMunicipioIbge", "SigTipoConsumidor",
            "CodEmpreendimento", "DthAtualizaCadastralEmpreend", "DscModalidadeHabilitado", "QtdUCRecebeCredito",
            "SigTipoGeracao", "DscFonteGeracao", "DscPorte", "MdaPotenciaInstaladaKW"]
@@ -164,6 +164,7 @@ def normaliza(raw, ibge_por_prefixo6=None, ibge_validos=None):
         "data": dconx if periodo_ok else None,
         "data_bruta": dconx,
         "data_conjunto": _data(raw.get("DatGeracaoConjuntoDados")),
+        "periodo_referencia": _txt(raw.get("AnmPeriodoReferencia")),
     }
 
 
@@ -178,6 +179,9 @@ class Agregador:
         self.uf_mes_fonte = defaultdict(lambda: [0, 0.0])
         self.dist_uf_ano = defaultdict(lambda: [0, 0.0])
         self.dist_mun = defaultdict(set)
+        # distribuidora (CNPJ) × município: base para conferir, na gold, unidades cuja
+        # distribuidora não tem conjunto elétrico na UF do município publicado
+        self.dist_municipio = defaultdict(lambda: [0, 0.0])
         self.classe_ano = defaultdict(lambda: [0, 0.0])
         self.modalidade_ano = defaultdict(lambda: [0, 0.0])
         self.porte_ano = defaultdict(lambda: [0, 0.0])
@@ -186,6 +190,9 @@ class Agregador:
         self.ucs_credito_uf_ano = defaultdict(float)
         self.nomes_dist = defaultdict(Counter)
         self.datas_conjunto = Counter()
+        self.periodos_referencia = Counter()
+        self.data_conexao_min = None   # menor e maior data de conexão válida (sem sentinela)
+        self.data_conexao_max = None
         self.c = Counter()
 
     @staticmethod
@@ -211,6 +218,10 @@ class Agregador:
             ano, mes = SEM_DATA, SEM_DATA
         else:
             ano, mes = f"{r['data'].year:04d}", r["data"].strftime("%Y-%m")
+            if self.data_conexao_min is None or r["data"] < self.data_conexao_min:
+                self.data_conexao_min = r["data"]
+            if self.data_conexao_max is None or r["data"] > self.data_conexao_max:
+                self.data_conexao_max = r["data"]
             if mes < INICIO_COBERTURA_DECLARADA:
                 c["anterior_cobertura_declarada"] += 1
             if r["data_conjunto"] and r["data"] > r["data_conjunto"]:
@@ -228,6 +239,8 @@ class Agregador:
             c["uf_do_codigo_diverge"] += 1
         if r["data_conjunto"]:
             self.datas_conjunto[r["data_conjunto"].isoformat()] += 1
+        if r["periodo_referencia"]:
+            self.periodos_referencia[r["periodo_referencia"]] += 1
         mun = r["mun"] or "sem_municipio"
         uf = r["uf"] or "sem_uf"
         cnpj = r["cnpj"] or "sem_cnpj"
@@ -236,6 +249,7 @@ class Agregador:
         self._soma(self.dist_uf_ano, (cnpj, uf, ano), kw)
         if r["mun"]:
             self.dist_mun[cnpj].add(r["mun"])
+        self._soma(self.dist_municipio, (cnpj, mun), kw)
         self._soma(self.classe_ano, (r["classe"] or "nao_informada", ano), kw)
         self._soma(self.modalidade_ano, (r["modalidade"] or "nao_informada", ano), kw)
         self._soma(self.porte_ano, (r["porte"] or "nao_informado", ano), kw)
@@ -264,6 +278,7 @@ class Agregador:
         yield from dois("porte_ano", self.porte_ano, lambda k: "|".join(k))
         yield from dois("tipo_consumidor_ano", self.tipo_consumidor_ano, lambda k: "|".join(k))
         yield from dois("fonte_detalhe_ano", self.fonte_detalhe_ano, lambda k: "|".join(k))
+        yield from dois("dist_mun", self.dist_municipio, lambda k: "|".join(k))
         for (uf, ano), v in self.ucs_credito_uf_ano.items():
             yield "ucs_credito.uf_ano", f"{uf}|{ano}", float(v)
         for cnpj, muns in self.dist_mun.items():
@@ -418,3 +433,57 @@ def concordancia_datas(caminho_relacao, caminho_tecnico_fv):
         out["datas_iguais"] += int(pc.sum(pc.cast(pc.fill_null(iguais, False), "int64")).as_py() or 0)
         out["potencias_iguais"] += int(pc.sum(pc.cast(pc.fill_null(pot, False), "int64")).as_py() or 0)
     return out
+
+
+# ---------------------------------------------------------------------------
+# Área de atuação de cada distribuidora (CNPJ) pelos conjuntos elétricos da ANEEL
+# ---------------------------------------------------------------------------
+# A relação de MMGD traz unidades com o município de outra área de concessão (ex.: 185
+# unidades da Neoenergia PE em São Caetano de Odivelas, PA; 289 da COELBA em Goiás), o que
+# indica código de município errado na origem. Para sinalizar sem corrigir, a área de cada
+# distribuidora vem de dois conjuntos oficiais da ANEEL, ligados pelo identificador do
+# conjunto elétrico (nunca por nome): "indicadores-continuidade-coletivos-limite" (CNPJ da
+# distribuidora × conjunto × ano) e "indqual-municipio" (conjunto × município IBGE). Vale
+# toda a história de conjuntos (de 1990 em diante): uma UF onde o CNPJ teve conjunto em
+# qualquer ano conta como atendida, o que só reduz sinalizações.
+
+
+def conjuntos_limite(linhas):
+    """{conjunto: {"cnpjs": set, "anos": set}} das linhas do CSV de limites de continuidade."""
+    out = defaultdict(lambda: {"cnpjs": set(), "anos": set()})
+    for r in linhas:
+        cj = _txt(r.get("IdeConjUndConsumidoras") or r.get("IdeConjUnidConsumidoras"))
+        cn = entidades.cnpj(_txt(r.get("NumCNPJ")))
+        if not cj or not cn:
+            continue
+        out[cj]["cnpjs"].add(cn)
+        ano = _txt(r.get("AnoLimiteQualidade"))
+        if ano and ano.isdigit():
+            out[cj]["anos"].add(int(ano))
+    return dict(out)
+
+
+def conjuntos_municipio(linhas):
+    """{conjunto: {(código IBGE, UF)}} das linhas do CSV indqual-municipio. A UF vem do
+    código do município (como na relação de MMGD); SigUF só quando o código não tem 7 dígitos."""
+    out = defaultdict(set)
+    for r in linhas:
+        cj = _txt(r.get("IdeConjUnidConsumidoras") or r.get("IdeConjUndConsumidoras"))
+        cod = (_txt(r.get("CodMunicipio")) or "").split(".")[0]
+        if not cj or not cod:
+            continue
+        uf = UF_POR_CODIGO.get(cod[:2]) if len(cod) == 7 else None
+        out[cj].add((cod, uf or _txt(r.get("SigUF"))))
+    return dict(out)
+
+
+def area_distribuidoras(limites, municipios):
+    """{cnpj: {uf: número de conjuntos}} juntando os dois conjuntos pelo identificador do
+    conjunto elétrico. Conjunto sem município publicado não acrescenta UF."""
+    area = defaultdict(Counter)
+    for cj, info in limites.items():
+        ufs = {uf for _, uf in municipios.get(cj, ()) if uf}
+        for cn in info["cnpjs"]:
+            for uf in ufs:
+                area[cn][uf] += 1
+    return {cn: dict(c) for cn, c in area.items()}

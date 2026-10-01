@@ -22,8 +22,12 @@ curtíssimo prazo executado em D-1 com o dia D em 48 intervalos semi-horários),
 Submódulo 4.3 (programação mensal: PMO e revisões semanais, prazo de sexta-feira) e
 Submódulo 4.5 (programação diária: CMO semi-horário, prazo de 16h de D-1, envio à CCEE).
 Os PDFs vêm do mesmo endereço do botão "Baixar" da página pública de Procedimentos de
-Rede vigentes do ONS. Os manuais dos modelos (NEWAVE, DECOMP e DESSEM), publicados pelo
-CEPEL, responderam HTTP 403 em 30/09/2026 e não foram integrados.
+Rede vigentes do ONS. Do CEPEL, que desenvolve os modelos, entra o Manual de Metodologia do
+DESSEM (novembro de 2022), publicado no site do CEPEL: o DESSEM é usado pelo ONS na
+programação diária e pela CCEE no preço horário, e o CMO do submercado é a média dos
+custos marginais das barras ponderada pelas cargas. Os manuais de metodologia do DECOMP
+e do NEWAVE não foram localizados entre os arquivos públicos do site do CEPEL (busca
+registrada a cada coleta) e ficam como limitação declarada.
 
 Cada passagem citada fica escrita aqui como está no ato e é CONFERIDA a cada coleta
 contra o texto baixado (espaços normalizados). Uma passagem pode ter partes separadas
@@ -52,6 +56,8 @@ URL_PR_PAGINA = "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-red
 _URL_PR_PDF = ("https://proxyportais.ons.org.br/ons.portalempregado.proxy/garapi/api/processo/retornarpdf"
                "?url=/sites/soumaisons/portalgar/ecmpdf/Subm%C3%B3dulo%20{arquivo}.pdf")
 URL_CEPEL = "https://www.cepel.br/"
+URL_CEPEL_MIDIA = "https://www.cepel.br/wp-json/wp/v2/media?search={termo}&per_page=100&mime_type=application/pdf"
+URL_DESSEM_MANUAL = "https://www.cepel.br/wp-content/uploads/2022/12/DESSEM_ManualMetodologia_19.2.pdf"
 LICENCA_PR = ("Documento público do ONS (Procedimentos de Rede, aprovados pela ANEEL). Os termos de uso do portal do ONS "
               "não foram relidos nesta integração; o uso aqui é a citação literal de passagens com indicação da fonte "
               "(Lei nº 9.610/1998, art. 46, III).")
@@ -92,6 +98,16 @@ DOCUMENTOS = {
                                 "Resolução Normativa ANEEL nº 1.104/2024"),
     "ons_pr_submodulo_4_5": _pr("4.5", "Procedimental", "2025.02", "01/03/2025", "Programação Diária da Operação",
                                 "Resolução Normativa ANEEL nº 1.112/2025"),
+    "cepel_dessem_manual_metodologia": {
+        "orgao": "CEPEL",
+        "titulo": "Modelo DESSEM: Manual de Metodologia (CEPEL, novembro de 2022)",
+        "url": URL_DESSEM_MANUAL, "url_oficial": URL_DESSEM_MANUAL, "ext": "pdf",
+        "licenca": ("Documento técnico publicado pelo CEPEL no seu site; termos de uso não relidos nesta integração. O uso aqui é a "
+                    "citação literal de passagens com indicação da fonte (Lei nº 9.610/1998, art. 46, III)."),
+        "nota": ("Manual de metodologia do DESSEM publicado no site do CEPEL (arquivo DESSEM_ManualMetodologia_19.2.pdf). A versão do "
+                 "modelo em uso pelo ONS e pela CCEE em cada data não é identificada pelos conjuntos de dados; o manual descreve a "
+                 "metodologia, não a configuração de cada execução."),
+    },
 }
 
 # (id, documento, dispositivo, passagem literal). A passagem é conferida no texto baixado.
@@ -191,6 +207,29 @@ TRECHOS = (
      "o ONS considera os resultados do modelo de curto prazo (DECOMP) que forneceu a Função de Custo Futuro para a semana operativa do dia D."),
     ("pr45_dessem", "ons_pr_submodulo_4_5", "nota de rodapé 2",
      "Trata-se de interstício de tempo que, do ponto de vista da modelagem do DESSEM,"),
+    # CEPEL: Manual de Metodologia do DESSEM
+    ("dessem_versao", "cepel_dessem_manual_metodologia", "capa",
+     "Manual de Metodologia – Modelo DESSEM – Novembro/2022"),
+    ("dessem_objetivo", "cepel_dessem_manual_metodologia", "seção 1 (O modelo DESSEM)",
+     "O programa DESSEM é um modelo de otimização desenvolvido pelo CEPEL (Centro de Pesquisas de Energia Elétrica) desde 1998 [1], "
+     "que tem como principal objetivo determinar a programação diária da operação e formação de preço para sistemas hidrotérmicos, "
+     "incluindo as fontes intermitentes, em um horizonte de algumas semanas e discretização de até meia-hora,"),
+    ("dessem_uso_ons_ccee", "cepel_dessem_manual_metodologia", "seção 1 (O modelo DESSEM)",
+     "O modelo vem sendo utilizado oficialmente pelo Operador Nacional do Sistema (ONS) desde Janeiro/2020 para a programação "
+     "diária da operação do sistema brasileiro, e desde Janeiro/2021 pela Câmara de Comercialização de Energia Elétrica (CCEE) "
+     "para a determinação do preço de energia horário para o dia seguinte [2]."),
+    ("dessem_acoplamento", "cepel_dessem_manual_metodologia", "seção 1 (O modelo DESSEM)",
+     "Mais especificamente, o DESSEM se acopla, ao final do horizonte de estudo, com a função de custo futuro fornecida pelo "
+     "DECOMP, que por sua vez se acopla à função de custo futuro fornecida pelo NEWAVE."),
+    ("dessem_resultado_cmo", "cepel_dessem_manual_metodologia", "seção 1, principais resultados",
+     "os custos marginais de energia em base de meia hora, por barra ou submercado, que são utilizados como base para formação "
+     "do preço horário;"),
+    ("dessem_cmo_duais", "cepel_dessem_manual_metodologia", "seção 22 (Cálculo do CMO)",
+     "é preciso mais uma resolução de PL-UCT-Fixo para se obter os valores das variáveis duais necessárias para o cálculo do "
+     "custo marginal de Operação (CMO)."),
+    ("dessem_cmo_submercado", "cepel_dessem_manual_metodologia", "seção 22.6 (Cálculo do custo marginal do submercado)",
+     "O CMO do submercado é calculado como a média ponderada dos CMBs nas barras que pertencem a cada submercado, ponderados "
+     "pelas respectivas cargas:"),
 )
 
 
