@@ -315,3 +315,62 @@ def linhas_cde_custeio(caminho_bronze, contagem=None):
 
 def sem_acento(s):
     return unicodedata.normalize("NFKD", s or "").encode("ascii", "ignore").decode()
+
+
+# SAMP (Sistema de Acompanhamento de Informações de Mercado para Regulação Econômica):
+# avaliado como alternativa para a tarifa média de fornecimento e a carga tributária
+# observada, e não usado (valores declarados com erro de ordem de grandeza em meses
+# isolados; ver docs/observatorios/energia/modulos/conta.md, seção 5.3). O arquivo
+# fica no bronze com sha256 e a conferência abaixo é refeita a cada gold, para que a
+# justificativa da exclusão seja reproduzível e não uma lembrança.
+CAMPOS_SAMP = ("NumCNPJAgenteDistribuidora", "SigAgenteDistribuidora", "NomTipoMercado", "DscModalidadeTarifaria",
+               "DscSubGrupoTarifario", "DscClasseConsumoMercado", "DscSubClasseConsumidor", "DscDetalheConsumidor",
+               "DscPostoTarifario", "DscOpcaoEnergia", "DscDetalheMercado", "DatCompetencia", "VlrMercado")
+DETALHES_SAMP = ("Receita Energia (R$)", "ICMS (R$)", "Energia TE (kWh)")
+
+
+def samp_residencial_mensal(caminho_bronze, lote=200000):
+    """Soma mensal por distribuidora do recorte residencial comum do SAMP: subgrupo B1,
+    modalidade convencional, classe e subclasse residencial, sem detalhe, mercado
+    'Regular' cativo, para as linhas de receita de energia, ICMS e energia faturada.
+    Devolve ({(cnpj, sigla, detalhe): {mes: valor}}, linhas lidas). Leitura em lotes e
+    só com as colunas usadas (o arquivo de 2025 tem 1,4 milhão de linhas)."""
+    import shutil
+    import tempfile
+    import pyarrow as pa
+    import pyarrow.compute as pc
+    import pyarrow.parquet as pq
+    from pipeline.energia import base
+    fd, tmp = tempfile.mkstemp(prefix="conta-samp-", suffix=".parquet")
+    os.close(fd)
+    out = {}
+    try:
+        with base.abre_bronze(caminho_bronze) as src, open(tmp, "wb") as dst:
+            shutil.copyfileobj(src, dst, 1 << 20)
+        arq = pq.ParquetFile(tmp)
+        faltam = [c for c in CAMPOS_SAMP if c not in arq.schema_arrow.names]
+        if faltam:
+            raise EsquemaInesperado(f"samp: colunas ausentes {faltam}")
+        for bloco in arq.iter_batches(columns=list(CAMPOS_SAMP), batch_size=lote):
+            t = pa.Table.from_batches([bloco])
+            m = pc.and_(pc.equal(t["DscSubGrupoTarifario"], "B1"), pc.equal(t["DscModalidadeTarifaria"], "Convencional"))
+            m = pc.and_(m, pc.equal(t["DscClasseConsumoMercado"], "Residencial"))
+            m = pc.and_(m, pc.equal(t["DscSubClasseConsumidor"], "Residencial"))
+            m = pc.and_(m, pc.equal(t["DscDetalheConsumidor"], NA))
+            m = pc.and_(m, pc.equal(t["NomTipoMercado"], "Regular"))
+            m = pc.and_(m, pc.equal(t["DscOpcaoEnergia"], "CATIVO"))
+            m = pc.and_(m, pc.is_in(t["DscDetalheMercado"], value_set=pa.array(DETALHES_SAMP)))
+            for row in t.filter(m).to_pylist():
+                cnpj = entidades.cnpj(row["NumCNPJAgenteDistribuidora"])
+                if not cnpj or row["VlrMercado"] is None or row["DatCompetencia"] is None:
+                    continue
+                k = (cnpj, normaliza_texto(row["SigAgenteDistribuidora"]), row["DscDetalheMercado"])
+                mes = str(row["DatCompetencia"])[:7]
+                out.setdefault(k, {})
+                out[k][mes] = out[k].get(mes, 0.0) + float(row["VlrMercado"])
+        return out, arq.metadata.num_rows
+    finally:
+        try:
+            os.remove(tmp)
+        except OSError:
+            pass

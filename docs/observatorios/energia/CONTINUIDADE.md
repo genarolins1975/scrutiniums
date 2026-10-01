@@ -48,5 +48,7 @@ O contêiner reiniciou e interrompeu os fluxos; o disco sobreviveu (silvers, bro
 | Módulos W3 | expansão, transição, empresas | wf_f8321428-1d4 |
 | Módulos W5 | água e clima, carga | wf_091c0372-524 |
 | Módulos W6 | geração, rede, mercado | wf_61f40fd7-0cf |
+| Dados e metodologia (P067 a P070) | dados | wf_cd0347b1-741 |
+| Benchmarks (concluído; docs/observatorios/energia/BENCHMARKS.md) | benchmarks | wf_2a3335e6-649 |
 
 Pendentes de disparo: água e clima e carga (`scratchpad/wave2a.json`), geração, rede e mercado (`scratchpad/wave2b.json`); depois visão geral, aprenda, dados e metodologia, home, integração, auditoria e documentação final. Descoberta de fontes: inventário, ONS e ANEEL distribuição concluídos; tarifas/social, geração/expansão/empresas, outras fontes, benchmarks e crítico interrompidos (os módulos verificam as próprias fontes; benchmarks e crítico ainda precisam rodar).

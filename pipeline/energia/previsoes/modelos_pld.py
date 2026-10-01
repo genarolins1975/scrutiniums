@@ -49,8 +49,6 @@ from datetime import date, timedelta
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 
-from pipeline.energia.previsoes import calendario as cal  # noqa: E402
-
 NIVEIS = (0.05, 0.10, 0.25, 0.50, 0.75, 0.90, 0.95)
 ROTULOS_NIVEIS = ("p05", "p10", "p25", "p50", "p75", "p90", "p95")
 GRADE_LAMBDA = ("ZERO", 3.0, 1.0, 0.3, 0.1, 0.03, 0.01, 0.001)

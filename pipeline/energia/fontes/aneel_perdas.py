@@ -289,7 +289,7 @@ def deriva_mes(m):
     denominador é a energia implícita no cálculo da fonte, fornecida + irregular + perdas
     totais; em 2024 ela soma 605,2 TWh nas concessionárias, dentro do intervalo [604,5; 606,8]
     TWh que decorre dos números publicados pela ANEEL para 2024 (44,6 TWh = 7,4% e 40,2 TWh =
-    6,6% da injetada), enquanto a injetada publicada soma 620,3 TWh. A fonte não explica a
+    6,6% da injetada), enquanto a injetada publicada das mesmas 51 soma 620,7 TWh. A fonte não explica a
     sobra e o módulo não atribui causa a ela. A perda técnica, porém, continua sendo calculada
     pela fonte sobre a injetada PUBLICADA (ÂMBAR ENERGIA RR 2024 e 2025: técnica ÷ injetada
     publicada = 7,620% na maior parte dos meses): por isso o módulo publica também a taxa
@@ -330,9 +330,10 @@ CAMPOS_SOMA = ("injetada", "injetada_ref", "perdas_totais_med", "perdas_tecnicas
 # Acima disso a parte não explicada é da ordem da própria perda (Manaus Energia 2004: resíduo de
 # −201% da injetada com taxa de 97%), e o agente-ano sai de agregados e comparações. Abaixo, o
 # resíduo fica publicado e classificado, sem exclusão. Sensibilidade conferida em 30/09/2026 na
-# série nacional das concessionárias: limite de 10% em vez de 5% muda a taxa anual em até
-# 0,15 p.p.; limite de 1% muda em até 1,5 p.p., porque tira distribuidoras de perda alta com
-# resíduo de 1% a 4% (Âmbar Amazonas, ERO, Light 2005), o que trocaria um defeito por outro.
+# série nacional das concessionárias (2003 a 2025): limite de 10% em vez de 5% muda a taxa
+# anual em até 0,14 p.p.; limite de 1% muda em até 1,05 p.p., porque tira distribuidoras de
+# perda alta com resíduo de 1% a 4% (Âmbar Amazonas, ERO, CEAM, Light 2005), o que trocaria um
+# defeito por outro.
 LIMITE_RESIDUO_BALANCO = 0.05
 # Decomposição (total = técnica + não técnica): cada linha mensal é inteira em kWh, então o
 # arredondamento da fonte explica até 2 kWh por mês (CEMIG-D 2023: +2 kWh no ano). Acima disso,
@@ -500,15 +501,16 @@ def cnpj_dv_valido(c14):
 # Trecho de referência: ao menos 6 meses seguidos com o mesmo percentual. Todo processo
 # tarifário (reajuste anual ou revisão) vigora cerca de 12 meses, então um percentual fixado
 # por processo dura bem mais que 6 meses; já 2 ou 3 meses iguais a 0,001 p.p. aparecem por
-# coincidência onde nenhum percentual é aplicado (112 trechos de 2 meses em 30/09/2026, em todos
+# coincidência onde nenhum percentual é aplicado (105 trechos de 2 meses em 30/09/2026, em todos
 # os anos da série, inclusive depois de 2016). Trecho mais curto fica publicado no CSV com a
 # classe "curto" (possível coincidência) e fora do bloco de referência da gold.
 MIN_MESES_REFERENCIA = 6
-# Troca de percentual: variação de ao menos 0,02 p.p. entre trechos vizinhos. Das 271
-# transições observadas, 113 ficam abaixo de 0,005 p.p. (o mesmo percentual interrompido por
-# meses fora do padrão, como DCELT 7,28% em 2019, 2021 e 2022) e 13 entre 0,005 e 0,02 p.p.
-# (CPFL-PAULISTA 6,024 → 6,022 → 6,023); nenhuma dessas é troca de percentual regulatório, e
-# associar a elas uma resolução homologatória seria inventar a ligação.
+# Troca de percentual: variação de ao menos 0,02 p.p. entre trechos vizinhos. Das 260
+# transições observadas em 30/09/2026, 111 ficam abaixo de 0,005 p.p. (o mesmo percentual
+# interrompido por meses fora do padrão, como DCELT 7,28% em 2019, 2021 e 2022) e 12 entre
+# 0,005 e 0,02 p.p. (ÂMBAR ENERGIA RR 7,620 → 7,613; ELETROPAULO 5,040 → 5,052); nenhuma
+# dessas é troca de percentual regulatório, e associar a elas uma resolução homologatória
+# seria inventar a ligação.
 LIMIAR_TROCA_PP = 0.02
 
 

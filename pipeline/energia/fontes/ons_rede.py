@@ -171,10 +171,18 @@ def parse_intercambio_internacional(linhas):
     return obs, rel
 
 
+FONTES_GERACAO = ("hidraulica", "termica", "eolica", "solar")
+
+
 def parse_balanco(linhas):
-    """BALANCO_ENERGIA_SUBSISTEMA_<ano>.csv → `<campo>.<SM>` (MWmed) para geração por
-    fonte, carga e intercâmbio de cada subsistema e do SIN. Campo vazio fica ausente e é
-    contado por campo (o dicionário admite nulo na geração)."""
+    """BALANCO_ENERGIA_SUBSISTEMA_<ano>.csv → `geracao.<SM>`, `carga.<SM>` e
+    `intercambio.<SM>` (MWmed) de cada subsistema e do SIN.
+
+    A geração entra somada (hidráulica + térmica + eólica + solar): é o que as identidades
+    do balanço usam, e a geração por fonte é tema do módulo Geração; guardar as quatro
+    séries horárias aqui dobraria o silver da família sem uso. Se alguma fonte vier vazia
+    (o dicionário admite nulo), a geração da hora fica ausente, nunca somada como zero; os
+    nulos são contados por fonte no relatório."""
     rel = {"linhas": 0, "colunas": None, "subsistemas": Counter(), "instantes_fora_da_hora": 0,
            "nulos": Counter(), "conflitos": [], "primeira": None, "ultima": None}
     vistos = defaultdict(list)
@@ -202,8 +210,11 @@ def parse_balanco(linhas):
         if len(lst) > 1:
             rel["conflitos"].append(f"{sm} {ref}")
             continue
-        for campo, v in lst[0].items():
-            obs.append((f"{campo}.{sm}", ref, v))
+        vals = lst[0]
+        fontes = [vals[k] for k in FONTES_GERACAO]
+        obs.append((f"geracao.{sm}", ref, None if any(v is None for v in fontes) else sum(fontes)))
+        obs.append((f"carga.{sm}", ref, vals["carga"]))
+        obs.append((f"intercambio.{sm}", ref, vals["intercambio"]))
     rel["subsistemas"] = dict(rel["subsistemas"])
     rel["nulos"] = dict(rel["nulos"])
     rel["conflitos"] = sorted(rel["conflitos"])[:50]
@@ -211,8 +222,8 @@ def parse_balanco(linhas):
 
 
 def parse_itaipu(linhas, ano_inicial):
-    """GERACAO_ITAIPU.csv (arquivo único desde 2000) → `<campo>` horário (MWmed) a partir
-    de `ano_inicial`, lido em fluxo. O relatório confere, linha a linha, as duas
+    """GERACAO_ITAIPU.csv (arquivo único desde 2000) → `total` e `brasil` horários (MWmed)
+    a partir de `ano_inicial`, lido em fluxo. O relatório confere, linha a linha, as duas
     identidades do dicionário: total = 60 Hz + 50 Hz e Brasil = 60 Hz + 50 Hz destinado
     ao Brasil (tolerância de 0,5 MWmed, metade da última casa inteira)."""
     rel = {"linhas": 0, "linhas_no_periodo": 0, "colunas": None, "instantes_fora_da_hora": 0, "nulos": Counter(),
@@ -249,8 +260,9 @@ def parse_itaipu(linhas, ano_inicial):
         if len(lst) > 1:
             rel["conflitos"].append(ref)
             continue
-        for campo, v in lst[0].items():
-            obs.append((campo, ref, v))
+        # só total e parcela do Brasil vão ao silver: os setores entram nas identidades acima
+        obs.append(("total", ref, lst[0]["total"]))
+        obs.append(("brasil", ref, lst[0]["brasil"]))
     rel["nulos"] = dict(rel["nulos"])
     rel["conflitos"] = sorted(rel["conflitos"])[:50]
     return obs, rel

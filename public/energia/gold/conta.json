@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "conta.json",
- "gerado_em": "2026-09-30T23:07:03Z",
+ "gerado_em": "2026-09-30T23:56:57Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "dafa93bb2111+alterado",
+ "versao_codigo": "3e7ff0a36fba+alterado",
  "disponivel": true,
  "data_referencia": "2026-09-30",
  "gerado_pela_fonte_em": "2026-09-30",
@@ -1691,7 +1691,8 @@
      "ato": "REH 3.521/2025"
     },
     "dias_sem_tarifa": 1,
-    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026"
+    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026",
+    "incorporada_por": null
    },
    {
     "cnpj": "02016439000138",
@@ -1703,7 +1704,8 @@
      "ato": "REH 2.401/2018"
     },
     "dias_sem_tarifa": 2661,
-    "motivo": "sem tarifa publicada desde 18/06/2019; o conjunto não informa o motivo (incorporação, extinção ou troca de CNPJ)"
+    "motivo": "incorporada pela distribuidora de CNPJ 02016440000162 (sigla atual RGE), REA nº 7.499/2018; a tarifa unificada começa em 19/06/2019",
+    "incorporada_por": "02016440000162"
    },
    {
     "cnpj": "05938444000196",
@@ -1715,7 +1717,8 @@
      "ato": "REH 1.814/2014"
     },
     "dias_sem_tarifa": 3560,
-    "motivo": "sem tarifa publicada desde 31/12/2016; o conjunto não informa o motivo (incorporação, extinção ou troca de CNPJ)"
+    "motivo": "sem tarifa publicada desde 31/12/2016; o conjunto não informa o motivo (incorporação, extinção ou troca de CNPJ)",
+    "incorporada_por": null
    },
    {
     "cnpj": "07297359000111",
@@ -1727,7 +1730,8 @@
      "ato": "REH 2.214/2017"
     },
     "dias_sem_tarifa": 3368,
-    "motivo": "sem tarifa publicada desde 11/07/2017; o conjunto não informa o motivo (incorporação, extinção ou troca de CNPJ)"
+    "motivo": "incorporada pela distribuidora de CNPJ 07282377000120 (sigla atual ESS), REA nº 6.318/2017; a tarifa unificada começa em 12/07/2017",
+    "incorporada_por": "07282377000120"
    },
    {
     "cnpj": "08826596000195",
@@ -1739,7 +1743,8 @@
      "ato": "REH 3.170/2023"
     },
     "dias_sem_tarifa": 1130,
-    "motivo": "sem tarifa publicada desde 27/08/2023; o conjunto não informa o motivo (incorporação, extinção ou troca de CNPJ)"
+    "motivo": "incorporada pela distribuidora de CNPJ 09095183000140 (sigla atual EPB), REA nº 12.687/2022; a tarifa unificada começa em 28/08/2023",
+    "incorporada_por": "09095183000140"
    },
    {
     "cnpj": "09364804000144",
@@ -1751,7 +1756,8 @@
      "ato": "REH 3.537/2025"
     },
     "dias_sem_tarifa": 1,
-    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026"
+    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026",
+    "incorporada_por": null
    },
    {
     "cnpj": "11615872000180",
@@ -1763,7 +1769,8 @@
      "ato": "REH 3.524/2025"
     },
     "dias_sem_tarifa": 1,
-    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026"
+    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026",
+    "incorporada_por": null
    },
    {
     "cnpj": "11810343000138",
@@ -1775,7 +1782,8 @@
      "ato": "REH 3.528/2025"
     },
     "dias_sem_tarifa": 1,
-    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026"
+    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026",
+    "incorporada_por": null
    },
    {
     "cnpj": "33249046000106",
@@ -1787,7 +1795,8 @@
      "ato": "REH 3.048/2022"
     },
     "dias_sem_tarifa": 1197,
-    "motivo": "sem tarifa publicada desde 21/06/2023; o conjunto não informa o motivo (incorporação, extinção ou troca de CNPJ)"
+    "motivo": "incorporada pela distribuidora de CNPJ 19527639000158 (sigla atual EMR), REA nº 12.687/2022 (provável); a tarifa unificada começa em 22/06/2023",
+    "incorporada_por": "19527639000158"
    },
    {
     "cnpj": "50105865000190",
@@ -1799,7 +1808,8 @@
      "ato": "REH 3.531/2025"
     },
     "dias_sem_tarifa": 1,
-    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026"
+    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026",
+    "incorporada_por": null
    },
    {
     "cnpj": "52503802000118",
@@ -1811,7 +1821,8 @@
      "ato": "REH 2.212/2017"
     },
     "dias_sem_tarifa": 3115,
-    "motivo": "sem tarifa publicada desde 21/03/2018; o conjunto não informa o motivo (incorporação, extinção ou troca de CNPJ)"
+    "motivo": "incorporada pela distribuidora de CNPJ 53859112000169 (sigla atual CPFL Santa Cruz), REA nº 6.723/2017; a tarifa unificada começa em 22/03/2018",
+    "incorporada_por": "53859112000169"
    },
    {
     "cnpj": "53176038000186",
@@ -1823,7 +1834,8 @@
      "ato": "REH 3.503/2025"
     },
     "dias_sem_tarifa": 63,
-    "motivo": "vigência encerrada em 29/07/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026"
+    "motivo": "vigência encerrada em 29/07/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026",
+    "incorporada_por": null
    },
    {
     "cnpj": "55188502000180",
@@ -1835,7 +1847,8 @@
      "ato": "REH 3.527/2025"
     },
     "dias_sem_tarifa": 1,
-    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026"
+    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026",
+    "incorporada_por": null
    },
    {
     "cnpj": "60855608000120",
@@ -1847,7 +1860,8 @@
      "ato": "REH 2.209/2017"
     },
     "dias_sem_tarifa": 3115,
-    "motivo": "sem tarifa publicada desde 21/03/2018; o conjunto não informa o motivo (incorporação, extinção ou troca de CNPJ)"
+    "motivo": "incorporada pela distribuidora de CNPJ 53859112000169 (sigla atual CPFL Santa Cruz), REA nº 6.723/2017; a tarifa unificada começa em 22/03/2018",
+    "incorporada_por": "53859112000169"
    },
    {
     "cnpj": "60942281000123",
@@ -1859,7 +1873,8 @@
      "ato": "REH 2.214/2017"
     },
     "dias_sem_tarifa": 3368,
-    "motivo": "sem tarifa publicada desde 11/07/2017; o conjunto não informa o motivo (incorporação, extinção ou troca de CNPJ)"
+    "motivo": "incorporada pela distribuidora de CNPJ 07282377000120 (sigla atual ESS), REA nº 6.318/2017; a tarifa unificada começa em 12/07/2017",
+    "incorporada_por": "07282377000120"
    },
    {
     "cnpj": "61015582000174",
@@ -1871,7 +1886,8 @@
      "ato": "REH 2.210/2017"
     },
     "dias_sem_tarifa": 3115,
-    "motivo": "sem tarifa publicada desde 21/03/2018; o conjunto não informa o motivo (incorporação, extinção ou troca de CNPJ)"
+    "motivo": "incorporada pela distribuidora de CNPJ 53859112000169 (sigla atual CPFL Santa Cruz), REA nº 6.723/2017; a tarifa unificada começa em 22/03/2018",
+    "incorporada_por": "53859112000169"
    },
    {
     "cnpj": "61116265000144",
@@ -1883,7 +1899,8 @@
      "ato": "REH 2.211/2017"
     },
     "dias_sem_tarifa": 3115,
-    "motivo": "sem tarifa publicada desde 21/03/2018; o conjunto não informa o motivo (incorporação, extinção ou troca de CNPJ)"
+    "motivo": "incorporada pela distribuidora de CNPJ 53859112000169 (sigla atual CPFL Santa Cruz), REA nº 6.723/2017; a tarifa unificada começa em 22/03/2018",
+    "incorporada_por": "53859112000169"
    },
    {
     "cnpj": "61416244000144",
@@ -1895,7 +1912,8 @@
      "ato": "REH 2.214/2017"
     },
     "dias_sem_tarifa": 3368,
-    "motivo": "sem tarifa publicada desde 11/07/2017; o conjunto não informa o motivo (incorporação, extinção ou troca de CNPJ)"
+    "motivo": "incorporada pela distribuidora de CNPJ 07282377000120 (sigla atual ESS), REA nº 6.318/2017; a tarifa unificada começa em 12/07/2017",
+    "incorporada_por": "07282377000120"
    },
    {
     "cnpj": "75568154000183",
@@ -1907,7 +1925,8 @@
      "ato": "REH 3.535/2025"
     },
     "dias_sem_tarifa": 1,
-    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026"
+    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026",
+    "incorporada_por": null
    },
    {
     "cnpj": "76583962000182",
@@ -1919,7 +1938,8 @@
      "ato": "REH 3.526/2025"
     },
     "dias_sem_tarifa": 1,
-    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026"
+    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026",
+    "incorporada_por": null
    },
    {
     "cnpj": "77882504000107",
@@ -1931,7 +1951,8 @@
      "ato": "REH 2.214/2017"
     },
     "dias_sem_tarifa": 3368,
-    "motivo": "sem tarifa publicada desde 11/07/2017; o conjunto não informa o motivo (incorporação, extinção ou troca de CNPJ)"
+    "motivo": "incorporada pela distribuidora de CNPJ 07282377000120 (sigla atual ESS), REA nº 6.318/2017; a tarifa unificada começa em 12/07/2017",
+    "incorporada_por": "07282377000120"
    },
    {
     "cnpj": "78829843000192",
@@ -1943,7 +1964,8 @@
      "ato": "REH 3.529/2025"
     },
     "dias_sem_tarifa": 1,
-    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026"
+    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026",
+    "incorporada_por": null
    },
    {
     "cnpj": "82574864000181",
@@ -1955,7 +1977,8 @@
      "ato": "REH 3.532/2025"
     },
     "dias_sem_tarifa": 1,
-    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026"
+    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026",
+    "incorporada_por": null
    },
    {
     "cnpj": "83646653000170",
@@ -1967,7 +1990,8 @@
      "ato": "REH 3.533/2025"
     },
     "dias_sem_tarifa": 1,
-    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026"
+    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026",
+    "incorporada_por": null
    },
    {
     "cnpj": "85318640000105",
@@ -1979,7 +2003,8 @@
      "ato": "REH 3.523/2025"
     },
     "dias_sem_tarifa": 1,
-    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026"
+    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026",
+    "incorporada_por": null
    },
    {
     "cnpj": "85665990000130",
@@ -1991,7 +2016,8 @@
      "ato": "REH 3.536/2025"
     },
     "dias_sem_tarifa": 1,
-    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026"
+    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026",
+    "incorporada_por": null
    },
    {
     "cnpj": "86433042000131",
@@ -2003,7 +2029,8 @@
      "ato": "REH 3.538/2025"
     },
     "dias_sem_tarifa": 1,
-    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026"
+    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026",
+    "incorporada_por": null
    },
    {
     "cnpj": "86439510000185",
@@ -2015,7 +2042,8 @@
      "ato": "REH 3.539/2025"
     },
     "dias_sem_tarifa": 1,
-    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026"
+    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026",
+    "incorporada_por": null
    },
    {
     "cnpj": "86444163000189",
@@ -2027,7 +2055,8 @@
      "ato": "REH 3.520/2025"
     },
     "dias_sem_tarifa": 1,
-    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026"
+    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026",
+    "incorporada_por": null
    },
    {
     "cnpj": "86448057000173",
@@ -2039,7 +2068,8 @@
      "ato": "REH 3.530/2025"
     },
     "dias_sem_tarifa": 1,
-    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026"
+    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026",
+    "incorporada_por": null
    },
    {
     "cnpj": "86449170000173",
@@ -2051,7 +2081,8 @@
      "ato": "REH 3.540/2025"
     },
     "dias_sem_tarifa": 1,
-    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026"
+    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026",
+    "incorporada_por": null
    },
    {
     "cnpj": "86512670000102",
@@ -2063,7 +2094,8 @@
      "ato": "REH 3.525/2025"
     },
     "dias_sem_tarifa": 1,
-    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026"
+    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026",
+    "incorporada_por": null
    },
    {
     "cnpj": "86532348000145",
@@ -2075,7 +2107,8 @@
      "ato": "REH 3.534/2025"
     },
     "dias_sem_tarifa": 1,
-    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026"
+    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026",
+    "incorporada_por": null
    },
    {
     "cnpj": "86533346000170",
@@ -2087,7 +2120,8 @@
      "ato": "REH 3.522/2025"
     },
     "dias_sem_tarifa": 1,
-    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026"
+    "motivo": "vigência encerrada em 29/09/2026; a tarifa seguinte ainda não consta no arquivo gerado pela ANEEL em 30/09/2026",
+    "incorporada_por": null
    }
   ],
   "evolucao": [
@@ -3712,7 +3746,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T10:01:51Z",
    "capturado_em": "2026-09-30T22:48:27Z",
-   "validado_em": "2026-09-30T23:07:03Z",
+   "validado_em": "2026-09-30T23:56:57Z",
    "cobertura_historica": {
     "inicio": "2010-02-03",
     "fim": "2026-09-30"
@@ -3730,9 +3764,9 @@
     "sha256": "8e5b18bfe3afbfa1d418e2f204b755c346efd6cad51a023a86c4045a809ddfb2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dafa93bb2111+alterado",
+   "versao_codigo": "3e7ff0a36fba+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:07:01Z",
+    "detectado_em": "2026-09-30T23:56:54Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -3769,7 +3803,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T10:01:51Z",
    "capturado_em": "2026-09-30T22:48:27Z",
-   "validado_em": "2026-09-30T23:07:03Z",
+   "validado_em": "2026-09-30T23:56:57Z",
    "cobertura_historica": {
     "inicio": "2010-02-03",
     "fim": "2026-09-30"
@@ -3785,9 +3819,9 @@
     "sha256": "8e5b18bfe3afbfa1d418e2f204b755c346efd6cad51a023a86c4045a809ddfb2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dafa93bb2111+alterado",
+   "versao_codigo": "3e7ff0a36fba+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:07:01Z",
+    "detectado_em": "2026-09-30T23:56:54Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -3904,8 +3938,8 @@
    "tratamento_ausencia": "distribuidora sem vigência na data fica fora e é listada; TE e TUSD iguais a zero na mesma linha são tarifa não homologada, não entram",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dafa93bb2111+alterado",
-    "publicacao": "2026-09-30T23:07:03Z"
+    "codigo": "3e7ff0a36fba+alterado",
+    "publicacao": "2026-09-30T23:56:57Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
    "testes": [
@@ -3917,17 +3951,17 @@
     {
      "nome": "componentes somam TE e TUSD (0,01 R$/MWh)",
      "resultado": "aprovado",
-     "detalhe": "80 de 80 distribuidoras com componentes"
+     "detalhe": "80 de 80 distribuidoras com componentes; 1 sem componentes para o ato vigente não entram nesta conferência"
     },
     {
      "nome": "TE e TUSD iguais nos conjuntos de tarifas e de componentes (0,005 R$/MWh)",
-     "resultado": "aprovado",
-     "detalhe": "80 conferidas, 0 divergentes, 1 sem componentes publicadas para o ato vigente"
+     "resultado": "ressalva",
+     "detalhe": "80 conferidas, 0 divergentes, 1 sem componentes publicadas para o ato vigente (ELFSM)"
     }
    ],
    "reconciliacao": {
-    "descricao": "TE e TUSD de cada distribuidora conferidas contra o conjunto Componentes Tarifárias (outro recurso da ANEEL, lido por outro código)",
-    "resultado": "aprovado",
+    "descricao": "TE e TUSD de cada distribuidora conferidas contra o conjunto Componentes Tarifárias (outro recurso da ANEEL, lido por outro código): 80 de 81 conferidas, 0 divergentes, 1 sem componentes para o ato vigente",
+    "resultado": "ressalva",
     "tolerancia": "0,005 R$/MWh por parcela"
    },
    "download": [
@@ -3941,7 +3975,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py conta --sem-coleta",
-   "citacao": "SCRUTINIUMS. Tarifa residencial B1 mediana entre distribuidoras: R$ 0,8212/kWh, distribuidoras com tarifa B1 residencial convencional vigente, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Tarifas de aplicação das distribuidoras de energia elétrica (recurso tarifas-homologadas-distribuidoras-energia-eletrica.csv, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Tarifa residencial B1 mediana entre distribuidoras: R$ 0,8212/kWh, distribuidoras com tarifa B1 residencial convencional vigente, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Tarifas de aplicação das distribuidoras de energia elétrica (recurso tarifas-homologadas-distribuidoras-energia-eletrica.csv, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "composicao": {
@@ -4137,20 +4171,69 @@
       "descricao": "Outros (TUSD)"
      }
     ]
+   },
+   {
+    "id": "creditos",
+    "rotulo": "Créditos tarifários lançados em componente de custo",
+    "componentes": []
    }
   ],
-  "classificacao": "observatório, pelo código da componente (PRORET 7.1 não lido: acesso bloqueado)",
+  "classificacao": "observatório, pelo código da componente (PRORET 7.1 não lido: acesso bloqueado); valor negativo em componente de custo listada em creditos.codigos vai para o grupo créditos",
   "mediana_rs_mwh": {
    "energia": 271.12,
    "transmissao": 92.54,
    "distribuicao": 267.6,
    "perdas": 56.82,
-   "encargos": 172.47,
-   "outros": 0.0
+   "encargos": 173.45,
+   "outros": 0.0,
+   "creditos": 0.0
+  },
+  "mediana": {
+   "grupos_rs_mwh": {
+    "energia": 271.12,
+    "transmissao": 92.54,
+    "distribuicao": 267.6,
+    "perdas": 56.82,
+    "encargos": 173.45,
+    "outros": 0.0,
+    "creditos": 0.0
+   },
+   "soma_das_medianas_rs_mwh": 861.53,
+   "mediana_do_total_rs_mwh": 820.46,
+   "fecha_com_total": false,
+   "nota": "Cada grupo tem a sua mediana entre distribuidoras, e a soma das medianas não é a tarifa mediana: use as medianas só grupo a grupo. A composição que fecha com o total é a média simples (composicao.media)."
+  },
+  "media": {
+   "n": 80,
+   "total_rs_mwh": 859.08,
+   "grupos_rs_mwh": {
+    "energia": 262.3,
+    "transmissao": 105.56,
+    "distribuicao": 281.9,
+    "perdas": 65.01,
+    "encargos": 177.32,
+    "outros": -16.23,
+    "creditos": -16.77
+   },
+   "grupos_pct": {
+    "energia": 30.53,
+    "transmissao": 12.29,
+    "distribuicao": 32.81,
+    "perdas": 7.57,
+    "encargos": 20.64,
+    "outros": -1.89,
+    "creditos": -1.95
+   },
+   "cde_rs_mwh": 137.11,
+   "cde_pct": 15.96,
+   "soma_grupos_menos_total_rs_mwh": -0.0001,
+   "definicao": "média simples entre as distribuidoras com composição na data (cada uma pesa igual, sem ponderação por consumo); os grupos médios somam a tarifa média, e a participação é a razão de somas Σ grupo ÷ Σ (TE + TUSD)"
   },
   "cde": {
    "mediana_rs_mwh": 139.5,
    "mediana_pct": 16.8,
+   "media_rs_mwh": 137.11,
+   "razao_de_somas_pct": 15.96,
    "n": 80,
    "codigos": [
     "TUSD_CDE",
@@ -4159,8 +4242,406 @@
     "TE_CDE_GD",
     "TE_CDE_COVID"
    ],
-   "nota": "Soma das componentes com CDE no código publicadas pela ANEEL dentro da TE e da TUSD. É parte do grupo de encargos, não um item a mais. A finalidade de cada código (quota anual, CDE Covid, CDE GD, CDE Eletrobras) está no PRORET, que não pôde ser lido; por isso a soma aparece como componentes CDE da tarifa, sem atribuição a programa específico."
+   "nota": "Soma das componentes com CDE no código publicadas pela ANEEL dentro da TE e da TUSD. É parte do grupo de encargos, não um item a mais. A finalidade de cada código (quota anual, CDE Covid, CDE GD, CDE Eletrobras) está no PRORET, que não pôde ser lido; por isso a soma aparece como componentes CDE da tarifa, sem atribuição a programa específico. mediana_rs_mwh e mediana_pct são medianas separadas (a mediana dos percentuais não é a mediana em R$/MWh dividida pela tarifa mediana); a participação comparável à composição média é razao_de_somas_pct."
   },
+  "creditos": {
+   "codigos": [
+    "TE_CFURH"
+   ],
+   "regra": "valor negativo em TE_CFURH sai do grupo do código e vai para o grupo créditos",
+   "leitura": "valor negativo na componente CFURH lido como crédito tarifário, provavelmente o repasse da repactuação da UBP (Lei nº 15.235/2025) às distribuidoras das áreas da Sudam e da Sudene; a regra de lançamento (PRORET) não pôde ser lida",
+   "documento": [
+    "aneel_ubp_repasse_2026"
+   ],
+   "faixa_historica": {
+    "codigo": "TE_CFURH",
+    "vigencias_iniciadas_ate": "2024-12-31",
+    "n": 1636,
+    "minimo": -5.38,
+    "maximo": 4.44
+   },
+   "distribuidoras": [
+    {
+     "cnpj": "05965546000109",
+     "sigla": "CEA",
+     "codigo": "TE_CFURH",
+     "valor": -267.43,
+     "pct_tarifa": -32.4,
+     "ato": "sem ato informado"
+    },
+    {
+     "cnpj": "05914650000166",
+     "sigla": "ERO",
+     "codigo": "TE_CFURH",
+     "valor": -256.66,
+     "pct_tarifa": -33.7,
+     "ato": "REH 3.320/2026"
+    },
+    {
+     "cnpj": "02341467000120",
+     "sigla": "Âmbar Amazonas",
+     "codigo": "TE_CFURH",
+     "valor": -158.11,
+     "pct_tarifa": -18.1,
+     "ato": "REH 3.588/2026"
+    },
+    {
+     "cnpj": "04065033000170",
+     "sigla": "EAC",
+     "codigo": "TE_CFURH",
+     "valor": -139.67,
+     "pct_tarifa": -16.8,
+     "ato": "REH 3.318/2026"
+    },
+    {
+     "cnpj": "15139629000194",
+     "sigla": "COELBA",
+     "codigo": "TE_CFURH",
+     "valor": -62.51,
+     "pct_tarifa": -7.1,
+     "ato": "REH 3.578/2026"
+    },
+    {
+     "cnpj": "13017462000163",
+     "sigla": "ESE",
+     "codigo": "TE_CFURH",
+     "valor": -57.13,
+     "pct_tarifa": -7.6,
+     "ato": "REH 3.575/2026"
+    },
+    {
+     "cnpj": "09095183000140",
+     "sigla": "EPB",
+     "codigo": "TE_CFURH",
+     "valor": -55.86,
+     "pct_tarifa": -7.9,
+     "ato": "REH 3.603/2026"
+    },
+    {
+     "cnpj": "06272793000184",
+     "sigla": "EQUATORIAL MA",
+     "codigo": "TE_CFURH",
+     "valor": -54.77,
+     "pct_tarifa": -6.2,
+     "ato": "REH 3.604/2026"
+    },
+    {
+     "cnpj": "03467321000199",
+     "sigla": "EMT",
+     "codigo": "TE_CFURH",
+     "valor": -53.48,
+     "pct_tarifa": -5.9,
+     "ato": "REH 3.581/2026"
+    },
+    {
+     "cnpj": "07047251000170",
+     "sigla": "ENEL CE",
+     "codigo": "TE_CFURH",
+     "valor": -47.55,
+     "pct_tarifa": -6.8,
+     "ato": "REH 3.324/2026"
+    },
+    {
+     "cnpj": "12272084000100",
+     "sigla": "EQUATORIAL AL",
+     "codigo": "TE_CFURH",
+     "valor": -46.28,
+     "pct_tarifa": -5.4,
+     "ato": "REH 3.584/2026"
+    },
+    {
+     "cnpj": "13255658000196",
+     "sigla": "SULGIPE",
+     "codigo": "TE_CFURH",
+     "valor": -44.51,
+     "pct_tarifa": -6.2,
+     "ato": "REH 3.321/2026"
+    },
+    {
+     "cnpj": "10835932000108",
+     "sigla": "Neoenergia PE",
+     "codigo": "TE_CFURH",
+     "valor": -43.83,
+     "pct_tarifa": -5.5,
+     "ato": "REH 3.583/2026"
+    },
+    {
+     "cnpj": "08324196000181",
+     "sigla": "COSERN",
+     "codigo": "TE_CFURH",
+     "valor": -40.58,
+     "pct_tarifa": -5.2,
+     "ato": "REH 3.573/2026"
+    },
+    {
+     "cnpj": "25086034000171",
+     "sigla": "ETO",
+     "codigo": "TE_CFURH",
+     "valor": -13.09,
+     "pct_tarifa": -1.3,
+     "ato": "REH 3.323/2026"
+    }
+   ],
+   "documento_estado": {
+    "aneel_ubp_repasse_2026": "CONFERIDA"
+   }
+  },
+  "componentes_atipicas": [
+   {
+    "cnpj": "07047251000170",
+    "sigla": "ENEL CE",
+    "codigo": "TE_CFURH",
+    "valor": -47.55,
+    "pct_tarifa": -6.8,
+    "grupo_pelo_codigo": "encargos",
+    "grupo_usado": "creditos",
+    "mediana_modulo_rs_mwh": 54.13,
+    "criterios": [
+     "sinal contrário à natureza do grupo"
+    ],
+    "tratamento": "reclassificada para o grupo creditos (crédito), conferida no arquivo original"
+   },
+   {
+    "cnpj": "09095183000140",
+    "sigla": "EPB",
+    "codigo": "TE_CFURH",
+    "valor": -55.86,
+    "pct_tarifa": -7.9,
+    "grupo_pelo_codigo": "encargos",
+    "grupo_usado": "creditos",
+    "mediana_modulo_rs_mwh": 54.13,
+    "criterios": [
+     "sinal contrário à natureza do grupo"
+    ],
+    "tratamento": "reclassificada para o grupo creditos (crédito), conferida no arquivo original"
+   },
+   {
+    "cnpj": "13255658000196",
+    "sigla": "SULGIPE",
+    "codigo": "TE_CFURH",
+    "valor": -44.51,
+    "pct_tarifa": -6.2,
+    "grupo_pelo_codigo": "encargos",
+    "grupo_usado": "creditos",
+    "mediana_modulo_rs_mwh": 54.13,
+    "criterios": [
+     "sinal contrário à natureza do grupo"
+    ],
+    "tratamento": "reclassificada para o grupo creditos (crédito), conferida no arquivo original"
+   },
+   {
+    "cnpj": "13017462000163",
+    "sigla": "ESE",
+    "codigo": "TE_CFURH",
+    "valor": -57.13,
+    "pct_tarifa": -7.6,
+    "grupo_pelo_codigo": "encargos",
+    "grupo_usado": "creditos",
+    "mediana_modulo_rs_mwh": 54.13,
+    "criterios": [
+     "sinal contrário à natureza do grupo"
+    ],
+    "tratamento": "reclassificada para o grupo creditos (crédito), conferida no arquivo original"
+   },
+   {
+    "cnpj": "05914650000166",
+    "sigla": "ERO",
+    "codigo": "TE_CFURH",
+    "valor": -256.66,
+    "pct_tarifa": -33.7,
+    "grupo_pelo_codigo": "encargos",
+    "grupo_usado": "creditos",
+    "mediana_modulo_rs_mwh": 54.13,
+    "criterios": [
+     "sinal contrário à natureza do grupo"
+    ],
+    "tratamento": "reclassificada para o grupo creditos (crédito), conferida no arquivo original"
+   },
+   {
+    "cnpj": "08324196000181",
+    "sigla": "COSERN",
+    "codigo": "TE_CFURH",
+    "valor": -40.58,
+    "pct_tarifa": -5.2,
+    "grupo_pelo_codigo": "encargos",
+    "grupo_usado": "creditos",
+    "mediana_modulo_rs_mwh": 54.13,
+    "criterios": [
+     "sinal contrário à natureza do grupo"
+    ],
+    "tratamento": "reclassificada para o grupo creditos (crédito), conferida no arquivo original"
+   },
+   {
+    "cnpj": "10835932000108",
+    "sigla": "Neoenergia PE",
+    "codigo": "TE_CFURH",
+    "valor": -43.83,
+    "pct_tarifa": -5.5,
+    "grupo_pelo_codigo": "encargos",
+    "grupo_usado": "creditos",
+    "mediana_modulo_rs_mwh": 54.13,
+    "criterios": [
+     "sinal contrário à natureza do grupo"
+    ],
+    "tratamento": "reclassificada para o grupo creditos (crédito), conferida no arquivo original"
+   },
+   {
+    "cnpj": "05965546000109",
+    "sigla": "CEA",
+    "codigo": "TE_CFURH",
+    "valor": -267.43,
+    "pct_tarifa": -32.4,
+    "grupo_pelo_codigo": "encargos",
+    "grupo_usado": "creditos",
+    "mediana_modulo_rs_mwh": 54.13,
+    "criterios": [
+     "sinal contrário à natureza do grupo"
+    ],
+    "tratamento": "reclassificada para o grupo creditos (crédito), conferida no arquivo original"
+   },
+   {
+    "cnpj": "04065033000170",
+    "sigla": "EAC",
+    "codigo": "TE_CFURH",
+    "valor": -139.67,
+    "pct_tarifa": -16.8,
+    "grupo_pelo_codigo": "encargos",
+    "grupo_usado": "creditos",
+    "mediana_modulo_rs_mwh": 54.13,
+    "criterios": [
+     "sinal contrário à natureza do grupo"
+    ],
+    "tratamento": "reclassificada para o grupo creditos (crédito), conferida no arquivo original"
+   },
+   {
+    "cnpj": "12272084000100",
+    "sigla": "EQUATORIAL AL",
+    "codigo": "TE_CDE_COVID",
+    "valor": -73.43,
+    "pct_tarifa": -8.6,
+    "grupo_pelo_codigo": "encargos",
+    "grupo_usado": "encargos",
+    "mediana_modulo_rs_mwh": 1.51,
+    "criterios": [
+     "sinal contrário à natureza do grupo",
+     "módulo mais de 10 vezes a mediana da componente entre as distribuidoras que a publicam"
+    ],
+    "tratamento": "mantida no grupo do código, conferida no arquivo original"
+   },
+   {
+    "cnpj": "12272084000100",
+    "sigla": "EQUATORIAL AL",
+    "codigo": "TE_CFURH",
+    "valor": -46.28,
+    "pct_tarifa": -5.4,
+    "grupo_pelo_codigo": "encargos",
+    "grupo_usado": "creditos",
+    "mediana_modulo_rs_mwh": 54.13,
+    "criterios": [
+     "sinal contrário à natureza do grupo"
+    ],
+    "tratamento": "reclassificada para o grupo creditos (crédito), conferida no arquivo original"
+   },
+   {
+    "cnpj": "02341467000120",
+    "sigla": "Âmbar Amazonas",
+    "codigo": "TE_CFURH",
+    "valor": -158.11,
+    "pct_tarifa": -18.1,
+    "grupo_pelo_codigo": "encargos",
+    "grupo_usado": "creditos",
+    "mediana_modulo_rs_mwh": 54.13,
+    "criterios": [
+     "sinal contrário à natureza do grupo"
+    ],
+    "tratamento": "reclassificada para o grupo creditos (crédito), conferida no arquivo original"
+   },
+   {
+    "cnpj": "02341467000120",
+    "sigla": "Âmbar Amazonas",
+    "codigo": "TUSD_PNT",
+    "valor": 161.48,
+    "pct_tarifa": 18.4,
+    "grupo_pelo_codigo": "perdas",
+    "grupo_usado": "perdas",
+    "mediana_modulo_rs_mwh": 14.17,
+    "criterios": [
+     "módulo mais de 10 vezes a mediana da componente entre as distribuidoras que a publicam"
+    ],
+    "tratamento": "mantida no grupo do código, conferida no arquivo original"
+   },
+   {
+    "cnpj": "15139629000194",
+    "sigla": "COELBA",
+    "codigo": "TE_CFURH",
+    "valor": -62.51,
+    "pct_tarifa": -7.1,
+    "grupo_pelo_codigo": "encargos",
+    "grupo_usado": "creditos",
+    "mediana_modulo_rs_mwh": 54.13,
+    "criterios": [
+     "sinal contrário à natureza do grupo"
+    ],
+    "tratamento": "reclassificada para o grupo creditos (crédito), conferida no arquivo original"
+   },
+   {
+    "cnpj": "06272793000184",
+    "sigla": "EQUATORIAL MA",
+    "codigo": "TE_CFURH",
+    "valor": -54.77,
+    "pct_tarifa": -6.2,
+    "grupo_pelo_codigo": "encargos",
+    "grupo_usado": "creditos",
+    "mediana_modulo_rs_mwh": 54.13,
+    "criterios": [
+     "sinal contrário à natureza do grupo"
+    ],
+    "tratamento": "reclassificada para o grupo creditos (crédito), conferida no arquivo original"
+   },
+   {
+    "cnpj": "03467321000199",
+    "sigla": "EMT",
+    "codigo": "TE_CFURH",
+    "valor": -53.48,
+    "pct_tarifa": -5.9,
+    "grupo_pelo_codigo": "encargos",
+    "grupo_usado": "creditos",
+    "mediana_modulo_rs_mwh": 54.13,
+    "criterios": [
+     "sinal contrário à natureza do grupo"
+    ],
+    "tratamento": "reclassificada para o grupo creditos (crédito), conferida no arquivo original"
+   },
+   {
+    "cnpj": "57384943000182",
+    "sigla": "CERIS",
+    "codigo": "TE_ANGRA",
+    "valor": 433.32,
+    "pct_tarifa": 38.9,
+    "grupo_pelo_codigo": "energia",
+    "grupo_usado": "energia",
+    "mediana_modulo_rs_mwh": 11.51,
+    "criterios": [
+     "módulo mais de 10 vezes a mediana da componente entre as distribuidoras que a publicam"
+    ],
+    "tratamento": "mantida no grupo do código, conferida no arquivo original"
+   },
+   {
+    "cnpj": "57384943000182",
+    "sigla": "CERIS",
+    "codigo": "TE_ENERGIA",
+    "valor": -72.43,
+    "pct_tarifa": -6.5,
+    "grupo_pelo_codigo": "energia",
+    "grupo_usado": "energia",
+    "mediana_modulo_rs_mwh": 262.01,
+    "criterios": [
+     "sinal contrário à natureza do grupo"
+    ],
+    "tratamento": "mantida no grupo do código, conferida no arquivo original"
+   }
+  ],
+  "regra_atipico": "componente com sinal contrário à natureza do grupo de custo ou com módulo mais de 10 vezes a mediana da mesma componente entre as distribuidoras, com pelo menos 5% da tarifa",
   "distribuidoras": [
    {
     "cnpj": "23664303000104",
@@ -4172,7 +4653,8 @@
      "distribuicao": 213.8,
      "perdas": 33.8,
      "encargos": 155.08,
-     "outros": -51.14
+     "outros": -51.14,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 35.8,
@@ -4180,13 +4662,15 @@
      "distribuicao": 34.6,
      "perdas": 5.5,
      "encargos": 25.1,
-     "outros": -8.3
+     "outros": -8.3,
+     "creditos": 0.0
     },
     "cde": 123.15,
     "cde_pct": 19.9,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "95824322000161",
@@ -4198,7 +4682,8 @@
      "distribuicao": 21.03,
      "perdas": 86.1,
      "encargos": 166.82,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 47.0,
@@ -4206,13 +4691,15 @@
      "distribuicao": 3.4,
      "perdas": 13.8,
      "encargos": 26.8,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 127.35,
     "cde_pct": 20.5,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "87656989000174",
@@ -4224,7 +4711,8 @@
      "distribuicao": 141.4,
      "perdas": 26.32,
      "encargos": 162.95,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 33.3,
@@ -4232,13 +4720,15 @@
      "distribuicao": 21.8,
      "perdas": 4.1,
      "encargos": 25.1,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 131.42,
     "cde_pct": 20.2,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "07047251000170",
@@ -4249,22 +4739,32 @@
      "transmissao": 41.06,
      "distribuicao": 283.71,
      "perdas": 77.36,
-     "encargos": 86.11,
-     "outros": -39.93
+     "encargos": 133.65,
+     "outros": -39.93,
+     "creditos": -47.55
     },
     "pct": {
      "energia": 36.1,
      "transmissao": 5.9,
      "distribuicao": 40.4,
      "perdas": 11.0,
-     "encargos": 12.3,
-     "outros": -5.7
+     "encargos": 19.0,
+     "outros": -5.7,
+     "creditos": -6.8
     },
     "cde": 92.44,
     "cde_pct": 13.2,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": [
+     {
+      "codigo": "TE_CFURH",
+      "valor": -47.55,
+      "grupo_pelo_codigo": "encargos",
+      "grupo_usado": "creditos"
+     }
+    ]
    },
    {
     "cnpj": "09095183000140",
@@ -4275,22 +4775,32 @@
      "transmissao": 45.47,
      "distribuicao": 236.11,
      "perdas": 69.14,
-     "encargos": 90.1,
-     "outros": -0.39
+     "encargos": 145.96,
+     "outros": -0.39,
+     "creditos": -55.86
     },
     "pct": {
      "energia": 37.9,
      "transmissao": 6.4,
      "distribuicao": 33.3,
      "perdas": 9.7,
-     "encargos": 12.7,
-     "outros": -0.1
+     "encargos": 20.6,
+     "outros": -0.1,
+     "creditos": -7.9
     },
     "cde": 101.0,
     "cde_pct": 14.2,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": [
+     {
+      "codigo": "TE_CFURH",
+      "valor": -55.86,
+      "grupo_pelo_codigo": "encargos",
+      "grupo_usado": "creditos"
+     }
+    ]
    },
    {
     "cnpj": "90660754000160",
@@ -4302,7 +4812,8 @@
      "distribuicao": 89.97,
      "perdas": 56.7,
      "encargos": 178.9,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 38.9,
@@ -4310,13 +4821,15 @@
      "distribuicao": 12.6,
      "perdas": 7.9,
      "encargos": 25.0,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 131.24,
     "cde_pct": 18.3,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "13255658000196",
@@ -4327,22 +4840,32 @@
      "transmissao": 46.84,
      "distribuicao": 306.41,
      "perdas": 58.92,
-     "encargos": 95.15,
-     "outros": 0.0
+     "encargos": 139.65,
+     "outros": 0.0,
+     "creditos": -44.51
     },
     "pct": {
      "energia": 29.4,
      "transmissao": 6.5,
      "distribuicao": 42.6,
      "perdas": 8.2,
-     "encargos": 13.2,
-     "outros": 0.0
+     "encargos": 19.4,
+     "outros": 0.0,
+     "creditos": -6.2
     },
     "cde": 100.28,
     "cde_pct": 14.0,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": [
+     {
+      "codigo": "TE_CFURH",
+      "valor": -44.51,
+      "grupo_pelo_codigo": "encargos",
+      "grupo_usado": "creditos"
+     }
+    ]
    },
    {
     "cnpj": "91982348000187",
@@ -4354,7 +4877,8 @@
      "distribuicao": 201.07,
      "perdas": 28.84,
      "encargos": 191.49,
-     "outros": -1.05
+     "outros": -1.05,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 30.5,
@@ -4362,13 +4886,15 @@
      "distribuicao": 27.6,
      "perdas": 4.0,
      "encargos": 26.3,
-     "outros": -0.1
+     "outros": -0.1,
+     "creditos": 0.0
     },
     "cde": 146.85,
     "cde_pct": 20.1,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "98042963000152",
@@ -4380,7 +4906,8 @@
      "distribuicao": 135.02,
      "perdas": 74.88,
      "encargos": 169.67,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 39.4,
@@ -4388,13 +4915,15 @@
      "distribuicao": 18.5,
      "perdas": 10.3,
      "encargos": 23.2,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 130.71,
     "cde_pct": 17.9,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "10532365000110",
@@ -4406,7 +4935,8 @@
      "distribuicao": 248.97,
      "perdas": 17.05,
      "encargos": 165.52,
-     "outros": 0.11
+     "outros": 0.11,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 19.9,
@@ -4414,13 +4944,15 @@
      "distribuicao": 34.1,
      "perdas": 2.3,
      "encargos": 22.7,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 129.2,
     "cde_pct": 17.7,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "52777034000190",
@@ -4432,7 +4964,8 @@
      "distribuicao": 231.6,
      "perdas": 42.17,
      "encargos": 170.43,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 29.4,
@@ -4440,13 +4973,15 @@
      "distribuicao": 31.6,
      "perdas": 5.8,
      "encargos": 23.3,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 140.05,
     "cde_pct": 19.1,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "75805895000130",
@@ -4458,7 +4993,8 @@
      "distribuicao": 153.57,
      "perdas": 31.42,
      "encargos": 184.98,
-     "outros": -57.9
+     "outros": -57.9,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 36.4,
@@ -4466,13 +5002,15 @@
      "distribuicao": 20.9,
      "perdas": 4.3,
      "encargos": 25.2,
-     "outros": -7.9
+     "outros": -7.9,
+     "creditos": 0.0
     },
     "cde": 140.8,
     "cde_pct": 19.2,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "87462750000163",
@@ -4484,7 +5022,8 @@
      "distribuicao": 195.02,
      "perdas": 42.32,
      "encargos": 174.6,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 17.4,
@@ -4492,13 +5031,15 @@
      "distribuicao": 26.4,
      "perdas": 5.7,
      "encargos": 23.7,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 135.05,
     "cde_pct": 18.3,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "33050196000188",
@@ -4510,7 +5051,8 @@
      "distribuicao": 200.53,
      "perdas": 54.27,
      "encargos": 222.72,
-     "outros": -45.07
+     "outros": -45.07,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 33.8,
@@ -4518,13 +5060,15 @@
      "distribuicao": 27.1,
      "perdas": 7.3,
      "encargos": 30.1,
-     "outros": -6.1
+     "outros": -6.1,
+     "creditos": 0.0
     },
     "cde": 180.06,
     "cde_pct": 24.4,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "04172213000151",
@@ -4536,7 +5080,8 @@
      "distribuicao": 189.01,
      "perdas": 48.28,
      "encargos": 204.55,
-     "outros": -57.9
+     "outros": -57.9,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 40.8,
@@ -4544,13 +5089,15 @@
      "distribuicao": 25.6,
      "perdas": 6.5,
      "encargos": 27.7,
-     "outros": -7.8
+     "outros": -7.8,
+     "creditos": 0.0
     },
     "cde": 155.56,
     "cde_pct": 21.0,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "44560381000139",
@@ -4562,7 +5109,8 @@
      "distribuicao": 301.36,
      "perdas": 14.97,
      "encargos": 146.61,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 26.5,
@@ -4570,13 +5118,15 @@
      "distribuicao": 40.6,
      "perdas": 2.0,
      "encargos": 19.7,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 118.19,
     "cde_pct": 15.9,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "46598678000119",
@@ -4588,7 +5138,8 @@
      "distribuicao": 304.62,
      "perdas": 15.71,
      "encargos": 159.46,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 21.1,
@@ -4596,13 +5147,15 @@
      "distribuicao": 41.0,
      "perdas": 2.1,
      "encargos": 21.5,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 138.37,
     "cde_pct": 18.6,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "97578090000134",
@@ -4614,7 +5167,8 @@
      "distribuicao": 158.25,
      "perdas": 30.87,
      "encargos": 174.18,
-     "outros": 0.02
+     "outros": 0.02,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 31.4,
@@ -4622,13 +5176,15 @@
      "distribuicao": 21.3,
      "perdas": 4.1,
      "encargos": 23.4,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 131.35,
     "cde_pct": 17.6,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "13017462000163",
@@ -4639,22 +5195,32 @@
      "transmissao": 51.21,
      "distribuicao": 254.99,
      "perdas": 64.35,
-     "encargos": 92.28,
-     "outros": -0.1
+     "encargos": 149.41,
+     "outros": -0.1,
+     "creditos": -57.13
     },
     "pct": {
      "energia": 38.7,
      "transmissao": 6.8,
      "distribuicao": 33.8,
      "perdas": 8.5,
-     "encargos": 12.2,
-     "outros": -0.0
+     "encargos": 19.8,
+     "outros": -0.0,
+     "creditos": -7.6
     },
     "cde": 108.57,
     "cde_pct": 14.4,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": [
+     {
+      "codigo": "TE_CFURH",
+      "valor": -57.13,
+      "grupo_pelo_codigo": "encargos",
+      "grupo_usado": "creditos"
+     }
+    ]
    },
    {
     "cnpj": "83647990000181",
@@ -4666,7 +5232,8 @@
      "distribuicao": 186.97,
      "perdas": 28.82,
      "encargos": 197.79,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 27.5,
@@ -4674,13 +5241,15 @@
      "distribuicao": 24.7,
      "perdas": 3.8,
      "encargos": 26.1,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 151.29,
     "cde_pct": 20.0,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "08336783000190",
@@ -4692,7 +5261,8 @@
      "distribuicao": 132.79,
      "perdas": 54.68,
      "encargos": 212.92,
-     "outros": -6.93
+     "outros": -6.93,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 38.7,
@@ -4700,13 +5270,15 @@
      "distribuicao": 17.5,
      "perdas": 7.2,
      "encargos": 28.0,
-     "outros": -0.9
+     "outros": -0.9,
+     "creditos": 0.0
     },
     "cde": 162.43,
     "cde_pct": 21.4,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "83855973000130",
@@ -4718,7 +5290,8 @@
      "distribuicao": 142.51,
      "perdas": 45.28,
      "encargos": 190.32,
-     "outros": -44.92
+     "outros": -44.92,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 36.4,
@@ -4726,13 +5299,15 @@
      "distribuicao": 18.8,
      "perdas": 6.0,
      "encargos": 25.1,
-     "outros": -5.9
+     "outros": -5.9,
+     "creditos": 0.0
     },
     "cde": 147.18,
     "cde_pct": 19.4,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "86301124000122",
@@ -4744,7 +5319,8 @@
      "distribuicao": 280.54,
      "perdas": 18.68,
      "encargos": 208.02,
-     "outros": -236.76
+     "outros": -236.76,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 44.0,
@@ -4752,13 +5328,15 @@
      "distribuicao": 36.9,
      "perdas": 2.5,
      "encargos": 27.4,
-     "outros": -31.2
+     "outros": -31.2,
+     "creditos": 0.0
     },
     "cde": 185.71,
     "cde_pct": 24.4,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "86531175000140",
@@ -4770,7 +5348,8 @@
      "distribuicao": 197.77,
      "perdas": 20.78,
      "encargos": 266.75,
-     "outros": -48.36
+     "outros": -48.36,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 27.7,
@@ -4778,13 +5357,15 @@
      "distribuicao": 26.0,
      "perdas": 2.7,
      "encargos": 35.1,
-     "outros": -6.4
+     "outros": -6.4,
+     "creditos": 0.0
     },
     "cde": 213.88,
     "cde_pct": 28.2,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "05914650000166",
@@ -4795,22 +5376,32 @@
      "transmissao": 76.81,
      "distribuicao": 404.02,
      "perdas": 111.15,
-     "encargos": -102.48,
-     "outros": -0.01
+     "encargos": 154.18,
+     "outros": -0.01,
+     "creditos": -256.66
     },
     "pct": {
      "energia": 35.8,
      "transmissao": 10.1,
      "distribuicao": 53.0,
      "perdas": 14.6,
-     "encargos": -13.4,
-     "outros": -0.0
+     "encargos": 20.2,
+     "outros": -0.0,
+     "creditos": -33.7
     },
     "cde": 103.74,
     "cde_pct": 13.6,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": [
+     {
+      "codigo": "TE_CFURH",
+      "valor": -256.66,
+      "grupo_pelo_codigo": "encargos",
+      "grupo_usado": "creditos"
+     }
+    ]
    },
    {
     "cnpj": "95289500000100",
@@ -4822,7 +5413,8 @@
      "distribuicao": 151.87,
      "perdas": 27.26,
      "encargos": 181.12,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 31.4,
@@ -4830,13 +5422,15 @@
      "distribuicao": 19.9,
      "perdas": 3.6,
      "encargos": 23.7,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 138.99,
     "cde_pct": 18.2,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "04368898000106",
@@ -4848,7 +5442,8 @@
      "distribuicao": 214.54,
      "perdas": 56.89,
      "encargos": 192.12,
-     "outros": -57.79
+     "outros": -57.79,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 36.9,
@@ -4856,13 +5451,15 @@
      "distribuicao": 27.9,
      "perdas": 7.4,
      "encargos": 25.0,
-     "outros": -7.5
+     "outros": -7.5,
+     "creditos": 0.0
     },
     "cde": 147.92,
     "cde_pct": 19.3,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "79850574000109",
@@ -4874,7 +5471,8 @@
      "distribuicao": 374.86,
      "perdas": 39.02,
      "encargos": 177.56,
-     "outros": -207.75
+     "outros": -207.75,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 32.7,
@@ -4882,13 +5480,15 @@
      "distribuicao": 48.8,
      "perdas": 5.1,
      "encargos": 23.1,
-     "outros": -27.1
+     "outros": -27.1,
+     "creditos": 0.0
     },
     "cde": 135.46,
     "cde_pct": 17.6,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "30460297000139",
@@ -4900,7 +5500,8 @@
      "distribuicao": 143.25,
      "perdas": 53.57,
      "encargos": 144.97,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 39.2,
@@ -4908,13 +5509,15 @@
      "distribuicao": 18.6,
      "perdas": 7.0,
      "encargos": 18.8,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 133.79,
     "cde_pct": 17.4,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "08324196000181",
@@ -4925,22 +5528,32 @@
      "transmissao": 53.27,
      "distribuicao": 267.0,
      "perdas": 69.11,
-     "encargos": 101.14,
-     "outros": -20.84
+     "encargos": 141.72,
+     "outros": -20.84,
+     "creditos": -40.58
     },
     "pct": {
      "energia": 39.5,
      "transmissao": 6.9,
      "distribuicao": 34.4,
      "perdas": 8.9,
-     "encargos": 13.0,
-     "outros": -2.7
+     "encargos": 18.3,
+     "outros": -2.7,
+     "creditos": -5.2
     },
     "cde": 105.99,
     "cde_pct": 13.7,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": [
+     {
+      "codigo": "TE_CFURH",
+      "valor": -40.58,
+      "grupo_pelo_codigo": "encargos",
+      "grupo_usado": "creditos"
+     }
+    ]
    },
    {
     "cnpj": "97839922000129",
@@ -4952,7 +5565,8 @@
      "distribuicao": 215.79,
      "perdas": 53.62,
      "encargos": 170.57,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 32.5,
@@ -4960,13 +5574,15 @@
      "distribuicao": 27.7,
      "perdas": 6.9,
      "encargos": 21.9,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 131.33,
     "cde_pct": 16.8,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "91950261000128",
@@ -4978,7 +5594,8 @@
      "distribuicao": 255.05,
      "perdas": 39.46,
      "encargos": 166.71,
-     "outros": 21.23
+     "outros": 21.23,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 27.1,
@@ -4986,13 +5603,15 @@
      "distribuicao": 32.5,
      "perdas": 5.0,
      "encargos": 21.2,
-     "outros": 2.7
+     "outros": 2.7,
+     "creditos": 0.0
     },
     "cde": 131.48,
     "cde_pct": 16.7,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "02302100000106",
@@ -5004,7 +5623,8 @@
      "distribuicao": 198.77,
      "perdas": 48.2,
      "encargos": 207.98,
-     "outros": 0.12
+     "outros": 0.12,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 33.6,
@@ -5012,13 +5632,15 @@
      "distribuicao": 25.3,
      "perdas": 6.1,
      "encargos": 26.4,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 157.59,
     "cde_pct": 20.0,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "61695227000193",
@@ -5030,7 +5652,8 @@
      "distribuicao": 212.08,
      "perdas": 49.16,
      "encargos": 203.27,
-     "outros": -8.26
+     "outros": -8.26,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 34.0,
@@ -5038,13 +5661,15 @@
      "distribuicao": 26.9,
      "perdas": 6.2,
      "encargos": 25.8,
-     "outros": -1.0
+     "outros": -1.0,
+     "creditos": 0.0
     },
     "cde": 153.18,
     "cde_pct": 19.4,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "02341470000144",
@@ -5056,7 +5681,8 @@
      "distribuicao": 200.13,
      "perdas": 111.14,
      "encargos": 154.79,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 37.0,
@@ -5064,13 +5690,15 @@
      "distribuicao": 25.3,
      "perdas": 14.1,
      "encargos": 19.6,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 102.9,
     "cde_pct": 13.0,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "88446034000155",
@@ -5082,7 +5710,8 @@
      "distribuicao": 221.41,
      "perdas": 29.46,
      "encargos": 200.7,
-     "outros": -0.06
+     "outros": -0.06,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 30.6,
@@ -5090,13 +5719,15 @@
      "distribuicao": 27.8,
      "perdas": 3.7,
      "encargos": 25.2,
-     "outros": -0.0
+     "outros": -0.0,
+     "creditos": 0.0
     },
     "cde": 156.26,
     "cde_pct": 19.6,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "10835932000108",
@@ -5107,22 +5738,32 @@
      "transmissao": 67.99,
      "distribuicao": 260.68,
      "perdas": 123.99,
-     "encargos": 107.78,
-     "outros": -44.02
+     "encargos": 151.61,
+     "outros": -44.02,
+     "creditos": -43.83
     },
     "pct": {
      "energia": 35.4,
      "transmissao": 8.5,
      "distribuicao": 32.6,
      "perdas": 15.5,
-     "encargos": 13.5,
-     "outros": -5.5
+     "encargos": 19.0,
+     "outros": -5.5,
+     "creditos": -5.5
     },
     "cde": 109.66,
     "cde_pct": 13.7,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": [
+     {
+      "codigo": "TE_CFURH",
+      "valor": -43.83,
+      "grupo_pelo_codigo": "encargos",
+      "grupo_usado": "creditos"
+     }
+    ]
    },
    {
     "cnpj": "53859112000169",
@@ -5134,7 +5775,8 @@
      "distribuicao": 272.85,
      "perdas": 64.85,
      "encargos": 218.68,
-     "outros": -46.97
+     "outros": -46.97,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 26.8,
@@ -5142,13 +5784,15 @@
      "distribuicao": 33.6,
      "perdas": 8.0,
      "encargos": 26.9,
-     "outros": -5.8
+     "outros": -5.8,
+     "creditos": 0.0
     },
     "cde": 176.05,
     "cde_pct": 21.7,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "07282377000120",
@@ -5160,7 +5804,8 @@
      "distribuicao": 200.81,
      "perdas": 52.97,
      "encargos": 191.67,
-     "outros": -24.76
+     "outros": -24.76,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 34.7,
@@ -5168,13 +5813,15 @@
      "distribuicao": 24.7,
      "perdas": 6.5,
      "encargos": 23.5,
-     "outros": -3.0
+     "outros": -3.0,
+     "creditos": 0.0
     },
     "cde": 146.52,
     "cde_pct": 18.0,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "01377555000110",
@@ -5186,7 +5833,8 @@
      "distribuicao": 288.01,
      "perdas": 38.85,
      "encargos": 190.81,
-     "outros": -0.0
+     "outros": -0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 28.5,
@@ -5194,13 +5842,15 @@
      "distribuicao": 35.1,
      "perdas": 4.7,
      "encargos": 23.3,
-     "outros": -0.0
+     "outros": -0.0,
+     "creditos": 0.0
     },
     "cde": 148.49,
     "cde_pct": 18.1,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "49606312000132",
@@ -5212,7 +5862,8 @@
      "distribuicao": 333.64,
      "perdas": 43.49,
      "encargos": 177.67,
-     "outros": -0.11
+     "outros": -0.11,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 19.3,
@@ -5220,13 +5871,15 @@
      "distribuicao": 40.6,
      "perdas": 5.3,
      "encargos": 21.6,
-     "outros": -0.0
+     "outros": -0.0,
+     "creditos": 0.0
     },
     "cde": 151.19,
     "cde_pct": 18.4,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "08467115000100",
@@ -5238,7 +5891,8 @@
      "distribuicao": 187.3,
      "perdas": 66.44,
      "encargos": 198.04,
-     "outros": -13.42
+     "outros": -13.42,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 34.0,
@@ -5246,13 +5900,15 @@
      "distribuicao": 22.8,
      "perdas": 8.1,
      "encargos": 24.1,
-     "outros": -1.6
+     "outros": -1.6,
+     "creditos": 0.0
     },
     "cde": 151.85,
     "cde_pct": 18.5,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "05965546000109",
@@ -5263,22 +5919,32 @@
      "transmissao": 96.96,
      "distribuicao": 388.86,
      "perdas": 172.58,
-     "encargos": -113.0,
-     "outros": -0.01
+     "encargos": 154.43,
+     "outros": -0.01,
+     "creditos": -267.43
     },
     "pct": {
      "energia": 33.9,
      "transmissao": 11.8,
      "distribuicao": 47.1,
      "perdas": 20.9,
-     "encargos": -13.7,
-     "outros": -0.0
+     "encargos": 18.7,
+     "outros": -0.0,
+     "creditos": -32.4
     },
     "cde": 94.92,
     "cde_pct": 11.5,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": [
+     {
+      "codigo": "TE_CFURH",
+      "valor": -267.43,
+      "grupo_pelo_codigo": "encargos",
+      "grupo_usado": "creditos"
+     }
+    ]
    },
    {
     "cnpj": "07522669000192",
@@ -5290,7 +5956,8 @@
      "distribuicao": 133.27,
      "perdas": 77.88,
      "encargos": 216.61,
-     "outros": -0.0
+     "outros": -0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 39.9,
@@ -5298,13 +5965,15 @@
      "distribuicao": 16.1,
      "perdas": 9.4,
      "encargos": 26.2,
-     "outros": -0.0
+     "outros": -0.0,
+     "creditos": 0.0
     },
     "cde": 165.05,
     "cde_pct": 20.0,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "04065033000170",
@@ -5315,22 +5984,32 @@
      "transmissao": 152.33,
      "distribuicao": 367.63,
      "perdas": 74.64,
-     "encargos": 19.01,
-     "outros": -0.03
+     "encargos": 158.68,
+     "outros": -0.03,
+     "creditos": -139.67
     },
     "pct": {
      "energia": 26.0,
      "transmissao": 18.4,
      "distribuicao": 44.3,
      "perdas": 9.0,
-     "encargos": 2.3,
-     "outros": -0.0
+     "encargos": 19.1,
+     "outros": -0.0,
+     "creditos": -16.8
     },
     "cde": 110.39,
     "cde_pct": 13.3,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": [
+     {
+      "codigo": "TE_CFURH",
+      "valor": -139.67,
+      "grupo_pelo_codigo": "encargos",
+      "grupo_usado": "creditos"
+     }
+    ]
    },
    {
     "cnpj": "89889604000144",
@@ -5342,7 +6021,8 @@
      "distribuicao": 245.94,
      "perdas": 33.21,
      "encargos": 195.14,
-     "outros": -0.0
+     "outros": -0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 28.9,
@@ -5350,13 +6030,15 @@
      "distribuicao": 29.4,
      "perdas": 4.0,
      "encargos": 23.4,
-     "outros": -0.0
+     "outros": -0.0,
+     "creditos": 0.0
     },
     "cde": 142.94,
     "cde_pct": 17.1,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "97505838000179",
@@ -5368,7 +6050,8 @@
      "distribuicao": 265.27,
      "perdas": 61.43,
      "encargos": 165.69,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 23.3,
@@ -5376,13 +6059,15 @@
      "distribuicao": 31.6,
      "perdas": 7.3,
      "encargos": 19.7,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 128.75,
     "cde_pct": 15.3,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "28152650000171",
@@ -5394,7 +6079,8 @@
      "distribuicao": 209.15,
      "perdas": 92.35,
      "encargos": 191.97,
-     "outros": -0.01
+     "outros": -0.01,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 34.2,
@@ -5402,13 +6088,15 @@
      "distribuicao": 24.8,
      "perdas": 10.9,
      "encargos": 22.8,
-     "outros": -0.0
+     "outros": -0.0,
+     "creditos": 0.0
     },
     "cde": 148.4,
     "cde_pct": 17.6,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "12272084000100",
@@ -5419,22 +6107,32 @@
      "transmissao": 86.5,
      "distribuicao": 311.33,
      "perdas": 113.58,
-     "encargos": 59.04,
-     "outros": 0.0
+     "encargos": 105.33,
+     "outros": 0.0,
+     "creditos": -46.28
     },
     "pct": {
      "energia": 33.0,
      "transmissao": 10.2,
      "distribuicao": 36.6,
      "perdas": 13.3,
-     "encargos": 6.9,
-     "outros": 0.0
+     "encargos": 12.4,
+     "outros": 0.0,
+     "creditos": -5.4
     },
     "cde": 64.7,
     "cde_pct": 7.6,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": [
+     {
+      "codigo": "TE_CFURH",
+      "valor": -46.28,
+      "grupo_pelo_codigo": "encargos",
+      "grupo_usado": "creditos"
+     }
+    ]
    },
    {
     "cnpj": "78274610000170",
@@ -5446,7 +6144,8 @@
      "distribuicao": 354.45,
      "perdas": 41.88,
      "encargos": 170.2,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 20.6,
@@ -5454,13 +6153,15 @@
      "distribuicao": 41.0,
      "perdas": 4.8,
      "encargos": 19.7,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 136.11,
     "cde_pct": 15.8,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "02341467000120",
@@ -5471,22 +6172,32 @@
      "transmissao": 44.59,
      "distribuicao": 172.76,
      "perdas": 265.38,
-     "encargos": 4.12,
-     "outros": 0.0
+     "encargos": 162.23,
+     "outros": 0.0,
+     "creditos": -158.11
     },
     "pct": {
      "energia": 44.4,
      "transmissao": 5.1,
      "distribuicao": 19.7,
      "perdas": 30.3,
-     "encargos": 0.5,
-     "outros": 0.0
+     "encargos": 18.5,
+     "outros": 0.0,
+     "creditos": -18.1
     },
     "cde": 102.41,
     "cde_pct": 11.7,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": [
+     {
+      "codigo": "TE_CFURH",
+      "valor": -158.11,
+      "grupo_pelo_codigo": "encargos",
+      "grupo_usado": "creditos"
+     }
+    ]
    },
    {
     "cnpj": "15139629000194",
@@ -5497,22 +6208,32 @@
      "transmissao": 70.08,
      "distribuicao": 349.53,
      "perdas": 97.36,
-     "encargos": 93.3,
-     "outros": -15.61
+     "encargos": 155.81,
+     "outros": -15.61,
+     "creditos": -62.51
     },
     "pct": {
      "energia": 32.2,
      "transmissao": 8.0,
      "distribuicao": 39.8,
      "perdas": 11.1,
-     "encargos": 10.6,
-     "outros": -1.8
+     "encargos": 17.8,
+     "outros": -1.8,
+     "creditos": -7.1
     },
     "cde": 111.81,
     "cde_pct": 12.7,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": [
+     {
+      "codigo": "TE_CFURH",
+      "valor": -62.51,
+      "grupo_pelo_codigo": "encargos",
+      "grupo_usado": "creditos"
+     }
+    ]
    },
    {
     "cnpj": "60444437000146",
@@ -5524,7 +6245,8 @@
      "distribuicao": 225.35,
      "perdas": 155.01,
      "encargos": 245.08,
-     "outros": -65.29
+     "outros": -65.29,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 27.5,
@@ -5532,13 +6254,15 @@
      "distribuicao": 25.6,
      "perdas": 17.6,
      "encargos": 27.8,
-     "outros": -7.4
+     "outros": -7.4,
+     "creditos": 0.0
     },
     "cde": 188.96,
     "cde_pct": 21.5,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "50235449000107",
@@ -5550,7 +6274,8 @@
      "distribuicao": 343.82,
      "perdas": 30.22,
      "encargos": 169.13,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 24.0,
@@ -5558,13 +6283,15 @@
      "distribuicao": 39.0,
      "perdas": 3.4,
      "encargos": 19.2,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 134.7,
     "cde_pct": 15.3,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "06272793000184",
@@ -5575,22 +6302,32 @@
      "transmissao": 64.0,
      "distribuicao": 325.14,
      "perdas": 105.83,
-     "encargos": 105.32,
-     "outros": -0.0
+     "encargos": 160.09,
+     "outros": -0.0,
+     "creditos": -54.77
     },
     "pct": {
      "energia": 32.5,
      "transmissao": 7.2,
      "distribuicao": 36.6,
      "perdas": 11.9,
-     "encargos": 11.8,
-     "outros": -0.0
+     "encargos": 18.0,
+     "outros": -0.0,
+     "creditos": -6.2
     },
     "cde": 104.05,
     "cde_pct": 11.7,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": [
+     {
+      "codigo": "TE_CFURH",
+      "valor": -54.77,
+      "grupo_pelo_codigo": "encargos",
+      "grupo_usado": "creditos"
+     }
+    ]
    },
    {
     "cnpj": "97081434000103",
@@ -5602,7 +6339,8 @@
      "distribuicao": 274.99,
      "perdas": 86.72,
      "encargos": 178.14,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 27.1,
@@ -5610,13 +6348,15 @@
      "distribuicao": 30.9,
      "perdas": 9.7,
      "encargos": 20.0,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 138.18,
     "cde_pct": 15.5,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "02328280000197",
@@ -5628,7 +6368,8 @@
      "distribuicao": 224.65,
      "perdas": 70.21,
      "encargos": 209.74,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 30.7,
@@ -5636,13 +6377,15 @@
      "distribuicao": 25.2,
      "perdas": 7.9,
      "encargos": 23.5,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 161.42,
     "cde_pct": 18.1,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "01543032000104",
@@ -5654,7 +6397,8 @@
      "distribuicao": 291.86,
      "perdas": 79.21,
      "encargos": 208.24,
-     "outros": -58.67
+     "outros": -58.67,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 31.8,
@@ -5662,13 +6406,15 @@
      "distribuicao": 32.7,
      "perdas": 8.9,
      "encargos": 23.4,
-     "outros": -6.6
+     "outros": -6.6,
+     "creditos": 0.0
     },
     "cde": 160.8,
     "cde_pct": 18.0,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "03467321000199",
@@ -5679,22 +6425,32 @@
      "transmissao": 66.07,
      "distribuicao": 315.1,
      "perdas": 83.27,
-     "encargos": 134.77,
-     "outros": -1.7
+     "encargos": 188.26,
+     "outros": -1.7,
+     "creditos": -53.48
     },
     "pct": {
      "energia": 33.6,
      "transmissao": 7.3,
      "distribuicao": 35.0,
      "perdas": 9.3,
-     "encargos": 15.0,
-     "outros": -0.2
+     "encargos": 20.9,
+     "outros": -0.2,
+     "creditos": -5.9
     },
     "cde": 151.08,
     "cde_pct": 16.8,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": [
+     {
+      "codigo": "TE_CFURH",
+      "valor": -53.48,
+      "grupo_pelo_codigo": "encargos",
+      "grupo_usado": "creditos"
+     }
+    ]
    },
    {
     "cnpj": "06981180000116",
@@ -5706,7 +6462,8 @@
      "distribuicao": 268.19,
      "perdas": 79.58,
      "encargos": 205.52,
-     "outros": -0.0
+     "outros": -0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 29.2,
@@ -5714,13 +6471,15 @@
      "distribuicao": 29.7,
      "perdas": 8.8,
      "encargos": 22.8,
-     "outros": -0.0
+     "outros": -0.0,
+     "creditos": 0.0
     },
     "cde": 163.99,
     "cde_pct": 18.2,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "49313653000110",
@@ -5732,7 +6491,8 @@
      "distribuicao": 384.98,
      "perdas": 30.43,
      "encargos": 175.55,
-     "outros": -0.06
+     "outros": -0.06,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 23.2,
@@ -5740,13 +6500,15 @@
      "distribuicao": 42.3,
      "perdas": 3.3,
      "encargos": 19.3,
-     "outros": -0.0
+     "outros": -0.0,
+     "creditos": 0.0
     },
     "cde": 139.35,
     "cde_pct": 15.3,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "09257558000121",
@@ -5758,7 +6520,8 @@
      "distribuicao": 292.49,
      "perdas": 65.54,
      "encargos": 168.53,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 32.5,
@@ -5766,13 +6529,15 @@
      "distribuicao": 32.0,
      "perdas": 7.2,
      "encargos": 18.4,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 131.55,
     "cde_pct": 14.4,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "19527639000158",
@@ -5784,7 +6549,8 @@
      "distribuicao": 308.45,
      "perdas": 62.16,
      "encargos": 196.55,
-     "outros": -64.84
+     "outros": -64.84,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 36.6,
@@ -5792,13 +6558,15 @@
      "distribuicao": 33.6,
      "perdas": 6.8,
      "encargos": 21.4,
-     "outros": -7.1
+     "outros": -7.1,
+     "creditos": 0.0
     },
     "cde": 151.28,
     "cde_pct": 16.5,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "02016440000162",
@@ -5810,7 +6578,8 @@
      "distribuicao": 300.4,
      "perdas": 65.3,
      "encargos": 194.11,
-     "outros": -22.89
+     "outros": -22.89,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 33.1,
@@ -5818,13 +6587,15 @@
      "distribuicao": 31.8,
      "perdas": 6.9,
      "encargos": 20.5,
-     "outros": -2.4
+     "outros": -2.4,
+     "creditos": 0.0
     },
     "cde": 147.3,
     "cde_pct": 15.6,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "06840748000189",
@@ -5836,7 +6607,8 @@
      "distribuicao": 364.88,
      "perdas": 106.49,
      "encargos": 141.09,
-     "outros": -1.15
+     "outros": -1.15,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 27.8,
@@ -5844,13 +6616,15 @@
      "distribuicao": 38.5,
      "perdas": 11.2,
      "encargos": 14.9,
-     "outros": -0.1
+     "outros": -0.1,
+     "creditos": 0.0
     },
     "cde": 94.03,
     "cde_pct": 9.9,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "52548732000114",
@@ -5862,7 +6636,8 @@
      "distribuicao": 335.36,
      "perdas": 25.39,
      "encargos": 168.44,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 32.4,
@@ -5870,13 +6645,15 @@
      "distribuicao": 34.6,
      "perdas": 2.6,
      "encargos": 17.4,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 153.26,
     "cde_pct": 15.8,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "87776043000141",
@@ -5888,7 +6665,8 @@
      "distribuicao": 259.43,
      "perdas": 92.46,
      "encargos": 172.21,
-     "outros": -1.39
+     "outros": -1.39,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 32.0,
@@ -5896,13 +6674,15 @@
      "distribuicao": 26.8,
      "perdas": 9.5,
      "encargos": 17.8,
-     "outros": -0.1
+     "outros": -0.1,
+     "creditos": 0.0
     },
     "cde": 140.84,
     "cde_pct": 14.5,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "04895728000180",
@@ -5914,7 +6694,8 @@
      "distribuicao": 385.82,
      "perdas": 142.78,
      "encargos": 128.03,
-     "outros": 0.09
+     "outros": 0.09,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 25.5,
@@ -5922,13 +6703,15 @@
      "distribuicao": 39.4,
      "perdas": 14.6,
      "encargos": 13.1,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 67.84,
     "cde_pct": 6.9,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "15413826000150",
@@ -5940,7 +6723,8 @@
      "distribuicao": 346.13,
      "perdas": 86.21,
      "encargos": 212.53,
-     "outros": -13.09
+     "outros": -13.09,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 27.8,
@@ -5948,13 +6732,15 @@
      "distribuicao": 35.1,
      "perdas": 8.7,
      "encargos": 21.5,
-     "outros": -1.3
+     "outros": -1.3,
+     "creditos": 0.0
     },
     "cde": 171.4,
     "cde_pct": 17.4,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "25086034000171",
@@ -5965,22 +6751,32 @@
      "transmissao": 50.76,
      "distribuicao": 441.48,
      "perdas": 78.84,
-     "encargos": 137.8,
-     "outros": 0.0
+     "encargos": 150.89,
+     "outros": 0.0,
+     "creditos": -13.09
     },
     "pct": {
      "energia": 28.6,
      "transmissao": 5.1,
      "distribuicao": 44.5,
      "perdas": 7.9,
-     "encargos": 13.9,
-     "outros": 0.0
+     "encargos": 15.2,
+     "outros": 0.0,
+     "creditos": -1.3
     },
     "cde": 97.77,
     "cde_pct": 9.8,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": [
+     {
+      "codigo": "TE_CFURH",
+      "valor": -13.09,
+      "grupo_pelo_codigo": "encargos",
+      "grupo_usado": "creditos"
+     }
+    ]
    },
    {
     "cnpj": "75826404000138",
@@ -5992,7 +6788,8 @@
      "distribuicao": 427.08,
      "perdas": 29.99,
      "encargos": 172.72,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 19.6,
@@ -6000,13 +6797,15 @@
      "distribuicao": 42.6,
      "perdas": 3.0,
      "encargos": 17.2,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 155.24,
     "cde_pct": 15.5,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "13107842000199",
@@ -6018,7 +6817,8 @@
      "distribuicao": 427.51,
      "perdas": 42.09,
      "encargos": 103.65,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 29.4,
@@ -6026,13 +6826,15 @@
      "distribuicao": 42.1,
      "perdas": 4.1,
      "encargos": 10.2,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 92.9,
     "cde_pct": 9.2,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "89435598000155",
@@ -6044,7 +6846,8 @@
      "distribuicao": 415.28,
      "perdas": 66.97,
      "encargos": 189.06,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 26.8,
@@ -6052,13 +6855,15 @@
      "distribuicao": 39.4,
      "perdas": 6.4,
      "encargos": 17.9,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 132.81,
     "cde_pct": 12.6,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "33050071000158",
@@ -6070,7 +6875,8 @@
      "distribuicao": 361.02,
      "perdas": 152.57,
      "encargos": 228.38,
-     "outros": -60.92
+     "outros": -60.92,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 26.3,
@@ -6078,13 +6884,15 @@
      "distribuicao": 34.0,
      "perdas": 14.4,
      "encargos": 21.5,
-     "outros": -5.7
+     "outros": -5.7,
+     "creditos": 0.0
     },
     "cde": 176.23,
     "cde_pct": 16.6,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "60196987000193",
@@ -6096,7 +6904,8 @@
      "distribuicao": 539.27,
      "perdas": 20.23,
      "encargos": 171.98,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 20.4,
@@ -6104,13 +6913,15 @@
      "distribuicao": 49.4,
      "perdas": 1.9,
      "encargos": 15.8,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 139.78,
     "cde_pct": 12.8,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "57384943000182",
@@ -6122,7 +6933,8 @@
      "distribuicao": 395.43,
      "perdas": 87.63,
      "encargos": 153.82,
-     "outros": -0.17
+     "outros": -0.17,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 32.4,
@@ -6130,13 +6942,15 @@
      "distribuicao": 35.5,
      "perdas": 7.9,
      "encargos": 13.8,
-     "outros": -0.0
+     "outros": -0.0,
+     "creditos": 0.0
     },
     "cde": 139.65,
     "cde_pct": 12.5,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "28610236000169",
@@ -6148,7 +6962,8 @@
      "distribuicao": 610.59,
      "perdas": 26.86,
      "encargos": 199.23,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 11.6,
@@ -6156,13 +6971,15 @@
      "distribuicao": 50.6,
      "perdas": 2.2,
      "encargos": 16.5,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 171.68,
     "cde_pct": 14.2,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "88022918000182",
@@ -6174,7 +6991,8 @@
      "distribuicao": 511.89,
      "perdas": 56.75,
      "encargos": 168.4,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 26.4,
@@ -6182,13 +7000,15 @@
      "distribuicao": 37.3,
      "perdas": 4.1,
      "encargos": 12.3,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 139.97,
     "cde_pct": 10.2,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "27707397000102",
@@ -6200,7 +7020,8 @@
      "distribuicao": 562.9,
      "perdas": 78.75,
      "encargos": 187.22,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 24.7,
@@ -6208,13 +7029,15 @@
      "distribuicao": 37.5,
      "perdas": 5.2,
      "encargos": 12.5,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 161.07,
     "cde_pct": 10.7,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    },
    {
     "cnpj": "31465487000101",
@@ -6226,7 +7049,8 @@
      "distribuicao": 605.13,
      "perdas": 42.72,
      "encargos": 166.1,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "pct": {
      "energia": 26.9,
@@ -6234,13 +7058,15 @@
      "distribuicao": 38.6,
      "perdas": 2.7,
      "encargos": 10.6,
-     "outros": 0.0
+     "outros": 0.0,
+     "creditos": 0.0
     },
     "cde": 152.03,
     "cde_pct": 9.7,
     "fecha_com_total": true,
     "confere_com_tarifas": true,
-    "codigos_sem_grupo": []
+    "codigos_sem_grupo": [],
+    "reclassificadas": []
    }
   ],
   "reconciliacao": {
@@ -6286,7 +7112,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T05:32:55Z",
    "capturado_em": "2026-09-30T22:51:44Z",
-   "validado_em": "2026-09-30T23:07:03Z",
+   "validado_em": "2026-09-30T23:56:57Z",
    "cobertura_historica": {
     "inicio": "2010-02-03",
     "fim": "2026-09-30"
@@ -6297,15 +7123,15 @@
     "conferência: soma das parcelas = TE e TUSD publicadas no mesmo conjunto (tolerância 0,01 R$/MWh)",
     "conferência cruzada: TE e TUSD do conjunto de componentes = TE e TUSD do conjunto de tarifas (tolerância 0,005 R$/MWh)"
    ],
-   "formula": "grupo(g) = Σ componentes c com GRUPO(c) = g; participação = grupo ÷ (TE + TUSD)",
+   "formula": "grupo(g) = Σ componentes c com GRUPO(c, valor) = g; participação = grupo ÷ (TE + TUSD); composição média: Σ distribuidoras grupo(g) ÷ Σ distribuidoras (TE + TUSD)",
    "snapshot": {
     "id": "aneel_componentes_tarifarias@2026-09-30T22:51:44Z",
     "sha256": "383dddecd3d2fe676d91488c3cf8caddd19ae57b08a22d7816f2a043cdd96da3"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dafa93bb2111+alterado",
+   "versao_codigo": "3e7ff0a36fba+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:07:01Z",
+    "detectado_em": "2026-09-30T23:56:54Z",
     "total": 0,
     "vintages_comparadas": 16,
     "arquivos": 16,
@@ -6316,7 +7142,10 @@
    "limitacoes": [
     "Agrupamento em energia, transmissão, distribuição, perdas, encargos e outros é classificação do observatório a partir do código de cada componente; a definição oficial das componentes está no PRORET, submódulo 7.1, cujo arquivo não pôde ser lido (acesso automatizado bloqueado em git.aneel.gov.br).",
     "Tributos e iluminação pública não fazem parte da tarifa e não aparecem na composição.",
-    "Componentes com valor negativo (devoluções e ajustes de processos anteriores) reduzem o grupo e são mantidos."
+    "Componentes com valor negativo (devoluções e ajustes de processos anteriores) reduzem o grupo e são mantidos.",
+    "Valor negativo em TE_CFURH não é custo daquela natureza e sai dos encargos para o grupo créditos (15 distribuidoras na data; lista em composicao.creditos): leitura do observatório, com a origem provável (repasse da repactuação da UBP) declarada, porque o PRORET não pôde ser lido.",
+    "18 componentes atípicas na data (sinal contrário ao grupo de custo ou módulo muito acima da mesma componente nas outras distribuidoras, com pelo menos 5% da tarifa) ficam listadas em composicao.componentes_atipicas e em validacao.ressalvas, conferidas no arquivo original.",
+    "A mediana de cada grupo não soma a tarifa mediana; a composição que fecha com o total é a média simples entre distribuidoras (composicao.media)."
    ],
    "download": "/energia/series/conta_composicao_b1.csv",
    "notas_fonte": "Apresenta os valores das Tarifas de Energia - TE e das Tarifas de Uso do Sistema de Distribuição - TUSD, resultantes dos processos de reajustes tarifários das distribuidoras de energia elétrica."
@@ -6401,8 +7230,8 @@
    "tratamento_ausencia": "componente não publicada não entra (não vira zero)",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dafa93bb2111+alterado",
-    "publicacao": "2026-09-30T23:07:03Z"
+    "codigo": "3e7ff0a36fba+alterado",
+    "publicacao": "2026-09-30T23:56:57Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
    "testes": [
@@ -6429,7 +7258,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py conta --sem-coleta",
-   "citacao": "SCRUTINIUMS. Participação dos encargos setoriais na tarifa B1 residencial: 21,6%, CERIPa (CNPJ 49606312000132), 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Componentes Tarifárias (recurso componentes-tarifarias-2026.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Participação dos encargos setoriais na tarifa B1 residencial: 21,6%, CERIPa (CNPJ 49606312000132), 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Componentes Tarifárias (recurso componentes-tarifarias-2026.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "simulador": {
@@ -6517,31 +7346,106 @@
     "id": "tarifa_social",
     "norma": "lei_15235_2025",
     "texto": "Tarifa Social (Lei nº 12.212/2010, art. 1º, na redação da Lei nº 15.235/2025): desconto de 100% sobre a parcela do consumo até 80 kWh/mês e de 0% sobre a parcela acima de 80 kWh/mês, incidente sobre a tarifa da classe residencial. Beneficiários não pagam CDE nem Proinfa (página da ANEEL), por isso a ANEEL homologa uma tarifa própria da subclasse (Residencial Tarifa Social, faixas 01 e 02).",
-    "aplicacao_no_simulador": "Faixa 01 (até 80 kWh): valor calculado com a tarifa da faixa 01 e abatido integralmente. Faixa 02 (acima de 80 kWh): tarifa homologada da faixa 02, sem desconto."
+    "aplicacao_no_simulador": "Faixa 01 (até 80 kWh): valor calculado com a tarifa da faixa 01 e abatido integralmente. Faixa 02 (acima de 80 kWh): tarifa homologada da faixa 02, sem desconto.",
+    "partes": [
+     {
+      "texto": "Desconto de 100% até 80 kWh/mês e de 0% acima, sobre a tarifa da classe residencial",
+      "norma": "lei_15235_2025",
+      "estado": "CONFERIDA",
+      "motivo": null
+     },
+     {
+      "texto": "Tarifa própria da subclasse (faixas 01 e 02), porque beneficiários não pagam CDE nem Proinfa",
+      "norma": "aneel_tarifa_social",
+      "estado": "CONFERIDA",
+      "motivo": null
+     }
+    ],
+    "estado": "CONFERIDA"
    },
    {
     "id": "desconto_social",
     "norma": "lei_15235_2025",
     "texto": "Desconto Social (Lei nº 10.438/2002, art. 13, § 3º-I, incluído pela Lei nº 15.235/2025): desde 1º/1/2026, famílias do CadÚnico com renda per capita acima de meio e até um salário mínimo têm isenção das quotas da CDE para consumo mensal de até 120 kWh, em uma unidade consumidora.",
-    "aplicacao_no_simulador": "Leitura por parcela, seguindo as faixas homologadas pela ANEEL (Residencial Desconto Social, faixas 01 e 02): até 120 kWh com a tarifa da faixa 01 e o excedente com a da faixa 02. O texto da REN que regulamenta a aplicação não pôde ser lido (bloqueio de acesso ao acervo da ANEEL); por isso a leitura é declarada."
+    "aplicacao_no_simulador": "Leitura por parcela, seguindo as faixas homologadas pela ANEEL (Residencial Desconto Social, faixas 01 e 02): até 120 kWh com a tarifa da faixa 01 e o excedente com a da faixa 02. O texto da REN que regulamenta a aplicação não pôde ser lido (bloqueio de acesso ao acervo da ANEEL); por isso a leitura é declarada.",
+    "partes": [
+     {
+      "texto": "Isenção das quotas da CDE até 120 kWh/mês desde 1º/1/2026",
+      "norma": "lei_15235_2025",
+      "estado": "CONFERIDA",
+      "motivo": null
+     },
+     {
+      "texto": "Aplicação por parcela: faixa 01 até 120 kWh e faixa 02 no excedente",
+      "norma": null,
+      "estado": "NAO_CONFERIDA",
+      "motivo": "a REN que regulamenta a aplicação não pôde ser lida (acervo da ANEEL bloqueado)"
+     }
+    ],
+    "estado": "PARCIAL"
    },
    {
     "id": "custo_disponibilidade",
     "norma": "aneel_geracao_distribuida",
     "texto": "Custo de disponibilidade do grupo B: valor em reais equivalente a 30 kWh (monofásico), 50 kWh (bifásico) ou 100 kWh (trifásico), cobrado como valor mínimo quando o consumo é menor (páginas oficiais da ANEEL; a REN nº 1.000/2021 é a norma de origem, mas seu texto não pôde ser lido no acervo da ANEEL, que bloqueou o acesso automatizado).",
-    "aplicacao_no_simulador": "Classes residencial, rural, demais classes e Desconto Social: energia faturada = maior entre o consumo e o mínimo da ligação. Tarifa Social: sem mínimo até 80 kWh (página da ANEEL); acima de 80 kWh o mínimo não é aplicado, e isso é declarado como regra não conferida."
+    "aplicacao_no_simulador": "Classes residencial, rural, demais classes e Desconto Social: energia faturada = maior entre o consumo e o mínimo da ligação. Tarifa Social: sem mínimo até 80 kWh (página da ANEEL); acima de 80 kWh o mínimo não é aplicado, e isso é declarado como regra não conferida.",
+    "partes": [
+     {
+      "texto": "Mínimo de 30, 50 ou 100 kWh (monofásico, bifásico, trifásico) nas classes residencial, rural, demais e Desconto Social",
+      "norma": "aneel_geracao_distribuida",
+      "estado": "CONFERIDA",
+      "motivo": null
+     },
+     {
+      "texto": "Tarifa Social sem mínimo até 80 kWh, inclusive em ligação trifásica",
+      "norma": "aneel_tarifa_social",
+      "estado": "CONFERIDA",
+      "motivo": null
+     },
+     {
+      "texto": "Tarifa Social acima de 80 kWh: mínimo não aplicado",
+      "norma": null,
+      "estado": "NAO_CONFERIDA",
+      "motivo": "a REN nº 1.000/2021 não pôde ser lida; a regra do mínimo para a Tarifa Social acima de 80 kWh não foi conferida"
+     }
+    ],
+    "estado": "PARCIAL"
    },
    {
     "id": "bandeira",
     "norma": "aneel_bandeiras",
     "texto": "Bandeira tarifária: acréscimo por kWh consumido conforme o patamar acionado no mês (verde sem acréscimo). Não se aplica a consumidores de sistemas isolados.",
-    "aplicacao_no_simulador": "Adicional × kWh consumido. Tarifa Social: aplicado só sobre a parcela acima de 80 kWh, porque a ANEEL informa que, até 80 kWh, a fatura pode conter apenas cobranças não associadas à energia consumida; a regra específica da REN não foi lida."
+    "aplicacao_no_simulador": "Adicional × kWh consumido. Tarifa Social: aplicado só sobre a parcela acima de 80 kWh, porque a ANEEL informa que, até 80 kWh, a fatura pode conter apenas cobranças não associadas à energia consumida; a regra específica da REN não foi lida.",
+    "partes": [
+     {
+      "texto": "Adicional por kWh consumido conforme o patamar do mês; não se aplica a sistemas isolados",
+      "norma": "aneel_bandeiras",
+      "estado": "CONFERIDA",
+      "motivo": null
+     },
+     {
+      "texto": "Tarifa Social: bandeira só sobre a parcela acima de 80 kWh",
+      "norma": null,
+      "estado": "NAO_CONFERIDA",
+      "motivo": "leitura da página da ANEEL sobre a fatura até 80 kWh; a regra específica da REN não foi lida"
+     }
+    ],
+    "estado": "PARCIAL"
    },
    {
     "id": "exclusoes",
     "norma": "aneel_custo_energia",
     "texto": "Tributos (ICMS estadual, PIS/Pasep e Cofins federais) e Contribuição para Iluminação Pública municipal compõem a fatura mas não a tarifa homologada. Não há base oficial estruturada por distribuidora e mês com essas alíquotas efetivas; ficam fora de todos os números deste módulo.",
-    "aplicacao_no_simulador": "Não incluídos. O resultado é uma estimativa sem tributos e sem iluminação pública."
+    "aplicacao_no_simulador": "Não incluídos. O resultado é uma estimativa sem tributos e sem iluminação pública.",
+    "partes": [
+     {
+      "texto": "Tributos e iluminação pública compõem a fatura, não a tarifa homologada",
+      "norma": "aneel_custo_energia",
+      "estado": "CONFERIDA",
+      "motivo": null
+     }
+    ],
+    "estado": "CONFERIDA"
    }
   ],
   "normas": [
@@ -6668,9 +7572,9 @@
   ],
   "estado_regras": {
    "tarifa_social": "CONFERIDA",
-   "desconto_social": "CONFERIDA",
-   "custo_disponibilidade": "CONFERIDA",
-   "bandeira": "CONFERIDA",
+   "desconto_social": "PARCIAL",
+   "custo_disponibilidade": "PARCIAL",
+   "bandeira": "PARCIAL",
    "exclusoes": "CONFERIDA"
   },
   "bandeiras": [
@@ -10436,45 +11340,44 @@
   "rotulo": "Estimativa sem tributos (ICMS, PIS/Pasep e Cofins) e sem contribuição de iluminação pública.",
   "formula": "total = Σ faixas (kWh da faixa × (TE + TUSD) da faixa ÷ 1000) − descontos + kWh sujeitos à bandeira × adicional ÷ 1000",
   "proveniencia": {
-   "indicador": "Tarifa de aplicação B1 residencial convencional por distribuidora e custo por perfil",
-   "natureza": "CALCULADO",
+   "indicador": "Estimativa do valor da energia na fatura por classe, consumo, ligação e bandeira (simulador)",
+   "natureza": "ESTIMADO",
    "fonte": {
-    "orgao": "ANEEL",
-    "dataset": "Tarifas de aplicação das distribuidoras de energia elétrica",
-    "recurso": "tarifas-homologadas-distribuidoras-energia-eletrica.csv",
+    "orgao": "ANEEL e Câmara dos Deputados",
+    "dataset": "Tarifas de aplicação das distribuidoras; Bandeiras Tarifárias; Lei nº 15.235/2025 e páginas oficiais da ANEEL",
+    "recurso": "tarifas-homologadas-distribuidoras-energia-eletrica.csv; Bandeira Tarifária - Acionamento; Bandeira Tarifária - Adicional; lei_15235_2025; aneel_tarifa_social; aneel_geracao_distribuida; aneel_bandeiras; aneel_custo_energia",
     "url_dataset": "https://dadosabertos.aneel.gov.br/dataset/tarifas-distribuidoras-energia-eletrica",
     "url_primaria": "https://dadosabertos.aneel.gov.br/dataset/5a583f3e-1646-4f67-bf0f-69db4203e89e/resource/fcf2906c-7c32-4b9b-a637-054e7a5234f4/download/tarifas-homologadas-distribuidoras-energia-eletrica.csv",
-    "licenca": "Open Data Commons Open Database License (ODbL)"
+    "licenca": "Open Data Commons Open Database License (ODbL), conforme o portal de dados abertos da ANEEL (conjuntos da ANEEL); Creative Commons Atribuição-SemDerivações 3.0 (CC BY-ND 3.0), conforme o rodapé do portal gov.br; Texto de lei, não protegido por direito autoral (Lei nº 9.610/1998, art. 8º, IV); reproduzido do portal da Câmara dos Deputados"
    },
-   "unidade": "R$/MWh (tarifa) e R$/mês (perfil)",
-   "frequencia": "por vigência",
+   "unidade": "R$/mês",
+   "frequencia": "por cenário, com a vigência da data de referência",
    "periodo_referencia": {
     "inicio": "2026-09-30",
     "fim": "2026-09-30"
    },
    "publicado_pela_fonte_em": "2026-09-30T10:01:51Z",
-   "capturado_em": "2026-09-30T22:48:27Z",
-   "validado_em": "2026-09-30T23:07:03Z",
+   "capturado_em": "2026-09-30T23:48:15Z",
+   "validado_em": "2026-09-30T23:56:57Z",
    "cobertura_historica": {
     "inicio": "2010-02-03",
     "fim": "2026-09-30"
    },
    "transformacoes": [
-    "recorte: subgrupo B1, modalidade convencional, subclasse residencial, sem detalhe, sem posto, sem acessante nominal, unidade MWh",
-    "tarifa de aplicação separada da base econômica",
-    "vigência que cobre a data de referência (início e fim inclusivos)",
-    "total = TE + TUSD",
-    "custo do perfil = kWh × total ÷ 1000"
+    "tarifa de aplicação (TE + TUSD) da classe e faixa vigente na data de referência",
+    "faixas da Tarifa Social (80 kWh) e do Desconto Social (120 kWh) conforme as regras em simulador.regras_texto",
+    "custo de disponibilidade de 30, 50 ou 100 kWh conforme a ligação, onde a regra se aplica",
+    "adicional da bandeira por kWh sujeito à bandeira"
    ],
-   "formula": "custo_perfil(kWh) = kWh × (TE + TUSD) ÷ 1000, com TE e TUSD da tarifa de aplicação em R$/MWh",
+   "formula": "total = Σ faixas (kWh da faixa × (TE + TUSD) da faixa ÷ 1000) − descontos + kWh sujeitos à bandeira × adicional ÷ 1000",
    "snapshot": {
-    "id": "aneel_tarifas_aplicacao@2026-09-30T22:48:27Z",
-    "sha256": "8e5b18bfe3afbfa1d418e2f204b755c346efd6cad51a023a86c4045a809ddfb2"
+    "id": "aneel_tarifas_aplicacao@2026-09-30T22:48:27Z + aneel_bandeiras_tarifarias@2026-09-30T22:52:09Z + normas_conta@2026-09-30T23:48:15Z",
+    "sha256": "0ae4130727e2591a10a052cb783d1f4aba8e73e843d336e79ab7fa5556f3d4bf"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dafa93bb2111+alterado",
+   "versao_codigo": "3e7ff0a36fba+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:07:01Z",
+    "detectado_em": "2026-09-30T23:56:54Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -10483,14 +11386,13 @@
     "exemplos": []
    },
    "limitacoes": [
-    "Tarifa homologada de aplicação sem tributos (ICMS, PIS/Pasep, Cofins), sem contribuição de iluminação pública e sem bandeira: não é a conta final nem a tarifa média de fornecimento.",
-    "Perfis de 100, 200 e 300 kWh/mês são referências definidas pelo observatório para comparar distribuidoras; não são consumo médio de nenhuma área.",
-    "Distribuidoras contam uma vez cada; a mediana não é ponderada pelo número de consumidores.",
-    "34 distribuidoras com tarifa no conjunto não têm vigência cobrindo 30/09/2026 e não entram no ranking: 22 com vigência encerrada há até 90 dias e a tarifa seguinte ainda fora do arquivo gerado pela ANEEL em 30/09/2026, e 12 sem tarifa há mais de 90 dias (ver sem_vigente). Quando as ausentes são muitas, a mediana da data pode diferir da mediana do dia 1º do mês na evolução.",
-    "Quando a fonte publica vigências sobrepostas com valores diferentes, vale a regra publicada em regras.sobreposicao; os casos ficam em conflitos_fonte."
+    "Estimativa sem ICMS, PIS/Pasep, Cofins e contribuição de iluminação pública: não é a fatura.",
+    "Leituras aplicadas que a norma lida não cobre (declaradas, não conferidas): desconto_social: Aplicação por parcela: faixa 01 até 120 kWh e faixa 02 no excedente (a REN que regulamenta a aplicação não pôde ser lida (acervo da ANEEL bloqueado)); custo_disponibilidade: Tarifa Social acima de 80 kWh: mínimo não aplicado (a REN nº 1.000/2021 não pôde ser lida; a regra do mínimo para a Tarifa Social acima de 80 kWh não foi conferida); bandeira: Tarifa Social: bandeira só sobre a parcela acima de 80 kWh (leitura da página da ANEEL sobre a fatura até 80 kWh; a regra específica da REN não foi lida)",
+    "Tarifa da classe não publicada na vigência torna a simulação indisponível; não se usa tarifa de outra classe.",
+    "Bandeiras não se aplicam a consumidores de sistemas isolados."
    ],
    "download": "/energia/series/conta_tarifas_b1_vigentes.csv",
-   "notas_fonte": "Apresenta os valores das Tarifas de Energia - TE e das Tarifas de Uso do Sistema de Distribuição - TUSD, resultantes dos processos de reajustes tarifários das distribuidoras de energia elétrica."
+   "notas_fonte": null
   },
   "evidencia": {
    "indicador": "Estimativa sem tributos do valor da energia na fatura (simulador)",
@@ -10554,8 +11456,8 @@
    "tratamento_ausencia": "sem tarifa ou sem bandeira publicada, a simulação fica indisponível",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dafa93bb2111+alterado",
-    "publicacao": "2026-09-30T23:07:03Z"
+    "codigo": "3e7ff0a36fba+alterado",
+    "publicacao": "2026-09-30T23:56:57Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
    "testes": [
@@ -10587,7 +11489,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py conta --sem-coleta",
-   "citacao": "SCRUTINIUMS. Estimativa sem tributos do valor da energia na fatura (simulador): R$ 126,00, CERIPa (CNPJ 49606312000132), residencial B1, 150 kWh, ligação monofásica, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Tarifas de aplicação e Bandeiras Tarifárias (recurso tarifas-homologadas-distribuidoras-energia-eletrica.csv, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Estimativa sem tributos do valor da energia na fatura (simulador): R$ 126,00, CERIPa (CNPJ 49606312000132), residencial B1, 150 kWh, ligação monofásica, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Tarifas de aplicação e Bandeiras Tarifárias (recurso tarifas-homologadas-distribuidoras-energia-eletrica.csv, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "reajustes": {
@@ -10600,7 +11502,8 @@
     10.67,
     4.22,
     "2025-08",
-    "2026-08"
+    "2026-08",
+    null
    ],
    [
     "86531175000140",
@@ -10610,7 +11513,8 @@
     16.71,
     4.44,
     "2025-07",
-    "2026-07"
+    "2026-07",
+    null
    ],
    [
     "86301124000122",
@@ -10620,7 +11524,8 @@
     9.21,
     4.44,
     "2025-07",
-    "2026-07"
+    "2026-07",
+    null
    ],
    [
     "83855973000130",
@@ -10630,7 +11535,8 @@
     11.15,
     4.44,
     "2025-07",
-    "2026-07"
+    "2026-07",
+    null
    ],
    [
     "83647990000181",
@@ -10640,7 +11546,8 @@
     8.92,
     4.44,
     "2025-07",
-    "2026-07"
+    "2026-07",
+    null
    ],
    [
     "06272793000184",
@@ -10650,7 +11557,8 @@
     5.42,
     4.44,
     "2025-07",
-    "2026-07"
+    "2026-07",
+    null
    ],
    [
     "09095183000140",
@@ -10660,7 +11568,8 @@
     5.04,
     4.44,
     "2025-07",
-    "2026-07"
+    "2026-07",
+    null
    ],
    [
     "02328280000197",
@@ -10670,7 +11579,8 @@
     12.01,
     4.44,
     "2025-07",
-    "2026-07"
+    "2026-07",
+    null
    ],
    [
     "25086034000171",
@@ -10680,7 +11590,8 @@
     -1.32,
     0.07,
     "2026-06",
-    "2026-07"
+    "2026-07",
+    null
    ],
    [
     "05914650000166",
@@ -10690,7 +11601,8 @@
     -9.38,
     3.78,
     "2025-11",
-    "2026-07"
+    "2026-07",
+    null
    ],
    [
     "07047251000170",
@@ -10700,7 +11612,8 @@
     -6.4,
     1.49,
     "2026-03",
-    "2026-07"
+    "2026-07",
+    null
    ],
    [
     "04065033000170",
@@ -10710,7 +11623,8 @@
     -5.05,
     3.78,
     "2025-11",
-    "2026-07"
+    "2026-07",
+    null
    ],
    [
     "08336783000190",
@@ -10720,7 +11634,8 @@
     9.21,
     4.44,
     "2025-07",
-    "2026-07"
+    "2026-07",
+    null
    ],
    [
     "28152650000171",
@@ -10730,7 +11645,8 @@
     6.89,
     4.44,
     "2025-07",
-    "2026-07"
+    "2026-07",
+    null
    ],
    [
     "89435598000155",
@@ -10740,7 +11656,8 @@
     14.46,
     4.64,
     "2025-06",
-    "2026-06"
+    "2026-06",
+    null
    ],
    [
     "91950261000128",
@@ -10750,7 +11667,8 @@
     21.14,
     4.64,
     "2025-06",
-    "2026-06"
+    "2026-06",
+    null
    ],
    [
     "90660754000160",
@@ -10760,7 +11678,8 @@
     18.56,
     4.64,
     "2025-06",
-    "2026-06"
+    "2026-06",
+    null
    ],
    [
     "95824322000161",
@@ -10770,7 +11689,8 @@
     30.32,
     4.64,
     "2025-06",
-    "2026-06"
+    "2026-06",
+    null
    ],
    [
     "98042963000152",
@@ -10780,7 +11700,8 @@
     20.37,
     4.64,
     "2025-06",
-    "2026-06"
+    "2026-06",
+    null
    ],
    [
     "09257558000121",
@@ -10790,7 +11711,8 @@
     24.06,
     4.64,
     "2025-06",
-    "2026-06"
+    "2026-06",
+    null
    ],
    [
     "97839922000129",
@@ -10800,7 +11722,8 @@
     23.23,
     4.64,
     "2025-06",
-    "2026-06"
+    "2026-06",
+    null
    ],
    [
     "97081434000103",
@@ -10810,7 +11733,8 @@
     24.78,
     4.64,
     "2025-06",
-    "2026-06"
+    "2026-06",
+    null
    ],
    [
     "57384943000182",
@@ -10820,7 +11744,8 @@
     13.78,
     4.64,
     "2025-06",
-    "2026-06"
+    "2026-06",
+    null
    ],
    [
     "87656989000174",
@@ -10830,7 +11755,8 @@
     17.68,
     4.64,
     "2025-06",
-    "2026-06"
+    "2026-06",
+    null
    ],
    [
     "97505838000179",
@@ -10840,7 +11766,8 @@
     4.78,
     4.64,
     "2025-06",
-    "2026-06"
+    "2026-06",
+    null
    ],
    [
     "10532365000110",
@@ -10850,7 +11777,8 @@
     14.81,
     4.64,
     "2025-06",
-    "2026-06"
+    "2026-06",
+    null
    ],
    [
     "87776043000141",
@@ -10860,7 +11788,8 @@
     29.0,
     4.64,
     "2025-06",
-    "2026-06"
+    "2026-06",
+    null
    ],
    [
     "30460297000139",
@@ -10870,7 +11799,8 @@
     12.83,
     4.64,
     "2025-06",
-    "2026-06"
+    "2026-06",
+    null
    ],
    [
     "89889604000144",
@@ -10880,7 +11810,8 @@
     13.72,
     4.64,
     "2025-06",
-    "2026-06"
+    "2026-06",
+    null
    ],
    [
     "97578090000134",
@@ -10890,7 +11821,8 @@
     6.1,
     4.64,
     "2025-06",
-    "2026-06"
+    "2026-06",
+    null
    ],
    [
     "91982348000187",
@@ -10900,7 +11832,8 @@
     20.45,
     4.64,
     "2025-06",
-    "2026-06"
+    "2026-06",
+    null
    ],
    [
     "88446034000155",
@@ -10910,7 +11843,8 @@
     16.31,
     4.64,
     "2025-06",
-    "2026-06"
+    "2026-06",
+    null
    ],
    [
     "95289500000100",
@@ -10920,7 +11854,8 @@
     10.51,
     4.64,
     "2025-06",
-    "2026-06"
+    "2026-06",
+    null
    ],
    [
     "07282377000120",
@@ -10930,7 +11865,8 @@
     9.18,
     4.64,
     "2025-06",
-    "2026-06"
+    "2026-06",
+    null
    ],
    [
     "61695227000193",
@@ -10940,7 +11876,8 @@
     8.85,
     4.64,
     "2025-06",
-    "2026-06"
+    "2026-06",
+    null
    ],
    [
     "75805895000130",
@@ -10950,7 +11887,8 @@
     14.31,
     4.72,
     "2025-05",
-    "2026-05"
+    "2026-05",
+    null
    ],
    [
     "79850574000109",
@@ -10960,7 +11898,8 @@
     19.55,
     4.2,
     "2025-07",
-    "2026-05"
+    "2026-05",
+    null
    ],
    [
     "04368898000106",
@@ -10970,7 +11909,8 @@
     19.55,
     4.72,
     "2025-05",
-    "2026-05"
+    "2026-05",
+    null
    ],
    [
     "19527639000158",
@@ -10980,7 +11920,8 @@
     12.48,
     4.72,
     "2025-05",
-    "2026-05"
+    "2026-05",
+    null
    ],
    [
     "02016440000162",
@@ -10990,7 +11931,8 @@
     14.89,
     4.72,
     "2025-05",
-    "2026-05"
+    "2026-05",
+    null
    ],
    [
     "46598678000119",
@@ -11000,7 +11942,8 @@
     1.05,
     4.39,
     "2025-04",
-    "2026-04"
+    "2026-04",
+    null
    ],
    [
     "44560381000139",
@@ -11010,7 +11953,8 @@
     -6.48,
     4.39,
     "2025-04",
-    "2026-04"
+    "2026-04",
+    null
    ],
    [
     "13107842000199",
@@ -11020,7 +11964,8 @@
     -2.82,
     4.39,
     "2025-04",
-    "2026-04"
+    "2026-04",
+    null
    ],
    [
     "52777034000190",
@@ -11030,7 +11975,8 @@
     5.18,
     4.39,
     "2025-04",
-    "2026-04"
+    "2026-04",
+    null
    ],
    [
     "06981180000116",
@@ -11040,7 +11986,8 @@
     5.21,
     4.39,
     "2025-04",
-    "2026-04"
+    "2026-04",
+    null
    ],
    [
     "02341467000120",
@@ -11050,7 +11997,8 @@
     3.88,
     4.39,
     "2025-04",
-    "2026-04"
+    "2026-04",
+    null
    ],
    [
     "12272084000100",
@@ -11060,7 +12008,8 @@
     5.36,
     4.39,
     "2025-04",
-    "2026-04"
+    "2026-04",
+    null
    ],
    [
     "10835932000108",
@@ -11070,7 +12019,8 @@
     3.86,
     4.14,
     "2025-03",
-    "2026-03"
+    "2026-03",
+    null
    ],
    [
     "49606312000132",
@@ -11080,7 +12030,8 @@
     3.23,
     4.14,
     "2025-03",
-    "2026-03"
+    "2026-03",
+    null
    ],
    [
     "31465487000101",
@@ -11090,7 +12041,8 @@
     5.74,
     4.14,
     "2025-03",
-    "2026-03"
+    "2026-03",
+    null
    ],
    [
     "27707397000102",
@@ -11100,7 +12052,8 @@
     8.5,
     4.14,
     "2025-03",
-    "2026-03"
+    "2026-03",
+    null
    ],
    [
     "28610236000169",
@@ -11110,7 +12063,8 @@
     -0.62,
     4.14,
     "2025-03",
-    "2026-03"
+    "2026-03",
+    null
    ],
    [
     "13017462000163",
@@ -11120,7 +12074,8 @@
     5.91,
     4.14,
     "2025-03",
-    "2026-03"
+    "2026-03",
+    null
    ],
    [
     "15413826000150",
@@ -11130,7 +12085,8 @@
     12.36,
     4.14,
     "2025-03",
-    "2026-03"
+    "2026-03",
+    null
    ],
    [
     "53859112000169",
@@ -11140,7 +12096,8 @@
     17.99,
     3.7,
     "2025-04",
-    "2026-03"
+    "2026-03",
+    null
    ],
    [
     "08324196000181",
@@ -11150,7 +12107,8 @@
     4.24,
     4.14,
     "2025-03",
-    "2026-03"
+    "2026-03",
+    null
    ],
    [
     "15139629000194",
@@ -11160,7 +12118,8 @@
     4.78,
     4.14,
     "2025-03",
-    "2026-03"
+    "2026-03",
+    null
    ],
    [
     "05965546000109",
@@ -11170,7 +12129,8 @@
     2.08,
     6.82,
     "2024-11",
-    "2026-03"
+    "2026-03",
+    null
    ],
    [
     "03467321000199",
@@ -11180,7 +12140,8 @@
     5.55,
     4.14,
     "2025-03",
-    "2026-03"
+    "2026-03",
+    null
    ],
    [
     "33050196000188",
@@ -11190,7 +12151,8 @@
     9.46,
     4.14,
     "2025-03",
-    "2026-03"
+    "2026-03",
+    null
    ],
    [
     "60444437000146",
@@ -11200,7 +12162,8 @@
     6.92,
     2.53,
     "2025-05",
-    "2026-02"
+    "2026-02",
+    null
    ],
    [
     "33050071000158",
@@ -11210,7 +12173,8 @@
     14.67,
     3.81,
     "2025-02",
-    "2026-02"
+    "2026-02",
+    null
    ],
    [
     "02341470000144",
@@ -11220,7 +12184,8 @@
     23.23,
     4.26,
     "2024-12",
-    "2025-12"
+    "2025-12",
+    null
    ],
    [
     "87462750000163",
@@ -11230,7 +12195,8 @@
     -1.59,
     4.46,
     "2024-11",
-    "2025-11"
+    "2025-11",
+    null
    ],
    [
     "88022918000182",
@@ -11240,7 +12206,8 @@
     32.69,
     4.46,
     "2024-11",
-    "2025-11"
+    "2025-11",
+    null
    ],
    [
     "78274610000170",
@@ -11250,7 +12217,8 @@
     24.24,
     4.46,
     "2024-11",
-    "2025-11"
+    "2025-11",
+    null
    ],
    [
     "06840748000189",
@@ -11260,7 +12228,8 @@
     14.2,
     4.46,
     "2024-11",
-    "2025-11"
+    "2025-11",
+    null
    ],
    [
     "49313653000110",
@@ -11270,7 +12239,8 @@
     16.63,
     4.68,
     "2024-10",
-    "2025-10"
+    "2025-10",
+    null
    ],
    [
     "52548732000114",
@@ -11280,7 +12250,8 @@
     15.61,
     4.68,
     "2024-10",
-    "2025-10"
+    "2025-10",
+    null
    ],
    [
     "50235449000107",
@@ -11290,7 +12261,8 @@
     15.63,
     4.68,
     "2024-10",
-    "2025-10"
+    "2025-10",
+    null
    ],
    [
     "75826404000138",
@@ -11300,7 +12272,8 @@
     34.49,
     4.68,
     "2024-10",
-    "2025-10"
+    "2025-10",
+    null
    ],
    [
     "60196987000193",
@@ -11310,7 +12283,8 @@
     11.39,
     4.68,
     "2024-10",
-    "2025-10"
+    "2025-10",
+    null
    ],
    [
     "01377555000110",
@@ -11320,7 +12294,8 @@
     20.99,
     4.68,
     "2024-10",
-    "2025-10"
+    "2025-10",
+    null
    ],
    [
     "08467115000100",
@@ -11330,7 +12305,8 @@
     21.95,
     4.68,
     "2024-10",
-    "2025-10"
+    "2025-10",
+    null
    ],
    [
     "23664303000104",
@@ -11340,7 +12316,8 @@
     6.86,
     4.68,
     "2024-10",
-    "2025-10"
+    "2025-10",
+    null
    ],
    [
     "02302100000106",
@@ -11350,7 +12327,8 @@
     16.05,
     5.17,
     "2024-09",
-    "2025-09"
+    "2025-09",
+    null
    ],
    [
     "04172213000151",
@@ -11360,7 +12338,8 @@
     5.86,
     5.17,
     "2024-09",
-    "2025-09"
+    "2025-09",
+    null
    ],
    [
     "07522669000192",
@@ -11370,7 +12349,8 @@
     11.21,
     5.17,
     "2024-09",
-    "2025-09"
+    "2025-09",
+    null
    ],
    [
     "01543032000104",
@@ -11380,7 +12360,8 @@
     19.56,
     5.17,
     "2024-09",
-    "2025-09"
+    "2025-09",
+    null
    ],
    [
     "04895728000180",
@@ -11390,7 +12371,8 @@
     4.25,
     5.23,
     "2024-07",
-    "2025-07"
+    "2025-07",
+    null
    ],
    [
     "13255658000196",
@@ -11400,7 +12382,8 @@
     2.02,
     5.53,
     "2024-04",
-    "2025-04"
+    "2025-04",
+    null
    ]
   ],
   "historico_url": "/energia/series/conta_historico_b1.json",
@@ -11419,6 +12402,7 @@
      ],
      "n": 102,
      "excluidas_sem_tarifa_nas_duas_datas": 1,
+     "excluidas_mudanca_perimetro": [],
      "mediana_pct": 11.18,
      "p25_pct": 5.45,
      "p75_pct": 16.55,
@@ -12048,13 +13032,29 @@
       "2021-08",
       "2026-08"
      ],
-     "n": 102,
+     "n": 100,
      "excluidas_sem_tarifa_nas_duas_datas": 3,
+     "excluidas_mudanca_perimetro": [
+      {
+       "cnpj": "09095183000140",
+       "sigla": "EPB",
+       "ato": "REA nº 12.687/2022",
+       "data": "2023-08-28",
+       "variacao_pct_nao_comparavel": 18.89
+      },
+      {
+       "cnpj": "19527639000158",
+       "sigla": "EMR",
+       "ato": "REA nº 12.687/2022 (provável)",
+       "data": "2023-06-22",
+       "variacao_pct_nao_comparavel": 37.38
+      }
+     ],
      "mediana_pct": 36.17,
-     "p25_pct": 23.81,
-     "p75_pct": 46.55,
-     "acima_ipca": 63,
-     "abaixo_ou_igual_ipca": 39,
+     "p25_pct": 24.03,
+     "p75_pct": 46.68,
+     "acima_ipca": 62,
+     "abaixo_ou_igual_ipca": 38,
      "distribuidoras": [
       [
        "86301124000122",
@@ -12139,12 +13139,6 @@
        "CERGAL",
        18.25,
        -8.97
-      ],
-      [
-       "09095183000140",
-       "EPB",
-       18.89,
-       -8.48
       ],
       [
        "78274610000170",
@@ -12384,12 +13378,6 @@
        "02341470000144",
        "ÂMBAR ENERGIA RR",
        37.37,
-       5.75
-      ],
-      [
-       "19527639000158",
-       "EMR",
-       37.38,
        5.75
       ],
       [
@@ -12679,12 +13667,49 @@
       "2016-08",
       "2026-08"
      ],
-     "n": 88,
+     "n": 83,
      "excluidas_sem_tarifa_nas_duas_datas": 27,
-     "mediana_pct": 81.78,
-     "p25_pct": 63.63,
-     "p75_pct": 98.66,
-     "acima_ipca": 69,
+     "excluidas_mudanca_perimetro": [
+      {
+       "cnpj": "02016440000162",
+       "sigla": "RGE",
+       "ato": "REA nº 7.499/2018",
+       "data": "2019-06-19",
+       "variacao_pct_nao_comparavel": 97.28
+      },
+      {
+       "cnpj": "07282377000120",
+       "sigla": "ESS",
+       "ato": "REA nº 6.318/2017",
+       "data": "2017-07-12",
+       "variacao_pct_nao_comparavel": 86.47
+      },
+      {
+       "cnpj": "09095183000140",
+       "sigla": "EPB",
+       "ato": "REA nº 12.687/2022",
+       "data": "2023-08-28",
+       "variacao_pct_nao_comparavel": 61.2
+      },
+      {
+       "cnpj": "19527639000158",
+       "sigla": "EMR",
+       "ato": "REA nº 12.687/2022 (provável)",
+       "data": "2023-06-22",
+       "variacao_pct_nao_comparavel": 81.33
+      },
+      {
+       "cnpj": "53859112000169",
+       "sigla": "CPFL Santa Cruz",
+       "ato": "REA nº 6.723/2017",
+       "data": "2018-03-22",
+       "variacao_pct_nao_comparavel": 84.24
+      }
+     ],
+     "mediana_pct": 81.15,
+     "p25_pct": 63.31,
+     "p75_pct": 99.47,
+     "acima_ipca": 64,
      "abaixo_ou_igual_ipca": 19,
      "distribuidoras": [
       [
@@ -12800,12 +13825,6 @@
        "ELFSM",
        59.81,
        -0.83
-      ],
-      [
-       "09095183000140",
-       "EPB",
-       61.2,
-       0.03
       ],
       [
        "60444437000146",
@@ -12946,34 +13965,16 @@
        12.41
       ],
       [
-       "19527639000158",
-       "EMR",
-       81.33,
-       12.52
-      ],
-      [
        "04368898000106",
        "COPEL-DIS",
        82.22,
        13.08
       ],
       [
-       "53859112000169",
-       "CPFL Santa Cruz",
-       84.24,
-       14.33
-      ],
-      [
        "28152650000171",
        "EDP ES",
        85.48,
        15.1
-      ],
-      [
-       "07282377000120",
-       "ESS",
-       86.47,
-       15.72
       ],
       [
        "86439510000185",
@@ -13058,12 +14059,6 @@
        "Âmbar Amazonas",
        96.65,
        22.03
-      ],
-      [
-       "02016440000162",
-       "RGE",
-       97.28,
-       22.42
       ],
       [
        "15413826000150",
@@ -13246,7 +14241,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T10:01:51Z",
    "capturado_em": "2026-09-30T22:48:27Z",
-   "validado_em": "2026-09-30T23:07:03Z",
+   "validado_em": "2026-09-30T23:56:57Z",
    "cobertura_historica": {
     "inicio": "2010-02-03",
     "fim": "2026-09-30"
@@ -13263,9 +14258,9 @@
     "sha256": "8e5b18bfe3afbfa1d418e2f204b755c346efd6cad51a023a86c4045a809ddfb2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dafa93bb2111+alterado",
+   "versao_codigo": "3e7ff0a36fba+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:07:01Z",
+    "detectado_em": "2026-09-30T23:56:54Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -13300,7 +14295,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T22:53:10Z",
-   "validado_em": "2026-09-30T23:07:03Z",
+   "validado_em": "2026-09-30T23:56:57Z",
    "cobertura_historica": {
     "inicio": "1979-12",
     "fim": "2026-08"
@@ -13312,9 +14307,9 @@
     "sha256": "270ede1eb413ab58d8dfbc1b5777f8447176ae7ab7cb49b47c66cb524e7e0fbe"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dafa93bb2111+alterado",
+   "versao_codigo": "3e7ff0a36fba+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:07:01Z",
+    "detectado_em": "2026-09-30T23:56:54Z",
     "total": 0,
     "vintages_comparadas": 1,
     "arquivos": 1,
@@ -13433,14 +14428,15 @@
    "denominador": null,
    "pesos": null,
    "exclusoes": [
-    "1 distribuidora com tarifa em só uma das datas"
+    "1 distribuidora com tarifa em só uma das datas",
+    "0 com mudança de perímetro (incorporação) dentro da janela"
    ],
    "cobertura": "102 distribuidoras",
    "tratamento_ausencia": "sem tarifa em uma das datas, a distribuidora fica fora; mês sem índice publicado não é interpolado",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dafa93bb2111+alterado",
-    "publicacao": "2026-09-30T23:07:03Z"
+    "codigo": "3e7ff0a36fba+alterado",
+    "publicacao": "2026-09-30T23:56:57Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
    "testes": [
@@ -13471,7 +14467,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py conta --sem-coleta",
-   "citacao": "SCRUTINIUMS. Variação mediana da tarifa B1 residencial em 12 meses: 11,18%, distribuidoras com tarifa B1 nas duas datas, 31/08/2025 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL e IBGE, Tarifas de aplicação; IPCA (SIDRA 1737) (recurso tarifas-homologadas-distribuidoras-energia-eletrica.csv, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Variação mediana da tarifa B1 residencial em 12 meses: 11,18%, distribuidoras com tarifa B1 nas duas datas, 31/08/2025 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL e IBGE, Tarifas de aplicação; IPCA (SIDRA 1737) (recurso tarifas-homologadas-distribuidoras-energia-eletrica.csv, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "efeito_medio": {
    "disponivel": false,
@@ -14454,7 +15450,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-28T08:00:56Z",
    "capturado_em": "2026-09-30T22:52:09Z",
-   "validado_em": "2026-09-30T23:07:03Z",
+   "validado_em": "2026-09-30T23:56:57Z",
    "cobertura_historica": {
     "inicio": "2015-01",
     "fim": "2026-09"
@@ -14466,9 +15462,9 @@
     "sha256": "3f1c3a5632ed6a5e47bd3996a573a16f15acd832cc8a5d35f00de500ef7c780c"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dafa93bb2111+alterado",
+   "versao_codigo": "3e7ff0a36fba+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:07:01Z",
+    "detectado_em": "2026-09-30T23:56:54Z",
     "total": 0,
     "vintages_comparadas": 4,
     "arquivos": 4,
@@ -14523,8 +15519,8 @@
    "tratamento_ausencia": "mês não publicado não é preenchido nem repetido",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dafa93bb2111+alterado",
-    "publicacao": "2026-09-30T23:07:03Z"
+    "codigo": "3e7ff0a36fba+alterado",
+    "publicacao": "2026-09-30T23:56:57Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
    "testes": [
@@ -14551,7 +15547,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py conta --sem-coleta",
-   "citacao": "SCRUTINIUMS. Bandeira tarifária acionada: Amarela: R$ 0,01885/kWh, consumidores cativos do SIN, 09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Bandeiras Tarifárias (recurso Bandeira Tarifária - Acionamento, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Bandeira tarifária acionada: Amarela: R$ 0,01885/kWh, consumidores cativos do SIN, 09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Bandeiras Tarifárias (recurso Bandeira Tarifária - Acionamento, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "subsidios": {
@@ -15505,7 +16501,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-11T11:44:10Z",
    "capturado_em": "2026-09-30T22:52:53Z",
-   "validado_em": "2026-09-30T23:07:03Z",
+   "validado_em": "2026-09-30T23:56:57Z",
    "cobertura_historica": {
     "inicio": "2013",
     "fim": "2026-09"
@@ -15521,9 +16517,9 @@
     "sha256": "e2f879e8f6b59c3edb6a207c3c0d3551b498f592ac1befb891fe3e14c9888c31"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dafa93bb2111+alterado",
+   "versao_codigo": "3e7ff0a36fba+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:07:01Z",
+    "detectado_em": "2026-09-30T23:56:54Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -15580,8 +16576,8 @@
    "tratamento_ausencia": "célula vazia não entra na soma e não vira zero",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dafa93bb2111+alterado",
-    "publicacao": "2026-09-30T23:07:03Z"
+    "codigo": "3e7ff0a36fba+alterado",
+    "publicacao": "2026-09-30T23:56:57Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
    "testes": [
@@ -15599,13 +16595,14 @@
      "nome": "série inteira: Total = previsão + ajuste por categoria (R$ 0,05), conferido na ingestão",
      "resultado": "ressalva",
      "detalhe": "376 de 102540 divergem"
+    },
+    {
+     "nome": "controle interno: soma das categorias contra a soma da linha Total publicada no mesmo ano (R$ 1 ou uma parte por milhão)",
+     "resultado": "aprovado",
+     "detalhe": "categorias 18.818.338.552 x linha Total 18.818.338.552"
     }
    ],
-   "reconciliacao": {
-    "descricao": "soma das categorias contra a soma da linha Total publicada no mesmo ano",
-    "resultado": "aprovado",
-    "tolerancia": "R$ 1 ou uma parte por milhão"
-   },
+   "reconciliacao": null,
    "download": [
     {
      "rotulo": "Subsídios por ano, distribuidora e categoria (CSV)",
@@ -15613,7 +16610,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py conta --sem-coleta",
-   "citacao": "SCRUTINIUMS. Repasses da CDE para subsídios tarifários no ano: R$ 18,8 bilhões, distribuidoras credoras de repasse, 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Subsídios Tarifários (recurso Subsídios Tarifários, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Repasses da CDE para subsídios tarifários no ano: R$ 18,8 bilhões, distribuidoras credoras de repasse, 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Subsídios Tarifários (recurso Subsídios Tarifários, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "financiamento_cde": {
@@ -15639,13 +16636,13 @@
     "id": "tarifa_social",
     "tipo": "Despesa",
     "rotulo": "Tarifa Social (baixa renda)",
-    "definicao": "Rubrica 'Subsídio Baixa Renda': custeio dos descontos da Tarifa Social de Energia Elétrica, que chegam às famílias beneficiárias como desconto na fatura (dicionário do conjunto)."
+    "definicao": "Rubrica 'Subsídio Baixa Renda': valor do orçamento aprovado da CDE para os descontos da Tarifa Social de Energia Elétrica, que chegam às famílias beneficiárias como desconto na fatura (dicionário do conjunto)."
    },
    {
     "id": "descontos_tarifarios",
     "tipo": "Despesa",
     "rotulo": "Descontos tarifários a categorias de usuários",
-    "definicao": "Demais rubricas 'Subsídio ...': compensam distribuidoras e transmissoras por descontos concedidos a categorias (rural, irrigação e aquicultura, água e esgoto, fontes incentivadas, distribuidoras pequenas, micro e minigeração distribuída). Não são transferências a famílias."
+    "definicao": "Demais rubricas 'Subsídio ...' do orçamento aprovado: compensam distribuidoras e transmissoras por descontos concedidos a categorias (rural, irrigação e aquicultura, água e esgoto, fontes incentivadas, distribuidoras pequenas, micro e minigeração distribuída). Não são transferências a famílias."
    },
    {
     "id": "ccc_luz_para_todos",
@@ -15663,7 +16660,7 @@
     "id": "quotas_tarifa",
     "tipo": "Receita",
     "rotulo": "Quotas da CDE",
-    "definicao": "Rubricas 'Quotas CDE Uso', 'Quotas CDE Energia' e 'Quotas CDE - GD': encargo cobrado nas tarifas (as componentes com CDE no código aparecem dentro da TUSD e da TE no conjunto de componentes tarifárias)."
+    "definicao": "Rubricas 'Quotas CDE Uso', 'Quotas CDE Energia' e 'Quotas CDE - GD' do orçamento aprovado: encargo cobrado nas tarifas, fixado para cobrir o que as demais receitas não cobrem (as componentes com CDE no código aparecem dentro da TUSD e da TE no conjunto de componentes tarifárias)."
    },
    {
     "id": "outras_receitas",
@@ -16562,11 +17559,52 @@
     ]
    }
   ],
-  "nota": "Valores anuais de custeio da CDE por rubrica, como publicados pela ANEEL. O ano corrente já tem valores antes de terminar, o que indica valores orçados; o dicionário não diz se os anos anteriores são orçamento ou execução. A Tarifa Social (baixa renda) é custeada aqui e não aparece no conjunto de subsídios tarifários, que trata só dos descontos a categorias de usuários.",
+  "natureza_valores": "orçamento anual aprovado ou previsto pela ANEEL (não é execução)",
+  "nota": "Orçamento anual da CDE por rubrica, como publicado pela ANEEL: valores aprovados ou previstos, não o que foi efetivamente gasto. A despesa é igual à receita em todos os anos porque a quota anual é fixada para cobrir a diferença entre a necessidade de recursos da conta e as demais fontes (página Gestão de Recursos Tarifários da ANEEL), e os totais conferem com os orçamentos divulgados pela ANEEL (reconciliacao_externa). A Tarifa Social (baixa renda) é custeada aqui e não aparece no conjunto de subsídios tarifários, que trata só dos descontos a categorias de usuários.",
+  "reconciliacao_externa": [
+   {
+    "ano": "2026",
+    "situacao": "previsto (consulta pública)",
+    "titulo": "Orçamento da CDE 2026, previsto em R$ 52,7 bilhões, entra em consulta pública",
+    "url": "https://www.gov.br/aneel/pt-br/assuntos/noticias/2025/orcamento-da-cde-2026-previsto-em-r-52-7-bilhoes-entra-em-consulta-publica",
+    "publicado_rs": 52700000000.0,
+    "arquivo_despesa_rs": 52660050882.84,
+    "diferenca_rs": -39949117.16,
+    "tolerancia_rs": 50000000.0,
+    "confere": true,
+    "acesso": "títulos das notícias oficiais da ANEEL lidos no índice de busca em 30/09/2026; o corpo das páginas exige autenticação no gov.br (conteúdo restrito durante o defeso eleitoral) e não foi guardado no bronze"
+   },
+   {
+    "ano": "2025",
+    "situacao": "aprovado",
+    "titulo": "Orçamento da CDE 2025, de R$ 49,2 bilhões, é aprovado pela ANEEL",
+    "url": "https://www.gov.br/aneel/pt-br/assuntos/noticias/2025/orcamento-da-cde-2025-de-r-49-2-bilhoes-e-aprovado-pela-aneel",
+    "publicado_rs": 49200000000.0,
+    "arquivo_despesa_rs": 49227181970.31,
+    "diferenca_rs": 27181970.31,
+    "tolerancia_rs": 50000000.0,
+    "confere": true,
+    "acesso": "títulos das notícias oficiais da ANEEL lidos no índice de busca em 30/09/2026; o corpo das páginas exige autenticação no gov.br (conteúdo restrito durante o defeso eleitoral) e não foi guardado no bronze"
+   },
+   {
+    "ano": "2023",
+    "situacao": "aprovado",
+    "titulo": "ANEEL aprova orçamento de R$ 34,99 bilhões para a Conta de Desenvolvimento Energético",
+    "url": "https://www.gov.br/aneel/pt-br/assuntos/noticias/2023/aneel-aprova-orcamento-de-r-34-99-bilhoes-para-a-conta-de-desenvolvimento-energetico",
+    "publicado_rs": 34990000000.0,
+    "arquivo_despesa_rs": 34985700578.16,
+    "diferenca_rs": -4299421.84,
+    "tolerancia_rs": 5000000.0,
+    "confere": true,
+    "acesso": "títulos das notícias oficiais da ANEEL lidos no índice de busca em 30/09/2026; o corpo das páginas exige autenticação no gov.br (conteúdo restrito durante o defeso eleitoral) e não foi guardado no bronze"
+   }
+  ],
+  "documento": "aneel_gestao_recursos_tarifarios",
   "comparacao_com_subsidios": "As rubricas de desconto do custeio da CDE e as categorias do conjunto de subsídios tarifários não coincidem em valor: um traz o valor anual da conta por rubrica, o outro os repasses mensais homologados por distribuidora. Os dois não se somam.",
+  "documento_estado": "CONFERIDA",
   "proveniencia": {
-   "indicador": "Custeio anual da CDE por rubrica de despesa e de receita",
-   "natureza": "OBSERVADO",
+   "indicador": "Orçamento anual da CDE por rubrica de despesa e de receita (aprovado ou previsto pela ANEEL)",
+   "natureza": "PREVISTO",
    "fonte": {
     "orgao": "ANEEL",
     "dataset": "Conta Desenvolvimento Energético (CDE) - Custeio dos Benefícios Tarifários",
@@ -16583,7 +17621,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-01T05:02:45Z",
    "capturado_em": "2026-09-30T22:53:08Z",
-   "validado_em": "2026-09-30T23:07:03Z",
+   "validado_em": "2026-09-30T23:56:57Z",
    "cobertura_historica": {
     "inicio": "2013",
     "fim": "2026"
@@ -16593,15 +17631,15 @@
     "grupo de leitura atribuído pelo nome da rubrica (classificação do observatório)",
     "participação das quotas = quotas ÷ receita total do ano; da Tarifa Social = rubrica ÷ despesa total"
    ],
-   "formula": null,
+   "formula": "quotas_pct = Σ 'Quotas CDE ...' ÷ Σ receitas × 100; tarifa_social_pct = 'Subsídio Baixa Renda' ÷ Σ despesas × 100",
    "snapshot": {
     "id": "aneel_cde_custeio@2026-09-30T22:53:08Z",
     "sha256": "540e4c7bcf29348da1f4d206d62b7f07c0c4dbaab9d5fcb66f9282c9658bcc84"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "dafa93bb2111+alterado",
+   "versao_codigo": "3e7ff0a36fba+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T23:07:03Z",
+    "detectado_em": "2026-09-30T23:56:57Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -16610,7 +17648,8 @@
     "exemplos": []
    },
    "limitacoes": [
-    "Valores anuais de custeio da CDE por rubrica, como publicados pela ANEEL. O ano corrente já tem valores antes de terminar, o que indica valores orçados; o dicionário não diz se os anos anteriores são orçamento ou execução. A Tarifa Social (baixa renda) é custeada aqui e não aparece no conjunto de subsídios tarifários, que trata só dos descontos a categorias de usuários.",
+    "Orçamento anual da CDE por rubrica, como publicado pela ANEEL: valores aprovados ou previstos, não o que foi efetivamente gasto. A despesa é igual à receita em todos os anos porque a quota anual é fixada para cobrir a diferença entre a necessidade de recursos da conta e as demais fontes (página Gestão de Recursos Tarifários da ANEEL), e os totais conferem com os orçamentos divulgados pela ANEEL (reconciliacao_externa). A Tarifa Social (baixa renda) é custeada aqui e não aparece no conjunto de subsídios tarifários, que trata só dos descontos a categorias de usuários.",
+    "Valores de orçamento: o que a CDE efetivamente arrecadou e gastou no ano não está neste conjunto.",
     "O dicionário do conjunto (versão 2.0) descreve o valor como custeio da Tarifa Social, mas o arquivo traz todas as rubricas da CDE; a leitura segue o conteúdo do arquivo.",
     "Rubrica publicada sem valor fica sem valor (não é zero) e é listada no ano.",
     "Valores nominais: comparar anos distantes exige correção monetária."
@@ -16668,26 +17707,26 @@
    "tratamento_ausencia": "rubrica sem valor publicado não entra e não vira zero",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "dafa93bb2111+alterado",
-    "publicacao": "2026-09-30T23:07:03Z"
+    "codigo": "3e7ff0a36fba+alterado",
+    "publicacao": "2026-09-30T23:56:57Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
    "testes": [
     {
-     "nome": "despesa = receita em todos os anos (R$ 1)",
+     "nome": "controle interno: despesa = receita em todos os anos (R$ 1)",
      "resultado": "aprovado",
-     "detalhe": "14 de 14 anos"
+     "detalhe": "14 de 14 anos; identidade do orçamento (a quota fecha a diferença), não conferência externa"
     },
     {
-     "nome": "rubrica repetida no mesmo ano com valor diferente",
+     "nome": "controle interno: rubrica repetida no mesmo ano com valor diferente",
      "resultado": "aprovado",
      "detalhe": "0 casos"
     }
    ],
    "reconciliacao": {
-    "descricao": "soma das despesas contra a soma das receitas publicadas no mesmo ano",
-    "resultado": "aprovado",
-    "tolerancia": "R$ 1"
+    "descricao": "despesa total do ano no arquivo contra o orçamento da CDE divulgado pela ANEEL: 2026, previsto (consulta pública): publicado R$ 52,70 bilhões, arquivo R$ 52,660 bilhões, confere; 2025, aprovado: publicado R$ 49,20 bilhões, arquivo R$ 49,227 bilhões, confere; 2023, aprovado: publicado R$ 34,99 bilhões, arquivo R$ 34,986 bilhões, confere. Acesso: títulos das notícias oficiais da ANEEL lidos no índice de busca em 30/09/2026; o corpo das páginas exige autenticação no gov.br (conteúdo restrito durante o defeso eleitoral) e não foi guardado no bronze",
+    "resultado": "ressalva",
+    "tolerancia": "meia unidade da última casa publicada no título (R$ 0,05 bilhão para uma casa, R$ 0,005 bilhão para duas)"
    },
    "download": [
     {
@@ -16696,9 +17735,229 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py conta --sem-coleta",
-   "citacao": "SCRUTINIUMS. Participação das quotas pagas nas tarifas no custeio da CDE: 96,4%, Conta de Desenvolvimento Energético (CDE), 2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, CDE: custeio dos benefícios tarifários (recurso cde-custeio-beneficios-tarifarios.csv, capturado em 30/09/2026). Versão energia-0.1.0, código dafa93bb2111+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Participação das quotas pagas nas tarifas no custeio da CDE: 96,4%, Conta de Desenvolvimento Energético (CDE), 2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, CDE: custeio dos benefícios tarifários (recurso cde-custeio-beneficios-tarifarios.csv, capturado em 30/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
+ "incorporacoes": [
+  {
+   "id": "ess_2017",
+   "incorporadora": "07282377000120",
+   "incorporadas": [
+    "07297359000111",
+    "60942281000123",
+    "61416244000144",
+    "77882504000107"
+   ],
+   "ato": "REA nº 6.318/2017",
+   "data_ato": "2017-04-25",
+   "tarifa_unificada_desde": "2017-07-12",
+   "descricao": "Agrupamento das concessões da Caiuá (hoje Energisa Sul-Sudeste), Bragantina, Nacional, Vale Paranapanema e Força e Luz do Oeste, por incorporação pela Caiuá.",
+   "identificacao": "número e data do ato lidos em resumo de buscador sobre o agrupamento (o documento primário não pôde ser lido)",
+   "sigla_incorporadora": "ESS",
+   "siglas_incorporadas": [
+    "EDEVP",
+    "EEB",
+    "CNEE",
+    "CFLO"
+   ],
+   "confirmada_nos_dados": true,
+   "situacao": "confirmada",
+   "fim_das_incorporadas": {
+    "07297359000111": "2017-07-11",
+    "60942281000123": "2017-07-11",
+    "61416244000144": "2017-07-11",
+    "77882504000107": "2017-07-11"
+   },
+   "incorporadora_com_tarifa_nova_na_data": true
+  },
+  {
+   "id": "cpfl_santa_cruz_2018",
+   "incorporadora": "53859112000169",
+   "incorporadas": [
+    "52503802000118",
+    "60855608000120",
+    "61015582000174",
+    "61116265000144"
+   ],
+   "ato": "REA nº 6.723/2017",
+   "data_ato": "2017-11-21",
+   "tarifa_unificada_desde": "2018-03-22",
+   "descricao": "Agrupamento das concessões da CPFL Jaguari, Mococa, Leste Paulista, Sul Paulista e Santa Cruz, por incorporação pela CPFL Jaguari, que passou a usar o nome CPFL Santa Cruz.",
+   "identificacao": "arquivo rea20176723ti.pdf do acervo da ANEEL (listado por buscador, acesso bloqueado) e demonstrações da Companhia Jaguari de Energia no site de relações com investidores da CPFL",
+   "sigla_incorporadora": "CPFL Santa Cruz",
+   "siglas_incorporadas": [
+    "CPFL MOCOCA",
+    "CPFL SUL PAULIST",
+    "CPFL LESTE PAULI",
+    "CPFL SANTA CRUZ"
+   ],
+   "confirmada_nos_dados": true,
+   "situacao": "confirmada",
+   "fim_das_incorporadas": {
+    "52503802000118": "2018-03-21",
+    "60855608000120": "2018-03-21",
+    "61015582000174": "2018-03-21",
+    "61116265000144": "2018-03-21"
+   },
+   "incorporadora_com_tarifa_nova_na_data": true
+  },
+  {
+   "id": "rge_2019",
+   "incorporadora": "02016440000162",
+   "incorporadas": [
+    "02016439000138"
+   ],
+   "ato": "REA nº 7.499/2018",
+   "data_ato": "2018-12-04",
+   "tarifa_unificada_desde": "2019-06-19",
+   "descricao": "Agrupamento das concessões da RGE Sul e da Rio Grande Energia (RGE), por incorporação pela RGE Sul, que passou a usar o nome RGE.",
+   "identificacao": "fato relevante da RGE Sul Distribuidora de Energia S.A. (CNPJ 02.016.440/0001-62) de 31/12/2018, que cita a REA nº 7.499 de 04/12/2018",
+   "sigla_incorporadora": "RGE",
+   "siglas_incorporadas": [
+    "RGE"
+   ],
+   "confirmada_nos_dados": true,
+   "situacao": "confirmada",
+   "fim_das_incorporadas": {
+    "02016439000138": "2019-06-18"
+   },
+   "incorporadora_com_tarifa_nova_na_data": true
+  },
+  {
+   "id": "emr_2023",
+   "incorporadora": "19527639000158",
+   "incorporadas": [
+    "33249046000106"
+   ],
+   "ato": "REA nº 12.687/2022 (provável)",
+   "data_ato": "2022-09-13",
+   "tarifa_unificada_desde": "2023-06-22",
+   "descricao": "Agrupamento das concessões da Energisa Minas Gerais e da Energisa Nova Friburgo na Energisa Minas Rio.",
+   "identificacao": "a autorização de 2022 foi noticiada junto com a da Paraíba (CanalEnergia); o número do ato não foi conferido para Minas Gerais e Nova Friburgo",
+   "sigla_incorporadora": "EMR",
+   "siglas_incorporadas": [
+    "ENF"
+   ],
+   "confirmada_nos_dados": true,
+   "situacao": "confirmada",
+   "fim_das_incorporadas": {
+    "33249046000106": "2023-06-21"
+   },
+   "incorporadora_com_tarifa_nova_na_data": true
+  },
+  {
+   "id": "epb_2023",
+   "incorporadora": "09095183000140",
+   "incorporadas": [
+    "08826596000195"
+   ],
+   "ato": "REA nº 12.687/2022",
+   "data_ato": "2022-09-13",
+   "tarifa_unificada_desde": "2023-08-28",
+   "descricao": "Agrupamento das concessões da Energisa Paraíba e da Energisa Borborema, por incorporação pela Energisa Paraíba.",
+   "identificacao": "notícia de 02/05/2023 (Monitor do Mercado) sobre as assembleias do grupo Energisa, que cita a REA nº 12.687 de 13/09/2022",
+   "sigla_incorporadora": "EPB",
+   "siglas_incorporadas": [
+    "EBO"
+   ],
+   "confirmada_nos_dados": true,
+   "situacao": "confirmada",
+   "fim_das_incorporadas": {
+    "08826596000195": "2023-08-27"
+   },
+   "incorporadora_com_tarifa_nova_na_data": true
+  }
+ ],
+ "tarifa_media_fornecimento": {
+  "disponivel": false,
+  "motivo": "Não há base oficial estruturada com receita de fornecimento, energia e tributos que passe na conferência de atípicos: o SAMP, avaliado para isso, traz meses isolados com valores declarados com erro de ordem de grandeza, e o dicionário não define as linhas de DscDetalheMercado. Sem regra de tratamento validada contra fonte independente, a tarifa média e a carga tributária observada não são publicadas.",
+  "alternativa_avaliada": {
+   "orgao": "ANEEL",
+   "conjunto": "SAMP: Sistema de Acompanhamento de Informações de Mercado para Regulação Econômica",
+   "url": "https://dadosabertos.aneel.gov.br/dataset/samp",
+   "recurso": "samp-2025.parquet",
+   "arquivo": "data/energia/bronze/aneel/aneel_samp_avaliacao/samp-2025.parquet/20260930T234810Z.165246dbdab5.parquet.gz",
+   "sha256": "165246dbdab576ef1448c5f71c2101ab056b4a5ff312041110495a0d2be6b2c8",
+   "capturado_em": "2026-09-30T23:48:10Z",
+   "publicado_em": "2026-09-15T05:19:35Z",
+   "linhas_lidas": 1372287,
+   "recorte": "subgrupo B1, modalidade convencional, classe e subclasse residencial, sem detalhe, mercado 'Regular', opção de energia cativa; linhas Receita Energia (R$) e ICMS (R$) somadas por distribuidora e mês",
+   "regra_atipico": "mês com valor acima de 5 vezes a mediana dos outros meses do ano na mesma distribuidora e linha",
+   "distribuidoras_no_recorte": 102,
+   "distribuidoras_com_mes_atipico": 1,
+   "meses_atipicos": [
+    {
+     "cnpj": "06981180000116",
+     "sigla": "CEMIG-D",
+     "linha": "ICMS (R$)",
+     "mes": "2025-06",
+     "valor_rs": 1611534642.0,
+     "mediana_outros_meses_rs": 158118002.93,
+     "razao": 10.2
+    },
+    {
+     "cnpj": "06981180000116",
+     "sigla": "CEMIG-D",
+     "linha": "Receita Energia (R$)",
+     "mes": "2025-07",
+     "valor_rs": 7085601982.0,
+     "mediana_outros_meses_rs": 733033632.51,
+     "razao": 9.7
+    },
+    {
+     "cnpj": "06981180000116",
+     "sigla": "CEMIG-D",
+     "linha": "Receita Energia (R$)",
+     "mes": "2025-10",
+     "valor_rs": 7924182288.0,
+     "mediana_outros_meses_rs": 733033632.51,
+     "razao": 10.8
+    }
+   ]
+  }
+ },
+ "documentos": [
+  {
+   "id": "aneel_ubp_repasse_2026",
+   "orgao": "ANEEL",
+   "titulo": "ANEEL homologa repasse preliminar de R$ 5,48 bilhões às distribuidoras, recurso utilizado para reduzir tarifas de energia no Norte e Nordeste (11/08/2026)",
+   "url": "https://www.gov.br/aneel/pt-br/assuntos/noticias/2026-defeso-eleitoral/aneel-homologa-repasse-preliminar-de-r-5-48-bilhoes-as-distribuidoras-recurso-utilizado-para-reduzir-tarifas-de-energia-no-norte-e-nordeste",
+   "licenca": "Creative Commons Atribuição-SemDerivações 3.0 (CC BY-ND 3.0), conforme o rodapé do portal gov.br",
+   "conferido_em": "2026-09-30T23:48:14Z",
+   "sha256": "f1f43bdca22c014d6aa9200b3cae2540760da2f06f089fe73b9c56f69a53ed25",
+   "estado": "CONFERIDA",
+   "trechos": [
+    {
+     "trecho": "a distribuição preliminar de R$ 5,48 bilhões às distribuidoras, provenientes da repactuação do Uso de Bem Público (UBP)",
+     "presente": true
+    },
+    {
+     "trecho": "possibilitou a substituição de pagamentos futuros de UBP por aportes na Conta de Desenvolvimento Energético (CDE)",
+     "presente": true
+    },
+    {
+     "trecho": "garantir a redução tarifária para consumidores do ambiente regulado nas regiões da Sudam e Sudene nos anos de 2025 e 2026",
+     "presente": true
+    }
+   ]
+  },
+  {
+   "id": "aneel_gestao_recursos_tarifarios",
+   "orgao": "ANEEL",
+   "titulo": "ANEEL: página Gestão de Recursos Tarifários (CDE)",
+   "url": "https://www.gov.br/aneel/pt-br/assuntos/tarifas/gestao-de-recursos-tarifarios",
+   "licenca": "Creative Commons Atribuição-SemDerivações 3.0 (CC BY-ND 3.0), conforme o rodapé do portal gov.br",
+   "conferido_em": "2026-09-30T23:48:15Z",
+   "sha256": "bfebae01ac8cc53b4e700ceb5647e1c7c3f071f9a7fd5826d390ca2b7e9b912b",
+   "estado": "CONFERIDA",
+   "trechos": [
+    {
+     "trecho": "Cabe à ANEEL aprovar o Orçamento Anual da CDE e fixar a quota anual, que deve corresponder à diferença entre a necessidade total de recursos da Conta e a arrecadação proporcionada pelas demais fontes",
+     "presente": true
+    }
+   ]
+  }
+ ],
  "conflitos_fonte": {
   "total": 274,
   "por_subclasse": [
@@ -17284,8 +18543,33 @@
    "adicional de bandeira não negativo (crítica)",
    "número-índice do IPCA positivo (crítica)",
    "participações da composição entre -100% e 200% (ressalva)",
+   "grupo de custo da composição (energia, transmissão, distribuição, perdas, encargos) com soma negativa (ressalva)",
+   "parcela CDE maior que o grupo de encargos que a contém (ressalva)",
+   "componente com sinal contrário à natureza do grupo de custo ou com módulo mais de 10 vezes a mediana da mesma componente, com pelo menos 5% da tarifa (ressalva, conferida no arquivo original)",
+   "valor negativo de componente de custo reclassificado como crédito (ressalva, com a lista)",
+   "incorporação registrada que não se confirma nos dados de tarifa (ressalva)",
    "custeio da CDE com despesa igual à receita no ano (ressalva)"
   ],
-  "ressalvas": []
+  "ressalvas": [
+   "ENEL CE: componente TE_CFURH de -47.55 R$/MWh (-6.8% da tarifa), sinal contrário à natureza do grupo; reclassificada para o grupo creditos (crédito), conferida no arquivo original",
+   "EPB: componente TE_CFURH de -55.86 R$/MWh (-7.9% da tarifa), sinal contrário à natureza do grupo; reclassificada para o grupo creditos (crédito), conferida no arquivo original",
+   "SULGIPE: componente TE_CFURH de -44.51 R$/MWh (-6.2% da tarifa), sinal contrário à natureza do grupo; reclassificada para o grupo creditos (crédito), conferida no arquivo original",
+   "ESE: componente TE_CFURH de -57.13 R$/MWh (-7.6% da tarifa), sinal contrário à natureza do grupo; reclassificada para o grupo creditos (crédito), conferida no arquivo original",
+   "ERO: componente TE_CFURH de -256.66 R$/MWh (-33.7% da tarifa), sinal contrário à natureza do grupo; reclassificada para o grupo creditos (crédito), conferida no arquivo original",
+   "COSERN: componente TE_CFURH de -40.58 R$/MWh (-5.2% da tarifa), sinal contrário à natureza do grupo; reclassificada para o grupo creditos (crédito), conferida no arquivo original",
+   "Neoenergia PE: componente TE_CFURH de -43.83 R$/MWh (-5.5% da tarifa), sinal contrário à natureza do grupo; reclassificada para o grupo creditos (crédito), conferida no arquivo original",
+   "CEA: componente TE_CFURH de -267.43 R$/MWh (-32.4% da tarifa), sinal contrário à natureza do grupo; reclassificada para o grupo creditos (crédito), conferida no arquivo original",
+   "EAC: componente TE_CFURH de -139.67 R$/MWh (-16.8% da tarifa), sinal contrário à natureza do grupo; reclassificada para o grupo creditos (crédito), conferida no arquivo original",
+   "EQUATORIAL AL: componente TE_CDE_COVID de -73.43 R$/MWh (-8.6% da tarifa), sinal contrário à natureza do grupo; módulo mais de 10 vezes a mediana da componente entre as distribuidoras que a publicam; mantida no grupo do código, conferida no arquivo original",
+   "EQUATORIAL AL: componente TE_CFURH de -46.28 R$/MWh (-5.4% da tarifa), sinal contrário à natureza do grupo; reclassificada para o grupo creditos (crédito), conferida no arquivo original",
+   "Âmbar Amazonas: componente TE_CFURH de -158.11 R$/MWh (-18.1% da tarifa), sinal contrário à natureza do grupo; reclassificada para o grupo creditos (crédito), conferida no arquivo original",
+   "Âmbar Amazonas: componente TUSD_PNT de 161.48 R$/MWh (18.4% da tarifa), módulo mais de 10 vezes a mediana da componente entre as distribuidoras que a publicam; mantida no grupo do código, conferida no arquivo original",
+   "COELBA: componente TE_CFURH de -62.51 R$/MWh (-7.1% da tarifa), sinal contrário à natureza do grupo; reclassificada para o grupo creditos (crédito), conferida no arquivo original",
+   "EQUATORIAL MA: componente TE_CFURH de -54.77 R$/MWh (-6.2% da tarifa), sinal contrário à natureza do grupo; reclassificada para o grupo creditos (crédito), conferida no arquivo original",
+   "EMT: componente TE_CFURH de -53.48 R$/MWh (-5.9% da tarifa), sinal contrário à natureza do grupo; reclassificada para o grupo creditos (crédito), conferida no arquivo original",
+   "CERIS: componente TE_ANGRA de 433.32 R$/MWh (38.9% da tarifa), módulo mais de 10 vezes a mediana da componente entre as distribuidoras que a publicam; mantida no grupo do código, conferida no arquivo original",
+   "CERIS: componente TE_ENERGIA de -72.43 R$/MWh (-6.5% da tarifa), sinal contrário à natureza do grupo; mantida no grupo do código, conferida no arquivo original",
+   "15 distribuidoras com valor negativo em componente de custo lido como crédito tarifário (grupo créditos, fora dos encargos), em R$/MWh: CEA -267.43, ERO -256.66, Âmbar Amazonas -158.11, EAC -139.67, COELBA -62.51, ESE -57.13, EPB -55.86, EQUATORIAL MA -54.77, EMT -53.48, ENEL CE -47.55, EQUATORIAL AL -46.28, SULGIPE -44.51, Neoenergia PE -43.83, COSERN -40.58, ETO -13.09"
+  ]
  }
 }

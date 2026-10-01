@@ -9,11 +9,18 @@ Recortes em pipeline/tests/dados/energia_perdas/ (tirados dos arquivos oficiais 
   CERAL Anitápolis (2023, só a linha antiga de perdas), RGE (2019, série encerrada em maio),
   Manaus Energia (2006, perda maior que a injetada), EMT (jun/2025, leiaute novo), COCEL
   (fev/2026, linha "Total (todos os níveis)" da injetada divergente da linha TOTAL), COPREL
-  (ago/2024, divergência arbitrada pelo fechamento do balanço) e EFLJC (jan a ago de 2025 e jan
-  a jul de 2026, acumulado do ano aberto);
+  (ago/2024, divergência arbitrada pelo fechamento do balanço), EFLJC (jan a ago de 2025 e jan
+  a jul de 2026, acumulado do ano aberto) e, para os defeitos apontados pelo verificador:
+  Manaus Energia (2004 inteiro, fornecida maior que a injetada; mai a jul/2009, fim da série),
+  Âmbar Amazonas (ago a out/2009, início da série, mesma raiz de CNPJ), RGE Sul (mar a ago/2019,
+  absorção da RGE), ERO (jul/2014, decomposição que não fecha), Sulgipe (mar/2024, técnica
+  medida diferente da faturada), EMS (set/2020, só técnica faturada) e Âmbar Energia RR (jan a
+  mar/2024, técnica sobre a injetada publicada);
 - mmgd_so_mmgd_recorte.csv: empreendimentos de MMGD (só CNPJ da distribuidora, município e
   sigla; sem dado pessoal) de quatro municípios fora da relação de conjuntos;
 - componentes_b1_cemig.csv.gz: componentes tarifárias da CEMIG-D (REH 2.396/2018 e 3.459/2025);
+- componentes_b1_cedri.csv.gz: componentes tarifárias B1 residencial da CEDRI no arquivo de 2025
+  (REH 3.531/2025, em dois trechos: 30/09 a 31/12/2025 e 01/01 a 29/09/2026);
 - indqual_municipio_recorte.csv, limites_continuidade_recorte.csv, mmgd_recorte.csv: conjuntos
   da EPB (Santa Rita), Neoenergia PE (Oratório), RGE Sul (Veranópolis), Elektro (Paraibuna) e
   CEDRAP, com as linhas originais e as primeiras linhas de MMGD de cada par;
@@ -39,6 +46,7 @@ DADOS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dados", "energ
 CEMIG, SULGIPE, COCEL, CERAL = "06981180000116", "13255658000196", "75805895000130", "75826404000138"
 RGE, MANAUS, EMT = "02016439000138", "02341467100020", "03467321000199"
 COPREL, EFLJC = "90660754000160", "86301124000122"
+AMBAR_AM, ERO, EMS, AMBAR_RR, CEDRI = "02341467000120", "05914650000166", "15413826000150", "02341470000144", "50105865000190"
 EPB, ELEKTRO, CEDRAP, RGESUL, NEO_PE = "09095183000140", "02328280000197", "60196987000193", "02016440000162", "10835932000108"
 
 
@@ -64,6 +72,13 @@ class ReconciliacaoComArquivoOriginal(unittest.TestCase):
         cls.mensal, cls.cad, cls.dup = _mensal()
         cls.csv = _csv_samp()
 
+    def _linha_csv(self, cnpj, ano, mes, modalidade, caracteristica):
+        v = [int(r["VlrEnergia"]) for r in self.csv if r["NumCPFCNPJ"] == cnpj and r["AnoReferenciaBalanco"] == str(ano)
+             and r["MesReferenciaBalanco"] == str(mes) and r["DscModalidadeBalanco"] == modalidade
+             and r["DscCctBalanco"] == caracteristica]
+        self.assertEqual(len(v), 1)
+        return v[0]
+
     def _soma_csv(self, cnpj, ano, modalidade, caracteristica):
         return sum(int(r["VlrEnergia"]) for r in self.csv
                    if r["NumCPFCNPJ"] == cnpj and r["AnoReferenciaBalanco"] == str(ano)
@@ -71,7 +86,8 @@ class ReconciliacaoComArquivoOriginal(unittest.TestCase):
 
     def test_perdas_totais_anuais_iguais_no_csv_e_no_parquet(self):
         # valores concretos da fonte (kWh), somados no CSV linha a linha
-        esperado = {(CEMIG, 2023): 6_691_132_265, (MANAUS, 2006): 1_991_209_900, (RGE, 2019): 472_220_789}
+        esperado = {(CEMIG, 2023): 6_691_132_265, (MANAUS, 2006): 1_991_209_900, (RGE, 2019): 472_220_789,
+                    (MANAUS, 2004): 1_534_755_221}
         for (cnpj, ano), kwh in esperado.items():
             self.assertEqual(self._soma_csv(cnpj, ano, "Perdas na Distribuição (valor medido)", "Perdas Totais"), kwh)
             self.assertEqual(ap.anual(self.mensal[cnpj], ano)["perdas_totais_med"], kwh)
@@ -93,8 +109,12 @@ class ReconciliacaoComArquivoOriginal(unittest.TestCase):
         self.assertEqual(m["irregular"], 15_580_000 + 170_000)
         self.assertEqual(m["perdas_totais_med"], 405_398_994)
         self.assertEqual(m["residuo"], 0)
-        # a técnica é a mesma nas bases medida e faturada; a não técnica faturada é negativa
+        # neste mês as linhas técnicas medida e faturada coincidem (conferido no CSV); em outros
+        # meses não (Sulgipe, mar/2024, em DecomposicaoEBasesDaTecnica); a não técnica faturada
+        # é negativa
         self.assertEqual(m["perdas_tecnicas"], 367_531_978)
+        self.assertEqual(m["tecnica_fat"], 367_531_978)
+        self.assertEqual(self._linha_csv(CEMIG, 2023, 6, "Perdas na Distribuição (valor faturado)", "Perdas Técnicas"), 367_531_978)
         self.assertEqual(m["pnt_fat"], -1_016_760)
 
     def test_ano_inteiro_da_cemig_fecha(self):
@@ -226,8 +246,10 @@ class PercentualTecnicoRegulatorio(unittest.TestCase):
 
     def test_trechos_constantes_e_troca_pro_rata_em_2023(self):
         segs = ap.segmentos_pt(self.mensal[CEMIG])
-        self.assertIn({"inicio": "2023-01", "fim": "2023-04", "pct": 8.766, "meses": 4}, segs)
-        self.assertIn({"inicio": "2023-06", "fim": "2023-12", "pct": 8.014, "meses": 7}, segs)
+        # no recorte o trecho de 8,766% aparece só de jan a abr/2023: menos de 6 meses é "curto"
+        # (na série inteira ele vai de jun/2018 a abr/2023, 59 meses)
+        self.assertIn({"inicio": "2023-01", "fim": "2023-04", "pct": 8.766, "meses": 4, "classe": "curto"}, segs)
+        self.assertIn({"inicio": "2023-06", "fim": "2023-12", "pct": 8.014, "meses": 7, "classe": "referencia"}, segs)
         m = self.mensal[CEMIG]["2023-05"]
         pct_maio = 100 * m["perdas_tecnicas"] / m["injetada"]
         self.assertEqual(round(pct_maio, 3), 8.669)
@@ -387,7 +409,7 @@ class ContratoDoModulo(unittest.TestCase):
 
     def test_reconciliacao_2024_intervalo(self):
         # intervalo implícito nos números do relatório (44,6 TWh = 7,4%; 40,2 TWh = 6,6%):
-        # 605,2 TWh (injetada de referência) cabe; 620,7 TWh (injetada bruta publicada) não
+        # 605,2 TWh (injetada de referência) cabe; 620,7 TWh (injetada publicada das mesmas 51) não
         dentro = mod._reconc_2024([{"ano": 2024, "universo": "concessionarias", "injetada_mwh": 605_200_000}])
         fora = mod._reconc_2024([{"ano": 2024, "universo": "concessionarias", "injetada_mwh": 620_700_000}])
         self.assertEqual(dentro[0], "aprovado")
@@ -561,6 +583,231 @@ class LeituraDoBronze(unittest.TestCase):
         self.assertIn("2507507", pop)
 
 
+class BalancoFisicamenteImpossivel(unittest.TestCase):
+    """Manaus Energia 2003 a 2008: energia fornecida maior que a injetada. A taxa de 97% em 2004 é
+    artefato da linha de injetada, e o agente-ano sai do agregado (antes entrava e subia a taxa
+    nacional em 0,5 p.p.)."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.mensal, _, _ = _mensal()
+        cls.csv = _csv_samp()
+
+    def _soma(self, ano, modalidade, caracteristica, detalhe=None, mes=None):
+        return sum(int(r["VlrEnergia"]) for r in self.csv
+                   if r["NumCPFCNPJ"] == MANAUS and r["AnoReferenciaBalanco"] == str(ano)
+                   and (mes is None or r["MesReferenciaBalanco"] == str(mes))
+                   and r["DscModalidadeBalanco"] == modalidade and r["DscCctBalanco"] == caracteristica
+                   and (detalhe is None or r["DscDetalheBalanco"] == detalhe))
+
+    def test_junho_de_2004_nas_linhas_originais(self):
+        inj = self._soma(2004, "Energia Injetada Total", "Energia Injetada Total", "Energia Medida (kWh)", 6)
+        cativo = self._soma(2004, "Energia Vendida", "Fornecimento - Cativo TOTAL", "Energia Medida (kWh)", 6)
+        perdas = self._soma(2004, "Perdas na Distribuição (valor medido)", "Perdas Totais", mes=6)
+        self.assertEqual((inj, cativo, perdas), (118_144_000, 254_125_607, 119_167_972))
+        m = self.mensal[MANAUS]["2004-06"]
+        self.assertEqual((m["injetada"], m["perdas_totais_med"]), (inj, perdas))
+        self.assertGreater(m["fornecida_med"], m["injetada"])
+
+    def test_2004_fora_do_agregado_com_alerta(self):
+        a = mod._anual_distribuidora(self.mensal[MANAUS], 2004)
+        self.assertTrue(a["completo"])
+        self.assertEqual(round(a["taxa_total"], 3), 97.065)
+        self.assertEqual(a["alertas"], ["fornecida_maior_que_injetada", "balanco_nao_fecha"])
+        self.assertEqual(round(ap.taxa(a["residuo_antigo"], a["injetada_antigo"]), 3), -201.035)
+        self.assertFalse(mod._valido_para_agregado(a))
+        linha = next(x for x in mod._nacional({(MANAUS, 2004): a}, {MANAUS: "concessionaria"}, [2004])
+                     if x["universo"] == "concessionarias")
+        self.assertEqual(linha["n_distribuidoras"], 0)
+        self.assertEqual(linha["excluidos"], {"fornecida_maior_que_injetada": 1})
+
+    def test_limite_do_residuo_por_leiaute(self):
+        # leiaute antigo: |resíduo| acima de 5% da injetada publicada, para mais ou para menos;
+        # leiaute de 2024: só a falta (fornecida + perdas acima da injetada publicada) é impossível
+        base_ = {"injetada_ref": 1000, "perdas_totais_med": 100, "fornecida_med": 850}
+        casos = [({"residuo_antigo": 49, "injetada_antigo": 1000}, []),
+                 ({"residuo_antigo": -51, "injetada_antigo": 1000}, ["balanco_nao_fecha"]),
+                 ({"residuo_antigo": 51, "injetada_antigo": 1000}, ["balanco_nao_fecha"]),
+                 ({"residuo_novo": 104, "injetada_novo": 1040}, []),
+                 ({"residuo_novo": -60, "injetada_novo": 1000}, ["balanco_nao_fecha"])]
+        for extra, esperado in casos:
+            self.assertEqual(ap.validade_anual({**base_, **extra}), esperado, extra)
+        self.assertEqual(ap.LIMITE_RESIDUO_BALANCO, 0.05)
+        # a CEMIG-D fecha o balanço e não recebe alerta
+        self.assertEqual(ap.validade_anual(ap.anual(self.mensal[CEMIG], 2023) | {"injetada_ref": 58_278_685_296}), [])
+
+
+class DecomposicaoEBasesDaTecnica(unittest.TestCase):
+    """Total = técnica + não técnica conferido mês a mês; técnica medida e faturada são linhas
+    diferentes e a faturada nunca substitui a medida."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.mensal, _, _ = _mensal()
+        cls.csv = _csv_samp()
+
+    def _linha(self, cnpj, ano, mes, modalidade, caracteristica):
+        v = [int(r["VlrEnergia"]) for r in self.csv if r["NumCPFCNPJ"] == cnpj and r["AnoReferenciaBalanco"] == str(ano)
+             and r["MesReferenciaBalanco"] == str(mes) and r["DscModalidadeBalanco"] == modalidade
+             and r["DscCctBalanco"] == caracteristica]
+        return v[0] if v else None
+
+    def test_ero_julho_2014_nao_fecha(self):
+        med = "Perdas na Distribuição (valor medido)"
+        total, tec, pnt = (self._linha(ERO, 2014, 7, med, c) for c in ("Perdas Totais", "Perdas Técnicas", "Perdas Não-Técnicas"))
+        self.assertEqual((total, tec, pnt), (327_121_858, 41_675_325, 53_290_776))
+        m = self.mensal[ERO]["2014-07"]
+        self.assertEqual(m["residuo_decomposicao"], total - tec - pnt)
+        self.assertEqual(m["residuo_decomposicao"], 232_155_757)
+        # a não técnica publicada é a usada (regra única), com a diferença à vista
+        self.assertEqual(m["pnt_med"], pnt)
+        self.assertEqual(ap.estado_decomposicao(ap.anual(self.mensal[ERO], 2014)), "nao_fecha")
+
+    def test_cemig_2023_fecha_no_arredondamento(self):
+        a = ap.anual(self.mensal[CEMIG], 2023)
+        self.assertEqual(a["meses_decomposicao_nao_fecha"], 0)
+        self.assertEqual(a["residuo_decomposicao"], -2)
+        self.assertEqual(ap.estado_decomposicao(a), "fecha")
+
+    def test_tecnica_medida_e_faturada_diferem(self):
+        med = self._linha(SULGIPE, 2024, 3, "Perdas na Distribuição (valor medido)", "Perdas Técnicas")
+        fat = self._linha(SULGIPE, 2024, 3, "Perdas na Distribuição (valor faturado)", "Perdas Técnicas")
+        self.assertEqual((med, fat), (5_269_964, 3_779_373))
+        m = self.mensal[SULGIPE]["2024-03"]
+        self.assertEqual((m["perdas_tecnicas"], m["tecnica_fat"]), (med, fat))
+
+    def test_faturada_nao_preenche_a_medida_ausente(self):
+        # EMS, set/2020: a fonte publica a técnica só no valor faturado
+        self.assertIsNone(self._linha(EMS, 2020, 9, "Perdas na Distribuição (valor medido)", "Perdas Técnicas"))
+        fat = self._linha(EMS, 2020, 9, "Perdas na Distribuição (valor faturado)", "Perdas Técnicas")
+        self.assertEqual(fat, 55_969_628)
+        m = self.mensal[EMS]["2020-09"]
+        self.assertIsNone(m["perdas_tecnicas"])
+        self.assertEqual(m["tecnica_fat"], fat)
+        self.assertIsNone(m["residuo_decomposicao"])  # sem técnica medida não há decomposição
+        self.assertEqual(ap.estado_decomposicao(ap.anual(self.mensal[EMS], 2020)), "sem_separacao")
+
+    def test_tecnica_sobre_a_injetada_publicada_ambar_rr(self):
+        # leiaute de 2024: a fonte aplica o percentual regulatório (7,620%) à injetada publicada;
+        # sobre a injetada de referência a mesma técnica dá menos
+        for mes in ("2024-01", "2024-02", "2024-03"):
+            m = self.mensal[AMBAR_RR][mes]
+            self.assertEqual(m["injetada_ref_origem"], "requerida")
+            self.assertEqual(round(100 * m["perdas_tecnicas"] / m["injetada"], 3), 7.62)
+            self.assertLess(100 * m["perdas_tecnicas"] / m["injetada_ref"], 7.57)
+        a = mod._anual_distribuidora(self.mensal[AMBAR_RR], 2024, 3)
+        self.assertAlmostEqual(a["taxa_tecnica_publicada"], 7.62, places=3)
+        self.assertLess(a["taxa_tecnica"], 7.56)
+
+
+class MudancasDeUniverso(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.mensal, _, _ = _mensal()
+
+    def test_absorcao_da_rge_pela_rge_sul(self):
+        absorcoes, sucessoes = ap.mudancas_de_universo({RGE: self.mensal[RGE], RGESUL: self.mensal[RGESUL]}, "2026-08")
+        self.assertEqual(sucessoes, [])
+        self.assertEqual(len(absorcoes), 1)
+        e = absorcoes[0]
+        self.assertEqual((e["competencia"], e["cnpj"], e["encerradas"]), ("2019-06", RGESUL, [RGE]))
+        self.assertGreater(e["salto_pct"], 100)
+        self.assertTrue(ap.par_afetado([e["competencia"]], 2019))
+        self.assertTrue(ap.par_afetado([e["competencia"]], 2020))
+        self.assertFalse(ap.par_afetado([e["competencia"]], 2021))
+        self.assertFalse(ap.par_afetado([e["competencia"]], 2018))
+        self.assertFalse(ap.par_afetado(["2019-01"], 2020))  # 2019 e 2020 inteiros na escala nova
+
+    def test_sucessao_manaus_ambar_pela_raiz_do_cnpj(self):
+        csv_ = _csv_samp()
+        self.assertTrue(any(r["NumCPFCNPJ"] == MANAUS for r in csv_))  # CNPJ como publicado pela fonte
+        self.assertFalse(ap.cnpj_dv_valido(MANAUS))
+        self.assertTrue(ap.cnpj_dv_valido(AMBAR_AM))
+        self.assertEqual(MANAUS[:8], AMBAR_AM[:8])
+        absorcoes, sucessoes = ap.mudancas_de_universo({MANAUS: self.mensal[MANAUS], AMBAR_AM: self.mensal[AMBAR_AM]}, "2026-08")
+        self.assertEqual(absorcoes, [])
+        self.assertEqual([(s["competencia"], s["cnpj"], s["anterior"], s["mesma_raiz_cnpj"]) for s in sucessoes],
+                         [("2009-08", AMBAR_AM, MANAUS, True)])
+
+    def test_quebra_de_escala_so_entre_anos_completos(self):
+        self.assertEqual(ap.quebra_escala({"completo": True, "injetada_ref": 100}, {"completo": True, "injetada_ref": 166}),
+                         (0.6599999999999999, True))
+        self.assertEqual(ap.quebra_escala({"completo": True, "injetada_ref": 100}, {"completo": True, "injetada_ref": 124})[1], False)
+        self.assertEqual(ap.quebra_escala({"completo": False, "injetada_ref": 100}, {"completo": True, "injetada_ref": 300}),
+                         (None, False))
+
+
+class ReferenciaRegulatoriaETarifa(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.mensal, _, _ = _mensal()
+
+    def _processos(self, arquivo):
+        linhas = list(csv.DictReader(io.TextIOWrapper(gzip.open(os.path.join(DADOS, arquivo)), encoding="utf-8"), delimiter=";"))
+        procs = []
+        for (cnpj, ini, base_t), e in sorted(ap.filtra_componentes_b1(linhas).items()):
+            if base_t == "Base Econômica":
+                procs.append({**e, "resumo": ap.resumo_tarifa(e)})
+        return procs
+
+    def test_tarifa_vencida_nao_e_vigente(self):
+        procs = self._processos("componentes_b1_cedri.csv.gz")
+        self.assertEqual([(p["inicio"], p["fim"]) for p in procs], [("2025-09-30", "2025-12-31"), ("2026-01-01", "2026-09-29")])
+        p, sit = ap.tarifa_vigente(procs, "2026-09-30")
+        self.assertEqual((p["inicio"], p["fim"], sit), ("2026-01-01", "2026-09-29", "vigencia_encerrada"))
+        self.assertIn("3.531", p["resolucao"])
+        p, sit = ap.tarifa_vigente(procs, "2026-09-29")
+        self.assertEqual((p["inicio"], sit), ("2026-01-01", "vigente"))
+        p, sit = ap.tarifa_vigente(procs, "2025-10-15")
+        self.assertEqual((p["inicio"], sit), ("2025-09-30", "vigente"))
+        self.assertEqual(ap.tarifa_vigente(procs, "2025-09-29"), (None, None))
+        cemig = self._processos("componentes_b1_cemig.csv.gz")
+        self.assertEqual(ap.tarifa_vigente(cemig, "2025-09-30")[1], "vigente")
+        p, sit = ap.tarifa_vigente(cemig, "2019-06-01")  # REH 2.396/2018 vigorou até 27/05/2019
+        self.assertEqual((p["fim"], sit), ("2019-05-27", "vigencia_encerrada"))
+
+    def test_reh_so_com_troca_real_de_percentual(self):
+        # CEMIG-D: 7,840% até abr/2018, mês de transição em mai/2018 e 8,766% depois; a troca
+        # de 0,81 p.p. contra o mês anterior ao trecho liga o trecho à REH 2.396/2018
+        procs = self._processos("componentes_b1_cemig.csv.gz")
+        segs = mod._segmentos_com_reh(self.mensal[CEMIG], procs)
+        s18 = next(s for s in segs if s["inicio"] == "2018-06")
+        self.assertEqual(s18["classe"], "curto")  # só 2 meses no recorte
+        self.assertEqual(s18["troca_pp"], 0.807)
+        self.assertIn("2.396", s18["reh"]["resolucao"])
+        # mesma série com um mês fora do padrão no meio: o percentual volta igual e a REH que
+        # começa no mês da interrupção não é associada (DCELT 7,28% em 2019, 2021 e 2022)
+        def mes(pct):
+            return {"perdas_tecnicas": round(pct * 10_000_000), "injetada": 1_000_000_000}
+        serie = {f"2021-{m:02d}": mes(7.28) for m in range(1, 8)}
+        serie["2021-08"] = mes(7.51)
+        serie.update({f"2021-{m:02d}": mes(7.28) for m in range(9, 13)})
+        serie.update({f"2022-{m:02d}": mes(7.28) for m in range(1, 4)})
+        reh = [{"inicio": "2021-08-24", "resolucao": "REH de teste", "base": "Base Econômica"}]
+        segs = mod._segmentos_com_reh(serie, reh)
+        self.assertEqual([(s["inicio"], s["meses"], s["classe"], s["troca_pp"], s["reh"]) for s in segs],
+                         [("2021-01", 7, "referencia", None, None), ("2021-09", 7, "referencia", 0.0, None)])
+        serie.update({f"2021-{m:02d}": mes(7.40) for m in range(9, 13)})
+        serie.update({f"2022-{m:02d}": mes(7.40) for m in range(1, 4)})
+        segs = mod._segmentos_com_reh(serie, reh)
+        self.assertEqual(segs[1]["troca_pp"], 0.12)
+        self.assertEqual(segs[1]["reh"]["resolucao"], "REH de teste")
+
+
+class TerritorioDoAnoDasPerdas(unittest.TestCase):
+    def test_distribuidora_incorporada_sem_mmgd_usa_a_uf_principal(self):
+        # o cadastro de MMGD é o atual: a EBO (incorporada em 2023) não tem nenhum empreendimento
+        # nele; os vínculos de 2022 valem na UF da maior parte deles, o que barra o código
+        # homônimo de outra UF (Santa Rita do Maranhão, erro da relação oficial)
+        ebo = "08826596000195"
+        rel = {"vinculos": {(ebo, "2504009"): {"uf": "PB"}, (ebo, "2506103"): {"uf": "PB"}, (ebo, "2509206"): {"uf": "PB"},
+                            (ebo, "2110203"): {"uf": "MA"}, (EPB, "2507507"): {"uf": "PB"}, (EPB, "2110203"): {"uf": "MA"}},
+               "mmgd": {(EPB, "2507507"): 12}}
+        out = mod._municipios_do_ano(rel)
+        self.assertEqual(out[ebo], ({"2504009", "2506103", "2509206"}, "uf_principal"))
+        self.assertEqual(out[EPB], ({"2507507"}, "mmgd"))
+
+
 class GoldPublicada(unittest.TestCase):
     """Contrato da gold publicada (public/energia/gold/perdas.json) conferido por caminhos
     independentes: CSV de download, malha do IBGE e validador de evidências."""
@@ -589,18 +836,140 @@ class GoldPublicada(unittest.TestCase):
             if ev is not None:
                 self.assertEqual(evidencia.validar(ev), [], nome)
 
-    def test_taxa_nacional_refeita_a_partir_do_csv(self):
-        ano = self.gold["referencia"]["ano"]
-        num = den = 0.0
+    def test_taxa_nacional_com_valores_da_fonte(self):
+        # Valores concretos relidos do CSV oficial samp-balanco.csv por código independente (sem as
+        # funções do módulo; roteiro no documento do módulo, seção 4), não do CSV que o módulo
+        # escreve. 2004: 55 concessionárias com os 12 meses, fora Manaus Energia e COCEL (fornecida
+        # maior que a injetada, resíduo de −201% e −93%): 39.100.473.197 kWh ÷ 259.141.951.677 kWh =
+        # 15,088%. Só sem a Manaus seriam 15,082%; com ela, 15,58% (o valor publicado antes da
+        # correção). 2025: conferência do verificador, 90.355.796 MWh ÷ 612.653.776 MWh = 14,748%.
+        nac = {x["ano"]: x for x in self.gold["nacional"]}
+        self.assertTrue(all(x["universo"] == "concessionarias" for x in self.gold["nacional"]))
+        self.assertEqual((nac[2004]["n_distribuidoras"], nac[2004]["perdas_totais_mwh"], nac[2004]["injetada_mwh"]),
+                         (55, 39_100_473, 259_141_952))
+        self.assertEqual(nac[2004]["taxa_total_pct"], 15.09)
+        self.assertEqual(nac[2004]["excluidos"].get("fornecida_maior_que_injetada"), 2)
+        self.assertEqual((nac[2025]["n_distribuidoras"], nac[2025]["perdas_totais_mwh"]), (51, 90_355_796))
+        self.assertLessEqual(abs(nac[2025]["injetada_mwh"] - 612_653_776), 1)
+        self.assertEqual(nac[2025]["taxa_total_pct"], 14.75)
+        # a Manaus Energia fica publicada com alerta nos seis anos completos, fora do agregado
         with open(self._serie("perdas_distribuidoras.csv"), encoding="utf-8") as f:
-            for r in csv.DictReader(f, delimiter=";"):
-                if (r["ano"] == str(ano) and r["classificacao"].startswith("Concession") and r["completo"] == "1"
-                        and not r["alertas"] and r["perdas_totais_mwh"] and r["injetada_referencia_mwh"]):
-                    num += float(r["perdas_totais_mwh"])
-                    den += float(r["injetada_referencia_mwh"])
-        nac = next(x for x in self.gold["nacional"] if x["ano"] == ano and x["universo"] == "concessionarias")
-        self.assertAlmostEqual(nac["taxa_total_pct"], round(100 * num / den, 2), places=6)
-        self.assertEqual(nac["perdas_totais_mwh"], round(num))
+            manaus = {r["ano"]: r for r in csv.DictReader(f, delimiter=";") if r["cnpj"] == MANAUS}
+        for ano in ("2003", "2004", "2005", "2006", "2007", "2008"):
+            self.assertIn("fornecida_maior_que_injetada", manaus[ano]["alertas"], ano)
+        self.assertEqual(manaus["2004"]["taxa_total_pct"], "97.065")
+
+    def test_valor_exibido_sai_de_numerador_e_denominador(self):
+        # arredondamento único: o texto exibido é o de 100 × numerador ÷ denominador com uma casa
+        with open(self._serie("perdas_evidencias.json"), encoding="utf-8") as f:
+            por_dist = json.load(f)["evidencias"]
+        evs = [(k, e) for k, e in self.gold["evidencias"].items() if e] + list(por_dist.items())
+        conferidas = 0
+        for nome, e in evs:
+            if "%" not in e["unidade"] or not e.get("numerador") or not e.get("denominador"):
+                continue
+            x = 100 * e["numerador"]["valor"] / e["denominador"]["valor"]
+            self.assertEqual(e["valor_exibido"], f"{x:.1f}%".replace(".", ","), nome)
+            self.assertAlmostEqual(e["valor_calculo"], x, places=5, msg=nome)
+            conferidas += 1
+        self.assertGreater(conferidas, 100)
+        # os seis casos que o arredondamento duplo trocava de casa decimal
+        self.assertEqual(self.gold["evidencias"]["taxa_nacional"]["valor_exibido"], "14,7%")
+        sig = {d["sigla"]: d["cnpj"] for d in self.gold["distribuidoras"]}
+        for s, txt in (("CRERAL", "9,9%"), ("ELETROPAULO", "12,4%"), ("CELETRO", "16,8%"), ("CERCOS", "12,5%"),
+                       ("CERTREL", "4,7%"), ("DMED", "4,1%")):
+            self.assertEqual(por_dist[sig[s]]["valor_exibido"], txt, s)
+
+    def test_serie_nacional_marca_universo_e_compara_mesmas_distribuidoras(self):
+        nac = {x["ano"]: x for x in self.gold["nacional"]}
+        # a separação técnica muda de universo entre 2023 e 2025 (a fonte parou de publicá-la
+        # para metade das distribuidoras): a linha diz isso e traz a cobertura do mercado BT
+        ns = [nac[a]["n_com_pnt_bt"] for a in (2023, 2024, 2025)]
+        self.assertTrue(ns[0] > ns[1] > ns[2] > 0, ns)
+        for a in (2024, 2025):
+            self.assertFalse(nac[a]["universo_igual_ano_anterior"]["pnt_bt"])
+            self.assertLess(nac[a]["cobertura_bt_pct"], 60)
+            m = nac[a]["mesmas_ano_anterior"]
+            self.assertLessEqual(m["n_pnt_bt"], min(nac[a]["n_com_pnt_bt"], nac[a - 1]["n_com_pnt_bt"]))
+        self.assertGreater(nac[2023]["cobertura_bt_pct"], 95)
+        # série de universo fixo refeita a partir do CSV por distribuidora (MWh com três casas)
+        uf = self.gold["universo_fixo"]
+        self.assertEqual(uf["anos"], [2023, 2024, 2025])
+        self.assertGreater(uf["n_distribuidoras"], 10)
+        with open(self._serie("perdas_distribuidoras.csv"), encoding="utf-8") as f:
+            linhas = {(r["cnpj"], r["ano"]): r for r in csv.DictReader(f, delimiter=";")}
+        for lin in uf["linhas"]:
+            sel = [linhas[(c, str(lin["ano"]))] for c in uf["cnpjs"]]
+            for r in sel:
+                self.assertEqual((r["completo"], r["alertas"]), ("1", ""))
+                self.assertIn(r["decomposicao"], ("fecha", "diferenca_pequena"))
+            pnt = sum(float(r["pnt_mwh"]) for r in sel)
+            bt = sum(float(r["mercado_bt_mwh"]) for r in sel)
+            self.assertAlmostEqual(lin["pnt_bt_pct"], 100 * pnt / bt, delta=0.006)
+
+    def test_tarifa_so_vigente_na_data_da_consulta(self):
+        hoje = self.gold["referencia"]["tarifa_consultada_em"]
+        encerradas = 0
+        for d in self.gold["distribuidoras"]:
+            t = d["tarifa"]
+            if not t:
+                continue
+            self.assertLessEqual(t["inicio"], hoje)
+            if t["situacao"] == "vigente":
+                self.assertTrue(t["fim"] is None or t["fim"] >= hoje, d["sigla"])
+            else:
+                self.assertEqual(t["situacao"], "vigencia_encerrada")
+                self.assertLess(t["fim"], hoje)
+                encerradas += 1
+        cedri = next(d for d in self.gold["distribuidoras"] if d["cnpj"] == CEDRI)
+        self.assertEqual((cedri["tarifa"]["fim"], cedri["tarifa"]["situacao"]), ("2026-09-29", "vigencia_encerrada"))
+        self.assertGreater(encerradas, 0)
+
+    def test_mudancas_de_universo_na_serie_anual(self):
+        with open(self._serie("perdas_anual.json"), encoding="utf-8") as f:
+            anual = json.load(f)
+        i = anual["campos"].index("universo_muda_ano_anterior")
+        por = {d["sigla"]: d for d in self.gold["distribuidoras"]}
+        # RGE Sul absorve a RGE em jun/2019: 2019 e 2020 não se comparam com o ano anterior
+        serie = {l[0]: l for l in anual["distribuidoras"][RGESUL]}
+        self.assertEqual((serie[2018][i], serie[2019][i], serie[2020][i], serie[2021][i]), (0, 1, 1, 0))
+        ev = [e for e in por["RGE SUL"]["eventos"] if e["tipo"] == "absorcao_provavel"]
+        self.assertEqual([(e["competencia"], e["encerradas"]) for e in ev], [("2019-06", [RGE])])
+        for sigla, anos in (("CPFL JAGUARI", (2018, 2019)), ("ESS", (2018, 2019))):
+            serie = {l[0]: l for l in anual["distribuidoras"][por[sigla]["cnpj"]]}
+            self.assertEqual([serie[a][i] for a in anos], [1, 1], sigla)
+        # Manaus Energia: CNPJ publicado com dígito verificador inválido, ligado à Âmbar Amazonas
+        # pela raiz, com a origem da ligação
+        manaus = por["MANAUS ENERGIA"]
+        self.assertFalse(manaus["cnpj_dv_valido"])
+        corr = {c["cnpj"]: c for c in manaus["correspondencias"]}
+        self.assertIn(AMBAR_AM, corr)
+        self.assertIn("dígito verificador inválido", corr[AMBAR_AM]["origem"])
+        self.assertTrue(por["ÂMBAR AMAZONAS"]["cnpj_dv_valido"])
+
+    def test_percentual_tecnico_so_trechos_longos_e_reh_com_troca(self):
+        for d in self.gold["distribuidoras"]:
+            t = d["tecnica_regulatoria"]
+            for s in (t or {}).get("segmentos", []):
+                self.assertGreaterEqual(s["meses"], 6, d["sigla"])
+        with open(self._serie("perdas_tecnicas_regulatorias.csv"), encoding="utf-8") as f:
+            pt = list(csv.DictReader(f, delimiter=";"))
+        self.assertTrue(any(r["classe"] == "curto" for r in pt))
+        for r in pt:
+            if r["resolucao_tarifaria"]:
+                self.assertGreaterEqual(abs(float(r["troca_pp"])), 0.02, (r["sigla"], r["inicio"]))
+        # NEOENERGIA PE: o único trecho (jul a ago/2014) não é referência
+        neo = next(d for d in self.gold["distribuidoras"] if d["cnpj"] == NEO_PE)
+        self.assertEqual(neo["tecnica_regulatoria"]["segmentos"], [])
+
+    def test_associacao_usa_territorio_do_ano_das_perdas(self):
+        a = self.gold["associacao"]
+        self.assertEqual(a["ano_perdas"], a["ano_relacao"])
+        pontos = {p[0]: p for p in a["pontos"]}
+        self.assertIn("08826596000195", pontos)  # EBO, válida em 2022, com o território de 2022
+        emr = next(d for d in self.gold["distribuidoras"] if d["sigla"] == "EMR")
+        # a EMR de 2026 inclui Nova Friburgo, que em 2022 era da ENF: renda diferente
+        self.assertNotEqual(pontos[emr["cnpj"]][1], emr["contexto"]["renda_media_pc_confirmados"])
 
     def test_linha_nacional_sem_distribuidora_nao_tem_zero(self):
         for x in self.gold["nacional"]:

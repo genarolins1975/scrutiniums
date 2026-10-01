@@ -16,8 +16,10 @@ ln(carga diária, MWmed):
     + temperatura média ponderada do dia (linear e duas dobras, em nós fixados pelos
       tercis da temperatura na PRIMEIRA janela de treino, sem olhar o futuro)
     + temperatura do dia anterior (inércia térmica).
-Janela de treino: desde 29/04/2023 (regime atual do ONS, com a estimativa de MMGD dentro
-da carga). Avaliação: origens no primeiro dia de cada mês a partir de 01/05/2024; em cada
+Janela de treino: desde o início do regime atual do ONS, com a estimativa de MMGD dentro
+da carga. O ONS declara 29/04/2023; na carga diária e na curva horária a MMGD aparece
+só a partir de 01/05/2023 (conferido contra a carga global e a MMGD da API de carga
+verificada; ver bloco a11_carga da gold). O módulo passa o início observado em `inicio`. Avaliação: origens no primeiro dia de cada mês a partir de 01/05/2024; em cada
 origem o modelo é estimado com os dias ANTERIORES e prevê os dias do mês, com a
 temperatura e o calendário realizados (é decomposição ex post, não previsão de carga:
 não há previsão de temperatura aqui).
@@ -118,14 +120,14 @@ def _ponte(x):
     return False
 
 
-def variaveis(dia, temp, temp_ant, cfg, nos, inicio_janela):
+def variaveis(dia, temp, temp_ant, cfg, nos, inicio_regime=INICIO_REGIME):
     """(nomes, grupos, valores) das variáveis de um dia, ou None se faltar temperatura."""
     x = date.fromisoformat(dia)
     nomes, grupos, vals = ["constante", "tendencia"], ["nivel_tendencia", "nivel_tendencia"], [1.0, (x - date(2023, 4, 29)).days / 365.25]
-    if cfg["inicio"] < INICIO_REGIME:
+    if cfg["inicio"] < inicio_regime:
         nomes.append("regime_2023")
         grupos.append("nivel_tendencia")
-        vals.append(1.0 if dia >= INICIO_REGIME else 0.0)
+        vals.append(1.0 if dia >= inicio_regime else 0.0)
     wd = x.weekday()
     for i, nome in zip((0, 1, 3, 4, 5, 6), DIAS_SEMANA):
         nomes.append(f"dia_{nome}")
@@ -191,15 +193,19 @@ def _origens(dias, primeira=PRIMEIRA_ORIGEM):
     return out
 
 
-def avaliar(carga, temps_media, temps_max, variante="principal", primeira_origem=PRIMEIRA_ORIGEM):
+def avaliar(carga, temps_media, temps_max, variante="principal", primeira_origem=PRIMEIRA_ORIGEM, inicio_regime=INICIO_REGIME,
+            excluir=()):
     """Estima o modelo em origens mensais e prevê cada mês fora da amostra.
 
     `carga`: {dia: MWmed}; `temps_*`: {dia: °C}. Retorna dict com previsões diárias
     fora da amostra (real, previsto, intervalos, contribuições por grupo), métricas por
     origem e no total, cobertura dos intervalos, coeficientes da última origem."""
-    cfg = VARIANTES[variante]
+    cfg = dict(VARIANTES[variante])
+    if cfg["inicio"] == INICIO_REGIME:
+        cfg["inicio"] = inicio_regime  # início observado do regime (ver docstring)
+    excluir = set(excluir)
     temps = temps_media if cfg["temperatura"] != "maxima" else temps_max
-    dias = sorted(d for d in carga if d >= cfg["inicio"] and carga[d] and carga[d] > 0)
+    dias = sorted(d for d in carga if d >= cfg["inicio"] and d not in excluir and carga[d] and carga[d] > 0)
     origens = _origens(dias, primeira_origem)
     if not origens:
         return None
@@ -209,7 +215,7 @@ def avaliar(carga, temps_media, temps_max, variante="principal", primeira_origem
     for d in dias:
         t = (temps or {}).get(d)
         ta = (temps or {}).get((date.fromisoformat(d) - timedelta(days=1)).isoformat())
-        v = variaveis(d, t, ta, cfg, nos, cfg["inicio"])
+        v = variaveis(d, t, ta, cfg, nos, inicio_regime)
         if v is None:
             continue
         nomes_ref, grupos_ref = v[0], v[1]
@@ -359,13 +365,10 @@ def resposta_temperatura(resultado, grade):
     nomes = resultado["_nomes"]
     nos = resultado["nos_temperatura"]
     out = []
-    ref = None
     for t in grade:
         x = {"temperatura": t, "temperatura_dia_anterior": t}
         for i, k in enumerate(nos):
             x[f"temperatura_acima_{i + 1}"] = max(t - k, 0.0)
         v = sum(u["beta"][j] * (x[n] - u["media_x"][j]) for j, n in enumerate(nomes) if n in x and j in u["ativas"])
-        out.append([t, v])
-    if out:
-        ref = min(out, key=lambda z: z[1])[1]
-    return [[t, 100 * v] for t, v in out], (100 * ref if ref is not None else None)
+        out.append([t, 100 * v])
+    return out

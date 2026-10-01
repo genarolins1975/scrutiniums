@@ -51,6 +51,10 @@ PACOTES = {
     "cadastro": ("reservatorio", "reservatorio", "RESERVATORIOS"),
     "precip_est": ("precipitacao-estacao", "precipitacao_estacao_di", "Precipitacao_Diaria_Observada-"),
     "bacias_shp": ("bacia_contorno", "bacia_contorno", "Bacias_Hidrograficas_SIN"),
+    # por subsistema: os mesmos arquivos do silver principal, recapturados na mesma coleta
+    # dos arquivos por reservatório, só para reconciliar valores da mesma captura
+    "ear_sm": ("ear-diario-por-subsistema", "ear_subsistema_di", "EAR_DIARIO_SUBSISTEMA_"),
+    "ena_sm": ("ena-diario-por-subsistema", "ena_subsistema_di", "ENA_DIARIO_SUBSISTEMA_"),
 }
 
 SUBSISTEMAS = ("SE", "S", "NE", "N")
@@ -205,9 +209,11 @@ def parse_ear_agregado(linhas, recorte):
         yield f"ear_pct.{n}", ref, num(r.get(k_pct))
 
 
-def parse_ena_agregado(linhas, recorte):
-    """ENA por REE ou por bacia → séries ena_bruta_mwmed, ena_bruta_pct_mlt, ena_arm_mwmed,
-    ena_arm_pct_mlt. A unidade das colunas _mwmed é MWmed (média do dia): o dicionário
+def parse_ena_agregado(linhas, recorte, armazenavel=False):
+    """ENA por REE ou por bacia → séries ena_bruta_mwmed e ena_bruta_pct_mlt (e, com
+    armazenavel=True, ena_arm_mwmed e ena_arm_pct_mlt; a ENA armazenável por recorte fica
+    só no bronze para manter o silver da família em tamanho que a cópia durável comporta,
+    e por subsistema vem do silver principal). A unidade das colunas _mwmed é MWmed (média do dia): o dicionário
     diz "MWmês", mas a soma das ENA por reservatório, cujo dicionário diz MWmed, reproduz
     o valor do subsistema (conferência no módulo e no teste)."""
     sufixo = "ree" if recorte == "ree" else "bacia"
@@ -219,8 +225,9 @@ def parse_ena_agregado(linhas, recorte):
             continue
         yield f"ena_bruta_mwmed.{n}", ref, num(r.get(f"ena_bruta_{sufixo}_mwmed"))
         yield f"ena_bruta_pct_mlt.{n}", ref, num(r.get(f"ena_bruta_{sufixo}_percentualmlt"))
-        yield f"ena_arm_mwmed.{n}", ref, num(r.get(f"ena_armazenavel_{sufixo}_mwmed"))
-        yield f"ena_arm_pct_mlt.{n}", ref, num(r.get(f"ena_armazenavel_{sufixo}_percentualmlt"))
+        if armazenavel:
+            yield f"ena_arm_mwmed.{n}", ref, num(r.get(f"ena_armazenavel_{sufixo}_mwmed"))
+            yield f"ena_arm_pct_mlt.{n}", ref, num(r.get(f"ena_armazenavel_{sufixo}_percentualmlt"))
 
 
 # ---------------------------------------------------------------- EAR por reservatório
@@ -346,9 +353,10 @@ def parse_ena_reservatorio(linhas):
 
 # ---------------------------------------------------------------- dados hidráulicos por reservatório
 
+# séries guardadas no silver (nível e uso consuntivo ficam só no bronze: não entram no
+# balanço publicado e dobrariam o tamanho do silver da família)
 CAMPOS_HIDRO = {
     "vol_util_pct": "val_volumeutilcon",
-    "nivel_montante_m": "val_nivelmontante",
     "q_afluente": "val_vazaoafluente",
     "q_defluente": "val_vazaodefluente",
     "q_turbinada": "val_vazaoturbinada",
@@ -358,7 +366,6 @@ CAMPOS_HIDRO = {
     "q_natural": "val_vazaonatural",
     "q_incremental": "val_vazaoincremental",
     "q_evaporacao": "val_vazaoevaporacaoliquida",
-    "q_uso_consuntivo": "val_vazaousoconsuntivo",
 }
 COLS_HIDRO = ["id_subsistema", "tip_reservatorio", "nom_bacia", "nom_ree", "id_reservatorio", "nom_reservatorio",
               "num_ordemcs", "cod_usina", "din_instante"] + list(CAMPOS_HIDRO.values())

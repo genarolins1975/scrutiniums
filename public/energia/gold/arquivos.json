@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "arquivos.json",
- "gerado_em": "2026-09-30T23:37:06Z",
+ "gerado_em": "2026-10-01T00:07:23Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "30ad85ccb171+alterado",
+ "versao_codigo": "3e7ff0a36fba+alterado",
  "disponivel": true,
  "arquivos": {
   "/energia/series/regulacao_limites_pld_atos.csv": {
@@ -81,13 +81,68 @@
    "modulo": "pld",
    "gold": "pld_detalhe.json"
   },
+  "/energia/series/clima_diario.csv": {
+   "colunas": "Temperatura do ar a 2 m por subsistema e SIN, diária desde 2001 (NASA POWER, MERRA-2 e GEOS-IT; ESTIMADO por reanálise). Colunas: data (AAAA-MM-DD, dia em hora solar local); recorte (SE, S, NE, N, SIN); temp_media_c, temp_max_c, temp_min_c (°C; média do dia e extremos horários do dia na célula, ponderados pela população); cobertura_pop_pct (% da população do recorte representada por células com dado no dia); ufs_com_dado; fonte_versao (MERRA-2 até o fim da série MERRA-2 no POWER; GEOS-IT depois, marcado como preliminar); preliminar (1 = últimos 60 dias, sujeitos a troca GEOS-IT → MERRA-2). Ausência = campo vazio.",
+   "modulo": "agua",
+   "gold": "agua_detalhe.json"
+  },
+  "/energia/series/agua_temperatura_uf_diario.csv": {
+   "colunas": "Temperatura do ar a 2 m por unidade da federação, diária desde 2019. Colunas: data; uf; subsistema; temp_media_c; temp_max_c; temp_min_c; celulas_com_dado; populacao_uf (Censo 2022). ESTIMADO por reanálise.",
+   "modulo": "agua",
+   "gold": "agua_detalhe.json"
+  },
+  "/energia/series/agua_precipitacao_bacias_diario.csv": {
+   "colunas": "Precipitação média na área de cada bacia hidroenergética do ONS, diária desde 2016 (IMERG via NASA POWER; ESTIMADO por satélite). Colunas: data (dia UTC); bacia; precip_mm (mm/dia, média ponderada pela área); cobertura_pct (% do peso da bacia com dado); preliminar (1 = IMERG Late, sem calibração por pluviômetros).",
+   "modulo": "agua",
+   "gold": "agua_detalhe.json"
+  },
+  "/energia/series/agua_precipitacao_bacias_mensal.csv": {
+   "colunas": "Precipitação mensal por bacia desde 2001. Colunas: mes (AAAA-MM); bacia; precip_mm (soma dos dias; vazio se faltar dia); media_2001_2025_mm, p10_mm, p90_mm, anos_base (climatologia do mês); anomalia_pct (100 × (precip ÷ média − 1)); preliminar (1 = mês com dias IMERG Late).",
+   "modulo": "agua",
+   "gold": "agua_detalhe.json"
+  },
+  "/energia/series/agua_clima_pontos.csv": {
+   "colunas": "Manifesto espacial. Colunas: tipo (precipitacao ou temperatura); id; lat; lon; recorte (bacia do ONS ou UF); subrecorte (polígono do shapefile ou subsistema); passo_grau; peso (área relativa, cos(lat) × passo², ou população da célula); populacao_recorte.",
+   "modulo": "agua",
+   "gold": "agua_detalhe.json"
+  },
+  "/energia/series/agua_ear_recortes_diario.csv": {
+   "colunas": "EAR e ENA diárias por REE e por bacia (ONS), desde 2022. Colunas: data; recorte (ree ou bacia); nome; ear_mwmes; ear_max_mwmes; ear_pct (publicado); ena_bruta_mwmed (MWmed); ena_bruta_pct_mlt; mlt_implicita_mwmed (ENA ÷ % MLT × 100). Ausência = vazio.",
+   "modulo": "agua",
+   "gold": "agua_detalhe.json"
+  },
+  "/energia/series/agua_ear_recortes_mensal.csv": {
+   "colunas": "EAR no último dia do mês e ENA mensal por REE e por bacia, desde 2000. Colunas: mes; recorte; nome; dia_ear; ear_mwmes_fim_mes; ear_max_mwmes_fim_mes; ear_pct_fim_mes; ena_bruta_pct_mlt_mes (Σ ENA ÷ Σ MLT dos dias do mês, só com o mês completo); dias_ena.",
+   "modulo": "agua",
+   "gold": "agua_detalhe.json"
+  },
+  "/energia/series/agua_capacidade_eventos.csv": {
+   "colunas": "Mudanças da EAR máxima por subsistema e sua atribuição a reservatórios. Colunas: data; subsistema; ear_max_antes_mwmes; ear_max_depois_mwmes; variacao_mwmes; cod_reservatorio; reservatorio; parte (proprio ou jusante); tipo (entrada, saida, alteracao); variacao_reservatorio_mwmes; residuo_evento_mwmes.",
+   "modulo": "agua",
+   "gold": "agua_detalhe.json"
+  },
+  "/energia/series/agua_mlt_mudancas.csv": {
+   "colunas": "Mudanças da MLT por usina (ONS, ENA por reservatório). Colunas: data; cod_reservatorio; reservatorio; subsistema; mlt_antes_mwmed; mlt_depois_mwmed; variacao_pct; tipo (revisao_no_mes: mudança fora do dia 1º, em usina existente). As trocas mensais normais (dia 1º) não entram no arquivo.",
+   "modulo": "agua",
+   "gold": "agua_detalhe.json"
+  },
+  "/energia/series/agua_reservatorios.csv": {
+   "colunas": "Reservatórios com balanço hídrico da janela de 30 dias. Colunas: id; cod; nome; subsistema; bacia; ree; tipo; vol_util_total_hm3 (cadastro ONS); vol_util_pct_fim; dv_obs_hm3; afluencia_hm3; defluencia_hm3; turbinado_hm3; vertido_hm3; outras_estruturas_hm3; defluencia_nao_discriminada_hm3; transferido_hm3; residuo_hm3 (dv_obs − (afluência − defluência)); residuo_com_transferencia_hm3; dias_com_dado; delta_ear_mwmes; dias_residuo_dentro_tolerancia_pct.",
+   "modulo": "agua",
+   "gold": "agua_detalhe.json"
+  },
+  "/energia/series/agua_reservatorios_diario.csv": {
+   "colunas": "Dados hidráulicos diários dos reservatórios com volume útil, últimos 365 dias. Colunas: data; id; vol_util_pct; dv_hm3; q_afluente, q_defluente, q_turbinada, q_vertida, q_outras, q_transferida, q_evaporacao, q_natural, q_incremental (m³/s); residuo_hm3. Ausência = vazio.",
+   "modulo": "agua",
+   "gold": "agua_detalhe.json"
+  },
   "/energia/series/carga_horaria.csv": {
    "colunas": "data_hora (início da hora, horário de Brasília); SE, S, NE, N = carga horária da Curva de Carga Horária do ONS em MWmed; SIN = soma dos quatro na hora (vazio se algum faltar); regime = 1, 2 ou 3 (mudanças de conteúdo do ONS em 01/03/2021 e 29/04/2023). Desde 2019.",
    "modulo": "carga",
    "gold": "carga_detalhe.json"
   },
   "/energia/series/carga_verificada_horaria.csv": {
-   "colunas": "data_hora (início da hora, Brasília); submercado (SE, S, NE, N, SIN); carga_global_mwmed, mmgd_mwmed, carga_liquida_mwmed = médias das duas meias horas da API de carga verificada; carga_liquida = carga_global − mmgd (identidade publicada pelo ONS, conferida). Desde 2024.",
+   "colunas": "data_hora (início da hora, Brasília); global_<sm>, mmgd_<sm>, liquida_<sm> para sm = SE, S, NE, N e SIN, em MWmed = médias das duas meias horas da API de carga verificada; liquida = global − mmgd (identidade publicada pelo ONS, conferida); vazio = hora sem as duas meias horas. Desde 2024.",
    "modulo": "carga",
    "gold": "carga_detalhe.json"
   },
@@ -102,7 +157,7 @@
    "gold": "carga_detalhe.json"
   },
   "/energia/series/carga_perfil_tipico.csv": {
-   "colunas": "produto (curva: Curva de Carga Horária; verificada: API); mes (AAAA-MM); submercado; classe_dia; hora (0 a 23); serie (carga, carga_global, mmgd, carga_liquida); media_mwmed; dias (dias completos na média).",
+   "colunas": "mes (AAAA-MM); submercado; classe_dia (util, sabado, domingo_feriado); hora (0 a 23, início); carga_mwmed (Curva de Carga Horária); carga_global_mwmed, mmgd_mwmed, carga_liquida_mwmed (API de carga verificada); dias_curva e dias_api (dias completos em cada média). Desde 2019.",
    "modulo": "carga",
    "gold": "carga_detalhe.json"
   },
@@ -112,7 +167,7 @@
    "gold": "carga_detalhe.json"
   },
   "/energia/series/carga_revisoes.csv": {
-   "colunas": "dataset; serie; ref; capturado_em (UTC) de cada vintage; valor; valor_anterior; diferenca; diferenca_pct; situacao (revisao ou quarentena).",
+   "colunas": "dataset; serie; ref (dia); capturado_em e capturado_em_ant (UTC, captura que revisou e a anterior); valor; valor_anterior; diferenca (MWmed); diferenca_pct (vazio se o anterior não era positivo); situacao (revisao ou correcao_de_valor_fora_do_dominio).",
    "modulo": "carga",
    "gold": "carga_detalhe.json"
   },
@@ -135,6 +190,151 @@
    "colunas": "data; nome; categoria (feriado_nacional, paixao, ponto_facultativo); base_legal; dia_semana. 2003 a 2027.",
    "modulo": "carga",
    "gold": "carga_detalhe.json"
+  },
+  "/energia/series/geracao_matriz_diaria.csv": {
+   "colunas": "data; regiao (SE, S, NE, N, SIN); horas = instantes horários distintos no arquivo do ONS; colunas por categoria (hidraulica, eolica, solar_centralizada, solar_mmgd, nuclear, gas, carvao, oleo, biomassa, outros, termica_sem_combustivel, nao_mapeada) em MWh no dia; total_mwh; total_sem_mmgd_mwh. Vazio = sem dado.",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_matriz_horaria_12m.csv": {
+   "colunas": "hora (local, início do intervalo); colunas por categoria em MWmed no SIN; últimos 366 dias.",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_rotulos_fonte.csv": {
+   "colunas": "ano; tipo_usina, combustivel e modalidade como o ONS escreve; categoria publicada; natureza (verificada, grupo_tipo3, grupo_mmgd); mwh no ano.",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_a11_conferencia.csv": {
+   "colunas": "data; balanco_solar_sin_mwh (Balanço de Energia); usinas_solar_mwh (soma das usinas FOTOVOLTAICA da Geração por Usina); usinas_mmgd_mwh; usinas_solar_sem_mmgd_mwh; diferenca_mwh = balanço − usinas.",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_reconciliacao_balanco.csv": {
+   "colunas": "mes; fonte do balanço (hidraulica, termica com nuclear, eolica, solar); balanco_mwh; usinas_mwh; diferenca_mwh; usinas_roraima_mwh (térmicas de Roraima na Geração por Usina); dias.",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_termica_motivo_mensal.csv": {
+   "colunas": "mes; regiao; total_mwh (geração verificada); uma coluna por motivo em MWh (partição sem dupla contagem); nao_classificado_mwh = total − soma dos motivos; constrained_off_mwh (restrição, não geração); horas.",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_termica_usina_mensal.csv": {
+   "colunas": "mes; usina (CEG ou código do ONS); nome; subsistema; combustivel (rótulo); categoria; origem_combustivel; total_mwh e uma coluna por motivo em MWh. Só linhas com algum valor diferente de zero.",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_cvu_semanal.csv": {
+   "colunas": "semana_inicio; semana_fim; pmo (ano-mês de referência e revisão); cod_usina (código do ONS nos modelos); usina; subsistema; categoria; cvu_rs_mwh. De 2021 em diante.",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_restricao_diaria.csv": {
+   "colunas": "data; fonte (eolica, solar); regiao; razao (REL, CNF, ENE, PAR, SEM); origem (LOC, SIS); energia_nao_gerada_mwh (estimada: referência − verificada nas meias horas limitadas); gnra_fonte_mwh (campo publicado pelo ONS, quando existe); meias_horas_limitadas; e, na linha razao = TOTAL, geracao_verificada_mwh, meias_horas e potencia_max_cortada_mw.",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_restricao_usina_mensal.csv": {
+   "colunas": "mes; fonte; id_ons; nome; subsistema; uf; geracao_verificada_mwh; energia não gerada estimada por razão (eng_REL, eng_CNF, eng_ENE, eng_PAR, eng_SEM, em MWh); meias_horas; meias_horas_limitadas.",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_capacidade_unidades.csv": {
+   "colunas": "cod_equipamento; usina; ceg; tipo; combustivel; categoria; modalidade; subsistema; uf; potencia_mw; entrada_teste; entrada_operacao; desativacao (retrato do dia da captura).",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_capacidade_usina_mensal.csv": {
+   "colunas": "mes; id_ons; nome; categoria; geracao_mwh; horas_com_valor; potencia_operacional_mw (média do mês pelas datas de entrada e desativação das unidades); fator_capacidade_pct; casamento (ceg, ceg_base, conjunto). Últimos 24 meses, só usinas pareadas.",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/geracao_capacidade_fonte_mensal.csv": {
+   "colunas": "mes; categoria; potencia_operacional_mw (todas as unidades do retrato em operação no mês); geracao_pareada_mwh; capacidade_hora_pareada_mwh; fator_capacidade_pct; cobertura_pct; fc_ons_pct (eólica e solar, conjunto Fator de Capacidade do ONS).",
+   "modulo": "geracao",
+   "gold": "geracao_detalhe.json"
+  },
+  "/energia/series/rede_horario_2021.csv": {
+   "colunas": "data_hora (início da hora, Brasília); fluxo_N_NE, fluxo_N_SE, fluxo_NE_SE, fluxo_S_SE = intercâmbio verificado na fronteira em MWmed, positivo da primeira para a segunda ponta; prog_* = programado na mesma orientação (só a partir de 2026); ext_ARGENTINA, ext_URUGUAI, ext_PARAGUAI = intercâmbio internacional verificado (positivo = exportação); prog_ext_* = programado; pld_SE, pld_S, pld_NE, pld_N = PLD horário da CCEE na mesma hora, R$/MWh nominais; saldo_SE, saldo_S, saldo_NE, saldo_N, saldo_SIN = intercâmbio líquido do balanço de energia (positivo = exporta). Vazio = ausência na fonte.",
+   "modulo": "rede",
+   "gold": "rede_detalhe.json"
+  },
+  "/energia/series/rede_horario_2022.csv": {
+   "colunas": "data_hora (início da hora, Brasília); fluxo_N_NE, fluxo_N_SE, fluxo_NE_SE, fluxo_S_SE = intercâmbio verificado na fronteira em MWmed, positivo da primeira para a segunda ponta; prog_* = programado na mesma orientação (só a partir de 2026); ext_ARGENTINA, ext_URUGUAI, ext_PARAGUAI = intercâmbio internacional verificado (positivo = exportação); prog_ext_* = programado; pld_SE, pld_S, pld_NE, pld_N = PLD horário da CCEE na mesma hora, R$/MWh nominais; saldo_SE, saldo_S, saldo_NE, saldo_N, saldo_SIN = intercâmbio líquido do balanço de energia (positivo = exporta). Vazio = ausência na fonte.",
+   "modulo": "rede",
+   "gold": "rede_detalhe.json"
+  },
+  "/energia/series/rede_horario_2023.csv": {
+   "colunas": "data_hora (início da hora, Brasília); fluxo_N_NE, fluxo_N_SE, fluxo_NE_SE, fluxo_S_SE = intercâmbio verificado na fronteira em MWmed, positivo da primeira para a segunda ponta; prog_* = programado na mesma orientação (só a partir de 2026); ext_ARGENTINA, ext_URUGUAI, ext_PARAGUAI = intercâmbio internacional verificado (positivo = exportação); prog_ext_* = programado; pld_SE, pld_S, pld_NE, pld_N = PLD horário da CCEE na mesma hora, R$/MWh nominais; saldo_SE, saldo_S, saldo_NE, saldo_N, saldo_SIN = intercâmbio líquido do balanço de energia (positivo = exporta). Vazio = ausência na fonte.",
+   "modulo": "rede",
+   "gold": "rede_detalhe.json"
+  },
+  "/energia/series/rede_horario_2024.csv": {
+   "colunas": "data_hora (início da hora, Brasília); fluxo_N_NE, fluxo_N_SE, fluxo_NE_SE, fluxo_S_SE = intercâmbio verificado na fronteira em MWmed, positivo da primeira para a segunda ponta; prog_* = programado na mesma orientação (só a partir de 2026); ext_ARGENTINA, ext_URUGUAI, ext_PARAGUAI = intercâmbio internacional verificado (positivo = exportação); prog_ext_* = programado; pld_SE, pld_S, pld_NE, pld_N = PLD horário da CCEE na mesma hora, R$/MWh nominais; saldo_SE, saldo_S, saldo_NE, saldo_N, saldo_SIN = intercâmbio líquido do balanço de energia (positivo = exporta). Vazio = ausência na fonte.",
+   "modulo": "rede",
+   "gold": "rede_detalhe.json"
+  },
+  "/energia/series/rede_horario_2025.csv": {
+   "colunas": "data_hora (início da hora, Brasília); fluxo_N_NE, fluxo_N_SE, fluxo_NE_SE, fluxo_S_SE = intercâmbio verificado na fronteira em MWmed, positivo da primeira para a segunda ponta; prog_* = programado na mesma orientação (só a partir de 2026); ext_ARGENTINA, ext_URUGUAI, ext_PARAGUAI = intercâmbio internacional verificado (positivo = exportação); prog_ext_* = programado; pld_SE, pld_S, pld_NE, pld_N = PLD horário da CCEE na mesma hora, R$/MWh nominais; saldo_SE, saldo_S, saldo_NE, saldo_N, saldo_SIN = intercâmbio líquido do balanço de energia (positivo = exporta). Vazio = ausência na fonte.",
+   "modulo": "rede",
+   "gold": "rede_detalhe.json"
+  },
+  "/energia/series/rede_horario_2026.csv": {
+   "colunas": "data_hora (início da hora, Brasília); fluxo_N_NE, fluxo_N_SE, fluxo_NE_SE, fluxo_S_SE = intercâmbio verificado na fronteira em MWmed, positivo da primeira para a segunda ponta; prog_* = programado na mesma orientação (só a partir de 2026); ext_ARGENTINA, ext_URUGUAI, ext_PARAGUAI = intercâmbio internacional verificado (positivo = exportação); prog_ext_* = programado; pld_SE, pld_S, pld_NE, pld_N = PLD horário da CCEE na mesma hora, R$/MWh nominais; saldo_SE, saldo_S, saldo_NE, saldo_N, saldo_SIN = intercâmbio líquido do balanço de energia (positivo = exporta). Vazio = ausência na fonte.",
+   "modulo": "rede",
+   "gold": "rede_detalhe.json"
+  },
+  "/energia/series/rede_fronteiras_diario.csv": {
+   "colunas": "data; par; horas (horas com valor); liquido_mwh (Σ fluxo horário × 1 h, com sinal); canonico_mwh (energia no sentido da primeira para a segunda ponta); inverso_mwh (sentido contrário); contra_saldo_mwh (menor dos dois: energia que o saldo líquido do dia esconde); horas_canonico, horas_inverso, horas_nulas (|fluxo| ≤ 1 MWmed); reversoes (trocas de sentido entre horas consecutivas com fluxo); max_canonico_mwmed, max_inverso_mwmed; horas_pld (horas com PLD nas duas pontas); horas_precos_separados (|ΔPLD| > R$ 0,01/MWh); horas_separados_fluxo_para_mais_caro e horas_separados_fluxo_para_mais_barato (sentido do fluxo verificado em relação ao preço, na mesma hora).",
+   "modulo": "rede",
+   "gold": "rede_detalhe.json"
+  },
+  "/energia/series/rede_subsistemas_diario.csv": {
+   "colunas": "data; sm; horas; exportacao_bruta_mwh e importacao_bruta_mwh (soma, hora a hora, das fronteiras em que o subsistema exporta e das em que importa, com o exterior no Sul); liquido_mwh (exportação menos importação); horas_transito (horas em que o subsistema exporta por uma fronteira e importa por outra ao mesmo tempo).",
+   "modulo": "rede",
+   "gold": "rede_detalhe.json"
+  },
+  "/energia/series/rede_balanco_mensal.csv": {
+   "colunas": "mes; sm (SE, S, NE, N, SIN); horas; horas_completas (todas as parcelas publicadas); geracao_mwh (hidráulica + térmica + eólica + solar), carga_mwh, intercambio_mwh (balanço do ONS, MWh); fronteiras_exterior_mwh (soma das fronteiras e, no Sul e no SIN, do intercâmbio internacional); residuo_balanco_mwh (geração − carga − intercâmbio); horas_residuo_balanco (|resíduo| > 0,1 MWmed); residuo_perimetro_mwh (intercâmbio do balanço − fronteiras e exterior); horas_residuo_perimetro.",
+   "modulo": "rede",
+   "gold": "rede_detalhe.json"
+  },
+  "/energia/series/rede_balanco_residuos.csv": {
+   "colunas": "data_hora; identidade (balanco: geração − carga − intercâmbio; perimetro: intercâmbio do balanço − fronteiras e exterior; soma_sin: intercâmbio do SIN − soma dos quatro subsistemas); sm; residuo_mwmed; só horas com |resíduo| > 0,1 MWmed. Parcela ausente na fonte não gera linha (a hora fica como incompleta na tabela mensal).",
+   "modulo": "rede",
+   "gold": "rede_detalhe.json"
+  },
+  "/energia/series/rede_exterior_mensal.csv": {
+   "colunas": "mes; pais (ARGENTINA, URUGUAI, PARAGUAI) ou ITAIPU; horas; exportacao_mwh e importacao_mwh (intercâmbio verificado, positivo = exportação); liquido_mwh; horas_com_fluxo (|fluxo| > 1 MWmed); programado_liquido_mwh (2026 em diante); para ITAIPU: total_mwh, brasil_mwh (destinada ao Brasil) e nao_brasil_mwh (total − Brasil).",
+   "modulo": "rede",
+   "gold": "rede_detalhe.json"
+  },
+  "/energia/series/rede_atls.csv": {
+   "colunas": "fluxo (sigla do ONS); periodicidade (ME = mensal, AN = acumulado no ano até o mês); mes; atls (fração de 0 a 1, como publicada; o dicionário diz %); horas_violacao (horas acima do limite estabelecido); horas_periodo_implicitas (horas_violacao ÷ (1 − atls), vazio quando atls = 1); horas_calendario (mensal).",
+   "modulo": "rede",
+   "gold": "rede_detalhe.json"
+  },
+  "/energia/series/rede_interrupcoes_carga.csv": {
+   "colunas": "chave; cod_perturbacao; instante (Brasília); sm; uf; agente; carga_interrompida_mw; tempo_medio_min; energia_nao_suprida_mwh; rede_basica (S/N); rede_operacao (S/N); repetida (1 = linha idêntica a outra do arquivo). Como publicado pelo ONS.",
+   "modulo": "rede",
+   "gold": "rede_detalhe.json"
+  },
+  "/energia/series/rede_programado_horario.csv": {
+   "colunas": "data_hora; par (fronteira na orientação canônica, ARGENTINA ou URUGUAI); programado_mwmed; verificado_mwmed; desvio_mwmed (verificado − programado); material (1 = |desvio| ≥ 1.000 MWmed); inversao (1 = programa e operação em sentidos opostos, ambos acima de 1 MWmed em módulo). Desvio não é falha: o programa é a previsão do dia anterior.",
+   "modulo": "rede",
+   "gold": "rede_detalhe.json"
+  },
+  "/energia/series/rede_programado_diario.csv": {
+   "colunas": "data; par; horas; programado_mwh; verificado_mwh; desvio_mwh (Σ verificado − programado); desvio_abs_mwh (Σ |desvio|); horas_materiais; horas_inversao; maior_desvio_mwmed e hora_maior_desvio.",
+   "modulo": "rede",
+   "gold": "rede_detalhe.json"
+  },
+  "/energia/series/rede_pdo_conferencia.csv": {
+   "colunas": "data_hora; pais; programado_conjunto_mwmed (intercâmbio internacional programado); pdo_mwmed (−média das duas meias horas das conversoras do país no PDO); diferenca_mwmed; confere (1 = diferença ≤ 0,5 MWmed).",
+   "modulo": "rede",
+   "gold": "rede_detalhe.json"
   },
   "/energia/series/expansao_usinas_siga.csv": {
    "colunas": "nucleo_ceg; ceg; nome; tipo; origem; fonte; fase (SIGA); estagio; outorga; uf; municipios; lat; lon (grau decimal, vazio = não informado ou 0 na fonte); kw_outorgado; kw_fiscalizado; entrada_operacao (vazio = sem data, inclui o marcador 1900-01-03 do SIGA); garantia_fisica_kwmed (vazio = sem garantia física registrada); vigencia_inicio; vigencia_fim; cnpjs_proprietarios (14 dígitos, separados por |)",
@@ -247,22 +447,22 @@
    "gold": "transicao.json"
   },
   "/energia/series/perdas_distribuidoras.csv": {
-   "colunas": "cnpj; sigla; nome; classificacao; ano; meses (competências publicadas no ano); completo (12 meses); injetada_publicada_mwh; injetada_referencia_mwh (denominador; ver origem_injetada); origem_injetada (publicada, requerida ou mista); perdas_totais_mwh (valor medido da fonte); taxa_total_pct (perdas totais ÷ injetada de referência); perdas_tecnicas_mwh (estimativa regulatória publicada pela fonte); taxa_tecnica_pct; pnt_mwh (perdas totais − técnicas, valor medido); pnt_injetada_pct; mercado_bt_mwh (energia medida em BT: cativo, consumo próprio e livre); pnt_bt_pct; perdas_totais_faturado_mwh; taxa_total_faturado_pct; perdas_linha_antiga_mwh (linha antiga Perdas do SAMP, base não identificada pela fonte; nunca somada à série medida); residuo_mwh (injetada publicada − fornecida − irregular − perdas); residuo_pct_injetada; reconciliacao (fecha, residuo_pequeno, residuo_relevante, sem_componentes); alertas. Energia em MWh; percentuais em %. Somas sobre os meses publicados no ano (coluna meses); só completo = 1 entra em agregados e comparações, e nada é escalado para 12 meses. Vazio = ausência (a fonte não publicou o componente em algum dos meses presentes); zero é zero.",
+   "colunas": "cnpj; sigla; nome; classificacao; ano; meses (competências publicadas no ano); completo (12 meses); injetada_publicada_mwh; injetada_referencia_mwh (denominador; ver origem_injetada); origem_injetada (publicada, requerida ou mista); perdas_totais_mwh (valor medido da fonte); taxa_total_pct (perdas totais ÷ injetada de referência); perdas_tecnicas_mwh (estimativa regulatória publicada pela fonte, só a do valor medido); taxa_tecnica_pct (sobre a injetada de referência); pnt_mwh (linha publicada 'Perdas Não-Técnicas', valor medido); pnt_injetada_pct; mercado_bt_mwh (energia medida em BT: cativo, consumo próprio e livre); pnt_bt_pct; perdas_totais_faturado_mwh; taxa_total_faturado_pct; perdas_linha_antiga_mwh (linha antiga Perdas do SAMP, base não identificada pela fonte; nunca somada à série medida); residuo_mwh (injetada publicada − fornecida − irregular − perdas); residuo_pct_injetada; reconciliacao (fecha, residuo_pequeno, residuo_relevante, sem_componentes); alertas (perda_total_negativa, perda_total_maior_que_injetada, fornecida_maior_que_injetada, balanco_nao_fecha, injetada_nao_positiva, representacoes_conflitantes: fora de agregados e comparações); taxa_tecnica_injetada_publicada_pct (técnica sobre a injetada publicada, a base em que a fonte aplica o percentual regulatório); residuo_decomposicao_mwh (perdas totais − técnicas − não técnicas); decomposicao (fecha, diferenca_pequena, nao_fecha, sem_separacao; nao_fecha fica fora dos agregados de técnica e não técnica); variacao_injetada_ano_anterior_pct; quebra_escala_ano_anterior (1 = injetada de referência mudou mais de 30% entre dois anos completos); absorcao_ano_anterior (1 = absorção provável observada no SAMP entre os dois anos); vazio no primeiro ano da série. Energia em MWh; percentuais em %. Somas sobre os meses publicados no ano (coluna meses); só completo = 1 entra em agregados e comparações, e nada é escalado para 12 meses. Vazio = ausência (a fonte não publicou o componente em algum dos meses presentes); zero é zero.",
    "modulo": "perdas",
    "gold": "perdas.json"
   },
   "/energia/series/perdas_mensal.csv": {
-   "colunas": "cnpj; competencia (AAAA-MM); valores em kWh como publicados no SAMP Balanço: injetada_publicada, injetada_referencia, origem_injetada, representacao (linha usada: todos=niveis, total=niveis, todos, total, niveis), fornecida_medida, outros_requisitos, irregular_faturada, perdas_totais_medidas, perdas_tecnicas, pnt_medidas, perdas_totais_faturadas, pnt_faturadas, perdas_linha_antiga, mercado_bt_medido, mmgd_injetada, residuo, conflitos (grandezas cujas representações divergem no mês), conflitos_abertos (divergência que nem a soma dos níveis nem o fechamento do balanço arbitrou; gera alerta). Vazio = linha ausente na fonte.",
+   "colunas": "cnpj; competencia (AAAA-MM); valores em kWh como publicados no SAMP Balanço: injetada_publicada, injetada_referencia, origem_injetada, representacao (linha usada: todos=niveis, total=niveis, todos, total, niveis), fornecida_medida, outros_requisitos, irregular_faturada, perdas_totais_medidas, perdas_tecnicas, pnt_medidas, perdas_totais_faturadas, pnt_faturadas, perdas_linha_antiga, mercado_bt_medido, mmgd_injetada, residuo, conflitos (grandezas cujas representações divergem no mês), conflitos_abertos (divergência que nem a soma dos níveis nem o fechamento do balanço arbitrou; gera alerta), perdas_tecnicas_faturadas (linha técnica do valor faturado, diferente da medida em 13% dos meses; nunca usada no lugar dela), residuo_decomposicao (perdas totais − técnicas − não técnicas medidas). perdas_tecnicas é só a do valor medido. Vazio = linha ausente na fonte.",
    "modulo": "perdas",
    "gold": "perdas.json"
   },
   "/energia/series/perdas_nacional.csv": {
-   "colunas": "ano; universo (concessionarias, permissionarias, todas); completo (0 = ano aberto, sem soma anual); n_distribuidoras (agentes com 12 meses e sem alerta físico); injetada_referencia_mwh; perdas_totais_mwh; taxa_total_pct; n_com_tecnica; injetada_com_tecnica_mwh; perdas_tecnicas_mwh; taxa_tecnica_pct; pnt_mwh; mercado_bt_mwh; pnt_bt_pct; excluidos (agentes-ano fora da soma e motivo). Taxas agregadas = 100 × Σ numeradores ÷ Σ denominadores do mesmo subconjunto.",
+   "colunas": "ano; universo (concessionarias, permissionarias, todas); completo (0 = ano aberto, sem soma anual); n_distribuidoras (agentes com 12 meses e sem alerta físico); injetada_referencia_mwh; perdas_totais_mwh; taxa_total_pct; n_com_tecnica; injetada_com_tecnica_mwh; perdas_tecnicas_mwh; taxa_tecnica_pct; pnt_mwh; mercado_bt_mwh; pnt_bt_pct; excluidos (agentes-ano fora da soma e motivo); cobertura_tecnica_pct (injetada das que entram na técnica ÷ injetada das válidas); taxa_tecnica_injetada_publicada_pct; cobertura_bt_pct (mercado BT das que entram na não técnica ÷ mercado BT das válidas); universo_*_igual_ano_anterior (1 = mesmo conjunto de distribuidoras do ano anterior naquela medida); n_mesmas_* e *_mesmas_ano_anterior / *_mesmas (a mesma medida no ano anterior e no ano, só sobre as distribuidoras válidas nos dois anos e sem mudança de escala entre eles: é aí que se lê a variação anual); fora_por_mudanca_de_universo. Taxas agregadas = 100 × Σ numeradores ÷ Σ denominadores do mesmo subconjunto; a diferença entre linhas de universos diferentes é composição, não variação.",
    "modulo": "perdas",
    "gold": "perdas.json"
   },
   "/energia/series/perdas_tecnicas_regulatorias.csv": {
-   "colunas": "cnpj; sigla; inicio (AAAA-MM); fim (AAAA-MM); percentual (% da energia injetada, constante no trecho); meses; resolucao_tarifaria (REH cuja vigência começa no mês de transição, quando existe); inicio_vigencia_reh; dia_prorata_diagnostico (dia em que a nova taxa teria começado, reconstituído da média pró-rata do mês de transição; diagnóstico, não data de vigência: coincide com o início da REH em poucos casos). A REH é associada por coincidência de mês; a fonte não liga o percentual ao ato.",
+   "colunas": "cnpj; sigla; inicio (AAAA-MM); fim (AAAA-MM); percentual (% da energia injetada, constante no trecho); meses; resolucao_tarifaria (REH cuja vigência começa no mês de transição, quando existe); inicio_vigencia_reh; dia_prorata_diagnostico (dia em que a nova taxa teria começado, reconstituído da média pró-rata do mês de transição; diagnóstico, não data de vigência: coincide com o início da REH em poucos casos); classe (referencia = 6 meses ou mais; curto = possível coincidência de arredondamento, fora da gold); troca_pp (variação contra o trecho anterior). A REH só é associada quando o percentual muda ao menos 0,02 p.p. e o início de vigência cai no mês da troca; é coincidência de datas, a fonte não liga o percentual ao ato.",
    "modulo": "perdas",
    "gold": "perdas.json"
   },
@@ -282,7 +482,7 @@
    "gold": "perdas.json"
   },
   "/energia/series/perdas_acumulado_ano.csv": {
-   "colunas": "nivel (universo ou distribuidora); chave (universo ou CNPJ); sigla; ano (ano aberto); mes_fim (último mês do recorte janeiro..mes_fim, o mesmo para todas); meses_ou_n (meses publicados da distribuidora ou número de distribuidoras somadas); comparavel (1 = completa e sem alerta nos dois anos); perdas_totais_mwh; injetada_referencia_mwh; taxa_total_pct; pnt_bt_pct; os mesmos campos do mesmo período do ano anterior (sufixo _ano_anterior); alertas. Agregado por universo = Σ numeradores ÷ Σ denominadores das distribuidoras comparáveis. Vazio = ausência.",
+   "colunas": "nivel (universo ou distribuidora); chave (universo ou CNPJ); sigla; ano (ano aberto); mes_fim (último mês do recorte janeiro..mes_fim, o mesmo para todas); meses_ou_n (meses publicados da distribuidora ou número de distribuidoras somadas); comparavel (1 = completa e sem alerta nos dois anos, sem quebra de escala nem absorção entre os dois recortes); perdas_totais_mwh; injetada_referencia_mwh; taxa_total_pct; pnt_bt_pct; os mesmos campos do mesmo período do ano anterior (sufixo _ano_anterior); alertas. Agregado por universo = Σ numeradores ÷ Σ denominadores das distribuidoras comparáveis. Vazio = ausência.",
    "modulo": "perdas",
    "gold": "perdas.json"
   },
@@ -296,38 +496,43 @@
    "modulo": "perdas",
    "gold": "perdas.json"
   },
+  "/energia/series/perdas_nacional.json": {
+   "colunas": "Série nacional completa (concessionárias, permissionárias e todas), com os mesmos campos da linha nacional da gold (que traz só as concessionárias): cobertura, marca de universo e comparação com o ano anterior nas mesmas distribuidoras; lida sob demanda.",
+   "modulo": "perdas",
+   "gold": "perdas.json"
+  },
   "/energia/series/perdas_municipios.json": {
    "colunas": "Município IBGE → [índice da distribuidora, estado do vínculo: 0 relação sem confirmação, 1 relação confirmada pelo cadastro de MMGD, 2 só pelo cadastro de MMGD]; para o mapa.",
    "modulo": "perdas",
    "gold": "perdas.json"
   },
   "/energia/series/qualidade_distribuidoras_anual.csv": {
-   "colunas": "cnpj; sigla; ano; meses (com DEC); dec_h e fec_interrupcoes (soma dos 12 meses; vazio se o ano não tem 12 meses); dec_limite_h e fec_limite_interrupcoes (média dos limites dos conjuntos ponderada pelas UCs médias); cobertura_limite (fração das UCs com limite); razao_dec e razao_fec (apurado ÷ limite); dgc_calculado (média das duas razões); dec_todas_parcelas_h e fec_todas_parcelas (soma de todas as parcelas publicadas, inclusive expurgadas); parcelas por grupo em horas e interrupções; ucs_media; conjuntos. Vazio = ausência.",
+   "colunas": "cnpj; sigla; classificacao (concessionária ou permissionária, das manifestações ou do IASC); ano; meses (com DEC); dec_h e fec_interrupcoes (soma dos 12 meses; vazio se o ano não tem 12 meses); dec_limite_h e fec_limite_interrupcoes (média dos limites dos conjuntos ponderada pelas UCs médias); cobertura_limite (fração das UCs com limite); razao_dec e razao_fec (apurado ÷ limite); dgc_calculado (média das duas razões); dec_todas_parcelas_h e fec_todas_parcelas (soma de todas as parcelas publicadas, inclusive expurgadas); parcelas por grupo em horas e interrupções; ucs_media; conjuntos; quebra_perimetro (incorporação ou cessão de área detectada no ano: CNPJs das outras distribuidoras envolvidas; a série antes e depois não é do mesmo perímetro). Vazio = ausência.",
    "modulo": "qualidade",
    "gold": "qualidade.json"
   },
   "/energia/series/qualidade_distribuidoras_mensal.csv": {
-   "colunas": "cnpj; sigla; mes (AAAA-MM); dec_h; fec_interrupcoes; ucs (UCs dos conjuntos com DEC no mês, denominador); ucs_total; conjuntos; cobertura (ucs ÷ ucs_total). DEC em horas e centésimos de hora, não minutos.",
+   "colunas": "cnpj; sigla; mes (AAAA-MM); dec_h; fec_interrupcoes; ucs (UCs dos conjuntos com DEC no mês, denominador do DEC); ucs_fec (denominador do FEC); ucs_total; conjuntos; cobertura (ucs ÷ ucs_total); controle_numcon (motivo quando o NumCon publicado no mês não é plausível: o mês fica fora do Brasil e, com mais de um conjunto, o DEC e o FEC da distribuidora ficam vazios porque os pesos não valem). DEC em horas e centésimos de hora, não minutos.",
    "modulo": "qualidade",
    "gold": "qualidade.json"
   },
   "/energia/series/qualidade_brasil.csv": {
-   "colunas": "periodo (AAAA ou AAAA-MM); tipo (anual ou mensal); dec_h; fec_interrupcoes; dec_limite_h; fec_limite_interrupcoes; ucs; conjuntos; completo (1 = 12 meses ou mês com cobertura plena).",
+   "colunas": "periodo (AAAA ou AAAA-MM); tipo (anual ou mensal); dec_h e fec_interrupcoes de todas as distribuidoras com indicadores publicados, inclusive permissionárias; dec_limite_h; fec_limite_interrupcoes; ucs; conjuntos; completo (1 = 12 meses ou mês com cobertura plena); dec_concessionarias_h e fec_concessionarias (só concessionárias, o universo do número divulgado pela ANEEL; vazio quando falta a classificação de alguma distribuidora do ano); distribuidoras_fora_numcon (distribuidoras do mês fora do agregado por NumCon implausível).",
    "modulo": "qualidade",
    "gold": "qualidade.json"
   },
   "/energia/series/qualidade_conjuntos_anual_2000_2009.csv": {
-   "colunas": "Conjuntos de 2000 a 2009: conjunto (IdeConjUndConsumidoras); nome (cadastro mais recente); cnpj (de quem publicou o ano); sigla; ano; meses; dec_h; fec_interrupcoes (soma dos meses publicados; o ano só é completo com 12 meses); dec_limite_h e fec_limite_interrupcoes (limite do mesmo ano); razao_dec e razao_fec (só com 12 meses); ucs_media.",
+   "colunas": "Conjuntos de 2000 a 2009: conjunto (IdeConjUndConsumidoras); nome (cadastro mais recente); cnpj (de quem publicou o ano); sigla; ano; meses; dec_h; fec_interrupcoes (soma dos meses publicados; o ano só é completo com 12 meses); dec_limite_h e fec_limite_interrupcoes (limite do mesmo ano); razao_dec e razao_fec (só com 12 meses); ucs_media; acima_limite_dec e acima_limite_fec (1 = apurado maior que o limite, comparados em centésimos, como publicados; 0 = igual ou abaixo; vazio sem 12 meses ou sem limite). DEC e FEC anuais somados em centésimos exatos.",
    "modulo": "qualidade",
    "gold": "qualidade.json"
   },
   "/energia/series/qualidade_conjuntos_anual_2010_2019.csv": {
-   "colunas": "Conjuntos de 2010 a 2019: conjunto (IdeConjUndConsumidoras); nome (cadastro mais recente); cnpj (de quem publicou o ano); sigla; ano; meses; dec_h; fec_interrupcoes (soma dos meses publicados; o ano só é completo com 12 meses); dec_limite_h e fec_limite_interrupcoes (limite do mesmo ano); razao_dec e razao_fec (só com 12 meses); ucs_media.",
+   "colunas": "Conjuntos de 2010 a 2019: conjunto (IdeConjUndConsumidoras); nome (cadastro mais recente); cnpj (de quem publicou o ano); sigla; ano; meses; dec_h; fec_interrupcoes (soma dos meses publicados; o ano só é completo com 12 meses); dec_limite_h e fec_limite_interrupcoes (limite do mesmo ano); razao_dec e razao_fec (só com 12 meses); ucs_media; acima_limite_dec e acima_limite_fec (1 = apurado maior que o limite, comparados em centésimos, como publicados; 0 = igual ou abaixo; vazio sem 12 meses ou sem limite). DEC e FEC anuais somados em centésimos exatos.",
    "modulo": "qualidade",
    "gold": "qualidade.json"
   },
   "/energia/series/qualidade_conjuntos_anual_2020_2029.csv": {
-   "colunas": "Conjuntos de 2020 a 2029: conjunto (IdeConjUndConsumidoras); nome (cadastro mais recente); cnpj (de quem publicou o ano); sigla; ano; meses; dec_h; fec_interrupcoes (soma dos meses publicados; o ano só é completo com 12 meses); dec_limite_h e fec_limite_interrupcoes (limite do mesmo ano); razao_dec e razao_fec (só com 12 meses); ucs_media.",
+   "colunas": "Conjuntos de 2020 a 2029: conjunto (IdeConjUndConsumidoras); nome (cadastro mais recente); cnpj (de quem publicou o ano); sigla; ano; meses; dec_h; fec_interrupcoes (soma dos meses publicados; o ano só é completo com 12 meses); dec_limite_h e fec_limite_interrupcoes (limite do mesmo ano); razao_dec e razao_fec (só com 12 meses); ucs_media; acima_limite_dec e acima_limite_fec (1 = apurado maior que o limite, comparados em centésimos, como publicados; 0 = igual ou abaixo; vazio sem 12 meses ou sem limite). DEC e FEC anuais somados em centésimos exatos.",
    "modulo": "qualidade",
    "gold": "qualidade.json"
   },
@@ -347,12 +552,22 @@
    "gold": "qualidade.json"
   },
   "/energia/series/qualidade_municipios.csv": {
-   "colunas": "cod_ibge; municipio; uf; conjuntos (IDs separados por espaço); n_conjuntos; relacao (conjunto_exclusivo, conjunto_compartilhado, varios_conjuntos); dec_min_h e dec_max_h, fec_min e fec_max dos conjuntos que atendem o município no ano de referência. O valor é do conjunto inteiro, não medido no município.",
+   "colunas": "cod_ibge; municipio; uf (nome e UF do cadastro do IBGE quando o código existe nele); conjuntos (IDs separados por espaço); n_conjuntos; relacao (conjunto_exclusivo, conjunto_compartilhado, varios_conjuntos, sem_conjunto_ativo, sem_relacao_na_fonte para município do IBGE que a base da ANEEL não cita, codigo_sem_ibge para código da ANEEL que não existe no cadastro do IBGE); conjuntos_com_valor; dec_min_h e dec_max_h, fec_min e fec_max dos conjuntos que atendem o município no ano de referência; cnpjs; conjuntos_historicos; no_ibge (1 ou 0); na_malha (1 ou 0). O valor é do conjunto inteiro, não medido no município.",
    "modulo": "qualidade",
    "gold": "qualidade.json"
   },
   "/energia/series/qualidade_mapa.json": {
-   "colunas": "JSON compacto para o mapa: ano; colunas [cod_ibge, relacao (índice em relacoes), n_conjuntos, dec_min, dec_max, fec_min, fec_max]; valores dos conjuntos que atendem o município (intervalo), nunca medidos no município; null = sem conjunto com 12 meses no ano.",
+   "colunas": "JSON compacto para o mapa: ano; colunas [cod_ibge, relacao (índice em relacoes), n_conjuntos, dec_min, dec_max, fec_min, fec_max]; uma linha por município do cadastro do IBGE (os da base da ANEEL sem relação publicada entram como sem_relacao_na_fonte); valores dos conjuntos que atendem o município (intervalo), nunca medidos no município; null = sem conjunto com 12 meses no ano; codigos_sem_ibge lista os códigos da base da ANEEL fora do cadastro do IBGE, que não vão ao mapa.",
+   "modulo": "qualidade",
+   "gold": "qualidade.json"
+  },
+  "/energia/series/qualidade_distribuidoras_serie.json": {
+   "colunas": "JSON compacto lido sob demanda pelos pequenos múltiplos: por CNPJ, anos (últimos 11 com valor), dec, fec, dec_limite e fec_limite anuais (null = ano sem 12 meses ou sem limite) e quebras (anos com mudança de perímetro).",
+   "modulo": "qualidade",
+   "gold": "qualidade.json"
+  },
+  "/energia/series/qualidade_atendimento_telefonico.csv": {
+   "colunas": "cnpj; sigla; mes (AAAA-MM); ins_pct, iab_pct e ico_pct (indicadores regulados, só períodos típicos, em %: a fonte publica a fração e o valor é multiplicado por 100); ins_cheio_pct, iab_cheio_pct e ico_cheio_pct (todos os períodos); ins_cumpre, iab_cumpre e ico_cumpre (1 ou 0 contra os padrões INS ≥ 85%, IAb ≤ 4%, ICO ≤ 2%); chamadas_oferecidas, ocupadas, atendidas e abandonadas (regulado) e as mesmas contagens cheias. Só as 40 distribuidoras obrigadas (mais de 60 mil UCs).",
    "modulo": "qualidade",
    "gold": "qualidade.json"
   },
@@ -377,12 +592,12 @@
    "gold": "conta.json"
   },
   "/energia/series/conta_composicao_b1.csv": {
-   "colunas": "cnpj; sigla; inicio; fim; ato; TE; TUSD; e uma coluna por código de componente (R$/MWh, arredondados a quatro casas decimais pelo escritor de CSV; a fonte publica até nove). Tarifa de aplicação B1 residencial convencional; o grupo de cada código está em conta.json (composicao.grupos). Vazio = componente não publicada na vigência.",
+   "colunas": "cnpj; sigla; inicio; fim; ato; TE; TUSD; e uma coluna por código de componente (R$/MWh, arredondados a quatro casas decimais pelo escritor de CSV; a fonte publica até nove). Tarifa de aplicação B1 residencial convencional; o grupo de cada código está em conta.json (composicao.grupos; valor negativo de TE_CFURH vai para o grupo créditos, composicao.creditos). Vazio = componente não publicada na vigência.",
    "modulo": "conta",
    "gold": "conta.json"
   },
   "/energia/series/conta_reajustes_b1.csv": {
-   "colunas": "cnpj; sigla; data; ato; mesmo_ato; total_antes_rs_mwh; total_depois_rs_mwh; variacao_pct; te_variacao_pct; tusd_variacao_pct; ipca_desde_evento_anterior_pct; meses_ipca. Mudanças da tarifa B1 residencial de aplicação na linha do tempo resolvida.",
+   "colunas": "cnpj; sigla; data; ato; mesmo_ato; total_antes_rs_mwh; total_depois_rs_mwh; variacao_pct; te_variacao_pct; tusd_variacao_pct; ipca_desde_evento_anterior_pct; meses_ipca; mudanca_perimetro (ato da incorporação quando o evento compara a tarifa da área antiga com a da área somada; vazio nos demais). Mudanças da tarifa B1 residencial de aplicação na linha do tempo resolvida.",
    "modulo": "conta",
    "gold": "conta.json"
   },
@@ -407,17 +622,17 @@
    "gold": "conta.json"
   },
   "/energia/series/conta_reajuste_vs_ipca.csv": {
-   "colunas": "janela_meses (12, 60, 120); de; ate (últimos dias dos meses inicial e final do IPCA); cnpj; sigla; ato_de; tarifa_de_rs_mwh; ato_ate; tarifa_ate_rs_mwh (TE + TUSD B1 residencial de aplicação vigente em cada data); variacao_pct; ipca_pct (razão de números-índice nos mesmos meses); variacao_real_pct = (1 + variação) ÷ (1 + IPCA) − 1. Só distribuidoras com tarifa nas duas datas.",
+   "colunas": "janela_meses (12, 60, 120); de; ate (últimos dias dos meses inicial e final do IPCA); cnpj; sigla; ato_de; tarifa_de_rs_mwh; ato_ate; tarifa_ate_rs_mwh (TE + TUSD B1 residencial de aplicação vigente em cada data); variacao_pct; ipca_pct (razão de números-índice nos mesmos meses); variacao_real_pct = (1 + variação) ÷ (1 + IPCA) − 1. Só distribuidoras com tarifa nas duas datas e sem mudança de perímetro (incorporação) dentro da janela.",
    "modulo": "conta",
    "gold": "conta.json"
   },
   "/energia/series/conta_cde_custeio.csv": {
-   "colunas": "ano; tipo (Despesa ou Receita); fonte (rubrica como publicada, aparada); grupo (classificação do observatório); valor_rs (R$ nominais; vazio = a ANEEL não publicou valor para a rubrica no ano, diferente de zero).",
+   "colunas": "ano; tipo (Despesa ou Receita); fonte (rubrica como publicada, aparada); grupo (classificação do observatório); valor_rs (R$ nominais do orçamento anual aprovado ou previsto pela ANEEL, não execução; vazio = a ANEEL não publicou valor para a rubrica no ano, diferente de zero).",
    "modulo": "conta",
    "gold": "conta.json"
   },
   "/energia/series/conta_historico_b1.json": {
-   "colunas": "JSON por CNPJ: sigla, nome, vigencias [início, fim, ato, TE, TUSD, TE + TUSD em R$/MWh] da tarifa B1 residencial de aplicação resolvida desde 2010, e eventos [data, ato, mesmo ato (true/false), total antes, total depois, variação %, variação TE %, variação TUSD %, IPCA % desde o evento anterior, mês inicial e final do IPCA]. null = ausência.",
+   "colunas": "JSON por CNPJ: sigla, nome, vigencias [início, fim, ato, TE, TUSD, TE + TUSD em R$/MWh] da tarifa B1 residencial de aplicação resolvida desde 2010, e eventos [data, ato, mesmo ato (true/false), total antes, total depois, variação %, variação TE %, variação TUSD %, IPCA % desde o evento anterior, mês inicial e final do IPCA, ato da incorporação quando o evento é mudança de perímetro]; incorporacoes (CNPJ incorporador) e incorporada_por (CNPJ incorporado). null = ausência.",
    "modulo": "conta",
    "gold": "conta.json"
   },
@@ -427,7 +642,12 @@
    "gold": "inclusao.json"
   },
   "/energia/series/inclusao_tsee_distribuidoras.csv": {
-   "colunas": "cnpj (14 dígitos); sigla (a mais recente no SCS); mes; uc_tsee; uc_residencial; participacao_pct; dmr_reais; dmr_por_uc_reais (R$ por UC no mês); kwh_por_uc (energia faturada média por UC com Tarifa Social no mês, kWh); despacho (despacho ANEEL vigente); residencial_inconsistente (1 = total residencial fora da regra de consistência). Vazio = ausência.",
+   "colunas": "cnpj (14 dígitos); sigla (a mais recente no SCS); mes; uc_tsee; uc_residencial; participacao_pct; dmr_reais; dmr_por_uc_reais (R$ por UC no mês); kwh_por_uc (energia faturada média por UC com Tarifa Social no mês, kWh); despacho (despacho ANEEL vigente); residencial_inconsistente (1 = total residencial fora da regra de consistência); ruptura_incorporacao (1 = primeiro mês em que a distribuidora informa as UC de uma incorporada, regra na gold). Vazio = ausência.",
+   "modulo": "inclusao",
+   "gold": "inclusao.json"
+  },
+  "/energia/series/inclusao_cde_mensal_uf.csv": {
+   "colunas": "mes (AAAA-MM do arquivo de Beneficiários da CDE; só meses com o original no bronze); territorio (BR ou sigla da UF); faturas_tsee (faturas de faturamento, tipo 1, com desconto da Tarifa Social nas subclasses 3.2 a 3.6); desconto_faturas_reais (soma do desconto dessas faturas, R$ correntes); desconto_medio_por_fatura_reais; desconto_liquido_reais (só BR: subclasses 3.2 a 3.6, tipos 1 a 4); desconto_fora_das_subclasses_reais (só BR: linhas SubsBaixaRenda de outras subclasses, diagnóstico, fora do líquido); faturas_municipio_invalido (só BR: formato inválido ou código inexistente, fora das UF); municipios_com_faturas (UF); cobertura_scs_pct (UC do SCS de referência em distribuidoras presentes no arquivo); mes_completo (1 = cobertura de pelo menos 99,5%). Vazio = ausência ou não se aplica.",
    "modulo": "inclusao",
    "gold": "inclusao.json"
   },
@@ -452,17 +672,22 @@
    "gold": "inclusao.json"
   },
   "/energia/series/inclusao_pof.csv": {
-   "colunas": "territorio (BR, região ou UF); classe (código SIDRA da classe de rendimento; 7999 = total); medida; valor; erro_padrao; cv_pct; fonte (SIDRA 6715, coeficientes publicados ou microdados); estado (publicado, cautela, suprimido). Valores em R$ de 15/01/2018 ou %.",
+   "colunas": "territorio (BR, região ou UF); classe (código SIDRA da classe de rendimento; 7999 = total); medida; valor; erro_padrao; cv_pct; fonte (SIDRA 6715, coeficientes publicados ou microdados); estado (publicado, cautela, suprimido; sensibilidade = medidas sens_*: média das participações na renda sem as famílias com energia acima da renda, número e peso % dessas famílias, soma das 3 maiores parcelas da média em ponto percentual). Valores em R$ de 15/01/2018 ou %.",
    "modulo": "inclusao",
    "gold": "inclusao.json"
   },
   "/energia/series/inclusao_acesso_pnad.csv": {
-   "colunas": "territorio; ano; situacao (total, urbana, rural); pct_com_energia; cv_pct_com_energia; pct_rede_geral; cv_pct_rede_geral; pct_integral_entre_rede (percentual dos domicílios ligados à rede geral com fornecimento em tempo integral); cv_pct_integral; domicilios_mil; domicilios_com_energia_mil; domicilios_sem_energia_mil (diferença calculada). Vazio = ausência.",
+   "colunas": "territorio; ano; situacao (total, urbana, rural); pct_com_energia; cv_pct_com_energia; pct_rede_geral; cv_pct_rede_geral; pct_integral_entre_rede (percentual dos domicílios ligados à rede geral com fornecimento em tempo integral); cv_pct_integral; domicilios_mil; domicilios_com_energia_mil; domicilios_sem_energia_mil (diferença calculada; vazio com estado menos_de_1_mil quando as duas estimativas arredondadas em milhares coincidem); domicilios_sem_energia_estado (calculado, menos_de_1_mil, ausente). Vazio = ausência.",
    "modulo": "inclusao",
    "gold": "inclusao.json"
   },
   "/energia/series/inclusao_sistemas_isolados.csv": {
    "colunas": "ciclo; sigla; nome; uf; municipio; distribuidora; populacao (pessoas); previsao_interligacao; previsao_interconexao; programa (programa de universalização informado); latitude; longitude. O mesmo ciclo mais recente também sai em inclusao_sistemas_isolados_pontos.json (lista de listas, campos declarados no arquivo) para o mapa.",
+   "modulo": "inclusao",
+   "gold": "inclusao.json"
+  },
+  "/energia/series/inclusao_cde_mensal_uf.json": {
+   "colunas": "JSON lido sob demanda pela página: {gerado_em, fonte, unidades, meses, ufs, completo, faturas_tsee, desconto_faturas_reais}; faturas_tsee e desconto_faturas_reais são listas por UF (ordem de ufs) com um valor por mês (ordem de meses); null = UF sem fatura no mês. Mesmos números de inclusao_cde_mensal_uf.csv.",
    "modulo": "inclusao",
    "gold": "inclusao.json"
   },
@@ -485,6 +710,71 @@
    "colunas": "uf; contrato; primeira_liberacao e ultima_liberacao (AAAA-MM); vlrempenhadocde, vlrpagocde (subvenção da CDE), vlrempenhadorgr, vlrpagorgr (empréstimo da RGR), vlrempenhadocaixa, vlrpagocaixa (Caixa ou outras fontes), vlrempenhadoae, vlrpago (contrapartida do agente executor): R$ correntes, como informados pelo MME. Vazio = ausência.",
    "modulo": "inclusao",
    "gold": "inclusao.json"
+  },
+  "/energia/series/empresas_agentes.csv": {
+   "colunas": "cnpj (14 dígitos); sigla; razao_social; ativo (1 = situação A no cadastro); comercializacao; distribuicao; geracao; transmissao (1 = ramo declarado ativo no cadastro, autodeclarado: não define distribuidora); proprietario_siga (1 = aparece como proprietário de usina no SIGA); distribuidora_regulada (1 = está no índice de distribuidoras do módulo); cvm_cd (código CVM quando é companhia aberta). Um CNPJ por linha, data do cadastro na coluna data_cadastro.",
+   "modulo": "empresas",
+   "gold": "empresas.json"
+  },
+  "/energia/series/empresas_ativos.csv": {
+   "colunas": "Uma linha por usina e proprietário do SIGA: nucleo_ceg; ceg; usina; tipo (SigTipoGeracao); fase; uf; kw_outorgado; kw_fiscalizado (vazio = não informado); estado_vinculo (vinculado, inclui_sem_documento, soma_divergente, sem_proprietario); soma_pct (soma das participações publicadas); proprietario_cnpj (vazio = proprietário sem CNPJ, pessoa física cujo nome não é republicado aqui); proprietario_nome (só para CNPJ); pct (participação publicada, %); regime (PIE, APE, SP ou REG); controle_majoritario (1 = participação acima de 50% numa usina com soma válida); grupo_cnpj (topo da cadeia de controladores únicos declarada no Polímero; igual ao proprietário quando não há controlador único); conferencia_agentes (igual, cnpj_diferente, percentual_diferente, ausente_em_agentes, sem_proprietario_no_siga). Potência em kW como publicada.",
+   "modulo": "empresas",
+   "gold": "empresas.json"
+  },
+  "/energia/series/empresas_proprietarios.csv": {
+   "colunas": "Um CNPJ por linha (proprietário direto no SIGA): cnpj; nome; no_cadastro_agentes (1/0); usinas (todas as fases); usinas_operacao; mw_bruto_operacao (potência fiscalizada somada das usinas em operação em que tem qualquer participação; soma bruta, não usar em agregados); mw_proporcional (Σ potência fiscalizada × participação, só usinas em operação com soma válida); mw_controle_direto (Σ potência das usinas em operação em que tem mais de 50%); usinas_controle_direto; grupo_cnpj; grupo_nome; regimes. MW = kW ÷ 1.000.",
+   "modulo": "empresas",
+   "gold": "empresas.json"
+  },
+  "/energia/series/empresas_grupos.csv": {
+   "colunas": "Um grupo por linha (topo de cadeia de controle): grupo_cnpj; nome; empresas_com_usinas (proprietários diretos no grupo); usinas_controle; mw_controle (Σ potência das usinas em operação cujo proprietário majoritário pertence ao grupo); mw_proporcional (Σ potência × participação detida por empresas do grupo; partição da potência sem dupla contagem); participacao_pct (mw_proporcional ÷ fronteira × 100); motivo_parada (por que a cadeia termina ali); acima (controlador não identificável acima do topo, quando declarado); listada_cvm (1/0).",
+   "modulo": "empresas",
+   "gold": "empresas.json"
+  },
+  "/energia/series/empresas_cadeia_societaria.csv": {
+   "colunas": "Arestas do grafo societário vigente (Polímero, trimestre de referência): pai_cnpj; pai_nome; socio_cnpj (vazio = pessoa física, fundo ou ente sem CNPJ); socio_nome (vazio para pessoa física); perfil (PJ, PF, DC); controlador (1/0); pct_direto (participação do sócio no pai, %; vazio quando a fonte só permite o percentual em relação ao agente declarante e o pai aparece em mais de um caminho); origem (propria = declarada pelo próprio pai; terceiros = lida nas árvores de outros agentes); declaracao (trimestre da declaração usada); concordancia (listas que concordam sobre o controlador ÷ listas); primeiro_trimestre; ultimo_trimestre (vigência da aresta em toda a base).",
+   "modulo": "empresas",
+   "gold": "empresas.json"
+  },
+  "/energia/series/empresas_distribuidoras.csv": {
+   "colunas": "cnpj; slug; sigla; nome; classificacao; grupo; ufs (separadas por |); ativa; fontes (samp, tarifas, continuidade presentes); perdas_ano; taxa_perdas_totais_pct; pnt_bt_pct; qualidade_ano; dec_h; fec; dec_limite_h; fec_limite; ucs; tarifa_b1_rs_mwh; tarifa_inicio; tarifa_fim; controlador_cnpj; controlador_nome; motivo_parada; cvm_cd. Valores copiados das golds perdas.json, qualidade.json e conta.json pelo CNPJ, sem recálculo. Vazio = a gold de origem não tem o dado.",
+   "modulo": "empresas",
+   "gold": "empresas.json"
+  },
+  "/energia/series/empresas_companhias_cvm.csv": {
+   "colunas": "Universo financeiro, uma companhia por linha: cnpj; cd_cvm (registro vigente ou mais recente); codigos_cvm (todos os registros do CNPJ); companhia (denominação na CVM); situacao; setor (setor de atividade declarado à CVM); categoria; controle_acionario; distribuidora_slug (quando é distribuidora do índice); controladora_aberta_cnpj (primeira companhia aberta na cadeia de controle declarada à ANEEL: ela consolida esta); controla_abertas_cnpj (separadas por |).",
+   "modulo": "empresas",
+   "gold": "empresas.json"
+  },
+  "/energia/series/empresas_financas_anual.csv": {
+   "colunas": "DFP, formato longo, um valor por linha: cnpj; escopo (consolidado ou individual, nunca somados); conta (id); cd_conta (código do plano padronizado da CVM; divida_bruta = 2.01.04 + 2.02.01); periodo_inicio (vazio em saldo); periodo_fim; recorte (exercicio ou saldo); valor_rs (R$ nominais, escala da fonte convertida); versao (maior versão do documento no arquivo); recebido_cvm_em (data de recebimento do documento na CVM); reapresentado_rs (valor do mesmo exercício como apresentado no comparativo da DFP seguinte, só quando difere em mais de R$ 1 mil). Nome da companhia em empresas_companhias_cvm.csv. Vazio = conta não publicada.",
+   "modulo": "empresas",
+   "gold": "empresas.json"
+  },
+  "/energia/series/empresas_financas_trimestral.csv": {
+   "colunas": "ITR, formato longo: cnpj; escopo; conta; cd_conta; periodo_inicio; periodo_fim; recorte (trimestre = três meses; acumulado_no_ano = janeiro até o fim do trimestre; saldo = balanço no fim do trimestre); valor_rs; versao; recebido_cvm_em. O 4º trimestre não tem ITR (vem na DFP anual); nada é deduzido por diferença.",
+   "modulo": "empresas",
+   "gold": "empresas.json"
+  },
+  "/energia/series/empresas_financas.json": {
+   "colunas": "Séries por companhia para leitura sob demanda, em R$ milhões com 3 casas (exato para a escala MIL da fonte): {cnpj: {anual: {con|ind: {conta: [[ano, valor], ...]}}, trimestral: {con|ind: {'conta:recorte': [[AAAA-MM-DD, valor], ...]}}}}. Recorte trimestre (DRE, três meses), saldo (balanço) ou acumulado_no_ano (fluxo de caixa). Mesmos valores dos CSV.",
+   "modulo": "empresas",
+   "gold": "empresas.json"
+  },
+  "/energia/series/empresas_ativos.json": {
+   "colunas": "Usinas do SIGA para o mapa, colunar: nucleo, nome, tipo, fase, uf, mw (fiscalizada; outorgada fora de operação), lat, lon, estado (índice em estados), grupo (índice em grupos ou -1). Coordenadas oficiais do SIGA; usina sem coordenada fica fora do mapa e dentro da tabela.",
+   "modulo": "empresas",
+   "gold": "empresas.json"
+  },
+  "/energia/series/empresas_cadeia.json": {
+   "colunas": "Grafo societário vigente para a árvore interativa: nos {cnpj: [nome, controlador_direto_cnpj|null, motivo_parada|null]} e arestas colunares (pai, socio, nome, controlador, pct_direto) dos nós que estão numa cadeia de usina ou distribuidora.",
+   "modulo": "empresas",
+   "gold": "empresas.json"
+  },
+  "/energia/series/empresas_evidencias.json": {
+   "colunas": "Evidência 'Comprove este número' da receita do último exercício de cada companhia do universo CVM (CNPJ → objeto de pipeline/energia/evidencia.py), lida sob demanda.",
+   "modulo": "empresas",
+   "gold": "empresas.json"
   },
   "/energia/series/previsoes_backtest_semanal.csv": {
    "colunas": "origem (dia da rodada, Brasília; corte às 07h00); horizonte (W1 a W4); submercado; entrega (sábado de início da semana, de sábado 00h a sábado 00h, fim excluído); periodo (desenvolvimento = entrega termina até 01/01/2025; teste = começa em 01/01/2025 ou depois; fronteira = atravessa a virada); realizado (média das 168 horas do PLD, vazio se a semana não está completa); b0, s0, c2p, c2h = previsões em R$/MWh nominais depois da restrição de preço (vazio = modelo sem previsão naquela célula); *_p10 e *_p90 = quantis empíricos (vazio sem 24 entregas de resíduos); piso e teto = faixa média [PLD mínimo, teto estrutural] dos atos publicados até a origem; faixa_provisoria = 1 quando o ato do ano da entrega ainda não tinha saído. Teste retrospectivo sob a hipótese LAT1D; não é previsão emitida.",

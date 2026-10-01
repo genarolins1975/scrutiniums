@@ -7,15 +7,28 @@ _PAG = ["/setor-eletrico/perdas"]
 _SAMP = ["aneel_samp_balanco"]
 _AUSENCIA_ANUAL = ("Soma anual só existe quando a linha está publicada nos 12 meses do ano civil; um mês ausente deixa o "
                    "ano ausente (nunca vira zero nem é completado). Ano corrente é parcial e fica fora de comparações.")
-_TECNICA_ESTIMADA = ("A parcela técnica publicada no SAMP é o percentual regulatório da revisão tarifária aplicado à energia "
-                     "injetada (estimativa), não medição.")
-_QUEBRA_2024 = ("Quebra em 2024: leiaute da REN 1.003/2022; injetada publicada bruta (o denominador passa a ser a energia "
-                "implícita no cálculo da fonte) e separação técnica e não técnica publicada para cerca de metade das "
+_TECNICA_ESTIMADA = ("A parcela técnica publicada no SAMP é o percentual regulatório do processo tarifário aplicado à energia "
+                     "injetada publicada (estimativa), não medição.")
+_QUEBRA_2024 = ("Quebra em 2024: leiaute da REN 1.003/2022; a injetada publicada deixa de fechar o balanço com a perda da "
+                "própria fonte (o denominador passa a ser a energia implícita no cálculo da fonte; a causa da diferença não "
+                "é atribuída) e a separação técnica e não técnica passa a ser publicada para cerca de metade das "
                 "distribuidoras.")
+_UNIVERSO = ("Universo variável: o conjunto de distribuidoras somadas muda de um ano para outro (ano incompleto, alerta, "
+             "início e fim de série, separação não publicada). A variação anual só se lê nas mesmas distribuidoras dos dois "
+             "anos, sem mudança de escala entre eles (bloco mesmas_ano_anterior), e a tendência recente na série de universo fixo.")
+_ESCALA = ("Mudança de universo da própria distribuidora (injetada mais de 30% maior ou menor entre anos completos, ou "
+           "absorção provável observada no SAMP) marca o par de anos, que não entra em variação anual.")
 _VALIDACAO_BALANCO = ("Identidade do balanço conferida mês a mês: injetada − fornecida − irregular − perdas; o resíduo é "
                       "publicado e classificado (fecha, residuo_pequeno, residuo_relevante, sem_componentes).")
-_FISICA = ("Agente-ano com perda total anual negativa ou maior que a injetada recebe alerta e fica fora de agregados e "
-           "comparações (o valor da fonte segue no CSV).")
+_FISICA = ("Agente-ano com perda total anual negativa ou maior que a injetada, fornecida maior que a injetada ou balanço que "
+           "não fecha (resíduo acima de 5% da injetada no leiaute antigo; fornecida + perdas acima da injetada publicada no "
+           "de 2024) recebe alerta e fica fora de agregados e comparações (o valor da fonte segue no CSV). Manaus Energia "
+           "2003 a 2008: fornecida maior que a injetada, taxa de 65% a 111%, fora; taxa nacional das concessionárias em "
+           "2004 = 15,09% (55 distribuidoras), conferida por releitura independente do CSV oficial.")
+_DECOMPOSICAO = ("Identidade total = técnica + não técnica conferida mês a mês nas linhas medidas: tolerância de 2 kWh por mês "
+                 "(arredondamento de cada linha ao kWh) e, no ano, 0,1% da perda total; 39 agentes-ano completos não fecham "
+                 "(ERO, jul/2014: 327.121.858 − 41.675.325 ≠ 53.290.776 kWh) e ficam fora dos agregados de técnica e não "
+                 "técnica, com o resíduo da decomposição publicado (conferência de 30/09/2026).")
 
 METRICAS = [
     {
@@ -34,7 +47,7 @@ METRICAS = [
         "natureza_transformacao": "CALCULADO",
         "dimensoes": ["distribuidora", "ano", "universo"],
         "regras_comparabilidade": ["Volume depende do tamanho do mercado: comparar distribuidoras pela taxa, não pelo volume.",
-                                   "Mudança societária ou incorporação muda o universo da série (eventos publicados).", _QUEBRA_2024],
+                                   _ESCALA, _UNIVERSO, _QUEBRA_2024],
         "regra_cobertura": "Agentes com balanço de distribuição no SAMP Balanço de jan/2003 até a última competência publicada.",
         "politica_ausencia": _AUSENCIA_ANUAL,
         "validacoes": [_VALIDACAO_BALANCO, _FISICA, "Parquet e CSV oficiais de 15/09/2026 conferidos por código independente: 549.552 linhas nos dois e as 2.146 somas anuais completas de perdas totais idênticas ao kWh."],
@@ -46,7 +59,7 @@ METRICAS = [
         "id": "perdas_taxa_total_injetada",
         "titulo": "Taxa de perdas totais sobre a energia injetada",
         "pergunta": "Que fração da energia injetada na rede se perdeu?",
-        "definicao": "Perdas totais medidas divididas pela energia injetada de referência do mesmo ano. Energia injetada de referência: a linha publicada no leiaute antigo do SAMP; no leiaute de 2024, a energia implícita no cálculo da própria fonte (fornecida + irregular + perdas), porque a linha publicada passou a ser bruta.",
+        "definicao": "Perdas totais medidas divididas pela energia injetada de referência do mesmo ano. Energia injetada de referência: a linha publicada no leiaute antigo do SAMP; no leiaute de 2024, a energia implícita no cálculo da própria fonte (fornecida + irregular + perdas), porque a linha publicada deixou de fechar o balanço com a perda da fonte; em 2024 essa energia (605,2 TWh nas concessionárias) cai no intervalo implícito no relatório da ANEEL, e a publicada (620,7 TWh) não. A causa da diferença não é atribuída.",
         "unidade": "% da energia injetada",
         "grao_geografico": "distribuidora (CNPJ); Brasil por universo",
         "grao_temporal": "ano civil",
@@ -59,8 +72,7 @@ METRICAS = [
         "natureza_fonte": "CALCULADO",
         "natureza_transformacao": "CALCULADO",
         "dimensoes": ["distribuidora", "ano", "universo"],
-        "regras_comparabilidade": [_QUEBRA_2024, "Não comparar ano parcial com ano completo.",
-                                   "Variação anual com mudança de escala da injetada acima de 30% fica marcada como provável mudança de universo."],
+        "regras_comparabilidade": [_QUEBRA_2024, "Não comparar ano parcial com ano completo.", _ESCALA, _UNIVERSO],
         "regra_cobertura": "Ano civil com os 12 meses de perdas e de injetada de referência publicados.",
         "politica_ausencia": _AUSENCIA_ANUAL,
         "validacoes": [_VALIDACAO_BALANCO, _FISICA,
@@ -73,7 +85,7 @@ METRICAS = [
         "id": "perdas_tecnicas_energia",
         "titulo": "Perdas técnicas (estimativa regulatória publicada)",
         "pergunta": "Quanto das perdas se atribui às características físicas da rede?",
-        "definicao": "Linha 'Perdas Técnicas' do SAMP Balanço. " + _TECNICA_ESTIMADA + " Taxa técnica = perdas técnicas ÷ energia injetada de referência.",
+        "definicao": "Linha 'Perdas Técnicas' do SAMP Balanço, valor medido (a do valor faturado é outra linha e nunca a substitui). " + _TECNICA_ESTIMADA + " Taxa técnica = perdas técnicas ÷ energia injetada de referência (mesma base da taxa total); ao lado, técnica ÷ energia injetada publicada, a base sobre a qual a fonte aplica o percentual e a que se compara com ele (as duas coincidem até 2023; no leiaute de 2024 a publicada é maior: ÂMBAR ENERGIA RR 2024, 7,620% sobre a publicada e 7,555% sobre a de referência).",
         "unidade": "MWh e % da energia injetada",
         "grao_geografico": "distribuidora (CNPJ)",
         "grao_temporal": "ano civil",
@@ -81,15 +93,16 @@ METRICAS = [
         "numerador": "Σ perdas técnicas do ano (MWh)",
         "denominador": "Σ energia injetada de referência do ano (MWh), só das distribuidoras com a técnica publicada nos 12 meses",
         "formula": "taxa_tecnica = 100 × Σ perdas_tecnicas ÷ Σ injetada_referência",
-        "regra_agregacao": "Agregado só sobre o subconjunto com a técnica publicada, com a cobertura (em % da injetada) ao lado.",
+        "regra_agregacao": "Agregado só sobre o subconjunto com a técnica publicada nos 12 meses e decomposição que não a contradiz, com a cobertura (em % da injetada) ao lado; variação anual só nas mesmas distribuidoras.",
         "versao_formula": "1",
         "natureza_fonte": "ESTIMADO",
         "natureza_transformacao": "CALCULADO",
         "dimensoes": ["distribuidora", "ano"],
-        "regras_comparabilidade": [_QUEBRA_2024, "A técnica não mede desempenho: segue o percentual regulatório por construção."],
-        "regra_cobertura": "Publicada para a maioria das distribuidoras até 2023; cerca de metade a partir de 2024.",
+        "regras_comparabilidade": [_QUEBRA_2024, _UNIVERSO, "A técnica não mede desempenho: segue o percentual regulatório por construção."],
+        "regra_cobertura": "Publicada para a maioria das distribuidoras até 2023 (48 de 50 concessionárias válidas); 32 de 51 em 2024 e 18 de 51 em 2025 (32,6% da injetada).",
         "politica_ausencia": _AUSENCIA_ANUAL + " Distribuidora sem a técnica em algum mês não tem técnica nem não técnica no ano.",
-        "validacoes": ["Perda técnica idêntica nas bases medida e faturada (conferido no arquivo)."],
+        "validacoes": ["Técnica medida e faturada são linhas diferentes: diferem em 2.419 de 18.755 meses com as duas (Sulgipe, mar/2024: 5.269.964 contra 3.779.373 kWh); em 317 meses só há a faturada, e esses meses ficam sem técnica (conferido no arquivo em 30/09/2026).",
+                       _DECOMPOSICAO],
         "limitacoes": ["Não se pode concluir que toda perda técnica é evitável nem que é eliminável a custo zero."],
         "gold": _GOLD, "paginas": _PAG,
     },
@@ -97,7 +110,7 @@ METRICAS = [
         "id": "perdas_nao_tecnicas_bt",
         "titulo": "Perdas não técnicas sobre o mercado de baixa tensão",
         "pergunta": "Quanto da energia perdida não se explica pela física da rede, em relação ao consumo de baixa tensão?",
-        "definicao": "Perdas não técnicas medidas (perdas totais menos técnicas, linha 'Perdas Não-Técnicas' do SAMP) divididas pelo mercado de baixa tensão medido: energia medida entregue em BT a cativos, consumo próprio e livres. É a base que a ANEEL usa para a referência regulatória não técnica (mercado medido desde 2025). Inclui furto, fraude e erros de medição, leitura e faturamento, que a fonte não separa.",
+        "definicao": "Linha 'Perdas Não-Técnicas' publicada pelo SAMP (valor medido; pela definição da ANEEL, perdas totais menos técnicas, identidade conferida mês a mês) dividida pelo mercado de baixa tensão medido: energia medida entregue em BT a cativos, consumo próprio e livres. É a base que a ANEEL usa para a referência regulatória não técnica (mercado medido desde 2025). Inclui furto, fraude e erros de medição, leitura e faturamento, que a fonte não separa.",
         "unidade": "% do mercado de baixa tensão medido",
         "grao_geografico": "distribuidora (CNPJ); Brasil por universo",
         "grao_temporal": "ano civil",
@@ -105,17 +118,18 @@ METRICAS = [
         "numerador": "Σ perdas não técnicas medidas do ano (MWh)",
         "denominador": "Σ mercado BT medido do ano (MWh)",
         "formula": "100 × Σ pnt_medidas ÷ Σ mercado_BT_medido",
-        "regra_agregacao": "100 × Σ numeradores ÷ Σ denominadores do subconjunto com as duas grandezas nos 12 meses.",
-        "versao_formula": "1",
-        "natureza_fonte": "CALCULADO",
+        "regra_agregacao": "100 × Σ numeradores ÷ Σ denominadores do subconjunto com as duas grandezas nos 12 meses e a decomposição fechando, com a cobertura em % do mercado BT de todas as válidas ao lado; variação anual só nas mesmas distribuidoras e tendência na série de universo fixo.",
+        "versao_formula": "2",
+        "natureza_fonte": "ESTIMADO",
         "natureza_transformacao": "CALCULADO",
         "dimensoes": ["distribuidora", "ano", "universo"],
         "regras_comparabilidade": ["Pode passar de 100% em áreas com perda muito alta (a base é só o mercado BT).",
                                    "Pode ser negativa quando a estimativa técnica supera a perda total medida (pequenas distribuidoras).",
-                                   _QUEBRA_2024],
-        "regra_cobertura": "Mercado BT por nível de tensão existe a partir de 2010.",
+                                   _QUEBRA_2024, _UNIVERSO,
+                                   "Série nacional de 2023 a 2025: 46, 31 e 18 concessionárias; a queda aparente da taxa é composição. Nas mesmas 16 concessionárias: 14,35%, 14,30% e 15,01% (conferência de 30/09/2026)."],
+        "regra_cobertura": "Mercado BT por nível de tensão existe a partir de 2010; separação publicada para cerca de metade das distribuidoras a partir de 2024.",
         "politica_ausencia": _AUSENCIA_ANUAL,
-        "validacoes": ["Não técnica = total − técnica conferido nas linhas da fonte."],
+        "validacoes": [_DECOMPOSICAO],
         "limitacoes": ["Não resumir a furto: a definição da fonte inclui erros de medição e faturamento.",
                        "Não atribuir às famílias de uma área a responsabilidade pelas perdas não técnicas."],
         "gold": _GOLD, "paginas": _PAG,
@@ -124,7 +138,7 @@ METRICAS = [
         "id": "perdas_nao_tecnicas_injetada",
         "titulo": "Perdas não técnicas sobre a energia injetada",
         "pergunta": "Que fração da energia injetada corresponde às perdas não técnicas?",
-        "definicao": "Perdas não técnicas medidas divididas pela energia injetada de referência. Mesma base da taxa total, o que permite somar técnica e não técnica: taxa técnica + taxa não técnica = taxa total.",
+        "definicao": "Linha 'Perdas Não-Técnicas' (valor medido) dividida pela energia injetada de referência, a mesma base da taxa total e da taxa técnica: taxa técnica + taxa não técnica = taxa total só onde a decomposição fecha (classe fecha ou diferenca_pequena); onde não fecha, o resíduo da decomposição fica publicado.",
         "unidade": "% da energia injetada",
         "grao_geografico": "distribuidora (CNPJ)",
         "grao_temporal": "ano civil",
@@ -132,15 +146,15 @@ METRICAS = [
         "numerador": "Σ perdas não técnicas medidas (MWh)",
         "denominador": "Σ energia injetada de referência (MWh)",
         "formula": "100 × Σ pnt_medidas ÷ Σ injetada_referência",
-        "regra_agregacao": "100 × Σ numeradores ÷ Σ denominadores.",
-        "versao_formula": "1",
-        "natureza_fonte": "CALCULADO",
+        "regra_agregacao": "100 × Σ numeradores ÷ Σ denominadores, só com a decomposição fechando.",
+        "versao_formula": "2",
+        "natureza_fonte": "ESTIMADO",
         "natureza_transformacao": "CALCULADO",
         "dimensoes": ["distribuidora", "ano"],
-        "regras_comparabilidade": ["Só se soma à taxa técnica porque o denominador é o mesmo; nunca somar com a taxa sobre BT."],
+        "regras_comparabilidade": ["Só se soma à taxa técnica sobre a injetada de referência (mesmo denominador) e só onde a decomposição fecha; nunca somar com a taxa sobre BT nem com a técnica sobre a injetada publicada."],
         "regra_cobertura": "Como a técnica.",
         "politica_ausencia": _AUSENCIA_ANUAL,
-        "validacoes": ["taxa técnica + taxa não técnica = taxa total (arredondamento de 0,01 p.p.)."],
+        "validacoes": [_DECOMPOSICAO],
         "limitacoes": [_TECNICA_ESTIMADA],
         "gold": _GOLD, "paginas": _PAG,
     },
@@ -161,35 +175,37 @@ METRICAS = [
         "natureza_fonte": "OBSERVADO",
         "natureza_transformacao": "CALCULADO",
         "dimensoes": ["distribuidora", "mês", "ano"],
-        "regras_comparabilidade": ["O leiaute de 2024 produz resíduo positivo sistemático nas distribuidoras com muita geração conectada à rede."],
+        "regras_comparabilidade": ["No leiaute de 2024 a injetada publicada deixou de fechar o balanço com a perda calculada pela fonte (resíduo positivo na maior parte das distribuidoras); a fonte não explica a diferença e o resíduo não é atribuído a causa."],
         "regra_cobertura": "Meses com injetada, fornecida medida e perda total publicadas.",
         "politica_ausencia": "Sem as linhas de fornecimento medido o resíduo é ausente e a classe é 'sem_componentes'.",
-        "validacoes": ["Representação de cada grandeza escolhida pela concordância com a soma dos níveis de tensão do mês."],
-        "limitacoes": ["Tolerância de 0,1% da injetada: abaixo disso a taxa não muda na primeira casa decimal."],
+        "validacoes": ["Representação de cada grandeza escolhida pela concordância com a soma dos níveis de tensão do mês.",
+                       "Resíduo acima de 5% da injetada no leiaute antigo, ou fornecida acima da injetada, tira o agente-ano de agregados e comparações (Manaus Energia 2004: −201%). Sensibilidade: limite de 10% muda a taxa nacional anual das concessionárias em até 0,14 p.p.; limite de 1% muda em até 1,05 p.p."],
+        "limitacoes": ["Tolerância de 0,1% da injetada para a classe residuo_pequeno: abaixo disso a taxa não muda na primeira casa decimal.",
+                       "Causas observadas no leiaute antigo, sem generalização: linha de fornecimento repetida (COCEL, 'Uso Distribuidoras' igual ao cativo), linhas de fornecimento ausentes (COELBA 2008 e 2009) e injetada inconsistente com as demais linhas (Manaus Energia 2003 a 2008)."],
         "gold": _GOLD, "paginas": _PAG,
     },
     {
         "id": "perdas_tecnica_regulatoria_implicita",
         "titulo": "Percentual regulatório de perdas técnicas (implícito no SAMP)",
         "pergunta": "Qual percentual técnico a regulação reconhece para a distribuidora em cada período tarifário?",
-        "definicao": "Razão entre perdas técnicas e energia injetada publicadas no SAMP quando ela é constante por meses seguidos: é o percentual regulatório aplicado pela fonte. O mês de troca mistura as duas taxas pró-rata dos dias. A resolução homologatória é associada ao trecho quando o início de vigência dela (componentes tarifárias) cai no mês da troca; o dia reconstituído da média pró-rata fica só no CSV, como diagnóstico.",
+        "definicao": "Razão entre perdas técnicas e energia injetada publicada no SAMP quando ela fica constante por 6 meses seguidos ou mais: inferência do observatório sobre o percentual regulatório aplicado pela fonte, não leitura do ato. Trechos de 2 a 5 meses ficam no CSV com a classe 'curto' (possível coincidência de arredondamento). O mês de troca mistura as duas taxas pró-rata dos dias. A resolução homologatória é associada ao trecho só quando o percentual muda ao menos 0,02 p.p. e o início de vigência dela (componentes tarifárias) cai no mês da troca; o dia reconstituído da média pró-rata fica só no CSV, como diagnóstico.",
         "unidade": "% da energia injetada",
         "grao_geografico": "distribuidora (CNPJ)",
         "grao_temporal": "trecho de vigência (meses)",
         "fontes": _SAMP + ["aneel_componentes_tarifarias_b1"],
         "numerador": "perdas técnicas do mês (kWh)",
         "denominador": "energia injetada publicada do mês (kWh)",
-        "formula": "pct = round(100 × PT ÷ I, 3); trecho = meses consecutivos com o mesmo pct (mínimo 2)",
+        "formula": "pct = round(100 × PT ÷ I_publicada, 3); trecho = meses consecutivos com o mesmo pct; referência = trecho de 6 meses ou mais; troca = variação de ao menos 0,02 p.p. contra o trecho anterior",
         "regra_agregacao": "Não se agrega entre distribuidoras.",
-        "versao_formula": "1",
+        "versao_formula": "2",
         "natureza_fonte": "ESTIMADO",
-        "natureza_transformacao": "CALCULADO",
+        "natureza_transformacao": "ESTIMADO",
         "dimensoes": ["distribuidora", "vigência"],
         "regras_comparabilidade": ["É parâmetro regulatório, não perda realizada nem meta de perda zero."],
-        "regra_cobertura": "Distribuidoras e períodos em que a fonte aplica percentual fixo (em geral de 2016 a 2023).",
+        "regra_cobertura": "Distribuidoras e períodos em que a razão fica constante por 6 meses ou mais: 169 trechos de referência em 49 distribuidoras, de jan/2003 a mar/2026 (conferência de 30/09/2026).",
         "politica_ausencia": "Onde a razão varia mês a mês não há trecho: o percentual regulatório fica ausente (não é estimado).",
         "validacoes": ["CEMIG-D: 8,766% de jun/2018 a abr/2023; maio/2018 = 7,959% = média pró-rata com início em 28/05/2018, a vigência da REH 2.396/2018 (o mesmo em maio/2023 com a REH 3.202/2023).",
-                        "Conferência de 30/09/2026: em 342 trechos, 78 têm REH no mês da troca; o dia reconstituído coincide com o da REH só nos dois casos da CEMIG-D, por isso não é publicado como vigência."],
+                        "Conferência de 30/09/2026: 331 trechos de 2 meses ou mais, 169 de referência; REH associada a 55 trechos (39 de referência), todos com troca de ao menos 0,02 p.p.; o dia reconstituído coincide com o da REH só nos dois casos da CEMIG-D, por isso não é publicado como vigência."],
         "limitacoes": ["A referência regulatória não técnica não está em base aberta acessível."],
         "gold": _GOLD, "paginas": _PAG,
     },
@@ -212,9 +228,10 @@ METRICAS = [
         "dimensoes": ["distribuidora", "resolução homologatória", "vigência", "base tarifária"],
         "regras_comparabilidade": ["Valores nominais: comparar anos exige cuidado com inflação e preço da energia.",
                                    "É nível regulatório reconhecido, não custo das perdas reais."],
-        "regra_cobertura": "Processos com vigência desde 2010 publicados nas componentes tarifárias (arquivos de 2012 a 2026).",
-        "politica_ausencia": "Processo sem alguma das seis componentes não tem resumo.",
-        "validacoes": ["TUSD igual à soma das componentes TUSD_* e TE igual à soma das TE_* (tolerância de 0,01 R$/MWh, arredondamento da fonte)."],
+        "regra_cobertura": "Processos publicados nos arquivos anuais de componentes tarifárias de 2012 a 2026 (primeiro início de vigência: 03/02/2012).",
+        "politica_ausencia": "Processo sem alguma das seis componentes não tem resumo. Sem processo vigente na data da consulta (início ≤ data ≤ fim), o último já iniciado aparece com a situação 'vigencia_encerrada' e a data de fim, nunca como vigente.",
+        "validacoes": ["TUSD igual à soma das componentes TUSD_* e TE igual à soma das TE_* (tolerância de 0,01 R$/MWh, arredondamento da fonte).",
+                       "Vigência conferida contra a data da consulta: em 30/09/2026, 23 distribuidoras ativas só têm processo encerrado no arquivo (CEDRI, REH 3.531/2025, até 29/09/2026)."],
         "limitacoes": ["Não é o custo total em reais reconhecido no processo (planilhas do processo inacessíveis).",
                        "Não se multiplica pela tarifa cheia nem por mercado para inventar um custo total."],
         "gold": _GOLD, "paginas": _PAG,
@@ -278,7 +295,7 @@ METRICAS = [
         "numerador": "Σ perdas totais medidas de janeiro a mes_fim (MWh)",
         "denominador": "Σ energia injetada de referência de janeiro a mes_fim (MWh)",
         "formula": "100 × Σ perdas_totais[1..mes_fim] ÷ Σ injetada_referência[1..mes_fim]",
-        "regra_agregacao": "Razão de somas sobre as distribuidoras completas e sem alerta nos dois recortes (mesmo conjunto nos dois anos).",
+        "regra_agregacao": "Razão de somas sobre as distribuidoras completas e sem alerta nos dois recortes, sem quebra de escala nem absorção entre eles (mesmo conjunto nos dois anos).",
         "versao_formula": "1",
         "natureza_fonte": "OBSERVADO",
         "natureza_transformacao": "CALCULADO",
@@ -295,7 +312,7 @@ METRICAS = [
         "id": "perdas_associacao_renda",
         "titulo": "Associação entre renda da área e perdas (Spearman)",
         "pergunta": "Distribuidoras cujas áreas têm renda média menor tendem a ter perdas maiores?",
-        "definicao": "Correlação de postos de Spearman entre a renda média domiciliar per capita dos municípios confirmados da área (Censo 2022) e a taxa de perdas (não técnicas sobre BT e totais sobre a injetada) das concessionárias no ano do Censo, com o número de pares.",
+        "definicao": "Correlação de postos de Spearman entre a renda média domiciliar per capita dos municípios da área no ano das perdas (Censo 2022; relação conjunto × distribuidora dos limites de continuidade de 2022) e a taxa de perdas (não técnicas sobre BT e totais sobre a injetada) das concessionárias no ano do Censo, com o número de pares; postos sobre os valores sem arredondamento.",
         "unidade": "coeficiente entre −1 e 1",
         "grao_geografico": "concessionária",
         "grao_temporal": "2022 (ano do Censo)",
@@ -307,7 +324,7 @@ METRICAS = [
         "natureza_transformacao": "CALCULADO",
         "dimensoes": ["concessionária"],
         "regras_comparabilidade": ["Associação descritiva entre áreas; não é causa nem descreve cada família."],
-        "regra_cobertura": "Concessionárias com perdas de 2022 completas e municípios confirmados.",
+        "regra_cobertura": "Concessionárias com perdas de 2022 completas, sem alerta e com território na relação de 2022; vínculos confirmados pelo cadastro de MMGD ou, para a distribuidora incorporada depois (ausente do cadastro atual: EBO e ENF), os da UF principal.",
         "politica_ausencia": "Concessionária sem a taxa ou sem renda fica fora do par; n publicado ao lado.",
         "validacoes": ["Spearman conferido em teste com empates (valores conhecidos)."],
         "limitacoes": ["Municípios compartilhados entram inteiros; renda municipal média esconde a desigualdade interna.",

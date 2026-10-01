@@ -475,6 +475,18 @@ export type PrevisoesDesempenhoGold = Cabecalho & {
     origens: { inicio: string; fim: string; n: number };
     snapshots: Record<string, { id: string | null; sha256: string | null; ultima_captura: string | null; revisoes: number | null }>;
     revisoes_hidrologia: Record<string, RevisoesHidrologia>;
+    /** Dicionários de dados do ONS (PDF) guardados pela coleta do módulo, com a conferência dos campos usados pelo C2-H. */
+    dicionarios_ons: Record<
+      "ear" | "ena",
+      {
+        url: string;
+        sha256: string | null;
+        capturado_em: string | null;
+        arquivo: string | null;
+        campos: Record<string, "presente" | "ausente"> | null;
+        leitura: string;
+      }
+    >;
     ultima_entrega_apurada_teste: string | null;
     linhas_csv: { semanal: number; mensal: number };
     configuracao_sha256: string;

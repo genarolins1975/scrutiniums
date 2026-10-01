@@ -381,9 +381,10 @@ def le_polimero(abrir_linhas, janela=None):
        começa na linha de nível 0, cujo sócio é o próprio agente declarante).
 
     `abrir_linhas()` devolve um iterador novo a cada chamada. Retorna dict com: arvores
-    {(raiz, período): [árvore, ...]}, eventos {raiz: [anos]}, periodos {período: n},
+    {(raiz, período): [árvore, ...]}, eventos {raiz: [anos]}, periodos {período: agentes
+    declarantes distintos},
     referencia (trimestre), vigencia {(pai, sócio): [primeiro, último]}, ocorrencias."""
-    periodos = collections.Counter()
+    declarantes = collections.defaultdict(set)   # agentes distintos por trimestre (não árvores)
     eventos = collections.defaultdict(set)
     ultima_declaracao = {}
     vigencia = {}
@@ -406,7 +407,7 @@ def le_polimero(abrir_linhas, janela=None):
             elif per[1] == 0:
                 eventos[raiz].add(per[0])
             else:
-                periodos[per] += 1
+                declarantes[per].add(raiz)
                 if raiz not in ultima_declaracao or per > ultima_declaracao[raiz]:
                     ultima_declaracao[raiz] = per
             continue
@@ -428,6 +429,7 @@ def le_polimero(abrir_linhas, janela=None):
         else:
             v[0] = min(v[0], per)
             v[1] = max(v[1], per)
+    periodos = {p: len(v) for p, v in declarantes.items()}
     ref = periodo_referencia(periodos)
     janela = set(janela or (_trimestres_ate(ref, JANELA_TRIMESTRES) if ref else []))
     arvores = collections.defaultdict(list)
@@ -458,7 +460,7 @@ def le_polimero(abrir_linhas, janela=None):
             "nivel": r.get("NumNivelCadeiaSocietaria"),
         })
     return {"arvores": dict(arvores), "eventos": {k: sorted(v) for k, v in eventos.items()},
-            "periodos": dict(periodos), "referencia": ref, "vigencia": vigencia, "ocorrencias": ocorr,
+            "periodos": periodos, "referencia": ref, "vigencia": vigencia, "ocorrencias": ocorr,
             "ultima_declaracao": ultima_declaracao}
 
 
@@ -623,8 +625,9 @@ def cadeia_de_controle(g, x, limite=25):
     for _ in range(limite):
         prox, motivo, aresta = controlador_direto(g, atual)
         if prox is None:
-            return {"topo": atual, "cadeia": cadeia, "motivo_parada": motivo, "pcts": pcts,
-                    "acima": aresta["nome"] if aresta else None}
+            # nome de pessoa física não é republicado: o motivo já diz que o controlador é PF
+            acima = aresta["nome"] if aresta and aresta.get("perfil") != "PF" else None
+            return {"topo": atual, "cadeia": cadeia, "motivo_parada": motivo, "pcts": pcts, "acima": acima}
         if prox in vistos:
             return {"topo": atual, "cadeia": cadeia, "motivo_parada": "ciclo", "pcts": pcts, "acima": None}
         vistos.add(prox)

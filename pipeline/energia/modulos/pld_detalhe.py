@@ -27,19 +27,26 @@ máximos. A comparação publicada é sempre entre o mesmo intervalo (a mesma ho
 mesma semana operativa de sábado a sexta) e em diferença absoluta (R$/MWh), nunca em
 razão ou multiplicador (achado A01).
 """
+import csv
+import hashlib
 import io
 import json
 import math
 import os
 import shutil
+import sqlite3
 import subprocess
 import sys
 import tempfile
+import urllib.error
+import urllib.request
 from collections import defaultdict
 from datetime import date, datetime, timedelta, timezone
+from email.utils import parsedate_to_datetime
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 
+from pipeline.common import USER_AGENT  # noqa: E402
 from pipeline.energia import base  # noqa: E402
 from pipeline.energia import evidencia as ev  # noqa: E402
 from pipeline.energia.fontes import ckan, ibge_pld, normas_pld, ons_pld  # noqa: E402
@@ -53,7 +60,8 @@ DS_A02 = "ons_cmo_semanal_a02"         # CMO semanal relido do original (CSV e P
 DS_DIC = "ons_cmo_dicionarios"         # dicionários de dados (JSON e PDF)
 DS_IPCA = "ibge_ipca_1737"             # IPCA número-índice
 DS_CONTROLE = "ons_cmo_controle"       # marca de importação de cada vintage no silver
-DS_NORMAS = "normas_pld"               # Decreto nº 5.163/2004 e REN ANEEL nº 957/2021 (P008)
+DS_NORMAS = "normas_pld"               # Decreto nº 5.163/2004, REN ANEEL nº 957/2021 e Procedimentos de Rede (P008)
+DS_BAL_CONF = "ons_cmo_balanco_conferencia"  # balanço do ONS baixado de novo, só para reconciliar a ponderada
 
 # silver principal (só leitura)
 DS_PLD = "ccee_pld_horario"
@@ -63,8 +71,10 @@ DS_INT = "intercambio_nacional_ho"
 
 PACOTE_SH = "cmo-semi-horario"
 PACOTE_SEM = "cmo-semanal"
+PACOTE_BAL = "balanco-energia-subsistema"
 URL_SH = "https://dados.ons.org.br/dataset/cmo-semi-horario"
 URL_SEM = "https://dados.ons.org.br/dataset/cmo-semanal"
+S3_ONS = "https://ons-aws-prod-opendata.s3.amazonaws.com/"
 S3_SH = "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/cmo_tm/"
 S3_SEM = "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/cmo_se/"
 LICENCA_IBGE = ("Uso livre com citação da fonte (IBGE). A página de termos de uso do IBGE respondeu com desafio "
@@ -72,13 +82,18 @@ LICENCA_IBGE = ("Uso livre com citação da fonte (IBGE). A página de termos de
 
 SITE = "https://scrutiniums.com/setor-eletrico/pld"
 
-# Tolerância monetária: o PLD e os limites são publicados em centavos. Um valor está "no
-# limite" quando a diferença absoluta é de até R$ 0,01/MWh (um centavo). A média diária
-# de 24 valores arredondados ao centavo tem erro de arredondamento de até R$ 0,005/MWh,
-# então a mesma tolerância serve ao teto estrutural. A sensibilidade com R$ 0,005/MWh
-# (igualdade ao centavo) é publicada junto.
+# Tolerâncias monetárias. O PLD horário e os limites são publicados em centavos, então na
+# hora "no limite" é igualdade ao centavo: |PLD − limite| ≤ R$ 0,005/MWh (o meio centavo
+# só absorve a representação binária do número). Um preço um centavo acima do piso é outro
+# preço e fica numa classe à parte ("a um centavo do limite"); a contagem que usaria
+# R$ 0,01/MWh na hora é publicada como sensibilidade (TOL_SENS). O teto estrutural é
+# conferido sobre a média das 24 horas, que tem erro de arredondamento de até R$ 0,005/MWh
+# contra um limite também arredondado ao centavo: ali a tolerância é R$ 0,01/MWh (TOL).
+# TOL também é o limiar de separação de preços entre submercados (mais de um centavo).
+TOL_HORA = 0.005
 TOL = 0.01
-TOL_SENS = 0.005
+TOL_SENS = 0.01
+MEIO_CENTAVO = 0.005
 EPS = 1e-9
 FLUXO_NULO = 1.0  # MWmed: fluxo de fronteira tratado como nulo nesta faixa
 PARES = (("SE", "S"), ("SE", "NE"), ("SE", "N"), ("S", "NE"), ("S", "N"), ("NE", "N"))
@@ -122,6 +137,18 @@ REGISTRO = {
          "descricao": ("Definição do mercado de curto prazo e valoração das exposições ao PLD. Cópia do Internet Archive do endereço "
                        "oficial, que responde com desafio de navegador."),
          "paginas": [{"rotulo": "PLD: entenda o preço", "href": "/setor-eletrico/pld"}], "downloads": [], "quebras": []},
+        {"orgao": "ONS", "nome": "procedimentos-de-rede", "slug": "ons-procedimentos-de-rede-pld", "dataset_silver": DS_NORMAS,
+         "titulo": "Procedimentos de Rede: Submódulos 2.4, 4.3 e 4.5 (uso do DECOMP e do DESSEM no cálculo do CMO)",
+         "estado": "INTEGRADO", "url": normas_pld.URL_PR_PAGINA, "licenca": normas_pld.LICENCA_PR, "tema": "normas", "formatos": ["PDF"],
+         "descricao": ("Horizonte, discretização e momento de execução dos modelos de curto e curtíssimo prazo do ONS, citados no "
+                       "painel CMO e formação de preço; cada passagem é conferida no PDF baixado."),
+         "paginas": [{"rotulo": "PLD: CMO e formação de preço", "href": "/setor-eletrico/pld"}], "downloads": [], "quebras": []},
+        {"orgao": "ONS", "nome": PACOTE_BAL, "slug": "ons-balanco-subsistema-conferencia-pld", "dataset_silver": DS_BAL_CONF,
+         "titulo": "Balanço de Energia nos Subsistemas: cópia própria para reconciliar o PLD ponderado pela carga",
+         "estado": "INTEGRADO", "url": f"https://dados.ons.org.br/dataset/{PACOTE_BAL}", "licenca": c.LICENCA_ONS,
+         "descricao": ("Arquivo anual baixado por este módulo e relido por leitor próprio para refazer a média ponderada pela carga "
+                       "das fichas de evidência; o peso publicado vem do silver principal."),
+         "paginas": [{"rotulo": "PLD: histórico e distribuição", "href": "/setor-eletrico/pld"}], "downloads": [], "quebras": []},
     ],
     "arquivos": {
         "/energia/series/pld_cmo_horario.csv": (
@@ -135,14 +162,22 @@ REGISTRO = {
             "pld_media = média das horas do PLD na semana (vazio se faltar alguma), pld_horas = quantas havia (168). R$/MWh."),
         "/energia/series/pld_limites_diario.csv": (
             "data; sm; pld_media_dia (média das 24 horas, vazio se faltar hora); horas; horas_no_piso e horas_no_teto_horario "
-            "(|PLD − limite| ≤ R$ 0,01/MWh); media_no_teto_estrutural (1 = média diária a até R$ 0,01/MWh do teto estrutural, "
-            "0 = não, vazio sem limite ou sem média); pld_min, pld_max_horario, pld_max_estrutural vigentes no dia e o ato de "
-            "cada um (vazios quando os atos não estão disponíveis). R$/MWh nominais."),
+            "(PLD igual ao limite ao centavo: |PLD − limite| ≤ R$ 0,005/MWh); horas_um_centavo_acima_do_piso (PLD exatamente "
+            "um centavo acima do piso, classe à parte); media_no_teto_estrutural (1 = média diária a até R$ 0,01/MWh do teto "
+            "estrutural, 0 = não, vazio sem limite ou sem média); pld_min, pld_max_horario, pld_max_estrutural vigentes no dia e o "
+            "ato de cada um (vazios quando os atos não estão disponíveis). R$/MWh nominais."),
         "/energia/series/pld_mensal.csv": (
             "mes (AAAA-MM); sm; parcial (1 = mês sem todos os dias completos); horas; media_temporal (média simples das horas, "
-            "R$/MWh nominais); horas_com_carga; media_ponderada_carga (Σ PLD × carga ÷ Σ carga do subsistema ONS nas horas com "
-            "carga, R$/MWh); mesmas_horas (1 = as duas médias usam as mesmas horas); ipca_indice (IBGE, dez/1993 = 100); "
-            "media_temporal_real (R$/MWh em reais do mes_base_real pelo IPCA; vazio sem índice do mês); mes_base_real."),
+            "R$/MWh nominais); horas_com_carga (horas com carga publicada e positiva); horas_carga_nao_positiva (horas com carga "
+            "publicada menor ou igual a zero, retiradas do peso); media_ponderada_carga (Σ PLD × carga ÷ Σ carga do subsistema ONS "
+            "nas horas com carga positiva, R$/MWh); mesmas_horas (1 = as duas médias usam as mesmas horas); ipca_indice (IBGE, "
+            "dez/1993 = 100); media_temporal_real (R$/MWh em reais do mes_base_real pelo IPCA; vazio sem índice do mês); mes_base_real."),
+        "/energia/series/pld_hora_dia.json": (
+            "Mapa hora × dia do PLD dos últimos 90 dias até o dia de referência: dias (AAAA-MM-DD, datas corridas), e por "
+            "submercado uma matriz [dia][hora 0 a 23] em R$/MWh nominais; null = hora sem PLD publicado (dia ausente fica todo null)."),
+        "/energia/series/pld_evidencias.json": (
+            "Fichas \"Comprove este número\" dos agregados do módulo (objeto de pipeline/energia/evidencia.py por chave), lidas sob "
+            "demanda pela interface; a gold traz só o índice."),
         "/energia/series/pld_separacao_diaria.csv": (
             "data; par (A_B); horas (horas com PLD nos dois submercados); horas_separadas (|PLD_A − PLD_B| > R$ 0,01/MWh); "
             "dif_media (média de PLD_A − PLD_B, R$/MWh); dif_abs_max; fronteira (se o par tem fronteira monitorada pelo ONS, "
@@ -199,6 +234,98 @@ def _marca_importado(con, vid, relatorio, chave=None):
     reconstituição por data em registros_como_estavam_em o encontre."""
     base.grava_registros(con, DS_CONTROLE, vid,
                          [(chave or vid, "importado", json.dumps(relatorio, ensure_ascii=False, sort_keys=True))])
+
+
+# ---------------------------------------------------------------------------
+# Data de publicação dos arquivos do S3 do ONS
+# ---------------------------------------------------------------------------
+# O last_modified do recurso no CKAN pode estar atrasado em relação ao arquivo: em
+# 30/09/2026 a captura das 22h06 (UTC) registrou 15:01:21, mas o objeto baixado no S3
+# tinha sido gravado às 22:00:52 (e o CKAN passou a dizer 22:01:09). A data que descreve
+# os bytes capturados é o Last-Modified do próprio objeto no S3, desde que o objeto lido
+# no cabeçalho seja o mesmo que foi baixado: isso se prova pelo ETag, que no S3 é o MD5
+# do conteúdo quando o arquivo é gravado de uma vez (sem "-n" de upload em partes).
+
+def instante_http(v):
+    """'Wed, 30 Sep 2026 22:00:52 GMT' → '2026-09-30T22:00:52Z'; None se ilegível."""
+    try:
+        dt = parsedate_to_datetime(v) if v else None
+    except (TypeError, ValueError):
+        return None
+    if dt is None:
+        return None
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def publicacao_do_objeto(cabecalhos, md5_conteudo):
+    """Last-Modified do objeto como publicação dos bytes capturados, só quando o ETag é o
+    MD5 desses bytes. ETag de upload em partes, ausente ou diferente devolve None: o
+    objeto lido no cabeçalho não é comprovadamente o arquivo capturado."""
+    etag = str((cabecalhos or {}).get("etag") or "").strip().strip('"').lower()
+    if not etag or "-" in etag or etag != str(md5_conteudo or "").lower():
+        return None
+    return instante_http((cabecalhos or {}).get("last_modified"))
+
+
+def cabecalhos_s3(url, timeout=60):
+    """HEAD do objeto (Last-Modified e ETag), com o mesmo User-Agent dos demais coletores."""
+    req = urllib.request.Request(url, method="HEAD", headers={"User-Agent": USER_AGENT})
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        return {"last_modified": resp.headers.get("Last-Modified"), "etag": resp.headers.get("ETag")}
+
+
+def md5_do_bronze(arquivo):
+    h = hashlib.md5()
+    with base.abre_bronze(arquivo) as f:
+        for bloco in iter(lambda: f.read(1 << 20), b""):
+            h.update(bloco)
+    return h.hexdigest()
+
+
+def confere_publicacao_s3(con, vintage, cabecalhos=cabecalhos_s3, agora=None):
+    """Confere e corrige a data de publicação de uma vintage de arquivo do S3 do ONS.
+
+    Conferida (ETag = MD5 dos bytes do bronze): publicado_em da vintage passa a ser o
+    Last-Modified do objeto, e o valor anterior (last_modified do CKAN lido na coleta) fica
+    registrado em `registros` com a evidência. Não conferida (o objeto mudou depois da
+    captura ou o ETag não é MD5): publicado_em fica vazio, porque nada comprova quando
+    aqueles bytes foram publicados. Falha de rede não muda nada e é tentada de novo."""
+    chave = f"publicacao_s3:{vintage['vintage_id']}"
+    feito = base.registros_como_estavam_em(con, DS_CONTROLE).get(chave, {})
+    if feito.get("resultado") in ("conferida", "nao_conferida"):
+        return {"resultado": feito["resultado"], "publicado_em": feito.get("publicado_em") or None, "registrado": True}
+    url = vintage.get("url") or ""
+    if not url.startswith(S3_ONS) or not vintage.get("arquivo"):
+        return {"resultado": "nao_se_aplica", "publicado_em": vintage.get("publicado_em")}
+    try:
+        cab = cabecalhos(url)
+        md5 = md5_do_bronze(vintage["arquivo"])
+    except Exception as e:  # sem rede ou sem arquivo: nada muda
+        return {"resultado": "falha", "publicado_em": vintage.get("publicado_em"), "detalhe": str(e)[:200]}
+    pub = publicacao_do_objeto(cab, md5)
+    resultado = "conferida" if pub else "nao_conferida"
+    anterior = vintage.get("publicado_em")
+    if pub != anterior:
+        con.execute("UPDATE vintages SET publicado_em=? WHERE vintage_id=?", (pub, vintage["vintage_id"]))
+    base.grava_registros(con, DS_CONTROLE, vintage["vintage_id"], [
+        (chave, "resultado", resultado), (chave, "publicado_em", pub or ""), (chave, "publicado_em_anterior", anterior or ""),
+        (chave, "last_modified_s3", cab.get("last_modified") or ""), (chave, "etag", cab.get("etag") or ""), (chave, "md5", md5),
+        (chave, "conferido_em", agora or base.agora_utc())])
+    con.commit()
+    return {"resultado": resultado, "publicado_em": pub, "anterior": anterior}
+
+
+def _publicacao_antes_do_download(url, last_modified_ckan):
+    """Data passada à política de recoleta: o Last-Modified do S3 (o mesmo que a vintage
+    vai guardar depois de conferida); sem resposta do HEAD, o last_modified do CKAN."""
+    if url.startswith(S3_ONS):
+        try:
+            return instante_http(cabecalhos_s3(url).get("last_modified")) or last_modified_ckan
+        except Exception:
+            return last_modified_ckan
+    return last_modified_ckan
 
 
 def _importa_semihorario(con, vintage):
@@ -361,7 +488,8 @@ def coletar(con, ctx):
         for ano, r in sorted(_recursos(pac_sh, "CMO_SEMIHORARIO_", "CSV").items()):
             recurso = f"CMO_SEMIHORARIO_{ano}"
             res = ckan.baixar_recurso(con, orgao="ONS", dataset=DS_SH, recurso=recurso, url=r["url"],
-                                      publicado_em=r.get("last_modified"), ext="csv", max_idade_dias=_max_idade(ano, hoje))
+                                      publicado_em=_publicacao_antes_do_download(r["url"], r.get("last_modified")), ext="csv",
+                                      max_idade_dias=_max_idade(ano, hoje))
             status["semihorario"][recurso] = res["status"]
             if res["status"] == "falha":
                 falha(f"{recurso}: {res['detalhe']}")
@@ -390,8 +518,9 @@ def coletar(con, ctx):
                     continue
                 recurso = f"CMO_SEMANAL_{ano}" + ("" if fmt == "csv" else "_parquet")
                 res = ckan.baixar_recurso(con, orgao="ONS", dataset=DS_A02, recurso=recurso, url=r["url"],
-                                          publicado_em=r.get("last_modified") or r.get("metadata_modified"), ext=ext,
-                                          max_idade_dias=_max_idade(ano, hoje))
+                                          publicado_em=_publicacao_antes_do_download(
+                                              r["url"], r.get("last_modified") or r.get("metadata_modified")),
+                                          ext=ext, max_idade_dias=_max_idade(ano, hoje))
                 status["semanal_original"][recurso] = res["status"]
                 if res["status"] == "falha":
                     falha(f"{recurso}: {res['detalhe']}")
@@ -420,7 +549,8 @@ def coletar(con, ctx):
                 continue
             recurso = f"{prefixo}_{fmt.lower()}"
             res = ckan.baixar_recurso(con, orgao="ONS", dataset=DS_DIC, recurso=recurso, url=r["url"],
-                                      publicado_em=r.get("last_modified"), ext=fmt.lower(), max_idade_dias=7)
+                                      publicado_em=_publicacao_antes_do_download(r["url"], r.get("last_modified")),
+                                      ext=fmt.lower(), max_idade_dias=7)
             status["dicionarios"][recurso] = res["status"]
             if res["status"] == "falha":
                 falha(f"{recurso}: {res['detalhe']}")
@@ -456,7 +586,7 @@ def coletar(con, ctx):
     # 5. Textos normativos do P008 (fora do CKAN): bronze com sha256, vintage e conferência
     status["normas"] = {}
     for doc_id, doc in normas_pld.DOCUMENTOS.items():
-        orgao = "camara-dos-deputados" if doc["ext"] == "html" else "ANEEL"
+        orgao = {"ONS": "ONS", "ANEEL": "ANEEL"}.get(doc["orgao"], "camara-dos-deputados")
         res = ckan.baixar_recurso(con, orgao=orgao, dataset=DS_NORMAS, recurso=doc_id, url=doc["url"], publicado_em=None,
                                   ext=doc["ext"], max_idade_dias=30)
         status["normas"][doc_id] = res["status"]
@@ -469,9 +599,56 @@ def coletar(con, ctx):
             except Exception as e:
                 base.registra_coleta(con, DS_NORMAS, rec, False, f"importação: {e}")
                 falha(f"{rec} importação: {e}")
+    # 6. Manuais dos modelos (CEPEL): tentativa registrada, sem contorno. Hoje o servidor
+    # responde 403; o registro em `coletas` é a evidência do bloqueio citada na gold.
+    status["cepel"] = _tenta_cepel(con)
+
+    # 7. Balanço de energia do ONS (carga horária): cópia própria do arquivo anual, relida por
+    # leitor independente só para reconciliar a média ponderada das fichas de evidência
+    status["balanco_conferencia"] = {}
+    try:
+        pac_bal = ckan.pacote("ONS", PACOTE_BAL)
+    except Exception as e:
+        pac_bal = None
+        base.registra_coleta(con, DS_BAL_CONF, "*", False, f"package_show: {e}")
+        falha(f"{PACOTE_BAL} package_show: {e}")
+    if pac_bal:
+        for ano, r in sorted(_recursos(pac_bal, "BALANCO_ENERGIA_SUBSISTEMA_", "CSV").items()):
+            if ano < hoje.year - 1:
+                continue
+            recurso = f"BALANCO_ENERGIA_SUBSISTEMA_{ano}"
+            res = ckan.baixar_recurso(con, orgao="ONS", dataset=DS_BAL_CONF, recurso=recurso, url=r["url"],
+                                      publicado_em=_publicacao_antes_do_download(r["url"], r.get("last_modified")), ext="csv",
+                                      max_idade_dias=_max_idade(ano, hoje))
+            status["balanco_conferencia"][recurso] = res["status"]
+            if res["status"] == "falha":
+                falha(f"{recurso}: {res['detalhe']}")
+
+    # 8. Data de publicação de cada arquivo vigente do S3 do ONS conferida pelo ETag
+    status["publicacao_s3"] = {}
+    for ds in (DS_SH, DS_A02, DS_DIC, DS_BAL_CONF):
+        for rec, v in ckan.vintages_vigentes(con, ds).items():
+            r_ = confere_publicacao_s3(con, v)
+            status["publicacao_s3"][f"{ds}:{rec}"] = r_["resultado"]
     con.commit()
     status["ok"] = not status["falhas"]
     return status
+
+
+def _tenta_cepel(con, url=normas_pld.URL_CEPEL):
+    """GET na página do CEPEL (manuais do NEWAVE, do DECOMP e do DESSEM). O resultado vai
+    para `coletas` (recurso 'cepel') e a gold o cita; bloqueio não é contornado."""
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            detalhe, ok = f"HTTP {resp.status}", True
+    except urllib.error.HTTPError as e:
+        detalhe, ok = f"HTTP {e.code}", False
+    except Exception as e:  # sem rede: registrado como falha de acesso
+        detalhe, ok = f"{type(e).__name__}: {str(e)[:150]}", False
+    base.registra_coleta(con, DS_NORMAS, "cepel", ok, f"{url} {detalhe}")
+    con.commit()
+    return detalhe
 
 
 

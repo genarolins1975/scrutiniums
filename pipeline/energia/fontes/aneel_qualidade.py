@@ -131,6 +131,18 @@ def _num(v):
         return None
 
 
+# Marcadores que a fonte publica no lugar da sigla (a Creral, CNPJ 89.435.598/0001-55, tem
+# SigAgente "Não Informado" nos indicadores de continuidade de 2010 a 2026): são ausência
+# de sigla, não um nome, e não podem virar o rótulo da distribuidora.
+MARCADORES_SEM_SIGLA = {"não informado", "nao informado", "não informada", "nao informada", "-", "n/a"}
+
+
+def sigla_valida(s):
+    """A sigla publicada, ou None quando vazia ou marcador de ausência."""
+    s = (s or "").strip()
+    return None if not s or s.lower() in MARCADORES_SEM_SIGLA else s
+
+
 # ---------------------------------------------------------------------------
 # Continuidade (DEC/FEC por conjunto e mês)
 # ---------------------------------------------------------------------------
@@ -172,6 +184,52 @@ def conjuntos_mes(lotes):
 
 def _ref(ano, mes):
     return f"{ano:04d}-{mes:02d}"
+
+
+def centesimos(v):
+    """Valor em centésimos inteiros (DEC em centésimos de hora, FEC em centésimos de
+    interrupção). Por que existe: a ANEEL publica cada DEC e FEC mensal e cada limite com
+    duas casas (verificado em 30/09/2026 nos 1,2 milhão de valores dos três Parquets e nos
+    263.389 limites: nenhum com mais casas), então a soma anual é um número exato de
+    centésimos. Em ponto flutuante a soma de 12 meses pode dar 8,000000000000002 e passar
+    por maior que o limite 8,00 (conjunto 12836, CRUZALTINA, 2025)."""
+    if v is None:
+        return None
+    return int(round(v * 100))
+
+
+def acima_do_limite(valor, limite):
+    """True quando o apurado passa do limite, comparados em centésimos inteiros (igual ao
+    limite não é transgressão); None quando falta um dos dois (ausência não vira "dentro")."""
+    if valor is None or limite is None:
+        return None
+    return centesimos(valor) > centesimos(limite)
+
+
+def controle_numcon(ucs_total, nconj_total, fator=2.0):
+    """Meses em que o número de UCs (NumCon) publicado por uma distribuidora não é
+    plausível, {ref: motivo}. Por que existe: em março de 2026 a CELESC publicou NumCon = 1
+    nos 121 conjuntos; o DEC mensal da distribuidora virava média simples dos conjuntos e,
+    no Brasil, a CELESC pesava 121 UCs em vez de 3,4 milhões, sem que nada acusasse.
+
+    Regras (sobre a soma do NumCon dos conjuntos da distribuidora no mês):
+    * no máximo 1 UC por conjunto em média (NumCon = 1 em todos os conjuntos);
+    * queda: menos da metade do mês anterior E do seguinte que existirem;
+    * pico: mais do dobro do mês anterior E do seguinte.
+    Exigir os dois vizinhos separa o mês isolado de uma mudança de patamar (incorporação,
+    cisão), em que o mês seguinte continua no nível novo."""
+    refs = sorted(r for r, v in ucs_total.items() if v)
+    out = {}
+    for i, r in enumerate(refs):
+        u, n = ucs_total[r], nconj_total.get(r)
+        viz = [ucs_total[x] for x in (refs[i - 1] if i > 0 else None, refs[i + 1] if i + 1 < len(refs) else None) if x]
+        if n and u <= n:
+            out[r] = f"NumCon médio de {u / n:.2f} UC por conjunto ({int(n)} conjuntos, {int(u)} UCs)"
+        elif viz and all(u * fator < v for v in viz):
+            out[r] = f"NumCon de {int(u)} UCs, menos da metade dos meses vizinhos ({', '.join(str(int(v)) for v in viz)})"
+        elif viz and all(u > fator * v for v in viz):
+            out[r] = f"NumCon de {int(u)} UCs, mais do dobro dos meses vizinhos ({', '.join(str(int(v)) for v in viz)})"
+    return out
 
 
 def agrega_mensal(dados, chave_grupo):
@@ -315,6 +373,63 @@ def limite_agregado(conj_anual, limites, grupo_de_conj, ano):
             for g, (nd, wd, nf, wf, wt) in acc.items()}
 
 
+def quebras_perimetro(por_dist_ano, conj_mun, limiar=0.10):
+    """Mudanças de perímetro de uma distribuidora de um ano para o seguinte (incorporação
+    de outra distribuidora ou cessão de área), detectadas pelos dados publicados.
+
+    por_dist_ano: {(cnpj, ano): (conjuntos com DEC no ano, UCs médias somadas)};
+    conj_mun: {conjunto: municípios que ele atende} (IndQual Município).
+
+    Duas condições, as duas necessárias: (1) as UCs médias variam mais que `limiar` de um
+    ano para o seguinte; (2) há continuidade territorial com outra distribuidora que perde
+    UCs (ou deixa de publicar) no mesmo ano: os municípios dos conjuntos novos eram
+    atendidos no ano anterior por conjuntos dela (ou, na perda, os municípios dos conjuntos
+    que saíram passam a ser atendidos por uma distribuidora que ganha UCs). Só a variação
+    de UCs acusaria cooperativas pequenas crescendo 10% ao ano e erros de NumCon; só a
+    vizinhança acusaria qualquer município dividido entre duas distribuidoras. Nada é
+    ligado por nome. Devolve uma lista de dicts, um por (cnpj, ano) com quebra."""
+    anos_cnpj = collections.defaultdict(set)
+    for (c14, a) in por_dist_ano:
+        anos_cnpj[a].add(c14)
+
+    def muns(cs):
+        out = set()
+        for cj in cs:
+            out |= conj_mun.get(cj, set())
+        return out
+    out = []
+    for (c14, a), (cs, u) in sorted(por_dist_ano.items()):
+        ant = por_dist_ano.get((c14, a - 1))
+        if not ant or not ant[1] or not u:
+            continue
+        var = u / ant[1] - 1
+        if abs(var) <= limiar:
+            continue
+        outras = []
+        if var > 0:
+            mn = muns(cs - ant[0])
+            for y in sorted(anos_cnpj[a - 1] - {c14}):
+                ya, yn = por_dist_ano[(y, a - 1)], por_dist_ano.get((y, a))
+                perdeu = yn is None or yn[1] < (1 - limiar) * ya[1]
+                comum = mn & muns(ya[0])
+                if perdeu and comum:
+                    outras.append({"cnpj": y, "papel": "origem", "municipios_em_comum": len(comum),
+                                   "ucs_ano_anterior": ya[1], "ucs_no_ano": yn[1] if yn else None})
+        else:
+            ms = muns(ant[0] - cs)
+            for y in sorted(anos_cnpj[a] - {c14}):
+                yn, ya = por_dist_ano[(y, a)], por_dist_ano.get((y, a - 1))
+                ganhou = ya is None or yn[1] > (1 + limiar) * ya[1]
+                comum = ms & muns(yn[0])
+                if ganhou and comum:
+                    outras.append({"cnpj": y, "papel": "destino", "municipios_em_comum": len(comum),
+                                   "ucs_ano_anterior": ya[1] if ya else None, "ucs_no_ano": yn[1]})
+        if outras:
+            out.append({"cnpj": c14, "ano": a, "conjuntos_antes": len(ant[0]), "conjuntos_depois": len(cs),
+                        "ucs_antes": ant[1], "ucs_depois": u, "variacao_ucs_pct": 100 * var, "outras": outras})
+    return out
+
+
 def le_limites(linhas):
     """{(conj, ano, 'DEC'|'FEC'): valor} e {conj: cnpj14} a partir das linhas do CSV
     indicadores-continuidade-coletivos-limite (vírgula decimal)."""
@@ -409,8 +524,9 @@ def agrega_compensacoes(lotes):
 
 def agrega_atendimento(lotes, ano_minimo=2015):
     """Por distribuidora e mês: ocorrências (Σ NumOcorr), ocorrências com interrupção
-    (Σ Nie) e tempos médios ponderados pelo número de ocorrências de cada conjunto
-    (TMAE = TMP + TMD + TME, em minutos). Por distribuidora e ano: dias críticos
+    (Σ Nie), tempos médios ponderados pelo número de ocorrências de cada conjunto
+    (TMAE = TMP + TMD + TME, em minutos), conjuntos com ocorrência informada e conjuntos
+    com Nie maior que NumOcorr (controle). Por distribuidora e ano: dias críticos
     somados sobre os conjuntos e conjuntos com ao menos um dia crítico."""
     conj = collections.defaultdict(dict)
     for d in lotes:
@@ -440,9 +556,15 @@ def agrega_atendimento(lotes, ano_minimo=2015):
             continue
         m = mensal[(c14, _ref(ano, per))]
         m["ocorr"] += n
+        m["conj_ocorr"] += 1
         if s.get("Nie") is not None:
             m["nie"] += s["Nie"]
             m["ocorr_nie"] += n
+            # controle de domínio: ocorrências com interrupção (Nie) são parte das
+            # ocorrências (NumOcorr); a fonte publica conjunto-meses com Nie maior, que são
+            # contados aqui (não corrigidos nem descartados; Nie não entra no TMAE)
+            if s["Nie"] > n:
+                m["conj_nie_maior"] += 1
         if n > 0 and all(s.get(x) is not None for x in ("TMP", "TMD", "TME")):
             m["tmae_num"] += (s["TMP"] + s["TMD"] + s["TME"]) * n
             m["tmp_num"] += s["TMP"] * n
@@ -700,6 +822,57 @@ def agrega_ouvidoria(linhas):
     return {k: dict(v) for k, v in out.items()}
 
 
+# ---------------------------------------------------------------------------
+# Indicadores de qualidade do atendimento telefônico (INS, IAb, ICO)
+# ---------------------------------------------------------------------------
+
+# Padrões regulatórios declarados no dicionário (versão 1.0, 16/07/2026; PRODIST, Módulo 8,
+# artigos 295 a 303): INS ≥ 85%, IAb ≤ 4%, ICO ≤ 2%, apurados só nos períodos típicos.
+PADRAO_TELEFONICO = {"ins": (">=", 85.0), "iab": ("<=", 4.0), "ico": ("<=", 2.0)}
+CAMPOS_TELEFONICO = {
+    # campo publicado → (chave, é percentual publicado como fração)
+    "PctINS": ("ins", True), "PctINSCheio": ("ins_cheio", True),
+    "PctIAb": ("iab", True), "PctIAbCheio": ("iab_cheio", True),
+    "PctICO": ("ico", True), "PctICOCheio": ("ico_cheio", True),
+    "QtdChof": ("oferecidas", False), "QtdChofCheio": ("oferecidas_cheio", False),
+    "QtdChoc": ("ocupadas", False), "QtdChocCheio": ("ocupadas_cheio", False),
+    "QtdChamadasAtendidas": ("atendidas", False), "QtdChamadasAtendidasCheio": ("atendidas_cheio", False),
+    "QtdChamadasAbandonadas": ("abandonadas", False), "QtdChamadasAbandonadasCheio": ("abandonadas_cheio", False),
+}
+
+
+def le_atendimento_telefonico(linhas):
+    """({(cnpj, 'AAAA-MM'): {...}}, conflitos) do CSV indicador-atendimento-telefonico.
+
+    Os campos Pct* vêm como fração (",938483..." = 93,85%): aqui viram percentuais (× 100),
+    a unidade em que o dicionário escreve o padrão (INS ≥ 85%). O arquivo publica "NumCNPJ"
+    (o dicionário chama NumCPFCNPJ); os dois nomes são aceitos. Chave repetida com valor
+    diferente é contada como conflito e fica a última linha."""
+    out, conflitos = {}, 0
+    for row in linhas:
+        c14 = entidades.cnpj(row.get("NumCNPJ") or row.get("NumCPFCNPJ"))
+        ano, mes = _int(row.get("AnoReferencia")), _int(row.get("MesReferencia"))
+        if not c14 or ano is None or mes is None or not 1 <= mes <= 12:
+            continue
+        reg = {"sigla": (row.get("SigAgente") or "").strip() or None, "uf": (row.get("SigUF") or "").strip() or None}
+        for campo, (chave, pct) in CAMPOS_TELEFONICO.items():
+            v = _num(row.get(campo))
+            reg[chave] = (100 * v if pct else v) if v is not None else None
+        k = (c14, _ref(ano, mes))
+        if k in out and out[k] != reg:
+            conflitos += 1
+        out[k] = reg
+    return out, conflitos
+
+
+def cumpre_padrao_telefonico(indicador, valor):
+    """True/False contra o padrão regulatório do indicador; None sem valor."""
+    if valor is None:
+        return None
+    op, lim = PADRAO_TELEFONICO[indicador]
+    return valor >= lim if op == ">=" else valor <= lim
+
+
 def linhas_parquet_como_dicts(lotes):
     for d in lotes:
         chaves = list(d)
@@ -942,6 +1115,57 @@ def le_ranking_continuidade(texto_html, ano):
                         "sigla": cel[2], "empresa": empresa, "regiao": cel[4],
                         "cnpj": CNPJ_RANKING.get(empresa)})
     return out
+
+
+# ---------------------------------------------------------------------------
+# Divulgação anual da ANEEL (notícia do ranking): DEC, FEC e compensações nacionais
+# ---------------------------------------------------------------------------
+
+def texto_de_html(texto_html):
+    """Texto corrido de uma página HTML (sem script e estilo), com espaços normalizados."""
+    t = re.sub(r"<script.*?</script>|<style.*?</style>", " ", texto_html, flags=re.S | re.I)
+    t = html.unescape(re.sub(r"<[^>]+>", " ", t)).replace("\xa0", " ")
+    return re.sub(r"\s+", " ", t).strip()
+
+
+def le_divulgacao_continuidade(texto_html):
+    """Números nacionais do texto anual da ANEEL sobre a continuidade (DEC em horas, FEC,
+    compensações em R$ e em quantidade), com o trecho de onde cada um saiu.
+
+    Devolve {ano: {"dec": x, "fec": y, "compensacao_rs": z, "compensacoes_qtd": w,
+    "trechos": {...}}} para o ano da divulgação e o anterior, que o texto cita para
+    comparação. Número não encontrado fica ausente (o texto mudou de redação: nenhuma
+    conferência é feita com ele). Os padrões seguem a redação das notícias de 2024 e 2025,
+    conferida nos arquivos guardados no bronze."""
+    t = texto_de_html(texto_html)
+    out = collections.defaultdict(lambda: {"trechos": {}})
+    m = re.search(r"desempenho das distribuidoras no fornecimento de energia el[ée]trica em (\d{4})", t)
+    if not m:
+        return {}
+    ano = int(m.group(1))
+
+    def num(s):
+        return _num(s)
+    m = re.search(r"(ficaram,? (?:em m[ée]dia,? )?([\d.,]+) horas (?:em m[ée]dia )?sem energia \(DEC\).*?em rela[çc][ãa]o a "
+                  r"(\d{4}),? quando (?:se registraram|registrou-se) ([\d.,]+) horas)", t)
+    if m and int(m.group(3)) == ano - 1:
+        out[ano]["dec"], out[ano - 1]["dec"] = num(m.group(2)), num(m.group(4))
+        out[ano]["trechos"]["dec"] = out[ano - 1]["trechos"]["dec"] = m.group(1)
+    m = re.search(r"(reduzindo de ([\d.,]+) interrup[çc][õo]es em (\d{4}) para ([\d.,]+) interrup[çc][õo]es em m[ée]dia "
+                  r"por consumidor em (\d{4}))", t)
+    if m and int(m.group(3)) == ano - 1 and int(m.group(5)) == ano:
+        out[ano - 1]["fec"], out[ano]["fec"] = num(m.group(2)), num(m.group(4))
+        out[ano]["trechos"]["fec"] = out[ano - 1]["trechos"]["fec"] = m.group(1)
+    m = re.search(r"(de R\$ ?([\d.,]+) bilh[ãa]o em (\d{4}) para R\$ ?([\d.,]+) bilh[ãa]o em (\d{4}))", t)
+    if m and int(m.group(3)) == ano - 1 and int(m.group(5)) == ano:
+        out[ano - 1]["compensacao_rs"], out[ano]["compensacao_rs"] = num(m.group(2)) * 1e9, num(m.group(4)) * 1e9
+        out[ano]["trechos"]["compensacao_rs"] = out[ano - 1]["trechos"]["compensacao_rs"] = m.group(1)
+        resto = t[m.end():m.end() + 300]
+        q = re.search(r"(quantidade de compensa[çc][õo]es[^.]*?de ([\d.,]+) para ([\d.,]+) milh[õo]es)", resto)
+        if q:
+            out[ano - 1]["compensacoes_qtd"], out[ano]["compensacoes_qtd"] = num(q.group(2)) * 1e6, num(q.group(3)) * 1e6
+            out[ano]["trechos"]["compensacoes_qtd"] = out[ano - 1]["trechos"]["compensacoes_qtd"] = q.group(1)
+    return {a: dict(v) for a, v in out.items() if len(v) > 1}
 
 
 def le_csv_texto(texto, separador=";"):

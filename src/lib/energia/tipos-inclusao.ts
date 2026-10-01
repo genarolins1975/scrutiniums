@@ -96,14 +96,14 @@ export type UfTsee = {
   municipios_com_faturas: number;
 };
 
+/**
+ * Um arquivo mensal de Beneficiários da CDE. Contagens e valores só existem quando o
+ * original está no bronze (`original_no_bronze`); o mês sondado e rejeitado pela
+ * cobertura publica só a cobertura e `motivo_sem_valores`.
+ */
 export type MesCde = {
   mes: string;
   distribuidoras: number | null;
-  faturas_tsee: number;
-  faturas_outras_subclasses: number;
-  desconto_faturas_reais: number | null;
-  desconto_liquido_reais: number | null;
-  faturas_municipio_invalido: number;
   /** % das UC do SCS de referência em distribuidoras presentes no arquivo. */
   cobertura_scs_pct: number | null;
   completo: boolean;
@@ -111,6 +111,46 @@ export type MesCde = {
   uso: string[];
   sha256: string | null;
   recurso: string | null;
+  /** Faturas de faturamento (tipo 1) com desconto nas subclasses 3.2 a 3.6. */
+  faturas_tsee: number | null;
+  faturas_outras_subclasses: number | null;
+  desconto_faturas_reais: number | null;
+  desconto_medio_por_fatura_reais: number | null;
+  /** Subclasses 3.2 a 3.6, tipos de faturamento 1 a 4 (cancelamentos e refaturamentos com o sinal da fonte). */
+  desconto_liquido_reais: number | null;
+  /** Diagnóstico: linhas SubsBaixaRenda de outras subclasses (fora do líquido). */
+  desconto_fora_das_subclasses_reais: number | null;
+  /** Faturas fora do mapa: formato inválido mais código inexistente na lista do IBGE. */
+  faturas_municipio_invalido: number | null;
+  faturas_municipio_inexistente: number | null;
+  codigos_inexistentes: { codigo: string; faturas: number }[];
+  motivo_sem_valores: string | null;
+};
+
+/** JSON sob demanda (`serie_cde_uf_json`): faturas e desconto por UF e mês (meses com original no bronze); listas na ordem de `ufs` × `meses`. */
+export type SerieCdeUf = {
+  gerado_em: string;
+  fonte: string;
+  unidades: { faturas_tsee: string; desconto_faturas_reais: string };
+  meses: string[];
+  ufs: string[];
+  completo: boolean[];
+  faturas_tsee: (number | null)[][];
+  desconto_faturas_reais: (number | null)[][];
+};
+
+export type Incorporacao = {
+  /** Primeiro mês em que a sucessora informa as UC da incorporada. */
+  mes_ruptura: string;
+  sucessora: string;
+  incorporadas: string[];
+  /** UC residenciais das incorporadas no último mês informado. */
+  total_incorporadas: number;
+  salto_sucessora: number;
+  patamar_antes: number;
+  patamar_depois: number;
+  sigla_sucessora: string | null;
+  siglas_incorporadas: (string | null)[];
 };
 
 export type ConferenciaScsCde = {
@@ -124,7 +164,11 @@ export type ConferenciaScsCde = {
   distribuidoras_comparadas: number;
   distribuidoras_ate_2pct: number;
   tolerancia: string;
+  /** Corte declarado: `maiores_diferencas` só traz distribuidoras com pelo menos estas UC no SCS. */
+  uc_minima_maiores_diferencas: number;
   maiores_diferencas: (ConferenciaDistribuidora & { cnpj: string; sigla: string | null })[];
+  /** Distribuidoras abaixo do corte com diferença acima de ±2% (ex.: CERES, 436 UC e 1.740 faturas). */
+  diferencas_distribuidoras_pequenas: (ConferenciaDistribuidora & { cnpj: string; sigla: string | null })[];
   so_no_scs: string[];
   so_na_cde: string[];
 };
@@ -136,7 +180,8 @@ export type SerieAntiga = {
   teste_do_recurso: { status_http: string | null; location: string | null; conclusao: string | null; testado_em: string | null };
   copia_usada: string;
   linhas_por_regiao: number;
-  comparacao_scs: { m: string; uc_baixa_renda_antiga: number; uc_residencial_antiga: number; uc_tsee_scs: number | null; diferenca_pct: number | null }[];
+  /** `repete_trimestre`: o arquivo original repete a contagem desse trimestre (fica fora da estatística de concordância). */
+  comparacao_scs: { m: string; uc_baixa_renda_antiga: number; uc_residencial_antiga: number; uc_tsee_scs: number | null; diferenca_pct: number | null; repete_trimestre: string | null }[];
   valores_repetidos: { m: string; repete: string }[];
   proveniencia: Proveniencia;
 };
@@ -177,13 +222,30 @@ export type TarifaSocial = {
   /** Faturas do mês do mapa por UF (faturas, não UC). */
   ufs: UfTsee[];
   cde_meses: MesCde[];
+  /** Endereço do JSON com a série por UF (SerieCdeUf), lido sob demanda. */
+  serie_cde_uf_json: string;
   conferencia_scs_cde: ConferenciaScsCde | null;
   mudancas_de_sigla: { cnpj: string; mes: string; de: string; para: string }[];
+  /** CNPJ cuja sigla no SCS é "Não Informado": sigla tomada de outra fonte, com a origem. */
+  siglas_de_outra_fonte: { cnpj: string; sigla: string; origem: string }[];
+  incorporacoes: Incorporacao[];
+  /** Meses que a regra sem incorporação tiraria da participação e que a incorporação explica. */
+  participacao_mantida_por_incorporacao: { mes: string; cnpj: string; sigla: string | null }[];
   diagnostico_scs: DiagnosticoScs | null;
   serie_antiga: SerieAntiga | null;
   custeio_cde: { linhas: LinhaCusteio[]; ano_corrente: string | null; proveniencia: Proveniencia } | null;
   eventos: { data: string; rotulo: string; fonte: string; detalhe: string }[];
-  regras: { mes_completo: string; residencial_inconsistente: string; despacho_vigente: string; mes_mapa: string };
+  regras: {
+    mes_completo: string;
+    residencial_inconsistente: string;
+    incorporacao: string;
+    maiores_diferencas: string;
+    desconto_liquido: string;
+    despacho_vigente: string;
+    mes_mapa: string;
+    mes_cde_sem_original: string;
+    municipio_valido: string;
+  };
   proveniencia: { scs: Proveniencia; participacao: Proveniencia; cde: Proveniencia; antiga?: Proveniencia; custeio?: Proveniencia };
 };
 
@@ -324,6 +386,15 @@ export type Orcamento = {
     media_razoes_desp_brasil: Evidencia;
     razao_medias_brasil: Evidencia;
   };
+  /** Brasil por classe (código SIDRA): média das participações na renda ao lado da mediana e sem as famílias com energia acima da renda. */
+  sensibilidade_media_razoes_renda: Record<string, {
+    media_razoes_renda_pct: number | null;
+    mediana_renda_pct: number | null;
+    media_sem_energia_acima_da_renda_pct: number | null;
+    familias_amostra_energia_acima_da_renda: number | null;
+    peso_energia_acima_da_renda_pct: number | null;
+    tres_maiores_contribuicoes_pp: number | null;
+  }>;
   proveniencia: { sidra: Proveniencia; microdados: Proveniencia };
 };
 
@@ -344,8 +415,9 @@ export type LinhaPnad = {
   cv_pct_integral: number | null;
   domicilios_mil: number | null;
   domicilios_com_energia_mil: number | null;
-  /** Diferença de duas estimativas publicadas; sem erro-padrão. */
+  /** Diferença de duas estimativas publicadas; sem erro-padrão. null com estado "menos_de_1_mil" quando as duas coincidem em milhares. */
   domicilios_sem_energia_mil: number | null;
+  domicilios_sem_energia_estado: "calculado" | "menos_de_1_mil" | "ausente";
 };
 
 export type LocalidadeIsolada = {
@@ -363,11 +435,12 @@ export type LocalidadeIsolada = {
   longitude: number | null;
 };
 
-export type CicloPasi = {
+/** População: soma só das informadas; null quando nenhuma localidade do grupo informa. */
+export type PopulacaoAgregada = { populacao: number | null; localidades_sem_populacao: number };
+
+export type CicloPasi = PopulacaoAgregada & {
   ciclo: string;
   localidades: number;
-  populacao: number;
-  localidades_sem_populacao: number;
   com_previsao_interligacao: number;
   programas: Record<string, number>;
   sairam_da_lista?: number;
@@ -395,8 +468,8 @@ export type ConferenciaCaderno = {
 export type SistemasIsolados = {
   ciclo: string;
   ciclos: CicloPasi[];
-  por_uf: { uf: string; nome: string | null; localidades: number; populacao: number }[];
-  por_distribuidora: { distribuidora: string; localidades: number; populacao: number }[];
+  por_uf: ({ uf: string; nome: string | null; localidades: number } & PopulacaoAgregada)[];
+  por_distribuidora: ({ distribuidora: string; localidades: number } & PopulacaoAgregada)[];
   localidades_mais_populosas: LocalidadeIsolada[];
   /** Todas as localidades do ciclo, sob demanda: { ciclo, campos, localidades: listas na ordem de `campos` }. */
   pontos_json: string;
@@ -411,7 +484,7 @@ export type LuzParaTodos = {
   ultimo_mes: string;
   ano_parcial: string;
   programas: { id: ProgramaLpt; rotulo: string }[];
-  /** Domicílios atendidos por ano do atendimento; null = nenhum atendimento do programa no ano. */
+  /** Domicílios atendidos por ano do atendimento; null = nenhuma linha do programa no ano; 0 = linhas com quantidade zero na fonte. */
   serie_anual: ({ ano: string; total: number; parcial: boolean } & Record<ProgramaLpt, number | null>)[];
   por_uf: ({ uf: string; nome: string | null; regiao: RegiaoId | null; total: number; desde_2023: number | null } & Record<ProgramaLpt, number | null>)[];
   municipios_mais_atendidos_desde_2023: { cod: string | null; municipio: string | null; uf: string; domicilios: number }[];

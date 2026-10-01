@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "previsoes_desempenho.json",
- "gerado_em": "2026-09-30T23:37:05Z",
+ "gerado_em": "2026-09-30T23:49:53Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "30ad85ccb171+alterado",
+ "versao_codigo": "3e7ff0a36fba+alterado",
  "disponivel": true,
  "paineis": [
   "P013",
@@ -30,7 +30,7 @@
   },
   "publicado_pela_fonte_em": null,
   "capturado_em": "2026-09-30T02:20:14Z",
-  "validado_em": "2026-09-30T23:37:05Z",
+  "validado_em": "2026-09-30T23:49:53Z",
   "cobertura_historica": {
    "inicio": "2021-01-01",
    "fim": "2026-09-30"
@@ -48,9 +48,9 @@
    "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
   },
   "versao_pipeline": "energia-0.1.0",
-  "versao_codigo": "30ad85ccb171+alterado",
+  "versao_codigo": "3e7ff0a36fba+alterado",
   "revisoes_conhecidas": {
-   "detectado_em": "2026-09-30T23:36:27Z",
+   "detectado_em": "2026-09-30T23:49:09Z",
    "total": 0,
    "vintages_comparadas": 8,
    "arquivos": 6,
@@ -187,6 +187,30 @@
       "para": 58.137
      }
     ]
+   }
+  },
+  "dicionarios_ons": {
+   "ear": {
+    "url": "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/ear_subsistema_di/DicionarioDados_EarPorSubsistema.pdf",
+    "sha256": "60f945f92087a49d3f1084dafd81b2a9b203e16903bc7c84befc131f56541c9e",
+    "capturado_em": "2026-09-30T23:31:26Z",
+    "arquivo": "data/energia/bronze/ons/previsoes_dicionarios_ons/ear/20260930T233126Z.60f945f92087.pdf.gz",
+    "campos": {
+     "ear_data": "presente",
+     "ear_verif_subsistema_percentual": "presente"
+    },
+    "leitura": "Todos os campos usados estão no dicionário."
+   },
+   "ena": {
+    "url": "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/ena_subsistema_di/DicionarioDados_EnaPorSubsistema.pdf",
+    "sha256": "8ac668725561c5f32831b3da2d9210fe117ff30342274793112f718e177abce7",
+    "capturado_em": "2026-09-30T23:31:27Z",
+    "arquivo": "data/energia/bronze/ons/previsoes_dicionarios_ons/ena/20260930T233127Z.8ac668725561.pdf.gz",
+    "campos": {
+     "ena_data": "presente",
+     "ena_bruta_regiao_percentualmlt": "presente"
+    },
+    "leitura": "Todos os campos usados estão no dicionário."
    }
   },
   "ultima_entrega_apurada_teste": "2026-10-01",
@@ -4930,6 +4954,7 @@
   "contaminacao": "O desenvolvimento é exploratório: a pesquisa examinou 2023 e 2024 antes de definir os candidatos. O teste final (entregas desde 01/01/2025) não foi usado em nenhuma escolha de configuração, mas o mesmo autor escreveu o código e viu os resultados ao depurá-lo."
  },
  "regimes": {
+  "nota": "Limiares fixados no período de desenvolvimento (2022 a 2024), por submercado e frequência, e aplicados sem mudança ao teste: preço no piso = B0 a até R$ 1/MWh do piso vigente no período do B0; preço alto = B0 acima do percentil 75 do B0 no desenvolvimento; armazenamento baixo, médio e alto = EAR do último dia elegível abaixo do percentil 33, entre 33 e 67 ou acima do 67; extremo = realizado acima do percentil 90 do desenvolvimento. Como o nível de preço subiu depois de 2024, a maior parte do teste cai em preço alto e acima do percentil 90: os regimes descrevem a mudança de nível, e grupos com menos de 10 entregas distintas são marcados como amostra insuficiente.",
   "limiares": [
    {
     "submercado": "N",
@@ -5146,55 +5171,7 @@
     "frequencia": "W",
     "periodo": "desenvolvimento",
     "tipo": "extremo",
-    "regime": "demais",
-    "linhas": 15512,
-    "entregas": 141,
-    "mae": 10.87,
-    "mae_b0_pareado": null,
-    "ganho_vs_b0": null,
-    "ganho_ic90": null,
-    "amostra_suficiente": true
-   },
-   {
-    "modelo": "C2-P",
-    "frequencia": "W",
-    "periodo": "desenvolvimento",
-    "tipo": "extremo",
-    "regime": "demais",
-    "linhas": 9420,
-    "entregas": 88,
-    "mae": 14.88,
-    "mae_b0_pareado": 14.55,
-    "ganho_vs_b0": -0.33,
-    "ganho_ic90": [
-     -2.71,
-     1.36
-    ],
-    "amostra_suficiente": true
-   },
-   {
-    "modelo": "C2-H",
-    "frequencia": "W",
-    "periodo": "desenvolvimento",
-    "tipo": "extremo",
-    "regime": "demais",
-    "linhas": 9420,
-    "entregas": 88,
-    "mae": 15.43,
-    "mae_b0_pareado": 14.55,
-    "ganho_vs_b0": -0.87,
-    "ganho_ic90": [
-     -3.89,
-     1.09
-    ],
-    "amostra_suficiente": true
-   },
-   {
-    "modelo": "B0",
-    "frequencia": "W",
-    "periodo": "desenvolvimento",
-    "tipo": "extremo",
-    "regime": "realizado_acima_p90",
+    "regime": "acima_p90_do_desenvolvimento",
     "linhas": 1680,
     "entregas": 16,
     "mae": 162.11,
@@ -5208,7 +5185,7 @@
     "frequencia": "W",
     "periodo": "desenvolvimento",
     "tipo": "extremo",
-    "regime": "realizado_acima_p90",
+    "regime": "acima_p90_do_desenvolvimento",
     "linhas": 1652,
     "entregas": 15,
     "mae": 164.23,
@@ -5225,7 +5202,7 @@
     "frequencia": "W",
     "periodo": "desenvolvimento",
     "tipo": "extremo",
-    "regime": "realizado_acima_p90",
+    "regime": "acima_p90_do_desenvolvimento",
     "linhas": 1652,
     "entregas": 15,
     "mae": 164.29,
@@ -5234,6 +5211,54 @@
     "ganho_ic90": [
      -2.14,
      1.66
+    ],
+    "amostra_suficiente": true
+   },
+   {
+    "modelo": "B0",
+    "frequencia": "W",
+    "periodo": "desenvolvimento",
+    "tipo": "extremo",
+    "regime": "ate_p90_do_desenvolvimento",
+    "linhas": 15512,
+    "entregas": 141,
+    "mae": 10.87,
+    "mae_b0_pareado": null,
+    "ganho_vs_b0": null,
+    "ganho_ic90": null,
+    "amostra_suficiente": true
+   },
+   {
+    "modelo": "C2-P",
+    "frequencia": "W",
+    "periodo": "desenvolvimento",
+    "tipo": "extremo",
+    "regime": "ate_p90_do_desenvolvimento",
+    "linhas": 9420,
+    "entregas": 88,
+    "mae": 14.88,
+    "mae_b0_pareado": 14.55,
+    "ganho_vs_b0": -0.33,
+    "ganho_ic90": [
+     -2.71,
+     1.36
+    ],
+    "amostra_suficiente": true
+   },
+   {
+    "modelo": "C2-H",
+    "frequencia": "W",
+    "periodo": "desenvolvimento",
+    "tipo": "extremo",
+    "regime": "ate_p90_do_desenvolvimento",
+    "linhas": 9420,
+    "entregas": 88,
+    "mae": 15.43,
+    "mae_b0_pareado": 14.55,
+    "ganho_vs_b0": -0.87,
+    "ganho_ic90": [
+     -3.89,
+     1.09
     ],
     "amostra_suficiente": true
    },
@@ -5506,49 +5531,7 @@
     "frequencia": "M",
     "periodo": "desenvolvimento",
     "tipo": "extremo",
-    "regime": "demais",
-    "linhas": 11312,
-    "entregas": 32,
-    "mae": 16.84,
-    "mae_b0_pareado": null,
-    "ganho_vs_b0": null,
-    "ganho_ic90": null,
-    "amostra_suficiente": true
-   },
-   {
-    "modelo": "C2-P",
-    "frequencia": "M",
-    "periodo": "desenvolvimento",
-    "tipo": "extremo",
-    "regime": "demais",
-    "linhas": 1780,
-    "entregas": 7,
-    "mae": 87.97,
-    "mae_b0_pareado": 66.51,
-    "ganho_vs_b0": -21.46,
-    "ganho_ic90": null,
-    "amostra_suficiente": false
-   },
-   {
-    "modelo": "C2-H",
-    "frequencia": "M",
-    "periodo": "desenvolvimento",
-    "tipo": "extremo",
-    "regime": "demais",
-    "linhas": 1780,
-    "entregas": 7,
-    "mae": 86.13,
-    "mae_b0_pareado": 66.51,
-    "ganho_vs_b0": -19.62,
-    "ganho_ic90": null,
-    "amostra_suficiente": false
-   },
-   {
-    "modelo": "B0",
-    "frequencia": "M",
-    "periodo": "desenvolvimento",
-    "tipo": "extremo",
-    "regime": "realizado_acima_p90",
+    "regime": "acima_p90_do_desenvolvimento",
     "linhas": 1104,
     "entregas": 3,
     "mae": 219.99,
@@ -5562,7 +5545,7 @@
     "frequencia": "M",
     "periodo": "desenvolvimento",
     "tipo": "extremo",
-    "regime": "realizado_acima_p90",
+    "regime": "acima_p90_do_desenvolvimento",
     "linhas": 1104,
     "entregas": 3,
     "mae": 207.33,
@@ -5576,12 +5559,54 @@
     "frequencia": "M",
     "periodo": "desenvolvimento",
     "tipo": "extremo",
-    "regime": "realizado_acima_p90",
+    "regime": "acima_p90_do_desenvolvimento",
     "linhas": 1104,
     "entregas": 3,
     "mae": 209.14,
     "mae_b0_pareado": 219.99,
     "ganho_vs_b0": 10.85,
+    "ganho_ic90": null,
+    "amostra_suficiente": false
+   },
+   {
+    "modelo": "B0",
+    "frequencia": "M",
+    "periodo": "desenvolvimento",
+    "tipo": "extremo",
+    "regime": "ate_p90_do_desenvolvimento",
+    "linhas": 11312,
+    "entregas": 32,
+    "mae": 16.84,
+    "mae_b0_pareado": null,
+    "ganho_vs_b0": null,
+    "ganho_ic90": null,
+    "amostra_suficiente": true
+   },
+   {
+    "modelo": "C2-P",
+    "frequencia": "M",
+    "periodo": "desenvolvimento",
+    "tipo": "extremo",
+    "regime": "ate_p90_do_desenvolvimento",
+    "linhas": 1780,
+    "entregas": 7,
+    "mae": 87.97,
+    "mae_b0_pareado": 66.51,
+    "ganho_vs_b0": -21.46,
+    "ganho_ic90": null,
+    "amostra_suficiente": false
+   },
+   {
+    "modelo": "C2-H",
+    "frequencia": "M",
+    "periodo": "desenvolvimento",
+    "tipo": "extremo",
+    "regime": "ate_p90_do_desenvolvimento",
+    "linhas": 1780,
+    "entregas": 7,
+    "mae": 86.13,
+    "mae_b0_pareado": 66.51,
+    "ganho_vs_b0": -19.62,
     "ganho_ic90": null,
     "amostra_suficiente": false
    },
@@ -5860,55 +5885,7 @@
     "frequencia": "W",
     "periodo": "teste",
     "tipo": "extremo",
-    "regime": "demais",
-    "linhas": 1680,
-    "entregas": 21,
-    "mae": 21.22,
-    "mae_b0_pareado": null,
-    "ganho_vs_b0": null,
-    "ganho_ic90": null,
-    "amostra_suficiente": true
-   },
-   {
-    "modelo": "C2-P",
-    "frequencia": "W",
-    "periodo": "teste",
-    "tipo": "extremo",
-    "regime": "demais",
-    "linhas": 1680,
-    "entregas": 21,
-    "mae": 21.36,
-    "mae_b0_pareado": 21.22,
-    "ganho_vs_b0": -0.14,
-    "ganho_ic90": [
-     -1.49,
-     1.02
-    ],
-    "amostra_suficiente": true
-   },
-   {
-    "modelo": "C2-H",
-    "frequencia": "W",
-    "periodo": "teste",
-    "tipo": "extremo",
-    "regime": "demais",
-    "linhas": 1680,
-    "entregas": 21,
-    "mae": 21.28,
-    "mae_b0_pareado": 21.22,
-    "ganho_vs_b0": -0.05,
-    "ganho_ic90": [
-     -1.53,
-     1.13
-    ],
-    "amostra_suficiente": true
-   },
-   {
-    "modelo": "B0",
-    "frequencia": "W",
-    "periodo": "teste",
-    "tipo": "extremo",
-    "regime": "realizado_acima_p90",
+    "regime": "acima_p90_do_desenvolvimento",
     "linhas": 8400,
     "entregas": 81,
     "mae": 65.73,
@@ -5922,7 +5899,7 @@
     "frequencia": "W",
     "periodo": "teste",
     "tipo": "extremo",
-    "regime": "realizado_acima_p90",
+    "regime": "acima_p90_do_desenvolvimento",
     "linhas": 8400,
     "entregas": 81,
     "mae": 63.28,
@@ -5939,7 +5916,7 @@
     "frequencia": "W",
     "periodo": "teste",
     "tipo": "extremo",
-    "regime": "realizado_acima_p90",
+    "regime": "acima_p90_do_desenvolvimento",
     "linhas": 8400,
     "entregas": 81,
     "mae": 64.1,
@@ -5948,6 +5925,54 @@
     "ganho_ic90": [
      -0.42,
      3.52
+    ],
+    "amostra_suficiente": true
+   },
+   {
+    "modelo": "B0",
+    "frequencia": "W",
+    "periodo": "teste",
+    "tipo": "extremo",
+    "regime": "ate_p90_do_desenvolvimento",
+    "linhas": 1680,
+    "entregas": 21,
+    "mae": 21.22,
+    "mae_b0_pareado": null,
+    "ganho_vs_b0": null,
+    "ganho_ic90": null,
+    "amostra_suficiente": true
+   },
+   {
+    "modelo": "C2-P",
+    "frequencia": "W",
+    "periodo": "teste",
+    "tipo": "extremo",
+    "regime": "ate_p90_do_desenvolvimento",
+    "linhas": 1680,
+    "entregas": 21,
+    "mae": 21.36,
+    "mae_b0_pareado": 21.22,
+    "ganho_vs_b0": -0.14,
+    "ganho_ic90": [
+     -1.49,
+     1.02
+    ],
+    "amostra_suficiente": true
+   },
+   {
+    "modelo": "C2-H",
+    "frequencia": "W",
+    "periodo": "teste",
+    "tipo": "extremo",
+    "regime": "ate_p90_do_desenvolvimento",
+    "linhas": 1680,
+    "entregas": 21,
+    "mae": 21.28,
+    "mae_b0_pareado": 21.22,
+    "ganho_vs_b0": -0.05,
+    "ganho_ic90": [
+     -1.53,
+     1.13
     ],
     "amostra_suficiente": true
    },
@@ -6238,49 +6263,7 @@
     "frequencia": "M",
     "periodo": "teste",
     "tipo": "extremo",
-    "regime": "demais",
-    "linhas": 916,
-    "entregas": 3,
-    "mae": 155.26,
-    "mae_b0_pareado": null,
-    "ganho_vs_b0": null,
-    "ganho_ic90": null,
-    "amostra_suficiente": false
-   },
-   {
-    "modelo": "C2-P",
-    "frequencia": "M",
-    "periodo": "teste",
-    "tipo": "extremo",
-    "regime": "demais",
-    "linhas": 916,
-    "entregas": 3,
-    "mae": 80.69,
-    "mae_b0_pareado": 155.26,
-    "ganho_vs_b0": 74.58,
-    "ganho_ic90": null,
-    "amostra_suficiente": false
-   },
-   {
-    "modelo": "C2-H",
-    "frequencia": "M",
-    "periodo": "teste",
-    "tipo": "extremo",
-    "regime": "demais",
-    "linhas": 916,
-    "entregas": 3,
-    "mae": 96.56,
-    "mae_b0_pareado": 155.26,
-    "ganho_vs_b0": 58.7,
-    "ganho_ic90": null,
-    "amostra_suficiente": false
-   },
-   {
-    "modelo": "B0",
-    "frequencia": "M",
-    "periodo": "teste",
-    "tipo": "extremo",
-    "regime": "realizado_acima_p90",
+    "regime": "acima_p90_do_desenvolvimento",
     "linhas": 6744,
     "entregas": 19,
     "mae": 81.14,
@@ -6294,7 +6277,7 @@
     "frequencia": "M",
     "periodo": "teste",
     "tipo": "extremo",
-    "regime": "realizado_acima_p90",
+    "regime": "acima_p90_do_desenvolvimento",
     "linhas": 6744,
     "entregas": 19,
     "mae": 81.18,
@@ -6311,7 +6294,7 @@
     "frequencia": "M",
     "periodo": "teste",
     "tipo": "extremo",
-    "regime": "realizado_acima_p90",
+    "regime": "acima_p90_do_desenvolvimento",
     "linhas": 6744,
     "entregas": 19,
     "mae": 81.07,
@@ -6322,6 +6305,48 @@
      4.53
     ],
     "amostra_suficiente": true
+   },
+   {
+    "modelo": "B0",
+    "frequencia": "M",
+    "periodo": "teste",
+    "tipo": "extremo",
+    "regime": "ate_p90_do_desenvolvimento",
+    "linhas": 916,
+    "entregas": 3,
+    "mae": 155.26,
+    "mae_b0_pareado": null,
+    "ganho_vs_b0": null,
+    "ganho_ic90": null,
+    "amostra_suficiente": false
+   },
+   {
+    "modelo": "C2-P",
+    "frequencia": "M",
+    "periodo": "teste",
+    "tipo": "extremo",
+    "regime": "ate_p90_do_desenvolvimento",
+    "linhas": 916,
+    "entregas": 3,
+    "mae": 80.69,
+    "mae_b0_pareado": 155.26,
+    "ganho_vs_b0": 74.58,
+    "ganho_ic90": null,
+    "amostra_suficiente": false
+   },
+   {
+    "modelo": "C2-H",
+    "frequencia": "M",
+    "periodo": "teste",
+    "tipo": "extremo",
+    "regime": "ate_p90_do_desenvolvimento",
+    "linhas": 916,
+    "entregas": 3,
+    "mae": 96.56,
+    "mae_b0_pareado": 155.26,
+    "ganho_vs_b0": 58.7,
+    "ganho_ic90": null,
+    "amostra_suficiente": false
    },
    {
     "modelo": "B0",
@@ -8732,10 +8757,13 @@
  "rotina": {
   "workflow": ".github/workflows/previsao-pld.yml",
   "cron_utc": [
-   "5 9 * * *",
-   "35 9 * * *"
+   "47 8 * * *",
+   "17 9 * * *",
+   "43 9 * * *",
+   "13 10 * * *",
+   "37 10 * * *"
   ],
-  "horarios": "Verificação e retentativa de coleta a partir de 06h05 de Brasília (09h05 UTC), segunda tentativa às 06h35; espera até o corte das 07h00; emissão com o dado como estava no corte; commit do arquivo de emissões até 08h00. Pré-carga: coleta noturna das 20h40 (atualizar-energia.yml).",
+  "horarios": "Gatilhos às 05h47, 06h17, 06h43, 07h13, 07h37 de Brasília: o primeiro que rodar confere o dado, tenta coletar o que falta antes do corte, espera as 07h00 e emite com o dado como estava no corte; os seguintes veem a rodada registrada e saem. O arquivo de emissões é commitado em seguida (prazo 08h00). Pré-carga: coleta noturna das 20h40 (atualizar-energia.yml).",
   "fuso": "America/Sao_Paulo; o cron do GitHub é em UTC e supõe UTC−3 (sem horário de verão desde 2019). Se o horário de verão voltar, o cron precisa mudar; a emissão calcula o corte pelo fuso e marca o atraso de qualquer forma.",
   "inicio_operacao_agendada": null,
   "execucoes_agendadas": 0,
@@ -11363,8 +11391,8 @@
    "tratamento_ausencia": "célula sem previsão ou sem realizado completo fica fora (nunca vira zero)",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "30ad85ccb171+alterado",
-    "publicacao": "2026-09-30T23:37:05Z"
+    "codigo": "3e7ff0a36fba+alterado",
+    "publicacao": "2026-09-30T23:49:53Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
    "testes": [
@@ -11394,7 +11422,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. Erro médio absoluto do B0 no horizonte W1 (teste): R$ 47,79/MWh, quatro submercados (SE, S, NE, N), 01/01/2025 a 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2021 a pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código 30ad85ccb171+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Erro médio absoluto do B0 no horizonte W1 (teste): R$ 47,79/MWh, quatro submercados (SE, S, NE, N), 01/01/2025 a 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2021 a pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "mae_c2p_w1_teste": {
    "indicador": "Erro médio absoluto do C2-P no horizonte W1 (teste)",
@@ -11487,8 +11515,8 @@
    "tratamento_ausencia": "célula sem previsão ou sem realizado completo fica fora (nunca vira zero)",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "30ad85ccb171+alterado",
-    "publicacao": "2026-09-30T23:37:05Z"
+    "codigo": "3e7ff0a36fba+alterado",
+    "publicacao": "2026-09-30T23:49:53Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
    "testes": [
@@ -11518,7 +11546,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. Erro médio absoluto do C2-P no horizonte W1 (teste): R$ 45,47/MWh, quatro submercados (SE, S, NE, N), 01/01/2025 a 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2021 a pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código 30ad85ccb171+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Erro médio absoluto do C2-P no horizonte W1 (teste): R$ 45,47/MWh, quatro submercados (SE, S, NE, N), 01/01/2025 a 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2021 a pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "mae_b0_m1_teste": {
    "indicador": "Erro médio absoluto do B0 no horizonte M1 (teste)",
@@ -11611,8 +11639,8 @@
    "tratamento_ausencia": "célula sem previsão ou sem realizado completo fica fora (nunca vira zero)",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "30ad85ccb171+alterado",
-    "publicacao": "2026-09-30T23:37:05Z"
+    "codigo": "3e7ff0a36fba+alterado",
+    "publicacao": "2026-09-30T23:49:53Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
    "testes": [
@@ -11642,7 +11670,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. Erro médio absoluto do B0 no horizonte M1 (teste): R$ 65,84/MWh, quatro submercados (SE, S, NE, N), 01/01/2025 a 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2021 a pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código 30ad85ccb171+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Erro médio absoluto do B0 no horizonte M1 (teste): R$ 65,84/MWh, quatro submercados (SE, S, NE, N), 01/01/2025 a 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2021 a pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "mae_c2p_m1_teste": {
    "indicador": "Erro médio absoluto do C2-P no horizonte M1 (teste)",
@@ -11735,8 +11763,8 @@
    "tratamento_ausencia": "célula sem previsão ou sem realizado completo fica fora (nunca vira zero)",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "30ad85ccb171+alterado",
-    "publicacao": "2026-09-30T23:37:05Z"
+    "codigo": "3e7ff0a36fba+alterado",
+    "publicacao": "2026-09-30T23:49:53Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
    "testes": [
@@ -11766,7 +11794,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
-   "citacao": "SCRUTINIUMS. Erro médio absoluto do C2-P no horizonte M1 (teste): R$ 67,78/MWh, quatro submercados (SE, S, NE, N), 01/01/2025 a 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2021 a pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código 30ad85ccb171+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Erro médio absoluto do C2-P no horizonte M1 (teste): R$ 67,78/MWh, quatro submercados (SE, S, NE, N), 01/01/2025 a 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2021 a pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código 3e7ff0a36fba+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "validacoes": [

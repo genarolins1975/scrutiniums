@@ -32,7 +32,12 @@ Regra de meses dos Beneficiários da CDE (cada arquivo mensal tem cerca de 300 M
 3. mês do mapa: o mais recente cuja cobertura, medida pelas UC do SCS no mês de
    conferência das distribuidoras presentes no arquivo, é de pelo menos 99,5%;
    procurado do mais recente para trás (até 8 meses). Os meses sondados e rejeitados
-   ficam registrados com a cobertura medida, sem cópia no bronze.
+   ficam registrados com a cobertura medida, sem cópia no bronze, e a gold publica deles
+   só a cobertura e o motivo (sem o original, os valores não são reprodutíveis);
+4. meses da série: todos os meses entre o de conferência e o do mapa, com o original no
+   bronze. Depois do fim do SCS a evolução mensal (faturas, desconto das faturas, desconto
+   líquido e desconto médio, Brasil e UF) vem daqui, inclusive a mudança de regra de
+   05/07/2025.
 """
 import collections
 import hashlib
@@ -107,6 +112,7 @@ TOLERANCIA_ANTIGA_PCT = 2.0  # SCS versus série antiga: mesma grandeza (UC baix
 MESES_SONDADOS = 8
 VARIACAO_RESIDENCIAL = 0.25  # salto do total residencial de uma distribuidora que marca o mês como inconsistente
 BASE_PEQUENA = 50            # famílias no denominador abaixo das quais a razão municipal é instável
+UC_MINIMA_DIFERENCAS = 1000  # UC no SCS para entrar em maiores_diferencas (as menores vão para lista própria)
 LIMIARES = (3.0, 5.0, 10.0)  # % da renda ou da despesa: análise de sensibilidade, não definição oficial
 CV_CAUTELA, CV_SUPRIME = 15.0, 30.0
 
@@ -138,7 +144,8 @@ REGISTRO = {
         {"orgao": "ANEEL", "nome": PAC_CDE, "slug": "aneel-beneficiarios-cde", "dataset_silver": DS_CDE,
          "titulo": "Beneficiários da CDE (agregado por município; nenhum dado pessoal)",
          "estado": "UTILIZADO EM INDICADOR", "url": ckan.url_dataset("ANEEL", PAC_CDE), "licenca": LIC_ANEEL,
-         "paginas": PAGINAS, "downloads": ["/energia/series/inclusao_municipios.csv"], "quebras": []},
+         "paginas": PAGINAS, "downloads": ["/energia/series/inclusao_municipios.csv", "/energia/series/inclusao_cde_mensal_uf.csv"],
+         "quebras": [{"data": "2025-07-05", "descricao": "Nova regra de desconto: gratuidade até 80 kWh por mês (MPV nº 1.300/2025), conforme a ANEEL."}]},
         {"orgao": "ANEEL", "nome": PAC_ANTIGA, "slug": "aneel-tarifa-social-antiga", "dataset_silver": DS_ANTIGA,
          "titulo": "Tarifa Social de Energia Elétrica: Beneficiários (descontinuado; histórico identificado)",
          "estado": "DESCONTINUADO NA FONTE; HISTÓRICO IDENTIFICADO", "url": ckan.url_dataset("ANEEL", PAC_ANTIGA),
@@ -192,7 +199,16 @@ REGISTRO = {
         "/energia/series/inclusao_tsee_distribuidoras.csv": (
             "cnpj (14 dígitos); sigla (a mais recente no SCS); mes; uc_tsee; uc_residencial; participacao_pct; dmr_reais; "
             "dmr_por_uc_reais (R$ por UC no mês); kwh_por_uc (energia faturada média por UC com Tarifa Social no mês, kWh); "
-            "despacho (despacho ANEEL vigente); residencial_inconsistente (1 = total residencial fora da regra de consistência). Vazio = ausência."),
+            "despacho (despacho ANEEL vigente); residencial_inconsistente (1 = total residencial fora da regra de consistência); "
+            "ruptura_incorporacao (1 = primeiro mês em que a distribuidora informa as UC de uma incorporada, regra na gold). Vazio = ausência."),
+        "/energia/series/inclusao_cde_mensal_uf.csv": (
+            "mes (AAAA-MM do arquivo de Beneficiários da CDE; só meses com o original no bronze); territorio (BR ou sigla da UF); "
+            "faturas_tsee (faturas de faturamento, tipo 1, com desconto da Tarifa Social nas subclasses 3.2 a 3.6); desconto_faturas_reais "
+            "(soma do desconto dessas faturas, R$ correntes); desconto_medio_por_fatura_reais; desconto_liquido_reais (só BR: subclasses 3.2 "
+            "a 3.6, tipos 1 a 4); desconto_fora_das_subclasses_reais (só BR: linhas SubsBaixaRenda de outras subclasses, diagnóstico, fora "
+            "do líquido); faturas_municipio_invalido (só BR: formato inválido ou código inexistente, fora das UF); municipios_com_faturas "
+            "(UF); cobertura_scs_pct (UC do SCS de referência em distribuidoras presentes no arquivo); mes_completo (1 = cobertura de pelo "
+            "menos 99,5%). Vazio = ausência ou não se aplica."),
         "/energia/series/inclusao_municipios.csv": (
             "cod_ibge6 (município, 6 dígitos); municipio; uf; mes_cde (mês do arquivo de Beneficiários da CDE); "
             "faturas_tsee (faturas de faturamento, tipo 1, com desconto da Tarifa Social nas subclasses 3.2 a 3.6; em regra uma por UC no mês, mas a conferência com o SCS mostra distribuidoras com mais faturas que UC); "
@@ -210,15 +226,22 @@ REGISTRO = {
             "O ano em curso é necessariamente valor orçado."),
         "/energia/series/inclusao_pof.csv": (
             "territorio (BR, região ou UF); classe (código SIDRA da classe de rendimento; 7999 = total); medida; valor; erro_padrao; cv_pct; "
-            "fonte (SIDRA 6715, coeficientes publicados ou microdados); estado (publicado, cautela, suprimido). Valores em R$ de 15/01/2018 ou %."),
+            "fonte (SIDRA 6715, coeficientes publicados ou microdados); estado (publicado, cautela, suprimido; sensibilidade = medidas sens_*: "
+            "média das participações na renda sem as famílias com energia acima da renda, número e peso % dessas famílias, "
+            "soma das 3 maiores parcelas da média em ponto percentual). Valores em R$ de 15/01/2018 ou %."),
         "/energia/series/inclusao_acesso_pnad.csv": (
             "territorio; ano; situacao (total, urbana, rural); pct_com_energia; cv_pct_com_energia; pct_rede_geral; cv_pct_rede_geral; "
             "pct_integral_entre_rede (percentual dos domicílios ligados à rede geral com fornecimento em tempo integral); cv_pct_integral; "
-            "domicilios_mil; domicilios_com_energia_mil; domicilios_sem_energia_mil (diferença calculada). Vazio = ausência."),
+            "domicilios_mil; domicilios_com_energia_mil; domicilios_sem_energia_mil (diferença calculada; vazio com estado menos_de_1_mil "
+            "quando as duas estimativas arredondadas em milhares coincidem); domicilios_sem_energia_estado (calculado, menos_de_1_mil, ausente). Vazio = ausência."),
         "/energia/series/inclusao_sistemas_isolados.csv": (
             "ciclo; sigla; nome; uf; municipio; distribuidora; populacao (pessoas); previsao_interligacao; previsao_interconexao; "
             "programa (programa de universalização informado); latitude; longitude. "
             "O mesmo ciclo mais recente também sai em inclusao_sistemas_isolados_pontos.json (lista de listas, campos declarados no arquivo) para o mapa."),
+        "/energia/series/inclusao_cde_mensal_uf.json": (
+            "JSON lido sob demanda pela página: {gerado_em, fonte, unidades, meses, ufs, completo, faturas_tsee, desconto_faturas_reais}; "
+            "faturas_tsee e desconto_faturas_reais são listas por UF (ordem de ufs) com um valor por mês (ordem de meses); null = UF sem "
+            "fatura no mês. Mesmos números de inclusao_cde_mensal_uf.csv."),
         "/energia/series/inclusao_sistemas_isolados_pontos.json": (
             "JSON para o mapa, lido sob demanda: {ciclo, gerado_em, fonte, campos, localidades}; cada localidade é uma lista na ordem "
             "de campos (sigla, nome, uf, municipio, distribuidora, populacao em pessoas, previsao_interligacao, programa, latitude, longitude). "
@@ -419,52 +442,7 @@ def _coleta_cde(con, ctx):
     st["mes_conferencia"] = ref_mes
 
     def processa(mes, guardar):
-        """guardar: True (sempre guarda o original no bronze), False (só sonda) ou
-        "se_completo" (guarda quando a cobertura atinge o mínimo). Mês já processado com
-        a mesma data de publicação na fonte não é baixado de novo."""
-        r = recursos[mes]
-        rec = (r.get("name") or mes).strip()
-        pub = ckan._normaliza_publicacao(r.get("last_modified"))
-        ult = base.ultima_vintage(con, DS_CDE, rec)
-        info = _info_mes(con, mes)
-        if ult and info and ult.get("publicado_em") == pub:
-            cob_ant = info.get("cobertura_scs")
-            quer = guardar is True or (guardar == "se_completo" and cob_ant is not None and cob_ant >= COBERTURA_MINIMA)
-            if ult.get("arquivo") or not quer:
-                return info
-        tmp, sha, nbytes = _baixa_temp(r.get("url"), ".zip")
-        try:
-            agg = fa.agrega_cde_zip(tmp)
-            pres = {cn for (cn, _, sc, tf) in agg["chaves"] if tf == "1"}
-            cob = (sum(v for cn, v in ref_vol.items() if cn in pres) / sum(ref_vol.values())) if ref_vol else None
-            quer = guardar is True or (guardar == "se_completo" and cob is not None and cob >= COBERTURA_MINIMA)
-            cap = base.agora_utc()
-            arquivo = None
-            if quer:
-                arquivo, sha, nbytes = base.salva_bronze_arquivo("aneel", DS_CDE, rec, tmp, "zip", cap, sha=sha)
-            vid, nova = base.registra_vintage(con, DS_CDE, rec, r.get("url"), cap, pub, sha, nbytes, "coleta_direta", arquivo)
-            if not nova and arquivo:
-                con.execute("UPDATE vintages SET arquivo=? WHERE vintage_id=? AND arquivo IS NULL", (arquivo, vid))
-            base.registra_coleta(con, DS_CDE, rec, True, f"{nbytes} bytes; {agg['linhas']} linhas; {agg['linhas_tsee']} da Tarifa Social")
-            base.grava_observacoes(con, DS_CDE, vid, fa.observacoes_cde(agg, mes))
-            regs = [(mes, "recurso", rec), (mes, "url", r.get("url")), (mes, "sha256", sha), (mes, "bytes", nbytes),
-                    (mes, "linhas", agg["linhas"]), (mes, "linhas_tsee", agg["linhas_tsee"]),
-                    (mes, "distribuidoras", len(pres)),
-                    (mes, "cobertura_scs", None if cob is None else round(cob, 6)), (mes, "mes_referencia_cobertura", ref_mes),
-                    (mes, "referencias_no_arquivo", json.dumps(agg["referencias"])),
-                    (mes, "valores_invalidos", agg["valores_invalidos"]),
-                    (mes, "bronze", "sim" if arquivo else "não (mês sondado; original não guardado)"),
-                    (mes, "publicado_em", pub),
-                    (mes, "cabecalho_faltando", ", ".join(agg["cabecalho_faltando"]) or None)]
-            regs += [(f"sigla|{cn}", "sigla", s_) for cn, s_ in agg["siglas"].items()]
-            base.grava_registros(con, DS_CDE, vid, regs)
-            con.commit()
-            return _info_mes(con, mes)
-        finally:
-            try:
-                os.remove(tmp)
-            except OSError:
-                pass
+        return _processa_cde_mes(con, recursos[mes], mes, guardar, ref_vol, ref_mes)
 
     ordem = sorted(recursos, reverse=True)
     if ref_mes:
@@ -478,9 +456,65 @@ def _coleta_cde(con, ctx):
         if cob is not None and cob >= COBERTURA_MINIMA:
             mapa = mes
             break
+    # série mensal depois do fim do SCS: todos os meses entre o de conferência e o do mapa, com o
+    # original no bronze. É o que mostra a mudança de regra de 05/07/2025, que o SCS não alcança.
+    if ref_mes and mapa:
+        for mes in sorted(m for m in recursos if ref_mes < m < mapa):
+            st["meses"][mes] = processa(mes, guardar=True)
     st["mes_mapa"] = mapa
     st["mes_recente"] = ordem[0]
     return st
+
+
+def _processa_cde_mes(con, r, mes, guardar, ref_vol, ref_mes):
+    """Lê um arquivo mensal de Beneficiários da CDE e grava o agregado no silver.
+
+    guardar: True (sempre guarda o original no bronze), False (só sonda) ou
+    "se_completo" (guarda quando a cobertura atinge o mínimo). Mês já processado com a
+    mesma data de publicação na fonte não é baixado de novo. O arquivo (cerca de 300 MB
+    compactado, 2 GB de CSV) vai para um temporário em disco e é lido em fluxo."""
+    rec = (r.get("name") or mes).strip()
+    pub = ckan._normaliza_publicacao(r.get("last_modified"))
+    ult = base.ultima_vintage(con, DS_CDE, rec)
+    info = _info_mes(con, mes)
+    if ult and info and ult.get("publicado_em") == pub:
+        cob_ant = info.get("cobertura_scs")
+        quer = guardar is True or (guardar == "se_completo" and cob_ant is not None and cob_ant >= COBERTURA_MINIMA)
+        if ult.get("arquivo") or not quer:
+            return info
+    tmp, sha, nbytes = _baixa_temp(r.get("url"), ".zip")
+    try:
+        agg = fa.agrega_cde_zip(tmp)
+        pres = {cn for (cn, _, sc, tf) in agg["chaves"] if tf == "1"}
+        cob = (sum(v for cn, v in ref_vol.items() if cn in pres) / sum(ref_vol.values())) if ref_vol else None
+        quer = guardar is True or (guardar == "se_completo" and cob is not None and cob >= COBERTURA_MINIMA)
+        cap = base.agora_utc()
+        arquivo = None
+        if quer:
+            arquivo, sha, nbytes = base.salva_bronze_arquivo("aneel", DS_CDE, rec, tmp, "zip", cap, sha=sha)
+        vid, nova = base.registra_vintage(con, DS_CDE, rec, r.get("url"), cap, pub, sha, nbytes, "coleta_direta", arquivo)
+        if not nova and arquivo:
+            con.execute("UPDATE vintages SET arquivo=? WHERE vintage_id=? AND arquivo IS NULL", (arquivo, vid))
+        base.registra_coleta(con, DS_CDE, rec, True, f"{nbytes} bytes; {agg['linhas']} linhas; {agg['linhas_tsee']} da Tarifa Social")
+        base.grava_observacoes(con, DS_CDE, vid, fa.observacoes_cde(agg, mes))
+        regs = [(mes, "recurso", rec), (mes, "url", r.get("url")), (mes, "sha256", sha), (mes, "bytes", nbytes),
+                (mes, "linhas", agg["linhas"]), (mes, "linhas_tsee", agg["linhas_tsee"]),
+                (mes, "distribuidoras", len(pres)),
+                (mes, "cobertura_scs", None if cob is None else round(cob, 6)), (mes, "mes_referencia_cobertura", ref_mes),
+                (mes, "referencias_no_arquivo", json.dumps(agg["referencias"])),
+                (mes, "valores_invalidos", agg["valores_invalidos"]),
+                (mes, "bronze", "sim" if arquivo else "não (mês sondado; original não guardado)"),
+                (mes, "publicado_em", pub),
+                (mes, "cabecalho_faltando", ", ".join(agg["cabecalho_faltando"]) or None)]
+        regs += [(f"sigla|{cn}", "sigla", s_) for cn, s_ in agg["siglas"].items()]
+        base.grava_registros(con, DS_CDE, vid, regs)
+        con.commit()
+        return _info_mes(con, mes)
+    finally:
+        try:
+            os.remove(tmp)
+        except OSError:
+            pass
 
 
 def _info_mes(con, mes):
@@ -591,9 +625,12 @@ def _coleta_mds(con, ctx):
             base.grava_observacoes(con, DS_MDS, v["vintage_id"], obs)
             _marca_importado(con, v["vintage_id"], f"{len(tot)} pares")
         st["totais"] = "atualizado"
-    # municipal: meses dos arquivos da CDE processados
-    meses = sorted({m for m, info in base.registros_como_estavam_em(con, DS_CDE).items()
-                    if re.fullmatch(r"\d{4}-\d{2}", m)})
+    # municipal: só o mês do mapa (o único usado no denominador municipal); os meses da série
+    # mensal da CDE não precisam do cadastro por município
+    infos = {m: i for m, i in base.registros_como_estavam_em(con, DS_CDE).items() if re.fullmatch(r"\d{4}-\d{2}", m)}
+    completos = [m for m, i in infos.items() if (i.get("bronze") or "").startswith("sim")
+                 and float(i.get("cobertura_scs") or 0) >= COBERTURA_MINIMA]
+    meses = [max(completos)] if completos else []
     st["meses_municipais"] = []
     for mes in meses:
         rec = f"municipios_{mes}"
@@ -664,7 +701,8 @@ def _coleta_pof(con, ctx):
         vint[nome] = ult
     vd, vt = vint[dados[0]], vint[trad[0]]
     st["microdados"] = dados[0]
-    chave = f"{vd['vintage_id']}+{vt['vintage_id']}"
+    # a chave leva a versão do estimador: medida nova (sensibilidade) reprocessa os mesmos microdados
+    chave = f"{vd['vintage_id']}+{vt['vintage_id']}#{ESTIMADOR_POF}"
     if not _importado(con, chave):
         estimativas, diag = _estimativas_pof(vd["arquivo"], vt["arquivo"])
         base.grava_observacoes(con, DS_POF_MICRO, vd["vintage_id"],
@@ -757,6 +795,7 @@ def _coleta_caderno_pasi(con):
     return tot
 
 
+ESTIMADOR_POF = "estimador2"  # 1: medidas originais; 2: sensibilidade da média das participações na renda
 LEITOR_LPT = "leitor3"  # versão do leitor do Luz para Todos (1: programas não reconhecidos por causa do hífen; 2: diagnóstico sem versão)
 
 
@@ -922,7 +961,10 @@ def estimativas_pof(fams):
     media_razoes_renda_pct(+_ep) (média das participações de cada família),
     mediana_desp_pct, mediana_renda_pct, sem_despesa_energia_pct(+_ep) e
     acima_<L>_renda_pct / acima_<L>_desp_pct (+_ep), para L em LIMIARES.
-    Participações individuais só para famílias com despesa total (ou renda) positiva."""
+    Participações individuais só para famílias com despesa total (ou renda) positiva.
+    Sensibilidade da média das participações na renda (sens_*): a mesma média sem as
+    famílias com despesa de energia acima da renda, o número e o peso % dessas famílias e a
+    soma das 3 maiores parcelas da média, em ponto percentual."""
     plano = Plano(fams)
     out = {}
     um = lambda f: 1.0  # noqa: E731
@@ -952,6 +994,18 @@ def estimativas_pof(fams):
             out[f"{k}.media_razoes_desp_pct"], out[f"{k}.media_razoes_desp_pct_ep"] = _pct(R3), _pct(ep3)
             R4, ep4, _, _ = plano.razao(mr, lambda f: f["energia"] / f["renda"], um)
             out[f"{k}.media_razoes_renda_pct"], out[f"{k}.media_razoes_renda_pct_ep"] = _pct(R4), _pct(ep4)
+            # sensibilidade da média das participações na renda: famílias com renda declarada quase
+            # nula geram razões enormes (despesa com energia acima da renda) e puxam a média
+            W_r = sum(f["peso"] for f in mr)
+            acima = [f for f in mr if f["energia"] > f["renda"]]
+            out[f"{k}.sens_renda_familias_energia_acima_da_renda_n"] = float(len(acima))
+            out[f"{k}.sens_renda_familias_energia_acima_da_renda_peso_pct"] = (
+                100 * sum(f["peso"] for f in acima) / W_r if W_r else None)
+            R6, ep6, _, _ = plano.razao([f for f in mr if f["energia"] <= f["renda"]], lambda f: f["energia"] / f["renda"], um)
+            out[f"{k}.sens_media_razoes_renda_sem_acima_da_renda_pct"] = _pct(R6)
+            out[f"{k}.sens_media_razoes_renda_sem_acima_da_renda_pct_ep"] = _pct(ep6)
+            maiores = sorted((f["peso"] * f["energia"] / f["renda"] for f in mr), reverse=True)[:3]
+            out[f"{k}.sens_media_razoes_renda_3_maiores_pp"] = 100 * sum(maiores) / W_r if W_r else None
             out[f"{k}.mediana_desp_pct"] = _pct(_mediana_ponderada([(f["energia"] / f["despesa"], f["peso"]) for f in md]))
             out[f"{k}.mediana_renda_pct"] = _pct(_mediana_ponderada([(f["energia"] / f["renda"], f["peso"]) for f in mr]))
             R5, ep5, _, _ = plano.razao(m, lambda f: 1.0 if f["energia"] <= 0 else 0.0, um)
@@ -989,6 +1043,7 @@ def construir(con, ctx):
     if faltam:
         return c.stub(GOLD, f"blocos sem dado: {faltam}")
     criticos, ressalvas = validar_gold(blocos, datetime.now(timezone.utc).strftime("%Y-%m"))
+    blocos["tarifa_social"].pop("_serie_cde_uf", None)
     if criticos:
         # violação crítica: a sentinela mantém a última publicação válida
         return c.stub(GOLD, "validação física e de domínio: " + "; ".join(criticos[:5]))
@@ -1032,6 +1087,19 @@ def validar_gold(b, mes_atual):
         mm = next(m for m in ts["cde_meses"] if m["mes"] == ts["mes_mapa"])
         if abs(sum(u["faturas_tsee"] for u in ts["ufs"]) + mm["faturas_municipio_invalido"] - mm["faturas_tsee"]) > 0.5:
             crit.append("faturas por UF mais inválidas não fecham com o total do arquivo")
+    su = ts.get("_serie_cde_uf") or {}
+    por_mes_cde = {m["mes"]: m for m in ts["cde_meses"]}
+    for i, mes in enumerate(su.get("meses", [])):
+        m = por_mes_cde[mes]
+        soma = sum(linha[i] or 0 for linha in su["faturas_tsee"])
+        if abs(soma + (m["faturas_municipio_invalido"] or 0) - (m["faturas_tsee"] or 0)) > 0.5:
+            crit.append(f"CDE {mes}: faturas por UF mais inválidas não fecham com o total")
+    for m in ts["cde_meses"]:
+        tem_valor = m["faturas_tsee"] is not None
+        if tem_valor != m["original_no_bronze"]:
+            crit.append(f"CDE {m['mes']}: valores publicados sem o original no bronze (ou o contrário)")
+        for k in ("faturas_tsee", "desconto_faturas_reais"):
+            nao_neg(f"CDE {m['mes']} {k}", m.get(k))
     ufs = [u["uf"] for u in ts["ufs"]]
     if len(ufs) != len(set(ufs)):
         crit.append("UF repetida no mapa da Tarifa Social")
@@ -1071,6 +1139,8 @@ def _rotulo_csv(u):
         "/energia/series/inclusao_tsee_mensal.csv": "Tarifa Social: série mensal nacional (SCS)",
         "/energia/series/inclusao_tsee_distribuidoras.csv": "Tarifa Social por distribuidora e mês (SCS)",
         "/energia/series/inclusao_municipios.csv": "Municípios: faturas com Tarifa Social e Cadastro Único (proxy)",
+        "/energia/series/inclusao_cde_mensal_uf.csv": "Tarifa Social: faturas e desconto por mês e UF (Beneficiários da CDE)",
+        "/energia/series/inclusao_cde_mensal_uf.json": "Tarifa Social: faturas e desconto por mês e UF (JSON do gráfico)",
         "/energia/series/inclusao_cobertura_mensal.csv": "Cobertura potencial nacional por mês (proxy)",
         "/energia/series/inclusao_tsee_antiga.csv": "Série antiga da ANEEL por região (descontinuada)",
         "/energia/series/inclusao_cde_custeio.csv": "CDE: custeio anual por rubrica",
@@ -1150,21 +1220,157 @@ def _mediana(xs):
     return xs[k // 2] if k % 2 else (xs[k // 2 - 1] + xs[k // 2]) / 2
 
 
-def residencial_inconsistente(res_por_mes, tsee_por_mes, mes):
+def residencial_inconsistente(res_por_mes, tsee_por_mes, mes, rupturas=()):
     """Regra publicada: o total de UC residenciais de uma distribuidora no mês é
     inconsistente quando falta, é zero, é menor que as próprias UC com Tarifa Social, ou
     se afasta mais de 25% da mediana dos três meses anteriores e três posteriores
     disponíveis. O valor da fonte continua publicado; ele só sai do numerador e do
-    denominador da participação (as duas somas perdem a mesma distribuidora)."""
+    denominador da participação (as duas somas perdem a mesma distribuidora).
+
+    `rupturas`: meses em que a distribuidora passou a informar as UC de uma incorporada
+    (incorporacoes_scs). A mediana só usa vizinhos do mesmo lado da ruptura: o novo
+    patamar depois de uma incorporação não é erro de dado, e o patamar antigo antes dela
+    também não (o defeito era marcar RGE SUL de jan a mar/2020, ESS em jun e jul/2017 e
+    CPFL JAGUARI em abr e mai/2018 e tirá-las da participação nacional)."""
     res = res_por_mes.get(mes)
     tsee = tsee_por_mes.get(mes)
     if res is None or res <= 0:
         return True
     if tsee is not None and res < tsee:
         return True
-    viz = [res_por_mes.get(_mes_menos(mes, k)) for k in (-3, -2, -1, 1, 2, 3)]
+    ini = max((b for b in rupturas if b <= mes), default=None)
+    fim = min((b for b in rupturas if b > mes), default=None)
+    viz = []
+    for k in (-3, -2, -1, 1, 2, 3):
+        m = _mes_menos(mes, k)
+        if (ini is None or m >= ini) and (fim is None or m < fim):
+            viz.append(res_por_mes.get(m))
     med = _mediana([v for v in viz if v is not None and v > 0])
     return bool(med) and abs(res / med - 1) > VARIACAO_RESIDENCIAL
+
+
+SALTO_MINIMO_SUCESSORA = 0.05  # salto do total residencial da sucessora, relativo ao patamar anterior
+
+
+def _patamar(res_por_mes, meses, antes_de=None, a_partir_de=None, n=3):
+    """Mediana dos n totais residenciais positivos mais próximos da ruptura, antes dela
+    (antes_de) ou a partir dela (a_partir_de), numa janela de 6 meses."""
+    if antes_de is not None:
+        cand = [m for m in sorted(meses, reverse=True) if _mes_menos(antes_de, 6) <= m < antes_de]
+    else:
+        cand = [m for m in sorted(meses) if a_partir_de <= m < _mes_menos(a_partir_de, -6)]
+    vals = [res_por_mes[m] for m in cand if (res_por_mes.get(m) or 0) > 0][:n]
+    return _mediana(vals)
+
+
+def incorporacoes_scs(res_por_dist, ultimo_mes, cauda, tolerancia=VARIACAO_RESIDENCIAL):
+    """Incorporações detectadas no próprio SCS, sem lista externa.
+
+    Saída: distribuidora X que informa pela última vez no mês L antes da cauda do
+    arquivo e nunca volta (mesma regra de completude_scs). Sucessora: distribuidora S
+    presente antes e depois de b = L + 1 cujo total residencial muda de patamar em b
+    (mediana dos 3 totais positivos seguintes menos a dos 3 anteriores, Δ) de forma
+    compatível com o total residencial das que saíram: |Δ − T| ≤ 25% de T, com T = soma
+    das que saem no mesmo mês ou o total de uma delas, e Δ de pelo menos 5% do patamar
+    anterior de S (o crescimento vegetativo de 2 a 3 meses fica abaixo de 1%).
+
+    Devolve [{mes_ruptura, sucessora, incorporadas: [cnpj...], total_incorporadas,
+    salto_sucessora, patamar_antes, patamar_depois}] em ordem de mês."""
+    saidas = collections.defaultdict(list)
+    for cn, u in ultimo_mes.items():
+        if u < cauda and res_por_dist.get(cn, {}).get(u):
+            saidas[u].append(cn)
+    out = []
+    for L, grupo in sorted(saidas.items()):
+        b = _mes_menos(L, -1)
+        alvos = [(tuple(sorted(grupo)), sum(res_por_dist[x][L] for x in grupo))]
+        if len(grupo) > 1:
+            alvos += [((x,), res_por_dist[x][L]) for x in grupo]
+        melhor = None
+        for cn, res in res_por_dist.items():
+            if cn in grupo:
+                continue
+            antes = _patamar(res, res, antes_de=b)
+            depois = _patamar(res, res, a_partir_de=b)
+            if not antes or not depois:
+                continue
+            delta = depois - antes
+            if delta < SALTO_MINIMO_SUCESSORA * antes:
+                continue
+            for inc, T in alvos:
+                erro = abs(delta - T) / T
+                if erro <= tolerancia and (melhor is None or erro < melhor[0]):
+                    melhor = (erro, cn, inc, T, delta, antes, depois)
+        if melhor:
+            _, cn, inc, T, delta, antes, depois = melhor
+            out.append({"mes_ruptura": b, "sucessora": cn, "incorporadas": list(inc), "total_incorporadas": T,
+                        "salto_sucessora": delta, "patamar_antes": antes, "patamar_depois": depois})
+    return out
+
+
+def municipio_do_mapa(mun, validos=None):
+    """Código de 6 dígitos do município de uma chave da CDE, ou None quando não entra no
+    mapa: formato inválido (já marcado 'invalido' na leitura) ou código que não existe na
+    lista de municípios do IBGE (a do Cadastro Único), como 1403205 em Roraima."""
+    if not mun or mun == "invalido":
+        return None
+    cod = mun[:6]
+    if validos is not None and cod not in validos:
+        return None
+    return cod
+
+
+def resumo_cde_mes(chaves, validos=None):
+    """Agregados de um mês de Beneficiários da CDE a partir das chaves do silver
+    {(cnpj, mun7|'invalido', subclasse, tipo_faturamento): {'n', 'valor', 'sem_valor'}}.
+
+    - faturas e desconto das faturas: SubsBaixaRenda, tipo 1, subclasses 3.2 a 3.6;
+    - desconto líquido: subclasses 3.2 a 3.6, tipos 1 a 4 (cancelamentos e
+      refaturamentos entram com o sinal da fonte); linhas SubsBaixaRenda de OUTRAS
+      subclasses (iluminação pública, industrial, comercial) ficam fora e são publicadas à
+      parte como diagnóstico (o defeito era somá-las ao líquido: R$ -26,1 milhões em
+      mar/2026);
+    - município: formato inválido ou código inexistente ficam só no total nacional."""
+    r = {"faturas_tsee": 0.0, "faturas_outras_subclasses": 0.0, "desconto_faturas_reais": 0.0,
+         "desconto_liquido_reais": 0.0, "desconto_fora_das_subclasses_reais": 0.0, "linhas_fora_das_subclasses": 0.0,
+         "faturas_municipio_invalido": 0.0, "faturas_municipio_inexistente": 0.0,
+         "codigos_inexistentes": collections.Counter(), "por_mun": {}, "por_dist": collections.Counter(),
+         "valor_por_dist": collections.Counter(), "uf_por_dist": collections.defaultdict(collections.Counter)}
+    for (cn, mun, sc, tf), v in chaves.items():
+        n, val = v.get("n", 0.0), v.get("valor", 0.0)
+        if sc not in SUBCLASSES_TSEE:
+            r["desconto_fora_das_subclasses_reais"] += val
+            r["linhas_fora_das_subclasses"] += n
+            if tf == "1":
+                r["faturas_outras_subclasses"] += n
+            continue
+        r["desconto_liquido_reais"] += val
+        if tf != "1":
+            continue
+        r["faturas_tsee"] += n
+        r["desconto_faturas_reais"] += val
+        r["por_dist"][cn] += n
+        r["valor_por_dist"][cn] += val
+        cod = municipio_do_mapa(mun, validos)
+        if cod is None:
+            r["faturas_municipio_invalido"] += n
+            if mun != "invalido":
+                r["faturas_municipio_inexistente"] += n
+                r["codigos_inexistentes"][mun] += n
+            continue
+        mm = r["por_mun"].setdefault(cod, {"faturas": 0.0, "valor": 0.0, "distribuidoras": set()})
+        mm["faturas"] += n
+        mm["valor"] += val
+        mm["distribuidoras"].add(cn)
+        r["uf_por_dist"][cn][fi.UF_SIGLA.get(cod[:2])] += n
+    por_uf = collections.defaultdict(lambda: {"faturas": 0.0, "valor": 0.0, "municipios": 0})
+    for cod, mm in r["por_mun"].items():
+        p = por_uf[fi.UF_SIGLA.get(cod[:2])]
+        p["faturas"] += mm["faturas"]
+        p["valor"] += mm["valor"]
+        p["municipios"] += 1
+    r["por_uf"] = dict(por_uf)
+    return r
 
 
 # ================================================================ P059: Tarifa Social
@@ -1177,6 +1383,38 @@ CAMPOS_SERIE_GOLD = ("m", "distribuidoras", "completo", "distribuidoras_faltante
 MEDIDAS_POF_UF = ("energia_media", "razao_medias_pct", "media_razoes_desp_pct", "media_razoes_renda_pct",
                   "sem_despesa_energia_pct", "acima_5_renda_pct", "acima_10_renda_pct")
 SUBCLASSES_TSEE = tuple(fa.SUBCLASSES_TSEE)
+
+
+SIGLAS_NAO_INFORMADAS = {"", "não informado", "nao informado", "n/i", "-"}
+
+
+def sigla_informada(s):
+    """Sigla que identifica a empresa: 'Não Informado' (texto do SCS para um CNPJ) não é nome."""
+    return bool(s) and s.strip().lower() not in SIGLAS_NAO_INFORMADAS
+
+
+def municipios_validos(con):
+    """Códigos de 6 dígitos dos municípios existentes, pela lista municipal do Cadastro
+    Único (MI Social usa o código IBGE). Conjunto vazio quando o MDS não está no silver;
+    aí só o formato do código é conferido (municipio_do_mapa recebe None)."""
+    cods = {cod for cod, r in base.registros_como_estavam_em(con, DS_MDS).items()
+            if re.fullmatch(r"\d{6}", cod) and r.get("uf")}
+    return cods or None
+
+
+def _texto_maiores_diferencas(reconc, mes_conf):
+    grandes, pequenas = reconc.get("maiores_diferencas") or [], reconc.get("diferencas_distribuidoras_pequenas") or []
+    txt = (f"Faturas não são UC: em {c.mes_br(mes_conf)} o arquivo tem {numero_exibido(reconc['diferenca_pct'], 2)}% de diferença "
+           "nas faturas contra as UC do SCS das mesmas distribuidoras.")
+    if grandes:
+        g = grandes[0]
+        txt += (f" Maior diferença entre distribuidoras com {numero_exibido(UC_MINIMA_DIFERENCAS)} UC ou mais: {g['sigla']}, "
+                f"{numero_exibido(g['diferenca_pct'], 2)}%.")
+    if pequenas:
+        p = pequenas[0]
+        txt += (f" Entre as menores, {p['sigla']}, {numero_exibido(p['diferenca_pct'], 2)}% "
+                f"({numero_exibido(p['uc_scs'])} UC no SCS e {numero_exibido(p['faturas_cde'])} faturas).")
+    return txt
 
 
 def _cde_por_mes(con):
@@ -1210,11 +1448,25 @@ def _bloco_tarifa_social(con, scs):
         if "|" in ch and campos.get("sigla"):
             cn, mes = ch.split("|", 1)
             sigla_hist[cn][mes] = campos["sigla"]
-    sigla = {cn: h[max(h)] for cn, h in sigla_hist.items()}
+    # sigla mais recente que identifica a empresa: o SCS traz "Não Informado" para ao menos
+    # um CNPJ (89435598000155, CRERAL na CDE); nesse caso vale a da CDE (chave é o CNPJ)
+    siglas_cde = {ch.split("|", 1)[1]: campos.get("sigla") for ch, campos in base.registros_como_estavam_em(con, DS_CDE).items()
+                  if ch.startswith("sigla|")}
+    sigla, origem_sigla = {}, {}
+    for cn, h in sigla_hist.items():
+        boas = [h[m] for m in sorted(h) if sigla_informada(h[m])]
+        if boas:
+            sigla[cn], origem_sigla[cn] = boas[-1], "SCS"
+        elif sigla_informada(siglas_cde.get(cn)):
+            sigla[cn], origem_sigla[cn] = siglas_cde[cn], "Beneficiários da CDE (SCS sem sigla informada)"
+        else:
+            sigla[cn], origem_sigla[cn] = None, None
     mudancas_sigla = []
     for cn, h in sigla_hist.items():
         ant = None
         for mes in sorted(h):
+            if not sigla_informada(h[mes]):
+                continue
             if ant is not None and h[mes] != ant:
                 mudancas_sigla.append({"cnpj": cn, "mes": mes, "de": ant, "para": h[mes]})
             ant = h[mes]
@@ -1228,12 +1480,27 @@ def _bloco_tarifa_social(con, scs):
     ref = max((m for m in meses if completos[m]), default=None)
     if ref is None:
         raise ValueError("nenhum mês completo no SCS")
-    # inconsistência do total residencial por distribuidora e mês
-    flag = {}
+    # incorporações detectadas no próprio SCS (saída definitiva e salto compatível da sucessora)
+    primeiro_inf, ultimo_inf = {}, {}
+    for m in meses:
+        for cn in meses_por[m]:
+            primeiro_inf.setdefault(cn, m)
+            ultimo_inf[cn] = m
+    incorporacoes = incorporacoes_scs({cn: d.get("uc_residencial", {}) for cn, d in dist.items()}, ultimo_inf,
+                                      _mes_menos(meses[-1], MESES_CAUDA - 1))
+    rupturas = collections.defaultdict(list)
+    for inc in incorporacoes:
+        rupturas[inc["sucessora"]].append(inc["mes_ruptura"])
+    # inconsistência do total residencial por distribuidora e mês (vizinhos do mesmo lado da ruptura)
+    flag, flag_sem_ruptura = {}, {}
     for cn, campos in dist.items():
         res, ts = campos.get("uc_residencial", {}), campos.get("uc_tsee", {})
         for mes in ts:
-            flag[(cn, mes)] = residencial_inconsistente(res, ts, mes)
+            flag[(cn, mes)] = residencial_inconsistente(res, ts, mes, rupturas.get(cn, ()))
+            if rupturas.get(cn):
+                flag_sem_ruptura[(cn, mes)] = residencial_inconsistente(res, ts, mes)
+    # meses que a regra antiga (sem ruptura) excluiria e que a incorporação explica
+    reincluidos = sorted((mes, cn) for (cn, mes), v in flag_sem_ruptura.items() if v and not flag[(cn, mes)])
     serie = []
     for mes in meses:
         cns = list(meses_por[mes])
@@ -1276,59 +1543,63 @@ def _bloco_tarifa_social(con, scs):
             out.append({"faixa": f, "rotulo": rot, "uc_tsee": ucs, "uc_residencial": res,
                         "pct_das_uc_tsee": _r(100 * ucs / tot, 2) if tot else None})
         return out
-    # CDE: meses processados
+    # CDE: meses processados. Só o mês com o original no bronze tem valores publicados; o mês
+    # sondado e rejeitado pela cobertura publica só a cobertura e o motivo (não é reprodutível)
     cde = _cde_por_mes(con)
     infos = {m: _info_mes(con, m) for m in cde}
+    no_bronze = {m for m, i in infos.items() if i and (i.get("bronze") or "").startswith("sim")}
     mes_mapa = max((m for m, i in infos.items() if i and (i.get("cobertura_scs") or 0) >= COBERTURA_MINIMA
-                    and i.get("bronze", "").startswith("sim")), default=None)
+                    and m in no_bronze), default=None)
     mes_conf = ref if ref in cde else None
-    siglas_cde = {ch.split("|", 1)[1]: campos.get("sigla") for ch, campos in base.registros_como_estavam_em(con, DS_CDE).items()
-                  if ch.startswith("sigla|")}
+    validos = municipios_validos(con)
+    resumos = {m: resumo_cde_mes(cde[m], validos) for m in sorted(no_bronze)}
     cde_meses = []
     for mes in sorted(cde):
-        chaves = cde[mes]
-        tsee1 = sum(v.get("n", 0) for (cn, mun, sc, tf), v in chaves.items() if tf == "1" and sc in SUBCLASSES_TSEE)
-        outras1 = sum(v.get("n", 0) for (cn, mun, sc, tf), v in chaves.items() if tf == "1" and sc not in SUBCLASSES_TSEE)
-        val1 = sum(v.get("valor", 0) for (cn, mun, sc, tf), v in chaves.items() if tf == "1" and sc in SUBCLASSES_TSEE)
-        val_liq = sum(v.get("valor", 0) for v in chaves.values())
-        inval = sum(v.get("n", 0) for (cn, mun, sc, tf), v in chaves.items()
-                    if tf == "1" and mun == "invalido" and sc in SUBCLASSES_TSEE)
         i = infos.get(mes) or {}
         uso = []
         if mes == mes_mapa:
             uso.append("mapa e cobertura potencial")
         if mes == mes_conf:
             uso.append("conferência com o SCS")
-        cde_meses.append({"mes": mes, "distribuidoras": i.get("distribuidoras"), "faturas_tsee": tsee1,
-                          "faturas_outras_subclasses": outras1, "desconto_faturas_reais": _r(val1, 2),
-                          "desconto_liquido_reais": _r(val_liq, 2), "faturas_municipio_invalido": inval,
-                          "cobertura_scs_pct": _r(100 * i["cobertura_scs"], 2) if i.get("cobertura_scs") is not None else None,
-                          "completo": (i.get("cobertura_scs") or 0) >= COBERTURA_MINIMA,
-                          "original_no_bronze": i.get("bronze", "").startswith("sim"), "uso": uso,
-                          "sha256": i.get("sha256"), "recurso": i.get("recurso")})
+        if mes in no_bronze and ref < mes and (mes_mapa is None or mes <= mes_mapa):
+            uso.append("série mensal depois do fim do SCS")
+        cob = i.get("cobertura_scs")
+        linha = {"mes": mes, "distribuidoras": i.get("distribuidoras"),
+                 "cobertura_scs_pct": _r(100 * cob, 2) if cob is not None else None,
+                 "completo": (cob or 0) >= COBERTURA_MINIMA, "original_no_bronze": mes in no_bronze, "uso": uso,
+                 "sha256": i.get("sha256"), "recurso": i.get("recurso")}
+        rs = resumos.get(mes)
+        if rs:
+            linha.update({
+                "faturas_tsee": rs["faturas_tsee"], "faturas_outras_subclasses": rs["faturas_outras_subclasses"],
+                "desconto_faturas_reais": _r(rs["desconto_faturas_reais"], 2),
+                "desconto_medio_por_fatura_reais": _r(rs["desconto_faturas_reais"] / rs["faturas_tsee"], 2) if rs["faturas_tsee"] else None,
+                "desconto_liquido_reais": _r(rs["desconto_liquido_reais"], 2),
+                "desconto_fora_das_subclasses_reais": _r(rs["desconto_fora_das_subclasses_reais"], 2),
+                "faturas_municipio_invalido": rs["faturas_municipio_invalido"],
+                "faturas_municipio_inexistente": rs["faturas_municipio_inexistente"],
+                "codigos_inexistentes": [{"codigo": k, "faturas": v} for k, v in sorted(rs["codigos_inexistentes"].items())],
+                "motivo_sem_valores": None})
+        else:
+            linha.update({k: None for k in ("faturas_tsee", "faturas_outras_subclasses", "desconto_faturas_reais",
+                                            "desconto_medio_por_fatura_reais", "desconto_liquido_reais",
+                                            "desconto_fora_das_subclasses_reais", "faturas_municipio_invalido",
+                                            "faturas_municipio_inexistente")})
+            linha["codigos_inexistentes"] = []
+            linha["motivo_sem_valores"] = (
+                f"mês sondado: cobertura de {numero_exibido(linha['cobertura_scs_pct'], 2)}% das UC do SCS de "
+                f"{c.mes_br(i.get('mes_referencia_cobertura') or ref)}, abaixo do mínimo de {numero_exibido(100 * COBERTURA_MINIMA, 1)}%; "
+                f"o original (sha256 {str(i.get('sha256'))[:12]}...) não foi guardado no bronze, e sem ele os valores não são reprodutíveis")
+        cde_meses.append(linha)
     # distribuidoras no mês do mapa: municípios e UF
-    uf_por_dist = collections.defaultdict(collections.Counter)
-    mun_mapa = collections.defaultdict(lambda: {"faturas": 0.0, "valor": 0.0, "distribuidoras": set()})
-    if mes_mapa:
-        for (cn, mun, sc, tf), v in cde[mes_mapa].items():
-            if tf != "1" or sc not in SUBCLASSES_TSEE:
-                continue
-            if mun != "invalido":
-                uf = fi.UF_SIGLA.get(mun[:2])
-                uf_por_dist[cn][uf] += v.get("n", 0)
-                mm = mun_mapa[mun[:6]]
-                mm["faturas"] += v.get("n", 0)
-                mm["valor"] += v.get("valor", 0.0)
-                mm["distribuidoras"].add(cn)
+    rs_mapa = resumos.get(mes_mapa) if mes_mapa else None
+    uf_por_dist = rs_mapa["uf_por_dist"] if rs_mapa else {}
+    mun_mapa = rs_mapa["por_mun"] if rs_mapa else {}
     # conferência SCS × CDE por distribuidora
     conf = {}
     if mes_conf:
-        cde_conf = collections.Counter()
-        val_conf = collections.Counter()
-        for (cn, mun, sc, tf), v in cde[mes_conf].items():
-            if tf == "1" and sc in SUBCLASSES_TSEE:
-                cde_conf[cn] += v.get("n", 0)
-                val_conf[cn] += v.get("valor", 0.0)
+        rs_conf = resumos.get(mes_conf) or resumo_cde_mes(cde[mes_conf], validos)
+        cde_conf, val_conf = rs_conf["por_dist"], rs_conf["valor_por_dist"]
         for cn in set(meses_por[mes_conf]) | set(cde_conf):
             s_ = dist.get(cn, {}).get("uc_tsee", {}).get(mes_conf)
             d_ = cde_conf.get(cn)
@@ -1353,10 +1624,18 @@ def _bloco_tarifa_social(con, scs):
         "tolerancia": ("±2% das contagens no total e em pelo menos 90% das distribuidoras; fora disso, ressalva com as maiores "
                        "diferenças listadas. As duas bases contam coisas próximas mas não idênticas: UC informada no pedido de "
                        "reembolso da DMR (SCS) versus faturas de faturamento com desconto no mês (CDE), que podem incluir "
-                       "faturas de outras referências e mais de uma fatura por UC."),
+                       "faturas de outras referências e mais de uma fatura por UC. A lista maiores_diferencas traz só "
+                       f"distribuidoras com {numero_exibido(UC_MINIMA_DIFERENCAS)} UC ou mais no SCS; as menores com diferença acima "
+                       "de ±2% ficam em diferencas_distribuidoras_pequenas, porque um percentual sobre poucas centenas de UC "
+                       "pesa pouco no total mas não deve sumir da conferência."),
+        "uc_minima_maiores_diferencas": UC_MINIMA_DIFERENCAS,
         "maiores_diferencas": sorted(
             [{"cnpj": cn, "sigla": sigla.get(cn) or siglas_cde.get(cn), **v} for cn, v in conf.items()
-             if v["diferenca_pct"] is not None and abs(v["diferenca_pct"]) > 2.0 and (v["uc_scs"] or 0) >= 1000],
+             if v["diferenca_pct"] is not None and abs(v["diferenca_pct"]) > 2.0 and (v["uc_scs"] or 0) >= UC_MINIMA_DIFERENCAS],
+            key=lambda x: -abs(x["diferenca_pct"]))[:12],
+        "diferencas_distribuidoras_pequenas": sorted(
+            [{"cnpj": cn, "sigla": sigla.get(cn) or siglas_cde.get(cn), **v} for cn, v in conf.items()
+             if v["diferenca_pct"] is not None and abs(v["diferenca_pct"]) > 2.0 and (v["uc_scs"] or 0) < UC_MINIMA_DIFERENCAS],
             key=lambda x: -abs(x["diferenca_pct"]))[:12],
         "so_no_scs": sorted(sigla.get(cn, cn) for cn, v in conf.items() if v["faturas_cde"] is None),
         "so_na_cde": sorted((siglas_cde.get(cn) or cn) for cn, v in conf.items() if v["uc_scs"] is None),
@@ -1388,13 +1667,7 @@ def _bloco_tarifa_social(con, scs):
     # UF no mês do mapa
     ufs_tab = []
     if mes_mapa:
-        por_uf = collections.defaultdict(lambda: {"faturas": 0.0, "valor": 0.0, "municipios": 0})
-        for mun6, mm in mun_mapa.items():
-            uf = fi.UF_SIGLA.get(mun6[:2])
-            p = por_uf[uf]
-            p["faturas"] += mm["faturas"]
-            p["valor"] += mm["valor"]
-            p["municipios"] += 1
+        por_uf = rs_mapa["por_uf"]
         for uf in UF_NOME:
             p = por_uf.get(uf)
             if not p:
@@ -1403,6 +1676,35 @@ def _bloco_tarifa_social(con, scs):
                             "desconto_reais": _r(p["valor"], 2),
                             "desconto_medio_por_fatura_reais": _r(p["valor"] / p["faturas"], 2) if p["faturas"] else None,
                             "municipios_com_faturas": p["municipios"]})
+    # série mensal da CDE por UF (só meses com o original no bronze): faturas e desconto das faturas
+    meses_serie_cde = sorted(resumos)
+    serie_cde_uf = {"meses": meses_serie_cde, "ufs": list(UF_NOME),
+                    "completo": [bool((infos.get(m) or {}).get("cobertura_scs", 0) >= COBERTURA_MINIMA) for m in meses_serie_cde],
+                    "faturas_tsee": [[(resumos[m]["por_uf"].get(uf) or {}).get("faturas") for m in meses_serie_cde] for uf in UF_NOME],
+                    "desconto_faturas_reais": [[_r((resumos[m]["por_uf"].get(uf) or {}).get("valor"), 2) for m in meses_serie_cde]
+                                               for uf in UF_NOME]}
+    linhas_cde = []
+    for l in cde_meses:
+        if not l["original_no_bronze"]:
+            continue
+        m = l["mes"]
+        linhas_cde.append([m, "BR", l["faturas_tsee"], l["desconto_faturas_reais"], l["desconto_medio_por_fatura_reais"],
+                           l["desconto_liquido_reais"], l["desconto_fora_das_subclasses_reais"], l["faturas_municipio_invalido"],
+                           len(resumos[m]["por_mun"]), l["cobertura_scs_pct"], 1 if l["completo"] else 0])
+        for uf in UF_NOME:
+            p = resumos[m]["por_uf"].get(uf)
+            if p:
+                linhas_cde.append([m, uf, p["faturas"], round(p["valor"], 2), round(p["valor"] / p["faturas"], 4) if p["faturas"] else None,
+                                   None, None, None, p["municipios"], l["cobertura_scs_pct"], 1 if l["completo"] else 0])
+    # a série por UF vai para um JSON lido sob demanda (a gold só leva o endereço), como os pontos do PASI
+    base.escreve_gold("inclusao_cde_mensal_uf.json", {"gerado_em": base.agora_utc(), "fonte": ckan.url_dataset("ANEEL", PAC_CDE),
+                                                      "unidades": {"faturas_tsee": "faturas de faturamento com desconto no mês",
+                                                                   "desconto_faturas_reais": "R$ correntes"},
+                                                      **serie_cde_uf}, destino=base.SERIES)
+    base.escreve_csv("inclusao_cde_mensal_uf.csv",
+                     ["mes", "territorio", "faturas_tsee", "desconto_faturas_reais", "desconto_medio_por_fatura_reais",
+                      "desconto_liquido_reais", "desconto_fora_das_subclasses_reais", "faturas_municipio_invalido",
+                      "municipios_com_faturas", "cobertura_scs_pct", "mes_completo"], linhas_cde)
     # série antiga (descontinuada) e comparação com o SCS
     antiga = _bloco_antiga(con, por_mes)
     custeio = _bloco_custeio(con)
@@ -1480,13 +1782,20 @@ def _bloco_tarifa_social(con, scs):
                 fonte=f_cde, formula="número de linhas com DscTipoSubsidio = SubsBaixaRenda, IdcTipoFaturamento = 1 e IdcSubclasse de 3.2 a 3.6",
                 chaves_origem=[f"arquivo {mm['recurso']} (sha256 {mm['sha256']})"],
                 cobertura=f"{numero_exibido(mm['cobertura_scs_pct'], 2)}% das UC do SCS de {c.mes_br(mes_conf or ref)} estão em distribuidoras presentes no arquivo",
-                exclusoes=["faturas de cancelamento e refaturamento (tipos 2 a 4)", "outras subclasses e outros subsídios da CDE"],
+                exclusoes=["faturas de cancelamento e refaturamento (tipos 2 a 4)", "outras subclasses e outros subsídios da CDE",
+                           "do mapa (não do total): código de município em formato inválido ou inexistente na lista do IBGE"],
                 testes=[ev.teste("soma das UF mais faturas sem município válido igual ao total nacional",
                                  "aprovado" if abs(soma_ufs + mm["faturas_municipio_invalido"] - mm["faturas_tsee"]) < 0.5 else "reprovado",
                                  f"{numero_exibido(soma_ufs)} nas UF + {numero_exibido(mm['faturas_municipio_invalido'])} sem município válido = {numero_exibido(mm['faturas_tsee'])}"),
+                        ev.teste("código de município conferido contra a lista de municípios do IBGE (Cadastro Único)",
+                                 "aprovado" if validos else "ressalva",
+                                 (f"{numero_exibido(len(validos))} municípios na lista; {numero_exibido(mm['faturas_municipio_inexistente'])} faturas com código "
+                                  f"de formato válido mas inexistente ({', '.join(x['codigo'] for x in mm['codigos_inexistentes']) or 'nenhum'}) ficam só no total nacional")
+                                 if validos else "lista de municípios ausente no silver: só o formato do código foi conferido"),
                         ev.teste("cobertura do arquivo pelo SCS de referência", "aprovado" if mm["completo"] else "ressalva",
                                  f"{numero_exibido(mm['cobertura_scs_pct'], 2)}% (mínimo {numero_exibido(100 * COBERTURA_MINIMA, 1)}%)")],
-                download=["/energia/series/inclusao_municipios.csv"], indicador="Faturas com desconto da Tarifa Social")}
+                download=["/energia/series/inclusao_municipios.csv", "/energia/series/inclusao_cde_mensal_uf.csv"],
+                indicador="Faturas com desconto da Tarifa Social")}
     lim_scs = [
         "O SCS registra a competência pelo despacho da ANEEL que aprovou a DMR; o último mês do arquivo costuma estar incompleto (distribuidoras ainda não homologadas) e não é tratado como dado nacional.",
         "A contagem é de unidades consumidoras (UC), não de famílias nem de pessoas; a subclasse multifamiliar reúne várias famílias numa só UC.",
@@ -1508,7 +1817,9 @@ def _bloco_tarifa_social(con, scs):
         fonte=prov_scs["fonte"], unidade="%", frequencia="mensal", periodo={"inicio": meses[0], "fim": ref},
         cobertura={"inicio": meses[0], "fim": meses[-1]}, capturado_em=c.ultima_captura(snap), snapshot=snap,
         formula="participação = 100 × Σ UC com Tarifa Social ÷ Σ UC residenciais, somente distribuidoras com total residencial consistente no mês",
-        transformacoes=["exclusão, das duas somas, de distribuidora com total residencial inconsistente (regra publicada)"],
+        transformacoes=["exclusão, das duas somas, de distribuidora com total residencial inconsistente (regra publicada)",
+                        "incorporação detectada no SCS (saída definitiva e salto compatível da sucessora) separa a série da sucessora: "
+                        "a mediana de consistência só compara meses do mesmo lado da incorporação"],
         limitacoes=lim_scs + ["A participação mede quanto das UC residenciais tem o benefício; não é cobertura do público elegível (ver cobertura potencial)."],
         download="/energia/series/inclusao_tsee_mensal.csv")
     snap_cde = c.snapshot_de(con, DS_CDE)
@@ -1519,20 +1830,20 @@ def _bloco_tarifa_social(con, scs):
                      ckan.url_dataset("ANEEL", PAC_CDE), next((m.get("url") for m in [infos.get(mes_mapa) or {}]), None) or ckan.url_dataset("ANEEL", PAC_CDE),
                      LIC_ANEEL),
         unidade="faturas de faturamento com desconto no mês; R$", frequencia="mensal (meses processados)",
-        periodo={"inicio": mes_mapa or "", "fim": mes_mapa or ""},
+        periodo={"inicio": min(no_bronze) if no_bronze else "", "fim": mes_mapa or (max(no_bronze) if no_bronze else "")},
         cobertura={"inicio": min(cde) if cde else "", "fim": max(cde) if cde else ""},
         capturado_em=c.ultima_captura(snap_cde), snapshot=snap_cde,
-        formula="faturas = número de linhas com DscTipoSubsidio = SubsBaixaRenda, IdcTipoFaturamento = 1 e subclasse 3.2 a 3.6, por município; desconto = soma de VlrSubsidio dessas linhas",
+        formula=("faturas = número de linhas com DscTipoSubsidio = SubsBaixaRenda, IdcTipoFaturamento = 1 e subclasse 3.2 a 3.6, por município; "
+                 "desconto = soma de VlrSubsidio dessas linhas; desconto líquido = soma de VlrSubsidio das subclasses 3.2 a 3.6 nos tipos 1 a 4; "
+                 "desconto médio por fatura = desconto ÷ faturas"),
         transformacoes=["leitura em fluxo do CSV mensal (cerca de 2 GB descompactado)", "agregação por distribuidora, município, subclasse e tipo de faturamento",
                         "nenhum campo pessoal (nome, CPF) é lido para o silver nem publicado"],
         limitacoes=["A ANEEL avisa que a base pode mudar a qualquer momento por retificação das distribuidoras.",
-                    "Faturas de cancelamento e refaturamento (tipos 2 a 4) não entram na contagem; entram no desconto líquido do mês.",
-                    "O arquivo mais recente pode não trazer todas as distribuidoras; o mês do mapa é o mais recente com cobertura de pelo menos 99,5% das UC do SCS.",
-                    "Linhas com código de município inválido entram no total nacional mas não no mapa."]
-                   + ([f"Faturas não são UC: em {c.mes_br(mes_conf)} o arquivo tem {numero_exibido(reconc['diferenca_pct'], 2)}% mais faturas "
-                       f"que as UC do SCS nas mesmas distribuidoras (maior diferença: {reconc['maiores_diferencas'][0]['sigla']}, "
-                       f"{numero_exibido(reconc['maiores_diferencas'][0]['diferenca_pct'], 2)}%)."]
-                      if reconc and reconc.get("maiores_diferencas") and reconc.get("diferenca_pct") is not None else []),
+                    "Faturas de cancelamento e refaturamento (tipos 2 a 4) não entram na contagem; entram no desconto líquido do mês, que só soma as subclasses 3.2 a 3.6. Linhas SubsBaixaRenda de outras subclasses (iluminação pública, industrial, comercial) ficam fora e aparecem à parte como diagnóstico.",
+                    "O arquivo mais recente pode não trazer todas as distribuidoras; o mês do mapa é o mais recente com cobertura de pelo menos 99,5% das UC do SCS. Meses sondados abaixo desse mínimo não guardam o original e publicam só a cobertura.",
+                    "Linhas com código de município em formato inválido ou inexistente na lista de municípios do IBGE entram no total nacional mas não no mapa.",
+                    "A série mensal da CDE começa no último mês completo do SCS (mai/2025) e vai até o mês do mapa; meses anteriores não foram processados (o SCS cobre o período)."]
+                   + ([_texto_maiores_diferencas(reconc, mes_conf)] if reconc and reconc.get("diferenca_pct") is not None else []),
         download="/energia/series/inclusao_municipios.csv")
     base.escreve_csv("inclusao_tsee_mensal.csv",
                      ["mes", "distribuidoras", "completo", "distribuidoras_faltantes", "uc_tsee_faltantes_ultimo_informe",
@@ -1555,10 +1866,11 @@ def _bloco_tarifa_social(con, scs):
                              None if inc or not res else round(100 * uc / res, 4), dmr,
                              round(dmr / uc, 4) if uc and dmr is not None else None,
                              round(1000 * mwh / uc, 4) if uc and mwh is not None else None,
-                             regs.get(f"{cn}|{mes}", {}).get("despacho"), 1 if inc else 0])
+                             regs.get(f"{cn}|{mes}", {}).get("despacho"), 1 if inc else 0,
+                             1 if mes in rupturas.get(cn, ()) else 0])
     base.escreve_csv("inclusao_tsee_distribuidoras.csv",
                      ["cnpj", "sigla", "mes", "uc_tsee", "uc_residencial", "participacao_pct", "dmr_reais",
-                      "dmr_por_uc_reais", "kwh_por_uc", "despacho", "residencial_inconsistente"], linhas_d)
+                      "dmr_por_uc_reais", "kwh_por_uc", "despacho", "residencial_inconsistente", "ruptura_incorporacao"], linhas_d)
     bloco = {
         "pergunta": "Onde e quanto a Tarifa Social alcança?",
         "mes_referencia": ref, "mes_mapa": mes_mapa,
@@ -1570,8 +1882,15 @@ def _bloco_tarifa_social(con, scs):
         "distribuidoras": distribs,
         "ufs": ufs_tab,
         "cde_meses": cde_meses,
+        "serie_cde_uf_json": "/energia/series/inclusao_cde_mensal_uf.json",
+        "_serie_cde_uf": serie_cde_uf,  # só para a validação; sai antes da publicação
         "conferencia_scs_cde": reconc,
         "mudancas_de_sigla": mudancas_sigla,
+        "siglas_de_outra_fonte": [{"cnpj": cn, "sigla": sigla[cn], "origem": o} for cn, o in sorted(origem_sigla.items())
+                                  if o and o != "SCS"],
+        "incorporacoes": [{**inc, "sigla_sucessora": sigla.get(inc["sucessora"]),
+                           "siglas_incorporadas": [sigla.get(x) for x in inc["incorporadas"]]} for inc in incorporacoes],
+        "participacao_mantida_por_incorporacao": [{"mes": m, "cnpj": cn, "sigla": sigla.get(cn)} for m, cn in reincluidos],
         "diagnostico_scs": diag_scs,
         "serie_antiga": antiga,
         "custeio_cde": custeio,
@@ -1585,9 +1904,18 @@ def _bloco_tarifa_social(con, scs):
             "mes_completo": ("Mês completo do SCS: pelo menos 90 distribuidoras informantes e nenhuma distribuidora esperada faltando. "
                              "Esperada é a que já informou antes e volta a informar depois (lacuna) ou que informou em algum dos 3 últimos meses do arquivo; "
                              "a que deixa de informar para sempre antes disso saiu do conjunto por incorporação e não torna o mês incompleto."),
-            "residencial_inconsistente": "Total residencial ausente, zero, menor que as UC com Tarifa Social ou mais de 25% distante da mediana dos 3 meses anteriores e 3 posteriores: a distribuidora sai das duas somas da participação naquele mês.",
+            "residencial_inconsistente": ("Total residencial ausente, zero, menor que as UC com Tarifa Social ou mais de 25% distante da mediana dos 3 meses anteriores e 3 posteriores: a distribuidora sai das duas somas da participação naquele mês. "
+                                          "Quando a distribuidora incorporou outra (incorporacoes), a mediana só usa meses do mesmo lado da incorporação: o novo patamar não é erro de dado."),
+            "incorporacao": ("Incorporação detectada no próprio SCS: distribuidora que informa pela última vez antes dos 3 últimos meses do arquivo e nunca volta, "
+                             "e sucessora cujo total residencial muda de patamar no mês seguinte (mediana dos 3 totais seguintes menos a dos 3 anteriores) "
+                             "em valor a até 25% do total residencial das que saíram, com salto de pelo menos 5% do patamar anterior."),
+            "maiores_diferencas": (f"A lista de maiores diferenças SCS × CDE considera distribuidoras com {numero_exibido(UC_MINIMA_DIFERENCAS)} UC ou mais no SCS; "
+                                   "as menores com diferença acima de ±2% aparecem em diferencas_distribuidoras_pequenas."),
+            "desconto_liquido": "Desconto líquido do mês: soma de VlrSubsidio das subclasses 3.2 a 3.6 nos tipos de faturamento 1 a 4; outras subclasses com SubsBaixaRenda ficam fora e são publicadas à parte.",
             "despacho_vigente": "Competência em mais de um despacho: vale o de data de registro mais recente; os demais ficam listados como alternativos.",
             "mes_mapa": "Arquivo mensal da CDE mais recente com cobertura de pelo menos 99,5% das UC do SCS no mês de conferência.",
+            "mes_cde_sem_original": "Mês da CDE sondado e rejeitado pela cobertura não guarda o original no bronze; publica só a cobertura e o motivo, sem contagens nem valores.",
+            "municipio_valido": "Código IBGE de 7 dígitos cujo prefixo de 6 dígitos está na lista de municípios do Cadastro Único (IBGE); outro código fica só no total nacional.",
         },
         "proveniencia": {"scs": prov_scs, "participacao": prov_part, "cde": prov_cde,
                          **({"antiga": antiga["proveniencia"]} if antiga else {}),
@@ -1616,7 +1944,9 @@ def _testes_scs(diag, completude, ref, antiga):
     falt = completude.get(ref, {}).get("faltantes", [])
     out.append(ev.teste("mês de referência completo (nenhuma distribuidora esperada faltando)", "aprovado" if not falt else "reprovado",
                         f"{len(falt)} distribuidora(s) esperada(s) ausente(s) em {ref}"))
-    comp = [x for x in (antiga or {}).get("comparacao_scs", []) if x.get("diferenca_pct") is not None]
+    todos = [x for x in (antiga or {}).get("comparacao_scs", []) if x.get("diferenca_pct") is not None]
+    comp = [x for x in todos if not x.get("repete_trimestre")]
+    repetidos = [x["m"] for x in todos if x.get("repete_trimestre")]
     if comp:
         dif = [abs(x["diferenca_pct"]) for x in comp]
         fora = [f"{x['m']} ({numero_exibido(x['diferenca_pct'], 2)}%)" for x in comp if abs(x["diferenca_pct"]) > TOLERANCIA_ANTIGA_PCT]
@@ -1624,7 +1954,9 @@ def _testes_scs(diag, completude, ref, antiga):
                             "aprovado" if not fora else "ressalva",
                             f"{len(comp)} trimestres entre {comp[0]['m']} e {comp[-1]['m']}; mediana da diferença absoluta "
                             f"{numero_exibido(_mediana(dif), 2)}%; fora da tolerância de {numero_exibido(TOLERANCIA_ANTIGA_PCT, 1)}%: "
-                            f"{', '.join(fora) if fora else 'nenhum'}"))
+                            f"{', '.join(fora) if fora else 'nenhum'}"
+                            + (f"; fora da estatística por repetir o trimestre anterior no arquivo original: {', '.join(repetidos)}"
+                               if repetidos else "")))
     return out
 
 
@@ -1651,20 +1983,24 @@ def _bloco_antiga(con, por_mes_scs):
         a[1] += l["uc_baixa_renda"] or 0
         a[2] += 1
     comparacao = []
+    rep = []
+    ant = None
     for mes, (res, br, n) in sorted(nac.items()):
         if n != 5:
             continue
         s_ = por_mes_scs.get(mes)
-        comparacao.append({"m": mes, "uc_baixa_renda_antiga": br, "uc_residencial_antiga": res,
-                           "uc_tsee_scs": s_["uc_tsee"] if s_ and s_["completo"] else None,
-                           "diferenca_pct": _r(100 * (s_["uc_tsee"] / br - 1), 2) if s_ and s_["completo"] and br else None})
-    portal = regs.get("portal", {})
-    rep = []
-    ant = None
-    for l in comparacao:
-        if ant and l["uc_baixa_renda_antiga"] == ant["uc_baixa_renda_antiga"]:
-            rep.append({"m": l["m"], "repete": ant["m"]})
+        # trimestre que repete a contagem do anterior no arquivo original (nov/2018 = set/2018) fica
+        # marcado e fora da estatística de concordância: não é uma observação independente
+        repete = ant["m"] if ant and br == ant["uc_baixa_renda_antiga"] else None
+        if repete:
+            rep.append({"m": mes, "repete": repete})
+        l = {"m": mes, "uc_baixa_renda_antiga": br, "uc_residencial_antiga": res,
+             "uc_tsee_scs": s_["uc_tsee"] if s_ and s_["completo"] else None,
+             "diferenca_pct": _r(100 * (s_["uc_tsee"] / br - 1), 2) if s_ and s_["completo"] and br else None,
+             "repete_trimestre": repete}
+        comparacao.append(l)
         ant = l
+    portal = regs.get("portal", {})
     snap = c.snapshot_de(con, DS_ANTIGA)
     base.escreve_csv("inclusao_tsee_antiga.csv", ["regiao", "mes", "uc_residencial", "uc_baixa_renda", "participacao_pct", "processado_em"],
                      [[l["regiao"], l["m"], l["uc_residencial"], l["uc_baixa_renda"], l["participacao_pct"], l["processado_em"]]
@@ -1748,7 +2084,7 @@ REGRA_ELEGIBILIDADE = {
     "vigencia": ("Os critérios de quem tem direito são os mesmos no período coberto pela comparação (a MPV nº 1.300/2025 mudou o "
                  "tamanho do desconto, não o público); a verificação foi feita na página da ANEEL em 30/09/2026."),
     "por_que_proxy": [
-        "O numerador conta UC com desconto; o denominador conta famílias. Uma família só pode ter o benefício em uma UC, mas pode não ser titular da conta (inquilino, conta em nome de terceiro, ligação compartilhada), e aí não aparece no numerador.",
+        "O numerador conta UC (SCS) ou faturas (CDE) com desconto; o denominador conta famílias. Uma família só pode ter o benefício em uma UC, mas pode não ser titular da conta (inquilino, conta em nome de terceiro, ligação compartilhada), e aí não aparece no numerador.",
         "O numerador inclui beneficiários pelos critérios II e III, que não estão (ou não estão todos) no denominador; por isso a razão pode passar de 100%.",
         "O município da fatura é o da UC; o do Cadastro Único é o da residência declarada.",
         "Famílias sem acesso à rede elétrica estão no denominador e não podem estar no numerador.",
@@ -1837,16 +2173,17 @@ def _bloco_cobertura(con, ctx):
             "razao_cadastradas_pct": _r(100 * tot_f / c_br, 2) if tot_f and c_br else None,
             "proxy": True,
             "evidencia": _evidencia(
-                valor=valor_br, unidade="UC com Tarifa Social por 100 famílias elegíveis pelo critério de renda",
+                valor=valor_br, unidade="faturas com desconto da Tarifa Social por 100 famílias elegíveis pelo critério de renda",
                 periodo=mes, entidade="Brasil", universo="faturas de faturamento com desconto da Tarifa Social; famílias do Cadastro Único com renda per capita até meio salário mínimo e cadastro atualizado",
                 fonte=f_cob, formula="100 × faturas com desconto da Tarifa Social (tipo 1, subclasses 3.2 a 3.6) ÷ famílias com renda per capita até ½ salário mínimo e cadastro atualizado (PROXY)",
                 chaves_origem=[f"CDE: arquivo {rec_cde}", f"MDS: anomes_s = {mes.replace('-', '')}, campo cadun_qtd_familias_atualizadas_rfpc_ate_meio_sm_i, soma dos municípios"],
                 numerador={"descricao": "faturas com Tarifa Social (ANEEL, Beneficiários da CDE)", "valor": tot_f},
                 denominador={"descricao": "famílias com renda per capita até meio salário mínimo e cadastro atualizado (MDS)", "valor": a_br},
-                exclusoes=["o numerador inclui beneficiários pelo BPC e por equipamento médico, ausentes do denominador: por isso é proxy, não taxa de cobertura"],
+                exclusoes=["o numerador inclui beneficiários pelo BPC e por equipamento médico, ausentes do denominador: por isso é proxy, não taxa de cobertura",
+                           "o numerador conta faturas (em regra uma por UC no mês), não famílias nem UC"],
                 cobertura=f"{len(municipios)} municípios no Cadastro Único do mês; faturas de todas as distribuidoras do arquivo",
                 casas=1, testes=testes_cob, download=["/energia/series/inclusao_municipios.csv", "/energia/series/inclusao_cobertura_mensal.csv"],
-                indicador="Razão entre UC com Tarifa Social e famílias elegíveis pela renda (proxy de cobertura)"),
+                indicador="Razão entre faturas com desconto da Tarifa Social e famílias elegíveis pela renda (proxy de cobertura)"),
         }
         por_uf = collections.defaultdict(lambda: [0.0, 0.0, 0.0, 0, 0])
         for m_ in municipios:
@@ -1900,7 +2237,7 @@ def _bloco_cobertura(con, ctx):
         indicador="Cobertura potencial da Tarifa Social (proxy)", natureza="CALCULADO",
         fonte=_fonte("MDS", "Cadastro Único por município (MI Social)", "cadun_qtd_familias_atualizadas_rfpc_ate_meio_sm_i",
                      fm.URL_MISOCIAL, fm.URL_MISOCIAL, LIC_MDS),
-        unidade="UC com Tarifa Social por 100 famílias", frequencia="mensal", periodo={"inicio": serie[0]["m"] if serie else (mes or ""), "fim": mes or (serie[-1]["m"] if serie else "")},
+        unidade="UC com Tarifa Social (série mensal nacional, SCS) ou faturas com desconto (Brasil, UF e município no mês do mapa, CDE) por 100 famílias", frequencia="mensal", periodo={"inicio": serie[0]["m"] if serie else (mes or ""), "fim": mes or (serie[-1]["m"] if serie else "")},
         cobertura={"inicio": serie[0]["m"] if serie else "", "fim": serie[-1]["m"] if serie else ""},
         capturado_em=c.ultima_captura(snap), snapshot=snap,
         formula="razão = 100 × UC (ou faturas) com Tarifa Social ÷ famílias do Cadastro Único com renda per capita até ½ salário mínimo (atualizadas; faixa de sensibilidade com todas as cadastradas)",
@@ -1923,6 +2260,11 @@ def _bloco_cobertura(con, ctx):
 MEDIDAS_POF = ("energia_media", "despesa_media", "razao_medias_pct", "media_razoes_desp_pct", "media_razoes_renda_pct",
                "mediana_desp_pct", "mediana_renda_pct", "sem_despesa_energia_pct") + tuple(
     f"acima_{int(L)}_{b}_pct" for L in LIMIARES for b in ("renda", "desp"))
+
+
+# sensibilidade da média das participações na renda (só no CSV e no bloco sensibilidade_media_razoes_renda)
+SENS_POF = ("sens_media_razoes_renda_sem_acima_da_renda_pct", "sens_renda_familias_energia_acima_da_renda_n",
+            "sens_renda_familias_energia_acima_da_renda_peso_pct", "sens_media_razoes_renda_3_maiores_pp")
 
 
 ROTULO_MEDIDA_POF = {
@@ -1955,6 +2297,24 @@ def estado_precisao(valor, ep):
     return ("cautela" if cv > CV_CAUTELA else "publicado"), cv
 
 
+def _texto_sensibilidade_renda(micro, g, cl="47558"):
+    """Texto da sensibilidade da média das participações na renda (Brasil, classe cl), a
+    partir das medidas sens_* dos microdados; sem as medidas, diz que não foram calculadas."""
+    k = f"BR.{cl}"
+    media, mediana = g(micro, f"{k}.media_razoes_renda_pct"), g(micro, f"{k}.mediana_renda_pct")
+    sem, n = g(micro, f"{k}.sens_media_razoes_renda_sem_acima_da_renda_pct"), g(micro, f"{k}.sens_renda_familias_energia_acima_da_renda_n")
+    peso, top3 = g(micro, f"{k}.sens_renda_familias_energia_acima_da_renda_peso_pct"), g(micro, f"{k}.sens_media_razoes_renda_3_maiores_pp")
+    rot = fi.CLASSES_POF.get(cl, (None, cl))[1]
+    rot = "todas as famílias" if cl == "7999" else f"famílias com rendimento {rot[0].lower()}{rot[1:]}"
+    if sem is None:
+        return (f"A média das participações da energia na renda ({rot}) é sensível a famílias com renda declarada quase nula; "
+                "a medida de sensibilidade não foi calculada nesta publicação.")
+    return (f"A média das participações da energia na renda ({rot}, {numero_exibido(media, 2)}%) depende de poucas famílias com renda "
+            f"declarada quase nula: {numero_exibido(n)} famílias da amostra ({numero_exibido(peso, 2)}% do peso) têm despesa com energia "
+            f"acima da renda; sem elas a média cai para {numero_exibido(sem, 2)}%; as 3 maiores parcelas somam "
+            f"{numero_exibido(top3, 2)} ponto percentual; a mediana é {numero_exibido(mediana, 2)}%.")
+
+
 def _bloco_orcamento(con):
     sidra = _vigentes(con, DS_POF)
     micro = _vigentes(con, DS_POF_MICRO)
@@ -1978,6 +2338,10 @@ def _bloco_orcamento(con):
                 # compacto na gold: [valor, CV %, estado]; erro-padrão no CSV (inclusao_pof.csv)
                 est[med] = [None if estado == "suprimido" else _r(v, 3 if med.endswith("pct") else 2), _r(cv, 1), estado]
                 csv_l.append([t, cod, med, None if estado == "suprimido" else v, ep, cv, "microdados", estado])
+            for sk in SENS_POF:
+                v = g(micro, f"{k}.{sk}")
+                if v is not None:
+                    csv_l.append([t, cod, sk, v, g(micro, f"{k}.{sk}_ep"), None, "microdados", "sensibilidade"])
             s_en, s_dt, s_pct = (g(sidra, f"{k}.energia_eletrica.media_reais"), g(sidra, f"{k}.despesa_total.media_reais"),
                                  g(sidra, f"{k}.energia_eletrica.distribuicao_pct"))
             cv_ibge = g(cvs, f"{k}.energia_eletrica.cv")
@@ -2036,16 +2400,18 @@ def _bloco_orcamento(con):
         "Estimativas com coeficiente de variação acima de 30% são suprimidas; entre 15% e 30% são publicadas com aviso.",
     ]
     prov_s = c.proveniencia(
-        indicador="Despesa média com energia elétrica e participação na despesa total (SIDRA 6715)", natureza="OBSERVADO",
+        indicador="Despesa média com energia elétrica e participação na despesa total (SIDRA 6715)", natureza="ESTIMADO",
         fonte=_fonte("IBGE", "POF 2017-2018, tabela 6715", "valores da API SIDRA (variáveis 1201 e 1204)",
                      "https://sidra.ibge.gov.br/tabela/6715", fi.URL_POF_6715, LIC_IBGE),
         unidade="R$ por família e mês (15/01/2018); %", frequencia="pesquisa de 2017-2018",
         periodo={"inicio": "2017-07", "fim": "2018-07"}, cobertura={"inicio": "2017-07", "fim": "2018-07"},
         capturado_em=c.ultima_captura(snap_s), snapshot=snap_s, publicacao_informada=False,
+        transformacoes=["nenhuma: valores da tabela 6715 como publicados; natureza ESTIMADO porque são estimativas amostrais "
+                        "publicadas pelo IBGE (estimado pela fonte), não medições"],
         limitacoes=lim[:2] + ["A distribuição publicada é razão de médias (média da despesa com energia ÷ média da despesa total), não a média das participações das famílias."],
         download="/energia/series/inclusao_pof.csv")
     prov_m = c.proveniencia(
-        indicador="Participação da energia no orçamento por família (microdados da POF)", natureza="CALCULADO",
+        indicador="Participação da energia no orçamento por família (microdados da POF)", natureza="ESTIMADO",
         fonte=_fonte("IBGE", "POF 2017-2018, microdados", "Dados_20230713.zip e Tradutores_20230713.zip",
                      URL_POF_MICRO_DIR, URL_POF_MICRO_DIR + "Dados_20230713.zip", LIC_IBGE),
         unidade="R$ por família e mês (15/01/2018); %", frequencia="pesquisa de 2017-2018",
@@ -2054,9 +2420,10 @@ def _bloco_orcamento(con):
         formula=("despesa da família = Σ valor deflacionado × fator de anualização (× meses nos quadros mensais) ÷ 12, "
                  "códigos do tradutor da despesa geral; média das razões = Σ w·(energia ÷ despesa) ÷ Σ w; "
                  "razão de médias = Σ w·energia ÷ Σ w·despesa; erro-padrão por linearização com estrato e UPA"),
-        transformacoes=["memória de cálculo do IBGE (Tabela de Despesa Geral.R) refeita em Python",
+        transformacoes=["estimativa do observatório a partir da amostra da POF (estimado pelo observatório): pesos, estrato e UPA do plano amostral",
+                        "memória de cálculo do IBGE (Tabela de Despesa Geral.R) refeita em Python",
                         "conferência das médias contra a tabela 6715 em todos os territórios e classes"],
-        limitacoes=lim, download="/energia/series/inclusao_pof.csv")
+        limitacoes=lim + [_texto_sensibilidade_renda(micro, g)], download="/energia/series/inclusao_pof.csv")
     br = {x["classe"]: x for x in linhas if x["territorio"] == "BR"}
     def kpi_micro(cl, med):
         x = (br.get(cl) or {}).get("microdados", {}).get(med) or [None, None, "ausente"]
@@ -2080,6 +2447,26 @@ def _bloco_orcamento(con):
     rec_pof = ev.reconciliacao(
         "Despesa média com energia elétrica por território e classe refeita dos microdados, contra a tabela 6715 do SIDRA (caminho independente: tabela publicada pelo IBGE)",
         "aprovado" if ok_medias and ok_desp else "reprovado", "R$ 0,005 por família e mês (o IBGE publica com duas casas)")
+    # a reconciliação com a tabela 6715 confere a despesa média com energia (a base de todas as
+    # medidas), não cada medida exibida: a ficha diz isso na própria descrição
+    rec_pof_medida = dict(rec_pof, descricao=rec_pof["descricao"] + (
+        ". Refere-se à despesa média com energia, a base comum das medidas; a medida exibida nesta ficha não é publicada "
+        "pelo IBGE e não tem conferência externa própria."))
+    rec_dist = ev.reconciliacao(
+        "Razão de médias refeita dos microdados contra a distribuição da despesa com energia publicada na tabela 6715 do SIDRA "
+        f"({reconc['distribuicao_ate_arredondamento']} de {len(dif_pct)} territórios e classes dentro da tolerância)",
+        "aprovado" if ok_dist else "reprovado", "0,05 ponto percentual (o IBGE publica a distribuição com uma casa)")
+    sens = {}
+    for cl in ("7999", *[cod for cod, (i, _, _, _) in fi.CLASSES_POF.items() if i is not None]):
+        k = f"BR.{cl}"
+        if g(micro, f"{k}.media_razoes_renda_pct") is None:
+            continue
+        sens[cl] = {"media_razoes_renda_pct": _r(g(micro, f"{k}.media_razoes_renda_pct"), 3),
+                    "mediana_renda_pct": _r(g(micro, f"{k}.mediana_renda_pct"), 3),
+                    "media_sem_energia_acima_da_renda_pct": _r(g(micro, f"{k}.sens_media_razoes_renda_sem_acima_da_renda_pct"), 3),
+                    "familias_amostra_energia_acima_da_renda": g(micro, f"{k}.sens_renda_familias_energia_acima_da_renda_n"),
+                    "peso_energia_acima_da_renda_pct": _r(g(micro, f"{k}.sens_renda_familias_energia_acima_da_renda_peso_pct"), 3),
+                    "tres_maiores_contribuicoes_pp": _r(g(micro, f"{k}.sens_media_razoes_renda_3_maiores_pp"), 3)}
     evidencias = {}
     for chave, cl, med, ent, univ, form, excl in (
         ("media_razoes_renda_classe_baixa", "47558", "media_razoes_renda_pct",
@@ -2092,13 +2479,25 @@ def _bloco_orcamento(con):
     ):
         x = kpi_micro(cl, med)
         bruto = g(micro, f"BR.{cl}.{med}") if x.get("valor") is not None else None  # antes do arredondamento
+        testes_ficha = list(testes_pof)
+        cob_ficha = f"{numero_exibido(g(micro, f'BR.{cl}.n'))} famílias na amostra do domínio; coeficiente de variação {numero_exibido(x.get('cv_pct'), 1)}%"
+        if med == "media_razoes_renda_pct" and sens.get(cl):
+            sx = sens[cl]
+            testes_ficha.append(ev.teste(
+                "sensibilidade da média das participações na renda a famílias com renda declarada quase nula",
+                # material quando muda o número exibido (uma casa decimal)
+                "ressalva" if sx["media_sem_energia_acima_da_renda_pct"] is not None and bruto is not None
+                and numero_exibido(bruto, 1) != numero_exibido(sx["media_sem_energia_acima_da_renda_pct"], 1) else "aprovado",
+                _texto_sensibilidade_renda(micro, g, cl)))
+            cob_ficha += f"; mediana da mesma participação {numero_exibido(sx['mediana_renda_pct'], 2)}% (menos sensível aos extremos)"
         evidencias[chave] = _evidencia(
             valor=bruto, unidade="%", periodo=PERIODO_POF, entidade=ent, universo=univ, fonte=f_micro, formula=form,
             chaves_origem=["MORADOR (PESO_FINAL, RENDA_TOTAL, ESTRATO_POF, COD_UPA)",
                            "registros de despesa com o tradutor da despesa geral; energia elétrica = nível 5 1102031"],
             pesos="PESO_FINAL (fator de expansão do IBGE); erro-padrão por linearização com estrato (ESTRATO_POF) e UPA (COD_UPA)",
-            exclusoes=excl, casas=1, sufixo="%", testes=testes_pof, reconciliacao=rec_pof,
-            cobertura=f"{numero_exibido(g(micro, f'BR.{cl}.n'))} famílias na amostra do domínio; coeficiente de variação {numero_exibido(x.get('cv_pct'), 1)}%",
+            exclusoes=excl, casas=1, sufixo="%", testes=testes_ficha,
+            reconciliacao=rec_dist if med == "razao_medias_pct" else rec_pof_medida,
+            cobertura=cob_ficha,
             tratamento_ausencia="Estimativa com coeficiente de variação acima de 30% é suprimida (fica sem valor); entre 15% e 30% é publicada com aviso.",
             revisoes="Microdados de 13/07/2023; revisões anteriores do IBGE não são reconstituídas.",
             download=["/energia/series/inclusao_pof.csv"], indicador="Peso da energia no orçamento (POF 2017-2018)")
@@ -2117,11 +2516,27 @@ def _bloco_orcamento(con):
         "conferencia": reconc,
         "diagnostico_microdados": diag,
         "evidencias": evidencias,
+        # Brasil por classe: a média das participações na renda ao lado da mediana e do mesmo cálculo sem
+        # as famílias com despesa de energia acima da renda (sensibilidade, não correção)
+        "sensibilidade_media_razoes_renda": sens,
         "proveniencia": {"sidra": prov_s, "microdados": prov_m},
     }
 
 
 # ================================================================ P062: acesso e sistemas isolados
+
+def serie_anual_lpt(mensal, progs):
+    """Domicílios atendidos por ano e programa a partir de {(uf, programa, 'AAAA-MM'): n}.
+    Programa sem nenhuma linha no ano = None; programa com linhas que somam zero = 0.0 (o
+    arquivo do MME traz linhas de "Recurso da Distribuidora" com qtddomicilios = 0 em 2015,
+    2017 e 2018; o defeito era publicá-las como ausência). O último ano é parcial."""
+    anual = collections.defaultdict(dict)
+    for (uf, prog, mes), v in mensal.items():
+        anual[mes[:4]][prog] = anual[mes[:4]].get(prog, 0.0) + v
+    ano_ult = max(anual) if anual else None
+    return [{"ano": a, **{p: anual[a].get(p) for p in progs}, "total": sum(anual[a].values()), "parcial": a == ano_ult}
+            for a in sorted(anual)]
+
 
 def _bloco_luz_para_todos(con):
     """Atendimentos do Luz para Todos (domicílios ligados) por ano, programa, UF e
@@ -2147,16 +2562,14 @@ def _bloco_luz_para_todos(con):
                 mensal[(uf, prog, mes)] += v
     ultimo_mes = max(m for _, _, m in mensal)
     ano_ult = ultimo_mes[:4]
-    anual = collections.defaultdict(lambda: collections.defaultdict(float))
+    serie = serie_anual_lpt(mensal, progs)
     por_uf = collections.defaultdict(lambda: collections.defaultdict(float))
     for (uf, prog, mes), v in mensal.items():
-        anual[mes[:4]][prog] += v
         por_uf[uf][prog] += v
         por_uf[uf]["total"] += v
         if mes[:4] >= "2023":
             por_uf[uf]["desde_2023"] += v
-    serie = [{"ano": a, **{p: anual[a].get(p, 0.0) if anual[a].get(p) else None for p in progs},
-              "total": sum(anual[a].values()), "parcial": a == ano_ult} for a in sorted(anual)]
+    # (as chaves só existem quando há linha; zero somado é zero publicado, chave ausente é null)
     # municípios com código IBGE pelo nome exato na UF (lista do Cadastro Único)
     regs_mds = base.registros_como_estavam_em(con, DS_MDS)
     idx = fl.indice_municipios([(cod, r.get("municipio"), r.get("uf")) for cod, r in regs_mds.items()
@@ -2250,7 +2663,7 @@ def _bloco_luz_para_todos(con):
         "programas": [{"id": p, "rotulo": fl.PROGRAMA_ROTULO[p]} for p in progs],
         "serie_anual": serie,
         "por_uf": [{"uf": uf, "nome": UF_NOME.get(uf), "regiao": REGIAO_DA_UF.get(uf), "total": t["total"],
-                    "desde_2023": t.get("desde_2023") or None, **{p: t.get(p) or None for p in progs}}
+                    "desde_2023": t.get("desde_2023"), **{p: t.get(p) for p in progs}}
                    for uf, t in sorted(por_uf.items(), key=lambda x: -x[1]["total"])],
         "municipios_mais_atendidos_desde_2023": [
             {"cod": cod_de(*k), "municipio": nomes.get(f"{k[0]}|{k[1]}"), "uf": k[0], "domicilios": t["desde_2023"]}
@@ -2264,6 +2677,13 @@ def _bloco_luz_para_todos(con):
         "evidencia_total": ev_total,
         "proveniencia": prov,
     }
+
+
+def soma_populacao(locais):
+    """{populacao, localidades_sem_populacao}: soma só das populações informadas; None
+    quando nenhuma localidade do grupo informa população (ausência não vira zero)."""
+    vals = [l["populacao"] for l in locais if l.get("populacao") is not None]
+    return {"populacao": sum(vals) if vals else None, "localidades_sem_populacao": len(locais) - len(vals)}
 
 
 def _conferencia_caderno(con, regs, locs):
@@ -2293,6 +2713,18 @@ def _conferencia_caderno(con, regs, locs):
             "tolerancia": "localidades: igualdade; população: 0,0005 milhão de pessoas (o caderno escreve três casas decimais)"}
 
 
+def domicilios_sem_energia(tot_mil, com_mil):
+    """(valor, estado) dos domicílios sem energia, em mil: diferença de duas estimativas
+    publicadas arredondadas em milhares. Diferença zero não prova zero: a verdadeira fica
+    entre 0 e 1 mil, e o estado é 'menos_de_1_mil' (sem valor, nunca 0,0 mil)."""
+    if tot_mil is None or com_mil is None:
+        return None, "ausente"
+    dif = tot_mil - com_mil
+    if dif == 0:
+        return None, "menos_de_1_mil"
+    return dif, "calculado"
+
+
 def _bloco_acesso(con, ctx):
     pn = _vigentes(con, DS_PNAD)
     if not pn:
@@ -2312,6 +2744,7 @@ def _bloco_acesso(con, ctx):
         com_mil = g(f"6737.{t}.{sit}.qualquer.domicilios_mil", ano)
         if com is None and tot is None:
             return None
+        sem, est_sem = domicilios_sem_energia(tot, com_mil)
         return {"territorio": t, "ano": ano, "situacao": sit,
                 "pct_com_energia": com, "cv_pct_com_energia": cv_com,
                 "pct_sem_energia": _r(100 - com, 1) if com is not None else None,
@@ -2319,7 +2752,7 @@ def _bloco_acesso(con, ctx):
                 "pct_rede_geral": rede, "cv_pct_rede_geral": cv_rede,
                 "pct_integral_entre_rede": integ, "cv_pct_integral": cv_int,
                 "domicilios_mil": tot, "domicilios_com_energia_mil": com_mil,
-                "domicilios_sem_energia_mil": tot - com_mil if tot is not None and com_mil is not None else None}
+                "domicilios_sem_energia_mil": sem, "domicilios_sem_energia_estado": est_sem}
     # gold: série completa para Brasil e regiões; UF no primeiro e no último ano (série inteira no CSV)
     serie = [l for t in terrs for a in anos for l in [linha(t, a, "total")] if l
              and (t == "BR" or t.startswith("RG-") or a in (anos[0], anos[-1]))]
@@ -2331,25 +2764,30 @@ def _bloco_acesso(con, ctx):
     base.escreve_csv("inclusao_acesso_pnad.csv",
                      ["territorio", "ano", "situacao", "pct_com_energia", "cv_pct_com_energia", "pct_rede_geral",
                       "cv_pct_rede_geral", "pct_integral_entre_rede", "cv_pct_integral", "domicilios_mil",
-                      "domicilios_com_energia_mil", "domicilios_sem_energia_mil"],
+                      "domicilios_com_energia_mil", "domicilios_sem_energia_mil", "domicilios_sem_energia_estado"],
                      [[l["territorio"], l["ano"], l["situacao"], l["pct_com_energia"], l["cv_pct_com_energia"], l["pct_rede_geral"],
                        l["cv_pct_rede_geral"], l["pct_integral_entre_rede"], l["cv_pct_integral"], l["domicilios_mil"],
-                       l["domicilios_com_energia_mil"], l["domicilios_sem_energia_mil"]]
+                       l["domicilios_com_energia_mil"], l["domicilios_sem_energia_mil"], l["domicilios_sem_energia_estado"]]
                       for t in terrs for a in anos for s in ("total", "urbana", "rural") for l in [linha(t, a, s)] if l])
     snap_p = c.snapshot_de(con, DS_PNAD)
     lim_p = [
         "Pesquisa amostral: o IBGE publica coeficiente de variação para cada estimativa; o número de domicílios sem energia é a diferença entre duas estimativas e não tem erro-padrão publicado.",
+        "As duas contagens vêm arredondadas em milhares: diferença zero quer dizer menos de 1 mil domicílios sem energia, não zero (estado menos_de_1_mil); percentual com energia de 100,0 quer dizer pelo menos 99,95%.",
         "Domicílio com energia (de qualquer fonte, inclusive gerador ou painel próprio) e fornecimento da rede em tempo integral são dimensões distintas: a segunda mede interrupção declarada, não qualidade técnica.",
         "O percentual em tempo integral é sobre os domicílios ligados à rede geral, não sobre todos os domicílios.",
         "A carga do SIN não mede acesso: sistemas isolados e domicílios sem ligação ficam fora dela.",
     ]
     prov_p = c.proveniencia(
-        indicador="Domicílios com energia elétrica e fornecimento em tempo integral (PNAD Contínua)", natureza="OBSERVADO",
+        indicador="Domicílios com energia elétrica e fornecimento em tempo integral (PNAD Contínua)", natureza="ESTIMADO",
         fonte=_fonte("IBGE", "PNAD Contínua anual (tabelas 6737, 6738 e 6731)", "valores da API SIDRA",
                      "https://sidra.ibge.gov.br/tabela/6737", fi.URL_PNAD_6737, LIC_IBGE),
         unidade="% e mil domicílios", frequencia="anual", periodo={"inicio": anos[0], "fim": ult},
         cobertura={"inicio": anos[0], "fim": ult}, capturado_em=c.ultima_captura(snap_p), snapshot=snap_p,
-        publicacao_informada=False, limitacoes=lim_p, download="/energia/series/inclusao_acesso_pnad.csv")
+        publicacao_informada=False, limitacoes=lim_p, download="/energia/series/inclusao_acesso_pnad.csv",
+        transformacoes=["percentuais, coeficientes de variação e contagens como publicados; natureza ESTIMADO porque são estimativas "
+                        "amostrais do IBGE (estimado pela fonte)",
+                        "domicílios sem energia = total − com energia (diferença calculada de duas estimativas); diferença zero entre "
+                        "valores arredondados em milhares é publicada como 'menos de 1 mil', sem valor"])
     br_ult = next((l for l in serie if l["territorio"] == "BR" and l["ano"] == ult), None)
     v6737, v6731 = base.ultima_vintage(con, DS_PNAD, "tabela_6737"), base.ultima_vintage(con, DS_PNAD, "tabela_6731")
     f_p = ev.fonte_de_vintage("IBGE", "PNAD Contínua anual, tabelas 6731 e 6737", fi.URL_PNAD_6737, v6737)
@@ -2395,21 +2833,21 @@ def _bloco_acesso(con, ctx):
         resumo = []
         for ci in ciclos:
             ls = locs[ci]
-            resumo.append({"ciclo": ci, "localidades": len(ls), "populacao": sum(l["populacao"] or 0 for l in ls),
-                           "localidades_sem_populacao": sum(1 for l in ls if l["populacao"] is None),
+            resumo.append({"ciclo": ci, "localidades": len(ls), **soma_populacao(ls),
                            "com_previsao_interligacao": sum(1 for l in ls if l["previsao_interligacao"]),
                            "programas": dict(collections.Counter(l["programa"] or "não informado" for l in ls))})
         for i in range(1, len(ciclos)):
             a, b = {l["sigla"] for l in locs[ciclos[i - 1]]}, {l["sigla"] for l in locs[ciclos[i]]}
             resumo[i]["sairam_da_lista"] = len(a - b)
             resumo[i]["entraram_na_lista"] = len(b - a)
-        por_uf = collections.defaultdict(lambda: {"localidades": 0, "populacao": 0.0})
-        por_dist = collections.defaultdict(lambda: {"localidades": 0, "populacao": 0.0})
+        # população ausente na fonte não vira zero: a soma usa só os valores informados e vem com a
+        # contagem de localidades sem população; nenhuma informada = populacao null
+        grupos_uf, grupos_dist = collections.defaultdict(list), collections.defaultdict(list)
         for l in locs[ultc]:
-            por_uf[l["uf"]]["localidades"] += 1
-            por_uf[l["uf"]]["populacao"] += l["populacao"] or 0
-            por_dist[l["distribuidora"]]["localidades"] += 1
-            por_dist[l["distribuidora"]]["populacao"] += l["populacao"] or 0
+            grupos_uf[l["uf"]].append(l)
+            grupos_dist[l["distribuidora"]].append(l)
+        por_uf = {uf: {"localidades": len(ls), **soma_populacao(ls)} for uf, ls in grupos_uf.items()}
+        por_dist = {d: {"localidades": len(ls), **soma_populacao(ls)} for d, ls in grupos_dist.items()}
         base.escreve_csv("inclusao_sistemas_isolados.csv",
                          ["ciclo", "sigla", "nome", "uf", "municipio", "distribuidora", "populacao", "previsao_interligacao",
                           "previsao_interconexao", "programa", "latitude", "longitude"],
@@ -2437,8 +2875,8 @@ def _bloco_acesso(con, ctx):
                         "Localidade isolada tem energia (em geral térmica a óleo diesel); isolamento não é falta de acesso, é acesso fora do SIN com custo subsidiado pela CCC."],
             download="/energia/series/inclusao_sistemas_isolados.csv")
         isolados = {"ciclo": ultc, "ciclos": resumo,
-                    "por_uf": [{"uf": uf, "nome": UF_NOME.get(uf), **v} for uf, v in sorted(por_uf.items(), key=lambda x: -x[1]["populacao"])],
-                    "por_distribuidora": [{"distribuidora": d, **v} for d, v in sorted(por_dist.items(), key=lambda x: -x[1]["populacao"])],
+                    "por_uf": [{"uf": uf, "nome": UF_NOME.get(uf), **v} for uf, v in sorted(por_uf.items(), key=lambda x: -(x[1]["populacao"] or 0))],
+                    "por_distribuidora": [{"distribuidora": d, **v} for d, v in sorted(por_dist.items(), key=lambda x: -(x[1]["populacao"] or 0))],
                     # gold: as 25 mais populosas; todas, com coordenadas, no JSON sob demanda e no CSV
                     "localidades_mais_populosas": sorted(locs[ultc], key=lambda x: -(x["populacao"] or 0))[:25],
                     "pontos_json": "/energia/series/inclusao_sistemas_isolados_pontos.json",

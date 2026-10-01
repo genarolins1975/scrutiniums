@@ -53,6 +53,12 @@ DS_BAND = "aneel_bandeiras_tarifarias"
 DS_SUBS = "aneel_subsidios_tarifarios"
 DS_IPCA = "ibge_ipca"
 DS_NORMAS = "normas_conta"
+# SAMP: avaliado para a tarifa média e os tributos e não usado; o arquivo fica no bronze
+# com sha256 para a justificativa da exclusão ser reproduzível
+DS_SAMP = "aneel_samp_avaliacao"
+PAC_SAMP = "samp"
+RECURSO_SAMP = "samp-2025.parquet"
+URL_SAMP = "https://dadosabertos.aneel.gov.br/dataset/samp"
 # mesmo nome de dataset do módulo Inclusão (que usa o conjunto para a Tarifa Social):
 # o catálogo junta os dois registros pela chave (órgão, conjunto)
 DS_CDE = "aneel_cde_custeio"
@@ -123,17 +129,25 @@ REGISTRO = {
     "arquivos": {
         _url(CSV_VIGENTES): "cnpj; sigla; nome; inicio_vigencia; fim_vigencia; ato; te_rs_mwh; tusd_rs_mwh; total_rs_mwh; total_rs_kwh; te_base_economica_rs_mwh; tusd_base_economica_rs_mwh; custo_100kwh_rs; custo_200kwh_rs; custo_300kwh_rs; posicao (1 = menor tarifa). Tarifa de aplicação B1 residencial convencional vigente na data de referência, sem tributos e sem bandeira. Vazio = ausência.",
         _url(CSV_HIST): "cnpj; sigla; subgrupo; subclasse; base (TA = tarifa de aplicação, BE = base econômica); inicio; fim; ato; te_rs_mwh; tusd_rs_mwh. Todas as vigências do recorte de baixa tensão convencional, como publicadas (inclui sobreposições da fonte).",
-        _url(CSV_COMP): "cnpj; sigla; inicio; fim; ato; TE; TUSD; e uma coluna por código de componente (R$/MWh, arredondados a quatro casas decimais pelo escritor de CSV; a fonte publica até nove). Tarifa de aplicação B1 residencial convencional; o grupo de cada código está em conta.json (composicao.grupos). Vazio = componente não publicada na vigência.",
-        _url(CSV_REAJ): "cnpj; sigla; data; ato; mesmo_ato; total_antes_rs_mwh; total_depois_rs_mwh; variacao_pct; te_variacao_pct; tusd_variacao_pct; ipca_desde_evento_anterior_pct; meses_ipca. Mudanças da tarifa B1 residencial de aplicação na linha do tempo resolvida.",
+        _url(CSV_COMP): "cnpj; sigla; inicio; fim; ato; TE; TUSD; e uma coluna por código de componente (R$/MWh, arredondados a quatro casas decimais pelo escritor de CSV; a fonte publica até nove). Tarifa de aplicação B1 residencial convencional; o grupo de cada código está em conta.json (composicao.grupos; valor negativo de TE_CFURH vai para o grupo créditos, composicao.creditos). Vazio = componente não publicada na vigência.",
+        _url(CSV_REAJ): "cnpj; sigla; data; ato; mesmo_ato; total_antes_rs_mwh; total_depois_rs_mwh; variacao_pct; te_variacao_pct; tusd_variacao_pct; ipca_desde_evento_anterior_pct; meses_ipca; mudanca_perimetro (ato da incorporação quando o evento compara a tarifa da área antiga com a da área somada; vazio nos demais). Mudanças da tarifa B1 residencial de aplicação na linha do tempo resolvida.",
         _url(CSV_BAND): "mes; bandeira; adicional_rs_mwh; adicional_tabela_rs_mwh; confere. Bandeira acionada por mês de competência e conferência com a tabela de adicionais.",
         _url(CSV_SUBS): "ano; cnpj; sigla; categoria; montante (Total = previsão + ajuste); valor_rs; meses. Soma dos repasses mensais homologados por ano de competência (competências futuras excluídas).",
         _url(CSV_IPCA): "mes; indice (dez/1993 = 100); variacao_12m_pct_publicada. IPCA do IBGE usado nas comparações.",
         _url(CSV_CONF): "cnpj; sigla; subgrupo; subclasse; base; de; ate; escolhido_inicio; escolhido_fim; escolhido_ato; escolhido_te; escolhido_tusd; alternativas (inicio/fim/ato/te/tusd separados por |). Vigências sobrepostas com valores diferentes publicadas pela fonte e a escolha feita pela regra.",
-        _url(CSV_JAN): "janela_meses (12, 60, 120); de; ate (últimos dias dos meses inicial e final do IPCA); cnpj; sigla; ato_de; tarifa_de_rs_mwh; ato_ate; tarifa_ate_rs_mwh (TE + TUSD B1 residencial de aplicação vigente em cada data); variacao_pct; ipca_pct (razão de números-índice nos mesmos meses); variacao_real_pct = (1 + variação) ÷ (1 + IPCA) − 1. Só distribuidoras com tarifa nas duas datas.",
-        _url(CSV_CDE): "ano; tipo (Despesa ou Receita); fonte (rubrica como publicada, aparada); grupo (classificação do observatório); valor_rs (R$ nominais; vazio = a ANEEL não publicou valor para a rubrica no ano, diferente de zero).",
-        _url(JSON_HIST): "JSON por CNPJ: sigla, nome, vigencias [início, fim, ato, TE, TUSD, TE + TUSD em R$/MWh] da tarifa B1 residencial de aplicação resolvida desde 2010, e eventos [data, ato, mesmo ato (true/false), total antes, total depois, variação %, variação TE %, variação TUSD %, IPCA % desde o evento anterior, mês inicial e final do IPCA]. null = ausência.",
+        _url(CSV_JAN): "janela_meses (12, 60, 120); de; ate (últimos dias dos meses inicial e final do IPCA); cnpj; sigla; ato_de; tarifa_de_rs_mwh; ato_ate; tarifa_ate_rs_mwh (TE + TUSD B1 residencial de aplicação vigente em cada data); variacao_pct; ipca_pct (razão de números-índice nos mesmos meses); variacao_real_pct = (1 + variação) ÷ (1 + IPCA) − 1. Só distribuidoras com tarifa nas duas datas e sem mudança de perímetro (incorporação) dentro da janela.",
+        _url(CSV_CDE): "ano; tipo (Despesa ou Receita); fonte (rubrica como publicada, aparada); grupo (classificação do observatório); valor_rs (R$ nominais do orçamento anual aprovado ou previsto pela ANEEL, não execução; vazio = a ANEEL não publicou valor para a rubrica no ano, diferente de zero).",
+        _url(JSON_HIST): "JSON por CNPJ: sigla, nome, vigencias [início, fim, ato, TE, TUSD, TE + TUSD em R$/MWh] da tarifa B1 residencial de aplicação resolvida desde 2010, e eventos [data, ato, mesmo ato (true/false), total antes, total depois, variação %, variação TE %, variação TUSD %, IPCA % desde o evento anterior, mês inicial e final do IPCA, ato da incorporação quando o evento é mudança de perímetro]; incorporacoes (CNPJ incorporador) e incorporada_por (CNPJ incorporado). null = ausência.",
     },
 }
+
+# Métrica de cada bloco da gold (pipeline/energia/metricas/conta.py): a natureza da
+# proveniência publicada no bloco tem de ser a natureza da transformação declarada na
+# métrica, e o teste confere as duas.
+METRICA_DO_BLOCO = {"tarifas": "conta_tarifa_b1_aplicacao", "composicao": "conta_composicao_grupo",
+                    "simulador": "conta_simulacao", "reajustes": "conta_variacao_tarifa_b1",
+                    "bandeiras": "conta_bandeira_adicional", "subsidios": "conta_subsidio_anual",
+                    "financiamento_cde": "conta_cde_custeio"}
 
 # ---------------------------------------------------------------------------
 # Regras e parâmetros conferidos em fonte primária. Os números abaixo são
@@ -172,6 +186,105 @@ NORMAS = [
                  "PIS/COFINS, ICMS e Contribuição para Iluminação Pública (CIP)"]},
 ]
 
+# Documentos oficiais que sustentam leituras do módulo sem serem regra do simulador:
+# capturados no bronze e com os trechos conferidos a cada captura, como as normas.
+DOCUMENTOS = [
+    {"id": "aneel_ubp_repasse_2026", "orgao": "ANEEL",
+     "titulo": "ANEEL homologa repasse preliminar de R$ 5,48 bilhões às distribuidoras, recurso utilizado para reduzir tarifas de energia no Norte e Nordeste (11/08/2026)",
+     "url": "https://www.gov.br/aneel/pt-br/assuntos/noticias/2026-defeso-eleitoral/aneel-homologa-repasse-preliminar-de-r-5-48-bilhoes-as-distribuidoras-recurso-utilizado-para-reduzir-tarifas-de-energia-no-norte-e-nordeste",
+     "licenca": LIC_GOVBR,
+     "trechos": ["a distribuição preliminar de R$ 5,48 bilhões às distribuidoras, provenientes da repactuação do Uso de Bem Público (UBP)",
+                 "possibilitou a substituição de pagamentos futuros de UBP por aportes na Conta de Desenvolvimento Energético (CDE)",
+                 "garantir a redução tarifária para consumidores do ambiente regulado nas regiões da Sudam e Sudene nos anos de 2025 e 2026"]},
+    {"id": "aneel_gestao_recursos_tarifarios", "orgao": "ANEEL", "titulo": "ANEEL: página Gestão de Recursos Tarifários (CDE)",
+     "url": "https://www.gov.br/aneel/pt-br/assuntos/tarifas/gestao-de-recursos-tarifarios", "licenca": LIC_GOVBR,
+     "trechos": ["Cabe à ANEEL aprovar o Orçamento Anual da CDE e fixar a quota anual, que deve corresponder à diferença entre a necessidade total de recursos da Conta e a arrecadação proporcionada pelas demais fontes"]},
+]
+
+# Reconciliação externa do custeio da CDE: o conjunto traz o orçamento anual da conta
+# (despesa igual à receita porque a quota fecha a diferença, como descreve a página de
+# Gestão de Recursos Tarifários). Os totais publicados pela ANEEL nas notícias abaixo
+# são comparados com a soma das despesas do arquivo. Em 30/09/2026 o corpo dessas
+# notícias exige autenticação no gov.br (conteúdo restrito durante o defeso eleitoral):
+# só o título pôde ser lido, no índice de busca, e a página não está no bronze. Por isso
+# a reconciliação sai com resultado "ressalva" mesmo quando os valores conferem.
+REFERENCIAS_ORCAMENTO_CDE = [
+    {"ano": "2026", "situacao": "previsto (consulta pública)",
+     "titulo": "Orçamento da CDE 2026, previsto em R$ 52,7 bilhões, entra em consulta pública",
+     "url": "https://www.gov.br/aneel/pt-br/assuntos/noticias/2025/orcamento-da-cde-2026-previsto-em-r-52-7-bilhoes-entra-em-consulta-publica"},
+    {"ano": "2025", "situacao": "aprovado",
+     "titulo": "Orçamento da CDE 2025, de R$ 49,2 bilhões, é aprovado pela ANEEL",
+     "url": "https://www.gov.br/aneel/pt-br/assuntos/noticias/2025/orcamento-da-cde-2025-de-r-49-2-bilhoes-e-aprovado-pela-aneel"},
+    {"ano": "2023", "situacao": "aprovado",
+     "titulo": "ANEEL aprova orçamento de R$ 34,99 bilhões para a Conta de Desenvolvimento Energético",
+     "url": "https://www.gov.br/aneel/pt-br/assuntos/noticias/2023/aneel-aprova-orcamento-de-r-34-99-bilhoes-para-a-conta-de-desenvolvimento-energetico"},
+]
+ACESSO_REFERENCIAS_CDE = ("títulos das notícias oficiais da ANEEL lidos no índice de busca em 30/09/2026; o corpo das "
+                          "páginas exige autenticação no gov.br (conteúdo restrito durante o defeso eleitoral) e não foi "
+                          "guardado no bronze")
+
+# Mudanças de perímetro (incorporações entre distribuidoras), que o conjunto de tarifas
+# não informa: o CNPJ incorporador continua a série, mas a tarifa a partir da data vale
+# para a área somada. O evento nessa data não é reajuste comum e a janela que a
+# atravessa compara áreas diferentes (fica fora e é contada). Registro por CNPJ, com o
+# ato da ANEEL que autorizou o agrupamento. O texto dos atos está no acervo da ANEEL
+# (www2.aneel.gov.br/cedoc), que respondeu 403 com desafio do Cloudflare em 30/09/2026;
+# o número do ato vem da fonte citada em `identificacao`, e a data é conferida nos
+# próprios dados a cada gold (os CNPJs incorporados deixam de ter tarifa na véspera do
+# início da tarifa unificada do incorporador). CNPJ que sai do conjunto sem registro
+# aqui continua com o motivo "não informado".
+INCORPORACOES = [
+    {"id": "ess_2017", "incorporadora": "07282377000120",
+     "incorporadas": ["07297359000111", "60942281000123", "61416244000144", "77882504000107"],
+     "ato": "REA nº 6.318/2017", "data_ato": "2017-04-25", "tarifa_unificada_desde": "2017-07-12",
+     "descricao": "Agrupamento das concessões da Caiuá (hoje Energisa Sul-Sudeste), Bragantina, Nacional, Vale Paranapanema e Força e Luz do Oeste, por incorporação pela Caiuá.",
+     "identificacao": "número e data do ato lidos em resumo de buscador sobre o agrupamento (o documento primário não pôde ser lido)"},
+    {"id": "cpfl_santa_cruz_2018", "incorporadora": "53859112000169",
+     "incorporadas": ["52503802000118", "60855608000120", "61015582000174", "61116265000144"],
+     "ato": "REA nº 6.723/2017", "data_ato": "2017-11-21", "tarifa_unificada_desde": "2018-03-22",
+     "descricao": "Agrupamento das concessões da CPFL Jaguari, Mococa, Leste Paulista, Sul Paulista e Santa Cruz, por incorporação pela CPFL Jaguari, que passou a usar o nome CPFL Santa Cruz.",
+     "identificacao": "arquivo rea20176723ti.pdf do acervo da ANEEL (listado por buscador, acesso bloqueado) e demonstrações da Companhia Jaguari de Energia no site de relações com investidores da CPFL"},
+    {"id": "rge_2019", "incorporadora": "02016440000162", "incorporadas": ["02016439000138"],
+     "ato": "REA nº 7.499/2018", "data_ato": "2018-12-04", "tarifa_unificada_desde": "2019-06-19",
+     "descricao": "Agrupamento das concessões da RGE Sul e da Rio Grande Energia (RGE), por incorporação pela RGE Sul, que passou a usar o nome RGE.",
+     "identificacao": "fato relevante da RGE Sul Distribuidora de Energia S.A. (CNPJ 02.016.440/0001-62) de 31/12/2018, que cita a REA nº 7.499 de 04/12/2018"},
+    {"id": "emr_2023", "incorporadora": "19527639000158", "incorporadas": ["33249046000106"],
+     "ato": "REA nº 12.687/2022 (provável)", "data_ato": "2022-09-13", "tarifa_unificada_desde": "2023-06-22",
+     "descricao": "Agrupamento das concessões da Energisa Minas Gerais e da Energisa Nova Friburgo na Energisa Minas Rio.",
+     "identificacao": "a autorização de 2022 foi noticiada junto com a da Paraíba (CanalEnergia); o número do ato não foi conferido para Minas Gerais e Nova Friburgo"},
+    {"id": "epb_2023", "incorporadora": "09095183000140", "incorporadas": ["08826596000195"],
+     "ato": "REA nº 12.687/2022", "data_ato": "2022-09-13", "tarifa_unificada_desde": "2023-08-28",
+     "descricao": "Agrupamento das concessões da Energisa Paraíba e da Energisa Borborema, por incorporação pela Energisa Paraíba.",
+     "identificacao": "notícia de 02/05/2023 (Monitor do Mercado) sobre as assembleias do grupo Energisa, que cita a REA nº 12.687 de 13/09/2022"},
+]
+
+
+def confere_incorporacao(inc, linhas_b1):
+    """Confere nos dados uma incorporação registrada: cada CNPJ incorporado tem a última
+    vigência B1 terminando na véspera da tarifa unificada, e o incorporador tem um pedaço
+    começando nessa data. linhas_b1 = {cnpj: linha do tempo B1 residencial de aplicação}."""
+    d = inc["tarifa_unificada_desde"]
+    vespera = (_d(d) - timedelta(days=1)).isoformat()
+    fins = {cn: (linhas_b1[cn][-1]["fim"] if linhas_b1.get(cn) else None) for cn in inc["incorporadas"]}
+    ok_fins = all(f == vespera for f in fins.values())
+    ok_inc = any(p["inicio"] == d for p in linhas_b1.get(inc["incorporadora"], []))
+    presentes = [cn for cn in [inc["incorporadora"], *inc["incorporadas"]] if linhas_b1.get(cn)]
+    situacao = "confirmada" if (ok_fins and ok_inc) else ("sem_dados" if not presentes else "divergente")
+    return {"confirmada_nos_dados": ok_fins and ok_inc, "situacao": situacao, "fim_das_incorporadas": fins,
+            "incorporadora_com_tarifa_nova_na_data": ok_inc}
+
+
+def mudancas_de_perimetro(cnpj, registro=INCORPORACOES):
+    """{data da tarifa unificada: incorporação} em que o CNPJ é o incorporador."""
+    return {inc["tarifa_unificada_desde"]: inc for inc in registro if inc["incorporadora"] == cnpj}
+
+
+def atravessa_perimetro(cnpj, d_ini, d_fim, registro=INCORPORACOES):
+    """Incorporações do CNPJ cuja tarifa unificada começa depois de d_ini e até d_fim: a
+    tarifa em d_ini é da área antiga e a de d_fim, da área somada."""
+    return [inc for inc in registro if inc["incorporadora"] == cnpj and d_ini < inc["tarifa_unificada_desde"] <= d_fim]
+
+
 REGRAS_SIMULADOR = {
     "custo_disponibilidade_kwh": {"monofasico": 30, "bifasico": 50, "trifasico": 100},
     "tarifa_social_limite_kwh": 80,
@@ -182,20 +295,51 @@ REGRAS_SIMULADOR = {
 REGRAS_TEXTO = [
     {"id": "tarifa_social", "norma": "lei_15235_2025",
      "texto": "Tarifa Social (Lei nº 12.212/2010, art. 1º, na redação da Lei nº 15.235/2025): desconto de 100% sobre a parcela do consumo até 80 kWh/mês e de 0% sobre a parcela acima de 80 kWh/mês, incidente sobre a tarifa da classe residencial. Beneficiários não pagam CDE nem Proinfa (página da ANEEL), por isso a ANEEL homologa uma tarifa própria da subclasse (Residencial Tarifa Social, faixas 01 e 02).",
-     "aplicacao_no_simulador": "Faixa 01 (até 80 kWh): valor calculado com a tarifa da faixa 01 e abatido integralmente. Faixa 02 (acima de 80 kWh): tarifa homologada da faixa 02, sem desconto."},
+     "aplicacao_no_simulador": "Faixa 01 (até 80 kWh): valor calculado com a tarifa da faixa 01 e abatido integralmente. Faixa 02 (acima de 80 kWh): tarifa homologada da faixa 02, sem desconto.",
+     "partes": [{"texto": "Desconto de 100% até 80 kWh/mês e de 0% acima, sobre a tarifa da classe residencial", "norma": "lei_15235_2025"},
+                {"texto": "Tarifa própria da subclasse (faixas 01 e 02), porque beneficiários não pagam CDE nem Proinfa", "norma": "aneel_tarifa_social"}]},
     {"id": "desconto_social", "norma": "lei_15235_2025",
      "texto": "Desconto Social (Lei nº 10.438/2002, art. 13, § 3º-I, incluído pela Lei nº 15.235/2025): desde 1º/1/2026, famílias do CadÚnico com renda per capita acima de meio e até um salário mínimo têm isenção das quotas da CDE para consumo mensal de até 120 kWh, em uma unidade consumidora.",
-     "aplicacao_no_simulador": "Leitura por parcela, seguindo as faixas homologadas pela ANEEL (Residencial Desconto Social, faixas 01 e 02): até 120 kWh com a tarifa da faixa 01 e o excedente com a da faixa 02. O texto da REN que regulamenta a aplicação não pôde ser lido (bloqueio de acesso ao acervo da ANEEL); por isso a leitura é declarada."},
+     "aplicacao_no_simulador": "Leitura por parcela, seguindo as faixas homologadas pela ANEEL (Residencial Desconto Social, faixas 01 e 02): até 120 kWh com a tarifa da faixa 01 e o excedente com a da faixa 02. O texto da REN que regulamenta a aplicação não pôde ser lido (bloqueio de acesso ao acervo da ANEEL); por isso a leitura é declarada.",
+     "partes": [{"texto": "Isenção das quotas da CDE até 120 kWh/mês desde 1º/1/2026", "norma": "lei_15235_2025"},
+                {"texto": "Aplicação por parcela: faixa 01 até 120 kWh e faixa 02 no excedente", "norma": None,
+                 "motivo": "a REN que regulamenta a aplicação não pôde ser lida (acervo da ANEEL bloqueado)"}]},
     {"id": "custo_disponibilidade", "norma": "aneel_geracao_distribuida",
      "texto": "Custo de disponibilidade do grupo B: valor em reais equivalente a 30 kWh (monofásico), 50 kWh (bifásico) ou 100 kWh (trifásico), cobrado como valor mínimo quando o consumo é menor (páginas oficiais da ANEEL; a REN nº 1.000/2021 é a norma de origem, mas seu texto não pôde ser lido no acervo da ANEEL, que bloqueou o acesso automatizado).",
-     "aplicacao_no_simulador": "Classes residencial, rural, demais classes e Desconto Social: energia faturada = maior entre o consumo e o mínimo da ligação. Tarifa Social: sem mínimo até 80 kWh (página da ANEEL); acima de 80 kWh o mínimo não é aplicado, e isso é declarado como regra não conferida."},
+     "aplicacao_no_simulador": "Classes residencial, rural, demais classes e Desconto Social: energia faturada = maior entre o consumo e o mínimo da ligação. Tarifa Social: sem mínimo até 80 kWh (página da ANEEL); acima de 80 kWh o mínimo não é aplicado, e isso é declarado como regra não conferida.",
+     "partes": [{"texto": "Mínimo de 30, 50 ou 100 kWh (monofásico, bifásico, trifásico) nas classes residencial, rural, demais e Desconto Social", "norma": "aneel_geracao_distribuida"},
+                {"texto": "Tarifa Social sem mínimo até 80 kWh, inclusive em ligação trifásica", "norma": "aneel_tarifa_social"},
+                {"texto": "Tarifa Social acima de 80 kWh: mínimo não aplicado", "norma": None,
+                 "motivo": "a REN nº 1.000/2021 não pôde ser lida; a regra do mínimo para a Tarifa Social acima de 80 kWh não foi conferida"}]},
     {"id": "bandeira", "norma": "aneel_bandeiras",
      "texto": "Bandeira tarifária: acréscimo por kWh consumido conforme o patamar acionado no mês (verde sem acréscimo). Não se aplica a consumidores de sistemas isolados.",
-     "aplicacao_no_simulador": "Adicional × kWh consumido. Tarifa Social: aplicado só sobre a parcela acima de 80 kWh, porque a ANEEL informa que, até 80 kWh, a fatura pode conter apenas cobranças não associadas à energia consumida; a regra específica da REN não foi lida."},
+     "aplicacao_no_simulador": "Adicional × kWh consumido. Tarifa Social: aplicado só sobre a parcela acima de 80 kWh, porque a ANEEL informa que, até 80 kWh, a fatura pode conter apenas cobranças não associadas à energia consumida; a regra específica da REN não foi lida.",
+     "partes": [{"texto": "Adicional por kWh consumido conforme o patamar do mês; não se aplica a sistemas isolados", "norma": "aneel_bandeiras"},
+                {"texto": "Tarifa Social: bandeira só sobre a parcela acima de 80 kWh", "norma": None,
+                 "motivo": "leitura da página da ANEEL sobre a fatura até 80 kWh; a regra específica da REN não foi lida"}]},
     {"id": "exclusoes", "norma": "aneel_custo_energia",
      "texto": "Tributos (ICMS estadual, PIS/Pasep e Cofins federais) e Contribuição para Iluminação Pública municipal compõem a fatura mas não a tarifa homologada. Não há base oficial estruturada por distribuidora e mês com essas alíquotas efetivas; ficam fora de todos os números deste módulo.",
-     "aplicacao_no_simulador": "Não incluídos. O resultado é uma estimativa sem tributos e sem iluminação pública."},
+     "aplicacao_no_simulador": "Não incluídos. O resultado é uma estimativa sem tributos e sem iluminação pública.",
+     "partes": [{"texto": "Tributos e iluminação pública compõem a fatura, não a tarifa homologada", "norma": "aneel_custo_energia"}]},
 ]
+
+
+def estado_das_regras(regras_texto, estado_norma):
+    """Estado de cada regra do simulador a partir das partes: o trecho normativo conferido
+    na captura não confere a leitura aplicada que a norma lida não cobre. Parte sem norma
+    é leitura declarada (NAO_CONFERIDA). Regra: CONFERIDA se todas as partes estão
+    conferidas, PARCIAL se só algumas, NAO_CONFERIDA se nenhuma."""
+    regras, estados = [], {}
+    for r_ in regras_texto:
+        partes = []
+        for pt in r_["partes"]:
+            est = estado_norma.get(pt["norma"]) if pt.get("norma") else "NAO_CONFERIDA"
+            partes.append({"texto": pt["texto"], "norma": pt.get("norma"), "estado": est or "NAO_CAPTURADA",
+                           "motivo": pt.get("motivo")})
+        ok = [p_["estado"] == "CONFERIDA" for p_ in partes]
+        estados[r_["id"]] = "CONFERIDA" if all(ok) else ("PARCIAL" if any(ok) else "NAO_CONFERIDA")
+        regras.append({**{k: v for k, v in r_.items() if k != "partes"}, "partes": partes, "estado": estados[r_["id"]]})
+    return regras, estados
 
 # Classificação dos componentes (códigos do conjunto oficial) em grupos de leitura.
 # A ANEEL descreve a tarifa como energia + transporte (transmissão e distribuição) +
@@ -244,13 +388,21 @@ RECLASSIFICA_SE_NEGATIVO = {
 # (a) sinal contrário à natureza do grupo de custo com módulo de pelo menos 5% da tarifa
 #     da distribuidora; devoluções pequenas (CDE Covid, P&D) são comuns e ficam abaixo;
 # (b) módulo mais de 10 vezes a mediana do módulo da mesma componente entre as
-#     distribuidoras com composição na data, também com pelo menos 5% da tarifa (pega um
-#     código usado no lugar de outro, como energia inteira lançada em TE_ANGRA).
+#     distribuidoras que a publicam com valor diferente de zero na data, também com pelo
+#     menos 5% da tarifa (pega um código usado no lugar de outro, como a energia inteira
+#     lançada em TE_ANGRA). O zero fica fora da mediana porque vários códigos só existem
+#     em parte das distribuidoras (uso da rede de outra distribuidora, por exemplo), e a
+#     mediana com zeros marcaria como atípico o que é estrutural.
 # Os 5% (cerca de R$ 0,04/kWh na tarifa mediana) separam valor que muda a leitura da
-# composição de ajuste de centavos; o fator 10 fica muito acima da dispersão entre
-# distribuidoras de qualquer código publicado em 2026.
+# composição de ajuste de centavos. Em 30/09/2026 a regra marca 18 componentes em 15
+# distribuidoras (documento, seção 4), todas conferidas no Parquet original.
 ATIPICO_PCT_TARIFA = 5.0
 ATIPICO_FATOR_MEDIANA = 10.0
+# SAMP: receita ou ICMS de um mês acima de 5 vezes a mediana dos outros meses do mesmo
+# ano é erro de ordem de grandeza, não sazonalidade. No arquivo de 2025, fora os três
+# meses da CEMIG-D que motivaram a exclusão (razões de 9,7 a 10,8), nenhum dos 2.400
+# pares distribuidora-mês das duas linhas passa de 1,95 vez a mediana dos outros meses.
+FATOR_ATIPICO_SAMP = 5.0
 
 DESCRICAO_COMPONENTE = {
     "TE_ENERGIA": "Custo da energia comprada pela distribuidora",
@@ -543,9 +695,19 @@ def coletar(con, ctx):
         return out
     registra(DS_IPCA, ipca)
 
+    def samp():
+        # só guarda o arquivo no bronze (com sha256 e vintage): a conferência que justifica
+        # não usar o SAMP é refeita na gold a partir dele (samp_residencial_mensal)
+        st, _, vint = ckan.coleta_pacote(con, orgao="ANEEL", nome=PAC_SAMP, dataset=DS_SAMP,
+                                         filtro_recurso=lambda r: (r.get("name") or "").strip() == RECURSO_SAMP,
+                                         max_idade_dias=30)
+        st["vintages"] = {k: v["sha256"] for k, v in vint.items()}
+        return st
+    registra(DS_SAMP, samp)
+
     def normas():
         out = {}
-        for n in NORMAS:
+        for n in NORMAS + DOCUMENTOS:
             res = ckan.baixar_recurso(con, orgao=entidades.slug(n["orgao"]), dataset=DS_NORMAS, recurso=n["id"], url=n["url"],
                                       publicado_em=None, ext="html", max_idade_dias=7, baixador=http_download)
             out[n["id"]] = {"status": res["status"], "detalhe": res["detalhe"]}
@@ -722,7 +884,8 @@ def grupos_componentes(comps):
 def componentes_atipicas(comps, total, mediana_modulo):
     """Componentes atípicas de uma distribuidora (regras em ATIPICO_*), para ressalva e
     conferência no arquivo original. mediana_modulo = {código: mediana de |valor| entre
-    as distribuidoras com composição na data}. Nada é descartado: a lista só marca."""
+    as distribuidoras que publicam o código com valor diferente de zero na data}. Nada é
+    descartado: a lista só marca."""
     out = []
     if not total:
         return out
@@ -738,7 +901,7 @@ def componentes_atipicas(comps, total, mediana_modulo):
             criterios.append("sinal contrário à natureza do grupo")
         med = mediana_modulo.get(cod)
         if med is not None and abs(v) > ATIPICO_FATOR_MEDIANA * med:
-            criterios.append(f"módulo mais de {ATIPICO_FATOR_MEDIANA:g} vezes a mediana da componente entre as distribuidoras")
+            criterios.append(f"módulo mais de {ATIPICO_FATOR_MEDIANA:g} vezes a mediana da componente entre as distribuidoras que a publicam")
         if criterios:
             out.append({"codigo": cod, "valor": v, "pct_tarifa": pct, "grupo_pelo_codigo": g_codigo,
                         "grupo_usado": grupo_da_componente(cod, v) or "outros", "mediana_modulo": med,
@@ -858,10 +1021,13 @@ def fim_do_mes(anomes):
     return (_d(prox + "-01") - timedelta(days=1)).isoformat()
 
 
-def eventos_tarifa(linha, indice):
+def eventos_tarifa(linha, indice, mudancas=None):
     """Mudanças da tarifa na linha do tempo resolvida: cada início de pedaço com
     anterior contíguo vira evento, com a variação do total, da TE e da TUSD e a
-    inflação do IPCA desde o evento anterior (índices do mês anterior a cada data)."""
+    inflação do IPCA desde o evento anterior (índices do mês anterior a cada data).
+    mudancas = {data: incorporação} (mudancas_de_perimetro): o evento nessa data
+    compara a tarifa da área antiga com a da área somada e sai marcado."""
+    mudancas = mudancas or {}
     out = []
     ult_data = None
     for i, p in enumerate(linha):
@@ -881,6 +1047,9 @@ def eventos_tarifa(linha, indice):
             "te_variacao": (p["te"] / ant["te"] - 1) if ant["te"] and p["te"] is not None else None,
             "tusd_variacao": (p["tusd"] / ant["tusd"] - 1) if ant["tusd"] and p["tusd"] is not None else None,
             "ipca_desde_anterior": ipca_entre(indice, m0, m1), "meses_ipca": [m0, m1],
+            "mudanca_perimetro": ({"id": mudancas[p["inicio"]]["id"], "ato": mudancas[p["inicio"]]["ato"],
+                                   "incorporadas": list(mudancas[p["inicio"]]["incorporadas"])}
+                                  if p["inicio"] in mudancas else None),
         })
         ult_data = p["inicio"]
     return out
@@ -945,20 +1114,21 @@ def agrega_subsidios(obs_s, mes_ref):
 # nome publicado; cada rubrica continua visível com o nome da fonte).
 GRUPOS_CDE = [
     ("tarifa_social", "Despesa", "Tarifa Social (baixa renda)",
-     "Rubrica 'Subsídio Baixa Renda': custeio dos descontos da Tarifa Social de Energia Elétrica, que chegam às famílias "
-     "beneficiárias como desconto na fatura (dicionário do conjunto)."),
+     "Rubrica 'Subsídio Baixa Renda': valor do orçamento aprovado da CDE para os descontos da Tarifa Social de Energia "
+     "Elétrica, que chegam às famílias beneficiárias como desconto na fatura (dicionário do conjunto)."),
     ("descontos_tarifarios", "Despesa", "Descontos tarifários a categorias de usuários",
-     "Demais rubricas 'Subsídio ...': compensam distribuidoras e transmissoras por descontos concedidos a categorias "
-     "(rural, irrigação e aquicultura, água e esgoto, fontes incentivadas, distribuidoras pequenas, micro e minigeração "
-     "distribuída). Não são transferências a famílias."),
+     "Demais rubricas 'Subsídio ...' do orçamento aprovado: compensam distribuidoras e transmissoras por descontos "
+     "concedidos a categorias (rural, irrigação e aquicultura, água e esgoto, fontes incentivadas, distribuidoras pequenas, "
+     "micro e minigeração distribuída). Não são transferências a famílias."),
     ("ccc_luz_para_todos", "Despesa", "CCC e Luz para Todos",
      "Rubricas 'CCC' (Conta de Consumo de Combustíveis) e 'Programa Luz para Todos - PLPT', com o nome publicado."),
     ("outras_despesas", "Despesa", "Outras despesas",
      "Demais rubricas de despesa com o nome publicado pela ANEEL (carvão mineral, subvenções, indenizações, restos a "
      "pagar e outras)."),
     ("quotas_tarifa", "Receita", "Quotas da CDE",
-     "Rubricas 'Quotas CDE Uso', 'Quotas CDE Energia' e 'Quotas CDE - GD': encargo cobrado nas tarifas (as componentes "
-     "com CDE no código aparecem dentro da TUSD e da TE no conjunto de componentes tarifárias)."),
+     "Rubricas 'Quotas CDE Uso', 'Quotas CDE Energia' e 'Quotas CDE - GD' do orçamento aprovado: encargo cobrado nas "
+     "tarifas, fixado para cobrir o que as demais receitas não cobrem (as componentes com CDE no código aparecem dentro "
+     "da TUSD e da TE no conjunto de componentes tarifárias)."),
     ("outras_receitas", "Receita", "Outras receitas",
      "Demais rubricas de receita com o nome publicado (uso de bem público, multas, recursos da União, aportes previstos "
      "em lei, saldo anterior e outras disponibilidades)."),
@@ -1005,6 +1175,35 @@ def agrega_cde(obs, sem_valor=()):
                        "fecha": abs(desp - rec) <= 1.0,
                        "rubricas_sem_valor": sorted(f for t, f, a_ in sem_valor if a_ == a)})
     return {"anos": anos, "linhas": linhas, "totais": totais}
+
+
+def valor_do_titulo_bilhoes(titulo):
+    """(valor em R$, tolerância em R$) lidos de 'R$ 52,7 bilhões' num título oficial: a
+    tolerância é meia unidade da última casa publicada (0,05 bilhão para uma casa)."""
+    m = re.search(r"R\$ (\d+)(?:,(\d+))? bilhões", titulo)
+    if not m:
+        return None, None
+    casas = len(m.group(2) or "")
+    valor = float(f"{m.group(1)}.{m.group(2) or '0'}") * 1e9
+    return valor, 0.5 * 10 ** (-casas) * 1e9
+
+
+def reconcilia_orcamento_cde(totais, referencias=REFERENCIAS_ORCAMENTO_CDE):
+    """Despesa anual do arquivo contra o orçamento da CDE divulgado pela ANEEL no título
+    da notícia oficial (REFERENCIAS_ORCAMENTO_CDE). Ano sem par no arquivo fica sem
+    resultado; nada é interpolado."""
+    por_ano = {t["ano"]: t for t in totais}
+    out = []
+    for ref in referencias:
+        pub, tol = valor_do_titulo_bilhoes(ref["titulo"])
+        t = por_ano.get(ref["ano"])
+        arq = t["despesa"] if t else None
+        dif = (arq - pub) if (arq is not None and pub is not None) else None
+        out.append({"ano": ref["ano"], "situacao": ref["situacao"], "titulo": ref["titulo"], "url": ref["url"],
+                    "publicado_rs": pub, "arquivo_despesa_rs": c.r(arq, 2) if arq is not None else None,
+                    "diferenca_rs": c.r(dif, 2) if dif is not None else None, "tolerancia_rs": tol,
+                    "confere": (abs(dif) <= tol) if dif is not None else None, "acesso": ACESSO_REFERENCIAS_CDE})
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -1078,6 +1277,19 @@ def _fonte_prov(orgao, conjunto, recurso, url_dataset, url_primaria, licenca):
             "url_primaria": url_primaria, "licenca": licenca}
 
 
+def _snapshot_composto(*snaps):
+    """Snapshot de um número que usa vários conjuntos: sha256 dos sha256 de cada um, em
+    ordem, e todas as capturas (para a data de publicação e as revisões)."""
+    import hashlib
+    validos = [x for x in snaps if x and x.get("sha256")]
+    if not validos:
+        return {"id": None, "sha256": None, "capturas": []}
+    return {"id": " + ".join(x["id"] for x in validos),
+            "sha256": hashlib.sha256("".join(x["sha256"] for x in validos).encode()).hexdigest(),
+            "revisoes": validos[0].get("revisoes"), "publicacao_confiavel": all(x.get("publicacao_confiavel", True) for x in validos),
+            "capturas": [cp for x in validos for cp in x.get("capturas", [])]}
+
+
 def _siglas(con):
     """{cnpj: sigla mais recente} e {cnpj: [siglas]} a partir do registro das tarifas."""
     reg = base.registros_como_estavam_em(con, DS_TARIFAS)
@@ -1099,10 +1311,10 @@ def _siglas(con):
     return mais_recente, todas, datas_ato, textos_ato, universo, gerado
 
 
-def _normas_status(con):
+def _normas_status(con, lista=None):
     reg = base.registros_como_estavam_em(con, DS_NORMAS)
     out = []
-    for n in NORMAS:
+    for n in (NORMAS if lista is None else lista):
         campos = reg.get(f"norma|{n['id']}", {})
         trechos = [{"trecho": t, "presente": campos.get(f"trecho|{i}") == "presente"} for i, t in enumerate(n["trechos"])]
         conferido = campos.get("conferido_em")
@@ -1118,12 +1330,18 @@ def valida_gold(g):
     """Limites físicos e de domínio antes de publicar (contrato, seção 5.2). Devolve
     (críticas, ressalvas, regras). Crítica vira stub (a sentinela mantém a última gold
     válida); ressalva vai para a gold, visível. Valor atípico não é descartado: fica
-    como ressalva para conferência no arquivo original."""
+    como ressalva, e cada caso é conferido no arquivo original (documento, seção 4)."""
     criticas, ressalvas = [], []
     regras = ["CNPJ único no ranking (crítica)", "TE + TUSD positiva no ranking (crítica)",
               "TE e TUSD não negativas (ressalva)", "tarifa fora de 200 a 3000 R$/MWh (ressalva, conferir no arquivo)",
               "data de referência não posterior à geração (crítica)", "adicional de bandeira não negativo (crítica)",
               "número-índice do IPCA positivo (crítica)", "participações da composição entre -100% e 200% (ressalva)",
+              "grupo de custo da composição (energia, transmissão, distribuição, perdas, encargos) com soma negativa (ressalva)",
+              "parcela CDE maior que o grupo de encargos que a contém (ressalva)",
+              (f"componente com sinal contrário à natureza do grupo de custo ou com módulo mais de {ATIPICO_FATOR_MEDIANA:g} vezes "
+               f"a mediana da mesma componente, com pelo menos {ATIPICO_PCT_TARIFA:g}% da tarifa (ressalva, conferida no arquivo original)"),
+              "valor negativo de componente de custo reclassificado como crédito (ressalva, com a lista)",
+              "incorporação registrada que não se confirma nos dados de tarifa (ressalva)",
               "custeio da CDE com despesa igual à receita no ano (ressalva)"]
     vig = g["tarifas"]["vigentes"]
     cnpjs = [v["cnpj"] for v in vig]
@@ -1149,6 +1367,25 @@ def valida_gold(g):
         fora = [k for k, v in x["pct"].items() if v is not None and not (-100 <= v <= 200)]
         if fora:
             ressalvas.append(f"{x['sigla']}: participação atípica em {', '.join(fora)}, mantida")
+        negativos = [k for k in GRUPOS_DE_CUSTO if x["grupos"].get(k) is not None and x["grupos"][k] < 0]
+        if negativos:
+            txt = ", ".join(f"{k} {x['grupos'][k]}" for k in negativos)
+            ressalvas.append(f"{x['sigla']}: grupo de custo com soma negativa ({txt})")
+        if x.get("cde") is not None and x["grupos"].get("encargos") is not None and x["cde"] > x["grupos"]["encargos"] + 0.01:
+            ressalvas.append(f"{x['sigla']}: parcela CDE ({x['cde']}) maior que o grupo de encargos ({x['grupos']['encargos']}), que a contém")
+    for a in g["composicao"].get("componentes_atipicas", []):
+        ressalvas.append(f"{a['sigla']}: componente {a['codigo']} de {a['valor']} R$/MWh ({a['pct_tarifa']}% da tarifa), "
+                         f"{'; '.join(a['criterios'])}; {a['tratamento']}")
+    cred = g["composicao"].get("creditos") or {}
+    if cred.get("distribuidoras"):
+        lista = ", ".join(f"{x['sigla']} {x['valor']}" for x in cred["distribuidoras"])
+        ressalvas.append(f"{len(cred['distribuidoras'])} distribuidoras com valor negativo em componente de custo lido como crédito "
+                         f"tarifário (grupo créditos, fora dos encargos), em R$/MWh: {lista}")
+    for inc in g.get("incorporacoes", []):
+        # sem nenhum dos CNPJs no conjunto não há o que conferir; dado presente e data que
+        # não bate é que vira ressalva
+        if inc.get("situacao") == "divergente":
+            ressalvas.append(f"incorporação {inc['ato']} ({inc['id']}) não se confirma nos dados de tarifa: {inc['fim_das_incorporadas']}")
     fin = g.get("financiamento_cde")
     if fin:
         for t in fin["totais"]:
@@ -1196,6 +1433,7 @@ def construir(con, ctx):
     var12_pub = ipca_obs.get("ipca|var12m", {})
     normas = _normas_status(con)
     estado_norma = {n["id"]: n["estado"] for n in normas}
+    regras_sim, estados_regras = estado_das_regras(REGRAS_TEXTO, estado_norma)
 
     # ---- linhas do tempo resolvidas por distribuidora e subclasse (tarifa de aplicação)
     linhas, conflitos = {}, []
@@ -1218,6 +1456,19 @@ def construir(con, ctx):
         sub, subclasse = CLASSES_TARIFA[chave]
         return linhas.get((cnpj, sub, subclasse, bt), [])
 
+    # ---- mudanças de perímetro registradas, conferidas nos dados da tarifa B1
+    linhas_b1 = {cn: lt(cn, "residencial") for cn in cnpjs}
+    incorporacoes = []
+    incorporada_por = {}
+    for inc in INCORPORACOES:
+        conf = confere_incorporacao(inc, linhas_b1)
+        incorporacoes.append({**{k: inc[k] for k in ("id", "incorporadora", "incorporadas", "ato", "data_ato",
+                                                     "tarifa_unificada_desde", "descricao", "identificacao")},
+                              "sigla_incorporadora": sigla.get(inc["incorporadora"]),
+                              "siglas_incorporadas": [sigla.get(cn) for cn in inc["incorporadas"]], **conf})
+        for cn in inc["incorporadas"]:
+            incorporada_por[cn] = inc
+
     # ---- P047: tarifa vigente B1 e perfis
     vigentes, sem_vigente = [], []
     for cnpj in cnpjs:
@@ -1231,6 +1482,10 @@ def construir(con, ctx):
             dias_sem = (_d(dia_ref) - _d(ult["fim"])).days
             if p is not None:
                 motivo = "zero publicado nas duas parcelas (tarifa não homologada para a subclasse)"
+            elif cnpj in incorporada_por:
+                inc = incorporada_por[cnpj]
+                motivo = (f"incorporada pela distribuidora de CNPJ {inc['incorporadora']} (sigla atual {sigla.get(inc['incorporadora'])}), "
+                          f"{inc['ato']}; a tarifa unificada começa em {c.data_br(inc['tarifa_unificada_desde'])}")
             elif dias_sem <= 90:
                 motivo = (f"vigência encerrada em {c.data_br(ult['fim'])}; a tarifa seguinte ainda não consta no arquivo "
                           f"gerado pela ANEEL em {c.data_br(gerado_fonte) if gerado_fonte else 'data não informada'}")
@@ -1239,7 +1494,8 @@ def construir(con, ctx):
                           "(incorporação, extinção ou troca de CNPJ)")
             sem_vigente.append({"cnpj": cnpj, "sigla": sigla.get(cnpj), "nome": nomes.get(cnpj),
                                 "ultima_vigencia": {"inicio": ult["inicio"], "fim": ult["fim"], "ato": ult["ato"]},
-                                "dias_sem_tarifa": dias_sem, "motivo": motivo})
+                                "dias_sem_tarifa": dias_sem, "motivo": motivo,
+                                "incorporada_por": incorporada_por[cnpj]["incorporadora"] if cnpj in incorporada_por else None})
             continue
         be = em(lt(cnpj, "residencial", "BE"), dia_ref)
         vigentes.append({
@@ -1312,7 +1568,7 @@ def construir(con, ctx):
         for ref, val in refs.items():
             comp_idx.setdefault(cnpj, {}).setdefault(ref, {})[cod] = val
     composicao, rec_cruzada, comp_csv = [], {"conferidas": 0, "divergentes": [], "sem_componentes": []}, []
-    comp_usado = {}
+    comp_usado, brutos_comp = {}, {}
     # CSV largo (uma linha por distribuidora e vigência, uma coluna por componente): o
     # formato longo passava de 5 MB. Componente não publicada na vigência fica vazia.
     codigos = [cd for _, _, cods in GRUPOS for cd in cods]
@@ -1349,6 +1605,7 @@ def construir(con, ctx):
                                                "tusd_tarifas": v["tusd"], "tusd_componentes": chk["tusd"]})
         tot = v["total"]
         cde = parcela_cde(comps)
+        brutos_comp[v["cnpj"]] = (grupos, cde, tot)
         composicao.append({
             "cnpj": v["cnpj"], "sigla": v["sigla"], "total": tot,
             "grupos": {g: c.r(x, 2) for g, x in grupos.items()},
@@ -1356,11 +1613,79 @@ def construir(con, ctx):
             # parcela das quotas da CDE dentro da tarifa (subconjunto do grupo encargos, não somar)
             "cde": c.r(cde, 2), "cde_pct": c.r(100 * cde / tot, 1) if (tot and cde is not None) else None,
             "fecha_com_total": ok_interno, "confere_com_tarifas": ok_cruzado, "codigos_sem_grupo": chk["desconhecidos"],
+            # valor tirado do grupo do código pelo sinal (crédito lançado em componente de custo)
+            "reclassificadas": [{"codigo": r_["codigo"], "valor": c.r(r_["valor"], 2), "grupo_pelo_codigo": r_["grupo_pelo_codigo"],
+                                 "grupo_usado": r_["grupo_usado"]} for r_ in chk["reclassificadas"]],
         })
+    # componentes atípicas: mediana do módulo de cada código entre as distribuidoras com
+    # composição na data (a comparação é com o mesmo código, na mesma data)
+    mods_cod = {}
+    for cn_, (_ref, cc) in comp_usado.items():
+        for cod, val in cc.items():
+            if cod not in TOTAIS_COMP and val is not None and abs(val) >= 0.01:
+                mods_cod.setdefault(cod, []).append(abs(val))
+    mediana_modulo = {cod: c.quantil(xs, 0.5) for cod, xs in mods_cod.items()}
+    atipicas = []
+    for x in composicao:
+        for a in componentes_atipicas(comp_usado[x["cnpj"]][1], x["total"], mediana_modulo):
+            reclass = a["grupo_usado"] != a["grupo_pelo_codigo"]
+            atipicas.append({"cnpj": x["cnpj"], "sigla": x["sigla"], "codigo": a["codigo"], "valor": c.r(a["valor"], 2),
+                             "pct_tarifa": c.r(a["pct_tarifa"], 1), "grupo_pelo_codigo": a["grupo_pelo_codigo"],
+                             "grupo_usado": a["grupo_usado"], "mediana_modulo_rs_mwh": c.r(a["mediana_modulo"], 2),
+                             "criterios": a["criterios"],
+                             "tratamento": (f"reclassificada para o grupo {a['grupo_usado']} (crédito), conferida no arquivo original"
+                                            if reclass else "mantida no grupo do código, conferida no arquivo original")})
+    creditos_lista = sorted(({"cnpj": x["cnpj"], "sigla": x["sigla"], "codigo": r_["codigo"], "valor": r_["valor"],
+                              "pct_tarifa": c.r(100 * r_["valor"] / x["total"], 1) if x["total"] else None,
+                              "ato": next((v_["ato"] for v_ in vigentes if v_["cnpj"] == x["cnpj"]), None)}
+                             for x in composicao for r_ in x["reclassificadas"]), key=lambda y: (y["valor"], y["sigla"] or ""))
+    creditos = {
+        "codigos": sorted(RECLASSIFICA_SE_NEGATIVO),
+        "regra": "valor negativo em " + ", ".join(sorted(RECLASSIFICA_SE_NEGATIVO)) + " sai do grupo do código e vai para o grupo créditos",
+        "leitura": "; ".join(r_["leitura"] for r_ in RECLASSIFICA_SE_NEGATIVO.values()),
+        "documento": sorted({r_["documento"] for r_ in RECLASSIFICA_SE_NEGATIVO.values()}),
+        "faixa_historica": None, "distribuidoras": creditos_lista,
+    }
+    # faixa histórica dos códigos reclassificáveis (vigências iniciadas até 2024, todas as
+    # distribuidoras): mostra que o valor negativo de agora não tem precedente no código
+    for cod in RECLASSIFICA_SE_NEGATIVO:
+        hist = [cc[cod] for refs in comp_idx.values() for r_, cc in refs.items() if r_[:4] <= "2024" and cc.get(cod) is not None]
+        if hist:
+            creditos["faixa_historica"] = {"codigo": cod, "vigencias_iniciadas_ate": "2024-12-31", "n": len(hist),
+                                           "minimo": c.r(min(hist), 2), "maximo": c.r(max(hist), 2)}
     comp_med = {}
     for g, _, _ in GRUPOS:
         xs = [x["grupos"][g] for x in composicao if x["grupos"][g] is not None]
         comp_med[g] = c.r(c.quantil(xs, 0.5), 2) if xs else None
+    # Cada grupo tem a sua própria mediana, e a soma das medianas não é a tarifa mediana.
+    # A composição que fecha com o total é a média simples entre distribuidoras (cada uma
+    # pesa igual): os grupos médios somam a tarifa média, e a participação de cada grupo é
+    # a razão de somas Σ grupo ÷ Σ tarifa (nunca a mediana de percentuais).
+    tot_brutos = [t_ for (_g, _c, t_) in brutos_comp.values()]
+    soma_tot = sum(tot_brutos)
+    n_comp = len(brutos_comp)
+    media_comp = None
+    if n_comp:
+        soma_g = {g: sum(gr[g] for (gr, _c, _t) in brutos_comp.values()) for g, _, _ in GRUPOS}
+        soma_cde = sum(cd for (_g, cd, _t) in brutos_comp.values() if cd is not None)
+        media_comp = {
+            "n": n_comp, "total_rs_mwh": c.r(soma_tot / n_comp, 2),
+            "grupos_rs_mwh": {g: c.r(x / n_comp, 2) for g, x in soma_g.items()},
+            "grupos_pct": {g: c.r(100 * x / soma_tot, 2) for g, x in soma_g.items()},
+            "cde_rs_mwh": c.r(soma_cde / n_comp, 2), "cde_pct": c.r(100 * soma_cde / soma_tot, 2),
+            "soma_grupos_menos_total_rs_mwh": c.r(sum(soma_g.values()) / n_comp - soma_tot / n_comp, 4),
+            "definicao": ("média simples entre as distribuidoras com composição na data (cada uma pesa igual, sem ponderação "
+                          "por consumo); os grupos médios somam a tarifa média, e a participação é a razão de somas "
+                          "Σ grupo ÷ Σ (TE + TUSD)"),
+        }
+    mediana_resumo = {
+        "grupos_rs_mwh": comp_med,
+        "soma_das_medianas_rs_mwh": c.r(sum(x for x in comp_med.values() if x is not None), 2),
+        "mediana_do_total_rs_mwh": c.r(c.quantil(tot_brutos, 0.5), 2) if tot_brutos else None,
+        "fecha_com_total": False,
+        "nota": ("Cada grupo tem a sua mediana entre distribuidoras, e a soma das medianas não é a tarifa mediana: use as "
+                 "medianas só grupo a grupo. A composição que fecha com o total é a média simples (composicao.media)."),
+    }
     # repetições da mesma componente, vigência e ato dentro dos arquivos anuais (contadas na ingestão)
     reg_comp = base.registros_como_estavam_em(con, DS_COMP)
     duplicatas_comp = {"iguais": 0, "conflitantes": 0, "arquivos_com_conflito": []}
@@ -1376,11 +1701,15 @@ def construir(con, ctx):
     xs_cde_pct = [x["cde_pct"] for x in composicao if x["cde_pct"] is not None]
     cde_resumo = {"mediana_rs_mwh": c.r(c.quantil(xs_cde, 0.5), 2) if xs_cde else None,
                   "mediana_pct": c.r(c.quantil(xs_cde_pct, 0.5), 1) if xs_cde_pct else None,
+                  "media_rs_mwh": media_comp["cde_rs_mwh"] if media_comp else None,
+                  "razao_de_somas_pct": media_comp["cde_pct"] if media_comp else None,
                   "n": len(xs_cde), "codigos": list(CODIGOS_CDE),
                   "nota": ("Soma das componentes com CDE no código publicadas pela ANEEL dentro da TE e da TUSD. É parte do "
                            "grupo de encargos, não um item a mais. A finalidade de cada código (quota anual, CDE Covid, CDE GD, "
                            "CDE Eletrobras) está no PRORET, que não pôde ser lido; por isso a soma aparece como componentes CDE "
-                           "da tarifa, sem atribuição a programa específico.")}
+                           "da tarifa, sem atribuição a programa específico. mediana_rs_mwh e mediana_pct são medianas separadas "
+                           "(a mediana dos percentuais não é a mediana em R$/MWh dividida pela tarifa mediana); a participação "
+                           "comparável à composição média é razao_de_somas_pct.")}
 
     # ---- P049: simulador
     band_obs = valores_vigentes(con, DS_BAND)
@@ -1461,7 +1790,7 @@ def construir(con, ctx):
     reaj_csv, historico_json, ultimos = [], {}, []
     cnpjs_vigentes = {v["cnpj"] for v in vigentes}
     for cnpj in cnpjs:
-        evs = eventos_tarifa(lt(cnpj, "residencial"), indice)
+        evs = eventos_tarifa(lt(cnpj, "residencial"), indice, mudancas_de_perimetro(cnpj))
         for e in evs:
             reaj_csv.append([cnpj, sigla.get(cnpj), e["data"], e["ato"], "sim" if e["mesmo_ato"] else "nao",
                              c.r(e["total_antes"], 2), c.r(e["total_depois"], 2),
@@ -1469,7 +1798,8 @@ def construir(con, ctx):
                              c.r(100 * e["te_variacao"], 2) if e["te_variacao"] is not None else None,
                              c.r(100 * e["tusd_variacao"], 2) if e["tusd_variacao"] is not None else None,
                              c.r(100 * e["ipca_desde_anterior"], 2) if e["ipca_desde_anterior"] is not None else None,
-                             f"{e['meses_ipca'][0]} a {e['meses_ipca'][1]}"])
+                             f"{e['meses_ipca'][0]} a {e['meses_ipca'][1]}",
+                             e["mudanca_perimetro"]["ato"] if e["mudanca_perimetro"] else None])
         pct = lambda x: c.r(100 * x, 2) if x is not None else None  # noqa: E731
         linha_b1 = lt(cnpj, "residencial")
         if linha_b1:
@@ -1479,20 +1809,27 @@ def construir(con, ctx):
                                c.r(total_rs_mwh(p), 2)] for p in linha_b1],
                 "eventos": [[e["data"], e["ato"], e["mesmo_ato"], c.r(e["total_antes"], 2), c.r(e["total_depois"], 2),
                              pct(e["variacao"]), pct(e["te_variacao"]), pct(e["tusd_variacao"]),
-                             pct(e["ipca_desde_anterior"]), e["meses_ipca"][0], e["meses_ipca"][1]] for e in evs],
+                             pct(e["ipca_desde_anterior"]), e["meses_ipca"][0], e["meses_ipca"][1],
+                             e["mudanca_perimetro"]["ato"] if e["mudanca_perimetro"] else None] for e in evs],
+                # incorporações em que este CNPJ é o incorporador (a série muda de área na data)
+                "incorporacoes": [{"data": i_["tarifa_unificada_desde"], "ato": i_["ato"], "incorporadas": i_["incorporadas"]}
+                                  for i_ in INCORPORACOES if i_["incorporadora"] == cnpj],
+                "incorporada_por": ({"cnpj": incorporada_por[cnpj]["incorporadora"], "ato": incorporada_por[cnpj]["ato"],
+                                     "data": incorporada_por[cnpj]["tarifa_unificada_desde"]} if cnpj in incorporada_por else None),
             }
         if evs and cnpj in cnpjs_vigentes:
             e = evs[-1]
             # último evento da tarifa B1 de cada distribuidora do ranking (lista completa no JSON e no CSV)
             ultimos.append([cnpj, sigla.get(cnpj), e["data"], e["ato"], pct(e["variacao"]), pct(e["ipca_desde_anterior"]),
-                            e["meses_ipca"][0], e["meses_ipca"][1]])
+                            e["meses_ipca"][0], e["meses_ipca"][1],
+                            e["mudanca_perimetro"]["ato"] if e["mudanca_perimetro"] else None])
     ultimos.sort(key=lambda x: (x[2], x[1] or ""), reverse=True)
     texto_hist = json.dumps({"gerado_em": base.agora_utc(), "data_referencia": dia_ref, "unidade": "R$/MWh e %",
                              "distribuidoras": historico_json}, ensure_ascii=False, separators=(",", ":"), allow_nan=False)
     base._escreve_atomico(os.path.join(base.SERIES, JSON_HIST), texto_hist)
     base.escreve_csv(CSV_REAJ, ["cnpj", "sigla", "data", "ato", "mesmo_ato", "total_antes_rs_mwh", "total_depois_rs_mwh",
                                 "variacao_pct", "te_variacao_pct", "tusd_variacao_pct",
-                                "ipca_desde_evento_anterior_pct", "meses_ipca"], reaj_csv)
+                                "ipca_desde_evento_anterior_pct", "meses_ipca", "mudanca_perimetro"], reaj_csv)
     comparacao = None
     jan_csv, jan_brutas = [], {}
     if ultimo_ipca:
@@ -1502,12 +1839,19 @@ def construir(con, ctx):
             m0 = soma_meses(ultimo_ipca, -n)
             d_ini = fim_do_mes(m0)
             ip = ipca_entre(indice, m0, ultimo_ipca)
-            brutas, excl = [], 0
+            brutas, excl, excl_perimetro = [], 0, []
             for cnpj in cnpjs:
                 p1, p0 = em(lt(cnpj, "residencial"), d_fim), em(lt(cnpj, "residencial"), d_ini)
                 t1, t0 = total_rs_mwh(p1), total_rs_mwh(p0)
                 if t0 is None or t1 is None:
                     excl += 1 if (t0 is not None or t1 is not None) else 0
+                    continue
+                cruza = atravessa_perimetro(cnpj, d_ini, d_fim)
+                if cruza:
+                    # tarifa da área antiga contra a da área somada: não é reajuste dos mesmos consumidores
+                    excl_perimetro.append({"cnpj": cnpj, "sigla": sigla.get(cnpj), "ato": cruza[0]["ato"],
+                                           "data": cruza[0]["tarifa_unificada_desde"],
+                                           "variacao_pct_nao_comparavel": c.r(100 * (t1 / t0 - 1), 2)})
                     continue
                 var = t1 / t0 - 1
                 real = (1 + var) / (1 + ip) - 1 if ip is not None else None
@@ -1520,6 +1864,7 @@ def construir(con, ctx):
             janelas.append({
                 "meses": n, "de": d_ini, "ate": d_fim, "ipca_pct": c.r(100 * ip, 2) if ip is not None else None,
                 "ipca_meses": [m0, ultimo_ipca], "n": len(brutas), "excluidas_sem_tarifa_nas_duas_datas": excl,
+                "excluidas_mudanca_perimetro": excl_perimetro,
                 "mediana_pct": c.r(100 * c.quantil(vs_, 0.5), 2) if vs_ else None,
                 "p25_pct": c.r(100 * c.quantil(vs_, 0.25), 2) if vs_ else None,
                 "p75_pct": c.r(100 * c.quantil(vs_, 0.75), 2) if vs_ else None,
@@ -1610,14 +1955,67 @@ def construir(con, ctx):
                         "grupos": {g: c.r(v_, 0) for g, v_ in x["grupos"].items()},
                         "quotas_pct": c.r(x["quotas_pct"], 1), "tarifa_social_pct": c.r(x["tarifa_social_pct"], 1),
                         "fecha": x["fecha"], "rubricas_sem_valor": x["rubricas_sem_valor"]} for x in cde["totais"]],
-            "nota": ("Valores anuais de custeio da CDE por rubrica, como publicados pela ANEEL. O ano corrente já tem valores "
-                     "antes de terminar, o que indica valores orçados; o dicionário não diz se os anos anteriores são "
-                     "orçamento ou execução. A Tarifa Social (baixa renda) é custeada aqui e não aparece no conjunto de "
-                     "subsídios tarifários, que trata só dos descontos a categorias de usuários."),
+            "natureza_valores": "orçamento anual aprovado ou previsto pela ANEEL (não é execução)",
+            "nota": ("Orçamento anual da CDE por rubrica, como publicado pela ANEEL: valores aprovados ou previstos, não o que "
+                     "foi efetivamente gasto. A despesa é igual à receita em todos os anos porque a quota anual é fixada para "
+                     "cobrir a diferença entre a necessidade de recursos da conta e as demais fontes (página Gestão de Recursos "
+                     "Tarifários da ANEEL), e os totais conferem com os orçamentos divulgados pela ANEEL (reconciliacao_externa). "
+                     "A Tarifa Social (baixa renda) é custeada aqui e não aparece no conjunto de subsídios tarifários, que trata "
+                     "só dos descontos a categorias de usuários."),
+            "reconciliacao_externa": reconcilia_orcamento_cde(cde["totais"]),
+            "documento": "aneel_gestao_recursos_tarifarios",
             "comparacao_com_subsidios": ("As rubricas de desconto do custeio da CDE e as categorias do conjunto de subsídios "
                                          "tarifários não coincidem em valor: um traz o valor anual da conta por rubrica, o "
                                          "outro os repasses mensais homologados por distribuidora. Os dois não se somam."),
         }
+
+    # ---- tarifa média de fornecimento: não publicada; a alternativa avaliada (SAMP) fica
+    # no bronze e a conferência que justifica a exclusão é refeita a partir dela
+    tarifa_media = {
+        "disponivel": False,
+        "motivo": ("Não há base oficial estruturada com receita de fornecimento, energia e tributos que passe na conferência "
+                   "de atípicos: o SAMP, avaliado para isso, traz meses isolados com valores declarados com erro de ordem de "
+                   "grandeza, e o dicionário não define as linhas de DscDetalheMercado. Sem regra de tratamento validada contra "
+                   "fonte independente, a tarifa média e a carga tributária observada não são publicadas."),
+        "alternativa_avaliada": None,
+    }
+    v_samp = _vintage_recente(con, DS_SAMP, RECURSO_SAMP)
+    if v_samp:
+        try:
+            serie_samp, n_samp = fa.samp_residencial_mensal(v_samp["arquivo"])
+        except Exception as e:  # arquivo com esquema novo: registrado, sem número inventado
+            serie_samp, n_samp = None, None
+            tarifa_media["alternativa_avaliada"] = {"erro_leitura": f"{type(e).__name__}: {e}"[:300]}
+        if serie_samp is not None:
+            atipicos_samp = []
+            for (cn, sg, det), meses in sorted(serie_samp.items()):
+                if det == "Energia TE (kWh)":
+                    continue
+                for mes_s, val in sorted(meses.items()):
+                    outros = [x for m_, x in meses.items() if m_ != mes_s]
+                    med_o = c.quantil(outros, 0.5) if outros else None
+                    if med_o and med_o > 0 and val > FATOR_ATIPICO_SAMP * med_o:
+                        atipicos_samp.append({"cnpj": cn, "sigla": sg, "linha": det, "mes": mes_s, "valor_rs": c.r(val, 2),
+                                              "mediana_outros_meses_rs": c.r(med_o, 2), "razao": c.r(val / med_o, 1)})
+            dists = sorted({k[0] for k in serie_samp})
+            tarifa_media["alternativa_avaliada"] = {
+                "orgao": "ANEEL", "conjunto": "SAMP: Sistema de Acompanhamento de Informações de Mercado para Regulação Econômica",
+                "url": URL_SAMP, "recurso": RECURSO_SAMP, "arquivo": v_samp["arquivo"], "sha256": v_samp["sha256"],
+                "capturado_em": v_samp["capturado_em"], "publicado_em": v_samp.get("publicado_em"), "linhas_lidas": n_samp,
+                "recorte": ("subgrupo B1, modalidade convencional, classe e subclasse residencial, sem detalhe, mercado 'Regular', "
+                            "opção de energia cativa; linhas Receita Energia (R$) e ICMS (R$) somadas por distribuidora e mês"),
+                "regra_atipico": (f"mês com valor acima de {FATOR_ATIPICO_SAMP:g} vezes a mediana dos outros meses do ano na mesma "
+                                  "distribuidora e linha"),
+                "distribuidoras_no_recorte": len(dists),
+                "distribuidoras_com_mes_atipico": len({a["cnpj"] for a in atipicos_samp}),
+                "meses_atipicos": atipicos_samp,
+            }
+
+    documentos = _normas_status(con, DOCUMENTOS)
+    estado_doc = {d_["id"]: d_["estado"] for d_ in documentos}
+    creditos["documento_estado"] = {d_: estado_doc.get(d_) for d_ in creditos["documento"]}
+    if financiamento:
+        financiamento["documento_estado"] = estado_doc.get(financiamento["documento"])
 
     # ---- proveniências
     meta_t = ckan.meta_local(DS_TARIFAS)
@@ -1665,6 +2063,13 @@ def construir(con, ctx):
         "Agrupamento em energia, transmissão, distribuição, perdas, encargos e outros é classificação do observatório a partir do código de cada componente; a definição oficial das componentes está no PRORET, submódulo 7.1, cujo arquivo não pôde ser lido (acesso automatizado bloqueado em git.aneel.gov.br).",
         "Tributos e iluminação pública não fazem parte da tarifa e não aparecem na composição.",
         "Componentes com valor negativo (devoluções e ajustes de processos anteriores) reduzem o grupo e são mantidos.",
+        (f"Valor negativo em {', '.join(sorted(RECLASSIFICA_SE_NEGATIVO))} não é custo daquela natureza e sai dos encargos para o grupo "
+         f"créditos ({len(creditos_lista)} distribuidoras na data; lista em composicao.creditos): leitura do observatório, com a "
+         "origem provável (repasse da repactuação da UBP) declarada, porque o PRORET não pôde ser lido."),
+        (f"{len(atipicas)} componentes atípicas na data (sinal contrário ao grupo de custo ou módulo muito acima da mesma componente "
+         "nas outras distribuidoras, com pelo menos 5% da tarifa) ficam listadas em composicao.componentes_atipicas e em "
+         "validacao.ressalvas, conferidas no arquivo original."),
+        "A mediana de cada grupo não soma a tarifa mediana; a composição que fecha com o total é a média simples entre distribuidoras (composicao.media).",
     ]
     prov_comp = c.proveniencia(
         indicador="Composição da tarifa B1 residencial de aplicação por grupo de componentes",
@@ -1676,7 +2081,8 @@ def construir(con, ctx):
         transformacoes=["recorte B1 residencial convencional, tarifa de aplicação, R$/MWh", "soma das componentes por grupo",
                         "conferência: soma das parcelas = TE e TUSD publicadas no mesmo conjunto (tolerância 0,01 R$/MWh)",
                         "conferência cruzada: TE e TUSD do conjunto de componentes = TE e TUSD do conjunto de tarifas (tolerância 0,005 R$/MWh)"],
-        formula="grupo(g) = Σ componentes c com GRUPO(c) = g; participação = grupo ÷ (TE + TUSD)",
+        formula=("grupo(g) = Σ componentes c com GRUPO(c, valor) = g; participação = grupo ÷ (TE + TUSD); composição média: "
+                 "Σ distribuidoras grupo(g) ÷ Σ distribuidoras (TE + TUSD)"),
         limitacoes=lim_comp, download=_url(CSV_COMP), notas_fonte=meta_c.get("notas"))
     prov_band = c.proveniencia(
         indicador="Bandeira tarifária acionada por mês e adicionais por patamar", natureza="OBSERVADO",
@@ -1702,6 +2108,33 @@ def construir(con, ctx):
         capturado_em=cap(snap_i), snapshot=snap_i, publicacao_informada=False,
         limitacoes=["IPCA mede preços ao consumidor em geral; a tarifa é um dos itens. Comparar reajuste com IPCA não diz se a tarifa está certa, só se subiu mais ou menos que a inflação no mesmo período."],
         download=_url(CSV_IPCA))
+    # simulador: estimativa por cenário que combina tarifas, bandeira e regras conferidas
+    # em normas; natureza e fontes próprias (não é a proveniência da tarifa do ranking)
+    snap_n = c.snapshot_de(con, DS_NORMAS)
+    snap_sim = _snapshot_composto(snap_t, snap_b, snap_n)
+    nao_conferidas = [f"{r_['id']}: {pt['texto']} ({pt['motivo'] or 'norma não conferida na captura'})"
+                      for r_ in regras_sim for pt in r_["partes"] if pt["estado"] != "CONFERIDA"]
+    prov_sim = c.proveniencia(
+        indicador="Estimativa do valor da energia na fatura por classe, consumo, ligação e bandeira (simulador)",
+        natureza="ESTIMADO",
+        fonte=_fonte_prov("ANEEL e Câmara dos Deputados",
+                          "Tarifas de aplicação das distribuidoras; Bandeiras Tarifárias; Lei nº 15.235/2025 e páginas oficiais da ANEEL",
+                          "tarifas-homologadas-distribuidoras-energia-eletrica.csv; Bandeira Tarifária - Acionamento; "
+                          "Bandeira Tarifária - Adicional; " + "; ".join(n["id"] for n in NORMAS),
+                          URL_TARIFAS, fonte_t["url_primaria"],
+                          f"{ckan.LICENCA_ANEEL} (conjuntos da ANEEL); {LIC_GOVBR}; {LIC_LEI}"),
+        unidade="R$/mês", frequencia="por cenário, com a vigência da data de referência",
+        periodo={"inicio": dia_ref, "fim": dia_ref}, cobertura=per_t, capturado_em=cap(snap_sim), snapshot=snap_sim,
+        transformacoes=["tarifa de aplicação (TE + TUSD) da classe e faixa vigente na data de referência",
+                        "faixas da Tarifa Social (80 kWh) e do Desconto Social (120 kWh) conforme as regras em simulador.regras_texto",
+                        "custo de disponibilidade de 30, 50 ou 100 kWh conforme a ligação, onde a regra se aplica",
+                        "adicional da bandeira por kWh sujeito à bandeira"],
+        formula="total = Σ faixas (kWh da faixa × (TE + TUSD) da faixa ÷ 1000) − descontos + kWh sujeitos à bandeira × adicional ÷ 1000",
+        limitacoes=["Estimativa sem ICMS, PIS/Pasep, Cofins e contribuição de iluminação pública: não é a fatura.",
+                    "Leituras aplicadas que a norma lida não cobre (declaradas, não conferidas): " + ("; ".join(nao_conferidas) or "nenhuma"),
+                    "Tarifa da classe não publicada na vigência torna a simulação indisponível; não se usa tarifa de outra classe.",
+                    "Bandeiras não se aplicam a consumidores de sistemas isolados."],
+        download=_url(CSV_VIGENTES), notas_fonte=None)
     prov_reaj = c.proveniencia(
         indicador="Variação da tarifa B1 residencial de aplicação entre vigências e comparação com o IPCA",
         natureza="CALCULADO", fonte=fonte_t, unidade="%", frequencia="por evento tarifário",
@@ -1734,7 +2167,8 @@ def construir(con, ctx):
     prov_cde = None
     if financiamento:
         prov_cde = c.proveniencia(
-            indicador="Custeio anual da CDE por rubrica de despesa e de receita", natureza="OBSERVADO",
+            indicador="Orçamento anual da CDE por rubrica de despesa e de receita (aprovado ou previsto pela ANEEL)",
+            natureza="PREVISTO",
             fonte=_fonte_prov("ANEEL", meta_cde.get("titulo") or "Conta Desenvolvimento Energético (CDE) - Custeio dos Benefícios Tarifários",
                               "cde-custeio-beneficios-tarifarios.csv", URL_CDE, URL_CDE, meta_cde.get("licenca") or ckan.LICENCA_ANEEL),
             unidade="R$ (nominal)", frequencia="anual",
@@ -1744,7 +2178,9 @@ def construir(con, ctx):
             transformacoes=["nome da rubrica aparado ('RGR ' e 'RGR' são a mesma rubrica em anos diferentes)",
                             "grupo de leitura atribuído pelo nome da rubrica (classificação do observatório)",
                             "participação das quotas = quotas ÷ receita total do ano; da Tarifa Social = rubrica ÷ despesa total"],
+            formula="quotas_pct = Σ 'Quotas CDE ...' ÷ Σ receitas × 100; tarifa_social_pct = 'Subsídio Baixa Renda' ÷ Σ despesas × 100",
             limitacoes=[financiamento["nota"],
+                        "Valores de orçamento: o que a CDE efetivamente arrecadou e gastou no ano não está neste conjunto.",
                         "O dicionário do conjunto (versão 2.0) descreve o valor como custeio da Tarifa Social, mas o arquivo traz todas as rubricas da CDE; a leitura segue o conteúdo do arquivo.",
                         "Rubrica publicada sem valor fica sem valor (não é zero) e é listada no ano.",
                         "Valores nominais: comparar anos distantes exige correção monetária."],
@@ -1759,15 +2195,21 @@ def construir(con, ctx):
                  f"{universo_t.get('unidade_diferente_de_mwh', 0)} linhas do recorte com unidade diferente de MWh ficaram de fora; nenhuma foi convertida"),
         ev.teste("componentes somam TE e TUSD (0,01 R$/MWh)",
                  _veredito(bool(composicao) and n_fecha == len(composicao), n_fecha > 0 or not composicao),
-                 f"{n_fecha} de {len(composicao)} distribuidoras com componentes"),
+                 f"{n_fecha} de {len(composicao)} distribuidoras com componentes; "
+                 f"{len(rec_cruzada['sem_componentes'])} sem componentes para o ato vigente não entram nesta conferência"),
         ev.teste("TE e TUSD iguais nos conjuntos de tarifas e de componentes (0,005 R$/MWh)",
-                 _veredito(not rec_cruzada["divergentes"], True),
+                 _veredito(not rec_cruzada["divergentes"] and not rec_cruzada["sem_componentes"], True),
                  f"{rec_cruzada['conferidas']} conferidas, {len(rec_cruzada['divergentes'])} divergentes, "
-                 f"{len(rec_cruzada['sem_componentes'])} sem componentes publicadas para o ato vigente"),
+                 f"{len(rec_cruzada['sem_componentes'])} sem componentes publicadas para o ato vigente"
+                 + (f" ({', '.join(x or 'sem sigla' for x in rec_cruzada['sem_componentes'])})" if rec_cruzada["sem_componentes"] else "")),
     ]
+    # cobertura parcial não é aprovação: distribuidora sem componentes para o ato fica sem
+    # a conferência cruzada, e o resultado sai como ressalva
     rec_tarifa = ev.reconciliacao(
-        "TE e TUSD de cada distribuidora conferidas contra o conjunto Componentes Tarifárias (outro recurso da ANEEL, lido por outro código)",
-        _veredito(not rec_cruzada["divergentes"], True), "0,005 R$/MWh por parcela")
+        (f"TE e TUSD de cada distribuidora conferidas contra o conjunto Componentes Tarifárias (outro recurso da ANEEL, lido por "
+         f"outro código): {rec_cruzada['conferidas']} de {resumo['n']} conferidas, {len(rec_cruzada['divergentes'])} divergentes, "
+         f"{len(rec_cruzada['sem_componentes'])} sem componentes para o ato vigente"),
+        _veredito(not rec_cruzada["divergentes"] and not rec_cruzada["sem_componentes"], True), "0,005 R$/MWh por parcela")
     med_bruta = c.quantil(totais, 0.5)
     ev_mediana = ev.construir(
         indicador="Tarifa residencial B1 mediana entre distribuidoras",
@@ -1871,7 +2313,8 @@ def construir(con, ctx):
             formula="mediana entre distribuidoras de (TE + TUSD em 'até') ÷ (TE + TUSD em 'de') − 1; IPCA pela razão de números-índice dos mesmos meses",
             exclusoes=[(f"{j12['excluidas_sem_tarifa_nas_duas_datas']} "
                         + ("distribuidora com tarifa" if j12["excluidas_sem_tarifa_nas_duas_datas"] == 1 else "distribuidoras com tarifa")
-                        + " em só uma das datas")],
+                        + " em só uma das datas"),
+                       f"{len(j12['excluidas_mudanca_perimetro'])} com mudança de perímetro (incorporação) dentro da janela"],
             cobertura=f"{j12['n']} distribuidoras", tratamento_ausencia="sem tarifa em uma das datas, a distribuidora fica fora; mês sem índice publicado não é interpolado",
             revisoes=snap_t.get("revisoes"),
             testes=[ev.teste("IPCA 12 meses pela razão de índices = variação publicada pelo IBGE (0,01 ponto percentual)",
@@ -1941,11 +2384,13 @@ def construir(con, ctx):
                              f"nos anos {', '.join(sorted(checagem['total_vs_categorias']['divergem_por_ano']))}; o ano exibido usa a soma das categorias"),
                     ev.teste("série inteira: Total = previsão + ajuste por categoria (R$ 0,05), conferido na ingestão",
                              _veredito(checagem["total_vs_previsao_mais_ajuste"]["divergem"] == 0, True),
-                             f"{checagem['total_vs_previsao_mais_ajuste']['divergem']} de {checagem['total_vs_previsao_mais_ajuste']['comparacoes']} divergem")],
-            reconciliacao=ev.reconciliacao(
-                "soma das categorias contra a soma da linha Total publicada no mesmo ano",
-                _veredito(ult_sub["total_publicado"] is not None and abs(ult_sub["total_publicado"] - ult_sub["soma_categorias"]) <= max(1.0, 1e-6 * abs(ult_sub["soma_categorias"] or 0)), True),
-                "R$ 1 ou uma parte por milhão"),
+                             f"{checagem['total_vs_previsao_mais_ajuste']['divergem']} de {checagem['total_vs_previsao_mais_ajuste']['comparacoes']} divergem"),
+                    # controle interno (o mesmo arquivo), não reconciliação externa: não há total oficial
+                    # independente dos repasses por categoria com o mesmo grão
+                    ev.teste("controle interno: soma das categorias contra a soma da linha Total publicada no mesmo ano (R$ 1 ou uma parte por milhão)",
+                             _veredito(ult_sub["total_publicado"] is not None and abs(ult_sub["total_publicado"] - ult_sub["soma_categorias"]) <= max(1.0, 1e-6 * abs(ult_sub["soma_categorias"] or 0)), True),
+                             f"categorias {_br(ult_sub['soma_categorias'], 0)} x linha Total {_br(ult_sub['total_publicado'], 0)}")],
+            reconciliacao=None,
             download=[{"rotulo": "Subsídios por ano, distribuidora e categoria (CSV)", "url": _url(CSV_SUBS)}],
             reproducao=REPRODUCAO)
 
@@ -1970,12 +2415,23 @@ def construir(con, ctx):
                 cobertura=f"{len(cde['anos'])} anos ({cde['anos'][0]} a {cde['anos'][-1]})",
                 tratamento_ausencia="rubrica sem valor publicado não entra e não vira zero",
                 revisoes=snap_cde.get("revisoes"),
-                testes=[ev.teste("despesa = receita em todos os anos (R$ 1)", _veredito(all(x["fecha"] for x in cde["totais"]), True),
-                                 f"{sum(1 for x in cde['totais'] if x['fecha'])} de {len(cde['totais'])} anos"),
-                        ev.teste("rubrica repetida no mesmo ano com valor diferente", _veredito(int(uni_cde.get("rubrica_repetida_com_valor_diferente", 0) or 0) == 0, True),
+                testes=[ev.teste("controle interno: despesa = receita em todos os anos (R$ 1)", _veredito(all(x["fecha"] for x in cde["totais"]), True),
+                                 f"{sum(1 for x in cde['totais'] if x['fecha'])} de {len(cde['totais'])} anos; identidade do orçamento "
+                                 "(a quota fecha a diferença), não conferência externa"),
+                        ev.teste("controle interno: rubrica repetida no mesmo ano com valor diferente", _veredito(int(uni_cde.get("rubrica_repetida_com_valor_diferente", 0) or 0) == 0, True),
                                  f"{uni_cde.get('rubrica_repetida_com_valor_diferente', 0)} casos")],
-                reconciliacao=ev.reconciliacao("soma das despesas contra a soma das receitas publicadas no mesmo ano",
-                                               _veredito(t_ult["fecha"], True), "R$ 1"),
+                # reconciliação externa: total do arquivo contra o orçamento divulgado pela ANEEL.
+                # Sai como ressalva mesmo quando confere, porque só o título das notícias pôde ser
+                # lido (corpo restrito no gov.br) e a página não está no bronze
+                reconciliacao=ev.reconciliacao(
+                    "despesa total do ano no arquivo contra o orçamento da CDE divulgado pela ANEEL: "
+                    + "; ".join(f"{x['ano']}, {x['situacao']}: publicado R$ {_br(x['publicado_rs'] / 1e9, 2)} bilhões, arquivo "
+                                f"R$ {_br(x['arquivo_despesa_rs'] / 1e9, 3) if x['arquivo_despesa_rs'] is not None else 'sem ano'} bilhões, "
+                                f"{'confere' if x['confere'] else 'diverge' if x['confere'] is False else 'sem par'}"
+                                for x in financiamento["reconciliacao_externa"])
+                    + f". Acesso: {ACESSO_REFERENCIAS_CDE}",
+                    ("reprovado" if any(x["confere"] is False for x in financiamento["reconciliacao_externa"]) else "ressalva"),
+                    "meia unidade da última casa publicada no título (R$ 0,05 bilhão para uma casa, R$ 0,005 bilhão para duas)"),
                 download=[{"rotulo": "Custeio da CDE por rubrica (CSV)", "url": _url(CSV_CDE)}], reproducao=REPRODUCAO)
         financiamento["proveniencia"] = prov_cde
         financiamento["evidencia"] = ev_cde
@@ -2006,22 +2462,30 @@ def construir(con, ctx):
                     "evidencia_mediana": ev_mediana},
         "composicao": {"grupos": [{"id": g, "rotulo": r_, "componentes": [{"codigo": cd, "descricao": DESCRICAO_COMPONENTE.get(cd)} for cd in cods]}
                                   for g, r_, cods in GRUPOS],
-                       "classificacao": "observatório, pelo código da componente (PRORET 7.1 não lido: acesso bloqueado)",
-                       "mediana_rs_mwh": comp_med, "cde": cde_resumo, "distribuidoras": composicao,
+                       "classificacao": ("observatório, pelo código da componente (PRORET 7.1 não lido: acesso bloqueado); valor "
+                                         "negativo em componente de custo listada em creditos.codigos vai para o grupo créditos"),
+                       # medianas grupo a grupo (não somam o total) e composição média que fecha com o total
+                       "mediana_rs_mwh": comp_med, "mediana": mediana_resumo, "media": media_comp,
+                       "cde": cde_resumo, "creditos": creditos, "componentes_atipicas": atipicas,
+                       "regra_atipico": (f"componente com sinal contrário à natureza do grupo de custo ou com módulo mais de "
+                                         f"{ATIPICO_FATOR_MEDIANA:g} vezes a mediana da mesma componente entre as distribuidoras, "
+                                         f"com pelo menos {ATIPICO_PCT_TARIFA:g}% da tarifa"),
+                       "distribuidoras": composicao,
                        "reconciliacao": {"conferidas": rec_cruzada["conferidas"], "divergentes": rec_cruzada["divergentes"],
                                          "sem_componentes": rec_cruzada["sem_componentes"], "duplicatas_fonte": duplicatas_comp},
                        "excluidos": ["ICMS", "PIS/Pasep", "Cofins", "Contribuição para Iluminação Pública"],
                        "proveniencia": prov_comp, "evidencia": ev_comp},
         "simulador": {"classes": CLASSES_SIMULADOR, "chaves_tarifa": {k: {"subgrupo": s, "subclasse": sc} for k, (s, sc) in CLASSES_TARIFA.items()},
-                      "regras": REGRAS_SIMULADOR, "regras_texto": REGRAS_TEXTO, "normas": normas,
-                      "estado_regras": {r_["id"]: estado_norma.get(r_["norma"]) for r_ in REGRAS_TEXTO},
+                      "regras": REGRAS_SIMULADOR, "regras_texto": regras_sim, "normas": normas,
+                      # estado de cada regra pelas partes: trecho normativo conferido e leitura aplicada são coisas distintas
+                      "estado_regras": estados_regras,
                       "bandeiras": patamares, "bandeira_vigente": band_vigente, "distribuidoras": sim_dist,
                       "cobertura_classes": cobertura_classes,
                       "casos_referencia": {"cnpj": alvo["cnpj"], "sigla": alvo["sigla"], "criterio": "distribuidora com tarifa B1 mais próxima da mediana",
                                            "casos": casos},
                       "rotulo": "Estimativa sem tributos (ICMS, PIS/Pasep e Cofins) e sem contribuição de iluminação pública.",
                       "formula": "total = Σ faixas (kWh da faixa × (TE + TUSD) da faixa ÷ 1000) − descontos + kWh sujeitos à bandeira × adicional ÷ 1000",
-                      "proveniencia": prov_tarifa, "evidencia": ev_sim},
+                      "proveniencia": prov_sim, "evidencia": ev_sim},
         "reajustes": {"ultimos": ultimos, "historico_url": _url(JSON_HIST), "comparacao_inflacao": comparacao,
                       "proveniencia": prov_reaj, "proveniencia_ipca": prov_ipca, "evidencia": ev_reaj,
                       "efeito_medio": {"disponivel": False,
@@ -2039,6 +2503,11 @@ def construir(con, ctx):
                       "nota": NOTA_SUBSIDIOS, "checagem": checagem, "competencias_futuras_excluidas": futuros,
                       "proveniencia": prov_subs, "evidencia": ev_subs},
         "financiamento_cde": financiamento,
+        # incorporações registradas (mudança de perímetro), conferidas nos dados de tarifa
+        "incorporacoes": incorporacoes,
+        "tarifa_media_fornecimento": tarifa_media,
+        # documentos oficiais que sustentam leituras do módulo (trechos conferidos a cada captura)
+        "documentos": documentos,
         "conflitos_fonte": {
             "total": len(conflitos),
             "por_subclasse": [{"subgrupo": k[0], "subclasse": k[1], "base": k[2], "n": n_}

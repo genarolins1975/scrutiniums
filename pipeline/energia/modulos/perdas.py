@@ -78,6 +78,7 @@ CSV_ACUM = "perdas_acumulado_ano.csv"
 JSON_ANUAL = "perdas_anual.json"
 JSON_EVID = "perdas_evidencias.json"
 JSON_MUN = "perdas_municipios.json"
+JSON_NACIONAL = "perdas_nacional.json"
 
 
 def _url(nome):
@@ -92,7 +93,7 @@ REGISTRO = {
          "licenca": LICENCA_ANEEL, "paginas": PAGINA,
          "downloads": [_url(CSV_ANUAL), _url(CSV_MENSAL), _url(CSV_NACIONAL), _url(CSV_PT), _url(CSV_ACUM)],
          "quebras": [
-             {"data": "2024-01-01", "descricao": "Leiaute da REN ANEEL 1.003/2022: linhas por nível de tensão com total próprio; a energia injetada publicada passa a ser bruta e deixa de fechar o balanço nas distribuidoras com geração conectada à rede; perdas técnicas e não técnicas deixam de ser publicadas para cerca de metade das distribuidoras."},
+             {"data": "2024-01-01", "descricao": "Leiaute da REN ANEEL 1.003/2022: linhas por nível de tensão com total próprio; a energia injetada publicada deixa de fechar o balanço com a perda calculada pela própria fonte (a fonte não explica a diferença); perdas técnicas e não técnicas deixam de ser publicadas para cerca de metade das distribuidoras."},
              {"data": "2025-01-01", "descricao": "A ANEEL passa a calcular energia requerida e perdas não técnicas sobre o mercado medido em vez do faturado (Despacho 1.220/2025-STR)."},
          ]},
         {"orgao": "ANEEL", "nome": "componentes-tarifarias", "slug": "aneel-componentes-tarifarias", "dataset_silver": DS_TARIFA,
@@ -115,16 +116,17 @@ REGISTRO = {
          "licenca": LICENCA_IBGE, "paginas": PAGINA, "downloads": [_url(CSV_CONTEXTO)], "quebras": []},
     ],
     "arquivos": {
-        _url(CSV_ANUAL): "cnpj; sigla; nome; classificacao; ano; meses (competências publicadas no ano); completo (12 meses); injetada_publicada_mwh; injetada_referencia_mwh (denominador; ver origem_injetada); origem_injetada (publicada, requerida ou mista); perdas_totais_mwh (valor medido da fonte); taxa_total_pct (perdas totais ÷ injetada de referência); perdas_tecnicas_mwh (estimativa regulatória publicada pela fonte); taxa_tecnica_pct; pnt_mwh (perdas totais − técnicas, valor medido); pnt_injetada_pct; mercado_bt_mwh (energia medida em BT: cativo, consumo próprio e livre); pnt_bt_pct; perdas_totais_faturado_mwh; taxa_total_faturado_pct; perdas_linha_antiga_mwh (linha antiga Perdas do SAMP, base não identificada pela fonte; nunca somada à série medida); residuo_mwh (injetada publicada − fornecida − irregular − perdas); residuo_pct_injetada; reconciliacao (fecha, residuo_pequeno, residuo_relevante, sem_componentes); alertas. Energia em MWh; percentuais em %. Somas sobre os meses publicados no ano (coluna meses); só completo = 1 entra em agregados e comparações, e nada é escalado para 12 meses. Vazio = ausência (a fonte não publicou o componente em algum dos meses presentes); zero é zero.",
-        _url(CSV_MENSAL): "cnpj; competencia (AAAA-MM); valores em kWh como publicados no SAMP Balanço: injetada_publicada, injetada_referencia, origem_injetada, representacao (linha usada: todos=niveis, total=niveis, todos, total, niveis), fornecida_medida, outros_requisitos, irregular_faturada, perdas_totais_medidas, perdas_tecnicas, pnt_medidas, perdas_totais_faturadas, pnt_faturadas, perdas_linha_antiga, mercado_bt_medido, mmgd_injetada, residuo, conflitos (grandezas cujas representações divergem no mês), conflitos_abertos (divergência que nem a soma dos níveis nem o fechamento do balanço arbitrou; gera alerta). Vazio = linha ausente na fonte.",
-        _url(CSV_NACIONAL): "ano; universo (concessionarias, permissionarias, todas); completo (0 = ano aberto, sem soma anual); n_distribuidoras (agentes com 12 meses e sem alerta físico); injetada_referencia_mwh; perdas_totais_mwh; taxa_total_pct; n_com_tecnica; injetada_com_tecnica_mwh; perdas_tecnicas_mwh; taxa_tecnica_pct; pnt_mwh; mercado_bt_mwh; pnt_bt_pct; excluidos (agentes-ano fora da soma e motivo). Taxas agregadas = 100 × Σ numeradores ÷ Σ denominadores do mesmo subconjunto.",
-        _url(CSV_PT): "cnpj; sigla; inicio (AAAA-MM); fim (AAAA-MM); percentual (% da energia injetada, constante no trecho); meses; resolucao_tarifaria (REH cuja vigência começa no mês de transição, quando existe); inicio_vigencia_reh; dia_prorata_diagnostico (dia em que a nova taxa teria começado, reconstituído da média pró-rata do mês de transição; diagnóstico, não data de vigência: coincide com o início da REH em poucos casos). A REH é associada por coincidência de mês; a fonte não liga o percentual ao ato.",
+        _url(CSV_ANUAL): "cnpj; sigla; nome; classificacao; ano; meses (competências publicadas no ano); completo (12 meses); injetada_publicada_mwh; injetada_referencia_mwh (denominador; ver origem_injetada); origem_injetada (publicada, requerida ou mista); perdas_totais_mwh (valor medido da fonte); taxa_total_pct (perdas totais ÷ injetada de referência); perdas_tecnicas_mwh (estimativa regulatória publicada pela fonte, só a do valor medido); taxa_tecnica_pct (sobre a injetada de referência); pnt_mwh (linha publicada 'Perdas Não-Técnicas', valor medido); pnt_injetada_pct; mercado_bt_mwh (energia medida em BT: cativo, consumo próprio e livre); pnt_bt_pct; perdas_totais_faturado_mwh; taxa_total_faturado_pct; perdas_linha_antiga_mwh (linha antiga Perdas do SAMP, base não identificada pela fonte; nunca somada à série medida); residuo_mwh (injetada publicada − fornecida − irregular − perdas); residuo_pct_injetada; reconciliacao (fecha, residuo_pequeno, residuo_relevante, sem_componentes); alertas (perda_total_negativa, perda_total_maior_que_injetada, fornecida_maior_que_injetada, balanco_nao_fecha, injetada_nao_positiva, representacoes_conflitantes: fora de agregados e comparações); taxa_tecnica_injetada_publicada_pct (técnica sobre a injetada publicada, a base em que a fonte aplica o percentual regulatório); residuo_decomposicao_mwh (perdas totais − técnicas − não técnicas); decomposicao (fecha, diferenca_pequena, nao_fecha, sem_separacao; nao_fecha fica fora dos agregados de técnica e não técnica); variacao_injetada_ano_anterior_pct; quebra_escala_ano_anterior (1 = injetada de referência mudou mais de 30% entre dois anos completos); absorcao_ano_anterior (1 = absorção provável observada no SAMP entre os dois anos); vazio no primeiro ano da série. Energia em MWh; percentuais em %. Somas sobre os meses publicados no ano (coluna meses); só completo = 1 entra em agregados e comparações, e nada é escalado para 12 meses. Vazio = ausência (a fonte não publicou o componente em algum dos meses presentes); zero é zero.",
+        _url(CSV_MENSAL): "cnpj; competencia (AAAA-MM); valores em kWh como publicados no SAMP Balanço: injetada_publicada, injetada_referencia, origem_injetada, representacao (linha usada: todos=niveis, total=niveis, todos, total, niveis), fornecida_medida, outros_requisitos, irregular_faturada, perdas_totais_medidas, perdas_tecnicas, pnt_medidas, perdas_totais_faturadas, pnt_faturadas, perdas_linha_antiga, mercado_bt_medido, mmgd_injetada, residuo, conflitos (grandezas cujas representações divergem no mês), conflitos_abertos (divergência que nem a soma dos níveis nem o fechamento do balanço arbitrou; gera alerta), perdas_tecnicas_faturadas (linha técnica do valor faturado, diferente da medida em 13% dos meses; nunca usada no lugar dela), residuo_decomposicao (perdas totais − técnicas − não técnicas medidas). perdas_tecnicas é só a do valor medido. Vazio = linha ausente na fonte.",
+        _url(CSV_NACIONAL): "ano; universo (concessionarias, permissionarias, todas); completo (0 = ano aberto, sem soma anual); n_distribuidoras (agentes com 12 meses e sem alerta físico); injetada_referencia_mwh; perdas_totais_mwh; taxa_total_pct; n_com_tecnica; injetada_com_tecnica_mwh; perdas_tecnicas_mwh; taxa_tecnica_pct; pnt_mwh; mercado_bt_mwh; pnt_bt_pct; excluidos (agentes-ano fora da soma e motivo); cobertura_tecnica_pct (injetada das que entram na técnica ÷ injetada das válidas); taxa_tecnica_injetada_publicada_pct; cobertura_bt_pct (mercado BT das que entram na não técnica ÷ mercado BT das válidas); universo_*_igual_ano_anterior (1 = mesmo conjunto de distribuidoras do ano anterior naquela medida); n_mesmas_* e *_mesmas_ano_anterior / *_mesmas (a mesma medida no ano anterior e no ano, só sobre as distribuidoras válidas nos dois anos e sem mudança de escala entre eles: é aí que se lê a variação anual); fora_por_mudanca_de_universo. Taxas agregadas = 100 × Σ numeradores ÷ Σ denominadores do mesmo subconjunto; a diferença entre linhas de universos diferentes é composição, não variação.",
+        _url(CSV_PT): "cnpj; sigla; inicio (AAAA-MM); fim (AAAA-MM); percentual (% da energia injetada, constante no trecho); meses; resolucao_tarifaria (REH cuja vigência começa no mês de transição, quando existe); inicio_vigencia_reh; dia_prorata_diagnostico (dia em que a nova taxa teria começado, reconstituído da média pró-rata do mês de transição; diagnóstico, não data de vigência: coincide com o início da REH em poucos casos); classe (referencia = 6 meses ou mais; curto = possível coincidência de arredondamento, fora da gold); troca_pp (variação contra o trecho anterior). A REH só é associada quando o percentual muda ao menos 0,02 p.p. e o início de vigência cai no mês da troca; é coincidência de datas, a fonte não liga o percentual ao ato.",
         _url(CSV_TARIFA): "cnpj; sigla; resolucao; inicio_vigencia; fim_vigencia; base (Base Econômica ou Tarifa de Aplicação); tusd_pt; tusd_pnt; tusd_per_rb_d; te_per_rb; perdas (soma das quatro); tusd; te; total (TUSD + TE); participacao_perdas_pct; participacao_pnt_pct. Tarifa residencial B1 convencional, subclasse residencial, R$/MWh nominais, sem tributos.",
         _url(CSV_MUN): "cod_ibge; municipio; uf; cnpj; sigla; conjuntos (identificadores dos conjuntos elétricos que ligam o município à distribuidora; vazio no vínculo só por MMGD); empreendimentos_mmgd (da distribuidora no município); confirmado_mmgd (1 = há ao menos um); origem_vinculo (relacao = conjunto × município da ANEEL; mmgd = município fora da relação, ligado pelo cadastro de MMGD com ao menos 10 empreendimentos e 5% dos do município); distribuidoras_no_municipio; codigo_ibge_valido (1 = existe na lista de municípios do IBGE); distribuidora_no_samp (1 = a distribuidora tem balanço no SAMP e, portanto, valor de perdas).",
         _url(CSV_CONTEXTO): "cnpj; sigla; municipios_confirmados; municipios_exclusivos; populacao_confirmados (Censo 2022, municípios inteiros, sem rateio); populacao_exclusivos; cobertura_exclusivos_pct; renda_media_pc_confirmados_rs (média domiciliar per capita, ponderada por moradores); renda_media_pc_exclusivos_rs; area_km2_confirmados.",
-        _url(CSV_ACUM): "nivel (universo ou distribuidora); chave (universo ou CNPJ); sigla; ano (ano aberto); mes_fim (último mês do recorte janeiro..mes_fim, o mesmo para todas); meses_ou_n (meses publicados da distribuidora ou número de distribuidoras somadas); comparavel (1 = completa e sem alerta nos dois anos); perdas_totais_mwh; injetada_referencia_mwh; taxa_total_pct; pnt_bt_pct; os mesmos campos do mesmo período do ano anterior (sufixo _ano_anterior); alertas. Agregado por universo = Σ numeradores ÷ Σ denominadores das distribuidoras comparáveis. Vazio = ausência.",
+        _url(CSV_ACUM): "nivel (universo ou distribuidora); chave (universo ou CNPJ); sigla; ano (ano aberto); mes_fim (último mês do recorte janeiro..mes_fim, o mesmo para todas); meses_ou_n (meses publicados da distribuidora ou número de distribuidoras somadas); comparavel (1 = completa e sem alerta nos dois anos, sem quebra de escala nem absorção entre os dois recortes); perdas_totais_mwh; injetada_referencia_mwh; taxa_total_pct; pnt_bt_pct; os mesmos campos do mesmo período do ano anterior (sufixo _ano_anterior); alertas. Agregado por universo = Σ numeradores ÷ Σ denominadores das distribuidoras comparáveis. Vazio = ausência.",
         _url(JSON_EVID): "Evidência 'Comprove este número' da taxa de perdas totais do ano de referência de cada distribuidora (CNPJ → objeto de pipeline/energia/evidencia.py), lida sob demanda.",
         _url(JSON_ANUAL): "Série anual por distribuidora (mesmos campos do CSV anual, em listas), para leitura sob demanda pela página.",
+        _url(JSON_NACIONAL): "Série nacional completa (concessionárias, permissionárias e todas), com os mesmos campos da linha nacional da gold (que traz só as concessionárias): cobertura, marca de universo e comparação com o ano anterior nas mesmas distribuidoras; lida sob demanda.",
         _url(JSON_MUN): "Município IBGE → [índice da distribuidora, estado do vínculo: 0 relação sem confirmação, 1 relação confirmada pelo cadastro de MMGD, 2 só pelo cadastro de MMGD]; para o mapa.",
     },
 }
@@ -520,42 +522,76 @@ def _valido_pnt_bt(a):
 
 def _soma_nacional(validos):
     """Razões de somas sobre um subconjunto de agentes-ano válidos. Sem agente válido, tudo
-    é ausente (None): zero só aparece quando a soma de valores publicados dá zero."""
-    if not validos:
-        return {"injetada_mwh": None, "perdas_totais_mwh": None, "taxa_total_pct": None, "n_com_tecnica": 0,
-                "injetada_com_tecnica_mwh": None, "cobertura_tecnica_pct": None, "perdas_tecnicas_mwh": None,
-                "taxa_tecnica_pct": None, "n_com_pnt_bt": 0, "pnt_mwh": None, "mercado_bt_mwh": None, "pnt_bt_pct": None}
-    inj = sum(a["injetada_ref"] for a in validos)
-    ptot = sum(a["perdas_totais_med"] for a in validos)
-    com_pt = [a for a in validos if a["perdas_tecnicas"] is not None]
-    com_bt = [a for a in validos if a["pnt_med"] is not None and a["bt_med"] is not None]
-    inj_pt = sum(a["injetada_ref"] for a in com_pt)
-    pt = sum(a["perdas_tecnicas"] for a in com_pt)
-    pnt = sum(a["pnt_med"] for a in com_bt)
-    bt = sum(a["bt_med"] for a in com_bt)
+    é ausente (None): zero só aparece quando a soma de valores publicados dá zero.
+
+    Técnica: só quem publica a técnica medida nos 12 meses e não tem a decomposição quebrada;
+    não técnica sobre BT: só quem tem não técnica e mercado BT nos 12 meses com a decomposição
+    fechando. As coberturas vão ao lado (técnica em % da injetada de referência; não técnica em
+    % do mercado BT de todas as válidas), porque o universo dessas duas medidas muda muito de
+    um ano para outro (a fonte deixou de publicar a separação de metade das distribuidoras em
+    2024). A chave "_exato" guarda somas em kWh e razões sem arredondamento, para a evidência e
+    as comparações; ela não é publicada (_sem_privados)."""
+    com_pt = [a for a in validos if _valido_tecnica(a)]
+    com_bt = [a for a in validos if _valido_pnt_bt(a)]
+    bt_todos = [a["bt_med"] for a in validos if a["bt_med"] is not None]
+    inj = sum(a["injetada_ref"] for a in validos) if validos else None
+    ptot = sum(a["perdas_totais_med"] for a in validos) if validos else None
+    inj_pt = sum(a["injetada_ref"] for a in com_pt) if com_pt else None
+    inj_pub_pt = (sum(a["injetada"] for a in com_pt)
+                  if com_pt and all(a["injetada"] is not None for a in com_pt) else None)
+    pt = sum(a["perdas_tecnicas"] for a in com_pt) if com_pt else None
+    pnt = sum(a["pnt_med"] for a in com_bt) if com_bt else None
+    bt = sum(a["bt_med"] for a in com_bt) if com_bt else None
+    exato = {"injetada_kwh": inj, "perdas_totais_kwh": ptot, "taxa_total": ap.taxa(ptot, inj),
+             "injetada_com_tecnica_kwh": inj_pt, "perdas_tecnicas_kwh": pt, "taxa_tecnica": ap.taxa(pt, inj_pt),
+             "pnt_kwh": pnt, "mercado_bt_kwh": bt, "pnt_bt": ap.taxa(pnt, bt),
+             "cnpjs_total": frozenset(a.get("cnpj") for a in validos),
+             "cnpjs_tecnica": frozenset(a.get("cnpj") for a in com_pt),
+             "cnpjs_pnt_bt": frozenset(a.get("cnpj") for a in com_bt)}
     return {
-        "injetada_mwh": _r(_mwh(inj)), "perdas_totais_mwh": _r(_mwh(ptot)), "taxa_total_pct": _r(ap.taxa(ptot, inj), 2),
-        "n_com_tecnica": len(com_pt), "injetada_com_tecnica_mwh": _r(_mwh(inj_pt)) if com_pt else None,
-        "cobertura_tecnica_pct": _r(ap.taxa(inj_pt, inj), 1) if com_pt else None,
-        "perdas_tecnicas_mwh": _r(_mwh(pt)) if com_pt else None,
-        "taxa_tecnica_pct": _r(ap.taxa(pt, inj_pt), 2) if com_pt else None,
-        "n_com_pnt_bt": len(com_bt), "pnt_mwh": _r(_mwh(pnt)) if com_bt else None,
-        "mercado_bt_mwh": _r(_mwh(bt)) if com_bt else None,
-        "pnt_bt_pct": _r(ap.taxa(pnt, bt), 2) if com_bt else None,
+        "injetada_mwh": _r(_mwh(inj)), "perdas_totais_mwh": _r(_mwh(ptot)), "taxa_total_pct": _r(exato["taxa_total"], 2),
+        "n_com_tecnica": len(com_pt), "injetada_com_tecnica_mwh": _r(_mwh(inj_pt)),
+        "cobertura_tecnica_pct": _r(ap.taxa(inj_pt, inj), 1),
+        "perdas_tecnicas_mwh": _r(_mwh(pt)), "taxa_tecnica_pct": _r(exato["taxa_tecnica"], 2),
+        "taxa_tecnica_injetada_publicada_pct": _r(ap.taxa(pt, inj_pub_pt), 2),
+        "n_com_pnt_bt": len(com_bt), "pnt_mwh": _r(_mwh(pnt)), "mercado_bt_mwh": _r(_mwh(bt)),
+        "cobertura_bt_pct": _r(ap.taxa(bt, sum(bt_todos)) if bt_todos else None, 1),
+        "pnt_bt_pct": _r(exato["pnt_bt"], 2),
+        "_exato": exato,
     }
 
 
-def _nacional(anuais, grupos, anos, ano_ref=None):
+def _razao_mesmas(anuais, cnpjs, anos, num, den):
+    """Razão de somas de `num` por `den` sobre as mesmas distribuidoras em cada ano de `anos`."""
+    out = []
+    for ano in anos:
+        n = sum(anuais[(c, ano)][num] for c in cnpjs)
+        d = sum(anuais[(c, ano)][den] for c in cnpjs)
+        out.append(_r(ap.taxa(n, d), 2) if cnpjs else None)
+    return out
+
+
+def _nacional(anuais, grupos, anos, ano_ref=None, afetados=frozenset()):
     """Agregados por ano e universo: Σ numeradores ÷ Σ denominadores do mesmo subconjunto.
     Ano posterior ao de referência sai marcado como parcial (a soma anual dele é ausente,
-    porque nenhuma distribuidora tem os 12 meses)."""
-    linhas = []
+    porque nenhuma distribuidora tem os 12 meses).
+
+    O conjunto de distribuidoras somadas muda de um ano para outro (ano incompleto, alerta,
+    início e fim de série, e, na separação técnica, a fonte que deixa de publicar). Por isso
+    cada linha diz se o universo de cada medida é igual ao do ano anterior e traz a comparação
+    com o ano anterior feita só sobre as MESMAS distribuidoras válidas nos dois anos, sem as que
+    mudaram de escala entre eles (`afetados`: pares (cnpj, ano) com quebra de escala ou
+    absorção entre ano−1 e ano). A variação anual se lê nesse bloco, nunca pela diferença entre
+    duas linhas de universos diferentes."""
+    linhas, por_chave = [], {}
     for ano in anos:
         for universo in ("concessionarias", "permissionarias", "todas"):
             sel = [(cnpj, a) for (cnpj, y), a in anuais.items() if y == ano
                    and (universo == "todas" or grupos.get(cnpj) == universo[:-1])]
             if not sel:
                 continue
+            for cnpj, a in sel:
+                a.setdefault("cnpj", cnpj)
             validos = [a for _, a in sel if _valido_para_agregado(a)]
             excl = collections.Counter()
             for _, a in sel:
@@ -563,10 +599,67 @@ def _nacional(anuais, grupos, anos, ano_ref=None):
                     excl["ano_incompleto"] += 1
                 elif a["alertas"]:
                     excl[a["alertas"][0]] += 1
-            linhas.append({"ano": ano, "universo": universo, "parcial": bool(ano_ref and ano > ano_ref),
-                           "n_distribuidoras": len(validos), "n_publicadas": len(sel),
-                           **_soma_nacional(validos), "excluidos": dict(excl)})
+            soma = _soma_nacional(validos)
+            linha = {"ano": ano, "universo": universo, "parcial": bool(ano_ref and ano > ano_ref),
+                     "n_distribuidoras": len(validos), "n_publicadas": len(sel), **soma, "excluidos": dict(excl),
+                     "universo_igual_ano_anterior": None, "mesmas_ano_anterior": None}
+            ant = por_chave.get((ano - 1, universo))
+            if ant is not None and validos and ant["n_distribuidoras"]:
+                ex, ea = soma["_exato"], ant["_exato"]
+                linha["universo_igual_ano_anterior"] = {
+                    "total": ex["cnpjs_total"] == ea["cnpjs_total"], "tecnica": ex["cnpjs_tecnica"] == ea["cnpjs_tecnica"],
+                    "pnt_bt": ex["cnpjs_pnt_bt"] == ea["cnpjs_pnt_bt"]}
+                fora = {c for c in ex["cnpjs_total"] & ea["cnpjs_total"] if (c, ano) in afetados}
+                mesmas = {}
+                for medida, chave, num, den in (("total", "cnpjs_total", "perdas_totais_med", "injetada_ref"),
+                                                ("tecnica", "cnpjs_tecnica", "perdas_tecnicas", "injetada_ref"),
+                                                ("pnt_bt", "cnpjs_pnt_bt", "pnt_med", "bt_med")):
+                    comuns = sorted((ex[chave] & ea[chave]) - fora)
+                    mesmas[f"n_{medida}"] = len(comuns)
+                    mesmas[{"total": "taxa_total_pct", "tecnica": "taxa_tecnica_pct", "pnt_bt": "pnt_bt_pct"}[medida]] = \
+                        _razao_mesmas(anuais, comuns, (ano - 1, ano), num, den) if comuns else None
+                mesmas["fora_por_mudanca_de_universo"] = len(fora)
+                linha["mesmas_ano_anterior"] = mesmas
+            por_chave[(ano, universo)] = linha
+            linhas.append(linha)
     return linhas
+
+
+def _universo_fixo(anuais, grupos, anos, afetados=frozenset(), universo="concessionarias"):
+    """Série com universo fixo: as mesmas distribuidoras, válidas para a não técnica sobre BT
+    (e portanto para a técnica) em todos os `anos`, sem mudança de escala entre eles. É a
+    leitura de tendência que a série nacional não permite quando a fonte muda de universo
+    (48, 33 e 19 concessionárias com a separação em 2023, 2024 e 2025)."""
+    conjuntos = []
+    for ano in anos:
+        conjuntos.append({cnpj for (cnpj, y), a in anuais.items() if y == ano and _valido_pnt_bt(a)
+                          and (universo == "todas" or grupos.get(cnpj) == universo[:-1])})
+    comuns = set.intersection(*conjuntos) if conjuntos else set()
+    comuns = sorted(c for c in comuns if not any((c, ano) in afetados for ano in anos[1:]))
+    linhas = []
+    for ano in anos:
+        sel = [anuais[(c, ano)] for c in comuns]
+        bt_todas = [a["bt_med"] for (cnpj, y), a in anuais.items() if y == ano and _valido_para_agregado(a)
+                    and a["bt_med"] is not None and (universo == "todas" or grupos.get(cnpj) == universo[:-1])]
+        soma = lambda campo: sum(a[campo] for a in sel) if sel else None  # noqa: E731
+        linhas.append({"ano": ano, "taxa_total_pct": _r(ap.taxa(soma("perdas_totais_med"), soma("injetada_ref")), 2),
+                       "taxa_tecnica_pct": _r(ap.taxa(soma("perdas_tecnicas"), soma("injetada_ref")), 2),
+                       "pnt_bt_pct": _r(ap.taxa(soma("pnt_med"), soma("bt_med")), 2),
+                       "pnt_mwh": _r(_mwh(soma("pnt_med"))), "mercado_bt_mwh": _r(_mwh(soma("bt_med"))),
+                       "cobertura_bt_pct": _r(ap.taxa(soma("bt_med"), sum(bt_todas)) if bt_todas and sel else None, 1)})
+    return {"universo": universo, "anos": list(anos), "n_distribuidoras": len(comuns), "cnpjs": comuns,
+            "criterio": ("mesmas distribuidoras com os 12 meses, sem alerta, com não técnica, técnica e mercado BT "
+                         "publicados e decomposição fechando em todos os anos, sem mudança de escala entre eles"),
+            "linhas": linhas}
+
+
+def _sem_privados(obj):
+    """Cópia sem as chaves iniciadas por "_" (valores exatos e conjuntos de trabalho)."""
+    if isinstance(obj, dict):
+        return {k: _sem_privados(v) for k, v in obj.items() if not (isinstance(k, str) and k.startswith("_"))}
+    if isinstance(obj, list):
+        return [_sem_privados(v) for v in obj]
+    return obj
 
 
 def _mes_fim_parcial(mensal, anuais, ano_ref, ano_parcial):
@@ -588,10 +681,11 @@ def _mes_fim_parcial(mensal, anuais, ano_ref, ano_parcial):
     return None
 
 
-def _acumulado(mensal, cadastro, grupos, ano_parcial, mes_fim):
+def _acumulado(mensal, cadastro, grupos, ano_parcial, mes_fim, afetados=frozenset()):
     """Acumulado janeiro..mes_fim do ano aberto e do mesmo período do ano anterior, por
     distribuidora e agregado (Σ numeradores ÷ Σ denominadores sobre as MESMAS distribuidoras
-    nos dois anos, completas e sem alerta nos dois recortes)."""
+    nos dois anos, completas e sem alerta nos dois recortes e sem mudança de escala entre eles:
+    quebra de escala entre os dois recortes ou absorção em `afetados`)."""
     por_dist, pares = {}, []
     for cnpj in cadastro:
         m = mensal[cnpj]
@@ -599,7 +693,10 @@ def _acumulado(mensal, cadastro, grupos, ano_parcial, mes_fim):
         ant = _anual_distribuidora(m, ano_parcial - 1, mes_fim)
         if atual["meses"] == 0:
             continue
-        ok = _valido_para_agregado(atual) and _valido_para_agregado(ant)
+        atual["cnpj"] = ant["cnpj"] = cnpj
+        _, quebra = ap.quebra_escala(ant, atual)
+        ok = (_valido_para_agregado(atual) and _valido_para_agregado(ant) and not quebra
+              and (cnpj, ano_parcial) not in afetados)
         por_dist[cnpj] = {"atual": atual, "anterior": ant, "comparavel": ok}
         if ok:
             pares.append((cnpj, atual, ant))
@@ -626,6 +723,13 @@ def _ano_referencia(anuais, hoje):
 
 
 def _segmentos_com_reh(mensal_cnpj, processos):
+    """Trechos do percentual técnico implícito com a resolução homologatória associada.
+
+    A REH só é associada quando há troca observada de percentual: variação de ao menos
+    LIMIAR_TROCA_PP (0,02 p.p.) contra o trecho anterior (ou, no primeiro trecho, contra a razão
+    do mês anterior ao início) E início de vigência da REH no mês de transição ou no primeiro
+    mês do trecho. Percentual igual ao anterior não tem troca, e a coincidência de mês com uma
+    REH não é ligação (DCELT 7,28% em 2019, 2021 e 2022, cada vez com uma REH diferente)."""
     segs = ap.segmentos_pt(mensal_cnpj)
     inicios = sorted({p["inicio"] for p in processos})
     out = []
@@ -633,9 +737,16 @@ def _segmentos_com_reh(mensal_cnpj, processos):
         ano, mes = int(s["inicio"][:4]), int(s["inicio"][5:7])
         # mês de transição: o anterior ao início do trecho, quando há trecho antes
         ant = f"{ano - (1 if mes == 1 else 0):04d}-{(12 if mes == 1 else mes - 1):02d}"
+        if i > 0:
+            pct_antes = segs[i - 1]["pct"]
+        else:
+            m_ant = mensal_cnpj.get(ant) or {}
+            pct_antes = (round(100.0 * m_ant["perdas_tecnicas"] / m_ant["injetada"], 3)
+                         if m_ant.get("perdas_tecnicas") is not None and m_ant.get("injetada") else None)
+        troca = None if pct_antes is None else round(s["pct"] - pct_antes, 3)
         reh, dia = None, None
         cands = [x for x in inicios if x[:7] in (ant, s["inicio"])]
-        if cands:
+        if cands and troca is not None and abs(troca) >= ap.LIMIAR_TROCA_PP:
             p = next(p for p in processos if p["inicio"] == cands[-1])
             reh = {"resolucao": p["resolucao"], "inicio_vigencia": p["inicio"]}
         if i > 0 and ant in mensal_cnpj:
@@ -643,7 +754,7 @@ def _segmentos_com_reh(mensal_cnpj, processos):
             if m.get("perdas_tecnicas") is not None and m.get("injetada"):
                 pct_mes = 100.0 * m["perdas_tecnicas"] / m["injetada"]
                 dia = ap.dia_inicio_prorata(pct_mes, segs[i - 1]["pct"], s["pct"], int(ant[:4]), int(ant[5:7]))
-        out.append({**s, "reh": reh, "dia_inicio_prorata": dia,
+        out.append({**s, "troca_pp": troca, "reh": reh, "dia_inicio_prorata": dia,
                     "transicao": ant if i > 0 and segs[i - 1]["fim"] < ant else None})
     return out
 
@@ -667,12 +778,14 @@ def _processos_tarifa(con):
     return por_cnpj
 
 
-def _relacao(con, hoje):
+def _relacao(con, hoje, ano=None):
+    """Relação conjunto × distribuidora (limites de continuidade do ano) × município
+    (IndQual), no ano pedido ou, sem ano, no mais recente até o ano corrente."""
     regs_lim = base.registros_como_estavam_em(con, DS_LIMITES)
     anos = sorted({int(k.split("|")[0]) for k in regs_lim if int(k.split("|")[0]) <= hoje.year})
-    if not anos:
+    if not anos or (ano is not None and ano not in anos):
         return None
-    ano = anos[-1]
+    ano = anos[-1] if ano is None else ano
     limites = [{"AnoLimiteQualidade": str(ano), "IdeConjUndConsumidoras": k.split("|")[1],
                 "NumCNPJ": v.get("cnpj"), "SigAgente": v.get("sigla") or ""}
                for k, v in regs_lim.items() if k.startswith(f"{ano}|")]
@@ -698,6 +811,63 @@ def _ibge(con):
     regs = base.registros_como_estavam_em(con, DS_IBGE)
     loc = {cod: (r.get("nome"), r.get("uf")) for cod, r in regs.items()}
     return series, loc
+
+
+def _hoje_brasilia():
+    """Data civil em America/Sao_Paulo (UTC−3 fixo, sem horário de verão desde 2019, quando a
+    base de fusos não está disponível)."""
+    from datetime import datetime, timedelta, timezone
+    try:
+        from zoneinfo import ZoneInfo
+        fuso = ZoneInfo("America/Sao_Paulo")
+    except Exception:
+        fuso = timezone(timedelta(hours=-3))
+    return datetime.now(timezone.utc).astimezone(fuso).date()
+
+
+def _contexto(ibge, conf, excl):
+    """População, área e renda domiciliar per capita (Censo) de um conjunto de municípios
+    inteiros; renda = Σ(renda média × moradores) ÷ Σ moradores. None sem dado do IBGE."""
+    pop, ren, mor, area = (ibge.get(k, {}) for k in ("populacao", "renda_media_pc", "moradores_dpp", "area_km2"))
+    if not pop:
+        return None
+    pop_c = sum(pop.get(x, 0) for x in conf if x in pop)
+    pop_e = sum(pop.get(x, 0) for x in excl if x in pop)
+    rc, nrc = ap.media_ponderada(ren, mor, conf)
+    re_, _ = ap.media_ponderada(ren, mor, excl)
+    return {"populacao_confirmados": _r(pop_c), "populacao_exclusivos": _r(pop_e),
+            "cobertura_exclusivos_pct": _r(ap.taxa(pop_e, pop_c), 1),
+            "renda_media_pc_confirmados": _r(rc, 2), "renda_media_pc_exclusivos": _r(re_, 2),
+            "municipios_com_renda": nrc, "area_km2_confirmados": _r(sum(area.get(x, 0) for x in conf), 0),
+            "_renda_exata": rc}
+
+
+def _municipios_do_ano(rel):
+    """{cnpj: (municípios, modo)} de uma relação conjunto × distribuidora × município.
+
+    modo "mmgd": vínculos confirmados pelo cadastro de MMGD (há empreendimento da distribuidora
+    no município). O cadastro é o atual e registra a distribuidora de hoje: distribuidora
+    incorporada depois do ano da relação não tem nenhum empreendimento nele (EBO e ENF em
+    2022). Para essas, modo "uf_principal": valem os vínculos da UF da maior parte deles, o que
+    barra o erro de código de município homônimo de outra UF, o único que a confirmação por
+    MMGD pegava na relação oficial."""
+    por = collections.defaultdict(lambda: {"conf": set(), "todos": set()})
+    mmgd_total = collections.Counter()
+    for (cnpj, cod), n in rel["mmgd"].items():
+        mmgd_total[cnpj] += n
+    for (cnpj, cod), e in rel["vinculos"].items():
+        por[cnpj]["todos"].add((cod, e["uf"]))
+        if rel["mmgd"].get((cnpj, cod), 0) > 0:
+            por[cnpj]["conf"].add(cod)
+    out = {}
+    for cnpj, d in por.items():
+        if mmgd_total[cnpj] > 0:
+            out[cnpj] = (d["conf"], "mmgd")
+        else:
+            ufs = collections.Counter(uf for _, uf in d["todos"] if uf)
+            principal = ufs.most_common(1)[0][0] if ufs else None
+            out[cnpj] = ({cod for cod, uf in d["todos"] if uf == principal}, "uf_principal")
+    return out
 
 
 def _fonte(orgao, dataset, recurso, url_dataset, url_primaria, licenca):
@@ -735,6 +905,8 @@ def construir(con, ctx):
     criticas, ressalvas = [], []
     if ultima_comp > cap_mes:
         criticas.append(f"competência {ultima_comp} posterior ao mês da captura {cap_mes}")
+    if not _silver_com_tecnica_separada(regs_samp):
+        ressalvas.append("silver anterior à versão 3: técnica medida e faturada ainda misturadas; reprocessar o SAMP")
     duplicadas = json.loads(regs_samp.get("_arquivo", {}).get("duplicadas") or "[]")
     if any(d[2][0].startswith("Perdas") or d[2][0] == ap.MOD_INJETADA for d in duplicadas):
         criticas.append("linhas de perdas ou de injetada duplicadas na mesma competência")
@@ -749,10 +921,29 @@ def construir(con, ctx):
         for ano in anos:
             if any(k.startswith(f"{ano:04d}-") for k in m):
                 anuais[(cnpj, ano)] = _anual_distribuidora(m, ano)
+                anuais[(cnpj, ano)]["cnpj"] = cnpj
     ano_ref, ano_parcial = _ano_referencia(anuais, hoje)
     if ano_ref is None:
         return c.stub(GOLD, "nenhum ano civil encerrado com ao menos 90% das distribuidoras completas")
-    nacional = _nacional(anuais, grupos, anos, ano_ref)
+
+    # ---------------------------------------------------------------- mudanças de universo
+    # Absorções e sucessões observadas no próprio SAMP e quebra de escala em todo par de anos
+    # completos: o par (ano−1, ano) afetado não entra em variação anual nem na comparação das
+    # mesmas distribuidoras da série nacional.
+    absorcoes, sucessoes = ap.mudancas_de_universo({x: mensal[x] for x in cadastro}, ultima_comp)
+    eventos_escala = collections.defaultdict(list)
+    for e in absorcoes:
+        eventos_escala[e["cnpj"]].append(e["competencia"])
+    pares = {}
+    for (cnpj, ano), a in anuais.items():
+        ant = anuais.get((cnpj, ano - 1))
+        variacao_inj, quebra = ap.quebra_escala(ant, a)
+        absorcao = ap.par_afetado(eventos_escala.get(cnpj, []), ano) and ant is not None
+        pares[(cnpj, ano)] = {"variacao_injetada": variacao_inj, "quebra_escala": quebra, "absorcao": absorcao,
+                              "universo_muda": quebra or absorcao}
+    afetados = frozenset(k for k, v in pares.items() if v["universo_muda"])
+    nacional = _nacional(anuais, grupos, anos, ano_ref, afetados)
+    universo_fixo = _universo_fixo(anuais, grupos, [ano_ref - 2, ano_ref - 1, ano_ref], afetados)
     nac_ref = next(x for x in nacional if x["ano"] == ano_ref and x["universo"] == "concessionarias")
     if not (5 <= (nac_ref["taxa_total_pct"] or 0) <= 30):
         criticas.append(f"taxa nacional {nac_ref['taxa_total_pct']}% fora da faixa física plausível de 5% a 30%")
@@ -763,7 +954,7 @@ def construir(con, ctx):
         ultimo_mes_parcial = max(comp for m in mensal.values() for comp in m if comp.startswith(str(ano_parcial)))
         mes_fim = _mes_fim_parcial(mensal, anuais, ano_ref, ano_parcial)
         if mes_fim:
-            acum_dist, acum_nac = _acumulado(mensal, cadastro, grupos, ano_parcial, mes_fim)
+            acum_dist, acum_nac = _acumulado(mensal, cadastro, grupos, ano_parcial, mes_fim, afetados)
 
     # ---------------------------------------------------------------- tarifa e percentual técnico
     processos = _processos_tarifa(con)
@@ -799,9 +990,46 @@ def construir(con, ctx):
         m["n_confirmadas"] = sum(1 for d in m["dist"] if d["confirmado"])
     municipios_sem_vinculo = sorted(set(loc) - set(municipios)) if loc else []
 
+    # ---------------------------------------------------------------- identidade e continuidade
+    # CNPJ com dígito verificador inválido é mantido como a fonte publicou (a chave continua
+    # sendo o CNPJ publicado) e marcado; CNPJs com a mesma raiz (8 dígitos, mesma empresa) no
+    # universo ficam ligados por correspondência explícita, com a origem da ligação.
+    sucessao_de = {e["cnpj"]: e for e in sucessoes}
+    continua_em = collections.defaultdict(list)
+    for e in sucessoes:
+        continua_em[e["anterior"]].append({"cnpj": e["cnpj"], "tipo": "sucessao"})
+    for e in absorcoes:
+        for x in e["encerradas"]:
+            continua_em[x].append({"cnpj": e["cnpj"], "tipo": "absorcao"})
+    por_raiz = collections.defaultdict(list)
+    for cnpj in cadastro:
+        por_raiz[cnpj[:8]].append(cnpj)
+    dv_valido = {cnpj: ap.cnpj_dv_valido(cnpj) for cnpj in cadastro}
+
+    def _correspondencias(cnpj):
+        out = []
+        for outro in sorted(por_raiz[cnpj[:8]]):
+            if outro == cnpj:
+                continue
+            origem = [f"mesma raiz de CNPJ ({cnpj[:8]}) nos agentes do SAMP Balanço"]
+            for x in (cnpj, outro):
+                if not dv_valido[x]:
+                    origem.append(f"o CNPJ {entidades.cnpj_formatado(x)}, como publicado pela fonte, tem dígito verificador inválido")
+            for x, y in ((cnpj, outro), (outro, cnpj)):
+                e = sucessao_de.get(y)
+                if e and e["anterior"] == x:
+                    origem.append(f"a série de {entidades.cnpj_formatado(x)} termina em {max(mensal[x])} e a de "
+                                  f"{entidades.cnpj_formatado(y)} começa em {e['competencia']}, com energia mensal "
+                                  f"{str(e['razao_energia']).replace('.', ',')} vez a anterior")
+            out.append({"cnpj": outro, "sigla": cadastro[outro]["sigla"], "regra": "mesma_raiz_cnpj", "origem": "; ".join(origem)})
+        return out
+
     # ---------------------------------------------------------------- por distribuidora
     distribuidoras, csv_anual, serie_json, csv_pt = [], [], {}, []
     csv_mensal = []
+    # vigência de tarifa se confere na data civil de Brasília (as datas das REH são locais; o
+    # `hoje` do contexto é a data UTC, que vira o dia às 21h de Brasília)
+    hoje_iso = (ctx.get("hoje_brasilia") or _hoje_brasilia()).isoformat()
     for cnpj in sorted(cadastro, key=lambda x: (cadastro[x]["sigla"] or cadastro[x]["nome"])):
         cad = cadastro[cnpj]
         m = mensal[cnpj]
@@ -811,17 +1039,24 @@ def construir(con, ctx):
             a = anuais.get((cnpj, ano))
             if not a:
                 continue
+            par = pares[(cnpj, ano)]
+            tem_par = anuais.get((cnpj, ano - 1)) is not None
             linha = [cnpj, cad["sigla"], cad["nome"], cad["classificacao"], ano, a["meses"], int(a["completo"]),
                      _mwh(a["injetada"]), _mwh(a["injetada_ref"]), a["origem_injetada"], _mwh(a["perdas_totais_med"]),
                      _r(a["taxa_total"], 3), _mwh(a["perdas_tecnicas"]), _r(a["taxa_tecnica"], 3), _mwh(a["pnt_med"]),
                      _r(a["pnt_injetada"], 3), _mwh(a["bt_med"]), _r(a["pnt_bt"], 3), _mwh(a["perdas_totais_fat"]),
                      _r(a["taxa_total_fat"], 3), _mwh(a["perdas_legado"]), _mwh(a["residuo"]), _r(a["residuo_pct"], 3),
-                     a["reconciliacao"], ",".join(a["alertas"])]
+                     a["reconciliacao"], ",".join(a["alertas"]),
+                     _r(a["taxa_tecnica_publicada"], 3), _mwh(a["residuo_decomposicao"]), a["decomposicao"],
+                     _r(100 * par["variacao_injetada"], 1) if par["variacao_injetada"] is not None else None,
+                     int(par["quebra_escala"]) if tem_par else None, int(par["absorcao"]) if tem_par else None]
             csv_anual.append(linha)
             linhas_serie.append([ano, a["meses"], int(a["completo"]), _r(_mwh(a["injetada_ref"])), _r(_mwh(a["perdas_totais_med"])),
                                  _r(a["taxa_total"], 2), _r(_mwh(a["perdas_tecnicas"])), _r(a["taxa_tecnica"], 2),
                                  _r(_mwh(a["pnt_med"])), _r(a["pnt_bt"], 2), _r(_mwh(a["bt_med"])),
-                                 _r(a["residuo_pct"], 2), a["reconciliacao"], a["alertas"], a["origem_injetada"]])
+                                 _r(a["residuo_pct"], 2), a["reconciliacao"], a["alertas"], a["origem_injetada"],
+                                 a["decomposicao"], _r(a["taxa_tecnica_publicada"], 2),
+                                 int(par["universo_muda"]) if tem_par else None])
         serie_json[cnpj] = linhas_serie
         for comp in comps:
             x = m[comp]
@@ -829,7 +1064,8 @@ def construir(con, ctx):
                                x.get("injetada_repr"), x.get("fornecida_med"), x.get("outros_requisitos"), x.get("irregular"),
                                x.get("perdas_totais_med"), x.get("perdas_tecnicas"), x.get("pnt_med"),
                                x.get("perdas_totais_fat"), x.get("pnt_fat"), x.get("perdas_legado"), x.get("bt_med"), x.get("mmgd"),
-                               x.get("residuo"), ",".join(x.get("conflitos") or []), ",".join(x.get("conflitos_abertos") or [])])
+                               x.get("residuo"), ",".join(x.get("conflitos") or []), ",".join(x.get("conflitos_abertos") or []),
+                               x.get("tecnica_fat"), x.get("residuo_decomposicao")])
         # ano de referência e comparação com o ano anterior completo
         a = anuais.get((cnpj, ano_ref))
         ref = None
@@ -838,21 +1074,27 @@ def construir(con, ctx):
                    "injetada_mwh": _r(_mwh(a["injetada_ref"])), "origem_injetada": a["origem_injetada"],
                    "perdas_totais_mwh": _r(_mwh(a["perdas_totais_med"])), "taxa_total_pct": _r(a["taxa_total"], 2),
                    "perdas_tecnicas_mwh": _r(_mwh(a["perdas_tecnicas"])), "taxa_tecnica_pct": _r(a["taxa_tecnica"], 2),
+                   "taxa_tecnica_injetada_publicada_pct": _r(a["taxa_tecnica_publicada"], 2),
                    "pnt_mwh": _r(_mwh(a["pnt_med"])), "pnt_injetada_pct": _r(a["pnt_injetada"], 2),
                    "mercado_bt_mwh": _r(_mwh(a["bt_med"])), "pnt_bt_pct": _r(a["pnt_bt"], 2),
                    "residuo_pct_injetada": _r(a["residuo_pct"], 2), "reconciliacao": a["reconciliacao"],
+                   "decomposicao": a["decomposicao"], "residuo_decomposicao_mwh": _r(_mwh(a["residuo_decomposicao"])),
                    "alertas": a["alertas"]}
         variacao = None
         ant = anuais.get((cnpj, ano_ref - 1))
-        if a and ant and a["completo"] and ant["completo"] and not a["alertas"] and not ant["alertas"]:
-            quebra = bool(ant["injetada_ref"]) and abs(a["injetada_ref"] / ant["injetada_ref"] - 1) > 0.30
+        if a and ant and _valido_para_agregado(a) and _valido_para_agregado(ant):
+            par = pares[(cnpj, ano_ref)]
+            comparavel = not par["universo_muda"]
+            pnt_ok = comparavel and _valido_pnt_bt(a) and _valido_pnt_bt(ant)
             variacao = {
-                "ano_base": ano_ref - 1,
-                "taxa_total_pp": _r((a["taxa_total"] - ant["taxa_total"]) if None not in (a["taxa_total"], ant["taxa_total"]) else None, 2),
+                "ano_base": ano_ref - 1, "comparavel": comparavel,
+                "taxa_total_pp": _r(a["taxa_total"] - ant["taxa_total"], 2) if comparavel else None,
                 "perdas_totais_pct": _r(ap.taxa(a["perdas_totais_med"] - ant["perdas_totais_med"], ant["perdas_totais_med"]), 1)
-                if ant["perdas_totais_med"] and ant["perdas_totais_med"] > 0 else None,
-                "pnt_bt_pp": _r((a["pnt_bt"] - ant["pnt_bt"]) if None not in (a["pnt_bt"], ant["pnt_bt"]) else None, 2),
-                "quebra_escala": quebra, "atravessa_leiaute": ant["origem_injetada"] != a["origem_injetada"],
+                if comparavel and ant["perdas_totais_med"] and ant["perdas_totais_med"] > 0 else None,
+                "pnt_bt_pp": _r(a["pnt_bt"] - ant["pnt_bt"], 2) if pnt_ok else None,
+                "variacao_injetada_pct": _r(100 * par["variacao_injetada"], 1) if par["variacao_injetada"] is not None else None,
+                "quebra_escala": par["quebra_escala"], "absorcao": par["absorcao"],
+                "atravessa_leiaute": ant["origem_injetada"] != a["origem_injetada"],
             }
         # acumulado do ano aberto contra o mesmo período do ano anterior (mesmos meses)
         parcial = None
@@ -866,18 +1108,21 @@ def construir(con, ctx):
                        "anterior": {"perdas_totais_mwh": _r(_mwh(an["perdas_totais_med"])), "taxa_total_pct": _r(an["taxa_total"], 2),
                                     "pnt_bt_pct": _r(an["pnt_bt"], 2), "origem_injetada": an["origem_injetada"]},
                        "alertas": sorted(set(at["alertas"]) | set(an["alertas"]))}
-        # percentual técnico implícito
+        # percentual técnico implícito: trechos de referência (6 meses ou mais) na gold; os
+        # curtos ficam só no CSV, com a classe, como possível coincidência de arredondamento
         procs_be = [p for p in processos.get(cnpj, []) if p["base"] == "Base Econômica"]
         segs = _segmentos_com_reh(m, procs_be)
         for s in segs:
             csv_pt.append([cnpj, cad["sigla"], s["inicio"], s["fim"], s["pct"], s["meses"],
-                           (s["reh"] or {}).get("resolucao"), (s["reh"] or {}).get("inicio_vigencia"), s["dia_inicio_prorata"]])
-        # tarifa: processo vigente na data de hoje (ou o mais recente)
+                           (s["reh"] or {}).get("resolucao"), (s["reh"] or {}).get("inicio_vigencia"), s["dia_inicio_prorata"],
+                           s["classe"], s["troca_pp"]])
+        segs_ref = [x for x in segs if x["classe"] == "referencia"]
+        # tarifa: só processo com início ≤ hoje ≤ fim; sem processo vigente, o último já iniciado
+        # com a situação "vigencia_encerrada" e a data de fim (nunca apresentado como vigente)
         tarifa = None
-        vig = [p for p in procs_be if p["resumo"] and p["inicio"] <= hoje.isoformat()]
-        if vig:
-            p = vig[-1]
-            tarifa = {"resolucao": p["resolucao"], "inicio": p["inicio"], "fim": p["fim"],
+        p, situacao = ap.tarifa_vigente(procs_be, hoje_iso)
+        if p:
+            tarifa = {"resolucao": p["resolucao"], "inicio": p["inicio"], "fim": p["fim"], "situacao": situacao,
                       **{k: _r(v, 2) for k, v in p["resumo"].items()},
                       "n_processos": len({x["inicio"] for x in procs_be})}
         # território e contexto
@@ -891,72 +1136,104 @@ def construir(con, ctx):
             terr = {"municipios": len(conf | pd["nao_confirmados"] | pd["so_mmgd"]), "confirmados": len(conf), "exclusivos": len(excl),
                     "compartilhados": len(conf - excl), "nao_confirmados": len(pd["nao_confirmados"]),
                     "so_mmgd": len(pd["so_mmgd"]), "ufs": ufs, "ufs_so_nao_confirmadas": ufs_nc}
-            pop, ren, mor, area = (ibge.get(k, {}) for k in ("populacao", "renda_media_pc", "moradores_dpp", "area_km2"))
-            pop_c = sum(pop.get(x, 0) for x in conf if x in pop)
-            pop_e = sum(pop.get(x, 0) for x in excl if x in pop)
-            rc, nrc = ap.media_ponderada(ren, mor, conf)
-            re_, nre = ap.media_ponderada(ren, mor, excl)
-            if pop:
-                contexto = {"populacao_confirmados": _r(pop_c), "populacao_exclusivos": _r(pop_e),
-                            "cobertura_exclusivos_pct": _r(ap.taxa(pop_e, pop_c), 1),
-                            "renda_media_pc_confirmados": _r(rc, 2), "renda_media_pc_exclusivos": _r(re_, 2),
-                            "municipios_com_renda": nrc, "area_km2_confirmados": _r(sum(area.get(x, 0) for x in conf), 0)}
-        # eventos observados na própria fonte (sem inferir destino de incorporações)
+            contexto = _contexto(ibge, conf, excl)
+        # eventos observados na própria fonte; continuidade provável pela energia, nunca por nome
         ev = []
         nomes = sorted(cad["nomes"].items(), key=lambda x: x[1][0])
         for (n1, (_, f1)), (n2, (i2, _)) in zip(nomes, nomes[1:]):
             ev.append({"tipo": "mudanca_nome", "competencia": i2, "de": n1, "para": n2})
         if comps[0] > "2003-01":
-            ev.append({"tipo": "inicio_serie", "competencia": comps[0]})
+            e = {"tipo": "inicio_serie", "competencia": comps[0]}
+            suc = sucessao_de.get(cnpj)
+            if suc:
+                e["sucessao_provavel_de"] = {"cnpj": suc["anterior"], "razao_energia": suc["razao_energia"],
+                                             "mesma_raiz_cnpj": suc["mesma_raiz_cnpj"]}
+            ev.append(e)
+        for e in absorcoes:
+            if e["cnpj"] == cnpj:
+                ev.append({"tipo": "absorcao_provavel", "competencia": e["competencia"], "encerradas": e["encerradas"],
+                           "salto_pct": e["salto_pct"], "salto_sobre_encerradas": e["salto_sobre_encerradas"]})
         if comps[-1] < ultima_comp[:4] + "-01":
-            ev.append({"tipo": "fim_serie", "competencia": comps[-1]})
+            e = {"tipo": "fim_serie", "competencia": comps[-1]}
+            if continua_em.get(cnpj):
+                e["continuidade_provavel"] = continua_em[cnpj]
+            ev.append(e)
         distribuidoras.append({
-            "cnpj": cnpj, "cnpj_formatado": entidades.cnpj_formatado(cnpj), "sigla": cad["sigla"], "nome": cad["nome"],
+            "cnpj": cnpj, "cnpj_formatado": entidades.cnpj_formatado(cnpj), "cnpj_dv_valido": dv_valido[cnpj],
+            "sigla": cad["sigla"], "nome": cad["nome"],
             "classificacao": cad["classificacao"], "grupo": cad["grupo"],
             "primeira_competencia": comps[0], "ultima_competencia": comps[-1],
             "ativa": comps[-1] >= f"{ano_ref}-12", "referencia": ref, "variacao": variacao, "parcial": parcial,
             # o dia reconstituído da média pró-rata fica só no CSV, como diagnóstico: coincide com o
             # início de vigência da REH em poucos casos (CEMIG-D 2018 e 2023) e não é data de vigência
-            "tecnica_regulatoria": {"segmentos": [{k: v for k, v in x.items() if k != "dia_inicio_prorata"} for x in segs[-3:]],
-                                    "n_segmentos": len(segs)} if segs else None,
+            "tecnica_regulatoria": {"segmentos": [{k: v for k, v in x.items() if k not in ("dia_inicio_prorata", "classe")}
+                                                  for x in segs_ref[-3:]],
+                                    "n_segmentos": len(segs_ref), "n_curtos": len(segs) - len(segs_ref)} if segs else None,
             "tarifa": tarifa, "territorio": terr, "contexto": contexto, "eventos": ev,
+            "correspondencias": _correspondencias(cnpj),
         })
 
     # ---------------------------------------------------------------- associação descritiva (P058)
     # Ano das perdas = ano do Censo (2022), para que renda e perdas descrevam o mesmo ano; se
-    # 2022 não for ano completo na série, usa-se o ano de referência (e o texto diz qual).
+    # 2022 não for ano completo na série, usa-se o ano de referência (e o texto diz qual). O
+    # território também é o do ano das perdas: relação conjunto × distribuidora dos limites de
+    # continuidade daquele ano (a de 2026 daria a EPB e à EMR municípios que em 2022 eram da EBO
+    # e da ENF, e deixaria a EBO sem território).
     ano_assoc = ANO_CENSO if any(y == ANO_CENSO and a["completo"] for (_, y), a in anuais.items()) else ano_ref
-    pontos = []
+    rel_assoc = rel if (rel and rel["ano"] == ano_assoc) else _relacao(con, hoje, ano_assoc)
+    terr_assoc = _municipios_do_ano(rel_assoc) if rel_assoc else {}
+    n_dist_mun = collections.Counter(cod for munis, _ in terr_assoc.values() for cod in munis)
+    pontos, brutos, excluidas_assoc, confirmacao_assoc = [], [], [], collections.Counter()
     for d in distribuidoras:
         a = anuais.get((d["cnpj"], ano_assoc))
-        if d["grupo"] != "concessionaria" or not d["contexto"] or not a or not _valido_para_agregado(a):
+        if d["grupo"] != "concessionaria" or not a or not _valido_para_agregado(a):
             continue
-        pontos.append([d["cnpj"], d["contexto"]["renda_media_pc_confirmados"], _r(a["pnt_bt"], 2), _r(a["taxa_total"], 2),
-                       d["contexto"]["cobertura_exclusivos_pct"]])
-    rho_pnt, n_pnt = ap.spearman([x[1] for x in pontos], [x[2] for x in pontos])
-    rho_tot, n_tot = ap.spearman([x[1] for x in pontos], [x[3] for x in pontos])
+        munis, modo = terr_assoc.get(d["cnpj"], (set(), None))
+        ctx_a = _contexto(ibge, munis, {cod for cod in munis if n_dist_mun[cod] == 1}) if munis else None
+        if not ctx_a or ctx_a["renda_media_pc_confirmados"] is None:
+            excluidas_assoc.append({"cnpj": d["cnpj"], "sigla": d["sigla"],
+                                    "motivo": f"sem município na relação conjunto × distribuidora de {ano_assoc}"})
+            continue
+        confirmacao_assoc[modo] += 1
+        pnt_bt = a["pnt_bt"] if _valido_pnt_bt(a) else None
+        pontos.append([d["cnpj"], ctx_a["renda_media_pc_confirmados"], _r(pnt_bt, 2), _r(a["taxa_total"], 2),
+                       ctx_a["cobertura_exclusivos_pct"]])
+        brutos.append((ctx_a["_renda_exata"], pnt_bt, a["taxa_total"]))
+    # postos sobre os valores sem arredondamento (o arredondamento criaria empates artificiais)
+    rho_pnt, n_pnt = ap.spearman([x[0] for x in brutos], [x[1] for x in brutos])
+    rho_tot, n_tot = ap.spearman([x[0] for x in brutos], [x[2] for x in brutos])
 
     # ---------------------------------------------------------------- arquivos de download
     base.escreve_csv(CSV_ANUAL, ["cnpj", "sigla", "nome", "classificacao", "ano", "meses", "completo", "injetada_publicada_mwh",
                                  "injetada_referencia_mwh", "origem_injetada", "perdas_totais_mwh", "taxa_total_pct",
                                  "perdas_tecnicas_mwh", "taxa_tecnica_pct", "pnt_mwh", "pnt_injetada_pct", "mercado_bt_mwh",
                                  "pnt_bt_pct", "perdas_totais_faturado_mwh", "taxa_total_faturado_pct", "perdas_linha_antiga_mwh", "residuo_mwh",
-                                 "residuo_pct_injetada", "reconciliacao", "alertas"], csv_anual)
+                                 "residuo_pct_injetada", "reconciliacao", "alertas", "taxa_tecnica_injetada_publicada_pct",
+                                 "residuo_decomposicao_mwh", "decomposicao", "variacao_injetada_ano_anterior_pct",
+                                 "quebra_escala_ano_anterior", "absorcao_ano_anterior"], csv_anual)
     base.escreve_csv(CSV_MENSAL, ["cnpj", "competencia", "injetada_publicada_kwh", "injetada_referencia_kwh", "origem_injetada",
                                   "representacao", "fornecida_medida_kwh", "outros_requisitos_kwh", "irregular_faturada_kwh",
                                   "perdas_totais_medidas_kwh", "perdas_tecnicas_kwh", "pnt_medidas_kwh",
                                   "perdas_totais_faturadas_kwh", "pnt_faturadas_kwh", "perdas_linha_antiga_kwh", "mercado_bt_medido_kwh",
-                                  "mmgd_injetada_kwh", "residuo_kwh", "conflitos", "conflitos_abertos"], csv_mensal)
+                                  "mmgd_injetada_kwh", "residuo_kwh", "conflitos", "conflitos_abertos", "perdas_tecnicas_faturadas_kwh",
+                                  "residuo_decomposicao_kwh"], csv_mensal)
     base.escreve_csv(CSV_NACIONAL, ["ano", "universo", "completo", "n_distribuidoras", "n_publicadas", "injetada_referencia_mwh",
                                     "perdas_totais_mwh", "taxa_total_pct", "n_com_tecnica", "injetada_com_tecnica_mwh",
                                     "perdas_tecnicas_mwh", "taxa_tecnica_pct", "n_com_pnt_bt", "pnt_mwh", "mercado_bt_mwh",
-                                    "pnt_bt_pct", "excluidos"],
+                                    "pnt_bt_pct", "excluidos", "cobertura_tecnica_pct", "taxa_tecnica_injetada_publicada_pct",
+                                    "cobertura_bt_pct", "universo_total_igual_ano_anterior", "universo_tecnica_igual_ano_anterior",
+                                    "universo_pnt_bt_igual_ano_anterior", "n_mesmas_total", "taxa_total_pct_mesmas_ano_anterior",
+                                    "taxa_total_pct_mesmas", "n_mesmas_tecnica", "taxa_tecnica_pct_mesmas_ano_anterior",
+                                    "taxa_tecnica_pct_mesmas", "n_mesmas_pnt_bt", "pnt_bt_pct_mesmas_ano_anterior", "pnt_bt_pct_mesmas",
+                                    "fora_por_mudanca_de_universo"],
                      [[x["ano"], x["universo"], int(x["ano"] <= ano_ref), x["n_distribuidoras"], x["n_publicadas"], x["injetada_mwh"],
                        x["perdas_totais_mwh"], x["taxa_total_pct"], x["n_com_tecnica"], x["injetada_com_tecnica_mwh"],
                        x["perdas_tecnicas_mwh"], x["taxa_tecnica_pct"], x["n_com_pnt_bt"], x["pnt_mwh"], x["mercado_bt_mwh"],
-                       x["pnt_bt_pct"], json.dumps(x["excluidos"], ensure_ascii=False)] for x in nacional])
+                       x["pnt_bt_pct"], json.dumps(x["excluidos"], ensure_ascii=False), x["cobertura_tecnica_pct"],
+                       x["taxa_tecnica_injetada_publicada_pct"], x["cobertura_bt_pct"]]
+                      + _colunas_comparacao(x) for x in nacional])
     base.escreve_csv(CSV_PT, ["cnpj", "sigla", "inicio", "fim", "percentual", "meses", "resolucao_tarifaria",
-                              "inicio_vigencia_reh", "dia_prorata_diagnostico"], csv_pt)
+                              "inicio_vigencia_reh", "dia_prorata_diagnostico", "classe", "troca_pp"], csv_pt)
     linhas_tarifa = []
     for cnpj, procs in sorted(processos.items()):
         for p in procs:
@@ -1013,8 +1290,11 @@ def construir(con, ctx):
         "gerado_em": base.agora_utc(), "unidades": "MWh e %",
         "campos": ["ano", "meses", "completo", "injetada_mwh", "perdas_totais_mwh", "taxa_total_pct", "perdas_tecnicas_mwh",
                    "taxa_tecnica_pct", "pnt_mwh", "pnt_bt_pct", "mercado_bt_mwh", "residuo_pct_injetada", "reconciliacao",
-                   "alertas", "origem_injetada"],
+                   "alertas", "origem_injetada", "decomposicao", "taxa_tecnica_injetada_publicada_pct",
+                   "universo_muda_ano_anterior"],
         "distribuidoras": serie_json}, destino=base.SERIES)
+    base.escreve_gold(JSON_NACIONAL, {"gerado_em": base.agora_utc(), "unidades": "MWh e %",
+                                      "linhas": _sem_privados(nacional)}, destino=base.SERIES)
     base.escreve_gold(JSON_MUN, {
         "gerado_em": base.agora_utc(), "ano_relacao": (rel or {}).get("ano"),
         "distribuidoras": [x["cnpj"] for x in distribuidoras],
@@ -1037,27 +1317,47 @@ def construir(con, ctx):
     cap = c.ultima_captura(snap_samp)
     per = {"inicio": min(k for m in mensal.values() for k in m), "fim": ultima_comp}
     lim_samp = [
-        "Perdas técnicas publicadas no SAMP são estimativas regulatórias (percentual fixado na revisão tarifária aplicado à energia injetada), não medição; a parcela não técnica é a diferença entre a perda total e essa estimativa.",
-        "A partir de 2024 (leiaute da REN 1.003/2022) a fonte deixou de publicar a separação técnica e não técnica para cerca de metade das distribuidoras e a energia injetada publicada passou a ser bruta; o denominador desses meses é a energia implícita no cálculo da própria fonte (fornecida + irregular + perdas), e a série tem quebra em 2024.",
+        "Perdas técnicas publicadas no SAMP são estimativas regulatórias (percentual fixado no processo tarifário aplicado à energia injetada publicada), não medição; a parcela não técnica publicada depende dessa estimativa.",
+        "A partir de 2024 (leiaute da REN 1.003/2022) a fonte deixou de publicar a separação técnica e não técnica para cerca de metade das distribuidoras, e a energia injetada publicada deixou de fechar o balanço com a perda calculada pela própria fonte; o denominador desses meses é a energia implícita no cálculo da fonte (fornecida + irregular + perdas), e a série tem quebra em 2024. A fonte não explica a diferença e o módulo não atribui causa a ela.",
         "Valores mensais oscilam com o calendário de leitura dos medidores; só o ano civil completo é comparado.",
         "Perdas medidas (base adotada pela ANEEL em 2025) diferem das faturadas: o faturado inclui o custo de disponibilidade e a compensação da MMGD.",
+        "Agente-ano com balanço que não fecha (resíduo acima de 5% da injetada no leiaute antigo, fornecida maior que a injetada) fica fora de agregados e comparações, com alerta.",
     ]
+    lim_separacao = [
+        "A técnica é o percentual regulatório aplicado pela fonte à injetada publicada (estimativa, não medição); a não técnica publicada é a perda total menos essa estimativa e herda a estimativa.",
+        "As linhas publicadas nem sempre obedecem a total = técnica + não técnica: a identidade é conferida mês a mês e o agente-ano que não fecha (acima de 2 kWh por mês e de 0,1% da perda total) sai dos agregados de técnica e não técnica.",
+        "Técnica medida e faturada são linhas diferentes da fonte (diferem em 13% dos meses em que as duas existem); só a medida é usada, e o mês sem ela fica sem técnica.",
+        "O universo com separação publicada muda muito de um ano para outro (a fonte deixou de publicá-la para cerca de metade das distribuidoras em 2024): a variação anual só se lê nas mesmas distribuidoras (comparação com o ano anterior e série de universo fixo).",
+    ]
+    faixa_tarifa = sorted(p["inicio"] for procs in processos.values() for p in procs) or [None]
+    refs_pt = [r for r in csv_pt if r[9] == "referencia"]
+    periodo_pt = ({"inicio": min(r[2] for r in refs_pt), "fim": max(r[3] for r in refs_pt)} if refs_pt else per)
     prov = {
         "volumes": c.proveniencia(
-            indicador="Perdas de energia na distribuição por distribuidora", natureza="OBSERVADO", fonte=fonte_samp,
+            indicador="Perdas totais de energia na distribuição por distribuidora (valor medido publicado pela fonte)",
+            natureza="OBSERVADO", fonte=fonte_samp,
             unidade="MWh", frequencia="mensal (publicação); anual (comparação)", periodo=per, cobertura=per,
             capturado_em=cap, snapshot=snap_samp, limitacoes=lim_samp, download=_url(CSV_ANUAL),
             transformacoes=["kWh → MWh (÷ 1.000)", "soma dos 12 meses do ano civil; ano com mês ausente fica ausente"],
             notas_fonte=meta_samp.get("notas")),
+        "separacao": c.proveniencia(
+            indicador="Perdas técnicas e não técnicas (estimadas pela fonte)", natureza="ESTIMADO", fonte=fonte_samp,
+            unidade="MWh", frequencia="mensal (publicação); anual (comparação)", periodo=per, cobertura=per,
+            capturado_em=cap, snapshot=snap_samp, limitacoes=lim_separacao, download=_url(CSV_ANUAL),
+            transformacoes=["linhas 'Perdas Técnicas' e 'Perdas Não-Técnicas' do valor medido, somadas nos 12 meses",
+                            "resíduo da decomposição = perdas totais − técnicas − não técnicas, mês a mês"]),
         "taxas": c.proveniencia(
             indicador="Taxas de perdas com denominador explícito", natureza="CALCULADO", fonte=fonte_samp, unidade="%",
             frequencia="anual", periodo={"inicio": str(anos[0]), "fim": str(ano_ref)}, cobertura=per, capturado_em=cap,
             snapshot=snap_samp, download=_url(CSV_ANUAL),
             transformacoes=["taxa total e técnica = 100 × Σ perdas ÷ Σ energia injetada de referência do ano",
+                            "técnica sobre a injetada publicada = 100 × Σ técnicas ÷ Σ injetada publicada (a base em que a fonte aplica o percentual regulatório)",
                             "não técnica sobre BT = 100 × Σ perdas não técnicas medidas ÷ Σ mercado BT medido (cativo, consumo próprio e livre)",
-                            "agregados: 100 × Σ numeradores ÷ Σ denominadores do mesmo subconjunto de distribuidoras"],
-            formula="taxa_total = 100 × perdas_totais ÷ injetada_referência; pnt_bt = 100 × (perdas_totais − perdas_técnicas) ÷ mercado_BT_medido",
-            limitacoes=lim_samp + ["Mercado BT separado por nível de tensão só existe a partir de 2010; antes disso a taxa não técnica sobre BT é ausente."]),
+                            "agregados: 100 × Σ numeradores ÷ Σ denominadores do mesmo subconjunto de distribuidoras, com a cobertura ao lado",
+                            "comparação com o ano anterior só sobre as mesmas distribuidoras válidas nos dois anos, sem mudança de escala entre eles"],
+            formula="taxa_total = 100 × perdas_totais ÷ injetada_referência; pnt_bt = 100 × perdas_não_técnicas_publicadas ÷ mercado_BT_medido",
+            limitacoes=lim_samp + ["Mercado BT separado por nível de tensão só existe a partir de 2010; antes disso a taxa não técnica sobre BT é ausente.",
+                                   "No leiaute de 2024 a técnica sobre a injetada de referência fica abaixo do percentual regulatório, que a fonte aplica à injetada publicada; as duas taxas técnicas são publicadas."]),
         "reconciliacao": c.proveniencia(
             indicador="Resíduo do balanço energético (injetada − fornecida − irregular − perdas)", natureza="CALCULADO",
             fonte=fonte_samp, unidade="MWh e % da injetada publicada", frequencia="mensal e anual", periodo=per, cobertura=per,
@@ -1065,27 +1365,30 @@ def construir(con, ctx):
             formula="resíduo = injetada publicada − (cativo + consumo próprio + suprimento + livre + uso por distribuidoras + contratos antigos) − irregular − perdas totais medidas",
             transformacoes=["representação de cada grandeza escolhida pela concordância com a soma dos níveis de tensão do mesmo mês"],
             limitacoes=["O resíduo mostra quanto da perda publicada não é explicado pelas linhas publicadas; não é atribuído a nenhuma causa.",
-                        "Tolerância de fechamento: 1 kWh por linha do arquivo (os valores são inteiros em kWh)."]),
+                        "Tolerância de fechamento: 1 kWh por linha do arquivo (os valores são inteiros em kWh).",
+                        "Acima de 5% da injetada (leiaute antigo) o agente-ano sai de agregados e comparações: a taxa não pode ser confirmada pelas demais linhas."]),
         "tecnica_regulatoria": c.proveniencia(
-            indicador="Percentual de perdas técnicas implícito no SAMP", natureza="CALCULADO", fonte=fonte_samp,
-            unidade="% da energia injetada", frequencia="por trecho de vigência", periodo=per, cobertura=per, capturado_em=cap,
-            snapshot=snap_samp, download=_url(CSV_PT),
-            formula="percentual = 100 × perdas técnicas ÷ energia injetada publicada, arredondado a 0,001 p.p.; trecho = meses consecutivos com o mesmo valor",
-            limitacoes=["Só existe onde a fonte aplica um percentual fixo (a partir de 2016, na maior parte das distribuidoras); antes disso a razão varia mês a mês.",
+            indicador="Percentual de perdas técnicas implícito no SAMP (inferido pelo observatório)", natureza="ESTIMADO",
+            fonte=fonte_samp, unidade="% da energia injetada publicada", frequencia="por trecho de vigência", periodo=periodo_pt,
+            cobertura=periodo_pt, capturado_em=cap, snapshot=snap_samp, download=_url(CSV_PT),
+            formula=("percentual = 100 × perdas técnicas ÷ energia injetada publicada, arredondado a 0,001 p.p.; trecho = meses "
+                     f"consecutivos com o mesmo valor; referência = trecho de {ap.MIN_MESES_REFERENCIA} meses ou mais"),
+            limitacoes=["É inferência do observatório (razão constante na série da fonte), não o percentual homologado lido de um ato: a fonte não publica o percentual regulatório em base aberta.",
+                        f"Trechos com menos de {ap.MIN_MESES_REFERENCIA} meses, em qualquer ano, ficam fora do bloco de referência como possível coincidência de arredondamento (publicados no CSV com a classe 'curto').",
                         "É a referência técnica que a própria fonte usou; comparar perda técnica publicada com esse percentual não mede desempenho (é igual por construção).",
-                        "A resolução homologatória é associada ao trecho por coincidência de mês entre o início de vigência e a troca do percentual; a fonte não publica essa ligação.",
-                        "Trechos curtos (dois ou três meses) antes de 2016 podem ser coincidência de arredondamento, não percentual fixado.",
+                        f"A resolução homologatória só é associada quando o percentual muda ao menos {str(ap.LIMIAR_TROCA_PP).replace('.', ',')} p.p. e o início de vigência dela cai no mês da troca; é coincidência de datas, a fonte não publica essa ligação.",
                         "A referência regulatória de perdas não técnicas não está em base aberta acessível (ver bloqueios)."]),
         "tarifa": c.proveniencia(
             indicador="Custo unitário das perdas na tarifa residencial B1", natureza="OBSERVADO",
             fonte=_fonte("ANEEL", "Componentes Tarifárias", "componentes-tarifarias-AAAA.parquet (2012 a 2026)", URL_TARIFA,
                          URL_TARIFA, LICENCA_ANEEL),
-            unidade="R$/MWh (nominal, sem tributos)", frequencia="por processo tarifário", periodo={"inicio": "2012-01-01", "fim": hoje.isoformat()},
-            cobertura={"inicio": "2012-01-01", "fim": hoje.isoformat()}, capturado_em=c.ultima_captura(snap_tarifa), snapshot=snap_tarifa,
+            unidade="R$/MWh (nominal, sem tributos)", frequencia="por processo tarifário", periodo={"inicio": faixa_tarifa[0], "fim": hoje_iso},
+            cobertura={"inicio": faixa_tarifa[0], "fim": hoje_iso}, capturado_em=c.ultima_captura(snap_tarifa), snapshot=snap_tarifa,
             download=_url(CSV_TARIFA),
             transformacoes=["filtro: subgrupo B1, modalidade convencional, subclasse residencial, sem detalhe, base econômica",
                             "perdas = TUSD_PT + TUSD_PNT + TUSD_Per_RB_D + TE_Per_RB; participação = perdas ÷ (TUSD + TE)"],
             limitacoes=["É o valor por MWh que a tarifa residencial recupera, não o custo total reconhecido em reais no processo (planilha do processo inacessível, ver bloqueios).",
+                        "O processo exibido é o vigente na data da consulta (início ≤ data ≤ fim); sem processo vigente no arquivo, aparece o último já iniciado com a situação 'vigencia_encerrada' e a data de fim.",
                         "Valores nominais: comparação entre anos sofre efeito da inflação e do preço da energia.",
                         "Não é o custo das perdas reais: é o nível regulatório reconhecido."]),
         "territorio": c.proveniencia(
@@ -1114,29 +1417,41 @@ def construir(con, ctx):
     }
 
     # ---------------------------------------------------------------- evidências ("Comprove este número")
+    # O texto exibido sai do valor sem arredondamento (razão das somas em kWh); numerador e
+    # denominador vão em MWh com três casas (o kWh exato da fonte), para que qualquer leitor
+    # refaça a conta e chegue ao mesmo texto. Arredondar duas vezes (2 casas e depois 1)
+    # mostraria 14,8% para 14,748%.
     v_samp = base.ultima_vintage(con, DS_SAMP, "samp-balanco.parquet")
     fonte_ev = evid.fonte_de_vintage("ANEEL", "SAMP Balanço", URL_SAMP, v_samp)
     n_fecha = sum(1 for a in anuais.values() if a["completo"] and a["reconciliacao"] == "fecha")
     n_pequeno = sum(1 for a in anuais.values() if a["completo"] and a["reconciliacao"] == "residuo_pequeno")
     n_relev = sum(1 for a in anuais.values() if a["completo"] and a["reconciliacao"] == "residuo_relevante")
     n_alerta = sum(1 for a in anuais.values() if a["alertas"])
+    n_balanco = sum(1 for a in anuais.values() if "balanco_nao_fecha" in a["alertas"] or "fornecida_maior_que_injetada" in a["alertas"])
+    n_dec = sum(1 for a in anuais.values() if a["completo"] and a["decomposicao"] == "nao_fecha")
     testes_build = [
         evid.teste("identidade_do_balanco", "ressalva" if n_relev else "aprovado",
                    f"{n_fecha} agentes-ano completos fecham dentro de 1 kWh por linha; {n_pequeno} com resíduo até 0,1% da "
-                   f"injetada; {n_relev} com resíduo maior, publicados com o resíduo à vista (em 2024 e 2025 o resíduo "
-                   f"reflete a injetada bruta do leiaute novo)."),
+                   f"injetada; {n_relev} com resíduo maior, publicados com o resíduo à vista e sem causa atribuída; "
+                   f"{n_balanco} deles (resíduo acima de 5% da injetada no leiaute antigo ou fornecida acima da injetada) "
+                   f"ficaram fora dos agregados."),
         evid.teste("limites_fisicos", "aprovado",
-                   f"taxa nacional {nac_ref['taxa_total_pct']}% dentro de 5% a 30%; {n_alerta} agentes-ano com alerta físico "
-                   f"ou representação não arbitrada ficaram fora dos agregados."),
+                   f"taxa nacional {_pct_br(nac_ref['_exato']['taxa_total'], 2)} dentro de 5% a 30%; {n_alerta} agentes-ano com alerta "
+                   f"(perda negativa ou acima da injetada, fornecida acima da injetada, balanço que não fecha ou representação "
+                   f"não arbitrada) ficaram fora dos agregados e das comparações."),
+        evid.teste("decomposicao", "ressalva" if n_dec else "aprovado",
+                   f"total = técnica + não técnica conferido mês a mês; {n_dec} agentes-ano completos não fecham (acima de 2 kWh "
+                   f"por mês e de 0,1% da perda total) e ficam fora dos agregados de técnica e não técnica."),
         evid.teste("horizonte_temporal", "aprovado", f"última competência {ultima_comp} não excede o mês da captura {cap_mes}."),
         evid.teste("releitura_independente_csv", "aprovado",
                    "pipeline/tests/test_energia_perdas.py relê o CSV oficial (recurso distinto do Parquet) com código próprio e "
-                   "confere somas anuais de CEMIG-D 2023, Manaus Energia 2006 e RGE 2019."),
+                   "confere somas anuais de CEMIG-D 2023, Manaus Energia 2004 e 2006 e RGE 2019, a decomposição da ERO em "
+                   "jul/2014 e a taxa nacional das concessionárias em 2004 e 2025."),
     ]
     res_2024, det_2024 = _reconc_2024(nacional)
     rec_2024 = evid.reconciliacao(
         "Injetada de referência das concessionárias em 2024 contra o intervalo implícito nos números do relatório da ANEEL "
-        "(44,6 TWh = 7,4% e 40,2 TWh = 6,6% da injetada; cópia de terceiro do PDF, usada só para conferência): " + det_2024,
+        "(44,6 TWh = 7,4% e 40,2 TWh = 6,6% da injetada; cópia de terceiro do PDF, usada só como alvo desta conferência): " + det_2024,
         res_2024, "intervalo decorrente do arredondamento a 0,1 p.p. dos percentuais publicados (±0,05 p.p.)") if res_2024 else None
     reproducao = ("python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); "
                   "o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.")
@@ -1146,48 +1461,63 @@ def construir(con, ctx):
     periodo_ref = {"inicio": f"{ano_ref}-01", "fim": f"{ano_ref}-12"}
     consulta_ref = (f"SAMP Balanço, AnoReferenciaBalanco = {ano_ref}, DscClassificacaoAgente = Concessionária, "
                     f"DscModalidadeBalanco = '{ap.MOD_PERDA_MED}', DscCctBalanco = '{ap.CCT_TOTAIS}'")
+    ex = nac_ref["_exato"]
     evid_nac = evid.construir(
-        indicador="Taxa de perdas totais na distribuição", valor_exibido=_pct_br(nac_ref["taxa_total_pct"], 1),
-        valor_calculo=nac_ref["taxa_total_pct"], unidade="% da energia injetada", periodo=periodo_ref,
+        indicador="Taxa de perdas totais na distribuição", valor_exibido=_pct_br(ex["taxa_total"], 1),
+        valor_calculo=_r(ex["taxa_total"], 6), unidade="% da energia injetada", periodo=periodo_ref,
         entidade="Concessionárias de distribuição (Brasil)",
         universo=f"{nac_ref['n_distribuidoras']} concessionárias com os 12 meses de {ano_ref} e sem alerta",
         fonte=fonte_ev, consulta=consulta_ref, formula="100 × Σ perdas totais medidas ÷ Σ energia injetada de referência",
-        numerador={"descricao": "Σ perdas totais medidas (MWh)", "valor": nac_ref["perdas_totais_mwh"]},
-        denominador={"descricao": "Σ energia injetada de referência (MWh)", "valor": nac_ref["injetada_mwh"]},
+        numerador={"descricao": "Σ perdas totais medidas (MWh)", "valor": _mwh3(ex["perdas_totais_kwh"])},
+        denominador={"descricao": "Σ energia injetada de referência (MWh)", "valor": _mwh3(ex["injetada_kwh"])},
         exclusoes=excl_ref, cobertura=f"{nac_ref['n_distribuidoras']} de {nac_ref['n_publicadas']} concessionárias com dado em {ano_ref}",
         tratamento_ausencia=ausencia, revisoes=snap_samp.get("revisoes"), testes=testes_build,
         reconciliacao=None, download=dl_nac, reproducao=reproducao)
     evid_vol = evid.construir(
-        indicador="Perdas totais de energia na distribuição", valor_exibido=_twh_br(nac_ref["perdas_totais_mwh"]),
-        valor_calculo=nac_ref["perdas_totais_mwh"], unidade="MWh", periodo=periodo_ref,
+        indicador="Perdas totais de energia na distribuição", valor_exibido=_twh_br(ex["perdas_totais_kwh"] / 1000.0),
+        valor_calculo=_mwh3(ex["perdas_totais_kwh"]), unidade="MWh", periodo=periodo_ref,
         entidade="Concessionárias de distribuição (Brasil)",
         universo=f"{nac_ref['n_distribuidoras']} concessionárias com os 12 meses de {ano_ref} e sem alerta",
         fonte=fonte_ev, consulta=consulta_ref, formula="Σ_distribuidoras Σ_meses perdas totais medidas (kWh) ÷ 1.000",
         exclusoes=excl_ref, cobertura=f"{nac_ref['n_distribuidoras']} de {nac_ref['n_publicadas']} concessionárias com dado em {ano_ref}",
         tratamento_ausencia=ausencia, revisoes=snap_samp.get("revisoes"), testes=testes_build,
         download=dl_nac, reproducao=reproducao)
+    # não técnica sobre BT: o universo muda de um ano para outro; a evidência diz quantas e
+    # quanto do mercado BT ela cobre, e aponta a série de universo fixo para a tendência
+    serie_n = [(x["ano"], x["n_com_pnt_bt"]) for x in nacional if x["universo"] == "concessionarias" and ano_ref - 2 <= x["ano"] <= ano_ref]
+    uf_lin = {x["ano"]: x for x in universo_fixo["linhas"]}
+    teste_universo = evid.teste(
+        "universo_comparavel", "ressalva",
+        "concessionárias com a separação publicada nos 12 meses e decomposição fechando: "
+        + ", ".join(f"{n} em {a}" for a, n in serie_n)
+        + f". Nas mesmas {universo_fixo['n_distribuidoras']} concessionárias em todos esses anos: "
+        + ", ".join(f"{_pct_br(uf_lin[a]['pnt_bt_pct'], 2) or 'sem dado'} em {a}" for a in universo_fixo["anos"])
+        + ". A diferença entre anos da série nacional é efeito de composição e não se lê como variação.")
     evid_pnt = evid.construir(
         indicador="Perdas não técnicas sobre o mercado de baixa tensão",
-        valor_exibido=_pct_br(nac_ref["pnt_bt_pct"], 1) if nac_ref["pnt_bt_pct"] is not None else None,
-        valor_calculo=nac_ref["pnt_bt_pct"], unidade="% do mercado de baixa tensão medido", periodo=periodo_ref,
-        entidade="Concessionárias com separação técnica e não técnica publicada",
-        universo=f"{nac_ref['n_com_pnt_bt']} concessionárias com a separação nos 12 meses de {ano_ref}",
+        valor_exibido=_pct_br(ex["pnt_bt"], 1) if ex["pnt_bt"] is not None else None,
+        valor_calculo=_r(ex["pnt_bt"], 6), unidade="% do mercado de baixa tensão medido", periodo=periodo_ref,
+        entidade=(f"{nac_ref['n_com_pnt_bt']} concessionárias com separação técnica e não técnica publicada "
+                  f"(não é a perda não técnica de todas as {nac_ref['n_distribuidoras']} concessionárias válidas)"),
+        universo=(f"{nac_ref['n_com_pnt_bt']} de {nac_ref['n_distribuidoras']} concessionárias válidas, com a separação nos 12 meses "
+                  f"de {ano_ref} e a decomposição fechando; {_pct_br(nac_ref['cobertura_bt_pct'], 1) or 'sem dado'} do mercado BT delas"),
         fonte=fonte_ev, consulta=(f"SAMP Balanço, AnoReferenciaBalanco = {ano_ref}, DscCctBalanco = '{ap.CCT_NAO_TECNICAS}' "
                                   f"(valor medido) e DscDetalheBalanco = '{ap.MEDIDA} - {ap.BT}' de cativo, consumo próprio e livre"),
         formula="100 × Σ perdas não técnicas medidas ÷ Σ mercado BT medido",
-        numerador={"descricao": "Σ perdas não técnicas medidas (MWh)", "valor": nac_ref["pnt_mwh"]},
-        denominador={"descricao": "Σ mercado de baixa tensão medido (MWh)", "valor": nac_ref["mercado_bt_mwh"]},
-        cobertura=(f"{nac_ref['n_com_pnt_bt']} de {nac_ref['n_distribuidoras']} concessionárias válidas publicam a separação "
-                   f"em todos os meses de {ano_ref}; a fonte deixou de publicá-la para cerca de metade delas a partir de 2024"),
-        tratamento_ausencia=ausencia + " Distribuidora sem a técnica em algum mês fica fora do numerador e do denominador.",
-        revisoes=snap_samp.get("revisoes"), testes=testes_build, download=dl_nac, reproducao=reproducao)
+        numerador={"descricao": "Σ perdas não técnicas medidas (MWh)", "valor": _mwh3(ex["pnt_kwh"])},
+        denominador={"descricao": "Σ mercado de baixa tensão medido (MWh)", "valor": _mwh3(ex["mercado_bt_kwh"])},
+        cobertura=(f"{nac_ref['n_com_pnt_bt']} de {nac_ref['n_distribuidoras']} concessionárias válidas, "
+                   f"{_pct_br(nac_ref['cobertura_bt_pct'], 1) or 'sem dado'} do mercado BT delas; a fonte deixou de publicar a "
+                   f"separação para cerca de metade das distribuidoras a partir de 2024"),
+        tratamento_ausencia=ausencia + " Distribuidora sem a técnica ou a não técnica em algum mês fica fora do numerador e do denominador.",
+        revisoes=snap_samp.get("revisoes"), testes=testes_build + [teste_universo], download=dl_nac, reproducao=reproducao)
     rel2024 = next((x for x in nacional if x["ano"] == 2024 and x["universo"] == "concessionarias"), None)
     evid_2024 = None
     if rel2024 and rel2024["injetada_mwh"] is not None:
         evid_2024 = evid.construir(
             indicador="Energia injetada de referência das concessionárias",
-            valor_exibido=_twh_br(rel2024["injetada_mwh"]), valor_calculo=rel2024["injetada_mwh"], unidade="MWh",
-            periodo={"inicio": "2024-01", "fim": "2024-12"}, entidade="Concessionárias de distribuição (Brasil)",
+            valor_exibido=_twh_br(rel2024["_exato"]["injetada_kwh"] / 1000.0), valor_calculo=_mwh3(rel2024["_exato"]["injetada_kwh"]),
+            unidade="MWh", periodo={"inicio": "2024-01", "fim": "2024-12"}, entidade="Concessionárias de distribuição (Brasil)",
             universo=f"{rel2024['n_distribuidoras']} concessionárias com os 12 meses de 2024 e sem alerta",
             fonte=fonte_ev, consulta="SAMP Balanço, AnoReferenciaBalanco = 2024, concessionárias; fornecida + irregular + perdas no leiaute novo",
             formula="Σ energia injetada de referência (leiaute antigo: linha publicada; leiaute de 2024: fornecida + irregular + perdas totais)",
@@ -1197,17 +1527,17 @@ def construir(con, ctx):
     evid_acum = None
     acum_conc = next((x for x in acum_nac if x["universo"] == "concessionarias"), None)
     if acum_conc and acum_conc["atual"]["taxa_total_pct"] is not None:
-        at = acum_conc["atual"]
+        at = acum_conc["atual"]["_exato"]
         evid_acum = evid.construir(
-            indicador=f"Taxa de perdas totais acumulada em {ano_parcial}", valor_exibido=_pct_br(at["taxa_total_pct"], 1),
-            valor_calculo=at["taxa_total_pct"], unidade="% da energia injetada",
+            indicador=f"Taxa de perdas totais acumulada em {ano_parcial}", valor_exibido=_pct_br(at["taxa_total"], 1),
+            valor_calculo=_r(at["taxa_total"], 6), unidade="% da energia injetada",
             periodo={"inicio": f"{ano_parcial}-01", "fim": f"{ano_parcial}-{mes_fim:02d}"},
             entidade="Concessionárias de distribuição (Brasil)",
             universo=f"{acum_conc['n_distribuidoras']} concessionárias com janeiro a {MESES_EXTENSO[mes_fim - 1]} completos em {ano_parcial} e em {ano_parcial - 1}",
             fonte=fonte_ev, consulta=f"SAMP Balanço, competências {ano_parcial}-01 a {ano_parcial}-{mes_fim:02d}, concessionárias",
             formula="100 × Σ perdas totais medidas ÷ Σ energia injetada de referência, janeiro a mes_fim",
-            numerador={"descricao": "Σ perdas totais medidas no período (MWh)", "valor": at["perdas_totais_mwh"]},
-            denominador={"descricao": "Σ energia injetada de referência no período (MWh)", "valor": at["injetada_mwh"]},
+            numerador={"descricao": "Σ perdas totais medidas no período (MWh)", "valor": _mwh3(at["perdas_totais_kwh"])},
+            denominador={"descricao": "Σ energia injetada de referência no período (MWh)", "valor": _mwh3(at["injetada_kwh"])},
             cobertura=f"{acum_conc['n_distribuidoras']} concessionárias; o recorte é o mesmo nos dois anos",
             tratamento_ausencia=ausencia + " Ano aberto: só compara com o mesmo período do ano anterior.",
             revisoes=snap_samp.get("revisoes"), testes=testes_build, download=[{"rotulo": "Acumulado do ano (CSV)", "url": _url(CSV_ACUM)}],
@@ -1222,11 +1552,11 @@ def construir(con, ctx):
         a = anuais[(d["cnpj"], ano_ref)]
         testes_d = [evid.teste("ano_completo", "aprovado" if rf["completo"] else "ressalva", f"{rf['meses']} meses publicados em {ano_ref}"),
                     evid.teste("limites_fisicos", "reprovado" if rf["alertas"] else "aprovado",
-                               ", ".join(rf["alertas"]) or "perda total entre zero e a energia injetada"),
+                               ", ".join(rf["alertas"]) or "perda total entre zero e a energia injetada; fornecida abaixo da injetada"),
                     evid.teste("identidade_do_balanco", "aprovado" if rf["reconciliacao"] in ("fecha", "residuo_pequeno") else "ressalva",
-                               f"{rf['reconciliacao']}; resíduo {_pct_br(rf['residuo_pct_injetada'], 2) if rf['residuo_pct_injetada'] is not None else 'sem componentes'} da injetada publicada")]
+                               f"{rf['reconciliacao']}; resíduo {_pct_br(a['residuo_pct'], 2) if a['residuo_pct'] is not None else 'sem componentes'} da injetada publicada")]
         evid_dist[d["cnpj"]] = evid.construir(
-            indicador="Taxa de perdas totais", valor_exibido=_pct_br(rf["taxa_total_pct"], 1), valor_calculo=_r(a["taxa_total"], 6),
+            indicador="Taxa de perdas totais", valor_exibido=_pct_br(a["taxa_total"], 1), valor_calculo=_r(a["taxa_total"], 6),
             unidade="% da energia injetada", periodo=periodo_ref, entidade=f"{d['sigla'] or d['nome']} (CNPJ {d['cnpj_formatado']})",
             universo="uma distribuidora, ano civil", fonte=fonte_ev,
             chaves_origem=[f"numerador: NumCPFCNPJ = {int(d['cnpj'])}, AnoReferenciaBalanco = {ano_ref}, MesReferenciaBalanco 1 a 12, "
@@ -1234,8 +1564,9 @@ def construir(con, ctx):
                            f"denominador: mesmas competências, linha '{ap.MOD_INJETADA}' (leiaute antigo) ou fornecida + irregular + "
                            f"perdas (leiaute de 2024); origem {rf['origem_injetada']}"],
             formula="100 × perdas totais medidas ÷ energia injetada de referência",
-            numerador={"descricao": f"perdas totais medidas {ano_ref} (MWh)", "valor": rf["perdas_totais_mwh"]},
-            denominador={"descricao": f"energia injetada de referência {ano_ref} (MWh, origem {rf['origem_injetada']})", "valor": rf["injetada_mwh"]},
+            numerador={"descricao": f"perdas totais medidas {ano_ref} (MWh)", "valor": _mwh3(a["perdas_totais_med"])},
+            denominador={"descricao": f"energia injetada de referência {ano_ref} (MWh, origem {rf['origem_injetada']})",
+                         "valor": _mwh3(a["injetada_ref"])},
             cobertura=f"{rf['meses']} de 12 meses", tratamento_ausencia=ausencia, revisoes=snap_samp.get("revisoes"), testes=testes_d,
             download=[{"rotulo": "Balanço mensal (CSV)", "url": _url(CSV_MENSAL)}], reproducao=reproducao)
     base.escreve_gold(JSON_EVID, {"gerado_em": base.agora_utc(), "ano": ano_ref, "evidencias": evid_dist}, destino=base.SERIES)
@@ -1262,19 +1593,27 @@ def construir(con, ctx):
         "Área desenhada como o conjunto dos municípios do IBGE ligados à distribuidora pela relação oficial conjunto × município (IndQual Município + limites de continuidade do ano), vínculo a vínculo, sem polígono inventado.",
         "Denominador das taxas: energia injetada publicada no leiaute antigo; no leiaute de 2024, a energia implícita no cálculo da própria fonte (fornecida + irregular + perdas).",
         "Base medida (não faturada) como principal, a mesma que a ANEEL adotou a partir de 2025; a faturada segue no CSV para comparação.",
-        "Agregados só com distribuidoras de ano completo e sem alerta físico; as excluídas aparecem contadas por motivo.",
+        "Agregados só com distribuidoras de ano completo e sem alerta físico (inclui balanço que não fecha acima de 5% da injetada e fornecida maior que a injetada); as excluídas aparecem contadas por motivo.",
+        "Não técnica = linha publicada 'Perdas Não-Técnicas' (valor medido), com a identidade total = técnica + não técnica conferida mês a mês; agente-ano que não fecha sai dos agregados de técnica e não técnica. Técnica só do valor medido, nunca substituída pela faturada.",
+        "Série nacional com cobertura e marca de universo por linha; variação anual só nas mesmas distribuidoras dos dois anos (sem mudança de escala entre eles) e série de universo fixo para os três últimos anos completos.",
+        "Quebra de escala (injetada mais de 30% maior ou menor) e absorção provável observada no SAMP marcadas em todo par de anos; o par afetado não entra em variação anual.",
+        "Percentual técnico regulatório: só trechos de 6 meses ou mais formam referência; resolução homologatória associada só com troca de ao menos 0,02 p.p.",
+        "Tarifa: só o processo com início ≤ data da consulta ≤ fim é apresentado como vigente; sem ele, o último já iniciado sai com a situação 'vigencia_encerrada'.",
         "Ano aberto comparado só com o mesmo período do ano anterior (janeiro até o último mês publicado por ao menos 90% das distribuidoras), sobre as mesmas distribuidoras nos dois recortes.",
         "Divergência entre representações de uma grandeza (linha TOTAL, linha de todos os níveis, soma dos níveis) é arbitrada pela soma dos níveis ou pelo fechamento do balanço do mês; só a que nenhuma das duas confirma gera alerta.",
-        "Associação com renda calculada com as perdas de 2022, o ano do Censo, para que as duas grandezas descrevam o mesmo ano.",
+        "Associação com renda calculada com as perdas de 2022, o ano do Censo, e com o território de 2022 (limites de continuidade daquele ano), para que as três grandezas descrevam o mesmo ano.",
     ]
     # comparação informativa com o relatório da ANEEL (edição 2025/2024), obtido por cópia de terceiro
     comparacao_relatorio = {
         "documento": "ANEEL/STR, Perdas de Energia Elétrica na Distribuição, edição 2025/2024 (16 p., extração do SAMP de maio de 2025)",
-        "acesso": "Original em git.aneel.gov.br bloqueado por desafio do Cloudflare; cópia de terceiro (agenciainfra.com, sha256 58d6da5b4edd06f4cf3e2c6c6627a166404de17ad90e81b838a39c139d6aa706) usada só para conferência, não como fonte de número publicado.",
+        "acesso": "Original em git.aneel.gov.br bloqueado por desafio do Cloudflare; cópia de terceiro (agenciainfra.com, sha256 58d6da5b4edd06f4cf3e2c6c6627a166404de17ad90e81b838a39c139d6aa706). Os valores do relatório aparecem aqui só como alvo desta conferência, rotulados como do relatório; nenhum indicador do observatório é calculado a partir deles.",
         "valores_relatorio": {"taxa_total_pct": 14.0, "perdas_tecnicas_twh": 44.6, "taxa_tecnica_pct": 7.4, "pnt_twh": 40.2,
                               "pnt_injetada_pct": 6.6, "mercado_bt_faturado_sobre_injetada_pct": 41.4, "base": "faturada"},
         "valores_observatorio": {"taxa_total_pct": (rel2024 or {}).get("taxa_total_pct"),
                                  "injetada_twh": _r((rel2024 or {}).get("injetada_mwh", 0) / 1e6, 1) if rel2024 else None,
+                                 "injetada_publicada_twh": _r(sum(a["injetada"] for (cnpj, y), a in anuais.items()
+                                                                   if y == 2024 and grupos.get(cnpj) == "concessionaria"
+                                                                   and _valido_para_agregado(a)) / 1e9, 1) if rel2024 else None,
                                  "base": "medida"},
         "leitura": "A injetada de referência de 2024 cai no intervalo implícito no relatório; a taxa total medida fica acima da faturada do relatório porque o mercado faturado inclui o custo de disponibilidade (a própria ANEEL registra essa diferença ao migrar para o mercado medido em 2025).",
     }
@@ -1286,15 +1625,21 @@ def construir(con, ctx):
     gold = {
         **c.cabecalho(GOLD),
         "referencia": {"ano": ano_ref, "ano_parcial": ano_parcial, "ultima_competencia": ultima_comp,
-                       "ultima_competencia_parcial": ultimo_mes_parcial, "mes_fim_acumulado": mes_fim, "aviso_parcial": aviso},
+                       "ultima_competencia_parcial": ultimo_mes_parcial, "mes_fim_acumulado": mes_fim, "aviso_parcial": aviso,
+                       "tarifa_consultada_em": hoje_iso},
         "definicoes": DEFINICOES,
-        "nacional": nacional,
+        # só as concessionárias na gold (a série de destaque); os três universos completos
+        # ficam em perdas_nacional.json, lido sob demanda, e no CSV nacional
+        "nacional": [x for x in nacional if x["universo"] == "concessionarias"],
         "acumulado": {"ano": ano_parcial, "mes_fim": mes_fim, "agregados": acum_nac} if mes_fim else None,
         "distribuidoras": distribuidoras,
-        "associacao": {"variavel_territorial": "renda média domiciliar per capita (Censo 2022) dos municípios confirmados",
-                       "ano_perdas": ano_assoc,
+        "universo_fixo": universo_fixo,
+        "associacao": {"variavel_territorial": "renda média domiciliar per capita (Censo 2022) dos municípios da área no ano das perdas",
+                       "ano_perdas": ano_assoc, "ano_relacao": (rel_assoc or {}).get("ano"),
+                       "confirmacao": dict(confirmacao_assoc), "excluidas": excluidas_assoc,
                        "spearman_pnt_bt": _r(rho_pnt, 3), "n_pnt_bt": n_pnt, "spearman_taxa_total": _r(rho_tot, 3), "n_taxa_total": n_tot,
-                       "universo": f"concessionárias com o ano {ano_assoc} completo, sem alerta e com território identificado",
+                       "universo": (f"concessionárias com o ano {ano_assoc} completo, sem alerta e com território na relação de {ano_assoc}; "
+                                    "não técnica só das que têm a separação publicada e fechando"),
                        "campos_pontos": ["cnpj", "renda_media_pc_confirmados", "pnt_bt_pct", "taxa_total_pct", "cobertura_exclusivos_pct"],
                        "pontos": pontos,
                        "leitura": "Associação descritiva entre áreas, não causa: renda municipal média não descreve cada unidade consumidora e perdas dependem também de gestão, rede e fiscalização. Perda não técnica não é atribuída às famílias da área."},
@@ -1316,6 +1661,11 @@ def construir(con, ctx):
             "agentes_ano_completos": sum(1 for a in anuais.values() if a["completo"]),
             "reconciliacao": dict(collections.Counter(a["reconciliacao"] for a in anuais.values() if a["completo"])),
             "alertas": dict(collections.Counter(x for a in anuais.values() for x in a["alertas"])),
+            "decomposicao": dict(collections.Counter(a["decomposicao"] for a in anuais.values() if a["completo"])),
+            "limite_residuo_balanco_pct": 100 * ap.LIMITE_RESIDUO_BALANCO,
+            "mudancas_de_universo": {"absorcoes": len(absorcoes), "sucessoes": len(sucessoes),
+                                     "pares_com_quebra_de_escala": sum(1 for v in pares.values() if v["quebra_escala"]),
+                                     "cnpj_com_digito_invalido": sorted(x for x, ok in dv_valido.items() if not ok)},
             "linhas_duplicadas_ignoradas": len(duplicadas), "ressalvas": ressalvas,
             "comparacao_relatorio_aneel": comparacao_relatorio,
         },
@@ -1333,9 +1683,21 @@ def construir(con, ctx):
             {"rotulo": "Contexto social por distribuidora (CSV)", "url": _url(CSV_CONTEXTO)},
             {"rotulo": "Acumulado do ano aberto e mesmo período do ano anterior (CSV)", "url": _url(CSV_ACUM)},
         ],
-        "series": {"anual": _url(JSON_ANUAL), "municipios": _url(JSON_MUN), "evidencias": _url(JSON_EVID)},
+        "series": {"anual": _url(JSON_ANUAL), "municipios": _url(JSON_MUN), "evidencias": _url(JSON_EVID),
+                   "nacional": _url(JSON_NACIONAL)},
     }
-    return gold
+    return _sem_privados(gold)
+
+
+def _colunas_comparacao(x):
+    """Colunas do CSV nacional sobre universo e comparação com o ano anterior nas mesmas
+    distribuidoras (vazias no primeiro ano ou sem distribuidora válida)."""
+    u, m = x.get("universo_igual_ano_anterior"), x.get("mesmas_ano_anterior")
+    col = [None if u is None else int(u[k]) for k in ("total", "tecnica", "pnt_bt")]
+    for n, chave in (("n_total", "taxa_total_pct"), ("n_tecnica", "taxa_tecnica_pct"), ("n_pnt_bt", "pnt_bt_pct")):
+        par = (m or {}).get(chave) or [None, None]
+        col += [(m or {}).get(n), par[0], par[1]]
+    return col + [(m or {}).get("fora_por_mudanca_de_universo")]
 
 
 def _reconc_2024(nacional):
@@ -1360,6 +1722,11 @@ def _pct_br(v, casas=1):
     return f"{v:.{casas}f}%".replace(".", ",")
 
 
+def _mwh3(kwh):
+    """kWh → MWh com três casas: o valor exato da fonte (inteiro em kWh) em MWh."""
+    return None if kwh is None else round(kwh / 1000.0, 3)
+
+
 def _twh_br(mwh):
     """MWh → "90,2 TWh" (uma casa), para o texto exibido; o valor de cálculo segue em MWh."""
     if mwh is None:
@@ -1369,11 +1736,11 @@ def _twh_br(mwh):
 
 DEFINICOES = {
     "perdas_totais": "Energia injetada na rede da distribuidora que não chega a ser entregue como consumo medido: diferença calculada pela ANEEL no SAMP Balanço (valor medido).",
-    "perdas_tecnicas": "Parcela atribuída às leis da física (aquecimento de cabos e transformadores). No SAMP é o percentual regulatório da revisão tarifária aplicado à energia injetada: estimativa, não medição.",
-    "perdas_nao_tecnicas": "Perdas totais menos as técnicas. Incluem furto, fraude, erros de medição, leitura e faturamento; a fonte não separa essas causas. Pode ser negativa quando a estimativa técnica supera a perda total medida.",
+    "perdas_tecnicas": "Parcela atribuída às leis da física (aquecimento de cabos e transformadores). No SAMP é o percentual regulatório do processo tarifário aplicado à energia injetada publicada: estimativa, não medição. Usada só a linha do valor medido.",
+    "perdas_nao_tecnicas": "Linha 'Perdas Não-Técnicas' publicada pela fonte (valor medido); pela definição da ANEEL, perdas totais menos as técnicas, identidade conferida mês a mês (quando não fecha, o agente-ano fica fora dos agregados de separação). Incluem furto, fraude, erros de medição, leitura e faturamento; a fonte não separa essas causas. Pode ser negativa quando a estimativa técnica supera a perda total medida.",
     "energia_injetada": "Energia inserida na rede para atender aos consumidores, incluindo as perdas. Denominador das taxas total e técnica.",
     "mercado_bt": "Energia medida entregue a consumidores de baixa tensão (cativos, consumo próprio e livres). Denominador da taxa não técnica, como na regulação da ANEEL.",
     "residuo": "Diferença entre a energia injetada publicada e a soma de energia fornecida, irregular e perdas. Mostra o que a fonte não explica; não é outra perda.",
-    "tecnica_regulatoria": "Percentual de perdas técnicas sobre a energia injetada fixado na revisão tarifária, lido da própria série do SAMP onde ela é constante.",
+    "tecnica_regulatoria": "Percentual de perdas técnicas sobre a energia injetada publicada, inferido pelo observatório da própria série do SAMP onde a razão fica constante por 6 meses ou mais; não é o percentual lido de um ato homologatório.",
     "custo_tarifa": "Parte da tarifa residencial B1 (sem tributos) que remunera perdas técnicas, não técnicas e na Rede Básica, em R$/MWh, por processo tarifário.",
 }

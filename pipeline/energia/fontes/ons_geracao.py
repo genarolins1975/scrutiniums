@@ -264,6 +264,9 @@ def agrega_geracao_usina(tabelas):
     - horario: {(hora 'AAAA-MM-DDTHH:MM', categoria): MWh} somado no SIN;
     - horas_dia: {(dia, sm|'SIN'): instantes distintos};
     - usina_mes: {(mes, id_ons): [MWh, horas_com_valor, linhas]};
+    - uf_mes: {(mes, uf, tipo, combustivel, modalidade): MWh} (geração por estado);
+    - roraima_dia: {(dia, tipo): MWh} das usinas de Roraima (UF RR), para decompor a
+      diferença com o Balanço, que só passa a incluir Roraima em julho de 2025;
     - cadastro: {id_ons: {...}} com o último rótulo visto;
     - rel: contagens de controle (linhas, vazios, inválidos, negativos, subsistema
       desconhecido, fora da grade horária, primeiro e último instante)."""
@@ -272,6 +275,8 @@ def agrega_geracao_usina(tabelas):
     horario = defaultdict(float)
     horas = defaultdict(set)
     usina_mes = defaultdict(lambda: [0.0, 0, 0])
+    uf_mes = defaultdict(float)
+    roraima = defaultdict(float)
     cadastro = {}
     rel = {"linhas": 0, "vazios": 0, "invalidos": 0, "negativos": 0, "subsistema_desconhecido": 0,
            "fora_da_grade": 0, "sem_id_ons": 0, "primeiro": None, "ultimo": None}
@@ -291,8 +296,9 @@ def agrega_geracao_usina(tabelas):
         ido = texto(_col(t, "id_ons") or pa.nulls(n, pa.string()))
         rel["sem_id_ons"] += pc.sum(pc.cast(pc.equal(ido, ""), pa.int64())).as_py() or 0
         mes = pc.utf8_slice_codeunits(dia, 0, 7)
+        uf = pc.utf8_upper(texto(t["id_estado"]))
         tab = pa.table({"dia": dia, "hora": hora, "mes": mes, "sm": sm, "tipo": tipo, "comb": comb, "mod": mod,
-                        "ido": ido, "v": v, "um": pa.array([1] * n, pa.int64())})
+                        "ido": ido, "uf": uf, "v": v, "um": pa.array([1] * n, pa.int64())})
         g = tab.group_by(["dia", "sm", "tipo", "comb", "mod"], use_threads=False).aggregate([("v", "sum"), ("v", "count"), ("um", "sum")]).to_pydict()
         for d_, s_, ti, co, mo, soma, cnt, lin in zip(g["dia"], g["sm"], g["tipo"], g["comb"], g["mod"], g["v_sum"], g["v_count"], g["um_sum"]):
             a = diario[(d_, s_, ti, co, mo)]
@@ -318,6 +324,16 @@ def agrega_geracao_usina(tabelas):
             a[0] += soma or 0.0
             a[1] += cnt
             a[2] += lin
+        g = tab.group_by(["mes", "uf", "tipo", "comb", "mod"], use_threads=False).aggregate([("v", "sum"), ("v", "count")]).to_pydict()
+        for m_, u_, ti, co, mo, soma, cnt in zip(g["mes"], g["uf"], g["tipo"], g["comb"], g["mod"], g["v_sum"], g["v_count"]):
+            if cnt:
+                uf_mes[(m_, u_, ti, co, mo)] += soma or 0.0
+        rr = tab.filter(pc.equal(uf, "RR"))
+        if rr.num_rows:
+            g = rr.group_by(["dia", "tipo"], use_threads=False).aggregate([("v", "sum"), ("v", "count")]).to_pydict()
+            for d_, ti, soma, cnt in zip(g["dia"], g["tipo"], g["v_sum"], g["v_count"]):
+                if cnt:
+                    roraima[(d_, ti)] += soma or 0.0
         # cadastro: um registro por identificador (última linha do lote)
         cad = pa.table({"ido": ido, "nome": texto(t["nom_usina"]), "tipo": tipo, "comb": comb, "mod": mod, "sm": sm,
                         "uf": texto(t["id_estado"]), "ceg": texto(_col(t, "ceg") or pa.nulls(n, pa.string()))})
@@ -330,7 +346,7 @@ def agrega_geracao_usina(tabelas):
             vistos[k] = True
             cadastro[k or "sem_id_ons"] = {c: dd[c][i] for c in ("nome", "tipo", "comb", "mod", "sm", "uf", "ceg")}
     return {"diario": dict(diario), "horario": dict(horario), "horas_dia": {k: len(v) for k, v in horas.items()},
-            "usina_mes": dict(usina_mes), "cadastro": cadastro, "rel": rel}
+            "usina_mes": dict(usina_mes), "uf_mes": dict(uf_mes), "roraima_dia": dict(roraima), "cadastro": cadastro, "rel": rel}
 
 
 # ---------------------------------------------------------------- térmica por motivo

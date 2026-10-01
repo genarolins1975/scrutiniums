@@ -159,7 +159,7 @@ def _celulas_b0(origem, info, lim):
 
 
 def emitir(con, origem, agora=None, modo="manual", run_url=None, versao_codigo=None, falha=None, gravar=True,
-           registro=None, pasta=arq.PASTA, legado=arq.LEGADO, emitido_em=None):
+           registro=None, pasta=arq.PASTA, legado=arq.LEGADO, emitido_em=None, lim=None):
     """Emite a rodada da origem e grava no arquivo. `falha`: registra a rodada como falha
     (todas as células sem número, com o motivo), sem calcular nada. `emitido_em` só é
     informado nos testes; na rodada real é o relógio no fim do cálculo."""
@@ -188,7 +188,7 @@ def emitir(con, origem, agora=None, modo="manual", run_url=None, versao_codigo=N
         return arq.anexa(regs, pasta, legado) if gravar else regs
     snap = snapshot_no_corte(con, corte_iso)
     info = v.Informacao(con, corte_iso)
-    lim = limites()
+    lim = lim or limites()
     celulas, calib = _celulas_b0(origem, info, lim)
     emitido = emitido_em or datetime.now(timezone.utc)
     cache_direto = {}

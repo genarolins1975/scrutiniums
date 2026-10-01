@@ -15,9 +15,21 @@ que a própria Convenção de Comercialização cita como base:
   com desafio de navegador; a cópia usada é a do Internet Archive, com o endereço oficial
   e o instante da cópia registrados e o sha256 do arquivo no bronze.
 
+Além das normas do PLD, entram os Procedimentos de Rede do ONS que descrevem o uso dos
+modelos que produzem o CMO (painéis P008 e P009): Submódulo 2.4 (premissas e critérios
+dos estudos energéticos: CMO semanal calculado pelo modelo de curto prazo; modelo de
+curtíssimo prazo executado em D-1 com o dia D em 48 intervalos semi-horários),
+Submódulo 4.3 (programação mensal: PMO e revisões semanais, prazo de sexta-feira) e
+Submódulo 4.5 (programação diária: CMO semi-horário, prazo de 16h de D-1, envio à CCEE).
+Os PDFs vêm do mesmo endereço do botão "Baixar" da página pública de Procedimentos de
+Rede vigentes do ONS. Os manuais dos modelos (NEWAVE, DECOMP e DESSEM), publicados pelo
+CEPEL, responderam HTTP 403 em 30/09/2026 e não foram integrados.
+
 Cada passagem citada fica escrita aqui como está no ato e é CONFERIDA a cada coleta
-contra o texto baixado (espaços normalizados). Passagem que não confere não é publicada
-como citação: a gold lista o que não conferiu, sem reescrever o ato.
+contra o texto baixado (espaços normalizados). Uma passagem pode ter partes separadas
+por " […] " (quando o texto original intercala marca de nota de rodapé ou trecho não
+citado): cada parte é conferida. Passagem que não confere não é publicada como citação:
+a gold lista o que não conferiu, sem reescrever o ato.
 """
 import html
 import os
@@ -33,6 +45,28 @@ URL_DECRETO_ORIGINAL = ("https://www2.camara.leg.br/legin/fed/decret/2004/"
 URL_REN957_OFICIAL = "https://www2.aneel.gov.br/cedoc/ren2021957.pdf"
 URL_REN957_COPIA = "https://web.archive.org/web/20250601132442id_/https://www2.aneel.gov.br/cedoc/ren2021957.pdf"
 COPIA_REN957_EM = "2025-06-01T13:24:42Z"
+
+# Procedimentos de Rede do ONS: página pública e endereço do botão "Baixar" de cada
+# submódulo (o mesmo montado pela página; nenhum cabeçalho especial é enviado).
+URL_PR_PAGINA = "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-rede/vigentes"
+_URL_PR_PDF = ("https://proxyportais.ons.org.br/ons.portalempregado.proxy/garapi/api/processo/retornarpdf"
+               "?url=/sites/soumaisons/portalgar/ecmpdf/Subm%C3%B3dulo%20{arquivo}.pdf")
+URL_CEPEL = "https://www.cepel.br/"
+LICENCA_PR = ("Documento público do ONS (Procedimentos de Rede, aprovados pela ANEEL). Os termos de uso do portal do ONS "
+              "não foram relidos nesta integração; o uso aqui é a citação literal de passagens com indicação da fonte "
+              "(Lei nº 9.610/1998, art. 46, III).")
+
+
+def _pr(sub, tipo, revisao, vigencia, titulo, aprovacao):
+    return {
+        "orgao": "ONS",
+        "titulo": f"Procedimentos de Rede, Submódulo {sub} – {titulo} ({tipo}, revisão {revisao}, vigência {vigencia})",
+        "url": _URL_PR_PDF.format(arquivo=f"{sub}-{tipo[:2].upper()}_{revisao}"), "url_oficial": URL_PR_PAGINA, "ext": "pdf",
+        "licenca": LICENCA_PR,
+        "nota": (f"PDF do submódulo {sub}, revisão {revisao} ({aprovacao}), baixado pelo endereço do botão \"Baixar\" da "
+                 "página de Procedimentos de Rede vigentes do ONS; a revisão e a vigência são conferidas no cabeçalho do documento."),
+        "submodulo": sub, "revisao": revisao, "vigencia": vigencia,
+    }
 
 DOCUMENTOS = {
     "decreto_5163_2004": {
@@ -52,6 +86,12 @@ DOCUMENTOS = {
                  "Internet Archive de " + COPIA_REN957_EM[:10] + " do mesmo endereço oficial; o texto compilado traz as alterações "
                  "até a data da cópia."),
     },
+    "ons_pr_submodulo_2_4": _pr("2.4", "Critérios", "2024.12", "19/12/2024", "Premissas, critérios e metodologias para estudos energéticos",
+                                "Despacho ANEEL 3.806/2024"),
+    "ons_pr_submodulo_4_3": _pr("4.3", "Procedimental", "2024.10", "30/10/2024", "Programação mensal da operação energética",
+                                "Resolução Normativa ANEEL nº 1.104/2024"),
+    "ons_pr_submodulo_4_5": _pr("4.5", "Procedimental", "2025.02", "01/03/2025", "Programação Diária da Operação",
+                                "Resolução Normativa ANEEL nº 1.112/2025"),
 }
 
 # (id, documento, dispositivo, passagem literal). A passagem é conferida no texto baixado.
@@ -99,6 +139,58 @@ TRECHOS = (
     ("ren957_art82", "ren_aneel_957_2021", "art. 82",
      "Art. 82. A Liquidação Financeira das operações de compra e venda de energia elétrica realizadas no âmbito MCP far-se-á de "
      "forma multilateral, com periodicidade máxima mensal, conforme Procedimentos de Comercialização específicos."),
+    # Procedimentos de Rede do ONS (uso dos modelos que produzem o CMO)
+    ("pr24_versao", "ons_pr_submodulo_2_4", "cabeçalho (revisão e vigência) e tabela de revisões",
+     "Premissas, critérios e metodologias para estudos energéticos 2.4 Critérios 2024.12 19/12/2024 […] "
+     "2024.12 Despacho ANEEL 3.806/2024 16/12/2024"),
+    ("pr24_cmo_semanal", "ons_pr_submodulo_2_4", "item 2.4.3.1",
+     "2.4.3.1 Os custos marginais de operação semanais são calculados diretamente pelo modelo para otimização da operação de "
+     "curto prazo com base em usinas individualizadas para cada semana operativa do PMO,"),
+    ("pr24_cmo_semi_horario", "ons_pr_submodulo_2_4", "item 2.5.1.1",
+     "2.5.1.1 O modelo de despacho hidrotérmico de curtíssimo prazo no processo de programação diária eletroenergética recebe "
+     "a função de custo futuro do modelo de curto prazo, inclui como dados de entrada a previsão de vazões, a previsão de carga, "
+     "a previsão da geração eólica e a rede elétrica e, resulta no valor do custo marginal de operação (CMO) semi-horário, "
+     "conforme processo descrito no Submódulo 4.5 – Programação Diária da Operação."),
+    ("pr24_execucao_d1", "ons_pr_submodulo_2_4", "item 2.5.1.2",
+     "2.5.1.2 O modelo de despacho hidrotérmico de curtíssimo prazo é executado diariamente em D-1, com horizonte de D até o "
+     "final da semana operativa, em que é feita a consulta à função de custo futuro do modelo de curto prazo, conforme mostrado na Figura 1."),
+    ("pr24_48_intervalos", "ons_pr_submodulo_2_4", "item 2.5.1.3",
+     "2.5.1.3 O primeiro dia (D) é detalhado em 48 intervalos semi-horários, considerando a Rede de Transmissão. Os demais dias "
+     "da semana operativa (D+1 até D+6) são divididos em patamares de carga."),
+    ("pr43_versao", "ons_pr_submodulo_4_3", "cabeçalho (revisão e vigência) e tabela de revisões",
+     "Programação mensal da operação energética 4.3 Procedimental 2024.10 30/10/2024 […] "
+     "2024.10 Resolução Normativa ANEEL nº 1.104/2024 22/10/2024"),
+    ("pr43_cmo_semanal", "ons_pr_submodulo_4_3", "item 1.4.1, alínea (a)",
+     "1.4.1. O ONS incorpora as informações consistidas nos arquivos de dados do modelo de otimização de curto prazo, executa o "
+     "modelo e obtém os seguintes resultados: (a) Custo Marginal de Operação (CMO) médio semanal, por subsistema, por patamar de carga;"),
+    ("pr43_prazo_sexta", "ons_pr_submodulo_4_3", "item 1.5.2 (a nota de rodapé 1 trata de feriados)",
+     "1.5.2. Caso o ONS não obtenha os resultados do modelo de curto prazo até as 12h00 de sexta-feira […] "
+     "são utilizados os resultados válidos mais recentes disponíveis."),
+    ("pr43_horizonte", "ons_pr_submodulo_4_3", "item 1.6.2",
+     "1.6.2. O ONS disponibiliza o PMO e suas revisões semanais a todos os agentes envolvidos, com horizonte de análise mensal, "
+     "discretizado em base semanal para o primeiro mês, que pode ser estendido por um período variável, desde que resguardada a base mensal."),
+    ("pr43_versoes_modelos", "ons_pr_submodulo_4_3", "item 1.7.1.3",
+     "1.7.1.3. As versões dos modelos computacionais utilizados pelo ONS são aquelas validadas com a participação dos agentes e "
+     "homologadas pela ANEEL, por meio de ato específico."),
+    ("pr45_versao", "ons_pr_submodulo_4_5", "cabeçalho (revisão e vigência) e tabela de revisões",
+     "Programação Diária da Operação 4.5 Procedimental 2025.02 01/03/2025 […] "
+     "2025.02 Resolução Normativa ANEEL nº 1.112/2025 11/02/2025"),
+    ("pr45_cmo_semi_horario", "ons_pr_submodulo_4_5", "item 2.3.1",
+     "2.3.1. O ONS atualiza os arquivos de dados do modelo de curtíssimo prazo e executa o modelo para definição dos valores de "
+     "despacho de geração das usinas hidráulicas, usinas termelétricas e os intercâmbios entre subsistemas e o Custo Marginal de "
+     "Operação (CMO) em base semi-horária."),
+    ("pr45_envio_ccee", "ons_pr_submodulo_4_5", "item 2.3.3",
+     "2.3.3. Após execução do modelo de curtíssimo prazo, o ONS encaminha o deck de dados e os resultados para CCEE."),
+    ("pr45_prazo_16h", "ons_pr_submodulo_4_5", "item 2.4.1 (a marca da nota de rodapé 1 fica entre as partes)",
+     "2.4.1. Na inviabilidade do ONS obter, até às 16h00min do dia D-1 […] os resultados do modelo de curtíssimo prazo para a "
+     "elaboração da programação do dia D, são consideradas as seguintes ações do Plano de Contingência para a definição das propostas de geração:"),
+    ("pr45_dia_d1", "ons_pr_submodulo_4_5", "nota de rodapé 1",
+     "O dia “D-1” refere-se ao dia anterior ao da programação, ou seja, data de processamento do modelo de curtíssimo prazo para a "
+     "elaboração da programação diária da operação eletroenergética do dia seguinte. O dia “D” refere-se ao dia a ser programado."),
+    ("pr45_decomp", "ons_pr_submodulo_4_5", "item 2.4.1, alínea (c), (1), (i)",
+     "o ONS considera os resultados do modelo de curto prazo (DECOMP) que forneceu a Função de Custo Futuro para a semana operativa do dia D."),
+    ("pr45_dessem", "ons_pr_submodulo_4_5", "nota de rodapé 2",
+     "Trata-se de interstício de tempo que, do ponto de vista da modelagem do DESSEM,"),
 )
 
 
@@ -138,6 +230,19 @@ def texto_pdf(conteudo):
     return normaliza(saida.decode("utf-8", errors="replace"))
 
 
+SEPARADOR = "[…]"
+
+
+def partes(passagem):
+    """Partes literais de uma passagem citada com elisão (" […] ")."""
+    return [p.strip() for p in passagem.split(SEPARADOR) if p.strip()]
+
+
+def confere(passagem, texto):
+    """True quando cada parte da passagem está, com espaços normalizados, no texto."""
+    return bool(texto) and all(normaliza(p) in texto for p in partes(passagem))
+
+
 def confere_trechos(doc_id, texto):
     """[(id, dispositivo, passagem, confere)] das passagens do documento `doc_id`.
     `texto` None (documento ilegível) deixa todas como não conferidas."""
@@ -145,5 +250,5 @@ def confere_trechos(doc_id, texto):
     for tid, doc, disp, passagem in TRECHOS:
         if doc != doc_id:
             continue
-        out.append((tid, disp, passagem, bool(texto) and normaliza(passagem) in texto))
+        out.append((tid, disp, passagem, confere(passagem, texto)))
     return out

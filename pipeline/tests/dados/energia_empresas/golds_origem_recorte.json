@@ -1,0 +1,991 @@
+{
+ "perdas.json": {
+  "disponivel": true,
+  "gerado_em": "2026-09-30T23:47:42Z",
+  "distribuidoras": [
+   {
+    "cnpj": "06981180000116",
+    "cnpj_formatado": "06.981.180/0001-16",
+    "cnpj_dv_valido": true,
+    "sigla": "CEMIG-D",
+    "nome": "CEMIG DISTRIBUIÇÃO S.A",
+    "classificacao": "Concessionária",
+    "grupo": "concessionaria",
+    "primeira_competencia": "2005-01",
+    "ultima_competencia": "2026-07",
+    "ativa": true,
+    "referencia": {
+     "ano": 2025,
+     "meses": 12,
+     "completo": true,
+     "injetada_mwh": 60989117,
+     "origem_injetada": "requerida",
+     "perdas_totais_mwh": 7394845,
+     "taxa_total_pct": 12.12,
+     "perdas_tecnicas_mwh": null,
+     "taxa_tecnica_pct": null,
+     "taxa_tecnica_injetada_publicada_pct": null,
+     "pnt_mwh": null,
+     "pnt_injetada_pct": null,
+     "mercado_bt_mwh": 24188430,
+     "pnt_bt_pct": null,
+     "residuo_pct_injetada": 10.37,
+     "reconciliacao": "residuo_relevante",
+     "decomposicao": "sem_separacao",
+     "residuo_decomposicao_mwh": null,
+     "alertas": []
+    },
+    "variacao": {
+     "ano_base": 2024,
+     "comparavel": true,
+     "taxa_total_pp": 0.89,
+     "perdas_totais_pct": 8.2,
+     "pnt_bt_pp": null,
+     "variacao_injetada_pct": 0.3,
+     "quebra_escala": false,
+     "absorcao": false,
+     "atravessa_leiaute": false
+    },
+    "parcial": {
+     "ano": 2026,
+     "mes_fim": 7,
+     "meses": 7,
+     "completo": true,
+     "comparavel": true,
+     "origem_injetada": "requerida",
+     "injetada_mwh": 35352704,
+     "perdas_totais_mwh": 4131436,
+     "taxa_total_pct": 11.69,
+     "pnt_bt_pct": null,
+     "anterior": {
+      "perdas_totais_mwh": 4263126,
+      "taxa_total_pct": 12.03,
+      "pnt_bt_pct": null,
+      "origem_injetada": "requerida"
+     },
+     "alertas": []
+    },
+    "tecnica_regulatoria": {
+     "segmentos": [
+      {
+       "inicio": "2016-01",
+       "fim": "2018-04",
+       "pct": 7.84,
+       "meses": 28,
+       "troca_pp": -3.92,
+       "reh": null,
+       "transicao": null
+      },
+      {
+       "inicio": "2018-06",
+       "fim": "2023-04",
+       "pct": 8.766,
+       "meses": 59,
+       "troca_pp": 0.926,
+       "reh": {
+        "resolucao": "RESOLUÇÃO HOMOLOGATÓRIA Nº 2.396, DE 22 DE MAIO DE 2018",
+        "inicio_vigencia": "2018-05-28"
+       },
+       "transicao": "2018-05"
+      },
+      {
+       "inicio": "2023-06",
+       "fim": "2023-12",
+       "pct": 8.014,
+       "meses": 7,
+       "troca_pp": -0.752,
+       "reh": {
+        "resolucao": "RESOLUÇÃO HOMOLOGATÓRIA Nº 3.202, DE 24 DE MAIO DE 2023",
+        "inicio_vigencia": "2023-05-28"
+       },
+       "transicao": "2023-05"
+      }
+     ],
+     "n_segmentos": 3,
+     "n_curtos": 0
+    },
+    "tarifa": {
+     "resolucao": "RESOLUÇÃO HOMOLOGATÓRIA Nº 3.589, DE 26 DE MAIO DE 2026",
+     "inicio": "2026-05-28",
+     "fim": "2027-05-27",
+     "situacao": "vigente",
+     "pt": 43.51,
+     "pnt": 16.77,
+     "rede_basica": 5.16,
+     "perdas": 65.44,
+     "tusd": 553.12,
+     "te": 292.88,
+     "total": 846.0,
+     "participacao_perdas_pct": 7.74,
+     "participacao_pnt_pct": 1.98,
+     "n_processos": 22
+    },
+    "territorio": {
+     "municipios": 800,
+     "confirmados": 776,
+     "exclusivos": 769,
+     "compartilhados": 7,
+     "nao_confirmados": 24,
+     "so_mmgd": 0,
+     "ufs": [
+      "MG"
+     ],
+     "ufs_so_nao_confirmadas": []
+    },
+    "contexto": {
+     "populacao_confirmados": 19202924,
+     "populacao_exclusivos": 19088808,
+     "cobertura_exclusivos_pct": 99.4,
+     "renda_media_pc_confirmados": 1625.17,
+     "renda_media_pc_exclusivos": 1624.91,
+     "municipios_com_renda": 776,
+     "area_km2_confirmados": 567667
+    },
+    "correspondencias": []
+   },
+   {
+    "cnpj": "53859112000169",
+    "cnpj_formatado": "53.859.112/0001-69",
+    "cnpj_dv_valido": true,
+    "sigla": "CPFL JAGUARI",
+    "nome": "COMPANHIA JAGUARI DE ENERGIA",
+    "classificacao": "Concessionária",
+    "grupo": "concessionaria",
+    "primeira_competencia": "2003-01",
+    "ultima_competencia": "2026-07",
+    "ativa": true,
+    "referencia": {
+     "ano": 2025,
+     "meses": 12,
+     "completo": true,
+     "injetada_mwh": 3918255,
+     "origem_injetada": "requerida",
+     "perdas_totais_mwh": 319573,
+     "taxa_total_pct": 8.16,
+     "perdas_tecnicas_mwh": null,
+     "taxa_tecnica_pct": null,
+     "taxa_tecnica_injetada_publicada_pct": null,
+     "pnt_mwh": null,
+     "pnt_injetada_pct": null,
+     "mercado_bt_mwh": 1716964,
+     "pnt_bt_pct": null,
+     "residuo_pct_injetada": 0.15,
+     "reconciliacao": "residuo_relevante",
+     "decomposicao": "sem_separacao",
+     "residuo_decomposicao_mwh": null,
+     "alertas": []
+    },
+    "variacao": {
+     "ano_base": 2024,
+     "comparavel": true,
+     "taxa_total_pp": -0.46,
+     "perdas_totais_pct": -5.4,
+     "pnt_bt_pp": null,
+     "variacao_injetada_pct": -0.1,
+     "quebra_escala": false,
+     "absorcao": false,
+     "atravessa_leiaute": false
+    },
+    "parcial": {
+     "ano": 2026,
+     "mes_fim": 7,
+     "meses": 7,
+     "completo": true,
+     "comparavel": true,
+     "origem_injetada": "requerida",
+     "injetada_mwh": 2269932,
+     "perdas_totais_mwh": 193434,
+     "taxa_total_pct": 8.52,
+     "pnt_bt_pct": null,
+     "anterior": {
+      "perdas_totais_mwh": 205371,
+      "taxa_total_pct": 8.97,
+      "pnt_bt_pct": null,
+      "origem_injetada": "requerida"
+     },
+     "alertas": []
+    },
+    "tecnica_regulatoria": {
+     "segmentos": [
+      {
+       "inicio": "2019-01",
+       "fim": "2021-02",
+       "pct": 7.14,
+       "meses": 26,
+       "troca_pp": -0.03,
+       "reh": null,
+       "transicao": null
+      },
+      {
+       "inicio": "2021-03",
+       "fim": "2023-12",
+       "pct": 6.85,
+       "meses": 34,
+       "troca_pp": -0.29,
+       "reh": {
+        "resolucao": "RESOLUÇÃO HOMOLOGATÓRIA Nº 2.837, DE 16 DE MARÇO DE 2021",
+        "inicio_vigencia": "2021-03-22"
+       },
+       "transicao": null
+      }
+     ],
+     "n_segmentos": 2,
+     "n_curtos": 0
+    },
+    "tarifa": {
+     "resolucao": "RESOLUÇÃO HOMOLOGATÓRIA Nº 3.580, DE 22 DE ABRIL DE 2026",
+     "inicio": "2026-04-22",
+     "fim": "2027-04-21",
+     "situacao": "vigente",
+     "pt": 41.16,
+     "pnt": 7.73,
+     "rede_basica": 3.95,
+     "perdas": 52.83,
+     "tusd": 553.43,
+     "te": 271.58,
+     "total": 825.01,
+     "participacao_perdas_pct": 6.4,
+     "participacao_pnt_pct": 0.94,
+     "n_processos": 20
+    },
+    "territorio": {
+     "municipios": 45,
+     "confirmados": 45,
+     "exclusivos": 39,
+     "compartilhados": 6,
+     "nao_confirmados": 0,
+     "so_mmgd": 0,
+     "ufs": [
+      "MG",
+      "PR",
+      "SP"
+     ],
+     "ufs_so_nao_confirmadas": []
+    },
+    "contexto": {
+     "populacao_confirmados": 1107517,
+     "populacao_exclusivos": 879555,
+     "cobertura_exclusivos_pct": 79.4,
+     "renda_media_pc_confirmados": 1626.1,
+     "renda_media_pc_exclusivos": 1595.61,
+     "municipios_com_renda": 45,
+     "area_km2_confirmados": 20250
+    },
+    "correspondencias": []
+   },
+   {
+    "cnpj": "61116265000144",
+    "cnpj_formatado": "61.116.265/0001-44",
+    "cnpj_dv_valido": true,
+    "sigla": "CPFL SANTA CRUZ",
+    "nome": "COMPANHIA LUZ E FORCA SANTA CRUZ",
+    "classificacao": "Concessionária",
+    "grupo": "concessionaria",
+    "primeira_competencia": "2003-01",
+    "ultima_competencia": "2018-02",
+    "ativa": false,
+    "referencia": null,
+    "variacao": null,
+    "parcial": null,
+    "tecnica_regulatoria": {
+     "segmentos": [],
+     "n_segmentos": 0,
+     "n_curtos": 2
+    },
+    "tarifa": {
+     "resolucao": "RESOLUÇÃO HOMOLOGATÓRIA Nº 2.211, DE 21 DE MARÇO DE 2017",
+     "inicio": "2017-03-22",
+     "fim": "2018-03-21",
+     "situacao": "vigencia_encerrada",
+     "pt": 22.25,
+     "pnt": 1.29,
+     "rede_basica": 1.87,
+     "perdas": 25.41,
+     "tusd": 241.17,
+     "te": 238.49,
+     "total": 479.66,
+     "participacao_perdas_pct": 5.3,
+     "participacao_pnt_pct": 0.27,
+     "n_processos": 9
+    },
+    "territorio": null,
+    "contexto": null,
+    "correspondencias": []
+   },
+   {
+    "cnpj": "02016439000138",
+    "cnpj_formatado": "02.016.439/0001-38",
+    "cnpj_dv_valido": true,
+    "sigla": "RGE",
+    "nome": "RIO GRANDE ENERGIA SA",
+    "classificacao": "Concessionária",
+    "grupo": "concessionaria",
+    "primeira_competencia": "2003-01",
+    "ultima_competencia": "2019-05",
+    "ativa": false,
+    "referencia": null,
+    "variacao": null,
+    "parcial": null,
+    "tecnica_regulatoria": {
+     "segmentos": [
+      {
+       "inicio": "2010-01",
+       "fim": "2011-10",
+       "pct": 8.66,
+       "meses": 22,
+       "troca_pp": null,
+       "reh": null,
+       "transicao": null
+      }
+     ],
+     "n_segmentos": 1,
+     "n_curtos": 0
+    },
+    "tarifa": {
+     "resolucao": "RESOLUÇÃO HOMOLOGATÓRIA Nº 2.401, DE 12 DE JUNHO DE 2018",
+     "inicio": "2018-06-19",
+     "fim": "2019-06-18",
+     "situacao": "vigencia_encerrada",
+     "pt": 21.88,
+     "pnt": 7.36,
+     "rede_basica": 5.88,
+     "perdas": 35.11,
+     "tusd": 257.9,
+     "te": 245.78,
+     "total": 503.68,
+     "participacao_perdas_pct": 6.97,
+     "participacao_pnt_pct": 1.46,
+     "n_processos": 10
+    },
+    "territorio": null,
+    "contexto": null,
+    "correspondencias": []
+   },
+   {
+    "cnpj": "02016440000162",
+    "cnpj_formatado": "02.016.440/0001-62",
+    "cnpj_dv_valido": true,
+    "sigla": "RGE SUL",
+    "nome": "RGE SUL DISTRIBUIDORA DE ENERGIA S.A.",
+    "classificacao": "Concessionária",
+    "grupo": "concessionaria",
+    "primeira_competencia": "2003-01",
+    "ultima_competencia": "2026-07",
+    "ativa": true,
+    "referencia": {
+     "ano": 2025,
+     "meses": 12,
+     "completo": true,
+     "injetada_mwh": 23542814,
+     "origem_injetada": "requerida",
+     "perdas_totais_mwh": 2179959,
+     "taxa_total_pct": 9.26,
+     "perdas_tecnicas_mwh": null,
+     "taxa_tecnica_pct": null,
+     "taxa_tecnica_injetada_publicada_pct": null,
+     "pnt_mwh": null,
+     "pnt_injetada_pct": null,
+     "mercado_bt_mwh": 11018622,
+     "pnt_bt_pct": null,
+     "residuo_pct_injetada": 1.36,
+     "reconciliacao": "residuo_relevante",
+     "decomposicao": "sem_separacao",
+     "residuo_decomposicao_mwh": null,
+     "alertas": []
+    },
+    "variacao": {
+     "ano_base": 2024,
+     "comparavel": true,
+     "taxa_total_pp": -1.11,
+     "perdas_totais_pct": -7.7,
+     "pnt_bt_pp": null,
+     "variacao_injetada_pct": 3.4,
+     "quebra_escala": false,
+     "absorcao": false,
+     "atravessa_leiaute": false
+    },
+    "parcial": {
+     "ano": 2026,
+     "mes_fim": 7,
+     "meses": 7,
+     "completo": true,
+     "comparavel": true,
+     "origem_injetada": "requerida",
+     "injetada_mwh": 14706920,
+     "perdas_totais_mwh": 1507825,
+     "taxa_total_pct": 10.25,
+     "pnt_bt_pct": null,
+     "anterior": {
+      "perdas_totais_mwh": 1433579,
+      "taxa_total_pct": 10.07,
+      "pnt_bt_pct": null,
+      "origem_injetada": "requerida"
+     },
+     "alertas": []
+    },
+    "tecnica_regulatoria": {
+     "segmentos": [],
+     "n_segmentos": 0,
+     "n_curtos": 1
+    },
+    "tarifa": {
+     "resolucao": "RESOLUÇÃO HOMOLOGATÓRIA Nº 3.590, DE 16 DE JUNHO DE 2026",
+     "inicio": "2026-06-19",
+     "fim": "2027-06-18",
+     "situacao": "vigente",
+     "pt": 30.07,
+     "pnt": 13.61,
+     "rede_basica": 6.67,
+     "perdas": 50.35,
+     "tusd": 550.57,
+     "te": 321.34,
+     "total": 871.91,
+     "participacao_perdas_pct": 5.77,
+     "participacao_pnt_pct": 1.56,
+     "n_processos": 21
+    },
+    "territorio": {
+     "municipios": 383,
+     "confirmados": 375,
+     "exclusivos": 147,
+     "compartilhados": 228,
+     "nao_confirmados": 7,
+     "so_mmgd": 1,
+     "ufs": [
+      "RS"
+     ],
+     "ufs_so_nao_confirmadas": []
+    },
+    "contexto": {
+     "populacao_confirmados": 6946196,
+     "populacao_exclusivos": 3944532,
+     "cobertura_exclusivos_pct": 56.8,
+     "renda_media_pc_confirmados": 1955.03,
+     "renda_media_pc_exclusivos": 1917.63,
+     "municipios_com_renda": 375,
+     "area_km2_confirmados": 182767
+    },
+    "correspondencias": []
+   }
+  ]
+ },
+ "qualidade.json": {
+  "disponivel": true,
+  "gerado_em": "2026-09-30T23:17:11Z",
+  "distribuidoras": [
+   {
+    "cnpj": "06981180000116",
+    "sigla": "CEMIG-D",
+    "nome_comercial": "Cemig-D",
+    "classificacao": "Concessionária",
+    "ano": 2025,
+    "meses": 12,
+    "ucs": 9429000.0,
+    "conjuntos": 265,
+    "dec": 8.98,
+    "fec": 5.14,
+    "dec_limite": 9.5,
+    "fec_limite": 5.84,
+    "cobertura_limite": 1.0,
+    "razao_dec": 0.944,
+    "razao_fec": 0.881,
+    "dgc_calculado": 0.912,
+    "dgc_publicado": 0.91,
+    "posicao_ranking": 31,
+    "porte_ranking": "grande",
+    "dec_todas_parcelas": 14.36,
+    "fec_todas_parcelas": 7.6,
+    "pct_dec_expurgado": 37.5,
+    "parcelas_dec": {
+     "apurado": 8.98,
+     "emergencia": 4.57,
+     "dia_critico": 0.56,
+     "externa": 0.25,
+     "ons": 0.0
+    },
+    "parcelas_fec": {
+     "apurado": 5.14,
+     "emergencia": 1.77,
+     "dia_critico": 0.26,
+     "externa": 0.42,
+     "ons": 0.0
+    },
+    "cobertura_min": 1.0,
+    "compensacao": {
+     "ano": 2025,
+     "valor": 128313016.65,
+     "quantidade": 2336490.0,
+     "valor_por_uc": 13.61,
+     "valor_por_tipo": {
+      "mensal": 126879998.63,
+      "dicri": 1433018.02
+     }
+    },
+    "iasc": {
+     "ano": 2025,
+     "valor": 61.96,
+     "amostra": 575.0,
+     "ordem": 38.0,
+     "categoria": "Região Sudeste acima de 500 mil unidades consumidoras"
+    },
+    "reclamacoes": {
+     "ano": 2025,
+     "n1": 4011636.0,
+     "n2": 40884.0,
+     "interrupcao_n1": 2783647.0,
+     "n1_por_mil_uc": 425.46,
+     "n2_por_mil_uc": 4.336,
+     "interrupcao_n1_por_mil_uc": 295.22,
+     "meses": 12,
+     "ouvidoria_aneel": 14772.0,
+     "ouvidoria_aneel_procedentes": 3317.0,
+     "ouvidoria_aneel_por_100mil_uc": 156.67,
+     "meses_ouvidoria": 12
+    },
+    "tmae_min": 322.9,
+    "eventos_emergencia_2026": 17,
+    "serie": {
+     "anos": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "dec": [
+      11.54,
+      11.92,
+      11.29,
+      10.59,
+      10.62,
+      9.71,
+      9.46,
+      9.48,
+      9.72,
+      9.47,
+      8.98
+     ],
+     "fec": [
+      5.88,
+      5.76,
+      5.59,
+      5.24,
+      5.05,
+      5.07,
+      4.6,
+      4.58,
+      4.86,
+      5.05,
+      5.14
+     ],
+     "dec_limite": [
+      11.62,
+      11.29,
+      10.88,
+      10.63,
+      10.51,
+      10.31,
+      10.09,
+      9.98,
+      9.59,
+      9.66,
+      9.5
+     ],
+     "fec_limite": [
+      8.33,
+      7.94,
+      7.58,
+      7.29,
+      7.24,
+      6.98,
+      6.57,
+      6.44,
+      6.0,
+      5.98,
+      5.84
+     ]
+    }
+   },
+   {
+    "cnpj": "02016440000162",
+    "sigla": "RGE SUL",
+    "nome_comercial": "RGE",
+    "classificacao": "Concessionária",
+    "ano": 2025,
+    "meses": 12,
+    "ucs": 3105370.0,
+    "conjuntos": 101,
+    "dec": 9.03,
+    "fec": 4.45,
+    "dec_limite": 10.4,
+    "fec_limite": 6.97,
+    "cobertura_limite": 1.0,
+    "razao_dec": 0.868,
+    "razao_fec": 0.638,
+    "dgc_calculado": 0.753,
+    "dgc_publicado": 0.75,
+    "posicao_ranking": 20,
+    "porte_ranking": "grande",
+    "dec_todas_parcelas": 13.35,
+    "fec_todas_parcelas": 6.11,
+    "pct_dec_expurgado": 32.4,
+    "parcelas_dec": {
+     "apurado": 9.03,
+     "emergencia": 2.96,
+     "dia_critico": 1.24,
+     "externa": 0.11,
+     "ons": 0.02
+    },
+    "parcelas_fec": {
+     "apurado": 4.45,
+     "emergencia": 0.78,
+     "dia_critico": 0.45,
+     "externa": 0.42,
+     "ons": 0.02
+    },
+    "cobertura_min": 1.0,
+    "compensacao": {
+     "ano": 2025,
+     "valor": 43680205.76,
+     "quantidade": 756297.0,
+     "valor_por_uc": 14.07,
+     "valor_por_tipo": {
+      "mensal": 42297310.84,
+      "dicri": 1382894.92
+     }
+    },
+    "iasc": {
+     "ano": 2025,
+     "valor": 68.37,
+     "amostra": 557.0,
+     "ordem": 19.0,
+     "categoria": "Região Sul acima de 500 mil unidades consumidoras"
+    },
+    "reclamacoes": {
+     "ano": 2025,
+     "n1": 979662.0,
+     "n2": 5703.0,
+     "interrupcao_n1": 821013.0,
+     "n1_por_mil_uc": 315.47,
+     "n2_por_mil_uc": 1.836,
+     "interrupcao_n1_por_mil_uc": 264.38,
+     "meses": 12,
+     "ouvidoria_aneel": 4038.0,
+     "ouvidoria_aneel_procedentes": 475.0,
+     "ouvidoria_aneel_por_100mil_uc": 130.03,
+     "meses_ouvidoria": 12
+    },
+    "tmae_min": 406.8,
+    "eventos_emergencia_2026": 4,
+    "serie": {
+     "anos": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "dec": [
+      19.1,
+      19.46,
+      15.58,
+      15.56,
+      14.03,
+      10.84,
+      10.85,
+      10.55,
+      8.63,
+      9.07,
+      9.03
+     ],
+     "fec": [
+      8.41,
+      9.41,
+      7.62,
+      5.89,
+      6.26,
+      5.27,
+      4.83,
+      4.63,
+      3.98,
+      4.41,
+      4.45
+     ],
+     "dec_limite": [
+      12.97,
+      12.25,
+      11.42,
+      10.81,
+      11.08,
+      11.0,
+      10.83,
+      10.76,
+      10.54,
+      10.49,
+      10.4
+     ],
+     "fec_limite": [
+      10.74,
+      9.85,
+      9.1,
+      8.29,
+      8.35,
+      8.15,
+      7.86,
+      7.69,
+      7.21,
+      7.18,
+      6.97
+     ]
+    }
+   },
+   {
+    "cnpj": "53859112000169",
+    "sigla": "CPFL JAGUARI",
+    "nome_comercial": "CPFL Santa Cruz",
+    "classificacao": "Concessionária",
+    "ano": 2025,
+    "meses": 12,
+    "ucs": 510824.0,
+    "conjuntos": 21,
+    "dec": 4.64,
+    "fec": 2.69,
+    "dec_limite": 7.35,
+    "fec_limite": 6.01,
+    "cobertura_limite": 1.0,
+    "razao_dec": 0.631,
+    "razao_fec": 0.448,
+    "dgc_calculado": 0.54,
+    "dgc_publicado": 0.54,
+    "posicao_ranking": 1,
+    "porte_ranking": "grande",
+    "dec_todas_parcelas": 6.59,
+    "fec_todas_parcelas": 3.7,
+    "pct_dec_expurgado": 29.6,
+    "parcelas_dec": {
+     "apurado": 4.64,
+     "emergencia": 0.76,
+     "dia_critico": 1.1,
+     "externa": 0.03,
+     "ons": 0.06
+    },
+    "parcelas_fec": {
+     "apurado": 2.69,
+     "emergencia": 0.22,
+     "dia_critico": 0.53,
+     "externa": 0.15,
+     "ons": 0.11
+    },
+    "cobertura_min": 1.0,
+    "compensacao": {
+     "ano": 2025,
+     "valor": 2861860.54,
+     "quantidade": 59685.0,
+     "valor_por_uc": 5.6,
+     "valor_por_tipo": {
+      "mensal": 2736359.88,
+      "dicri": 125500.66
+     }
+    },
+    "iasc": {
+     "ano": 2025,
+     "valor": 68.72,
+     "amostra": 392.0,
+     "ordem": 15.0,
+     "categoria": "Região Sudeste acima de 500 mil unidades consumidoras"
+    },
+    "reclamacoes": {
+     "ano": 2025,
+     "n1": 103709.0,
+     "n2": 819.0,
+     "interrupcao_n1": 83248.0,
+     "n1_por_mil_uc": 203.02,
+     "n2_por_mil_uc": 1.603,
+     "interrupcao_n1_por_mil_uc": 162.97,
+     "meses": 12,
+     "ouvidoria_aneel": 394.0,
+     "ouvidoria_aneel_procedentes": 53.0,
+     "ouvidoria_aneel_por_100mil_uc": 77.13,
+     "meses_ouvidoria": 12
+    },
+    "tmae_min": 268.5,
+    "eventos_emergencia_2026": 0,
+    "serie": {
+     "anos": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+     ],
+     "dec": [
+      6.89,
+      7.08,
+      6.38,
+      6.0,
+      5.56,
+      4.88,
+      5.66,
+      4.74,
+      5.04,
+      4.84,
+      4.64
+     ],
+     "fec": [
+      4.61,
+      6.11,
+      5.69,
+      5.09,
+      4.25,
+      3.68,
+      4.21,
+      3.22,
+      3.22,
+      3.05,
+      2.69
+     ],
+     "dec_limite": [
+      8.47,
+      8.0,
+      8.0,
+      8.76,
+      8.45,
+      8.19,
+      8.2,
+      8.13,
+      7.99,
+      7.35,
+      7.35
+     ],
+     "fec_limite": [
+      8.0,
+      8.0,
+      8.0,
+      7.89,
+      7.64,
+      6.96,
+      6.96,
+      6.92,
+      6.56,
+      6.11,
+      6.01
+     ]
+    }
+   }
+  ]
+ },
+ "conta.json": {
+  "disponivel": true,
+  "gerado_em": "2026-09-30T23:48:51Z",
+  "tarifas": {
+   "vigentes": [
+    {
+     "cnpj": "53859112000169",
+     "sigla": "CPFL Santa Cruz",
+     "nome": "COMPANHIA JAGUARI DE ENERGIA",
+     "inicio": "2026-04-22",
+     "fim": "2027-04-21",
+     "ato": "REH 3.580/2026",
+     "te": 252.19,
+     "tusd": 560.39,
+     "total": 812.58,
+     "be_te": 271.58,
+     "be_tusd": 553.43,
+     "be_total": 825.01,
+     "perfis": {
+      "100": 81.26,
+      "200": 162.52,
+      "300": 243.77
+     },
+     "posicao": 38
+    },
+    {
+     "cnpj": "06981180000116",
+     "sigla": "CEMIG-D",
+     "nome": "CEMIG DISTRIBUICAO S.A",
+     "inicio": "2026-05-28",
+     "fim": "2027-05-27",
+     "ato": "REH 3.589/2026",
+     "te": 310.21,
+     "tusd": 593.08,
+     "total": 903.29,
+     "be_te": 292.88,
+     "be_tusd": 553.12,
+     "be_total": 846.0,
+     "perfis": {
+      "100": 90.33,
+      "200": 180.66,
+      "300": 270.99
+     },
+     "posicao": 61
+    },
+    {
+     "cnpj": "02016440000162",
+     "sigla": "RGE",
+     "nome": "RGE SUL DISTRIBUIDORA DE ENERGIA S.A.",
+     "inicio": "2026-06-19",
+     "fim": "2027-06-18",
+     "ato": "REH 3.590/2026",
+     "te": 356.11,
+     "tusd": 588.5,
+     "total": 944.61,
+     "be_te": 321.34,
+     "be_tusd": 550.57,
+     "be_total": 871.91,
+     "perfis": {
+      "100": 94.46,
+      "200": 188.92,
+      "300": 283.38
+     },
+     "posicao": 65
+    }
+   ],
+   "sem_vigente": [
+    {
+     "cnpj": "02016439000138",
+     "sigla": "RGE",
+     "nome": "RIO GRANDE ENERGIA SA",
+     "ultima_vigencia": {
+      "inicio": "2018-06-19",
+      "fim": "2019-06-18",
+      "ato": "REH 2.401/2018"
+     },
+     "dias_sem_tarifa": 2661,
+     "motivo": "incorporada pela distribuidora de CNPJ 02016440000162 (sigla atual RGE), REA nº 7.499/2018; a tarifa unificada começa em 19/06/2019",
+     "incorporada_por": "02016440000162"
+    },
+    {
+     "cnpj": "61116265000144",
+     "sigla": "CPFL SANTA CRUZ",
+     "nome": "COMPANHIA LUZ E FORCA SANTA CRUZ",
+     "ultima_vigencia": {
+      "inicio": "2017-03-22",
+      "fim": "2018-03-21",
+      "ato": "REH 2.211/2017"
+     },
+     "dias_sem_tarifa": 3115,
+     "motivo": "incorporada pela distribuidora de CNPJ 53859112000169 (sigla atual CPFL Santa Cruz), REA nº 6.723/2017; a tarifa unificada começa em 22/03/2018",
+     "incorporada_por": "53859112000169"
+    }
+   ]
+  }
+ }
+}

@@ -26,15 +26,13 @@ Fontes: PLD horário da CCEE e EAR e ENA diários do ONS, lidos do silver princi
 ANEEL (módulo Regulação). A coleta própria (família `previsoes`) guarda os dicionários de
 dados do ONS de EAR e ENA, para conferir que os campos usados pelo C2-H continuam lá.
 """
-import csv
-import io
 import json
 import math
 import os
 import subprocess
 import sys
 from collections import defaultdict
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, timedelta
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 
@@ -75,7 +73,27 @@ LIMITE_RODADAS = 30
 TOL_REEXECUCAO = 0.005  # R$/MWh: a previsão é gravada com 4 casas; meio centavo cobre arredondamento
 SITE = "https://scrutiniums.com/setor-eletrico/pld/previsoes"
 WORKFLOW = ".github/workflows/previsao-pld.yml"
-CRON_UTC = ["5 9 * * *", "35 9 * * *"]
+
+
+def _crons_do_workflow():
+    """Crons (UTC) lidos do próprio workflow, para a gold nunca divergir do agendamento real."""
+    caminho = os.path.join(base.RAIZ, WORKFLOW)
+    if not os.path.exists(caminho):
+        return []
+    out = []
+    with open(caminho, encoding="utf-8") as f:
+        for linha in f:
+            t = linha.strip()
+            if t.startswith("- cron:"):
+                out.append(t.split(":", 1)[1].split("#")[0].strip().strip('"'))
+    return out
+
+
+def _hora_brasilia(cron):
+    """'47 8 * * *' → '05h47' (UTC−3; o workflow declara a mesma suposição)."""
+    minuto, hora = cron.split()[:2]
+    h = (int(hora) - 3) % 24
+    return f"{h:02d}h{int(minuto):02d}"
 MODELOS_TESTE = ("B0", "S0", "C2-P", "C2-H")
 REGRA_SELECAO = ("Fixada antes do teste: no período de desenvolvimento, um candidato (C2-P ou C2-H) é selecionado quando o ganho de "
                  "MAE sobre o B0, com horizontes e submercados juntos, tem intervalo de 90% inteiro acima de zero; com dois, fica o de "
@@ -413,10 +431,12 @@ def _rotina(rodadas, hoje):
                 faltantes.append(d.isoformat())
             d += timedelta(days=1)
     no_prazo = [r for r in agendadas if r["no_prazo"] and not r["falha"]]
+    crons = _crons_do_workflow()
     return {
-        "workflow": WORKFLOW, "cron_utc": CRON_UTC,
-        "horarios": ("Verificação e retentativa de coleta a partir de 06h05 de Brasília (09h05 UTC), segunda tentativa às 06h35; "
-                     "espera até o corte das 07h00; emissão com o dado como estava no corte; commit do arquivo de emissões até 08h00. "
+        "workflow": WORKFLOW, "cron_utc": crons,
+        "horarios": (f"Gatilhos às {', '.join(_hora_brasilia(x) for x in crons)} de Brasília: o primeiro que rodar confere o dado, "
+                     "tenta coletar o que falta antes do corte, espera as 07h00 e emite com o dado como estava no corte; os "
+                     "seguintes veem a rodada registrada e saem. O arquivo de emissões é commitado em seguida (prazo 08h00). "
                      "Pré-carga: coleta noturna das 20h40 (atualizar-energia.yml)."),
         "fuso": "America/Sao_Paulo; o cron do GitHub é em UTC e supõe UTC−3 (sem horário de verão desde 2019). Se o horário de "
                 "verão voltar, o cron precisa mudar; a emissão calcula o corte pelo fuso e marca o atraso de qualquer forma.",
@@ -752,6 +772,22 @@ def _valida(linhas, ajustes, info, cp, lim_final):
     return criticas, testes, {"b0_conferidos": n, "b0_maior_diferenca": maxdif}
 
 
+def _dicionarios(con):
+    """Dicionários do ONS guardados pela coleta do módulo: arquivo, sha256, captura e se os
+    campos usados pelo C2-H continuam definidos (conferência de mudança de esquema)."""
+    regs = base.registros_como_estavam_em(con, DS_DIC)
+    out = {}
+    for nome, d in DICIONARIOS.items():
+        vt = base.ultima_vintage(con, DS_DIC, nome)
+        campos = {k.split(":", 1)[1]: x for k, x in (regs.get(nome) or {}).items() if k.startswith("campo:")}
+        out[nome] = {"url": d["url"], "sha256": (vt or {}).get("sha256"), "capturado_em": (vt or {}).get("capturado_em"),
+                     "arquivo": (vt or {}).get("arquivo"), "campos": campos or None,
+                     "leitura": ("Dicionário ainda não coletado." if not vt else
+                                 "Todos os campos usados estão no dicionário." if campos and all(x == "presente" for x in campos.values())
+                                 else "Campo usado ausente ou não conferido no dicionário: revisar o C2-H.")}
+    return out
+
+
 def _revisoes_hidro(cp):
     """Magnitude das revisões do ONS nas séries usadas pelo C2-H (risco de olhar o futuro no
     teste retrospectivo, que usa o snapshot)."""
@@ -919,6 +955,7 @@ def construir(con, ctx):
                                "revisoes": (s.get("revisoes") or {}).get("total")} for ds, s in
                           ((v.DS_PLD, snap_pld), (v.DS_EAR, snap_ear), (v.DS_ENA, snap_ena))},
             "revisoes_hidrologia": _revisoes_hidro(cp),
+            "dicionarios_ons": _dicionarios(con),
             "ultima_entrega_apurada_teste": ultima_entrega.isoformat() if ultima_entrega else None,
             "linhas_csv": {"semanal": n_sem, "mensal": n_men},
             "configuracao_sha256": mp.sha_configuracao(),

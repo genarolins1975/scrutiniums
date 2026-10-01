@@ -98,7 +98,9 @@ CSV_PROPRIETARIOS = "empresas_proprietarios.csv"
 CSV_GRUPOS = "empresas_grupos.csv"
 CSV_CADEIA = "empresas_cadeia_societaria.csv"
 CSV_DISTRIBUIDORAS = "empresas_distribuidoras.csv"
-CSV_FINANCAS = "empresas_financas.csv"
+CSV_FINANCAS = "empresas_financas_anual.csv"
+CSV_FINANCAS_TRIM = "empresas_financas_trimestral.csv"
+CSV_COMPANHIAS = "empresas_companhias_cvm.csv"
 JSON_FINANCAS = "empresas_financas.json"
 JSON_ATIVOS = "empresas_ativos.json"
 JSON_CADEIA = "empresas_cadeia.json"
@@ -132,7 +134,7 @@ REGISTRO = {
         {"orgao": "CVM", "nome": "cia_aberta-cad", "slug": "cvm-cadastro-companhias-abertas",
          "dataset_silver": DS_CVM_CAD, "titulo": "CVM: cadastro de companhias abertas",
          "estado": "UTILIZADO EM INDICADOR", "url": URL_CVM_CAD_DS, "licenca": LICENCA_CVM, "paginas": PAGINAS,
-         "downloads": [_url(CSV_FINANCAS)], "quebras": []},
+         "downloads": [_url(CSV_COMPANHIAS)], "quebras": []},
         {"orgao": "CVM", "nome": "cia_aberta-doc-dfp", "slug": "cvm-dfp",
          "dataset_silver": DS_DFP, "titulo": "CVM: Demonstrações Financeiras Padronizadas (DFP)",
          "estado": "UTILIZADO EM INDICADOR", "url": URL_DFP_DS, "licenca": LICENCA_CVM, "paginas": PAGINAS,
@@ -140,7 +142,7 @@ REGISTRO = {
         {"orgao": "CVM", "nome": "cia_aberta-doc-itr", "slug": "cvm-itr",
          "dataset_silver": DS_ITR, "titulo": "CVM: Informações Trimestrais (ITR)",
          "estado": "UTILIZADO EM INDICADOR", "url": URL_ITR_DS, "licenca": LICENCA_CVM, "paginas": PAGINAS,
-         "downloads": [_url(CSV_FINANCAS), _url(JSON_FINANCAS)], "quebras": []},
+         "downloads": [_url(CSV_FINANCAS_TRIM), _url(JSON_FINANCAS)], "quebras": []},
     ],
     "arquivos": {
         _url(CSV_AGENTES): "cnpj (14 dígitos); sigla; razao_social; ativo (1 = situação A no cadastro); comercializacao; distribuicao; geracao; transmissao (1 = ramo declarado ativo no cadastro, autodeclarado: não define distribuidora); proprietario_siga (1 = aparece como proprietário de usina no SIGA); distribuidora_regulada (1 = está no índice de distribuidoras do módulo); cvm_cd (código CVM quando é companhia aberta). Um CNPJ por linha, data do cadastro na coluna data_cadastro.",
@@ -149,8 +151,10 @@ REGISTRO = {
         _url(CSV_GRUPOS): "Um grupo por linha (topo de cadeia de controle): grupo_cnpj; nome; empresas_com_usinas (proprietários diretos no grupo); usinas_controle; mw_controle (Σ potência das usinas em operação cujo proprietário majoritário pertence ao grupo); mw_proporcional (Σ potência × participação detida por empresas do grupo; partição da potência sem dupla contagem); participacao_pct (mw_proporcional ÷ fronteira × 100); motivo_parada (por que a cadeia termina ali); acima (controlador não identificável acima do topo, quando declarado); listada_cvm (1/0).",
         _url(CSV_CADEIA): "Arestas do grafo societário vigente (Polímero, trimestre de referência): pai_cnpj; pai_nome; socio_cnpj (vazio = pessoa física, fundo ou ente sem CNPJ); socio_nome (vazio para pessoa física); perfil (PJ, PF, DC); controlador (1/0); pct_direto (participação do sócio no pai, %; vazio quando a fonte só permite o percentual em relação ao agente declarante e o pai aparece em mais de um caminho); origem (propria = declarada pelo próprio pai; terceiros = lida nas árvores de outros agentes); declaracao (trimestre da declaração usada); concordancia (listas que concordam sobre o controlador ÷ listas); primeiro_trimestre; ultimo_trimestre (vigência da aresta em toda a base).",
         _url(CSV_DISTRIBUIDORAS): "cnpj; slug; sigla; nome; classificacao; grupo; ufs (separadas por |); ativa; fontes (samp, tarifas, continuidade presentes); perdas_ano; taxa_perdas_totais_pct; pnt_bt_pct; qualidade_ano; dec_h; fec; dec_limite_h; fec_limite; ucs; tarifa_b1_rs_mwh; tarifa_inicio; tarifa_fim; controlador_cnpj; controlador_nome; motivo_parada; cvm_cd. Valores copiados das golds perdas.json, qualidade.json e conta.json pelo CNPJ, sem recálculo. Vazio = a gold de origem não tem o dado.",
-        _url(CSV_FINANCAS): "Formato longo, um valor por linha: cnpj; cd_cvm; companhia; documento (DFP ou ITR); escopo (consolidado ou individual, nunca somados); conta (id); cd_conta (código do plano padronizado da CVM; divida_bruta = 2.01.04 + 2.02.01); periodo_inicio (vazio em saldo); periodo_fim; recorte (exercicio, trimestre, acumulado_no_ano, saldo); valor_rs (R$ nominais, escala da fonte convertida); versao (maior versão do documento no arquivo); recebido_cvm_em (data de recebimento do documento na CVM); reapresentado_rs (valor do mesmo período como reapresentado no documento do exercício seguinte, quando difere). Vazio = conta não publicada no documento.",
-        _url(JSON_FINANCAS): "Séries por companhia para leitura sob demanda: {cnpj: {anual: {con|ind: {conta: [[ano, valor_rs], ...]}}, trimestral: {con|ind: {conta: [[AAAA-MM-DD, valor_rs], ...]}}}}. Trimestral = valor do trimestre (DRE) ou saldo no fim do trimestre (balanço); DFC acumulada no ano. Mesmos valores do CSV.",
+        _url(CSV_COMPANHIAS): "Universo financeiro, uma companhia por linha: cnpj; cd_cvm (registro vigente ou mais recente); codigos_cvm (todos os registros do CNPJ); companhia (denominação na CVM); situacao; setor (setor de atividade declarado à CVM); categoria; controle_acionario; distribuidora_slug (quando é distribuidora do índice); controladora_aberta_cnpj (primeira companhia aberta na cadeia de controle declarada à ANEEL: ela consolida esta); controla_abertas_cnpj (separadas por |).",
+        _url(CSV_FINANCAS): "DFP, formato longo, um valor por linha: cnpj; escopo (consolidado ou individual, nunca somados); conta (id); cd_conta (código do plano padronizado da CVM; divida_bruta = 2.01.04 + 2.02.01); periodo_inicio (vazio em saldo); periodo_fim; recorte (exercicio ou saldo); valor_rs (R$ nominais, escala da fonte convertida); versao (maior versão do documento no arquivo); recebido_cvm_em (data de recebimento do documento na CVM); reapresentado_rs (valor do mesmo exercício como apresentado no comparativo da DFP seguinte, só quando difere em mais de R$ 1 mil). Nome da companhia em empresas_companhias_cvm.csv. Vazio = conta não publicada.",
+        _url(CSV_FINANCAS_TRIM): "ITR, formato longo: cnpj; escopo; conta; cd_conta; periodo_inicio; periodo_fim; recorte (trimestre = três meses; acumulado_no_ano = janeiro até o fim do trimestre; saldo = balanço no fim do trimestre); valor_rs; versao; recebido_cvm_em. O 4º trimestre não tem ITR (vem na DFP anual); nada é deduzido por diferença.",
+        _url(JSON_FINANCAS): "Séries por companhia para leitura sob demanda, em R$ milhões com 3 casas (exato para a escala MIL da fonte): {cnpj: {anual: {con|ind: {conta: [[ano, valor], ...]}}, trimestral: {con|ind: {'conta:recorte': [[AAAA-MM-DD, valor], ...]}}}}. Recorte trimestre (DRE, três meses), saldo (balanço) ou acumulado_no_ano (fluxo de caixa). Mesmos valores dos CSV.",
         _url(JSON_ATIVOS): "Usinas do SIGA para o mapa, colunar: nucleo, nome, tipo, fase, uf, mw (fiscalizada; outorgada fora de operação), lat, lon, estado (índice em estados), grupo (índice em grupos ou -1). Coordenadas oficiais do SIGA; usina sem coordenada fica fora do mapa e dentro da tabela.",
         _url(JSON_CADEIA): "Grafo societário vigente para a árvore interativa: nos {cnpj: [nome, controlador_direto_cnpj|null, motivo_parada|null]} e arestas colunares (pai, socio, nome, controlador, pct_direto) dos nós que estão numa cadeia de usina ou distribuidora.",
         _url(JSON_EVID): "Evidência 'Comprove este número' da receita do último exercício de cada companhia do universo CVM (CNPJ → objeto de pipeline/energia/evidencia.py), lida sob demanda.",
@@ -158,6 +162,9 @@ REGISTRO = {
 }
 
 VERSAO_PROCESSAMENTO = "1"
+# Medidas do último exercício publicadas na gold por companhia; as demais contas ficam no CSV e
+# no JSON de séries (a gold tem teto de tamanho).
+CONTAS_DESTAQUE = ("receita", "ebit", "lucro_liquido", "divida_bruta", "patrimonio_liquido", "ativo_total", "caixa_investimento")
 ESTADOS = ["vinculado", "inclui_sem_documento", "soma_divergente", "sem_proprietario", "nao_lido"]
 ROTULO_ESTADO = {
     "vinculado": "Todos os proprietários com CNPJ e participações somando 100%",
@@ -614,13 +621,16 @@ def _ativos(usinas, grafo, conf_agentes):
                 fronteira["kw_sem_potencia"] += 1
         valido = est in ("vinculado", "inclui_sem_documento")
         por_cnpj = _agrega_por_cnpj(props or [])
+        # soma aceita dentro da tolerância de arredondamento (ex.: 100,0001% em Machadinho): as
+        # parcelas são normalizadas pela soma publicada para que a partição feche exatamente
+        soma_pct = sum(p["pct"] for p in props) if valido else None
         majoritario = next((c14 for c14, pct, _ in por_cnpj if pct > 50.0), None) if valido else None
         u["grupo_majoritario"] = cadeia(majoritario)["topo"] if majoritario else None
         if op and valido and kw:
             fronteira["kw_valido"] += kw
             fronteira["usinas_validas"] += 1
             fronteira["por_tipo"][u["tipo"]] += kw
-            fronteira["kw_sem_documento"] += kw * sum(p["pct"] for p in props if not p["cnpj"]) / 100.0
+            fronteira["kw_sem_documento"] += kw * sum(p["pct"] for p in props if not p["cnpj"]) / soma_pct
             if majoritario is None:
                 fronteira["kw_sem_majoritario"] += kw
                 fronteira["usinas_sem_majoritario"] += 1
@@ -634,9 +644,10 @@ def _ativos(usinas, grafo, conf_agentes):
                 d["usinas_operacao"] += 1
                 d["kw_bruto"] += kw or 0.0
             if op and valido and kw:
-                d["kw_prop"] += kw * pct / 100.0
-                grupos[topo]["kw_prop"] += kw * pct / 100.0
-                grupos[topo]["por_tipo"][u["tipo"]] += kw * pct / 100.0
+                parcela = kw * pct / soma_pct
+                d["kw_prop"] += parcela
+                grupos[topo]["kw_prop"] += parcela
+                grupos[topo]["por_tipo"][u["tipo"]] += parcela
                 grupos[topo]["empresas"].add(c14)
             if c14 == majoritario:
                 d["usinas_controle"] += 1
@@ -812,8 +823,9 @@ def construir(con, ctx):
         return c.stub(GOLD, "nenhuma usina em operação com participações válidas")
     soma_grupos = sum(g["kw_prop"] for g in at["grupos"].values())
     soma_donos = sum(d["kw_prop"] for d in at["donos"].values())
-    identidade_ok = abs(soma_grupos - soma_donos) <= 1e-6 * max(1.0, soma_donos)
-    identidade_total = abs(soma_donos + fr["kw_sem_documento"] - fr["kw_valido"]) <= 1e-6 * fr["kw_valido"]
+    # tolerância de ponto flutuante (10⁻⁹ relativo, cerca de 0,2 kW em 220 GW): a partição é exata
+    identidade_ok = abs(soma_grupos - soma_donos) <= 1e-9 * max(1.0, soma_donos)
+    identidade_total = abs(soma_donos + fr["kw_sem_documento"] - fr["kw_valido"]) <= 1e-9 * fr["kw_valido"]
     if not (identidade_ok and identidade_total):
         return c.stub(GOLD, "identidade de partição violada: Σ grupos, Σ proprietários e fronteira não fecham")
 
@@ -855,13 +867,16 @@ def construir(con, ctx):
             for p in u["proprietarios"]:
                 r_ = por_regime[p["regime"]]
                 r_["parcelas"] += 1
-                r_["kw_prop"] += u["kw_fiscalizado"] * p["pct"] / 100.0
+                r_["kw_prop"] += u["kw_fiscalizado"] * p["pct"] / sum(x["pct"] for x in u["proprietarios"])
     sem_vinculo = sorted((k for k, u in usinas.items() if u["estado"] not in ("vinculado",) and u["fase"] == "Operação"),
                          key=lambda k: -(usinas[k]["kw_fiscalizado"] or 0))
     sem_vinculo_pub = [{"nucleo": k, "ceg": usinas[k]["ceg"], "nome": usinas[k]["nome"], "tipo": usinas[k]["tipo"],
                         "uf": usinas[k]["uf"], "mw": _r(_mw(usinas[k]["kw_fiscalizado"]), 3), "estado": usinas[k]["estado"],
                         "soma_pct": _r(sum(p["pct"] for p in usinas[k]["proprietarios"]), 4) if usinas[k]["proprietarios"] else None,
-                        "proprietarios_cnpj": [p["cnpj"] for p in usinas[k]["proprietarios"] or [] if p["cnpj"]]}
+                        "proprietarios_cnpj": [p["cnpj"] for p in usinas[k]["proprietarios"] or [] if p["cnpj"]],
+                        # soma de 200% com matriz e filial: mesma pessoa jurídica (raiz do CNPJ), dito sem consolidar
+                        "mesma_raiz": len({entidades.raiz_cnpj(p["cnpj"]) for p in usinas[k]["proprietarios"] or [] if p["cnpj"]}) == 1
+                        and len([p for p in usinas[k]["proprietarios"] or [] if p["cnpj"]]) > 1}
                        for k in sem_vinculo[:25]]
 
     # ---------------------------------------------------------------- P039: grupos e concentração
@@ -915,21 +930,21 @@ def construir(con, ctx):
         indicador="Potência em operação com todos os proprietários identificados por CNPJ",
         valor_exibido=f"{_br_num(pct_mw_vinc, 1)}%", valor_calculo=pct_mw_vinc, unidade="% da potência fiscalizada em operação",
         periodo={"inicio": data_siga, "fim": data_siga}, entidade="Usinas em operação no SIGA (Brasil)",
-        universo=f"{at['estados']['vinculado']['usinas_operacao'] + sum(at['estados'][e]['usinas_operacao'] for e in ESTADOS if e != 'vinculado')} usinas em fase Operação",
+        universo=f"{_br_num(sum(at['estados'][e]['usinas_operacao'] for e in ESTADOS), 0)} usinas em fase Operação",
         fonte=evid.fonte_de_vintage("ANEEL", "SIGA: Sistema de Informações de Geração da ANEEL", URL_SIGA, v_siga),
         consulta="SIGA diário, DscFaseUsina = 'Operação'; DscPropriRegimePariticipacao lido por inteiro; vinculado = todas as parcelas com CNPJ e soma das participações a 100% ± 0,005 p.p. por parcela",
         formula="100 × Σ potência fiscalizada das usinas vinculadas ÷ Σ potência fiscalizada das usinas em operação",
         numerador={"descricao": "Σ potência fiscalizada das usinas em operação vinculadas (kW)", "valor": _r(vinc["kw_operacao"], 1)},
         denominador={"descricao": "Σ potência fiscalizada das usinas em operação (kW)", "valor": _r(total_kw_op, 1)},
-        cobertura=f"{total_usinas} usinas no SIGA de {data_siga}, todas as fases; a razão usa só as em operação",
+        cobertura=f"{_br_num(total_usinas, 0)} usinas no SIGA de {evid._data_br(data_siga)}, todas as fases; a razão usa só as em operação",
         tratamento_ausencia="Usina com proprietário 'Não Informado' entra no denominador e fora do numerador; potência fiscalizada vazia conta como ausente (nunca zero) e fica fora das duas somas.",
         revisoes=snap_siga.get("revisoes"),
         testes=[evid.teste("Campo de proprietários lido por inteiro", "aprovado",
-                           f"{total_usinas - oc_siga['proprietarios_nao_informados']} de {total_usinas - oc_siga['proprietarios_nao_informados']} campos preenchidos lidos sem sobra; {oc_siga['proprietarios_nao_informados']} 'Não Informado'"),
+                           f"{_br_num(total_usinas - oc_siga['proprietarios_nao_informados'], 0)} de {_br_num(total_usinas - oc_siga['proprietarios_nao_informados'], 0)} campos preenchidos lidos sem sobra; {oc_siga['proprietarios_nao_informados']} 'Não Informado'"),
                 evid.teste("Partição sem dupla contagem", "aprovado",
-                           "Σ potência proporcional por proprietário + parcela sem CNPJ = potência válida da fronteira (diferença < 10⁻⁶)")],
+                           "Σ potência proporcional por proprietário + parcela sem CNPJ = potência válida da fronteira (diferença relativa < 10⁻⁹)")],
         reconciliacao=evid.reconciliacao(
-            f"Conferência usina a usina com o conjunto Agentes de Geração ({data_agger}): {comp['iguais']} de {comp['comparadas']} usinas com a mesma lista de CNPJ e os mesmos percentuais" if comp else "Agentes de Geração indisponível",
+            f"Conferência usina a usina com o conjunto Agentes de Geração ({evid._data_br(data_agger)}): {_br_num(comp['iguais'], 0)} de {_br_num(comp['comparadas'], 0)} usinas com a mesma lista de CNPJ e os mesmos percentuais" if comp else "Agentes de Geração indisponível",
             ("aprovado" if comp and comp["iguais"] >= 0.98 * comp["comparadas"] else "ressalva"),
             "0,01 p.p. por parcela (precisão de 2 casas do conjunto Agentes de Geração); 98% das usinas iguais, pois os arquivos têm datas diferentes"),
         download=[{"rotulo": "Usinas e proprietários (CSV)", "url": _url(CSV_ATIVOS)}], reproducao=REPRODUCAO)
@@ -938,7 +953,7 @@ def construir(con, ctx):
         valor_exibido=_br_num(conc_grp["hhi"], 0), valor_calculo=conc_grp["hhi"], unidade="pontos (0 a 10.000)",
         periodo={"inicio": data_siga, "fim": data_siga},
         entidade="Grupos (topo da cadeia de controladores únicos declarada à ANEEL)",
-        universo=f"{conc_grp['participantes']} grupos; fronteira de {_br_num(_mw(total_valido), 0)} MW fiscalizados em {fr['usinas_validas']} usinas em operação com participações válidas",
+        universo=f"{_br_num(conc_grp['participantes'], 0)} grupos; fronteira de {_br_num(_mw(total_valido), 0)} MW fiscalizados em {_br_num(fr['usinas_validas'], 0)} usinas em operação com participações válidas",
         fonte={**evid.fonte_de_vintage("ANEEL", "SIGA e Composição Societária (Polímero)", URL_SIGA, v_siga),
                "arquivos": [evid.arquivo_de_vintage(v_siga)] + ([evid.arquivo_de_vintage(v_pol)] if v_pol else [])},
         consulta=f"SIGA de {data_siga} (fase Operação, participações válidas) × grafo de controle do Polímero, trimestre {ae.rotulo_periodo(pol['referencia']) if pol and pol['referencia'] else 'indisponível'}",
@@ -951,7 +966,7 @@ def construir(con, ctx):
         revisoes=snap_siga.get("revisoes"),
         testes=[evid.teste("Soma das cotas", "aprovado", f"cotas dos grupos somam {_br_num(sum(s for _, s in conc_grp['_cotas']), 3)}% da fronteira; o restante é a parcela sem CNPJ"),
                 evid.teste("Partição por grupo igual à partição por proprietário direto", "aprovado",
-                           "Σ potência proporcional dos grupos = Σ potência proporcional dos proprietários diretos (diferença < 10⁻⁶)")],
+                           "Σ potência proporcional dos grupos = Σ potência proporcional dos proprietários diretos (diferença relativa < 10⁻⁹)")],
         download=[{"rotulo": "Grupos (CSV)", "url": _url(CSV_GRUPOS)}, {"rotulo": "Proprietários (CSV)", "url": _url(CSV_PROPRIETARIOS)}],
         reproducao=REPRODUCAO)
 
@@ -1014,7 +1029,7 @@ def construir(con, ctx):
                   "cvm_cadastro_capturado_em": v_cad["capturado_em"] if v_cad else None},
         "definicoes": {
             "vinculo": "Vínculo provado = CNPJ publicado pela fonte oficial no mesmo registro do ativo. Nenhum vínculo por semelhança de nome.",
-            "capacidade_proporcional": "Potência fiscalizada da usina × participação do proprietário (%), somada sobre as usinas em operação com participações que somam 100%.",
+            "capacidade_proporcional": "Potência fiscalizada da usina × participação do proprietário ÷ soma das participações publicadas (100% dentro da tolerância de arredondamento), somada sobre as usinas em operação com participações válidas.",
             "capacidade_controle_direto": "Potência fiscalizada das usinas em operação em que o proprietário tem mais de 50% (maioria da propriedade do ativo).",
             "grupo": "Topo da cadeia de controladores únicos declarada à ANEEL (Composição Societária): sobe-se de sócio controlador em sócio controlador enquanto há um único controlador com CNPJ.",
             "capacidade_controle_grupo": "Potência das usinas em operação cujo proprietário majoritário pertence ao grupo (está na cadeia de controle que termina nele).",
@@ -1057,7 +1072,7 @@ def construir(con, ctx):
                 "mw_operacao_total": _r(_mw(total_kw_op), 1),
                 "mw_fora": _r(_mw(total_kw_op - total_valido), 1),
                 "mw_sem_documento": _r(_mw(fr["kw_sem_documento"]), 1),
-                "mw_sem_controlador_majoritario": _r(_mw(fr["kw_sem_majoritario"]), 1),
+                "mw_sem_controlador_majoritario": _r(_mw(fr["kw_sem_majoritario"]), 1),  # nenhum CNPJ acima de 50%
                 "usinas_sem_controlador_majoritario": fr["usinas_sem_majoritario"],
             },
             "concentracao": {
@@ -1087,7 +1102,9 @@ def construir(con, ctx):
             {"rotulo": "Cadeia societária vigente (CSV)", "url": _url(CSV_CADEIA)},
             {"rotulo": "Cadastro de agentes (CSV)", "url": _url(CSV_AGENTES)},
             {"rotulo": "Distribuidoras (CSV)", "url": _url(CSV_DISTRIBUIDORAS)},
-            {"rotulo": "Demonstrações financeiras padronizadas (CSV)", "url": _url(CSV_FINANCAS)},
+            {"rotulo": "Companhias abertas do universo (CSV)", "url": _url(CSV_COMPANHIAS)},
+            {"rotulo": "Demonstrações anuais, DFP (CSV)", "url": _url(CSV_FINANCAS)},
+            {"rotulo": "Informações trimestrais, ITR (CSV)", "url": _url(CSV_FINANCAS_TRIM)},
         ],
         "series": {"ativos": _url(JSON_ATIVOS), "cadeia": _url(JSON_CADEIA), "financas": _url(JSON_FINANCAS),
                    "evidencias": _url(JSON_EVID)},
@@ -1113,6 +1130,16 @@ BLOQUEIOS = [
      "evidencia": "O Polímero publica o percentual em relação ao agente declarante e há caminhos múltiplos; o módulo publica a capacidade sob controle e a capacidade proporcional das participações diretas das controladas, métricas sem dupla contagem.",
      "alternativa": "Árvore societária com percentuais diretos quando definidos (CSV da cadeia)."},
 ]
+
+
+def _texto_versoes(doc):
+    """Texto de revisões de um documento da CVM a partir do índice do zip."""
+    v, n = doc.get("versao"), int(doc.get("versoes") or 0)
+    if not v:
+        return "Versão do documento não identificada no índice do arquivo."
+    if n <= 1:
+        return f"Versão {v} do documento; nenhuma outra versão entregue."
+    return f"Versão {v} do documento, a mais recente de {n} versões entregues à CVM."
 
 
 def _pub_conc(conc, nomes):
@@ -1142,12 +1169,18 @@ def _bloco_polimero(pol, grafo):
 
 # ======================================================================= P037
 def _slugs_unicos(itens):
-    """Slug principal pela sigla de exibição; colisão recebe a raiz do CNPJ. Aliases (slugs
-    das outras siglas publicadas pelas fontes) só entram quando não colidem com nada."""
-    usados = collections.Counter(entidades.slug(i["sigla"]) for i in itens)
+    """Slug principal pela sigla de exibição. Quando duas distribuidoras têm a mesma sigla (a
+    incorporada e a incorporadora, como RGE e RGE Sul), a única ativa do grupo fica com o
+    slug simples e as demais recebem a raiz do CNPJ; sem uma única ativa, todas recebem.
+    Aliases (slugs das outras siglas publicadas pelas fontes) só entram quando não colidem."""
+    grupos = collections.defaultdict(list)
     for i in itens:
-        s = entidades.slug(i["sigla"]) or i["cnpj"]
-        i["slug"] = s if usados[s] == 1 else f"{s}-{i['cnpj'][:8]}"
+        grupos[entidades.slug(i["sigla"]) or i["cnpj"]].append(i)
+    for s, membros in grupos.items():
+        ativos = [i for i in membros if i["ativa"]]
+        for i in membros:
+            simples = len(membros) == 1 or (len(ativos) == 1 and i is ativos[0])
+            i["slug"] = s if simples else f"{s}-{i['cnpj'][:8]}"
     principais = {i["slug"] for i in itens}
     contagem_alias = collections.Counter(a for i in itens for a in {entidades.slug(x["sigla"]) for x in i["siglas"]} - {i["slug"]})
     for i in itens:
@@ -1178,7 +1211,6 @@ def _indice_distribuidoras(golds, agentes, cvm_cad, cadeia, nomes, donos):
                 siglas.append({"sigla": s, "fonte": fonte})
         sigla = siglas[0]["sigla"] if siglas else x
         nome = (agentes.get(x) or {}).get("razao_social") or (p or {}).get("nome") or (cvg or cs or {}).get("nome")
-        nome_fonte = "cadastro_agentes" if (agentes.get(x) or {}).get("razao_social") else ("samp" if (p or {}).get("nome") else "tarifas")
         classificacao = (p or {}).get("classificacao") or (q or {}).get("classificacao")
         grupo = (p or {}).get("grupo") or ({"Concessionária": "concessionaria", "Permissionária": "permissionaria"}.get((q or {}).get("classificacao")))
         conflito_classe = bool(p and q and p.get("grupo") and q.get("classificacao") and
@@ -1189,12 +1221,11 @@ def _indice_distribuidoras(golds, agentes, cvm_cad, cadeia, nomes, donos):
         cvm = cvm_cad.get(x)
         dono = donos.get(x)
         itens.append({
-            "cnpj": x, "cnpj_formatado": entidades.cnpj_formatado(x), "sigla": sigla, "siglas": siglas,
-            "nome": nome, "nome_fonte": nome_fonte, "classificacao": classificacao, "grupo": grupo,
+            "cnpj": x, "sigla": sigla, "siglas": siglas,
+            "nome": nome, "classificacao": classificacao, "grupo": grupo,
             "conflito_classificacao": conflito_classe, "ufs": terr.get("ufs") or [],
             "ativa": bool((p or {}).get("ativa") or cvg or q),
-            "fontes": {"samp": p is not None, "tarifas": (cvg or cs) is not None, "continuidade": q is not None,
-                       "cadastro_agentes": x in agentes},
+            "fontes": {"samp": p is not None, "tarifas": (cvg or cs) is not None, "continuidade": q is not None},
             "perdas": ({"ano": ref.get("ano"), "taxa_total_pct": ref.get("taxa_total_pct"), "pnt_bt_pct": ref.get("pnt_bt_pct"),
                         "perdas_totais_mwh": ref.get("perdas_totais_mwh"), "completo": ref.get("completo"),
                         "ultima_competencia": p.get("ultima_competencia")} if p else None),
@@ -1260,7 +1291,7 @@ def _bloco_financas(fin, cvm_cad, universo, distrib, cadeia, listadas, nomes, sn
         ult = max((a for (esc, conta), s in d.items() if esc == esc_pub for a in s), default=None)
         valores = {}
         if ult is not None:
-            for ct in [*[c_["id"] for c_ in cv.CONTAS], "divida_bruta"]:
+            for ct in CONTAS_DESTAQUE:
                 v = d.get((esc_pub, ct), {}).get(ult)
                 valores[ct] = _r(v, 0)
         # cadeia de controle: primeira companhia aberta ativa acima (consolida esta)
@@ -1323,7 +1354,7 @@ def _bloco_financas(fin, cvm_cad, universo, distrib, cadeia, listadas, nomes, sn
                 formula="VL_CONTA × escala (MIL = 1.000; UNIDADE = 1)",
                 cobertura=f"Documento {doc.get('id_doc') or 'sem identificador'} recebido pela CVM em {doc.get('dt_receb') or 'data não informada'}",
                 tratamento_ausencia="Conta ausente no documento fica ausente; nunca zero.",
-                revisoes=f"Versão {doc.get('versao') or '?'} do documento ({doc.get('versoes') or '?'} versões entregues).",
+                revisoes=_texto_versoes(doc),
                 testes=[evid.teste("Conta fixa do plano padronizado", "aprovado", "ST_CONTA_FIXA = S e rótulo iniciado por 'Receita'"),
                         evid.teste("Maior versão do documento", "aprovado", "linhas de versões anteriores descartadas")],
                 reconciliacao=rec, download=[{"rotulo": "Demonstrações (CSV)", "url": _url(CSV_FINANCAS)}],
@@ -1471,40 +1502,48 @@ def _escreve_csvs(at, usinas, agentes, nomes, cadeia, grafo, pol, distrib, fin, 
                                           "perdas_ano", "taxa_perdas_totais_pct", "pnt_bt_pct", "qualidade_ano", "dec_h", "fec",
                                           "dec_limite_h", "fec_limite", "ucs", "tarifa_b1_rs_mwh", "tarifa_inicio", "tarifa_fim",
                                           "controlador_cnpj", "controlador_nome", "motivo_parada", "cvm_cd"], linhas)
-    # finanças
+    # finanças: CSV anual (DFP), CSV trimestral (ITR) e cadastro das companhias; valores em R$
     tipo = {ct["id"]: ct["tipo"] for ct in cv.CONTAS}
     tipo["divida_bruta"] = "saldo"
     codigo = {ct["id"]: ct["codigo"] for ct in cv.CONTAS}
     codigo["divida_bruta"] = "2.01.04+2.02.01"
-    linhas, series = [], {}
+    anual_l, trim_l, cias, series = [], [], [], {}
+    por_cnpj = {co["cnpj"]: co for co in financas["companhias"]}
     for x in universo_cvm:
         r = cvm_cad.get(x) or {}
-        nome = r.get("denominacao") or nomes.get(x)
+        co = por_cnpj.get(x) or {}
+        cias.append([x, r.get("cd_cvm"), r.get("codigos_cvm"), r.get("denominacao") or nomes.get(x), r.get("situacao"), r.get("setor"),
+                     r.get("categoria"), r.get("controle"), co.get("distribuidora_slug"),
+                     (co.get("controladora_aberta") or {}).get("cnpj"), "|".join(co.get("controla_abertas") or [])])
         s_x = {"anual": {}, "trimestral": {}}
-        for (esc, conta), s in sorted(fin["anual"].get(x, {}).items()):
-            for ano, v in sorted(s.items()):
+        for (esc, conta), s_ in sorted(fin["anual"].get(x, {}).items()):
+            for ano, v in sorted(s_.items()):
                 doc = fin["docs_dfp"].get(f"doc|{x}|{ano}-12-31") or {}
                 reap = fin["anterior"].get(x, {}).get((esc, conta), {}).get(ano)
-                linhas.append([x, r.get("cd_cvm"), nome, "DFP", "consolidado" if esc == "con" else "individual", conta, codigo[conta],
-                               f"{ano}-01-01" if tipo[conta] == "fluxo" else None, f"{ano}-12-31",
-                               "exercicio" if tipo[conta] == "fluxo" else "saldo", _r(v, 2), doc.get("versao"), doc.get("dt_receb"),
-                               _r(reap, 2) if reap is not None and abs(reap - v) > 1000.0 else None])
-                s_x["anual"].setdefault(esc, {}).setdefault(conta, []).append([ano, _r(v, 0)])
-        for (esc, conta, recorte), s in sorted(fin["trimestral"].get(x, {}).items()):
-            for fim, v in sorted(s.items()):
+                anual_l.append([x, "consolidado" if esc == "con" else "individual", conta, codigo[conta],
+                                f"{ano}-01-01" if tipo[conta] == "fluxo" else None, f"{ano}-12-31",
+                                "exercicio" if tipo[conta] == "fluxo" else "saldo", _r(v, 2), doc.get("versao"), doc.get("dt_receb"),
+                                _r(reap, 2) if reap is not None and abs(reap - v) > 1000.0 else None])
+                s_x["anual"].setdefault(esc, {}).setdefault(conta, []).append([ano, _r(v / 1e6, 3)])
+        for (esc, conta, recorte), s_ in sorted(fin["trimestral"].get(x, {}).items()):
+            for fim, v in sorted(s_.items()):
                 doc = fin["docs_itr"].get(f"doc|{x}|{fim}") or {}
                 ini = None
                 if recorte == "trimestre":
-                    m = int(fim[5:7]) - 2
-                    ini = f"{fim[:4]}-{m:02d}-01"
+                    ini = f"{fim[:4]}-{int(fim[5:7]) - 2:02d}-01"
                 elif recorte == "acumulado_no_ano":
                     ini = f"{fim[:4]}-01-01"
-                linhas.append([x, r.get("cd_cvm"), nome, "ITR", "consolidado" if esc == "con" else "individual", conta, codigo[conta],
-                               ini, fim, recorte, _r(v, 2), doc.get("versao"), doc.get("dt_receb"), None])
-                if recorte in ("trimestre", "saldo") or (recorte == "acumulado_no_ano" and tipo[conta] == "fluxo" and conta.startswith("caixa")):
-                    s_x["trimestral"].setdefault(esc, {}).setdefault(f"{conta}:{recorte}", []).append([fim, _r(v, 0)])
+                trim_l.append([x, "consolidado" if esc == "con" else "individual", conta, codigo[conta], ini, fim, recorte,
+                               _r(v, 2), doc.get("versao"), doc.get("dt_receb")])
+                if recorte in ("trimestre", "saldo") or (recorte == "acumulado_no_ano" and conta.startswith("caixa_")):
+                    s_x["trimestral"].setdefault(esc, {}).setdefault(f"{conta}:{recorte}", []).append([fim, _r(v / 1e6, 3)])
         if s_x["anual"] or s_x["trimestral"]:
             series[x] = s_x
-    base.escreve_csv(CSV_FINANCAS, ["cnpj", "cd_cvm", "companhia", "documento", "escopo", "conta", "cd_conta", "periodo_inicio",
-                                    "periodo_fim", "recorte", "valor_rs", "versao", "recebido_cvm_em", "reapresentado_rs"], linhas)
-    base.escreve_gold(JSON_FINANCAS, {"gerado_em": base.agora_utc(), "unidade": "R$", "series": series}, destino=base.SERIES)
+    base.escreve_csv(CSV_COMPANHIAS, ["cnpj", "cd_cvm", "codigos_cvm", "companhia", "situacao", "setor", "categoria",
+                                      "controle_acionario", "distribuidora_slug", "controladora_aberta_cnpj",
+                                      "controla_abertas_cnpj"], cias)
+    base.escreve_csv(CSV_FINANCAS, ["cnpj", "escopo", "conta", "cd_conta", "periodo_inicio", "periodo_fim", "recorte", "valor_rs",
+                                    "versao", "recebido_cvm_em", "reapresentado_rs"], anual_l)
+    base.escreve_csv(CSV_FINANCAS_TRIM, ["cnpj", "escopo", "conta", "cd_conta", "periodo_inicio", "periodo_fim", "recorte",
+                                         "valor_rs", "versao", "recebido_cvm_em"], trim_l)
+    base.escreve_gold(JSON_FINANCAS, {"gerado_em": base.agora_utc(), "unidade": "R$ milhões", "series": series}, destino=base.SERIES)

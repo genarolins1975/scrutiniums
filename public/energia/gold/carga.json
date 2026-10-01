@@ -1,16 +1,17 @@
 {
  "dominio": "energia",
  "gold": "carga.json",
- "gerado_em": "2026-09-30T02:20:27Z",
+ "gerado_em": "2026-10-01T00:00:17Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "196905461ac0",
+ "versao_codigo": "3e7ff0a36fba+alterado",
  "disponivel": true,
  "dia_referencia": "2026-09-28",
  "unidade": "MWmed",
  "regras": {
   "carga_sin": "Carga do SIN = soma das cargas diárias dos quatro subsistemas.",
   "comparacao_anual": "Média dos últimos 7 ou 30 dias contra os mesmos dias do ano anterior, apenas quando os dois períodos estão no mesmo regime metodológico declarado pelo ONS.",
-  "extremo_12m": "Maior carga diária dos últimos 365 dias."
+  "extremo_12m": "Maior carga diária dos últimos 365 dias.",
+  "validacao_fisica": "Valor diário só é publicado se for positivo (domínio do dicionário do ONS), estiver na faixa plausível do subsistema e não saltar mais de 40% sobre a mediana da semana anterior; atípico é conferido na curva horária antes de ser publicado ou posto em quarentena."
  },
  "regimes": [
   {
@@ -11842,6 +11843,96 @@
    "SIN": 81312.0
   }
  ],
+ "validacao": {
+  "regras": [
+   {
+    "id": "F1",
+    "tipo": "dominio",
+    "critica": true,
+    "descricao": "Carga diária precisa ser positiva: o dicionário de dados do ONS (Carga de Energia Diária, versão 1.2) não admite valor nulo, zero nem negativo em val_cargaenergiamwmed."
+   },
+   {
+    "id": "F2",
+    "tipo": "faixa_plausivel",
+    "critica": false,
+    "descricao": "Entre 50% do menor e 150% do maior valor aceito do mesmo subsistema nos 1.095 dias anteriores (exige 365 dias de histórico)."
+   },
+   {
+    "id": "F3",
+    "tipo": "salto",
+    "critica": false,
+    "descricao": "Desvio de até 40% em relação à mediana dos 7 dias anteriores aceitos do mesmo subsistema (exige 5 dias)."
+   },
+   {
+    "id": "C1",
+    "tipo": "conferencia",
+    "critica": false,
+    "descricao": "Valor que viola F2 ou F3 é conferido na média das 24 horas do mesmo dia da Curva de Carga Horária do ONS: diferença de até 0,5% ou 5 MWmed confirma o valor (publicado com ressalva); sem confirmação, quarentena."
+   }
+  ],
+  "quarentena": [],
+  "atipicos_conferidos": [
+   {
+    "sm": "S",
+    "dia": "2015-01-06",
+    "valor": 12307.82897049,
+    "regras": [
+     "F3"
+    ],
+    "situacao": "atipico_conferido",
+    "curva_horaria_media": 12307.829,
+    "conferencia": "curva confirma o valor"
+   },
+   {
+    "sm": "S",
+    "dia": "2015-01-07",
+    "valor": 12696.97940387,
+    "regras": [
+     "F3"
+    ],
+    "situacao": "atipico_conferido",
+    "curva_horaria_media": 12696.979,
+    "conferencia": "curva confirma o valor"
+   },
+   {
+    "sm": "S",
+    "dia": "2015-01-08",
+    "valor": 12378.04140136,
+    "regras": [
+     "F3"
+    ],
+    "situacao": "atipico_conferido",
+    "curva_horaria_media": 12378.041,
+    "conferencia": "curva confirma o valor"
+   },
+   {
+    "sm": "NE",
+    "dia": "2018-08-25",
+    "valor": 3969.773875,
+    "regras": [
+     "F2",
+     "F3"
+    ],
+    "situacao": "atipico_conferido",
+    "curva_horaria_media": 3969.774,
+    "conferencia": "curva confirma o valor"
+   }
+  ],
+  "historico_fora_do_dominio": [
+   {
+    "sm": "NE",
+    "dia": "2026-09-26",
+    "valor": -668.879,
+    "capturado_em": "2026-09-29T02:42:48Z",
+    "vintage": "carga_energia_di:CARGA_ENERGIA_2026:de70b50fcf85e2f3",
+    "recurso": "CARGA_ENERGIA_2026",
+    "revisado_para": 13984.69575,
+    "revisado_em": "2026-09-30T02:19:48Z",
+    "situacao": "revisado_pela_fonte"
+   }
+  ],
+  "valores_verificados": 39060
+ },
  "proveniencia": {
   "carga": {
    "indicador": "Carga de energia diária por subsistema",
@@ -11862,174 +11953,23 @@
    },
    "publicado_pela_fonte_em": "2026-09-29T22:00:43.436290",
    "capturado_em": "2026-09-30T02:19:48Z",
-   "validado_em": "2026-09-30T02:20:27Z",
+   "validado_em": "2026-10-01T00:00:17Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-28"
    },
-   "transformacoes": [],
+   "transformacoes": [
+    "validação física antes da publicação (domínio, faixa plausível, salto) com conferência na curva horária e quarentena"
+   ],
    "formula": null,
    "snapshot": {
     "id": "carga_energia_di@2026-09-30T02:19:48Z",
     "sha256": "b6e8471dc064c63a4db34e9e6e3009a019460c71bff839104a1415ea0dbaefb3"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "196905461ac0",
+   "versao_codigo": "3e7ff0a36fba+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T02:20:26Z",
-    "total": 33,
-    "vintages_comparadas": 28,
-    "arquivos": 27,
-    "recapturas_sem_mudanca": 1,
-    "ultimo_download_ok": "2026-09-30T02:19:48Z",
-    "exemplos": [
-     {
-      "serie": "carga_mwmed.N",
-      "ref": "2026-09-26",
-      "valores": 2
-     },
-     {
-      "serie": "carga_mwmed.NE",
-      "ref": "2026-09-26",
-      "valores": 2
-     },
-     {
-      "serie": "carga_mwmed.S",
-      "ref": "2026-09-26",
-      "valores": 2
-     },
-     {
-      "serie": "carga_mwmed.SE",
-      "ref": "2026-09-26",
-      "valores": 2
-     },
-     {
-      "serie": "carga_mwmed.N",
-      "ref": "2026-09-25",
-      "valores": 2
-     },
-     {
-      "serie": "carga_mwmed.NE",
-      "ref": "2026-09-25",
-      "valores": 2
-     },
-     {
-      "serie": "carga_mwmed.S",
-      "ref": "2026-09-25",
-      "valores": 2
-     },
-     {
-      "serie": "carga_mwmed.SE",
-      "ref": "2026-09-25",
-      "valores": 2
-     },
-     {
-      "serie": "carga_mwmed.NE",
-      "ref": "2026-09-24",
-      "valores": 2
-     },
-     {
-      "serie": "carga_mwmed.S",
-      "ref": "2026-09-24",
-      "valores": 2
-     },
-     {
-      "serie": "carga_mwmed.SE",
-      "ref": "2026-09-24",
-      "valores": 2
-     },
-     {
-      "serie": "carga_mwmed.NE",
-      "ref": "2026-09-23",
-      "valores": 2
-     },
-     {
-      "serie": "carga_mwmed.S",
-      "ref": "2026-09-23",
-      "valores": 2
-     },
-     {
-      "serie": "carga_mwmed.SE",
-      "ref": "2026-09-23",
-      "valores": 2
-     },
-     {
-      "serie": "carga_mwmed.NE",
-      "ref": "2026-09-22",
-      "valores": 2
-     },
-     {
-      "serie": "carga_mwmed.S",
-      "ref": "2026-09-22",
-      "valores": 2
-     },
-     {
-      "serie": "carga_mwmed.SE",
-      "ref": "2026-09-22",
-      "valores": 2
-     },
-     {
-      "serie": "carga_mwmed.N",
-      "ref": "2026-09-21",
-      "valores": 2
-     },
-     {
-      "serie": "carga_mwmed.NE",
-      "ref": "2026-09-21",
-      "valores": 2
-     },
-     {
-      "serie": "carga_mwmed.SE",
-      "ref": "2026-09-21",
-      "valores": 2
-     }
-    ]
-   },
-   "limitacoes": [
-    "O ONS mudou o conteúdo da série em 01/03/2021 e em 29/04/2023 (inclusão da estimativa de MMGD); comparações que atravessam essas datas não são homogêneas e não são exibidas como variação.",
-    "Dados em processo de consistência recorrente do ONS, sujeitos a revisão após a publicação."
-   ],
-   "download": "/energia/series/carga_diaria.csv",
-   "notas_fonte": "Dados de carga por subsistema em base diária, medida em MWmed. \r\n\r\nAté fevereiro/2021, os dados representam a carga atendida por usinas despachadas e/ou programadas pelo ONS, com base em dados recebidos pelo Sistema de Supervisão e Controle do ONS. Entre março/2021 e abril/23, os dados representam a carga atendida por usinas despachadas e/ou programadas pelo ONS, com base em dados recebidos pelo Sistema de Supervisão e Controle do ONS, mais a previsão de geração de usinas não despachadas pelo ONS. A partir de 29/04/2023, além dos dados anteriormente considerados, passou a ser incorporado o valor estimado da micro e minigeração distribuída (MMGD), com base em dados meteorológicos previstos."
-  },
-  "sin": {
-   "indicador": "Carga do SIN e variação anual",
-   "natureza": "CALCULADO",
-   "fonte": {
-    "orgao": "ONS",
-    "dataset": "Carga de Energia Diária",
-    "recurso": "carga_energia_di (arquivos CSV anuais)",
-    "url_dataset": "https://dados.ons.org.br/dataset/carga-energia",
-    "url_primaria": "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/carga_energia_di/",
-    "licenca": "Creative Commons Atribuição (CC-BY), conforme o portal de dados abertos do ONS"
-   },
-   "unidade": "MWmed e %",
-   "frequencia": "diária",
-   "periodo_referencia": {
-    "inicio": "2000-01-01",
-    "fim": "2026-09-28"
-   },
-   "publicado_pela_fonte_em": "2026-09-29T22:00:43.436290",
-   "capturado_em": "2026-09-30T02:19:48Z",
-   "validado_em": "2026-09-30T02:20:27Z",
-   "cobertura_historica": {
-    "inicio": "2000-01-01",
-    "fim": "2026-09-28"
-   },
-   "transformacoes": [
-    "soma dos quatro subsistemas",
-    "médias móveis de 7 e 30 dias",
-    "comparação com os mesmos dias do ano anterior"
-   ],
-   "formula": "variação = média(últimos n dias) ÷ média(mesmos n dias do ano anterior) − 1",
-   "snapshot": {
-    "id": "carga_energia_di@2026-09-30T02:19:48Z",
-    "sha256": "b6e8471dc064c63a4db34e9e6e3009a019460c71bff839104a1415ea0dbaefb3"
-   },
-   "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "196905461ac0",
-   "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T02:20:26Z",
+    "detectado_em": "2026-10-01T00:00:17Z",
     "total": 33,
     "vintages_comparadas": 28,
     "arquivos": 27,
@@ -12141,7 +12081,164 @@
    "limitacoes": [
     "O ONS mudou o conteúdo da série em 01/03/2021 e em 29/04/2023 (inclusão da estimativa de MMGD); comparações que atravessam essas datas não são homogêneas e não são exibidas como variação.",
     "Dados em processo de consistência recorrente do ONS, sujeitos a revisão após a publicação.",
-    "Temperatura, dias úteis e feriados afetam a carga e não são ajustados."
+    "A captura de 28/09/2026, 23:42 (Brasília) trouxe a carga do Nordeste de 26/09/2026 igual a −668,879 MWmed, fora do domínio do dicionário do ONS; o valor não entra na publicação, e a fonte o revisou para 13.984,7 MWmed na captura de 29/09/2026, 23:19 (Brasília).",
+    "4 valores atípicos (regras F2 ou F3) foram publicados porque a curva horária do ONS confirma o mesmo valor: S em 06/01/2015; S em 07/01/2015; S em 08/01/2015; NE em 25/08/2018."
+   ],
+   "download": "/energia/series/carga_diaria.csv",
+   "notas_fonte": null
+  },
+  "sin": {
+   "indicador": "Carga do SIN e variação anual",
+   "natureza": "CALCULADO",
+   "fonte": {
+    "orgao": "ONS",
+    "dataset": "Carga de Energia Diária",
+    "recurso": "carga_energia_di (arquivos CSV anuais)",
+    "url_dataset": "https://dados.ons.org.br/dataset/carga-energia",
+    "url_primaria": "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/carga_energia_di/",
+    "licenca": "Creative Commons Atribuição (CC-BY), conforme o portal de dados abertos do ONS"
+   },
+   "unidade": "MWmed e %",
+   "frequencia": "diária",
+   "periodo_referencia": {
+    "inicio": "2000-01-01",
+    "fim": "2026-09-28"
+   },
+   "publicado_pela_fonte_em": "2026-09-29T22:00:43.436290",
+   "capturado_em": "2026-09-30T02:19:48Z",
+   "validado_em": "2026-10-01T00:00:17Z",
+   "cobertura_historica": {
+    "inicio": "2000-01-01",
+    "fim": "2026-09-28"
+   },
+   "transformacoes": [
+    "soma dos quatro subsistemas (só em dia com os quatro aceitos pela validação física)",
+    "médias móveis de 7 e 30 dias",
+    "comparação com os mesmos dias do ano anterior"
+   ],
+   "formula": "variação = média(últimos n dias) ÷ média(mesmos n dias do ano anterior) − 1",
+   "snapshot": {
+    "id": "carga_energia_di@2026-09-30T02:19:48Z",
+    "sha256": "b6e8471dc064c63a4db34e9e6e3009a019460c71bff839104a1415ea0dbaefb3"
+   },
+   "versao_pipeline": "energia-0.1.0",
+   "versao_codigo": "3e7ff0a36fba+alterado",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-10-01T00:00:17Z",
+    "total": 33,
+    "vintages_comparadas": 28,
+    "arquivos": 27,
+    "recapturas_sem_mudanca": 1,
+    "ultimo_download_ok": "2026-09-30T02:19:48Z",
+    "exemplos": [
+     {
+      "serie": "carga_mwmed.N",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.S",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-26",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.N",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.S",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-25",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-24",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.S",
+      "ref": "2026-09-24",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-24",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-23",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.S",
+      "ref": "2026-09-23",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-23",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-22",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.S",
+      "ref": "2026-09-22",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-22",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.N",
+      "ref": "2026-09-21",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-21",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-21",
+      "valores": 2
+     }
+    ]
+   },
+   "limitacoes": [
+    "O ONS mudou o conteúdo da série em 01/03/2021 e em 29/04/2023 (inclusão da estimativa de MMGD); comparações que atravessam essas datas não são homogêneas e não são exibidas como variação.",
+    "Dados em processo de consistência recorrente do ONS, sujeitos a revisão após a publicação.",
+    "A captura de 28/09/2026, 23:42 (Brasília) trouxe a carga do Nordeste de 26/09/2026 igual a −668,879 MWmed, fora do domínio do dicionário do ONS; o valor não entra na publicação, e a fonte o revisou para 13.984,7 MWmed na captura de 29/09/2026, 23:19 (Brasília).",
+    "4 valores atípicos (regras F2 ou F3) foram publicados porque a curva horária do ONS confirma o mesmo valor: S em 06/01/2015; S em 07/01/2015; S em 08/01/2015; NE em 25/08/2018.",
+    "Temperatura, dias úteis e feriados afetam a carga e não são ajustados aqui; comparações com os mesmos dias da semana e a decomposição por clima e calendário estão em carga_detalhe.json."
    ],
    "download": null,
    "notas_fonte": null
@@ -12165,24 +12262,24 @@
    },
    "publicado_pela_fonte_em": "2026-09-29T22:00:43.436290",
    "capturado_em": "2026-09-30T02:19:48Z",
-   "validado_em": "2026-09-30T02:20:27Z",
+   "validado_em": "2026-10-01T00:00:17Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-28"
    },
    "transformacoes": [
-    "média aritmética dos valores diários do mês",
+    "média aritmética dos valores diários aceitos do mês",
     "SIN: soma dos quatro subsistemas em cada dia"
    ],
-   "formula": "carga_mensal(s, m) = média de carga(s, d) para os dias d do mês m com dado; o mês corrente é parcial",
+   "formula": "carga_mensal(s, m) = média de carga(s, d) para os dias d do mês m com dado aceito; o mês corrente é parcial",
    "snapshot": {
     "id": "carga_energia_di@2026-09-30T02:19:48Z",
     "sha256": "b6e8471dc064c63a4db34e9e6e3009a019460c71bff839104a1415ea0dbaefb3"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "196905461ac0",
+   "versao_codigo": "3e7ff0a36fba+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-09-30T02:20:26Z",
+    "detectado_em": "2026-10-01T00:00:17Z",
     "total": 33,
     "vintages_comparadas": 28,
     "arquivos": 27,
@@ -12294,13 +12391,15 @@
    "limitacoes": [
     "O ONS mudou o conteúdo da série em 01/03/2021 e em 29/04/2023 (inclusão da estimativa de MMGD); comparações que atravessam essas datas não são homogêneas e não são exibidas como variação.",
     "Dados em processo de consistência recorrente do ONS, sujeitos a revisão após a publicação.",
+    "A captura de 28/09/2026, 23:42 (Brasília) trouxe a carga do Nordeste de 26/09/2026 igual a −668,879 MWmed, fora do domínio do dicionário do ONS; o valor não entra na publicação, e a fonte o revisou para 13.984,7 MWmed na captura de 29/09/2026, 23:19 (Brasília).",
+    "4 valores atípicos (regras F2 ou F3) foram publicados porque a curva horária do ONS confirma o mesmo valor: S em 06/01/2015; S em 07/01/2015; S em 08/01/2015; NE em 25/08/2018.",
     "Médias de meses em regimes metodológicos diferentes não são comparáveis diretamente."
    ],
    "download": null,
    "notas_fonte": null
   }
  },
- "fonte_notas": "Dados de carga por subsistema em base diária, medida em MWmed. \r\n\r\nAté fevereiro/2021, os dados representam a carga atendida por usinas despachadas e/ou programadas pelo ONS, com base em dados recebidos pelo Sistema de Supervisão e Controle do ONS. Entre março/2021 e abril/23, os dados representam a carga atendida por usinas despachadas e/ou programadas pelo ONS, com base em dados recebidos pelo Sistema de Supervisão e Controle do ONS, mais a previsão de geração de usinas não despachadas pelo ONS. A partir de 29/04/2023, além dos dados anteriormente considerados, passou a ser incorporado o valor estimado da micro e minigeração distribuída (MMGD), com base em dados meteorológicos previstos.",
+ "fonte_notas": null,
  "downloads": [
   {
    "rotulo": "Carga diária por subsistema e SIN (CSV)",

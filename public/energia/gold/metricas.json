@@ -1,11 +1,347 @@
 {
  "dominio": "energia",
  "gold": "metricas.json",
- "gerado_em": "2026-09-30T23:37:06Z",
+ "gerado_em": "2026-10-01T00:07:23Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "30ad85ccb171+alterado",
+ "versao_codigo": "3e7ff0a36fba+alterado",
  "disponivel": true,
  "metricas": [
+  {
+   "id": "carga_decomposicao_contribuicao",
+   "titulo": "Contribuição de calendário, temperatura, sazonalidade e tendência (decomposição estatística)",
+   "pergunta": "Quanto da variação da carga é compatível com clima e calendário, segundo um modelo estatístico?",
+   "definicao": "Mudança na previsão de ln(carga) de um modelo de regressão estimado só com dias anteriores, atribuída a cada grupo de variáveis (β × diferença das médias das variáveis do grupo). Resíduo = diferença real − diferença prevista. Não é efeito causal nem percentual explicado.",
+   "unidade": "log × 100 (aproximadamente pontos percentuais)",
+   "grao_geografico": "subsistema e SIN",
+   "grao_temporal": "diário e janelas",
+   "fontes": [
+    "carga_energia_di",
+    "nasa_power_temperatura",
+    "ibge_populacao_uf_6579",
+    "ibge_centroides_capitais",
+    "senado_leis_feriados"
+   ],
+   "formula": "contribuição_g = 100 × Σ_{j∈g} β_j (x̄_j,A − x̄_j,B); resíduo = 100 × (ȳ_A − ȳ_B) − Σ_g contribuição_g",
+   "regra_agregacao": "Soma dentro de cada grupo; médias de ln(carga) nos dias das janelas.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "ESTIMADO",
+   "dimensoes": [
+    "subsistema",
+    "variante do modelo",
+    "janela"
+   ],
+   "regras_comparabilidade": [
+    "Contribuições de variantes diferentes não se somam.",
+    "Com temperatura ausente em parte da janela, a decomposição usa o maior trecho inicial com todas as variáveis e o informa."
+   ],
+   "regra_cobertura": "Dias com carga aceita, temperatura do dia e do dia anterior.",
+   "politica_ausencia": "Dia sem temperatura fica fora do modelo; nada é interpolado.",
+   "validacoes": [
+    "Backtest com origens mensais fora da amostra e comparação com a referência de 364 dias.",
+    "Sensibilidade a seis especificações."
+   ],
+   "limitacoes": [
+    "Associação estatística, não causa.",
+    "Temperatura de reanálise, não observação de estação."
+   ],
+   "gold": "carga_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/carga"
+   ],
+   "arquivo": "pipeline/energia/metricas/carga.py"
+  },
+  {
+   "id": "carga_decomposicao_erro",
+   "titulo": "Erro fora da amostra da decomposição estatística",
+   "pergunta": "Quão bem o modelo de clima e calendário reproduz a carga em dias que não viu?",
+   "definicao": "Erro percentual absoluto médio, viés, erro absoluto em MWmed e cobertura dos intervalos de 80% e 95%, nos dias de cada mês previstos pelo modelo estimado só com os dias anteriores ao mês.",
+   "unidade": "% e MWmed",
+   "grao_geografico": "subsistema e SIN",
+   "grao_temporal": "diário, agregado no período de avaliação",
+   "fontes": [
+    "carga_energia_di",
+    "nasa_power_temperatura",
+    "ibge_populacao_uf_6579",
+    "ibge_centroides_capitais"
+   ],
+   "formula": "MAPE = 100 × média |real ÷ previsto − 1|; viés = 100 × média (real ÷ previsto − 1)",
+   "regra_agregacao": "Média simples entre dias previstos.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "ESTIMADO",
+   "dimensoes": [
+    "subsistema",
+    "variante",
+    "origem"
+   ],
+   "regras_comparabilidade": [
+    "Comparável entre variantes só no mesmo período de avaliação (mesmas origens).",
+    "A referência ingênua (mesmo dia da semana 364 dias antes) é publicada junto."
+   ],
+   "regra_cobertura": "Origens mensais desde 01/05/2024 com pelo menos 300 dias de treino.",
+   "politica_ausencia": "Dia sem previsão (temperatura ausente) fica fora da métrica e da contagem.",
+   "validacoes": [
+    "Treino estritamente anterior a cada origem (sem olhar o futuro)."
+   ],
+   "limitacoes": [
+    "Usa a temperatura realizada: mede decomposição, não previsão de carga.",
+    "Cobertura empírica abaixo da nominal é publicada, não corrigida."
+   ],
+   "gold": "carga_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/carga"
+   ],
+   "arquivo": "pipeline/energia/metricas/carga.py"
+  },
+  {
+   "id": "carga_media_anual",
+   "titulo": "Carga média anual e variação entre anos completos",
+   "pergunta": "Quanto o sistema consumiu em média em cada ano e quanto isso mudou?",
+   "definicao": "Média da carga diária do ano. A variação só é publicada entre dois anos completos inteiramente no mesmo regime do ONS; o ano corrente entra como acumulado até o último dia contra o mesmo período do ano anterior deslocado 364 dias.",
+   "unidade": "MWmed e %",
+   "grao_geografico": "subsistema e SIN",
+   "grao_temporal": "anual",
+   "fontes": [
+    "carga_energia_di"
+   ],
+   "formula": "média anual = Σ carga diária ÷ dias com dado; variação = 100 × (média do ano ÷ média do ano anterior − 1)",
+   "regra_agregacao": "Média dos dias (cada dia tem o mesmo peso de 24 horas).",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "ano",
+    "subsistema"
+   ],
+   "regras_comparabilidade": [
+    "Só compara períodos dentro do mesmo regime do ONS: até 28/02/2021; de 01/03/2021 a 28/04/2023; desde 29/04/2023 (com a estimativa de MMGD). Variação que atravessa uma dessas datas não é publicada.",
+    "Ano parcial não é comparado com ano completo; o acumulado do ano usa o mesmo período do ano anterior.",
+    "Variação de carga é observação; não é atribuída à atividade econômica sem evidência adicional."
+   ],
+   "regra_cobertura": "Ano completo = todos os dias com o SIN (quatro subsistemas aceitos).",
+   "politica_ausencia": "Dia em quarentena (validação física) ou ausente fica sem valor: nunca zero, nunca repetido. Janela com dia ausente não tem média nem variação.",
+   "validacoes": [
+    "Validação física antes da publicação: F1 (valor positivo, domínio do dicionário do ONS), F2 (faixa plausível do subsistema), F3 (salto sobre a mediana da semana anterior), com conferência na curva horária e quarentena.",
+    "Média das 24 horas da curva horária conferida contra a carga diária (tolerância de 0,01 MWmed; os dias que diferem são publicados em p025.revisoes.curva_contra_diaria)."
+   ],
+   "limitacoes": [
+    "2021 e 2023 misturam dois regimes: não têm variação contra o ano anterior nem o seguinte."
+   ],
+   "gold": "carga_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/carga"
+   ],
+   "arquivo": "pipeline/energia/metricas/carga.py"
+  },
+  {
+   "id": "carga_mmgd_participacao",
+   "titulo": "Parcela da carga global atendida por MMGD (estimativa do ONS)",
+   "pergunta": "Qual parcela da carga é suprida pela micro e minigeração distribuída, segundo a estimativa do ONS?",
+   "definicao": "Energia de MMGD estimada pelo ONS dividida pela carga global verificada, nas mesmas horas, na API de carga verificada. Carga líquida de MMGD = carga global − MMGD, identidade publicada pelo ONS e conferida em cada meia hora.",
+   "unidade": "% da carga global",
+   "grao_geografico": "submercado e SIN",
+   "grao_temporal": "hora, dia e mês",
+   "fontes": [
+    "ons_carga_verificada_ho"
+   ],
+   "formula": "100 × Σ MMGD (MWh) ÷ Σ carga global (MWh)",
+   "numerador": "energia de MMGD estimada (MWh)",
+   "denominador": "carga global verificada (MWh)",
+   "regra_agregacao": "Razão de somas de energia nas mesmas horas (nunca média de percentuais).",
+   "versao_formula": "1",
+   "natureza_fonte": "ESTIMADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "submercado",
+    "mês",
+    "hora"
+   ],
+   "regras_comparabilidade": [
+    "Não se aplica à carga diária nem à curva de carga: a carga global da API é outra grandeza (maior, sobretudo à noite).",
+    "Nenhuma dupla contagem: a MMGD da API nunca é somada à curva (que já inclui uma estimativa de MMGD desde 29/04/2023) nem subtraída dela."
+   ],
+   "regra_cobertura": "Horas com as duas meias horas de carga global e de MMGD; mês completo quando todos os dias têm 24 horas.",
+   "politica_ausencia": "Antes de 15/02/2019 a MMGD vem vazia na API: ausência, não zero. Dia em curso na captura é descartado.",
+   "validacoes": [
+    "Identidade carga global = líquida + MMGD em cada meia hora (0,01 MWmed).",
+    "MMGD não negativa (dicionário do ONS).",
+    "Energia diária por submercado conferida contra o arquivo do módulo Transição (mesma API, outro código; 0,1 MWh)."
+   ],
+   "limitacoes": [
+    "A MMGD é estimativa do ONS, não medição.",
+    "A API não informa o método de estimativa; as notas da carga diária falam em dados meteorológicos previstos."
+   ],
+   "gold": "carga_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/carga"
+   ],
+   "arquivo": "pipeline/energia/metricas/carga.py"
+  },
+  {
+   "id": "carga_perfil_tipico",
+   "titulo": "Perfil horário típico por mês e tipo de dia",
+   "pergunta": "Como a carga se distribui ao longo do dia num mês típico?",
+   "definicao": "Média, hora a hora, dos dias completos de uma classe (dia útil; sábado; domingo ou feriado nacional, Paixão e Carnaval) no mês, para a carga da curva e, separadamente, para a carga global, a MMGD e a carga líquida da API.",
+   "unidade": "MWmed",
+   "grao_geografico": "subsistema e SIN",
+   "grao_temporal": "hora do dia, por mês",
+   "fontes": [
+    "ons_curva_carga_ho",
+    "ons_carga_verificada_ho",
+    "senado_leis_feriados"
+   ],
+   "formula": "perfil(h) = Σ_dias carga(d, h) ÷ número de dias completos da classe",
+   "regra_agregacao": "Média simples entre dias (todos com 24 horas).",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "mês",
+    "classe do dia",
+    "hora",
+    "subsistema",
+    "série"
+   ],
+   "regras_comparabilidade": [
+    "Curva (carga) e API (carga global) são produtos diferentes: aparecem lado a lado, nunca subtraídos um do outro.",
+    "Só compara períodos dentro do mesmo regime do ONS: até 28/02/2021; de 01/03/2021 a 28/04/2023; desde 29/04/2023 (com a estimativa de MMGD). Variação que atravessa uma dessas datas não é publicada."
+   ],
+   "regra_cobertura": "Dias com as 24 horas; a quantidade de dias de cada média é publicada.",
+   "politica_ausencia": "Classe sem dia completo no mês não tem perfil.",
+   "validacoes": [
+    "Média das 24 horas da curva horária conferida contra a carga diária (tolerância de 0,01 MWmed; os dias que diferem são publicados em p025.revisoes.curva_contra_diaria)."
+   ],
+   "limitacoes": [
+    "Classe de dia pelo calendário nacional: feriados estaduais e municipais não entram."
+   ],
+   "gold": "carga_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/carga"
+   ],
+   "arquivo": "pipeline/energia/metricas/carga.py"
+  },
+  {
+   "id": "carga_pico_horario",
+   "titulo": "Pico horário diário da carga e hora do pico",
+   "pergunta": "Quando ocorre o pico de carga e de que tamanho ele é?",
+   "definicao": "Maior valor horário da Curva de Carga Horária do ONS no dia e a hora local (início da hora) em que ocorreu. Para o SIN, o máximo da soma dos quatro subsistemas hora a hora, não a soma dos picos.",
+   "unidade": "MWmed (na hora) e hora 0 a 23",
+   "grao_geografico": "subsistema e SIN",
+   "grao_temporal": "diário (a partir de valores horários)",
+   "fontes": [
+    "ons_curva_carga_ho"
+   ],
+   "formula": "pico = max_h carga(h); hora = argmax_h (empate: primeira hora)",
+   "regra_agregacao": "Máximo diário; distribuição anual = contagem de dias por hora do pico.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "dia",
+    "subsistema",
+    "ano"
+   ],
+   "regras_comparabilidade": [
+    "Só compara períodos dentro do mesmo regime do ONS: até 28/02/2021; de 01/03/2021 a 28/04/2023; desde 29/04/2023 (com a estimativa de MMGD). Variação que atravessa uma dessas datas não é publicada.",
+    "Antes de 2019 havia horário de verão: a hora local do pico se desloca uma hora nesses meses."
+   ],
+   "regra_cobertura": "Dia com as 24 horas (dias de mudança do horário de verão, com 23 horas, ficam sem pico).",
+   "politica_ausencia": "Dia incompleto não tem pico.",
+   "validacoes": [
+    "Média das 24 horas da curva horária conferida contra a carga diária (tolerância de 0,01 MWmed; os dias que diferem são publicados em p025.revisoes.curva_contra_diaria)."
+   ],
+   "limitacoes": [
+    "Desde 29/04/2023 a curva inclui a MMGD estimada, que desloca a forma da curva ao meio-dia; o pico da carga líquida está no painel de MMGD."
+   ],
+   "gold": "carga_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/carga"
+   ],
+   "arquivo": "pipeline/energia/metricas/carga.py"
+  },
+  {
+   "id": "carga_revisao",
+   "titulo": "Revisão da carga diária entre capturas",
+   "pergunta": "Quanto a fonte mudou um valor já publicado?",
+   "definicao": "Diferença entre o valor de uma carga diária numa captura e o valor da captura anterior do mesmo arquivo, em MWmed e em % do valor anterior; correção de valor fora do domínio é marcada à parte.",
+   "unidade": "MWmed e %",
+   "grao_geografico": "subsistema",
+   "grao_temporal": "diário, por captura",
+   "fontes": [
+    "carga_energia_di"
+   ],
+   "formula": "diferença = valor(captura k) − valor(captura k − 1); % = 100 × diferença ÷ valor(captura k − 1)",
+   "regra_agregacao": "Sem agregação; resumo por mediana e máximo do valor absoluto das diferenças percentuais.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "subsistema",
+    "dia",
+    "captura"
+   ],
+   "regras_comparabilidade": [
+    "Só compara capturas do mesmo arquivo anual; a percentagem não é calculada quando o valor anterior é zero ou negativo."
+   ],
+   "regra_cobertura": "Capturas integradas no silver (a primeira captura de cada arquivo não tem revisão).",
+   "politica_ausencia": "Valor que some numa captura posterior não é revisão para zero: não gera linha.",
+   "validacoes": [
+    "Revisões lidas das vintages do silver, que só gravam valor novo ou alterado."
+   ],
+   "limitacoes": [
+    "O silver só conhece as capturas feitas pelo observatório; revisões entre duas capturas ficam agregadas."
+   ],
+   "gold": "carga_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/carga"
+   ],
+   "arquivo": "pipeline/energia/metricas/carga.py"
+  },
+  {
+   "id": "carga_variacao_equivalente",
+   "titulo": "Variação da carga contra os mesmos dias da semana do ano anterior",
+   "pergunta": "Quanto a carga mudou em relação ao mesmo período do ano passado, com a mesma composição de dias?",
+   "definicao": "Média da carga diária numa janela (7 dias, 28 dias, mês corrente, último mês completo ou 52 semanas) dividida pela média da mesma janela deslocada 364 dias (52 semanas: mesmos dias da semana), menos 1. Publicada ao lado da comparação com as mesmas datas do calendário e da composição de dias úteis, sábados e domingos ou feriados das duas.",
+   "unidade": "%",
+   "grao_geografico": "subsistema (SE/CO, S, NE, N) e SIN",
+   "grao_temporal": "janela diária móvel",
+   "fontes": [
+    "carga_energia_di"
+   ],
+   "formula": "100 × (média(janela) ÷ média(janela − 364 dias) − 1)",
+   "numerador": "média da carga diária na janela (MWmed)",
+   "denominador": "média da carga diária na janela deslocada 364 dias (MWmed)",
+   "regra_agregacao": "Média aritmética de valores diários em MWmed (todos os dias têm 24 horas; SIN = soma dos quatro subsistemas no dia).",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "subsistema",
+    "janela",
+    "tipo de comparação (mesmas datas ou equivalente)"
+   ],
+   "regras_comparabilidade": [
+    "Só compara períodos dentro do mesmo regime do ONS: até 28/02/2021; de 01/03/2021 a 28/04/2023; desde 29/04/2023 (com a estimativa de MMGD). Variação que atravessa uma dessas datas não é publicada.",
+    "Feriado nacional que cai em dia útil num ano e no fim de semana no outro torna o calendário não equivalente; o indicador marca calendario_equivalente = falso.",
+    "Variação de carga é observação; não é atribuída à atividade econômica sem evidência adicional."
+   ],
+   "regra_cobertura": "Todos os dias das duas janelas presentes e aceitos pela validação física.",
+   "politica_ausencia": "Dia em quarentena (validação física) ou ausente fica sem valor: nunca zero, nunca repetido. Janela com dia ausente não tem média nem variação.",
+   "validacoes": [
+    "Validação física antes da publicação: F1 (valor positivo, domínio do dicionário do ONS), F2 (faixa plausível do subsistema), F3 (salto sobre a mediana da semana anterior), com conferência na curva horária e quarentena.",
+    "Média das 24 horas da curva horária conferida contra a carga diária (tolerância de 0,01 MWmed; os dias que diferem são publicados em p025.revisoes.curva_contra_diaria)."
+   ],
+   "limitacoes": [
+    "Mesmos dias da semana não igualam temperatura nem eventos locais: a decomposição estatística trata a temperatura.",
+    "Os dias mais recentes são revisados pelo ONS depois da publicação."
+   ],
+   "gold": "carga_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/carga"
+   ],
+   "arquivo": "pipeline/energia/metricas/carga.py"
+  },
   {
    "id": "conta_bandeira_adicional",
    "titulo": "Bandeira tarifária acionada e adicional por patamar",
@@ -45,9 +381,9 @@
   },
   {
    "id": "conta_cde_custeio",
-   "titulo": "Custeio anual da CDE: quem paga e para onde vai",
-   "pergunta": "Quanto a CDE movimenta por ano, quanto vem das quotas cobradas nas tarifas e quanto vai para a Tarifa Social e os descontos tarifários?",
-   "definicao": "Valores anuais de custeio da Conta de Desenvolvimento Energético por rubrica de despesa e de receita, como publicados pela ANEEL, agrupados pelo nome da rubrica (Tarifa Social, descontos tarifários, CCC e Luz para Todos, outras despesas; quotas da CDE, outras receitas). Participação das quotas = quotas ÷ receita total do ano; da Tarifa Social = rubrica Subsídio Baixa Renda ÷ despesa total do ano.",
+   "titulo": "Orçamento anual da CDE: quem paga e para onde vai",
+   "pergunta": "Quanto a CDE prevê movimentar por ano, quanto vem das quotas cobradas nas tarifas e quanto vai para a Tarifa Social e os descontos tarifários?",
+   "definicao": "Orçamento anual da Conta de Desenvolvimento Energético (aprovado ou previsto pela ANEEL, não execução) por rubrica de despesa e de receita, como publicado no conjunto de custeio dos benefícios tarifários, agrupado pelo nome da rubrica (Tarifa Social, descontos tarifários, CCC e Luz para Todos, outras despesas; quotas da CDE, outras receitas). Participação das quotas = quotas ÷ receita total do ano; da Tarifa Social = rubrica Subsídio Baixa Renda ÷ despesa total do ano.",
    "unidade": "R$ nominais e %",
    "grao_geografico": "nacional (conta setorial)",
    "grao_temporal": "anual",
@@ -58,9 +394,9 @@
    "numerador": "Σ rubricas do grupo (R$)",
    "denominador": "Σ receitas ou Σ despesas do ano (R$)",
    "regra_agregacao": "Soma de valores publicados no mesmo ano; rubrica sem valor não entra.",
-   "versao_formula": "1",
-   "natureza_fonte": "OBSERVADO",
-   "natureza_transformacao": "CALCULADO",
+   "versao_formula": "2",
+   "natureza_fonte": "PREVISTO",
+   "natureza_transformacao": "PREVISTO",
    "dimensoes": [
     "ano",
     "tipo (despesa, receita)",
@@ -75,11 +411,13 @@
    "regra_cobertura": "Anos publicados no conjunto (2013 em diante).",
    "politica_ausencia": "Rubrica publicada sem valor fica nula e listada no ano; nunca vira zero.",
    "validacoes": [
-    "Σ despesas = Σ receitas em cada ano (tolerância R$ 1).",
+    "Controle interno: Σ despesas = Σ receitas em cada ano (tolerância R$ 1), identidade do orçamento em que a quota cobre a diferença.",
+    "Reconciliação externa: despesa total do ano contra o orçamento divulgado pela ANEEL (2023, 2025 e 2026), com tolerância de meia unidade da última casa publicada.",
     "Rubrica repetida no mesmo ano com valor diferente é contada (nenhuma em 30/09/2026)."
    ],
    "limitacoes": [
-    "O ano corrente tem valores antes de terminar (valores orçados); o dicionário não diz se os anos anteriores são orçamento ou execução.",
+    "São valores de orçamento (aprovados ou previstos), não o que a CDE efetivamente arrecadou e gastou.",
+    "A reconciliação externa usa o título das notícias oficiais; o corpo das páginas estava restrito no gov.br em 30/09/2026.",
     "Agrupamento pelo nome da rubrica é do observatório."
    ],
    "gold": "conta.json",
@@ -92,7 +430,7 @@
    "id": "conta_composicao_grupo",
    "titulo": "Composição da tarifa B1 por grupo de componentes",
    "pergunta": "Para onde vai o valor pago por kWh: energia, transmissão, distribuição, perdas ou encargos?",
-   "definicao": "Soma das componentes tarifárias oficiais da TE e da TUSD de aplicação B1 residencial, agrupadas por código em energia comprada, transmissão e conexão, distribuição (fio B), perdas e receitas irrecuperáveis, encargos setoriais e outros ajustes. O agrupamento é do observatório; cada código fica visível.",
+   "definicao": "Soma das componentes tarifárias oficiais da TE e da TUSD de aplicação B1 residencial, agrupadas por código em energia comprada, transmissão e conexão, distribuição (fio B), perdas e receitas irrecuperáveis, encargos setoriais, outros ajustes e créditos. Valor negativo em componente de custo cuja natureza não admite sinal negativo (TE_CFURH) sai do grupo do código e vai para créditos, com a origem provável declarada (repasse da repactuação da UBP). O agrupamento é do observatório; cada código fica visível.",
    "unidade": "R$/MWh e % da tarifa",
    "grao_geografico": "distribuidora (CNPJ)",
    "grao_temporal": "vigência",
@@ -100,10 +438,10 @@
     "aneel_componentes_tarifarias",
     "aneel_tarifas_aplicacao"
    ],
-   "formula": "grupo(g) = Σ componentes com GRUPO = g; participação = grupo ÷ (TE + TUSD)",
+   "formula": "grupo(g) = Σ componentes com GRUPO(código, valor) = g; participação = grupo ÷ (TE + TUSD); composição média = Σ distribuidoras grupo(g) ÷ Σ distribuidoras (TE + TUSD)",
    "numerador": "Σ das componentes do grupo (R$/MWh)",
    "denominador": "TE + TUSD de aplicação (R$/MWh)",
-   "regra_agregacao": "Por distribuidora; resumo nacional pela mediana de cada grupo (as medianas não somam o total).",
+   "regra_agregacao": "Por distribuidora. Resumo nacional que fecha com o total: média simples entre distribuidoras, com participação pela razão de somas. A mediana de cada grupo também é publicada, mas as medianas não somam o total e não se usam como composição.",
    "versao_formula": "1",
    "natureza_fonte": "OBSERVADO",
    "natureza_transformacao": "CALCULADO",
@@ -114,16 +452,19 @@
    ],
    "regras_comparabilidade": [
     "Componentes já estão dentro da TE e da TUSD: nada é somado por fora.",
-    "Componentes negativas (devoluções) reduzem o grupo e são mantidas."
+    "Componentes negativas (devoluções) reduzem o grupo e são mantidas; valor negativo em componente de custo listada em composicao.creditos vai para o grupo créditos.",
+    "Mediana de grupo não é parcela da tarifa mediana; composição que soma o total é a média (razão de somas)."
    ],
    "regra_cobertura": "Distribuidoras com tarifa B1 vigente e componentes publicadas para o mesmo ato e vigência.",
    "politica_ausencia": "Componente ausente não vira zero; distribuidora sem componentes para o ato vigente fica listada em reconciliacao.sem_componentes.",
    "validacoes": [
     "Soma das parcelas = TE e TUSD publicadas no próprio conjunto (tolerância 0,01 R$/MWh).",
-    "TE e TUSD do conjunto de componentes = TE e TUSD do conjunto de tarifas (tolerância 0,005 R$/MWh)."
+    "TE e TUSD do conjunto de componentes = TE e TUSD do conjunto de tarifas (tolerância 0,005 R$/MWh).",
+    "Grupo de custo com soma negativa, parcela CDE maior que os encargos e componente atípica (sinal contrário ao grupo de custo ou módulo mais de 10 vezes a mediana da componente, com pelo menos 5% da tarifa) viram ressalva visível, conferida no arquivo original."
    ],
    "limitacoes": [
     "O PRORET 7.1, que define as componentes, não pôde ser lido (acesso bloqueado); o grupo é classificação do observatório.",
+    "A leitura do valor negativo de TE_CFURH como crédito do repasse da UBP é do observatório, apoiada na lista de distribuidoras divulgada pela ANEEL em 11/08/2026.",
     "Tributos e iluminação pública não fazem parte da tarifa."
    ],
    "gold": "conta.json",
@@ -188,7 +529,7 @@
    "formula": "cde = Σ componentes com CDE no código; participação = cde ÷ (TE + TUSD) × 100",
    "numerador": "Σ componentes CDE (R$/MWh)",
    "denominador": "TE + TUSD de aplicação (R$/MWh)",
-   "regra_agregacao": "Por distribuidora; resumo nacional pela mediana entre distribuidoras, sem ponderação.",
+   "regra_agregacao": "Por distribuidora; resumo nacional pela mediana entre distribuidoras (em R$/MWh e em % separadamente, sem ponderação) e pela razão de somas (Σ CDE ÷ Σ tarifa), que é a participação comparável à composição média.",
    "versao_formula": "1",
    "natureza_fonte": "OBSERVADO",
    "natureza_transformacao": "CALCULADO",
@@ -245,11 +586,11 @@
    "politica_ausencia": "Tarifa da classe ausente torna a simulação indisponível para aquela classe; não se usa tarifa de outra classe.",
    "validacoes": [
     "Casos de referência calculados no pipeline (casos_referencia) devem ser reproduzidos pela interface.",
-    "Trechos das normas conferidos a cada captura (simulador.normas)."
+    "Trechos das normas conferidos a cada captura (simulador.normas); o estado de cada regra separa o trecho normativo conferido da leitura aplicada (simulador.regras_texto[].partes)."
    ],
    "limitacoes": [
     "Desconto Social por parcela e bandeira na Tarifa Social são leituras declaradas (REN não lida por bloqueio de acesso).",
-    "Custo de disponibilidade da Tarifa Social acima de 80 kWh não modelado."
+    "Custo de disponibilidade da Tarifa Social acima de 80 kWh não modelado (regra não conferida)."
    ],
    "gold": "conta.json",
    "paginas": [
@@ -369,20 +710,625 @@
     "Não é o efeito médio do processo tarifário (que pondera todas as classes).",
     "Diferença entre PLD e tarifa não é margem da distribuidora."
    ],
-   "regra_cobertura": "Distribuidoras com tarifa nas duas datas; as demais são contadas como excluídas.",
+   "regra_cobertura": "Distribuidoras com tarifa nas duas datas e sem mudança de perímetro (incorporação registrada) dentro da janela; as demais são contadas como excluídas.",
    "politica_ausencia": "Sem tarifa em uma das datas ou sem índice publicado no mês, a variação fica vazia.",
    "validacoes": [
     "IPCA de 12 meses pela razão de índices conferido com a variação publicada pelo IBGE (tolerância 0,01 ponto percentual).",
     "Contagem acima e abaixo do IPCA feita com os valores não arredondados."
    ],
    "limitacoes": [
-    "O conjunto não diz se o ato é reajuste, revisão periódica ou extraordinária."
+    "O conjunto não diz se o ato é reajuste, revisão periódica ou extraordinária.",
+    "Na data de uma incorporação o CNPJ incorporador passa a ter a tarifa da área somada: o evento sai marcado como mudança de perímetro e não é reajuste dos mesmos consumidores."
    ],
    "gold": "conta.json",
    "paginas": [
     "/setor-eletrico/conta-de-luz"
    ],
    "arquivo": "pipeline/energia/metricas/conta.py"
+  },
+  {
+   "id": "empresas_ativo_total",
+   "titulo": "Ativo total",
+   "pergunta": "Qual o ativo total no fim do período?",
+   "definicao": "Conta 1 do balanço patrimonial ativo.",
+   "unidade": "R$ nominais",
+   "grao_geografico": "companhia aberta (CNPJ), consolidado ou individual",
+   "grao_temporal": "fim do exercício (DFP) e fim do trimestre (ITR)",
+   "fontes": [
+    "cvm_cad_cia_aberta",
+    "cvm_dfp",
+    "cvm_itr"
+   ],
+   "formula": "VL_CONTA da conta 1 × escala (MIL = 1.000; UNIDADE = 1), maior versão do documento",
+   "regra_agregacao": "Nenhuma agregação entre companhias. Saldo no fim do período; não se soma no tempo.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "companhia",
+    "escopo",
+    "periodo",
+    "documento"
+   ],
+   "regras_comparabilidade": [
+    "Consolidado e individual são séries separadas do mesmo CNPJ; nenhum valor é somado entre companhias (a controladora já consolida as controladas).",
+    "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
+   ],
+   "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero); exercício irregular (menos de 12 meses) fica fora da série anual.",
+   "validacoes": [
+    "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
+    "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
+    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+   ],
+   "limitacoes": [
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+   ],
+   "gold": "empresas.json",
+   "paginas": [
+    "/setor-eletrico/empresas",
+    "/setor-eletrico/empresas/[entidade]"
+   ],
+   "arquivo": "pipeline/energia/metricas/empresas.py"
+  },
+  {
+   "id": "empresas_caixa_investimento",
+   "titulo": "Caixa líquido das atividades de investimento",
+   "pergunta": "Quanto caixa foi aplicado (ou gerado) em atividades de investimento?",
+   "definicao": "Conta 6.02 da demonstração dos fluxos de caixa (método direto ou indireto).",
+   "unidade": "R$ nominais",
+   "grao_geografico": "companhia aberta (CNPJ), consolidado ou individual",
+   "grao_temporal": "exercício social (DFP) e trimestre (ITR)",
+   "fontes": [
+    "cvm_cad_cia_aberta",
+    "cvm_dfp",
+    "cvm_itr"
+   ],
+   "formula": "VL_CONTA da conta 6.02 × escala (MIL = 1.000; UNIDADE = 1), maior versão do documento",
+   "regra_agregacao": "Nenhuma agregação entre companhias. Fluxo: valor do período publicado (exercício, trimestre ou acumulado no ano); o 4º trimestre não é deduzido por diferença.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "companhia",
+    "escopo",
+    "periodo",
+    "documento"
+   ],
+   "regras_comparabilidade": [
+    "Consolidado e individual são séries separadas do mesmo CNPJ; nenhum valor é somado entre companhias (a controladora já consolida as controladas).",
+    "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
+   ],
+   "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero); exercício irregular (menos de 12 meses) fica fora da série anual.",
+   "validacoes": [
+    "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
+    "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
+    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+   ],
+   "limitacoes": [
+    "Inclui aquisições, aplicações financeiras e resgates; não é o investimento em ativos da concessão, que não tem conta fixa.",
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+   ],
+   "gold": "empresas.json",
+   "paginas": [
+    "/setor-eletrico/empresas",
+    "/setor-eletrico/empresas/[entidade]"
+   ],
+   "arquivo": "pipeline/energia/metricas/empresas.py"
+  },
+  {
+   "id": "empresas_capacidade_controle_direto",
+   "titulo": "Capacidade sob controle direto",
+   "pergunta": "Quanta potência em operação está em usinas em que a empresa detém a maioria?",
+   "definicao": "Soma da potência fiscalizada inteira das usinas em operação em que o CNPJ detém mais de 50% da propriedade publicada no SIGA.",
+   "unidade": "MW",
+   "grao_geografico": "proprietário direto (CNPJ)",
+   "grao_temporal": "fotografia diária do SIGA",
+   "fontes": [
+    "aneel_siga"
+   ],
+   "formula": "cap_ctrl(e) = Σ_u kW_fiscalizado(u) × [pct(e, u) > 50] ÷ 1.000",
+   "regra_agregacao": "Cada usina tem no máximo um controlador majoritário; usinas sem maioria (ex.: 50% e 50%) não são atribuídas e a potência delas é publicada à parte.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "proprietário",
+    "tipo de usina"
+   ],
+   "regras_comparabilidade": [
+    "Métrica distinta da capacidade proporcional: não somar as duas nem trocar uma pela outra.",
+    "Fronteira: potência fiscalizada das usinas em fase Operação no SIGA cujas participações publicadas somam 100% (tolerância de 0,005 p.p. por parcela), Brasil, na data do SIGA; exclui micro e minigeração distribuída."
+   ],
+   "regra_cobertura": "Usinas em operação no SIGA com participações válidas.",
+   "politica_ausencia": "Usina sem proprietário informado ou com participações que não somam 100% fica fora das medidas de capacidade por proprietário e por grupo e é listada pelo motivo; potência fiscalizada vazia é ausência, nunca zero.",
+   "validacoes": [
+    "Vínculo usina × proprietário só pelo CNPJ publicado no próprio SIGA; nenhum vínculo por nome."
+   ],
+   "limitacoes": [
+    "Critério de maioria da propriedade do ativo; acordos de acionistas que dão controle a minoritários não estão na fonte."
+   ],
+   "gold": "empresas.json",
+   "paginas": [
+    "/setor-eletrico/empresas"
+   ],
+   "arquivo": "pipeline/energia/metricas/empresas.py"
+  },
+  {
+   "id": "empresas_capacidade_controle_grupo",
+   "titulo": "Capacidade sob controle do grupo",
+   "pergunta": "Quanta potência em operação está sob controle de cada grupo econômico com vínculo declarado?",
+   "definicao": "Soma da potência fiscalizada das usinas em operação cujo proprietário majoritário (> 50%) tem o grupo como topo da cadeia de controladores únicos declarada à ANEEL.",
+   "unidade": "MW",
+   "grao_geografico": "grupo (CNPJ do topo da cadeia de controle)",
+   "grao_temporal": "SIGA diário × trimestre de referência do Polímero",
+   "fontes": [
+    "aneel_siga",
+    "aneel_polimero"
+   ],
+   "formula": "cap_ctrl_grupo(g) = Σ_u kW(u) × [topo(majoritário(u)) = g] ÷ 1.000",
+   "regra_agregacao": "Partição das usinas com controlador majoritário: cada usina pertence a no máximo um grupo (sem dupla contagem de controladora e controlada).",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "grupo",
+    "tipo de usina"
+   ],
+   "regras_comparabilidade": [
+    "Grupo = topo da cadeia de controladores únicos declarada à ANEEL na Composição Societária (Polímero): a cadeia para em controle compartilhado, controlador pessoa física, controlador sem CNPJ, declarações que discordam sobre o controlador (menos de 90% de concordância) ou agente sem declaração nos quatro trimestres até o de referência.",
+    "Fronteira: potência fiscalizada das usinas em fase Operação no SIGA cujas participações publicadas somam 100% (tolerância de 0,005 p.p. por parcela), Brasil, na data do SIGA; exclui micro e minigeração distribuída."
+   ],
+   "regra_cobertura": "Proprietários sem declaração no Polímero são o próprio topo (grupo de uma empresa); o motivo de parada de cada cadeia é publicado.",
+   "politica_ausencia": "Usina sem proprietário informado ou com participações que não somam 100% fica fora das medidas de capacidade por proprietário e por grupo e é listada pelo motivo; potência fiscalizada vazia é ausência, nunca zero. Cadeia sem controlador único termina no último CNPJ provado; nada é atribuído por semelhança de nome.",
+   "validacoes": [
+    "Percentual do Polímero confirmado como relativo ao agente declarante (967 de 968 casos do 1º trimestre de 2026).",
+    "Ciclos na cadeia são detectados e encerram a subida."
+   ],
+   "limitacoes": [
+    "Depende da cobertura e da qualidade das declarações ao Polímero; declarações de terceiros discordantes deixam o nó ambíguo."
+   ],
+   "gold": "empresas.json",
+   "paginas": [
+    "/setor-eletrico/empresas"
+   ],
+   "arquivo": "pipeline/energia/metricas/empresas.py"
+  },
+  {
+   "id": "empresas_capacidade_proporcional",
+   "titulo": "Capacidade proporcional à participação (proprietário direto)",
+   "pergunta": "Quanta potência em operação corresponde às participações de cada empresa nos ativos?",
+   "definicao": "Soma, sobre as usinas em operação com participações válidas, da potência fiscalizada multiplicada pela participação do CNPJ publicada no SIGA e dividida pela soma das participações da usina (100% dentro da tolerância de arredondamento; a divisão corrige resíduos como os 100,0001% de Machadinho e fecha a partição).",
+   "unidade": "MW",
+   "grao_geografico": "proprietário direto (CNPJ)",
+   "grao_temporal": "fotografia diária do SIGA",
+   "fontes": [
+    "aneel_siga"
+   ],
+   "formula": "cap_prop(e) = Σ_u kW_fiscalizado(u) × pct(e, u) ÷ Σ_e' pct(e', u) ÷ 1.000",
+   "regra_agregacao": "Partição exata: a soma sobre todos os CNPJ mais a parcela sem CNPJ é igual à potência da fronteira (identidade verificada a cada geração com tolerância de ponto flutuante de 10⁻⁹).",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "proprietário",
+    "tipo de usina",
+    "regime de exploração"
+   ],
+   "regras_comparabilidade": [
+    "Capacidade não é energia gerada: não misturar com participação na geração verificada.",
+    "Fronteira: potência fiscalizada das usinas em fase Operação no SIGA cujas participações publicadas somam 100% (tolerância de 0,005 p.p. por parcela), Brasil, na data do SIGA; exclui micro e minigeração distribuída."
+   ],
+   "regra_cobertura": "Usinas em operação no SIGA com participações válidas.",
+   "politica_ausencia": "Usina sem proprietário informado ou com participações que não somam 100% fica fora das medidas de capacidade por proprietário e por grupo e é listada pelo motivo; potência fiscalizada vazia é ausência, nunca zero.",
+   "validacoes": [
+    "Vínculo usina × proprietário só pelo CNPJ publicado no próprio SIGA; nenhum vínculo por nome.",
+    "Conferência usina a usina com o conjunto Agentes de Geração da ANEEL (arquivo mensal independente): 24.902 de 24.905 usinas comparáveis com a mesma lista de CNPJ e os mesmos percentuais em 30/09/2026.",
+    "Identidade de partição: Σ proprietários + parcela sem CNPJ = fronteira (diferença relativa menor que 10⁻⁹)."
+   ],
+   "limitacoes": [
+    "O proprietário direto costuma ser uma sociedade de propósito específico; para o conglomerado ver a capacidade do grupo."
+   ],
+   "gold": "empresas.json",
+   "paginas": [
+    "/setor-eletrico/empresas"
+   ],
+   "arquivo": "pipeline/energia/metricas/empresas.py"
+  },
+  {
+   "id": "empresas_capacidade_proporcional_grupo",
+   "titulo": "Capacidade proporcional das empresas do grupo",
+   "pergunta": "Quanta potência corresponde às participações diretas detidas pelas empresas sob controle de cada grupo?",
+   "definicao": "Soma, sobre as usinas em operação com participações válidas, da potência × participação de cada proprietário direto cujo topo de cadeia de controle é o grupo. Não multiplica pela fração do grupo no proprietário (não é participação econômica indireta).",
+   "unidade": "MW",
+   "grao_geografico": "grupo (CNPJ do topo da cadeia de controle)",
+   "grao_temporal": "SIGA diário × trimestre de referência do Polímero",
+   "fontes": [
+    "aneel_siga",
+    "aneel_polimero"
+   ],
+   "formula": "cap_prop_grupo(g) = Σ_e [topo(e) = g] × cap_prop(e)",
+   "regra_agregacao": "Partição da capacidade proporcional: Σ grupos = Σ proprietários diretos (identidade verificada).",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "grupo",
+    "tipo de usina"
+   ],
+   "regras_comparabilidade": [
+    "Grupo = topo da cadeia de controladores únicos declarada à ANEEL na Composição Societária (Polímero): a cadeia para em controle compartilhado, controlador pessoa física, controlador sem CNPJ, declarações que discordam sobre o controlador (menos de 90% de concordância) ou agente sem declaração nos quatro trimestres até o de referência.",
+    "Fronteira: potência fiscalizada das usinas em fase Operação no SIGA cujas participações publicadas somam 100% (tolerância de 0,005 p.p. por parcela), Brasil, na data do SIGA; exclui micro e minigeração distribuída."
+   ],
+   "regra_cobertura": "Mesma da capacidade proporcional.",
+   "politica_ausencia": "Usina sem proprietário informado ou com participações que não somam 100% fica fora das medidas de capacidade por proprietário e por grupo e é listada pelo motivo; potência fiscalizada vazia é ausência, nunca zero.",
+   "validacoes": [
+    "Identidade: Σ grupos = Σ proprietários diretos (diferença relativa menor que 10⁻⁹)."
+   ],
+   "limitacoes": [
+    "Participação econômica indireta (look-through) não calculada: exige todos os caminhos societários com percentuais diretos."
+   ],
+   "gold": "empresas.json",
+   "paginas": [
+    "/setor-eletrico/empresas"
+   ],
+   "arquivo": "pipeline/energia/metricas/empresas.py"
+  },
+  {
+   "id": "empresas_cobertura_vinculos",
+   "titulo": "Cobertura dos vínculos de propriedade dos ativos de geração",
+   "pergunta": "Que parte da potência em operação tem todos os proprietários identificados por CNPJ?",
+   "definicao": "Potência fiscalizada das usinas em operação cujos proprietários publicados no SIGA têm todos CNPJ e participações somando 100%, dividida pela potência fiscalizada de todas as usinas em operação.",
+   "unidade": "% da potência fiscalizada em operação",
+   "grao_geografico": "Brasil",
+   "grao_temporal": "fotografia diária do SIGA",
+   "fontes": [
+    "aneel_siga"
+   ],
+   "numerador": "Σ potência fiscalizada das usinas em operação no estado 'vinculado' (kW)",
+   "denominador": "Σ potência fiscalizada das usinas em operação (kW)",
+   "formula": "100 × Σ kW(vinculado) ÷ Σ kW(operação)",
+   "regra_agregacao": "Razão de somas de potência; a contagem de usinas é publicada ao lado, com o mesmo critério.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "estado do vínculo",
+    "fase",
+    "tipo de usina"
+   ],
+   "regras_comparabilidade": [
+    "Comparar só fotografias do SIGA (datas diferentes mudam o parque)."
+   ],
+   "regra_cobertura": "Todas as usinas do SIGA diário (todas as fases nas contagens; só operação na razão de potência).",
+   "politica_ausencia": "Usina sem proprietário informado ou com participações que não somam 100% fica fora das medidas de capacidade por proprietário e por grupo e é listada pelo motivo; potência fiscalizada vazia é ausência, nunca zero.",
+   "validacoes": [
+    "Vínculo usina × proprietário só pelo CNPJ publicado no próprio SIGA; nenhum vínculo por nome.",
+    "Campo de proprietários lido por inteiro por expressão ancorada: sobra de texto invalida a usina inteira (nenhuma em 30/09/2026).",
+    "Conferência usina a usina com o conjunto Agentes de Geração da ANEEL (arquivo mensal independente): 24.902 de 24.905 usinas comparáveis com a mesma lista de CNPJ e os mesmos percentuais em 30/09/2026."
+   ],
+   "limitacoes": [
+    "Proprietário pessoa física aparece no SIGA sem CPF: a usina fica no estado 'inclui_sem_documento' e o nome não é republicado.",
+    "Matriz e filial do mesmo CNPJ raiz publicadas com 100% cada somam 200%: a usina fica fora das medidas de capacidade (sem consolidação por inferência)."
+   ],
+   "gold": "empresas.json",
+   "paginas": [
+    "/setor-eletrico/empresas"
+   ],
+   "arquivo": "pipeline/energia/metricas/empresas.py"
+  },
+  {
+   "id": "empresas_distribuidora_referencias",
+   "titulo": "Ficha da distribuidora (referências cruzadas)",
+   "pergunta": "Como a distribuidora aparece nos módulos de perdas, qualidade e tarifa?",
+   "definicao": "Para cada CNPJ do índice de distribuidoras, os valores de referência publicados pelas golds perdas.json (taxa de perdas totais, não técnicas sobre a baixa tensão), qualidade.json (DEC, FEC e limites) e conta.json (tarifa B1 vigente), copiados sem recálculo, com o controlador declarado ao Polímero e o registro na CVM.",
+   "unidade": "as de cada módulo de origem (%, horas, interrupções, R$/MWh)",
+   "grao_geografico": "distribuidora (CNPJ)",
+   "grao_temporal": "ano de referência de cada módulo; tarifa vigente na data da gold de conta",
+   "fontes": [
+    "aneel_samp_balanco",
+    "aneel_continuidade",
+    "aneel_tarifas_aplicacao",
+    "aneel_polimero",
+    "cvm_cad_cia_aberta"
+   ],
+   "formula": "cópia pelo CNPJ canônico (14 dígitos) do valor publicado na gold de origem",
+   "regra_agregacao": "Nenhuma: um valor por distribuidora, o mesmo da página de origem.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "distribuidora",
+    "módulo de origem"
+   ],
+   "regras_comparabilidade": [
+    "Pares: mesma classificação (concessionária ou permissionária) e mesmo porte do ranking de continuidade.",
+    "Anos de referência podem diferir entre módulos; cada bloco traz o seu."
+   ],
+   "regra_cobertura": "CNPJ presente no SAMP, na continuidade ou nas tarifas; índice com os campos ausentes onde a gold de origem não tem o dado.",
+   "politica_ausencia": "Módulo sem dado para a distribuidora = bloco nulo (nunca zero).",
+   "validacoes": [
+    "Slug único por distribuidora; aliases só sem colisão.",
+    "Valores iguais aos da gold de origem (teste por CNPJ)."
+   ],
+   "limitacoes": [
+    "Distribuidora encerrada (fim de série no SAMP) aparece como inativa com os dados históricos disponíveis."
+   ],
+   "gold": "empresas.json",
+   "paginas": [
+    "/setor-eletrico/empresas",
+    "/setor-eletrico/empresas/[entidade]"
+   ],
+   "arquivo": "pipeline/energia/metricas/empresas.py"
+  },
+  {
+   "id": "empresas_divida_bruta",
+   "titulo": "Empréstimos, financiamentos e debêntures",
+   "pergunta": "Quanto a companhia deve em empréstimos, financiamentos e debêntures?",
+   "definicao": "Soma das contas 2.01.04 (circulante) e 2.02.01 (não circulante) do mesmo escopo e da mesma data.",
+   "unidade": "R$ nominais",
+   "grao_geografico": "companhia aberta (CNPJ), consolidado ou individual",
+   "grao_temporal": "fim do exercício (DFP) e fim do trimestre (ITR)",
+   "fontes": [
+    "cvm_cad_cia_aberta",
+    "cvm_dfp",
+    "cvm_itr"
+   ],
+   "formula": "divida_bruta = VL(2.01.04) + VL(2.02.01), mesmo escopo e mesma data; ausente se uma das duas faltar",
+   "regra_agregacao": "Nenhuma agregação entre companhias. Saldo no fim do período; não se soma no tempo.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "companhia",
+    "escopo",
+    "periodo",
+    "documento"
+   ],
+   "regras_comparabilidade": [
+    "Consolidado e individual são séries separadas do mesmo CNPJ; nenhum valor é somado entre companhias (a controladora já consolida as controladas).",
+    "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
+   ],
+   "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero); exercício irregular (menos de 12 meses) fica fora da série anual.",
+   "validacoes": [
+    "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
+    "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
+    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+   ],
+   "limitacoes": [
+    "Não desconta caixa (não é dívida líquida); arrendamentos entram só quando a companhia os classifica nessas contas.",
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+   ],
+   "gold": "empresas.json",
+   "paginas": [
+    "/setor-eletrico/empresas",
+    "/setor-eletrico/empresas/[entidade]"
+   ],
+   "arquivo": "pipeline/energia/metricas/empresas.py"
+  },
+  {
+   "id": "empresas_ebit",
+   "titulo": "Resultado antes do resultado financeiro e dos tributos",
+   "pergunta": "Qual o resultado operacional contábil?",
+   "definicao": "Conta 3.05 da DRE padronizada da CVM. Não é EBITDA (depreciação e amortização não somadas de volta).",
+   "unidade": "R$ nominais",
+   "grao_geografico": "companhia aberta (CNPJ), consolidado ou individual",
+   "grao_temporal": "exercício social (DFP) e trimestre (ITR)",
+   "fontes": [
+    "cvm_cad_cia_aberta",
+    "cvm_dfp",
+    "cvm_itr"
+   ],
+   "formula": "VL_CONTA da conta 3.05 × escala (MIL = 1.000; UNIDADE = 1), maior versão do documento",
+   "regra_agregacao": "Nenhuma agregação entre companhias. Fluxo: valor do período publicado (exercício, trimestre ou acumulado no ano); o 4º trimestre não é deduzido por diferença.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "companhia",
+    "escopo",
+    "periodo",
+    "documento"
+   ],
+   "regras_comparabilidade": [
+    "Consolidado e individual são séries separadas do mesmo CNPJ; nenhum valor é somado entre companhias (a controladora já consolida as controladas).",
+    "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
+   ],
+   "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero); exercício irregular (menos de 12 meses) fica fora da série anual.",
+   "validacoes": [
+    "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
+    "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
+    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+   ],
+   "limitacoes": [
+    "EBITDA não é conta padronizada e não é publicado pelo observatório.",
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+   ],
+   "gold": "empresas.json",
+   "paginas": [
+    "/setor-eletrico/empresas",
+    "/setor-eletrico/empresas/[entidade]"
+   ],
+   "arquivo": "pipeline/energia/metricas/empresas.py"
+  },
+  {
+   "id": "empresas_hhi_capacidade",
+   "titulo": "Concentração da potência em operação (HHI)",
+   "pergunta": "Quão concentrada está a propriedade da potência em operação?",
+   "definicao": "Índice Herfindahl-Hirschman: soma dos quadrados das cotas (em %) de cada participante na potência da fronteira. Publicado por proprietário direto (capacidade proporcional), por grupo (capacidade proporcional das empresas do grupo) e por grupo de controle (capacidade sob controle), e por tipo de usina.",
+   "unidade": "pontos (0 a 10.000)",
+   "grao_geografico": "Brasil (fronteira explícita)",
+   "grao_temporal": "fotografia diária do SIGA",
+   "fontes": [
+    "aneel_siga",
+    "aneel_polimero"
+   ],
+   "formula": "HHI = Σ_i (100 × P_i ÷ T)²; CR4 e CR10 = Σ das 4 e 10 maiores cotas",
+   "regra_agregacao": "Cotas sobre o total T da fronteira; a parcela sem participante identificável (pessoas físicas; no controle, usinas sem maioria) fica no denominador e fora do numerador.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "nível (proprietário, grupo, controle)",
+    "tipo de usina"
+   ],
+   "regras_comparabilidade": [
+    "Fronteira: potência fiscalizada das usinas em fase Operação no SIGA cujas participações publicadas somam 100% (tolerância de 0,005 p.p. por parcela), Brasil, na data do SIGA; exclui micro e minigeração distribuída.",
+    "Não é o mercado relevante de uma análise concorrencial (energia vendida, submercado, contratos). Faixas descritivas das diretrizes do CADE e dos EUA de 2010: < 1.500, 1.500 a 2.500, > 2.500."
+   ],
+   "regra_cobertura": "Potência da fronteira; a parcela fora é publicada.",
+   "politica_ausencia": "Participante sem CNPJ não entra no numerador: o HHI é limite inferior.",
+   "validacoes": [
+    "Soma das cotas ≤ 100%; HHI entre 0 e 10.000.",
+    "Recalculado nos testes a partir do CSV de grupos."
+   ],
+   "limitacoes": [
+    "Por proprietário direto subestima a concentração (sociedades de propósito específico contam separadas)."
+   ],
+   "gold": "empresas.json",
+   "paginas": [
+    "/setor-eletrico/empresas"
+   ],
+   "arquivo": "pipeline/energia/metricas/empresas.py"
+  },
+  {
+   "id": "empresas_lucro_liquido",
+   "titulo": "Lucro ou prejuízo do período",
+   "pergunta": "Quanto a companhia lucrou?",
+   "definicao": "Conta 3.11 da DRE padronizada da CVM; no consolidado inclui a parcela dos não controladores (3.11.02).",
+   "unidade": "R$ nominais",
+   "grao_geografico": "companhia aberta (CNPJ), consolidado ou individual",
+   "grao_temporal": "exercício social (DFP) e trimestre (ITR)",
+   "fontes": [
+    "cvm_cad_cia_aberta",
+    "cvm_dfp",
+    "cvm_itr"
+   ],
+   "formula": "VL_CONTA da conta 3.11 × escala (MIL = 1.000; UNIDADE = 1), maior versão do documento",
+   "regra_agregacao": "Nenhuma agregação entre companhias. Fluxo: valor do período publicado (exercício, trimestre ou acumulado no ano); o 4º trimestre não é deduzido por diferença.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "companhia",
+    "escopo",
+    "periodo",
+    "documento"
+   ],
+   "regras_comparabilidade": [
+    "Consolidado e individual são séries separadas do mesmo CNPJ; nenhum valor é somado entre companhias (a controladora já consolida as controladas).",
+    "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
+   ],
+   "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero); exercício irregular (menos de 12 meses) fica fora da série anual.",
+   "validacoes": [
+    "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
+    "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
+    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+   ],
+   "limitacoes": [
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+   ],
+   "gold": "empresas.json",
+   "paginas": [
+    "/setor-eletrico/empresas",
+    "/setor-eletrico/empresas/[entidade]"
+   ],
+   "arquivo": "pipeline/energia/metricas/empresas.py"
+  },
+  {
+   "id": "empresas_patrimonio_liquido",
+   "titulo": "Patrimônio líquido",
+   "pergunta": "Qual o patrimônio líquido no fim do período?",
+   "definicao": "Conta 2.03 do balanço patrimonial passivo.",
+   "unidade": "R$ nominais",
+   "grao_geografico": "companhia aberta (CNPJ), consolidado ou individual",
+   "grao_temporal": "fim do exercício (DFP) e fim do trimestre (ITR)",
+   "fontes": [
+    "cvm_cad_cia_aberta",
+    "cvm_dfp",
+    "cvm_itr"
+   ],
+   "formula": "VL_CONTA da conta 2.03 × escala (MIL = 1.000; UNIDADE = 1), maior versão do documento",
+   "regra_agregacao": "Nenhuma agregação entre companhias. Saldo no fim do período; não se soma no tempo.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "companhia",
+    "escopo",
+    "periodo",
+    "documento"
+   ],
+   "regras_comparabilidade": [
+    "Consolidado e individual são séries separadas do mesmo CNPJ; nenhum valor é somado entre companhias (a controladora já consolida as controladas).",
+    "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
+   ],
+   "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero); exercício irregular (menos de 12 meses) fica fora da série anual.",
+   "validacoes": [
+    "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
+    "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
+    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+   ],
+   "limitacoes": [
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+   ],
+   "gold": "empresas.json",
+   "paginas": [
+    "/setor-eletrico/empresas",
+    "/setor-eletrico/empresas/[entidade]"
+   ],
+   "arquivo": "pipeline/energia/metricas/empresas.py"
+  },
+  {
+   "id": "empresas_receita",
+   "titulo": "Receita líquida (companhia aberta)",
+   "pergunta": "Quanto a companhia faturou no período?",
+   "definicao": "Conta 3.01 (Receita de venda de bens e/ou serviços) da DRE padronizada da CVM.",
+   "unidade": "R$ nominais",
+   "grao_geografico": "companhia aberta (CNPJ), consolidado ou individual",
+   "grao_temporal": "exercício social (DFP) e trimestre (ITR)",
+   "fontes": [
+    "cvm_cad_cia_aberta",
+    "cvm_dfp",
+    "cvm_itr"
+   ],
+   "formula": "VL_CONTA da conta 3.01 × escala (MIL = 1.000; UNIDADE = 1), maior versão do documento",
+   "regra_agregacao": "Nenhuma agregação entre companhias. Fluxo: valor do período publicado (exercício, trimestre ou acumulado no ano); o 4º trimestre não é deduzido por diferença.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "companhia",
+    "escopo",
+    "periodo",
+    "documento"
+   ],
+   "regras_comparabilidade": [
+    "Consolidado e individual são séries separadas do mesmo CNPJ; nenhum valor é somado entre companhias (a controladora já consolida as controladas).",
+    "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
+   ],
+   "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero); exercício irregular (menos de 12 meses) fica fora da série anual.",
+   "validacoes": [
+    "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
+    "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
+    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+   ],
+   "limitacoes": [
+    "Nas distribuidoras inclui receita de construção da infraestrutura da concessão, com custo equivalente.",
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+   ],
+   "gold": "empresas.json",
+   "paginas": [
+    "/setor-eletrico/empresas",
+    "/setor-eletrico/empresas/[entidade]"
+   ],
+   "arquivo": "pipeline/energia/metricas/empresas.py"
   },
   {
    "id": "expansao_atraso_previsto",
@@ -1045,6 +1991,85 @@
    "arquivo": "pipeline/energia/metricas/inclusao.py"
   },
   {
+   "id": "inclusao.cde_desconto_liquido",
+   "titulo": "Desconto líquido da Tarifa Social no mês (Beneficiários da CDE)",
+   "pergunta": "Quanto de desconto ficou nas faturas da Tarifa Social depois de cancelamentos e refaturamentos?",
+   "definicao": "Soma de VlrSubsidio das linhas SubsBaixaRenda das subclasses 3.2 a 3.6 nos tipos de faturamento 1 a 4 (faturamento, cancelamento e os dois refaturamentos), com o sinal da fonte. Linhas SubsBaixaRenda de outras subclasses (iluminação pública, industrial, comercial) ficam fora e são publicadas à parte como diagnóstico (desconto_fora_das_subclasses_reais).",
+   "unidade": "R$ correntes no mês",
+   "grao_geografico": "Brasil",
+   "grao_temporal": "mês do arquivo",
+   "fontes": [
+    "aneel_cde_beneficiarios"
+   ],
+   "numerador": "Σ VlrSubsidio (subclasses 3.2 a 3.6; tipos 1 a 4)",
+   "regra_agregacao": "soma nacional; o diagnóstico de outras subclasses soma os tipos 1 a 4 das demais subclasses com SubsBaixaRenda",
+   "versao_formula": "1.1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "mês"
+   ],
+   "regras_comparabilidade": [
+    "valores nominais",
+    "regra de desconto mudou em 05/07/2025",
+    "versão 1.0 somava também as outras subclasses (R$ -26,1 milhões em mar/2026) e foi corrigida"
+   ],
+   "regra_cobertura": "meses com o original no bronze",
+   "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
+   "validacoes": [
+    "mar/2026: R$ 786.968.415,45 em releitura independente do arquivo (subclasses 3.2 a 3.6, tipos 1 a 4)",
+    "mai/2025: R$ 530.597.136,83 na mesma releitura"
+   ],
+   "limitacoes": [
+    "cancelamento e refaturamento podem referir-se a faturas de meses anteriores"
+   ],
+   "gold": "inclusao.json",
+   "paginas": [
+    "/setor-eletrico/inclusao-energetica"
+   ],
+   "arquivo": "pipeline/energia/metricas/inclusao.py"
+  },
+  {
+   "id": "inclusao.cde_desconto_medio_fatura",
+   "titulo": "Desconto médio por fatura com Tarifa Social",
+   "pergunta": "Quanto vale, em média, o desconto em cada fatura com Tarifa Social?",
+   "definicao": "Desconto das faturas de faturamento (tipo 1, subclasses 3.2 a 3.6) dividido pelo número dessas faturas, no Brasil ou na UF, no mesmo mês do arquivo.",
+   "unidade": "R$ por fatura no mês",
+   "grao_geografico": "Brasil, UF",
+   "grao_temporal": "mês do arquivo",
+   "fontes": [
+    "aneel_cde_beneficiarios"
+   ],
+   "numerador": "Σ VlrSubsidio das faturas tipo 1 das subclasses 3.2 a 3.6",
+   "denominador": "número dessas faturas",
+   "formula": "Σ desconto ÷ Σ faturas (razão de somas, nunca média de médias municipais)",
+   "regra_agregacao": "razão de somas no território",
+   "versao_formula": "1.0",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "UF",
+    "mês"
+   ],
+   "regras_comparabilidade": [
+    "depende da tarifa local e do consumo",
+    "a regra de 05/07/2025 (gratuidade até 80 kWh) muda o patamar a partir de jul/2025"
+   ],
+   "regra_cobertura": "faturas > 0; UF só com municípios válidos",
+   "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
+   "validacoes": [
+    "mesmas faturas no numerador e no denominador"
+   ],
+   "limitacoes": [
+    "média por fatura, não desconto de cada família"
+   ],
+   "gold": "inclusao.json",
+   "paginas": [
+    "/setor-eletrico/inclusao-energetica"
+   ],
+   "arquivo": "pipeline/energia/metricas/inclusao.py"
+  },
+  {
    "id": "inclusao.cde_desconto_tsee",
    "titulo": "Desconto da Tarifa Social nas faturas (Beneficiários da CDE)",
    "pergunta": "Quanto de desconto chegou às faturas em cada UF?",
@@ -1056,7 +2081,7 @@
     "aneel_cde_beneficiarios"
    ],
    "numerador": "Σ VlrSubsidio",
-   "regra_agregacao": "soma; cancelamentos e refaturamentos (tipos 2 a 4) só no desconto líquido do mês",
+   "regra_agregacao": "soma; cancelamentos e refaturamentos (tipos 2 a 4) só no desconto líquido do mês (inclusao.cde_desconto_liquido)",
    "versao_formula": "1.0",
    "natureza_fonte": "OBSERVADO",
    "natureza_transformacao": "CALCULADO",
@@ -1095,7 +2120,7 @@
     "aneel_cde_beneficiarios"
    ],
    "numerador": "contagem de linhas com DscTipoSubsidio = SubsBaixaRenda, IdcTipoFaturamento = 1, IdcSubclasse em 3.2 a 3.6",
-   "regra_agregacao": "contagem por município; UF = soma dos municípios; linhas com código de município inválido só no total nacional",
+   "regra_agregacao": "contagem por município; UF = soma dos municípios; linhas com código de município em formato inválido ou inexistente na lista de municípios do IBGE (Cadastro Único) só no total nacional",
    "versao_formula": "1.0",
    "natureza_fonte": "OBSERVADO",
    "natureza_transformacao": "CALCULADO",
@@ -1107,7 +2132,8 @@
    ],
    "regras_comparabilidade": [
     "mês do mapa: o mais recente com cobertura ≥ 99,5% das UC do SCS",
-    "fatura não é família"
+    "fatura não é família",
+    "série mensal só com meses cujo original está no bronze; mês sondado abaixo da cobertura mínima publica só a cobertura"
    ],
    "regra_cobertura": "cobertura = UC do SCS (mês de conferência) das distribuidoras presentes no arquivo ÷ UC do SCS de todas",
    "politica_ausencia": "Município sem fatura no arquivo aparece sem valor (ausente), não como zero.",
@@ -1130,7 +2156,7 @@
    "titulo": "Cobertura potencial da Tarifa Social (proxy)",
    "pergunta": "Quem pode estar ficando de fora?",
    "definicao": "UC (ou faturas) com Tarifa Social por 100 famílias do Cadastro Único com renda per capita de até meio salário mínimo e cadastro atualizado, no mesmo mês e território. É PROXY: o numerador inclui beneficiários pelo BPC e por equipamento médico, fora do denominador, e conta UC, não famílias.",
-   "unidade": "UC com Tarifa Social por 100 famílias",
+   "unidade": "UC (série mensal nacional, SCS) ou faturas com desconto (Brasil, UF e município no mês do mapa, CDE) com Tarifa Social por 100 famílias",
    "grao_geografico": "município, UF, Brasil",
    "grao_temporal": "mês",
    "fontes": [
@@ -1198,7 +2224,7 @@
     "não se compara com domicílios sem energia da PNAD como se fosse o mesmo universo"
    ],
    "regra_cobertura": "todas as linhas válidas do arquivo; linha com quantidade, data, estado ou programa inválido fica fora e contada no diagnóstico",
-   "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
+   "politica_ausencia": "Programa sem nenhuma linha no ano ou na UF: sem valor. Programa com linhas que somam zero (qtddomicilios = 0 na fonte): 0 publicado, como em 'Recurso da Distribuidora' em 2017 e 2018.",
    "validacoes": [
     "soma por UF e por município iguais ao total nacional",
     "municípios sem correspondência exata de nome contados e publicados"
@@ -1354,9 +2380,10 @@
     "sem erro-padrão publicado; valores pequenos são imprecisos"
    ],
    "regra_cobertura": "domicílios particulares permanentes",
-   "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
+   "politica_ausencia": "Estimativa ausente: sem valor (estado ausente). Diferença zero entre as duas contagens arredondadas em milhares: sem valor e estado menos_de_1_mil (a verdadeira fica entre 0 e 1 mil), nunca 0,0 mil.",
    "validacoes": [
-    "percentual complementar coerente com 100 − percentual com energia"
+    "percentual complementar coerente com 100 − percentual com energia",
+    "RR 2025 rural: 20 − 20 mil com 99,3% com energia vira menos_de_1_mil, não zero"
    ],
    "limitacoes": [
     "as duas estimativas vêm arredondadas em milhares"
@@ -1384,7 +2411,7 @@
    "regra_agregacao": "proporção ponderada; erro-padrão por linearização",
    "versao_formula": "1.0",
    "natureza_fonte": "ESTIMADO",
-   "natureza_transformacao": "CALCULADO",
+   "natureza_transformacao": "ESTIMADO",
    "dimensoes": [
     "território",
     "classe de rendimento",
@@ -1412,7 +2439,7 @@
    "id": "inclusao.pof_energia_media",
    "titulo": "Despesa média mensal com energia elétrica por família (POF)",
    "pergunta": "Quanto as famílias gastam com energia elétrica por mês?",
-   "definicao": "Despesa monetária e não monetária média mensal familiar com energia elétrica (POF 2017-2018), em reais de 15/01/2018.",
+   "definicao": "Despesa monetária e não monetária média mensal familiar com energia elétrica (POF 2017-2018), em reais de 15/01/2018. Estimativa amostral: a publicada pelo IBGE na tabela 6715 (estimado pela fonte) e a refeita dos microdados com o plano amostral (estimado pelo observatório), conferidas uma contra a outra.",
    "unidade": "R$ por família e mês (15/01/2018)",
    "grao_geografico": "Brasil, grande região, UF",
    "grao_temporal": "período da pesquisa (jul/2017 a jul/2018)",
@@ -1427,7 +2454,7 @@
    "regra_agregacao": "média ponderada pelo fator de expansão",
    "versao_formula": "1.0",
    "natureza_fonte": "ESTIMADO",
-   "natureza_transformacao": "CALCULADO",
+   "natureza_transformacao": "ESTIMADO",
    "dimensoes": [
     "território",
     "classe de rendimento (Brasil e regiões)"
@@ -1468,14 +2495,15 @@
    "regra_agregacao": "média ponderada de razões individuais; erro-padrão por linearização",
    "versao_formula": "1.0",
    "natureza_fonte": "ESTIMADO",
-   "natureza_transformacao": "CALCULADO",
+   "natureza_transformacao": "ESTIMADO",
    "dimensoes": [
     "território",
     "classe de rendimento",
     "base (despesa ou renda)"
    ],
    "regras_comparabilidade": [
-    "publicada ao lado da razão de médias, nunca no lugar dela"
+    "publicada ao lado da razão de médias, nunca no lugar dela",
+    "na renda, sempre acompanhada da mediana e da sensibilidade (inclusao.pof_sensibilidade_renda)"
    ],
    "regra_cobertura": "famílias com despesa total (ou renda) positiva",
    "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
@@ -1509,7 +2537,7 @@
    "regra_agregacao": "razão de totais ponderados",
    "versao_formula": "1.0",
    "natureza_fonte": "ESTIMADO",
-   "natureza_transformacao": "CALCULADO",
+   "natureza_transformacao": "ESTIMADO",
    "dimensoes": [
     "território",
     "classe de rendimento"
@@ -1524,6 +2552,45 @@
    ],
    "limitacoes": [
     "subestima o peso típico nas famílias de menor despesa"
+   ],
+   "gold": "inclusao.json",
+   "paginas": [
+    "/setor-eletrico/inclusao-energetica"
+   ],
+   "arquivo": "pipeline/energia/metricas/inclusao.py"
+  },
+  {
+   "id": "inclusao.pof_sensibilidade_renda",
+   "titulo": "Sensibilidade da participação média da energia na renda",
+   "pergunta": "Quanto a média das participações na renda depende de poucas famílias com renda declarada quase nula?",
+   "definicao": "Para o mesmo domínio da média das participações na renda: (a) a mesma média sem as famílias com despesa de energia acima da renda; (b) o número dessas famílias na amostra e o seu peso em % das famílias; (c) a soma das 3 maiores parcelas w·(energia ÷ renda) ÷ Σw, em ponto percentual. É análise de sensibilidade, não correção da estimativa.",
+   "unidade": "% da renda; famílias da amostra; % das famílias; ponto percentual",
+   "grao_geografico": "Brasil, grande região, UF",
+   "grao_temporal": "2017-2018",
+   "fontes": [
+    "ibge_pof_microdados"
+   ],
+   "numerador": "Σ w·(energia ÷ renda) das famílias com energia ≤ renda",
+   "denominador": "Σ w dessas famílias",
+   "formula": "100 × Σ w·(y ÷ x) ÷ Σ w no subconjunto; parcelas máximas = 100 × Σ dos 3 maiores w·(y ÷ x) ÷ Σ w",
+   "regra_agregacao": "média ponderada no subconjunto; erro-padrão por linearização",
+   "versao_formula": "1.0",
+   "natureza_fonte": "ESTIMADO",
+   "natureza_transformacao": "ESTIMADO",
+   "dimensoes": [
+    "território",
+    "classe de rendimento"
+   ],
+   "regras_comparabilidade": [
+    "sempre ao lado da média completa e da mediana; nunca substitui a média publicada"
+   ],
+   "regra_cobertura": "famílias com renda positiva",
+   "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
+   "validacoes": [
+    "Brasil, até R$ 1.908: média 6,88%, mediana 4,27% (conferidas em reprodução independente dos microdados)"
+   ],
+   "limitacoes": [
+    "o corte em energia acima da renda é uma escolha de sensibilidade: renda subdeclarada e despesa esporádica alta não se distinguem na POF"
    ],
    "gold": "inclusao.json",
    "paginas": [
@@ -1556,8 +2623,8 @@
    "regras_comparabilidade": [
     "entrada e saída da lista entre ciclos não têm motivo informado"
    ],
-   "regra_cobertura": "localidades do ciclo; população ausente não vira zero na contagem de localidades sem população",
-   "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
+   "regra_cobertura": "localidades do ciclo; a soma de população usa só as localidades que a informam",
+   "politica_ausencia": "População ausente não vira zero: cada agregado (ciclo, UF, distribuidora) soma só as populações informadas, traz a contagem de localidades sem população e fica sem valor quando nenhuma localidade do grupo informa (caso da VIBRA ENERGIA no ciclo 2025).",
    "validacoes": [
     "ciclo 2025 conferido contra o caderno em PDF da EPE (160 localidades, 1,965 milhão de pessoas)"
    ],
@@ -1610,6 +2677,43 @@
    "arquivo": "pipeline/energia/metricas/inclusao.py"
   },
   {
+   "id": "inclusao.tsee_dmr_12m",
+   "titulo": "DMR da Tarifa Social em 12 meses",
+   "pergunta": "Quanto custou a Tarifa Social nos últimos 12 meses, pelo SCS?",
+   "definicao": "Soma da Diferença Mensal de Receita (VlrDMR, despacho vigente, um valor por distribuidora e mês) dos 12 meses até o mês de referência.",
+   "unidade": "R$ correntes em 12 meses",
+   "grao_geografico": "Brasil",
+   "grao_temporal": "12 meses móveis",
+   "fontes": [
+    "aneel_scs"
+   ],
+   "numerador": "Σ DMR mensal nacional dos 12 meses",
+   "regra_agregacao": "soma de 12 meses; sem valor quando falta qualquer mês da janela; meses incompletos (distribuidora esperada faltando) entram e são contados em meses_incompletos",
+   "versao_formula": "1.0",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "janela de 12 meses"
+   ],
+   "regras_comparabilidade": [
+    "valores nominais",
+    "não coincide com o valor anual da CDE (ano de referência do orçamento)"
+   ],
+   "regra_cobertura": "12 meses presentes no SCS; mês incompleto na janela é declarado, não completado",
+   "politica_ausencia": "Mês ausente na janela: soma sem valor (não soma parcial).",
+   "validacoes": [
+    "jun/2024 a mai/2025: R$ 6.498.825.755,39, conferido por soma direta do CSV"
+   ],
+   "limitacoes": [
+    "mês incompleto na janela subestima a soma; o número de meses incompletos acompanha o valor"
+   ],
+   "gold": "inclusao.json",
+   "paginas": [
+    "/setor-eletrico/inclusao-energetica"
+   ],
+   "arquivo": "pipeline/energia/metricas/inclusao.py"
+  },
+  {
    "id": "inclusao.tsee_dmr_por_uc",
    "titulo": "DMR por unidade consumidora",
    "pergunta": "Qual é, em média, o valor do desconto por UC beneficiada no mês?",
@@ -1641,6 +2745,45 @@
    ],
    "limitacoes": [
     "média por UC, não valor de cada fatura"
+   ],
+   "gold": "inclusao.json",
+   "paginas": [
+    "/setor-eletrico/inclusao-energetica"
+   ],
+   "arquivo": "pipeline/energia/metricas/inclusao.py"
+  },
+  {
+   "id": "inclusao.tsee_faixas_consumo",
+   "titulo": "UC com Tarifa Social por faixa de consumo",
+   "pergunta": "Em que faixa de consumo estão as UC com Tarifa Social?",
+   "definicao": "UC com Tarifa Social em cada uma das cinco faixas de consumo do SCS (até 30 kWh, 31 a 50, 51 a 100, 101 a 220, acima de 220) e a parte de cada faixa no total do mês.",
+   "unidade": "unidades consumidoras; % das UC com Tarifa Social",
+   "grao_geografico": "Brasil",
+   "grao_temporal": "mês",
+   "fontes": [
+    "aneel_scs"
+   ],
+   "numerador": "Σ UC com Tarifa Social da faixa",
+   "denominador": "Σ UC com Tarifa Social das cinco faixas",
+   "formula": "100 × UC da faixa ÷ UC das cinco faixas",
+   "regra_agregacao": "soma entre distribuidoras no despacho vigente",
+   "versao_formula": "1.0",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "faixa",
+    "mês"
+   ],
+   "regras_comparabilidade": [
+    "faixas do SCS, não as da regra de desconto de 05/07/2025"
+   ],
+   "regra_cobertura": "mês de referência e 12 meses antes",
+   "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
+   "validacoes": [
+    "soma das faixas igual ao total do mês"
+   ],
+   "limitacoes": [
+    "faixa do consumo faturado do mês, não do consumo habitual"
    ],
    "gold": "inclusao.json",
    "paginas": [
@@ -1713,10 +2856,11 @@
     "nunca média simples das participações das distribuidoras",
     "não é cobertura do público elegível"
    ],
-   "regra_cobertura": "total residencial inconsistente: ausente, zero, menor que as UC com Tarifa Social ou a mais de 25% da mediana de ±3 meses",
+   "regra_cobertura": "total residencial inconsistente: ausente, zero, menor que as UC com Tarifa Social ou a mais de 25% da mediana de ±3 meses; quando a distribuidora incorporou outra, a mediana só compara meses do mesmo lado da incorporação (incorporação detectada no SCS: saída definitiva de uma distribuidora e salto da sucessora a até 25% do total residencial da incorporada)",
    "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
    "validacoes": [
-    "caso real: ELETROPAULO dez/2021 (total residencial cai de 7,44 milhões para 2,55 milhões e volta) marcado como inconsistente"
+    "caso real: ELETROPAULO dez/2021 (total residencial cai de 7,44 milhões para 2,55 milhões e volta) marcado como inconsistente",
+    "caso real de incorporação: RGE SUL fev/2020 (2.454.222 UC residenciais depois de incorporar a RGE, 1.279.372) fica na participação; a mesma RGE SUL em jun/2020 (991.302, queda isolada) continua inconsistente"
    ],
    "limitacoes": [
     "o total residencial é informado pela própria distribuidora no SCS"
@@ -1765,6 +2909,46 @@
    "limitacoes": [
     "não distingue famílias com mais de uma UC (a regra permite uma só)",
     "sujeito a retificação pela distribuidora"
+   ],
+   "gold": "inclusao.json",
+   "paginas": [
+    "/setor-eletrico/inclusao-energetica"
+   ],
+   "arquivo": "pipeline/energia/metricas/inclusao.py"
+  },
+  {
+   "id": "inclusao.tsee_variacao_12m",
+   "titulo": "Variação das UC com Tarifa Social em 12 meses",
+   "pergunta": "O número de UC com Tarifa Social cresceu ou caiu no último ano?",
+   "definicao": "Variação percentual das UC com Tarifa Social do mês de referência contra o mesmo mês do ano anterior, no Brasil (série nacional) ou na distribuidora (mesmo CNPJ).",
+   "unidade": "%",
+   "grao_geografico": "Brasil; distribuidora",
+   "grao_temporal": "mês contra o mesmo mês 12 meses antes",
+   "fontes": [
+    "aneel_scs"
+   ],
+   "numerador": "UC com Tarifa Social no mês",
+   "denominador": "UC com Tarifa Social 12 meses antes",
+   "formula": "100 × (UC_m ÷ UC_(m−12) − 1)",
+   "regra_agregacao": "razão entre dois totais do mesmo universo",
+   "versao_formula": "1.0",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "mês",
+    "distribuidora"
+   ],
+   "regras_comparabilidade": [
+    "no Brasil, só comparável quando o mês base também é completo (campo comparavel)",
+    "na distribuidora, incorporação no intervalo muda o universo (ver incorporacoes)"
+   ],
+   "regra_cobertura": "mês base presente; ausente fica sem valor",
+   "politica_ausencia": "Ausência na fonte fica sem valor (nunca zero); o motivo aparece na evidência.",
+   "validacoes": [
+    "mai/2025 contra mai/2024: 2,36%, conferido por soma direta do CSV"
+   ],
+   "limitacoes": [
+    "não separa entrada de novas famílias de recadastramento e revisão cadastral"
    ],
    "gold": "inclusao.json",
    "paginas": [
@@ -2243,7 +3427,7 @@
    "id": "perdas_associacao_renda",
    "titulo": "Associação entre renda da área e perdas (Spearman)",
    "pergunta": "Distribuidoras cujas áreas têm renda média menor tendem a ter perdas maiores?",
-   "definicao": "Correlação de postos de Spearman entre a renda média domiciliar per capita dos municípios confirmados da área (Censo 2022) e a taxa de perdas (não técnicas sobre BT e totais sobre a injetada) das concessionárias no ano do Censo, com o número de pares.",
+   "definicao": "Correlação de postos de Spearman entre a renda média domiciliar per capita dos municípios da área no ano das perdas (Censo 2022; relação conjunto × distribuidora dos limites de continuidade de 2022) e a taxa de perdas (não técnicas sobre BT e totais sobre a injetada) das concessionárias no ano do Censo, com o número de pares; postos sobre os valores sem arredondamento.",
    "unidade": "coeficiente entre −1 e 1",
    "grao_geografico": "concessionária",
    "grao_temporal": "2022 (ano do Censo)",
@@ -2265,7 +3449,7 @@
    "regras_comparabilidade": [
     "Associação descritiva entre áreas; não é causa nem descreve cada família."
    ],
-   "regra_cobertura": "Concessionárias com perdas de 2022 completas e municípios confirmados.",
+   "regra_cobertura": "Concessionárias com perdas de 2022 completas, sem alerta e com território na relação de 2022; vínculos confirmados pelo cadastro de MMGD ou, para a distribuidora incorporada depois (ausente do cadastro atual: EBO e ENF), os da UF principal.",
    "politica_ausencia": "Concessionária sem a taxa ou sem renda fica fora do par; n publicado ao lado.",
    "validacoes": [
     "Spearman conferido em teste com empates (valores conhecidos)."
@@ -2347,10 +3531,11 @@
     "Valores nominais: comparar anos exige cuidado com inflação e preço da energia.",
     "É nível regulatório reconhecido, não custo das perdas reais."
    ],
-   "regra_cobertura": "Processos com vigência desde 2010 publicados nas componentes tarifárias (arquivos de 2012 a 2026).",
-   "politica_ausencia": "Processo sem alguma das seis componentes não tem resumo.",
+   "regra_cobertura": "Processos publicados nos arquivos anuais de componentes tarifárias de 2012 a 2026 (primeiro início de vigência: 03/02/2012).",
+   "politica_ausencia": "Processo sem alguma das seis componentes não tem resumo. Sem processo vigente na data da consulta (início ≤ data ≤ fim), o último já iniciado aparece com a situação 'vigencia_encerrada' e a data de fim, nunca como vigente.",
    "validacoes": [
-    "TUSD igual à soma das componentes TUSD_* e TE igual à soma das TE_* (tolerância de 0,01 R$/MWh, arredondamento da fonte)."
+    "TUSD igual à soma das componentes TUSD_* e TE igual à soma das TE_* (tolerância de 0,01 R$/MWh, arredondamento da fonte).",
+    "Vigência conferida contra a data da consulta: em 30/09/2026, 23 distribuidoras ativas só têm processo encerrado no arquivo (CEDRI, REH 3.531/2025, até 29/09/2026)."
    ],
    "limitacoes": [
     "Não é o custo total em reais reconhecido no processo (planilhas do processo inacessíveis).",
@@ -2366,7 +3551,7 @@
    "id": "perdas_nao_tecnicas_bt",
    "titulo": "Perdas não técnicas sobre o mercado de baixa tensão",
    "pergunta": "Quanto da energia perdida não se explica pela física da rede, em relação ao consumo de baixa tensão?",
-   "definicao": "Perdas não técnicas medidas (perdas totais menos técnicas, linha 'Perdas Não-Técnicas' do SAMP) divididas pelo mercado de baixa tensão medido: energia medida entregue em BT a cativos, consumo próprio e livres. É a base que a ANEEL usa para a referência regulatória não técnica (mercado medido desde 2025). Inclui furto, fraude e erros de medição, leitura e faturamento, que a fonte não separa.",
+   "definicao": "Linha 'Perdas Não-Técnicas' publicada pelo SAMP (valor medido; pela definição da ANEEL, perdas totais menos técnicas, identidade conferida mês a mês) dividida pelo mercado de baixa tensão medido: energia medida entregue em BT a cativos, consumo próprio e livres. É a base que a ANEEL usa para a referência regulatória não técnica (mercado medido desde 2025). Inclui furto, fraude e erros de medição, leitura e faturamento, que a fonte não separa.",
    "unidade": "% do mercado de baixa tensão medido",
    "grao_geografico": "distribuidora (CNPJ); Brasil por universo",
    "grao_temporal": "ano civil",
@@ -2376,9 +3561,9 @@
    "numerador": "Σ perdas não técnicas medidas do ano (MWh)",
    "denominador": "Σ mercado BT medido do ano (MWh)",
    "formula": "100 × Σ pnt_medidas ÷ Σ mercado_BT_medido",
-   "regra_agregacao": "100 × Σ numeradores ÷ Σ denominadores do subconjunto com as duas grandezas nos 12 meses.",
-   "versao_formula": "1",
-   "natureza_fonte": "CALCULADO",
+   "regra_agregacao": "100 × Σ numeradores ÷ Σ denominadores do subconjunto com as duas grandezas nos 12 meses e a decomposição fechando, com a cobertura em % do mercado BT de todas as válidas ao lado; variação anual só nas mesmas distribuidoras e tendência na série de universo fixo.",
+   "versao_formula": "2",
+   "natureza_fonte": "ESTIMADO",
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
     "distribuidora",
@@ -2388,12 +3573,14 @@
    "regras_comparabilidade": [
     "Pode passar de 100% em áreas com perda muito alta (a base é só o mercado BT).",
     "Pode ser negativa quando a estimativa técnica supera a perda total medida (pequenas distribuidoras).",
-    "Quebra em 2024: leiaute da REN 1.003/2022; injetada publicada bruta (o denominador passa a ser a energia implícita no cálculo da fonte) e separação técnica e não técnica publicada para cerca de metade das distribuidoras."
+    "Quebra em 2024: leiaute da REN 1.003/2022; a injetada publicada deixa de fechar o balanço com a perda da própria fonte (o denominador passa a ser a energia implícita no cálculo da fonte; a causa da diferença não é atribuída) e a separação técnica e não técnica passa a ser publicada para cerca de metade das distribuidoras.",
+    "Universo variável: o conjunto de distribuidoras somadas muda de um ano para outro (ano incompleto, alerta, início e fim de série, separação não publicada). A variação anual só se lê nas mesmas distribuidoras dos dois anos, sem mudança de escala entre eles (bloco mesmas_ano_anterior), e a tendência recente na série de universo fixo.",
+    "Série nacional de 2023 a 2025: 46, 31 e 18 concessionárias; a queda aparente da taxa é composição. Nas mesmas 16 concessionárias: 14,35%, 14,30% e 15,01% (conferência de 30/09/2026)."
    ],
-   "regra_cobertura": "Mercado BT por nível de tensão existe a partir de 2010.",
+   "regra_cobertura": "Mercado BT por nível de tensão existe a partir de 2010; separação publicada para cerca de metade das distribuidoras a partir de 2024.",
    "politica_ausencia": "Soma anual só existe quando a linha está publicada nos 12 meses do ano civil; um mês ausente deixa o ano ausente (nunca vira zero nem é completado). Ano corrente é parcial e fica fora de comparações.",
    "validacoes": [
-    "Não técnica = total − técnica conferido nas linhas da fonte."
+    "Identidade total = técnica + não técnica conferida mês a mês nas linhas medidas: tolerância de 2 kWh por mês (arredondamento de cada linha ao kWh) e, no ano, 0,1% da perda total; 39 agentes-ano completos não fecham (ERO, jul/2014: 327.121.858 − 41.675.325 ≠ 53.290.776 kWh) e ficam fora dos agregados de técnica e não técnica, com o resíduo da decomposição publicado (conferência de 30/09/2026)."
    ],
    "limitacoes": [
     "Não resumir a furto: a definição da fonte inclui erros de medição e faturamento.",
@@ -2409,7 +3596,7 @@
    "id": "perdas_nao_tecnicas_injetada",
    "titulo": "Perdas não técnicas sobre a energia injetada",
    "pergunta": "Que fração da energia injetada corresponde às perdas não técnicas?",
-   "definicao": "Perdas não técnicas medidas divididas pela energia injetada de referência. Mesma base da taxa total, o que permite somar técnica e não técnica: taxa técnica + taxa não técnica = taxa total.",
+   "definicao": "Linha 'Perdas Não-Técnicas' (valor medido) dividida pela energia injetada de referência, a mesma base da taxa total e da taxa técnica: taxa técnica + taxa não técnica = taxa total só onde a decomposição fecha (classe fecha ou diferenca_pequena); onde não fecha, o resíduo da decomposição fica publicado.",
    "unidade": "% da energia injetada",
    "grao_geografico": "distribuidora (CNPJ)",
    "grao_temporal": "ano civil",
@@ -2419,24 +3606,24 @@
    "numerador": "Σ perdas não técnicas medidas (MWh)",
    "denominador": "Σ energia injetada de referência (MWh)",
    "formula": "100 × Σ pnt_medidas ÷ Σ injetada_referência",
-   "regra_agregacao": "100 × Σ numeradores ÷ Σ denominadores.",
-   "versao_formula": "1",
-   "natureza_fonte": "CALCULADO",
+   "regra_agregacao": "100 × Σ numeradores ÷ Σ denominadores, só com a decomposição fechando.",
+   "versao_formula": "2",
+   "natureza_fonte": "ESTIMADO",
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
     "distribuidora",
     "ano"
    ],
    "regras_comparabilidade": [
-    "Só se soma à taxa técnica porque o denominador é o mesmo; nunca somar com a taxa sobre BT."
+    "Só se soma à taxa técnica sobre a injetada de referência (mesmo denominador) e só onde a decomposição fecha; nunca somar com a taxa sobre BT nem com a técnica sobre a injetada publicada."
    ],
    "regra_cobertura": "Como a técnica.",
    "politica_ausencia": "Soma anual só existe quando a linha está publicada nos 12 meses do ano civil; um mês ausente deixa o ano ausente (nunca vira zero nem é completado). Ano corrente é parcial e fica fora de comparações.",
    "validacoes": [
-    "taxa técnica + taxa não técnica = taxa total (arredondamento de 0,01 p.p.)."
+    "Identidade total = técnica + não técnica conferida mês a mês nas linhas medidas: tolerância de 2 kWh por mês (arredondamento de cada linha ao kWh) e, no ano, 0,1% da perda total; 39 agentes-ano completos não fecham (ERO, jul/2014: 327.121.858 − 41.675.325 ≠ 53.290.776 kWh) e ficam fora dos agregados de técnica e não técnica, com o resíduo da decomposição publicado (conferência de 30/09/2026)."
    ],
    "limitacoes": [
-    "A parcela técnica publicada no SAMP é o percentual regulatório da revisão tarifária aplicado à energia injetada (estimativa), não medição."
+    "A parcela técnica publicada no SAMP é o percentual regulatório do processo tarifário aplicado à energia injetada publicada (estimativa), não medição."
    ],
    "gold": "perdas.json",
    "paginas": [
@@ -2468,15 +3655,17 @@
     "ano"
    ],
    "regras_comparabilidade": [
-    "O leiaute de 2024 produz resíduo positivo sistemático nas distribuidoras com muita geração conectada à rede."
+    "No leiaute de 2024 a injetada publicada deixou de fechar o balanço com a perda calculada pela fonte (resíduo positivo na maior parte das distribuidoras); a fonte não explica a diferença e o resíduo não é atribuído a causa."
    ],
    "regra_cobertura": "Meses com injetada, fornecida medida e perda total publicadas.",
    "politica_ausencia": "Sem as linhas de fornecimento medido o resíduo é ausente e a classe é 'sem_componentes'.",
    "validacoes": [
-    "Representação de cada grandeza escolhida pela concordância com a soma dos níveis de tensão do mês."
+    "Representação de cada grandeza escolhida pela concordância com a soma dos níveis de tensão do mês.",
+    "Resíduo acima de 5% da injetada no leiaute antigo, ou fornecida acima da injetada, tira o agente-ano de agregados e comparações (Manaus Energia 2004: −201%). Sensibilidade: limite de 10% muda a taxa nacional anual das concessionárias em até 0,14 p.p.; limite de 1% muda em até 1,05 p.p."
    ],
    "limitacoes": [
-    "Tolerância de 0,1% da injetada: abaixo disso a taxa não muda na primeira casa decimal."
+    "Tolerância de 0,1% da injetada para a classe residuo_pequeno: abaixo disso a taxa não muda na primeira casa decimal.",
+    "Causas observadas no leiaute antigo, sem generalização: linha de fornecimento repetida (COCEL, 'Uso Distribuidoras' igual ao cativo), linhas de fornecimento ausentes (COELBA 2008 e 2009) e injetada inconsistente com as demais linhas (Manaus Energia 2003 a 2008)."
    ],
    "gold": "perdas.json",
    "paginas": [
@@ -2498,7 +3687,7 @@
    "numerador": "Σ perdas totais medidas de janeiro a mes_fim (MWh)",
    "denominador": "Σ energia injetada de referência de janeiro a mes_fim (MWh)",
    "formula": "100 × Σ perdas_totais[1..mes_fim] ÷ Σ injetada_referência[1..mes_fim]",
-   "regra_agregacao": "Razão de somas sobre as distribuidoras completas e sem alerta nos dois recortes (mesmo conjunto nos dois anos).",
+   "regra_agregacao": "Razão de somas sobre as distribuidoras completas e sem alerta nos dois recortes, sem quebra de escala nem absorção entre eles (mesmo conjunto nos dois anos).",
    "versao_formula": "1",
    "natureza_fonte": "OBSERVADO",
    "natureza_transformacao": "CALCULADO",
@@ -2513,7 +3702,7 @@
    "regra_cobertura": "Distribuidoras com todos os meses de janeiro a mes_fim nos dois anos.",
    "politica_ausencia": "Mês ausente no recorte deixa a distribuidora fora (comparavel = 0); nada é completado.",
    "validacoes": [
-    "Agente-ano com perda total anual negativa ou maior que a injetada recebe alerta e fica fora de agregados e comparações (o valor da fonte segue no CSV).",
+    "Agente-ano com perda total anual negativa ou maior que a injetada, fornecida maior que a injetada ou balanço que não fecha (resíduo acima de 5% da injetada no leiaute antigo; fornecida + perdas acima da injetada publicada no de 2024) recebe alerta e fica fora de agregados e comparações (o valor da fonte segue no CSV). Manaus Energia 2003 a 2008: fornecida maior que a injetada, taxa de 65% a 111%, fora; taxa nacional das concessionárias em 2004 = 15,09% (55 distribuidoras), conferida por releitura independente do CSV oficial.",
     "Recorte mes_fim único para todas as distribuidoras."
    ],
    "limitacoes": [
@@ -2529,7 +3718,7 @@
    "id": "perdas_taxa_total_injetada",
    "titulo": "Taxa de perdas totais sobre a energia injetada",
    "pergunta": "Que fração da energia injetada na rede se perdeu?",
-   "definicao": "Perdas totais medidas divididas pela energia injetada de referência do mesmo ano. Energia injetada de referência: a linha publicada no leiaute antigo do SAMP; no leiaute de 2024, a energia implícita no cálculo da própria fonte (fornecida + irregular + perdas), porque a linha publicada passou a ser bruta.",
+   "definicao": "Perdas totais medidas divididas pela energia injetada de referência do mesmo ano. Energia injetada de referência: a linha publicada no leiaute antigo do SAMP; no leiaute de 2024, a energia implícita no cálculo da própria fonte (fornecida + irregular + perdas), porque a linha publicada deixou de fechar o balanço com a perda da fonte; em 2024 essa energia (605,2 TWh nas concessionárias) cai no intervalo implícito no relatório da ANEEL, e a publicada (620,7 TWh) não. A causa da diferença não é atribuída.",
    "unidade": "% da energia injetada",
    "grao_geografico": "distribuidora (CNPJ); Brasil por universo",
    "grao_temporal": "ano civil",
@@ -2549,21 +3738,22 @@
     "universo"
    ],
    "regras_comparabilidade": [
-    "Quebra em 2024: leiaute da REN 1.003/2022; injetada publicada bruta (o denominador passa a ser a energia implícita no cálculo da fonte) e separação técnica e não técnica publicada para cerca de metade das distribuidoras.",
+    "Quebra em 2024: leiaute da REN 1.003/2022; a injetada publicada deixa de fechar o balanço com a perda da própria fonte (o denominador passa a ser a energia implícita no cálculo da fonte; a causa da diferença não é atribuída) e a separação técnica e não técnica passa a ser publicada para cerca de metade das distribuidoras.",
     "Não comparar ano parcial com ano completo.",
-    "Variação anual com mudança de escala da injetada acima de 30% fica marcada como provável mudança de universo."
+    "Mudança de universo da própria distribuidora (injetada mais de 30% maior ou menor entre anos completos, ou absorção provável observada no SAMP) marca o par de anos, que não entra em variação anual.",
+    "Universo variável: o conjunto de distribuidoras somadas muda de um ano para outro (ano incompleto, alerta, início e fim de série, separação não publicada). A variação anual só se lê nas mesmas distribuidoras dos dois anos, sem mudança de escala entre eles (bloco mesmas_ano_anterior), e a tendência recente na série de universo fixo."
    ],
    "regra_cobertura": "Ano civil com os 12 meses de perdas e de injetada de referência publicados.",
    "politica_ausencia": "Soma anual só existe quando a linha está publicada nos 12 meses do ano civil; um mês ausente deixa o ano ausente (nunca vira zero nem é completado). Ano corrente é parcial e fica fora de comparações.",
    "validacoes": [
     "Identidade do balanço conferida mês a mês: injetada − fornecida − irregular − perdas; o resíduo é publicado e classificado (fecha, residuo_pequeno, residuo_relevante, sem_componentes).",
-    "Agente-ano com perda total anual negativa ou maior que a injetada recebe alerta e fica fora de agregados e comparações (o valor da fonte segue no CSV).",
+    "Agente-ano com perda total anual negativa ou maior que a injetada, fornecida maior que a injetada ou balanço que não fecha (resíduo acima de 5% da injetada no leiaute antigo; fornecida + perdas acima da injetada publicada no de 2024) recebe alerta e fica fora de agregados e comparações (o valor da fonte segue no CSV). Manaus Energia 2003 a 2008: fornecida maior que a injetada, taxa de 65% a 111%, fora; taxa nacional das concessionárias em 2004 = 15,09% (55 distribuidoras), conferida por releitura independente do CSV oficial.",
     "Taxa nacional das concessionárias entre 5% e 30% (fora disso a gold não é publicada).",
     "2024: injetada de referência das concessionárias dentro do intervalo implícito nos números do relatório da ANEEL."
    ],
    "limitacoes": [
     "Base medida: difere da taxa sobre o mercado faturado usada pela ANEEL até 2024.",
-    "A parcela técnica publicada no SAMP é o percentual regulatório da revisão tarifária aplicado à energia injetada (estimativa), não medição."
+    "A parcela técnica publicada no SAMP é o percentual regulatório do processo tarifário aplicado à energia injetada publicada (estimativa), não medição."
    ],
    "gold": "perdas.json",
    "paginas": [
@@ -2575,7 +3765,7 @@
    "id": "perdas_tecnica_regulatoria_implicita",
    "titulo": "Percentual regulatório de perdas técnicas (implícito no SAMP)",
    "pergunta": "Qual percentual técnico a regulação reconhece para a distribuidora em cada período tarifário?",
-   "definicao": "Razão entre perdas técnicas e energia injetada publicadas no SAMP quando ela é constante por meses seguidos: é o percentual regulatório aplicado pela fonte. O mês de troca mistura as duas taxas pró-rata dos dias. A resolução homologatória é associada ao trecho quando o início de vigência dela (componentes tarifárias) cai no mês da troca; o dia reconstituído da média pró-rata fica só no CSV, como diagnóstico.",
+   "definicao": "Razão entre perdas técnicas e energia injetada publicada no SAMP quando ela fica constante por 6 meses seguidos ou mais: inferência do observatório sobre o percentual regulatório aplicado pela fonte, não leitura do ato. Trechos de 2 a 5 meses ficam no CSV com a classe 'curto' (possível coincidência de arredondamento). O mês de troca mistura as duas taxas pró-rata dos dias. A resolução homologatória é associada ao trecho só quando o percentual muda ao menos 0,02 p.p. e o início de vigência dela (componentes tarifárias) cai no mês da troca; o dia reconstituído da média pró-rata fica só no CSV, como diagnóstico.",
    "unidade": "% da energia injetada",
    "grao_geografico": "distribuidora (CNPJ)",
    "grao_temporal": "trecho de vigência (meses)",
@@ -2585,11 +3775,11 @@
    ],
    "numerador": "perdas técnicas do mês (kWh)",
    "denominador": "energia injetada publicada do mês (kWh)",
-   "formula": "pct = round(100 × PT ÷ I, 3); trecho = meses consecutivos com o mesmo pct (mínimo 2)",
+   "formula": "pct = round(100 × PT ÷ I_publicada, 3); trecho = meses consecutivos com o mesmo pct; referência = trecho de 6 meses ou mais; troca = variação de ao menos 0,02 p.p. contra o trecho anterior",
    "regra_agregacao": "Não se agrega entre distribuidoras.",
-   "versao_formula": "1",
+   "versao_formula": "2",
    "natureza_fonte": "ESTIMADO",
-   "natureza_transformacao": "CALCULADO",
+   "natureza_transformacao": "ESTIMADO",
    "dimensoes": [
     "distribuidora",
     "vigência"
@@ -2597,11 +3787,11 @@
    "regras_comparabilidade": [
     "É parâmetro regulatório, não perda realizada nem meta de perda zero."
    ],
-   "regra_cobertura": "Distribuidoras e períodos em que a fonte aplica percentual fixo (em geral de 2016 a 2023).",
+   "regra_cobertura": "Distribuidoras e períodos em que a razão fica constante por 6 meses ou mais: 169 trechos de referência em 49 distribuidoras, de jan/2003 a mar/2026 (conferência de 30/09/2026).",
    "politica_ausencia": "Onde a razão varia mês a mês não há trecho: o percentual regulatório fica ausente (não é estimado).",
    "validacoes": [
     "CEMIG-D: 8,766% de jun/2018 a abr/2023; maio/2018 = 7,959% = média pró-rata com início em 28/05/2018, a vigência da REH 2.396/2018 (o mesmo em maio/2023 com a REH 3.202/2023).",
-    "Conferência de 30/09/2026: em 342 trechos, 78 têm REH no mês da troca; o dia reconstituído coincide com o da REH só nos dois casos da CEMIG-D, por isso não é publicado como vigência."
+    "Conferência de 30/09/2026: 331 trechos de 2 meses ou mais, 169 de referência; REH associada a 55 trechos (39 de referência), todos com troca de ao menos 0,02 p.p.; o dia reconstituído coincide com o da REH só nos dois casos da CEMIG-D, por isso não é publicado como vigência."
    ],
    "limitacoes": [
     "A referência regulatória não técnica não está em base aberta acessível."
@@ -2616,7 +3806,7 @@
    "id": "perdas_tecnicas_energia",
    "titulo": "Perdas técnicas (estimativa regulatória publicada)",
    "pergunta": "Quanto das perdas se atribui às características físicas da rede?",
-   "definicao": "Linha 'Perdas Técnicas' do SAMP Balanço. A parcela técnica publicada no SAMP é o percentual regulatório da revisão tarifária aplicado à energia injetada (estimativa), não medição. Taxa técnica = perdas técnicas ÷ energia injetada de referência.",
+   "definicao": "Linha 'Perdas Técnicas' do SAMP Balanço, valor medido (a do valor faturado é outra linha e nunca a substitui). A parcela técnica publicada no SAMP é o percentual regulatório do processo tarifário aplicado à energia injetada publicada (estimativa), não medição. Taxa técnica = perdas técnicas ÷ energia injetada de referência (mesma base da taxa total); ao lado, técnica ÷ energia injetada publicada, a base sobre a qual a fonte aplica o percentual e a que se compara com ele (as duas coincidem até 2023; no leiaute de 2024 a publicada é maior: ÂMBAR ENERGIA RR 2024, 7,620% sobre a publicada e 7,555% sobre a de referência).",
    "unidade": "MWh e % da energia injetada",
    "grao_geografico": "distribuidora (CNPJ)",
    "grao_temporal": "ano civil",
@@ -2626,7 +3816,7 @@
    "numerador": "Σ perdas técnicas do ano (MWh)",
    "denominador": "Σ energia injetada de referência do ano (MWh), só das distribuidoras com a técnica publicada nos 12 meses",
    "formula": "taxa_tecnica = 100 × Σ perdas_tecnicas ÷ Σ injetada_referência",
-   "regra_agregacao": "Agregado só sobre o subconjunto com a técnica publicada, com a cobertura (em % da injetada) ao lado.",
+   "regra_agregacao": "Agregado só sobre o subconjunto com a técnica publicada nos 12 meses e decomposição que não a contradiz, com a cobertura (em % da injetada) ao lado; variação anual só nas mesmas distribuidoras.",
    "versao_formula": "1",
    "natureza_fonte": "ESTIMADO",
    "natureza_transformacao": "CALCULADO",
@@ -2635,13 +3825,15 @@
     "ano"
    ],
    "regras_comparabilidade": [
-    "Quebra em 2024: leiaute da REN 1.003/2022; injetada publicada bruta (o denominador passa a ser a energia implícita no cálculo da fonte) e separação técnica e não técnica publicada para cerca de metade das distribuidoras.",
+    "Quebra em 2024: leiaute da REN 1.003/2022; a injetada publicada deixa de fechar o balanço com a perda da própria fonte (o denominador passa a ser a energia implícita no cálculo da fonte; a causa da diferença não é atribuída) e a separação técnica e não técnica passa a ser publicada para cerca de metade das distribuidoras.",
+    "Universo variável: o conjunto de distribuidoras somadas muda de um ano para outro (ano incompleto, alerta, início e fim de série, separação não publicada). A variação anual só se lê nas mesmas distribuidoras dos dois anos, sem mudança de escala entre eles (bloco mesmas_ano_anterior), e a tendência recente na série de universo fixo.",
     "A técnica não mede desempenho: segue o percentual regulatório por construção."
    ],
-   "regra_cobertura": "Publicada para a maioria das distribuidoras até 2023; cerca de metade a partir de 2024.",
+   "regra_cobertura": "Publicada para a maioria das distribuidoras até 2023 (48 de 50 concessionárias válidas); 32 de 51 em 2024 e 18 de 51 em 2025 (32,6% da injetada).",
    "politica_ausencia": "Soma anual só existe quando a linha está publicada nos 12 meses do ano civil; um mês ausente deixa o ano ausente (nunca vira zero nem é completado). Ano corrente é parcial e fica fora de comparações. Distribuidora sem a técnica em algum mês não tem técnica nem não técnica no ano.",
    "validacoes": [
-    "Perda técnica idêntica nas bases medida e faturada (conferido no arquivo)."
+    "Técnica medida e faturada são linhas diferentes: diferem em 2.419 de 18.755 meses com as duas (Sulgipe, mar/2024: 5.269.964 contra 3.779.373 kWh); em 317 meses só há a faturada, e esses meses ficam sem técnica (conferido no arquivo em 30/09/2026).",
+    "Identidade total = técnica + não técnica conferida mês a mês nas linhas medidas: tolerância de 2 kWh por mês (arredondamento de cada linha ao kWh) e, no ano, 0,1% da perda total; 39 agentes-ano completos não fecham (ERO, jul/2014: 327.121.858 − 41.675.325 ≠ 53.290.776 kWh) e ficam fora dos agregados de técnica e não técnica, com o resíduo da decomposição publicado (conferência de 30/09/2026)."
    ],
    "limitacoes": [
     "Não se pode concluir que toda perda técnica é evitável nem que é eliminável a custo zero."
@@ -2675,14 +3867,15 @@
    ],
    "regras_comparabilidade": [
     "Volume depende do tamanho do mercado: comparar distribuidoras pela taxa, não pelo volume.",
-    "Mudança societária ou incorporação muda o universo da série (eventos publicados).",
-    "Quebra em 2024: leiaute da REN 1.003/2022; injetada publicada bruta (o denominador passa a ser a energia implícita no cálculo da fonte) e separação técnica e não técnica publicada para cerca de metade das distribuidoras."
+    "Mudança de universo da própria distribuidora (injetada mais de 30% maior ou menor entre anos completos, ou absorção provável observada no SAMP) marca o par de anos, que não entra em variação anual.",
+    "Universo variável: o conjunto de distribuidoras somadas muda de um ano para outro (ano incompleto, alerta, início e fim de série, separação não publicada). A variação anual só se lê nas mesmas distribuidoras dos dois anos, sem mudança de escala entre eles (bloco mesmas_ano_anterior), e a tendência recente na série de universo fixo.",
+    "Quebra em 2024: leiaute da REN 1.003/2022; a injetada publicada deixa de fechar o balanço com a perda da própria fonte (o denominador passa a ser a energia implícita no cálculo da fonte; a causa da diferença não é atribuída) e a separação técnica e não técnica passa a ser publicada para cerca de metade das distribuidoras."
    ],
    "regra_cobertura": "Agentes com balanço de distribuição no SAMP Balanço de jan/2003 até a última competência publicada.",
    "politica_ausencia": "Soma anual só existe quando a linha está publicada nos 12 meses do ano civil; um mês ausente deixa o ano ausente (nunca vira zero nem é completado). Ano corrente é parcial e fica fora de comparações.",
    "validacoes": [
     "Identidade do balanço conferida mês a mês: injetada − fornecida − irregular − perdas; o resíduo é publicado e classificado (fecha, residuo_pequeno, residuo_relevante, sem_componentes).",
-    "Agente-ano com perda total anual negativa ou maior que a injetada recebe alerta e fica fora de agregados e comparações (o valor da fonte segue no CSV).",
+    "Agente-ano com perda total anual negativa ou maior que a injetada, fornecida maior que a injetada ou balanço que não fecha (resíduo acima de 5% da injetada no leiaute antigo; fornecida + perdas acima da injetada publicada no de 2024) recebe alerta e fica fora de agregados e comparações (o valor da fonte segue no CSV). Manaus Energia 2003 a 2008: fornecida maior que a injetada, taxa de 65% a 111%, fora; taxa nacional das concessionárias em 2004 = 15,09% (55 distribuidoras), conferida por releitura independente do CSV oficial.",
     "Parquet e CSV oficiais de 15/09/2026 conferidos por código independente: 549.552 linhas nos dois e as 2.146 somas anuais completas de perdas totais idênticas ao kWh."
    ],
    "limitacoes": [
@@ -4525,6 +5718,517 @@
    "arquivo": "pipeline/energia/metricas/transicao.py"
   },
   {
+   "gold": "rede_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/rede"
+   ],
+   "versao_formula": "1.0",
+   "id": "rede_atls_horas_violacao",
+   "titulo": "Horas acima do limite sistêmico (ATLS)",
+   "pergunta": "Quando há evidência publicada de fluxo acima do limite de segurança?",
+   "definicao": "Tempo em que cada fluxo sistêmico monitorado pelo ONS ficou acima do limite estabelecido pelos estudos elétricos, como publicado no indicador ATLS (Submódulo 9.1).",
+   "unidade": "horas",
+   "grao_geografico": "fluxo sistêmico do ONS",
+   "grao_temporal": "mês e 12 meses",
+   "fontes": [
+    "ons_rede_atls"
+   ],
+   "formula": "Σ num_horasviolacao mensal",
+   "regra_agregacao": "soma de horas publicadas",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "fluxo",
+    "mês"
+   ],
+   "regras_comparabilidade": [
+    "Fluxos mudam ao longo do tempo; compare só meses em que o fluxo é publicado."
+   ],
+   "regra_cobertura": "Meses publicados.",
+   "politica_ausencia": "Mês não publicado fica fora (não vira zero).",
+   "validacoes": [
+    "acumulado no ano publicado = soma dos meses",
+    "ATLS publicado = 1 − horas ÷ período (o valor vem em fração, não em %)"
+   ],
+   "limitacoes": [
+    "O valor do limite não é publicado; o indicador não mede quanto da capacidade foi usada.",
+    "Violações de menos de 10 minutos e dentro da banda morta (50 MW ou 5% do limite) não entram."
+   ],
+   "arquivo": "pipeline/energia/metricas/rede.py"
+  },
+  {
+   "gold": "rede_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/rede"
+   ],
+   "versao_formula": "1.0",
+   "id": "rede_desvio_programado",
+   "titulo": "Desvio entre intercâmbio verificado e programado",
+   "pergunta": "Quanto o fluxo divergiu do programa?",
+   "definicao": "Verificado menos programado, hora a hora, na mesma orientação; desvio material quando o módulo chega a 1.000 MWmed.",
+   "unidade": "MWmed por hora; MWh por dia; horas",
+   "grao_geografico": "fronteira e país",
+   "grao_temporal": "hora, dia e mês",
+   "fontes": [
+    "ons_rede_intercambio_nacional",
+    "ons_rede_intercambio_internacional",
+    "ons_rede_pdo_conversoras"
+   ],
+   "formula": "desvio_h = verificado_h − programado_h; material = |desvio_h| ≥ 1.000 MWmed",
+   "numerador": "Σ |desvio_h|",
+   "denominador": "horas com os dois valores",
+   "regra_agregacao": "média do desvio absoluto; contagem de horas materiais e de inversões de sentido",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "par",
+    "hora",
+    "dia",
+    "mês"
+   ],
+   "regras_comparabilidade": [
+    "Limiar único para todas as fronteiras; sensibilidade publicada em 500 e 2.000 MWmed."
+   ],
+   "regra_cobertura": "Horas desde janeiro de 2026 (o programado não existe nos arquivos anteriores).",
+   "politica_ausencia": "Hora sem valor publicado fica fora das somas e das contagens; nada é preenchido, interpolado ou repetido.",
+   "validacoes": [
+    "programado internacional igual ao PDO das conversoras em todas as horas da amostra conferida"
+   ],
+   "limitacoes": [
+    "Desvio não é falha: a operação em tempo real corrige o programa.",
+    "A fonte não identifica a revisão do programa das fronteiras entre subsistemas."
+   ],
+   "arquivo": "pipeline/energia/metricas/rede.py"
+  },
+  {
+   "gold": "rede_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/rede"
+   ],
+   "versao_formula": "1.0",
+   "id": "rede_exterior",
+   "titulo": "Intercâmbio internacional por país",
+   "pergunta": "Quanta energia o Brasil exportou e importou de cada país vizinho?",
+   "definicao": "Soma mensal dos valores horários positivos (exportação) e do módulo dos negativos (importação) do intercâmbio verificado nas conversoras de fronteira.",
+   "unidade": "MWh",
+   "grao_geografico": "país",
+   "grao_temporal": "mês e 12 meses",
+   "fontes": [
+    "ons_rede_intercambio_internacional"
+   ],
+   "formula": "exportação = Σ max(v_h, 0); importação = Σ max(−v_h, 0)",
+   "regra_agregacao": "soma de energia horária",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "país",
+    "mês"
+   ],
+   "regras_comparabilidade": [
+    "Meses com horas ausentes trazem a contagem de horas."
+   ],
+   "regra_cobertura": "Horas publicadas.",
+   "politica_ausencia": "Hora sem valor publicado fica fora das somas e das contagens; nada é preenchido, interpolado ou repetido.",
+   "validacoes": [
+    "saldo de 12 meses igual ao intercâmbio do SIN no balanço nas horas comuns (tolerância 0,1 MWmed por hora)"
+   ],
+   "limitacoes": [
+    "Itaipu é geração no conjunto do ONS, não intercâmbio.",
+    "Paraguai (Acaray) aparece no arquivo até fevereiro de 2024, sempre com fluxo nulo."
+   ],
+   "arquivo": "pipeline/energia/metricas/rede.py"
+  },
+  {
+   "gold": "rede_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/rede"
+   ],
+   "versao_formula": "1.0",
+   "id": "rede_fluxo_contra_saldo",
+   "titulo": "Energia contra o saldo",
+   "pergunta": "Quanto do fluxo o saldo líquido esconde?",
+   "definicao": "O menor dos dois sentidos no período: energia que circulou no sentido oposto ao saldo e que o saldo anula.",
+   "unidade": "MWh",
+   "grao_geografico": "fronteira entre subsistemas",
+   "grao_temporal": "dia e janela de 30 dias",
+   "fontes": [
+    "ons_rede_intercambio_nacional"
+   ],
+   "formula": "contra_saldo = min(canônico, inverso)",
+   "regra_agregacao": "calculada sobre as somas do período (a soma dos valores diários também é publicada)",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "fronteira",
+    "dia"
+   ],
+   "regras_comparabilidade": [
+    "A soma dos valores diários é menor ou igual ao valor da janela de 30 dias: a janela também conta dias inteiros no sentido oposto ao saldo do período."
+   ],
+   "regra_cobertura": "Horas publicadas.",
+   "politica_ausencia": "Hora sem valor publicado fica fora das somas e das contagens; nada é preenchido, interpolado ou repetido.",
+   "validacoes": [
+    "mesma conta pelo silver principal nas horas comuns (tolerância 0,001 MWh por hora)"
+   ],
+   "limitacoes": [
+    "Reversão de fluxo não é, por si, sinal de problema: resulta do despacho e da geração variável.",
+    "Não diz se a fronteira estava no limite: os limites operativos de intercâmbio não são públicos em formato estruturado."
+   ],
+   "arquivo": "pipeline/energia/metricas/rede.py"
+  },
+  {
+   "gold": "rede_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/rede"
+   ],
+   "versao_formula": "1.0",
+   "id": "rede_fluxo_liquido",
+   "titulo": "Saldo líquido de energia na fronteira",
+   "pergunta": "Quanta energia passou, no saldo, de uma região para a outra?",
+   "definicao": "Energia no sentido canônico menos energia no sentido inverso, somando os valores horários do intercâmbio verificado.",
+   "unidade": "MWh",
+   "grao_geografico": "fronteira entre subsistemas",
+   "grao_temporal": "dia, mês e janela de 30 dias",
+   "fontes": [
+    "ons_rede_intercambio_nacional"
+   ],
+   "formula": "líquido = Σ_h fluxo_h (MWmed × 1 h), com sinal da orientação canônica",
+   "regra_agregacao": "soma de energia horária",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "fronteira",
+    "dia",
+    "mês"
+   ],
+   "regras_comparabilidade": [
+    "Meses e dias com horas faltantes são comparáveis só com o número de horas ao lado (coluna horas)."
+   ],
+   "regra_cobertura": "Todas as horas publicadas; dia com menos de 24 horas é marcado pela contagem.",
+   "politica_ausencia": "Hora sem valor publicado fica fora das somas e das contagens; nada é preenchido, interpolado ou repetido.",
+   "validacoes": [
+    "orientação de cada linha do arquivo convertida para a canônica (verificado e programado com o mesmo sinal)",
+    "releitura igual à do silver principal nos arquivos idênticos (resultado em conferencia_silver_principal)",
+    "sem duas linhas da mesma fronteira na mesma hora"
+   ],
+   "limitacoes": [
+    "O saldo esconde a energia que circulou no sentido oposto (ver rede_fluxo_contra_saldo).",
+    "Não diz se a fronteira estava no limite: os limites operativos de intercâmbio não são públicos em formato estruturado.",
+    "Dados em consistência recorrente do ONS: valores recentes podem ser revisados."
+   ],
+   "arquivo": "pipeline/energia/metricas/rede.py"
+  },
+  {
+   "gold": "rede_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/rede"
+   ],
+   "versao_formula": "1.0",
+   "id": "rede_fluxo_por_sentido",
+   "titulo": "Energia em cada sentido da fronteira",
+   "pergunta": "Quanta energia foi de uma região para a outra, e quanta voltou?",
+   "definicao": "Soma dos valores horários positivos (sentido canônico) e soma do módulo dos negativos (sentido inverso).",
+   "unidade": "MWh",
+   "grao_geografico": "fronteira entre subsistemas",
+   "grao_temporal": "dia, mês e janela de 30 dias",
+   "fontes": [
+    "ons_rede_intercambio_nacional"
+   ],
+   "formula": "canônico = Σ max(f_h, 0); inverso = Σ max(−f_h, 0)",
+   "regra_agregacao": "soma de energia horária por sentido",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "fronteira",
+    "sentido",
+    "dia",
+    "mês"
+   ],
+   "regras_comparabilidade": [
+    "É bruto entre horas: dentro da hora, o valor publicado já é o saldo médio das linhas da fronteira."
+   ],
+   "regra_cobertura": "Horas publicadas.",
+   "politica_ausencia": "Hora sem valor publicado fica fora das somas e das contagens; nada é preenchido, interpolado ou repetido.",
+   "validacoes": [
+    "canônico − inverso = líquido",
+    "reconferido contra o arquivo original do ONS por outro código (documento do módulo)"
+   ],
+   "limitacoes": [
+    "A fonte não publica o fluxo de cada linha: sentidos opostos em linhas diferentes na mesma hora não aparecem.",
+    "Não diz se a fronteira estava no limite: os limites operativos de intercâmbio não são públicos em formato estruturado."
+   ],
+   "arquivo": "pipeline/energia/metricas/rede.py"
+  },
+  {
+   "gold": "rede_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/rede"
+   ],
+   "versao_formula": "1.0",
+   "id": "rede_interrupcao_ens",
+   "titulo": "Energia não suprida em interrupções de carga",
+   "pergunta": "Quanta carga ficou sem energia por perturbações na rede?",
+   "definicao": "Soma da energia não suprida dos registros de interrupção de carga publicados pelo ONS.",
+   "unidade": "MWh",
+   "grao_geografico": "SIN e subsistema",
+   "grao_temporal": "ano e 12 meses",
+   "fontes": [
+    "ons_rede_interrupcao_carga"
+   ],
+   "formula": "Σ val_energianaosuprida_mwh",
+   "regra_agregacao": "soma de registros",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "subsistema",
+    "ano",
+    "rede básica"
+   ],
+   "regras_comparabilidade": [
+    "Ano corrente é parcial."
+   ],
+   "regra_cobertura": "Registros publicados desde 2007.",
+   "politica_ausencia": "Registro sem energia informada fica fora da soma.",
+   "validacoes": [
+    "energia = carga interrompida × tempo médio ÷ 60 em todos os registros da janela"
+   ],
+   "limitacoes": [
+    "Interrupção de carga é perturbação, não prova de limite de intercâmbio atingido.",
+    "A descrição do conjunto cita cortes acima de 100 MW, mas o arquivo traz registros menores (contados à parte)."
+   ],
+   "arquivo": "pipeline/energia/metricas/rede.py"
+  },
+  {
+   "gold": "rede_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/rede"
+   ],
+   "versao_formula": "1.0",
+   "id": "rede_itaipu_nao_brasil",
+   "titulo": "Geração de Itaipu não destinada ao Brasil",
+   "pergunta": "Quanto da geração de Itaipu não foi destinada ao Brasil?",
+   "definicao": "Geração total da usina menos a parcela destinada ao Brasil (setor de 60 Hz mais a parte do setor de 50 Hz medida nos conversores de Foz do Iguaçu).",
+   "unidade": "MWh",
+   "grao_geografico": "usina",
+   "grao_temporal": "mês",
+   "fontes": [
+    "ons_rede_itaipu"
+   ],
+   "formula": "não Brasil = Σ_h (total_h − Brasil_h)",
+   "regra_agregacao": "soma de energia horária",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "mês"
+   ],
+   "regras_comparabilidade": [
+    "Não é intercâmbio internacional nem consumo do Paraguai medido: é uma diferença entre duas medidas."
+   ],
+   "regra_cobertura": "Horas com total e parcela do Brasil.",
+   "politica_ausencia": "Hora sem valor publicado fica fora das somas e das contagens; nada é preenchido, interpolado ou repetido.",
+   "validacoes": [
+    "total = 60 Hz + 50 Hz e Brasil = 60 Hz + 50 Hz do Brasil em todas as linhas (tolerância 0,5 MWmed)"
+   ],
+   "limitacoes": [
+    "O ONS removeu em 30/07/2026 o campo com a parcela destinada ao Paraguai; a diferença inclui o que não é medido separadamente."
+   ],
+   "arquivo": "pipeline/energia/metricas/rede.py"
+  },
+  {
+   "gold": "rede_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/rede"
+   ],
+   "versao_formula": "1.0",
+   "id": "rede_pld_mesma_hora",
+   "titulo": "Preço nas pontas da fronteira na mesma hora",
+   "pergunta": "Os preços das duas regiões se separaram nas horas em que a energia circulou?",
+   "definicao": "Contagem de horas com PLD das duas pontas diferente em mais de R$ 0,01/MWh e, nessas horas, do sentido do fluxo verificado em relação ao preço.",
+   "unidade": "horas",
+   "grao_geografico": "fronteira entre subsistemas",
+   "grao_temporal": "dia, mês e janela de 30 dias",
+   "fontes": [
+    "ons_rede_intercambio_nacional",
+    "ccee_pld_horario"
+   ],
+   "formula": "separada(h) = |PLD_para − PLD_de| > 0,01; para o mais caro = sinal(fluxo_h) = sinal(ΔPLD_h)",
+   "regra_agregacao": "contagem de horas",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "fronteira",
+    "dia"
+   ],
+   "regras_comparabilidade": [
+    "PLD e fluxo na mesma hora local; horas sem PLD (depois da última captura da CCEE) ficam fora."
+   ],
+   "regra_cobertura": "Horas com fluxo e PLD nas duas pontas.",
+   "politica_ausencia": "Hora sem valor publicado fica fora das somas e das contagens; nada é preenchido, interpolado ou repetido.",
+   "validacoes": [
+    "mesma tolerância de centavo do módulo PLD"
+   ],
+   "limitacoes": [
+    "Diferença de preço não demonstra fronteira congestionada; o PLD sai de modelo com restrições não publicadas.",
+    "Associação descritiva: não identifica causa."
+   ],
+   "arquivo": "pipeline/energia/metricas/rede.py"
+  },
+  {
+   "gold": "rede_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/rede"
+   ],
+   "versao_formula": "1.0",
+   "id": "rede_residuo_balanco",
+   "titulo": "Resíduo do balanço de energia",
+   "pergunta": "Geração menos carga fecha com o intercâmbio publicado no mesmo balanço?",
+   "definicao": "Geração hidráulica + térmica + eólica + solar − carga − intercâmbio, hora a hora, no Balanço de Energia nos Subsistemas.",
+   "unidade": "MWmed por hora; MWh por mês; horas",
+   "grao_geografico": "subsistema e SIN",
+   "grao_temporal": "hora e mês",
+   "fontes": [
+    "ons_rede_balanco"
+   ],
+   "formula": "r_h = hid + ter + eol + sol − carga − intercâmbio; hora com resíduo quando |r_h| > 0,1 MWmed",
+   "regra_agregacao": "contagem de horas e soma mensal do resíduo",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "subsistema",
+    "hora",
+    "mês"
+   ],
+   "regras_comparabilidade": [
+    "Contagens também acima de 1, 10 e 100 MWmed, para separar arredondamento de diferença material."
+   ],
+   "regra_cobertura": "Horas com as seis parcelas publicadas.",
+   "politica_ausencia": "Hora com parcela ausente fica fora (não vira zero).",
+   "validacoes": [
+    "tolerância de 0,1 MWmed justificada pela precisão de três casas dos arquivos"
+   ],
+   "limitacoes": [
+    "Resíduo não é atribuído a perdas nem ao exterior: a fonte não informa a causa.",
+    "Dados em consistência recorrente do ONS: valores recentes podem ser revisados."
+   ],
+   "arquivo": "pipeline/energia/metricas/rede.py"
+  },
+  {
+   "gold": "rede_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/rede"
+   ],
+   "versao_formula": "1.0",
+   "id": "rede_residuo_perimetro",
+   "titulo": "Resíduo de perímetro do intercâmbio",
+   "pergunta": "O intercâmbio do balanço é a soma das fronteiras e do exterior?",
+   "definicao": "Intercâmbio do subsistema no balanço menos a soma das suas fronteiras no conjunto de intercâmbio (no Sul, mais Argentina e Uruguai; no SIN, o intercâmbio internacional).",
+   "unidade": "MWmed por hora; horas",
+   "grao_geografico": "subsistema e SIN",
+   "grao_temporal": "hora e mês",
+   "fontes": [
+    "ons_rede_balanco",
+    "ons_rede_intercambio_nacional",
+    "ons_rede_intercambio_internacional"
+   ],
+   "formula": "r_h = intercâmbio_balanço − Σ fronteiras (− exterior)",
+   "regra_agregacao": "contagem de horas e soma mensal",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "subsistema",
+    "hora",
+    "mês"
+   ],
+   "regras_comparabilidade": [
+    "Compara três conjuntos do ONS publicados separadamente."
+   ],
+   "regra_cobertura": "Horas com balanço, fronteiras e exterior publicados.",
+   "politica_ausencia": "Hora sem valor publicado fica fora das somas e das contagens; nada é preenchido, interpolado ou repetido.",
+   "validacoes": [
+    "diagnóstico das horas com resíduo: coerência interna do balanço (SIN = Sul − fronteira S→SE)"
+   ],
+   "limitacoes": [
+    "O sinal do intercâmbio do balanço não está no dicionário; foi conferido por esta identidade."
+   ],
+   "arquivo": "pipeline/energia/metricas/rede.py"
+  },
+  {
+   "gold": "rede_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/rede"
+   ],
+   "versao_formula": "1.0",
+   "id": "rede_reversoes",
+   "titulo": "Reversões de sentido na fronteira",
+   "pergunta": "Quantas vezes o fluxo trocou de sentido?",
+   "definicao": "Número de trocas de sentido entre horas consecutivas com fluxo acima de 1 MWmed em módulo.",
+   "unidade": "trocas",
+   "grao_geografico": "fronteira entre subsistemas",
+   "grao_temporal": "dia",
+   "fontes": [
+    "ons_rede_intercambio_nacional"
+   ],
+   "formula": "Σ_h 1[sentido(h) ≠ sentido(h anterior com fluxo)]",
+   "regra_agregacao": "contagem por dia (horas nulas não interrompem a sequência; hora ausente interrompe)",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "fronteira",
+    "dia"
+   ],
+   "regras_comparabilidade": [
+    "A faixa de 1 MWmed é a mesma do módulo PLD."
+   ],
+   "regra_cobertura": "Horas publicadas.",
+   "politica_ausencia": "Hora sem valor publicado fica fora das somas e das contagens; nada é preenchido, interpolado ou repetido.",
+   "validacoes": [
+    "casos de teste com sequências reais recortadas do arquivo de 2026"
+   ],
+   "limitacoes": [
+    "Contagem horária: oscilações dentro da hora não aparecem."
+   ],
+   "arquivo": "pipeline/energia/metricas/rede.py"
+  },
+  {
+   "gold": "rede_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/rede"
+   ],
+   "versao_formula": "1.0",
+   "id": "rede_subsistema_bruto",
+   "titulo": "Exportação e importação brutas do subsistema",
+   "pergunta": "Quanto cada região exportou e importou ao mesmo tempo?",
+   "definicao": "Soma, hora a hora, das fronteiras em que o subsistema exporta (exportação bruta) e das em que importa (importação bruta); no Sul, Argentina e Uruguai entram como fronteiras.",
+   "unidade": "MWh",
+   "grao_geografico": "subsistema",
+   "grao_temporal": "dia e mês",
+   "fontes": [
+    "ons_rede_intercambio_nacional",
+    "ons_rede_intercambio_internacional"
+   ],
+   "formula": "exp = Σ_h Σ_f max(p_f,h, 0); imp = Σ_h Σ_f max(−p_f,h, 0); líquido = exp − imp",
+   "regra_agregacao": "soma de energia horária",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "subsistema",
+    "dia",
+    "mês"
+   ],
+   "regras_comparabilidade": [
+    "O líquido é igual ao intercâmbio do balanço do ONS (identidade conferida hora a hora, achado A05)."
+   ],
+   "regra_cobertura": "Hora com todas as fronteiras do subsistema (e o exterior, no Sul).",
+   "politica_ausencia": "Hora sem valor publicado fica fora das somas e das contagens; nada é preenchido, interpolado ou repetido.",
+   "validacoes": [
+    "identidade com o intercâmbio do balanço de energia"
+   ],
+   "limitacoes": [
+    "Horas de trânsito (exporta por uma fronteira e importa por outra) não dizem de onde vem a energia consumida."
+   ],
+   "arquivo": "pipeline/energia/metricas/rede.py"
+  },
+  {
    "gold": "regulacao.json",
    "paginas": [
     "/setor-eletrico/regulacao"
@@ -4835,6 +6539,46 @@
     "2021 e 2023: valores lidos em documento oficial do processo (voto), porque o texto do ato não estava acessível."
    ],
    "arquivo": "pipeline/energia/metricas/regulacao.py"
+  },
+  {
+   "id": "temperatura_ponderada_subsistema",
+   "titulo": "Temperatura diária ponderada pela população, por subsistema",
+   "pergunta": "Qual foi a temperatura média do dia nas regiões de cada subsistema?",
+   "definicao": "Média da temperatura do ar a 2 m (NASA POWER) nos centroides das capitais das UFs do subsistema, ponderada pela população residente estimada de cada UF (IBGE, SIDRA 6579).",
+   "unidade": "°C",
+   "grao_geografico": "subsistema e SIN",
+   "grao_temporal": "diário",
+   "fontes": [
+    "nasa_power_temperatura",
+    "ibge_populacao_uf_6579",
+    "ibge_centroides_capitais"
+   ],
+   "formula": "T = Σ peso_UF × T_capital ÷ Σ pesos com valor (dia publicado com pelo menos 95% do peso)",
+   "regra_agregacao": "Média ponderada por população.",
+   "versao_formula": "1",
+   "natureza_fonte": "ESTIMADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "subsistema",
+    "dia"
+   ],
+   "regras_comparabilidade": [
+    "MERRA-2 (histórico) e GEOS-IT (trecho recente) são produtos diferentes da NASA; a fonte de cada mês é publicada."
+   ],
+   "regra_cobertura": "Dia com pelo menos 95% do peso populacional com valor.",
+   "politica_ausencia": "Valor -999 da fonte é ausência; dia sem cobertura mínima fica sem valor.",
+   "validacoes": [
+    "UFs por subsistema conferidas pela soma das áreas de carga da API do ONS em 20/09/2026."
+   ],
+   "limitacoes": [
+    "Reanálise e análise de modelo, não observação de estação.",
+    "A capital representa a UF; população não é distribuição da carga."
+   ],
+   "gold": "carga_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/carga"
+   ],
+   "arquivo": "pipeline/energia/metricas/carga.py"
   }
  ]
 }

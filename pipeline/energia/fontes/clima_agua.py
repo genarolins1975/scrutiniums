@@ -210,10 +210,14 @@ def localizador(bacias):
 # ---------------------------------------------------------------- IBGE: sedes municipais e população
 
 def sedes_municipais(dados_zip):
-    """{cod_municipio: (uf, nome, lat, lon)} das sedes municipais (Localidades 2022)."""
+    """{cod_municipio: (uf, nome, lat, lon)} das sedes municipais (Localidades 2022).
+
+    A sede é a localidade de categoria "Cidade": a subcategoria é "Sede Municipal" para
+    5.543 municípios, "Capital Estadual" para 26 e "Capital Federal" para Brasília. Filtrar
+    só "Sede Municipal" deixaria as capitais (as maiores cidades) de fora."""
     z = zipfile.ZipFile(io.BytesIO(dados_zip))
     dbf = next(n for n in z.namelist() if n.lower().endswith(".dbf"))
-    regs = le_dbf(z.read(dbf), filtro=lambda r: r.get("SCT_LOCALI") == "Sede Municipal")
+    regs = le_dbf(z.read(dbf), filtro=lambda r: r.get("CT_LOCALID") == "Cidade")
     out = {}
     for r in regs:
         try:

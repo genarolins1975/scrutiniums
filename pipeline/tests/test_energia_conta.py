@@ -11,7 +11,15 @@ reais capturados em 30/09/2026 (linhas copiadas sem alteração):
 - subsidios_amostra.csv: três pares distribuidora-mês do CSV de subsídios;
 - sidra_ipca_amostra.json: resposta do SIDRA (tabela 1737) de jul/2025 a ago/2026;
 - cde_custeio_amostra.csv: todas as linhas de 2022, 2023 e 2026 do CSV de custeio da CDE;
-- lei_15235_2025_trecho.html e aneel_gd_trecho.html: trechos do HTML oficial.
+- lei_15235_2025_trecho.html e aneel_gd_trecho.html: trechos do HTML oficial;
+- tarifas_incorporacao_amostra.csv: linhas B1 residenciais de aplicação de 2017 a 2019
+  da CPFL Jaguari (hoje CPFL Santa Cruz), das quatro CPFL incorporadas por ela, da RGE
+  antiga (CNPJ 02016439000138) e da RGE Sul (02016440000162), para as incorporações;
+- tarifas_ubp_amostra.csv e componentes_ubp_2026.parquet: tarifa B1 residencial vigente
+  em 30/09/2026 e as componentes (Parquet de 2025) de EAC, ERO e CEA, com o valor
+  negativo de TE_CFURH (crédito do repasse da UBP), mais três linhas fora do recorte;
+- samp_2025_amostra.parquet: linhas B1 residenciais do SAMP de 2025 (receita de energia e
+  ICMS, mercado regular cativo) da CEMIG-D e da CERCOS.
 
 Os valores esperados são escritos por extenso e conferidos com aritmética decimal
 própria do teste, não com as funções do módulo.
@@ -41,7 +49,11 @@ CEMIG = "06981180000116"
 CERACA = "09364804000144"
 CEA = "05965546000109"
 RGE = "02016440000162"
+RGE_ANTIGA = "02016439000138"
+CPFL_SANTA_CRUZ = "53859112000169"
 CERNHE = "53176038000186"
+EAC = "04065033000170"
+ERO = "05914650000166"
 
 
 def _ler(nome, modo="rb"):
@@ -188,8 +200,11 @@ class Sobreposicao(_Ambiente):
         self.assertEqual((esc["ato"], esc["tusd"], esc["te"]), ("REH 3.001/2021", 362.45, 142.80))
         self.assertEqual(conf["alternativas"][0]["ato"], "REH 2.979/2021")
 
-    def test_mudanca_de_sigla_com_mesmo_cnpj_nao_quebra_a_serie(self):
-        # RGE SUL incorporou a RGE e passou a usar a sigla RGE com o mesmo CNPJ (2019)
+    def test_incorporacao_da_rge_nao_e_mudanca_de_sigla(self):
+        # A RGE SUL incorporou a Rio Grande Energia (REA nº 7.499/2018) e passou a usar a
+        # sigla RGE com o CNPJ da incorporadora. A série do CNPJ continua, mas o evento de
+        # 19/06/2019 compara a tarifa da área da RGE SUL com a da área somada: é mudança de
+        # perímetro, marcada, e não reajuste comum.
         self.silver_tarifas()
         segs = conta.segmentos_tarifas(conta.valores_vigentes(self.con, conta.DS_TARIFAS))
         linha, _ = conta.linha_do_tempo(segs[(RGE, "B1", "Residencial", "TA")])
@@ -198,9 +213,11 @@ class Sobreposicao(_Ambiente):
         mais_recente, todas, _, _, _, _ = conta._siglas(self.con)
         self.assertEqual(todas[RGE], ["RGE", "RGE SUL"])
         self.assertEqual(mais_recente[RGE], "RGE")
-        # evento de 19/06/2019 (primeira vigência com a sigla RGE) aparece como mudança da mesma série
-        evs = conta.eventos_tarifa(linha, {})
-        self.assertIn("2019-06-19", [e["data"] for e in evs])
+        evs = {e["data"]: e for e in conta.eventos_tarifa(linha, {}, conta.mudancas_de_perimetro(RGE))}
+        self.assertEqual(evs["2019-06-19"]["mudanca_perimetro"]["ato"], "REA nº 7.499/2018")
+        self.assertEqual(evs["2019-06-19"]["mudanca_perimetro"]["incorporadas"], [RGE_ANTIGA])
+        # o evento anterior (19/04/2019, mesma área) não é mudança de perímetro
+        self.assertIsNone(evs["2019-04-19"]["mudanca_perimetro"])
 
 
 class ComponentesReconciliacao(_Ambiente):
@@ -464,6 +481,10 @@ class Gold(_Ambiente):
     """Gold construída de ponta a ponta a partir das amostras reais."""
 
     def _monta(self):
+        # as linhas das incorporações completam a série da RGE da amostra principal (a RGE
+        # antiga termina na véspera da tarifa unificada da RGE SUL)
+        conta._processa_tarifas(self.con, self.vintage(conta.DS_TARIFAS, "t-incorporacao.csv",
+                                                       "tarifas_incorporacao_amostra.csv", "csv"))
         self.silver_tarifas()
         conta._processa_componentes(self.con, self.vintage(conta.DS_COMP, "componentes-tarifarias-2026.parquet",
                                                            "componentes_cemig_2026.parquet", "parquet"))
@@ -494,8 +515,10 @@ class Gold(_Ambiente):
         self.assertEqual(sim["bandeira_vigente"]["bandeira"], "Amarela")
         # setembro/2026 é o mês de referência e está publicado: sem aviso de defasagem
         self.assertIsNone(sim["bandeira_vigente"]["aviso"])
-        self.assertEqual(sim["estado_regras"]["tarifa_social"], "CONFERIDA")
-        self.assertEqual(sim["estado_regras"]["custo_disponibilidade"], "NAO_CAPTURADA")
+        # só a lei foi capturada nesta amostra: a Tarifa Social tem parte na página da ANEEL
+        # (não capturada) e fica parcial; o custo de disponibilidade não tem parte conferida
+        self.assertEqual(sim["estado_regras"]["tarifa_social"], "PARCIAL")
+        self.assertEqual(sim["estado_regras"]["custo_disponibilidade"], "NAO_CONFERIDA")
         casos = {tuple(x[:4]): x[4] for x in sim["casos_referencia"]["casos"]}
         self.assertEqual(casos[("residencial", 25, "monofasico", "Verde")], 27.1)     # 30 × 0,90329
         self.assertEqual(casos[("tarifa_social", 80, "trifasico", "Amarela")], 0.0)
@@ -580,6 +603,31 @@ class Gold(_Ambiente):
         with open(os.path.join(base.SERIES, conta.CSV_JAN), encoding="utf-8") as f:
             self.assertIn(CEMIG, f.read())
 
+    def test_natureza_da_proveniencia_igual_a_da_metrica(self):
+        from pipeline.energia.metricas import conta as mc
+        g = self._monta()
+        metr = {m["id"]: m for m in mc.METRICAS}
+        for bloco, mid in conta.METRICA_DO_BLOCO.items():
+            self.assertEqual(g[bloco]["proveniencia"]["natureza"], metr[mid]["natureza_transformacao"], bloco)
+        sim = g["simulador"]["proveniencia"]
+        # o simulador tem proveniência própria: estimativa, com tarifas, bandeiras e normas
+        self.assertNotEqual(sim, g["tarifas"]["proveniencia"])
+        self.assertEqual(sim["natureza"], "ESTIMADO")
+        self.assertIn("Bandeira", sim["fonte"]["recurso"])
+        self.assertIn("lei_15235_2025", sim["fonte"]["recurso"])
+        self.assertEqual(sim["formula"], g["simulador"]["formula"])
+        self.assertTrue(any("não conferidas" in x and "Tarifa Social acima de 80 kWh" in x for x in sim["limitacoes"]))
+        # CDE: orçamento (previsto), com a identidade como controle interno e a conferência
+        # com os orçamentos da ANEEL como reconciliação externa
+        fin = g["financiamento_cde"]
+        self.assertEqual(fin["proveniencia"]["natureza"], "PREVISTO")
+        self.assertIn("orçamento", fin["natureza_valores"])
+        self.assertTrue(any(t["nome"].startswith("controle interno: despesa = receita") for t in fin["evidencia"]["testes"]))
+        self.assertIn("orçamento da CDE divulgado pela ANEEL", fin["evidencia"]["reconciliacao"]["descricao"])
+        self.assertEqual(fin["evidencia"]["reconciliacao"]["resultado"], "ressalva")
+        # subsídios: a soma contra a linha Total do mesmo arquivo é controle interno, não reconciliação
+        self.assertIsNone(g["subsidios"]["evidencia"])
+
     def test_validacao_fisica_critica_vira_stub_e_atipico_vira_ressalva(self):
         g = self._monta()
         self.assertEqual(g["validacao"]["ressalvas"], [])
@@ -598,6 +646,230 @@ class Gold(_Ambiente):
     def test_sem_tarifas_no_silver_vira_stub(self):
         g = conta.construir(self.con, {"hoje": date(2026, 9, 30)})
         self.assertFalse(g["disponivel"])
+
+
+class Incorporacoes(_Ambiente):
+    """Mudança societária não é troca de sigla: amostras reais da CPFL (REA nº 6.723/2017)
+    e da RGE (REA nº 7.499/2018)."""
+
+    def _linhas(self):
+        v = self.vintage(conta.DS_TARIFAS, "t-incorporacao.csv", "tarifas_incorporacao_amostra.csv", "csv")
+        conta._processa_tarifas(self.con, v)
+        segs = conta.segmentos_tarifas(conta.valores_vigentes(self.con, conta.DS_TARIFAS))
+        return {k[0]: conta.linha_do_tempo(ss)[0] for k, ss in segs.items()
+                if k[1:] == ("B1", "Residencial", "TA")}
+
+    def test_incorporacoes_confirmadas_nos_dados(self):
+        linhas = self._linhas()
+        por_id = {i["id"]: i for i in conta.INCORPORACOES}
+        for id_ in ("cpfl_santa_cruz_2018", "rge_2019"):
+            conf = conta.confere_incorporacao(por_id[id_], linhas)
+            self.assertTrue(conf["confirmada_nos_dados"], id_)
+        # as quatro CPFL incorporadas terminam na véspera da tarifa unificada (releitura do CSV)
+        fins = {r["NumCNPJDistribuidora"]: r["DatFimVigencia"] for r in csv.DictReader(
+            io.StringIO(_ler("tarifas_incorporacao_amostra.csv").decode("utf-8")), delimiter=";")
+            if r["NumCNPJDistribuidora"] in por_id["cpfl_santa_cruz_2018"]["incorporadas"]}
+        self.assertEqual(set(fins.values()), {"2018-03-21"})
+        # registro com data errada não se confirma (e vira ressalva na gold)
+        errado = {**por_id["rge_2019"], "tarifa_unificada_desde": "2019-04-19"}
+        conf = conta.confere_incorporacao(errado, linhas)
+        self.assertEqual((conf["confirmada_nos_dados"], conf["situacao"]), (False, "divergente"))
+        # nenhum dos CNPJs no conjunto: nada a conferir, sem ressalva
+        self.assertEqual(conta.confere_incorporacao(por_id["epb_2023"], linhas)["situacao"], "sem_dados")
+
+    def test_evento_que_atravessa_incorporacao_sai_marcado(self):
+        linhas = self._linhas()
+        evs = {e["data"]: e for e in conta.eventos_tarifa(linhas[CPFL_SANTA_CRUZ], {},
+                                                             conta.mudancas_de_perimetro(CPFL_SANTA_CRUZ))}
+        e = evs["2018-03-22"]
+        # a variação publicada antes (+17,63%) comparava a tarifa da CPFL Jaguari com a da
+        # área somada das cinco concessões; confere com a releitura, mas sai marcada
+        rows = [r for r in csv.DictReader(io.StringIO(_ler("tarifas_incorporacao_amostra.csv").decode("utf-8")), delimiter=";")
+                if r["NumCNPJDistribuidora"] == CPFL_SANTA_CRUZ]
+        antes = next(r for r in rows if r["DatInicioVigencia"] == "2017-03-22")
+        depois = next(r for r in rows if r["DatInicioVigencia"] == "2018-03-22")
+        var = (_dec(depois["VlrTE"]) + _dec(depois["VlrTUSD"])) / (_dec(antes["VlrTE"]) + _dec(antes["VlrTUSD"])) - 1
+        self.assertAlmostEqual(e["variacao"], float(var), places=9)
+        self.assertEqual(round(100 * var, 2), D("17.63"))
+        self.assertEqual(e["mudanca_perimetro"]["ato"], "REA nº 6.723/2017")
+        self.assertIsNone(evs["2019-03-22"]["mudanca_perimetro"])
+        # janelas: a de 120 meses terminada em ago/2026 atravessa a incorporação; a de 12 meses, não
+        self.assertTrue(conta.atravessa_perimetro(CPFL_SANTA_CRUZ, "2016-08-31", "2026-08-31"))
+        self.assertTrue(conta.atravessa_perimetro(RGE, "2016-08-31", "2026-08-31"))
+        self.assertFalse(conta.atravessa_perimetro(CPFL_SANTA_CRUZ, "2025-08-31", "2026-08-31"))
+        # a janela que começa no próprio dia da tarifa unificada já compara a mesma área
+        self.assertFalse(conta.atravessa_perimetro(CPFL_SANTA_CRUZ, "2018-03-22", "2026-08-31"))
+
+    def test_gold_marca_incorporadas_e_eventos(self):
+        v = self.vintage(conta.DS_TARIFAS, "t-incorporacao.csv", "tarifas_incorporacao_amostra.csv", "csv")
+        conta._processa_tarifas(self.con, v)
+        v2 = self.vintage(conta.DS_TARIFAS, "t-cemig.csv", "tarifas_amostra.csv", "csv")
+        conta._processa_tarifas(self.con, v2)
+        g = conta.construir(self.con, {"hoje": date(2026, 9, 30)})
+        sem = {x["cnpj"]: x for x in g["tarifas"]["sem_vigente"]}
+        self.assertEqual(sem[RGE_ANTIGA]["incorporada_por"], RGE)
+        self.assertIn("REA nº 7.499/2018", sem[RGE_ANTIGA]["motivo"])
+        self.assertIn("incorporada", sem["52503802000118"]["motivo"])            # CPFL Mococa
+        inc = {i["id"]: i for i in g["incorporacoes"]}
+        self.assertTrue(inc["rge_2019"]["confirmada_nos_dados"])
+        with open(os.path.join(base.SERIES, conta.JSON_HIST), encoding="utf-8") as f:
+            hist = json.load(f)["distribuidoras"]
+        ev = next(e for e in hist[CPFL_SANTA_CRUZ]["eventos"] if e[0] == "2018-03-22")
+        self.assertEqual(ev[11], "REA nº 6.723/2017")
+        with open(os.path.join(base.SERIES, conta.CSV_REAJ), encoding="utf-8") as f:
+            linhas = [l for l in f.read().splitlines() if l.startswith(CPFL_SANTA_CRUZ) and ";2018-03-22;" in l]
+        self.assertTrue(linhas and linhas[0].endswith("REA nº 6.723/2017"))
+
+
+class ComposicaoCreditoUbp(_Ambiente):
+    """Linhas reais de EAC, ERO e CEA (vigência em 30/09/2026): TE_CFURH negativo é crédito
+    (repasse da UBP), não encargo; somado aos encargos deixava o grupo negativo."""
+
+    ESPERADO_CFURH = {"EAC": D("-139.67140016"), "ERO": D("-256.662649608"), "CEA": D("-267.431324938")}
+
+    def _comps(self):
+        import pyarrow.parquet as pq
+        v = self.vintage(conta.DS_COMP, "componentes-tarifarias-2025.parquet", "componentes_ubp_2026.parquet", "parquet")
+        cont = {}
+        linhas = list(fa.linhas_componentes(v["arquivo"], cont))
+        self.assertEqual(cont["linhas_lidas"], 208)   # 205 do recorte e 3 de base econômica, fora
+        por = {}
+        for l in linhas:
+            por.setdefault((l["sigla"], l["inicio"], l["ato"]), {})[l["componente"]] = l["valor"]
+        # releitura independente do Parquet (pyarrow, sem o leitor do módulo)
+        t = pq.read_table(os.path.join(DADOS, "componentes_ubp_2026.parquet")).to_pylist()
+        cfurh = {(r["SigNomeAgente"], str(r["DatInicioVigencia"])[:10]): D(str(r["VlrComponenteTarifario"])) for r in t
+                 if r["DscComponenteTarifario"] == "TE_CFURH" and r["DscBaseTarifaria"] == "Tarifa de Aplicação"
+                 and r["DscSubClasseConsumidor"] == "Residencial"}
+        return por, cfurh
+
+    def test_credito_sai_dos_encargos(self):
+        por, cfurh = self._comps()
+        vig = {"EAC": ("EAC", "2026-08-26", "REH 3.318/2026"), "ERO": ("ERO", "2026-08-26", "REH 3.320/2026"),
+               "CEA": ("CEA", "2026-04-13", "sem ato informado")}
+        for sig, chave in vig.items():
+            comps = por[chave]
+            self.assertEqual(D(str(comps["TE_CFURH"])), self.ESPERADO_CFURH[sig])
+            self.assertEqual(cfurh[(sig, chave[1])], self.ESPERADO_CFURH[sig])
+            grupos, chk = conta.grupos_componentes(comps)
+            # crédito no grupo próprio, com o valor publicado
+            self.assertAlmostEqual(grupos["creditos"], float(self.ESPERADO_CFURH[sig]), places=9)
+            self.assertEqual([r_["codigo"] for r_ in chk["reclassificadas"]], ["TE_CFURH"])
+            # nada somado por fora: os grupos continuam fechando com a TE e a TUSD publicadas
+            self.assertLess(abs(sum(grupos.values()) - (comps["TE"] + comps["TUSD"])), 0.02)
+            # encargos positivos e a parcela CDE (subconjunto) não passa do grupo
+            self.assertGreater(grupos["encargos"], 0, sig)
+            self.assertLessEqual(conta.parcela_cde(comps), grupos["encargos"] + 0.01, sig)
+            # pelo código apenas (leitura antiga), CEA e ERO tinham encargos negativos
+            enc_pelo_codigo = sum(v for cd, v in comps.items() if conta.GRUPO_DE.get(cd) == "encargos" and v is not None)
+            if sig in ("CEA", "ERO"):
+                self.assertLess(enc_pelo_codigo, 0, sig)
+            self.assertGreater(conta.parcela_cde(comps), enc_pelo_codigo, sig)
+
+    def _gold(self):
+        conta._processa_tarifas(self.con, self.vintage(conta.DS_TARIFAS, "t-ubp.csv", "tarifas_ubp_amostra.csv", "csv"))
+        conta._processa_tarifas(self.con, self.vintage(conta.DS_TARIFAS, "t-amostra.csv", "tarifas_amostra.csv", "csv"))
+        conta._processa_componentes(self.con, self.vintage(conta.DS_COMP, "componentes-tarifarias-2025.parquet",
+                                                           "componentes_ubp_2026.parquet", "parquet"))
+        return conta.construir(self.con, {"hoje": date(2026, 9, 30)})
+
+    def test_gold_publica_credito_atipico_e_ressalva(self):
+        g = self._gold()
+        comp = g["composicao"]
+        cred = {x["sigla"]: x for x in comp["creditos"]["distribuidoras"]}
+        self.assertEqual(sorted(cred), ["CEA", "EAC", "ERO"])
+        self.assertEqual(cred["CEA"]["valor"], -267.43)
+        dist = {x["sigla"]: x for x in comp["distribuidoras"]}
+        for sig in ("CEA", "ERO", "EAC"):
+            self.assertGreater(dist[sig]["grupos"]["encargos"], 0)
+            self.assertLessEqual(dist[sig]["cde"], dist[sig]["grupos"]["encargos"])
+            self.assertEqual(dist[sig]["reclassificadas"][0]["grupo_usado"], "creditos")
+        # atípicas: sinal contrário à natureza do grupo (encargos), acima de 5% da tarifa
+        atip = {(a["sigla"], a["codigo"]) for a in comp["componentes_atipicas"]}
+        self.assertTrue({("CEA", "TE_CFURH"), ("ERO", "TE_CFURH"), ("EAC", "TE_CFURH")} <= atip)
+        ress = g["validacao"]["ressalvas"]
+        self.assertTrue(any("crédito" in r and "CEA -267.43" in r for r in ress))
+        self.assertTrue(any(r.startswith("ERO: componente TE_CFURH") for r in ress))
+        self.assertFalse(any("grupo de custo com soma negativa" in r for r in ress))
+        # CEMIG-D tem tarifa vigente sem componentes nesta amostra: reconciliação com cobertura
+        # parcial não é aprovação
+        self.assertEqual(comp["reconciliacao"]["sem_componentes"], ["CEMIG-D"])
+        self.assertEqual(g["tarifas"]["evidencia_mediana"]["reconciliacao"]["resultado"], "ressalva")
+        # composição média fecha com o total; as medianas não (e dizem isso)
+        m = comp["media"]
+        self.assertAlmostEqual(sum(m["grupos_rs_mwh"].values()), m["total_rs_mwh"], delta=0.05)
+        self.assertAlmostEqual(sum(m["grupos_pct"].values()), 100.0, delta=0.05)
+        self.assertFalse(comp["mediana"]["fecha_com_total"])
+        # razão de somas conferida à mão: Σ creditos ÷ Σ tarifas das três
+        tot = D("58.85") + D("703.59") + D("113.86") + D("715.85") + D("41.05") + D("784.10")
+        creditos = sum(self.ESPERADO_CFURH.values())
+        self.assertAlmostEqual(m["grupos_pct"]["creditos"], float(round(100 * creditos / tot, 2)), places=6)
+
+    def test_sem_reclassificacao_a_validacao_pega_o_defeito(self):
+        # a leitura antiga (TE_CFURH sempre nos encargos) precisa virar ressalva visível
+        with mock.patch.dict(conta.RECLASSIFICA_SE_NEGATIVO, {}, clear=True):
+            g = self._gold()
+        ress = g["validacao"]["ressalvas"]
+        self.assertTrue(any(r.startswith("CEA: grupo de custo com soma negativa (encargos -113.0") for r in ress), ress)
+        self.assertTrue(any(r.startswith("ERO: grupo de custo com soma negativa") for r in ress))
+        self.assertTrue(any(r.startswith("EAC: parcela CDE") for r in ress))
+
+
+class SampAvaliado(_Ambiente):
+    def test_samp_no_bronze_e_meses_atipicos_da_cemig(self):
+        import pyarrow.parquet as pq
+        v = self.vintage(conta.DS_SAMP, conta.RECURSO_SAMP, "samp_2025_amostra.parquet", "parquet")
+        serie, n = fa.samp_residencial_mensal(v["arquivo"])
+        self.assertEqual(n, 48)
+        # releitura independente
+        t = pq.read_table(os.path.join(DADOS, "samp_2025_amostra.parquet")).to_pylist()
+        jul = sum(D(str(r["VlrMercado"])) for r in t if r["NumCNPJAgenteDistribuidora"] == 6981180000116
+                  and r["DscDetalheMercado"] == "Receita Energia (R$)" and str(r["DatCompetencia"]).startswith("2025-07"))
+        self.assertEqual(jul, D("7085601982.0"))
+        self.assertAlmostEqual(serie[(CEMIG, "CEMIG-D", "Receita Energia (R$)")]["2025-07"], float(jul), places=2)
+        conta._processa_tarifas(self.con, self.vintage(conta.DS_TARIFAS, "t.csv", "tarifas_amostra.csv", "csv"))
+        g = conta.construir(self.con, {"hoje": date(2026, 9, 30)})
+        alt = g["tarifa_media_fornecimento"]["alternativa_avaliada"]
+        self.assertRegex(alt["sha256"], r"^[0-9a-f]{64}$")
+        self.assertEqual(alt["recurso"], "samp-2025.parquet")
+        meses = {(a["sigla"], a["linha"], a["mes"]) for a in alt["meses_atipicos"]}
+        self.assertEqual(meses, {("CEMIG-D", "ICMS (R$)", "2025-06"), ("CEMIG-D", "Receita Energia (R$)", "2025-07"),
+                                 ("CEMIG-D", "Receita Energia (R$)", "2025-10")})
+        self.assertEqual((alt["distribuidoras_no_recorte"], alt["distribuidoras_com_mes_atipico"]), (2, 1))
+        self.assertFalse(g["tarifa_media_fornecimento"]["disponivel"])
+
+
+class RegrasENatureza(_Ambiente):
+    def test_leitura_nao_conferida_nao_herda_o_estado_da_norma(self):
+        todas = {n["id"]: "CONFERIDA" for n in conta.NORMAS}
+        regras, estados = conta.estado_das_regras(conta.REGRAS_TEXTO, todas)
+        self.assertEqual(estados["tarifa_social"], "CONFERIDA")
+        # o trecho da página de geração distribuída está conferido, mas a regra do mínimo na
+        # Tarifa Social acima de 80 kWh é leitura declarada: a regra fica parcial
+        self.assertEqual(estados["custo_disponibilidade"], "PARCIAL")
+        cd = next(r_ for r_ in regras if r_["id"] == "custo_disponibilidade")
+        parte = next(p_ for p_ in cd["partes"] if "acima de 80 kWh" in p_["texto"])
+        self.assertEqual(parte["estado"], "NAO_CONFERIDA")
+        self.assertEqual(estados["desconto_social"], "PARCIAL")
+        self.assertEqual(estados["bandeira"], "PARCIAL")
+        # norma não capturada: nenhuma parte conferida
+        _, est2 = conta.estado_das_regras(conta.REGRAS_TEXTO, {})
+        self.assertEqual(set(est2.values()), {"NAO_CONFERIDA"})
+
+    def test_orcamento_cde_contra_titulos_da_aneel(self):
+        v = self.vintage(conta.DS_CDE, "cde-custeio-beneficios-tarifarios.csv", "cde_custeio_amostra.csv", "csv")
+        conta._processa_cde(self.con, v)
+        ag = conta.agrega_cde(conta.valores_vigentes(self.con, conta.DS_CDE))
+        rec = {x["ano"]: x for x in conta.reconcilia_orcamento_cde(ag["totais"])}
+        # 2026: R$ 52.660.050.882,84 no arquivo contra R$ 52,7 bilhões previstos (meia unidade: 0,05 bilhão)
+        self.assertEqual(rec["2026"]["publicado_rs"], 52.7e9)
+        self.assertAlmostEqual(rec["2026"]["diferenca_rs"], float(D("52660050882.84") - D("52700000000")), places=1)
+        self.assertTrue(rec["2026"]["confere"])
+        # 2023: R$ 34.985.700.578,16 contra R$ 34,99 bilhões (tolerância de 0,005 bilhão)
+        self.assertEqual(rec["2023"]["tolerancia_rs"], 5e6)
+        self.assertTrue(rec["2023"]["confere"])
+        self.assertIsNone(rec["2025"]["confere"])      # 2025 não está na amostra: sem par, sem resultado
+        self.assertEqual(conta.valor_do_titulo_bilhoes("orçamento de R$ 34,99 bilhões"), (34.99e9, 5e6))
 
 
 class CatalogoDeMetricas(unittest.TestCase):
