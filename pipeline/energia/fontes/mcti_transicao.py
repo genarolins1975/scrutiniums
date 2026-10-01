@@ -326,6 +326,19 @@ def _rotulo_bloco_direita(linhas, ini, fim, coluna_minima):
     return None, None
 
 
+MESES_TEXTO = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro",
+               "novembro", "dezembro"]
+
+
+def _dia_mes(mes, dia):
+    return f"{dia:02d}/{mes:02d}"
+
+
+def _sinal(x, casas):
+    """Número com sinal e vírgula decimal, para texto exibido (ex.: −0,00269)."""
+    return f"{x:+.{casas}f}".replace("-", "\u2212").replace(".", ",")
+
+
 def _revisoes_diarias(out, linhas, j, k, dmeses, anteriores):
     """Valores diários de outra publicação, à direita do bloco diário principal.
 
@@ -343,8 +356,10 @@ def _revisoes_diarias(out, linhas, j, k, dmeses, anteriores):
     # na coluna seguinte, como em 2020, ou deixar colunas vazias, como em 2022)
     depois = max(_ordem_col(c) for c, _ in dmeses) + 1
     celula, rotulo = _rotulo_bloco_direita(linhas, j + 2, k, depois)
-    datas = sorted(f"{ano}-{m:02d}-{d:02d}" for m, d in anteriores)
-    resumo = (f"{len(anteriores)} valores diários à direita do bloco principal ({datas[0][5:]} a {datas[-1][5:]})")
+    datas = sorted((m, d) for m, d in anteriores)
+    n = len(anteriores)
+    resumo = (f"{n} {'valor diário' if n == 1 else 'valores diários'} à direita do bloco principal "
+              f"({_dia_mes(*datas[0])}" + (f" a {_dia_mes(*datas[-1])})" if n > 1 else ")"))
     if rotulo and "atual" in _sem_acento(rotulo):
         mensal_ant = {int(r["periodo"][5:7]): r["anterior"] for r in out["revisoes"] if r["serie"] == "margem_operacao_mensal"}
         sentidos = []
@@ -359,18 +374,19 @@ def _revisoes_diarias(out, linhas, j, k, dmeses, anteriores):
             delta_d = sum(troca.values()) / len(troca) - sum(princ.values()) / len(princ)
             delta_m = mensal_ant[mes] - atual_m
             sentidos.append((mes, delta_d, delta_m, delta_d * delta_m > 0))
+        comparacao = "; ".join(f"{MESES_TEXTO[m - 1]}: média diária {_sinal(dd, 5)}, mensal {_sinal(dm, 4)}"
+                               for m, dd, dm, _ in sentidos) or "nenhum mês comparável"
         if not sentidos or not all(ok for *_, ok in sentidos):
             out["problemas"].append(
-                f"margem de operação diária {ano}: {resumo}, sob o rótulo \"{rotulo}\" (célula {celula}); a troca pelos "
-                "diários principais não acompanha a correção declarada no mensal em todos os meses comparáveis "
-                f"({', '.join(f'{MESES[m - 1]}: média diária {dd:+.5f}, mensal {dm:+.4f}' for m, dd, dm, _ in sentidos) or 'nenhum mês comparável'}); "
-                "não lidos como revisão nem como fator diário")
+                f"margem de operação diária {ano}: {resumo}, sob o rótulo \"{rotulo}\" (célula {celula}); trocar os diários "
+                "principais por eles não move a média do mês no sentido da correção declarada no mensal "
+                f"({comparacao}); não lidos como revisão nem como fator diário")
             return
         out["problemas"].append(
             f"margem de operação diária {ano}: o rótulo \"{rotulo}\" (célula {celula}) chama de atual o bloco diário da direita, "
             "mas o topo da planilha declara a publicação anterior (com erros) e o mensal principal é o corrigido; lidos como "
-            f"publicação anterior os {resumo}, porque a troca pelos diários principais move a média de cada mês no sentido "
-            f"da correção do mensal ({', '.join(f'{MESES[m - 1]}: média diária {dd:+.5f}, mensal {dm:+.4f}' for m, dd, dm, _ in sentidos)})")
+            f"publicação anterior os {resumo}, porque trocar os diários principais por eles move a média de cada mês no "
+            f"sentido da correção do mensal ({comparacao})")
     for (mes, dia), v in sorted(anteriores.items()):
         data_txt = f"{ano}-{mes:02d}-{dia:02d}"
         if dia > calendar.monthrange(ano, mes)[1]:
