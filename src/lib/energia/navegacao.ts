@@ -95,6 +95,16 @@ export const DESTINOS_NAVEGACAO: DestinoNavegacao[] = [
   // 1. Comece aqui
   { ...doModulo("mapa"), rotulo: "Mapa do observatório", grupo: "comece-aqui", publicado: true, pergunta: "Como compreender e explorar o setor usando este observatório?" },
   { ...doModulo("visao-geral"), rotulo: "Visão geral", grupo: "comece-aqui", publicado: true, pergunta: "O que está acontecendo no sistema elétrico?" },
+  {
+    slug: "territorio",
+    href: "/setor-eletrico/territorio",
+    rotulo: "Minha região",
+    pergunta: "O que acontece na minha região?",
+    resumo: "Mapa com submercado, distribuidora, município e usinas, cada número no seu próprio grão e com link para o módulo de origem.",
+    grupo: "comece-aqui",
+    publicado: true,
+    integrado: true,
+  },
 
   // 2. Operação do sistema
   { ...doModulo("agua-e-clima"), rotulo: "Água e clima", grupo: "operacao", publicado: true, pergunta: "Quanta energia está armazenada e como a água e o clima estão evoluindo?" },

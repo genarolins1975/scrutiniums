@@ -56,7 +56,7 @@ const QUADRO_6_2_C: Record<string, string> = {
 
 // Seção 5.1: grupos, na ordem, e o que cada um reúne.
 const SECAO_5_1: [string, string[]][] = [
-  ["Comece aqui", ["mapa", "visao-geral"]],
+  ["Comece aqui", ["mapa", "visao-geral", "territorio"]],
   ["Operação do sistema", ["agua-e-clima", "geracao", "carga", "rede"]],
   ["Preços e mercado", ["pld", "pld-modelos", "mercado"]],
   ["Consumidor e território", ["conta-de-luz", "perdas", "qualidade", "inclusao-energetica"]],
