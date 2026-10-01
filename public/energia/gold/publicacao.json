@@ -1,14 +1,14 @@
 {
  "dominio": "energia",
  "gold": "publicacao.json",
- "gerado_em": "2026-10-01T08:14:04Z",
+ "gerado_em": "2026-10-01T11:22:00Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "00dc290a9fdd+alterado",
+ "versao_codigo": "685bb4bc29fd+alterado",
  "disponivel": true,
  "referencia": {
   "hoje": "2026-10-01",
   "fuso": "America/Sao_Paulo (UTC−3)",
-  "executado_em": "2026-10-01T08:14:04Z",
+  "executado_em": "2026-10-01T11:22:00Z",
   "janela_calendario_dias": 120
  },
  "regras": {
@@ -128,12 +128,12 @@
    "equivalentes": 25,
    "bytes": 21276772
   },
-  "duracao_s": 101.3,
+  "duracao_s": 124.0,
   "tempos_s": {
-   "golds": 0.8,
-   "csv": 22.4,
-   "parquet": 10.4,
-   "silvers": 64.3
+   "golds": 0.9,
+   "csv": 25.4,
+   "parquet": 11.5,
+   "silvers": 81.6
   }
  },
  "conjuntos": [
@@ -1474,7 +1474,7 @@
     },
     "integrado": {
      "ok": true,
-     "observacoes": 233425
+     "observacoes": 235163
     },
     "validado": {
      "ok": true,
@@ -13711,7 +13711,7 @@
   {
    "gold": "arquivos.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T08:13:02Z",
+   "gerado_em": "2026-10-01T11:21:01Z",
    "bytes": 125458,
    "veredito": "aprovado",
    "aprovadas": 4,
@@ -13753,8 +13753,8 @@
   {
    "gold": "catalogo.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T08:10:33Z",
-   "bytes": 406374,
+   "gerado_em": "2026-10-01T11:16:15Z",
+   "bytes": 405882,
    "veredito": "aprovado",
    "aprovadas": 5,
    "checagens": {
@@ -13902,7 +13902,7 @@
   {
    "gold": "metricas.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T08:13:02Z",
+   "gerado_em": "2026-10-01T11:21:01Z",
    "bytes": 619352,
    "veredito": "ressalva",
    "aprovadas": 3,
@@ -16452,7 +16452,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-10-01T05:56:47Z",
-   "validado_em": "2026-10-01T08:14:04Z",
+   "validado_em": "2026-10-01T11:22:00Z",
    "cobertura_historica": {
     "inicio": "2026-10-01",
     "fim": "2026-10-01"
@@ -16469,9 +16469,9 @@
     "sha256": "f92208a1736658fc743037acca6970f11c01e34c212798de8481ba05e369e214"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "00dc290a9fdd+alterado",
+   "versao_codigo": "685bb4bc29fd+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T08:15:45Z",
+    "detectado_em": "2026-10-01T11:24:04Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 1,
@@ -16506,7 +16506,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-10-01T07:37:35Z",
-   "validado_em": "2026-10-01T08:14:04Z",
+   "validado_em": "2026-10-01T11:22:00Z",
    "cobertura_historica": {
     "inicio": "2026-09-27",
     "fim": "2026-10-01"
@@ -16521,10 +16521,10 @@
     "sha256": "919777c092024f80b4f047c5acbab3b810405ab248b4197f839e4759b0846b1f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "00dc290a9fdd+alterado",
+   "versao_codigo": "685bb4bc29fd+alterado",
    "revisoes_conhecidas": {
     "total": 0,
-    "detectado_em": "2026-10-01T08:14:04Z",
+    "detectado_em": "2026-10-01T11:22:00Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -16554,7 +16554,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-10-01T07:37:35Z",
-   "validado_em": "2026-10-01T08:14:04Z",
+   "validado_em": "2026-10-01T11:22:00Z",
    "cobertura_historica": {
     "inicio": "2026-09-27",
     "fim": "2026-10-01"
@@ -16568,10 +16568,10 @@
     "sha256": "919777c092024f80b4f047c5acbab3b810405ab248b4197f839e4759b0846b1f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "00dc290a9fdd+alterado",
+   "versao_codigo": "685bb4bc29fd+alterado",
    "revisoes_conhecidas": {
     "total": 3057,
-    "detectado_em": "2026-10-01T08:14:04Z",
+    "detectado_em": "2026-10-01T11:22:00Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -16601,7 +16601,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-10-01T07:37:35Z",
-   "validado_em": "2026-10-01T08:14:04Z",
+   "validado_em": "2026-10-01T11:22:00Z",
    "cobertura_historica": {
     "inicio": "2026-10-01",
     "fim": "2026-10-01"
@@ -16615,10 +16615,10 @@
     "sha256": "919777c092024f80b4f047c5acbab3b810405ab248b4197f839e4759b0846b1f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "00dc290a9fdd+alterado",
+   "versao_codigo": "685bb4bc29fd+alterado",
    "revisoes_conhecidas": {
     "total": 0,
-    "detectado_em": "2026-10-01T08:14:04Z",
+    "detectado_em": "2026-10-01T11:22:00Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -16646,8 +16646,8 @@
     "fim": "2026-10-01"
    },
    "publicado_pela_fonte_em": null,
-   "capturado_em": "2026-10-01T08:14:04Z",
-   "validado_em": "2026-10-01T08:14:04Z",
+   "capturado_em": "2026-10-01T11:22:00Z",
+   "validado_em": "2026-10-01T11:22:00Z",
    "cobertura_historica": {
     "inicio": "2026-10-01",
     "fim": "2026-10-01"
@@ -16659,14 +16659,14 @@
    ],
    "formula": "id da publicação = sha256 da lista [caminho, bytes, sha256] em ordem de caminho; Parquet equivalente ⇔ mesmas colunas e linhas e cada célula igual à do CSV (número comparado como decimal)",
    "snapshot": {
-    "id": "series_publicadas@2026-10-01T08:14:04Z",
+    "id": "series_publicadas@2026-10-01T11:22:00Z",
     "sha256": "e5316a31427a08523c146376d3897a6899c034dfd772d216e0899836b7f0ea04"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "00dc290a9fdd+alterado",
+   "versao_codigo": "685bb4bc29fd+alterado",
    "revisoes_conhecidas": {
     "total": 0,
-    "detectado_em": "2026-10-01T08:14:04Z",
+    "detectado_em": "2026-10-01T11:22:00Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -16738,8 +16738,8 @@
    "tratamento_ausencia": "conjunto sem evidência de uma etapa para na etapa anterior",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "00dc290a9fdd+alterado",
-    "publicacao": "2026-10-01T08:14:04Z"
+    "codigo": "685bb4bc29fd+alterado",
+    "publicacao": "2026-10-01T11:22:00Z"
    },
    "revisoes": "Detecção de revisões não disponível para este número.",
    "testes": [
@@ -16766,7 +16766,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py dados --sem-coleta",
-   "citacao": "SCRUTINIUMS. Conjuntos publicados no catálogo: 126 conjuntos, catálogo do observatório, 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, ANEEL e CCEE, Listagem de conjuntos (API CKAN package_search) (recurso package_search). Versão energia-0.1.0, código 00dc290a9fdd+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Conjuntos publicados no catálogo: 126 conjuntos, catálogo do observatório, 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, ANEEL e CCEE, Listagem de conjuntos (API CKAN package_search) (recurso package_search). Versão energia-0.1.0, código 685bb4bc29fd+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "conjuntos_atrasados": {
    "indicador": "Conjuntos com atualização atrasada",
@@ -16806,8 +16806,8 @@
    "tratamento_ausencia": "sem frequência declarada: SEM SLA; sem período nem data de publicação da fonte: SEM DADO",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "00dc290a9fdd+alterado",
-    "publicacao": "2026-10-01T08:14:04Z"
+    "codigo": "685bb4bc29fd+alterado",
+    "publicacao": "2026-10-01T11:22:00Z"
    },
    "revisoes": "Detecção de revisões não disponível para este número.",
    "testes": [
@@ -16835,7 +16835,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py dados --sem-coleta",
-   "citacao": "SCRUTINIUMS. Conjuntos com atualização atrasada: 1 conjuntos, conjuntos integrados, 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: Scrutiniums (pipeline do observatório), Silvers do domínio Energia (recurso vintages vigentes de todos os conjuntos integrados; o sha256 é o da lista ordenada conjunto:recurso:sha256 de cada vintage vigente (o mesmo snapshot da proveniência 'saude'), capturado em 01/10/2026). Versão energia-0.1.0, código 00dc290a9fdd+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Conjuntos com atualização atrasada: 1 conjuntos, conjuntos integrados, 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: Scrutiniums (pipeline do observatório), Silvers do domínio Energia (recurso vintages vigentes de todos os conjuntos integrados; o sha256 é o da lista ordenada conjunto:recurso:sha256 de cada vintage vigente (o mesmo snapshot da proveniência 'saude'), capturado em 01/10/2026). Versão energia-0.1.0, código 685bb4bc29fd+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "maior_revisao_relativa": {
    "indicador": "Maior revisão relativa detectada (Balanço de Energia nos Subsistemas)",
@@ -16897,8 +16897,8 @@
    "tratamento_ausencia": "referência ausente numa captura não conta como revisão (ausência não é zero)",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "00dc290a9fdd+alterado",
-    "publicacao": "2026-10-01T08:14:04Z"
+    "codigo": "685bb4bc29fd+alterado",
+    "publicacao": "2026-10-01T11:22:00Z"
    },
    "revisoes": "2620 observações (pares série e referência) revisadas pela fonte entre capturas do mesmo arquivo, em 336 referências distintas.",
    "testes": [
@@ -16916,7 +16916,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py dados --sem-coleta",
-   "citacao": "SCRUTINIUMS. Maior revisão relativa detectada (Balanço de Energia nos Subsistemas): 20656,6%, série carga.NE de balanco_energia_subsistema_ho, 26/09/2026 08:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Balanço de Energia nos Subsistemas (recurso BALANCO_ENERGIA_SUBSISTEMA_2026). Versão energia-0.1.0, código 00dc290a9fdd+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Maior revisão relativa detectada (Balanço de Energia nos Subsistemas): 20656,6%, série carga.NE de balanco_energia_subsistema_ho, 26/09/2026 08:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Balanço de Energia nos Subsistemas (recurso BALANCO_ENERGIA_SUBSISTEMA_2026). Versão energia-0.1.0, código 685bb4bc29fd+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "parquet_equivalentes": {
    "indicador": "Arquivos Parquet equivalentes ao CSV de origem",
@@ -16937,7 +16937,7 @@
     "url": "https://github.com/genarolins1975/scrutiniums/tree/main/public/energia/series",
     "arquivo": "public/energia/series/*.csv",
     "sha256": "56adb29c993aef850de5e8a946ffe7ce3db87e7b805084bf75a20a42cd7a96c0",
-    "capturado_em": "2026-10-01T08:14:04Z",
+    "capturado_em": "2026-10-01T11:22:00Z",
     "publicado_em": null
    },
    "extracao_pdf": null,
@@ -16954,8 +16954,8 @@
    "tratamento_ausencia": "célula vazia do CSV é nulo no Parquet, nunca zero; coluna com número que o float64 não guarda exatamente fica como texto",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "00dc290a9fdd+alterado",
-    "publicacao": "2026-10-01T08:14:04Z"
+    "codigo": "685bb4bc29fd+alterado",
+    "publicacao": "2026-10-01T11:22:00Z"
    },
    "revisoes": "Detecção de revisões não disponível para este número.",
    "testes": [
@@ -16982,7 +16982,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py dados --sem-coleta",
-   "citacao": "SCRUTINIUMS. Arquivos Parquet equivalentes ao CSV de origem: 25 arquivos, séries publicadas em public/energia/series, 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: Scrutiniums (pipeline do observatório), Séries publicadas (CSV e Parquet) (recurso 25 CSV de origem; o sha256 é o da lista ordenada caminho:sha256 recalculada na conferência (o de cada CSV está em arquivos.parquet de publicacao.json e no manifesto), capturado em 01/10/2026). Versão energia-0.1.0, código 00dc290a9fdd+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Arquivos Parquet equivalentes ao CSV de origem: 25 arquivos, séries publicadas em public/energia/series, 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: Scrutiniums (pipeline do observatório), Séries publicadas (CSV e Parquet) (recurso 25 CSV de origem; o sha256 é o da lista ordenada caminho:sha256 recalculada na conferência (o de cada CSV está em arquivos.parquet de publicacao.json e no manifesto), capturado em 01/10/2026). Versão energia-0.1.0, código 685bb4bc29fd+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "afirmacoes_conferidas": {
    "indicador": "Afirmações de integração da Metodologia conferidas com o catálogo",
@@ -17009,8 +17009,8 @@
      {
       "recurso": "/energia/gold/catalogo.json",
       "arquivo": "public/energia/gold/catalogo.json",
-      "sha256": "0bff0add655b7fa0777b75bbba80d0ca1758e9d874a01838a70e49b78b8ad4e5",
-      "capturado_em": "2026-10-01T08:14:04Z",
+      "sha256": "a399f784967a78c1ff5e91b807414f708b60255f9479b10f7d8bf4701ca41858",
+      "capturado_em": "2026-10-01T11:22:00Z",
       "publicado_em": null
      }
     ]
@@ -17056,8 +17056,8 @@
    "tratamento_ausencia": "conjunto citado que não está no catálogo reprova a afirmação; nunca é contado como verificado",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "00dc290a9fdd+alterado",
-    "publicacao": "2026-10-01T08:14:04Z"
+    "codigo": "685bb4bc29fd+alterado",
+    "publicacao": "2026-10-01T11:22:00Z"
    },
    "revisoes": "Detecção de revisões não disponível para este número.",
    "testes": [
@@ -17080,7 +17080,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py dados --sem-coleta",
-   "citacao": "SCRUTINIUMS. Afirmações de integração da Metodologia conferidas com o catálogo: 8 afirmações, página Metodologia, 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: Scrutiniums (pipeline do observatório), Catálogo do observatório (catalogo.json) (recurso catalogo.json gravado nesta publicação). Versão energia-0.1.0, código 00dc290a9fdd+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Afirmações de integração da Metodologia conferidas com o catálogo: 8 afirmações, página Metodologia, 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: Scrutiniums (pipeline do observatório), Catálogo do observatório (catalogo.json) (recurso catalogo.json gravado nesta publicação). Versão energia-0.1.0, código 685bb4bc29fd+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "checagens_reprovadas": {
    "indicador": "Checagens automáticas reprovadas nesta publicação",
@@ -17108,21 +17108,21 @@
       "recurso": "/energia/series/empresas_financas_ajustes.csv",
       "arquivo": "public/energia/series/empresas_financas_ajustes.csv",
       "sha256": "25518c16ec119b7afc8e697be910a5ca5541f000131e8d8d50a3d1ca82deea17",
-      "capturado_em": "2026-10-01T08:14:04Z",
+      "capturado_em": "2026-10-01T11:22:00Z",
       "publicado_em": null
      },
      {
       "recurso": "/energia/series/mercado_nacional_mensal.csv",
       "arquivo": "public/energia/series/mercado_nacional_mensal.csv",
       "sha256": "eb6fcba7b021f6d4d145b4b1d76d81d2331282195784067af7be923986b2c2a0",
-      "capturado_em": "2026-10-01T08:14:04Z",
+      "capturado_em": "2026-10-01T11:22:00Z",
       "publicado_em": null
      },
      {
       "recurso": "/energia/series/sintese_regras_diario.csv",
       "arquivo": "public/energia/series/sintese_regras_diario.csv",
       "sha256": "7b975056e280af8cce712c6b599169edd36fdd2bb77837246bbfd80e0cf4ddd1",
-      "capturado_em": "2026-10-01T08:14:04Z",
+      "capturado_em": "2026-10-01T11:22:00Z",
       "publicado_em": null
      },
      {
@@ -17152,8 +17152,8 @@
    "tratamento_ausencia": "checagem sem aplicação ao alvo é não aplicável, nunca aprovada",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "00dc290a9fdd+alterado",
-    "publicacao": "2026-10-01T08:14:04Z"
+    "codigo": "685bb4bc29fd+alterado",
+    "publicacao": "2026-10-01T11:22:00Z"
    },
    "revisoes": "Detecção de revisões não disponível para este número.",
    "testes": [
@@ -17171,7 +17171,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py dados --sem-coleta",
-   "citacao": "SCRUTINIUMS. Checagens automáticas reprovadas nesta publicação: 3 checagens, publicação do observatório, 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: Scrutiniums (pipeline do observatório), Validador genérico (pipeline/energia/validacoes.py) (recurso alvos reprovados (sha256 recalculado na validação) e silvers do domínio). Versão energia-0.1.0, código 00dc290a9fdd+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Checagens automáticas reprovadas nesta publicação: 3 checagens, publicação do observatório, 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: Scrutiniums (pipeline do observatório), Validador genérico (pipeline/energia/validacoes.py) (recurso alvos reprovados (sha256 recalculado na validação) e silvers do domínio). Versão energia-0.1.0, código 685bb4bc29fd+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  }
 }

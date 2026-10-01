@@ -72,12 +72,12 @@ CONJUNTOS = {
     "consumo_mensal_ambiente_comercializacao": {
         "painel": "P032", "titulo": "Consumo mensal por ambiente de contratação (ACR e ACL), contabilização do MCP",
         "colunas": ("MES_REFERENCIA", "CONSUMO_TOTAL_ACR", "CONSUMO_TOTAL_ACL"), "leitor": "mensal", "dims": (),
-        "unidade": "MWmed", "quebras": [{"data": "2026-02-01", "descricao": "A classe de agente Comercializador deu lugar à classe Varejista; o conjunto CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO deixou de contar o consumo da Varejista no ACL (cerca de 2.500 MW médios), enquanto CONSUMO_CLASSE_AGENTE o publica como classe própria. O observatório soma o ACL pelas classes para manter a série comparável."}],},
+        "unidade": "MWmed", "quebras": [{"data": "2026-02-01", "origem": "PLATAFORMA", "descricao": "A classe de agente Comercializador deu lugar à classe Varejista; o conjunto CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO deixou de contar o consumo da Varejista no ACL (cerca de 2.500 MW médios), enquanto CONSUMO_CLASSE_AGENTE o publica como classe própria. O observatório soma o ACL pelas classes para manter a série comparável."}],},
     "consumo_classe_agente": {
         "painel": "P032", "titulo": "Consumo por classe de agente e ambiente (centro de gravidade e ponto de conexão)",
         "colunas": ("MES_REFERENCIA", "CLASSE_AGENTE", "CONSUMO", "CONSUMO_PONTO_CONEXAO_CLASSE_ACR",
                     "CONSUMO_PONTO_CONEXAO_CLASSE_ACL"), "leitor": "mensal", "dims": ("CLASSE_AGENTE",), "unidade": "MWmed",
-        "quebras": [{"data": "2026-02-01", "descricao": "A classe de agente Comercializador deu lugar à classe Varejista; o conjunto CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO deixou de contar o consumo da Varejista no ACL (cerca de 2.500 MW médios), enquanto CONSUMO_CLASSE_AGENTE o publica como classe própria. O observatório soma o ACL pelas classes para manter a série comparável."}],},
+        "quebras": [{"data": "2026-02-01", "origem": "PLATAFORMA", "descricao": "A classe de agente Comercializador deu lugar à classe Varejista; o conjunto CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO deixou de contar o consumo da Varejista no ACL (cerca de 2.500 MW médios), enquanto CONSUMO_CLASSE_AGENTE o publica como classe própria. O observatório soma o ACL pelas classes para manter a série comparável."}],},
     "agente_qtd_contabilizacao": {
         "painel": "P033", "titulo": "Quantidade de agentes na contabilização por classe",
         "colunas": ("MES_REFERENCIA", "CLASSE", "QUANTIDADE_AGENTE_CONTABILIZACAO"), "leitor": "mensal",

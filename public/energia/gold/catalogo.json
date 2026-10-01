@@ -1,7 +1,7 @@
 {
  "dominio": "energia",
  "gold": "catalogo.json",
- "gerado_em": "2026-10-01T08:14:04Z",
+ "gerado_em": "2026-10-01T11:22:00Z",
  "versao_pipeline": "energia-0.1.0",
  "disponivel": true,
  "estados": [
@@ -933,6 +933,7 @@
    "quebras": [
     {
      "data": "2020-07-01",
+     "origem": "PLATAFORMA",
      "descricao": "Salto no número de agentes declarantes distintos por trimestre na própria base: 14 no 2º trimestre de 2020, 162 no 3º e 1.117 no 4º (de 9 a 14 por trimestre entre 2018 e o 2º trimestre de 2020; cerca de 3 mil a partir de 2025). Antes do salto a base cobre poucos agentes e não serve para comparar a estrutura de controle do setor."
     }
    ],
@@ -1457,6 +1458,7 @@
    "quebras": [
     {
      "data": "2014-01-01",
+     "origem": "FONTE",
      "descricao": "Antes de 2014 o arquivo detalhado não cobre toda a potência liberada no ano (nota do dicionário de dados da ANEEL)."
     }
    ],
@@ -1961,6 +1963,7 @@
    "quebras": [
     {
      "data": "2021-06-17",
+     "origem": "PLATAFORMA",
      "descricao": "Primeira fotografia do histórico publicado do RALIE; antes dela não há previsão com data-base em dados abertos."
     }
    ],
@@ -3167,6 +3170,7 @@
    "quebras": [
     {
      "data": "2026-02-01",
+     "origem": "PLATAFORMA",
      "descricao": "A classe de agente Comercializador deu lugar à classe Varejista; o conjunto CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO deixou de contar o consumo da Varejista no ACL (cerca de 2.500 MW médios), enquanto CONSUMO_CLASSE_AGENTE o publica como classe própria. O observatório soma o ACL pelas classes para manter a série comparável."
     }
    ],
@@ -3278,6 +3282,7 @@
    "quebras": [
     {
      "data": "2026-02-01",
+     "origem": "PLATAFORMA",
      "descricao": "A classe de agente Comercializador deu lugar à classe Varejista; o conjunto CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO deixou de contar o consumo da Varejista no ACL (cerca de 2.500 MW médios), enquanto CONSUMO_CLASSE_AGENTE o publica como classe própria. O observatório soma o ACL pelas classes para manter a série comparável."
     }
    ],
@@ -3935,6 +3940,7 @@
    "quebras": [
     {
      "data": "2026-07-01",
+     "origem": "PLATAFORMA",
      "descricao": "O parágrafo de composição dos encargos mudou de rótulos entre 2024 e 2026 (restrição de operação, suporte de reativo, deslocamento hidráulico por perfis de geração e de consumo, suporte de reativo vinculado ao sandbox); o extrator mapeia os rótulos conhecidos e registra os desconhecidos."
     }
    ],
@@ -6395,6 +6401,7 @@
    "quebras": [
     {
      "data": "2026-03-01",
+     "origem": "PLATAFORMA",
      "descricao": "A edição de março de 2026 publicou o suporte de reativo de março com uma parcela 'vinculada a resposta da demanda' (280 mil R$); as edições de abril a junho retiraram a parcela e o total de março passou de 344.773 para 344.493 mil R$."
     }
    ],
@@ -6636,7 +6643,11 @@
      "origem": "PLATAFORMA",
      "descricao": "Na carga horária do balanço a MMGD aparece a partir de 01/05/2023: até 30/04 ela acompanha a carga global sem MMGD da API de carga verificada do ONS e, depois, a carga com MMGD (módulo PLD, historico.ponderacao)."
     },
-    "A partir de 29/04/2023 a geração solar e a carga incluem a estimativa da micro e minigeração distribuída (MMGD) feita pelo ONS, somada sem separação (componente ESTIMADO). O conjunto do balanço não declara a mudança; a data é a declarada pelo ONS para o conjunto Carga de Energia, e o degrau aparece no arquivo do balanço no mesmo dia (solar do SIN às 12h: 5.688,69 MWmed em 28/04/2023 e 14.987,70 em 29/04/2023). O intercâmbio não muda; geração e carga mensais dos dois lados da data não são comparáveis diretamente (coluna mmgd_estimada)."
+    {
+     "data": "2023-04-29",
+     "origem": "PLATAFORMA",
+     "descricao": "A partir de 29/04/2023 a geração solar e a carga incluem a estimativa da micro e minigeração distribuída (MMGD) feita pelo ONS, somada sem separação (componente ESTIMADO). O conjunto do balanço não declara a mudança; a data é a declarada pelo ONS para o conjunto Carga de Energia, e o degrau aparece no arquivo do balanço no mesmo dia (solar do SIN às 12h: 5.688,69 MWmed em 28/04/2023 e 14.987,70 em 29/04/2023). O intercâmbio não muda; geração e carga mensais dos dois lados da data não são comparáveis diretamente (coluna mmgd_estimada)."
+    }
    ],
    "interno": "balanco_energia_subsistema_ho",
    "familia": "energia",
@@ -8883,7 +8894,11 @@
     "rede_detalhe.json"
    ],
    "quebras": [
-    "Campo da parcela destinada ao Paraguai removido pelo ONS na versão 1.1 do dicionário (30/07/2026)."
+    {
+     "data": "2026-07-30",
+     "origem": "FONTE",
+     "descricao": "Campo da parcela destinada ao Paraguai removido pelo ONS na versão 1.1 do dicionário (30/07/2026)."
+    }
    ],
    "interno": "ons_rede_itaipu",
    "familia": "ons_rede",
@@ -9127,7 +9142,11 @@
     "rede_detalhe.json"
    ],
    "quebras": [
-    "A partir do arquivo de 2026 cada linha vem orientada no sentido do fluxo verificado da hora (valor não negativo); até 2025 a orientação era fixa e o valor tinha sinal. O dicionário não descreve a mudança."
+    {
+     "data": "2026-01-01",
+     "origem": "PLATAFORMA",
+     "descricao": "A partir do arquivo de 2026 cada linha vem orientada no sentido do fluxo verificado da hora (valor não negativo); até 2025 a orientação era fixa e o valor tinha sinal. O dicionário não descreve a mudança."
+    }
    ],
    "interno": "intercambio_nacional_ho",
    "familia": "energia",

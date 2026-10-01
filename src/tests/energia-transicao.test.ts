@@ -696,7 +696,9 @@ describe("páginas renderizadas no servidor", () => {
     expect(contagem(null, "unidade", "unidades")).toBe("sem dado");
     // nomes pelo código IBGE, conferidos contra o CSV municipal publicado (caminho independente do JSON)
     const porCodigo = new Map(csv("transicao_mmgd_municipios.csv").map((r) => [r.codigo_ibge, `${r.municipio} (${r.uf})`]));
-    const ids = G.mmgd.controles.distribuidora_fora_da_uf.maiores_municipios.map((x) => x.ibge);
+    const fora = G.mmgd.controles.distribuidora_fora_da_uf;
+    if (!fora.disponivel) throw new Error(`controle fora da área indisponível: ${fora.motivo}`);
+    const ids = fora.maiores_municipios.map((x) => x.ibge);
     const arq = JSON.parse(ler("public/energia/series/transicao_municipios.json")) as MunicipiosMmgdArquivo;
     const nomes = nomesMunicipios(arq, ids);
     expect(nomes.size).toBe(ids.length);

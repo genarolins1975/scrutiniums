@@ -25,7 +25,15 @@ export function GeracaoNavegacao({ atual }: { atual: PainelGeracao }) {
   return (
     <nav aria-label="Painéis da geração" className="pb-4">
       <ol className="flex flex-wrap gap-2 text-sm">
-        {PAINEIS_GERACAO.map((p) => (
+        {PAINEIS_GERACAO.map((p) =>
+          !p.publicado ? (
+            <li key={p.id}>
+              <span className="inline-flex min-h-[44px] items-center border border-dashed border-linha px-3 text-carvao-muted">
+                {p.rotulo}
+                <span className="ml-1.5 text-xs text-mineral">(em preparação)</span>
+              </span>
+            </li>
+          ) : (
           <li key={p.id}>
             <Link
               href={rotaPainel(p.id)}
@@ -37,7 +45,8 @@ export function GeracaoNavegacao({ atual }: { atual: PainelGeracao }) {
               {p.rotulo}
             </Link>
           </li>
-        ))}
+          ),
+        )}
       </ol>
     </nav>
   );
@@ -67,7 +76,7 @@ export function GeracaoIndisponivel({ motivo }: { motivo?: string | null }) {
 }
 
 /** Rodapé do painel: downloads, link compartilhável e a próxima pergunta (seção 7.2, itens 9 e 10). */
-export function GeracaoSeguir({ ancora, proximo, downloads }: { ancora: string; proximo: { href: string; pergunta: string }; downloads: { rotulo: string; url: string }[] }) {
+export function GeracaoSeguir({ ancora, proximo, downloads }: { ancora: string; proximo: { href: string; pergunta: string } | null; downloads: { rotulo: string; url: string }[] }) {
   return (
     <div className="space-y-3 border-t border-linha pt-3">
       {downloads.length > 0 && (
@@ -86,12 +95,14 @@ export function GeracaoSeguir({ ancora, proximo, downloads }: { ancora: string; 
       )}
       <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
         <GeracaoLinkPainel ancora={ancora} />
-        <p className="text-sm">
-          <span className="rotulo mr-2 text-mineral">Próxima pergunta</span>
-          <Link href={proximo.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-            {proximo.pergunta}
-          </Link>
-        </p>
+        {proximo && (
+          <p className="text-sm">
+            <span className="rotulo mr-2 text-mineral">Próxima pergunta</span>
+            <Link href={proximo.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
+              {proximo.pergunta}
+            </Link>
+          </p>
+        )}
       </div>
     </div>
   );

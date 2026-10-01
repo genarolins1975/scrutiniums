@@ -1,11 +1,11 @@
 {
  "dominio": "energia",
  "gold": "manifesto.json",
- "gerado_em": "2026-10-01T08:15:47Z",
+ "gerado_em": "2026-10-01T11:24:06Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "00dc290a9fdd+alterado",
+ "versao_codigo": "685bb4bc29fd+alterado",
  "disponivel": true,
- "id_publicacao": "7bc227bd52534c3f29de3d7271ab96b6703b04410730df22c12649dbc1386772",
+ "id_publicacao": "9c0af84aacc82f60fd8d4edf2a7bd078e6af5967f9332da6fe7f2fd330b321af",
  "regra_id": "sha256 da lista JSON [caminho, bytes, sha256] de todos os arquivos listados, em ordem de caminho (separadores sem espaço, UTF-8): o mesmo conjunto de bytes tem o mesmo id.",
  "completo": false,
  "fora_do_manifesto": [
@@ -29,7 +29,7 @@
  "repositorio": "https://github.com/genarolins1975/scrutiniums",
  "totais": {
   "arquivos": 265,
-  "bytes": 206033711,
+  "bytes": 206033710,
   "geometrias": 2,
   "golds": 26,
   "series": 212,
@@ -196,7 +196,7 @@
    "caminho": "/energia/gold/publicacao.json",
    "tipo": "gold",
    "bytes": 402680,
-   "sha256": "48b43ca8229c7a4fddcddc6250923bb1c8fa2c26fcd207c70e252c6df70e88d1"
+   "sha256": "432f220d29a78e6b93aef4b895a6b1755332763eecd91bab655a3dc42a25e832"
   },
   {
    "caminho": "/energia/gold/qualidade.json",
@@ -1183,7 +1183,7 @@
    "caminho": "/energia/series/dados_conjuntos.csv",
    "tipo": "serie",
    "bytes": 56792,
-   "sha256": "c5671bd7e60af663db694ab6b9aa81fdd4178415a6002a05c3a1c456a129508b",
+   "sha256": "3495f7543aecf1bbdb5b101279acd482cd490a73ae454f87dc093579addaa244",
    "colunas": [
     "id",
     "familia",
@@ -1368,8 +1368,8 @@
   {
    "caminho": "/energia/series/dados_validacoes.csv",
    "tipo": "serie",
-   "bytes": 570437,
-   "sha256": "f151a88b4e927f8d9ca3beffd82376a0c443944190f13fe2a4539afb6f127cd5",
+   "bytes": 570436,
+   "sha256": "6ba7f5aedb133868ec37ed919e11a4b5bbe9f9a87ae7909da1c7dcb9a12e044d",
    "colunas": [
     "id",
     "alvo",

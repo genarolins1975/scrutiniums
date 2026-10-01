@@ -4,7 +4,7 @@ gold:agua_detalhe.json:cabecalho;agua_detalhe.json;esquema;aprovado;Cabeçalho c
 gold:agua_detalhe.json:proveniencia;agua_detalhe.json;proveniencia;aprovado;12 proveniências completas;toda proveniência com natureza válida, fonte (órgão, URL https, licença), período, snapshot com sha256, captura e limitações, CALCULADO com fórmula;12;0;
 gold:agua_detalhe.json:links;agua_detalhe.json;downloads;aprovado;16 arquivos citados existem;todo caminho /energia/series, /energia/gold ou /energia/geo citado existe em public/;16;0;
 gold:agua_detalhe.json:datas_futuras;agua_detalhe.json;datas_futuras;aprovado;Nenhum período observado ou calculado além da data da validação;fim do período de referência até hoje (Brasília), salvo PREVISTO, CENARIO ou regra de horizonte da fonte;12;0;
-gold:agua_detalhe.json:drift;agua_detalhe.json;drift_esquema;aprovado;0 campos removidos, 0 com tipo alterado e 96 novos em relação ao último commit;campos e tipos até 3 níveis iguais aos da publicação anterior (campo removido pode quebrar a página que o lê);1288;0;
+gold:agua_detalhe.json:drift;agua_detalhe.json;drift_esquema;aprovado;0 campos removidos, 0 com tipo alterado e 0 novos em relação ao último commit;campos e tipos até 3 níveis iguais aos da publicação anterior (campo removido pode quebrar a página que o lê);1384;0;
 gold:agua_detalhe.json:tamanho;agua_detalhe.json;tamanho;aprovado;386 KB;até 400 KB (contrato dos módulos);1;0;
 gold:arquivos.json:json;arquivos.json;json;aprovado;JSON válido, sem NaN ou Infinity;JSON válido, sem NaN ou Infinity;1;0;
 gold:arquivos.json:cabecalho;arquivos.json;esquema;aprovado;Cabeçalho completo e publicação íntegra;dominio = energia, disponivel booleano e verdadeiro, gerado_em em UTC;1;0;
@@ -32,8 +32,8 @@ gold:catalogo.json:cabecalho;catalogo.json;esquema;aprovado;Cabeçalho completo 
 gold:catalogo.json:proveniencia;catalogo.json;proveniencia;nao_aplicavel;Gold de controle (catálogo, metadados, manifesto): não publica indicador.;toda proveniência com natureza, fonte, período, snapshot, captura e limitações;;0;
 gold:catalogo.json:links;catalogo.json;downloads;aprovado;158 arquivos citados existem;todo caminho /energia/series, /energia/gold ou /energia/geo citado existe em public/;158;0;
 gold:catalogo.json:datas_futuras;catalogo.json;datas_futuras;nao_aplicavel;Nenhum período observado ou calculado além da data da validação;fim do período de referência até hoje (Brasília), salvo PREVISTO, CENARIO ou regra de horizonte da fonte;0;0;
-gold:catalogo.json:drift;catalogo.json;drift_esquema;aprovado;0 campos removidos, 0 com tipo alterado e 0 novos em relação ao último commit;campos e tipos até 3 níveis iguais aos da publicação anterior (campo removido pode quebrar a página que o lê);124;0;
-gold:catalogo.json:tamanho;catalogo.json;tamanho;aprovado;397 KB;até 400 KB (contrato dos módulos);1;0;
+gold:catalogo.json:drift;catalogo.json;drift_esquema;aprovado;0 campos removidos, 0 com tipo alterado e 0 novos em relação ao último commit;campos e tipos até 3 níveis iguais aos da publicação anterior (campo removido pode quebrar a página que o lê);122;0;
+gold:catalogo.json:tamanho;catalogo.json;tamanho;aprovado;396 KB;até 400 KB (contrato dos módulos);1;0;
 gold:cmo.json:json;cmo.json;json;aprovado;JSON válido, sem NaN ou Infinity;JSON válido, sem NaN ou Infinity;1;0;
 gold:cmo.json:cabecalho;cmo.json;esquema;aprovado;Cabeçalho completo e publicação íntegra;dominio = energia, disponivel booleano e verdadeiro, gerado_em em UTC;1;0;
 gold:cmo.json:proveniencia;cmo.json;proveniencia;aprovado;1 proveniências completas;toda proveniência com natureza válida, fonte (órgão, URL https, licença), período, snapshot com sha256, captura e limitações, CALCULADO com fórmula;1;0;
@@ -186,7 +186,7 @@ gold:sintese.json:cabecalho;sintese.json;esquema;aprovado;Cabeçalho completo e 
 gold:sintese.json:proveniencia;sintese.json;proveniencia;ressalva;Nenhuma proveniência no formato do contrato (natureza, fonte, limitações) foi encontrada.;toda proveniência com natureza, fonte, período, snapshot, captura e limitações;0;0;
 gold:sintese.json:links;sintese.json;downloads;aprovado;21 arquivos citados existem;todo caminho /energia/series, /energia/gold ou /energia/geo citado existe em public/;21;0;
 gold:sintese.json:datas_futuras;sintese.json;datas_futuras;nao_aplicavel;Nenhum período observado ou calculado além da data da validação;fim do período de referência até hoje (Brasília), salvo PREVISTO, CENARIO ou regra de horizonte da fonte;0;0;
-gold:sintese.json:drift;sintese.json;drift_esquema;aprovado;0 campos removidos, 0 com tipo alterado e 1 novos em relação ao último commit;campos e tipos até 3 níveis iguais aos da publicação anterior (campo removido pode quebrar a página que o lê);342;0;
+gold:sintese.json:drift;sintese.json;drift_esquema;aprovado;0 campos removidos, 0 com tipo alterado e 0 novos em relação ao último commit;campos e tipos até 3 níveis iguais aos da publicação anterior (campo removido pode quebrar a página que o lê);343;0;
 gold:sintese.json:tamanho;sintese.json;tamanho;aprovado;350 KB;até 400 KB (contrato dos módulos);1;0;
 gold:territorio.json:json;territorio.json;json;aprovado;JSON válido, sem NaN ou Infinity;JSON válido, sem NaN ou Infinity;1;0;
 gold:territorio.json:cabecalho;territorio.json;esquema;aprovado;Cabeçalho completo e publicação íntegra;dominio = energia, disponivel booleano e verdadeiro, gerado_em em UTC;1;0;

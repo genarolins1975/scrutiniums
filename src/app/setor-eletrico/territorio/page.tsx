@@ -115,7 +115,7 @@ export default function TerritorioPage() {
               natureza={g.proveniencia.indice.natureza}
               porQueImporta={
                 <>
-                  Quem mora num município paga a tarifa da sua distribuidora, está num submercado com o seu preço de curto prazo, é atendido por um conjunto elétrico com a sua
+                  Quem mora num município paga a tarifa da sua distribuidora, está num submercado com o seu PLD, é atendido por um conjunto elétrico com a sua
                   continuidade e vive num lugar com a sua geração distribuída. Juntar essas peças mostra o que acontece na região sem atribuir a um lugar um número que pertence a uma
                   área maior.
                 </>

@@ -134,7 +134,7 @@ REGISTRO = {
          "dataset_silver": DS_MME, "titulo": "Boletim de Monitoramento do Sistema Elétrico: edições mensais (encargos de serviços do sistema e consumo por ambiente) e consolidação anual (conferência anual)",
          "estado": "UTILIZADO EM INDICADOR", "url": URL_MME, "licenca": LICENCA_MME, "paginas": PAGINA,
          "downloads": [_url(CSV_ESS)], "quebras": [
-             {"data": "2026-03-01", "descricao": "A edição de março de 2026 publicou o suporte de reativo de março com uma parcela 'vinculada a resposta da demanda' (280 mil R$); as edições de abril a junho retiraram a parcela e o total de março passou de 344.773 para 344.493 mil R$."}]},
+             {"data": "2026-03-01", "origem": "PLATAFORMA", "descricao": "A edição de março de 2026 publicou o suporte de reativo de março com uma parcela 'vinculada a resposta da demanda' (280 mil R$); as edições de abril a junho retiraram a parcela e o total de março passou de 344.773 para 344.493 mil R$."}]},
         *[{"orgao": "CCEE", "nome": nome, "slug": f"ccee-{nome.replace('_', '-')}", "dataset_silver": cm.dataset(nome),
            "titulo": spec["titulo"], "estado": "UTILIZADO EM INDICADOR", "url": f"{cm.PORTAL}/dataset/{nome}",
            "licenca": cm.LICENCA, "paginas": PAGINA, "downloads": [_url(CSV_CCEE)], "quebras": spec.get("quebras", [])}
@@ -144,7 +144,7 @@ REGISTRO = {
          "estado": "VALIDADO", "url": cm.URL_MERCADO_MENSAL,
          "licenca": "Publicação da CCEE; números reproduzidos com atribuição, apenas para conferência", "paginas": PAGINA,
          "downloads": [], "quebras": [
-             {"data": "2026-07-01", "descricao": "O parágrafo de composição dos encargos mudou de rótulos entre 2024 e 2026 (restrição de operação, suporte de reativo, deslocamento hidráulico por perfis de geração e de consumo, suporte de reativo vinculado ao sandbox); o extrator mapeia os rótulos conhecidos e registra os desconhecidos."}]},
+             {"data": "2026-07-01", "origem": "PLATAFORMA", "descricao": "O parágrafo de composição dos encargos mudou de rótulos entre 2024 e 2026 (restrição de operação, suporte de reativo, deslocamento hidráulico por perfis de geração e de consumo, suporte de reativo vinculado ao sandbox); o extrator mapeia os rótulos conhecidos e registra os desconhecidos."}]},
     ],
     "arquivos": {
         _url(CSV_CONSUMO): "mes (AAAA-MM); regiao (geográfica); subsistema (SE, S, NE, N ou ISOL = sistemas isolados); classe (Residencial, Industrial, Comercial, Rural, Outros); tipo (cativo ou livre); consumo_mwh (consumo de energia elétrica na rede, MWh, como publicado pela EPE); unidades_consumidoras (número de UCs no mês). Fonte: EPE, dados abertos do consumo mensal (tabela CONSUMO E NUMCONS SAM). Vazio = a fonte não publicou o valor; zero é zero.",

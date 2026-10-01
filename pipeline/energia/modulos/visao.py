@@ -163,7 +163,7 @@ REGRAS = [
      "nao_implica": "Participação térmica alta ou baixa não indica, sozinha, escassez de água nem custo maior para o consumidor.",
      "hipoteses": [{"texto": "Despacho por razão elétrica, por segurança energética ou por ordem de mérito", "onde_verificar": "/setor-eletrico/geracao"},
                    {"texto": "Variação da geração hidráulica, eólica ou solar", "onde_verificar": "/setor-eletrico/geracao"}],
-     "href": "/setor-eletrico/geracao#termica", "gold": "geracao.json", "metrica": "visao_regra_termica",
+     "href": "/setor-eletrico/geracao/termica#p022", "gold": "geracao.json", "metrica": "visao_regra_termica",
      "dataset": "balanco_energia_subsistema_ho", "unidade": "% da geração do balanço"},
     {"id": "carga_extrema", "tipo": "regra", "titulo": "Carga diária entre as mais altas do ano",
      "condicao": "Carga do SIN no dia acima do 95º percentil dos 364 dias anteriores, todos no mesmo regime metodológico declarado pelo ONS.",

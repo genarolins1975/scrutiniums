@@ -311,7 +311,8 @@ REGISTRO = {
          "descricao": "Fluxo horário verificado e programado em cada fronteira entre subsistemas, relido linha a linha para conferir orientação e sinal.",
          "paginas": [{"rotulo": "Rede: circulação de energia", "href": "/setor-eletrico/rede"}],
          "downloads": ["/energia/series/rede_fronteiras_diario.csv", "/energia/series/rede_programado_horario.csv"], "quebras": [
-             "A partir do arquivo de 2026 cada linha vem orientada no sentido do fluxo verificado da hora (valor não negativo); até 2025 a orientação era fixa e o valor tinha sinal. O dicionário não descreve a mudança."]},
+             {"data": "2026-01-01", "origem": "PLATAFORMA", "descricao":
+             "A partir do arquivo de 2026 cada linha vem orientada no sentido do fluxo verificado da hora (valor não negativo); até 2025 a orientação era fixa e o valor tinha sinal. O dicionário não descreve a mudança."}]},
         {"orgao": "ONS", "nome": "intercambio-internacional", "slug": "ons-intercambio-internacional", "dataset_silver": DS_II,
          "titulo": "Intercâmbio do SIN com Outros Países", "estado": "UTILIZADO EM INDICADOR", "url": url_pacote(DS_II),
          "licenca": c.LICENCA_ONS,
@@ -323,17 +324,18 @@ REGISTRO = {
          "url": url_pacote(DS_BAL), "licenca": c.LICENCA_ONS,
          "paginas": [{"rotulo": "Rede: balanço e exterior", "href": "/setor-eletrico/rede"}],
          "downloads": ["/energia/series/rede_balanco_mensal.csv", "/energia/series/rede_balanco_residuos.csv"], "quebras": [
+             {"data": "2023-04-29", "origem": "PLATAFORMA", "descricao":
              "A partir de 29/04/2023 a geração solar e a carga incluem a estimativa da micro e minigeração distribuída (MMGD) "
              "feita pelo ONS, somada sem separação (componente ESTIMADO). O conjunto do balanço não declara a mudança; a data "
              "é a declarada pelo ONS para o conjunto Carga de Energia, e o degrau aparece no arquivo do balanço no mesmo dia "
              "(solar do SIN às 12h: 5.688,69 MWmed em 28/04/2023 e 14.987,70 em 29/04/2023). O intercâmbio não muda; geração "
-             "e carga mensais dos dois lados da data não são comparáveis diretamente (coluna mmgd_estimada)."]},
+             "e carga mensais dos dois lados da data não são comparáveis diretamente (coluna mmgd_estimada)."}]},
         {"orgao": "ONS", "nome": "geracao_itaipu", "slug": "ons-geracao-itaipu", "dataset_silver": DS_ITA,
          "titulo": "Geração de Itaipu Binacional: base horária", "estado": "UTILIZADO EM INDICADOR", "url": url_pacote(DS_ITA),
          "licenca": c.LICENCA_ONS,
          "paginas": [{"rotulo": "Rede: balanço e exterior", "href": "/setor-eletrico/rede"}],
          "downloads": ["/energia/series/rede_exterior_mensal.csv"], "quebras": [
-             "Campo da parcela destinada ao Paraguai removido pelo ONS na versão 1.1 do dicionário (30/07/2026)."]},
+             {"data": "2026-07-30", "origem": "FONTE", "descricao": "Campo da parcela destinada ao Paraguai removido pelo ONS na versão 1.1 do dicionário (30/07/2026)."}]},
         {"orgao": "ONS", "nome": "ind_confiarb_atls", "slug": "ons-ind-confiarb-atls", "dataset_silver": DS_ATLS,
          "titulo": "Indicador ATLS: atendimento aos limites sistêmicos", "estado": "UTILIZADO EM INDICADOR",
          "url": url_pacote(DS_ATLS), "licenca": c.LICENCA_ONS,

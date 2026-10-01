@@ -205,7 +205,7 @@ describe("P036: mapa das usinas", () => {
     const nucleosCsv = new Set(csv("public/energia/series/empresas_ativos.csv").map((l) => l.nucleo_ceg));
     expect(nucleosCsv.size).toBe(G.cadastro.ativos.usinas);
     for (const k of J.nucleo) expect(nucleosCsv.has(k), k).toBe(true);
-    for (const t of new Set(J.tipo)) expect(TIPOS_USINA.some((x) => x.id === t), String(t)).toBe(true);
+    for (const t of Array.from(new Set(J.tipo))) expect(TIPOS_USINA.some((x) => x.id === t), String(t)).toBe(true);
   });
 
   it("filtro por fase em operação: a mesma contagem do arquivo, e a tabela equivalente tem as mesmas usinas na mesma ordem", () => {

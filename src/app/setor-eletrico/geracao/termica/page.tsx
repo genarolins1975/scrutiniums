@@ -34,6 +34,7 @@ import {
   linhasCvuMensal,
   linhasCvuUsinas,
   linhasUniversoTermica,
+  painelPublicado,
   paraTabela,
   perguntaPainel,
   rotaPainel,
@@ -283,7 +284,7 @@ export default function GeracaoTermicaPage() {
                   </ul>
                 </GeracaoAuditoria>
 
-                <GeracaoSeguir ancora="p022" proximo={{ href: `${rotaPainel("p023")}#p023`, pergunta: perguntaPainel("p023") }} downloads={downloadsDoPainel(g.downloads, "p022")} />
+                <GeracaoSeguir ancora="p022" proximo={painelPublicado("p023") ? { href: `${rotaPainel("p023")}#p023`, pergunta: perguntaPainel("p023") } : null} downloads={downloadsDoPainel(g.downloads, "p022")} />
               </div>
             </PainelEvidencia>
           </Bloco>

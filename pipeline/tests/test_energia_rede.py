@@ -364,10 +364,13 @@ class TestQuebraMmgd(unittest.TestCase):
                          ["sem", "sem", "parcial", "com", "com"])
         quebras = next(x for x in rd.REGISTRO["datasets"] if x["dataset_silver"] == rd.DS_BAL)["quebras"]
         self.assertEqual(len(quebras), 1)
-        self.assertIn("29/04/2023", quebras[0])
+        q = quebras[0]
+        # quebra datada, com origem: o balanço não declara a mudança, a plataforma a identifica no dado
+        self.assertEqual((q["data"], q["origem"]), ("2023-04-29", "PLATAFORMA"))
+        self.assertIn("29/04/2023", q["descricao"])
         # os números citados no REGISTRO são os do arquivo (conferidos no teste acima)
-        self.assertIn("5.688,69", quebras[0])
-        self.assertIn(rd._fmt(14987.696, 2), quebras[0])
+        self.assertIn("5.688,69", q["descricao"])
+        self.assertIn(rd._fmt(14987.696, 2), q["descricao"])
 
     def test_natureza_mista_nas_metricas(self):
         from pipeline.energia.metricas import rede as m_rede

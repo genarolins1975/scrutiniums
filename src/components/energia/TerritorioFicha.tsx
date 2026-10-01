@@ -89,7 +89,8 @@ function Ausente({ motivo }: { motivo: string | null }) {
 }
 
 function valorOu(v: number | null | undefined, casas: number, unidade: string, motivo: string | null = null): ReactNode {
-  return v === null || v === undefined ? <Ausente motivo={motivo} /> : `${num(v, casas)}${unidade ? ` ${unidade}` : ""}`;
+  // percentual colado ao número, como no resto do observatório; demais unidades com espaço
+  return v === null || v === undefined ? <Ausente motivo={motivo} /> : `${num(v, casas)}${unidade === "%" ? "%" : unidade ? ` ${unidade}` : ""}`;
 }
 
 function Links({ itens, titulo = "Na página de origem" }: { itens: LinkModulo[]; titulo?: string }) {

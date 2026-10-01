@@ -192,10 +192,10 @@ def _m_termica(v):
     return [
         _t("As térmicas responderam por "),
         _t(f"{nbr(_v(v, 'participacao_7d'))}% da geração do balanço do ONS nos 7 dias até {c.data_br(_v(v, 'dia'))}",
-           evidencia="geracao.json#termica_contexto.participacao_7d", href="/setor-eletrico/geracao#termica"),
+           evidencia="geracao.json#termica_contexto.participacao_7d", href="/setor-eletrico/geracao/termica#p022"),
         _t(" (a solar desse total inclui a micro e minigeração distribuída estimada pelo ONS); nos 12 meses anteriores, a mediana dessa participação foi "),
         _t(f"{nbr(_v(v, 'mediana_365d'))}%", evidencia="geracao.json#termica_contexto.mediana_365d",
-           href="/setor-eletrico/geracao#termica"),
+           href="/setor-eletrico/geracao/termica#p022"),
         _t("."),
     ]
 

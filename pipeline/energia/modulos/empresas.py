@@ -141,7 +141,7 @@ REGISTRO = {
          "dataset_silver": DS_POLIMERO, "titulo": "Composição Societária (Polímero): árvores de controle declaradas",
          "estado": "UTILIZADO EM INDICADOR", "url": URL_POLIMERO, "licenca": LICENCA_ANEEL, "paginas": PAGINAS,
          "downloads": [_url(CSV_CADEIA), _url(CSV_GRUPOS), _url(JSON_CADEIA)], "quebras": [
-             {"data": "2020-07-01", "descricao": "Salto no número de agentes declarantes distintos por trimestre na própria base: 14 no 2º trimestre de 2020, 162 no 3º e 1.117 no 4º (de 9 a 14 por trimestre entre 2018 e o 2º trimestre de 2020; cerca de 3 mil a partir de 2025). Antes do salto a base cobre poucos agentes e não serve para comparar a estrutura de controle do setor."}]},
+             {"data": "2020-07-01", "origem": "PLATAFORMA", "descricao": "Salto no número de agentes declarantes distintos por trimestre na própria base: 14 no 2º trimestre de 2020, 162 no 3º e 1.117 no 4º (de 9 a 14 por trimestre entre 2018 e o 2º trimestre de 2020; cerca de 3 mil a partir de 2025). Antes do salto a base cobre poucos agentes e não serve para comparar a estrutura de controle do setor."}]},
         {"orgao": "ANEEL", "nome": NOME_SIGET, "slug": "aneel-siget",
          "dataset_silver": DS_SIGET, "titulo": "SIGET: contratos de concessão de transmissão, CNPJ da concessionária, linhas e subestações",
          "estado": "UTILIZADO EM INDICADOR", "url": URL_SIGET, "licenca": LICENCA_ANEEL, "paginas": PAGINAS,

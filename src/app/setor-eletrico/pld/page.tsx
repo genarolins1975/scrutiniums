@@ -292,7 +292,7 @@ export default function PldPage() {
                 porQueImporta={
                   <>
                     O PLD não é tarifa nem cotação de bolsa: é o preço que valora as diferenças entre o contratado e o verificado no Mercado de Curto Prazo, calculado a partir do custo
-                    marginal dos modelos oficiais e limitado pela ANEEL. Saber de onde ele vem evita ler causa onde há regra.
+                    marginal dos modelos oficiais e limitado pela ANEEL. Saber de onde ele vem ajuda a não confundir regra com causa.
                   </>
                 }
                 oQueMudou={

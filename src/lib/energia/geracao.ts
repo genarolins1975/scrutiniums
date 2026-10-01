@@ -62,12 +62,17 @@ export const PERGUNTA_MODULO_GERACAO = "De onde vem a eletricidade e quais fonte
  * juntos passariam da meta de cerca de 600 KB de HTML por página (contrato, seção 5.1).
  * Perguntas do Anexo A, com o sujeito explícito quando a pergunta curta seria ambígua.
  */
-export const PAINEIS_GERACAO: { id: PainelGeracao; rotulo: string; caminho: string; pergunta: string }[] = [
-  { id: "p021", rotulo: "Matriz efetiva", caminho: "", pergunta: "Quais fontes atenderam a carga?" },
-  { id: "p022", rotulo: "Despacho térmico", caminho: "/termica", pergunta: "Quanto as térmicas geraram e por que foram acionadas?" },
-  { id: "p023", rotulo: "Renováveis restringidas", caminho: "/restricoes", pergunta: "Quanta geração eólica e solar foi restringida?" },
-  { id: "p024", rotulo: "Capacidade e utilização", caminho: "/capacidade", pergunta: "Quanto está instalado e quanto produz?" },
+/** `publicado`: a rota do painel já existe no app; painel não publicado aparece como "em preparação", nunca como link. */
+export const PAINEIS_GERACAO: { id: PainelGeracao; rotulo: string; caminho: string; pergunta: string; publicado: boolean }[] = [
+  { id: "p021", rotulo: "Matriz efetiva", caminho: "", pergunta: "Quais fontes atenderam a carga?", publicado: true },
+  { id: "p022", rotulo: "Despacho térmico", caminho: "/termica", pergunta: "Quanto as térmicas geraram e por que foram acionadas?", publicado: true },
+  { id: "p023", rotulo: "Renováveis restringidas", caminho: "/restricoes", pergunta: "Quanta geração eólica e solar foi restringida?", publicado: false },
+  { id: "p024", rotulo: "Capacidade e utilização", caminho: "/capacidade", pergunta: "Quanto está instalado e quanto produz?", publicado: false },
 ];
+
+export function painelPublicado(id: PainelGeracao): boolean {
+  return PAINEIS_GERACAO.find((p) => p.id === id)?.publicado ?? false;
+}
 
 export function rotaPainel(id: PainelGeracao): string {
   return `${ROTA_GERACAO}${PAINEIS_GERACAO.find((p) => p.id === id)?.caminho ?? ""}`;
