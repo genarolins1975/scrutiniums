@@ -521,9 +521,84 @@ def infomercado_valores(texto):
         "encargos_milhoes_rs": r"O total de encargos foi de R\$ ([\d.,]+) milhões",
         "liquidar_bilhoes_rs": r"O total a liquidar foi de R\$ ([\d.,]+) bilhões",
     }
-    valores = {}
+    valores, paginas = {}, {}
     for k, p in padroes.items():
         m = re.search(p, texto)
         if m:
             valores[k] = _num_br(m.group(1))
-    return {"numero": cab.group(1), "mes": mes, "valores": valores}
+            paginas[k] = texto.count("\f", 0, m.start()) + 1
+    return {"numero": cab.group(1), "mes": mes, "valores": valores, "paginas": paginas}
+
+
+def _texto_pdf_bronze(arquivo):
+    """Texto (pdftotext -layout) de um PDF guardado no bronze (.pdf.gz), descomprimido em fluxo
+    para um temporário. None quando o pdftotext não está instalado."""
+    import shutil
+    import subprocess
+    import tempfile
+    exe = shutil.which("pdftotext")
+    if not exe:
+        return None
+    fd, tmp = tempfile.mkstemp(prefix="infomercado-", suffix=".pdf")
+    os.close(fd)
+    try:
+        with base.abre_bronze(arquivo) as src, open(tmp, "wb") as dst:
+            shutil.copyfileobj(src, dst, 1 << 20)
+        r = subprocess.run([exe, "-layout", tmp, "-"], capture_output=True, timeout=120)
+        if r.returncode != 0:
+            raise ValueError(f"pdftotext falhou: {r.stderr[:200]!r}")
+        return r.stdout.decode("utf-8", errors="replace")
+    finally:
+        try:
+            os.remove(tmp)
+        except OSError:
+            pass
+
+
+def coleta_infomercado(con, baixador=http_download, extrai_texto=_texto_pdf_bronze):
+    """Baixa as edições do InfoMercado mensal listadas em INFOMERCADO para o bronze (sha256,
+    vintage) e grava no silver os números do sumário executivo, com a página de cada um.
+    São publicações encerradas (a CCEE não atualiza edições antigas): a recoleta é anual.
+    Nunca lança: falha vira registro em `coletas`."""
+    status = {"ok": True, "edicoes": {}}
+    for it in INFOMERCADO:
+        recurso = f"InfoMercado-mensal_{it['numero']}.pdf"
+        res = ckan.baixar_recurso(con, orgao="CCEE", dataset=DS_INFOMERCADO, recurso=recurso, url=it["url"],
+                                  publicado_em=None, ext="pdf", max_idade_dias=365, baixador=baixador)
+        item = {"status": res["status"], "detalhe": res["detalhe"]}
+        status["edicoes"][recurso] = item
+        v = res["vintage"]
+        if res["status"] == "falha" or not v:
+            status["ok"] = False
+            continue
+        if _ja_processada(con, DS_INFOMERCADO, v["vintage_id"]):
+            continue
+        try:
+            texto = extrai_texto(v["arquivo"])
+            if texto is None:
+                item["erro"] = "pdftotext ausente: extração adiada"
+                continue
+            vals = infomercado_valores(texto)
+        except Exception as e:  # PDF fora do formato verificado: nada é gravado
+            base.registra_coleta(con, DS_INFOMERCADO, recurso, False, f"extração: {e}"[:500])
+            con.commit()
+            item["erro"] = str(e)[:300]
+            status["ok"] = False
+            continue
+        if vals["numero"] != it["numero"]:
+            base.registra_coleta(con, DS_INFOMERCADO, recurso, False,
+                                 f"número da edição no PDF ({vals['numero']}) difere do esperado ({it['numero']})")
+            con.commit()
+            item["erro"] = "edição divergente"
+            status["ok"] = False
+            continue
+        obs = [(f"im|{vals['numero']}|{k}", vals["mes"], val) for k, val in vals["valores"].items()]
+        ch = f"edicao|{vals['numero']}"
+        regs = [(ch, "mes", vals["mes"]), (ch, "recurso", recurso), (ch, "vintage", v["vintage_id"]), (ch, "url", it["url"])]
+        regs += [(ch, f"pagina|{k}", str(p)) for k, p in vals["paginas"].items()]
+        regs.append((f"__processada__|{v['vintage_id']}|{VERSAO_LEITOR}", "ok", "1"))
+        novas, rev = base.grava_observacoes(con, DS_INFOMERCADO, v["vintage_id"], obs)
+        base.grava_registros(con, DS_INFOMERCADO, v["vintage_id"], regs)
+        con.commit()
+        item.update(medidas=sorted(vals["valores"]), novas=novas, revisoes=rev)
+    return status
