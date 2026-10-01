@@ -1100,11 +1100,27 @@ FONTE_INT = c.fonte_ons("intercambio-nacional", DS_INT, "Intercâmbios entre Sub
 
 
 def _fonte_composta(*fontes):
+    """Fonte de um número que combina conjuntos de órgãos diferentes. `url_dataset` e
+    `url_primaria` seguem o esquema da proveniência (os da primeira fonte); `urls` lista o
+    endereço de CADA fonte, para que nenhuma (a ANEEL dos atos, por exemplo) desapareça."""
     return {"orgao": "; ".join(dict.fromkeys(f["orgao"] for f in fontes)),
             "dataset": "; ".join(f["dataset"] for f in fontes),
             "recurso": "; ".join(f["recurso"] for f in fontes),
             "url_dataset": fontes[0]["url_dataset"], "url_primaria": fontes[0]["url_primaria"],
-            "licenca": "; ".join(dict.fromkeys(f["licenca"] for f in fontes))}
+            "licenca": "; ".join(dict.fromkeys(f["licenca"] for f in fontes if f.get("licenca"))),
+            "urls": [{"orgao": f["orgao"], "dataset": f["dataset"], "url_dataset": f["url_dataset"], "url_primaria": f["url_primaria"]}
+                     for f in fontes] + [u for f in fontes for u in f.get("urls_extras", [])]}
+
+
+def _fonte_atos(atos, recurso=None):
+    """Fonte ANEEL dos limites: endereço oficial do ato vigente mais recente e, em
+    `urls_extras`, o de cada ato usado (cada um com o nível de conferência)."""
+    ultimo = max(atos, key=lambda a: (a.get("vigencia_inicio") or "", a.get("data_publicacao") or ""))
+    return {"orgao": "ANEEL", "dataset": "Atos anuais de limites do PLD (via módulo Regulação)",
+            "recurso": recurso or "pipeline/energia/regulatorio/limites_pld.json",
+            "url_dataset": ultimo["url"], "url_primaria": ultimo["url"], "licenca": "Ato normativo público da ANEEL",
+            "urls_extras": [{"orgao": "ANEEL", "dataset": a["ato"], "url_dataset": a["url"], "url_primaria": a["url"],
+                             "nivel_conferencia": a.get("nivel_conferencia")} for a in atos if a is not ultimo]}
 
 
 def _corr(xs, ys):

@@ -5,6 +5,7 @@ import { GraficoBarras } from "@/components/energia/GraficoBarras";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
+import { dataBR } from "@/lib/energia/formato";
 import { CAMPO_DIST, destacar, linhasRanking, remover, respostaTarifa, type Perfil } from "@/lib/energia/conta";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { ResumoTarifas, TarifaVigente } from "@/lib/energia/tipos-conta";
@@ -59,7 +60,7 @@ export function ContaTarifas({ vigentes, resumo, dataReferencia, fonte }: ContaT
     if (id) definir({ dist: destacar(v.dist, id) });
     else if (destaque) definir({ dist: remover(v.dist, destaque) });
   };
-  const resposta = respostaTarifa({ data_referencia: dataReferencia, tarifas: { resumo, vigentes } as never }, perfil);
+  const resposta = respostaTarifa(dataReferencia, resumo, vigentes, perfil);
   const chavePerfil = String(perfil) as "100" | "200" | "300";
 
   return (
@@ -139,7 +140,7 @@ export function ContaTarifas({ vigentes, resumo, dataReferencia, fonte }: ContaT
 
       {destaque && !naRanking && (
         <p className="text-sm text-carvao-muted" role="status">
-          A distribuidora escolhida não tem tarifa B1 vigente em {dataReferencia.split("-").reverse().join("/")} e não entra no ranking; o histórico e o motivo estão abaixo.
+          A distribuidora escolhida não tem tarifa B1 vigente em {dataBR(dataReferencia)} e não entra no ranking; o histórico e o motivo estão abaixo.
         </p>
       )}
 

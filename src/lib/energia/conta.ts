@@ -35,6 +35,7 @@ import type {
   JanelaInflacao,
   Ligacao,
   PontoEvolucao,
+  ResumoTarifas,
   Simulador,
   Subsidios,
   TarifaVigente,
@@ -540,15 +541,14 @@ export function verboVariacao(v: number | null | undefined, casas = 2): string {
 }
 
 /** P047: quanto custa o perfil escolhido, do menor ao maior, e a mediana. */
-export function respostaTarifa(g: Pick<ContaGold, "data_referencia" | "tarifas">, perfil: Perfil): string {
-  const { resumo, vigentes } = g.tarifas;
+export function respostaTarifa(dataReferencia: string, resumo: ResumoTarifas, vigentes: readonly TarifaVigente[], perfil: Perfil): string {
   const chave = String(perfil) as "100" | "200" | "300";
   const ord = [...vigentes].sort((a, b) => a.posicao - b.posicao);
   const menor = ord[0];
   const maior = ord[ord.length - 1];
-  if (!menor || !maior || resumo.n === 0) return `Em ${dataBR(g.data_referencia)}, nenhuma distribuidora tem tarifa B1 residencial vigente no arquivo da ANEEL.`;
+  if (!menor || !maior || resumo.n === 0) return `Em ${dataBR(dataReferencia)}, nenhuma distribuidora tem tarifa B1 residencial vigente no arquivo da ANEEL.`;
   return (
-    `Em ${dataBR(g.data_referencia)}, ${perfil} kWh no mês custam, só pela tarifa B1 residencial homologada (TE + TUSD, sem tributos e sem bandeira), ` +
+    `Em ${dataBR(dataReferencia)}, ${perfil} kWh no mês custam, só pela tarifa B1 residencial homologada (TE + TUSD, sem tributos e sem bandeira), ` +
     `de ${reais(menor.perfis[chave])} (${rotuloDistribuidora(menor.sigla, menor.cnpj)}) a ${reais(maior.perfis[chave])} (${rotuloDistribuidora(maior.sigla, maior.cnpj)}); ` +
     `a mediana entre ${resumo.n} distribuidoras é ${reais(resumo.perfis_mediana[chave])}, ou ${rsKwh(resumo.mediana)}.`
   );
