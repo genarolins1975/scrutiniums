@@ -62,7 +62,36 @@ export type Desempenho =
       por_celula: LinhaMetrica[];
       por_celula_nota: string;
     }
-  | { publicado: false; motivo: string };
+  | {
+      publicado: false;
+      motivo: string;
+      /** Onde estão os resultados calculados e retidos (fora do portal). */
+      calculado: string;
+    };
+
+/** Estado da publicação dos números de desempenho do teste retrospectivo (regra do
+ * registro de modelos: só com a liberação formal do responsável, com nome e data). */
+export type DecisaoPublicacao = {
+  estado: "PENDENTE" | "LIBERADA" | string;
+  decidido_por: string | null;
+  decidido_em: string | null;
+  escopo_decidido?: string | null;
+  pergunta?: string;
+  registro?: string;
+};
+
+export type PublicacaoDesempenho =
+  | { estado: "LIBERADA"; publicado: true; regra: string; decisao: DecisaoPublicacao | null }
+  | {
+      estado: "RETIDA";
+      publicado: false;
+      regra: string;
+      decisao: DecisaoPublicacao | null;
+      motivo: string;
+      interpretacao_do_implementador: string;
+      para_liberar: string;
+      arquivos_retirados_do_portal: string[] | null;
+    };
 
 export type CandidatoSelecao = {
   modelo: "C2-P" | "C2-H";
@@ -187,6 +216,9 @@ export type Rodada = {
   prazo: string | null;
   emitido_em: string;
   atraso_min: number | null;
+  /** "registrado" (gravado pela rodada) ou o texto que declara o atraso derivado de
+   * emitido_em e prazo (registro transcrito sem o campo); null sem prazo. */
+  atraso_origem: string | null;
   no_prazo: boolean | null;
   /** "agendada", "manual" ou o texto do registro transcrito de artefato externo. */
   modo: string;
@@ -232,6 +264,29 @@ export type Reexecucao = {
   tolerancia: string;
 };
 
+/** Calibração dos registros gravados com a comparação estrita anterior a 01/10/2026, refeita
+ * com a regra corrigida. Com os números de desempenho retidos, só os estados aparecem: as
+ * coberturas (gravada e refeita) ficam fora do portal. */
+export type CalibracaoRegraAntiga = {
+  descricao: string;
+  rodadas: string[];
+  registros: number;
+  cobertura_diferente: number;
+  status_diferente: number;
+  por_registro: {
+    forecast_id: string;
+    run_id: string;
+    horizonte: Horizonte;
+    submercado: Submercado;
+    status_gravado: string | null;
+    status_recalculado: string;
+    entregas: number | null;
+    /** Só com a publicação liberada. */
+    cobertura_gravada?: number | null;
+    cobertura_recalculada?: number | null;
+  }[];
+};
+
 export type Prospectivo = {
   rodadas: Rodada[];
   total_rodadas: number;
@@ -243,6 +298,7 @@ export type Prospectivo = {
   leitura: string;
   revisoes_entre_rodadas: RevisaoEntrega[];
   reexecucao: Reexecucao;
+  calibracao_regra_antiga: CalibracaoRegraAntiga;
 };
 
 export type Rotina = {
@@ -251,6 +307,9 @@ export type Rotina = {
   horarios: string;
   fuso: string;
   inicio_operacao_agendada: string | null;
+  /** Instante (UTC) da verificação e último dia de Brasília cujo prazo das 08h00 já passou. */
+  verificado_em: string;
+  dias_vencidos_ate: string;
   execucoes_agendadas: number;
   no_prazo: number;
   atrasadas: number;
@@ -297,7 +356,16 @@ export type RegistroEmissao = {
   previsao_parte_desconhecida?: number;
   media_conhecida_no_corte?: number;
   quantis: { p10: number; p90: number; rotulo_faixa: string } | null;
-  calibracao: { status: string; cobertura_p10_p90?: number | null; entregas?: number | null; fonte?: string };
+  /** `cobertura_p10_p90` só existe com a publicação liberada; retida, a rodada grava
+   * `cobertura_retida` e a partição publicada omite o campo dos registros antigos. */
+  calibracao: {
+    status: string;
+    cobertura_p10_p90?: number | null;
+    cobertura_retida?: string;
+    entregas?: number | null;
+    fonte?: string;
+    comparacao?: string;
+  };
   limites?: { piso_medio: number | null; teto_estrutural_medio: number | null; provisoria: boolean };
   features_usadas?: {
     nome: string;
@@ -319,11 +387,19 @@ export type RegistroEmissao = {
   substitui: string | null;
   motivo_correcao: string | null;
   anterior?: string | null;
+  /** Só na partição publicada: campos do registro versionado omitidos na publicação. */
+  omitido_na_publicacao?: string[];
+  /** sha256 do registro completo versionado (a projeção publicada não o altera). */
   sha256: string;
 };
 
 /** public/energia/series/previsoes_emissoes_AAAA-MM.json */
-export type ParticaoEmissoes = { mes: string; registros: RegistroEmissao[] };
+export type ParticaoEmissoes = {
+  mes: string;
+  registros: RegistroEmissao[];
+  /** Presente quando a publicação omite números de desempenho retidos. */
+  projecao?: { registros_com_campos_omitidos: number; campos_omitidos: string[]; motivo: string; sha256: string };
+};
 
 /* ---------- P013: previsão atual ---------- */
 
@@ -341,6 +417,10 @@ export type CelulaAtual = {
   fracao_conhecida: number | null;
   periodo_usado: { inicio: string; fim: string; capturado_em: string | null } | null;
   forecast_id: string;
+  /** Estado de calibração refeito com a regra corrigida (registros gravados antes de 01/10/2026). */
+  calibracao_recalculada?: EstadoCalibracao | string;
+  /** Chave em `evidencias` ("Comprove este número"); null sem número. */
+  evidencia: string | null;
 };
 
 export type PublicadoNoCorte = {
@@ -360,8 +440,11 @@ export type PublicadoNoCorte = {
       /** [hora local 'AAAA-MM-DDTHH:00', PLD em R$/MWh] */
       valores: [string, number | null][];
       capturado_em: string | null;
+      /** Chave em `evidencias`; null sem hora capturada. */
+      evidencia: string | null;
     }
   >;
+  proveniencia: Proveniencia;
 };
 
 export type PrevisaoAtual =
@@ -381,6 +464,8 @@ export type PrevisaoAtual =
       bandas: string;
       candidatos: { emitidos: boolean; motivo: string | null };
       ja_publicado_no_corte: PublicadoNoCorte | null;
+      /** Proveniência da referência experimental (natureza PREVISTO). */
+      proveniencia: Proveniencia | null;
     }
   | { disponivel: false; motivo: string; ja_publicado_no_corte: PublicadoNoCorte | null };
 
@@ -489,6 +574,9 @@ export type PrevisoesDesempenhoGold = Cabecalho & {
     >;
     ultima_entrega_apurada_teste: string | null;
     linhas_csv: { semanal: number; mensal: number };
+    /** Último dia de EAR e ENA no dado integrado (menor entre os submercados). */
+    ultimo_dia_ear: string | null;
+    ultimo_dia_ena: string | null;
     configuracao_sha256: string;
     configuracao_registrada_sha256: string | null;
   };
@@ -500,6 +588,7 @@ export type PrevisoesDesempenhoGold = Cabecalho & {
     avaliado: boolean;
     motivo_sem_avaliacao: string | null;
   }[];
+  publicacao_desempenho: PublicacaoDesempenho;
   desempenho: Desempenho;
   selecao: Selecao | null;
   regimes: Regimes | null;
@@ -510,6 +599,8 @@ export type PrevisoesDesempenhoGold = Cabecalho & {
   previsao_atual: PrevisaoAtual;
   fichas: Ficha[];
   governanca: Governanca;
+  /** Evidências dos números publicados: grade B0 (b0_semanal_SE...), PLD já publicado no
+   * corte (pld_no_corte_SE...) e, com a publicação liberada, os MAE do teste. */
   evidencias: Record<string, Evidencia>;
   validacoes: { nome: string; resultado: ResultadoTeste; detalhe: string }[];
   downloads: Download[];

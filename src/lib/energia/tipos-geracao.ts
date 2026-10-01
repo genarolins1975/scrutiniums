@@ -121,7 +121,19 @@ export type A11 = {
   tratamento: string[];
 };
 
-export type TipoQuebra = "rotulo_novo" | "rotulo_encerrado" | "roraima" | "identificadores_sem_valor" | "salto_de_universo";
+/**
+ * rotulo_encerrado = o rótulo some do arquivo (sem linhas); rotulo_sem_valor = as linhas continuam,
+ * todas vazias; sequencia_zero = rótulo só com zero exato por 3 meses ou mais, depois que as usinas
+ * que produziam deixaram o arquivo.
+ */
+export type TipoQuebra =
+  | "rotulo_novo"
+  | "rotulo_encerrado"
+  | "rotulo_sem_valor"
+  | "sequencia_zero"
+  | "roraima"
+  | "identificadores_sem_valor"
+  | "salto_de_universo";
 export type Quebra = {
   data: string;
   tipo: TipoQuebra;
@@ -133,6 +145,15 @@ export type Quebra = {
 };
 
 /* ---------- P021: matriz efetiva ---------- */
+
+/** Ressalva de universo de uma categoria num período: a participação continua publicada, mas não é comparável. */
+export type RessalvaUniverso = {
+  motivos: ("salto_no_periodo" | "universo_reduzido")[];
+  identificadores_com_valor_no_ultimo_mes: number;
+  maior_numero_12_meses_antes: number;
+  /** Datas (AAAA-MM-01) dos saltos de universo dentro do período. */
+  saltos: string[];
+};
 
 export type Mix = {
   inicio: string;
@@ -149,6 +170,11 @@ export type Mix = {
   /** true quando o período inteiro é posterior a 29/04/2023. */
   mmgd_no_periodo: boolean;
   dias_no_periodo?: number;
+  /** Categorias com linha em só parte dos dias do período (presença parcial): dias com linha. */
+  dias_com_linha: Partial<Record<CategoriaGeracao, number>>;
+  /** % da energia do período por natureza do dado; natureza sem linha no período é null. */
+  natureza_pct: Record<NaturezaGeracao, number | null>;
+  ressalvas_universo: Partial<Record<CategoriaGeracao, RessalvaUniverso>>;
 };
 
 export type JanelasRegiao = { dia?: Mix | null; "7d"?: Mix | null; "30d": Mix | null; "12m": Mix | null };
@@ -164,6 +190,7 @@ export type ComparacaoDozeMeses = {
   anterior_mwmed: PorCategoria<number | null>;
 };
 
+/** Série mensal do SIN; categoria sem linha no mês é null (ausência, nunca zero). */
 export type MensalSin = {
   meses: string[];
   dias_completos: number[];
@@ -171,6 +198,10 @@ export type MensalSin = {
   parcial: boolean[];
   total_mwmed: (number | null)[];
   total_sem_mmgd_mwmed: (number | null)[];
+  /** Só os meses com presença parcial da categoria: {categoria: {mês: dias com linha}}. */
+  dias_com_linha: Partial<Record<CategoriaGeracao, Record<string, number>>>;
+  /** Meses em que a participação da categoria tem ressalva de universo. */
+  ressalvas_universo: Partial<Record<CategoriaGeracao, string[]>>;
 } & PorCategoria<(number | null)[]>;
 
 export type NaturezaMensal = { meses: string[] } & Record<NaturezaGeracao, (number | null)[]>;
@@ -182,6 +213,9 @@ export type AnoSin = {
   mwmed: PorCategoria<number | null>;
   total_sem_mmgd_mwmed: number | null;
   participacao_sem_mmgd: PorCategoria<number | null>;
+  natureza_pct: Record<NaturezaGeracao, number | null>;
+  dias_com_linha: Partial<Record<CategoriaGeracao, number>>;
+  ressalvas_universo: Partial<Record<CategoriaGeracao, RessalvaUniverso>>;
   mmgd_dias: number;
 };
 
@@ -242,14 +276,58 @@ export type ReconciliacaoBalanco = {
 
 export type ContagemMensal = { meses: string[] } & Partial<Record<CategoriaGeracao, number[]>>;
 
+export type SequenciaZeroRotulo = {
+  tipo: string;
+  combustivel: string;
+  modalidade: string | null;
+  categoria: CategoriaGeracao;
+  inicio: string;
+  fim: string;
+  meses: number;
+  mes_anterior: string;
+  mwh_mes_anterior: number | null;
+  ultimo_mes_com_valor: string;
+  /** Identificadores do rótulo com valor no mês anterior e sem linha no primeiro mês da sequência. */
+  identificadores_que_sairam: number;
+  mwh_mes_anterior_dos_que_sairam: number | null;
+};
+
+export type SequenciaZeroIdentificador = {
+  id: string;
+  nome: string | null;
+  categoria: CategoriaGeracao | null;
+  modalidade: string | null;
+  inicio: string;
+  fim: string;
+  meses: number;
+  mwh_mes_anterior: number | null;
+  continua: boolean;
+};
+
+export type LacunaCategoria = {
+  sem_valor: number;
+  sem_linhas: number;
+  com_valor_no_mes: number;
+  com_valor_mesmo_mes_ano_anterior: number;
+  /** Geração publicada pela fonte para os mesmos identificadores um ano antes: referência observada, não estimativa. */
+  mwh_dos_ausentes_mesmo_mes_ano_anterior: number | null;
+};
+
 export type UniversoMatriz = {
   identificadores_por_categoria: ContagemMensal;
   identificadores_sem_valor_por_categoria: ContagemMensal;
+  /** Identificadores com valor em algum dos 12 meses anteriores e sem nenhuma linha no mês. */
+  identificadores_sem_linhas_por_categoria: ContagemMensal;
   lacuna_ultimo_mes: {
     mes: string;
+    mes_ano_anterior: string;
     identificadores_sem_valor: number;
+    identificadores_sem_linhas: number;
     por_categoria: Partial<Record<CategoriaGeracao, number>>;
+    detalhe_por_categoria: Partial<Record<CategoriaGeracao, LacunaCategoria>>;
     exemplos: string[];
+    exemplos_sem_linhas: string[];
+    nota: string;
   } | null;
   linhas_sem_id_ons_por_arquivo: Record<string, number>;
   mudancas_de_rotulo: {
@@ -259,11 +337,40 @@ export type UniversoMatriz = {
     categoria: CategoriaGeracao;
     natureza: NaturezaGeracao;
     aparece_em: string | null;
+    /** Último mês com linhas no arquivo, quando o rótulo some antes do último mês. */
     ultimo_mes_com_linhas: string | null;
+    /** Último mês com valor, quando as linhas continuam depois dele, todas vazias. */
+    ultimo_mes_com_valor: string | null;
   }[];
   saltos_de_universo: { mes: string; categoria: CategoriaGeracao; identificadores_antes: number; identificadores_depois: number }[];
+  sequencias_zero_rotulo: SequenciaZeroRotulo[];
+  sequencias_zero_identificadores: {
+    n: number;
+    continuam_no_ultimo_mes: number;
+    por_categoria: Partial<Record<CategoriaGeracao, number>>;
+    /** As sequências mais longas (a contagem completa está em n). */
+    lista: SequenciaZeroIdentificador[];
+  };
   regra: string;
+  regra_ressalvas: string;
+  regra_sequencias_zero: string;
 };
+
+/** Decomposição da categoria "outros" pelo código de combustível do CEG (CM, FL, PE...). */
+export type OutrosPorCeg = {
+  inicio: string;
+  fim: string;
+  itens: {
+    codigo_ceg: string | null;
+    fonte_aneel: string;
+    mwh: number | null;
+    mwmed: number | null;
+    pct_da_categoria: number | null;
+    identificadores: number;
+    maiores: string[];
+  }[];
+  regra: string;
+} | null;
 
 export type Matriz = {
   dia_referencia: string;
@@ -278,6 +385,7 @@ export type Matriz = {
   horario_sin_recente: { horas: string[] } & SerieRecente;
   rotulos: RotuloFonte[];
   nao_mapeadas: RotuloFonte[];
+  outros_por_ceg: OutrosPorCeg;
   reconciliacao_balanco: ReconciliacaoBalanco;
   universo: UniversoMatriz;
 };
@@ -306,31 +414,58 @@ export type TermicaCombustivel12m = {
   nao_classificado_mwh: number | null;
 };
 
+export type OrigemCombustivel =
+  | "termica_por_motivo"
+  | "geracao_por_usina"
+  | "capacidade_instalada"
+  | "geracao_por_usina_ceg_base"
+  | "capacidade_instalada_ceg_base"
+  | "mesma_usina"
+  | "nao_identificado";
+
+/** Parcela da usina (código do ONS nos modelos), com a geração no período e o CVU da semana vigente. */
+export type ParcelaTermica = { cod: number; nome: string | null; mwh: number | null; cvu_semana_vigente: number | null };
+
+/** Usina = identidade que liga as chaves (CEG) da mesma usina na fonte; `id` é a chave mais recente. */
 export type TermicaUsina = {
   id: string;
   nome: string | null;
+  origem_nome: "termica_por_motivo" | "geracao_por_usina" | "capacidade_instalada";
   sm: Submercado | string | null;
   ceg: string | null;
-  cod: number | null;
+  chaves_na_fonte: string[];
   combustivel: string | null;
   categoria: CategoriaCombustivel;
-  origem_combustivel: "termica_por_motivo" | "geracao_por_usina" | "capacidade_instalada" | "geracao_por_usina_ceg_base" | "capacidade_instalada_ceg_base" | "nao_identificado";
+  origem_combustivel: OrigemCombustivel;
   mwh: number | null;
   mwmed: number | null;
   /** Só motivos com geração no período (motivo ausente = zero na usina). */
   motivos_pct: Partial<Record<MotivoDespacho, number>>;
   constrained_off_mwh: number | null;
+  /** Parcelas com geração no período ou CVU na semana; as demais são contadas em parcelas_omitidas. */
+  parcelas: ParcelaTermica[];
+  parcelas_omitidas: number;
+  /** CVU quando a usina tem uma só parcela com CVU; com várias, null (o CVU de cada uma está em parcelas). */
   cvu_semana_vigente: number | null;
 };
 
-export type CvuUsina = { cod: number; nome: string | null; sm: string | null; cvu: number | null; categoria: CategoriaCombustivel; id_termica: string | null };
+export type CvuUsina = {
+  cod: number;
+  nome: string | null;
+  sm: string | null;
+  cvu: number | null;
+  categoria: CategoriaCombustivel;
+  /** Identidade da usina na térmica por motivo; null = sem par ou código ambíguo. */
+  id_termica: string | null;
+  usina: string | null;
+};
 
 export type Cvu = {
   semana: { inicio: string; fim: string | null; estudo: string | null; pmo: string | null; revisao: number | null };
   usinas: CvuUsina[];
   por_combustivel: ({ categoria: CategoriaCombustivel; rotulo: string } & Quantis)[];
   mediana_mensal: { meses: string[] } & Partial<Record<CategoriaCombustivel, (number | null)[]>>;
-  cobertura: { usinas_com_cvu: number; pareadas_com_termica: number; sem_par: string[] };
+  cobertura: { usinas_com_cvu: number; pareadas_com_termica: number; sem_par: string[]; codigos_ambiguos: { cod: number; usinas: string[] }[] };
   controles: { conflitos_mesma_semana_usina: number; linhas_repetidas_identicas: number };
 };
 
@@ -354,7 +489,14 @@ export type Termica = {
   mensal_combustivel: { meses: string[] } & Record<CategoriaCombustivel, (number | null)[]>;
   usinas_12m: TermicaUsina[];
   usinas_12m_resumo: { usinas_com_geracao: number; publicadas: number; cobertura_da_energia_pct: number | null; lista_completa: string };
-  mapa_combustivel: { usinas: number; por_origem: Record<string, number>; nao_identificadas: { id: string; nome: string | null }[] };
+  mapa_combustivel: {
+    usinas: number;
+    por_origem: Record<string, number>;
+    nao_identificadas: { id: string; nome: string | null; mwh_12m: number | null }[];
+    nao_identificadas_mwh_12m: number | null;
+    nao_identificadas_pct_12m: number | null;
+  };
+  identidade: { usinas_com_mais_de_uma_chave: { usina: string; nome: string | null; chaves: string[] }[]; regra: string };
   universo: {
     mensal: {
       mes: string;
@@ -396,6 +538,8 @@ export type RestricaoUsina = {
   uf: string | null;
   lat: number | null;
   lon: number | null;
+  /** Coordenada da subestação coletora; sem ela, a do ponto de conexão (origem registrada). */
+  origem_coordenada: "subestacao_coletora" | "ponto_de_conexao" | null;
   energia_nao_gerada_mwh: number;
   geracao_verificada_mwh: number | null;
   taxa_pct: number | null;
@@ -431,7 +575,14 @@ export type Restricao = {
     usinas_com_restricao: number;
   } | null;
   usinas_12m: RestricaoUsina[];
-  usinas_12m_resumo: { usinas_com_restricao: number; publicadas: number; cobertura_da_energia_pct: number | null; com_coordenadas: number; lista_completa: string };
+  usinas_12m_resumo: {
+    usinas_com_restricao: number;
+    publicadas: number;
+    cobertura_da_energia_pct: number | null;
+    com_coordenadas: number;
+    coordenadas_por_origem: Record<string, number>;
+    lista_completa: string;
+  };
   descricoes_ultimo_mes: { mes: string; n_descricoes: number; itens: { descricao: string; mwh: number | null }[] } | null;
   diario_recente: {
     dias: string[];
@@ -448,6 +599,12 @@ export type Restricao = {
     razao_fora_do_dominio: number;
     gnra_divergente_da_regra: number;
     meias_horas_com_gnra: number;
+    /** Corte simultâneo × soma das referências das mesmas linhas na meia hora. */
+    meias_horas_com_corte: number;
+    meias_horas_corte_acima_da_referencia: number;
+    arquivos_sem_controle_de_referencia: number;
+    dias_maior_corte_acima_da_referencia: number;
+    dias_maior_corte_sem_referencia: number;
   };
 };
 
@@ -459,6 +616,10 @@ export type Capacidade12m = {
   categoria: CategoriaCapacidade;
   rotulo: string;
   potencia_atual_mw: number | null;
+  /** Potência média em operação nos 12 meses (todas as unidades da categoria). */
+  potencia_media_12m_mw: number | null;
+  /** Capacidade-hora do denominador ÷ horas dos 12 meses; nunca passa de potencia_media_12m_mw. */
+  capacidade_hora_media_mw: number | null;
   geracao_pareada_mwh: number | null;
   capacidade_hora_mwh: number | null;
   fator_capacidade_pct: number | null;
@@ -506,9 +667,37 @@ export type Capacidade = {
       por_categoria_mw: Partial<Record<CategoriaCapacidade, number>>;
       fontes_em_outros: { origem: string | null; fonte: string | null; mw: number | null }[];
       fonte: string;
+      serie_temporal: string;
+      nota_temporal: string;
+    } | null;
+    /** Série histórica da ANEEL por tipo de geração ao lado da potência do ONS no último dia do mesmo mês. */
+    siga_historico: {
+      datas: string[];
+      grupos: Record<
+        "hidraulica" | "eolica" | "solar_centralizada" | "nuclear" | "termica",
+        { aneel_mw: (number | null)[]; ons_mw: (number | null)[]; ons_pct_da_aneel: (number | null)[] }
+      >;
+      data_geracao_arquivo: string | null;
+      capturado_em: string | null;
+      tipos_fora_dos_grupos: Record<string, number>;
+      fonte: string;
+      regra: string;
     } | null;
     /** Capacidade de MMGD cadastrada na ANEEL (módulo Transição): fora do fator de capacidade. */
-    mmgd: { potencia_mw: number; data_cadastro: string | null; fonte: string } | null;
+    mmgd: {
+      potencia_mw: number;
+      data_cadastro: string | null;
+      fonte: string;
+      /** Potência cadastrada ao fim de cada mês ao lado da MMGD estimada pelo ONS; nunca somadas nem divididas. */
+      mensal: {
+        meses: string[];
+        potencia_cadastrada_mw: (number | null)[];
+        cadastro_provisorio: boolean[];
+        geracao_estimada_ons_mwmed: (number | null)[];
+        mes_completo_na_geracao: boolean[];
+        regra: string;
+      } | null;
+    } | null;
   };
 };
 

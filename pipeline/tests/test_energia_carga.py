@@ -766,6 +766,37 @@ class GoldPublicada(unittest.TestCase):
         self.assertIn("não causal", self.g["p027"]["nome"])
         self.assertEqual(self.g["p027"]["natureza"], "ESTIMADO")
 
+    def test_diferenca_global_contra_curva_descrita_pela_propria_tabela(self):
+        # o texto escrito à mão dizia "mais à noite"; na tabela por hora a maior diferença cai às 13h
+        # (+7,63%) e a menor às 06h (+1,69%). O texto agora é lido da tabela: a hora do máximo e a do
+        # mínimo citadas são as da tabela, e "noite" não aparece em nenhuma frase publicada sobre isso.
+        por_hora = self.g["p026"]["compatibilidade"]["por_hora_sin_365d"]
+        validos = [x for x in por_hora if x["diferenca_pct"] is not None]
+        mx = max(validos, key=lambda x: x["diferenca_pct"])
+        mn = min(validos, key=lambda x: x["diferenca_pct"])
+        conclusao = self.g["p026"]["compatibilidade"]["conclusao"]
+        limitacao = next(t for t in self.g["proveniencia"]["api"]["limitacoes"] if "curva de carga" in t)
+        for t in (conclusao, *self.g["proveniencia"]["api"]["limitacoes"]):
+            self.assertNotIn("noite", t)
+        for t in (conclusao, limitacao):
+            self.assertIn(f"na hora das {mx['hora']:02d}h", t)
+            self.assertIn(f"na hora das {mn['hora']:02d}h", t)
+        self.assertTrue(all(x["diferenca_pct"] > 0 for x in validos))
+        self.assertIn("acima da curva em todas as horas do dia", conclusao)
+
+    def test_texto_diferenca_horaria_segue_a_tabela(self):
+        por_hora = [{"hora": 0, "horas": 365, "diferenca_mwmed": 1911.0, "diferenca_pct": 2.49},
+                    {"hora": 6, "horas": 365, "diferenca_mwmed": 1236.0, "diferenca_pct": 1.69},
+                    {"hora": 13, "horas": 365, "diferenca_mwmed": 6212.0, "diferenca_pct": 7.63},
+                    {"hora": 20, "horas": 0, "diferenca_mwmed": None, "diferenca_pct": None}]
+        t = mod._texto_diferenca_horaria(por_hora)
+        self.assertEqual(t, "nos últimos 365 dias do SIN, a carga global ficou acima da curva em todas as horas do dia, "
+                            "de +1,69% na hora das 06h a +7,63% na hora das 13h")
+        por_hora[0]["diferenca_pct"] = -0.5
+        self.assertIn("muda de sinal", mod._texto_diferenca_horaria(por_hora))
+        self.assertIn("de −0,50% na hora das 00h", mod._texto_diferenca_horaria(por_hora))
+        self.assertIsNone(mod._texto_diferenca_horaria([{"hora": 1, "horas": 0, "diferenca_mwmed": None, "diferenca_pct": None}]))
+
 
 if __name__ == "__main__":
     unittest.main()

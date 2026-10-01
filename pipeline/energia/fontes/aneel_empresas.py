@@ -688,3 +688,234 @@ def cadeia_de_controle(g, x, limite=25):
         pcts.append(aresta["pct"])
         atual = prox
     return {"topo": atual, "cadeia": cadeia, "motivo_parada": "ciclo", "pcts": pcts, "acima": None}
+
+
+def _acumula_nome(d, chave, per, nome):
+    """Guarda, por CNPJ, só os nomes do período mais recente em que ele aparece, contados."""
+    atual = d.get(chave)
+    if atual is None or per > atual[0]:
+        d[chave] = (per, collections.Counter({nome: 1}))
+    elif per == atual[0]:
+        atual[1][nome] += 1
+
+
+def nomes_polimero(pol):
+    """{CNPJ: nome} lido do Polímero com prioridade determinística.
+
+    1. O nome da linha de nível 0 da declaração mais recente do próprio agente (é como ele
+       se declara à ANEEL).
+    2. Para quem não declara na janela, o nome com que aparece como sócio na declaração mais
+       recente de terceiros.
+    Empate no mesmo trimestre (dois declarantes grafam o nome de formas diferentes): o nome
+    mais frequente nesse trimestre e, persistindo o empate, a ordem alfabética. A primeira
+    versão sobrescrevia o nome iterando o grafo vigente, cuja ordem vem de um conjunto: com
+    sementes de hash diferentes saíam 'State Grid Brazil Power Participações S.A.' ou 'STATE
+    GRID BRAZIL POWER PARTICIPAÇÕES S/A.', e até a denominação antiga de uma companhia."""
+    proprio, terceiros = {}, {}
+    for (raiz, per), arvores in pol["arvores"].items():
+        for arv in arvores:
+            if arv.get("nome"):
+                _acumula_nome(proprio, raiz, per, arv["nome"])
+            for a in arv["arestas"]:
+                if a["socio"] and a["nome"]:
+                    _acumula_nome(terceiros, a["socio"], per, a["nome"])
+
+    def escolhe(contagem):
+        return sorted(contagem.items(), key=lambda kv: (-kv[1], kv[0]))[0][0]
+
+    out = {k: escolhe(cont) for k, (_, cont) in terceiros.items()}
+    out.update({k: escolhe(cont) for k, (_, cont) in proprio.items()})
+    return out
+
+
+# ----------------------------------------------------------------------------- SIGET (transmissão)
+
+# Recursos do conjunto "Sistema de Gestão da Transmissão (SIGET)" usados no vínculo dos ativos
+# de transmissão ao CNPJ. O contrato de concessão (IdeCcd) é a ponte: cada módulo (linha,
+# equipamento, manobra ou módulo geral de subestação) pertence ao contrato IdeCcdProprietario,
+# e o recurso "SIGET - Contrato Agente" publica o CNPJ da concessionária de cada contrato.
+SIGET_CONTRATOS = "siget-contrato-agente.csv"
+SIGET_MODULOS = "siget-contrato-empreendimento-obra-modulo.csv"
+SIGET_LINHAS = "siget-contrato-modulolinhatransmissao-subestacaoorigem-subestacaodestino.csv"
+SIGET_EQUIPAMENTOS = "siget-contrato-moduloequipamento-subestacao.csv"
+SIGET_RECURSOS = (SIGET_CONTRATOS, SIGET_MODULOS, SIGET_LINHAS, SIGET_EQUIPAMENTOS)
+# Obra em operação ou concluída: o módulo existe e opera (DscSitObr; os demais estados são
+# "Em andamento", "Planejado" e vazio).
+SIGET_SITUACOES_OPERACAO = ("Em operação", "Concluído")
+SIGET_TIPOS_MODULO = {"LT": "linha de transmissão", "ME": "equipamento de subestação",
+                      "MM": "manobra (entrada de linha, conexão, interligação de barras)",
+                      "MG": "módulo geral de subestação (infraestrutura)"}
+
+
+def le_siget_contratos(linhas):
+    """'SIGET - Contrato Agente' → ({IdeCcd: contrato}, ocorrências). O CNPJ vem sem os
+    zeros à esquerda em parte das linhas ('8635011000150') e é normalizado para 14 dígitos
+    (entidades.cnpj); contrato sem CNPJ fica com cnpj None e é contado, nunca ligado por nome."""
+    out, ocorr = {}, {"linhas": 0, "sem_cnpj": 0, "cnpj_sem_zeros": 0, "repetidos": 0, "data_geracao": None}
+    for r in linhas:
+        ocorr["linhas"] += 1
+        k = texto(r.get("IdeCcd"))
+        if not k:
+            continue
+        ocorr["data_geracao"] = ocorr["data_geracao"] or data_iso(r.get("DatGeracaoConjuntoDados"))
+        bruto = re.sub(r"\D", "", texto(r.get("NumCNPJ")) or "")
+        c14 = entidades.cnpj(bruto) if bruto else None
+        if c14 is None:
+            ocorr["sem_cnpj"] += 1
+        elif len(bruto) < 14:
+            ocorr["cnpj_sem_zeros"] += 1
+        if k in out:
+            ocorr["repetidos"] += 1
+            continue
+        out[k] = {"numero": texto(r.get("NumCnaCcd")), "tipo": texto(r.get("IdcTipoCcd")), "cnpj": c14,
+                  "agente": texto(r.get("DscRazaoSocial")), "assinatura": data_iso(r.get("DatAsnCcd")),
+                  "fim": data_iso(r.get("DatFimCcd")), "uf": texto(r.get("SigUF"))}
+    return out, ocorr
+
+
+def le_siget_modulos(linhas):
+    """'SIGET - Contrato Empreendimento Obra Módulo' → ({IdeMdl: módulo}, ocorrências). O
+    arquivo tem uma linha por obra × módulo (o mesmo módulo aparece numa obra de instalação e
+    noutra de adequação, por exemplo); o módulo fica com o contrato proprietário
+    (IdeCcdProprietario, que difere do contrato da obra, IdeCcd, quando a obra foi autorizada
+    em outro contrato), o tipo (SigTipMdl) e em_operacao = alguma obra do módulo em operação ou
+    concluída. Módulo com mais de um contrato proprietário é contado e fica sem dono (nenhum
+    caso em 29/09/2026)."""
+    out, ocorr = {}, {"linhas": 0, "sem_modulo": 0, "proprietario_divergente": [], "data_geracao": None}
+    for r in linhas:
+        ocorr["linhas"] += 1
+        m = texto(r.get("IdeMdl"))
+        if not m:
+            ocorr["sem_modulo"] += 1
+            continue
+        ocorr["data_geracao"] = ocorr["data_geracao"] or data_iso(r.get("DatGeracaoConjuntoDados"))
+        dono = texto(r.get("IdeCcdProprietario"))
+        opera = texto(r.get("DscSitObr")) in SIGET_SITUACOES_OPERACAO
+        x = out.get(m)
+        if x is None:
+            out[m] = {"proprietario": dono, "tipo": texto(r.get("SigTipMdl")), "em_operacao": opera,
+                      "nome": texto(r.get("NomMdl"))}
+            continue
+        if x["proprietario"] != dono and m not in ocorr["proprietario_divergente"]:
+            ocorr["proprietario_divergente"].append(m)
+        x["em_operacao"] = x["em_operacao"] or opera
+    for m in ocorr["proprietario_divergente"]:
+        out[m]["proprietario"] = None
+    return out, ocorr
+
+
+def le_siget_linhas(linhas):
+    """Módulos de linha de transmissão → {IdeMdl: linha}. Cada módulo de linha é um circuito
+    (NumCcuLinTms) com a extensão da linha (NumEtnLinTms, km); o mesmo módulo aparece uma vez
+    por obra, sempre com a mesma linha e a mesma extensão (151 repetições em 29/09/2026), e
+    conta uma vez."""
+    out = {}
+    for r in linhas:
+        m = texto(r.get("IdeMdl"))
+        if not m or m in out:
+            continue
+        out[m] = {"linha": texto(r.get("IdeLinTms")), "nome": texto(r.get("NomLinTms")), "km": numero(r.get("NumEtnLinTms")),
+                  "tensao_kv": numero(r.get("NumTensaoBaseLinhaTransm")), "situacao": texto(r.get("DscSitLinTms")),
+                  "ufs": sorted({u for u in (texto(r.get("SigUFSubestacaoOrigem")), texto(r.get("SigUFSubestacaoDestino")))
+                                 if u in UFS})}
+    return out
+
+
+def le_siget_equipamentos(linhas):
+    """Módulos de equipamento de subestação → {IdeMdl: equipamento} com a subestação (IdeSbe),
+    a UF e, para transformador de potência, a potência (MdaPotAtvMdlEqp, MVA) e a finalidade
+    (principal ou reserva: o reserva substitui outro em falha e não acrescenta capacidade)."""
+    out = {}
+    for r in linhas:
+        m = texto(r.get("IdeMdl"))
+        if not m or m in out:
+            continue
+        tipo = texto(r.get("DscTipEqp"))
+        out[m] = {"subestacao": texto(r.get("IdeSbe")), "nome_subestacao": texto(r.get("NomSubestacao")),
+                  "uf": texto(r.get("SigUFSubestacao")) if texto(r.get("SigUFSubestacao")) in UFS else None,
+                  "tipo": tipo, "finalidade": texto(r.get("DscFinMdlEqp")),
+                  "mva": numero(r.get("MdaPotAtvMdlEqp")) if tipo == "Transformador de Potência" else None}
+    return out
+
+
+def transmissao_por_cnpj(contratos, modulos, linhas, equipamentos):
+    """Ativos de transmissão por CNPJ da concessionária: módulo → contrato proprietário →
+    CNPJ. Retorna (por_cnpj, cobertura). Medidas por CNPJ:
+
+    * contratos (todos os do CNPJ no recurso de contratos) e módulos por tipo;
+    * circuitos e km de circuito das linhas ativas (DscSitLinTms = 'Ativa'), separados entre
+      módulo em operação (alguma obra em operação ou concluída) e em implantação; linha
+      desativada só é contada;
+    * subestações: IdeSbe distintos em que o CNPJ tem módulo de equipamento em operação (o
+      SIGET aberto liga à subestação só os módulos de equipamento; manobra e módulo geral
+      ficam sem subestação). A mesma subestação pode ter módulos de mais de um CNPJ: somar
+      subestações entre CNPJ conta a subestação mais de uma vez;
+    * transformação: MVA dos transformadores de potência principais em operação.
+
+    Cobertura: módulos cujo contrato proprietário tem CNPJ; módulos de linha com registro no
+    recurso de linhas; módulos de equipamento com registro no recurso de equipamentos."""
+    por = {}
+
+    def novo(c14):
+        return {"contratos": 0, "contratos_com_modulos": set(), "modulos": 0, "modulos_operacao": 0,
+                "por_tipo": collections.Counter(), "circuitos_operacao": 0, "km_operacao": 0.0,
+                "circuitos_implantacao": 0, "km_implantacao": 0.0, "circuitos_desativados": 0,
+                "subestacoes": set(), "mva_operacao": 0.0, "ufs": set(), "agentes": collections.Counter()}
+
+    for k, ct in contratos.items():
+        if ct["cnpj"]:
+            d = por.setdefault(ct["cnpj"], novo(ct["cnpj"]))
+            d["contratos"] += 1
+            if ct["agente"]:
+                d["agentes"][ct["agente"]] += 1
+    cob = {"modulos": len(modulos), "modulos_com_cnpj": 0, "modulos_sem_contrato": 0, "modulos_contrato_sem_cnpj": 0,
+           "modulos_lt": 0, "modulos_lt_com_linha": 0, "modulos_me": 0, "modulos_me_com_equipamento": 0,
+           "contratos": len(contratos), "contratos_sem_cnpj": sum(1 for x in contratos.values() if not x["cnpj"]),
+           "subestacoes_distintas": set(), "km_operacao": 0.0, "circuitos_operacao": 0}
+    for m in sorted(modulos, key=lambda s: (len(s), s)):
+        x = modulos[m]
+        tipo = x["tipo"]
+        lt = linhas.get(m) if tipo == "LT" else None
+        eq = equipamentos.get(m) if tipo == "ME" else None
+        if tipo == "LT":
+            cob["modulos_lt"] += 1
+            cob["modulos_lt_com_linha"] += lt is not None
+        if tipo == "ME":
+            cob["modulos_me"] += 1
+            cob["modulos_me_com_equipamento"] += eq is not None
+        ct = contratos.get(x["proprietario"]) if x["proprietario"] else None
+        if ct is None:
+            cob["modulos_sem_contrato"] += 1
+            continue
+        if not ct["cnpj"]:
+            cob["modulos_contrato_sem_cnpj"] += 1
+            continue
+        cob["modulos_com_cnpj"] += 1
+        d = por[ct["cnpj"]]
+        d["contratos_com_modulos"].add(x["proprietario"])
+        d["modulos"] += 1
+        d["por_tipo"][tipo] += 1
+        d["modulos_operacao"] += x["em_operacao"]
+        if lt is not None:
+            d["ufs"].update(lt["ufs"])
+            if lt["situacao"] == "Ativa" and lt["km"] is not None:
+                if x["em_operacao"]:
+                    d["circuitos_operacao"] += 1
+                    d["km_operacao"] += lt["km"]
+                    cob["circuitos_operacao"] += 1
+                    cob["km_operacao"] += lt["km"]
+                else:
+                    d["circuitos_implantacao"] += 1
+                    d["km_implantacao"] += lt["km"]
+            elif lt["situacao"] == "Desativada":
+                d["circuitos_desativados"] += 1
+        if eq is not None and x["em_operacao"]:
+            if eq["subestacao"]:
+                d["subestacoes"].add(eq["subestacao"])
+                cob["subestacoes_distintas"].add(eq["subestacao"])
+            if eq["uf"]:
+                d["ufs"].add(eq["uf"])
+            if eq["mva"] is not None and eq["finalidade"] != "Reserva":
+                d["mva_operacao"] += eq["mva"]
+    cob["subestacoes_distintas"] = len(cob["subestacoes_distintas"])
+    return por, cob

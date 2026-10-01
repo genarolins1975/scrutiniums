@@ -145,8 +145,10 @@ ARQUIVOS_PUBLICOS = {
     CSV_EMISSOES: (
         "Uma linha por célula emitida pelo observatório (arquivo imutável, pipeline/energia/previsoes/): forecast_id; run_id; "
         "tipo (REFERENCIA_EXPERIMENTAL, RODADA_INTERNA, PUBLICACAO); modelo; versao_modelo; origem; cutoff, prazo e emitido_em "
-        "(UTC); atraso_min; modo (agendada ou manual); horizonte; entrega; submercado; status; previsao (R$/MWh, vazio = sem "
-        "número); motivo; realizado e erro quando a entrega já terminou; sha256."),
+        "(UTC); atraso_min (minutos depois do prazo, o mesmo da gold); atraso_origem (registrado = gravado pela rodada; calculado "
+        "= derivado de emitido_em e prazo porque o registro transcrito não o trazia); modo (agendada, manual ou registro "
+        "transcrito de artefato externo); horizonte; entrega; submercado; status; previsao (R$/MWh, vazio = sem número); mudanca "
+        "(diferença para a rodada anterior da mesma entrega); motivo; realizado e erro quando a entrega já terminou; sha256."),
 }
 
 # Resultados do teste retrospectivo retidos (sem liberação registrada): ficam fora do portal,
@@ -157,27 +159,9 @@ JSON_INTERNO = "previsoes_desempenho_interno.json"
 
 
 def publicacao_desempenho(registro):
-    """(publicar, situação) dos números de desempenho do teste retrospectivo (P016).
-
-    A regra do registro de modelos diz que números de desempenho só entram no portal depois
-    da liberação formal pelo responsável pela plataforma. A leitura de que ela alcança só o
-    artefato de pesquisa (campo `escopo`) foi escrita pelo implementador em 30/09/2026 e não
-    foi ratificada; a especificação (seção 12.4) proíbe autoatribuir essa autorização. Então
-    `publicar = true` só vale com a decisão do responsável registrada, com nome e data, em
-    `validacao_observatorio.decisao_publicacao`; sem ela, os números ficam retidos."""
-    vo = registro.get("validacao_observatorio") or {}
-    dec = vo.get("decisao_publicacao") or {}
-    decidida = bool(dec.get("decidido_por") and dec.get("decidido_em") and dec.get("estado") == "LIBERADA")
-    if vo.get("publicar") is True and decidida:
-        return True, {"estado": "LIBERADA", "decisao": dec}
-    motivo = ("Números de desempenho do teste retrospectivo retidos: a regra do registro de modelos só os admite no portal "
-              "depois da liberação formal pelo responsável pela plataforma, e essa decisão ainda não foi registrada com nome e "
-              "data. A interpretação de que a retenção alcança só o artefato de pesquisa é do implementador (30/09/2026) e "
-              "aguarda ratificação. O cálculo está pronto e é reproduzível; os resultados ficam fora do portal até a decisão.")
-    if vo.get("publicar") is True and not decidida:
-        motivo = ("validacao_observatorio.publicar = true sem decisão do responsável registrada com nome e data: tratado como "
-                  "retido. " + motivo)
-    return False, {"estado": "RETIDA", "motivo": motivo, "decisao": dec or None}
+    """(publicar, situação) dos números de desempenho do teste retrospectivo (P016). A regra
+    mora em emissao.py porque a rodada diária e a publicação das partições também a seguem."""
+    return em.publicacao_desempenho(registro)
 
 
 def _publicar_no_registro():
@@ -443,6 +427,10 @@ def _g23(ajustes, linhas):
 
 # ---------------------------------------------------------------- prospectivo
 
+MODO_TRANSCRITO = "manual (registro transcrito de artefato externo)"
+ORIGEM_ATRASO_CALCULADO = "calculado de emitido_em e prazo (não registrado na origem)"
+
+
 def _rodadas(registros):
     por_run = defaultdict(list)
     for r in registros:
@@ -452,14 +440,19 @@ def _rodadas(registros):
         r0 = rs[0]
         prazo = r0.get("prazo")
         atraso = r0.get("atraso_min")
+        origem_atraso = "registrado" if atraso is not None else None
         if atraso is None and prazo and r0.get("emitido_em"):
+            # registro transcrito sem o campo: o atraso é derivado de emitido_em e prazo, e a
+            # derivação fica declarada (não foi registrado na origem)
             atraso = round(max(0.0, (cal.instante(r0["emitido_em"]) - cal.instante(prazo)).total_seconds() / 60), 1)
-        modo = (r0.get("execucao") or {}).get("modo") or "manual (registro transcrito de artefato externo)"
+            origem_atraso = ORIGEM_ATRASO_CALCULADO
+        modo = (r0.get("execucao") or {}).get("modo") or MODO_TRANSCRITO
         falha = any(x.get("motivo") == "FALHA_NA_EXECUCAO" for x in rs)
         com = sum(1 for x in rs if x.get("previsao") is not None)
         out.append({
             "run_id": run_id, "origem": r0["origem"], "cutoff": r0["cutoff"], "prazo": prazo, "emitido_em": r0["emitido_em"],
-            "atraso_min": atraso, "no_prazo": atraso == 0 if atraso is not None else None, "modo": modo,
+            "atraso_min": atraso, "atraso_origem": origem_atraso, "no_prazo": atraso == 0 if atraso is not None else None,
+            "modo": modo,
             "executor": (r0.get("execucao") or {}).get("executor"), "run_url": (r0.get("execucao") or {}).get("run_url"),
             "tipos": sorted({x["tipo"] for x in rs}), "modelos": sorted({x["modelo"] for x in rs}),
             "versao_codigo": r0.get("versao_codigo"), "celulas": len(rs), "com_numero": com, "falha": falha,
@@ -519,9 +512,11 @@ def _rotina(rodadas, agora):
     }
 
 
-def _apuracoes(registros, info, cp):
+def _apuracoes(registros, info, cp, rodadas=()):
     """Realizado e erro das previsões arquivadas cuja entrega já terminou; reexecução de
-    cada previsão B0 arquivada com o dado como estava no corte dela."""
+    cada previsão B0 arquivada com o dado como estava no corte dela. O prazo vem da rodada
+    (mesmo atraso da gold e do CSV)."""
+    no_prazo_run = {x["run_id"]: x["no_prazo"] for x in rodadas}
     ap, reex = [], {"conferidas": 0, "divergentes": [], "tolerancia": f"{TOL_REEXECUCAO} R$/MWh"}
     cache = {}
     for r in registros:
@@ -533,7 +528,8 @@ def _apuracoes(registros, info, cp):
         ap.append({"forecast_id": r["forecast_id"], "modelo": r["modelo"], "tipo": r["tipo"], "origem": r["origem"],
                    "horizonte": r["horizonte"], "submercado": r["submercado"], "entrega": e["id"],
                    "previsao": r["previsao"], "realizado": _r(y, 4), "erro": _r(r["previsao"] - y, 4) if y is not None else None,
-                   "emitida_antes_da_entrega": emitida_antes, "no_prazo": not (r.get("atraso_min") or 0) > 0})
+                   "emitida_antes_da_entrega": emitida_antes,
+                   "no_prazo": no_prazo_run.get(r["run_id"], not (r.get("atraso_min") or 0) > 0)})
         if r["modelo"] == "B0" and r.get("features_usadas"):
             f = r["features_usadas"][0]
             chave = (r["submercado"], r["cutoff"])
@@ -574,8 +570,10 @@ def _revisoes(registros, run_atual=None, limite=None):
     return out
 
 
-def _ja_publicado(cp, run):
-    """PLD já publicado pela CCEE para as horas depois do corte (dado, não previsão)."""
+def _ja_publicado(cp, run, evidencias=None):
+    """PLD já publicado pela CCEE para as horas depois do corte (dado, não previsão). A
+    evidência de cada média vai para `evidencias` (chave em submercados[sm].evidencia)."""
+    evidencias = {} if evidencias is None else evidencias
     if not run:
         return None
     corte = run["cutoff"]
@@ -590,11 +588,193 @@ def _ja_publicado(cp, run):
         out["submercados"][sm] = {"horas": len(pts), "primeira": pts[0][0] if pts else None, "ultima": pts[-1][0] if pts else None,
                                   "media": _r(sum(x for _, x in pts) / len(pts)) if pts else None,
                                   "minimo": _r(min(x for _, x in pts)) if pts else None, "maximo": _r(max(x for _, x in pts)) if pts else None,
-                                  "valores": [[r_, _r(x)] for r_, x in pts], "capturado_em": cap["capturado_em"]}
+                                  "valores": [[r_, _r(x)] for r_, x in pts], "capturado_em": cap["capturado_em"],
+                                  "evidencia": f"pld_no_corte_{sm}" if pts else None}
+        if pts:
+            evidencias[f"pld_no_corte_{sm}"] = _evidencia_pld_corte(cp, run, sm, pts)
     return out
 
 
-def _previsao_atual(registros, registro, rodadas):
+# ---------------------------------------------------------------- P013: evidência e proveniência
+
+def _reais(x):
+    """R$ 124,09/MWh (duas casas, vírgula decimal, ponto de milhar)."""
+    t = f"{x:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    return f"R$ {t}/MWh"
+
+
+def _fonte_pld_ate(cp, anos, instante):
+    """Bloco `fonte` com cada arquivo anual do PLD capturado até o instante (todas as
+    vintages consideradas por como_estava_em). publicado_em fica nulo: o last_modified da
+    CCEE não acompanha o conteúdo (achado A09)."""
+    recursos = {f"pld_horario_{a}" for a in anos}
+    lim = base.instante_utc(instante)
+    vts = [x for x in base.vintages_do_dataset(cp, v.DS_PLD) if x["recurso"] in recursos and x["capturado_em"] <= lim]
+    arquivos = [{**ev.arquivo_de_vintage(x), "publicado_em": None} for x in vts]
+    return {"orgao": "CCEE", "conjunto": "PLD_HORARIO (PLD horário por submercado)", "recurso": ", ".join(sorted(recursos)),
+            "url": URL_CCEE, "arquivo": None, "sha256": None,
+            "capturado_em": max((x["capturado_em"] for x in vts), default=None), "publicado_em": None,
+            "arquivos": arquivos or None}
+
+
+def _downloads_emissoes(mes):
+    return [{"rotulo": "Emissões registradas (CSV)", "url": CSV_EMISSOES},
+            {"rotulo": f"Arquivo de emissões de {mes} (JSON)", "url": f"/energia/series/previsoes_emissoes_{mes}.json"}]
+
+
+def _evidencias_b0(cp, registros, run_id, reex, snap_pld):
+    """Evidência de cada número da grade B0 da rodada atual, um por frequência e submercado
+    (W1 a W4 repetem o B0 semanal; M1 a M3, o mensal). A média é refeita hora a hora com o
+    dado como estava no corte, sem as somas acumuladas da emissão, e conferida contra o
+    valor arquivado. Devolve {chave: evidência} e {forecast_id: chave}."""
+    out, por_celula = {}, {}
+    regs = [r for r in registros if r["run_id"] == run_id and r["modelo"] == "B0"]
+    divergentes = {d["forecast_id"] for d in reex["divergentes"]}
+    cache = {}
+    for r in regs:
+        if r.get("previsao") is None or not r.get("features_usadas"):
+            continue
+        nome_freq = "semanal" if r["frequencia"] == "W" else "mensal"
+        chave = f"b0_{nome_freq}_{r['submercado']}"
+        por_celula[r["forecast_id"]] = chave
+        if chave in out:
+            continue
+        sm, corte = r["submercado"], r["cutoff"]
+        grupo = sorted((x for x in regs if x["frequencia"] == r["frequencia"] and x["submercado"] == sm),
+                       key=lambda x: cal.HORIZONTES.index(x["horizonte"]))
+        f = r["features_usadas"][0]
+        ini, fim = date.fromisoformat(f["inicio"]), date.fromisoformat(f["fim"])
+        if (sm, corte) not in cache:
+            cache[(sm, corte)] = _pontos_dict(cp, sm, corte)
+        refs = cal.horas(ini, fim)
+        vals = [cache[(sm, corte)].get(x) for x in refs]
+        presentes = sum(1 for x in vals if x is not None)
+        soma = sum(x for x in vals if x is not None)
+        direto = soma / len(refs) if presentes == len(refs) else None
+        lims = r.get("limites") or {}
+        direto_r = mp.restringe(direto, lims.get("piso_medio"), lims.get("teto_estrutural_medio"))[0] if direto is not None else None
+        dif = abs(direto_r - r["previsao"]) if direto_r is not None else None
+        ok = dif is not None and dif <= TOL_REEXECUCAO
+        antes = f.get("capturado_em") is not None and cal.instante(f["capturado_em"]) <= cal.instante(corte)
+        div_g = [x["forecast_id"] for x in grupo if x["forecast_id"] in divergentes]
+        ultimo = fim - timedelta(days=1)
+        mes = r["registrado_no_portal_em"][:7]
+        out[chave] = ev.construir(
+            indicador=(f"Referência experimental B0 {nome_freq} ({', '.join(x['horizonte'] for x in grupo)}), submercado {sm}, "
+                       f"rodada de {c.data_br(r['origem'])}"),
+            valor_exibido=_reais(r["previsao"]), valor_calculo=r["previsao"], unidade="R$/MWh",
+            periodo={"inicio": ini.isoformat(), "fim": ultimo.isoformat()},
+            entidade=f"submercado {sm}",
+            universo=(f"{len(refs)} horas do PLD horário de {c.data_br(ini.isoformat())} a {c.data_br(ultimo.isoformat())}; o "
+                      f"mesmo número vale para as entregas {', '.join(x['entrega']['id'] for x in grupo)}"),
+            fonte=_fonte_pld_ate(cp, sorted({ini.year, ultimo.year}), corte),
+            chaves_origem=[f"pld.{sm}"],
+            consulta=(f"silver ccee_pld_horario, série pld.{sm}, referências de {refs[0]} a {refs[-1]} (hora de Brasília), como "
+                      f"estavam no corte {corte} (base.como_estava_em)"),
+            formula=("B0 = Σ PLD_h ÷ n nas horas do último período completo elegível no corte (fim excluído), limitado à faixa "
+                     "[piso médio, teto estrutural médio] da entrega"),
+            numerador={"descricao": f"Σ PLD_h das {len(refs)} horas (R$/MWh)", "valor": round(soma, 6)},
+            denominador={"descricao": "horas do período", "valor": len(refs)},
+            cobertura=f"{presentes} de {len(refs)} horas presentes no corte",
+            tratamento_ausencia="Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
+            revisoes=snap_pld.get("revisoes"),
+            testes=[
+                ev.teste("Média refeita hora a hora com o dado como estava no corte (sem as somas acumuladas da emissão)",
+                         "aprovado" if ok else "reprovado",
+                         (f"refeita {direto_r:.6f}; arquivada {r['previsao']:.4f}; diferença {dif:.6f} R$/MWh" if dif is not None
+                          else f"período incompleto no corte ({presentes} de {len(refs)} horas)")),
+                ev.teste("Dado usado capturado até o corte (sem olhar para o futuro)", "aprovado" if antes else "reprovado",
+                         f"capturado_em {f.get('capturado_em')}; corte {corte}"),
+                ev.teste("Reexecução das células arquivadas com este B0", "aprovado" if not div_g else "reprovado",
+                         f"{len(grupo)} células; {len(div_g)} divergentes (tolerância {TOL_REEXECUCAO} R$/MWh)"),
+            ],
+            reconciliacao=ev.reconciliacao(
+                ("Duas contas independentes: na emissão, a média por somas acumuladas conferida contra o recálculo hora a hora "
+                 "(b0_direto, tolerância 1e-6 R$/MWh); na gold, nova soma hora a hora a partir do silver no corte, contra o "
+                 "valor arquivado com 4 casas."),
+                "aprovado" if ok else "reprovado", f"{TOL_REEXECUCAO} R$/MWh (previsão gravada com 4 casas decimais)"),
+            download=_downloads_emissoes(mes),
+            reproducao="python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
+        )
+    return out, por_celula
+
+
+def _evidencia_pld_corte(cp, run, sm, pts):
+    """Evidência da média do PLD já publicado para as horas do dia de origem depois do corte."""
+    corte, origem = run["cutoff"], date.fromisoformat(run["origem"])
+    esperado = 24 - cal.HORA_CORTE.hour
+    soma = sum(x for _, x in pts)
+    media = soma / len(pts)
+    cap = v.capturas_usadas(cp, v.DS_PLD, f"pld.{sm}", origem, origem + timedelta(days=1), corte)
+    antes = cap["capturado_em"] is not None and cal.instante(cap["capturado_em"]) <= cal.instante(corte)
+    return ev.construir(
+        indicador=(f"PLD médio já publicado pela CCEE para {c.data_br(run['origem'])}, das {cal.HORA_CORTE.hour:02d}h às 23h, "
+                   f"submercado {sm}"),
+        valor_exibido=_reais(media), valor_calculo=media, unidade="R$/MWh",
+        periodo={"inicio": pts[0][0], "fim": pts[-1][0]}, entidade=f"submercado {sm}",
+        universo=f"{len(pts)} horas do dia de origem a partir do corte",
+        fonte=_fonte_pld_ate(cp, [origem.year], corte), chaves_origem=[f"pld.{sm}"],
+        consulta=(f"silver ccee_pld_horario, série pld.{sm}, referências de {pts[0][0]} a {pts[-1][0]} (hora de Brasília), como "
+                  f"estavam no corte {corte}"),
+        formula="média = Σ PLD_h ÷ horas, nas horas do dia de origem a partir das 07h",
+        numerador={"descricao": f"Σ PLD_h das {len(pts)} horas (R$/MWh)", "valor": round(soma, 6)},
+        denominador={"descricao": "horas", "valor": len(pts)},
+        cobertura=f"{len(pts)} de {esperado} horas do dia depois do corte",
+        tratamento_ausencia="Hora não capturada até o corte fica fora e a contagem de horas aparece ao lado; nunca é preenchida.",
+        revisoes=None,
+        testes=[ev.teste("Todas as horas do dia depois do corte capturadas", "aprovado" if len(pts) == esperado else "ressalva",
+                         f"{len(pts)} de {esperado} horas"),
+                ev.teste("Capturado até o corte", "aprovado" if antes else "reprovado",
+                         f"capturado_em {cap['capturado_em']}; corte {corte}")],
+        reconciliacao=None,
+        download=_downloads_emissoes(run["registrado_no_portal_em"][:7] if run.get("registrado_no_portal_em") else run["origem"][:7]),
+        reproducao="python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
+    )
+
+
+def _proveniencia_b0(run, regs, snap_pld, ultimo_dia, com_faixa=False):
+    feats = [r["features_usadas"][0] for r in regs if r.get("features_usadas")]
+    r0 = regs[0] if regs else {}
+    fonte = {"orgao": "CCEE", "dataset": "PLD_HORARIO", "recurso": "pld_horario_2021 a pld_horario_2026", "url_dataset": URL_CCEE,
+             "url_primaria": URL_CCEE, "licenca": c.LICENCA_CCEE}
+    return c.proveniencia(
+        indicador="Referência experimental B0 (persistência) da rodada atual", natureza="PREVISTO", fonte=fonte,
+        unidade="R$/MWh nominais", frequencia="rodada diária; entregas semanais (W1 a W4) e mensais (M1 a M3)",
+        periodo={"inicio": min((f["inicio"] for f in feats), default=None), "fim": max((f["fim"] for f in feats), default=None)},
+        cobertura={"inicio": cal.INICIO_PLD_HORARIO.isoformat(), "fim": ultimo_dia.isoformat()},
+        capturado_em=max((f["capturado_em"] for f in feats if f.get("capturado_em")), default=None),
+        snapshot={"id": r0.get("snapshot"), "sha256": r0.get("snapshot_sha256")}, publicacao_informada=False,
+        revisoes=snap_pld.get("revisoes"),
+        transformacoes=["PLD horário como estava no corte das 07h00 de Brasília (base.como_estava_em)",
+                        "média das horas do último período completo elegível (semana de sábado a sábado ou mês civil, LAT1D)",
+                        "restrição à faixa [piso médio, teto estrutural médio] dos atos da ANEEL publicados até a véspera",
+                        "recálculo independente hora a hora antes de gravar; registro imutável com sha256"],
+        formula="B0 = mín(máx(Σ PLD_h ÷ n do último período elegível; piso), teto)",
+        limitacoes=["Referência experimental identificada (seção 12.4): não é previsão aprovada nem a previsão principal.",
+                    "Persistência pura: não usa chuva, reservatórios nem vazões.",
+                    ("Faixa de incerteza só nos segmentos CALIBRADO." if com_faixa else
+                     "Sem faixa de incerteza: nenhum segmento está CALIBRADO."),
+                    f"Rodada {run['modo']}" + (f", emitida {run['atraso_min']:.0f} minutos depois do prazo das 08h00."
+                                                 if run.get("atraso_min") else ", no prazo.")],
+        download=CSV_EMISSOES)
+
+
+def _proveniencia_pld_corte(run, snap_pld):
+    fonte = {"orgao": "CCEE", "dataset": "PLD_HORARIO", "recurso": f"pld_horario_{run['origem'][:4]}", "url_dataset": URL_CCEE,
+             "url_primaria": URL_CCEE, "licenca": c.LICENCA_CCEE}
+    return c.proveniencia(
+        indicador="PLD horário já publicado para o dia de origem depois do corte", natureza="OBSERVADO", fonte=fonte,
+        unidade="R$/MWh nominais", frequencia="horária",
+        periodo={"inicio": f"{run['origem']}T{cal.HORA_CORTE.hour:02d}:00", "fim": f"{run['origem']}T23:00"},
+        cobertura={"inicio": run["origem"], "fim": run["origem"]}, capturado_em=c.ultima_captura(snap_pld),
+        snapshot=snap_pld, publicacao_informada=False,
+        transformacoes=["PLD horário como estava no corte (base.como_estava_em)", "média, mínimo e máximo das horas listadas"],
+        limitacoes=["É dado publicado pela CCEE na véspera, não previsão; não entra em nenhuma entrega prevista.",
+                    "A data de publicação de cada hora não é informada pela CCEE; vale a captura (achado A09)."],
+        download=CSV_EMISSOES)
+
+
+def _previsao_atual(registros, registro, rodadas, publicar=False):
     ref = [r for r in rodadas if "REFERENCIA_EXPERIMENTAL" in r["tipos"]]
     if not ref:
         return {"disponivel": False, "motivo": "Nenhuma rodada da referência experimental B0 registrada no arquivo."}
@@ -615,8 +795,11 @@ def _previsao_atual(registros, registro, rodadas):
         "run_id": run["run_id"], "origem": run["origem"], "cutoff": run["cutoff"], "prazo": run["prazo"],
         "emitido_em": run["emitido_em"], "atraso_min": run["atraso_min"], "modo": run["modo"], "alertas": run["alertas"],
         "versao_codigo": run["versao_codigo"], "celulas": celulas,
-        "bandas": ("Sem faixa: nenhum segmento do B0 está CALIBRADO no período de teste (ver calibração em P016)."
-                   if not any(x["quantis"] for x in celulas) else "Faixa de 80% só nos segmentos CALIBRADO."),
+        "bandas": (("Faixa de 80% só nos segmentos CALIBRADO." if any(x["quantis"] for x in celulas) else
+                    "Sem faixa: nenhum segmento do B0 está CALIBRADO no período de teste (estado em cada célula; "
+                    + ("cobertura e amostra em P016)." if publicar else
+                       "a cobertura do teste retrospectivo está retida fora do portal até a liberação dos números de "
+                       "desempenho)."))),
         "candidatos": {"emitidos": liberada,
                        "motivo": (None if liberada else
                                   "C2-P e C2-H não são emitidos: a governança retém número de rodada interna dos candidatos até a "
@@ -737,20 +920,26 @@ def _escreve_ajustes(ajustes):
     base.escreve_csv(os.path.basename(CSV_AJUSTES), cab, rows)
 
 
-def _escreve_emissoes(registros, apur):
+def _escreve_emissoes(registros, apur, rodadas):
+    """Uma linha por célula. Atraso e modo vêm da rodada (_rodadas), os mesmos da gold: no
+    registro transcrito de 27/09/2026 o atraso não foi gravado e é derivado de emitido_em e
+    prazo, com a derivação declarada na coluna atraso_origem."""
     por_id = {a["forecast_id"]: a for a in apur}
+    por_run = {x["run_id"]: x for x in rodadas}
     mudanca = {}
     for grupo in _revisoes(registros):
         for x in grupo["sequencia"]:
             mudanca[(grupo["modelo"], grupo["entrega"], grupo["submercado"], x["run_id"])] = x["mudanca"]
-    cab = ["forecast_id", "run_id", "tipo", "modelo", "versao_modelo", "origem", "cutoff", "prazo", "emitido_em", "atraso_min", "modo",
-           "horizonte", "entrega", "submercado", "status", "previsao", "mudanca", "motivo", "realizado", "erro", "sha256"]
+    cab = ["forecast_id", "run_id", "tipo", "modelo", "versao_modelo", "origem", "cutoff", "prazo", "emitido_em", "atraso_min",
+           "atraso_origem", "modo", "horizonte", "entrega", "submercado", "status", "previsao", "mudanca", "motivo", "realizado",
+           "erro", "sha256"]
     rows = []
     for r in registros:
         a = por_id.get(r["forecast_id"]) or {}
+        rd = por_run[r["run_id"]]
         mud = mudanca.get((r["modelo"], r["entrega"]["id"], r["submercado"], r["run_id"]))
         rows.append([r["forecast_id"], r["run_id"], r["tipo"], r["modelo"], r.get("versao_modelo"), r["origem"], r["cutoff"],
-                     r.get("prazo"), r["emitido_em"], r.get("atraso_min"), (r.get("execucao") or {}).get("modo") or "manual",
+                     r.get("prazo"), r["emitido_em"], rd["atraso_min"], rd["atraso_origem"] or "", rd["modo"],
                      r["horizonte"], r["entrega"]["id"], r["submercado"], r["status"], r.get("previsao"), mud, r.get("motivo") or "",
                      a.get("realizado"), a.get("erro"), r["sha256"]])
     base.escreve_csv(os.path.basename(CSV_EMISSOES), cab, rows)
@@ -1055,13 +1244,13 @@ def construir(con, ctx):
     if viol_arq:
         return c.stub(GOLD, "arquivo de emissões viola a governança: " + "; ".join(viol_arq[:5]))
     rodadas = _rodadas(registros)
-    apur, reex = _apuracoes(registros, info, cp)
+    apur, reex = _apuracoes(registros, info, cp, rodadas)
     if reex["divergentes"]:
         testes.append(ev.teste("Reexecução das previsões B0 arquivadas", "reprovado", json.dumps(reex["divergentes"][:3], ensure_ascii=False)))
     else:
         testes.append(ev.teste("Reexecução das previsões B0 arquivadas", "aprovado",
                                f"{reex['conferidas']} previsões refeitas com o dado como estava no corte; tolerância {TOL_REEXECUCAO} R$/MWh"))
-    _escreve_emissoes(registros, apur)
+    _escreve_emissoes(registros, apur, rodadas)
     maturadas = [a for a in apur if a["realizado"] is not None and a["emitida_antes_da_entrega"]]
     prosp_met = None
     if maturadas:
@@ -1069,8 +1258,24 @@ def construir(con, ctx):
         prosp_met = {"entregas_apuradas": len({(a["entrega"], a["submercado"]) for a in maturadas}), "celulas": len(maturadas),
                      "mae": _r(sum(abs(e) for e in err) / len(err)), "vies": _r(sum(err) / len(err))}
     rotina = _rotina(rodadas, ctx.get("agora") or datetime.now(timezone.utc))
-    atual = _previsao_atual(registros, registro, rodadas)
-    atual["ja_publicado_no_corte"] = _ja_publicado(cp, next((r for r in rodadas if r["run_id"] == atual.get("run_id")), None))
+    atual = _previsao_atual(registros, registro, rodadas, publicar)
+    run_atual = next((r for r in rodadas if r["run_id"] == atual.get("run_id")), None)
+    # P013: evidência ("Comprove este número") e proveniência própria dos números publicados
+    # da rodada atual, que não dependem da liberação dos números de desempenho
+    ev_p013 = {}
+    atual["ja_publicado_no_corte"] = _ja_publicado(cp, run_atual, ev_p013)
+    if atual["ja_publicado_no_corte"]:
+        atual["ja_publicado_no_corte"]["proveniencia"] = _proveniencia_pld_corte(run_atual, snap_pld)
+    if run_atual:
+        ev_b0, chave_cel = _evidencias_b0(cp, registros, run_atual["run_id"], reex, snap_pld)
+        ev_p013.update(ev_b0)
+        for cel in atual.get("celulas") or []:
+            cel["evidencia"] = chave_cel.get(cel["forecast_id"])
+        regs_atual = [r for r in registros if r["run_id"] == run_atual["run_id"] and r["modelo"] == "B0"
+                      and r.get("features_usadas")]
+        atual["proveniencia"] = (_proveniencia_b0(run_atual, regs_atual, snap_pld, ultimo_dia,
+                                                  any(x.get("quantis") for x in atual.get("celulas") or []))
+                                 if regs_atual else None)
     recalib = _calibracao_regra_antiga(registros, cp, lim)
     status_novo = {x["forecast_id"]: x["status_recalculado"] for x in recalib["por_registro"]}
     for cel in atual.get("celulas") or []:
@@ -1110,29 +1315,8 @@ def construir(con, ctx):
                                          "validacoes": testes, **resultados}, destino=DIR_INTERNO)
     fonte_ccee = {"orgao": "CCEE", "dataset": "PLD_HORARIO", "recurso": "pld_horario_2021 a pld_horario_2026", "url_dataset": URL_CCEE,
                   "url_primaria": URL_CCEE, "licenca": c.LICENCA_CCEE}
-    prov = c.proveniencia(
-        indicador="Desempenho da previsão do PLD (teste retrospectivo e prospectivo)", natureza="CALCULADO", fonte=fonte_ccee,
-        unidade="R$/MWh (erros); fração de 0 a 1 (coberturas)", frequencia="diária (origens); semanal e mensal (entregas)",
-        periodo={"inicio": av.ORIGEM_INICIAL.isoformat(), "fim": ultimo_dia.isoformat()},
-        cobertura={"inicio": cal.INICIO_PLD_HORARIO.isoformat(), "fim": ultimo_dia.isoformat()},
-        capturado_em=c.ultima_captura(snap_pld), snapshot=snap_pld, publicacao_informada=False,
-        transformacoes=["PLD horário → média por entrega (semana de sábado a sábado; mês civil)",
-                        "variáveis sob LAT1D a partir do dado como estava no instante de informação",
-                        "modelos B0, S0, C2-P, C2-H com treino só no passado", "restrição à faixa [piso, teto estrutural]",
-                        "métricas por horizonte, submercado, período e regime"],
-        formula="MAE = média |previsão − realizado|; viés = média (previsão − realizado); ganho = MAE(B0) − MAE(modelo) nas mesmas células",
-        limitacoes=[
-            "Teste retrospectivo é reconstrução sob a hipótese LAT1D: o sistema não tinha capturas nas origens antigas (primeira "
-            "captura do PLD em 27/09/2026) e a CCEE não informa quando publicou cada hora (achado A09).",
-            "EAR e ENA do ONS passam por consistência recorrente; o teste do C2-H usa o valor revisado, com risco de olhar o futuro.",
-            "O período de desenvolvimento (2022 a 2024) já tinha sido examinado pela pesquisa antes da definição dos candidatos.",
-            "Origens diárias vizinhas preveem a mesma entrega: o tamanho efetivo é o número de entregas distintas.",
-            "Prospectivo ainda sem entrega apurada: nenhuma conclusão sobre desempenho em operação real.",
-        ] + ([] if publicar else [
-            "Números de desempenho do teste retrospectivo retidos fora do portal até a decisão do responsável pela plataforma "
-            "(regra do registro de modelos); esta gold traz o arquivo de emissões, a rotina, a referência experimental B0 e as "
-            "fichas, sem MAE, ganho, cobertura nem calibração numérica."]),
-        download=CSV_DESEMPENHO if publicar else CSV_EMISSOES)
+    prov = (_proveniencia_desempenho(fonte_ccee, ultimo_dia, snap_pld) if publicar else
+            _proveniencia_retida(fonte_ccee, ultimo_dia, snap_pld))
     gold = {
         **c.cabecalho(GOLD),
         "paineis": ["P013", "P014", "P015", "P016"],
@@ -1195,7 +1379,7 @@ def construir(con, ctx):
         "previsao_atual": atual,
         "fichas": fichas,
         "governanca": _governanca(registro, g23, rotina, atual, conf, situacao),
-        "evidencias": kpis if publicar else {},
+        "evidencias": {**ev_p013, **(kpis if publicar else {})},
         "validacoes": testes,
         "downloads": (([{"rotulo": "Teste retrospectivo semanal (CSV)", "url": CSV_SEMANAL},
                         {"rotulo": "Teste retrospectivo mensal (CSV)", "url": CSV_MENSAL},
@@ -1204,6 +1388,60 @@ def construir(con, ctx):
                          {"rotulo": "Emissões registradas (CSV)", "url": CSV_EMISSOES}]),
     }
     return gold
+
+
+_LIMITACOES_TESTE = [
+    "Teste retrospectivo é reconstrução sob a hipótese LAT1D: o sistema não tinha capturas nas origens antigas (primeira "
+    "captura do PLD em 27/09/2026) e a CCEE não informa quando publicou cada hora (achado A09).",
+    "EAR e ENA do ONS passam por consistência recorrente; o teste do C2-H usa o valor revisado, com risco de olhar o futuro.",
+    "O período de desenvolvimento (2022 a 2024) já tinha sido examinado pela pesquisa antes da definição dos candidatos.",
+    "Origens diárias vizinhas preveem a mesma entrega: o tamanho efetivo é o número de entregas distintas.",
+]
+
+
+def _proveniencia_desempenho(fonte_ccee, ultimo_dia, snap_pld):
+    """Proveniência de topo com os números de desempenho liberados (P016 publicado)."""
+    return c.proveniencia(
+        indicador="Desempenho da previsão do PLD (teste retrospectivo e prospectivo)", natureza="CALCULADO", fonte=fonte_ccee,
+        unidade="R$/MWh (erros); fração de 0 a 1 (coberturas)", frequencia="diária (origens); semanal e mensal (entregas)",
+        periodo={"inicio": av.ORIGEM_INICIAL.isoformat(), "fim": ultimo_dia.isoformat()},
+        cobertura={"inicio": cal.INICIO_PLD_HORARIO.isoformat(), "fim": ultimo_dia.isoformat()},
+        capturado_em=c.ultima_captura(snap_pld), snapshot=snap_pld, publicacao_informada=False,
+        transformacoes=["PLD horário → média por entrega (semana de sábado a sábado; mês civil)",
+                        "variáveis sob LAT1D a partir do dado como estava no instante de informação",
+                        "modelos B0, S0, C2-P, C2-H com treino só no passado", "restrição à faixa [piso, teto estrutural]",
+                        "métricas por horizonte, submercado, período e regime"],
+        formula="MAE = média |previsão − realizado|; viés = média (previsão − realizado); ganho = MAE(B0) − MAE(modelo) nas mesmas células",
+        limitacoes=_LIMITACOES_TESTE + ["Prospectivo ainda sem entrega apurada: nenhuma conclusão sobre desempenho em operação real."],
+        download=CSV_DESEMPENHO)
+
+
+def _proveniencia_retida(fonte_ccee, ultimo_dia, snap_pld):
+    """Proveniência de topo com os números de desempenho retidos: descreve o que a gold
+    publica (referência experimental B0, PLD já publicado no corte, arquivo de emissões,
+    rotina, fichas e o estado da publicação), não os indicadores retidos."""
+    return c.proveniencia(
+        indicador="Previsão do PLD: referência experimental B0, arquivo de emissões, rotina e fichas dos modelos",
+        natureza="PREVISTO", fonte=fonte_ccee,
+        unidade="R$/MWh nominais (previsões e PLD); minutos (atraso da rodada); contagens (células, rodadas)",
+        frequencia="rodada diária; entregas semanais e mensais",
+        periodo={"inicio": av.ORIGEM_INICIAL.isoformat(), "fim": ultimo_dia.isoformat()},
+        cobertura={"inicio": cal.INICIO_PLD_HORARIO.isoformat(), "fim": ultimo_dia.isoformat()},
+        capturado_em=c.ultima_captura(snap_pld), snapshot=snap_pld, publicacao_informada=False,
+        transformacoes=["PLD horário como estava no corte das 07h00 (base.como_estava_em)",
+                        "B0 = média do último período completo elegível, restrita à faixa de preço",
+                        "arquivo imutável de emissões com sha256 e encadeamento; reexecução de cada previsão arquivada",
+                        "coeficientes do C2 por origem de ajuste (configuração dos modelos)"],
+        formula="B0 = mín(máx(Σ PLD_h ÷ n do último período elegível; piso), teto); atraso = máx(0, emitido_em − prazo)",
+        limitacoes=[
+            "Números de desempenho do teste retrospectivo (MAE, viés, ganho, cobertura, calibração numérica, regimes, "
+            "sensibilidade e G23-R1) retidos fora do portal até a decisão do responsável pela plataforma (regra do registro de "
+            "modelos); estão calculados e validados nesta execução, em data/energia/previsoes/validacao_interna.",
+            "B0 é referência experimental identificada (seção 12.4), não previsão aprovada; nenhum modelo está em PRODUÇÃO.",
+            "Prospectivo ainda sem entrega apurada: nenhuma conclusão sobre desempenho em operação real.",
+            "Rotina diária agendada ainda não comprovada por execução real.",
+        ] + _LIMITACOES_TESTE[:1],
+        download=CSV_EMISSOES)
 
 
 def _ultimo_dia(series):
@@ -1243,8 +1481,18 @@ def _retira_do_portal():
 
 
 def _sem_coberturas(recalib):
-    """Bloco da recalibração sem os valores de cobertura (números de desempenho retidos)."""
-    return {**recalib, "por_registro": [{k: x for k, x in r.items() if not k.startswith("cobertura")} for r in recalib["por_registro"]]}
+    """Bloco da recalibração sem os valores de cobertura (números de desempenho retidos). A
+    cobertura gravada pela regra antiga também não é publicada: a partição pública do arquivo
+    a omite (emissao.projecao_publica), e a refeita fica com os resultados retidos."""
+    return {**recalib,
+            "descricao": ("Registros emitidos antes de 01/10/2026 gravaram calibracao.cobertura_p10_p90 com comparação estrita em "
+                          "ponto flutuante: numa semana inteira no piso, o realizado (58,5999999996) ficava abaixo do P10 limitado "
+                          "ao piso (58,60000000000001) e a célula contava como descoberta. O registro é imutável e não é reescrito. "
+                          "Com os números de desempenho retidos, nem a cobertura gravada nem a refeita com a regra corrigida "
+                          "(tolerância de 1e-6 R$/MWh, faixa inclusiva) vão ao portal: a partição pública do arquivo omite o campo "
+                          "e a refeita fica com os resultados retidos, em data/energia/previsoes/validacao_interna. Aqui ficam só "
+                          "os estados de calibração, gravado e refeito."),
+            "por_registro": [{k: x for k, x in r.items() if not k.startswith("cobertura")} for r in recalib["por_registro"]]}
 
 
 def _calibracao_regra_antiga(registros, cp, lim):

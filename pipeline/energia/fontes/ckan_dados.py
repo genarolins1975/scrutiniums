@@ -9,11 +9,13 @@ pipeline o acessou de fato e leu o seu formato e cabeçalho. Este arquivo:
    vintage no silver da família `publicacao` e grava cada conjunto e cada recurso como
    registro com histórico: mudança de data de publicação, recurso que some do portal
    (descontinuado ou renomeado) e frequência declarada ficam rastreáveis por data;
-2. tenta a listagem da CCEE com o mesmo agente identificado do projeto. O portal da
-   CCEE responde 403 ("Acesso bloqueado") a este ambiente: a falha é registrada e o
-   catálogo da CCEE usa os package_show versionados com sha256 em
-   pipeline/energia/seed (PLD_HORARIO e os três conjuntos do mercado de curto prazo),
-   recurso a recurso. Nada é contornado;
+2. colhe também a listagem da CCEE, com o mesmo cliente HTTP e o mesmo User-Agent
+   identificado de todo o pipeline. Em 01/10/2026 o portal respondeu 403 ("Acesso
+   bloqueado") ao curl e 200 ao cliente do pipeline; nada é alterado para contornar
+   bloqueio. Quando o portal recusa, a falha é registrada em `coletas` e o catálogo da
+   CCEE usa os package_show versionados com sha256 em pipeline/energia/seed/ccee_*
+   (PLD_HORARIO, mercado de curto prazo e os conjuntos do módulo Mercado), recurso a
+   recurso;
 3. verifica um recurso de cada conjunto ainda não integrado: GET com Range dos
    primeiros 64 KB, status HTTP, tamanho, tipo, assinatura do formato e, em CSV, o
    cabeçalho real. Reverificação semanal ou quando a fonte muda o recurso;

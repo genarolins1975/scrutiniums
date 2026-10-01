@@ -28,6 +28,7 @@ from pipeline.energia import base  # noqa: E402
 from pipeline.energia import governanca as g  # noqa: E402
 from pipeline.energia.gold import comum as c  # noqa: E402
 from pipeline.energia.previsoes import arquivo as arq  # noqa: E402
+from pipeline.energia.previsoes import emissao as em  # noqa: E402
 
 AQUI = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REGISTRO = os.path.join(AQUI, "registro_modelos.json")
@@ -116,13 +117,27 @@ def construir(anterior=None, pasta=arq.PASTA, legado=None, destino_series=None, 
     resumo_rodadas = _resumo_rodadas(todos)
     publicacoes = [r for r in arquivo if r["tipo"] == "PUBLICACAO"]
     ultima_interna = resumo_rodadas[0] if resumo_rodadas else None
+    # números de desempenho retidos não vão ao portal nem dentro dos registros: a partição
+    # publicada é uma projeção do arquivo versionado (que nunca é reescrito)
+    publicar_desempenho, _ = em.publicacao_desempenho(registro)
     indice = []
     for mes, regs in sorted(particoes.items()):
-        conteudo = {"mes": mes, "registros": regs}
+        publicados = [em.projecao_publica(r, publicar_desempenho) for r in regs]
+        omitidos = sum(1 for r in publicados if r.get("omitido_na_publicacao"))
+        conteudo = {"mes": mes, "registros": publicados}
+        if omitidos:
+            conteudo["projecao"] = {
+                "registros_com_campos_omitidos": omitidos,
+                "campos_omitidos": sorted({c_ for r in publicados for c_ in r.get("omitido_na_publicacao") or []}),
+                "motivo": ("Números de desempenho do teste retrospectivo retidos até a liberação formal pelo responsável pela "
+                           "plataforma; registros gravados antes desta regra trazem a cobertura, que a publicação omite."),
+                "sha256": ("O sha256 e o encadeamento de cada registro são os do registro completo, versionado em "
+                           f"pipeline/energia/previsoes/emissoes/{mes}.jsonl; o registro nunca é reescrito."),
+            }
         texto = json.dumps(conteudo, ensure_ascii=False, sort_keys=True, allow_nan=False)
         if escrever_particoes:
             base._escreve_atomico(os.path.join(destino_series, f"previsoes_emissoes_{mes}.json"), texto)
-        indice.append({"mes": mes, "url": PARTICAO_URL.format(mes=mes), "registros": len(regs),
+        indice.append({"mes": mes, "url": PARTICAO_URL.format(mes=mes), "registros": len(regs), "registros_com_campos_omitidos": omitidos,
                        "primeiro": regs[0]["forecast_id"] if regs else None, "ultimo_sha256": regs[-1]["sha256"] if regs else None,
                        "sha256_particao": base.sha256_bytes(texto.encode("utf-8")),
                        "por_tipo": {t: sum(1 for r in regs if r["tipo"] == t) for t in g.TIPOS_REGISTRO}})

@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-10-01T00:53:07Z",
+ "gerado_em": "2026-10-01T07:08:48Z",
  "nos": {
   "00000000017590": [
    "BANCO DO BRASIL SA",
@@ -1342,7 +1342,7 @@
    "sem_declaracao"
   ],
   "02341470000144": [
-   "RORAIMA ENERGIA S.A",
+   "AMBAR ENERGIA RORAIMA S.A.",
    "04210423000197",
    null
   ],
@@ -1717,7 +1717,7 @@
    "sem_declaracao"
   ],
   "03071894000107": [
-   "VALGROUP AM INDUSTRIA DE MASTERBATCH LTDA. (atual denominação social da Valfilm Amazônia Indústria e Comércio Ltda.)",
+   "VALGROUP AM INDÚSTRIA DE MASTERBATCH LTDA.",
    null,
    "ambigua"
   ],
@@ -3282,7 +3282,7 @@
    "sem_declaracao"
   ],
   "04859784000169": [
-   "JLV PARTICIPAÇÕES S.A.",
+   "J.L.V. Participações S.A.",
    null,
    "ambigua"
   ],
@@ -3667,7 +3667,7 @@
    "sem_declaracao"
   ],
   "05300331000160": [
-   "DAIRY PARTNERS AMERICAS BRASIL LTDA.",
+   "DPA COMERCIO E DISTRIBUICAO DE ALIMENTOS LTDA",
    null,
    "sem_declaracao"
   ],
@@ -3847,7 +3847,7 @@
    "sem_declaracao"
   ],
   "05498301000100": [
-   "EDF INTERNATIONAL SAS",
+   "EDF Holding S.A.S",
    null,
    "sem_cnpj"
   ],
@@ -5292,7 +5292,7 @@
    "sem_declaracao"
   ],
   "07543799000101": [
-   "SANTA MARIA PARTICIPAÇÕES S.A.",
+   "SANTA MARIA PARTICIPAÇÕES S/A",
    null,
    "compartilhado"
   ],
@@ -6172,7 +6172,7 @@
    null
   ],
   "08338206000138": [
-   "Companhia Energética Rio da Prata S.A",
+   "Companhia Energética Rio da Prata",
    "02281472000195",
    null
   ],
@@ -6387,7 +6387,7 @@
    "sem_controlador"
   ],
   "08560444000193": [
-   "COMPANHIA CELG DE PARTICIPACOES - CELGPAR",
+   "COMPANHIA CELG DE PARTICIPACOES - CELGPAR - EM LIQUIDACAO",
    "01409580000138",
    null
   ],
@@ -7067,7 +7067,7 @@
    null
   ],
   "09120019000146": [
-   "Eletrogeração SA",
+   "Eletrogeração S.A.",
    null,
    "ambigua"
   ],
@@ -7087,7 +7087,7 @@
    null
   ],
   "09151316000159": [
-   "Bom Futuro Energia Ltda",
+   "BOM FUTURO ENERGIA LTDA",
    null,
    "ambigua"
   ],
@@ -7342,7 +7342,7 @@
    "sem_declaracao"
   ],
   "09341337000137": [
-   "CENTRAIS EÓLICAS DE CAETITÉ PARTICIPAÇÕES S.A",
+   "CENTRAIS EÓLICAS DE CAETITÉ PARTICIPAÇÕES S.A.",
    "18108793000122",
    null
   ],
@@ -7482,7 +7482,7 @@
    "sem_declaracao"
   ],
   "09448003000167": [
-   "ZX PARTICIPAÇOES S/A",
+   "ZX PARTICIPAÇÕES S/A",
    null,
    "ambigua"
   ],
@@ -8457,7 +8457,7 @@
    null
   ],
   "10882083000143": [
-   "CHAR EMPREENDIMENTOS E PARTICIPAÇÕES SA",
+   "CHAR EMPREENDIMENTOS E PARTICIPAÇÕES S.A",
    "00186026000176",
    null
   ],
@@ -9447,7 +9447,7 @@
    "sem_declaracao"
   ],
   "11938558000139": [
-   "STATE GRID BRAZIL HOLDING S.A.",
+   "State Grid Brazil Holding S.A.",
    "52877711000142",
    null
   ],
@@ -9707,7 +9707,7 @@
    "sem_declaracao"
   ],
   "12265979000109": [
-   "DME POÇOS DE CALDAS PARTICIPAÇÕES S.A. - DMEE",
+   "DME POCOS DE CALDAS PARTICIPACOES S.A",
    "18629840000183",
    null
   ],
@@ -12667,7 +12667,7 @@
    null
   ],
   "18396589000154": [
-   "Voltalia Areia Branca I Participações S.A.",
+   "Voltalia Areia Branca I Participacoes S.A.",
    null,
    "ambigua"
   ],
@@ -12792,7 +12792,7 @@
    "compartilhado"
   ],
   "18629840000183": [
-   "PREFEITO MUNICIPAL DE POCOS DE CALDAS",
+   "PREFEITURA MUNICIPAL DE POÇOS DE CALDAS",
    null,
    "sem_declaracao"
   ],
@@ -14887,7 +14887,7 @@
    null
   ],
   "22606673000122": [
-   "Nsp investimentos SA",
+   "NSP Investimentos S.A. - Em Recuperação Judicial",
    null,
    "sem_controlador"
   ],
@@ -15092,7 +15092,7 @@
    null
   ],
   "23109759000102": [
-   "FIP – IE -  Fundo de Investimentos em Participações de Infraestrutura",
+   "FUNDO DE INVESTIMENTO EM PARTICIPACOES EM INFRAESTRUTURA PROSPERIDADE",
    null,
    "ambigua"
   ],
@@ -15707,7 +15707,7 @@
    null
   ],
   "24274124000123": [
-   "CEA II - Centrais Eólicas Assuruá II SPE S.A.",
+   "Assuruá 2 Energia S.A.",
    "10187906000110",
    null
   ],
@@ -16677,7 +16677,7 @@
    "sem_declaracao"
   ],
   "27875133000168": [
-   "VIOLETA ENERGIA RENOVÁVEL DO BRASIL LTDA",
+   "VIOLETA ENERGIA RENOVAVEL DO BRASIL LTDA",
    null,
    "ambigua"
   ],
@@ -16762,7 +16762,7 @@
    null
   ],
   "28165202000102": [
-   "New Energies Investimentos e Participações Ltda.",
+   "New Energies Investimentos e Participações LTDA",
    "40166232000139",
    null
   ],
@@ -17147,7 +17147,7 @@
    "compartilhado"
   ],
   "29376032000178": [
-   "PRINCIPAL ENERGIA INVESTIMENTOS E PARTICIPACOES LTDA",
+   "Delta Makers Participações Ltda",
    null,
    "ambigua"
   ],
@@ -18542,7 +18542,7 @@
    "sem_declaracao"
   ],
   "31908280000164": [
-   "IBITU ENERGIA S/A",
+   "IBITU ENERGIA S.A.",
    "17322459000104",
    null
   ],
@@ -18552,7 +18552,7 @@
    null
   ],
   "31973393000143": [
-   "CGN BRASIL ENERGIA E PARTICIPAÇÕES S.A",
+   "CGN BRASIL ENERGIA E PARTICIPAÇÕES S.A.",
    null,
    "sem_controlador"
   ],
@@ -18562,7 +18562,7 @@
    "sem_controlador"
   ],
   "32003989000183": [
-   "INGENOSTRUM BRASIL S.L",
+   "INGENOSTRUM BRASIL S.I.",
    null,
    "compartilhado"
   ],
@@ -19327,7 +19327,7 @@
    "ambigua"
   ],
   "33641852000117": [
-   "Atlas Casablanca Holding S.A.",
+   "ATLAS CASABLANCA HOLDING S.A.",
    null,
    "compartilhado"
   ],
@@ -20752,7 +20752,7 @@
    "sem_declaracao"
   ],
   "36553075000147": [
-   "Atlas Casablanca Holding S.A.",
+   "Atlas Brasil Energia Holding 1 S.A.",
    null,
    "ambigua"
   ],
@@ -20977,7 +20977,7 @@
    "pessoa_fisica"
   ],
   "37198316000140": [
-   "RIO GRANDE ENERGIAS RENOVAVEIS LTDA",
+   "RIO GRANDE ENERGIAS RENOVÁVEIS",
    null,
    "ambigua"
   ],
@@ -21312,7 +21312,7 @@
    null
   ],
   "38075266000176": [
-   "Focus Futura Holding Participações S.A",
+   "Focus Futura Holding Participações S.A.",
    "04423567000121",
    null
   ],
@@ -21647,7 +21647,7 @@
    "sem_declaracao"
   ],
   "39573257000178": [
-   "FOCUS FUTURA GERAÇÃO 1 S.A.",
+   "Focus Futura Geração 1 S.A.",
    "04423567000121",
    null
   ],
@@ -21812,7 +21812,7 @@
    "sem_declaracao"
   ],
   "40166232000139": [
-   "NEWEN HOLDING LTDA",
+   "Newen Holding LTDA",
    "02346527000106",
    null
   ],
@@ -21882,7 +21882,7 @@
    null
   ],
   "40480607000130": [
-   "RIO ALTO STL HOLDING II LTDA",
+   "RIO ALTO SLT Holding II Ltda",
    "38199406000118",
    null
   ],
@@ -22142,7 +22142,7 @@
    null
   ],
   "41196394000182": [
-   "NEC Operações e Participações em Energia Ltda.",
+   "NEC OPERAÇÕES E PARTICIPAÇÕES EM ENERGIA LTDA.",
    null,
    "ambigua"
   ],
@@ -22277,7 +22277,7 @@
    "sem_declaracao"
   ],
   "41568455000195": [
-   "EOLICA SERRA DE IBIAPABA HOLDING S.A.",
+   "VENTOS DC 1 SUBHOLDING S.A.",
    "43162519000189",
    null
   ],
@@ -22392,7 +22392,7 @@
    null
   ],
   "41816597000124": [
-   "EÓLICA AÇÚ HOLDING S.A.",
+   "EOLICA ACU HOLDING S.A",
    "08666285000106",
    null
   ],
@@ -22427,7 +22427,7 @@
    "sem_controlador"
   ],
   "41825390000116": [
-   "Veleiros Holdings S.A.",
+   "Potengi Holdings S.A.",
    null,
    "ambigua"
   ],
@@ -22902,7 +22902,7 @@
    "sem_declaracao"
   ],
   "42596330000131": [
-   "RDVE Subholding S.A.",
+   "RDVE Subholding S.A",
    null,
    "compartilhado"
   ],
@@ -23242,7 +23242,7 @@
    "sem_declaracao"
   ],
   "42923063000160": [
-   "JATOBA FUNDO DE INVESTIMENTO EM PARTICIPACOES EM INFRAESTRUTURA",
+   "JATOBÁ FUNDO DE INVESTIMENTO EM PARTICIPAÇÕES EM INFRAESTRUTURA",
    null,
    "compartilhado"
   ],
@@ -23377,7 +23377,7 @@
    null
   ],
   "43162519000189": [
-   "Casa dos Ventos S.A.",
+   "CASA DOS VENTOS S.A.",
    null,
    "ambigua"
   ],
@@ -24267,7 +24267,7 @@
    null
   ],
   "44599638000166": [
-   "RIO ALTO STL HOLDING V S/A",
+   "RIO ALTO SLT Holding V S/A",
    "38199406000118",
    null
   ],
@@ -24457,7 +24457,7 @@
    "sem_declaracao"
   ],
   "45024644000158": [
-   "CAJUÍNA AB1 HOLDINGS S.A.",
+   "Cajuína AB1 Holdings S.A",
    "33113381000174",
    null
   ],
@@ -25087,7 +25087,7 @@
    null
   ],
   "45661048000189": [
-   "Denerge Desenvolvimento Energético S/A",
+   "Denerge Desenvolvimento Energetico S.A",
    null,
    "ambigua"
   ],
@@ -25237,7 +25237,7 @@
    null
   ],
   "45913004000107": [
-   "GIP HELIOS I S.A.",
+   "GIP Helios I S.A.",
    "45788850000134",
    null
   ],
@@ -26597,7 +26597,7 @@
    "sem_declaracao"
   ],
   "48592960000114": [
-   "EDF BRASIL HOLDING S.A.",
+   "EDF BRASIL HOLDING S.A",
    "05498301000100",
    null
   ],
@@ -26667,7 +26667,7 @@
    null
   ],
   "48947023000134": [
-   "SF 593 Participações  Societárias S.A.",
+   "SF 593 Participações Societárias S.A.",
    "40690150000199",
    null
   ],
@@ -26887,7 +26887,7 @@
    "sem_declaracao"
   ],
   "50527638000153": [
-   "COCAL PARTICIPAÇÕES S/A",
+   "COCAL PARTICIPAÇÕES S.A.",
    "44373108000103",
    null
   ],
@@ -26897,7 +26897,7 @@
    "sem_declaracao"
   ],
   "50643327000150": [
-   "Paraty Holding Ltda",
+   "PARATY HOLDING LTDA",
    null,
    "ambigua"
   ],
@@ -27917,7 +27917,7 @@
    "sem_declaracao"
   ],
   "55629962000104": [
-   "Electra Hydra Participacões Societárias S/A",
+   "ELECTRA HYDRA PARTICIPACOES SOCIETARIAS S/A",
    "21161326000170",
    null
   ],
@@ -29087,7 +29087,7 @@
    "sem_declaracao"
   ],
   "60963972000103": [
-   "CELLES CORDEIRO ALIMENTOS LTDA - EM RECUPERACAO JUDICIAL",
+   "CCA LATICINIOS LTDA",
    null,
    "sem_declaracao"
   ],
@@ -29097,7 +29097,7 @@
    "sem_declaracao"
   ],
   "60995414000120": [
-   "SERRA DAS ALMAS F1.2 HOLDING S.A.",
+   "Serra das Almas F1.2 Holding S.A.",
    "21812954000179",
    null
   ],
@@ -29177,7 +29177,7 @@
    "sem_declaracao"
   ],
   "61194148000107": [
-   "HEJOASSU ADMINISTRAÇÃO S.A.",
+   "Hejoassu Administração S.A.",
    null,
    "compartilhado"
   ],
@@ -29377,7 +29377,7 @@
    "sem_declaracao"
   ],
   "62881099000135": [
-   "INSTITUTO SANTANENSE DE ENSINO SUPERIOR LTDA",
+   "INSTITUTO SANTANENSE DE ENSINO SUPERIOR LTDA - EM RECUPERACAO JUDICIAL",
    null,
    "sem_declaracao"
   ],
@@ -29877,7 +29877,7 @@
    "sem_declaracao"
   ],
   "74280256000136": [
-   "SENCINET LATAM BRASIL LTDA",
+   "SENCINET LATAM BRASIL LTDA EM RECUPERACAO JUDICIAL",
    null,
    "sem_declaracao"
   ],
@@ -30127,7 +30127,7 @@
    "sem_declaracao"
   ],
   "77804599000140": [
-   "FLESSAK ELETRO INDUSTRIAL S.A. - EM RECUPERACAO JUDICIAL",
+   "Flessak Eletro Industrial S.A.",
    null,
    "ambigua"
   ],
@@ -30817,7 +30817,7 @@
    "sem_declaracao"
   ],
   "84962919000156": [
-   "Ibema Participações S.A.",
+   "IBEMA PARTICIPAÇÕES S.A.",
    null,
    "ambigua"
   ],
@@ -31277,7 +31277,7 @@
    "sem_declaracao"
   ],
   "90316407000115": [
-   "ROMAR F MANN &amp- CIA. LTDA.",
+   "ROMAR F MANN & CIA. LTDA.",
    null,
    "sem_declaracao"
   ],

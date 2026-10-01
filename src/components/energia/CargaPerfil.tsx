@@ -27,20 +27,24 @@ import {
   linhasMmgdMensal,
   linhasPerfil,
   linhasRecente,
+  listaTexto,
   matrizHoraPico,
   paraTabela,
+  parentesesMmgd,
   perfilEscolhido,
+  recorteEvolucao,
   respostaPerfil,
   respostaPerfilTipico,
   rotuloHora,
   textoAtualidadeHoraria,
+  textoQuebraCurva,
   type MedidaPerfil,
 } from "@/lib/energia/carga";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
-import { dataBR, mesAno } from "@/lib/energia/formato";
+import { dataBR, mesAno, plural } from "@/lib/energia/formato";
 import { LIMITE_COMPARACAO, type ColunaTabela } from "@/lib/energia/tabela";
 import type { Regiao } from "@/lib/energia/tipos";
-import type { ClasseDia, P026 } from "@/lib/energia/tipos-carga";
+import type { ClasseDia, P026, Regime } from "@/lib/energia/tipos-carga";
 
 /**
  * P026, MMGD e perfil horário. Duas famílias de carga do ONS convivem sem se
@@ -50,8 +54,11 @@ import type { ClasseDia, P026 } from "@/lib/energia/tipos-carga";
  * separados, alinhados pelo cursor, e nenhuma conta soma ou subtrai uma da outra.
  *
  * Recorte na URL: região (?sm=), mês e tipo de dia do perfil (?mes=, ?cls=),
- * subsistema do perfil do último mês (?psm=), anos comparados (?anos=, até quatro)
- * e medida da evolução (?med=).
+ * subsistema do perfil do último mês (?psm=), anos comparados (?anos=, até quatro),
+ * medida da evolução (?med=), anos do mapa de calor (?hp=), intervalo do zoom da MMGD
+ * mensal (?mde=, ?mate=) e busca, filtros, ordem e
+ * página de cada tabela (prefixos hor, pf, mmgd, pfsm, evo, pic e rec). Datas de regime,
+ * mês do perfil comparado e contagens dos títulos vêm da gold, nunca do código.
  */
 const CLASSES: readonly ClasseDia[] = ["util", "sabado", "domingo_feriado"];
 
@@ -87,11 +94,6 @@ const COLUNAS_MMGD: ColunaTabela[] = [
   { id: "parcial", rotulo: "Mês incompleto", tipo: "texto", categorica: true },
   ...REGIOES.map((sm): ColunaTabela => ({ id: sm, rotulo: `MMGD na carga global, ${CURTO_REGIAO[sm]}`, tipo: "percentual", casas: 2 })),
 ];
-const COLUNAS_HORA_API: ColunaTabela[] = [
-  { id: "hora", rotulo: "Hora (início)", tipo: "texto" },
-  { id: "liquida", rotulo: "Dias com pico da carga líquida", tipo: "numero", casas: 0 },
-  { id: "global", rotulo: "Dias com pico da carga global", tipo: "numero", casas: 0 },
-];
 const COLUNAS_RECORDES: ColunaTabela[] = [
   { id: "regiao", rotulo: "Região", tipo: "texto", categorica: true },
   { id: "ano", rotulo: "Ano", tipo: "texto" },
@@ -116,12 +118,18 @@ export function CargaPerfil({
   fonteCurva,
   fonteApi,
   versao,
+  regimes,
+  diferencaCurva,
   destaques,
 }: {
   p026: Omit<P026, "compatibilidade" | "conceitos">;
   fonteCurva: string;
   fonteApi: string;
   versao: string;
+  /** Regimes metodológicos do ONS publicados na gold (datas dos avisos de mudança da curva). */
+  regimes: (Regime & { observado_nos_dados?: string })[];
+  /** Onde a carga global da API se afasta da curva, por hora (textoDiferencaHoraria, no servidor). */
+  diferencaCurva: string | null;
   destaques?: ReactNode;
 }) {
   const p = p026 as P026;
@@ -137,6 +145,9 @@ export function CargaPerfil({
       anos: campo(tiposUrl.lista(tiposUrl.opcao(anos), { max: LIMITE_COMPARACAO }), padraoAnos),
       med: campo(tiposUrl.opcao(MEDIDAS_PERFIL), "liquida" as MedidaPerfil),
       hp: campo(tiposUrl.opcao(["recentes", "todos"] as const), "recentes"),
+      // intervalo do zoom da parcela mensal da MMGD
+      mde: campo(tiposUrl.mes(), ""),
+      mate: campo(tiposUrl.mes(), ""),
     }),
     [anos.join(","), padraoAnos.join(",")], // eslint-disable-line react-hooks/exhaustive-deps
   );
@@ -164,7 +175,13 @@ export function CargaPerfil({
   const evolucao = useMemo(() => linhasEvolucao(p, anosEscolhidos, medida), [p, anosEscolhidos.join(","), medida]); // eslint-disable-line react-hooks/exhaustive-deps
   const picos = useMemo(() => p.picos_90d.map((x) => ({ ...x, id: x.d })), [p]);
   const recordes = useMemo(() => p.recordes_anuais.map((r) => ({ id: `${r.sm}:${r.ano}`, regiao: NOME_REGIAO[r.sm], ano: String(r.ano), dia: r.dia, hora: r.hora, pico: r.pico })), [p]);
-  const quebraCurva = medida === "carga" && anosEscolhidos.some((a) => a < "2023") && anosEscolhidos.some((a) => a >= "2023");
+  // aviso quando os perfis da curva comparados estão em regimes diferentes do ONS (2021 e 2023, pelas datas da gold)
+  const mesesEscolhidos = anosEscolhidos.map((a) => p.perfil_evolucao.find((x) => x.mes.startsWith(a))?.mes).filter((m): m is string => !!m);
+  const quebraCurva = medida === "carga" ? textoQuebraCurva(regimes, mesesEscolhidos) : null;
+  const evol = recorteEvolucao(p);
+  const diasRecentes = new Set(p.recente.map((r) => r.h.slice(0, 10))).size;
+  // primeiro ano da série horária da curva (os subsistemas só têm hora a hora desde então; o SIN usa os agregados diários antes)
+  const inicioHorario = p.hora_pico_por_ano.SE?.[0]?.ano;
 
   return (
     <div className="space-y-6">
@@ -196,7 +213,7 @@ export function CargaPerfil({
       {destaques}
 
       <div className="space-y-4">
-        <h3 className="font-serif text-lg text-carvao">Últimos sete dias, hora a hora</h3>
+        <h3 className="font-serif text-lg text-carvao">Últimos {plural(diasRecentes, "dia", "dias")}, hora a hora</h3>
         <CursorSincronizado>
           <GraficoLinhas
             titulo="Carga verificada do SIN: carga global, carga líquida de MMGD e MMGD estimada"
@@ -221,8 +238,8 @@ export function CargaPerfil({
           />
         </CursorSincronizado>
         <p className="text-sm text-carvao-muted">
-          A carga verificada (API) é publicada por submercado; aqui está o SIN. A carga global da API e a curva são grandezas diferentes (a global é maior, sobretudo à
-          noite): por isso ficam em gráficos separados e a MMGD nunca é subtraída da curva.
+          A carga verificada (API) é publicada por submercado; aqui está o SIN. A carga global da API e a curva são grandezas diferentes
+          {diferencaCurva ? ` (${diferencaCurva})` : ""}: por isso ficam em gráficos separados e a MMGD nunca é subtraída da curva.
         </p>
         <TabelaInterativa
           titulo="Tabela equivalente: as mesmas horas dos dois gráficos"
@@ -233,6 +250,7 @@ export function CargaPerfil({
           fonte={`${fonteApi}; ${fonteCurva}`}
           versao={versao}
           nomeArquivo="carga-ultimas-horas"
+          chaveUrl="hor"
           ordemInicial={{ coluna: "h", direcao: "desc" }}
         />
       </div>
@@ -293,6 +311,7 @@ export function CargaPerfil({
               versao={perfil.mes}
               nomeArquivo={`carga-perfil-sin-${perfil.mes}-${perfil.classe}`}
               tamanhoPagina={25}
+              chaveUrl="pf"
             />
           </>
         ) : (
@@ -313,6 +332,8 @@ export function CargaPerfil({
           zeroNoEixo
           legendaInterativa
           zoom
+          intervalo={v.mde && v.mate ? { inicio: v.mde, fim: v.mate } : null}
+          onIntervalo={(i) => definir({ mde: i?.inicio ?? "", mate: i?.fim ?? "" })}
         />
         <TabelaInterativa
           titulo="Tabela equivalente: parcela mensal da MMGD por região"
@@ -323,6 +344,7 @@ export function CargaPerfil({
           fonte={fonteApi}
           versao={versao}
           nomeArquivo="carga-mmgd-mensal"
+          chaveUrl="mmgd"
           ordemInicial={{ coluna: "mes", direcao: "desc" }}
           nota="Mês incompleto: a carga verificada ainda não tem todos os dias do mês (o mês corrente)."
         />
@@ -353,7 +375,7 @@ export function CargaPerfil({
           casas={0}
           passoRotuloColunas={3}
           periodo={`${matriz.anos[0]?.id ?? ""} a ${dataBR(p.ultimo_dia_curva)}`}
-          nota="Desde a inclusão da MMGD na curva (declarada para 29/04/2023, observada nos dados em 01/05/2023), o pico da curva inclui MMGD estimada; o pico da carga líquida está abaixo, na carga verificada."
+          nota={`Desde a inclusão da MMGD na curva${parentesesMmgd(regimes)}, o pico da curva inclui MMGD estimada; o pico da carga líquida está abaixo, na carga verificada.`}
         />
         {anoApi && (
           <>
@@ -369,16 +391,7 @@ export function CargaPerfil({
               unidade="dias"
               casas={0}
             />
-            <TabelaInterativa
-              titulo="Tabela equivalente: dias com pico em cada hora"
-              colunas={COLUNAS_HORA_API}
-              linhas={horasApi}
-              chaveLinha="id"
-              colunaRotulo="hora"
-              fonte={fonteApi}
-              versao={String(anoApi.ano)}
-              nomeArquivo={`carga-hora-pico-api-${anoApi.ano}`}
-            />
+            {/* a tabela equivalente deste gráfico é a do próprio GraficoBarras (já no HTML, recolhida); as horas de pico por dia estão em carga_verificada_diaria.csv */}
           </>
         )}
       </div>
@@ -411,6 +424,7 @@ export function CargaPerfil({
               fonte={`${fonteApi}; ${fonteCurva}`}
               versao={perfilSm.mes}
               nomeArquivo={`carga-perfil-${perfilSm.sm}-${perfilSm.mes}-${perfilSm.classe}`}
+              chaveUrl="pfsm"
             />
           </>
         ) : (
@@ -419,7 +433,9 @@ export function CargaPerfil({
       </div>
 
       <div data-nivel="analisar" className="space-y-4 border-t border-linha pt-5">
-        <h3 className="font-serif text-lg text-carvao">Como o dia útil de agosto mudou desde 2019</h3>
+        <h3 className="font-serif text-lg text-carvao">
+          {evol ? `Como o ${evol.classe} de ${evol.mes} mudou desde ${evol.desde}` : "Como o perfil do mesmo mês mudou entre os anos"}
+        </h3>
         <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
           <CargaLista rotulo="Medida" opcoes={MEDIDAS_PERFIL.map((m) => ({ id: m, rotulo: ROTULO_MEDIDA[m] }))} valor={medida} onEscolher={(m) => definir({ med: m })} />
         </div>
@@ -428,43 +444,45 @@ export function CargaPerfil({
           entidades={anos.map((a) => ({ id: a, rotulo: a }))}
           selecionadas={anosEscolhidos}
           onMudar={(ids) => definir({ anos: ids })}
-          dicaBusca="2019, 2026"
+          dicaBusca={anos.length ? listaTexto([anos[0], anos[anos.length - 1]]) : ""}
           vazio="Nenhum ano escolhido. Escolha até quatro para comparar o perfil na mesma escala."
         >
           {() => null}
         </Comparador>
         {quebraCurva && (
           <p role="note" className="border-l-2 border-aviso pl-3 text-sm text-carvao">
-            A curva de carga mudou de conteúdo entre os anos escolhidos (previsão de usinas não despachadas desde 01/03/2021; MMGD estimada declarada para 29/04/2023,
-            observada nos dados em 01/05/2023): a diferença entre as curvas mistura mudança de medida e de consumo. Na carga verificada a definição é a mesma em todos os anos.
+            {quebraCurva}
           </p>
         )}
         {anosEscolhidos.length > 0 && (
-          <GraficoLinhas
-            titulo={`${ROTULO_MEDIDA[medida]}, dia útil médio de agosto`}
-            dados={evolucao}
-            chaveX="hora"
-            formatoX="texto"
-            series={anosEscolhidos.map((a, i) => ({ id: a, rotulo: a, cor: COR_COMPARACAO[i % COR_COMPARACAO.length] }))}
-            unidade="MWmed"
-            casas={0}
-            altura={280}
-          />
+          <>
+            <GraficoLinhas
+              titulo={`${ROTULO_MEDIDA[medida]}, ${evol ? `${evol.classe} médio de ${evol.mes}` : "perfil médio do mês"}`}
+              dados={evolucao}
+              chaveX="hora"
+              formatoX="texto"
+              series={anosEscolhidos.map((a, i) => ({ id: a, rotulo: a, cor: COR_COMPARACAO[i % COR_COMPARACAO.length] }))}
+              unidade="MWmed"
+              casas={0}
+              altura={280}
+            />
+            <TabelaInterativa
+              titulo={`Tabela equivalente: perfil ${evol ? `de ${evol.mes} ` : ""}dos anos escolhidos`}
+              colunas={[{ id: "hora", rotulo: "Hora (início)", tipo: "texto" }, ...anosEscolhidos.map((a): ColunaTabela => ({ id: a, rotulo: a, tipo: "numero", unidade: "MWmed", casas: 0 }))]}
+              linhas={evolucao}
+              chaveLinha="id"
+              colunaRotulo="hora"
+              fonte={medida === "carga" ? fonteCurva : fonteApi}
+              versao={versao}
+              nomeArquivo={`carga-perfil-evolucao-${medida}`}
+              chaveUrl="evo"
+            />
+          </>
         )}
-        <TabelaInterativa
-          titulo="Tabela equivalente: perfil de agosto dos anos escolhidos"
-          colunas={[{ id: "hora", rotulo: "Hora (início)", tipo: "texto" }, ...anosEscolhidos.map((a): ColunaTabela => ({ id: a, rotulo: a, tipo: "numero", unidade: "MWmed", casas: 0 }))]}
-          linhas={evolucao}
-          chaveLinha="id"
-          colunaRotulo="hora"
-          fonte={medida === "carga" ? fonteCurva : fonteApi}
-          versao={versao}
-          nomeArquivo={`carga-perfil-agosto-${medida}`}
-        />
       </div>
 
       <div data-nivel="analisar" className="space-y-4 border-t border-linha pt-5">
-        <h3 className="font-serif text-lg text-carvao">Pico de cada dia nos últimos 90 dias (SIN)</h3>
+        <h3 className="font-serif text-lg text-carvao">Pico de cada dia nos últimos {plural(picos.length, "dia", "dias")} (SIN)</h3>
         <CursorSincronizado>
           <GraficoLinhas
             titulo="Pico horário diário da curva de carga do SIN"
@@ -486,14 +504,15 @@ export function CargaPerfil({
           />
         </CursorSincronizado>
         <TabelaInterativa
-          titulo="Tabela equivalente: picos e horas dos últimos 90 dias"
+          titulo={`Tabela equivalente: picos e horas dos últimos ${plural(picos.length, "dia", "dias")}`}
           colunas={COLUNAS_PICOS}
           linhas={picos}
           chaveLinha="id"
           colunaRotulo="d"
           fonte={`${fonteCurva}; ${fonteApi}`}
           versao={versao}
-          nomeArquivo="carga-picos-90-dias"
+          nomeArquivo="carga-picos-diarios"
+          chaveUrl="pic"
           ordemInicial={{ coluna: "d", direcao: "desc" }}
         />
         <TabelaInterativa
@@ -507,7 +526,7 @@ export function CargaPerfil({
           nomeArquivo="carga-recordes-anuais"
           chaveUrl="rec"
           ordemInicial={{ coluna: "ano", direcao: "desc" }}
-          nota="Antes de 2019 a hora do pico vem dos agregados diários da curva (média, pico e hora por subsistema). Anos de regimes diferentes não são comparáveis em nível."
+          nota={`${inicioHorario ? `Antes de ${inicioHorario} a hora do pico vem dos agregados diários da curva (média, pico e hora por subsistema). ` : ""}Anos de regimes diferentes não são comparáveis em nível.`}
         />
       </div>
     </div>

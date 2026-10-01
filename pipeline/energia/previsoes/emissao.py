@@ -24,7 +24,9 @@ registradas no arquivo.
 O que vai para o arquivo:
 * B0, como REFERENCIA_EXPERIMENTAL (seção 12.4): número real quando o período elegível
   está capturado até o corte e o recálculo independente confere; faixa só se o segmento
-  estiver CALIBRADO no teste retrospectivo, o que hoje não acontece;
+  estiver CALIBRADO no teste retrospectivo, o que hoje não acontece; enquanto os números
+  de desempenho estiverem retidos (publicacao_desempenho), o registro leva só o estado de
+  calibração, sem a cobertura do teste retrospectivo;
 * C2-P e C2-H, como RODADA_INTERNA, só depois da liberação formal registrada no registro
   de modelos (`publicacao_resultados.liberada`); até lá, nenhuma célula deles é emitida.
 """
@@ -57,6 +59,68 @@ ROTULO_REF = "B0: referência experimental de persistência, não é previsão a
 def le_registro(caminho=REGISTRO_MODELOS):
     with open(caminho, encoding="utf-8") as f:
         return json.load(f)
+
+
+def publicacao_desempenho(registro):
+    """(publicar, situação) dos números de desempenho do teste retrospectivo (P016).
+
+    A regra do registro de modelos diz que números de desempenho só entram no portal depois
+    da liberação formal pelo responsável pela plataforma. A leitura de que ela alcança só o
+    artefato de pesquisa (campo `escopo`) foi escrita pelo implementador em 30/09/2026 e não
+    foi ratificada; a especificação (seção 12.4) proíbe autoatribuir essa autorização. Então
+    `publicar = true` só vale com a decisão do responsável registrada, com nome e data, em
+    `validacao_observatorio.decisao_publicacao`; sem ela, os números ficam retidos.
+
+    Mora aqui, e não no módulo da gold, porque a rodada diária também precisa dela: a
+    cobertura do teste retrospectivo gravada em cada registro é número de desempenho."""
+    vo = registro.get("validacao_observatorio") or {}
+    dec = vo.get("decisao_publicacao") or {}
+    decidida = bool(dec.get("decidido_por") and dec.get("decidido_em") and dec.get("estado") == "LIBERADA")
+    if vo.get("publicar") is True and decidida:
+        return True, {"estado": "LIBERADA", "decisao": dec}
+    motivo = ("Números de desempenho do teste retrospectivo retidos: a regra do registro de modelos só os admite no portal "
+              "depois da liberação formal pelo responsável pela plataforma, e essa decisão ainda não foi registrada com nome e "
+              "data. A interpretação de que a retenção alcança só o artefato de pesquisa é do implementador (30/09/2026) e "
+              "aguarda ratificação. O cálculo está pronto e é reproduzível; os resultados ficam fora do portal até a decisão.")
+    if vo.get("publicar") is True and not decidida:
+        motivo = ("validacao_observatorio.publicar = true sem decisão do responsável registrada com nome e data: tratado como "
+                  "retido. " + motivo)
+    return False, {"estado": "RETIDA", "motivo": motivo, "decisao": dec or None}
+
+
+# Campos de desempenho dentro de `calibracao` de um registro. O estado (CALIBRADO,
+# AMOSTRA_INSUFICIENTE...) e o número de entregas ficam: o estado decide se há faixa e a
+# contagem é tamanho de amostra, não resultado. A cobertura é resultado do teste retrospectivo.
+CAMPOS_DESEMPENHO_CALIBRACAO = ("cobertura_p10_p90",)
+NOTA_RETIDA = ("cobertura do teste retrospectivo retida: número de desempenho fora do portal até a liberação formal pelo "
+               "responsável (validacao_observatorio.decisao_publicacao no registro de modelos)")
+
+
+def calibracao_para_registro(calib, publicar):
+    """Calibração como vai para o registro novo. Sob retenção, a rodada grava só o estado,
+    as entregas, a fonte e a regra de comparação; a cobertura não entra no arquivo (que é
+    versionado e publicado) e fica marcada como retida."""
+    if publicar:
+        return dict(calib)
+    out = {k: x for k, x in calib.items() if k not in CAMPOS_DESEMPENHO_CALIBRACAO}
+    out["cobertura_retida"] = NOTA_RETIDA
+    return out
+
+
+def projecao_publica(rec, publicar):
+    """Registro como aparece na partição publicada (public/energia/series). O registro
+    versionado nunca é reescrito: sob retenção, a publicação omite os números de desempenho
+    que registros antigos gravaram (a rodada de 30/09/2026 gravou a cobertura do teste
+    retrospectivo antes desta regra) e declara a omissão. O sha256 continua sendo o do
+    registro completo, guardado em pipeline/energia/previsoes/emissoes/AAAA-MM.jsonl."""
+    cal_ = rec.get("calibracao")
+    if publicar or not isinstance(cal_, dict) or not any(k in cal_ for k in CAMPOS_DESEMPENHO_CALIBRACAO):
+        return rec
+    omitidos = [f"calibracao.{k}" for k in CAMPOS_DESEMPENHO_CALIBRACAO if k in cal_]
+    novo = {**rec, "calibracao": {**{k: x for k, x in cal_.items() if k not in CAMPOS_DESEMPENHO_CALIBRACAO},
+                                  "cobertura_retida": NOTA_RETIDA}}
+    novo["omitido_na_publicacao"] = omitidos
+    return novo
 
 
 def limites():
@@ -193,6 +257,9 @@ def emitir(con, origem, agora=None, modo="manual", run_url=None, versao_codigo=N
     info = v.Informacao(con, corte_iso)
     lim = lim or limites()
     celulas, calib = _celulas_b0(origem, info, lim)
+    # a cobertura do teste retrospectivo é número de desempenho: sem a liberação, o registro
+    # (versionado e publicado) leva só o estado de calibração, nunca o número
+    publicar = publicacao_desempenho(registro)[0]
     emitido = emitido_em or datetime.now(timezone.utc)
     cache_direto = {}
     for e in cal.entregas(origem):
@@ -204,7 +271,8 @@ def emitir(con, origem, agora=None, modo="manual", run_url=None, versao_codigo=N
             per = bas["b0"]
             ini, fim = date.fromisoformat(per["inicio"]), date.fromisoformat(per["fim"])
             conhecidas = info.horas_disponiveis(sm, e["inicio"], e["fim"])
-            r.update(tipo="REFERENCIA_EXPERIMENTAL", rotulo=ROTULO_REF, calibracao=calib[(e["horizonte"], sm)],
+            r.update(tipo="REFERENCIA_EXPERIMENTAL", rotulo=ROTULO_REF,
+                     calibracao=calibracao_para_registro(calib[(e["horizonte"], sm)], publicar),
                      horas_capturadas_ate_corte=conhecidas, fracao_conhecida=round(conhecidas / e["horas"], 6),
                      limites={"piso_medio": None if ln.lo is None else round(ln.lo, 4),
                               "teto_estrutural_medio": None if ln.hi is None else round(ln.hi, 4),

@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "pld_detalhe.json",
- "gerado_em": "2026-10-01T06:43:27Z",
+ "gerado_em": "2026-10-01T06:54:27Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "f5cba38ad40f+alterado",
+ "versao_codigo": "eec0a3121e05+alterado",
  "disponivel": true,
  "unidade": "R$/MWh nominais, salvo onde indicado",
  "fuso": "Horário de Brasília (UTC−3, sem horário de verão no período integrado)",
@@ -11639,7 +11639,7 @@
       "ponderada_menos_sem_mmgd": -6.24
      }
     ],
-    "texto": "Em ago/2026, a ponderada pela carga do balanço (com a MMGD estimada) ficou entre −R$ 9,26 e −R$ 5,73/MWh da ponderada pela carga sem MMGD, enquanto a distância entre a ponderada e a média temporal ficou entre R$ 0,39 e R$ 4,26/MWh. A escolha do peso muda o resultado; as duas ponderadas são publicadas, cada uma com o seu perímetro."
+    "texto": "Em ago/2026, a ponderada pela carga do balanço (com a MMGD estimada) ficou de R$ 5,73 a R$ 9,26/MWh abaixo da ponderada pela carga sem MMGD, e a distância entre ela e a média temporal ficou de R$ 0,39 a R$ 4,26/MWh acima da média temporal, nos quatro submercados. A escolha do peso muda o resultado; as duas ponderadas são publicadas, cada uma com o seu perímetro."
    }
   },
   "sazonal_mes": [
@@ -17205,7 +17205,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:00:52Z",
    "capturado_em": "2026-09-30T22:06:13Z",
-   "validado_em": "2026-10-01T06:43:24Z",
+   "validado_em": "2026-10-01T06:54:24Z",
    "cobertura_historica": {
     "inicio": "2020-01-01T00:00",
     "fim": "2026-10-01T23:30"
@@ -17222,9 +17222,9 @@
     "sha256": "85e6f360396ec924e3dea1a16adc5d29357d54b2441b83fa6f9acfef484d517f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:42:58Z",
+    "detectado_em": "2026-10-01T06:54:00Z",
     "total": 0,
     "vintages_comparadas": 7,
     "arquivos": 7,
@@ -17261,7 +17261,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:00:52Z",
    "capturado_em": "2026-09-30T22:06:13Z",
-   "validado_em": "2026-10-01T06:43:24Z",
+   "validado_em": "2026-10-01T06:54:25Z",
    "cobertura_historica": {
     "inicio": "2020-01-01T00:00",
     "fim": "2026-10-01T23:30"
@@ -17275,9 +17275,9 @@
     "sha256": "85e6f360396ec924e3dea1a16adc5d29357d54b2441b83fa6f9acfef484d517f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:42:58Z",
+    "detectado_em": "2026-10-01T06:54:00Z",
     "total": 0,
     "vintages_comparadas": 7,
     "arquivos": 7,
@@ -17332,7 +17332,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:14Z",
-   "validado_em": "2026-10-01T06:43:24Z",
+   "validado_em": "2026-10-01T06:54:25Z",
    "cobertura_historica": {
     "inicio": "2023-10-07",
     "fim": "2026-10-02"
@@ -17348,9 +17348,9 @@
     "sha256": "0c92735cc77edc05022e65b2053fce1cae98f7dd59de17d26ca100638586baab"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:42:59Z",
+    "detectado_em": "2026-10-01T06:54:00Z",
     "total": 0,
     "vintages_comparadas": 22,
     "arquivos": 22,
@@ -17472,7 +17472,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:14Z",
-   "validado_em": "2026-10-01T06:43:24Z",
+   "validado_em": "2026-10-01T06:54:25Z",
    "cobertura_historica": {
     "inicio": "2021-01-01T00:00",
     "fim": "2026-09-30T23:00"
@@ -17488,9 +17488,9 @@
     "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:42:59Z",
+    "detectado_em": "2026-10-01T06:54:00Z",
     "total": 0,
     "vintages_comparadas": 8,
     "arquivos": 6,
@@ -17553,7 +17553,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:14Z",
-   "validado_em": "2026-10-01T06:43:24Z",
+   "validado_em": "2026-10-01T06:54:25Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-30"
@@ -17571,9 +17571,9 @@
     "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:43:24Z",
+    "detectado_em": "2026-10-01T06:54:24Z",
     "total": 689,
     "exemplos": [
      {
@@ -17701,7 +17701,7 @@
     "ponderada_carga_sem_mmgd usa a carga global líquida de MMGD da API de carga verificada do ONS (perímetro homogêneo, sem a MMGD estimada) e é a série para comparar meses de perímetros diferentes; vem do silver do módulo Carga e cobre as horas com as duas meias horas publicadas.",
     "Mês parcial marcado; a ponderada usa só as horas com carga publicada e positiva (campos mesmas_horas e mesmas_horas_sem_mmgd).",
     "Moeda constante é perspectiva adicional; o IPCA mede preços ao consumidor, não custos de energia.",
-    "Em ago/2026, a ponderada pela carga do balanço (com a MMGD estimada) ficou entre −R$ 9,26 e −R$ 5,73/MWh da ponderada pela carga sem MMGD, enquanto a distância entre a ponderada e a média temporal ficou entre R$ 0,39 e R$ 4,26/MWh. A escolha do peso muda o resultado; as duas ponderadas são publicadas, cada uma com o seu perímetro.",
+    "Em ago/2026, a ponderada pela carga do balanço (com a MMGD estimada) ficou de R$ 5,73 a R$ 9,26/MWh abaixo da ponderada pela carga sem MMGD, e a distância entre ela e a média temporal ficou de R$ 0,39 a R$ 4,26/MWh acima da média temporal, nos quatro submercados. A escolha do peso muda o resultado; as duas ponderadas são publicadas, cada uma com o seu perímetro.",
     "A carga do ONS foi revista entre capturas em SE 2026-09 (256 horas, até 5.738,2 MWmed, efeito de −R$ 0,10/MWh na ponderada); S 2026-09 (117 horas, até 431,5 MWmed, efeito de −R$ 0,03/MWh na ponderada); NE 2026-09 (245 horas, até 18.847,3 MWmed, efeito de −R$ 1,63/MWh na ponderada); N 2026-09 (71 horas, até 397,9 MWmed, efeito de −R$ 0,05/MWh na ponderada); ver ponderacao.revisoes_carga."
    ],
    "download": "/energia/series/pld_mensal.csv",
@@ -17726,7 +17726,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-29T22:00:42.467156",
    "capturado_em": "2026-09-30T02:19:57Z",
-   "validado_em": "2026-10-01T06:43:24Z",
+   "validado_em": "2026-10-01T06:54:25Z",
    "cobertura_historica": {
     "inicio": "2021-01-01T00:00",
     "fim": "2026-09-28T23:00"
@@ -17741,9 +17741,9 @@
     "sha256": "8774bc4794fad38b820ea212ddf4bf343761f449d90dfef8d2a31d64fb0993ba"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:43:24Z",
+    "detectado_em": "2026-10-01T06:54:24Z",
     "total": 689,
     "vintages_comparadas": 7,
     "arquivos": 6,
@@ -17877,7 +17877,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:14Z",
-   "validado_em": "2026-10-01T06:43:24Z",
+   "validado_em": "2026-10-01T06:54:25Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-30"
@@ -17893,9 +17893,9 @@
     "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:42:59Z",
+    "detectado_em": "2026-10-01T06:54:00Z",
     "total": 0,
     "vintages_comparadas": 8,
     "arquivos": 6,
@@ -18010,7 +18010,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:14Z",
-   "validado_em": "2026-10-01T06:43:24Z",
+   "validado_em": "2026-10-01T06:54:25Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-30"
@@ -18026,9 +18026,9 @@
     "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:42:59Z",
+    "detectado_em": "2026-10-01T06:54:00Z",
     "total": 0,
     "vintages_comparadas": 8,
     "arquivos": 6,
@@ -18065,7 +18065,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:14Z",
-   "validado_em": "2026-10-01T06:43:24Z",
+   "validado_em": "2026-10-01T06:54:25Z",
    "cobertura_historica": {
     "inicio": "2021-01-01T00:00",
     "fim": "2026-09-30T23:00"
@@ -18080,9 +18080,9 @@
     "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:42:59Z",
+    "detectado_em": "2026-10-01T06:54:00Z",
     "total": 0,
     "vintages_comparadas": 8,
     "arquivos": 6,
@@ -18132,7 +18132,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:08Z",
-   "validado_em": "2026-10-01T06:43:24Z",
+   "validado_em": "2026-10-01T06:54:25Z",
    "cobertura_historica": {
     "inicio": "2021-01-01T00:00",
     "fim": "2026-09-28T23:00"
@@ -18147,9 +18147,9 @@
     "sha256": "cc661040c697757661b1c94d38a802ccc10c0d9b8c1403082731a53f2994d931"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:43:03Z",
+    "detectado_em": "2026-10-01T06:54:04Z",
     "total": 0,
     "vintages_comparadas": 7,
     "arquivos": 6,
@@ -18184,7 +18184,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:00:46Z",
    "capturado_em": "2026-09-30T22:06:43Z",
-   "validado_em": "2026-10-01T06:43:24Z",
+   "validado_em": "2026-10-01T06:54:25Z",
    "cobertura_historica": {
     "inicio": "2005-01-07",
     "fim": "2026-10-02"
@@ -18200,9 +18200,9 @@
     "sha256": "c7b5fe550dbb5b44b839999c3c68e1e5b34a31efbf36427bdfca2e300931ad89"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:42:58Z",
+    "detectado_em": "2026-10-01T06:54:00Z",
     "total": 0,
     "vintages_comparadas": 44,
     "arquivos": 44,
@@ -18237,7 +18237,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:14Z",
-   "validado_em": "2026-10-01T06:43:24Z",
+   "validado_em": "2026-10-01T06:54:25Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-30"
@@ -18252,9 +18252,9 @@
     "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:42:59Z",
+    "detectado_em": "2026-10-01T06:54:00Z",
     "total": 0,
     "vintages_comparadas": 8,
     "arquivos": 6,
@@ -18288,7 +18288,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-10-01T00:04:34Z",
-   "validado_em": "2026-10-01T06:43:24Z",
+   "validado_em": "2026-10-01T06:54:25Z",
    "cobertura_historica": {
     "inicio": "2021-01-01T00:00",
     "fim": "2026-09-29T23:00"
@@ -18303,9 +18303,9 @@
     "sha256": "6928d877ecd805241b51dba2b91b6a19e7fbd12c72cf4958bd705dcb2db3eff7"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:43:24Z",
+    "detectado_em": "2026-10-01T06:54:24Z",
     "total": 0,
     "vintages_comparadas": 376,
     "arquivos": 376,
@@ -18417,7 +18417,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:14Z",
-   "validado_em": "2026-10-01T06:43:24Z",
+   "validado_em": "2026-10-01T06:54:25Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-30"
@@ -18433,9 +18433,9 @@
     "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:42:59Z",
+    "detectado_em": "2026-10-01T06:54:00Z",
     "total": 0,
     "vintages_comparadas": 8,
     "arquivos": 6,

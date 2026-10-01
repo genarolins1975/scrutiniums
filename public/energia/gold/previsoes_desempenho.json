@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "previsoes_desempenho.json",
- "gerado_em": "2026-10-01T00:55:11Z",
+ "gerado_em": "2026-10-01T06:58:21Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d5dc4fd86561+alterado",
+ "versao_codigo": "eec0a3121e05+alterado",
  "disponivel": true,
  "paineis": [
   "P013",
@@ -12,8 +12,8 @@
   "P016"
  ],
  "proveniencia": {
-  "indicador": "Desempenho da previsão do PLD (teste retrospectivo e prospectivo)",
-  "natureza": "CALCULADO",
+  "indicador": "Previsão do PLD: referência experimental B0, arquivo de emissões, rotina e fichas dos modelos",
+  "natureza": "PREVISTO",
   "fonte": {
    "orgao": "CCEE",
    "dataset": "PLD_HORARIO",
@@ -22,35 +22,34 @@
    "url_primaria": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
    "licenca": "Creative Commons Attribution 4.0 (CC-BY-4.0), conforme o portal de dados abertos da CCEE"
   },
-  "unidade": "R$/MWh (erros); fração de 0 a 1 (coberturas)",
-  "frequencia": "diária (origens); semanal e mensal (entregas)",
+  "unidade": "R$/MWh nominais (previsões e PLD); minutos (atraso da rodada); contagens (células, rodadas)",
+  "frequencia": "rodada diária; entregas semanais e mensais",
   "periodo_referencia": {
    "inicio": "2022-01-01",
    "fim": "2026-09-30"
   },
   "publicado_pela_fonte_em": null,
   "capturado_em": "2026-09-30T02:20:14Z",
-  "validado_em": "2026-10-01T00:55:11Z",
+  "validado_em": "2026-10-01T06:58:21Z",
   "cobertura_historica": {
    "inicio": "2021-01-01",
    "fim": "2026-09-30"
   },
   "transformacoes": [
-   "PLD horário → média por entrega (semana de sábado a sábado; mês civil)",
-   "variáveis sob LAT1D a partir do dado como estava no instante de informação",
-   "modelos B0, S0, C2-P, C2-H com treino só no passado",
-   "restrição à faixa [piso, teto estrutural]",
-   "métricas por horizonte, submercado, período e regime"
+   "PLD horário como estava no corte das 07h00 (base.como_estava_em)",
+   "B0 = média do último período completo elegível, restrita à faixa de preço",
+   "arquivo imutável de emissões com sha256 e encadeamento; reexecução de cada previsão arquivada",
+   "coeficientes do C2 por origem de ajuste (configuração dos modelos)"
   ],
-  "formula": "MAE = média |previsão − realizado|; viés = média (previsão − realizado); ganho = MAE(B0) − MAE(modelo) nas mesmas células",
+  "formula": "B0 = mín(máx(Σ PLD_h ÷ n do último período elegível; piso), teto); atraso = máx(0, emitido_em − prazo)",
   "snapshot": {
    "id": "ccee_pld_horario@2026-09-30T02:20:14Z",
    "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
   },
   "versao_pipeline": "energia-0.1.0",
-  "versao_codigo": "d5dc4fd86561+alterado",
+  "versao_codigo": "eec0a3121e05+alterado",
   "revisoes_conhecidas": {
-   "detectado_em": "2026-10-01T00:54:29Z",
+   "detectado_em": "2026-10-01T06:57:22Z",
    "total": 0,
    "vintages_comparadas": 8,
    "arquivos": 6,
@@ -59,12 +58,11 @@
    "exemplos": []
   },
   "limitacoes": [
-   "Teste retrospectivo é reconstrução sob a hipótese LAT1D: o sistema não tinha capturas nas origens antigas (primeira captura do PLD em 27/09/2026) e a CCEE não informa quando publicou cada hora (achado A09).",
-   "EAR e ENA do ONS passam por consistência recorrente; o teste do C2-H usa o valor revisado, com risco de olhar o futuro.",
-   "O período de desenvolvimento (2022 a 2024) já tinha sido examinado pela pesquisa antes da definição dos candidatos.",
-   "Origens diárias vizinhas preveem a mesma entrega: o tamanho efetivo é o número de entregas distintas.",
+   "Números de desempenho do teste retrospectivo (MAE, viés, ganho, cobertura, calibração numérica, regimes, sensibilidade e G23-R1) retidos fora do portal até a decisão do responsável pela plataforma (regra do registro de modelos); estão calculados e validados nesta execução, em data/energia/previsoes/validacao_interna.",
+   "B0 é referência experimental identificada (seção 12.4), não previsão aprovada; nenhum modelo está em PRODUÇÃO.",
    "Prospectivo ainda sem entrega apurada: nenhuma conclusão sobre desempenho em operação real.",
-   "Números de desempenho do teste retrospectivo retidos fora do portal até a decisão do responsável pela plataforma (regra do registro de modelos); esta gold traz o arquivo de emissões, a rotina, a referência experimental B0 e as fichas, sem MAE, ganho, cobertura nem calibração numérica."
+   "Rotina diária agendada ainda não comprovada por execução real.",
+   "Teste retrospectivo é reconstrução sob a hipótese LAT1D: o sistema não tinha capturas nas origens antigas (primeira captura do PLD em 27/09/2026) e a CCEE não informa quando publicou cada hora (achado A09)."
   ],
   "download": "/energia/series/previsoes_emissoes.csv",
   "notas_fonte": null
@@ -281,11 +279,7 @@
   "motivo": "Números de desempenho do teste retrospectivo retidos: a regra do registro de modelos só os admite no portal depois da liberação formal pelo responsável pela plataforma, e essa decisão ainda não foi registrada com nome e data. A interpretação de que a retenção alcança só o artefato de pesquisa é do implementador (30/09/2026) e aguarda ratificação. O cálculo está pronto e é reproduzível; os resultados ficam fora do portal até a decisão.",
   "interpretacao_do_implementador": "O campo publicacao_resultados.escopo (retenção só do artefato de pesquisa) e o antigo validacao_observatorio.publicar = true foram escritos pelo implementador do módulo em 30/09/2026, sem decisão do responsável. Não valem como autorização (seção 12.4).",
   "para_liberar": "O responsável registra em validacao_observatorio.decisao_publicacao: estado LIBERADA, decidido_por, decidido_em e o escopo decidido; e troca publicar para true. A próxima execução publica os números.",
-  "arquivos_retirados_do_portal": [
-   "/energia/series/previsoes_backtest_semanal.csv",
-   "/energia/series/previsoes_backtest_mensal.csv",
-   "/energia/series/previsoes_desempenho.csv"
-  ]
+  "arquivos_retirados_do_portal": null
  },
  "desempenho": {
   "publicado": false,
@@ -305,6 +299,7 @@
     "prazo": "2026-09-30T11:00:00Z",
     "emitido_em": "2026-09-30T23:31:17Z",
     "atraso_min": 751.3,
+    "atraso_origem": "registrado",
     "no_prazo": false,
     "modo": "manual",
     "executor": "ambiente de desenvolvimento",
@@ -334,6 +329,7 @@
     "prazo": "2026-09-27T11:00:00Z",
     "emitido_em": "2026-09-27T19:10:13Z",
     "atraso_min": 490.2,
+    "atraso_origem": "calculado de emitido_em e prazo (não registrado na origem)",
     "no_prazo": false,
     "modo": "manual (registro transcrito de artefato externo)",
     "executor": null,
@@ -1189,7 +1185,7 @@
    "tolerancia": "0.005 R$/MWh"
   },
   "calibracao_regra_antiga": {
-   "descricao": "Registros emitidos antes de 01/10/2026 gravaram calibracao.cobertura_p10_p90 com comparação estrita em ponto flutuante: numa semana inteira no piso, o realizado (58,5999999996) ficava abaixo do P10 limitado ao piso (58,60000000000001) e a célula contava como descoberta. O registro é imutável e continua como foi gravado; a calibração refeita com a regra corrigida (tolerância de 1e-6 R$/MWh, faixa inclusiva) e com o dado como estava no corte de cada rodada fica ao lado.",
+   "descricao": "Registros emitidos antes de 01/10/2026 gravaram calibracao.cobertura_p10_p90 com comparação estrita em ponto flutuante: numa semana inteira no piso, o realizado (58,5999999996) ficava abaixo do P10 limitado ao piso (58,60000000000001) e a célula contava como descoberta. O registro é imutável e não é reescrito. Com os números de desempenho retidos, nem a cobertura gravada nem a refeita com a regra corrigida (tolerância de 1e-6 R$/MWh, faixa inclusiva) vão ao portal: a partição pública do arquivo omite o campo e a refeita fica com os resultados retidos, em data/energia/previsoes/validacao_interna. Aqui ficam só os estados de calibração, gravado e refeito.",
    "rodadas": [
     "prosp_2026-09-30_20260930T233117Z"
    ],
@@ -1464,7 +1460,7 @@
   "horarios": "Gatilhos às 05h47, 06h17, 06h43, 07h13, 07h37 de Brasília: o primeiro que rodar confere o dado, tenta coletar o que falta antes do corte, espera as 07h00 e emite com o dado como estava no corte; os seguintes ficam na fila do mesmo grupo de concorrência, partem do main atual (não do commit em que o gatilho foi criado), conferem de novo logo antes de emitir e saem ao ver a rodada registrada. O arquivo de emissões é commitado em seguida (prazo 08h00). Pré-carga: coleta noturna das 20h40 (atualizar-energia.yml). Comportamento ainda não comprovado por execução agendada real.",
   "fuso": "America/Sao_Paulo; o cron do GitHub é em UTC e supõe UTC−3 (sem horário de verão desde 2019). Se o horário de verão voltar, o cron precisa mudar; a emissão calcula o corte pelo fuso e marca o atraso de qualquer forma.",
   "inicio_operacao_agendada": null,
-  "verificado_em": "2026-10-01T00:55:07Z",
+  "verificado_em": "2026-10-01T06:58:15Z",
   "dias_vencidos_ate": "2026-09-30",
   "execucoes_agendadas": 0,
   "no_prazo": 0,
@@ -1519,6 +1515,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:W1:SE:B0",
+    "evidencia": "b0_semanal_SE",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -1547,6 +1544,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:W1:S:B0",
+    "evidencia": "b0_semanal_S",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -1575,6 +1573,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:W1:NE:B0",
+    "evidencia": "b0_semanal_NE",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -1603,6 +1602,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:W1:N:B0",
+    "evidencia": "b0_semanal_N",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -1631,6 +1631,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:W2:SE:B0",
+    "evidencia": "b0_semanal_SE",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -1659,6 +1660,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:W2:S:B0",
+    "evidencia": "b0_semanal_S",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -1687,6 +1689,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:W2:NE:B0",
+    "evidencia": "b0_semanal_NE",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -1715,6 +1718,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:W2:N:B0",
+    "evidencia": "b0_semanal_N",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -1743,6 +1747,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:W3:SE:B0",
+    "evidencia": "b0_semanal_SE",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -1771,6 +1776,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:W3:S:B0",
+    "evidencia": "b0_semanal_S",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -1799,6 +1805,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:W3:NE:B0",
+    "evidencia": "b0_semanal_NE",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -1827,6 +1834,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:W3:N:B0",
+    "evidencia": "b0_semanal_N",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -1855,6 +1863,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:W4:SE:B0",
+    "evidencia": "b0_semanal_SE",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -1883,6 +1892,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:W4:S:B0",
+    "evidencia": "b0_semanal_S",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -1911,6 +1921,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:W4:NE:B0",
+    "evidencia": "b0_semanal_NE",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -1939,6 +1950,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:W4:N:B0",
+    "evidencia": "b0_semanal_N",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -1967,6 +1979,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:M1:SE:B0",
+    "evidencia": "b0_mensal_SE",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -1995,6 +2008,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:M1:S:B0",
+    "evidencia": "b0_mensal_S",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -2023,6 +2037,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:M1:NE:B0",
+    "evidencia": "b0_mensal_NE",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -2051,6 +2066,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:M1:N:B0",
+    "evidencia": "b0_mensal_N",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -2079,6 +2095,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:M2:SE:B0",
+    "evidencia": "b0_mensal_SE",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -2107,6 +2124,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:M2:S:B0",
+    "evidencia": "b0_mensal_S",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -2135,6 +2153,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:M2:NE:B0",
+    "evidencia": "b0_mensal_NE",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -2163,6 +2182,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:M2:N:B0",
+    "evidencia": "b0_mensal_N",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -2191,6 +2211,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:M3:SE:B0",
+    "evidencia": "b0_mensal_SE",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -2219,6 +2240,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:M3:S:B0",
+    "evidencia": "b0_mensal_S",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -2247,6 +2269,7 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:M3:NE:B0",
+    "evidencia": "b0_mensal_NE",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    },
    {
@@ -2275,10 +2298,11 @@
      "capturado_em": "2026-09-27T15:44:02Z"
     },
     "forecast_id": "prosp_2026-09-30_20260930T233117Z:M3:N:B0",
+    "evidencia": "b0_mensal_N",
     "calibracao_recalculada": "AMOSTRA_INSUFICIENTE"
    }
   ],
-  "bandas": "Sem faixa: nenhum segmento do B0 está CALIBRADO no período de teste (ver calibração em P016).",
+  "bandas": "Sem faixa: nenhum segmento do B0 está CALIBRADO no período de teste (estado em cada célula; a cobertura do teste retrospectivo está retida fora do portal até a liberação dos números de desempenho).",
   "candidatos": {
    "emitidos": false,
    "motivo": "C2-P e C2-H não são emitidos: a governança retém número de rodada interna dos candidatos até a liberação formal registrada no registro de modelos. O período prospectivo deles ainda não começou."
@@ -2366,7 +2390,8 @@
        99.03
       ]
      ],
-     "capturado_em": "2026-09-30T02:20:14Z"
+     "capturado_em": "2026-09-30T02:20:14Z",
+     "evidencia": "pld_no_corte_SE"
     },
     "S": {
      "horas": 17,
@@ -2445,7 +2470,8 @@
        99.02
       ]
      ],
-     "capturado_em": "2026-09-30T02:20:14Z"
+     "capturado_em": "2026-09-30T02:20:14Z",
+     "evidencia": "pld_no_corte_S"
     },
     "NE": {
      "horas": 17,
@@ -2524,7 +2550,8 @@
        99.02
       ]
      ],
-     "capturado_em": "2026-09-30T02:20:14Z"
+     "capturado_em": "2026-09-30T02:20:14Z",
+     "evidencia": "pld_no_corte_NE"
     },
     "N": {
      "horas": 17,
@@ -2603,9 +2630,116 @@
        99.03
       ]
      ],
-     "capturado_em": "2026-09-30T02:20:14Z"
+     "capturado_em": "2026-09-30T02:20:14Z",
+     "evidencia": "pld_no_corte_N"
     }
+   },
+   "proveniencia": {
+    "indicador": "PLD horário já publicado para o dia de origem depois do corte",
+    "natureza": "OBSERVADO",
+    "fonte": {
+     "orgao": "CCEE",
+     "dataset": "PLD_HORARIO",
+     "recurso": "pld_horario_2026",
+     "url_dataset": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+     "url_primaria": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+     "licenca": "Creative Commons Attribution 4.0 (CC-BY-4.0), conforme o portal de dados abertos da CCEE"
+    },
+    "unidade": "R$/MWh nominais",
+    "frequencia": "horária",
+    "periodo_referencia": {
+     "inicio": "2026-09-30T07:00",
+     "fim": "2026-09-30T23:00"
+    },
+    "publicado_pela_fonte_em": null,
+    "capturado_em": "2026-09-30T02:20:14Z",
+    "validado_em": "2026-10-01T06:58:16Z",
+    "cobertura_historica": {
+     "inicio": "2026-09-30",
+     "fim": "2026-09-30"
+    },
+    "transformacoes": [
+     "PLD horário como estava no corte (base.como_estava_em)",
+     "média, mínimo e máximo das horas listadas"
+    ],
+    "formula": null,
+    "snapshot": {
+     "id": "ccee_pld_horario@2026-09-30T02:20:14Z",
+     "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
+    },
+    "versao_pipeline": "energia-0.1.0",
+    "versao_codigo": "eec0a3121e05+alterado",
+    "revisoes_conhecidas": {
+     "detectado_em": "2026-10-01T06:57:22Z",
+     "total": 0,
+     "vintages_comparadas": 8,
+     "arquivos": 6,
+     "recapturas_sem_mudanca": 10,
+     "ultimo_download_ok": "2026-09-30T02:20:15Z",
+     "exemplos": []
+    },
+    "limitacoes": [
+     "É dado publicado pela CCEE na véspera, não previsão; não entra em nenhuma entrega prevista.",
+     "A data de publicação de cada hora não é informada pela CCEE; vale a captura (achado A09)."
+    ],
+    "download": "/energia/series/previsoes_emissoes.csv",
+    "notas_fonte": null
    }
+  },
+  "proveniencia": {
+   "indicador": "Referência experimental B0 (persistência) da rodada atual",
+   "natureza": "PREVISTO",
+   "fonte": {
+    "orgao": "CCEE",
+    "dataset": "PLD_HORARIO",
+    "recurso": "pld_horario_2021 a pld_horario_2026",
+    "url_dataset": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "url_primaria": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "licenca": "Creative Commons Attribution 4.0 (CC-BY-4.0), conforme o portal de dados abertos da CCEE"
+   },
+   "unidade": "R$/MWh nominais",
+   "frequencia": "rodada diária; entregas semanais (W1 a W4) e mensais (M1 a M3)",
+   "periodo_referencia": {
+    "inicio": "2026-08-01",
+    "fim": "2026-09-26"
+   },
+   "publicado_pela_fonte_em": null,
+   "capturado_em": "2026-09-27T15:44:02Z",
+   "validado_em": "2026-10-01T06:58:16Z",
+   "cobertura_historica": {
+    "inicio": "2021-01-01",
+    "fim": "2026-09-30"
+   },
+   "transformacoes": [
+    "PLD horário como estava no corte das 07h00 de Brasília (base.como_estava_em)",
+    "média das horas do último período completo elegível (semana de sábado a sábado ou mês civil, LAT1D)",
+    "restrição à faixa [piso médio, teto estrutural médio] dos atos da ANEEL publicados até a véspera",
+    "recálculo independente hora a hora antes de gravar; registro imutável com sha256"
+   ],
+   "formula": "B0 = mín(máx(Σ PLD_h ÷ n do último período elegível; piso), teto)",
+   "snapshot": {
+    "id": "corte@2026-09-30T10:00:00Z:b673ea95d1c4",
+    "sha256": "b673ea95d1c4acafa47212954e47da8cec9487d6cdaf336ccd1f4931a846d247"
+   },
+   "versao_pipeline": "energia-0.1.0",
+   "versao_codigo": "eec0a3121e05+alterado",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-10-01T06:57:22Z",
+    "total": 0,
+    "vintages_comparadas": 8,
+    "arquivos": 6,
+    "recapturas_sem_mudanca": 10,
+    "ultimo_download_ok": "2026-09-30T02:20:15Z",
+    "exemplos": []
+   },
+   "limitacoes": [
+    "Referência experimental identificada (seção 12.4): não é previsão aprovada nem a previsão principal.",
+    "Persistência pura: não usa chuva, reservatórios nem vazões.",
+    "Sem faixa de incerteza: nenhum segmento está CALIBRADO.",
+    "Rodada manual, emitida 751 minutos depois do prazo das 08h00."
+   ],
+   "download": "/energia/series/previsoes_emissoes.csv",
+   "notas_fonte": null
   }
  },
  "fichas": [
@@ -4033,7 +4167,1244 @@
    }
   }
  },
- "evidencias": {},
+ "evidencias": {
+  "pld_no_corte_SE": {
+   "indicador": "PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado SE",
+   "valor_exibido": "R$ 155,21/MWh",
+   "valor_calculo": 155.21058823529415,
+   "unidade": "R$/MWh",
+   "periodo": {
+    "inicio": "2026-09-30T07:00",
+    "fim": "2026-09-30T23:00"
+   },
+   "entidade": "submercado SE",
+   "universo": "17 horas do dia de origem a partir do corte",
+   "filtros": [],
+   "fonte": {
+    "orgao": "CCEE",
+    "conjunto": "PLD_HORARIO (PLD horário por submercado)",
+    "recurso": "pld_horario_2026",
+    "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": "2026-09-30T02:20:14Z",
+    "publicado_em": null,
+    "arquivos": [
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "pipeline/energia/seed/ccee_pld_horario/v20260927T154402Z/pld_horario_2026.csv.gz",
+      "sha256": "e28cffcf3d406940c153d35d60d70287f40dbc75bb435c02186183db9ee607e0",
+      "capturado_em": "2026-09-27T15:44:02Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260929T024341Z.0f4f9ccf690e.csv.gz",
+      "sha256": "0f4f9ccf690e5283ecfeee9812a00c306f9a6a99494d9eed60ec34265f7aa671",
+      "capturado_em": "2026-09-29T02:43:41Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
+      "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
+      "capturado_em": "2026-09-30T02:20:14Z",
+      "publicado_em": null
+     }
+    ]
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "pld.SE"
+   ],
+   "chaves_total": null,
+   "consulta": "silver ccee_pld_horario, série pld.SE, referências de 2026-09-30T07:00 a 2026-09-30T23:00 (hora de Brasília), como estavam no corte 2026-09-30T10:00:00Z",
+   "manifesto": null,
+   "formula": "média = Σ PLD_h ÷ horas, nas horas do dia de origem a partir das 07h",
+   "numerador": {
+    "descricao": "Σ PLD_h das 17 horas (R$/MWh)",
+    "valor": 2638.58
+   },
+   "denominador": {
+    "descricao": "horas",
+    "valor": 17
+   },
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "17 de 17 horas do dia depois do corte",
+   "tratamento_ausencia": "Hora não capturada até o corte fica fora e a contagem de horas aparece ao lado; nunca é preenchida.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T06:58:15Z"
+   },
+   "revisoes": "Detecção de revisões não disponível para este número.",
+   "testes": [
+    {
+     "nome": "Todas as horas do dia depois do corte capturadas",
+     "resultado": "aprovado",
+     "detalhe": "17 de 17 horas"
+    },
+    {
+     "nome": "Capturado até o corte",
+     "resultado": "aprovado",
+     "detalhe": "capturado_em 2026-09-30T02:20:14Z; corte 2026-09-30T10:00:00Z"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Emissões registradas (CSV)",
+     "url": "/energia/series/previsoes_emissoes.csv"
+    },
+    {
+     "rotulo": "Arquivo de emissões de 2026-09 (JSON)",
+     "url": "/energia/series/previsoes_emissoes_2026-09.json"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
+   "citacao": "SCRUTINIUMS. PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado SE: R$ 155,21/MWh, submercado SE, 30/09/2026 07:00 a 30/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "pld_no_corte_S": {
+   "indicador": "PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado S",
+   "valor_exibido": "R$ 155,21/MWh",
+   "valor_calculo": 155.2070588235294,
+   "unidade": "R$/MWh",
+   "periodo": {
+    "inicio": "2026-09-30T07:00",
+    "fim": "2026-09-30T23:00"
+   },
+   "entidade": "submercado S",
+   "universo": "17 horas do dia de origem a partir do corte",
+   "filtros": [],
+   "fonte": {
+    "orgao": "CCEE",
+    "conjunto": "PLD_HORARIO (PLD horário por submercado)",
+    "recurso": "pld_horario_2026",
+    "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": "2026-09-30T02:20:14Z",
+    "publicado_em": null,
+    "arquivos": [
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "pipeline/energia/seed/ccee_pld_horario/v20260927T154402Z/pld_horario_2026.csv.gz",
+      "sha256": "e28cffcf3d406940c153d35d60d70287f40dbc75bb435c02186183db9ee607e0",
+      "capturado_em": "2026-09-27T15:44:02Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260929T024341Z.0f4f9ccf690e.csv.gz",
+      "sha256": "0f4f9ccf690e5283ecfeee9812a00c306f9a6a99494d9eed60ec34265f7aa671",
+      "capturado_em": "2026-09-29T02:43:41Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
+      "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
+      "capturado_em": "2026-09-30T02:20:14Z",
+      "publicado_em": null
+     }
+    ]
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "pld.S"
+   ],
+   "chaves_total": null,
+   "consulta": "silver ccee_pld_horario, série pld.S, referências de 2026-09-30T07:00 a 2026-09-30T23:00 (hora de Brasília), como estavam no corte 2026-09-30T10:00:00Z",
+   "manifesto": null,
+   "formula": "média = Σ PLD_h ÷ horas, nas horas do dia de origem a partir das 07h",
+   "numerador": {
+    "descricao": "Σ PLD_h das 17 horas (R$/MWh)",
+    "valor": 2638.52
+   },
+   "denominador": {
+    "descricao": "horas",
+    "valor": 17
+   },
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "17 de 17 horas do dia depois do corte",
+   "tratamento_ausencia": "Hora não capturada até o corte fica fora e a contagem de horas aparece ao lado; nunca é preenchida.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T06:58:15Z"
+   },
+   "revisoes": "Detecção de revisões não disponível para este número.",
+   "testes": [
+    {
+     "nome": "Todas as horas do dia depois do corte capturadas",
+     "resultado": "aprovado",
+     "detalhe": "17 de 17 horas"
+    },
+    {
+     "nome": "Capturado até o corte",
+     "resultado": "aprovado",
+     "detalhe": "capturado_em 2026-09-30T02:20:14Z; corte 2026-09-30T10:00:00Z"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Emissões registradas (CSV)",
+     "url": "/energia/series/previsoes_emissoes.csv"
+    },
+    {
+     "rotulo": "Arquivo de emissões de 2026-09 (JSON)",
+     "url": "/energia/series/previsoes_emissoes_2026-09.json"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
+   "citacao": "SCRUTINIUMS. PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado S: R$ 155,21/MWh, submercado S, 30/09/2026 07:00 a 30/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "pld_no_corte_NE": {
+   "indicador": "PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado NE",
+   "valor_exibido": "R$ 140,65/MWh",
+   "valor_calculo": 140.64823529411765,
+   "unidade": "R$/MWh",
+   "periodo": {
+    "inicio": "2026-09-30T07:00",
+    "fim": "2026-09-30T23:00"
+   },
+   "entidade": "submercado NE",
+   "universo": "17 horas do dia de origem a partir do corte",
+   "filtros": [],
+   "fonte": {
+    "orgao": "CCEE",
+    "conjunto": "PLD_HORARIO (PLD horário por submercado)",
+    "recurso": "pld_horario_2026",
+    "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": "2026-09-30T02:20:14Z",
+    "publicado_em": null,
+    "arquivos": [
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "pipeline/energia/seed/ccee_pld_horario/v20260927T154402Z/pld_horario_2026.csv.gz",
+      "sha256": "e28cffcf3d406940c153d35d60d70287f40dbc75bb435c02186183db9ee607e0",
+      "capturado_em": "2026-09-27T15:44:02Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260929T024341Z.0f4f9ccf690e.csv.gz",
+      "sha256": "0f4f9ccf690e5283ecfeee9812a00c306f9a6a99494d9eed60ec34265f7aa671",
+      "capturado_em": "2026-09-29T02:43:41Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
+      "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
+      "capturado_em": "2026-09-30T02:20:14Z",
+      "publicado_em": null
+     }
+    ]
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "pld.NE"
+   ],
+   "chaves_total": null,
+   "consulta": "silver ccee_pld_horario, série pld.NE, referências de 2026-09-30T07:00 a 2026-09-30T23:00 (hora de Brasília), como estavam no corte 2026-09-30T10:00:00Z",
+   "manifesto": null,
+   "formula": "média = Σ PLD_h ÷ horas, nas horas do dia de origem a partir das 07h",
+   "numerador": {
+    "descricao": "Σ PLD_h das 17 horas (R$/MWh)",
+    "valor": 2391.02
+   },
+   "denominador": {
+    "descricao": "horas",
+    "valor": 17
+   },
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "17 de 17 horas do dia depois do corte",
+   "tratamento_ausencia": "Hora não capturada até o corte fica fora e a contagem de horas aparece ao lado; nunca é preenchida.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T06:58:15Z"
+   },
+   "revisoes": "Detecção de revisões não disponível para este número.",
+   "testes": [
+    {
+     "nome": "Todas as horas do dia depois do corte capturadas",
+     "resultado": "aprovado",
+     "detalhe": "17 de 17 horas"
+    },
+    {
+     "nome": "Capturado até o corte",
+     "resultado": "aprovado",
+     "detalhe": "capturado_em 2026-09-30T02:20:14Z; corte 2026-09-30T10:00:00Z"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Emissões registradas (CSV)",
+     "url": "/energia/series/previsoes_emissoes.csv"
+    },
+    {
+     "rotulo": "Arquivo de emissões de 2026-09 (JSON)",
+     "url": "/energia/series/previsoes_emissoes_2026-09.json"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
+   "citacao": "SCRUTINIUMS. PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado NE: R$ 140,65/MWh, submercado NE, 30/09/2026 07:00 a 30/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "pld_no_corte_N": {
+   "indicador": "PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado N",
+   "valor_exibido": "R$ 155,21/MWh",
+   "valor_calculo": 155.21058823529415,
+   "unidade": "R$/MWh",
+   "periodo": {
+    "inicio": "2026-09-30T07:00",
+    "fim": "2026-09-30T23:00"
+   },
+   "entidade": "submercado N",
+   "universo": "17 horas do dia de origem a partir do corte",
+   "filtros": [],
+   "fonte": {
+    "orgao": "CCEE",
+    "conjunto": "PLD_HORARIO (PLD horário por submercado)",
+    "recurso": "pld_horario_2026",
+    "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": "2026-09-30T02:20:14Z",
+    "publicado_em": null,
+    "arquivos": [
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "pipeline/energia/seed/ccee_pld_horario/v20260927T154402Z/pld_horario_2026.csv.gz",
+      "sha256": "e28cffcf3d406940c153d35d60d70287f40dbc75bb435c02186183db9ee607e0",
+      "capturado_em": "2026-09-27T15:44:02Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260929T024341Z.0f4f9ccf690e.csv.gz",
+      "sha256": "0f4f9ccf690e5283ecfeee9812a00c306f9a6a99494d9eed60ec34265f7aa671",
+      "capturado_em": "2026-09-29T02:43:41Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
+      "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
+      "capturado_em": "2026-09-30T02:20:14Z",
+      "publicado_em": null
+     }
+    ]
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "pld.N"
+   ],
+   "chaves_total": null,
+   "consulta": "silver ccee_pld_horario, série pld.N, referências de 2026-09-30T07:00 a 2026-09-30T23:00 (hora de Brasília), como estavam no corte 2026-09-30T10:00:00Z",
+   "manifesto": null,
+   "formula": "média = Σ PLD_h ÷ horas, nas horas do dia de origem a partir das 07h",
+   "numerador": {
+    "descricao": "Σ PLD_h das 17 horas (R$/MWh)",
+    "valor": 2638.58
+   },
+   "denominador": {
+    "descricao": "horas",
+    "valor": 17
+   },
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "17 de 17 horas do dia depois do corte",
+   "tratamento_ausencia": "Hora não capturada até o corte fica fora e a contagem de horas aparece ao lado; nunca é preenchida.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T06:58:16Z"
+   },
+   "revisoes": "Detecção de revisões não disponível para este número.",
+   "testes": [
+    {
+     "nome": "Todas as horas do dia depois do corte capturadas",
+     "resultado": "aprovado",
+     "detalhe": "17 de 17 horas"
+    },
+    {
+     "nome": "Capturado até o corte",
+     "resultado": "aprovado",
+     "detalhe": "capturado_em 2026-09-30T02:20:14Z; corte 2026-09-30T10:00:00Z"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Emissões registradas (CSV)",
+     "url": "/energia/series/previsoes_emissoes.csv"
+    },
+    {
+     "rotulo": "Arquivo de emissões de 2026-09 (JSON)",
+     "url": "/energia/series/previsoes_emissoes_2026-09.json"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
+   "citacao": "SCRUTINIUMS. PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado N: R$ 155,21/MWh, submercado N, 30/09/2026 07:00 a 30/09/2026 23:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "b0_semanal_SE": {
+   "indicador": "Referência experimental B0 semanal (W1, W2, W3, W4), submercado SE, rodada de 30/09/2026",
+   "valor_exibido": "R$ 124,09/MWh",
+   "valor_calculo": 124.0911,
+   "unidade": "R$/MWh",
+   "periodo": {
+    "inicio": "2026-09-19",
+    "fim": "2026-09-25"
+   },
+   "entidade": "submercado SE",
+   "universo": "168 horas do PLD horário de 19/09/2026 a 25/09/2026; o mesmo número vale para as entregas W2026-10-03, W2026-10-10, W2026-10-17, W2026-10-24",
+   "filtros": [],
+   "fonte": {
+    "orgao": "CCEE",
+    "conjunto": "PLD_HORARIO (PLD horário por submercado)",
+    "recurso": "pld_horario_2026",
+    "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": "2026-09-30T02:20:14Z",
+    "publicado_em": null,
+    "arquivos": [
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "pipeline/energia/seed/ccee_pld_horario/v20260927T154402Z/pld_horario_2026.csv.gz",
+      "sha256": "e28cffcf3d406940c153d35d60d70287f40dbc75bb435c02186183db9ee607e0",
+      "capturado_em": "2026-09-27T15:44:02Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260929T024341Z.0f4f9ccf690e.csv.gz",
+      "sha256": "0f4f9ccf690e5283ecfeee9812a00c306f9a6a99494d9eed60ec34265f7aa671",
+      "capturado_em": "2026-09-29T02:43:41Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
+      "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
+      "capturado_em": "2026-09-30T02:20:14Z",
+      "publicado_em": null
+     }
+    ]
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "pld.SE"
+   ],
+   "chaves_total": null,
+   "consulta": "silver ccee_pld_horario, série pld.SE, referências de 2026-09-19T00:00 a 2026-09-25T23:00 (hora de Brasília), como estavam no corte 2026-09-30T10:00:00Z (base.como_estava_em)",
+   "manifesto": null,
+   "formula": "B0 = Σ PLD_h ÷ n nas horas do último período completo elegível no corte (fim excluído), limitado à faixa [piso médio, teto estrutural médio] da entrega",
+   "numerador": {
+    "descricao": "Σ PLD_h das 168 horas (R$/MWh)",
+    "valor": 20847.31
+   },
+   "denominador": {
+    "descricao": "horas do período",
+    "valor": 168
+   },
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "168 de 168 horas presentes no corte",
+   "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T06:58:16Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "Média refeita hora a hora com o dado como estava no corte (sem as somas acumuladas da emissão)",
+     "resultado": "aprovado",
+     "detalhe": "refeita 124.091131; arquivada 124.0911; diferença 0.000031 R$/MWh"
+    },
+    {
+     "nome": "Dado usado capturado até o corte (sem olhar para o futuro)",
+     "resultado": "aprovado",
+     "detalhe": "capturado_em 2026-09-27T15:44:02Z; corte 2026-09-30T10:00:00Z"
+    },
+    {
+     "nome": "Reexecução das células arquivadas com este B0",
+     "resultado": "aprovado",
+     "detalhe": "4 células; 0 divergentes (tolerância 0.005 R$/MWh)"
+    }
+   ],
+   "reconciliacao": {
+    "descricao": "Duas contas independentes: na emissão, a média por somas acumuladas conferida contra o recálculo hora a hora (b0_direto, tolerância 1e-6 R$/MWh); na gold, nova soma hora a hora a partir do silver no corte, contra o valor arquivado com 4 casas.",
+    "resultado": "aprovado",
+    "tolerancia": "0.005 R$/MWh (previsão gravada com 4 casas decimais)"
+   },
+   "download": [
+    {
+     "rotulo": "Emissões registradas (CSV)",
+     "url": "/energia/series/previsoes_emissoes.csv"
+    },
+    {
+     "rotulo": "Arquivo de emissões de 2026-09 (JSON)",
+     "url": "/energia/series/previsoes_emissoes_2026-09.json"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
+   "citacao": "SCRUTINIUMS. Referência experimental B0 semanal (W1, W2, W3, W4), submercado SE, rodada de 30/09/2026: R$ 124,09/MWh, submercado SE, 19/09/2026 a 25/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "b0_semanal_S": {
+   "indicador": "Referência experimental B0 semanal (W1, W2, W3, W4), submercado S, rodada de 30/09/2026",
+   "valor_exibido": "R$ 120,86/MWh",
+   "valor_calculo": 120.8636,
+   "unidade": "R$/MWh",
+   "periodo": {
+    "inicio": "2026-09-19",
+    "fim": "2026-09-25"
+   },
+   "entidade": "submercado S",
+   "universo": "168 horas do PLD horário de 19/09/2026 a 25/09/2026; o mesmo número vale para as entregas W2026-10-03, W2026-10-10, W2026-10-17, W2026-10-24",
+   "filtros": [],
+   "fonte": {
+    "orgao": "CCEE",
+    "conjunto": "PLD_HORARIO (PLD horário por submercado)",
+    "recurso": "pld_horario_2026",
+    "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": "2026-09-30T02:20:14Z",
+    "publicado_em": null,
+    "arquivos": [
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "pipeline/energia/seed/ccee_pld_horario/v20260927T154402Z/pld_horario_2026.csv.gz",
+      "sha256": "e28cffcf3d406940c153d35d60d70287f40dbc75bb435c02186183db9ee607e0",
+      "capturado_em": "2026-09-27T15:44:02Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260929T024341Z.0f4f9ccf690e.csv.gz",
+      "sha256": "0f4f9ccf690e5283ecfeee9812a00c306f9a6a99494d9eed60ec34265f7aa671",
+      "capturado_em": "2026-09-29T02:43:41Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
+      "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
+      "capturado_em": "2026-09-30T02:20:14Z",
+      "publicado_em": null
+     }
+    ]
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "pld.S"
+   ],
+   "chaves_total": null,
+   "consulta": "silver ccee_pld_horario, série pld.S, referências de 2026-09-19T00:00 a 2026-09-25T23:00 (hora de Brasília), como estavam no corte 2026-09-30T10:00:00Z (base.como_estava_em)",
+   "manifesto": null,
+   "formula": "B0 = Σ PLD_h ÷ n nas horas do último período completo elegível no corte (fim excluído), limitado à faixa [piso médio, teto estrutural médio] da entrega",
+   "numerador": {
+    "descricao": "Σ PLD_h das 168 horas (R$/MWh)",
+    "valor": 20305.08
+   },
+   "denominador": {
+    "descricao": "horas do período",
+    "valor": 168
+   },
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "168 de 168 horas presentes no corte",
+   "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T06:58:16Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "Média refeita hora a hora com o dado como estava no corte (sem as somas acumuladas da emissão)",
+     "resultado": "aprovado",
+     "detalhe": "refeita 120.863571; arquivada 120.8636; diferença 0.000029 R$/MWh"
+    },
+    {
+     "nome": "Dado usado capturado até o corte (sem olhar para o futuro)",
+     "resultado": "aprovado",
+     "detalhe": "capturado_em 2026-09-27T15:44:02Z; corte 2026-09-30T10:00:00Z"
+    },
+    {
+     "nome": "Reexecução das células arquivadas com este B0",
+     "resultado": "aprovado",
+     "detalhe": "4 células; 0 divergentes (tolerância 0.005 R$/MWh)"
+    }
+   ],
+   "reconciliacao": {
+    "descricao": "Duas contas independentes: na emissão, a média por somas acumuladas conferida contra o recálculo hora a hora (b0_direto, tolerância 1e-6 R$/MWh); na gold, nova soma hora a hora a partir do silver no corte, contra o valor arquivado com 4 casas.",
+    "resultado": "aprovado",
+    "tolerancia": "0.005 R$/MWh (previsão gravada com 4 casas decimais)"
+   },
+   "download": [
+    {
+     "rotulo": "Emissões registradas (CSV)",
+     "url": "/energia/series/previsoes_emissoes.csv"
+    },
+    {
+     "rotulo": "Arquivo de emissões de 2026-09 (JSON)",
+     "url": "/energia/series/previsoes_emissoes_2026-09.json"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
+   "citacao": "SCRUTINIUMS. Referência experimental B0 semanal (W1, W2, W3, W4), submercado S, rodada de 30/09/2026: R$ 120,86/MWh, submercado S, 19/09/2026 a 25/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "b0_semanal_NE": {
+   "indicador": "Referência experimental B0 semanal (W1, W2, W3, W4), submercado NE, rodada de 30/09/2026",
+   "valor_exibido": "R$ 124,09/MWh",
+   "valor_calculo": 124.0886,
+   "unidade": "R$/MWh",
+   "periodo": {
+    "inicio": "2026-09-19",
+    "fim": "2026-09-25"
+   },
+   "entidade": "submercado NE",
+   "universo": "168 horas do PLD horário de 19/09/2026 a 25/09/2026; o mesmo número vale para as entregas W2026-10-03, W2026-10-10, W2026-10-17, W2026-10-24",
+   "filtros": [],
+   "fonte": {
+    "orgao": "CCEE",
+    "conjunto": "PLD_HORARIO (PLD horário por submercado)",
+    "recurso": "pld_horario_2026",
+    "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": "2026-09-30T02:20:14Z",
+    "publicado_em": null,
+    "arquivos": [
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "pipeline/energia/seed/ccee_pld_horario/v20260927T154402Z/pld_horario_2026.csv.gz",
+      "sha256": "e28cffcf3d406940c153d35d60d70287f40dbc75bb435c02186183db9ee607e0",
+      "capturado_em": "2026-09-27T15:44:02Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260929T024341Z.0f4f9ccf690e.csv.gz",
+      "sha256": "0f4f9ccf690e5283ecfeee9812a00c306f9a6a99494d9eed60ec34265f7aa671",
+      "capturado_em": "2026-09-29T02:43:41Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
+      "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
+      "capturado_em": "2026-09-30T02:20:14Z",
+      "publicado_em": null
+     }
+    ]
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "pld.NE"
+   ],
+   "chaves_total": null,
+   "consulta": "silver ccee_pld_horario, série pld.NE, referências de 2026-09-19T00:00 a 2026-09-25T23:00 (hora de Brasília), como estavam no corte 2026-09-30T10:00:00Z (base.como_estava_em)",
+   "manifesto": null,
+   "formula": "B0 = Σ PLD_h ÷ n nas horas do último período completo elegível no corte (fim excluído), limitado à faixa [piso médio, teto estrutural médio] da entrega",
+   "numerador": {
+    "descricao": "Σ PLD_h das 168 horas (R$/MWh)",
+    "valor": 20846.88
+   },
+   "denominador": {
+    "descricao": "horas do período",
+    "valor": 168
+   },
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "168 de 168 horas presentes no corte",
+   "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T06:58:16Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "Média refeita hora a hora com o dado como estava no corte (sem as somas acumuladas da emissão)",
+     "resultado": "aprovado",
+     "detalhe": "refeita 124.088571; arquivada 124.0886; diferença 0.000029 R$/MWh"
+    },
+    {
+     "nome": "Dado usado capturado até o corte (sem olhar para o futuro)",
+     "resultado": "aprovado",
+     "detalhe": "capturado_em 2026-09-27T15:44:02Z; corte 2026-09-30T10:00:00Z"
+    },
+    {
+     "nome": "Reexecução das células arquivadas com este B0",
+     "resultado": "aprovado",
+     "detalhe": "4 células; 0 divergentes (tolerância 0.005 R$/MWh)"
+    }
+   ],
+   "reconciliacao": {
+    "descricao": "Duas contas independentes: na emissão, a média por somas acumuladas conferida contra o recálculo hora a hora (b0_direto, tolerância 1e-6 R$/MWh); na gold, nova soma hora a hora a partir do silver no corte, contra o valor arquivado com 4 casas.",
+    "resultado": "aprovado",
+    "tolerancia": "0.005 R$/MWh (previsão gravada com 4 casas decimais)"
+   },
+   "download": [
+    {
+     "rotulo": "Emissões registradas (CSV)",
+     "url": "/energia/series/previsoes_emissoes.csv"
+    },
+    {
+     "rotulo": "Arquivo de emissões de 2026-09 (JSON)",
+     "url": "/energia/series/previsoes_emissoes_2026-09.json"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
+   "citacao": "SCRUTINIUMS. Referência experimental B0 semanal (W1, W2, W3, W4), submercado NE, rodada de 30/09/2026: R$ 124,09/MWh, submercado NE, 19/09/2026 a 25/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "b0_semanal_N": {
+   "indicador": "Referência experimental B0 semanal (W1, W2, W3, W4), submercado N, rodada de 30/09/2026",
+   "valor_exibido": "R$ 124,09/MWh",
+   "valor_calculo": 124.0934,
+   "unidade": "R$/MWh",
+   "periodo": {
+    "inicio": "2026-09-19",
+    "fim": "2026-09-25"
+   },
+   "entidade": "submercado N",
+   "universo": "168 horas do PLD horário de 19/09/2026 a 25/09/2026; o mesmo número vale para as entregas W2026-10-03, W2026-10-10, W2026-10-17, W2026-10-24",
+   "filtros": [],
+   "fonte": {
+    "orgao": "CCEE",
+    "conjunto": "PLD_HORARIO (PLD horário por submercado)",
+    "recurso": "pld_horario_2026",
+    "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": "2026-09-30T02:20:14Z",
+    "publicado_em": null,
+    "arquivos": [
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "pipeline/energia/seed/ccee_pld_horario/v20260927T154402Z/pld_horario_2026.csv.gz",
+      "sha256": "e28cffcf3d406940c153d35d60d70287f40dbc75bb435c02186183db9ee607e0",
+      "capturado_em": "2026-09-27T15:44:02Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260929T024341Z.0f4f9ccf690e.csv.gz",
+      "sha256": "0f4f9ccf690e5283ecfeee9812a00c306f9a6a99494d9eed60ec34265f7aa671",
+      "capturado_em": "2026-09-29T02:43:41Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
+      "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
+      "capturado_em": "2026-09-30T02:20:14Z",
+      "publicado_em": null
+     }
+    ]
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "pld.N"
+   ],
+   "chaves_total": null,
+   "consulta": "silver ccee_pld_horario, série pld.N, referências de 2026-09-19T00:00 a 2026-09-25T23:00 (hora de Brasília), como estavam no corte 2026-09-30T10:00:00Z (base.como_estava_em)",
+   "manifesto": null,
+   "formula": "B0 = Σ PLD_h ÷ n nas horas do último período completo elegível no corte (fim excluído), limitado à faixa [piso médio, teto estrutural médio] da entrega",
+   "numerador": {
+    "descricao": "Σ PLD_h das 168 horas (R$/MWh)",
+    "valor": 20847.69
+   },
+   "denominador": {
+    "descricao": "horas do período",
+    "valor": 168
+   },
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "168 de 168 horas presentes no corte",
+   "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T06:58:16Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "Média refeita hora a hora com o dado como estava no corte (sem as somas acumuladas da emissão)",
+     "resultado": "aprovado",
+     "detalhe": "refeita 124.093393; arquivada 124.0934; diferença 0.000007 R$/MWh"
+    },
+    {
+     "nome": "Dado usado capturado até o corte (sem olhar para o futuro)",
+     "resultado": "aprovado",
+     "detalhe": "capturado_em 2026-09-27T15:44:02Z; corte 2026-09-30T10:00:00Z"
+    },
+    {
+     "nome": "Reexecução das células arquivadas com este B0",
+     "resultado": "aprovado",
+     "detalhe": "4 células; 0 divergentes (tolerância 0.005 R$/MWh)"
+    }
+   ],
+   "reconciliacao": {
+    "descricao": "Duas contas independentes: na emissão, a média por somas acumuladas conferida contra o recálculo hora a hora (b0_direto, tolerância 1e-6 R$/MWh); na gold, nova soma hora a hora a partir do silver no corte, contra o valor arquivado com 4 casas.",
+    "resultado": "aprovado",
+    "tolerancia": "0.005 R$/MWh (previsão gravada com 4 casas decimais)"
+   },
+   "download": [
+    {
+     "rotulo": "Emissões registradas (CSV)",
+     "url": "/energia/series/previsoes_emissoes.csv"
+    },
+    {
+     "rotulo": "Arquivo de emissões de 2026-09 (JSON)",
+     "url": "/energia/series/previsoes_emissoes_2026-09.json"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
+   "citacao": "SCRUTINIUMS. Referência experimental B0 semanal (W1, W2, W3, W4), submercado N, rodada de 30/09/2026: R$ 124,09/MWh, submercado N, 19/09/2026 a 25/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "b0_mensal_SE": {
+   "indicador": "Referência experimental B0 mensal (M1, M2, M3), submercado SE, rodada de 30/09/2026",
+   "valor_exibido": "R$ 128,12/MWh",
+   "valor_calculo": 128.1175,
+   "unidade": "R$/MWh",
+   "periodo": {
+    "inicio": "2026-08-01",
+    "fim": "2026-08-31"
+   },
+   "entidade": "submercado SE",
+   "universo": "744 horas do PLD horário de 01/08/2026 a 31/08/2026; o mesmo número vale para as entregas M2026-10, M2026-11, M2026-12",
+   "filtros": [],
+   "fonte": {
+    "orgao": "CCEE",
+    "conjunto": "PLD_HORARIO (PLD horário por submercado)",
+    "recurso": "pld_horario_2026",
+    "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": "2026-09-30T02:20:14Z",
+    "publicado_em": null,
+    "arquivos": [
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "pipeline/energia/seed/ccee_pld_horario/v20260927T154402Z/pld_horario_2026.csv.gz",
+      "sha256": "e28cffcf3d406940c153d35d60d70287f40dbc75bb435c02186183db9ee607e0",
+      "capturado_em": "2026-09-27T15:44:02Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260929T024341Z.0f4f9ccf690e.csv.gz",
+      "sha256": "0f4f9ccf690e5283ecfeee9812a00c306f9a6a99494d9eed60ec34265f7aa671",
+      "capturado_em": "2026-09-29T02:43:41Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
+      "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
+      "capturado_em": "2026-09-30T02:20:14Z",
+      "publicado_em": null
+     }
+    ]
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "pld.SE"
+   ],
+   "chaves_total": null,
+   "consulta": "silver ccee_pld_horario, série pld.SE, referências de 2026-08-01T00:00 a 2026-08-31T23:00 (hora de Brasília), como estavam no corte 2026-09-30T10:00:00Z (base.como_estava_em)",
+   "manifesto": null,
+   "formula": "B0 = Σ PLD_h ÷ n nas horas do último período completo elegível no corte (fim excluído), limitado à faixa [piso médio, teto estrutural médio] da entrega",
+   "numerador": {
+    "descricao": "Σ PLD_h das 744 horas (R$/MWh)",
+    "valor": 95319.42
+   },
+   "denominador": {
+    "descricao": "horas do período",
+    "valor": 744
+   },
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "744 de 744 horas presentes no corte",
+   "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T06:58:16Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "Média refeita hora a hora com o dado como estava no corte (sem as somas acumuladas da emissão)",
+     "resultado": "aprovado",
+     "detalhe": "refeita 128.117500; arquivada 128.1175; diferença 0.000000 R$/MWh"
+    },
+    {
+     "nome": "Dado usado capturado até o corte (sem olhar para o futuro)",
+     "resultado": "aprovado",
+     "detalhe": "capturado_em 2026-09-27T15:44:02Z; corte 2026-09-30T10:00:00Z"
+    },
+    {
+     "nome": "Reexecução das células arquivadas com este B0",
+     "resultado": "aprovado",
+     "detalhe": "3 células; 0 divergentes (tolerância 0.005 R$/MWh)"
+    }
+   ],
+   "reconciliacao": {
+    "descricao": "Duas contas independentes: na emissão, a média por somas acumuladas conferida contra o recálculo hora a hora (b0_direto, tolerância 1e-6 R$/MWh); na gold, nova soma hora a hora a partir do silver no corte, contra o valor arquivado com 4 casas.",
+    "resultado": "aprovado",
+    "tolerancia": "0.005 R$/MWh (previsão gravada com 4 casas decimais)"
+   },
+   "download": [
+    {
+     "rotulo": "Emissões registradas (CSV)",
+     "url": "/energia/series/previsoes_emissoes.csv"
+    },
+    {
+     "rotulo": "Arquivo de emissões de 2026-09 (JSON)",
+     "url": "/energia/series/previsoes_emissoes_2026-09.json"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
+   "citacao": "SCRUTINIUMS. Referência experimental B0 mensal (M1, M2, M3), submercado SE, rodada de 30/09/2026: R$ 128,12/MWh, submercado SE, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "b0_mensal_S": {
+   "indicador": "Referência experimental B0 mensal (M1, M2, M3), submercado S, rodada de 30/09/2026",
+   "valor_exibido": "R$ 128,10/MWh",
+   "valor_calculo": 128.1003,
+   "unidade": "R$/MWh",
+   "periodo": {
+    "inicio": "2026-08-01",
+    "fim": "2026-08-31"
+   },
+   "entidade": "submercado S",
+   "universo": "744 horas do PLD horário de 01/08/2026 a 31/08/2026; o mesmo número vale para as entregas M2026-10, M2026-11, M2026-12",
+   "filtros": [],
+   "fonte": {
+    "orgao": "CCEE",
+    "conjunto": "PLD_HORARIO (PLD horário por submercado)",
+    "recurso": "pld_horario_2026",
+    "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": "2026-09-30T02:20:14Z",
+    "publicado_em": null,
+    "arquivos": [
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "pipeline/energia/seed/ccee_pld_horario/v20260927T154402Z/pld_horario_2026.csv.gz",
+      "sha256": "e28cffcf3d406940c153d35d60d70287f40dbc75bb435c02186183db9ee607e0",
+      "capturado_em": "2026-09-27T15:44:02Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260929T024341Z.0f4f9ccf690e.csv.gz",
+      "sha256": "0f4f9ccf690e5283ecfeee9812a00c306f9a6a99494d9eed60ec34265f7aa671",
+      "capturado_em": "2026-09-29T02:43:41Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
+      "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
+      "capturado_em": "2026-09-30T02:20:14Z",
+      "publicado_em": null
+     }
+    ]
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "pld.S"
+   ],
+   "chaves_total": null,
+   "consulta": "silver ccee_pld_horario, série pld.S, referências de 2026-08-01T00:00 a 2026-08-31T23:00 (hora de Brasília), como estavam no corte 2026-09-30T10:00:00Z (base.como_estava_em)",
+   "manifesto": null,
+   "formula": "B0 = Σ PLD_h ÷ n nas horas do último período completo elegível no corte (fim excluído), limitado à faixa [piso médio, teto estrutural médio] da entrega",
+   "numerador": {
+    "descricao": "Σ PLD_h das 744 horas (R$/MWh)",
+    "valor": 95306.63
+   },
+   "denominador": {
+    "descricao": "horas do período",
+    "valor": 744
+   },
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "744 de 744 horas presentes no corte",
+   "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T06:58:16Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "Média refeita hora a hora com o dado como estava no corte (sem as somas acumuladas da emissão)",
+     "resultado": "aprovado",
+     "detalhe": "refeita 128.100309; arquivada 128.1003; diferença 0.000009 R$/MWh"
+    },
+    {
+     "nome": "Dado usado capturado até o corte (sem olhar para o futuro)",
+     "resultado": "aprovado",
+     "detalhe": "capturado_em 2026-09-27T15:44:02Z; corte 2026-09-30T10:00:00Z"
+    },
+    {
+     "nome": "Reexecução das células arquivadas com este B0",
+     "resultado": "aprovado",
+     "detalhe": "3 células; 0 divergentes (tolerância 0.005 R$/MWh)"
+    }
+   ],
+   "reconciliacao": {
+    "descricao": "Duas contas independentes: na emissão, a média por somas acumuladas conferida contra o recálculo hora a hora (b0_direto, tolerância 1e-6 R$/MWh); na gold, nova soma hora a hora a partir do silver no corte, contra o valor arquivado com 4 casas.",
+    "resultado": "aprovado",
+    "tolerancia": "0.005 R$/MWh (previsão gravada com 4 casas decimais)"
+   },
+   "download": [
+    {
+     "rotulo": "Emissões registradas (CSV)",
+     "url": "/energia/series/previsoes_emissoes.csv"
+    },
+    {
+     "rotulo": "Arquivo de emissões de 2026-09 (JSON)",
+     "url": "/energia/series/previsoes_emissoes_2026-09.json"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
+   "citacao": "SCRUTINIUMS. Referência experimental B0 mensal (M1, M2, M3), submercado S, rodada de 30/09/2026: R$ 128,10/MWh, submercado S, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "b0_mensal_NE": {
+   "indicador": "Referência experimental B0 mensal (M1, M2, M3), submercado NE, rodada de 30/09/2026",
+   "valor_exibido": "R$ 125,27/MWh",
+   "valor_calculo": 125.2699,
+   "unidade": "R$/MWh",
+   "periodo": {
+    "inicio": "2026-08-01",
+    "fim": "2026-08-31"
+   },
+   "entidade": "submercado NE",
+   "universo": "744 horas do PLD horário de 01/08/2026 a 31/08/2026; o mesmo número vale para as entregas M2026-10, M2026-11, M2026-12",
+   "filtros": [],
+   "fonte": {
+    "orgao": "CCEE",
+    "conjunto": "PLD_HORARIO (PLD horário por submercado)",
+    "recurso": "pld_horario_2026",
+    "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": "2026-09-30T02:20:14Z",
+    "publicado_em": null,
+    "arquivos": [
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "pipeline/energia/seed/ccee_pld_horario/v20260927T154402Z/pld_horario_2026.csv.gz",
+      "sha256": "e28cffcf3d406940c153d35d60d70287f40dbc75bb435c02186183db9ee607e0",
+      "capturado_em": "2026-09-27T15:44:02Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260929T024341Z.0f4f9ccf690e.csv.gz",
+      "sha256": "0f4f9ccf690e5283ecfeee9812a00c306f9a6a99494d9eed60ec34265f7aa671",
+      "capturado_em": "2026-09-29T02:43:41Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
+      "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
+      "capturado_em": "2026-09-30T02:20:14Z",
+      "publicado_em": null
+     }
+    ]
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "pld.NE"
+   ],
+   "chaves_total": null,
+   "consulta": "silver ccee_pld_horario, série pld.NE, referências de 2026-08-01T00:00 a 2026-08-31T23:00 (hora de Brasília), como estavam no corte 2026-09-30T10:00:00Z (base.como_estava_em)",
+   "manifesto": null,
+   "formula": "B0 = Σ PLD_h ÷ n nas horas do último período completo elegível no corte (fim excluído), limitado à faixa [piso médio, teto estrutural médio] da entrega",
+   "numerador": {
+    "descricao": "Σ PLD_h das 744 horas (R$/MWh)",
+    "valor": 93200.82
+   },
+   "denominador": {
+    "descricao": "horas do período",
+    "valor": 744
+   },
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "744 de 744 horas presentes no corte",
+   "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T06:58:16Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "Média refeita hora a hora com o dado como estava no corte (sem as somas acumuladas da emissão)",
+     "resultado": "aprovado",
+     "detalhe": "refeita 125.269919; arquivada 125.2699; diferença 0.000019 R$/MWh"
+    },
+    {
+     "nome": "Dado usado capturado até o corte (sem olhar para o futuro)",
+     "resultado": "aprovado",
+     "detalhe": "capturado_em 2026-09-27T15:44:02Z; corte 2026-09-30T10:00:00Z"
+    },
+    {
+     "nome": "Reexecução das células arquivadas com este B0",
+     "resultado": "aprovado",
+     "detalhe": "3 células; 0 divergentes (tolerância 0.005 R$/MWh)"
+    }
+   ],
+   "reconciliacao": {
+    "descricao": "Duas contas independentes: na emissão, a média por somas acumuladas conferida contra o recálculo hora a hora (b0_direto, tolerância 1e-6 R$/MWh); na gold, nova soma hora a hora a partir do silver no corte, contra o valor arquivado com 4 casas.",
+    "resultado": "aprovado",
+    "tolerancia": "0.005 R$/MWh (previsão gravada com 4 casas decimais)"
+   },
+   "download": [
+    {
+     "rotulo": "Emissões registradas (CSV)",
+     "url": "/energia/series/previsoes_emissoes.csv"
+    },
+    {
+     "rotulo": "Arquivo de emissões de 2026-09 (JSON)",
+     "url": "/energia/series/previsoes_emissoes_2026-09.json"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
+   "citacao": "SCRUTINIUMS. Referência experimental B0 mensal (M1, M2, M3), submercado NE, rodada de 30/09/2026: R$ 125,27/MWh, submercado NE, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "b0_mensal_N": {
+   "indicador": "Referência experimental B0 mensal (M1, M2, M3), submercado N, rodada de 30/09/2026",
+   "valor_exibido": "R$ 126,70/MWh",
+   "valor_calculo": 126.7024,
+   "unidade": "R$/MWh",
+   "periodo": {
+    "inicio": "2026-08-01",
+    "fim": "2026-08-31"
+   },
+   "entidade": "submercado N",
+   "universo": "744 horas do PLD horário de 01/08/2026 a 31/08/2026; o mesmo número vale para as entregas M2026-10, M2026-11, M2026-12",
+   "filtros": [],
+   "fonte": {
+    "orgao": "CCEE",
+    "conjunto": "PLD_HORARIO (PLD horário por submercado)",
+    "recurso": "pld_horario_2026",
+    "url": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": "2026-09-30T02:20:14Z",
+    "publicado_em": null,
+    "arquivos": [
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "pipeline/energia/seed/ccee_pld_horario/v20260927T154402Z/pld_horario_2026.csv.gz",
+      "sha256": "e28cffcf3d406940c153d35d60d70287f40dbc75bb435c02186183db9ee607e0",
+      "capturado_em": "2026-09-27T15:44:02Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260929T024341Z.0f4f9ccf690e.csv.gz",
+      "sha256": "0f4f9ccf690e5283ecfeee9812a00c306f9a6a99494d9eed60ec34265f7aa671",
+      "capturado_em": "2026-09-29T02:43:41Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "pld_horario_2026",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
+      "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
+      "capturado_em": "2026-09-30T02:20:14Z",
+      "publicado_em": null
+     }
+    ]
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "pld.N"
+   ],
+   "chaves_total": null,
+   "consulta": "silver ccee_pld_horario, série pld.N, referências de 2026-08-01T00:00 a 2026-08-31T23:00 (hora de Brasília), como estavam no corte 2026-09-30T10:00:00Z (base.como_estava_em)",
+   "manifesto": null,
+   "formula": "B0 = Σ PLD_h ÷ n nas horas do último período completo elegível no corte (fim excluído), limitado à faixa [piso médio, teto estrutural médio] da entrega",
+   "numerador": {
+    "descricao": "Σ PLD_h das 744 horas (R$/MWh)",
+    "valor": 94266.55
+   },
+   "denominador": {
+    "descricao": "horas do período",
+    "valor": 744
+   },
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "744 de 744 horas presentes no corte",
+   "tratamento_ausencia": "Hora ausente deixa o período sem média e a célula sem número, com o motivo; nunca média parcial.",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T06:58:16Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "Média refeita hora a hora com o dado como estava no corte (sem as somas acumuladas da emissão)",
+     "resultado": "aprovado",
+     "detalhe": "refeita 126.702352; arquivada 126.7024; diferença 0.000048 R$/MWh"
+    },
+    {
+     "nome": "Dado usado capturado até o corte (sem olhar para o futuro)",
+     "resultado": "aprovado",
+     "detalhe": "capturado_em 2026-09-27T15:44:02Z; corte 2026-09-30T10:00:00Z"
+    },
+    {
+     "nome": "Reexecução das células arquivadas com este B0",
+     "resultado": "aprovado",
+     "detalhe": "3 células; 0 divergentes (tolerância 0.005 R$/MWh)"
+    }
+   ],
+   "reconciliacao": {
+    "descricao": "Duas contas independentes: na emissão, a média por somas acumuladas conferida contra o recálculo hora a hora (b0_direto, tolerância 1e-6 R$/MWh); na gold, nova soma hora a hora a partir do silver no corte, contra o valor arquivado com 4 casas.",
+    "resultado": "aprovado",
+    "tolerancia": "0.005 R$/MWh (previsão gravada com 4 casas decimais)"
+   },
+   "download": [
+    {
+     "rotulo": "Emissões registradas (CSV)",
+     "url": "/energia/series/previsoes_emissoes.csv"
+    },
+    {
+     "rotulo": "Arquivo de emissões de 2026-09 (JSON)",
+     "url": "/energia/series/previsoes_emissoes_2026-09.json"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta",
+   "citacao": "SCRUTINIUMS. Referência experimental B0 mensal (M1, M2, M3), submercado N, rodada de 30/09/2026: R$ 126,70/MWh, submercado N, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (PLD horário por submercado) (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  }
+ },
  "validacoes": [
   {
    "nome": "28 células por origem (7 horizontes × 4 submercados)",

@@ -12,11 +12,21 @@ Parquet e CSV oficiais do ONS baixados em 30/09/2026, filtrados por hora, usina 
 - termica_2026_08_01.parquet: Angra II, GNA II, Mauá 3 e Porto de Sergipe I em 01/08/2026;
 - restricao_eolica_2026_08_31.parquet: Conj. Caju (limitado) e CEECVA (sem limitação) em 31/08/2026;
 - fator_capacidade_2026_08_01.parquet, capacidade_amostra.parquet, relacionamento_caju.parquet,
-  cvu_2026_01_17.parquet e os textos dos dicionários (pdftotext -layout).
+  cvu_2026_01_17.parquet e os textos dos dicionários (pdftotext -layout);
+- gu_2025_10_, gu_2025_11_ e gu_2026_08_atlantico_gna.parquet: Do Atlântico (RJCSA), GNA II e
+  Termorio nas duas primeiras horas de 10/2025, 11/2025 e 08/2026 (a fonte troca o CEG da
+  Do Atlântico de UTE.PE para UTE.CM em 11/2025);
+- td_2025_01_, td_2025_10_ e td_2026_08_parcelas.parquet: térmica por motivo na primeira hora,
+  com as parcelas de Maranhão 4, J. Lacerda A, Atlântico e Camaçari Muricy II (CEG em PE e BA);
+- cvu_2026_09_26_parcelas.parquet: CVU da semana de 26/09/2026 desses códigos;
+- capacidade_gna_termorio.parquet: as unidades de GNA II e Termorio (gás e vapor de ciclo combinado);
+- aneel_empreendimentos_operacao_recorte.csv: série histórica da ANEEL por tipo (12/2021 e 06/2026).
 
 Os valores esperados vêm de caminho independente do código testado: a linha SIN do
 próprio balanço do ONS, o campo GNRa publicado pelo ONS, as colunas de total da fonte e
-somas feitas à parte com laços simples sobre as amostras (registradas no documento do módulo)."""
+somas feitas à parte com laços simples sobre as amostras (registradas no documento do módulo).
+A classe GoldPublicada confere a gold contra números lidos da fonte por outro código
+(registrados no documento) e, como controle interno, contra os CSV publicados."""
 import csv
 import json
 import os
@@ -31,6 +41,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 
 from pipeline.energia import base  # noqa: E402
 from pipeline.energia import evidencia as ev  # noqa: E402
+from pipeline.energia.fontes import ckan  # noqa: E402
 from pipeline.energia.fontes import ons_geracao as og  # noqa: E402
 from pipeline.energia.modulos import geracao_detalhe as gd  # noqa: E402
 
@@ -198,9 +209,32 @@ class Restricoes(unittest.TestCase):
         self.assertAlmostEqual(self.a["usina_mes"][("2026-08", "CJU_RNCAJ1")]["ger"], 9038.224, delta=0.001)
 
     def test_potencia_maxima_cortada_em_mw(self):
-        mw, inst = self.a["pot_max"][("2026-08-31", "SIN")]
+        mw, inst, ref = self.a["pot_max"][("2026-08-31", "SIN")]
         self.assertAlmostEqual(mw, 90.203, delta=0.001)
         self.assertEqual(inst, "2026-08-31T15:30")
+        # controle declarado na métrica: o corte simultâneo não passa da soma das referências
+        # das mesmas linhas na meia hora (366,958 MW em 31/08/2026 15:30, soma feita à parte abaixo)
+        import pyarrow.parquet as pq
+        t = pq.read_table(_p("restricao_eolica_2026_08_31.parquet")).to_pylist()
+        ref_sep = sum(float(r["val_geracaoreferencia"]) for r in t if str(r["din_instante"])[:16] == "2026-08-31 15:30"
+                      and r["val_geracaolimitada"] not in (None, "") and r["val_geracaoreferencia"] not in (None, ""))
+        self.assertAlmostEqual(ref, ref_sep, delta=0.001)
+        self.assertLessEqual(mw, ref)
+        self.assertEqual(self.a["rel"]["meias_corte_acima_da_referencia"], 0)
+        self.assertEqual(self.a["rel"]["meias_com_corte"], 9)
+
+    def test_corte_acima_da_referencia_e_contado(self):
+        # geração verificada negativa (dado inválido, 799 células na fonte eólica) faz o corte
+        # passar da referência: o controle conta em vez de esconder
+        import pyarrow as pa
+        import pyarrow.parquet as pq
+        t = pq.read_table(_p("restricao_eolica_2026_08_31.parquet"))
+        lin = t.to_pylist()
+        alvo = next(i for i, r in enumerate(lin) if str(r["din_instante"])[:16] == "2026-08-31 15:30"
+                    and r["val_geracaolimitada"] not in (None, ""))
+        lin[alvo]["val_geracao"] = -500.0
+        a = og.agrega_restricao([pa.Table.from_pylist(lin, schema=t.schema)])
+        self.assertEqual(a["rel"]["meias_corte_acima_da_referencia"], 1)
 
 
 class CapacidadeEFator(unittest.TestCase):
@@ -329,8 +363,205 @@ class ImportacaoEManifesto(unittest.TestCase):
         self.assertAlmostEqual(sem_filtro, 14987.696 + 9984.5, delta=0.01)
 
 
+def _vintage_em(con, ds, recurso, caminho, capturado, sha):
+    vid, _ = base.registra_vintage(con, ds, recurso, "x", capturado, None, sha, 1, "coleta_direta", caminho)
+    return base.ultima_vintage(con, ds, recurso) | {"vintage_id": vid}
+
+
+class CicloCombinadoNaCategoriaDaUsina(unittest.TestCase):
+    """P024, defeito 1: a turbina a vapor de ciclo combinado ('Resíduo Ciclo Combinado') de
+    uma usina a gás entra no gás, como a geração da mesma usina no fator de capacidade."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.unid, cls.rel = og.le_capacidade(og.lotes(_p("capacidade_gna_termorio.parquet"), gd.COLS_CAP))
+        for cod, u in cls.unid.items():
+            u["_cod"] = cod
+            u["categoria_propria"] = og.categoria(u["tipo"], u["combustivel"], "")
+        cls.cad_u = og.agrega_geracao_usina(og.lotes(_p("gu_2026_08_atlantico_gna.parquet"), og.COLS_USINA))["cadastro"]
+
+    def test_rcc_nao_e_combustivel_nem_outros(self):
+        self.assertEqual(og.categoria("TÉRMICA", "RESÍDUO CICLO COMBINADO", ""), "nao_mapeada")
+        self.assertNotEqual(og.categoria_combustivel("Resíduo Ciclo Combinado"), "outros")
+
+    def test_soma_das_unidades_do_ceg_e_a_potencia_do_gas(self):
+        import pyarrow.parquet as pq
+        # soma feita à parte, direto do Parquet do ONS: GNA II 3 × 366,733 + 572,4 e Termorio 6 × 104,7 + 145 + 2 × 108
+        bruto = pq.read_table(_p("capacidade_gna_termorio.parquet")).to_pylist()
+        soma = defaultdict(float)
+        for r in bruto:
+            soma[r["ceg"].strip()] += float(r["val_potenciaefetiva"])
+        self.assertAlmostEqual(soma["UTE.GN.RJ.038173-0.01"], 1672.599, places=3)
+        self.assertAlmostEqual(soma["UTE.GN.RJ.027888-2.01"], 989.2, places=3)
+        cats = gd.categorias_das_unidades(self.unid, self.cad_u, gd.ceg_para_ids(None, self.cad_u), [], "2026-09-30")
+        gas = defaultdict(float)
+        for cod, (cat, origem) in cats.items():
+            self.assertEqual(cat, "gas", cod)
+            self.assertEqual(origem, "geracao_por_usina")
+            gas[self.unid[cod]["ceg"]] += self.unid[cod]["potencia_mw"]
+        self.assertAlmostEqual(gas["UTE.GN.RJ.038173-0.01"], soma["UTE.GN.RJ.038173-0.01"], places=3)
+        self.assertAlmostEqual(gas["UTE.GN.RJ.027888-2.01"], soma["UTE.GN.RJ.027888-2.01"], places=3)
+
+    def test_sem_par_na_geracao_usa_as_demais_unidades_do_ceg(self):
+        cats = gd.categorias_das_unidades(self.unid, {}, {}, [], "2026-09-30")
+        rcc = [cod for cod, u in self.unid.items() if og.norm(u["combustivel"]) == og.COMBUSTIVEL_CICLO_COMBINADO]
+        self.assertEqual(len(rcc), 4)
+        self.assertTrue(all(cats[cod] == ("gas", "demais_unidades_do_ceg") for cod in rcc))
+
+    def test_potencia_invalida_vem_do_relatorio_da_importacao(self):
+        import pyarrow as pa
+        import pyarrow.parquet as pq
+        con = base.conecta(":memory:")
+        t = pq.read_table(_p("capacidade_gna_termorio.parquet"))
+        lin = t.to_pylist()
+        lin[0]["val_potenciaefetiva"] = 0.0
+        with tempfile.TemporaryDirectory() as d:
+            arq = os.path.join(d, "cap.parquet")
+            pq.write_table(pa.Table.from_pylist(lin, schema=t.schema), arq)
+            v = _vintage_em(con, "ons_capacidade_geracao", "CAPACIDADE_GERACAO", arq, "2026-09-30T23:41:04Z", "c" * 64)
+            gd._importa_capacidade(con, v)
+        teste = gd.teste_potencia(con)
+        self.assertEqual(teste["resultado"], "ressalva")
+        self.assertIn("1 de 13", teste["detalhe"])
+
+
+class TrocaDeCegEParcelas(unittest.TestCase):
+    """P022, defeitos 2 e 3: a Geração por Usina troca o CEG da Do Atlântico de UTE.PE para
+    UTE.CM em 11/2025; a térmica por motivo publica parcelas (códigos do ONS) dentro do CEG."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.con = con = base.conecta(":memory:")
+        for i, (rec, cap) in enumerate((("GERACAO_USINA-2_2025_10", "2026-09-30T23:49:09Z"), ("GERACAO_USINA-2_2025_11", "2026-09-30T23:49:10Z"),
+                                        ("GERACAO_USINA-2_2026_08", "2026-09-30T23:49:21Z"))):
+            v = _vintage_em(con, "ons_geracao_usina", rec, _p(f"gu_{rec[-7:].lower()}_atlantico_gna.parquet"), cap, str(i) * 64)
+            gd._importa_usina(con, v, rec[-7:].replace("_", "-"))
+        for i, (rec, cap) in enumerate((("GERACAO_TERMICA_DESPACHO-2_2025_01", "2026-09-30T23:41:51Z"),
+                                        ("GERACAO_TERMICA_DESPACHO-2_2025_10", "2026-09-30T23:41:57Z"),
+                                        ("GERACAO_TERMICA_DESPACHO-2_2026_08", "2026-09-30T23:42:04Z"))):
+            v = _vintage_em(con, "ons_geracao_termica_motivo", rec, _p(f"td_{rec[-7:].lower()}_parcelas.parquet"), cap, str(i + 5) * 64)
+            gd._importa_termica(con, v, rec[-7:].replace("_", "-"))
+        v = _vintage_em(con, "ons_cvu_termica", "CVU_USINA_TERMICA_2026", _p("cvu_2026_09_26_parcelas.parquet"), "2026-09-30T23:40:58Z", "9" * 64)
+        gd._importa_cvu(con, v, "2026")
+        cls.cad_u = base.registros_como_estavam_em(con, "ons_geracao_usina")
+        cls.hist_u = gd.historico_cadastro(con, "ons_geracao_usina")
+        cls.cad_t = base.registros_como_estavam_em(con, "ons_geracao_termica_motivo")
+        cls.hist_t = gd.historico_cadastro(con, "ons_geracao_termica_motivo")
+
+    def test_cadastro_vigente_guarda_so_o_ultimo_ceg_e_o_historico_guarda_os_dois(self):
+        self.assertEqual(self.cad_u["RJCSA"]["ceg"], "UTE.CM.RJ.029587-6.01")
+        self.assertEqual([st.get("ceg") for st in self.hist_u["RJCSA"] if st.get("ceg")][:2],
+                         ["UTE.PE.RJ.029587-6.01", "UTE.CM.RJ.029587-6.01"])
+
+    def test_ceg_antigo_tem_combustivel_outros(self):
+        antigo = {"UTE.PE.RJ.029587-6.01": self.cad_t["UTE.PE.RJ.029587-6.01"]}
+        self.assertEqual(antigo["UTE.PE.RJ.029587-6.01"].get("combustivel"), None)  # a fonte só traz combustível em 2026
+        # só com o cadastro vigente (último CEG) o CEG antigo fica sem combustível: era o defeito
+        self.assertEqual(gd.mapa_combustivel(antigo, self.cad_u, {})["UTE.PE.RJ.029587-6.01"]["categoria"], "nao_mapeada")
+        m = gd.mapa_combustivel(antigo, self.cad_u, {}, hist_u=self.hist_u)["UTE.PE.RJ.029587-6.01"]
+        self.assertEqual(m, {"rotulo": "Resíduos Industriais", "categoria": "outros", "origem": "geracao_por_usina"})
+
+    def test_uma_usina_so_no_ranking(self):
+        cods = gd.codigos_termicos(self.hist_t, self.cad_t)
+        self.assertEqual(cods["UTE.PE.RJ.029587-6.01"], {65, 183})       # todas as linhas, não só a última
+        self.assertEqual(cods["UTE.GN.MA.030202-3.01"], {36, 600, 601, 608, 609})
+        cegs = gd.ceg_para_ids(self.hist_u, self.cad_u)
+        ult = {"UTE.PE.RJ.029587-6.01": "2025-10", "UTE.CM.RJ.029587-6.01": "2026-08", "UTE.PE.BA.031304-1.01": "2025-01",
+               "UTE.PE.PE.031304-1.01": "2026-08", "UTE.CM.SC.001260-2.01": "2026-08", "UTE.GN.MA.030202-3.01": "2026-08"}
+        ident = gd.identidades_termicas(sorted(ult), self.cad_t, cods, cegs, ult)
+        # Atlântico: mesmo número de empreendimento e mesmo identificador RJCSA na Geração por Usina
+        self.assertEqual(ident["UTE.PE.RJ.029587-6.01"], "UTE.CM.RJ.029587-6.01")
+        # Camaçari Muricy II: mesmo número e mesmo código 235 nos dois CEGs (UF trocada)
+        self.assertEqual(ident["UTE.PE.BA.031304-1.01"], "UTE.PE.PE.031304-1.01")
+        self.assertEqual(len(set(ident.values())), 4)
+        nome = gd.nome_identidade("UTE.CM.RJ.029587-6.01", ["UTE.CM.RJ.029587-6.01", "UTE.PE.RJ.029587-6.01"],
+                                  self.cad_t, cegs, self.cad_u, {})
+        self.assertEqual(nome, ("Do Atlântico", "termica_por_motivo"))
+        # J. Lacerda A: duas parcelas no CEG, o nome não é o da última parcela
+        nome_jl = gd.nome_identidade("UTE.CM.SC.001260-2.01", ["UTE.CM.SC.001260-2.01"], self.cad_t, cegs, self.cad_u, {})
+        self.assertEqual(nome_jl, ("J. Lacerda A-1 + J. Lacerda A-2", "termica_por_motivo"))
+
+    def test_cvu_por_parcela_e_codigo_de_dois_cegs_pareado(self):
+        import pyarrow.parquet as pq
+        cods = gd.codigos_termicos(self.hist_t, self.cad_t)
+        cegs = gd.ceg_para_ids(self.hist_u, self.cad_u)
+        chaves = sorted(self.cad_t)
+        ident = gd.identidades_termicas(chaves, self.cad_t, cods, cegs, {})
+        cod_ident = defaultdict(set)
+        for ch, cs in cods.items():
+            for cod in cs:
+                cod_ident[cod].add(ident[ch])
+        comb = gd.mapa_combustivel(self.cad_t, self.cad_u, {}, hist_u=self.hist_u, identidade=ident)
+        cv = gd.bloco_cvu(self.con, comb, date(2026, 9, 30), cod_ident, {})
+        par = {u["cod"]: (u["id_termica"], u["cvu"]) for u in cv["usinas"]}
+        # CVU lido à parte do Parquet do ONS (semana de 26/09/2026)
+        fonte = {int(r["cod_usinaplanejamento"]): float(r["val_cvu"]) for r in pq.read_table(_p("cvu_2026_09_26_parcelas.parquet")).to_pylist()}
+        self.assertEqual(fonte[36], 180.51)
+        self.assertEqual(par[36], (ident["UTE.GN.MA.030202-3.01"], 180.51))      # Maranhão 4 P0
+        self.assertEqual(par[26][0], ident["UTE.CM.SC.001260-2.01"])             # J. Lacerda A-1
+        self.assertEqual(par[27][0], ident["UTE.CM.SC.001260-2.01"])             # J. Lacerda A-2
+        self.assertEqual((par[26][1], par[27][1]), (fonte[26], fonte[27]))
+        self.assertEqual(par[235][0], ident["UTE.PE.PE.031304-1.01"])            # código ligado a dois CEGs da mesma usina
+        self.assertEqual(cv["cobertura"]["codigos_ambiguos"], [])
+        self.assertEqual(cv["cobertura"]["pareadas_com_termica"], len(fonte))
+
+
+class AusenciaNaoViraZero(unittest.TestCase):
+    """P021, defeito 4: categoria sem linha no período é nula; presença parcial é contada."""
+
+    def test_mix_sem_mmgd_antes_de_29_04_2023(self):
+        con = base.conecta(":memory:")
+        v = _vintage_em(con, "ons_geracao_usina", "GERACAO_USINA-2_2023_04", _p("geracao_usina_2023_04_h12.parquet"), "2026-09-30T23:00:00Z", "a" * 64)
+        gd._importa_usina(con, v, "2023-04")
+        D = gd.carrega_usina(con)
+        cat_dia, nat_dia, rotulos, horas, cache = gd.matriz_diaria(D)
+        m = gd.mix(cat_dia, horas, "SIN", ["2023-04-28"], nat_dia=nat_dia)
+        self.assertIsNone(m["mwmed"]["solar_mmgd"])
+        self.assertIsNone(m["participacao"]["solar_mmgd"])
+        self.assertIsNone(m["natureza_pct"]["grupo_mmgd"])
+        self.assertAlmostEqual(sum(v for v in m["participacao"].values() if v is not None), 100, delta=0.05)
+        dois = gd.mix(cat_dia, horas, "SIN", ["2023-04-28", "2023-04-29"])
+        self.assertEqual(dois["dias_com_linha"]["solar_mmgd"], 1)               # presença parcial explícita
+        self.assertAlmostEqual(dois["mwmed"]["solar_mmgd"], 9984.5 / 2, delta=0.1)
+
+
+class SerieHistoricaAneel(unittest.TestCase):
+    """P024, defeito 6: capacidade da ANEEL por tipo em datas de referência (o SIGA por data)."""
+
+    def test_le_recorte_oficial(self):
+        dados, data_ger, inval = gd.le_aneel_historico(ckan.le_csv_bronze(_p("aneel_empreendimentos_operacao_recorte.csv")))
+        self.assertEqual(data_ger, "2026-08-05")
+        self.assertEqual(inval, 0)
+        self.assertEqual(dados[("UHE", "2026-06")], (103235221.0, 215.0))       # mês '6 ' com espaço na fonte
+        self.assertEqual(dados[("EOL", "2021-12")], (20771078.86, 789.0))
+        hid = sum(dados[(t, "2026-06")][0] for t in ("UHE", "PCH", "CGH")) / 1000
+        self.assertAlmostEqual(hid, 110218.1495, places=3)
+        self.assertNotIn("CGU", gd.TIPO_ANEEL_GRUPO)                            # tipo fora dos grupos fica contado, não somado
+
+
+class SequenciasDeZero(unittest.TestCase):
+    """Defeito 10: rótulo que passa a publicar só zero depois de produzir é sinalizado; as
+    usinas que saíram do arquivo são contadas."""
+
+    def test_rotulo_zero_depois_de_producao(self):
+        k = ("TÉRMICA", "Biomassa", "TIPO III")
+        meses = ["2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01"]
+        mwh = {(k, "2025-08"): 85153.0, (k, "2025-09"): 41343.4, **{(k, m): 0.0 for m in meses[2:]}}
+        U = {"cat_id": {"A": "biomassa", "B": "biomassa"}, "valor": {"A": set(meses[:2]), "B": set(meses)},
+             "linhas": {"A": set(meses[:2]), "B": set(meses)}, "mwh": {("A", "2025-09"): 41343.4, ("B", "2025-09"): 0.0}}
+        cad = {"A": {"tipo": k[0], "comb": k[1], "mod": k[2]}, "B": {"tipo": k[0], "comb": k[1], "mod": k[2]}}
+        z = gd.sequencias_zero_rotulo({k: set(meses)}, mwh, {k: ("biomassa", "verificada")}, U, cad)
+        self.assertEqual(len(z), 1)
+        self.assertEqual((z[0]["inicio"], z[0]["fim"], z[0]["meses"]), ("2025-10", "2026-01", 4))
+        self.assertEqual(z[0]["identificadores_que_sairam"], 1)
+        # zero curto (2 meses) não é sequência longa
+        mwh2 = {**mwh, (k, "2025-12"): 10.0}
+        self.assertEqual(gd.sequencias_zero_rotulo({k: set(meses)}, mwh2, {k: ("biomassa", "verificada")}, U, cad), [])
+
+
 class GoldPublicada(unittest.TestCase):
-    """Contrato da gold publicada e equivalência com os CSV de download (outro código lê o CSV)."""
+    """Contrato da gold publicada. Os testes de equivalência gold × CSV são controles internos
+    (o CSV sai do mesmo código); os de conferência usam números lidos da fonte por outro código."""
 
     @classmethod
     def setUpClass(cls):
@@ -382,6 +613,9 @@ class GoldPublicada(unittest.TestCase):
         tot = sum(soma.values())
         self.assertEqual(horas, m["horas"])
         for cat, p in m["participacao"].items():
+            if p is None:  # categoria sem linha na janela: ausente no CSV também
+                self.assertEqual(soma[cat], 0.0, cat)
+                continue
             self.assertAlmostEqual(100 * soma[cat] / tot, p, delta=0.006)
         self.assertAlmostEqual(tot / horas, m["total_mwmed"], delta=0.06)
 
@@ -434,6 +668,148 @@ class GoldPublicada(unittest.TestCase):
             self.assertIsNone(comp["variacao_pct"][cat])
             saltos = [q for q in self.g["quebras"] if q["tipo"] == "salto_de_universo" and cat in q["categorias"]]
             self.assertTrue(set(info["datas"]) <= {q["data"] for q in saltos})
+
+    # ---- defeitos da verificação de 01/10/2026; valores esperados lidos da fonte por outro
+    # código (Parquet do S3 do ONS e CSV da ANEEL, laços simples), registrados no documento
+
+    def test_ausencia_nula_na_serie_mensal_anual_e_no_csv_a11(self):
+        ms = self.g["matriz"]["mensal_sin"]
+        i = ms["meses"].index("2023-03")
+        self.assertIsNone(ms["solar_mmgd"][i])                     # sem linha 'Pequenas Usinas (MMGD)' antes de 29/04/2023
+        self.assertIsNone(ms["termica_sem_combustivel"][ms["meses"].index("2021-01")])
+        self.assertEqual(ms["dias_com_linha"]["solar_mmgd"], {"2023-04": 2})  # abril/2023: só 29 e 30
+        anos = {a["ano"]: a for a in self.g["matriz"]["anual_sin"]}
+        self.assertIsNone(anos[2021]["mwmed"]["solar_mmgd"])
+        self.assertIsNone(anos[2022]["mwmed"]["solar_mmgd"])
+        linhas = {r["data"]: r for r in self._csv("/energia/series/geracao_a11_conferencia.csv")}
+        self.assertEqual(linhas["2023-04-28"]["usinas_mmgd_mwh"], "")
+        self.assertNotEqual(linhas["2023-04-29"]["usinas_mmgd_mwh"], "")
+        self.assertFalse(any(r["usinas_mmgd_mwh"] == "0.0" for d, r in linhas.items() if d < "2023-04-29"))
+
+    def test_ressalva_de_universo_junto_da_participacao(self):
+        # fonte (GU 08/2025 e 08/2026, contagem à parte): 63 e 17 identificadores de biomassa com valor
+        u = self.g["matriz"]["universo"]["identificadores_por_categoria"]
+        self.assertEqual(u["biomassa"][u["meses"].index("2025-08")], 63)
+        self.assertEqual(u["biomassa"][u["meses"].index("2026-08")], 17)
+        for nome in ("dia", "7d", "30d", "12m"):
+            r = self.g["matriz"]["janelas"]["SIN"][nome]["ressalvas_universo"]
+            self.assertIn("universo_reduzido", r["biomassa"]["motivos"], nome)
+            self.assertEqual(r["biomassa"]["maior_numero_12_meses_antes"], 63)
+        self.assertEqual(self.g["matriz"]["janelas"]["SIN"]["30d"]["ressalvas_universo"]["biomassa"]["identificadores_com_valor_no_ultimo_mes"], 17)
+        self.assertNotIn("hidraulica", self.g["matriz"]["janelas"]["SIN"]["30d"]["ressalvas_universo"])
+        anos = {a["ano"]: a for a in self.g["matriz"]["anual_sin"]}
+        self.assertIn("biomassa", anos[2026]["ressalvas_universo"])
+        self.assertIn("2026-05", self.g["matriz"]["mensal_sin"]["ressalvas_universo"]["biomassa"])
+        lac = self.g["matriz"]["universo"]["lacuna_ultimo_mes"]
+        self.assertGreater(lac["detalhe_por_categoria"]["biomassa"]["sem_linhas"], 0)
+
+    def test_natureza_mista_declarada_e_medida(self):
+        from pipeline.energia import metricas
+        cat = {m["id"]: m for m in metricas.todas()}
+        for mid in ("geracao_categoria_mwmed", "geracao_participacao"):
+            self.assertTrue(cat[mid]["natureza_fonte"].startswith("MISTO"), mid)
+        for mid in ("geracao_restricao_energia", "geracao_restricao_taxa"):
+            self.assertEqual(cat[mid]["natureza_fonte"], "ESTIMADO")
+        for k in ("restricao_eolica", "restricao_solar"):
+            self.assertEqual(self.g["proveniencia"][k]["natureza"], "ESTIMADO")
+        j = self.g["matriz"]["janelas"]["SIN"]["30d"]
+        self.assertAlmostEqual(sum(v for v in j["natureza_pct"].values() if v is not None), 100, delta=0.05)
+        self.assertAlmostEqual(j["natureza_pct"]["grupo_mmgd"], j["participacao"]["solar_mmgd"], delta=0.01)
+
+    def test_valor_vira_linha_vazia_e_sequencia_de_zero(self):
+        q = self.g["quebras"]
+        sem_valor = [x for x in q if x["tipo"] == "rotulo_sem_valor" and "Biomassa / TIPO III" in x["descricao"]]
+        self.assertEqual([x["data"] for x in sem_valor], ["2026-05-01"])
+        self.assertFalse(any("Biomassa / TIPO III" in x["descricao"] for x in q if x["tipo"] == "rotulo_encerrado"))
+        zero = [x for x in q if x["tipo"] == "sequencia_zero" and "Biomassa / TIPO III" in x["descricao"]]
+        self.assertEqual([x["data"] for x in zero], ["2025-10-01"])
+        z = next(x for x in self.g["matriz"]["universo"]["sequencias_zero_rotulo"] if (x["combustivel"], x["modalidade"]) == ("Biomassa", "TIPO III"))
+        # fonte: 41.343 MWh em 09/2025 (soma das horas dos 4 identificadores que produziam) e zero de 10/2025 a 04/2026
+        self.assertEqual((z["inicio"], z["fim"], z["identificadores_que_sairam"]), ("2025-10", "2026-04", 4))
+        self.assertAlmostEqual(z["mwh_mes_anterior"], 41343.4, delta=0.1)
+        ctl = [c_ for c_ in self.g["controles"] if c_["nome"].startswith("Sequências longas")]
+        self.assertEqual(ctl[0]["resultado"], "ressalva")
+
+    def test_outros_decomposto_pelo_ceg(self):
+        o = {x["codigo_ceg"]: x for x in self.g["matriz"]["outros_por_ceg"]["itens"]}
+        self.assertIn("licor negro", o["FL"]["fonte_aneel"])
+        # releitura da GU de 09/2025 a 08/2026: FL 173,4 MWmed; CM 396,9 + PE 56,3 (a Do Atlântico
+        # antes da troca do CEG, aqui somada ao CEG atual UTE.CM)
+        self.assertAlmostEqual(o["FL"]["mwmed"], 173.4, delta=0.1)
+        self.assertAlmostEqual(o["CM"]["mwmed"], 396.9 + 56.3, delta=0.15)
+        self.assertIn("licor negro", next(c_["rotulo"] for c_ in self.g["categorias"] if c_["id"] == "outros"))
+
+    def test_ciclo_combinado_no_gas_e_potencia_coerente_com_o_fc(self):
+        rcc = [r for r in self._csv("/energia/series/geracao_capacidade_unidades.csv")
+               if og.norm(r["combustivel"]) == og.COMBUSTIVEL_CICLO_COMBINADO and not r["desativacao"]]
+        # fonte (CAPACIDADE_GERACAO.parquet de 30/09/2026): 21 unidades RCC em operação, 3.529,766 MW
+        self.assertEqual(len(rcc), 21)
+        self.assertAlmostEqual(sum(float(r["potencia_mw"]) for r in rcc), 3529.766, delta=0.001)
+        self.assertFalse(any(r["categoria"] == "outros" for r in rcc))
+        for x in self.g["capacidade"]["ultimos_12m"]["por_categoria"]:
+            self.assertLessEqual(x["capacidade_hora_media_mw"], x["potencia_media_12m_mw"] + 0.05, x["categoria"])
+        termorio = [r for r in self._csv("/energia/series/geracao_capacidade_usina_mensal.csv") if r["grupo"] == "ceg:UTE.GN.RJ.027888-2.01" and r["mes"] == "2026-08"]
+        self.assertEqual(termorio[0]["categoria"], "gas")
+        self.assertAlmostEqual(float(termorio[0]["potencia_operacional_mw"]), 989.2, delta=0.001)
+
+    def test_do_atlantico_uma_usina_com_combustivel_em_todo_o_historico(self):
+        t = self.g["termica"]
+        atl = [u for u in t["usinas_12m"] if "UTE.PE.RJ.029587-6.01" in u["chaves_na_fonte"]]
+        self.assertEqual(len(atl), 1)
+        self.assertEqual(atl[0]["categoria"], "outros")
+        # releitura da TD 09/2025 a 08/2026: 2.041.706,9 MWh sob UTE.CM e 483.460,4 sob UTE.PE
+        self.assertAlmostEqual(atl[0]["mwh"], 2041706.9 + 483460.4, delta=0.2)
+        self.assertEqual(t["mapa_combustivel"]["nao_identificadas_mwh_12m"], 0.0)
+        mc = t["mensal_combustivel"]
+        for m in ("2022-07", "2024-01", "2025-10", "2025-11"):
+            self.assertIsNotNone(mc["outros"][mc["meses"].index(m)], m)
+        self.assertTrue(all(v is None for v in mc["nao_mapeada"][mc["meses"].index("2022-07"):]))
+
+    def test_cvu_pareado_por_parcela(self):
+        cv = self.g["termica"]["cvu"]
+        self.assertEqual(cv["cobertura"]["codigos_ambiguos"], [])
+        self.assertEqual(sorted(cv["cobertura"]["sem_par"]), sorted(["UTE MANAUS", "ST.CRUZ 34", "BARCARENA", "AZULAO", "PALMAPLAN"]))
+        m4 = next(u for u in self.g["termica"]["usinas_12m"] if u["id"] == "UTE.GN.MA.030202-3.01")
+        p0 = next(p_ for p_ in m4["parcelas"] if p_["cod"] == 36)
+        self.assertEqual(p0["cvu_semana_vigente"], 180.51)                        # MARANHAOIV, semana de 26/09/2026
+        self.assertEqual(m4["cvu_semana_vigente"], 180.51)
+        jl = next(u for u in self.g["termica"]["usinas_12m"] if u["id"] == "UTE.CM.SC.001260-2.01")
+        self.assertIsNone(jl["cvu_semana_vigente"])                              # duas parcelas com CVU: um por parcela
+        self.assertEqual({p_["cod"]: p_["cvu_semana_vigente"] for p_ in jl["parcelas"]}, {26: 518.9, 27: 416.39})
+
+    def test_correspondencia_temporal_aneel_mmgd_e_geracao(self):
+        ctx = self.g["capacidade"]["contexto"]
+        h = ctx["siga_historico"]
+        i = h["datas"].index("2026-06")
+        self.assertAlmostEqual(h["grupos"]["hidraulica"]["aneel_mw"][i], 110218.1, delta=0.05)  # UHE + PCH + CGH do CSV da ANEEL
+        self.assertAlmostEqual(h["grupos"]["eolica"]["aneel_mw"][i], 34810.7, delta=0.05)
+        mm = ctx["mmgd"]["mensal"]
+        self.assertEqual(mm["meses"][0], "2023-05")
+        self.assertEqual(len(mm["meses"]), len(mm["potencia_cadastrada_mw"]))
+        self.assertTrue(all(v is not None for v in mm["geracao_estimada_ons_mwmed"]))
+
+    def test_textos_e_descricoes_conferem_com_o_dado(self):
+        with open(os.path.join(RAIZ, "docs", "observatorios", "energia", "modulos", "geracao.md"), encoding="utf-8") as f:
+            doc = f.read()
+        cob = self.g["termica"]["usinas_12m_resumo"]["cobertura_da_energia_pct"]
+        self.assertIn(f"{cob:.1f}".replace(".", ",") + "% da energia", doc)
+        # colunas declaradas da reconciliação = cabeçalho do CSV
+        desc = gd.REGISTRO["arquivos"][gd.CSV["reconciliacao"]]
+        cab = list(self._csv(gd.CSV["reconciliacao"])[0].keys())
+        for col in cab:
+            self.assertIn(col, desc, col)
+        self.assertNotIn("usinas_roraima_mwh", desc)
+        # coordenada sem subestação coletora vem do ponto de conexão, com a origem registrada
+        sol = {u["id"]: u for u in self.g["restricoes"]["solar"]["usinas_12m"]}
+        if "CJU_MGSDJ" in sol:
+            self.assertEqual(sol["CJU_MGSDJ"]["origem_coordenada"], "ponto_de_conexao")
+            self.assertEqual((sol["CJU_MGSDJ"]["lat"], sol["CJU_MGSDJ"]["lon"]), (-15.2928, -43.7153))
+        # citação de número com vários arquivos nomeia os recursos
+        for k, e in self.g["evidencias"].items():
+            if e["fonte"].get("arquivos"):
+                self.assertNotIn("recurso não identificado", e["citacao"], k)
+                recs = sorted(a["recurso"] for a in e["fonte"]["arquivos"])
+                self.assertIn(recs[-1], e["citacao"], k)
 
     def test_evidencias_validas(self):
         self.assertGreaterEqual(len(self.g["evidencias"]), 10)

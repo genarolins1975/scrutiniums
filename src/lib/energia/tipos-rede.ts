@@ -281,6 +281,7 @@ export type QuebraBalanco = {
   /** null quando o arquivo do ano não está no bronze; { erro } quando a leitura falhou. */
   conferencia_arquivo: ConferenciaDegrauMmgd | { erro: string } | null;
   degrau_observado_no_dia: boolean;
+  regra_degrau: string;
   efeito: string;
 };
 

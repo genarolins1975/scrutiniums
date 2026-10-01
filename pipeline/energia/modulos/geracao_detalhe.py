@@ -101,6 +101,19 @@ CONJUNTOS = {
     "conjunto": {"pacote": "usina_conjunto", "ds": "ons_usina_conjunto", "s3": "usina_conjunto",
                  "arquivo": "RELACIONAMENTO_USINA_CONJUNTO.parquet", "titulo": "Relacionamento entre Conjuntos e Usinas"},
 }
+# Série histórica oficial da ANEEL da capacidade em operação por tipo de geração (a mesma
+# base do SIGA): anual até 2022 e trimestral desde 2023. É o "SIGA por data" do P024: o
+# retrato do SIGA não tem histórico no portal, mas esta série tem.
+ANEEL_HIST = {"pacote": "empreendimentos-em-operacao", "ds": "aneel_empreendimentos_operacao",
+              "arquivo": "empreendimento-operacao-historico.csv",
+              "titulo": "Quantidade de empreendimentos de geração de energia em operação"}
+# tipo de geração da ANEEL → grupo comparável com as categorias do ONS (térmicas juntas: a
+# série da ANEEL não separa combustível)
+TIPO_ANEEL_GRUPO = {"UHE": "hidraulica", "PCH": "hidraulica", "CGH": "hidraulica", "EOL": "eolica",
+                    "UFV": "solar_centralizada", "UTN": "nuclear", "UTE": "termica"}
+GRUPO_ONS_CATS = {"hidraulica": ("hidraulica",), "eolica": ("eolica",), "solar_centralizada": ("solar_centralizada",),
+                  "nuclear": ("nuclear",), "termica": ("gas", "carvao", "oleo", "biomassa", "outros")}
+
 # dicionários também do Balanço (achado A11: o dicionário do balanço não menciona MMGD)
 PACOTES_DICIONARIO = tuple(cfg["pacote"] for cfg in CONJUNTOS.values()) + ("balanco-energia-subsistema",)
 ORDEM_IMPORTACAO = ("usina", "termica", "cvu", "coff_eolica", "coff_solar", "coff_eolica_det", "coff_solar_det", "fc",
@@ -172,6 +185,11 @@ REGISTRO = {
                           "Modalidade de operação de cada usina (Tipo I, II-A, II-B, II-C e III)."),
         _dataset_registro("conjunto", "UTILIZADO EM INDICADOR", [],
                           "Usinas Tipo II-C que compõem cada conjunto, com início e fim do relacionamento."),
+        {"orgao": "ANEEL", "nome": ANEEL_HIST["pacote"], "slug": "aneel-empreendimentos-operacao", "dataset_silver": ANEEL_HIST["ds"],
+         "titulo": ANEEL_HIST["titulo"], "estado": "UTILIZADO EM INDICADOR", "url": "https://dadosabertos.aneel.gov.br/dataset/" + ANEEL_HIST["pacote"],
+         "licenca": ckan.LICENCA_ANEEL, "tema": "geracao", "formatos": ["CSV"],
+         "descricao": "Potência instalada em operação por tipo de geração (base do SIGA) em datas de referência: capacidade da ANEEL ao lado da potência do ONS no P024.",
+         "paginas": [PAGINA], "downloads": [], "quebras": []},
     ],
     "arquivos": {
         CSV["matriz_diaria"]: (
@@ -182,23 +200,33 @@ REGISTRO = {
         CSV["rotulos"]: ("ano; tipo_usina, combustivel e modalidade como o ONS escreve; categoria publicada; natureza "
                          "(verificada, grupo_tipo3, grupo_mmgd); mwh no ano."),
         CSV["a11"]: ("data; balanco_solar_sin_mwh (Balanço de Energia); usinas_solar_mwh (soma das usinas FOTOVOLTAICA da "
-                     "Geração por Usina); usinas_mmgd_mwh; usinas_solar_sem_mmgd_mwh; diferenca_mwh = balanço − usinas."),
+                     "Geração por Usina); usinas_mmgd_mwh (vazio antes de 29/04/2023: o grupo MMGD não existe na fonte, ausência e "
+                     "não zero); usinas_solar_sem_mmgd_mwh; diferenca_mwh = balanço − usinas."),
         CSV["reconciliacao"]: ("mes; fonte do balanço (hidraulica, termica com nuclear, eolica, solar); balanco_mwh; usinas_mwh; "
-                               "diferenca_mwh; usinas_roraima_mwh (térmicas de Roraima na Geração por Usina); dias."),
+                               "diferenca_mwh = balanço − usinas; roraima_excluida_mwh (térmica das usinas de Roraima nos dias em que "
+                               "o balanço as exclui); diferenca_sem_roraima_mwh = diferença + Roraima excluída; dias; subsistema_dias; "
+                               "subsistema_dias_conciliados (|diferença ajustada| ≤ 1 MWh)."),
         CSV["termica_mensal"]: ("mes; regiao; total_mwh (geração verificada); uma coluna por motivo em MWh (partição sem "
                                 "dupla contagem); nao_classificado_mwh = total − soma dos motivos; constrained_off_mwh "
                                 "(restrição, não geração); horas."),
-        CSV["termica_usina"]: ("mes; usina (CEG ou código do ONS); nome; subsistema; combustivel (rótulo); categoria; "
-                               "origem_combustivel; total_mwh e uma coluna por motivo em MWh. Só linhas com algum valor diferente de zero."),
-        CSV["cvu"]: "semana_inicio; semana_fim; pmo (ano-mês de referência e revisão); cod_usina (código do ONS nos modelos); usina; subsistema; categoria; cvu_rs_mwh. De 2021 em diante.",
+        CSV["termica_usina"]: ("mes; usina (identidade: chave mais recente da usina, ligando CEGs com o mesmo número de "
+                               "empreendimento e elo publicado pelo ONS); nome_usina; chave_fonte (CEG ou código do ONS como a fonte "
+                               "publicou no mês); nome_na_fonte (último nom_usina do CEG, pode ser o de uma parcela); subsistema; "
+                               "combustivel (rótulo); categoria; origem_combustivel; total_mwh e uma coluna por motivo em MWh. Só "
+                               "linhas com algum valor diferente de zero."),
+        CSV["cvu"]: ("semana_inicio; semana_fim; pmo (ano-mês de referência e revisão); cod_usina (código do ONS nos modelos); "
+                     "usina (nome no CVU); usina_termica (identidade na térmica por motivo; vazio = sem par ou código ambíguo); "
+                     "subsistema; categoria; cvu_rs_mwh. De 2021 em diante."),
         CSV["restricao_diaria"]: ("data; fonte (eolica, solar); regiao; razao (REL, CNF, ENE, PAR, SEM); origem (LOC, SIS); "
                                   "energia_nao_gerada_mwh (estimada: referência − verificada nas meias horas limitadas); "
                                   "gnra_fonte_mwh (campo publicado pelo ONS, quando existe); meias_horas_limitadas; e, na linha "
                                   "razao = TOTAL, geracao_verificada_mwh, meias_horas e potencia_max_cortada_mw."),
         CSV["restricao_usina"]: ("mes; fonte; id_ons; nome; subsistema; uf; geracao_verificada_mwh; energia não gerada estimada "
                                  "por razão (eng_REL, eng_CNF, eng_ENE, eng_PAR, eng_SEM, em MWh); meias_horas; meias_horas_limitadas."),
-        CSV["capacidade_unidades"]: ("cod_equipamento; usina; ceg; tipo; combustivel; categoria; modalidade; subsistema; uf; "
-                                     "potencia_mw; entrada_teste; entrada_operacao; desativacao (retrato do dia da captura)."),
+        CSV["capacidade_unidades"]: ("cod_equipamento; usina; ceg; tipo; combustivel (rótulo da unidade); categoria (a da usina "
+                                     "na Geração por Usina, a mesma do fator de capacidade); origem_categoria (geracao_por_usina, "
+                                     "geracao_por_usina_ceg_base, conjunto, rotulo_da_unidade, demais_unidades_do_ceg); modalidade; "
+                                     "subsistema; uf; potencia_mw; entrada_teste; entrada_operacao; desativacao (retrato do dia da captura)."),
         CSV["capacidade_usina"]: ("mes; grupo (ceg:<CEG>, base:<CEG sem versão> ou cju:<conjunto>); identificadores (id_ons da "
                                   "Geração por Usina somados no grupo); nome; categoria; geracao_mwh; horas_com_valor; "
                                   "potencia_operacional_mw (média do mês pelas datas de entrada e desativação das unidades); "
@@ -688,6 +716,65 @@ def importa_pendentes(con, k, alvo, status):
         con.commit()
 
 
+def _coleta_aneel_historico(con, status):
+    """Série histórica da capacidade em operação por tipo de geração (ANEEL), CSV pequeno."""
+    try:
+        pac = ckan.pacote("ANEEL", ANEEL_HIST["pacote"])
+        base.escreve_gold(f"_meta_{ANEEL_HIST['ds']}.json", ckan.metadados(pac, "ANEEL"), destino=META_DIR)
+    except Exception as e:
+        status["falhas"].append(f"{ANEEL_HIST['pacote']} package_show: {e}")
+        return
+    rec = next((r for r in pac.get("resources", []) if (r.get("url") or "").endswith(ANEEL_HIST["arquivo"])), None)
+    if not rec:
+        status["falhas"].append(f"{ANEEL_HIST['pacote']}: recurso {ANEEL_HIST['arquivo']} não encontrado")
+        return
+    res = ckan.baixar_recurso(con, orgao="ANEEL", dataset=ANEEL_HIST["ds"], recurso=ANEEL_HIST["arquivo"], url=rec["url"],
+                              publicado_em=rec.get("last_modified"), ext="csv", max_idade_dias=7)
+    status["conjuntos"]["aneel_historico"] = res["status"]
+    if res["status"] == "falha":
+        status["falhas"].append(f"{ANEEL_HIST['arquivo']}: {res['detalhe']}")
+    v = res.get("vintage")
+    if v and not _importado(_controle(con), v["vintage_id"]):
+        try:
+            rel = importa_aneel_historico(con, v)
+            status["importacoes"][ANEEL_HIST["arquivo"]] = rel
+        except Exception as e:  # formato novo: registrado, sem número
+            status["falhas"].append(f"{ANEEL_HIST['arquivo']} importação: {e}")
+    con.commit()
+
+
+def le_aneel_historico(linhas):
+    """Linhas do CSV (DatGeracaoConjuntoDados; SigTipoGeracao; QtdUsinasPeriodo;
+    MdaPotenciaInstaladaKW; MesReferencia; AnoReferencia) → {(tipo, 'AAAA-MM'): (kW, usinas)}
+    e a data de geração do arquivo. Mês com espaço ('5 ') é aparado; vazio é ausência."""
+    out, data_geracao, invalidas = {}, None, 0
+    for r in linhas:
+        t = (r.get("SigTipoGeracao") or "").strip().upper()
+        ano, mes = (r.get("AnoReferencia") or "").strip(), (r.get("MesReferencia") or "").strip()
+        if not (t and ano.isdigit() and mes.isdigit()):
+            invalidas += 1
+            continue
+        out[(t, f"{ano}-{int(mes):02d}")] = (ckan.numero_br(r.get("MdaPotenciaInstaladaKW")), ckan.numero_br(r.get("QtdUsinasPeriodo")))
+        data_geracao = (r.get("DatGeracaoConjuntoDados") or "").strip() or data_geracao
+    return out, data_geracao, invalidas
+
+
+def importa_aneel_historico(con, v):
+    dados, data_geracao, invalidas = le_aneel_historico(ckan.le_csv_bronze(v["arquivo"]))
+    obs = []
+    for (t, ref), (kw, n) in dados.items():
+        if kw is not None:
+            obs.append((f"emp_op.kw.{t}", ref, kw))
+        if n is not None:
+            obs.append((f"emp_op.n.{t}", ref, n))
+    novas, revs = base.grava_observacoes(con, ANEEL_HIST["ds"], v["vintage_id"], obs)
+    base.grava_registros(con, ANEEL_HIST["ds"], v["vintage_id"], [("arquivo", "data_geracao", data_geracao)])
+    rel = {"linhas": len(dados), "invalidas": invalidas, "observacoes": len(obs), "novas": novas, "revisoes": revs,
+           "data_geracao": data_geracao}
+    _marca_importado(con, v["vintage_id"], rel)
+    return rel
+
+
 def coletar(con, ctx):
     """Coleta do módulo. Nunca lança por falha de fonte: cada falha vira registro em
     `coletas` e item em `falhas`; a gold anterior fica no ar pela sentinela."""
@@ -723,6 +810,8 @@ def coletar(con, ctx):
             if res["status"] == "falha":
                 status["falhas"].append(f"{recurso}: {res['detalhe']}")
         importa_pendentes(con, k, alvo, status)
+    if not ctx.get("somente") or "aneel_historico" in ctx["somente"]:
+        _coleta_aneel_historico(con, status)
     if ctx.get("somente") and "dicionarios" not in ctx["somente"]:
         status["ok"] = not status["falhas"]
         return status
@@ -874,6 +963,19 @@ def _periodos_arquivo(meses):
     return set(meses) | {m[:4] for m in meses}
 
 
+def texto_recursos(recursos):
+    """Recursos de vários arquivos para a citação, agrupados por conjunto: 'X_2025_09 a
+    X_2026_08 (12 arquivos) e CAPACIDADE_GERACAO'."""
+    import re
+    grupos = defaultdict(list)
+    for r_ in sorted({x for x in recursos if x}):
+        grupos[re.sub(r"_\d{4}(_\d{2})?$", "", r_)].append(r_)
+    partes = []
+    for _, rs in sorted(grupos.items(), key=lambda x: -len(x[1])):
+        partes.append(rs[0] if len(rs) == 1 else (" e ".join(rs) if len(rs) == 2 else f"{rs[0]} a {rs[-1]} ({len(rs)} arquivos)"))
+    return " e ".join(partes)
+
+
 def _evidencia(*, indicador, valor_exibido, valor, unidade, periodo, entidade, universo, fonte_k, arquivos, consulta,
                formula, cobertura, tratamento_ausencia, revisoes, testes, reconciliacao, download, filtros=(),
                numerador=None, denominador=None, exclusoes=(), pesos=None, chaves=()):
@@ -884,12 +986,24 @@ def _evidencia(*, indicador, valor_exibido, valor, unidade, periodo, entidade, u
         f.update({k: arquivos[0].get(k) for k in ("recurso", "arquivo", "sha256", "capturado_em", "publicado_em")})
     elif arquivos:
         f["arquivos"] = arquivos
-    return ev.construir(indicador=indicador, valor_exibido=valor_exibido, valor_calculo=valor, unidade=unidade,
-                        periodo=periodo, entidade=entidade, universo=universo, filtros=list(filtros), fonte=f,
-                        chaves_origem=list(chaves), consulta=consulta, formula=formula, numerador=numerador,
-                        denominador=denominador, pesos=pesos, exclusoes=list(exclusoes), cobertura=cobertura,
-                        tratamento_ausencia=tratamento_ausencia, revisoes=revisoes, testes=testes,
-                        reconciliacao=reconciliacao, download=download, reproducao=REPRODUCAO, endereco=SITE)
+    e = ev.construir(indicador=indicador, valor_exibido=valor_exibido, valor_calculo=valor, unidade=unidade,
+                     periodo=periodo, entidade=entidade, universo=universo, filtros=list(filtros), fonte=f,
+                     chaves_origem=list(chaves), consulta=consulta, formula=formula, numerador=numerador,
+                     denominador=denominador, pesos=pesos, exclusoes=list(exclusoes), cobertura=cobertura,
+                     tratamento_ausencia=tratamento_ausencia, revisoes=revisoes, testes=testes,
+                     reconciliacao=reconciliacao, download=download, reproducao=REPRODUCAO, endereco=SITE)
+    if len(arquivos) > 1:
+        # número que usa vários arquivos: a citação nomeia os recursos de fonte.arquivos (o
+        # campo único fonte.recurso fica nulo, porque não há um recurso só)
+        texto_rec = texto_recursos([a.get("recurso") for a in arquivos])
+        caps = [a.get("capturado_em") for a in arquivos if a.get("capturado_em")]
+        e["citacao"] = ev.citacao(indicador=indicador, valor_exibido=e["valor_exibido"], unidade=unidade, entidade=entidade,
+                                  periodo=e["periodo"], fonte={**f, "recurso": texto_rec, "capturado_em": max(caps) if caps else None},
+                                  versao=e["versao"], endereco=SITE)
+        problemas = ev.validar(e)
+        if problemas:
+            raise ev.EvidenciaInvalida(problemas)
+    return e
 
 
 def _quantis(xs):
@@ -1348,10 +1462,17 @@ def rotulos_por_mes(D):
     return linhas, valor, mwh
 
 
-def sequencias_zero_rotulo(valor, mwh, cache):
+def sequencias_zero_rotulo(valor, mwh, cache, U=None, cad=None):
     """Rótulos cujas horas com valor são todas exatamente zero por ZERO_MESES_ROTULO meses
-    seguidos ou mais, logo depois de um mês com geração positiva (seção 11.7: sequência
-    longa repetida). Pode ser parada real ou falha da fonte; a fonte não distingue."""
+    seguidos ou mais, logo depois de um mês com ao menos 1 MWh (seção 11.7: sequência longa
+    repetida). Pode ser parada real ou falha da fonte; a fonte não distingue. Com `U`, conta
+    os identificadores do rótulo que tinham valor no mês anterior e não têm linha no primeiro
+    mês da sequência: zero que aparece porque as usinas que produziam saíram do arquivo."""
+    rot_id = defaultdict(set)
+    if U is not None:
+        for ido in U["cat_id"]:
+            r_ = (cad or {}).get(ido, {})
+            rot_id[(r_.get("tipo") or "", r_.get("comb") or "", r_.get("mod") or "")].add(ido)
     out = []
     for k_, ms in valor.items():
         ms = sorted(ms)
@@ -1365,10 +1486,13 @@ def sequencias_zero_rotulo(valor, mwh, cache):
                 j += 1
             n = j - i + 1
             ant = _meses_antes(ms[i], 1)[0]
-            if n >= ZERO_MESES_ROTULO and mwh.get((k_, ant), 0.0) > 0:
+            if n >= ZERO_MESES_ROTULO and mwh.get((k_, ant), 0.0) >= 1.0:
+                sairam = sorted(i_ for i_ in rot_id.get(k_, ()) if ant in U["valor"].get(i_, ()) and ms[i] not in U["linhas"].get(i_, ()))
                 out.append({"tipo": k_[0], "combustivel": k_[1], "modalidade": k_[2] or None, "categoria": cache[k_][0],
                             "inicio": ms[i], "fim": ms[j], "meses": n, "mes_anterior": ant,
-                            "mwh_mes_anterior": c.r(mwh[(k_, ant)], 1), "ultimo_mes_com_valor": ms[-1]})
+                            "mwh_mes_anterior": c.r(mwh[(k_, ant)], 1), "ultimo_mes_com_valor": ms[-1],
+                            "identificadores_que_sairam": len(sairam),
+                            "mwh_mes_anterior_dos_que_sairam": c.r(sum(U["mwh"].get((i_, ant), 0.0) for i_ in sairam), 1) if sairam else None})
             i = j + 1
     return sorted(out, key=lambda x: (x["inicio"], x["tipo"], x["combustivel"]))
 
@@ -1515,8 +1639,9 @@ def bloco_matriz(con, D, cat_dia, nat_dia, rotulos, horas, cache, rec, ok, hoje)
         if ds_:
             for cat in ressalvas_universo(U, meses, saltos, f"{mes}-01", ds_[-1], "SIN", mensal=True):
                 ress_mes[cat].append(mes)
-    mensal["dias_com_linha"] = {cat: xs for cat, xs in presenca_mes.items()
-                                if any(0 < n_ < d_ for n_, d_ in zip(xs, mensal["dias_completos"]))}
+    # só os meses com presença parcial: {categoria: {mês: dias com linha}}
+    mensal["dias_com_linha"] = {cat: {m: n_ for m, n_, d_ in zip(meses, xs, mensal["dias_completos"]) if 0 < n_ < d_}
+                                for cat, xs in presenca_mes.items() if any(0 < n_ < d_ for n_, d_ in zip(xs, mensal["dias_completos"]))}
     mensal["ressalvas_universo"] = dict(ress_mes)
     # anos civis, perímetro sem MMGD e a MMGD à parte
     anual = []
@@ -1574,7 +1699,7 @@ def bloco_matriz(con, D, cat_dia, nat_dia, rotulos, horas, cache, rec, ok, hoje)
                              "natureza": cache[k_][1], "aparece_em": a_ if a_ > primeiro_mes else None,
                              "ultimo_mes_com_linhas": ult_l if ult_l < ultimo_mes else None,
                              "ultimo_mes_com_valor": ult_v if sem_valor_desde else None})
-    zeros_rotulo = sequencias_zero_rotulo(rot_valor, rot_mwh, cache)
+    zeros_rotulo = sequencias_zero_rotulo(rot_valor, rot_mwh, cache, U, cad)
     zeros_id = sequencias_zero_identificadores(U, meses, cad)
     universo = contagem(U["uni"], meses)
     sem_valor = contagem(U["vazios"], meses)
@@ -1681,7 +1806,7 @@ def bloco_matriz(con, D, cat_dia, nat_dia, rotulos, horas, cache, rec, ok, hoje)
                      "sequencias_zero_rotulo": zeros_rotulo,
                      "sequencias_zero_identificadores": {"n": len(zeros_id), "continuam_no_ultimo_mes": sum(1 for x in zeros_id if x["continua"]),
                                                          "por_categoria": dict(Counter(x["categoria"] for x in zeros_id)),
-                                                         "lista": zeros_id[:40]},
+                                                         "lista": zeros_id[:10]},
                      "regra": ("Identificador = usina, conjunto ou grupo (id_ons) da natureza verificada, na categoria do último rótulo "
                                "publicado. Com valor: ao menos uma hora com valor no mês (zero publicado conta). Sem valor: linhas, todas "
                                "vazias. Sem linhas: teve valor em algum dos 12 meses anteriores e não consta do arquivo no mês. Salto = "
@@ -2000,11 +2125,12 @@ def bloco_termica(con, D_u, unidades, hoje):
         for cod in cods_rep:
             mwh_p = parc12.get((rep, cod))
             cv = cvu_por_cod.get(cod)
-            if mwh_p is None and not (cv and cv.get("id_termica") == rep):
-                continue  # parcela antiga, sem geração no período e sem CVU na semana
+            if not mwh_p and not (cv and cv.get("id_termica") == rep):
+                continue  # parcela sem geração no período e sem CVU na semana (contada em parcelas_omitidas)
             nome_p = next((nomes_p[(ch, cod)] for ch in [rep] + chs if (ch, cod) in nomes_p), None)
             parcelas.append({"cod": cod, "nome": nome_p, "mwh": c.r(mwh_p, 1),
                              "cvu_semana_vigente": cv["cvu"] if cv and cv.get("id_termica") == rep else None})
+        omitidas = len(cods_rep) - len(parcelas)
         com_cvu = [p_["cvu_semana_vigente"] for p_ in parcelas if p_["cvu_semana_vigente"] is not None]
         usinas.append({"id": rep, "nome": nome_id[rep][0], "origem_nome": nome_id[rep][1], "sm": r_.get("sm"),
                        "ceg": og.ceg_valido(r_.get("ceg")) or None,
@@ -2014,7 +2140,7 @@ def bloco_termica(con, D_u, unidades, hoje):
                        "mwh": c.r(t_, 1), "mwmed": c.r(t_ / horas12, 2),
                        "motivos_pct": {m: c.r(100 * x[m] / t_, 1) for m in MOTIVOS if t_ > 0 and x.get(m)},
                        "constrained_off_mwh": c.r(x.get("constrained_off"), 1),
-                       "parcelas": parcelas,
+                       "parcelas": parcelas, "parcelas_omitidas": omitidas,
                        # um valor só quando a usina tem uma parcela com CVU; com várias, o CVU de cada uma está em parcelas
                        "cvu_semana_vigente": com_cvu[0] if len(com_cvu) == 1 else None})
     usinas.sort(key=lambda u: -(u["mwh"] or 0))
@@ -2175,7 +2301,7 @@ def bloco_restricao(con, k, k_det, fc_cad, hoje):
     cad = base.registros_como_estavam_em(con, ds)
     sm_dia = defaultdict(lambda: defaultdict(float))
     raz_dia = defaultdict(float)
-    pot = {}
+    pot, pot_ref = {}, {}
     usina = defaultdict(dict)
     for (serie, ref), v in tudo.items():
         p = serie.split("|")
@@ -2186,6 +2312,8 @@ def bloco_restricao(con, k, k_det, fc_cad, hoje):
             raz_dia[(ref, p[1], p[2], p[3], pre)] += v
         elif pre == "p":
             pot[(ref, p[1])] = v
+        elif pre == "pr":
+            pot_ref[(ref, p[1])] = v
         elif pre.startswith("u"):
             usina[(ref, p[1])][pre[1:]] = v
     dias = sorted({d for d, _ in sm_dia})
@@ -2271,11 +2399,17 @@ def bloco_restricao(con, k, k_det, fc_cad, hoje):
         r_ = cad.get(ido, {})
         f_ = fc_cad.get(ido, {})
         raz_p = max(((x.get(f"eng_{r}", 0.0), r) for r in RAZOES))[1]
-        lat = f_.get("lat") or f_.get("lat_pc")
-        lon = f_.get("lon") or f_.get("lon_pc")
+        # coordenada da subestação coletora; sem ela, a do ponto de conexão, com a origem registrada
+        if f_.get("lat") not in (None, "") and f_.get("lon") not in (None, ""):
+            lat, lon, origem_c = f_.get("lat"), f_.get("lon"), "subestacao_coletora"
+        elif f_.get("lat_pc") not in (None, "") and f_.get("lon_pc") not in (None, ""):
+            lat, lon, origem_c = f_.get("lat_pc"), f_.get("lon_pc"), "ponto_de_conexao"
+        else:
+            lat = lon = origem_c = None
         usinas.append({"id": ido, "nome": r_.get("nome"), "sm": r_.get("sm"), "uf": r_.get("uf"),
                        "lat": c.r(float(lat), 4) if lat not in (None, "") else None,
                        "lon": c.r(float(lon), 4) if lon not in (None, "") else None,
+                       "origem_coordenada": origem_c,
                        "energia_nao_gerada_mwh": c.r(eng, 1), "geracao_verificada_mwh": c.r(x.get("ger"), 1),
                        "taxa_pct": c.r(_div(100 * eng, x.get("ger", 0.0) + eng), 2), "razao_principal": raz_p})
     usinas.sort(key=lambda u: -u["energia_nao_gerada_mwh"])
@@ -2284,6 +2418,7 @@ def bloco_restricao(con, k, k_det, fc_cad, hoje):
     resumo_usinas = {"usinas_com_restricao": len(usinas), "publicadas": min(len(usinas), n_pub),
                      "cobertura_da_energia_pct": c.r(100 * sum(u["energia_nao_gerada_mwh"] for u in usinas[:n_pub]) / tot_u, 2) if tot_u else None,
                      "com_coordenadas": sum(1 for u in usinas[:n_pub] if u["lat"] is not None),
+                     "coordenadas_por_origem": dict(Counter(u["origem_coordenada"] or "sem_coordenada" for u in usinas[:n_pub])),
                      "lista_completa": CSV["restricao_usina"]}
     # causas detalhadas (texto do ONS) no último mês completo
     desc = None
@@ -2311,7 +2446,14 @@ def bloco_restricao(con, k, k_det, fc_cad, hoje):
             "limitadas_sem_referencia": int(sum(x.get("lsr", 0.0) for (m, rg), x in por_mes.items() if rg == "SIN")),
             "razao_fora_do_dominio": sum((r_ or {}).get("razao_desconhecida", 0) for r_ in rels.values()),
             "gnra_divergente_da_regra": sum((r_ or {}).get("gnra_diverge", 0) for r_ in rels.values()),
-            "meias_horas_com_gnra": sum((r_ or {}).get("com_gnra", 0) for r_ in rels.values())}
+            "meias_horas_com_gnra": sum((r_ or {}).get("com_gnra", 0) for r_ in rels.values()),
+            # corte simultâneo × soma das referências das mesmas linhas na meia hora: na importação,
+            # todas as meias horas com corte (por subsistema); no silver, o maior corte de cada dia
+            "meias_horas_com_corte": sum((r_ or {}).get("meias_com_corte", 0) for r_ in rels.values()),
+            "meias_horas_corte_acima_da_referencia": sum((r_ or {}).get("meias_corte_acima_da_referencia", 0) for r_ in rels.values()),
+            "arquivos_sem_controle_de_referencia": sum(1 for r_ in rels.values() if r_ is None or "meias_corte_acima_da_referencia" not in r_),
+            "dias_maior_corte_acima_da_referencia": sum(1 for k_, v in pot.items() if k_ in pot_ref and v > pot_ref[k_] + 1e-6),
+            "dias_maior_corte_sem_referencia": sum(1 for k_, v in pot.items() if v > 0 and k_ not in pot_ref)}
     return {
         "fonte": "eolica" if k == "coff_eolica" else "solar", "primeiro_mes": meses[0], "ultimo_mes_completo": completos[-1] if completos else None,
         "mensal_sin": mensal,
@@ -2518,6 +2660,49 @@ def mmgd_mensal(mensal_tr, matriz):
                       "capacidade do ONS, e a razão entre os dois não é publicada como fator de capacidade.")}
 
 
+def siga_historico(con, unidades, primeiro_mes):
+    """Capacidade em operação da ANEEL (série histórica por tipo de geração, base do SIGA)
+    nas datas de referência publicadas, ao lado da potência do ONS em operação comercial no
+    último dia do mesmo mês (unidades do retrato pela data de entrada e de desativação). Dois
+    universos diferentes (a ANEEL inclui usinas não despachadas pelo ONS, sistemas isolados
+    e autoprodução), lado a lado na mesma data; nada é somado. Térmicas juntas: a série da
+    ANEEL não separa combustível."""
+    obs = vigentes(con, ANEEL_HIST["ds"], "emp_op.kw.")
+    if not obs:
+        return None
+    por_ref, fora = defaultdict(lambda: defaultdict(float)), Counter()
+    for (serie, ref), kw in obs.items():
+        t = serie.rsplit(".", 1)[1]
+        g = TIPO_ANEEL_GRUPO.get(t)
+        if g:
+            por_ref[ref][g] += kw / 1000
+        else:
+            fora[t] += 1
+    refs = sorted(r for r in por_ref if r >= primeiro_mes)
+    if not refs:
+        return None
+    grupos = {}
+    for g, cats in GRUPO_ONS_CATS.items():
+        aneel, ons = [], []
+        for ref in refs:
+            dia = f"{ref}-{og.dias_do_mes(ref):02d}"
+            aneel.append(c.r(por_ref[ref].get(g), 1) if g in por_ref[ref] else None)
+            ons.append(c.r(sum(u["potencia_mw"] for u in unidades.values() if u.get("potencia_mw") and u.get("categoria") in cats
+                               and og.unidade_opera_em(u, dia)), 1))
+        grupos[g] = {"aneel_mw": aneel, "ons_mw": ons,
+                     "ons_pct_da_aneel": [c.r(100 * o / a, 1) if a and o is not None else None for a, o in zip(aneel, ons)]}
+    reg = base.registros_como_estavam_em(con, ANEEL_HIST["ds"]).get("arquivo", {})
+    v = base.ultima_vintage(con, ANEEL_HIST["ds"], ANEEL_HIST["arquivo"])
+    return {"datas": refs, "grupos": grupos, "data_geracao_arquivo": reg.get("data_geracao"),
+            "capturado_em": v["capturado_em"] if v else None, "tipos_fora_dos_grupos": dict(fora),
+            "fonte": f"ANEEL, {ANEEL_HIST['titulo']} ({ANEEL_HIST['arquivo']})",
+            "regra": ("ANEEL: potência instalada em operação por tipo de geração na data de referência (UHE, PCH e CGH em "
+                      "hidráulica; EOL; UFV; UTN; UTE em térmica). ONS: soma das unidades do retrato atual da Capacidade "
+                      "Instalada em operação comercial no último dia do mês, pela categoria da usina. Universos diferentes, "
+                      "lado a lado; ons_pct_da_aneel é a parcela da capacidade da ANEEL que o retrato do ONS cobre na data, "
+                      "não fator de capacidade.")}
+
+
 def bloco_capacidade(con, D_u, hoje, ctx, ok, matriz=None):
     unidades = unidades_capacidade(con)
     if not unidades:
@@ -2694,13 +2879,12 @@ def bloco_capacidade(con, D_u, hoje, ctx, ok, matriz=None):
                 "por_categoria_mw": {k: c.r(v, 1) for k, v in siga_cat.items()}, "fontes_em_outros": nao_map,
                 "fonte": "ANEEL, SIGA (capacidade fiscalizada em operação), como publicado em expansao.json"}
     if siga is not None:
-        siga["serie_temporal"] = None
-        siga["lacuna_temporal"] = (
-            "O SIGA publicado é um retrato do dia (o portal da ANEEL não publica retratos anteriores). A reconstituição "
-            "pela data de entrada em operação da usina foi avaliada e não publicada: o SIGA tem uma data por usina, e a "
-            "reconstituição atribuiria a potência atual inteira à data da primeira unidade (usinas motorizadas ao longo de "
-            "anos apareceriam completas desde o início), além de não enxergar usinas desativadas. A comparação com o ONS "
-            "fica restrita à data do retrato; o exemplo conferido está no documento do módulo.")
+        siga["serie_temporal"] = "contexto.siga_historico"
+        siga["nota_temporal"] = (
+            "O SIGA por usina e combustível é um retrato do dia (o portal da ANEEL não publica retratos anteriores, e a "
+            "reconstituição pela data de entrada da usina atribuiria a potência atual inteira à data da primeira unidade). "
+            "A correspondência temporal usa a série histórica oficial da ANEEL por tipo de geração (contexto.siga_historico), "
+            "que não separa combustível.")
     mmgd = None
     tr = (golds.get("transicao.json") or {}).get("mmgd") or {}
     if (tr.get("resumo") or {}).get("potencia_mw") is not None:
@@ -2724,7 +2908,7 @@ def bloco_capacidade(con, D_u, hoje, ctx, ok, matriz=None):
                        "regra": ("Grupo de pareamento: identificadores da Geração por Usina com o mesmo CEG (ou CEG sem versão) "
                                  "somam a geração e usam as unidades uma vez; conjuntos usam as unidades das usinas com "
                                  "relacionamento vigente no dia 15 do mês. Unidade já atribuída a um grupo de CEG não entra num conjunto.")},
-        "contexto": {"siga": siga, "mmgd": mmgd},
+        "contexto": {"siga": siga, "siga_historico": siga_historico(con, unidades, meses[0] if meses else "2021-01"), "mmgd": mmgd},
         "_linhas_usina": linhas_usina, "_pot_cat": pot_cat, "_por_cat": por_cat, "_fc_ons": fc_ons, "_unidades": unidades,
     }
 
@@ -2763,9 +2947,12 @@ def escreve_csvs(ctx, D_u, cat_dia, horas, rotulos, cache, bal, matriz, termica,
     for d in dias:
         b = [bal.get((d, "solar", sm)) for sm in SM]
         bs = sum(x[0] for x in b) if all(x and x[1] == 24 for x in b) else None
-        mm = cat_dia.get((d, "SIN", "solar_mmgd"), 0.0)
-        ce = cat_dia.get((d, "SIN", "solar_centralizada"), 0.0)
-        a11.append([d, c.r(bs, 3), c.r(mm + ce, 3), c.r(mm, 3), c.r(ce, 3), c.r(bs - (mm + ce), 3) if bs is not None else None])
+        # sem linha do grupo MMGD (antes de 29/04/2023) a coluna fica vazia: ausência, não zero
+        mm = cat_dia.get((d, "SIN", "solar_mmgd"))
+        ce = cat_dia.get((d, "SIN", "solar_centralizada"))
+        us_ = None if mm is None and ce is None else (mm or 0.0) + (ce or 0.0)
+        a11.append([d, c.r(bs, 3), c.r(us_, 3), c.r(mm, 3), c.r(ce, 3),
+                    c.r(bs - us_, 3) if bs is not None and us_ is not None else None])
     _csv(ctx, nome(CSV["a11"]), ["data", "balanco_solar_sin_mwh", "usinas_solar_mwh", "usinas_mmgd_mwh", "usinas_solar_sem_mmgd_mwh",
                                  "diferenca_mwh"], a11)
     _csv(ctx, nome(CSV["reconciliacao"]), ["mes", "fonte", "balanco_mwh", "usinas_mwh", "diferenca_mwh", "roraima_excluida_mwh",
@@ -2796,10 +2983,12 @@ def escreve_csvs(ctx, D_u, cat_dia, horas, rotulos, cache, bal, matriz, termica,
                 continue
             r_ = termica["_cad"].get(ch, {})
             cb = termica["_comb"].get(ch, {})
-            lin.append([m, ch, r_.get("nome"), r_.get("sm"), cb.get("rotulo"), cb.get("categoria"), cb.get("origem")] +
-                       [c.r(v, 3) for v in vals])
-        _csv(ctx, nome(CSV["termica_usina"]), ["mes", "usina", "nome", "subsistema", "combustivel", "categoria", "origem_combustivel",
-                                               "total_mwh"] + [f"{m}_mwh" for m in MOTIVOS] + ["constrained_off_mwh"], lin)
+            rep = termica["_ident"].get(ch, ch)
+            lin.append([m, rep, (termica["_nome_id"].get(rep) or (None,))[0], ch, r_.get("nome"), r_.get("sm"), cb.get("rotulo"),
+                        cb.get("categoria"), cb.get("origem")] + [c.r(v, 3) for v in vals])
+        _csv(ctx, nome(CSV["termica_usina"]), ["mes", "usina", "nome_usina", "chave_fonte", "nome_na_fonte", "subsistema", "combustivel",
+                                               "categoria", "origem_combustivel", "total_mwh"] + [f"{m}_mwh" for m in MOTIVOS] +
+             ["constrained_off_mwh"], lin)
         cv = termica.get("cvu")
         if cv:
             lin = []
@@ -2812,9 +3001,9 @@ def escreve_csvs(ctx, D_u, cat_dia, horas, rotulos, cache, bal, matriz, termica,
                     ch = cv["_cod_ch"].get(cod)
                     cat = (termica["_comb"].get(ch) or {}).get("categoria", "nao_mapeada") if ch else "nao_mapeada"
                     pmo = f"{info.get('ano_ref')}-{int(float(info['mes_ref'])):02d} rev {info.get('revisao')}" if info.get("mes_ref") else None
-                    lin.append([ini, info.get("fim"), pmo, cod, r_.get("nome"), r_.get("sm"), cat, c.r(v, 2)])
-            _csv(ctx, nome(CSV["cvu"]), ["semana_inicio", "semana_fim", "pmo", "cod_usina", "usina", "subsistema", "categoria",
-                                         "cvu_rs_mwh"], lin)
+                    lin.append([ini, info.get("fim"), pmo, cod, r_.get("nome"), ch, r_.get("sm"), cat, c.r(v, 2)])
+            _csv(ctx, nome(CSV["cvu"]), ["semana_inicio", "semana_fim", "pmo", "cod_usina", "usina", "usina_termica", "subsistema",
+                                         "categoria", "cvu_rs_mwh"], lin)
     lin_d, lin_u = [], []
     for fonte, b in (("eolica", eol), ("solar", sol)):
         if not b:
@@ -2871,7 +3060,9 @@ LIMITACOES_USINA = [
     "Desde 29/04/2023 a Geração por Usina inclui a estimativa de MMGD (fotovoltaica); comparações que atravessam a data usam o perímetro sem MMGD.",
     "O tipo da usina define a fonte (como no Balanço): conjuntos híbridos rotulados com combustível fotovoltaico dentro de usinas eólicas contam como eólica.",
     "Os grupos térmicos Tipo III ('Outras Multi-Combustível') não têm combustível identificado na fonte e ficam numa categoria própria, explícita; a categoria Biomassa cobre só as usinas com combustível declarado.",
-    "Mudanças de universo na fonte (rótulos que aparecem ou somem, saltos no número de usinas com dado, identificadores com todas as horas vazias) estão em 'quebras'; a variação de 12 meses de categoria com salto de universo é suprimida.",
+    "A categoria 'outras térmicas' segue o rótulo 'Resíduos Industriais' do ONS, que reúne gases de siderurgia (CEG UTE.CM, carvão mineral na ANEEL), licor negro de celulose (CEG UTE.FL, biomassa florestal na ANEEL) e resíduos de petróleo (UTE.PE): comparada ao SIGA, a biomassa daqui fica menor e 'outras' maior. A parcela de cada código está em matriz.outros_por_ceg.",
+    "Mudanças de universo na fonte (rótulos que aparecem, deixam de ter valor ou somem, saltos no número de usinas com dado, identificadores vazios ou que deixam de constar do arquivo, sequências longas de zero exato) estão em 'quebras' e em matriz.universo; cada janela, mês e ano leva em ressalvas_universo as categorias afetadas, e a variação de 12 meses dessas categorias é suprimida.",
+    "Natureza mista: o total soma geração verificada (medição), previsões do ONS para grupos Tipo III e estimativa do ONS para a MMGD; a fração de cada natureza sai em natureza_pct de cada janela e ano e em natureza_mensal_sin.",
     "Dados em processo de consistência recorrente do ONS, sujeitos a revisão; revisões entre capturas são detectadas e publicadas.",
 ]
 
@@ -2926,7 +3117,8 @@ def evidencias(con, matriz, a11, termica, eol, sol, cap, rec):
             formula="participação = energia da categoria ÷ energia de todas as categorias × 100",
             numerador={"descricao": f"energia de {ROTULO_CAT[cat]} (MWh)", "valor": v},
             denominador={"descricao": "energia de todas as categorias (MWh)", "valor": tot_mwh},
-            cobertura=f"{m30['dias']} dias completos de 30", tratamento_ausencia="dia incompleto fica fora; categoria sem linha conta zero energia no período",
+            cobertura=f"{m30['dias']} dias completos de 30",
+            tratamento_ausencia="dia incompleto fica fora; categoria sem nenhuma linha no período fica nula (ausência) e não entra no total",
             revisoes=_rev(con, "usina"), testes=[teste_comp], reconciliacao=rec_txt,
             download=[{"rotulo": "Matriz diária por categoria (CSV)", "url": CSV["matriz_diaria"]}])
     # A11: MMGD no primeiro dia
@@ -3048,9 +3240,21 @@ def evidencias(con, matriz, a11, termica, eol, sol, cap, rec):
             consulta="unidades do retrato com entrada em operação comercial até a data e sem desativação",
             formula="Σ val_potenciaefetiva das unidades em operação", cobertura="retrato do dia da captura (o conjunto não tem histórico)",
             tratamento_ausencia="unidade sem data de entrada em operação comercial fica fora", revisoes=_rev(con, "capacidade"),
-            testes=[ev.teste("Potência positiva em todas as unidades", "aprovado", "o dicionário não admite zero nem negativo; conferido na importação")],
+            testes=[teste_potencia(con)],
             reconciliacao=None, download=[{"rotulo": "Unidades geradoras (CSV)", "url": CSV["capacidade_unidades"]}])
     return out
+
+
+def teste_potencia(con):
+    """Potência positiva em todas as unidades: resultado lido do relatório gravado na
+    importação do retrato (contagem `potencia_invalida`), não fixado aqui."""
+    rels = [r_ for r_ in relatorios(con, _ds("capacidade")).values() if r_]
+    if not rels:
+        return ev.teste("Potência positiva em todas as unidades", "ressalva", "relatório da importação do retrato ausente")
+    inval = sum(r_.get("potencia_invalida", 0) for r_ in rels)
+    linhas = sum(r_.get("linhas", 0) for r_ in rels)
+    return ev.teste("Potência positiva em todas as unidades", "aprovado" if inval == 0 else "ressalva",
+                    f"{inval} de {linhas} unidades com potência nula ou não positiva na importação (o dicionário não admite)")
 
 
 def controles(matriz, termica, eol, sol, cap, hoje):
@@ -3064,9 +3268,9 @@ def controles(matriz, termica, eol, sol, cap, hoje):
             s_ = sum(v for v in m["participacao"].values() if v is not None)
             if abs(s_ - 100) > 0.05:
                 out.append(_controle_item(f"Participações somam 100% ({rg}, {nome})", "reprovado", _n(s_, 3), critico=True))
-            if any(v < -1e-6 for v in m["_mwh"].values()):
+            if any(v is not None and v < -1e-6 for v in m["_mwh"].values()):
                 out.append(_controle_item(f"Energia não negativa por categoria ({rg}, {nome})", "reprovado",
-                                          ", ".join(k for k, v in m["_mwh"].items() if v < 0), critico=True))
+                                          ", ".join(k for k, v in m["_mwh"].items() if v is not None and v < 0), critico=True))
     out.append(_controle_item("Participações somam 100% em todas as janelas e regiões", "aprovado", "tolerância 0,05 ponto percentual"))
     nm = matriz["nao_mapeadas"]
     out.append(_controle_item("Rótulos da fonte sem categoria", "aprovado" if not nm else "ressalva",
@@ -3079,8 +3283,17 @@ def controles(matriz, termica, eol, sol, cap, hoje):
     if termica:
         out.append(_controle_item("Valores negativos na térmica por motivo (fonte)", "aprovado" if not termica["controles"]["valores_negativos_na_fonte"] else "ressalva",
                                   f"{termica['controles']['valores_negativos_na_fonte']} células negativas em motivos ou no total (mantidas como publicadas)"))
-        nid = termica["mapa_combustivel"]["nao_identificadas"]
-        out.append(_controle_item("Térmicas sem combustível identificado", "aprovado" if not nid else "ressalva", f"{len(nid)} usinas"))
+        mc = termica["mapa_combustivel"]
+        nid = mc["nao_identificadas"]
+        out.append(_controle_item("Térmicas sem combustível identificado", "aprovado" if not nid else "ressalva",
+                                  f"{len(nid)} chaves da fonte, {_n(mc['nao_identificadas_pct_12m'], 3)}% da energia térmica dos 12 meses"
+                                  + (": " + "; ".join(f"{x['id']} ({x['nome']})" for x in nid[:6]) if nid else "")))
+        cv = termica.get("cvu")
+        if cv:
+            amb = cv["cobertura"]["codigos_ambiguos"]
+            out.append(_controle_item("Código do CVU ligado a uma só usina da térmica por motivo", "aprovado" if not amb else "ressalva",
+                                      f"{len(amb)} códigos ligados a mais de uma usina (ficam sem par); "
+                                      f"{cv['cobertura']['pareadas_com_termica']} de {cv['cobertura']['usinas_com_cvu']} usinas do CVU pareadas"))
     for nome, b in (("eólica", eol), ("solar", sol)):
         if b:
             ct = b["controles"]
@@ -3090,10 +3303,42 @@ def controles(matriz, termica, eol, sol, cap, hoje):
                                       f"{ct['razao_fora_do_dominio']} meias horas com razão fora de REL, CNF, ENE, PAR"))
             out.append(_controle_item(f"Valores negativos ({nome})", "aprovado" if ct["valores_negativos_na_fonte"] == 0 else "ressalva",
                                       f"{ct['valores_negativos_na_fonte']} células negativas na fonte (o dicionário não admite)"))
+            viol = ct["meias_horas_corte_acima_da_referencia"] + ct["dias_maior_corte_acima_da_referencia"]
+            out.append(_controle_item(f"Corte simultâneo não excede a soma das referências da meia hora ({nome})",
+                                      "aprovado" if viol == 0 and ct["arquivos_sem_controle_de_referencia"] == 0 and ct["dias_maior_corte_sem_referencia"] == 0
+                                      else "ressalva",
+                                      f"{ct['meias_horas_corte_acima_da_referencia']} de {ct['meias_horas_com_corte']} meias horas com corte (por subsistema) "
+                                      f"acima da soma das referências; {ct['dias_maior_corte_acima_da_referencia']} dias com o maior corte acima dela; "
+                                      f"{ct['arquivos_sem_controle_de_referencia']} arquivos sem o controle"))
     if cap:
         n = cap["pareamento"]["fc_acima_de_100"]["n"]
         out.append(_controle_item("Fator de capacidade mensal acima de 100% numa usina", "aprovado" if n == 0 else "ressalva",
                                   f"{n} usina-meses; indicam potência cadastrada menor que a real no mês e não são descartados"))
+        if cap.get("ultimos_12m"):
+            # coerência entre a potência mostrada e o denominador do fator de capacidade: as
+            # unidades pareadas são parte das unidades da categoria, então a capacidade-hora
+            # média não pode passar da potência média (passaria com unidade classificada numa
+            # categoria no retrato e em outra no fator de capacidade)
+            inc = [x for x in cap["ultimos_12m"]["por_categoria"]
+                   if x["capacidade_hora_media_mw"] is not None and x["potencia_media_12m_mw"] is not None
+                   and x["capacidade_hora_media_mw"] > x["potencia_media_12m_mw"] + 0.05]
+            out.append(_controle_item("Potência da categoria cobre o denominador do fator de capacidade", "aprovado" if not inc else "reprovado",
+                                      "capacidade-hora média ≤ potência média em operação nos 12 meses, em todas as categorias" if not inc else
+                                      "; ".join(f"{x['categoria']}: {_n(x['capacidade_hora_media_mw'], 1)} MW contra {_n(x['potencia_media_12m_mw'], 1)} MW" for x in inc),
+                                      critico=True))
+    uni = matriz["universo"]
+    zr = uni["sequencias_zero_rotulo"]
+    zi = uni["sequencias_zero_identificadores"]
+    out.append(_controle_item("Sequências longas de zero exato depois de produção positiva", "aprovado" if not zr and not zi["n"] else "ressalva",
+                              f"{len(zr)} rótulos com {ZERO_MESES_ROTULO} meses ou mais e {zi['n']} identificadores com {ZERO_MESES_ID} meses ou mais "
+                              f"({zi['continuam_no_ultimo_mes']} até o último mês); rótulos e os {len(zi['lista'])} identificadores com sequência mais longa "
+                              "em matriz.universo, nada excluído"))
+    lac = uni.get("lacuna_ultimo_mes")
+    if lac:
+        out.append(_controle_item("Identificadores sem valor ou sem linhas no último mês completo",
+                                  "aprovado" if not lac["identificadores_sem_valor"] and not lac["identificadores_sem_linhas"] else "ressalva",
+                                  f"{c.mes_br(lac['mes'])}: {lac['identificadores_sem_valor']} com linhas vazias e {lac['identificadores_sem_linhas']} "
+                                  "que tiveram valor nos 12 meses anteriores e não constam do arquivo"))
     return out
 
 
@@ -3105,13 +3350,15 @@ def quebras(con, a11, matriz):
     notas_carga = (dic.get("pacote_carga-energia") or {}).get("notas")
     uni = matriz["universo"]
     out = []
-    novos, fim_ = defaultdict(list), defaultdict(list)
+    novos, fim_, sem_val = defaultdict(list), defaultdict(list), defaultdict(list)
     for x in uni["mudancas_de_rotulo"]:
         rot = f"{x['tipo']} / {x['combustivel']} / {x['modalidade'] or 'sem modalidade'}"
         if x["aparece_em"]:
             novos[x["aparece_em"]].append((rot, x["categoria"]))
         if x["ultimo_mes_com_linhas"]:
             fim_[x["ultimo_mes_com_linhas"]].append((rot, x["categoria"]))
+        if x.get("ultimo_mes_com_valor"):
+            sem_val[x["ultimo_mes_com_valor"]].append((rot, x["categoria"]))
     t_2021 = _trecho(notas_carga, "março/2021")
     for mes, rots in sorted(novos.items()):
         doc = t_2021 if mes == "2021-03" else (_trecho(notas_carga, "29/04/2023") if mes == INICIO_MMGD[:7] else None)
@@ -3122,7 +3369,26 @@ def quebras(con, a11, matriz):
     for mes, rots in sorted(fim_.items()):
         out.append({"data": f"{_mes_seguinte(mes)}-01", "tipo": "rotulo_encerrado", "origem": "DADO", "trecho_fonte": None,
                     "categorias": sorted({c_ for _, c_ in rots}),
-                    "descricao": f"Deixam de ter linhas depois de {c.mes_br(mes)}: " + "; ".join(r_ for r_, _ in rots) + "."})
+                    "descricao": f"Deixam de ter linhas no arquivo depois de {c.mes_br(mes)}: " + "; ".join(r_ for r_, _ in rots) + "."})
+    for mes, rots in sorted(sem_val.items()):
+        out.append({"data": f"{_mes_seguinte(mes)}-01", "tipo": "rotulo_sem_valor", "origem": "DADO", "trecho_fonte": None,
+                    "categorias": sorted({c_ for _, c_ in rots}),
+                    "descricao": (f"Deixam de ter valor depois de {c.mes_br(mes)} (as linhas continuam no arquivo, todas vazias): "
+                                  + "; ".join(r_ for r_, _ in rots) + ".")})
+    # sequência de zero exato num rótulo vira quebra quando coincide com a saída das usinas
+    # que produziam (mudança de universo); as demais (térmica sem despacho por meses) ficam
+    # só na lista de controle em matriz.universo.sequencias_zero_rotulo
+    for x in uni.get("sequencias_zero_rotulo") or []:
+        if not x.get("identificadores_que_sairam"):
+            continue
+        rot = f"{x['tipo']} / {x['combustivel']} / {x['modalidade'] or 'sem modalidade'}"
+        out.append({"data": f"{x['inicio']}-01", "tipo": "sequencia_zero", "origem": "DADO", "trecho_fonte": None,
+                    "categorias": [x["categoria"]],
+                    "descricao": (f"{rot}: todas as horas com valor são exatamente zero de {c.mes_br(x['inicio'])} a {c.mes_br(x['fim'])} "
+                                  f"({x['meses']} meses), depois de {_n(x['mwh_mes_anterior'])} MWh em {c.mes_br(x['mes_anterior'])}. "
+                                  f"Os {x['identificadores_que_sairam']} identificadores que produziam ({_n(x['mwh_mes_anterior_dos_que_sairam'])} MWh "
+                                  f"em {c.mes_br(x['mes_anterior'])}) deixam de constar do arquivo, e os que restam publicam zero. "
+                                  "A fonte não diz se as usinas pararam ou se o dado falta.")})
     rr = matriz["reconciliacao_balanco"]["roraima"]
     if rr.get("primeiro_dia_sem_exclusao_apos"):
         out.append({"data": rr["primeiro_dia_sem_exclusao_apos"], "tipo": "roraima", "origem": "DADO", "trecho_fonte": None,
@@ -3164,7 +3430,7 @@ def construir(con, ctx):
     fc_cad = base.registros_como_estavam_em(con, _ds("fc"))
     eol = bloco_restricao(con, "coff_eolica", "coff_eolica_det", fc_cad, hoje)
     sol = bloco_restricao(con, "coff_solar", "coff_solar_det", fc_cad, hoje)
-    cap = bloco_capacidade(con, D_u, hoje, ctx, ok)
+    cap = bloco_capacidade(con, D_u, hoje, ctx, ok, matriz=matriz)
     ctrl = controles(matriz, termica, eol, sol, cap, hoje)
     criticos = [x for x in ctrl if x["critico"] and x["resultado"] == "reprovado"]
     if criticos:
@@ -3220,7 +3486,9 @@ def construir(con, ctx):
                                 download=CSV["cvu"])
     for nome, b, k in (("restricao_eolica", eol, "coff_eolica"), ("restricao_solar", sol, "coff_solar")):
         if b:
-            prov[nome] = _prov(con, k, indicador="Energia não gerada por restrição de operação (constrained-off)", natureza="CALCULADO",
+            # natureza ESTIMADO: a energia não gerada depende da geração de referência, que o
+            # ONS estima (a métrica declara natureza_fonte ESTIMADO pelo mesmo motivo)
+            prov[nome] = _prov(con, k, indicador="Energia não gerada por restrição de operação (constrained-off)", natureza="ESTIMADO",
                                recurso=CONJUNTOS[k]["prefixos"][0] + "<ano_mês>.parquet", unidade="MWh, MW e %",
                                frequencia="semi-horária, agregada por dia e mês",
                                periodo={"inicio": b["primeiro_mes"], "fim": b["ultimo_mes_completo"] or b["primeiro_mes"]},

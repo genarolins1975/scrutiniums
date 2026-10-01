@@ -5,7 +5,8 @@ import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { NATUREZAS, SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { LISTA_UNIDADES } from "@/components/evidencia/Unidade";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { gold } from "@/lib/energia/gold";
+import { gold, lerGold } from "@/lib/energia/gold";
+import type { PublicacaoGold } from "@/lib/energia/tipos-dados";
 import { carimbo, rotuloRegra } from "@/lib/energia/formato";
 import type { Natureza } from "@/lib/energia/tipos";
 
@@ -179,7 +180,12 @@ Previsões: VINTAGE DA FONTE → VARIÁVEIS DE ENTRADA → VERSÃO DO MODELO →
                 : "Nenhuma tentativa registrada nesta publicação."}
             </li>
             <li>Os limites regulatórios do PLD (mínimo, máximo horário e estrutural) não foram auditados; o &quot;menor valor observado no ano&quot; é descritivo e nunca é chamado de piso.</li>
-            <li>Limites de intercâmbio, CVU por usina, geração por usina e por motivo de despacho estão catalogados e ainda não integrados.</li>
+            {/* afirmações de integração geradas pelo pipeline a partir do estado real do catálogo (achado A06) */}
+            {(lerGold<PublicacaoGold>("publicacao.json")?.afirmacoes ?? [])
+              .filter((a) => ["limites_intercambio", "cvu_usina", "geracao_usina", "despacho_termico"].includes(a.id))
+              .map((a) => (
+                <li key={a.id}>{a.texto}</li>
+              ))}
             <li>Definições de conceitos cujas fontes primárias (CCEE, legislação) não foram acessadas aparecem como verbetes em preparação.</li>
             <li>Valores monetários em R$ nominais.</li>
             <li>O histórico de vintages persiste no cache da automação (GitHub Actions). O silver (banco com vintages e observações) tem cópia durável numa release do repositório; os arquivos brutos do bronze não têm, mas o sha256 de cada um fica registrado no silver. Se cache e cópia se perderem, a automação abre um alerta, os dados publicados continuam corretos e só o registro de revisões anteriores se perde.</li>

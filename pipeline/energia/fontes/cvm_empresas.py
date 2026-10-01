@@ -68,7 +68,20 @@ CONTAS = [
      "rotulo": "Caixa líquido das atividades de investimento",
      "definicao": "Conta 6.02 da DFC. É a medida padronizada mais próxima de investimento: inclui imobilizado e intangível (ativo de concessão), mas também aquisições, aplicações financeiras e resgates; o investimento em ativos da concessão não tem conta fixa própria."},
 ]
-CODIGOS = {(c["demonstracao"], c["codigo"]): c["id"] for c in CONTAS}
+# Contas auxiliares: lidas só para conferências internas, nunca publicadas como série. O saldo
+# inicial de caixa da DFC de um exercício (6.05.01) é, por construção, o saldo final do exercício
+# anterior (6.05.02 do comparativo no mesmo documento); quando a companhia não preenche a DFC do
+# exercício, a CVM entrega o modelo com zero e a identidade quebra (CELGPAR, DFP 2025: saldo
+# inicial 0 contra saldo final de 2024 de R$ 203.811 mil).
+CONTAS_AUXILIARES = [
+    {"id": "dfc_saldo_inicial", "demonstracao": "DFC", "codigo": "6.05.01", "tipo": "fluxo",
+     "rotulo": "Saldo inicial de caixa e equivalentes (DFC)"},
+    {"id": "dfc_saldo_final", "demonstracao": "DFC", "codigo": "6.05.02", "tipo": "fluxo",
+     "rotulo": "Saldo final de caixa e equivalentes (DFC)"},
+]
+IDS_AUXILIARES = frozenset(c["id"] for c in CONTAS_AUXILIARES)
+TIPO_CONTA = {c["id"]: c["tipo"] for c in CONTAS + CONTAS_AUXILIARES}
+CODIGOS = {(c["demonstracao"], c["codigo"]): c["id"] for c in CONTAS + CONTAS_AUXILIARES}
 # Medida calculada a partir de contas fixas (não é conta da CVM): soma, nunca mistura escopos.
 DIVIDA_BRUTA = {"id": "divida_bruta", "rotulo": "Empréstimos, financiamentos e debêntures (circulante + não circulante)",
                 "formula": "2.01.04 + 2.02.01, mesmo escopo, mesma data", "tipo": "saldo"}
@@ -151,7 +164,9 @@ def membros_do_zip(z, doc, ano):
 
 def le_indice(z, doc, ano, alvos_fmt):
     """Documentos entregues (índice do zip): {(cnpj, dt_refer): [ {versao, dt_receb, id_doc,
-    categoria, link} ]}, todas as versões listadas."""
+    categoria, link} ]}, uma entrada por linha do índice. O índice pode repetir a mesma versão
+    (no ITR de 2021, o documento da 02.291.077/0001-93 de 30/06/2021 aparece duas vezes com
+    VERSAO 1): quem conta versões conta as versões distintas (versoes_distintas)."""
     nome = f"{doc.lower()}_cia_aberta_{ano}.csv"
     out = {}
     if nome not in z.namelist():
@@ -171,7 +186,9 @@ def le_valores(z, doc, ano, alvos_fmt):
 
     Retorna (valores, ocorrências), com valores = [{cnpj, escopo, demonstracao, conta (id),
     codigo, ordem ('U' último exercício, 'P' exercício anterior reapresentado), dt_ini
-    (None em saldo), dt_fim, dt_refer, versao, valor (R$)}]."""
+    (None em saldo), dt_fim, dt_refer, versao, valor (R$), escala (MIL ou UNIDADE, como a
+    fonte marcou: a marca pode estar errada, e a conferência entre documentos fica com o
+    módulo)}]."""
     brutos = []
     ocorr = {"linhas": 0, "escala_desconhecida": 0, "moeda_desconhecida": 0, "rotulo_3_01_inesperado": 0,
              "versoes_descartadas": 0}
@@ -191,7 +208,8 @@ def le_valores(z, doc, ano, alvos_fmt):
                 if (r.get("MOEDA") or "").strip() != "REAL":
                     ocorr["moeda_desconhecida"] += 1
                     continue
-                esc_m = ESCALAS.get((r.get("ESCALA_MOEDA") or "").strip())
+                escala = (r.get("ESCALA_MOEDA") or "").strip()
+                esc_m = ESCALAS.get(escala)
                 if esc_m is None:
                     ocorr["escala_desconhecida"] += 1
                     continue
@@ -205,6 +223,7 @@ def le_valores(z, doc, ano, alvos_fmt):
                     "codigo": cod, "ordem": "U" if ordem.startswith("ÚLT") or ordem.startswith("ULT") else "P",
                     "dt_ini": _texto(r.get("DT_INI_EXERC")), "dt_fim": _texto(r.get("DT_FIM_EXERC")),
                     "dt_refer": _texto(r.get("DT_REFER")), "versao": int(r.get("VERSAO") or 0), "valor": v,
+                    "escala": escala,
                 })
     maior = {}
     for b in brutos:
@@ -222,6 +241,11 @@ def le_valores(z, doc, ano, alvos_fmt):
         vistos.add(chave)
         valores.append(b)
     return valores, ocorr
+
+
+def versoes_distintas(entradas):
+    """Número de versões distintas de um documento a partir das entradas do índice."""
+    return len({e["versao"] for e in entradas})
 
 
 def abre_zip(caminho):

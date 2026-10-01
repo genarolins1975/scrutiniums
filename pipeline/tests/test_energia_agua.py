@@ -12,9 +12,18 @@ Sem rede. As amostras em pipeline/tests/dados/energia_agua/ são recortes reais:
 - ONS, contorno da bacia do Capivari (shapefile das bacias do SIN);
 - ONS, precipitação diária observada em três estações em janeiro de 2021;
 - NASA POWER, recortes de uma célula de temperatura e de um ponto de precipitação;
-- IBGE, população do Censo 2022 (SIDRA 4709) e sedes municipais (Localidades 2022).
-Os valores esperados foram calculados por outro caminho (awk sobre os arquivos originais)
-e estão escritos nos testes.
+- IBGE, população do Censo 2022 (SIDRA 4709) e sedes municipais (Localidades 2022);
+- ONS, EAR por REE de 26/12/2017 a 02/01/2018 (reconfiguração dos REE) e de 28/09 de 2016 a
+  2026 (PARANA, SUDESTE, ITAIPU); EAR por bacia de ARAGUARI (EAR máxima zero); EAR por
+  subsistema de 28/09 de 2001 a 2026 (SE e S), baixada de novo do S3 em 01/10/2026;
+- ONS, dados hidráulicos de 2026 de Sobradinho (janela de 31/08 a 29/09), Marimbondo,
+  Jirau e Pimental (convenção da defluência);
+- ONS, degraus da MLT de cinco usinas (Furnas, Camargos, Itutinga, Funil-MG, Mascarenhas de
+  Moraes) de dezembro de 2023 a fevereiro de 2026;
+- Open-Meteo, dois pontos de chuva e duas células de temperatura da rodada de 30/09/2026
+  00Z do ECMWF IFS 0,25° e a resposta "modelRunUnavailable" da rodada de 01/10/2026.
+Os valores esperados foram calculados por outro caminho (awk sobre os arquivos originais,
+ou a conferência independente do verificador) e estão escritos nos testes.
 """
 import csv
 import gzip
@@ -370,6 +379,30 @@ class TestClima(unittest.TestCase):
         for p in pts:
             self.assertAlmostEqual(p["peso"], math.cos(math.radians(p["lat"])) * 0.01, places=12)
         self.assertFalse(cl.dentro(-40.0, -10.0, b["aneis"]))
+
+    def test_camada_da_bacia_na_grade_das_malhas_do_ibge(self):
+        """Capivari projetado na mesma Albers e na mesma grade de 100 m da camada de UF:
+        a caixa do caminho publicado é a caixa dos vértices originais projetados (o
+        Douglas-Peucker mantém os extremos de cada anel até a tolerância de 1 km)."""
+        from pipeline.energia import geo
+        b = json.loads(_texto("bacia_capivari.json"))
+        vint = {"url": "https://exemplo/Bacias_Hidrograficas_SIN.zip", "capturado_em": "2026-09-30T23:43:45Z",
+                "sha256": "1456e2b8c4446b9984be2fa4206588d94b8fe6e0270534f467c803f95c0198d4", "arquivo": "bronze.zip.gz"}
+        cam = m.camada_bacias([{"nome_shape": "CAPIVARI", "bacia_ons": "CAPIVARI", "bbox": b["bbox"], "aneis": b["aneis"]}], vint)
+        self.assertEqual([f["id"] for f in cam["features"]], ["CAPIVARI"])
+        self.assertEqual(cam["projecao"]["origem_m"], [-2340300, 1999800])     # a mesma de public/energia/geo/uf.json
+        aneis = geo.le_caminho_svg(cam["features"][0]["d"])
+        self.assertEqual(len(aneis), 1)
+        orig = [geo.quantiza(geo.albers(lon, lat), geo.origem_da_grade()) for lon, lat in b["aneis"][0]]
+        self.assertLess(len(aneis[0]), len(orig))                               # simplificado
+        for i, f in ((0, min), (1, min)):
+            self.assertLessEqual(abs(f(p[i] for p in aneis[0]) - f(p[i] for p in orig)), 10)   # 10 × 100 m
+        for i, f in ((0, max), (1, max)):
+            self.assertLessEqual(abs(f(p[i] for p in aneis[0]) - f(p[i] for p in orig)), 10)
+        x0, y0, w, h = (int(v) for v in cam["viewBox"].split())
+        self.assertEqual((x0, y0), (min(p[0] for p in aneis[0]), min(p[1] for p in aneis[0])))
+        with self.assertRaises(ValueError):                                       # polígono sem bacia não é publicado
+            m.camada_bacias([{"nome_shape": "X", "bacia_ons": None, "bbox": b["bbox"], "aneis": b["aneis"]}], vint)
 
     def test_media_ponderada_ignora_ausencia(self):
         self.assertEqual(cl.media_ponderada([(10.0, 1.0), (20.0, 3.0)]), 17.5)
@@ -975,6 +1008,69 @@ class TestGoldPublicada(unittest.TestCase):
             self.assertTrue(all(v is None or v >= 0 for v in b["mm"]))
         self.assertFalse(cl_["separacao"]["previsao"].startswith("Não integrada"))
         self.assertEqual(self.g["proveniencia"]["previsao"]["natureza"], "PREVISTO")
+
+    def test_subsistemas_com_a_faixa_sazonal_do_ultimo_ano(self):
+        """O pequeno múltiplo dos subsistemas termina no dia da EAR com o valor e a faixa do
+        resumo (mesma captura, mesmas regras), como os REE e as bacias."""
+        dia = date.fromisoformat(self.g["armazenamento"]["dia"])
+        for s in self.g["armazenamento"]["subsistemas"]:
+            se = s["semanal"]
+            self.assertEqual(len(se["v"]), 27, s["sm"])
+            self.assertEqual(date.fromisoformat(se["d0"]) + timedelta(days=se["passo_dias"] * 26), dia, s["sm"])
+            self.assertAlmostEqual(se["v"][-1], s["ear_pct"], delta=0.051, msg=s["sm"])
+            self.assertAlmostEqual(se["p10"][-1], s["p10"], delta=0.051, msg=s["sm"])
+            self.assertAlmostEqual(se["p90"][-1], s["p90"], delta=0.051, msg=s["sm"])
+
+    def test_series_de_45_dias_refazem_o_balanco_da_janela(self):
+        """agua_reservatorios_45d.json: um reservatório por item da lista da gold, na mesma
+        ordem; o último volume é o do fim da janela, e a soma das vazões diárias (m³/s,
+        inteiras) × 0,0864 refaz a afluência e a defluência de 30 dias da gold (tolerância:
+        30 dias × 0,5 m³/s de arredondamento × 0,0864 = 1,3 hm³)."""
+        r = self.g["reservatorios"]
+        with open(os.path.join(base.SERIES, "agua_reservatorios_45d.json"), encoding="utf-8") as f:
+            j = json.load(f)
+        self.assertEqual(r["series_45d"]["arquivo"], "/energia/series/agua_reservatorios_45d.json")
+        self.assertEqual([x["id"] for x in j["reservatorios"]], [x["id"] for x in r["lista"]])
+        self.assertEqual(j["fim"], r["fim"])
+        d0 = date.fromisoformat(j["d0"])
+        dias = [(d0 + timedelta(days=i)).isoformat() for i in range(45)]
+        self.assertEqual(dias[-1], r["fim"])
+        jan = [i for i, k in enumerate(dias) if r["inicio"] <= k <= r["fim"]]
+        self.assertEqual(len(jan), 30)
+        conferidos = 0
+        for x, s in zip(r["lista"], j["reservatorios"]):
+            self.assertEqual(len(s["vol"]), 45)
+            if x["vol_util_pct_fim"] is not None:
+                self.assertAlmostEqual(s["vol"][-1], x["vol_util_pct_fim"], delta=0.006, msg=x["id"])
+            if x["balanco_calculado"] and all(s["afl"][i] is not None and s["defl"][i] is not None for i in jan):
+                self.assertAlmostEqual(sum(s["afl"][i] for i in jan) * 0.0864, x["afluencia_hm3"], delta=1.3, msg=x["id"])
+                self.assertAlmostEqual(sum(s["defl"][i] for i in jan) * 0.0864, x["defluencia_hm3"], delta=1.3, msg=x["id"])
+                conferidos += 1
+        self.assertGreater(conferidos, 50)
+
+    def test_lista_traz_o_codigo_da_usina_da_decomposicao(self):
+        """A parcela da decomposição (por usina) liga-se ao balanço (por reservatório) pelo
+        cod_usina, nunca pelo nome: Serra da Mesa é a usina 251 e o reservatório TOSMES."""
+        r = self.g["reservatorios"]
+        por_cod = {x["cod"]: x for x in r["lista"] if x.get("cod")}
+        se = next(x for x in r["decomposicao_ear"] if x["sm"] == "SE")
+        ligadas = [p_ for p_ in se["maiores_quedas"] + se["maiores_altas"] if p_["cod"] in por_cod]
+        self.assertGreaterEqual(len(ligadas), 8)
+        self.assertEqual(por_cod["251"]["id"], "TOSMES")
+
+    def test_camada_das_bacias_publicada(self):
+        with open(os.path.join(base.SERIES, "agua_bacias_geo.json"), encoding="utf-8") as f:
+            cam = json.load(f)
+        with open(os.path.join(base.RAIZ, "public", "energia", "geo", "uf.json"), encoding="utf-8") as f:
+            uf = json.load(f)
+        self.assertEqual(cam["projecao"]["origem_m"], uf["projecao"]["origem_m"])
+        self.assertEqual(cam["projecao"]["unidade_svg_m"], uf["projecao"]["unidade_svg_m"])
+        ids = {x["id"] for x in cam["features"]}
+        chuva = {b["bacia"] for b in self.g["clima"]["precipitacao_bacias"]}
+        self.assertEqual(ids, chuva)                                   # 22: SANTA MARIA VIT não tem polígono
+        self.assertEqual(cam["contagem"]["poligonos"], cam["contagem"]["poligonos_origem"])
+        self.assertEqual(sorted(cam["conciliacao"]["poligonos_por_bacia"]["AMAZONAS"]),
+                         ["CURUA-UNA", "JARI", "MADEIRA", "TAPAJOS", "UATUAMA", "XINGU"])
 
     def test_tamanho_e_nenhum_nan(self):
         self.assertLess(os.path.getsize(GOLD), 400 * 1024)            # contrato: até cerca de 400 KB

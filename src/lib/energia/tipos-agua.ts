@@ -58,6 +58,8 @@ export type AguaEarSubsistema = AguaFaixaSazonal & {
   variacao_30d_mwmes: number | null;
   variacao_12m_mwmes: number | null;
   variacao_30d_pp: number | null;
+  /** Último ano a cada 14 dias com a faixa da data (mesmas regras dos REE e das bacias). */
+  semanal: AguaSemanal;
 };
 
 /** Pequeno múltiplo: um ponto a cada `passo_dias` dias desde `d0` (inclusive) até o dia de referência. */
@@ -494,6 +496,8 @@ export type AguaConvencaoDefluencia = "inclui_outras" | "exclui_outras" | "sem_o
 
 export type AguaReservatorio = {
   id: string;
+  /** cod_usina do ONS: liga o reservatório às parcelas da decomposição da EAR (por usina). */
+  cod: string | null;
   nome: string;
   subsistema: string | null;
   bacia: string | null;
@@ -562,18 +566,32 @@ export type AguaReservatorios = {
   convencao_defluencia: Partial<Record<AguaConvencaoDefluencia, number>>;
   sem_cadastro: string[];
   decomposicao_ear: AguaDecomposicaoEar[];
-  /** Últimos 45 dias (consecutivos desde d0) dos 8 reservatórios de maior volume útil. */
-  series_principais: {
-    id: string;
-    nome: string;
-    d0: string;
-    passo_dias: number;
-    vol: (number | null)[];
-    afl: (number | null)[];
-    defl: (number | null)[];
-    turb: (number | null)[];
-    vert: (number | null)[];
-  }[];
+  /** Séries diárias de 45 dias de cada reservatório da lista, no JSON lido sob demanda. */
+  series_45d: { arquivo: string; d0: string; fim: string; dias: number };
+};
+
+/** Série diária de um reservatório (dias consecutivos desde d0; null = sem dado no dia). */
+export type AguaSerieReservatorio = {
+  id: string;
+  nome: string;
+  d0: string;
+  passo_dias: number;
+  /** Volume útil, % do volume útil total. */
+  vol: (number | null)[];
+  /** Vazões afluente, defluente, turbinada e vertida, m³/s. */
+  afl: (number | null)[];
+  defl: (number | null)[];
+  turb: (number | null)[];
+  vert: (number | null)[];
+};
+
+/** public/energia/series/agua_reservatorios_45d.json (um item por reservatório da lista da gold, na mesma ordem). */
+export type AguaReservatorios45d = {
+  fim: string;
+  d0: string;
+  passo_dias: number;
+  criterio: string;
+  reservatorios: AguaSerieReservatorio[];
 };
 
 /* ---------- gold ---------- */

@@ -24,6 +24,22 @@ const DATASETS_ESTATICOS: DatasetIntegrado[] = [
   { slug: "ons-cmo-semanal", interno: "cmo_se", catalogoId: "ons:cmo-semanal", paginas: [{ rotulo: "PLD (formação)", href: "/setor-eletrico/pld#cmo" }, { rotulo: "Visão geral", href: "/setor-eletrico/visao-geral" }], downloads: ["/energia/series/cmo_semanal.csv"] },
 ];
 
+const URL_CONJUNTO: Record<string, string> = {
+  ONS: "https://dados.ons.org.br/dataset/",
+  ANEEL: "https://dadosabertos.aneel.gov.br/dataset/",
+  CCEE: "https://dadosabertos.ccee.org.br/dataset/",
+};
+
+/**
+ * Página oficial de um conjunto do catálogo. Para caber no limite da gold, o catálogo
+ * omite a URL quando ela é a do portal seguida do nome (campo `compactacao` do arquivo).
+ */
+export function urlDoConjunto(e: { id: string; orgao: string; url?: string | null }): string | null {
+  if (e.url) return e.url;
+  const base = URL_CONJUNTO[e.orgao];
+  return base ? base + e.id.slice(e.id.indexOf(":") + 1) : null;
+}
+
 /** Catálogo publicado (catalogo.json), lido no build. */
 export function catalogoDados(): CatalogoDados | null {
   const c = lerGold<CatalogoDados>("catalogo.json");
@@ -39,7 +55,8 @@ function integradosDeModulos(): DatasetIntegrado[] {
   const cat = catalogoDados();
   const fixos = new Set(DATASETS_ESTATICOS.map((d) => d.slug));
   return (cat?.entradas ?? [])
-    .filter((e) => e.slug && e.interno && !fixos.has(e.slug) && e.estado !== "CATALOGADO")
+    // integrado de fato: a escada chegou pelo menos a INTEGRADO (recurso só verificado não conta)
+    .filter((e) => e.slug && e.interno && !fixos.has(e.slug) && ["INTEGRADO", "VALIDADO", "PUBLICADO"].includes(e.estado))
     .map((e) => ({ slug: e.slug!, interno: e.interno!, catalogoId: e.id, paginas: e.paginas ?? [], downloads: e.downloads ?? [] }));
 }
 

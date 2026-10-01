@@ -229,6 +229,16 @@ describe("catálogo coerente com o pipeline", () => {
     expect(ESTADOS.reduce((t, k) => t + (cat.contagem as any)[k], 0)).toBe(cat.total);
   });
 
+  it("conjunto declarado por módulo que não chegou a INTEGRADO aparece com ressalva que explica", () => {
+    const cat = ler("catalogo.json") as CatalogoDados;
+    for (const e of cat.entradas) {
+      if (e.integracoes?.length && ["CATALOGADO", "RECURSO VERIFICADO"].includes(e.estado)) {
+        expect(e.ressalvas?.length, e.id).toBeGreaterThan(0);
+        expect(DATASETS_INTEGRADOS.map((d) => d.catalogoId), e.id).not.toContain(e.id);
+      }
+    }
+  });
+
   it("PLD, EAR e ENA são publicados em indicador; os modelos que os usam aparecem com o estado do registro", () => {
     const cat = ler("catalogo.json") as CatalogoDados;
     for (const id of ["ccee:pld_horario", "ons:ear-diario-por-subsistema", "ons:ena-diario-por-subsistema"]) {
@@ -306,7 +316,7 @@ describe("publicação: saúde, revisões, manifesto e reprodução (módulo dad
     expect(v.aprovado + v.ressalva + v.reprovado + v.nao_aplicavel).toBe(v.checagens);
     for (const nat of Object.keys(g.eixos.matriz)) expect([...NATUREZAS, "SEM_VINCULO"]).toContain(nat);
     for (const c of g.conjuntos) {
-      if (c.estado === "VALIDADO" || c.estado === "PUBLICADO") expect(c.etapas.validado.reprovadas, c.id).toBe(0);
+      if (c.estado === "VALIDADO" || c.estado === "PUBLICADO") expect(c.etapas.validado.reprovadas ?? 0, c.id).toBe(0);
     }
   });
 

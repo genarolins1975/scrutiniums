@@ -1,6 +1,6 @@
 # PLD: governança de previsão
 
-## Estado em 30/09/2026 (evidência)
+## Estado em 01/10/2026 (evidência)
 
 Até 28/09/2026 o repositório não tinha código de previsão nem construtor de variáveis: o registro de modelos e a rodada de 27/09/2026 foram transcritos do artefato externo de pesquisa `PLD_PREVISOES_EXPLICADAS v1-previa-r4` (sha256 `5af8904bb0382d153b785911a99ec32bc27f5f7030f8c4aaf39d38ea8b7f449d`, código de pesquisa `1b6ba3d`). Em 30/09/2026 o observatório passou a ter o próprio código (`pipeline/energia/previsoes/`), reexecutável a partir do silver com vintages. Método, números e evidências: `docs/observatorios/energia/modulos/previsoes.md`.
 
@@ -11,12 +11,12 @@ Até 28/09/2026 o repositório não tinha código de previsão nem construtor de
 | Rodada de 27/09/2026 (pesquisa) | 28 células sem número; causa reproduzida: no corte das 07h o sistema não tinha nenhuma captura do PLD (a primeira é das 15h44 UTC daquele dia) |
 | Rotina diária | implementada e agendada (`.github/workflows/previsao-pld.yml`); ainda não comprovada por execução agendada real |
 | Candidatos | C2-P e C2-H reimplementados (versões `C2-P-obs1`, `C2-H-obs1`) e avaliados; C1 sem configuração publicável, não reimplementado; todos em PESQUISA |
-| Validação reproduzível do observatório | teste retrospectivo fora da amostra publicado em `previsoes_desempenho.json` (P016) |
+| Validação reproduzível do observatório | teste retrospectivo fora da amostra calculado e validado a cada execução, com os números **retidos fora do portal** (`data/energia/previsoes/validacao_interna/`) até a decisão do responsável (`validacao_observatorio.decisao_publicacao`, hoje PENDENTE); `previsoes_desempenho.json` traz `publicacao_desempenho.estado = RETIDA` e nenhum número de desempenho (P016 bloqueado por decisão pendente) |
 | Resultados do artefato de pesquisa | continuam retidos (`publicacao_resultados.liberada = false`) |
 | G4 | não concluível no repositório (código e arquivos da pesquisa fora dele); decisão do responsável |
 | G23-R1 | documentado com evidência na reimplementação (coeficiente acima de 1 e previsões brutas fora da faixa); decisão revisável |
 
-**Duas coisas diferentes com o nome "resultado".** Os resultados do artefato de pesquisa (métricas calculadas fora do repositório) seguem retidos até a G4 e a liberação formal pelo responsável. A validação do observatório é outra evidência: calculada pelo pipeline com código e dados públicos, reexecutável por qualquer pessoa, publicada porque o painel P016 a exige. Ela não aprova nem promove modelo e pode ser suspensa pelo responsável (`validacao_observatorio.publicar = false` no registro de modelos).
+**Duas coisas diferentes com o nome "resultado".** Os resultados do artefato de pesquisa (métricas calculadas fora do repositório) seguem retidos até a G4 e a liberação formal pelo responsável. A validação do observatório é outra evidência: calculada pelo pipeline com código e dados públicos, reexecutável por qualquer pessoa. Se a regra de retenção também a alcança é pergunta registrada para o responsável (`validacao_observatorio.decisao_publicacao`); a leitura de que não alcança foi escrita pelo implementador em 30/09/2026 e não vale como autorização. Até a decisão, com nome e data, os números dela (MAE, ganho, cobertura, calibração numérica, regimes, sensibilidade, G23-R1) ficam fora do portal: a gold, as partições do arquivo de emissões (projeção sem a cobertura do teste retrospectivo) e as rodadas novas (só o estado de calibração) não os trazem. Ela não aprova nem promove modelo.
 
 **Números de rodada interna dos candidatos.** A retenção também vale para rodada interna: enquanto `publicacao_resultados.liberada` for falso, o validador recusa número em registro `RODADA_INTERNA`, e a rotina diária não emite C2-P nem C2-H. O período prospectivo dos candidatos só começa depois da liberação formal. Valor não finito (NaN, infinito) é barrado em qualquer campo numérico, e faixa rotulada como 80% em qualquer grafia exige calibração CALIBRADO.
 
@@ -33,7 +33,7 @@ PESQUISA ──(gate V)──> VALIDAÇÃO ──(gate P)──> PRODUÇÃO ─�
 | PRODUÇÃO | única fonte do bloco "Para onde o PLD pode ir?" |
 | APOSENTADO | histórico; previsões antigas continuam no arquivo |
 
-**Gate V (pesquisa → validação):** teste retrospectivo só com informação disponível no corte (vintages e regra LAT1D), comparação pareada contra referências com incerteza (bootstrap por blocos), calibração medida em suporte comum, limitações e falhas documentadas, revisão independente ACEITO sem bloqueante. Os quatro primeiros itens estão publicados para C2-P e C2-H; falta a revisão independente.
+**Gate V (pesquisa → validação):** teste retrospectivo só com informação disponível no corte (vintages e regra LAT1D), comparação pareada contra referências com incerteza (bootstrap por blocos), calibração medida em suporte comum, limitações e falhas documentadas, revisão independente ACEITO sem bloqueante. Os quatro primeiros itens estão calculados e validados para C2-P e C2-H, com os números retidos fora do portal até a decisão de publicação; falta a revisão independente.
 
 **Gate P (validação → produção):** período prospectivo com rodadas registradas antes do realizado (mínimo definido no registro, proposta: 12 origens semanais), apuração publicada, calibração dentro da tolerância declarada ou faixa suprimida, aprovação do dono com data, versão de código e snapshot registrados.
 
@@ -59,7 +59,7 @@ Fonte versionada:
 * `pipeline/energia/previsoes/emissoes/AAAA-MM.jsonl`: registros novos, um arquivo por mês de inclusão, só com acréscimo no fim. Cada registro guarda em `anterior` o sha256 do registro anterior na ordem do arquivo (o primeiro aponta para o último registro de `arquivo.jsonl`).
 * `pipeline/energia/previsoes/apuracoes.jsonl`: apurações registradas à mão (vazio). As apurações calculadas (realizado, erro) ficam em `previsoes_desempenho.json` e no CSV de emissões, sem tocar o registro original.
 
-Publicação: `public/energia/gold/previsoes.json` (bloco principal `atual`, `referencia_experimental`, resumo das últimas rodadas, `arquivo` com os registros anteriores ao particionamento e `emissoes` com o índice das partições) e `public/energia/series/previsoes_emissoes_AAAA-MM.json` (cada mês, carregado sob demanda). O arquivo não entra inteiro numa gold: ele cresce 28 linhas por modelo por dia.
+Publicação: `public/energia/gold/previsoes.json` (bloco principal `atual`, `referencia_experimental`, resumo das últimas rodadas, `arquivo` com os registros anteriores ao particionamento e `emissoes` com o índice das partições) e `public/energia/series/previsoes_emissoes_AAAA-MM.json` (cada mês, carregado sob demanda). O arquivo não entra inteiro numa gold: ele cresce 28 linhas por modelo por dia. Com os números de desempenho retidos, cada partição publicada é uma projeção do arquivo versionado: omite `calibracao.cobertura_p10_p90` dos registros que a gravaram (rodada de 30/09/2026), marca `omitido_na_publicacao` em cada um e declara a omissão em `projecao`; o `sha256` e o encadeamento continuam os do registro completo, que nunca é reescrito. As rodadas novas, sob retenção, já não gravam a cobertura (só o estado de calibração e `cobertura_retida`).
 
 A cada construção, `pipeline/energia/gold/modelos.py` confere o sha256 de cada registro, a cadeia, o mês de cada partição e compara cada mês com a publicação anterior (nada some nem muda). Os testes também conferem os registros contra listas fixas de `forecast_id` e sha256 gravadas quando o registro entrou (`src/tests/fixtures/previsoes-publicadas.json` para a rodada de 27/09; `pipeline/tests/dados/energia_previsoes/emissoes_publicadas.json` para a de 30/09), o que detecta edição mesmo quando arquivo e gold mudam juntos no mesmo commit.
 

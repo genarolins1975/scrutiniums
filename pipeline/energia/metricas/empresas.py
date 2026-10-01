@@ -6,6 +6,7 @@ _GOLD = "empresas.json"
 _PAG = ["/setor-eletrico/empresas"]
 _PAG_ENT = ["/setor-eletrico/empresas", "/setor-eletrico/empresas/[entidade]"]
 _SIGA = ["aneel_siga"]
+_SIGET = ["aneel_siget"]
 _POL = ["aneel_siga", "aneel_polimero"]
 _CVM = ["cvm_cad_cia_aberta", "cvm_dfp", "cvm_itr"]
 _FRONTEIRA = ("Fronteira: potência fiscalizada das usinas em fase Operação no SIGA cujas participações publicadas somam "
@@ -22,7 +23,9 @@ _GRUPO = ("Grupo = topo da cadeia de controladores únicos declarada à ANEEL na
           "referência.")
 _AUSENCIA_CVM = ("Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a "
                  "zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de "
-                 "ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e "
+                 "ter controladas) é ausência, nunca zero. Coluna não preenchida pela companhia, com prova no próprio arquivo "
+                 "(valores 0 ou ±1 na unidade do documento contra o outro escopo preenchido; DFC zerada contra saldo de caixa, "
+                 "com a DRE zerada do mesmo documento), também é ausência. Exercício curto de fato (constituição) fica fora da série anual e "
                  "vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício "
                  "inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.")
 _ESCOPO = ("Consolidado e individual são séries separadas do mesmo CNPJ; nenhum valor é somado entre companhias (a "
@@ -31,7 +34,17 @@ _COBERTURA_CVM = ("Companhias abertas com setor de energia elétrica declarado �
                   "registro): não representa o setor inteiro.")
 
 
-def _conta_cvm(mid, titulo, pergunta, definicao, codigo, tipo, lim):
+_ESCALA_CVM = ("Escala conferida entre documentos da mesma companhia e escopo: o mesmo número publicado em dois documentos "
+               "(exercício e comparativo da DFP seguinte; balanço de 31/12 e comparativo do ITR; trimestre e comparativo do ITR do "
+               "ano seguinte) com razão de 1.000 (±0,1%) prova que uma das marcas MIL/UNIDADE está errada; os documentos ligados "
+               "são convertidos para a escala da DFP mais recente (63 documentos de 12 companhias em 30/09/2026, entre eles a "
+               "Equatorial Goiás de 2019 a 2021 e a Celeo Redes em 2019). O valor corrigido tem natureza ESTIMADO e nota no CSV.")
+
+
+def _conta_cvm(mid, titulo, pergunta, definicao, codigo, tipo, lim, conferido=None):
+    """Métrica de conta da CVM. `conferido`: a conferência feita para ESTA conta (valores relidos
+    do arquivo original por código independente nos testes); conta sem conferência própria não
+    herda a de outra."""
     return {
         "id": mid, "titulo": titulo, "pergunta": pergunta, "definicao": definicao,
         "unidade": "R$ nominais",
@@ -49,9 +62,11 @@ def _conta_cvm(mid, titulo, pergunta, definicao, codigo, tipo, lim):
         "politica_ausencia": _AUSENCIA_CVM,
         "validacoes": ["Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
                        "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
-                       "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
-                       "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."],
-        "limitacoes": lim + ["Demonstrações societárias (CVM), não regulatórias (ANEEL)."],
+                       _ESCALA_CVM,
+                       "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub); salto de 300 vezes ou mais no ativo entre exercícios consecutivos fica listado para conferência."]
+                      + ([conferido] if conferido else []),
+        "limitacoes": lim + ["Demonstrações societárias (CVM), não regulatórias (ANEEL).",
+                             "Valor com nota escala_corrigida no CSV é ESTIMADO pelo observatório (a fonte marcou outra escala no documento)."],
         "gold": _GOLD, "paginas": _PAG_ENT,
     }
 
@@ -194,6 +209,76 @@ METRICAS = [
         "gold": _GOLD, "paginas": _PAG,
     },
     {
+        "id": "empresas_transmissao_km_circuito",
+        "titulo": "Linhas de transmissão por concessionária (km de circuito)",
+        "pergunta": "Quantos quilômetros de circuito de transmissão em operação cada concessionária detém?",
+        "definicao": "Soma da extensão (NumEtnLinTms) dos módulos de linha ativos do SIGET cujo contrato proprietário (IdeCcdProprietario) é da concessionária, contando só os módulos com alguma obra em operação ou concluída. Cada módulo de linha é um circuito.",
+        "unidade": "km de circuito",
+        "grao_geografico": "concessionária de transmissão (CNPJ) e grupo (topo da cadeia de controle)",
+        "grao_temporal": "fotografia do SIGET (arquivo gerado diariamente)",
+        "fontes": _SIGET,
+        "formula": "km(e) = Σ_m NumEtnLinTms(m) × [contrato_proprietário(m) tem CNPJ e] × [linha ativa] × [obra em operação]",
+        "regra_agregacao": "Soma por CNPJ e por grupo; cada módulo pertence a um só contrato e conta uma vez (o arquivo repete o módulo por obra).",
+        "versao_formula": "1",
+        "natureza_fonte": "OBSERVADO",
+        "natureza_transformacao": "CALCULADO",
+        "dimensoes": ["concessionária", "grupo", "situação do módulo"],
+        "regras_comparabilidade": ["km de circuito, não km de traçado: linha de circuito duplo conta duas vezes; não se compara com o comprimento de geometria da EPE.",
+                                   "Vínculo pelo CNPJ publicado no recurso 'SIGET - Contrato Agente'; nenhum vínculo por nome."],
+        "regra_cobertura": "Módulos de linha registrados no SIGET em contratos de concessão de transmissão (1.567 em 29/09/2026, todos com extensão no recurso de linhas e com contrato ligado a CNPJ).",
+        "politica_ausencia": "Linha desativada é contada à parte; linha sem obra em operação fica em implantação; módulo sem extensão ficaria fora da soma (nenhum em 29/09/2026).",
+        "validacoes": ["CNPJ completado com zeros à esquerda (115 contratos publicam o número sem os zeros) e conferido no cadastro de agentes: os 298 CNPJ com módulos estão no cadastro com o ramo transmissão declarado.",
+                       "Recalculada nos testes por leitura independente do recorte real do SIGET (contratos 012/2007 da AXIA Nordeste e 011/2007 da ATE VI)."],
+        "limitacoes": ["Instalações de transmissão fora dos contratos registrados no SIGET não estão na medida."],
+        "gold": _GOLD, "paginas": _PAG,
+    },
+    {
+        "id": "empresas_transmissao_subestacoes",
+        "titulo": "Subestações com equipamento da concessionária",
+        "pergunta": "Em quantas subestações cada concessionária tem equipamento em operação?",
+        "definicao": "Número de subestações distintas (IdeSbe) em que a concessionária tem módulo de equipamento (transformador, reator, capacitor, compensador, conversora) em operação, pelo contrato proprietário do módulo.",
+        "unidade": "subestações",
+        "grao_geografico": "concessionária de transmissão (CNPJ) e grupo",
+        "grao_temporal": "fotografia do SIGET",
+        "fontes": _SIGET,
+        "formula": "subestações(e) = |{IdeSbe(m) : m módulo de equipamento do CNPJ e em operação}|",
+        "regra_agregacao": "Contagem de distintos; no grupo, união das subestações das empresas (sem contar duas vezes). Não somar entre CNPJ: a mesma subestação pode ter módulos de mais de uma concessionária.",
+        "versao_formula": "1",
+        "natureza_fonte": "OBSERVADO",
+        "natureza_transformacao": "CALCULADO",
+        "dimensoes": ["concessionária", "grupo"],
+        "regras_comparabilidade": ["O SIGET aberto liga à subestação só os módulos de equipamento; manobra e módulo geral ficam sem subestação."],
+        "regra_cobertura": "4.318 módulos de equipamento em 29/09/2026, todos com subestação no recurso de equipamentos.",
+        "politica_ausencia": "Concessionária só com linhas (sem módulo de equipamento) tem zero subestações por esta definição, o que não significa ausência de pátio de manobra.",
+        "validacoes": ["Subestações distintas do SIGET inteiro publicadas ao lado (625 com equipamento em operação em 29/09/2026)."],
+        "limitacoes": ["Não mede a propriedade da subestação inteira; mede presença de equipamento da concessionária nela."],
+        "gold": _GOLD, "paginas": _PAG,
+    },
+    {
+        "id": "empresas_transmissao_cobertura_cnpj",
+        "titulo": "Módulos de transmissão ligados ao CNPJ",
+        "pergunta": "Que parte dos ativos de transmissão do SIGET tem a concessionária identificada por CNPJ?",
+        "definicao": "Módulos do SIGET cujo contrato proprietário tem CNPJ publicado no recurso de contratos, divididos pelos módulos distintos do SIGET.",
+        "unidade": "% dos módulos",
+        "grao_geografico": "Brasil",
+        "grao_temporal": "fotografia do SIGET",
+        "fontes": _SIGET,
+        "numerador": "módulos com contrato proprietário ligado a um CNPJ",
+        "denominador": "módulos distintos do SIGET",
+        "formula": "100 × numerador ÷ denominador",
+        "regra_agregacao": "Razão de contagens de módulos distintos.",
+        "versao_formula": "1",
+        "natureza_fonte": "OBSERVADO",
+        "natureza_transformacao": "CALCULADO",
+        "dimensoes": ["tipo de módulo"],
+        "regras_comparabilidade": ["Comparar só fotografias do SIGET."],
+        "regra_cobertura": "Todos os módulos do recurso 'SIGET - Contrato Empreendimento Obra Módulo'.",
+        "politica_ausencia": "Contrato sem CNPJ na fonte (1 em 29/09/2026, sem módulos) fica fora e é contado.",
+        "validacoes": ["Um único contrato proprietário por módulo (nenhum módulo com dois em 29/09/2026)."],
+        "limitacoes": ["Cobre os contratos de concessão registrados no SIGET."],
+        "gold": _GOLD, "paginas": _PAG,
+    },
+    {
         "id": "empresas_distribuidora_referencias",
         "titulo": "Ficha da distribuidora (referências cruzadas)",
         "pergunta": "Como a distribuidora aparece nos módulos de perdas, qualidade e tarifa?",
@@ -224,7 +309,8 @@ METRICAS = [
     },
     _conta_cvm("empresas_receita", "Receita líquida (companhia aberta)", "Quanto a companhia faturou no período?",
                "Conta 3.01 (Receita de venda de bens e/ou serviços) da DRE padronizada da CVM.", "3.01", "fluxo",
-               ["Nas distribuidoras inclui receita de construção da infraestrutura da concessão, com custo equivalente."]),
+               ["Nas distribuidoras inclui receita de construção da infraestrutura da concessão, com custo equivalente."],
+               "Relida do CSV original por código independente nos testes: CEMIG consolidado 2024, R$ 39.819.620 mil; CEMIG 2º trimestre de 2025, R$ 10.786.295 mil (trimestre) e R$ 20.630.526 mil (acumulado); Equatorial Goiás 2021 individual, R$ 9.735.479 mil depois da correção de escala (a DFP 2021 marca UNIDADE; a DFP 2022 traz o mesmo número em MIL)."),
     _conta_cvm("empresas_ebit", "Resultado antes do resultado financeiro e dos tributos", "Qual o resultado operacional contábil?",
                "Conta 3.05 da DRE padronizada da CVM. Não é EBITDA (depreciação e amortização não somadas de volta).", "3.05", "fluxo",
                ["EBITDA não é conta padronizada e não é publicado pelo observatório."]),
@@ -238,23 +324,29 @@ METRICAS = [
                ["Aplicações financeiras fora de equivalentes de caixa ficam em outras contas do ativo."]),
     _conta_cvm("empresas_emprestimos_cp", "Empréstimos e financiamentos no passivo circulante", "Quanto vence em até 12 meses em empréstimos, financiamentos e debêntures?",
                "Conta 2.01.04 do balanço patrimonial passivo (inclui debêntures).", "2.01.04", "saldo",
-               ["Arrendamentos entram só quando a companhia os classifica nessa conta."]),
+               ["Arrendamentos entram só quando a companhia os classifica nessa conta."],
+               "Relida do BPP original nos testes: CEMIG consolidado em 31/12/2024, R$ 2.876.548 mil."),
     _conta_cvm("empresas_emprestimos_lp", "Empréstimos e financiamentos no passivo não circulante", "Quanto vence depois de 12 meses em empréstimos, financiamentos e debêntures?",
                "Conta 2.02.01 do balanço patrimonial passivo (inclui debêntures).", "2.02.01", "saldo",
-               ["Arrendamentos entram só quando a companhia os classifica nessa conta."]),
+               ["Arrendamentos entram só quando a companhia os classifica nessa conta."],
+               "Relida do BPP original nos testes: CEMIG consolidado em 31/12/2024, R$ 9.402.752 mil."),
     _conta_cvm("empresas_caixa_operacional", "Caixa líquido das atividades operacionais", "Quanto caixa as operações geraram (ou consumiram) no período?",
                "Conta 6.01 da demonstração dos fluxos de caixa (método direto ou indireto). No ITR, acumulada desde janeiro.", "6.01", "fluxo",
-               ["Método direto e indireto chegam ao mesmo total, mas as linhas internas diferem e não são publicadas aqui."]),
+               ["Método direto e indireto chegam ao mesmo total, mas as linhas internas diferem e não são publicadas aqui."],
+               "Relida do DFC_MI original nos testes: CPFL Energia consolidado, 1º trimestre de 2025, R$ 2.093.648 mil (acumulado no ano)."),
     _conta_cvm("empresas_patrimonio_liquido", "Patrimônio líquido", "Qual o patrimônio líquido no fim do período?",
                "Conta 2.03 do balanço patrimonial passivo.", "2.03", "saldo", []),
-    _conta_cvm("empresas_ativo_total", "Ativo total", "Qual o ativo total no fim do período?", "Conta 1 do balanço patrimonial ativo.", "1", "saldo", []),
+    _conta_cvm("empresas_ativo_total", "Ativo total", "Qual o ativo total no fim do período?", "Conta 1 do balanço patrimonial ativo.", "1", "saldo", [],
+               "Relida do BPA original nos testes: Rio Paranapanema 2025 individual, R$ 3.986.965 mil (consolidado entregue com zero, ausente); AXIA Energia Nordeste em 30/06/2021, consolidado com 1 mil e as demais contas zero (coluna não preenchida, ausente) contra 28.552.507 mil no individual."),
     _conta_cvm("empresas_caixa_investimento", "Caixa líquido das atividades de investimento",
                "Quanto caixa foi aplicado (ou gerado) em atividades de investimento?",
                "Conta 6.02 da demonstração dos fluxos de caixa (método direto ou indireto).", "6.02", "fluxo",
-               ["Inclui aquisições, aplicações financeiras e resgates; não é o investimento em ativos da concessão, que não tem conta fixa."]),
+               ["Inclui aquisições, aplicações financeiras e resgates; não é o investimento em ativos da concessão, que não tem conta fixa."],
+               "Relida do DFC original nos testes: Ferreira Gomes 2025 individual, R$ 759 mil; CELGPAR 2025 individual, DFC entregue com zero contra saldo final de caixa de 2024 de R$ 203.811 mil (fluxos não preenchidos, ausente)."),
     {**_conta_cvm("empresas_divida_bruta", "Empréstimos, financiamentos e debêntures", "Quanto a companhia deve em empréstimos, financiamentos e debêntures?",
                   "Soma das contas 2.01.04 (circulante) e 2.02.01 (não circulante) do mesmo escopo e da mesma data.", "2.01.04 + 2.02.01", "saldo",
-                  ["Não desconta caixa (não é dívida líquida); arrendamentos entram só quando a companhia os classifica nessas contas."]),
+                  ["Não desconta caixa (não é dívida líquida); arrendamentos entram só quando a companhia os classifica nessas contas."],
+                  "Recalculada nos testes a partir do BPP original: CEMIG consolidado em 31/12/2024, 2.876.548 + 9.402.752 = R$ 12.279.300 mil."),
      "natureza_transformacao": "CALCULADO", "numerador": None,
      "formula": "divida_bruta = VL(2.01.04) + VL(2.02.01), mesmo escopo e mesma data; ausente se uma das duas faltar"},
 ]

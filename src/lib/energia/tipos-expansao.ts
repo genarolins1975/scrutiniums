@@ -104,6 +104,12 @@ export type ReconciliacaoUf = {
   residuo_pct: number | null;
 };
 
+export type JanelaReconciliacao = {
+  liberacoes_descontadas: { inicio: string; fim: string | null };
+  /** Dias entre a última liberação do arquivo e a data do SIGA: o que entrou neles fica no resíduo. */
+  sem_liberacoes_publicadas: { inicio: string; fim: string } | null;
+};
+
 export type CapacidadeInstalada = {
   data_referencia: string;
   total: { usinas: number; mw_fiscalizado: number; mw_outorgado: number };
@@ -120,6 +126,9 @@ export type CapacidadeInstalada = {
     /** Mês (AAAA-MM) do agregado oficial "capacidade instalada por UF". */
     referencia_uf: string | null;
     por_uf: ReconciliacaoUf[];
+    /** Liberações descontadas (do dia seguinte ao fim do mês do agregado até a última liberação publicada) e os dias até a data do SIGA sem liberação publicada. */
+    janela_tipo: JanelaReconciliacao | null;
+    janela_uf: JanelaReconciliacao | null;
     tolerancia_residuo_pct: number;
     justificativa_tolerancia: string;
     fora_da_tolerancia: { tipos: string[]; ufs: string[] };
@@ -175,7 +184,10 @@ export type AtoPotenciaConferida = {
   publicacao: string | null;
   nome: string | null;
   nucleo: number | null;
+  /** Tipo do ato (a outorga encerrada). */
   tipo: string | null;
+  /** Tipo atual no SIGA (usado na conferência de potência); null fora do SIGA. */
+  tipo_no_cadastro: string | null;
   mw_no_ato: number | null;
   /** Potência somada; null = fora da soma. */
   mw_usado: number | null;
@@ -188,7 +200,16 @@ export type Encerramentos = {
   regra: string;
   desde: string | null;
   por_ano: EncerramentosAno[];
+  /** Pelo tipo do ato (a outorga encerrada). */
   por_tipo: { tipo: string | null; usinas: number; mw_usinas: number }[];
+  /** Pelo tipo atual no SIGA ("(fora do SIGA)" quando o núcleo não consta). */
+  por_tipo_no_cadastro: { tipo: string; usinas: number; mw_usinas: number }[];
+  regra_tipo: string;
+  /** Conversão de regime: concessão ou autorização de PCH ou UHE encerrada, usina em operação como CGH sob registro. */
+  tipo_do_ato_diferente_do_cadastro: {
+    atos: number;
+    pares: { tipo_no_ato: string; tipo_no_cadastro: string; outorga_no_siga: string | null; atos: number }[];
+  };
   /** Atos sem data de publicação na fonte: fora da série anual, contados à parte (e no total). */
   sem_data_publicacao: { atos: number; usinas: number; mw_usinas: number };
   total: { atos: number; usinas: number; mw_usinas: number; usinas_sem_potencia: number };
@@ -233,15 +254,66 @@ export type RalieAtual = {
   fase_no_siga: { fase: string; usinas: number }[];
 };
 
-export type DesfechoCoorte = { usinas: number; mw_outorgado: number; pct_mw: number | null };
+/** pct_mw é a parcela de mw_em_implantacao (peso); mw_outorgado é contexto. */
+export type DesfechoCoorte = {
+  usinas: number;
+  mw_em_implantacao: number;
+  mw_outorgado: number;
+  usinas_que_ja_operavam: number;
+  pct_mw: number | null;
+};
 
 export type Coorte = {
   /** "estoque_inicial" (primeira fotografia) ou o ano de entrada no RALIE. */
   coorte: string;
   rotulo: string;
   usinas: number;
+  /** Peso: potência das unidades da primeira fotografia, limitada à outorga da usina. */
+  mw_em_implantacao: number;
   mw_outorgado: number;
+  /** Ampliações: usinas que já operavam antes da primeira fotografia. */
+  usinas_que_ja_operavam: number;
   desfechos: Record<Desfecho, DesfechoCoorte>;
+};
+
+export type PesoCoortes = {
+  regra: string;
+  usinas_com_peso_limitado_pela_outorga: number;
+  usinas_sem_unidades_na_primeira_fotografia: number;
+  usinas_que_ja_operavam: number;
+  usinas_que_ja_operavam_em_operacao_no_siga_sem_liberacao: number;
+};
+
+/** Fotografia vizinha da mesma usina (conferência do valor fora de escala no próprio arquivo). */
+export type FotografiaVizinha = { ralie: string; ugs: number; mw_ugs: number | null } | null;
+
+/** Pares (fotografia, usina) do Parquet histórico com a soma das unidades 10 vezes a outorga ou mais. */
+export type UnidadesAtipicas = {
+  regra: string;
+  fator: number;
+  casos: {
+    ralie: string;
+    fotografia_mensal: boolean;
+    nucleo: number;
+    nome: string | null;
+    tipo: string | null;
+    ugs: number;
+    mw_ugs: number | null;
+    mw_outorgado: number | null;
+    razao: number | null;
+    anterior: FotografiaVizinha;
+    seguinte: FotografiaVizinha;
+  }[];
+  pares: number;
+  usinas: number;
+  mw_ugs_publicado_nos_casos: number;
+  /** Razões entre 1,5 e 10 vezes: mantidas (sem a assinatura de erro de ordem de grandeza). */
+  mantidos_entre_atencao_e_fator: {
+    fator_minimo: number;
+    pares: number;
+    usinas: number;
+    maiores: { nucleo: number; nome: string | null; tipo: string | null; pares: number; razao_max: number | null }[];
+  };
 };
 
 /** Última fotografia de cada mês do Parquet histórico do RALIE. */
@@ -252,6 +324,9 @@ export type HistoricoMensalRalie = {
   ugs: number;
   mw_ugs: number;
   mw_ugs_sem_previsao: number;
+  /** Usinas com unidades fora de escala na fotografia, excluídas dos campos por unidade, e a potência publicada delas. */
+  usinas_atipicas_excluidas: number;
+  mw_ugs_atipicas_excluidas: number;
   mw_obra_nao_iniciada: number;
   mw_obra_em_andamento: number;
   mw_obra_paralisada: number;
@@ -273,9 +348,11 @@ export type Estagios = {
   ralie: RalieAtual;
   coortes: Coorte[];
   desfechos_definicao: Record<Desfecho, string>;
+  coortes_peso: PesoCoortes;
   /** Onde estão no SIGA as usinas sem desfecho ("ausente do SIGA" = fora do arquivo aberto, sem ato vinculado). */
   sem_desfecho_no_siga: { situacao_siga: string; usinas: number; mw_outorgado: number }[];
   historico_mensal: HistoricoMensalRalie[];
+  unidades_atipicas: UnidadesAtipicas;
 };
 
 // ------------------------------------------------------------------ cronograma e atrasos (P041)
@@ -375,6 +452,13 @@ export type DesvioPrazoAno = {
   ano: string;
   unidades_ou_grupos: number;
   mw_liberado: number;
+  /** Denominador dos percentuais: linhas e potência com data outorgada; as sem data saem à parte. */
+  unidades_ou_grupos_com_data_outorgada: number;
+  mw_com_data_outorgada: number;
+  unidades_ou_grupos_sem_data_outorgada: number;
+  mw_sem_data_outorgada: number;
+  mw_depois_do_prazo: number;
+  mw_antes_do_prazo: number;
   pct_mw_depois_do_prazo: number | null;
   pct_mw_antes_do_prazo: number | null;
   mediana_desvio_dias_ponderada: number | null;
@@ -387,6 +471,8 @@ export type Cronograma = {
     primeira_fotografia: string;
     fotografias: number;
     fotografias_mensais: number;
+    /** Unidades de usinas com potência fora de escala tiradas das fotografias mensais. */
+    ugs_atipicas_excluidas_das_fotografias_mensais: number;
     ultima_fotografia: string;
   };
   /** Capturas do RALIE atual pelo observatório (histórico próprio, começa na primeira captura). */
@@ -417,6 +503,9 @@ export type LeilaoAno = {
   rap_vencedor_rs_mi: number;
   desagio_agregado_pct: number | null;
   lotes_sem_investimento: number;
+  /** Lotes contratados com 0 km (ou 0 MVA) e a instalação descrita: campo não preenchido, fora da soma. */
+  lotes_km_nao_informado: number;
+  lotes_mva_nao_informado: number;
   investimento_ofertado_sem_vencedor_rs_mi: number;
   rap_edital_sem_vencedor_rs_mi: number;
 };
@@ -432,6 +521,11 @@ export type Leiloes = {
   lotes_sem_vencedor: number;
   sem_vencedor_por_rotulo: Record<string, number>;
   regra_sem_vencedor: string;
+  regra_zero: string;
+  lotes_km_nao_informado: number;
+  lotes_mva_nao_informado: number;
+  /** O campo de MVA mistura convenções (reserva incluída nos lotes antigos, excluída nos recentes). */
+  nota_mva: string;
   /** Último leilão presente no arquivo aberto: anos posteriores são ausência, não zero. */
   ultimo_leilao: { leilao: string | null; data: string | null };
   desagio_inconsistente: { lote: string; desagio_fonte_pct: number | null; desagio_calculado_pct: number | null }[];
@@ -445,11 +539,21 @@ export type ObrasTransmissao = {
   modulos_lt_fora_do_limite: number;
   /** Módulos listados em mais de um empreendimento: contados uma vez. */
   modulos_em_mais_de_um_empreendimento: { regra: string; modulos_lt: number; modulos_tr: number; km_lt: number; mva_tr: number };
-  por_situacao: { situacao: string; empreendimentos: number; obras: number; km_lt_novas: number; mva_tr_novos: number }[];
+  /** MVA novo = transformadores de finalidade principal; o reserva fica em mva_tr_reserva. */
+  regra_mva_reserva: string;
+  por_situacao: {
+    situacao: string;
+    empreendimentos: number;
+    obras: number;
+    km_lt_novas: number;
+    mva_tr_novos: number;
+    mva_tr_reserva: number;
+  }[];
   em_andamento: {
     empreendimentos: number;
     km_lt_novas: number;
     mva_tr_novos: number;
+    mva_tr_reserva: number;
     com_prazo_legal_vencido: number;
     km_prazo_vencido: number;
     mva_prazo_vencido: number;
@@ -467,14 +571,28 @@ export type ObrasTransmissao = {
     mva_tr: number;
     ufs: string[];
   }[];
-  atraso_realizado_por_ano: {
+  /** Data efetiva menos o prazo VIGENTE do ato legal: desvio, não atraso com data-base. */
+  desvio_prazo_vigente_por_ano: {
+    definicao: string;
+    por_ano: {
+      ano: string;
+      empreendimentos: number;
+      pct_depois_do_prazo_vigente: number | null;
+      /** Data efetiva igual ao prazo vigente: sinal de prazo revisto. */
+      empreendimentos_data_efetiva_igual_ao_prazo: number;
+      pct_data_efetiva_igual_ao_prazo: number | null;
+      mediana_desvio_dias: number | null;
+      p75_desvio_dias: number | null;
+    }[];
+  };
+  entrada_por_ano: {
     ano: string;
-    empreendimentos: number;
-    pct_com_atraso: number | null;
-    mediana_dias: number | null;
-    p75_dias: number | null;
+    km_lt_novas: number;
+    mva_tr_novos: number;
+    mva_tr_reserva: number;
+    modulos_lt: number;
+    modulos_tr: number;
   }[];
-  entrada_por_ano: { ano: string; km_lt_novas: number; mva_tr_novos: number; modulos_lt: number; modulos_tr: number }[];
 };
 
 /** Geração e rede por UF lado a lado: grandezas diferentes, nunca somadas nem divididas. */
@@ -515,6 +633,7 @@ export type ContratoAssinado = {
   empreendimentos: number | null;
   km_lt_novas: number | null;
   mva_tr_novos: number | null;
+  mva_tr_reserva: number | null;
 };
 
 export type ContratosAssinados = {
@@ -528,6 +647,7 @@ export type ContratosAssinados = {
     empreendimentos: number;
     km_lt_novas: number;
     mva_tr_novos: number;
+    mva_tr_reserva: number;
     ano_parcial: boolean;
   }[];
   depois_do_ultimo_leilao_do_arquivo: { ultimo_leilao: string | null; contratos: ContratoAssinado[] };
@@ -593,8 +713,19 @@ export type CamadaPde = {
   rotulo: string;
   pde_dez2025_gw: number | null;
   pde_dez2035_gw: number | null;
+  /** "direta", "parcial", "sem correspondência verificada", "fora do universo do SIGA e do RALIE" ou "não é geração". */
   correspondencia: string;
   nota: string | null;
+  /** Tipos do SIGA somados no realizado e na carteira; null sem correspondência. */
+  siga_tipos: string[] | null;
+  /** Categoria como no Anexo I-3 do relatório (SIN), sem a parcela que o SIGA não cadastra (Itaipu 50 Hz na UHE). */
+  pde_anexo_i3: {
+    rotulo: string;
+    pagina: number | null;
+    dez2026_gw: number | null;
+    dez2035_gw: number | null;
+    parcela_fora_do_siga: { rotulo: string | null; dez2026_gw: number | null; dez2035_gw: number | null } | null;
+  } | null;
   /** Realizado do SIGA na categoria correspondente; null quando não há correspondência verificada. */
   realizado_siga_gw: number | null;
   carteira_ralie_gw: number | null;
@@ -609,11 +740,31 @@ export type Cenarios = {
   horizonte: string;
   cenario: string;
   universo: string;
-  hipoteses: { texto: string; pagina: number | null }[];
+  /** ressalva: o que mudou depois da data-base, segundo o próprio relatório (página em pagina_ressalva). */
+  hipoteses: { texto: string; pagina: number | null; ressalva: string | null; pagina_ressalva: number | null }[];
   relatorio: string;
   caderno_de_dados: string;
   figuras: Record<string, FiguraPde>;
   camadas: CamadaPde[];
+  camadas_regra: string;
+  /** Tabela do Anexo I-3 do relatório (PDF), conferida contra as figuras 3-25 e 3-6; null sem a extração. */
+  anexo_i3: {
+    pagina: number | null;
+    extracao: string | null;
+    titulo: string;
+    notas: Record<string, string> | null;
+    conferencia_figuras: {
+      figura: string;
+      coluna: string;
+      referencia: string;
+      figura_mw: number | null;
+      linhas_anexo: string[];
+      anexo_mw: number | null;
+      diferenca_mw: number | null;
+      tolerancia_mw: number;
+      resultado: "aprovada" | "divergente";
+    }[];
+  } | null;
   conferencia_relatorio: {
     descricao: string;
     calculado_gw: number | null;

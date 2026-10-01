@@ -135,10 +135,15 @@ METRICAS = [
        validacoes=["calibração só com n ≥ 100 entregas distintas",
                    "cobertura refeita por outro leitor a partir do CSV do teste retrospectivo (células cobertas iguais a menos das "
                    "ambíguas pelo arredondamento a 2 casas)",
-                   "realizado no piso com P10 limitado ao piso conta como coberto (teste com a semana de 04/01/2025)"],
+                   "realizado no piso com P10 limitado ao piso conta como coberto: semana real de 04/01/2025 (as 168 horas a "
+                   "R$ 58,60/MWh nos quatro submercados), média por somas acumuladas 58,59999999997672 contra P10 no piso de "
+                   "58,60000000000001 (pipeline/tests/test_energia_previsoes.py, "
+                   "CoberturaNoPiso.test_semana_de_04_01_2025_no_piso_conta_como_coberta)"],
        limitacoes=[_DEP, "Faixa não calibrada não é publicada na previsão atual.",
-                   "Registros do arquivo emitidos antes de 01/10/2026 gravaram a cobertura com comparação estrita; o valor refeito "
-                   "com a regra corrigida aparece ao lado, sem reescrever o registro."]),
+                   "Registros do arquivo emitidos antes de 01/10/2026 gravaram a cobertura com comparação estrita e nunca são "
+                   "reescritos. Enquanto os números de desempenho estiverem retidos, a partição pública do arquivo omite essa "
+                   "cobertura e as rodadas novas não a gravam; depois da liberação, a gold publica ao lado o valor refeito com a "
+                   "regra corrigida (prospectivo.calibracao_regra_antiga)."]),
     _m(id="previsao_largura_p10_p90", titulo="Largura média da faixa P10 a P90",
        pergunta="Quão larga é a faixa de incerteza?",
        definicao="Média de (P90 − P10) nas células com quantis.", unidade="R$/MWh",
@@ -291,3 +296,49 @@ CAMPOS = {
     "c2p_bruta": "previsao_pld_retrospectiva", "c2h_bruta": "previsao_pld_retrospectiva",
     "c2p_final": "previsao_pld_retrospectiva", "c2h_final": "previsao_pld_retrospectiva",
 }
+
+
+# ---------------------------------------------------------------- estado de publicação
+
+# Medidas de desempenho do teste retrospectivo (P016). Sem a liberação formal pelo
+# responsável (validacao_observatorio.decisao_publicacao no registro de modelos), elas são
+# calculadas e validadas, mas não entram na gold publicada: ficam em
+# data/energia/previsoes/validacao_interna/previsoes_desempenho_interno.json, fora do
+# portal. O catálogo diz isso em vez de apontar para uma gold que não as contém.
+RETIDAS_SEM_LIBERACAO = (
+    "previsao_pld_retrospectiva", "previsao_erro_absoluto_medio", "previsao_vies", "previsao_ganho_sobre_b0",
+    "previsao_perda_quantilica", "previsao_cobertura_p10_p90", "previsao_largura_p10_p90", "previsao_rmse",
+    "previsao_skill_mae_sobre_b0", "previsao_cobertura_p05_p95", "previsao_fracao_abaixo_p10", "previsao_fracao_acima_p90",
+    "previsao_brutas_fora_da_faixa", "previsao_limiares_de_regime",
+)
+GOLD_INTERNA = "previsoes_desempenho_interno.json"
+
+
+def _desempenho_liberado():
+    try:
+        from pipeline.energia.previsoes import emissao as em
+        return em.publicacao_desempenho(em.le_registro())[0]
+    except (OSError, ValueError, ImportError):
+        return False
+
+
+def _aplica_publicacao(metricas, liberado):
+    for m in metricas:
+        if m["id"] not in RETIDAS_SEM_LIBERACAO:
+            m["publicacao"] = {"estado": "PUBLICADA", "gold": GOLD}
+        elif liberado:
+            m["publicacao"] = {"estado": "PUBLICADA", "gold": GOLD}
+        else:
+            m["gold"] = GOLD_INTERNA
+            m["publicacao"] = {
+                "estado": "RETIDA",
+                "gold": None,
+                "gold_quando_liberada": GOLD,
+                "local": "data/energia/previsoes/validacao_interna (fora do portal)",
+                "motivo": ("Número de desempenho do teste retrospectivo: só entra no portal depois da liberação formal pelo "
+                           "responsável pela plataforma (registro de modelos); até lá é calculado e validado, sem publicação."),
+            }
+    return metricas
+
+
+_aplica_publicacao(METRICAS, _desempenho_liberado())

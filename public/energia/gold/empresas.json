@@ -1,14 +1,14 @@
 {
  "dominio": "energia",
  "gold": "empresas.json",
- "gerado_em": "2026-10-01T00:53:08Z",
+ "gerado_em": "2026-10-01T07:08:50Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d5dc4fd86561+alterado",
+ "versao_codigo": "eec0a3121e05+alterado",
  "disponivel": true,
  "datas": {
   "siga": "2026-09-30",
-  "agentes_geracao": "2026-09-01",
-  "cadastro_agentes": "2026-09-01",
+  "agentes_geracao": "2026-10-01",
+  "cadastro_agentes": "2026-10-01",
   "polimero_referencia": "2026T2",
   "polimero_janela": [
    "2025T3",
@@ -16,7 +16,7 @@
    "2026T1",
    "2026T2"
   ],
-  "cvm_cadastro_capturado_em": "2026-09-30T23:40:10Z"
+  "cvm_cadastro_capturado_em": "2026-10-01T07:02:56Z"
  },
  "definicoes": {
   "vinculo": "Vínculo provado = CNPJ publicado pela fonte oficial no mesmo registro do ativo. Nenhum vínculo por semelhança de nome.",
@@ -29,14 +29,21 @@
  },
  "cadastro": {
   "agentes": {
-   "data": "2026-09-01",
-   "total": 9956,
-   "ativos": 9750,
+   "data": "2026-10-01",
+   "total": 9998,
+   "ativos": 9761,
+   "ramos_universo": "agentes ativos (situação A no cadastro) por ramo declarado",
    "ramos": {
-    "geracao": 8655,
+    "geracao": 8662,
     "distribuicao": 175,
-    "transmissao": 469,
+    "transmissao": 473,
     "comercializacao": 833
+   },
+   "ramos_incluindo_inativos": {
+    "geracao": 8860,
+    "distribuicao": 183,
+    "transmissao": 490,
+    "comercializacao": 857
    }
   },
   "ativos": {
@@ -105,10 +112,12 @@
     }
    ],
    "pct_mw_operacao_vinculado": 99.91,
+   "pct_usinas_operacao_vinculadas": 98.86,
    "pct_usinas_vinculadas": 98.95,
+   "universo_pct_usinas_vinculadas": "usinas de todas as fases do SIGA (operação, construção e construção não iniciada)",
    "proprietarios_cnpj": 5581,
-   "proprietarios_no_cadastro": 5561,
-   "proprietarios_fora_do_cadastro": 20,
+   "proprietarios_no_cadastro": 5566,
+   "proprietarios_fora_do_cadastro": 15,
    "por_regime": [
     {
      "regime": "PIE",
@@ -394,55 +403,104 @@
    ],
    "sem_vinculo_total": 260,
    "conferencia_agentes_geracao": {
-    "comparadas": 24905,
-    "iguais": 24902,
-    "cnpj_diferentes": 3,
-    "percentual_diferente": 0,
-    "so_no_siga": 26,
-    "so_em_agentes": 114,
-    "data": "2026-09-01",
+    "comparadas": 24931,
+    "iguais": 24914,
+    "cnpj_diferentes": 13,
+    "percentual_diferente": 4,
+    "so_no_siga": 0,
+    "so_em_agentes": 0,
+    "data": "2026-10-01",
     "exemplos": [
      {
-      "nucleo": "2592",
+      "nucleo": "1272",
+      "motivo": "percentual",
+      "siga": {
+       "57247924000104": 100.0
+      },
+      "agentes": {
+       "57247924000104": 200.0
+      }
+     },
+     {
+      "nucleo": "1544",
       "motivo": "cnpj",
       "siga": [
-       "44640428000174"
+       "03258983000159"
       ],
       "agentes": [
-       "05528196000105"
+       "00350763000162"
       ]
      },
      {
-      "nucleo": "30538",
+      "nucleo": "2856",
+      "motivo": "percentual",
+      "siga": {
+       "07642982000164": 100.0
+      },
+      "agentes": {
+       "07642982000164": 200.0
+      }
+     },
+     {
+      "nucleo": "27153",
+      "motivo": "percentual",
+      "siga": {
+       "55560181000100": 100.0
+      },
+      "agentes": {
+       "55560181000100": 200.0
+      }
+     },
+     {
+      "nucleo": "28803",
       "motivo": "cnpj",
       "siga": [
-       "65783548000109"
+       "07836421000104"
       ],
       "agentes": [
-       "47080619000117"
+       "66893788000110"
       ]
      },
      {
-      "nucleo": "31041",
+      "nucleo": "28804",
       "motivo": "cnpj",
       "siga": [
-       "01885369000191",
-       "09482011000120",
-       "13759398000196",
-       "21058169000172",
-       "54831307000163",
-       "85996171000175"
+       "08656307000157"
       ],
       "agentes": [
-       "01885369000191",
-       "02927219000166",
-       "13759398000196",
-       "21058169000172",
-       "54831307000163",
-       "85996171000175"
+       "68033343000196"
+      ]
+     },
+     {
+      "nucleo": "29764",
+      "motivo": "cnpj",
+      "siga": [
+       "09395012000137"
+      ],
+      "agentes": [
+       "04729053000107",
+       "09395012000137",
+       "12465129000154",
+       "20004244000150",
+       "20802227000168",
+       "35382136000198",
+       "82780099000156"
+      ]
+     },
+     {
+      "nucleo": "30387",
+      "motivo": "cnpj",
+      "siga": [
+       "11815365000190"
+      ],
+      "agentes": [
+       "11815365000190",
+       "80718984000180",
+       "83560763000114"
       ]
      }
-    ]
+    ],
+    "nota": "CNPJ diferente nas duas fontes; causa não verificada (troca de proprietário entre as datas dos arquivos ou divergência de cadastro): cada fonte tem uma única captura."
    },
    "evidencia": {
     "indicador": "Potência em operação com todos os proprietários identificados por CNPJ",
@@ -486,8 +544,8 @@
     "tratamento_ausencia": "Usina com proprietário 'Não Informado' entra no denominador e fora do numerador; potência fiscalizada vazia conta como ausente (nunca zero) e fica fora das duas somas.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "d5dc4fd86561+alterado",
-     "publicacao": "2026-10-01T00:53:06Z"
+     "codigo": "eec0a3121e05+alterado",
+     "publicacao": "2026-10-01T07:08:48Z"
     },
     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
     "testes": [
@@ -503,9 +561,9 @@
      }
     ],
     "reconciliacao": {
-     "descricao": "Conferência usina a usina com o conjunto Agentes de Geração (01/09/2026): 24.902 de 24.905 usinas com a mesma lista de CNPJ e os mesmos percentuais",
+     "descricao": "Conferência usina a usina com o conjunto Agentes de Geração (01/10/2026): 24.914 de 24.931 usinas com a mesma lista de CNPJ e os mesmos percentuais",
      "resultado": "aprovado",
-     "tolerancia": "0,01 p.p. por parcela (precisão de 2 casas do conjunto Agentes de Geração); 98% das usinas iguais, pois os arquivos têm datas diferentes"
+     "tolerancia": "0,01 p.p. por parcela (precisão de 2 casas do conjunto Agentes de Geração); aceite com pelo menos 98% das usinas iguais, porque os arquivos têm datas diferentes e a causa de cada CNPJ diferente (troca de proprietário ou divergência de cadastro) não é verificada; resultado 99,93%"
     },
     "download": [
      {
@@ -514,7 +572,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py empresas --sem-coleta",
-    "citacao": "SCRUTINIUMS. Potência em operação com todos os proprietários identificados por CNPJ: 99,9%, Usinas em operação no SIGA (Brasil), 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SIGA: Sistema de Informações de Geração da ANEEL (recurso siga-empreendimentos-geracao-diario.csv, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Potência em operação com todos os proprietários identificados por CNPJ: 99,9%, Usinas em operação no SIGA (Brasil), 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SIGA: Sistema de Informações de Geração da ANEEL (recurso siga-empreendimentos-geracao-diario.csv, capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    }
   },
   "proprietarios": [
@@ -949,7 +1007,7 @@
      "REG"
     ],
     "grupo": "61194148000107",
-    "grupo_nome": "HEJOASSU ADMINISTRAÇÃO S.A."
+    "grupo_nome": "Hejoassu Administração S.A."
    },
    {
     "cnpj": "15743303000171",
@@ -1014,181 +1072,447 @@
     ],
     "grupo": "06132057000120",
     "grupo_nome": "INTERNATIONAL POWER S.A."
-   },
-   {
-    "cnpj": "01917818000136",
-    "nome": "LIGHT ENERGIA S.A",
-    "sigla": "LIGHT ENERGIA",
-    "usinas": 5,
-    "usinas_operacao": 5,
-    "mw_proporcional": 855.1,
-    "mw_controle_direto": 855.1,
-    "usinas_controle_direto": 5,
-    "no_cadastro_agentes": true,
-    "regimes": [
-     "SP"
-    ],
-    "grupo": "03378521000175",
-    "grupo_nome": "LIGHT S.A. - EM RECUPERAÇÃO JUDICIAL"
-   },
-   {
-    "cnpj": "04591168000170",
-    "nome": "FOZ DO CHAPECO ENERGIA S.A.",
-    "sigla": "CHAPECÓ",
-    "usinas": 1,
-    "usinas_operacao": 1,
-    "mw_proporcional": 855.0,
-    "mw_controle_direto": 855.0,
-    "usinas_controle_direto": 1,
-    "no_cadastro_agentes": true,
-    "regimes": [
-     "PIE"
-    ],
-    "grupo": "07829836000142",
-    "grupo_nome": "Chapecoense Geração S.A."
-   },
-   {
-    "cnpj": "14578002000177",
-    "nome": "PARNAIBA II GERACAO DE ENERGIA S.A",
-    "sigla": "PARNAIBA II",
-    "usinas": 3,
-    "usinas_operacao": 3,
-    "mw_proporcional": 840.5,
-    "mw_controle_direto": 840.5,
-    "usinas_controle_direto": 3,
-    "no_cadastro_agentes": true,
-    "regimes": [
-     "PIE"
-    ],
-    "grupo": "04423567000121",
-    "grupo_nome": "ENEVA S.A."
-   },
-   {
-    "cnpj": "03258983000159",
-    "nome": "USINA TERMELETRICA NORTE FLUMINENSE S/A",
-    "sigla": "EDF NF",
-    "usinas": 1,
-    "usinas_operacao": 1,
-    "mw_proporcional": 826.8,
-    "mw_controle_direto": 826.8,
-    "usinas_controle_direto": 1,
-    "no_cadastro_agentes": true,
-    "regimes": [
-     "PIE"
-    ],
-    "grupo": "05498301000100",
-    "grupo_nome": "EDF INTERNATIONAL SAS"
-   },
-   {
-    "cnpj": "14522198000188",
-    "nome": "TIJOA PARTICIPACOES E INVESTIMENTOS S.A.",
-    "sigla": "TIJOA",
-    "usinas": 1,
-    "usinas_operacao": 1,
-    "mw_proporcional": 807.5,
-    "mw_controle_direto": 807.5,
-    "usinas_controle_direto": 1,
-    "no_cadastro_agentes": true,
-    "regimes": [
-     "SP"
-    ],
-    "grupo": null,
-    "grupo_nome": null
-   },
-   {
-    "cnpj": "27093977000157",
-    "nome": "DIAMANTE GERACAO DE ENERGIA LTDA.",
-    "sigla": "Diamante",
-    "usinas": 3,
-    "usinas_operacao": 3,
-    "mw_proporcional": 740.0,
-    "mw_controle_direto": 740.0,
-    "usinas_controle_direto": 3,
-    "no_cadastro_agentes": true,
-    "regimes": [
-     "PIE"
-    ],
-    "grupo": "43056820000108",
-    "grupo_nome": "DIAMANTE HOLDING PARTICIPACOES LTDA"
-   },
-   {
-    "cnpj": "08976495000109",
-    "nome": "PORTO DO PECEM GERACAO DE ENERGIA LTDA",
-    "sigla": "Porto do Pecem I",
-    "usinas": 2,
-    "usinas_operacao": 2,
-    "mw_proporcional": 722.8,
-    "mw_controle_direto": 722.8,
-    "usinas_controle_direto": 2,
-    "no_cadastro_agentes": true,
-    "regimes": [
-     "PIE",
-     "REG"
-    ],
-    "grupo": "43056820000108",
-    "grupo_nome": "DIAMANTE HOLDING PARTICIPACOES LTDA"
-   },
-   {
-    "cnpj": "18494537000110",
-    "nome": "EMPRESA DE ENERGIA SAO MANOEL S.A.",
-    "sigla": "EESM",
-    "usinas": 1,
-    "usinas_operacao": 1,
-    "mw_proporcional": 700.0,
-    "mw_controle_direto": 700.0,
-    "usinas_controle_direto": 1,
-    "no_cadastro_agentes": true,
-    "regimes": [
-     "PIE"
-    ],
-    "grupo": null,
-    "grupo_nome": null
-   },
-   {
-    "cnpj": "04781143000139",
-    "nome": "BAESA-ENERGETICA BARRA GRANDE S/A",
-    "sigla": "BAESA",
-    "usinas": 1,
-    "usinas_operacao": 1,
-    "mw_proporcional": 690.0,
-    "mw_controle_direto": 690.0,
-    "usinas_controle_direto": 1,
-    "no_cadastro_agentes": true,
-    "regimes": [
-     "PIE"
-    ],
-    "grupo": "23637697000101",
-    "grupo_nome": "ALCOA ALUMINIO S/A"
-   },
-   {
-    "cnpj": "89637490000145",
-    "nome": "KLABIN S.A.",
-    "sigla": null,
-    "usinas": 7,
-    "usinas_operacao": 7,
-    "mw_proporcional": 667.8,
-    "mw_controle_direto": 667.8,
-    "usinas_controle_direto": 7,
-    "no_cadastro_agentes": true,
-    "regimes": [
-     "APE",
-     "PIE",
-     "REG"
-    ],
-    "grupo": null,
-    "grupo_nome": null
    }
-  ]
+  ],
+  "transmissao": {
+   "data": "2026-09-29",
+   "regra_vinculo": "Módulo → contrato proprietário (IdeCcdProprietario) → CNPJ publicado no recurso 'SIGET - Contrato Agente'; nenhum vínculo por nome.",
+   "definicoes": {
+    "km_circuito": "Soma da extensão (NumEtnLinTms) dos módulos de linha ativos cujo módulo tem obra em operação ou concluída. Cada módulo de linha é um circuito: linha de circuito duplo conta duas vezes (km de circuito, não km de traçado).",
+    "subestacoes": "Subestações distintas em que o CNPJ tem módulo de equipamento em operação. O SIGET aberto liga à subestação só os módulos de equipamento; a mesma subestação pode ter módulos de mais de um CNPJ.",
+    "mva": "Potência dos transformadores de potência principais em operação (o reserva não acrescenta capacidade)."
+   },
+   "resumo": {
+    "contratos": 413,
+    "contratos_sem_cnpj": 1,
+    "cnpj_completados_com_zeros": 115,
+    "cnpjs": 305,
+    "cnpjs_com_modulos": 298,
+    "modulos": 16856,
+    "modulos_com_cnpj": 16856,
+    "pct_modulos_com_cnpj": 100.0,
+    "modulos_por_tipo": {
+     "LT": 1567,
+     "ME": 4318,
+     "MG": 1003,
+     "MM": 9968
+    },
+    "circuitos_operacao": 1230,
+    "km_circuito_operacao": 135838.6,
+    "subestacoes_distintas": 625
+   },
+   "cobertura": {
+    "modulos_lt": 1567,
+    "modulos_lt_com_linha": 1567,
+    "modulos_me": 4318,
+    "modulos_me_com_equipamento": 4318,
+    "modulos_sem_contrato": 0,
+    "modulos_contrato_sem_cnpj": 0
+   },
+   "conferencia_cadastro_agentes": {
+    "cnpjs_com_modulos": 298,
+    "no_cadastro": 298,
+    "com_ramo_transmissao": 298,
+    "ativos_com_ramo_sem_modulo_no_siget": 176
+   },
+   "maiores": [
+    {
+     "cnpj": "33541368000116",
+     "nome": "AXIA ENERGIA NORDESTE S.A.",
+     "contratos": 25,
+     "modulos": 1749,
+     "circuitos_operacao": 162,
+     "km_circuito_operacao": 12700.4,
+     "pct_km": 9.35,
+     "subestacoes": 95,
+     "mva_transformacao_operacao": 38699.0,
+     "ufs": [
+      "AL",
+      "BA",
+      "CE",
+      "MA",
+      "PB",
+      "PE",
+      "PI",
+      "RN",
+      "SE"
+     ],
+     "grupo": "00001180000126",
+     "grupo_nome": "AXIA ENERGIA S.A."
+    },
+    {
+     "cnpj": "02998611000104",
+     "nome": "ISA ENERGIA BRASIL S.A.",
+     "contratos": 5,
+     "modulos": 1505,
+     "circuitos_operacao": 176,
+     "km_circuito_operacao": 10364.8,
+     "pct_km": 7.63,
+     "subestacoes": 65,
+     "mva_transformacao_operacao": 21259.0,
+     "ufs": [
+      "BA",
+      "ES",
+      "MG",
+      "MS",
+      "RJ",
+      "SP"
+     ],
+     "grupo": "07580775000122",
+     "grupo_nome": "Interconexión Eléctrica S.A. E.S.P."
+    },
+    {
+     "cnpj": "02016507000169",
+     "nome": "AXIA ENERGIA SUL S.A.",
+     "contratos": 13,
+     "modulos": 733,
+     "circuitos_operacao": 75,
+     "km_circuito_operacao": 5816.4,
+     "pct_km": 4.28,
+     "subestacoes": 45,
+     "mva_transformacao_operacao": 17974.0,
+     "ufs": [
+      "MS",
+      "PR",
+      "RS",
+      "SC",
+      "SP"
+     ],
+     "grupo": "00001180000126",
+     "grupo_nome": "AXIA ENERGIA S.A."
+    },
+    {
+     "cnpj": "00001180000126",
+     "nome": "AXIA ENERGIA S.A.",
+     "contratos": 9,
+     "modulos": 776,
+     "circuitos_operacao": 65,
+     "km_circuito_operacao": 5579.5,
+     "pct_km": 4.11,
+     "subestacoes": 38,
+     "mva_transformacao_operacao": 30159.0,
+     "ufs": [
+      "DF",
+      "ES",
+      "GO",
+      "MG",
+      "MT",
+      "PR",
+      "RJ",
+      "SP",
+      "TO"
+     ],
+     "grupo": null,
+     "grupo_nome": null
+    },
+    {
+     "cnpj": "00357038000116",
+     "nome": "AXIA ENERGIA NORTE S.A.",
+     "contratos": 13,
+     "modulos": 988,
+     "circuitos_operacao": 53,
+     "km_circuito_operacao": 5509.4,
+     "pct_km": 4.06,
+     "subestacoes": 45,
+     "mva_transformacao_operacao": 12346.0,
+     "ufs": [
+      "AC",
+      "AM",
+      "MA",
+      "MT",
+      "PA",
+      "PI",
+      "RO",
+      "RR",
+      "SP",
+      "TO"
+     ],
+     "grupo": "00001180000126",
+     "grupo_nome": "AXIA ENERGIA S.A."
+    },
+    {
+     "cnpj": "23093056000133",
+     "nome": "XINGU RIO TRANSMISSORA DE ENERGIA S.A.",
+     "contratos": 1,
+     "modulos": 47,
+     "circuitos_operacao": 4,
+     "km_circuito_operacao": 5144.0,
+     "pct_km": 3.79,
+     "subestacoes": 2,
+     "mva_transformacao_operacao": 80.0,
+     "ufs": [
+      "PA",
+      "RJ"
+     ],
+     "grupo": "52877711000142",
+     "grupo_nome": "STATE GRID INTERNATIONAL SINGAPORE PRIVATE LIMITED"
+    },
+    {
+     "cnpj": "09625321000156",
+     "nome": "NORTE BRASIL TRANSMISSORA DE ENERGIA S.A.",
+     "contratos": 1,
+     "modulos": 2,
+     "circuitos_operacao": 2,
+     "km_circuito_operacao": 4824.0,
+     "pct_km": 3.55,
+     "subestacoes": 0,
+     "mva_transformacao_operacao": 0.0,
+     "ufs": [
+      "RO",
+      "SP"
+     ],
+     "grupo": null,
+     "grupo_nome": null
+    },
+    {
+     "cnpj": "20223016000170",
+     "nome": "BELO MONTE TRANSMISSORA DE ENERGIA SPE S.A.",
+     "contratos": 1,
+     "modulos": 35,
+     "circuitos_operacao": 2,
+     "km_circuito_operacao": 4184.0,
+     "pct_km": 3.08,
+     "subestacoes": 2,
+     "mva_transformacao_operacao": 0.0,
+     "ufs": [
+      "MG",
+      "PA"
+     ],
+     "grupo": null,
+     "grupo_nome": null
+    },
+    {
+     "cnpj": "92715812000131",
+     "nome": "CPFL TRANSMISSAO S.A.",
+     "contratos": 4,
+     "modulos": 925,
+     "circuitos_operacao": 67,
+     "km_circuito_operacao": 2549.9,
+     "pct_km": 1.88,
+     "subestacoes": 47,
+     "mva_transformacao_operacao": 6767.0,
+     "ufs": [
+      "PR",
+      "RS"
+     ],
+     "grupo": "26002119000197",
+     "grupo_nome": "State Grid Brazil Power Participações S.A."
+    },
+    {
+     "cnpj": "15286382000139",
+     "nome": "MATRINCHA TRANSMISSORA DE ENERGIA (TP NORTE) S.A.",
+     "contratos": 1,
+     "modulos": 115,
+     "circuitos_operacao": 9,
+     "km_circuito_operacao": 2438.6,
+     "pct_km": 1.8,
+     "subestacoes": 5,
+     "mva_transformacao_operacao": 800.0,
+     "ufs": [
+      "MT"
+     ],
+     "grupo": null,
+     "grupo_nome": null
+    }
+   ],
+   "grupos": [
+    {
+     "cnpj": "00001180000126",
+     "nome": "AXIA ENERGIA S.A.",
+     "empresas": 16,
+     "circuitos_operacao": 360,
+     "km_circuito_operacao": 30063.7,
+     "pct_km": 22.13,
+     "subestacoes": 227,
+     "mva_transformacao_operacao": 100638.0
+    },
+    {
+     "cnpj": "07580775000122",
+     "nome": "Interconexión Eléctrica S.A. E.S.P.",
+     "empresas": 18,
+     "circuitos_operacao": 204,
+     "km_circuito_operacao": 14378.4,
+     "pct_km": 10.58,
+     "subestacoes": 92,
+     "mva_transformacao_operacao": 40150.0
+    },
+    {
+     "cnpj": "52877711000142",
+     "nome": "STATE GRID INTERNATIONAL SINGAPORE PRIVATE LIMITED",
+     "empresas": 20,
+     "circuitos_operacao": 39,
+     "km_circuito_operacao": 9926.6,
+     "pct_km": 7.31,
+     "subestacoes": 29,
+     "mva_transformacao_operacao": 17345.0
+    },
+    {
+     "cnpj": "07859971000130",
+     "nome": "TRANSMISSORA ALIANCA DE ENERGIA ELETRICA S/A",
+     "empresas": 12,
+     "circuitos_operacao": 49,
+     "km_circuito_operacao": 5817.1,
+     "pct_km": 4.28,
+     "subestacoes": 38,
+     "mva_transformacao_operacao": 10920.0
+    },
+    {
+     "cnpj": "51771889000141",
+     "nome": "Cime Administração e Participações S.A.",
+     "empresas": 26,
+     "circuitos_operacao": 44,
+     "km_circuito_operacao": 5702.7,
+     "pct_km": 4.2,
+     "subestacoes": 39,
+     "mva_transformacao_operacao": 15044.0
+    },
+    {
+     "cnpj": "05470823000102",
+     "nome": "IBERDROLA ENERGIA S.A.",
+     "empresas": 8,
+     "circuitos_operacao": 36,
+     "km_circuito_operacao": 5074.4,
+     "pct_km": 3.74,
+     "subestacoes": 28,
+     "mva_transformacao_operacao": 5038.0
+    },
+    {
+     "cnpj": "09625321000156",
+     "nome": "NORTE BRASIL TRANSMISSORA DE ENERGIA S.A.",
+     "empresas": 1,
+     "circuitos_operacao": 2,
+     "km_circuito_operacao": 4824.0,
+     "pct_km": 3.55,
+     "subestacoes": 0,
+     "mva_transformacao_operacao": 0.0
+    },
+    {
+     "cnpj": "20223016000170",
+     "nome": "BELO MONTE TRANSMISSORA DE ENERGIA SPE S.A.",
+     "empresas": 1,
+     "circuitos_operacao": 2,
+     "km_circuito_operacao": 4184.0,
+     "pct_km": 3.08,
+     "subestacoes": 2,
+     "mva_transformacao_operacao": 0.0
+    }
+   ],
+   "evidencia": {
+    "indicador": "Módulos de transmissão do SIGET ligados ao CNPJ da concessionária",
+    "valor_exibido": "100,00%",
+    "valor_calculo": 100.0,
+    "unidade": "% dos módulos",
+    "periodo": {
+     "inicio": "2026-09-29",
+     "fim": "2026-09-29"
+    },
+    "entidade": "Módulos de transmissão registrados no SIGET (Brasil)",
+    "universo": "16.856 módulos (linha, equipamento, manobra e módulo geral) em 413 contratos de concessão",
+    "filtros": [],
+    "fonte": {
+     "orgao": "ANEEL",
+     "conjunto": "SIGET: Sistema de Gestão da Transmissão",
+     "recurso": "siget-contrato-agente.csv",
+     "url": "https://dadosabertos.aneel.gov.br/dataset/beefe870-7452-4830-a7b0-6611e3d5eff6/resource/60e111c3-6ee1-412e-abe3-bc15af897537/download/siget-contrato-agente.csv",
+     "arquivo": "data/energia/bronze/aneel/aneel_siget/siget-contrato-agente.csv/20261001T004514Z.1ee8b243d3f1.csv.gz",
+     "sha256": "1ee8b243d3f1b1c402be0d290aed1899c006aba5f7c182ef9453d78099a75fcf",
+     "capturado_em": "2026-10-01T00:45:14Z",
+     "publicado_em": "2026-09-29T16:35:49Z",
+     "arquivos": [
+      {
+       "recurso": "siget-contrato-agente.csv",
+       "arquivo": "data/energia/bronze/aneel/aneel_siget/siget-contrato-agente.csv/20261001T004514Z.1ee8b243d3f1.csv.gz",
+       "sha256": "1ee8b243d3f1b1c402be0d290aed1899c006aba5f7c182ef9453d78099a75fcf",
+       "capturado_em": "2026-10-01T00:45:14Z",
+       "publicado_em": "2026-09-29T16:35:49Z"
+      },
+      {
+       "recurso": "siget-contrato-empreendimento-obra-modulo.csv",
+       "arquivo": "data/energia/bronze/aneel/aneel_siget/siget-contrato-empreendimento-obra-modulo.csv/20260930T222158Z.d9a84fa14970.csv.gz",
+       "sha256": "d9a84fa1497095eee660670b13c4f41e58bad3eab3affac30e0dfee77fa8d6e0",
+       "capturado_em": "2026-09-30T22:21:58Z",
+       "publicado_em": "2026-09-29T16:35:48Z"
+      },
+      {
+       "recurso": "siget-contrato-modulolinhatransmissao-subestacaoorigem-subestacaodestino.csv",
+       "arquivo": "data/energia/bronze/aneel/aneel_siget/siget-contrato-modulolinhatransmissao-subestacaoorigem-subestacaodestino.csv/20260930T222210Z.4d5200f2d103.csv.gz",
+       "sha256": "4d5200f2d10398774357ab55c66d6da848f1a88804c209d8be7ccb2b48f57711",
+       "capturado_em": "2026-09-30T22:22:10Z",
+       "publicado_em": "2026-09-29T16:35:50Z"
+      },
+      {
+       "recurso": "siget-contrato-moduloequipamento-subestacao.csv",
+       "arquivo": "data/energia/bronze/aneel/aneel_siget/siget-contrato-moduloequipamento-subestacao.csv/20260930T222207Z.def713da233e.csv.gz",
+       "sha256": "def713da233e09bc07a120ac7a1ffae4a7abf4a92abd724467fb484fd8e17e2e",
+       "capturado_em": "2026-09-30T22:22:07Z",
+       "publicado_em": "2026-09-29T16:36:54Z"
+      }
+     ]
+    },
+    "extracao_pdf": null,
+    "chaves_origem": [
+     "siget-contrato-empreendimento-obra-modulo.csv: IdeMdl, IdeCcdProprietario",
+     "siget-contrato-agente.csv: IdeCcd, NumCNPJ"
+    ],
+    "chaves_total": null,
+    "consulta": "IdeMdl → IdeCcdProprietario (contrato dono do módulo) → IdeCcd do recurso de contratos → NumCNPJ completado com zeros à esquerda até 14 dígitos",
+    "manifesto": null,
+    "formula": "100 × módulos cujo contrato proprietário tem CNPJ ÷ módulos",
+    "numerador": {
+     "descricao": "módulos ligados a um CNPJ",
+     "valor": 16856
+    },
+    "denominador": {
+     "descricao": "módulos distintos do SIGET",
+     "valor": 16856
+    },
+    "pesos": null,
+    "exclusoes": [],
+    "cobertura": "1567 de 1567 módulos de linha com extensão no recurso de linhas; 4318 de 4318 módulos de equipamento com subestação no recurso de equipamentos",
+    "tratamento_ausencia": "Contrato sem CNPJ na fonte (1 em 29/09/2026, sem módulos) fica fora; módulo sem contrato com CNPJ seria contado à parte, nunca ligado por nome.",
+    "versao": {
+     "pipeline": "energia-0.1.0",
+     "codigo": "eec0a3121e05+alterado",
+     "publicacao": "2026-10-01T07:08:45Z"
+    },
+    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+    "testes": [
+     {
+      "nome": "Um único contrato proprietário por módulo",
+      "resultado": "aprovado",
+      "detalhe": "0 módulos com mais de um contrato proprietário"
+     },
+     {
+      "nome": "CNPJ completado com zeros à esquerda",
+      "resultado": "aprovado",
+      "detalhe": "115 contratos com NumCNPJ de menos de 14 dígitos completados (ex.: 8635011000150 → 08635011000150)"
+     }
+    ],
+    "reconciliacao": {
+     "descricao": "Cadastro de agentes (298 dos 298 CNPJ com módulos estão no cadastro; 298 declaram o ramo transmissão)",
+     "resultado": "aprovado",
+     "tolerancia": "conferência de identidade, não de valor: o ramo do cadastro é autodeclarado; aceite com pelo menos 90% dos CNPJ com o ramo declarado"
+    },
+    "download": [
+     {
+      "rotulo": "Transmissão por CNPJ (CSV)",
+      "url": "/energia/series/empresas_transmissao.csv"
+     }
+    ],
+    "reproducao": "python3 pipeline/energia/executar_modulo.py empresas --sem-coleta",
+    "citacao": "SCRUTINIUMS. Módulos de transmissão do SIGET ligados ao CNPJ da concessionária: 100,00%, Módulos de transmissão registrados no SIGET (Brasil), 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SIGET: Sistema de Gestão da Transmissão (recurso siget-contrato-agente.csv, capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   }
+  }
  },
  "distribuidoras": {
   "regra_universo": "CNPJ presente em ao menos uma base regulada de distribuição já integrada: SAMP Balanço (módulo Perdas), indicadores de continuidade (módulo Qualidade) ou tarifas de aplicação (módulo Conta de luz). O indicador de ramo 'distribuição' do cadastro de agentes não define o universo (é autodeclarado e inclui parques solares).",
   "golds_origem": {
    "perdas.json": {
-    "gerado_em": "2026-10-01T00:44:22Z",
+    "gerado_em": "2026-10-01T06:06:09Z",
     "disponivel": true
    },
    "qualidade.json": {
-    "gerado_em": "2026-10-01T00:20:33Z",
+    "gerado_em": "2026-10-01T05:53:21Z",
     "disponivel": true
    },
    "conta.json": {
@@ -1907,9 +2231,13 @@
      {
       "sigla": "ÂMBAR ENERGIA RR",
       "fonte": "tarifas"
+     },
+     {
+      "sigla": "Âmbar Roraima",
+      "fonte": "cadastro_agentes"
      }
     ],
-    "nome": "RORAIMA ENERGIA S.A",
+    "nome": "AMBAR ENERGIA RORAIMA S.A.",
     "classificacao": "Concessionária",
     "grupo": "concessionaria",
     "conflito_classificacao": false,
@@ -1961,7 +2289,9 @@
      "mw_proporcional": 190.321
     },
     "slug": "ambar-energia-rr",
-    "slugs_alternativos": [],
+    "slugs_alternativos": [
+     "ambar-roraima"
+    ],
     "evolucao": {
      "perdas": "2003/2026",
      "qualidade": "2015/2025",
@@ -2015,7 +2345,7 @@
     },
     "controle": {
      "topo": "45661048000189",
-     "topo_nome": "Denerge Desenvolvimento Energético S/A",
+     "topo_nome": "Denerge Desenvolvimento Energetico S.A",
      "cadeia": [
       "03467321000199",
       "61584140000149",
@@ -2876,7 +3206,7 @@
     },
     "controle": {
      "topo": "45661048000189",
-     "topo_nome": "Denerge Desenvolvimento Energético S/A",
+     "topo_nome": "Denerge Desenvolvimento Energetico S.A",
      "cadeia": [
       "07282377000120",
       "61584140000149",
@@ -4134,7 +4464,7 @@
     },
     "controle": {
      "topo": "45661048000189",
-     "topo_nome": "Denerge Desenvolvimento Energético S/A",
+     "topo_nome": "Denerge Desenvolvimento Energetico S.A",
      "cadeia": [
       "15413826000150",
       "61584140000149",
@@ -4280,7 +4610,7 @@
     },
     "controle": {
      "topo": "18629840000183",
-     "topo_nome": "PREFEITO MUNICIPAL DE POCOS DE CALDAS",
+     "topo_nome": "PREFEITURA MUNICIPAL DE POÇOS DE CALDAS",
      "cadeia": [
       "23664303000104",
       "12265979000109",
@@ -4349,7 +4679,7 @@
     },
     "controle": {
      "topo": "45661048000189",
-     "topo_nome": "Denerge Desenvolvimento Energético S/A",
+     "topo_nome": "Denerge Desenvolvimento Energetico S.A",
      "cadeia": [
       "25086034000171",
       "61584140000149",
@@ -6289,7 +6619,7 @@
     "tarifa": null,
     "controle": {
      "topo": "45661048000189",
-     "topo_nome": "Denerge Desenvolvimento Energético S/A",
+     "topo_nome": "Denerge Desenvolvimento Energetico S.A",
      "cadeia": [
       "61584140000149",
       "45661048000189"
@@ -9250,16 +9580,17 @@
    "ultimo_trimestre": "2026-06-30"
   },
   "revisoes": {
-   "documentos_com_mais_de_uma_versao": 512,
-   "valores_reapresentados": 2281,
+   "documentos_com_mais_de_uma_versao": 511,
+   "valores_reapresentados": 2134,
+   "inversoes_de_escala_resolvidas": 144,
    "observacoes_revisadas_entre_capturas": 0,
-   "regra": "Reapresentação = valor do exercício como publicado no comparativo da DFP seguinte diferente do valor original em mais de R$ 1 mil."
+   "regra": "Reapresentação = valor do exercício como publicado no comparativo da DFP seguinte diferente do valor original em mais de R$ 1 mil, depois da correção de escala (a troca de MIL por UNIDADE entre os dois documentos não é reapresentação: conta em inversoes_de_escala_resolvidas). Versões = versões distintas de cada documento no índice da CVM."
   },
   "exclusoes": {
    "regra_nao_apresentada": "Coluna de demonstração (CNPJ, escopo, exercício corrente ou comparativo, data) com ativo total igual a zero: a CVM preenche com zero as tabelas do escopo que a companhia não apresentou (em geral o consolidado de quem deixou de ter controladas). Todos os valores da coluna viram ausência, nunca zero.",
    "colunas_nao_apresentadas": {
     "documentos": 35,
-    "valores": 385,
+    "valores": 453,
     "exercicio_ou_trimestre": [
      {
       "cnpj": "02998301000181",
@@ -9405,6 +9736,90 @@
     "valores": 10,
     "companhias": 2,
     "recorte_csv": "periodo_irregular"
+   },
+   "regra_nao_preenchida": "Coluna não preenchida pela companhia, com prova no próprio arquivo: (1) coluna_nao_preenchida = todos os valores 0 ou ±1 na unidade do documento enquanto o outro escopo da mesma coluna tem valores de pelo menos 1.000 unidades (o modelo preenchido com 1); (2) fluxos_nao_preenchidos = DFC com todas as contas lidas iguais a zero enquanto o arquivo mostra caixa (saldo final do exercício anterior, caixa no balanço ou patrimônio líquido variando com DRE e DFC zeradas), levando junto a DRE zerada do mesmo documento e escopo. Os valores viram ausência, nunca zero.",
+   "colunas_nao_preenchidas": {
+    "colunas": 13,
+    "valores": 53,
+    "por_motivo": {
+     "coluna_nao_preenchida": 3,
+     "fluxos_nao_preenchidos": 10
+    },
+    "exercicio_ou_trimestre": [
+     "02291077000193 ind DFP DFC 2013-01-01/2013-12-31: fluxos_nao_preenchidos",
+     "08560444000193 ind DFP DFC 2025-01-01/2025-12-31: fluxos_nao_preenchidos",
+     "08560444000193 ind DFP DRE 2025-01-01/2025-12-31: fluxos_nao_preenchidos",
+     "20514555000169 ind DFP DFC 2022-01-01/2022-12-31: fluxos_nao_preenchidos",
+     "33541368000116 con ITR DRE 2021-04-01/2021-06-30: coluna_nao_preenchida",
+     "33541368000116 con ITR saldo 2021-03-31: coluna_nao_preenchida",
+     "33541368000116 con ITR saldo 2021-06-30: coluna_nao_preenchida"
+    ]
+   },
+   "escala": {
+    "regra": "Troca de escala: o mesmo número publicado em dois documentos da companhia (DFP do ano e comparativo da DFP seguinte; balanço de 31/12 e comparativo do ITR seguinte; trimestre e comparativo do ITR do ano seguinte) com razão de 1.000 (±0,1%) entre os valores convertidos, em ao menos duas contas e por maioria: a marca ESCALA_MOEDA de um dos documentos está errada. Os documentos ligados assim recebem níveis relativos; a DFP mais recente do componente define a escala e os demais valores são convertidos para ela (natureza ESTIMADO, nota em cada valor dos CSV; lista em empresas_financas_ajustes.csv).",
+    "documentos_corrigidos": 63,
+    "valores_corrigidos": 946,
+    "companhias": 12,
+    "por_companhia": [
+     "01543032000104 individual: 13 documentos convertidos para a escala da DFP de 2025-12-31 (MIL)",
+     "03076274000152 individual: 1 documentos convertidos para a escala da DFP de 2011-12-31 (MIL)",
+     "04739720000124 individual: 1 documentos convertidos para a escala da DFP de 2025-12-31 (MIL)",
+     "08773191000136 consolidado: 1 documentos convertidos para a escala da DFP de 2023-12-31 (MIL)",
+     "08773191000136 individual: 1 documentos convertidos para a escala da DFP de 2023-12-31 (MIL)",
+     "08935054000150 consolidado: 6 documentos convertidos para a escala da DFP de 2025-12-31 (MIL)",
+     "08935054000150 individual: 6 documentos convertidos para a escala da DFP de 2025-12-31 (MIL)",
+     "09149503000106 consolidado: 10 documentos convertidos para a escala da DFP de 2025-12-31 (MIL)",
+     "09149503000106 individual: 10 documentos convertidos para a escala da DFP de 2025-12-31 (MIL)",
+     "10502676000137 individual: 5 documentos convertidos para a escala da DFP de 2025-12-31 (MIL)",
+     "10835932000108 individual: 1 documentos convertidos para a escala da DFP de 2025-12-31 (MIL)",
+     "21254073000180 individual: 3 documentos convertidos para a escala da DFP de 2025-12-31 (MIL)",
+     "28925264000175 individual: 1 documentos convertidos para a escala da DFP de 2025-12-31 (MIL)",
+     "31001230000107 consolidado: 1 documentos convertidos para a escala da DFP de 2025-12-31 (MIL)",
+     "31001230000107 individual: 1 documentos convertidos para a escala da DFP de 2025-12-31 (MIL)",
+     "40480481000102 consolidado: 1 documentos convertidos para a escala da DFP de 2024-12-31 (MIL)",
+     "40480481000102 individual: 1 documentos convertidos para a escala da DFP de 2024-12-31 (MIL)"
+    ],
+    "componentes_contraditorios": []
+   },
+   "saltos_ativo": {
+    "regra": "Ativo total que muda 300 vezes ou mais entre exercícios consecutivos depois da correção de escala: publicado como a fonte entregou (sem comparativo exato que prove troca de escala), para conferência; inclui constituição de fato (ativo inicial de R$ 1 mil, por exemplo).",
+    "casos": [
+     {
+      "cnpj": "00194724000113",
+      "escopo": "ind",
+      "de": 2020,
+      "para": 2021,
+      "razao": 4056.0812
+     },
+     {
+      "cnpj": "28201130000101",
+      "escopo": "ind",
+      "de": 2017,
+      "para": 2018,
+      "razao": 335199.0
+     },
+     {
+      "cnpj": "37663076000107",
+      "escopo": "ind",
+      "de": 2020,
+      "para": 2021,
+      "razao": 7765842.0
+     },
+     {
+      "cnpj": "38126888000186",
+      "escopo": "con",
+      "de": 2020,
+      "para": 2021,
+      "razao": 315.0382
+     },
+     {
+      "cnpj": "46568486000160",
+      "escopo": "ind",
+      "de": 2024,
+      "para": 2025,
+      "razao": 1290302.4494
+     }
+    ]
    }
   },
   "companhias": [
@@ -9414,8 +9829,6 @@
     "nome": "NEOENERGIA S.A",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -9452,8 +9865,6 @@
     "nome": "EQUATORIAL S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -9487,8 +9898,6 @@
     "nome": "CPFL ENERGIA SA",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO HOLDING",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -9524,8 +9933,6 @@
     "nome": "CIA ENERG MINAS GERAIS - CEMIG",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "ESTATAL",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -9557,8 +9964,6 @@
     "nome": "AXIA ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "ESTATAL",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -9592,8 +9997,6 @@
     "nome": "ENERGISA SA",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -9627,8 +10030,6 @@
     "nome": "CEMIG DISTRIBUIÇÃO S/A",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "ESTATAL",
     "distribuidora_slug": "cemig-d",
     "anos": [
      2010,
@@ -9660,8 +10061,6 @@
     "nome": "COMPANHIA PARANAENSE DE ENERGIA COPEL",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "ESTATAL HOLDING",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -9693,8 +10092,6 @@
     "nome": "ELETROPAULO METROP. ELET. SAO PAULO S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": "eletropaulo",
     "anos": [
      2010,
@@ -9723,8 +10120,6 @@
     "nome": "EDP ENERGIAS DO BRASIL S/A",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "ESTRANGEIRO HOLDING",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -9756,8 +10151,6 @@
     "nome": "REDE ENERGIA PARTICIPAÇÕES S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": "caiua",
     "anos": [
      2010,
@@ -9790,8 +10183,6 @@
     "nome": "COPEL DISTRIBUIÇÃO S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "ESTATAL HOLDING",
     "distribuidora_slug": "copel-dis",
     "anos": [
      2021,
@@ -9823,8 +10214,6 @@
     "nome": "ENEVA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -9855,8 +10244,6 @@
     "nome": "CIA DE ELETRICIDADE DO ESTADO DA BAHIA - COELBA",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO HOLDING",
     "distribuidora_slug": "coelba",
     "anos": [
      2010,
@@ -9888,8 +10275,6 @@
     "nome": "COMPANHIA PAULISTA DE FORCA LUZ - CPFL",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": "cpfl-paulista",
     "anos": [
      2010,
@@ -9921,8 +10306,6 @@
     "nome": "LIGHT S.A. - EM RECUPERAÇÃO JUDICIAL",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -9954,8 +10337,6 @@
     "nome": "LIGHT SERVIÇOS DE ELETRICIDADE SA",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO HOLDING",
     "distribuidora_slug": "light-sesa",
     "anos": [
      2010,
@@ -9987,8 +10368,6 @@
     "nome": "AUREN ENERGIA S.A",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2021,
@@ -10021,8 +10400,6 @@
     "nome": "ENGIE BRASIL ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -10055,8 +10432,6 @@
     "nome": "EQUATORIAL GOIAS DISTRIBUIDORA DE ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": "equatorial-go",
     "anos": [
      2019,
@@ -10079,7 +10454,7 @@
      "cnpj": "03220438000173",
      "nome": "EQUATORIAL S.A."
     },
-    "valores_reapresentados": 12,
+    "valores_reapresentados": 7,
     "controla_abertas": []
    },
    {
@@ -10088,8 +10463,6 @@
     "nome": "RGE SUL DISTRIBUIDORA DE ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": "rge",
     "anos": [
      2010,
@@ -10121,8 +10494,6 @@
     "nome": "EQUATORIAL PARÁ DISTRIBUIDORA DE ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": "equatorial-pa",
     "anos": [
      2010,
@@ -10154,8 +10525,6 @@
     "nome": "CENTRAIS ELETRICAS DE SANTA CATARINA S.A",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "ESTATAL",
     "distribuidora_slug": "celesc-83878892",
     "anos": [
      2010,
@@ -10184,8 +10553,6 @@
     "nome": "AXIA ENERGIA NORTE S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2023,
@@ -10217,8 +10584,6 @@
     "nome": "ELEKTRO REDES S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": "elektro",
     "anos": [
      2010,
@@ -10250,8 +10615,6 @@
     "nome": "AMPLA ENERGIA E SERVIÇOS S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "ESTRANGEIRO",
     "distribuidora_slug": "enel-rj",
     "anos": [
      2010,
@@ -10280,8 +10643,6 @@
     "nome": "ISA ENERGIA BRASIL S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO HOLDING",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -10310,8 +10671,6 @@
     "nome": "CIA ENERG CEARA - COELCE",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": "enel-ce",
     "anos": [
      2010,
@@ -10340,8 +10699,6 @@
     "nome": "ENERGISA MATO GROSSO-DISTRIBUIDORA DE ENERGIA S/A",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": "emt",
     "anos": [
      2010,
@@ -10373,8 +10730,6 @@
     "nome": "AXIA ENERGIA NORDESTE S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": null,
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -10406,8 +10761,6 @@
     "nome": "CIA ENERGÉTICA DE PERNAMBUCO - CELPE",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO HOLDING",
     "distribuidora_slug": "neoenergia-pe",
     "anos": [
      2010,
@@ -10430,7 +10783,7 @@
      "cnpj": "01083200000118",
      "nome": "NEOENERGIA S.A"
     },
-    "valores_reapresentados": 42,
+    "valores_reapresentados": 32,
     "controla_abertas": []
    },
    {
@@ -10439,8 +10792,6 @@
     "nome": "CEMIG GERAÇÃO E TRANSMISSÃO S/A",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "ESTATAL",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -10472,8 +10823,6 @@
     "nome": "EQUATORIAL MARANHÃO DISTRIBUIDORA DE ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": "equatorial-ma",
     "anos": [
      2010,
@@ -10505,8 +10854,6 @@
     "nome": "EDP SÃO PAULO DISTRIBUIÇÃO DE ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": "edp-sp",
     "anos": [
      2010,
@@ -10538,8 +10885,6 @@
     "nome": "CHINA THREE GORGES BRASIL ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2021,
@@ -10571,8 +10916,6 @@
     "nome": "SERENA ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2021,
@@ -10603,8 +10946,6 @@
     "nome": "NORTE ENERGIA S.A",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2019,
@@ -10633,8 +10974,6 @@
     "nome": "CIA ESTADUAL DE DISTRIBUIÇÃO DE ENERGIA ELETRICA",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "ESTATAL",
     "distribuidora_slug": "ceee-d",
     "anos": [
      2010,
@@ -10666,8 +11005,6 @@
     "nome": "CIA PIRATININGA DE FORÇA E LUZ",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": "cpfl-piratining",
     "anos": [
      2010,
@@ -10699,8 +11036,6 @@
     "nome": "EDP ESPIRITO SANTO DISTRIBUIÇÃO DE ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": "edp-es",
     "anos": [
      2010,
@@ -10732,8 +11067,6 @@
     "nome": "COMERC ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2020,
@@ -10767,8 +11100,6 @@
     "nome": "SERENA GERAÇÃO S.A.",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -10800,8 +11131,6 @@
     "nome": "COPEL GERAÇÃO E TRANSMISSÃO S/A",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "ESTATAL HOLDING",
     "distribuidora_slug": null,
     "anos": [
      2018,
@@ -10833,8 +11162,6 @@
     "nome": "AXIA ENERGIA UHE SANTO ANTÔNIO S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2013,
@@ -10866,8 +11193,6 @@
     "nome": "ENERGISA MATO GROSSO DO SUL - DIST DE ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": "ems",
     "anos": [
      2010,
@@ -10899,8 +11224,6 @@
     "nome": "TRANSMISSORA ALIANÇA DE ENERGIA ELÉTRICA S.A.",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -10929,8 +11252,6 @@
     "nome": "ALUPAR INVESTIMENTO S/A",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -10962,8 +11283,6 @@
     "nome": "RIO PARANA ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2018,
@@ -10995,8 +11314,6 @@
     "nome": "CIA ENERGÉTICA DO RIO GRANDE DO NORTE",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": "cosern",
     "anos": [
      2010,
@@ -11028,8 +11345,6 @@
     "nome": "AUREN PARTICIPAÇÕES S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO HOLDING",
     "distribuidora_slug": null,
     "anos": [
      2020,
@@ -11058,8 +11373,6 @@
     "nome": "ENERGISA PARAÍBA - DISTRIBUIDORA DE ENERGIA S/A",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": "epb",
     "anos": [
      2010,
@@ -11091,8 +11404,6 @@
     "nome": "AUREN OPERAÇÕES S.A.",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO HOLDING",
     "distribuidora_slug": null,
     "anos": [
      2020,
@@ -11124,8 +11435,6 @@
     "nome": "CPFL ENERGIAS RENOVÁVEIS S.A.",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -11157,8 +11466,6 @@
     "nome": "AXIA ENERGIA SUL S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2023,
@@ -11190,8 +11497,6 @@
     "nome": "ENERGISA SUL-SUDESTE - DISTRIBUIDORA DE ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": "ess",
     "anos": [
      2018,
@@ -11223,8 +11528,6 @@
     "nome": "ENERGISA SERGIPE - DISTRIBUIDORA DE ENERGIA S/A",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": "ese",
     "anos": [
      2010,
@@ -11256,8 +11559,6 @@
     "nome": "CPFL TRANSMISSÃO S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "ESTATAL",
     "distribuidora_slug": "cpfl-transmissao",
     "anos": [
      2010,
@@ -11289,8 +11590,6 @@
     "nome": "CESP - COMPANHIA ENERGÉTICA DE SÃO PAULO",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -11322,8 +11621,6 @@
     "nome": "ENERGISA MINAS RIO - DISTRIBUIDORA DE ENERGIA S/A",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": "emr",
     "anos": [
      2010,
@@ -11355,8 +11652,6 @@
     "nome": "RIO PARANAPANEMA ENERGIA SA",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -11390,8 +11685,6 @@
     "nome": "ENERGISA TRANSMISSÃO DE ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2017,
@@ -11423,8 +11716,6 @@
     "nome": "ARGO ENERGIA EMPREENDIMENTOS E PARTICIPAÇÕES S.A.",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO HOLDING",
     "distribuidora_slug": null,
     "anos": [
      2016,
@@ -11458,8 +11749,6 @@
     "nome": "USINA TERMELÉTRICA PAMPA SUL S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2019,
@@ -11479,7 +11768,7 @@
     "alertas": [],
     "ultimo_trimestre": "2026-06-30",
     "controladora_aberta": null,
-    "valores_reapresentados": 10,
+    "valores_reapresentados": 0,
     "controla_abertas": []
    },
    {
@@ -11488,8 +11777,6 @@
     "nome": "ARGO TRANSMISSÃO DE ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2016,
@@ -11521,8 +11808,6 @@
     "nome": "LIGHT ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2011,
@@ -11554,8 +11839,6 @@
     "nome": "ASSURUÁ 4 E 5 HOLDING ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO HOLDING",
     "distribuidora_slug": null,
     "anos": [
      2024,
@@ -11584,8 +11867,6 @@
     "nome": "TAPAJÓS TRANSMISSORA DE ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2017,
@@ -11614,8 +11895,6 @@
     "nome": "BRASIL BIOFUELS S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2023,
@@ -11644,8 +11923,6 @@
     "nome": "COMPANHIA ENERGÉTICA JAGUARA",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2017,
@@ -11668,7 +11945,7 @@
      "cnpj": "02474103000119",
      "nome": "ENGIE BRASIL ENERGIA S.A."
     },
-    "valores_reapresentados": 20,
+    "valores_reapresentados": 2,
     "controla_abertas": []
    },
    {
@@ -11677,8 +11954,6 @@
     "nome": "RENOVA ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -11707,8 +11982,6 @@
     "nome": "COMPANHIA ENERGÉTICA DE BRASÍLIA - CEB",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "ESTATAL",
     "distribuidora_slug": "ceb",
     "anos": [
      2010,
@@ -11737,8 +12010,6 @@
     "nome": "EMAE - EMPRESA METROP.AGUAS ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "ESTATAL",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -11770,8 +12041,6 @@
     "nome": "TERP GLBL BRASIL I PARTICIPAÇÕES S.A.",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2024,
@@ -11800,8 +12069,6 @@
     "nome": "COMPANHIA ENERGÉTICA MIRANDA",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2017,
@@ -11833,8 +12100,6 @@
     "nome": "COMPANHIA ENERGÉTICA SINOP S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2016,
@@ -11863,8 +12128,6 @@
     "nome": "COMPANHIA ESTADUAL DE GERAÇÃO DE ENERGIA ELÉTRICA - CEEE-G",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2021,
@@ -11893,8 +12156,6 @@
     "nome": "NORTE BRASIL TRANSMISSORA DE ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2019,
@@ -11923,8 +12184,6 @@
     "nome": "TUPI ENERGIAS RENOVÁVEIS S.A.",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2025,
@@ -11953,8 +12212,6 @@
     "nome": "TRANSMISSORA JOSÉ MARIA DE MACEDO DE ELETRICIDADE S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO HOLDING",
     "distribuidora_slug": null,
     "anos": [
      2020,
@@ -11986,8 +12243,6 @@
     "nome": "ESSENTIA PCHS S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "ESTRANGEIRO",
     "distribuidora_slug": null,
     "anos": [
      2020,
@@ -12018,8 +12273,6 @@
     "nome": "HÉLIO VALGAS SOLAR PARTICIPAÇÕES S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2023,
@@ -12051,8 +12304,6 @@
     "nome": "FERREIRA GOMES ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO HOLDING",
     "distribuidora_slug": null,
     "anos": [
      2011,
@@ -12086,8 +12337,6 @@
     "nome": "FOZ DO RIO CLARO ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2021,
@@ -12119,8 +12368,6 @@
     "nome": "BELÉM TRANSMISSORA DE ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2017,
@@ -12149,8 +12396,6 @@
     "nome": "MANAUS TRANSMISSORA DE ENERGIA S.A",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2020,
@@ -12179,8 +12424,6 @@
     "nome": "LINHAS DE MACAPÁ TRANSMISSORA DE ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2014,
@@ -12209,8 +12452,6 @@
     "nome": "TERMELÉTRICA PERNAMBUCO III S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2012,
@@ -12230,7 +12471,7 @@
     "alertas": [],
     "ultimo_trimestre": "2026-06-30",
     "controladora_aberta": null,
-    "valores_reapresentados": 29,
+    "valores_reapresentados": 10,
     "controla_abertas": []
    },
    {
@@ -12239,8 +12480,6 @@
     "nome": "INVESTCO S/A",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -12269,8 +12508,6 @@
     "nome": "LINHAS DE XINGU TRANSMISSORA DE ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2014,
@@ -12299,8 +12536,6 @@
     "nome": "RIO ALTO ENERGIAS RENOVÁVEIS S.A. - EM RECUPERAÇÃO JUDICIAL",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2020,
@@ -12331,8 +12566,6 @@
     "nome": "ARGO V TRANSMISSAO DE ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO HOLDING",
     "distribuidora_slug": null,
     "anos": [
      2020,
@@ -12364,8 +12597,6 @@
     "nome": "CELEO REDES TRANSMISSÃO DE ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2018,
@@ -12385,7 +12616,7 @@
     "alertas": [],
     "ultimo_trimestre": "2026-06-30",
     "controladora_aberta": null,
-    "valores_reapresentados": 44,
+    "valores_reapresentados": 4,
     "controla_abertas": []
    },
    {
@@ -12394,8 +12625,6 @@
     "nome": "ARGO VI TRANSMISSAO DE ENERGIA S.A.",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO HOLDING",
     "distribuidora_slug": null,
     "anos": [
      2020,
@@ -12418,7 +12647,7 @@
      "cnpj": "24624551000194",
      "nome": "ARGO ENERGIA EMPREENDIMENTOS E PARTICIPAÇÕES S.A."
     },
-    "valores_reapresentados": 3,
+    "valores_reapresentados": 0,
     "controla_abertas": []
    },
    {
@@ -12427,8 +12656,6 @@
     "nome": "ASA BRANCA HOLDING S.A.",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO HOLDING",
     "distribuidora_slug": null,
     "anos": [
      2021,
@@ -12457,8 +12684,6 @@
     "nome": "CACHOEIRA PAULISTA TRANSMISSORA DE ENERGIA SA",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO HOLDING",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -12487,8 +12712,6 @@
     "nome": "AFLUENTE TRANSMISSÃO DE ENERGIA ELETRICA S/A",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO HOLDING",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -12520,8 +12743,6 @@
     "nome": "COMPANHIA ITAUNENSE ENERGIA E PARTICIPAÇÕES",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2014,
@@ -12541,7 +12762,7 @@
     "alertas": [],
     "ultimo_trimestre": "2026-06-30",
     "controladora_aberta": null,
-    "valores_reapresentados": 9,
+    "valores_reapresentados": 0,
     "controla_abertas": []
    },
    {
@@ -12550,8 +12771,6 @@
     "nome": "PLATÃO CAPITAL S.A.",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2024,
@@ -12580,8 +12799,6 @@
     "nome": "PRODUTORES ENERGET.DE MANSO S.A.- PROMAN",
     "situacao": "ATIVO",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -12610,8 +12827,6 @@
     "nome": "521 PARTICIPAÇOES S.A. - EM LIQUIDAÇÃO EXTRAJUDICIAL",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -12640,8 +12855,6 @@
     "nome": "BONAIRE PARTICIPAÇÕES S.A.- EM LIQUIDAÇÃO",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -12670,8 +12883,6 @@
     "nome": "DINAMICA ENERGIA S/A",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -12700,8 +12911,6 @@
     "nome": "COMPANHIA CELG DE PARTICIPAÇÕES - CELGPAR",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "ESTATAL HOLDING",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -12710,16 +12919,16 @@
     "ultimo_exercicio": 2025,
     "escopo_exibido": "ind",
     "valores": {
-     "receita": 0,
-     "ebit": 0,
-     "lucro_liquido": 0,
+     "receita": null,
+     "ebit": null,
+     "lucro_liquido": null,
      "divida_bruta": 137000,
      "patrimonio_liquido": 590513000,
      "ativo_total": 749830000,
-     "caixa_investimento": 0
+     "caixa_investimento": null
     },
     "alertas": [
-     "dre_zerada_na_fonte"
+     "fluxos_nao_preenchidos"
     ],
     "ultimo_trimestre": "2025-09-30",
     "controladora_aberta": null,
@@ -12732,8 +12941,6 @@
     "nome": "QUANTUM PARTICIPAÇÕES S.A",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2024,
@@ -12762,8 +12969,6 @@
     "nome": "MANTIQUEIRA HOLDING S.A.",
     "situacao": "ATIVO",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2024,
@@ -12792,8 +12997,6 @@
     "nome": "CPFL GERAÇÃO DE ENERGIA S/A",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -12825,8 +13028,6 @@
     "nome": "RIO GRANDE ENERGIA SA",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": "rge-02016439",
     "anos": [
      2010,
@@ -12855,8 +13056,6 @@
     "nome": "AES TIETE SA",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -12885,8 +13084,6 @@
     "nome": "VBC ENERGIA SA",
     "situacao": "CANCELADA",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -12915,8 +13112,6 @@
     "nome": "AMPLA INVESTIMENTOS E SERVIÇOS S/A",
     "situacao": "CANCELADA",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO HOLDING",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -12945,8 +13140,6 @@
     "nome": "AES TIETÊ ENERGIA S.A",
     "situacao": "CANCELADA",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -12978,8 +13171,6 @@
     "nome": "FOCUS ENERGIA HOLDING PARTICIPAÇÕES S.A.",
     "situacao": "CANCELADA",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2019,
@@ -13008,8 +13199,6 @@
     "nome": "STATKRAFT ENERGIAS RENOVÁVEIS S.A.",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -13038,8 +13227,6 @@
     "nome": "SAFIRA HOLDING S.A.",
     "situacao": "CANCELADA",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2021,
@@ -13068,8 +13255,6 @@
     "nome": "ELETRORIVER S.A.",
     "situacao": "CANCELADA",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO HOLDING",
     "distribuidora_slug": null,
     "anos": [
      2021,
@@ -13098,8 +13283,6 @@
     "nome": "TERMOPERNAMBUCO SA",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -13131,8 +13314,6 @@
     "nome": "ITAQUI GERAÇÃO DE ENERGIA S.A.",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2012,
@@ -13164,8 +13345,6 @@
     "nome": "2W ECOBANK S.A. - EM RECUPERAÇÃO JUDICIAL",
     "situacao": "SUSPENSO(A) - DECISÃO ADM",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2019,
@@ -13194,8 +13373,6 @@
     "nome": "Rio Energy Participações S.A.",
     "situacao": "CANCELADA",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2020,
@@ -13224,8 +13401,6 @@
     "nome": "BAESA-ENERGETICA BARRA GRANDE SA",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -13254,8 +13429,6 @@
     "nome": "ITA ENERGETICA S/A",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -13287,8 +13460,6 @@
     "nome": "VENTOS DO SUL ENERGIA S.A.",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2018,
@@ -13317,8 +13488,6 @@
     "nome": "MULTINER S/A",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO HOLDING",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -13338,7 +13507,7 @@
     "alertas": [],
     "ultimo_trimestre": "2025-09-30",
     "controladora_aberta": null,
-    "valores_reapresentados": 106,
+    "valores_reapresentados": 83,
     "controla_abertas": []
    },
    {
@@ -13347,8 +13516,6 @@
     "nome": "ITAPEBI GERAÇÃO DE ENERGIA S/A",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -13380,8 +13547,6 @@
     "nome": "ANEMUS WIND HOLDING S.A.",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2021,
@@ -13410,8 +13575,6 @@
     "nome": "MACHADINHO ENERGÉTICA SA",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -13431,7 +13594,7 @@
     "alertas": [],
     "ultimo_trimestre": null,
     "controladora_aberta": null,
-    "valores_reapresentados": 10,
+    "valores_reapresentados": 0,
     "controla_abertas": []
    },
    {
@@ -13440,8 +13603,6 @@
     "nome": "RIO ALTO STL HOLDING I S.A.",
     "situacao": "CANCELADA",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2021,
@@ -13475,8 +13636,6 @@
     "nome": "AFLUENTE GERAÇÃO DE ENERGIA ELÉTRICA S.A.",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -13508,8 +13667,6 @@
     "nome": "INEPAR ENERGIA SA",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -13538,8 +13695,6 @@
     "nome": "ITIQUIRA ENERGÉTICA S/A",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": null,
-    "controle_acionario": "ESTRANGEIRO",
     "distribuidora_slug": null,
     "anos": null,
     "ultimo_exercicio": null,
@@ -13557,8 +13712,6 @@
     "nome": "CIMS SA",
     "situacao": "CANCELADA",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -13587,8 +13740,6 @@
     "nome": "ELETROBRÁS PARTICIPAÇÕES S.A. - ELETROPAR",
     "situacao": "CANCELADA",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "ESTATAL",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -13617,8 +13768,6 @@
     "nome": "CENTRAIS ELÉTRICAS CACHOEIRA DOURADA S/A",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": null,
-    "controle_acionario": "ESTRANGEIRO HOLDING",
     "distribuidora_slug": null,
     "anos": null,
     "ultimo_exercicio": null,
@@ -13636,8 +13785,6 @@
     "nome": "AES ELPA SA",
     "situacao": "CANCELADA",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO HOLDING",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -13666,8 +13813,6 @@
     "nome": "CPFL JAGUARIÚNA S.A.",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": null,
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": null,
     "ultimo_exercicio": null,
@@ -13685,8 +13830,6 @@
     "nome": "UPTICK PARTICIPACOES S.A. - EM LIQUIDAÇÃO",
     "situacao": "CANCELADA",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -13715,8 +13858,6 @@
     "nome": "CIA ENERGETICA MERIDIONAL",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": null,
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": null,
     "ultimo_exercicio": null,
@@ -13734,8 +13875,6 @@
     "nome": "SUBESTAÇÃO ELETROMETRÔ S/A",
     "situacao": "CANCELADA",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -13764,8 +13903,6 @@
     "nome": "EPTE-EMPR. PTA TRANS. ENERG. ELETR. S.A.",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": null,
-    "controle_acionario": "ESTATAL",
     "distribuidora_slug": null,
     "anos": null,
     "ultimo_exercicio": null,
@@ -13783,8 +13920,6 @@
     "nome": "BSB ENERGÉTICA S.A.",
     "situacao": "CANCELADA",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO HOLDING",
     "distribuidora_slug": null,
     "anos": [
      2021,
@@ -13813,8 +13948,6 @@
     "nome": "BRASILIANA ENERGIA SA",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": null,
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": null,
     "ultimo_exercicio": null,
@@ -13832,8 +13965,6 @@
     "nome": "ISA CAPITAL DO BRASIL SA",
     "situacao": "CANCELADA",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "ESTRANGEIRO HOLDING",
     "distribuidora_slug": null,
     "anos": null,
     "ultimo_exercicio": null,
@@ -13851,8 +13982,6 @@
     "nome": "BRASILIANA PARTICIPAÇÕES S.A.",
     "situacao": "CANCELADA",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2015,
@@ -13881,8 +14010,6 @@
     "nome": "REDENTOR ENERGIA S/A",
     "situacao": "CANCELADA",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2010,
@@ -13911,8 +14038,6 @@
     "nome": "EOX ENERGIA EÓLICA S.A.",
     "situacao": "CANCELADA",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2011,
@@ -13941,8 +14066,6 @@
     "nome": "ISOLUX INFRASTRUCTURE SA",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "ESTRANGEIRO",
     "distribuidora_slug": null,
     "anos": null,
     "ultimo_exercicio": null,
@@ -13960,8 +14083,6 @@
     "nome": "RIO MONSARÁS PARTICIPAÇÕES S/A",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": "Categoria B",
-    "controle_acionario": "PRIVADO HOLDING",
     "distribuidora_slug": null,
     "anos": [
      2011,
@@ -13990,8 +14111,6 @@
     "nome": "RR CASA DE INVESTIMENTOS E PARTICIPAÇÕES S.A.",
     "situacao": "CANCELADA",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2015,
@@ -14020,8 +14139,6 @@
     "nome": "AMALFI EMPREENDIMENTOS E PARTICIPAÇÕES S.A.",
     "situacao": "CANCELADA",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": "Categoria A",
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": [
      2017,
@@ -14050,8 +14167,6 @@
     "nome": "CIA PAULISTA ENERGIA ELETRICA",
     "situacao": "CANCELADA",
     "setor": "Energia Elétrica",
-    "categoria": null,
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": "cpfl-leste-pauli",
     "anos": null,
     "ultimo_exercicio": null,
@@ -14069,8 +14184,6 @@
     "nome": "IVEN SA",
     "situacao": "CANCELADA",
     "setor": "Emp. Adm. Part. - Energia Elétrica",
-    "categoria": null,
-    "controle_acionario": "PRIVADO",
     "distribuidora_slug": null,
     "anos": null,
     "ultimo_exercicio": null,
@@ -14583,8 +14696,8 @@
     "tratamento_ausencia": "Parcela sem CNPJ (pessoas físicas, 42,7 MW) fica no denominador e fora dos participantes: o índice é um limite inferior.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "d5dc4fd86561+alterado",
-     "publicacao": "2026-10-01T00:53:06Z"
+     "codigo": "eec0a3121e05+alterado",
+     "publicacao": "2026-10-01T07:08:48Z"
     },
     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
     "testes": [
@@ -14611,7 +14724,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py empresas --sem-coleta",
-    "citacao": "SCRUTINIUMS. Índice Herfindahl-Hirschman da potência em operação por grupo de controle: 392 pontos (0 a 10.000), Grupos (topo da cadeia de controladores únicos declarada à ANEEL), 01/07/2025 a 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SIGA e Composição Societária (Polímero) (recurso siga-empreendimentos-geracao-diario.csv, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Índice Herfindahl-Hirschman da potência em operação por grupo de controle: 392 pontos (0 a 10.000), Grupos (topo da cadeia de controladores únicos declarada à ANEEL), 01/07/2025 a 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SIGA e Composição Societária (Polímero) (recurso siga-empreendimentos-geracao-diario.csv, capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    }
   },
   "cobertura": {
@@ -14972,7 +15085,7 @@
    },
    {
     "cnpj": "61194148000107",
-    "nome": "HEJOASSU ADMINISTRAÇÃO S.A.",
+    "nome": "Hejoassu Administração S.A.",
     "mw_proporcional": 1329.4,
     "participacao_pct": 0.6,
     "mw_controle": 1149.8,
@@ -14984,7 +15097,7 @@
    },
    {
     "cnpj": "05498301000100",
-    "nome": "EDF INTERNATIONAL SAS",
+    "nome": "EDF Holding S.A.S",
     "mw_proporcional": 1228.7,
     "participacao_pct": 0.56,
     "mw_controle": 1228.7,
@@ -15017,136 +15130,18 @@
     "motivo_parada": "compartilhado",
     "acima": null,
     "listada_cvm": true
-   },
-   {
-    "cnpj": "21812954000179",
-    "nome": "EDF EN DO BRASIL PARTICIPACOES LTDA",
-    "mw_proporcional": 1115.2,
-    "participacao_pct": 0.51,
-    "mw_controle": 1115.2,
-    "usinas_controle": 25,
-    "empresas_com_usinas": 25,
-    "motivo_parada": "compartilhado",
-    "acima": null,
-    "listada_cvm": false
-   },
-   {
-    "cnpj": "33042730000104",
-    "nome": "COMPANHIA SIDERURGICA NACIONAL",
-    "mw_proporcional": 1076.6,
-    "participacao_pct": 0.49,
-    "mw_controle": 881.0,
-    "usinas_controle": 9,
-    "empresas_com_usinas": 6,
-    "motivo_parada": "compartilhado",
-    "acima": null,
-    "listada_cvm": true
-   },
-   {
-    "cnpj": "23637697000101",
-    "nome": "ALCOA ALUMINIO S/A",
-    "mw_proporcional": 1001.7,
-    "participacao_pct": 0.45,
-    "mw_controle": 690.0,
-    "usinas_controle": 1,
-    "empresas_com_usinas": 2,
-    "motivo_parada": "ambigua",
-    "acima": null,
-    "listada_cvm": false
-   },
-   {
-    "cnpj": "09334083000120",
-    "nome": "EDP RENOVAVEIS BRASIL S/A",
-    "mw_proporcional": 909.8,
-    "participacao_pct": 0.41,
-    "mw_controle": 876.0,
-    "usinas_controle": 20,
-    "empresas_com_usinas": 20,
-    "motivo_parada": "sem_cnpj",
-    "acima": "EDP RENOVAVEIS, SA",
-    "listada_cvm": false
-   },
-   {
-    "cnpj": "03378521000175",
-    "nome": "LIGHT S.A. - EM RECUPERAÇÃO JUDICIAL",
-    "mw_proporcional": 855.1,
-    "participacao_pct": 0.39,
-    "mw_controle": 855.1,
-    "usinas_controle": 5,
-    "empresas_com_usinas": 1,
-    "motivo_parada": "sem_controlador",
-    "acima": null,
-    "listada_cvm": true
-   },
-   {
-    "cnpj": "07829836000142",
-    "nome": "Chapecoense Geração S.A.",
-    "mw_proporcional": 855.0,
-    "participacao_pct": 0.39,
-    "mw_controle": 855.0,
-    "usinas_controle": 1,
-    "empresas_com_usinas": 1,
-    "motivo_parada": "compartilhado",
-    "acima": null,
-    "listada_cvm": false
-   },
-   {
-    "cnpj": "14522198000188",
-    "nome": "TIJOA PARTICIPACOES E INVESTIMENTOS S.A.",
-    "mw_proporcional": 807.5,
-    "participacao_pct": 0.37,
-    "mw_controle": 807.5,
-    "usinas_controle": 1,
-    "empresas_com_usinas": 1,
-    "motivo_parada": "sem_declaracao",
-    "acima": null,
-    "listada_cvm": false
-   },
-   {
-    "cnpj": "42078944000121",
-    "nome": "VISTA ALEGRE COMERCIALIZADORA DE ENERGIA S.A",
-    "mw_proporcional": 767.6,
-    "participacao_pct": 0.35,
-    "mw_controle": 767.6,
-    "usinas_controle": 18,
-    "empresas_com_usinas": 18,
-    "motivo_parada": "compartilhado",
-    "acima": null,
-    "listada_cvm": false
-   },
-   {
-    "cnpj": "17322459000104",
-    "nome": "ASTRA INFRAESTRUTURA I FUNDO DE INVESTIMENTO EM PARTICIPAÇÕES MULTIESTRATÉGIA",
-    "mw_proporcional": 745.3,
-    "participacao_pct": 0.34,
-    "mw_controle": 745.3,
-    "usinas_controle": 27,
-    "empresas_com_usinas": 27,
-    "motivo_parada": "ambigua",
-    "acima": null,
-    "listada_cvm": false
-   },
-   {
-    "cnpj": "18494537000110",
-    "nome": "EMPRESA DE ENERGIA SAO MANOEL S.A.",
-    "mw_proporcional": 700.0,
-    "participacao_pct": 0.32,
-    "mw_controle": 700.0,
-    "usinas_controle": 1,
-    "empresas_com_usinas": 1,
-    "motivo_parada": "compartilhado",
-    "acima": null,
-    "listada_cvm": false
    }
   ]
  },
  "validacao": {
   "criticas": [],
   "ressalvas": [
-   "35 colunas de demonstração da CVM com ativo total zero tratadas como não apresentadas (385 valores fora das séries)",
+   "35 colunas de demonstração da CVM com ativo total zero tratadas como não apresentadas (453 valores fora das séries)",
    "12 exercícios com data de início inconsistente na fonte aceitos como exercício de 12 meses (nota no CSV anual)",
    "36 valores de exercícios curtos (DFP) e 10 de períodos irregulares (ITR) fora das séries, publicados nos CSV com recorte próprio",
-   "1 companhias com DRE do último exercício zerada na fonte e balanço positivo (alerta dre_zerada_na_fonte)"
+   "13 colunas de demonstração da CVM não preenchidas pela companhia (prova no próprio arquivo) tratadas como ausência (53 valores)",
+   "63 documentos da CVM com a marca de escala divergente de outro documento da mesma companhia, convertidos para a escala da DFP mais recente (946 valores; natureza ESTIMADO)",
+   "5 saltos de 300 vezes ou mais no ativo total entre exercícios consecutivos sem troca de escala provada (financas.exclusoes.saltos_ativo)"
   ],
   "identidades": {
    "particao_grupos": true,
@@ -15160,13 +15155,6 @@
    "descricao": "Demonstrações regulatórias das distribuidoras (Balancete Mensal Padronizado e base de dados da sustentabilidade econômico-financeira) não integradas.",
    "evidencia": "Em 30/09/2026, git.aneel.gov.br respondeu HTTP 403 com cf-mitigated: challenge (desafio do Cloudflare) para os arquivos da base de sustentabilidade (2026_1T_base_dados_sustentabilidade.zip) e para a listagem da pasta; http://informacoesbmp.aneel.gov.br/ respondeu HTTP 503. Nenhum conjunto equivalente no portal de dados abertos da ANEEL (buscas: balancete, econômico-financeiro, demonstrações). O acesso não foi contornado.",
    "alternativa": "Demonstrações societárias da CVM (DFP e ITR), rotuladas como societárias; as regulatórias ficam como pendência."
-  },
-  {
-   "id": "transmissao",
-   "painel": "P036",
-   "descricao": "Ativos de transmissão não vinculados a CNPJ.",
-   "evidencia": "O SIGET (dados abertos da ANEEL) identifica contratos de concessão por código interno (IdeCcd), sem CNPJ da concessionária; nenhum outro conjunto aberto liga o contrato ao CNPJ.",
-   "alternativa": "Transmissoras aparecem no cadastro de agentes (ramo transmissão) e, quando abertas, nas finanças da CVM."
   },
   {
    "id": "look_through",
@@ -15201,31 +15189,31 @@
    "unidade": "pessoas jurídicas",
    "frequencia": "mensal (fonte)",
    "periodo_referencia": {
-    "inicio": "2026-09-01",
-    "fim": "2026-09-01"
+    "inicio": "2026-10-01",
+    "fim": "2026-10-01"
    },
-   "publicado_pela_fonte_em": "2026-09-01T05:02:47Z",
-   "capturado_em": "2026-09-30T23:39:09Z",
-   "validado_em": "2026-10-01T00:53:08Z",
+   "publicado_pela_fonte_em": "2026-10-01T05:01:19Z",
+   "capturado_em": "2026-10-01T07:02:36Z",
+   "validado_em": "2026-10-01T07:08:49Z",
    "cobertura_historica": {
-    "inicio": "2026-09-01",
-    "fim": "2026-09-01"
+    "inicio": "2026-10-01",
+    "fim": "2026-10-01"
    },
    "transformacoes": [],
    "formula": null,
    "snapshot": {
-    "id": "aneel_agentes_setor@2026-09-30T23:39:09Z",
-    "sha256": "2539f329bd1075c2dd9f79a3e498b2e0edc01b29789c2733c30b427bcabf2f54"
+    "id": "aneel_agentes_setor@2026-10-01T07:02:36Z",
+    "sha256": "4c93ee977a89c04c8efd5763a0fc416ef2985fb098ea17acb3b11e6223a4fe40"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:53:05Z",
+    "detectado_em": "2026-10-01T07:08:44Z",
     "total": 0,
-    "vintages_comparadas": 2,
+    "vintages_comparadas": 3,
     "arquivos": 2,
     "recapturas_sem_mudanca": 0,
-    "ultimo_download_ok": "2026-09-30T23:39:09Z",
+    "ultimo_download_ok": "2026-10-01T07:02:36Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -15254,7 +15242,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T10:40:44Z",
    "capturado_em": "2026-09-30T22:18:54Z",
-   "validado_em": "2026-10-01T00:53:08Z",
+   "validado_em": "2026-10-01T07:08:49Z",
    "cobertura_historica": {
     "inicio": "2026-09-30",
     "fim": "2026-09-30"
@@ -15270,14 +15258,14 @@
     "sha256": "d169541d7cbb805f08bd74db3b8283fee946f08b5d217f89e1ab396df6362d35"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:53:05Z",
+    "detectado_em": "2026-10-01T07:08:44Z",
     "total": 0,
     "vintages_comparadas": 1,
     "arquivos": 1,
-    "recapturas_sem_mudanca": 1,
-    "ultimo_download_ok": "2026-09-30T23:39:26Z",
+    "recapturas_sem_mudanca": 3,
+    "ultimo_download_ok": "2026-10-01T07:06:04Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -15307,7 +15295,7 @@
    },
    "publicado_pela_fonte_em": "2026-07-14T00:57:03Z",
    "capturado_em": "2026-09-30T23:39:55Z",
-   "validado_em": "2026-10-01T00:53:08Z",
+   "validado_em": "2026-10-01T07:08:49Z",
    "cobertura_historica": {
     "inicio": "2018T1",
     "fim": "2026T2"
@@ -15319,9 +15307,9 @@
     "sha256": "acc4ead9e10e3c206a556173b84455990e4d2604170034eb027a70a0625681d7"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:53:05Z",
+    "detectado_em": "2026-10-01T07:08:44Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -15358,7 +15346,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T10:40:44Z",
    "capturado_em": "2026-09-30T22:18:54Z",
-   "validado_em": "2026-10-01T00:53:08Z",
+   "validado_em": "2026-10-01T07:08:49Z",
    "cobertura_historica": {
     "inicio": "2026-09-30",
     "fim": "2026-09-30"
@@ -15370,14 +15358,14 @@
     "sha256": "d169541d7cbb805f08bd74db3b8283fee946f08b5d217f89e1ab396df6362d35"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:53:05Z",
+    "detectado_em": "2026-10-01T07:08:44Z",
     "total": 0,
     "vintages_comparadas": 1,
     "arquivos": 1,
-    "recapturas_sem_mudanca": 1,
-    "ultimo_download_ok": "2026-09-30T23:39:26Z",
+    "recapturas_sem_mudanca": 3,
+    "ultimo_download_ok": "2026-10-01T07:06:04Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -15387,6 +15375,59 @@
    ],
    "download": "/energia/series/empresas_grupos.csv",
    "notas_fonte": "Período composto: SIGA em 30/09/2026 e declarações ao Polímero de 2025T3 a 2026T2 (a última de cada agente na janela). O HHI por proprietário direto usa só o SIGA; por grupo usa as duas fontes."
+  },
+  "transmissao": {
+   "indicador": "Ativos de transmissão por CNPJ da concessionária (contratos, módulos, km de circuito, subestações)",
+   "natureza": "CALCULADO",
+   "fonte": {
+    "orgao": "ANEEL",
+    "dataset": "SIGET: Sistema de Gestão da Transmissão",
+    "recurso": "siget-contrato-agente.csv, siget-contrato-empreendimento-obra-modulo.csv, siget-contrato-modulolinhatransmissao-subestacaoorigem-subestacaodestino.csv, siget-contrato-moduloequipamento-subestacao.csv",
+    "url_dataset": "https://dadosabertos.aneel.gov.br/dataset/sistema-de-gestao-da-transmissao-siget",
+    "url_primaria": "https://dadosabertos.aneel.gov.br/dataset/beefe870-7452-4830-a7b0-6611e3d5eff6/resource/a1366325-1071-4eeb-94bd-27915747b177/download/siget-contrato-empreendimento-obra-modulo.csv",
+    "licenca": "Open Data Commons Open Database License (ODbL)"
+   },
+   "unidade": "módulos, km de circuito, subestações, MVA",
+   "frequencia": "a da fonte (arquivos gerados diariamente)",
+   "periodo_referencia": {
+    "inicio": "2026-09-29",
+    "fim": "2026-09-29"
+   },
+   "publicado_pela_fonte_em": "2026-09-29T16:36:54Z",
+   "capturado_em": "2026-09-30T22:21:58Z",
+   "validado_em": "2026-10-01T07:08:45Z",
+   "cobertura_historica": {
+    "inicio": "2026-09-29",
+    "fim": "2026-09-29"
+   },
+   "transformacoes": [
+    "CNPJ completado com zeros à esquerda até 14 dígitos",
+    "módulo contado uma vez (o arquivo repete o módulo por obra)",
+    "em operação = alguma obra do módulo em operação ou concluída (DscSitObr)"
+   ],
+   "formula": "por CNPJ: Σ km dos módulos de linha ativos em operação; subestações distintas dos módulos de equipamento em operação; Σ MVA dos transformadores principais em operação",
+   "snapshot": {
+    "id": "aneel_siget@2026-10-01T00:45:14Z",
+    "sha256": "ba7b0f28643643812f41a1b5ff52e7ccab85746b1d01665b4c95fc774a126e5b"
+   },
+   "versao_pipeline": "energia-0.1.0",
+   "versao_codigo": "eec0a3121e05+alterado",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-10-01T07:08:44Z",
+    "total": 0,
+    "vintages_comparadas": 4,
+    "arquivos": 4,
+    "recapturas_sem_mudanca": 8,
+    "ultimo_download_ok": "2026-10-01T07:06:06Z",
+    "exemplos": []
+   },
+   "limitacoes": [
+    "km de circuito: linha de circuito duplo conta duas vezes; não é km de traçado e não se compara com o comprimento de geometria da EPE.",
+    "Subestação só pelos módulos de equipamento (o SIGET aberto não liga manobra e módulo geral à subestação); subestações somadas entre CNPJ contam a mesma subestação mais de uma vez.",
+    "Contrato de concessão de transmissão; instalações de distribuição e as demais instalações de transmissão fora do SIGET não estão aqui."
+   ],
+   "download": "/energia/series/empresas_transmissao.csv",
+   "notas_fonte": null
   },
   "distribuidoras": {
    "indicador": "Índice de distribuidoras: identidade, sigla, classificação, UFs e controle",
@@ -15407,7 +15448,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": null,
-   "validado_em": "2026-10-01T00:53:05Z",
+   "validado_em": "2026-10-01T07:08:45Z",
    "cobertura_historica": {
     "inicio": "2025-01-01",
     "fim": "2026-09-30"
@@ -15415,11 +15456,11 @@
    "transformacoes": [],
    "formula": null,
    "snapshot": {
-    "id": "golds:perdas.json@2026-10-01T00:44:22Z,qualidade.json@2026-10-01T00:20:33Z,conta.json@2026-09-30T23:56:57Z",
+    "id": "golds:perdas.json@2026-10-01T06:06:09Z,qualidade.json@2026-10-01T05:53:21Z,conta.json@2026-09-30T23:56:57Z",
     "sha256": null
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": null,
    "limitacoes": [
     "UFs vêm da relação conjunto elétrico × município da ANEEL (módulo Perdas); distribuidoras sem conjuntos vigentes ficam sem UF.",
@@ -15447,13 +15488,13 @@
    },
    "publicado_pela_fonte_em": "2026-09-15T05:01:12Z",
    "capturado_em": "2026-09-30T22:26:40Z",
-   "validado_em": "2026-10-01T00:53:05Z",
+   "validado_em": "2026-10-01T07:08:45Z",
    "cobertura_historica": {
     "inicio": "2003-01",
     "fim": "2026-08"
    },
    "transformacoes": [
-    "cópia pelo CNPJ de perdas.json (gerada em 2026-10-01T00:44:22Z), sem recálculo"
+    "cópia pelo CNPJ de perdas.json (gerada em 2026-10-01T06:06:09Z), sem recálculo"
    ],
    "formula": "taxa_total = 100 × perdas_totais ÷ injetada_referência; pnt_bt = 100 × perdas_não_técnicas_publicadas ÷ mercado_BT_medido",
    "snapshot": {
@@ -15461,7 +15502,7 @@
     "sha256": "1f8e4d44f6170bc91bcf2fa0b6047953394d8e8cf47bf9dfa3b3ed6f40ab63eb"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": null,
    "limitacoes": [
     "Valor copiado da gold de origem pelo CNPJ, sem recálculo; valem a definição e as limitações do módulo de origem (proveniência completa na gold de origem)."
@@ -15480,7 +15521,7 @@
     "url_primaria": "https://dadosabertos.aneel.gov.br/dataset/3193ebab-81b3-406e-be0e-f968a4a21689/resource/cffe3c15-9d3e-4187-ae63-e097cf88c0af/download/samp-balanco.parquet",
     "licenca": "Open Data Commons Open Database License (ODbL)"
    },
-   "unidade": "MWh",
+   "unidade": "% do mercado de baixa tensão",
    "frequencia": "mensal (publicação); anual (comparação)",
    "periodo_referencia": {
     "inicio": "2025",
@@ -15488,13 +15529,13 @@
    },
    "publicado_pela_fonte_em": "2026-09-15T05:01:12Z",
    "capturado_em": "2026-09-30T22:26:40Z",
-   "validado_em": "2026-10-01T00:53:05Z",
+   "validado_em": "2026-10-01T07:08:45Z",
    "cobertura_historica": {
     "inicio": "2003-01",
     "fim": "2026-08"
    },
    "transformacoes": [
-    "cópia pelo CNPJ de perdas.json (gerada em 2026-10-01T00:44:22Z), sem recálculo"
+    "cópia pelo CNPJ de perdas.json (gerada em 2026-10-01T06:06:09Z), sem recálculo"
    ],
    "formula": "taxa_total = 100 × perdas_totais ÷ injetada_referência; pnt_bt = 100 × perdas_não_técnicas_publicadas ÷ mercado_BT_medido",
    "snapshot": {
@@ -15502,7 +15543,7 @@
     "sha256": "1f8e4d44f6170bc91bcf2fa0b6047953394d8e8cf47bf9dfa3b3ed6f40ab63eb"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": null,
    "limitacoes": [
     "Valor copiado da gold de origem pelo CNPJ, sem recálculo; valem a definição e as limitações do módulo de origem (proveniência completa na gold de origem)."
@@ -15529,13 +15570,13 @@
    },
    "publicado_pela_fonte_em": "2026-09-05T05:27:08Z",
    "capturado_em": "2026-09-30T22:45:43Z",
-   "validado_em": "2026-10-01T00:53:05Z",
+   "validado_em": "2026-10-01T07:08:45Z",
    "cobertura_historica": {
     "inicio": "2000-01",
     "fim": "2026-06"
    },
    "transformacoes": [
-    "cópia pelo CNPJ de qualidade.json (gerada em 2026-10-01T00:20:33Z), sem recálculo"
+    "cópia pelo CNPJ de qualidade.json (gerada em 2026-10-01T05:53:21Z), sem recálculo"
    ],
    "formula": "DEC(g, m) = Σ_c DEC(c, m) × UC(c, m) ÷ Σ_c UC(c, m); DEC(g, ano) = Σ_m DEC(g, m) (idem FEC) ; L(g, ano) = Σ_c L(c, ano) × UCmédia(c, ano) ÷ Σ_c UCmédia(c, ano); razão = apurado ÷ L; DGC = (razão DEC + razão FEC) ÷ 2",
    "snapshot": {
@@ -15543,7 +15584,7 @@
     "sha256": "f38b101a901fcb2bd3eea73da25d0cc26b2a2e2c5f6a63fb5be395fd90585e94"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": null,
    "limitacoes": [
     "Valor copiado da gold de origem pelo CNPJ, sem recálculo; valem a definição e as limitações do módulo de origem (proveniência completa na gold de origem)."
@@ -15570,7 +15611,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T10:01:51Z",
    "capturado_em": "2026-09-30T22:48:27Z",
-   "validado_em": "2026-10-01T00:53:05Z",
+   "validado_em": "2026-10-01T07:08:45Z",
    "cobertura_historica": {
     "inicio": "2010-02-03",
     "fim": "2026-09-30"
@@ -15584,7 +15625,7 @@
     "sha256": "8e5b18bfe3afbfa1d418e2f204b755c346efd6cad51a023a86c4045a809ddfb2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": null,
    "limitacoes": [
     "Valor copiado da gold de origem pelo CNPJ, sem recálculo; valem a definição e as limitações do módulo de origem (proveniência completa na gold de origem)."
@@ -15611,7 +15652,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T10:35:29Z",
    "capturado_em": "2026-09-30T23:40:58Z",
-   "validado_em": "2026-10-01T00:53:06Z",
+   "validado_em": "2026-10-01T07:08:48Z",
    "cobertura_historica": {
     "inicio": "2010",
     "fim": "2025"
@@ -15622,6 +15663,9 @@
     "só contas fixas (ST_CONTA_FIXA = S)",
     "dívida bruta = 2.01.04 + 2.02.01 no mesmo escopo e data",
     "coluna de demonstração com ativo total ≤ 0 (escopo não apresentado, que a CVM preenche com zero) tratada como ausência",
+    "coluna não preenchida pela companhia (valores 0 ou ±1 contra o outro escopo preenchido; DFC zerada contra saldo de caixa no próprio arquivo, com a DRE zerada do mesmo documento) tratada como ausência",
+    "escala corrigida quando o mesmo número aparece em dois documentos da companhia com marcas MIL e UNIDADE trocadas (proveniência financas_escala, natureza ESTIMADO)",
+    "versões contadas como versões distintas do índice da CVM",
     "exercício com DT_INI_EXERC diferente de 1º de janeiro aceito como exercício de 12 meses só quando o comparativo do mesmo documento tem balanço positivo no fim do ano anterior (data publicada na nota do CSV)",
     "último exercício escolhido entre os dois escopos antes do escopo; consolidado quando apresentado nesse exercício"
    ],
@@ -15631,9 +15675,9 @@
     "sha256": "bd6eb5c27436d75b28a350e14cd825e734681df1823f4f3030daa1947a9fc938"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:53:05Z",
+    "detectado_em": "2026-10-01T07:08:44Z",
     "total": 0,
     "vintages_comparadas": 17,
     "arquivos": 17,
@@ -15649,6 +15693,59 @@
     "Caixa das atividades de investimento (6.02) inclui aquisições, aplicações e resgates, não só investimento em ativos."
    ],
    "download": "/energia/series/empresas_financas_anual.csv",
+   "notas_fonte": null
+  },
+  "financas_escala": {
+   "indicador": "Valores da CVM com a escala corrigida pelo observatório (troca entre MIL e UNIDADE)",
+   "natureza": "ESTIMADO",
+   "fonte": {
+    "orgao": "CVM",
+    "dataset": "Demonstrações Financeiras Padronizadas (DFP) e Informações Trimestrais (ITR)",
+    "recurso": "dfp_cia_aberta_AAAA.zip e itr_cia_aberta_AAAA.zip",
+    "url_dataset": "https://dados.cvm.gov.br/dataset/cia_aberta-doc-dfp",
+    "url_primaria": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/",
+    "licenca": "Licença Aberta para Bases de Dados (ODbL) do Open Data Commons, conforme o portal de dados abertos da CVM"
+   },
+   "unidade": "R$ nominais",
+   "frequencia": "anual (DFP) e trimestral (ITR)",
+   "periodo_referencia": {
+    "inicio": "2010",
+    "fim": "2026-06-30"
+   },
+   "publicado_pela_fonte_em": "2026-09-27T10:35:29Z",
+   "capturado_em": "2026-09-30T23:40:58Z",
+   "validado_em": "2026-10-01T07:08:48Z",
+   "cobertura_historica": {
+    "inicio": "2010",
+    "fim": "2025"
+   },
+   "transformacoes": [
+    "conferência de escala entre documentos da mesma companhia e escopo (DFP do ano, comparativo da DFP seguinte, ITR e comparativos do ITR)",
+    "valores do documento com escala divergente convertidos para a escala da DFP mais recente ligada a ele",
+    "inversões corrigidas deixam de contar como reapresentação"
+   ],
+   "formula": "valor corrigido = VL_CONTA × escala marcada × 1.000^(nível da referência − nível do documento); níveis pela razão de 1.000 (±0,1%) entre o mesmo valor publicado em dois documentos; referência = DFP mais recente do componente",
+   "snapshot": {
+    "id": "cvm_dfp@2026-09-30T23:40:58Z",
+    "sha256": "bd6eb5c27436d75b28a350e14cd825e734681df1823f4f3030daa1947a9fc938"
+   },
+   "versao_pipeline": "energia-0.1.0",
+   "versao_codigo": "eec0a3121e05+alterado",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-10-01T07:08:44Z",
+    "total": 0,
+    "vintages_comparadas": 17,
+    "arquivos": 17,
+    "recapturas_sem_mudanca": 0,
+    "ultimo_download_ok": "2026-09-30T23:40:58Z",
+    "exemplos": []
+   },
+   "limitacoes": [
+    "A correção depende de um valor repetido em dois documentos: documento sem nenhum comparativo exato não é ligado e fica com a escala marcada (saltos remanescentes listados em financas.exclusoes.saltos_ativo).",
+    "A referência é a DFP mais recente do componente: se a própria DFP mais recente estiver com a escala errada, a correção segue o erro (nenhum caso em 30/09/2026: as referências conferem com a ordem de grandeza do ativo publicada pelas demais DFP).",
+    "Valor corrigido não é valor publicado pela fonte: a lista de documentos corrigidos está em empresas_financas_ajustes.csv e a nota de cada valor nos CSV de demonstrações."
+   ],
+   "download": "/energia/series/empresas_financas_ajustes.csv",
    "notas_fonte": null
   }
  },
@@ -15672,6 +15769,10 @@
   {
    "rotulo": "Cadastro de agentes (CSV)",
    "url": "/energia/series/empresas_agentes.csv"
+  },
+  {
+   "rotulo": "Transmissão por CNPJ, SIGET (CSV)",
+   "url": "/energia/series/empresas_transmissao.csv"
   },
   {
    "rotulo": "Distribuidoras (CSV)",

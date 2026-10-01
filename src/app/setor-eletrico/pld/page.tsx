@@ -15,7 +15,7 @@ import { PldPeriodos, type PeriodoPld } from "@/components/energia/PldPeriodos";
 import { IlustracaoDistribuicao } from "@/components/energia/IlustracaoDistribuicao";
 import { TabelaDados } from "@/components/energia/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { gold, integra } from "@/lib/energia/gold";
+import { gold, integra, lerGold } from "@/lib/energia/gold";
 import { carimbo, dataBR, horaLocal, num, pct, reais, rotuloRegra } from "@/lib/energia/formato";
 import { textoAmplitude } from "@/lib/energia/resumos";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
@@ -23,6 +23,7 @@ import { NOS_FORMACAO, PLD_NAO_E, TIPOS_RELACAO } from "@/lib/energia/conteudo/p
 import { conceito } from "@/lib/energia/conteudo/conceitos";
 import { estadoCarga, estadoEar, estadoEna, estadoPld, estadoRenovaveis, estadoTermicas } from "@/lib/energia/leituras";
 import type { PldGold } from "@/lib/energia/tipos";
+import type { PldDetalheGold, RegimeLimites } from "@/lib/energia/tipos-pld";
 
 export const dynamic = "force-static";
 
@@ -85,6 +86,10 @@ export default function PldPage() {
   const carga = gold.carga();
   const rede = gold.rede();
   const cmo = gold.cmo();
+  // limites oficiais (atos anuais da ANEEL, com vigência) publicados pelo módulo PLD
+  const detalhe = lerGold<PldDetalheGold>("pld_detalhe.json");
+  const limDet = integra(detalhe) && detalhe.limites.disponivel ? detalhe.limites : null;
+  const regimeVigente: RegimeLimites | null = limDet ? (limDet.regimes.at(-1) ?? null) : null;
   const prev = gold.previsoes();
   const mods = gold.modelos();
   const cPld = conceito("pld");
@@ -117,10 +122,10 @@ export default function PldPage() {
           historico: { rotulo: "Série do CMO", href: "#cmo" },
         }
       : null,
-    limites: integra(pld)
+    limites: regimeVigente
       ? {
-          texto: `Menor valor horário observado em ${pld.dia_referencia.slice(0, 4)} até ${dataBR(pld.dia_referencia)}: ${reais(pld.menor_valor_ano.at(-1)?.SE ?? null)}/MWh. Não é o piso regulatório: os limites oficiais vigentes não foram auditados nesta fase.`,
-          natureza: "CALCULADO",
+          texto: `Limites oficiais vigentes desde ${dataBR(regimeVigente.inicio)}: piso ${reais(regimeVigente.pld_min)}/MWh, teto horário ${reais(regimeVigente.pld_max_horario)}/MWh e teto estrutural ${reais(regimeVigente.pld_max_estrutural)}/MWh (${regimeVigente.ato_pld_min ?? "ato não identificado"}).`,
+          natureza: "OBSERVADO",
         }
       : null,
     pld: estadoPld(pld) ? { texto: estadoPld(pld)!, natureza: "CALCULADO", historico: { rotulo: "O que está acontecendo", href: "#hoje" } } : null,
@@ -300,7 +305,7 @@ export default function PldPage() {
                     </>
                   }
                   comoInterpretar={<>Compare os subsistemas na mesma semana: valores iguais ou diferentes são saída do modelo DECOMP; a razão de uma diferença não é identificada aqui. A CCEE informa que o PLD horário é calculado com NEWAVE, DECOMP e DESSEM; o CMO semi-horário do DESSEM, também publicado pelo ONS, ainda não está integrado a este painel.</>}
-                  naoConcluir={<>CMO semanal não é PLD: o PLD é horário, calculado pela CCEE, e aplica limites mínimo e máximos; os dois podem diferir muito na mesma semana (compare com os cartões do PLD no capítulo 3). O CMO é saída de modelo, não medição.</>}
+                  naoConcluir={<>CMO semanal não é PLD: o PLD é horário, calculado pela CCEE, e aplica limites mínimo e máximos; o valor de uma semana operativa não se compara com o preço de um dia ou de uma hora. O CMO é saída de modelo, não medição.</>}
                   proveniencia={cmo.proveniencia.cmo}
                 >
                   <GraficoLinhas
@@ -346,7 +351,7 @@ export default function PldPage() {
                     porQueImporta={<>O PLD é horário. A curva mostra em que horas do dia o preço de cada submercado sobe ou cai e se os quatro seguem juntos.</>}
                     oQueMudou={<>Nos últimos 30 dias, {pld.periodos["30d"].diferenca.horas_acima_limiar} horas tiveram diferença acima de {reais(pld.limiar_diferenca)}/MWh entre submercados.</>}
                     comoInterpretar={<>Alterne os períodos. O dia de referência, 7 e 30 dias mostram horas; 12 meses mostra médias diárias; o histórico, médias mensais desde 2021.</>}
-                    naoConcluir={<>Uma posição alta ou baixa no histórico não diz para onde o preço vai. Anos diferentes têm limites regulatórios diferentes, não auditados nesta fase.</>}
+                    naoConcluir={<>Uma posição alta ou baixa no histórico não diz para onde o preço vai. Anos diferentes têm limites regulatórios diferentes (piso e tetos de cada ano, com o ato da ANEEL, no modo Auditar).</>}
                     proveniencia={pld.proveniencia.horario}
                     extraFonte={<>Captura primária de {carimbo(pld.proveniencia.horario.capturado_em)}.</>}
                     complementares={[
@@ -375,9 +380,23 @@ export default function PldPage() {
                   </div>
                 </div>
                 <div data-nivel="auditar" className="mt-8 border border-linha bg-superficie p-6">
-                  <h3 className="font-serif text-xl text-carvao">Menor valor horário observado por ano</h3>
+                  {limDet ? (
+                    <>
+                      <h3 className="font-serif text-xl text-carvao">Limites oficiais do PLD por vigência</h3>
+                      <p className="mt-1 text-sm text-carvao-muted">
+                        Piso, teto horário e teto estrutural fixados nos atos anuais da ANEEL, em vigor em cada trecho; o último trecho vai até o dia de referência. {limDet.conferencia_atos.leitura}
+                      </p>
+                      <TabelaDados
+                        titulo="Limites do PLD por trecho de vigência (R$/MWh)"
+                        colunas={["Início", "Fim", "Piso", "Teto horário", "Teto estrutural", "Ato do piso"]}
+                        linhas={limDet.regimes.map((r) => [dataBR(r.inicio), dataBR(r.fim), r.pld_min, r.pld_max_horario, r.pld_max_estrutural, r.ato_pld_min])}
+                        casas={[null, null, 2, 2, 2, null]}
+                      />
+                    </>
+                  ) : null}
+                  <h3 className="mt-8 font-serif text-xl text-carvao">Menor valor horário observado por ano</h3>
                   <p className="mt-1 text-sm text-carvao-muted">
-                    Referência descritiva. Não é o piso regulatório do PLD: os limites homologados de cada ano não foram auditados nesta fase.
+                    Referência descritiva, nunca usada como piso: o piso regulatório é o do ato vigente{limDet ? " (tabela acima)" : ""}.
                   </p>
                   <TabelaDados
                     titulo="Menor valor horário observado por ano e submercado"

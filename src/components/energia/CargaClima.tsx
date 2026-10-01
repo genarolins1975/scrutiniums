@@ -31,7 +31,7 @@ import {
   type TipoComparacao,
 } from "@/lib/energia/carga";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
-import { dataBR, mesAno, num } from "@/lib/energia/formato";
+import { dataBR, mesAno, num, plural } from "@/lib/energia/formato";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { Regiao } from "@/lib/energia/tipos";
 import type { A07, P027, VarianteModelo } from "@/lib/energia/tipos-carga";
@@ -39,7 +39,9 @@ import type { A07, P027, VarianteModelo } from "@/lib/energia/tipos-carga";
 /**
  * P027, clima e calendário: decomposição estatística (não causal) da carga diária,
  * estimada só com o passado e avaliada fora da amostra. Região (?sm=), variante do
- * modelo (?var=) e tipo de comparação da janela do achado (?cmp=) ficam na URL. O
+ * modelo (?var=) e tipo de comparação da janela do achado (?cmp=) ficam na URL, assim
+ * como busca, filtros, ordem e página de cada tabela (prefixos prev, dec, met, ori, sen
+ * e tmp); as datas do achado e as contagens dos títulos vêm da gold. O
  * gráfico real × previsto, o de contribuições e a tabela usam as mesmas linhas; a
  * resposta é refeita pela mesma regra quando a região muda.
  */
@@ -105,6 +107,7 @@ const COLUNAS_TEMPERATURA: ColunaTabela[] = [
 export function CargaClima({
   p027,
   a07,
+  achado,
   diaReferencia,
   fonte,
   versao,
@@ -112,6 +115,8 @@ export function CargaClima({
 }: {
   p027: Pick<NonNullable<P027>, "metricas" | "periodo_avaliacao" | "sensibilidade" | "por_origem_sin" | "recente_sin" | "resposta_temperatura">;
   a07: Pick<A07, "decomposicao">;
+  /** Janela do achado A07 (a07.referencia) e o motivo publicado quando o modelo cobre menos dias (a07.janela_modelo). */
+  achado: { inicio: string; fim: string; motivo: string | null };
   diaReferencia: string;
   fonte: string;
   versao: string;
@@ -162,7 +167,7 @@ export function CargaClima({
       {destaques}
 
       <div className="space-y-4">
-        <h3 className="font-serif text-lg text-carvao">Últimos 90 dias previstos: real, previsto e intervalo (SIN)</h3>
+        <h3 className="font-serif text-lg text-carvao">Últimos {plural(recente.length, "dia previsto", "dias previstos")}: real, previsto e intervalo (SIN)</h3>
         <p className="max-w-prose2 text-sm leading-relaxed text-carvao">{respostaUltimoDia(p)}</p>
         <CursorSincronizado>
           <GraficoLinhas
@@ -203,13 +208,16 @@ export function CargaClima({
           fonte={fonte}
           versao={versao}
           nomeArquivo="carga-decomposicao-recente-sin"
+          chaveUrl="prev"
           ordemInicial={{ coluna: "d", direcao: "desc" }}
           nota="Contribuição: mudança da previsão associada ao grupo, com o resto fixo. Não é efeito causal nem parcela explicada."
         />
       </div>
 
       <div className="space-y-4" id="decomposicao-a07">
-        <h3 className="font-serif text-lg text-carvao">A semana do achado de 22 a 28/09/2026, decomposta</h3>
+        <h3 className="font-serif text-lg text-carvao">
+          A janela do achado, de {dataBR(achado.inicio)} a {dataBR(achado.fim)}, decomposta
+        </h3>
         <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
           <CargaEscolha legenda="Comparar com" opcoes={OPCOES_TIPO} valor={tipo} onEscolher={(x) => definir({ cmp: x })} />
           <CargaLista
@@ -224,6 +232,12 @@ export function CargaClima({
             <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta="p027-decomposicao" aria-live="polite">
               {respostaDecomposicao(d)}
             </p>
+            {d.fim < achado.fim && (
+              <p className="border-l-2 border-mineral pl-3 text-sm text-carvao-muted">
+                Esta variante cobre {plural(d.dias, "dia", "dias")}, até {dataBR(d.fim)}, e não a janela inteira do achado
+                {achado.motivo ? `: ${achado.motivo}` : ": dia sem temperatura não entra no modelo"}.
+              </p>
+            )}
             <GraficoBarras
               titulo={`Diferença entre as janelas ${DO_REGIAO[sm]}, por parte do modelo (log × 100)`}
               dados={barrasTabela}
@@ -231,7 +245,7 @@ export function CargaClima({
               chaveRotulo="rotulo"
               series={[{ id: "valor", rotulo: "Parte da diferença", cor: COR_REGIAO[sm] }]}
               unidade="log × 100"
-              casas={1}
+              casas={2}
               orientacao="horizontal"
               referencias={[{ valor: d.real_log100, rotulo: "Diferença real" }]}
             />
@@ -244,7 +258,8 @@ export function CargaClima({
               fonte={fonte}
               versao={d.origem_modelo}
               nomeArquivo={`carga-decomposicao-a07-${sm}-${variante}-${tipo}`}
-              nota={`Soma das partes: ${num(barras.reduce((s, b) => s + b.valor, 0), 2)}; diferença real: ${num(d.real_log100, 2)} (arredondamentos de 0,01).`}
+              chaveUrl="dec"
+              nota={`As quatro partes do modelo somam a diferença prevista (${num(d.previsto_log100, 2)}); com o resíduo (${num(d.residuo_log100, 2)}), a diferença real (${num(d.real_log100, 2)}). Valores da gold, com duas casas.`}
             />
           </>
         ) : (
@@ -265,6 +280,7 @@ export function CargaClima({
           fonte={fonte}
           versao={versao}
           nomeArquivo="carga-decomposicao-metricas"
+          chaveUrl="met"
           selecionado={sm}
           onSelecionar={(id) => id && definir({ sm: id as Regiao })}
           nota="Cobertura abaixo da nominal (80% e 95%) indica intervalos mais estreitos que a incerteza real."
@@ -288,6 +304,7 @@ export function CargaClima({
           fonte={fonte}
           versao={versao}
           nomeArquivo="carga-decomposicao-origens-sin"
+          chaveUrl="ori"
         />
       </div>
 
@@ -314,6 +331,7 @@ export function CargaClima({
           fonte={fonte}
           versao={versao}
           nomeArquivo={`carga-decomposicao-sensibilidade-${sm}`}
+          chaveUrl="sen"
           selecionado={variante}
           onSelecionar={(id) => id && definir({ var: id as VarianteModelo })}
         />
@@ -345,6 +363,7 @@ export function CargaClima({
           fonte={fonte}
           versao={versao}
           nomeArquivo="carga-resposta-temperatura"
+          chaveUrl="tmp"
         />
       </div>
     </div>

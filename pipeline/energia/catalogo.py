@@ -36,7 +36,6 @@ validação da gold publicacao.json.
 """
 import json
 import os
-import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -59,7 +58,8 @@ DEFINICOES_ESTADO = {
     "RECURSO VERIFICADO": "Um arquivo do conjunto foi acessado pelo pipeline: baixado com sha256 ou lido por requisição parcial, com "
                           "status HTTP, formato reconhecido pela assinatura e cabeçalho real.",
     "INTEGRADO": "Coletado automaticamente: cada captura tem o original guardado com sha256 e o conteúdo extraído entra no histórico "
-                 "de capturas (documentos ficam guardados para citação).",
+                 "de capturas (documentos ficam guardados para citação; arquivo lido direto do original conta quando a gold que o "
+                 "usa cita o seu snapshot).",
     "VALIDADO": "Integrado e com validações automáticas registradas nesta publicação, nenhuma reprovada: capturas com sha256, "
                 "original conferido, horizonte das datas e esquema da fonte.",
     "PUBLICADO": "Validado e alimentando gold íntegra publicada no portal, cujo contrato (proveniência, links, esquema) não foi reprovado.",
@@ -67,7 +67,8 @@ DEFINICOES_ESTADO = {
 CRITERIOS_ESTADO = {
     "CATALOGADO": "conjunto na resposta do package_search (ONS, ANEEL), em package_show versionado (CCEE), no REGISTRO de um módulo ou em catalogo_manual.json",
     "RECURSO VERIFICADO": "vintage com sha256 em algum silver, ou verificação parcial (Range de 64 KB) com HTTP 200/206 nos últimos dias",
-    "INTEGRADO": "vintage(s) no silver da família declarada e observações ou registros extraídos (ou documento PDF/HTML guardado)",
+    "INTEGRADO": ("vintage(s) no silver da família declarada e observações ou registros extraídos, documento PDF/HTML/XML guardado, "
+                  "ou original lido do bronze por gold cuja proveniência cita o snapshot do conjunto"),
     "VALIDADO": "checagens conjunto:<família>/<dataset>:* do relatório em publicacao.json sem nenhum resultado reprovado",
     "PUBLICADO": "dataset citado no snapshot de uma proveniência de gold íntegra ou declarado no REGISTRO do módulo dono de gold íntegra, sem checagem reprovada nessa gold",
 }
@@ -156,7 +157,7 @@ TEMAS = [
     ("mercado", ["sumario", "compra_venda", "contabiliza", "mre", "gsf", "encargo"]),
 ]
 # Tamanho da descrição no catálogo publicado (a íntegra fica em dados_catalogo.csv).
-MAX_DESCRICAO = 130
+MAX_DESCRICAO = 120
 ORDEM_RECURSO = ["CATALOGADO", "RECURSO VERIFICADO", "INTEGRADO", "VALIDADO", "PUBLICADO"]
 
 
@@ -544,7 +545,9 @@ def construir(brutos, publicacao=None, verificacoes=None, recursos_saida=None, c
                                       "estado": x["estado"], "capturas": x["capturas"] or None,
                                       "removido": True if not x["presente"] else None}) for x in rec]
         if pkg.get("_seed_versoes"):
-            e["metadados_versionados"] = pkg["_seed_versoes"]
+            # versão mais recente guardada no repositório e quantas há (todas em pipeline/energia/seed)
+            ult = max(pkg["_seed_versoes"], key=lambda v: v.get("capturado_em") or "")
+            e["metadados_versionados"] = {"versoes": len(pkg["_seed_versoes"]), "ultima": ult}
         return e
 
     seeds = pacotes_seed_ccee()
@@ -598,10 +601,20 @@ def construir(brutos, publicacao=None, verificacoes=None, recursos_saida=None, c
     regs = {}
     for it in integracoes():
         regs.setdefault((it["orgao"], it["nome"]), []).append(it)
+    por_id = {f"{x.get('familia')}/{x.get('dataset_silver')}": x for x in conjuntos_pub}
     for e in entradas:
         chave = (e["orgao"], e["nome"])
-        lista = por_integracao.get(chave) or []
         declaradas = regs.get(chave) or []
+        # o conjunto do silver de cada declaração (dois nomes do portal podem apontar para o
+        # mesmo dataset do silver; publicacao.json guarda uma linha por dataset)
+        lista = []
+        for d in declaradas:
+            x = por_id.get(f"{d.get('familia')}/{d.get('dataset_silver')}")
+            if x is not None and x not in lista:
+                lista.append(x)
+        for x in por_integracao.get(chave) or []:
+            if x not in lista:
+                lista.append(x)
         # id do conjunto em publicacao.json (família/dataset) e o estado de cada integração
         e["integracoes"] = [{"id": f"{x.get('familia')}/{x.get('dataset_silver')}", "estado": x.get("estado")} for x in lista]
         if declaradas and not lista:

@@ -90,9 +90,15 @@ export type ResumoAgentes = {
   data: string | null;
   total: number;
   ativos: number;
+  /** Universo de `ramos`: agentes ativos (situação A no cadastro) por ramo declarado. */
+  ramos_universo: string;
   /** Agentes ativos com o ramo declarado no cadastro (autodeclarado; não define distribuidora). */
-  ramos: { geracao: number; distribuicao: number; transmissao: number; comercializacao: number };
+  ramos: RamosAgentes;
+  /** Os mesmos ramos contando também os agentes inativos. */
+  ramos_incluindo_inativos: RamosAgentes;
 };
+
+export type RamosAgentes = { geracao: number; distribuicao: number; transmissao: number; comercializacao: number };
 
 export type FaseResumo = { fase: string; usinas: number; mw_outorgado: number | null; mw_fiscalizado: number | null };
 
@@ -146,8 +152,13 @@ export type Ativos = {
   por_fase: FaseResumo[];
   operacao: { usinas: number; mw_fiscalizado: number | null };
   estados: EstadoResumo[];
+  /** Potência em operação com todos os proprietários identificados por CNPJ (% da potência fiscalizada em operação). */
   pct_mw_operacao_vinculado: number | null;
+  /** Usinas em operação vinculadas ÷ usinas em operação (mesmo universo do percentual de potência). */
+  pct_usinas_operacao_vinculadas: number | null;
+  /** Usinas vinculadas ÷ usinas de TODAS as fases (universo em universo_pct_usinas_vinculadas). */
   pct_usinas_vinculadas: number | null;
+  universo_pct_usinas_vinculadas: string;
   proprietarios_cnpj: number;
   proprietarios_no_cadastro: number;
   proprietarios_fora_do_cadastro: number;
@@ -175,11 +186,90 @@ export type Proprietario = {
   grupo_nome: string | null;
 };
 
+/* ---------------------------------------------------------------- P036: transmissão (SIGET) */
+
+/** Concessionária de transmissão: módulo → contrato proprietário (IdeCcdProprietario) → CNPJ do recurso "SIGET - Contrato Agente". */
+export type TransmissaoAgente = {
+  cnpj: string;
+  nome: string | null;
+  contratos: number;
+  modulos: number;
+  circuitos_operacao: number;
+  /** km de circuito (linha de circuito duplo conta duas vezes) dos módulos de linha ativos em operação. */
+  km_circuito_operacao: number | null;
+  /** % do km de circuito em operação do SIGET inteiro. */
+  pct_km: number | null;
+  /** Subestações distintas com módulo de equipamento em operação do CNPJ (não somar entre CNPJ). */
+  subestacoes: number;
+  /** MVA dos transformadores de potência principais em operação (reserva fora). */
+  mva_transformacao_operacao: number | null;
+  ufs: string[];
+  /** Topo da cadeia de controle declarada ao Polímero quando acima do próprio CNPJ. */
+  grupo: string | null;
+  grupo_nome: string | null;
+};
+
+export type TransmissaoGrupo = {
+  cnpj: string;
+  nome: string | null;
+  empresas: number;
+  circuitos_operacao: number;
+  km_circuito_operacao: number | null;
+  pct_km: number | null;
+  /** União das subestações das empresas do grupo. */
+  subestacoes: number;
+  mva_transformacao_operacao: number | null;
+};
+
+export type Transmissao = {
+  /** Data de geração dos arquivos do SIGET. */
+  data: string | null;
+  regra_vinculo: string;
+  definicoes: { km_circuito: string; subestacoes: string; mva: string };
+  resumo: {
+    contratos: number;
+    contratos_sem_cnpj: number;
+    /** Contratos com NumCNPJ de menos de 14 dígitos na fonte, completados com zeros à esquerda. */
+    cnpj_completados_com_zeros: number;
+    cnpjs: number;
+    cnpjs_com_modulos: number;
+    modulos: number;
+    modulos_com_cnpj: number;
+    pct_modulos_com_cnpj: number | null;
+    /** LT linha, ME equipamento, MM manobra, MG módulo geral. */
+    modulos_por_tipo: Record<string, number>;
+    circuitos_operacao: number;
+    km_circuito_operacao: number | null;
+    subestacoes_distintas: number;
+  };
+  cobertura: {
+    modulos_lt: number;
+    modulos_lt_com_linha: number;
+    modulos_me: number;
+    modulos_me_com_equipamento: number;
+    modulos_sem_contrato: number;
+    modulos_contrato_sem_cnpj: number;
+  };
+  conferencia_cadastro_agentes: {
+    cnpjs_com_modulos: number;
+    no_cadastro: number;
+    com_ramo_transmissao: number;
+    ativos_com_ramo_sem_modulo_no_siget: number;
+  };
+  /** As 10 maiores por km de circuito em operação (todas no CSV de transmissão). */
+  maiores: TransmissaoAgente[];
+  /** Os 8 maiores grupos por km de circuito em operação. */
+  grupos: TransmissaoGrupo[];
+  evidencia: Evidencia;
+};
+
 export type Cadastro = {
   agentes: ResumoAgentes;
   ativos: Ativos;
-  /** Os 40 maiores proprietários diretos por capacidade proporcional (todos no CSV de proprietários). */
+  /** Os 30 maiores proprietários diretos por capacidade proporcional (todos no CSV de proprietários). */
   proprietarios: Proprietario[];
+  /** Ativos de transmissão por CNPJ (SIGET); null quando o SIGET falta no silver. */
+  transmissao: Transmissao | null;
 };
 
 /* ---------------------------------------------------------------- P037: distribuidoras */
@@ -310,8 +400,7 @@ export type Companhia = {
   nome: string | null;
   situacao: string | null;
   setor: string | null;
-  categoria: string | null;
-  controle_acionario: string | null;
+  /** Categoria de registro e controle acionário ficam só em empresas_companhias_cvm.csv. */
   distribuidora_slug: string | null;
   /** Primeiro e último exercício com DFP; null sem DFP. */
   anos: [number, number] | null;
@@ -350,8 +439,12 @@ export type Financas = {
     ultimo_trimestre: string | null;
   };
   revisoes: {
+    /** Documentos com mais de uma versão distinta no índice da CVM. */
     documentos_com_mais_de_uma_versao: number;
+    /** Reapresentações depois da correção de escala. */
     valores_reapresentados: number;
+    /** Pares exercício × comparativo que só diferiam pela marca de escala (deixaram de contar como reapresentação). */
+    inversoes_de_escala_resolvidas: number;
     observacoes_revisadas_entre_capturas: number;
     regra: string;
   };
@@ -360,10 +453,17 @@ export type Financas = {
   companhias: Companhia[];
 };
 
-/** consolidado_nao_apresentado: o consolidado do exercício veio com ativo total zero e o individual é exibido;
+/** consolidado_nao_apresentado: o consolidado do exercício veio com ativo total zero (ou não preenchido) e o individual é exibido;
  * inicio_inconsistente_na_fonte: DT_INI_EXERC mal preenchida num exercício inteiro (valor aceito, data na nota do CSV);
- * dre_zerada_na_fonte: receita, resultado e lucro iguais a zero com balanço positivo (publicado como a fonte entregou). */
-export type AlertaCompanhia = "consolidado_nao_apresentado" | "inicio_inconsistente_na_fonte" | "dre_zerada_na_fonte";
+ * escala_corrigida: algum valor exibido teve a escala convertida (a marca MIL/UNIDADE do documento diverge de outro documento);
+ * fluxos_nao_preenchidos: DRE e DFC do exercício provadamente não preenchidas (ausentes);
+ * dre_zerada_na_fonte: receita, resultado e lucro iguais a zero com balanço positivo, sem prova de não preenchimento no arquivo. */
+export type AlertaCompanhia =
+  | "consolidado_nao_apresentado"
+  | "inicio_inconsistente_na_fonte"
+  | "escala_corrigida"
+  | "fluxos_nao_preenchidos"
+  | "dre_zerada_na_fonte";
 
 export type ExclusoesFinancas = {
   regra_nao_apresentada: string;
@@ -384,6 +484,27 @@ export type ExclusoesFinancas = {
   inicio_inconsistente: { cnpj: string; ano: number; dt_ini_publicada: string }[];
   exercicios_irregulares: { valores: number; companhias: number; recorte_csv: "exercicio_irregular" };
   periodos_irregulares_itr: { valores: number; companhias: number; recorte_csv: "periodo_irregular" };
+  regra_nao_preenchida: string;
+  colunas_nao_preenchidas: {
+    colunas: number;
+    valores: number;
+    por_motivo: Partial<Record<"coluna_nao_preenchida" | "fluxos_nao_preenchidos", number>>;
+    /** "CNPJ escopo DOCUMENTO demonstração período: motivo", só do exercício ou trimestre corrente (lista inteira no CSV de ajustes). */
+    exercicio_ou_trimestre: string[];
+  };
+  escala: {
+    regra: string;
+    documentos_corrigidos: number;
+    valores_corrigidos: number;
+    companhias: number;
+    /** Texto por companhia e escopo; documento a documento em empresas_financas_ajustes.csv. */
+    por_companhia: string[];
+    componentes_contraditorios: { cnpj: string; escopo: EscopoCvm; documentos: number }[];
+  };
+  saltos_ativo: {
+    regra: string;
+    casos: { cnpj: string; escopo: EscopoCvm; de: number; para: number; razao: number | null }[];
+  };
 };
 
 /* ---------------------------------------------------------------- P039: controle e concentração */
@@ -465,7 +586,7 @@ export type Controle = {
     pct_mw_consolidado_em_grupo: number | null;
     motivos_parada: { motivo: MotivoParada; rotulo: string; proprietarios: number }[];
   };
-  /** Os 40 maiores grupos por capacidade proporcional. */
+  /** Os 30 maiores grupos por capacidade proporcional (todos no CSV de grupos). */
   grupos: Grupo[];
 };
 
@@ -502,6 +623,7 @@ export type EmpresasGold = Cabecalho & {
     ativos: Proveniencia;
     controle: Proveniencia;
     concentracao: Proveniencia;
+    transmissao: Proveniencia | null;
     /** Identidade do índice (OBSERVADO); os números copiados têm proveniência própria, com a natureza herdada da origem. */
     distribuidoras: Proveniencia;
     distribuidoras_perdas: Proveniencia | null;
@@ -509,6 +631,8 @@ export type EmpresasGold = Cabecalho & {
     distribuidoras_qualidade: Proveniencia | null;
     distribuidoras_tarifa: Proveniencia | null;
     financas: Proveniencia;
+    /** Valores com a escala convertida pelo observatório (natureza ESTIMADO). */
+    financas_escala: Proveniencia;
   };
   downloads: Download[];
   series: { ativos: string; cadeia: string; financas: string; evidencias: string };
@@ -564,6 +688,8 @@ export type SeriesFinanceiras = {
       anual: Partial<Record<EscopoCvm, Partial<Record<ContaCvm, [number, number | null][]>>>>;
       /** Chave "conta:recorte": DRE em trimestre, balanço em saldo, DFC em acumulado_no_ano (desde o 1º trimestre). */
       trimestral: Partial<Record<EscopoCvm, Record<string, [string, number | null][]>>>;
+      /** Documentos com a escala convertida ("DFP 2021-12-31 individual: x1000"); ausente quando não há. */
+      escala_corrigida?: string[];
     }
   >;
 };

@@ -24,7 +24,6 @@ import csv
 import gzip
 import json
 import os
-import statistics
 import sys
 import unittest
 from collections import defaultdict
@@ -296,7 +295,7 @@ class Usinas(unittest.TestCase):
         self.assertEqual(self.u["contagem"]["multimunicipio"], 2)
 
     def test_declaracao_prevalece_sobre_coordenada(self):
-        n, mw = self.u["op"]["3106200"]
+        n, _mw = self.u["op"]["3106200"]
         self.assertEqual(n, 3)                               # as três CGHs de "Belo Horizonte - MG"
         linhas = {x[0]: x for x in self.u["usinas"]}
         self.assertEqual(linhas["CGH.PH.MG.000345-0.2"][11], 0)   # coordenada fora (Ouro Preto)
@@ -459,6 +458,14 @@ class GoldPublicada(unittest.TestCase):
         self.assertEqual([x["codigo"] for x in r["codigos_da_relacao_fora_da_malha"]], ["4314530"])
         cemig = self.dist["CEMIG-D"]
         self.assertEqual((cemig["area"]["municipios"], cemig["area"]["confirmados"], cemig["area"]["exclusivos"]), (800, 776, 769))
+
+    def test_tarifa_da_distribuidora_igual_ao_arquivo_original(self):
+        # tarifas-homologadas-distribuidoras-energia-eletrica.csv (bronze de 30/09/2026), linha
+        # CEMIG-D, REH 3.589/2026, Tarifa de Aplicação, B1 Convencional Residencial: TUSD 593,08 e TE 310,21
+        t_ = self.dist["CEMIG-D"]["indicadores"]["tarifa"]
+        self.assertEqual((t_["tusd_rs_mwh"], t_["te_rs_mwh"]), (593.08, 310.21))
+        self.assertAlmostEqual(t_["total_rs_mwh"], 903.29, places=2)
+        self.assertEqual((t_["vigencia_inicio"], t_["vigencia_fim"]), ("2026-05-28", "2027-05-27"))
 
     def test_areas_de_carga_provadas_na_publicacao(self):
         ac = self.g["areas_carga"]

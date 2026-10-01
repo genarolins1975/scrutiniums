@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "carga_detalhe.json",
- "gerado_em": "2026-10-01T06:24:22Z",
+ "gerado_em": "2026-10-01T07:11:57Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "f5cba38ad40f+alterado",
+ "versao_codigo": "eec0a3121e05+alterado",
  "disponivel": true,
  "dia_referencia": "2026-09-28",
  "unidade": "MWmed",
@@ -18324,7 +18324,7 @@
      "diferenca_pct": 2.39
     }
    ],
-   "conclusao": "A carga global da API de carga verificada não é a mesma grandeza da curva de carga: difere ano a ano e hora a hora (mais à noite). Carga, MMGD e carga líquida só são decompostas dentro da API; a MMGD da API nunca é subtraída da curva."
+   "conclusao": "A carga global da API de carga verificada não é a mesma grandeza da curva de carga: difere ano a ano e hora a hora (nos últimos 365 dias do SIN, a carga global ficou acima da curva em todas as horas do dia, de +1,69% na hora das 06h a +7,63% na hora das 13h). Carga, MMGD e carga líquida só são decompostas dentro da API; a MMGD da API nunca é subtraída da curva."
   },
   "conceitos": {
    "carga_curva": "Carga de energia da Curva de Carga Horária (e da Carga de Energia Diária, que é a média das 24 horas): carga atendida pelas usinas despachadas ou programadas pelo ONS, mais a previsão de usinas não despachadas (desde 01/03/2021) e a estimativa de MMGD com dados meteorológicos previstos (declarada para 29/04/2023, observada nos dados em 01/05/2023). A MMGD está dentro, mas não aparece separada.",
@@ -21744,7 +21744,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-29T22:00:43.436290",
    "capturado_em": "2026-09-30T02:19:48Z",
-   "validado_em": "2026-10-01T06:24:21Z",
+   "validado_em": "2026-10-01T07:11:55Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-28"
@@ -21761,9 +21761,9 @@
     "sha256": "b6e8471dc064c63a4db34e9e6e3009a019460c71bff839104a1415ea0dbaefb3"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:24:19Z",
+    "detectado_em": "2026-10-01T07:11:54Z",
     "total": 33,
     "vintages_comparadas": 28,
     "arquivos": 27,
@@ -21900,7 +21900,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:01:09Z",
    "capturado_em": "2026-09-30T23:31:22Z",
-   "validado_em": "2026-10-01T06:24:21Z",
+   "validado_em": "2026-10-01T07:11:55Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-29"
@@ -21917,9 +21917,9 @@
     "sha256": "cfd40a007a991294b117e6c82a8a65277e3cee02939bcbd33a4d60067c214d39"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:24:20Z",
+    "detectado_em": "2026-10-01T07:11:55Z",
     "total": 0,
     "vintages_comparadas": 27,
     "arquivos": 27,
@@ -21956,7 +21956,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-10-01T00:04:34Z",
-   "validado_em": "2026-10-01T06:24:21Z",
+   "validado_em": "2026-10-01T07:11:56Z",
    "cobertura_historica": {
     "inicio": "2019-01-01",
     "fim": "2026-09-29"
@@ -21972,9 +21972,9 @@
     "sha256": "6928d877ecd805241b51dba2b91b6a19e7fbd12c72cf4958bd705dcb2db3eff7"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:24:21Z",
+    "detectado_em": "2026-10-01T07:11:55Z",
     "total": 0,
     "vintages_comparadas": 376,
     "arquivos": 376,
@@ -21984,7 +21984,7 @@
    },
    "limitacoes": [
     "A MMGD é estimativa do ONS, não medição: a micro e minigeração não é supervisionada.",
-    "A carga global desta API não é a mesma grandeza da curva de carga (é maior, sobretudo à noite); as duas não se misturam.",
+    "A carga global desta API não é a mesma grandeza da curva de carga (nos últimos 365 dias do SIN, a carga global ficou acima da curva em todas as horas do dia, de +1,69% na hora das 06h a +7,63% na hora das 13h); as duas não se misturam.",
     "Antes de 15/02/2019 a MMGD vem vazia (ausência, não zero).",
     "Os dados do ONS passam por consistência recorrente e são revisados depois da publicação; os dias mais recentes mudam."
    ],
@@ -22038,7 +22038,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T23:33:21Z",
-   "validado_em": "2026-10-01T06:24:21Z",
+   "validado_em": "2026-10-01T07:11:56Z",
    "cobertura_historica": {
     "inicio": "2019-01-01",
     "fim": "2026-09-27"
@@ -22054,9 +22054,9 @@
     "sha256": "66c16d30c194d9e918b143e8fdd1fcdeedb50ed61560625ecdb5e0605d4545a8"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:24:21Z",
+    "detectado_em": "2026-10-01T07:11:55Z",
     "total": 0,
     "vintages_comparadas": 32,
     "arquivos": 32,
@@ -22092,7 +22092,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-29T22:00:43.436290",
    "capturado_em": "2026-09-30T02:19:48Z",
-   "validado_em": "2026-10-01T06:24:21Z",
+   "validado_em": "2026-10-01T07:11:56Z",
    "cobertura_historica": {
     "inicio": "2023-04-29",
     "fim": "2026-09-28"
@@ -22108,9 +22108,9 @@
     "sha256": "b6e8471dc064c63a4db34e9e6e3009a019460c71bff839104a1415ea0dbaefb3"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:24:19Z",
+    "detectado_em": "2026-10-01T07:11:54Z",
     "total": 33,
     "vintages_comparadas": 28,
     "arquivos": 27,
@@ -22307,8 +22307,8 @@
    "tratamento_ausencia": "janela com dia ausente não tem variação",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "f5cba38ad40f+alterado",
-    "publicacao": "2026-10-01T06:24:21Z"
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T07:11:56Z"
    },
    "revisoes": "2 capturas do arquivo de 2026 comparadas; a de 29/09/2026 não tinha a janela completa e trazia −668,879 MWmed no NE em 26/09.",
    "testes": [
@@ -22344,7 +22344,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py carga --sem-coleta\nArquivo da fonte indisponível neste ambiente para parte das capturas: valores lidos do silver principal (base.como_estava_em(con, 'carga_energia_di', 'carga_mwmed.<sm>', '2026-09-30T02:20:27Z')).",
-   "citacao": "SCRUTINIUMS. Variação da carga do SIN em 7 dias contra os mesmos dias do ano anterior (reprodução do diagnóstico): +10,5%, SIN (soma de SE/CO, S, NE e N), 22/09/2026 a 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Diária (recurso CARGA_ENERGIA_2026, capturado em 29/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Variação da carga do SIN em 7 dias contra os mesmos dias do ano anterior (reprodução do diagnóstico): +10,5%, SIN (soma de SE/CO, S, NE e N), 22/09/2026 a 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Diária (recurso CARGA_ENERGIA_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "p025_7d_equivalente": {
    "indicador": "Variação da carga do SIN nos últimos 7 dias contra os mesmos dias da semana 52 semanas antes",
@@ -22422,8 +22422,8 @@
    "tratamento_ausencia": "dia em quarentena ou ausente anula a comparação",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "f5cba38ad40f+alterado",
-    "publicacao": "2026-10-01T06:24:21Z"
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T07:11:56Z"
    },
    "revisoes": "33 observações revisadas pela fonte entre as capturas integradas. Mais recentes: carga_mwmed.N em 2026-09-26; carga_mwmed.NE em 2026-09-26; carga_mwmed.S em 2026-09-26; carga_mwmed.SE em 2026-09-26; carga_mwmed.N em 2026-09-25. Verificação em 2026-10-01.",
    "testes": [
@@ -22446,7 +22446,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py carga --sem-coleta\nArquivo da fonte indisponível neste ambiente para parte das capturas: valores lidos do silver principal (base.serie_vigente(con, 'carga_energia_di', 'carga_mwmed.<sm>')).",
-   "citacao": "SCRUTINIUMS. Variação da carga do SIN nos últimos 7 dias contra os mesmos dias da semana 52 semanas antes: +11,4%, SIN, 22/09/2026 a 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Diária (recurso CARGA_ENERGIA_2026, capturado em 29/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Variação da carga do SIN nos últimos 7 dias contra os mesmos dias da semana 52 semanas antes: +11,4%, SIN, 22/09/2026 a 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Diária (recurso CARGA_ENERGIA_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "p026_mmgd_mes": {
    "indicador": "Parcela da carga global do SIN atendida por MMGD (estimativa do ONS), último mês completo",
@@ -22527,8 +22527,8 @@
    "tratamento_ausencia": "hora sem as duas meias horas fica fora; dia em curso na captura não entra",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "f5cba38ad40f+alterado",
-    "publicacao": "2026-10-01T06:24:22Z"
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T07:11:56Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -22555,7 +22555,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py carga --sem-coleta",
-   "citacao": "SCRUTINIUMS. Parcela da carga global do SIN atendida por MMGD (estimativa do ONS), último mês completo: 10,8%, SIN, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Verificada (recurso cargaverificada_SECO_2026-08, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Parcela da carga global do SIN atendida por MMGD (estimativa do ONS), último mês completo: 10,8%, SIN, 01/08/2026 a 31/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Verificada (recurso cargaverificada_SECO_2026-08, capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "p026_pico_sin": {
    "indicador": "Pico horário da carga do SIN no dia",
@@ -22642,8 +22642,8 @@
    "tratamento_ausencia": "dia sem as 24 horas não tem pico",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "f5cba38ad40f+alterado",
-    "publicacao": "2026-10-01T06:24:22Z"
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T07:11:57Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -22665,7 +22665,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py carga --sem-coleta",
-   "citacao": "SCRUTINIUMS. Pico horário da carga do SIN no dia: 98.741 MWmed às 19h, SIN, 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Curva de Carga Horária (recurso CurvaCarga-2026, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Pico horário da carga do SIN no dia: 98.741 MWmed às 19h, SIN, 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Curva de Carga Horária (recurso CurvaCarga-2026, capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "p027_mape_sin": {
    "indicador": "Erro percentual absoluto médio da decomposição estatística, fora da amostra (SIN)",
@@ -22768,8 +22768,8 @@
    "tratamento_ausencia": "dia sem temperatura (ou sem a do dia anterior) fica fora do modelo",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "f5cba38ad40f+alterado",
-    "publicacao": "2026-10-01T06:24:22Z"
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T07:11:57Z"
    },
    "revisoes": "A série é reavaliada a cada publicação com a carga e a temperatura vigentes.",
    "testes": [
@@ -22801,7 +22801,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py carga --sem-coleta\nArquivo da fonte indisponível neste ambiente para parte das capturas: valores lidos do silver principal (base.serie_vigente(con, 'carga_energia_di', 'carga_mwmed.<sm>')).",
-   "citacao": "SCRUTINIUMS. Erro percentual absoluto médio da decomposição estatística, fora da amostra (SIN): 2,08%, SIN, 01/05/2024 a 27/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Diária (recurso CARGA_ENERGIA_2026, capturado em 29/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Erro percentual absoluto médio da decomposição estatística, fora da amostra (SIN): 2,08%, SIN, 01/05/2024 a 27/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Diária (recurso CARGA_ENERGIA_2026, capturado em 29/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "downloads": [

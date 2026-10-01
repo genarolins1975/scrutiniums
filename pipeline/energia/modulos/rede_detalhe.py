@@ -411,10 +411,12 @@ REGISTRO = {
         "/energia/series/rede_programado_horario.csv": (
             "data_hora; par (fronteira na orientação canônica, ARGENTINA ou URUGUAI); programado_mwmed; verificado_mwmed; "
             "desvio_mwmed (verificado − programado); material (1 = |desvio| ≥ 1.000 MWmed); inversao (1 = programa e operação em "
-            "sentidos opostos, ambos acima de 1 MWmed em módulo). Desvio não é falha: o programa é a previsão do dia anterior."),
+            "sentidos opostos, ambos acima de 1 MWmed em módulo); dia_rotulado (1 = dia com programado repetido por 6 horas ou mais "
+            "numa fronteira entre subsistemas, rótulo nas quatro fronteiras; 0 nos países). Desvio não é falha: o programa é a "
+            "previsão do dia anterior."),
         "/energia/series/rede_programado_diario.csv": (
             "data; par; horas; programado_mwh; verificado_mwh; desvio_mwh (Σ verificado − programado); desvio_abs_mwh "
-            "(Σ |desvio|); horas_materiais; horas_inversao; maior_desvio_mwmed e hora_maior_desvio."),
+            "(Σ |desvio|); horas_materiais; horas_inversao; maior_desvio_mwmed e hora_maior_desvio; dia_rotulado (programa repetido)."),
         "/energia/series/rede_pdo_conferencia.csv": (
             "data_hora; pais; programado_conjunto_mwmed (intercâmbio internacional programado); pdo_mwmed (−média das duas meias "
             "horas das conversoras do país no PDO); diferenca_mwmed; confere (1 = diferença ≤ 0,5 MWmed)."),
@@ -1500,7 +1502,8 @@ def linhas_balanco_mensal(mensal):
     for (m, sm) in sorted(mensal, key=lambda k: (k[0], ordem.index(k[1]))):
         x = mensal[(m, sm)]
         comp, per = x["horas_completas"] > 0, x["horas_perimetro"] > 0
-        val = {k: (_r(x[k], 3) if (comp if k in CAMPOS_BALANCO_MES[:4] else per) else None) for k in CAMPOS_BALANCO_MES}
+        # "+ 0.0" tira o sinal do zero arredondado (−0,0 vira 0,0)
+        val = {k: (_r(x[k], 3) + 0.0 if (comp if k in CAMPOS_BALANCO_MES[:4] else per) else None) for k in CAMPOS_BALANCO_MES}
         linhas.append({"mes": m, "sm": sm, "mmgd_estimada": regime_mmgd(m), **{k: int(x[k]) for k in CONTAGENS_BALANCO_MES}, **val})
     return linhas
 
@@ -1517,7 +1520,7 @@ def _balanco(bal, fluxo, ext, con, quebra_mmgd):
     meses = sorted({x["mes"] for x in linhas})
     idx = {(x["mes"], x["sm"]): x for x in linhas}
     mensal_gold = {"meses": meses, "mmgd_estimada": [regime_mmgd(m) for m in meses], "por_sm": {sm: {
-        **{k: [_r(idx[(m, sm)][k], 0) if (m, sm) in idx and idx[(m, sm)][k] is not None else None for m in meses]
+        **{k: [_r(idx[(m, sm)][k], 0) + 0.0 if (m, sm) in idx and idx[(m, sm)][k] is not None else None for m in meses]
            for k in CAMPOS_BALANCO_MES},
         **{k: [idx[(m, sm)][k] if (m, sm) in idx else None for m in meses] for k in CONTAGENS_BALANCO_MES},
     } for sm in ons_rede.SUBSISTEMAS + ("SIN",)}}
@@ -1580,6 +1583,8 @@ def _quebra_mmgd(con):
                        "observacao": ("O conjunto do balanço não declara a mudança: o dicionário (versão 1.0, 02/05/2023) e a "
                                       "descrição no portal não mencionam a MMGD.")},
         "conferencia_arquivo": conf, "degrau_observado_no_dia": observado,
+        "regra_degrau": ("degrau observado quando a solar do SIN no dia é mais de 1,5 vez a do dia anterior e geração − carga − "
+                         "intercâmbio fecha (0,1 MWmed) nas 24 horas do dia, ou seja, a carga acompanha a solar"),
         "efeito": ("Geração e carga mensais de antes e de depois de 29/04/2023 não são comparáveis diretamente (marcação "
                    "mmgd_estimada na série mensal: sem, parcial em abril de 2023, com). Resíduos e intercâmbio não são afetados."),
     }

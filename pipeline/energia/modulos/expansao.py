@@ -660,14 +660,20 @@ def _integra(con, ds, rec, v):
         txt = _texto_pdf(v)
         if txt is None:
             raise RuntimeError("pdftotext ausente: o Anexo I-3 do relatório fica para um ambiente com poppler")
-        anexo = epe_pde.extrai_anexo_i3(txt)
-        linhas = [(f"pde2035.anexo_i3.{k}", ano, mw) for k, anos in anexo["linhas"].items()
-                  for ano, mw in anos.items() if mw is not None]
-        base.grava_registros(con, ds, v["vintage_id"], [("meta:pde2035_anexo_i3", "pagina", str(anexo["pagina"])),
-                                                        ("meta:pde2035_anexo_i3", "notas", _fmt(anexo["notas"])),
-                                                        ("meta:pde2035_anexo_i3", "extracao", "pdftotext -layout")])
-        return {"pagina": anexo["pagina"], "observacoes": base.grava_observacoes(con, ds, v["vintage_id"], linhas)}
+        return _integra_anexo_i3(con, ds, v["vintage_id"], txt)
     return None  # recurso guardado no bronze sem integração (página do PDE)
+
+
+def _integra_anexo_i3(con, ds, vid, texto, primeira_pagina=1):
+    """Tabela do Anexo I-3 do relatório do PDE (texto do pdftotext -layout) → observações
+    pde2035.anexo_i3.<linha> por ano (MW) e a página e as notas da tabela em registros."""
+    anexo = epe_pde.extrai_anexo_i3(texto, primeira_pagina)
+    linhas = [(f"pde2035.anexo_i3.{k}", ano, mw) for k, anos in anexo["linhas"].items()
+              for ano, mw in anos.items() if mw is not None]
+    base.grava_registros(con, ds, vid, [("meta:pde2035_anexo_i3", "pagina", str(anexo["pagina"])),
+                                        ("meta:pde2035_anexo_i3", "notas", _fmt(anexo["notas"])),
+                                        ("meta:pde2035_anexo_i3", "extracao", "pdftotext -layout")])
+    return {"pagina": anexo["pagina"], "observacoes": base.grava_observacoes(con, ds, vid, linhas)}
 
 
 def _texto_pdf(v):

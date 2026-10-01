@@ -1,7 +1,7 @@
 {
  "dominio": "energia",
  "gold": "catalogo.json",
- "gerado_em": "2026-10-01T06:42:09Z",
+ "gerado_em": "2026-10-01T07:03:15Z",
  "versao_pipeline": "energia-0.1.0",
  "disponivel": true,
  "estados": [
@@ -14,14 +14,14 @@
  "definicoes_estado": {
   "CATALOGADO": "Existe na listagem oficial do portal, num package_show versionado ou no registro de um módulo, com URL e licença. Entrada cadastrada à mão fica aqui, com metadados não verificados.",
   "RECURSO VERIFICADO": "Um arquivo do conjunto foi acessado pelo pipeline: baixado com sha256 ou lido por requisição parcial, com status HTTP, formato reconhecido pela assinatura e cabeçalho real.",
-  "INTEGRADO": "Coletado automaticamente: cada captura tem o original guardado com sha256 e o conteúdo extraído entra no histórico de capturas (documentos ficam guardados para citação).",
+  "INTEGRADO": "Coletado automaticamente: cada captura tem o original guardado com sha256 e o conteúdo extraído entra no histórico de capturas (documentos ficam guardados para citação; arquivo lido direto do original conta quando a gold que o usa cita o seu snapshot).",
   "VALIDADO": "Integrado e com validações automáticas registradas nesta publicação, nenhuma reprovada: capturas com sha256, original conferido, horizonte das datas e esquema da fonte.",
   "PUBLICADO": "Validado e alimentando gold íntegra publicada no portal, cujo contrato (proveniência, links, esquema) não foi reprovado."
  },
  "criterios_estado": {
   "CATALOGADO": "conjunto na resposta do package_search (ONS, ANEEL), em package_show versionado (CCEE), no REGISTRO de um módulo ou em catalogo_manual.json",
   "RECURSO VERIFICADO": "vintage com sha256 em algum silver, ou verificação parcial (Range de 64 KB) com HTTP 200/206 nos últimos dias",
-  "INTEGRADO": "vintage(s) no silver da família declarada e observações ou registros extraídos (ou documento PDF/HTML guardado)",
+  "INTEGRADO": "vintage(s) no silver da família declarada e observações ou registros extraídos, documento PDF/HTML/XML guardado, ou original lido do bronze por gold cuja proveniência cita o snapshot do conjunto",
   "VALIDADO": "checagens conjunto:<família>/<dataset>:* do relatório em publicacao.json sem nenhum resultado reprovado",
   "PUBLICADO": "dataset citado no snapshot de uma proveniência de gold íntegra ou declarado no REGISTRO do módulo dono de gold íntegra, sem checagem reprovada nessa gold"
  },
@@ -71,11 +71,11 @@
   }
  },
  "contagem": {
-  "CATALOGADO": 26,
-  "RECURSO VERIFICADO": 269,
+  "CATALOGADO": 22,
+  "RECURSO VERIFICADO": 266,
   "INTEGRADO": 0,
-  "VALIDADO": 13,
-  "PUBLICADO": 105
+  "VALIDADO": 5,
+  "PUBLICADO": 120
  },
  "total": 413,
  "descontinuados": 12,
@@ -84,8 +84,8 @@
    "por_estado": {
     "CATALOGADO": 488,
     "RECURSO VERIFICADO": 29,
-    "VALIDADO": 20,
-    "PUBLICADO": 94
+    "VALIDADO": 4,
+    "PUBLICADO": 110
    },
    "total": 631,
    "removidos": 0,
@@ -105,8 +105,7 @@
    "por_estado": {
     "CATALOGADO": 13043,
     "RECURSO VERIFICADO": 92,
-    "VALIDADO": 2,
-    "PUBLICADO": 686
+    "PUBLICADO": 688
    },
    "total": 13823,
    "removidos": 0,
@@ -120,7 +119,7 @@
    "orgao": "ANEEL",
    "titulo": "Agentes do Setor Elétrico",
    "modificado_na_fonte": "2026-10-01",
-   "descricao": "O Cadastro de agentes da ANEEL é um banco de dados oficial, único, atualizado e confiável de informações cadastrais das pessoas…",
+   "descricao": "O Cadastro de agentes da ANEEL é um banco de dados oficial, único, atualizado e confiável de informações cadastrais das…",
    "formatos": [
     "CSV",
     "PDF"
@@ -156,12 +155,12 @@
    },
    "integracoes": [
     {
-     "id": "empresas/aneel_agentes_setor",
-     "estado": "VALIDADO"
-    },
-    {
      "id": "mercado/aneel_agentes_mercado",
      "estado": "PUBLICADO"
+    },
+    {
+     "id": "empresas/aneel_agentes_setor",
+     "estado": "VALIDADO"
     }
    ],
    "modulos": [
@@ -180,8 +179,8 @@
     "mercado.json"
    ],
    "quebras": [],
-   "interno": "aneel_agentes_setor",
-   "familia": "empresas",
+   "interno": "aneel_agentes_mercado",
+   "familia": "mercado",
    "paginas": [
     {
      "rotulo": "Mercado",
@@ -203,7 +202,7 @@
    "orgao": "ANEEL",
    "titulo": "Atendimento às Ocorrências Emergenciais",
    "modificado_na_fonte": "2026-09-05",
-   "descricao": "O atendimento às ocorrências emergenciais é avaliado por meio de indicadores vinculados a conjuntos de unidades consumidoras…",
+   "descricao": "O atendimento às ocorrências emergenciais é avaliado por meio de indicadores vinculados a conjuntos de unidades…",
    "formatos": [
     "CSV",
     "PARQUET",
@@ -269,12 +268,161 @@
    ]
   },
   {
+   "id": "aneel:atos-limites-pld",
+   "slug": "aneel-atos-limites-pld",
+   "orgao": "ANEEL",
+   "titulo": "Atos anuais da ANEEL que fixam os limites do PLD (2021 a 2026) e atos da linha do tempo",
+   "url": "https://www2.aneel.gov.br/cedoc/",
+   "licenca": "Ato oficial publicado no Diário Oficial da União; texto normativo de domínio público (Lei nº 9.610/1998, art. 8º, IV)",
+   "descricao": "",
+   "formatos": [],
+   "tema": "preco",
+   "metadados_verificados": true,
+   "etapas": {
+    "catalogado": {
+     "ok": true,
+     "origem": "registro"
+    },
+    "recurso_verificado": {
+     "ok": true
+    },
+    "integrado": {
+     "ok": true
+    },
+    "validado": {
+     "ok": true
+    },
+    "publicado": {
+     "ok": true
+    }
+   },
+   "integracoes": [
+    {
+     "id": "regulacao/regulacao_documentos",
+     "estado": "PUBLICADO"
+    }
+   ],
+   "modulos": [
+    "regulacao"
+   ],
+   "estado": "PUBLICADO",
+   "papeis": [
+    "indicador"
+   ],
+   "usado_em": [
+    "regulacao.json"
+   ],
+   "quebras": [
+    {
+     "data": "2021-01-01",
+     "origem": "FONTE",
+     "descricao": "PLD passa a ser horário e o teto horário passa a valer ao lado do teto estrutural (Portaria MME nº 301/2019)."
+    },
+    {
+     "data": "2025-01-01",
+     "origem": "FONTE",
+     "descricao": "Os limites passam a ser fixados por despacho da superintendência (delegação da Portaria nº 6.828/2023), não mais por resolução homologatória da Diretoria."
+    }
+   ],
+   "interno": "regulacao_documentos",
+   "familia": "regulacao",
+   "paginas": [
+    {
+     "rotulo": "Regulação",
+     "href": "/setor-eletrico/regulacao"
+    },
+    {
+     "rotulo": "PLD",
+     "href": "/setor-eletrico/pld"
+    }
+   ],
+   "downloads": [
+    "/energia/series/regulacao_limites_pld_atos.csv",
+    "/energia/series/regulacao_limites_pld_conferencias.csv",
+    "/energia/series/regulacao_limites_pld_vigencias.csv",
+    "/energia/series/regulacao_linha_do_tempo.csv"
+   ]
+  },
+  {
+   "id": "aneel:atos-de-outorgas-de-geracao",
+   "slug": "aneel-atos-outorgas-geracao",
+   "orgao": "ANEEL",
+   "titulo": "Atos de Outorgas de Geração",
+   "modificado_na_fonte": "2026-10-01",
+   "descricao": "Contem os documentos emitidos pela ANEEL referentes aos empreendimentos de geração a partir de 2015.",
+   "formatos": [
+    "CSV",
+    "PDF"
+   ],
+   "tema": "geracao",
+   "frequencia_declarada": "Mensal",
+   "metadados_verificados": true,
+   "etapas": {
+    "catalogado": {
+     "ok": true,
+     "origem": "listagem"
+    },
+    "recurso_verificado": {
+     "ok": true
+    },
+    "integrado": {
+     "ok": true
+    },
+    "validado": {
+     "ok": true
+    },
+    "publicado": {
+     "ok": true
+    }
+   },
+   "recursos_resumo": {
+    "total": 2,
+    "por_estado": {
+     "CATALOGADO": 1,
+     "PUBLICADO": 1
+    },
+    "acessados": 1,
+    "ultimo_publicado": "2026-10-01"
+   },
+   "integracoes": [
+    {
+     "id": "aneel_geracao/aneel_atos_outorga_geracao",
+     "estado": "PUBLICADO"
+    }
+   ],
+   "modulos": [
+    "expansao"
+   ],
+   "ressalvas": [
+    "A listagem do portal informa modificação de 1 arquivo(s) depois da última captura (atos-outorgas-aneel: 2026-10-01T05:01:25 UTC; captura em 2026-09-30T22:21:26Z)."
+   ],
+   "estado": "PUBLICADO",
+   "papeis": [
+    "indicador"
+   ],
+   "usado_em": [
+    "expansao.json"
+   ],
+   "quebras": [],
+   "interno": "aneel_atos_outorga_geracao",
+   "familia": "aneel_geracao",
+   "paginas": [
+    {
+     "rotulo": "Expansão",
+     "href": "/setor-eletrico/expansao"
+    }
+   ],
+   "downloads": [
+    "/energia/series/expansao_encerramentos_outorga.csv"
+   ]
+  },
+  {
    "id": "aneel:audiencias-e-consultas-publicas",
    "slug": "aneel-audiencias-consultas-publicas",
    "orgao": "ANEEL",
    "titulo": "Audiências e Consultas Públicas",
    "modificado_na_fonte": "2026-07-22",
-   "descricao": "A ANEEL tem se comprometido em fazer com que o seu processo de tomada de decisão seja transparente, permitindo a participação e o…",
+   "descricao": "A ANEEL tem se comprometido em fazer com que o seu processo de tomada de decisão seja transparente, permitindo a…",
    "formatos": [
     "CSV",
     "PDF"
@@ -340,7 +488,7 @@
    "orgao": "ANEEL",
    "titulo": "Bandeiras Tarifárias",
    "modificado_na_fonte": "2026-10-01",
-   "descricao": "O Brasil é um dos países mais dependentes da energia hidrelétrica do mundo. Cerca de 65% da energia elétrica é produzida em…",
+   "descricao": "O Brasil é um dos países mais dependentes da energia hidrelétrica do mundo. Cerca de 65% da energia elétrica é…",
    "formatos": [
     "CSV",
     "PDF"
@@ -376,7 +524,7 @@
    },
    "integracoes": [
     {
-     "id": "aneel_tarifas/aneel_bandeiras_tarifarias",
+     "id": "regulacao/aneel_bandeiras_adicional",
      "estado": "PUBLICADO"
     },
     {
@@ -384,7 +532,7 @@
      "estado": "PUBLICADO"
     },
     {
-     "id": "regulacao/aneel_bandeiras_adicional",
+     "id": "aneel_tarifas/aneel_bandeiras_tarifarias",
      "estado": "PUBLICADO"
     }
    ],
@@ -392,6 +540,9 @@
     "conta",
     "mercado",
     "regulacao"
+   ],
+   "ressalvas": [
+    "A listagem do portal informa modificação de 1 arquivo(s) depois da última captura (Bandeira Tarifária - Acionamento: 2026-10-01T05:01:18 UTC; captura em 2026-09-30T22:52:09Z)."
    ],
    "estado": "PUBLICADO",
    "papeis": [
@@ -403,8 +554,8 @@
     "regulacao.json"
    ],
    "quebras": [],
-   "interno": "aneel_bandeiras_tarifarias",
-   "familia": "aneel_tarifas",
+   "interno": "aneel_bandeiras_adicional",
+   "familia": "regulacao",
    "paginas": [
     {
      "rotulo": "Regulação",
@@ -508,12 +659,79 @@
    ]
   },
   {
+   "id": "aneel:capacidade-instalada-por-unidade-da-federacao",
+   "slug": "aneel-capacidade-uf",
+   "orgao": "ANEEL",
+   "titulo": "Capacidade Instalada por Unidade da Federação",
+   "modificado_na_fonte": "2026-07-01",
+   "descricao": "A geração é o segmento da indústria de eletricidade responsável por produzir energia elétrica e injetá-la nos sistemas…",
+   "formatos": [
+    "CSV",
+    "PDF"
+   ],
+   "tema": "geracao",
+   "frequencia_declarada": "Trimestral",
+   "metadados_verificados": true,
+   "etapas": {
+    "catalogado": {
+     "ok": true,
+     "origem": "listagem"
+    },
+    "recurso_verificado": {
+     "ok": true
+    },
+    "integrado": {
+     "ok": true
+    },
+    "validado": {
+     "ok": true
+    },
+    "publicado": {
+     "ok": true
+    }
+   },
+   "recursos_resumo": {
+    "total": 2,
+    "por_estado": {
+     "CATALOGADO": 1,
+     "PUBLICADO": 1
+    },
+    "acessados": 1,
+    "ultimo_publicado": "2026-07-01"
+   },
+   "integracoes": [
+    {
+     "id": "aneel_geracao/aneel_capacidade_agregada",
+     "estado": "PUBLICADO"
+    }
+   ],
+   "modulos": [
+    "expansao"
+   ],
+   "estado": "PUBLICADO",
+   "papeis": [
+    "contexto"
+   ],
+   "usado_em": [
+    "expansao.json"
+   ],
+   "quebras": [],
+   "interno": "aneel_capacidade_agregada",
+   "familia": "aneel_geracao",
+   "paginas": [
+    {
+     "rotulo": "Expansão",
+     "href": "/setor-eletrico/expansao"
+    }
+   ]
+  },
+  {
    "id": "aneel:componentes-tarifarias",
    "slug": "aneel-componentes-tarifarias",
    "orgao": "ANEEL",
    "titulo": "Componentes Tarifárias",
    "modificado_na_fonte": "2026-09-27",
-   "descricao": "Apresenta os valores das Tarifas de Energia - TE e das Tarifas de Uso do Sistema de Distribuição - TUSD, resultantes dos…",
+   "descricao": "Apresenta os valores das Tarifas de Energia - TE e das Tarifas de Uso do Sistema de Distribuição - TUSD, resultantes…",
    "formatos": [
     "CSV",
     "PARQUET",
@@ -595,7 +813,7 @@
    "orgao": "ANEEL",
    "titulo": "Conta Desenvolvimento Energético (CDE) - Custeio dos Benefícios Tarifários",
    "modificado_na_fonte": "2026-10-01",
-   "descricao": "O Decreto nº 9.022, de 31 de março de 2017, consolidou e atualizou as normas relacionadas à Conta de Desenvolvimento Energético –…",
+   "descricao": "O Decreto nº 9.022, de 31 de março de 2017, consolidou e atualizou as normas relacionadas à Conta de Desenvolvimento…",
    "formatos": [
     "CSV",
     "PDF"
@@ -631,17 +849,21 @@
    },
    "integracoes": [
     {
-     "id": "aneel_social/aneel_cde_custeio",
+     "id": "aneel_tarifas/aneel_cde_custeio",
      "estado": "PUBLICADO"
     },
     {
-     "id": "aneel_tarifas/aneel_cde_custeio",
+     "id": "aneel_social/aneel_cde_custeio",
      "estado": "PUBLICADO"
     }
    ],
    "modulos": [
     "conta",
     "inclusao"
+   ],
+   "ressalvas": [
+    "A listagem do portal informa modificação de 1 arquivo(s) depois da última captura (cde-custeio-beneficios-tarifarios.csv: 2026-10-01T05:01:18 UTC; captura em 2026-09-30T22:41:44Z).",
+    "A listagem do portal informa modificação de 1 arquivo(s) depois da última captura (cde-custeio-beneficios-tarifarios.csv: 2026-10-01T05:01:18 UTC; captura em 2026-09-30T22:53:08Z)."
    ],
    "estado": "PUBLICADO",
    "papeis": [
@@ -653,7 +875,7 @@
    ],
    "quebras": [],
    "interno": "aneel_cde_custeio",
-   "familia": "aneel_social",
+   "familia": "aneel_tarifas",
    "paginas": [
     {
      "rotulo": "Conta de luz",
@@ -680,7 +902,7 @@
    "titulo": "Evento Situação de Emergência",
    "licenca": "Licença Aberta para Bases de Dados (ODbL) do Open Data Commons",
    "modificado_na_fonte": "2026-08-15",
-   "descricao": "O conjunto de dados \"Evento Situação Emergencial\" reúne informações sobre os decretos emitidos por órgãos competentes que…",
+   "descricao": "O conjunto de dados \"Evento Situação Emergencial\" reúne informações sobre os decretos emitidos por órgãos competentes…",
    "formatos": [
     "CSV",
     "PDF"
@@ -745,7 +967,7 @@
   },
   {
    "id": "aneel:indqual-municipio",
-   "slug": "aneel-indqual-municipio",
+   "slug": "aneel-indqual-municipio-area-mmgd",
    "orgao": "ANEEL",
    "titulo": "IndQual Município",
    "modificado_na_fonte": "2026-09-09",
@@ -785,11 +1007,11 @@
    },
    "integracoes": [
     {
-     "id": "aneel_distribuicao/aneel_indqual_municipio",
+     "id": "aneel_mmgd/aneel_mmgd_ref_conjuntos_municipio",
      "estado": "PUBLICADO"
     },
     {
-     "id": "aneel_mmgd/aneel_mmgd_ref_conjuntos_municipio",
+     "id": "aneel_distribuicao/aneel_indqual_municipio",
      "estado": "PUBLICADO"
     },
     {
@@ -813,8 +1035,8 @@
     "transicao.json"
    ],
    "quebras": [],
-   "interno": "aneel_indqual_municipio",
-   "familia": "aneel_distribuicao",
+   "interno": "aneel_mmgd_ref_conjuntos_municipio",
+   "familia": "aneel_mmgd",
    "paginas": [
     {
      "rotulo": "Transição e ambiente",
@@ -838,11 +1060,11 @@
   },
   {
    "id": "aneel:indicadores-coletivos-de-continuidade-dec-e-fec",
-   "slug": "aneel-continuidade-dec-fec",
+   "slug": "aneel-conjuntos-limite-area-mmgd",
    "orgao": "ANEEL",
    "titulo": "Indicadores Coletivos de Continuidade (DEC e FEC)",
    "modificado_na_fonte": "2026-09-05",
-   "descricao": "O conjunto de dados apresenta os limites e os valores apurados dos indicadores coletivos de continuidade DEC (Duração Equivalente…",
+   "descricao": "O conjunto de dados apresenta os limites e os valores apurados dos indicadores coletivos de continuidade DEC (Duração…",
    "formatos": [
     "CSV",
     "PARQUET",
@@ -881,11 +1103,11 @@
    },
    "integracoes": [
     {
-     "id": "aneel_distribuicao/aneel_continuidade_limites",
+     "id": "aneel_mmgd/aneel_mmgd_ref_conjuntos_limite",
      "estado": "PUBLICADO"
     },
     {
-     "id": "aneel_mmgd/aneel_mmgd_ref_conjuntos_limite",
+     "id": "aneel_distribuicao/aneel_continuidade_limites",
      "estado": "PUBLICADO"
     },
     {
@@ -925,8 +1147,8 @@
      "descricao": "Compensações por violação do DISE (interrupção em situação de emergência) passam a ser publicadas."
     }
    ],
-   "interno": "aneel_continuidade_limites",
-   "familia": "aneel_distribuicao",
+   "interno": "aneel_mmgd_ref_conjuntos_limite",
+   "familia": "aneel_mmgd",
    "paginas": [
     {
      "rotulo": "Transição e ambiente",
@@ -962,7 +1184,7 @@
    "orgao": "ANEEL",
    "titulo": "Indicadores de Qualidade do Atendimento Telefônico",
    "modificado_na_fonte": "2026-09-05",
-   "descricao": "Este conjunto de dados reúne os indicadores de qualidade do atendimento telefônico prestados pelas distribuidoras de energia…",
+   "descricao": "Este conjunto de dados reúne os indicadores de qualidade do atendimento telefônico prestados pelas distribuidoras de…",
    "formatos": [
     "CSV",
     "PDF"
@@ -1032,13 +1254,89 @@
    ]
   },
   {
+   "id": "aneel:liberacao-para-operacao-comercial-de-empreendimentos-de-geracao",
+   "slug": "aneel-liberacao-operacao-comercial",
+   "orgao": "ANEEL",
+   "titulo": "Liberação para operação comercial de empreendimentos de geração",
+   "modificado_na_fonte": "2026-09-18",
+   "descricao": "Este conjunto de dados reflete a listagem de capacidade instalada liberada para operação comercial. Estão disponíveis…",
+   "formatos": [
+    "CSV",
+    "PDF",
+    "XML"
+   ],
+   "tema": "geracao",
+   "frequencia_declarada": "Quinzenal",
+   "metadados_verificados": true,
+   "etapas": {
+    "catalogado": {
+     "ok": true,
+     "origem": "listagem"
+    },
+    "recurso_verificado": {
+     "ok": true
+    },
+    "integrado": {
+     "ok": true
+    },
+    "validado": {
+     "ok": true
+    },
+    "publicado": {
+     "ok": true
+    }
+   },
+   "recursos_resumo": {
+    "total": 6,
+    "por_estado": {
+     "CATALOGADO": 4,
+     "PUBLICADO": 2
+    },
+    "acessados": 2,
+    "ultimo_publicado": "2026-09-18"
+   },
+   "integracoes": [
+    {
+     "id": "aneel_geracao/aneel_liberacao_comercial",
+     "estado": "PUBLICADO"
+    }
+   ],
+   "modulos": [
+    "expansao"
+   ],
+   "estado": "PUBLICADO",
+   "papeis": [
+    "indicador"
+   ],
+   "usado_em": [
+    "expansao.json"
+   ],
+   "quebras": [
+    {
+     "data": "2014-01-01",
+     "descricao": "Antes de 2014 o arquivo detalhado não cobre toda a potência liberada no ano (nota do dicionário de dados da ANEEL)."
+    }
+   ],
+   "interno": "aneel_liberacao_comercial",
+   "familia": "aneel_geracao",
+   "paginas": [
+    {
+     "rotulo": "Expansão",
+     "href": "/setor-eletrico/expansao"
+    }
+   ],
+   "downloads": [
+    "/energia/series/expansao_liberacoes_anuais.csv"
+   ]
+  },
+  {
    "id": "aneel:api-package-search",
    "slug": "aneel-catalogo-ckan",
    "orgao": "ANEEL",
    "titulo": "Listagem dos conjuntos do portal de dados abertos da ANEEL (API CKAN package_search)",
    "url": "https://dadosabertos.aneel.gov.br/api/3/action/package_search?rows=1000",
    "licenca": "Open Data Commons Open Database License (ODbL), conforme o portal de dados abertos da ANEEL",
-   "descricao": "Resposta completa da API (conjuntos, recursos, frequência de atualização declarada, situação e descontinuação), versionada com…",
+   "descricao": "Resposta completa da API (conjuntos, recursos, frequência de atualização declarada, situação e descontinuação)…",
    "formatos": [
     "JSON"
    ],
@@ -1102,7 +1400,7 @@
    "titulo": "Manifestações no 1° e 2° nível da Distribuidora",
    "licenca": "Licença Aberta para Bases de Dados (ODbL) do Open Data Commons",
    "modificado_na_fonte": "2026-09-26",
-   "descricao": "Quantidade de manifestações dos consumidores, por tipologia e nível de atendimento das distribuidoras de energia elétrica…",
+   "descricao": "Quantidade de manifestações dos consumidores, por tipologia e nível de atendimento das distribuidoras de energia…",
    "formatos": [
     "PARQUET",
     "PDF",
@@ -1184,7 +1482,7 @@
    "orgao": "ANEEL",
    "titulo": "Ouvidoria Setorial ANEEL",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "A Ouvidoria Setorial apoia os consumidores na busca pela conciliação com a distribuidora em questões relacionadas à prestação do…",
+   "descricao": "A Ouvidoria Setorial apoia os consumidores na busca pela conciliação com a distribuidora em questões relacionadas à…",
    "formatos": [
     "CSV",
     "PARQUET",
@@ -1256,7 +1554,7 @@
    "titulo": "Pautas e Atas das Reuniões Publicas da Diretoria",
    "licenca": "Licença Aberta para Bases de Dados (ODbL) do Open Data Commons",
    "modificado_na_fonte": "2026-09-25",
-   "descricao": "A pauta tem a finalidade de comunicar à sociedade os assuntos que serão deliberados pela Diretoria, informando a data, a hora e o…",
+   "descricao": "A pauta tem a finalidade de comunicar à sociedade os assuntos que serão deliberados pela Diretoria, informando a data…",
    "formatos": [
     "CSV",
     "PDF"
@@ -1380,6 +1678,165 @@
    ]
   },
   {
+   "id": "aneel:empreendimentos-em-operacao",
+   "slug": "aneel-empreendimentos-operacao",
+   "orgao": "ANEEL",
+   "titulo": "Quantidade de empreendimentos de geração de energia em operação",
+   "modificado_na_fonte": "2026-08-05",
+   "descricao": "A geração é o segmento da indústria de eletricidade responsável por produzir energia elétrica e injetá-la nos sistemas…",
+   "formatos": [
+    "CSV",
+    "PDF"
+   ],
+   "tema": "geracao",
+   "frequencia_declarada": "Trimestral",
+   "metadados_verificados": true,
+   "etapas": {
+    "catalogado": {
+     "ok": true,
+     "origem": "listagem"
+    },
+    "recurso_verificado": {
+     "ok": true
+    },
+    "integrado": {
+     "ok": true
+    },
+    "validado": {
+     "ok": true
+    },
+    "publicado": {
+     "ok": true
+    }
+   },
+   "recursos_resumo": {
+    "total": 2,
+    "por_estado": {
+     "CATALOGADO": 1,
+     "PUBLICADO": 1
+    },
+    "acessados": 1,
+    "ultimo_publicado": "2026-08-05"
+   },
+   "integracoes": [
+    {
+     "id": "ons_geracao/aneel_empreendimentos_operacao",
+     "estado": "PUBLICADO"
+    },
+    {
+     "id": "aneel_geracao/aneel_capacidade_agregada",
+     "estado": "PUBLICADO"
+    }
+   ],
+   "modulos": [
+    "expansao",
+    "geracao"
+   ],
+   "estado": "PUBLICADO",
+   "papeis": [
+    "contexto",
+    "indicador"
+   ],
+   "usado_em": [
+    "expansao.json",
+    "geracao_detalhe.json"
+   ],
+   "quebras": [],
+   "interno": "aneel_empreendimentos_operacao",
+   "familia": "ons_geracao",
+   "paginas": [
+    {
+     "rotulo": "Geração",
+     "href": "/setor-eletrico/geracao"
+    },
+    {
+     "rotulo": "Expansão",
+     "href": "/setor-eletrico/expansao"
+    }
+   ]
+  },
+  {
+   "id": "aneel:ralie-relatorio-de-acompanhamento-da-expansao-da-oferta-de-geracao-de-energia-eletrica",
+   "slug": "aneel-ralie",
+   "orgao": "ANEEL",
+   "titulo": "RALIE – Relatório de Acompanhamento da Expansão da Oferta de Geração de Energia Elétrica",
+   "licenca": "Licença Aberta para Bases de Dados (ODbL) do Open Data Commons",
+   "modificado_na_fonte": "2026-09-18",
+   "descricao": "O acompanhamento da expansão da oferta de geração de energia elétrica abrange todos os empreendimentos em implantação…",
+   "formatos": [
+    "CSV",
+    "PARQUET",
+    "PDF",
+    "ZIP"
+   ],
+   "tema": "geracao",
+   "frequencia_declarada": "Quinzenal",
+   "metadados_verificados": true,
+   "etapas": {
+    "catalogado": {
+     "ok": true,
+     "origem": "listagem"
+    },
+    "recurso_verificado": {
+     "ok": true
+    },
+    "integrado": {
+     "ok": true
+    },
+    "validado": {
+     "ok": true
+    },
+    "publicado": {
+     "ok": true
+    }
+   },
+   "recursos_resumo": {
+    "total": 12,
+    "por_estado": {
+     "CATALOGADO": 7,
+     "PUBLICADO": 5
+    },
+    "acessados": 5,
+    "ultimo_publicado": "2026-09-18"
+   },
+   "integracoes": [
+    {
+     "id": "aneel_geracao/aneel_ralie",
+     "estado": "PUBLICADO"
+    }
+   ],
+   "modulos": [
+    "expansao"
+   ],
+   "estado": "PUBLICADO",
+   "papeis": [
+    "indicador"
+   ],
+   "usado_em": [
+    "expansao.json"
+   ],
+   "quebras": [
+    {
+     "data": "2021-06-17",
+     "descricao": "Primeira fotografia do histórico publicado do RALIE; antes dela não há previsão com data-base em dados abertos."
+    }
+   ],
+   "interno": "aneel_ralie",
+   "familia": "aneel_geracao",
+   "paginas": [
+    {
+     "rotulo": "Expansão",
+     "href": "/setor-eletrico/expansao"
+    }
+   ],
+   "downloads": [
+    "/energia/series/expansao_carteira_ralie.csv",
+    "/energia/series/expansao_confiabilidade_previsoes.csv",
+    "/energia/series/expansao_trajetorias_ralie.csv",
+    "/energia/series/expansao_unidades_ralie.csv"
+   ]
+  },
+  {
    "id": "aneel:ranking-de-continuidade",
    "slug": "aneel-ranking-continuidade",
    "orgao": "ANEEL",
@@ -1444,7 +1901,7 @@
    "titulo": "Relação de empreendimentos de Mini e Micro Geração Distribuída",
    "licenca": "Licença Aberta para Bases de Dados (ODbL) do Open Data Commons",
    "modificado_na_fonte": "2026-09-29",
-   "descricao": "O presente documento trata de dados referentes às conexões de microgeração e minigeração distribuída (MMGD) por meio de unidades…",
+   "descricao": "O presente documento trata de dados referentes às conexões de microgeração e minigeração distribuída (MMGD) por meio de…",
    "formatos": [
     "CSV",
     "PARQUET",
@@ -1484,11 +1941,11 @@
    },
    "integracoes": [
     {
-     "id": "aneel_distribuicao/aneel_mmgd_municipio",
+     "id": "aneel_mmgd/aneel_mmgd_empreendimentos",
      "estado": "PUBLICADO"
     },
     {
-     "id": "aneel_mmgd/aneel_mmgd_empreendimentos",
+     "id": "aneel_distribuicao/aneel_mmgd_municipio",
      "estado": "PUBLICADO"
     }
    ],
@@ -1511,8 +1968,8 @@
      "descricao": "Atualização suspensa de 23/09/2025 a 13/11/2025 na migração do SISGD para o sistema MMGD; a ANEEL avisa de inserção mais lenta nos meses seguintes."
     }
    ],
-   "interno": "aneel_mmgd_municipio",
-   "familia": "aneel_distribuicao",
+   "interno": "aneel_mmgd_empreendimentos",
+   "familia": "aneel_mmgd",
    "paginas": [
     {
      "rotulo": "Transição e ambiente",
@@ -1533,12 +1990,142 @@
    ]
   },
   {
+   "id": "aneel:ren-957-2021",
+   "slug": "camara-decreto-5163-2004",
+   "orgao": "ANEEL",
+   "titulo": "Resolução Normativa nº 957/2021: Convenção de Comercialização (texto compilado)",
+   "url": "https://www2.aneel.gov.br/cedoc/ren2021957.pdf",
+   "licenca": "Ato normativo da ANEEL: texto oficial de domínio público (Lei nº 9.610/1998, art. 8º, IV)",
+   "descricao": "Definição do mercado de curto prazo e valoração das exposições ao PLD. O endereço oficial responde com desafio de…",
+   "formatos": [
+    "PDF"
+   ],
+   "tema": "normas",
+   "metadados_verificados": true,
+   "etapas": {
+    "catalogado": {
+     "ok": true,
+     "origem": "registro"
+    },
+    "recurso_verificado": {
+     "ok": true
+    },
+    "integrado": {
+     "ok": true
+    },
+    "validado": {
+     "ok": true
+    },
+    "publicado": {
+     "ok": true
+    }
+   },
+   "integracoes": [
+    {
+     "id": "ons_cmo/normas_pld",
+     "estado": "PUBLICADO"
+    }
+   ],
+   "modulos": [
+    "pld"
+   ],
+   "estado": "PUBLICADO",
+   "papeis": [
+    "contexto"
+   ],
+   "usado_em": [
+    "pld_detalhe.json"
+   ],
+   "quebras": [],
+   "interno": "normas_pld",
+   "familia": "ons_cmo",
+   "paginas": [
+    {
+     "rotulo": "PLD: entenda o preço",
+     "href": "/setor-eletrico/pld"
+    }
+   ]
+  },
+  {
+   "id": "aneel:resultado-de-leiloes",
+   "slug": "aneel-resultado-leiloes",
+   "orgao": "ANEEL",
+   "titulo": "Resultado de leilões de geração e transmissão de energia elétrica",
+   "modificado_na_fonte": "2026-10-01",
+   "descricao": "A Constituição Federal de 1988, em seu artigo 175, determina que a prestação de serviços públicos seja atribuída a…",
+   "formatos": [
+    "CSV",
+    "PDF"
+   ],
+   "tema": "geracao",
+   "frequencia_declarada": "Mensal",
+   "metadados_verificados": true,
+   "etapas": {
+    "catalogado": {
+     "ok": true,
+     "origem": "listagem"
+    },
+    "recurso_verificado": {
+     "ok": true
+    },
+    "integrado": {
+     "ok": true
+    },
+    "validado": {
+     "ok": true
+    },
+    "publicado": {
+     "ok": true
+    }
+   },
+   "recursos_resumo": {
+    "total": 4,
+    "por_estado": {
+     "CATALOGADO": 3,
+     "PUBLICADO": 1
+    },
+    "acessados": 1,
+    "ultimo_publicado": "2026-10-01"
+   },
+   "integracoes": [
+    {
+     "id": "aneel_geracao/aneel_leiloes_transmissao",
+     "estado": "PUBLICADO"
+    }
+   ],
+   "modulos": [
+    "expansao"
+   ],
+   "ressalvas": [
+    "A listagem do portal informa modificação de 1 arquivo(s) depois da última captura (resultado-leiloes-transmissao.csv: 2026-10-01T05:00:45 UTC; captura em 2026-09-30T22:21:32Z)."
+   ],
+   "estado": "PUBLICADO",
+   "papeis": [
+    "indicador"
+   ],
+   "usado_em": [
+    "expansao.json"
+   ],
+   "quebras": [],
+   "interno": "aneel_leiloes_transmissao",
+   "familia": "aneel_geracao",
+   "paginas": [
+    {
+     "rotulo": "Expansão",
+     "href": "/setor-eletrico/expansao"
+    }
+   ],
+   "downloads": [
+    "/energia/series/expansao_leiloes_transmissao.csv"
+   ]
+  },
+  {
    "id": "aneel:samp-balanco",
    "slug": "aneel-samp-balanco",
    "orgao": "ANEEL",
    "titulo": "SAMP - Balanço",
    "modificado_na_fonte": "2026-09-15",
-   "descricao": "Balanço energético: conjunto de informações da quantidade de energia elétrica, detalhadas pelas disponibilidades e pelos…",
+   "descricao": "Balanço energético: conjunto de informações da quantidade de energia elétrica, detalhadas pelas disponibilidades e…",
    "formatos": [
     "CSV",
     "PARQUET",
@@ -1624,7 +2211,7 @@
    "orgao": "ANEEL",
    "titulo": "SAMP - Sistema de Acompanhamento de Informações de Mercado para Regulação Econômica",
    "modificado_na_fonte": "2026-09-15",
-   "descricao": "Informações do mercado de energia elétrica, declaradas pelas concessionárias e permissionárias de distribuição, conforme…",
+   "descricao": "Informações do mercado de energia elétrica, declaradas pelas concessionárias e permissionárias de distribuição…",
    "formatos": [
     "CSV",
     "PARQUET",
@@ -1696,7 +2283,7 @@
    "orgao": "ANEEL",
    "titulo": "SCS - Sistema de Controle de Subvenções e Programas Sociais",
    "modificado_na_fonte": "2026-09-20",
-   "descricao": "As distribuidoras de energia elétrica devem mensalmente encaminhar relatório solicitando a aprovação dos valores de Diferença…",
+   "descricao": "As distribuidoras de energia elétrica devem mensalmente encaminhar relatório solicitando a aprovação dos valores de…",
    "formatos": [
     "CSV",
     "PDF"
@@ -1781,7 +2368,7 @@
    "orgao": "ANEEL",
    "titulo": "SIGA - Sistema de Informações de Geração da ANEEL",
    "modificado_na_fonte": "2026-10-01",
-   "descricao": "Este é o novo conjunto de dados extraídos do SIGA (banco de dados do Sistema de Informações de Geração da ANEEL), que contém as…",
+   "descricao": "Este é o novo conjunto de dados extraídos do SIGA (banco de dados do Sistema de Informações de Geração da ANEEL), que…",
    "formatos": [
     "CSV",
     "PDF",
@@ -1862,12 +2449,94 @@
    ]
   },
   {
+   "id": "aneel:sistema-de-gestao-da-transmissao-siget",
+   "slug": "aneel-siget",
+   "orgao": "ANEEL",
+   "titulo": "Sistema de Gestão da Transmissão - SIGET",
+   "modificado_na_fonte": "2026-09-30",
+   "descricao": "A expansão da rede básica de transmissão de energia elétrica tem seu planejamento centralizado. O Ministério de Minas e…",
+   "formatos": [
+    "CSV",
+    "PDF"
+   ],
+   "tema": "rede",
+   "frequencia_declarada": "Diária",
+   "metadados_verificados": true,
+   "etapas": {
+    "catalogado": {
+     "ok": true,
+     "origem": "listagem"
+    },
+    "recurso_verificado": {
+     "ok": true
+    },
+    "integrado": {
+     "ok": true
+    },
+    "validado": {
+     "ok": true
+    },
+    "publicado": {
+     "ok": true
+    }
+   },
+   "recursos_resumo": {
+    "total": 34,
+    "por_estado": {
+     "CATALOGADO": 29,
+     "PUBLICADO": 5
+    },
+    "acessados": 5,
+    "ultimo_publicado": "2026-09-30"
+   },
+   "integracoes": [
+    {
+     "id": "aneel_geracao/aneel_siget",
+     "estado": "PUBLICADO"
+    },
+    {
+     "id": "empresas/aneel_siget",
+     "estado": "PUBLICADO"
+    }
+   ],
+   "modulos": [
+    "empresas",
+    "expansao"
+   ],
+   "estado": "PUBLICADO",
+   "papeis": [
+    "indicador"
+   ],
+   "usado_em": [
+    "empresas.json",
+    "expansao.json"
+   ],
+   "quebras": [],
+   "interno": "aneel_siget",
+   "familia": "aneel_geracao",
+   "paginas": [
+    {
+     "rotulo": "Expansão",
+     "href": "/setor-eletrico/expansao"
+    },
+    {
+     "rotulo": "Empresas",
+     "href": "/setor-eletrico/empresas"
+    }
+   ],
+   "downloads": [
+    "/energia/series/empresas_transmissao.csv",
+    "/energia/series/expansao_contratos_transmissao.csv",
+    "/energia/series/expansao_obras_transmissao.csv"
+   ]
+  },
+  {
    "id": "aneel:subsidios-tarifarios",
    "slug": "aneel-subsidios-tarifarios",
    "orgao": "ANEEL",
    "titulo": "Subsídios Tarifários",
    "modificado_na_fonte": "2026-10-01",
-   "descricao": "Até o começo da vigência da Lei nº 12.783, de 11 de janeiro de 2013, todos os descontos tarifários, exceto o concedido ao…",
+   "descricao": "Até o começo da vigência da Lei nº 12.783, de 11 de janeiro de 2013, todos os descontos tarifários, exceto o concedido…",
    "formatos": [
     "CSV",
     "PDF"
@@ -1910,6 +2579,9 @@
    "modulos": [
     "conta"
    ],
+   "ressalvas": [
+    "A listagem do portal informa modificação de 1 arquivo(s) depois da última captura (Subsídios Tarifários: 2026-10-01T05:01:57 UTC; captura em 2026-09-30T22:52:53Z)."
+   ],
    "estado": "PUBLICADO",
    "papeis": [
     "indicador"
@@ -1937,7 +2609,7 @@
    "titulo": "Tarifa Social de Energia Elétrica – Beneficiários (descontinuado)",
    "licenca": "",
    "modificado_na_fonte": "2026-06-12",
-   "descricao": "###Conjunto de dados substituído pelo https://dadosabertos.aneel.gov.br/dataset/beneficiarios-da-cde Histórico da quantidade de…",
+   "descricao": "###Conjunto de dados substituído pelo https://dadosabertos.aneel.gov.br/dataset/beneficiarios-da-cde Histórico da…",
    "formatos": [
     "CSV",
     "JSON",
@@ -2012,7 +2684,7 @@
    "orgao": "ANEEL",
    "titulo": "Tarifas de aplicação das distribuidoras de energia elétrica",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Apresenta os valores das Tarifas de Energia - TE e das Tarifas de Uso do Sistema de Distribuição - TUSD, resultantes dos…",
+   "descricao": "Apresenta os valores das Tarifas de Energia - TE e das Tarifas de Uso do Sistema de Distribuição - TUSD, resultantes…",
    "formatos": [
     "CSV",
     "PDF",
@@ -2087,7 +2759,7 @@
    "orgao": "ANEEL",
    "titulo": "Índice ANEEL de Satisfação do Consumidor (IASC)",
    "modificado_na_fonte": "2026-06-26",
-   "descricao": "O Índice ANEEL de satisfação do Consumidor é um indicador que permite avaliar o grau de satisfação do consumidor residencial com…",
+   "descricao": "O Índice ANEEL de satisfação do Consumidor é um indicador que permite avaliar o grau de satisfação do consumidor…",
    "formatos": [
     "CSV",
     "PDF"
@@ -2219,13 +2891,14 @@
      "capturas": 1
     }
    ],
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_mercado/v20261001T003925Z/package_show_agente_qtd_contabilizacao.json",
      "sha256": "963ba4671a3ac892a34a294572b37748c797feffba46e480d9e69637c911c518",
      "capturado_em": "2026-10-01T00:39:29Z"
     }
-   ],
+   },
    "integracoes": [
     {
      "id": "mercado/ccee_agente_qtd_contabilizacao",
@@ -2324,13 +2997,14 @@
      "capturas": 1
     }
    ],
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_mercado/v20261001T003925Z/package_show_consumo_classe_agente.json",
      "sha256": "ccc2712a7b2ed7e5157f763c40bbd4c8bde581ac0803c1ebb48995531bc45623",
      "capturado_em": "2026-10-01T00:39:28Z"
     }
-   ],
+   },
    "integracoes": [
     {
      "id": "mercado/ccee_consumo_classe_agente",
@@ -2371,7 +3045,7 @@
    "orgao": "CCEE",
    "titulo": "CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO",
    "modificado_na_fonte": "2026-09-01",
-   "descricao": "Dados de consumo utilizados na contabilização do MCP - Mercado de Curto Prazo totalizados por ambiente de contratação livre e…",
+   "descricao": "Dados de consumo utilizados na contabilização do MCP - Mercado de Curto Prazo totalizados por ambiente de contratação…",
    "formatos": [
     "CSV"
    ],
@@ -2434,13 +3108,14 @@
      "capturas": 1
     }
    ],
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_mercado/v20261001T003925Z/package_show_consumo_mensal_ambiente_comercializacao.json",
      "sha256": "3c5cc37e00ab0b7dfb936af44753d9dcfcdcbf7dc77c423a910140239cb0a1e6",
      "capturado_em": "2026-10-01T00:39:26Z"
     }
-   ],
+   },
    "integracoes": [
     {
      "id": "mercado/ccee_consumo_mensal_ambiente_comercializacao",
@@ -2523,13 +3198,14 @@
      "capturas": 1
     }
    ],
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_mercado/v20261001T003925Z/package_show_desligamento_compulsorio.json",
      "sha256": "fba0d5d447dabe9b87eb668589efb933d242ab0c7887a404df95f07598659d93",
      "capturado_em": "2026-10-01T00:39:35Z"
     }
-   ],
+   },
    "integracoes": [
     {
      "id": "mercado/ccee_desligamento_compulsorio",
@@ -2565,7 +3241,7 @@
    "orgao": "CCEE",
    "titulo": "DESLIGAMENTO_VOLUNTARIO",
    "modificado_na_fonte": "2026-07-03",
-   "descricao": "Disponibilizar informações históricas referentes aos agentes que se desligaram voluntariamente da CCEE, com ou sem sucessão.",
+   "descricao": "Disponibilizar informações históricas referentes aos agentes que se desligaram voluntariamente da CCEE, com ou sem…",
    "formatos": [
     "CSV"
    ],
@@ -2607,13 +3283,14 @@
      "capturas": 1
     }
    ],
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_mercado/v20261001T003925Z/package_show_desligamento_voluntario.json",
      "sha256": "61ad2238a21f420db3512e6dbbaf6deb0762ddb8a2bbedabfd85669a200864f4",
      "capturado_em": "2026-10-01T00:39:34Z"
     }
-   ],
+   },
    "integracoes": [
     {
      "id": "mercado/ccee_desligamento_voluntario",
@@ -2712,13 +3389,14 @@
      "capturas": 1
     }
    ],
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_mercado/v20261001T003925Z/package_show_encargo_ess_ancilar.json",
      "sha256": "43d3bb49a9b9fe19ca1ec48e6e6b5a6ede22d12c3867909068c12c75a50f104e",
      "capturado_em": "2026-10-01T00:39:41Z"
     }
-   ],
+   },
    "integracoes": [
     {
      "id": "mercado/ccee_encargo_ess_ancilar",
@@ -2817,13 +3495,14 @@
      "capturas": 1
     }
    ],
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_mercado/v20261001T003925Z/package_show_encargo_pgto_mensal.json",
      "sha256": "005e6f03b62f06b92bda12e07ec97ceb84388862b4e55c27d8dc43c0b1fb4302",
      "capturado_em": "2026-10-01T00:39:48Z"
     }
-   ],
+   },
    "integracoes": [
     {
      "id": "mercado/ccee_encargo_pgto_mensal",
@@ -2859,7 +3538,7 @@
    "orgao": "CCEE",
    "titulo": "GARANTIA_FISICA_SAZO_MRE_SUBMERCADO",
    "modificado_na_fonte": "2026-09-01",
-   "descricao": "Dados de garantia física sazonalizada para fins de MRE, proporcional as unidades geradoras em operação comercial no mês de…",
+   "descricao": "Dados de garantia física sazonalizada para fins de MRE, proporcional as unidades geradoras em operação comercial no mês…",
    "formatos": [
     "CSV"
    ],
@@ -2922,13 +3601,14 @@
      "capturas": 1
     }
    ],
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_mercado/v20261001T003925Z/package_show_garantia_fisica_sazo_mre_submercado.json",
      "sha256": "bd846883576d23a5bb716ab35db66da518b3b64056c17814b2dd979626caafc7",
      "capturado_em": "2026-10-01T00:39:53Z"
     }
-   ],
+   },
    "integracoes": [
     {
      "id": "mercado/ccee_garantia_fisica_sazo_mre_submercado",
@@ -2964,7 +3644,7 @@
    "orgao": "CCEE",
    "titulo": "GERACAO_SUBMERCADO",
    "modificado_na_fonte": "2026-09-01",
-   "descricao": "Dados de geração utilizados na contabilização do MCP - Mercado de Curto Prazo, com foco nos parâmetros de geração utilizados pelo…",
+   "descricao": "Dados de geração utilizados na contabilização do MCP - Mercado de Curto Prazo, com foco nos parâmetros de geração…",
    "formatos": [
     "CSV"
    ],
@@ -3027,13 +3707,14 @@
      "capturas": 1
     }
    ],
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_mercado/v20261001T003925Z/package_show_geracao_submercado.json",
      "sha256": "9168427b06fdb5342e0d621c9656c8527f659b05e1caa53babd17ad1da1d4828",
      "capturado_em": "2026-10-01T00:40:14Z"
     }
-   ],
+   },
    "integracoes": [
     {
      "id": "mercado/ccee_geracao_submercado",
@@ -3178,13 +3859,14 @@
      "capturas": 1
     }
    ],
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_mercado/v20261001T003925Z/package_show_lista_agente_associado.json",
      "sha256": "f094d1eaefedabc6a41124cd9f0f08f24cbc088c25efd26135481596d4b5821c",
      "capturado_em": "2026-10-01T00:39:31Z"
     }
-   ],
+   },
    "integracoes": [
     {
      "id": "mercado/ccee_lista_agente_associado",
@@ -3220,7 +3902,7 @@
    "orgao": "CCEE",
    "titulo": "LISTA_PERFIL_V1",
    "modificado_na_fonte": "2026-09-01",
-   "descricao": "Lista o cadastro de perfil de agentes na CCEE e o seu status no mês de referência de contabilização. _Esse dataset foi criado em…",
+   "descricao": "Lista o cadastro de perfil de agentes na CCEE e o seu status no mês de referência de contabilização. _Esse dataset foi…",
    "formatos": [
     "CSV"
    ],
@@ -3269,13 +3951,14 @@
      "capturas": 1
     }
    ],
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_mercado/v20261001T003925Z/package_show_lista_perfil_v1.json",
      "sha256": "2d773e94893fa7bafd541e5dfaace8e80226215b0f1d2715c21d572624c6e206",
      "capturado_em": "2026-10-01T00:41:55Z"
     }
-   ],
+   },
    "integracoes": [
     {
      "id": "mercado/ccee_lista_perfil_v1",
@@ -3312,7 +3995,7 @@
    "titulo": "Listagem dos conjuntos do portal de dados abertos da CCEE (API CKAN package_search)",
    "url": "https://dadosabertos.ccee.org.br/api/3/action/package_search?rows=1000",
    "licenca": "Creative Commons Attribution 4.0 (CC-BY-4.0), conforme o portal de dados abertos da CCEE",
-   "descricao": "Resposta completa da API (conjuntos e recursos, com data de modificação de cada arquivo), versionada com sha256 a cada mudança…",
+   "descricao": "Resposta completa da API (conjuntos e recursos, com data de modificação de cada arquivo), versionada com sha256 a cada…",
    "formatos": [
     "JSON"
    ],
@@ -3439,13 +4122,14 @@
      "capturas": 1
     }
    ],
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_mercado/v20261001T003925Z/package_show_mre_mensal.json",
      "sha256": "ed4bded7cb1431484d45a67ddf02910a3b9def6c1bbae57c9bd3cec53aca875c",
      "capturado_em": "2026-10-01T00:39:40Z"
     }
-   ],
+   },
    "integracoes": [
     {
      "id": "mercado/ccee_mre_mensal",
@@ -3482,7 +4166,7 @@
    "titulo": "Metadados oficiais (package_show) de conjuntos da CCEE versionados no repositório",
    "url": "https://dadosabertos.ccee.org.br/",
    "licenca": "Creative Commons Attribution 4.0 (CC-BY-4.0), conforme o portal de dados abertos da CCEE",
-   "descricao": "Todo package_show guardado em pipeline/energia/seed/ccee_* (PLD_HORARIO, conjuntos do mercado de curto prazo e os do módulo…",
+   "descricao": "Todo package_show guardado em pipeline/energia/seed/ccee_* (PLD_HORARIO, conjuntos do mercado de curto prazo e os do…",
    "formatos": [
     "JSON"
    ],
@@ -3601,13 +4285,14 @@
      "capturas": 1
     }
    ],
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_mercado/v20261001T003925Z/package_show_parcela_carga_consumo.json",
      "sha256": "e4e879cfc30b573d728a2eef41353a388e5be6dd7c02e7d4af6405d2b1439190",
      "capturado_em": "2026-10-01T00:39:37Z"
     }
-   ],
+   },
    "integracoes": [
     {
      "id": "mercado/ccee_parcela_carga_consumo",
@@ -3643,7 +4328,7 @@
    "orgao": "CCEE",
    "titulo": "PLD_HORARIO",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Disponibilizar os dados históricos horários do Preço de Liquidação das Diferenças - PLD, por submercado e período de referência",
+   "descricao": "Disponibilizar os dados históricos horários do Preço de Liquidação das Diferenças - PLD, por submercado e período de…",
    "formatos": [
     "CSV"
    ],
@@ -3727,13 +4412,14 @@
      "capturas": 3
     }
    ],
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_pld_horario/v20260927T154402Z/package_show.json",
      "sha256": "f1eaff9257a47454cdeae2deb0f1ec2ca2c2c170e6850c95a2bd87c7af98a9d5",
      "capturado_em": "2026-09-27T15:44:02Z"
     }
-   ],
+   },
    "integracoes": [
     {
      "id": "energia/ccee_pld_horario",
@@ -3787,7 +4473,7 @@
    "orgao": "CCEE",
    "titulo": "RD_ENCARGOS_CONTAB_MENSAL",
    "modificado_na_fonte": "2026-09-28",
-   "descricao": "Objetivo: Monitorar encargo associado à RD para repasse em forma de ESS para os consumidores. Dados contabilizados, consolidados…",
+   "descricao": "Objetivo: Monitorar encargo associado à RD para repasse em forma de ESS para os consumidores. Dados contabilizados…",
    "formatos": [
     "CSV"
    ],
@@ -3843,13 +4529,14 @@
      "capturas": 1
     }
    ],
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_mercado/v20261001T003925Z/package_show_rd_encargos_contab_mensal.json",
      "sha256": "700a60f0546fd811040c8ed373b4368da17e41dbacacdf2eb15a889a615c9550",
      "capturado_em": "2026-10-01T05:55:00Z"
     }
-   ],
+   },
    "integracoes": [
     {
      "id": "mercado/ccee_rd_encargos_contab_mensal",
@@ -3948,13 +4635,14 @@
      "capturas": 1
     }
    ],
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_mercado/v20261001T003925Z/package_show_reserva_encargo.json",
      "sha256": "cd672519dd72e2d741dbdb68da1dfe0ca02563648b82d6ccabe3300036d718a1",
      "capturado_em": "2026-10-01T00:39:43Z"
     }
-   ],
+   },
    "integracoes": [
     {
      "id": "mercado/ccee_reserva_encargo",
@@ -4053,18 +4741,14 @@
      "capturas": 1
     }
    ],
-   "metadados_versionados": [
-    {
-     "arquivo": "pipeline/energia/seed/ccee_documentos/v20260928T110709Z/package_show_sumario_mensal_compra_venda_submercado.json",
-     "sha256": "50b740f7be98e965531bf0b9dd6a7cac9695a9777391a8ffa144daa8eb439f94",
-     "capturado_em": "2026-09-28T11:07:09Z"
-    },
-    {
+   "metadados_versionados": {
+    "versoes": 2,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_mercado/v20261001T003925Z/package_show_sumario_mensal_compra_venda_submercado.json",
      "sha256": "50b740f7be98e965531bf0b9dd6a7cac9695a9777391a8ffa144daa8eb439f94",
      "capturado_em": "2026-10-01T00:39:45Z"
     }
-   ],
+   },
    "integracoes": [
     {
      "id": "mercado/ccee_sumario_mensal_compra_venda_submercado",
@@ -4163,13 +4847,14 @@
      "capturas": 1
     }
    ],
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_mercado/v20261001T003925Z/package_show_sumario_mensal_liquidacao.json",
      "sha256": "c4bf808b7f759c2f213dd9a7b561dbc29d50f523bc7b5769ca7db273abdfa4f8",
      "capturado_em": "2026-10-01T00:39:46Z"
     }
-   ],
+   },
    "integracoes": [
     {
      "id": "mercado/ccee_sumario_mensal_liquidacao",
@@ -4197,6 +4882,63 @@
    ],
    "downloads": [
     "/energia/series/mercado_ccee_mensal.csv"
+   ]
+  },
+  {
+   "id": "cepel:dessem-manual-metodologia",
+   "slug": "camara-decreto-5163-2004",
+   "orgao": "CEPEL",
+   "titulo": "Modelo DESSEM: Manual de Metodologia (novembro de 2022)",
+   "url": "https://www.cepel.br/wp-content/uploads/2022/12/DESSEM_ManualMetodologia_19.2.pdf",
+   "licenca": "Documento técnico publicado pelo CEPEL no seu site; termos de uso não relidos nesta integração. O uso aqui é a citação literal de passagens com indicação da fonte (Lei nº 9.610/1998, art. 46, III).",
+   "descricao": "Uso do DESSEM pelo ONS e pela CCEE e cálculo do CMO do submercado (média dos custos marginais das barras ponderada…",
+   "formatos": [
+    "PDF"
+   ],
+   "tema": "normas",
+   "metadados_verificados": true,
+   "etapas": {
+    "catalogado": {
+     "ok": true,
+     "origem": "registro"
+    },
+    "recurso_verificado": {
+     "ok": true
+    },
+    "integrado": {
+     "ok": true
+    },
+    "validado": {
+     "ok": true
+    },
+    "publicado": {
+     "ok": true
+    }
+   },
+   "integracoes": [
+    {
+     "id": "ons_cmo/normas_pld",
+     "estado": "PUBLICADO"
+    }
+   ],
+   "modulos": [
+    "pld"
+   ],
+   "estado": "PUBLICADO",
+   "papeis": [
+    "contexto"
+   ],
+   "usado_em": [
+    "pld_detalhe.json"
+   ],
+   "quebras": [],
+   "interno": "normas_pld",
+   "familia": "ons_cmo",
+   "paginas": [
+    {
+     "rotulo": "PLD: CMO e formação de preço",
+     "href": "/setor-eletrico/pld"
+    }
    ]
   },
   {
@@ -4433,6 +5175,127 @@
    ]
   },
   {
+   "id": "epe:pde-2035",
+   "slug": "epe-pde-2035",
+   "orgao": "EPE",
+   "titulo": "Plano Decenal de Expansão de Energia 2035: caderno de dados do relatório final",
+   "url": "https://www.epe.gov.br/pt/publicacoes-dados-abertos/publicacoes/plano-decenal-de-expansao-de-energia-2035",
+   "licenca": "Creative Commons Atribuição 4.0 Internacional (CC BY 4.0), conforme o rodapé do portal da EPE",
+   "descricao": "Planilhas por capítulo do PDE 2035 (aprovado pela Portaria MME nº 923/2026). Cenário de planejamento, nunca realizado.",
+   "formatos": [
+    "XLSX",
+    "PDF"
+   ],
+   "tema": "hidrologia",
+   "metadados_verificados": true,
+   "etapas": {
+    "catalogado": {
+     "ok": true,
+     "origem": "registro"
+    },
+    "recurso_verificado": {
+     "ok": true
+    },
+    "integrado": {
+     "ok": true
+    },
+    "validado": {
+     "ok": true
+    },
+    "publicado": {
+     "ok": true
+    }
+   },
+   "integracoes": [
+    {
+     "id": "aneel_geracao/epe_pde",
+     "estado": "PUBLICADO"
+    }
+   ],
+   "modulos": [
+    "expansao"
+   ],
+   "estado": "PUBLICADO",
+   "papeis": [
+    "indicador"
+   ],
+   "usado_em": [
+    "expansao.json"
+   ],
+   "quebras": [],
+   "interno": "epe_pde",
+   "familia": "aneel_geracao",
+   "paginas": [
+    {
+     "rotulo": "Expansão",
+     "href": "/setor-eletrico/expansao"
+    }
+   ],
+   "downloads": [
+    "/energia/series/expansao_pde2035.csv"
+   ]
+  },
+  {
+   "id": "epe:webmap-epe-linhas-de-transmissao",
+   "slug": "epe-webmap-linhas-transmissao",
+   "orgao": "EPE",
+   "titulo": "WebMap da EPE: linhas de transmissão existentes e da expansão planejada (geometria)",
+   "url": "https://gisepeprd2.epe.gov.br/WebMapEPE/",
+   "licenca": "Creative Commons Atribuição 4.0 Internacional (CC BY 4.0), conforme o rodapé do portal da EPE",
+   "descricao": "Camadas 21 (base existente) e 10 (expansão planejada) do serviço ArcGIS SMA/WMS_Webmap_EPE, consultadas pela interface…",
+   "formatos": [
+    "GeoJSON"
+   ],
+   "tema": "rede",
+   "metadados_verificados": true,
+   "etapas": {
+    "catalogado": {
+     "ok": true,
+     "origem": "registro"
+    },
+    "recurso_verificado": {
+     "ok": true
+    },
+    "integrado": {
+     "ok": true
+    },
+    "validado": {
+     "ok": true
+    },
+    "publicado": {
+     "ok": true
+    }
+   },
+   "integracoes": [
+    {
+     "id": "aneel_geracao/epe_webmap_rede",
+     "estado": "PUBLICADO"
+    }
+   ],
+   "modulos": [
+    "expansao"
+   ],
+   "estado": "PUBLICADO",
+   "papeis": [
+    "indicador"
+   ],
+   "usado_em": [
+    "expansao.json"
+   ],
+   "quebras": [],
+   "interno": "epe_webmap_rede",
+   "familia": "aneel_geracao",
+   "paginas": [
+    {
+     "rotulo": "Expansão",
+     "href": "/setor-eletrico/expansao"
+    }
+   ],
+   "downloads": [
+    "/energia/series/expansao_rede_epe.json"
+   ]
+  },
+  {
    "id": "ibge:censo-2022-agregados-4714-10295",
    "slug": "ibge-censo-2022-municipios",
    "orgao": "IBGE",
@@ -4579,11 +5442,11 @@
    },
    "integracoes": [
     {
-     "id": "ons_cmo/ibge_ipca_1737",
+     "id": "regulacao/ibge_ipca_1737",
      "estado": "PUBLICADO"
     },
     {
-     "id": "regulacao/ibge_ipca_1737",
+     "id": "ons_cmo/ibge_ipca_1737",
      "estado": "PUBLICADO"
     }
    ],
@@ -4601,7 +5464,7 @@
    ],
    "quebras": [],
    "interno": "ibge_ipca_1737",
-   "familia": "ons_cmo",
+   "familia": "regulacao",
    "paginas": [
     {
      "rotulo": "Regulação",
@@ -4913,7 +5776,7 @@
   },
   {
    "id": "ibge:sidra-6579",
-   "slug": "ibge-populacao-estimada-6579",
+   "slug": "ibge-populacao-uf-6579-carga",
    "orgao": "IBGE",
    "titulo": "População residente estimada por UF (SIDRA 6579), peso da temperatura",
    "url": "https://sidra.ibge.gov.br/tabela/6579",
@@ -4942,11 +5805,11 @@
    },
    "integracoes": [
     {
-     "id": "aneel_mmgd/ibge_populacao_6579",
+     "id": "ons_carga/ibge_populacao_uf_6579",
      "estado": "PUBLICADO"
     },
     {
-     "id": "ons_carga/ibge_populacao_uf_6579",
+     "id": "aneel_mmgd/ibge_populacao_6579",
      "estado": "PUBLICADO"
     }
    ],
@@ -4964,8 +5827,8 @@
     "transicao.json"
    ],
    "quebras": [],
-   "interno": "ibge_populacao_6579",
-   "familia": "aneel_mmgd",
+   "interno": "ibge_populacao_uf_6579",
+   "familia": "ons_carga",
    "paginas": [
     {
      "rotulo": "Carga",
@@ -4988,7 +5851,7 @@
    "titulo": "Fatores de emissão de CO2 da geração de energia elétrica no SIN",
    "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/sirene/dados-e-ferramentas/fatores-de-emissao",
    "licenca": "Informação pública de órgão federal (Lei 12.527/2011), sem licença específica declarada na página; citar o MCTI como fonte",
-   "descricao": "Fator médio mensal e anual para inventários e fatores de margem de operação e de construção para projetos de MDL, em tCO2/MWh.",
+   "descricao": "Fator médio mensal e anual para inventários e fatores de margem de operação e de construção para projetos de MDL, em…",
    "formatos": [],
    "tema": "ambiente",
    "metadados_verificados": true,
@@ -5235,7 +6098,7 @@
    "titulo": "NASA POWER: temperatura do ar a 2 m (média e máxima diárias) nas capitais",
    "url": "https://power.larc.nasa.gov/docs/services/api/temporal/daily/",
    "licenca": "Dados da NASA de acesso livre e sem restrição de uso, com pedido de citação do projeto POWER (NASA Langley Research Center, Prediction Of Worldwide Energy Resources)",
-   "descricao": "Reanálise MERRA-2 e análise GEOS-IT (natureza estimada, não observação de estação), no centroide do município de cada capital.",
+   "descricao": "Reanálise MERRA-2 e análise GEOS-IT (natureza estimada, não observação de estação), no centroide do município de cada…",
    "formatos": [],
    "tema": "hidrologia",
    "metadados_verificados": true,
@@ -5292,7 +6155,7 @@
    "orgao": "ONS",
    "titulo": "Balanço de Energia nos Subsistemas",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Informações da carga e oferta de energia verificados em periodicidade horária por subsistema. A oferta é representada pelos…",
+   "descricao": "Informações da carga e oferta de energia verificados em periodicidade horária por subsistema. A oferta é representada…",
    "formatos": [
     "CSV",
     "JSON",
@@ -5337,12 +6200,12 @@
      "estado": "PUBLICADO"
     },
     {
-     "id": "ons_carga/ons_balanco_carga_conferencia",
-     "estado": "PUBLICADO"
-    },
-    {
      "id": "ons_cmo/ons_cmo_balanco_conferencia",
      "estado": "RECURSO VERIFICADO"
+    },
+    {
+     "id": "ons_carga/ons_balanco_carga_conferencia",
+     "estado": "PUBLICADO"
     },
     {
      "id": "ons_rede/ons_rede_balanco",
@@ -5354,6 +6217,9 @@
     "operacao",
     "pld",
     "rede"
+   ],
+   "ressalvas": [
+    "A listagem do portal informa modificação de 1 arquivo(s) depois da última captura (Balanco_de_Energia_Subsistema-2026: 2026-09-30T22:00:43 UTC; captura em 2026-09-30T02:19:57Z)."
    ],
    "estado": "PUBLICADO",
    "papeis": [
@@ -5437,7 +6303,7 @@
    "orgao": "ONS",
    "titulo": "CMO Semanal",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Valores do custo, por unidade de energia produzida, para atender ao incremento de uma unidade de carga no SIN, chamado de Custo…",
+   "descricao": "Valores do custo, por unidade de energia produzida, para atender ao incremento de uma unidade de carga no SIN, chamado…",
    "formatos": [
     "CSV",
     "JSON",
@@ -5490,6 +6356,9 @@
     "operacao",
     "pld"
    ],
+   "ressalvas": [
+    "A listagem do portal informa modificação de 1 arquivo(s) depois da última captura (CMO_Semanal-2026: 2026-09-30T22:00:54 UTC; captura em 2026-09-29T02:43:32Z)."
+   ],
    "estado": "PUBLICADO",
    "papeis": [
     "indicador"
@@ -5527,7 +6396,7 @@
    "orgao": "ONS",
    "titulo": "CMO Semi-Horário",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Valores do custo, por unidade de energia produzida, para atender ao incremento de uma unidade de carga no SIN, chamado de Custo…",
+   "descricao": "Valores do custo, por unidade de energia produzida, para atender ao incremento de uma unidade de carga no SIN, chamado…",
    "formatos": [
     "CSV",
     "JSON",
@@ -5602,7 +6471,7 @@
    "orgao": "ONS",
    "titulo": "CVU das Usina Térmicas",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Custo Variável Unitário (CVU) de usinas térmicas considerado no Programa Mensal da Operação, conforme utilizado na execução do…",
+   "descricao": "Custo Variável Unitário (CVU) de usinas térmicas considerado no Programa Mensal da Operação, conforme utilizado na…",
    "formatos": [
     "CSV",
     "JSON",
@@ -5676,7 +6545,7 @@
    "orgao": "ONS",
    "titulo": "Capacidade Instalada de Geração",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Dados de potência nominal de Unidades Geradoras de Usinas despachadas pelo ONS, que são aquelas classificadas com modalidade de…",
+   "descricao": "Dados de potência nominal de Unidades Geradoras de Usinas despachadas pelo ONS, que são aquelas classificadas com…",
    "formatos": [
     "CSV",
     "JSON",
@@ -5751,7 +6620,7 @@
    "orgao": "ONS",
    "titulo": "Carga de Energia Diária",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Dados de carga por subsistema em base diária, medida em MWmed. Até fevereiro/2021, os dados representam a carga atendida por…",
+   "descricao": "Dados de carga por subsistema em base diária, medida em MWmed. Até fevereiro/2021, os dados representam a carga…",
    "formatos": [
     "CSV",
     "JSON",
@@ -5803,6 +6672,9 @@
     "carga",
     "operacao"
    ],
+   "ressalvas": [
+    "A listagem do portal informa modificação de 1 arquivo(s) depois da última captura (Carga_Energia-2026: 2026-09-30T22:00:54 UTC; captura em 2026-09-30T02:19:48Z)."
+   ],
    "estado": "PUBLICADO",
    "papeis": [
     "conferencia",
@@ -5847,12 +6719,12 @@
   },
   {
    "id": "ons:carga-energia-verificada",
-   "slug": "ons-carga-verificada-mmgd",
+   "slug": "ons-carga-verificada-areas",
    "orgao": "ONS",
    "titulo": "Carga de Energia Verificada",
    "licenca": "Creative Commons Attribution",
    "modificado_na_fonte": "2025-10-01",
-   "descricao": "Dados de carga verificada na periodicidade semi-horária por área de carga e suas componentes de parcela supervisionada pelo ONS…",
+   "descricao": "Dados de carga verificada na periodicidade semi-horária por área de carga e suas componentes de parcela supervisionada…",
    "formatos": [
     "API",
     "JSON",
@@ -5888,7 +6760,7 @@
    },
    "integracoes": [
     {
-     "id": "aneel_mmgd/ons_carga_verificada_mmgd",
+     "id": "ons_hidrologia/ons_carga_areas_verificacao",
      "estado": "PUBLICADO"
     },
     {
@@ -5896,7 +6768,7 @@
      "estado": "PUBLICADO"
     },
     {
-     "id": "ons_hidrologia/ons_carga_areas_verificacao",
+     "id": "aneel_mmgd/ons_carga_verificada_mmgd",
      "estado": "PUBLICADO"
     },
     {
@@ -5922,8 +6794,8 @@
     "transicao.json"
    ],
    "quebras": [],
-   "interno": "ons_carga_verificada_mmgd",
-   "familia": "aneel_mmgd",
+   "interno": "ons_carga_areas_verificacao",
+   "familia": "ons_hidrologia",
    "paginas": [
     {
      "rotulo": "Água e clima",
@@ -6042,7 +6914,7 @@
    "orgao": "ONS",
    "titulo": "Dados Hidráulicos por Reservatório – Base diária",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Dados hidráulicos verificados de reservatórios consolidados pelo ONS na periodicidade diária. **A atualização desses dados no…",
+   "descricao": "Dados hidráulicos verificados de reservatórios consolidados pelo ONS na periodicidade diária. **A atualização desses…",
    "formatos": [
     "CSV",
     "JSON",
@@ -6117,7 +6989,7 @@
    "orgao": "ONS",
    "titulo": "Dados de Restrição De Operação Por Constrained-off de Usinas Eólicas - Detalhamento Por Usinas",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Informações associadas à apuração das restrições de operação por Constrained-off nas usinas eólicas classificadas nas modalidades…",
+   "descricao": "Informações associadas à apuração das restrições de operação por Constrained-off nas usinas eólicas classificadas nas…",
    "formatos": [
     "CSV",
     "JSON",
@@ -6188,7 +7060,7 @@
    "orgao": "ONS",
    "titulo": "Dados de Restrição De Operação Por Constrained-off de Usinas Fotovoltaicas - Detalhamento Por Usinas",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Informações associadas à apuração das restrições de operação por Constrained-off nas usinas fotovoltaicas classificadas nas…",
+   "descricao": "Informações associadas à apuração das restrições de operação por Constrained-off nas usinas fotovoltaicas classificadas…",
    "formatos": [
     "CSV",
     "JSON",
@@ -6259,7 +7131,7 @@
    "orgao": "ONS",
    "titulo": "Dados de Restrição de Operação por Constrained-off de Usinas Eólicas",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Informações associadas à apuração das restrições de operação por Constrained-off nas usinas eólicas classificadas nas modalidades…",
+   "descricao": "Informações associadas à apuração das restrições de operação por Constrained-off nas usinas eólicas classificadas nas…",
    "formatos": [
     "CSV",
     "JSON",
@@ -6334,7 +7206,7 @@
    "orgao": "ONS",
    "titulo": "Dados de Restrição de Operação por Constrained-off de Usinas Fotovoltaicas",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Informações associadas à apuração das restrições de operação por Constrained-off nas usinas fotovoltaicas classificadas nas…",
+   "descricao": "Informações associadas à apuração das restrições de operação por Constrained-off nas usinas fotovoltaicas classificadas…",
    "formatos": [
     "CSV",
     "JSON",
@@ -6553,7 +7425,7 @@
    "orgao": "ONS",
    "titulo": "Dados dos indicadores de confiabilidade da rede básica: ATLS – atendimento aos limites sistêmicos",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Indicador de Atendimento aos Limites Sistêmicos (ATLS), estabelecido conforme Submódulo 9.1 dos Procedimentos de Rede. O…",
+   "descricao": "Indicador de Atendimento aos Limites Sistêmicos (ATLS), estabelecido conforme Submódulo 9.1 dos Procedimentos de Rede…",
    "formatos": [
     "CSV",
     "JSON",
@@ -6622,13 +7494,74 @@
    ]
   },
   {
+   "id": "ons:dicionarios-ear-ena-subsistema",
+   "slug": "ons-dicionarios-ear-ena",
+   "orgao": "ONS",
+   "titulo": "Dicionários de dados de EAR e ENA diários por subsistema (PDF do ONS)",
+   "url": "https://dados.ons.org.br/dataset/ear-diario-por-subsistema",
+   "licenca": "Creative Commons Atribuição (CC-BY), conforme o portal de dados abertos do ONS",
+   "descricao": "Dicionários oficiais dos conjuntos de EAR e ENA diários, guardados com sha256 para conferir, a cada coleta, que os…",
+   "formatos": [
+    "PDF"
+   ],
+   "tema": "hidrologia",
+   "metadados_verificados": true,
+   "etapas": {
+    "catalogado": {
+     "ok": true,
+     "origem": "registro"
+    },
+    "recurso_verificado": {
+     "ok": true
+    },
+    "integrado": {
+     "ok": true
+    },
+    "validado": {
+     "ok": true
+    },
+    "publicado": {
+     "ok": true
+    }
+   },
+   "integracoes": [
+    {
+     "id": "previsoes/previsoes_dicionarios_ons",
+     "estado": "PUBLICADO"
+    }
+   ],
+   "modulos": [
+    "previsoes"
+   ],
+   "estado": "PUBLICADO",
+   "papeis": [
+    "contexto"
+   ],
+   "usado_em": [
+    "previsoes_desempenho.json"
+   ],
+   "quebras": [],
+   "interno": "previsoes_dicionarios_ons",
+   "familia": "previsoes",
+   "paginas": [
+    {
+     "rotulo": "Previsões do PLD",
+     "href": "/setor-eletrico/pld/previsoes"
+    },
+    {
+     "rotulo": "Modelos de previsão do PLD",
+     "href": "/setor-eletrico/pld/modelos"
+    }
+   ]
+  },
+  {
    "id": "ons:documentos-limites-intercambio",
    "slug": "ons-documentos-limites-intercambio",
    "orgao": "ONS",
    "titulo": "Documentos públicos do ONS sobre limites sistêmicos (Submódulo 9.1, PEL 2019/2020, RT-ONS DPL 0131/2023)",
    "url": "https://proxyportais.ons.org.br/ons.portalempregado.proxy/garapi/api/processo/retornarpdf?url=%2Fsites%2Fsoumaisons%2Fportalgar%2Fecmpdf%2FSubm%C3%B3dulo+9.1-IN_2020.12.pdf",
    "licenca": "Documento público do ONS no portal ons.org.br (direitos reservados ao ONS); usado só por citação de trechos conferidos, sem redistribuição do arquivo",
-   "descricao": "Definição do ATLS e das siglas dos fluxos, e evidência de que os limites publicados dependem de configuração (achado A06).",
+   "descricao": "Definição do ATLS e das siglas dos fluxos, e evidência de que os limites publicados dependem de configuração (achado…",
    "formatos": [
     "PDF"
    ],
@@ -6684,7 +7617,7 @@
    "orgao": "ONS",
    "titulo": "EAR Diário por Bacia",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Dados das grandezas de energia armazenada (EAR) em periodicidade diária por Bacias Hidro Energéticas. A Energia Armazenada (EAR)…",
+   "descricao": "Dados das grandezas de energia armazenada (EAR) em periodicidade diária por Bacias Hidro Energéticas. A Energia…",
    "formatos": [
     "CSV",
     "JSON",
@@ -6759,7 +7692,7 @@
    "orgao": "ONS",
    "titulo": "EAR Diário por REE - Reservatório Equivalente de Energia",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Dados das grandezas de energia armazenada (EAR) em periodicidade diária por Reservatórios Equivalentes. A Energia Armazenada…",
+   "descricao": "Dados das grandezas de energia armazenada (EAR) em periodicidade diária por Reservatórios Equivalentes. A Energia…",
    "formatos": [
     "CSV",
     "JSON",
@@ -6845,7 +7778,7 @@
    "orgao": "ONS",
    "titulo": "EAR Diário por Reservatório",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Dados das grandezas de energia armazenada (EAR) em periodicidade diária por Reservatórios. A Energia Armazenada (EAR) representa…",
+   "descricao": "Dados das grandezas de energia armazenada (EAR) em periodicidade diária por Reservatórios. A Energia Armazenada (EAR)…",
    "formatos": [
     "CSV",
     "JSON",
@@ -6930,7 +7863,7 @@
    "orgao": "ONS",
    "titulo": "EAR Diário por Subsistema",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Dados das grandezas de energia armazenada (EAR) em periodicidade diária por Subsistemas. A Energia Armazenada (EAR) representa a…",
+   "descricao": "Dados das grandezas de energia armazenada (EAR) em periodicidade diária por Subsistemas. A Energia Armazenada (EAR)…",
    "formatos": [
     "CSV",
     "JSON",
@@ -6964,8 +7897,7 @@
     "por_estado": {
      "CATALOGADO": 54,
      "RECURSO VERIFICADO": 1,
-     "VALIDADO": 1,
-     "PUBLICADO": 27
+     "PUBLICADO": 28
     },
     "acessados": 29,
     "ultimo_publicado": "2026-09-30"
@@ -6978,6 +7910,9 @@
    ],
    "modulos": [
     "operacao"
+   ],
+   "ressalvas": [
+    "A listagem do portal informa modificação de 1 arquivo(s) depois da última captura (EAR_Diario_por_Subsistema-2026: 2026-09-30T22:01:34 UTC; captura em 2026-09-30T02:19:44Z)."
    ],
    "estado": "PUBLICADO",
    "papeis": [
@@ -7017,7 +7952,7 @@
    "orgao": "ONS",
    "titulo": "ENA Diário por Bacia",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Dados das grandezas de energia natural afluente (ENA) dos reservatórios com periodicidade diária por Bacias Hidro Energéticas. A…",
+   "descricao": "Dados das grandezas de energia natural afluente (ENA) dos reservatórios com periodicidade diária por Bacias Hidro…",
    "formatos": [
     "CSV",
     "JSON",
@@ -7092,7 +8027,7 @@
    "orgao": "ONS",
    "titulo": "ENA Diário por REE - Reservatório Equivalente de Energia",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Dados das grandezas de energia natural afluente (ENA) dos reservatórios com periodicidade diária por Reservatórios Equivalentes…",
+   "descricao": "Dados das grandezas de energia natural afluente (ENA) dos reservatórios com periodicidade diária por Reservatórios…",
    "formatos": [
     "CSV",
     "JSON",
@@ -7173,7 +8108,7 @@
    "orgao": "ONS",
    "titulo": "ENA Diário por Reservatório",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Dados das grandezas de energia natural afluente (ENA) com periodicidade diária por Reservatório. A Energia Natural Afluente (ENA)…",
+   "descricao": "Dados das grandezas de energia natural afluente (ENA) com periodicidade diária por Reservatório. A Energia Natural…",
    "formatos": [
     "CSV",
     "JSON",
@@ -7268,7 +8203,7 @@
    "orgao": "ONS",
    "titulo": "ENA Diário por Subsistema",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Dados das grandezas de energia natural afluente (ENA) dos reservatórios com periodicidade diária por Subsistemas. A Energia…",
+   "descricao": "Dados das grandezas de energia natural afluente (ENA) dos reservatórios com periodicidade diária por Subsistemas. A…",
    "formatos": [
     "CSV",
     "JSON",
@@ -7302,8 +8237,7 @@
     "por_estado": {
      "CATALOGADO": 33,
      "RECURSO VERIFICADO": 1,
-     "VALIDADO": 1,
-     "PUBLICADO": 27
+     "PUBLICADO": 28
     },
     "acessados": 29,
     "ultimo_publicado": "2026-09-30"
@@ -7316,6 +8250,9 @@
    ],
    "modulos": [
     "operacao"
+   ],
+   "ressalvas": [
+    "A listagem do portal informa modificação de 1 arquivo(s) depois da última captura (ENA_Diario_por_Subsistema-2026: 2026-09-30T22:01:53 UTC; captura em 2026-09-30T02:19:46Z)."
    ],
    "estado": "PUBLICADO",
    "papeis": [
@@ -7355,7 +8292,7 @@
    "orgao": "ONS",
    "titulo": "Fator de Capacidade de Geração Eólica e Solar",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Fator de capacidade de usinas e conjuntos de usinas eólicos e solares despachados pelo ONS em base horária. O fator de capacidade…",
+   "descricao": "Fator de capacidade de usinas e conjuntos de usinas eólicos e solares despachados pelo ONS em base horária. O fator de…",
    "formatos": [
     "CSV",
     "JSON",
@@ -7429,7 +8366,7 @@
    "orgao": "ONS",
    "titulo": "Geração Térmica por Motivo de Despacho",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Dados programados e verificados de geração de usinas térmicas despachadas pelo ONS por motivo de despacho em base horária. Os…",
+   "descricao": "Dados programados e verificados de geração de usinas térmicas despachadas pelo ONS por motivo de despacho em base…",
    "formatos": [
     "CSV",
     "JSON",
@@ -7504,7 +8441,7 @@
    "orgao": "ONS",
    "titulo": "Geração de Itaipu Binacional - Base horária",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Dados de geração da UHE Itaipu Binacional em base horária, obtidos a partir do Sistema de Supervisão e Controle do ONS. Os dados…",
+   "descricao": "Dados de geração da UHE Itaipu Binacional em base horária, obtidos a partir do Sistema de Supervisão e Controle do ONS…",
    "formatos": [
     "CSV",
     "JSON",
@@ -7580,7 +8517,7 @@
    "orgao": "ONS",
    "titulo": "Geração por Usina em Base Horária",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Geração verificada de usinas, conjuntos de usinas e grupos de pequenas usinas em base horária. Os Conjuntos são formados por…",
+   "descricao": "Geração verificada de usinas, conjuntos de usinas e grupos de pequenas usinas em base horária. Os Conjuntos são…",
    "formatos": [
     "CSV",
     "JSON",
@@ -7665,7 +8602,7 @@
    "orgao": "ONS",
    "titulo": "Intercâmbio do SIN com Outros Países",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Dados de intercâmbio entre o Sistema Interligado Nacional-SIN e outros países em base horária, em MWmed. As grandezas representam…",
+   "descricao": "Dados de intercâmbio entre o Sistema Interligado Nacional-SIN e outros países em base horária, em MWmed. As grandezas…",
    "formatos": [
     "CSV",
     "JSON",
@@ -7739,7 +8676,7 @@
    "orgao": "ONS",
    "titulo": "Intercâmbios Entre Subsistemas",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "Dados de intercâmbio entre subsistemas em base horária, em MWmed. As grandezas representam a soma das medidas de fluxo de…",
+   "descricao": "Dados de intercâmbio entre subsistemas em base horária, em MWmed. As grandezas representam a soma das medidas de fluxo…",
    "formatos": [
     "CSV",
     "JSON",
@@ -7791,6 +8728,9 @@
    "modulos": [
     "operacao",
     "rede"
+   ],
+   "ressalvas": [
+    "A listagem do portal informa modificação de 1 arquivo(s) depois da última captura (Intercambio_Nacional-2026: 2026-09-30T22:04:30 UTC; captura em 2026-09-30T02:20:08Z)."
    ],
    "estado": "PUBLICADO",
    "papeis": [
@@ -7910,7 +8850,7 @@
    "titulo": "Listagem dos conjuntos do portal de dados abertos do ONS (API CKAN package_search)",
    "url": "https://dados.ons.org.br/api/3/action/package_search?rows=1000",
    "licenca": "Creative Commons Atribuição (CC-BY), conforme o portal de dados abertos do ONS",
-   "descricao": "Resposta completa da API (conjuntos, recursos, datas de modificação e campos extras, como o horário de atualização declarado)…",
+   "descricao": "Resposta completa da API (conjuntos, recursos, datas de modificação e campos extras, como o horário de atualização…",
    "formatos": [
     "JSON"
    ],
@@ -7973,7 +8913,7 @@
    "orgao": "ONS",
    "titulo": "Modalidade de Operação de Usinas",
    "modificado_na_fonte": "2026-09-30",
-   "descricao": "As modalidades de operação de usinas são divididas em Tipo I, Tipos II-A, II-B e II-C e Tipo III. O processo de classificação de…",
+   "descricao": "As modalidades de operação de usinas são divididas em Tipo I, Tipos II-A, II-B e II-C e Tipo III. O processo de…",
    "formatos": [
     "CSV",
     "JSON",
@@ -8103,7 +9043,7 @@
    "titulo": "Precipitação Diária Observada",
    "licenca": "Creative Commons Attribution",
    "modificado_na_fonte": "2026-04-28",
-   "descricao": "**Estes dados não serão mais atualizados pois o ONS passou a utilizar a precipitação por satélite (combinação da chuva observada…",
+   "descricao": "**Estes dados não serão mais atualizados pois o ONS passou a utilizar a precipitação por satélite (combinação da chuva…",
    "formatos": [
     "CSV",
     "JSON",
@@ -8167,6 +9107,63 @@
     {
      "rotulo": "Água e clima",
      "href": "/setor-eletrico/agua-e-clima"
+    }
+   ]
+  },
+  {
+   "id": "ons:procedimentos-de-rede",
+   "slug": "camara-decreto-5163-2004",
+   "orgao": "ONS",
+   "titulo": "Procedimentos de Rede: Submódulos 2.4, 4.3 e 4.5 (uso do DECOMP e do DESSEM no cálculo do CMO)",
+   "url": "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-rede/vigentes",
+   "licenca": "Documento público do ONS (Procedimentos de Rede, aprovados pela ANEEL). Os termos de uso do portal do ONS não foram relidos nesta integração; o uso aqui é a citação literal de passagens com indicação da fonte (Lei nº 9.610/1998, art. 46, III).",
+   "descricao": "Horizonte, discretização e momento de execução dos modelos de curto e curtíssimo prazo do ONS, citados no painel CMO e…",
+   "formatos": [
+    "PDF"
+   ],
+   "tema": "normas",
+   "metadados_verificados": true,
+   "etapas": {
+    "catalogado": {
+     "ok": true,
+     "origem": "registro"
+    },
+    "recurso_verificado": {
+     "ok": true
+    },
+    "integrado": {
+     "ok": true
+    },
+    "validado": {
+     "ok": true
+    },
+    "publicado": {
+     "ok": true
+    }
+   },
+   "integracoes": [
+    {
+     "id": "ons_cmo/normas_pld",
+     "estado": "PUBLICADO"
+    }
+   ],
+   "modulos": [
+    "pld"
+   ],
+   "estado": "PUBLICADO",
+   "papeis": [
+    "contexto"
+   ],
+   "usado_em": [
+    "pld_detalhe.json"
+   ],
+   "quebras": [],
+   "interno": "normas_pld",
+   "familia": "ons_cmo",
+   "paginas": [
+    {
+     "rotulo": "PLD: CMO e formação de preço",
+     "href": "/setor-eletrico/pld"
     }
    ]
   },
@@ -8309,7 +9306,7 @@
    "titulo": "Open-Meteo: temperatura diária ERA5 e ECMWF IFS nas capitais (sensibilidade da decomposição, não calculada)",
    "url": "https://open-meteo.com/en/docs/historical-weather-api",
    "licenca": "Open-Meteo: Creative Commons Attribution 4.0 (CC BY 4.0); ERA5 e IFS contêm informação modificada do Copernicus Climate Change Service e do ECMWF",
-   "descricao": "Reanálise ERA5 e análise ECMWF IFS (natureza estimada) nos mesmos 27 centroides, desde 25/04/2023. Coletado só para parte das…",
+   "descricao": "Reanálise ERA5 e análise ECMWF IFS (natureza estimada) nos mesmos 27 centroides, desde 25/04/2023. Coletado só para…",
    "formatos": [],
    "tema": "hidrologia",
    "metadados_verificados": true,
@@ -8355,6 +9352,64 @@
      "rotulo": "Carga",
      "href": "/setor-eletrico/carga"
     }
+   ]
+  },
+  {
+   "id": "senado federal:legislacao-federal",
+   "slug": "aneel-atos-limites-pld",
+   "orgao": "Senado Federal",
+   "titulo": "Legislação Federal (texto da publicação original das leis citadas)",
+   "url": "https://legis.senado.leg.br/",
+   "licenca": "Texto normativo de domínio público (Lei nº 9.610/1998, art. 8º, IV), no portal de Legislação Federal do Senado",
+   "descricao": "",
+   "formatos": [],
+   "tema": "outros",
+   "metadados_verificados": true,
+   "etapas": {
+    "catalogado": {
+     "ok": true,
+     "origem": "registro"
+    },
+    "recurso_verificado": {
+     "ok": true
+    },
+    "integrado": {
+     "ok": true
+    },
+    "validado": {
+     "ok": true
+    },
+    "publicado": {
+     "ok": true
+    }
+   },
+   "integracoes": [
+    {
+     "id": "regulacao/regulacao_documentos",
+     "estado": "PUBLICADO"
+    }
+   ],
+   "modulos": [
+    "regulacao"
+   ],
+   "estado": "PUBLICADO",
+   "papeis": [
+    "indicador"
+   ],
+   "usado_em": [
+    "regulacao.json"
+   ],
+   "quebras": [],
+   "interno": "regulacao_documentos",
+   "familia": "regulacao",
+   "paginas": [
+    {
+     "rotulo": "Regulação",
+     "href": "/setor-eletrico/regulacao"
+    }
+   ],
+   "downloads": [
+    "/energia/series/regulacao_linha_do_tempo.csv"
    ]
   },
   {
@@ -8421,7 +9476,7 @@
    "orgao": "ANEEL",
    "titulo": "Agentes de Geração de Energia Elétrica",
    "modificado_na_fonte": "2026-10-01",
-   "descricao": "Lista de Agentes de Geração de Energia Elétrica relacionando as Usinas e seus respectivos CEGs, CNPJ e Percentual de Participação…",
+   "descricao": "Lista de Agentes de Geração de Energia Elétrica relacionando as Usinas e seus respectivos CEGs, CNPJ e Percentual de…",
    "formatos": [
     "CSV",
     "PDF"
@@ -8485,152 +9540,12 @@
    ]
   },
   {
-   "id": "aneel:atos-de-outorgas-de-geracao",
-   "slug": "aneel-atos-outorgas-geracao",
-   "orgao": "ANEEL",
-   "titulo": "Atos de Outorgas de Geração",
-   "modificado_na_fonte": "2026-10-01",
-   "descricao": "Contem os documentos emitidos pela ANEEL referentes aos empreendimentos de geração a partir de 2015.",
-   "formatos": [
-    "CSV",
-    "PDF"
-   ],
-   "tema": "geracao",
-   "frequencia_declarada": "Mensal",
-   "metadados_verificados": true,
-   "etapas": {
-    "catalogado": {
-     "ok": true,
-     "origem": "listagem"
-    },
-    "recurso_verificado": {
-     "ok": true
-    },
-    "integrado": {
-     "ok": true
-    },
-    "validado": {
-     "ok": true
-    },
-    "publicado": {
-     "ok": false
-    }
-   },
-   "recursos_resumo": {
-    "total": 2,
-    "por_estado": {
-     "CATALOGADO": 1,
-     "VALIDADO": 1
-    },
-    "acessados": 1,
-    "ultimo_publicado": "2026-10-01"
-   },
-   "integracoes": [
-    {
-     "id": "aneel_geracao/aneel_atos_outorga_geracao",
-     "estado": "VALIDADO"
-    }
-   ],
-   "modulos": [
-    "expansao"
-   ],
-   "ressalvas": [
-    "O módulo declara uso em indicador, mas o estado calculado é VALIDADO."
-   ],
-   "estado": "VALIDADO",
-   "papeis": [
-    "indicador"
-   ],
-   "usado_em": [
-    "expansao.json"
-   ],
-   "quebras": [],
-   "interno": "aneel_atos_outorga_geracao",
-   "familia": "aneel_geracao",
-   "paginas": [
-    {
-     "rotulo": "Expansão",
-     "href": "/setor-eletrico/expansao"
-    }
-   ],
-   "downloads": [
-    "/energia/series/expansao_encerramentos_outorga.csv"
-   ]
-  },
-  {
-   "id": "aneel:capacidade-instalada-por-unidade-da-federacao",
-   "slug": "aneel-capacidade-uf",
-   "orgao": "ANEEL",
-   "titulo": "Capacidade Instalada por Unidade da Federação",
-   "modificado_na_fonte": "2026-07-01",
-   "descricao": "A geração é o segmento da indústria de eletricidade responsável por produzir energia elétrica e injetá-la nos sistemas de…",
-   "formatos": [
-    "CSV",
-    "PDF"
-   ],
-   "tema": "geracao",
-   "frequencia_declarada": "Trimestral",
-   "metadados_verificados": true,
-   "etapas": {
-    "catalogado": {
-     "ok": true,
-     "origem": "listagem"
-    },
-    "recurso_verificado": {
-     "ok": true
-    },
-    "integrado": {
-     "ok": true
-    },
-    "validado": {
-     "ok": true
-    },
-    "publicado": {
-     "ok": false
-    }
-   },
-   "recursos_resumo": {
-    "total": 2,
-    "por_estado": {
-     "CATALOGADO": 1,
-     "VALIDADO": 1
-    },
-    "acessados": 1,
-    "ultimo_publicado": "2026-07-01"
-   },
-   "integracoes": [
-    {
-     "id": "aneel_geracao/aneel_capacidade_agregada",
-     "estado": "VALIDADO"
-    }
-   ],
-   "modulos": [
-    "expansao"
-   ],
-   "estado": "VALIDADO",
-   "papeis": [
-    "contexto"
-   ],
-   "usado_em": [
-    "expansao.json"
-   ],
-   "quebras": [],
-   "interno": "aneel_capacidade_agregada",
-   "familia": "aneel_geracao",
-   "paginas": [
-    {
-     "rotulo": "Expansão",
-     "href": "/setor-eletrico/expansao"
-    }
-   ]
-  },
-  {
    "id": "aneel:composicao-societaria-polimero",
    "slug": "aneel-composicao-societaria",
    "orgao": "ANEEL",
    "titulo": "Composição Societária - Polímero",
    "modificado_na_fonte": "2026-07-14",
-   "descricao": "Os agentes do Setor Elétrico devem informar à ANEEL a composição societária de seus empreendimentos por meio do preenchimento dos…",
+   "descricao": "Os agentes do Setor Elétrico devem informar à ANEEL a composição societária de seus empreendimentos por meio do…",
    "formatos": [
     "CSV",
     "PARQUET",
@@ -8706,316 +9621,6 @@
    ]
   },
   {
-   "id": "aneel:liberacao-para-operacao-comercial-de-empreendimentos-de-geracao",
-   "slug": "aneel-liberacao-operacao-comercial",
-   "orgao": "ANEEL",
-   "titulo": "Liberação para operação comercial de empreendimentos de geração",
-   "modificado_na_fonte": "2026-09-18",
-   "descricao": "Este conjunto de dados reflete a listagem de capacidade instalada liberada para operação comercial. Estão disponíveis dois…",
-   "formatos": [
-    "CSV",
-    "PDF",
-    "XML"
-   ],
-   "tema": "geracao",
-   "frequencia_declarada": "Quinzenal",
-   "metadados_verificados": true,
-   "etapas": {
-    "catalogado": {
-     "ok": true,
-     "origem": "listagem"
-    },
-    "recurso_verificado": {
-     "ok": true
-    },
-    "integrado": {
-     "ok": true
-    },
-    "validado": {
-     "ok": true
-    },
-    "publicado": {
-     "ok": false
-    }
-   },
-   "recursos_resumo": {
-    "total": 6,
-    "por_estado": {
-     "CATALOGADO": 4,
-     "VALIDADO": 2
-    },
-    "acessados": 2,
-    "ultimo_publicado": "2026-09-18"
-   },
-   "integracoes": [
-    {
-     "id": "aneel_geracao/aneel_liberacao_comercial",
-     "estado": "VALIDADO"
-    }
-   ],
-   "modulos": [
-    "expansao"
-   ],
-   "ressalvas": [
-    "O módulo declara uso em indicador, mas o estado calculado é VALIDADO."
-   ],
-   "estado": "VALIDADO",
-   "papeis": [
-    "indicador"
-   ],
-   "usado_em": [
-    "expansao.json"
-   ],
-   "quebras": [
-    {
-     "data": "2014-01-01",
-     "descricao": "Antes de 2014 o arquivo detalhado não cobre toda a potência liberada no ano (nota do dicionário de dados da ANEEL)."
-    }
-   ],
-   "interno": "aneel_liberacao_comercial",
-   "familia": "aneel_geracao",
-   "paginas": [
-    {
-     "rotulo": "Expansão",
-     "href": "/setor-eletrico/expansao"
-    }
-   ],
-   "downloads": [
-    "/energia/series/expansao_liberacoes_anuais.csv"
-   ]
-  },
-  {
-   "id": "aneel:ralie-relatorio-de-acompanhamento-da-expansao-da-oferta-de-geracao-de-energia-eletrica",
-   "slug": "aneel-ralie",
-   "orgao": "ANEEL",
-   "titulo": "RALIE – Relatório de Acompanhamento da Expansão da Oferta de Geração de Energia Elétrica",
-   "licenca": "Licença Aberta para Bases de Dados (ODbL) do Open Data Commons",
-   "modificado_na_fonte": "2026-09-18",
-   "descricao": "O acompanhamento da expansão da oferta de geração de energia elétrica abrange todos os empreendimentos em implantação no…",
-   "formatos": [
-    "CSV",
-    "PARQUET",
-    "PDF",
-    "ZIP"
-   ],
-   "tema": "geracao",
-   "frequencia_declarada": "Quinzenal",
-   "metadados_verificados": true,
-   "etapas": {
-    "catalogado": {
-     "ok": true,
-     "origem": "listagem"
-    },
-    "recurso_verificado": {
-     "ok": true
-    },
-    "integrado": {
-     "ok": true
-    },
-    "validado": {
-     "ok": true
-    },
-    "publicado": {
-     "ok": false
-    }
-   },
-   "recursos_resumo": {
-    "total": 12,
-    "por_estado": {
-     "CATALOGADO": 7,
-     "VALIDADO": 5
-    },
-    "acessados": 5,
-    "ultimo_publicado": "2026-09-18"
-   },
-   "integracoes": [
-    {
-     "id": "aneel_geracao/aneel_ralie",
-     "estado": "VALIDADO"
-    }
-   ],
-   "modulos": [
-    "expansao"
-   ],
-   "ressalvas": [
-    "O módulo declara uso em indicador, mas o estado calculado é VALIDADO."
-   ],
-   "estado": "VALIDADO",
-   "papeis": [
-    "indicador"
-   ],
-   "usado_em": [
-    "expansao.json"
-   ],
-   "quebras": [
-    {
-     "data": "2021-06-17",
-     "descricao": "Primeira fotografia do histórico publicado do RALIE; antes dela não há previsão com data-base em dados abertos."
-    }
-   ],
-   "interno": "aneel_ralie",
-   "familia": "aneel_geracao",
-   "paginas": [
-    {
-     "rotulo": "Expansão",
-     "href": "/setor-eletrico/expansao"
-    }
-   ],
-   "downloads": [
-    "/energia/series/expansao_carteira_ralie.csv",
-    "/energia/series/expansao_confiabilidade_previsoes.csv",
-    "/energia/series/expansao_trajetorias_ralie.csv",
-    "/energia/series/expansao_unidades_ralie.csv"
-   ]
-  },
-  {
-   "id": "aneel:resultado-de-leiloes",
-   "slug": "aneel-resultado-leiloes",
-   "orgao": "ANEEL",
-   "titulo": "Resultado de leilões de geração e transmissão de energia elétrica",
-   "modificado_na_fonte": "2026-10-01",
-   "descricao": "A Constituição Federal de 1988, em seu artigo 175, determina que a prestação de serviços públicos seja atribuída a…",
-   "formatos": [
-    "CSV",
-    "PDF"
-   ],
-   "tema": "geracao",
-   "frequencia_declarada": "Mensal",
-   "metadados_verificados": true,
-   "etapas": {
-    "catalogado": {
-     "ok": true,
-     "origem": "listagem"
-    },
-    "recurso_verificado": {
-     "ok": true
-    },
-    "integrado": {
-     "ok": true
-    },
-    "validado": {
-     "ok": true
-    },
-    "publicado": {
-     "ok": false
-    }
-   },
-   "recursos_resumo": {
-    "total": 4,
-    "por_estado": {
-     "CATALOGADO": 3,
-     "VALIDADO": 1
-    },
-    "acessados": 1,
-    "ultimo_publicado": "2026-10-01"
-   },
-   "integracoes": [
-    {
-     "id": "aneel_geracao/aneel_leiloes_transmissao",
-     "estado": "VALIDADO"
-    }
-   ],
-   "modulos": [
-    "expansao"
-   ],
-   "ressalvas": [
-    "O módulo declara uso em indicador, mas o estado calculado é VALIDADO."
-   ],
-   "estado": "VALIDADO",
-   "papeis": [
-    "indicador"
-   ],
-   "usado_em": [
-    "expansao.json"
-   ],
-   "quebras": [],
-   "interno": "aneel_leiloes_transmissao",
-   "familia": "aneel_geracao",
-   "paginas": [
-    {
-     "rotulo": "Expansão",
-     "href": "/setor-eletrico/expansao"
-    }
-   ],
-   "downloads": [
-    "/energia/series/expansao_leiloes_transmissao.csv"
-   ]
-  },
-  {
-   "id": "aneel:sistema-de-gestao-da-transmissao-siget",
-   "slug": "aneel-siget",
-   "orgao": "ANEEL",
-   "titulo": "Sistema de Gestão da Transmissão - SIGET",
-   "modificado_na_fonte": "2026-09-30",
-   "descricao": "A expansão da rede básica de transmissão de energia elétrica tem seu planejamento centralizado. O Ministério de Minas e Energia —…",
-   "formatos": [
-    "CSV",
-    "PDF"
-   ],
-   "tema": "rede",
-   "frequencia_declarada": "Diária",
-   "metadados_verificados": true,
-   "etapas": {
-    "catalogado": {
-     "ok": true,
-     "origem": "listagem"
-    },
-    "recurso_verificado": {
-     "ok": true
-    },
-    "integrado": {
-     "ok": true
-    },
-    "validado": {
-     "ok": true
-    },
-    "publicado": {
-     "ok": false
-    }
-   },
-   "recursos_resumo": {
-    "total": 34,
-    "por_estado": {
-     "CATALOGADO": 29,
-     "VALIDADO": 5
-    },
-    "acessados": 5,
-    "ultimo_publicado": "2026-09-30"
-   },
-   "integracoes": [
-    {
-     "id": "aneel_geracao/aneel_siget",
-     "estado": "VALIDADO"
-    }
-   ],
-   "modulos": [
-    "expansao"
-   ],
-   "ressalvas": [
-    "O módulo declara uso em indicador, mas o estado calculado é VALIDADO."
-   ],
-   "estado": "VALIDADO",
-   "papeis": [
-    "indicador"
-   ],
-   "usado_em": [
-    "expansao.json"
-   ],
-   "quebras": [],
-   "interno": "aneel_siget",
-   "familia": "aneel_geracao",
-   "paginas": [
-    {
-     "rotulo": "Expansão",
-     "href": "/setor-eletrico/expansao"
-    }
-   ],
-   "downloads": [
-    "/energia/series/expansao_contratos_transmissao.csv",
-    "/energia/series/expansao_obras_transmissao.csv"
-   ]
-  },
-  {
    "id": "cvm:cia_aberta-doc-dfp",
    "slug": "cvm-dfp",
    "orgao": "CVM",
@@ -9074,6 +9679,7 @@
    ],
    "downloads": [
     "/energia/series/empresas_financas.json",
+    "/energia/series/empresas_financas_ajustes.csv",
     "/energia/series/empresas_financas_anual.csv"
    ]
   },
@@ -9136,6 +9742,7 @@
    ],
    "downloads": [
     "/energia/series/empresas_financas.json",
+    "/energia/series/empresas_financas_ajustes.csv",
     "/energia/series/empresas_financas_trimestral.csv"
    ]
   },
@@ -9201,131 +9808,6 @@
    ]
   },
   {
-   "id": "epe:pde-2035",
-   "slug": "epe-pde-2035",
-   "orgao": "EPE",
-   "titulo": "Plano Decenal de Expansão de Energia 2035: caderno de dados do relatório final",
-   "url": "https://www.epe.gov.br/pt/publicacoes-dados-abertos/publicacoes/plano-decenal-de-expansao-de-energia-2035",
-   "licenca": "Creative Commons Atribuição 4.0 Internacional (CC BY 4.0), conforme o rodapé do portal da EPE",
-   "descricao": "Planilhas por capítulo do PDE 2035 (aprovado pela Portaria MME nº 923/2026). Cenário de planejamento, nunca realizado.",
-   "formatos": [
-    "XLSX",
-    "PDF"
-   ],
-   "tema": "hidrologia",
-   "metadados_verificados": true,
-   "etapas": {
-    "catalogado": {
-     "ok": true,
-     "origem": "registro"
-    },
-    "recurso_verificado": {
-     "ok": true
-    },
-    "integrado": {
-     "ok": true
-    },
-    "validado": {
-     "ok": true
-    },
-    "publicado": {
-     "ok": false
-    }
-   },
-   "integracoes": [
-    {
-     "id": "aneel_geracao/epe_pde",
-     "estado": "VALIDADO"
-    }
-   ],
-   "modulos": [
-    "expansao"
-   ],
-   "ressalvas": [
-    "O módulo declara uso em indicador, mas o estado calculado é VALIDADO."
-   ],
-   "estado": "VALIDADO",
-   "papeis": [
-    "indicador"
-   ],
-   "usado_em": [
-    "expansao.json"
-   ],
-   "quebras": [],
-   "interno": "epe_pde",
-   "familia": "aneel_geracao",
-   "paginas": [
-    {
-     "rotulo": "Expansão",
-     "href": "/setor-eletrico/expansao"
-    }
-   ],
-   "downloads": [
-    "/energia/series/expansao_pde2035.csv"
-   ]
-  },
-  {
-   "id": "ons:dicionarios-ear-ena-subsistema",
-   "slug": "ons-dicionarios-ear-ena",
-   "orgao": "ONS",
-   "titulo": "Dicionários de dados de EAR e ENA diários por subsistema (PDF do ONS)",
-   "url": "https://dados.ons.org.br/dataset/ear-diario-por-subsistema",
-   "licenca": "Creative Commons Atribuição (CC-BY), conforme o portal de dados abertos do ONS",
-   "descricao": "Dicionários oficiais dos conjuntos de EAR e ENA diários, guardados com sha256 para conferir, a cada coleta, que os campos usados…",
-   "formatos": [
-    "PDF"
-   ],
-   "tema": "hidrologia",
-   "metadados_verificados": true,
-   "etapas": {
-    "catalogado": {
-     "ok": true,
-     "origem": "registro"
-    },
-    "recurso_verificado": {
-     "ok": true
-    },
-    "integrado": {
-     "ok": true
-    },
-    "validado": {
-     "ok": true
-    },
-    "publicado": {
-     "ok": false
-    }
-   },
-   "integracoes": [
-    {
-     "id": "previsoes/previsoes_dicionarios_ons",
-     "estado": "VALIDADO"
-    }
-   ],
-   "modulos": [
-    "previsoes"
-   ],
-   "estado": "VALIDADO",
-   "papeis": [
-    "contexto"
-   ],
-   "usado_em": [
-    "previsoes_desempenho.json"
-   ],
-   "quebras": [],
-   "interno": "previsoes_dicionarios_ons",
-   "familia": "previsoes",
-   "paginas": [
-    {
-     "rotulo": "Previsões do PLD",
-     "href": "/setor-eletrico/pld/previsoes"
-    },
-    {
-     "rotulo": "Modelos de previsão do PLD",
-     "href": "/setor-eletrico/pld/modelos"
-    }
-   ]
-  },
-  {
    "id": "aneel:acrescimo-da-potencia-instalada",
    "orgao": "ANEEL",
    "titulo": "Acréscimo anual da potência instalada",
@@ -9377,82 +9859,6 @@
     "recurso": "pedidos-de-conexao-mmgd-regiao-nordeste.parquet",
     "formato": "PARQUET"
    }
-  },
-  {
-   "id": "aneel:atos-limites-pld",
-   "slug": "aneel-atos-limites-pld",
-   "orgao": "ANEEL",
-   "titulo": "Atos anuais da ANEEL que fixam os limites do PLD (2021 a 2026) e atos da linha do tempo",
-   "url": "https://www2.aneel.gov.br/cedoc/",
-   "licenca": "Ato oficial publicado no Diário Oficial da União; texto normativo de domínio público (Lei nº 9.610/1998, art. 8º, IV)",
-   "descricao": "",
-   "formatos": [],
-   "tema": "preco",
-   "metadados_verificados": true,
-   "etapas": {
-    "catalogado": {
-     "ok": true,
-     "origem": "registro"
-    },
-    "recurso_verificado": {
-     "ok": true
-    },
-    "validado": {
-     "ok": false
-    },
-    "publicado": {
-     "ok": false
-    }
-   },
-   "integracoes": [
-    {
-     "id": "regulacao/regulacao_documentos",
-     "estado": "RECURSO VERIFICADO"
-    }
-   ],
-   "modulos": [
-    "regulacao"
-   ],
-   "ressalvas": [
-    "O módulo declara uso em indicador, mas o estado calculado é RECURSO VERIFICADO."
-   ],
-   "estado": "RECURSO VERIFICADO",
-   "papeis": [
-    "indicador"
-   ],
-   "usado_em": [
-    "regulacao.json"
-   ],
-   "quebras": [
-    {
-     "data": "2021-01-01",
-     "origem": "FONTE",
-     "descricao": "PLD passa a ser horário e o teto horário passa a valer ao lado do teto estrutural (Portaria MME nº 301/2019)."
-    },
-    {
-     "data": "2025-01-01",
-     "origem": "FONTE",
-     "descricao": "Os limites passam a ser fixados por despacho da superintendência (delegação da Portaria nº 6.828/2023), não mais por resolução homologatória da Diretoria."
-    }
-   ],
-   "interno": "regulacao_documentos",
-   "familia": "regulacao",
-   "paginas": [
-    {
-     "rotulo": "Regulação",
-     "href": "/setor-eletrico/regulacao"
-    },
-    {
-     "rotulo": "PLD",
-     "href": "/setor-eletrico/pld"
-    }
-   ],
-   "downloads": [
-    "/energia/series/regulacao_limites_pld_atos.csv",
-    "/energia/series/regulacao_limites_pld_conferencias.csv",
-    "/energia/series/regulacao_limites_pld_vigencias.csv",
-    "/energia/series/regulacao_linha_do_tempo.csv"
-   ]
   },
   {
    "id": "aneel:auto-de-infracao",
@@ -9907,69 +10313,6 @@
     "formato": "CSV",
     "colunas": 7
    }
-  },
-  {
-   "id": "aneel:empreendimentos-em-operacao",
-   "slug": "aneel-empreendimentos-operacao",
-   "orgao": "ANEEL",
-   "titulo": "Quantidade de empreendimentos de geração de energia em operação",
-   "modificado_na_fonte": "2026-08-05",
-   "descricao": "A geração é o segmento da indústria de eletricidade responsável por produzir energia elétrica e injetá-la nos sistemas de…",
-   "formatos": [
-    "CSV",
-    "PDF"
-   ],
-   "tema": "geracao",
-   "frequencia_declarada": "Trimestral",
-   "metadados_verificados": true,
-   "etapas": {
-    "catalogado": {
-     "ok": true,
-     "origem": "listagem"
-    },
-    "recurso_verificado": {
-     "ok": true,
-     "via": "captura_outro_dataset",
-     "arquivos": 1
-    }
-   },
-   "recursos_resumo": {
-    "total": 2,
-    "por_estado": {
-     "CATALOGADO": 1,
-     "VALIDADO": 1
-    },
-    "acessados": 1,
-    "ultimo_publicado": "2026-08-05"
-   },
-   "integracoes": [
-    {
-     "id": "aneel_geracao/aneel_capacidade_agregada",
-     "estado": null
-    }
-   ],
-   "modulos": [
-    "expansao"
-   ],
-   "ressalvas": [
-    "Declarado no REGISTRO de módulo, mas sem estado calculado nesta publicação (gold publicacao.json ausente ou anterior à declaração)."
-   ],
-   "estado": "RECURSO VERIFICADO",
-   "papeis": [
-    "contexto"
-   ],
-   "usado_em": [
-    "expansao.json"
-   ],
-   "quebras": [],
-   "interno": "aneel_capacidade_agregada",
-   "familia": "aneel_geracao",
-   "paginas": [
-    {
-     "rotulo": "Expansão",
-     "href": "/setor-eletrico/expansao"
-    }
-   ]
   },
   {
    "id": "aneel:usinas-termeletricas-por-tipo",
@@ -11929,13 +12272,14 @@
     "acessados": 1,
     "ultimo_publicado": "2025-01-24"
    },
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_mercado/v20261001T003925Z/package_show_fator_ajuste_gf.json",
      "sha256": "186546970358bbc3e52342501f48098689fb35e911726c24c30523a271777e50",
      "capturado_em": "2026-10-01T00:39:39Z"
     }
-   ],
+   },
    "estado": "RECURSO VERIFICADO",
    "usado_em": [],
    "quebras": [],
@@ -12536,13 +12880,14 @@
     "acessados": 1,
     "ultimo_publicado": "2026-02-02"
    },
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_mercado/v20261001T003925Z/package_show_lista_perfil.json",
      "sha256": "14839bb53612698c746415586c412c596bf1aa0e38438f0c1e66b349aa81abe0",
      "capturado_em": "2026-10-01T00:39:33Z"
     }
-   ],
+   },
    "estado": "RECURSO VERIFICADO",
    "usado_em": [],
    "quebras": [],
@@ -12868,13 +13213,14 @@
     "acessados": 1,
     "ultimo_publicado": "2026-09-01"
    },
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_mercado/v20261001T003925Z/package_show_mre_horario.json",
      "sha256": "ea77a1c4a7895d8516aa2239ecfbc9cc60ab25c88806c097c2817e1d37dc5fc5",
      "capturado_em": "2026-10-01T00:40:12Z"
     }
-   ],
+   },
    "estado": "RECURSO VERIFICADO",
    "usado_em": [],
    "quebras": [],
@@ -13476,13 +13822,14 @@
     "acessados": 1,
     "ultimo_publicado": "2026-09-01"
    },
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_documentos/v20260928T110709Z/package_show_pld_horario_submercado.json",
      "sha256": "e20b7fd2cc2b20d8d4881de2665be50520a46a22cb45e38f23ecba9512079fa3",
      "capturado_em": "2026-09-28T11:07:09Z"
     }
-   ],
+   },
    "estado": "RECURSO VERIFICADO",
    "usado_em": [],
    "quebras": [],
@@ -14058,13 +14405,14 @@
     "acessados": 1,
     "ultimo_publicado": "2026-09-01"
    },
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_mercado/v20261001T003925Z/package_show_repasse_risco_hidrologico.json",
      "sha256": "a3b4a601437c51309612edc94ba00d9974612768d3c18de15f1b92a8789aa40c",
      "capturado_em": "2026-10-01T00:39:50Z"
     }
-   ],
+   },
    "estado": "RECURSO VERIFICADO",
    "usado_em": [],
    "quebras": [],
@@ -14540,13 +14888,14 @@
     "acessados": 1,
     "ultimo_publicado": "2026-02-06"
    },
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_mercado/v20261001T003925Z/package_show_sazonalizacao_mre_gf_fator_ajuste.json",
      "sha256": "9a823272bc131fb98ff710aba8c897100809b70dfad7f6510662ff7a5e596b97",
      "capturado_em": "2026-10-01T00:40:16Z"
     }
-   ],
+   },
    "estado": "RECURSO VERIFICADO",
    "usado_em": [],
    "quebras": [],
@@ -14597,13 +14946,14 @@
     "acessados": 1,
     "ultimo_publicado": "2026-09-01"
    },
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_documentos/v20260928T110709Z/package_show_sumario_be_horario_submercado.json",
      "sha256": "24f50e2f3a29820752863f7b95c6f3629415159a6fd7d0377843cf44e8a7b83b",
      "capturado_em": "2026-09-28T11:07:09Z"
     }
-   ],
+   },
    "estado": "RECURSO VERIFICADO",
    "usado_em": [],
    "quebras": [],
@@ -14829,13 +15179,14 @@
     "acessados": 1,
     "ultimo_publicado": "2026-06-02"
    },
-   "metadados_versionados": [
-    {
+   "metadados_versionados": {
+    "versoes": 1,
+    "ultima": {
      "arquivo": "pipeline/energia/seed/ccee_mercado/v20261001T003925Z/package_show_varejista_consumidor.json",
      "sha256": "bce6a419830f6967a4d68866146d604f395b340d60fc7f1920c1568272de5274",
      "capturado_em": "2026-10-01T00:39:49Z"
     }
-   ],
+   },
    "estado": "RECURSO VERIFICADO",
    "usado_em": [],
    "quebras": [],
@@ -14870,66 +15221,6 @@
     "formato": "CSV",
     "colunas": 10
    }
-  },
-  {
-   "id": "epe:webmap-epe-linhas-de-transmissao",
-   "slug": "epe-webmap-linhas-transmissao",
-   "orgao": "EPE",
-   "titulo": "WebMap da EPE: linhas de transmissão existentes e da expansão planejada (geometria)",
-   "url": "https://gisepeprd2.epe.gov.br/WebMapEPE/",
-   "licenca": "Creative Commons Atribuição 4.0 Internacional (CC BY 4.0), conforme o rodapé do portal da EPE",
-   "descricao": "Camadas 21 (base existente) e 10 (expansão planejada) do serviço ArcGIS SMA/WMS_Webmap_EPE, consultadas pela interface pública…",
-   "formatos": [
-    "GeoJSON"
-   ],
-   "tema": "rede",
-   "metadados_verificados": true,
-   "etapas": {
-    "catalogado": {
-     "ok": true,
-     "origem": "registro"
-    },
-    "recurso_verificado": {
-     "ok": true
-    },
-    "validado": {
-     "ok": false
-    },
-    "publicado": {
-     "ok": false
-    }
-   },
-   "integracoes": [
-    {
-     "id": "aneel_geracao/epe_webmap_rede",
-     "estado": "RECURSO VERIFICADO"
-    }
-   ],
-   "modulos": [
-    "expansao"
-   ],
-   "ressalvas": [
-    "O módulo declara uso em indicador, mas o estado calculado é RECURSO VERIFICADO."
-   ],
-   "estado": "RECURSO VERIFICADO",
-   "papeis": [
-    "indicador"
-   ],
-   "usado_em": [
-    "expansao.json"
-   ],
-   "quebras": [],
-   "interno": "epe_webmap_rede",
-   "familia": "aneel_geracao",
-   "paginas": [
-    {
-     "rotulo": "Expansão",
-     "href": "/setor-eletrico/expansao"
-    }
-   ],
-   "downloads": [
-    "/energia/series/expansao_rede_epe.json"
-   ]
   },
   {
    "id": "ibge:localidades-2022",
@@ -15264,7 +15555,7 @@
    "titulo": "Contornos das Bacias Hidrográficas",
    "licenca": "Creative Commons Attribution",
    "modificado_na_fonte": "2024-05-27",
-   "descricao": "Informações em formato shapefile, que são os dados geoespaciais e vetoriais em sistemas de informação geográfica, para apresentar…",
+   "descricao": "Informações em formato shapefile, que são os dados geoespaciais e vetoriais em sistemas de informação geográfica, para…",
    "formatos": [
     "ZIP"
    ],
@@ -17003,53 +17294,6 @@
    }
   },
   {
-   "id": "aneel:ren-957-2021",
-   "slug": "aneel-ren-957-2021",
-   "orgao": "ANEEL",
-   "titulo": "Resolução Normativa nº 957/2021: Convenção de Comercialização (texto compilado)",
-   "url": "https://www2.aneel.gov.br/cedoc/ren2021957.pdf",
-   "licenca": "Ato normativo da ANEEL: texto oficial de domínio público (Lei nº 9.610/1998, art. 8º, IV)",
-   "descricao": "Definição do mercado de curto prazo e valoração das exposições ao PLD. O endereço oficial responde com desafio de navegador; o…",
-   "formatos": [
-    "PDF"
-   ],
-   "tema": "normas",
-   "metadados_verificados": true,
-   "etapas": {
-    "catalogado": {
-     "ok": true,
-     "origem": "registro",
-     "modulo": "pld"
-    }
-   },
-   "integracoes": [
-    {
-     "id": "ons_cmo/normas_pld",
-     "estado": null
-    }
-   ],
-   "modulos": [
-    "pld"
-   ],
-   "ressalvas": [
-    "Declarado no REGISTRO de módulo, mas sem estado calculado nesta publicação (gold publicacao.json ausente ou anterior à declaração)."
-   ],
-   "estado": "CATALOGADO",
-   "papeis": [
-    "contexto"
-   ],
-   "usado_em": [],
-   "quebras": [],
-   "interno": "normas_pld",
-   "familia": "ons_cmo",
-   "paginas": [
-    {
-     "rotulo": "PLD: entenda o preço",
-     "href": "/setor-eletrico/pld"
-    }
-   ]
-  },
-  {
    "id": "anp:precos",
    "orgao": "ANP",
    "nome": null,
@@ -17142,53 +17386,6 @@
    "quebras": []
   },
   {
-   "id": "cepel:dessem-manual-metodologia",
-   "slug": "cepel-dessem-manual-metodologia",
-   "orgao": "CEPEL",
-   "titulo": "Modelo DESSEM: Manual de Metodologia (novembro de 2022)",
-   "url": "https://www.cepel.br/wp-content/uploads/2022/12/DESSEM_ManualMetodologia_19.2.pdf",
-   "licenca": "Documento técnico publicado pelo CEPEL no seu site; termos de uso não relidos nesta integração. O uso aqui é a citação literal de passagens com indicação da fonte (Lei nº 9.610/1998, art. 46, III).",
-   "descricao": "Uso do DESSEM pelo ONS e pela CCEE e cálculo do CMO do submercado (média dos custos marginais das barras ponderada pelas cargas)…",
-   "formatos": [
-    "PDF"
-   ],
-   "tema": "normas",
-   "metadados_verificados": true,
-   "etapas": {
-    "catalogado": {
-     "ok": true,
-     "origem": "registro",
-     "modulo": "pld"
-    }
-   },
-   "integracoes": [
-    {
-     "id": "ons_cmo/normas_pld",
-     "estado": null
-    }
-   ],
-   "modulos": [
-    "pld"
-   ],
-   "ressalvas": [
-    "Declarado no REGISTRO de módulo, mas sem estado calculado nesta publicação (gold publicacao.json ausente ou anterior à declaração)."
-   ],
-   "estado": "CATALOGADO",
-   "papeis": [
-    "contexto"
-   ],
-   "usado_em": [],
-   "quebras": [],
-   "interno": "normas_pld",
-   "familia": "ons_cmo",
-   "paginas": [
-    {
-     "rotulo": "PLD: CMO e formação de preço",
-     "href": "/setor-eletrico/pld"
-    }
-   ]
-  },
-  {
    "id": "epe:anuario",
    "orgao": "EPE",
    "nome": null,
@@ -17252,7 +17449,7 @@
    "url": "https://sidra.ibge.gov.br/",
    "licenca": null,
    "modificado_na_fonte": null,
-   "descricao": "Contexto para carga e consumo, ainda não integrado no domínio Energia. População e IPCA do SIDRA já estão integrados e aparecem…",
+   "descricao": "Contexto para carga e consumo, ainda não integrado no domínio Energia. População e IPCA do SIDRA já estão integrados e…",
    "formatos": [],
    "tema": "carga",
    "estado": "CATALOGADO",
@@ -17317,101 +17514,6 @@
    "estado": "CATALOGADO",
    "usado_em": [],
    "quebras": []
-  },
-  {
-   "id": "ons:procedimentos-de-rede",
-   "slug": "ons-procedimentos-de-rede-pld",
-   "orgao": "ONS",
-   "titulo": "Procedimentos de Rede: Submódulos 2.4, 4.3 e 4.5 (uso do DECOMP e do DESSEM no cálculo do CMO)",
-   "url": "https://www.ons.org.br/paginas/sobre-o-ons/procedimentos-de-rede/vigentes",
-   "licenca": "Documento público do ONS (Procedimentos de Rede, aprovados pela ANEEL). Os termos de uso do portal do ONS não foram relidos nesta integração; o uso aqui é a citação literal de passagens com indicação da fonte (Lei nº 9.610/1998, art. 46, III).",
-   "descricao": "Horizonte, discretização e momento de execução dos modelos de curto e curtíssimo prazo do ONS, citados no painel CMO e formação…",
-   "formatos": [
-    "PDF"
-   ],
-   "tema": "normas",
-   "metadados_verificados": true,
-   "etapas": {
-    "catalogado": {
-     "ok": true,
-     "origem": "registro",
-     "modulo": "pld"
-    }
-   },
-   "integracoes": [
-    {
-     "id": "ons_cmo/normas_pld",
-     "estado": null
-    }
-   ],
-   "modulos": [
-    "pld"
-   ],
-   "ressalvas": [
-    "Declarado no REGISTRO de módulo, mas sem estado calculado nesta publicação (gold publicacao.json ausente ou anterior à declaração)."
-   ],
-   "estado": "CATALOGADO",
-   "papeis": [
-    "contexto"
-   ],
-   "usado_em": [],
-   "quebras": [],
-   "interno": "normas_pld",
-   "familia": "ons_cmo",
-   "paginas": [
-    {
-     "rotulo": "PLD: CMO e formação de preço",
-     "href": "/setor-eletrico/pld"
-    }
-   ]
-  },
-  {
-   "id": "senado federal:legislacao-federal",
-   "slug": "senado-legislacao-federal",
-   "orgao": "Senado Federal",
-   "titulo": "Legislação Federal (texto da publicação original das leis citadas)",
-   "url": "https://legis.senado.leg.br/",
-   "licenca": "Texto normativo de domínio público (Lei nº 9.610/1998, art. 8º, IV), no portal de Legislação Federal do Senado",
-   "descricao": "",
-   "formatos": [],
-   "tema": "outros",
-   "metadados_verificados": true,
-   "etapas": {
-    "catalogado": {
-     "ok": true,
-     "origem": "registro",
-     "modulo": "regulacao"
-    }
-   },
-   "integracoes": [
-    {
-     "id": "regulacao/regulacao_documentos",
-     "estado": null
-    }
-   ],
-   "modulos": [
-    "regulacao"
-   ],
-   "ressalvas": [
-    "Declarado no REGISTRO de módulo, mas sem estado calculado nesta publicação (gold publicacao.json ausente ou anterior à declaração)."
-   ],
-   "estado": "CATALOGADO",
-   "papeis": [
-    "indicador"
-   ],
-   "usado_em": [],
-   "quebras": [],
-   "interno": "regulacao_documentos",
-   "familia": "regulacao",
-   "paginas": [
-    {
-     "rotulo": "Regulação",
-     "href": "/setor-eletrico/regulacao"
-    }
-   ],
-   "downloads": [
-    "/energia/series/regulacao_linha_do_tempo.csv"
-   ]
   }
  ]
 }

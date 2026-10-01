@@ -447,7 +447,7 @@ def _dias_conferidos(con):
 def _series_do_dia(con, dia):
     """{área: {instante: MWmed}} vigentes para o dia (última captura de cada recurso)."""
     out = defaultdict(dict)
-    for rec, serie, ref, valor in con.execute(
+    for _rec, serie, ref, valor in con.execute(
             """SELECT v.recurso, o.serie, o.ref, o.valor FROM observacoes o JOIN vintages v ON v.vintage_id=o.vintage_id
                WHERE o.dataset=? AND v.recurso LIKE ? AND o.serie LIKE 'meia_hora.%'
                ORDER BY v.capturado_em, o.rowid""", (DS_AREAS, f"%@{dia}")):
@@ -657,16 +657,13 @@ def construir(con, ctx):
 
     # ---- indicadores municipais
     mmgd = {}
-    tg = (ins.get("transicao_gold") or {}).get("obj") or {}
     if ins.get("transicao_municipios"):
         for r in _le_csv(_caminho("series", "transicao_mmgd_municipios.csv")):
             mmgd[r["codigo_ibge"]] = {"pop": _int(r["populacao_estimada"]), "un": _int(r["unidades"]),
                                       "kw": _num(r["potencia_kw"]), "w_hab": _num(r["w_por_habitante"])}
-    ig = (ins.get("inclusao_gold") or {}).get("obj") or {}
     cod6 = defaultdict(list)
     for cod in municipios:
         cod6[cod[:6]].append(cod)
-    cod6_ambiguos = sorted(k for k, v in cod6.items() if len(v) > 1)
     tsee, tsee_sem_cod = {}, []
     mes_cde = mes_cad = None
     if ins.get("inclusao_municipios"):
@@ -1649,7 +1646,6 @@ def _evidencias(con, ins, resumo, areas, contagem_usi, linhas_mun):
     if areas["conferencias"] and vs:
         arquivos = [ev.arquivo_de_vintage(v) for v in vs if v["recurso"].split("@")[1] in areas["dias"]][:68]
         n_prov = resumo["municipios_por_estado_submercado"].get("provado", 0) + resumo["municipios_por_estado_submercado"].get("provado_com_area_sem_carga", 0)
-        cf = areas["conferencias"][0]
         try:
             fonte = {"orgao": "ONS", "conjunto": "Carga de Energia Verificada (API por área de carga)", "recurso": "cargaverificada (34 áreas por dia)",
                      "url": ot.URL_DATASET, "arquivo": None, "sha256": None, "capturado_em": None, "publicado_em": None,

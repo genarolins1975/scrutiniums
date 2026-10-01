@@ -66,8 +66,10 @@ export type EtapaRecursoVerificado = {
   detalhe?: string;
 };
 
-export type EtapaIntegrado = { ok: boolean; observacoes?: number; registros?: number; documento?: true };
+/** documento: original guardado para citação; leitura_do_original: sem tabela no silver, lido do bronze por gold que cita o snapshot. */
+export type EtapaIntegrado = { ok: boolean; observacoes?: number; registros?: number; documento?: true; leitura_do_original?: true };
 
+/** Contagem de checagens; ressalvas e reprovadas ausentes = nenhuma. */
 export type EtapaValidado = {
   ok: boolean;
   resultado?: Veredito;
@@ -115,8 +117,8 @@ export type Atualidade = {
   situacao: SituacaoAtualidade;
   caso?: CasoSla;
   base?: "periodo_de_referencia" | "publicacao_da_fonte";
+  /** Tolerância em dias: PublicacaoGold.regras.sla[cadencia]. */
   cadencia?: Cadencia;
-  tolerancia_dias?: number;
   /** Maior referência disponível até hoje (nunca a data da captura). */
   ultimo_periodo?: string;
   fim_ultimo_periodo?: string;
@@ -139,7 +141,7 @@ export type DadoConjunto = {
   completude_interna?: number;
   series_com_lacuna?: number;
   series_no_ultimo?: number;
-  periodo_anterior?: string;
+  /** Séries com valor no período anterior ao último (pelo passo da série). */
   series_no_anterior?: number;
   /** Cadastros: menor fração de chaves com um campo preenchido. */
   preenchimento_minimo?: number;
@@ -201,7 +203,8 @@ export type ConjuntoIntegrado = {
   etapas: Required<Etapas>;
   ressalvas: string[];
   uso: { papeis: Papel[]; modelos?: { codigo: string; estado: EstadoModelo | null }[] };
-  descontinuado: boolean;
+  /** Ausente = não descontinuado. */
+  descontinuado?: true;
   descontinuacao?: { motivo: string; evidencia: string };
   frequencia: Frequencia;
   atualidade: Atualidade;
@@ -212,6 +215,8 @@ export type ConjuntoIntegrado = {
     ultima_publicacao_fonte?: string;
     anteriores_preservadas?: number;
     origens?: Record<string, number>;
+    /** A fonte modificou arquivos depois da última captura (atraso do pipeline, não da fonte). */
+    fonte_mais_nova?: { recursos: number; exemplos: { recurso: string; modificado_na_fonte: string; ultima_captura: string }[] };
   };
   coleta: {
     tentativas: number;
@@ -331,6 +336,7 @@ export type PublicacaoGold = Cabecalho & {
     estados: Record<EstadoDados, string>;
     criterios_estado: Record<EstadoDados, string>;
     uso: string;
+    captura_atras_da_fonte: string;
     sla: Record<Cadencia, { tolerancia_dias: number; periodo_dias_aprox: number }>;
     sla_texto: string;
     falha: string;
@@ -348,6 +354,7 @@ export type PublicacaoGold = Cabecalho & {
     com_revisao: number;
     referencias_revisadas: number;
     com_falha_recente: number;
+    captura_atras_da_fonte: number;
     descontinuados: number;
     validacao: Record<ResultadoChecagem, number> & { checagens: number };
     golds: { total: number; integras: number; por_veredito: Partial<Record<Veredito, number>> };
@@ -453,7 +460,8 @@ export type EntradaDados = {
   recursos_resumo?: ResumoRecursosEntrada;
   /** CCEE recurso a recurso nas entradas com algum arquivo integrado (tabela completa em dados_recursos_ccee.csv). */
   recursos?: RecursoCcee[];
-  metadados_versionados?: { arquivo: string; sha256: string; capturado_em: string | null }[];
+  /** package_show da CCEE versionados no repositório: quantas versões e a mais recente. */
+  metadados_versionados?: { versoes: number; ultima: { arquivo: string; sha256: string; capturado_em: string | null } };
   integracoes?: { id: string; estado: EstadoDados | null }[];
   modulos?: string[];
   ressalvas?: string[];

@@ -14,7 +14,9 @@ golds presentes), e calcula:
 1. P067: o estado de cada conjunto na escada catalogado, recurso verificado,
    integrado, validado e publicado, cada etapa com evidência; o uso (indicador, modelo
    com o seu estado, conferência) como eixo separado; a CCEE recurso a recurso a partir
-   dos package_show versionados (o portal responde 403 a este ambiente); descontinuados.
+   da listagem do portal (ou dos package_show versionados, quando o portal recusa o
+   pedido); recurso a recurso também no ONS e na ANEEL (dados_recursos_<orgao>.csv);
+   descontinuados declarados pela fonte.
 2. P068: por conjunto, último período disponível, captura, tentativa e falha (a falha
    nunca renova a data do dado), frequência declarada pela fonte e SLA de atualidade
    derivado dela, completude interna das séries e cobertura do último período, e
@@ -27,11 +29,11 @@ golds presentes), e calcula:
    golds, CSV e conjuntos; natureza e situação da validação como eixos separados (11.3),
    afirmações de integração geradas do estado real do catálogo.
 
-Fontes próprias (família `publicacao`): listagem package_search do ONS e da ANEEL,
-package_show versionados da CCEE, verificação parcial de recursos e metadados de
-frequência de fontes fora dos portais (SIDRA, CVM, MME).
+Fontes próprias (família `publicacao`): listagem package_search do ONS, da ANEEL e da
+CCEE, package_show da CCEE versionados no repositório (alternativa quando o portal
+recusa o pedido), verificação parcial de recursos e metadados de frequência de fontes
+fora dos portais (SIDRA, CVM, MME).
 """
-import csv
 import json
 import os
 import sys
@@ -583,16 +585,20 @@ def _etapas(grupo, an, chks, golds_res, brutos, seeds, documento, agora):
     n = vs.get("n") or 0
     rec = {"ok": n > 0, "via": "captura", "em": vs.get("primeira_captura"), "capturas": n, "arquivos": vs.get("recursos") or 0}
     conteudo = bool((an or {}).get("observacoes")) or bool((an or {}).get("registros"))
-    integ = _enxuto({"ok": n > 0 and (conteudo or documento), "em": vs.get("primeira_captura") if n else None,
+    citam = sorted(n_ for n_, r in golds_res.items() if it["dataset_silver"] in r["datasets_citados"])
+    # leitura direta do original: o módulo lê o arquivo guardado no bronze (geometria,
+    # JSON de API) sem tabela no silver, e a proveniência de uma gold cita o snapshot
+    bronze_citado = n > 0 and not conteudo and not documento and bool(citam)
+    integ = _enxuto({"ok": n > 0 and (conteudo or documento or bronze_citado), "em": vs.get("primeira_captura") if n else None,
                      "observacoes": ((an or {}).get("observacoes") or {}).get("linhas"),
                      "registros": ((an or {}).get("registros") or {}).get("chaves"),
-                     "documento": True if (documento and not conteudo) else None})
+                     "documento": True if (documento and not conteudo) else None,
+                     "leitura_do_original": True if bronze_citado else None})
     verd = val.veredito(chks)
     cont = Counter(x["resultado"] for x in chks)
     valid = {"ok": integ["ok"] and verd in ("aprovado", "ressalva"), "resultado": verd, "aprovadas": cont.get("aprovado", 0),
              "ressalvas": cont.get("ressalva", 0), "reprovadas": cont.get("reprovado", 0)}
     golds_decl = sorted({g for x in grupo for g in x["golds"]})
-    citam = sorted(n_ for n_, r in golds_res.items() if it["dataset_silver"] in r["datasets_citados"])
     consumidoras = sorted(set(golds_decl) | set(citam))
     integras = []
     problemas = []
@@ -616,7 +622,36 @@ def _etapas(grupo, an, chks, golds_res, brutos, seeds, documento, agora):
     return {"catalogado": cat, "recurso_verificado": rec, "integrado": integ, "validado": valid, "publicado": publ}, consumidoras
 
 
-def conjuntos(grupos, analises, golds_res, brutos, seeds, metadados, hoje, agora):
+def _instante(texto):
+    """Carimbo do CKAN (UTC sem fuso, com microssegundos) ou da captura ('...Z') em
+    'AAAA-MM-DDTHH:MM:SS', comparável como texto."""
+    return str(texto or "").replace("Z", "")[:19] or None
+
+
+def fonte_mais_nova(brutos, capturas_idx):
+    """{(família, dataset): resumo} dos arquivos que a fonte modificou depois da última
+    captura do pipeline: a listagem do portal (last_modified do recurso, em UTC no CKAN)
+    é mais recente que a captura registrada no silver. É atraso nosso, não da fonte, e
+    fica separado do SLA (que mede a fonte)."""
+    out = {}
+    for orgao in ("ONS", "ANEEL", "CCEE"):
+        for p in (brutos.get(orgao) or {}).get("resultado") or []:
+            for r in p.get("resources") or []:
+                lm = _instante(r.get("last_modified"))
+                caps = capturas_idx.get(catalogo.normaliza_url(r.get("url"))) or []
+                if not lm or not caps:
+                    continue
+                for c in caps:
+                    ult = _instante(c["ultima"])
+                    if ult and lm > ult:
+                        x = out.setdefault((c["familia"], c["dataset"]), {"recursos": 0, "exemplos": []})
+                        x["recursos"] += 1
+                        if len(x["exemplos"]) < 1:
+                            x["exemplos"].append({"recurso": r.get("name"), "modificado_na_fonte": lm, "ultima_captura": c["ultima"]})
+    return out
+
+
+def conjuntos(grupos, analises, golds_res, brutos, seeds, metadados, hoje, agora, mais_novos=None):
     mods = catalogo.estados_modelos()
     out, checagens = [], []
     for (fam, ds), grupo in sorted(grupos.items()):
@@ -629,7 +664,9 @@ def conjuntos(grupos, analises, golds_res, brutos, seeds, metadados, hoje, agora
                                  f"Dataset {ds} declarado no REGISTRO, sem capturas no silver {fam}",
                                  criterio="toda captura com sha256 do arquivo original e instante UTC", verificados=0, problemas=1)]
         else:
-            chks = val.valida_conjunto(chave, an, regra_horizonte=val.HORIZONTE_SILVER.get(ds), documento=documento)
+            citado = any(ds in r["datasets_citados"] for r in golds_res.values())
+            chks = val.valida_conjunto(chave, an, regra_horizonte=val.HORIZONTE_SILVER.get(ds), documento=documento,
+                                       lido_do_original=citado)
         checagens.extend(chks)
         etapas, consumidoras = _etapas(grupo, an, chks, golds_res, brutos, seeds, documento, agora)
         estado = catalogo.estado_por_etapas(etapas)
@@ -654,6 +691,11 @@ def conjuntos(grupos, analises, golds_res, brutos, seeds, metadados, hoje, agora
             nosso = gp["ref_max_ate_hoje"].replace("-", "")[:len(fonte_ult)]
             if fonte_ult > nosso:
                 ressalvas.append(f"A fonte informa período {fonte_ult} e o silver tem até {gp['ref_max_ate_hoje']}: integração defasada.")
+        novo = (mais_novos or {}).get((fam, ds))
+        if novo:
+            ex = novo["exemplos"][0]
+            ressalvas.append(f"A listagem do portal informa modificação de {novo['recursos']} arquivo(s) depois da última captura "
+                             f"({ex['recurso']}: {ex['modificado_na_fonte']} UTC; captura em {ex['ultima_captura']}).")
         modelos = sorted({m for x in grupo for m in x.get("modelos", [])})
         rv = _resumo_revisao(an)
         br = (an or {}).get("bronze") or {}
@@ -686,7 +728,7 @@ def conjuntos(grupos, analises, golds_res, brutos, seeds, metadados, hoje, agora
             "capturas": {"vintages": vs.get("n", 0), "recursos": vs.get("recursos", 0),
                          "anteriores_preservadas": vs.get("recursos_com_anterior", 0), "primeira": vs.get("primeira_captura"),
                          "ultima": vs.get("ultima_captura"), "ultima_publicacao_fonte": vs.get("ultima_publicacao_fonte"),
-                         "origens": vs.get("origens", {})},
+                         "origens": vs.get("origens", {}), "fonte_mais_nova": novo},
             "coleta": {"tentativas": co.get("tentativas", 0), "falhas": co.get("falhas", 0),
                        "ultima_tentativa": co.get("ultima_tentativa"), "ultimo_ok": co.get("ultimo_ok"),
                        "ultima_falha": co.get("ultima_falha"), "falhas_consecutivas": co.get("falhas_consecutivas", 0)},
@@ -730,6 +772,9 @@ def publico(x):
         et["catalogado"].pop("em", None)
     et["integrado"].pop("em", None)
     et["recurso_verificado"].pop("via", None)  # sempre captura com sha256 num conjunto integrado
+    for k in ("ressalvas", "reprovadas"):
+        if not et["validado"].get(k):
+            et["validado"].pop(k, None)  # ausente = nenhuma
     if et["publicado"].get("golds") == x["golds"]:
         et["publicado"].pop("golds")  # ausente = todas as golds do conjunto
     out["etapas"] = et
@@ -737,20 +782,26 @@ def publico(x):
     ja = {i["detalhe"] for i in x["validacao"]["itens"]}
     out["ressalvas"] = [r for r in x["ressalvas"] if r not in ja]
     out["uso"] = _enxuto({"papeis": x["uso"]["papeis"], "modelos": x["uso"]["modelos"] or None})
-    out["descontinuado"] = x["descontinuado"]
+    if x["descontinuado"]:
+        out["descontinuado"] = True
     if x.get("descontinuacao"):
         out["descontinuacao"] = x["descontinuacao"]
     # o nome do campo de onde a frequência foi lida fica em dados_conjuntos.csv
     out["frequencia"] = _enxuto({k: v for k, v in x["frequencia"].items()
                                  if not (k == "sem_sla" and v is False) and not (k == "campo" and x["frequencia"].get("origem") == "portal")})
     # a origem da cadência é a do caso (A a D), descrito em regras.sla_texto
-    out["atualidade"] = _enxuto({k: v for k, v in x["atualidade"].items() if k != "origem_cadencia"})
-    out["dado"] = _enxuto({k: v for k, v in (x["dado"] or {}).items() if k not in ("linhas", "chaves", "ultimo_periodo")}) or None
+    # tolerância em dias: regras.sla[cadencia]; período anterior: o da série antes do último
+    out["atualidade"] = _enxuto({k: v for k, v in x["atualidade"].items() if k not in ("origem_cadencia", "tolerancia_dias")})
+    out["dado"] = _enxuto({k: v for k, v in (x["dado"] or {}).items()
+                           if k not in ("linhas", "chaves", "ultimo_periodo", "periodo_anterior")}) or None
     out["capturas"] = _enxuto({"ultima": vs.get("ultima"), "ultima_publicacao_fonte": vs.get("ultima_publicacao_fonte"),
                                "anteriores_preservadas": vs.get("anteriores_preservadas") or None,
+                               "fonte_mais_nova": vs.get("fonte_mais_nova"),
                                "origens": vs.get("origens") if set(vs.get("origens") or {}) - {"coleta_direta"} else None})
+    uf = co.get("ultima_falha")
     out["coleta"] = _enxuto({"tentativas": co["tentativas"], "falhas": co["falhas"], "ultimo_ok": co.get("ultimo_ok"),
-                             "ultima_falha": co.get("ultima_falha"), "falhas_consecutivas": co["falhas_consecutivas"]})
+                             "ultima_falha": ({**uf, "detalhe": str(uf.get("detalhe") or "")[:120]} if uf else None),
+                             "falhas_consecutivas": co["falhas_consecutivas"]})
     out["revisoes"] = x["revisoes"]
     out["bronze"] = (_enxuto({"presentes": br.get("presentes"), "ausentes": br.get("ausentes") or None,
                               "sha256_conferidos": br.get("sha256_conferidos"), "sha256_divergentes": br.get("sha256_divergentes") or None,
@@ -802,19 +853,6 @@ def calendario(lista, hoje):
                 for d in sorted(total)]
     linhas.sort(key=lambda r: (r["dia"], r["familia"], r["dataset"]))
     return agregado, linhas
-
-
-def _evidencias(o, out=None):
-    out = [] if out is None else out
-    if isinstance(o, dict):
-        if "valor_exibido" in o and "testes" in o and "fonte" in o:
-            out.append(o)
-        for v in o.values():
-            _evidencias(v, out)
-    elif isinstance(o, list):
-        for v in o:
-            _evidencias(v, out)
-    return out
 
 
 def _eh_proveniencia(o):
@@ -1377,7 +1415,9 @@ def construir(con, ctx):
     analises, nao_declarados = _analises(grupos, hoje, cache_hash)
     base.escreve_gold(os.path.basename(cache_hash_caminho), cache_hash, destino=os.path.dirname(cache_hash_caminho))
     tempos["silvers"] = round(time.time() - t, 1)
-    lista, chk_conj = conjuntos(grupos, analises, golds_res, brutos, seeds, metadados, hoje, agora)
+    capturas_idx = catalogo.indice_capturas()
+    mais_novos = fonte_mais_nova(brutos, capturas_idx)
+    lista, chk_conj = conjuntos(grupos, analises, golds_res, brutos, seeds, metadados, hoje, agora, mais_novos=mais_novos)
 
     todas = [k for r in golds_res.values() for k in r["checagens"]] + [k for r in csv_res.values() for k in r["checagens"]]
     todas += ident + chk_parquet + chk_conj
@@ -1403,6 +1443,9 @@ def construir(con, ctx):
                           "que começa depois da data de modificação informada, essa data não acompanha o conteúdo e vale o fim do "
                           "último período mais a cadência e a tolerância (publicacao_nao_acompanha_conteudo). Sem frequência declarada "
                           "em metadado legível, o SLA não é aplicado (SEM SLA), em vez de inventar uma."),
+            "captura_atras_da_fonte": ("Arquivo que a fonte modificou (last_modified da listagem do portal, UTC) depois da última "
+                                       "captura registrada no silver: o atraso é do pipeline, não da fonte, e aparece em "
+                                       "capturas.fonte_mais_nova e nas ressalvas, sem mudar o SLA (que mede a fonte)."),
             "falha": ("Falha de coleta nunca renova a data do dado: o último período vem das referências do silver, a última "
                       "captura da última vintage com conteúdo, e a falha aparece separada, com data e motivo. A captura anterior "
                       "fica preservada no silver (append only) e no bronze com sha256."),
@@ -1435,6 +1478,7 @@ def construir(con, ctx):
             "com_revisao": sum(1 for x in lista if ((x["revisoes"] or {}).get("referencias") or 0) > 0),
             "referencias_revisadas": sum(((x["revisoes"] or {}).get("referencias") or 0) for x in lista),
             "com_falha_recente": sum(1 for x in lista if x["coleta"]["falhas_consecutivas"]),
+            "captura_atras_da_fonte": sum(1 for x in lista if x["capturas"].get("fonte_mais_nova")),
             "descontinuados": sum(1 for x in lista if x["descontinuado"]),
             "validacao": {k: cont.get(k, 0) for k in val.RESULTADOS} | {"checagens": len(todas)},
             "golds": {"total": len(golds_res), "integras": sum(1 for r in golds_res.values() if r["disponivel"]),
@@ -1501,7 +1545,7 @@ def construir(con, ctx):
                       {"rotulo": "Manifesto da publicação (JSON)", "url": f"/energia/gold/{MANIFESTO}"}],
     })
     recursos = []
-    cat = catalogo.construir(brutos, publicacao=g, verificacoes=verificacoes, recursos_saida=recursos)
+    cat = catalogo.construir(brutos, publicacao=g, verificacoes=verificacoes, recursos_saida=recursos, capturas=capturas_idx)
     ccee = [e for e in cat["entradas"] if e["orgao"] == "CCEE"]
     g["catalogo"] = {"total": cat["total"], "contagem": cat["contagem"], "descontinuados": cat["descontinuados"],
                      "portais": cat["portais"], "recursos": cat["recursos"],

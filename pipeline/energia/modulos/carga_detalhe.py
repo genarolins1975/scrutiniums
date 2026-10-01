@@ -26,8 +26,9 @@ Por que dois produtos de carga do ONS convivem aqui sem se misturar: a curva hor
 mesmo produto da carga diária (a média das 24 horas é o valor diário) e inclui a MMGD
 estimada (inclusão declarada para 29/04/2023, observada nos dados em 01/05/2023) sem
 publicá-la separada; a carga verificada da API publica a
-MMGD separada, mas a carga global dela é outro conceito (maior que a curva, sobretudo
-à noite). Carga, MMGD e carga líquida só são decompostas dentro da API; a curva nunca
+MMGD separada, mas a carga global dela é outro conceito (maior que a curva, numa
+diferença que muda com a hora do dia e é lida da tabela compatibilidade.por_hora_sin_365d,
+nunca escrita à mão). Carga, MMGD e carga líquida só são decompostas dentro da API; a curva nunca
 recebe a MMGD da API subtraída (seria dupla contagem ou mistura de definições).
 """
 import math
@@ -638,6 +639,30 @@ def _sinal(v, casas=1):
     return ("+" if v > 0 else "") + _br(v, casas)
 
 
+def _texto_diferenca_horaria(por_hora):
+    """Onde a carga global da API se afasta da curva, por hora do dia, lido da própria tabela.
+
+    Por que derivado: o texto anterior, escrito à mão, dizia "mais à noite", e a tabela mostra o
+    contrário (a maior diferença cai nas horas de sol). Empate fica com a primeira hora; a regra é
+    a mesma de textoDiferencaHoraria em src/lib/energia/carga.ts.
+    """
+    v = [x for x in por_hora if x.get("diferenca_pct") is not None and x.get("horas")]
+    if not v:
+        return None
+    mx = max(v, key=lambda x: x["diferenca_pct"])
+    mn = min(v, key=lambda x: x["diferenca_pct"])
+    dias = max(x["horas"] for x in v)
+    if all(x["diferenca_pct"] > 0 for x in v):
+        quadro = "a carga global ficou acima da curva em todas as horas do dia"
+    elif all(x["diferenca_pct"] < 0 for x in v):
+        quadro = "a carga global ficou abaixo da curva em todas as horas do dia"
+    else:
+        quadro = "a diferença entre a carga global e a curva muda de sinal ao longo do dia"
+    quando = "no último dia" if dias == 1 else f"nos últimos {_br(dias, 0)} dias"
+    return (f"{quando} do SIN, {quadro}, de {_sinal(mn['diferenca_pct'], 2)}% "
+            f"na hora das {mn['hora']:02d}h a {_sinal(mx['diferenca_pct'], 2)}% na hora das {mx['hora']:02d}h")
+
+
 def _dias(ini, fim):
     x, f = date.fromisoformat(ini), date.fromisoformat(fim)
     out = []
@@ -1099,6 +1124,7 @@ def bloco_p026(dados, dia_ref):
                 n += 1
         por_hora.append({"hora": h, "horas": n, "diferenca_mwmed": c.r((sg - sc) / n, 0) if n else None,
                          "diferenca_pct": c.r(100 * (sg / sc - 1), 2) if n and sc else None})
+    dif_hora = _texto_diferenca_horaria(por_hora)
     return {
         "ultimo_dia": ult, "ultimo_dia_curva": ult_curva, "ultimo_dia_api": ult_api,
         "recente": recente, "perfil_sin_12m": perf_sin, "perfil_subsistemas": perf_sm, "perfil_evolucao": perf_evol,
@@ -1106,8 +1132,9 @@ def bloco_p026(dados, dia_ref):
         "recordes_anuais": recordes, "mmgd_mensal": mensal,
         "compatibilidade": {"por_ano": compat, "por_hora_sin_365d": por_hora,
                             "conclusao": ("A carga global da API de carga verificada não é a mesma grandeza da curva de carga: "
-                                          "difere ano a ano e hora a hora (mais à noite). Carga, MMGD e carga líquida só são "
-                                          "decompostas dentro da API; a MMGD da API nunca é subtraída da curva.")},
+                                          "difere ano a ano e hora a hora" + (f" ({dif_hora})" if dif_hora else "") +
+                                          ". Carga, MMGD e carga líquida só são decompostas dentro da API; a MMGD da API "
+                                          "nunca é subtraída da curva.")},
     }
 
 
@@ -2000,7 +2027,9 @@ def construir(con, ctx):
                             "SIN = soma dos quatro submercados nas horas com os quatro"],
             formula="participação da MMGD = 100 × Σ MMGD ÷ Σ carga global, mesmas horas",
             limitacoes=["A MMGD é estimativa do ONS, não medição: a micro e minigeração não é supervisionada.",
-                        "A carga global desta API não é a mesma grandeza da curva de carga (é maior, sobretudo à noite); as duas não se misturam.",
+                        "A carga global desta API não é a mesma grandeza da curva de carga"
+                        + (f" ({d})" if (d := _texto_diferenca_horaria(p026["compatibilidade"]["por_hora_sin_365d"])) else "")
+                        + "; as duas não se misturam.",
                         "Antes de 15/02/2019 a MMGD vem vazia (ausência, não zero).", LIM_REVISAO],
             download=_u(CSV["verificada_diaria"]),
             notas_fonte=("Natureza por série (ver natureza_por_serie): a MMGD é estimativa do ONS; a carga líquida de MMGD é supervisão "

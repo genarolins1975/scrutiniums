@@ -42,10 +42,12 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 
 from pipeline.energia import base, metricas  # noqa: E402
 from pipeline.energia import regulatorio  # noqa: E402
-from pipeline.energia.fontes import ccee, ibge_pld, normas_pld, ons, ons_pld  # noqa: E402
+from pipeline.energia.fontes import ccee, ibge_pld, normas_pld, ons, ons_carga, ons_pld  # noqa: E402
 from pipeline.energia.modulos import pld_detalhe as m  # noqa: E402
 
 DADOS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dados", "energia_pld")
+URL_COPIA_DSP = "https://web.archive.org/web/20251224150719id_/https://www2.aneel.gov.br/cedoc/dsp20253850ti.pdf"
+CAPTURAS_CARGA = ("2026-09-29T02:43:15Z", "2026-09-30T02:19:57Z")
 
 
 def _texto(nome):
@@ -496,6 +498,66 @@ class Calculos(unittest.TestCase):
         self.assertIsNone(rec)
         self.assertEqual(falta["resultado"], "ressalva")     # sem arquivo: declarado, nunca "aprovado"
 
+    def test_perimetro_do_mes_pela_descricao_do_ons(self):
+        self.assertEqual([m.perimetro_do_mes(x) for x in ("2021-02", "2021-03", "2023-03", "2023-04", "2023-05")],
+                         ["P1", "P2", "P2", "P2_P3", "P3"])
+
+    def test_leitor_independente_da_api_de_carga(self):
+        """A resposta da API marca o FIM da meia hora em UTC; o leitor próprio do módulo e o parser do módulo
+        Carga dão as mesmas horas e os mesmos valores. 25/09/2026 18h, área SECO (jq): carga global 0,5 ×
+        (meias horas de 21:30Z e 22:00Z) e MMGD da mesma forma."""
+        regs = json.loads(_texto("api_carga_2026_09_semana.json.gz"))
+        seco = [x for x in regs if x["cod_areacarga"] == "SECO"]
+        lido = m.releitura_api_carga(json.dumps(seco).encode("utf-8"))
+        self.assertEqual(len(lido), 168)
+        meia = {x["din_referenciautc"][:16]: x for x in seco}
+        g18 = 0.5 * (meia["2026-09-25T21:30"]["val_cargaglobal"] + meia["2026-09-25T22:00"]["val_cargaglobal"])
+        m18 = 0.5 * (meia["2026-09-25T21:30"]["val_cargammgd"] + meia["2026-09-25T22:00"]["val_cargammgd"])
+        self.assertAlmostEqual(lido["2026-09-25T18:00"][0], g18, places=6)
+        self.assertAlmostEqual(lido["2026-09-25T18:00"][1], m18, places=6)
+        horas, _ = ons_carga.agrega_api(seco)
+        for h, (g_, m__) in lido.items():
+            a = horas[("SE", h)]
+            self.assertAlmostEqual(a["global_mwh"], g_, places=6)
+            self.assertAlmostEqual(a["mmgd_mwh"], m__, places=6)
+        # campo vazio escrito como na API ("campo": ,) vira ausência e a hora sai
+        texto = json.dumps(seco[:2]).replace('"val_cargammgd": ' + json.dumps(seco[0]["val_cargammgd"]), '"val_cargammgd": ', 1)
+        self.assertEqual(m.releitura_api_carga(texto), {})
+
+    def test_conferencia_de_perimetro_pura(self):
+        """Balanço igual à carga sem MMGD: coeficiente 0 e erro sem MMGD 0; igual à carga com MMGD: coeficiente 1."""
+        g = {f"2023-05-01T{h:02d}:00": 1000.0 + 10 * h for h in range(24)}
+        mm = {k: float(max(0, 12 - abs(12 - int(k[11:13]))) * 50) for k in g}
+        sem = m.conferencia_perimetro({k: g[k] - mm[k] for k in g}, g, mm)["2023-05"]
+        com = m.conferencia_perimetro(dict(g), g, mm)["2023-05"]
+        self.assertEqual((sem["segue"], round(sem["coef_mmgd"], 9), sem["erro_abs_medio_sem_mmgd"]), ("sem_mmgd", 0.0, 0.0))
+        self.assertEqual((com["segue"], round(com["coef_mmgd"], 9), com["erro_abs_medio_com_mmgd"]), ("com_mmgd", 1.0, 0.0))
+
+    def test_reconciliacao_com_pld_json(self):
+        amp = [{"periodo": "30d", "inicio": "2026-09-01T00:00", "fim": "2026-09-30T23:00", "horas": 720, "horas_acima_1": 55}]
+        ok = m.reconcilia_pld_operacao(amp, {"limiar_diferenca": 1.0, "periodos": {"30d": {
+            "inicio": "2026-09-01T00:00", "fim": "2026-09-30T23:00", "n_horas": 720, "diferenca": {"horas_acima_limiar": 55}}}})
+        self.assertEqual((len(ok["comparadas"]), ok["divergentes"]), (1, []))
+        dif = m.reconcilia_pld_operacao(amp, {"limiar_diferenca": 1.0, "periodos": {"30d": {
+            "inicio": "2026-09-01T00:00", "fim": "2026-09-30T23:00", "n_horas": 720, "diferenca": {"horas_acima_limiar": 56}}}})
+        self.assertEqual(len(dif["divergentes"]), 1)
+        outra = m.reconcilia_pld_operacao(amp, {"limiar_diferenca": 1.0, "periodos": {"30d": {
+            "inicio": "2026-08-31T00:00", "fim": "2026-09-29T23:00", "n_horas": 720, "diferenca": {"horas_acima_limiar": 55}}}})
+        self.assertEqual(outra["comparadas"], [])
+        self.assertIn("janelas diferentes", outra["detalhe"])
+
+    def test_revisoes_compostas_sem_zero_inventado(self):
+        rv = m._revisoes_compostas([("PLD (CCEE)", {"total": 2, "exemplos": [{"serie": "pld.SE", "ref": "2026-09-01T00:00", "valores": 2}]}),
+                                    ("carga da API (ONS)", None)])
+        self.assertEqual(rv["total"], 2)
+        self.assertEqual(rv["componentes"], [{"fonte": "PLD (CCEE)", "total": 2}, {"fonte": "carga da API (ONS)", "total": None}])
+
+    def test_texto_da_faixa_de_diferencas(self):
+        self.assertEqual(m._faixa_diferenca([-6.09, -5.73, -9.26, -6.24], "da ponderada pela carga sem MMGD"),
+                         "de R$ 5,73 a R$ 9,26/MWh abaixo da ponderada pela carga sem MMGD")
+        self.assertEqual(m._faixa_diferenca([3.61, 0.39], "da média temporal"), "de R$ 0,39 a R$ 3,61/MWh acima da média temporal")
+        self.assertEqual(m._faixa_diferenca([0.0, 0.0], "da média temporal"), "igual à média temporal")
+
     def test_fichas_sem_resultado_escrito_a_mao(self):
         """Defeito do verificador: testes das fichas com "aprovado" literal. Nenhuma chamada a ev.teste
         ou ev.reconciliacao em pld_detalhe.py pode ter o resultado como constante."""
@@ -533,7 +595,7 @@ class ConstrucaoDaGold(unittest.TestCase):
         # PLD de anos anteriores (sazonalidade, regimes, relação com o CMO em 2021) numa vintage sem arquivo
         anteriores = []
         for nome in ("pld_horario_2021_teto_estrutural.csv", "pld_horario_2023_piso.csv", "pld_horario_anteriores_amostra.csv.gz",
-                     "pld_horario_2025_amostra.csv.gz"):
+                     "pld_horario_2025_amostra.csv.gz", "pld_horario_2025_fluxo.csv", "pld_horario_2023_quebra.csv"):
             anteriores += list(ccee.parse_pld(_texto(nome)))
         v0, _ = base.registra_vintage(cp, "ccee_pld_horario", "pld_horario_anteriores", "u", "2026-09-20T15:00:00Z", None, "9" * 64, 1, "seed", None)
         base.grava_observacoes(cp, "ccee_pld_horario", v0, anteriores)
@@ -552,6 +614,30 @@ class ConstrucaoDaGold(unittest.TestCase):
                                  ("intercambio_nacional_ho", "intercambio_2026_amostra.csv.gz", ons.parse_intercambio)):
             vid, _ = base.registra_vintage(cp, ds, nome, "u", "2026-09-26T00:00:00Z", None, ("c" + ds)[:64].ljust(64, "0"), 1, "coleta_direta", None)
             base.grava_observacoes(cp, ds, vid, parser(_texto(nome)))
+        # fluxo de 25 e 27/01/2025 (separações nas fronteiras N-NE, N-SE e NE-SE, com horas nos dois
+        # sentidos) e carga do balanço de 29/04 a 02/05/2023 (mudança de perímetro da carga)
+        for ds, nome, parser in (("intercambio_nacional_ho", "intercambio_2025_amostra.csv.gz", ons.parse_intercambio),
+                                 ("balanco_energia_subsistema_ho", "balanco_2023_quebra.csv.gz", ons.parse_balanco)):
+            vid, _ = base.registra_vintage(cp, ds, nome, "u", "2026-09-26T00:00:00Z", None, ("d" + ds)[:64].ljust(64, "0"), 1, "coleta_direta", None)
+            base.grava_observacoes(cp, ds, vid, parser(_texto(nome)))
+        # carga de 26/09/2026 nas duas capturas reais do balanço (a de 29/09 com carga negativa no
+        # Nordeste, revista na de 30/09): 96 horas-subsistema revistas, que a proveniência mensal conta
+        for cap in CAPTURAS_CARGA:
+            vid, _ = base.registra_vintage(cp, "balanco_energia_subsistema_ho", "BALANCO_ENERGIA_SUBSISTEMA_2026", "u", cap, None,
+                                           ("e" + cap)[:64].ljust(64, "0"), 1, "coleta_direta", None)
+            base.grava_observacoes(cp, "balanco_energia_subsistema_ho", vid,
+                                   [(f"carga.{r['id_subsistema']}", r["din_instante"][:13].replace(" ", "T") + ":00",
+                                     float(r[f"val_carga_captura_{cap}"])) for r in _linhas("carga_20260926_capturas.csv")])
+        # carga verificada da API do ONS (silver do módulo Carga), pelo caminho de produção daquele
+        # módulo: dias 29/04 a 02/05/2023 e semana de 19 a 25/09/2026, quatro áreas de carga
+        cc = base.conecta(":memory:")
+        for i, nome in enumerate(("api_carga_2023_quebra.json.gz", "api_carga_2026_09_semana.json.gz")):
+            horas_api, _ = ons_carga.agrega_api(ons_carga.parse_api(_texto(nome)))
+            vid, _ = base.registra_vintage(cc, m.DS_CARGA_API, nome, "u", "2026-09-30T23:36:42Z", None, str(i) * 64, 1, "coleta_direta", None)
+            base.grava_observacoes(cc, m.DS_CARGA_API, vid, ons_carga.observacoes_api(horas_api))
+        # descrição do conjunto Carga de Energia (package_show do ONS capturado em 01/10/2026), com os trechos de perímetro
+        os.makedirs(os.path.join(cls.tmp, "dados", "meta"), exist_ok=True)
+        shutil.copy(os.path.join(DADOS, "nota_carga_energia_meta.json"), os.path.join(cls.tmp, "dados", "meta", f"_meta_{m.DS_NOTA_CARGA}.json"))
         cf = base.conecta(":memory:")
         arq, sha, n = base.salva_bronze_arquivo("ons", m.DS_SH, "CMO_SEMIHORARIO_2026",
                                                 _descomprime("cmo_semihorario_2026_amostra.csv.gz", cls.tmp), "csv", "2026-09-26T00:00:00Z")
@@ -589,7 +675,9 @@ class ConstrucaoDaGold(unittest.TestCase):
         os.makedirs(os.path.join(cls.tmp, "silver"), exist_ok=True)
         reg_db = os.path.join(cls.tmp, "silver", "regulacao_teste.db")
         cr = base.conecta(reg_db)
-        base.registra_vintage(cr, "regulacao_documentos", "dsp20253850ti", "u", "2026-09-30T23:05:02Z", None, sha_dsp, n_dsp, "coleta_direta", arq_dsp)
+        # o módulo Regulação baixa o ato da cópia do Internet Archive (o endereço oficial responde 403)
+        base.registra_vintage(cr, "regulacao_documentos", "dsp20253850ti", URL_COPIA_DSP, "2026-09-30T23:05:02Z", None, sha_dsp, n_dsp,
+                              "coleta_direta", arq_dsp)
         cr.commit()
         cr.close()
         with open(dsp, "rb") as f:
@@ -597,19 +685,27 @@ class ConstrucaoDaGold(unittest.TestCase):
         docs = regulatorio.documentos()
         docs["dsp20253850ti"] = {**docs["dsp20253850ti"], "sha256": sha_txt}
         cls.csv_dir = os.path.join(cls.tmp, "series")
+        # gold de operação pld.json com a janela da amostra: 15 horas com amplitude acima de R$ 1,00/MWh
+        # de 19 a 25/09/2026 (awk sobre pld_horario_2026_amostra), para a reconciliação entre as golds
+        cls.gold_pld = {"limiar_diferenca": 1.0, "periodos": {"30d": {"inicio": "2026-09-19T00:00", "fim": "2026-09-25T23:00", "n_horas": 168,
+                                                                      "diferenca": {"horas_acima_limiar": 15}}}}
         ctx = {"con_principal": cp, "limites_pld": regulatorio.limites_pld(), "destino_csv": cls.csv_dir, "hoje": date(2026, 9, 30),
-               "regulacao_db": reg_db, "documentos_regulacao": docs, "ler_pdf": lambda b: b.decode("utf-8").split("\f")}
+               "regulacao_db": reg_db, "documentos_regulacao": docs, "ler_pdf": lambda b: b.decode("utf-8").split("\f"),
+               "con_carga": cc, "gold_pld": cls.gold_pld}
         cls.g = m.construir(cf, ctx)
         with open(os.path.join(cls.csv_dir, "pld_evidencias.json"), encoding="utf-8") as f:
             cls.ev = json.load(f)["evidencias"]
+        with open(os.path.join(cls.csv_dir, "pld_horario_recente.json"), encoding="utf-8") as f:
+            cls.recente = json.load(f)
         cls.g_sem_limites = m.construir(cf, {"con_principal": cp, "limites_pld": None, "destino_csv": os.path.join(cls.tmp, "series2"),
-                                             "hoje": date(2026, 9, 30), "regulacao_db": None})
-        cls.cp, cls.cf = cp, cf
+                                             "hoje": date(2026, 9, 30), "regulacao_db": None, "carga_db": None, "gold_pld": None})
+        cls.cp, cls.cf, cls.cc = cp, cf, cc
 
     @classmethod
     def tearDownClass(cls):
         cls.cp.close()
         cls.cf.close()
+        cls.cc.close()
         cls.p.stop()
         shutil.rmtree(cls.tmp, ignore_errors=True)
 
@@ -952,6 +1048,246 @@ class ConstrucaoDaGold(unittest.TestCase):
         pub = nomes["Data de publicação do CMO semi-horário conferida no S3 (ETag igual ao MD5 do arquivo capturado)"]
         self.assertEqual(pub["resultado"], "ressalva")   # o silver de teste não tem conferência registrada
         self.assertIn("sem conferência registrada", pub["detalhe"])
+
+    # ------------------------------------------------------------------ verificação de 01/10/2026
+
+    def _csv(self, nome):
+        with open(os.path.join(self.csv_dir, nome), encoding="utf-8") as f:
+            return list(csv.DictReader(f, delimiter=";"))
+
+    def test_perimetro_da_carga_antes_e_depois_da_quebra(self):
+        """Defeito 1: a carga do balanço usada como peso muda de perímetro em 29/04/2023 (MMGD estimada).
+        Dois dias reais antes (29 e 30/04/2023) e dois depois (01 e 02/05/2023): por awk e jq sobre o CSV do
+        balanço e a resposta da API de carga verificada, o balanço segue a carga SEM MMGD em abril (SE: erro
+        absoluto médio 112,2473 contra 1.821,1145 MWmed com MMGD; coeficiente da MMGD 0,0038) e COM MMGD em
+        maio (1.135,7729 contra 1.679,3250; coeficiente 0,8213). No dado horário, a MMGD aparece em 01/05/2023."""
+        mh = self.g["historico"]["mensal"]
+        per = dict(zip(mh["meses"], mh["perimetro_carga"]))
+        self.assertEqual((per["2021-01"], per["2022-09"], per["2023-04"], per["2023-05"], per["2026-09"]), ("P1", "P2", "P2_P3", "P3", "P3"))
+        esperado = {("SE", "2023-04"): (112.2473, 1821.1145, 0.0038), ("SE", "2023-05"): (1679.3250, 1135.7729, 0.8213),
+                    ("S", "2023-04"): (162.5694, 843.1435, -0.0043), ("S", "2023-05"): (937.5494, 332.1264, 1.0287),
+                    ("NE", "2023-04"): (403.9341, 702.2752, -0.0637), ("NE", "2023-05"): (697.6071, 240.0878, 0.8563),
+                    ("N", "2023-04"): (230.0147, 325.2177, 0.0050), ("N", "2023-05"): (194.8806, 68.9825, 0.7898)}
+        linhas = {(r["sm"], r["mes"]): r for r in self._csv("pld_mensal.csv")}
+        for (sm, mes), (e_sem, e_com, coef) in esperado.items():
+            r = linhas[(sm, mes)]
+            self.assertEqual(r["perimetro_carga"], per[mes])
+            self.assertEqual(r["horas_conferencia_perimetro"], "48")
+            self.assertAlmostEqual(float(r["erro_abs_medio_balanco_vs_global_sem_mmgd"]), e_sem, delta=0.0002, msg=(sm, mes))
+            self.assertAlmostEqual(float(r["erro_abs_medio_balanco_vs_global_com_mmgd"]), e_com, delta=0.0002, msg=(sm, mes))
+            self.assertAlmostEqual(float(r["coef_mmgd_no_balanco"]), coef, delta=0.0002, msg=(sm, mes))
+            # PLD no piso nos quatro dias: as duas ponderadas e a temporal coincidem (R$ 69,04/MWh)
+            self.assertEqual(float(r["media_ponderada_carga"]), 69.04)
+            self.assertEqual(float(r["media_ponderada_carga_sem_mmgd"]), 69.04)
+        pond = self.g["historico"]["ponderacao"]
+        q = {x["data"]: x for x in pond["quebras"]}
+        self.assertEqual(q["2023-04-29"]["inicio_observado_no_balanco"], "2023-05-01")
+        self.assertTrue(q["2023-04-29"]["conferida_no_dado"])
+        self.assertFalse(q["2021-03-01"]["conferida_no_dado"])
+        self.assertEqual(pond["conferencia_perimetro"]["meses_divergentes"], [])
+        # os três trechos da descrição do ONS conferidos literalmente na captura do package_show
+        self.assertEqual([p_["trecho_conferido"] for p_ in pond["perimetros"]], [True, True, True])
+        self.assertEqual([p_["natureza_do_peso"] for p_ in pond["perimetros"]], ["OBSERVADO", "ESTIMADO", "ESTIMADO"])
+        ctrl = next(x for x in self.g["controles"] if x["nome"].startswith("Perímetro da carga do balanço"))
+        self.assertEqual(ctrl["resultado"], "aprovado", ctrl["detalhe"])
+        self.assertIn("01/05/2023", ctrl["detalhe"])
+
+    def test_natureza_e_limitacoes_declaram_a_mmgd(self):
+        """Defeito 1: o peso do balanço é ESTIMADO (previsão de usinas não despachadas desde 03/2021 e MMGD
+        estimada desde 29/04/2023) no catálogo e na proveniência; o peso sem MMGD é OBSERVADO."""
+        catalogo = {x["id"]: x for x in metricas.todas()}
+        prov = self.g["proveniencia"]
+        self.assertEqual(catalogo["pld_media_mensal_ponderada_carga"]["natureza_fonte"], "ESTIMADO")
+        self.assertEqual(prov["peso_carga_balanco"]["natureza"], "ESTIMADO")
+        self.assertEqual(catalogo["pld_media_mensal_ponderada_carga_sem_mmgd"]["natureza_fonte"], "OBSERVADO")
+        self.assertEqual(prov["peso_carga_sem_mmgd"]["natureza"], "OBSERVADO")
+        texto = " ".join(prov["historico_mensal"]["limitacoes"]) + " " + " ".join(catalogo["pld_media_mensal_ponderada_carga"]["limitacoes"])
+        for termo in ("MMGD", "03/2021", "29/04/2023", "01/05/2023", "perimetro_carga"):
+            self.assertIn(termo, texto + catalogo["pld_media_mensal_ponderada_carga"]["definicao"]
+                          + " ".join(catalogo["pld_media_mensal_ponderada_carga"]["regras_comparabilidade"]), termo)
+        self.assertNotIn("carga verificada do subsistema", self.g["historico"]["ponderacao"]["peso"])
+        self.assertIn("https://dados.ons.org.br/dataset/carga-energia-verificada",
+                      [u["url_dataset"] for u in prov["historico_mensal"]["fonte"]["urls"]])
+
+    def test_ponderada_sem_mmgd_contra_awk(self):
+        """Semana de 19 a 25/09/2026: Σ PLD × (carga global − MMGD) ÷ Σ (carga global − MMGD), com as meias
+        horas da API somadas por hora (fim da meia hora em UTC menos 3 h 30 min), por jq e awk sobre a resposta
+        da API e o CSV da CCEE: SE 138,768538; S 141,105905; NE 140,438920; N 132,297633 (168 horas cada)."""
+        mh = self.g["historico"]["mensal"]
+        i = mh["meses"].index("2026-09")
+        for sm, v in (("SE", 138.768538), ("S", 141.105905), ("NE", 140.438920), ("N", 132.297633)):
+            self.assertAlmostEqual(mh[sm]["ponderada_carga_sem_mmgd"][i], v, delta=0.006, msg=sm)
+            self.assertEqual((mh[sm]["horas_com_carga_sem_mmgd"][i], mh[sm]["mesmas_horas_sem_mmgd"][i]), (168, True))
+        se = next(r for r in self._csv("pld_mensal.csv") if r["sm"] == "SE" and r["mes"] == "2026-09")
+        self.assertAlmostEqual(float(se["media_ponderada_carga_sem_mmgd"]), 138.768538, delta=0.0001)
+        # sem mês completo na amostra, nenhuma sensibilidade e nenhuma ficha de mês parcial
+        self.assertIsNone(self.g["historico"]["ponderacao"]["sensibilidade_peso"])
+        self.assertFalse(any(k.startswith("ponderada_sem_mmgd_") for k in self.ev))
+
+    def test_sem_silver_da_carga_a_ponderada_sem_mmgd_fica_ausente(self):
+        mh = self.g_sem_limites["historico"]["mensal"]
+        self.assertTrue(all(v is None for sm in m.SM for v in mh[sm]["ponderada_carga_sem_mmgd"]))
+        pond = self.g_sem_limites["historico"]["ponderacao"]
+        self.assertFalse(pond["peso_sem_mmgd"]["disponivel"])
+        self.assertIn("ons_carga.db", pond["peso_sem_mmgd"]["motivo"])
+        self.assertNotIn("peso_carga_sem_mmgd", self.g_sem_limites["proveniencia"])
+        self.assertIsNone(self.g_sem_limites["metricas_proveniencia"]["pld_media_mensal_ponderada_carga_sem_mmgd"]["fonte"])
+        ctrl = next(x for x in self.g_sem_limites["controles"] if x["nome"].startswith("Perímetro da carga do balanço"))
+        self.assertEqual(ctrl["resultado"], "ressalva")
+
+    def test_revisoes_da_proveniencia_mensal_incluem_a_carga(self):
+        """Defeito 6: a carga de 26/09/2026 foi revista em 96 horas-subsistema entre as capturas de 29 e 30/09
+        (awk sobre carga_20260926_capturas.csv); o PLD da amostra não tem revisão. A proveniência mensal
+        soma as duas fontes em vez de mostrar só o snapshot do PLD."""
+        rv = self.g["proveniencia"]["historico_mensal"]["revisoes_conhecidas"]
+        comp = {x["fonte"]: x["total"] for x in rv["componentes"]}
+        self.assertEqual(comp, {"PLD (CCEE)": 0, "carga do balanço (ONS)": 96, "carga da API (ONS)": 0})
+        self.assertEqual(rv["total"], 96)
+        self.assertTrue(all(x["serie"].startswith("carga.") and x["ref"][:10] == "2026-09-26" for x in rv["exemplos"]))
+        self.assertEqual(self.g["proveniencia"]["peso_carga_balanco"]["revisoes_conhecidas"]["total"], 96)
+
+    def test_fluxo_nas_quatro_fronteiras_contra_awk(self):
+        """Defeito 2: 25 e 27/01/2025 têm horas separadas nas quatro fronteiras e horas com fluxo do maior para
+        o menor preço. awk sobre o CSV da CCEE e o INTERCAMBIO_NACIONAL_2025 do ONS (orientação canônica, linha
+        no sentido verificado): N-NE 14 separadas (12 do menor para o maior, 2 ao contrário), N-SE 14 (14, 0),
+        NE-SE 16 (15, 1), S-SE 7 (7, 0); fluxo médio nas separadas 3.038,35; 5.035,10; 1.426,46; −1.621,78 MWmed.
+        Inverter o sinal de uma fronteira ou trocar duas fronteiras muda pelo menos um desses números."""
+        fl = {x["fronteira"]: x for x in self.g["regional"]["fluxos"] if x["periodo"] == "2025"}
+        for fr, (sep, mm, mM, nulo, media) in {"N_NE": (14, 12, 2, 0, 3038.345786), "N_SE": (14, 14, 0, 0, 5035.098857),
+                                                 "NE_SE": (16, 15, 1, 0, 1426.460875), "S_SE": (7, 7, 0, 0, -1621.775)}.items():
+            x = fl[fr]
+            self.assertEqual((x["horas_com_fluxo"], x["horas_separadas"], x["do_menor_para_o_maior"], x["do_maior_para_o_menor"],
+                              x["fluxo_nulo"]), (48, sep, mm, mM, nulo), fr)
+            self.assertAlmostEqual(x["fluxo_medio_separadas"], media, delta=0.006, msg=fr)
+        # CSV diário: par NE_N em 25/01/2025, fronteira N_NE, fluxo médio das 24 horas (awk) e 7 horas separadas
+        r = next(r for r in self._csv("pld_separacao_diaria.csv") if r["data"] == "2025-01-25" and r["par"] == "NE_N")
+        self.assertEqual((r["fronteira"], r["horas_separadas"], r["horas_com_fluxo"]), ("N_NE", "7", "24"))
+        self.assertAlmostEqual(float(r["fluxo_medio_mwmed"]), 961.097292, delta=0.0001)
+
+    def test_horario_recente_mesma_hora_por_submercado(self):
+        """Defeito 2: 25/09/2026 às 18h, por awk nos originais: PLD SE 263,43, S 263,42, NE 263,42, N 263,43;
+        CMO do DESSEM na hora = média das meias horas 18:00 e 18:30 (SE 162,73 e 188,43 → 175,58; NE 159,46 e
+        167,24 → 163,35; S 175,685; N 196,035); fluxo N_NE −2.238,773 (linha NE→N), N_SE 1.590,039, NE_SE 6.282,472,
+        S_SE −4,936 (linha SE→S). Deslocar o CMO uma hora ou trocar o submercado muda esses valores."""
+        ptr = self.g["horario_recente"]
+        self.assertEqual((ptr["url"], ptr["inicio"], ptr["fim"], ptr["horas"]),
+                         ("/energia/series/pld_horario_recente.json", "2026-09-19T00:00", "2026-09-25T23:00", 168))
+        rc = self.recente
+        self.assertEqual((rc["t"][0], rc["t"][-1], len(rc["t"])), ("2026-09-19T00:00", "2026-09-25T23:00", 168))
+        i = rc["t"].index("2026-09-25T18:00")
+        self.assertEqual({sm: rc["pld"][sm][i] for sm in m.SM}, {"SE": 263.43, "S": 263.42, "NE": 263.42, "N": 263.43})
+        self.assertEqual((rc["cmo_dessem"]["SE"][i], rc["cmo_dessem"]["NE"][i]), (175.58, 163.35))
+        self.assertAlmostEqual(rc["cmo_dessem"]["S"][i], 175.685, delta=0.006)
+        self.assertAlmostEqual(rc["cmo_dessem"]["N"][i], 196.035, delta=0.006)
+        self.assertEqual({k: rc["fluxo"][k][i] for k in rc["fluxo"]}, {"N_NE": -2238.8, "N_SE": 1590.0, "NE_SE": 6282.5, "S_SE": -4.9})
+        self.assertEqual(rc["amplitude"][i], 0.01)
+        # equivalência com o CSV horário publicado (mesmos números nas 168 horas; o JSON arredonda ao
+        # centavo e o CSV guarda 4 casas: a diferença vai até meio centavo)
+        csvh = {r["data_hora_local"]: r for r in self._csv("pld_cmo_horario.csv")}
+        for j, t in enumerate(rc["t"]):
+            for sm in m.SM:
+                self.assertAlmostEqual(float(csvh[t][f"PLD_{sm}"]), rc["pld"][sm][j], delta=0.0051)
+                self.assertAlmostEqual(float(csvh[t][f"CMO_{sm}"]), rc["cmo_dessem"][sm][j], delta=0.0051)
+
+    def test_calendario_piso_e_teto_por_dia(self):
+        """Defeito 2: horas no piso e no teto horário por dia (awk, igualdade ao centavo): 16/01/2022 SE e S com
+        5 horas a R$ 55,70/MWh e uma a R$ 55,71 (fica fora do piso), N e NE com 24; 30/03/2026 SE 8 no piso e 2
+        no teto horário (R$ 1.611,04), S 0 e 2; 25/09/2026 10 horas no piso em cada submercado. O CSV diário de
+        limites traz os mesmos números."""
+        cal = self.g["limites"]["calendario"]
+        esperado = {("2022-01-16", "SE"): (5, 0), ("2022-01-16", "S"): (5, 0), ("2022-01-16", "N"): (24, 0), ("2022-01-16", "NE"): (24, 0),
+                    ("2026-03-30", "SE"): (8, 2), ("2026-03-30", "S"): (0, 2), ("2026-03-30", "NE"): (9, 2), ("2026-03-30", "N"): (9, 2),
+                    ("2026-09-25", "SE"): (10, 0), ("2026-09-25", "S"): (10, 0), ("2026-09-25", "NE"): (10, 0), ("2026-09-25", "N"): (10, 0)}
+        diario = {(r["data"], r["sm"]): r for r in self._csv("pld_limites_diario.csv")}
+        for (dia, sm), (piso, teto) in esperado.items():
+            i = cal["dias"].index(dia)
+            self.assertEqual((cal[sm]["horas_piso"][i], cal[sm]["horas_teto_horario"][i]), (piso, teto), (dia, sm))
+            r = diario[(dia, sm)]
+            self.assertEqual((int(r["horas_no_piso"]), int(r["horas_no_teto_horario"])), (piso, teto), (dia, sm))
+        self.assertEqual(diario[("2022-01-16", "SE")]["horas_um_centavo_acima_do_piso"], "1")
+        # calendário e CSV iguais em todos os dias publicados
+        for i, dia in enumerate(cal["dias"]):
+            for sm in m.SM:
+                r = diario[(dia, sm)]
+                self.assertEqual((cal[sm]["horas_piso"][i], cal[sm]["horas_teto_horario"][i]),
+                                 (int(r["horas_no_piso"]), int(r["horas_no_teto_horario"])), (dia, sm))
+
+    def test_downloads_relidos_iguais_a_gold(self):
+        """Defeito 2: cada CSV de download, relido depois de escrito, reproduz os números da gold."""
+        amp = {x["periodo"]: x for x in self.g["regional"]["amplitude"]}
+        por_ano = defaultdict(int)
+        for r in self._csv("pld_amplitude_diaria.csv"):
+            por_ano[r["data"][:4]] += int(r["horas_com_separacao"])
+        for ano, n in por_ano.items():
+            self.assertEqual(amp[ano]["horas_com_separacao"], n, ano)
+        sep = {(x["periodo"], x["par"]): x["horas_separadas"] for x in self.g["regional"]["separacao"]}
+        por_par = defaultdict(int)
+        for r in self._csv("pld_separacao_diaria.csv"):
+            por_par[(r["data"][:4], r["par"])] += int(r["horas_separadas"])
+        for k, n in por_par.items():
+            self.assertEqual(sep[k], n, k)
+        saz = {(x["sm"], x["mes"]): x for x in self.g["historico"]["sazonal_mes"]}
+        linhas = self._csv("pld_sazonal.csv")
+        self.assertEqual(len(linhas), 48)
+        for r in linhas:
+            x = saz[(r["sm"], int(r["mes"]))]
+            self.assertEqual(int(r["n_dias"]), x["n"])
+            for q in ("p10", "p25", "p50", "p75", "p90"):
+                self.assertEqual(r[q] == "", x[q] is None)
+                if x[q] is not None:
+                    self.assertAlmostEqual(float(r[q]), x[q], delta=0.005)
+        mh = self.g["historico"]["mensal"]
+        for r in self._csv("pld_mensal.csv"):
+            i = mh["meses"].index(r["mes"])
+            self.assertEqual(r["perimetro_carga"], mh["perimetro_carga"][i])
+            for col, campo in (("media_temporal", "temporal"), ("media_ponderada_carga", "ponderada_carga"),
+                               ("media_ponderada_carga_sem_mmgd", "ponderada_carga_sem_mmgd"), ("media_temporal_real", "real")):
+                g_ = mh[r["sm"]][campo][i]
+                self.assertEqual(r[col] == "", g_ is None, (r["mes"], r["sm"], col))
+                if g_ is not None:
+                    self.assertAlmostEqual(float(r[col]), g_, delta=0.005)
+
+    def test_mes_corrente_e_perfil_da_separacao(self):
+        """Mês corrente (setembro de 2026, 7 dias completos na amostra, SE 124,091131 por awk); os setembros
+        anteriores da amostra são parciais e não entram como mês completo. Perfil horário da separação SE e S
+        nos últimos 12 meses (30/03 e 19 a 25/09/2026, 8 dias), fração por hora do dia por awk."""
+        mc = next(x for x in self.g["historico"]["mes_corrente"] if x["sm"] == "SE")
+        self.assertEqual((mc["mes"], mc["dias"], mc["parcial"], mc["mesmo_mes_anos_anteriores"]), ("2026-09", 7, True, []))
+        self.assertAlmostEqual(mc["media_dias_completos"], 124.091131, delta=0.006)
+        perfil = self.g["regional"]["perfil_horario_separacao_12m"]["SE_S"]
+        self.assertEqual(perfil, [0.25, 0.25, 0.25, 0.375, 0.25, 0.375] + [0.125] * 11 + [0.0] * 4 + [0.125] * 3)
+
+    def test_empates_no_piso_marcam_ano_parcial(self):
+        """Defeito 7: o bloco de empates no piso marca o ano parcial como permanência e regimes."""
+        emp = {x["ano"]: x for x in self.g["limites"]["empates_piso"]}
+        perm = {(x["ano"], x["sm"]): x["parcial"] for x in self.g["limites"]["permanencia_anual"]}
+        self.assertTrue(emp[2026]["parcial"])
+        self.assertFalse(emp[2025]["parcial"])
+        for ano, x in emp.items():
+            self.assertEqual(x["parcial"], perm[(ano, "SE")], ano)
+
+    def test_amplitude_com_o_limiar_de_pld_json(self):
+        """Defeito 8: 19 a 25/09/2026, awk: 46 horas com amplitude acima de R$ 0,01/MWh, 15 acima de R$ 1,00/MWh
+        e 15 acima de R$ 10,00/MWh. A contagem com R$ 1,00/MWh reconcilia com a de pld.json na mesma janela."""
+        a = next(x for x in self.g["regional"]["amplitude"] if x["periodo"] == "30d")
+        self.assertEqual((a["horas_com_separacao"], a["horas_acima_1"], a["horas_acima_10"]), (46, 15, 15))
+        ctrl = next(x for x in self.g["controles"] if x["nome"].startswith("Amplitude com R$ 1,00/MWh"))
+        self.assertEqual(ctrl["resultado"], "aprovado", ctrl["detalhe"])
+        self.assertIn("pld.json", self.g["regional"]["limiar_sensibilidade"])
+
+    def test_ficha_do_piso_mostra_a_copia_lida(self):
+        """Defeito 5: o arquivo do ato vigente foi baixado da cópia do Internet Archive (o endereço oficial da
+        ANEEL responde 403): a ficha mostra os dois endereços, no arquivo e na extração do PDF."""
+        e = self.ev["piso_2026_SE"]
+        arq = e["fonte"]["arquivos"][1]
+        self.assertEqual((arq["url"], arq["url_copia"]), ("https://www2.aneel.gov.br/cedoc/dsp20253850ti.pdf", URL_COPIA_DSP))
+        self.assertIn(URL_COPIA_DSP, e["extracao_pdf"]["documento"])
+        self.assertIn(URL_COPIA_DSP, e["consulta"])
+        ren = next(x for x in m.REGISTRO["datasets"] if x["nome"] == "ren-957-2021")
+        self.assertEqual(ren["url_copia"], normas_pld.URL_REN957_COPIA)
+        self.assertIn(normas_pld.URL_REN957_COPIA, ren["descricao"])
+        bal = next(x for x in m.REGISTRO["datasets"] if x["dataset_silver"] == m.DS_BAL_CONF)
+        self.assertEqual([q["data"] for q in bal["quebras"]], ["2021-03-01", "2023-04-29", "2023-05-01"])
 
 
 class HistoricoComCargaNegativa(unittest.TestCase):

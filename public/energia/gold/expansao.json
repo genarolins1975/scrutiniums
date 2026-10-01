@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "expansao.json",
- "gerado_em": "2026-10-01T06:43:37Z",
+ "gerado_em": "2026-10-01T06:58:49Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "f5cba38ad40f+alterado",
+ "versao_codigo": "eec0a3121e05+alterado",
  "disponivel": true,
  "referencias": {
   "siga": "2026-09-30",
@@ -36,7 +36,7 @@
   "1 usina com potência fiscalizada mais de 20% acima da outorgada (valor da fonte mantido).",
   "Reconciliação com o agregado oficial por UF (2026-06) com resíduo acima de 1% em: AM, MS (diferença não explicada pelas liberações do intervalo; valores da fonte mantidos).",
   "4 atos de encerramento com a potência em kW no campo de MW (corrigidos pelo cadastro da usina) e 1 ato com potência divergente por fator 1.000 sem confirmação (fora da soma): ver estagios.encerramentos.potencia_conferida.",
-  "17 pares (fotografia, usina) do Parquet histórico do RALIE com a soma das unidades 10 vezes a outorga ou mais, conferidos no arquivo e excluídos das análises por unidade (7 em fotografia mensal): Belvedere 1 (17/06/2021); Fótons de São Mauro 01 (04/04/2023); Fótons de São Mauro 02 (04/04/2023); Fótons de São Mauro 03 (04/04/2023); Fótons de São Mauro 04 (04/04/2023); Fótons de São Mauro 01 (05/04/2023); Fótons de São Mauro 02 (05/04/2023); Fótons de São Mauro 03 (05/04/2023); Fótons de São Mauro 04 (05/04/2023); São Miguel IV (16/04/2023); Cobra 9 (16/04/2023); Fótons de São Mauro 01 (16/04/2023); Fótons de São Mauro 02 (16/04/2023); Fótons de São Mauro 03 (16/04/2023); Fótons de São Mauro 04 (16/04/2023); Vapor 1 (16/04/2023); SETE CAMPOS 03 (03/10/2023). Ver estagios.unidades_atipicas."
+  "17 pares (fotografia, usina) do Parquet histórico do RALIE com a soma das unidades 10 vezes a outorga ou mais, conferidos no arquivo e excluídos das análises por unidade (7 em fotografia mensal): Belvedere 1 (17/06/2021); Fótons de São Mauro 01 (04/04/2023, 05/04/2023, 16/04/2023); Fótons de São Mauro 02 (04/04/2023, 05/04/2023, 16/04/2023); Fótons de São Mauro 03 (04/04/2023, 05/04/2023, 16/04/2023); Fótons de São Mauro 04 (04/04/2023, 05/04/2023, 16/04/2023); São Miguel IV (16/04/2023); Cobra 9 (16/04/2023); Vapor 1 (16/04/2023); SETE CAMPOS 03 (03/10/2023). Ver estagios.unidades_atipicas."
  ],
  "capacidade_instalada": {
   "data_referencia": "2026-09-30",
@@ -1516,8 +1516,8 @@
     },
     {
      "tipo": "UTE",
-     "usinas": 221,
-     "mw_usinas": 11055.2
+     "usinas": 220,
+     "mw_usinas": 11051.2
     },
     {
      "tipo": "EOL",
@@ -1526,22 +1526,93 @@
     },
     {
      "tipo": "PCH",
-     "usinas": 110,
-     "mw_usinas": 1242.4
+     "usinas": 237,
+     "mw_usinas": 1584.1
     },
     {
      "tipo": "UHE",
-     "usinas": 15,
-     "mw_usinas": 475.8
+     "usinas": 44,
+     "mw_usinas": 519.0
     },
     {
      "tipo": "CGH",
-     "usinas": 168,
-     "mw_usinas": 395.5
+     "usinas": 13,
+     "mw_usinas": 14.6
     }
    ],
-   "regra_tipo": "Tipo do cadastro da usina no SIGA quando o núcleo do CEG está no arquivo; senão o rótulo do ato.",
-   "atos_com_tipo_do_ato_diferente_do_cadastro": 172,
+   "por_tipo_no_cadastro": [
+    {
+     "tipo": "(fora do SIGA)",
+     "usinas": 2252,
+     "mw_usinas": 91406.9
+    },
+    {
+     "tipo": "UTE",
+     "usinas": 20,
+     "mw_usinas": 1343.5
+    },
+    {
+     "tipo": "UFV",
+     "usinas": 23,
+     "mw_usinas": 1052.1
+    },
+    {
+     "tipo": "CGH",
+     "usinas": 166,
+     "mw_usinas": 394.1
+    },
+    {
+     "tipo": "PCH",
+     "usinas": 13,
+     "mw_usinas": 131.4
+    },
+    {
+     "tipo": "EOL",
+     "usinas": 3,
+     "mw_usinas": 79.4
+    },
+    {
+     "tipo": "UHE",
+     "usinas": 1,
+     "mw_usinas": 30.3
+    }
+   ],
+   "regra_tipo": "por_tipo usa o tipo do ato (a outorga encerrada); por_tipo_no_cadastro, o tipo atual da usina no SIGA. Divergem quando a concessão ou autorização de uma PCH ou UHE foi extinta e a usina segue em operação como CGH sob registro (conversão de regime). A conferência de potência usa o tipo do cadastro.",
+   "tipo_do_ato_diferente_do_cadastro": {
+    "atos": 172,
+    "pares": [
+     {
+      "tipo_no_ato": "PCH",
+      "tipo_no_cadastro": "CGH",
+      "outorga_no_siga": "Registro",
+      "atos": 140
+     },
+     {
+      "tipo_no_ato": "UHE",
+      "tipo_no_cadastro": "CGH",
+      "outorga_no_siga": "Registro",
+      "atos": 27
+     },
+     {
+      "tipo_no_ato": "UHE",
+      "tipo_no_cadastro": "PCH",
+      "outorga_no_siga": "Autorização",
+      "atos": 2
+     },
+     {
+      "tipo_no_ato": "PCH",
+      "tipo_no_cadastro": "CGH",
+      "outorga_no_siga": "Autorização",
+      "atos": 2
+     },
+     {
+      "tipo_no_ato": "PCH",
+      "tipo_no_cadastro": "UTE",
+      "outorga_no_siga": "Autorização",
+      "atos": 1
+     }
+    ]
+   },
    "sem_data_publicacao": {
     "atos": 3,
     "usinas": 3,
@@ -1570,7 +1641,7 @@
       "nome": "Sucundurí - Powertech",
       "nucleo": 37726,
       "tipo": "UTE",
-      "tipo_no_ato": "UTE",
+      "tipo_no_cadastro": "UTE",
       "mw_no_ato": 561.0,
       "mw_usado": 0.561,
       "kw_cadastro": 561.0,
@@ -1583,7 +1654,7 @@
       "nome": "Axinim - Powertech",
       "nucleo": 37731,
       "tipo": "UTE",
-      "tipo_no_ato": "UTE",
+      "tipo_no_cadastro": "UTE",
       "mw_no_ato": 975.0,
       "mw_usado": 0.975,
       "kw_cadastro": 975.0,
@@ -1595,8 +1666,8 @@
       "publicacao": "2022-08-16",
       "nome": "Monjolinho",
       "nucleo": 1486,
-      "tipo": "CGH",
-      "tipo_no_ato": "UHE",
+      "tipo": "UHE",
+      "tipo_no_cadastro": "CGH",
       "mw_no_ato": 600.0,
       "mw_usado": 0.6,
       "kw_cadastro": 600.0,
@@ -1609,7 +1680,7 @@
       "nome": "Paina (Socavão)",
       "nucleo": 2758,
       "tipo": "CGH",
-      "tipo_no_ato": "CGH",
+      "tipo_no_cadastro": "CGH",
       "mw_no_ato": 736.0,
       "mw_usado": 0.736,
       "kw_cadastro": 736.0,
@@ -1623,8 +1694,8 @@
       "publicacao": "2022-11-09",
       "nome": "Jurupará",
       "nucleo": 1286,
-      "tipo": "CGH",
-      "tipo_no_ato": "UHE",
+      "tipo": "UHE",
+      "tipo_no_cadastro": "CGH",
       "mw_no_ato": 4.4,
       "mw_usado": null,
       "kw_cadastro": 4.4,
@@ -12219,7 +12290,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T10:40:44Z",
    "capturado_em": "2026-09-30T22:18:54Z",
-   "validado_em": "2026-10-01T06:43:37Z",
+   "validado_em": "2026-10-01T06:58:49Z",
    "cobertura_historica": {
     "inicio": "2026-09-30",
     "fim": "2026-09-30"
@@ -12234,9 +12305,9 @@
     "sha256": "d169541d7cbb805f08bd74db3b8283fee946f08b5d217f89e1ab396df6362d35"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:43:37Z",
+    "detectado_em": "2026-10-01T06:58:49Z",
     "total": 0,
     "vintages_comparadas": 1,
     "arquivos": 1,
@@ -12273,7 +12344,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T10:40:44Z",
    "capturado_em": "2026-09-30T22:18:54Z",
-   "validado_em": "2026-10-01T06:43:37Z",
+   "validado_em": "2026-10-01T06:58:49Z",
    "cobertura_historica": {
     "inicio": "2026-09-30",
     "fim": "2026-09-30"
@@ -12288,9 +12359,9 @@
     "sha256": "d169541d7cbb805f08bd74db3b8283fee946f08b5d217f89e1ab396df6362d35"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:43:37Z",
+    "detectado_em": "2026-10-01T06:58:49Z",
     "total": 0,
     "vintages_comparadas": 1,
     "arquivos": 1,
@@ -12327,7 +12398,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-25T18:14:51Z",
    "capturado_em": "2026-09-30T22:21:26Z",
-   "validado_em": "2026-10-01T06:43:37Z",
+   "validado_em": "2026-10-01T06:58:49Z",
    "cobertura_historica": {
     "inicio": "2015",
     "fim": "2026-09-25"
@@ -12344,9 +12415,9 @@
     "sha256": "0da8e26db84d3c522d694bf98850457b1c0c82df6158c9d4690fa10a9904dc61"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:43:37Z",
+    "detectado_em": "2026-10-01T06:58:49Z",
     "total": 0,
     "vintages_comparadas": 1,
     "arquivos": 1,
@@ -12386,7 +12457,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-18T21:17:26Z",
    "capturado_em": "2026-09-30T22:20:52Z",
-   "validado_em": "2026-10-01T06:43:37Z",
+   "validado_em": "2026-10-01T06:58:49Z",
    "cobertura_historica": {
     "inicio": "2021-06-17",
     "fim": "2026-09-18"
@@ -12401,9 +12472,9 @@
     "sha256": "37c206fc0b79e067183992c8ee84e009aa9ee6771113407d2ed05cf42a54faf6"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:43:37Z",
+    "detectado_em": "2026-10-01T06:58:49Z",
     "total": 0,
     "vintages_comparadas": 5,
     "arquivos": 5,
@@ -12440,7 +12511,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-18T21:17:26Z",
    "capturado_em": "2026-09-30T22:20:52Z",
-   "validado_em": "2026-10-01T06:43:37Z",
+   "validado_em": "2026-10-01T06:58:49Z",
    "cobertura_historica": {
     "inicio": "2021-06-17",
     "fim": "2026-09-18"
@@ -12456,9 +12527,9 @@
     "sha256": "37c206fc0b79e067183992c8ee84e009aa9ee6771113407d2ed05cf42a54faf6"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:43:37Z",
+    "detectado_em": "2026-10-01T06:58:49Z",
     "total": 0,
     "vintages_comparadas": 5,
     "arquivos": 5,
@@ -12498,7 +12569,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-18T21:17:26Z",
    "capturado_em": "2026-09-30T22:20:52Z",
-   "validado_em": "2026-10-01T06:43:37Z",
+   "validado_em": "2026-10-01T06:58:49Z",
    "cobertura_historica": {
     "inicio": "2021-06-17",
     "fim": "2026-09-18"
@@ -12514,9 +12585,9 @@
     "sha256": "37c206fc0b79e067183992c8ee84e009aa9ee6771113407d2ed05cf42a54faf6"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:43:37Z",
+    "detectado_em": "2026-10-01T06:58:49Z",
     "total": 0,
     "vintages_comparadas": 5,
     "arquivos": 5,
@@ -12555,7 +12626,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-18T20:07:07Z",
    "capturado_em": "2026-09-30T22:21:15Z",
-   "validado_em": "2026-10-01T06:43:37Z",
+   "validado_em": "2026-10-01T06:58:49Z",
    "cobertura_historica": {
     "inicio": "2014",
     "fim": "2026-09-16"
@@ -12570,9 +12641,9 @@
     "sha256": "7f2c5d02aa1d1fa87d33a136983e562f32490795ed6bbe5c0ad6966add0b648e"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:43:37Z",
+    "detectado_em": "2026-10-01T06:58:49Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -12609,7 +12680,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-01T05:01:33Z",
    "capturado_em": "2026-09-30T22:21:32Z",
-   "validado_em": "2026-10-01T06:43:38Z",
+   "validado_em": "2026-10-01T06:58:49Z",
    "cobertura_historica": {
     "inicio": "1999",
     "fim": "2024-09-27"
@@ -12625,9 +12696,9 @@
     "sha256": "a0671f9f513cbd2caeb80077ecf84f9335dc42238007264d9c9300dd5e5c57e5"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:43:38Z",
+    "detectado_em": "2026-10-01T06:58:49Z",
     "total": 0,
     "vintages_comparadas": 1,
     "arquivos": 1,
@@ -12665,7 +12736,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-29T16:36:54Z",
    "capturado_em": "2026-10-01T00:45:14Z",
-   "validado_em": "2026-10-01T06:43:38Z",
+   "validado_em": "2026-10-01T06:58:49Z",
    "cobertura_historica": {
     "inicio": "2005",
     "fim": "2026-09-29"
@@ -12681,9 +12752,9 @@
     "sha256": "7974247e4631ce5b8af8053b978c1d3eb7707aa80fa1aa88951600f98ac29082"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:43:38Z",
+    "detectado_em": "2026-10-01T06:58:49Z",
     "total": 0,
     "vintages_comparadas": 5,
     "arquivos": 5,
@@ -12723,7 +12794,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-18T21:17:26Z",
    "capturado_em": "2026-09-30T22:20:52Z",
-   "validado_em": "2026-10-01T06:43:38Z",
+   "validado_em": "2026-10-01T06:58:49Z",
    "cobertura_historica": {
     "inicio": "2021-06-17",
     "fim": "2026-09-18"
@@ -12739,9 +12810,9 @@
     "sha256": "37c206fc0b79e067183992c8ee84e009aa9ee6771113407d2ed05cf42a54faf6"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:43:38Z",
+    "detectado_em": "2026-10-01T06:58:49Z",
     "total": 0,
     "vintages_comparadas": 5,
     "arquivos": 5,
@@ -12776,7 +12847,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-29T16:36:54Z",
    "capturado_em": "2026-10-01T00:45:14Z",
-   "validado_em": "2026-10-01T06:43:38Z",
+   "validado_em": "2026-10-01T06:58:49Z",
    "cobertura_historica": {
     "inicio": "1995",
     "fim": "2026-09-29"
@@ -12792,9 +12863,9 @@
     "sha256": "7974247e4631ce5b8af8053b978c1d3eb7707aa80fa1aa88951600f98ac29082"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:43:38Z",
+    "detectado_em": "2026-10-01T06:58:49Z",
     "total": 0,
     "vintages_comparadas": 5,
     "arquivos": 5,
@@ -12829,7 +12900,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-10-01T00:46:47Z",
-   "validado_em": "2026-10-01T06:43:38Z",
+   "validado_em": "2026-10-01T06:58:49Z",
    "cobertura_historica": {
     "inicio": "1968",
     "fim": "2038"
@@ -12845,9 +12916,9 @@
     "sha256": "c32b9326655da2ecc3acb22ecf2e24f97d385fbc4f9ff7caeceaabeef06d3b5a"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:43:38Z",
+    "detectado_em": "2026-10-01T06:58:49Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -12883,7 +12954,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T22:22:59Z",
-   "validado_em": "2026-10-01T06:43:38Z",
+   "validado_em": "2026-10-01T06:58:49Z",
    "cobertura_historica": {
     "inicio": "2025",
     "fim": "2035"
@@ -12898,9 +12969,9 @@
     "sha256": "f3c3178071b54b7726abda5cf49cda2a114e73173c0e658bacb6c4a367592d9b"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "eec0a3121e05+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:43:38Z",
+    "detectado_em": "2026-10-01T06:58:49Z",
     "total": 0,
     "vintages_comparadas": 3,
     "arquivos": 3,
@@ -12963,8 +13034,8 @@
    "tratamento_ausencia": "potência vazia não soma e não vira zero exibido; núcleo de CEG repetido na fonte conta uma vez",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "f5cba38ad40f+alterado",
-    "publicacao": "2026-10-01T06:43:38Z"
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T06:58:49Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -12995,7 +13066,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
-   "citacao": "SCRUTINIUMS. Capacidade instalada em operação: 220.659 MW, Brasil (Sistema Interligado e sistemas isolados), 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SIGA: Sistema de Informações de Geração da ANEEL (recurso siga-empreendimentos-geracao-diario.csv, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Capacidade instalada em operação: 220.659 MW, Brasil (Sistema Interligado e sistemas isolados), 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SIGA: Sistema de Informações de Geração da ANEEL (recurso siga-empreendimentos-geracao-diario.csv, capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "outorgado_sem_obra": {
    "indicador": "Potência outorgada com construção não iniciada",
@@ -13038,8 +13109,8 @@
    "tratamento_ausencia": "potência vazia não soma",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "f5cba38ad40f+alterado",
-    "publicacao": "2026-10-01T06:43:38Z"
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T06:58:49Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -13062,7 +13133,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
-   "citacao": "SCRUTINIUMS. Potência outorgada com construção não iniciada: 87.267 MW, Brasil, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SIGA: Sistema de Informações de Geração da ANEEL (recurso siga-empreendimentos-geracao-diario.csv, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Potência outorgada com construção não iniciada: 87.267 MW, Brasil, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SIGA: Sistema de Informações de Geração da ANEEL (recurso siga-empreendimentos-geracao-diario.csv, capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "ralie_em_implantacao": {
    "indicador": "Potência das unidades geradoras em implantação acompanhadas pelo RALIE",
@@ -13103,8 +13174,8 @@
    "tratamento_ausencia": "unidade sem potência não soma; unidade sem previsão da fiscalização é contada à parte, com a justificativa publicada",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "f5cba38ad40f+alterado",
-    "publicacao": "2026-10-01T06:43:38Z"
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T06:58:50Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -13135,7 +13206,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
-   "citacao": "SCRUTINIUMS. Potência das unidades geradoras em implantação acompanhadas pelo RALIE: 95.888 MW, Brasil, 18/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, RALIE: Relatório de Acompanhamento da Expansão da Oferta de Geração (recurso ralie-unidade-geradora-atual.csv, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Potência das unidades geradoras em implantação acompanhadas pelo RALIE: 95.888 MW, Brasil, 18/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, RALIE: Relatório de Acompanhamento da Expansão da Oferta de Geração (recurso ralie-unidade-geradora-atual.csv, capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "coorte_inicial_operacao": {
    "indicador": "Potência em implantação na primeira fotografia do RALIE que entrou em operação",
@@ -13221,8 +13292,8 @@
    "tratamento_ausencia": "usina sem operação nem ato de encerramento fica em 'sem desfecho', nunca em operação",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "f5cba38ad40f+alterado",
-    "publicacao": "2026-10-01T06:43:38Z"
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T06:58:50Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -13240,12 +13311,12 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
-   "citacao": "SCRUTINIUMS. Potência em implantação na primeira fotografia do RALIE que entrou em operação: 67,6%, usinas presentes na primeira fotografia do RALIE, 17/06/2021 a 18/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, RALIE: Relatório de Acompanhamento da Expansão da Oferta de Geração (recurso ralie-unidade-geradora-historico.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Potência em implantação na primeira fotografia do RALIE que entrou em operação: 67,6%, usinas presentes na primeira fotografia do RALIE, 17/06/2021 a 18/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, RALIE: Relatório de Acompanhamento da Expansão da Oferta de Geração (recurso ralie-unidade-geradora-historico.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "confiabilidade_ultima": {
    "indicador": "Potência prometida para os 12 meses seguintes que foi liberada no prazo",
    "valor_exibido": "50,5%",
-   "valor_calculo": 50.466136314571294,
+   "valor_calculo": 50.466136314571315,
    "unidade": "% do MW prometido",
    "periodo": {
     "inicio": "2025-08-22",
@@ -13291,11 +13362,11 @@
    "formula": "100 × Σ kW das unidades prometidas e liberadas até o fim da janela ÷ Σ kW prometido na fotografia",
    "numerador": {
     "descricao": "kW liberado para operação comercial até o fim da janela",
-    "valor": 5737516.949999999
+    "valor": 5737516.95
    },
    "denominador": {
     "descricao": "kW com previsão dentro da janela na fotografia",
-    "valor": 11369043.420000002
+    "valor": 11369043.419999998
    },
    "pesos": null,
    "exclusoes": [
@@ -13305,8 +13376,8 @@
    "tratamento_ausencia": "unidade sem liberação no arquivo conta como não liberada; nenhuma previsão é reconstruída com o estoque atual",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "f5cba38ad40f+alterado",
-    "publicacao": "2026-10-01T06:43:38Z"
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T06:58:50Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -13329,7 +13400,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
-   "citacao": "SCRUTINIUMS. Potência prometida para os 12 meses seguintes que foi liberada no prazo: 50,5%, unidades geradoras com previsão da fiscalização dentro da janela, 22/08/2025 a 22/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, RALIE: Relatório de Acompanhamento da Expansão da Oferta de Geração (recurso ralie-unidade-geradora-historico.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Potência prometida para os 12 meses seguintes que foi liberada no prazo: 50,5%, unidades geradoras com previsão da fiscalização dentro da janela, 22/08/2025 a 22/08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, RALIE: Relatório de Acompanhamento da Expansão da Oferta de Geração (recurso ralie-unidade-geradora-historico.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "transmissao_em_andamento": {
    "indicador": "Linhas de transmissão novas em empreendimentos em andamento",
@@ -13389,8 +13460,8 @@
    "tratamento_ausencia": "módulo sem extensão informada não soma; MVA e km nunca são somados entre si",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "f5cba38ad40f+alterado",
-    "publicacao": "2026-10-01T06:43:38Z"
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T06:58:50Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -13413,7 +13484,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
-   "citacao": "SCRUTINIUMS. Linhas de transmissão novas em empreendimentos em andamento: 25.947 km, Rede Básica e demais instalações cadastradas no SIGET, 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Sistema de Gestão da Transmissão (SIGET) (recurso siget-contrato-empreendimento-obra-modulo.csv, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Linhas de transmissão novas em empreendimentos em andamento: 25.947 km, Rede Básica e demais instalações cadastradas no SIGET, 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Sistema de Gestão da Transmissão (SIGET) (recurso siget-contrato-empreendimento-obra-modulo.csv, capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "leiloes_ultimo_ano": {
    "indicador": "Extensão de linhas contratadas em leilão no ano",
@@ -13472,8 +13543,8 @@
    "tratamento_ausencia": "lote contratado sem linha descrita tem 0 km real e soma 0; 0 km com linha descrita é campo não preenchido e fica fora; em lote sem vencedor o 0 é marcador e fica fora; ano sem linha no arquivo é ausência, não zero",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "f5cba38ad40f+alterado",
-    "publicacao": "2026-10-01T06:43:38Z"
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T06:58:50Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -13496,7 +13567,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
-   "citacao": "SCRUTINIUMS. Extensão de linhas contratadas em leilão no ano: 7.247 km, lotes de transmissão contratados em leilão no ano, 01/01/2024 a 31/12/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Resultado de leilões de geração e transmissão de energia elétrica (recurso resultado-leiloes-transmissao.csv, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Extensão de linhas contratadas em leilão no ano: 7.247 km, lotes de transmissão contratados em leilão no ano, 01/01/2024 a 31/12/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Resultado de leilões de geração e transmissão de energia elétrica (recurso resultado-leiloes-transmissao.csv, capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "pde_capacidade_2035": {
    "indicador": "Capacidade instalada nacional em 2035 no Cenário de Referência do PDE 2035 (CENÁRIO)",
@@ -13544,8 +13615,8 @@
    "tratamento_ausencia": "célula vazia não soma",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "f5cba38ad40f+alterado",
-    "publicacao": "2026-10-01T06:43:38Z"
+    "codigo": "eec0a3121e05+alterado",
+    "publicacao": "2026-10-01T06:58:50Z"
    },
    "revisoes": "Edição fixa aprovada: o caderno de dados é recapturado mensalmente e uma mudança de sha256 fica registrada como nova vintage.",
    "testes": [
@@ -13567,7 +13638,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.",
-   "citacao": "SCRUTINIUMS. Capacidade instalada nacional em 2035 no Cenário de Referência do PDE 2035 (CENÁRIO): 359 GW, matriz elétrica nacional (inclui MMGD, baterias e resposta da demanda), 12/2035. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: EPE, Plano Decenal de Expansão de Energia 2035 (recurso pde2035_dados_relatorio_final.zip, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Capacidade instalada nacional em 2035 no Cenário de Referência do PDE 2035 (CENÁRIO): 359 GW, matriz elétrica nacional (inclui MMGD, baterias e resposta da demanda), 12/2035. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: EPE, Plano Decenal de Expansão de Energia 2035 (recurso pde2035_dados_relatorio_final.zip, capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "downloads": [

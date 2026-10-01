@@ -8,7 +8,7 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { NOME_REGIAO, REGIOES, ROTULO_GRUPO, listaTexto, perguntaPainel, rotaPainel } from "@/lib/energia/carga";
+import { NOME_REGIAO, REGIOES, ROTULO_GRUPO, perguntaPainel, rotaPainel } from "@/lib/energia/carga";
 import { carimbo, dataBR, mesAno, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import type { ColunaTabela } from "@/lib/energia/tabela";
@@ -65,7 +65,7 @@ export default function ClimaCalendarioPage() {
   return (
     <>
       <CabecalhoEnergia atual="carga" />
-      <MarcaVisita secao="energia:carga-clima" />
+      <MarcaVisita secao="energia:carga" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
         <CabecalhoModulo
           rotulo="Carga"
@@ -134,6 +134,7 @@ export default function ClimaCalendarioPage() {
                       resposta_temperatura: p.resposta_temperatura,
                     }}
                     a07={{ decomposicao: g.a07.decomposicao }}
+                    achado={{ inicio: g.a07.referencia.inicio, fim: g.a07.referencia.fim, motivo: g.a07.janela_modelo.motivo }}
                     diaReferencia={g.dia_referencia}
                     fonte={FONTE}
                     versao={p.periodo_avaliacao.fim}
@@ -147,7 +148,11 @@ export default function ClimaCalendarioPage() {
                           casas={2}
                           tamanho="medio"
                           cor="var(--cor-energia)"
-                          nota={`Referência ingênua de 364 dias: ${num(p.metricas.SIN.mape_referencia_364d_pct, 2)}% nos mesmos dias.`}
+                          nota={
+                            p.metricas.SIN?.mape_referencia_364d_pct != null
+                              ? `Referência ingênua de 364 dias: ${num(p.metricas.SIN.mape_referencia_364d_pct, 2)}% nos mesmos dias.`
+                              : "Sem erro da referência ingênua de 364 dias nesta publicação."
+                          }
                           endereco={`${rotaPainel("p027")}#p027`}
                         />
                       </div>
@@ -162,8 +167,8 @@ export default function ClimaCalendarioPage() {
 
                 <CargaAnalise id="calendario" titulo="Calendário usado: feriados por lei e pontos facultativos">
                   <p className="text-sm text-carvao-muted">
-                    Categorias: {listaTexto(Object.entries(categorias).map(([k, v]) => `${k.replaceAll("_", " ")} (${v})`))}. Pontos facultativos (Carnaval, Cinzas, Corpus
-                    Christi) entram no modelo como variáveis próprias e numa variante sem eles.
+                    Categorias do calendário: {Object.values(categorias).join("; ")}. Pontos facultativos (Carnaval, Cinzas, Corpus Christi) entram no modelo como variáveis
+                    próprias e numa variante sem eles.
                   </p>
                   <TabelaInterativa
                     titulo="Feriados e pontos facultativos nos últimos 12 meses"
@@ -174,6 +179,7 @@ export default function ClimaCalendarioPage() {
                     fonte="Senado Federal (leis de feriados) e portarias anuais de pontos facultativos"
                     versao={g.dia_referencia}
                     nomeArquivo="carga-calendario-12-meses"
+                    chaveUrl="cal"
                   />
                 </CargaAnalise>
 
@@ -219,6 +225,7 @@ export default function ClimaCalendarioPage() {
                       fonte={FONTE}
                       versao={p.ultimo_ajuste_sin.origem}
                       nomeArquivo="carga-decomposicao-coeficientes-sin"
+                      chaveUrl="coef"
                     />
                   </CargaAuditoria>
                 )}
@@ -227,7 +234,7 @@ export default function ClimaCalendarioPage() {
                   <p className="text-sm text-carvao-muted">
                     Produto da NASA POWER por mês:{" "}
                     {Array.from(porProduto.entries())
-                      .map(([f, ms]) => `${f} em ${ms.length} meses (${mesAno(ms[0])} a ${mesAno(ms[ms.length - 1])})`)
+                      .map(([f, ms]) => (ms.length === 1 ? `${f} em ${mesAno(ms[0])}` : `${f} em ${ms.length} meses (${mesAno(ms[0])} a ${mesAno(ms[ms.length - 1])})`))
                       .join("; ")}
                     . Pesos: população residente estimada por UF (IBGE{t.ano_populacao ? `, ${t.ano_populacao}` : ""}), normalizada dentro de cada região.
                   </p>
@@ -260,6 +267,7 @@ export default function ClimaCalendarioPage() {
                     fonte="Senado Federal, dados abertos da legislação"
                     versao={g.dia_referencia}
                     nomeArquivo="carga-leis-feriados"
+                    chaveUrl="leis"
                   />
                   <CargaFontes fontes={g.fontes.filter((f) => ["temperatura", "populacao", "centroides", "leis"].includes(f.id))} />
                 </CargaAuditoria>

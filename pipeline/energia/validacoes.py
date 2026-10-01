@@ -636,9 +636,11 @@ def _valida_media_diaria(ident, dir_series, cid, crit):
 # ---------------------------------------------------------------- conjuntos do silver
 
 
-def valida_conjunto(chave, an, *, regra_horizonte=None, documento=False):
+def valida_conjunto(chave, an, *, regra_horizonte=None, documento=False, lido_do_original=False):
     """Checagens de um conjunto do silver a partir de silver_dados.analisa. O estado
-    VALIDADO do catálogo exige que nenhuma delas esteja reprovada."""
+    VALIDADO do catálogo exige que nenhuma delas esteja reprovada. `lido_do_original`:
+    sem tabela no silver, mas uma gold cita o snapshot do conjunto na proveniência (o
+    módulo lê o arquivo original guardado no bronze)."""
     out = []
     vs = an.get("_vintages") or []
     pref = f"conjunto:{chave}"
@@ -706,11 +708,18 @@ def valida_conjunto(chave, an, *, regra_horizonte=None, documento=False):
                             criterio="nenhuma referência posterior à data (Brasília) da captura que a trouxe, mais a folga de publicação da fonte",
                             verificados=hz["vintages_verificadas"], problemas=hz["violacoes"], exemplos=hz["exemplos"]))
     tem_conteudo = bool(an.get("observacoes")) or bool(an.get("registros"))
-    out.append(checagem(f"{pref}:conteudo", chave, "conteudo",
-                        "aprovado" if tem_conteudo else ("nao_aplicavel" if documento else "ressalva"),
-                        ("Observações ou registros extraídos do arquivo" if tem_conteudo else
-                         "Documento guardado como original (PDF, página): o conteúdo é citado, não tabulado" if documento else
-                         "Capturas sem observações nem registros extraídos no silver"),
-                        criterio="conjunto integrado tem conteúdo extraído no silver (documentos são citados)", verificados=1,
-                        problemas=0 if (tem_conteudo or documento) else 1))
+    if tem_conteudo:
+        res, det = "aprovado", "Observações ou registros extraídos do arquivo"
+    elif documento:
+        res, det = "nao_aplicavel", "Documento guardado como original (PDF, página, metadado XML): o conteúdo é citado, não tabulado"
+    elif lido_do_original:
+        res, det = "aprovado", ("Sem tabela no silver: o módulo lê o original guardado no bronze com sha256 e a proveniência de "
+                                "uma gold publicada cita o snapshot do conjunto")
+    else:
+        res, det = "ressalva", ("Capturas sem observações nem registros no silver e nenhuma gold cita o conjunto na proveniência: "
+                                "não há como rastrear o uso do conteúdo")
+    out.append(checagem(f"{pref}:conteudo", chave, "conteudo", res, det,
+                        criterio=("conjunto integrado tem conteúdo extraído no silver, é documento citado ou é lido do original "
+                                  "por gold que cita o seu snapshot"), verificados=1,
+                        problemas=1 if res == "ressalva" else 0))
     return out

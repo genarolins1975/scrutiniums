@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
+import { CargaHistorico } from "@/components/energia/CargaHistorico";
 import { CargaNivel } from "@/components/energia/CargaNivel";
 import { CargaAnalise, CargaAuditoria, CargaAviso, CargaFontes, CargaIndisponivel, CargaNavegacao, CargaSeguir } from "@/components/energia/CargaPagina";
-import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
@@ -15,16 +15,20 @@ import {
   COLUNAS_COMPARACOES_TODAS,
   NOME_REGIAO,
   REGIOES,
+  ROTULO_JANELA_A07,
+  ROTULO_SITUACAO_REVISAO,
   linhasComparacoesTodas,
   marcosRegimes,
   paraTabela,
+  parentesesMmgd,
   perguntaPainel,
   rotaPainel,
   serieColunar,
   situacaoAtualidade,
+  textoAvisoRegimes,
   textoRevisoes,
 } from "@/lib/energia/carga";
-import { carimbo, dataBR, num, sinal } from "@/lib/energia/formato";
+import { carimbo, dataBR, mesAno, num, plural, sinal } from "@/lib/energia/formato";
 import { gold, integra, lerGold } from "@/lib/energia/gold";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { CargaDetalheGold } from "@/lib/energia/tipos-carga";
@@ -33,7 +37,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Carga: nível e crescimento do consumo do sistema elétrico",
   description:
-    "Carga de energia diária do SIN e dos subsistemas (ONS) com comparações de calendário equivalente, médias mensais e anuais dentro do mesmo regime metodológico, revisões entre capturas, validação física e a reprodução do achado de +10,5% em sete dias.",
+    "Carga de energia diária do SIN e dos subsistemas (ONS) com comparações de calendário equivalente, médias mensais e anuais dentro do mesmo regime metodológico, revisões entre capturas, validação física e a reprodução da variação de sete dias publicada antes, com o que ela não permite concluir.",
   alternates: { canonical: "/setor-eletrico/carga" },
 };
 
@@ -45,7 +49,8 @@ const COLUNAS_CAPTURAS: ColunaTabela[] = [
   ...(["SE", "S", "NE", "N", "SIN"] as const).map((sm): ColunaTabela => ({ id: sm, rotulo: sm === "SE" ? "SE/CO" : sm, tipo: "numero", unidade: "MWmed", casas: 3 })),
   { id: "fora", rotulo: "Fora do domínio", tipo: "texto" },
 ];
-const COLUNAS_A07_REGIOES: ColunaTabela[] = [
+/** Colunas da tabela do A07; os anos das duas janelas vêm da referência do achado na gold. */
+const colunasA07Regioes = (ano: string, anoAnt: string): ColunaTabela[] => [
   { id: "regiao", rotulo: "Região", tipo: "texto" },
   { id: "mesmas", rotulo: "Mesmas datas", tipo: "percentual", casas: 2 },
   { id: "equivalente", rotulo: "Mesmos dias da semana", tipo: "percentual", casas: 2 },
@@ -54,8 +59,8 @@ const COLUNAS_A07_REGIOES: ColunaTabela[] = [
   { id: "mmgd", rotulo: "MMGD (API), mesmas datas", tipo: "percentual", casas: 2 },
   { id: "liquida", rotulo: "Carga líquida (API), mesmas datas", tipo: "percentual", casas: 2 },
   { id: "pontos", rotulo: "Aumento da MMGD em pontos da carga global", tipo: "numero", unidade: "p.p.", casas: 2 },
-  { id: "temp_a", rotulo: "Temperatura em 2026", tipo: "numero", unidade: "°C", casas: 1 },
-  { id: "temp_b", rotulo: "Temperatura nas mesmas datas de 2025", tipo: "numero", unidade: "°C", casas: 1 },
+  { id: "temp_a", rotulo: `Temperatura em ${ano}`, tipo: "numero", unidade: "°C", casas: 1 },
+  { id: "temp_b", rotulo: `Temperatura nas mesmas datas de ${anoAnt}`, tipo: "numero", unidade: "°C", casas: 1 },
 ];
 const COLUNAS_RESIDUOS: ColunaTabela[] = [
   { id: "regiao", rotulo: "Região", tipo: "texto", categorica: true },
@@ -125,6 +130,7 @@ export default function CargaPage() {
   const val = p.validacao;
   const fimMensal = c.mensal[c.mensal.length - 1];
   const residuosA07 = a.residuos_fora_da_amostra.filter((r) => r.sm === "SIN");
+  const inicioMensal = c.mensal[0]?.m.slice(0, 4) ?? "";
 
   return (
     <>
@@ -133,7 +139,7 @@ export default function CargaPage() {
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
         <CabecalhoModulo
           rotulo="Carga"
-          titulo="Quanto o sistema está consumindo?"
+          titulo="Nível e crescimento da carga"
           referencia={
             <>
               ONS, Carga de Energia Diária, até {dataBR(g.dia_referencia)}; processado em {carimbo(g.gerado_em)}.
@@ -174,8 +180,8 @@ export default function CargaPage() {
               naoConcluir={
                 <>
                   A variação da carga não mede atividade econômica: este painel não tem dado de atividade que sustente essa leitura. A carga inclui uma estimativa de MMGD que o
-                  ONS não publica separada (declarada para 29/04/2023, observada nos dados em 01/05/2023), então não se sabe quanto da variação vem dela. A carga não é ajustada
-                  por temperatura; a decomposição estatística está no painel de clima e calendário.
+                  ONS não publica separada{parentesesMmgd(g.regimes)}, então não se sabe quanto da variação vem dela. A carga não é ajustada por temperatura; a decomposição
+                  estatística está no painel de clima e calendário.
                 </>
               }
               proveniencia={g.proveniencia.comparacoes}
@@ -192,7 +198,7 @@ export default function CargaPage() {
                   destaques={
                     <div className="grid gap-4 sm:grid-cols-2">
                       <Numero
-                        rotulo="SIN, últimos 7 dias contra os mesmos dias da semana 52 semanas antes"
+                        rotulo="Variação da carga do SIN: últimos 7 dias contra os mesmos dias da semana 52 semanas antes"
                         natureza="CALCULADO"
                         evidencia={ev.p025_7d_equivalente}
                         formato="pct"
@@ -202,7 +208,7 @@ export default function CargaPage() {
                         endereco={`${rotaPainel("p025")}#p025`}
                       />
                       <Numero
-                        rotulo="SIN, os mesmos 7 dias contra as mesmas datas do ano anterior (reprodução do diagnóstico)"
+                        rotulo="Variação da carga do SIN: os mesmos 7 dias contra as mesmas datas do ano anterior (reprodução do diagnóstico)"
                         natureza="CALCULADO"
                         evidencia={ev.a07_reproducao}
                         formato="pct"
@@ -216,22 +222,16 @@ export default function CargaPage() {
                   }
                 />
 
-                <CargaAnalise titulo="Histórico desde 2000, com as mudanças de regime marcadas">
-                  <GraficoLinhas
-                    titulo="Carga média mensal do SIN desde 2000"
-                    dados={c.mensal.map((x) => ({ m: x.m, SIN: x.SIN }))}
-                    chaveX="m"
-                    formatoX="mes"
-                    series={[{ id: "SIN", rotulo: "SIN", cor: "var(--cor-energia)" }]}
-                    unidade="MWmed"
-                    casas={0}
+                <CargaAnalise titulo={`Histórico desde ${inicioMensal}, com as mudanças de regime marcadas`}>
+                  <CargaHistorico
+                    titulo={`Carga média mensal do SIN desde ${inicioMensal}`}
+                    dados={c.mensal.map((x) => ({ m: x.m, SIN: x.SIN ?? null }))}
+                    cor="var(--cor-energia)"
                     marcos={marcosRegimes(g.regimes, c.mensal[0]?.m ?? "", fimMensal?.m ?? "", "mes")}
-                    zoom
                   />
                   <CargaAviso>
-                    Antes de 01/03/2021 a série não inclui a previsão de usinas não despachadas, e antes da inclusão da MMGD (declarada para 29/04/2023, observada nos dados em
-                    01/05/2023) não inclui a MMGD estimada: o salto depois de cada marca não é, por si, aumento de consumo.
-                    {fimMensal && fimMensal.m === g.dia_referencia.slice(0, 7) ? ` O último mês (${dataBR(fimMensal.m)}) é parcial, com ${fimMensal.dias} dias.` : ""}
+                    {textoAvisoRegimes(g.regimes)}
+                    {fimMensal && fimMensal.m === g.dia_referencia.slice(0, 7) ? ` O último mês (${mesAno(fimMensal.m)}) é parcial, com ${plural(fimMensal.dias, "dia", "dias")}.` : ""}
                   </CargaAviso>
                 </CargaAnalise>
 
@@ -243,7 +243,7 @@ export default function CargaPage() {
                   </ul>
                   <TabelaInterativa
                     titulo="Variação nas mesmas janelas, por região e produto"
-                    colunas={COLUNAS_A07_REGIOES}
+                    colunas={colunasA07Regioes(a.referencia.inicio.slice(0, 4), a.referencia.inicio_anterior.slice(0, 4))}
                     linhas={REGIOES.map((sm) => {
                       const cp = a.comparacoes.find((x) => x.sm === sm);
                       const m = a.mmgd.find((x) => x.sm === sm);
@@ -267,17 +267,19 @@ export default function CargaPage() {
                     fonte="ONS (carga diária, curva horária e carga verificada) e NASA POWER (temperatura)"
                     versao={a.referencia.fim}
                     nomeArquivo="carga-a07-regioes"
+                    chaveUrl="a07"
                     nota={`Temperatura de ${dataBR(a.janela_modelo.inicio)} a ${dataBR(a.janela_modelo.fim)} (${a.janela_modelo.dias} de ${a.janela_modelo.dias_janela} dias)${a.janela_modelo.motivo ? `: ${a.janela_modelo.motivo}` : ""}.`}
                   />
                   <TabelaInterativa
                     titulo="Real contra o previsto fora da amostra nas janelas do achado (SIN)"
                     colunas={COLUNAS_RESIDUOS}
-                    linhas={paraTabela(residuosA07.map((r) => ({ ...r, id: `${r.sm}:${r.janela}`, regiao: NOME_REGIAO[r.sm], origens: r.origens })))}
+                    linhas={paraTabela(residuosA07.map((r) => ({ ...r, id: `${r.sm}:${r.janela}`, regiao: NOME_REGIAO[r.sm], janela: ROTULO_JANELA_A07[r.janela] ?? r.janela })))}
                     chaveLinha="id"
                     colunaRotulo="janela"
                     fonte="Decomposição estatística do observatório"
                     versao={a.referencia.fim}
                     nomeArquivo="carga-a07-residuos"
+                    chaveUrl="a07r"
                   />
                   <p className="text-sm text-carvao-muted">
                     A divisão da diferença entre calendário, temperatura, sazonalidade, tendência e resíduo, por região e variante do modelo, está no{" "}
@@ -292,17 +294,20 @@ export default function CargaPage() {
                   </p>
                 </CargaAnalise>
 
-                <CargaAuditoria id="a07-capturas" titulo="As duas capturas do arquivo de 2026 usadas no achado">
+                <CargaAuditoria
+                  id="a07-capturas"
+                  titulo={`${a.por_captura_2026.length === 1 ? "A captura" : `As ${num(a.por_captura_2026.length, 0)} capturas`} do arquivo de ${a.referencia.fim.slice(0, 4)} usadas no achado`}
+                >
                   {a.por_captura_2026.map((cap) => (
                     <p key={cap.sha256} className="text-sm text-carvao-muted">
                       Captura de {carimbo(cap.capturado_em)} (sha256 {cap.sha256.slice(0, 12)}…):{" "}
                       {cap.janela_completa && cap.variacao_pct !== null
-                        ? `janela completa, variação de ${sinal(cap.variacao_pct, 2)}% sobre as mesmas datas de 2025.`
+                        ? `janela completa, variação de ${sinal(cap.variacao_pct, 2)}% sobre as mesmas datas de ${a.referencia.inicio_anterior.slice(0, 4)}.`
                         : "janela incompleta ou com valor fora do domínio: a variação não existe com esta captura."}
                     </p>
                   ))}
                   <TabelaInterativa
-                    titulo="Carga diária de cada captura, de 22 a 28/09/2026"
+                    titulo={`Carga diária de cada captura, de ${dataBR(a.referencia.inicio)} a ${dataBR(a.referencia.fim)}`}
                     colunas={COLUNAS_CAPTURAS}
                     linhas={a.por_captura_2026.flatMap((cap) =>
                       cap.dias.map((d) => ({ id: `${cap.capturado_em}:${d.d}`, captura: carimbo(cap.capturado_em), d: d.d, SE: d.SE, S: d.S, NE: d.NE, N: d.N, SIN: d.SIN, fora: d.fora_do_dominio.join(", ") })),
@@ -312,6 +317,7 @@ export default function CargaPage() {
                     fonte="ONS, Carga de Energia Diária (silver principal, capturas guardadas)"
                     versao={a.referencia.fim}
                     nomeArquivo="carga-a07-capturas"
+                    chaveUrl="cap"
                   />
                 </CargaAuditoria>
 
@@ -320,12 +326,21 @@ export default function CargaPage() {
                   <TabelaInterativa
                     titulo="Valores revisados pela fonte"
                     colunas={COLUNAS_REVISOES}
-                    linhas={paraTabela(p.revisoes.linhas.map((l) => ({ ...l, id: `${l.sm}:${l.dia}:${l.capturado_em}`, capturado_em: carimbo(l.capturado_em), capturado_em_ant: carimbo(l.capturado_em_ant) })))}
+                    linhas={paraTabela(
+                      p.revisoes.linhas.map((l) => ({
+                        ...l,
+                        id: `${l.sm}:${l.dia}:${l.capturado_em}`,
+                        situacao: ROTULO_SITUACAO_REVISAO[l.situacao] ?? l.situacao,
+                        capturado_em: carimbo(l.capturado_em),
+                        capturado_em_ant: carimbo(l.capturado_em_ant),
+                      })),
+                    )}
                     chaveLinha="id"
                     colunaRotulo="dia"
                     fonte="ONS, Carga de Energia Diária (capturas do observatório)"
                     versao={versao}
                     nomeArquivo="carga-revisoes"
+                    chaveUrl="rev"
                     ordemInicial={{ coluna: "dia", direcao: "desc" }}
                   />
                   <p className="text-sm text-carvao-muted">
@@ -356,6 +371,7 @@ export default function CargaPage() {
                     fonte="Validação do observatório sobre ONS (carga diária e balanço de energia)"
                     versao={versao}
                     nomeArquivo="carga-validacao-ocorrencias"
+                    chaveUrl="oc"
                   />
                   <TabelaInterativa
                     titulo="Registros esperados por subsistema"
@@ -366,6 +382,7 @@ export default function CargaPage() {
                     fonte="Validação do observatório (regra A1)"
                     versao={versao}
                     nomeArquivo="carga-registros-esperados"
+                    chaveUrl="esp"
                   />
                   <TabelaInterativa
                     titulo="Dias sem valor e o estado conferido no arquivo atual da fonte"
@@ -376,6 +393,7 @@ export default function CargaPage() {
                     fonte="ONS, Carga de Energia Diária (arquivo atual)"
                     versao={versao}
                     nomeArquivo="carga-dias-ausentes"
+                    chaveUrl="aus"
                     semLinhas="Nenhum dia sem valor entre o primeiro e o último dia publicado."
                   />
                   {val.historico_fora_do_dominio.length > 0 && (

@@ -33,6 +33,7 @@ import {
   respostaNivel,
   serieComReferencia,
   textoClasses,
+  textoMesCorrente,
   type SerieColunar,
   type TipoComparacao,
 } from "@/lib/energia/carga";
@@ -45,7 +46,8 @@ import type { JanelaId, P025, Regime } from "@/lib/energia/tipos-carga";
 /**
  * P025, nível e crescimento: região, janela e tipo de comparação ficam na URL
  * (?sm=, ?jan=, ?cmp=), assim como o intervalo do gráfico diário (?de=, ?ate=) e as
- * regiões comparadas mês a mês (?sms=). A resposta, os pontos pareados e a tabela
+ * regiões comparadas mês a mês (?sms=); busca, filtros, ordem e página de cada tabela
+ * também (prefixos jan.t, mes.t, acum e ano.t). A resposta, os pontos pareados e a tabela
  * equivalente usam as mesmas linhas (linhasComparacao), e a resposta é refeita pela
  * mesma regra quando o recorte muda. O padrão (SIN, 7 dias, mesmos dias da semana)
  * não é gravado na URL.
@@ -96,7 +98,7 @@ export function CargaNivel({
         ? l.media === null
           ? "sem comparação: falta dia numa das janelas"
           : "sem variação: janelas em regimes diferentes do ONS"
-        : `variação ${sinal(l.variacao_pct, 1)}%; ${dataBR(l.inicio)} a ${dataBR(l.fim)} contra ${dataBR(l.inicio_ant)} a ${dataBR(l.fim_ant)}`,
+        : `variação ${sinal(l.variacao_pct, 2)}%; ${dataBR(l.inicio)} a ${dataBR(l.fim)} contra ${dataBR(l.inicio_ant)} a ${dataBR(l.fim_ant)}`,
   }));
   const diaria = useMemo(() => serieComReferencia(serie, sm), [serie, sm]);
   const inicioSerie = serie.d[0] ?? "";
@@ -134,7 +136,7 @@ export function CargaNivel({
         <div>
           <dt className="rotulo text-mineral">Período</dt>
           <dd className="mt-0.5">
-            {j ? `${dataBR(j.inicio)} a ${dataBR(j.fim)}` : "sem janela"}; comparação com as {ROTULO_TIPO[tipo]}
+            {j ? `${dataBR(j.inicio)} a ${dataBR(j.fim)}` : "sem janela"}; comparação: {ROTULO_TIPO[tipo]}
           </dd>
         </div>
         <div>
@@ -178,6 +180,7 @@ export function CargaNivel({
         fonte={fonte}
         versao={versao}
         nomeArquivo={`carga-comparacoes-${sm}-${tipo}`}
+        chaveUrl="jan.t"
         selecionado={janela}
         onSelecionar={(id) => id && definir({ jan: id as JanelaId })}
         nota="Variação nula: janela incompleta ou em outro regime do ONS. A média nunca é calculada com dia ausente."
@@ -220,23 +223,24 @@ export function CargaNivel({
             formatoX="mes"
             series={escolhidas.map((r) => ({ id: `var_${r}`, rotulo: NOME_REGIAO[r], sigla: CURTO_REGIAO[r], cor: COR_REGIAO[r] }))}
             unidade="%"
-            casas={1}
+            casas={2}
             zeroNoEixo
           />
         )}
         <p className="text-sm text-carvao-muted">
-          Os meses comparados podem ter números diferentes de dias úteis (colunas da tabela); a variação mensal não é ajustada por calendário. O mês corrente é parcial e
-          compara os mesmos dias do mês.
+          Os meses comparados podem ter números diferentes de dias úteis (colunas da tabela); a variação mensal não é ajustada por calendário.{" "}
+          {textoMesCorrente(p.mensal, p.comparacoes.janelas)}
         </p>
         <TabelaInterativa
-          titulo="Tabela equivalente: carga média mensal e variação, últimos 36 meses"
+          titulo={`Tabela equivalente: carga média mensal e variação, últimos ${num(mensal.length, 0)} meses`}
           colunas={COLUNAS_MENSAL}
           linhas={paraTabela(mensal)}
           chaveLinha="id"
           colunaRotulo="m"
           fonte={fonte}
           versao={versao}
-          nomeArquivo="carga-mensal-36-meses"
+          nomeArquivo="carga-mensal"
+          chaveUrl="mes.t"
           ordemInicial={{ coluna: "m", direcao: "desc" }}
         />
       </div>
@@ -255,6 +259,7 @@ export function CargaNivel({
           fonte={fonte}
           versao={versao}
           nomeArquivo="carga-acumulado-ano"
+          chaveUrl="acum"
           selecionado={sm}
           onSelecionar={(id) => id && definir({ sm: id as Regiao })}
         />
@@ -280,6 +285,7 @@ export function CargaNivel({
           fonte={fonte}
           versao={versao}
           nomeArquivo="carga-anual"
+          chaveUrl="ano.t"
           ordemInicial={{ coluna: "ano", direcao: "desc" }}
         />
         <p className="text-xs text-carvao-muted">Médias de {num(anual.length, 0)} anos; a tabela traz as cinco regiões, o gráfico a região escolhida.</p>

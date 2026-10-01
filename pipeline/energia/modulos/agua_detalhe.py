@@ -10,8 +10,12 @@ Fontes (seção "Fontes verificadas" em docs/observatorios/energia/modulos/agua.
   reservatório (base diária); cadastro de reservatórios; contornos das bacias;
   precipitação diária observada (2020 e 2021, só para conferência); dicionários de dados;
   carga verificada por área geoelétrica (um dia, para conferir estado → subsistema);
-- ONS no silver principal (só leitura): EAR e ENA por subsistema; balanço de energia;
+- ONS no silver principal (só leitura): EAR e ENA por subsistema; balanço de energia. Os
+  arquivos por subsistema de 2025 e 2026 são recapturados pelo módulo junto com os por
+  REE, bacia e reservatório; em cada ano vale a captura mais recente das duas, para que
+  todos os blocos da gold usem o mesmo valor do ONS para o mesmo dia;
 - NASA POWER: precipitação IMERG (GPM) e temperatura MERRA-2/GEOS-IT por ponto;
+- Open-Meteo (API de rodadas individuais): PREVISÃO do ECMWF IFS 0,25°, rodada de 00Z;
 - IBGE: sedes municipais (Localidades 2022) e população do Censo 2022 (SIDRA 4709).
 
 Por que tanto cuidado com unidade e perímetro:
@@ -25,7 +29,9 @@ Por que tanto cuidado com unidade e perímetro:
   resíduo perto de zero é consequência da construção, não prova independente;
 - a variação da EAR de um subsistema é decomposta por reservatório (identidade conferida
   contra o conjunto por subsistema); a ENA aparece ao lado como contexto, nunca como
-  explicação única.
+  explicação única;
+- um recorte só é comparado com o próprio passado no mesmo perímetro: os REE mudaram no
+  fim de 2017 (configuracao_ree) e EAR máxima zero é "não se aplica", não 0%.
 """
 import calendar
 import hashlib
@@ -95,7 +101,7 @@ ANO_MIN_HIDRO = 2025
 BASE_CLIMA = (2001, 2025)       # climatologia: anos completos 2001 a 2025
 JANELA = 30
 DIAS_EAR_DIARIA = 120           # EAR diária por subsistema na gold
-DIAS_SERIES_RES = 45            # séries diárias dos maiores reservatórios na gold
+DIAS_SERIES_RES = 45            # séries diárias dos reservatórios (agua_reservatorios_45d.json)
 DIAS_TEMP_DIARIA = 45           # temperatura diária com a faixa na gold (o CSV traz tudo)
 UF_DESDE = "2019-01-01"          # temperatura por UF no silver e no CSV
 
@@ -144,9 +150,10 @@ DOWNLOADS_DS = {
     "ena_bacia": ["/energia/series/agua_ear_recortes_diario.csv", "/energia/series/agua_ear_recortes_mensal.csv"],
     "ear_res": ["/energia/series/agua_capacidade_eventos.csv"],
     "ena_res": ["/energia/series/agua_mlt_mudancas.csv"],
-    "hidro_res": ["/energia/series/agua_reservatorios.csv", "/energia/series/agua_reservatorios_diario.csv"],
+    "hidro_res": ["/energia/series/agua_reservatorios.csv", "/energia/series/agua_reservatorios_diario.csv",
+                  "/energia/series/agua_reservatorios_45d.json"],
     "cadastro": ["/energia/series/agua_reservatorios.csv"],
-    "bacias_shp": ["/energia/series/agua_clima_pontos.csv"],
+    "bacias_shp": ["/energia/series/agua_clima_pontos.csv", "/energia/series/agua_bacias_geo.json"],
 }
 # quebras conhecidas e conferidas nos próprios arquivos (detalhes no documento do módulo).
 # origem PLATAFORMA = identificada pela Scrutiniums no dado (o ONS não a declara no
@@ -295,6 +302,18 @@ REGISTRO = {
             "Dados hidráulicos diários dos reservatórios com volume útil, últimos 365 dias. Colunas: data; id; "
             "vol_util_pct; dv_hm3; q_afluente, q_defluente, q_turbinada, q_vertida, q_outras, q_transferida, "
             "q_natural (m³/s); residuo_hm3. Ausência = vazio."),
+        "/energia/series/agua_reservatorios_45d.json": (
+            "Séries diárias dos últimos 45 dias (a janela do balanço e as duas semanas anteriores) dos reservatórios da "
+            "lista da gold (EAR máxima positiva no dia da EAR), lidas pela página sob demanda. Campos: fim (último dia); d0 "
+            "(primeiro dia); passo_dias (1); criterio; reservatorios[] com id (id_reservatorio do ONS), nome, d0, "
+            "passo_dias e os arrays vol (volume útil, % do volume útil total), afl, defl, turb, vert (vazões afluente, "
+            "defluente, turbinada e vertida, m³/s); o ponto i é o dia d0 + i; null = sem dado no dia (nunca preenchido)."),
+        "/energia/series/agua_bacias_geo.json": (
+            "Contornos das bacias hidrográficas do ONS para o mapa, no formato das malhas de public/energia/geo: Albers "
+            "cônica equivalente com a mesma grade de 100 m da camada de UF (sobreponíveis), Douglas-Peucker por anel com "
+            "tolerância de 1 km. Campos: camada; fonte; url; capturado_em e sha256 do zip original no bronze; projecao; "
+            "simplificacao; viewBox; contagem; conciliacao (polígonos do shapefile reunidos em cada bacia); features[] com "
+            "id (nome da bacia nos conjuntos do ONS), nome, uf (vazio) e d (caminho SVG)."),
     },
 }
 
@@ -684,6 +703,80 @@ def _pontos_precipitacao(con, st):
     base.grava_registros(con, DS_PONTOS_PR, vid, regs + _remocoes(con, DS_PONTOS_PR, regs))
     con.commit()
     return pontos
+
+
+TOL_GEO_BACIAS_M = 1000   # a mesma tolerância da camada de UF: invisível no mapa do país inteiro
+ARQ_GEO_BACIAS = "agua_bacias_geo.json"
+
+
+def camada_bacias(bacias, vint, origem=None):
+    """Camada das bacias do ONS para o mapa da página, no formato das malhas de
+    public/energia/geo (lib/energia/geo.ts): mesma projeção (Albers cônica equivalente) e
+    mesma grade de quantização da camada de UF, para que as duas se sobreponham sem ajuste.
+
+    Uma feature por bacia dos conjuntos do ONS (id = nome da bacia nos conjuntos, o mesmo da
+    gold), com os polígonos do shapefile que a compõem (BACIA_ONS: AMAZONAS reúne Madeira,
+    Tapajós, Xingu e outros). Cada anel é simplificado sozinho (Douglas-Peucker em metros
+    projetados): o shapefile não traz topologia, então a divisa de duas bacias vizinhas pode
+    se afastar até a tolerância, abaixo de um pixel no mapa do país. Anel que degeneraria
+    recebe tolerância menor; nenhum polígono é descartado (falha em vez de publicar sem ele)."""
+    from pipeline.energia import geo
+    origem = origem or geo.origem_da_grade()
+    por_bacia, poligonos, reduzidos = defaultdict(list), defaultdict(list), 0
+    for b in bacias:
+        if not b["bacia_ons"]:
+            raise ValueError(f"polígono {b['nome_shape']} sem bacia correspondente nos conjuntos do ONS")
+        poligonos[b["bacia_ons"]].append(b["nome_shape"])
+        for anel in b["aneis"]:
+            proj = [geo.albers(lon, lat) for lon, lat in anel]
+            tol, q = TOL_GEO_BACIAS_M, None
+            while True:
+                q = geo.limpa_anel([geo.quantiza(p, origem) for p in geo.douglas_peucker(proj, tol)])
+                if geo.anel_valido(q) or tol <= 0:
+                    break
+                tol, reduzidos = tol // 2 if tol > 1 else 0, reduzidos + 1
+            if not geo.anel_valido(q):
+                raise ValueError(f"anel de {b['nome_shape']} sem área na grade de {geo.GRADE_M} m")
+            por_bacia[b["bacia_ons"]].append(geo.orienta(q, True))
+    features, caixas = [], []
+    for nome in sorted(por_bacia):
+        aneis = por_bacia[nome]
+        caixas.append(geo.caixa(aneis))
+        features.append({"id": nome, "nome": nome, "uf": "", "d": geo.caminho_svg(aneis)})
+    x0, y0 = min(cx[0] for cx in caixas), min(cx[1] for cx in caixas)
+    x1, y1 = max(cx[2] for cx in caixas), max(cx[3] for cx in caixas)
+    n_pol = sum(len(b["aneis"]) for b in bacias)
+    return {
+        "camada": "bacias_ons",
+        "titulo": "Bacias hidrográficas do SIN (contornos do ONS)",
+        "fonte": "ONS, Contornos das Bacias Hidrográficas (Bacias_Hidrograficas_SIN.zip)",
+        "url": vint["url"], "url_nomes": vint["url"],
+        "capturado_em": vint["capturado_em"], "sha256": vint["sha256"], "sha256_nomes": vint["sha256"],
+        "bronze": vint["arquivo"],
+        "malha": {"revisao": None, "nota_liberacao": "versão do conjunto de 31/01/2023 (página do conjunto no portal do ONS)",
+                  "data_nota": None, "documentacao": URLS.get("bacias_shp", "https://dados.ons.org.br/dataset/bacia_contorno"),
+                  "qualidade": "original do ONS simplificado", "formato_original": "shapefile (polígonos em graus, WGS84)"},
+        "projecao": {"nome": "Albers cônica equivalente", "paralelos_padrao": list(geo.PARALELOS_PADRAO),
+                     "meridiano_central": geo.MERIDIANO_CENTRAL, "latitude_origem": geo.LATITUDE_ORIGEM,
+                     "superficie": f"esfera autálica do GRS80 (R = {geo.R_AUTALICO} m); coordenadas de entrada em WGS84",
+                     "unidade_svg_m": geo.GRADE_M, "origem_m": [origem[0], origem[1]],
+                     "eixo_y": "para baixo (coordenada de tela do SVG)"},
+        "simplificacao": {"metodo": "Douglas-Peucker por anel (o shapefile não tem topologia: divisas vizinhas podem se afastar até a tolerância)",
+                          "tolerancia_m": TOL_GEO_BACIAS_M, "arcos_com_tolerancia_reduzida": reduzidos,
+                          "garantia": "nenhum polígono é descartado; anel que degeneraria recebe tolerância menor"},
+        "viewBox": f"{x0} {y0} {x1 - x0} {y1 - y0}",
+        "contagem": {"features": len(features), "poligonos": sum(len(a) for a in por_bacia.values()),
+                     "poligonos_origem": n_pol, "aneis": sum(len(a) for a in por_bacia.values())},
+        "conciliacao": {"nomes_sem_geometria": [], "poligonos_por_bacia": {k: sorted(v) for k, v in sorted(poligonos.items())}},
+        "features": features,
+    }
+
+
+def _camada_bacias(con):
+    v = base.ultima_vintage(con, DS_SHP, "Bacias_Hidrograficas_SIN")
+    if not v:
+        return None
+    return camada_bacias(cl.bacias_do_zip(_le_bronze(v)), v)
 
 
 def _vintage_derivada(con, ds, recurso, manifesto):
@@ -1536,6 +1629,10 @@ def _armazenamento(con, con_p, d):
             "variacao_12m_mwmes": c.r(m_ - mw[sm][um_ano], 1) if um_ano in mw[sm] else None,
             "variacao_30d_pp": c.r(v - pct[sm][_dmenos(dia, 30)], 2) if _dmenos(dia, 30) in pct[sm] else None,
             **faixa_sazonal(pct[sm], mw[sm], mx[sm], dia, ANO_INI_BACIA),
+            # o último ano com a faixa da data, no mesmo passo e com as mesmas regras dos REE e
+            # das bacias: a página desenha a faixa sazonal dos subsistemas a partir da mesma
+            # captura dos demais números (a hidrologia.json usa só o silver principal)
+            "semanal": _semanal({"pct": pct[sm], "mw": mw[sm], "max": mx[sm]}, dia, ANO_INI_BACIA),
         })
     d["_ear"] = (mw, mx, pct, dias_)
     # 4) séries: fim de mês (estoque) em MWmês desde 2000 e diária dos últimos 120 dias.
@@ -2595,21 +2692,10 @@ def _reservatorios(con, con_p, d):
                 "comparavel_com_delta_ear": False,
             },
         })
-    # séries diárias (45 dias: a janela de 30 e as duas semanas anteriores) dos 8
-    # reservatórios de maior volume útil; o CSV diário traz 365 dias de todos
-    top = sorted((x for x in lista if x["vol_util_total_hm3"]), key=lambda x: -x["vol_util_total_hm3"])[:8]
+    # séries diárias (45 dias: a janela de 30 e as duas semanas anteriores) de cada reservatório
+    # da lista: ficam em agua_reservatorios_45d.json (abaixo), lidas pela página sob demanda;
+    # na gold não caberiam (contrato, seção 5.1). O CSV diário traz 365 dias de todos.
     ini90 = _dmenos(fim, DIAS_SERIES_RES - 1)
-    series = []
-    for x in top:
-        qq = q[x["id"]]
-        # dias consecutivos de d0 a fim (dia sem dado = null, nunca preenchido)
-        ks = _dias_janela(fim, DIAS_SERIES_RES)
-        series.append({"id": x["id"], "nome": x["nome"], "d0": ini90, "passo_dias": 1,
-                       "vol": [c.r(qq["vol_util_pct"].get(k), 2) for k in ks],
-                       "afl": [c.r(qq.get("q_afluente", {}).get(k), 0) for k in ks],
-                       "defl": [c.r(qq.get("q_defluente", {}).get(k), 0) for k in ks],
-                       "turb": [c.r(qq.get("q_turbinada", {}).get(k), 0) for k in ks],
-                       "vert": [c.r(qq.get("q_vertida", {}).get(k), 0) for k in ks]})
     calc = [x for x in lista if x["balanco_calculado"]]
     # "fecha por construção": ao menos 95% dos dias com resíduo dentro do arredondamento em
     # toda a série diária disponível (a característica é do método da fonte, não da janela);
@@ -2639,7 +2725,19 @@ def _reservatorios(con, con_p, d):
         "convencao_defluencia": dict(sorted(convs.items())),
         "sem_cadastro": nao_casados,
         "decomposicao_ear": decomp,
-        "series_principais": series,
+        "series_45d": {"arquivo": f"/energia/series/{ARQ_RES_45D}", "d0": ini90, "fim": fim, "dias": DIAS_SERIES_RES},
+    }
+    # dias consecutivos de d0 a fim (dia sem dado = null, nunca preenchido)
+    ks = _dias_janela(fim, DIAS_SERIES_RES)
+    d["_res_45d"] = {
+        "fim": fim, "d0": ini90, "passo_dias": 1,
+        "criterio": d["reservatorios"]["criterio_lista"],
+        "reservatorios": [{"id": x["id"], "nome": x["nome"], "d0": ini90, "passo_dias": 1,
+                           **{k_: [c.r(q[x["id"]].get(campo, {}).get(k), casas) for k in ks]
+                              for k_, campo, casas in (("vol", "vol_util_pct", 2), ("afl", "q_afluente", 0),
+                                                       ("defl", "q_defluente", 0), ("turb", "q_turbinada", 0),
+                                                       ("vert", "q_vertida", 0))}}
+                          for x in d["reservatorios"]["lista"]],
     }
     return d
 
@@ -2686,7 +2784,9 @@ COLS_RES_CSV = ["id", "cod", "nome", "usina", "rio", "subsistema", "bacia", "ree
                 "residuo_com_transferencia_hm3", "tolerancia_dia_hm3", "dias_residuo_avaliados",
                 "dias_residuo_dentro_tolerancia_pct", "serie_inicio", "serie_fim", "serie_dias_residuo_avaliados",
                 "serie_dias_residuo_dentro_tolerancia_pct", "balanco_calculado", "motivo_sem_balanco"]
-CAMPOS_SO_CSV = ("usina", "rio", "vol_util_pct_inicio", "tolerancia_dia_hm3", "cod", "ree", "serie_inicio", "serie_fim",
+# "cod" (cod_usina) fica na gold: é a chave que liga cada parcela da decomposição da EAR (por
+# usina) ao balanço do reservatório (por id_reservatorio), sem casar nomes
+CAMPOS_SO_CSV = ("usina", "rio", "vol_util_pct_inicio", "tolerancia_dia_hm3", "ree", "serie_inicio", "serie_fim",
                  "tipo", "motivo_sem_balanco", "serie_dias_residuo_avaliados")
 
 LIM_ONS = ("O ONS informa que os dados fazem parte de um processo de consistência recorrente e podem ser atualizados "
@@ -2852,7 +2952,27 @@ def _csvs(d):
                                                       "q_natural", "residuo_hm3"], sorted(d["_res_diario_csv"]))
         downloads += [{"rotulo": "Balanço de 30 dias por reservatório (CSV)", "url": "/energia/series/agua_reservatorios.csv"},
                       {"rotulo": "Dados hidráulicos diários por reservatório, 365 dias (CSV)", "url": "/energia/series/agua_reservatorios_diario.csv"}]
+    # JSON lidos pela página sob demanda (mapa das bacias e séries de 45 dias de cada
+    # reservatório da lista): uma feature ou um reservatório por linha, diffs legíveis
+    destino = d.get("destino_csv") or base.SERIES
+    if d.get("_res_45d"):
+        _escreve_json_linhas(os.path.join(destino, ARQ_RES_45D), d["_res_45d"], "reservatorios")
+        downloads.append({"rotulo": "Séries diárias de 45 dias dos reservatórios da lista (JSON)", "url": f"/energia/series/{ARQ_RES_45D}"})
+    if d.get("_geo_bacias"):
+        _escreve_json_linhas(os.path.join(destino, ARQ_GEO_BACIAS), d["_geo_bacias"], "features")
+        downloads.append({"rotulo": "Contornos das bacias do ONS, projetados e simplificados para o mapa (JSON)",
+                          "url": f"/energia/series/{ARQ_GEO_BACIAS}"})
     return downloads
+
+
+ARQ_RES_45D = "agua_reservatorios_45d.json"
+
+
+def _escreve_json_linhas(caminho, payload, lista):
+    """Cabeçalho numa linha e um item da lista por linha (o formato das malhas em public/energia/geo)."""
+    cab = json.dumps({k: v for k, v in payload.items() if k != lista}, ensure_ascii=False, separators=(",", ":"), allow_nan=False)[:-1]
+    itens = [json.dumps(x, ensure_ascii=False, separators=(",", ":"), allow_nan=False) for x in payload[lista]]
+    return base._escreve_atomico(caminho, cab + f',"{lista}":[\n' + ",\n".join(itens) + "\n]}\n")
 
 
 def _br(v, casas=2):
@@ -2887,6 +3007,12 @@ def construir(con, ctx):
         _reservatorios(con, con_p, d)
     except RuntimeError as e:
         faltas.append(f"reservatórios: {e}")
+    try:
+        d["_geo_bacias"] = _camada_bacias(con)
+        if d["_geo_bacias"] is None:
+            faltas.append("mapa das bacias: shapefile de contornos ausente no bronze")
+    except ValueError as e:
+        faltas.append(f"mapa das bacias: {e}")
     problemas = _valida(d)
     criticos = [p for p in problemas if p.startswith("CRÍTICO")]
     if criticos:
@@ -2919,13 +3045,16 @@ REGRAS = {
     "ear_agregada": "EAR de um agregado (SIN) = soma das EAR verificadas em MWmês ÷ soma das EAR máximas em MWmês × 100. Nunca a média dos percentuais.",
     "ear_absoluta": "Energia armazenada em MWmês (energia que os reservatórios produziriam em um mês à potência média de 1 MW por MWmês), publicada pelo ONS por subsistema, REE, bacia e reservatório.",
     "capacidade": "Mudança de capacidade = variação diária da EAR máxima do subsistema acima de 0,01 MWmês; atribuída aos reservatórios cuja EAR máxima (parte própria no subsistema da usina, parte a jusante no subsistema a jusante) mudou, entrou ou saiu no mesmo dia. O resíduo do evento é publicado.",
-    "faixa_sazonal": "Mediana, 10º e 90º percentis do valor do mesmo dia do calendário nos anos completos anteriores (subsistemas e bacias desde 2001; REE desde 2016). 29/02 fica fora da distribuição e, como dia de referência, usa 28/02.",
+    "faixa_sazonal": "Mediana, 10º e 90º percentis do valor do mesmo dia do calendário nos anos completos anteriores (subsistemas, SIN e bacias desde 2001; REE desde 2016, e desde 2018 os seis com perímetro mudado na reconfiguração de 29 e 30/12/2017). Anos com EAR máxima zero ficam fora; com menos de 5 anos não há faixa; periodo_base traz os anos usados. 29/02 usa 28/02.",
+    "nao_se_aplica": "Recorte com EAR máxima zero (sem armazenamento): percentual, variações em pontos percentuais, faixa e percentil são nulos (não se aplica); a EAR em MWmês, zero, é publicada.",
+    "captura": "Para cada ano vale a captura mais recente do arquivo anual do ONS por subsistema (silver principal ou recaptura do módulo); as revisões entre as duas nos últimos 30 dias são publicadas.",
     "ena_30d": "ENA de 30 dias em % da MLT = soma da ENA bruta diária (MWmed) nos 30 dias ÷ soma da MLT vigente em cada dia (MLT implícita = ENA ÷ percentual da MLT × 100) × 100.",
-    "mlt": "A MLT não é fixa: muda quando usinas entram ou saem e quando o ONS recalcula a referência. Mudança dentro do mês, em usina existente, é tratada como revisão da referência.",
+    "mlt": "A MLT não é fixa: muda quando usinas entram ou saem e quando o ONS troca a versão da referência. Mudança dentro do mês, em usina existente, é comparada por igualdade com a MLT vigente na mesma data 1 e 2 anos antes: retorno a uma versão anterior ou versão nova. Comparação entre anos pela MLT do último dia do mês.",
     "precipitacao": "Precipitação da bacia = média ponderada pela área (cos(lat) × passo²) dos pontos de grade dentro do polígono do ONS; dia publicado só com ao menos 80% do peso com dado. Mês só com todos os dias.",
     "temperatura": "Temperatura da UF = média das células MERRA-2 mais populosas (até metade da população do estado, no máximo 6), ponderada pela população das sedes; subsistema e SIN = média das UFs ponderada pela população (Censo 2022); dia publicado com ao menos 90% da população coberta.",
     "anomalia": "Anomalia = valor ÷ média do mesmo mês (ou mesma janela) em 2001 a 2025 − 1, em %, para a chuva; diferença em °C para a temperatura.",
-    "balanco_reservatorio": "ΔV observado (hm³) = (volume útil % do fim − do início) ÷ 100 × volume útil total do cadastro; fluxos em hm³ = vazão (m³/s) × 86.400 s ÷ 10⁶; resíduo = ΔV observado − (afluência − defluência). Transferência publicada à parte, com resíduo alternativo.",
+    "balanco_reservatorio": "ΔV observado (hm³) = (volume útil % do fim − do início) ÷ 100 × volume útil total do cadastro; fluxos em hm³ = vazão (m³/s) × 86.400 s ÷ 10⁶; resíduo = ΔV observado − (afluência − defluência). Transferência publicada à parte, com resíduo alternativo. Fração de dias dentro do arredondamento na janela e na série disponível. Defluência não discriminada segundo a convenção do reservatório (defluência com ou sem as outras estruturas, detectada nos dados); convenção indeterminada = nulo.",
+    "previsao": "PREVISÃO da rodada de 00Z do ECMWF IFS 0,25° (Open-Meteo, rodadas individuais), nos mesmos pontos e com as mesmas regras de agregação da estimativa; só dias completos com valor em todos os recortes; não publicada com mais de 48 horas.",
     "decomposicao_ear": "Variação da EAR do subsistema em 30 dias = soma das variações por reservatório (parte própria no subsistema da usina; parte a jusante no subsistema a jusante). A ENA, a geração hidráulica e a chuva aparecem como contexto e não fecham balanço com a EAR.",
 }
 

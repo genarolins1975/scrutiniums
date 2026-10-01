@@ -143,6 +143,8 @@ export function textoCalendarioJanela(j: JanelaComparacao, tipo: TipoComparacao)
 export type LinhaComparacao = {
   id: string;
   sm: Regiao;
+  regiao: string;
+  comparacao: string;
   janela: JanelaId;
   rotulo: string;
   tipo: TipoComparacao;
@@ -173,6 +175,8 @@ export function linhasComparacao(p: Pick<P025, "comparacoes">, sm: Regiao, tipo:
     return {
       id: `${sm}:${j.id}:${tipo}`,
       sm,
+      regiao: NOME_REGIAO[sm],
+      comparacao: ROTULO_TIPO[tipo],
       janela: j.id,
       rotulo: cap(j.rotulo),
       tipo,
@@ -202,10 +206,12 @@ export function respostaNivel(p: Pick<P025, "comparacoes">, sm: Regiao, janela: 
   const j = p.comparacoes.janelas.find((x) => x.id === janela);
   const quem = DO_REGIAO[sm];
   if (!j) return `A gold desta publicação não traz a janela pedida para a carga ${quem}.`;
-  const periodo = `de ${dataBR(j.inicio)} a ${dataBR(j.fim)} (${j.rotulo}, ${plural(j.dias, "dia", "dias")})`;
+  // o rótulo já diz a duração quando traz número ("últimos 7 dias", "últimas 52 semanas")
+  const rot = /\d/.test(j.rotulo) ? j.rotulo : `${j.rotulo}, ${plural(j.dias, "dia", "dias")}`;
+  const periodo = `de ${dataBR(j.inicio)} a ${dataBR(j.fim)} (${rot})`;
   const n = p.comparacoes.subsistemas.find((x) => x.sm === sm)?.janelas[janela]?.[tipo] ?? null;
   if (!n) {
-    return `${cap(periodo)}, a carga ${quem} não tem comparação com as ${ROTULO_TIPO[tipo]}: falta dia aceito pela validação física numa das janelas, e a média não é calculada com dia ausente.`;
+    return `${cap(periodo)}, a carga ${quem} não tem comparação (${ROTULO_TIPO[tipo]}): falta dia aceito pela validação física numa das janelas, e a média não é calculada com dia ausente.`;
   }
   const base = `${cap(periodo)}, a carga ${quem} teve média de ${num(n.media, 0)} MWmed`;
   const ant = `${num(n.media_ant, 0)} MWmed, de ${dataBR(n.inicio_ant)} a ${dataBR(n.fim_ant)}`;
@@ -213,7 +219,9 @@ export function respostaNivel(p: Pick<P025, "comparacoes">, sm: Regiao, janela: 
     return `${base}. A janela de comparação (${ant}) está em outro regime metodológico do ONS, e por isso a diferença não é publicada como variação.`;
   }
   const ref = tipo === "equivalente" ? "a dos mesmos dias da semana 52 semanas antes" : "a das mesmas datas do ano anterior";
-  return `${base}, variação de ${sinal(n.variacao_pct, 1)}% sobre ${ref} (${ant}). ${textoCalendarioJanela(j, tipo)}`;
+  // duas casas, a precisão publicada na gold: arredondar de novo para uma casa um valor já arredondado
+  // para duas pode divergir do valor completo (11,4498 vira 11,45 e depois 11,5, quando o certo é 11,4)
+  return `${base}, variação de ${sinal(n.variacao_pct, 2)}% sobre ${ref} (${ant}). ${textoCalendarioJanela(j, tipo)}`;
 }
 
 /** Resposta do acumulado do ano, com a composição de calendário das duas janelas. */
@@ -224,10 +232,10 @@ export function respostaAcumulado(a: AcumuladoAno, sm: Regiao): string {
   const base = `No acumulado de ${dataBR(a.inicio)} a ${dataBR(a.fim)}, a carga ${quem} teve média de ${num(s.media, 0)} MWmed`;
   const ant = `${num(s.media_ant, 0)} MWmed de ${dataBR(a.inicio_ant)} a ${dataBR(a.fim_ant)}, mesmos dias da semana`;
   if (s.variacao_pct === null) return `${base}; a janela de comparação (${ant}) está em outro regime do ONS, sem variação publicada.`;
-  if (a.calendario_equivalente) return `${base}, variação de ${sinal(s.variacao_pct, 1)}% sobre ${ant}, com a mesma composição de calendário (${textoClasses(a.classes)}).`;
+  if (a.calendario_equivalente) return `${base}, variação de ${sinal(s.variacao_pct, 2)}% sobre ${ant}, com a mesma composição de calendário (${textoClasses(a.classes)}).`;
   const feriados = (xs: string[]) => (xs.length ? listaTexto(xs.map(dataBR)) : "nenhum");
   return (
-    `${base}, variação de ${sinal(s.variacao_pct, 1)}% sobre ${ant}, mas o calendário não é equivalente: ` +
+    `${base}, variação de ${sinal(s.variacao_pct, 2)}% sobre ${ant}, mas o calendário não é equivalente: ` +
     `${plural(a.classes.util, "dia útil", "dias úteis")} contra ${a.classes_ant.util}; feriados em dia útil: ${feriados(a.feriados_dia_util)} nesta janela e ${feriados(a.feriados_dia_util_ant)} na de comparação.`
   );
 }
@@ -246,6 +254,22 @@ export function linhasAcumulado(a: AcumuladoAno): LinhaAcumulado[] {
     const s = a.sm[sm];
     return { id: sm, regiao: NOME_REGIAO[sm], media: s?.media ?? null, media_ant: s?.media_ant ?? null, variacao_pct: s?.variacao_pct ?? null, mesmo_regime: s ? s.mesmo_regime : null };
   });
+}
+
+/**
+ * O que a série mensal faz com o mês corrente: a gold publica só meses completos, então o mês
+ * em curso fica de fora e aparece na janela "mês corrente"; se um dia a gold trouxer o mês
+ * parcial, o texto diz que ele compara os mesmos dias.
+ */
+export function textoMesCorrente(mensal: readonly { m: string }[], janelas: readonly JanelaComparacao[]): string {
+  const ult = mensal[mensal.length - 1]?.m;
+  if (!ult) return "Sem série mensal nesta publicação.";
+  const mc = janelas.find((j) => j.id === "mes_corrente");
+  if (mc && mc.inicio.slice(0, 7) === ult) return `O último mês (${mesAno(ult)}) é parcial, até ${dataBR(mc.fim)}, e compara os mesmos dias do mês do ano anterior.`;
+  if (mc && mc.inicio.slice(0, 7) > ult) {
+    return `A série mensal termina no último mês completo (${mesAno(ult)}); o mês corrente, parcial (${dataBR(mc.inicio)} a ${dataBR(mc.fim)}), está na janela “${mc.rotulo}” do seletor acima.`;
+  }
+  return `A série mensal termina em ${mesAno(ult)}.`;
 }
 
 /** Linhas mensais (36 meses): as mesmas do gráfico de variação e da tabela. */
@@ -326,6 +350,101 @@ export function marcosRegimes(regimes: (Regime & { observado_nos_dados?: string 
   return out;
 }
 
+/* ---------- regimes do ONS nos textos (as datas vêm da gold, nunca do código) ---------- */
+
+type RegimeGold = Regime & { observado_nos_dados?: string };
+
+/** Regime cuja descrição publicada cita o termo ("MMGD", "não despachadas"); null quando a gold não o traz. */
+export function regimeCom(regimes: readonly RegimeGold[], termo: RegExp): RegimeGold | null {
+  return regimes.find((r) => termo.test(r.descricao)) ?? null;
+}
+
+/** "declarada para 29/04/2023, observada nos dados em 01/05/2023", ou só a data declarada quando os dados não mostram outra. */
+export function datasRegime(r: RegimeGold): string {
+  return r.observado_nos_dados && r.observado_nos_dados !== r.inicio
+    ? `declarada para ${dataBR(r.inicio)}, observada nos dados em ${dataBR(r.observado_nos_dados)}`
+    : `a partir de ${dataBR(r.inicio)}`;
+}
+
+/** Inclusão da MMGD na carga, entre parênteses, com as datas da gold ("" se a gold não traz o regime). */
+export function parentesesMmgd(regimes: readonly RegimeGold[]): string {
+  const r = regimeCom(regimes, /MMGD/);
+  return r ? ` (${datasRegime(r)})` : "";
+}
+
+/** Aviso do histórico mensal: o que a série deixa de incluir antes de cada mudança de regime publicada. */
+export function textoAvisoRegimes(regimes: readonly RegimeGold[]): string {
+  const desp = regimeCom(regimes, /não despachadas/);
+  const mmgd = regimeCom(regimes, /MMGD/);
+  const partes: string[] = [];
+  if (desp) partes.push(`antes de ${dataBR(desp.inicio)} a série não inclui a previsão de usinas não despachadas`);
+  if (mmgd) partes.push(`antes da inclusão da MMGD (${datasRegime(mmgd)}) não inclui a MMGD estimada`);
+  if (!partes.length) return "A série muda de conteúdo em cada mudança de regime do ONS: o salto depois de cada marca não é, por si, aumento de consumo.";
+  return `${cap(listaTexto(partes))}: o salto depois de cada marca não é, por si, aumento de consumo.`;
+}
+
+/** Índice do regime que contém o mês inteiro ("2021-08"); null quando o mês atravessa uma mudança ou fica fora. */
+export function regimeDoMes(regimes: readonly RegimeGold[], mes: string): number | null {
+  const ini = `${mes}-01`;
+  // dia 0 do mês seguinte é o último dia deste
+  const ultimo = new Date(Date.UTC(Number(mes.slice(0, 4)), Number(mes.slice(5, 7)), 0)).toISOString().slice(0, 10);
+  const i = regimes.findIndex((r) => r.inicio <= ini && (r.fim === null || r.fim >= ini));
+  if (i < 0) return null;
+  const fim = regimes[i].fim;
+  return fim === null || fim >= ultimo ? i : null;
+}
+
+/** O que o regime acrescentou, pela primeira frase da descrição publicada ("Inclui a previsão..." vira "a previsão..."). */
+function acrescimoRegime(r: RegimeGold): string {
+  return r.descricao.split(". ")[0].replace(/\.$/, "").replace(/^Inclui (também )?/, "");
+}
+
+/**
+ * Aviso de comparação de perfis da curva entre meses de regimes diferentes do ONS (a curva mudou de
+ * conteúdo em cada regime), com o que entrou e quando, lidos da gold. null quando todos os meses
+ * estão no mesmo regime.
+ */
+export function textoQuebraCurva(regimes: readonly RegimeGold[], meses: readonly string[]): string | null {
+  if (meses.length < 2) return null;
+  const idx = meses.map((m) => regimeDoMes(regimes, m));
+  if (idx.every((i) => i !== null && i === idx[0])) return null;
+  const a = meses.reduce((x, y) => (y < x ? y : x));
+  const b = meses.reduce((x, y) => (y > x ? y : x));
+  const mudancas = regimes
+    .slice(1)
+    .filter((r) => r.inicio.slice(0, 7) > a && r.inicio.slice(0, 7) <= b)
+    .map((r) => `${acrescimoRegime(r)} (${datasRegime(r)})`);
+  return (
+    `A curva de carga mudou de conteúdo entre os meses escolhidos${mudancas.length ? `: passou a incluir ${listaTexto(mudancas)}` : ""}. ` +
+    "A diferença entre as curvas mistura mudança de medida e de consumo. Na carga verificada a definição é a mesma em todos os anos."
+  );
+}
+
+/* ---------- diferença entre a carga global da API e a curva, por hora ---------- */
+
+export type DiferencaHora = { hora: number; horas: number; diferenca_mwmed: number | null; diferenca_pct: number | null };
+
+/**
+ * Onde a carga global da API fica mais longe da curva, nas mesmas horas: a menor e a maior
+ * diferença por hora do dia, lidas da gold (nada de "mais à noite" escrito à mão).
+ */
+export function textoDiferencaHoraria(porHora: readonly DiferencaHora[]): string | null {
+  const v = porHora.filter((x): x is DiferencaHora & { diferenca_pct: number } => x.diferenca_pct !== null && x.horas > 0);
+  if (!v.length) return null;
+  const max = v.reduce((a, b) => (b.diferenca_pct > a.diferenca_pct ? b : a));
+  const min = v.reduce((a, b) => (b.diferenca_pct < a.diferenca_pct ? b : a));
+  const dias = Math.max(...v.map((x) => x.horas));
+  const quadro = v.every((x) => x.diferenca_pct > 0)
+    ? "a carga global ficou acima da curva em todas as horas do dia"
+    : v.every((x) => x.diferenca_pct < 0)
+      ? "a carga global ficou abaixo da curva em todas as horas do dia"
+      : "a diferença entre a carga global e a curva muda de sinal ao longo do dia";
+  return (
+    `${dias === 1 ? "no último dia" : `nos últimos ${num(dias, 0)} dias`} do SIN, ${quadro}, de ${sinal(min.diferenca_pct, 2)}% na hora das ${rotuloHora(min.hora)} ` +
+    `a ${sinal(max.diferenca_pct, 2)}% na hora das ${rotuloHora(max.hora)}`
+  );
+}
+
 /** Resumo das revisões entre capturas, com a magnitude (seção 11.6: magnitude e alcance, não só contagem). */
 export function textoRevisoes(r: P025["revisoes"]): string {
   if (!r.total) return `Nenhum valor revisado entre as ${plural(r.capturas_diaria.length, "captura", "capturas")} da carga diária guardadas.`;
@@ -387,7 +506,7 @@ export function respostaPerfil(p: P026, sm: Regiao): string {
   const m = ultimoMesCompletoMmgd(p, sm);
   partes.push(
     m
-      ? `Em ${mesAno(m.m)}, a MMGD estimada pelo ONS foi ${num(m.mmgd_pct, 1)}% da carga global ${quem} na carga verificada (${num(m.mmgd, 0)} de ${num(m.global, 0)} MWmed, média do mês).`
+      ? `Em ${mesAno(m.m)}, a MMGD estimada pelo ONS foi ${num(m.mmgd_pct, 2)}% da carga global ${quem} na carga verificada (${num(m.mmgd, 0)} de ${num(m.global, 0)} MWmed, média do mês).`
       : `A carga verificada não tem mês completo com MMGD para a região ${quem.replace(/^do /, "")}.`,
   );
   const anos = p.hora_pico_por_ano[sm] ?? [];
@@ -502,13 +621,13 @@ export function matrizHoraPico(
   };
 }
 
-export type LinhaHoraPicoApi = { id: string; hora: string; liquida: number; global: number };
+export type LinhaHoraPicoApi = { id: string; hora: string; liquida: number | null; global: number | null };
 
-/** Dias com pico em cada hora no ano, carga líquida e carga global da API (SIN). */
+/** Dias com pico em cada hora no ano, carga líquida e carga global da API (SIN); hora sem contagem publicada é ausência, não zero. */
 export function linhasHoraPicoApi(p: P026, ano: number): LinhaHoraPicoApi[] {
   const a = p.hora_pico_api_sin_por_ano.find((x) => x.ano === ano);
   if (!a) return [];
-  return Array.from({ length: 24 }, (_, h) => ({ id: String(h), hora: rotuloHora(h), liquida: a.contagem_liquida[h] ?? 0, global: a.contagem_global[h] ?? 0 }));
+  return Array.from({ length: 24 }, (_, h) => ({ id: String(h), hora: rotuloHora(h), liquida: a.contagem_liquida[h] ?? null, global: a.contagem_global[h] ?? null }));
 }
 
 export type MedidaPerfil = "liquida" | "global" | "mmgd" | "carga";
@@ -519,6 +638,19 @@ export const ROTULO_MEDIDA: Record<MedidaPerfil, string> = {
   mmgd: "MMGD estimada (carga verificada)",
   carga: "Carga da curva horária",
 };
+
+const MESES_EXTENSO = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+
+/** "agosto" para "2026-08". */
+export function nomeMes(mes: string): string {
+  return MESES_EXTENSO[Number(mes.slice(5, 7)) - 1] ?? mes;
+}
+
+/** Mês e tipo de dia do perfil comparado entre anos, lidos da gold ("dia útil", "agosto"); null sem perfil. */
+export function recorteEvolucao(p: Pick<P026, "perfil_evolucao">): { mes: string; classe: string; desde: string } | null {
+  const pf = p.perfil_evolucao[0];
+  return pf ? { mes: nomeMes(pf.mes), classe: ROTULO_CLASSE[pf.classe], desde: pf.mes.slice(0, 4) } : null;
+}
 
 export function anosEvolucao(p: P026): string[] {
   return p.perfil_evolucao.map((x) => x.mes.slice(0, 4));
@@ -590,11 +722,12 @@ export function barrasDecomposicao(d: DecomposicaoA07): BarraDecomposicao[] {
 
 /** Texto da decomposição escolhida, só com os números da linha (associação, não causa). */
 export function respostaDecomposicao(d: DecomposicaoA07): string {
-  const partes = barrasDecomposicao(d).map((b) => `${b.rotulo.toLowerCase()} ${num(b.valor, 1)}`);
+  // duas casas, a precisão da gold (com uma casa, 2,65 viraria 2,7 aqui e 2,6 no texto do pipeline)
+  const partes = barrasDecomposicao(d).map((b) => `${b.rotulo.toLowerCase()} ${num(b.valor, 2)}`);
   const tipo = d.comparacao === "equivalente" ? "mesmos dias da semana" : "mesmas datas";
   return (
     `De ${dataBR(d.inicio)} a ${dataBR(d.fim)} contra ${dataBR(d.inicio_ant)} a ${dataBR(d.fim_ant)} (${tipo}, ${plural(d.dias, "dia", "dias")}), ` +
-    `a carga média ${DO_REGIAO[d.sm]} variou ${sinal(d.variacao_real_pct, 2)}%. Em log × 100, a diferença de ${num(d.real_log100, 1)} se divide em ${listaTexto(partes)} ` +
+    `a carga média ${DO_REGIAO[d.sm]} variou ${sinal(d.variacao_real_pct, 2)}%. Em log × 100, a diferença de ${num(d.real_log100, 2)} se divide em ${listaTexto(partes)} ` +
     `(modelo estimado até ${dataBR(d.ultimo_dia_treino)}). É associação estatística, não causa: o resíduo é o que o modelo não reproduz.`
   );
 }
@@ -675,8 +808,8 @@ export const COLUNAS_COMPARACAO: ColunaTabela[] = [
 
 /** Tabela completa (todas as regiões e tipos), igual a carga_comparacoes.csv. */
 export const COLUNAS_COMPARACOES_TODAS: ColunaTabela[] = [
-  { id: "sm", rotulo: "Região", tipo: "texto", categorica: true },
-  { id: "tipo", rotulo: "Tipo de comparação", tipo: "texto", categorica: true },
+  { id: "regiao", rotulo: "Região", tipo: "texto", categorica: true },
+  { id: "comparacao", rotulo: "Comparação", tipo: "texto", categorica: true },
   ...COLUNAS_COMPARACAO,
 ];
 
@@ -708,3 +841,14 @@ export const COLUNAS_ACUMULADO: ColunaTabela[] = [
   { id: "variacao_pct", rotulo: "Variação", tipo: "percentual", casas: 2 },
   { id: "mesmo_regime", rotulo: "Mesmo regime do ONS", tipo: "texto" },
 ];
+
+/** Rótulos legíveis dos identificadores que a gold publica (a tabela mostra o rótulo; o CSV da fonte guarda o identificador). */
+export const ROTULO_JANELA_A07: Record<string, string> = {
+  "2026": "2026",
+  "2025_mesmas_datas": "2025, mesmas datas",
+  "2025_equivalente": "2025, mesmos dias da semana",
+};
+export const ROTULO_SITUACAO_REVISAO: Record<string, string> = {
+  revisao: "revisão",
+  correcao_de_valor_fora_do_dominio: "correção de valor fora do domínio",
+};

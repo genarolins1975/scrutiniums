@@ -11,7 +11,11 @@ Fontes (seção "Fontes verificadas" em docs/observatorios/energia/modulos/pld.m
 - ONS, dicionários de dados dos dois conjuntos: unidade do CMO (achado A03);
 - CCEE, PLD_HORARIO: lido do silver principal (ccee_pld_horario), só leitura;
 - ONS, Balanço de Energia nos Subsistemas (carga horária) e Intercâmbios entre
-  Subsistemas (fluxo horário): silver principal, só leitura;
+  Subsistemas (fluxo horário): silver principal, só leitura. A carga do balanço muda de
+  perímetro em 03/2021 e em 29/04/2023 (MMGD estimada; ver PERIMETROS_CARGA);
+- ONS, Carga Verificada (API, carga global e MMGD por área): silver do módulo Carga
+  (ons_carga.db), só leitura; peso de perímetro homogêneo da ponderada sem MMGD e
+  conferência do perímetro do balanço;
 - IBGE, IPCA número-índice (SIDRA 1737): deflator opcional;
 - ANEEL, atos anuais de limites do PLD: consumidos de pipeline.energia.regulatorio
   (módulo Regulação), nunca inferidos do menor valor observado (achado A04);

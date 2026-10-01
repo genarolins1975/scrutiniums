@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "rede_janela_horaria.json",
- "gerado_em": "2026-10-01T06:44:39Z",
+ "gerado_em": "2026-10-01T06:49:57Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "f5cba38ad40f+alterado",
+ "versao_codigo": "eec0a3121e05+alterado",
  "disponivel": true,
  "horas": [
   "2026-09-23T00:00",

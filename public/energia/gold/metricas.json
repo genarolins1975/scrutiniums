@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "metricas.json",
- "gerado_em": "2026-10-01T06:45:18Z",
+ "gerado_em": "2026-10-01T07:11:57Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "30599423bcec+alterado",
+ "versao_codigo": "eec0a3121e05+alterado",
  "disponivel": true,
  "metricas": [
   {
@@ -1875,15 +1875,17 @@
     "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
    ],
    "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
-   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Coluna não preenchida pela companhia, com prova no próprio arquivo (valores 0 ou ±1 na unidade do documento contra o outro escopo preenchido; DFC zerada contra saldo de caixa, com a DRE zerada do mesmo documento), também é ausência. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
    "validacoes": [
     "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
     "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
-    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
-    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+    "Escala conferida entre documentos da mesma companhia e escopo: o mesmo número publicado em dois documentos (exercício e comparativo da DFP seguinte; balanço de 31/12 e comparativo do ITR; trimestre e comparativo do ITR do ano seguinte) com razão de 1.000 (±0,1%) prova que uma das marcas MIL/UNIDADE está errada; os documentos ligados são convertidos para a escala da DFP mais recente (63 documentos de 12 companhias em 30/09/2026, entre eles a Equatorial Goiás de 2019 a 2021 e a Celeo Redes em 2019). O valor corrigido tem natureza ESTIMADO e nota no CSV.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub); salto de 300 vezes ou mais no ativo entre exercícios consecutivos fica listado para conferência.",
+    "Relida do BPA original nos testes: Rio Paranapanema 2025 individual, R$ 3.986.965 mil (consolidado entregue com zero, ausente); AXIA Energia Nordeste em 30/06/2021, consolidado com 1 mil e as demais contas zero (coluna não preenchida, ausente) contra 28.552.507 mil no individual."
    ],
    "limitacoes": [
-    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL).",
+    "Valor com nota escala_corrigida no CSV é ESTIMADO pelo observatório (a fonte marcou outra escala no documento)."
    ],
    "gold": "empresas.json",
    "paginas": [
@@ -1921,16 +1923,17 @@
     "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
    ],
    "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
-   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Coluna não preenchida pela companhia, com prova no próprio arquivo (valores 0 ou ±1 na unidade do documento contra o outro escopo preenchido; DFC zerada contra saldo de caixa, com a DRE zerada do mesmo documento), também é ausência. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
    "validacoes": [
     "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
     "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
-    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
-    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+    "Escala conferida entre documentos da mesma companhia e escopo: o mesmo número publicado em dois documentos (exercício e comparativo da DFP seguinte; balanço de 31/12 e comparativo do ITR; trimestre e comparativo do ITR do ano seguinte) com razão de 1.000 (±0,1%) prova que uma das marcas MIL/UNIDADE está errada; os documentos ligados são convertidos para a escala da DFP mais recente (63 documentos de 12 companhias em 30/09/2026, entre eles a Equatorial Goiás de 2019 a 2021 e a Celeo Redes em 2019). O valor corrigido tem natureza ESTIMADO e nota no CSV.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub); salto de 300 vezes ou mais no ativo entre exercícios consecutivos fica listado para conferência."
    ],
    "limitacoes": [
     "Aplicações financeiras fora de equivalentes de caixa ficam em outras contas do ativo.",
-    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL).",
+    "Valor com nota escala_corrigida no CSV é ESTIMADO pelo observatório (a fonte marcou outra escala no documento)."
    ],
    "gold": "empresas.json",
    "paginas": [
@@ -1968,16 +1971,18 @@
     "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
    ],
    "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
-   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Coluna não preenchida pela companhia, com prova no próprio arquivo (valores 0 ou ±1 na unidade do documento contra o outro escopo preenchido; DFC zerada contra saldo de caixa, com a DRE zerada do mesmo documento), também é ausência. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
    "validacoes": [
     "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
     "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
-    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
-    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+    "Escala conferida entre documentos da mesma companhia e escopo: o mesmo número publicado em dois documentos (exercício e comparativo da DFP seguinte; balanço de 31/12 e comparativo do ITR; trimestre e comparativo do ITR do ano seguinte) com razão de 1.000 (±0,1%) prova que uma das marcas MIL/UNIDADE está errada; os documentos ligados são convertidos para a escala da DFP mais recente (63 documentos de 12 companhias em 30/09/2026, entre eles a Equatorial Goiás de 2019 a 2021 e a Celeo Redes em 2019). O valor corrigido tem natureza ESTIMADO e nota no CSV.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub); salto de 300 vezes ou mais no ativo entre exercícios consecutivos fica listado para conferência.",
+    "Relida do DFC original nos testes: Ferreira Gomes 2025 individual, R$ 759 mil; CELGPAR 2025 individual, DFC entregue com zero contra saldo final de caixa de 2024 de R$ 203.811 mil (fluxos não preenchidos, ausente)."
    ],
    "limitacoes": [
     "Inclui aquisições, aplicações financeiras e resgates; não é o investimento em ativos da concessão, que não tem conta fixa.",
-    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL).",
+    "Valor com nota escala_corrigida no CSV é ESTIMADO pelo observatório (a fonte marcou outra escala no documento)."
    ],
    "gold": "empresas.json",
    "paginas": [
@@ -2015,16 +2020,18 @@
     "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
    ],
    "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
-   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Coluna não preenchida pela companhia, com prova no próprio arquivo (valores 0 ou ±1 na unidade do documento contra o outro escopo preenchido; DFC zerada contra saldo de caixa, com a DRE zerada do mesmo documento), também é ausência. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
    "validacoes": [
     "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
     "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
-    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
-    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+    "Escala conferida entre documentos da mesma companhia e escopo: o mesmo número publicado em dois documentos (exercício e comparativo da DFP seguinte; balanço de 31/12 e comparativo do ITR; trimestre e comparativo do ITR do ano seguinte) com razão de 1.000 (±0,1%) prova que uma das marcas MIL/UNIDADE está errada; os documentos ligados são convertidos para a escala da DFP mais recente (63 documentos de 12 companhias em 30/09/2026, entre eles a Equatorial Goiás de 2019 a 2021 e a Celeo Redes em 2019). O valor corrigido tem natureza ESTIMADO e nota no CSV.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub); salto de 300 vezes ou mais no ativo entre exercícios consecutivos fica listado para conferência.",
+    "Relida do DFC_MI original nos testes: CPFL Energia consolidado, 1º trimestre de 2025, R$ 2.093.648 mil (acumulado no ano)."
    ],
    "limitacoes": [
     "Método direto e indireto chegam ao mesmo total, mas as linhas internas diferem e não são publicadas aqui.",
-    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL).",
+    "Valor com nota escala_corrigida no CSV é ESTIMADO pelo observatório (a fonte marcou outra escala no documento)."
    ],
    "gold": "empresas.json",
    "paginas": [
@@ -2317,16 +2324,18 @@
     "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
    ],
    "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
-   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Coluna não preenchida pela companhia, com prova no próprio arquivo (valores 0 ou ±1 na unidade do documento contra o outro escopo preenchido; DFC zerada contra saldo de caixa, com a DRE zerada do mesmo documento), também é ausência. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
    "validacoes": [
     "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
     "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
-    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
-    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+    "Escala conferida entre documentos da mesma companhia e escopo: o mesmo número publicado em dois documentos (exercício e comparativo da DFP seguinte; balanço de 31/12 e comparativo do ITR; trimestre e comparativo do ITR do ano seguinte) com razão de 1.000 (±0,1%) prova que uma das marcas MIL/UNIDADE está errada; os documentos ligados são convertidos para a escala da DFP mais recente (63 documentos de 12 companhias em 30/09/2026, entre eles a Equatorial Goiás de 2019 a 2021 e a Celeo Redes em 2019). O valor corrigido tem natureza ESTIMADO e nota no CSV.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub); salto de 300 vezes ou mais no ativo entre exercícios consecutivos fica listado para conferência.",
+    "Recalculada nos testes a partir do BPP original: CEMIG consolidado em 31/12/2024, 2.876.548 + 9.402.752 = R$ 12.279.300 mil."
    ],
    "limitacoes": [
     "Não desconta caixa (não é dívida líquida); arrendamentos entram só quando a companhia os classifica nessas contas.",
-    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL).",
+    "Valor com nota escala_corrigida no CSV é ESTIMADO pelo observatório (a fonte marcou outra escala no documento)."
    ],
    "gold": "empresas.json",
    "paginas": [
@@ -2364,16 +2373,17 @@
     "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
    ],
    "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
-   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Coluna não preenchida pela companhia, com prova no próprio arquivo (valores 0 ou ±1 na unidade do documento contra o outro escopo preenchido; DFC zerada contra saldo de caixa, com a DRE zerada do mesmo documento), também é ausência. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
    "validacoes": [
     "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
     "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
-    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
-    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+    "Escala conferida entre documentos da mesma companhia e escopo: o mesmo número publicado em dois documentos (exercício e comparativo da DFP seguinte; balanço de 31/12 e comparativo do ITR; trimestre e comparativo do ITR do ano seguinte) com razão de 1.000 (±0,1%) prova que uma das marcas MIL/UNIDADE está errada; os documentos ligados são convertidos para a escala da DFP mais recente (63 documentos de 12 companhias em 30/09/2026, entre eles a Equatorial Goiás de 2019 a 2021 e a Celeo Redes em 2019). O valor corrigido tem natureza ESTIMADO e nota no CSV.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub); salto de 300 vezes ou mais no ativo entre exercícios consecutivos fica listado para conferência."
    ],
    "limitacoes": [
     "EBITDA não é conta padronizada e não é publicado pelo observatório.",
-    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL).",
+    "Valor com nota escala_corrigida no CSV é ESTIMADO pelo observatório (a fonte marcou outra escala no documento)."
    ],
    "gold": "empresas.json",
    "paginas": [
@@ -2411,16 +2421,18 @@
     "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
    ],
    "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
-   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Coluna não preenchida pela companhia, com prova no próprio arquivo (valores 0 ou ±1 na unidade do documento contra o outro escopo preenchido; DFC zerada contra saldo de caixa, com a DRE zerada do mesmo documento), também é ausência. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
    "validacoes": [
     "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
     "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
-    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
-    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+    "Escala conferida entre documentos da mesma companhia e escopo: o mesmo número publicado em dois documentos (exercício e comparativo da DFP seguinte; balanço de 31/12 e comparativo do ITR; trimestre e comparativo do ITR do ano seguinte) com razão de 1.000 (±0,1%) prova que uma das marcas MIL/UNIDADE está errada; os documentos ligados são convertidos para a escala da DFP mais recente (63 documentos de 12 companhias em 30/09/2026, entre eles a Equatorial Goiás de 2019 a 2021 e a Celeo Redes em 2019). O valor corrigido tem natureza ESTIMADO e nota no CSV.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub); salto de 300 vezes ou mais no ativo entre exercícios consecutivos fica listado para conferência.",
+    "Relida do BPP original nos testes: CEMIG consolidado em 31/12/2024, R$ 2.876.548 mil."
    ],
    "limitacoes": [
     "Arrendamentos entram só quando a companhia os classifica nessa conta.",
-    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL).",
+    "Valor com nota escala_corrigida no CSV é ESTIMADO pelo observatório (a fonte marcou outra escala no documento)."
    ],
    "gold": "empresas.json",
    "paginas": [
@@ -2458,16 +2470,18 @@
     "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
    ],
    "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
-   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Coluna não preenchida pela companhia, com prova no próprio arquivo (valores 0 ou ±1 na unidade do documento contra o outro escopo preenchido; DFC zerada contra saldo de caixa, com a DRE zerada do mesmo documento), também é ausência. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
    "validacoes": [
     "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
     "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
-    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
-    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+    "Escala conferida entre documentos da mesma companhia e escopo: o mesmo número publicado em dois documentos (exercício e comparativo da DFP seguinte; balanço de 31/12 e comparativo do ITR; trimestre e comparativo do ITR do ano seguinte) com razão de 1.000 (±0,1%) prova que uma das marcas MIL/UNIDADE está errada; os documentos ligados são convertidos para a escala da DFP mais recente (63 documentos de 12 companhias em 30/09/2026, entre eles a Equatorial Goiás de 2019 a 2021 e a Celeo Redes em 2019). O valor corrigido tem natureza ESTIMADO e nota no CSV.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub); salto de 300 vezes ou mais no ativo entre exercícios consecutivos fica listado para conferência.",
+    "Relida do BPP original nos testes: CEMIG consolidado em 31/12/2024, R$ 9.402.752 mil."
    ],
    "limitacoes": [
     "Arrendamentos entram só quando a companhia os classifica nessa conta.",
-    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL).",
+    "Valor com nota escala_corrigida no CSV é ESTIMADO pelo observatório (a fonte marcou outra escala no documento)."
    ],
    "gold": "empresas.json",
    "paginas": [
@@ -2545,16 +2559,17 @@
     "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
    ],
    "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
-   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Coluna não preenchida pela companhia, com prova no próprio arquivo (valores 0 ou ±1 na unidade do documento contra o outro escopo preenchido; DFC zerada contra saldo de caixa, com a DRE zerada do mesmo documento), também é ausência. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
    "validacoes": [
     "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
     "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
-    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
-    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+    "Escala conferida entre documentos da mesma companhia e escopo: o mesmo número publicado em dois documentos (exercício e comparativo da DFP seguinte; balanço de 31/12 e comparativo do ITR; trimestre e comparativo do ITR do ano seguinte) com razão de 1.000 (±0,1%) prova que uma das marcas MIL/UNIDADE está errada; os documentos ligados são convertidos para a escala da DFP mais recente (63 documentos de 12 companhias em 30/09/2026, entre eles a Equatorial Goiás de 2019 a 2021 e a Celeo Redes em 2019). O valor corrigido tem natureza ESTIMADO e nota no CSV.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub); salto de 300 vezes ou mais no ativo entre exercícios consecutivos fica listado para conferência."
    ],
    "limitacoes": [
     "Só existe no consolidado; no individual o lucro inteiro (3.11) é da companhia.",
-    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL).",
+    "Valor com nota escala_corrigida no CSV é ESTIMADO pelo observatório (a fonte marcou outra escala no documento)."
    ],
    "gold": "empresas.json",
    "paginas": [
@@ -2592,15 +2607,16 @@
     "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
    ],
    "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
-   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Coluna não preenchida pela companhia, com prova no próprio arquivo (valores 0 ou ±1 na unidade do documento contra o outro escopo preenchido; DFC zerada contra saldo de caixa, com a DRE zerada do mesmo documento), também é ausência. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
    "validacoes": [
     "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
     "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
-    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
-    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+    "Escala conferida entre documentos da mesma companhia e escopo: o mesmo número publicado em dois documentos (exercício e comparativo da DFP seguinte; balanço de 31/12 e comparativo do ITR; trimestre e comparativo do ITR do ano seguinte) com razão de 1.000 (±0,1%) prova que uma das marcas MIL/UNIDADE está errada; os documentos ligados são convertidos para a escala da DFP mais recente (63 documentos de 12 companhias em 30/09/2026, entre eles a Equatorial Goiás de 2019 a 2021 e a Celeo Redes em 2019). O valor corrigido tem natureza ESTIMADO e nota no CSV.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub); salto de 300 vezes ou mais no ativo entre exercícios consecutivos fica listado para conferência."
    ],
    "limitacoes": [
-    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL).",
+    "Valor com nota escala_corrigida no CSV é ESTIMADO pelo observatório (a fonte marcou outra escala no documento)."
    ],
    "gold": "empresas.json",
    "paginas": [
@@ -2638,15 +2654,16 @@
     "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
    ],
    "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
-   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Coluna não preenchida pela companhia, com prova no próprio arquivo (valores 0 ou ±1 na unidade do documento contra o outro escopo preenchido; DFC zerada contra saldo de caixa, com a DRE zerada do mesmo documento), também é ausência. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
    "validacoes": [
     "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
     "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
-    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
-    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+    "Escala conferida entre documentos da mesma companhia e escopo: o mesmo número publicado em dois documentos (exercício e comparativo da DFP seguinte; balanço de 31/12 e comparativo do ITR; trimestre e comparativo do ITR do ano seguinte) com razão de 1.000 (±0,1%) prova que uma das marcas MIL/UNIDADE está errada; os documentos ligados são convertidos para a escala da DFP mais recente (63 documentos de 12 companhias em 30/09/2026, entre eles a Equatorial Goiás de 2019 a 2021 e a Celeo Redes em 2019). O valor corrigido tem natureza ESTIMADO e nota no CSV.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub); salto de 300 vezes ou mais no ativo entre exercícios consecutivos fica listado para conferência."
    ],
    "limitacoes": [
-    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL).",
+    "Valor com nota escala_corrigida no CSV é ESTIMADO pelo observatório (a fonte marcou outra escala no documento)."
    ],
    "gold": "empresas.json",
    "paginas": [
@@ -2684,21 +2701,138 @@
     "Reapresentação: o comparativo da DFP seguinte pode trazer outro valor para o mesmo exercício; o CSV publica os dois quando diferem em mais de R$ 1 mil."
    ],
    "regra_cobertura": "Companhias abertas com setor de energia elétrica declarado à CVM (ou distribuidoras do índice com registro): não representa o setor inteiro.",
-   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
+   "politica_ausencia": "Conta não publicada no documento fica ausente (nunca zero). Coluna de demonstração com ativo total igual a zero (escopo que a companhia não apresentou e a CVM preenche com zero, como o consolidado de quem deixou de ter controladas) é ausência, nunca zero. Coluna não preenchida pela companhia, com prova no próprio arquivo (valores 0 ou ±1 na unidade do documento contra o outro escopo preenchido; DFC zerada contra saldo de caixa, com a DRE zerada do mesmo documento), também é ausência. Exercício curto de fato (constituição) fica fora da série anual e vai para o CSV com recorte exercicio_irregular; data de início mal preenchida pela companhia num exercício inteiro (balanço positivo no fim do ano anterior no mesmo documento) fica na série com nota.",
    "validacoes": [
     "Só contas fixas (ST_CONTA_FIXA = S) e rótulo da 3.01 iniciado por 'Receita' (plano de empresas comerciais e industriais).",
     "Escala e moeda conferidas linha a linha (REAL; MIL ou UNIDADE); outra escala é descartada e contada.",
-    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub).",
-    "Receita consolidada da CEMIG em 2024 relida do CSV original por código independente: R$ 39.819.620 mil."
+    "Escala conferida entre documentos da mesma companhia e escopo: o mesmo número publicado em dois documentos (exercício e comparativo da DFP seguinte; balanço de 31/12 e comparativo do ITR; trimestre e comparativo do ITR do ano seguinte) com razão de 1.000 (±0,1%) prova que uma das marcas MIL/UNIDADE está errada; os documentos ligados são convertidos para a escala da DFP mais recente (63 documentos de 12 companhias em 30/09/2026, entre eles a Equatorial Goiás de 2019 a 2021 e a Celeo Redes em 2019). O valor corrigido tem natureza ESTIMADO e nota no CSV.",
+    "Domínio: ativo total publicado sempre maior que zero (coluna com ativo zero é tratada como não apresentada; violação restante vira stub); salto de 300 vezes ou mais no ativo entre exercícios consecutivos fica listado para conferência.",
+    "Relida do CSV original por código independente nos testes: CEMIG consolidado 2024, R$ 39.819.620 mil; CEMIG 2º trimestre de 2025, R$ 10.786.295 mil (trimestre) e R$ 20.630.526 mil (acumulado); Equatorial Goiás 2021 individual, R$ 9.735.479 mil depois da correção de escala (a DFP 2021 marca UNIDADE; a DFP 2022 traz o mesmo número em MIL)."
    ],
    "limitacoes": [
     "Nas distribuidoras inclui receita de construção da infraestrutura da concessão, com custo equivalente.",
-    "Demonstrações societárias (CVM), não regulatórias (ANEEL)."
+    "Demonstrações societárias (CVM), não regulatórias (ANEEL).",
+    "Valor com nota escala_corrigida no CSV é ESTIMADO pelo observatório (a fonte marcou outra escala no documento)."
    ],
    "gold": "empresas.json",
    "paginas": [
     "/setor-eletrico/empresas",
     "/setor-eletrico/empresas/[entidade]"
+   ],
+   "arquivo": "pipeline/energia/metricas/empresas.py"
+  },
+  {
+   "id": "empresas_transmissao_cobertura_cnpj",
+   "titulo": "Módulos de transmissão ligados ao CNPJ",
+   "pergunta": "Que parte dos ativos de transmissão do SIGET tem a concessionária identificada por CNPJ?",
+   "definicao": "Módulos do SIGET cujo contrato proprietário tem CNPJ publicado no recurso de contratos, divididos pelos módulos distintos do SIGET.",
+   "unidade": "% dos módulos",
+   "grao_geografico": "Brasil",
+   "grao_temporal": "fotografia do SIGET",
+   "fontes": [
+    "aneel_siget"
+   ],
+   "numerador": "módulos com contrato proprietário ligado a um CNPJ",
+   "denominador": "módulos distintos do SIGET",
+   "formula": "100 × numerador ÷ denominador",
+   "regra_agregacao": "Razão de contagens de módulos distintos.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "tipo de módulo"
+   ],
+   "regras_comparabilidade": [
+    "Comparar só fotografias do SIGET."
+   ],
+   "regra_cobertura": "Todos os módulos do recurso 'SIGET - Contrato Empreendimento Obra Módulo'.",
+   "politica_ausencia": "Contrato sem CNPJ na fonte (1 em 29/09/2026, sem módulos) fica fora e é contado.",
+   "validacoes": [
+    "Um único contrato proprietário por módulo (nenhum módulo com dois em 29/09/2026)."
+   ],
+   "limitacoes": [
+    "Cobre os contratos de concessão registrados no SIGET."
+   ],
+   "gold": "empresas.json",
+   "paginas": [
+    "/setor-eletrico/empresas"
+   ],
+   "arquivo": "pipeline/energia/metricas/empresas.py"
+  },
+  {
+   "id": "empresas_transmissao_km_circuito",
+   "titulo": "Linhas de transmissão por concessionária (km de circuito)",
+   "pergunta": "Quantos quilômetros de circuito de transmissão em operação cada concessionária detém?",
+   "definicao": "Soma da extensão (NumEtnLinTms) dos módulos de linha ativos do SIGET cujo contrato proprietário (IdeCcdProprietario) é da concessionária, contando só os módulos com alguma obra em operação ou concluída. Cada módulo de linha é um circuito.",
+   "unidade": "km de circuito",
+   "grao_geografico": "concessionária de transmissão (CNPJ) e grupo (topo da cadeia de controle)",
+   "grao_temporal": "fotografia do SIGET (arquivo gerado diariamente)",
+   "fontes": [
+    "aneel_siget"
+   ],
+   "formula": "km(e) = Σ_m NumEtnLinTms(m) × [contrato_proprietário(m) tem CNPJ e] × [linha ativa] × [obra em operação]",
+   "regra_agregacao": "Soma por CNPJ e por grupo; cada módulo pertence a um só contrato e conta uma vez (o arquivo repete o módulo por obra).",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "concessionária",
+    "grupo",
+    "situação do módulo"
+   ],
+   "regras_comparabilidade": [
+    "km de circuito, não km de traçado: linha de circuito duplo conta duas vezes; não se compara com o comprimento de geometria da EPE.",
+    "Vínculo pelo CNPJ publicado no recurso 'SIGET - Contrato Agente'; nenhum vínculo por nome."
+   ],
+   "regra_cobertura": "Módulos de linha registrados no SIGET em contratos de concessão de transmissão (1.567 em 29/09/2026, todos com extensão no recurso de linhas e com contrato ligado a CNPJ).",
+   "politica_ausencia": "Linha desativada é contada à parte; linha sem obra em operação fica em implantação; módulo sem extensão ficaria fora da soma (nenhum em 29/09/2026).",
+   "validacoes": [
+    "CNPJ completado com zeros à esquerda (115 contratos publicam o número sem os zeros) e conferido no cadastro de agentes: os 298 CNPJ com módulos estão no cadastro com o ramo transmissão declarado.",
+    "Recalculada nos testes por leitura independente do recorte real do SIGET (contratos 012/2007 da AXIA Nordeste e 011/2007 da ATE VI)."
+   ],
+   "limitacoes": [
+    "Instalações de transmissão fora dos contratos registrados no SIGET não estão na medida."
+   ],
+   "gold": "empresas.json",
+   "paginas": [
+    "/setor-eletrico/empresas"
+   ],
+   "arquivo": "pipeline/energia/metricas/empresas.py"
+  },
+  {
+   "id": "empresas_transmissao_subestacoes",
+   "titulo": "Subestações com equipamento da concessionária",
+   "pergunta": "Em quantas subestações cada concessionária tem equipamento em operação?",
+   "definicao": "Número de subestações distintas (IdeSbe) em que a concessionária tem módulo de equipamento (transformador, reator, capacitor, compensador, conversora) em operação, pelo contrato proprietário do módulo.",
+   "unidade": "subestações",
+   "grao_geografico": "concessionária de transmissão (CNPJ) e grupo",
+   "grao_temporal": "fotografia do SIGET",
+   "fontes": [
+    "aneel_siget"
+   ],
+   "formula": "subestações(e) = |{IdeSbe(m) : m módulo de equipamento do CNPJ e em operação}|",
+   "regra_agregacao": "Contagem de distintos; no grupo, união das subestações das empresas (sem contar duas vezes). Não somar entre CNPJ: a mesma subestação pode ter módulos de mais de uma concessionária.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "concessionária",
+    "grupo"
+   ],
+   "regras_comparabilidade": [
+    "O SIGET aberto liga à subestação só os módulos de equipamento; manobra e módulo geral ficam sem subestação."
+   ],
+   "regra_cobertura": "4.318 módulos de equipamento em 29/09/2026, todos com subestação no recurso de equipamentos.",
+   "politica_ausencia": "Concessionária só com linhas (sem módulo de equipamento) tem zero subestações por esta definição, o que não significa ausência de pátio de manobra.",
+   "validacoes": [
+    "Subestações distintas do SIGET inteiro publicadas ao lado (625 com equipamento em operação em 29/09/2026)."
+   ],
+   "limitacoes": [
+    "Não mede a propriedade da subestação inteira; mede presença de equipamento da concessionária nela."
+   ],
+   "gold": "empresas.json",
+   "paginas": [
+    "/setor-eletrico/empresas"
    ],
    "arquivo": "pipeline/energia/metricas/empresas.py"
   },
@@ -2821,7 +2955,8 @@
    "politica_ausencia": "Unidade sem liberação no arquivo conta como não liberada até a data do arquivo.",
    "validacoes": [
     "Partição: no prazo + depois + não liberada = prometida em todas as fotografias.",
-    "Vínculo exato por (IdeNucleoCEG, NumUgUsina); grupos '1 a 5' do arquivo de liberações são expandidos, texto não numérico não é vinculado."
+    "Vínculo exato por (IdeNucleoCEG, NumUgUsina); grupos '1 a 5' do arquivo de liberações são expandidos, texto não numérico não é vinculado.",
+    "Unidades de usina com potência fora de escala na fotografia (soma 10 vezes a outorga ou mais) excluídas da janela."
    ],
    "limitacoes": [
     "Unidade renumerada entre a fotografia e a liberação aparece como não liberada."
@@ -2843,9 +2978,9 @@
    "fontes": [
     "aneel_siget"
    ],
-   "formula": "km(ano) = Σ NumEtnLinTms dos módulos LT de obras de Instalação dos contratos assinados no ano (objeto original); MVA(ano) = Σ MdaPotAtvMdlEqp dos transformadores",
+   "formula": "km(ano) = Σ NumEtnLinTms dos módulos LT de obras de Instalação dos contratos assinados no ano (objeto original); MVA(ano) = Σ MdaPotAtvMdlEqp dos transformadores de finalidade principal (reserva em mva_tr_reserva)",
    "regra_agregacao": "Somas por ano de assinatura, cada grandeza no seu campo.",
-   "versao_formula": "1",
+   "versao_formula": "2",
    "natureza_fonte": "OBSERVADO",
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
@@ -2875,8 +3010,8 @@
    "id": "expansao_desfecho_coortes",
    "titulo": "Desfecho das usinas que passaram pelo RALIE",
    "pergunta": "Das usinas que estavam em implantação, quantas entraram em operação, tiveram a outorga encerrada ou saíram sem desfecho?",
-   "definicao": "Cada usina do Parquet histórico do RALIE é classificada, nesta ordem: em implantação (consta na fotografia mais recente); operação (fase Operação no SIGA ou todas as unidades da primeira fotografia liberadas para operação comercial); outorga encerrada (ato de revogação ou extinção publicado depois da primeira aparição); sem desfecho. Agrupadas por coorte (estoque da primeira fotografia e ano de entrada no RALIE), ponderadas pela potência outorgada na primeira aparição.",
-   "unidade": "% do MW outorgado na primeira fotografia e usinas",
+   "definicao": "Cada usina do Parquet histórico do RALIE é classificada, nesta ordem: em implantação (consta na fotografia mais recente); operação (todas as unidades da primeira fotografia liberadas para operação comercial, ou fase Operação no SIGA quando a usina não operava antes da primeira fotografia); outorga encerrada (ato de revogação ou extinção publicado depois da primeira aparição, ou ato de encerramento sem data de publicação na fonte); sem desfecho. Em ampliação de usina que já operava antes da primeira fotografia (entrada em operação no SIGA ou liberação comercial anterior), a fase Operação do SIGA reflete a parte antiga e não conta: só a liberação de todas as unidades da ampliação. Agrupadas por coorte (estoque da primeira fotografia e ano de entrada no RALIE), ponderadas pela potência das unidades em implantação na primeira aparição, limitada à outorga da usina.",
+   "unidade": "% do MW em implantação na primeira fotografia e usinas",
    "grao_geografico": "Brasil; usina (CSV)",
    "grao_temporal": "coorte (primeira fotografia ou ano de entrada)",
    "fontes": [
@@ -2885,11 +3020,11 @@
     "aneel_liberacao_comercial",
     "aneel_atos_outorga_geracao"
    ],
-   "numerador": "Σ kW outorgado na primeira fotografia das usinas da coorte com o desfecho",
-   "denominador": "Σ kW outorgado na primeira fotografia de todas as usinas da coorte",
-   "formula": "pct(desfecho, coorte) = 100 × Σ kW(desfecho) ÷ Σ kW(coorte)",
-   "regra_agregacao": "Razão de somas de potência; desfechos disjuntos e exaustivos (somam 100%).",
-   "versao_formula": "1",
+   "numerador": "Σ peso das usinas da coorte com o desfecho; peso = min(Σ MdaPotenciaUnitaria das unidades da primeira fotografia, MdaPotenciaOutorgadaKw da usina na mesma fotografia)",
+   "denominador": "Σ peso de todas as usinas da coorte",
+   "formula": "pct(desfecho, coorte) = 100 × Σ peso(desfecho) ÷ Σ peso(coorte)",
+   "regra_agregacao": "Razão de somas de potência; desfechos disjuntos e exaustivos (somam 100%). A potência outorgada da usina sai ao lado (mw_outorgado), como contexto.",
+   "versao_formula": "2",
    "natureza_fonte": "OBSERVADO",
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
@@ -2905,10 +3040,12 @@
    "regra_cobertura": "Usinas presentes em alguma fotografia do Parquet histórico desde 17/06/2021; vínculo pelo núcleo do CEG.",
    "politica_ausencia": "Usina sem operação nem ato de encerramento fica em 'sem desfecho', nunca em operação.",
    "validacoes": [
-    "Soma dos desfechos igual ao total da coorte."
+    "Soma dos desfechos igual ao total da coorte.",
+    "Peso limitado à outorga: unidade com potência fora de escala na primeira fotografia (Belvedere 1, 14 unidades somando 45 GW para 45 MW outorgados em 17/06/2021) não domina a coorte."
    ],
    "limitacoes": [
     "Usina em operação parcial que segue no RALIE conta como em implantação.",
+    "Ampliação sem liberação das unidades no arquivo de liberações fica em sem desfecho (ou outorga encerrada, se houver ato), mesmo com a usina em operação no SIGA.",
     "Sem desfecho não é abandono: pode ser mudança de CEG, saída do acompanhamento, ato fora do conjunto ou ato de revogação publicado sem núcleo nem código do CEG (320 atos e 13.446,8 MW em 30/09/2026, 293 de 2026 e 27 de 2025), que não se liga a nenhuma usina do RALIE."
    ],
    "gold": "expansao.json",
@@ -2945,7 +3082,8 @@
    "regra_cobertura": "Pares de fotografias mensais do Parquet histórico.",
    "politica_ausencia": "Unidade sem previsão em uma das fotografias fica fora do par.",
    "validacoes": [
-    "Parcelas adiada + mantida + antecipada somam 100% do par."
+    "Parcelas adiada + mantida + antecipada somam 100% do par.",
+    "Unidades de usina com potência fora de escala na fotografia (soma 10 vezes a outorga ou mais) excluídas do par."
    ],
    "limitacoes": [
     "Viés de sobrevivência: o par só contém unidades que não entraram em operação no intervalo.",
@@ -2989,7 +3127,8 @@
    "regra_cobertura": "Usinas acompanhadas pela fiscalização (o arquivo não cobre todo o SIGA).",
    "politica_ausencia": "Linha sem data outorgada fica fora da mediana e das parcelas.",
    "validacoes": [
-    "Potência em kW do campo MdaPotenciaLiberadaComercial (o campo unitário mistura MW e kW em linhas antigas)."
+    "Potência em kW do campo MdaPotenciaLiberadaComercial (o campo unitário mistura MW e kW em linhas antigas).",
+    "Denominador publicado: mw_com_data_outorgada e unidades_ou_grupos_com_data_outorgada; linhas sem data outorgada em campos próprios (os percentuais se reconstroem da gold)."
    ],
    "limitacoes": [
     "A data outorgada é a vigente na publicação: cronograma alterado por ato posterior é medido contra a data alterada.",
@@ -3022,7 +3161,8 @@
    "dimensoes": [
     "ano",
     "tipo de encerramento",
-    "tipo de geração",
+    "tipo de geração do ato",
+    "tipo de geração no cadastro do SIGA",
     "situação no SIGA"
    ],
    "regras_comparabilidade": [
@@ -3041,7 +3181,8 @@
     "Encerramentos anteriores a 2015 não constam do conjunto.",
     "O ano corrente é parcial e é marcado (ano_parcial); não compete com anos completos.",
     "Atos sem núcleo nem código do CEG na fonte (320 em 30/09/2026, quase todos de 2025 e 2026) não se ligam a nenhuma usina e não são deduplicados.",
-    "Usina sem cadastro no SIGA nem no RALIE (734 atos em 30/09/2026) só tem a potência do ato e o limite do tipo como controle."
+    "Usina sem cadastro no SIGA nem no RALIE (734 atos em 30/09/2026) só tem a potência do ato e o limite do tipo como controle.",
+    "O tipo por_tipo é o do ato (a outorga encerrada); o tipo atual no SIGA sai em por_tipo_no_cadastro. Divergem na conversão de regime (concessão ou autorização de PCH ou UHE extinta e usina em operação como CGH sob registro); a conferência de potência usa o tipo do cadastro."
    ],
    "gold": "expansao.json",
    "paginas": [
@@ -3074,8 +3215,8 @@
     "MW é potência instalada ou outorgada, não energia: a produção depende do fator de capacidade de cada fonte, e garantia física ou energia firme são outras grandezas.",
     "MW nominal não indica capacidade firme de escoamento; a comparação é temporal e territorial, não de suficiência."
    ],
-   "regra_cobertura": "UFs com geração no RALIE ou obra de transmissão em andamento.",
-   "politica_ausencia": "UF sem obra em andamento aparece com 0 empreendimentos (contagem real), não com ausência.",
+   "regra_cobertura": "UFs com geração no RALIE, obra de transmissão em andamento no SIGET ou linha no WebMap da EPE (as 27 UFs em 01/10/2026).",
+   "politica_ausencia": "UF sem unidade no RALIE ou sem obra em andamento aparece com 0 (zero observado: os dois arquivos listam todo o seu universo), não com ausência; sem a camada da EPE, os campos da EPE são nulos.",
    "validacoes": [
     "Nenhum campo soma grandezas de unidades diferentes."
    ],
@@ -3124,7 +3265,8 @@
    ],
    "limitacoes": [
     "Reais nominais da data de cada leilão, sem correção monetária.",
-    "Investimento é o previsto no edital, não o realizado."
+    "Investimento é o previsto no edital, não o realizado.",
+    "O MVA dos lotes não segue uma convenção única para o transformador reserva: lotes antigos o incluem ('(6+1) x 250 MVA' = 1.750 MVA no 004/2000, lote 1) e recentes informam só o principal (001/2024, lote 8: '(3+1Res) x 500 MVA' = 1.500 MVA). A série de MVA leiloado mistura as duas convenções e não se compara diretamente com o MVA novo do SIGET, que exclui a reserva."
    ],
    "gold": "expansao.json",
    "paginas": [
@@ -3136,16 +3278,16 @@
    "id": "expansao_obras_transmissao",
    "titulo": "Obras de transmissão: extensão, transformação e prazos",
    "pergunta": "Quanta rede está em obra e quanto dela já passou do prazo do ato legal?",
-   "definicao": "Por empreendimento do SIGET: km de circuito dos módulos de linha e MVA dos transformadores de potência com obra do tipo Instalação; prazo do ato legal (DatOprComEpd) e data efetiva (DatEfeOprComEpd). Prazo vencido = empreendimento em andamento ou planejado com data do ato legal anterior à data do arquivo.",
+   "definicao": "Por empreendimento do SIGET: km de circuito dos módulos de linha e MVA dos transformadores de potência de finalidade principal com obra do tipo Instalação (transformador reserva em campo próprio, fora do MVA novo); prazo vigente do ato legal (DatOprComEpd) e data efetiva (DatEfeOprComEpd). Prazo vencido = empreendimento em andamento ou planejado com data do ato legal anterior à data do arquivo. Data efetiva menos prazo do ato legal é desvio em relação ao prazo vigente (já revisto quando houve ato posterior), não atraso com data-base.",
    "unidade": "km de circuito, MVA, empreendimentos e dias",
    "grao_geografico": "empreendimento; UF das subestações (tabela por UF)",
    "grao_temporal": "fotografia diária do SIGET; ano de energização (DatOprComObr)",
    "fontes": [
     "aneel_siget"
    ],
-   "formula": "km(emp) = Σ NumEtnLinTms dos módulos LT distintos com obra de Instalação; MVA(emp) = Σ MdaPotAtvMdlEqp dos transformadores de potência",
-   "regra_agregacao": "Somas por grandeza e situação; módulo listado em mais de um empreendimento conta uma vez, no empreendimento da obra de Instalação mais antiga; atraso realizado por ano como mediana e percentis de (efetiva − ato legal).",
-   "versao_formula": "1",
+   "formula": "km(emp) = Σ NumEtnLinTms dos módulos LT distintos com obra de Instalação; MVA(emp) = Σ MdaPotAtvMdlEqp dos transformadores de potência com DscFinMdlEqp diferente de 'Reserva'",
+   "regra_agregacao": "Somas por grandeza e situação; módulo listado em mais de um empreendimento conta uma vez, no empreendimento da obra de Instalação mais antiga; desvio em relação ao prazo vigente por ano como mediana e percentis de (efetiva − ato legal), com a contagem de empreendimentos em que as duas datas coincidem.",
+   "versao_formula": "2",
    "natureza_fonte": "OBSERVADO",
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
@@ -3156,6 +3298,7 @@
    "regras_comparabilidade": [
     "km de circuito: no SIGET cada circuito é um módulo de linha com a extensão da linha (NumEtnLinTms), então linha de circuito duplo ou bipolo conta cada circuito.",
     "Reatores e capacitores (Mvar) não entram no MVA de transformação.",
+    "Transformador reserva (DscFinMdlEqp = 'Reserva') não acrescenta capacidade: fica em mva_tr_reserva (5.589,6 MVA dos 53.111,3 MVA de transformadores em obras em andamento em 29/09/2026).",
     "Linha interestadual aparece nas duas UFs na tabela por UF: a soma das UFs supera o total nacional."
    ],
    "regra_cobertura": "Empreendimentos com contrato de concessão cadastrados no SIGET.",
@@ -3165,7 +3308,8 @@
    ],
    "limitacoes": [
     "km de circuito: no SIGET cada circuito é um módulo de linha com a extensão da linha (NumEtnLinTms), então linha de circuito duplo ou bipolo conta cada circuito.",
-    "A previsão informada pela transmissora não está no arquivo aberto: o atraso em andamento é medido contra o ato legal.",
+    "A previsão informada pela transmissora não está no arquivo aberto: o prazo vencido em andamento é medido contra o prazo vigente do ato legal.",
+    "O prazo original do contrato não está no arquivo aberto: o prazo do ato legal publicado é o vigente e coincide com a data efetiva em cerca de um terço a dois quintos dos empreendimentos de cada ano (prazo revisto). Por isso não se publica atraso realizado das obras, só o desvio em relação ao prazo vigente.",
     "O SIGET não tem coordenadas: a territorialização das obras é por UF das subestações; a geometria das linhas vem do WebMap da EPE (expansao_rede_epe), sem chave comum com o SIGET."
    ],
    "gold": "expansao.json",
@@ -3196,12 +3340,15 @@
    ],
    "regras_comparabilidade": [
     "PDE 2035 é cenário de planejamento de uma edição específica (data-base das premissas janeiro de 2025, aprovado pela Portaria MME nº 923/2026), nunca realizado nem previsão; é publicado com selo CENÁRIO em camada separada.",
-    "Categorias do PDE não correspondem uma a uma às do SIGA: só as correspondências diretas ficam lado a lado, sem diferença calculada."
+    "Categorias do PDE não correspondem uma a uma às do SIGA: as correspondências diretas e parciais ficam lado a lado, sem diferença calculada.",
+    "A UHE das figuras inclui Itaipu 50 Hz, máquinas de Itaipu pertencentes ao Paraguai (Anexo I-3, p. 526): o valor comparável com o SIGA é a linha Hidrelétrica do Anexo I-3 (102,423 GW em dez/2026), sem essa parcela.",
+    "A categoria PCH das figuras é 'PCH E CGH' no Anexo I-3: o realizado do SIGA soma PCH e CGH."
    ],
    "regra_cobertura": "Edição PDE 2035 (relatório final aprovado).",
    "politica_ausencia": "Célula vazia na planilha é ausência.",
    "validacoes": [
     "Soma da Figura 3-25 igual aos totais rotulados no relatório (249 GW em 2025 e 359 GW em 2035) com tolerância de 0,5 GW.",
+    "Tabela do Anexo I-3 (PDF, p. 526) conferida pelas identidades da própria tabela (Total Considerado = Total do SIN + Itaipu 50 Hz; Renováveis = Hidrelétrica + Outras renováveis) e contra as figuras 3-25 (dez/2035) e 3-6 (2026), com tolerância de 1 MW (arredondamento da figura em GW com três casas).",
     "Soma da Figura 3-6 em 2025 igual a cerca de 251 GW do texto com tolerância de 1 GW: conferência de valor, não de universo (o texto fala em oferta centralizada e a figura inclui a MMGD na coluna Solar)."
    ],
    "limitacoes": [
@@ -3327,7 +3474,8 @@
    "politica_ausencia": "Classificação vazia vira '(vazio)', nunca é atribuída a outra categoria.",
    "validacoes": [
     "Chave (IdeNucleoCEG, NumUgUsina) única no arquivo.",
-    "Potência unitária não negativa."
+    "Potência unitária não negativa.",
+    "Série mensal do Parquet histórico: usina cuja soma das unidades é 10 vezes a outorga ou mais na fotografia (erro de ordem de grandeza, conferido contra as fotografias vizinhas) tem as unidades excluídas daquela fotografia, com a potência excluída publicada (17 pares em 30/09/2026, 7 em fotografia mensal)."
    ],
    "limitacoes": [
     "O RALIE cobre usinas em implantação acompanhadas pela fiscalização; unidades liberadas para operação comercial deixam o relatório nas fotografias seguintes.",
@@ -3343,7 +3491,7 @@
    "id": "expansao_reconciliacao_siga_agregados",
    "titulo": "Reconciliação do SIGA com os agregados oficiais",
    "pergunta": "A soma do SIGA confere com os totais que a própria ANEEL publica?",
-   "definicao": "Resíduo = capacidade do SIGA − agregado oficial do último mês publicado − potência liberada para operação comercial entre o fim desse mês e a data do SIGA, por tipo de geração e por UF.",
+   "definicao": "Resíduo = capacidade do SIGA − agregado oficial do último mês publicado − potência liberada para operação comercial publicada entre o fim desse mês e a última data do arquivo de liberações (ou a data do SIGA, se anterior), por tipo de geração e por UF. Os dias entre a última liberação publicada e a data do SIGA não têm liberação para descontar e são declarados (janela_tipo, janela_uf).",
    "unidade": "MW e % do agregado",
    "grao_geografico": "tipo de geração; UF",
    "grao_temporal": "fotografia do SIGA contra o último mês do agregado",
@@ -3372,7 +3520,8 @@
     "Tolerância de 1% do agregado do grupo; fora dela o grupo é listado em fora_da_tolerancia e a evidência vira ressalva."
    ],
    "limitacoes": [
-    "O resíduo não identifica a usina responsável: aponta onde conferir."
+    "O resíduo não identifica a usina responsável: aponta onde conferir.",
+    "Liberações entre a última data do arquivo de liberações e a data do SIGA (17 a 30/09/2026 em 30/09/2026) não são descontadas e ficam no resíduo."
    ],
    "gold": "expansao.json",
    "paginas": [
@@ -3436,7 +3585,7 @@
    "formula": "diferença = solar do balanço − Σ usinas fotovoltaicas (com MMGD)",
    "regra_agregacao": "Soma diária dos quatro subsistemas.",
    "versao_formula": "1",
-   "natureza_fonte": "OBSERVADO",
+   "natureza_fonte": "MISTO: OBSERVADO (usinas) e ESTIMADO (MMGD do ONS, a partir de 29/04/2023)",
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
     "dia"
@@ -3459,6 +3608,47 @@
    "arquivo": "pipeline/energia/metricas/geracao.py"
   },
   {
+   "id": "geracao_capacidade_ons_aneel",
+   "titulo": "Potência do ONS e capacidade da ANEEL na mesma data",
+   "pergunta": "Quanto da capacidade em operação registrada pela ANEEL está no retrato das usinas despachadas pelo ONS?",
+   "definicao": "Capacidade em operação por tipo de geração na série histórica da ANEEL (base do SIGA) e potência das unidades do retrato da Capacidade Instalada do ONS em operação comercial no último dia do mesmo mês, por grupo (hidráulica, eólica, solar centralizada, nuclear, térmicas); a parcela é ONS ÷ ANEEL.",
+   "unidade": "MW e %",
+   "grao_geografico": "Brasil (ANEEL) e SIN (ONS), por grupo de fonte",
+   "grao_temporal": "datas de referência da série da ANEEL (trimestral desde 2021)",
+   "fontes": [
+    "ons_capacidade_geracao",
+    "aneel_empreendimentos_operacao"
+   ],
+   "numerador": "potência do ONS em operação comercial no último dia do mês (MW)",
+   "denominador": "capacidade em operação da ANEEL na mesma data de referência (MW)",
+   "regra_agregacao": "Soma de potências de unidades (ONS) e de tipos de geração (ANEEL) no grupo; razão na mesma data.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "grupo de fonte",
+    "data de referência"
+   ],
+   "regras_comparabilidade": [
+    "Universos diferentes: a ANEEL inclui usinas não despachadas pelo ONS, sistemas isolados e autoprodução; nada é somado.",
+    "Não é fator de capacidade: compara potência com potência na mesma data."
+   ],
+   "regra_cobertura": "Datas da série da ANEEL a partir do primeiro mês da Geração por Usina integrada.",
+   "politica_ausencia": "Data sem valor de um tipo na ANEEL fica nula no grupo.",
+   "validacoes": [
+    "Datas de referência só as publicadas pela ANEEL; nenhum valor interpolado entre elas."
+   ],
+   "limitacoes": [
+    "O retrato do ONS não tem histórico: a potência de cada data é reconstituída pelas datas de entrada e desativação das unidades atuais.",
+    "A série da ANEEL não separa combustível: as térmicas são comparadas juntas."
+   ],
+   "gold": "geracao_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/geracao"
+   ],
+   "arquivo": "pipeline/energia/metricas/geracao.py"
+  },
+  {
    "id": "geracao_categoria_mwmed",
    "titulo": "Geração por fonte e combustível",
    "pergunta": "Quanta energia cada fonte e cada combustível gerou no período?",
@@ -3473,8 +3663,8 @@
    "denominador": "horas dos dias completos do período",
    "formula": "MWmed = Σ MWh ÷ horas",
    "regra_agregacao": "Soma de energia; SIN = soma dos quatro subsistemas; MWmed nunca é média de médias diárias.",
-   "versao_formula": "1",
-   "natureza_fonte": "OBSERVADO",
+   "versao_formula": "2",
+   "natureza_fonte": "MISTO: OBSERVADO (geração verificada), PREVISTO (grupos de pequenas usinas Tipo III) e ESTIMADO (MMGD estimada pelo ONS); fração de cada natureza publicada em natureza_pct",
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
     "categoria",
@@ -3491,11 +3681,13 @@
    "validacoes": [
     "Energia não negativa por categoria.",
     "Dia de referência não posterior à data de processamento.",
+    "Categoria sem nenhuma linha no período é nula, não zero (MMGD antes de 29/04/2023, grupos Tipo III térmicos antes de 03/2021).",
     "Reconciliação diária com o Balanço de Energia nos Subsistemas por fonte, subsistema e dia (tolerância de 1 MWh)."
    ],
    "limitacoes": [
     "Grupos de pequenas usinas Tipo III e de MMGD são previsões e estimativas do ONS (dicionário da Geração por Usina, versão 1.2); a parcela de cada natureza é publicada à parte.",
-    "Mudanças de universo na fonte (rótulos que aparecem ou somem, usinas que passam a vir sem valor) são detectadas por regra publicada e listadas em 'quebras'.",
+    "Mudanças de universo na fonte (rótulos que aparecem, deixam de ter valor ou somem, usinas que passam a vir sem valor ou deixam de constar do arquivo, sequências longas de zero exato) são detectadas por regra publicada e listadas em 'quebras' e em matriz.universo; cada janela, mês e ano traz em ressalvas_universo as categorias afetadas.",
+    "A categoria 'outras térmicas' segue o rótulo 'Resíduos Industriais' do ONS, que reúne gases de siderurgia (CEG UTE.CM) e licor negro de celulose (CEG UTE.FL, biomassa florestal na ANEEL): a decomposição por código do CEG sai em matriz.outros_por_ceg.",
     "Grupos térmicos Tipo III ('Outras Multi-Combustível') não têm combustível na fonte: categoria própria, explícita."
    ],
    "gold": "geracao_detalhe.json",
@@ -3515,8 +3707,8 @@
    "fontes": [
     "ons_cvu_termica"
    ],
-   "regra_agregacao": "Distribuição por combustível (mínimo, quartis, máximo) na semana vigente; mediana mensal de usinas e semanas.",
-   "versao_formula": "1",
+   "regra_agregacao": "Distribuição por combustível (mínimo, quartis, máximo) na semana vigente; mediana mensal de usinas e semanas; no ranking térmico, CVU por parcela (código do ONS).",
+   "versao_formula": "2",
    "natureza_fonte": "OBSERVADO",
    "natureza_transformacao": "OBSERVADO",
    "dimensoes": [
@@ -3530,10 +3722,12 @@
    "regra_cobertura": "Semanas operativas de 2005 em diante; na gold, a semana vigente na data de processamento.",
    "politica_ausencia": "Usina sem CVU na semana não aparece; linha repetida idêntica conta uma vez; conflito é registrado.",
    "validacoes": [
-    "Conflito de CVU para a mesma usina e semana derruba a escolha (contado, nenhuma versão escolhida em silêncio)."
+    "Conflito de CVU para a mesma usina e semana derruba a escolha (contado, nenhuma versão escolhida em silêncio).",
+    "Código do ONS ligado a mais de uma usina fica sem par e é contado (controle publicado)."
    ],
    "limitacoes": [
-    "O par com a usina da térmica por motivo é pelo código do ONS nos modelos; códigos de parcelas (P1, P2) podem não casar."
+    "O par com a usina da térmica por motivo é pelo código do ONS nos modelos, com todos os códigos (parcelas) que cada usina já teve; usina com várias parcelas tem um CVU por parcela, e o ranking publica cada um.",
+    "Usinas do CVU sem nenhum código na térmica por motivo ficam sem combustível identificado."
    ],
    "gold": "geracao_detalhe.json",
    "paginas": [
@@ -3572,7 +3766,8 @@
    "regra_cobertura": "Usinas e conjuntos despachados (natureza verificada); grupos Tipo III e MMGD ficam fora do numerador e do denominador.",
    "politica_ausencia": "Grupo sem unidade pareada fica fora; a cobertura (energia pareada ÷ energia da categoria) é publicada.",
    "validacoes": [
-    "Mês de usina acima de 100% contado e listado, não descartado (unidade em teste, potência desatualizada)."
+    "Mês de usina acima de 100% contado e listado, não descartado (unidade em teste, potência desatualizada).",
+    "Capacidade-hora média do denominador não passa da potência média em operação da categoria (mesma classificação nos dois)."
    ],
    "limitacoes": [
     "Geração em teste antes da operação comercial infla o fator do mês de entrada.",
@@ -3598,8 +3793,8 @@
    "numerador": "energia da categoria no período (MWh)",
    "denominador": "energia de todas as categorias no período (MWh), com ou sem a solar MMGD",
    "regra_agregacao": "Razão de somas de energia do mesmo perímetro; nunca média de participações diárias.",
-   "versao_formula": "1",
-   "natureza_fonte": "OBSERVADO",
+   "versao_formula": "2",
+   "natureza_fonte": "MISTO: OBSERVADO (geração verificada), PREVISTO (grupos de pequenas usinas Tipo III) e ESTIMADO (MMGD estimada pelo ONS); fração de cada natureza publicada em natureza_pct",
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
     "categoria",
@@ -3613,11 +3808,14 @@
    "regra_cobertura": "Dias completos do período; o número de dias usados acompanha cada janela.",
    "politica_ausencia": "Valor vazio na fonte é ausência: não entra na soma nem nas horas daquela série; dia sem as 24 horas em todos os subsistemas fica fora das janelas; usina com todas as horas vazias no mês é contada como lacuna, nunca como zero.",
    "validacoes": [
-    "Participações somam 100% (tolerância 0,05 ponto percentual) em todas as janelas e regiões; falha derruba a publicação."
+    "Participações somam 100% (tolerância 0,05 ponto percentual) em todas as janelas e regiões; falha derruba a publicação.",
+    "Categoria ausente no período tem participação nula, fora do total.",
+    "Ressalva de universo junto da participação: salto de universo dentro do período ou universo reduzido (até 75% do maior número de identificadores com valor dos 12 meses anteriores)."
    ],
    "limitacoes": [
     "Grupos de pequenas usinas Tipo III e de MMGD são previsões e estimativas do ONS (dicionário da Geração por Usina, versão 1.2); a parcela de cada natureza é publicada à parte.",
-    "Mudanças de universo na fonte (rótulos que aparecem ou somem, usinas que passam a vir sem valor) são detectadas por regra publicada e listadas em 'quebras'."
+    "Mudanças de universo na fonte (rótulos que aparecem, deixam de ter valor ou somem, usinas que passam a vir sem valor ou deixam de constar do arquivo, sequências longas de zero exato) são detectadas por regra publicada e listadas em 'quebras' e em matriz.universo; cada janela, mês e ano traz em ressalvas_universo as categorias afetadas.",
+    "A categoria 'outras térmicas' segue o rótulo 'Resíduos Industriais' do ONS, que reúne gases de siderurgia (CEG UTE.CM) e licor negro de celulose (CEG UTE.FL, biomassa florestal na ANEEL): a decomposição por código do CEG sai em matriz.outros_por_ceg."
    ],
    "gold": "geracao_detalhe.json",
    "paginas": [
@@ -3646,12 +3844,14 @@
     "mês"
    ],
    "regras_comparabilidade": [
-    "Capacidade do ONS (usinas despachadas) não é a do SIGA da ANEEL nem inclui a MMGD: universos diferentes, nunca somados."
+    "Capacidade do ONS (usinas despachadas) não é a do SIGA da ANEEL nem inclui a MMGD: universos diferentes, nunca somados.",
+    "A unidade entra na categoria da usina na Geração por Usina (mesmo CEG), a mesma do fator de capacidade: a turbina a vapor de ciclo combinado ('Resíduo Ciclo Combinado') de uma usina a gás é gás."
    ],
    "regra_cobertura": "Unidades presentes no retrato do dia; o conjunto não tem histórico.",
    "politica_ausencia": "Unidade sem data de entrada em operação comercial fica fora.",
    "validacoes": [
-    "Potência positiva em todas as unidades (o dicionário não admite zero)."
+    "Potência positiva em todas as unidades (o dicionário não admite zero): resultado tirado da contagem gravada na importação.",
+    "Capacidade-hora média do fator de capacidade não passa da potência média em operação da categoria (controle crítico)."
    ],
    "limitacoes": [
     "Usinas que saíram do despacho centralizado não aparecem no retrato; potência atual aplicada a todo o histórico da unidade (repotenciações não reconstituídas)."
@@ -3677,7 +3877,7 @@
    "formula": "diferença = balanço − Σ usinas; conciliado quando |diferença| ≤ 1 MWh",
    "regra_agregacao": "Soma das diferenças diárias; contagem de dias conciliados no subsistema e no SIN.",
    "versao_formula": "1",
-   "natureza_fonte": "OBSERVADO",
+   "natureza_fonte": "MISTO: OBSERVADO, PREVISTO e ESTIMADO nos dois lados (o Balanço e a soma das usinas incluem os grupos Tipo III e a MMGD)",
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
     "fonte do balanço",
@@ -3775,7 +3975,7 @@
    "regra_cobertura": "Mesmo universo da energia não gerada.",
    "politica_ausencia": "Dia sem limitação tem corte zero (há linhas sem limitação), não ausência.",
    "validacoes": [
-    "Corte simultâneo não excede a soma das referências da meia hora."
+    "Corte simultâneo não excede a soma das referências das mesmas linhas na meia hora: contado na importação em todas as meias horas com corte, por subsistema, e conferido no silver no maior corte de cada dia (ressalva se violar)."
    ],
    "limitacoes": [
     "Depende da referência estimada pelo ONS."
@@ -3851,7 +4051,8 @@
     "subsistema"
    ],
    "regras_comparabilidade": [
-    "Combustível e motivo são dimensões separadas: o combustível vem da própria fonte (2026) ou do mesmo CEG em outros conjuntos do ONS.",
+    "Combustível e motivo são dimensões separadas: o combustível vem da própria fonte (2026) ou do mesmo CEG em outros conjuntos do ONS, com todos os CEGs que cada usina já publicou.",
+    "Usina = identidade que liga CEGs com o mesmo número de empreendimento e elo publicado pelo ONS (mesmo código nos modelos ou mesmo identificador na Geração por Usina): a troca de CEG da fonte não quebra a série nem duplica a usina no ranking.",
     "O motivo é a classificação do ONS, nunca inferida do PLD ou do CMO.",
     "Unit commitment só existe a partir de janeiro de 2020 (DESSEM); antes é 'não se aplica'."
    ],
@@ -3863,7 +4064,7 @@
    ],
    "limitacoes": [
     "Valores negativos em anos antigos da fonte, que o dicionário não admite, mantidos e contados.",
-    "Usinas sem combustível identificado ficam na categoria 'não mapeada'."
+    "Usinas sem combustível identificado ficam na categoria 'não mapeada' (lista e energia em mapa_combustivel)."
    ],
    "gold": "geracao_detalhe.json",
    "paginas": [
@@ -7551,10 +7752,14 @@
    "limitacoes": [
     "O horário é o do cálculo; a publicação no site depende do commit, poucos minutos depois."
    ],
+   "publicacao": {
+    "estado": "PUBLICADA",
+    "gold": "previsoes_desempenho.json"
+   },
    "arquivo": "pipeline/energia/metricas/previsoes.py"
   },
   {
-   "gold": "previsoes_desempenho.json",
+   "gold": "previsoes_desempenho_interno.json",
    "paginas": [
     "/setor-eletrico/pld/previsoes",
     "/setor-eletrico/pld/modelos"
@@ -7594,10 +7799,17 @@
    "limitacoes": [
     "Faixa provisória (ato do ano seguinte ainda não publicado) usa os limites vigentes na origem."
    ],
+   "publicacao": {
+    "estado": "RETIDA",
+    "gold": null,
+    "gold_quando_liberada": "previsoes_desempenho.json",
+    "local": "data/energia/previsoes/validacao_interna (fora do portal)",
+    "motivo": "Número de desempenho do teste retrospectivo: só entra no portal depois da liberação formal pelo responsável pela plataforma (registro de modelos); até lá é calculado e validado, sem publicação."
+   },
    "arquivo": "pipeline/energia/metricas/previsoes.py"
   },
   {
-   "gold": "previsoes_desempenho.json",
+   "gold": "previsoes_desempenho_interno.json",
    "paginas": [
     "/setor-eletrico/pld/previsoes",
     "/setor-eletrico/pld/modelos"
@@ -7636,10 +7848,17 @@
    "limitacoes": [
     "Origens diárias vizinhas preveem a mesma entrega: o tamanho efetivo é o número de entregas distintas, publicado ao lado."
    ],
+   "publicacao": {
+    "estado": "RETIDA",
+    "gold": null,
+    "gold_quando_liberada": "previsoes_desempenho.json",
+    "local": "data/energia/previsoes/validacao_interna (fora do portal)",
+    "motivo": "Número de desempenho do teste retrospectivo: só entra no portal depois da liberação formal pelo responsável pela plataforma (registro de modelos); até lá é calculado e validado, sem publicação."
+   },
    "arquivo": "pipeline/energia/metricas/previsoes.py"
   },
   {
-   "gold": "previsoes_desempenho.json",
+   "gold": "previsoes_desempenho_interno.json",
    "paginas": [
     "/setor-eletrico/pld/previsoes",
     "/setor-eletrico/pld/modelos"
@@ -7675,13 +7894,20 @@
    "validacoes": [
     "calibração só com n ≥ 100 entregas distintas",
     "cobertura refeita por outro leitor a partir do CSV do teste retrospectivo (células cobertas iguais a menos das ambíguas pelo arredondamento a 2 casas)",
-    "realizado no piso com P10 limitado ao piso conta como coberto (teste com a semana de 04/01/2025)"
+    "realizado no piso com P10 limitado ao piso conta como coberto: semana real de 04/01/2025 (as 168 horas a R$ 58,60/MWh nos quatro submercados), média por somas acumuladas 58,59999999997672 contra P10 no piso de 58,60000000000001 (pipeline/tests/test_energia_previsoes.py, CoberturaNoPiso.test_semana_de_04_01_2025_no_piso_conta_como_coberta)"
    ],
    "limitacoes": [
     "Origens diárias vizinhas preveem a mesma entrega: o tamanho efetivo é o número de entregas distintas, publicado ao lado.",
     "Faixa não calibrada não é publicada na previsão atual.",
-    "Registros do arquivo emitidos antes de 01/10/2026 gravaram a cobertura com comparação estrita; o valor refeito com a regra corrigida aparece ao lado, sem reescrever o registro."
+    "Registros do arquivo emitidos antes de 01/10/2026 gravaram a cobertura com comparação estrita e nunca são reescritos. Enquanto os números de desempenho estiverem retidos, a partição pública do arquivo omite essa cobertura e as rodadas novas não a gravam; depois da liberação, a gold publica ao lado o valor refeito com a regra corrigida (prospectivo.calibracao_regra_antiga)."
    ],
+   "publicacao": {
+    "estado": "RETIDA",
+    "gold": null,
+    "gold_quando_liberada": "previsoes_desempenho.json",
+    "local": "data/energia/previsoes/validacao_interna (fora do portal)",
+    "motivo": "Número de desempenho do teste retrospectivo: só entra no portal depois da liberação formal pelo responsável pela plataforma (registro de modelos); até lá é calculado e validado, sem publicação."
+   },
    "arquivo": "pipeline/energia/metricas/previsoes.py"
   },
   {
@@ -7725,10 +7951,14 @@
    "limitacoes": [
     "Coeficiente acima de 1 indica amplificação possível, não erro por si só."
    ],
+   "publicacao": {
+    "estado": "PUBLICADA",
+    "gold": "previsoes_desempenho.json"
+   },
    "arquivo": "pipeline/energia/metricas/previsoes.py"
   },
   {
-   "gold": "previsoes_desempenho.json",
+   "gold": "previsoes_desempenho_interno.json",
    "paginas": [
     "/setor-eletrico/pld/previsoes",
     "/setor-eletrico/pld/modelos"
@@ -7770,10 +8000,17 @@
     "O teste retrospectivo é reconstrução sob a hipótese LAT1D (período usado só depois de terminado há 1 dia); a CCEE não informa quando publicou cada hora do passado (achado A09).",
     "Origens diárias vizinhas preveem a mesma entrega: o tamanho efetivo é o número de entregas distintas, publicado ao lado."
    ],
+   "publicacao": {
+    "estado": "RETIDA",
+    "gold": null,
+    "gold_quando_liberada": "previsoes_desempenho.json",
+    "local": "data/energia/previsoes/validacao_interna (fora do portal)",
+    "motivo": "Número de desempenho do teste retrospectivo: só entra no portal depois da liberação formal pelo responsável pela plataforma (registro de modelos); até lá é calculado e validado, sem publicação."
+   },
    "arquivo": "pipeline/energia/metricas/previsoes.py"
   },
   {
-   "gold": "previsoes_desempenho.json",
+   "gold": "previsoes_desempenho_interno.json",
    "paginas": [
     "/setor-eletrico/pld/previsoes",
     "/setor-eletrico/pld/modelos"
@@ -7812,10 +8049,17 @@
    "limitacoes": [
     "Origens diárias vizinhas preveem a mesma entrega: o tamanho efetivo é o número de entregas distintas, publicado ao lado."
    ],
+   "publicacao": {
+    "estado": "RETIDA",
+    "gold": null,
+    "gold_quando_liberada": "previsoes_desempenho.json",
+    "local": "data/energia/previsoes/validacao_interna (fora do portal)",
+    "motivo": "Número de desempenho do teste retrospectivo: só entra no portal depois da liberação formal pelo responsável pela plataforma (registro de modelos); até lá é calculado e validado, sem publicação."
+   },
    "arquivo": "pipeline/energia/metricas/previsoes.py"
   },
   {
-   "gold": "previsoes_desempenho.json",
+   "gold": "previsoes_desempenho_interno.json",
    "paginas": [
     "/setor-eletrico/pld/previsoes",
     "/setor-eletrico/pld/modelos"
@@ -7854,10 +8098,17 @@
    "limitacoes": [
     "Origens diárias vizinhas preveem a mesma entrega: o tamanho efetivo é o número de entregas distintas, publicado ao lado."
    ],
+   "publicacao": {
+    "estado": "RETIDA",
+    "gold": null,
+    "gold_quando_liberada": "previsoes_desempenho.json",
+    "local": "data/energia/previsoes/validacao_interna (fora do portal)",
+    "motivo": "Número de desempenho do teste retrospectivo: só entra no portal depois da liberação formal pelo responsável pela plataforma (registro de modelos); até lá é calculado e validado, sem publicação."
+   },
    "arquivo": "pipeline/energia/metricas/previsoes.py"
   },
   {
-   "gold": "previsoes_desempenho.json",
+   "gold": "previsoes_desempenho_interno.json",
    "paginas": [
     "/setor-eletrico/pld/previsoes",
     "/setor-eletrico/pld/modelos"
@@ -7896,10 +8147,17 @@
     "Origens diárias vizinhas preveem a mesma entrega: o tamanho efetivo é o número de entregas distintas, publicado ao lado.",
     "Blocos de calendário aproximam, não eliminam, a dependência."
    ],
+   "publicacao": {
+    "estado": "RETIDA",
+    "gold": null,
+    "gold_quando_liberada": "previsoes_desempenho.json",
+    "local": "data/energia/previsoes/validacao_interna (fora do portal)",
+    "motivo": "Número de desempenho do teste retrospectivo: só entra no portal depois da liberação formal pelo responsável pela plataforma (registro de modelos); até lá é calculado e validado, sem publicação."
+   },
    "arquivo": "pipeline/energia/metricas/previsoes.py"
   },
   {
-   "gold": "previsoes_desempenho.json",
+   "gold": "previsoes_desempenho_interno.json",
    "paginas": [
     "/setor-eletrico/pld/previsoes",
     "/setor-eletrico/pld/modelos"
@@ -7936,10 +8194,17 @@
    "limitacoes": [
     "Origens diárias vizinhas preveem a mesma entrega: o tamanho efetivo é o número de entregas distintas, publicado ao lado."
    ],
+   "publicacao": {
+    "estado": "RETIDA",
+    "gold": null,
+    "gold_quando_liberada": "previsoes_desempenho.json",
+    "local": "data/energia/previsoes/validacao_interna (fora do portal)",
+    "motivo": "Número de desempenho do teste retrospectivo: só entra no portal depois da liberação formal pelo responsável pela plataforma (registro de modelos); até lá é calculado e validado, sem publicação."
+   },
    "arquivo": "pipeline/energia/metricas/previsoes.py"
   },
   {
-   "gold": "previsoes_desempenho.json",
+   "gold": "previsoes_desempenho_interno.json",
    "paginas": [
     "/setor-eletrico/pld/previsoes",
     "/setor-eletrico/pld/modelos"
@@ -7975,10 +8240,17 @@
    "limitacoes": [
     "Grupos com menos de 10 entregas são marcados."
    ],
+   "publicacao": {
+    "estado": "RETIDA",
+    "gold": null,
+    "gold_quando_liberada": "previsoes_desempenho.json",
+    "local": "data/energia/previsoes/validacao_interna (fora do portal)",
+    "motivo": "Número de desempenho do teste retrospectivo: só entra no portal depois da liberação formal pelo responsável pela plataforma (registro de modelos); até lá é calculado e validado, sem publicação."
+   },
    "arquivo": "pipeline/energia/metricas/previsoes.py"
   },
   {
-   "gold": "previsoes_desempenho.json",
+   "gold": "previsoes_desempenho_interno.json",
    "paginas": [
     "/setor-eletrico/pld/previsoes",
     "/setor-eletrico/pld/modelos"
@@ -8016,6 +8288,13 @@
     "O teste retrospectivo é reconstrução sob a hipótese LAT1D (período usado só depois de terminado há 1 dia); a CCEE não informa quando publicou cada hora do passado (achado A09).",
     "Origens diárias vizinhas preveem a mesma entrega: o tamanho efetivo é o número de entregas distintas, publicado ao lado."
    ],
+   "publicacao": {
+    "estado": "RETIDA",
+    "gold": null,
+    "gold_quando_liberada": "previsoes_desempenho.json",
+    "local": "data/energia/previsoes/validacao_interna (fora do portal)",
+    "motivo": "Número de desempenho do teste retrospectivo: só entra no portal depois da liberação formal pelo responsável pela plataforma (registro de modelos); até lá é calculado e validado, sem publicação."
+   },
    "arquivo": "pipeline/energia/metricas/previsoes.py"
   },
   {
@@ -8057,6 +8336,10 @@
    "limitacoes": [
     "O PLD pode ser republicado pela CCEE; a avaliação usa a versão vigente no silver (nenhuma revisão detectada até 30/09/2026)."
    ],
+   "publicacao": {
+    "estado": "PUBLICADA",
+    "gold": "previsoes_desempenho.json"
+   },
    "arquivo": "pipeline/energia/metricas/previsoes.py"
   },
   {
@@ -8102,10 +8385,14 @@
     "Sem faixa de incerteza enquanto o segmento não estiver calibrado.",
     "Modelo em pesquisa: não alimenta a previsão principal."
    ],
+   "publicacao": {
+    "estado": "PUBLICADA",
+    "gold": "previsoes_desempenho.json"
+   },
    "arquivo": "pipeline/energia/metricas/previsoes.py"
   },
   {
-   "gold": "previsoes_desempenho.json",
+   "gold": "previsoes_desempenho_interno.json",
    "paginas": [
     "/setor-eletrico/pld/previsoes",
     "/setor-eletrico/pld/modelos"
@@ -8148,10 +8435,17 @@
     "O teste retrospectivo é reconstrução sob a hipótese LAT1D (período usado só depois de terminado há 1 dia); a CCEE não informa quando publicou cada hora do passado (achado A09).",
     "EAR e ENA do ONS são revisadas (consistência recorrente); o teste do C2-H usa o valor revisado."
    ],
+   "publicacao": {
+    "estado": "RETIDA",
+    "gold": null,
+    "gold_quando_liberada": "previsoes_desempenho.json",
+    "local": "data/energia/previsoes/validacao_interna (fora do portal)",
+    "motivo": "Número de desempenho do teste retrospectivo: só entra no portal depois da liberação formal pelo responsável pela plataforma (registro de modelos); até lá é calculado e validado, sem publicação."
+   },
    "arquivo": "pipeline/energia/metricas/previsoes.py"
   },
   {
-   "gold": "previsoes_desempenho.json",
+   "gold": "previsoes_desempenho_interno.json",
    "paginas": [
     "/setor-eletrico/pld/previsoes",
     "/setor-eletrico/pld/modelos"
@@ -8191,10 +8485,17 @@
     "O teste retrospectivo é reconstrução sob a hipótese LAT1D (período usado só depois de terminado há 1 dia); a CCEE não informa quando publicou cada hora do passado (achado A09).",
     "Origens diárias vizinhas preveem a mesma entrega: o tamanho efetivo é o número de entregas distintas, publicado ao lado."
    ],
+   "publicacao": {
+    "estado": "RETIDA",
+    "gold": null,
+    "gold_quando_liberada": "previsoes_desempenho.json",
+    "local": "data/energia/previsoes/validacao_interna (fora do portal)",
+    "motivo": "Número de desempenho do teste retrospectivo: só entra no portal depois da liberação formal pelo responsável pela plataforma (registro de modelos); até lá é calculado e validado, sem publicação."
+   },
    "arquivo": "pipeline/energia/metricas/previsoes.py"
   },
   {
-   "gold": "previsoes_desempenho.json",
+   "gold": "previsoes_desempenho_interno.json",
    "paginas": [
     "/setor-eletrico/pld/previsoes",
     "/setor-eletrico/pld/modelos"
@@ -8233,6 +8534,13 @@
    "limitacoes": [
     "Origens diárias vizinhas preveem a mesma entrega: o tamanho efetivo é o número de entregas distintas, publicado ao lado."
    ],
+   "publicacao": {
+    "estado": "RETIDA",
+    "gold": null,
+    "gold_quando_liberada": "previsoes_desempenho.json",
+    "local": "data/energia/previsoes/validacao_interna (fora do portal)",
+    "motivo": "Número de desempenho do teste retrospectivo: só entra no portal depois da liberação formal pelo responsável pela plataforma (registro de modelos); até lá é calculado e validado, sem publicação."
+   },
    "arquivo": "pipeline/energia/metricas/previsoes.py"
   },
   {
@@ -8273,10 +8581,14 @@
    "limitacoes": [
     "Origens diárias vizinhas preveem a mesma entrega: o tamanho efetivo é o número de entregas distintas, publicado ao lado."
    ],
+   "publicacao": {
+    "estado": "PUBLICADA",
+    "gold": "previsoes_desempenho.json"
+   },
    "arquivo": "pipeline/energia/metricas/previsoes.py"
   },
   {
-   "gold": "previsoes_desempenho.json",
+   "gold": "previsoes_desempenho_interno.json",
    "paginas": [
     "/setor-eletrico/pld/previsoes",
     "/setor-eletrico/pld/modelos"
@@ -8316,6 +8628,13 @@
     "O teste retrospectivo é reconstrução sob a hipótese LAT1D (período usado só depois de terminado há 1 dia); a CCEE não informa quando publicou cada hora do passado (achado A09).",
     "Origens diárias vizinhas preveem a mesma entrega: o tamanho efetivo é o número de entregas distintas, publicado ao lado."
    ],
+   "publicacao": {
+    "estado": "RETIDA",
+    "gold": null,
+    "gold_quando_liberada": "previsoes_desempenho.json",
+    "local": "data/energia/previsoes/validacao_interna (fora do portal)",
+    "motivo": "Número de desempenho do teste retrospectivo: só entra no portal depois da liberação formal pelo responsável pela plataforma (registro de modelos); até lá é calculado e validado, sem publicação."
+   },
    "arquivo": "pipeline/energia/metricas/previsoes.py"
   },
   {

@@ -5,7 +5,8 @@ Sem rede. As amostras em pipeline/tests/dados/energia_previsoes/ são recortes r
 - PLD horário da CCEE, linhas copiadas sem alteração da captura versionada do projeto
   (pipeline/energia/seed/ccee_pld_horario/v20260927T154402Z, capturada em 27/09/2026 15h44
   UTC): outubro de 2024 (formato com aspas, preço alto de seca), outubro de 2025 e
-  01/08/2026 a 27/09/2026;
+  01/08/2026 a 27/09/2026; e a semana de 04 a 10/01/2025 (as 168 horas no piso de R$ 58,60
+  nos quatro submercados), recortada do pld_horario_2025 do mesmo seed;
 - EAR e ENA diárias por subsistema do ONS (arquivos de 2026 baixados em 30/09/2026 às 22h
   UTC; sha256 a73378b0... e e0bcbdd3...), de 25/08 a 29/09/2026;
 - atos da ANEEL com os limites do PLD de 2024 a 2026 (esquema do módulo Regulação).
@@ -17,18 +18,22 @@ captura antes do corte), a simulação é declarada no próprio teste.
 """
 import copy
 import csv
+import glob
 import gzip
 import json
 import os
+import re
 import shutil
 import sys
 import tempfile
 import unittest
+from collections import defaultdict
 from datetime import date, datetime, timedelta, timezone
+from unittest import mock
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from pipeline.energia import base, governanca as g, metricas  # noqa: E402
+from pipeline.energia import base, evidencia as ev, governanca as g, metricas  # noqa: E402
 from pipeline.energia.fontes import ccee, ons  # noqa: E402
 from pipeline.energia.gold import modelos as gold_modelos  # noqa: E402
 from pipeline.energia.modulos import previsoes as mod  # noqa: E402
@@ -474,8 +479,23 @@ class Governanca(unittest.TestCase):
         self.assertEqual(self.registro["validacao_observatorio"]["configuracao_sha256"], mp.sha_configuracao())
 
     def test_metricas_do_modulo_validas(self):
-        ms = [m for m in metricas.todas() if m["gold"] == "previsoes_desempenho.json"]
+        ms = [m for m in metricas.todas() if m["arquivo"].endswith("/previsoes.py")]
         self.assertGreaterEqual(len(ms), 10)
+
+    def test_metrica_retida_nao_aponta_para_a_gold_publicada(self):
+        """Defeito da verificação de 01/10/2026: MAE, ganho e cobertura apontavam
+        gold = previsoes_desempenho.json, que sob retenção não os contém."""
+        publicar = mod.publicacao_desempenho(self.registro)[0]
+        from pipeline.energia.metricas import previsoes as mprev
+        for m in metricas.todas():
+            if not m["arquivo"].endswith("/previsoes.py"):
+                continue
+            self.assertIn(m["publicacao"]["estado"], ("PUBLICADA", "RETIDA"), m["id"])
+            if m["id"] in mprev.RETIDAS_SEM_LIBERACAO and not publicar:
+                self.assertEqual(m["publicacao"]["estado"], "RETIDA", m["id"])
+                self.assertNotEqual(m["gold"], "previsoes_desempenho.json", m["id"])
+            if m["publicacao"]["estado"] == "PUBLICADA":
+                self.assertEqual(m["gold"], "previsoes_desempenho.json", m["id"])
 
 
 class Gold(unittest.TestCase):
@@ -531,10 +551,21 @@ class Gold(unittest.TestCase):
         self.assertFalse(self.g["rotina"]["comprovada"] and self.g["rotina"]["execucoes_agendadas"] < 7)
 
     def test_csv_de_desempenho_confere_com_a_gold(self):
-        caminho = os.path.join(base.SERIES, "previsoes_desempenho.csv")
+        """Com a publicação liberada, o CSV do portal confere com a gold; retida, o CSV e o
+        JSON internos (data/energia/previsoes/validacao_interna) conferem entre si."""
+        if self.g["desempenho"]["publicado"]:
+            caminho, por_horizonte = os.path.join(base.SERIES, "previsoes_desempenho.csv"), self.g["desempenho"]["por_horizonte"]
+        else:
+            caminho = os.path.join(mod.DIR_INTERNO, "previsoes_desempenho.csv")
+            interno = os.path.join(mod.DIR_INTERNO, mod.JSON_INTERNO)
+            if not (os.path.exists(caminho) and os.path.exists(interno)):
+                self.skipTest("resultados retidos ainda não gerados neste checkout (executar_modulo.py previsoes)")
+            with open(interno, encoding="utf-8") as f:
+                por_horizonte = json.load(f)["desempenho"]["por_horizonte"]
         with open(caminho, encoding="utf-8") as f:
             linhas = list(csv.DictReader(f, delimiter=";"))
-        for x in self.g["desempenho"].get("por_horizonte", []):
+        self.assertTrue(por_horizonte)
+        for x in por_horizonte:
             l_ = next(r for r in linhas if r["recorte"] == "horizonte" and r["modelo"] == x["modelo"] and r["horizonte"] == x["horizonte"]
                       and r["periodo"] == x["periodo"])
             self.assertEqual(int(l_["linhas"]), x["linhas"])
@@ -542,21 +573,461 @@ class Gold(unittest.TestCase):
                 self.assertAlmostEqual(float(l_["mae"]), x["mae"], places=2)
 
 
+def _utc(*a):
+    return datetime(*a, tzinfo=timezone.utc)
+
+
+class GoldRetida(unittest.TestCase):
+    """Estado da publicação no portal (o que está em public/energia), com asserções que não
+    passam no vazio: sob retenção, nenhum número de desempenho em lugar nenhum do portal."""
+
+    @classmethod
+    def setUpClass(cls):
+        caminho = os.path.join(base.GOLD, "previsoes_desempenho.json")
+        if not os.path.exists(caminho):
+            raise unittest.SkipTest("gold ainda não gerada")
+        with open(caminho, encoding="utf-8") as f:
+            cls.g = json.load(f)
+        cls.publicar = mod.publicacao_desempenho(em.le_registro())[0]
+
+    def test_estado_da_gold_segue_o_registro(self):
+        self.assertEqual(self.g["publicacao_desempenho"]["publicado"], self.publicar)
+        self.assertEqual(self.g["desempenho"]["publicado"], self.publicar)
+
+    def test_retida_sem_numero_de_desempenho_na_gold(self):
+        if self.publicar:
+            self.skipTest("publicação liberada")
+        self.assertEqual(_numeros_de_desempenho(self.g), [])
+        for bloco in ("selecao", "regimes", "sensibilidade_latencia", "g23_r1"):
+            self.assertIsNone(self.g[bloco], bloco)
+        self.assertIsNone(self.g["prospectivo"]["metricas"])
+        self.assertTrue(self.g["desempenho"]["calculado"])
+        self.assertFalse(any(k.startswith("mae_") for k in self.g["evidencias"]))
+        self.assertNotIn("MAE", self.g["proveniencia"]["formula"])      # a proveniência descreve o que é publicado
+        self.assertNotEqual(self.g["proveniencia"]["natureza"], "CALCULADO")
+        self.assertNotIn("ver calibração em P016", self.g["previsao_atual"].get("bandas", ""))
+
+    def test_retida_sem_csv_do_teste_retrospectivo_no_portal(self):
+        if self.publicar:
+            self.skipTest("publicação liberada")
+        urls = {d["url"] for d in self.g["downloads"]}
+        for url in mod.ARQUIVOS_P016:
+            self.assertFalse(os.path.exists(os.path.join(base.SERIES, os.path.basename(url))), url)
+            self.assertNotIn(url, urls)
+            self.assertNotIn(url, mod.REGISTRO["arquivos"])
+
+    def test_particoes_publicadas_sem_numero_de_desempenho(self):
+        """Falha se houver cobertura (ou outro número de desempenho) em
+        public/energia/series/previsoes_emissoes_*.json com a publicação retida."""
+        caminhos = sorted(glob.glob(os.path.join(base.SERIES, "previsoes_emissoes_*.json")))
+        self.assertTrue(caminhos)
+        versionados = {r["forecast_id"]: r["sha256"] for r in arq.le_tudo()}
+        for caminho in caminhos:
+            with open(caminho, encoding="utf-8") as f:
+                part = json.load(f)
+            if not self.publicar:
+                self.assertEqual(_numeros_de_desempenho(part), [], caminho)
+            for r in part["registros"]:
+                self.assertEqual(versionados.get(r["forecast_id"]), r["sha256"], r["forecast_id"])   # projeção, não reescrita
+
+    def test_previsoes_json_sem_numero_de_desempenho(self):
+        if self.publicar:
+            self.skipTest("publicação liberada")
+        for nome in ("previsoes.json", "modelos.json"):
+            with open(os.path.join(base.GOLD, nome), encoding="utf-8") as f:
+                self.assertEqual(_numeros_de_desempenho(json.load(f)), [], nome)
+
+    def test_numeros_de_p013_com_evidencia_e_proveniencia(self):
+        at = self.g["previsao_atual"]
+        if not at.get("celulas"):
+            self.skipTest("sem rodada da referência experimental")
+        self.assertEqual(at["proveniencia"]["natureza"], "PREVISTO")
+        for c_ in at["celulas"]:
+            if c_["previsao"] is None:
+                continue
+            e = self.g["evidencias"][c_["evidencia"]]
+            self.assertEqual(ev.validar(e), [], c_["forecast_id"])
+            self.assertAlmostEqual(e["valor_calculo"], c_["previsao"], places=9)
+            self.assertTrue(all(t["resultado"] == "aprovado" for t in e["testes"]), e["testes"])
+        pub = at["ja_publicado_no_corte"]
+        if pub:
+            self.assertEqual(pub["proveniencia"]["natureza"], "OBSERVADO")
+            for sm, x in pub["submercados"].items():
+                if x["horas"]:
+                    e = self.g["evidencias"][x["evidencia"]]
+                    self.assertEqual(ev.validar(e), [], sm)
+                    self.assertAlmostEqual(e["valor_calculo"], x["media"], delta=0.005)
+
+    def test_csv_de_emissoes_confere_com_as_rodadas_da_gold(self):
+        with open(os.path.join(base.SERIES, "previsoes_emissoes.csv"), encoding="utf-8") as f:
+            linhas = list(csv.DictReader(f, delimiter=";"))
+        por_run = {x["run_id"]: x for x in self.g["prospectivo"]["rodadas"]}
+        self.assertTrue(linhas)
+        for ln in linhas:
+            rd = por_run.get(ln["run_id"])
+            if rd is None:
+                continue
+            self.assertEqual(float(ln["atraso_min"]) if ln["atraso_min"] else None, rd["atraso_min"], ln["forecast_id"])
+            self.assertEqual(ln["modo"], rd["modo"], ln["forecast_id"])
+
+
+class Documento(unittest.TestCase):
+    """O documento do módulo confere com a execução que ele descreve. Cada seção numérica
+    declara a data do PLD da execução; com dado mais novo (rodada diária) o teste sai como
+    pulado com o motivo, para não travar a publicação diária por um texto datado."""
+
+    @classmethod
+    def setUpClass(cls):
+        with open(os.path.join(RAIZ, "docs", "observatorios", "energia", "modulos", "previsoes.md"), encoding="utf-8") as f:
+            cls.doc = f.read()
+        caminho = os.path.join(base.GOLD, "previsoes_desempenho.json")
+        cls.g = None
+        if os.path.exists(caminho):
+            with open(caminho, encoding="utf-8") as f:
+                cls.g = json.load(f)
+        interno = os.path.join(mod.DIR_INTERNO, mod.JSON_INTERNO)
+        cls.interno = None
+        if os.path.exists(interno):
+            with open(interno, encoding="utf-8") as f:
+                cls.interno = json.load(f)
+
+    def _mesma_execucao(self):
+        if not self.g:
+            self.skipTest("gold ainda não gerada")
+        m = re.search(r"com o PLD até (\d\d)/(\d\d)/(\d{4})", self.doc)
+        self.assertIsNotNone(m, "o documento precisa declarar a data do PLD da execução descrita")
+        data = f"{m.group(3)}-{m.group(2)}-{m.group(1)}"
+        if data != self.g["dados"]["ultimo_dia_pld"]:
+            self.skipTest(f"documento descreve a execução com PLD até {data}; gold atual até {self.g['dados']['ultimo_dia_pld']}")
+
+    @staticmethod
+    def _br(x, casas=0):
+        t = f"{x:,.{casas}f}"
+        return t.replace(",", "X").replace(".", ",").replace("X", ".")
+
+    def test_estado_de_p016_segue_a_publicacao(self):
+        if not self.g:
+            self.skipTest("gold ainda não gerada")
+        linha = next(ln for ln in self.doc.splitlines() if ln.startswith("| P016"))
+        if not self.g["desempenho"]["publicado"]:
+            self.assertNotIn("Concluído", linha)
+            self.assertIn("Bloqueado", linha)
+            self.assertNotIn("Resultados publicados", self.doc)
+            self.assertIn("Resultados calculados e retidos", self.doc)
+
+    def test_cobertura_do_b0_no_documento_e_a_da_regra_corrigida(self):
+        self._mesma_execucao()
+        if not self.interno:
+            self.skipTest("resultados retidos ainda não gerados neste checkout")
+        ph = self.interno["desempenho"]["por_horizonte"]
+        for x in ph:
+            if x["modelo"] != "B0" or x["periodo"] != "teste":
+                continue
+            linha = next(ln for ln in self.doc.splitlines() if ln.startswith(f"| {x['horizonte']} |"))
+            self.assertIn(f"{self._br(100 * x['cobertura_p10_p90'], 1)}%", linha, x["horizonte"])
+            self.assertIn(self._br(x["mae"], 2), linha, x["horizonte"])
+
+    def test_contagens_do_g23_no_documento_sao_as_do_codigo(self):
+        self._mesma_execucao()
+        if not self.interno:
+            self.skipTest("resultados retidos ainda não gerados neste checkout")
+        for x in self.interno["g23_r1"]["fora_da_faixa_antes_da_restricao"]:
+            texto = f"{self._br(x['abaixo_do_piso'])} de {self._br(x['previsoes'])}"
+            self.assertIn(texto, self.doc, (x["modelo"], x["frequencia"]))
+            if x["negativas"]:
+                self.assertIn(f"{self._br(x['negativas'])} negativas", self.doc, (x["modelo"], x["frequencia"]))
+
+    def test_primeira_entrega_a_terminar(self):
+        if not self.g or not self.g["previsao_atual"].get("celulas"):
+            self.skipTest("sem rodada da referência experimental")
+        cel = min(self.g["previsao_atual"]["celulas"], key=lambda c_: c_["entrega"]["fim"])
+        m = re.search(r"primeira entrega a terminar é (\S+)", self.doc)
+        self.assertIsNotNone(m)
+        run = self.g["previsao_atual"]["run_id"]
+        if run not in self.doc:
+            self.skipTest(f"documento descreve outra rodada; atual {run}")
+        self.assertEqual(m.group(1).strip(" ,.()"), cel["entrega"]["id"])
+
+    def test_periodo_integrado_de_ear_e_ena(self):
+        self._mesma_execucao()
+        for campo in ("ultimo_dia_ear", "ultimo_dia_ena"):
+            d = date.fromisoformat(self.g["dados"][campo])
+            self.assertIn(f"integrado até {d.strftime('%d/%m/%Y')}", self.doc, campo)
+
+
 class Rotina(unittest.TestCase):
     def test_rotina_so_e_comprovada_com_execucoes_agendadas(self):
+        # instantes com fuso: a rotina compara com o prazo das 08h00 de Brasília (11h00 UTC)
         manual = [{"origem": "2026-09-30", "modo": "manual", "no_prazo": False, "falha": False}]
-        r = mod._rotina(manual, date(2026, 9, 30))
+        r = mod._rotina(manual, _utc(2026, 9, 30, 12))
         self.assertFalse(r["comprovada"])
         self.assertEqual(r["execucoes_agendadas"], 0)
         dias = [date(2026, 10, 1) + timedelta(days=i) for i in range(8)]
         ag = [{"origem": d.isoformat(), "modo": "agendada", "no_prazo": True, "falha": False} for d in dias if d != date(2026, 10, 4)]
-        r = mod._rotina(ag + manual, date(2026, 10, 8))
+        r = mod._rotina(ag + manual, _utc(2026, 10, 8, 12))
         self.assertFalse(r["comprovada"])                      # 04/10 sem rodada
         self.assertEqual(r["dias_sem_rodada"], ["2026-10-04"])
+        self.assertEqual(r["dias_vencidos_ate"], "2026-10-08")
         ag.append({"origem": "2026-10-04", "modo": "agendada", "no_prazo": False, "falha": False})
-        r = mod._rotina(ag, date(2026, 10, 8))
+        r = mod._rotina(ag, _utc(2026, 10, 8, 12))
         self.assertTrue(r["comprovada"])                       # 7 no prazo, 1 atrasada, nenhum dia faltante
         self.assertEqual(r["atrasadas"], 1)
+
+    def test_dia_ainda_no_prazo_nao_conta_como_faltante(self):
+        """Às 07h30 de Brasília de 09/10 (10h30 UTC) a rodada de 09/10 ainda está no prazo:
+        não é dia faltante. Às 21h30 de Brasília de 08/10 (00h30 UTC de 09/10) a data UTC já
+        é 09/10, mas o último dia vencido continua 08/10."""
+        dias = [date(2026, 10, 1) + timedelta(days=i) for i in range(8)]
+        ag = [{"origem": d.isoformat(), "modo": "agendada", "no_prazo": True, "falha": False} for d in dias]
+        r = mod._rotina(ag, _utc(2026, 10, 9, 10, 30))
+        self.assertEqual((r["dias_vencidos_ate"], r["dias_sem_rodada"], r["comprovada"]), ("2026-10-08", [], True))
+        self.assertEqual(mod.ultimo_dia_vencido(_utc(2026, 10, 9, 0, 30)), date(2026, 10, 8))
+        self.assertEqual(mod.ultimo_dia_vencido(_utc(2026, 10, 9, 11, 0)), date(2026, 10, 9))   # 08h00 em ponto: venceu
+        r = mod._rotina(ag, _utc(2026, 10, 9, 11, 5))
+        self.assertEqual((r["dias_sem_rodada"], r["comprovada"]), (["2026-10-09"], False))
+
+
+# ---------------------------------------------------------------- verificação de 01/10/2026
+
+CHAVES_DESEMPENHO = {"mae", "mae_b0_pareado", "vies", "rmse", "ganho_vs_b0", "ganho_ic90", "skill", "perda_quantilica",
+                     "cobertura_p10_p90", "cobertura_p05_p95", "largura_p10_p90", "abaixo_p10", "acima_p90",
+                     "cobertura_gravada", "cobertura_recalculada"}
+
+
+def _numeros_de_desempenho(obj, caminho=""):
+    """Caminhos de campos de desempenho com valor numérico em qualquer profundidade."""
+    out = []
+    if isinstance(obj, dict):
+        for k, x in obj.items():
+            if k in CHAVES_DESEMPENHO and (isinstance(x, (int, float)) and not isinstance(x, bool)
+                                           or isinstance(x, list) and any(isinstance(y, (int, float)) for y in x)):
+                out.append(f"{caminho}.{k}")
+            out.extend(_numeros_de_desempenho(x, f"{caminho}.{k}"))
+    elif isinstance(obj, list):
+        for i, x in enumerate(obj):
+            out.extend(_numeros_de_desempenho(x, f"{caminho}[{i}]"))
+    return out
+
+
+def _registro_liberado():
+    """Registro de modelos com a liberação simulada (só no teste; o real segue retido)."""
+    reg = copy.deepcopy(em.le_registro())
+    reg["validacao_observatorio"]["publicar"] = True
+    reg["validacao_observatorio"]["decisao_publicacao"] = {"estado": "LIBERADA", "decidido_por": "teste",
+                                                           "decidido_em": "2026-10-01", "escopo_decidido": "teste"}
+    return reg
+
+
+class Retencao(unittest.TestCase):
+    """Defeito alto da verificação de 01/10/2026: a cobertura do teste retrospectivo, número
+    de desempenho retido, era gravada em todo registro novo e publicada na partição mensal."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.pasta = os.path.join(self.tmp, "emissoes")
+        self.legado = os.path.join(self.tmp, "arquivo.jsonl")
+        shutil.copy(arq.LEGADO, self.legado)
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp)
+
+    def _emite(self, registro, origem=date(2026, 9, 28)):
+        quando = datetime(origem.year, origem.month, origem.day, 10, 30, tzinfo=timezone.utc)
+        return em.emitir(_silver(), origem, agora=quando, emitido_em=quando, versao_codigo="teste", pasta=self.pasta,
+                         legado=self.legado, lim=_limites(), registro=registro)
+
+    def test_regra_de_publicacao_exige_decisao_com_nome_e_data(self):
+        reg = copy.deepcopy(em.le_registro())
+        reg["validacao_observatorio"]["publicar"] = True
+        reg["validacao_observatorio"]["decisao_publicacao"] = {"estado": "PENDENTE"}
+        self.assertEqual(em.publicacao_desempenho(reg)[0], False)        # publicar = true sozinho não libera
+        self.assertEqual(em.publicacao_desempenho(_registro_liberado())[0], True)
+        self.assertEqual(mod.publicacao_desempenho(reg), em.publicacao_desempenho(reg))   # o módulo delega à mesma regra
+
+    def test_rodada_retida_grava_so_o_estado_de_calibracao(self):
+        reg = copy.deepcopy(em.le_registro())
+        reg["validacao_observatorio"]["publicar"] = False
+        regs = self._emite(reg)
+        self.assertEqual(len(regs), 28)
+        for r in regs:
+            self.assertNotIn("cobertura_p10_p90", r["calibracao"], r["forecast_id"])
+            self.assertIn("cobertura_retida", r["calibracao"])
+            self.assertIn(r["calibracao"]["status"], ("CALIBRADO", "DESCALIBRADO", "AMOSTRA_INSUFICIENTE", "SEM_AVALIACAO"))
+        self.assertEqual(_numeros_de_desempenho(arq.le_tudo(self.pasta, self.legado)), [])
+
+    def test_rodada_liberada_grava_a_cobertura(self):
+        regs = self._emite(_registro_liberado())
+        self.assertTrue(all("cobertura_p10_p90" in r["calibracao"] and "cobertura_retida" not in r["calibracao"] for r in regs))
+
+    def test_particao_publicada_omite_cobertura_sem_reescrever_o_registro(self):
+        """Registro gravado com a cobertura (como a rodada de 30/09/2026): o arquivo
+        versionado continua igual, e a partição pública sai sem o número, com o mesmo sha256
+        e com a omissão declarada. A comparação com a publicação anterior segue válida."""
+        regs = self._emite(_registro_liberado())
+        antes = _le(os.path.join(self.pasta, "2026-09.jsonl"))
+        series = os.path.join(self.tmp, "series")
+        os.makedirs(series)
+        with mock.patch.object(em, "publicacao_desempenho", return_value=(False, {"estado": "RETIDA"})):
+            prev, _ = gold_modelos.construir(None, pasta=self.pasta, legado=self.legado, destino_series=series)
+            publicada = json.loads(_le(os.path.join(series, "previsoes_emissoes_2026-09.json")))
+            self.assertEqual(_numeros_de_desempenho(publicada), [])
+            self.assertEqual(publicada["projecao"]["campos_omitidos"], ["calibracao.cobertura_p10_p90"])
+            self.assertEqual([r["sha256"] for r in publicada["registros"]], [r["sha256"] for r in regs])
+            self.assertTrue(all(r["omitido_na_publicacao"] == ["calibracao.cobertura_p10_p90"] for r in publicada["registros"]))
+            self.assertEqual(prev["emissoes"]["particoes"][0]["registros_com_campos_omitidos"], 28)
+            gold_modelos.construir(None, pasta=self.pasta, legado=self.legado, destino_series=series, escrever_particoes=False)
+        self.assertEqual(_le(os.path.join(self.pasta, "2026-09.jsonl")), antes)
+        self.assertEqual(arq.valida_particoes(self.pasta, self.legado), [])
+        # liberada, a publicação traz o registro inteiro
+        with mock.patch.object(em, "publicacao_desempenho", return_value=(True, {"estado": "LIBERADA"})):
+            gold_modelos.construir(None, pasta=self.pasta, legado=self.legado, destino_series=series)
+            publicada = json.loads(_le(os.path.join(series, "previsoes_emissoes_2026-09.json")))
+            self.assertNotIn("projecao", publicada)
+            self.assertEqual(publicada["registros"], regs)
+
+
+class CoberturaNoPiso(unittest.TestCase):
+    """A métrica de cobertura declarava um teste da regra inclusiva no piso que não existia."""
+
+    def test_semana_de_04_01_2025_no_piso_conta_como_coberta(self):
+        pld = _pld()
+        for serie, ref, val in ccee.parse_pld(_texto_gz("pld_horario_2025_01_04_a_10.csv.gz")):
+            pld[serie.split(".")[1]].append((ref, val))
+        info, lim = _info(pld), _limites()
+        origem = date(2024, 12, 31)
+        e = cal.entrega(origem, "W1")
+        self.assertEqual(e["id"], "W2025-01-04")
+        lo, hi, prov, _ = lim.faixa(e, origem)        # despacho de 2025 publicado em 17/12/2024: piso de R$ 58,60
+        self.assertFalse(prov)
+        self.assertAlmostEqual(lo, 58.60, places=9)
+        # simulação declarada: resíduos que levam o P10 abaixo do piso; a restrição o limita ao piso
+        q = mp.quantis_finais(lo + 5.0, mp.quantis_residuos([-60.0, -40.0, -20.0, -5.0, 0.0, 5.0, 10.0]), lo, hi)
+        self.assertEqual(q["p10"], lo)
+        linhas = []
+        for sm in cal.SUBMERCADOS:
+            y = v.realizado(info, e, sm)                # média por somas acumuladas, como no teste retrospectivo
+            self.assertAlmostEqual(y, 58.60, places=9)  # awk: as 168 horas valem 58,60 nos quatro submercados
+            self.assertLess(y, q["p10"])                 # pela comparação estrita a semana sairia descoberta (o defeito)
+            self.assertTrue(av.dentro(y, q["p10"], q["p90"]))
+            self.assertFalse(av.abaixo(y, q["p10"]))
+            ln = av.Linha(origem, "W1", sm, e)
+            ln.y, ln.prev, ln.q = y, {"B0": lo + 5.0}, {"B0": q}
+            linhas.append(ln)
+        res = av.resumo(linhas, "B0", "W")
+        self.assertEqual((res["cobertura_p10_p90"], res["abaixo_p10"], res["acima_p90"]), (1.0, 0.0, 0.0))
+        # um centavo abaixo do piso já é descoberto: a tolerância é ruído binário, não folga
+        self.assertFalse(av.dentro(58.59, q["p10"], q["p90"]))
+
+
+def _silver_por_ano(captura_pld=CAPTURA_SEED):
+    """Silver com o recorte do PLD em vintages por ano, com o sha256 do arquivo de teste de
+    onde cada ano veio (o pipeline guarda pld_horario_AAAA)."""
+    con = base.conecta(":memory:")
+    arquivos = {"2024": "pld_horario_2024_10.csv.gz", "2025": "pld_horario_2025_10_2026_08_09.csv.gz",
+                "2026": "pld_horario_2025_10_2026_08_09.csv.gz"}
+    por_ano = defaultdict(list)
+    for sm, ps in _pld().items():
+        for r, x in ps:
+            por_ano[r[:4]].append((f"pld.{sm}", r, x))
+    for ano, obs in sorted(por_ano.items()):
+        caminho = os.path.join(DADOS, arquivos[ano])
+        with open(caminho, "rb") as f:
+            sha = base.sha256_bytes(f.read())
+        vid, _ = base.registra_vintage(con, v.DS_PLD, f"pld_horario_{ano}", "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+                                       captura_pld, None, sha, 1, "teste", os.path.relpath(caminho, RAIZ))
+        base.grava_observacoes(con, v.DS_PLD, vid, obs)
+    ear, ena = _hidro()
+    for ds, serie, dados in ((v.DS_EAR, v.SERIE_EAR, ear), (v.DS_ENA, v.SERIE_ENA, ena)):
+        vid, _ = base.registra_vintage(con, ds, "recorte", "https://dados.ons.org.br", CAPTURA_ONS, None, "b" * 64, 1, "teste", None)
+        base.grava_observacoes(con, ds, vid, [(f"{serie}.{sm}", d.isoformat(), x) for sm, dd in dados.items() for d, x in dd.items()])
+    con.commit()
+    return con
+
+
+class EvidenciaP013(unittest.TestCase):
+    """Os números publicados de P013 (grade B0 e PLD já publicado no corte) não tinham
+    evidência nem proveniência própria."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.pasta = os.path.join(self.tmp, "emissoes")
+        self.legado = os.path.join(self.tmp, "arquivo.jsonl")
+        shutil.copy(arq.LEGADO, self.legado)
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp)
+
+    def test_evidencia_da_grade_b0_confere_com_awk(self):
+        con = _silver_por_ano()
+        quando = _utc(2026, 9, 30, 10, 20)
+        regs = em.emitir(con, date(2026, 9, 30), agora=quando, emitido_em=quando, versao_codigo="teste", pasta=self.pasta,
+                         legado=self.legado, lim=_limites())
+        evs, por_celula = mod._evidencias_b0(con, regs, regs[0]["run_id"], {"divergentes": []}, {"revisoes": None})
+        self.assertEqual(len(evs), 8)                                  # 2 frequências × 4 submercados
+        self.assertEqual(len(por_celula), 28)                          # toda célula com número aponta para uma evidência
+        with open(os.path.join(DADOS, "pld_horario_2025_10_2026_08_09.csv.gz"), "rb") as f:
+            sha_2026 = base.sha256_bytes(f.read())
+        for sm in cal.SUBMERCADOS:
+            w, m = evs[f"b0_semanal_{sm}"], evs[f"b0_mensal_{sm}"]
+            self.assertEqual(ev.validar(w), [])
+            self.assertAlmostEqual(w["numerador"]["valor"] / w["denominador"]["valor"], SEMANA_0919[sm], places=5)
+            self.assertEqual(w["denominador"]["valor"], 168)
+            self.assertAlmostEqual(w["valor_calculo"], SEMANA_0919[sm], places=4)
+            self.assertAlmostEqual(m["numerador"]["valor"] / m["denominador"]["valor"], AGOSTO_2026[sm], places=5)
+            self.assertEqual(m["denominador"]["valor"], 744)
+            self.assertEqual((w["periodo"]["inicio"], w["periodo"]["fim"]), ("2026-09-19", "2026-09-25"))
+            self.assertTrue(all(t["resultado"] == "aprovado" for t in w["testes"]), w["testes"])
+            self.assertEqual({a["sha256"] for a in w["fonte"]["arquivos"]}, {sha_2026})
+        # valor arquivado diferente do refeito: a evidência reprova (não confirma por construção)
+        adulterado = [dict(r, previsao=r["previsao"] + 0.01) if r["submercado"] == "SE" else r for r in regs]
+        evs2, _ = mod._evidencias_b0(con, adulterado, regs[0]["run_id"], {"divergentes": []}, {"revisoes": None})
+        self.assertEqual(evs2["b0_semanal_SE"]["testes"][0]["resultado"], "reprovado")
+        self.assertEqual(evs2["b0_semanal_S"]["testes"][0]["resultado"], "aprovado")
+
+    def test_pld_ja_publicado_no_corte_com_evidencia(self):
+        """Simulação declarada: captura às 09h00 UTC de 27/09 (antes do corte das 10h00 UTC);
+        a real é das 15h44. Médias de 27/09, 07h a 23h, por awk sobre o arquivo original."""
+        con = _silver_por_ano(captura_pld="2026-09-27T09:00:00Z")
+        run = {"cutoff": "2026-09-27T10:00:00Z", "origem": "2026-09-27", "registrado_no_portal_em": "2026-09-27"}
+        evs = {}
+        out = mod._ja_publicado(con, run, evs)
+        awk = {"SE": 72.797647, "S": 72.794118, "NE": 72.795294, "N": 72.799412}
+        for sm in cal.SUBMERCADOS:
+            x = out["submercados"][sm]
+            self.assertEqual((x["horas"], x["primeira"], x["ultima"]), (17, "2026-09-27T07:00", "2026-09-27T23:00"))
+            e = evs[x["evidencia"]]
+            self.assertEqual(ev.validar(e), [])
+            self.assertAlmostEqual(e["valor_calculo"], awk[sm], places=5)
+            self.assertEqual(e["denominador"]["valor"], 17)
+        # sem captura até o corte não há número nem evidência
+        vazio = {}
+        out = mod._ja_publicado(_silver_por_ano(), run, vazio)
+        self.assertEqual((out["submercados"]["SE"]["horas"], out["submercados"]["SE"]["evidencia"], vazio), (0, None, {}))
+
+
+class EmissoesCsv(unittest.TestCase):
+    def test_atraso_e_modo_do_csv_sao_os_da_rodada(self):
+        """Rodada transcrita de 27/09/2026 sem atraso gravado: o CSV traz o mesmo atraso
+        derivado e o mesmo modo da gold, com a derivação declarada."""
+        registros = arq.le_tudo()
+        rodadas = mod._rodadas(registros)
+        r27 = next(x for x in rodadas if x["run_id"].startswith("prosp_2026-09-27"))
+        self.assertEqual((r27["atraso_min"], r27["atraso_origem"], r27["modo"]),
+                         (490.2, mod.ORIGEM_ATRASO_CALCULADO, mod.MODO_TRANSCRITO))   # 19h10m13s − 11h00 UTC
+        destino = tempfile.mkdtemp()
+        try:
+            with mock.patch.object(base, "SERIES", destino):
+                mod._escreve_emissoes(registros, [], rodadas)
+            with open(os.path.join(destino, "previsoes_emissoes.csv"), encoding="utf-8") as f:
+                linhas = list(csv.DictReader(f, delimiter=";"))
+        finally:
+            shutil.rmtree(destino)
+        por_run = {x["run_id"]: x for x in rodadas}
+        self.assertEqual(len(linhas), len(registros))
+        for ln in linhas:
+            rd = por_run[ln["run_id"]]
+            self.assertEqual(float(ln["atraso_min"]), rd["atraso_min"], ln["forecast_id"])
+            self.assertEqual(ln["modo"], rd["modo"], ln["forecast_id"])
 
 
 if __name__ == "__main__":

@@ -9,9 +9,10 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
+import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { NOME_REGIAO, perguntaPainel, rotaPainel, rotuloHora, situacaoAtualidade } from "@/lib/energia/carga";
-import { carimbo, dataBR, num } from "@/lib/energia/formato";
+import { NOME_REGIAO, perguntaPainel, rotaPainel, rotuloHora, situacaoAtualidade, textoDiferencaHoraria } from "@/lib/energia/carga";
+import { carimbo, dataBR, num, plural } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { CargaDetalheGold } from "@/lib/energia/tipos-carga";
@@ -20,7 +21,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Carga: MMGD e perfil horário",
   description:
-    "Curva de carga horária do ONS desde 2019, hora do pico por ano desde 2000, perfil típico por mês e tipo de dia e a decomposição da carga verificada em carga global, MMGD estimada e carga líquida de MMGD, sem misturar os dois produtos do ONS.",
+    "Curva de carga horária do ONS, hora do pico por ano, perfil típico por mês e tipo de dia e a decomposição da carga verificada em carga global, MMGD estimada e carga líquida de MMGD, sem misturar os dois produtos do ONS.",
   alternates: { canonical: "/setor-eletrico/carga/perfil-horario" },
 };
 
@@ -71,11 +72,15 @@ export default function PerfilHorarioPage() {
   const { compatibilidade: _c, conceitos: _k, ...p026Cliente } = p;
   // hora do pico do dia provado na ficha, lida da mesma série de picos (nunca do texto da ficha)
   const picoEv = p.picos_90d.find((x) => x.d === ev.p026_pico_sin?.periodo?.fim && x.hora !== null) ?? null;
+  // onde a carga global da API se afasta da curva, lido da tabela por hora (nunca escrito à mão)
+  const porHora = p.compatibilidade.por_hora_sin_365d;
+  const diferencaCurva = textoDiferencaHoraria(porHora);
+  const diasPorHora = Math.max(0, ...porHora.map((x) => x.horas));
 
   return (
     <>
       <CabecalhoEnergia atual="carga" />
-      <MarcaVisita secao="energia:carga-perfil" />
+      <MarcaVisita secao="energia:carga" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
         <CabecalhoModulo
           rotulo="Carga"
@@ -86,8 +91,10 @@ export default function PerfilHorarioPage() {
             </>
           }
         >
-          A que horas o sistema demanda mais energia, e quanto da carga é atendido por micro e minigeração distribuída (MMGD), segundo a estimativa do ONS. O ONS publica
-          dois produtos de carga com definições diferentes; esta página mostra os dois lado a lado e nunca soma nem subtrai um do outro.
+          A que horas o sistema demanda mais energia, e quanto da carga é atendido por micro e minigeração distribuída (<Termo slug="geracao-distribuida">MMGD</Termo>),
+          segundo a estimativa do ONS. O ONS publica dois produtos de carga com definições diferentes: a <Termo slug="curva-de-carga">curva de carga horária</Termo> e a
+          carga verificada, com a <Termo slug="carga-global">carga global</Termo> e a <Termo slug="carga-liquida-de-mmgd">carga líquida de MMGD</Termo>. Esta página mostra os
+          dois lado a lado e nunca soma nem subtrai um do outro.
         </CabecalhoModulo>
         <CargaNavegacao atual="p026" />
         <ModoProfundidade>
@@ -114,7 +121,7 @@ export default function PerfilHorarioPage() {
               naoConcluir={
                 <>
                   A MMGD é estimativa do ONS, não medição: a micro e minigeração não é supervisionada. A parcela de MMGD dentro da curva e da carga diária não é publicada, então
-                  não se sabe quanto do pico da curva é MMGD. A carga global da API não substitui a curva (é maior, sobretudo à noite).
+                  não se sabe quanto do pico da curva é MMGD. A carga global da API não substitui a curva{diferencaCurva ? ` (${diferencaCurva})` : ""}.
                 </>
               }
               proveniencia={g.proveniencia.api}
@@ -131,6 +138,8 @@ export default function PerfilHorarioPage() {
                   fonteCurva={FONTE_CURVA}
                   fonteApi={FONTE_API}
                   versao={p.ultimo_dia}
+                  regimes={g.regimes}
+                  diferencaCurva={diferencaCurva}
                   destaques={
                     <div className="grid gap-4 sm:grid-cols-2">
                       <Numero
@@ -151,7 +160,7 @@ export default function PerfilHorarioPage() {
                         casas={0}
                         tamanho="medio"
                         cor="var(--cor-energia-dark)"
-                        nota={picoEv ? `Às ${rotuloHora(picoEv.hora ?? 0)} de ${dataBR(picoEv.d)}; a curva inclui MMGD estimada, não separada.` : "Inclui MMGD estimada, não separada."}
+                        nota={picoEv?.hora != null ? `Às ${rotuloHora(picoEv.hora)} de ${dataBR(picoEv.d)}; a curva inclui MMGD estimada, não separada.` : "Inclui MMGD estimada, não separada."}
                         endereco={`${rotaPainel("p026")}#p026`}
                       />
                     </div>
@@ -214,13 +223,16 @@ export default function PerfilHorarioPage() {
                     fonte="ONS (carga diária, curva horária, carga verificada e balanço de energia)"
                     versao={a11.declarado}
                     nomeArquivo="carga-a11-inclusao-mmgd"
+                    chaveUrl="a11"
                   />
                 </CargaAnalise>
 
                 <CargaAuditoria id="compatibilidade" titulo="Compatibilidade entre a carga global da API e a curva">
                   <p className="text-sm text-carvao-muted">
                     {p.compatibilidade.conclusao}
-                    {ultimoAno ? ` Em ${ultimoAno.ano}, no SIN, a carga global ficou ${num(ultimoAno.diferenca_pct, 2)}% acima da curva nas mesmas ${num(ultimoAno.horas, 0)} horas.` : ""}
+                    {ultimoAno && ultimoAno.diferenca_pct !== null
+                      ? ` Em ${ultimoAno.ano}, no SIN, a carga global ficou ${num(Math.abs(ultimoAno.diferenca_pct), 2)}% ${ultimoAno.diferenca_pct >= 0 ? "acima" : "abaixo"} da curva nas mesmas ${num(ultimoAno.horas, 0)} horas.`
+                      : ""}
                   </p>
                   <TabelaInterativa
                     titulo="Carga global da API contra a curva, mesmas horas, por ano"
@@ -234,7 +246,7 @@ export default function PerfilHorarioPage() {
                     chaveUrl="compat"
                   />
                   <TabelaInterativa
-                    titulo="SIN, últimos 365 dias: diferença por hora do dia"
+                    titulo={`SIN, últimos ${plural(diasPorHora, "dia", "dias")}: diferença por hora do dia`}
                     colunas={COLUNAS_COMPAT_HORA}
                     linhas={p.compatibilidade.por_hora_sin_365d.map((x) => ({ ...x, id: String(x.hora) }))}
                     chaveLinha="id"
@@ -242,6 +254,7 @@ export default function PerfilHorarioPage() {
                     fonte={`${FONTE_API}; ${FONTE_CURVA}`}
                     versao={p.ultimo_dia}
                     nomeArquivo="carga-compatibilidade-hora"
+                    chaveUrl="compath"
                   />
                   <CargaFontes fontes={g.fontes.filter((f) => f.id === "curva" || f.id === "api")} />
                 </CargaAuditoria>

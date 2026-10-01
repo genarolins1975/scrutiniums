@@ -7,7 +7,7 @@ import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold } from "@/lib/energia/gold";
 import { carimbo } from "@/lib/energia/formato";
-import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
+import { DATASETS_INTEGRADOS, urlDoConjunto } from "@/lib/energia/datasets";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -52,7 +52,8 @@ export default function DadosEnergiaPage() {
       </>
     );
   }
-  const integrados = cat.entradas.filter((e) => e.estado !== "CATALOGADO");
+  // compatibilidade com o catálogo de cinco estados (a página nova vem na fase de interface)
+  const integrados = cat.entradas.filter((e) => ["INTEGRADO", "VALIDADO", "PUBLICADO"].includes(e.estado as string) && e.slug);
   return (
     <>
       <CabecalhoEnergia atual="dados" />
@@ -97,9 +98,9 @@ export default function DadosEnergiaPage() {
                   <span className="mt-2 font-serif text-lg text-carvao">{e.titulo}</span>
                   <span className="mt-1 text-sm text-carvao-muted">
                     Usado em: {(DATASETS_INTEGRADOS.find((d) => d.catalogoId === e.id)?.paginas.map((p) => p.rotulo) ?? Array.from(new Set(e.usado_em.map((u) => PAGINA_DA_GOLD[u] ?? u)))).join(", ")}
-                    {e.modelos.length ? ` · modelos ${e.modelos.join(", ")}` : ""}
+                    {(e.modelos ?? []).length ? ` · modelos ${(e.modelos ?? []).join(", ")}` : ""}
                   </span>
-                  {e.quebras.length > 0 && <span className="mt-1 text-xs text-aviso">{textoQuebras(e.quebras)}</span>}
+                  {(e.quebras ?? []).length > 0 && <span className="mt-1 text-xs text-aviso">{textoQuebras(e.quebras)}</span>}
                 </Link>
               </li>
             ))}
@@ -115,13 +116,13 @@ export default function DadosEnergiaPage() {
               slug: e.slug,
               orgao: e.orgao,
               titulo: e.titulo,
-              url: e.url,
+              url: urlDoConjunto(e) ?? "",
               tema: e.tema,
               estado: e.estado,
-              formatos: e.formatos,
-              modificado: e.modificado_na_fonte,
+              formatos: e.formatos ?? [],
+              modificado: e.modificado_na_fonte ?? null,
               verificado: e.metadados_verificados,
-              descontinuado: e.descontinuado,
+              descontinuado: e.descontinuado ?? false,
             }))}
           />
         </section>

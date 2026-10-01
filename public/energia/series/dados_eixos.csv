@@ -24,7 +24,7 @@ empresas.json;Índice Herfindahl-Hirschman da potência em operação por grupo 
 expansao.json;Capacidade instalada em operação;;reconciliacao_aprovada;aprovado;2;0;0
 expansao.json;Potência outorgada com construção não iniciada;;controles_aprovados;;2;0;0
 expansao.json;Potência das unidades geradoras em implantação acompanhadas pelo RALIE;;reconciliacao_aprovada;aprovado;2;0;0
-expansao.json;Potência da primeira fotografia do RALIE que entrou em operação;;controles_aprovados;;1;0;0
+expansao.json;Potência em implantação na primeira fotografia do RALIE que entrou em operação;;controles_aprovados;;1;0;0
 expansao.json;Potência prometida para os 12 meses seguintes que foi liberada no prazo;;controles_aprovados;;2;0;0
 expansao.json;Linhas de transmissão novas em empreendimentos em andamento;;controles_aprovados;;2;0;0
 expansao.json;Extensão de linhas contratadas em leilão no ano;;ressalva;;1;1;0
@@ -72,6 +72,18 @@ perdas.json;Perdas não técnicas sobre o mercado de baixa tensão;;ressalva;;3;
 perdas.json;Energia injetada de referência das concessionárias;;ressalva;aprovado;3;2;0
 perdas.json;Taxa de perdas totais acumulada em 2026;;ressalva;;3;2;0
 perdas.json;Associação entre renda média da área e taxa de perdas totais (ρ de Spearman);;ressalva;;3;1;0
+previsoes_desempenho.json;PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado SE;PREVISTO;controles_aprovados;;2;0;0
+previsoes_desempenho.json;PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado S;PREVISTO;controles_aprovados;;2;0;0
+previsoes_desempenho.json;PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado NE;PREVISTO;controles_aprovados;;2;0;0
+previsoes_desempenho.json;PLD médio já publicado pela CCEE para 30/09/2026, das 07h às 23h, submercado N;PREVISTO;controles_aprovados;;2;0;0
+previsoes_desempenho.json;Referência experimental B0 semanal (W1, W2, W3, W4), submercado SE, rodada de 30/09/2026;PREVISTO;reconciliacao_aprovada;aprovado;3;0;0
+previsoes_desempenho.json;Referência experimental B0 semanal (W1, W2, W3, W4), submercado S, rodada de 30/09/2026;PREVISTO;reconciliacao_aprovada;aprovado;3;0;0
+previsoes_desempenho.json;Referência experimental B0 semanal (W1, W2, W3, W4), submercado NE, rodada de 30/09/2026;PREVISTO;reconciliacao_aprovada;aprovado;3;0;0
+previsoes_desempenho.json;Referência experimental B0 semanal (W1, W2, W3, W4), submercado N, rodada de 30/09/2026;PREVISTO;reconciliacao_aprovada;aprovado;3;0;0
+previsoes_desempenho.json;Referência experimental B0 mensal (M1, M2, M3), submercado SE, rodada de 30/09/2026;PREVISTO;reconciliacao_aprovada;aprovado;3;0;0
+previsoes_desempenho.json;Referência experimental B0 mensal (M1, M2, M3), submercado S, rodada de 30/09/2026;PREVISTO;reconciliacao_aprovada;aprovado;3;0;0
+previsoes_desempenho.json;Referência experimental B0 mensal (M1, M2, M3), submercado NE, rodada de 30/09/2026;PREVISTO;reconciliacao_aprovada;aprovado;3;0;0
+previsoes_desempenho.json;Referência experimental B0 mensal (M1, M2, M3), submercado N, rodada de 30/09/2026;PREVISTO;reconciliacao_aprovada;aprovado;3;0;0
 qualidade.json;DEC do Brasil (apurado, ponderado por unidades consumidoras, todas as distribuidoras, inclusive permissionárias);;ressalva;aprovado;4;1;0
 qualidade.json;FEC do Brasil (apurado, ponderado por unidades consumidoras, todas as distribuidoras, inclusive permissionárias);;ressalva;aprovado;4;1;0
 qualidade.json;Conjuntos com DEC anual acima do limite;;controles_aprovados;;3;0;0

@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "previsoes.json",
- "gerado_em": "2026-09-30T23:43:56Z",
+ "gerado_em": "2026-10-01T06:57:05Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "3e7ff0a36fba+alterado",
+ "versao_codigo": "eec0a3121e05+alterado",
  "disponivel": true,
  "atual": {
   "disponivel": false,
@@ -1313,9 +1313,10 @@
     "mes": "2026-09",
     "url": "/energia/series/previsoes_emissoes_2026-09.json",
     "registros": 28,
+    "registros_com_campos_omitidos": 28,
     "primeiro": "prosp_2026-09-30_20260930T233117Z:W1:SE:B0",
     "ultimo_sha256": "99dd04662d10412ad5f394e89c25e90a070d4c184b8987bc48dbbd4c72566126",
-    "sha256_particao": "73a4eec9b11d24d60f0ce14e0973b010a2c8d1aefd8c21423c859f8889e32ecc",
+    "sha256_particao": "457af628b0db4c1f0098982e4e92935756c9f2fce76cda9d2647310fcb0c62c5",
     "por_tipo": {
      "PUBLICACAO": 0,
      "RODADA_INTERNA": 0,

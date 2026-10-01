@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "arquivos.json",
- "gerado_em": "2026-10-01T06:45:18Z",
+ "gerado_em": "2026-10-01T07:11:57Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "30599423bcec+alterado",
+ "versao_codigo": "eec0a3121e05+alterado",
  "disponivel": true,
  "arquivos": {
   "/energia/series/regulacao_limites_pld_atos.csv": {
@@ -161,6 +161,16 @@
    "modulo": "agua",
    "gold": "agua_detalhe.json"
   },
+  "/energia/series/agua_reservatorios_45d.json": {
+   "colunas": "Séries diárias dos últimos 45 dias (a janela do balanço e as duas semanas anteriores) dos reservatórios da lista da gold (EAR máxima positiva no dia da EAR), lidas pela página sob demanda. Campos: fim (último dia); d0 (primeiro dia); passo_dias (1); criterio; reservatorios[] com id (id_reservatorio do ONS), nome, d0, passo_dias e os arrays vol (volume útil, % do volume útil total), afl, defl, turb, vert (vazões afluente, defluente, turbinada e vertida, m³/s); o ponto i é o dia d0 + i; null = sem dado no dia (nunca preenchido).",
+   "modulo": "agua",
+   "gold": "agua_detalhe.json"
+  },
+  "/energia/series/agua_bacias_geo.json": {
+   "colunas": "Contornos das bacias hidrográficas do ONS para o mapa, no formato das malhas de public/energia/geo: Albers cônica equivalente com a mesma grade de 100 m da camada de UF (sobreponíveis), Douglas-Peucker por anel com tolerância de 1 km. Campos: camada; fonte; url; capturado_em e sha256 do zip original no bronze; projecao; simplificacao; viewBox; contagem; conciliacao (polígonos do shapefile reunidos em cada bacia); features[] com id (nome da bacia nos conjuntos do ONS), nome, uf (vazio) e d (caminho SVG).",
+   "modulo": "agua",
+   "gold": "agua_detalhe.json"
+  },
   "/energia/series/carga_horaria.csv": {
    "colunas": "data_hora (início da hora, horário de Brasília); SE, S, NE, N = carga horária da Curva de Carga Horária do ONS em MWmed; SIN = soma dos quatro na hora (vazio se algum faltar); regime = 1, 2 ou 3 (mudanças de conteúdo do ONS em 01/03/2021 e na inclusão da MMGD, declarada para 29/04/2023 e observada nos dados em 01/05/2023) ou transicao (29 e 30/04/2023, dias sem regime seguro). Desde 2019.",
    "modulo": "carga",
@@ -232,12 +242,12 @@
    "gold": "geracao_detalhe.json"
   },
   "/energia/series/geracao_a11_conferencia.csv": {
-   "colunas": "data; balanco_solar_sin_mwh (Balanço de Energia); usinas_solar_mwh (soma das usinas FOTOVOLTAICA da Geração por Usina); usinas_mmgd_mwh; usinas_solar_sem_mmgd_mwh; diferenca_mwh = balanço − usinas.",
+   "colunas": "data; balanco_solar_sin_mwh (Balanço de Energia); usinas_solar_mwh (soma das usinas FOTOVOLTAICA da Geração por Usina); usinas_mmgd_mwh (vazio antes de 29/04/2023: o grupo MMGD não existe na fonte, ausência e não zero); usinas_solar_sem_mmgd_mwh; diferenca_mwh = balanço − usinas.",
    "modulo": "geracao",
    "gold": "geracao_detalhe.json"
   },
   "/energia/series/geracao_reconciliacao_balanco.csv": {
-   "colunas": "mes; fonte do balanço (hidraulica, termica com nuclear, eolica, solar); balanco_mwh; usinas_mwh; diferenca_mwh; usinas_roraima_mwh (térmicas de Roraima na Geração por Usina); dias.",
+   "colunas": "mes; fonte do balanço (hidraulica, termica com nuclear, eolica, solar); balanco_mwh; usinas_mwh; diferenca_mwh = balanço − usinas; roraima_excluida_mwh (térmica das usinas de Roraima nos dias em que o balanço as exclui); diferenca_sem_roraima_mwh = diferença + Roraima excluída; dias; subsistema_dias; subsistema_dias_conciliados (|diferença ajustada| ≤ 1 MWh).",
    "modulo": "geracao",
    "gold": "geracao_detalhe.json"
   },
@@ -247,12 +257,12 @@
    "gold": "geracao_detalhe.json"
   },
   "/energia/series/geracao_termica_usina_mensal.csv": {
-   "colunas": "mes; usina (CEG ou código do ONS); nome; subsistema; combustivel (rótulo); categoria; origem_combustivel; total_mwh e uma coluna por motivo em MWh. Só linhas com algum valor diferente de zero.",
+   "colunas": "mes; usina (identidade: chave mais recente da usina, ligando CEGs com o mesmo número de empreendimento e elo publicado pelo ONS); nome_usina; chave_fonte (CEG ou código do ONS como a fonte publicou no mês); nome_na_fonte (último nom_usina do CEG, pode ser o de uma parcela); subsistema; combustivel (rótulo); categoria; origem_combustivel; total_mwh e uma coluna por motivo em MWh. Só linhas com algum valor diferente de zero.",
    "modulo": "geracao",
    "gold": "geracao_detalhe.json"
   },
   "/energia/series/geracao_cvu_semanal.csv": {
-   "colunas": "semana_inicio; semana_fim; pmo (ano-mês de referência e revisão); cod_usina (código do ONS nos modelos); usina; subsistema; categoria; cvu_rs_mwh. De 2021 em diante.",
+   "colunas": "semana_inicio; semana_fim; pmo (ano-mês de referência e revisão); cod_usina (código do ONS nos modelos); usina (nome no CVU); usina_termica (identidade na térmica por motivo; vazio = sem par ou código ambíguo); subsistema; categoria; cvu_rs_mwh. De 2021 em diante.",
    "modulo": "geracao",
    "gold": "geracao_detalhe.json"
   },
@@ -267,7 +277,7 @@
    "gold": "geracao_detalhe.json"
   },
   "/energia/series/geracao_capacidade_unidades.csv": {
-   "colunas": "cod_equipamento; usina; ceg; tipo; combustivel; categoria; modalidade; subsistema; uf; potencia_mw; entrada_teste; entrada_operacao; desativacao (retrato do dia da captura).",
+   "colunas": "cod_equipamento; usina; ceg; tipo; combustivel (rótulo da unidade); categoria (a da usina na Geração por Usina, a mesma do fator de capacidade); origem_categoria (geracao_por_usina, geracao_por_usina_ceg_base, conjunto, rotulo_da_unidade, demais_unidades_do_ceg); modalidade; subsistema; uf; potencia_mw; entrada_teste; entrada_operacao; desativacao (retrato do dia da captura).",
    "modulo": "geracao",
    "gold": "geracao_detalhe.json"
   },
@@ -352,12 +362,12 @@
    "gold": "rede_detalhe.json"
   },
   "/energia/series/rede_programado_horario.csv": {
-   "colunas": "data_hora; par (fronteira na orientação canônica, ARGENTINA ou URUGUAI); programado_mwmed; verificado_mwmed; desvio_mwmed (verificado − programado); material (1 = |desvio| ≥ 1.000 MWmed); inversao (1 = programa e operação em sentidos opostos, ambos acima de 1 MWmed em módulo). Desvio não é falha: o programa é a previsão do dia anterior.",
+   "colunas": "data_hora; par (fronteira na orientação canônica, ARGENTINA ou URUGUAI); programado_mwmed; verificado_mwmed; desvio_mwmed (verificado − programado); material (1 = |desvio| ≥ 1.000 MWmed); inversao (1 = programa e operação em sentidos opostos, ambos acima de 1 MWmed em módulo); dia_rotulado (1 = dia com programado repetido por 6 horas ou mais numa fronteira entre subsistemas, rótulo nas quatro fronteiras; 0 nos países). Desvio não é falha: o programa é a previsão do dia anterior.",
    "modulo": "rede",
    "gold": "rede_detalhe.json"
   },
   "/energia/series/rede_programado_diario.csv": {
-   "colunas": "data; par; horas; programado_mwh; verificado_mwh; desvio_mwh (Σ verificado − programado); desvio_abs_mwh (Σ |desvio|); horas_materiais; horas_inversao; maior_desvio_mwmed e hora_maior_desvio.",
+   "colunas": "data; par; horas; programado_mwh; verificado_mwh; desvio_mwh (Σ verificado − programado); desvio_abs_mwh (Σ |desvio|); horas_materiais; horas_inversao; maior_desvio_mwmed e hora_maior_desvio; dia_rotulado (programa repetido).",
    "modulo": "rede",
    "gold": "rede_detalhe.json"
   },
@@ -857,17 +867,17 @@
    "gold": "empresas.json"
   },
   "/energia/series/empresas_financas_anual.csv": {
-   "colunas": "DFP, formato longo, um valor por linha: cnpj; escopo (consolidado ou individual, nunca somados); conta (id); cd_conta (código do plano padronizado da CVM; divida_bruta = 2.01.04 + 2.02.01); periodo_inicio (vazio em saldo); periodo_fim; recorte (exercicio = exercício social de 12 meses, que entra nas séries; saldo; exercicio_irregular = período publicado com início depois de 1º de janeiro numa companhia sem balanço positivo no fim do ano anterior, como o exercício de constituição: fica só neste CSV, com as datas da fonte, fora das séries); valor_rs (R$ nominais, escala da fonte convertida); versao (maior versão do documento no arquivo); recebido_cvm_em (data de recebimento do documento na CVM); reapresentado_rs (valor do mesmo exercício como apresentado no comparativo da DFP seguinte, só quando difere em mais de R$ 1 mil); nota (inicio_inconsistente_na_fonte:AAAA-MM-DD = a companhia publicou DT_INI_EXERC diferente de 1º de janeiro num exercício encerrado em 31/12 tendo balanço positivo no fim do ano anterior no mesmo documento; o valor é tratado como o exercício de 12 meses e a data publicada fica na nota). Demonstração com ativo total igual a zero (a CVM preenche com zero o consolidado que a companhia deixou de apresentar) é tratada como não apresentada: os valores dela não aparecem (lista em financas.exclusoes da gold). Nome da companhia em empresas_companhias_cvm.csv. Vazio = conta não publicada.",
+   "colunas": "DFP, formato longo, um valor por linha: cnpj; escopo (consolidado ou individual, nunca somados); conta (id); cd_conta (código do plano padronizado da CVM; divida_bruta = 2.01.04 + 2.02.01); periodo_inicio (vazio em saldo); periodo_fim; recorte (exercicio = exercício social de 12 meses, que entra nas séries; saldo; exercicio_irregular = período publicado com início depois de 1º de janeiro numa companhia sem balanço positivo no fim do ano anterior, como o exercício de constituição: fica só neste CSV, com as datas da fonte, fora das séries); valor_rs (R$ nominais, escala da fonte convertida); versao (maior versão do documento no arquivo); recebido_cvm_em (data de recebimento do documento na CVM); reapresentado_rs (valor do mesmo exercício como apresentado no comparativo da DFP seguinte, só quando difere em mais de R$ 1 mil); nota (inicio_inconsistente_na_fonte:AAAA-MM-DD = a companhia publicou DT_INI_EXERC diferente de 1º de janeiro num exercício encerrado em 31/12 tendo balanço positivo no fim do ano anterior no mesmo documento; o valor é tratado como o exercício de 12 meses e a data publicada fica na nota; escala_corrigida:x1000 ou x0.001 = valor convertido para a escala da DFP mais recente ligada ao documento, porque o mesmo número aparece em outro documento da companhia com a outra marca de escala: valor ESTIMADO pelo observatório; as duas notas podem vir juntas, separadas por |). Reapresentação comparada depois da correção de escala. Demonstração com ativo total igual a zero (a CVM preenche com zero o consolidado que a companhia deixou de apresentar) e coluna não preenchida pela companhia são tratadas como ausência: os valores delas não aparecem (lista com a prova em empresas_financas_ajustes.csv). Nome da companhia em empresas_companhias_cvm.csv. Vazio = conta não publicada.",
    "modulo": "empresas",
    "gold": "empresas.json"
   },
   "/energia/series/empresas_financas_trimestral.csv": {
-   "colunas": "ITR, formato longo: cnpj; escopo; conta; cd_conta; periodo_inicio; periodo_fim; recorte (trimestre = três meses da DRE; acumulado_no_ano = janeiro até o fim do trimestre, na DRE e sempre na DFC, que a CVM publica acumulada; no 1º trimestre a DRE aparece nos dois recortes com o mesmo valor, porque o trimestre e o acumulado coincidem; saldo = balanço no fim do trimestre; periodo_irregular = fluxo com início fora dessas regras, com as datas da fonte, fora das séries); valor_rs; versao; recebido_cvm_em. O 4º trimestre não tem ITR (vem na DFP anual); nada é deduzido por diferença. Demonstração com ativo total igual a zero é tratada como não apresentada, como no CSV anual.",
+   "colunas": "ITR, formato longo: cnpj; escopo; conta; cd_conta; periodo_inicio; periodo_fim; recorte (trimestre = três meses da DRE; acumulado_no_ano = janeiro até o fim do trimestre, na DRE e sempre na DFC, que a CVM publica acumulada; no 1º trimestre a DRE aparece nos dois recortes com o mesmo valor, porque o trimestre e o acumulado coincidem; saldo = balanço no fim do trimestre; periodo_irregular = fluxo com início fora dessas regras, com as datas da fonte, fora das séries); valor_rs; versao; recebido_cvm_em; nota (escala_corrigida:x1000 ou x0.001 = o documento marca uma escala que diverge de outro documento da mesma companhia com os mesmos números, e o valor foi convertido para a escala da DFP mais recente ligada a ele: valor ESTIMADO pelo observatório, prova em empresas_financas_ajustes.csv). O 4º trimestre não tem ITR (vem na DFP anual); nada é deduzido por diferença. Demonstração com ativo total igual a zero e coluna não preenchida pela companhia (empresas_financas_ajustes.csv) são tratadas como ausência, como no CSV anual.",
    "modulo": "empresas",
    "gold": "empresas.json"
   },
   "/energia/series/empresas_financas.json": {
-   "colunas": "Séries por companhia para leitura sob demanda, em R$ milhões com 3 casas (exato para a escala MIL da fonte): {cnpj: {anual: {con|ind: {conta: [[ano, valor], ...]}}, trimestral: {con|ind: {'conta:recorte': [[AAAA-MM-DD, valor], ...]}}}}. Recorte trimestre (DRE, três meses), saldo (balanço) ou acumulado_no_ano (DFC, de janeiro ao fim do trimestre, inclusive o 1º trimestre). Mesmos valores dos CSV.",
+   "colunas": "Séries por companhia para leitura sob demanda, em R$ milhões com 3 casas (exato para a escala MIL da fonte): {cnpj: {anual: {con|ind: {conta: [[ano, valor], ...]}}, trimestral: {con|ind: {'conta:recorte': [[AAAA-MM-DD, valor], ...]}}}}. Recorte trimestre (DRE, três meses), saldo (balanço) ou acumulado_no_ano (DFC, de janeiro ao fim do trimestre, inclusive o 1º trimestre). escala_corrigida (só quando há): documentos convertidos para a escala da DFP mais recente ligada a eles ('DFP 2021-12-31 individual: x1000'). Mesmos valores dos CSV.",
    "modulo": "empresas",
    "gold": "empresas.json"
   },
@@ -878,6 +888,16 @@
   },
   "/energia/series/empresas_cadeia.json": {
    "colunas": "Grafo societário vigente para a árvore interativa: nos {cnpj: [nome, controlador_direto_cnpj|null, motivo_parada|null]} e arestas colunares (pai, socio, nome, controlador, pct_direto) dos nós que estão numa cadeia de usina ou distribuidora. Em nome, sócio sem CNPJ só aparece com o nome quando é pessoa jurídica estrangeira declarada pela fonte ou rótulo coletivo; senão 'pessoa física' ou 'sócio sem documento'.",
+   "modulo": "empresas",
+   "gold": "empresas.json"
+  },
+  "/energia/series/empresas_transmissao.csv": {
+   "colunas": "Ativos de transmissão por CNPJ da concessionária (SIGET), um CNPJ por linha: cnpj (14 dígitos; a fonte publica parte dos CNPJ sem os zeros à esquerda e eles são completados); nome (razão social do cadastro de agentes, da CVM ou do Polímero; senão o nome curto do agente no SIGET); nome_siget (DscRazaoSocial do contrato); contratos (contratos de concessão do CNPJ no SIGET); contratos_com_modulos; modulos (módulos cujo contrato proprietário, IdeCcdProprietario, é do CNPJ); modulos_operacao (alguma obra do módulo em operação ou concluída); modulos_lt, modulos_me, modulos_mm, modulos_mg (linha, equipamento, manobra, módulo geral); circuitos_operacao e km_circuito_operacao (módulos de linha ativos em operação; cada módulo é um circuito, então km de circuito: linha de circuito duplo conta duas vezes); circuitos_implantacao e km_circuito_implantacao (linha ativa sem obra em operação); circuitos_desativados; subestacoes (subestações distintas em que o CNPJ tem módulo de equipamento em operação; a mesma subestação pode aparecer em mais de um CNPJ); mva_transformacao_operacao (transformadores de potência principais em operação; reserva fora); ufs (separadas por |); no_cadastro_agentes (1/0); ramo_transmissao_cadastro (1 = ramo transmissão declarado no cadastro de agentes); grupo_cnpj e grupo_nome (topo da cadeia de controle declarada no Polímero; igual ao CNPJ quando não há controlador único); data_siget.",
+   "modulo": "empresas",
+   "gold": "empresas.json"
+  },
+  "/energia/series/empresas_financas_ajustes.csv": {
+   "colunas": "Ajustes do observatório aos dados da CVM, uma linha por documento e coluna: tipo (escala_corrigida = documento cuja marca ESCALA_MOEDA diverge de outro documento da mesma companhia que repete os mesmos números, convertido para a escala da DFP mais recente ligada a ele; coluna_nao_preenchida = coluna com valores 0 ou ±1 na unidade do documento enquanto o outro escopo tem valores; fluxos_nao_preenchidos = DFC zerada contra saldo de caixa no próprio arquivo, com a DRE zerada do mesmo documento; escopo_nao_apresentado e demonstracao_zerada = coluna com ativo total igual a zero); cnpj; escopo (consolidado ou individual); documento (DFP ou ITR); dt_refer (data de referência do documento); ordem (ultimo = exercício ou trimestre do documento; penultimo = comparativo); demonstracao (saldo = balanço; DRE; DFC; todas); periodo (data do saldo ou início/fim do fluxo); escala_marcada (MIL ou UNIDADE, como a fonte marcou); fator (multiplicador aplicado, só em escala_corrigida); referencia (documento que define a escala, só em escala_corrigida); detalhe (a prova no próprio arquivo). Os valores das colunas não preenchidas e zeradas ficam fora das séries (ausência, nunca zero).",
    "modulo": "empresas",
    "gold": "empresas.json"
   },
@@ -892,7 +912,7 @@
    "gold": "previsoes_desempenho.json"
   },
   "/energia/series/previsoes_emissoes.csv": {
-   "colunas": "Uma linha por célula emitida pelo observatório (arquivo imutável, pipeline/energia/previsoes/): forecast_id; run_id; tipo (REFERENCIA_EXPERIMENTAL, RODADA_INTERNA, PUBLICACAO); modelo; versao_modelo; origem; cutoff, prazo e emitido_em (UTC); atraso_min; modo (agendada ou manual); horizonte; entrega; submercado; status; previsao (R$/MWh, vazio = sem número); motivo; realizado e erro quando a entrega já terminou; sha256.",
+   "colunas": "Uma linha por célula emitida pelo observatório (arquivo imutável, pipeline/energia/previsoes/): forecast_id; run_id; tipo (REFERENCIA_EXPERIMENTAL, RODADA_INTERNA, PUBLICACAO); modelo; versao_modelo; origem; cutoff, prazo e emitido_em (UTC); atraso_min (minutos depois do prazo, o mesmo da gold); atraso_origem (registrado = gravado pela rodada; calculado = derivado de emitido_em e prazo porque o registro transcrito não o trazia); modo (agendada, manual ou registro transcrito de artefato externo); horizonte; entrega; submercado; status; previsao (R$/MWh, vazio = sem número); mudanca (diferença para a rodada anterior da mesma entrega); motivo; realizado e erro quando a entrega já terminou; sha256.",
    "modulo": "previsoes",
    "gold": "previsoes_desempenho.json"
   },

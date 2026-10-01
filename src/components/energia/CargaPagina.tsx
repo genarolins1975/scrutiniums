@@ -151,7 +151,8 @@ export function CargaFontes({ fontes }: { fontes: FonteCarga[] }) {
   return (
     <ul className="space-y-2 text-sm text-carvao-muted">
       {fontes.map((f) => (
-        <li key={f.id} className="leading-relaxed">
+        // recurso pode ser um endereço longo sem espaço: quebra dentro da linha em vez de alargar a página no celular
+        <li key={f.id} className="leading-relaxed [overflow-wrap:anywhere]">
           <span className="text-carvao">
             {f.orgao}, {f.conjunto}
           </span>

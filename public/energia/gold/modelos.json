@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "modelos.json",
- "gerado_em": "2026-09-30T23:43:56Z",
+ "gerado_em": "2026-10-01T06:57:05Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "3e7ff0a36fba+alterado",
+ "versao_codigo": "eec0a3121e05+alterado",
  "disponivel": true,
  "fonte": {
   "artefato": "PLD_PREVISOES_EXPLICADAS v1-previa-r4",
@@ -30,7 +30,7 @@
    "Revisão do documento de origem aceita",
    "Liberação registrada pelo responsável pela plataforma, com data"
   ],
-  "escopo": "Resultados do artefato de pesquisa PLD_PREVISOES_EXPLICADAS v1-previa-r4 (métricas, coberturas e comparações calculadas fora do repositório). Continuam retidos. Esta retenção também bloqueia número em rodada interna dos candidatos (C2-P e C2-H) no arquivo de emissões."
+  "escopo": "Proposta de leitura, não ratificada: a retenção alcançaria os resultados do artefato de pesquisa PLD_PREVISOES_EXPLICADAS v1-previa-r4 (métricas, coberturas e comparações calculadas fora do repositório), e não a validação reproduzível do observatório. Esta leitura foi escrita pelo implementador do módulo em 30/09/2026, sem decisão do responsável pela plataforma; até essa decisão, a regra vale para todos os números de desempenho (validacao_observatorio.decisao_publicacao). A retenção também bloqueia número em rodada interna dos candidatos (C2-P e C2-H) no arquivo de emissões."
  },
  "validacao_observatorio": {
   "descricao": "Teste retrospectivo e métricas calculados pelo pipeline do observatório com código deste repositório (pipeline/energia/previsoes/) e dados públicos do silver com vintages. É a evidência do painel P016 e é reexecutável por qualquer pessoa; não são os resultados retidos da pesquisa, não aprovam nem promovem modelo.",
@@ -38,8 +38,16 @@
   "configuracao_sha256": "cf421e3e43c1df68f553f375e7fde983a5eec702ec68f2df3293dc5cee93d8e0",
   "configuracao_congelada_em": "2026-09-30",
   "desenho_fixado_antes_do_teste": "Definições das variáveis, grade de λ, janelas, divisão entre desenvolvimento (entregas até 01/01/2025) e teste (entregas desde 01/01/2025) e regra de seleção foram escritas antes da primeira execução do teste. A separação é de procedimento: o mesmo autor escreveu o código e viu os resultados ao depurá-lo; nenhuma escolha foi refeita depois de ver o período de teste, e o sha256 da configuração permite conferir mudanças futuras.",
-  "publicar": true,
-  "fundamento_publicacao": "Especificação do observatório, painel P016 (publicar MAE, viés, escores probabilísticos, cobertura, largura e referências, separando teste retrospectivo e prospectivo). O responsável pela plataforma pode suspender a publicação trocando `publicar` para false; a gold então omite os números."
+  "publicar": false,
+  "decisao_publicacao": {
+   "estado": "PENDENTE",
+   "decidido_por": null,
+   "decidido_em": null,
+   "escopo_decidido": null,
+   "pergunta": "A regra de publicacao_resultados (números de desempenho só no portal depois da liberação formal) alcança a validação reproduzível do observatório (teste retrospectivo de B0, S0, C2-P e C2-H calculado no repositório) ou só os resultados do artefato de pesquisa?",
+   "registro": "Em 30/09/2026 o implementador do módulo acrescentou publicacao_resultados.escopo e publicar = true sem decisão do responsável; em 01/10/2026, depois da verificação adversarial, publicar voltou a false até a decisão. Liberação: estado LIBERADA, decidido_por, decidido_em e escopo_decidido preenchidos pelo responsável, e publicar = true; o pipeline só publica com os quatro campos."
+  },
+  "fundamento_publicacao": "Especificação do observatório, painel P016 (publicar MAE, viés, escores probabilísticos, cobertura, largura e referências, separando teste retrospectivo e prospectivo), sujeita à regra de publicacao_resultados. Sem decisão registrada do responsável, o pipeline calcula e valida tudo, guarda os resultados fora do portal (data/energia/previsoes/validacao_interna) e a gold omite os números."
  },
  "definicoes": {
   "alvo": "PLD médio temporal do período de entrega, por submercado, em R$/MWh nominais: média aritmética simples de todas as horas do PLD horário da CCEE na entrega (não é média ponderada pela carga).",
@@ -361,7 +369,7 @@
    "id": "G23-R1",
    "titulo": "C2 pode amplificar o sinal de preço; previsões mensais negativas",
    "estado": "DOCUMENTADA_COM_EVIDENCIA",
-   "descricao": "Na reimplementação, a gold publica, por segmento, a fração das origens de ajuste em que o coeficiente da variável média dos 7 dias − B0 passou de 1 e quantas previsões brutas ficaram abaixo do piso ou acima do teto antes da restrição de preço. A restrição à faixa [piso, teto estrutural] impede previsão negativa; não corrige a amplificação.",
+   "descricao": "Na reimplementação, a validação do observatório calcula, por segmento, a fração das origens de ajuste em que o coeficiente da variável média dos 7 dias − B0 passou de 1 (coeficientes por origem em previsoes_ajustes_c2.csv) e quantas previsões brutas ficaram abaixo do piso ou acima do teto antes da restrição de preço (na gold quando a publicação dos resultados for liberada; até lá, nos resultados retidos). A restrição à faixa [piso, teto estrutural] impede previsão negativa; não corrige a amplificação.",
    "encaminhamento": "Decisão revisável: aceitar a restrição de preço como tratamento ou exigir coeficiente limitado a [0, 1].",
    "responsavel": "revisor independente e responsável pela plataforma"
   }
