@@ -120,7 +120,11 @@ _CANON = (("diaria", re.compile(r"di[aá]ri|todos os dias|15 em 15 min|hor[aá]r
           ("mensal", re.compile(r"mensal|ms\+", re.I)),
           ("trimestral", re.compile(r"trimestr", re.I)),
           ("anual", re.compile(r"anual", re.I)))
-_SEM_SLA = re.compile(r"sob demanda|conforme|sem atualiza|eventual|irregular|[úu]nica|n[ãa]o aplic", re.I)
+# Declarações sem cadência, como os portais as escrevem (levantadas nas listagens de
+# 01/10/2026): "Sob demanda", "Conforme envios dos agentes", "Sem atualização", "Única",
+# "Não aplicável", "A depender da ocorrência.", "Quando houver nova deliberação", "Periódica".
+_SEM_SLA = re.compile(r"sob demanda|conforme|sem atualiza|eventual|irregular|[úu]nica|n[ãa]o aplic|a depender|quando houver|"
+                      r"^\s*peri[óo]dica\s*\.?\s*$", re.I)
 
 
 def frequencias_canonicas(*textos):

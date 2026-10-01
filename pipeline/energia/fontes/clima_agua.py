@@ -316,3 +316,125 @@ def media_ponderada(valores_pesos):
     num = sum(v * w for v, w in valores_pesos)
     den = sum(w for _, w in valores_pesos)
     return num / den if den > 0 else None
+
+
+# ---------------------------------------------------------------- previsão (Open-Meteo, ECMWF IFS)
+#
+# Previsão meteorológica é outra natureza (PREVISTO), separada da observação e da
+# estimativa. Fontes testadas em 01/10/2026: o OpenDAP do NOMADS (NOAA) foi aposentado
+# ("OpenDAP format has been retired") e os GRIB2 do GFS e do ECMWF exigiriam decodificador
+# fora da biblioteca padrão; a API de previsão do Open-Meteo responde (a de arquivo
+# histórico, archive-api, é que recusou por limite diário). Usa-se a API de rodadas
+# individuais (single-runs-api) com o modelo ECMWF IFS 0,25° (dados abertos do ECMWF) e a
+# rodada de 00Z escolhida no pedido: a emissão do número é a rodada pedida, e não uma
+# costura de rodadas como na API padrão (que completa a rodada mais nova, de alcance
+# curto, com a anterior).
+
+OPENMETEO_PREV = "https://single-runs-api.open-meteo.com/v1/forecast"
+MODELO_PREV = "ecmwf_ifs025"
+OPENMETEO_DOC = "https://open-meteo.com/en/docs/single-runs-api"
+VARS_PREV = {"precip": ("precipitation_sum",), "temp": ("temperature_2m_mean", "temperature_2m_max")}
+LOTE_PREV = 100   # pontos por requisição (a API aceita várias coordenadas separadas por vírgula)
+DIAS_PREV = 16    # pedido; o ECMWF IFS chega a 15 dias, e o que vier nulo fica de fora
+
+
+def url_previsao(tipo, pontos, rodada):
+    """URL da previsão diária (dia UTC) da rodada `rodada` (AAAA-MM-DD, 00Z) para os pontos
+    [(lat, lon)]. A API só agrega por dia rodadas de 00Z no fuso pedido (GMT)."""
+    lats = ",".join(f"{la:.4f}" for la, _lo in pontos)
+    lons = ",".join(f"{lo:.4f}" for _la, lo in pontos)
+    return (f"{OPENMETEO_PREV}?latitude={lats}&longitude={lons}&daily={','.join(VARS_PREV[tipo])}"
+            f"&forecast_days={DIAS_PREV}&timezone=GMT&models={MODELO_PREV}&run={rodada}T00:00")
+
+
+def le_previsao(dados, n_pontos):
+    """[{variável: {AAAA-MM-DD: valor|None}}] por ponto, na ordem pedida. Resposta de erro
+    do Open-Meteo ({"error": true, "reason": ...} ou texto, como "modelRunUnavailable"
+    quando a rodada ainda não está publicada) ou com número de pontos diferente lança:
+    nada é completado."""
+    texto = dados.decode("utf-8", "replace") if isinstance(dados, (bytes, bytearray)) else dados
+    try:
+        d = json.loads(texto)
+    except ValueError:
+        raise ValueError(f"Open-Meteo: resposta não é JSON: {texto[:160]}")
+    if isinstance(d, dict) and d.get("error"):
+        raise ValueError(f"Open-Meteo: {d.get('reason')}")
+    lst = d if isinstance(d, list) else [d]
+    if len(lst) != n_pontos:
+        raise ValueError(f"Open-Meteo devolveu {len(lst)} pontos, esperados {n_pontos}")
+    out = []
+    for x in sorted(enumerate(lst), key=lambda t: t[1].get("location_id", t[0])):
+        dia = x[1].get("daily") or {}
+        dias = dia.get("time") or []
+        out.append({v: {k: (None if val is None else float(val)) for k, val in zip(dias, dia.get(v) or [])}
+                    for v in dia if v != "time"})
+    return out
+
+
+def primeiro_dia_completo(inicializacao):
+    """Primeiro dia UTC inteiramente coberto pela rodada (AAAA-MM-DDTHH:MMZ): o próprio dia
+    quando a rodada é de 00Z, o seguinte nos demais casos."""
+    d = date.fromisoformat(inicializacao[:10])
+    return d.isoformat() if inicializacao[11:16] == "00:00" else (d + timedelta(days=1)).isoformat()
+
+
+def agrega_previsao(valores, pontos, celulas, pop_uf, uf_subsistema=None, cob_bacia=0.8, cob_uf=0.8, cob_recorte=0.9):
+    """Agrega a previsão com as mesmas regras da estimativa observada.
+
+    valores: {("precip", id_ponto) | ("temp", id_celula): {variável: {dia: valor}}};
+    pontos: [{"id", "bacia", "peso"}]; celulas: [{"id", "uf", "pop"}]; pop_uf: {UF: pop}.
+    Chuva da bacia = média ponderada pela área (dia com ao menos 80% do peso com dado);
+    temperatura da UF = média das células ponderada pela população (80%); subsistema e
+    SIN = média das UF ponderada pela população (90%). Devolve {"bacias": {bacia: {dia:
+    mm}}, "recortes": {recorte: {"t": {dia: °C}, "tmax": {dia: °C}}}}."""
+    uf_subsistema = uf_subsistema or UF_SUBSISTEMA
+    por_bacia = defaultdict(list)
+    for p in pontos:
+        if p.get("bacia"):
+            por_bacia[p["bacia"]].append(p)
+    bacias = {}
+    for b, pts in por_bacia.items():
+        wt = sum(p["peso"] for p in pts)
+        dias = set().union(*(set(valores.get(("precip", p["id"]), {}).get("precipitation_sum", {})) for p in pts))
+        s = {}
+        for k in sorted(dias):
+            vp = [(valores[("precip", p["id"])]["precipitation_sum"][k], p["peso"]) for p in pts
+                  if valores.get(("precip", p["id"]), {}).get("precipitation_sum", {}).get(k) is not None]
+            if wt and sum(w for _v, w in vp) >= cob_bacia * wt:
+                s[k] = media_ponderada(vp)
+        bacias[b] = s
+    por_uf = defaultdict(list)
+    for cel in celulas:
+        por_uf[cel["uf"]].append(cel)
+    ufs = {}
+    for uf, cels in por_uf.items():
+        wt = sum(c_["pop"] for c_ in cels)
+        out = {}
+        for var, chave in (("temperature_2m_mean", "t"), ("temperature_2m_max", "tmax")):
+            dias = set().union(*(set(valores.get(("temp", c_["id"]), {}).get(var, {})) for c_ in cels))
+            s = {}
+            for k in sorted(dias):
+                vp = [(valores[("temp", c_["id"])][var][k], c_["pop"]) for c_ in cels
+                      if valores.get(("temp", c_["id"]), {}).get(var, {}).get(k) is not None]
+                if wt and sum(w for _v, w in vp) >= cob_uf * wt:
+                    s[k] = media_ponderada(vp)
+            out[chave] = s
+        ufs[uf] = out
+    grupos = defaultdict(list)
+    for uf, sm in uf_subsistema.items():
+        grupos[sm].append(uf)
+    grupos["SIN"] = list(uf_subsistema)
+    recortes = {}
+    for rec, lst in grupos.items():
+        ptot = sum(pop_uf.get(uf) or 0 for uf in lst)
+        out = {}
+        for chave in ("t", "tmax"):
+            dias = set().union(*(set(ufs.get(uf, {}).get(chave, {})) for uf in lst))
+            s = {}
+            for k in sorted(dias):
+                vp = [(ufs[uf][chave][k], pop_uf.get(uf) or 0) for uf in lst if k in ufs.get(uf, {}).get(chave, {})]
+                if ptot and sum(w for _v, w in vp) >= cob_recorte * ptot:
+                    s[k] = media_ponderada(vp)
+            out[chave] = s
+        recortes[rec] = out
+    return {"bacias": bacias, "recortes": recortes}

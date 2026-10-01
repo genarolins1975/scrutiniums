@@ -11,20 +11,26 @@ _POP = ["ibge_populacao_6579"]
 _ONS = ["ons_carga_verificada_mmgd"]
 _MCTI = ["mcti_fator_emissao"]
 _CAPACIDADE = "Capacidade instalada cadastrada, não energia gerada."
-_AUSENCIA_MMGD = ("Combinação sem registro no cadastro = zero empreendimentos (o arquivo é o cadastro completo); potência "
-                  "ausente em um registro não vira zero: a unidade conta e a potência fica fora da soma, contada no controle; "
-                  "data sentinela (ano < 2000) = sem ano de conexão, no estoque e fora das séries por ano.")
+_AUSENCIA_MMGD = ("Combinação sem registro no cadastro = zero empreendimentos (o arquivo é o cadastro completo), dentro da "
+                  "cobertura declarada pela ANEEL (a partir de dez/2008); antes dela, período sem registro = nulo rotulado "
+                  "(cobertura_declarada fora ou parcial), e registro existente é publicado com o rótulo. Potência ausente em um "
+                  "registro não vira zero: a unidade conta, a potência fica fora da soma, cada agregado traz "
+                  "unidades_sem_potencia (soma parcial) e agregado sem nenhuma potência informada publica potência nula. Data "
+                  "sentinela (ano < 2000) = sem ano de conexão, no estoque e fora das séries por ano.")
 _VALIDACOES_MMGD = ["Código de empreendimento único no arquivo (repetição derruba a publicação).",
                     "Identidade de agregação: soma por município = soma por UF e mês = soma por distribuidora = soma por distribuidora e município = linhas do arquivo.",
                     "Identidade de estoque: estoque acumulado por data de conexão (séries anual e mensal) + unidades com data sentinela = total do cadastro, em unidades (exato) e kW (0,01 kW); diferença derruba a publicação.",
-                    "Área da distribuidora: unidades em UF onde o CNPJ da distribuidora não tem conjunto elétrico (base de continuidade da ANEEL) são contadas por município e sinalizadas, sem correção.",
+                    "Área da distribuidora: unidades em UF onde o CNPJ da distribuidora não tem conjunto elétrico (base de continuidade da ANEEL) são contadas por município e sinalizadas, sem correção, e separadas pelo CEP publicado em provável município errado (CEP na área da distribuidora), provável distribuidora errada (CEP, código do empreendimento e UF publicada na UF do município) e indeterminadas; as classes somam o total sinalizado (diferença derruba a publicação).",
+                    "Unidades sem potência nos agregados = registros com potência ausente ou negativa no arquivo (diferença derruba a publicação).",
                     "Potência não negativa; datas não posteriores à data de geração do conjunto.",
                     "Data de conexão conferida com DatConexao do recurso técnico fotovoltaico, pelo código.",
                     "Parquet e CSV oficiais do mesmo conjunto conferidos entre si por UF e ano (30/09/2026)."]
 _LIM_MMGD = ["O cadastro é o vigente na data do arquivo; unidades desativadas não aparecem no histórico.",
              "Meses recentes provisórios: conexões desses meses ainda podem entrar em capturas seguintes; a queda nos meses finais do arquivo não tem causa atribuída.",
              "Duplicidade candidata medida e não removida (CPF e CEP de pessoa física vêm tarjados).",
-             "Há unidades com município de outra área de concessão (provável código de município errado na origem): ficam no município publicado, sinalizadas, e podem inflar números municipais."]
+             ("Há unidades cadastradas em UF onde a distribuidora informada não tem conjunto elétrico: algum campo está errado na origem. "
+              "Pelo CEP, parte provavelmente tem o município errado (infla o município publicado) e parte provavelmente tem o CNPJ "
+              "errado (fica no município publicado e infla o total da distribuidora informada); ficam sinalizadas, sem correção.")]
 _NATUREZA_MCTI = ("Fator estimado pelo MCTI (emissões calculadas a partir do consumo de combustível e de fatores metodológicos, "
                   "divididas pela geração do ONS), não medido; a plataforma publica o valor oficial sem alteração, por isso a "
                   "transformação também é ESTIMADO (da fonte) e não CALCULADO.")
@@ -46,7 +52,7 @@ METRICAS = [
         "natureza_transformacao": "OBSERVADO",
         "dimensoes": ["município", "UF", "distribuidora", "fonte", "classe de consumo", "modalidade", "porte", "tipo de consumidor", "ano de conexão"],
         "regras_comparabilidade": ["Unidade de MMGD não é domicílio nem consumidor: uma unidade pode repartir créditos com várias outras.", _REGRA_ANO],
-        "regra_cobertura": "Todas as distribuidoras que enviaram dados ao sistema de MMGD da ANEEL; conexões desde dez/2008 (cobertura declarada).",
+        "regra_cobertura": "Todas as distribuidoras que enviaram dados ao sistema de MMGD da ANEEL; cobertura declarada a partir de dez/2008 (registro anterior publicado com rótulo; período anterior sem registro nulo, não zero).",
         "politica_ausencia": _AUSENCIA_MMGD,
         "validacoes": _VALIDACOES_MMGD,
         "limitacoes": _LIM_MMGD,
@@ -70,7 +76,10 @@ METRICAS = [
         "regra_cobertura": "Igual à de unidades.",
         "politica_ausencia": _AUSENCIA_MMGD,
         "validacoes": _VALIDACOES_MMGD,
-        "limitacoes": _LIM_MMGD + ["Minigeração em autoconsumo remoto fica no município da usina, não no de quem usa o crédito."],
+        "limitacoes": _LIM_MMGD + ["Minigeração em autoconsumo remoto e em geração compartilhada fica no município da usina, não no de "
+                                   "quem usa o crédito: no autoconsumo remoto a energia compensa outras unidades do mesmo titular, e na "
+                                   "geração compartilhada o consumo dos participantes de consórcio, cooperativa, condomínio ou "
+                                   "associação (definições da ANEEL), possivelmente em outro município."],
         "gold": _GOLD, "paginas": _PAG,
     },
     {
@@ -95,9 +104,14 @@ METRICAS = [
         "regra_cobertura": "Municípios com população estimada publicada; sem população = razão ausente.",
         "politica_ausencia": "Município sem população publicada: razão ausente (não zero). Município sem MMGD: zero real.",
         "validacoes": ["Soma municipal da população igual à da UF publicada pelo IBGE (conferida no teste com amostra real).",
-                       "Município com unidades de distribuidora sem conjunto elétrico na UF fica sinalizado, com a contagem e os kW dessas unidades."],
+                       "Município com unidades de distribuidora sem conjunto elétrico na UF fica sinalizado, com a contagem e os kW dessas unidades e de cada classe pelo CEP.",
+                       "Município com unidade sem potência informada fica fora dos rankings e dos quantis (soma parcial)."],
         "limitacoes": ["População é estimativa do IBGE para 1º de julho do ano, não contagem censitária.", _CAPACIDADE,
-                       "Em município sinalizado, a razão inclui unidades provavelmente cadastradas com o município errado e pode estar inflada (ex.: São Caetano de Odivelas, PA, com 185 de 249 unidades da Neoenergia PE)."],
+                       ("Em município com unidades da classe de provável município errado (CEP publicado numa UF da área da distribuidora), a "
+                        "razão inclui unidades que provavelmente ficam em outro município e pode estar inflada (ex.: São Caetano de Odivelas, PA, "
+                        "com 185 de 249 unidades da Neoenergia PE); para refazê-la, desconte só essa classe (colunas do CSV municipal). A classe "
+                        "de provável distribuidora errada (CEP, código e UF publicada na UF do município) fica no município publicado e não "
+                        "infla a razão municipal.")],
         "gold": _GOLD, "paginas": _PAG,
     },
     {
@@ -171,7 +185,8 @@ METRICAS = [
         "politica_ausencia": "Meia hora sem valor fora da soma e das horas; dia sem as 24 horas não entra no SIN.",
         "validacoes": ["Identidade do ONS: carga global = carga sem MMGD + MMGD, dia a dia (0,1 MWh).",
                        "Valores não negativos (o dicionário não admite negativo)."],
-        "limitacoes": ["Estimativa do ONS, não medição.", "O ONS revisa o histórico; meses antigos são recoletados a cada 30 dias."],
+        "limitacoes": ["Estimativa do ONS, não medição: o ONS a chama de valor estimado e a separa, no dicionário da carga verificada, da parcela supervisionada; os documentos consultados não descrevem o método.",
+                       "O ONS revisa o histórico; meses antigos são recoletados a cada 30 dias."],
         "gold": _GOLD, "paginas": _PAG,
     },
     {
@@ -194,7 +209,7 @@ METRICAS = [
         "regras_comparabilidade": ["Numerador e denominador do mesmo conjunto e intervalos."],
         "regra_cobertura": "Dias completos.",
         "politica_ausencia": "Mês sem dia completo: ausente.",
-        "validacoes": ["Participação entre 0 e 100%."],
+        "validacoes": ["Participação entre 0 e 100%, executada a cada publicação: mês (submercado ou SIN) ou ano fora do intervalo derruba a publicação (stub); dia com MMGD negativa ou maior que a carga global vira ressalva na proveniência."],
         "limitacoes": ["Herda a natureza estimada da parcela de MMGD."],
         "gold": _GOLD, "paginas": _PAG,
     },

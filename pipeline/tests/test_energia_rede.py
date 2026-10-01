@@ -330,6 +330,276 @@ class TestAmostraPdo(unittest.TestCase):
         self.assertNotIn("2025-12-01", dias)
 
 
+def carrega_balanco(ano):
+    """Balanço, fronteiras e exterior das amostras de um ano, no formato do silver."""
+    o_bal, _ = ons_rede.parse_balanco(linhas(f"balanco_{ano}_amostra.csv"))
+    o_in, _ = ons_rede.parse_intercambio_nacional(linhas(f"intercambio_nacional_{ano}_amostra.csv"))
+    o_ii, _ = ons_rede.parse_intercambio_internacional(linhas(f"intercambio_internacional_{ano}_amostra.csv"))
+    bal = {(k, sm): serie(o_bal, f"{k}.{sm}") for k in rd.PARCELAS_BALANCO for sm in ons_rede.SUBSISTEMAS + ("SIN",)}
+    fluxo = {p: serie(o_in, f"verificado.{p}") for p in ons_rede.PARES}
+    ext = {p: serie(o_ii, f"verificado.{p}") for p in rd.PAISES}
+    horas = sorted(set().union(*(set(v) for v in bal.values())))
+    return bal, fluxo, ext, horas
+
+
+class TestQuebraMmgd(unittest.TestCase):
+    """P029, seção 11.1: a solar e a carga do balanço incluem a MMGD estimada desde 29/04/2023.
+    Amostra: as 48 linhas SIN de 28 e 29/04/2023 do BALANCO_ENERGIA_SUBSISTEMA_2023.csv; somas
+    esperadas feitas com awk sobre o recorte."""
+
+    def test_degrau_no_arquivo_original(self):
+        d = rd.degrau_mmgd(linhas("balanco_2023_mmgd_amostra.csv"))
+        self.assertEqual((d["dia_anterior"], d["dia"], d["horas_dia_anterior"], d["horas_dia"]), ("2023-04-28", "2023-04-29", 24, 24))
+        self.assertAlmostEqual(d["solar_12h_dia_anterior_mwmed"], 5688.69, places=3)
+        self.assertAlmostEqual(d["solar_12h_dia_mwmed"], 14987.696, places=3)
+        self.assertAlmostEqual(d["solar_mwh_dia_anterior"], 47791.725, places=3)
+        self.assertAlmostEqual(d["solar_mwh_dia"], 105039.356, places=3)
+        # a carga acompanha a solar: o balanço fecha nas 24 horas dos dois dias (sem a MMGD na carga,
+        # o resíduo das 12h de 29/04 seria da ordem de 9 GWmed)
+        self.assertEqual((d["horas_balanco_fecha_dia_anterior"], d["horas_balanco_fecha_dia"]), (24, 24))
+        self.assertGreater(d["razao_solar_dia"], 2.0)
+
+    def test_regime_por_mes_e_registro(self):
+        self.assertEqual([rd.regime_mmgd(m) for m in ("2021-01", "2023-03", "2023-04", "2023-05", "2026-09")],
+                         ["sem", "sem", "parcial", "com", "com"])
+        quebras = next(x for x in rd.REGISTRO["datasets"] if x["dataset_silver"] == rd.DS_BAL)["quebras"]
+        self.assertEqual(len(quebras), 1)
+        self.assertIn("29/04/2023", quebras[0])
+        # os números citados no REGISTRO são os do arquivo (conferidos no teste acima)
+        self.assertIn("5.688,69", quebras[0])
+        self.assertIn(rd._fmt(14987.696, 2), quebras[0])
+
+    def test_natureza_mista_nas_metricas(self):
+        from pipeline.energia.metricas import rede as m_rede
+        m = {x["id"]: x for x in m_rede.METRICAS}
+        self.assertIn("ESTIMADO", m["rede_residuo_balanco"]["natureza_fonte"])
+        self.assertIn("ESTIMADO", {c_["natureza"] for c_ in m["rede_residuo_balanco"]["natureza_componentes"]})
+        self.assertIn("PREVISTO", m["rede_desvio_programado"]["natureza_fonte"])
+        self.assertEqual(m["rede_atls_horas_violacao"]["natureza_transformacao"], "CALCULADO")
+
+
+class TestExteriorAgregado(unittest.TestCase):
+    """Resumo de 12 meses: país sem hora na janela vira nulo; zero publicado continua zero."""
+
+    @classmethod
+    def setUpClass(cls):
+        o_ii, _ = ons_rede.parse_intercambio_internacional(linhas("intercambio_internacional_2025_amostra.csv"))
+        cls.ext = {p: serie(o_ii, f"verificado.{p}") for p in rd.PAISES}
+        cls.ext["PARAGUAI"] = {}   # o arquivo de 2025 não tem nenhuma linha do Paraguai
+        cls.prog = {p: {} for p in rd.PAISES}
+
+    def test_pais_ausente_na_janela_vira_nulo(self):
+        mensal = rd.agrega_exterior(self.ext, self.prog, "2025-06-15")
+        meses = sorted({m for m, _ in mensal})
+        resumo, m12 = rd.resumo_exterior_12m(mensal, meses, "2025-06-15")
+        self.assertEqual(m12, ["2025-03", "2025-05"])
+        py = resumo["PARAGUAI"]
+        self.assertEqual(py["horas"], 0)
+        self.assertIsNone(py["exportacao_mwh"])
+        self.assertIsNone(py["importacao_mwh"])
+        self.assertIsNone(py["horas_com_fluxo"])
+        # Argentina: só 08/03/2025 12h (269,09 MWmed exportados); 07 e 08/05/2025 sem nenhuma linha
+        self.assertEqual((resumo["ARGENTINA"]["horas"], resumo["ARGENTINA"]["exportacao_mwh"],
+                          resumo["ARGENTINA"]["importacao_mwh"]), (1, 269.0, 0.0))
+        # Uruguai: 25 horas publicadas com valor 0,0 (zero real, não ausência)
+        self.assertEqual((resumo["URUGUAI"]["horas"], resumo["URUGUAI"]["exportacao_mwh"],
+                          resumo["URUGUAI"]["horas_com_fluxo"]), (25, 0.0, 0))
+
+    def test_cobertura_por_pais(self):
+        dias = rd.cobertura_dias({p: self.ext[p] for p in rd.PAISES_SUL}, ["2025-05-07", "2025-05-08"])
+        self.assertEqual(dias[0], {"dia": "2025-05-07", "horas": 0, "horas_max": 0, "por_serie": {"ARGENTINA": 0, "URUGUAI": 0}})
+        # 08/05/2025: o Uruguai tem as 24 horas e só a Argentina falta (não é dia sem nenhum dado)
+        self.assertEqual(dias[1], {"dia": "2025-05-08", "horas": 0, "horas_max": 24, "por_serie": {"ARGENTINA": 0, "URUGUAI": 24}})
+
+
+class TestBalancoMensal(unittest.TestCase):
+    """Somas mensais do balanço: cada grupo sobre as mesmas horas, e a linha fecha."""
+
+    def test_intercambio_e_fronteiras_nas_mesmas_horas(self):
+        # 08/03/2025 12h tem exterior; 09/03/2025 12h não tem nenhuma linha no conjunto internacional
+        bal, fluxo, ext, horas = carrega_balanco(2025)
+        _, mensal, _, _ = rd.agrega_balanco(bal, fluxo, ext, horas)
+        lin = {(x["mes"], x["sm"]): x for x in rd.linhas_balanco_mensal(mensal)}
+        s_ = lin[("2025-03", "S")]
+        self.assertEqual((s_["horas"], s_["horas_completas"], s_["horas_perimetro"]), (2, 2, 1))
+        self.assertAlmostEqual(s_["intercambio_mwh"], -3219.919 - 5651.353, places=3)       # as duas horas
+        self.assertAlmostEqual(s_["intercambio_perimetro_mwh"], -3219.919, places=3)        # só a hora com exterior
+        self.assertAlmostEqual(s_["fronteiras_exterior_mwh"], -3489.012 + 269.09 + 0.0, places=3)
+        self.assertAlmostEqual(s_["residuo_perimetro_mwh"], 0.003, places=3)
+        for x in lin.values():
+            self.assertAlmostEqual(x["geracao_mwh"] - x["carga_mwh"] - x["intercambio_mwh"], x["residuo_balanco_mwh"], places=2)
+            if x["horas_perimetro"]:
+                self.assertAlmostEqual(x["intercambio_perimetro_mwh"] - x["fronteiras_exterior_mwh"], x["residuo_perimetro_mwh"],
+                                       places=2)
+        self.assertEqual(s_["mmgd_estimada"], "com")
+
+    def test_14_09_2022_sul_e_soma_iguais_a_menos_a_argentina(self):
+        # 14/09/2022 não está no arquivo de fronteiras; balanço e exterior estão
+        bal, fluxo, ext, horas = carrega_balanco(2022)
+        ident, _, residuos, _ = rd.agrega_balanco(bal, fluxo, ext, horas)
+        self.assertEqual(ident["balanco.S"]["horas_residuo_lista"], ["2022-09-14T12:00"])
+        self.assertEqual(ident["balanco.S"]["igual_menos_exterior"], 1)
+        self.assertEqual(ident["soma_sin"]["horas_residuo_lista"], ["2022-09-14T12:00"])
+        self.assertEqual(ident["soma_sin"]["igual_menos_exterior"], 1)
+        res = {(r[1], r[2]): r[3] for r in residuos}
+        # (13.570,499 + 1.362,229 + 870,1 + 3) − 11.775,119 − 5.582,029 = −1.551,32 = −Argentina
+        self.assertAlmostEqual(res[("balanco", "S")], -1551.32, places=2)
+        self.assertAlmostEqual(res[("soma_sin", "SIN")], -1551.32, places=2)
+        # 13/09/2022 12h fecha em todas as identidades; o perímetro de 14/09 não é calculado (sem fronteiras)
+        self.assertEqual(ident["perimetro.N"]["horas"], 1)
+        self.assertEqual(ident["balanco.SIN"]["residuo"], 0)
+
+
+class TestCsvHorario(unittest.TestCase):
+    def test_hora_sem_fronteira_continua_no_csv(self):
+        bal, fluxo, ext, _ = carrega_balanco(2022)
+        vazio = {p: {} for p in ons_rede.PARES}
+        por_ano = rd.linhas_horarias(fluxo, vazio, ext, {p: {} for p in rd.PAISES_SUL},
+                                     {sm: {} for sm in ons_rede.SUBSISTEMAS}, bal)
+        lin = {x[0]: dict(zip(rd.CAB_HORARIO, x)) for x in por_ano["2022"]}
+        self.assertEqual(sorted(lin), ["2022-09-13T12:00", "2022-09-14T12:00"])
+        h = lin["2022-09-14T12:00"]
+        self.assertIsNone(h["fluxo_S_SE"])                      # ausência no arquivo de fronteiras: vazio
+        self.assertAlmostEqual(h["saldo_S"], 5582.029, places=3)
+        self.assertAlmostEqual(h["saldo_SIN"], 1551.32, places=3)
+        self.assertAlmostEqual(h["ext_ARGENTINA"], 1551.32, places=3)
+
+
+class TestInterrupcoesAgregadas(unittest.TestCase):
+    """Todos os 35 registros do Sul em 2026 (recorte do INTERRUPCAO_CARGA.csv); somas com awk."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.eventos, _ = ons_rede.parse_interrupcoes(linhas("interrupcoes_2026_sul_amostra.csv"))
+
+    def test_ens_anual_do_sul_em_2026(self):
+        a = rd.anual_interrupcoes(self.eventos, 2026)
+        self.assertEqual((a["anos"], a["parcial"]), (["2026"], [True]))
+        s_ = a["por_sm"]["S"]
+        self.assertEqual((s_["registros"], s_["perturbacoes"], s_["registros_rede_basica"], s_["registros_100mw"]),
+                         ([35], [32], [35], [1]))
+        self.assertEqual(s_["ens_mwh"], [2514.5])
+        self.assertEqual(a["por_sm"]["SIN"]["ens_mwh"], [2514.5])
+        self.assertEqual(a["por_sm"]["SE"]["registros"], [0])   # nenhum registro no recorte: zero eventos
+
+    def test_janela_de_12_meses(self):
+        r = rd.resumo_interrupcoes_12m(self.eventos)
+        self.assertEqual((r["inicio"], r["fim"], r["registros"], r["perturbacoes"]), ("2025-09-28", "2026-09-27", 35, 32))
+        self.assertAlmostEqual(r["_ens"], 2514.534667, places=4)
+
+
+class TestProgramaRepetido(unittest.TestCase):
+    """P031, seção 11.7: em 22/08/2026 o programado de NE→SE/CO vale exatamente 0 nas 24 horas.
+    Amostras: as 96 linhas de 22/08/2026 e as de 29/09/2026 do INTERCAMBIO_NACIONAL_2026.csv."""
+
+    @classmethod
+    def setUpClass(cls):
+        obs, _ = ons_rede.parse_intercambio_nacional(linhas("intercambio_nacional_2026_amostra.csv")
+                                                     + linhas("intercambio_nacional_2026_08_22_amostra.csv"))
+        cls.fluxo = {p: serie(obs, f"verificado.{p}") for p in ons_rede.PARES}
+        cls.prog = {p: serie(obs, f"programado.{p}") for p in ons_rede.PARES}
+
+    def test_sequencia_detectada_e_dia_rotulado(self):
+        seqs, dias = rd.programa_repetido(self.prog)
+        self.assertEqual(dias, ["2026-08-22"])
+        self.assertEqual(seqs, [{"par": "NE_SE", "inicio": "2026-08-22T00:00", "fim": "2026-08-22T23:00", "horas": 24,
+                                 "valor_mwmed": 0.0}])
+        # no mesmo dia a exportação programada do Nordeste vai toda para o Norte (somas com awk)
+        hs = rd.horas_do_dia("2026-08-22")
+        self.assertAlmostEqual(sum(self.prog["N_NE"][h] for h in hs), -198909.999, places=3)
+        self.assertAlmostEqual(sum(self.fluxo["N_NE"][h] for h in hs), -75278.045, places=3)
+        self.assertAlmostEqual(sum(self.fluxo["NE_SE"][h] for h in hs), 94464.903, places=3)
+
+    def test_sequencia_curta_nao_rotula(self):
+        self.assertEqual(rd.sequencias_repetidas({"2026-05-15T08:00": -8440.0, "2026-05-15T09:00": -8440.0,
+                                                  "2026-05-15T10:00": -8000.0}), [])
+        # hora ausente interrompe a sequência
+        serie_ = {f"2026-01-01T{h:02d}:00": 0.0 for h in range(24) if h != 5}
+        self.assertEqual([(a, b, n) for a, b, n, _ in rd.sequencias_repetidas(serie_)],
+                         [("2026-01-01T06:00", "2026-01-01T23:00", 18)])
+
+    def test_distribuicao_de_uma_fronteira_com_e_sem_o_dia(self):
+        todas = sorted(h for h in self.prog["NE_SE"] if h[:10] in ("2026-08-22", "2026-09-29"))
+        sem = [h for h in todas if h[:10] != "2026-08-22"]
+        d = rd.distribuicao_desvios(self.prog["NE_SE"], self.fluxo["NE_SE"], sem)
+        # 29/09/2026, NE→SE/CO, 24 horas: valores calculados com awk sobre o recorte
+        self.assertEqual(d["horas"], 24)
+        self.assertEqual((d["vies_mwmed"], d["desvio_abs_medio_mwmed"], d["p50_abs_mwmed"], d["max_abs_mwmed"]),
+                         (201.7, 538.1, 549.5, 1195.1))
+        self.assertEqual(d["horas_materiais"], {"500": 12, "1000": 2, "2000": 0})
+        self.assertEqual(d["horas_inversao"], 0)
+        com = rd.distribuicao_desvios(self.prog["NE_SE"], self.fluxo["NE_SE"], todas)
+        self.assertEqual(com["horas"], 48)
+        self.assertGreater(com["max_abs_mwmed"], d["max_abs_mwmed"])
+
+
+class TestTextosA05(unittest.TestCase):
+    """Textos do A05 gerados dos contadores: cada afirmação só aparece quando o contador a sustenta."""
+
+    @classmethod
+    def setUpClass(cls):
+        bal, fluxo, ext, horas = carrega_balanco(2022)
+        ident, _, _, _ = rd.agrega_balanco(bal, fluxo, ext, horas)
+        cls.idm = {}
+        for k, x in ident.items():
+            por_ano = {}
+            for h in x["horas_residuo_lista"]:
+                por_ano[h[:4]] = por_ano.get(h[:4], 0) + 1
+            cls.idm[k] = {"horas": x["horas"], "horas_fecham": x["fecham"], "horas_residuo": x["residuo"],
+                          "horas_residuo_por_ano": por_ano, "horas_residuo_igual_menos_exterior": x["igual_menos_exterior"],
+                          "dias_residuo_igual_menos_exterior": sorted(x["dias_igual_menos_exterior"]),
+                          "maior_residuo_mwmed": x["max_abs"] if x["residuo"] else None, "maior_residuo_em": x["max_em"],
+                          "primeira_hora_residuo": (x["horas_residuo_lista"] or [None])[0],
+                          "ultima_hora_residuo": (x["horas_residuo_lista"] or [None])[-1]}
+        cls.diag = {"horas": 0, "balanco_coerente": 0, "exterior_zero_no_balanco": 0, "exterior_menor_no_balanco": 0,
+                    "exterior_outro_no_balanco": 0, "meses": []}
+
+    def test_sul_em_14_09_2022_aparece_nas_frases(self):
+        t = rd.textos_a05(self.idm, self.diag, 0)
+        sul = next(f for f in t["frases"] if f.startswith("Sul, balanço interno"))
+        self.assertIn("igual a menos o intercâmbio internacional", sul)
+        self.assertIn("14/09/2022", sul)
+        self.assertTrue(any(f.startswith("Sistema Interligado Nacional, soma dos subsistemas") and "14/09/2022" in f
+                            for f in t["frases"]))
+        self.assertTrue(t["status"].startswith("fechado com resíduos sinalizados: 2 horas-identidade"))
+        self.assertIn("em todas as horas no perímetro de Norte", t["perdas"])
+        # sem diagnóstico do Sul, a frase de que a diferença está no exterior do balanço não aparece
+        self.assertFalse(any("diferença está no valor do exterior" in f for f in t["frases"]))
+
+    def test_ramos_condicionais(self):
+        idm = json.loads(json.dumps(self.idm))
+        idm["perimetro.N"]["horas_residuo"] = 3
+        idm["perimetro.N"]["horas_fecham"] -= 3
+        t = rd.textos_a05(idm, self.diag, 0)
+        self.assertNotIn("em todas as horas", t["perdas"])
+        diag = {"horas": 5, "balanco_coerente": 5, "exterior_zero_no_balanco": 4, "exterior_menor_no_balanco": 1,
+                "exterior_outro_no_balanco": 0, "meses": ["2024-04"]}
+        idm["perimetro.S"]["horas_residuo"] = 5
+        self.assertTrue(any("diferença está no valor do exterior" in f for f in rd.textos_a05(idm, diag, 0)["frases"]))
+        diag["exterior_outro_no_balanco"], diag["exterior_menor_no_balanco"] = 1, 0
+        self.assertFalse(any("diferença está no valor do exterior" in f for f in rd.textos_a05(idm, diag, 0)["frases"]))
+        zero = {k: {**x, "horas_residuo": 0, "horas_fecham": x["horas"]} for k, x in self.idm.items()}
+        self.assertEqual(rd.textos_a05(zero, self.diag, 0)["status"], "fechado: todas as identidades fecham em todas as horas")
+
+
+class TestDefinicoesAtls(unittest.TestCase):
+    def test_definicao_contida_no_trecho_conferido(self):
+        for fl, (definicao, doc) in rd.DEFINICOES_ATLS.items():
+            trecho = dict(rd.DOCUMENTOS[doc]["trechos"]).get(fl)
+            self.assertIsNotNone(trecho, fl)
+            self.assertTrue(ons_rede.confere_passagem(trecho, definicao), fl)
+        self.assertNotIn("EXP_NE", rd.DEFINICOES_ATLS)
+        txt = texto("rt_ons_dpl_0131_2023_trecho.txt")
+        self.assertTrue(ons_rede.confere_passagem(txt, "Interligação Nordeste-Norte (FNEN)"))
+        self.assertFalse(ons_rede.confere_passagem(txt, "Exportação Nordeste (ExpNE)"))
+
+    def test_busca_de_limites_registra_os_decks_da_ccee(self):
+        deck = [b for b in rd.BUSCA_LIMITES if "NEWAVE" in b["onde"]]
+        self.assertEqual(len(deck), 1)
+        self.assertIn("403", deck[0]["resultado"])
+        self.assertIn("limites de modelo", deck[0]["resultado"])
+
+
 @unittest.skipUnless(os.path.exists(GOLD), "gold do módulo ainda não gerada")
 class TestGoldPublicada(unittest.TestCase):
     """Invariantes da gold publicada (não repetem a fórmula: conferem coerência entre blocos)."""
@@ -341,7 +611,83 @@ class TestGoldPublicada(unittest.TestCase):
 
     def test_disponivel_e_tamanho(self):
         self.assertTrue(self.g["disponivel"])
-        self.assertLess(os.path.getsize(GOLD), 450 * 1024)
+        self.assertLess(os.path.getsize(GOLD), 400 * 1024)   # contrato: gold até ~400 KB
+        j = self.g["circulacao"]["janela_horaria"]
+        caminho = os.path.join(os.path.dirname(GOLD), "..", "series", os.path.basename(j["url"]))
+        with open(caminho, encoding="utf-8") as f:
+            janela = json.load(f)
+        self.assertEqual((janela["horas"][0], janela["horas"][-1], len(janela["horas"])), (j["inicio"], j["fim"], j["horas"]))
+
+    def test_balanco_mensal_fecha_linha_a_linha(self):
+        m = self.g["balanco"]["mensal"]
+        for sm, col in m["por_sm"].items():
+            for i, mes in enumerate(m["meses"]):
+                g_, c_, ic, rb = (col[k][i] for k in ("geracao_mwh", "carga_mwh", "intercambio_mwh", "residuo_balanco_mwh"))
+                if None not in (g_, c_, ic, rb):
+                    self.assertLessEqual(abs(g_ - c_ - ic - rb), 2.0, f"{sm} {mes}")   # quatro arredondamentos de 0,5 MWh
+                ip, fe, rp = (col[k][i] for k in ("intercambio_perimetro_mwh", "fronteiras_exterior_mwh", "residuo_perimetro_mwh"))
+                if None not in (ip, fe, rp):
+                    self.assertLessEqual(abs(ip - fe - rp), 1.5, f"{sm} {mes}")
+                self.assertLessEqual(col["horas_perimetro"][i] or 0, col["horas"][i] or 0)
+        # março de 2025 no Sul: 6 dias sem exterior ficam fora do perímetro, não do balanço
+        i = m["meses"].index("2025-03")
+        s_ = m["por_sm"]["S"]
+        self.assertEqual((s_["horas"][i], s_["horas_perimetro"][i]), (744, 600))
+        self.assertNotEqual(s_["intercambio_mwh"][i], s_["intercambio_perimetro_mwh"][i])
+        self.assertEqual(m["mmgd_estimada"][m["meses"].index("2023-04")], "parcial")
+        self.assertEqual(m["mmgd_estimada"][m["meses"].index("2023-03")], "sem")
+
+    def test_quebra_mmgd_conferida(self):
+        q = self.g["balanco"]["quebras"][0]
+        self.assertEqual(q["dia"], "2023-04-29")
+        self.assertTrue(q["degrau_observado_no_dia"])
+        self.assertAlmostEqual(q["conferencia_arquivo"]["solar_12h_dia_mwmed"], 14987.696, places=3)
+        self.assertNotEqual(q["declaracao"]["confere"], False)
+        prov = self.g["proveniencia"]["balanco"]
+        self.assertIn("ESTIMADO", {x["natureza"] for x in prov["natureza_componentes"]})
+        self.assertTrue(any("MMGD" in x for x in prov["limitacoes"]))
+        self.assertEqual({x["natureza"] for x in self.g["proveniencia"]["programado"]["natureza_componentes"]},
+                         {"OBSERVADO", "PREVISTO"})
+        self.assertEqual(self.g["proveniencia"]["atls"]["natureza"], "CALCULADO")
+
+    def test_exterior_ausente_nao_vira_zero(self):
+        for p, r in self.g["exterior"]["resumo_12m"].items():
+            if r["horas"] == 0:
+                self.assertIsNone(r["exportacao_mwh"], p)
+                self.assertIsNone(r["importacao_mwh"], p)
+                self.assertNotIn(self.g["paises"][[x["pais"] for x in self.g["paises"]].index(p)]["nome"],
+                                 self.g["evidencias"]["exterior_12m"]["entidade"])
+            else:
+                self.assertIsNotNone(r["exportacao_mwh"], p)
+        cob = self.g["cobertura"]["exterior"]
+        self.assertEqual(cob["dias_sem_nenhum_dado"] + cob["dias_parciais"], cob["dias_incompletos"])
+        for d in cob["lista"]:
+            self.assertEqual((d["horas"], d["horas_max"]), (min(d["por_serie"].values()), max(d["por_serie"].values())))
+
+    def test_programa_repetido_rotulado(self):
+        pr = self.g["programado"]
+        rotulados = {d["dia"] for d in pr["programa_repetido"]["dias"]}
+        for m in pr["maiores_desvios"] + pr["maiores_desvios_fora_dos_dias_rotulados"]:
+            self.assertEqual(m["dia_rotulado"], m["hora"][:10] in rotulados and m["par"] in ("N_NE", "N_SE", "NE_SE", "S_SE"))
+        self.assertFalse(any(m["dia_rotulado"] for m in pr["maiores_desvios_fora_dos_dias_rotulados"]))
+        for p, x in pr["distribuicao"].items():
+            sem = x["sem_dias_rotulados"]
+            self.assertEqual(sem["horas"] + 24 * x["dias_rotulados"], x["horas"], p)
+        pdo = pr["versao_programa"]["conferencia_pdo"]
+        self.assertEqual(pdo["dias_comparados"] + len(pdo["dias_sem_programado_no_conjunto"]), pdo["dias"])
+        self.assertEqual(pdo["horas"], 24 * 2 * pdo["dias_comparados"])
+
+    def test_textos_a05_coerentes_com_os_contadores(self):
+        ids = {x["id"]: x for x in self.g["balanco"]["identidades"]}
+        a05 = self.g["achados"]["A05"]
+        tudo_nne = all(ids[f"perimetro.{sm}"]["horas_residuo"] == 0 for sm in ("N", "NE", "SE"))
+        self.assertEqual("em todas as horas no perímetro" in a05["perdas"], tudo_nne)
+        for k in ("balanco.S", "soma_sin"):
+            if ids[k]["horas_residuo_igual_menos_exterior"]:
+                dia = rd.c.data_br(ids[k]["dias_residuo_igual_menos_exterior"][0])
+                self.assertTrue(any(dia in f and "igual a menos o intercâmbio internacional" in f for f in a05["frases"]), k)
+        total = sum(x["horas_residuo"] for x in ids.values())
+        self.assertIn(rd._fmt(total), a05["status"])
 
     def test_resumo_30d_coerente(self):
         for r in self.g["circulacao"]["resumo_30d"]:
@@ -373,8 +719,13 @@ class TestGoldPublicada(unittest.TestCase):
         docs = self.g["restricoes"]["documentos"]
         for f in self.g["restricoes"]["atls"]["fluxos"]:
             if f["definicao"]:
-                trechos = {t["id"]: t["confere"] for t in docs[f["documento_definicao"]]["trechos"]}
-                self.assertTrue(trechos.get(f["fluxo"]), f["fluxo"])
+                trechos = {t["id"]: t for t in docs[f["documento_definicao"]]["trechos"]}
+                t = trechos.get(f["fluxo"])
+                self.assertTrue(t and t["confere"], f["fluxo"])
+                # a definição publicada está escrita no trecho conferido
+                self.assertTrue(ons_rede.confere_passagem(t["texto"], f["definicao"]), f["fluxo"])
+            if f["fluxo"] == "EXP_NE":
+                self.assertIsNone(f["definicao"])
 
 
 if __name__ == "__main__":

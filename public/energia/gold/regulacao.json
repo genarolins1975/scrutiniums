@@ -1,12 +1,12 @@
 {
  "dominio": "energia",
  "gold": "regulacao.json",
- "gerado_em": "2026-10-01T00:49:24Z",
+ "gerado_em": "2026-10-01T06:42:16Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d5dc4fd86561+alterado",
+ "versao_codigo": "f5cba38ad40f+alterado",
  "disponivel": true,
  "modulo": "regulacao",
- "data_referencia": "2026-09-30",
+ "data_referencia": "2026-10-01",
  "paineis": [
   "P044",
   "P045",
@@ -14,7 +14,7 @@
  ],
  "resumo": {
   "limites_hoje": {
-   "data": "2026-09-30",
+   "data": "2026-10-01",
    "pld_min": 57.31,
    "ato_pld_min": "Despacho ANEEL nº 3.850/2025",
    "pld_max_horario": 1611.04,
@@ -32,9 +32,9 @@
    2025,
    2026
   ],
-  "eventos_linha_do_tempo": 23,
+  "eventos_linha_do_tempo": 26,
   "consultas_abertas": 8,
-  "consultas_na_janela": 43,
+  "consultas_na_janela": 44,
   "atividades_agenda": 59
  },
  "limites_pld": {
@@ -712,7 +712,7 @@
    }
   ],
   "vigente_hoje": {
-   "data": "2026-09-30",
+   "data": "2026-10-01",
    "pld_min": 57.31,
    "ato_pld_min": "Despacho ANEEL nº 3.850/2025",
    "pld_max_horario": 1611.04,
@@ -1202,6 +1202,12 @@
     "verificado_em": "2026-09-30",
     "resposta": "conexão encerrada sem resposta",
     "conduta": "texto das leis lido no portal de Legislação Federal do Senado"
+   },
+   {
+    "fonte": "leis.org (endereço que a página oficial da Agenda Regulatória publica para a Portaria nº 7.157/2026 e para o menu 'Atos Normativos')",
+    "verificado_em": "2026-10-01",
+    "resposta": "HTTP 403 com página 'Just a moment...' (desafio de navegador do Cloudflare); a coleta registra a tentativa a cada execução (recurso portaria_revisao_agenda)",
+    "conduta": "não contornado; a revisão da Agenda fica declarada como não lida"
    }
   ],
   "metodo": "Cada valor de limites_pld.json foi lido no documento indicado em 'documento_valores' (texto extraído do PDF, espaços normalizados) e o 'trecho' de cada ato é composto de passagens literais desse documento, separadas por ' […] '. A data de publicação vem da linha 'Este texto não substitui o publicado no D.O. de ...' do extrato ou do texto do ato; a vigência vem do dispositivo do ato. Nível 'texto_do_ato' = valores lidos no próprio ato; nível 'documento_oficial_do_processo' = texto integral do ato não acessível, valores lidos em voto ou nota técnica da ANEEL do mesmo processo. A gold refaz cada teto a partir do teto publicado no ano anterior multiplicado pela razão entre o IPCA de novembro do ano anterior e o de novembro de dois anos antes (IBGE, SIDRA 1737), com tolerância de R$ 0,011/MWh (dois arredondamentos a centavos): é o encadeamento anual que os atos da ANEEL praticam. O art. 23, § 1º, da REN nº 1.032/2022 enuncia outra conta (valores de R$ 556,58 e R$ 1.141,85 a preços de setembro de 2019, atualizados pelo IPCA); a aplicação literal dessa conta é calculada a cada execução e publicada como conferência informativa 'art23_literal', porque não reproduz os valores publicados, e confere o piso como o maior valor entre TEO e TEO de Itaipu fixados no mesmo ato (art. 24). Número e data da deliberação das resoluções homologatórias são conferidos nas atas das reuniões públicas da Diretoria (dados abertos da ANEEL)."
@@ -1221,11 +1227,18 @@
  "regras_limites": {
   "ato": "Resolução Normativa ANEEL nº 1.032, de 26 de julho de 2022",
   "dispositivo": "arts. 22 a 24 (limites do PLD) e art. 34 (vigência)",
-  "resumo": "Consolida as regras de formação do PLD e dos seus limites. O teto horário vale hora a hora; o teto estrutural vale para a média diária dos preços horários, que a CCEE ajusta de forma uniforme quando a média passa do teto; o piso é o maior valor entre a TEO e a TEO de Itaipu; os tetos são corrigidos todo ano pelo IPCA a partir dos valores de setembro de 2019. A regra dos limites vinha da REN nº 858/2019, revogada na consolidação.",
+  "resumo": "Consolida as regras de formação do PLD e dos seus limites. O teto horário vale hora a hora; o teto estrutural vale para a média diária dos preços horários, que a CCEE ajusta de forma uniforme quando a média passa do teto; o piso é o maior valor entre a TEO e a TEO de Itaipu; o art. 23, § 1º, manda atualizar os tetos todo ano pelo IPCA a partir dos valores de setembro de 2019, mas os atos anuais encadeiam o teto publicado no ano anterior pela variação do IPCA de novembro; a aplicação literal do artigo não reproduz os valores publicados (conferências regra_ipca e art23_literal). A regra dos limites vinha da REN nº 858/2019, revogada na consolidação.",
   "trecho": "§ 1º Os limites máximos do PLD serão atualizados pela ANEEL anualmente pela variação do Índice Nacional de Preços ao Consumidor Amplo (IPCA) a partir dos seguintes valores, a preços de setembro de 2019: I - R$ 556,58 / MWh, para o para o PLDmax_estrutural; e II - R$ 1.141,85 / MWh, para o para o PLDmax_horário. […] § 3º A partir da vigência do PLDmax_horário, caso a média diária dos PLDs horários for superior ao PLDmax_estrutural, a CCEE deve ajustar a série de PLDs horários até que a média de seus valores seja igual ao PLDmax_estrutural. […] Art. 24. O valor mínimo do PLD será calculado anualmente pela ANEEL considerando o maior valor entre: I - a Tarifa de Energia de Otimização da UHE Itaipu (TEOItaipu); e II - a Tarifa de Energia de Otimização (TEO) das outras usinas hidrelétricas do Sistema Interligado Nacional.",
   "vigencia_inicio": "2022-09-01",
   "documento": "ren20221032",
-  "url_oficial": "https://www2.aneel.gov.br/cedoc/ren20221032.pdf"
+  "url_oficial": "https://www2.aneel.gov.br/cedoc/ren20221032.pdf",
+  "pratica_dos_atos": {
+   "texto": "Os atos anuais encadeiam o teto publicado no ano anterior pela variação do IPCA de novembro: 12 de 12 tetos reproduzidos dentro da tolerância de R$ 0,011/MWh, que cobre dois arredondamentos a centavos; maior resíduo de R$ 0,0067/MWh. A aplicação literal do art. 23, § 1º, a partir dos valores de setembro de 2019, não reproduz os valores publicados: diferenças de R$ −0,65 a R$ −0,24/MWh entre 2021 e 2026 (conferência art23_literal).",
+   "regra_ipca_aprovadas": 12,
+   "regra_ipca_total": 12,
+   "art23_literal_diferenca_min": -0.6472,
+   "art23_literal_diferenca_max": -0.2403
+  }
  },
  "bandeiras": {
   "vigencias": [
@@ -1234,21 +1247,69 @@
     "patamar": "Amarela",
     "vigencia_inicio": "2015-03-02",
     "vigencia_fim": "2016-01-31",
+    "vigencia_fim_mes": "2016-01",
+    "vigencia_fim_grao": "dia",
     "vigencia_fim_origem": "valor_seguinte",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": "2016-01-31",
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 0,
+     "meses_coerentes": 0,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 25.0
    },
    {
     "ato": "REH nº 1.859/2015",
     "patamar": "Vermelha P1",
     "vigencia_inicio": "2015-03-02",
-    "vigencia_fim": "2016-01-31",
-    "vigencia_fim_origem": "valor_seguinte",
+    "vigencia_fim": null,
+    "vigencia_fim_mes": "2015-08",
+    "vigencia_fim_grao": "mes",
+    "vigencia_fim_origem": "acionamento_diverge",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": "2016-01-31",
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
-    "conferencia_fim": null,
+    "conferencia_fim": {
+     "resultado": "ressalva",
+     "detalhe": "o recurso Acionamento registra Vermelha P1 a R$ 45,00/MWh de 2015-09 a 2016-01, sem resolução correspondente no recurso Adicional; o valor de R$ 55,00/MWh aparece até 2015-08; a véspera do valor seguinte do recurso Adicional daria 2016-01-31, o que o Acionamento contradiz"
+    },
+    "conferencia_acionamento": {
+     "meses_conferidos": 11,
+     "meses_coerentes": 6,
+     "meses_divergentes": [
+      {
+       "competencia": "2015-09",
+       "rs_mwh": 45.0
+      },
+      {
+       "competencia": "2015-10",
+       "rs_mwh": 45.0
+      },
+      {
+       "competencia": "2015-11",
+       "rs_mwh": 45.0
+      },
+      {
+       "competencia": "2015-12",
+       "rs_mwh": 45.0
+      },
+      {
+       "competencia": "2016-01",
+       "rs_mwh": 45.0
+      }
+     ],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": "2015-08",
+     "primeiro_mes_divergente": "2015-09"
+    },
     "rs_mwh": 55.0
    },
    {
@@ -1256,10 +1317,22 @@
     "patamar": "Amarela",
     "vigencia_inicio": "2016-02-01",
     "vigencia_fim": "2017-01-31",
+    "vigencia_fim_mes": "2017-01",
+    "vigencia_fim_grao": "dia",
     "vigencia_fim_origem": "valor_seguinte",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": "2017-01-31",
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 2,
+     "meses_coerentes": 2,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 15.0
    },
    {
@@ -1267,10 +1340,22 @@
     "patamar": "Vermelha P1",
     "vigencia_inicio": "2016-02-01",
     "vigencia_fim": "2017-01-31",
+    "vigencia_fim_mes": "2017-01",
+    "vigencia_fim_grao": "dia",
     "vigencia_fim_origem": "valor_seguinte",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": "2017-01-31",
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 0,
+     "meses_coerentes": 0,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 30.0
    },
    {
@@ -1278,10 +1363,22 @@
     "patamar": "Vermelha P2",
     "vigencia_inicio": "2016-02-01",
     "vigencia_fim": "2017-01-31",
+    "vigencia_fim_mes": "2017-01",
+    "vigencia_fim_grao": "dia",
     "vigencia_fim_origem": "valor_seguinte",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": "2017-01-31",
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 1,
+     "meses_coerentes": 1,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 45.0
    },
    {
@@ -1289,10 +1386,22 @@
     "patamar": "Amarela",
     "vigencia_inicio": "2017-02-01",
     "vigencia_fim": "2018-04-30",
+    "vigencia_fim_mes": "2018-04",
+    "vigencia_fim_grao": "dia",
     "vigencia_fim_origem": "valor_seguinte",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": "2018-04-30",
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 3,
+     "meses_coerentes": 3,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 20.0
    },
    {
@@ -1300,21 +1409,53 @@
     "patamar": "Vermelha P1",
     "vigencia_inicio": "2017-02-01",
     "vigencia_fim": "2018-04-30",
+    "vigencia_fim_mes": "2018-04",
+    "vigencia_fim_grao": "dia",
     "vigencia_fim_origem": "valor_seguinte",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": "2018-04-30",
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 4,
+     "meses_coerentes": 4,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 30.0
    },
    {
     "ato": "REH nº 2.203/2017",
     "patamar": "Vermelha P2",
     "vigencia_inicio": "2017-02-01",
-    "vigencia_fim": "2018-04-30",
-    "vigencia_fim_origem": "valor_seguinte",
+    "vigencia_fim": null,
+    "vigencia_fim_mes": "2017-10",
+    "vigencia_fim_grao": "mes",
+    "vigencia_fim_origem": "acionamento_diverge",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": "2018-04-30",
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
-    "conferencia_fim": null,
+    "conferencia_fim": {
+     "resultado": "ressalva",
+     "detalhe": "o recurso Acionamento registra Vermelha P2 a R$ 50,00/MWh em 2017-11, sem resolução correspondente no recurso Adicional; o valor de R$ 35,00/MWh aparece até 2017-10; a véspera do valor seguinte do recurso Adicional daria 2018-04-30, o que o Acionamento contradiz"
+    },
+    "conferencia_acionamento": {
+     "meses_conferidos": 2,
+     "meses_coerentes": 1,
+     "meses_divergentes": [
+      {
+       "competencia": "2017-11",
+       "rs_mwh": 50.0
+      }
+     ],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": "2017-10",
+     "primeiro_mes_divergente": "2017-11"
+    },
     "rs_mwh": 35.0
    },
    {
@@ -1322,10 +1463,22 @@
     "patamar": "Amarela",
     "vigencia_inicio": "2018-05-01",
     "vigencia_fim": "2019-05-31",
+    "vigencia_fim_mes": "2019-05",
+    "vigencia_fim_grao": "dia",
     "vigencia_fim_origem": "valor_seguinte",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": "2019-05-31",
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 3,
+     "meses_coerentes": 3,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 10.0
    },
    {
@@ -1333,10 +1486,22 @@
     "patamar": "Vermelha P1",
     "vigencia_inicio": "2018-05-01",
     "vigencia_fim": "2019-05-31",
+    "vigencia_fim_mes": "2019-05",
+    "vigencia_fim_grao": "dia",
     "vigencia_fim_origem": "valor_seguinte",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": "2019-05-31",
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 0,
+     "meses_coerentes": 0,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 30.0
    },
    {
@@ -1344,10 +1509,22 @@
     "patamar": "Vermelha P2",
     "vigencia_inicio": "2018-05-01",
     "vigencia_fim": "2019-05-31",
+    "vigencia_fim_mes": "2019-05",
+    "vigencia_fim_grao": "dia",
     "vigencia_fim_origem": "valor_seguinte",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": "2019-05-31",
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 5,
+     "meses_coerentes": 5,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 50.0
    },
    {
@@ -1355,10 +1532,22 @@
     "patamar": "Amarela",
     "vigencia_inicio": "2019-06-01",
     "vigencia_fim": "2019-10-31",
+    "vigencia_fim_mes": "2019-10",
+    "vigencia_fim_grao": "dia",
     "vigencia_fim_origem": "valor_seguinte",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": "2019-10-31",
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 2,
+     "meses_coerentes": 2,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 15.0
    },
    {
@@ -1366,10 +1555,22 @@
     "patamar": "Vermelha P1",
     "vigencia_inicio": "2019-06-01",
     "vigencia_fim": "2019-10-31",
+    "vigencia_fim_mes": "2019-10",
+    "vigencia_fim_grao": "dia",
     "vigencia_fim_origem": "valor_seguinte",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": "2019-10-31",
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 2,
+     "meses_coerentes": 2,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 40.0
    },
    {
@@ -1377,10 +1578,22 @@
     "patamar": "Vermelha P2",
     "vigencia_inicio": "2019-06-01",
     "vigencia_fim": "2019-10-31",
+    "vigencia_fim_mes": "2019-10",
+    "vigencia_fim_grao": "dia",
     "vigencia_fim_origem": "valor_seguinte",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": "2019-10-31",
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 0,
+     "meses_coerentes": 0,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 60.0
    },
    {
@@ -1388,10 +1601,22 @@
     "patamar": "Amarela",
     "vigencia_inicio": "2019-11-01",
     "vigencia_fim": "2021-06-30",
+    "vigencia_fim_mes": "2021-06",
+    "vigencia_fim_grao": "dia",
     "vigencia_fim_origem": "valor_seguinte",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": "2021-06-30",
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 6,
+     "meses_coerentes": 6,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 13.43
    },
    {
@@ -1399,10 +1624,22 @@
     "patamar": "Vermelha P1",
     "vigencia_inicio": "2019-11-01",
     "vigencia_fim": "2021-06-30",
+    "vigencia_fim_mes": "2021-06",
+    "vigencia_fim_grao": "dia",
     "vigencia_fim_origem": "valor_seguinte",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": "2021-06-30",
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 2,
+     "meses_coerentes": 2,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 41.69
    },
    {
@@ -1410,10 +1647,22 @@
     "patamar": "Vermelha P2",
     "vigencia_inicio": "2019-11-01",
     "vigencia_fim": "2021-06-30",
+    "vigencia_fim_mes": "2021-06",
+    "vigencia_fim_grao": "dia",
     "vigencia_fim_origem": "valor_seguinte",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": "2021-06-30",
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 2,
+     "meses_coerentes": 2,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 62.43
    },
    {
@@ -1421,10 +1670,22 @@
     "patamar": "Amarela",
     "vigencia_inicio": "2021-07-01",
     "vigencia_fim": "2022-06-30",
+    "vigencia_fim_mes": "2022-06",
+    "vigencia_fim_grao": "dia",
     "vigencia_fim_origem": "valor_seguinte",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": "2022-06-30",
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 0,
+     "meses_coerentes": 0,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 18.74
    },
    {
@@ -1432,10 +1693,22 @@
     "patamar": "Vermelha P1",
     "vigencia_inicio": "2021-07-01",
     "vigencia_fim": "2022-06-30",
+    "vigencia_fim_mes": "2022-06",
+    "vigencia_fim_grao": "dia",
     "vigencia_fim_origem": "valor_seguinte",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": "2022-06-30",
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 0,
+     "meses_coerentes": 0,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 39.71
    },
    {
@@ -1443,18 +1716,34 @@
     "patamar": "Vermelha P2",
     "vigencia_inicio": "2021-07-01",
     "vigencia_fim": "2022-06-30",
+    "vigencia_fim_mes": "2022-06",
+    "vigencia_fim_grao": "dia",
     "vigencia_fim_origem": "valor_seguinte",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": "2022-06-30",
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 2,
+     "meses_coerentes": 2,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 94.92
    },
    {
     "ato": "RES CREG nº 3/2021",
     "patamar": "Escassez Hídrica",
     "vigencia_inicio": "2021-09-01",
-    "vigencia_fim": "2022-04-30",
+    "vigencia_fim": null,
+    "vigencia_fim_mes": "2022-04",
+    "vigencia_fim_grao": "mes",
     "vigencia_fim_origem": "ultimo_acionamento",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": null,
     "ultimo_acionamento": {
      "competencia": "2022-04",
      "rs_mwh": 71.0
@@ -1467,6 +1756,17 @@
      "resultado": "aprovado",
      "detalhe": "o dicionário do recurso Acionamento escreve a vigência do patamar de 2021-09 a 2022-04; último mês com acionamento no recurso: 2022-04"
     },
+    "conferencia_acionamento": {
+     "meses_conferidos": 8,
+     "meses_coerentes": 7,
+     "meses_divergentes": [],
+     "mes_parcial": {
+      "competencia": "2022-04",
+      "rs_mwh": 71.0
+     },
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 142.0
    },
    {
@@ -1474,10 +1774,22 @@
     "patamar": "Amarela",
     "vigencia_inicio": "2022-07-01",
     "vigencia_fim": "2024-03-31",
+    "vigencia_fim_mes": "2024-03",
+    "vigencia_fim_grao": "dia",
     "vigencia_fim_origem": "valor_seguinte",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": "2024-03-31",
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 0,
+     "meses_coerentes": 0,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 29.89
    },
    {
@@ -1485,10 +1797,22 @@
     "patamar": "Vermelha P1",
     "vigencia_inicio": "2022-07-01",
     "vigencia_fim": "2024-03-31",
+    "vigencia_fim_mes": "2024-03",
+    "vigencia_fim_grao": "dia",
     "vigencia_fim_origem": "valor_seguinte",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": "2024-03-31",
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 0,
+     "meses_coerentes": 0,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 65.0
    },
    {
@@ -1496,10 +1820,22 @@
     "patamar": "Vermelha P2",
     "vigencia_inicio": "2022-07-01",
     "vigencia_fim": "2024-03-31",
+    "vigencia_fim_mes": "2024-03",
+    "vigencia_fim_grao": "dia",
     "vigencia_fim_origem": "valor_seguinte",
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": "2024-03-31",
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 0,
+     "meses_coerentes": 0,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 97.95
    },
    {
@@ -1507,10 +1843,22 @@
     "patamar": "Amarela",
     "vigencia_inicio": "2024-04-01",
     "vigencia_fim": null,
+    "vigencia_fim_mes": null,
+    "vigencia_fim_grao": null,
     "vigencia_fim_origem": null,
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": null,
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 9,
+     "meses_coerentes": 9,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 18.85
    },
    {
@@ -1518,10 +1866,22 @@
     "patamar": "Vermelha P1",
     "vigencia_inicio": "2024-04-01",
     "vigencia_fim": null,
+    "vigencia_fim_mes": null,
+    "vigencia_fim_grao": null,
     "vigencia_fim_origem": null,
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": null,
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 5,
+     "meses_coerentes": 5,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 44.63
    },
    {
@@ -1529,15 +1889,61 @@
     "patamar": "Vermelha P2",
     "vigencia_inicio": "2024-04-01",
     "vigencia_fim": null,
+    "vigencia_fim_mes": null,
+    "vigencia_fim_grao": null,
     "vigencia_fim_origem": null,
+    "fim_incerto": false,
+    "fim_pelo_recurso_adicional": null,
     "ultimo_acionamento": null,
     "resolucao_seguinte_sem_patamar": null,
     "conferencia_fim": null,
+    "conferencia_acionamento": {
+     "meses_conferidos": 3,
+     "meses_coerentes": 3,
+     "meses_divergentes": [],
+     "mes_parcial": null,
+     "ultimo_mes_coerente": null,
+     "primeiro_mes_divergente": null
+    },
     "rs_mwh": 78.77
    }
   ],
+  "acionamentos_sem_resolucao": [
+   {
+    "patamar": "Vermelha P1",
+    "rs_mwh": 30.0,
+    "inicio": "2015-01",
+    "fim": "2015-02",
+    "meses": 2,
+    "motivo": "sem_vigencia"
+   },
+   {
+    "patamar": "Vermelha P1",
+    "rs_mwh": 45.0,
+    "inicio": "2015-09",
+    "fim": "2016-01",
+    "meses": 5,
+    "motivo": "valor_diferente"
+   },
+   {
+    "patamar": "Vermelha P2",
+    "rs_mwh": 50.0,
+    "inicio": "2017-11",
+    "fim": "2017-11",
+    "meses": 1,
+    "motivo": "valor_diferente"
+   }
+  ],
+  "conferencia_acionamento": {
+   "meses_conferidos": 72,
+   "meses_coerentes": 65,
+   "meses_divergentes": 6,
+   "meses_parciais": 1,
+   "meses_sem_vigencia": 2,
+   "regra": "cada mês em que o patamar foi acionado (recurso Acionamento) dentro de uma vigência do recurso Adicional tem de trazer o mesmo valor; mês com outro valor encerra a vigência no último mês coerente (grão mensal) e vira evento 'valor observado no Acionamento sem resolução no recurso Adicional'"
+  },
   "gerado_pela_fonte_em": "2026-07-15",
-  "acionamento_gerado_pela_fonte_em": "2026-09-28",
+  "acionamento_gerado_pela_fonte_em": "2026-10-01",
   "acionamento_meses": 141,
   "acionamento_periodo": {
    "inicio": "2015-01",
@@ -1560,10 +1966,15 @@
     "data_ato_na_pagina": "2025-10-21",
     "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.137/2025",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
     "confirmacoes": [
      {
       "ato": "Resolução Normativa nº 1.137/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.137/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2025-10-21",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar novas versões dos Módulos 1, 4, 6, 8 e 11 dos Procedimentos de Distribuição",
@@ -1571,12 +1982,16 @@
      },
      {
       "ato": "Resolução Normativa nº 1.137/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.137/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2025-10-21",
       "fonte": "texto do ato (ren20251137, sha256 aae70356c1fe)",
       "trecho": "Anexo I - Módulo 1 - GLOSSÁRIO DE TERMOS TÉCNICOS DO PRODIST",
       "versao_aprovada": null
      }
-    ]
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRODIST",
@@ -1592,8 +2007,11 @@
     "data_ato_na_pagina": "2021-12-07",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 956/2021",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRODIST",
@@ -1609,16 +2027,22 @@
     "data_ato_na_pagina": "2021-12-07",
     "conferencia": "pagina_possivelmente_desatualizada",
     "ato_vigente": null,
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [
      {
       "ato": "Despacho nº 3.717/2023",
+      "ato_na_fonte": "Despacho nº 3.717/2023",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2023-10-03",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar a revisão do Módulo 3 dos Procedimentos de Distribuição",
       "versao_aprovada": null
      }
     ],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRODIST",
@@ -1634,10 +2058,15 @@
     "data_ato_na_pagina": "2025-10-21",
     "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.137/2025",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
     "confirmacoes": [
      {
       "ato": "Resolução Normativa nº 1.137/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.137/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2025-10-21",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar novas versões dos Módulos 1, 4, 6, 8 e 11 dos Procedimentos de Distribuição",
@@ -1645,12 +2074,16 @@
      },
      {
       "ato": "Resolução Normativa nº 1.137/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.137/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2025-10-21",
       "fonte": "texto do ato (ren20251137, sha256 aae70356c1fe)",
       "trecho": "Anexo II - Módulo 4 - PROCEDIMENTOS OPERATIVOS DO SISTEMA DE DISTRIBUIÇÃO",
       "versao_aprovada": null
      }
-    ]
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRODIST",
@@ -1666,8 +2099,11 @@
     "data_ato_na_pagina": "2021-12-07",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 956/2021",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRODIST",
@@ -1683,10 +2119,15 @@
     "data_ato_na_pagina": "2025-10-21",
     "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.137/2025",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
     "confirmacoes": [
      {
       "ato": "Resolução Normativa nº 1.137/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.137/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2025-10-21",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar novas versões dos Módulos 1, 4, 6, 8 e 11 dos Procedimentos de Distribuição",
@@ -1694,12 +2135,16 @@
      },
      {
       "ato": "Resolução Normativa nº 1.137/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.137/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2025-10-21",
       "fonte": "texto do ato (ren20251137, sha256 aae70356c1fe)",
       "trecho": "Anexo III - Módulo 6 - INFORMAÇÕES REQUERIDAS E OBRIGAÇÕES",
       "versao_aprovada": null
      }
-    ]
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRODIST",
@@ -1715,8 +2160,11 @@
     "data_ato_na_pagina": "2021-12-07",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 956/2021",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRODIST",
@@ -1732,10 +2180,15 @@
     "data_ato_na_pagina": "2025-10-21",
     "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.137/2025",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
     "confirmacoes": [
      {
       "ato": "Resolução Normativa nº 1.137/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.137/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2025-10-21",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar novas versões dos Módulos 1, 4, 6, 8 e 11 dos Procedimentos de Distribuição",
@@ -1743,12 +2196,16 @@
      },
      {
       "ato": "Resolução Normativa nº 1.137/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.137/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2025-10-21",
       "fonte": "texto do ato (ren20251137, sha256 aae70356c1fe)",
       "trecho": "Anexo IV - Módulo 8 - QUALIDADE DO FORNECIMENTO DE ENERGIA ELÉTRICA",
       "versao_aprovada": null
      }
-    ]
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRODIST",
@@ -1764,16 +2221,22 @@
     "data_ato_na_pagina": "2021-12-07",
     "conferencia": "pagina_possivelmente_desatualizada",
     "ato_vigente": null,
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [
      {
       "ato": "Resolução Normativa nº 1.137/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.137/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2025-10-21",
       "fonte": "texto do ato (ren20251137, sha256 aae70356c1fe)",
       "trecho": "Anexo VI - Módulo 9 - RESSARCIMENTO DE DANOS ELÉTRICOS",
       "versao_aprovada": null
      }
     ],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRODIST",
@@ -1789,8 +2252,11 @@
     "data_ato_na_pagina": "2021-12-07",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 956/2021",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRODIST",
@@ -1806,9 +2272,14 @@
     "data_ato_na_pagina": "2021-12-07",
     "conferencia": "pagina_possivelmente_desatualizada",
     "ato_vigente": null,
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [
      {
       "ato": "Resolução Normativa nº 1.137/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.137/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2025-10-21",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar novas versões dos Módulos 1, 4, 6, 8 e 11 dos Procedimentos de Distribuição",
@@ -1816,13 +2287,17 @@
      },
      {
       "ato": "Resolução Normativa nº 1.137/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.137/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2025-10-21",
       "fonte": "texto do ato (ren20251137, sha256 aae70356c1fe)",
       "trecho": "Anexo V - Módulo 11 - FATURA DE ENERGIA ELÉTRICA E INFORMAÇÕES SUPLEMENTARES",
       "versao_aprovada": null
      }
     ],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -1836,10 +2311,24 @@
     "url_versoes": "https://git.aneel.gov.br/publico/centralconteudo/-/tree/main/procreg/proret/modulo02/subm2.1",
     "observacao": null,
     "data_ato_na_pagina": "2025-02-11",
-    "conferencia": "sem_conferencia_externa",
+    "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.114/2025",
+    "conferencia_versao": "confere",
+    "versao_no_ato": "2.5",
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [
+     {
+      "ato": "Resolução Normativa nº 1.114/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.114/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
+      "data": "2025-02-11",
+      "fonte": "texto do ato (ren20251114, sha256 f5bb38dbe356)",
+      "trecho": "Submódulo 2.1, versão 2.5",
+      "versao_aprovada": "2.5"
+     }
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -1855,8 +2344,13 @@
     "data_ato_na_pagina": "2025-02-11",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.114/2025",
+    "conferencia_versao": "ato_lido_nao_cita_o_item",
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": [
+     "Resolução Normativa nº 1.114/2025, lida no bronze, aprova versões de outros itens do PRORET e não cita o Submódulo 2.1 A; a atribuição da página não é confirmada pelo texto do ato"
+    ]
    },
    {
     "conjunto": "PRORET",
@@ -1872,16 +2366,22 @@
     "data_ato_na_pagina": "2025-05-20",
     "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.121/2025",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
     "confirmacoes": [
      {
       "ato": "Resolução Normativa nº 1.121/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.121/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2025-05-20",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar a proposta de aprimoramento das regras dos Submódulos 2.2 e 2.2A dos Procedimentos de Regulação Tarifária",
       "versao_aprovada": null
      }
-    ]
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -1897,8 +2397,13 @@
     "data_ato_na_pagina": null,
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": null,
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": [
+     "a página não publica arquivo de versão vigente para o item"
+    ]
    },
    {
     "conjunto": "PRORET",
@@ -1914,8 +2419,11 @@
     "data_ato_na_pagina": "2022-02-01",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.003/2022",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -1931,8 +2439,11 @@
     "data_ato_na_pagina": "2022-02-01",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.003/2022",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -1948,16 +2459,22 @@
     "data_ato_na_pagina": "2024-05-14",
     "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.091/2024",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
     "confirmacoes": [
      {
       "ato": "Resolução Normativa nº 1.091/2024",
+      "ato_na_fonte": "Resolução Normativa nº 1.091/2024",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2024-05-14",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar a revisão dos Submódulos 2.1, 2.2, 2.5, 2.6, 2.7, 2.8, 3.1, 3.2, 3.3, 4.2, 4.4, 5.5, 6.3, 7.4, 8.4, 9.1, 9.3, 9.7, 10.1, 10.2, 10.4, 10.6, 12.1 e 12.4 dos Procedimentos de Regulação Tarifária",
       "versao_aprovada": null
      }
-    ]
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -1973,8 +2490,11 @@
     "data_ato_na_pagina": "2024-05-14",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.091/2024",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -1988,10 +2508,24 @@
     "url_versoes": "https://git.aneel.gov.br/publico/centralconteudo/-/tree/main/procreg/proret/modulo02/subm2.6",
     "observacao": null,
     "data_ato_na_pagina": "2025-02-11",
-    "conferencia": "sem_conferencia_externa",
+    "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.114/2025",
+    "conferencia_versao": "confere",
+    "versao_no_ato": "3.0",
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [
+     {
+      "ato": "Resolução Normativa nº 1.114/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.114/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
+      "data": "2025-02-11",
+      "fonte": "texto do ato (ren20251114, sha256 f5bb38dbe356)",
+      "trecho": "Submódulo 2.6, versão 3.0",
+      "versao_aprovada": "3.0"
+     }
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2005,10 +2539,24 @@
     "url_versoes": "https://git.aneel.gov.br/publico/centralconteudo/-/tree/main/procreg/proret/modulo02/subm2.6A",
     "observacao": null,
     "data_ato_na_pagina": "2025-02-11",
-    "conferencia": "sem_conferencia_externa",
+    "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.114/2025",
+    "conferencia_versao": "confere",
+    "versao_no_ato": "2.0",
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [
+     {
+      "ato": "Resolução Normativa nº 1.114/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.114/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
+      "data": "2025-02-11",
+      "fonte": "texto do ato (ren20251114, sha256 f5bb38dbe356)",
+      "trecho": "Submódulo 2.6A, versão 2.0",
+      "versao_aprovada": "2.0"
+     }
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2024,8 +2572,11 @@
     "data_ato_na_pagina": "2026-01-27",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.150/2026",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2041,8 +2592,11 @@
     "data_ato_na_pagina": "2026-01-27",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.150/2026",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2058,16 +2612,22 @@
     "data_ato_na_pagina": "2024-05-14",
     "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.091/2024",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
     "confirmacoes": [
      {
       "ato": "Resolução Normativa nº 1.091/2024",
+      "ato_na_fonte": "Resolução Normativa nº 1.091/2024",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2024-05-14",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar a revisão dos Submódulos 2.1, 2.2, 2.5, 2.6, 2.7, 2.8, 3.1, 3.2, 3.3, 4.2, 4.4, 5.5, 6.3, 7.4, 8.4, 9.1, 9.3, 9.7, 10.1, 10.2, 10.4, 10.6, 12.1 e 12.4 dos Procedimentos de Regulação Tarifária",
       "versao_aprovada": null
      }
-    ]
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2083,8 +2643,11 @@
     "data_ato_na_pagina": "2022-02-01",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.003/2022",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2100,8 +2663,13 @@
     "data_ato_na_pagina": null,
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": null,
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": [
+     "a página não publica arquivo de versão vigente para o item"
+    ]
    },
    {
     "conjunto": "PRORET",
@@ -2115,27 +2683,55 @@
     "url_versoes": "https://git.aneel.gov.br/publico/centralconteudo/-/tree/main/procreg/proret/modulo03/subm3.1",
     "observacao": null,
     "data_ato_na_pagina": "2025-02-11",
-    "conferencia": "sem_conferencia_externa",
+    "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.114/2025",
+    "conferencia_versao": "confere",
+    "versao_no_ato": "1.6",
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [
+     {
+      "ato": "Resolução Normativa nº 1.114/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.114/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
+      "data": "2025-02-11",
+      "fonte": "texto do ato (ren20251114, sha256 f5bb38dbe356)",
+      "trecho": "Submódulo 3.1, versão 1.6",
+      "versao_aprovada": "1.6"
+     }
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
     "modulo": "Submódulo 3.1 A",
     "titulo": "Procedimentos Gerais",
-    "versao_na_pagina": null,
-    "ato_na_pagina": null,
-    "ano_ato": null,
-    "numero_ato": null,
+    "versao_na_pagina": "1.2",
+    "ato_na_pagina": "Resolução Normativa nº 1.114/2025",
+    "ano_ato": 2025,
+    "numero_ato": 1114,
     "url_vigente": "https://git.aneel.gov.br/publico/centralconteudo/-/raw/main/procreg/proret/modulo03/subm3.1A/Proret_Submod_3.1A_v1.2_aren20251114.pdf",
     "url_versoes": "https://git.aneel.gov.br/publico/centralconteudo/-/tree/main/procreg/proret/modulo03/subm3.1A",
     "observacao": null,
-    "data_ato_na_pagina": null,
-    "conferencia": "sem_conferencia_externa",
-    "ato_vigente": null,
+    "data_ato_na_pagina": "2025-02-11",
+    "conferencia": "confirmada_por_ato_integrado",
+    "ato_vigente": "Resolução Normativa nº 1.114/2025",
+    "conferencia_versao": "confere",
+    "versao_no_ato": "1.2",
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [
+     {
+      "ato": "Resolução Normativa nº 1.114/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.114/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
+      "data": "2025-02-11",
+      "fonte": "texto do ato (ren20251114, sha256 f5bb38dbe356)",
+      "trecho": "Submódulo 3.1A, versão 1.2",
+      "versao_aprovada": "1.2"
+     }
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2149,10 +2745,24 @@
     "url_versoes": "https://git.aneel.gov.br/publico/centralconteudo/-/raw/main/procreg/proret/modulo03/subm3.2/Proret_Submod_3.2_V_2.0_aren20251114.pdf",
     "observacao": null,
     "data_ato_na_pagina": "2025-02-11",
-    "conferencia": "sem_conferencia_externa",
+    "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.114/2025",
+    "conferencia_versao": "confere",
+    "versao_no_ato": "2.0",
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [
+     {
+      "ato": "Resolução Normativa nº 1.114/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.114/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
+      "data": "2025-02-11",
+      "fonte": "texto do ato (ren20251114, sha256 f5bb38dbe356)",
+      "trecho": "Submódulo 3.2, versão 2.0",
+      "versao_aprovada": "2.0"
+     }
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2166,10 +2776,24 @@
     "url_versoes": "https://git.aneel.gov.br/publico/centralconteudo/-/tree/main/procreg/proret/modulo03/subm3.2A",
     "observacao": null,
     "data_ato_na_pagina": "2025-02-11",
-    "conferencia": "sem_conferencia_externa",
+    "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.114/2025",
+    "conferencia_versao": "confere",
+    "versao_no_ato": "2.0",
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [
+     {
+      "ato": "Resolução Normativa nº 1.114/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.114/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
+      "data": "2025-02-11",
+      "fonte": "texto do ato (ren20251114, sha256 f5bb38dbe356)",
+      "trecho": "Submódulo 3.2A, versão 2.0",
+      "versao_aprovada": "2.0"
+     }
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2185,16 +2809,22 @@
     "data_ato_na_pagina": "2024-05-14",
     "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.091/2024",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
     "confirmacoes": [
      {
       "ato": "Resolução Normativa nº 1.091/2024",
+      "ato_na_fonte": "Resolução Normativa nº 1.091/2024",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2024-05-14",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar a revisão dos Submódulos 2.1, 2.2, 2.5, 2.6, 2.7, 2.8, 3.1, 3.2, 3.3, 4.2, 4.4, 5.5, 6.3, 7.4, 8.4, 9.1, 9.3, 9.7, 10.1, 10.2, 10.4, 10.6, 12.1 e 12.4 dos Procedimentos de Regulação Tarifária",
       "versao_aprovada": null
      }
-    ]
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2210,8 +2840,11 @@
     "data_ato_na_pagina": "2024-05-14",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.091/2024",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2227,8 +2860,11 @@
     "data_ato_na_pagina": "2022-11-22",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.049/2022",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2244,25 +2880,31 @@
     "data_ato_na_pagina": "2022-11-22",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.049/2022",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
     "modulo": "Submódulo 4.1",
     "titulo": "Conceitos Gerais",
-    "versao_na_pagina": null,
-    "ato_na_pagina": null,
-    "ano_ato": null,
-    "numero_ato": null,
+    "versao_na_pagina": "1.0C",
+    "ato_na_pagina": "Resolução Normativa nº 1.003/2022",
+    "ano_ato": 2022,
+    "numero_ato": 1003,
     "url_vigente": "https://git.aneel.gov.br/publico/centralconteudo/-/raw/main/procreg/proret/modulo04/subm4.1/Proret_Submod_4.1_V1.0C_aren20221003.pdf",
     "url_versoes": "https://git.aneel.gov.br/publico/centralconteudo/-/tree/main/procreg/proret/modulo04/subm4.1",
     "observacao": null,
-    "data_ato_na_pagina": null,
+    "data_ato_na_pagina": "2022-02-01",
     "conferencia": "sem_conferencia_externa",
-    "ato_vigente": null,
+    "ato_vigente": "Resolução Normativa nº 1.003/2022",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2276,10 +2918,24 @@
     "url_versoes": "https://git.aneel.gov.br/publico/centralconteudo/-/tree/main/procreg/proret/modulo04/subm4.2",
     "observacao": null,
     "data_ato_na_pagina": "2025-02-11",
-    "conferencia": "sem_conferencia_externa",
+    "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.114/2025",
+    "conferencia_versao": "confere",
+    "versao_no_ato": "1.3",
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [
+     {
+      "ato": "Resolução Normativa nº 1.114/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.114/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
+      "data": "2025-02-11",
+      "fonte": "texto do ato (ren20251114, sha256 f5bb38dbe356)",
+      "trecho": "Submódulo 4.2, versão 1.3",
+      "versao_aprovada": "1.3"
+     }
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2295,8 +2951,13 @@
     "data_ato_na_pagina": null,
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": null,
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": [
+     "a página não publica arquivo de versão vigente para o item"
+    ]
    },
    {
     "conjunto": "PRORET",
@@ -2310,10 +2971,26 @@
     "url_versoes": "https://git.aneel.gov.br/publico/centralconteudo/-/tree/main/procreg/proret/modulo04/subm4.3",
     "observacao": null,
     "data_ato_na_pagina": "2025-02-11",
-    "conferencia": "sem_conferencia_externa",
+    "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.114/2025",
+    "conferencia_versao": "diverge",
+    "versao_no_ato": "1.1",
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [
+     {
+      "ato": "Resolução Normativa nº 1.114/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.114/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
+      "data": "2025-02-11",
+      "fonte": "texto do ato (ren20251114, sha256 f5bb38dbe356)",
+      "trecho": "Submódulo 4.3, versão 1.1",
+      "versao_aprovada": "1.1"
+     }
+    ],
+    "ressalvas": [
+     "Resolução Normativa nº 1.114/2025 aprova a versão 1.1 do Submódulo 4.3; a página publica a versão 1.3 atribuída ao mesmo ato"
+    ]
    },
    {
     "conjunto": "PRORET",
@@ -2329,8 +3006,11 @@
     "data_ato_na_pagina": "2025-07-01",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.127/2025",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2346,8 +3026,11 @@
     "data_ato_na_pagina": "2025-07-01",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.127/2025",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2363,8 +3046,11 @@
     "data_ato_na_pagina": "2022-02-01",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.003/2022",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2378,10 +3064,26 @@
     "url_versoes": "https://git.aneel.gov.br/publico/centralconteudo/-/tree/main/procreg/proret/modulo05/subm5.2",
     "observacao": null,
     "data_ato_na_pagina": "2025-12-09",
-    "conferencia": "sem_conferencia_externa",
+    "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.147/2025",
+    "conferencia_versao": "diverge",
+    "versao_no_ato": "1.5",
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [
+     {
+      "ato": "Resolução Normativa nº 1.147/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.147/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
+      "data": "2025-12-09",
+      "fonte": "texto do ato (ren20251147, sha256 0cc3f6cbfb97)",
+      "trecho": "Submódulo 5.2, versão 1.5",
+      "versao_aprovada": "1.5"
+     }
+    ],
+    "ressalvas": [
+     "Resolução Normativa nº 1.147/2025 aprova a versão 1.5 do Submódulo 5.2; a página publica a versão 1.6 atribuída ao mesmo ato"
+    ]
    },
    {
     "conjunto": "PRORET",
@@ -2397,8 +3099,11 @@
     "data_ato_na_pagina": "2023-12-05",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.080/2023",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2414,8 +3119,11 @@
     "data_ato_na_pagina": "2024-09-24",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.103/2024",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2431,16 +3139,22 @@
     "data_ato_na_pagina": "2024-05-14",
     "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.091/2024",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
     "confirmacoes": [
      {
       "ato": "Resolução Normativa nº 1.091/2024",
+      "ato_na_fonte": "Resolução Normativa nº 1.091/2024",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2024-05-14",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar a revisão dos Submódulos 2.1, 2.2, 2.5, 2.6, 2.7, 2.8, 3.1, 3.2, 3.3, 4.2, 4.4, 5.5, 6.3, 7.4, 8.4, 9.1, 9.3, 9.7, 10.1, 10.2, 10.4, 10.6, 12.1 e 12.4 dos Procedimentos de Regulação Tarifária",
       "versao_aprovada": null
      }
-    ]
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2456,16 +3170,22 @@
     "data_ato_na_pagina": "2025-10-14",
     "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.135/2025",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
     "confirmacoes": [
      {
       "ato": "Resolução Normativa nº 1.135/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.135/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2025-10-14",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar a adequação do Submódulo 5.6 “Pesquisa e Desenvolvimento – P&D e Eficiência Energética – EE” dos Procedimentos de Regulação Tarifária",
       "versao_aprovada": null
      }
-    ]
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2481,8 +3201,11 @@
     "data_ato_na_pagina": "2022-02-01",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.003/2022",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2498,8 +3221,11 @@
     "data_ato_na_pagina": "2022-02-01",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.003/2022",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2515,15 +3241,23 @@
     "data_ato_na_pagina": null,
     "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.160/2026",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
     "confirmacoes": [
      {
-      "ato": "Portaria nº 1.160/2026",
+      "ato": null,
+      "ato_na_fonte": "Portaria nº 1.160/2026",
+      "ato_suspeito": true,
+      "motivo_ato_suspeito": "Portaria nº 1.160/2026 fora da faixa da série: mediana de 6.974 entre 6 atos do tipo deliberados de 2025 a 2027 (aceito de metade a uma vez e meia); o número cabe na faixa de Resolução Normativa",
       "data": "2026-06-16",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar os aprimoramentos do Submódulo 6.2 dos Procedimentos de Regulação Tarifária",
       "versao_aprovada": null
      }
+    ],
+    "ressalvas": [
+     "número de ato suspeito nas atas: Portaria nº 1.160/2026 fora da faixa da série: mediana de 6.974 entre 6 atos do tipo deliberados de 2025 a 2027 (aceito de metade a uma vez e meia); o número cabe na faixa de Resolução Normativa"
     ]
    },
    {
@@ -2540,16 +3274,22 @@
     "data_ato_na_pagina": "2024-05-14",
     "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.091/2024",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
     "confirmacoes": [
      {
       "ato": "Resolução Normativa nº 1.091/2024",
+      "ato_na_fonte": "Resolução Normativa nº 1.091/2024",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2024-05-14",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar a revisão dos Submódulos 2.1, 2.2, 2.5, 2.6, 2.7, 2.8, 3.1, 3.2, 3.3, 4.2, 4.4, 5.5, 6.3, 7.4, 8.4, 9.1, 9.3, 9.7, 10.1, 10.2, 10.4, 10.6, 12.1 e 12.4 dos Procedimentos de Regulação Tarifária",
       "versao_aprovada": null
      }
-    ]
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2565,8 +3305,11 @@
     "data_ato_na_pagina": "2022-02-01",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.003/2022",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2582,8 +3325,11 @@
     "data_ato_na_pagina": "2022-02-01",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.003/2022",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2599,15 +3345,23 @@
     "data_ato_na_pagina": null,
     "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.084/2024",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
     "confirmacoes": [
      {
-      "ato": "Resolução Homologatória nº 1.084/2024",
+      "ato": null,
+      "ato_na_fonte": "Resolução Homologatória nº 1.084/2024",
+      "ato_suspeito": true,
+      "motivo_ato_suspeito": "Resolução Homologatória nº 1.084/2024 fora da faixa da série: mediana de 3.371 entre 206 atos do tipo deliberados de 2023 a 2025 (aceito de metade a uma vez e meia); o número cabe na faixa de Resolução Normativa",
       "data": "2024-03-05",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar o Submódulo 6.8 dos Procedimentos de Regulação Tarifária",
       "versao_aprovada": null
      }
+    ],
+    "ressalvas": [
+     "número de ato suspeito nas atas: Resolução Homologatória nº 1.084/2024 fora da faixa da série: mediana de 3.371 entre 206 atos do tipo deliberados de 2023 a 2025 (aceito de metade a uma vez e meia); o número cabe na faixa de Resolução Normativa"
     ]
    },
    {
@@ -2622,10 +3376,24 @@
     "url_versoes": "https://git.aneel.gov.br/publico/centralconteudo/-/tree/main/procreg/proret/modulo07/subm7.1",
     "observacao": null,
     "data_ato_na_pagina": "2025-12-09",
-    "conferencia": "sem_conferencia_externa",
+    "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.147/2025",
+    "conferencia_versao": "confere",
+    "versao_no_ato": "2.9",
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [
+     {
+      "ato": "Resolução Normativa nº 1.147/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.147/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
+      "data": "2025-12-09",
+      "fonte": "texto do ato (ren20251147, sha256 0cc3f6cbfb97)",
+      "trecho": "Submódulo 7.1, versão 2.9",
+      "versao_aprovada": "2.9"
+     }
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2641,8 +3409,11 @@
     "data_ato_na_pagina": "2023-02-07",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.060/2023",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2658,16 +3429,24 @@
     "data_ato_na_pagina": "2023-02-07",
     "conferencia": "pagina_possivelmente_desatualizada",
     "ato_vigente": null,
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [
      {
-      "ato": "Resolução Normativa nº 3.354/2024",
+      "ato": null,
+      "ato_na_fonte": "Resolução Normativa nº 3.354/2024",
+      "ato_suspeito": true,
+      "motivo_ato_suspeito": "Resolução Normativa nº 3.354/2024 fora da faixa da série: mediana de 1.100 entre 75 atos do tipo deliberados de 2023 a 2025 (aceito de metade a uma vez e meia); o número cabe na faixa de Resolução Homologatória",
       "data": "2024-07-23",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar a versão 2.7 do Submódulo 7.3 dos Procedimentos de Regulação Tarifária",
       "versao_aprovada": "2.7"
      }
     ],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": [
+     "número de ato suspeito nas atas: Resolução Normativa nº 3.354/2024 fora da faixa da série: mediana de 1.100 entre 75 atos do tipo deliberados de 2023 a 2025 (aceito de metade a uma vez e meia); o número cabe na faixa de Resolução Homologatória"
+    ]
    },
    {
     "conjunto": "PRORET",
@@ -2683,16 +3462,22 @@
     "data_ato_na_pagina": "2025-06-10",
     "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.126/2025",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
     "confirmacoes": [
      {
       "ato": "Resolução Normativa nº 1.126/2025",
+      "ato_na_fonte": "Resolução Normativa nº 1.126/2025",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2025-06-10",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar a revisão do Submódulo 7.4 dos Procedimentos de Regulação Tarifária",
       "versao_aprovada": null
      }
-    ]
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2708,8 +3493,11 @@
     "data_ato_na_pagina": "2023-02-07",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.058/2023",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2725,8 +3513,11 @@
     "data_ato_na_pagina": "2023-02-07",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.058/2023",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2742,8 +3533,11 @@
     "data_ato_na_pagina": "2023-02-07",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.058/2023",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2759,16 +3553,22 @@
     "data_ato_na_pagina": "2024-05-14",
     "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.091/2024",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
     "confirmacoes": [
      {
       "ato": "Resolução Normativa nº 1.091/2024",
+      "ato_na_fonte": "Resolução Normativa nº 1.091/2024",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2024-05-14",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar a revisão dos Submódulos 2.1, 2.2, 2.5, 2.6, 2.7, 2.8, 3.1, 3.2, 3.3, 4.2, 4.4, 5.5, 6.3, 7.4, 8.4, 9.1, 9.3, 9.7, 10.1, 10.2, 10.4, 10.6, 12.1 e 12.4 dos Procedimentos de Regulação Tarifária",
       "versao_aprovada": null
      }
-    ]
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2784,8 +3584,11 @@
     "data_ato_na_pagina": "2023-02-07",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.058/2023",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2801,8 +3604,11 @@
     "data_ato_na_pagina": "2022-07-26",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.028/2022",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2818,16 +3624,22 @@
     "data_ato_na_pagina": "2024-06-25",
     "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.096/2024",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
     "confirmacoes": [
      {
       "ato": "Resolução Normativa nº 1.096/2024",
+      "ato_na_fonte": "Resolução Normativa nº 1.096/2024",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2024-06-25",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar a revisão dos Submódulos 9.1 e 9.2 dos Procedimentos de Regulação Tarifária",
       "versao_aprovada": null
      }
-    ]
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2843,50 +3655,62 @@
     "data_ato_na_pagina": "2024-06-25",
     "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.096/2024",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
     "confirmacoes": [
      {
       "ato": "Resolução Normativa nº 1.096/2024",
+      "ato_na_fonte": "Resolução Normativa nº 1.096/2024",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2024-06-25",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar a revisão dos Submódulos 9.1 e 9.2 dos Procedimentos de Regulação Tarifária",
       "versao_aprovada": null
      }
-    ]
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
     "modulo": "Submódulo 9.3",
     "titulo": "Reajuste Anual das Receitas das Concessionárias de Transmissão",
-    "versao_na_pagina": null,
-    "ato_na_pagina": null,
-    "ano_ato": null,
-    "numero_ato": null,
+    "versao_na_pagina": "1.2",
+    "ato_na_pagina": "Despacho nº 3.606/2025",
+    "ano_ato": 2025,
+    "numero_ato": 3606,
     "url_vigente": "https://git.aneel.gov.br/publico/centralconteudo/-/raw/main/procreg/proret/modulo09/subm9.3/Proret_Submod_9.3_V_1.2_adsp20253606.pdf",
     "url_versoes": "https://git.aneel.gov.br/publico/centralconteudo/-/tree/main/procreg/proret/modulo09/subm9.3",
     "observacao": null,
     "data_ato_na_pagina": null,
     "conferencia": "sem_conferencia_externa",
-    "ato_vigente": null,
+    "ato_vigente": "Despacho nº 3.606/2025",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
     "modulo": "Submódulo 9.4",
     "titulo": "Cálculo das Tarifas de Uso do Sistema de Transmissão (TUST) e da Tarifa de Transporte de Itaipu",
-    "versao_na_pagina": null,
-    "ato_na_pagina": null,
-    "ano_ato": null,
-    "numero_ato": null,
+    "versao_na_pagina": "1.3",
+    "ato_na_pagina": "Despacho nº 3.606/2025",
+    "ano_ato": 2025,
+    "numero_ato": 3606,
     "url_vigente": "https://git.aneel.gov.br/publico/centralconteudo/-/raw/main/procreg/proret/modulo09/subm9.4/Proret_Submod_9.4_V_1.3_adsp20253606.pdf",
     "url_versoes": "https://git.aneel.gov.br/publico/centralconteudo/-/tree/main/procreg/proret/modulo09/subm9.4",
     "observacao": null,
     "data_ato_na_pagina": null,
     "conferencia": "sem_conferencia_externa",
-    "ato_vigente": null,
+    "ato_vigente": "Despacho nº 3.606/2025",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2902,8 +3726,11 @@
     "data_ato_na_pagina": null,
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.083/2024",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2919,8 +3746,11 @@
     "data_ato_na_pagina": "2022-02-01",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.003/2022",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2936,16 +3766,22 @@
     "data_ato_na_pagina": "2024-05-14",
     "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.091/2024",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
     "confirmacoes": [
      {
       "ato": "Resolução Normativa nº 1.091/2024",
+      "ato_na_fonte": "Resolução Normativa nº 1.091/2024",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2024-05-14",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar a revisão dos Submódulos 2.1, 2.2, 2.5, 2.6, 2.7, 2.8, 3.1, 3.2, 3.3, 4.2, 4.4, 5.5, 6.3, 7.4, 8.4, 9.1, 9.3, 9.7, 10.1, 10.2, 10.4, 10.6, 12.1 e 12.4 dos Procedimentos de Regulação Tarifária",
       "versao_aprovada": null
      }
-    ]
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2961,16 +3797,22 @@
     "data_ato_na_pagina": "2024-05-14",
     "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.091/2024",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
     "confirmacoes": [
      {
       "ato": "Resolução Normativa nº 1.091/2024",
+      "ato_na_fonte": "Resolução Normativa nº 1.091/2024",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2024-05-14",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar a revisão dos Submódulos 2.1, 2.2, 2.5, 2.6, 2.7, 2.8, 3.1, 3.2, 3.3, 4.2, 4.4, 5.5, 6.3, 7.4, 8.4, 9.1, 9.3, 9.7, 10.1, 10.2, 10.4, 10.6, 12.1 e 12.4 dos Procedimentos de Regulação Tarifária",
       "versao_aprovada": null
      }
-    ]
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -2986,8 +3828,11 @@
     "data_ato_na_pagina": "2022-02-01",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.003/2022",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -3003,16 +3848,22 @@
     "data_ato_na_pagina": "2024-05-14",
     "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.091/2024",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
     "confirmacoes": [
      {
       "ato": "Resolução Normativa nº 1.091/2024",
+      "ato_na_fonte": "Resolução Normativa nº 1.091/2024",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2024-05-14",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar a revisão dos Submódulos 2.1, 2.2, 2.5, 2.6, 2.7, 2.8, 3.1, 3.2, 3.3, 4.2, 4.4, 5.5, 6.3, 7.4, 8.4, 9.1, 9.3, 9.7, 10.1, 10.2, 10.4, 10.6, 12.1 e 12.4 dos Procedimentos de Regulação Tarifária",
       "versao_aprovada": null
      }
-    ]
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -3028,16 +3879,22 @@
     "data_ato_na_pagina": "2022-06-28",
     "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.024/2022",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
     "confirmacoes": [
      {
       "ato": "Resolução Normativa nº 1.024/2022",
+      "ato_na_fonte": "Resolução Normativa nº 1.024/2022",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2022-06-28",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar os Submódulos 7.4 (Anexo III), 9.4 (Anexo IV) e 10.5 (Anexo V) dos Procedimentos de Regulação Tarifária",
       "versao_aprovada": null
      }
-    ]
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -3053,16 +3910,22 @@
     "data_ato_na_pagina": "2024-05-14",
     "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.091/2024",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
     "confirmacoes": [
      {
       "ato": "Resolução Normativa nº 1.091/2024",
+      "ato_na_fonte": "Resolução Normativa nº 1.091/2024",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2024-05-14",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar a revisão dos Submódulos 2.1, 2.2, 2.5, 2.6, 2.7, 2.8, 3.1, 3.2, 3.3, 4.2, 4.4, 5.5, 6.3, 7.4, 8.4, 9.1, 9.3, 9.7, 10.1, 10.2, 10.4, 10.6, 12.1 e 12.4 dos Procedimentos de Regulação Tarifária",
       "versao_aprovada": null
      }
-    ]
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -3078,8 +3941,11 @@
     "data_ato_na_pagina": "2025-05-20",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.120/2025",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -3095,25 +3961,31 @@
     "data_ato_na_pagina": "2022-07-26",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.028/2022",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
     "modulo": "Submódulo 12.1",
     "titulo": "Revisão Periódica da Receita Anual de Geração das Usinas Cotistas",
-    "versao_na_pagina": null,
-    "ato_na_pagina": null,
-    "ano_ato": null,
-    "numero_ato": null,
+    "versao_na_pagina": "2.4",
+    "ato_na_pagina": "Despacho nº 3.606/2025",
+    "ano_ato": 2025,
+    "numero_ato": 3606,
     "url_vigente": "https://git.aneel.gov.br/publico/centralconteudo/-/raw/main/procreg/proret/modulo12/subm12.1/Proret_Submod_12.1_V_2.4_adsp20253606.pdf",
     "url_versoes": "https://git.aneel.gov.br/publico/centralconteudo/-/tree/main/procreg/proret/modulo12/subm12.1",
     "observacao": null,
     "data_ato_na_pagina": null,
     "conferencia": "sem_conferencia_externa",
-    "ato_vigente": null,
+    "ato_vigente": "Despacho nº 3.606/2025",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -3129,8 +4001,11 @@
     "data_ato_na_pagina": "2022-02-01",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.003/2022",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -3146,8 +4021,11 @@
     "data_ato_na_pagina": "2022-02-01",
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.003/2022",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -3163,16 +4041,22 @@
     "data_ato_na_pagina": "2024-05-14",
     "conferencia": "confirmada_por_ato_integrado",
     "ato_vigente": "Resolução Normativa nº 1.091/2024",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
     "confirmacoes": [
      {
       "ato": "Resolução Normativa nº 1.091/2024",
+      "ato_na_fonte": "Resolução Normativa nº 1.091/2024",
+      "ato_suspeito": false,
+      "motivo_ato_suspeito": null,
       "data": "2024-05-14",
       "fonte": "ata da reunião pública da Diretoria",
       "trecho": "aprovar a revisão dos Submódulos 2.1, 2.2, 2.5, 2.6, 2.7, 2.8, 3.1, 3.2, 3.3, 4.2, 4.4, 5.5, 6.3, 7.4, 8.4, 9.1, 9.3, 9.7, 10.1, 10.2, 10.4, 10.6, 12.1 e 12.4 dos Procedimentos de Regulação Tarifária",
       "versao_aprovada": null
      }
-    ]
+    ],
+    "ressalvas": []
    },
    {
     "conjunto": "PRORET",
@@ -3188,8 +4072,11 @@
     "data_ato_na_pagina": null,
     "conferencia": "sem_conferencia_externa",
     "ato_vigente": "Resolução Normativa nº 1.160/2026",
+    "conferencia_versao": null,
+    "versao_no_ato": null,
     "atos_posteriores": [],
-    "confirmacoes": []
+    "confirmacoes": [],
+    "ressalvas": []
    }
   ],
   "verificado_em": {
@@ -3201,14 +4088,28 @@
    "PRORET": "https://www.gov.br/aneel/pt-br/centrais-de-conteudos/procedimentos-regulatorios/proret"
   },
   "contagem_conferencia": {
-   "confirmada_por_ato_integrado": 23,
-   "sem_conferencia_externa": 55,
+   "confirmada_por_ato_integrado": 34,
+   "sem_conferencia_externa": 44,
    "pagina_possivelmente_desatualizada": 4
   },
-  "regra_conferencia": "A versão e o ato vêm do nome do arquivo que a página oficial publica como versão vigente. O ato é conferido com as decisões das atas da Diretoria que aprovam versões de módulos e com os anexos das Resoluções Normativas lidas no bronze: ato posterior que aprova nova versão do mesmo módulo marca o item como página oficial possivelmente desatualizada (ato_vigente vazio); o mesmo ato da página confirma; sem ato integrado sobre o módulo, fica sem conferência externa."
+  "contagem_versao": {
+   "confere": 9,
+   "diverge": 2,
+   "ato_lido_nao_cita_o_item": 1,
+   "sem_versao_no_ato": 70
+  },
+  "atos_lidos": [
+   "Resolução Normativa nº 1.000/2021",
+   "Resolução Normativa nº 1.032/2022",
+   "Resolução Normativa nº 1.114/2025",
+   "Resolução Normativa nº 1.137/2025",
+   "Resolução Normativa nº 1.147/2025",
+   "Resolução Normativa nº 953/2021"
+  ],
+  "regra_conferencia": "A versão e o ato vêm do nome do arquivo que a página oficial publica como versão vigente (resolução normativa 'aren' ou despacho 'adsp'). O ato é conferido com as decisões das atas da Diretoria que aprovam versões de módulos e com as Resoluções Normativas lidas no bronze (anexos e incisos 'Submódulo X, versão Y'): ato posterior que aprova nova versão do mesmo módulo marca o item como página oficial possivelmente desatualizada (ato_vigente vazio); o mesmo ato da página confirma; sem ato integrado sobre o módulo, fica sem conferência externa. Quando o ato da página escreve a versão, ela é conferida com a da página (conferencia_versao); número de ato fora da faixa do tipo nas atas fica marcado como suspeito e não é exibido como ato."
  },
  "linha_do_tempo": {
-  "conferido_em": "2026-09-30",
+  "conferido_em": "2026-10-01",
   "nota": "Marcos que mudam a leitura dos painéis do observatório. 'resumo' é texto editorial do observatório, conferido no documento citado; 'efeito_declarado' é o que o próprio ato declara (ementa ou dispositivo, citado literalmente); 'impacto_estimado' fica sempre vazio aqui: o observatório não estima o efeito das normas nesta linha do tempo, e a coincidência entre uma data desta lista e um movimento em gráfico não é evidência de causa. 'trecho', 'efeito_declarado' e 'vigencia_regra' são literais do documento; 'trecho' é composto de passagens literais do documento, separadas por ' […] '. Vigência marcada como calculada segue a Lei Complementar nº 95/1998, art. 8º, § 1º (inclui o dia da publicação e o último dia do prazo; vigora no dia seguinte).",
   "eventos": [
    {
@@ -3244,9 +4145,15 @@
     "trecho": "VII - residencial desconto social. […] Art. 13. Esta Resolução entra em vigor na data de sua publicação e produz efeitos: I - em 1º de julho de 2026, quanto ao art. 2º, na parte que insere o artigo 205-A na Resolução Normativa nº 1.000, de 7 de dezembro de 2021; II - em 1º de abril de 2026, quanto ao art. 2º, na parte que altera os artigos 440, 441 e 443",
     "nivel_conferencia": "texto_do_ato",
     "observacoes": [],
+    "vigencia_grao": "dia",
     "origem": "curadoria",
     "trecho_confere": true,
     "conferencia_detalhe": "trecho, efeito declarado e regra de vigência encontrados no documento",
+    "conferencia_publicacao": {
+     "resultado": "aprovado",
+     "fonte": "https://www2.aneel.gov.br/cedoc/ren20251147.pdf",
+     "detalhe": "data '16.12.2025' escrita no texto do ato (sha256 0cc3f6cbfb97)"
+    },
     "url_oficial": "https://www2.aneel.gov.br/cedoc/ren20251147.pdf",
     "copia_publica": "https://web.archive.org/web/20260112220612id_/https://www2.aneel.gov.br/cedoc/ren20251147.pdf",
     "sha256": "0cc3f6cbfb976d11825781592ecace8e4d41d0cbfd9f8e30839a6327383a9325",
@@ -3290,9 +4197,15 @@
     "observacoes": [
      "Os prazos são máximos ('até') e contados da entrada em vigor do dispositivo; a lei não fixa uma data de abertura. A regulação da ANEEL consta da Agenda Regulatória 2026-2027 (atividades AR26-08 e AR26-26)."
     ],
+    "vigencia_grao": "dia",
     "origem": "curadoria",
     "trecho_confere": true,
     "conferencia_detalhe": "trecho, efeito declarado e regra de vigência encontrados no documento",
+    "conferencia_publicacao": {
+     "resultado": "aprovado",
+     "fonte": "https://legis.senado.leg.br/dadosabertos/legislacao/41727716",
+     "detalhe": "metadados abertos do Senado (sha256 dc2890fc5f2c): Publicação Original [Diário Oficial da União de 25/11/2025] (p. 2, col. 2)"
+    },
     "url_oficial": "https://legis.senado.leg.br/norma/41727716/publicacao/41727936",
     "copia_publica": null,
     "sha256": null,
@@ -3330,9 +4243,15 @@
     "observacoes": [
      "O texto do art. 13, VI, diz '180 (cento e oitenta) dias mês', como transcrito. A página oficial do PRODIST lista a versão 14 do Módulo 8 como vigente, aprovada por esta resolução. Os indicadores de continuidade publicados antes da resolução não têm o DISE."
     ],
+    "vigencia_grao": "dia",
     "origem": "curadoria",
     "trecho_confere": true,
     "conferencia_detalhe": "trecho, efeito declarado e regra de vigência encontrados no documento",
+    "conferencia_publicacao": {
+     "resultado": "aprovado",
+     "fonte": "https://www2.aneel.gov.br/cedoc/ren20251137.pdf",
+     "detalhe": "data '30.10.2025' escrita no texto do ato (sha256 aae70356c1fe)"
+    },
     "url_oficial": "https://www2.aneel.gov.br/cedoc/ren20251137.pdf",
     "copia_publica": "https://web.archive.org/web/20251129212833id_/https://www2.aneel.gov.br/cedoc/ren20251137.pdf",
     "sha256": "aae70356c1fee7569051ef95359b142d053564866cb210fb4be735c19d6c5043",
@@ -3377,9 +4296,15 @@
     "observacoes": [
      "O Senado registra retificação no DOU de 10/10/2025. A ANEEL regulou a lei na REN nº 1.147/2025."
     ],
+    "vigencia_grao": "dia",
     "origem": "curadoria",
     "trecho_confere": true,
     "conferencia_detalhe": "trecho, efeito declarado e regra de vigência encontrados no documento",
+    "conferencia_publicacao": {
+     "resultado": "aprovado",
+     "fonte": "https://legis.senado.leg.br/dadosabertos/legislacao/41554304",
+     "detalhe": "metadados abertos do Senado (sha256 d2f41fbf04a6): Publicação Original [Diário Oficial da União de 09/10/2025] (p. 3, col. 1)"
+    },
     "url_oficial": "https://legis.senado.leg.br/norma/41554304/publicacao/41549818",
     "copia_publica": null,
     "sha256": null,
@@ -3420,9 +4345,15 @@
     "observacoes": [
      "Publicada em edição extra do DOU (nº 94-A), segundo os metadados do Senado."
     ],
+    "vigencia_grao": "dia",
     "origem": "curadoria",
     "trecho_confere": true,
     "conferencia_detalhe": "trecho, efeito declarado e regra de vigência encontrados no documento",
+    "conferencia_publicacao": {
+     "resultado": "aprovado",
+     "fonte": "https://legis.senado.leg.br/dadosabertos/legislacao/40864402",
+     "detalhe": "metadados abertos do Senado (sha256 b18cf0236800): Publicação Original [Diário Oficial da União - Edição Extra de 21/05/2025 - nº 94-A] (p. 1, col. 1)"
+    },
     "url_oficial": "https://legis.senado.leg.br/norma/40864402/publicacao/40867755",
     "copia_publica": null,
     "sha256": null,
@@ -3460,9 +4391,15 @@
     "observacoes": [
      "Muda o denominador das perdas não técnicas regulatórias: séries anteriores e posteriores a 2025 não são diretamente comparáveis sem ajuste. A página oficial do PRORET lista as versões 3.0 do Submódulo 2.6 e 2.0 do Submódulo 2.6A como vigentes, aprovadas por esta resolução."
     ],
+    "vigencia_grao": "dia",
     "origem": "curadoria",
     "trecho_confere": true,
     "conferencia_detalhe": "trecho, efeito declarado e regra de vigência encontrados no documento",
+    "conferencia_publicacao": {
+     "resultado": "aprovado",
+     "fonte": "https://www2.aneel.gov.br/cedoc/ren20251114.pdf",
+     "detalhe": "data '14.03.2025' escrita no texto do ato (sha256 f5bb38dbe356)"
+    },
     "url_oficial": "https://www2.aneel.gov.br/cedoc/ren20251114.pdf",
     "copia_publica": "https://web.archive.org/web/20250723195957id_/https://www2.aneel.gov.br/cedoc/ren20251114.pdf",
     "sha256": "f5bb38dbe356fb5bbacc197a1a18dc9511343a5919c13bb840dc1a04326c0a80",
@@ -3477,6 +4414,7 @@
     "data_ato": null,
     "data_publicacao": null,
     "vigencia_inicio": "2024-04-01",
+    "vigencia_grao": "dia",
     "vigencia_regra": "data de vigência informada pelo conjunto de dados da ANEEL (DatVigencia)",
     "vigencia_calculada": false,
     "dispositivo": "não lido: o texto do ato não foi acessado; valores do recurso 'Bandeira Tarifária - Adicional'",
@@ -3502,6 +4440,7 @@
     "origem": "conjunto_de_dados",
     "trecho_confere": null,
     "conferencia_detalhe": "valores do recurso CSV guardado no bronze",
+    "conferencia_publicacao": null,
     "url_oficial": "https://dadosabertos.aneel.gov.br/dataset/bandeiras-tarifarias",
     "copia_publica": null,
     "sha256": null,
@@ -3536,9 +4475,15 @@
     "trecho": "(i.a) a revisão da metodologia de cálculo do PLD máximo estrutural, diante dos atuais critérios de garantia de suprimento definidos pelo Conselho Nacional de Política Energética – CNPE, e a sistemática de conciliação entre o PLD máximo horário e o PLD máximo estrutural, a serem aplicadas a partir de 2025; e (i.b) as metodologias de cálculo do PLD mínimo e de definição da Tarifa de Energia de Otimização – TEO; e (ii) definir que, para o ano de 2024, os limites máximos do PLD serão aqueles definidos na Resolução Homologatória nº 3.167, de 29 de dezembro de 2022, atualizados pela variação acumulada do Índice Nacional de Preços ao Consumidor Amplo – IPCA no ano de 2023",
     "nivel_conferencia": "texto_do_ato",
     "observacoes": [],
+    "vigencia_grao": "dia",
     "origem": "curadoria",
     "trecho_confere": true,
     "conferencia_detalhe": "trecho, efeito declarado e regra de vigência encontrados no documento",
+    "conferencia_publicacao": {
+     "resultado": "aprovado",
+     "fonte": "https://www2.aneel.gov.br/cedoc/dsp20233587.pdf",
+     "detalhe": "data '02.10.2023' escrita no texto do ato (sha256 d1bdcf29e742)"
+    },
     "url_oficial": "https://www2.aneel.gov.br/cedoc/dsp20233587.pdf",
     "copia_publica": "https://web.archive.org/web/20251110153749id_/https://www2.aneel.gov.br/cedoc/dsp20233587.pdf",
     "sha256": "d1bdcf29e7421352f5d371456f83441751519057abd11a554b1d5c0db976d0d0",
@@ -3559,7 +4504,7 @@
     "vigencia_regra": "Art. 34. Esta Resolução entra em vigor em 1º de setembro de 2022.",
     "vigencia_calculada": false,
     "dispositivo": "arts. 22 a 24 (limites do PLD) e art. 34 (vigência)",
-    "resumo": "Consolida as regras de formação do PLD e dos seus limites. O teto horário vale hora a hora; o teto estrutural vale para a média diária dos preços horários, que a CCEE ajusta de forma uniforme quando a média passa do teto; o piso é o maior valor entre a TEO e a TEO de Itaipu; os tetos são corrigidos todo ano pelo IPCA a partir dos valores de setembro de 2019. A regra dos limites vinha da REN nº 858/2019, revogada na consolidação.",
+    "resumo": "Consolida as regras de formação do PLD e dos seus limites. O teto horário vale hora a hora; o teto estrutural vale para a média diária dos preços horários, que a CCEE ajusta de forma uniforme quando a média passa do teto; o piso é o maior valor entre a TEO e a TEO de Itaipu; o art. 23, § 1º, manda atualizar os tetos todo ano pelo IPCA a partir dos valores de setembro de 2019, mas os atos anuais encadeiam o teto publicado no ano anterior pela variação do IPCA de novembro; a aplicação literal do artigo não reproduz os valores publicados (conferências regra_ipca e art23_literal). A regra dos limites vinha da REN nº 858/2019, revogada na consolidação.",
     "efeito_declarado": "Consolida os atos regulatórios relativos à elaboração do Programa Mensal da Operação Energética – PMO, e para a formação do Custo Marginal da Operação – CMO e do Preço de Liquidação de Diferenças – PLD",
     "impacto_estimado": null,
     "temas": [
@@ -3578,9 +4523,15 @@
     "observacoes": [
      "O próprio texto registra retificação no D.O. de 21.11.2022. A revogação da REN nº 858/2019 pela consolidação é afirmada na Nota Técnica nº 01/2023-SGT/ANEEL, item 8."
     ],
+    "vigencia_grao": "dia",
     "origem": "curadoria",
     "trecho_confere": true,
     "conferencia_detalhe": "trecho, efeito declarado e regra de vigência encontrados no documento",
+    "conferencia_publicacao": {
+     "resultado": "aprovado",
+     "fonte": "https://www2.aneel.gov.br/cedoc/ren20221032.pdf",
+     "detalhe": "data '02.08.2022' escrita no texto do ato (sha256 df67f43f2248)"
+    },
     "url_oficial": "https://www2.aneel.gov.br/cedoc/ren20221032.pdf",
     "copia_publica": "https://web.archive.org/web/20240414122616id_/https://www2.aneel.gov.br/cedoc/ren20221032.pdf",
     "sha256": "df67f43f224838a7c9c3aed26accd485ea089094ac2b7a0ed3d6d66bf800f775",
@@ -3595,6 +4546,7 @@
     "data_ato": null,
     "data_publicacao": null,
     "vigencia_inicio": "2022-07-01",
+    "vigencia_grao": "dia",
     "vigencia_regra": "data de vigência informada pelo conjunto de dados da ANEEL (DatVigencia)",
     "vigencia_calculada": false,
     "dispositivo": "não lido: o texto do ato não foi acessado; valores do recurso 'Bandeira Tarifária - Adicional'",
@@ -3620,6 +4572,7 @@
     "origem": "conjunto_de_dados",
     "trecho_confere": null,
     "conferencia_detalhe": "valores do recurso CSV guardado no bronze",
+    "conferencia_publicacao": null,
     "url_oficial": "https://dadosabertos.aneel.gov.br/dataset/bandeiras-tarifarias",
     "copia_publica": null,
     "sha256": null,
@@ -3658,9 +4611,15 @@
     "trecho": "Parágrafo único. O Poder Executivo e as concessionárias, permissionárias e autorizadas de serviço público de distribuição de energia elétrica deverão compatibilizar e atualizar a relação de cadastrados que atendam aos critérios fixados no art. 2º desta Lei e inscrevê-los automaticamente como beneficiários da Tarifa Social de Energia Elétrica.” (NR) Art. 2º Esta Lei entra em vigor após decorridos 120 (cento e vinte) dias de sua publicação oficial.",
     "nivel_conferencia": "texto_do_ato",
     "observacoes": [],
+    "vigencia_grao": "dia",
     "origem": "curadoria",
     "trecho_confere": true,
     "conferencia_detalhe": "trecho, efeito declarado e regra de vigência encontrados no documento",
+    "conferencia_publicacao": {
+     "resultado": "aprovado",
+     "fonte": "https://legis.senado.leg.br/dadosabertos/legislacao/34849049",
+     "detalhe": "metadados abertos do Senado (sha256 f9cca2d263c5): Publicação Original [Diário Oficial da União de 13/09/2021] (p. 1, col. 2)"
+    },
     "url_oficial": "https://legis.senado.leg.br/norma/34849049/publicacao/34849250",
     "copia_publica": null,
     "sha256": null,
@@ -3705,9 +4664,15 @@
     "observacoes": [
      "A lei foi alterada depois (Leis nº 14.620/2023, nº 15.097/2025 e nº 15.269/2025, segundo os metadados do Senado); o texto lido é o da publicação original."
     ],
+    "vigencia_grao": "dia",
     "origem": "curadoria",
     "trecho_confere": true,
     "conferencia_detalhe": "trecho, efeito declarado e regra de vigência encontrados no documento",
+    "conferencia_publicacao": {
+     "resultado": "aprovado",
+     "fonte": "https://legis.senado.leg.br/dadosabertos/legislacao/35420157",
+     "detalhe": "metadados abertos do Senado (sha256 e7623583665d): Publicação Original [Diário Oficial da União de 07/01/2022] (p. 4, col. 1)"
+    },
     "url_oficial": "https://legis.senado.leg.br/norma/35420157/publicacao/35420471",
     "copia_publica": null,
     "sha256": null,
@@ -3720,7 +4685,7 @@
     "ato": "Resolução Normativa ANEEL nº 1.000, de 7 de dezembro de 2021",
     "tipo_ato": "Resolução Normativa",
     "data_ato": "2021-12-07",
-    "data_publicacao": null,
+    "data_publicacao": "2021-12-20",
     "vigencia_inicio": "2022-01-03",
     "vigencia_regra": "Art. 679. Esta Resolução entra em vigor em 3 de janeiro de 2022.",
     "vigencia_calculada": false,
@@ -3747,14 +4712,20 @@
      }
     ],
     "documento": "ren20211000",
-    "trecho": "Art. 1º Esta Resolução Normativa estabelece as Regras de Prestação do Serviço Público de Distribuição de Energia Elétrica, nas quais estão dispostos os direitos e deveres do consumidor e demais usuários do serviço. […] Art. 679. Esta Resolução entra em vigor em 3 de janeiro de 2022.",
+    "trecho": "Art. 1º Esta Resolução Normativa estabelece as Regras de Prestação do Serviço Público de Distribuição de Energia Elétrica, nas quais estão dispostos os direitos e deveres do consumidor e demais usuários do serviço. […] Art. 679. Esta Resolução entra em vigor em 3 de janeiro de 2022. […] (*) Republicado em razão de incorreções no original publicado no DOU de 20/12/2021, edição 238, seção 1, página 206.",
     "nivel_conferencia": "texto_do_ato",
     "observacoes": [
-     "Documento lido é o texto compilado de dezembro de 2023; ele registra republicação no D.O. de 21.01.2022 e retificações até 04.07.2023, mas não a data da publicação original, por isso a data de publicação fica vazia. A numeração do artigo de vigência é a do texto compilado."
+     "Documento lido é o texto compilado de dezembro de 2023. A publicação original foi no DOU de 20/12/2021, edição 238, seção 1, página 206, como o próprio texto registra na nota '(*) Republicado em razão de incorreções no original publicado no DOU de 20/12/2021, edição 238, seção 1, página 206.' (passagem incluída no trecho e conferida no PDF). O texto foi republicado no D.O. de 21.01.2022, seção 1, p. 74, e retificado no D.O. de 21.02.2022, 25.03.2022, 04.05.2022, 11.07.2022, 27.10.2022 e 04.07.2023. A numeração do artigo de vigência é a do texto compilado."
     ],
+    "vigencia_grao": "dia",
     "origem": "curadoria",
     "trecho_confere": true,
     "conferencia_detalhe": "trecho, efeito declarado e regra de vigência encontrados no documento",
+    "conferencia_publicacao": {
+     "resultado": "aprovado",
+     "fonte": "https://www2.aneel.gov.br/cedoc/ren20211000.pdf",
+     "detalhe": "data '20/12/2021' escrita no texto do ato (sha256 9909f807206e)"
+    },
     "url_oficial": "https://www2.aneel.gov.br/cedoc/ren20211000.pdf",
     "copia_publica": "https://web.archive.org/web/20231204151212id_/https://www2.aneel.gov.br/cedoc/ren20211000.pdf",
     "sha256": "9909f807206e219228f8f3fff115f8ca6b4201e0dc19633ec0ee3427e58b6536",
@@ -3792,9 +4763,15 @@
     "trecho": "§3º Cada família terá direito ao benefício da TSEE em apenas uma unidade consumidora […] Art. 3º Esta Resolução entra em vigor em 1º de janeiro de 2022.",
     "nivel_conferencia": "texto_do_ato",
     "observacoes": [],
+    "vigencia_grao": "dia",
     "origem": "curadoria",
     "trecho_confere": true,
     "conferencia_detalhe": "trecho, efeito declarado e regra de vigência encontrados no documento",
+    "conferencia_publicacao": {
+     "resultado": "aprovado",
+     "fonte": "https://www2.aneel.gov.br/cedoc/ren2021953.pdf",
+     "detalhe": "data '02.12.2021' escrita no texto do ato (sha256 75e81a9dc5c3)"
+    },
     "url_oficial": "https://www2.aneel.gov.br/cedoc/ren2021953.pdf",
     "copia_publica": "https://web.archive.org/web/20231108211851id_/https://www2.aneel.gov.br/cedoc/ren2021953.pdf",
     "sha256": "75e81a9dc5c391b3bd79e209cae6bb4da4f9ad25a913ec33d7214275f975e010",
@@ -3812,6 +4789,7 @@
     "data_ato": null,
     "data_publicacao": null,
     "vigencia_inicio": "2021-09-01",
+    "vigencia_grao": "dia",
     "vigencia_regra": "data de vigência informada pelo conjunto de dados da ANEEL (DatVigencia)",
     "vigencia_calculada": false,
     "dispositivo": "não lido: o texto do ato não foi acessado; valores do recurso 'Bandeira Tarifária - Adicional'",
@@ -3837,6 +4815,7 @@
     "origem": "conjunto_de_dados",
     "trecho_confere": null,
     "conferencia_detalhe": "valores do recurso CSV guardado no bronze",
+    "conferencia_publicacao": null,
     "url_oficial": "https://dadosabertos.aneel.gov.br/dataset/bandeiras-tarifarias",
     "copia_publica": null,
     "sha256": null,
@@ -3851,6 +4830,7 @@
     "data_ato": null,
     "data_publicacao": null,
     "vigencia_inicio": "2021-07-01",
+    "vigencia_grao": "dia",
     "vigencia_regra": "data de vigência informada pelo conjunto de dados da ANEEL (DatVigencia)",
     "vigencia_calculada": false,
     "dispositivo": "não lido: o texto do ato não foi acessado; valores do recurso 'Bandeira Tarifária - Adicional'",
@@ -3876,6 +4856,7 @@
     "origem": "conjunto_de_dados",
     "trecho_confere": null,
     "conferencia_detalhe": "valores do recurso CSV guardado no bronze",
+    "conferencia_publicacao": null,
     "url_oficial": "https://dadosabertos.aneel.gov.br/dataset/bandeiras-tarifarias",
     "copia_publica": null,
     "sha256": null,
@@ -3915,9 +4896,11 @@
     "observacoes": [
      "A data de publicação da Portaria MME nº 301/2019 no DOU não foi conferida (Diário Oficial inacessível daqui). O PLD anterior a 2021 não é comparável hora a hora com o atual."
     ],
+    "vigencia_grao": "dia",
     "origem": "curadoria",
     "trecho_confere": true,
     "conferencia_detalhe": "trecho, efeito declarado e regra de vigência encontrados no documento",
+    "conferencia_publicacao": null,
     "url_oficial": "https://www2.aneel.gov.br/cedoc/nreh20212994.pdf",
     "copia_publica": "https://web.archive.org/web/20251222224806id_/https://www2.aneel.gov.br/cedoc/nreh20212994.pdf",
     "sha256": "2521c146528cfc1f102b95efcc4a8b958d3d660cae34c5ffbd31407d7117e351",
@@ -3932,6 +4915,7 @@
     "data_ato": null,
     "data_publicacao": null,
     "vigencia_inicio": "2019-11-01",
+    "vigencia_grao": "dia",
     "vigencia_regra": "data de vigência informada pelo conjunto de dados da ANEEL (DatVigencia)",
     "vigencia_calculada": false,
     "dispositivo": "não lido: o texto do ato não foi acessado; valores do recurso 'Bandeira Tarifária - Adicional'",
@@ -3957,6 +4941,7 @@
     "origem": "conjunto_de_dados",
     "trecho_confere": null,
     "conferencia_detalhe": "valores do recurso CSV guardado no bronze",
+    "conferencia_publicacao": null,
     "url_oficial": "https://dadosabertos.aneel.gov.br/dataset/bandeiras-tarifarias",
     "copia_publica": null,
     "sha256": null,
@@ -3971,6 +4956,7 @@
     "data_ato": null,
     "data_publicacao": null,
     "vigencia_inicio": "2019-06-01",
+    "vigencia_grao": "dia",
     "vigencia_regra": "data de vigência informada pelo conjunto de dados da ANEEL (DatVigencia)",
     "vigencia_calculada": false,
     "dispositivo": "não lido: o texto do ato não foi acessado; valores do recurso 'Bandeira Tarifária - Adicional'",
@@ -3996,6 +4982,7 @@
     "origem": "conjunto_de_dados",
     "trecho_confere": null,
     "conferencia_detalhe": "valores do recurso CSV guardado no bronze",
+    "conferencia_publicacao": null,
     "url_oficial": "https://dadosabertos.aneel.gov.br/dataset/bandeiras-tarifarias",
     "copia_publica": null,
     "sha256": null,
@@ -4010,6 +4997,7 @@
     "data_ato": null,
     "data_publicacao": null,
     "vigencia_inicio": "2018-05-01",
+    "vigencia_grao": "dia",
     "vigencia_regra": "data de vigência informada pelo conjunto de dados da ANEEL (DatVigencia)",
     "vigencia_calculada": false,
     "dispositivo": "não lido: o texto do ato não foi acessado; valores do recurso 'Bandeira Tarifária - Adicional'",
@@ -4035,6 +5023,48 @@
     "origem": "conjunto_de_dados",
     "trecho_confere": null,
     "conferencia_detalhe": "valores do recurso CSV guardado no bronze",
+    "conferencia_publicacao": null,
+    "url_oficial": "https://dadosabertos.aneel.gov.br/dataset/bandeiras-tarifarias",
+    "copia_publica": null,
+    "sha256": null,
+    "deliberacao": null
+   },
+   {
+    "id": "bandeiras-acionamento-2017-11-vermelha-p2",
+    "titulo": "Valor observado no Acionamento sem resolução no recurso Adicional",
+    "orgao": "ANEEL",
+    "ato": null,
+    "tipo_ato": "Registro mensal de acionamento",
+    "data_ato": null,
+    "data_publicacao": null,
+    "vigencia_inicio": "2017-11-01",
+    "vigencia_grao": "mes",
+    "vigencia_regra": "mês de competência do recurso 'Bandeira Tarifária - Acionamento' (DatCompetencia); o dia não é informado",
+    "vigencia_calculada": false,
+    "dispositivo": "não identificado: nenhuma resolução do recurso 'Bandeira Tarifária - Adicional' fixa este valor para o patamar no período",
+    "resumo": "Vermelha P2 acionada a R$ 50,00/MWh em 2017-11 (1 mês) segundo o recurso Acionamento; o recurso Adicional fixava R$ 35,00/MWh pela REH nº 2.203/2017 (vigência desde 01/02/2017).",
+    "efeito_declarado": null,
+    "impacto_estimado": null,
+    "temas": [
+     "tarifa",
+     "bandeiras"
+    ],
+    "paineis": [
+     {
+      "rotulo": "Conta de luz",
+      "href": "/setor-eletrico/conta-de-luz"
+     }
+    ],
+    "documento": null,
+    "trecho": "2017-11;Vermelha P2;50,00",
+    "nivel_conferencia": "registro_em_conjunto_de_dados_oficial",
+    "observacoes": [
+     "Valor observado no recurso Acionamento sem resolução correspondente no recurso Adicional; o ato que o fixou não foi identificado nem lido, e a data exata da mudança não é informada (grão mensal)."
+    ],
+    "origem": "conjunto_de_dados",
+    "trecho_confere": null,
+    "conferencia_detalhe": "meses do recurso Acionamento guardado no bronze, conferidos com as vigências do recurso Adicional",
+    "conferencia_publicacao": null,
     "url_oficial": "https://dadosabertos.aneel.gov.br/dataset/bandeiras-tarifarias",
     "copia_publica": null,
     "sha256": null,
@@ -4049,6 +5079,7 @@
     "data_ato": null,
     "data_publicacao": null,
     "vigencia_inicio": "2017-02-01",
+    "vigencia_grao": "dia",
     "vigencia_regra": "data de vigência informada pelo conjunto de dados da ANEEL (DatVigencia)",
     "vigencia_calculada": false,
     "dispositivo": "não lido: o texto do ato não foi acessado; valores do recurso 'Bandeira Tarifária - Adicional'",
@@ -4074,6 +5105,7 @@
     "origem": "conjunto_de_dados",
     "trecho_confere": null,
     "conferencia_detalhe": "valores do recurso CSV guardado no bronze",
+    "conferencia_publicacao": null,
     "url_oficial": "https://dadosabertos.aneel.gov.br/dataset/bandeiras-tarifarias",
     "copia_publica": null,
     "sha256": null,
@@ -4088,6 +5120,7 @@
     "data_ato": null,
     "data_publicacao": null,
     "vigencia_inicio": "2016-02-01",
+    "vigencia_grao": "dia",
     "vigencia_regra": "data de vigência informada pelo conjunto de dados da ANEEL (DatVigencia)",
     "vigencia_calculada": false,
     "dispositivo": "não lido: o texto do ato não foi acessado; valores do recurso 'Bandeira Tarifária - Adicional'",
@@ -4113,6 +5146,48 @@
     "origem": "conjunto_de_dados",
     "trecho_confere": null,
     "conferencia_detalhe": "valores do recurso CSV guardado no bronze",
+    "conferencia_publicacao": null,
+    "url_oficial": "https://dadosabertos.aneel.gov.br/dataset/bandeiras-tarifarias",
+    "copia_publica": null,
+    "sha256": null,
+    "deliberacao": null
+   },
+   {
+    "id": "bandeiras-acionamento-2015-09-vermelha-p1",
+    "titulo": "Valor observado no Acionamento sem resolução no recurso Adicional",
+    "orgao": "ANEEL",
+    "ato": null,
+    "tipo_ato": "Registro mensal de acionamento",
+    "data_ato": null,
+    "data_publicacao": null,
+    "vigencia_inicio": "2015-09-01",
+    "vigencia_grao": "mes",
+    "vigencia_regra": "mês de competência do recurso 'Bandeira Tarifária - Acionamento' (DatCompetencia); o dia não é informado",
+    "vigencia_calculada": false,
+    "dispositivo": "não identificado: nenhuma resolução do recurso 'Bandeira Tarifária - Adicional' fixa este valor para o patamar no período",
+    "resumo": "Vermelha P1 acionada a R$ 45,00/MWh de 2015-09 a 2016-01 (5 meses) segundo o recurso Acionamento; o recurso Adicional fixava R$ 55,00/MWh pela REH nº 1.859/2015 (vigência desde 02/03/2015).",
+    "efeito_declarado": null,
+    "impacto_estimado": null,
+    "temas": [
+     "tarifa",
+     "bandeiras"
+    ],
+    "paineis": [
+     {
+      "rotulo": "Conta de luz",
+      "href": "/setor-eletrico/conta-de-luz"
+     }
+    ],
+    "documento": null,
+    "trecho": "2015-09 a 2016-01;Vermelha P1;45,00",
+    "nivel_conferencia": "registro_em_conjunto_de_dados_oficial",
+    "observacoes": [
+     "Valor observado no recurso Acionamento sem resolução correspondente no recurso Adicional; o ato que o fixou não foi identificado nem lido, e a data exata da mudança não é informada (grão mensal)."
+    ],
+    "origem": "conjunto_de_dados",
+    "trecho_confere": null,
+    "conferencia_detalhe": "meses do recurso Acionamento guardado no bronze, conferidos com as vigências do recurso Adicional",
+    "conferencia_publicacao": null,
     "url_oficial": "https://dadosabertos.aneel.gov.br/dataset/bandeiras-tarifarias",
     "copia_publica": null,
     "sha256": null,
@@ -4127,6 +5202,7 @@
     "data_ato": null,
     "data_publicacao": null,
     "vigencia_inicio": "2015-03-02",
+    "vigencia_grao": "dia",
     "vigencia_regra": "data de vigência informada pelo conjunto de dados da ANEEL (DatVigencia)",
     "vigencia_calculada": false,
     "dispositivo": "não lido: o texto do ato não foi acessado; valores do recurso 'Bandeira Tarifária - Adicional'",
@@ -4152,6 +5228,48 @@
     "origem": "conjunto_de_dados",
     "trecho_confere": null,
     "conferencia_detalhe": "valores do recurso CSV guardado no bronze",
+    "conferencia_publicacao": null,
+    "url_oficial": "https://dadosabertos.aneel.gov.br/dataset/bandeiras-tarifarias",
+    "copia_publica": null,
+    "sha256": null,
+    "deliberacao": null
+   },
+   {
+    "id": "bandeiras-acionamento-2015-01-vermelha-p1",
+    "titulo": "Valor observado no Acionamento sem resolução no recurso Adicional",
+    "orgao": "ANEEL",
+    "ato": null,
+    "tipo_ato": "Registro mensal de acionamento",
+    "data_ato": null,
+    "data_publicacao": null,
+    "vigencia_inicio": "2015-01-01",
+    "vigencia_grao": "mes",
+    "vigencia_regra": "mês de competência do recurso 'Bandeira Tarifária - Acionamento' (DatCompetencia); o dia não é informado",
+    "vigencia_calculada": false,
+    "dispositivo": "não identificado: nenhuma resolução do recurso 'Bandeira Tarifária - Adicional' fixa este valor para o patamar no período",
+    "resumo": "Vermelha P1 acionada a R$ 30,00/MWh de 2015-01 a 2015-02 (2 meses) segundo o recurso Acionamento; nenhuma resolução do recurso Adicional cobre esses meses.",
+    "efeito_declarado": null,
+    "impacto_estimado": null,
+    "temas": [
+     "tarifa",
+     "bandeiras"
+    ],
+    "paineis": [
+     {
+      "rotulo": "Conta de luz",
+      "href": "/setor-eletrico/conta-de-luz"
+     }
+    ],
+    "documento": null,
+    "trecho": "2015-01 a 2015-02;Vermelha P1;30,00",
+    "nivel_conferencia": "registro_em_conjunto_de_dados_oficial",
+    "observacoes": [
+     "Valor observado no recurso Acionamento sem resolução correspondente no recurso Adicional; o ato que o fixou não foi identificado nem lido, e a data exata da mudança não é informada (grão mensal)."
+    ],
+    "origem": "conjunto_de_dados",
+    "trecho_confere": null,
+    "conferencia_detalhe": "meses do recurso Acionamento guardado no bronze, conferidos com as vigências do recurso Adicional",
+    "conferencia_publicacao": null,
     "url_oficial": "https://dadosabertos.aneel.gov.br/dataset/bandeiras-tarifarias",
     "copia_publica": null,
     "sha256": null,
@@ -4211,8 +5329,9 @@
   ]
  },
  "consultas": {
-  "data_referencia": "2026-09-30",
-  "atas_ate": "2026-09-22",
+  "data_referencia": "2026-10-01",
+  "atas_ate": "2026-09-29",
+  "atas_deliberadas_ate": "2026-09-22",
   "atas_geradas_em": "2026-09-25",
   "janela_dias": 200,
   "itens": [
@@ -4649,10 +5768,14 @@
      "data": "2026-09-08",
      "reuniao": "18/2026 - RPO",
      "ato": null,
+     "ato_na_ata": null,
+     "ato_suspeito": false,
+     "motivo_ato_suspeito": null,
      "resultado_julgamento": "Pedido de Vista",
      "decidido": false,
-     "decisao": "O Diretor Willamy Moreira Frota pediu vista deste processo. A Diretora-Relatora, Agnes Maria de Aragão da Costa, acompanhada pelo Diretor Gentil Nogueira de Sá Júnior, votou no sentido de: (i) aprovar a Resolução Normativa que aprimora a regulação dos serviços de distribuição em consequência da abertura de mercado para consumidores do Grupo A, alterando as Resoluções Normativas nº 846/2019, nº 948/2021, nº 957/2021, nº 1.000/2021 e nº 1.011/2022 e a Resolução Homologatória nº 2.992/2021- (ii) aprovar a Resolução Normativa que institui o Open Energy, acesso e compartilhamento padronizado de dados por meio de interfaces e integração de sistemas, conforme minuta anexa ao voto da […]",
-     "vinculo": "numero_citado"
+     "decisao": "O Diretor Willamy Moreira Frota pediu vista deste processo. A Diretora-Relatora, Agnes Maria de Aragão da Costa, acompanhada pelo Diretor Gentil Nogueira de Sá Júnior, votou no sentido de: (i) aprovar a Resolução Normativa que aprimora a regulação dos serviços de distribuição em consequência da abertura de mercado para consumidores do Grupo A, alterando as Resoluções Normativas nº 846/2019, nº 948/2021, nº 957/2021, nº 1.000/2021 e nº 1.011/2022 […]",
+     "vinculo": "numero_citado",
+     "forma": "resultado"
     },
     "agenda_codigos": []
    },
@@ -4729,11 +5852,75 @@
      "data": "2026-07-28",
      "reuniao": "15/2026 - RPO",
      "ato": null,
+     "ato_na_ata": null,
+     "ato_suspeito": false,
+     "motivo_ato_suspeito": null,
      "resultado_julgamento": "Pedido de Vista",
      "decidido": false,
      "decisao": "O Diretor Gentil Nogueira de Sá Júnior pediu vista deste processo, a qual será considerada coletiva, nos termos do art. 53, § 9º, da Norma de Organização nº 1 (Resolução Normativa nº 1.133/2025).",
-     "vinculo": "numero_citado"
+     "vinculo": "numero_citado",
+     "forma": "resultado"
     },
+    "agenda_codigos": []
+   },
+   {
+    "id": "CP-1-2026",
+    "modalidade": "Consulta Pública",
+    "numero": 1,
+    "numero_na_ata": 1,
+    "ano": 2026,
+    "rotulo": "Consulta Pública nº 1/2026",
+    "numero_citado": 2,
+    "numero_em_conflito": false,
+    "numero_suspeito": false,
+    "motivo_numero_suspeito": null,
+    "numero_citado_no_processo": null,
+    "tema": "Proposta de abertura de Consulta Pública com vistas a colher subsídios e informações adicionais para a avaliação dos sistemas de medição para transição energética e modernização no segmento de distribuição.",
+    "processos": [
+     "48500.002339/2024-11"
+    ],
+    "relator": "FERNANDO LUIZ MOSNA FERREIRA DA SILVA",
+    "deliberacao_abertura": {
+     "data": "2026-01-27",
+     "reuniao": "2/2026 - RPO",
+     "decisao": "A Diretoria, por unanimidade, decidiu instaurar Consulta Pública, na modalidade intercâmbio documental, mediante a disponibilização do Relatório de Análise de Impacto Regulatório – AIR Conjunto nº 1/2025-STD-SFFSTR/ANEEL e respectivos anexos, no período de 29 de janeiro a 16 de março de 2026, com vistas a receber subsídios e informações para o aprimoramento da Análise de Impacto Regulatório no âmbito da atividade “Avaliação dos sistemas de medição para transição energética e modernização no segmento de distribuição”, prevista na Agenda Regulatória."
+    },
+    "fases": [
+     {
+      "fase": "abertura",
+      "data_deliberacao": "2026-01-27",
+      "reuniao": "2/2026 - RPO",
+      "inicio": "2026-01-29",
+      "fim": "2026-03-16",
+      "janela_origem": "datas_explicitas",
+      "fim_calculado": false,
+      "duracao_dias": null,
+      "sessao": null,
+      "trecho_periodo": "de 29 de janeiro a 16 de março de 2026"
+     },
+     {
+      "fase": "2ª fase",
+      "data_deliberacao": "2026-06-30",
+      "reuniao": "13/2026 - RPO",
+      "inicio": null,
+      "fim": null,
+      "janela_origem": null,
+      "fim_calculado": false,
+      "duracao_dias": 45,
+      "sessao": null,
+      "trecho_periodo": null
+     }
+    ],
+    "fase_atual": "2ª fase",
+    "inicio": null,
+    "fim": null,
+    "janela_origem": null,
+    "fim_calculado": false,
+    "duracao_dias": 45,
+    "sessao": null,
+    "situacao": "prazo_nao_datado",
+    "situacao_rotulo": "A ata informa a duração, mas não a data de início nem a de encerramento; situação não derivável",
+    "resultado": null,
     "agenda_codigos": []
    },
    {
@@ -4871,102 +6058,6 @@
     "fase_atual": "abertura",
     "inicio": "2026-04-23",
     "fim": "2026-05-12",
-    "janela_origem": "datas_explicitas",
-    "fim_calculado": false,
-    "duracao_dias": null,
-    "sessao": null,
-    "situacao": "encerrada_aguardando",
-    "situacao_rotulo": "Contribuições encerradas, sem resultado deliberado em reunião pública registrada",
-    "resultado": null,
-    "agenda_codigos": []
-   },
-   {
-    "id": "CP-3-2026",
-    "modalidade": "Consulta Pública",
-    "numero": 3,
-    "numero_na_ata": 3,
-    "ano": 2026,
-    "rotulo": "Consulta Pública nº 3/2026",
-    "numero_citado": 0,
-    "numero_em_conflito": false,
-    "numero_suspeito": false,
-    "motivo_numero_suspeito": null,
-    "numero_citado_no_processo": null,
-    "tema": "Proposta de abertura de Consulta Pública com vistas a colher subsídios e informações adicionais para o aprimoramento do Submódulo 6.2 dos Procedimentos de Regulação Tarifária – PRORET, decorrente da criação da Reserva Técnica Financeira da Conta de Comercialização de Energia Elétrica de Itaipu pelo Decreto nº 12.390/2025, e aperfeiçoamentos de procedimentos relativos à Tarifa Bônus de Itaipu e aos valores de repasse para as Distribuidoras de Energia Elétrica do Sistema Interligado Nacional – SIN.",
-    "processos": [
-     "48500.007732/2007-09"
-    ],
-    "relator": "AGNES MARIA DE ARAGAO DA COSTA",
-    "deliberacao_abertura": {
-     "data": "2026-03-31",
-     "reuniao": "4/2026 - RPC",
-     "decisao": "A Diretoria, por unanimidade, decidiu instaurar Consulta Pública, por intercâmbio documental, no período de 1º de abril a 18 de maio de 2026, com vistas a colher subsídios e contribuições para o aprimoramento do Submódulo 6.2 dos Procedimentos de Regulação Tarifária – PRORET, nos termos da proposta apresentada pela Superintendência de Gestão Tarifária e Regulação Econômica – STR na Nota Técnica nº 37/2026-STR/ANEEL."
-    },
-    "fases": [
-     {
-      "fase": "abertura",
-      "data_deliberacao": "2026-03-31",
-      "reuniao": "4/2026 - RPC",
-      "inicio": "2026-04-01",
-      "fim": "2026-05-18",
-      "janela_origem": "datas_explicitas",
-      "fim_calculado": false,
-      "duracao_dias": null,
-      "sessao": null,
-      "trecho_periodo": "de 1 de abril a 18 de maio de 2026"
-     }
-    ],
-    "fase_atual": "abertura",
-    "inicio": "2026-04-01",
-    "fim": "2026-05-18",
-    "janela_origem": "datas_explicitas",
-    "fim_calculado": false,
-    "duracao_dias": null,
-    "sessao": null,
-    "situacao": "encerrada_aguardando",
-    "situacao_rotulo": "Contribuições encerradas, sem resultado deliberado em reunião pública registrada",
-    "resultado": null,
-    "agenda_codigos": []
-   },
-   {
-    "id": "CP-6-2026",
-    "modalidade": "Consulta Pública",
-    "numero": 6,
-    "numero_na_ata": 6,
-    "ano": 2026,
-    "rotulo": "Consulta Pública nº 6/2026",
-    "numero_citado": 2,
-    "numero_em_conflito": false,
-    "numero_suspeito": false,
-    "motivo_numero_suspeito": null,
-    "numero_citado_no_processo": null,
-    "tema": "Proposta de abertura de Consulta Pública com vistas a colher subsídios e informações adicionais para aperfeiçoar o Edital do Leilão nº 4/2026, destinado à contratação de serviço público de transmissão de energia elétrica.",
-    "processos": [
-     "48500.004996/2026-65"
-    ],
-    "relator": "GENTIL NOGUEIRA DE SA JUNIOR",
-    "deliberacao_abertura": {
-     "data": "2026-04-07",
-     "reuniao": "7/2026 - RPO",
-     "decisao": "A Diretoria, por unanimidade, decidiu instaurar Consulta Pública, no período de 9 de abril de 2026 a 25 de maio de 2026, com o objetivo de obter subsídios para o aperfeiçoamento da minuta do Edital do Leilão nº 4/2026-ANEEL e respectivos Anexos."
-    },
-    "fases": [
-     {
-      "fase": "abertura",
-      "data_deliberacao": "2026-04-07",
-      "reuniao": "7/2026 - RPO",
-      "inicio": "2026-04-09",
-      "fim": "2026-05-25",
-      "janela_origem": "datas_explicitas",
-      "fim_calculado": false,
-      "duracao_dias": null,
-      "sessao": null,
-      "trecho_periodo": "de 9 de abril de 2026 a 25 de maio de 2026"
-     }
-    ],
-    "fase_atual": "abertura",
-    "inicio": "2026-04-09",
-    "fim": "2026-05-25",
     "janela_origem": "datas_explicitas",
     "fim_calculado": false,
     "duracao_dias": null,
@@ -5699,10 +6790,14 @@
      "data": "2026-09-22",
      "reuniao": "19/2026 - RPO",
      "ato": "Despacho nº 3.695/2026",
+     "ato_na_ata": "Despacho nº 3.695/2026",
+     "ato_suspeito": false,
+     "motivo_ato_suspeito": null,
      "resultado_julgamento": "Deliberado",
      "decidido": true,
-     "decisao": "A Diretoria, por unanimidade, decidiu: (i) não aprovar, neste momento, a representação do programa de Resposta da Demanda na cadeia de modelos de otimização eletroenergética utilizados na operação do sistema e formação de preços- (ii) determinar ao Operador Nacional do Sistema Elétrico – ONS e à Câmara de Comercialização de Energia Elétrica – CCEE a continuidade dos estudos e aperfeiçoamentos necessários à adequada representação do programa de Resposta da Demanda nos modelos computacionais, bem como a apresentação de cronograma para implementação dessa funcionalidade- e (iii) determinar ao ONS e à CCEE que, no prazo de 90 (noventa) dias, promovam o aperfeiçoamento dos mecanismos de […]",
-     "vinculo": "numero_citado"
+     "decisao": "A Diretoria, por unanimidade, decidiu: (i) não aprovar, neste momento, a representação do programa de Resposta da Demanda na cadeia de modelos de otimização eletroenergética utilizados na operação do sistema e formação de preços- (ii) determinar ao Operador Nacional do Sistema Elétrico – ONS e à Câmara de Comercialização de Energia Elétrica – CCEE a continuidade dos estudos e aperfeiçoamentos necessários à adequada representação do programa de […]",
+     "vinculo": "numero_citado",
+     "forma": "resultado"
     },
     "agenda_codigos": []
    },
@@ -5755,10 +6850,14 @@
      "data": "2026-08-24",
      "reuniao": "17/2026 - RPO",
      "ato": "Despacho nº 3.312/2026",
+     "ato_na_ata": "Despacho nº 3.312/2026",
+     "ato_suspeito": false,
+     "motivo_ato_suspeito": null,
      "resultado_julgamento": "Deliberado",
      "decidido": true,
-     "decisao": "A Diretoria, por unanimidade, acompanhando o voto do Diretor-Relator, Fernando Luiz Mosna Ferreira da Silva, decidiu: (i) conhecer dos Pedidos de Revisão Tarifária Extraordinária decorrentes da pandemia de Covid-19 formulados pelas distribuidoras Light Serviços de Eletricidade S.A., Neoenergia Coelba, Neoenergia Pernambuco, Neoenergia Cosern, Neoenergia Brasília e Copel Distribuição S.A. e, no mérito, indeferir os pedidos- e (ii) revogar o Submódulo 2.10 dos Procedimentos de Regulação Tarifária – PRORET.",
-     "vinculo": "numero_citado"
+     "decisao": "A Diretoria, por unanimidade, acompanhando o voto do Diretor-Relator, Fernando Luiz Mosna Ferreira da Silva, decidiu: (i) conhecer dos Pedidos de Revisão Tarifária Extraordinária decorrentes da pandemia de Covid-19 formulados pelas distribuidoras Light Serviços de Eletricidade S.A., Neoenergia Coelba, Neoenergia Pernambuco, Neoenergia Cosern, Neoenergia Brasília e Copel Distribuição S.A. e, no mérito, indeferir os pedidos- e (ii) revogar o […]",
+     "vinculo": "numero_citado",
+     "forma": "resultado"
     },
     "agenda_codigos": []
    },
@@ -5823,10 +6922,14 @@
      "data": "2026-06-02",
      "reuniao": "11/2026 - RPO",
      "ato": "Resolução Normativa nº 1.162/2026",
+     "ato_na_ata": "Resolução Normativa nº 1.162/2026",
+     "ato_suspeito": false,
+     "motivo_ato_suspeito": null,
      "resultado_julgamento": "Deliberado",
      "decidido": true,
-     "decisao": "A Diretoria, decidiu: (i) por unanimidade, aprovar a regulamentação que estabelece os requisitos e procedimentos necessários à obtenção de outorga de autorização de Sistemas de Armazenamento de Energia, conforme Anexo I da Nota Técnica Conjunta nº 3/2026-SGM-SCE-STD-STR-SFT/ANEEL, incorporados os ajustes apresentados no voto-vista do Diretor Fernando Luiz Mosna Ferreira da Silva- (ii) por maioria, vencido o Diretor Fernando Luiz Mosna Ferreira da Silva, aprovar a regulamentação que estabelece tratamento regulatório para a implantação de Armazenamento de Energia Elétrica, bem como alterar as Resoluções Normativas nº 846/2019- nº 875/2020- nº 905/2020- nº 921/2021, nº 1.000/2021- nº […]",
-     "vinculo": "numero_citado"
+     "decisao": "A Diretoria, decidiu: (i) por unanimidade, aprovar a regulamentação que estabelece os requisitos e procedimentos necessários à obtenção de outorga de autorização de Sistemas de Armazenamento de Energia, conforme Anexo I da Nota Técnica Conjunta nº 3/2026-SGM-SCE-STD-STR-SFT/ANEEL, incorporados os ajustes apresentados no voto-vista do Diretor Fernando Luiz Mosna Ferreira da Silva- (ii) por maioria, vencido o Diretor Fernando Luiz Mosna Ferreira […]",
+     "vinculo": "numero_citado",
+     "forma": "resultado"
     },
     "agenda_codigos": []
    },
@@ -5879,10 +6982,14 @@
      "data": "2026-09-22",
      "reuniao": "19/2026 - RPO",
      "ato": "Resolução Normativa nº 1.167/2026",
+     "ato_na_ata": "Resolução Normativa nº 1.167/2026",
+     "ato_suspeito": false,
+     "motivo_ato_suspeito": null,
      "resultado_julgamento": "Deliberado",
      "decidido": true,
      "decisao": "A Diretoria, por unanimidade, decidiu aprovar o Módulo “Reajuste dos Parâmetros da Receita de CCEAR” das Regras de Comercialização de Energia Elétrica aplicáveis ao Sistema de Contabilização e Liquidação – SCL, na forma da minuta de Resolução Normativa anexa ao voto da Diretora-Relatora.",
-     "vinculo": "numero_citado"
+     "vinculo": "numero_citado",
+     "forma": "resultado"
     },
     "agenda_codigos": []
    },
@@ -5935,10 +7042,14 @@
      "data": "2026-04-22",
      "reuniao": "8/2026 - RPO",
      "ato": "Resolução Normativa nº 1.155/2026",
+     "ato_na_ata": "Resolução Normativa nº 1.155/2026",
+     "ato_suspeito": false,
+     "motivo_ato_suspeito": null,
      "resultado_julgamento": "Deliberado",
      "decidido": true,
-     "decisao": "A Diretoria, por unanimidade, decidiu: (i) aprovar as alterações nas Regras e nos Procedimentos de Comercialização, conforme minuta de Resolução Normativa anexa ao voto do Diretor-Relator- e (ii) recomendar que a Câmara de Comercialização de Energia Elétrica – CCEE avalie se as regras aplicáveis ao faturamento em parcela única de outros leilões de geração com tal característica estão devidamente ajustadas ao disposto nos respectivos contratos, apresentando, quando da submissão das Regras de Comercialização 2027, ajustes a serem introduzidos no correspondente caderno de regras caso se mostrem necessários.",
-     "vinculo": "numero_citado"
+     "decisao": "A Diretoria, por unanimidade, decidiu: (i) aprovar as alterações nas Regras e nos Procedimentos de Comercialização, conforme minuta de Resolução Normativa anexa ao voto do Diretor-Relator- e (ii) recomendar que a Câmara de Comercialização de Energia Elétrica – CCEE avalie se as regras aplicáveis ao faturamento em parcela única de outros leilões de geração com tal característica estão devidamente ajustadas ao disposto nos respectivos contratos, […]",
+     "vinculo": "numero_citado",
+     "forma": "resultado"
     },
     "agenda_codigos": []
    },
@@ -5991,10 +7102,14 @@
      "data": "2026-05-19",
      "reuniao": "10/2026 - RPO",
      "ato": "Despacho nº 1.832/2026",
+     "ato_na_ata": "Despacho nº 1.832/2026",
+     "ato_suspeito": false,
+     "motivo_ato_suspeito": null,
      "resultado_julgamento": "Deliberado",
      "decidido": true,
-     "decisao": "A Diretoria, por maioria, acompanhando o voto-vista do Diretor Gentil Nogueira de Sá Júnior e vencida a Diretora-Relatora, Agnes Maria de Aragão da Costa, decidiu aprovar a emissão de Despacho, com as seguintes diretrizes a serem observadas no rateio dos eventuais recursos a serem arrecadados na repactuação de Uso do Bem Público – UBP, de que tratam o § 8º e o § 9º do art. 4º da Lei nº 15.235/2025: (i) a Câmara de Comercialização de Energia Elétrica – CCEE deverá oficiar a ANEEL quanto aos recursos depositados na Conta de Desenvolvimento Energético – CDE relativos à repactuação das parcelas vincendas devidas a título de UBP, de que trata o art. 4º da Lei nº 15.235/2025- ii) a partir dos […]",
-     "vinculo": "numero_citado"
+     "decisao": "A Diretoria, por maioria, acompanhando o voto-vista do Diretor Gentil Nogueira de Sá Júnior e vencida a Diretora-Relatora, Agnes Maria de Aragão da Costa, decidiu aprovar a emissão de Despacho, com as seguintes diretrizes a serem observadas no rateio dos eventuais recursos a serem arrecadados na repactuação de Uso do Bem Público – UBP, de que tratam o § 8º e o § 9º do art. 4º da Lei nº 15.235/2025: (i) a Câmara de Comercialização de Energia […]",
+     "vinculo": "numero_citado",
+     "forma": "resultado"
     },
     "agenda_codigos": []
    },
@@ -6047,10 +7162,14 @@
      "data": "2026-04-22",
      "reuniao": "8/2026 - RPO",
      "ato": "Resolução Homologatória nº 3.580/2026",
+     "ato_na_ata": "Resolução Homologatória nº 3.580/2026",
+     "ato_suspeito": false,
+     "motivo_ato_suspeito": null,
      "resultado_julgamento": "Deliberado",
      "decidido": true,
-     "decisao": "A Diretoria, por maioria, acompanhando o voto-vista do Diretor Gentil Nogueira de Sá Júnior, e vencido o Diretor Fernando Luiz Mosna Ferreira da Silva, decidiu: (i) aprovar o resultado da Revisão Tarifária Periódica de 2026 da Companhia Jaguari de Energia – CPFL Santa Cruz, a vigorar a partir da publicação da Resolução Homologatória, que conduz ao efeito médio a ser percebido pelos consumidores de 15,12%, sendo 9,71% para os consumidores em Alta Tensão e 17,86% para os consumidores em Baixa Tensão- (ii) estabelecer que a diferença de receita incorrida no período em que o reajuste foi postergado (entre 22 de março de 2026 e a data da publicação da Resolução Homologatória contendo a aprovação […]",
-     "vinculo": "numero_citado"
+     "decisao": "A Diretoria, por maioria, acompanhando o voto-vista do Diretor Gentil Nogueira de Sá Júnior, e vencido o Diretor Fernando Luiz Mosna Ferreira da Silva, decidiu: (i) aprovar o resultado da Revisão Tarifária Periódica de 2026 da Companhia Jaguari de Energia – CPFL Santa Cruz, a vigorar a partir da publicação da Resolução Homologatória, que conduz ao efeito médio a ser percebido pelos consumidores de 15,12%, sendo 9,71% para os consumidores em Alta […]",
+     "vinculo": "numero_citado",
+     "forma": "apos_contribuicoes"
     },
     "agenda_codigos": []
    },
@@ -6103,10 +7222,14 @@
      "data": "2026-09-15",
      "reuniao": "16/2026 - RPC",
      "ato": "Resolução Normativa nº 1.166/2026",
+     "ato_na_ata": "Resolução Normativa nº 1.166/2026",
+     "ato_suspeito": false,
+     "motivo_ato_suspeito": null,
      "resultado_julgamento": "Deliberado",
      "decidido": true,
      "decisao": "A Diretoria, por unanimidade, decidiu estabelecer as diretrizes e as condições para o desenvolvimento do Sandbox Regulatório Energias da Floresta, na forma da minuta de Resolução Normativa anexa ao voto do Diretor-Relator.",
-     "vinculo": "numero_citado"
+     "vinculo": "numero_citado",
+     "forma": "resultado"
     },
     "agenda_codigos": []
    },
@@ -6159,10 +7282,74 @@
      "data": "2026-06-16",
      "reuniao": "12/2026 - RPO",
      "ato": "Resolução Homologatória nº 3.591/2026",
+     "ato_na_ata": "Resolução Homologatória nº 3.591/2026",
+     "ato_suspeito": false,
+     "motivo_ato_suspeito": null,
      "resultado_julgamento": "Deliberado",
      "decidido": true,
-     "decisao": "A Diretoria, por unanimidade, decidiu: (i) aprovar o resultado da Revisão Tarifária Periódica de 2026 da Energisa Minas Rio – Distribuidora de Energia S.A. – EMR, a vigorar a partir de 22 de junho de 2026, que conduz ao efeito médio a ser percebido pelos consumidores de 11,27%, sendo de 5,23%, em média, para os consumidores conectados na Alta Tensão e de 12,80%, em média, para os consumidores conectados na Baixa Tensão- (ii) fixar as Tarifas de Uso dos Sistemas de Distribuição – TUSD e as Tarifas de Energia Elétrica – TE aplicáveis aos consumidores e aos usuários da concessionária- (iii) aprovar o valor mensal de recursos da Conta de Desenvolvimento Energético – CDE a ser repassado pela […]",
-     "vinculo": "processo"
+     "decisao": "A Diretoria, por unanimidade, decidiu: (i) aprovar o resultado da Revisão Tarifária Periódica de 2026 da Energisa Minas Rio – Distribuidora de Energia S.A. – EMR, a vigorar a partir de 22 de junho de 2026, que conduz ao efeito médio a ser percebido pelos consumidores de 11,27%, sendo de 5,23%, em média, para os consumidores conectados na Alta Tensão e de 12,80%, em média, para os consumidores conectados na Baixa Tensão- (ii) fixar as Tarifas de […]",
+     "vinculo": "processo",
+     "forma": "apos_contribuicoes"
+    },
+    "agenda_codigos": []
+   },
+   {
+    "id": "CP-3-2026",
+    "modalidade": "Consulta Pública",
+    "numero": 3,
+    "numero_na_ata": 3,
+    "ano": 2026,
+    "rotulo": "Consulta Pública nº 3/2026",
+    "numero_citado": 0,
+    "numero_em_conflito": false,
+    "numero_suspeito": false,
+    "motivo_numero_suspeito": null,
+    "numero_citado_no_processo": null,
+    "tema": "Proposta de abertura de Consulta Pública com vistas a colher subsídios e informações adicionais para o aprimoramento do Submódulo 6.2 dos Procedimentos de Regulação Tarifária – PRORET, decorrente da criação da Reserva Técnica Financeira da Conta de Comercialização de Energia Elétrica de Itaipu pelo Decreto nº 12.390/2025, e aperfeiçoamentos de procedimentos relativos à Tarifa Bônus de Itaipu e aos valores de repasse para as Distribuidoras de Energia Elétrica do Sistema Interligado Nacional – SIN.",
+    "processos": [
+     "48500.007732/2007-09"
+    ],
+    "relator": "AGNES MARIA DE ARAGAO DA COSTA",
+    "deliberacao_abertura": {
+     "data": "2026-03-31",
+     "reuniao": "4/2026 - RPC",
+     "decisao": "A Diretoria, por unanimidade, decidiu instaurar Consulta Pública, por intercâmbio documental, no período de 1º de abril a 18 de maio de 2026, com vistas a colher subsídios e contribuições para o aprimoramento do Submódulo 6.2 dos Procedimentos de Regulação Tarifária – PRORET, nos termos da proposta apresentada pela Superintendência de Gestão Tarifária e Regulação Econômica – STR na Nota Técnica nº 37/2026-STR/ANEEL."
+    },
+    "fases": [
+     {
+      "fase": "abertura",
+      "data_deliberacao": "2026-03-31",
+      "reuniao": "4/2026 - RPC",
+      "inicio": "2026-04-01",
+      "fim": "2026-05-18",
+      "janela_origem": "datas_explicitas",
+      "fim_calculado": false,
+      "duracao_dias": null,
+      "sessao": null,
+      "trecho_periodo": "de 1 de abril a 18 de maio de 2026"
+     }
+    ],
+    "fase_atual": "abertura",
+    "inicio": "2026-04-01",
+    "fim": "2026-05-18",
+    "janela_origem": "datas_explicitas",
+    "fim_calculado": false,
+    "duracao_dias": null,
+    "sessao": null,
+    "situacao": "decidida",
+    "situacao_rotulo": "Resultado deliberado pela Diretoria",
+    "resultado": {
+     "data": "2026-06-16",
+     "reuniao": "12/2026 - RPO",
+     "ato": null,
+     "ato_na_ata": "Portaria nº 1.160/2026",
+     "ato_suspeito": true,
+     "motivo_ato_suspeito": "Portaria nº 1.160/2026 fora da faixa da série: mediana de 6.974 entre 6 atos do tipo deliberados de 2025 a 2027 (aceito de metade a uma vez e meia); o número cabe na faixa de Resolução Normativa",
+     "resultado_julgamento": "Parcialmente Deliberado",
+     "decidido": true,
+     "decisao": "A Diretoria, por unanimidade, decidiu: (i) aprovar os aprimoramentos do Submódulo 6.2 dos Procedimentos de Regulação Tarifária – PRORET, nos termos da proposta apresentada pela Superintendência de Gestão Tarifária e Regulação Econômica – STR na Nota Técnica nº 89/2026-STR/ANEEL, a serem considerados inclusive no processo da aprovação da tarifa Bônus e valores de repasse de 2026- (ii) revogar a delegação da STR para aprovação da tarifa bônus e […]",
+     "vinculo": "processo_e_objeto",
+     "forma": "objeto_aprovado_no_processo"
     },
     "agenda_codigos": []
    },
@@ -6215,10 +7402,74 @@
      "data": "2026-06-30",
      "reuniao": "13/2026 - RPO",
      "ato": "Resolução Homologatória nº 3.592/2026",
+     "ato_na_ata": "Resolução Homologatória nº 3.592/2026",
+     "ato_suspeito": false,
+     "motivo_ato_suspeito": null,
      "resultado_julgamento": "Deliberado",
      "decidido": true,
-     "decisao": "A Diretoria, por unanimidade, decidiu ratificar a decisão proferida no 10º Circuito Deliberativo Público Ordinário de 2026 (item 1), realizado em 23 de junho de 2026, no sentido de: (i) aprovar o resultado da Revisão Tarifária Periódica de 2026 da Copel Distribuição S.A. – Copel-Dis, a vigorar a partir de 24 de junho de 2026, que conduz ao efeito médio a ser percebido pelos consumidores de 20,51%, sendo de 21,87%, em média, para os consumidores conectados na Alta Tensão e de 19,85%, em média, para os consumidores conectados na Baixa Tensão- (ii) fixar as Tarifas de Uso dos Sistemas de Distribuição – TUSD e as Tarifas de Energia Elétrica – TE aplicáveis aos consumidores e aos usuários da […]",
-     "vinculo": "processo"
+     "decisao": "A Diretoria, por unanimidade, decidiu ratificar a decisão proferida no 10º Circuito Deliberativo Público Ordinário de 2026 (item 1), realizado em 23 de junho de 2026, no sentido de: (i) aprovar o resultado da Revisão Tarifária Periódica de 2026 da Copel Distribuição S.A. – Copel-Dis, a vigorar a partir de 24 de junho de 2026, que conduz ao efeito médio a ser percebido pelos consumidores de 20,51%, sendo de 21,87%, em média, para os consumidores […]",
+     "vinculo": "processo",
+     "forma": "apos_contribuicoes"
+    },
+    "agenda_codigos": []
+   },
+   {
+    "id": "CP-6-2026",
+    "modalidade": "Consulta Pública",
+    "numero": 6,
+    "numero_na_ata": 6,
+    "ano": 2026,
+    "rotulo": "Consulta Pública nº 6/2026",
+    "numero_citado": 2,
+    "numero_em_conflito": false,
+    "numero_suspeito": false,
+    "motivo_numero_suspeito": null,
+    "numero_citado_no_processo": null,
+    "tema": "Proposta de abertura de Consulta Pública com vistas a colher subsídios e informações adicionais para aperfeiçoar o Edital do Leilão nº 4/2026, destinado à contratação de serviço público de transmissão de energia elétrica.",
+    "processos": [
+     "48500.004996/2026-65"
+    ],
+    "relator": "GENTIL NOGUEIRA DE SA JUNIOR",
+    "deliberacao_abertura": {
+     "data": "2026-04-07",
+     "reuniao": "7/2026 - RPO",
+     "decisao": "A Diretoria, por unanimidade, decidiu instaurar Consulta Pública, no período de 9 de abril de 2026 a 25 de maio de 2026, com o objetivo de obter subsídios para o aperfeiçoamento da minuta do Edital do Leilão nº 4/2026-ANEEL e respectivos Anexos."
+    },
+    "fases": [
+     {
+      "fase": "abertura",
+      "data_deliberacao": "2026-04-07",
+      "reuniao": "7/2026 - RPO",
+      "inicio": "2026-04-09",
+      "fim": "2026-05-25",
+      "janela_origem": "datas_explicitas",
+      "fim_calculado": false,
+      "duracao_dias": null,
+      "sessao": null,
+      "trecho_periodo": "de 9 de abril de 2026 a 25 de maio de 2026"
+     }
+    ],
+    "fase_atual": "abertura",
+    "inicio": "2026-04-09",
+    "fim": "2026-05-25",
+    "janela_origem": "datas_explicitas",
+    "fim_calculado": false,
+    "duracao_dias": null,
+    "sessao": null,
+    "situacao": "decidida",
+    "situacao_rotulo": "Resultado deliberado pela Diretoria",
+    "resultado": {
+     "data": "2026-06-22",
+     "reuniao": "4/2026 - RPE",
+     "ato": "Despacho nº 2.266/2026",
+     "ato_na_ata": "Despacho nº 2.266/2026",
+     "ato_suspeito": false,
+     "motivo_ato_suspeito": null,
+     "resultado_julgamento": "Parcialmente Deliberado",
+     "decidido": true,
+     "decisao": "A Diretoria, por unanimidade, decidiu: (i) aprovar a minuta do Edital do Leilão nº 4/2026-ANEEL, com os respectivos Apêndices e Anexos, consolidada com os aprimoramentos decorrentes da Consulta Pública nº 6/2026- (ii) encaminhar a minuta do Edital com os respectivos Apêndices e Anexos, ao Tribunal de Contas da União – TCU, em observância à Instrução Normativa TCU nº 81/2018- (iii) autorizar a visita dos interessados, desde logo e até 16 de […]",
+     "vinculo": "numero_citado",
+     "forma": "consolidacao"
     },
     "agenda_codigos": []
    },
@@ -6271,10 +7522,14 @@
      "data": "2026-07-14",
      "reuniao": "14/2026 - RPO",
      "ato": "Resolução Homologatória nº 3.599/2026",
+     "ato_na_ata": "Resolução Homologatória nº 3.599/2026",
+     "ato_suspeito": false,
+     "motivo_ato_suspeito": null,
      "resultado_julgamento": "Deliberado",
      "decidido": true,
-     "decisao": "A Diretoria, por unanimidade, decidiu: (i) homologar as novas tarifas de aplicação da Energisa Sul-Sudeste – Distribuidora de Energia S.A. – ESS, a vigorar a partir de 12 de julho de 2026, que conduz ao efeito médio a ser percebido pelos consumidores de 9,63%, sendo de 9,99%, em média, para os consumidores conectados na Alta Tensão e de 9,49%, em média, para os consumidores conectados na Baixa Tensão- (ii) fixar as Tarifas de Energia – TE e as Tarifas de Uso dos Sistemas de Distribuição – TUSD aplicáveis aos consumidores e usuários da ESS- (iii) estabelecer os valores da receita anual referente às instalações de transmissão classificadas como de Demais Instalações de Transmissão – DIT de […]",
-     "vinculo": "processo"
+     "decisao": "A Diretoria, por unanimidade, decidiu: (i) homologar as novas tarifas de aplicação da Energisa Sul-Sudeste – Distribuidora de Energia S.A. – ESS, a vigorar a partir de 12 de julho de 2026, que conduz ao efeito médio a ser percebido pelos consumidores de 9,63%, sendo de 9,99%, em média, para os consumidores conectados na Alta Tensão e de 9,49%, em média, para os consumidores conectados na Baixa Tensão- (ii) fixar as Tarifas de Energia – TE e as […]",
+     "vinculo": "processo",
+     "forma": "apos_contribuicoes"
     },
     "agenda_codigos": []
    },
@@ -6327,10 +7582,14 @@
      "data": "2026-08-18",
      "reuniao": "14/2026 - RPC",
      "ato": "Resolução Homologatória nº 3.602/2026",
+     "ato_na_ata": "Resolução Homologatória nº 3.602/2026",
+     "ato_suspeito": false,
+     "motivo_ato_suspeito": null,
      "resultado_julgamento": "Deliberado",
      "decidido": true,
-     "decisao": "A Diretoria, por unanimidade, decidiu: (i) aprovar o resultado da Revisão Tarifária Periódica de 2026 da Celesc Distribuição S.A. – Celesc-DIS, a vigorar a partir de 22 de agosto de 2026, que conduz ao efeito médio a ser percebido pelos consumidores de 10,82%, sendo de 14,16%, em média, para os consumidores conectados na alta tensão e de 9,26%, em média, para os consumidores conectados na baixa tensão- (ii) fixar as Tarifas de Uso dos Sistemas de Distribuição – TUSD e as Tarifas de Energia Elétrica – TE aplicáveis aos consumidores e aos usuários da concessionária- (iii) aprovar o valor mensal de recursos da Conta de Desenvolvimento Energético – CDE a ser repassado pela Câmara de […]",
-     "vinculo": "numero_citado"
+     "decisao": "A Diretoria, por unanimidade, decidiu: (i) aprovar o resultado da Revisão Tarifária Periódica de 2026 da Celesc Distribuição S.A. – Celesc-DIS, a vigorar a partir de 22 de agosto de 2026, que conduz ao efeito médio a ser percebido pelos consumidores de 10,82%, sendo de 14,16%, em média, para os consumidores conectados na alta tensão e de 9,26%, em média, para os consumidores conectados na baixa tensão- (ii) fixar as Tarifas de Uso dos Sistemas […]",
+     "vinculo": "numero_citado",
+     "forma": "apos_contribuicoes"
     },
     "agenda_codigos": []
    },
@@ -6383,10 +7642,14 @@
      "data": "2026-04-22",
      "reuniao": "8/2026 - RPO",
      "ato": "Resolução Normativa nº 1.154/2026",
+     "ato_na_ata": "Resolução Normativa nº 1.154/2026",
+     "ato_suspeito": false,
+     "motivo_ato_suspeito": null,
      "resultado_julgamento": "Deliberado",
      "decidido": true,
-     "decisao": "A Diretoria, por unanimidade, decidiu: (i) aprovar as Regras e Procedimentos de Comercialização de Energia Elétrica aplicáveis ao Sistema de Contabilização e Liquidação – SCL em atendimento à Resolução Normativa nº 1.085/2024, na forma da minuta anexa ao voto da Diretora-Relatora, incluindo o ajuste acerca do preenchimento de dados faltantes residuais vinculados ao Sistema de Medição de Indisponibilidade – SMI- (ii) indeferir o Pedido de Medida Cautelar protocolado pela Associação Brasileira de Geração de Energia Limpa – Abragel e pela Associação Brasileira de Pequenas Centrais Hidrelétricas e Centrais Geradoras Hidrelétricas – Abrapch com vistas a postergar a suspensão do prazo regulatório […]",
-     "vinculo": "numero_citado"
+     "decisao": "A Diretoria, por unanimidade, decidiu: (i) aprovar as Regras e Procedimentos de Comercialização de Energia Elétrica aplicáveis ao Sistema de Contabilização e Liquidação – SCL em atendimento à Resolução Normativa nº 1.085/2024, na forma da minuta anexa ao voto da Diretora-Relatora, incluindo o ajuste acerca do preenchimento de dados faltantes residuais vinculados ao Sistema de Medição de Indisponibilidade – SMI- (ii) indeferir o Pedido de Medida […]",
+     "vinculo": "numero_citado",
+     "forma": "resultado"
     },
     "agenda_codigos": []
    },
@@ -6439,10 +7702,14 @@
      "data": "2026-06-02",
      "reuniao": "11/2026 - RPO",
      "ato": "Resolução Normativa nº 1.157/2026",
+     "ato_na_ata": "Resolução Normativa nº 1.157/2026",
+     "ato_suspeito": false,
+     "motivo_ato_suspeito": null,
      "resultado_julgamento": "Deliberado",
      "decidido": true,
      "decisao": "A Diretoria, por unanimidade, decidiu estabelecer requisitos e procedimentos atinentes ao mecanismo excepcional para tratamento de outorgas de geração e dos Contratos de Uso do Sistema de Transmissão – CUST celebrados por centrais geradoras.",
-     "vinculo": "numero_citado"
+     "vinculo": "numero_citado",
+     "forma": "resultado"
     },
     "agenda_codigos": []
    }
@@ -6451,9 +7718,9 @@
   "contagem_por_situacao": {
    "aberta": 8,
    "a_abrir": 0,
-   "encerrada_aguardando": 108,
-   "resultado_em_pauta": 7,
-   "decidida": 411,
+   "encerrada_aguardando": 68,
+   "resultado_em_pauta": 8,
+   "decidida": 450,
    "prazo_nao_datado": 4,
    "sessao_sem_periodo": 4,
    "sem_periodo_na_ata": 0
@@ -6541,6 +7808,45 @@
     "gerado_em": "2026-07-22"
    }
   ],
+  "contagem_por_forma_resultado": {
+   "resultado": 324,
+   "encerramento": 2,
+   "apos_contribuicoes": 39,
+   "consolidacao": 78,
+   "resultado_sem_numero": 13,
+   "objeto_aprovado_no_processo": 2
+  },
+  "atos_suspeitos": 43,
+  "decisoes_sem_resultado_formal": [
+   {
+    "data": "2026-09-29",
+    "reuniao": "17/2026 - RPC",
+    "processos": [
+     "48500.000846/2026-82"
+    ],
+    "assunto": "Proposta de abertura de Consulta Pública com vistas a colher subsídios e informações adicionais para aprimoramentos regulatórios relacionados ao Decreto nº 12.772/2025.",
+    "decisao": "A Diretoria, por unanimidade, decidiu: (i) realização de Consulta Pública, com duração de 45 dias, de 30/09/2026 a 14/11/2026, com vistas à obtenção de subsídios acerca das minutas de Resolução Normativa e de revisão dos Módulos 1 e 5 das Regras dos Serviços de Transmissão, aprovadas pela Resolução Normativa nº 905/2020, nos termos originais previstos na Nota Técnica nº 97/2026-STD/ANEEL- (ii) emissão de Despacho ao Operador Nacional do Sistema Elétrico – ONS, determinando o envio, no prazo de até 45 dias, de propostas de alteração, bem como de outras que se mostrem necessárias, dos Procedimentos de Rede relacionados à operacionalização das atribuições que lhe foram delegadas pelo Decreto […]",
+    "inicio": "2026-09-30",
+    "fim": "2026-11-14",
+    "janela_origem": "datas_explicitas",
+    "situacao_se_confirmada": "aberta"
+   },
+   {
+    "data": "2026-09-29",
+    "reuniao": "17/2026 - RPC",
+    "processos": [
+     "48500.023844/2026-61"
+    ],
+    "assunto": "Proposta de abertura de Consulta Pública com vistas a colher subsídios e informações adicionais para a definição dos critérios e da metodologia aplicáveis à extensão de prazo prevista no § 7º do art. 26 da Lei nº 9.427/1996, referente à prorrogação por prazo suficiente à amortização dos investimentos de acréscimo de capacidade de geração, objetivando o aproveitamento ótimo do potencial hidráulico.",
+    "decisao": "A Diretoria, por unanimidade, decidiu instaurar Consulta Pública, por intercâmbio documental, pelo prazo de 30 (trinta) dias, de 1º a 30 de outubro de 2026, com vistas a colher subsídios e informações adicionais para o aprimoramento da proposta de regulamentação dos critérios e da metodologia aplicáveis à extensão de prazo prevista no § 7º do art. 26 da Lei nº 9.427/1996, conforme Nota Técnica Conjunta nº 31/2026-SCE-SGM/ANEEL e minuta de Resolução Normativa anexa aos autos com o ajuste proposto neste Voto.",
+    "inicio": "2026-10-01",
+    "fim": "2026-10-30",
+    "janela_origem": "datas_explicitas",
+    "situacao_se_confirmada": "aberta"
+   }
+  ],
+  "abertas_se_confirmadas": 2,
+  "a_abrir_se_confirmadas": 0,
   "cobertura_faixa": {
    "consultas": {
     "de": 2020,
@@ -6587,7 +7893,14 @@
    "aprovada_por": "Portaria ANEEL nº 7.030, de 2 de dezembro de 2025",
    "atualizada_por": "Portaria nº 7.157, de 8 de setembro de 2026",
    "trecho": "aprovada pela Portaria ANEEL nº 7.030, de 2 de dezembro de 2025, atualizada pela Portaria nº 7.157, de 8 de setembro de 2026",
-   "pagina": "https://www.gov.br/aneel/pt-br/assuntos/governanca-regulatoria/agenda-regulatoria"
+   "pagina": "https://www.gov.br/aneel/pt-br/assuntos/governanca-regulatoria/agenda-regulatoria",
+   "url_texto": "https://leis.org/aneel/lei/portaria/2026/7157/portaria-n-7157-2026-resolve-art-1-aprovar-a-primeira-revisao-da-agenda-regulatoria-da-aneel-para-o-bienio-2026-2027art-2-o-anexo-i-da/?termo=agenda%20regulat%C3%B3ria",
+   "texto_lido": false,
+   "tentativa": {
+    "tentado_em": "2026-10-01T06:35:30Z",
+    "ok": false,
+    "detalhe": "download: Falha ao baixar https://leis.org/aneel/lei/portaria/2026/7157/portaria-n-7157-2026-resolve-art-1-aprovar-a-primeira-revisao-da-agenda-regulatoria-da-aneel-para-o-bienio-2026-2027art-2-o-anexo-i-da/?termo=agenda%20regulat%C3%B3ria: HTTP Error 403: Forbidden"
+   }
   },
   "itens": [
    {
@@ -7284,8 +8597,8 @@
     "tratamento_ausencia": "campo que o ato não fixa fica vazio e vale o ato anterior do mesmo ano; nunca o menor preço observado",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "d5dc4fd86561+alterado",
-     "publicacao": "2026-10-01T00:49:23Z"
+     "codigo": "f5cba38ad40f+alterado",
+     "publicacao": "2026-10-01T06:42:14Z"
     },
     "revisoes": "Curadoria versionada: edição do valor no arquivo curado vira revisão registrada no silver (dataset regulacao_curadoria).",
     "testes": [
@@ -7321,7 +8634,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py regulacao --sem-coleta",
-    "citacao": "SCRUTINIUMS. Piso do PLD (PLD mínimo) vigente: R$ 57,31/MWh, Mercado de Curto Prazo (todos os submercados), 01/01/2026 a 31/12/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Despacho ANEEL nº 3.850/2025 (recurso dsp20253850ti, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Piso do PLD (PLD mínimo) vigente: R$ 57,31/MWh, Mercado de Curto Prazo (todos os submercados), 01/01/2026 a 31/12/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Despacho ANEEL nº 3.850/2025 (recurso dsp20253850ti, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    },
    "pld_max_horario": {
     "indicador": "Teto horário do PLD vigente",
@@ -7366,8 +8679,8 @@
     "tratamento_ausencia": "campo que o ato não fixa fica vazio e vale o ato anterior do mesmo ano; nunca o menor preço observado",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "d5dc4fd86561+alterado",
-     "publicacao": "2026-10-01T00:49:23Z"
+     "codigo": "f5cba38ad40f+alterado",
+     "publicacao": "2026-10-01T06:42:14Z"
     },
     "revisoes": "Curadoria versionada: edição do valor no arquivo curado vira revisão registrada no silver (dataset regulacao_curadoria).",
     "testes": [
@@ -7408,7 +8721,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py regulacao --sem-coleta",
-    "citacao": "SCRUTINIUMS. Teto horário do PLD vigente: R$ 1.611,04/MWh, Mercado de Curto Prazo (todos os submercados), 01/01/2026 a 31/12/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Despacho ANEEL nº 3.850/2025 (recurso dsp20253850ti, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Teto horário do PLD vigente: R$ 1.611,04/MWh, Mercado de Curto Prazo (todos os submercados), 01/01/2026 a 31/12/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Despacho ANEEL nº 3.850/2025 (recurso dsp20253850ti, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    },
    "pld_max_estrutural": {
     "indicador": "Teto estrutural do PLD vigente",
@@ -7453,8 +8766,8 @@
     "tratamento_ausencia": "campo que o ato não fixa fica vazio e vale o ato anterior do mesmo ano; nunca o menor preço observado",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "d5dc4fd86561+alterado",
-     "publicacao": "2026-10-01T00:49:23Z"
+     "codigo": "f5cba38ad40f+alterado",
+     "publicacao": "2026-10-01T06:42:14Z"
     },
     "revisoes": "Curadoria versionada: edição do valor no arquivo curado vira revisão registrada no silver (dataset regulacao_curadoria).",
     "testes": [
@@ -7495,7 +8808,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py regulacao --sem-coleta",
-    "citacao": "SCRUTINIUMS. Teto estrutural do PLD vigente: R$ 785,27/MWh, Mercado de Curto Prazo (todos os submercados), 01/01/2026 a 31/12/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Despacho ANEEL nº 3.850/2025 (recurso dsp20253850ti, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Teto estrutural do PLD vigente: R$ 785,27/MWh, Mercado de Curto Prazo (todos os submercados), 01/01/2026 a 31/12/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Despacho ANEEL nº 3.850/2025 (recurso dsp20253850ti, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    }
   },
   "consultas_abertas": {
@@ -7504,8 +8817,8 @@
    "valor_calculo": 8,
    "unidade": "consultas",
    "periodo": {
-    "inicio": "2026-09-30",
-    "fim": "2026-09-30"
+    "inicio": "2026-10-01",
+    "fim": "2026-10-01"
    },
    "entidade": "ANEEL",
    "universo": "avisos com abertura deliberada em reunião pública registrada nas atas",
@@ -7539,12 +8852,12 @@
    "denominador": null,
    "pesos": null,
    "exclusoes": [],
-   "cobertura": "atas publicadas até a reunião de 22/09/2026",
+   "cobertura": "atas publicadas até a reunião de 29/09/2026",
    "tratamento_ausencia": "fase sem datas na ata (só duração, só sessão de audiência ou nada) não é contada como aberta; fim calculado de início e duração conta como janela, rotulado (fim_calculado)",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:49:24Z"
+    "codigo": "f5cba38ad40f+alterado",
+    "publicacao": "2026-10-01T06:42:16Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -7561,7 +8874,12 @@
     {
      "nome": "Sem resultado posterior no mesmo processo",
      "resultado": "aprovado",
-     "detalhe": "nenhuma linha posterior das atas, no mesmo processo, leva resultado ou encerramento à Diretoria"
+     "detalhe": "nenhuma linha posterior das atas, no mesmo processo, leva resultado, encerramento ou decisão que consolida o documento da consulta à Diretoria, nem aprova o módulo de procedimento que o tema cita"
+    },
+    {
+     "nome": "Decisões ainda sem resultado formal nas atas",
+     "resultado": "ressalva",
+     "detalhe": "2 proposta(s) de abertura da reunião de 29/09/2026 com a decisão escrita e o resultado formal vazio (sem número de aviso) ficam fora da contagem; se a ata confirmar a deliberação, a contagem de abertas seria 10 na data de referência: processo 48500.000846/2026-82, 30/09/2026 a 14/11/2026; processo 48500.023844/2026-61, 01/10/2026 a 30/10/2026"
     }
    ],
    "reconciliacao": null,
@@ -7572,7 +8890,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py regulacao --sem-coleta",
-   "citacao": "SCRUTINIUMS. Consultas e audiências públicas recebendo contribuições: 8 consultas, ANEEL, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Pautas e atas das reuniões públicas da Diretoria (recurso pautas-atas-reunioes-publicas-diretoria.csv, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Consultas e audiências públicas recebendo contribuições: 8 consultas, ANEEL, 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Pautas e atas das reuniões públicas da Diretoria (recurso pautas-atas-reunioes-publicas-diretoria.csv, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "proveniencia": {
@@ -7594,8 +8912,8 @@
     "fim": "2026-12-31"
    },
    "publicado_pela_fonte_em": "2025-12-23",
-   "capturado_em": "2026-09-30T23:09:37Z",
-   "validado_em": "2026-10-01T00:49:24Z",
+   "capturado_em": "2026-10-01T06:34:52Z",
+   "validado_em": "2026-10-01T06:42:16Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-12-31"
@@ -7608,18 +8926,18 @@
    ],
    "formula": null,
    "snapshot": {
-    "id": "regulacao_documentos@2026-09-30T23:09:37Z",
-    "sha256": "881adceeb9e03646dd21a20c402a300fd14468dadd0a4fa19adac79f3efd066f"
+    "id": "regulacao_documentos@2026-10-01T06:34:52Z",
+    "sha256": "754ef2cc085e365eb00688e373c5de6e402914f6f9e295bb113df588952cd67e"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "f5cba38ad40f+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:49:23Z",
+    "detectado_em": "2026-10-01T06:42:14Z",
     "total": 0,
-    "vintages_comparadas": 29,
-    "arquivos": 29,
+    "vintages_comparadas": 36,
+    "arquivos": 36,
     "recapturas_sem_mudanca": 0,
-    "ultimo_download_ok": "2026-09-30T23:09:37Z",
+    "ultimo_download_ok": "2026-10-01T06:34:52Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -7649,38 +8967,40 @@
     "inicio": "2015-03-02",
     "fim": "2024-04-01"
    },
-   "publicado_pela_fonte_em": "2026-09-28T08:00:56Z",
-   "capturado_em": "2026-10-01T00:39:17Z",
-   "validado_em": "2026-10-01T00:49:24Z",
+   "publicado_pela_fonte_em": "2026-10-01T05:01:18Z",
+   "capturado_em": "2026-10-01T06:34:59Z",
+   "validado_em": "2026-10-01T06:42:16Z",
    "cobertura_historica": {
     "inicio": "2015-03-02",
     "fim": "2024-04-01"
    },
    "transformacoes": [
-    "fim de vigência = véspera do valor seguinte do mesmo patamar",
-    "patamar extinto (ausente da resolução seguinte do recurso Adicional e sem acionamento depois): fim no último dia do último mês com acionamento no recurso 'Bandeira Tarifária - Acionamento', conferido com a vigência escrita no dicionário desse recurso"
+    "fim de vigência = véspera do valor seguinte do mesmo patamar (grão diário)",
+    "patamar extinto (ausente da resolução seguinte do recurso Adicional e sem acionamento depois): fim no último mês com acionamento no recurso 'Bandeira Tarifária - Acionamento' (grão mensal, dia vazio), conferido com a vigência escrita no dicionário desse recurso",
+    "conferência mês a mês com o recurso Acionamento: mês acionado com outro valor encerra a vigência no último mês coerente (grão mensal, 'acionamento_diverge') e vira evento 'valor observado no Acionamento sem resolução no recurso Adicional' na linha do tempo"
    ],
    "formula": null,
    "snapshot": {
-    "id": "aneel_bandeiras_adicional@2026-10-01T00:39:17Z",
-    "sha256": "3f1c3a5632ed6a5e47bd3996a573a16f15acd832cc8a5d35f00de500ef7c780c"
+    "id": "aneel_bandeiras_adicional@2026-10-01T06:34:59Z",
+    "sha256": "a1caf57c8b62a60401573fd655d45bac6a8a17d42dd926339f11bba76bf4d844"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "f5cba38ad40f+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:49:23Z",
+    "detectado_em": "2026-10-01T06:42:14Z",
     "total": 0,
-    "vintages_comparadas": 4,
+    "vintages_comparadas": 5,
     "arquivos": 4,
     "recapturas_sem_mudanca": 0,
-    "ultimo_download_ok": "2026-10-01T00:39:17Z",
+    "ultimo_download_ok": "2026-10-01T06:34:59Z",
     "exemplos": []
    },
    "limitacoes": [
     "A fonte informa a data de vigência, não a de publicação do ato; o texto das resoluções não foi lido.",
-    "Valores sem fim (Amarela, Vermelha P1, Vermelha P2): não há valor posterior no recurso Adicional e o patamar não foi extinto.",
+    "Valores sem fim (Amarela de 01/04/2024, Vermelha P1 de 01/04/2024, Vermelha P2 de 01/04/2024): não há valor posterior no recurso Adicional e o patamar não foi extinto.",
+    "O recurso Adicional é incompleto: 6 meses acionados com valor diferente do vigente pelo Adicional e 2 meses sem resolução vigente no Adicional (Vermelha P1 R$ 30,00/MWh de 2015-01 a 2015-02; Vermelha P1 R$ 45,00/MWh de 2015-09 a 2016-01; Vermelha P2 R$ 50,00/MWh em 2017-11); nesses casos o fim da vigência anterior tem grão mensal e o ato que fixou o valor observado não foi identificado.",
     "O fim de patamar extinto tem grão mensal: o recurso Acionamento é mensal e não informa o dia (Escassez Hídrica: R$ 71,00/MWh em 2022-04, contra adicional de R$ 142,00/MWh).",
-    "Arquivo gerado pela fonte em 2026-07-15 (Adicional) e 2026-09-28 (Acionamento); resolução posterior não aparece até a ANEEL atualizar o recurso."
+    "Arquivo gerado pela fonte em 2026-07-15 (Adicional) e 2026-10-01 (Acionamento); resolução posterior não aparece até a ANEEL atualizar o recurso."
    ],
    "download": "/energia/series/regulacao_bandeiras_adicionais.csv",
    "notas_fonte": null
@@ -7699,15 +9019,15 @@
    "unidade": "versão",
    "frequencia": "quando a ANEEL aprova nova versão",
    "periodo_referencia": {
-    "inicio": "2026-09-30",
-    "fim": "2026-09-30"
+    "inicio": "2026-10-01",
+    "fim": "2026-10-01"
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T23:08:24Z",
-   "validado_em": "2026-10-01T00:49:24Z",
+   "validado_em": "2026-10-01T06:42:16Z",
    "cobertura_historica": {
-    "inicio": "2026-09-30",
-    "fim": "2026-09-30"
+    "inicio": "2026-10-01",
+    "fim": "2026-10-01"
    },
    "transformacoes": [
     "ato e versão lidos do nome do arquivo que a página publica como versão vigente",
@@ -7719,9 +9039,9 @@
     "sha256": "4951d081937e8bc42335829da2a7c8c8ce60fe0c37412a0585b30c4a73b951c8"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "f5cba38ad40f+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:49:23Z",
+    "detectado_em": "2026-10-01T06:42:14Z",
     "total": 0,
     "vintages_comparadas": 4,
     "arquivos": 4,
@@ -7733,6 +9053,8 @@
     "Os PDFs dos módulos estão em git.aneel.gov.br, bloqueado por desafio de navegador; o conteúdo de cada versão não foi lido.",
     "A data de início de vigência de cada versão não é informada pela página, exceto nas notas transcritas.",
     "4 itens têm ato posterior ao da página que aprova nova versão do mesmo módulo: a página oficial pode estar desatualizada e o número da versão vigente não é conhecido (ato_vigente vazio).",
+    "2 itens com versão diferente da que o próprio ato da página aprova e 1 com ato lido que não cita o item (ressalvas por item).",
+    "Número de ato fora da faixa do tipo nas atas (ex.: 'Portaria nº 1.160/2026' para a REN nº 1.160/2026) fica marcado como suspeito e não é exibido como ato.",
     "Itens sem conferência externa: nenhuma ata nem ato integrado trata do módulo depois do ato da página; isso não prova que a versão está atualizada (atos decididos fora das reuniões públicas não aparecem)."
    ],
    "download": "/energia/series/regulacao_procedimentos_vigentes.csv",
@@ -7752,35 +9074,36 @@
    "unidade": "evento",
    "frequencia": "por ato",
    "periodo_referencia": {
-    "inicio": "2015-03-02",
+    "inicio": "2015-01-01",
     "fim": "2025-12-16"
    },
    "publicado_pela_fonte_em": null,
-   "capturado_em": "2026-09-30T23:09:37Z",
-   "validado_em": "2026-10-01T00:49:24Z",
+   "capturado_em": "2026-10-01T06:34:52Z",
+   "validado_em": "2026-10-01T06:42:16Z",
    "cobertura_historica": {
-    "inicio": "2015-03-02",
+    "inicio": "2015-01-01",
     "fim": "2025-12-16"
    },
    "transformacoes": [
     "resumo editorial conferido no texto; efeito declarado e regra de vigência são literais do ato",
+    "data de publicação conferida por caminho independente: 'Publicação Original' nos metadados abertos do Senado (leis e medida provisória) ou data escrita no próprio PDF do ato da ANEEL",
     "vigência calculada, quando marcada, pela LC nº 95/1998, art. 8º, § 1º",
-    "eventos de bandeiras derivados do conjunto de dados da ANEEL, sem leitura do ato"
+    "eventos de bandeiras derivados do conjunto de dados da ANEEL, sem leitura do ato; valores observados no recurso Acionamento sem resolução no recurso Adicional entram como evento próprio, com grão mensal"
    ],
    "formula": null,
    "snapshot": {
-    "id": "regulacao_documentos@2026-09-30T23:09:37Z",
-    "sha256": "881adceeb9e03646dd21a20c402a300fd14468dadd0a4fa19adac79f3efd066f"
+    "id": "regulacao_documentos@2026-10-01T06:34:52Z",
+    "sha256": "754ef2cc085e365eb00688e373c5de6e402914f6f9e295bb113df588952cd67e"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "f5cba38ad40f+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:49:23Z",
+    "detectado_em": "2026-10-01T06:42:14Z",
     "total": 0,
-    "vintages_comparadas": 29,
-    "arquivos": 29,
+    "vintages_comparadas": 36,
+    "arquivos": 36,
     "recapturas_sem_mudanca": 0,
-    "ultimo_download_ok": "2026-09-30T23:09:37Z",
+    "ultimo_download_ok": "2026-10-01T06:34:52Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -7806,21 +9129,24 @@
    "unidade": "consulta",
    "frequencia": "semanal (atualização da fonte)",
    "periodo_referencia": {
-    "inicio": "2026-09-30",
-    "fim": "2026-09-30"
+    "inicio": "2026-10-01",
+    "fim": "2026-10-01"
    },
    "publicado_pela_fonte_em": "2026-09-25T03:04:53Z",
    "capturado_em": "2026-09-30T23:08:03Z",
-   "validado_em": "2026-10-01T00:49:24Z",
+   "validado_em": "2026-10-01T06:42:16Z",
    "cobertura_historica": {
-    "inicio": "2017-09-12",
-    "fim": "2026-09-22"
+    "inicio": "2017-09-05",
+    "fim": "2026-09-29"
    },
    "transformacoes": [
     "período de contribuições lido do texto da decisão por expressões regulares testadas (datas por extenso, numéricas e redações 'entre os dias', 'com início em ... até', 'iniciando em ... e finalizando em')",
     "quando a ata dá só o início e a duração, fim calculado e rotulado (fim_calculado)",
     "número da consulta = número do aviso na linha de abertura, conferido pelas citações 'nº N/AAAA' do mesmo processo e pelo total anual publicado; número suspeito marcado e substituído no rótulo pelo número que o processo cita, quando único",
-    "resultado ligado pela citação explícita de todas as consultas da oração do resultado, preferindo a do mesmo processo, ou, na falta de número, pelo processo"
+    "resultado ligado pela citação explícita de todas as consultas da oração do resultado, preferindo a do mesmo processo, ou, na falta de número, pelo processo",
+    "decisão do mesmo processo que consolida o documento da consulta sem a palavra 'Resultado' (edital 'consolidado após avaliação das contribuições', 'consolidada com os aprimoramentos decorrentes', extinção do processo) também decide a consulta; a primeira deliberada vale",
+    "decisão sem número do mesmo processo que aprova o módulo do PRODIST ou do PRORET citado no tema decide a consulta (vínculo 'processo_e_objeto')",
+    "número do ato do resultado conferido com a numeração do tipo nas atas; fora da faixa, o ato fica vazio e marcado como suspeito"
    ],
    "formula": "situação = f(data de referência, janela de contribuições da fase deliberada por último, resultado deliberado); ver regra_situacao",
    "snapshot": {
@@ -7828,9 +9154,9 @@
     "sha256": "04277a1d8a0da17bd0566f4337709a344a63035e87e39c2bc244649a72928c3d"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "f5cba38ad40f+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:49:23Z",
+    "detectado_em": "2026-10-01T06:42:14Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -7843,6 +9169,8 @@
     "30 consultas têm número suspeito (acima do total anual publicado ou não citado pelo próprio processo, que cita outro): o rótulo usa o número citado pelo processo quando ele é único.",
     "Fim calculado (início e duração escritos na ata): conta o dia do início, a convenção mais frequente nas atas que escrevem as duas datas e a duração (convencao_contagem_prazo); pela outra convenção o prazo terminaria um dia depois.",
     "Prorrogação ou reabertura decidida fora da reunião pública não aparece; o aviso publicado pode ter datas diferentes das da decisão.",
+    "43 resultados têm número de ato fora da faixa do tipo nas atas (ato_suspeito): o ato não é exibido como certo.",
+    "Decisões da pauta mais recente com resultado formal vazio (sem número de aviso) não entram na contagem: processo 48500.000846/2026-82, 30/09/2026 a 14/11/2026 (estaria aberta na data de referência); processo 48500.023844/2026-61, 01/10/2026 a 30/10/2026 (estaria aberta na data de referência); a contagem de abertas pode estar subestimada até a ata registrar a deliberação.",
     "A situação vale para a data de referência e depende das atas publicadas até a última reunião registrada.",
     "Tomadas de subsídios não são deliberadas em reunião e ficam de fora."
    ],
@@ -7867,8 +9195,8 @@
     "fim": "2027-12-31"
    },
    "publicado_pela_fonte_em": "2025-12-05",
-   "capturado_em": "2026-09-30T23:09:37Z",
-   "validado_em": "2026-10-01T00:49:24Z",
+   "capturado_em": "2026-10-01T06:34:52Z",
+   "validado_em": "2026-10-01T06:42:16Z",
    "cobertura_historica": {
     "inicio": "2026-01-01",
     "fim": "2027-12-31"
@@ -7878,23 +9206,23 @@
    ],
    "formula": null,
    "snapshot": {
-    "id": "regulacao_documentos@2026-09-30T23:09:37Z",
-    "sha256": "881adceeb9e03646dd21a20c402a300fd14468dadd0a4fa19adac79f3efd066f"
+    "id": "regulacao_documentos@2026-10-01T06:34:52Z",
+    "sha256": "754ef2cc085e365eb00688e373c5de6e402914f6f9e295bb113df588952cd67e"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "f5cba38ad40f+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:49:23Z",
+    "detectado_em": "2026-10-01T06:42:14Z",
     "total": 0,
-    "vintages_comparadas": 29,
-    "arquivos": 29,
+    "vintages_comparadas": 36,
+    "arquivos": 36,
     "recapturas_sem_mudanca": 0,
-    "ultimo_download_ok": "2026-09-30T23:09:37Z",
+    "ultimo_download_ok": "2026-10-01T06:34:52Z",
     "exemplos": []
    },
    "limitacoes": [
     "Origem dos atos da ANEEL (www2.aneel.gov.br/cedoc) bloqueada por desafio de navegador; PDFs lidos na cópia pública do Internet Archive (bytes originais, modo id_), aceita só com o sha256 registrado.",
-    "A primeira revisão (Portaria nº 7.157, de 8 de setembro de 2026) consta da página oficial e da ata de 08/09/2026, mas o texto não pôde ser lido: anos previstos e atividades podem ter mudado.",
+    "A primeira revisão (Portaria nº 7.157, de 8 de setembro de 2026) consta da página oficial e da ata de 08/09/2026, mas o texto não pôde ser lido: anos previstos e atividades podem ter mudado. A página oficial aponta a portaria para leis.org, que respondeu HTTP 403 na tentativa de 01/10/2026 (desafio de navegador do Cloudflare, não contornado).",
     "Cronograma referencial de etapas (portalrelatorios.aneel.gov.br) não respondeu; o eixo temático não é extraído.",
     "Ano previsto é previsão da agência, reprogramável; não é compromisso nem data de decisão."
    ],
@@ -7904,8 +9232,8 @@
  },
  "curadoria": {
   "snapshot": {
-   "id": "regulacao_curadoria@2026-10-01T00:39:12Z",
-   "sha256": "aff72efec67b7c0ce39bf3e070a93ddb97745d5ab8750d08a56bcabb111ae30b"
+   "id": "regulacao_curadoria@2026-10-01T06:34:43Z",
+   "sha256": "8ba19de36c216292f7952434068756b7d53b9e10e77d233c2717b189f63bb163"
   },
   "arquivos": [
    {
@@ -7920,13 +9248,13 @@
    },
    {
     "arquivo": "limites_pld_conferencia.json",
-    "sha256": "389b692cffe3546f0ca61d6c3e62020b2b654cfbc4f44110bde1f672f923eb5f",
-    "registrado_em": "2026-10-01T00:39:12Z"
+    "sha256": "014ecc0a8cd632eb0228520abaef102d3e5fc7a6543d7296c89d5dc4a84cbea9",
+    "registrado_em": "2026-10-01T06:34:43Z"
    },
    {
     "arquivo": "linha_do_tempo.json",
-    "sha256": "b658117641ade48d24be42ccfa759776f2533b7ab82dcb910246bdbbf1cc60f3",
-    "registrado_em": "2026-09-30T23:01:51Z"
+    "sha256": "bbbe1601224e8f5db1831867d497e76bc12880a12c1b9312675e911ac162d026",
+    "registrado_em": "2026-10-01T06:34:43Z"
    }
   ]
  },

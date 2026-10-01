@@ -1,7 +1,7 @@
 gold;indicador;natureza;situacao_validacao;reconciliacao;testes_aprovados;testes_ressalva;testes_reprovados
-agua_detalhe.json;EAR do SIN;;reconciliacao_aprovada;aprovado;3;0;0
+agua_detalhe.json;EAR do SIN;CALCULADO;reconciliacao_aprovada;aprovado;3;0;0
 agua_detalhe.json;Energia armazenada no SIN;;reconciliacao_aprovada;aprovado;1;0;0
-agua_detalhe.json;Mudanças da capacidade de armazenamento (EAR máxima) desde 2000;;controles_aprovados;;1;0;0
+agua_detalhe.json;Mudanças da capacidade de armazenamento (EAR máxima) desde 2000;CALCULADO;controles_aprovados;;1;0;0
 agua_detalhe.json;ENA bruta de 30 dias do SIN;;controles_aprovados;;2;0;0
 agua_detalhe.json;Diferença entre a MLT do conjunto aberto e a MLT do PMO (Sudeste/Centro-Oeste);;ressalva;;0;2;0
 agua_detalhe.json;Anomalia da temperatura do SIN em 30 dias;;ressalva;;1;1;0
@@ -11,14 +11,14 @@ carga_detalhe.json;Variação da carga do SIN em 7 dias contra os mesmos dias do
 carga_detalhe.json;Variação da carga do SIN nos últimos 7 dias contra os mesmos dias da semana 52 semanas antes;;controles_aprovados;;2;0;0
 carga_detalhe.json;Parcela da carga global do SIN atendida por MMGD (estimativa do ONS), último mês completo;;reconciliacao_aprovada;aprovado;2;0;0
 carga_detalhe.json;Pico horário da carga do SIN no dia;;reconciliacao_aprovada;aprovado;1;0;0
-carga_detalhe.json;Erro percentual absoluto médio da decomposição estatística, fora da amostra (SIN);;ressalva;;2;1;0
-conta.json;Tarifa residencial B1 mediana entre distribuidoras;;ressalva;ressalva;2;1;0
-conta.json;Participação dos encargos setoriais na tarifa B1 residencial;;reconciliacao_aprovada;aprovado;2;0;0
-conta.json;Estimativa sem tributos do valor da energia na fatura (simulador);;controles_aprovados;;3;0;0
-conta.json;Variação mediana da tarifa B1 residencial em 12 meses;;reconciliacao_aprovada;aprovado;2;0;0
-conta.json;Bandeira tarifária acionada;;ressalva;aprovado;1;1;0
-conta.json;Repasses da CDE para subsídios tarifários no ano;;ressalva;;2;2;0
-conta.json;Participação das quotas pagas nas tarifas no custeio da CDE;;ressalva;ressalva;2;0;0
+carga_detalhe.json;Erro percentual absoluto médio da decomposição estatística, fora da amostra (SIN);;ressalva;;1;2;0
+conta.json;Tarifa residencial B1 mediana entre distribuidoras;CALCULADO;ressalva;ressalva;2;1;0
+conta.json;Participação dos encargos setoriais na tarifa B1 residencial;CALCULADO;reconciliacao_aprovada;aprovado;2;0;0
+conta.json;Estimativa sem tributos do valor da energia na fatura (simulador);ESTIMADO;controles_aprovados;;3;0;0
+conta.json;Variação mediana da tarifa B1 residencial em 12 meses;CALCULADO;reconciliacao_aprovada;aprovado;2;0;0
+conta.json;Bandeira tarifária acionada;OBSERVADO;ressalva;aprovado;1;1;0
+conta.json;Repasses da CDE para subsídios tarifários no ano;CALCULADO;ressalva;;2;2;0
+conta.json;Participação das quotas pagas nas tarifas no custeio da CDE;PREVISTO;ressalva;ressalva;2;0;0
 empresas.json;Potência em operação com todos os proprietários identificados por CNPJ;;reconciliacao_aprovada;aprovado;2;0;0
 empresas.json;Índice Herfindahl-Hirschman da potência em operação por grupo de controle;;controles_aprovados;;2;0;0
 expansao.json;Capacidade instalada em operação;;reconciliacao_aprovada;aprovado;2;0;0
@@ -52,8 +52,8 @@ inclusao.json;Peso da energia no orçamento (POF 2017-2018);;ressalva;aprovado;3
 inclusao.json;Peso da energia no orçamento (POF 2017-2018);;reconciliacao_aprovada;aprovado;3;0;0
 inclusao.json;Peso da energia no orçamento (POF 2017-2018);;reconciliacao_aprovada;aprovado;3;0;0
 inclusao.json;Domicílios sem energia elétrica;;controles_aprovados;;2;0;0
-inclusao.json;População das localidades atendidas por sistemas isolados;;reconciliacao_aprovada;aprovado;2;0;0
-inclusao.json;Domicílios atendidos pelo Luz para Todos;;ressalva;;3;1;0
+inclusao.json;População das localidades atendidas por sistemas isolados;OBSERVADO;reconciliacao_aprovada;aprovado;2;0;0
+inclusao.json;Domicílios atendidos pelo Luz para Todos;OBSERVADO;ressalva;;3;1;0
 mercado.json;Participação do mercado livre no consumo de energia elétrica na rede (12 meses);;ressalva;ressalva;1;0;0
 mercado.json;Participação do ACL no consumo contabilizado pela CCEE (12 meses);;reconciliacao_aprovada;aprovado;1;0;0
 mercado.json;Agentes que participaram da contabilização da CCEE;;ressalva;ressalva;1;0;0
@@ -77,7 +77,7 @@ qualidade.json;FEC do Brasil (apurado, ponderado por unidades consumidoras, toda
 qualidade.json;Conjuntos com DEC anual acima do limite;;controles_aprovados;;3;0;0
 qualidade.json;Compensações pagas a unidades consumidoras por violação dos limites individuais de continuidade;;ressalva;ressalva;3;0;0
 qualidade.json;Reclamações no 1º nível (atendimento da distribuidora), taxa nacional;;controles_aprovados;;2;0;0
-qualidade.json;Reclamações na Ouvidoria Setorial da ANEEL, taxa nacional;;controles_aprovados;;2;0;0
+qualidade.json;Reclamações na Ouvidoria Setorial da ANEEL, taxa nacional;CALCULADO;controles_aprovados;;2;0;0
 rede_detalhe.json;Energia no sentido contrário ao saldo em 30 dias;;reconciliacao_aprovada;aprovado;2;0;0
 rede_detalhe.json;Energia no sentido contrário ao saldo em 30 dias;;reconciliacao_aprovada;aprovado;2;0;0
 rede_detalhe.json;Energia no sentido contrário ao saldo em 30 dias;;reconciliacao_aprovada;aprovado;2;0;0
@@ -94,18 +94,37 @@ rede_detalhe.json;Horas acima do limite sistêmico em 12 meses (ATLS);;ressalva;
 rede_detalhe.json;Horas acima do limite sistêmico em 12 meses (ATLS);;ressalva;aprovado;1;1;0
 rede_detalhe.json;Horas acima do limite sistêmico em 12 meses (ATLS);;ressalva;aprovado;1;1;0
 rede_detalhe.json;Energia não suprida em interrupções de carga, 12 meses;;reconciliacao_aprovada;aprovado;1;0;0
-rede_detalhe.json;Desvio absoluto médio entre verificado e programado;;controles_aprovados;;2;0;0
-rede_detalhe.json;Desvio absoluto médio entre verificado e programado;;controles_aprovados;;2;0;0
-rede_detalhe.json;Desvio absoluto médio entre verificado e programado;;controles_aprovados;;2;0;0
-rede_detalhe.json;Desvio absoluto médio entre verificado e programado;;controles_aprovados;;2;0;0
+rede_detalhe.json;Desvio absoluto médio entre verificado e programado;;ressalva;;2;1;0
+rede_detalhe.json;Desvio absoluto médio entre verificado e programado;;ressalva;;2;1;0
+rede_detalhe.json;Desvio absoluto médio entre verificado e programado;;ressalva;;2;1;0
+rede_detalhe.json;Desvio absoluto médio entre verificado e programado;;ressalva;;2;1;0
 rede_detalhe.json;Desvio absoluto médio entre verificado e programado;;reconciliacao_aprovada;aprovado;2;0;0
 rede_detalhe.json;Desvio absoluto médio entre verificado e programado;;reconciliacao_aprovada;aprovado;2;0;0
 regulacao.json;Piso do PLD (PLD mínimo) vigente;;reconciliacao_aprovada;aprovado;3;0;0
 regulacao.json;Teto horário do PLD vigente;;ressalva;aprovado;3;1;0
 regulacao.json;Teto estrutural do PLD vigente;;ressalva;aprovado;3;1;0
-regulacao.json;Consultas e audiências públicas recebendo contribuições;;controles_aprovados;;3;0;0
+regulacao.json;Consultas e audiências públicas recebendo contribuições;;ressalva;;3;1;0
+sintese.json;Visão geral, frase 'reservatorios';;controles_aprovados;;2;0;0
+sintese.json;Visão geral, frase 'afluencias';;controles_aprovados;;2;0;0
+sintese.json;Visão geral, frase 'carga';;controles_aprovados;;2;0;0
+sintese.json;Visão geral, frase 'termica';;controles_aprovados;;2;0;0
+sintese.json;Visão geral, frase 'pld';;controles_aprovados;;2;0;0
+sintese.json;Visão geral, frase 'rede';;controles_aprovados;;2;0;0
+sintese.json;Tarifa residencial B1 mediana entre distribuidoras;;ressalva;ressalva;2;1;0
+sintese.json;DEC do Brasil (apurado, ponderado por unidades consumidoras, todas as distribuidoras, inclusive permissionárias);;ressalva;aprovado;4;1;0
+sintese.json;FEC do Brasil (apurado, ponderado por unidades consumidoras, todas as distribuidoras, inclusive permissionárias);;ressalva;aprovado;4;1;0
+sintese.json;Taxa de perdas totais na distribuição;;ressalva;;3;2;0
+sintese.json;Unidades consumidoras com Tarifa Social;;ressalva;ressalva;4;1;0
+sintese.json;Regra 'termica' do o que observar;;controles_aprovados;;1;0;0
+sintese.json;Regra 'carga_extrema' do o que observar;;controles_aprovados;;1;0;0
+sintese.json;Regra 'descolamento' do o que observar;;controles_aprovados;;1;0;0
+sintese.json;Regra 'restricao_eolica' do o que observar;;controles_aprovados;;1;0;0
+sintese.json;Regra 'restricao_solar' do o que observar;;controles_aprovados;;1;0;0
+territorio.json;Municípios atendidos por mais de uma distribuidora;;reconciliacao_aprovada;aprovado;1;0;0
+territorio.json;Municípios com submercado provado pela carga das áreas do ONS;;reconciliacao_aprovada;aprovado;2;0;0
+territorio.json;Usinas com todos os municípios declarados reconhecidos no cadastro do IBGE;;controles_aprovados;;1;0;0
 transicao.json;Unidades de micro e minigeração distribuída no cadastro da ANEEL;;ressalva;aprovado;3;1;0
 transicao.json;Potência instalada de micro e minigeração distribuída no cadastro da ANEEL;;ressalva;aprovado;3;1;0
-transicao.json;MMGD estimada pelo ONS no SIN, média do mês;;reconciliacao_aprovada;aprovado;2;0;0
+transicao.json;MMGD estimada pelo ONS no SIN, média do mês;;reconciliacao_aprovada;aprovado;3;0;0
 transicao.json;Fator médio anual de emissão de CO2 do SIN (inventários);;reconciliacao_aprovada;aprovado;2;0;0
 transicao.json;Fator médio mensal de emissão de CO2 do SIN (inventários);;controles_aprovados;;1;0;0

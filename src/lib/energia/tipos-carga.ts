@@ -78,11 +78,22 @@ export type CargaAnual = {
   variacao_pct: Partial<Record<Regiao, number>> | null;
 } & Record<Regiao, number | null>;
 
+/** Ano corrente até o último dia contra o mesmo período deslocado 364 dias, com a composição
+ * de calendário das duas janelas (nacional): `calendario_equivalente` falso quando feriados
+ * caem em dia útil num ano e no fim de semana no outro. */
 export type AcumuladoAno = {
   inicio: string;
   fim: string;
   inicio_ant: string;
   fim_ant: string;
+  classes: ClassesDias;
+  classes_ant: ClassesDias;
+  calendario_equivalente: boolean;
+  eventos: EventoCurto[];
+  eventos_ant: EventoCurto[];
+  /** Feriados nacionais e Paixão que caem em dia útil em cada janela (datas ISO). */
+  feriados_dia_util: string[];
+  feriados_dia_util_ant: string[];
   sm: Record<Regiao, { media: number; media_ant: number; variacao_pct: number | null; mesmo_regime: boolean } | null>;
 };
 
@@ -114,6 +125,9 @@ export type Revisoes = {
   capturas_diaria: string[];
   total: number;
   dias_revisados: number;
+  /** Revisões com valor anterior positivo, as que entram na mediana e no máximo. */
+  revisoes_com_percentual: number;
+  /** Mediana verdadeira (n par: média dos dois valores centrais), sem arredondar as linhas. */
   mediana_abs_pct: number | null;
   max_abs_pct: number | null;
   linhas: RevisaoLinha[];
@@ -126,15 +140,28 @@ export type Revisoes = {
   };
 };
 
-export type RegraValidacao = { id: "F1" | "F2" | "F3" | "C1"; tipo: string; critica: boolean; descricao: string };
+export type RegraValidacao = { id: "F1" | "F2" | "F3" | "C1" | "A1"; tipo: string; critica: boolean; descricao: string };
+/** Médias diárias (MWmed) dos componentes do Balanço de Energia nos Subsistemas do ONS. */
+export type ComponentesBalanco = Partial<Record<"hidraulica" | "termica" | "eolica" | "solar" | "carga" | "intercambio", number>>;
+/** Conferência C1 de um valor atípico nos componentes do balanço (null quando não se aplica: valor fora do domínio). */
+export type ConferenciaBalanco = {
+  dia: ComponentesBalanco | null;
+  anterior: ComponentesBalanco | null;
+  seguinte: ComponentesBalanco | null;
+  /** Componente de geração que some no dia (abaixo de 25% do menor vizinho material): lacuna de dado. */
+  lacunas: { componente: "hidraulica" | "termica" | "eolica" | "solar"; valor_dia: number | null; vizinhos: number[] }[];
+  geracao_menos_intercambio: number | null;
+} | null;
 export type OcorrenciaValidacao = {
   sm: Submercado;
   dia: string;
   valor: number | null;
   regras: ("F1" | "F2" | "F3")[];
   situacao: "quarentena" | "atipico_conferido";
+  /** Média das 24 horas da curva, só informativa: é o mesmo produto e não confere nada. */
   curva_horaria_media: number | null;
   conferencia: string;
+  balanco: ConferenciaBalanco;
 };
 export type ForaDoDominio = {
   sm: Submercado;
@@ -147,12 +174,17 @@ export type ForaDoDominio = {
   revisado_em: string | null;
   situacao: "revisado_pela_fonte" | "vigente_em_quarentena";
 };
+/** Estado de um dia ausente, conferido no arquivo atual da fonte (regra A1). */
+export type EstadoAusencia = "celula_vazia_na_fonte" | "linha_ausente_na_fonte" | "presente_no_arquivo_atual" | "nao_conferido";
 export type ValidacaoFisica = {
   regras: RegraValidacao[];
   quarentena: OcorrenciaValidacao[];
   atipicos_conferidos: OcorrenciaValidacao[];
   historico_fora_do_dominio: ForaDoDominio[];
   valores_verificados: number;
+  /** Todo dia entre o primeiro e o último dia publicado, por subsistema. */
+  registros_esperados: Record<Submercado, { inicio: string; fim: string; esperados: number; presentes: number; ausentes: number; quarentena: number }>;
+  ausentes: { sm: Submercado; dia: string; estado: EstadoAusencia; valor_arquivo_atual: number | null }[];
 };
 
 export type P025 = {
@@ -340,6 +372,8 @@ export type DiaDecomposicao = {
 export type P027 = {
   natureza: Natureza;
   nome: string;
+  /** Primeiro e último dia efetivamente previstos fora da amostra (o último pode ser anterior ao último dia de carga). */
+  periodo_avaliacao: { inicio: string; fim: string; dias: number };
   especificacao: {
     alvo: string;
     estimador: string;
@@ -372,7 +406,11 @@ export type LeiFeriado = {
   estabelece: string;
   ementa_senado: string | null;
   id_senado: string | null;
-  conferida: boolean;
+  /** Norma e ementa conferidas nos metadados abertos do Senado. */
+  conferida_ementa: boolean;
+  /** Texto da lei relido (falso: Planalto sem resposta e PDF do Senado com 0 byte). */
+  conferida_texto: boolean;
+  texto_situacao: string;
   url: string;
   capturado_em: string | null;
   sha256: string | null;
@@ -401,12 +439,41 @@ export type FonteCarga = {
   leis?: LeiFeriado[];
 };
 
+/* ---------- A11 (parte de carga): data em que a MMGD entra na carga ---------- */
+
+export type A11Carga = {
+  declarado: string;
+  observado_carga: string | null;
+  observado_meio_dia: string | null;
+  observado_solar_balanco: string | null;
+  degrau_carga_menos_global_mwmed: number | null;
+  degrau_meio_dia_mwmed: number | null;
+  degrau_solar_balanco_mwmed: number | null;
+  mmgd_meio_dia_media_mwmed: number | null;
+  dias: { d: string; carga_menos_global: number | null; meio_dia_curva_menos_global: number | null; mmgd_meio_dia: number | null; solar_balanco: number | null }[];
+  regra: string;
+  textos: string[];
+  /** Dias entre a data declarada e a observada (sem regime seguro). */
+  transicao: string[];
+  inicio_regime_usado: string;
+};
+
+/** Natureza de cada série da API de carga verificada (seção 11.3). */
+export type NaturezaSerieApi = {
+  serie: "mmgd" | "liquida" | "global";
+  rotulo: string;
+  natureza: Natureza;
+  componentes: { natureza: Natureza; descricao: string }[];
+  descricao: string;
+};
+
 export type CargaDetalheGold = Cabecalho & {
   dia_referencia: string;
   unidade: "MWmed";
-  regimes: Regime[];
+  regimes: (Regime & { observado_nos_dados?: string })[];
   p025: P025;
   a07: A07;
+  a11_carga: A11Carga;
   p026: P026;
   p027: P027;
   calendario: {
@@ -423,7 +490,9 @@ export type CargaDetalheGold = Cabecalho & {
     ufs_por_subsistema: Record<Submercado, string[]>;
   };
   fontes: FonteCarga[];
-  proveniencia: Record<"comparacoes" | "curva" | "api" | "temperatura" | "modelo", Proveniencia>;
+  proveniencia: Record<"comparacoes" | "curva" | "temperatura" | "modelo", Proveniencia> & {
+    api: Proveniencia & { natureza_por_serie: NaturezaSerieApi[] };
+  };
   evidencias: Partial<Record<"a07_reproducao" | "p025_7d_equivalente" | "p026_mmgd_mes" | "p026_pico_sin" | "p027_mape_sin", Evidencia>>;
   downloads: Download[];
 };

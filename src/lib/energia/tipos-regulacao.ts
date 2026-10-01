@@ -124,6 +124,16 @@ export type LimitesPld = {
 
 export type AtividadeResumo = { codigo: string; atividade: string; ano_previsto: number };
 
+/** Como os atos anuais aplicam a regra dos tetos, medido pelas conferências da execução. */
+export type PraticaDosAtos = {
+  texto: string;
+  regra_ipca_aprovadas: number;
+  regra_ipca_total: number;
+  /** Diferença (ato − conta literal do art. 23, § 1º), R$/MWh. */
+  art23_literal_diferenca_min: number | null;
+  art23_literal_diferenca_max: number | null;
+};
+
 export type RegrasLimites = {
   ato: string;
   dispositivo: string;
@@ -132,30 +142,75 @@ export type RegrasLimites = {
   vigencia_inicio: string;
   documento: string;
   url_oficial: string | null;
+  pratica_dos_atos: PraticaDosAtos;
 } | null;
+
+export type MesAcionamento = { competencia: string; rs_mwh: number | null };
+
+/** Conferência da vigência, mês a mês, com o recurso "Bandeira Tarifária - Acionamento". */
+export type ConferenciaAcionamento = {
+  meses_conferidos: number;
+  meses_coerentes: number;
+  /** Meses acionados dentro da vigência com valor diferente do adicional. */
+  meses_divergentes: MesAcionamento[];
+  /** Mês final de patamar extinto com valor menor que o adicional (acionamento em parte do mês). */
+  mes_parcial: MesAcionamento | null;
+  ultimo_mes_coerente: string | null;
+  primeiro_mes_divergente: string | null;
+};
 
 export type VigenciaBandeira = {
   ato: string | null;
   patamar: "Amarela" | "Vermelha P1" | "Vermelha P2" | "Escassez Hídrica" | string;
   vigencia_inicio: string;
-  /** null = valor sem término na fonte (patamar ainda acionado e sem valor posterior). */
+  /** AAAA-MM-DD só quando o fim tem grão diário; null = sem fim ou fim com grão mensal. */
   vigencia_fim: string | null;
+  /** AAAA-MM do fim (todas as vigências com fim). */
+  vigencia_fim_mes: string | null;
+  /** "dia" (véspera do valor seguinte), "mes" (fim conhecido só pelo mês) ou null (sem fim). */
+  vigencia_fim_grao: "dia" | "mes" | null;
   /**
    * valor_seguinte = véspera do valor seguinte do mesmo patamar; ultimo_acionamento = patamar
-   * extinto, fim no último dia do último mês com acionamento (grão mensal); null = sem fim.
+   * extinto, último mês com acionamento; acionamento_diverge = o recurso Acionamento traz outro
+   * valor antes do valor seguinte do recurso Adicional (fim no último mês coerente); null = sem fim.
    */
-  vigencia_fim_origem: "valor_seguinte" | "ultimo_acionamento" | null;
+  vigencia_fim_origem: "valor_seguinte" | "ultimo_acionamento" | "acionamento_diverge" | null;
+  /** true = mais de um mês entre o último mês coerente e o primeiro divergente. */
+  fim_incerto: boolean;
+  /** O que a véspera do valor seguinte do recurso Adicional daria (pode ser contrariado pelo Acionamento). */
+  fim_pelo_recurso_adicional: string | null;
   /** Último mês com o patamar no recurso Acionamento (só patamar extinto). */
   ultimo_acionamento: { competencia: string; rs_mwh: number | null } | null;
   /** Primeira resolução posterior do recurso Adicional que fixou os patamares sem este. */
   resolucao_seguinte_sem_patamar: { ato: string | null; vigencia_inicio: string } | null;
-  /** Conferência do fim com a vigência escrita no dicionário do recurso Acionamento. */
-  conferencia_fim: { resultado: "aprovado" | "reprovado" | "nao_executada"; detalhe: string } | null;
+  /** Conferência do fim: dicionário do Acionamento (patamar extinto) ou ressalva do Acionamento divergente. */
+  conferencia_fim: { resultado: "aprovado" | "reprovado" | "ressalva" | "nao_executada"; detalhe: string } | null;
+  conferencia_acionamento: ConferenciaAcionamento | null;
   rs_mwh: number | null;
+};
+
+/** Valor do recurso Acionamento sem resolução correspondente no recurso Adicional (meses consecutivos). */
+export type AcionamentoSemResolucao = {
+  patamar: string;
+  rs_mwh: number;
+  inicio: string;
+  fim: string;
+  meses: number;
+  /** valor_diferente = há vigência no mês, com outro valor; sem_vigencia = nenhuma resolução cobre o mês. */
+  motivo: "valor_diferente" | "sem_vigencia";
 };
 
 export type Bandeiras = {
   vigencias: VigenciaBandeira[];
+  acionamentos_sem_resolucao: AcionamentoSemResolucao[];
+  conferencia_acionamento: {
+    meses_conferidos: number;
+    meses_coerentes: number;
+    meses_divergentes: number;
+    meses_parciais: number;
+    meses_sem_vigencia: number;
+    regra: string;
+  };
   gerado_pela_fonte_em: string | null;
   acionamento_gerado_pela_fonte_em: string | null;
   acionamento_meses: number;
@@ -165,7 +220,12 @@ export type Bandeiras = {
 export type ConferenciaProcedimento = "confirmada_por_ato_integrado" | "sem_conferencia_externa" | "pagina_possivelmente_desatualizada";
 
 export type AtoProcedimento = {
+  /** null quando o número do ato registrado nas atas está fora da faixa do tipo (ato_suspeito). */
   ato: string | null;
+  /** Ato como a fonte registra. */
+  ato_na_fonte: string | null;
+  ato_suspeito: boolean;
+  motivo_ato_suspeito: string | null;
   /** Data da deliberação (ata) ou do ato (anexo de Resolução Normativa lida). */
   data: string;
   /** "ata da reunião pública da Diretoria" ou "texto do ato (<documento>, sha256 ...)". */
@@ -189,8 +249,15 @@ export type Procedimento = {
   conferencia: ConferenciaProcedimento;
   /** null quando há ato posterior que aprova nova versão: a versão vigente não é conhecida. */
   ato_vigente: string | null;
+  /**
+   * Versão da página contra a que o próprio ato da página aprova: confere, diverge,
+   * ato_lido_nao_cita_o_item (a REN lida não cita o item) ou null (o ato não escreve a versão).
+   */
+  conferencia_versao: "confere" | "diverge" | "ato_lido_nao_cita_o_item" | null;
+  versao_no_ato: string | null;
   atos_posteriores: AtoProcedimento[];
   confirmacoes: AtoProcedimento[];
+  ressalvas: string[];
   url_vigente: string | null;
   url_versoes: string | null;
   observacao: string | null;
@@ -201,6 +268,9 @@ export type Procedimentos = {
   verificado_em: { prodist: string | null; proret: string | null };
   paginas: { PRODIST: string; PRORET: string };
   contagem_conferencia: Record<ConferenciaProcedimento, number>;
+  contagem_versao: { confere: number; diverge: number; ato_lido_nao_cita_o_item: number; sem_versao_no_ato: number };
+  /** Resoluções Normativas lidas no bronze (anexos e incisos que aprovam versões). */
+  atos_lidos: string[];
   regra_conferencia: string;
 };
 
@@ -223,7 +293,11 @@ export type EventoRegulatorio = {
   tipo_ato: string;
   data_ato: string | null;
   data_publicacao: string | null;
+  /** Data de publicação conferida nos metadados do Senado ou no texto do ato; null sem data. */
+  conferencia_publicacao: { resultado: "aprovado" | "reprovado" | "ressalva" | "nao_executada"; detalhe: string; fonte: string | null } | null;
   vigencia_inicio: string;
+  /** "mes" nos valores observados só no recurso Acionamento (vigencia_inicio = primeiro dia do mês de competência). */
+  vigencia_grao: "dia" | "mes";
   /** Literal do ato (ou, nos eventos de bandeiras, a regra do conjunto de dados). */
   vigencia_regra: string;
   /** true = vigência calculada pela LC nº 95/1998, art. 8º, § 1º. */
@@ -294,15 +368,46 @@ export type FaseConsulta = {
   trecho_periodo: string | null;
 };
 
+export type FormaResultado =
+  | "resultado"
+  | "encerramento"
+  | "apos_contribuicoes"
+  /** Decisão que consolida o edital ou a norma sem a palavra "Resultado" (ex.: Despacho nº 2.266/2026, CP 6/2026). */
+  | "consolidacao"
+  | "resultado_sem_numero"
+  /** Decisão sem número, do mesmo processo, que aprova o módulo de procedimento do tema (CP 3/2026). */
+  | "objeto_aprovado_no_processo";
+
 export type ResultadoConsulta = {
   data: string;
   reuniao: string;
+  /** null quando o número do ato registrado na ata está fora da faixa do tipo (ato_suspeito). */
   ato: string | null;
+  ato_na_ata: string | null;
+  ato_suspeito: boolean;
+  motivo_ato_suspeito: string | null;
   resultado_julgamento: string;
   decidido: boolean;
   decisao: string;
-  /** numero_citado = a ata cita "nº N/AAAA"; processo = mesmo número de processo do SEI. */
-  vinculo: "numero_citado" | "processo";
+  /**
+   * numero_citado = a ata cita "nº N/AAAA"; processo = mesmo número de processo do SEI;
+   * processo_e_objeto = mesmo processo e mesmo módulo de procedimento aprovado, sem número.
+   */
+  vinculo: "numero_citado" | "processo" | "processo_e_objeto";
+  forma: FormaResultado;
+};
+
+/** Proposta de abertura com decisão escrita na pauta e resultado formal vazio (não entra na contagem). */
+export type DecisaoSemResultadoFormal = {
+  data: string;
+  reuniao: string;
+  processos: string[];
+  assunto: string;
+  decisao: string;
+  inicio: string | null;
+  fim: string | null;
+  janela_origem: OrigemJanela | null;
+  situacao_se_confirmada: "aberta" | "a_abrir" | "encerrada_aguardando" | null;
 };
 
 export type Consulta = {
@@ -361,8 +466,10 @@ export type Consultas = {
   disponivel: boolean;
   motivo?: string;
   data_referencia: string;
-  /** Data da última reunião registrada nas atas integradas. */
+  /** Data da última reunião registrada nas atas integradas (inclui pauta ainda sem resultado). */
   atas_ate?: string | null;
+  /** Data da última reunião com resultado deliberado registrado. */
+  atas_deliberadas_ate?: string | null;
   atas_geradas_em?: string | null;
   janela_dias?: number;
   itens: Consulta[];
@@ -372,6 +479,13 @@ export type Consultas = {
   /** Menor e maior cobertura anual (%) por modalidade entre 2020 e 2025. */
   cobertura_faixa?: { consultas: FaixaCobertura; audiencias: FaixaCobertura };
   numeros_suspeitos?: number;
+  contagem_por_forma_resultado?: Record<FormaResultado, number>;
+  /** Resultados cujo número de ato está fora da faixa do tipo nas atas. */
+  atos_suspeitos?: number;
+  decisoes_sem_resultado_formal?: DecisaoSemResultadoFormal[];
+  /** Quantas dessas decisões estariam abertas, ou a abrir, na data de referência se a ata as confirmar. */
+  abertas_se_confirmadas?: number;
+  a_abrir_se_confirmadas?: number;
   /** Atas com as duas datas e a duração: quantas contam o dia do início (inclusiva) e quantas não. */
   convencao_contagem_prazo?: { inclusiva: number; exclusiva: number; outra: number; casos: number };
   situacoes: Record<SituacaoConsulta, string>;
@@ -390,6 +504,11 @@ export type RevisaoAgenda = {
   atualizada_por: string | null;
   trecho: string | null;
   pagina: string;
+  /** Endereço que a página oficial publica para a portaria de revisão (leis.org). */
+  url_texto: string | null;
+  texto_lido: boolean;
+  /** Última tentativa de coleta do texto da revisão. */
+  tentativa: { tentado_em: string; ok: boolean; detalhe: string } | null;
 };
 
 export type Agenda = {

@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "metricas.json",
- "gerado_em": "2026-10-01T06:12:24Z",
+ "gerado_em": "2026-10-01T06:44:58Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d4f2c5af5147+alterado",
+ "versao_codigo": "f5cba38ad40f+alterado",
  "disponivel": true,
  "metricas": [
   {
@@ -70,13 +70,14 @@
     "reservatório"
    ],
    "regras_comparabilidade": [
-    "Tolerância diária: 0,01% do volume útil (arredondamento do percentual) + 0,002 hm³."
+    "Tolerância diária: 0,01% do volume útil (arredondamento do percentual) + 0,002 hm³.",
+    "Fração de dias dentro da tolerância publicada na janela de 30 dias e, à parte, em toda a série diária disponível (com o período)."
    ],
    "regra_cobertura": "Janela com os 30 dias de afluência e defluência e volume no início e no fim.",
    "politica_ausencia": "Sem volume útil no cadastro ou dia sem dado: sem balanço (nunca completado).",
    "validacoes": [
-    "fração de dias com resíduo dentro da tolerância",
-    "defluência − (turbinada + vertida + outras) publicada como não discriminada"
+    "fração de dias com resíduo dentro da tolerância (janela e série)",
+    "convenção da defluência detectada por reservatório nos dias com outras estruturas acima de 1 m³/s: defluência não discriminada = defluência − turbinada − vertida (− outras, quando a defluência as inclui); convenção indeterminada = nulo"
    ],
    "limitacoes": [
     "A afluência do ONS é calculada pelo balanço na maioria dos reservatórios: fechar não prova a medição.",
@@ -133,9 +134,9 @@
    "id": "agua_ear_faixa_sazonal",
    "titulo": "Faixa sazonal da EAR",
    "pergunta": "O armazenamento está dentro do usual para a data?",
-   "definicao": "10º, 50º e 90º percentis do valor do mesmo dia do calendário nos anos completos anteriores, por subsistema, REE e bacia, em % e em MWmês.",
+   "definicao": "10º, 50º e 90º percentis do valor do mesmo dia do calendário nos anos completos anteriores, por subsistema, SIN, REE e bacia, em % e em MWmês.",
    "unidade": "% da EAR máxima e MWmês",
-   "grao_geografico": "subsistema, REE, bacia",
+   "grao_geografico": "subsistema, SIN, REE, bacia",
    "grao_temporal": "dia do calendário",
    "fontes": [
     "ear_subsistema_di",
@@ -151,14 +152,16 @@
     "dia"
    ],
    "regras_comparabilidade": [
-    "Base desde 2001 (subsistemas e bacias) e desde 2016 (REE); o tamanho amostral (anos_na_base) acompanha cada faixa.",
-    "capacidade_mudou_na_base sinaliza recorte cuja EAR máxima mudou mais de 5% dentro da base."
+    "Base desde 2001 (subsistemas, SIN e bacias) e desde 2016 (REE); periodo_base traz o primeiro e o último ano realmente usados e anos_na_base o tamanho amostral.",
+    "REE com perímetro mudado na reconfiguração de 29 e 30/12/2017 (SUL, PARANA, NORTE e os novos IGUACU, PARANAPANEMA, MANAUS-AMAPA) só têm base desde 2018 (detecção nos próprios arquivos).",
+    "capacidade_mudou_na_base sinaliza, em todos os recortes (subsistemas e SIN inclusive), EAR máxima que variou mais de 5% dentro da base ou cuja mediana difere da atual em mais de 5%."
    ],
-   "regra_cobertura": "Anos com valor no dia do calendário.",
-   "politica_ausencia": "Ano sem valor fica fora da distribuição.",
+   "regra_cobertura": "Anos com valor e EAR máxima positiva no dia do calendário; com menos de 5 anos não há faixa nem percentil.",
+   "politica_ausencia": "Ano sem valor fica fora da distribuição. EAR máxima zero (recorte sem armazenamento) = não se aplica: percentual, faixa e percentil nulos.",
    "validacoes": [
     "n por data publicado",
-    "faixa = abaixo, dentro ou acima pelos percentis 10 e 90"
+    "faixa = abaixo, dentro ou acima pelos percentis 10 e 90",
+    "quebra de perímetro dos REE detectada pela conservação da soma das EAR máximas na repartição"
    ],
    "limitacoes": [
     "Anos com capacidades diferentes têm o mesmo peso.",
@@ -261,7 +264,8 @@
    "grao_geografico": "SIN",
    "grao_temporal": "dia",
    "fontes": [
-    "ear_subsistema_di"
+    "ear_subsistema_di",
+    "ons_ear_subsistema_conferencia"
    ],
    "numerador": "Σ EAR verificada dos subsistemas (MWmês)",
    "denominador": "Σ EAR máxima dos subsistemas (MWmês)",
@@ -275,7 +279,7 @@
    "regras_comparabilidade": [
     "Percentual de capacidades diferentes ao longo do tempo: a EAR máxima mudou várias vezes desde 2000 (ver agua_ear_max_eventos)."
    ],
-   "regra_cobertura": "Só dias com os quatro subsistemas.",
+   "regra_cobertura": "Só dias com os quatro subsistemas; em cada ano vale a captura mais recente do arquivo anual (recaptura do módulo ou silver principal), e a revisão entre as duas fica publicada.",
    "politica_ausencia": "Dia sem algum subsistema fica sem SIN.",
    "validacoes": [
     "percentual publicado por subsistema = EAR ÷ EAR máxima (diferença máxima conferida em toda a série)",
@@ -303,6 +307,7 @@
    "grao_temporal": "janela móvel de 30 dias",
    "fontes": [
     "ena_subsistema_di",
+    "ons_ena_subsistema_conferencia",
     "ons_ena_ree_di",
     "ons_ena_bacia_di"
    ],
@@ -317,7 +322,8 @@
     "dia final da janela"
    ],
    "regras_comparabilidade": [
-    "A MLT do conjunto aberto muda (usinas novas e recálculos) e difere da MLT do PMO em vários meses (agua_mlt_versao)."
+    "A MLT do conjunto aberto muda (usinas novas, versões novas e retornos a versões anteriores) e difere da MLT do PMO em vários meses (agua_mlt_versao).",
+    "Faixa e percentil com a mesma janela nos anos da base (REE afetados pela reconfiguração de 2017 só desde 2018); menos de 5 anos: sem faixa."
    ],
    "regra_cobertura": "Janela com os 30 dias publicados.",
    "politica_ausencia": "Janela com dia ausente não é calculada.",
@@ -351,7 +357,7 @@
    ],
    "numerador": "MLT implícita do conjunto aberto (MWmed)",
    "denominador": "MLT do PMO (MWmed)",
-   "formula": "diferença = 100 × (MLT_aberto ÷ MLT_PMO − 1); revisão = mudança da MLT de uma usina fora do dia 1º",
+   "formula": "diferença = 100 × (MLT_aberto ÷ MLT_PMO − 1); revisão = mudança da MLT de uma usina fora do dia 1º; retorno = revisão cujos valores são iguais aos vigentes na mesma data 1 ou 2 anos antes",
    "regra_agregacao": "por subsistema e mês; dias coincidentes quando os quatro subsistemas ficam dentro de 0,05%",
    "natureza_fonte": "OBSERVADO",
    "natureza_transformacao": "CALCULADO",
@@ -367,10 +373,12 @@
    "politica_ausencia": "Mês sem relatório não é comparado.",
    "validacoes": [
     "tabela de 4 subsistemas × 2 meses lida inteira ou descartada",
-    "soma das MLT por usina = MLT implícita do subsistema"
+    "soma das MLT por usina = MLT implícita do subsistema",
+    "comparação entre anos pela MLT vigente no último dia do mês (o dia 15 pode cair numa versão provisória)",
+    "cita o relatório do PMO do próprio mês e lista todos os que publicam o mês"
    ],
    "limitacoes": [
-    "O ONS não publica o período histórico da MLT; a versão é inferida das mudanças observadas."
+    "O ONS não publica o período histórico da MLT; a versão é inferida das mudanças observadas, comparadas por igualdade com versões anteriores."
    ],
    "arquivo": "pipeline/energia/metricas/agua.py"
   },
@@ -455,6 +463,91 @@
     "Estimativa por satélite, não medição.",
     "Amostragem em grade de 1° (adensada em bacias pequenas), não integral da área.",
     "A bacia SANTA MARIA VIT não tem polígono no shapefile do ONS e fica sem chuva."
+   ],
+   "arquivo": "pipeline/energia/metricas/agua.py"
+  },
+  {
+   "gold": "agua_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/agua-e-clima"
+   ],
+   "versao_formula": "1.0",
+   "id": "agua_previsao_chuva_bacia",
+   "titulo": "Previsão de chuva por bacia",
+   "pergunta": "Quanto o modelo de previsão espera de chuva em cada bacia nos próximos dias?",
+   "definicao": "Precipitação diária prevista pela rodada de 00Z mais recente do ECMWF IFS 0,25° (Open-Meteo, API de rodadas individuais) nos mesmos pontos de grade da estimativa observada, média ponderada pela área; soma de 7 dias e do horizonte, ao lado da média 2001 a 2025 dos mesmos dias pelo IMERG.",
+   "unidade": "mm/dia (mm em 7 dias e no horizonte)",
+   "grao_geografico": "bacia hidroenergética do ONS",
+   "grao_temporal": "dia UTC, rodada",
+   "fontes": [
+    "clima_previsao",
+    "ons_bacia_contorno",
+    "clima_precipitacao_bacia"
+   ],
+   "formula": "P(b, d) = Σ cos(lat_i) passo_i² P_i(d) ÷ Σ cos(lat_i) passo_i²",
+   "regra_agregacao": "média ponderada pela área (dia com ao menos 80% do peso); só dias completos da rodada com valor em todas as bacias",
+   "natureza_fonte": "PREVISTO",
+   "natureza_transformacao": "PREVISTO",
+   "dimensoes": [
+    "bacia",
+    "dia",
+    "rodada"
+   ],
+   "regras_comparabilidade": [
+    "Previsão de modelo e climatologia de satélite são produtos diferentes: a comparação é de ordem de grandeza."
+   ],
+   "regra_cobertura": "Rodada de 00Z de hoje ou de ontem (UTC), publicada até 48 horas depois da emissão.",
+   "politica_ausencia": "Rodada indisponível ou lote com falha: nada é agregado e a pendência é publicada.",
+   "validacoes": [
+    "não negativa",
+    "número de pontos devolvidos = pedidos",
+    "emissão = rodada pedida"
+   ],
+   "limitacoes": [
+    "Previsão, não observação; substituída a cada rodada.",
+    "Sem avaliação de acerto neste módulo."
+   ],
+   "arquivo": "pipeline/energia/metricas/agua.py"
+  },
+  {
+   "gold": "agua_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/agua-e-clima"
+   ],
+   "versao_formula": "1.0",
+   "id": "agua_previsao_temperatura",
+   "titulo": "Previsão de temperatura por subsistema",
+   "pergunta": "Que temperatura o modelo de previsão espera nas áreas onde está a população de cada subsistema?",
+   "definicao": "Temperatura média e máxima diárias previstas pela rodada de 00Z mais recente do ECMWF IFS 0,25° nas mesmas células populosas da estimativa observada, ponderadas pela população (Censo 2022).",
+   "unidade": "°C",
+   "grao_geografico": "subsistema e SIN",
+   "grao_temporal": "dia UTC, rodada",
+   "fontes": [
+    "clima_previsao",
+    "ibge_localidades_2022",
+    "ibge_censo2022_populacao"
+   ],
+   "formula": "T(UF) = Σ pop_c T_c ÷ Σ pop_c; T(s) = Σ pop_UF T(UF) ÷ Σ pop_UF",
+   "regra_agregacao": "média ponderada pela população (80% por UF, 90% por subsistema)",
+   "natureza_fonte": "PREVISTO",
+   "natureza_transformacao": "PREVISTO",
+   "dimensoes": [
+    "recorte",
+    "dia",
+    "rodada"
+   ],
+   "regras_comparabilidade": [
+    "Dia UTC na previsão e hora solar local na reanálise observada; a climatologia ao lado é do MERRA-2."
+   ],
+   "regra_cobertura": "Mesma rodada da previsão de chuva.",
+   "politica_ausencia": "Sem rodada válida, sem previsão (pendência publicada).",
+   "validacoes": [
+    "intervalo físico",
+    "mesmas células e pesos da temperatura observada"
+   ],
+   "limitacoes": [
+    "Previsão, não observação.",
+    "Sem avaliação de acerto neste módulo."
    ],
    "arquivo": "pipeline/energia/metricas/agua.py"
   },
@@ -1261,6 +1354,497 @@
     "/setor-eletrico/conta-de-luz"
    ],
    "arquivo": "pipeline/energia/metricas/conta.py"
+  },
+  {
+   "gold": "publicacao.json",
+   "paginas": [
+    "/setor-eletrico/dados"
+   ],
+   "versao_formula": "1.0",
+   "natureza_fonte": "CALCULADO",
+   "natureza_transformacao": "CALCULADO",
+   "id": "dados_completude_interna",
+   "titulo": "Completude interna das séries de um conjunto",
+   "pergunta": "Há buracos no meio das séries que o conjunto traz?",
+   "definicao": "Referências distintas presentes divididas pelas esperadas entre a primeira e a última referência de cada série, no passo modal do conjunto, somadas sobre as séries.",
+   "unidade": "fração (0 a 1)",
+   "grao_geografico": "não se aplica",
+   "grao_temporal": "por conjunto e publicação",
+   "fontes": [
+    "silvers_declarados"
+   ],
+   "numerador": "Σ referências distintas presentes em cada série",
+   "denominador": "Σ referências esperadas de cada série entre a primeira e a última, no passo modal",
+   "formula": "completude = Σ presentes ÷ Σ esperadas, limitada a 1",
+   "regra_agregacao": "razão de somas (não média de razões por série)",
+   "dimensoes": [
+    "conjunto",
+    "grão"
+   ],
+   "regras_comparabilidade": [
+    "Só se calcula com passo modal seguido por pelo menos metade dos intervalos (cadência regular)."
+   ],
+   "regra_cobertura": "Séries de observações numéricas do silver com formato de referência regular (horária, diária, mensal, trimestral, anual).",
+   "politica_ausencia": "Série com cadência irregular ou cadastro sem período: completude não se aplica (campo ausente).",
+   "validacoes": [
+    "série com lacuna conhecida (silver de teste) dá completude < 1 com o número exato de faltas (teste do módulo)"
+   ],
+   "limitacoes": [
+    "Não acusa série que começou depois ou terminou antes (usina nova, distribuidora extinta): só lacunas internas.",
+    "Nas séries horárias, a referência é a hora local publicada pela fonte, sem fuso: hora que não existe ou se repete numa mudança de horário conta como a fonte a publicou.",
+    "Medida sobre a própria plataforma, recalculada a cada execução do pipeline; não descreve o setor elétrico."
+   ],
+   "arquivo": "pipeline/energia/metricas/dados.py"
+  },
+  {
+   "gold": "publicacao.json",
+   "paginas": [
+    "/setor-eletrico/dados"
+   ],
+   "versao_formula": "1.0",
+   "natureza_fonte": "CALCULADO",
+   "natureza_transformacao": "CALCULADO",
+   "id": "dados_conjuntos_publicados",
+   "titulo": "Conjuntos publicados no catálogo",
+   "pergunta": "Quantos conjuntos chegaram ao fim da escada, com evidência em cada etapa?",
+   "definicao": "Contagem de entradas do catálogo com estado PUBLICADO.",
+   "unidade": "conjuntos",
+   "grao_geografico": "não se aplica",
+   "grao_temporal": "por publicação",
+   "fontes": [
+    "catalogo_ckan_ons",
+    "catalogo_ckan_aneel",
+    "catalogo_ckan_ccee",
+    "catalogo_ccee_seed",
+    "silvers_declarados"
+   ],
+   "formula": "n = #{entradas : estado = PUBLICADO}",
+   "regra_agregacao": "contagem",
+   "dimensoes": [
+    "órgão",
+    "tema"
+   ],
+   "regras_comparabilidade": [
+    "Entre publicações, a contagem muda quando módulos integram conjuntos novos ou golds são reprovadas."
+   ],
+   "regra_cobertura": "Entradas de catalogo.json.",
+   "politica_ausencia": "Não se aplica (contagem).",
+   "validacoes": [
+    "publicados sem checagem reprovada no relatório e com gold consumidora íntegra (ficha conjuntos_publicados)"
+   ],
+   "limitacoes": [
+    "Medida sobre a própria plataforma, recalculada a cada execução do pipeline; não descreve o setor elétrico."
+   ],
+   "arquivo": "pipeline/energia/metricas/dados.py"
+  },
+  {
+   "gold": "publicacao.json",
+   "paginas": [
+    "/setor-eletrico/dados"
+   ],
+   "versao_formula": "1.0",
+   "natureza_fonte": "CALCULADO",
+   "natureza_transformacao": "CALCULADO",
+   "id": "dados_equivalencia_parquet",
+   "titulo": "Equivalência entre CSV e Parquet",
+   "pergunta": "O arquivo Parquet tem exatamente o mesmo conteúdo do CSV?",
+   "definicao": "Parquet relido em lotes e comparado com o CSV célula a célula: texto igual, inteiro igual como texto, número igual ao número escrito no CSV e vazio igual a nulo.",
+   "unidade": "células divergentes",
+   "grao_geografico": "não se aplica",
+   "grao_temporal": "por arquivo e publicação",
+   "fontes": [
+    "silvers_declarados"
+   ],
+   "formula": "divergências = Σ células com valor Parquet ≠ valor CSV; equivalente ⇔ divergências = 0 e mesmas linhas",
+   "regra_agregacao": "contagem de arquivos equivalentes (resumo.parquet)",
+   "dimensoes": [
+    "arquivo"
+   ],
+   "regras_comparabilidade": [
+    "Colunas de código (CNPJ, IBGE, CEG) ficam como texto para não perder zero à esquerda."
+   ],
+   "regra_cobertura": "Todo CSV de public/energia/series com pelo menos 2 MiB.",
+   "politica_ausencia": "Célula vazia do CSV é nulo no Parquet; nunca zero.",
+   "validacoes": [
+    "CSV com zero à esquerda, vazio e decimal relido idêntico (teste do módulo)"
+   ],
+   "limitacoes": [
+    "Número do CSV com mais de 17 dígitos significativos não é representável em float64; a conferência célula a célula desta publicação acusaria a perda como divergência.",
+    "Medida sobre a própria plataforma, recalculada a cada execução do pipeline; não descreve o setor elétrico."
+   ],
+   "arquivo": "pipeline/energia/metricas/dados.py"
+  },
+  {
+   "gold": "publicacao.json",
+   "paginas": [
+    "/setor-eletrico/dados"
+   ],
+   "versao_formula": "1.0",
+   "natureza_fonte": "CALCULADO",
+   "natureza_transformacao": "CALCULADO",
+   "id": "dados_estado_catalogo",
+   "titulo": "Estado do conjunto no catálogo",
+   "pergunta": "Até onde este conjunto chegou: só catalogado, arquivo acessado, integrado, validado ou publicado?",
+   "definicao": "Última etapa alcançada em sequência na escada catalogado → recurso verificado → integrado → validado → publicado; cada etapa exige a sua evidência e uma etapa sem evidência interrompe a escada.",
+   "unidade": "categoria (CATALOGADO, RECURSO VERIFICADO, INTEGRADO, VALIDADO, PUBLICADO)",
+   "grao_geografico": "não se aplica (conjunto de dados)",
+   "grao_temporal": "por publicação",
+   "fontes": [
+    "catalogo_ckan_ons",
+    "catalogo_ckan_aneel",
+    "catalogo_ckan_ccee",
+    "catalogo_ccee_seed",
+    "verificacao_recursos",
+    "silvers_declarados"
+   ],
+   "formula": "estado = última etapa e_k com ok(e_1) ∧ … ∧ ok(e_k); catalogado = listagem do portal, package_show versionado, REGISTRO com URL e licença ou cadastro manual; recurso verificado = vintage com sha256 ou leitura parcial com HTTP 200/206; integrado = vintage e conteúdo extraído (ou documento guardado); validado = nenhuma checagem reprovada do conjunto; publicado = alguma gold consumidora íntegra e não reprovada",
+   "regra_agregacao": "contagem de conjuntos por estado (resumo.por_estado e catalogo.contagem)",
+   "dimensoes": [
+    "órgão",
+    "tema",
+    "estado",
+    "papel de uso"
+   ],
+   "regras_comparabilidade": [
+    "O estado é o desta publicação: um conjunto pode voltar de PUBLICADO para VALIDADO se a gold que o consome for reprovada no contrato.",
+    "Uso (indicador, modelo, conferência, contexto, histórico) é outro eixo e não muda o estado."
+   ],
+   "regra_cobertura": "Todos os conjuntos das listagens do ONS, da ANEEL e da CCEE, os declarados nos REGISTRO e o cadastro manual.",
+   "politica_ausencia": "Etapa sem evidência é etapa não alcançada; nunca é presumida.",
+   "validacoes": [
+    "escada sem salto: etapa com evidência depois de etapa sem evidência vira ressalva visível (catalogo.saltos)",
+    "publicado conferido contra o relatório de checagens e a varredura das golds (ficha conjuntos_publicados)"
+   ],
+   "limitacoes": [
+    "Recurso verificado por requisição parcial lê só os primeiros 64 KB de um arquivo do conjunto.",
+    "Cadastro manual (catalogo_manual.json) fica em CATALOGADO com metadados não verificados na fonte.",
+    "Medida sobre a própria plataforma, recalculada a cada execução do pipeline; não descreve o setor elétrico."
+   ],
+   "arquivo": "pipeline/energia/metricas/dados.py"
+  },
+  {
+   "gold": "publicacao.json",
+   "paginas": [
+    "/setor-eletrico/dados"
+   ],
+   "versao_formula": "1.0",
+   "natureza_fonte": "CALCULADO",
+   "natureza_transformacao": "CALCULADO",
+   "id": "dados_estado_recurso",
+   "titulo": "Estado de cada recurso (arquivo) de um conjunto",
+   "pergunta": "Quais arquivos de um conjunto o pipeline realmente acessou?",
+   "definicao": "Estado de cada recurso listado pelo portal: herda o estado da integração declarada que o capturou com sha256; RECURSO VERIFICADO se foi baixado por outro dataset ou lido por requisição parcial; CATALOGADO nos demais. Recurso que sumiu da listagem fica como removido pela fonte.",
+   "unidade": "categoria por recurso; contagem de recursos por estado",
+   "grao_geografico": "não se aplica",
+   "grao_temporal": "por publicação",
+   "fontes": [
+    "catalogo_ckan_ons",
+    "catalogo_ckan_aneel",
+    "catalogo_ckan_ccee",
+    "catalogo_ccee_seed",
+    "verificacao_recursos",
+    "silvers_declarados"
+   ],
+   "formula": "vínculo recurso ↔ captura pela URL normalizada (esquema e host em minúsculas, caminho decodificado, sem barra final)",
+   "regra_agregacao": "contagem por conjunto (recursos_resumo) e por portal (catalogo.recursos)",
+   "dimensoes": [
+    "órgão",
+    "conjunto",
+    "formato",
+    "estado"
+   ],
+   "regras_comparabilidade": [
+    "Um conjunto com muitos arquivos anuais e só o ano corrente integrado tem poucos recursos acessados sem que isso seja falha: a cobertura de anos está no conjunto do silver."
+   ],
+   "regra_cobertura": "Recursos das listagens package_search (ONS, ANEEL, CCEE) ou dos package_show versionados quando a listagem falha.",
+   "politica_ausencia": "Recurso sem captura nem verificação fica CATALOGADO; URL ausente não casa com captura nenhuma.",
+   "validacoes": [
+    "contagem por estado igual à soma das linhas de dados_recursos_<orgao>.csv (teste do módulo)"
+   ],
+   "limitacoes": [
+    "URL que muda a cada publicação (token do servidor) quebra o vínculo com a captura anterior.",
+    "Medida sobre a própria plataforma, recalculada a cada execução do pipeline; não descreve o setor elétrico."
+   ],
+   "arquivo": "pipeline/energia/metricas/dados.py"
+  },
+  {
+   "gold": "manifesto.json",
+   "paginas": [
+    "/setor-eletrico/dados",
+    "/setor-eletrico/metodologia"
+   ],
+   "versao_formula": "1.0",
+   "natureza_fonte": "CALCULADO",
+   "natureza_transformacao": "CALCULADO",
+   "id": "dados_id_publicacao",
+   "titulo": "Identificador da publicação",
+   "pergunta": "Qual é a versão exata dos arquivos que geraram esta página?",
+   "definicao": "sha256 da lista [caminho, bytes, sha256] de todos os arquivos publicados (golds, séries, Parquet e geometrias), em ordem de caminho, serializada em JSON sem espaços: o mesmo conjunto de bytes tem o mesmo id.",
+   "unidade": "hexadecimal de 64 caracteres",
+   "grao_geografico": "não se aplica",
+   "grao_temporal": "por publicação",
+   "fontes": [
+    "silvers_declarados"
+   ],
+   "formula": "id = sha256(json([[caminho, bytes, sha256], …] ordenado por caminho, separadores ',' e ':'))",
+   "regra_agregacao": "não se aplica",
+   "dimensoes": [
+    "publicação"
+   ],
+   "regras_comparabilidade": [
+    "Dois ids iguais garantem os mesmos bytes; ids diferentes não dizem o quanto mudou (ver o manifesto)."
+   ],
+   "regra_cobertura": "Arquivos de public/energia/gold, public/energia/series e public/energia/geo; os quatro reescritos pelo orquestrador depois do módulo dados ficam em fora_do_manifesto até a chamada final.",
+   "politica_ausencia": "Arquivo ilegível entra com o sha256 dos bytes e legivel = falso.",
+   "validacoes": [
+    "id recalculado a partir das entradas do manifesto (teste do módulo e teste de contrato TS)",
+    "sha256 e tamanho de cada arquivo listado conferidos contra o disco (teste do módulo)"
+   ],
+   "limitacoes": [
+    "O silver (vintages) não é publicado no git; reproduzir uma gold exige o silver da release energia-estado.",
+    "Medida sobre a própria plataforma, recalculada a cada execução do pipeline; não descreve o setor elétrico."
+   ],
+   "arquivo": "pipeline/energia/metricas/dados.py"
+  },
+  {
+   "gold": "publicacao.json",
+   "paginas": [
+    "/setor-eletrico/dados"
+   ],
+   "versao_formula": "1.0",
+   "natureza_fonte": "CALCULADO",
+   "natureza_transformacao": "CALCULADO",
+   "id": "dados_revisao_maior_absoluta",
+   "titulo": "Maior revisão absoluta",
+   "pergunta": "Qual foi a maior mudança, na unidade da própria série, num valor já publicado?",
+   "definicao": "Maior |novo − anterior| entre os eventos de revisão do conjunto, com a série, a referência e as capturas.",
+   "unidade": "unidade da série revisada",
+   "grao_geografico": "não se aplica",
+   "grao_temporal": "por conjunto",
+   "fontes": [
+    "silvers_declarados"
+   ],
+   "formula": "max |novo − anterior|",
+   "regra_agregacao": "máximo entre eventos",
+   "dimensoes": [
+    "conjunto"
+   ],
+   "regras_comparabilidade": [
+    "Só se compara dentro da mesma série: conjuntos misturam unidades (MWmed, R$/MWh, %)."
+   ],
+   "regra_cobertura": "Todos os eventos de revisão do conjunto.",
+   "politica_ausencia": "Sem evento de revisão: campo ausente.",
+   "validacoes": [
+    "mesmo evento relido do silver de teste com os valores conhecidos (teste do módulo)"
+   ],
+   "limitacoes": [
+    "Medida sobre a própria plataforma, recalculada a cada execução do pipeline; não descreve o setor elétrico."
+   ],
+   "arquivo": "pipeline/energia/metricas/dados.py"
+  },
+  {
+   "gold": "publicacao.json",
+   "paginas": [
+    "/setor-eletrico/dados"
+   ],
+   "versao_formula": "1.0",
+   "natureza_fonte": "CALCULADO",
+   "natureza_transformacao": "CALCULADO",
+   "id": "dados_revisao_maior_relativa",
+   "titulo": "Maior revisão relativa",
+   "pergunta": "Qual foi a maior mudança proporcional que a fonte fez num valor já publicado?",
+   "definicao": "Maior |novo − anterior| ÷ |anterior| entre os eventos de revisão do conjunto, com a série, a referência e as capturas.",
+   "unidade": "%",
+   "grao_geografico": "não se aplica",
+   "grao_temporal": "por conjunto",
+   "fontes": [
+    "silvers_declarados"
+   ],
+   "numerador": "|valor novo − valor anterior| (unidade da série)",
+   "denominador": "|valor anterior| (unidade da série)",
+   "formula": "100 × |novo − anterior| ÷ |anterior|",
+   "regra_agregacao": "máximo entre eventos",
+   "dimensoes": [
+    "conjunto"
+   ],
+   "regras_comparabilidade": [
+    "Valor anterior perto de zero infla a relativa: leia junto com a maior revisão absoluta."
+   ],
+   "regra_cobertura": "Eventos com valor anterior diferente de zero; os que partem de zero são contados à parte (a_partir_de_zero).",
+   "politica_ausencia": "Sem evento de revisão: campo ausente.",
+   "validacoes": [
+    "valores de antes e depois lidos das duas vintages no silver (ficha maior_revisao_relativa)"
+   ],
+   "limitacoes": [
+    "Não indica por que a fonte revisou (consistência, reprocessamento, correção).",
+    "Medida sobre a própria plataforma, recalculada a cada execução do pipeline; não descreve o setor elétrico."
+   ],
+   "arquivo": "pipeline/energia/metricas/dados.py"
+  },
+  {
+   "gold": "publicacao.json",
+   "paginas": [
+    "/setor-eletrico/dados"
+   ],
+   "versao_formula": "1.0",
+   "natureza_fonte": "CALCULADO",
+   "natureza_transformacao": "CALCULADO",
+   "id": "dados_revisoes_alcance",
+   "titulo": "Alcance das revisões da fonte",
+   "pergunta": "Quantas referências a fonte mudou depois de publicar, em quantas séries e em que período?",
+   "definicao": "Revisão é a troca de valor de uma mesma (série, referência) entre capturas consecutivas do silver. Conta-se eventos, referências e séries afetadas e o intervalo de referências revisadas.",
+   "unidade": "referências, séries e eventos",
+   "grao_geografico": "não se aplica",
+   "grao_temporal": "por conjunto e dia de captura",
+   "fontes": [
+    "silvers_declarados"
+   ],
+   "formula": "revisão ⇔ |valor_novo − valor_anterior| > 1e-9 na mesma (série, referência), capturas em ordem",
+   "regra_agregacao": "contagem exata por conjunto; calendário por dia da captura que trouxe o valor novo",
+   "dimensoes": [
+    "conjunto",
+    "série",
+    "referência",
+    "dia de captura"
+   ],
+   "regras_comparabilidade": [
+    "Conjunto com mais capturas tem mais oportunidade de revelar revisões."
+   ],
+   "regra_cobertura": "Conjuntos com pelo menos duas capturas do mesmo arquivo.",
+   "politica_ausencia": "Referência ausente numa captura não é revisão (ausência não vira zero).",
+   "validacoes": [
+    "revisão sintética conhecida num silver de teste é encontrada com os valores de antes e depois (teste do módulo)"
+   ],
+   "limitacoes": [
+    "Só há revisão detectável a partir da segunda captura de um mesmo arquivo.",
+    "Os silvers deste ambiente foram reconstruídos entre 29/09 e 01/10/2026: capturas, falhas e revisões anteriores a essas datas não estão registradas.",
+    "Medida sobre a própria plataforma, recalculada a cada execução do pipeline; não descreve o setor elétrico."
+   ],
+   "arquivo": "pipeline/energia/metricas/dados.py"
+  },
+  {
+   "gold": "publicacao.json",
+   "paginas": [
+    "/setor-eletrico/dados"
+   ],
+   "versao_formula": "1.0",
+   "natureza_fonte": "CALCULADO",
+   "natureza_transformacao": "CALCULADO",
+   "id": "dados_situacao_atualidade",
+   "titulo": "Atualidade do conjunto (SLA pela frequência declarada)",
+   "pergunta": "O conjunto está em dia com a frequência que a própria fonte promete?",
+   "definicao": "EM DIA quando hoje não passou do prazo do próximo período; ATRASADO quando passou; SEM SLA quando a fonte não declara frequência legível (ou o conjunto foi descontinuado); SEM DADO quando não há período de referência nem data de publicação informada pela fonte.",
+   "unidade": "categoria; dias de atraso",
+   "grao_geografico": "não se aplica",
+   "grao_temporal": "dia da validação (Brasília)",
+   "fontes": [
+    "catalogo_ckan_ons",
+    "catalogo_ckan_aneel",
+    "catalogo_ckan_ccee",
+    "metadados_fontes",
+    "silvers_declarados"
+   ],
+   "formula": "prazo = fim do período seguinte ao último disponível + tolerância (caso A e C); fim do último período + período da cadência + tolerância (caso B, e caso D quando a data da fonte não acompanha o conteúdo); publicação informada pela fonte + período da cadência + tolerância (caso D). Tolerâncias: diária 2, semanal 7, quinzenal 15, mensal 60, trimestral 90, anual 365 dias; dias_atraso = hoje − prazo",
+   "regra_agregacao": "contagem de conjuntos por situação (resumo.por_situacao)",
+   "dimensoes": [
+    "conjunto",
+    "cadência",
+    "caso da regra"
+   ],
+   "regras_comparabilidade": [
+    "Atraso de conjunto diário e de conjunto anual não têm a mesma escala: compare dentro da cadência.",
+    "Caso C usa o grão do dado porque a frequência declarada pelo ONS é o horário da rotina do portal ('Diariamente, às 12h e 19h'), não a promessa de um período novo por dia."
+   ],
+   "regra_cobertura": "Conjuntos integrados com frequência declarada no portal, nos metadados da fonte (SIDRA, CKAN da CVM e do MME) ou no REGISTRO do módulo.",
+   "politica_ausencia": "Sem frequência declarada não se inventa uma: SEM SLA. A data da captura nunca entra no cálculo.",
+   "validacoes": [
+    "último período publicado igual ao MAX(ref) relido no silver por consulta direta nos conjuntos com falha de coleta",
+    "todo ATRASADO tem prazo anterior a hoje (ficha conjuntos_atrasados)"
+   ],
+   "limitacoes": [
+    "Frequência declarada em texto livre é lida por expressões regulares (ckan_dados.frequencias_canonicas).",
+    "A data de modificação informada pela CCEE não acompanha o conteúdo dos arquivos: o caso D a substitui pelo fim do último período quando o arquivo traz período posterior a ela.",
+    "Medida sobre a própria plataforma, recalculada a cada execução do pipeline; não descreve o setor elétrico."
+   ],
+   "arquivo": "pipeline/energia/metricas/dados.py"
+  },
+  {
+   "gold": "publicacao.json",
+   "paginas": [
+    "/setor-eletrico/dados"
+   ],
+   "versao_formula": "1.0",
+   "natureza_fonte": "CALCULADO",
+   "natureza_transformacao": "CALCULADO",
+   "id": "dados_situacao_validacao_ficha",
+   "titulo": "Situação da validação de um número publicado",
+   "pergunta": "O número que aparece na página foi conferido por outro caminho?",
+   "definicao": "Eixo separado da natureza (seção 11.3): reconciliação aprovada, controles internos aprovados, ressalva, divergência ou pendência, a partir dos testes e da reconciliação da ficha 'Comprove este número'.",
+   "unidade": "categoria",
+   "grao_geografico": "não se aplica",
+   "grao_temporal": "por publicação",
+   "fontes": [
+    "silvers_declarados"
+   ],
+   "formula": "divergência se teste ou reconciliação reprovado; ressalva se algum com ressalva; reconciliação aprovada se a reconciliação aprovou; controles aprovados se todos os testes aprovaram; pendência nos demais",
+   "regra_agregacao": "matriz natureza × situação (eixos.matriz)",
+   "dimensoes": [
+    "gold",
+    "natureza",
+    "situação"
+   ],
+   "regras_comparabilidade": [
+    "Calculado não quer dizer menos confiável, e observado não quer dizer livre de erro."
+   ],
+   "regra_cobertura": "Toda ficha de evidência encontrada nas golds (objeto com valor_exibido, testes e fonte).",
+   "politica_ausencia": "Ficha sem teste nem reconciliação: pendência.",
+   "validacoes": [
+    "natureza vinculada pela proveniência de mesmo indicador na mesma gold; sem vínculo, SEM_VINCULO declarado"
+   ],
+   "limitacoes": [
+    "A qualidade da reconciliação depende do que cada módulo registrou na ficha.",
+    "Medida sobre a própria plataforma, recalculada a cada execução do pipeline; não descreve o setor elétrico."
+   ],
+   "arquivo": "pipeline/energia/metricas/dados.py"
+  },
+  {
+   "gold": "publicacao.json",
+   "paginas": [
+    "/setor-eletrico/dados"
+   ],
+   "versao_formula": "1.0",
+   "natureza_fonte": "CALCULADO",
+   "natureza_transformacao": "CALCULADO",
+   "id": "dados_veredito_validacao",
+   "titulo": "Veredito das validações automáticas",
+   "pergunta": "As checagens automáticas aprovaram esta gold, este CSV ou este conjunto?",
+   "definicao": "Pior resultado entre as checagens aplicáveis ao alvo: reprovado > ressalva > aprovado; não aplicável não conta. Checagens: esquema e JSON estrito, proveniência completa, links existentes, datas futuras, drift de esquema em relação ao último commit, tamanho; nos CSV, colunas, ausência textual, duplicadas, chave inferida, datas futuras e dicionário; identidades de agregação declaradas; nos conjuntos, sha256 das capturas e do original, horizonte e drift do cabeçalho da fonte.",
+   "unidade": "categoria (aprovado, ressalva, reprovado, nao_aplicavel)",
+   "grao_geografico": "não se aplica",
+   "grao_temporal": "por publicação",
+   "fontes": [
+    "silvers_declarados"
+   ],
+   "formula": "veredito = max_gravidade(resultado das checagens aplicáveis)",
+   "regra_agregacao": "contagem de checagens por resultado (resumo.validacao) e de alvos por veredito",
+   "dimensoes": [
+    "tipo de alvo",
+    "tipo de checagem"
+   ],
+   "regras_comparabilidade": [
+    "Divergência entre total e partes publicados pela própria fonte é ressalva; total calculado pela plataforma que não fecha é reprovado."
+   ],
+   "regra_cobertura": "Todas as golds de public/energia/gold, todos os CSV de public/energia/series e todos os conjuntos declarados.",
+   "politica_ausencia": "Alvo sem checagem aplicável: nao_aplicavel, nunca aprovado.",
+   "validacoes": [
+    "casos de teste com JSON com NaN, link quebrado, CSV com coluna torta e ausência escrita como texto são reprovados (teste do módulo)"
+   ],
+   "limitacoes": [
+    "A chave única dos CSV é inferida pelo nome e pelo tipo das colunas; ressalva de chave pede conferência humana.",
+    "Identidades de agregação só valem para as declaradas em validacoes.IDENTIDADES.",
+    "Medida sobre a própria plataforma, recalculada a cada execução do pipeline; não descreve o setor elétrico."
+   ],
+   "arquivo": "pipeline/energia/metricas/dados.py"
   },
   {
    "id": "empresas_ativo_total",
@@ -5328,12 +5912,13 @@
     "Ano parcial (o da data do cadastro) não entra em comparação de crescimento; usa-se o último ano completo."
    ],
    "regra_cobertura": "Igual à de unidades.",
-   "politica_ausencia": "Combinação sem registro no cadastro = zero empreendimentos (o arquivo é o cadastro completo); potência ausente em um registro não vira zero: a unidade conta e a potência fica fora da soma, contada no controle; data sentinela (ano < 2000) = sem ano de conexão, no estoque e fora das séries por ano.",
+   "politica_ausencia": "Combinação sem registro no cadastro = zero empreendimentos (o arquivo é o cadastro completo), dentro da cobertura declarada pela ANEEL (a partir de dez/2008); antes dela, período sem registro = nulo rotulado (cobertura_declarada fora ou parcial), e registro existente é publicado com o rótulo. Potência ausente em um registro não vira zero: a unidade conta, a potência fica fora da soma, cada agregado traz unidades_sem_potencia (soma parcial) e agregado sem nenhuma potência informada publica potência nula. Data sentinela (ano < 2000) = sem ano de conexão, no estoque e fora das séries por ano.",
    "validacoes": [
     "Código de empreendimento único no arquivo (repetição derruba a publicação).",
     "Identidade de agregação: soma por município = soma por UF e mês = soma por distribuidora = soma por distribuidora e município = linhas do arquivo.",
     "Identidade de estoque: estoque acumulado por data de conexão (séries anual e mensal) + unidades com data sentinela = total do cadastro, em unidades (exato) e kW (0,01 kW); diferença derruba a publicação.",
-    "Área da distribuidora: unidades em UF onde o CNPJ da distribuidora não tem conjunto elétrico (base de continuidade da ANEEL) são contadas por município e sinalizadas, sem correção.",
+    "Área da distribuidora: unidades em UF onde o CNPJ da distribuidora não tem conjunto elétrico (base de continuidade da ANEEL) são contadas por município e sinalizadas, sem correção, e separadas pelo CEP publicado em provável município errado (CEP na área da distribuidora), provável distribuidora errada (CEP, código do empreendimento e UF publicada na UF do município) e indeterminadas; as classes somam o total sinalizado (diferença derruba a publicação).",
+    "Unidades sem potência nos agregados = registros com potência ausente ou negativa no arquivo (diferença derruba a publicação).",
     "Potência não negativa; datas não posteriores à data de geração do conjunto.",
     "Data de conexão conferida com DatConexao do recurso técnico fotovoltaico, pelo código.",
     "Parquet e CSV oficiais do mesmo conjunto conferidos entre si por UF e ano (30/09/2026)."
@@ -5342,8 +5927,8 @@
     "O cadastro é o vigente na data do arquivo; unidades desativadas não aparecem no histórico.",
     "Meses recentes provisórios: conexões desses meses ainda podem entrar em capturas seguintes; a queda nos meses finais do arquivo não tem causa atribuída.",
     "Duplicidade candidata medida e não removida (CPF e CEP de pessoa física vêm tarjados).",
-    "Há unidades com município de outra área de concessão (provável código de município errado na origem): ficam no município publicado, sinalizadas, e podem inflar números municipais.",
-    "Minigeração em autoconsumo remoto fica no município da usina, não no de quem usa o crédito."
+    "Há unidades cadastradas em UF onde a distribuidora informada não tem conjunto elétrico: algum campo está errado na origem. Pelo CEP, parte provavelmente tem o município errado (infla o município publicado) e parte provavelmente tem o CNPJ errado (fica no município publicado e infla o total da distribuidora informada); ficam sinalizadas, sem correção.",
+    "Minigeração em autoconsumo remoto e em geração compartilhada fica no município da usina, não no de quem usa o crédito: no autoconsumo remoto a energia compensa outras unidades do mesmo titular, e na geração compartilhada o consumo dos participantes de consórcio, cooperativa, condomínio ou associação (definições da ANEEL), possivelmente em outro município."
    ],
    "gold": "transicao.json",
    "paginas": [
@@ -5382,12 +5967,13 @@
    "politica_ausencia": "Município sem população publicada: razão ausente (não zero). Município sem MMGD: zero real.",
    "validacoes": [
     "Soma municipal da população igual à da UF publicada pelo IBGE (conferida no teste com amostra real).",
-    "Município com unidades de distribuidora sem conjunto elétrico na UF fica sinalizado, com a contagem e os kW dessas unidades."
+    "Município com unidades de distribuidora sem conjunto elétrico na UF fica sinalizado, com a contagem e os kW dessas unidades e de cada classe pelo CEP.",
+    "Município com unidade sem potência informada fica fora dos rankings e dos quantis (soma parcial)."
    ],
    "limitacoes": [
     "População é estimativa do IBGE para 1º de julho do ano, não contagem censitária.",
     "Capacidade instalada cadastrada, não energia gerada.",
-    "Em município sinalizado, a razão inclui unidades provavelmente cadastradas com o município errado e pode estar inflada (ex.: São Caetano de Odivelas, PA, com 185 de 249 unidades da Neoenergia PE)."
+    "Em município com unidades da classe de provável município errado (CEP publicado numa UF da área da distribuidora), a razão inclui unidades que provavelmente ficam em outro município e pode estar inflada (ex.: São Caetano de Odivelas, PA, com 185 de 249 unidades da Neoenergia PE); para refazê-la, desconte só essa classe (colunas do CSV municipal). A classe de provável distribuidora errada (CEP, código e UF publicada na UF do município) fica no município publicado e não infla a razão municipal."
    ],
    "gold": "transicao.json",
    "paginas": [
@@ -5425,13 +6011,14 @@
     "Unidade de MMGD não é domicílio nem consumidor: uma unidade pode repartir créditos com várias outras.",
     "Ano parcial (o da data do cadastro) não entra em comparação de crescimento; usa-se o último ano completo."
    ],
-   "regra_cobertura": "Todas as distribuidoras que enviaram dados ao sistema de MMGD da ANEEL; conexões desde dez/2008 (cobertura declarada).",
-   "politica_ausencia": "Combinação sem registro no cadastro = zero empreendimentos (o arquivo é o cadastro completo); potência ausente em um registro não vira zero: a unidade conta e a potência fica fora da soma, contada no controle; data sentinela (ano < 2000) = sem ano de conexão, no estoque e fora das séries por ano.",
+   "regra_cobertura": "Todas as distribuidoras que enviaram dados ao sistema de MMGD da ANEEL; cobertura declarada a partir de dez/2008 (registro anterior publicado com rótulo; período anterior sem registro nulo, não zero).",
+   "politica_ausencia": "Combinação sem registro no cadastro = zero empreendimentos (o arquivo é o cadastro completo), dentro da cobertura declarada pela ANEEL (a partir de dez/2008); antes dela, período sem registro = nulo rotulado (cobertura_declarada fora ou parcial), e registro existente é publicado com o rótulo. Potência ausente em um registro não vira zero: a unidade conta, a potência fica fora da soma, cada agregado traz unidades_sem_potencia (soma parcial) e agregado sem nenhuma potência informada publica potência nula. Data sentinela (ano < 2000) = sem ano de conexão, no estoque e fora das séries por ano.",
    "validacoes": [
     "Código de empreendimento único no arquivo (repetição derruba a publicação).",
     "Identidade de agregação: soma por município = soma por UF e mês = soma por distribuidora = soma por distribuidora e município = linhas do arquivo.",
     "Identidade de estoque: estoque acumulado por data de conexão (séries anual e mensal) + unidades com data sentinela = total do cadastro, em unidades (exato) e kW (0,01 kW); diferença derruba a publicação.",
-    "Área da distribuidora: unidades em UF onde o CNPJ da distribuidora não tem conjunto elétrico (base de continuidade da ANEEL) são contadas por município e sinalizadas, sem correção.",
+    "Área da distribuidora: unidades em UF onde o CNPJ da distribuidora não tem conjunto elétrico (base de continuidade da ANEEL) são contadas por município e sinalizadas, sem correção, e separadas pelo CEP publicado em provável município errado (CEP na área da distribuidora), provável distribuidora errada (CEP, código do empreendimento e UF publicada na UF do município) e indeterminadas; as classes somam o total sinalizado (diferença derruba a publicação).",
+    "Unidades sem potência nos agregados = registros com potência ausente ou negativa no arquivo (diferença derruba a publicação).",
     "Potência não negativa; datas não posteriores à data de geração do conjunto.",
     "Data de conexão conferida com DatConexao do recurso técnico fotovoltaico, pelo código.",
     "Parquet e CSV oficiais do mesmo conjunto conferidos entre si por UF e ano (30/09/2026)."
@@ -5440,7 +6027,7 @@
     "O cadastro é o vigente na data do arquivo; unidades desativadas não aparecem no histórico.",
     "Meses recentes provisórios: conexões desses meses ainda podem entrar em capturas seguintes; a queda nos meses finais do arquivo não tem causa atribuída.",
     "Duplicidade candidata medida e não removida (CPF e CEP de pessoa física vêm tarjados).",
-    "Há unidades com município de outra área de concessão (provável código de município errado na origem): ficam no município publicado, sinalizadas, e podem inflar números municipais."
+    "Há unidades cadastradas em UF onde a distribuidora informada não tem conjunto elétrico: algum campo está errado na origem. Pelo CEP, parte provavelmente tem o município errado (infla o município publicado) e parte provavelmente tem o CNPJ errado (fica no município publicado e infla o total da distribuidora informada); ficam sinalizadas, sem correção."
    ],
    "gold": "transicao.json",
    "paginas": [
@@ -5523,7 +6110,7 @@
     "Valores não negativos (o dicionário não admite negativo)."
    ],
    "limitacoes": [
-    "Estimativa do ONS, não medição.",
+    "Estimativa do ONS, não medição: o ONS a chama de valor estimado e a separa, no dicionário da carga verificada, da parcela supervisionada; os documentos consultados não descrevem o método.",
     "O ONS revisa o histórico; meses antigos são recoletados a cada 30 dias."
    ],
    "gold": "transicao.json",
@@ -5561,7 +6148,7 @@
    "regra_cobertura": "Dias completos.",
    "politica_ausencia": "Mês sem dia completo: ausente.",
    "validacoes": [
-    "Participação entre 0 e 100%."
+    "Participação entre 0 e 100%, executada a cada publicação: mês (submercado ou SIN) ou ano fora do intervalo derruba a publicação (stub); dia com MMGD negativa ou maior que a carga global vira ressalva na proveniência."
    ],
    "limitacoes": [
     "Herda a natureza estimada da parcela de MMGD."
@@ -6108,10 +6695,12 @@
    "regra_cobertura": "Horas com os quatro submercados.",
    "politica_ausencia": "Hora sem PLD publicado não entra no cálculo nem vira zero; o número de horas usadas acompanha cada valor.",
    "validacoes": [
-    "amplitude ≥ 0"
+    "amplitude ≥ 0",
+    "horas acima de R$ 1,00/MWh iguais às de pld.json nas mesmas janelas"
    ],
    "limitacoes": [
-    "Estatística descritiva: não identifica causa."
+    "Estatística descritiva: não identifica causa.",
+    "horas_com_separacao usa R$ 0,01/MWh; horas_acima_1 (R$ 1,00/MWh) é o limiar de pld.json. As duas contagens medem coisas diferentes e não devem aparecer lado a lado sem o limiar."
    ],
    "arquivo": "pipeline/energia/metricas/pld.py"
   },
@@ -6339,7 +6928,8 @@
     "quantidade de submercados no piso"
    ],
    "regras_comparabilidade": [
-    "Horas empatadas no piso têm diferença de preço zero por construção dos limites."
+    "Horas empatadas no piso têm diferença de preço zero por construção dos limites.",
+    "Ano parcial marcado (parcial = true); não compete com ano completo sem aviso."
    ],
    "regra_cobertura": "Horas com os quatro submercados.",
    "politica_ausencia": "Hora sem PLD publicado não entra no cálculo nem vira zero; o número de horas usadas acompanha cada valor.",
@@ -6482,28 +7072,31 @@
    ],
    "versao_formula": "1.0",
    "id": "pld_media_mensal_ponderada_carga",
-   "titulo": "PLD médio mensal ponderado pela carga",
-   "pergunta": "Qual foi o PLD médio do mês pesando cada hora pela carga do subsistema?",
-   "definicao": "Soma do PLD vezes a carga verificada do subsistema na mesma hora, dividida pela soma da carga, nas horas com carga publicada e positiva.",
+   "titulo": "PLD médio mensal ponderado pela carga do balanço do ONS",
+   "pergunta": "Qual foi o PLD médio do mês pesando cada hora pela carga do subsistema no balanço do ONS?",
+   "definicao": "Soma do PLD vezes a carga do subsistema no Balanço de Energia nos Subsistemas do ONS na mesma hora, dividida pela soma da carga, nas horas com carga publicada e positiva. O perímetro dessa carga muda dentro da série: até 02/2021, carga atendida por usinas despachadas ou programadas pelo ONS (P1); de 03/2021 a 04/2023, mais a previsão de geração de usinas não despachadas (P2); desde 29/04/2023, mais a MMGD estimada pelo ONS com base em dados meteorológicos previstos (P3; no dado horário do balanço, desde 01/05/2023).",
    "unidade": "R$/MWh",
    "grao_geografico": "submercado (peso: subsistema de mesmo nome)",
-   "grao_temporal": "mês",
+   "grao_temporal": "mês (perímetro do peso marcado)",
    "fontes": [
     "ccee_pld_horario",
-    "balanco_energia_subsistema_ho"
+    "balanco_energia_subsistema_ho",
+    "ons_carga_verificada_ho"
    ],
    "numerador": "Σ PLD_h × carga_h (carga_h > 0)",
    "denominador": "Σ carga_h (carga_h > 0)",
    "formula": "Σ PLD_h × carga_h ÷ Σ carga_h nas horas com carga_h > 0",
    "regra_agregacao": "média ponderada pela energia (MWmed numa hora = MWh)",
-   "natureza_fonte": "OBSERVADO",
+   "natureza_fonte": "ESTIMADO",
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
     "submercado",
-    "mês"
+    "mês",
+    "perímetro da carga"
    ],
    "regras_comparabilidade": [
-    "Só é comparada com a média temporal quando as duas usam as mesmas horas (campo mesmas_horas)."
+    "Só é comparada com a média temporal quando as duas usam as mesmas horas (campo mesmas_horas).",
+    "Só é comparável entre meses do mesmo perímetro da carga (perimetro_carga): as mudanças de 03/2021 e de 29/04/2023 mudam o peso, e a MMGD estimada desloca o peso para as horas de sol. Para comparar meses de perímetros diferentes, use pld_media_mensal_ponderada_carga_sem_mmgd."
    ],
    "regra_cobertura": "Horas com PLD e carga positiva.",
    "politica_ausencia": "Hora sem carga fica fora da ponderada; hora com carga ≤ 0 (valor fisicamente impossível) também sai do peso e é listada como ressalva; mesmas_horas indica a diferença de cobertura.",
@@ -6511,10 +7104,59 @@
     "controle físico: carga > 0 em toda hora usada como peso",
     "numerador e denominador publicados na evidência",
     "magnitude e alcance das revisões da carga por mês, com o efeito na ponderada",
+    "perímetro da carga conferido mês a mês contra a API de carga verificada (erro absoluto médio e coeficiente da MMGD)",
     "reconciliação por releitura dos arquivos originais da CCEE e do ONS"
    ],
    "limitacoes": [
     "Carga do subsistema do ONS, não consumo contabilizado na CCEE; correspondência subsistema e submercado pelo nome.",
+    "Natureza da fonte ESTIMADO: publicada como carga verificada, a carga do balanço tem componentes estimados desde 03/2021 (previsão de geração de usinas não despachadas) e desde 29/04/2023 (MMGD estimada com dados meteorológicos previstos).",
+    "A escolha do peso muda o resultado: nos meses recentes, a diferença entre a ponderada pelo balanço (com MMGD) e a ponderada sem MMGD é maior que a distância entre a ponderada e a média temporal (valores de cada construção em historico.ponderacao.sensibilidade_peso).",
+    "A carga é revista pelo ONS depois de publicada; a ponderada dos meses recentes pode mudar."
+   ],
+   "arquivo": "pipeline/energia/metricas/pld.py"
+  },
+  {
+   "gold": "pld_detalhe.json",
+   "paginas": [
+    "/setor-eletrico/pld"
+   ],
+   "versao_formula": "1.0",
+   "id": "pld_media_mensal_ponderada_carga_sem_mmgd",
+   "titulo": "PLD médio mensal ponderado pela carga sem MMGD",
+   "pergunta": "Qual foi o PLD médio do mês pesando cada hora pela carga medida do subsistema, sem a MMGD estimada?",
+   "definicao": "Soma do PLD vezes a carga global líquida de MMGD do subsistema na mesma hora (carga global menos MMGD da API de carga verificada do ONS: parcela supervisionada mais a não supervisionada da medição para faturamento da CCEE), dividida pela soma dessa carga, nas horas com o valor publicado e positivo. Perímetro homogêneo em toda a série.",
+   "unidade": "R$/MWh",
+   "grao_geografico": "submercado (peso: área de carga de mesmo nome na API)",
+   "grao_temporal": "mês",
+   "fontes": [
+    "ccee_pld_horario",
+    "ons_carga_verificada_ho"
+   ],
+   "numerador": "Σ PLD_h × (global_h − MMGD_h) (global_h − MMGD_h > 0)",
+   "denominador": "Σ (global_h − MMGD_h) (global_h − MMGD_h > 0)",
+   "formula": "Σ PLD_h × (global_h − MMGD_h) ÷ Σ (global_h − MMGD_h) nas horas com global_h − MMGD_h > 0",
+   "regra_agregacao": "média ponderada pela energia (MWmed numa hora = MWh; hora = soma das duas meias horas da API)",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "submercado",
+    "mês"
+   ],
+   "regras_comparabilidade": [
+    "Só é comparada com a média temporal quando as duas usam as mesmas horas (campo mesmas_horas_sem_mmgd).",
+    "Mesmo perímetro em todos os meses: é a ponderada para comparar meses antes e depois de 2023."
+   ],
+   "regra_cobertura": "Horas com PLD e com as duas meias horas de carga global e de MMGD publicadas na API.",
+   "politica_ausencia": "Hora sem as duas meias horas fica fora da ponderada; hora com carga líquida ≤ 0 também sai do peso e é listada (horas_retiradas_sem_mmgd); mesmas_horas_sem_mmgd indica a diferença de cobertura.",
+   "validacoes": [
+    "controle físico: carga líquida > 0 em toda hora usada como peso",
+    "numerador e denominador publicados na evidência",
+    "reconciliação por releitura do arquivo da CCEE e da resposta da API do ONS"
+   ],
+   "limitacoes": [
+    "Carga do sistema medida pelo ONS, não consumo contabilizado na CCEE; correspondência área de carga e submercado pelo nome.",
+    "A MMGD (estimada pelo ONS) fica fora do peso: a média descreve o preço pesado pela carga atendida pelo sistema medido.",
+    "Lida do silver do módulo Carga; a cobertura acompanha a coleta daquele módulo.",
     "A carga é revista pelo ONS depois de publicada; a ponderada dos meses recentes pode mudar."
    ],
    "arquivo": "pipeline/energia/metricas/pld.py"
@@ -8368,10 +9010,10 @@
    "fontes": [
     "ons_rede_atls"
    ],
-   "formula": "Σ num_horasviolacao mensal",
-   "regra_agregacao": "soma de horas publicadas",
+   "formula": "horas_12m = Σ num_horasviolacao mensal dos 12 últimos meses publicados (soma feita pelo observatório)",
+   "regra_agregacao": "valores mensais como publicados; somas de 12 meses e do histórico calculadas pelo observatório",
    "natureza_fonte": "OBSERVADO",
-   "natureza_transformacao": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
    "dimensoes": [
     "fluxo",
     "mês"
@@ -8413,7 +9055,17 @@
    "numerador": "Σ |desvio_h|",
    "denominador": "horas com os dois valores",
    "regra_agregacao": "média do desvio absoluto; contagem de horas materiais e de inversões de sentido",
-   "natureza_fonte": "OBSERVADO",
+   "natureza_fonte": "OBSERVADO e PREVISTO",
+   "natureza_componentes": [
+    {
+     "componente": "intercâmbio verificado",
+     "natureza": "OBSERVADO"
+    },
+    {
+     "componente": "intercâmbio programado (programa do dia anterior)",
+     "natureza": "PREVISTO"
+    }
+   ],
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
     "par",
@@ -8422,7 +9074,8 @@
     "mês"
    ],
    "regras_comparabilidade": [
-    "Limiar único para todas as fronteiras; sensibilidade publicada em 500 e 2.000 MWmed."
+    "Limiar único para todas as fronteiras; sensibilidade publicada em 500 e 2.000 MWmed.",
+    "Dias com programado repetido por 6 horas ou mais numa fronteira entre subsistemas (22/08/2026: NE→SE/CO exatamente 0 nas 24 horas) são rotulados; a distribuição sai com e sem eles."
    ],
    "regra_cobertura": "Horas desde janeiro de 2026 (o programado não existe nos arquivos anteriores).",
    "politica_ausencia": "Hora sem valor publicado fica fora das somas e das contagens; nada é preenchido, interpolado ou repetido.",
@@ -8463,7 +9116,7 @@
     "Meses com horas ausentes trazem a contagem de horas."
    ],
    "regra_cobertura": "Horas publicadas.",
-   "politica_ausencia": "Hora sem valor publicado fica fora das somas e das contagens; nada é preenchido, interpolado ou repetido.",
+   "politica_ausencia": "Hora sem valor publicado fica fora das somas e das contagens; nada é preenchido, interpolado ou repetido. País sem nenhuma hora publicada no período (Paraguai desde 21/02/2024) fica com exportação e importação nulas, não zero.",
    "validacoes": [
     "saldo de 12 meses igual ao intercâmbio do SIN no balanço nas horas comuns (tolerância 0,1 MWmed por hora)"
    ],
@@ -8725,8 +9378,20 @@
     "ons_rede_balanco"
    ],
    "formula": "r_h = hid + ter + eol + sol − carga − intercâmbio; hora com resíduo quando |r_h| > 0,1 MWmed",
-   "regra_agregacao": "contagem de horas e soma mensal do resíduo",
-   "natureza_fonte": "OBSERVADO",
+   "regra_agregacao": "contagem de horas e soma mensal do resíduo, geração, carga e intercâmbio sobre as mesmas horas completas",
+   "natureza_fonte": "OBSERVADO e ESTIMADO",
+   "natureza_componentes": [
+    {
+     "componente": "geração das usinas, carga e intercâmbio verificados",
+     "natureza": "OBSERVADO",
+     "desde": null
+    },
+    {
+     "componente": "parcela da MMGD estimada pelo ONS na geração solar e na carga",
+     "natureza": "ESTIMADO",
+     "desde": "2023-04-29"
+    }
+   ],
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
     "subsistema",
@@ -8734,15 +9399,19 @@
     "mês"
    ],
    "regras_comparabilidade": [
-    "Contagens também acima de 1, 10 e 100 MWmed, para separar arredondamento de diferença material."
+    "Contagens também acima de 1, 10 e 100 MWmed, para separar arredondamento de diferença material.",
+    "Geração e carga mensais de antes e de depois de 29/04/2023 não são comparáveis diretamente (marcação mmgd_estimada: sem, parcial em abril de 2023, com)."
    ],
    "regra_cobertura": "Horas com as seis parcelas publicadas.",
    "politica_ausencia": "Hora com parcela ausente fica fora (não vira zero).",
    "validacoes": [
-    "tolerância de 0,1 MWmed justificada pela precisão de três casas dos arquivos"
+    "tolerância de 0,1 MWmed justificada pela precisão de três casas dos arquivos",
+    "em cada linha mensal, geração − carga − intercâmbio = resíduo do balanço (mesmas horas)",
+    "degrau da solar em 29/04/2023 conferido no arquivo original do balanço, com o balanço fechando nas 24 horas do dia"
    ],
    "limitacoes": [
     "Resíduo não é atribuído a perdas nem ao exterior: a fonte não informa a causa.",
+    "Desde 29/04/2023 a geração solar e a carga do balanço incluem a estimativa da MMGD feita pelo ONS, somada sem separação; o conjunto do balanço não declara a mudança (data declarada para o conjunto Carga de Energia e degrau conferido no arquivo). O resíduo e o intercâmbio não são afetados.",
     "Dados em consistência recorrente do ONS: valores recentes podem ser revisados."
    ],
    "arquivo": "pipeline/energia/metricas/rede.py"
@@ -8766,7 +9435,7 @@
     "ons_rede_intercambio_internacional"
    ],
    "formula": "r_h = intercâmbio_balanço − Σ fronteiras (− exterior)",
-   "regra_agregacao": "contagem de horas e soma mensal",
+   "regra_agregacao": "contagem de horas e soma mensal; intercâmbio do perímetro, fronteiras e exterior e resíduo somados nas mesmas horas (horas_perimetro)",
    "natureza_fonte": "OBSERVADO",
    "natureza_transformacao": "CALCULADO",
    "dimensoes": [
@@ -8775,12 +9444,14 @@
     "mês"
    ],
    "regras_comparabilidade": [
-    "Compara três conjuntos do ONS publicados separadamente."
+    "Compara três conjuntos do ONS publicados separadamente.",
+    "O intercâmbio do perímetro pode ser menor que o intercâmbio do balanço do mesmo mês: dia sem exterior no conjunto internacional entra no balanço e não no perímetro (ver horas_perimetro)."
    ],
    "regra_cobertura": "Horas com balanço, fronteiras e exterior publicados.",
    "politica_ausencia": "Hora sem valor publicado fica fora das somas e das contagens; nada é preenchido, interpolado ou repetido.",
    "validacoes": [
-    "diagnóstico das horas com resíduo: coerência interna do balanço (SIN = Sul − fronteira S→SE)"
+    "diagnóstico das horas com resíduo: coerência interna do balanço (SIN = Sul − fronteira S→SE)",
+    "em cada linha mensal, intercâmbio do perímetro − fronteiras e exterior = resíduo do perímetro (mesmas horas)"
    ],
    "limitacoes": [
     "O sinal do intercâmbio do balanço não está no dicionário; foi conferido por esta identidade."
@@ -8893,13 +9564,15 @@
    "regra_cobertura": "Desde março de 2015, como publicado no recurso 'Bandeira Tarifária - Adicional'.",
    "politica_ausencia": "Valor vazio na fonte fica vazio; a bandeira verde não tem adicional e não consta do recurso.",
    "validacoes": [
-    "fim de vigência = véspera do valor seguinte do mesmo patamar",
-    "patamar extinto (ausente da resolução seguinte e sem acionamento depois) termina no último mês com acionamento no recurso 'Bandeira Tarifária - Acionamento', conferido com a vigência escrita no dicionário desse recurso",
-    "valor positivo"
+    "fim de vigência = véspera do valor seguinte do mesmo patamar (grão diário)",
+    "patamar extinto (ausente da resolução seguinte e sem acionamento depois) termina no último mês com acionamento no recurso 'Bandeira Tarifária - Acionamento' (grão mensal, dia vazio), conferido com a vigência escrita no dicionário desse recurso",
+    "cada mês acionado dentro da vigência traz o mesmo valor no recurso Acionamento; mês com outro valor encerra a vigência no último mês coerente (grão mensal) e é publicado como valor sem resolução no recurso Adicional",
+    "valor positivo: adicional zero ou negativo reprova a validação da gold (vazio é ausência)"
    ],
    "limitacoes": [
     "A data de publicação das resoluções não é informada pela fonte.",
-    "Fim de patamar extinto com grão mensal (o recurso Acionamento é mensal)."
+    "O recurso Adicional é incompleto (faltam as resoluções que fixaram Vermelha P1 a R$ 45,00 em 2015 e Vermelha P2 a R$ 50,00 em 2017, valores vistos só no recurso Acionamento).",
+    "Fim de patamar extinto e fim contrariado pelo Acionamento têm grão mensal (o recurso Acionamento é mensal)."
    ],
    "arquivo": "pipeline/energia/metricas/regulacao.py"
   },
@@ -8951,13 +9624,14 @@
    "titulo": "Cobertura das consultas e audiências reconstituídas das atas",
    "pergunta": "Que parte das consultas e das audiências públicas do ano aparece nas atas da Diretoria?",
    "definicao": "Por modalidade: consultas públicas com abertura deliberada nas atas do ano frente ao total anual de consultas públicas, e audiências públicas com abertura deliberada nas atas frente ao total anual de audiências, ambos publicados pela ANEEL no conjunto 'Audiências e Consultas Públicas'. As duas razões são publicadas separadas (cobertura e cobertura_faixa na gold).",
-   "unidade": "consultas",
+   "unidade": "% (aberturas da modalidade nas atas ÷ total anual da modalidade publicado pela ANEEL)",
    "grao_geografico": "ANEEL",
    "grao_temporal": "ano",
    "fontes": [
     "aneel_pautas_atas_diretoria",
     "aneel_audiencias_consultas"
    ],
+   "formula": "cobertura = 100 × aberturas da modalidade nas atas do ano ÷ total anual da modalidade publicado pela ANEEL; a gold publica também as duas contagens",
    "numerador": "aberturas da modalidade nas atas do ano",
    "denominador": "total anual da modalidade publicado pela ANEEL",
    "regra_agregacao": "contagem por ano",
@@ -9051,15 +9725,57 @@
     "Depende das atas publicadas; a contagem de um dia não se compara com totais anuais."
    ],
    "regra_cobertura": "Avisos deliberados em reunião pública registrada no conjunto de pautas e atas (desde set/2017).",
-   "politica_ausencia": "Fase sem janela na ata (só duração, só sessão de audiência ou nada) não entra na contagem de abertas; fase com início e duração escritos tem o fim calculado (contando o dia do início) e rotulado.",
+   "politica_ausencia": "Fase sem janela na ata (só duração, só sessão de audiência ou nada) não entra na contagem de abertas; fase com início e duração escritos tem o fim calculado (contando o dia do início) e rotulado. Decisão de abertura escrita na pauta com resultado formal vazio (sem número de aviso) não entra; fica declarada com a situação que teria se confirmada.",
    "validacoes": [
     "nenhuma consulta com fim anterior à data de referência aparece como aberta",
     "período lido por expressões regulares testadas em frases reais das atas (por extenso, numéricas, 'entre os dias', 'com início em ... até')",
-    "datas da janela das abertas reencontradas no texto integral da decisão por regra independente"
+    "datas da janela das abertas reencontradas no texto integral da decisão por regra independente",
+    "nenhuma linha posterior do mesmo processo leva resultado, encerramento ou decisão que consolida o documento da consulta (edital 'consolidado após avaliação das contribuições', 'aprimoramentos decorrentes'), nem aprova o módulo de procedimento do tema"
    ],
    "limitacoes": [
     "Prorrogação decidida fora da reunião pública não aparece.",
     "Tomadas de subsídios e consultas abertas por ato de superintendência ficam de fora."
+   ],
+   "arquivo": "pipeline/energia/metricas/regulacao.py"
+  },
+  {
+   "gold": "regulacao.json",
+   "paginas": [
+    "/setor-eletrico/regulacao"
+   ],
+   "versao_formula": "1.0",
+   "id": "regulacao_consultas_por_situacao",
+   "titulo": "Consultas e audiências públicas por situação",
+   "pergunta": "Das consultas e audiências reconstituídas das atas, quantas estão decididas, encerradas sem resultado, em pauta ou abertas?",
+   "definicao": "Contagem do histórico de avisos de consulta e audiência pública com abertura deliberada em reunião pública (desde set/2017), por situação na data de referência, pela regra de situação publicada na gold. Resultado é a deliberação que cita a consulta (\"Resultado da Consulta Pública nº N\", encerramento, decisão que consolida o edital ou a norma \"após avaliação das contribuições apresentadas\" ou \"com os aprimoramentos decorrentes\" dela, extinção do processo) ou, sem número, a decisão do mesmo processo que aprova o módulo de procedimento do tema.",
+   "unidade": "consultas",
+   "grao_geografico": "ANEEL",
+   "grao_temporal": "dia (data de referência, horário de Brasília)",
+   "fontes": [
+    "aneel_pautas_atas_diretoria"
+   ],
+   "formula": "contagem do histórico por situação (contagem_por_situacao na gold); forma do resultado em contagem_por_forma_resultado",
+   "regra_agregacao": "contagem",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "situação",
+    "modalidade",
+    "forma do resultado"
+   ],
+   "regras_comparabilidade": [
+    "Depende das atas publicadas e da cobertura anual das atas (cobertura_faixa); decisões fora de reunião pública não aparecem."
+   ],
+   "regra_cobertura": "Avisos deliberados em reunião pública registrada no conjunto de pautas e atas (desde set/2017).",
+   "politica_ausencia": "Consulta sem resultado deliberado nas atas fica encerrada aguardando, resultado em pauta ou com situação não derivável; nunca decidida por suposição.",
+   "validacoes": [
+    "decidida exige resultado deliberado",
+    "resultado de outro processo só liga pela citação explícita e, na decisão que consolida o documento, só no mesmo processo",
+    "linhas reais das atas nos testes (Despacho nº 2.266/2026 para a CP 6/2026; Despacho nº 3.323/2025 para a CP 28/2025; decisão de 16/06/2026 para a CP 3/2026)"
+   ],
+   "limitacoes": [
+    "Resultado que cita número de outro processo, num processo com mais de uma consulta, não é ligado.",
+    "Número de ato fora da faixa do tipo nas atas fica marcado como suspeito e não é exibido."
    ],
    "arquivo": "pipeline/energia/metricas/regulacao.py"
   },
@@ -9221,6 +9937,1041 @@
     "/setor-eletrico/carga"
    ],
    "arquivo": "pipeline/energia/metricas/carga.py"
+  },
+  {
+   "id": "territorio_localidades_isoladas_municipio",
+   "titulo": "Localidades do município atendidas por sistema isolado",
+   "pergunta": "Há parte do meu município fora do Sistema Interligado Nacional?",
+   "definicao": "Localidades da lista de sistemas isolados do PASI (EPE, ciclo mais recente integrado pelo módulo Inclusão) cujo município, pelo nome oficial do IBGE na UF, é o município; população declarada pela fonte.",
+   "unidade": "localidades; habitantes",
+   "grao_geografico": "município (soma de localidades)",
+   "grao_temporal": "ciclo anual do PASI",
+   "fontes": [
+    "epe_pasi_localidades"
+   ],
+   "numerador": "Σ população das localidades do município",
+   "regra_agregacao": "Contagem e soma da população declarada.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "formula": "isol_pop(m) = Σ população(l), l ∈ localidades isoladas com município(l) = m",
+   "dimensoes": [
+    "município",
+    "UF"
+   ],
+   "regras_comparabilidade": [
+    "A lista indica localidades fora do SIN; não diz se o município inteiro está fora."
+   ],
+   "regra_cobertura": "160 localidades no ciclo 2025, todas ligadas a um município.",
+   "politica_ausencia": "Município sem localidade na lista = zero localidades; população não informada pela fonte fica nula.",
+   "validacoes": [
+    "Todas as localidades ligadas a um município pela igualdade do nome na UF."
+   ],
+   "limitacoes": [
+    "A interligação prevista muda a lista de um ciclo para outro."
+   ],
+   "gold": "territorio.json",
+   "paginas": [
+    "/setor-eletrico/territorio"
+   ],
+   "arquivo": "pipeline/energia/metricas/territorio.py"
+  },
+  {
+   "id": "territorio_lpt_municipio",
+   "titulo": "Domicílios atendidos pelo Luz para Todos no município (período inteiro)",
+   "pergunta": "Quantas ligações o Luz para Todos registrou no meu município?",
+   "definicao": "Soma, por município, dos domicílios atendidos em todos os anos e programas do arquivo do MME integrado pelo módulo Inclusão; linhas sem código IBGE ligadas pelo nome oficial do IBGE na UF ou por grafia antiga documentada na DTB.",
+   "unidade": "domicílios",
+   "grao_geografico": "município",
+   "grao_temporal": "acumulado de 2004 até o último mês do arquivo",
+   "fontes": [
+    "mme_luz_para_todos"
+   ],
+   "numerador": "Σ domicílios atendidos (ano × programa)",
+   "regra_agregacao": "Soma de contagens da mesma grandeza.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "formula": "LPT(m) = Σ_ano Σ_programa domicílios(m, ano, programa)",
+   "dimensoes": [
+    "município"
+   ],
+   "regras_comparabilidade": [
+    "Ligação registrada no período, não situação atual de acesso; o ano corrente é parcial."
+   ],
+   "regra_cobertura": "Municípios com alguma linha no arquivo.",
+   "politica_ausencia": "Município sem linha no arquivo = nulo (ausência de registro), não zero.",
+   "validacoes": [
+    "Nenhuma linha do arquivo fica sem município depois da ligação pelo nome (as restantes seriam listadas)."
+   ],
+   "limitacoes": [
+    "Domicílio atendido é ligação nova; não é pessoa nem unidade consumidora com benefício."
+   ],
+   "gold": "territorio.json",
+   "paginas": [
+    "/setor-eletrico/territorio"
+   ],
+   "arquivo": "pipeline/energia/metricas/territorio.py"
+  },
+  {
+   "id": "territorio_municipios_compartilhados",
+   "titulo": "Municípios atendidos por mais de uma distribuidora",
+   "pergunta": "Em quantos municípios mais de uma distribuidora atende?",
+   "definicao": "Contagem de municípios com duas ou mais distribuidoras de vínculo 1 (confirmado) ou 2 (só pelo cadastro de MMGD).",
+   "unidade": "municípios",
+   "grao_geografico": "Brasil",
+   "grao_temporal": "relação vigente do ano",
+   "fontes": [
+    "aneel_indqual_municipio",
+    "aneel_continuidade_limites",
+    "aneel_mmgd_municipio"
+   ],
+   "numerador": "municípios com 2 ou mais distribuidoras de vínculo 1 ou 2",
+   "regra_agregacao": "Contagem simples de municípios.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "formula": "#{m : |{d : vínculo(m, d) ∈ {1, 2}}| ≥ 2}",
+   "dimensoes": [
+    "UF"
+   ],
+   "regras_comparabilidade": [
+    "Vínculo 0 (sem confirmação) não conta: a relação oficial tem códigos de município evidentemente errados."
+   ],
+   "regra_cobertura": "Municípios da malha do IBGE.",
+   "politica_ausencia": "Município sem vínculo válido fora da contagem.",
+   "validacoes": [
+    "Igual à contagem publicada na gold de Perdas (mapa.municipios_compartilhados)."
+   ],
+   "limitacoes": [
+    "Compartilhar o município não diz que parte de cada distribuidora atende."
+   ],
+   "gold": "territorio.json",
+   "paginas": [
+    "/setor-eletrico/territorio"
+   ],
+   "arquivo": "pipeline/energia/metricas/territorio.py"
+  },
+  {
+   "id": "territorio_residuo_area_carga",
+   "titulo": "Resíduo do fechamento das áreas de carga",
+   "pergunta": "As áreas de carga somam a carga do submercado?",
+   "definicao": "Em cada meia hora, soma da carga das áreas geoelétricas atribuídas ao submercado mais a área de perdas do mesmo submercado, menos a carga do submercado; resumida pela mediana do valor absoluto no dia (e também pela média e pelo máximo).",
+   "unidade": "MWmed",
+   "grao_geografico": "submercado",
+   "grao_temporal": "meia hora, resumida por dia",
+   "fontes": [
+    "territorio_ons_areas_carga"
+   ],
+   "numerador": "Σ carga das áreas do submercado + carga da área de perdas − carga do submercado (por meia hora)",
+   "regra_agregacao": "Mediana do resíduo absoluto nas meias horas comuns a todas as áreas do submercado.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "formula": "resíduo(sm, h) = Σ_a∈sm carga(a, h) + carga(perdas_sm, h) − carga(sm, h); resumo(sm, dia) = mediana_h |resíduo(sm, h)|",
+   "dimensoes": [
+    "submercado",
+    "dia"
+   ],
+   "regras_comparabilidade": [
+    "Tolerância de 15 MWmed na mediana por meia hora, fixada pelos dados: ruído da hipótese até 7,9 MWmed e menor alternativa com 28,8 MWmed (13 e 16/09/2026); cada dia publica o seu ruído e a sua menor alternativa."
+   ],
+   "regra_cobertura": "Dia com as 34 áreas e ao menos 40 meias horas comuns por submercado.",
+   "politica_ausencia": "Área sem resposta: dia incompleto, sem resíduo.",
+   "validacoes": [
+    "Dois dias (útil e domingo) fecham dentro da tolerância e nenhuma alternativa fecha."
+   ],
+   "limitacoes": [
+    "A carga é consistida depois pelo ONS; resíduos de alguns MWmed (e meias horas isoladas maiores) são esperados e não alteram a pertença."
+   ],
+   "gold": "territorio.json",
+   "paginas": [
+    "/setor-eletrico/territorio"
+   ],
+   "arquivo": "pipeline/energia/metricas/territorio.py"
+  },
+  {
+   "id": "territorio_submercado_municipio",
+   "titulo": "Submercado do município (pela UF e pelas áreas de carga do ONS)",
+   "pergunta": "A que submercado pertence o meu município?",
+   "definicao": "Submercado da UF do município. A pertença de cada área de carga do ONS ao submercado é provada pelo fechamento da carga verificada meia hora a meia hora em dois dias (soma das áreas geoelétricas mais a área de perdas igual à carga do submercado, e nenhuma alternativa, mover a área ou trocá-la com outra, fecha). Estados: provado; provado_com_area_sem_carga (UF com área sem carga, cuja pertença a soma não prova: TOCO, no Tocantins); com_localidade_isolada (o PASI da EPE lista localidade do município em sistema isolado, fora do SIN); nao_provado.",
+   "unidade": "submercado (SE, S, NE, N) e estado",
+   "grao_geografico": "município, pela UF",
+   "grao_temporal": "conferência a cada 30 dias (dois dias por conferência)",
+   "fontes": [
+    "territorio_ons_areas_carga",
+    "epe_pasi_localidades"
+   ],
+   "regra_agregacao": "Não se agrega.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "formula": "submercado(m) = sm tal que todas as áreas de carga com carga positiva da UF de m são provadas em sm nos dois dias",
+   "dimensoes": [
+    "UF",
+    "município"
+   ],
+   "regras_comparabilidade": [
+    "Nenhum valor desce de grão: o município guarda a referência à distribuidora, ao conjunto e ao submercado, nunca o valor deles.",
+    "PLD e EAR do submercado são do submercado inteiro; o município só aponta para ele."
+   ],
+   "regra_cobertura": "27 UFs; 34 áreas de carga do dicionário do ONS por dia conferido.",
+   "politica_ausencia": "Dia com área sem resposta não conta; sem conferência, o estado é nao_provado (nunca se adota o mapeamento sem prova).",
+   "validacoes": [
+    "Mediana do resíduo absoluto por meia hora de cada submercado até 15 MWmed, e nenhuma alternativa (mover uma área ou trocar duas de submercados diferentes) dentro da mesma tolerância.",
+    "Mapeamento provado igual ao publicado pelos módulos Água e Carga."
+   ],
+   "limitacoes": [
+    "Não há tabela oficial município → submercado: a divisa no mapa é a da UF.",
+    "O PASI indica localidades isoladas, não a parte do município fora do SIN."
+   ],
+   "gold": "territorio.json",
+   "paginas": [
+    "/setor-eletrico/territorio"
+   ],
+   "arquivo": "pipeline/energia/metricas/territorio.py"
+  },
+  {
+   "id": "territorio_usinas_coordenada_concordancia",
+   "titulo": "Coordenada da usina dentro do município declarado",
+   "pergunta": "A coordenada do SIGA cai no município que ele declara?",
+   "definicao": "Ponto em polígono da coordenada do SIGA, projetada na grade da malha publicada, contra os municípios declarados da usina.",
+   "unidade": "usinas",
+   "grao_geografico": "usina",
+   "grao_temporal": "cadastro do dia do SIGA",
+   "fontes": [
+    "aneel_siga"
+   ],
+   "numerador": "usinas com a coordenada dentro de um município declarado",
+   "denominador": "usinas com coordenada e município reconhecido",
+   "regra_agregacao": "Contagem simples.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "formula": "concordância = #{u : coordenada(u) ∈ ∪ polígonos(municípios_declarados(u))}",
+   "dimensoes": [
+    "tipo de usina"
+   ],
+   "regras_comparabilidade": [
+    "Conferência, não correção: o município declarado prevalece."
+   ],
+   "regra_cobertura": "Usinas com coordenada (zero na fonte = sem coordenada).",
+   "politica_ausencia": "Sem coordenada ou sem município reconhecido: fora da conferência (nulo).",
+   "validacoes": [
+    "Ao menos 90% dentro (abaixo disso, ressalva)."
+   ],
+   "limitacoes": [
+    "Coordenada do SIGA é aproximada; a malha é simplificada a 400 m: divisa fina pode falhar nos dois sentidos."
+   ],
+   "gold": "territorio.json",
+   "paginas": [
+    "/setor-eletrico/territorio"
+   ],
+   "arquivo": "pipeline/energia/metricas/territorio.py"
+  },
+  {
+   "id": "territorio_usinas_municipio",
+   "titulo": "Usinas declaradas só no município (contagem e potência)",
+   "pergunta": "Quantas usinas o SIGA registra no meu município?",
+   "definicao": "Usinas do SIGA cujo único município declarado é o município (nome oficial do IBGE na UF, ou grafia antiga documentada na DTB do IBGE): contagem e potência fiscalizada das em operação; contagem e potência outorgada das em construção ou com construção não iniciada. Usina declarada em vários municípios é listada em cada um, sem potência somada.",
+   "unidade": "usinas; MW",
+   "grao_geografico": "município (soma de usinas)",
+   "grao_temporal": "cadastro do dia do SIGA",
+   "fontes": [
+    "aneel_siga"
+   ],
+   "numerador": "Σ potência das usinas declaradas só no município",
+   "regra_agregacao": "Soma de potências de usinas inteiras (mesma grandeza, kW ÷ 1.000); nunca repartição de usina entre municípios.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "formula": "MW(m) = Σ potência fiscalizada (operação) das usinas com municípios_declarados = {m} ÷ 1.000",
+   "dimensoes": [
+    "município",
+    "estágio"
+   ],
+   "regras_comparabilidade": [
+    "MW é potência, não energia.",
+    "Operação (fiscalizada) e carteira (outorgada) não se somam."
+   ],
+   "regra_cobertura": "Todas as usinas do CSV do SIGA publicado pelo módulo Expansão; nomes não reconhecidos listados.",
+   "politica_ausencia": "Município sem usina declarada = zero (o SIGA é o cadastro completo das outorgas); usina sem potência fiscalizada conta e não soma.",
+   "validacoes": [
+    "Soma por UF principal das usinas em operação igual à da gold de Expansão (0,05 MW).",
+    "Contagens e potências de 5 municípios conferidas contra o CSV original do SIGA por outro código."
+   ],
+   "limitacoes": [
+    "A potência de usina em vários municípios (grandes hidrelétricas, por exemplo) não aparece em nenhuma soma municipal.",
+    "Micro e minigeração distribuída não está no SIGA: aparece na métrica de MMGD."
+   ],
+   "gold": "territorio.json",
+   "paginas": [
+    "/setor-eletrico/territorio"
+   ],
+   "arquivo": "pipeline/energia/metricas/territorio.py"
+  },
+  {
+   "id": "territorio_vinculo_municipio_distribuidora",
+   "titulo": "Distribuidoras que atendem o município",
+   "pergunta": "Que distribuidora atende o meu município?",
+   "definicao": "Distribuidoras (CNPJ) ligadas ao município IBGE pela relação oficial conjunto elétrico × município da ANEEL (IndQual Município e limites de continuidade do ano), com o estado do vínculo publicado pelo módulo Perdas: 1 = confirmado por empreendimento de MMGD da distribuidora no município; 0 = relação sem confirmação; 2 = só pelo cadastro de MMGD (município fora da relação).",
+   "unidade": "referências (índice da distribuidora e estado do vínculo)",
+   "grao_geografico": "município (código IBGE) × distribuidora (CNPJ)",
+   "grao_temporal": "relação vigente do ano (2026)",
+   "fontes": [
+    "aneel_indqual_municipio",
+    "aneel_continuidade_limites",
+    "aneel_mmgd_municipio"
+   ],
+   "regra_agregacao": "Não se agrega: é uma lista de vínculos por município.",
+   "versao_formula": "1",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "OBSERVADO",
+   "dimensoes": [
+    "município",
+    "distribuidora",
+    "estado do vínculo"
+   ],
+   "regras_comparabilidade": [
+    "Nenhum valor desce de grão: o município guarda a referência à distribuidora, ao conjunto e ao submercado, nunca o valor deles.",
+    "Município com mais de uma distribuidora não tem divisão interna conhecida: nenhuma é escolhida por conta própria."
+   ],
+   "regra_cobertura": "Os 5.571 municípios da malha do IBGE (revisão 2025); código da relação fora da malha listado à parte.",
+   "politica_ausencia": "Município sem vínculo fica com lista vazia e é listado; nunca recebe a distribuidora de um vizinho.",
+   "validacoes": [
+    "Contagens de municípios compartilhados, vínculos e vínculos sem confirmação iguais às publicadas pelo módulo Perdas.",
+    "Municípios por distribuidora (confirmados e só MMGD) iguais aos da gold de Perdas.",
+    "Distribuidoras por município comparadas com os conjuntos do módulo Qualidade (diferenças listadas)."
+   ],
+   "limitacoes": [
+    "Sem polígono oficial de concessão acessível: a área é a união de municípios inteiros.",
+    "A relação de 2026 não descreve anos anteriores (absorções e trocas de concessão)."
+   ],
+   "gold": "territorio.json",
+   "paginas": [
+    "/setor-eletrico/territorio"
+   ],
+   "arquivo": "pipeline/energia/metricas/territorio.py"
+  },
+  {
+   "gold": "sintese.json",
+   "paginas": [
+    "/setor-eletrico/visao-geral"
+   ],
+   "versao_formula": "1.0",
+   "id": "visao_carga_diaria_sin",
+   "titulo": "Carga diária do SIN (série da Visão geral)",
+   "pergunta": "Quanto o sistema está consumindo, dia a dia?",
+   "definicao": "Soma das cargas diárias dos quatro subsistemas publicadas pelo ONS, copiada de carga.json#serie; a referência é a mesma data do ano anterior quando os dois dias estão no mesmo regime metodológico.",
+   "unidade": "MWmed",
+   "grao_geografico": "SIN",
+   "grao_temporal": "dia",
+   "fontes": [
+    "carga_energia_di"
+   ],
+   "formula": "carga_SIN(d) = Σ_s carga(s, d), s ∈ {SE, S, NE, N}",
+   "regra_agregacao": "soma dos subsistemas no mesmo dia",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "dia"
+   ],
+   "regras_comparabilidade": [
+    "Regimes do ONS: até 28/02/2021, de 01/03/2021 a 28/04/2023 e desde 29/04/2023 (MMGD estimada incluída); o ano anterior só aparece no mesmo regime."
+   ],
+   "regra_cobertura": "Dias aceitos pela validação física do módulo Carga.",
+   "politica_ausencia": "Dia em quarentena ou ausente fica vazio.",
+   "validacoes": [
+    "cada célula igual à de carga.json#serie"
+   ],
+   "limitacoes": [
+    "Temperatura e calendário não são ajustados."
+   ],
+   "arquivo": "pipeline/energia/metricas/visao.py"
+  },
+  {
+   "gold": "sintese.json",
+   "paginas": [
+    "/setor-eletrico/visao-geral"
+   ],
+   "versao_formula": "1.0",
+   "id": "visao_defasagem_frase",
+   "titulo": "Defasagem da frase em relação ao processamento",
+   "pergunta": "Quantos dias separam o dado da data em que a página foi processada?",
+   "definicao": "Data de processamento (civil de Brasília) menos a data de referência do dado usado na frase. Negativa quando a fonte publica o dado do dia seguinte na véspera (PLD).",
+   "unidade": "dias",
+   "grao_geografico": "frase",
+   "grao_temporal": "processamento",
+   "fontes": [
+    "ear_subsistema_di",
+    "ena_subsistema_di",
+    "carga_energia_di",
+    "balanco_energia_subsistema_ho",
+    "intercambio_nacional_ho",
+    "ccee_pld_horario"
+   ],
+   "formula": "defasagem = data_processamento_brasilia − data_referencia",
+   "regra_agregacao": "não se aplica",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "frase"
+   ],
+   "regras_comparabilidade": [
+    "A data de processamento é a civil de Brasília (comum.hoje_brasilia), não a UTC do servidor."
+   ],
+   "regra_cobertura": "Toda frase emitida.",
+   "politica_ausencia": "Sem data de referência, a frase não é emitida.",
+   "validacoes": [
+    "texto sem '0 dias antes' quando a referência é posterior ao processamento"
+   ],
+   "limitacoes": [
+    "Não substitui a situação de atualidade pela frequência declarada da fonte (publicacao.json), também publicada."
+   ],
+   "arquivo": "pipeline/energia/metricas/visao.py"
+  },
+  {
+   "gold": "sintese.json",
+   "paginas": [
+    "/setor-eletrico/visao-geral"
+   ],
+   "versao_formula": "1.0",
+   "id": "visao_fluxo_diario_fronteira",
+   "titulo": "Fluxo médio diário entre subsistemas (série da Visão geral)",
+   "pergunta": "Para onde a energia está fluindo entre as regiões?",
+   "definicao": "Média das 24 horas do intercâmbio verificado em cada fronteira, com sinal (positivo da primeira para a segunda ponta), copiada de rede.json#serie_fluxos.",
+   "unidade": "MWmed",
+   "grao_geografico": "fronteira entre subsistemas",
+   "grao_temporal": "dia",
+   "fontes": [
+    "intercambio_nacional_ho"
+   ],
+   "formula": "fluxo(par, d) = (1/24) × Σ_h sinal × intercâmbio_verificado(h)",
+   "regra_agregacao": "média temporal das horas",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "dia",
+    "fronteira"
+   ],
+   "regras_comparabilidade": [
+    "Sentido convencionado por fronteira (N→NE, N→SE/CO, NE→SE/CO, S→SE/CO)."
+   ],
+   "regra_cobertura": "Dias com as 24 horas.",
+   "politica_ausencia": "Dia incompleto fica vazio.",
+   "validacoes": [
+    "cada célula igual à de rede.json#serie_fluxos"
+   ],
+   "limitacoes": [
+    "Sem limites de intercâmbio neste painel: fluxo alto não indica congestionamento."
+   ],
+   "arquivo": "pipeline/energia/metricas/visao.py"
+  },
+  {
+   "gold": "sintese.json",
+   "paginas": [
+    "/setor-eletrico/visao-geral"
+   ],
+   "versao_formula": "1.0",
+   "id": "visao_frequencia_disparo",
+   "titulo": "Frequência de disparo das regras no histórico",
+   "pergunta": "Quantas vezes cada regra teria disparado desde 2021, e por quanto tempo?",
+   "definicao": "Para cada regra: dias avaliados, dias com a condição, acionamentos brutos (sequências de dias com a condição), acionamentos curtos descartados pela duração mínima, episódios, duração mediana e máxima, dias com alerta exibido (da confirmação ao retorno) e sensibilidade a durações mínimas de 1, 3, 7 e 14 dias.",
+   "unidade": "dias, episódios e % dos dias avaliados",
+   "grao_geografico": "regra",
+   "grao_temporal": "histórico desde 01/01/2021",
+   "fontes": [
+    "ear_subsistema_di",
+    "ena_subsistema_di",
+    "carga_energia_di",
+    "balanco_energia_subsistema_ho",
+    "ccee_pld_horario",
+    "ons_coff_eolica",
+    "ons_coff_fotovoltaica"
+   ],
+   "numerador": "dias com alerta exibido",
+   "denominador": "dias avaliados",
+   "formula": "pct_dias_exibidos = 100 × Σ dias exibidos ÷ dias avaliados; episódios por ano = episódios ÷ (dias avaliados ÷ 365,25), só com ao menos 365 dias",
+   "regra_agregacao": "contagem sobre a série diária de condições",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "regra",
+    "duração mínima"
+   ],
+   "regras_comparabilidade": [
+    "Regras com histórico avaliável diferente (termica e restrição solar começam depois) não têm a mesma base."
+   ],
+   "regra_cobertura": "Dias avaliados de cada regra.",
+   "politica_ausencia": "Dia não avaliado fica fora do denominador.",
+   "validacoes": [
+    "mesma máquina de estados que avalia o dia",
+    "episódios publicados em sintese_episodios.csv"
+   ],
+   "limitacoes": [
+    "Reavaliação com dados de hoje: não reproduz o que se via na época; os alertas emitidos são registrados a partir desta versão.",
+    "Sem verdade de referência, nenhum alerta é rotulado como falso; o registro das emissões mede os que deixaram de se confirmar após revisão."
+   ],
+   "arquivo": "pipeline/energia/metricas/visao.py"
+  },
+  {
+   "gold": "sintese.json",
+   "paginas": [
+    "/setor-eletrico/visao-geral"
+   ],
+   "versao_formula": "1.0",
+   "id": "visao_participacao_termica_7d",
+   "titulo": "Participação térmica em janela de 7 dias (SIN)",
+   "pergunta": "Quanto da geração verificada veio de térmicas na última semana?",
+   "definicao": "Geração térmica verificada dividida pela soma da geração hidráulica, térmica, eólica e solar do balanço de energia do ONS, em janela móvel de 7 dias, copiada de geracao.json#serie_termica_7d.",
+   "unidade": "% da geração verificada",
+   "grao_geografico": "SIN",
+   "grao_temporal": "janela móvel de 7 dias",
+   "fontes": [
+    "balanco_energia_subsistema_ho"
+   ],
+   "numerador": "Σ geração térmica verificada nos 7 dias (MWmed·dia)",
+   "denominador": "Σ geração verificada das quatro fontes nos 7 dias (MWmed·dia)",
+   "formula": "100 × Σ térmica ÷ Σ (hidráulica + térmica + eólica + solar)",
+   "regra_agregacao": "razão de somas",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "dia final da janela"
+   ],
+   "regras_comparabilidade": [
+    "Desde 29/04/2023 a solar do balanço inclui a MMGD estimada; janelas antes e depois não se comparam."
+   ],
+   "regra_cobertura": "Janelas com os 7 dias completos.",
+   "politica_ausencia": "Janela com dia ausente fica vazia.",
+   "validacoes": [
+    "cada célula igual à de geracao.json#serie_termica_7d"
+   ],
+   "limitacoes": [
+    "O balanço não separa a térmica por combustível (painel Geração)."
+   ],
+   "arquivo": "pipeline/energia/metricas/visao.py"
+  },
+  {
+   "gold": "sintese.json",
+   "paginas": [
+    "/setor-eletrico/visao-geral"
+   ],
+   "versao_formula": "1.0",
+   "id": "visao_pld_media_diaria",
+   "titulo": "PLD médio diário por submercado (série da Visão geral)",
+   "pergunta": "Em que nível está o preço de liquidação nos últimos 90 dias?",
+   "definicao": "Média aritmética simples das 24 horas do PLD de cada dia e submercado, copiada de pld.json#diario sem recálculo.",
+   "unidade": "R$/MWh (nominal)",
+   "grao_geografico": "submercado",
+   "grao_temporal": "dia (horário de Brasília)",
+   "fontes": [
+    "ccee_pld_horario"
+   ],
+   "formula": "PLD_dia(s) = (1/24) × Σ PLD_h(s), h = 0..23",
+   "regra_agregacao": "média temporal simples das horas (não ponderada pela carga)",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "dia",
+    "submercado"
+   ],
+   "regras_comparabilidade": [
+    "Valores nominais; anos diferentes têm limites regulatórios diferentes.",
+    "Não é o PLD ponderado pela carga (pld_media_mensal_ponderada_carga)."
+   ],
+   "regra_cobertura": "Dias com as 24 horas publicadas; últimos 90 dias até a data de referência do PLD.",
+   "politica_ausencia": "Dia sem as 24 horas não tem média e fica vazio.",
+   "validacoes": [
+    "cada célula igual à de pld.json#diario (conferência a cada publicação)"
+   ],
+   "limitacoes": [
+    "A CCEE publica o PLD do dia seguinte na véspera; a série termina depois das demais da Visão geral."
+   ],
+   "arquivo": "pipeline/energia/metricas/visao.py"
+  },
+  {
+   "gold": "sintese.json",
+   "paginas": [
+    "/setor-eletrico/visao-geral"
+   ],
+   "versao_formula": "1.0",
+   "id": "visao_regra_atualidade_fontes",
+   "titulo": "Regra: fonte da Visão geral com atualização atrasada",
+   "pergunta": "Algum conjunto usado nesta página está atrasado em relação à frequência declarada?",
+   "definicao": "Algum conjunto usado nas frases, nos determinantes ou em energia e sociedade com situação ATRASADO no painel de saúde dos dados (publicacao.json).",
+   "unidade": "conjuntos",
+   "grao_geografico": "conjuntos da Visão geral",
+   "grao_temporal": "processamento",
+   "fontes": [
+    "ear_subsistema_di",
+    "ena_subsistema_di",
+    "carga_energia_di",
+    "balanco_energia_subsistema_ho",
+    "intercambio_nacional_ho",
+    "ccee_pld_horario",
+    "cmo_se",
+    "aneel_tarifas_aplicacao",
+    "aneel_continuidade",
+    "aneel_samp_balanco",
+    "aneel_scs"
+   ],
+   "formula": "ativo = ∃ conjunto com atualidade.situacao = ATRASADO",
+   "regra_agregacao": "contagem",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "conjunto"
+   ],
+   "regras_comparabilidade": [
+    "Tolerância pela cadência declarada (módulo Dados)."
+   ],
+   "regra_cobertura": "Conjuntos com situação publicada.",
+   "politica_ausencia": "Conjunto sem situação publicada é listado à parte.",
+   "validacoes": [
+    "situação lida de publicacao.json#conjuntos[].atualidade"
+   ],
+   "limitacoes": [
+    "Atraso pode ser da fonte ou da integração; o painel Dados separa as causas."
+   ],
+   "arquivo": "pipeline/energia/metricas/visao.py"
+  },
+  {
+   "gold": "sintese.json",
+   "paginas": [
+    "/setor-eletrico/visao-geral"
+   ],
+   "versao_formula": "1.0",
+   "id": "visao_regra_carga_extrema",
+   "titulo": "Regra: carga diária entre as mais altas do ano",
+   "pergunta": "A carga está entre os dias mais altos dos últimos 12 meses?",
+   "definicao": "Carga do SIN acima do 95º percentil dos 364 dias anteriores, no mesmo regime metodológico e com pelo menos 330 dias publicados; alerta com 2 dias seguidos, retorno com 3 dias abaixo.",
+   "unidade": "MWmed",
+   "grao_geografico": "SIN",
+   "grao_temporal": "dia",
+   "fontes": [
+    "carga_energia_di"
+   ],
+   "formula": "condição(d) = carga(d) > quantil_0,95{carga(d − i), i = 1..364}",
+   "regra_agregacao": "condição diária booleana; episódio = duração mínima de dias seguidos com a condição; fim = dias seguidos sem ela",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "dia",
+    "regra"
+   ],
+   "regras_comparabilidade": [
+    "Base de 364 dias no mesmo regime do ONS; a série publicada pela gold de Carga começa três anos antes da referência."
+   ],
+   "regra_cobertura": "Dias com base completa no mesmo regime.",
+   "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
+   "validacoes": [
+    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
+    "estado do dia reavaliado e comparado com a classificação publicada pela gold de origem"
+   ],
+   "limitacoes": [
+    "Alerta descreve condição medida; não implica causa nem é previsão.",
+    "Temperatura e calendário não são ajustados."
+   ],
+   "arquivo": "pipeline/energia/metricas/visao.py"
+  },
+  {
+   "gold": "sintese.json",
+   "paginas": [
+    "/setor-eletrico/visao-geral"
+   ],
+   "versao_formula": "1.0",
+   "id": "visao_regra_descolamento",
+   "titulo": "Regra: preços separados entre submercados",
+   "pergunta": "Os submercados estão com preços diferentes de forma persistente?",
+   "definicao": "Diferença entre o maior e o menor PLD médio diário dos quatro submercados de pelo menos max(R$ 5,00/MWh; 10% da média dos quatro); alerta com 3 dias seguidos, retorno com 3 dias abaixo.",
+   "unidade": "R$/MWh",
+   "grao_geografico": "quatro submercados",
+   "grao_temporal": "dia",
+   "fontes": [
+    "ccee_pld_horario"
+   ],
+   "formula": "condição(d) = max_s PLD_d(s) − min_s PLD_d(s) ≥ max(5; 0,10 × média_s PLD_d(s))",
+   "regra_agregacao": "condição diária booleana; episódio = duração mínima de dias seguidos com a condição; fim = dias seguidos sem ela",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "dia",
+    "regra"
+   ],
+   "regras_comparabilidade": [
+    "Médias diárias arredondadas ao centavo (pld.json#diario); a amplitude do dia confere com pld.json#amplitude_dia em R$ 0,02/MWh."
+   ],
+   "regra_cobertura": "Dias com os quatro submercados (desde 01/01/2021).",
+   "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
+   "validacoes": [
+    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
+    "estado do dia reavaliado e comparado com a classificação publicada pela gold de origem"
+   ],
+   "limitacoes": [
+    "Alerta descreve condição medida; não implica causa nem é previsão.",
+    "Não identifica qual restrição de transmissão atuou."
+   ],
+   "arquivo": "pipeline/energia/metricas/visao.py"
+  },
+  {
+   "gold": "sintese.json",
+   "paginas": [
+    "/setor-eletrico/visao-geral"
+   ],
+   "versao_formula": "1.0",
+   "id": "visao_regra_ear_faixa",
+   "titulo": "Regra: EAR do SIN fora da faixa usual",
+   "pergunta": "O armazenamento do SIN está fora do usual para a data?",
+   "definicao": "EAR do SIN abaixo do 10º ou acima do 90º percentil do mesmo dia do calendário nos anos completos de 2001 ao anterior; alerta com 7 dias seguidos, retorno com 7 dias seguidos dentro.",
+   "unidade": "% da EAR máxima",
+   "grao_geografico": "SIN",
+   "grao_temporal": "dia",
+   "fontes": [
+    "ear_subsistema_di"
+   ],
+   "formula": "condição(d) = EAR_SIN(d) < P10(md) ou EAR_SIN(d) > P90(md); EAR_SIN = 100 × Σ EAR ÷ Σ EARmax",
+   "regra_agregacao": "condição diária booleana; episódio = duração mínima de dias seguidos com a condição; fim = dias seguidos sem ela",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "dia",
+    "regra"
+   ],
+   "regras_comparabilidade": [
+    "A variante 'algum dos quatro subsistemas' é publicada como alternativa avaliada e rejeitada."
+   ],
+   "regra_cobertura": "Dias com os quatro subsistemas e faixa da data disponível (2021 em diante).",
+   "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
+   "validacoes": [
+    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
+    "estado do dia reavaliado e comparado com a classificação publicada pela gold de origem"
+   ],
+   "limitacoes": [
+    "Alerta descreve condição medida; não implica causa nem é previsão.",
+    "A capacidade de armazenamento mudou ao longo do tempo; a faixa compara percentuais de capacidades diferentes."
+   ],
+   "arquivo": "pipeline/energia/metricas/visao.py"
+  },
+  {
+   "gold": "sintese.json",
+   "paginas": [
+    "/setor-eletrico/visao-geral"
+   ],
+   "versao_formula": "1.0",
+   "id": "visao_regra_ena_faixa",
+   "titulo": "Regra: ENA de 30 dias do SIN fora da faixa usual",
+   "pergunta": "A afluência do último mês está fora do usual para o mesmo período do ano?",
+   "definicao": "ENA bruta do SIN em 30 dias, em % da MLT, abaixo do 10º ou acima do 90º percentil da mesma janela nos anos de 2001 ao anterior; alerta com 7 dias seguidos, retorno com 7 dias seguidos dentro.",
+   "unidade": "% da MLT",
+   "grao_geografico": "SIN",
+   "grao_temporal": "dia",
+   "fontes": [
+    "ena_subsistema_di"
+   ],
+   "formula": "condição(d) = ENA30(d) < P10 ou > P90 das janelas terminadas na mesma data dos anos anteriores; ENA30 = 100 × Σ ENA ÷ Σ MLT",
+   "regra_agregacao": "condição diária booleana; episódio = duração mínima de dias seguidos com a condição; fim = dias seguidos sem ela",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "dia",
+    "regra"
+   ],
+   "regras_comparabilidade": [
+    "A MLT do conjunto aberto muda com usinas novas e recálculos (agua_mlt_versao)."
+   ],
+   "regra_cobertura": "Janelas com os 30 dias.",
+   "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
+   "validacoes": [
+    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
+    "estado do dia reavaliado e comparado com a classificação publicada pela gold de origem"
+   ],
+   "limitacoes": [
+    "Alerta descreve condição medida; não implica causa nem é previsão.",
+    "Janela de 30 dias suaviza eventos curtos."
+   ],
+   "arquivo": "pipeline/energia/metricas/visao.py"
+  },
+  {
+   "gold": "sintese.json",
+   "paginas": [
+    "/setor-eletrico/visao-geral"
+   ],
+   "versao_formula": "1.0",
+   "id": "visao_regra_pld_defasagem",
+   "titulo": "Regra: PLD sem atualização recente",
+   "pergunta": "A série de PLD está sendo integrada?",
+   "definicao": "Último dia de PLD integrado mais de 2 dias antes da data de processamento (civil de Brasília).",
+   "unidade": "dias",
+   "grao_geografico": "quatro submercados",
+   "grao_temporal": "processamento",
+   "fontes": [
+    "ccee_pld_horario"
+   ],
+   "formula": "ativo = data_processamento − dia_referencia_pld > 2",
+   "regra_agregacao": "não se aplica",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "processamento"
+   ],
+   "regras_comparabilidade": [
+    "A CCEE publica o PLD do dia seguinte na véspera: defasagem de −1 é o normal à noite."
+   ],
+   "regra_cobertura": "Cada processamento.",
+   "politica_ausencia": "Sem pld.json íntegro, a regra não é listada.",
+   "validacoes": [
+    "data de Brasília, não UTC (defeito corrigido: '0 dias antes do processamento' às 23h20 de Brasília)"
+   ],
+   "limitacoes": [
+    "Diz respeito à integração, não ao preço."
+   ],
+   "arquivo": "pipeline/energia/metricas/visao.py"
+  },
+  {
+   "gold": "sintese.json",
+   "paginas": [
+    "/setor-eletrico/visao-geral"
+   ],
+   "versao_formula": "1.0",
+   "id": "visao_regra_pld_piso",
+   "titulo": "Regra: PLD no piso o dia inteiro",
+   "pergunta": "O piso regulatório determinou o preço em todas as horas?",
+   "definicao": "Algum submercado com as 24 horas do dia no PLD mínimo vigente (igual ao centavo, contagem de pld_limites_diario.csv do módulo PLD); alerta com 3 dias seguidos, retorno com 3 dias sem dia inteiro no piso.",
+   "unidade": "dias",
+   "grao_geografico": "quatro submercados",
+   "grao_temporal": "dia",
+   "fontes": [
+    "ccee_pld_horario"
+   ],
+   "formula": "condição(d) = ∃ s: horas_no_piso(s, d) = horas(s, d) = 24",
+   "regra_agregacao": "condição diária booleana; episódio = duração mínima de dias seguidos com a condição; fim = dias seguidos sem ela",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "dia",
+    "regra"
+   ],
+   "regras_comparabilidade": [
+    "Limites por ano conforme os atos da ANEEL (conferidos com regulacao.json)."
+   ],
+   "regra_cobertura": "Dias do PLD horário com limites vigentes (desde 01/01/2021).",
+   "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
+   "validacoes": [
+    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
+    "estado do dia reavaliado e comparado com a classificação publicada pela gold de origem",
+    "limites do CSV do PLD iguais aos vigentes publicados pela Regulação (R$ 0,005/MWh)"
+   ],
+   "limitacoes": [
+    "Alerta descreve condição medida; não implica causa nem é previsão.",
+    "Preço no piso não quer dizer energia sem custo."
+   ],
+   "arquivo": "pipeline/energia/metricas/visao.py"
+  },
+  {
+   "gold": "sintese.json",
+   "paginas": [
+    "/setor-eletrico/visao-geral"
+   ],
+   "versao_formula": "1.0",
+   "id": "visao_regra_pld_teto",
+   "titulo": "Regra: PLD no teto horário ou estrutural",
+   "pergunta": "Algum limite máximo do PLD foi atingido?",
+   "definicao": "Alguma hora no PLD máximo horário ou média diária no máximo estrutural em algum submercado; alerta no mesmo dia, retorno com 7 dias seguidos sem teto.",
+   "unidade": "dias",
+   "grao_geografico": "quatro submercados",
+   "grao_temporal": "dia",
+   "fontes": [
+    "ccee_pld_horario"
+   ],
+   "formula": "condição(d) = ∃ s: horas_no_teto_horario(s, d) > 0 ou media_no_teto_estrutural(s, d) = 1",
+   "regra_agregacao": "condição diária booleana; episódio = duração mínima de dias seguidos com a condição; fim = dias seguidos sem ela",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "dia",
+    "regra"
+   ],
+   "regras_comparabilidade": [
+    "Teto horário vale hora a hora; teto estrutural vale para a média diária."
+   ],
+   "regra_cobertura": "Dias do PLD horário com limites vigentes.",
+   "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
+   "validacoes": [
+    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
+    "estado do dia reavaliado e comparado com a classificação publicada pela gold de origem",
+    "limites do CSV do PLD iguais aos vigentes publicados pela Regulação (R$ 0,005/MWh)"
+   ],
+   "limitacoes": [
+    "Alerta descreve condição medida; não implica causa nem é previsão.",
+    "Não identifica a causa nem indica risco de suprimento."
+   ],
+   "arquivo": "pipeline/energia/metricas/visao.py"
+  },
+  {
+   "gold": "sintese.json",
+   "paginas": [
+    "/setor-eletrico/visao-geral"
+   ],
+   "versao_formula": "1.0",
+   "id": "visao_regra_restricao",
+   "titulo": "Regra: restrição de eólicas ou fotovoltaicas acima do usual",
+   "pergunta": "O corte de geração renovável está acima do usual do último ano?",
+   "definicao": "Taxa de restrição do SIN em 7 dias (energia não gerada ÷ geração verificada mais não gerada, linhas TOTAL de geracao_restricao_diaria.csv somadas nas regiões) acima do 90º percentil das 365 janelas terminadas de 7 a 371 dias antes; alerta com 7 dias seguidos, retorno com 7.",
+   "unidade": "% da geração possível",
+   "grao_geografico": "SIN, por fonte (eólica, fotovoltaica)",
+   "grao_temporal": "dia",
+   "fontes": [
+    "ons_coff_eolica",
+    "ons_coff_fotovoltaica"
+   ],
+   "formula": "condição(d) = taxa7(d) > P90{taxa7(d − i), i = 7..371}; taxa7 = 100 × Σ não gerada ÷ Σ (verificada + não gerada)",
+   "regra_agregacao": "condição diária booleana; episódio = duração mínima de dias seguidos com a condição; fim = dias seguidos sem ela",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "dia",
+    "regra"
+   ],
+   "regras_comparabilidade": [
+    "Universo de usinas dos arquivos de restrição do ONS (muda com usinas novas); taxa de razão de somas."
+   ],
+   "regra_cobertura": "Eólica desde out/2021, fotovoltaica desde abr/2024; avaliada com 365 janelas anteriores completas.",
+   "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
+   "validacoes": [
+    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
+    "estado do dia reavaliado e comparado com a classificação publicada pela gold de origem"
+   ],
+   "limitacoes": [
+    "Alerta descreve condição medida; não implica causa nem é previsão.",
+    "Energia não gerada é estimativa do ONS; MMGD não entra."
+   ],
+   "arquivo": "pipeline/energia/metricas/visao.py"
+  },
+  {
+   "gold": "sintese.json",
+   "paginas": [
+    "/setor-eletrico/visao-geral"
+   ],
+   "versao_formula": "1.0",
+   "id": "visao_regra_revisao_material",
+   "titulo": "Regra: revisão material de dado já publicado",
+   "pergunta": "A fonte mudou números que esta página usa?",
+   "definicao": "Captura nos últimos 7 dias com ao menos uma revisão material de série da Visão geral: |Δ| ≥ 1% do valor anterior e ≥ piso da unidade (0,1 p.p.; 10 MWmed ou MWmês; R$ 0,01/MWh).",
+   "unidade": "revisões",
+   "grao_geografico": "conjuntos da Visão geral",
+   "grao_temporal": "dia de captura (Brasília)",
+   "fontes": [
+    "ear_subsistema_di",
+    "ena_subsistema_di",
+    "carga_energia_di",
+    "balanco_energia_subsistema_ho",
+    "intercambio_nacional_ho",
+    "ccee_pld_horario",
+    "cmo_se"
+   ],
+   "formula": "condição(d) = ∃ captura c, d − 6 ≤ dia(c) ≤ d, com revisão material",
+   "regra_agregacao": "condição diária booleana; episódio = duração mínima de dias seguidos com a condição; fim = dias seguidos sem ela",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "dia",
+    "regra"
+   ],
+   "regras_comparabilidade": [
+    "Revisão é comparação entre capturas consecutivas do mesmo arquivo; antes da primeira captura comparável o dia não é avaliado."
+   ],
+   "regra_cobertura": "Capturas versionadas do silver principal (desde 27/09/2026).",
+   "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
+   "validacoes": [
+    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
+    "estado do dia reavaliado e comparado com a classificação publicada pela gold de origem"
+   ],
+   "limitacoes": [
+    "Alerta descreve condição medida; não implica causa nem é previsão.",
+    "Histórico curto: frequência anual não estimável antes de um ano de capturas."
+   ],
+   "arquivo": "pipeline/energia/metricas/visao.py"
+  },
+  {
+   "gold": "sintese.json",
+   "paginas": [
+    "/setor-eletrico/visao-geral"
+   ],
+   "versao_formula": "1.0",
+   "id": "visao_regra_termica",
+   "titulo": "Regra: participação térmica incomum",
+   "pergunta": "As térmicas estão gerando muito mais ou muito menos que no último ano?",
+   "definicao": "Participação térmica de 7 dias abaixo do 10º ou acima do 90º percentil das 365 janelas terminadas de 7 a 371 dias antes, todas no regime do balanço iniciado em 29/04/2023; alerta com 7 dias seguidos, retorno com 7.",
+   "unidade": "% da geração verificada",
+   "grao_geografico": "SIN",
+   "grao_temporal": "dia",
+   "fontes": [
+    "balanco_energia_subsistema_ho"
+   ],
+   "formula": "condição(d) = part7(d) < P10 ou > P90 de {part7(d − i), i = 7..371}",
+   "regra_agregacao": "condição diária booleana; episódio = duração mínima de dias seguidos com a condição; fim = dias seguidos sem ela",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "dia",
+    "regra"
+   ],
+   "regras_comparabilidade": [
+    "Só avaliada com 365 janelas inteiras no mesmo regime (a partir de maio de 2024)."
+   ],
+   "regra_cobertura": "Dias com as 365 janelas anteriores completas no regime atual.",
+   "politica_ausencia": "Dia sem dado ou sem base completa não é avaliado: não confirma nem normaliza o alerta e interrompe a contagem de dias seguidos.",
+   "validacoes": [
+    "Frequência de disparo reavaliada em todos os dias desde 01/01/2021 com os dados vigentes hoje (já revisados), pela mesma função que avalia o dia (gold/sintese.py: episodios e resumo_historico).",
+    "estado do dia reavaliado e comparado com a classificação publicada pela gold de origem"
+   ],
+   "limitacoes": [
+    "Alerta descreve condição medida; não implica causa nem é previsão.",
+    "O balanço não separa a térmica por combustível nem por motivo de despacho."
+   ],
+   "arquivo": "pipeline/energia/metricas/visao.py"
+  },
+  {
+   "gold": "sintese.json",
+   "paginas": [
+    "/setor-eletrico/visao-geral"
+   ],
+   "versao_formula": "1.0",
+   "id": "visao_revisoes_janela_frase",
+   "titulo": "Referências revisadas na janela da frase",
+   "pergunta": "Algum dado usado nesta frase foi revisado pela fonte entre capturas?",
+   "definicao": "Número de referências (dias ou horas) dentro da janela da frase cujo valor mudou entre capturas consecutivas no silver principal; a maior variação relativa acompanha.",
+   "unidade": "referências",
+   "grao_geografico": "frase",
+   "grao_temporal": "janela da frase",
+   "fontes": [
+    "ear_subsistema_di",
+    "ena_subsistema_di",
+    "carga_energia_di",
+    "balanco_energia_subsistema_ho",
+    "intercambio_nacional_ho",
+    "ccee_pld_horario"
+   ],
+   "formula": "contagem de (série, referência) com mais de um valor entre vintages e referência na janela",
+   "regra_agregacao": "contagem",
+   "natureza_fonte": "OBSERVADO",
+   "natureza_transformacao": "CALCULADO",
+   "dimensoes": [
+    "frase"
+   ],
+   "regras_comparabilidade": [
+    "Séries horárias contam horas; séries diárias contam dias."
+   ],
+   "regra_cobertura": "Capturas versionadas do silver principal (desde 27/09/2026).",
+   "politica_ausencia": "Referência ausente numa captura não é revisão.",
+   "validacoes": [
+    "mesma lista de revisões publicada em sintese_revisoes.csv"
+   ],
+   "limitacoes": [
+    "Antes das capturas versionadas não há como medir revisão."
+   ],
+   "arquivo": "pipeline/energia/metricas/visao.py"
   }
  ]
 }

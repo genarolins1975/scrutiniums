@@ -1,32 +1,6 @@
 {
- "nota": "Entradas cadastradas à mão. metadados_verificados=false até conferência na fonte.",
+ "nota": "Entradas cadastradas à mão: fontes candidatas ainda sem integração nem listagem colhida pelo pipeline. metadados_verificados=false até conferência na fonte; o endereço de cada uma é lido por requisição parcial na coleta do módulo dados (endereco_verificado no catálogo). Removidas em 01/10/2026 por terem entrada própria verificada: ccee:portal (a listagem package_search da CCEE passou a ser colhida, 204 conjuntos), epe:pde (epe:pde-2035, módulo Expansão), mme:boletim (mme:boletim-de-monitoramento-do-sistema-eletrico, módulo Mercado) e cvm:cia_aberta (cvm:cia_aberta-doc-dfp, -doc-itr e -cad, módulo Empresas).",
  "entradas": [
-  {
-   "id": "ccee:portal",
-   "orgao": "CCEE",
-   "nome": null,
-   "titulo": "Demais conjuntos do portal de dados abertos da CCEE (preços médios, contabilização, MRE e GSF, encargos, consumo, agentes)",
-   "url": "https://dadosabertos.ccee.org.br/",
-   "licenca": null,
-   "modificado_na_fonte": null,
-   "descricao": "Lista a verificar: o portal respondeu HTTP 403 ao ambiente de construção em 28/09/2026. Catalogação conjunto a conjunto pendente.",
-   "n_recursos": null,
-   "formatos": [],
-   "tema": "mercado"
-  },
-  {
-   "id": "epe:pde",
-   "orgao": "EPE",
-   "nome": null,
-   "titulo": "Plano Decenal de Expansão de Energia (PDE)",
-   "url": "https://www.epe.gov.br/pt/publicacoes-dados-abertos/publicacoes/plano-decenal-de-expansao-de-energia-pde",
-   "licenca": null,
-   "modificado_na_fonte": null,
-   "descricao": "Planejamento de expansão da oferta e da transmissão em horizonte de dez anos. Endereço a conferir.",
-   "n_recursos": null,
-   "formatos": [],
-   "tema": "expansao"
-  },
   {
    "id": "epe:anuario",
    "orgao": "EPE",
@@ -54,19 +28,6 @@
    "tema": "geracao"
   },
   {
-   "id": "mme:boletim",
-   "orgao": "MME",
-   "nome": null,
-   "titulo": "Boletim Mensal de Monitoramento do Sistema Elétrico Brasileiro",
-   "url": "https://www.gov.br/mme/pt-br",
-   "licenca": null,
-   "modificado_na_fonte": null,
-   "descricao": "Boletim de acompanhamento do sistema. Endereço específico a conferir.",
-   "n_recursos": null,
-   "formatos": [],
-   "tema": "outros"
-  },
-  {
    "id": "ana:hidroweb",
    "orgao": "ANA",
    "nome": null,
@@ -91,19 +52,6 @@
    "n_recursos": null,
    "formatos": [],
    "tema": "hidrologia"
-  },
-  {
-   "id": "cvm:cia_aberta",
-   "orgao": "CVM",
-   "nome": null,
-   "titulo": "Companhias abertas: DFP, ITR e FRE",
-   "url": "https://dados.cvm.gov.br/",
-   "licenca": null,
-   "modificado_na_fonte": null,
-   "descricao": "Demonstrações financeiras das companhias do setor elétrico listadas. Já integrado no domínio Crédito para instituições financeiras; integração para energia pendente.",
-   "n_recursos": null,
-   "formatos": [],
-   "tema": "empresas"
   },
   {
    "id": "b3:cotacoes",
@@ -135,11 +83,11 @@
    "id": "ibge:atividade",
    "orgao": "IBGE",
    "nome": null,
-   "titulo": "Indicadores de atividade econômica e população",
+   "titulo": "Indicadores de atividade econômica (SIDRA)",
    "url": "https://sidra.ibge.gov.br/",
    "licenca": null,
    "modificado_na_fonte": null,
-   "descricao": "Contexto para carga e consumo. Já integrado no domínio Crédito (SIDRA).",
+   "descricao": "Contexto para carga e consumo, ainda não integrado no domínio Energia. População e IPCA do SIDRA já estão integrados e aparecem em entradas próprias do catálogo. Tabelas específicas a conferir.",
    "n_recursos": null,
    "formatos": [],
    "tema": "carga"

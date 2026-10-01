@@ -1,0 +1,5 @@
+din_instante;id_subsistema_origem;nom_subsistema_origem;id_subsistema_destino;nom_subsistema_destino;val_intercambiomwmed
+2022-09-13 12:00:00;N;NORTE;NE;NORDESTE;-2059.52500000
+2022-09-13 12:00:00;N;NORTE;SE;SUDESTE;1817.89800000
+2022-09-13 12:00:00;NE;NORDESTE;SE;SUDESTE;3250.55400000
+2022-09-13 12:00:00;SE;SUDESTE;S;SUL;-1171.58400000

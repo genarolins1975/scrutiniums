@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "mercado.json",
- "gerado_em": "2026-10-01T06:09:13Z",
+ "gerado_em": "2026-10-01T06:22:40Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d4f2c5af5147+alterado",
+ "versao_codigo": "f5cba38ad40f+alterado",
  "disponivel": true,
  "referencias": {
   "hoje": "2026-10-01",
@@ -108,8 +108,8 @@
      "tratamento_ausencia": "mês sem cativo ou sem livre interrompe a janela (sem preenchimento)",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "d4f2c5af5147+alterado",
-      "publicacao": "2026-10-01T06:09:15Z"
+      "codigo": "f5cba38ad40f+alterado",
+      "publicacao": "2026-10-01T06:22:42Z"
      },
      "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
@@ -135,7 +135,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Participação do mercado livre no consumo de energia elétrica na rede (12 meses): 45,3%, Brasil (SIN e sistemas isolados), 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: EPE, Consumo mensal de energia elétrica (dados abertos) (recurso Dados_abertos_Consumo_Mensal.xlsx, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Participação do mercado livre no consumo de energia elétrica na rede (12 meses): 45,3%, Brasil (SIN e sistemas isolados), 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: EPE, Consumo mensal de energia elétrica (dados abertos) (recurso Dados_abertos_Consumo_Mensal.xlsx, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "consumo_livre_12m": {
@@ -252,8 +252,8 @@
      "tratamento_ausencia": "janela só é calculada com os 12 meses publicados; mês sem classes usa o conjunto de ambiente",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "d4f2c5af5147+alterado",
-      "publicacao": "2026-10-01T06:09:15Z"
+      "codigo": "f5cba38ad40f+alterado",
+      "publicacao": "2026-10-01T06:22:42Z"
      },
      "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
@@ -275,7 +275,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Participação do ACL no consumo contabilizado pela CCEE (12 meses): 42,8%, SIN, 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, CONSUMO_CLASSE_AGENTE (conferido com CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO) (recurso consumo_classe_agente_2026, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Participação do ACL no consumo contabilizado pela CCEE (12 meses): 42,8%, SIN, 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, CONSUMO_CLASSE_AGENTE (conferido com CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO) (recurso consumo_classe_agente_2026, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    }
   },
@@ -7941,8 +7941,8 @@
      "tratamento_ausencia": "classe sem linha no mês não é somada (não vira zero)",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "d4f2c5af5147+alterado",
-      "publicacao": "2026-10-01T06:09:15Z"
+      "codigo": "f5cba38ad40f+alterado",
+      "publicacao": "2026-10-01T06:22:42Z"
      },
      "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
@@ -7964,7 +7964,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Agentes que participaram da contabilização da CCEE: 16.376 agentes, CCEE (SIN), 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, AGENTE_QTD_CONTABILIZACAO (recurso agente_qtd_contabilizacao_2026, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Agentes que participaram da contabilização da CCEE: 16.376 agentes, CCEE (SIN), 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, AGENTE_QTD_CONTABILIZACAO (recurso agente_qtd_contabilizacao_2026, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "ucs_livres": {
@@ -8007,8 +8007,8 @@
      "tratamento_ausencia": "linha sem número de consumidores não entra na soma",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "d4f2c5af5147+alterado",
-      "publicacao": "2026-10-01T06:09:15Z"
+      "codigo": "f5cba38ad40f+alterado",
+      "publicacao": "2026-10-01T06:22:42Z"
      },
      "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
@@ -8030,7 +8030,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Unidades consumidoras no mercado livre: 96.618 unidades consumidoras, Brasil, 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: EPE, Consumo mensal de energia elétrica (dados abertos) (recurso Dados_abertos_Consumo_Mensal.xlsx, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Unidades consumidoras no mercado livre: 96.618 unidades consumidoras, Brasil, 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: EPE, Consumo mensal de energia elétrica (dados abertos) (recurso Dados_abertos_Consumo_Mensal.xlsx, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "parcelas_carga": {
@@ -8096,8 +8096,8 @@
      "tratamento_ausencia": "linha sem código de parcela é contada à parte e não entra",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "d4f2c5af5147+alterado",
-      "publicacao": "2026-10-01T06:09:15Z"
+      "codigo": "f5cba38ad40f+alterado",
+      "publicacao": "2026-10-01T06:22:42Z"
      },
      "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
@@ -8115,7 +8115,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Parcelas de carga no ACL contabilizadas pela CCEE: 46.890 parcelas de carga, CCEE (SIN), 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PARCELA_CARGA_CONSUMO (recurso parcela_carga_consumo_2026, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Parcelas de carga no ACL contabilizadas pela CCEE: 46.890 parcelas de carga, CCEE (SIN), 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PARCELA_CARGA_CONSUMO (recurso parcela_carga_consumo_2026, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    }
   },
@@ -8551,21 +8551,21 @@
     "entradas": 27,
     "saidas": 36,
     "por_classe": {
-     "Produtor Independente": {
-      "entradas": 10,
-      "saidas": 1
-     },
      "Consumidor Livre": {
       "entradas": 11,
       "saidas": 16
      },
-     "Comercializador": {
-      "entradas": 2,
-      "saidas": 2
+     "Produtor Independente": {
+      "entradas": 10,
+      "saidas": 1
      },
      "Consumidor Especial": {
       "entradas": 3,
       "saidas": 17
+     },
+     "Comercializador": {
+      "entradas": 2,
+      "saidas": 2
      },
      "Autoprodutor": {
       "entradas": 1,
@@ -8579,6 +8579,10 @@
     "entradas": 43,
     "saidas": 29,
     "por_classe": {
+     "Consumidor Especial": {
+      "entradas": 11,
+      "saidas": 16
+     },
      "Consumidor Livre": {
       "entradas": 13,
       "saidas": 7
@@ -8586,10 +8590,6 @@
      "Produtor Independente": {
       "entradas": 15,
       "saidas": 2
-     },
-     "Consumidor Especial": {
-      "entradas": 11,
-      "saidas": 16
      },
      "Comercializador": {
       "entradas": 4,
@@ -8607,6 +8607,10 @@
     "entradas": 64,
     "saidas": 33,
     "por_classe": {
+     "Produtor Independente": {
+      "entradas": 12,
+      "saidas": 7
+     },
      "Consumidor Especial": {
       "entradas": 21,
       "saidas": 20
@@ -8614,10 +8618,6 @@
      "Consumidor Livre": {
       "entradas": 24,
       "saidas": 6
-     },
-     "Produtor Independente": {
-      "entradas": 12,
-      "saidas": 7
      },
      "Comercializador": {
       "entradas": 6,
@@ -8635,17 +8635,13 @@
     "entradas": 83,
     "saidas": 79,
     "por_classe": {
-     "Consumidor Especial": {
-      "entradas": 26,
-      "saidas": 57
-     },
      "Consumidor Livre": {
       "entradas": 42,
       "saidas": 19
      },
-     "Produtor Independente": {
-      "entradas": 11,
-      "saidas": 3
+     "Consumidor Especial": {
+      "entradas": 26,
+      "saidas": 57
      },
      "Comercializador": {
       "entradas": 3,
@@ -8654,6 +8650,10 @@
      "Autoprodutor": {
       "entradas": 1,
       "saidas": 0
+     },
+     "Produtor Independente": {
+      "entradas": 11,
+      "saidas": 3
      }
     }
    },
@@ -8667,13 +8667,13 @@
       "entradas": 17,
       "saidas": 13
      },
-     "Produtor Independente": {
-      "entradas": 2,
-      "saidas": 11
-     },
      "Consumidor Especial": {
       "entradas": 13,
       "saidas": 50
+     },
+     "Produtor Independente": {
+      "entradas": 2,
+      "saidas": 11
      },
      "Comercializador": {
       "entradas": 6,
@@ -8691,17 +8691,17 @@
       "entradas": 13,
       "saidas": 3
      },
-     "Consumidor Livre": {
-      "entradas": 18,
-      "saidas": 18
+     "Consumidor Especial": {
+      "entradas": 16,
+      "saidas": 45
      },
      "Comercializador": {
       "entradas": 3,
       "saidas": 4
      },
-     "Consumidor Especial": {
-      "entradas": 16,
-      "saidas": 45
+     "Consumidor Livre": {
+      "entradas": 18,
+      "saidas": 18
      },
      "Autoprodutor": {
       "entradas": 0,
@@ -8719,13 +8719,13 @@
       "entradas": 27,
       "saidas": 12
      },
-     "Produtor Independente": {
-      "entradas": 30,
-      "saidas": 4
-     },
      "Consumidor Especial": {
       "entradas": 10,
       "saidas": 21
+     },
+     "Produtor Independente": {
+      "entradas": 30,
+      "saidas": 4
      },
      "Comercializador": {
       "entradas": 3,
@@ -8739,6 +8739,10 @@
     "entradas": 56,
     "saidas": 47,
     "por_classe": {
+     "Consumidor Livre": {
+      "entradas": 19,
+      "saidas": 17
+     },
      "Produtor Independente": {
       "entradas": 19,
       "saidas": 4
@@ -8746,10 +8750,6 @@
      "Consumidor Especial": {
       "entradas": 18,
       "saidas": 18
-     },
-     "Consumidor Livre": {
-      "entradas": 19,
-      "saidas": 17
      },
      "Comercializador": {
       "entradas": 0,
@@ -8763,21 +8763,21 @@
     "entradas": 75,
     "saidas": 52,
     "por_classe": {
-     "Consumidor Livre": {
-      "entradas": 34,
-      "saidas": 22
-     },
      "Consumidor Especial": {
       "entradas": 19,
       "saidas": 25
      },
-     "Comercializador": {
-      "entradas": 2,
-      "saidas": 3
+     "Consumidor Livre": {
+      "entradas": 34,
+      "saidas": 22
      },
      "Produtor Independente": {
       "entradas": 20,
       "saidas": 1
+     },
+     "Comercializador": {
+      "entradas": 2,
+      "saidas": 3
      },
      "Autoprodutor": {
       "entradas": 0,
@@ -8791,25 +8791,25 @@
     "entradas": 57,
     "saidas": 55,
     "por_classe": {
-     "Consumidor Livre": {
-      "entradas": 25,
-      "saidas": 14
-     },
      "Consumidor Especial": {
       "entradas": 18,
       "saidas": 27
+     },
+     "Consumidor Livre": {
+      "entradas": 25,
+      "saidas": 14
      },
      "Produtor Independente": {
       "entradas": 11,
       "saidas": 0
      },
-     "Autoprodutor": {
-      "entradas": 1,
-      "saidas": 0
-     },
      "Comercializador": {
       "entradas": 2,
       "saidas": 14
+     },
+     "Autoprodutor": {
+      "entradas": 1,
+      "saidas": 0
      }
     }
    },
@@ -8819,10 +8819,6 @@
     "entradas": 25,
     "saidas": 25,
     "por_classe": {
-     "Consumidor Especial": {
-      "entradas": 10,
-      "saidas": 13
-     },
      "Produtor Independente": {
       "entradas": 6,
       "saidas": 2
@@ -8830,6 +8826,10 @@
      "Consumidor Livre": {
       "entradas": 7,
       "saidas": 8
+     },
+     "Consumidor Especial": {
+      "entradas": 10,
+      "saidas": 13
      },
      "Comercializador": {
       "entradas": 2,
@@ -9466,746 +9466,6 @@
     }
    ]
   },
-  "desligamentos_anual": [
-   {
-    "ano": "2010",
-    "tipo": "voluntário",
-    "classe": "Produtor Independente",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2013",
-    "tipo": "compulsório",
-    "classe": "Comercializador",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2013",
-    "tipo": "compulsório",
-    "classe": "Gerador",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2013",
-    "tipo": "compulsório",
-    "classe": "Produtor Independente",
-    "desligamentos": 4.0
-   },
-   {
-    "ano": "2013",
-    "tipo": "voluntário",
-    "classe": "Comercializador",
-    "desligamentos": 2.0
-   },
-   {
-    "ano": "2013",
-    "tipo": "voluntário",
-    "classe": "Consumidor Especial",
-    "desligamentos": 6.0
-   },
-   {
-    "ano": "2013",
-    "tipo": "voluntário",
-    "classe": "Consumidor Livre",
-    "desligamentos": 6.0
-   },
-   {
-    "ano": "2013",
-    "tipo": "voluntário",
-    "classe": "Não Agente",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2013",
-    "tipo": "voluntário",
-    "classe": "Produtor Independente",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2014",
-    "tipo": "compulsório",
-    "classe": "Comercializador",
-    "desligamentos": 6.0
-   },
-   {
-    "ano": "2014",
-    "tipo": "compulsório",
-    "classe": "Consumidor Especial",
-    "desligamentos": 3.0
-   },
-   {
-    "ano": "2014",
-    "tipo": "compulsório",
-    "classe": "Consumidor Livre",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2014",
-    "tipo": "compulsório",
-    "classe": "Produtor Independente",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2014",
-    "tipo": "voluntário",
-    "classe": "Autoprodutor",
-    "desligamentos": 2.0
-   },
-   {
-    "ano": "2014",
-    "tipo": "voluntário",
-    "classe": "Comercializador",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2014",
-    "tipo": "voluntário",
-    "classe": "Consumidor Especial",
-    "desligamentos": 33.0
-   },
-   {
-    "ano": "2014",
-    "tipo": "voluntário",
-    "classe": "Consumidor Livre",
-    "desligamentos": 20.0
-   },
-   {
-    "ano": "2014",
-    "tipo": "voluntário",
-    "classe": "Produtor Independente",
-    "desligamentos": 6.0
-   },
-   {
-    "ano": "2015",
-    "tipo": "compulsório",
-    "classe": "Comercializador",
-    "desligamentos": 6.0
-   },
-   {
-    "ano": "2015",
-    "tipo": "compulsório",
-    "classe": "Consumidor Especial",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2015",
-    "tipo": "compulsório",
-    "classe": "Produtor Independente",
-    "desligamentos": 6.0
-   },
-   {
-    "ano": "2015",
-    "tipo": "voluntário",
-    "classe": "Autoprodutor",
-    "desligamentos": 2.0
-   },
-   {
-    "ano": "2015",
-    "tipo": "voluntário",
-    "classe": "Comercializador",
-    "desligamentos": 4.0
-   },
-   {
-    "ano": "2015",
-    "tipo": "voluntário",
-    "classe": "Consumidor Especial",
-    "desligamentos": 28.0
-   },
-   {
-    "ano": "2015",
-    "tipo": "voluntário",
-    "classe": "Consumidor Livre",
-    "desligamentos": 17.0
-   },
-   {
-    "ano": "2015",
-    "tipo": "voluntário",
-    "classe": "Produtor Independente",
-    "desligamentos": 13.0
-   },
-   {
-    "ano": "2016",
-    "tipo": "compulsório",
-    "classe": "Consumidor Especial",
-    "desligamentos": 2.0
-   },
-   {
-    "ano": "2016",
-    "tipo": "compulsório",
-    "classe": "Produtor Independente",
-    "desligamentos": 10.0
-   },
-   {
-    "ano": "2016",
-    "tipo": "voluntário",
-    "classe": "Autoprodutor",
-    "desligamentos": 4.0
-   },
-   {
-    "ano": "2016",
-    "tipo": "voluntário",
-    "classe": "Comercializador",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2016",
-    "tipo": "voluntário",
-    "classe": "Consumidor Especial",
-    "desligamentos": 39.0
-   },
-   {
-    "ano": "2016",
-    "tipo": "voluntário",
-    "classe": "Consumidor Livre",
-    "desligamentos": 17.0
-   },
-   {
-    "ano": "2016",
-    "tipo": "voluntário",
-    "classe": "Gerador",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2016",
-    "tipo": "voluntário",
-    "classe": "Não Agente",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2016",
-    "tipo": "voluntário",
-    "classe": "Produtor Independente",
-    "desligamentos": 7.0
-   },
-   {
-    "ano": "2017",
-    "tipo": "compulsório",
-    "classe": "Comercializador",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2017",
-    "tipo": "compulsório",
-    "classe": "Consumidor Especial",
-    "desligamentos": 2.0
-   },
-   {
-    "ano": "2017",
-    "tipo": "compulsório",
-    "classe": "Distribuidor",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2017",
-    "tipo": "compulsório",
-    "classe": "Produtor Independente",
-    "desligamentos": 44.0
-   },
-   {
-    "ano": "2017",
-    "tipo": "voluntário",
-    "classe": "Autoprodutor",
-    "desligamentos": 2.0
-   },
-   {
-    "ano": "2017",
-    "tipo": "voluntário",
-    "classe": "Comercializador",
-    "desligamentos": 3.0
-   },
-   {
-    "ano": "2017",
-    "tipo": "voluntário",
-    "classe": "Consumidor Especial",
-    "desligamentos": 71.0
-   },
-   {
-    "ano": "2017",
-    "tipo": "voluntário",
-    "classe": "Consumidor Livre",
-    "desligamentos": 35.0
-   },
-   {
-    "ano": "2017",
-    "tipo": "voluntário",
-    "classe": "Distribuidor",
-    "desligamentos": 3.0
-   },
-   {
-    "ano": "2017",
-    "tipo": "voluntário",
-    "classe": "Produtor Independente",
-    "desligamentos": 26.0
-   },
-   {
-    "ano": "2018",
-    "tipo": "compulsório",
-    "classe": "Comercializador",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2018",
-    "tipo": "compulsório",
-    "classe": "Consumidor Livre",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2018",
-    "tipo": "compulsório",
-    "classe": "Gerador",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2018",
-    "tipo": "compulsório",
-    "classe": "Produtor Independente",
-    "desligamentos": 32.0
-   },
-   {
-    "ano": "2018",
-    "tipo": "voluntário",
-    "classe": "Autoprodutor",
-    "desligamentos": 3.0
-   },
-   {
-    "ano": "2018",
-    "tipo": "voluntário",
-    "classe": "Comercializador",
-    "desligamentos": 3.0
-   },
-   {
-    "ano": "2018",
-    "tipo": "voluntário",
-    "classe": "Consumidor Especial",
-    "desligamentos": 111.0
-   },
-   {
-    "ano": "2018",
-    "tipo": "voluntário",
-    "classe": "Consumidor Livre",
-    "desligamentos": 30.0
-   },
-   {
-    "ano": "2018",
-    "tipo": "voluntário",
-    "classe": "Distribuidor",
-    "desligamentos": 4.0
-   },
-   {
-    "ano": "2018",
-    "tipo": "voluntário",
-    "classe": "Gerador",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2018",
-    "tipo": "voluntário",
-    "classe": "Não Agente",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2018",
-    "tipo": "voluntário",
-    "classe": "Produtor Independente",
-    "desligamentos": 19.0
-   },
-   {
-    "ano": "2019",
-    "tipo": "compulsório",
-    "classe": "Consumidor Especial",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2019",
-    "tipo": "compulsório",
-    "classe": "Produtor Independente",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2019",
-    "tipo": "voluntário",
-    "classe": "Autoprodutor",
-    "desligamentos": 2.0
-   },
-   {
-    "ano": "2019",
-    "tipo": "voluntário",
-    "classe": "Comercializador",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2019",
-    "tipo": "voluntário",
-    "classe": "Consumidor Especial",
-    "desligamentos": 105.0
-   },
-   {
-    "ano": "2019",
-    "tipo": "voluntário",
-    "classe": "Consumidor Livre",
-    "desligamentos": 39.0
-   },
-   {
-    "ano": "2019",
-    "tipo": "voluntário",
-    "classe": "Distribuidor",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2019",
-    "tipo": "voluntário",
-    "classe": "Gerador",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2019",
-    "tipo": "voluntário",
-    "classe": "Não Agente",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2019",
-    "tipo": "voluntário",
-    "classe": "Produtor Independente",
-    "desligamentos": 15.0
-   },
-   {
-    "ano": "2020",
-    "tipo": "compulsório",
-    "classe": "Consumidor Especial",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2020",
-    "tipo": "compulsório",
-    "classe": "Consumidor Livre",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2020",
-    "tipo": "voluntário",
-    "classe": "Autoprodutor",
-    "desligamentos": 2.0
-   },
-   {
-    "ano": "2020",
-    "tipo": "voluntário",
-    "classe": "Comercializador",
-    "desligamentos": 6.0
-   },
-   {
-    "ano": "2020",
-    "tipo": "voluntário",
-    "classe": "Consumidor Especial",
-    "desligamentos": 150.0
-   },
-   {
-    "ano": "2020",
-    "tipo": "voluntário",
-    "classe": "Consumidor Livre",
-    "desligamentos": 25.0
-   },
-   {
-    "ano": "2020",
-    "tipo": "voluntário",
-    "classe": "Gerador",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2020",
-    "tipo": "voluntário",
-    "classe": "Não Agente",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2020",
-    "tipo": "voluntário",
-    "classe": "Produtor Independente",
-    "desligamentos": 7.0
-   },
-   {
-    "ano": "2021",
-    "tipo": "compulsório",
-    "classe": "Consumidor Especial",
-    "desligamentos": 3.0
-   },
-   {
-    "ano": "2021",
-    "tipo": "compulsório",
-    "classe": "Consumidor Livre",
-    "desligamentos": 2.0
-   },
-   {
-    "ano": "2021",
-    "tipo": "voluntário",
-    "classe": "Autoprodutor",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2021",
-    "tipo": "voluntário",
-    "classe": "Comercializador",
-    "desligamentos": 2.0
-   },
-   {
-    "ano": "2021",
-    "tipo": "voluntário",
-    "classe": "Consumidor Especial",
-    "desligamentos": 113.0
-   },
-   {
-    "ano": "2021",
-    "tipo": "voluntário",
-    "classe": "Consumidor Livre",
-    "desligamentos": 27.0
-   },
-   {
-    "ano": "2021",
-    "tipo": "voluntário",
-    "classe": "Produtor Independente",
-    "desligamentos": 21.0
-   },
-   {
-    "ano": "2021",
-    "tipo": "voluntário",
-    "classe": "Transmissor",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2022",
-    "tipo": "voluntário",
-    "classe": "Comercializador",
-    "desligamentos": 3.0
-   },
-   {
-    "ano": "2022",
-    "tipo": "voluntário",
-    "classe": "Consumidor Especial",
-    "desligamentos": 146.0
-   },
-   {
-    "ano": "2022",
-    "tipo": "voluntário",
-    "classe": "Consumidor Livre",
-    "desligamentos": 39.0
-   },
-   {
-    "ano": "2022",
-    "tipo": "voluntário",
-    "classe": "Não Agente",
-    "desligamentos": 2.0
-   },
-   {
-    "ano": "2022",
-    "tipo": "voluntário",
-    "classe": "Produtor Independente",
-    "desligamentos": 27.0
-   },
-   {
-    "ano": "2023",
-    "tipo": "compulsório",
-    "classe": "Produtor Independente",
-    "desligamentos": 10.0
-   },
-   {
-    "ano": "2023",
-    "tipo": "voluntário",
-    "classe": "Autoprodutor",
-    "desligamentos": 3.0
-   },
-   {
-    "ano": "2023",
-    "tipo": "voluntário",
-    "classe": "Comercializador",
-    "desligamentos": 18.0
-   },
-   {
-    "ano": "2023",
-    "tipo": "voluntário",
-    "classe": "Consumidor Especial",
-    "desligamentos": 151.0
-   },
-   {
-    "ano": "2023",
-    "tipo": "voluntário",
-    "classe": "Consumidor Livre",
-    "desligamentos": 62.0
-   },
-   {
-    "ano": "2023",
-    "tipo": "voluntário",
-    "classe": "Não Agente",
-    "desligamentos": 3.0
-   },
-   {
-    "ano": "2023",
-    "tipo": "voluntário",
-    "classe": "Produtor Independente",
-    "desligamentos": 15.0
-   },
-   {
-    "ano": "2024",
-    "tipo": "compulsório",
-    "classe": "Comercializador",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2024",
-    "tipo": "compulsório",
-    "classe": "Consumidor Especial",
-    "desligamentos": 2.0
-   },
-   {
-    "ano": "2024",
-    "tipo": "compulsório",
-    "classe": "Produtor Independente",
-    "desligamentos": 7.0
-   },
-   {
-    "ano": "2024",
-    "tipo": "voluntário",
-    "classe": "Autoprodutor",
-    "desligamentos": 2.0
-   },
-   {
-    "ano": "2024",
-    "tipo": "voluntário",
-    "classe": "Comercializador",
-    "desligamentos": 24.0
-   },
-   {
-    "ano": "2024",
-    "tipo": "voluntário",
-    "classe": "Consumidor Especial",
-    "desligamentos": 193.0
-   },
-   {
-    "ano": "2024",
-    "tipo": "voluntário",
-    "classe": "Consumidor Livre",
-    "desligamentos": 93.0
-   },
-   {
-    "ano": "2024",
-    "tipo": "voluntário",
-    "classe": "Não Agente",
-    "desligamentos": 4.0
-   },
-   {
-    "ano": "2024",
-    "tipo": "voluntário",
-    "classe": "Produtor Independente",
-    "desligamentos": 34.0
-   },
-   {
-    "ano": "2025",
-    "tipo": "compulsório",
-    "classe": "Comercializador",
-    "desligamentos": 15.0
-   },
-   {
-    "ano": "2025",
-    "tipo": "compulsório",
-    "classe": "Consumidor Especial",
-    "desligamentos": 2.0
-   },
-   {
-    "ano": "2025",
-    "tipo": "compulsório",
-    "classe": "Produtor Independente",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2025",
-    "tipo": "voluntário",
-    "classe": "Autoprodutor",
-    "desligamentos": 2.0
-   },
-   {
-    "ano": "2025",
-    "tipo": "voluntário",
-    "classe": "Comercializador",
-    "desligamentos": 11.0
-   },
-   {
-    "ano": "2025",
-    "tipo": "voluntário",
-    "classe": "Consumidor Especial",
-    "desligamentos": 149.0
-   },
-   {
-    "ano": "2025",
-    "tipo": "voluntário",
-    "classe": "Consumidor Livre",
-    "desligamentos": 92.0
-   },
-   {
-    "ano": "2025",
-    "tipo": "voluntário",
-    "classe": "Não Agente",
-    "desligamentos": 8.0
-   },
-   {
-    "ano": "2025",
-    "tipo": "voluntário",
-    "classe": "Produtor Independente",
-    "desligamentos": 16.0
-   },
-   {
-    "ano": "2026",
-    "tipo": "compulsório",
-    "classe": "Comercializador",
-    "desligamentos": 7.0
-   },
-   {
-    "ano": "2026",
-    "tipo": "compulsório",
-    "classe": "Consumidor Especial",
-    "desligamentos": 3.0
-   },
-   {
-    "ano": "2026",
-    "tipo": "compulsório",
-    "classe": "Produtor Independente",
-    "desligamentos": 2.0
-   },
-   {
-    "ano": "2026",
-    "tipo": "voluntário",
-    "classe": "Autoprodutor",
-    "desligamentos": 1.0
-   },
-   {
-    "ano": "2026",
-    "tipo": "voluntário",
-    "classe": "Comercializador",
-    "desligamentos": 9.0
-   },
-   {
-    "ano": "2026",
-    "tipo": "voluntário",
-    "classe": "Consumidor Especial",
-    "desligamentos": 77.0
-   },
-   {
-    "ano": "2026",
-    "tipo": "voluntário",
-    "classe": "Consumidor Livre",
-    "desligamentos": 105.0
-   },
-   {
-    "ano": "2026",
-    "tipo": "voluntário",
-    "classe": "Não Agente",
-    "desligamentos": 2.0
-   },
-   {
-    "ano": "2026",
-    "tipo": "voluntário",
-    "classe": "Produtor Independente",
-    "desligamentos": 12.0
-   }
-  ],
   "ucs_livres_por_classe_ultimo_mes": {
    "mes": "2026-08",
    "linhas": [
@@ -11072,6 +10332,154 @@
     "transmissao": 473
    },
    "ativos_so_comercializacao": 625
+  },
+  "desligamentos_por_ano": [
+   {
+    "ano": "2010",
+    "tipo": "voluntário",
+    "desligamentos": 1.0
+   },
+   {
+    "ano": "2013",
+    "tipo": "compulsório",
+    "desligamentos": 6.0
+   },
+   {
+    "ano": "2013",
+    "tipo": "voluntário",
+    "desligamentos": 16.0
+   },
+   {
+    "ano": "2014",
+    "tipo": "compulsório",
+    "desligamentos": 11.0
+   },
+   {
+    "ano": "2014",
+    "tipo": "voluntário",
+    "desligamentos": 62.0
+   },
+   {
+    "ano": "2015",
+    "tipo": "compulsório",
+    "desligamentos": 13.0
+   },
+   {
+    "ano": "2015",
+    "tipo": "voluntário",
+    "desligamentos": 64.0
+   },
+   {
+    "ano": "2016",
+    "tipo": "compulsório",
+    "desligamentos": 12.0
+   },
+   {
+    "ano": "2016",
+    "tipo": "voluntário",
+    "desligamentos": 70.0
+   },
+   {
+    "ano": "2017",
+    "tipo": "compulsório",
+    "desligamentos": 48.0
+   },
+   {
+    "ano": "2017",
+    "tipo": "voluntário",
+    "desligamentos": 140.0
+   },
+   {
+    "ano": "2018",
+    "tipo": "compulsório",
+    "desligamentos": 35.0
+   },
+   {
+    "ano": "2018",
+    "tipo": "voluntário",
+    "desligamentos": 172.0
+   },
+   {
+    "ano": "2019",
+    "tipo": "compulsório",
+    "desligamentos": 2.0
+   },
+   {
+    "ano": "2019",
+    "tipo": "voluntário",
+    "desligamentos": 165.0
+   },
+   {
+    "ano": "2020",
+    "tipo": "compulsório",
+    "desligamentos": 2.0
+   },
+   {
+    "ano": "2020",
+    "tipo": "voluntário",
+    "desligamentos": 192.0
+   },
+   {
+    "ano": "2021",
+    "tipo": "compulsório",
+    "desligamentos": 5.0
+   },
+   {
+    "ano": "2021",
+    "tipo": "voluntário",
+    "desligamentos": 165.0
+   },
+   {
+    "ano": "2022",
+    "tipo": "voluntário",
+    "desligamentos": 217.0
+   },
+   {
+    "ano": "2023",
+    "tipo": "compulsório",
+    "desligamentos": 10.0
+   },
+   {
+    "ano": "2023",
+    "tipo": "voluntário",
+    "desligamentos": 252.0
+   },
+   {
+    "ano": "2024",
+    "tipo": "compulsório",
+    "desligamentos": 10.0
+   },
+   {
+    "ano": "2024",
+    "tipo": "voluntário",
+    "desligamentos": 350.0
+   },
+   {
+    "ano": "2025",
+    "tipo": "compulsório",
+    "desligamentos": 18.0
+   },
+   {
+    "ano": "2025",
+    "tipo": "voluntário",
+    "desligamentos": 278.0
+   },
+   {
+    "ano": "2026",
+    "tipo": "compulsório",
+    "desligamentos": 12.0
+   },
+   {
+    "ano": "2026",
+    "tipo": "voluntário",
+    "desligamentos": 206.0
+   }
+  ],
+  "detalhe": {
+   "url": "/energia/series/mercado_detalhe.json",
+   "tabelas": [
+    "desligamentos_anual"
+   ]
   }
  },
  "mre_gsf": {
@@ -11185,8 +10593,8 @@
      "tratamento_ausencia": "mês sem os quatro submercados fica sem GSF",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "d4f2c5af5147+alterado",
-      "publicacao": "2026-10-01T06:09:16Z"
+      "codigo": "f5cba38ad40f+alterado",
+      "publicacao": "2026-10-01T06:22:43Z"
      },
      "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
@@ -11208,7 +10616,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Fator de ajuste do MRE (GSF): 76,8%, Mecanismo de Realocação de Energia (SIN), 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, GERACAO_SUBMERCADO e MRE_MENSAL (recurso mre_mensal_2026, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Fator de ajuste do MRE (GSF): 76,8%, Mecanismo de Realocação de Energia (SIN), 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, GERACAO_SUBMERCADO e MRE_MENSAL (recurso mre_mensal_2026, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "gsf_12m": {
@@ -11317,8 +10725,8 @@
      "tratamento_ausencia": "janela incompleta não é calculada",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "d4f2c5af5147+alterado",
-      "publicacao": "2026-10-01T06:09:16Z"
+      "codigo": "f5cba38ad40f+alterado",
+      "publicacao": "2026-10-01T06:22:43Z"
      },
      "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
@@ -11336,7 +10744,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Fator de ajuste do MRE (GSF) em 12 meses: 80,4%, Mecanismo de Realocação de Energia (SIN), 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, GERACAO_SUBMERCADO e MRE_MENSAL (recurso mre_mensal_2026, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Fator de ajuste do MRE (GSF) em 12 meses: 80,4%, Mecanismo de Realocação de Energia (SIN), 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, GERACAO_SUBMERCADO e MRE_MENSAL (recurso mre_mensal_2026, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "risco_hidrologico_acr_12m": {
@@ -11381,8 +10789,8 @@
      "tratamento_ausencia": "campo vazio não entra na soma",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "d4f2c5af5147+alterado",
-      "publicacao": "2026-10-01T06:09:16Z"
+      "codigo": "f5cba38ad40f+alterado",
+      "publicacao": "2026-10-01T06:22:43Z"
      },
      "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
@@ -11400,7 +10808,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Custo do risco hidrológico alocado às distribuidoras (cotas, repactuadas e Itaipu): R$ 8,41 bilhões, distribuidoras (mercado regulado), 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Bandeiras Tarifárias: Conta Bandeira (recurso Bandeira Tarifária - Conta Bandeira, capturado em 01/10/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Custo do risco hidrológico alocado às distribuidoras (cotas, repactuadas e Itaipu): R$ 8,41 bilhões, distribuidoras (mercado regulado), 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, Bandeiras Tarifárias: Conta Bandeira (recurso Bandeira Tarifária - Conta Bandeira, capturado em 01/10/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    }
   },
@@ -12187,668 +11595,6 @@
    }
   ],
   "risco_hidrologico_acr": {
-   "mensal": [
-    {
-     "mes": "2021-08",
-     "distribuidoras": 103,
-     "rh_itaipu": 1183093136,
-     "rh_repactuadas": 2350863128,
-     "rh_ccgf": 1664039253,
-     "previsao_rh": -580360178,
-     "premio_risco": -64937395,
-     "rh_ccgf_repactuadas_liquido": 3369604808,
-     "rh_bruto": 5197995517
-    },
-    {
-     "mes": "2021-09",
-     "distribuidoras": 103,
-     "rh_itaipu": 968569112,
-     "rh_repactuadas": 1994787543,
-     "rh_ccgf": 1517172480,
-     "previsao_rh": -603747152,
-     "premio_risco": -69782786,
-     "rh_ccgf_repactuadas_liquido": 2838430086,
-     "rh_bruto": 4480529136
-    },
-    {
-     "mes": "2021-10",
-     "distribuidoras": 103,
-     "rh_itaipu": 367888709,
-     "rh_repactuadas": 899371663,
-     "rh_ccgf": 772964338,
-     "previsao_rh": -608654936,
-     "premio_risco": -67500330,
-     "rh_ccgf_repactuadas_liquido": 996180736,
-     "rh_bruto": 2040224710
-    },
-    {
-     "mes": "2021-11",
-     "distribuidoras": 103,
-     "rh_itaipu": 70790778,
-     "rh_repactuadas": 219426328,
-     "rh_ccgf": 199679322,
-     "previsao_rh": -622269315,
-     "premio_risco": -69748294,
-     "rh_ccgf_repactuadas_liquido": -272911959,
-     "rh_bruto": 489896428
-    },
-    {
-     "mes": "2021-12",
-     "distribuidoras": 103,
-     "rh_itaipu": 64760136,
-     "rh_repactuadas": 109570107,
-     "rh_ccgf": 123678222,
-     "previsao_rh": -625747205,
-     "premio_risco": -78247348,
-     "rh_ccgf_repactuadas_liquido": -470746224,
-     "rh_bruto": 298008465
-    },
-    {
-     "mes": "2022-01",
-     "distribuidoras": 103,
-     "rh_itaipu": 48308951,
-     "rh_repactuadas": 32657938,
-     "rh_ccgf": 56646833,
-     "previsao_rh": -627532796,
-     "premio_risco": -70218146,
-     "rh_ccgf_repactuadas_liquido": -608446171,
-     "rh_bruto": 137613721
-    },
-    {
-     "mes": "2022-02",
-     "distribuidoras": 103,
-     "rh_itaipu": 26468220,
-     "rh_repactuadas": 6397558,
-     "rh_ccgf": 20379534,
-     "previsao_rh": -627861048,
-     "premio_risco": -77787954,
-     "rh_ccgf_repactuadas_liquido": -678871911,
-     "rh_bruto": 53245311
-    },
-    {
-     "mes": "2022-03",
-     "distribuidoras": 104,
-     "rh_itaipu": 8974812,
-     "rh_repactuadas": 1584742,
-     "rh_ccgf": 4879166,
-     "previsao_rh": -629747630,
-     "premio_risco": -75352988,
-     "rh_ccgf_repactuadas_liquido": -698636711,
-     "rh_bruto": 15438720
-    },
-    {
-     "mes": "2022-04",
-     "distribuidoras": 104,
-     "rh_itaipu": 24520679,
-     "rh_repactuadas": 16470467,
-     "rh_ccgf": 30066580,
-     "previsao_rh": -632704590,
-     "premio_risco": -77880228,
-     "rh_ccgf_repactuadas_liquido": -664047771,
-     "rh_bruto": 71057726
-    },
-    {
-     "mes": "2022-05",
-     "distribuidoras": 104,
-     "rh_itaipu": 40104988,
-     "rh_repactuadas": 56511063,
-     "rh_ccgf": 51273568,
-     "previsao_rh": -630652857,
-     "premio_risco": -75353967,
-     "rh_ccgf_repactuadas_liquido": -598222193,
-     "rh_bruto": 147889619
-    },
-    {
-     "mes": "2022-06",
-     "distribuidoras": 104,
-     "rh_itaipu": 33578122,
-     "rh_repactuadas": 72859109,
-     "rh_ccgf": 47637911,
-     "previsao_rh": -604760996,
-     "premio_risco": -77844119,
-     "rh_ccgf_repactuadas_liquido": -562108096,
-     "rh_bruto": 154075142
-    },
-    {
-     "mes": "2022-07",
-     "distribuidoras": 104,
-     "rh_itaipu": 56445461,
-     "rh_repactuadas": 123009788,
-     "rh_ccgf": 47929001,
-     "previsao_rh": -561872955,
-     "premio_risco": -77837883,
-     "rh_ccgf_repactuadas_liquido": -468772049,
-     "rh_bruto": 227384250
-    },
-    {
-     "mes": "2022-08",
-     "distribuidoras": 104,
-     "rh_itaipu": 55827994,
-     "rh_repactuadas": 165848365,
-     "rh_ccgf": 82106048,
-     "previsao_rh": -547034788,
-     "premio_risco": -75341895,
-     "rh_ccgf_repactuadas_liquido": -374422269,
-     "rh_bruto": 303782407
-    },
-    {
-     "mes": "2022-09",
-     "distribuidoras": 104,
-     "rh_itaipu": 11837517,
-     "rh_repactuadas": 112320513,
-     "rh_ccgf": 84879686,
-     "previsao_rh": -519321245,
-     "premio_risco": -77863638,
-     "rh_ccgf_repactuadas_liquido": -399984684,
-     "rh_bruto": 209037716
-    },
-    {
-     "mes": "2022-10",
-     "distribuidoras": 104,
-     "rh_itaipu": -22976792,
-     "rh_repactuadas": 110229559,
-     "rh_ccgf": 121582598,
-     "previsao_rh": -515687097,
-     "premio_risco": -75361290,
-     "rh_ccgf_repactuadas_liquido": -359236230,
-     "rh_bruto": 208835365
-    },
-    {
-     "mes": "2022-11",
-     "distribuidoras": 104,
-     "rh_itaipu": -25775311,
-     "rh_repactuadas": 52585798,
-     "rh_ccgf": 51639166,
-     "previsao_rh": -505704723,
-     "premio_risco": -77784608,
-     "rh_ccgf_repactuadas_liquido": -479264367,
-     "rh_bruto": 78449653
-    },
-    {
-     "mes": "2022-12",
-     "distribuidoras": 104,
-     "rh_itaipu": -290004,
-     "rh_repactuadas": 35840945,
-     "rh_ccgf": 33216360,
-     "previsao_rh": -504957515,
-     "premio_risco": -81883276,
-     "rh_ccgf_repactuadas_liquido": -517783486,
-     "rh_bruto": 68767301
-    },
-    {
-     "mes": "2023-01",
-     "distribuidoras": 104,
-     "rh_itaipu": 15114618,
-     "rh_repactuadas": 5708420,
-     "rh_ccgf": -3928707,
-     "previsao_rh": -505414766,
-     "premio_risco": -73950829,
-     "rh_ccgf_repactuadas_liquido": -577585882,
-     "rh_bruto": 16894331
-    },
-    {
-     "mes": "2023-02",
-     "distribuidoras": 104,
-     "rh_itaipu": -6434734,
-     "rh_repactuadas": -16654944,
-     "rh_ccgf": -4978060,
-     "previsao_rh": -505723687,
-     "premio_risco": -82761336,
-     "rh_ccgf_repactuadas_liquido": -610118026,
-     "rh_bruto": -28067738
-    },
-    {
-     "mes": "2023-03",
-     "distribuidoras": 104,
-     "rh_itaipu": -32056040,
-     "rh_repactuadas": -49991282,
-     "rh_ccgf": -48003453,
-     "previsao_rh": -510970491,
-     "premio_risco": -80118462,
-     "rh_ccgf_repactuadas_liquido": -689083688,
-     "rh_bruto": -130050775
-    },
-    {
-     "mes": "2023-04",
-     "distribuidoras": 104,
-     "rh_itaipu": 10250795,
-     "rh_repactuadas": 12169178,
-     "rh_ccgf": -205182,
-     "previsao_rh": -521284472,
-     "premio_risco": -84421012,
-     "rh_ccgf_repactuadas_liquido": -593741489,
-     "rh_bruto": 22214791
-    },
-    {
-     "mes": "2023-05",
-     "distribuidoras": 104,
-     "rh_itaipu": 29653010,
-     "rh_repactuadas": 60901040,
-     "rh_ccgf": 10340988,
-     "previsao_rh": -529004177,
-     "premio_risco": -86178430,
-     "rh_ccgf_repactuadas_liquido": -543940579,
-     "rh_bruto": 100895038
-    },
-    {
-     "mes": "2023-06",
-     "distribuidoras": 103,
-     "rh_itaipu": 15341140,
-     "rh_repactuadas": 127784270,
-     "rh_ccgf": 49125940,
-     "previsao_rh": -538767750,
-     "premio_risco": -89048423,
-     "rh_ccgf_repactuadas_liquido": -450905963,
-     "rh_bruto": 192251350
-    },
-    {
-     "mes": "2023-07",
-     "distribuidoras": 103,
-     "rh_itaipu": 20720835,
-     "rh_repactuadas": 157630750,
-     "rh_ccgf": 49878862,
-     "previsao_rh": -562695778,
-     "premio_risco": -89060925,
-     "rh_ccgf_repactuadas_liquido": -444247091,
-     "rh_bruto": 228230447
-    },
-    {
-     "mes": "2023-08",
-     "distribuidoras": 103,
-     "rh_itaipu": 13464636,
-     "rh_repactuadas": 119703577,
-     "rh_ccgf": 39341335,
-     "previsao_rh": -571019737,
-     "premio_risco": -83586506,
-     "rh_ccgf_repactuadas_liquido": -495561331,
-     "rh_bruto": 172509548
-    },
-    {
-     "mes": "2023-09",
-     "distribuidoras": 103,
-     "rh_itaipu": 18481015,
-     "rh_repactuadas": 97661211,
-     "rh_ccgf": 46026384,
-     "previsao_rh": -580556756,
-     "premio_risco": -83593735,
-     "rh_ccgf_repactuadas_liquido": -520462897,
-     "rh_bruto": 162168610
-    },
-    {
-     "mes": "2023-10",
-     "distribuidoras": 103,
-     "rh_itaipu": 538448,
-     "rh_repactuadas": 59283839,
-     "rh_ccgf": 37999750,
-     "previsao_rh": -584426206,
-     "premio_risco": -83277051,
-     "rh_ccgf_repactuadas_liquido": -570419668,
-     "rh_bruto": 97822037
-    },
-    {
-     "mes": "2023-11",
-     "distribuidoras": 103,
-     "rh_itaipu": -12760004,
-     "rh_repactuadas": 34846536,
-     "rh_ccgf": 26933739,
-     "previsao_rh": -591666816,
-     "premio_risco": -86048778,
-     "rh_ccgf_repactuadas_liquido": -615935318,
-     "rh_bruto": 49020271
-    },
-    {
-     "mes": "2023-12",
-     "distribuidoras": 103,
-     "rh_itaipu": -10477000,
-     "rh_repactuadas": 28705575,
-     "rh_ccgf": 31056002,
-     "previsao_rh": -595112180,
-     "premio_risco": -89899687,
-     "rh_ccgf_repactuadas_liquido": -625250290,
-     "rh_bruto": 49284577
-    },
-    {
-     "mes": "2024-01",
-     "distribuidoras": 103,
-     "rh_itaipu": -21245907,
-     "rh_repactuadas": -1068044,
-     "rh_ccgf": -17813233,
-     "previsao_rh": -596097881,
-     "premio_risco": -81125198,
-     "rh_ccgf_repactuadas_liquido": -696104355,
-     "rh_bruto": -40127184
-    },
-    {
-     "mes": "2024-02",
-     "distribuidoras": 103,
-     "rh_itaipu": 5484328,
-     "rh_repactuadas": -32458867,
-     "rh_ccgf": -17435322,
-     "previsao_rh": -596466427,
-     "premio_risco": -86915675,
-     "rh_ccgf_repactuadas_liquido": -733276291,
-     "rh_bruto": -44409861
-    },
-    {
-     "mes": "2024-03",
-     "distribuidoras": 103,
-     "rh_itaipu": 9809800,
-     "rh_repactuadas": -53906456,
-     "rh_ccgf": -34620137,
-     "previsao_rh": -595486345,
-     "premio_risco": -84191482,
-     "rh_ccgf_repactuadas_liquido": -768204420,
-     "rh_bruto": -78716794
-    },
-    {
-     "mes": "2024-04",
-     "distribuidoras": 103,
-     "rh_itaipu": 23983195,
-     "rh_repactuadas": -7842899,
-     "rh_ccgf": -12283241,
-     "previsao_rh": -600456898,
-     "premio_risco": -87264398,
-     "rh_ccgf_repactuadas_liquido": -707847436,
-     "rh_bruto": 3857055
-    },
-    {
-     "mes": "2024-05",
-     "distribuidoras": 103,
-     "rh_itaipu": 50577207,
-     "rh_repactuadas": 37068059,
-     "rh_ccgf": 13066244,
-     "previsao_rh": -606662654,
-     "premio_risco": -83969835,
-     "rh_ccgf_repactuadas_liquido": -640498185,
-     "rh_bruto": 100711510
-    },
-    {
-     "mes": "2024-06",
-     "distribuidoras": 103,
-     "rh_itaipu": 58462632,
-     "rh_repactuadas": 103406001,
-     "rh_ccgf": 39807893,
-     "previsao_rh": -605319851,
-     "premio_risco": -116612836,
-     "rh_ccgf_repactuadas_liquido": -578718793,
-     "rh_bruto": 201676527
-    },
-    {
-     "mes": "2024-07",
-     "distribuidoras": 103,
-     "rh_itaipu": 95125299,
-     "rh_repactuadas": 212847532,
-     "rh_ccgf": 58589796,
-     "previsao_rh": -586086071,
-     "premio_risco": -131348772,
-     "rh_ccgf_repactuadas_liquido": -445997514,
-     "rh_bruto": 366562627
-    },
-    {
-     "mes": "2024-08",
-     "distribuidoras": 103,
-     "rh_itaipu": 138873873,
-     "rh_repactuadas": 384061517,
-     "rh_ccgf": 112058182,
-     "previsao_rh": -572455263,
-     "premio_risco": -84169477,
-     "rh_ccgf_repactuadas_liquido": -160505041,
-     "rh_bruto": 634993572
-    },
-    {
-     "mes": "2024-09",
-     "distribuidoras": 103,
-     "rh_itaipu": 380489174,
-     "rh_repactuadas": 756787640,
-     "rh_ccgf": 369864224,
-     "previsao_rh": -554334737,
-     "premio_risco": -86986383,
-     "rh_ccgf_repactuadas_liquido": 485330744,
-     "rh_bruto": 1507141038
-    },
-    {
-     "mes": "2024-10",
-     "distribuidoras": 103,
-     "rh_itaipu": 635896302,
-     "rh_repactuadas": 1169132060,
-     "rh_ccgf": 656328442,
-     "previsao_rh": -550743930,
-     "premio_risco": -84146909,
-     "rh_ccgf_repactuadas_liquido": 1190569663,
-     "rh_bruto": 2461356804
-    },
-    {
-     "mes": "2024-11",
-     "distribuidoras": 103,
-     "rh_itaipu": 69325629,
-     "rh_repactuadas": 140779626,
-     "rh_ccgf": 71029281,
-     "previsao_rh": -560757802,
-     "premio_risco": -86840488,
-     "rh_ccgf_repactuadas_liquido": -435789383,
-     "rh_bruto": 281134535
-    },
-    {
-     "mes": "2024-12",
-     "distribuidoras": 103,
-     "rh_itaipu": 17479052,
-     "rh_repactuadas": 60079039,
-     "rh_ccgf": 50150163,
-     "previsao_rh": -560129669,
-     "premio_risco": -91142728,
-     "rh_ccgf_repactuadas_liquido": -541043195,
-     "rh_bruto": 127708254
-    },
-    {
-     "mes": "2025-01",
-     "distribuidoras": 103,
-     "rh_itaipu": 1942040,
-     "rh_repactuadas": -31029651,
-     "rh_ccgf": -6801818,
-     "previsao_rh": -560756275,
-     "premio_risco": -82220272,
-     "rh_ccgf_repactuadas_liquido": -680808017,
-     "rh_bruto": -35889429
-    },
-    {
-     "mes": "2025-02",
-     "distribuidoras": 102,
-     "rh_itaipu": -13108199,
-     "rh_repactuadas": -70414690,
-     "rh_ccgf": -19405958,
-     "previsao_rh": -561273604,
-     "premio_risco": -91015473,
-     "rh_ccgf_repactuadas_liquido": -742109725,
-     "rh_bruto": -102928847
-    },
-    {
-     "mes": "2025-03",
-     "distribuidoras": 102,
-     "rh_itaipu": 53314047,
-     "rh_repactuadas": -21657026,
-     "rh_ccgf": -49075390,
-     "previsao_rh": -559602911,
-     "premio_risco": -88070751,
-     "rh_ccgf_repactuadas_liquido": -718406079,
-     "rh_bruto": -17418369
-    },
-    {
-     "mes": "2025-04",
-     "distribuidoras": 102,
-     "rh_itaipu": 105874337,
-     "rh_repactuadas": 50366608,
-     "rh_ccgf": 14421767,
-     "previsao_rh": -555034879,
-     "premio_risco": -97628546,
-     "rh_ccgf_repactuadas_liquido": -587875050,
-     "rh_bruto": 170662712
-    },
-    {
-     "mes": "2025-05",
-     "distribuidoras": 102,
-     "rh_itaipu": 234179326,
-     "rh_repactuadas": 318391911,
-     "rh_ccgf": 87283305,
-     "previsao_rh": -549039142,
-     "premio_risco": -93795243,
-     "rh_ccgf_repactuadas_liquido": -237159169,
-     "rh_bruto": 639854542
-    },
-    {
-     "mes": "2025-06",
-     "distribuidoras": 102,
-     "rh_itaipu": 267989663,
-     "rh_repactuadas": 475688697,
-     "rh_ccgf": 125832587,
-     "previsao_rh": -543635618,
-     "premio_risco": -95759280,
-     "rh_ccgf_repactuadas_liquido": -37873615,
-     "rh_bruto": 869510946
-    },
-    {
-     "mes": "2025-07",
-     "distribuidoras": 102,
-     "rh_itaipu": 318966854,
-     "rh_repactuadas": 600338900,
-     "rh_ccgf": 184746014,
-     "previsao_rh": -540501038,
-     "premio_risco": -100328719,
-     "rh_ccgf_repactuadas_liquido": 144255156,
-     "rh_bruto": 1104051768
-    },
-    {
-     "mes": "2025-08",
-     "distribuidoras": 102,
-     "rh_itaipu": 481208721,
-     "rh_repactuadas": 943191900,
-     "rh_ccgf": 332507508,
-     "previsao_rh": -535537617,
-     "premio_risco": -97099640,
-     "rh_ccgf_repactuadas_liquido": 643062151,
-     "rh_bruto": 1756908128
-    },
-    {
-     "mes": "2025-09",
-     "distribuidoras": 102,
-     "rh_itaipu": 393045648,
-     "rh_repactuadas": 760186548,
-     "rh_ccgf": 310090369,
-     "previsao_rh": -533806877,
-     "premio_risco": -100340659,
-     "rh_ccgf_repactuadas_liquido": 436129381,
-     "rh_bruto": 1463322565
-    },
-    {
-     "mes": "2025-10",
-     "distribuidoras": 102,
-     "rh_itaipu": 367788830,
-     "rh_repactuadas": 729077735,
-     "rh_ccgf": 321612612,
-     "previsao_rh": -534336107,
-     "premio_risco": -97114616,
-     "rh_ccgf_repactuadas_liquido": 419239623,
-     "rh_bruto": 1418479177
-    },
-    {
-     "mes": "2025-11",
-     "distribuidoras": 102,
-     "rh_itaipu": 293198139,
-     "rh_repactuadas": 610938288,
-     "rh_ccgf": 281952286,
-     "previsao_rh": -534784297,
-     "premio_risco": -100284699,
-     "rh_ccgf_repactuadas_liquido": 257821578,
-     "rh_bruto": 1186088713
-    },
-    {
-     "mes": "2025-12",
-     "distribuidoras": 102,
-     "rh_itaipu": 163643031,
-     "rh_repactuadas": 253705690,
-     "rh_ccgf": 130620058,
-     "previsao_rh": -534901009,
-     "premio_risco": -104340369,
-     "rh_ccgf_repactuadas_liquido": -254915631,
-     "rh_bruto": 547968778
-    },
-    {
-     "mes": "2026-01",
-     "distribuidoras": 102,
-     "rh_itaipu": 132756330,
-     "rh_repactuadas": 119043168,
-     "rh_ccgf": 61842537,
-     "previsao_rh": -535908601,
-     "premio_risco": -93929699,
-     "rh_ccgf_repactuadas_liquido": -448952595,
-     "rh_bruto": 313642035
-    },
-    {
-     "mes": "2026-02",
-     "distribuidoras": 102,
-     "rh_itaipu": 28655196,
-     "rh_repactuadas": -169269041,
-     "rh_ccgf": -63485223,
-     "previsao_rh": -539204724,
-     "premio_risco": -103907179,
-     "rh_ccgf_repactuadas_liquido": -875866167,
-     "rh_bruto": -204099068
-    },
-    {
-     "mes": "2026-03",
-     "distribuidoras": 102,
-     "rh_itaipu": 69625434,
-     "rh_repactuadas": -18444640,
-     "rh_ccgf": -2529056,
-     "previsao_rh": -544006424,
-     "premio_risco": -100501642,
-     "rh_ccgf_repactuadas_liquido": -665481761,
-     "rh_bruto": 48651738
-    },
-    {
-     "mes": "2026-04",
-     "distribuidoras": 102,
-     "rh_itaipu": 112842182,
-     "rh_repactuadas": 60659808,
-     "rh_ccgf": 11544164,
-     "previsao_rh": -558197760,
-     "premio_risco": -103987582,
-     "rh_ccgf_repactuadas_liquido": -589981370,
-     "rh_bruto": 185046154
-    },
-    {
-     "mes": "2026-05",
-     "distribuidoras": 102,
-     "rh_itaipu": 200785058,
-     "rh_repactuadas": 257373854,
-     "rh_ccgf": 60335296,
-     "previsao_rh": -567451136,
-     "premio_risco": -100706015,
-     "rh_ccgf_repactuadas_liquido": -350448001,
-     "rh_bruto": 518494208
-    },
-    {
-     "mes": "2026-06",
-     "distribuidoras": 102,
-     "rh_itaipu": 198948704,
-     "rh_repactuadas": 335059051,
-     "rh_ccgf": 75708452,
-     "previsao_rh": -580451298,
-     "premio_risco": -103993137,
-     "rh_ccgf_repactuadas_liquido": -273676932,
-     "rh_bruto": 609716208
-    },
-    {
-     "mes": "2026-07",
-     "distribuidoras": 103,
-     "rh_itaipu": 148345230,
-     "rh_repactuadas": 336421982,
-     "rh_ccgf": 80272583,
-     "previsao_rh": -600877526,
-     "premio_risco": -104396323,
-     "rh_ccgf_repactuadas_liquido": -288579284,
-     "rh_bruto": 565039795
-    }
-   ],
    "anual": [
     {
      "ano": "2015",
@@ -12983,7 +11729,12 @@
      "rh_bruto": 2036491070
     }
    ],
-   "mensal_na_gold": "últimos 60 meses; a série anual cobre desde 2015 e o CSV tem todas as competências"
+   "detalhe": {
+    "url": "/energia/series/mercado_detalhe.json",
+    "tabelas": [
+     "risco_hidrologico_acr_mensal"
+    ]
+   }
   }
  },
  "encargos": {
@@ -13067,8 +11818,8 @@
      "tratamento_ausencia": "mês com tipo vazio fica sem total e interrompe a janela",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "d4f2c5af5147+alterado",
-      "publicacao": "2026-10-01T06:09:17Z"
+      "codigo": "f5cba38ad40f+alterado",
+      "publicacao": "2026-10-01T06:22:44Z"
      },
      "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
@@ -13099,7 +11850,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Encargos de serviços do sistema (ESS) em 12 meses: R$ 1,60 bilhão, SIN, 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, ENCARGO_ESS_ANCILAR (recurso encargo_ess_ancilar_2026, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Encargos de serviços do sistema (ESS) em 12 meses: R$ 1,60 bilhão, SIN, 08/2025 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, ENCARGO_ESS_ANCILAR (recurso encargo_ess_ancilar_2026, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "eer_12m": {
@@ -13174,8 +11925,8 @@
      "tratamento_ausencia": "mês ausente interrompe a janela",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "d4f2c5af5147+alterado",
-      "publicacao": "2026-10-01T06:09:17Z"
+      "codigo": "f5cba38ad40f+alterado",
+      "publicacao": "2026-10-01T06:22:44Z"
      },
      "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
@@ -13193,7 +11944,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Encargo de energia de reserva (EER) em 12 meses: R$ 10,20 bilhões, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, RESERVA_ENCARGO (recurso reserva_encargo_2026, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Encargo de energia de reserva (EER) em 12 meses: R$ 10,20 bilhões, SIN, 09/2025 a 08/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, RESERVA_ENCARGO (recurso reserva_encargo_2026, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "inadimplencia_ultimo_mes": {
@@ -13274,8 +12025,8 @@
      "tratamento_ausencia": "mês sem os dois valores fica sem taxa",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "d4f2c5af5147+alterado",
-      "publicacao": "2026-10-01T06:09:17Z"
+      "codigo": "f5cba38ad40f+alterado",
+      "publicacao": "2026-10-01T06:22:44Z"
      },
      "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
      "testes": [
@@ -13297,7 +12048,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Inadimplência na liquidação financeira do mercado de curto prazo: 20,4%, MCP (SIN), 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, SUMARIO_MENSAL_LIQUIDACAO (recurso sumario_mensal_liquidacao_2026, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Inadimplência na liquidação financeira do mercado de curto prazo: 20,4%, MCP (SIN), 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, SUMARIO_MENSAL_LIQUIDACAO (recurso sumario_mensal_liquidacao_2026, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    },
    "ess_mme_ano": {
@@ -13355,8 +12106,8 @@
      "tratamento_ausencia": "meses posteriores à edição (publicados como 0) não entram",
      "versao": {
       "pipeline": "energia-0.1.0",
-      "codigo": "d4f2c5af5147+alterado",
-      "publicacao": "2026-10-01T06:09:17Z"
+      "codigo": "f5cba38ad40f+alterado",
+      "publicacao": "2026-10-01T06:22:44Z"
      },
      "revisoes": "8 revisões entre edições do boletim (ver lista de revisões)",
      "testes": [
@@ -13374,7 +12125,7 @@
       }
      ],
      "reproducao": "python3 pipeline/energia/executar_modulo.py mercado --sem-coleta",
-     "citacao": "SCRUTINIUMS. Encargos de serviços do sistema no ano, Boletim Mensal do MME: R$ 958,1 milhões, SIN, 01/2026 a 06/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: MME, Boletim Mensal de Monitoramento do Sistema Elétrico (recurso boletim-mensal-junho-2026.pdf, capturado em 30/09/2026). Versão energia-0.1.0, código d4f2c5af5147+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+     "citacao": "SCRUTINIUMS. Encargos de serviços do sistema no ano, Boletim Mensal do MME: R$ 958,1 milhões, SIN, 01/2026 a 06/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: MME, Boletim Mensal de Monitoramento do Sistema Elétrico (recurso boletim-mensal-junho-2026.pdf, capturado em 30/09/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
     }
    }
   },
@@ -14837,1256 +13588,6 @@
     "situacao": "liquidada"
    }
   ],
-  "mcp_submercado_mensal": [
-   {
-    "mes": "2023-05",
-    "submercado": "SE",
-    "be_positivo_mwh": 16598888,
-    "be_negativo_mwh": -19022363,
-    "resultado_venda_rs": 1145987129,
-    "resultado_compra_rs": -1313303939
-   },
-   {
-    "mes": "2023-05",
-    "submercado": "S",
-    "be_positivo_mwh": 5617333,
-    "be_negativo_mwh": -9639091,
-    "resultado_venda_rs": 387820679,
-    "resultado_compra_rs": -665482886
-   },
-   {
-    "mes": "2023-05",
-    "submercado": "NE",
-    "be_positivo_mwh": 13941821,
-    "be_negativo_mwh": -11859052,
-    "resultado_venda_rs": 962543351,
-    "resultado_compra_rs": -818748904
-   },
-   {
-    "mes": "2023-05",
-    "submercado": "N",
-    "be_positivo_mwh": 9082085,
-    "be_negativo_mwh": -4719621,
-    "resultado_venda_rs": 627027173,
-    "resultado_compra_rs": -325842662
-   },
-   {
-    "mes": "2023-06",
-    "submercado": "SE",
-    "be_positivo_mwh": 16018193,
-    "be_negativo_mwh": -18309707,
-    "resultado_venda_rs": 1105896074,
-    "resultado_compra_rs": -1264102077
-   },
-   {
-    "mes": "2023-06",
-    "submercado": "S",
-    "be_positivo_mwh": 5649800,
-    "be_negativo_mwh": -9588520,
-    "resultado_venda_rs": 390062169,
-    "resultado_compra_rs": -661991415
-   },
-   {
-    "mes": "2023-06",
-    "submercado": "NE",
-    "be_positivo_mwh": 14740239,
-    "be_negativo_mwh": -10756765,
-    "resultado_venda_rs": 1017666113,
-    "resultado_compra_rs": -742646981
-   },
-   {
-    "mes": "2023-06",
-    "submercado": "N",
-    "be_positivo_mwh": 6620543,
-    "be_negativo_mwh": -4373784,
-    "resultado_venda_rs": 457082258,
-    "resultado_compra_rs": -301966062
-   },
-   {
-    "mes": "2023-07",
-    "submercado": "SE",
-    "be_positivo_mwh": 16257401,
-    "be_negativo_mwh": -20731500,
-    "resultado_venda_rs": 1122411024,
-    "resultado_compra_rs": -1431302774
-   },
-   {
-    "mes": "2023-07",
-    "submercado": "S",
-    "be_positivo_mwh": 8716671,
-    "be_negativo_mwh": -9313716,
-    "resultado_venda_rs": 601798929,
-    "resultado_compra_rs": -643018976
-   },
-   {
-    "mes": "2023-07",
-    "submercado": "NE",
-    "be_positivo_mwh": 16442156,
-    "be_negativo_mwh": -11243956,
-    "resultado_venda_rs": 1135166396,
-    "resultado_compra_rs": -776282732
-   },
-   {
-    "mes": "2023-07",
-    "submercado": "N",
-    "be_positivo_mwh": 5918348,
-    "be_negativo_mwh": -6045403,
-    "resultado_venda_rs": 408602722,
-    "resultado_compra_rs": -417374667
-   },
-   {
-    "mes": "2023-08",
-    "submercado": "SE",
-    "be_positivo_mwh": 16813738,
-    "be_negativo_mwh": -20705864,
-    "resultado_venda_rs": 1160820373,
-    "resultado_compra_rs": -1429532859
-   },
-   {
-    "mes": "2023-08",
-    "submercado": "S",
-    "be_positivo_mwh": 9443694,
-    "be_negativo_mwh": -8736425,
-    "resultado_venda_rs": 651992633,
-    "resultado_compra_rs": -603162788
-   },
-   {
-    "mes": "2023-08",
-    "submercado": "NE",
-    "be_positivo_mwh": 15664632,
-    "be_negativo_mwh": -11306428,
-    "resultado_venda_rs": 1081486218,
-    "resultado_compra_rs": -780595771
-   },
-   {
-    "mes": "2023-08",
-    "submercado": "N",
-    "be_positivo_mwh": 5908676,
-    "be_negativo_mwh": -7082024,
-    "resultado_venda_rs": 407934992,
-    "resultado_compra_rs": -488942893
-   },
-   {
-    "mes": "2023-09",
-    "submercado": "SE",
-    "be_positivo_mwh": 19297343,
-    "be_negativo_mwh": -23660447,
-    "resultado_venda_rs": 1713997715,
-    "resultado_compra_rs": -2054823587
-   },
-   {
-    "mes": "2023-09",
-    "submercado": "S",
-    "be_positivo_mwh": 10170798,
-    "be_negativo_mwh": -8513008,
-    "resultado_venda_rs": 830184588,
-    "resultado_compra_rs": -695117025
-   },
-   {
-    "mes": "2023-09",
-    "submercado": "NE",
-    "be_positivo_mwh": 15440400,
-    "be_negativo_mwh": -11234008,
-    "resultado_venda_rs": 1241525171,
-    "resultado_compra_rs": -930563214
-   },
-   {
-    "mes": "2023-09",
-    "submercado": "N",
-    "be_positivo_mwh": 5866132,
-    "be_negativo_mwh": -7367210,
-    "resultado_venda_rs": 492869198,
-    "resultado_compra_rs": -598072927
-   },
-   {
-    "mes": "2023-10",
-    "submercado": "SE",
-    "be_positivo_mwh": 18049829,
-    "be_negativo_mwh": -24342463,
-    "resultado_venda_rs": 1420585489,
-    "resultado_compra_rs": -1879784765
-   },
-   {
-    "mes": "2023-10",
-    "submercado": "S",
-    "be_positivo_mwh": 11537689,
-    "be_negativo_mwh": -8488556,
-    "resultado_venda_rs": 868105497,
-    "resultado_compra_rs": -645748744
-   },
-   {
-    "mes": "2023-10",
-    "submercado": "NE",
-    "be_positivo_mwh": 16472141,
-    "be_negativo_mwh": -12015293,
-    "resultado_venda_rs": 1230485064,
-    "resultado_compra_rs": -911707825
-   },
-   {
-    "mes": "2023-10",
-    "submercado": "N",
-    "be_positivo_mwh": 6406342,
-    "be_negativo_mwh": -7619690,
-    "resultado_venda_rs": 491760254,
-    "resultado_compra_rs": -573695287
-   },
-   {
-    "mes": "2023-11",
-    "submercado": "SE",
-    "be_positivo_mwh": 18871441,
-    "be_negativo_mwh": -23285980,
-    "resultado_venda_rs": 1679179850,
-    "resultado_compra_rs": -2056896006
-   },
-   {
-    "mes": "2023-11",
-    "submercado": "S",
-    "be_positivo_mwh": 10620307,
-    "be_negativo_mwh": -8443668,
-    "resultado_venda_rs": 905983704,
-    "resultado_compra_rs": -739887492
-   },
-   {
-    "mes": "2023-11",
-    "submercado": "NE",
-    "be_positivo_mwh": 15045628,
-    "be_negativo_mwh": -11580447,
-    "resultado_venda_rs": 1284183739,
-    "resultado_compra_rs": -981887404
-   },
-   {
-    "mes": "2023-11",
-    "submercado": "N",
-    "be_positivo_mwh": 6033366,
-    "be_negativo_mwh": -7260648,
-    "resultado_venda_rs": 535086949,
-    "resultado_compra_rs": -625764315
-   },
-   {
-    "mes": "2023-12",
-    "submercado": "SE",
-    "be_positivo_mwh": 21197565,
-    "be_negativo_mwh": -24883600,
-    "resultado_venda_rs": 1627604641,
-    "resultado_compra_rs": -1889434423
-   },
-   {
-    "mes": "2023-12",
-    "submercado": "S",
-    "be_positivo_mwh": 11342565,
-    "be_negativo_mwh": -9598618,
-    "resultado_venda_rs": 845559848,
-    "resultado_compra_rs": -723740937
-   },
-   {
-    "mes": "2023-12",
-    "submercado": "NE",
-    "be_positivo_mwh": 15553816,
-    "be_negativo_mwh": -12015127,
-    "resultado_venda_rs": 1148464860,
-    "resultado_compra_rs": -895525209
-   },
-   {
-    "mes": "2023-12",
-    "submercado": "N",
-    "be_positivo_mwh": 5949764,
-    "be_negativo_mwh": -7546365,
-    "resultado_venda_rs": 447061611,
-    "resultado_compra_rs": -559991437
-   },
-   {
-    "mes": "2024-01",
-    "submercado": "SE",
-    "be_positivo_mwh": 21661966,
-    "be_negativo_mwh": -23094368,
-    "resultado_venda_rs": 1343843487,
-    "resultado_compra_rs": -1431369904
-   },
-   {
-    "mes": "2024-01",
-    "submercado": "S",
-    "be_positivo_mwh": 10597899,
-    "be_negativo_mwh": -9718823,
-    "resultado_venda_rs": 654390577,
-    "resultado_compra_rs": -600604515
-   },
-   {
-    "mes": "2024-01",
-    "submercado": "NE",
-    "be_positivo_mwh": 14662018,
-    "be_negativo_mwh": -14437999,
-    "resultado_venda_rs": 904341424,
-    "resultado_compra_rs": -890843157
-   },
-   {
-    "mes": "2024-01",
-    "submercado": "N",
-    "be_positivo_mwh": 6522327,
-    "be_negativo_mwh": -6193019,
-    "resultado_venda_rs": 398842551,
-    "resultado_compra_rs": -378600556
-   },
-   {
-    "mes": "2024-02",
-    "submercado": "SE",
-    "be_positivo_mwh": 18243819,
-    "be_negativo_mwh": -22263678,
-    "resultado_venda_rs": 1129740960,
-    "resultado_compra_rs": -1375643306
-   },
-   {
-    "mes": "2024-02",
-    "submercado": "S",
-    "be_positivo_mwh": 8002894,
-    "be_negativo_mwh": -9457594,
-    "resultado_venda_rs": 493847931,
-    "resultado_compra_rs": -582800017
-   },
-   {
-    "mes": "2024-02",
-    "submercado": "NE",
-    "be_positivo_mwh": 14076197,
-    "be_negativo_mwh": -12777657,
-    "resultado_venda_rs": 862928291,
-    "resultado_compra_rs": -784025191
-   },
-   {
-    "mes": "2024-02",
-    "submercado": "N",
-    "be_positivo_mwh": 8778128,
-    "be_negativo_mwh": -4602109,
-    "resultado_venda_rs": 537674509,
-    "resultado_compra_rs": -281723686
-   },
-   {
-    "mes": "2024-03",
-    "submercado": "SE",
-    "be_positivo_mwh": 18881942,
-    "be_negativo_mwh": -23639868,
-    "resultado_venda_rs": 1153120243,
-    "resultado_compra_rs": -1443686807
-   },
-   {
-    "mes": "2024-03",
-    "submercado": "S",
-    "be_positivo_mwh": 8140452,
-    "be_negativo_mwh": -9447926,
-    "resultado_venda_rs": 497137401,
-    "resultado_compra_rs": -576984879
-   },
-   {
-    "mes": "2024-03",
-    "submercado": "NE",
-    "be_positivo_mwh": 14732616,
-    "be_negativo_mwh": -14158013,
-    "resultado_venda_rs": 899720848,
-    "resultado_compra_rs": -864629847
-   },
-   {
-    "mes": "2024-03",
-    "submercado": "N",
-    "be_positivo_mwh": 10569871,
-    "be_negativo_mwh": -5079074,
-    "resultado_venda_rs": 645501966,
-    "resultado_compra_rs": -310179033
-   },
-   {
-    "mes": "2024-04",
-    "submercado": "SE",
-    "be_positivo_mwh": 18218613,
-    "be_negativo_mwh": -22483301,
-    "resultado_venda_rs": 1112610712,
-    "resultado_compra_rs": -1373055403
-   },
-   {
-    "mes": "2024-04",
-    "submercado": "S",
-    "be_positivo_mwh": 7158269,
-    "be_negativo_mwh": -9095740,
-    "resultado_venda_rs": 437155530,
-    "resultado_compra_rs": -555476797
-   },
-   {
-    "mes": "2024-04",
-    "submercado": "NE",
-    "be_positivo_mwh": 14484146,
-    "be_negativo_mwh": -13328017,
-    "resultado_venda_rs": 884546719,
-    "resultado_compra_rs": -813942053
-   },
-   {
-    "mes": "2024-04",
-    "submercado": "N",
-    "be_positivo_mwh": 9984262,
-    "be_negativo_mwh": -4938233,
-    "resultado_venda_rs": 609738915,
-    "resultado_compra_rs": -301577903
-   },
-   {
-    "mes": "2024-05",
-    "submercado": "SE",
-    "be_positivo_mwh": 17389192,
-    "be_negativo_mwh": -25729415,
-    "resultado_venda_rs": 1061958103,
-    "resultado_compra_rs": -1571295416
-   },
-   {
-    "mes": "2024-05",
-    "submercado": "S",
-    "be_positivo_mwh": 8751690,
-    "be_negativo_mwh": -8526880,
-    "resultado_venda_rs": 534465687,
-    "resultado_compra_rs": -520736569
-   },
-   {
-    "mes": "2024-05",
-    "submercado": "NE",
-    "be_positivo_mwh": 16573647,
-    "be_negativo_mwh": -12944679,
-    "resultado_venda_rs": 1012152578,
-    "resultado_compra_rs": -790531497
-   },
-   {
-    "mes": "2024-05",
-    "submercado": "N",
-    "be_positivo_mwh": 9685792,
-    "be_negativo_mwh": -5199348,
-    "resultado_venda_rs": 591511337,
-    "resultado_compra_rs": -317524229
-   },
-   {
-    "mes": "2024-06",
-    "submercado": "SE",
-    "be_positivo_mwh": 16840998,
-    "be_negativo_mwh": -22969477,
-    "resultado_venda_rs": 1172385362,
-    "resultado_compra_rs": -1582810217
-   },
-   {
-    "mes": "2024-06",
-    "submercado": "S",
-    "be_positivo_mwh": 9626394,
-    "be_negativo_mwh": -8740372,
-    "resultado_venda_rs": 656386800,
-    "resultado_compra_rs": -594992970
-   },
-   {
-    "mes": "2024-06",
-    "submercado": "NE",
-    "be_positivo_mwh": 16583574,
-    "be_negativo_mwh": -11459359,
-    "resultado_venda_rs": 1100123436,
-    "resultado_compra_rs": -768273618
-   },
-   {
-    "mes": "2024-06",
-    "submercado": "N",
-    "be_positivo_mwh": 6583532,
-    "be_negativo_mwh": -6465291,
-    "resultado_venda_rs": 443782957,
-    "resultado_compra_rs": -426612822
-   },
-   {
-    "mes": "2024-07",
-    "submercado": "SE",
-    "be_positivo_mwh": 18388239,
-    "be_negativo_mwh": -24757394,
-    "resultado_venda_rs": 1650406414,
-    "resultado_compra_rs": -2204513905
-   },
-   {
-    "mes": "2024-07",
-    "submercado": "S",
-    "be_positivo_mwh": 10731081,
-    "be_negativo_mwh": -9945490,
-    "resultado_venda_rs": 945748985,
-    "resultado_compra_rs": -881456124
-   },
-   {
-    "mes": "2024-07",
-    "submercado": "NE",
-    "be_positivo_mwh": 18116616,
-    "be_negativo_mwh": -11716473,
-    "resultado_venda_rs": 1530701891,
-    "resultado_compra_rs": -1002869086
-   },
-   {
-    "mes": "2024-07",
-    "submercado": "N",
-    "be_positivo_mwh": 7543739,
-    "be_negativo_mwh": -8360318,
-    "resultado_venda_rs": 655161825,
-    "resultado_compra_rs": -716495546
-   },
-   {
-    "mes": "2024-08",
-    "submercado": "SE",
-    "be_positivo_mwh": 18059417,
-    "be_negativo_mwh": -24165897,
-    "resultado_venda_rs": 2202642116,
-    "resultado_compra_rs": -2928655027
-   },
-   {
-    "mes": "2024-08",
-    "submercado": "S",
-    "be_positivo_mwh": 9892055,
-    "be_negativo_mwh": -9636043,
-    "resultado_venda_rs": 1212830938,
-    "resultado_compra_rs": -1183715948
-   },
-   {
-    "mes": "2024-08",
-    "submercado": "NE",
-    "be_positivo_mwh": 19099519,
-    "be_negativo_mwh": -11961457,
-    "resultado_venda_rs": 1997015903,
-    "resultado_compra_rs": -1273747146
-   },
-   {
-    "mes": "2024-08",
-    "submercado": "N",
-    "be_positivo_mwh": 8378208,
-    "be_negativo_mwh": -9665802,
-    "resultado_venda_rs": 1012512624,
-    "resultado_compra_rs": -1158587648
-   },
-   {
-    "mes": "2024-09",
-    "submercado": "SE",
-    "be_positivo_mwh": 18868001,
-    "be_negativo_mwh": -23915510,
-    "resultado_venda_rs": 5861341866,
-    "resultado_compra_rs": -7476137335
-   },
-   {
-    "mes": "2024-09",
-    "submercado": "S",
-    "be_positivo_mwh": 8225873,
-    "be_negativo_mwh": -8921562,
-    "resultado_venda_rs": 2606181165,
-    "resultado_compra_rs": -2795542203
-   },
-   {
-    "mes": "2024-09",
-    "submercado": "NE",
-    "be_positivo_mwh": 18777554,
-    "be_negativo_mwh": -11633972,
-    "resultado_venda_rs": 4629405008,
-    "resultado_compra_rs": -2880888695
-   },
-   {
-    "mes": "2024-09",
-    "submercado": "N",
-    "be_positivo_mwh": 6495148,
-    "be_negativo_mwh": -7895531,
-    "resultado_venda_rs": 2157656451,
-    "resultado_compra_rs": -2591686734
-   },
-   {
-    "mes": "2024-10",
-    "submercado": "SE",
-    "be_positivo_mwh": 20208056,
-    "be_negativo_mwh": -24746623,
-    "resultado_venda_rs": 9832033589,
-    "resultado_compra_rs": -12153007070
-   },
-   {
-    "mes": "2024-10",
-    "submercado": "S",
-    "be_positivo_mwh": 8873520,
-    "be_negativo_mwh": -9178909,
-    "resultado_venda_rs": 4470013813,
-    "resultado_compra_rs": -4523874025
-   },
-   {
-    "mes": "2024-10",
-    "submercado": "NE",
-    "be_positivo_mwh": 18696397,
-    "be_negativo_mwh": -12893146,
-    "resultado_venda_rs": 8300411091,
-    "resultado_compra_rs": -5756117518
-   },
-   {
-    "mes": "2024-10",
-    "submercado": "N",
-    "be_positivo_mwh": 7420894,
-    "be_negativo_mwh": -8380189,
-    "resultado_venda_rs": 3969400894,
-    "resultado_compra_rs": -4381515488
-   },
-   {
-    "mes": "2024-11",
-    "submercado": "SE",
-    "be_positivo_mwh": 20362497,
-    "be_negativo_mwh": -23498281,
-    "resultado_venda_rs": 2214877338,
-    "resultado_compra_rs": -2575826519
-   },
-   {
-    "mes": "2024-11",
-    "submercado": "S",
-    "be_positivo_mwh": 8620281,
-    "be_negativo_mwh": -9213267,
-    "resultado_venda_rs": 956106668,
-    "resultado_compra_rs": -1013763965
-   },
-   {
-    "mes": "2024-11",
-    "submercado": "NE",
-    "be_positivo_mwh": 16912192,
-    "be_negativo_mwh": -12211026,
-    "resultado_venda_rs": 1763652333,
-    "resultado_compra_rs": -1276682804
-   },
-   {
-    "mes": "2024-11",
-    "submercado": "N",
-    "be_positivo_mwh": 7157054,
-    "be_negativo_mwh": -8129450,
-    "resultado_venda_rs": 798341034,
-    "resultado_compra_rs": -875190225
-   },
-   {
-    "mes": "2024-12",
-    "submercado": "SE",
-    "be_positivo_mwh": 21046040,
-    "be_negativo_mwh": -24921396,
-    "resultado_venda_rs": 1408686937,
-    "resultado_compra_rs": -1654992062
-   },
-   {
-    "mes": "2024-12",
-    "submercado": "S",
-    "be_positivo_mwh": 8348208,
-    "be_negativo_mwh": -8852168,
-    "resultado_venda_rs": 546991317,
-    "resultado_compra_rs": -581270579
-   },
-   {
-    "mes": "2024-12",
-    "submercado": "NE",
-    "be_positivo_mwh": 16584252,
-    "be_negativo_mwh": -12614204,
-    "resultado_venda_rs": 1075891423,
-    "resultado_compra_rs": -821463227
-   },
-   {
-    "mes": "2024-12",
-    "submercado": "N",
-    "be_positivo_mwh": 7139088,
-    "be_negativo_mwh": -6729820,
-    "resultado_venda_rs": 469952122,
-    "resultado_compra_rs": -443797214
-   },
-   {
-    "mes": "2025-01",
-    "submercado": "SE",
-    "be_positivo_mwh": 23691278,
-    "be_negativo_mwh": -25679502,
-    "resultado_venda_rs": 1435856306,
-    "resultado_compra_rs": -1554235071
-   },
-   {
-    "mes": "2025-01",
-    "submercado": "S",
-    "be_positivo_mwh": 7616896,
-    "be_negativo_mwh": -10266900,
-    "resultado_venda_rs": 453118863,
-    "resultado_compra_rs": -609820768
-   },
-   {
-    "mes": "2025-01",
-    "submercado": "NE",
-    "be_positivo_mwh": 16740744,
-    "be_negativo_mwh": -16309548,
-    "resultado_venda_rs": 992842136,
-    "resultado_compra_rs": -968567532
-   },
-   {
-    "mes": "2025-01",
-    "submercado": "N",
-    "be_positivo_mwh": 10314404,
-    "be_negativo_mwh": -6107372,
-    "resultado_venda_rs": 612294197,
-    "resultado_compra_rs": -361692667
-   },
-   {
-    "mes": "2025-02",
-    "submercado": "SE",
-    "be_positivo_mwh": 21148329,
-    "be_negativo_mwh": -24244649,
-    "resultado_venda_rs": 2006632709,
-    "resultado_compra_rs": -2343490370
-   },
-   {
-    "mes": "2025-02",
-    "submercado": "S",
-    "be_positivo_mwh": 6653643,
-    "be_negativo_mwh": -10332668,
-    "resultado_venda_rs": 635064639,
-    "resultado_compra_rs": -974728003
-   },
-   {
-    "mes": "2025-02",
-    "submercado": "NE",
-    "be_positivo_mwh": 16480055,
-    "be_negativo_mwh": -14075408,
-    "resultado_venda_rs": 965760978,
-    "resultado_compra_rs": -824843226
-   },
-   {
-    "mes": "2025-02",
-    "submercado": "N",
-    "be_positivo_mwh": 10004634,
-    "be_negativo_mwh": -5633936,
-    "resultado_venda_rs": 586290318,
-    "resultado_compra_rs": -330158122
-   },
-   {
-    "mes": "2025-03",
-    "submercado": "SE",
-    "be_positivo_mwh": 22584709,
-    "be_negativo_mwh": -26888817,
-    "resultado_venda_rs": 7442067172,
-    "resultado_compra_rs": -8886698308
-   },
-   {
-    "mes": "2025-03",
-    "submercado": "S",
-    "be_positivo_mwh": 6334727,
-    "be_negativo_mwh": -10897901,
-    "resultado_venda_rs": 2141107309,
-    "resultado_compra_rs": -3682934043
-   },
-   {
-    "mes": "2025-03",
-    "submercado": "NE",
-    "be_positivo_mwh": 18823574,
-    "be_negativo_mwh": -15546848,
-    "resultado_venda_rs": 1109334417,
-    "resultado_compra_rs": -917285592
-   },
-   {
-    "mes": "2025-03",
-    "submercado": "N",
-    "be_positivo_mwh": 12117316,
-    "be_negativo_mwh": -6526760,
-    "resultado_venda_rs": 715614671,
-    "resultado_compra_rs": -384982428
-   },
-   {
-    "mes": "2025-04",
-    "submercado": "SE",
-    "be_positivo_mwh": 21328187,
-    "be_negativo_mwh": -24506280,
-    "resultado_venda_rs": 4384167653,
-    "resultado_compra_rs": -5071560485
-   },
-   {
-    "mes": "2025-04",
-    "submercado": "S",
-    "be_positivo_mwh": 5562360,
-    "be_negativo_mwh": -10068894,
-    "resultado_venda_rs": 1152335546,
-    "resultado_compra_rs": -2103496295
-   },
-   {
-    "mes": "2025-04",
-    "submercado": "NE",
-    "be_positivo_mwh": 17671618,
-    "be_negativo_mwh": -15336392,
-    "resultado_venda_rs": 1824548181,
-    "resultado_compra_rs": -1727664697
-   },
-   {
-    "mes": "2025-04",
-    "submercado": "N",
-    "be_positivo_mwh": 11507986,
-    "be_negativo_mwh": -6158585,
-    "resultado_venda_rs": 1341087830,
-    "resultado_compra_rs": -655827035
-   },
-   {
-    "mes": "2025-05",
-    "submercado": "SE",
-    "be_positivo_mwh": 20203611,
-    "be_negativo_mwh": -23571193,
-    "resultado_venda_rs": 4338764431,
-    "resultado_compra_rs": -5138001110
-   },
-   {
-    "mes": "2025-05",
-    "submercado": "S",
-    "be_positivo_mwh": 6541157,
-    "be_negativo_mwh": -11274064,
-    "resultado_venda_rs": 1571588992,
-    "resultado_compra_rs": -2705436070
-   },
-   {
-    "mes": "2025-05",
-    "submercado": "NE",
-    "be_positivo_mwh": 19061550,
-    "be_negativo_mwh": -14012021,
-    "resultado_venda_rs": 2387414966,
-    "resultado_compra_rs": -1781037134
-   },
-   {
-    "mes": "2025-05",
-    "submercado": "N",
-    "be_positivo_mwh": 9692214,
-    "be_negativo_mwh": -6641253,
-    "resultado_venda_rs": 1247111744,
-    "resultado_compra_rs": -804496407
-   },
-   {
-    "mes": "2025-06",
-    "submercado": "SE",
-    "be_positivo_mwh": 19695099,
-    "be_negativo_mwh": -23435082,
-    "resultado_venda_rs": 4563700758,
-    "resultado_compra_rs": -5483415063
-   },
-   {
-    "mes": "2025-06",
-    "submercado": "S",
-    "be_positivo_mwh": 7476744,
-    "be_negativo_mwh": -10494682,
-    "resultado_venda_rs": 1806180225,
-    "resultado_compra_rs": -2558384307
-   },
-   {
-    "mes": "2025-06",
-    "submercado": "NE",
-    "be_positivo_mwh": 18528389,
-    "be_negativo_mwh": -12836405,
-    "resultado_venda_rs": 4230331863,
-    "resultado_compra_rs": -2922912949
-   },
-   {
-    "mes": "2025-06",
-    "submercado": "N",
-    "be_positivo_mwh": 7394674,
-    "be_negativo_mwh": -6328737,
-    "resultado_venda_rs": 1822958327,
-    "resultado_compra_rs": -1493606072
-   },
-   {
-    "mes": "2025-07",
-    "submercado": "SE",
-    "be_positivo_mwh": 19866697,
-    "be_negativo_mwh": -24147445,
-    "resultado_venda_rs": 4252557393,
-    "resultado_compra_rs": -5240841397
-   },
-   {
-    "mes": "2025-07",
-    "submercado": "S",
-    "be_positivo_mwh": 9602390,
-    "be_negativo_mwh": -10742111,
-    "resultado_venda_rs": 2081580671,
-    "resultado_compra_rs": -2283120870
-   },
-   {
-    "mes": "2025-07",
-    "submercado": "NE",
-    "be_positivo_mwh": 19514948,
-    "be_negativo_mwh": -13517738,
-    "resultado_venda_rs": 4080724751,
-    "resultado_compra_rs": -2851079880
-   },
-   {
-    "mes": "2025-07",
-    "submercado": "N",
-    "be_positivo_mwh": 6998633,
-    "be_negativo_mwh": -7575374,
-    "resultado_venda_rs": 1542498651,
-    "resultado_compra_rs": -1619321580
-   },
-   {
-    "mes": "2025-08",
-    "submercado": "SE",
-    "be_positivo_mwh": 20870341,
-    "be_negativo_mwh": -25416183,
-    "resultado_venda_rs": 6003337396,
-    "resultado_compra_rs": -7450223067
-   },
-   {
-    "mes": "2025-08",
-    "submercado": "S",
-    "be_positivo_mwh": 8949396,
-    "be_negativo_mwh": -9746335,
-    "resultado_venda_rs": 2665416915,
-    "resultado_compra_rs": -2851995369
-   },
-   {
-    "mes": "2025-08",
-    "submercado": "NE",
-    "be_positivo_mwh": 19342538,
-    "be_negativo_mwh": -12900747,
-    "resultado_venda_rs": 5326189583,
-    "resultado_compra_rs": -3522163866
-   },
-   {
-    "mes": "2025-08",
-    "submercado": "N",
-    "be_positivo_mwh": 7000931,
-    "be_negativo_mwh": -8099941,
-    "resultado_venda_rs": 2089822347,
-    "resultado_compra_rs": -2403361552
-   },
-   {
-    "mes": "2025-09",
-    "submercado": "SE",
-    "be_positivo_mwh": 21690484,
-    "be_negativo_mwh": -27469175,
-    "resultado_venda_rs": 5596017356,
-    "resultado_compra_rs": -7215139367
-   },
-   {
-    "mes": "2025-09",
-    "submercado": "S",
-    "be_positivo_mwh": 9279265,
-    "be_negativo_mwh": -9163530,
-    "resultado_venda_rs": 2528484454,
-    "resultado_compra_rs": -2454018164
-   },
-   {
-    "mes": "2025-09",
-    "submercado": "NE",
-    "be_positivo_mwh": 19749335,
-    "be_negativo_mwh": -12483679,
-    "resultado_venda_rs": 4983868719,
-    "resultado_compra_rs": -3139101158
-   },
-   {
-    "mes": "2025-09",
-    "submercado": "N",
-    "be_positivo_mwh": 6890887,
-    "be_negativo_mwh": -8493587,
-    "resultado_venda_rs": 1862645496,
-    "resultado_compra_rs": -2283750079
-   },
-   {
-    "mes": "2025-10",
-    "submercado": "SE",
-    "be_positivo_mwh": 22325445,
-    "be_negativo_mwh": -28688793,
-    "resultado_venda_rs": 5482037074,
-    "resultado_compra_rs": -7187267582
-   },
-   {
-    "mes": "2025-10",
-    "submercado": "S",
-    "be_positivo_mwh": 10189313,
-    "be_negativo_mwh": -9629358,
-    "resultado_venda_rs": 2637622055,
-    "resultado_compra_rs": -2468885683
-   },
-   {
-    "mes": "2025-10",
-    "submercado": "NE",
-    "be_positivo_mwh": 20739394,
-    "be_negativo_mwh": -13332908,
-    "resultado_venda_rs": 4623038922,
-    "resultado_compra_rs": -2965350138
-   },
-   {
-    "mes": "2025-10",
-    "submercado": "N",
-    "be_positivo_mwh": 7319488,
-    "be_negativo_mwh": -8922582,
-    "resultado_venda_rs": 1938514729,
-    "resultado_compra_rs": -2334768366
-   },
-   {
-    "mes": "2025-11",
-    "submercado": "SE",
-    "be_positivo_mwh": 22086322,
-    "be_negativo_mwh": -26052583,
-    "resultado_venda_rs": 6193130575,
-    "resultado_compra_rs": -7316760431
-   },
-   {
-    "mes": "2025-11",
-    "submercado": "S",
-    "be_positivo_mwh": 9465873,
-    "be_negativo_mwh": -9506465,
-    "resultado_venda_rs": 2662285475,
-    "resultado_compra_rs": -2664664059
-   },
-   {
-    "mes": "2025-11",
-    "submercado": "NE",
-    "be_positivo_mwh": 17787719,
-    "be_negativo_mwh": -13115785,
-    "resultado_venda_rs": 4982579084,
-    "resultado_compra_rs": -3706119975
-   },
-   {
-    "mes": "2025-11",
-    "submercado": "N",
-    "be_positivo_mwh": 7524146,
-    "be_negativo_mwh": -8189227,
-    "resultado_venda_rs": 2193017471,
-    "resultado_compra_rs": -2363409931
-   },
-   {
-    "mes": "2025-12",
-    "submercado": "SE",
-    "be_positivo_mwh": 23857388,
-    "be_negativo_mwh": -27410954,
-    "resultado_venda_rs": 6488469483,
-    "resultado_compra_rs": -7458586064
-   },
-   {
-    "mes": "2025-12",
-    "submercado": "S",
-    "be_positivo_mwh": 9352741,
-    "be_negativo_mwh": -10412228,
-    "resultado_venda_rs": 2562739544,
-    "resultado_compra_rs": -2823525523
-   },
-   {
-    "mes": "2025-12",
-    "submercado": "NE",
-    "be_positivo_mwh": 17950098,
-    "be_negativo_mwh": -13818411,
-    "resultado_venda_rs": 4839323782,
-    "resultado_compra_rs": -3757291787
-   },
-   {
-    "mes": "2025-12",
-    "submercado": "N",
-    "be_positivo_mwh": 8298765,
-    "be_negativo_mwh": -7817399,
-    "resultado_venda_rs": 2301649402,
-    "resultado_compra_rs": -2152981427
-   },
-   {
-    "mes": "2026-01",
-    "submercado": "SE",
-    "be_positivo_mwh": 23011311,
-    "be_negativo_mwh": -27964686,
-    "resultado_venda_rs": 5680594718,
-    "resultado_compra_rs": -6986687881
-   },
-   {
-    "mes": "2026-01",
-    "submercado": "S",
-    "be_positivo_mwh": 8546549,
-    "be_negativo_mwh": -10592714,
-    "resultado_venda_rs": 2116820476,
-    "resultado_compra_rs": -2695952948
-   },
-   {
-    "mes": "2026-01",
-    "submercado": "NE",
-    "be_positivo_mwh": 19634598,
-    "be_negativo_mwh": -15320103,
-    "resultado_venda_rs": 4697750421,
-    "resultado_compra_rs": -3670430214
-   },
-   {
-    "mes": "2026-01",
-    "submercado": "N",
-    "be_positivo_mwh": 9078004,
-    "be_negativo_mwh": -6392958,
-    "resultado_venda_rs": 2286401831,
-    "resultado_compra_rs": -1514926125
-   },
-   {
-    "mes": "2026-02",
-    "submercado": "SE",
-    "be_positivo_mwh": 24201729,
-    "be_negativo_mwh": -26620857,
-    "resultado_venda_rs": 9187650126,
-    "resultado_compra_rs": -10146813579
-   },
-   {
-    "mes": "2026-02",
-    "submercado": "S",
-    "be_positivo_mwh": 7378207,
-    "be_negativo_mwh": -10349447,
-    "resultado_venda_rs": 2969037272,
-    "resultado_compra_rs": -4168406515
-   },
-   {
-    "mes": "2026-02",
-    "submercado": "NE",
-    "be_positivo_mwh": 16945296,
-    "be_negativo_mwh": -15599839,
-    "resultado_venda_rs": 6396458944,
-    "resultado_compra_rs": -6035419479
-   },
-   {
-    "mes": "2026-02",
-    "submercado": "N",
-    "be_positivo_mwh": 9619420,
-    "be_negativo_mwh": -5574509,
-    "resultado_venda_rs": 3875240432,
-    "resultado_compra_rs": -2157896906
-   },
-   {
-    "mes": "2026-03",
-    "submercado": "SE",
-    "be_positivo_mwh": 26181585,
-    "be_negativo_mwh": -27416907,
-    "resultado_venda_rs": 8325257582,
-    "resultado_compra_rs": -8625898178
-   },
-   {
-    "mes": "2026-03",
-    "submercado": "S",
-    "be_positivo_mwh": 6899431,
-    "be_negativo_mwh": -12784778,
-    "resultado_venda_rs": 2913641216,
-    "resultado_compra_rs": -5444673224
-   },
-   {
-    "mes": "2026-03",
-    "submercado": "NE",
-    "be_positivo_mwh": 20134557,
-    "be_negativo_mwh": -18556689,
-    "resultado_venda_rs": 5048141955,
-    "resultado_compra_rs": -4949109130
-   },
-   {
-    "mes": "2026-03",
-    "submercado": "N",
-    "be_positivo_mwh": 12067560,
-    "be_negativo_mwh": -6524758,
-    "resultado_venda_rs": 3326052923,
-    "resultado_compra_rs": -1706377532
-   },
-   {
-    "mes": "2026-04",
-    "submercado": "SE",
-    "be_positivo_mwh": 22767920,
-    "be_negativo_mwh": -24912707,
-    "resultado_venda_rs": 4995240323,
-    "resultado_compra_rs": -5485533918
-   },
-   {
-    "mes": "2026-04",
-    "submercado": "S",
-    "be_positivo_mwh": 5669375,
-    "be_negativo_mwh": -11630412,
-    "resultado_venda_rs": 1468483300,
-    "resultado_compra_rs": -3029747453
-   },
-   {
-    "mes": "2026-04",
-    "submercado": "NE",
-    "be_positivo_mwh": 19427276,
-    "be_negativo_mwh": -16142059,
-    "resultado_venda_rs": 2675439398,
-    "resultado_compra_rs": -2314127955
-   },
-   {
-    "mes": "2026-04",
-    "submercado": "N",
-    "be_positivo_mwh": 10912008,
-    "be_negativo_mwh": -6091401,
-    "resultado_venda_rs": 1656737654,
-    "resultado_compra_rs": -854614556
-   },
-   {
-    "mes": "2026-05",
-    "submercado": "SE",
-    "be_positivo_mwh": 23109041,
-    "be_negativo_mwh": -26921626,
-    "resultado_venda_rs": 5051742435,
-    "resultado_compra_rs": -5968790836
-   },
-   {
-    "mes": "2026-05",
-    "submercado": "S",
-    "be_positivo_mwh": 6162923,
-    "be_negativo_mwh": -11368901,
-    "resultado_venda_rs": 1524846511,
-    "resultado_compra_rs": -2833114656
-   },
-   {
-    "mes": "2026-05",
-    "submercado": "NE",
-    "be_positivo_mwh": 20611655,
-    "be_negativo_mwh": -15919160,
-    "resultado_venda_rs": 3483995375,
-    "resultado_compra_rs": -2743087844
-   },
-   {
-    "mes": "2026-05",
-    "submercado": "N",
-    "be_positivo_mwh": 10836126,
-    "be_negativo_mwh": -6510058,
-    "resultado_venda_rs": 1966929479,
-    "resultado_compra_rs": -1126113305
-   },
-   {
-    "mes": "2026-06",
-    "submercado": "SE",
-    "be_positivo_mwh": 21784621,
-    "be_negativo_mwh": -24917167,
-    "resultado_venda_rs": 3979493120,
-    "resultado_compra_rs": -4615715462
-   },
-   {
-    "mes": "2026-06",
-    "submercado": "S",
-    "be_positivo_mwh": 6592142,
-    "be_negativo_mwh": -9604758,
-    "resultado_venda_rs": 1310718788,
-    "resultado_compra_rs": -1898601576
-   },
-   {
-    "mes": "2026-06",
-    "submercado": "NE",
-    "be_positivo_mwh": 20165574,
-    "be_negativo_mwh": -14746328,
-    "resultado_venda_rs": 3731566097,
-    "resultado_compra_rs": -2758741464
-   },
-   {
-    "mes": "2026-06",
-    "submercado": "N",
-    "be_positivo_mwh": 7554892,
-    "be_negativo_mwh": -6828976,
-    "resultado_venda_rs": 1490868092,
-    "resultado_compra_rs": -1293908184
-   },
-   {
-    "mes": "2026-07",
-    "submercado": "SE",
-    "be_positivo_mwh": 21726036,
-    "be_negativo_mwh": -25810318,
-    "resultado_venda_rs": 2991334464,
-    "resultado_compra_rs": -3643949023
-   },
-   {
-    "mes": "2026-07",
-    "submercado": "S",
-    "be_positivo_mwh": 10004548,
-    "be_negativo_mwh": -10621879,
-    "resultado_venda_rs": 1458524763,
-    "resultado_compra_rs": -1505460400
-   },
-   {
-    "mes": "2026-07",
-    "submercado": "NE",
-    "be_positivo_mwh": 20131711,
-    "be_negativo_mwh": -14155323,
-    "resultado_venda_rs": 2836055966,
-    "resultado_compra_rs": -2036303517
-   },
-   {
-    "mes": "2026-07",
-    "submercado": "N",
-    "be_positivo_mwh": 7287906,
-    "be_negativo_mwh": -8562681,
-    "resultado_venda_rs": 1093466027,
-    "resultado_compra_rs": -1197078984
-   }
-  ],
   "mme": {
    "edicoes": [
     {
@@ -17359,608 +14860,6 @@
     }
    ]
   },
-  "acr_conta_bandeira_mensal": [
-   {
-    "mes": "2021-08",
-    "distribuidoras": 103,
-    "ess_eer": 502324606,
-    "ressarcimento_coner": -1060569250,
-    "resultado_mcp": -905843048,
-    "ccear_d": 1754383729,
-    "receita_faturada_bandeiras": 2198907868,
-    "repasse_conta_bandeira": 369333
-   },
-   {
-    "mes": "2021-09",
-    "distribuidoras": 103,
-    "ess_eer": 1090742874,
-    "ressarcimento_coner": -1085442726,
-    "resultado_mcp": -503496492,
-    "ccear_d": 1385396859,
-    "receita_faturada_bandeiras": 2815642000,
-    "repasse_conta_bandeira": 422489
-   },
-   {
-    "mes": "2021-10",
-    "distribuidoras": 103,
-    "ess_eer": 4763118732,
-    "ressarcimento_coner": -972913584,
-    "resultado_mcp": -69386163,
-    "ccear_d": 569227396,
-    "receita_faturada_bandeiras": 3442834647,
-    "repasse_conta_bandeira": 25067
-   },
-   {
-    "mes": "2021-11",
-    "distribuidoras": 103,
-    "ess_eer": 3595297512,
-    "ressarcimento_coner": -252786682,
-    "resultado_mcp": 396498704,
-    "ccear_d": 169424466,
-    "receita_faturada_bandeiras": 3295480824,
-    "repasse_conta_bandeira": 556969
-   },
-   {
-    "mes": "2021-12",
-    "distribuidoras": 103,
-    "ess_eer": 2052855472,
-    "ressarcimento_coner": 88025332,
-    "resultado_mcp": 335532913,
-    "ccear_d": -480631532,
-    "receita_faturada_bandeiras": 3311281471,
-    "repasse_conta_bandeira": 292026
-   },
-   {
-    "mes": "2022-01",
-    "distribuidoras": 103,
-    "ess_eer": 2224493863,
-    "ressarcimento_coner": 125481328,
-    "resultado_mcp": 397109344,
-    "ccear_d": -556700684,
-    "receita_faturada_bandeiras": 3271146806,
-    "repasse_conta_bandeira": 535010
-   },
-   {
-    "mes": "2022-02",
-    "distribuidoras": 103,
-    "ess_eer": 546888245,
-    "ressarcimento_coner": 113482663,
-    "resultado_mcp": 303584010,
-    "ccear_d": -417381816,
-    "receita_faturada_bandeiras": 3282332267,
-    "repasse_conta_bandeira": 27457
-   },
-   {
-    "mes": "2022-03",
-    "distribuidoras": 104,
-    "ess_eer": 791287885,
-    "ressarcimento_coner": 74626441,
-    "resultado_mcp": 207307042,
-    "ccear_d": -553815165,
-    "receita_faturada_bandeiras": 3466156431,
-    "repasse_conta_bandeira": 580072
-   },
-   {
-    "mes": "2022-04",
-    "distribuidoras": 104,
-    "ess_eer": 127786737,
-    "ressarcimento_coner": 54511111,
-    "resultado_mcp": 260169026,
-    "ccear_d": -586330522,
-    "receita_faturada_bandeiras": 2838130957,
-    "repasse_conta_bandeira": 920510
-   },
-   {
-    "mes": "2022-05",
-    "distribuidoras": 104,
-    "ess_eer": 311,
-    "ressarcimento_coner": 183488661,
-    "resultado_mcp": 694366720,
-    "ccear_d": -700918256,
-    "receita_faturada_bandeiras": 589715239,
-    "repasse_conta_bandeira": 6904814
-   },
-   {
-    "mes": "2022-06",
-    "distribuidoras": 104,
-    "ess_eer": 0,
-    "ressarcimento_coner": 1867218,
-    "resultado_mcp": 826544766,
-    "ccear_d": -669480116,
-    "receita_faturada_bandeiras": 5575636,
-    "repasse_conta_bandeira": 50637
-   },
-   {
-    "mes": "2022-07",
-    "distribuidoras": 104,
-    "ess_eer": 0,
-    "ressarcimento_coner": 30488050,
-    "resultado_mcp": 707309281,
-    "ccear_d": -683466869,
-    "receita_faturada_bandeiras": -15046953,
-    "repasse_conta_bandeira": 42869674
-   },
-   {
-    "mes": "2022-08",
-    "distribuidoras": 104,
-    "ess_eer": 252,
-    "ressarcimento_coner": 61026425,
-    "resultado_mcp": 676523249,
-    "ccear_d": -598893010,
-    "receita_faturada_bandeiras": 4590951,
-    "repasse_conta_bandeira": 35399854
-   },
-   {
-    "mes": "2022-09",
-    "distribuidoras": 104,
-    "ess_eer": 18928,
-    "ressarcimento_coner": 38019001,
-    "resultado_mcp": 750262752,
-    "ccear_d": -689450964,
-    "receita_faturada_bandeiras": 5662488,
-    "repasse_conta_bandeira": 27014322
-   },
-   {
-    "mes": "2022-10",
-    "distribuidoras": 104,
-    "ess_eer": 7205584,
-    "ressarcimento_coner": 93564953,
-    "resultado_mcp": 638710819,
-    "ccear_d": -776360526,
-    "receita_faturada_bandeiras": 3306357,
-    "repasse_conta_bandeira": 31096120
-   },
-   {
-    "mes": "2022-11",
-    "distribuidoras": 104,
-    "ess_eer": 312,
-    "ressarcimento_coner": 61253924,
-    "resultado_mcp": 775461300,
-    "ccear_d": -586111684,
-    "receita_faturada_bandeiras": 1887867,
-    "repasse_conta_bandeira": 589498
-   },
-   {
-    "mes": "2022-12",
-    "distribuidoras": 104,
-    "ess_eer": 0,
-    "ressarcimento_coner": 370535397,
-    "resultado_mcp": 607894090,
-    "ccear_d": -626328578,
-    "receita_faturada_bandeiras": 2520762,
-    "repasse_conta_bandeira": 7677032
-   },
-   {
-    "mes": "2023-01",
-    "distribuidoras": 104,
-    "ess_eer": 0,
-    "ressarcimento_coner": 254590856,
-    "resultado_mcp": 407078893,
-    "ccear_d": -633190712,
-    "receita_faturada_bandeiras": 490450,
-    "repasse_conta_bandeira": 40658042
-   },
-   {
-    "mes": "2023-02",
-    "distribuidoras": 104,
-    "ess_eer": 0,
-    "ressarcimento_coner": 113558622,
-    "resultado_mcp": 225230278,
-    "ccear_d": -433738315,
-    "receita_faturada_bandeiras": 2590803,
-    "repasse_conta_bandeira": 23953902
-   },
-   {
-    "mes": "2023-03",
-    "distribuidoras": 104,
-    "ess_eer": 0,
-    "ressarcimento_coner": 113817209,
-    "resultado_mcp": 86790564,
-    "ccear_d": -531427420,
-    "receita_faturada_bandeiras": 1790197,
-    "repasse_conta_bandeira": 630449
-   },
-   {
-    "mes": "2023-04",
-    "distribuidoras": 104,
-    "ess_eer": 0,
-    "ressarcimento_coner": 189570886,
-    "resultado_mcp": 536719995,
-    "ccear_d": -549662315,
-    "receita_faturada_bandeiras": 675049,
-    "repasse_conta_bandeira": 2997308
-   },
-   {
-    "mes": "2023-05",
-    "distribuidoras": 104,
-    "ess_eer": 0,
-    "ressarcimento_coner": 242477942,
-    "resultado_mcp": 520108637,
-    "ccear_d": -688364633,
-    "receita_faturada_bandeiras": -564424,
-    "repasse_conta_bandeira": 21756100
-   },
-   {
-    "mes": "2023-06",
-    "distribuidoras": 103,
-    "ess_eer": 0,
-    "ressarcimento_coner": 164330116,
-    "resultado_mcp": 679396951,
-    "ccear_d": -696657783,
-    "receita_faturada_bandeiras": -21329817,
-    "repasse_conta_bandeira": 6362672
-   },
-   {
-    "mes": "2023-07",
-    "distribuidoras": 103,
-    "ess_eer": 0,
-    "ressarcimento_coner": 120616253,
-    "resultado_mcp": 718780587,
-    "ccear_d": -822247318,
-    "receita_faturada_bandeiras": 612940,
-    "repasse_conta_bandeira": 31570266
-   },
-   {
-    "mes": "2023-08",
-    "distribuidoras": 103,
-    "ess_eer": 203,
-    "ressarcimento_coner": 87625454,
-    "resultado_mcp": 548270503,
-    "ccear_d": -843732906,
-    "receita_faturada_bandeiras": -378110,
-    "repasse_conta_bandeira": 6952122
-   },
-   {
-    "mes": "2023-09",
-    "distribuidoras": 103,
-    "ess_eer": 345314,
-    "ressarcimento_coner": -78400036,
-    "resultado_mcp": 288037159,
-    "ccear_d": -743844862,
-    "receita_faturada_bandeiras": -680384,
-    "repasse_conta_bandeira": 8112679
-   },
-   {
-    "mes": "2023-10",
-    "distribuidoras": 103,
-    "ess_eer": 189632,
-    "ressarcimento_coner": 57998791,
-    "resultado_mcp": 295924669,
-    "ccear_d": -844057021,
-    "receita_faturada_bandeiras": -940381,
-    "repasse_conta_bandeira": 0
-   },
-   {
-    "mes": "2023-11",
-    "distribuidoras": 103,
-    "ess_eer": 728004,
-    "ressarcimento_coner": 89846593,
-    "resultado_mcp": 109768795,
-    "ccear_d": -637209192,
-    "receita_faturada_bandeiras": -1330620,
-    "repasse_conta_bandeira": 62081
-   },
-   {
-    "mes": "2023-12",
-    "distribuidoras": 103,
-    "ess_eer": 451666,
-    "ressarcimento_coner": 93642317,
-    "resultado_mcp": -12145658,
-    "ccear_d": -716530046,
-    "receita_faturada_bandeiras": 129782,
-    "repasse_conta_bandeira": 35029
-   },
-   {
-    "mes": "2024-01",
-    "distribuidoras": 103,
-    "ess_eer": 340006,
-    "ressarcimento_coner": 89869252,
-    "resultado_mcp": -35255235,
-    "ccear_d": -782676009,
-    "receita_faturada_bandeiras": -4298977,
-    "repasse_conta_bandeira": 14921
-   },
-   {
-    "mes": "2024-02",
-    "distribuidoras": 103,
-    "ess_eer": 17593,
-    "ressarcimento_coner": 163240499,
-    "resultado_mcp": -179044708,
-    "ccear_d": -1278482816,
-    "receita_faturada_bandeiras": 16750,
-    "repasse_conta_bandeira": 4431140
-   },
-   {
-    "mes": "2024-03",
-    "distribuidoras": 103,
-    "ess_eer": 12345,
-    "ressarcimento_coner": 194298649,
-    "resultado_mcp": -258636746,
-    "ccear_d": -592267561,
-    "receita_faturada_bandeiras": -25026,
-    "repasse_conta_bandeira": 15468844
-   },
-   {
-    "mes": "2024-04",
-    "distribuidoras": 103,
-    "ess_eer": 9121,
-    "ressarcimento_coner": 144824945,
-    "resultado_mcp": -10483881,
-    "ccear_d": 134179596,
-    "receita_faturada_bandeiras": -1318689,
-    "repasse_conta_bandeira": 65971
-   },
-   {
-    "mes": "2024-05",
-    "distribuidoras": 103,
-    "ess_eer": 22205948,
-    "ressarcimento_coner": 144100073,
-    "resultado_mcp": 46386325,
-    "ccear_d": -671099631,
-    "receita_faturada_bandeiras": -532455,
-    "repasse_conta_bandeira": 31535
-   },
-   {
-    "mes": "2024-06",
-    "distribuidoras": 103,
-    "ess_eer": 227929,
-    "ressarcimento_coner": 147596989,
-    "resultado_mcp": 482685249,
-    "ccear_d": -481652257,
-    "receita_faturada_bandeiras": -553129,
-    "repasse_conta_bandeira": 3651365
-   },
-   {
-    "mes": "2024-07",
-    "distribuidoras": 103,
-    "ess_eer": 327344,
-    "ressarcimento_coner": 168578615,
-    "resultado_mcp": 779396162,
-    "ccear_d": -474763014,
-    "receita_faturada_bandeiras": 186414092,
-    "repasse_conta_bandeira": 22377422
-   },
-   {
-    "mes": "2024-08",
-    "distribuidoras": 103,
-    "ess_eer": 1052774,
-    "ressarcimento_coner": 115563455,
-    "resultado_mcp": 774345534,
-    "ccear_d": -383010969,
-    "receita_faturada_bandeiras": 242828569,
-    "repasse_conta_bandeira": 62553472
-   },
-   {
-    "mes": "2024-09",
-    "distribuidoras": 103,
-    "ess_eer": 3609373,
-    "ressarcimento_coner": 82423399,
-    "resultado_mcp": 100041849,
-    "ccear_d": 251016026,
-    "receita_faturada_bandeiras": 465982509,
-    "repasse_conta_bandeira": 52869169
-   },
-   {
-    "mes": "2024-10",
-    "distribuidoras": 103,
-    "ess_eer": 3911654,
-    "ressarcimento_coner": -140814847,
-    "resultado_mcp": -208222162,
-    "ccear_d": 885520226,
-    "receita_faturada_bandeiras": 1461577374,
-    "repasse_conta_bandeira": 947397
-   },
-   {
-    "mes": "2024-11",
-    "distribuidoras": 103,
-    "ess_eer": 7854869,
-    "ressarcimento_coner": -433643061,
-    "resultado_mcp": 326223770,
-    "ccear_d": -278206187,
-    "receita_faturada_bandeiras": 1216852413,
-    "repasse_conta_bandeira": 280024
-   },
-   {
-    "mes": "2024-12",
-    "distribuidoras": 103,
-    "ess_eer": 4093580,
-    "ressarcimento_coner": 312808636,
-    "resultado_mcp": 220099917,
-    "ccear_d": -537234811,
-    "receita_faturada_bandeiras": 240167810,
-    "repasse_conta_bandeira": 6910177
-   },
-   {
-    "mes": "2025-01",
-    "distribuidoras": 103,
-    "ess_eer": 2738011,
-    "ressarcimento_coner": -319821425,
-    "resultado_mcp": 60137785,
-    "ccear_d": -617970971,
-    "receita_faturada_bandeiras": 5357347,
-    "repasse_conta_bandeira": 65032
-   },
-   {
-    "mes": "2025-02",
-    "distribuidoras": 102,
-    "ess_eer": 2925529,
-    "ressarcimento_coner": 340226933,
-    "resultado_mcp": -202002198,
-    "ccear_d": -289187884,
-    "receita_faturada_bandeiras": 2826702,
-    "repasse_conta_bandeira": 36242915
-   },
-   {
-    "mes": "2025-03",
-    "distribuidoras": 102,
-    "ess_eer": 1311271,
-    "ressarcimento_coner": 298780554,
-    "resultado_mcp": 303148023,
-    "ccear_d": 48209793,
-    "receita_faturada_bandeiras": -1234514,
-    "repasse_conta_bandeira": 527469
-   },
-   {
-    "mes": "2025-04",
-    "distribuidoras": 102,
-    "ess_eer": 1347455,
-    "ressarcimento_coner": 191112770,
-    "resultado_mcp": 494205354,
-    "ccear_d": 41517847,
-    "receita_faturada_bandeiras": 1481013,
-    "repasse_conta_bandeira": 238207
-   },
-   {
-    "mes": "2025-05",
-    "distribuidoras": 102,
-    "ess_eer": 11223317,
-    "ressarcimento_coner": 270226226,
-    "resultado_mcp": 543669983,
-    "ccear_d": -57193610,
-    "receita_faturada_bandeiras": 195140774,
-    "repasse_conta_bandeira": 61623
-   },
-   {
-    "mes": "2025-06",
-    "distribuidoras": 102,
-    "ess_eer": 3694554,
-    "ressarcimento_coner": 165674238,
-    "resultado_mcp": 140438542,
-    "ccear_d": 343317167,
-    "receita_faturada_bandeiras": 646308836,
-    "repasse_conta_bandeira": 269071
-   },
-   {
-    "mes": "2025-07",
-    "distribuidoras": 102,
-    "ess_eer": 815918,
-    "ressarcimento_coner": 15582192,
-    "resultado_mcp": 263280324,
-    "ccear_d": 450800263,
-    "receita_faturada_bandeiras": 908667099,
-    "repasse_conta_bandeira": 6531641
-   },
-   {
-    "mes": "2025-08",
-    "distribuidoras": 102,
-    "ess_eer": 585784,
-    "ressarcimento_coner": 20047387,
-    "resultado_mcp": 7991374,
-    "ccear_d": 673577666,
-    "receita_faturada_bandeiras": 1271928327,
-    "repasse_conta_bandeira": 17989881
-   },
-   {
-    "mes": "2025-09",
-    "distribuidoras": 102,
-    "ess_eer": 1073887,
-    "ressarcimento_coner": -165378659,
-    "resultado_mcp": 131244354,
-    "ccear_d": 411599638,
-    "receita_faturada_bandeiras": 1658653454,
-    "repasse_conta_bandeira": 1512789
-   },
-   {
-    "mes": "2025-10",
-    "distribuidoras": 102,
-    "ess_eer": 2556932,
-    "ressarcimento_coner": -110643625,
-    "resultado_mcp": 207009715,
-    "ccear_d": 351169528,
-    "receita_faturada_bandeiras": 1373926803,
-    "repasse_conta_bandeira": 169231
-   },
-   {
-    "mes": "2025-11",
-    "distribuidoras": 102,
-    "ess_eer": 2851837,
-    "ressarcimento_coner": -100264754,
-    "resultado_mcp": 53979307,
-    "ccear_d": 755034802,
-    "receita_faturada_bandeiras": 977420776,
-    "repasse_conta_bandeira": 63720
-   },
-   {
-    "mes": "2025-12",
-    "distribuidoras": 102,
-    "ess_eer": 6342880,
-    "ressarcimento_coner": 4211500,
-    "resultado_mcp": 101968434,
-    "ccear_d": 700808149,
-    "receita_faturada_bandeiras": 734103930,
-    "repasse_conta_bandeira": 188221
-   },
-   {
-    "mes": "2026-01",
-    "distribuidoras": 102,
-    "ess_eer": 6588808,
-    "ressarcimento_coner": -582710356,
-    "resultado_mcp": 149960511,
-    "ccear_d": 388599835,
-    "receita_faturada_bandeiras": 236222854,
-    "repasse_conta_bandeira": -10621676
-   },
-   {
-    "mes": "2026-02",
-    "distribuidoras": 102,
-    "ess_eer": 779086,
-    "ressarcimento_coner": 530277260,
-    "resultado_mcp": 317484120,
-    "ccear_d": 1544174865,
-    "receita_faturada_bandeiras": 1626330,
-    "repasse_conta_bandeira": 562097
-   },
-   {
-    "mes": "2026-03",
-    "distribuidoras": 102,
-    "ess_eer": 34205040,
-    "ressarcimento_coner": -78158062,
-    "resultado_mcp": 961712025,
-    "ccear_d": 818850521,
-    "receita_faturada_bandeiras": 1855083,
-    "repasse_conta_bandeira": 32868
-   },
-   {
-    "mes": "2026-04",
-    "distribuidoras": 102,
-    "ess_eer": 1982872,
-    "ressarcimento_coner": -8743722,
-    "resultado_mcp": 566228560,
-    "ccear_d": 177685821,
-    "receita_faturada_bandeiras": 1454502,
-    "repasse_conta_bandeira": 191067
-   },
-   {
-    "mes": "2026-05",
-    "distribuidoras": 102,
-    "ess_eer": 1085223,
-    "ressarcimento_coner": 239266838,
-    "resultado_mcp": 447569165,
-    "ccear_d": 54518418,
-    "receita_faturada_bandeiras": 201879685,
-    "repasse_conta_bandeira": 1271038
-   },
-   {
-    "mes": "2026-06",
-    "distribuidoras": 102,
-    "ess_eer": 946626,
-    "ressarcimento_coner": -27457944,
-    "resultado_mcp": 231699877,
-    "ccear_d": 39473258,
-    "receita_faturada_bandeiras": 370446487,
-    "repasse_conta_bandeira": 3710795
-   },
-   {
-    "mes": "2026-07",
-    "distribuidoras": 103,
-    "ess_eer": 3075126,
-    "ressarcimento_coner": 52430569,
-    "resultado_mcp": 383374478,
-    "ccear_d": 284654821,
-    "receita_faturada_bandeiras": 395272368,
-    "repasse_conta_bandeira": 11971876
-   }
-  ],
   "reconciliacao_infomercado": [
    {
     "numero": "206",
@@ -18392,7 +15291,14 @@
     "receita_faturada_bandeiras": 1208757308,
     "repasse_conta_bandeira": 7118066
    }
-  ]
+  ],
+  "detalhe": {
+   "url": "/energia/series/mercado_detalhe.json",
+   "tabelas": [
+    "mcp_submercado_mensal",
+    "acr_conta_bandeira_mensal"
+   ]
+  }
  },
  "ccee_conjuntos": [
   {
@@ -18655,7 +15561,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T13:51:24Z",
    "capturado_em": "2026-10-01T00:33:34Z",
-   "validado_em": "2026-10-01T06:09:17Z",
+   "validado_em": "2026-10-01T06:22:44Z",
    "cobertura_historica": {
     "inicio": "2004-01",
     "fim": "2026-08"
@@ -18670,9 +15576,9 @@
     "sha256": "a771bd8a47d7ed3651f3e7f875ba7e0213daa6c813e1745a782427c0cfee425a"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d4f2c5af5147+alterado",
+   "versao_codigo": "f5cba38ad40f+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:09:17Z",
+    "detectado_em": "2026-10-01T06:22:44Z",
     "total": 0,
     "exemplos": []
    },
@@ -18703,7 +15609,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-01T14:58:17Z",
    "capturado_em": "2026-10-01T00:45:34Z",
-   "validado_em": "2026-10-01T06:09:17Z",
+   "validado_em": "2026-10-01T06:22:44Z",
    "cobertura_historica": {
     "inicio": "2023-05",
     "fim": "2026-07"
@@ -18720,9 +15626,9 @@
     "sha256": "4d0593bfe44499ad91f7d3979da82b1aea60ad3bdf41e3c4c93be69be4c0f11a"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d4f2c5af5147+alterado",
+   "versao_codigo": "f5cba38ad40f+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:09:17Z",
+    "detectado_em": "2026-10-01T06:22:44Z",
     "total": 0,
     "exemplos": []
    },
@@ -18755,7 +15661,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-15T05:20:19Z",
    "capturado_em": "2026-10-01T00:34:29Z",
-   "validado_em": "2026-10-01T06:09:17Z",
+   "validado_em": "2026-10-01T06:22:44Z",
    "cobertura_historica": {
     "inicio": "2019-01",
     "fim": "2026-08"
@@ -18770,9 +15676,9 @@
     "sha256": "e026223f29321e9e71964f3804d33621895635ec507c4ce64eefeaf8e7a32e8e"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d4f2c5af5147+alterado",
+   "versao_codigo": "f5cba38ad40f+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:09:17Z",
+    "detectado_em": "2026-10-01T06:22:44Z",
     "total": 0,
     "vintages_comparadas": 9,
     "arquivos": 9,
@@ -18808,7 +15714,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-03T18:27:55Z",
    "capturado_em": "2026-10-01T00:46:32Z",
-   "validado_em": "2026-10-01T06:09:17Z",
+   "validado_em": "2026-10-01T06:22:44Z",
    "cobertura_historica": {
     "inicio": "2023-05",
     "fim": "2026-07"
@@ -18824,9 +15730,9 @@
     "sha256": "7472efc0c2c6ad4bd152008008dd6a2ee84df0597ba6b74b97a2678188869c57"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d4f2c5af5147+alterado",
+   "versao_codigo": "f5cba38ad40f+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:09:17Z",
+    "detectado_em": "2026-10-01T06:22:44Z",
     "total": 0,
     "exemplos": []
    },
@@ -18860,13 +15766,13 @@
    },
    "publicado_pela_fonte_em": "2026-09-01T14:54:33Z",
    "capturado_em": "2026-10-01T00:46:55Z",
-   "validado_em": "2026-10-01T06:09:17Z",
+   "validado_em": "2026-10-01T06:22:44Z",
    "cobertura_historica": {
     "inicio": "2023-05",
     "fim": "2026-07"
    },
    "transformacoes": [
-    "conferido contra o fator publicado no InfoMercado mensal da CCEE (agosto e outubro de 2024)"
+    "conferido contra o fator publicado no InfoMercado mensal da CCEE em cada edição capturada (ver reconciliacao_infomercado)"
    ],
    "formula": "GSF = 100 × Σ GERACAO_MRE (4 submercados) ÷ GARANTIA_FISICA_MODULADA_FDISP; período = razão das somas em MWh",
    "snapshot": {
@@ -18874,9 +15780,9 @@
     "sha256": "cd86ed9c2635fc432fab5bd66b22daa2bf5fc8c5b59d6f0309733700047612cc"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d4f2c5af5147+alterado",
+   "versao_codigo": "f5cba38ad40f+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:09:17Z",
+    "detectado_em": "2026-10-01T06:22:44Z",
     "total": 0,
     "exemplos": []
    },
@@ -18905,12 +15811,12 @@
    "unidade": "R$ nominais",
    "frequencia": "mensal (competência)",
    "periodo_referencia": {
-    "inicio": "2021-08",
+    "inicio": "2015-01",
     "fim": "2026-07"
    },
    "publicado_pela_fonte_em": "2026-10-01T05:01:17Z",
    "capturado_em": "2026-10-01T06:01:29Z",
-   "validado_em": "2026-10-01T06:09:17Z",
+   "validado_em": "2026-10-01T06:22:44Z",
    "cobertura_historica": {
     "inicio": "2015-01",
     "fim": "2026-07"
@@ -18925,9 +15831,9 @@
     "sha256": "a3fe614dc30f9173af4a99bc08dc7054b818cf16124310fde84b907c33aab9aa"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d4f2c5af5147+alterado",
+   "versao_codigo": "f5cba38ad40f+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:09:17Z",
+    "detectado_em": "2026-10-01T06:22:44Z",
     "total": 0,
     "vintages_comparadas": 3,
     "arquivos": 2,
@@ -18962,7 +15868,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-28T14:48:53Z",
    "capturado_em": "2026-10-01T05:53:11Z",
-   "validado_em": "2026-10-01T06:09:17Z",
+   "validado_em": "2026-10-01T06:22:44Z",
    "cobertura_historica": {
     "inicio": "2023-05",
     "fim": "2026-07"
@@ -18976,9 +15882,9 @@
     "sha256": "0580d275b809eef615f6ca1ed6d9f44b0747bebdf0b05654ff38dab2b465ac8c"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d4f2c5af5147+alterado",
+   "versao_codigo": "f5cba38ad40f+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:09:17Z",
+    "detectado_em": "2026-10-01T06:22:44Z",
     "total": 0,
     "exemplos": []
    },
@@ -19010,7 +15916,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-25T18:10:00Z",
    "capturado_em": "2026-10-01T06:01:47Z",
-   "validado_em": "2026-10-01T06:09:17Z",
+   "validado_em": "2026-10-01T06:22:44Z",
    "cobertura_historica": {
     "inicio": "2026-01",
     "fim": "2026-06"
@@ -19025,9 +15931,9 @@
     "sha256": "da460fdea2849880e40776b181ebe5f094a0d45b0317c3009cd1d93ca54ebc8c"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d4f2c5af5147+alterado",
+   "versao_codigo": "f5cba38ad40f+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:09:17Z",
+    "detectado_em": "2026-10-01T06:22:44Z",
     "total": 0,
     "vintages_comparadas": 8,
     "arquivos": 6,
@@ -19243,7 +16149,7 @@
    "titulo": "Livre e regulado",
    "pergunta": "Como se distribui o consumo entre o mercado livre e o regulado?",
    "resposta": "De setembro de 2025 a agosto de 2026, o mercado livre respondeu por 45,3% do consumo de energia elétrica na rede apurado pela EPE, participação maior que a dos 12 meses anteriores (44,2%). Na contabilização da CCEE, que mede o consumo no centro de gravidade, o ACL teve 42,8% de agosto de 2025 a julho de 2026.",
-   "estado": "concluido_com_limitacao",
+   "estado_dados": "concluido_com_limitacao",
    "criterio_aceite": "ACL+ACR reconcilia com o universo escolhido, sem igualar automaticamente à carga do ONS.",
    "verificacoes": [
     {
@@ -19280,7 +16186,7 @@
    "titulo": "Agentes e migração",
    "pergunta": "Quem participa do mercado e como a composição mudou?",
    "resposta": "Em julho de 2026, 16.376 agentes participaram da contabilização da CCEE. A EPE contou 96.618 unidades consumidoras no mercado livre em agosto de 2026, 14.569 a mais que 12 meses antes. No cadastro da CCEE publicado em 2026-09-01, 47.358 perfis ativos pertenciam a 16.365 agentes: agente, perfil e unidade consumidora são contagens diferentes.",
-   "estado": "concluido_com_limitacao",
+   "estado_dados": "concluido_com_limitacao",
    "criterio_aceite": "Sem chamar novos perfis de novas empresas; cancelamentos e migrações definidos.",
    "verificacoes": [
     {
@@ -19292,7 +16198,7 @@
     {
      "nome": "Entrada e saída de agente pelo CNPJ; desligamento pela lista oficial da CCEE (voluntário ou compulsório, com sucessão)",
      "resultado": "aprovado",
-     "detalhe": "12 meses de lista de associados; 123 combinações de ano, tipo e classe de desligamento",
+     "detalhe": "12 meses de lista de associados; desligamentos de 2010 a 2026 por tipo",
      "essencial": true
     },
     {
@@ -19317,7 +16223,7 @@
    "titulo": "MRE e GSF",
    "pergunta": "Como foi o ajuste da garantia física das hidrelétricas do MRE?",
    "resposta": "O fator de ajuste do MRE (GSF) foi de 76,8% em julho de 2026 e de 80,4% nos 12 meses até julho de 2026: no período, as hidrelétricas do MRE geraram menos que a garantia física ajustada.",
-   "estado": "concluido_com_limitacao",
+   "estado_dados": "concluido_com_limitacao",
    "criterio_aceite": "GSF reconciliado à publicação oficial; garantia física e geração não misturadas.",
    "verificacoes": [
     {
@@ -19347,7 +16253,7 @@
    "titulo": "Encargos e contabilização",
    "pergunta": "Quais custos públicos aparecem na liquidação do mercado de curto prazo?",
    "resposta": "Nos 12 meses de competência até julho de 2026, os encargos de serviços do sistema somaram R$ 1,60 bilhão. O encargo de energia de reserva somou R$ 10,20 bilhões nos 12 meses até agosto de 2026. Na liquidação de julho de 2026, a inadimplência foi de 20,4% do valor a liquidar.",
-   "estado": "concluido_com_limitacao",
+   "estado_dados": "concluido_com_limitacao",
    "criterio_aceite": "Nenhuma série inventada de PPA ou curva a termo; preços privados permanecem fora do escopo aberto.",
    "verificacoes": [
     {

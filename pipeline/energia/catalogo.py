@@ -156,7 +156,7 @@ TEMAS = [
     ("mercado", ["sumario", "compra_venda", "contabiliza", "mre", "gsf", "encargo"]),
 ]
 # Tamanho da descrição no catálogo publicado (a íntegra fica em dados_catalogo.csv).
-MAX_DESCRICAO = 160
+MAX_DESCRICAO = 130
 ORDEM_RECURSO = ["CATALOGADO", "RECURSO VERIFICADO", "INTEGRADO", "VALIDADO", "PUBLICADO"]
 
 
@@ -508,9 +508,10 @@ def construir(brutos, publicacao=None, verificacoes=None, recursos_saida=None, c
     if registrados is None:
         registrados = ler_recursos_registrados()
     por_integracao = {}
-    for it in (publicacao.get("conjuntos") or []):
+    conjuntos_pub = [_com_familia(it) for it in (publicacao.get("conjuntos") or [])]
+    for it in conjuntos_pub:
         por_integracao.setdefault((it.get("orgao"), it.get("nome")), []).append(it)
-    integ_estados = {(it.get("familia"), it.get("dataset_silver")): it.get("estado") for it in (publicacao.get("conjuntos") or [])}
+    integ_estados = {(it.get("familia"), it.get("dataset_silver")): it.get("estado") for it in conjuntos_pub}
     mods = estados_modelos()
     entradas, status = [], {}
     presentes = set()
@@ -537,7 +538,7 @@ def construir(brutos, publicacao=None, verificacoes=None, recursos_saida=None, c
         }
         # CCEE recurso a recurso no próprio catálogo para os conjuntos com algum arquivo
         # acessado pelo pipeline; a tabela de todos os recursos está em dados_recursos_ccee.csv
-        if orgao == "CCEE" and e["recursos_resumo"].get("acessados"):
+        if orgao == "CCEE" and any(x["estado"] in ORDEM_RECURSO[2:] for x in rec):
             e["recursos"] = [_enxuto({"nome": x["recurso"], "formato": x["formato"],
                                       "publicado_em": str(x["publicado_em"])[:10] if x.get("publicado_em") else None,
                                       "estado": x["estado"], "capturas": x["capturas"] or None,
@@ -560,6 +561,7 @@ def construir(brutos, publicacao=None, verificacoes=None, recursos_saida=None, c
         if orgao != "CCEE" or res:
             status[orgao] = {"colhido_em": b.get("colhido_em"), "conjuntos": len(res), "erro": b.get("erro"),
                              "origem": "API CKAN package_search", "url": ck.CATALOGOS[orgao]["url"],
+                             "url_conjunto": URL_DATASET[orgao],
                              "recursos": sum(len(p.get("resources") or []) for p in res)}
     if not (brutos.get("CCEE") or {}).get("resultado"):
         # a listagem da CCEE falhou nesta execução: os package_show versionados no
@@ -572,7 +574,7 @@ def construir(brutos, publicacao=None, verificacoes=None, recursos_saida=None, c
             entradas.append(e)
             presentes.add(("CCEE", pkg.get("name")))
         erro_ccee = (brutos.get("CCEE") or {}).get("erro") or ultima_falha_ccee()
-        status["CCEE"] = {"colhido_em": None, "conjuntos": len(seeds), "erro": erro_ccee,
+        status["CCEE"] = {"colhido_em": None, "conjuntos": len(seeds), "erro": erro_ccee, "url_conjunto": URL_DATASET["CCEE"],
                           "origem": "package_show versionados no repositório (pipeline/energia/seed/ccee_*), recurso a recurso",
                           "seed_capturado_em": sorted({p["_seed"]["capturado_em"] for p in seeds}),
                           "recursos": sum(len(p.get("resources") or []) for p in seeds)}
@@ -600,11 +602,11 @@ def construir(brutos, publicacao=None, verificacoes=None, recursos_saida=None, c
         chave = (e["orgao"], e["nome"])
         lista = por_integracao.get(chave) or []
         declaradas = regs.get(chave) or []
-        e["integracoes"] = [{"dataset_silver": x.get("dataset_silver"), "familia": x.get("familia"),
-                             "modulos": x.get("modulos"), "estado": x.get("estado")} for x in lista]
+        # id do conjunto em publicacao.json (família/dataset) e o estado de cada integração
+        e["integracoes"] = [{"id": f"{x.get('familia')}/{x.get('dataset_silver')}", "estado": x.get("estado")} for x in lista]
         if declaradas and not lista:
-            e["integracoes"] = [{"dataset_silver": d.get("dataset_silver"), "familia": d.get("familia"),
-                                 "modulos": [d["modulo"]], "estado": None} for d in declaradas]
+            e["integracoes"] = [{"id": f"{d.get('familia')}/{d.get('dataset_silver')}", "estado": None} for d in declaradas]
+        e["modulos"] = sorted({m for x in lista for m in (x.get("modulos") or [])} | {d["modulo"] for d in declaradas})
         ets = dict(e["etapas"])
         if lista:
             melhor = max(lista, key=lambda x: ESTADOS.index(x.get("estado") or "CATALOGADO"))
@@ -619,8 +621,15 @@ def construir(brutos, publicacao=None, verificacoes=None, recursos_saida=None, c
             e["ressalvas"] = []
             if declaradas:
                 e["ressalvas"].append("Declarado no REGISTRO de módulo, mas sem estado calculado nesta publicação (gold publicacao.json ausente ou anterior à declaração).")
-        e["etapas"] = {k: _enxuto(v) for k, v in ets.items()}
         e["estado"] = estado_por_etapas(ets)
+        # etapa não alcançada e sem nenhuma evidência ({"ok": false}) não é escrita: chave
+        # ausente = etapa não alcançada. Conjunto integrado leva só o essencial de cada
+        # etapa; a evidência completa está no conjunto de publicacao.json (integracoes).
+        if lista:
+            e["etapas"] = {k: _enxuto({kk: vv for kk, vv in v.items() if kk in ("ok", "origem", "via")})
+                           for k, v in ets.items() if v.get("ok") or len(v) > 1}
+        else:
+            e["etapas"] = {k: _enxuto(v) for k, v in ets.items() if v.get("ok") or len(v) > 1}
         e["ressalvas"] = e.get("ressalvas", []) + saltos(ets)
         golds = sorted({g for d in declaradas for g in d.get("golds", [])})
         paginas = []
@@ -630,10 +639,9 @@ def construir(brutos, publicacao=None, verificacoes=None, recursos_saida=None, c
                     paginas.append(p)
         modelos = sorted({m for d in declaradas for m in d.get("modelos", [])})
         if declaradas:
-            e["uso"] = {"papeis": sorted({papel(d.get("estado_declarado")) for d in declaradas}),
-                        "declarado": sorted({d.get("estado_declarado") for d in declaradas if d.get("estado_declarado")}),
-                        "golds": golds, "paginas": paginas,
-                        "modelos": [{"codigo": m, "estado": mods.get(m)} for m in modelos]}
+            # papel de uso (eixo separado do estado); golds em usado_em, páginas em paginas,
+            # códigos de modelo em modelos e o estado de cada modelo no cabeçalho
+            e["papeis"] = sorted({papel(d.get("estado_declarado")) for d in declaradas})
         # campos lidos pela página inicial, por datasets.ts e pelos testes de reauditoria
         # (usado_em e quebras existem em toda entrada, mesmo vazios)
         e["usado_em"] = golds if e["estado"] != "CATALOGADO" else []
@@ -645,7 +653,12 @@ def construir(brutos, publicacao=None, verificacoes=None, recursos_saida=None, c
             e["interno"] = primeira.get("dataset_silver")
             e["familia"] = primeira.get("familia")
             e["paginas"] = paginas
-            e["downloads"] = sorted({u for d in declaradas for u in d.get("downloads", [])})
+            declarados = sorted({u for d in declaradas for u in d.get("downloads", [])})
+            # só o que existe em public/: download declarado e não publicado vira ressalva
+            e["downloads"] = [u for u in declarados if os.path.exists(os.path.join(base.RAIZ, "public", u.lstrip("/")))]
+            faltam = [u for u in declarados if u not in e["downloads"]]
+            if faltam:
+                e["ressalvas"] = (e.get("ressalvas") or []) + [f"Download declarado no REGISTRO e não publicado: {', '.join(faltam)}."]
         for k in ("slug", "interno", "familia", "descontinuacao", "referencia_publicacao", "modificado_na_fonte",
                   "frequencia_declarada", "n_recursos"):
             if e.get(k) is None:
@@ -653,6 +666,9 @@ def construir(brutos, publicacao=None, verificacoes=None, recursos_saida=None, c
         for k in ("integracoes", "ressalvas"):
             if not e.get(k):
                 e.pop(k, None)
+        if not (declaradas or lista):
+            # descrição integral em dados_catalogo.csv; o JSON leva só a dos integrados
+            e.pop("descricao", None)
     with open(os.path.join(AQUI, "catalogo_manual.json"), encoding="utf-8") as f:
         for m in json.load(f)["entradas"]:
             v = verificacoes.get(f"MANUAL:{m['id']}")
@@ -664,6 +680,16 @@ def construir(brutos, publicacao=None, verificacoes=None, recursos_saida=None, c
                              "endereco_verificado": ({"http_status": v.get("http_status"), "resultado": v.get("resultado"),
                                                       "verificado_em": v.get("verificado_em"), "detalhe": v.get("detalhe")} if v else None)})
     entradas.sort(key=lambda e: (-ESTADOS.index(e["estado"]), e["orgao"], e.get("titulo") or ""))
+    licencas = {}
+    for o, st in status.items():
+        cont = {}
+        for e in entradas:
+            if e["orgao"] == o and e.get("licenca"):
+                cont[e["licenca"]] = cont.get(e["licenca"], 0) + 1
+        st["licenca"] = max(cont, key=cont.get) if cont else None
+        licencas[o] = st["licenca"]
+    for e in entradas:
+        _compacta_publicado(e, licencas)
     contagem = {s: 0 for s in ESTADOS}
     for e in entradas:
         contagem[e["estado"]] += 1
@@ -687,6 +713,16 @@ def construir(brutos, publicacao=None, verificacoes=None, recursos_saida=None, c
                           "integração declarada herda o estado dessa integração; capturado por outro dataset ou lido por requisição "
                           "parcial está RECURSO VERIFICADO; os demais estão CATALOGADO. Recurso que sumiu da listagem fica como removido "
                           "pela fonte. A tabela completa está em dados_recursos_<órgão>.csv."),
+        "compactacao": ("Para caber no limite de tamanho da gold: chave ausente = vazio ou não informado; 'nome' é o trecho do id "
+                        "depois de 'órgão:'; url ausente = url_conjunto do portal seguida do nome; licença ausente = a do portal "
+                        "(portais.<órgão>.licenca); descontinuado ausente = falso; etapa ausente = não alcançada. Entrada sem "
+                        "integração não tem 'etapas': o cadastro está em 'catalogado' (origem; ausente = listagem do portal) e o acesso ao arquivo em "
+                        "'verificacao' (etapa recurso verificado; ok ausente = êxito, via ausente = requisição parcial), as "
+                        "demais etapas não foram alcançadas; nelas, modificado_na_fonte cede lugar a recursos_resumo."
+                        "ultimo_publicado (data dos arquivos). Descrição só nos "
+                        "conjuntos integrados (a íntegra de todos está em dados_catalogo.csv); a evidência completa das etapas de "
+                        "um conjunto integrado está em publicacao.json (integracoes[].id)."),
+        "modelos": {m: st for m, st in sorted(mods.items())},
         "portais": status, "contagem": contagem, "total": len(entradas),
         "descontinuados": sum(1 for e in entradas if e.get("descontinuado")),
         "recursos": {o: {"por_estado": {k: v for k, v in c.items() if v}, "total": sum(c.values()),
@@ -695,6 +731,56 @@ def construir(brutos, publicacao=None, verificacoes=None, recursos_saida=None, c
                      for o, c in sorted(rec_cont.items())},
         "entradas": entradas,
     }
+
+
+def _com_familia(it):
+    """Conjunto de publicacao.json com família e dataset do silver (o id é 'família/dataset')."""
+    if it.get("familia") and it.get("dataset_silver"):
+        return it
+    fam, _, ds = str(it.get("id") or "").partition("/")
+    return {**it, "familia": fam or None, "dataset_silver": ds or None}
+
+
+def _compacta_publicado(e, licencas):
+    """Forma publicada de uma entrada (ver 'compactacao' no cabeçalho do catálogo)."""
+    if e.get("nome") is not None and e["id"] == f"{e['orgao'].lower()}:{e['nome']}":
+        if e.get("url") and e["orgao"] in URL_DATASET and e["url"] == URL_DATASET[e["orgao"]] + e["nome"]:
+            e.pop("url")
+        e.pop("nome")
+    e.pop("n_recursos", None)
+    if not e.get("integracoes") and e.get("estado") in ("CATALOGADO", "RECURSO VERIFICADO"):
+        # sem integração: a escada para em catalogado ou recurso verificado; as duas etapas
+        # viram campos da entrada (origem do cadastro e a verificação do recurso)
+        et = e.pop("etapas")
+        cat_ = et.get("catalogado") or {}
+        if not (cat_.get("ok") and cat_.get("origem") == "listagem" and len(cat_) == 2):
+            # ausente = catalogado pela listagem do portal (o caso comum)
+            e["catalogado"] = _enxuto({"origem": cat_.get("origem"), "ok": None if cat_.get("ok") else False,
+                                       **{k: v for k, v in cat_.items() if k not in ("ok", "origem")}})
+        rv = et.get("recurso_verificado")
+        if rv:
+            # ok ausente = verificação com êxito; via ausente = requisição parcial
+            e["verificacao"] = {k: v for k, v in rv.items() if not (k == "ok" and v is True)
+                                and not (k == "via" and v == "requisicao_parcial")}
+        if (e.get("recursos_resumo") or {}).get("ultimo_publicado"):
+            # data de modificação dos metadados do conjunto: a dos arquivos (ultimo_publicado)
+            # é a que importa para a atualidade; a íntegra está em dados_catalogo.csv
+            e.pop("modificado_na_fonte", None)
+    if e.get("licenca") and e.get("licenca") == licencas.get(e["orgao"]):
+        e.pop("licenca")
+    if not e.get("descontinuado"):
+        e.pop("descontinuado", None)
+    e.pop("referencia_publicacao", None)
+    if e.get("modificado_na_fonte"):
+        e["modificado_na_fonte"] = str(e["modificado_na_fonte"])[:10]
+    rr = e.get("recursos_resumo")
+    if rr and not e.get("integracoes"):
+        rr.pop("por_estado", None)
+        if not rr.get("acessados"):
+            rr.pop("acessados", None)
+    for k in ("modelos", "downloads", "paginas", "modulos"):
+        if k in e and not e[k]:
+            e.pop(k)
 
 
 def _corta(texto, n=MAX_DESCRICAO):
@@ -717,10 +803,9 @@ def _etapa_verificacao(v, resumo=None):
     if not ok:
         return _enxuto({"ok": False, "via": "requisicao_parcial", "em": v.get("verificado_em"),
                         "detalhe": str(v.get("detalhe") or v.get("http_status") or "")[:160] or None})
+    # status HTTP e tamanho ficam em dados_recursos_<orgao>.csv (verificado_em, tamanho)
     return _enxuto({"ok": True, "via": "requisicao_parcial", "em": v.get("verificado_em"), "recurso": v.get("recurso"),
-                    "http": int(v["http_status"]) if str(v.get("http_status") or "").isdigit() else None,
-                    "formato": v.get("formato_detectado"), "colunas": len(cab.split(" | ")) if cab else None,
-                    "bytes": int(v["bytes_total"]) if str(v.get("bytes_total") or "").isdigit() else None})
+                    "formato": v.get("formato_detectado"), "colunas": len(cab.split(" | ")) if cab else None})
 
 
 def ler_verificacoes():

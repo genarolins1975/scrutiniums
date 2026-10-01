@@ -215,3 +215,89 @@ def extrai_pde2035(dados_zip):
         out[chave] = {**extrai_figura(planilhas[nome], spec), "unidade": spec["unidade"], "aba": spec["aba"],
                       "pagina": spec["pagina"], "nota": spec["nota"], "arquivo": nome}
     return out
+
+
+# ------------------------------------------------------------ Anexo I-3 do relatório (PDF)
+#
+# O caderno de dados não traz a tabela do Anexo I-3 (capacidade instalada da geração
+# centralizada por fonte, MW, 2026 a 2035). Ela é a única fonte, dentro da edição, que
+# separa a parcela paraguaia de Itaipu ("Itaipu 50 Hz", nota 6: "Máquinas da UHE Itaipu
+# pertencentes ao Paraguai") da hidrelétrica do SIN e que diz que a categoria pequena
+# hidrelétrica é "PCH E CGH". Sem isso a UHE da Figura 3-25 (109,423 GW em dez/2025 =
+# 102,423 + 7,0) seria comparada com a UHE do SIGA, que só cadastra a parte brasileira.
+# A leitura é do texto do PDF (pdftotext -layout), conferida pelas identidades da própria
+# tabela (Total Considerado = Total do SIN + Itaipu 50 Hz; Renováveis = Hidrelétrica +
+# Outras renováveis) antes de qualquer uso.
+TITULO_ANEXO_I3 = "Anexo I-3 - Geração Centralizada: Evolução da Capacidade Instalada por Fonte de Geração"
+LINHAS_ANEXO_I3 = {
+    "renovaveis": "Renováveis", "hidreletrica": "Hidrelétrica", "outras_renovaveis": "Outras renováveis",
+    "pch_e_cgh": "PCH E CGH", "eolica": "Eólica", "fotovoltaica_centralizada": "Fotovoltaica centralizada",
+    "biomassa_biogas_rsu": "Biomassa + Biogás + RSU", "biocombustivel": "Biocombustível",
+    "nao_renovaveis": "Não renováveis", "nuclear": "Nuclear", "gas_natural": "Gás natural", "carvao": "Carvão",
+    "oleo_combustivel": "Óleo combustível", "oleo_diesel": "Óleo diesel", "bateria": "Bateria",
+    "resposta_da_demanda": "Resposta da demanda", "total_do_sin": "Total do SIN", "itaipu_50hz": "Itaipu 50 Hz",
+    "total_considerado": "Total Considerado",
+}
+
+
+def _rotulo_limpo(s):
+    """'Hidrelétrica (2)' → 'hidreletrica'; 'Biomassa (3) + Biogás + RSU' → 'biomassa + biogas + rsu'."""
+    s = re.sub(r"\(\d+\)", " ", s).replace(":", " ")
+    return re.sub(r"\s+", " ", _sem_acento(s)).strip().lower()
+
+
+def _mw_texto(t):
+    """'102.423' → 102423.0 (ponto de milhar, MW inteiros); '-' → None (célula sem valor)."""
+    if t == "-":
+        return None
+    if not re.fullmatch(r"\d{1,3}(\.\d{3})*", t):
+        raise ValueError(f"número inesperado no Anexo I-3: {t!r}")
+    return float(t.replace(".", ""))
+
+
+def extrai_anexo_i3(texto, primeira_pagina=1):
+    """Texto do relatório (pdftotext -layout, páginas separadas por \\f) → {pagina, anos,
+    linhas: {chave: {ano: MW}}, notas: {n: texto}}. `primeira_pagina` é o número da
+    página do primeiro trecho do texto (1 para o relatório inteiro). Falha alto se a
+    página, o cabeçalho de anos, uma linha esperada ou as identidades da tabela não
+    conferirem."""
+    paginas = texto.split("\f")
+    alvo = _sem_acento(TITULO_ANEXO_I3).lower()
+    idx = next((i for i, p in enumerate(paginas) if alvo in re.sub(r"\s+", " ", _sem_acento(p)).lower()), None)
+    if idx is None:
+        raise RuntimeError("Anexo I-3 não encontrado no texto do relatório")
+    linhas = paginas[idx].splitlines()
+    anos = None
+    valores, notas = {}, {}
+    esperadas = {_rotulo_limpo(v): k for k, v in LINHAS_ANEXO_I3.items()}
+    for ln in linhas:
+        toks = ln.split()
+        if anos is None and len(toks) >= 5 and all(re.fullmatch(r"20\d\d", t) for t in toks):
+            anos = toks
+            continue
+        m = re.match(r"^\s*\((\d+)\)\s+(.*\S)\s*$", ln)
+        if m and anos is not None:
+            notas[m.group(1)] = m.group(2)
+            continue
+        if anos is None:
+            continue
+        m = re.match(r"^\s*(\S.*?)\s{2,}((?:-|[\d.]+)(?:\s+(?:-|[\d.]+))*)\s*$", ln)
+        if not m:
+            continue
+        nums = m.group(2).split()
+        chave = esperadas.get(_rotulo_limpo(m.group(1)))
+        if chave is None or len(nums) != len(anos):
+            continue
+        valores[chave] = {a: _mw_texto(t) for a, t in zip(anos, nums)}
+    if anos is None:
+        raise RuntimeError("Anexo I-3: cabeçalho de anos não encontrado")
+    faltam = sorted(set(LINHAS_ANEXO_I3) - set(valores))
+    if faltam:
+        raise RuntimeError(f"Anexo I-3: linhas não lidas: {faltam}")
+    for a in anos:
+        v = {k: (x.get(a) or 0.0) for k, x in valores.items()}
+        if abs(v["total_considerado"] - v["total_do_sin"] - v["itaipu_50hz"]) > 0.5:
+            raise RuntimeError(f"Anexo I-3 {a}: Total Considerado difere de Total do SIN + Itaipu 50 Hz")
+        if abs(v["renovaveis"] - v["hidreletrica"] - v["outras_renovaveis"]) > 0.5:
+            raise RuntimeError(f"Anexo I-3 {a}: Renováveis difere de Hidrelétrica + Outras renováveis")
+    return {"pagina": idx + primeira_pagina, "anos": anos, "linhas": valores, "notas": notas}

@@ -20,7 +20,21 @@ pipeline/tests/dados/energia_regulacao/:
 * prt20257030_anexo_amostra.txt: duas páginas do Anexo I da Portaria nº 7.030/2025;
 * govbr_*.html: trechos de conteúdo das páginas oficiais (PRODIST, PRORET, Agenda);
 * bandeira-tarifaria-adicional.csv e audiencias-consultas-publicas-aneel.csv: arquivos inteiros;
-* lei14203_fragmento.html: fragmento da página da Lei nº 14.203/2021 no portal do Senado.
+* lei14203_fragmento.html: fragmento da página da Lei nº 14.203/2021 no portal do Senado;
+* atas_amostra_resultados.csv.gz: 40 linhas reais do CSV das atas (mesmo arquivo), escolhidas pelos
+  defeitos da segunda verificação de 30/09/2026: decisões que consolidam o edital ou a norma sem a
+  palavra "Resultado" (Despacho nº 2.266/2026, CP 6/2026; Despacho nº 3.323/2025, CP 28/2025;
+  Despacho nº 1.929/2025, CP 18/2025; REH nº 2.684/2020, AP 1/2020; Despacho nº 3.573/2025, CP
+  20/2022; REH nº 3.568/2026, CP 35/2025), a aprovação sem número do Submódulo 6.2 (CP 3/2026), os
+  contraexemplos (medida cautelar da CP 33/2025, impugnação da AP 29/2019), a 2ª fase da CP 1/2026 e
+  as duas propostas da pauta de 29/09/2026 com decisão escrita e resultado vazio; linhas inteiras;
+* numeracao_atas.json.gz: números dos atos deliberados por tipo e ano no mesmo arquivo (REN, REH e
+  Portaria de 2019 a 2026; Despacho de 2023, 2025 e 2026), agregados sem edição;
+* bandeira-tarifaria-acionamento_2015_2018.csv: linhas reais do recurso Acionamento de 2015 a 2018;
+* ren20251114_art2.txt, ren20251147_art6.txt e ren20211000_publicacao.txt: linhas extraídas
+  (pdftotext) da REN nº 1.114/2025 (art. 2º), da REN nº 1.147/2025 (art. 6º) e do fecho da REN nº
+  1.000/2021 (nota de republicação);
+* senado_lei14203_metadados.xml: metadados abertos do Senado da Lei nº 14.203/2021 (bronze).
 
 As reconciliações leem os valores de novo, por expressões escritas aqui (não pelas funções
 do módulo), e comparam com números concretos escritos no teste.
@@ -56,6 +70,21 @@ def _atas():
 def _atas_defeitos():
     with gzip.open(os.path.join(DADOS, "atas_amostra_defeitos.csv.gz"), "rt", encoding="utf-8", newline="") as f:
         return [ar.linha_ata(r) for r in csv.DictReader(f, delimiter=";")]
+
+
+def _atas_resultados():
+    with gzip.open(os.path.join(DADOS, "atas_amostra_resultados.csv.gz"), "rt", encoding="utf-8", newline="") as f:
+        return [ar.linha_ata(r) for r in csv.DictReader(f, delimiter=";")]
+
+
+def _numeracao():
+    with gzip.open(os.path.join(DADOS, "numeracao_atas.json.gz"), "rt", encoding="utf-8") as f:
+        d = json.load(f)["numeracao"]
+    return {(k.rsplit("|", 1)[0], int(k.rsplit("|", 1)[1])): v for k, v in d.items()}
+
+
+def _sem_espacos(t):
+    return " ".join((t or "").replace("\xa0", " ").split())
 
 
 def _totais_completos():
@@ -378,8 +407,12 @@ class BandeirasEParticipacao(unittest.TestCase):
                      if r["NomBandeiraAcionada"] == "Escassez Hídrica"]
         self.assertEqual(meses[-1], ("2022-04", "71,00"))
         esc = [x for x in self._vig() if x["patamar"] == "Escassez Hídrica"]
-        self.assertEqual([(x["rs_mwh"], x["vigencia_fim"], x["vigencia_fim_origem"]) for x in esc],
-                         [(142.0, "2022-04-30", "ultimo_acionamento")])
+        # grão mensal: o mês de abril de 2022 teve acionamento em parte (R$ 71,00 = metade de R$ 142,00);
+        # o dia do fim não é informado e fica vazio, em vez de imputar 30/04/2022
+        self.assertEqual([(x["rs_mwh"], x["vigencia_fim"], x["vigencia_fim_mes"], x["vigencia_fim_grao"], x["vigencia_fim_origem"])
+                          for x in esc], [(142.0, None, "2022-04", "mes", "ultimo_acionamento")])
+        self.assertEqual(esc[0]["conferencia_acionamento"]["mes_parcial"], {"competencia": "2022-04", "rs_mwh": 71.0})
+        self.assertEqual(esc[0]["conferencia_acionamento"]["meses_divergentes"], [])
         self.assertEqual(esc[0]["ultimo_acionamento"], {"competencia": "2022-04", "rs_mwh": 71.0})
         self.assertEqual(esc[0]["resolucao_seguinte_sem_patamar"], {"ato": "REH nº 3.051/2022", "vigencia_inicio": "2022-07-01"})
         # o dicionário do recurso escreve a mesma vigência
@@ -389,7 +422,7 @@ class BandeirasEParticipacao(unittest.TestCase):
     def test_sem_acionamento_o_fim_fica_vazio(self):
         # sem o recurso Acionamento a fonte Adicional não informa término: vazio, nunca inventado
         esc = [x for x in self._vig(com_acionamento=False) if x["patamar"] == "Escassez Hídrica"]
-        self.assertEqual([(x["vigencia_fim"], x["vigencia_fim_origem"]) for x in esc], [(None, None)])
+        self.assertEqual([(x["vigencia_fim"], x["vigencia_fim_mes"], x["vigencia_fim_origem"]) for x in esc], [(None, None, None)])
 
 
 class TextosEConferencia(unittest.TestCase):
@@ -643,6 +676,285 @@ class AgendaELimites(unittest.TestCase):
         self.assertEqual(item["agenda_codigos"], ["AR24-22", "AR25-08"])
 
 
+class ResultadosSemAPalavraResultado(unittest.TestCase):
+    """Defeito 1 da segunda verificação: decisões que consolidam o edital ou a norma depois da
+    consulta, sem a palavra "Resultado" no assunto, não decidiam a consulta (CP 6/2026 e CP
+    28/2025 ficavam encerradas aguardando). Linhas reais em atas_amostra_resultados.csv.gz."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.atas = _atas_resultados()
+        cls.cons = ar.consultas_das_atas([a for a in cls.atas if ar.ata_relevante(a)])
+
+    def _linha(self, data, num):
+        return next(a for a in self.atas if a["data"] == data and a["num_ato"] == num)
+
+    def test_cp_6_2026_decidida_pelo_despacho_2266(self):
+        a = self._linha("2026-06-22", "2266")
+        # releitura independente do texto da decisão
+        self.assertIn("aprovar a minuta do Edital do Leilão nº 4/2026-ANEEL, com os respectivos Apêndices e Anexos, consolidada "
+                      "com os aprimoramentos decorrentes da Consulta Pública nº 6/2026", _sem_espacos(a["decisao"]))
+        self.assertIn("consolidado após avaliação das contribuições apresentadas na Consulta Pública nº 6/2026", _sem_espacos(a["assunto"]))
+        self.assertEqual(ar.alvos_da_consolidacao(a["decisao"]), [("CP", 6, 2026)])
+        self.assertEqual(ar.alvos_do_resultado(a["assunto"]), [])  # a regra antiga não via esta linha
+        r = self.cons["CP-6-2026"]["resultado"]
+        self.assertEqual((r["ato"], r["data"], r["decidido"], r["vinculo"], r["forma"]),
+                         ("Despacho nº 2.266/2026", "2026-06-22", True, "numero_citado", "consolidacao"))
+        self.assertEqual(ar.situacao(self.cons["CP-6-2026"], "2026-09-30"), "decidida")
+
+    def test_cp_28_2025_decidida_pelo_despacho_3323(self):
+        a = self._linha("2025-11-11", "3323")
+        self.assertIn("consolidada com os aprimoramentos decorrentes da Consulta Pública nº 28/2025", _sem_espacos(a["decisao"]))
+        self.assertIn("consolidado após análise das contribuições apresentadas na Consulta Pública nº 28/2025", _sem_espacos(a["assunto"]))
+        c = self.cons["CP-28-2025"]
+        self.assertEqual(ar.janela_vigente(c)["fim"], "2025-09-24")  # prorrogação de 16/09/2025, conferida antes
+        self.assertEqual((c["resultado"]["ato"], c["resultado"]["data"]), ("Despacho nº 3.323/2025", "2025-11-11"))
+        self.assertEqual(ar.situacao(c, "2026-09-30"), "decidida")
+        self.assertEqual(self.cons["CP-18-2025"]["resultado"]["ato"], "Despacho nº 1.929/2025")
+
+    def test_cp_3_2026_objeto_aprovado_sem_numero(self):
+        # 16/06/2026, mesmo processo 48500.007732/2007-09: "aprovar os aprimoramentos do Submódulo 6.2 dos
+        # Procedimentos de Regulação Tarifária" sem citar a Consulta Pública nº 3/2026
+        a = self._linha("2026-06-16", "1160")
+        self.assertIn("aprovar os aprimoramentos do Submódulo 6.2 dos Procedimentos de Regulação Tarifária", _sem_espacos(a["decisao"]))
+        self.assertNotIn("Consulta Pública", a["assunto"] + a["decisao"])
+        c = self.cons["CP-3-2026"]
+        self.assertEqual(ar.procedimentos_citados(c["tema"]), {("PRORET", "submódulo 6.2")})
+        self.assertEqual((c["resultado"]["data"], c["resultado"]["vinculo"], c["resultado"]["forma"]),
+                         ("2026-06-16", "processo_e_objeto", "objeto_aprovado_no_processo"))
+        self.assertEqual(ar.situacao(c, "2026-09-30"), "decidida")
+
+    def test_duas_consultas_na_mesma_oracao_e_extincao(self):
+        r = self.cons["AP-1-2020"]["resultado"]
+        self.assertEqual((r["ato"], r["data"]), ("Resolução Homologatória nº 2.684/2020", "2020-04-28"))
+        self.assertEqual(ar.alvos_da_consolidacao("Revisão Tarifária Extraordinária da Equatorial Alagoas Distribuidora de Energia S.A., "
+                                                  "a vigorar a partir de 3 de maio de 2020, após consolidação das contribuições recebidas por "
+                                                  "meio da Consulta Pública nº 4/2020 e da Audiência Pública nº 1/2020."),
+                         [("CP", 4, 2020), ("AP", 1, 2020)])
+        r = self.cons["CP-20-2022"]["resultado"]  # "decidiu declarar extinto o processo de instrução da Consulta Pública nº 20/2022"
+        self.assertEqual((r["ato"], r["data"], r["forma"]), ("Despacho nº 3.573/2025", "2025-12-02", "consolidacao"))
+
+    def test_a_primeira_decisao_que_consolida_vale(self):
+        # o Despacho nº 1.477/2026 (recursos contra o resultado do leilão) repete a descrição do edital; não troca o resultado
+        r = self.cons["CP-35-2025"]["resultado"]
+        self.assertEqual((r["ato"], r["data"]), ("Resolução Homologatória nº 3.568/2026", "2026-02-10"))
+        self.assertIn("consolidado após avaliação das contribuições apresentadas na Consulta Pública nº 35/2025",
+                      _sem_espacos(self._linha("2026-04-28", "1477")["assunto"]))
+
+    def test_contraexemplos_nao_decidem(self):
+        # medida cautelar "até a análise definitiva das contribuições recebidas na Consulta Pública nº 33/2025"
+        a = self._linha("2026-05-19", "1804")
+        self.assertIn("até a análise definitiva das contribuições recebidas na Consulta Pública nº 33/2025", _sem_espacos(a["decisao"]))
+        self.assertEqual(ar.alvos_da_consolidacao(a["decisao"]) + ar.alvos_da_consolidacao(a["assunto"]), [])
+        self.assertNotEqual(ar.situacao(self.cons["CP-33-2025"], "2026-09-30"), "decidida")
+        # impugnação ao edital "conforme minuta prevista na abertura da Audiência Pública nº 29/2019"
+        a = self._linha("2019-10-08", "2.766")
+        self.assertEqual(ar.alvos_da_consolidacao(a["decisao"]), [])
+        self.assertIsNone(self.cons["AP-29-2019"]["resultado"])
+
+    def test_controle_independente_das_abertas_ve_a_consolidacao(self):
+        # o vocabulário do controle 3 da evidência pega as linhas que a regra antiga (só "Resultado",
+        # "Encerramento", "Fechamento" no início do assunto) não pegava
+        for data, num in (("2026-06-22", "2266"), ("2025-11-11", "3323"), ("2025-12-02", "3573")):
+            a = self._linha(data, num)
+            self.assertIsNone(re.match(r"\s*(Resultados?|Encerramento|Fechamento)\b", a["assunto"]))
+            self.assertTrue(m.VOCABULARIO_RESULTADO.search(a["assunto"] + " " + a["decisao"]), (data, num))
+
+
+class JanelaEDecisoesPendentes(unittest.TestCase):
+    """Defeitos 4 e 9: a janela da gold usa a fase atual; decisões com resultado formal vazio ficam declaradas."""
+
+    @classmethod
+    def setUpClass(cls):
+        con = base.conecta(":memory:")
+        with tempfile.TemporaryDirectory() as tmp:
+            cls.b = m._bloco_consultas(con, {"destino_csv": tmp}, "2026-09-30", _atas_resultados(), set(), _numeracao())
+
+    def test_fase_recente_de_consulta_antiga_entra_na_janela(self):
+        ids = {i["id"]: i for i in self.b["itens"]}
+        # CP 1/2026: aberta em 27/01/2026 (fora dos 200 dias); 2ª fase de 45 dias instaurada em 30/06/2026, sem datas
+        self.assertIn("CP-1-2026", ids)
+        self.assertEqual((ids["CP-1-2026"]["fase_atual"], ids["CP-1-2026"]["situacao"]), ("2ª fase", "prazo_nao_datado"))
+        self.assertEqual(ids["CP-1-2026"]["deliberacao_abertura"]["data"], "2026-01-27")
+        self.assertIn("CP-9-2026", ids)
+
+    def test_decisoes_da_pauta_sem_resultado_formal(self):
+        p = self.b["decisoes_sem_resultado_formal"]
+        self.assertEqual([(x["processos"], x["inicio"], x["fim"], x["situacao_se_confirmada"]) for x in p],
+                         [(["48500.000846/2026-82"], "2026-09-30", "2026-11-14", "aberta"),
+                          (["48500.023844/2026-61"], "2026-10-01", "2026-10-30", "a_abrir")])
+        self.assertEqual((self.b["abertas_se_confirmadas"], self.b["a_abrir_se_confirmadas"]), (1, 1))
+        # não entram na contagem: nenhum aviso foi reconstituído desses processos
+        procs = {p for i in self.b["itens"] for p in i["processos"]}
+        self.assertFalse(procs & {"48500.000846/2026-82", "48500.023844/2026-61"})
+        self.assertEqual(ar.decisoes_sem_resultado_formal(_atas_resultados(), "2026-10-01")[1]["situacao_se_confirmada"], "aberta")
+
+    def test_ato_suspeito_nao_aparece_como_certo(self):
+        cp3 = next(i for i in self.b["itens"] if i["id"] == "CP-3-2026")
+        self.assertEqual((cp3["resultado"]["ato"], cp3["resultado"]["ato_na_ata"], cp3["resultado"]["ato_suspeito"]),
+                         (None, "Portaria nº 1.160/2026", True))
+        self.assertIn("Resolução Normativa", cp3["resultado"]["motivo_ato_suspeito"])
+        cp6 = next(i for i in self.b["itens"] if i["id"] == "CP-6-2026")
+        self.assertEqual((cp6["resultado"]["ato"], cp6["resultado"]["ato_suspeito"]), ("Despacho nº 2.266/2026", False))
+
+
+class NumeroDoAto(unittest.TestCase):
+    """Defeito 6: número de ato fora da faixa do tipo, conferido com a numeração real das atas."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.num = _numeracao()
+
+    def test_faixa_por_tipo_e_ano(self):
+        n = self.num
+        # REN de 2024 na faixa de 1.08x a 1.11x (REN nº 1.093/2024 em 21/05/2024)
+        self.assertIn(1093, n[("Resolução Normativa", 2024)])
+        susp = {(t, k, a): ar.confere_numero_ato(t, k, a, n)[0] for t, k, a in (
+            ("Resolução Normativa", 3354, 2024), ("Resolução Homologatória", 14985, 2023), ("Resolução Homologatória", 12536, 2022),
+            ("Resolução Normativa", 2827, 2020), ("Portaria", 1160, 2026), ("Resolução Homologatória", 1084, 2024),
+            ("Resolução Normativa", 1114, 2025), ("Resolução Normativa", 1160, 2026), ("Resolução Homologatória", 3304, 2023),
+            ("Despacho", 3850, 2025), ("Despacho", 2266, 2026), ("Portaria", 7157, 2026))}
+        self.assertEqual([k for k, v in susp.items() if v], [
+            ("Resolução Normativa", 3354, 2024), ("Resolução Homologatória", 14985, 2023), ("Resolução Homologatória", 12536, 2022),
+            ("Resolução Normativa", 2827, 2020), ("Portaria", 1160, 2026), ("Resolução Homologatória", 1084, 2024)])
+        self.assertIn("cabe na faixa de Resolução Normativa", ar.confere_numero_ato("Portaria", 1160, 2026, n)[1])
+
+    def test_aviso_de_leilao_pelo_numero_do_leilao(self):
+        self.assertTrue(ar.confere_numero_ato(
+            "Aviso de Convocação de Leilão", 3031, 2022, self.num,
+            "Aprovação do Edital do Leilão nº 3/2022-ANEEL, denominado Leilão de Energia Nova “A-4”, de 2022, destinado a contratar")[0])
+        self.assertFalse(ar.confere_numero_ato(
+            "Aviso de Convocação de Leilão", 6, 2018, self.num,
+            "Aprovação dos Editais dos Leilões nº 5/2018, denominado Leilão de Energia Existente A-1, de 2018 e nº 6/2018, denominado "
+            "Leilão de Energia Existente A-2 de 2018, destinados à compra")[0])
+
+
+class BandeirasContraAcionamento(unittest.TestCase):
+    """Defeito 2: o recurso Adicional não tem as resoluções de set/2015 e nov/2017; o Acionamento contradiz o fim
+    deduzido como véspera do valor seguinte."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.ad = ar.bandeiras_adicional(ar.le_csv(_ler("bandeira-tarifaria-adicional.csv", "rb")))
+        cls.ac = ar.bandeiras_acionamento(ar.le_csv(_ler("bandeira-tarifaria-acionamento_2015_2018.csv", "rb"))
+                                          + ar.le_csv(_ler("bandeira-tarifaria-acionamento_recorte.csv", "rb")))
+        cls.vig = ar.vigencias_bandeiras(cls.ad, cls.ac)
+
+    def test_releitura_dos_meses_na_fonte(self):
+        with open(os.path.join(DADOS, "bandeira-tarifaria-acionamento_2015_2018.csv"), encoding="utf-8-sig", newline="") as f:
+            meses = {r["DatCompetencia"][:7]: (r["NomBandeiraAcionada"], r["VlrAdicionalBandeira"]) for r in csv.DictReader(f, delimiter=";")}
+        self.assertEqual([meses[k] for k in ("2015-08", "2015-09", "2016-01")],
+                         [("Vermelha P1", "55,00"), ("Vermelha P1", "45,00"), ("Vermelha P1", "45,00")])
+        self.assertEqual([meses[k] for k in ("2017-10", "2017-11")], [("Vermelha P2", "35,00"), ("Vermelha P2", "50,00")])
+
+    def _v(self, pat, ini):
+        return next(x for x in self.vig if x["patamar"] == pat and x["vigencia_inicio"] == ini)
+
+    def test_vermelha_p1_de_55_termina_em_agosto_de_2015(self):
+        v = self._v("Vermelha P1", "2015-03-02")
+        self.assertEqual((v["rs_mwh"], v["vigencia_fim"], v["vigencia_fim_mes"], v["vigencia_fim_grao"], v["vigencia_fim_origem"],
+                          v["fim_incerto"], v["fim_pelo_recurso_adicional"]),
+                         (55.0, None, "2015-08", "mes", "acionamento_diverge", False, "2016-01-31"))
+        self.assertEqual([d["competencia"] for d in v["conferencia_acionamento"]["meses_divergentes"]],
+                         ["2015-09", "2015-10", "2015-11", "2015-12", "2016-01"])
+
+    def test_vermelha_p2_de_35_termina_em_outubro_de_2017(self):
+        v = self._v("Vermelha P2", "2017-02-01")
+        self.assertEqual((v["vigencia_fim"], v["vigencia_fim_mes"], v["vigencia_fim_origem"]), (None, "2017-10", "acionamento_diverge"))
+        self.assertEqual(v["conferencia_acionamento"]["meses_divergentes"], [{"competencia": "2017-11", "rs_mwh": 50.0}])
+        # vigência coerente com o Acionamento continua com o fim diário da véspera do valor seguinte
+        a = self._v("Amarela", "2017-02-01")
+        self.assertEqual((a["vigencia_fim"], a["vigencia_fim_grao"], a["conferencia_acionamento"]["meses_coerentes"]),
+                         ("2018-04-30", "dia", 3))
+
+    def test_valores_sem_resolucao_no_adicional(self):
+        tr = ar.acionamentos_sem_resolucao(self.vig, self.ac)
+        self.assertEqual([(t["patamar"], t["rs_mwh"], t["inicio"], t["fim"], t["motivo"]) for t in tr],
+                         [("Vermelha P1", 30.0, "2015-01", "2015-02", "sem_vigencia"),
+                          ("Vermelha P1", 45.0, "2015-09", "2016-01", "valor_diferente"),
+                          ("Vermelha P2", 50.0, "2017-11", "2017-11", "valor_diferente")])
+
+    def test_adicional_nao_positivo_reprova_a_validacao(self):
+        g = {"limites_pld": {"atos": []}, "consultas": {"itens": []}, "linha_do_tempo": {"eventos": []},
+             "bandeiras": {"vigencias": [dict(self._v("Amarela", "2017-02-01"), rs_mwh=0.0)]}}
+        self.assertTrue(any("não positivo" in x for x in m._valida_gold(g, "2026-09-30")))
+        g["bandeiras"]["vigencias"] = [self._v("Amarela", "2017-02-01")]
+        self.assertEqual(m._valida_gold(g, "2026-09-30"), [])
+
+
+class ProcedimentosNomesEAtos(unittest.TestCase):
+    """Defeito 3: nomes de arquivo fora do padrão antigo e versões aprovadas por enumeração nas REN."""
+
+    def test_nomes_de_arquivo_reais(self):
+        base_url = "https://git.aneel.gov.br/publico/centralconteudo/-/raw/main/procreg/proret/"
+        casos = {"modulo03/subm3.1A/Proret_Submod_3.1A_v1.2_aren20251114.pdf": ("1.2", "Resolução Normativa nº 1.114/2025"),
+                 "modulo04/subm4.1/Proret_Submod_4.1_V1.0C_aren20221003.pdf": ("1.0C", "Resolução Normativa nº 1.003/2022"),
+                 "modulo09/subm9.3/Proret_Submod_9.3_V_1.2_adsp20253606.pdf": ("1.2", "Despacho nº 3.606/2025"),
+                 "modulo12/subm12.1/Proret_Submod_12.1_V_2.4_adsp20253606.pdf": ("2.4", "Despacho nº 3.606/2025"),
+                 "modulo02/subm2.1A/Proret_Submod_2.1A_V_2.2_ren20251114.pdf": ("2.2", "Resolução Normativa nº 1.114/2025")}
+        for arq, esperado in casos.items():
+            va = ar.versao_e_ato_do_arquivo(base_url + arq)
+            self.assertEqual((va["versao"], va["ato"]), esperado, arq)
+        self.assertEqual(ar.versao_e_ato_do_arquivo("https://x/aren2021956_Prodist_modulo_11_v2.pdf")["ato"], "Resolução Normativa nº 956/2021")
+        self.assertIsNone(ar.versao_e_ato_do_arquivo("https://x/arquivo_sem_padrao.pdf"))
+
+    def test_versoes_aprovadas_pela_ren_1114_e_1147(self):
+        v = ar.versoes_aprovadas_no_ato(_ler("ren20251114_art2.txt"))
+        self.assertEqual([(x["modulo"], x["versao"]) for x in v],
+                         [("Submódulo 2.1", "2.5"), ("Submódulo 2.6", "3.0"), ("Submódulo 2.6A", "2.0"), ("Submódulo 3.1", "1.6"),
+                          ("Submódulo 3.1A", "1.2"), ("Submódulo 3.2", "2.0"), ("Submódulo 3.2A", "2.0"), ("Submódulo 4.2", "1.3"),
+                          ("Submódulo 4.3", "1.1")])
+        self.assertEqual({x["conjunto"] for x in v}, {"PRORET"})
+        self.assertEqual([(x["modulo"], x["versao"]) for x in ar.versoes_aprovadas_no_ato(_ler("ren20251147_art6.txt"))],
+                         [("Submódulo 5.2", "1.5"), ("Submódulo 7.1", "2.9")])
+        # sem "Aprovar" nem o nome do conjunto antes da enumeração, nada é aprovado
+        self.assertEqual(ar.versoes_aprovadas_no_ato("ver o Submódulo 2.1, versão 2.5, citado na nota"), [])
+
+    def test_versao_da_pagina_contra_a_do_ato(self):
+        # página: Submódulo 4.3 v1.3 pela REN nº 1.114/2025; o art. 2º, IX, aprova a versão 1.1
+        self.assertEqual(ar.confere_numero_da_versao("1.3", [{"versao_aprovada": "1.1"}]), "diverge")
+        self.assertEqual(ar.confere_numero_da_versao("2.5", [{"versao_aprovada": "2.5"}]), "confere")
+        self.assertEqual(ar.confere_numero_da_versao("1.10C", [{"versao_aprovada": "1.10"}]), "confere")
+        self.assertIsNone(ar.confere_numero_da_versao("v14", [{"versao_aprovada": None}]))
+
+
+class PublicacaoConferida(unittest.TestCase):
+    """Defeitos 5 e 11: publicação da REN nº 1.000/2021 e metadados do Senado guardados e conferidos."""
+
+    def test_ren_1000_publicada_em_20_12_2021(self):
+        t = _ler("ren20211000_publicacao.txt")
+        self.assertIn("original publicado no DOU de 20/12/2021, edição 238, seção 1, página 206.", _sem_espacos(t))
+        e = next(x for x in rg.linha_do_tempo()["eventos"] if x["id"] == "ren-1000-2021")
+        self.assertEqual(e["data_publicacao"], "2021-12-20")
+        ok, faltam = ar.confere_trecho(ar.pedacos(e["trecho"])[-1], [t])
+        self.assertTrue(ok, faltam)
+
+    def test_metadados_do_senado(self):
+        pub = ar.publicacao_original_senado(_ler("senado_lei14203_metadados.xml", "rb"))
+        self.assertEqual(pub["data"], "2021-09-13")
+        self.assertIn("Publicação Original", pub["dispositivo"])
+        e = next(x for x in rg.linha_do_tempo()["eventos"] if x["id"] == "lei-14203-2021")
+        self.assertEqual(e["data_publicacao"], pub["data"])
+        self.assertEqual(rg.documentos()["lei14203_2021"]["metadados"], "https://legis.senado.leg.br/dadosabertos/legislacao/34849049")
+        self.assertIsNone(ar.publicacao_original_senado(b"<nao-e-xml"))
+
+
+class AgendaERegraDosLimites(unittest.TestCase):
+    """Defeitos 8 e 10: resumo da regra dos limites e origem da revisão da Agenda."""
+
+    def test_resumo_da_ren_1032_diz_o_que_os_atos_praticam(self):
+        r = next(x for x in rg.linha_do_tempo()["eventos"] if x["id"] == "ren-1032-2022")["resumo"]
+        self.assertIn("encadeiam o teto publicado no ano anterior pela variação do IPCA de novembro", r)
+        self.assertIn("art23_literal", r)
+
+    def test_revisao_da_agenda_aponta_para_leis_org(self):
+        url = ar.link_revisao_agenda(_ler("govbr_agenda.html", "rb"))
+        self.assertTrue(url.startswith("https://leis.org/aneel/lei/portaria/2026/7157/"), url)
+        bloq = [b for b in rg.conferencia_limites()["bloqueios"] if b["fonte"].startswith("leis.org")]
+        self.assertEqual(len(bloq), 1)
+        self.assertIn("403", bloq[0]["resposta"])
+
+
 @unittest.skipUnless(os.path.exists(os.path.join(base.GOLD, m.GOLD)), "gold ainda não publicada")
 class GoldPublicada(unittest.TestCase):
     def setUp(self):
@@ -664,7 +976,7 @@ class GoldPublicada(unittest.TestCase):
     def test_defeitos_da_verificacao_nao_voltam(self):
         g = self.g
         esc = [x for x in g["bandeiras"]["vigencias"] if x["patamar"] == "Escassez Hídrica"]
-        self.assertEqual([x["vigencia_fim"] for x in esc], ["2022-04-30"])
+        self.assertEqual([(x["vigencia_fim"], x["vigencia_fim_mes"]) for x in esc], [(None, "2022-04")])
         m11 = next(i for i in g["procedimentos"]["itens"] if i["conjunto"] == "PRODIST" and i["modulo"] == "Módulo 11")
         self.assertEqual((m11["conferencia"], m11["ato_vigente"]), ("pagina_possivelmente_desatualizada", None))
         self.assertEqual(sorted(x["codigo"] for x in g["limites_em_revisao"]), ["AR24-05", "AR24-18"])
@@ -675,6 +987,39 @@ class GoldPublicada(unittest.TestCase):
         for c in g["consultas"]["itens"]:
             if c["id"] in ("CP-23-2026", "AP-5-2026-2"):
                 self.assertEqual((c["inicio"], c["fim"], c["situacao"]), ("2026-07-30", "2026-09-14", "encerrada_aguardando"))
+
+    def test_segunda_verificacao_nao_volta(self):
+        g = self.g
+        cont = g["consultas"]["contagem_por_situacao"]
+        # antes da correção: 108 encerradas aguardando e 411 decididas no histórico de 542
+        self.assertEqual(g["consultas"]["total_historico"], 542)
+        self.assertLessEqual(cont["encerrada_aguardando"], 92)
+        self.assertGreaterEqual(cont["decidida"], 427)
+        itens = {i["id"]: i for i in g["consultas"]["itens"]}
+        for cid in ("CP-6-2026", "CP-3-2026"):
+            if cid in itens:
+                self.assertEqual(itens[cid]["situacao"], "decidida", cid)
+        self.assertIn("CP-1-2026", itens)
+        proc = {(i["conjunto"], i["modulo"]): i for i in g["procedimentos"]["itens"]}
+        self.assertEqual((proc[("PRORET", "Submódulo 2.1")]["conferencia"], proc[("PRORET", "Submódulo 2.1")]["conferencia_versao"]),
+                         ("confirmada_por_ato_integrado", "confere"))
+        self.assertEqual((proc[("PRORET", "Submódulo 4.3")]["versao_na_pagina"], proc[("PRORET", "Submódulo 4.3")]["versao_no_ato"],
+                          proc[("PRORET", "Submódulo 4.3")]["conferencia_versao"]), ("1.3", "1.1", "diverge"))
+        self.assertEqual(proc[("PRORET", "Submódulo 3.1 A")]["ato_na_pagina"], "Resolução Normativa nº 1.114/2025")
+        self.assertEqual(proc[("PRORET", "Submódulo 9.3")]["ato_na_pagina"], "Despacho nº 3.606/2025")
+        p73 = proc[("PRORET", "Submódulo 7.3")]["atos_posteriores"][0]
+        self.assertEqual((p73["ato"], p73["ato_na_fonte"], p73["ato_suspeito"]), (None, "Resolução Normativa nº 3.354/2024", True))
+        ev = {e["id"]: e for e in g["linha_do_tempo"]["eventos"]}
+        self.assertIn("bandeiras-acionamento-2015-09-vermelha-p1", ev)
+        self.assertIn("bandeiras-acionamento-2017-11-vermelha-p2", ev)
+        self.assertEqual(ev["bandeiras-acionamento-2015-09-vermelha-p1"]["vigencia_grao"], "mes")
+        self.assertEqual((ev["ren-1000-2021"]["data_publicacao"], ev["ren-1000-2021"]["conferencia_publicacao"]["resultado"]),
+                         ("2021-12-20", "aprovado"))
+        self.assertFalse([e["id"] for e in ev.values() if (e.get("conferencia_publicacao") or {}).get("resultado") == "reprovado"])
+        pr = g["regras_limites"]["pratica_dos_atos"]
+        self.assertEqual(pr["regra_ipca_aprovadas"], pr["regra_ipca_total"])
+        self.assertAlmostEqual(pr["art23_literal_diferenca_min"], -0.6472, delta=0.0001)
+        self.assertAlmostEqual(pr["art23_literal_diferenca_max"], -0.2403, delta=0.0001)
 
     def test_evidencias_dos_tres_limites(self):
         ev = self.g["evidencias"]["limites"]

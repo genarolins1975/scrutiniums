@@ -171,13 +171,14 @@ DOCUMENTOS = {
     },
 }
 
-# Fluxos do ATLS com definição localizada em documento público (a sigla do ATLS é a
-# mesma do documento; EXP_NE corresponde a ExpNE, grafada sem sublinhado no RT-ONS).
+# Fluxos do ATLS com definição localizada em documento público: a definição publicada é
+# um pedaço literal do trecho conferido de mesmo id (teste em test_energia_rede.py), e a
+# sigla do ATLS é a mesma do documento. EXP_NE fica sem definição: o RT-ONS usa "ExpNE"
+# e "Exportação Nordeste" em frases separadas, sem nenhum trecho que ligue os dois.
 DEFINICOES_ATLS = {
     "FNS": ("Fluxo sentido Norte-Sul", "ons_pel_2019_2020"),
     "FNESE": ("Fluxo da Interligação Nordeste-Sudeste/Centro-Oeste", "ons_rt_dpl_0131_2023"),
-    "FNEN": ("Fluxo da Interligação Nordeste-Norte", "ons_rt_dpl_0131_2023"),
-    "EXP_NE": ("Exportação Nordeste (ExpNE)", "ons_rt_dpl_0131_2023"),
+    "FNEN": ("Interligação Nordeste-Norte", "ons_rt_dpl_0131_2023"),
     "RSE": ("Recebimento pelo Sudeste", "ons_pel_2019_2020"),
     "RSUL": ("Recebimento pela Região Sul", "ons_pel_2019_2020"),
     "RNE": ("Recebimento da Região Nordeste", "ons_pel_2019_2020"),
@@ -207,7 +208,47 @@ BUSCA_LIMITES = [
     {"onde": "Mensagens operativas do Manual de Procedimentos da Operação sobre limites de FNS e FNESE (endereços em ons.org.br/MPO2)",
      "url": "https://ons.org.br/MPO2/Mensagem%20Operativa/Sist%C3%AAmica/CNOS/MOP-ONS%20394-S-2020.pdf",
      "resultado": "Endereços encontrados em busca pública responderam 404 em 30/09/2026."},
+    {"onde": ("Decks de preço NEWAVE e DECOMP publicados pela CCEE (acervo da CCEE e portal de dados abertos da CCEE, "
+              "busca por 'deck' e 'newave'), que trazem os limites de intercâmbio por mês e patamar usados nos modelos"),
+     "url": "https://www.ccee.org.br/web/guest/acervo-ccee",
+     "resultado": ("Os quatro endereços consultados (acervo da CCEE e package_search do portal de dados abertos por 'deck' "
+                   "e 'newave') responderam 403 \"Acesso bloqueado\" em 01/10/2026 (06h28 UTC), pelo bloqueio da origem a "
+                   "este ambiente; não foi contornado. Mesmo acessíveis, seriam limites de modelo (planejamento mensal e "
+                   "semanal por patamar de carga), não os limites operativos vigentes hora a hora.")},
 ]
+
+# Quebra metodológica no Balanço de Energia nos Subsistemas (seção 11.1 da especificação):
+# a partir de 29/04/2023 a geração solar e a carga incluem a estimativa da micro e
+# minigeração distribuída (MMGD) feita pelo ONS. O conjunto do balanço não declara a
+# mudança (nem o dicionário, versão 1.0 de 02/05/2023, nem a descrição no CKAN); a data é a
+# que o ONS declara na descrição do conjunto Carga de Energia, e o degrau aparece no
+# arquivo do balanço no mesmo dia (conferido na construção, em `balanco.quebras`). O
+# intercâmbio não muda: a estimativa entra na geração e na carga do mesmo subsistema.
+MMGD_BALANCO = "2023-04-29"
+PACOTE_DECLARACAO_MMGD = "carga-energia"
+TRECHO_DECLARACAO_MMGD = ("A partir de 29/04/2023, além dos dados anteriormente considerados, passou a ser incorporado o "
+                          "valor estimado da micro e minigeração distribuída (MMGD)")
+META_DECLARACAO_MMGD = "_meta_ons_rede_declaracao_mmgd.json"
+NATUREZA_COMPONENTES_BALANCO = [
+    {"componente": "geração hidráulica, térmica, eólica e solar das usinas, carga e intercâmbio verificados",
+     "natureza": "OBSERVADO", "desde": None},
+    {"componente": "parcela da MMGD estimada pelo ONS, somada sem separação à geração solar e à carga",
+     "natureza": "ESTIMADO", "desde": MMGD_BALANCO},
+]
+NATUREZA_COMPONENTES_PROGRAMADO = [
+    {"componente": "intercâmbio verificado", "natureza": "OBSERVADO", "desde": None},
+    {"componente": "intercâmbio programado (programa do dia anterior)", "natureza": "PREVISTO", "desde": None},
+]
+
+# Programa com valor repetido (seção 11.7): nas quatro fronteiras entre subsistemas o
+# programado nunca se repete por mais de duas horas seguidas no arquivo de 2026, a não ser
+# em 22/08/2026 (NE→SE/CO exatamente 0 nas 24 horas). A regra marca sequências de pelo
+# menos SEQ_REPETIDA_MIN horas com o mesmo valor programado numa fronteira; o dia inteiro
+# fica rotulado nas quatro fronteiras (o programa das fronteiras é um só despacho: em
+# 22/08/2026 a exportação programada do Nordeste foi toda para o Norte). Nada é descartado:
+# a distribuição sai com e sem os dias rotulados. Nos países, programa zero é o estado
+# comum (sem intercâmbio programado, conferido com o PDO das conversoras) e não é marcado.
+SEQ_REPETIDA_MIN = 6
 
 NULO = 1.0             # MWmed: fluxo de fronteira ou país tratado como nulo nesta faixa (o mesmo do módulo PLD)
 TOL_IDENT = 0.1        # MWmed: tolerância das identidades do balanço (ver _TEXTO_TOL)
@@ -216,7 +257,9 @@ TOL_PLD = 0.01         # R$/MWh: preços separados quando a diferença passa de 
 LIMIAR_MATERIAL = 1000.0         # MWmed: desvio horário material entre programado e verificado
 LIMIARES_SENSIBILIDADE = (500.0, 1000.0, 2000.0)
 DIAS_JANELA_HORARIA = 7
-DIAS_DIARIO = 60
+# janela diária da gold = a mesma do resumo de 30 dias (o histórico diário inteiro está nos CSV)
+DIAS_DIARIO = 30
+ARQUIVO_JANELA = "rede_janela_horaria.json"
 DIAS_PDO_RECENTES = 30
 PAISES = ("ARGENTINA", "URUGUAI", "PARAGUAI")
 PAISES_SUL = ("ARGENTINA", "URUGUAI")   # conversoras no Sul (Garabi, Uruguaiana, Melo, Rivera): conferido no balanço
@@ -279,7 +322,12 @@ REGISTRO = {
          "titulo": "Balanço de Energia nos Subsistemas: releitura dos arquivos originais", "estado": "UTILIZADO EM INDICADOR",
          "url": url_pacote(DS_BAL), "licenca": c.LICENCA_ONS,
          "paginas": [{"rotulo": "Rede: balanço e exterior", "href": "/setor-eletrico/rede"}],
-         "downloads": ["/energia/series/rede_balanco_mensal.csv", "/energia/series/rede_balanco_residuos.csv"], "quebras": []},
+         "downloads": ["/energia/series/rede_balanco_mensal.csv", "/energia/series/rede_balanco_residuos.csv"], "quebras": [
+             "A partir de 29/04/2023 a geração solar e a carga incluem a estimativa da micro e minigeração distribuída (MMGD) "
+             "feita pelo ONS, somada sem separação (componente ESTIMADO). O conjunto do balanço não declara a mudança; a data "
+             "é a declarada pelo ONS para o conjunto Carga de Energia, e o degrau aparece no arquivo do balanço no mesmo dia "
+             "(solar do SIN às 12h: 5.688,69 MWmed em 28/04/2023 e 14.987,70 em 29/04/2023). O intercâmbio não muda; geração "
+             "e carga mensais dos dois lados da data não são comparáveis diretamente (coluna mmgd_estimada)."]},
         {"orgao": "ONS", "nome": "geracao_itaipu", "slug": "ons-geracao-itaipu", "dataset_silver": DS_ITA,
          "titulo": "Geração de Itaipu Binacional: base horária", "estado": "UTILIZADO EM INDICADOR", "url": url_pacote(DS_ITA),
          "licenca": c.LICENCA_ONS,
@@ -316,7 +364,13 @@ REGISTRO = {
             "de 2026); ext_ARGENTINA, ext_URUGUAI, ext_PARAGUAI = intercâmbio internacional verificado (positivo = exportação); "
             "prog_ext_* = programado; pld_SE, pld_S, pld_NE, pld_N = PLD horário da CCEE na mesma hora, R$/MWh nominais; "
             "saldo_SE, saldo_S, saldo_NE, saldo_N, saldo_SIN = intercâmbio líquido do balanço de energia (positivo = exporta). "
-            "Vazio = ausência na fonte.") for a in range(ANO_INICIAL, 2027)},
+            "Uma linha para cada hora presente em qualquer uma das fontes (fronteiras, exterior, balanço ou PLD): a hora que "
+            "falta numa fonte fica com as colunas dela vazias (14/09/2022, por exemplo, não está no arquivo de fronteiras e "
+            "tem exterior, saldo e PLD). Vazio = ausência na fonte.") for a in range(ANO_INICIAL, 2027)},
+        "/energia/series/rede_janela_horaria.json": (
+            "JSON lido pela página sob demanda (mapa e cursor): horas (últimos 7 dias completos, início da hora, Brasília) e, "
+            "em arrays paralelos, fluxo e programado de cada fronteira (MWmed, orientação canônica), exterior de Argentina e "
+            "Uruguai (MWmed, positivo = exportação) e PLD de cada submercado (R$/MWh). null = ausência na fonte."),
         "/energia/series/rede_fronteiras_diario.csv": (
             "data; par; horas (horas com valor); liquido_mwh (Σ fluxo horário × 1 h, com sinal); canonico_mwh (energia no sentido "
             "da primeira para a segunda ponta); inverso_mwh (sentido contrário); contra_saldo_mwh (menor dos dois: energia que "
@@ -329,11 +383,15 @@ REGISTRO = {
             "exporta e das em que importa, com o exterior no Sul); liquido_mwh (exportação menos importação); horas_transito "
             "(horas em que o subsistema exporta por uma fronteira e importa por outra ao mesmo tempo)."),
         "/energia/series/rede_balanco_mensal.csv": (
-            "mes; sm (SE, S, NE, N, SIN); horas; horas_completas (todas as parcelas publicadas); geracao_mwh (hidráulica + "
-            "térmica + eólica + solar), carga_mwh, intercambio_mwh (balanço do ONS, MWh); fronteiras_exterior_mwh (soma das "
-            "fronteiras e, no Sul e no SIN, do intercâmbio internacional); residuo_balanco_mwh (geração − carga − intercâmbio); "
-            "horas_residuo_balanco (|resíduo| > 0,1 MWmed); residuo_perimetro_mwh (intercâmbio do balanço − fronteiras e "
-            "exterior); horas_residuo_perimetro."),
+            "mes; sm (SE, S, NE, N, SIN); mmgd_estimada (sem = mês antes de 29/04/2023; parcial = abril de 2023; com = geração "
+            "solar e carga incluem a MMGD estimada pelo ONS); horas (horas do balanço no mês); horas_completas (geração, carga e "
+            "intercâmbio publicados); geracao_mwh (hidráulica + térmica + eólica + solar), carga_mwh, intercambio_mwh e "
+            "residuo_balanco_mwh (geração − carga − intercâmbio), os quatro somados nas horas_completas; horas_residuo_balanco "
+            "(|resíduo| > 0,1 MWmed); horas_perimetro (horas com intercâmbio do balanço, todas as fronteiras do subsistema e, no "
+            "Sul e no SIN, Argentina e Uruguai); intercambio_perimetro_mwh (intercâmbio do balanço nessas horas), "
+            "fronteiras_exterior_mwh (soma das fronteiras e do exterior nessas horas) e residuo_perimetro_mwh (a diferença), "
+            "os três somados nas mesmas horas_perimetro; horas_residuo_perimetro. Em cada linha, geracao − carga − intercambio = "
+            "residuo_balanco e intercambio_perimetro − fronteiras_exterior = residuo_perimetro."),
         "/energia/series/rede_balanco_residuos.csv": (
             "data_hora; identidade (balanco: geração − carga − intercâmbio; perimetro: intercâmbio do balanço − fronteiras e "
             "exterior; soma_sin: intercâmbio do SIN − soma dos quatro subsistemas); sm; residuo_mwmed; só horas com |resíduo| "
@@ -518,6 +576,13 @@ def coletar(con, ctx):
         except Exception as e:  # pane do portal: registrada, sem dado inventado
             base.registra_coleta(con, ds, "*", False, f"package_show: {e}")
             falha(f"{cj['pacote']} package_show: {e}")
+    # descrição do conjunto Carga de Energia: é onde o ONS declara a inclusão da MMGD, que
+    # aparece também no balanço (a construção confere o trecho literal e o degrau no arquivo)
+    try:
+        base.escreve_gold(META_DECLARACAO_MMGD, {**ckan.metadados(ckan.pacote("ONS", PACOTE_DECLARACAO_MMGD), "ONS"),
+                                                 "capturado_em": base.agora_utc()}, destino=META_DIR)
+    except Exception as e:
+        falha(f"{PACOTE_DECLARACAO_MMGD} package_show: {e}")
 
     # 1. arquivos anuais (intercâmbio nacional e internacional, balanço)
     for ds in (DS_IN, DS_II, DS_BAL):
@@ -767,6 +832,198 @@ def runs(horas_ordenadas):
     return out
 
 
+def regime_mmgd(mes):
+    """'sem', 'parcial' ou 'com' para um mês AAAA-MM, conforme a geração solar e a carga do
+    balanço incluam a estimativa da MMGD (desde MMGD_BALANCO) em nenhum, em parte ou em todos
+    os dias do mês."""
+    if mes < MMGD_BALANCO[:7]:
+        return "sem"
+    if mes == MMGD_BALANCO[:7] and MMGD_BALANCO[8:10] != "01":
+        return "parcial"
+    return "com"
+
+
+def degrau_mmgd(linhas, dia=MMGD_BALANCO, sm="SIN"):
+    """Confere no arquivo original do balanço (linhas do CSV, como lidas por le_csv_bronze) o
+    degrau da geração solar no dia em que a MMGD estimada passa a ser somada: energia solar do
+    dia anterior e do dia, valor das 12h e em quantas horas de cada dia geração − carga −
+    intercâmbio fecha. Se a carga não acompanhasse a solar, o balanço do dia não fecharia (o
+    resíduo da hora seria do tamanho da MMGD). Só lê o subsistema pedido; não guarda a série."""
+    anterior = (date.fromisoformat(dia) - timedelta(days=1)).isoformat()
+    x = {d: {"solar_mwh": 0.0, "horas": 0, "solar_12h": None, "fecham": 0} for d in (anterior, dia)}
+    for r in linhas:
+        if ons_rede.sigla(r.get("id_subsistema")) != sm:
+            continue
+        ref = ons_rede.hora_ref(r.get("din_instante"))
+        if ref is None or ref[:10] not in x:
+            continue
+        vals = {campo: ckan.numero_br(r.get(col)) for campo, col in ons_rede.CAMPOS_BALANCO}
+        y = x[ref[:10]]
+        if vals["solar"] is not None:
+            y["solar_mwh"] += vals["solar"]
+            y["horas"] += 1
+            if ref[11:13] == "12":
+                y["solar_12h"] = vals["solar"]
+        ger = [vals[k] for k in ons_rede.FONTES_GERACAO]
+        if None not in ger and vals["carga"] is not None and vals["intercambio"] is not None \
+                and abs(sum(ger) - vals["carga"] - vals["intercambio"]) <= TOL_IDENT:
+            y["fecham"] += 1
+    a, b = x[anterior], x[dia]
+    return {"sm": sm, "dia_anterior": anterior, "dia": dia,
+            "solar_mwh_dia_anterior": a["solar_mwh"] if a["horas"] else None, "solar_mwh_dia": b["solar_mwh"] if b["horas"] else None,
+            "horas_dia_anterior": a["horas"], "horas_dia": b["horas"],
+            "solar_12h_dia_anterior_mwmed": a["solar_12h"], "solar_12h_dia_mwmed": b["solar_12h"],
+            "razao_solar_dia": (b["solar_mwh"] / a["solar_mwh"]) if a["horas"] and b["horas"] and a["solar_mwh"] > 0 else None,
+            "horas_balanco_fecha_dia_anterior": a["fecham"], "horas_balanco_fecha_dia": b["fecham"]}
+
+
+def sequencias_repetidas(serie, minimo=SEQ_REPETIDA_MIN):
+    """Sequências de horas consecutivas com exatamente o mesmo valor numa série horária
+    ({hora: valor}), com pelo menos `minimo` horas: [(início, fim, horas, valor)]. Hora
+    ausente interrompe a sequência."""
+    out = []
+    ini = ant = val = None
+    n = 0
+    for h in sorted(serie):
+        v = serie[h]
+        consecutiva = ant is not None and datetime.fromisoformat(h) - datetime.fromisoformat(ant) == timedelta(hours=1)
+        if v is not None and consecutiva and v == val:
+            n += 1
+        else:
+            if n >= minimo:
+                out.append((ini, ant, n, val))
+            ini, val, n = h, v, (1 if v is not None else 0)
+        ant = h
+    if n >= minimo:
+        out.append((ini, ant, n, val))
+    return out
+
+
+def programa_repetido(prog, pares=PARES, minimo=SEQ_REPETIDA_MIN):
+    """Sequências de programado repetido nas fronteiras entre subsistemas e os dias que elas
+    tocam (rotulados nas quatro fronteiras). Devolve (lista de sequências, dias rotulados)."""
+    seqs = []
+    for p in pares:
+        for ini, fim, n, v in sequencias_repetidas(prog.get(p) or {}, minimo):
+            seqs.append({"par": p, "inicio": ini, "fim": fim, "horas": n, "valor_mwmed": v})
+    dias = set()
+    for s in seqs:
+        d = date.fromisoformat(s["inicio"][:10])
+        while d.isoformat() <= s["fim"][:10]:
+            dias.add(d.isoformat())
+            d += timedelta(days=1)
+    return sorted(seqs, key=lambda s: (s["inicio"], s["par"])), sorted(dias)
+
+
+def distribuicao_desvios(pg, vf, horas):
+    """Distribuição do desvio verificado − programado nas horas dadas (as duas séries com
+    valor): viés, desvio absoluto médio, quantis do módulo, máximo, horas materiais nos três
+    limiares e inversões de sentido. None sem horas."""
+    hs = [h for h in horas if pg.get(h) is not None and vf.get(h) is not None]
+    if not hs:
+        return None
+    desvios = [vf[h] - pg[h] for h in hs]
+    ab = [abs(d) for d in desvios]
+    return {"horas": len(hs), "inicio": hs[0], "fim": hs[-1], "vies_mwmed": _r(sum(desvios) / len(hs), 1),
+            "desvio_abs_medio_mwmed": _r(sum(ab) / len(hs), 1), "p50_abs_mwmed": _r(c.quantil(ab, 0.5), 1),
+            "p90_abs_mwmed": _r(c.quantil(ab, 0.9), 1), "p99_abs_mwmed": _r(c.quantil(ab, 0.99), 1),
+            "max_abs_mwmed": _r(max(ab), 1),
+            "horas_materiais": {f"{int(l)}": sum(1 for d in desvios if material(d, l)) for l in LIMIARES_SENSIBILIDADE},
+            "horas_inversao": sum(1 for h in hs if inversao(pg[h], vf[h])),
+            "programado_abs_mediano_mwmed": _r(c.quantil([abs(pg[h]) for h in hs], 0.5), 1),
+            "_desvios": desvios}
+
+
+def agrega_exterior(ext, prog_ext, dia_ref, paises=PAISES):
+    """Somas mensais por país (função pura): horas, exportação (valores positivos), importação
+    (módulo dos negativos), horas com fluxo e programado. Só entram meses com hora publicada:
+    país sem nenhuma hora no mês não tem chave (ausência, não zero)."""
+    mensal = defaultdict(lambda: defaultdict(float))
+    for p in paises:
+        for h, v in (ext.get(p) or {}).items():
+            if h[:10] > dia_ref or v is None:
+                continue
+            m = mensal[(h[:7], p)]
+            m["horas"] += 1
+            m["exportacao_mwh"] += max(v, 0.0)
+            m["importacao_mwh"] += max(-v, 0.0)
+            m["horas_com_fluxo"] += 1 if abs(v) > NULO else 0
+            g = (prog_ext.get(p) or {}).get(h)
+            if g is not None:
+                m["programado_liquido_mwh"] += g
+                m["horas_programado"] += 1
+    return mensal
+
+
+def resumo_exterior_12m(mensal, meses, dia_ref, paises=PAISES):
+    """12 meses completos até o mês anterior ao do dia de referência. País sem nenhuma hora
+    publicada na janela fica com exportação, importação e horas com fluxo nulos (ausência
+    declarada, nunca zero) e horas = 0."""
+    m12 = [m for m in meses if m < dia_ref[:7]][-12:]
+    out = {}
+    for p in paises:
+        presentes = [mensal[(m, p)] for m in m12 if (m, p) in mensal]
+        horas = int(sum(x["horas"] for x in presentes))
+        out[p] = {"meses": [m12[0], m12[-1]] if m12 else None, "horas": horas,
+                  "exportacao_mwh": _r(sum(x["exportacao_mwh"] for x in presentes), 0) if horas else None,
+                  "importacao_mwh": _r(sum(x["importacao_mwh"] for x in presentes), 0) if horas else None,
+                  "horas_com_fluxo": int(sum(x["horas_com_fluxo"] for x in presentes)) if horas else None}
+    return out, m12
+
+
+def cobertura_dias(series, todos):
+    """Dias sem as 24 horas em alguma das séries ({nome: {hora: valor}}): para cada dia, o
+    mínimo e o máximo de horas entre as séries e as horas de cada uma. Um dia com horas_max = 0
+    não tem nenhum dado; com horas_max > 0, falta só em parte das séries ou das horas."""
+    out = []
+    for d in todos:
+        hs = horas_do_dia(d)
+        por = {k: sum(1 for h in hs if h in s) for k, s in series.items()}
+        if min(por.values()) < 24:
+            out.append({"dia": d, "horas": min(por.values()), "horas_max": max(por.values()), "por_serie": por})
+    return out
+
+
+def anual_interrupcoes(eventos, ano_corrente, subsistemas=("SIN",) + ons_rede.SUBSISTEMAS):
+    """Somas anuais por subsistema (e SIN) dos registros de interrupção de carga: registros,
+    perturbações distintas, energia não suprida, registros e energia com rede básica e
+    registros com carga de pelo menos 100 MW. Ano sem registro no subsistema vale 0 (a
+    fonte lista eventos: ausência de evento é zero eventos, não dado faltante)."""
+    anual = defaultdict(lambda: {"registros": 0, "perturbacoes": set(), "ens_mwh": 0.0, "registros_rede_basica": 0,
+                                 "ens_rede_basica_mwh": 0.0, "registros_100mw": 0})
+    for e in eventos:
+        for chave in ((e["din_interrupcaocarga"][:4], "SIN"), (e["din_interrupcaocarga"][:4], e["id_subsistema"])):
+            x = anual[chave]
+            x["registros"] += 1
+            x["perturbacoes"].add(e["cod_perturbacao"])
+            x["ens_mwh"] += e["val_energianaosuprida_mwh"] or 0.0
+            if e["flg_envolveuredebasica"] == "S":
+                x["registros_rede_basica"] += 1
+                x["ens_rede_basica_mwh"] += e["val_energianaosuprida_mwh"] or 0.0
+            if (e["val_cargainterrompida_mw"] or 0) >= 100:
+                x["registros_100mw"] += 1
+    anos = sorted({a for a, _ in anual})
+    return {"anos": anos, "parcial": [a == str(ano_corrente) for a in anos], "por_sm": {sm: {
+        "registros": [anual[(a, sm)]["registros"] if (a, sm) in anual else 0 for a in anos],
+        "perturbacoes": [len(anual[(a, sm)]["perturbacoes"]) if (a, sm) in anual else 0 for a in anos],
+        "ens_mwh": [_r(anual[(a, sm)]["ens_mwh"], 1) if (a, sm) in anual else 0 for a in anos],
+        "registros_rede_basica": [anual[(a, sm)]["registros_rede_basica"] if (a, sm) in anual else 0 for a in anos],
+        "ens_rede_basica_mwh": [_r(anual[(a, sm)]["ens_rede_basica_mwh"], 1) if (a, sm) in anual else 0 for a in anos],
+        "registros_100mw": [anual[(a, sm)]["registros_100mw"] if (a, sm) in anual else 0 for a in anos],
+    } for sm in subsistemas}}
+
+
+def resumo_interrupcoes_12m(eventos):
+    """Janela de 365 dias que termina no dia do registro mais recente do arquivo."""
+    fim = max((e["din_interrupcaocarga"][:10] for e in eventos), default=None)
+    ini = (date.fromisoformat(fim) - timedelta(days=364)).isoformat() if fim else None
+    ev12 = [e for e in eventos if fim and ini <= e["din_interrupcaocarga"][:10] <= fim]
+    ens = sum(e["val_energianaosuprida_mwh"] or 0 for e in ev12)
+    return {"inicio": ini, "fim": fim, "registros": len(ev12), "perturbacoes": len({e["cod_perturbacao"] for e in ev12}),
+            "ens_mwh": _r(ens, 1), "registros_rede_basica": sum(1 for e in ev12 if e["flg_envolveuredebasica"] == "S"),
+            "_ens": ens, "_n": len(ev12)}
+
+
 # ---------------------------------------------------------------------------
 # Leitura do silver
 # ---------------------------------------------------------------------------
@@ -861,7 +1118,7 @@ def construir(con, ctx):
         return c.stub(GOLD, f"fluxo de fronteira de {maior_fluxo:.0f} MWmed: acima de qualquer valor físico plausível, conferir a fonte")
 
     circulacao = _circulacao(fluxo, prog, ext, pld, bal, dia_ref, todas_horas)
-    balanco = _balanco(bal, fluxo, ext, con)
+    balanco = _balanco(bal, fluxo, ext, con, _quebra_mmgd(con))
     exterior = _exterior(ext, prog_ext, con, dia_ref)
     restricoes = _restricoes(con, hoje)
     programado = _programado(fluxo, prog, ext, prog_ext, con, dia_ref)
@@ -923,25 +1180,20 @@ def _limpa(x):
 
 def _cobertura(fluxo, ext, bal, dia_ref):
     """Dias sem as 24 horas em cada fonte, de 1º de janeiro do ano inicial ao dia de
-    referência: a ausência fica listada, nunca preenchida."""
+    referência, com as horas de cada série (fronteira, país, subsistema): a ausência fica
+    listada, nunca preenchida, e um dia em que só parte das séries falta não é contado
+    como dia sem nenhum dado."""
     ini = date(ANO_INICIAL, 1, 1)
-    fim = c.d(dia_ref)
-    todos = [d.isoformat() for d in c.dias(ini, fim)]
+    todos = [d.isoformat() for d in c.dias(ini, c.d(dia_ref))]
 
-    def faltas(series):
-        out = []
-        for d in todos:
-            n = min(sum(1 for h in horas_do_dia(d) if h in s_) for s_ in series)
-            if n < 24:
-                out.append({"dia": d, "horas": n})
-        return out
-    fr = faltas([fluxo[p] for p in PARES])
-    ex = faltas([ext[p] for p in PAISES_SUL])
-    ba = faltas([bal[("intercambio", sm)] for sm in ons_rede.SUBSISTEMAS + ("SIN",)])
+    def bloco(series):
+        lst = cobertura_dias(series, todos)
+        return {"dias_incompletos": len(lst), "dias_sem_nenhum_dado": sum(1 for x in lst if x["horas_max"] == 0),
+                "dias_parciais": sum(1 for x in lst if x["horas_max"] > 0), "lista": lst[:40]}
     return {"inicio": ini.isoformat(), "fim": dia_ref, "dias": len(todos),
-            "fronteiras": {"dias_incompletos": len(fr), "lista": fr[:40]},
-            "exterior": {"dias_incompletos": len(ex), "lista": ex[:40]},
-            "balanco": {"dias_incompletos": len(ba), "lista": ba[:40]}}
+            "fronteiras": bloco({p: fluxo[p] for p in PARES}),
+            "exterior": bloco({p: ext[p] for p in PAISES_SUL}),
+            "balanco": bloco({sm: bal[("intercambio", sm)] for sm in ons_rede.SUBSISTEMAS + ("SIN",)})}
 
 
 def _anos_com_dado(horas):
@@ -1114,6 +1366,7 @@ def _circulacao(fluxo, prog, ext, pld, bal, dia_ref, todas_horas):
     ini_j = (fim - timedelta(days=DIAS_JANELA_HORARIA - 1)).isoformat()
     hj = [h for d in c.dias(c.d(ini_j), fim) for h in horas_do_dia(d.isoformat())]
     janela = {
+        **c.cabecalho("rede_janela_horaria.json"),
         "horas": hj,
         "fluxo": {p: [_r(fluxo[p].get(h), 1) for h in hj] for p in PARES},
         "programado": {p: [_r(prog[p].get(h), 1) for h in hj] for p in PARES},
@@ -1122,24 +1375,48 @@ def _circulacao(fluxo, prog, ext, pld, bal, dia_ref, todas_horas):
         # o saldo de cada subsistema na hora é a soma das fronteiras (identidade conferida em balanco.identidades);
         # a série do balanço fica em rede_horario_<ano>.csv (colunas saldo_*)
     }
+    # a janela horária (mapa e cursor) vai num JSON à parte, lido pela página sob demanda (contrato,
+    # seção 5.1): são 2.352 valores que pesariam na gold de todas as visitas
+    base.escreve_gold(ARQUIVO_JANELA, janela, destino=base.SERIES)
+    janela_ref = {"url": _csv_url(ARQUIVO_JANELA), "inicio": hj[0], "fim": hj[-1], "horas": len(hj), "dias": DIAS_JANELA_HORARIA}
     return {"diario": diario_gold, "resumo_30d": resumo, "mensal": mensal_gold, "subsistemas_diario": sub_gold,
-            "subsistemas_mensal": sub_mensal_gold, "janela_horaria": janela, "_diario_completo": diario, "_sub_d": sub_d}
+            "subsistemas_mensal": sub_mensal_gold, "janela_horaria": janela_ref, "_diario_completo": diario, "_sub_d": sub_d}
 
 
 # ---------------------------------------------------------------------------
 # P029: balanço e exterior
 # ---------------------------------------------------------------------------
 
-def _balanco(bal, fluxo, ext, con):
-    horas = sorted(set(bal[("intercambio", "SIN")]) | set().union(*(set(bal[("intercambio", sm)]) for sm in ons_rede.SUBSISTEMAS)))
-    ident = {k: {"horas": 0, "fecham": 0, "entre": 0, "residuo": 0, "faixas": {f: 0 for f in FAIXAS_RESIDUO}, "max_abs": 0.0, "max_em": None,
-                 "horas_residuo_lista": []} for k in
-             [f"balanco.{sm}" for sm in ons_rede.SUBSISTEMAS + ("SIN",)] + [f"perimetro.{sm}" for sm in ons_rede.SUBSISTEMAS + ("SIN",)]
-             + ["soma_sin"]}
-    mensal = defaultdict(lambda: defaultdict(float))
-    residuos_csv = []
+IDENTIDADES = ([f"balanco.{sm}" for sm in ons_rede.SUBSISTEMAS + ("SIN",)]
+               + [f"perimetro.{sm}" for sm in ons_rede.SUBSISTEMAS + ("SIN",)] + ["soma_sin"])
+CAMPOS_BALANCO_MES = ("geracao_mwh", "carga_mwh", "intercambio_mwh", "residuo_balanco_mwh", "intercambio_perimetro_mwh",
+                      "fronteiras_exterior_mwh", "residuo_perimetro_mwh")
+CONTAGENS_BALANCO_MES = ("horas", "horas_completas", "horas_residuo_balanco", "horas_perimetro", "horas_residuo_perimetro")
 
-    def conta(chave, h, res):
+
+def agrega_balanco(bal, fluxo, ext, horas):
+    """Núcleo das identidades do balanço (função pura, sem escrita): percorre as horas e
+    devolve (contadores por identidade, somas mensais por subsistema, linhas de resíduo e
+    horas em que o perímetro foi calculado e fechou nos quatro subsistemas e no SIN).
+
+    Cada grupo de somas mensais usa um único conjunto de horas, para que a linha feche:
+    geração, carga, intercâmbio e resíduo do balanço somam as horas com as três parcelas
+    (horas_completas); intercâmbio do perímetro, fronteiras e exterior e resíduo do perímetro
+    somam as horas com o intercâmbio e todas as parcelas do perímetro (horas_perimetro). O
+    intercâmbio aparece nos dois grupos porque as horas podem ser diferentes (dia sem
+    exterior no conjunto internacional entra no primeiro e não no segundo).
+
+    Para cada hora com resíduo, confere também se o resíduo é igual a menos o intercâmbio
+    internacional da mesma hora (soma dos países publicados, dentro da tolerância): é um
+    padrão verificável, não uma causa, e é publicado como contagem e lista de dias."""
+    ident = {k: {"horas": 0, "fecham": 0, "entre": 0, "residuo": 0, "faixas": {f: 0 for f in FAIXAS_RESIDUO}, "max_abs": 0.0,
+                 "max_em": None, "horas_residuo_lista": [], "igual_menos_exterior": 0, "dias_igual_menos_exterior": set()}
+             for k in IDENTIDADES}
+    mensal = defaultdict(lambda: defaultdict(float))
+    residuos = []
+    perimetro_fecha = set()   # horas com o perímetro calculado e fechado nos quatro subsistemas e no SIN
+
+    def conta(chave, h, res, ext_total):
         x = ident[chave]
         x["horas"] += 1
         if abs(res) <= TOL_IDENT:
@@ -1154,32 +1431,41 @@ def _balanco(bal, fluxo, ext, con):
         if abs(res) > x["max_abs"]:
             x["max_abs"], x["max_em"] = abs(res), h
         x["horas_residuo_lista"].append(h)
+        if ext_total is not None and abs(res + ext_total) <= TOL_IDENT:
+            x["igual_menos_exterior"] += 1
+            x["dias_igual_menos_exterior"].add(h[:10])
         ident_nome, _, sm = chave.partition(".")
-        residuos_csv.append([h, ident_nome, sm or "SIN", _r(res, 3)])
+        residuos.append([h, ident_nome, sm or "SIN", _r(res, 3)])
 
     for h in horas:
-        fh = {p: fluxo[p].get(h) for p in PARES}
-        eh = {p: ext[p].get(h) for p in PAISES}
+        fh = {p: (fluxo.get(p) or {}).get(h) for p in PARES}
+        eh = {p: (ext.get(p) or {}).get(h) for p in PAISES}
+        # exterior da hora: soma dos países publicados, exigindo Argentina e Uruguai
+        ext_total = None if any(eh[p] is None for p in PAISES_SUL) else sum(v for v in eh.values() if v is not None)
         soma_sm = 0.0
         soma_ok = True
+        per_fecha = 0
         for sm in ons_rede.SUBSISTEMAS + ("SIN",):
-            parc = {k: bal[(k, sm)].get(h) for k in PARCELAS_BALANCO}
+            parc = {k: (bal.get((k, sm)) or {}).get(h) for k in PARCELAS_BALANCO}
+            if all(v is None for v in parc.values()):
+                if sm != "SIN":
+                    soma_ok = False
+                continue
             m = mensal[(h[:7], sm)]
             m["horas"] += 1
-            for k, v in parc.items():
-                if v is not None:
-                    m[f"{k}_mwh"] += v
             rb = residuo_balanco(parc)
             if rb is not None:
                 m["horas_completas"] += 1
+                m["geracao_mwh"] += parc["geracao"]
+                m["carga_mwh"] += parc["carga"]
+                m["intercambio_mwh"] += parc["intercambio"]
                 m["residuo_balanco_mwh"] += rb
                 if abs(rb) > TOL_IDENT:
                     m["horas_residuo_balanco"] += 1
-                conta(f"balanco.{sm}", h, rb)
+                conta(f"balanco.{sm}", h, rb, ext_total)
             ic = parc["intercambio"]
             if sm == "SIN":
-                partes = [eh.get(p) for p in PAISES]
-                partes = None if any(x is None for x in partes[:2]) else [x for x in partes if x is not None]
+                partes = None if ext_total is None else [v for v in eh.values() if v is not None]
             else:
                 partes = contribuicoes(sm, fh, eh)
                 if ic is not None:
@@ -1188,37 +1474,52 @@ def _balanco(bal, fluxo, ext, con):
                     soma_ok = False
             if ic is not None and partes is not None:
                 rp = ic - sum(partes)
+                m["horas_perimetro"] += 1
+                m["intercambio_perimetro_mwh"] += ic
                 m["fronteiras_exterior_mwh"] += sum(partes)
                 m["residuo_perimetro_mwh"] += rp
-                m["horas_perimetro"] += 1
                 if abs(rp) > TOL_IDENT:
                     m["horas_residuo_perimetro"] += 1
-                conta(f"perimetro.{sm}", h, rp)
-        sin = bal[("intercambio", "SIN")].get(h)
+                else:
+                    per_fecha += 1
+                conta(f"perimetro.{sm}", h, rp, ext_total)
+        if per_fecha == 5:
+            perimetro_fecha.add(h)
+        sin = (bal.get(("intercambio", "SIN")) or {}).get(h)
         if soma_ok and sin is not None:
-            conta("soma_sin", h, sin - soma_sm)
+            conta("soma_sin", h, sin - soma_sm, ext_total)
+    residuos.sort()
+    return ident, mensal, residuos, perimetro_fecha
 
-    residuos_csv.sort()
-    base.escreve_csv("rede_balanco_residuos.csv", ["data_hora", "identidade", "sm", "residuo_mwmed"], residuos_csv)
-    meses = sorted({m for m, _ in mensal})
-    campos = ("geracao_mwh", "carga_mwh", "intercambio_mwh", "fronteiras_exterior_mwh", "residuo_balanco_mwh",
-              "residuo_perimetro_mwh")
+
+def linhas_balanco_mensal(mensal):
+    """Linhas do CSV mensal (e base da gold): mês, subsistema, regime da MMGD, contagens e somas.
+    Grupo sem nenhuma hora fica vazio (ausência), não zero."""
+    ordem = ons_rede.SUBSISTEMAS + ("SIN",)
     linhas = []
-    for m in meses:
-        for sm in ons_rede.SUBSISTEMAS + ("SIN",):
-            x = mensal.get((m, sm))
-            if not x:
-                continue
-            linhas.append([m, sm, int(x["horas"]), int(x["horas_completas"])] + [_r(x[k], 3) if k in x else None for k in campos]
-                          + [int(x["horas_residuo_balanco"]), int(x["horas_perimetro"]), int(x["horas_residuo_perimetro"])])
-    base.escreve_csv("rede_balanco_mensal.csv",
-                     ["mes", "sm", "horas", "horas_completas"] + list(campos) + ["horas_residuo_balanco", "horas_perimetro",
-                                                                                 "horas_residuo_perimetro"], linhas)
-    mensal_gold = {"meses": meses, "por_sm": {sm: {
-        **{k: [_r(mensal[(m, sm)][k], 0) if (m, sm) in mensal and k in mensal[(m, sm)] else None for m in meses] for k in campos},
-        "horas_completas": [int(mensal[(m, sm)]["horas_completas"]) if (m, sm) in mensal else None for m in meses],
-        "horas_residuo_balanco": [int(mensal[(m, sm)]["horas_residuo_balanco"]) if (m, sm) in mensal else None for m in meses],
-        "horas_residuo_perimetro": [int(mensal[(m, sm)]["horas_residuo_perimetro"]) if (m, sm) in mensal else None for m in meses],
+    for (m, sm) in sorted(mensal, key=lambda k: (k[0], ordem.index(k[1]))):
+        x = mensal[(m, sm)]
+        comp, per = x["horas_completas"] > 0, x["horas_perimetro"] > 0
+        val = {k: (_r(x[k], 3) if (comp if k in CAMPOS_BALANCO_MES[:4] else per) else None) for k in CAMPOS_BALANCO_MES}
+        linhas.append({"mes": m, "sm": sm, "mmgd_estimada": regime_mmgd(m), **{k: int(x[k]) for k in CONTAGENS_BALANCO_MES}, **val})
+    return linhas
+
+
+def _balanco(bal, fluxo, ext, con, quebra_mmgd):
+    horas = sorted(set(bal[("intercambio", "SIN")]) | set().union(*(set(bal[("intercambio", sm)]) for sm in ons_rede.SUBSISTEMAS)))
+    ident, mensal, residuos_csv, perimetro_fecha = agrega_balanco(bal, fluxo, ext, horas)
+    base.escreve_csv("rede_balanco_residuos.csv", ["data_hora", "identidade", "sm", "residuo_mwmed"], residuos_csv)
+    linhas = linhas_balanco_mensal(mensal)
+    cab = ["mes", "sm", "mmgd_estimada", "horas", "horas_completas", "geracao_mwh", "carga_mwh", "intercambio_mwh",
+           "residuo_balanco_mwh", "horas_residuo_balanco", "horas_perimetro", "intercambio_perimetro_mwh",
+           "fronteiras_exterior_mwh", "residuo_perimetro_mwh", "horas_residuo_perimetro"]
+    base.escreve_csv("rede_balanco_mensal.csv", cab, [[x[k] for k in cab] for x in linhas])
+    meses = sorted({x["mes"] for x in linhas})
+    idx = {(x["mes"], x["sm"]): x for x in linhas}
+    mensal_gold = {"meses": meses, "mmgd_estimada": [regime_mmgd(m) for m in meses], "por_sm": {sm: {
+        **{k: [_r(idx[(m, sm)][k], 0) if (m, sm) in idx and idx[(m, sm)][k] is not None else None for m in meses]
+           for k in CAMPOS_BALANCO_MES},
+        **{k: [idx[(m, sm)][k] if (m, sm) in idx else None for m in meses] for k in CONTAGENS_BALANCO_MES},
     } for sm in ons_rede.SUBSISTEMAS + ("SIN",)}}
 
     identidades = []
@@ -1227,13 +1528,20 @@ def _balanco(bal, fluxo, ext, con):
         "perimetro": "Intercâmbio do balanço − soma das fronteiras do conjunto de intercâmbio (no Sul, mais Argentina e Uruguai; no SIN, o intercâmbio internacional)",
         "soma_sin": "Intercâmbio do SIN − soma dos intercâmbios dos quatro subsistemas, no mesmo balanço",
     }
-    for chave, x in ident.items():
+    for chave in IDENTIDADES:
+        x = ident[chave]
         nome, _, sm = chave.partition(".")
         periodos = runs(x["horas_residuo_lista"])
+        por_ano = defaultdict(int)
+        for h in x["horas_residuo_lista"]:
+            por_ano[h[:4]] += 1
         identidades.append({
             "id": chave, "identidade": nome, "sm": sm or "SIN", "descricao": descr[nome], "horas": x["horas"],
             "horas_fecham": x["fecham"], "horas_entre_0_01_e_tolerancia": x["entre"], "horas_residuo": x["residuo"],
+            "horas_residuo_por_ano": dict(sorted(por_ano.items())),
             "horas_acima": {f"{int(f)}": n for f, n in x["faixas"].items()},
+            "horas_residuo_igual_menos_exterior": x["igual_menos_exterior"],
+            "dias_residuo_igual_menos_exterior": sorted(x["dias_igual_menos_exterior"])[:20],
             "maior_residuo_mwmed": _r(x["max_abs"], 3) if x["residuo"] else None, "maior_residuo_em": x["max_em"],
             "periodos": [{"inicio": a, "fim": b, "horas": n} for a, b, n in sorted(periodos, key=lambda t: -t[2])[:12]],
             "n_periodos": len(periodos),
@@ -1241,25 +1549,45 @@ def _balanco(bal, fluxo, ext, con):
             "ultima_hora_residuo": x["horas_residuo_lista"][-1] if x["horas_residuo_lista"] else None,
         })
     return {"tolerancia_mwmed": TOL_IDENT, "faixas_mwmed": list(FAIXAS_RESIDUO), "identidades": identidades,
-            "mensal": mensal_gold, "_ident": ident}
+            "quebras": [quebra_mmgd], "mensal": mensal_gold, "_ident": ident, "_perimetro_fecha": perimetro_fecha}
+
+
+def _quebra_mmgd(con):
+    """Bloco da quebra da MMGD no balanço: declaração do ONS (trecho literal conferido na
+    descrição do conjunto Carga de Energia) e degrau conferido no arquivo original do ano."""
+    meta = base.le_gold(META_DECLARACAO_MMGD, destino=META_DIR) or {}
+    notas = meta.get("notas")
+    rec = f"{CONJUNTOS[DS_BAL]['prefixo']}{MMGD_BALANCO[:4]}"
+    v = ckan.vintages_vigentes(con, DS_BAL).get(rec)
+    conf = None
+    if v:
+        try:
+            conf = degrau_mmgd(ckan.le_csv_bronze(v["arquivo"], encoding="utf-8-sig", separador=";"))
+            conf.update({"arquivo": f"{rec}.csv", "sha256": v["sha256"], "capturado_em": v["capturado_em"]})
+        except (OSError, ValueError) as e:  # bronze ausente: a conferência fica declarada como não feita
+            conf = {"erro": str(e)[:200]}
+    observado = bool(conf and conf.get("razao_solar_dia") and conf["razao_solar_dia"] > 1.5
+                     and conf.get("horas_balanco_fecha_dia") == conf.get("horas_dia") == 24)
+    return {
+        "id": "mmgd_2023", "dia": MMGD_BALANCO, "componentes": ["geracao_solar", "carga"], "natureza_componente": "ESTIMADO",
+        "descricao": ("A partir de 29/04/2023 a geração solar e a carga do balanço incluem a estimativa da micro e minigeração "
+                      "distribuída (MMGD) feita pelo ONS, somada sem separação. O intercâmbio não muda: a estimativa entra na "
+                      "geração e na carga do mesmo subsistema, e as identidades continuam fechando."),
+        "declaracao": {"conjunto": "Carga de Energia (ONS)", "url": f"https://dados.ons.org.br/dataset/{PACOTE_DECLARACAO_MMGD}",
+                       "trecho": TRECHO_DECLARACAO_MMGD,
+                       "confere": None if notas is None else ons_rede.confere_passagem(notas, TRECHO_DECLARACAO_MMGD),
+                       "capturado_em": meta.get("capturado_em"),
+                       "observacao": ("O conjunto do balanço não declara a mudança: o dicionário (versão 1.0, 02/05/2023) e a "
+                                      "descrição no portal não mencionam a MMGD.")},
+        "conferencia_arquivo": conf, "degrau_observado_no_dia": observado,
+        "efeito": ("Geração e carga mensais de antes e de depois de 29/04/2023 não são comparáveis diretamente (marcação "
+                   "mmgd_estimada na série mensal: sem, parcial em abril de 2023, com). Resíduos e intercâmbio não são afetados."),
+    }
 
 
 def _exterior(ext, prog_ext, con, dia_ref):
     ita = {k: _serie(con, DS_ITA, k, f"{ANO_INICIAL}-01-01") for k in ("total", "brasil")}
-    mensal = defaultdict(lambda: defaultdict(float))
-    for p in PAISES:
-        for h, v in ext[p].items():
-            if h[:10] > dia_ref:
-                continue
-            m = mensal[(h[:7], p)]
-            m["horas"] += 1
-            m["exportacao_mwh"] += max(v, 0.0)
-            m["importacao_mwh"] += max(-v, 0.0)
-            m["horas_com_fluxo"] += 1 if abs(v) > NULO else 0
-            g = prog_ext[p].get(h)
-            if g is not None:
-                m["programado_liquido_mwh"] += g
-                m["horas_programado"] += 1
+    mensal = agrega_exterior(ext, prog_ext, dia_ref)
     for h, v in ita["total"].items():
         if h[:10] > dia_ref:
             continue
@@ -1311,14 +1639,7 @@ def _exterior(ext, prog_ext, con, dia_ref):
     }
     esq_ita = _esquemas(con, DS_ITA)
     rel_ita = next(iter(esq_ita.values()), {})
-    # 12 meses completos até o mês anterior ao do dia de referência
-    mref = dia_ref[:7]
-    m12 = [m for m in meses if m < mref][-12:]
-    resumo = {p: {"meses": [m12[0], m12[-1]] if m12 else None,
-                  "exportacao_mwh": _r(sum(mensal[(m, p)]["exportacao_mwh"] for m in m12 if (m, p) in mensal), 0),
-                  "importacao_mwh": _r(sum(mensal[(m, p)]["importacao_mwh"] for m in m12 if (m, p) in mensal), 0),
-                  "horas_com_fluxo": int(sum(mensal[(m, p)]["horas_com_fluxo"] for m in m12 if (m, p) in mensal)),
-                  "horas": int(sum(mensal[(m, p)]["horas"] for m in m12 if (m, p) in mensal))} for p in PAISES}
+    resumo, m12 = resumo_exterior_12m(mensal, meses, dia_ref)
     return {"meses": meses, "por_pais": por_pais, "itaipu": itaipu, "resumo_12m": resumo,
             "itaipu_identidades": {"linhas": rel_ita.get("linhas_no_periodo"),
                                    "total_diferente_de_60_mais_50": rel_ita.get("identidade_total_falhas"),
@@ -1403,8 +1724,9 @@ def _restricoes(con, hoje):
         d = DEFINICOES_ATLS.get(fl)
         conf = None
         if d:
+            # a definição só sai se o trecho de mesmo id foi conferido no PDF e contém o texto da definição
             t = next((t for t in docs[d[1]]["trechos"] if t["id"] == fl), None)
-            conf = t["confere"] if t else None
+            conf = t["confere"] and ons_rede.confere_passagem(t["texto"], d[0]) if t else None
         por_fluxo.append({
             "fluxo": fl, "definicao": d[0] if d and conf else None, "documento_definicao": d[1] if d and conf else None,
             "inicio": meses[0] if meses else None, "fim": meses[-1] if meses else None, "meses": len(meses),
@@ -1451,29 +1773,7 @@ def _restricoes(con, hoje):
                        e["nom_agente"], e["val_cargainterrompida_mw"], e["val_tempomedio_minutos"],
                        _r(e["val_energianaosuprida_mwh"], 4), e["flg_envolveuredebasica"], e["flg_envolveuredeoperacao"],
                        1 if inteiras[tuple(e[k] for k in ons_rede.CAMPOS_INTERRUPCAO)] > 1 else 0] for e in eventos])
-    anual = defaultdict(lambda: {"registros": 0, "perturbacoes": set(), "ens_mwh": 0.0, "registros_rede_basica": 0,
-                                 "ens_rede_basica_mwh": 0.0, "registros_100mw": 0})
-    for e in eventos:
-        for chave in ((e["din_interrupcaocarga"][:4], "SIN"), (e["din_interrupcaocarga"][:4], e["id_subsistema"])):
-            x = anual[chave]
-            x["registros"] += 1
-            x["perturbacoes"].add(e["cod_perturbacao"])
-            x["ens_mwh"] += e["val_energianaosuprida_mwh"] or 0.0
-            if e["flg_envolveuredebasica"] == "S":
-                x["registros_rede_basica"] += 1
-                x["ens_rede_basica_mwh"] += e["val_energianaosuprida_mwh"] or 0.0
-            if (e["val_cargainterrompida_mw"] or 0) >= 100:
-                x["registros_100mw"] += 1
-    anos = sorted({a for a, _ in anual})
-    ano_corrente = str(hoje.year)
-    anual_gold = {"anos": anos, "parcial": [a == ano_corrente for a in anos], "por_sm": {sm: {
-        "registros": [anual[(a, sm)]["registros"] if (a, sm) in anual else 0 for a in anos],
-        "perturbacoes": [len(anual[(a, sm)]["perturbacoes"]) if (a, sm) in anual else 0 for a in anos],
-        "ens_mwh": [_r(anual[(a, sm)]["ens_mwh"], 1) if (a, sm) in anual else 0 for a in anos],
-        "registros_rede_basica": [anual[(a, sm)]["registros_rede_basica"] if (a, sm) in anual else 0 for a in anos],
-        "ens_rede_basica_mwh": [_r(anual[(a, sm)]["ens_rede_basica_mwh"], 1) if (a, sm) in anual else 0 for a in anos],
-        "registros_100mw": [anual[(a, sm)]["registros_100mw"] if (a, sm) in anual else 0 for a in anos],
-    } for sm in ("SIN",) + ons_rede.SUBSISTEMAS}}
+    anual_gold = anual_interrupcoes(eventos, hoje.year)
     # perturbações: soma dos registros de uma mesma perturbação (a fonte publica um registro por agente e UF)
     pert = defaultdict(lambda: {"registros": 0, "ens_mwh": 0.0, "carga_mw": 0.0, "ufs": set(), "sms": set(), "inicio": None,
                                 "rede_basica": False})
@@ -1493,13 +1793,7 @@ def _restricoes(con, hoje):
                 "rede_basica": x["rede_basica"]}
     maiores = [_pert(k, x) for k, x in sorted(pert.items(), key=lambda kv: -kv[1]["ens_mwh"])[:15]]
     recentes = [_pert(k, x) for k, x in sorted(pert.items(), key=lambda kv: kv[1]["inicio"], reverse=True)[:15]]
-    fim12 = max((e["din_interrupcaocarga"][:10] for e in eventos), default=None)
-    ini12 = (c.d(fim12) - timedelta(days=364)).isoformat() if fim12 else None
-    ev12 = [e for e in eventos if fim12 and ini12 <= e["din_interrupcaocarga"][:10] <= fim12]
-    resumo12 = {"inicio": ini12, "fim": fim12, "registros": len(ev12), "perturbacoes": len({e["cod_perturbacao"] for e in ev12}),
-                "ens_mwh": _r(sum(e["val_energianaosuprida_mwh"] or 0 for e in ev12), 1),
-                "registros_rede_basica": sum(1 for e in ev12 if e["flg_envolveuredebasica"] == "S"),
-                "_ens": sum(e["val_energianaosuprida_mwh"] or 0 for e in ev12), "_n": len(ev12)}
+    resumo12 = resumo_interrupcoes_12m(eventos)
     interrupcoes = {
         "registros": len(eventos), "perturbacoes": len(pert),
         "inicio": eventos[0]["din_interrupcaocarga"] if eventos else None, "fim": eventos[-1]["din_interrupcaocarga"] if eventos else None,
@@ -1529,18 +1823,19 @@ def _restricoes(con, hoje):
 def _programado(fluxo, prog, ext, prog_ext, con, dia_ref):
     series = {p: (prog[p], fluxo[p]) for p in PARES}
     series.update({p: (prog_ext[p], ext[p]) for p in PAISES_SUL})
+    seqs, dias_rot = programa_repetido({p: {h: v for h, v in prog[p].items() if h[:10] <= dia_ref} for p in PARES})
+    rotulados = set(dias_rot)
     linhas_h, por_dia, dist = [], defaultdict(dict), {}
     inicio = None
     for p, (pg, vf) in series.items():
-        hs = sorted(h for h in pg if h in vf and h[:10] <= dia_ref)
+        hs = sorted(h for h in pg if h in vf and pg[h] is not None and vf[h] is not None and h[:10] <= dia_ref)
         if not hs:
             continue
         inicio = hs[0] if inicio is None else min(inicio, hs[0])
-        desvios = []
         for h in hs:
             d = vf[h] - pg[h]
-            desvios.append(d)
-            linhas_h.append([h, p, _r(pg[h], 3), _r(vf[h], 3), _r(d, 3), 1 if material(d) else 0, 1 if inversao(pg[h], vf[h]) else 0])
+            linhas_h.append([h, p, _r(pg[h], 3), _r(vf[h], 3), _r(d, 3), 1 if material(d) else 0, 1 if inversao(pg[h], vf[h]) else 0,
+                             1 if p in PARES and h[:10] in rotulados else 0])
             x = por_dia[p].setdefault(h[:10], {"horas": 0, "prog": 0.0, "verif": 0.0, "desvio": 0.0, "abs": 0.0, "mat": 0,
                                                 "inv": 0, "maior": None, "hora_maior": None})
             x["horas"] += 1
@@ -1552,27 +1847,24 @@ def _programado(fluxo, prog, ext, prog_ext, con, dia_ref):
             x["inv"] += 1 if inversao(pg[h], vf[h]) else 0
             if x["maior"] is None or abs(d) > abs(x["maior"]):
                 x["maior"], x["hora_maior"] = d, h
-        ab = [abs(d) for d in desvios]
-        dist[p] = {"horas": len(hs), "inicio": hs[0], "fim": hs[-1], "vies_mwmed": _r(sum(desvios) / len(hs), 1),
-                   "desvio_abs_medio_mwmed": _r(sum(ab) / len(hs), 1), "p50_abs_mwmed": _r(c.quantil(ab, 0.5), 1),
-                   "p90_abs_mwmed": _r(c.quantil(ab, 0.9), 1), "p99_abs_mwmed": _r(c.quantil(ab, 0.99), 1),
-                   "max_abs_mwmed": _r(max(ab), 1),
-                   "horas_materiais": {f"{int(l)}": sum(1 for d in desvios if material(d, l)) for l in LIMIARES_SENSIBILIDADE},
-                   "horas_inversao": sum(1 for h in hs if inversao(pg[h], vf[h])),
-                   "programado_abs_mediano_mwmed": _r(c.quantil([abs(pg[h]) for h in hs], 0.5), 1),
-                   "_desvios": desvios}
+        dist[p] = distribuicao_desvios(pg, vf, hs)
+        # a mesma distribuição sem os dias rotulados (só nas fronteiras entre subsistemas)
+        fora = [h for h in hs if not (p in PARES and h[:10] in rotulados)]
+        sem = distribuicao_desvios(pg, vf, fora)
+        dist[p]["sem_dias_rotulados"] = {k: v for k, v in (sem or {}).items() if not k.startswith("_")} or None
+        dist[p]["dias_rotulados"] = len({h[:10] for h in hs} & rotulados) if p in PARES else 0
     linhas_h.sort()
     base.escreve_csv("rede_programado_horario.csv", ["data_hora", "par", "programado_mwmed", "verificado_mwmed", "desvio_mwmed",
-                                                     "material", "inversao"], linhas_h)
+                                                     "material", "inversao", "dia_rotulado"], linhas_h)
     linhas_d = []
     for p in series:
         for d, x in sorted(por_dia[p].items()):
             linhas_d.append([d, p, x["horas"], _r(x["prog"], 3), _r(x["verif"], 3), _r(x["desvio"], 3), _r(x["abs"], 3), x["mat"],
-                             x["inv"], _r(x["maior"], 3), x["hora_maior"]])
+                             x["inv"], _r(x["maior"], 3), x["hora_maior"], 1 if p in PARES and d in rotulados else 0])
     linhas_d.sort()
     base.escreve_csv("rede_programado_diario.csv", ["data", "par", "horas", "programado_mwh", "verificado_mwh", "desvio_mwh",
                                                     "desvio_abs_mwh", "horas_materiais", "horas_inversao", "maior_desvio_mwmed",
-                                                    "hora_maior_desvio"], linhas_d)
+                                                    "hora_maior_desvio", "dia_rotulado"], linhas_d)
     fim = c.d(dia_ref)
     ult = [(fim - timedelta(days=i)).isoformat() for i in range(DIAS_DIARIO - 1, -1, -1)]
     diario = {"dias": ult, "por_par": {p: {
@@ -1590,7 +1882,7 @@ def _programado(fluxo, prog, ext, prog_ext, con, dia_ref):
             for k in ("horas", "prog", "verif", "abs", "mat", "inv"):
                 y[k] += x[k]
     meses = sorted({m for m, _ in mensal})
-    mensal_gold = {"meses": meses, "por_par": {p: {
+    mensal_gold = {"meses": meses, "dias_rotulados": [sum(1 for d in rotulados if d[:7] == m) for m in meses], "por_par": {p: {
         "horas": [mensal[(m, p)]["horas"] if (m, p) in mensal else None for m in meses],
         "programado_mwh": [_r(mensal[(m, p)]["prog"], 0) if (m, p) in mensal else None for m in meses],
         "verificado_mwh": [_r(mensal[(m, p)]["verif"], 0) if (m, p) in mensal else None for m in meses],
@@ -1598,10 +1890,39 @@ def _programado(fluxo, prog, ext, prog_ext, con, dia_ref):
         "horas_materiais": [mensal[(m, p)]["mat"] if (m, p) in mensal else None for m in meses],
         "horas_inversao": [mensal[(m, p)]["inv"] if (m, p) in mensal else None for m in meses],
     } for p in series}}
-    # maiores desvios (horas), com o contexto necessário para não chamar de falha
-    maiores = sorted(linhas_h, key=lambda r: -abs(r[4]))[:15]
-    maiores_gold = [{"hora": r[0], "par": r[1], "programado_mwmed": _r(r[2], 1), "verificado_mwmed": _r(r[3], 1),
-                     "desvio_mwmed": _r(r[4], 1), "inversao": bool(r[6])} for r in maiores]
+
+    # maiores desvios (horas), com o contexto necessário para não chamar de falha; cada hora diz
+    # se o dia está rotulado, e a lista fora dos dias rotulados sai ao lado
+    def _maior(r):
+        return {"hora": r[0], "par": r[1], "programado_mwmed": _r(r[2], 1), "verificado_mwmed": _r(r[3], 1),
+                "desvio_mwmed": _r(r[4], 1), "inversao": bool(r[6]), "dia_rotulado": bool(r[7])}
+    ordem = sorted(linhas_h, key=lambda r: -abs(r[4]))
+    maiores_gold = [_maior(r) for r in ordem[:15]]
+    maiores_fora = [_maior(r) for r in ordem if not r[7]][:15]
+    # descrição de cada dia rotulado: as sequências e o programado e o verificado das quatro fronteiras no dia
+    dias_gold = []
+    for d in dias_rot:
+        hs = horas_do_dia(d)
+        dias_gold.append({
+            "dia": d,
+            "sequencias": [s_ for s_ in seqs if s_["inicio"][:10] <= d <= s_["fim"][:10]],
+            "por_par": {p: {"programado_mwh": _r(sum(prog[p][h] for h in hs if prog[p].get(h) is not None), 0),
+                            "verificado_mwh": _r(sum(fluxo[p][h] for h in hs if fluxo[p].get(h) is not None), 0),
+                            "desvio_abs_mwh": _r(por_dia[p][d]["abs"], 0) if d in por_dia[p] else None,
+                            "horas_materiais": por_dia[p][d]["mat"] if d in por_dia[p] else None} for p in PARES},
+        })
+    rotulo = {
+        "regra": (f"Dia rotulado: alguma fronteira entre subsistemas tem pelo menos {SEQ_REPETIDA_MIN} horas seguidas com "
+                  "exatamente o mesmo valor programado. O dia inteiro fica rotulado nas quatro fronteiras (o programa das "
+                  "fronteiras é um só despacho). Os dias não são descartados: a distribuição de cada fronteira sai com e sem "
+                  "eles, e cada um dos maiores desvios diz se é de dia rotulado. Nos países, programa zero por muitas horas é o "
+                  "estado comum (sem intercâmbio programado, conferido com o PDO das conversoras) e não é rotulado."),
+        "minimo_horas": SEQ_REPETIDA_MIN, "dias": dias_gold,
+        "maior_sequencia_fora_dos_dias_rotulados": {
+            p: max((n for _, _, n, _ in sequencias_repetidas({h: v for h, v in prog[p].items()
+                                                              if h[:10] <= dia_ref and h[:10] not in rotulados}, 1)), default=None)
+            for p in PARES},
+    }
     # conferência da versão do programa: intercâmbio internacional programado × PDO das conversoras
     pdo = _conferencia_pdo(con, prog_ext)
     revis = c.revisoes_do_dataset(con, DS_IN)
@@ -1619,8 +1940,10 @@ def _programado(fluxo, prog, ext, prog_ext, con, dia_ref):
     return {
         "inicio": inicio, "fim": dia_ref, "limiar_material_mwmed": LIMIAR_MATERIAL, "justificativa_limiar": justificativa,
         "limiares_sensibilidade_mwmed": list(LIMIARES_SENSIBILIDADE),
+        "programa_repetido": rotulo,
         "distribuicao": {p: {k: v for k, v in x.items() if not k.startswith("_")} for p, x in dist.items()},
         "diario": diario, "mensal": mensal_gold, "maiores_desvios": maiores_gold,
+        "maiores_desvios_fora_dos_dias_rotulados": maiores_fora,
         "versao_programa": {
             "identificada_pela_fonte": False,
             "texto": ("O conjunto publica um único valor programado por hora, sem identificar a revisão do programa. Para o "
@@ -1631,7 +1954,7 @@ def _programado(fluxo, prog, ext, prog_ext, con, dia_ref):
             "revisoes_do_programado_entre_capturas": revis_prog,
             "capturas_comparadas": revis.get("vintages_comparadas"),
         },
-        "_dist": dist, "_pdo": pdo,
+        "_dist": dist, "_pdo": pdo, "_rotulados": rotulados,
     }
 
 
@@ -1678,7 +2001,10 @@ def _conferencia_pdo(con, prog_ext):
     linhas.sort()
     base.escreve_csv("rede_pdo_conferencia.csv", ["data_hora", "pais", "programado_conjunto_mwmed", "pdo_mwmed", "diferenca_mwmed",
                                                   "confere"], linhas)
+    comparados = sorted({l[0][:10] for l in linhas})
     return {"dias": len(dias), "primeiro_dia": dias[0] if dias else None, "ultimo_dia": dias[-1] if dias else None,
+            # dias do PDO sem programado no conjunto internacional (os mais recentes: o PDO sai na véspera) não entram
+            "dias_comparados": len(comparados), "dias_sem_programado_no_conjunto": sorted(set(dias) - set(comparados)),
             "horas": horas, "horas_conferem": ok, "horas_com_programa_ou_pdo": horas_nao_nulas,
             "horas_com_programa_ou_pdo_conferem": ok_nao_nulas, "tolerancia_mwmed": 0.5,
             "amostra": ("últimos 30 dias publicados e dias 1 e 15 de cada mês desde janeiro de 2026"),
@@ -1775,50 +2101,110 @@ def diagnostico_perimetro_sul(horas, bal, fluxo, ext):
             "exterior_menor_no_balanco": menor, "exterior_outro_no_balanco": coerente - zero - menor, "meses": sorted(meses)}
 
 
+ROTULO_IDENTIDADE = {
+    "balanco": "balanço interno (geração − carga − intercâmbio)",
+    "perimetro": "perímetro (intercâmbio do balanço contra fronteiras e exterior)",
+    "soma_sin": "soma dos subsistemas (intercâmbio do SIN contra a soma dos quatro)",
+}
+
+
+def _lista_dias(dias, maximo=6):
+    return ", ".join(c.data_br(d) for d in dias[:maximo]) + (" e outros" if len(dias) > maximo else "")
+
+
+def _por_ano(x):
+    return "; ".join(f"{a}: {_fmt(n)}" for a, n in sorted((x.get("horas_residuo_por_ano") or {}).items()))
+
+
+def textos_a05(idm, diag, residuo_sin_fora_do_perimetro):
+    """Textos do achado A05 a partir dos contadores (regras determinísticas, uma por frase;
+    testes em test_energia_rede.py). Nada aqui é afirmado sem o contador que o sustenta:
+    "em todas as horas" só quando o resíduo é zero; a frase sobre o exterior do Sul só quando
+    todas as horas com resíduo são coerentes dentro do balanço e o exterior do balanço é zero
+    ou menor; o padrão "resíduo igual a menos o exterior" só com a contagem de horas.
+
+    `idm`: {id da identidade: resumo publicado em balanco.identidades}; `diag`: diagnóstico
+    do perímetro do Sul; `residuo_sin_fora_do_perimetro`: horas com resíduo no balanço
+    interno do SIN em que o perímetro fecha (intercâmbio coerente com fronteiras e exterior)."""
+    per = {sm: idm[f"perimetro.{sm}"] for sm in ons_rede.SUBSISTEMAS + ("SIN",)}
+    soma = idm["soma_sin"]
+    frases = []
+    for sm in ("N", "NE", "SE"):
+        x = per[sm]
+        f = (f"{c.NOME_SUBMERCADO[sm]}: o intercâmbio do balanço é igual à soma das fronteiras em {_fmt(x['horas_fecham'])} "
+             f"de {_fmt(x['horas'])} horas (tolerância de 0,1 MWmed).")
+        if x["horas_residuo"]:
+            f += f" Horas com resíduo por ano: {_por_ano(x)}."
+        frases.append(f)
+    xs = per["S"]
+    f = (f"Sul: o intercâmbio do balanço é igual à fronteira com o Sudeste mais Argentina e Uruguai em {_fmt(xs['horas_fecham'])} "
+         f"de {_fmt(xs['horas'])} horas.")
+    if xs["horas_residuo"]:
+        f += (f" Nas demais ({_fmt(xs['horas_residuo'])}, meses {', '.join(c.mes_br(m) for m in diag['meses'])}), o balanço é "
+              f"coerente consigo mesmo em {_fmt(diag['balanco_coerente'])} (intercâmbio do SIN = Sul − fronteira S→SE) e usa "
+              f"um exterior diferente do conjunto internacional: zero em {_fmt(diag['exterior_zero_no_balanco'])} horas, menor "
+              f"em módulo em {_fmt(diag['exterior_menor_no_balanco'])} e maior ou de sinal trocado em "
+              f"{_fmt(diag['exterior_outro_no_balanco'])}.")
+        if diag["horas"] and diag["balanco_coerente"] == diag["horas"] and diag["exterior_outro_no_balanco"] == 0:
+            f += " Em todas essas horas a diferença está no valor do exterior que o balanço usa."
+    frases.append(f)
+    xsin = per["SIN"]
+    f = (f"SIN: o intercâmbio do balanço é igual ao intercâmbio internacional em {_fmt(xsin['horas_fecham'])} de "
+         f"{_fmt(xsin['horas'])} horas; o intercâmbio do SIN é igual à soma dos quatro subsistemas em "
+         f"{_fmt(soma['horas_fecham'])} de {_fmt(soma['horas'])} horas.")
+    frases.append(f)
+    # cada identidade do balanço interno e a soma dos subsistemas com resíduo ganha uma frase
+    for chave in [f"balanco.{sm}" for sm in ons_rede.SUBSISTEMAS + ("SIN",)] + ["soma_sin"]:
+        x = idm[chave]
+        if not x["horas_residuo"]:
+            continue
+        nome, _, sm = chave.partition(".")
+        f = (f"{c.NOME_SUBMERCADO[sm or 'SIN']}, {ROTULO_IDENTIDADE[nome]}: {_fmt(x['horas_residuo'])} horas com resíduo "
+             f"(por ano: {_por_ano(x)}), entre {x['primeira_hora_residuo']} e {x['ultima_hora_residuo']}; maior "
+             f"{_fmt(x['maior_residuo_mwmed'], 1)} MWmed em {x['maior_residuo_em']}.")
+        k = x.get("horas_residuo_igual_menos_exterior") or 0
+        if k:
+            f += (f" Em {_fmt(k)} delas o resíduo é igual a menos o intercâmbio internacional da mesma hora "
+                  f"({_lista_dias(x.get('dias_residuo_igual_menos_exterior') or [])}).")
+        if chave == "balanco.SIN" and residuo_sin_fora_do_perimetro:
+            f += (f" Em {_fmt(residuo_sin_fora_do_perimetro)} delas o intercâmbio fecha com as fronteiras e o exterior, então o "
+                  "resíduo está nas parcelas de geração ou de carga publicadas no balanço.")
+        f += " A fonte não informa a causa e nenhuma é atribuída."
+        frases.append(f)
+    total = sum(x["horas_residuo"] for x in idm.values())
+    com_residuo = [k for k, x in idm.items() if x["horas_residuo"]]
+    status = ("fechado: todas as identidades fecham em todas as horas" if not total else
+              f"fechado com resíduos sinalizados: {_fmt(total)} horas-identidade com resíduo em {len(com_residuo)} de "
+              f"{len(idm)} identidades, publicadas sem causa atribuída")
+    bl_sin = idm["balanco.SIN"]
+    nne = [per[sm] for sm in ("N", "NE", "SE")]
+    perdas = (f"Nenhum resíduo é atribuído a perdas: as identidades não têm termo de perdas e fecham em "
+              f"{_fmt(bl_sin['horas_fecham'])} de {_fmt(bl_sin['horas'])} horas no balanço interno do SIN e ")
+    if all(x["horas_residuo"] == 0 for x in nne):
+        perdas += "em todas as horas no perímetro de Norte, Nordeste e Sudeste/Centro-Oeste."
+    else:
+        perdas += ("no perímetro de Norte, Nordeste e Sudeste/Centro-Oeste em "
+                   + ", ".join(f"{_fmt(x['horas_fecham'])} de {_fmt(x['horas'])}" for x in nne) + " horas, respectivamente.")
+    return {"status": status, "frases": frases, "perdas": perdas}
+
+
 def _achados(balanco, esquema, restricoes, programado, con, ext, bal, fluxo):
     idm = {x["id"]: x for x in balanco["identidades"]}
     diag = diagnostico_perimetro_sul(balanco["_ident"]["perimetro.S"]["horas_residuo_lista"], bal, fluxo, ext)
-    sul_fora = diag["exterior_zero_no_balanco"]
     py = ext.get("PARAGUAI") or {}
     py_nao_nulo = sum(1 for v in py.values() if abs(v) > NULO)
     py_periodo = (min(py), max(py)) if py else (None, None)
-    per = {sm: idm[f"perimetro.{sm}"] for sm in ons_rede.SUBSISTEMAS + ("SIN",)}
-    bl = {sm: idm[f"balanco.{sm}"] for sm in ons_rede.SUBSISTEMAS + ("SIN",)}
-    soma = idm["soma_sin"]
     dic = _dicionarios(con)
     orient = esquema["intercambio_nacional"]
     fixos = [a["recurso"][-4:] for a in orient if a["orientacao_fixa"]]
     variaveis = [a["recurso"][-4:] for a in orient if not a["orientacao_fixa"]]
-    frases = []
-    for sm in ("N", "NE", "SE"):
-        x = per[sm]
-        frases.append(f"{c.NOME_SUBMERCADO[sm]}: o intercâmbio do balanço é igual à soma das fronteiras em {_fmt(x['horas_fecham'])} "
-                      f"de {_fmt(x['horas'])} horas (tolerância de 0,1 MWmed).")
-    xs = per["S"]
-    frases.append(f"Sul: o intercâmbio do balanço é igual à fronteira com o Sudeste mais Argentina e Uruguai em "
-                  f"{_fmt(xs['horas_fecham'])} de {_fmt(xs['horas'])} horas. Nas demais ({_fmt(xs['horas_residuo'])}, meses "
-                  f"{', '.join(c.mes_br(m) for m in diag['meses'])}), o balanço é coerente consigo mesmo em "
-                  f"{_fmt(diag['balanco_coerente'])} (intercâmbio do SIN = Sul − fronteira S→SE), mas usa um exterior diferente "
-                  f"do conjunto internacional: zero em {_fmt(sul_fora)} horas, menor em módulo em "
-                  f"{_fmt(diag['exterior_menor_no_balanco'])} e maior ou de sinal trocado em {_fmt(diag['exterior_outro_no_balanco'])}. "
-                  "O resíduo está no perímetro do exterior, não em perdas.")
-    xsin = per["SIN"]
-    frases.append(f"SIN: o intercâmbio do balanço é igual ao intercâmbio internacional em {_fmt(xsin['horas_fecham'])} de "
-                  f"{_fmt(xsin['horas'])} horas; o intercâmbio do SIN é igual à soma dos quatro subsistemas em "
-                  f"{_fmt(soma['horas_fecham'])} de {_fmt(soma['horas'])} horas"
-                  + (f" (as demais em {', '.join(sorted({p['inicio'][:10] for p in soma['periodos']}))})." if soma["horas_residuo"] else "."))
-    xb = bl["SIN"]
     ident = balanco["_ident"]
+    # horas com resíduo no balanço interno do SIN em que o perímetro foi calculado nos quatro
+    # subsistemas e no SIN e fechou em todos (o intercâmbio é coerente com outros dois conjuntos)
     h_bal = set(ident["balanco.SIN"]["horas_residuo_lista"])
-    h_per = set().union(*(set(ident[f"perimetro.{sm}"]["horas_residuo_lista"]) for sm in ons_rede.SUBSISTEMAS + ("SIN",)))
-    em_comum = len(h_bal & h_per)
-    frases.append(f"Balanço interno (geração − carga − intercâmbio) do SIN: {_fmt(xb['horas_residuo'])} horas com resíduo, entre "
-                  f"{xb['primeira_hora_residuo']} e {xb['ultima_hora_residuo']}; em {_fmt(len(h_bal) - em_comum)} delas o intercâmbio "
-                  "fecha com as fronteiras e o exterior, então o resíduo está nas parcelas de geração ou de carga publicadas no "
-                  "balanço. A causa não é informada pela fonte."
-                  if xb["horas_residuo"] else "Balanço interno (geração − carga − intercâmbio) do SIN fecha em todas as horas.")
+    textos = textos_a05(idm, diag, len(h_bal & balanco["_perimetro_fecha"]))
     a05 = {
-        "status": "fechado com resíduos sinalizados",
+        "status": textos["status"],
         "perimetro": ("O intercâmbio de cada subsistema no balanço é o saldo das fronteiras com os outros subsistemas; o do Sul "
                       "inclui Argentina e Uruguai; o do SIN é o intercâmbio internacional. Soma zero só acontece quando o "
                       "exterior é nulo."),
@@ -1829,12 +2215,10 @@ def _achados(balanco, esquema, restricoes, programado, con, ext, bal, fluxo):
                      f"{_fmt(py_nao_nulo)} com fluxo acima de 1 MWmed em módulo; o arquivo deixa de trazer o país depois disso. "
                      "Itaipu é uma usina no conjunto do ONS (geração), não intercâmbio. Argentina e Uruguai entram no Sul, como "
                      "mostra a identidade do balanço do Sul."),
-        "perdas": (f"Nenhum resíduo é atribuído a perdas: as três identidades não têm termo de perdas e fecham em "
-                   f"{_fmt(bl['SIN']['horas_fecham'])} de {_fmt(bl['SIN']['horas'])} horas no balanço interno do SIN e em todas "
-                   "as horas nas fronteiras de Norte, Nordeste e Sudeste/Centro-Oeste."),
+        "perdas": textos["perdas"],
         "diagnostico_perimetro_sul": diag,
         "paraguai": {"horas": len(py), "horas_com_fluxo": py_nao_nulo, "inicio": py_periodo[0], "fim": py_periodo[1]},
-        "frases": frases,
+        "frases": textos["frases"],
         "dicionario_balanco_define_sinal": dic[DS_BAL]["menciona_sinal"],
         "dicionario_internacional_define_sinal": dic[DS_II]["menciona_sinal"],
     }
@@ -1854,22 +2238,30 @@ def _achados(balanco, esquema, restricoes, programado, con, ext, bal, fluxo):
 # CSV horários por ano
 # ---------------------------------------------------------------------------
 
-def _escreve_csv_horarios(fluxo, prog, ext, prog_ext, pld, bal):
-    horas = sorted(set().union(*(set(v) for v in fluxo.values())))
+CAB_HORARIO = (["data_hora"] + [f"fluxo_{p}" for p in PARES] + [f"prog_{p}" for p in PARES] + [f"ext_{p}" for p in PAISES]
+               + [f"prog_ext_{p}" for p in PAISES_SUL] + [f"pld_{sm}" for sm in ons_rede.SUBSISTEMAS]
+               + [f"saldo_{sm}" for sm in ons_rede.SUBSISTEMAS + ("SIN",)])
+
+
+def linhas_horarias(fluxo, prog, ext, prog_ext, pld, bal):
+    """{ano: linhas} do CSV horário (função pura). As horas são a união das horas de todas
+    as fontes (fronteiras, exterior, balanço e PLD): uma hora que falta numa fonte sai com
+    as colunas dela vazias, em vez de sumir do arquivo junto com as outras fontes."""
+    fontes = list(fluxo.values()) + list(ext.values()) + list(pld.values()) + [
+        bal.get(("intercambio", sm)) or {} for sm in ons_rede.SUBSISTEMAS + ("SIN",)]
+    horas = sorted(set().union(*(set(s_) for s_ in fontes)))
     por_ano = defaultdict(list)
     for h in horas:
-        por_ano[h[:4]].append(h)
-    cab = (["data_hora"] + [f"fluxo_{p}" for p in PARES] + [f"prog_{p}" for p in PARES] + [f"ext_{p}" for p in PAISES]
-           + [f"prog_ext_{p}" for p in PAISES_SUL] + [f"pld_{sm}" for sm in ons_rede.SUBSISTEMAS]
-           + [f"saldo_{sm}" for sm in ons_rede.SUBSISTEMAS + ("SIN",)])
-    for ano, hs in por_ano.items():
-        linhas = []
-        for h in hs:
-            linhas.append([h] + [_r(fluxo[p].get(h), 3) for p in PARES] + [_r(prog[p].get(h), 3) for p in PARES]
-                          + [_r(ext[p].get(h), 3) for p in PAISES] + [_r(prog_ext[p].get(h), 3) for p in PAISES_SUL]
-                          + [c.r(pld[sm].get(h), 2) for sm in ons_rede.SUBSISTEMAS]
-                          + [_r(bal[("intercambio", sm)].get(h), 3) for sm in ons_rede.SUBSISTEMAS + ("SIN",)])
-        base.escreve_csv(f"rede_horario_{ano}.csv", cab, linhas)
+        por_ano[h[:4]].append([h] + [_r(fluxo[p].get(h), 3) for p in PARES] + [_r(prog[p].get(h), 3) for p in PARES]
+                              + [_r(ext[p].get(h), 3) for p in PAISES] + [_r(prog_ext[p].get(h), 3) for p in PAISES_SUL]
+                              + [c.r(pld[sm].get(h), 2) for sm in ons_rede.SUBSISTEMAS]
+                              + [_r((bal.get(("intercambio", sm)) or {}).get(h), 3) for sm in ons_rede.SUBSISTEMAS + ("SIN",)])
+    return dict(por_ano)
+
+
+def _escreve_csv_horarios(fluxo, prog, ext, prog_ext, pld, bal):
+    for ano, linhas in linhas_horarias(fluxo, prog, ext, prog_ext, pld, bal).items():
+        base.escreve_csv(f"rede_horario_{ano}.csv", CAB_HORARIO, linhas)
 
 
 # ---------------------------------------------------------------------------
@@ -1937,14 +2329,25 @@ def _proveniencias(gold, snaps, snap_pld, pld, dia_ref):
         unidade="MWmed por hora; MWh por mês", frequencia="horária, agregada por mês", periodo={"inicio": ini, "fim": dia_ref},
         cobertura={"inicio": ini, "fim": dia_ref}, capturado_em=c.ultima_captura(snaps[DS_BAL]), snapshot=snaps[DS_BAL],
         transformacoes=["releitura dos arquivos originais do balanço", "resíduos hora a hora nas três identidades",
-                        f"tolerância de {TOL_IDENT} MWmed por hora (arredondamento), com contagens acima de 1, 10 e 100 MWmed"],
+                        f"tolerância de {TOL_IDENT} MWmed por hora (arredondamento), com contagens acima de 1, 10 e 100 MWmed",
+                        "somas mensais em dois grupos, cada um sobre as suas horas: geração, carga, intercâmbio e resíduo do "
+                        "balanço nas horas com as três parcelas; intercâmbio, fronteiras e exterior e resíduo do perímetro nas "
+                        "horas com todas as parcelas do perímetro",
+                        "marcação de cada mês quanto à MMGD estimada (sem, parcial, com) a partir de 29/04/2023"],
         formula=("resíduo_balanço = hidráulica + térmica + eólica + solar − carga − intercâmbio; resíduo_perímetro = "
                  "intercâmbio_balanço − Σ fronteiras (− exterior no Sul e no SIN); resíduo_soma = intercâmbio_SIN − Σ subsistemas"),
         limitacoes=["O dicionário do balanço não descreve o sinal do intercâmbio; o sinal (positivo = exporta) foi conferido "
                     "pela identidade com as fronteiras.",
                     "Resíduo não é atribuído a perdas nem ao exterior por hipótese: é publicado com os períodos em que ocorre.",
-                    "Parcela ausente na fonte deixa a hora como incompleta; nada é preenchido."] + lim_comum[:1],
+                    "Parcela ausente na fonte deixa a hora como incompleta; nada é preenchido.",
+                    ("A partir de 29/04/2023 a geração solar e a carga do balanço incluem a estimativa da micro e minigeração "
+                     "distribuída (MMGD) feita pelo ONS (componente ESTIMADO, somado sem separação). O conjunto do balanço não "
+                     "declara a mudança; a data é a declarada pelo ONS para o conjunto Carga de Energia e o degrau foi conferido "
+                     "no arquivo original (balanco.quebras). Geração e carga de meses dos dois lados da data não são comparáveis "
+                     "diretamente; resíduos e intercâmbio não são afetados.")] + lim_comum[:1],
         download="/energia/series/rede_balanco_mensal.csv", notas_fonte=_notas(DS_BAL))
+    # natureza por componente (seção 11.3): o agregado oficial mistura medição e estimativa da fonte
+    p["balanco"]["natureza_componentes"] = NATUREZA_COMPONENTES_BALANCO
     p["exterior"] = c.proveniencia(
         indicador="Intercâmbio internacional verificado por país", natureza="CALCULADO", fonte=_fonte_prov(DS_II),
         unidade="MWh", frequencia="horária, somada por mês", periodo={"inicio": ini, "fim": dia_ref},
@@ -1954,19 +2357,25 @@ def _proveniencias(gold, snaps, snap_pld, pld, dia_ref):
         formula="exportação = Σ max(v_h, 0); importação = Σ max(−v_h, 0); Itaipu não Brasil = Σ (total_h − Brasil_h)",
         limitacoes=["Itaipu é geração no conjunto do ONS, não intercâmbio; a parcela não destinada ao Brasil não é medida "
                     "diretamente desde a remoção do campo do Paraguai (dicionário versão 1.1, 30/07/2026).",
-                    (f"{gold['cobertura']['exterior']['dias_incompletos']} dia(s) sem as 24 horas no conjunto internacional "
-                     "(lista em cobertura.exterior): horas ausentes não são preenchidas.")] + lim_comum[:1],
+                    (f"{gold['cobertura']['exterior']['dias_incompletos']} dia(s) sem as 24 horas de Argentina e Uruguai no "
+                     f"conjunto internacional ({gold['cobertura']['exterior']['dias_sem_nenhum_dado']} sem nenhum dado e "
+                     f"{gold['cobertura']['exterior']['dias_parciais']} com só parte; lista por país em cobertura.exterior): "
+                     "horas ausentes não são preenchidas.",
+                    "País sem nenhuma hora publicada na janela de 12 meses (o Paraguai desde 21/02/2024) fica com exportação e "
+                     "importação nulas no resumo, não zero.")] + lim_comum[:1],
         download="/energia/series/rede_exterior_mensal.csv", notas_fonte=_notas(DS_II))
     p["atls"] = c.proveniencia(
-        indicador="Horas de violação dos limites sistêmicos (ATLS)", natureza="OBSERVADO", fonte=_fonte_prov(DS_ATLS),
+        indicador="Horas de violação dos limites sistêmicos (ATLS)", natureza="CALCULADO", fonte=_fonte_prov(DS_ATLS),
         unidade="horas; ATLS como fração de 0 a 1", frequencia="mensal e acumulada no ano",
         periodo={"inicio": min((f["inicio"] for f in gold["restricoes"]["atls"]["fluxos"] if f["inicio"]), default=None) or ini,
                  "fim": gold["restricoes"]["atls"]["ultimo_mes"] or dia_ref},
         cobertura={"inicio": min((f["inicio"] for f in gold["restricoes"]["atls"]["fluxos"] if f["inicio"]), default=None) or ini,
                    "fim": gold["restricoes"]["atls"]["ultimo_mes"] or dia_ref},
         capturado_em=c.ultima_captura(snaps[DS_ATLS]), snapshot=snaps[DS_ATLS],
-        transformacoes=["valores como publicados", "soma de horas de violação em 12 meses",
+        transformacoes=["valores mensais como publicados (série mensal e CSV)", "soma de horas de violação em 12 meses e no "
+                        "histórico (calculada pelo observatório)",
                         "período de observação implícito = horas ÷ (1 − ATLS), para conferir a unidade"],
+        formula="horas_12m(fluxo) = Σ num_horasviolacao mensal (ME) dos 12 últimos meses publicados; total = Σ de todos os meses",
         limitacoes=["O ONS não publica o valor do limite nem o sentido da violação; o indicador diz quanto tempo o fluxo "
                     "ficou acima do limite recomendado, não quanto da capacidade foi usada.",
                     "Violações com menos de 10 minutos e dentro da banda morta (50 MW ou 5% do limite) não entram (Submódulo 9.1).",
@@ -2002,8 +2411,14 @@ def _proveniencias(gold, snaps, snap_pld, pld, dia_ref):
         limitacoes=["O valor programado só existe nos arquivos a partir de 2026 (campo incluído no dicionário em 04/05/2026).",
                     "A fonte não identifica a revisão do programa; para o exterior o valor coincide com o PDO das conversoras "
                     "na amostra conferida.",
-                    "Desvio não é falha: a operação em tempo real corrige o programa do dia anterior."] + lim_comum[:1],
+                    "Desvio não é falha: a operação em tempo real corrige o programa do dia anterior.",
+                    (f"Dias com programado repetido por {SEQ_REPETIDA_MIN} horas ou mais numa fronteira entre subsistemas "
+                     f"({', '.join(c.data_br(d['dia']) for d in prog['programa_repetido']['dias']) or 'nenhum'}) ficam "
+                     "rotulados, não descartados: a distribuição sai com e sem eles (programado.programa_repetido).")]
+        + lim_comum[:1],
         download="/energia/series/rede_programado_diario.csv", notas_fonte=_notas(DS_IN))
+    # o desvio compara uma medida (verificado, OBSERVADO) com o programa (PREVISTO)
+    p["programado"]["natureza_componentes"] = NATUREZA_COMPONENTES_PROGRAMADO
     return p
 
 
@@ -2123,16 +2538,22 @@ def _evidencias(gold, con, con_p, fluxo, dia_ref, ressalvas):
         paises = {p: _serie(con, DS_II, f"verificado.{p}", f"{ANO_INICIAL}-01-01") for p in PAISES}
         liq = sum(v for p in PAISES for h, v in paises[p].items() if h[:7] in m12)
         horas_ext = sorted({h for p in PAISES for h in paises[p] if h[:7] in m12})
+        # só os países com hora publicada na janela entram na entidade e nas chaves; o ausente é dito
+        com_horas = [p for p in PAISES if (ext_m["resumo_12m"].get(p) or {}).get("horas")]
+        sem_horas = [p for p in PAISES if p not in com_horas]
         comuns = [h for h in horas_ext if h in bal_sin]
         liq_comum = sum(paises[p].get(h) or 0 for p in PAISES for h in comuns)
         sin_comum = sum(bal_sin[h] for h in comuns)
         dif = liq_comum - sin_comum
         out["exterior_12m"] = _ev(
             indicador="Saldo do intercâmbio internacional em 12 meses (positivo = exportação)", valor_exibido=f"{_fmt(liq)} MWh",
-            valor_calculo=liq, unidade="MWh", periodo={"inicio": m12[0], "fim": m12[-1]}, entidade="Brasil (SIN) com Argentina, Uruguai e Paraguai",
+            valor_calculo=liq, unidade="MWh", periodo={"inicio": m12[0], "fim": m12[-1]},
+            entidade="Brasil (SIN) com " + " e ".join(NOME_PAIS[p] for p in com_horas),
+            exclusoes=[f"{NOME_PAIS[p]}: nenhuma hora publicada na janela (última hora no arquivo: "
+                       f"{ext_m['por_pais'][p]['ultima_hora'] or 'nenhuma'}); fica fora, sem virar zero" for p in sem_horas],
             universo=f"{len(horas_ext)} horas publicadas nos 12 meses", fonte=_fonte_ev(con, DS_II),
             consulta=f"SELECT serie, ref, valor FROM observacoes (vigente) WHERE dataset='{DS_II}' AND serie LIKE 'verificado.%' AND ref BETWEEN '{m12[0]}' AND '{m12[-1]}-31T23:00'",
-            chaves_origem=[f"{DS_II}:verificado.{p}" for p in PAISES],
+            chaves_origem=[f"{DS_II}:verificado.{p}" for p in com_horas],
             formula="Σ_países Σ_h intercâmbio verificado (MWmed × 1 h)", cobertura=f"{len(horas_ext)} horas; {len(comuns)} com balanço",
             tratamento_ausencia="Hora ausente no arquivo do ONS fica fora da soma.", revisoes=c.revisoes_do_dataset(con, DS_II),
             testes=[ev.teste("Horas esperadas nos 12 meses", "aprovado" if len(horas_ext) == sum(horas_calendario(m) for m in m12) else "ressalva",
@@ -2209,6 +2630,14 @@ def _evidencias(gold, con, con_p, fluxo, dia_ref, ressalvas):
         testes = [ev.teste("Horas com programado e verificado", "aprovado", f"{x['horas']} horas de {x['inicio']} a {x['fim']}"),
                   ev.teste(f"Horas com desvio material (≥ {_fmt(LIMIAR_MATERIAL)} MWmed)", "aprovado",
                            f"{x['horas_materiais'][str(int(LIMIAR_MATERIAL))]} horas; com 500 MWmed: {x['horas_materiais']['500']}; com 2.000 MWmed: {x['horas_materiais']['2000']}")]
+        sem = x.get("sem_dias_rotulados")
+        if p in PARES and x.get("dias_rotulados"):
+            testes.append(ev.teste(
+                f"Dias com programado repetido por {SEQ_REPETIDA_MIN} horas ou mais (rotulados, não descartados)", "ressalva",
+                f"{x['dias_rotulados']} dia(s) rotulado(s): "
+                + ", ".join(c.data_br(d["dia"]) for d in prog["programa_repetido"]["dias"])
+                + (f"; sem eles: desvio absoluto médio {_fmt(sem['desvio_abs_medio_mwmed'], 1)} MWmed em {sem['horas']} horas, "
+                   f"máximo {_fmt(sem['max_abs_mwmed'], 1)} MWmed" if sem else "")))
         rec = None
         if p in PAISES_SUL and pdo.get("horas"):
             lin = [l for l in pdo["_linhas"] if l[1] == p]

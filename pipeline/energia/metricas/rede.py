@@ -24,6 +24,17 @@ F_PLD = "ccee_pld_horario"
 _AUS = "Hora sem valor publicado fica fora das somas e das contagens; nada é preenchido, interpolado ou repetido."
 _SEM_LIMITE = "Não diz se a fronteira estava no limite: os limites operativos de intercâmbio não são públicos em formato estruturado."
 _CONSISTENCIA = "Dados em consistência recorrente do ONS: valores recentes podem ser revisados."
+# Balanço de Energia nos Subsistemas: desde 29/04/2023 a solar e a carga incluem a MMGD estimada pelo ONS
+# (seção 11.3: agregado oficial com componente estimado preserva essa informação)
+_NAT_BALANCO = [
+    {"componente": "geração das usinas, carga e intercâmbio verificados", "natureza": "OBSERVADO", "desde": None},
+    {"componente": "parcela da MMGD estimada pelo ONS na geração solar e na carga", "natureza": "ESTIMADO", "desde": "2023-04-29"},
+]
+_MMGD_LIMITACAO = ("Desde 29/04/2023 a geração solar e a carga do balanço incluem a estimativa da MMGD feita pelo ONS, somada sem "
+                   "separação; o conjunto do balanço não declara a mudança (data declarada para o conjunto Carga de Energia e "
+                   "degrau conferido no arquivo). O resíduo e o intercâmbio não são afetados.")
+_MMGD_COMPARABILIDADE = ("Geração e carga mensais de antes e de depois de 29/04/2023 não são comparáveis diretamente "
+                         "(marcação mmgd_estimada: sem, parcial em abril de 2023, com).")
 
 
 def _m(**kw):
@@ -106,22 +117,30 @@ METRICAS = [
        definicao="Geração hidráulica + térmica + eólica + solar − carga − intercâmbio, hora a hora, no Balanço de Energia nos Subsistemas.",
        unidade="MWmed por hora; MWh por mês; horas", grao_geografico="subsistema e SIN", grao_temporal="hora e mês",
        fontes=[F_BAL], formula="r_h = hid + ter + eol + sol − carga − intercâmbio; hora com resíduo quando |r_h| > 0,1 MWmed",
-       regra_agregacao="contagem de horas e soma mensal do resíduo", natureza_fonte="OBSERVADO", natureza_transformacao="CALCULADO",
+       regra_agregacao="contagem de horas e soma mensal do resíduo, geração, carga e intercâmbio sobre as mesmas horas completas",
+       natureza_fonte="OBSERVADO e ESTIMADO", natureza_componentes=_NAT_BALANCO, natureza_transformacao="CALCULADO",
        dimensoes=["subsistema", "hora", "mês"],
-       regras_comparabilidade=["Contagens também acima de 1, 10 e 100 MWmed, para separar arredondamento de diferença material."],
+       regras_comparabilidade=["Contagens também acima de 1, 10 e 100 MWmed, para separar arredondamento de diferença material.",
+                               _MMGD_COMPARABILIDADE],
        regra_cobertura="Horas com as seis parcelas publicadas.", politica_ausencia="Hora com parcela ausente fica fora (não vira zero).",
-       validacoes=["tolerância de 0,1 MWmed justificada pela precisão de três casas dos arquivos"],
-       limitacoes=["Resíduo não é atribuído a perdas nem ao exterior: a fonte não informa a causa.", _CONSISTENCIA]),
+       validacoes=["tolerância de 0,1 MWmed justificada pela precisão de três casas dos arquivos",
+                   "em cada linha mensal, geração − carga − intercâmbio = resíduo do balanço (mesmas horas)",
+                   "degrau da solar em 29/04/2023 conferido no arquivo original do balanço, com o balanço fechando nas 24 horas do dia"],
+       limitacoes=["Resíduo não é atribuído a perdas nem ao exterior: a fonte não informa a causa.", _MMGD_LIMITACAO, _CONSISTENCIA]),
     _m(id="rede_residuo_perimetro", titulo="Resíduo de perímetro do intercâmbio",
        pergunta="O intercâmbio do balanço é a soma das fronteiras e do exterior?",
        definicao="Intercâmbio do subsistema no balanço menos a soma das suas fronteiras no conjunto de intercâmbio (no Sul, mais Argentina e Uruguai; no SIN, o intercâmbio internacional).",
        unidade="MWmed por hora; horas", grao_geografico="subsistema e SIN", grao_temporal="hora e mês",
        fontes=[F_BAL, F_IN, F_II], formula="r_h = intercâmbio_balanço − Σ fronteiras (− exterior)",
-       regra_agregacao="contagem de horas e soma mensal", natureza_fonte="OBSERVADO", natureza_transformacao="CALCULADO",
+       regra_agregacao=("contagem de horas e soma mensal; intercâmbio do perímetro, fronteiras e exterior e resíduo somados nas "
+                        "mesmas horas (horas_perimetro)"), natureza_fonte="OBSERVADO", natureza_transformacao="CALCULADO",
        dimensoes=["subsistema", "hora", "mês"],
-       regras_comparabilidade=["Compara três conjuntos do ONS publicados separadamente."],
+       regras_comparabilidade=["Compara três conjuntos do ONS publicados separadamente.",
+                               "O intercâmbio do perímetro pode ser menor que o intercâmbio do balanço do mesmo mês: dia sem exterior "
+                               "no conjunto internacional entra no balanço e não no perímetro (ver horas_perimetro)."],
        regra_cobertura="Horas com balanço, fronteiras e exterior publicados.", politica_ausencia=_AUS,
-       validacoes=["diagnóstico das horas com resíduo: coerência interna do balanço (SIN = Sul − fronteira S→SE)"],
+       validacoes=["diagnóstico das horas com resíduo: coerência interna do balanço (SIN = Sul − fronteira S→SE)",
+                   "em cada linha mensal, intercâmbio do perímetro − fronteiras e exterior = resíduo do perímetro (mesmas horas)"],
        limitacoes=["O sinal do intercâmbio do balanço não está no dicionário; foi conferido por esta identidade."]),
     _m(id="rede_exterior", titulo="Intercâmbio internacional por país",
        pergunta="Quanta energia o Brasil exportou e importou de cada país vizinho?",
@@ -130,7 +149,8 @@ METRICAS = [
        fontes=[F_II], formula="exportação = Σ max(v_h, 0); importação = Σ max(−v_h, 0)",
        regra_agregacao="soma de energia horária", natureza_fonte="OBSERVADO", natureza_transformacao="CALCULADO",
        dimensoes=["país", "mês"], regras_comparabilidade=["Meses com horas ausentes trazem a contagem de horas."],
-       regra_cobertura="Horas publicadas.", politica_ausencia=_AUS,
+       regra_cobertura="Horas publicadas.",
+       politica_ausencia=_AUS + " País sem nenhuma hora publicada no período (Paraguai desde 21/02/2024) fica com exportação e importação nulas, não zero.",
        validacoes=["saldo de 12 meses igual ao intercâmbio do SIN no balanço nas horas comuns (tolerância 0,1 MWmed por hora)"],
        limitacoes=["Itaipu é geração no conjunto do ONS, não intercâmbio.", "Paraguai (Acaray) aparece no arquivo até fevereiro de 2024, sempre com fluxo nulo."]),
     _m(id="rede_itaipu_nao_brasil", titulo="Geração de Itaipu não destinada ao Brasil",
@@ -147,8 +167,9 @@ METRICAS = [
        pergunta="Quando há evidência publicada de fluxo acima do limite de segurança?",
        definicao="Tempo em que cada fluxo sistêmico monitorado pelo ONS ficou acima do limite estabelecido pelos estudos elétricos, como publicado no indicador ATLS (Submódulo 9.1).",
        unidade="horas", grao_geografico="fluxo sistêmico do ONS", grao_temporal="mês e 12 meses", fontes=[F_ATLS],
-       formula="Σ num_horasviolacao mensal", regra_agregacao="soma de horas publicadas",
-       natureza_fonte="OBSERVADO", natureza_transformacao="OBSERVADO", dimensoes=["fluxo", "mês"],
+       formula="horas_12m = Σ num_horasviolacao mensal dos 12 últimos meses publicados (soma feita pelo observatório)",
+       regra_agregacao="valores mensais como publicados; somas de 12 meses e do histórico calculadas pelo observatório",
+       natureza_fonte="OBSERVADO", natureza_transformacao="CALCULADO", dimensoes=["fluxo", "mês"],
        regras_comparabilidade=["Fluxos mudam ao longo do tempo; compare só meses em que o fluxo é publicado."],
        regra_cobertura="Meses publicados.", politica_ausencia="Mês não publicado fica fora (não vira zero).",
        validacoes=["acumulado no ano publicado = soma dos meses", "ATLS publicado = 1 − horas ÷ período (o valor vem em fração, não em %)"],
@@ -172,8 +193,13 @@ METRICAS = [
        fontes=[F_IN, F_II, F_PDO], formula="desvio_h = verificado_h − programado_h; material = |desvio_h| ≥ 1.000 MWmed",
        numerador="Σ |desvio_h|", denominador="horas com os dois valores",
        regra_agregacao="média do desvio absoluto; contagem de horas materiais e de inversões de sentido",
-       natureza_fonte="OBSERVADO", natureza_transformacao="CALCULADO", dimensoes=["par", "hora", "dia", "mês"],
-       regras_comparabilidade=["Limiar único para todas as fronteiras; sensibilidade publicada em 500 e 2.000 MWmed."],
+       natureza_fonte="OBSERVADO e PREVISTO", natureza_componentes=[
+           {"componente": "intercâmbio verificado", "natureza": "OBSERVADO"},
+           {"componente": "intercâmbio programado (programa do dia anterior)", "natureza": "PREVISTO"}],
+       natureza_transformacao="CALCULADO", dimensoes=["par", "hora", "dia", "mês"],
+       regras_comparabilidade=["Limiar único para todas as fronteiras; sensibilidade publicada em 500 e 2.000 MWmed.",
+                               "Dias com programado repetido por 6 horas ou mais numa fronteira entre subsistemas (22/08/2026: "
+                               "NE→SE/CO exatamente 0 nas 24 horas) são rotulados; a distribuição sai com e sem eles."],
        regra_cobertura="Horas desde janeiro de 2026 (o programado não existe nos arquivos anteriores).", politica_ausencia=_AUS,
        validacoes=["programado internacional igual ao PDO das conversoras em todas as horas da amostra conferida"],
        limitacoes=["Desvio não é falha: a operação em tempo real corrige o programa.",

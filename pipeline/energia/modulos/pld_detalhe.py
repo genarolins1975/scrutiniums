@@ -34,6 +34,7 @@ import io
 import json
 import math
 import os
+import re
 import shutil
 import sqlite3
 import subprocess
@@ -63,6 +64,17 @@ DS_IPCA = "ibge_ipca_1737"             # IPCA número-índice
 DS_CONTROLE = "ons_cmo_controle"       # marca de importação de cada vintage no silver
 DS_NORMAS = "normas_pld"               # Decreto nº 5.163/2004, REN ANEEL nº 957/2021 e Procedimentos de Rede (P008)
 DS_BAL_CONF = "ons_cmo_balanco_conferencia"  # balanço do ONS baixado de novo, só para reconciliar a ponderada
+DS_NOTA_CARGA = "ons_cmo_nota_carga_energia"  # descrição do conjunto Carga de Energia do ONS (perímetro da carga), só metadado
+
+# silver do módulo Carga (família ons_carga, só leitura): carga verificada da API do ONS por
+# componente. Dá o peso de perímetro homogêneo (carga global líquida de MMGD) e a conferência
+# do perímetro da carga do balanço (ver PERIMETROS_CARGA)
+DS_CARGA_API = "ons_carga_verificada_ho"
+SILVER_CARGA = "ons_carga.db"
+URL_CARGA_API = "https://dados.ons.org.br/dataset/carga-energia-verificada"
+URL_API_CARGA = "https://apicarga.ons.org.br/prd/cargaverificada"
+AREA_API = {"SE": "SECO", "S": "S", "NE": "NE", "N": "N"}
+PACOTE_CARGA_DIARIA = "carga-energia"
 
 # silver principal (só leitura)
 DS_PLD = "ccee_pld_horario"
@@ -101,6 +113,36 @@ PARES = (("SE", "S"), ("SE", "NE"), ("SE", "N"), ("S", "NE"), ("S", "N"), ("NE",
 FRONTEIRAS = (("N", "NE"), ("N", "SE"), ("NE", "SE"), ("S", "SE"))
 INICIO = "2021-01-01"  # início do PLD horário
 
+# Perímetro da carga usada como peso da média ponderada (Balanço de Energia nos Subsistemas do
+# ONS). A descrição do conjunto Carga de Energia do ONS declara duas mudanças no que a carga
+# representa; a descrição do balanço não as repete, mas a carga horária do balanço segue a
+# mesma regra: até 04/2023 fica perto da carga global SEM a MMGD da API de carga verificada e,
+# desde 05/2023, perto da carga COM a MMGD (conferencia_perimetro, mês a mês). Os trechos são
+# citados literalmente e conferidos na descrição capturada (DS_NOTA_CARGA). Por isso a ponderada
+# pelo balanço muda de perímetro dentro da série publicada e tem componente estimado desde
+# 03/2021; a ponderada pela carga global líquida de MMGD (API) é publicada ao lado.
+PERIMETROS_CARGA = (
+    {"id": "P1", "inicio": None, "fim": "2021-02-28",
+     "trecho": ("Até fevereiro/2021, os dados representam a carga atendida por usinas despachadas e/ou programadas pelo ONS, com base "
+                "em dados recebidos pelo Sistema de Supervisão e Controle do ONS."),
+     "componente_estimado": None, "inclui_mmgd": False},
+    {"id": "P2", "inicio": "2021-03-01", "fim": "2023-04-28",
+     "trecho": ("Entre março/2021 e abril/23, os dados representam a carga atendida por usinas despachadas e/ou programadas pelo ONS, "
+                "com base em dados recebidos pelo Sistema de Supervisão e Controle do ONS, mais a previsão de geração de usinas não "
+                "despachadas pelo ONS."),
+     "componente_estimado": "previsão de geração de usinas não despachadas pelo ONS", "inclui_mmgd": False},
+    {"id": "P3", "inicio": "2023-04-29", "fim": None,
+     "trecho": ("A partir de 29/04/2023, além dos dados anteriormente considerados, passou a ser incorporado o valor estimado da micro e "
+                "minigeração distribuída (MMGD), com base em dados meteorológicos previstos."),
+     "componente_estimado": ("previsão de geração de usinas não despachadas pelo ONS e valor estimado da MMGD com base em dados "
+                             "meteorológicos previstos"), "inclui_mmgd": True},
+)
+# Coeficiente da MMGD da API no resíduo do balanço (inclinação de balanço − carga sem MMGD
+# contra a MMGD, por mês): perto de 0 quando o balanço não inclui a MMGD e perto de 1 quando
+# inclui. Nos dados de 2021 a 2026 ficou entre −0,29 e 0,12 até 04/2023 e entre 0,66 e 1,02
+# depois (construção de 01/10/2026); 0,5 separa as duas situações com folga.
+LIMIAR_COEF_MMGD = 0.5
+
 REGISTRO = {
     "id": "pld",
     "gold": GOLD,
@@ -135,8 +177,9 @@ REGISTRO = {
          "titulo": "Resolução Normativa nº 957/2021: Convenção de Comercialização (texto compilado)",
          "estado": "INTEGRADO", "url": normas_pld.URL_REN957_OFICIAL, "licenca": normas_pld.DOCUMENTOS["ren_aneel_957_2021"]["licenca"],
          "tema": "normas", "formatos": ["PDF"],
-         "descricao": ("Definição do mercado de curto prazo e valoração das exposições ao PLD. Cópia do Internet Archive do endereço "
-                       "oficial, que responde com desafio de navegador."),
+         "descricao": ("Definição do mercado de curto prazo e valoração das exposições ao PLD. O endereço oficial responde com desafio "
+                       "de navegador; o texto lido é a cópia do Internet Archive " + normas_pld.URL_REN957_COPIA + "."),
+         "url_copia": normas_pld.URL_REN957_COPIA,
          "paginas": [{"rotulo": "PLD: entenda o preço", "href": "/setor-eletrico/pld"}], "downloads": [], "quebras": []},
         {"orgao": "ONS", "nome": "procedimentos-de-rede", "slug": "ons-procedimentos-de-rede-pld", "dataset_silver": DS_NORMAS,
          "titulo": "Procedimentos de Rede: Submódulos 2.4, 4.3 e 4.5 (uso do DECOMP e do DESSEM no cálculo do CMO)",
@@ -154,8 +197,19 @@ REGISTRO = {
          "titulo": "Balanço de Energia nos Subsistemas: cópia própria para reconciliar o PLD ponderado pela carga",
          "estado": "INTEGRADO", "url": f"https://dados.ons.org.br/dataset/{PACOTE_BAL}", "licenca": c.LICENCA_ONS,
          "descricao": ("Arquivo anual baixado por este módulo e relido por leitor próprio para refazer a média ponderada pela carga "
-                       "das fichas de evidência; o peso publicado vem do silver principal."),
-         "paginas": [{"rotulo": "PLD: histórico e distribuição", "href": "/setor-eletrico/pld"}], "downloads": [], "quebras": []},
+                       "das fichas de evidência; o peso publicado vem do silver principal. A carga muda de perímetro em 03/2021 e em "
+                       "29/04/2023 (MMGD estimada incorporada; no dado horário, desde 01/05/2023)."),
+         "paginas": [{"rotulo": "PLD: histórico e distribuição", "href": "/setor-eletrico/pld"}], "downloads": [],
+         "quebras": [
+             {"data": "2021-03-01", "origem": "FONTE",
+              "descricao": ("Carga passa a incluir a previsão de geração de usinas não despachadas pelo ONS (descrição do conjunto Carga de "
+                            "Energia; não conferida no dado horário do balanço).")},
+             {"data": "2023-04-29", "origem": "FONTE",
+              "descricao": "Carga passa a incorporar o valor estimado da MMGD, com base em dados meteorológicos previstos (descrição do conjunto Carga de Energia)."},
+             {"data": "2023-05-01", "origem": "PLATAFORMA",
+              "descricao": ("Na carga horária do balanço a MMGD aparece a partir de 01/05/2023: até 30/04 ela acompanha a carga global sem "
+                            "MMGD da API de carga verificada do ONS e, depois, a carga com MMGD (módulo PLD, historico.ponderacao).")},
+         ]},
     ],
     "arquivos": {
         "/energia/series/pld_cmo_horario.csv": (
@@ -182,6 +236,10 @@ REGISTRO = {
         "/energia/series/pld_hora_dia.json": (
             "Mapa hora × dia do PLD dos últimos 90 dias até o dia de referência: dias (AAAA-MM-DD, datas corridas), e por "
             "submercado uma matriz [dia][hora 0 a 23] em R$/MWh nominais; null = hora sem PLD publicado (dia ausente fica todo null)."),
+        "/energia/series/pld_horario_recente.json": (
+            "Últimas 168 horas até o fim do dia de referência: t (início da hora, Brasília); pld e cmo_dessem por submercado (R$/MWh; "
+            "CMO do DESSEM na hora = média das duas meias horas); fluxo por fronteira N_NE, N_SE, NE_SE, S_SE (MWmed, positivo da "
+            "primeira para a segunda ponta, orientação do ONS); amplitude (maior menos menor PLD na hora). null = ausência."),
         "/energia/series/pld_evidencias.json": (
             "Fichas \"Comprove este número\" dos agregados do módulo (objeto de pipeline/energia/evidencia.py por chave), lidas sob "
             "demanda pela interface; a gold traz só o índice."),
@@ -631,6 +689,17 @@ def coletar(con, ctx):
             status["balanco_conferencia"][recurso] = res["status"]
             if res["status"] == "falha":
                 falha(f"{recurso}: {res['detalhe']}")
+    # 7b. Descrição do conjunto Carga de Energia (package_show): é ali que o ONS declara as
+    # mudanças de perímetro da carga (03/2021 e 29/04/2023, MMGD estimada). Só o metadado é
+    # guardado; os trechos de PERIMETROS_CARGA são conferidos nele a cada construção.
+    try:
+        base.escreve_gold(f"_meta_{DS_NOTA_CARGA}.json", ckan.metadados(ckan.pacote("ONS", PACOTE_CARGA_DIARIA), "ONS")
+                          | {"capturado_em": base.agora_utc()}, destino=os.path.join(base.DADOS, "meta"))
+        status["nota_carga"] = "ok"
+    except Exception as e:
+        base.registra_coleta(con, DS_NOTA_CARGA, "*", False, f"package_show: {e}")
+        status["nota_carga"] = "falha"
+        falha(f"{PACOTE_CARGA_DIARIA} package_show: {e}")
 
     # 8. Data de publicação de cada arquivo vigente do S3 do ONS conferida pelo ETag
     status["publicacao_s3"] = {}
@@ -925,6 +994,52 @@ def magnitude_revisoes(historicos):
             "horas_com_troca_de_sinal": troca_sinal, "capturas": sorted(caps)}
 
 
+def perimetro_do_dia(dia):
+    """Id do perímetro declarado pelo ONS para a carga do dia (AAAA-MM-DD)."""
+    for p_ in PERIMETROS_CARGA:
+        if (p_["inicio"] is None or dia >= p_["inicio"]) and (p_["fim"] is None or dia <= p_["fim"]):
+            return p_["id"]
+    return None
+
+
+def perimetro_do_mes(mes):
+    """Perímetro da carga num mês (AAAA-MM): o id quando o mês inteiro está num perímetro;
+    "P2_P3" (os dois ids) quando a mudança declarada cai dentro do mês. Comparar a ponderada
+    de meses com perímetros diferentes mistura a mudança do peso com a do preço."""
+    ultimo = calendar.monthrange(int(mes[:4]), int(mes[5:7]))[1]
+    a, b = perimetro_do_dia(mes + "-01"), perimetro_do_dia(f"{mes}-{ultimo:02d}")
+    return a if a == b else f"{a}_{b}"
+
+
+def conferencia_perimetro(balanco, global_api, mmgd_api):
+    """Conferência empírica do perímetro da carga do balanço contra a API de carga verificada
+    do ONS, nas horas com os três valores: {mês: {...}}. Erro absoluto médio contra a carga
+    global com MMGD e contra a carga global sem MMGD (global − MMGD), e o coeficiente da MMGD:
+    inclinação (mínimos quadrados) de [balanço − (global − MMGD)] contra a MMGD da API. Se o
+    balanço não inclui a MMGD, o resíduo não acompanha a MMGD (coeficiente perto de 0); se
+    inclui, acompanha (perto de 1). Descritivo: mostra qual perímetro a carga do balanço segue,
+    não que os dois produtos sejam iguais."""
+    acc = defaultdict(list)
+    for h, v in balanco.items():
+        g, m_ = global_api.get(h), mmgd_api.get(h)
+        if v is None or g is None or m_ is None:
+            continue
+        acc[h[:7]].append((v, g, m_))
+    out = {}
+    for mes, xs in sorted(acc.items()):
+        n = len(xs)
+        res = [v - (g - m_) for v, g, m_ in xs]
+        ms = [m_ for _, _, m_ in xs]
+        mm = sum(ms) / n
+        coef = _coef_mmgd(list(zip(res, ms)))
+        e_com = sum(abs(v - g) for v, g, _ in xs) / n
+        e_sem = sum(abs(r_) for r_ in res) / n
+        out[mes] = {"horas": n, "carga_balanco_media": sum(v for v, _, _ in xs) / n, "global_api_media": sum(g for _, g, _ in xs) / n,
+                    "mmgd_api_media": mm, "erro_abs_medio_com_mmgd": e_com, "erro_abs_medio_sem_mmgd": e_sem, "coef_mmgd": coef,
+                    "segue": "com_mmgd" if e_com < e_sem else "sem_mmgd"}
+    return out
+
+
 # Leitores independentes dos arquivos originais (fichas de evidência). Não usam os parsers
 # que alimentam o silver (fontes/ccee.py, fontes/ons.py, fontes/ons_pld.py): servem para
 # refazer o número a partir do arquivo publicado pela fonte, por outro código.
@@ -954,6 +1069,33 @@ def releitura_pld(linhas):
         mes = g[i["MES_REFERENCIA"]]
         out[sm][f"{mes[:4]}-{mes[4:6]}-{int(g[i['DIA']]):02d}T{int(g[i['HORA']]):02d}:00"] = float(g[i["PLD_HORA"]])
     return dict(out)
+
+
+def releitura_api_carga(bruto):
+    """Resposta da API de carga verificada do ONS (bytes ou texto) → {hora local: (global,
+    MMGD)} em MWmed da hora, por leitor próprio (não usa fontes/ons_carga.py). A API marca o
+    FIM da meia hora em UTC; o início no horário de Brasília (UTC−3, sem horário de verão no
+    período) é o fim menos 3 h 30 min. A hora só entra com as duas meias horas dos dois campos.
+    A API às vezes escreve campo vazio como `"campo": ,`, que vira ausência."""
+    texto = bruto.decode("utf-8") if isinstance(bruto, bytes) else bruto
+    texto = re.sub(r":\s*(?=[,}])", ": null", texto)
+    acc = defaultdict(lambda: [0.0, 0.0, 0, 0])
+    vistos = set()
+    for x in json.loads(texto):
+        ref = x.get("din_referenciautc")
+        if not ref or ref in vistos:
+            continue
+        vistos.add(ref)
+        fim = datetime.strptime(ref[:19], "%Y-%m-%dT%H:%M:%S")
+        ini = fim - timedelta(hours=3, minutes=30)
+        a = acc[ini.strftime("%Y-%m-%dT%H:00")]
+        if x.get("val_cargaglobal") is not None:
+            a[0] += float(x["val_cargaglobal"]) * 0.5
+            a[2] += 1
+        if x.get("val_cargammgd") is not None:
+            a[1] += float(x["val_cargammgd"]) * 0.5
+            a[3] += 1
+    return {h: (a[0], a[1]) for h, a in acc.items() if a[2] == 2 and a[3] == 2}
 
 
 def releitura_ons(linhas, campo, sm, inicio, fim):
@@ -1130,6 +1272,43 @@ FONTE_IPCA = _fonte("IBGE", "IPCA: número-índice (tabela 1737, variável 2266)
                     ibge_pld.URL_TABELA, ibge_pld.URL_SIDRA, LICENCA_IBGE)
 FONTE_BAL = c.fonte_ons("balanco-energia-subsistema", DS_BAL, "Balanço de Energia nos Subsistemas")
 FONTE_INT = c.fonte_ons("intercambio-nacional", DS_INT, "Intercâmbios entre Subsistemas")
+FONTE_CARGA_API = _fonte("ONS", "Carga Verificada (API de carga verificada por área, via módulo Carga)",
+                         "API cargaverificada, áreas SECO, S, NE e N: val_cargaglobal e val_cargammgd (meia hora, somadas por hora)",
+                         URL_CARGA_API, URL_API_CARGA, c.LICENCA_ONS)
+
+
+def _carga_api(ctx):
+    """Carga verificada da API do ONS por subsistema e hora, lida (só leitura) do silver do
+    módulo Carga: {"global": {sm: {hora: MWmed}}, "mmgd": {...}, "snapshot", "revisoes",
+    "vintages"} ou {"disponivel": False, "motivo"}. Testes passam ctx["con_carga"]."""
+    con = ctx.get("con_carga")
+    fechar = False
+    if con is None:
+        caminho = ctx.get("carga_db") if "carga_db" in ctx else os.path.join(base.SILVER, SILVER_CARGA)
+        if not caminho or not os.path.exists(caminho):
+            return {"disponivel": False, "motivo": f"silver do módulo Carga ({SILVER_CARGA}) ausente neste ambiente"}
+        try:
+            con = sqlite3.connect(f"file:{caminho}?mode=ro", uri=True, timeout=30)
+            fechar = True
+        except sqlite3.Error as e:
+            return {"disponivel": False, "motivo": f"silver do módulo Carga ilegível: {e}"}
+    try:
+        g = {sm: _serie(con, DS_CARGA_API, f"global_ho.{sm}") for sm in SM}
+        m_ = {sm: _serie(con, DS_CARGA_API, f"mmgd_ho.{sm}") for sm in SM}
+        if not all(g.values()) or not all(m_.values()):
+            return {"disponivel": False, "motivo": f"séries global_ho e mmgd_ho ausentes em {DS_CARGA_API} para algum subsistema"}
+        snap = c.snapshot_de(con, DS_CARGA_API)
+        rev = con.execute(
+            """SELECT serie, ref, COUNT(DISTINCT valor) FROM observacoes WHERE dataset=? AND ref>=? AND
+               (serie LIKE 'global_ho.%' OR serie LIKE 'mmgd_ho.%') GROUP BY serie, ref HAVING COUNT(DISTINCT valor) > 1
+               ORDER BY ref DESC, serie""", (DS_CARGA_API, INICIO)).fetchall()
+        vint = {v["recurso"]: v for v in base.vintages_do_dataset(con, DS_CARGA_API)}  # a última captura de cada recurso fica
+        return {"disponivel": True, "global": g, "mmgd": m_, "snapshot": snap, "revisoes": rev, "vintages": vint}
+    except sqlite3.Error as e:
+        return {"disponivel": False, "motivo": f"leitura de {DS_CARGA_API} falhou: {e}"}
+    finally:
+        if fechar:
+            con.close()
 
 
 def _fonte_composta(*fontes):
@@ -1153,7 +1332,7 @@ def _fonte_atos(atos, recurso=None):
             "recurso": recurso or "pipeline/energia/regulatorio/limites_pld.json",
             "url_dataset": ultimo["url"], "url_primaria": ultimo["url"], "licenca": "Ato normativo público da ANEEL",
             "urls_extras": [{"orgao": "ANEEL", "dataset": a["ato"], "url_dataset": a["url"], "url_primaria": a["url"],
-                             "nivel_conferencia": a.get("nivel_conferencia")} for a in atos]}
+                             "nivel_conferencia": a.get("nivel_conferencia"), "url_copia": a.get("documento_copia")} for a in atos]}
 
 
 def _corr(xs, ys):
@@ -1523,7 +1702,8 @@ def _bloco_limites(d):
             l_ = lim_dia.get(h[:10], {})
             k = sum(1 for s in SM if situacao_hora(pld[s][h], l_) == "piso")
             k_no_piso[k] += 1
-        empates.append({"ano": int(ano), "horas": len(horas_ano), "por_quantidade_no_piso": {str(k): k_no_piso.get(k, 0) for k in range(5)},
+        empates.append({"ano": int(ano), "parcial": ano == d["dia_ref"][:4] and d["dia_ref"][5:] != "12-31", "horas": len(horas_ano),
+                        "por_quantidade_no_piso": {str(k): k_no_piso.get(k, 0) for k in range(5)},
                         "horas_quatro_no_piso": k_no_piso.get(4, 0), "frac_quatro_no_piso": c.r(k_no_piso.get(4, 0) / len(horas_ano), 4) if horas_ano else None})
         for sm in SM:
             hs = [h for h in pld[sm] if h[:4] == ano and h <= ultima_hora]
@@ -1667,10 +1847,18 @@ def _bloco_historico(d):
         for h in pld[sm]:
             if h <= ultima_hora:
                 horas_mes[sm][h[:7]].append(h)
+    api = d.get("carga_api") or {"disponivel": False, "motivo": "carga verificada da API não lida"}
+    # peso de perímetro homogêneo: carga global líquida de MMGD da API (global − MMGD na mesma hora)
+    carga_sem = ({sm: {h: g_ - api["mmgd"][sm][h] for h, g_ in api["global"][sm].items() if h in api["mmgd"][sm]} for sm in SM}
+                 if api.get("disponivel") else None)
+    conf = {sm: conferencia_perimetro(carga[sm], api["global"][sm], api["mmgd"][sm]) for sm in SM} if api.get("disponivel") else None
     mensal = {"meses": meses, "dias_completos": [dias_por_mes.get(m, 0) for m in meses],
               "parcial": [mes_parcial(m, dias_por_mes.get(m, 0)) for m in meses],
-              **{sm: {"horas": [], "temporal": [], "horas_com_carga": [], "ponderada_carga": [], "mesmas_horas": [], "real": []} for sm in SM}}
-    csv_m, retiradas = [], []
+              "perimetro_carga": [perimetro_do_mes(m) for m in meses],
+              **{sm: {"horas": [], "temporal": [], "horas_com_carga": [], "ponderada_carga": [], "mesmas_horas": [],
+                      "horas_com_carga_sem_mmgd": [], "ponderada_carga_sem_mmgd": [], "mesmas_horas_sem_mmgd": [], "real": []}
+                 for sm in SM}}
+    csv_m, retiradas, retiradas_sem = [], [], []
     pond_mes = {}
     for i, mes in enumerate(meses):
         for sm in SM:
@@ -1684,6 +1872,16 @@ def _bloco_historico(d):
             if fora:
                 retiradas.append({"sm": sm, "mes": mes, "horas": len(fora),
                                   "exemplos": [{"hora": k, "carga_mwmed": c.r(w_, 3)} for k, _, w_ in fora[:5]]})
+            # mesmo controle físico para a carga líquida de MMGD (a MMGD estimada pode passar da
+            # carga global numa hora de sol; carga líquida ≤ 0 não é peso válido)
+            if carga_sem is not None:
+                validos_s, fora_s = pesos_validos([(h, pld[sm][h], carga_sem[sm].get(h)) for h in hs])
+                pond_s = media_ponderada([(p_, w_) for _, p_, w_ in validos_s])
+                if fora_s:
+                    retiradas_sem.append({"sm": sm, "mes": mes, "horas": len(fora_s),
+                                          "exemplos": [{"hora": k, "carga_mwmed": c.r(w_, 3)} for k, _, w_ in fora_s[:5]]})
+            else:
+                validos_s, fora_s, pond_s = [], [], None
             real = deflaciona(temporal, ipca.get(mes), i_base)
             col = mensal[sm]
             col["horas"].append(len(vals))
@@ -1691,12 +1889,26 @@ def _bloco_historico(d):
             col["horas_com_carga"].append(len(validos))
             col["ponderada_carga"].append(c.r(pond))
             col["mesmas_horas"].append(len(validos) == len(vals))
+            col["horas_com_carga_sem_mmgd"].append(len(validos_s))
+            col["ponderada_carga_sem_mmgd"].append(c.r(pond_s))
+            col["mesmas_horas_sem_mmgd"].append(len(validos_s) == len(vals))
             col["real"].append(c.r(real))
+            cf = (conf or {}).get(sm, {}).get(mes) or {}
             csv_m.append([mes, sm, int(mensal["parcial"][i]), len(vals), temporal, len(validos), len(fora), pond,
-                          int(len(validos) == len(vals)), ipca.get(mes), real, base_real])
+                          int(len(validos) == len(vals)), ipca.get(mes), real, base_real, mensal["perimetro_carga"][i],
+                          len(validos_s) if carga_sem is not None else None, len(fora_s) if carga_sem is not None else None, pond_s,
+                          int(len(validos_s) == len(vals)) if carga_sem is not None else None,
+                          cf.get("horas"), cf.get("carga_balanco_media"), cf.get("global_api_media"), cf.get("mmgd_api_media"),
+                          cf.get("erro_abs_medio_com_mmgd"), cf.get("erro_abs_medio_sem_mmgd"), cf.get("coef_mmgd")])
     _escreve_csv(d, "pld_mensal.csv", ["mes", "sm", "parcial", "horas", "media_temporal", "horas_com_carga", "horas_carga_nao_positiva",
-                                        "media_ponderada_carga", "mesmas_horas", "ipca_indice", "media_temporal_real", "mes_base_real"], csv_m)
+                                        "media_ponderada_carga", "mesmas_horas", "ipca_indice", "media_temporal_real", "mes_base_real",
+                                        "perimetro_carga", "horas_com_carga_sem_mmgd", "horas_carga_sem_mmgd_nao_positiva",
+                                        "media_ponderada_carga_sem_mmgd", "mesmas_horas_sem_mmgd", "horas_conferencia_perimetro",
+                                        "carga_balanco_media_mwmed", "carga_global_api_media_mwmed", "mmgd_api_media_mwmed",
+                                        "erro_abs_medio_balanco_vs_global_com_mmgd", "erro_abs_medio_balanco_vs_global_sem_mmgd",
+                                        "coef_mmgd_no_balanco"], csv_m)
     revisoes_carga = _revisoes_carga(d, pond_mes)
+    perimetro = _perimetro_peso(d, mensal, conf, api, retiradas_sem)
 
     ano_ref = int(dia_ref[:4])
     sazonal, csv_s = [], []
@@ -1772,20 +1984,192 @@ def _bloco_historico(d):
         "deflator": {"indice": "IPCA, número-índice (base dezembro de 1993 = 100), IBGE tabela 1737", "mes_base": base_real,
                      "indice_base": i_base, "ultimo_mes_do_indice": max(ipca) if ipca else None,
                      "regra": "valor em reais do mês-base = valor nominal do mês × índice do mês-base ÷ índice do mês. Mês sem índice publicado fica sem valor real."},
-        "ponderacao": {"peso": "carga verificada do subsistema na mesma hora (ONS, Balanço de Energia nos Subsistemas, MWmed; numa hora, MWmed equivale a MWh)",
+        "ponderacao": {"peso": ("carga do subsistema na mesma hora no Balanço de Energia nos Subsistemas do ONS (MWmed; numa hora, MWmed "
+                                "equivale a MWh). O perímetro dessa carga muda dentro da série: desde 03/2021 inclui a previsão de geração "
+                                "de usinas não despachadas e desde 29/04/2023 a MMGD estimada pelo ONS (ver perimetros)"),
                        "ressalva": ("A carga é publicada por subsistema do ONS e o PLD por submercado da CCEE; os quatro se correspondem pelo nome "
                                     "(Sudeste/Centro-Oeste, Sul, Nordeste, Norte), mas a correspondência de perímetro não é conferida por estes dados. "
                                     "A carga do balanço é a carga do sistema, não o consumo contabilizado na CCEE."),
                        "ultima_hora_com_carga": ult_carga,
                        "controle_fisico": ("Carga ≤ 0 numa hora não é peso válido (a carga é energia consumida): a hora sai da média "
-                                           "ponderada, o mês fica com mesmas_horas = false e a hora é listada em horas_retiradas."),
+                                           "ponderada, o mês fica com mesmas_horas = false e a hora é listada em horas_retiradas. O mesmo "
+                                           "vale para a carga líquida de MMGD (horas_retiradas_sem_mmgd)."),
                        "horas_retiradas": retiradas,
-                       "revisoes_carga": revisoes_carga},
+                       "revisoes_carga": revisoes_carga,
+                       **perimetro},
         "sazonal_mes": sazonal,
         "posicao_referencia": posicao,
         "mes_corrente": mes_corrente,
         "regimes": regimes,
         "perfil_hora_mes": perfil,
+    }
+
+
+def _nota_carga():
+    """Descrição do conjunto Carga de Energia guardada na coleta e a conferência literal de
+    cada trecho de PERIMETROS_CARGA nela. Sem a captura, os trechos ficam não conferidos."""
+    meta = ckan.meta_local(DS_NOTA_CARGA)
+    texto = normas_pld.normaliza(meta.get("notas") or "")
+    return {"url": meta.get("url") or f"https://dados.ons.org.br/dataset/{PACOTE_CARGA_DIARIA}",
+            "capturado_em": meta.get("capturado_em"), "modificado_na_fonte": meta.get("modificado"),
+            "conferidos": {p_["id"]: (normas_pld.confere(p_["trecho"], texto) if texto else None) for p_ in PERIMETROS_CARGA}}
+
+
+def inicio_observado_mmgd(balanco, global_api, mmgd_api, de="2023-04-15", ate="2023-05-31", limiar=LIMIAR_COEF_MMGD):
+    """Primeiro dia, na janela da mudança declarada, a partir do qual o coeficiente da MMGD
+    de cada dia (inclinação de balanço − carga sem MMGD contra a MMGD nas 24 horas, como em
+    conferencia_perimetro) fica no limiar ou acima em todos os subsistemas e em todos os dias
+    seguintes da janela. O coeficiente do dia usa o formato diário da MMGD (zero à noite, pico
+    ao meio-dia) e não depende do erro de nível da carga, que num dia nublado pode encobrir a
+    comparação dos erros absolutos. None sem dado na janela ou sem mudança."""
+    por_dia = defaultdict(dict)
+    for sm in balanco:
+        acc = defaultdict(list)
+        for h, v in balanco[sm].items():
+            if not (de <= h[:10] <= ate):
+                continue
+            g, m_ = global_api[sm].get(h), mmgd_api[sm].get(h)
+            if v is not None and g is not None and m_ is not None:
+                acc[h[:10]].append((v - (g - m_), m_))
+        for dia, xs in acc.items():
+            por_dia[dia][sm] = _coef_mmgd(xs)
+    dias_ = sorted(por_dia)
+    for i, dia in enumerate(dias_):
+        if all(len(por_dia[x]) == len(balanco) and all(k is not None and k >= limiar for k in por_dia[x].values()) for x in dias_[i:]):
+            return dia
+    return None
+
+
+def _coef_mmgd(pares):
+    """Inclinação (mínimos quadrados) do resíduo contra a MMGD em [(resíduo, MMGD)]; None
+    quando a MMGD não varia."""
+    n = len(pares)
+    if n < 2:
+        return None
+    mr = sum(r_ for r_, _ in pares) / n
+    mm = sum(x for _, x in pares) / n
+    var = sum((x - mm) ** 2 for _, x in pares)
+    return sum((r_ - mr) * (x - mm) for r_, x in pares) / var if var > 0 else None
+
+
+def _faixa_diferenca(difs, referencia):
+    """Texto determinístico de uma faixa de diferenças em R$/MWh contra `referencia` (escrita
+    com "da ..."): "de R$ a a R$ b/MWh acima (ou abaixo) da ..." quando todas têm o mesmo
+    sinal; com sinais trocados, a faixa com sinal; sem diferença, "igual à ..."."""
+    lo, hi = min(difs), max(difs)
+    a_ref = "à " + referencia[3:] if referencia.startswith("da ") else referencia
+    if lo == 0 and hi == 0:
+        return f"igual {a_ref}"
+    if lo >= 0 or hi <= 0:
+        a, b = sorted((abs(lo), abs(hi)))
+        faixa = f"{_br(a)}/MWh" if a == b else f"de {_br(a)} a {_br(b)}/MWh"
+        return f"{faixa} {'acima' if hi > 0 else 'abaixo'} {referencia}"
+    return f"entre {_br(lo)} e {_br(hi)}/MWh em relação {a_ref}"
+
+
+def _perimetro_peso(d, mensal, conf, api, retiradas_sem):
+    """Perímetro da carga usada como peso (seção 11.3: agregado oficial com MMGD estimada
+    preserva essa informação), conferência mês a mês contra a API, peso alternativo de
+    perímetro homogêneo e a sensibilidade da ponderada à escolha do peso."""
+    nota = d.get("nota_carga") or {"url": None, "capturado_em": None, "modificado_na_fonte": None, "conferidos": {}}
+    meses = mensal["meses"]
+    perims = []
+    for p_ in PERIMETROS_CARGA:
+        idx = [i for i, m_ in enumerate(meses) if mensal["perimetro_carga"][i] == p_["id"]]
+        conf_sm = {}
+        for sm in SM:
+            xs = [conf[sm][meses[i]] for i in idx if conf and meses[i] in conf[sm]]
+            n = sum(x["horas"] for x in xs)
+            coefs = [x["coef_mmgd"] for x in xs if x["coef_mmgd"] is not None]
+            conf_sm[sm] = {"erro_abs_medio_com_mmgd": c.r(sum(x["erro_abs_medio_com_mmgd"] * x["horas"] for x in xs) / n, 1) if n else None,
+                           "erro_abs_medio_sem_mmgd": c.r(sum(x["erro_abs_medio_sem_mmgd"] * x["horas"] for x in xs) / n, 1) if n else None,
+                           "coef_mmgd_min": c.r(min(coefs), 2) if coefs else None, "coef_mmgd_max": c.r(max(coefs), 2) if coefs else None,
+                           "meses_seguem_com_mmgd": sum(1 for x in xs if x["segue"] == "com_mmgd"),
+                           "meses_seguem_sem_mmgd": sum(1 for x in xs if x["segue"] == "sem_mmgd")}
+        perims.append({"id": p_["id"], "inicio": p_["inicio"], "fim": p_["fim"], "trecho": p_["trecho"],
+                       "trecho_conferido": nota["conferidos"].get(p_["id"]), "componente_estimado": p_["componente_estimado"],
+                       "inclui_mmgd": p_["inclui_mmgd"], "natureza_do_peso": "ESTIMADO" if p_["componente_estimado"] else "OBSERVADO",
+                       "primeiro_mes": meses[idx[0]] if idx else None, "ultimo_mes": meses[idx[-1]] if idx else None,
+                       "n_meses": len(idx), "conferencia": conf_sm if conf else None})
+    # controle: meses em que o balanço não segue o perímetro declarado (P1 e P2 sem MMGD; P3 com)
+    divergentes = []
+    if conf:
+        for i, mes in enumerate(meses):
+            per = mensal["perimetro_carga"][i]
+            if "_" in per:
+                continue  # mês da mudança: as duas situações convivem
+            com = per == "P3"
+            for sm in SM:
+                x = conf[sm].get(mes)
+                if not x:
+                    continue
+                ok = (x["segue"] == "com_mmgd") == com and (x["coef_mmgd"] is None or (x["coef_mmgd"] >= LIMIAR_COEF_MMGD) == com)
+                if not ok:
+                    divergentes.append({"sm": sm, "mes": mes, "perimetro": per, "segue": x["segue"], "coef_mmgd": c.r(x["coef_mmgd"], 2)})
+    inicio_obs = inicio_observado_mmgd(d["carga"], api["global"], api["mmgd"]) if api.get("disponivel") else None
+    quebras = [
+        {"data": "2021-03-01", "mes": "2021-03", "de": "P1", "para": "P2", "origem": "FONTE",
+         "descricao": "A carga passa a incluir a previsão de geração de usinas não despachadas pelo ONS.",
+         "conferida_no_dado": False,
+         "nota": "Sem série pública separada das usinas não despachadas, a mudança não é conferida na carga horária do balanço; vale a declaração do ONS."},
+        {"data": "2023-04-29", "mes": "2023-04", "de": "P2", "para": "P3", "origem": "FONTE",
+         "descricao": "A carga passa a incorporar o valor estimado da MMGD, com base em dados meteorológicos previstos.",
+         "conferida_no_dado": inicio_obs is not None, "inicio_observado_no_balanco": inicio_obs,
+         "nota": ("Conferida contra a API de carga verificada do ONS: a carga horária do balanço passa a acompanhar a carga com MMGD a "
+                  f"partir de {c.data_br(inicio_obs)} nos quatro subsistemas." if inicio_obs else
+                  "Não conferida nesta construção (API de carga verificada indisponível ou sem dado na janela da mudança).")},
+    ]
+    # sensibilidade: último mês completo com as três médias nos quatro submercados
+    sens = []
+    for i in range(len(meses) - 1, -1, -1):
+        if mensal["parcial"][i]:
+            continue
+        linhas = []
+        for sm in SM:
+            col = mensal[sm]
+            t, pb, ps = col["temporal"][i], col["ponderada_carga"][i], col["ponderada_carga_sem_mmgd"][i]
+            if None in (t, pb, ps) or not col["mesmas_horas"][i] or not col["mesmas_horas_sem_mmgd"][i]:
+                linhas = []
+                break
+            linhas.append({"sm": sm, "temporal": t, "ponderada_carga": pb, "ponderada_carga_sem_mmgd": ps,
+                           "ponderada_menos_temporal": c.r(pb - t), "sem_mmgd_menos_temporal": c.r(ps - t),
+                           "ponderada_menos_sem_mmgd": c.r(pb - ps)})
+        if linhas:
+            sens = {"mes": meses[i], "perimetro_carga": mensal["perimetro_carga"][i], "por_sm": linhas,
+                    "texto": (f"Em {c.mes_br(meses[i])}, a ponderada pela carga do balanço"
+                              + (" (com a MMGD estimada)" if "P3" in mensal["perimetro_carga"][i] else "") + " ficou "
+                              + _faixa_diferenca([x["ponderada_menos_sem_mmgd"] for x in linhas], "da ponderada pela carga sem MMGD")
+                              + ", e a distância entre ela e a média temporal ficou "
+                              + _faixa_diferenca([x["ponderada_menos_temporal"] for x in linhas], "da média temporal")
+                              + ", nos quatro submercados. A escolha do peso muda o resultado; as duas ponderadas são publicadas, cada uma "
+                                "com o seu perímetro.")}
+            break
+    return {
+        "perimetros": perims,
+        "fonte_perimetro": {"conjunto": "Carga de Energia (ONS), descrição do conjunto", "url": nota["url"], "capturado_em": nota["capturado_em"],
+                            "modificado_na_fonte": nota["modificado_na_fonte"],
+                            "nota": ("A descrição do Balanço de Energia nos Subsistemas não trata do perímetro da carga; os trechos são do conjunto "
+                                     "Carga de Energia do mesmo órgão, e a conferência mês a mês contra a API de carga verificada mostra que a "
+                                     "carga horária do balanço segue a mudança de 2023.")},
+        "quebras": quebras,
+        "conferencia_perimetro": {"disponivel": bool(conf), "motivo": None if conf else api.get("motivo"),
+                                  "limiar_coef_mmgd": LIMIAR_COEF_MMGD, "meses_divergentes": divergentes,
+                                  "metodo": ("Nas horas com carga do balanço, carga global e MMGD da API: erro absoluto médio contra a carga com "
+                                             "MMGD e contra a carga sem MMGD, e coeficiente da MMGD (inclinação de balanço − carga sem MMGD "
+                                             "contra a MMGD, mínimos quadrados) por mês; valores mensais em pld_mensal.csv.")},
+        "peso_sem_mmgd": {"disponivel": bool(api.get("disponivel")), "motivo": None if api.get("disponivel") else api.get("motivo"),
+                          "peso": ("carga global líquida de MMGD do subsistema na mesma hora: val_cargaglobal − val_cargammgd da API de carga "
+                                   "verificada do ONS (parcela supervisionada mais a não supervisionada da medição para faturamento da CCEE), "
+                                   "soma das duas meias horas da hora"),
+                          "natureza": "OBSERVADO",
+                          "perimetro": ("o mesmo em toda a série: a descrição e o dicionário da API não declaram mudança de perímetro; a MMGD, "
+                                        "estimada, fica fora do peso"),
+                          "ultima_hora": max((max(api["global"][sm]) for sm in SM), default=None) if api.get("disponivel") else None,
+                          "horas_retiradas": retiradas_sem},
+        "comparabilidade": ("ponderada_carga só é comparável entre meses do mesmo perimetro_carga (P1 até 02/2021; P2 de 03/2021 a 04/2023; "
+                            "P3 desde 05/2023; 2023-04 tem a mudança declarada). Para comparar meses de perímetros diferentes, use "
+                            "ponderada_carga_sem_mmgd, de perímetro homogêneo."),
+        "sensibilidade_peso": sens or None,
     }
 
 
@@ -1869,6 +2253,9 @@ def _bloco_regional(d):
         amplitude.append({"periodo": per["id"], "rotulo": per["rotulo"], "inicio": hs[0], "fim": hs[-1], "horas": len(hs),
                           "horas_com_separacao": sum(1 for a in av if a > TOL + EPS),
                           "frac_com_separacao": c.r(sum(1 for a in av if a > TOL + EPS) / len(hs), 4),
+                          # sensibilidade ao limiar: a gold de operação pld.json conta horas com
+                          # diferença acima de R$ 1,00/MWh; a mesma contagem aqui reconcilia as duas
+                          "horas_acima_1": sum(1 for a in av if a > 1.0 + EPS), "horas_acima_10": sum(1 for a in av if a > 10.0 + EPS),
                           "media": c.r(c.media(av)), "p50": c.r(c.quantil(av, 0.5)), "p95": c.r(c.quantil(av, 0.95)),
                           "max": c.r(amax), "quando_max": hmax})
         for a, b in PARES:
@@ -1944,6 +2331,9 @@ def _bloco_regional(d):
         "regra_separacao": ("Dois submercados estão separados numa hora quando |PLD_A − PLD_B| > R$ 0,01/MWh (mais de um centavo), sempre na mesma "
                             "hora e na mesma publicação da CCEE. Diferenças de exatamente um centavo são frequentes e ficam contadas à parte "
                             "(horas_diferenca_de_um_centavo), sem entrar na separação."),
+        "limiar_sensibilidade": ("horas_acima_1 e horas_acima_10 contam as horas com diferença acima de R$ 1,00/MWh e de R$ 10,00/MWh. A gold "
+                                 "de operação pld.json (resumo por janela) usa R$ 1,00/MWh: nas mesmas janelas, horas_acima_1 da amplitude "
+                                 "é o número dela (controle publicado); horas_com_separacao usa R$ 0,01/MWh e por isso é maior."),
         "regra_fluxo": ("Fluxo verificado pelo ONS na fronteira, na mesma hora, com sinal positivo da primeira para a segunda ponta. "
                         f"Fluxo de até {FLUXO_NULO:.0f} MWmed em módulo é tratado como nulo. A contagem é descritiva: os limites de "
                         "intercâmbio não estão integrados e nenhuma hora é classificada como congestionada."),
@@ -1954,12 +2344,44 @@ def _bloco_regional(d):
     }
 
 
+def reconcilia_pld_operacao(amplitude, gold_pld):
+    """Contagem de horas com diferença acima de R$ 1,00/MWh entre submercados: amplitude
+    deste módulo contra `periodos.<janela>.diferenca.horas_acima_limiar` da gold de operação
+    pld.json, só quando a janela (primeira e última hora) e o limiar são os mesmos. Evita que
+    as páginas mostrem duas contagens irreconciliáveis para a mesma janela."""
+    if not gold_pld or not gold_pld.get("periodos"):
+        return {"comparadas": [], "divergentes": [], "detalhe": "gold pld.json ausente neste ambiente: não comparado"}
+    if gold_pld.get("limiar_diferenca") != 1.0:
+        return {"comparadas": [], "divergentes": [], "detalhe": f"pld.json usa limiar {gold_pld.get('limiar_diferenca')}: não comparado"}
+    comparadas, divergentes, outras = [], [], []
+    for a in amplitude:
+        p_ = gold_pld["periodos"].get(a["periodo"])
+        if not isinstance(p_, dict) or "diferenca" not in p_:
+            continue
+        if (p_.get("inicio"), p_.get("fim")) != (a["inicio"], a["fim"]):
+            outras.append(a["periodo"])
+            continue
+        x = {"periodo": a["periodo"], "horas": a["horas"], "horas_pld_json": p_.get("n_horas"), "acima_1": a["horas_acima_1"],
+             "acima_1_pld_json": p_["diferenca"].get("horas_acima_limiar")}
+        comparadas.append(x)
+        if x["horas"] != x["horas_pld_json"] or x["acima_1"] != x["acima_1_pld_json"]:
+            divergentes.append(x)
+    det = "; ".join(f"{x['periodo']}: {x['acima_1']} de {x['horas']} horas aqui e {x['acima_1_pld_json']} de {x['horas_pld_json']} em pld.json"
+                    for x in comparadas)
+    if outras:
+        det += ("; " if det else "") + "janelas diferentes de pld.json (não comparadas): " + ", ".join(outras)
+    return {"comparadas": comparadas, "divergentes": divergentes, "detalhe": det or "nenhuma janela em comum"}
+
+
 def _horario_recente(d, horas=168):
     """Janela horária comum aos painéis alinhados (P009 e P012): últimas 168 horas até o
-    fim do dia de referência, com PLD, CMO do DESSEM na hora e fluxo nas fronteiras."""
+    fim do dia de referência, com PLD, CMO do DESSEM na hora e fluxo nas fronteiras. Vai em
+    arquivo próprio lido sob demanda (contrato 5.1, como o mapa hora × dia): a gold traz o
+    ponteiro e o recorte, para ficar no tamanho de publicação."""
     fim = datetime.fromisoformat(d["dia_ref"] + "T23:00")
     ts = [(fim - timedelta(hours=horas - 1 - i)).strftime("%Y-%m-%dT%H:00") for i in range(horas)]
-    out = {"t": ts, "pld": {}, "cmo_dessem": {}, "fluxo": {}, "amplitude": []}
+    out = {"gerado_em": base.agora_utc(), "unidade": "R$/MWh nominais; fluxo em MWmed", "fuso": "horário de Brasília",
+           "t": ts, "pld": {}, "cmo_dessem": {}, "fluxo": {}, "amplitude": []}
     for sm in SM:
         out["pld"][sm] = [c.r(d["pld"][sm].get(t)) for t in ts]
         out["cmo_dessem"][sm] = [c.r(d["cmo_h"][sm].get(t)) for t in ts]
@@ -1969,7 +2391,13 @@ def _horario_recente(d, horas=168):
     for t in ts:
         vs = [d["pld"][sm].get(t) for sm in SM]
         out["amplitude"].append(c.r(max(vs) - min(vs)) if None not in vs else None)
-    return out
+    base.escreve_gold("pld_horario_recente.json", out, destino=d.get("destino_csv") or base.SERIES)
+    return {"url": "/energia/series/pld_horario_recente.json", "inicio": ts[0], "fim": ts[-1], "horas": horas,
+            "horas_com_pld_nos_quatro": sum(1 for x in out["amplitude"] if x is not None),
+            "horas_com_cmo_nos_quatro": sum(1 for i in range(horas) if all(out["cmo_dessem"][sm][i] is not None for sm in SM)),
+            "horas_com_fluxo": {k: sum(1 for x in v if x is not None) for k, v in out["fluxo"].items()},
+            "nota": ("Últimas 168 horas até o fim do dia de referência, lidas sob demanda: PLD, CMO do DESSEM na mesma hora, fluxo nas "
+                     "fronteiras (positivo da primeira para a segunda ponta) e amplitude entre submercados; ausência = null.")}
 
 
 def _achado_a02(d, con):
@@ -2030,10 +2458,13 @@ def _achado_a02(d, con):
     confirmado = all(a["linhas_zeradas_no_trecho"] == a["linhas_esperadas_no_trecho"] and a["linhas_esperadas_no_trecho"] > 0
                      and a["parquet"]["celulas"] and a["parquet"]["celulas_iguais"] == a["parquet"]["celulas"] for a in arquivos)
     ini_meia, fim_meia = _dmais(ini, -6) + "T00:00", fim + "T23:30"
+    n_dias = (date.fromisoformat(fim) - date.fromisoformat(_dmais(ini, -6))).days + 1
     dessem = []
     for sm in SM:
         vs = [v for k, v in sh[sm].items() if ini_meia <= k <= fim_meia]
-        dessem.append({"sm": sm, "meias_horas": len(vs), "meias_horas_zero": sum(1 for v in vs if v == 0),
+        dias_pub = {k[:10] for k in sh[sm] if ini_meia <= k <= fim_meia}
+        dessem.append({"sm": sm, "meias_horas": len(vs), "meias_horas_esperadas": n_dias * 48, "dias_sem_publicacao": n_dias - len(dias_pub),
+                       "meias_horas_zero": sum(1 for v in vs if v == 0),
                        "frac_zero": c.r(sum(1 for v in vs if v == 0) / len(vs), 4) if vs else None,
                        "media": c.r(c.media(vs)), "max": c.r(max(vs)) if vs else None})
     pld_p = []
@@ -2053,7 +2484,9 @@ def _achado_a02(d, con):
              "é zero nos quatro subsistemas, na média semanal e nos três patamares. "
              + ("Os zeros estão no arquivo original: CSV e Parquet oficiais conferem célula a célula. " if confirmado else
                 "A conferência no arquivo original não fechou em todos os arquivos (ver detalhes). ")
-             + f"No mesmo período, o CMO semi-horário do DESSEM foi zero em {_pct(se_d['frac_zero'])} das meias horas do Sudeste/Centro-Oeste"
+             + f"No mesmo período, o CMO semi-horário do DESSEM foi zero em {_pct(se_d['frac_zero'])} das meias horas publicadas do Sudeste/Centro-Oeste "
+             f"({_num_br(se_d['meias_horas_zero'], 0)} de {_num_br(se_d['meias_horas'], 0)}; o período tem {_num_br(se_d['meias_horas_esperadas'], 0)} "
+             f"meias horas e {se_d['dias_sem_publicacao']} dias sem nenhuma publicada)"
              + (f" e o PLD do Sudeste/Centro-Oeste ficou no piso em {_pct(se_p['frac_piso'])} das horas"
                 + ("." if se_p["horas_com_limite"] == se_p["horas"] else f" com limite vigente conhecido ({se_p['horas_com_limite']} de {se_p['horas']}).")
                 if se_p["frac_piso"] is not None else
@@ -2454,6 +2887,7 @@ def construir(con, ctx):
          "limites_origem": origem, "limites_conferido_em": dado.get("conferido_em") if isinstance(dado, dict) else None,
          "pendencias_limites": pendencias_limites, "momento": momento_do_calculo(citadas_ids),
          "historico_carga": {sm: base.revisoes_da_serie(cp, DS_BAL, f"carga.{sm}") for sm in SM},
+         "carga_api": _carga_api(ctx), "nota_carga": _nota_carga(),
          "dicionario": dicionario, "notas": notas, "destino_csv": ctx.get("destino_csv")}
 
     # CSV horário alinhado (CMO do DESSEM na hora e PLD)
@@ -2522,6 +2956,21 @@ def construir(con, ctx):
              ("nenhuma hora com carga menor ou igual a zero nos meses publicados" if not ret else
               "horas com carga menor ou igual a zero retiradas da média ponderada: "
               + "; ".join(f"{x['sm']} {x['mes']}: {x['horas']}" for x in ret)), ressalva=True)
+    cpm = bloco_hist["ponderacao"]["conferencia_perimetro"]
+    q23 = next(q for q in bloco_hist["ponderacao"]["quebras"] if q["data"] == "2023-04-29")
+    nconf = bloco_hist["ponderacao"]["perimetros"]
+    nao_conf = [p_["id"] for p_ in nconf if p_["trecho_conferido"] is not True]
+    controle("Perímetro da carga do balanço (peso da ponderada) conferido contra a API de carga verificada",
+             cpm["disponivel"] and not cpm["meses_divergentes"] and q23["conferida_no_dado"] and not nao_conf,
+             (("não executado: " + str(cpm["motivo"])) if not cpm["disponivel"] else
+              (f"{len(cpm['meses_divergentes'])} meses-subsistema em que a carga do balanço não segue o perímetro declarado"
+               + (" (" + "; ".join(f"{x['sm']} {x['mes']}" for x in cpm["meses_divergentes"][:8]) + ")" if cpm["meses_divergentes"] else "")
+               + f"; MMGD presente na carga do balanço desde {c.data_br(q23['inicio_observado_no_balanco']) if q23['inicio_observado_no_balanco'] else 'data não identificada'}"
+               + (f"; trechos da descrição do ONS não conferidos na captura: {', '.join(nao_conf)}" if nao_conf else
+                  "; trechos da descrição do ONS conferidos literalmente"))), ressalva=True)
+    rec_op = reconcilia_pld_operacao(bloco_reg["amplitude"], ctx.get("gold_pld") if "gold_pld" in ctx else base.le_gold("pld.json"))
+    controle("Amplitude com R$ 1,00/MWh igual à contagem da gold de operação pld.json nas mesmas janelas",
+             bool(rec_op["comparadas"]) and not rec_op["divergentes"], rec_op["detalhe"], ressalva=not rec_op["comparadas"])
     pubs = _publicacoes_conferidas(con, DS_SH)
     controle("Data de publicação do CMO semi-horário conferida no S3 (ETag igual ao MD5 do arquivo capturado)",
              pubs["conferida"] == pubs["arquivos"] and pubs["arquivos"] > 0,
@@ -2547,8 +2996,20 @@ def construir(con, ctx):
         lim_dessem.append("O CMO de um dia é calculado na véspera (D-1) para a programação do dia D (Procedimentos de Rede, Submódulo 2.4, "
                           "item 2.5.1.2): por isso o arquivo já traz o dia seguinte, que é valor programado, não realizado.")
     lim_pond = [bloco_hist["ponderacao"]["ressalva"],
-                "Mês parcial marcado; a ponderada usa só as horas com carga publicada e positiva (campo mesmas_horas).",
+                ("O peso da ponderada (carga do Balanço de Energia nos Subsistemas) muda de perímetro dentro da série, segundo a descrição do "
+                 "conjunto Carga de Energia do ONS: até 02/2021, carga atendida por usinas despachadas ou programadas pelo ONS; de 03/2021 a "
+                 "04/2023, mais a previsão de geração de usinas não despachadas; desde 29/04/2023, mais a MMGD estimada com base em dados "
+                 "meteorológicos previstos (no dado horário do balanço, desde "
+                 + (c.data_br(q23["inicio_observado_no_balanco"]) if q23["inicio_observado_no_balanco"] else "data não conferida") + "). "
+                 "A ponderada só é comparável entre meses do mesmo perimetro_carga; desde 03/2021 o peso tem componente estimado."),
+                ("ponderada_carga_sem_mmgd usa a carga global líquida de MMGD da API de carga verificada do ONS (perímetro homogêneo, sem a "
+                 "MMGD estimada) e é a série para comparar meses de perímetros diferentes; vem do silver do módulo Carga e cobre as horas "
+                 "com as duas meias horas publicadas."),
+                "Mês parcial marcado; a ponderada usa só as horas com carga publicada e positiva (campos mesmas_horas e mesmas_horas_sem_mmgd).",
                 "Moeda constante é perspectiva adicional; o IPCA mede preços ao consumidor, não custos de energia."]
+    sp = bloco_hist["ponderacao"]["sensibilidade_peso"]
+    if sp:
+        lim_pond.append(sp["texto"])
     if ret:
         lim_pond.append("Ressalva: o ONS publicou carga menor ou igual a zero em algumas horas; elas saíram da média ponderada ("
                         + "; ".join(f"{x['sm']} {x['mes']}: {x['horas']} horas" for x in ret) + ").")
@@ -2558,6 +3019,13 @@ def construir(con, ctx):
             f"{x['sm']} {x['mes']} ({x['horas_revisadas']} horas, até {_num_br(x['max_abs_mwmed'], 1)} MWmed"
             + (f", efeito de {_br(x['efeito_na_ponderada'])}/MWh na ponderada" if x["efeito_na_ponderada"] is not None else "") + ")"
             for x in rc) + "; ver ponderacao.revisoes_carga.")
+    api = d["carga_api"]
+    api_ok = bool(api.get("disponivel"))
+    rev_carga_bal = _revisoes_de_historicos(
+        [(f"carga.{sm}", ref, h) for sm in SM for ref, h in d["historico_carga"][sm] if ref >= INICIO], snap_bal)
+    rev_api = _revisoes_de_linhas(api["revisoes"], api["snapshot"]) if api_ok else None
+    rev_hist = _revisoes_compostas([("PLD (CCEE)", snap_pld.get("revisoes")), ("carga do balanço (ONS)", rev_carga_bal),
+                                    ("carga da API (ONS)", rev_api)])
     fonte_rel = _fonte_composta(c.FONTE_CCEE_PLD, FONTE_SH, *([_fonte_atos(atos)] if atos else []))
     prov = {
         "cmo_semi_horario": c.proveniencia(
@@ -2598,14 +3066,35 @@ def construir(con, ctx):
                                                "Estatística descritiva: a diferença não é explicada por estes dados."],
             download="/energia/series/pld_cmo_horario.csv"),
         "historico_mensal": c.proveniencia(
-            indicador="PLD médio mensal: média temporal, média ponderada pela carga e média temporal em moeda constante",
-            natureza="CALCULADO", fonte=_fonte_composta(c.FONTE_CCEE_PLD, FONTE_BAL, FONTE_IPCA), unidade="R$/MWh",
-            frequencia="mensal", periodo={"inicio": INICIO[:7], "fim": dia_ref[:7]}, cobertura={"inicio": INICIO, "fim": dia_ref},
-            capturado_em=cap_pld, snapshot=snap_pld, publicacao_informada=False,
-            transformacoes=["média simples das horas do mês", "média ponderada pela carga verificada do subsistema na mesma hora (só carga positiva)",
+            indicador=("PLD médio mensal: média temporal, médias ponderadas pela carga (balanço do ONS e carga líquida de MMGD) e média "
+                       "temporal em moeda constante"),
+            natureza="CALCULADO", fonte=_fonte_composta(c.FONTE_CCEE_PLD, FONTE_BAL, *([FONTE_CARGA_API] if api_ok else []), FONTE_IPCA),
+            unidade="R$/MWh", frequencia="mensal", periodo={"inicio": INICIO[:7], "fim": dia_ref[:7]}, cobertura={"inicio": INICIO, "fim": dia_ref},
+            capturado_em=cap_pld, snapshot=snap_pld, publicacao_informada=False, revisoes=rev_hist,
+            transformacoes=["média simples das horas do mês",
+                            "média ponderada pela carga do subsistema no balanço do ONS na mesma hora (só carga positiva), com o perímetro da carga de cada mês",
+                            "média ponderada pela carga global líquida de MMGD da API de carga verificada do ONS na mesma hora (só carga positiva)",
+                            "conferência do perímetro da carga do balanço contra a API, mês a mês",
                             "deflação pelo IPCA para reais do mês-base"],
-            formula="temporal = Σ PLD_h ÷ n; ponderada = Σ PLD_h × carga_h ÷ Σ carga_h nas horas com carga_h > 0; real = temporal × IPCA(base) ÷ IPCA(mês)",
+            formula=("temporal = Σ PLD_h ÷ n; ponderada = Σ PLD_h × carga_h ÷ Σ carga_h nas horas com carga_h > 0 (carga do balanço); "
+                     "ponderada_sem_mmgd = Σ PLD_h × (global_h − MMGD_h) ÷ Σ (global_h − MMGD_h) nas horas com global_h − MMGD_h > 0; "
+                     "real = temporal × IPCA(base) ÷ IPCA(mês)"),
             limitacoes=comum_lim + lim_ccee + lim_pond, download="/energia/series/pld_mensal.csv"),
+        "peso_carga_balanco": c.proveniencia(
+            indicador="Carga do subsistema no Balanço de Energia nos Subsistemas (peso da média ponderada pela carga)",
+            natureza="ESTIMADO", fonte=FONTE_BAL, unidade="MWmed", frequencia="horária",
+            periodo={"inicio": INICIO + "T00:00", "fim": bloco_hist["ponderacao"]["ultima_hora_com_carga"] or ultima_hora},
+            cobertura={"inicio": INICIO + "T00:00", "fim": bloco_hist["ponderacao"]["ultima_hora_com_carga"] or ultima_hora},
+            capturado_em=c.ultima_captura(snap_bal), snapshot=snap_bal, revisoes=rev_carga_bal,
+            transformacoes=["série carga.<subsistema> do silver principal, como publicada", "perímetro de cada mês pela descrição do ONS"],
+            limitacoes=[("Publicada pelo ONS como carga verificada, mas com componentes estimados: desde 03/2021 inclui a previsão de geração "
+                         "de usinas não despachadas pelo ONS e desde 29/04/2023 o valor estimado da MMGD com base em dados meteorológicos "
+                         "previstos (descrição do conjunto Carga de Energia do ONS). Natureza ESTIMADO pela parcela estimada; os meses até "
+                         "02/2021 (perímetro P1) não têm esse componente."),
+                        "O perímetro muda em 03/2021 e em 29/04/2023 (no dado horário, " + (c.data_br(q23["inicio_observado_no_balanco"])
+                                                                                         if q23["inicio_observado_no_balanco"] else "data não conferida") + "): séries de perímetros diferentes não são comparáveis sem ajuste.",
+                        "O ONS avisa que os dados passam por consistência recorrente e podem mudar depois de publicados."],
+            download="/energia/series/pld_mensal.csv"),
         "sazonal": c.proveniencia(
             indicador="Percentis sazonais da média diária do PLD (mesmo mês e mesma semana ISO de anos anteriores)",
             natureza="CALCULADO", fonte=c.FONTE_CCEE_PLD, unidade="R$/MWh", frequencia="diária",
@@ -2669,6 +3158,21 @@ def construir(con, ctx):
                         "Só os dias com captura direta entram; a amostra é curta."],
             download=None),
     }
+    if api_ok:
+        ult_api = bloco_hist["ponderacao"]["peso_sem_mmgd"]["ultima_hora"]
+        prov["peso_carga_sem_mmgd"] = c.proveniencia(
+            indicador="Carga global líquida de MMGD por subsistema (peso da média ponderada sem MMGD)",
+            natureza="OBSERVADO", fonte=FONTE_CARGA_API, unidade="MWmed", frequencia="horária (soma das duas meias horas da API)",
+            periodo={"inicio": INICIO + "T00:00", "fim": ult_api}, cobertura={"inicio": INICIO + "T00:00", "fim": ult_api},
+            capturado_em=c.ultima_captura(api["snapshot"]), snapshot=api["snapshot"], revisoes=rev_api,
+            transformacoes=["séries global_ho e mmgd_ho do silver do módulo Carga (meias horas da API somadas por hora, hora só com as duas meias horas)",
+                            "carga líquida de MMGD = carga global − MMGD na mesma hora"],
+            limitacoes=["Parcela supervisionada pelo ONS mais a não supervisionada, da medição para faturamento da CCEE (dicionário da API, versão "
+                        "de 30/10/2023); a MMGD, estimada pelo ONS, fica fora do peso.",
+                        "Lida do silver do módulo Carga (só leitura): a cobertura acompanha a última coleta daquele módulo, e o dia em curso é descartado.",
+                        "A descrição e o dicionário da API não declaram mudança de perímetro; a homogeneidade é a declarada pela fonte, não conferida por outra série.",
+                        "O ONS avisa que os dados passam por consistência recorrente e podem mudar depois de publicados."],
+            download="/energia/series/pld_mensal.csv")
     if bloco_lim.get("disponivel"):
         conf_txt = bloco_lim["conferencia_atos"]["leitura"]
         prov["limites"] = c.proveniencia(
@@ -2723,15 +3227,15 @@ def construir(con, ctx):
         "metricas": {
             "cmo_pld": ["pld_cmo_dessem_hora", "pld_cmo_dessem_semana", "pld_pld_semana", "pld_diferenca_pld_cmo"],
             "limites": ["pld_horas_piso", "pld_horas_teto_horario", "pld_dias_teto_estrutural", "pld_empates_piso"],
-            "historico": ["pld_media_mensal_temporal", "pld_media_mensal_ponderada_carga", "pld_media_mensal_real",
-                          "pld_percentil_sazonal", "pld_quantis_regime", "pld_perfil_hora_mes"],
+            "historico": ["pld_media_mensal_temporal", "pld_media_mensal_ponderada_carga", "pld_media_mensal_ponderada_carga_sem_mmgd",
+                          "pld_media_mensal_real", "pld_percentil_sazonal", "pld_quantis_regime", "pld_perfil_hora_mes"],
             "regional": ["pld_amplitude_horaria", "pld_separacao_par", "pld_diferenca_media_par", "pld_sentido_fluxo_separacao"],
             "achados": ["pld_sequencia_zero_cmo_semanal", "pld_folga_lat1d"],
         },
         # proveniência de cada métrica: `calculo` descreve o número publicado (natureza da
         # transformação) e `fonte`, quando a gold tem a proveniência do dado de origem, a
         # natureza da fonte; as duas têm de coincidir com o catálogo (teste)
-        "metricas_proveniencia": {k: {"calculo": v[0], "fonte": v[1]} for k, v in METRICA_PROVENIENCIA.items()
+        "metricas_proveniencia": {k: {"calculo": v[0], "fonte": v[1] if v[1] in prov else None} for k, v in METRICA_PROVENIENCIA.items()
                                   if v[0] in prov},
         "controles": controles,
         "proveniencia": prov,
@@ -2740,7 +3244,8 @@ def construir(con, ctx):
                                   for k, e in evid.items()}},
         "snapshots": {k: _snap_resumo(v) for k, v in (("cmo_semi_horario", snap_sh), ("cmo_semanal_original", snap_a02),
                                                       ("dicionarios", snap_dic), ("ipca", snap_ipca), ("normas", snap_normas), ("pld", snap_pld),
-                                                      ("cmo_semanal", snap_sem), ("balanco", snap_bal), ("intercambio", snap_int))},
+                                                      ("cmo_semanal", snap_sem), ("balanco", snap_bal), ("intercambio", snap_int),
+                                                      *((("carga_api", api["snapshot"]),) if api_ok else ()))},
         "downloads": [{"rotulo": r_, "url": u_} for u_, r_ in (
             ("/energia/series/pld_cmo_horario.csv", "CMO do DESSEM na hora e PLD horário, quatro submercados (CSV)"),
             ("/energia/series/pld_cmo_semanal.csv", "CMO semanal, média do DESSEM e média do PLD por semana operativa (CSV)"),
@@ -2748,6 +3253,7 @@ def construir(con, ctx):
             ("/energia/series/pld_mensal.csv", "PLD mensal: temporal, ponderado pela carga e em moeda constante (CSV)"),
             ("/energia/series/pld_sazonal.csv", "Percentis sazonais da média diária por mês (CSV)"),
             ("/energia/series/pld_hora_dia.json", "Mapa hora × dia do PLD, últimos 90 dias (JSON)"),
+            ("/energia/series/pld_horario_recente.json", "PLD, CMO do DESSEM e fluxo nas fronteiras, últimas 168 horas (JSON)"),
             ("/energia/series/pld_separacao_diaria.csv", "Separação diária por par de submercados e fluxo na fronteira (CSV)"),
             ("/energia/series/pld_amplitude_diaria.csv", "Amplitude diária entre submercados (CSV)"))],
     }
@@ -2767,7 +3273,8 @@ METRICA_PROVENIENCIA = {
     "pld_dias_teto_estrutural": ("limites", None),
     "pld_empates_piso": ("limites", None),
     "pld_media_mensal_temporal": ("historico_mensal", None),
-    "pld_media_mensal_ponderada_carga": ("historico_mensal", None),
+    "pld_media_mensal_ponderada_carga": ("historico_mensal", "peso_carga_balanco"),
+    "pld_media_mensal_ponderada_carga_sem_mmgd": ("historico_mensal", "peso_carga_sem_mmgd"),
     "pld_media_mensal_real": ("historico_mensal", None),
     "pld_percentil_sazonal": ("sazonal", None),
     "pld_quantis_regime": ("distribuicao", None),
@@ -2827,7 +3334,7 @@ def _vintage_regulacao(doc_id, ctx):
     try:
         con = sqlite3.connect(f"file:{caminho}?mode=ro", uri=True, timeout=30)
         try:
-            row = con.execute("""SELECT arquivo, sha256, capturado_em FROM vintages WHERE dataset='regulacao_documentos' AND recurso=?
+            row = con.execute("""SELECT arquivo, sha256, capturado_em, url FROM vintages WHERE dataset='regulacao_documentos' AND recurso=?
                                  ORDER BY capturado_em DESC LIMIT 1""", (doc_id,)).fetchone()
         finally:
             con.close()
@@ -2835,7 +3342,9 @@ def _vintage_regulacao(doc_id, ctx):
         return None
     if not row or not row[0] or not os.path.exists(os.path.join(base.RAIZ, row[0])):
         return None
-    return {"arquivo": row[0], "sha256": row[1], "capturado_em": row[2]}
+    # url: endereço de onde o arquivo foi efetivamente baixado (a cópia do Internet Archive
+    # quando o endereço oficial da ANEEL responde 403), distinto do endereço oficial do ato
+    return {"arquivo": row[0], "sha256": row[1], "capturado_em": row[2], "url_baixada": row[3]}
 
 
 def _confere_ato_vigente(d, ctx):
@@ -2848,7 +3357,8 @@ def _confere_ato_vigente(d, ctx):
     ato = next((a for a in d["atos"] if a["ato"] == nome), None)
     if not ato:
         return {"confere": False, "detalhe": "nenhum ato vigente informa o piso no dia de referência", "arquivo": None, "ato": None}
-    base_ = {"ato": ato["ato"], "url": ato["url"], "documento": ato.get("documento_valores"), "nivel_conferencia": ato.get("nivel_conferencia"),
+    base_ = {"ato": ato["ato"], "url": ato["url"], "url_copia": ato.get("documento_copia"), "url_baixada": None,
+             "documento": ato.get("documento_valores"), "nivel_conferencia": ato.get("nivel_conferencia"),
              "publicado_em": ato.get("data_publicacao"), "edicao": ato.get("dou") or (f"publicado em {ato['data_publicacao']}"
                                                                                      if ato.get("data_publicacao") else None),
              "titulo": ato.get("documento_titulo") or ato["ato"], "arquivo": None, "sha256": None, "capturado_em": None, "pagina": None}
@@ -2947,6 +3457,31 @@ def _reconcilia(rotulo, horas, relidos, arquivos, calc, valor, silver, toleranci
     x = calc(relidos)
     return ev.reconciliacao(f"releitura de {_origem_txt(arquivos)} por leitor independente (sem o parser que alimenta o silver): {fmt(x)}",
                             "aprovado" if abs(x - valor) <= tolerancia else "reprovado", tol_txt), None
+
+
+def _revisoes_de_linhas(linhas, snap, limite=20):
+    """Revisões no formato de revisoes_conhecidas a partir de [(serie, ref, nº de valores)]
+    já restritas às séries que entram no número (não ao conjunto inteiro)."""
+    rv = snap.get("revisoes") or {}
+    linhas = sorted(linhas, key=lambda x: (x[1], x[0]), reverse=True)
+    return {"detectado_em": base.agora_utc(), "total": len(linhas), "vintages_comparadas": rv.get("vintages_comparadas"),
+            "arquivos": rv.get("arquivos"), "exemplos": [{"serie": a, "ref": b, "valores": n} for a, b, n in linhas[:limite]]}
+
+
+def _revisoes_de_historicos(itens, snap, limite=20):
+    """[(serie, ref, [(capturado_em, valor), ...])] → revisoes_conhecidas das refs com mais
+    de um valor distinto."""
+    return _revisoes_de_linhas([(a, b, len({v for _, v in h})) for a, b, h in itens if len({v for _, v in h}) > 1], snap, limite)
+
+
+def _revisoes_compostas(componentes, limite=20):
+    """Revisões de um número que combina fontes (PLD e carga, por exemplo): o total soma as
+    revisões de cada fonte nas séries usadas, e `componentes` mostra a parte de cada uma.
+    Fonte sem detecção (None) entra com total null, sem virar zero."""
+    exemplos = sorted((x for _, r_ in componentes if r_ for x in r_.get("exemplos", [])), key=lambda x: (x["ref"], x["serie"]), reverse=True)
+    return {"detectado_em": base.agora_utc(), "total": sum((r_ or {}).get("total") or 0 for _, r_ in componentes),
+            "exemplos": exemplos[:limite],
+            "componentes": [{"fonte": rot, "total": r_.get("total") if r_ else None} for rot, r_ in componentes]}
 
 
 def _revisoes_recorte(con, dataset, series, filtro, unidade):
@@ -3058,10 +3593,14 @@ def _evidencias(d, bloco_cmo, bloco_lim, bloco_hist, bloco_reg, a02, snap_pld, s
         atos_ano = ", ".join(sorted({a["ato"] for a in d["atos"] if str(a.get("ano")) == ano}))
         item_ato, extracao = None, None
         if ato_ref and ato_ref.get("arquivo"):
+            # a cópia efetivamente lida (Internet Archive, quando o endereço oficial responde 403)
+            # aparece ao lado do endereço oficial: a ficha não aponta só para um link que não abre
+            copia = ato_ref.get("url_baixada") if ato_ref.get("url_baixada") and ato_ref.get("url_baixada") != ato_ref["url"] else ato_ref.get("url_copia")
             item_ato = {"recurso": f"{ato_ref['ato']} ({ato_ref['documento']}.pdf)", "arquivo": ato_ref["arquivo"], "sha256": ato_ref["sha256"],
                         "capturado_em": ato_ref["capturado_em"], "publicado_em": ato_ref["publicado_em"], "url": ato_ref["url"],
-                        "nivel_conferencia": ato_ref["nivel_conferencia"]}
-            extracao = {"documento": ato_ref["titulo"], "edicao": ato_ref["edicao"] or "edição não registrada",
+                        "url_copia": copia, "nivel_conferencia": ato_ref["nivel_conferencia"]}
+            extracao = {"documento": ato_ref["titulo"] + (f" (arquivo lido da cópia {copia}; endereço oficial {ato_ref['url']})" if copia else ""),
+                        "edicao": ato_ref["edicao"] or "edição não registrada",
                         "pagina": f"página {ato_ref['pagina']} do PDF" if ato_ref.get("pagina") else "página não identificada",
                         "conferencia": f"{ato_ref['detalhe']}; nível de conferência do módulo Regulação: {ato_ref['nivel_conferencia']}"}
         for x in bloco_lim["permanencia_anual"]:
@@ -3088,7 +3627,8 @@ def _evidencias(d, bloco_cmo, bloco_lim, bloco_hist, bloco_reg, a02, snap_pld, s
                 fonte=_fonte_composta(c.FONTE_CCEE_PLD, _fonte_atos([a for a in d["atos"] if str(a.get("ano")) == ano] or d["atos"], atos_ano)),
                 arquivos=arq_pld + ([item_ato] if item_ato else []), extracao_pdf=extracao,
                 consulta=(f"PLD_HORARIO, submercado {c.NOME_SUBMERCADO[sm]}, ano {ano}; mínimo vigente por dia segundo {atos_ano}"
-                          + (f" ({ato_ref['url']})" if ato_ref and ato_ref.get("url") else "")),
+                          + (f" ({ato_ref['url']}" + (f"; cópia lida: {item_ato['url_copia']}" if item_ato and item_ato.get("url_copia") else "")
+                             + ")" if ato_ref and ato_ref.get("url") else "")),
                 formula="100 × nº de horas com PLD igual ao mínimo vigente ao centavo (|PLD − mínimo| ≤ R$ 0,005/MWh) ÷ nº de horas com limites vigentes",
                 numerador={"descricao": "horas no piso", "valor": x["horas_piso"]},
                 denominador={"descricao": "horas com limites vigentes", "valor": x["horas_com_limite"]},
@@ -3143,22 +3683,95 @@ def _evidencias(d, bloco_cmo, bloco_lim, bloco_hist, bloco_reg, a02, snap_pld, s
                                        "R$ 0,000001/MWh (mesmos números somados em outra ordem)")
         rv_carga = _revisoes_recorte(cp, DS_BAL, [f"carga.{sm}"], lambda r_: r_[:7] == mes, "MWmed")
         rv_pld = _revisoes_recorte(cp, DS_PLD, [f"pld.{sm}"], lambda r_: r_[:7] == mes, "R$/MWh")
+        per = perimetro_do_mes(mes)
+        per_txt = next(p_ for p_ in PERIMETROS_CARGA if p_["id"] == per.split("_")[-1])
         out[f"ponderada_{mes}_{sm}"] = _evidencia(
-            indicador=f"PLD médio de {c.mes_br(mes)} ponderado pela carga", valor_exibido=_br(v) + "/MWh", valor=v, unidade="R$/MWh",
-            periodo={"inicio": hs[0], "fim": hs[-1]}, entidade=c.NOME_SUBMERCADO[sm], universo="horas do mês com PLD e carga positiva",
-            filtros=[f"mês {mes}", f"submercado {c.NOME_SUBMERCADO[sm]} e subsistema {sm} do ONS"],
+            indicador=f"PLD médio de {c.mes_br(mes)} ponderado pela carga do balanço do ONS", valor_exibido=_br(v) + "/MWh", valor=v,
+            unidade="R$/MWh", periodo={"inicio": hs[0], "fim": hs[-1]}, entidade=c.NOME_SUBMERCADO[sm],
+            universo="horas do mês com PLD e carga positiva",
+            filtros=[f"mês {mes}", f"submercado {c.NOME_SUBMERCADO[sm]} e subsistema {sm} do ONS",
+                     f"perímetro da carga {per}" + (" (inclui a MMGD estimada pelo ONS)" if per_txt["inclui_mmgd"] else "")],
             fonte=_fonte_composta(c.FONTE_CCEE_PLD, FONTE_BAL),
             arquivos=_arquivos_snap(snap_pld, {f"pld_horario_{mes[:4]}"}, cp, DS_PLD)
                      + _arquivos_snap(snap_bal, {f"BALANCO_ENERGIA_SUBSISTEMA_{mes[:4]}"}, cp, DS_BAL),
             consulta=f"PLD_HORARIO submercado {c.NOME_SUBMERCADO[sm]} e BALANCO_ENERGIA_SUBSISTEMA id_subsistema={sm} (val_carga), horas de {mes}",
             formula="Σ PLD_h × carga_h ÷ Σ carga_h (carga_h > 0)", numerador={"descricao": "Σ PLD × carga (R$)", "valor": c.r(num, 2)},
             denominador={"descricao": "Σ carga (MWh)", "valor": c.r(den, 3)},
-            pesos="carga verificada do subsistema na hora (MWmed; numa hora, MWmed equivale a MWh); hora com carga ≤ 0 sai do peso",
+            pesos=("carga do subsistema na hora no Balanço de Energia nos Subsistemas do ONS (MWmed; numa hora, MWmed equivale a MWh); "
+                   f"perímetro {per}: " + per_txt["trecho"] + " Hora com carga ≤ 0 sai do peso."),
             cobertura=f"{len(hs)} horas, todas com carga positiva",
             tratamento_ausencia="hora sem carga ou com carga ≤ 0 fica fora da ponderada (campo mesmas_horas no CSV mensal)",
             revisoes=f"PLD: {rv_pld} Carga: {rv_carga}", testes=testes, reconciliacao=rec,
             download=[{"rotulo": "CSV mensal", "url": "/energia/series/pld_mensal.csv"}],
             reproducao=reproduzir + "\nCruzar pld_cmo_horario.csv (PLD) com a carga horária do balanço do ONS na mesma hora e aplicar a fórmula.")
+    # P011: média mensal ponderada pela carga líquida de MMGD (API do ONS), último mês completo
+    api = d.get("carga_api") or {}
+    for sm in SM if api.get("disponivel") else ():
+        cand = [i for i, _ in enumerate(mh["meses"]) if not mh["parcial"][i] and mh[sm]["mesmas_horas_sem_mmgd"][i]
+                and mh[sm]["ponderada_carga_sem_mmgd"][i] is not None]
+        if not cand:
+            continue
+        mes = mh["meses"][cand[-1]]
+        hs = sorted(h for h in pld[sm] if h[:7] == mes)
+        peso = {h: api["global"][sm][h] - api["mmgd"][sm][h] for h in hs}
+        num = sum(pld[sm][h] * peso[h] for h in hs)
+        den = sum(peso[h] for h in hs)
+        v = num / den
+        horas_mes = calendar.monthrange(int(mes[:4]), int(mes[5:7]))[1] * 24
+        relidos, arqs = _pld_relido(cache, cp, sm, hs)
+        vint = (api.get("vintages") or {}).get(f"cargaverificada_{AREA_API[sm]}_{mes}")
+        api_rel = {}
+        if vint and vint.get("arquivo") and os.path.exists(os.path.join(base.RAIZ, vint["arquivo"])):
+            with base.abre_bronze(vint["arquivo"]) as f_:
+                api_rel = releitura_api_carga(f_.read())
+        testes = [ev.teste("todas as horas do mês com PLD e carga líquida de MMGD", veredito(len(hs) == horas_mes),
+                           f"{len(hs)} de {horas_mes} horas do mês com PLD e carga global e MMGD publicadas"),
+                  ev.teste("carga líquida de MMGD positiva em todas as horas usadas como peso", veredito(min(peso.values()) > 0),
+                           f"menor carga líquida horária do mês: {_num_br(min(peso.values()), 1)} MWmed")]
+        if not arqs or not api_rel:
+            rec = None
+            testes.append(ev.teste("releitura dos arquivos originais", "ressalva",
+                                   ("arquivo da CCEE" if not arqs else "resposta da API do ONS no bronze do módulo Carga") +
+                                   " não disponível neste ambiente; reconciliação por releitura não executada"))
+        else:
+            faltam = [h for h in hs if h not in relidos or h not in api_rel]
+            pares_ = [(relidos[h], api_rel[h][0] - api_rel[h][1]) for h in hs if h in relidos and h in api_rel]
+            x_ = media_ponderada(pares_)
+            origem = _origem_txt(arqs + [{"recurso": vint["recurso"], "capturado_em": vint["capturado_em"], "vigente": True}])
+            rec = ev.reconciliacao(
+                f"releitura de {origem} por leitor independente (sem os parsers que alimentam os silvers): "
+                f"{_num_br(x_, 6) if x_ is not None else 'sem valor'} R$/MWh"
+                + (f"; {len(faltam)} horas ausentes nos arquivos relidos" if faltam else ""),
+                ("ressalva" if faltam else veredito(x_ is not None and abs(x_ - v) <= 1e-6)),
+                "R$ 0,000001/MWh (a carga do silver é arredondada a 0,0001 MWh por hora)")
+        arq_api = ([{"recurso": vint["recurso"], "arquivo": vint.get("arquivo"), "sha256": vint.get("sha256"),
+                     "capturado_em": vint.get("capturado_em"), "publicado_em": None, "url": vint.get("url")}] if vint else [])
+        rv_api = [x for x in api.get("revisoes") or [] if x[0] in (f"global_ho.{sm}", f"mmgd_ho.{sm}") and x[1][:7] == mes]
+        rv_pld = _revisoes_recorte(cp, DS_PLD, [f"pld.{sm}"], lambda r_: r_[:7] == mes, "R$/MWh")
+        out[f"ponderada_sem_mmgd_{mes}_{sm}"] = _evidencia(
+            indicador=f"PLD médio de {c.mes_br(mes)} ponderado pela carga sem MMGD", valor_exibido=_br(v) + "/MWh", valor=v,
+            unidade="R$/MWh", periodo={"inicio": hs[0], "fim": hs[-1]}, entidade=c.NOME_SUBMERCADO[sm],
+            universo="horas do mês com PLD e carga líquida de MMGD positiva",
+            filtros=[f"mês {mes}", f"submercado {c.NOME_SUBMERCADO[sm]} e área de carga {AREA_API[sm]} da API do ONS"],
+            fonte=_fonte_composta(c.FONTE_CCEE_PLD, FONTE_CARGA_API),
+            arquivos=_arquivos_snap(snap_pld, {f"pld_horario_{mes[:4]}"}, cp, DS_PLD) + arq_api,
+            consulta=(f"PLD_HORARIO submercado {c.NOME_SUBMERCADO[sm]} e {URL_API_CARGA}?dat_inicio={mes}-01&dat_fim={mes}-"
+                      f"{horas_mes // 24:02d}&cod_areacarga={AREA_API[sm]} (val_cargaglobal − val_cargammgd, meias horas somadas por hora)"),
+            formula="Σ PLD_h × (global_h − MMGD_h) ÷ Σ (global_h − MMGD_h), com global_h − MMGD_h > 0",
+            numerador={"descricao": "Σ PLD × carga líquida de MMGD (R$)", "valor": c.r(num, 2)},
+            denominador={"descricao": "Σ carga líquida de MMGD (MWh)", "valor": c.r(den, 3)},
+            pesos=("carga global líquida de MMGD do subsistema na hora (API de carga verificada do ONS: parcela supervisionada mais a não "
+                   "supervisionada da medição para faturamento da CCEE); a MMGD estimada fica fora do peso"),
+            cobertura=f"{len(hs)} horas, todas com carga líquida positiva",
+            tratamento_ausencia="hora sem as duas meias horas da API ou com carga líquida ≤ 0 fica fora da ponderada (mesmas_horas_sem_mmgd)",
+            revisoes=(f"PLD: {rv_pld} Carga da API: " + (f"{len(rv_api)} observações de global_ho.{sm} e mmgd_ho.{sm} do mês revistas "
+                                                         "entre as capturas integradas pelo módulo Carga." if rv_api else
+                                                         "nenhuma revisão das séries do mês entre as capturas integradas pelo módulo Carga.")),
+            testes=testes, reconciliacao=rec,
+            download=[{"rotulo": "CSV mensal", "url": "/energia/series/pld_mensal.csv"}],
+            reproducao=reproduzir + f"\nBaixar a resposta da API de carga verificada do mês para a área {AREA_API[sm]}, somar as meias horas por "
+                                    "hora (instante UTC do fim da meia hora menos 30 minutos, em horário de Brasília), tirar a MMGD da carga global e "
+                                    "ponderar o PLD da mesma hora.")
     # P012: separação nos últimos 12 meses por par
     per = next(p for p in bloco_reg["periodos"] if p["id"] == "12m")
     h12 = [h for h in d["horas_comuns"] if per["inicio"] <= h <= per["fim"]]

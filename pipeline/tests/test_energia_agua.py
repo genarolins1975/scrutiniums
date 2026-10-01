@@ -28,6 +28,7 @@ import sqlite3
 import sys
 import tempfile
 import unittest
+from datetime import date, timedelta
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
@@ -455,6 +456,314 @@ class TestRegrasEGold(unittest.TestCase):
         self.assertTrue(any(x.startswith("CRÍTICO: EAR inválida") for x in probs))
 
 
+def _serie_recorte(nome_arq, tipo, nome):
+    """{"pct", "mw", "max"} de um recorte (REE ou bacia) lido pelo parser do módulo."""
+    s = {"pct": {}, "mw": {}, "max": {}}
+    for serie, ref, v in oa.parse_ear_agregado(_linhas(nome_arq), tipo):
+        pref, n_ = serie.split(".", 1)
+        if n_ == nome and v is not None:
+            s[{"ear_pct": "pct", "ear_mwmes": "mw", "ear_max_mwmes": "max"}[pref]][ref] = v
+    return s
+
+
+class TestPerimetroRee(unittest.TestCase):
+    """Defeito: REE tratados como a mesma entidade só pelo nome através da reconfiguração do
+    fim de 2017. Linhas reais dos arquivos EAR_DIARIO_REE_2017 e _2018 do ONS."""
+
+    def test_quebra_de_perimetro_detectada_nas_linhas_de_2017_e_2018(self):
+        mx = {}
+        for serie, ref, v in oa.parse_ear_agregado(_linhas("ear_ree_2017_2018_trecho.csv"), "ree"):
+            if serie.startswith("ear_max_mwmes.") and v is not None:
+                mx.setdefault(serie.split(".", 1)[1], {})[ref] = v
+        # 26 a 28/12/2017: 9 REE; 29/12: SUL, PARANA e NORTE já reduzidos e os novos ausentes;
+        # 30/12: 12 REE (IGUACU, PARANAPANEMA, MANAUS-AMAPA)
+        self.assertEqual(mx["SUL"]["2017-12-28"], 20100.0)
+        self.assertEqual(mx["SUL"]["2017-12-29"], 9591.0)
+        self.assertNotIn("2017-12-29", mx["IGUACU"])
+        self.assertEqual(mx["IGUACU"]["2017-12-30"], 10509.0)
+        cfg = m.configuracao_ree(mx)
+        self.assertEqual([q["data"] for q in cfg["quebras"]], ["2017-12-30"])   # 01/01/2018 é só recálculo
+        q = cfg["quebras"][0]
+        self.assertEqual(q["dia_soma_conservada"], "2017-12-28")
+        self.assertEqual(q["transicao"], ["2017-12-29"])
+        # a repartição conserva a soma: 290.261 MWmês antes e depois
+        self.assertEqual(q["soma_ear_max_antes_mwmes"], 290261.0)
+        self.assertEqual(q["soma_ear_max_depois_mwmes"], 290261.0)
+        self.assertEqual(set(q["afetados"]), {"SUL", "PARANA", "NORTE", "IGUACU", "PARANAPANEMA", "MANAUS-AMAPA"})
+        for n_ in ("SUL", "PARANA", "NORTE", "IGUACU", "PARANAPANEMA", "MANAUS-AMAPA"):
+            self.assertEqual(cfg["ano_inicio_base"][n_], 2018, n_)
+        for n_ in ("SUDESTE", "NORDESTE", "MADEIRA", "BELO MONTE", "ITAIPU", "TELES PIRES"):
+            self.assertNotIn(n_, q["afetados"])
+            self.assertEqual(cfg["ano_inicio_base"][n_], 2017, n_)     # primeiro ano do trecho
+
+    def test_faixa_do_parana_so_com_o_perimetro_atual(self):
+        """28/09/2026: PARANA com 56,61%. Base 2016 a 2025 (perímetros misturados): p90 51,89 e
+        'acima'; base 2018 a 2025 (perímetro atual): p90 56,68 e 'dentro' (conferência do
+        verificador com os arquivos anuais do ONS)."""
+        s = _serie_recorte("ear_ree_0928_trecho.csv", "ree", "PARANA")
+        self.assertAlmostEqual(s["pct"]["2026-09-28"], 56.612)
+        misto = m.faixa_sazonal(s["pct"], s["mw"], s["max"], "2026-09-28", 2016)
+        self.assertEqual((misto["anos_na_base"], misto["p90"], misto["faixa"]), (10, 51.89, "acima"))
+        f = m.faixa_sazonal(s["pct"], s["mw"], s["max"], "2026-09-28", 2018)
+        self.assertEqual((f["anos_na_base"], f["periodo_base"], f["p90"], f["faixa"]), (8, "2018-2025", 56.68, "dentro"))
+        self.assertFalse(f["capacidade_mudou_na_base"])     # 140.228 a 140.596 MWmês: mesmo perímetro
+
+    def test_quebra_declarada_no_registro(self):
+        ds = next(x for x in m.REGISTRO["datasets"] if x["dataset_silver"] == m.DS_EAR_REE)
+        q = [x for x in ds["quebras"] if x["data"] == "2017-12-29"]
+        self.assertEqual(len(q), 1)
+        self.assertEqual(q[0]["origem"], "PLATAFORMA")
+        for termo in ("IGUACU", "PARANAPANEMA", "MANAUS-AMAPA", "SUL", "PARANA", "NORTE", "2018"):
+            self.assertIn(termo, q[0]["descricao"])
+        for d in m.REGISTRO["datasets"]:
+            for x in d["quebras"]:
+                self.assertIn(x["origem"], ("FONTE", "PLATAFORMA"))
+                self.assertRegex(x["data"], r"^\d{4}-\d{2}-\d{2}$")
+
+
+class TestNaoSeAplica(unittest.TestCase):
+    """Defeito: recorte sem armazenamento (EAR máxima zero) publicado com percentual 0/0."""
+
+    def test_itaipu_sem_percentual_faixa_nem_percentil(self):
+        s = _serie_recorte("ear_ree_0928_trecho.csv", "ree", "ITAIPU")
+        self.assertEqual(s["max"]["2026-09-28"], 0.0)          # "0E-8" é zero publicado, não ausência
+        r = m._resumo_ear_recorte("ITAIPU", s, "2026-09-28", 2016)
+        self.assertTrue(r["sem_armazenamento"])
+        for k in ("ear_pct", "variacao_7d_pp", "variacao_30d_pp", "p10", "p50", "p90", "p10_mwmes", "p90_mwmes",
+                  "faixa", "percentil_na_data", "periodo_base"):
+            self.assertIsNone(r[k], k)
+        self.assertEqual(r["anos_na_base"], 0)
+        self.assertEqual(r["ear_mwmes"], 0.0)                  # o estoque zero é zero de fato
+        self.assertEqual(r["variacao_30d_mwmes"], 0.0)
+
+    def test_bacia_araguari_sem_variacao_em_pontos_percentuais(self):
+        s = _serie_recorte("ear_bacia_araguari_trecho.csv", "bacia", "ARAGUARI")
+        r = m._resumo_ear_recorte("ARAGUARI", s, "2026-09-28", 2001)
+        self.assertIsNone(r["ear_pct"])
+        self.assertIsNone(r["variacao_7d_pp"])
+        self.assertIsNone(r["faixa"])
+
+    def test_anos_sem_capacidade_ficam_fora_da_base(self):
+        # um recorte com EAR máxima zero em anos da base (reservatório ainda inexistente)
+        pct = {"2018-09-28": 0.0, "2019-09-28": 0.0, **{f"{a}-09-28": 40.0 + a - 2020 for a in range(2020, 2027)}}
+        mx = {"2018-09-28": 0.0, "2019-09-28": 0.0, **{f"{a}-09-28": 900.0 for a in range(2020, 2027)}}
+        mw = {k: pct[k] * mx[k] / 100 for k in pct}
+        f = m.faixa_sazonal(pct, mw, mx, "2026-09-28", 2016)
+        self.assertEqual((f["anos_na_base"], f["periodo_base"]), (6, "2020-2025"))
+        self.assertEqual(f["p10"], 40.5)                       # sem os zeros de 2018 e 2019
+
+    def test_minimo_de_anos_para_faixa(self):
+        pct = {"2024-09-28": 30.0, "2025-09-28": 60.0, "2026-09-28": 50.0}
+        mx = {k: 100.0 for k in pct}
+        f = m.faixa_sazonal(pct, pct, mx, "2026-09-28", 2001)
+        self.assertEqual((f["anos_na_base"], f["periodo_base"]), (2, "2024-2025"))
+        self.assertIsNone(f["p10"])
+        self.assertIsNone(f["faixa"])
+        self.assertIsNone(f["percentil_na_data"])
+
+
+class TestCapacidadeSubsistemas(unittest.TestCase):
+    """Defeito: faixa dos subsistemas sem o sinal de capacidade que mudou na base. Linhas
+    reais dos arquivos EAR_DIARIO_SUBSISTEMA_2001 a _2026 do ONS (28/09)."""
+
+    def _serie(self, sm):
+        s = {"pct": {}, "mw": {}, "max": {}}
+        for serie, ref, v in ons_sm.parse_ear(_texto("ear_subsistema_0928_trecho.csv")):
+            pref, x = serie.split(".", 1)
+            if x == sm:
+                s[{"ear_pct": "pct", "ear_mwmes": "mw", "ear_max_mwmes": "max"}[pref]][ref] = v
+        return s
+
+    def test_sudeste_faixa_e_capacidade(self):
+        s = self._serie("SE")
+        f = m.faixa_sazonal(s["pct"], s["mw"], s["max"], "2026-09-28", m.ANO_INI_BACIA)
+        # conferência do verificador (quantil tipo 7, 25 anos)
+        self.assertEqual((f["p10"], f["p50"], f["p90"], f["anos_na_base"]), (23.84, 49.48, 66.31, 25))
+        self.assertEqual((f["p10_mwmes"], f["p50_mwmes"], f["p90_mwmes"]), (48391.5, 96212.6, 126592.0))
+        self.assertEqual(f["percentil_na_data"], 72.0)
+        self.assertEqual((f["ear_max_base_min_mwmes"], f["ear_max_base_max_mwmes"]), (159643.0, 204615.3))
+        self.assertTrue(f["capacidade_mudou_na_base"])
+
+    def test_sul_capacidade_variou_28_por_cento(self):
+        s = self._serie("S")
+        f = m.faixa_sazonal(s["pct"], s["mw"], s["max"], "2026-09-28", m.ANO_INI_BACIA)
+        self.assertEqual((f["ear_max_base_min_mwmes"], f["ear_max_base_max_mwmes"]), (14645.0, 20459.2))
+        self.assertTrue(f["capacidade_mudou_na_base"])
+
+
+class TestCapturas(unittest.TestCase):
+    """Defeito: a gold misturava duas capturas do ONS para o mesmo dia. Valores reais do
+    Nordeste em 28/09/2026: silver principal (captura de 30/09 02:19Z) 35.626,564 MWmês;
+    recaptura (23:51Z) e arquivo baixado de novo 35.651,441 MWmês."""
+
+    def _con(self, ds, recurso, capt, linhas):
+        con = base.conecta(":memory:")
+        vid, _ = base.registra_vintage(con, ds, recurso, "teste", capt, None, hashlib.sha256(capt.encode()).hexdigest(),
+                                       1, "teste", "x")
+        base.grava_observacoes(con, ds, vid, linhas)
+        return con
+
+    def test_vale_a_captura_mais_recente_de_cada_ano(self):
+        cp = self._con(m.DS_EAR_SM, "EAR_DIARIO_SUBSISTEMA_2026", "2026-09-30T02:19:44Z",
+                       [("ear_mwmes.NE", "2026-09-28", 35626.564)])
+        base.registra_vintage(cp, m.DS_EAR_SM, "EAR_DIARIO_SUBSISTEMA_2024", "teste", "2026-09-29T02:42:31Z", None,
+                              "a" * 64, 1, "teste", "x")
+        base.grava_observacoes(cp, m.DS_EAR_SM, f"{m.DS_EAR_SM}:EAR_DIARIO_SUBSISTEMA_2024:{'a' * 16}",
+                               [("ear_mwmes.NE", "2024-09-28", 21187.0)])
+        cr = self._con(m.DS_EAR_SM_CONF, "EAR_DIARIO_SUBSISTEMA_2026", "2026-09-30T23:51:52Z",
+                       [("ear_mwmes.NE", "2026-09-28", 35651.441), ("ear_mwmes.NE", "2026-09-29", 35484.985)])
+        out, escolha, dados = m.series_mais_recentes(
+            [(m.FONTE_PRINCIPAL, cp, m.DS_EAR_SM), (m.FONTE_RECAPTURA, cr, m.DS_EAR_SM_CONF)], "EAR_DIARIO_SUBSISTEMA_",
+            ["ear_mwmes.NE"])
+        self.assertEqual(out["ear_mwmes.NE"]["2026-09-28"], 35651.441)
+        self.assertEqual(out["ear_mwmes.NE"]["2026-09-29"], 35484.985)
+        self.assertEqual(out["ear_mwmes.NE"]["2024-09-28"], 21187.0)        # ano só no silver principal
+        self.assertEqual(escolha["2026"]["fonte"], m.FONTE_RECAPTURA)
+        self.assertEqual(escolha["2024"]["fonte"], m.FONTE_PRINCIPAL)
+        rev = m._revisoes_entre_capturas(dados, [("NE", "ear_mwmes.NE")], ["2026-09-28"])
+        self.assertEqual(rev[0]["diferenca"], 24.877)                         # revisão exposta, não absorvida
+
+
+class TestBalancoJanelaEConvencao(unittest.TestCase):
+    """Defeitos: fração de dias calculada na série inteira mas publicada como da janela; e
+    defluência não discriminada negativa por convenção de defluência sem as outras
+    estruturas. Linhas reais de DADOS_HIDROLOGICOS_RES_2026 (ONS)."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.cad = {r["nom_reservatorio"]: r for r in _linhas("cadastro_trecho.csv")}
+        cls.q = {}
+        obs, atrib = oa.parse_dados_hidrologicos(_linhas("hidro_2026_trecho.csv.gz"))
+        for s, ref, v in obs:
+            if v is not None:
+                campo, rid = s.split(".", 1)
+                cls.q.setdefault(rid, {}).setdefault(campo, {})[ref] = v
+        cls.ids = {at["nome"]: rid for rid, at in atrib.items()}
+
+    def test_sobradinho_fracao_na_janela_publicada(self):
+        x = self.q[self.ids["SOBRADINHO"]]
+        b = m.balanco_reservatorio(x, float(self.cad["SOBRADINHO"]["val_volutiltot"]), "2026-09-29")
+        # janela de 31/08 a 29/09/2026: 17 de 30 dias (56,7%) dentro do arredondamento; em toda
+        # a série de 2025 e 2026 (636 dias) são 18,2% (conferência do verificador)
+        self.assertEqual((b["dentro_tol_janela"], b["n_res_janela"]), (17, 30))
+        self.assertAlmostEqual(100.0 * b["dentro_tol_janela"] / b["n_res_janela"], 56.7, places=1)
+        # a série do trecho começa em 30/08: os dias avaliados da série são os mesmos 30
+        self.assertEqual(b["periodo_residuos"], ("2026-08-31", "2026-09-29"))
+
+    def test_fracao_da_serie_e_da_janela_sao_distintas(self):
+        # 2025 (setembro, trecho antigo): a série tem 60 dias e a janela 30
+        obs, atrib = oa.parse_dados_hidrologicos(_linhas("hidro_2025_trecho.csv.gz"))
+        rid = next(r for r, at in atrib.items() if at["nome"] == "FURNAS")
+        x = {}
+        for s_, ref, v in obs:
+            campo, r_ = s_.split(".", 1)
+            if r_ == rid and v is not None:
+                x.setdefault(campo, {})[ref] = v
+        b = m.balanco_reservatorio(x, float(self.cad["FURNAS"]["val_volutiltot"]), "2025-09-30")
+        self.assertEqual((b["n_res"], b["n_res_janela"]), (60, 30))
+        self.assertEqual((b["dentro_tol"], b["dentro_tol_janela"]), (59, 30))   # o dia fora (25/08) não está na janela
+
+    def test_marimbondo_publica_defluencia_sem_outras_estruturas(self):
+        x = self.q[self.ids["MARIMBONDO"]]
+        # 15/09/2026: defluência 1.168 = turbinada 1.168 + vertida 0; outras estruturas 201 m³/s
+        self.assertEqual((x["q_defluente"]["2026-09-15"], x["q_turbinada"]["2026-09-15"], x["q_vertida"]["2026-09-15"],
+                          x["q_outras"]["2026-09-15"]), (1168.0, 1168.0, 0.0, 201.0))
+        c_ = m.convencao_defluencia(x)
+        self.assertEqual(c_["convencao"], "exclui_outras")
+        self.assertEqual(c_["dias_sem_outras"], c_["dias_avaliados"])
+        b = m.balanco_reservatorio(x, 5265.0, "2026-09-15", n=6)
+        self.assertGreater(b["comp"]["q_outras"], 90.0)                      # ~104 hm³ de outras estruturas
+        self.assertAlmostEqual(b["defl_disc"], 0.0, places=6)                # não vira −outras
+
+    def test_jirau_e_pimental_incluem_as_outras_estruturas(self):
+        x = self.q[self.ids["JIRAU"]]
+        # 04/07/2026: 14.954 = 9.568 + 5.344 + 42
+        self.assertEqual(x["q_defluente"]["2026-07-04"], x["q_turbinada"]["2026-07-04"] + x["q_vertida"]["2026-07-04"]
+                         + x["q_outras"]["2026-07-04"])
+        self.assertEqual(m.convencao_defluencia(x)["convencao"], "inclui_outras")
+        self.assertEqual(m.convencao_defluencia(self.q[self.ids["PIMENTAL"]])["convencao"], "inclui_outras")
+
+    def test_convencao_indeterminada_nao_publica_numero(self):
+        x = {"q_defluente": {"2026-01-0%d" % i: 100.0 for i in range(1, 7)},
+             "q_turbinada": {"2026-01-0%d" % i: 80.0 for i in range(1, 7)},
+             "q_vertida": {"2026-01-0%d" % i: 0.0 for i in range(1, 7)},
+             "q_outras": {"2026-01-0%d" % i: (20.0 if i < 4 else 30.0) for i in range(1, 7)},
+             "q_afluente": {"2026-01-0%d" % i: 100.0 for i in range(1, 7)}}
+        self.assertEqual(m.convencao_defluencia(x)["convencao"], "indeterminada")
+        self.assertIsNone(m.balanco_reservatorio(x, None, "2026-01-06", n=6)["defl_disc"])
+
+
+class TestVersaoMlt(unittest.TestCase):
+    """Defeito: 20/01/2026 lido como recálculo, quando devolveu a MLT de 2025. Degraus reais
+    da MLT de cinco usinas (ENA_DIARIO_RESERVATORIOS_2023 a _2026, ONS)."""
+
+    @classmethod
+    def setUpClass(cls):
+        d = json.loads(_texto("mlt_usinas_2025_2026_trecho.json"))
+        cls.itens = {c_: [tuple(x) for x in v["degraus"]] for c_, v in d.items()}
+        cls.nomes = {c_: v["nome"] for c_, v in d.items()}
+
+    def test_furnas_volta_ao_valor_de_2025(self):
+        f = self.itens["6"]
+        self.assertEqual(self.nomes["6"], "FURNAS")
+        self.assertEqual(m._vigente(f, "2025-01-15"), 1398.36)
+        self.assertEqual(m._vigente(f, "2026-01-15"), 1391.043)     # versão provisória
+        self.assertEqual(m._vigente(f, "2026-01-25"), 1398.36)      # retorno
+
+    def test_classifica_retorno_e_periodo_provisorio(self):
+        rev = {"2025-11-04": list(self.itens), "2026-01-20": list(self.itens)}
+        out, prov = m.classifica_revisoes_mlt(self.itens, rev)
+        r = {x["data"]: x for x in out}
+        self.assertEqual(r["2025-11-04"]["classificacao"], "nova_versao")
+        self.assertEqual(r["2025-11-04"]["vespera_igual_ao_ano_anterior"], 5)
+        self.assertEqual(r["2026-01-20"]["classificacao"], "retorno_a_versao_anterior")
+        self.assertEqual(r["2026-01-20"]["igual_a_vigente_em"], "2025-01-20")
+        self.assertEqual(prov, [{"inicio": "2025-11-04", "fim": "2026-01-19", "retorno_em": "2026-01-20",
+                                 "versao_restaurada_igual_a_de": "2025-01-20", "usinas_na_nova_versao": 5,
+                                 "usinas_no_retorno": 5}])
+
+    def test_comparacao_anual_pelo_fim_do_mes(self):
+        # dia 15 cai na versão provisória e daria "MLT diferente"; o último dia do mês não
+        dif15 = sum(1 for it in self.itens.values() if not m._igual(m._vigente(it, "2026-01-15"), m._vigente(it, "2025-01-15")))
+        dif31 = sum(1 for it in self.itens.values() if not m._igual(m._vigente(it, "2026-01-31"), m._vigente(it, "2025-01-31")))
+        self.assertEqual((dif15, dif31), (5, 0))
+
+
+class TestPrevisao(unittest.TestCase):
+    """P019: previsão integrada (PREVISTO), separada da estimativa. Respostas reais da API de
+    rodadas individuais do Open-Meteo (ECMWF IFS 0,25°, rodada de 30/09/2026 00Z)."""
+
+    def test_le_resposta_e_recusa_rodada_indisponivel(self):
+        p = cl.le_previsao(_texto("openmeteo_precip_trecho.json"), 2)
+        self.assertIsNone(p[0]["precipitation_sum"]["2026-09-30"])          # dia da rodada sem soma: nulo
+        self.assertEqual(p[0]["precipitation_sum"]["2026-10-01"], 1.3)
+        self.assertEqual(p[1]["precipitation_sum"]["2026-10-01"], 0.1)
+        with self.assertRaises(ValueError):
+            cl.le_previsao(_texto("openmeteo_rodada_indisponivel.txt"), 2)  # "modelRunUnavailable"
+        with self.assertRaises(ValueError):
+            cl.le_previsao(_texto("openmeteo_precip_trecho.json"), 3)       # ponto faltando não é completado
+
+    def test_agrega_com_as_regras_da_estimativa(self):
+        p = cl.le_previsao(_texto("openmeteo_precip_trecho.json"), 2)
+        t = cl.le_previsao(_texto("openmeteo_temp_trecho.json"), 2)
+        valores = {("precip", "a"): p[0], ("precip", "b"): p[1], ("temp", "c1"): t[0], ("temp", "c2"): t[1]}
+        pontos = [{"id": "a", "bacia": "X", "peso": 3.0}, {"id": "b", "bacia": "X", "peso": 1.0}]
+        celulas = [{"id": "c1", "uf": "AP", "pop": 400}, {"id": "c2", "uf": "RR", "pop": 100}]
+        ag = cl.agrega_previsao(valores, pontos, celulas, {"AP": 300, "RR": 100}, uf_subsistema={"AP": "N", "RR": "N"})
+        self.assertAlmostEqual(ag["bacias"]["X"]["2026-10-01"], (3 * 1.3 + 1 * 0.1) / 4)
+        self.assertNotIn("2026-09-30", ag["bacias"]["X"])                     # nulo nos dois pontos
+        # 01/10: AP 29,1 °C e RR 28,3 °C, ponderados pela população das UF (300 e 100)
+        self.assertAlmostEqual(ag["recortes"]["N"]["t"]["2026-10-01"], (300 * 29.1 + 100 * 28.3) / 400)
+        self.assertEqual(cl.primeiro_dia_completo("2026-09-30T00:00Z"), "2026-09-30")
+        self.assertEqual(cl.primeiro_dia_completo("2026-09-30T12:00Z"), "2026-10-01")
+
+    def test_url_pede_a_rodada_de_00z(self):
+        u = cl.url_previsao("precip", [(-23.5, -46.6)], "2026-09-30")
+        self.assertIn("run=2026-09-30T00:00", u)
+        self.assertIn("models=ecmwf_ifs025", u)
+        self.assertIn("timezone=GMT", u)
+
+
 GOLD = os.path.join(base.GOLD, m.GOLD)
 
 
@@ -492,8 +801,183 @@ class TestGoldPublicada(unittest.TestCase):
         for x in self.g["reservatorios"]["decomposicao_ear"]:
             self.assertLessEqual(abs(x["residuo_mwmes"]), 0.05, x["sm"])
 
+    def test_ree_nordeste_igual_ao_subsistema_ne_no_mesmo_dia(self):
+        """REE NORDESTE e subsistema NE têm o mesmo perímetro: na mesma captura o valor é o
+        mesmo (a gold antiga trazia 35.626,6 contra 35.651,4 em 28/09/2026)."""
+        a = self.g["armazenamento"]
+        ne = next(x for x in a["subsistemas"] if x["sm"] == "NE")
+        ree = next(x for x in a["ree"] if x["nome"] == "NORDESTE")
+        self.assertEqual(ree["dia"], ne["dia"])
+        self.assertAlmostEqual(ree["ear_mwmes"], ne["ear_mwmes"], delta=0.1)
+        self.assertAlmostEqual(ree["ear_pct"], ne["ear_pct"], delta=0.01)
+        self.assertAlmostEqual(ree["variacao_30d_mwmes"], ne["variacao_30d_mwmes"], delta=0.2)
+        self.assertEqual(self.g["dias_referencia"]["ear"], self.g["dias_referencia"]["ree"])
+
+    def test_decomposicao_igual_a_variacao_publicada(self):
+        a = self.g["armazenamento"]
+        sd = a["serie_diaria_mwmes"]
+        dia_de = lambda i: (date.fromisoformat(sd["d0"]) + timedelta(days=i)).isoformat()  # noqa: E731
+        idx = {dia_de(i): i for i in range(len(sd["SE"]))}
+        subs = {x["sm"]: x for x in a["subsistemas"]}
+        for x in self.g["reservatorios"]["decomposicao_ear"]:
+            if x["fim"] == a["dia"]:
+                self.assertAlmostEqual(x["delta_ear_mwmes"], subs[x["sm"]]["variacao_30d_mwmes"], delta=0.15, msg=x["sm"])
+            # a série diária publicada (MWmês inteiros) reproduz a variação da decomposição
+            self.assertAlmostEqual(sd[x["sm"]][idx[x["fim"]]] - sd[x["sm"]][idx[x["inicio"]]], x["delta_ear_mwmes"],
+                                   delta=1.0, msg=x["sm"])
+
+    def test_ena_da_conferencia_de_unidade_e_do_csv_sao_a_mesma_captura(self):
+        caminho = os.path.join(base.SERIES, "agua_subsistemas_diario.csv")
+        with open(caminho, encoding="utf-8") as f:
+            csvv = {(r["data"], r["recorte"]): r for r in csv.DictReader(f, delimiter=";")}
+        for u in self.g["afluencia"]["mlt"]["unidade"]:
+            ex = u["exemplo"]
+            self.assertAlmostEqual(float(csvv[(ex["dia"], u["sm"])]["ena_bruta_mwmed"]), ex["subsistema_mwmed"], delta=0.001)
+        for s_ in self.g["armazenamento"]["subsistemas"]:
+            self.assertIn(s_["captura"], (m.FONTE_PRINCIPAL, m.FONTE_RECAPTURA))
+            self.assertAlmostEqual(float(csvv[(s_["dia"], s_["sm"])]["ear_mwmes"]), s_["ear_mwmes"], delta=0.05)
+
+    def test_mes_corrente_marcado_como_parcial(self):
+        a = self.g["armazenamento"]
+        sm = a["serie_mensal_mwmes"]
+        ult = date.fromisoformat(a["dia"])
+        fim_mes = (ult.replace(day=28) + timedelta(days=4)).replace(day=1) - timedelta(days=1)
+        if ult != fim_mes:
+            self.assertEqual(sm["mes_parcial"], {"m": a["dia"][:7], "d": a["dia"]})
+            self.assertEqual(sm["m"][-1], a["dia"][:7])
+
+    def test_subsistemas_e_sin_trazem_sinal_de_capacidade(self):
+        subs = {x["sm"]: x for x in self.g["armazenamento"]["subsistemas"]}
+        for sm in ("SE", "S", "NE", "N", "SIN"):
+            for k in ("capacidade_mudou_na_base", "ear_max_base_min_mwmes", "ear_max_base_max_mwmes"):
+                self.assertIn(k, subs[sm], sm)
+        self.assertTrue(subs["SE"]["capacidade_mudou_na_base"])     # 159.643 a 204.615 MWmês em 28/09
+        self.assertTrue(subs["SIN"]["capacidade_mudou_na_base"])
+
+    def test_recortes_sem_armazenamento_sem_percentual(self):
+        a = self.g["armazenamento"]
+        zeros = [x for x in a["ree"] + a["bacias"] if x["ear_max_mwmes"] == 0]
+        self.assertTrue(any(x["nome"] == "ITAIPU" for x in zeros))
+        for x in zeros:
+            for k in ("ear_pct", "variacao_7d_pp", "variacao_30d_pp", "p10", "p90", "faixa", "percentil_na_data"):
+                self.assertIsNone(x[k], (x["nome"], k))
+            self.assertIsNone(x["semanal"])
+
+    def test_ree_afetados_pela_reconfiguracao_com_base_desde_2018(self):
+        a = self.g["armazenamento"]
+        q = [x for x in a["quebras_perimetro_ree"] if x["data"] == "2017-12-30"]
+        self.assertEqual(len(q), 1)
+        for x in a["ree"]:
+            if x["nome"] in q[0]["afetados"]:
+                self.assertEqual(x["base_desde"], 2018, x["nome"])
+                if x["periodo_base"]:
+                    self.assertGreaterEqual(int(x["periodo_base"][:4]), 2018, x["nome"])
+        for x in self.g["afluencia"]["ree"]:
+            if x["nome"] in q[0]["afetados"] and x["periodo_base"]:
+                self.assertGreaterEqual(int(x["periodo_base"][:4]), 2018, x["nome"])
+
+    def test_faixa_so_com_anos_suficientes_e_periodo_real(self):
+        for lst in (self.g["armazenamento"]["ree"], self.g["armazenamento"]["bacias"]):
+            for x in lst:
+                if x["anos_na_base"] < m.MIN_ANOS_FAIXA:
+                    self.assertIsNone(x["faixa"], x["nome"])
+                if x["periodo_base"]:
+                    a0, a1 = map(int, x["periodo_base"].split("-"))
+                    self.assertLessEqual(x["anos_na_base"], a1 - a0 + 1, x["nome"])
+        for x in self.g["afluencia"]["bacias"] + self.g["afluencia"]["ree"]:
+            if x["anos_na_base_30d"] < m.MIN_ANOS_FAIXA:
+                self.assertIsNone(x["faixa_30d"], x["nome"])
+                self.assertIsNone(x["percentil_30d"], x["nome"])
+
+    def test_fracao_de_dias_na_janela_com_periodo(self):
+        r = self.g["reservatorios"]
+        self.assertTrue(r["periodo_fecham_por_construcao"])
+        for x in r["lista"]:
+            if x["balanco_calculado"]:
+                self.assertEqual(x["dias_residuo_avaliados"], 30, x["nome"])
+                self.assertIsNotNone(x["serie_dias_residuo_dentro_tolerancia_pct"], x["nome"])
+        if (r["inicio"], r["fim"]) == ("2026-08-31", "2026-09-29"):
+            sob = next(x for x in r["lista"] if x["nome"] == "SOBRADINHO")
+            # conferência do verificador com DADOS_HIDROLOGICOS_RES_2025 e _2026
+            self.assertEqual(sob["dias_residuo_dentro_tolerancia_pct"], 56.7)
+            self.assertEqual(sob["serie_dias_residuo_dentro_tolerancia_pct"], 18.2)
+
+    def test_defluencia_nao_discriminada_sem_sinal_espurio(self):
+        with open(os.path.join(base.SERIES, "agua_reservatorios.csv"), encoding="utf-8") as f:
+            linhas = list(csv.DictReader(f, delimiter=";"))
+        for r in linhas:
+            if r["outras_estruturas_hm3"] and r["defluencia_nao_discriminada_hm3"] and float(r["outras_estruturas_hm3"]) > 1:
+                # o defeito antigo: não discriminada = −outras exatamente (convenção sem as outras)
+                self.assertGreater(abs(float(r["defluencia_nao_discriminada_hm3"]) + float(r["outras_estruturas_hm3"])), 0.05, r["nome"])
+            if r["convencao_defluencia"] == "indeterminada" and r["outras_estruturas_hm3"] and float(r["outras_estruturas_hm3"]) > 0.2:
+                self.assertEqual(r["defluencia_nao_discriminada_hm3"], "", r["nome"])
+        mar = next(r for r in linhas if r["nome"] == "MARIMBONDO")
+        self.assertEqual(mar["convencao_defluencia"], "exclui_outras")
+        jir = next(r for r in linhas if r["nome"] == "JIRAU")
+        self.assertEqual(jir["convencao_defluencia"], "inclui_outras")
+
+    def test_csv_de_reservatorios_bate_com_o_dicionario(self):
+        with open(os.path.join(base.SERIES, "agua_reservatorios.csv"), encoding="utf-8") as f:
+            cab = f.readline().strip().split(";")
+        self.assertEqual(cab, ["janela_inicio", "janela_fim"] + m.COLS_RES_CSV)
+        texto = m.REGISTRO["arquivos"]["/energia/series/agua_reservatorios.csv"]
+        for col in cab:
+            self.assertIn(col, texto)
+        for antigo in ("dias_com_dado", "delta_ear_mwmes"):
+            self.assertNotIn(antigo, texto)
+        r = self.g["reservatorios"]
+        self.assertEqual(sum(r["sem_balanco_por_motivo"].values()), r["n_reservatorios"] - r["n_com_balanco"])
+
+    def test_pmo_cita_o_relatorio_do_proprio_mes(self):
+        comp = {(x["mes"], x["sm"]): x for x in self.g["afluencia"]["mlt"]["pmo"]["comparacao"]}
+        if ("2026-02", "SE") in comp:
+            self.assertEqual(comp[("2026-02", "SE")]["relatorio"], "RELATORIO-PMO-31_01 a 06_02")
+            self.assertTrue(comp[("2026-02", "SE")]["relatorio_do_proprio_mes"])
+        if ("2026-08", "SE") in comp:
+            self.assertEqual(comp[("2026-08", "SE")]["relatorio"], "RELATORIO-PMO-22_08_26 a 28_08_26")
+        for x in comp.values():
+            if x["relatorio_do_proprio_mes"]:
+                self.assertTrue(x["relatorio"].startswith("RELATORIO-PMO-"))
+
+    def test_mlt_de_2026_e_a_de_2025(self):
+        mlt = self.g["afluencia"]["mlt"]
+        if self.g["dias_referencia"]["ena"][:4] == "2026":
+            for x in mlt["ano_corrente_igual_ao_anterior"]:
+                self.assertGreaterEqual(x["usinas_iguais"], 0.95 * x["usinas_comparadas"], x["mes"])
+            prov = [p_ for p_ in mlt["periodos_provisorios"] if p_["inicio"] == "2025-11-04"]
+            self.assertEqual(prov[0]["fim"], "2026-01-19")
+            anos = dict(zip(zip(mlt["anos"]["ano"], mlt["anos"]["mes"]), mlt["anos"]["usinas_com_mlt_diferente"]))
+            self.assertEqual(anos[(2026, 1)], 0)
+
+    def test_proveniencia_da_ena_por_recorte(self):
+        p = self.g["proveniencia"]
+        af = self.g["afluencia"]
+        self.assertTrue(p["ena_30d_ree"]["snapshot"]["id"].startswith("ons_ena_ree_di@"))
+        self.assertTrue(p["ena_30d_bacia"]["snapshot"]["id"].startswith("ons_ena_bacia_di@"))
+        self.assertEqual(p["ena_30d_ree"]["periodo_referencia"]["fim"], af["dia_ree"])
+        self.assertEqual(p["ena_30d_bacia"]["periodo_referencia"]["fim"], af["dia_bacias"])
+        self.assertEqual(p["ena_30d"]["periodo_referencia"]["fim"], af["dia"])
+        # a cobertura histórica é a dos anos da base, não a janela de 30 dias
+        self.assertEqual(p["ena_30d"]["cobertura_historica"]["inicio"], "2001-01-01")
+
+    def test_previsao_rotulada_e_separada(self):
+        cl_ = self.g["clima"]
+        pv = cl_["previsao"]
+        if pv is None:
+            self.assertTrue(any(x.startswith("previsão:") for x in self.g["pendencias"]))
+            return
+        self.assertEqual(pv["natureza"], "PREVISTO")
+        self.assertRegex(pv["emitida_em"], r"^\d{4}-\d{2}-\d{2}T00:00Z$")
+        self.assertLessEqual(pv["idade_horas"], m.IDADE_MAX_PREVISAO_H)
+        self.assertGreaterEqual(pv["d0"], pv["emitida_em"][:10])
+        for b in pv["bacias"]:
+            self.assertEqual(len(b["mm"]), pv["n_dias"])
+            self.assertTrue(all(v is None or v >= 0 for v in b["mm"]))
+        self.assertFalse(cl_["separacao"]["previsao"].startswith("Não integrada"))
+        self.assertEqual(self.g["proveniencia"]["previsao"]["natureza"], "PREVISTO")
+
     def test_tamanho_e_nenhum_nan(self):
-        self.assertLess(os.path.getsize(GOLD), 450 * 1024)
+        self.assertLess(os.path.getsize(GOLD), 400 * 1024)            # contrato: até cerca de 400 KB
         with open(GOLD, encoding="utf-8") as f:
             texto = f.read()
         self.assertNotIn("NaN", texto)

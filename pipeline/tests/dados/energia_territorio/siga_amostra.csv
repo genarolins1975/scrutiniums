@@ -1,0 +1,28 @@
+nucleo_ceg;ceg;nome;tipo;origem;fonte;fase;estagio;outorga;uf;municipios;lat;lon;kw_outorgado;kw_fiscalizado;entrada_operacao;garantia_fisica_kwmed;vigencia_inicio;vigencia_fim;cnpjs_proprietarios
+8;PCH.PH.MG.000008-6.1;E;PCH;Hídrica;Potencial hidráulico;Operação;operacao;Autorização;MG;Nova Lima - MG;-20.1248;-43.8702;1400.0;1400.0;1953-11-20;;2000-07-07;2030-07-07;18565382000166
+9;PCH.PH.MG.000009-4.1;F;PCH;Hídrica;Potencial hidráulico;Operação;operacao;Autorização;MG;Nova Lima - MG;-20.1319;-43.8769;3972.0;3972.0;1953-11-20;;2000-07-07;2030-07-07;18565382000166
+10;PCH.PH.MG.000010-8.1;G;PCH;Hídrica;Potencial hidráulico;Operação;operacao;Autorização;MG;Nova Lima - MG;-20.1375;-43.8919;1440.0;1440.0;1937-01-01;;2000-08-31;2030-08-31;18565382000166
+789;PCH.PH.MG.000789-7.1;Codorna;PCH;Hídrica;Potencial hidráulico;Operação;operacao;Autorização;MG;Nova Lima - MG;-20.1655;-43.8901;1944.0;1944.0;1937-01-01;;2000-07-03;2030-07-03;18565382000166
+27175;PCH.PH.MG.027175-6.1;D;PCH;Hídrica;Potencial hidráulico;Operação;operacao;Autorização;MG;Nova Lima - MG;-20.132;-43.8779;1360.0;1360.0;1953-11-20;;2000-07-07;2030-07-07;18565382000166
+27771;UTE.PE.MG.027771-1.1;Gerador de Emergência;UTE;Fóssil;Petróleo;Operação;operacao;Registro;MG;Nova Lima - MG;-19.9666;-43.8343;996.0;996.0;2010-01-25;;;;40164964000190
+27788;CGH.PH.MG.027788-6.1;B;CGH;Hídrica;Potencial hidráulico;Operação;operacao;Registro;MG;Nova Lima - MG;-20.1375;-43.8881;940.0;940.0;1976-03-29;;;;18565382000166
+27899;PCH.PH.MG.027899-8.1;E Nova;PCH;Hídrica;Potencial hidráulico;Operação;operacao;Autorização;MG;Nova Lima - MG;-20.1247;-43.8698;2744.0;2744.0;1953-11-20;;2000-07-07;2030-07-07;18565382000166
+30610;UTE.PE.MG.030610-0.1;Maio Empreendimentos e Construções;UTE;Fóssil;Petróleo;Operação;operacao;Registro;MG;Nova Lima - MG;-20.0702;-43.8945;347.0;347.0;2011-02-28;;;;25909094000147
+32647;UTE.PE.MG.032647-0.1;Verdemar - Loja 05;UTE;Fóssil;Petróleo;Operação;operacao;Registro;MG;Nova Lima - MG;-20.0631;-43.9795;368.0;368.0;2009-11-01;;;;65124307001464
+32753;UTE.PE.MG.032753-0.1;Verdemar - CD Star;UTE;Fóssil;Petróleo;Operação;operacao;Registro;MG;Nova Lima - MG;-20.0614;-43.975;368.0;368.0;2009-11-01;;;;65124307001464
+34524;UTE.PE.MG.034524-5.1;BELO HORIZONTE - 1;UTE;Fóssil;Petróleo;Operação;operacao;Registro;MG;Nova Lima - MG;-19.984;-43.8498;64.8;64.0;2009-01-01;;;;40432544000147
+34184;UFV.RS.RN.034184-3.1;Assú V;UFV;Solar;Radiação solar;Operação;operacao;Autorização;RN;Açu - RN;-5.546;-37.0264;34000.0;34000.0;2017-12-23;9200.0;2016-06-08;2051-06-08;23844275000107
+35096;PCH.PH.RN.035096-6.1;Armando Ribeiro;PCH;Hídrica;Potencial hidráulico;Operação;operacao;Autorização;RN;Açu - RN;-5.6691;-36.8805;4700.0;4700.0;2021-01-01;3200.0;2017-03-09;2052-03-09;12895803000130
+37749;UFV.RS.RN.037749-0.1;Mendubim I;UFV;Solar;Radiação solar;Operação;operacao;Autorização;RN;Açu - RN;-5.6458;-37.0611;34500.0;34500.0;2024-02-08;10900.0;2020-12-11;2055-12-11;45991644000127
+37750;UFV.RS.RN.037750-3.1;Mendubim II;UFV;Solar;Radiação solar;Operação;operacao;Autorização;RN;Açu - RN;-5.6413;-37.0591;46000.0;46000.0;2024-02-08;14500.0;2020-12-11;2055-12-11;45991741000110
+37332;UFV.RS.RN.037332-0.1;Futuro II;UFV;Solar;Radiação solar;Construção não iniciada;construcao_nao_iniciada;Autorização;RN;Açu - RN;-5.4418;-36.9958;50000.0;0.0;;;2022-03-04;2057-03-04;06022644000167
+37676;UFV.RS.RN.037676-0.1;Futuro III;UFV;Solar;Radiação solar;Construção não iniciada;construcao_nao_iniciada;Autorização;RN;Açu - RN;-5.4486;-36.9875;50000.0;0.0;;;2022-03-04;2057-03-04;06022644000167
+41;UHE.PH.MG.000041-8.1;Água Vermelha (Antiga José Ermírio de Moraes);UHE;Hídrica;Potencial hidráulico;Operação;operacao;Concessão;MG;Iturama - MG, Indiaporã - SP, Ouroeste - SP;-19.8632;-50.3465;1396200.0;1396200.0;1978-08-22;694500.0;1999-12-20;2032-08-11;00194724000113
+1006;UHE.PH.MG.001006-5.1;Funil;UHE;Hídrica;Potencial hidráulico;Operação;operacao;Concessão;MG;Bom Sucesso - MG, Ibituruna - MG, Ijaci - MG, Itumirim - MG, Lavras - MG, Perdões - MG;-21.1429;-45.0361;180000.0;180000.0;2002-12-30;80400.0;2000-12-20;2040-05-30;12009135000105
+57911;UFV.RS.PI.057911-4.1;Floriano 13;UFV;Solar;Radiação solar;Construção não iniciada;construcao_nao_iniciada;Autorização;PI;Não Informado;-7.2006;-43.2058;96000.0;0.0;;;2024-09-09;2059-09-09;03537249000129
+28157;UTE.AI.PR.028157-3.1;Usiban (Antiga Açúcar e Álcool Bandeirantes);UTE;Biomassa;Agroindustriais;Operação;operacao;Autorização;PR;Bandeirantes - PR;;;8200.0;8200.0;1998-05-30;;2025-10-21;2060-10-21;75619056000128
+28770;EOL.CV.CE.028770-9.1;Enacel;EOL;Eólica;Cinética do vento;Operação;operacao;Autorização;CE;Aracati - CE;;;31500.0;31500.0;2010-03-18;7930.0;2002-11-13;2032-11-13;08439659000150
+33511;UTE.PE.RJ.033511-8.1;PROLAGOS CONCESSIONÁRIA DE SERVIÇOS PÚBLICOS - ETE BUZIOS;UTE;Fóssil;Petróleo;Operação;operacao;Registro;RJ;Armação de Búzios - RJ;-22.7775;-41.9422;120.0;120.0;2014-12-01;;;;02382073000110
+345;CGH.PH.MG.000345-0.2;Caboclo;CGH;Hídrica;Potencial hidráulico;Operação;operacao;Registro;MG;Belo Horizonte - MG;-20.495;-43.4828;4420.0;4420.0;1944-12-23;3580.0;;;20227915000141
+27066;CGH.PH.MG.027066-0.2;Funil;CGH;Hídrica;Potencial hidráulico;Operação;operacao;Registro;MG;Belo Horizonte - MG;-20.4767;-43.4464;4230.0;4230.0;1949-12-23;2870.0;;;20227915000141
+27719;CGH.PH.MG.027719-3.2;Salto;CGH;Hídrica;Potencial hidráulico;Operação;operacao;Registro;MG;Belo Horizonte - MG;-20.4942;-43.4506;4505.0;4505.0;1940-12-23;;;;20227915000141

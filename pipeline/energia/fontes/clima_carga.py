@@ -6,7 +6,9 @@ Fonte escolhida em 30/09/2026, com a evidência no documento do módulo:
 - Open-Meteo (reanálise ERA5) respondeu HTTP 429 "Daily API request limit exceeded" a
   partir do endereço compartilhado do ambiente em 30/09/2026: era a cota diária do
   endereço, não bloqueio (em 01/10/2026, depois da virada da cota às 0h UTC, respondeu
-  HTTP 200). Passou a ser coletado como fonte de sensibilidade (ver abaixo);
+  HTTP 200 para 15 capitais e voltou ao 429 antes das 6h UTC). É coletado para a
+  sensibilidade descrita abaixo, mas não entra em nenhum número publicado enquanto não
+  cobrir as 27 capitais;
 - NOAA GSOD (observação sinótica) não tem arquivos de 2026 (a lista de estações termina
   em 24/08/2025);
 - NASA POWER (API diária por ponto, https://power.larc.nasa.gov) respondeu. É reanálise
@@ -20,7 +22,8 @@ subsistema = média das capitais ponderada pela população residente estimada d
 (IBGE, SIDRA 6579, último ano). A capital representa a UF, o que é uma aproximação: o
 interior pode ser mais quente ou mais frio, e a carga não se distribui como a população.
 
-Sensibilidade ao produto de temperatura (Open-Meteo, coletado desde 01/10/2026): a NASA
+Sensibilidade ao produto de temperatura (Open-Meteo, coletado desde 01/10/2026; ainda não
+calculada, porque a cota diária só permitiu 15 das 27 capitais): a NASA
 POWER troca de produto no trecho recente (MERRA-2 até o último mês que a reanálise
 alcançou, GEOS-IT depois), e o modelo treinado com MERRA-2 é aplicado a dias em GEOS-IT;
 comparar 2026 (GEOS-IT) com 2025 (MERRA-2) mistura dois produtos. Para medir o efeito,

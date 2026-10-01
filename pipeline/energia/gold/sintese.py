@@ -277,8 +277,9 @@ def qualidade_frase(fid, vals, gold, prov, conjunto, revisoes_ds, hoje):
     else:
         maior = max(abs(x) for k in revisadas for x in revisoes_ds[k] if x is not None) if any(
             x is not None for k in revisadas for x in revisoes_ds[k]) else None
-        txt_rev = (f"{n_rev} {'referência usada nesta frase foi revisada' if n_rev == 1 else 'referências usadas nesta frase foram revisadas'} "
-                   f"pela fonte entre capturas" + (f" (maior variação de {nbr(maior, 2)}%)" if maior is not None else "") +
+        tipo = "horária" if "T" in revisadas[0] else "diária"
+        txt_rev = (f"{n_rev} {'referência ' + tipo + ' usada nesta frase foi revisada' if n_rev == 1 else 'referências ' + tipo.replace('ária', 'árias') + ' usadas nesta frase foram revisadas'} "
+                   f"pela fonte entre capturas" + (f" (maior variação de {nbr(maior, 2)}% sobre o valor anterior)" if maior is not None else "") +
                    "; o valor exibido é o da captura mais recente.")
     return {
         "natureza": (prov or {}).get("natureza"),
@@ -415,14 +416,17 @@ def resumo_historico(serie, dur_min, dur_ret, sensibilidade=(1, 3, 7, 14)):
     exib = [_dias_exibido(e, ultimo) for e in eps]
     n_av = len(avaliados)
     anos = n_av / 365.25
-    curtas = [s for s in seqs if s["dias"] < dur_min]
+    # acionamento descartado = sequência mais curta que a duração mínima fora de qualquer
+    # episódio (dentro de um episódio ela só prolonga o alerta já exibido)
+    curtas = [x for x in seqs if x["dias"] < dur_min
+              and not any(e["inicio"] <= x["inicio"] <= (e["fim"] or ultimo) for e in eps)]
     sens = []
     for k in sensibilidade:
         rk = episodios(serie, k, dur_ret)
         ex = sum(_dias_exibido(e, ultimo) for e in rk["episodios"])
         sens.append({"duracao_minima_dias": k, "episodios": len(rk["episodios"]),
                      "dias_exibidos": ex, "pct_dias_exibidos": c.r(100.0 * ex / n_av, 1),
-                     "por_ano": c.r(len(rk["episodios"]) / anos, 1) if anos > 0 else None})
+                     "por_ano": c.r(len(rk["episodios"]) / anos, 1) if n_av >= 365 else None})
     return {
         "inicio": serie[0][0], "fim": ultimo,
         "dias_avaliados": n_av, "dias_sem_avaliacao": len(serie) - n_av,
@@ -432,7 +436,9 @@ def resumo_historico(serie, dur_min, dur_ret, sensibilidade=(1, 3, 7, 14)):
         "acionamentos_curtos_descartados": len(curtas),
         "pct_acionamentos_descartados": c.r(100.0 * len(curtas) / len(seqs), 1) if seqs else None,
         "episodios": len(eps),
-        "episodios_por_ano": c.r(len(eps) / anos, 1) if anos > 0 else None,
+        # taxa anual só com pelo menos um ano avaliado: extrapolar dias para ano engana
+        "episodios_por_ano": c.r(len(eps) / anos, 1) if n_av >= 365 else None,
+        "historico_curto": n_av < 365,
         "duracao_mediana_dias": c.r(statistics.median(dur), 1) if dur else None,
         "duracao_maxima_dias": max(dur) if dur else None,
         "dias_exibidos": sum(exib),
@@ -499,15 +505,31 @@ def bandas_por_ano(serie, anos, ano_ini=2001):
     return out
 
 
-def condicoes_ear(ear_pct, inicio, fim):
-    """Condição diária da regra ear_faixa: algum subsistema fora da faixa usual da data.
-    `ear_pct` = {sm: {dia: % da EAR máxima}} (silver, valor publicado pelo ONS)."""
+def ear_sin(ear_mw, ear_max):
+    """{dia: EAR do SIN em %} = Σ EAR verificada ÷ Σ EAR máxima dos quatro subsistemas, só
+    nos dias com os quatro (mesma regra de hidrologia.json)."""
+    out = {}
+    for k in ear_mw[SMS[0]]:
+        try:
+            num = sum(ear_mw[sm][k] for sm in SMS)
+            den = sum(ear_max[sm][k] for sm in SMS)
+        except KeyError:
+            continue
+        if den > 0:
+            out[k] = 100.0 * num / den
+    return out
+
+
+def condicoes_ear(ear_pct, inicio, fim, entidades=("SIN",)):
+    """Condição diária da regra ear_faixa: EAR fora da faixa usual da data em alguma das
+    `entidades` (padrão: o SIN; a variante com os quatro subsistemas é publicada como
+    alternativa avaliada). `ear_pct` = {entidade: {dia: % da EAR máxima}}."""
     anos = range(int(inicio[:4]), int(fim[:4]) + 1)
-    bandas = {sm: bandas_por_ano(ear_pct[sm], anos) for sm in SMS}
+    bandas = {sm: bandas_por_ano(ear_pct[sm], anos) for sm in entidades}
     out = []
     for dia in calendario(inicio, fim):
         fora, valores, falta = [], {}, False
-        for sm in SMS:
+        for sm in entidades:
             v = ear_pct[sm].get(dia)
             p10, _, p90, _ = bandas[sm][int(dia[:4])].get(_md(dia), (None, None, None, 0))
             fx = faixa(v, p10, p90)
@@ -545,14 +567,25 @@ def ena30_serie(ena_mw, ena_pct):
     return out
 
 
-def condicoes_ena(e30, inicio, fim, ano_ini=2001):
-    """Condição diária da regra ena_faixa: ENA de 30 dias de algum subsistema fora do 10º
-    a 90º percentil da mesma janela nos anos anteriores (desde 2001), como em hidrologia."""
+def ena_sin(ena_mw, ena_pct):
+    """(ENA bruta, % da MLT) do SIN por dia: soma da ENA e da MLT implícita (ENA ÷ %)
+    dos quatro subsistemas, só nos dias com os quatro (mesma regra de hidrologia.json)."""
+    mlt = {sm: {k: ena_mw[sm][k] / (ena_pct[sm][k] / 100.0) for k in ena_mw[sm] if ena_pct[sm].get(k)} for sm in SMS}
+    dias = set.intersection(*(set(mlt[sm]) for sm in SMS))
+    mw = {k: sum(ena_mw[sm][k] for sm in SMS) for k in dias}
+    pct = {k: 100.0 * mw[k] / sum(mlt[sm][k] for sm in SMS) for k in dias}
+    return mw, pct
+
+
+def condicoes_ena(e30, inicio, fim, ano_ini=2001, entidades=("SIN",)):
+    """Condição diária da regra ena_faixa: ENA de 30 dias fora do 10º a 90º percentil da
+    mesma janela nos anos anteriores (desde 2001) em alguma das `entidades`, como em
+    hidrologia.json (padrão: o SIN)."""
     out = []
     for dia in calendario(inicio, fim):
         fora, valores, falta = [], {}, False
         x = d(dia)
-        for sm in SMS:
+        for sm in entidades:
             v = e30[sm].get(dia)
             hist = []
             for a in range(ano_ini, x.year):

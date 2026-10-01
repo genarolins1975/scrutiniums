@@ -6,8 +6,8 @@
  * índice i de cada array se refere ao mesmo período. Nenhum número é recalculado na
  * interface: comparações entre CMO e PLD já vêm como diferença no mesmo intervalo.
  */
-import type { Evidencia } from "./evidencia";
-import type { Cabecalho, Download, Proveniencia, Submercado } from "./tipos";
+import type { ArquivoEvidencia, Evidencia, FonteEvidencia } from "./evidencia";
+import type { Cabecalho, Download, Fonte, Proveniencia, Submercado } from "./tipos";
 
 export type SerieSm<T> = Record<Submercado, T>;
 export type Fronteira = "N_NE" | "N_SE" | "NE_SE" | "S_SE";
@@ -22,10 +22,48 @@ export type SituacaoHora =
   | "abaixo_do_piso"
   | "acima_do_teto";
 
+/* ---------- Fonte e proveniência compostas ---------- */
+
+/**
+ * Endereço de cada fonte de um número que combina conjuntos de órgãos diferentes (PLD da CCEE
+ * e atos da ANEEL, por exemplo): `Fonte` guarda só o da primeira, `urls` lista todas. Nos atos
+ * da ANEEL vêm o nível de conferência e a cópia pública efetivamente lida.
+ */
+export type UrlFonte = {
+  orgao: string;
+  dataset: string;
+  url_dataset: string;
+  url_primaria: string;
+  nivel_conferencia?: NivelConferencia | null;
+  /** Cópia pública lida quando o endereço oficial não responde (Internet Archive). */
+  url_copia?: string | null;
+};
+
+export type FonteComposta = Fonte & { urls?: UrlFonte[] };
+
+type RevisoesBase = NonNullable<Proveniencia["revisoes_conhecidas"]>;
+/** Revisões de um número com mais de uma fonte: `total` soma as revisões das séries usadas de cada fonte. */
+export type RevisoesPld = RevisoesBase & { componentes?: { fonte: string; total: number | null }[] };
+
+/** Proveniência do módulo: o contrato compartilhado com a fonte composta e as revisões por fonte. */
+export type ProvenienciaPld = Omit<Proveniencia, "fonte" | "revisoes_conhecidas"> & {
+  fonte: FonteComposta;
+  revisoes_conhecidas: RevisoesPld | null;
+};
+
 /* ---------- Evidência ("Comprove este número") ---------- */
 
-/** Fichas no contrato compartilhado (pipeline/energia/evidencia.py e src/lib/energia/evidencia.ts). */
-export type EvidenciaPld = Evidencia;
+/** Arquivo da ficha; o ato da ANEEL traz endereço oficial, cópia lida e nível de conferência, e a resposta da API do ONS, a URL consultada. */
+export type ArquivoEvidenciaPld = ArquivoEvidencia & {
+  url?: string | null;
+  url_copia?: string | null;
+  nivel_conferencia?: NivelConferencia | null;
+};
+
+/** Fichas no contrato compartilhado (pipeline/energia/evidencia.py e src/lib/energia/evidencia.ts), com os campos extras dos arquivos. */
+export type EvidenciaPld = Omit<Evidencia, "fonte"> & {
+  fonte: Omit<FonteEvidencia, "arquivos"> & { arquivos?: ArquivoEvidenciaPld[] | null };
+};
 
 /**
  * public/energia/series/pld_evidencias.json: as fichas completas, lidas sob demanda pela
@@ -295,6 +333,8 @@ export type PermanenciaAnual = {
 
 export type EmpatePiso = {
   ano: number;
+  /** Ano de referência ainda em curso. */
+  parcial: boolean;
   horas: number;
   por_quantidade_no_piso: Record<"0" | "1" | "2" | "3" | "4", number>;
   horas_quatro_no_piso: number;
@@ -354,9 +394,14 @@ export type MensalSm = {
   horas: number[];
   temporal: (number | null)[];
   horas_com_carga: number[];
+  /** Peso: carga do balanço do ONS, cujo perímetro muda dentro da série (`BlocoHistorico.mensal.perimetro_carga`). */
   ponderada_carga: (number | null)[];
   /** true quando a ponderada usa exatamente as mesmas horas da temporal. */
   mesmas_horas: boolean[];
+  horas_com_carga_sem_mmgd: number[];
+  /** Peso: carga global líquida de MMGD da API de carga verificada do ONS (perímetro homogêneo). */
+  ponderada_carga_sem_mmgd: (number | null)[];
+  mesmas_horas_sem_mmgd: boolean[];
   /** Média temporal em reais do mês-base do deflator. */
   real: (number | null)[];
 };
@@ -426,8 +471,68 @@ export type RevisaoCarga = {
   efeito_na_ponderada: number | null;
 };
 
+/** Perímetro da carga do balanço declarado pelo ONS; "P2_P3" = mês em que a mudança declarada acontece. */
+export type PerimetroCarga = "P1" | "P2" | "P3" | "P2_P3" | "P1_P2";
+
+export type ConferenciaPerimetroSm = {
+  erro_abs_medio_com_mmgd: number | null;
+  erro_abs_medio_sem_mmgd: number | null;
+  coef_mmgd_min: number | null;
+  coef_mmgd_max: number | null;
+  meses_seguem_com_mmgd: number;
+  meses_seguem_sem_mmgd: number;
+};
+
+export type PerimetroPeso = {
+  id: "P1" | "P2" | "P3";
+  inicio: string | null;
+  fim: string | null;
+  /** Trecho literal da descrição do conjunto Carga de Energia do ONS. */
+  trecho: string;
+  /** Trecho conferido na descrição capturada; null sem captura. */
+  trecho_conferido: boolean | null;
+  componente_estimado: string | null;
+  inclui_mmgd: boolean;
+  natureza_do_peso: "OBSERVADO" | "ESTIMADO";
+  primeiro_mes: string | null;
+  ultimo_mes: string | null;
+  n_meses: number;
+  /** Conferência contra a API de carga verificada; null sem a API. */
+  conferencia: SerieSm<ConferenciaPerimetroSm> | null;
+};
+
+export type QuebraPerimetro = {
+  data: string;
+  mes: string;
+  de: "P1" | "P2";
+  para: "P2" | "P3";
+  origem: "FONTE";
+  descricao: string;
+  conferida_no_dado: boolean;
+  /** Primeiro dia em que a carga horária do balanço acompanha a carga com MMGD (só na quebra de 2023). */
+  inicio_observado_no_balanco?: string | null;
+  nota: string;
+};
+
+export type SensibilidadePeso = {
+  mes: string;
+  perimetro_carga: PerimetroCarga;
+  por_sm: {
+    sm: Submercado;
+    temporal: number;
+    ponderada_carga: number;
+    ponderada_carga_sem_mmgd: number;
+    ponderada_menos_temporal: number;
+    sem_mmgd_menos_temporal: number;
+    ponderada_menos_sem_mmgd: number;
+  }[];
+  texto: string;
+};
+
+export type HorasRetiradas = { sm: Submercado; mes: string; horas: number; exemplos: { hora: string; carga_mwmed: number | null }[] }[];
+
 export type BlocoHistorico = {
-  mensal: { meses: string[]; dias_completos: number[]; parcial: boolean[] } & SerieSm<MensalSm>;
+  mensal: { meses: string[]; dias_completos: number[]; parcial: boolean[]; perimetro_carga: PerimetroCarga[] } & SerieSm<MensalSm>;
   /** Mapa hora × dia dos últimos 90 dias em arquivo próprio (PldHoraDiaArquivo), lido sob demanda. */
   hora_dia: { url: string; inicio: string; fim: string; dias: number; dias_completos_no_recorte: number; nota: string };
   deflator: { indice: string; mes_base: string | null; indice_base: number | null; ultimo_mes_do_indice: string | null; regra: string };
@@ -437,8 +542,30 @@ export type BlocoHistorico = {
     ultima_hora_com_carga: string | null;
     controle_fisico: string;
     /** Horas com carga ≤ 0 retiradas do peso (ressalva visível); vazio quando não houve. */
-    horas_retiradas: { sm: Submercado; mes: string; horas: number; exemplos: { hora: string; carga_mwmed: number | null }[] }[];
+    horas_retiradas: HorasRetiradas;
     revisoes_carga: RevisaoCarga[];
+    perimetros: PerimetroPeso[];
+    fonte_perimetro: { conjunto: string; url: string | null; capturado_em: string | null; modificado_na_fonte: string | null; nota: string };
+    quebras: QuebraPerimetro[];
+    conferencia_perimetro: {
+      disponivel: boolean;
+      motivo: string | null;
+      limiar_coef_mmgd: number;
+      meses_divergentes: { sm: Submercado; mes: string; perimetro: PerimetroCarga; segue: "com_mmgd" | "sem_mmgd"; coef_mmgd: number | null }[];
+      metodo: string;
+    };
+    peso_sem_mmgd: {
+      disponivel: boolean;
+      motivo: string | null;
+      peso: string;
+      natureza: "OBSERVADO";
+      perimetro: string;
+      ultima_hora: string | null;
+      horas_retiradas: HorasRetiradas;
+    };
+    comparabilidade: string;
+    /** Último mês completo com as três médias nos quatro submercados; null quando não há. */
+    sensibilidade_peso: SensibilidadePeso | null;
   };
   sazonal_mes: SazonalMes[];
   posicao_referencia: PosicaoReferencia[];
@@ -460,6 +587,9 @@ export type AmplitudePeriodo = {
   horas: number;
   horas_com_separacao: number;
   frac_com_separacao: number | null;
+  /** Sensibilidade ao limiar: acima de R$ 1,00/MWh (o limiar de pld.json) e de R$ 10,00/MWh. */
+  horas_acima_1: number;
+  horas_acima_10: number;
   media: number | null;
   p50: number | null;
   p95: number | null;
@@ -501,6 +631,7 @@ export type BlocoRegional = {
   pares: Par[];
   fronteiras: Fronteira[];
   regra_separacao: string;
+  limiar_sensibilidade: string;
   regra_fluxo: string;
   periodos: PeriodoRegional[];
   amplitude: AmplitudePeriodo[];
@@ -511,12 +642,30 @@ export type BlocoRegional = {
   fluxos: FluxoSeparacao[];
 };
 
-export type HorarioRecente = {
+/**
+ * public/energia/series/pld_horario_recente.json: últimas 168 horas até o fim do dia de
+ * referência, lido sob demanda (a gold traz `HorarioRecente`, o ponteiro).
+ */
+export type PldHorarioRecenteArquivo = {
+  gerado_em: string;
+  unidade: string;
+  fuso: string;
   t: string[];
   pld: SerieSm<(number | null)[]>;
   cmo_dessem: SerieSm<(number | null)[]>;
   fluxo: Record<Fronteira, (number | null)[]>;
   amplitude: (number | null)[];
+};
+
+export type HorarioRecente = {
+  url: string;
+  inicio: string;
+  fim: string;
+  horas: number;
+  horas_com_pld_nos_quatro: number;
+  horas_com_cmo_nos_quatro: number;
+  horas_com_fluxo: Record<Fronteira, number>;
+  nota: string;
 };
 
 /* ---------- Achados históricos ---------- */
@@ -550,7 +699,17 @@ export type AchadoA02 = {
   };
   periodo?: { primeira_semana_inicio: string; ultima_semana_fim: string; semanas: number };
   arquivos: ArquivoA02[];
-  dessem_mesmo_periodo?: { sm: Submercado; meias_horas: number; meias_horas_zero: number; frac_zero: number | null; media: number | null; max: number | null }[];
+  dessem_mesmo_periodo?: {
+    sm: Submercado;
+    /** Meias horas publicadas; `meias_horas_esperadas` = dias do período × 48. */
+    meias_horas: number;
+    meias_horas_esperadas: number;
+    dias_sem_publicacao: number;
+    meias_horas_zero: number;
+    frac_zero: number | null;
+    media: number | null;
+    max: number | null;
+  }[];
   pld_mesmo_periodo?: { sm: Submercado; horas: number; media: number | null; horas_com_limite: number; frac_piso: number | null }[];
   observacao_formato?: string;
   /** Permissões declaradas no dicionário em PDF do CMO semanal (zero admitido ou não). */
@@ -694,25 +853,29 @@ export type PldDetalheGold = Cabecalho & {
   controles: Controle[];
   proveniencia: {
     /** Natureza ESTIMADO: resultado do modelo DESSEM, não medição. */
-    cmo_semi_horario: Proveniencia;
-    cmo_horario: Proveniencia;
-    comparacao_semanal: Proveniencia;
-    relacao_pld_cmo: Proveniencia;
-    historico_mensal: Proveniencia;
-    sazonal: Proveniencia;
-    distribuicao: Proveniencia;
-    regional: Proveniencia;
-    fluxos: Proveniencia;
-    a02: Proveniencia;
-    a09: Proveniencia;
+    cmo_semi_horario: ProvenienciaPld;
+    cmo_horario: ProvenienciaPld;
+    comparacao_semanal: ProvenienciaPld;
+    relacao_pld_cmo: ProvenienciaPld;
+    historico_mensal: ProvenienciaPld;
+    /** Peso da ponderada pelo balanço: natureza ESTIMADO (previsão de usinas não despachadas desde 03/2021 e MMGD estimada desde 29/04/2023). */
+    peso_carga_balanco: ProvenienciaPld;
+    /** Peso da ponderada sem MMGD (API de carga verificada); ausente quando o silver do módulo Carga não está disponível. */
+    peso_carga_sem_mmgd?: ProvenienciaPld;
+    sazonal: ProvenienciaPld;
+    distribuicao: ProvenienciaPld;
+    regional: ProvenienciaPld;
+    fluxos: ProvenienciaPld;
+    a02: ProvenienciaPld;
+    a09: ProvenienciaPld;
     /** Presente só quando os atos de limites estão disponíveis. */
-    limites?: Proveniencia;
+    limites?: ProvenienciaPld;
   };
   /** Índice das fichas; as fichas completas ficam em `arquivo` (PldEvidenciasArquivo), lidas sob demanda. */
   evidencias: { arquivo: string; indice: Record<string, { indicador: string; valor_exibido: string; entidade: string }> };
   snapshots: Record<
     "cmo_semi_horario" | "cmo_semanal_original" | "dicionarios" | "ipca" | "normas" | "pld" | "cmo_semanal" | "balanco" | "intercambio",
     SnapshotResumo
-  >;
+  > & { carga_api?: SnapshotResumo };
   downloads: Download[];
 };

@@ -57,11 +57,40 @@ COMBUSTIVEL_CATEGORIA = {
     "MULTI-COMBUSTIVEL DIESEL/OLEO": "oleo",
     "BIOMASSA": "biomassa",
     "NUCLEAR": "nuclear",
+    # "Resíduos Industriais" do ONS junta coisas que a ANEEL classifica em fontes diferentes:
+    # gases de siderurgia (CEG UTE.CM, carvão mineral na ANEEL), licor negro de celulose
+    # (CEG UTE.FL, biomassa florestal na ANEEL) e resíduos de refinaria (UTE.PE). A
+    # categoria publicada segue o rótulo do ONS, e a decomposição pelo código de
+    # combustível do CEG sai em matriz.outros_por_ceg.
     "RESIDUOS INDUSTRIAIS": "outros",
-    "RESIDUO CICLO COMBINADO": "outros",
     "MULTI-COMBUSTIVEL GAS/DIESEL": "outros",
     # grupos de pequenas térmicas Tipo III: a fonte não identifica o combustível
     "OUTRAS MULTI-COMBUSTIVEL": "termica_sem_combustivel",
+}
+
+# "Resíduo Ciclo Combinado" (Capacidade Instalada) não é combustível: é a turbina a vapor
+# do ciclo combinado, movida pelo calor de exaustão das turbinas da própria usina (todas
+# as 23 unidades do retrato de 30/09/2026 estão em usinas a gás ou óleo, CEG UTE.GN ou
+# UTE.PE). A unidade herda a categoria da usina (mesmo CEG na Geração por Usina ou, sem
+# par, as demais unidades do mesmo CEG); nunca vai para "outros" por conta própria.
+COMBUSTIVEL_CICLO_COMBINADO = "RESIDUO CICLO COMBINADO"
+
+# Código de combustível do CEG (segundo campo, "UTE.FL.MA...") → origem e fonte da ANEEL.
+# Tabela conferida em 01/10/2026 contra a classificação do próprio SIGA publicada pelo
+# módulo Expansão (expansao_usinas_siga.csv): 151 CEGs UTE.FL são Biomassa/Floresta, 21
+# UTE.CM são Fóssil/Carvão mineral, 2.144 UTE.PE são Fóssil/Petróleo, 474 UTE.AI são
+# Biomassa/Agroindustriais. Serve só para decompor a categoria "outros"; não reclassifica.
+CEG_FONTE_ANEEL = {
+    "AI": "Biomassa: agroindustriais (bagaço de cana e afins)",
+    "BL": "Biomassa: biocombustíveis líquidos",
+    "FL": "Biomassa: floresta (inclui licor negro de celulose)",
+    "RA": "Biomassa: resíduos animais",
+    "RU": "Biomassa: resíduos sólidos urbanos",
+    "CM": "Fóssil: carvão mineral (inclui gases de siderurgia)",
+    "GN": "Fóssil: gás natural",
+    "PE": "Fóssil: petróleo",
+    "OF": "Fóssil: outros fósseis",
+    "UR": "Nuclear: urânio",
 }
 
 CATEGORIAS = (
@@ -74,7 +103,7 @@ CATEGORIAS = (
     ("carvao", "Carvão mineral"),
     ("oleo", "Óleo combustível e diesel"),
     ("biomassa", "Biomassa"),
-    ("outros", "Outras térmicas (resíduos industriais e multicombustível gás/diesel)"),
+    ("outros", "Outras térmicas (resíduos industriais do ONS, que incluem gases de siderurgia e licor negro de celulose, e multicombustível gás/diesel)"),
     ("termica_sem_combustivel", "Térmicas pequenas sem combustível identificado (grupos Tipo III)"),
     ("nao_mapeada", "Categoria não mapeada"),
 )
@@ -398,13 +427,19 @@ def agrega_termica(tabelas):
 
     - diario: {(dia, sm, medida): MWh} para os motivos e as medidas extras;
     - usina_mes: {(mes, chave, medida): MWh};
+    - parcela_mes: {(mes, chave, cod): MWh} geração verificada de cada parcela (código do
+      ONS nos modelos) dentro da usina: uma usina (CEG) pode ter várias parcelas, cada uma
+      com seu código e seu CVU (Maranhão 4 P0, P1 e P2; J. Lacerda A-1 e A-2);
     - presentes: {medida: linhas com valor} (coluna ausente ou toda nula = não se aplica);
-    - cadastro: {chave: {nome, sm, ceg, cod, combustivel}};
+    - cadastro: {chave: {nome, sm, ceg, cod, combustivel, parcelas}}, em que `parcelas` é a
+      lista [[cod, nome], ...] de TODAS as linhas do arquivo (não só a última);
     - horas_dia: {dia: instantes distintos}; rel: controles."""
     pa, pc = _pa()
     medidas = [(m, c) for m, c, _ in MOTIVOS] + list(EXTRAS_TERMICA)
     diario = defaultdict(float)
     usina_mes = defaultdict(float)
+    parcela_mes = defaultdict(float)
+    parcelas = defaultdict(dict)
     presentes = defaultdict(int)
     cadastro = {}
     horas = defaultdict(set)
@@ -450,6 +485,12 @@ def agrega_termica(tabelas):
                 val = g[f"{m}_sum"][i]
                 if val is not None:
                     usina_mes[(g["mes"][i], g["ch"][i], m)] += val
+        if "total" in somas:
+            tp = pa.table({"mes": mes, "ch": cols["ch"], "cod": cod, "total": cols["total"]})
+            g = tp.group_by(["mes", "ch", "cod"], use_threads=False).aggregate([("total", "sum")]).to_pydict()
+            for m_, ch_, cod_, val in zip(g["mes"], g["ch"], g["cod"], g["total_sum"]):
+                if val is not None and cod_ is not None:
+                    parcela_mes[(m_, ch_, int(cod_))] += val
         for d_, h_ in zip(dia.to_pylist(), hora.to_pylist()):
             horas[d_].add(h_)
         nomes = texto(t["nom_usina"]).to_pylist()
@@ -462,10 +503,13 @@ def agrega_termica(tabelas):
             reg["nome"], reg["sm"] = nomes[i], sms[i]
             if cod_l[i] is not None:
                 reg["cod"] = cod_l[i]
+                parcelas[k][int(cod_l[i])] = nomes[i]
             if combs[i]:
                 reg["combustivel"] = combs[i]
-    return {"diario": dict(diario), "usina_mes": dict(usina_mes), "presentes": dict(presentes),
-            "cadastro": cadastro, "horas_dia": {k: len(v) for k, v in horas.items()}, "rel": rel}
+    for k, ps in parcelas.items():
+        cadastro[k]["parcelas"] = [[cod_, ps[cod_]] for cod_ in sorted(ps)]
+    return {"diario": dict(diario), "usina_mes": dict(usina_mes), "parcela_mes": dict(parcela_mes),
+            "presentes": dict(presentes), "cadastro": cadastro, "horas_dia": {k: len(v) for k, v in horas.items()}, "rel": rel}
 
 
 def particao_motivos(valores):
@@ -553,18 +597,22 @@ def agrega_restricao(tabelas):
 
     - diario_sm: {(dia, sm): {ger, ref, meias, lim, lim_sem_ref, ger_nula}};
     - diario_razao: {(dia, sm, razao, origem): {eng, gnra, gnra_n, meias}};
-    - pot_max: {(dia, sm|'SIN'): (MW, instante)} maior corte simultâneo numa meia hora;
+    - pot_max: {(dia, sm|'SIN'): (MW, instante, MW de referência)} maior corte simultâneo
+      numa meia hora e a soma das gerações de referência das mesmas linhas naquela meia hora
+      (o corte simultâneo nunca pode passar dela; o controle conta as meias horas em que passa);
     - usina_mes: {(mes, id_ons): {ger, eng_<razao>..., meias, lim}};
     - descricoes_mes: {(mes, descrição): eng}; cadastro por id_ons; rel."""
     pa, pc = _pa()
     diario_sm = defaultdict(lambda: {"ger": 0.0, "ref": 0.0, "meias": 0, "lim": 0, "lim_sem_ref": 0, "ger_nula": 0})
     diario_razao = defaultdict(lambda: {"eng": 0.0, "gnra": 0.0, "gnra_n": 0, "meias": 0})
     corte_meia = defaultdict(float)
+    ref_meia = defaultdict(float)
     usina_mes = defaultdict(lambda: defaultdict(float))
     desc_mes = defaultdict(float)
     cadastro = {}
     rel = {"linhas": 0, "invalidos": 0, "negativos": 0, "subsistema_desconhecido": 0, "fora_da_grade": 0,
-           "primeiro": None, "ultimo": None, "razao_desconhecida": 0, "gnra_diverge": 0, "com_gnra": 0}
+           "primeiro": None, "ultimo": None, "razao_desconhecida": 0, "gnra_diverge": 0, "com_gnra": 0,
+           "meias_corte_acima_da_referencia": 0, "meias_com_corte": 0}
     for t in tabelas:
         n = t.num_rows
         rel["linhas"] += n
@@ -621,9 +669,13 @@ def agrega_restricao(tabelas):
                 x["gnra"] += (a["gnra_sum"][i] or 0.0) * HORAS_MEIA
                 x["gnra_n"] += a["gnra_count"][i]
                 x["meias"] += a["um_sum"][i]
-            a = lim_tab.group_by(["inst", "sm"], use_threads=False).aggregate([("corte", "sum")]).to_pydict()
+            # referência somada só nas linhas com corte calculado (as mesmas do numerador)
+            rc = pc.if_else(pc.is_valid(lim_tab["corte"]), lim_tab["ref"], pa.scalar(None, pa.float64()))
+            a = lim_tab.append_column("rc", rc).group_by(["inst", "sm"], use_threads=False).aggregate(
+                [("corte", "sum"), ("rc", "sum")]).to_pydict()
             for i in range(len(a["inst"])):
                 corte_meia[(a["inst"][i], a["sm"][i])] += a["corte_sum"][i] or 0.0
+                ref_meia[(a["inst"][i], a["sm"][i])] += a["rc_sum"][i] or 0.0
             a = lim_tab.group_by(["mes", "ido", "raz"], use_threads=False).aggregate([("corte", "sum"), ("um", "sum")]).to_pydict()
             for i in range(len(a["mes"])):
                 x = usina_mes[(a["mes"][i], a["ido"][i] or "sem_id_ons")]
@@ -647,18 +699,25 @@ def agrega_restricao(tabelas):
             for c in ("nome", "sm", "uf", "ceg", "ponto", "agente"):
                 if d[c][i]:
                     reg[c] = d[c][i]
-    # maior corte simultâneo por dia (MW numa meia hora), por subsistema e no SIN
+    # maior corte simultâneo por dia (MW numa meia hora), por subsistema e no SIN, com a
+    # soma das referências na mesma meia hora. Controle: corte simultâneo acima da soma das
+    # referências só acontece com geração verificada negativa (dado inválido na fonte)
     pot = {}
-    sin = defaultdict(float)
+    sin, sin_ref = defaultdict(float), defaultdict(float)
     for (inst, sm_), v in corte_meia.items():
+        r_ = ref_meia[(inst, sm_)]
         sin[inst] += v
+        sin_ref[inst] += r_
+        if v > 0:
+            rel["meias_com_corte"] += 1
+            rel["meias_corte_acima_da_referencia"] += v > r_ + 1e-6
         k = (inst[:10], sm_)
         if k not in pot or v > pot[k][0]:
-            pot[k] = (v, inst)
+            pot[k] = (v, inst, r_)
     for inst, v in sin.items():
         k = (inst[:10], "SIN")
         if k not in pot or v > pot[k][0]:
-            pot[k] = (v, inst)
+            pot[k] = (v, inst, sin_ref[inst])
     return {"diario_sm": {k: dict(v) for k, v in diario_sm.items()}, "diario_razao": {k: dict(v) for k, v in diario_razao.items()},
             "pot_max": pot, "usina_mes": {k: dict(v) for k, v in usina_mes.items()}, "descricoes_mes": dict(desc_mes),
             "cadastro": cadastro, "rel": rel}
@@ -831,6 +890,25 @@ def ceg_base(ceg):
     ceg = (ceg or "").strip()
     m = re.match(r"^(.*\d-\d)\.\d{2}$", ceg)
     return m.group(1) if m else ceg
+
+
+_CEG = re.compile(r"^([A-Z]{3})\.([A-Z]{2})\.([A-Z]{2})\.(\d{6}-\d)(?:\.\d{1,2})?$")
+
+
+def nucleo_ceg(ceg):
+    """Número sequencial do empreendimento no CEG ('029587-6' em UTE.CM.RJ.029587-6.01), ou
+    ''. A ANEEL corrige o código de combustível ou a UF de um CEG sem trocar o número: a
+    usina Do Atlântico passou de UTE.PE.RJ.029587-6.01 para UTE.CM.RJ.029587-6.01 na
+    Geração por Usina em 11/2025; Pecém II aparece como UTE.PE.PE.031303-3.02 e
+    UTE.PE.BA.031303-3.01 na térmica por motivo."""
+    m = _CEG.match(ceg_valido(ceg).upper())
+    return m.group(4) if m else ""
+
+
+def codigo_combustivel_ceg(ceg):
+    """Código de combustível do CEG ('FL' em UTE.FL.MA.030959-1.01), ou ''."""
+    m = _CEG.match(ceg_valido(ceg).upper())
+    return m.group(2) if m else ""
 
 
 def unidade_opera_em(u, dia):

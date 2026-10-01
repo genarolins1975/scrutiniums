@@ -267,7 +267,10 @@ def _controle(con):
 # (chave primária inclui a vintage), então uma mudança no que a importação grava (nova
 # agregação) sobe a versão e a marca passa a ser "importado@<versão>": as vintages
 # vigentes são relidas do bronze na próxima coleta.
-VERSAO_IMPORTACAO = {"ons_geracao_usina": 2, "ons_geracao_termica_motivo": 2}
+# Versão 3 da térmica: parcelas (todos os códigos do ONS de cada CEG no arquivo) e geração
+# por parcela. Versão 2 das restrições: soma das referências na meia hora do maior corte.
+VERSAO_IMPORTACAO = {"ons_geracao_usina": 2, "ons_geracao_termica_motivo": 3, "ons_coff_eolica": 2,
+                     "ons_coff_fotovoltaica": 2}
 
 
 def _campo(vid, nome):
@@ -363,11 +366,18 @@ def _importa_termica(con, v, periodo):
         s = f"tu|{ch}|{m}"
         manif.add(s)
         obs.append((s, mes, _r(mwh)))
+    for (mes, ch, cod), mwh in a["parcela_mes"].items():
+        s = f"tp|{ch}|{cod}"
+        manif.add(s)
+        obs.append((s, mes, _r(mwh)))
     for dia, n in a["horas_dia"].items():
         obs.append(("tnh", dia, float(n)))
     manif.add("tnh")
     novas, revs = base.grava_observacoes(con, ds, v["vintage_id"], obs)
-    regs = [(ch, campo, val) for ch, cad in a["cadastro"].items() for campo, val in cad.items() if val not in (None, "")]
+    # `parcelas` vai como JSON: o histórico de registros guarda cada conjunto de códigos que
+    # o arquivo trouxe para o CEG, e a união dos históricos dá todos os códigos da usina
+    regs = [(ch, campo, json.dumps(val, ensure_ascii=False) if campo == "parcelas" else val)
+            for ch, cad in a["cadastro"].items() for campo, val in cad.items() if val not in (None, "", [])]
     base.grava_registros(con, ds, v["vintage_id"], regs)
     rel = {**a["rel"], "periodo": periodo, "observacoes": len(obs), "novas": novas, "revisoes": revs,
            "usinas": len(a["cadastro"]), "presentes": a["presentes"],
@@ -432,8 +442,9 @@ def _importa_coff(con, k, v, periodo):
         if x["gnra_n"]:
             add(f"a|{sm}|{raz}|{orig}", dia, x["gnra"])
     regs = []
-    for (dia, sm), (mw, inst) in a["pot_max"].items():
+    for (dia, sm), (mw, inst, ref) in a["pot_max"].items():
         add(f"p|{sm}", dia, mw)
+        add(f"pr|{sm}", dia, ref)
         regs.append((f"p|{sm}|{dia}", "instante", inst))
     for (mes, ido), x in a["usina_mes"].items():
         for campo, val in x.items():
@@ -635,6 +646,48 @@ def _coleta_notas(con, status):
             con.commit()
 
 
+def importa_pendentes(con, k, alvo, status):
+    """Importa do bronze as vintages vigentes do conjunto `k` ainda não importadas na versão
+    atual da importação (inclui as puladas na coleta). `alvo` vazio = todas as vigentes;
+    sem rede, isto basta para reler o bronze depois de uma mudança de versão."""
+    cfg = CONJUNTOS[k]
+    ds = cfg["ds"]
+    ctrl = _controle(con)
+    vig = ckan.vintages_vigentes(con, ds)
+    for recurso, v in sorted(vig.items(), key=lambda x: og.periodo_do_arquivo(x[0] + ".parquet") or ""):
+        if _importado(ctrl, v["vintage_id"]):
+            continue
+        if not cfg.get("arquivo") and recurso not in alvo and alvo:
+            continue  # arquivo que saiu da seleção (ex.: detalhamento mais antigo)
+        periodo = og.periodo_do_arquivo(recurso + ".parquet")
+        _espera_memoria()
+        try:
+            if k == "usina":
+                rel = _importa_usina(con, v, periodo)
+            elif k == "termica":
+                rel = _importa_termica(con, v, periodo)
+            elif k == "cvu":
+                rel = _importa_cvu(con, v, periodo)
+            elif k in ("coff_eolica", "coff_solar"):
+                rel = _importa_coff(con, k, v, periodo)
+            elif k in ("coff_eolica_det", "coff_solar_det"):
+                rel = _importa_coff_det(con, k, v, periodo)
+            elif k == "fc":
+                rel = _importa_fc(con, v, periodo)
+            elif k == "capacidade":
+                rel = _importa_capacidade(con, v)
+            elif k == "modalidade":
+                rel = _importa_tabela(con, k, v, _chave_modalidade)
+            else:
+                rel = _importa_tabela(con, k, v, _chave_conjunto)
+            status["importacoes"][recurso] = {kk: rel.get(kk) for kk in ("linhas", "observacoes", "novas", "revisoes")}
+            base.registra_coleta(con, ds, recurso, True, f"importação: {rel.get('observacoes', rel.get('linhas'))}")
+        except Exception as e:  # arquivo ilegível ou formato novo: registrado, sem número
+            base.registra_coleta(con, ds, recurso, False, f"importação: {e}")
+            status["falhas"].append(f"{recurso} importação: {e}")
+        con.commit()
+
+
 def coletar(con, ctx):
     """Coleta do módulo. Nunca lança por falha de fonte: cada falha vira registro em
     `coletas` e item em `falhas`; a gold anterior fica no ar pela sentinela."""
@@ -669,41 +722,7 @@ def coletar(con, ctx):
             st[chave] += 1
             if res["status"] == "falha":
                 status["falhas"].append(f"{recurso}: {res['detalhe']}")
-        # importação das vintages vigentes ainda não importadas (inclui as puladas)
-        ctrl = _controle(con)
-        vig = ckan.vintages_vigentes(con, ds)
-        for recurso, v in sorted(vig.items(), key=lambda x: og.periodo_do_arquivo(x[0] + ".parquet") or ""):
-            if _importado(ctrl, v["vintage_id"]):
-                continue
-            if not cfg.get("arquivo") and recurso not in alvo and alvo:
-                continue  # arquivo que saiu da seleção (ex.: detalhamento mais antigo)
-            periodo = og.periodo_do_arquivo(recurso + ".parquet")
-            _espera_memoria()
-            try:
-                if k == "usina":
-                    rel = _importa_usina(con, v, periodo)
-                elif k == "termica":
-                    rel = _importa_termica(con, v, periodo)
-                elif k == "cvu":
-                    rel = _importa_cvu(con, v, periodo)
-                elif k in ("coff_eolica", "coff_solar"):
-                    rel = _importa_coff(con, k, v, periodo)
-                elif k in ("coff_eolica_det", "coff_solar_det"):
-                    rel = _importa_coff_det(con, k, v, periodo)
-                elif k == "fc":
-                    rel = _importa_fc(con, v, periodo)
-                elif k == "capacidade":
-                    rel = _importa_capacidade(con, v)
-                elif k == "modalidade":
-                    rel = _importa_tabela(con, k, v, _chave_modalidade)
-                else:
-                    rel = _importa_tabela(con, k, v, _chave_conjunto)
-                status["importacoes"][recurso] = {kk: rel.get(kk) for kk in ("linhas", "observacoes", "novas", "revisoes")}
-                base.registra_coleta(con, ds, recurso, True, f"importação: {rel.get('observacoes', rel.get('linhas'))}")
-            except Exception as e:  # arquivo ilegível ou formato novo: registrado, sem número
-                base.registra_coleta(con, ds, recurso, False, f"importação: {e}")
-                status["falhas"].append(f"{recurso} importação: {e}")
-            con.commit()
+        importa_pendentes(con, k, alvo, status)
     if ctx.get("somente") and "dicionarios" not in ctx["somente"]:
         status["ok"] = not status["falhas"]
         return status
@@ -896,6 +915,7 @@ def carrega_usina(con):
     for (serie, ref), v in tudo.items():
         D[serie.split("|", 1)[0]][(serie, ref)] = v
     D["cadastro"] = base.registros_como_estavam_em(con, ds)
+    D["historico_cadastro"] = historico_cadastro(con, ds)
     D["manifestos"] = man
     return D
 
@@ -929,25 +949,47 @@ def dias_completos(horas):
     return [d for d in dias if horas.get((d, "SIN")) == 24 and all(horas.get((d, sm)) == 24 for sm in SM)]
 
 
-def mix(cat_dia, horas, rg, dias, mmgd_valida=True):
+def soma_presente(cat_dia, rg, cat, dias):
+    """(MWh, dias com linha) de uma categoria numa região. Categoria sem nenhuma linha com
+    valor nos dias pedidos é AUSENTE: devolve (None, 0), nunca zero (antes de 29/04/2023 não
+    existe o grupo MMGD; antes de 03/2021, os grupos Tipo III térmicos)."""
+    vals = [cat_dia[(d, rg, cat)] for d in dias if (d, rg, cat) in cat_dia]
+    return (sum(vals) if vals else None), len(vals)
+
+
+def mix(cat_dia, horas, rg, dias, mmgd_valida=True, nat_dia=None):
     """Composição de uma janela de dias completos numa região: MWmed por categoria
-    (Σ MWh ÷ Σ horas) e participação no total com e sem MMGD."""
+    (Σ MWh ÷ Σ horas) e participação no total com e sem MMGD. Categoria ausente no período
+    fica nula (MWmed e participação); presente só em parte dos dias, entra com a energia dos
+    dias em que existe e a contagem de dias sai em `dias_com_linha` (presença parcial)."""
     hs = sum(horas.get((d, rg), 0) for d in dias)
     if not dias or not hs:
         return None
-    mwh = {cat: sum(cat_dia.get((d, rg, cat), 0.0) for d in dias) for cat in CATS}
-    tot = sum(mwh.values())
-    tot_sem = tot - mwh["solar_mmgd"]
-    return {
+    mwh, presenca = {}, {}
+    for cat in CATS:
+        mwh[cat], presenca[cat] = soma_presente(cat_dia, rg, cat, dias)
+    tot = sum(v for v in mwh.values() if v is not None)
+    tot_sem = tot - (mwh["solar_mmgd"] or 0.0)
+    out = {
         "inicio": min(dias), "fim": max(dias), "dias": len(dias), "horas": hs,
-        "mwmed": {cat: c.r(mwh[cat] / hs, 1) for cat in CATS},
+        "mwmed": {cat: c.r(mwh[cat] / hs, 1) if mwh[cat] is not None else None for cat in CATS},
         "total_mwmed": c.r(tot / hs, 1), "total_sem_mmgd_mwmed": c.r(tot_sem / hs, 1),
-        "participacao": {cat: c.r(100 * mwh[cat] / tot, 2) if tot else None for cat in CATS},
-        "participacao_sem_mmgd": {cat: (None if cat == "solar_mmgd" else (c.r(100 * mwh[cat] / tot_sem, 2) if tot_sem else None))
+        "participacao": {cat: c.r(100 * mwh[cat] / tot, 2) if tot and mwh[cat] is not None else None for cat in CATS},
+        "participacao_sem_mmgd": {cat: (None if cat == "solar_mmgd" or mwh[cat] is None
+                                        else (c.r(100 * mwh[cat] / tot_sem, 2) if tot_sem else None))
                                   for cat in CATS},
         "mmgd_no_periodo": mmgd_valida,
+        # categorias com linha em só parte dos dias do período (ex.: MMGD na janela que cruza 29/04/2023)
+        "dias_com_linha": {cat: presenca[cat] for cat in CATS if 0 < presenca[cat] < len(dias)},
         "_mwh": mwh, "_tot": tot, "_tot_sem": tot_sem,
     }
+    if nat_dia is not None:
+        nt = {nat: soma_presente(nat_dia, rg, nat, dias)[0] for nat in NATUREZAS}
+        tn = sum(v for v in nt.values() if v is not None)
+        # fração da energia do período por natureza do dado (verificada, previsão Tipo III,
+        # estimativa MMGD); natureza sem linha no período fica nula
+        out["natureza_pct"] = {nat: c.r(100 * nt[nat] / tn, 2) if tn and nt[nat] is not None else None for nat in NATUREZAS}
+    return out
 
 
 def _sem_privados(x):
@@ -1183,10 +1225,226 @@ def _captura_dic(con, recurso):
 
 # ---------------------------------------------------------------- P021 matriz efetiva
 
+# Regras de universo (identificadores com dado por categoria e mês), publicadas em
+# matriz.universo.regra e usadas nas ressalvas de cada janela, mês e ano.
+SALTO_MIN_ANTES = 5          # salto só com ao menos 5 identificadores no mês anterior
+SALTO_VARIACAO = 0.25        # variação de 25% ou mais entre meses seguidos
+REDUZIDO_FRACAO = 0.75       # universo reduzido: até 75% do maior número dos 12 meses anteriores
+ZERO_MESES_ROTULO = 3        # rótulo com todas as horas exatamente zero por 3 meses seguidos
+ZERO_MESES_ID = 6            # identificador com todas as horas exatamente zero por 6 meses seguidos
+
+
+def _meses_antes(mes, n):
+    out, a, b = [], int(mes[:4]), int(mes[5:7])
+    for _ in range(n):
+        a, b = (a - 1, 12) if b == 1 else (a, b - 1)
+        out.append(f"{a}-{b:02d}")
+    return out
+
+
+def universo_identificadores(D, meses):
+    """Identificadores (id_ons) da Geração por Usina por categoria, região e mês, na
+    categoria do último rótulo publicado. Grupos de pequenas usinas e MMGD ficam fora (são
+    previsões por UF, não usinas). Três estados por mês:
+    - com valor: ao menos uma hora com valor (zero publicado conta como valor);
+    - sem valor: linhas na fonte, todas vazias;
+    - sem linhas: o identificador teve valor em algum dos 12 meses anteriores e não tem
+      nenhuma linha no mês (deixou de constar do arquivo)."""
+    cad = D["cadastro"]
+    meses_set = set(meses)
+    linhas, valor, mwh = defaultdict(set), defaultdict(set), {}
+    for (serie, mes), n_ in D["un"].items():
+        ido = serie[3:]
+        if mes not in meses_set or ido == "sem_id_ons" or og.natureza_modalidade(cad.get(ido, {}).get("mod")) != "verificada":
+            continue
+        linhas[ido].add(mes)
+        if n_:
+            valor[ido].add(mes)
+    for (serie, mes), v in D["u"].items():
+        mwh[(serie[2:], mes)] = v
+    uni, vazios, saidas = defaultdict(set), defaultdict(set), defaultdict(set)
+    cat_id = {}
+    for ido in set(linhas) | set(valor):
+        r_ = cad.get(ido, {})
+        cat = og.categoria(r_.get("tipo"), r_.get("comb"), r_.get("mod"))
+        cat_id[ido] = cat
+        rgs = ("SIN", (r_.get("sm") or "").upper())
+        for mes in meses:
+            if mes in valor[ido]:
+                alvo = uni
+            elif mes in linhas[ido]:
+                alvo = vazios
+            elif any(m in valor[ido] for m in _meses_antes(mes, 12)):
+                alvo = saidas
+            else:
+                continue
+            for rg in rgs:
+                alvo[(mes, cat, rg)].add(ido)
+    return {"uni": uni, "vazios": vazios, "saidas": saidas, "cat_id": cat_id, "mwh": mwh, "valor": valor, "linhas": linhas}
+
+
+def contagem(sets, meses, rg="SIN"):
+    """{"meses": [...], categoria: [n por mês]} só das categorias que aparecem."""
+    return {"meses": meses, **{cat: [len(sets.get((m, cat, rg), ())) for m in meses] for cat in CATS
+                                if any((m, cat, rg) in sets for m in meses)}}
+
+
+def saltos_universo(U, meses, rg="SIN"):
+    """Saltos de universo: variação de 25% ou mais, com ao menos 5 identificadores com valor
+    no mês anterior, entre meses seguidos."""
+    out = []
+    for cat in CATS:
+        xs = [len(U["uni"].get((m, cat, rg), ())) for m in meses]
+        for i in range(1, len(xs)):
+            antes, depois = xs[i - 1], xs[i]
+            if antes >= SALTO_MIN_ANTES and abs(depois - antes) / antes >= SALTO_VARIACAO:
+                out.append({"mes": meses[i], "categoria": cat, "identificadores_antes": antes, "identificadores_depois": depois})
+    return out
+
+
+def ressalvas_universo(U, meses, saltos_rg, ini, fim, rg="SIN", mensal=False):
+    """Categorias cuja participação no período não é comparável por mudança do universo da
+    fonte, com o motivo:
+    - salto_no_periodo: salto de universo com data dentro do período (num mês da série
+      mensal, salto em relação ao mês anterior);
+    - universo_reduzido: identificadores com valor no último mês do período até 75% do maior
+      número dos 12 meses anteriores ao início do período (ao menos 5 nessa referência).
+    A participação continua publicada; a ressalva vai junto dela."""
+    meses_set = set(meses)
+    m_ini, m_fim = ini[:7], fim[:7]
+    ref_meses = [m for m in _meses_antes(m_ini, 12) if m in meses_set]
+    out = {}
+    for cat in CATS:
+        n_fim = len(U["uni"].get((m_fim, cat, rg), ()))
+        nmax = max((len(U["uni"].get((m, cat, rg), ())) for m in ref_meses), default=0)
+        if mensal:
+            datas = [f"{x['mes']}-01" for x in saltos_rg if x["categoria"] == cat and x["mes"] == m_ini]
+        else:
+            datas = [f"{x['mes']}-01" for x in saltos_rg if x["categoria"] == cat and ini < f"{x['mes']}-01" <= fim]
+        motivos = (["salto_no_periodo"] if datas else []) + \
+                  (["universo_reduzido"] if nmax >= SALTO_MIN_ANTES and n_fim <= REDUZIDO_FRACAO * nmax else [])
+        if motivos:
+            out[cat] = {"motivos": motivos, "identificadores_com_valor_no_ultimo_mes": n_fim,
+                        "maior_numero_12_meses_antes": nmax, "saltos": datas}
+    return out
+
+
+def rotulos_por_mes(D):
+    """Por rótulo (tipo, combustível, modalidade): meses com linhas (manifesto do arquivo
+    mensal; no arquivo anual de 2021, os meses com valor), meses com valor e energia mensal."""
+    linhas, valor, mwh = defaultdict(set), defaultdict(set), defaultdict(float)
+    for (serie, dia), v in D["d"].items():
+        _, sm, ti, co, mo = serie.split("|", 4)
+        valor[(ti, co, mo)].add(dia[:7])
+        linhas[(ti, co, mo)].add(dia[:7])
+        mwh[((ti, co, mo), dia[:7])] += v
+    for per, series in (D.get("manifestos") or {}).items():
+        if len(per) != 7:
+            continue
+        for s in series:
+            if s.startswith("d|"):
+                _, sm, ti, co, mo = s.split("|", 4)
+                linhas[(ti, co, mo)].add(per)
+    return linhas, valor, mwh
+
+
+def sequencias_zero_rotulo(valor, mwh, cache):
+    """Rótulos cujas horas com valor são todas exatamente zero por ZERO_MESES_ROTULO meses
+    seguidos ou mais, logo depois de um mês com geração positiva (seção 11.7: sequência
+    longa repetida). Pode ser parada real ou falha da fonte; a fonte não distingue."""
+    out = []
+    for k_, ms in valor.items():
+        ms = sorted(ms)
+        i = 0
+        while i < len(ms):
+            if abs(mwh[(k_, ms[i])]) > 1e-9:
+                i += 1
+                continue
+            j = i
+            while j + 1 < len(ms) and ms[j + 1] == _mes_seguinte(ms[j]) and abs(mwh[(k_, ms[j + 1])]) <= 1e-9:
+                j += 1
+            n = j - i + 1
+            ant = _meses_antes(ms[i], 1)[0]
+            if n >= ZERO_MESES_ROTULO and mwh.get((k_, ant), 0.0) > 0:
+                out.append({"tipo": k_[0], "combustivel": k_[1], "modalidade": k_[2] or None, "categoria": cache[k_][0],
+                            "inicio": ms[i], "fim": ms[j], "meses": n, "mes_anterior": ant,
+                            "mwh_mes_anterior": c.r(mwh[(k_, ant)], 1), "ultimo_mes_com_valor": ms[-1]})
+            i = j + 1
+    return sorted(out, key=lambda x: (x["inicio"], x["tipo"], x["combustivel"]))
+
+
+def sequencias_zero_identificadores(U, meses, cad):
+    """Identificadores com todas as horas com valor exatamente zero por ZERO_MESES_ID meses
+    seguidos ou mais depois de um mês com geração positiva. Térmicas sem despacho e usinas
+    paradas produzem isso de verdade; a lista é controle (seção 11.7), não exclusão."""
+    out = []
+    for ido, ms_valor in U["valor"].items():
+        seq = []
+        for m in meses:
+            v = U["mwh"].get((ido, m)) if m in ms_valor else None
+            seq.append(v)
+        i = 0
+        while i < len(seq):
+            if seq[i] is None or abs(seq[i]) > 1e-9:
+                i += 1
+                continue
+            j = i
+            while j + 1 < len(seq) and seq[j + 1] is not None and abs(seq[j + 1]) <= 1e-9:
+                j += 1
+            n = j - i + 1
+            if n >= ZERO_MESES_ID and i > 0 and seq[i - 1] and seq[i - 1] > 0:
+                r_ = cad.get(ido, {})
+                out.append({"id": ido, "nome": r_.get("nome"), "categoria": U["cat_id"].get(ido), "modalidade": r_.get("mod"),
+                            "inicio": meses[i], "fim": meses[j], "meses": n, "mwh_mes_anterior": c.r(seq[i - 1], 1),
+                            "continua": j == len(seq) - 1 or seq[j + 1] is None})
+            i = j + 1
+    return sorted(out, key=lambda x: (-x["meses"], x["id"]))
+
+
+def outros_por_ceg(D, U, meses12):
+    """Decomposição da categoria 'outros' (rótulos 'Resíduos Industriais' e 'Multi-Combustível
+    Gás/Diesel' do ONS) pelo código de combustível do CEG de cada identificador, nos 12 meses
+    completos: mostra quanto é gás de siderurgia (CM), licor negro de celulose (FL, biomassa
+    florestal na ANEEL), petróleo (PE) e conjuntos sem CEG."""
+    cad = D["cadastro"]
+    agg = defaultdict(lambda: {"mwh": 0.0, "ids": set(), "nomes": Counter()})
+    horas = sum(og.dias_do_mes(m) * 24 for m in meses12)
+    for ido, cat in U["cat_id"].items():
+        if cat != "outros":
+            continue
+        cod = og.codigo_combustivel_ceg(cad.get(ido, {}).get("ceg")) or "sem_ceg"
+        v = sum(U["mwh"].get((ido, m), 0.0) for m in meses12 if m in U["valor"].get(ido, ()))
+        if not v:
+            continue
+        a = agg[cod]
+        a["mwh"] += v
+        a["ids"].add(ido)
+        a["nomes"][cad.get(ido, {}).get("nome") or ido] += v
+    tot = sum(a["mwh"] for a in agg.values())
+    out = []
+    for cod, a in sorted(agg.items(), key=lambda x: -x[1]["mwh"]):
+        out.append({"codigo_ceg": None if cod == "sem_ceg" else cod,
+                    "fonte_aneel": og.CEG_FONTE_ANEEL.get(cod, "Conjunto de usinas sem CEG próprio" if cod == "sem_ceg" else "código não tabelado"),
+                    "mwh": c.r(a["mwh"], 1), "mwmed": c.r(a["mwh"] / horas, 1) if horas else None,
+                    "pct_da_categoria": c.r(100 * a["mwh"] / tot, 2) if tot else None, "identificadores": len(a["ids"]),
+                    "maiores": [n for n, _ in a["nomes"].most_common(6)]})
+    return {"inicio": meses12[0], "fim": meses12[-1], "itens": out,
+            "regra": ("Identificadores da categoria 'outros' (Geração por Usina, natureza verificada) somados pelo código de combustível "
+                      "do CEG (segundo campo: CM, FL, PE...); a fonte da ANEEL de cada código foi conferida no SIGA. A categoria "
+                      "publicada continua a do ONS; a decomposição só mostra o que ela reúne.")} if meses12 else None
+
+
 def bloco_matriz(con, D, cat_dia, nat_dia, rotulos, horas, cache, rec, ok, hoje):
     dia_ref = ok[-1]
     fim = c.d(dia_ref)
     oks = set(ok)
+    primeiro_mes, ultimo_mes = ok[0][:7], dia_ref[:7]
+    meses = _meses_entre(primeiro_mes, ultimo_mes)
+    cad = D["cadastro"]
+    # universo da fonte primeiro: as ressalvas das janelas dependem dele
+    U = universo_identificadores(D, meses)
+    saltos_rg = {rg: saltos_universo(U, meses, rg) for rg in REGIOES}
+    saltos = saltos_rg["SIN"]
 
     def janela(n, fim_=None):
         f_ = fim_ or fim
@@ -1199,9 +1457,10 @@ def bloco_matriz(con, D, cat_dia, nat_dia, rotulos, horas, cache, rec, ok, hoje)
             if rg != "SIN" and nome in ("dia", "7d"):
                 continue  # recortes curtos só no SIN (os subsistemas estão no CSV diário)
             ks = janela(n)
-            m = mix(cat_dia, horas, rg, ks, mmgd_valida=min(ks) >= INICIO_MMGD if ks else False)
+            m = mix(cat_dia, horas, rg, ks, mmgd_valida=min(ks) >= INICIO_MMGD if ks else False, nat_dia=nat_dia)
             if m:
                 m["dias_no_periodo"] = n
+                m["ressalvas_universo"] = ressalvas_universo(U, meses, saltos_rg[rg], m["inicio"], m["fim"], rg)
             janelas[rg][nome] = m
     # 12 meses anteriores (365 dias), mesmo perímetro
     ant = janela(365, fim - timedelta(days=365))
@@ -1209,22 +1468,28 @@ def bloco_matriz(con, D, cat_dia, nat_dia, rotulos, horas, cache, rec, ok, hoje)
     m_at = janelas["SIN"]["12m"]
     comparacao_12m = None
     if m_ant and m_at:
+        def var(cat):
+            a_, b_ = m_at["_mwh"][cat], m_ant["_mwh"][cat]
+            if a_ is None or b_ is None or b_ <= 0 or (cat == "solar_mmgd" and not m_ant["mmgd_no_periodo"]):
+                return None  # categoria ausente ou sem base em um dos períodos
+            return c.r(100 * (a_ / m_at["horas"]) / (b_ / m_ant["horas"]) - 100, 1)
         comparacao_12m = {"atual": {"inicio": m_at["inicio"], "fim": m_at["fim"], "dias": m_at["dias"]},
                           "anterior": {"inicio": m_ant["inicio"], "fim": m_ant["fim"], "dias": m_ant["dias"]},
                           "mesmo_regime_mmgd": m_at["mmgd_no_periodo"] and m_ant["mmgd_no_periodo"],
-                          "variacao_pct": {cat: (c.r(100 * (m_at["_mwh"][cat] / m_at["horas"]) / (m_ant["_mwh"][cat] / m_ant["horas"]) - 100, 1)
-                                                 if m_ant["_mwh"][cat] > 0 and (cat != "solar_mmgd" or m_ant["mmgd_no_periodo"]) else None)
-                                           for cat in CATS},
+                          "variacao_pct": {cat: var(cat) for cat in CATS},
                           "variacao_total_sem_mmgd_pct": c.r(100 * (m_at["_tot_sem"] / m_at["horas"]) / (m_ant["_tot_sem"] / m_ant["horas"]) - 100, 1),
-                          "anterior_mwmed": {cat: c.r(m_ant["_mwh"][cat] / m_ant["horas"], 1) for cat in CATS}}
-    # série mensal do SIN (só dias completos)
-    meses = _meses_entre(ok[0][:7], dia_ref[:7])
+                          "anterior_mwmed": {cat: c.r(m_ant["_mwh"][cat] / m_ant["horas"], 1) if m_ant["_mwh"][cat] is not None else None
+                                             for cat in CATS}}
+    # série mensal do SIN (só dias completos). Categoria sem linha no mês é nula (ausência,
+    # nunca zero); com linha em parte dos dias, a contagem sai em dias_com_linha
     por_mes = defaultdict(list)
     for d in ok:
         por_mes[d[:7]].append(d)
     mensal = {"meses": meses, "dias_completos": [], "dias_no_mes": [], "parcial": [], "total_mwmed": [],
               "total_sem_mmgd_mwmed": [], **{cat: [] for cat in CATS}}
+    presenca_mes = {cat: [] for cat in CATS}
     natureza_mensal = {"meses": meses, **{nat: [] for nat in NATUREZAS}}
+    ress_mes = defaultdict(list)
     for mes in meses:
         ds_ = por_mes.get(mes, [])
         hs = 24 * len(ds_)
@@ -1232,35 +1497,48 @@ def bloco_matriz(con, D, cat_dia, nat_dia, rotulos, horas, cache, rec, ok, hoje)
         mensal["dias_no_mes"].append(og.dias_do_mes(mes))
         mensal["parcial"].append(len(ds_) < og.dias_do_mes(mes))
         tot = 0.0
+        mm = None
         for cat in CATS:
-            v = sum(cat_dia.get((d, "SIN", cat), 0.0) for d in ds_)
-            tot += v
-            mensal[cat].append(c.r(v / hs, 1) if hs else None)
-        mm = sum(cat_dia.get((d, "SIN", "solar_mmgd"), 0.0) for d in ds_)
+            v, n_ = soma_presente(cat_dia, "SIN", cat, ds_)
+            presenca_mes[cat].append(n_)
+            if v is not None:
+                tot += v
+            if cat == "solar_mmgd":
+                mm = v
+            mensal[cat].append(c.r(v / hs, 1) if hs and v is not None else None)
         mensal["total_mwmed"].append(c.r(tot / hs, 1) if hs else None)
-        mensal["total_sem_mmgd_mwmed"].append(c.r((tot - mm) / hs, 1) if hs else None)
-        nt = {nat: sum(nat_dia.get((d, "SIN", nat), 0.0) for d in ds_) for nat in NATUREZAS}
-        tn = sum(nt.values())
+        mensal["total_sem_mmgd_mwmed"].append(c.r((tot - (mm or 0.0)) / hs, 1) if hs else None)
+        nt = {nat: soma_presente(nat_dia, "SIN", nat, ds_)[0] for nat in NATUREZAS}
+        tn = sum(v for v in nt.values() if v is not None)
         for nat in NATUREZAS:
-            natureza_mensal[nat].append(c.r(100 * nt[nat] / tn, 2) if tn else None)
+            natureza_mensal[nat].append(c.r(100 * nt[nat] / tn, 2) if tn and nt[nat] is not None else None)
+        if ds_:
+            for cat in ressalvas_universo(U, meses, saltos, f"{mes}-01", ds_[-1], "SIN", mensal=True):
+                ress_mes[cat].append(mes)
+    mensal["dias_com_linha"] = {cat: xs for cat, xs in presenca_mes.items()
+                                if any(0 < n_ < d_ for n_, d_ in zip(xs, mensal["dias_completos"]))}
+    mensal["ressalvas_universo"] = dict(ress_mes)
     # anos civis, perímetro sem MMGD e a MMGD à parte
     anual = []
     for ano in sorted({d[:4] for d in ok}):
         ds_ = [d for d in ok if d[:4] == ano]
-        m = mix(cat_dia, horas, "SIN", ds_, mmgd_valida=min(ds_) >= INICIO_MMGD)
+        m = mix(cat_dia, horas, "SIN", ds_, mmgd_valida=min(ds_) >= INICIO_MMGD, nat_dia=nat_dia)
         dias_ano = 366 if int(ano) % 4 == 0 else 365
         anual.append({"ano": int(ano), "dias": len(ds_), "parcial": len(ds_) < dias_ano,
                       "mwmed": m["mwmed"], "total_sem_mmgd_mwmed": m["total_sem_mmgd_mwmed"],
-                      "participacao_sem_mmgd": m["participacao_sem_mmgd"],
+                      "participacao_sem_mmgd": m["participacao_sem_mmgd"], "natureza_pct": m["natureza_pct"],
+                      "dias_com_linha": m["dias_com_linha"],
+                      "ressalvas_universo": ressalvas_universo(U, meses, saltos, ds_[0], ds_[-1], "SIN"),
                       "mmgd_dias": sum(1 for d in ds_ if d >= INICIO_MMGD)})
-    # diário recente (120 dias) e horário dos últimos 7 dias, SIN
+    # diário recente (60 dias) e horário dos últimos 3 dias, SIN; categoria sem linha no dia ou
+    # na hora fica nula (ausência); zero publicado pela fonte fica zero
     recentes = [d for d in ok if d > (fim - timedelta(days=60)).isoformat()]
     presentes = [cat for cat in CATS if any((d, "SIN", cat) in cat_dia for d in recentes)]
     diario = {"dias": recentes, "categorias": presentes,
-              **{cat: [c.r(cat_dia.get((d, "SIN", cat), 0.0) / 24, 1) for d in recentes] for cat in presentes}}
+              **{cat: [c.r(cat_dia[(d, "SIN", cat)] / 24, 1) if (d, "SIN", cat) in cat_dia else None for d in recentes]
+                 for cat in presentes}}
     ult = [d for d in ok if d > (fim - timedelta(days=3)).isoformat()]
     horas_rec = [f"{d}T{h:02d}:00" for d in ult for h in range(24)]
-    # categoria sem linha na hora fica nula (ausência); zero publicado pela fonte fica zero
     pres_h = [cat for cat in CATS if any((f"h|{cat}", h) in D["h"] for h in horas_rec)]
     horario = {"horas": horas_rec, "categorias": pres_h, **{cat: [c.r(D["h"].get((f"h|{cat}", h)), 1) for h in horas_rec] for cat in pres_h}}
     # rótulos da fonte → categoria (auditoria e categorias desconhecidas explícitas)
@@ -1276,61 +1554,65 @@ def bloco_matriz(con, D, cat_dia, nat_dia, rotulos, horas, cache, rec, ok, hoje)
         tab_rot.append({"tipo": ti, "combustivel": co, "modalidade": mo or None, "categoria": cat, "natureza": nat,
                         "mwh_12m": c.r(rot12.get((ti, co, mo)), 1), "mwh_desde_inicio": c.r(sum(anos.values()), 1)})
     nao_map = [r_ for r_ in tab_rot if r_["categoria"] == "nao_mapeada"]
-    # mudanças de universo na fonte: rótulos (tipo, combustível, modalidade) que aparecem
-    # depois do início ou somem antes do fim, e identificadores com dado por categoria e mês
-    primeiro_mes, ultimo_mes = ok[0][:7], dia_ref[:7]
-    meses_rot, meses_ger = defaultdict(set), defaultdict(set)
-    for (serie, dia), mwh in D["d"].items():
-        _, sm, ti, co, mo = serie.split("|", 4)
-        meses_rot[(ti, co, mo)].add(dia[:7])
-        if mwh > 0:
-            meses_ger[(ti, co, mo)].add(dia[:7])
+    # mudanças de rótulo na fonte: aparece (primeiro mês com geração positiva), deixa de ter
+    # valor (as linhas continuam, vazias) e deixa de ter linhas (some do arquivo)
+    rot_linhas, rot_valor, rot_mwh = rotulos_por_mes(D)
     mudancas = []
-    for k_, ms in sorted(meses_rot.items(), key=lambda x: (min(meses_ger.get(x[0]) or x[1]), x[0])):
-        # aparece = primeiro mês com geração positiva; some = último mês com linhas
-        a_, b_ = min(meses_ger.get(k_) or ms), max(ms)
-        if a_ > primeiro_mes or b_ < ultimo_mes:
+    prim_pos = {}
+    for (k_, m), v in rot_mwh.items():
+        if v > 0 and (k_ not in prim_pos or m < prim_pos[k_]):
+            prim_pos[k_] = m
+    for k_ in sorted(rot_linhas, key=lambda x: (prim_pos.get(x) or min(rot_linhas[x]), x)):
+        if k_ not in cache:
+            continue
+        a_ = prim_pos.get(k_) or min(rot_linhas[k_])
+        ult_l = max(rot_linhas[k_])
+        ult_v = max(rot_valor[k_]) if rot_valor.get(k_) else None
+        sem_valor_desde = _mes_seguinte(ult_v) if ult_v and ult_v < ult_l else None
+        if a_ > primeiro_mes or ult_l < ultimo_mes or sem_valor_desde:
             mudancas.append({"tipo": k_[0], "combustivel": k_[1], "modalidade": k_[2] or None, "categoria": cache[k_][0],
                              "natureza": cache[k_][1], "aparece_em": a_ if a_ > primeiro_mes else None,
-                             "ultimo_mes_com_linhas": b_ if b_ < ultimo_mes else None})
-    cad = D["cadastro"]
-    uni, vazios = defaultdict(set), defaultdict(set)
-    meses_set = set(meses)
-    for (serie, mes), n_ in D["un"].items():
-        ido = serie[3:]
-        r_ = cad.get(ido, {})
-        if mes not in meses_set or ido == "sem_id_ons" or og.natureza_modalidade(r_.get("mod")) != "verificada":
-            continue  # grupos de pequenas usinas e MMGD não são contados por identificador
-        cat = og.categoria(r_.get("tipo"), r_.get("comb"), r_.get("mod"))
-        (uni if n_ else vazios)[(mes, cat)].add(ido)
-    universo = {"meses": meses, **{cat: [len(uni.get((m, cat), ())) for m in meses] for cat in CATS if any((m, cat) in uni for m in meses)}}
-    sem_valor = {"meses": meses, **{cat: [len(vazios.get((m, cat), ())) for m in meses] for cat in CATS if any((m, cat) in vazios for m in meses)}}
-    # a gold leva os últimos 24 meses das contagens; os saltos de toda a série ficam em "saltos_de_universo"
-    # identificadores com linhas e nenhuma hora com valor no último mês completo: ausência na
-    # fonte. A geração das mesmas usinas no mesmo mês do ano anterior dá a ordem de grandeza
-    # do que falta (referência publicada à parte, nunca somada aos totais)
-    # (não se estima o que falta: os identificadores mudam entre anos e a fonte não informa a
-    # geração dessas usinas; a lacuna é publicada como contagem e as comparações das
-    # categorias afetadas são suprimidas)
+                             "ultimo_mes_com_linhas": ult_l if ult_l < ultimo_mes else None,
+                             "ultimo_mes_com_valor": ult_v if sem_valor_desde else None})
+    zeros_rotulo = sequencias_zero_rotulo(rot_valor, rot_mwh, cache)
+    zeros_id = sequencias_zero_identificadores(U, meses, cad)
+    universo = contagem(U["uni"], meses)
+    sem_valor = contagem(U["vazios"], meses)
+    sem_linhas = contagem(U["saidas"], meses)
+    # lacuna do último mês completo: identificadores com linhas e sem nenhuma hora com valor e
+    # identificadores que tiveram valor nos 12 meses anteriores e não têm linha no mês. Não
+    # se estima o que falta: a geração publicada pelos mesmos identificadores no mesmo mês do
+    # ano anterior é referência observada, publicada à parte e nunca somada aos totais
     meses_ok = [m for m in meses if sum(1 for d in ok if d[:7] == m) == og.dias_do_mes(m)]
     lacuna = None
     if meses_ok:
         mref = meses_ok[-1]
-        ids_v = sorted(i for (m, cat), ids in vazios.items() if m == mref for i in ids)
-        lacuna = {"mes": mref, "identificadores_sem_valor": len(ids_v),
-                  "por_categoria": dict(Counter(og.categoria(cad.get(i, {}).get("tipo"), cad.get(i, {}).get("comb"), cad.get(i, {}).get("mod")) for i in ids_v)),
-                  "exemplos": [cad.get(i, {}).get("nome") or i for i in ids_v[:15]]}
+        m_ano = _meses_antes(mref, 12)[-1]
+        ids_v = sorted({i for (m, cat, rg), ids in U["vazios"].items() if m == mref and rg == "SIN" for i in ids})
+        ids_s = sorted({i for (m, cat, rg), ids in U["saidas"].items() if m == mref and rg == "SIN" for i in ids})
+        por_cat = {}
+        for cat in CATS:
+            v_ = [i for i in ids_v if U["cat_id"].get(i) == cat]
+            s_ = [i for i in ids_s if U["cat_id"].get(i) == cat]
+            if not v_ and not s_:
+                continue
+            ref = sum(U["mwh"].get((i, m_ano), 0.0) for i in v_ + s_ if m_ano in U["valor"].get(i, ()))
+            por_cat[cat] = {"sem_valor": len(v_), "sem_linhas": len(s_),
+                            "com_valor_no_mes": len(U["uni"].get((mref, cat, "SIN"), ())),
+                            "com_valor_mesmo_mes_ano_anterior": len(U["uni"].get((m_ano, cat, "SIN"), ())),
+                            "mwh_dos_ausentes_mesmo_mes_ano_anterior": c.r(ref, 1)}
+        lacuna = {"mes": mref, "mes_ano_anterior": m_ano, "identificadores_sem_valor": len(ids_v),
+                  "identificadores_sem_linhas": len(ids_s),
+                  "por_categoria": {cat: x["sem_valor"] for cat, x in por_cat.items() if x["sem_valor"]},
+                  "detalhe_por_categoria": por_cat,
+                  "exemplos": [cad.get(i, {}).get("nome") or i for i in ids_v[:15]],
+                  "exemplos_sem_linhas": [cad.get(i, {}).get("nome") or i for i in ids_s[:15]],
+                  "nota": ("mwh_dos_ausentes_mesmo_mes_ano_anterior é a geração que a própria fonte publicou para os mesmos "
+                           "identificadores um ano antes: ordem de grandeza do que deixou de constar, não estimativa nem correção.")}
     rels_u = relatorios(con, _ds("usina"))
     sem_id = {og.periodo_do_arquivo(r_ + ".parquet"): x.get("sem_id_ons") for r_, x in rels_u.items() if x and x.get("sem_id_ons")}
-    saltos = []
-    for cat in CATS:
-        if cat not in universo:
-            continue
-        xs = universo[cat]
-        for i in range(1, len(xs)):
-            antes, depois = xs[i - 1], xs[i]
-            if antes >= 5 and abs(depois - antes) / antes >= 0.25:
-                saltos.append({"mes": meses[i], "categoria": cat, "identificadores_antes": antes, "identificadores_depois": depois})
+    outros = outros_por_ceg(D, U, meses_ok[-12:])
+
     # reconciliação com o Balanço: mensal por fonte (SIN) e dias conciliados
     rec_mes = defaultdict(lambda: {"bal": 0.0, "us": 0.0, "rr_excluida": 0.0, "dias": set(), "ok": 0, "n": 0})
     for x in rec:
@@ -1389,38 +1671,107 @@ def bloco_matriz(con, D, cat_dia, nat_dia, rotulos, horas, cache, rec, ok, hoje)
         "dia_referencia": dia_ref, "primeiro_dia": ok[0], "dias_completos": len(ok),
         "janelas": _sem_privados(janelas), "comparacao_12m": comparacao_12m, "mensal_sin": mensal,
         "natureza_mensal_sin": natureza_mensal, "anual_sin": anual, "diario_sin_recente": diario, "horario_sin_recente": horario,
-        "rotulos": tab_rot, "nao_mapeadas": nao_map, "reconciliacao_balanco": reconciliacao,
+        "rotulos": tab_rot, "nao_mapeadas": nao_map, "outros_por_ceg": outros, "reconciliacao_balanco": reconciliacao,
         "universo": {"identificadores_por_categoria": {k: (v[-24:] if isinstance(v, list) else v) for k, v in universo.items()},
                      "identificadores_sem_valor_por_categoria": {k: (v[-24:] if isinstance(v, list) else v) for k, v in sem_valor.items()},
+                     "identificadores_sem_linhas_por_categoria": {k: (v[-24:] if isinstance(v, list) else v) for k, v in sem_linhas.items()},
                      "_sem_valor": sem_valor,
                      "lacuna_ultimo_mes": lacuna, "linhas_sem_id_ons_por_arquivo": sem_id,
                      "mudancas_de_rotulo": mudancas, "saltos_de_universo": saltos,
-                     "regra": ("Identificador = usina, conjunto ou grupo (id_ons) com ao menos uma hora com valor no mês, na categoria do "
-                               "último rótulo publicado. Salto = variação de 25% ou mais, com ao menos 5 identificadores no mês anterior.")},
+                     "sequencias_zero_rotulo": zeros_rotulo,
+                     "sequencias_zero_identificadores": {"n": len(zeros_id), "continuam_no_ultimo_mes": sum(1 for x in zeros_id if x["continua"]),
+                                                         "por_categoria": dict(Counter(x["categoria"] for x in zeros_id)),
+                                                         "lista": zeros_id[:40]},
+                     "regra": ("Identificador = usina, conjunto ou grupo (id_ons) da natureza verificada, na categoria do último rótulo "
+                               "publicado. Com valor: ao menos uma hora com valor no mês (zero publicado conta). Sem valor: linhas, todas "
+                               "vazias. Sem linhas: teve valor em algum dos 12 meses anteriores e não consta do arquivo no mês. Salto = "
+                               f"variação de {int(100 * SALTO_VARIACAO)}% ou mais entre meses seguidos, com ao menos {SALTO_MIN_ANTES} "
+                               "identificadores com valor no mês anterior."),
+                     "regra_ressalvas": ("Cada janela, mês e ano leva em ressalvas_universo as categorias com salto de universo dentro do "
+                                         "período (no mês, salto em relação ao mês anterior) ou com universo reduzido: identificadores com "
+                                         f"valor no último mês do período até {int(100 * REDUZIDO_FRACAO)}% do maior número dos 12 meses "
+                                         f"anteriores ao início (com ao menos {SALTO_MIN_ANTES} nessa referência). A participação continua "
+                                         "publicada; a ressalva diz que ela não é comparável com períodos de outro universo."),
+                     "regra_sequencias_zero": (f"Rótulo: todas as horas com valor exatamente zero por {ZERO_MESES_ROTULO} meses seguidos ou "
+                                               f"mais depois de um mês com geração positiva. Identificador: o mesmo por {ZERO_MESES_ID} meses. "
+                                               "Pode ser parada real (térmica sem despacho, usina desligada) ou falha da fonte; a fonte "
+                                               "não distingue, e nada é excluído.")},
         "_janelas": janelas,
     }
 
 
-
 # ---------------------------------------------------------------- P022 despacho térmico
 
-def mapa_combustivel(cad_t, cad_u, unidades):
+def historico_cadastro(con, ds):
+    """{chave: [estado, ...]}: cada estado distinto que o registro teve, na ordem das
+    capturas. grava_registros só guarda o que muda, e cada arquivo é uma vintage; o estado
+    depois de cada vintage que tocou a chave é o que aquele arquivo publicou. É assim que
+    se recuperam todos os CEGs que um identificador já teve (o cadastro vigente guarda só o
+    último)."""
+    estado, hist = {}, defaultdict(list)
+    tocadas, vid_atual = set(), None
+
+    def fecha():
+        for ch in tocadas:
+            st = {k: v for k, v in estado[ch].items() if v != ""}
+            if not hist[ch] or hist[ch][-1] != st:
+                hist[ch].append(st)
+        tocadas.clear()
+
+    for ch, campo, valor, vid in con.execute(
+            """SELECT r.chave, r.campo, r.valor, r.vintage_id FROM registros r JOIN vintages v ON v.vintage_id = r.vintage_id
+               WHERE r.dataset = ? ORDER BY v.capturado_em, r.rowid""", (ds,)):
+        if vid != vid_atual:
+            fecha()
+            vid_atual = vid
+        estado.setdefault(ch, {})[campo] = valor
+        tocadas.add(ch)
+    fecha()
+    return dict(hist)
+
+
+def ceg_para_ids(hist_u, cad_u):
+    """{CEG: {id_ons}} com todos os CEGs que cada identificador da Geração por Usina já
+    publicou (histórico) e os do cadastro vigente."""
+    out = defaultdict(set)
+    for ido, estados in (hist_u or {}).items():
+        for st in estados:
+            ceg = og.ceg_valido(st.get("ceg"))
+            if ceg:
+                out[ceg].add(ido)
+    for ido, r_ in (cad_u or {}).items():
+        ceg = og.ceg_valido(r_.get("ceg"))
+        if ceg:
+            out[ceg].add(ido)
+    return out
+
+
+def mapa_combustivel(cad_t, cad_u, unidades, hist_u=None, identidade=None):
     """Combustível de cada usina da térmica por motivo, por ordem de autoridade:
     1. campo nom_combustivel do próprio conjunto (só existe nos arquivos de 2026);
-    2. mesmo CEG na Geração por Usina (nom_tipocombustivel);
-    3. mesmo CEG na Capacidade Instalada (nom_combustivel da unidade);
+    2. mesmo CEG na Geração por Usina (nom_tipocombustivel), com TODOS os CEGs que cada
+       identificador já publicou (`hist_u`), não só o último: a usina Do Atlântico publicou
+       UTE.PE.RJ.029587-6.01 com "Resíduos Industriais" até 10/2025 e UTE.CM depois;
+    3. mesmo CEG na Capacidade Instalada (nom_combustivel da unidade; a turbina a vapor de
+       ciclo combinado não é combustível e não decide);
     4. o mesmo nas duas fontes pelo CEG sem o sufixo de versão;
+    5. outra chave da mesma usina (`identidade`: CEG com o mesmo número e o mesmo código do
+       ONS ou o mesmo identificador da Geração por Usina);
     sem nenhum: "não mapeada", explícita. Nunca por semelhança de nome."""
     por_ceg_u, por_base_u, por_ceg_c, por_base_c = {}, {}, {}, {}
-    for ido, r_ in cad_u.items():
+
+    def rot_u(r_):
+        return "Nuclear" if og.norm(r_.get("tipo")) == "NUCLEAR" else r_.get("comb")
+
+    estados = [st for est in (hist_u or {}).values() for st in est] + list(cad_u.values())
+    for r_ in estados:  # do mais antigo ao vigente: o rótulo mais recente de cada CEG prevalece
         ceg = og.ceg_valido(r_.get("ceg"))
-        if ceg and og.grupo_balanco(r_.get("tipo")) == "termica":
-            rot = "Nuclear" if og.norm(r_.get("tipo")) == "NUCLEAR" else r_.get("comb")
-            por_ceg_u[ceg] = rot
-            por_base_u[og.ceg_base(ceg)] = rot
+        if ceg and og.grupo_balanco(r_.get("tipo")) == "termica" and rot_u(r_):
+            por_ceg_u[ceg] = rot_u(r_)
+            por_base_u[og.ceg_base(ceg)] = rot_u(r_)
     for cod, u in unidades.items():
         ceg = (u.get("ceg") or "").strip()
-        if ceg and og.grupo_balanco(u.get("tipo")) == "termica":
+        if ceg and og.grupo_balanco(u.get("tipo")) == "termica" and og.norm(u.get("combustivel")) != og.COMBUSTIVEL_CICLO_COMBINADO:
             rot = "Nuclear" if og.norm(u.get("tipo")) == "NUCLEAR" else u.get("combustivel")
             por_ceg_c.setdefault(ceg, rot)
             por_base_c.setdefault(og.ceg_base(ceg), rot)
@@ -1437,7 +1788,94 @@ def mapa_combustivel(cad_t, cad_u, unidades):
                 break
         else:
             out[ch] = {"rotulo": None, "categoria": "nao_mapeada", "origem": "nao_identificado"}
+    if identidade:
+        membros = defaultdict(list)
+        for ch, rep in identidade.items():
+            membros[rep].append(ch)
+        for ch, x in list(out.items()):
+            if x["categoria"] != "nao_mapeada" or ch not in identidade:
+                continue
+            outras = [out[o] for o in membros[identidade[ch]] if o != ch and o in out and out[o]["categoria"] != "nao_mapeada"]
+            if outras:
+                out[ch] = {"rotulo": outras[0]["rotulo"], "categoria": outras[0]["categoria"], "origem": "mesma_usina"}
     return out
+
+
+def codigos_termicos(hist_t, cad_t):
+    """{chave: {códigos do ONS}} com todos os códigos que cada CEG já teve: o campo `cod`
+    (último código de cada arquivo) e as parcelas (todas as linhas de cada arquivo)."""
+    out = defaultdict(set)
+    for ch, estados in list((hist_t or {}).items()) + [(ch, [r_]) for ch, r_ in cad_t.items()]:
+        for st in estados:
+            if st.get("cod") not in (None, ""):
+                out[ch].add(int(float(st["cod"])))
+            for cod, _ in json.loads(st.get("parcelas") or "[]"):
+                out[ch].add(int(cod))
+    return out
+
+
+def nomes_parcelas(hist_t, cad_t):
+    """{(chave, código): nome} da parcela, pelo último arquivo que a trouxe."""
+    out = {}
+    for ch, estados in list((hist_t or {}).items()) + [(ch, [r_]) for ch, r_ in cad_t.items()]:
+        for st in estados:
+            for cod, nome in json.loads(st.get("parcelas") or "[]"):
+                out[(ch, int(cod))] = nome
+    return out
+
+
+def identidades_termicas(chaves, cad_t, cods, ceg_ids, ultimo_mes_de):
+    """Liga as chaves da térmica por motivo que são a mesma usina: CEGs com o mesmo número
+    de empreendimento (a ANEEL corrigiu só o código de combustível ou a UF) E um elo
+    publicado pelo ONS, o mesmo código nos modelos ou o mesmo identificador na Geração por
+    Usina. Representante = a chave com o mês mais recente com dado. Nunca por nome."""
+    pai = {ch: ch for ch in chaves}
+
+    def raiz(x):
+        while pai[x] != x:
+            pai[x] = pai[pai[x]]
+            x = pai[x]
+        return x
+
+    por_nucleo = defaultdict(list)
+    for ch in chaves:
+        n_ = og.nucleo_ceg(og.ceg_valido(cad_t.get(ch, {}).get("ceg")) or ch)
+        if n_:
+            por_nucleo[n_].append(ch)
+    for n_, chs in por_nucleo.items():
+        for i in range(len(chs)):
+            for j in range(i + 1, len(chs)):
+                a, b = chs[i], chs[j]
+                ceg_a = og.ceg_valido(cad_t.get(a, {}).get("ceg")) or a
+                ceg_b = og.ceg_valido(cad_t.get(b, {}).get("ceg")) or b
+                if (cods.get(a, set()) & cods.get(b, set())) or (ceg_ids.get(ceg_a, set()) & ceg_ids.get(ceg_b, set())):
+                    pai[raiz(a)] = raiz(b)
+    grupos = defaultdict(list)
+    for ch in chaves:
+        grupos[raiz(ch)].append(ch)
+    out = {}
+    for chs in grupos.values():
+        rep = max(chs, key=lambda x: (ultimo_mes_de.get(x) or "", x))
+        for ch in chs:
+            out[ch] = rep
+    return out
+
+
+def nome_identidade(rep, membros, cad_t, ceg_ids, cad_u, unidades):
+    """Nome da usina (não da última parcela): com uma parcela só, o nome da térmica por
+    motivo; com várias, o nome da usina na Geração por Usina (mesmo CEG), senão o da
+    Capacidade Instalada, senão os nomes das parcelas juntos."""
+    parc = json.loads(cad_t.get(rep, {}).get("parcelas") or "[]")
+    if len(parc) <= 1:
+        return (parc[0][1] if parc else cad_t.get(rep, {}).get("nome")), "termica_por_motivo"
+    cegs = {og.ceg_valido(cad_t.get(ch, {}).get("ceg")) or ch for ch in membros}
+    nomes = sorted({cad_u.get(i, {}).get("nome") for ceg in cegs for i in ceg_ids.get(ceg, ()) if cad_u.get(i, {}).get("nome")})
+    if nomes:
+        return " + ".join(nomes), "geracao_por_usina"
+    cap = sorted({u.get("usina") for u in unidades.values() if (u.get("ceg") or "").strip() in cegs and u.get("usina")})
+    if cap:
+        return " + ".join(cap), "capacidade_instalada"
+    return " + ".join(sorted({n for _, n in parc})), "termica_por_motivo"
 
 
 def _meses_completos(dias_por_mes, ate_mes):
@@ -1456,7 +1894,10 @@ def bloco_termica(con, D_u, unidades, hoje):
     man = manifestos(con, ds)
     tudo = filtra_manifesto(vigentes(con, ds), man)
     cad_t = base.registros_como_estavam_em(con, ds)
-    diario, usina_mes, horas = defaultdict(float), defaultdict(float), {}
+    hist_t = historico_cadastro(con, ds)
+    hist_u = D_u.get("historico_cadastro") or {}
+    cad_u = D_u["cadastro"]
+    diario, usina_mes, parcela_mes, horas = defaultdict(float), defaultdict(float), defaultdict(float), {}
     for (serie, ref), v in tudo.items():
         p = serie.split("|")
         if p[0] == "t":
@@ -1464,6 +1905,8 @@ def bloco_termica(con, D_u, unidades, hoje):
             diario[(ref[:7], "SIN", p[2])] += v
         elif p[0] == "tu":
             usina_mes[(ref, p[1], p[2])] += v
+        elif p[0] == "tp":
+            parcela_mes[(ref, p[1], int(p[2]))] += v
         elif p[0] == "tnh":
             horas[ref] = v
     # dia completo: 23 a 25 instantes (dias de troca do horário de verão, até 2019, têm 23 ou 25)
@@ -1478,8 +1921,19 @@ def bloco_termica(con, D_u, unidades, hoje):
     if not completos:
         return None
     ult12 = completos[-12:]
-    presentes_t = {ch for (_, ch, _) in usina_mes}
-    comb = mapa_combustivel({ch: r_ for ch, r_ in cad_t.items() if ch in presentes_t}, D_u["cadastro"], unidades)
+    presentes_t = sorted({ch for (_, ch, _) in usina_mes})
+    ultimo_mes_de = {}
+    for (mes, ch, med), v in usina_mes.items():
+        if med == "total" and mes > ultimo_mes_de.get(ch, ""):
+            ultimo_mes_de[ch] = mes
+    cods = codigos_termicos(hist_t, cad_t)
+    cegs_gu = ceg_para_ids(hist_u, cad_u)
+    ident = identidades_termicas(presentes_t, cad_t, cods, cegs_gu, ultimo_mes_de)
+    membros = defaultdict(list)
+    for ch, rep in ident.items():
+        membros[rep].append(ch)
+    nome_id = {rep: nome_identidade(rep, chs, cad_t, cegs_gu, cad_u, unidades) for rep, chs in membros.items()}
+    comb = mapa_combustivel({ch: r_ for ch, r_ in cad_t.items() if ch in ident}, cad_u, unidades, hist_u=hist_u, identidade=ident)
     # série mensal do SIN por motivo (MWmed = MWh ÷ horas do mês no arquivo)
     mensal = {"meses": meses, "horas": [horas_mes[m] for m in meses],
               "parcial": [dias_mes[m] < og.dias_do_mes(m) for m in meses], "total_mwmed": [],
@@ -1501,7 +1955,7 @@ def bloco_termica(con, D_u, unidades, hoje):
     for (mes, ch, med), v in usina_mes.items():
         if mes in ult12:
             por_comb[comb.get(ch, {}).get("categoria", "nao_mapeada")][med] += v
-            por_usina[ch][med] += v
+            por_usina[ident.get(ch, ch)][med] += v
     tot12 = sum(x.get("total", 0.0) for x in por_comb.values())
     motivos12 = {m: sum(x.get(m, 0.0) for x in por_comb.values()) for m in MOTIVOS}
     res12 = tot12 - sum(motivos12.values())
@@ -1523,28 +1977,55 @@ def bloco_termica(con, D_u, unidades, hoje):
             comb_mes[(mes, comb.get(ch, {}).get("categoria", "nao_mapeada"))] += v
     mensal_comb = {"meses": meses, **{cat: [c.r(_div(comb_mes.get((m, cat)), horas_mes[m]), 1) if (m, cat) in comb_mes else None
                                             for m in meses] for cat in og.COMBUSTIVEIS}}
-    # CVU vigente por usina (código do ONS nos modelos)
-    cvu = bloco_cvu(con, cad_t, comb, hoje)
-    cvu_por_cod = {x["cod"]: x["cvu"] for x in (cvu or {}).get("usinas", [])}
+    # CVU vigente: código do ONS → usina (identidade), com todos os códigos de todas as chaves
+    cod_ident = defaultdict(set)
+    for ch, cs in cods.items():
+        if ch in ident:
+            for cod in cs:
+                cod_ident[cod].add(ident[ch])
+    nomes_p = nomes_parcelas(hist_t, cad_t)
+    cvu = bloco_cvu(con, comb, hoje, cod_ident, nome_id)
+    cvu_por_cod = {x["cod"]: x for x in (cvu or {}).get("usinas", [])}
+    parc12 = defaultdict(float)
+    for (mes, ch, cod), v in parcela_mes.items():
+        if mes in ult12 and ch in ident:
+            parc12[(ident[ch], cod)] += v
     usinas = []
-    for ch, x in por_usina.items():
+    for rep, x in por_usina.items():
         t_ = x.get("total", 0.0)
-        r_ = cad_t.get(ch, {})
-        cod = r_.get("cod")
-        usinas.append({"id": ch, "nome": r_.get("nome"), "sm": r_.get("sm"), "ceg": r_.get("ceg") or None,
-                       "cod": int(float(cod)) if cod not in (None, "") else None,
-                       "combustivel": comb.get(ch, {}).get("rotulo"), "categoria": comb.get(ch, {}).get("categoria", "nao_mapeada"),
-                       "origem_combustivel": comb.get(ch, {}).get("origem", "nao_identificado"),
+        r_ = cad_t.get(rep, {})
+        chs = sorted(membros.get(rep, [rep]))
+        cods_rep = sorted({cod for ch in chs for cod in cods.get(ch, ())})
+        parcelas = []
+        for cod in cods_rep:
+            mwh_p = parc12.get((rep, cod))
+            cv = cvu_por_cod.get(cod)
+            if mwh_p is None and not (cv and cv.get("id_termica") == rep):
+                continue  # parcela antiga, sem geração no período e sem CVU na semana
+            nome_p = next((nomes_p[(ch, cod)] for ch in [rep] + chs if (ch, cod) in nomes_p), None)
+            parcelas.append({"cod": cod, "nome": nome_p, "mwh": c.r(mwh_p, 1),
+                             "cvu_semana_vigente": cv["cvu"] if cv and cv.get("id_termica") == rep else None})
+        com_cvu = [p_["cvu_semana_vigente"] for p_ in parcelas if p_["cvu_semana_vigente"] is not None]
+        usinas.append({"id": rep, "nome": nome_id[rep][0], "origem_nome": nome_id[rep][1], "sm": r_.get("sm"),
+                       "ceg": og.ceg_valido(r_.get("ceg")) or None,
+                       "chaves_na_fonte": chs,
+                       "combustivel": comb.get(rep, {}).get("rotulo"), "categoria": comb.get(rep, {}).get("categoria", "nao_mapeada"),
+                       "origem_combustivel": comb.get(rep, {}).get("origem", "nao_identificado"),
                        "mwh": c.r(t_, 1), "mwmed": c.r(t_ / horas12, 2),
                        "motivos_pct": {m: c.r(100 * x[m] / t_, 1) for m in MOTIVOS if t_ > 0 and x.get(m)},
                        "constrained_off_mwh": c.r(x.get("constrained_off"), 1),
-                       "cvu_semana_vigente": cvu_por_cod.get(int(float(cod))) if cod not in (None, "") else None})
+                       "parcelas": parcelas,
+                       # um valor só quando a usina tem uma parcela com CVU; com várias, o CVU de cada uma está em parcelas
+                       "cvu_semana_vigente": com_cvu[0] if len(com_cvu) == 1 else None})
     usinas.sort(key=lambda u: -(u["mwh"] or 0))
     n_usinas_12m = sum(1 for u in usinas if (u["mwh"] or 0) > 0)
     cob_top = c.r(100 * sum(u["mwh"] or 0 for u in usinas[:USINAS_GOLD_TERMICA]) / tot12, 2) if tot12 else None
     origens = Counter(v["origem"] for v in comb.values())
-    nao_id = [{"id": ch, "nome": cad_t.get(ch, {}).get("nome")} for ch, v in comb.items() if v["categoria"] == "nao_mapeada"]
-    universo = universo_termica(D_u, usina_mes, cad_t, ult12, completos)
+    nao_id = [{"id": ch, "nome": cad_t.get(ch, {}).get("nome"),
+               "mwh_12m": c.r(sum(v for (m, ch_, med), v in usina_mes.items() if ch_ == ch and med == "total" and m in ult12), 1)}
+              for ch, v in comb.items() if v["categoria"] == "nao_mapeada"]
+    ligadas = [{"usina": rep, "nome": nome_id[rep][0], "chaves": sorted(chs)} for rep, chs in sorted(membros.items()) if len(chs) > 1]
+    universo = universo_termica(D_u, usina_mes, cad_t, ident, cegs_gu, completos)
     rels = relatorios(con, ds)
     negativos = sum((r_ or {}).get("negativos", 0) for r_ in rels.values())
     return {
@@ -1561,39 +2042,46 @@ def bloco_termica(con, D_u, unidades, hoje):
         "usinas_12m": usinas[:USINAS_GOLD_TERMICA],
         "usinas_12m_resumo": {"usinas_com_geracao": n_usinas_12m, "publicadas": min(len(usinas), USINAS_GOLD_TERMICA),
                               "cobertura_da_energia_pct": cob_top, "lista_completa": CSV["termica_usina"]},
-        "mapa_combustivel": {"usinas": len(comb), "por_origem": dict(origens), "nao_identificadas": nao_id},
+        "mapa_combustivel": {"usinas": len(comb), "por_origem": dict(origens), "nao_identificadas": nao_id,
+                             "nao_identificadas_mwh_12m": c.r(sum(x["mwh_12m"] or 0 for x in nao_id), 1),
+                             "nao_identificadas_pct_12m": c.r(100 * sum(x["mwh_12m"] or 0 for x in nao_id) / tot12, 3) if tot12 else None},
+        "identidade": {"usinas_com_mais_de_uma_chave": ligadas,
+                       "regra": ("Chaves da fonte (CEG) ligadas como a mesma usina quando o número do empreendimento no CEG é o mesmo "
+                                 "(a ANEEL corrigiu só o código de combustível ou a UF) e o ONS publica um elo: o mesmo código nos "
+                                 "modelos ou o mesmo identificador na Geração por Usina. A usina leva a chave mais recente e o nome da "
+                                 "usina (com várias parcelas, o da Geração por Usina); cada parcela, seu código e seu CVU.")},
         "universo": universo,
         "cvu": cvu,
         "controles": {"valores_negativos_na_fonte": negativos},
-        "_usina_mes": usina_mes, "_comb": comb, "_cad": cad_t, "_horas_mes": horas_mes, "_ult12": ult12, "_diario": diario, "_meses_todos": meses_todos,
+        "_usina_mes": usina_mes, "_comb": comb, "_cad": cad_t, "_horas_mes": horas_mes, "_ult12": ult12, "_diario": diario,
+        "_meses_todos": meses_todos, "_ident": ident, "_nome_id": nome_id,
     }
 
 
-def universo_termica(D_u, usina_mes, cad_t, ult12, completos):
+def universo_termica(D_u, usina_mes, cad_t, ident, cegs_gu, completos):
     """A térmica por motivo cobre as térmicas despachadas pelo ONS. Conferência por outro
-    caminho: as mesmas usinas (mesmo CEG) somadas na Geração por Usina, mês a mês; e a
-    cobertura em relação a todas as térmicas e nucleares Tipo I e II-A da Geração por Usina."""
+    caminho: as mesmas usinas (mesma identidade: CEGs com o mesmo número e elo publicado)
+    somadas na Geração por Usina, mês a mês, cada identificador uma vez; e a cobertura em
+    relação a todas as térmicas e nucleares Tipo I e II-A da Geração por Usina."""
     cad_u = D_u["cadastro"]
-    ceg_para_ids = defaultdict(list)
-    for ido, r_ in cad_u.items():
-        ceg = og.ceg_valido(r_.get("ceg"))
-        if ceg:
-            ceg_para_ids[ceg].append(ido)
     u_mes = defaultdict(float)
     for (serie, mes), v in D_u["u"].items():
         u_mes[(serie[2:], mes)] = v
     meses = [m for m in completos if m >= min(m_ for (_, m_) in u_mes)] if u_mes else []
-    tot_por_mes = defaultdict(list)
+    ids_de = defaultdict(set)
+    for ch, rep in ident.items():
+        ids_de[rep] |= cegs_gu.get(og.ceg_valido(cad_t.get(ch, {}).get("ceg")) or ch, set())
+    tot_por_mes = defaultdict(lambda: defaultdict(float))
     for (m, ch, med), v in usina_mes.items():
         if med == "total":
-            tot_por_mes[m].append((ch, v))
+            tot_por_mes[m][ident.get(ch, ch)] += v
     linhas = []
     for mes in meses[-12:]:
-        term_tot = sum(v for _, v in tot_por_mes.get(mes, []))
+        term_tot = sum(tot_por_mes.get(mes, {}).values())
         mesmas_t = mesmas_u = 0.0
         pares = sem_par = 0
-        for ch, v in tot_por_mes.get(mes, []):
-            ids = ceg_para_ids.get(cad_t.get(ch, {}).get("ceg") or ch, [])
+        for rep, v in tot_por_mes.get(mes, {}).items():
+            ids = ids_de.get(rep)
             if ids:
                 pares += 1
                 mesmas_t += v
@@ -1609,12 +2097,13 @@ def universo_termica(D_u, usina_mes, cad_t, ult12, completos):
                        "geracao_usina_tipo_i_iia_mwh": c.r(tipo12, 1),
                        "cobertura_tipo_i_iia_pct": c.r(100 * term_tot / tipo12, 2) if tipo12 else None})
     return {"mensal": linhas,
-            "regra": ("Pareamento pelo CEG da ANEEL: a mesma usina nos dois conjuntos. A cobertura compara o total da térmica "
-                      "por motivo com todas as térmicas e nucleares de modalidade Tipo I e II-A da Geração por Usina, "
-                      "inclusive as de Roraima, que só entram no SIN com a interligação.")}
+            "regra": ("Pareamento pelo CEG da ANEEL, com todos os CEGs que cada identificador da Geração por Usina já publicou e "
+                      "as chaves da mesma usina ligadas: a mesma usina nos dois conjuntos, cada identificador somado uma vez. A "
+                      "cobertura compara o total da térmica por motivo com todas as térmicas e nucleares de modalidade Tipo I e "
+                      "II-A da Geração por Usina, inclusive as de Roraima, que só entram no SIN com a interligação.")}
 
 
-def bloco_cvu(con, cad_t, comb, hoje):
+def bloco_cvu(con, comb, hoje, cod_ident, nome_id):
     ds = _ds("cvu")
     man = manifestos(con, ds)
     obs = filtra_manifesto(vigentes(con, ds), man)
@@ -1629,21 +2118,21 @@ def bloco_cvu(con, cad_t, comb, hoje):
         return None
     sem = semanas[-1]
     info = reg.get(f"sem|{sem}", {})
-    # código do ONS → usina da térmica por motivo, com todos os códigos que a usina já teve
-    # (o histórico de registros guarda cada valor); código ligado a mais de uma usina fica sem par
-    cods = defaultdict(set)
-    for ch, valor in con.execute("SELECT chave, valor FROM registros WHERE dataset=? AND campo='cod'", (_ds("termica"),)):
-        if valor not in (None, "") and ch in cad_t:
-            cods[int(float(valor))].add(ch)
-    cod_ch = {cod: next(iter(chs)) for cod, chs in cods.items() if len(chs) == 1}
+    # código do ONS → usina da térmica por motivo. Os códigos de cada usina são os de todas
+    # as linhas de todos os arquivos (parcelas), de todas as chaves ligadas à mesma usina;
+    # código que leva a mais de uma usina fica sem par (nenhuma escolha em silêncio)
+    cod_ch = {cod: next(iter(reps)) for cod, reps in cod_ident.items() if len(reps) == 1}
+    ambiguos = {cod: sorted(reps) for cod, reps in cod_ident.items() if len(reps) > 1}
+
     def cat_cod(cod):
         ch = cod_ch.get(cod)
         return (comb.get(ch) or {}).get("categoria", "nao_mapeada") if ch else "nao_mapeada"
     usinas = []
     for cod, v in sorted(por_sem[sem].items(), key=lambda x: x[1]):
         r_ = reg.get(f"usi|{cod}", {})
+        ch = cod_ch.get(cod)
         usinas.append({"cod": cod, "nome": r_.get("nome"), "sm": r_.get("sm"), "cvu": c.r(v, 2), "categoria": cat_cod(cod),
-                       "id_termica": cod_ch.get(cod)})
+                       "id_termica": ch, "usina": (nome_id.get(ch) or (None,))[0] if ch else None})
     por_cat = defaultdict(list)
     for u in usinas:
         por_cat[u["categoria"]].append(u["cvu"])
@@ -1666,7 +2155,8 @@ def bloco_cvu(con, cad_t, comb, hoje):
                        "revisao": int(float(info["revisao"])) if info.get("revisao") not in (None, "") else None},
             "usinas": usinas, "por_combustivel": dist, "mediana_mensal": hist,
             "cobertura": {"usinas_com_cvu": len(usinas), "pareadas_com_termica": sum(1 for u in usinas if u["id_termica"]),
-                          "sem_par": [u["nome"] for u in usinas if not u["id_termica"]][:40]},
+                          "sem_par": [u["nome"] for u in usinas if not u["id_termica"]][:40],
+                          "codigos_ambiguos": [{"cod": cod, "usinas": reps} for cod, reps in sorted(ambiguos.items())][:20]},
             "controles": {"conflitos_mesma_semana_usina": conflitos, "linhas_repetidas_identicas": repetidas},
             "_por_sem": por_sem, "_reg": reg, "_cod_ch": cod_ch}
 
@@ -1890,7 +2380,9 @@ SIGA_ORIGEM_PARA_CAT = {"Biomassa": "biomassa"}
 
 
 def unidades_capacidade(con):
-    """Unidades geradoras do retrato vigente (registros do silver), com potência numérica."""
+    """Unidades geradoras do retrato vigente (registros do silver), com potência numérica.
+    `categoria` aqui é a do rótulo da própria unidade; a categoria publicada vem de
+    categorias_das_unidades (a da usina na Geração por Usina)."""
     out = {}
     for cod, r_ in base.registros_como_estavam_em(con, _ds("capacidade")).items():
         try:
@@ -1900,8 +2392,54 @@ def unidades_capacidade(con):
         u = dict(r_)
         u["_cod"] = cod
         u["potencia_mw"] = p
-        u["categoria"] = og.categoria(r_.get("tipo"), r_.get("combustivel"), "")
+        u["categoria_propria"] = og.categoria(r_.get("tipo"), r_.get("combustivel"), "")
+        u["categoria"] = u["categoria_propria"]
         out[cod] = u
+    return out
+
+
+def categorias_das_unidades(unidades, cad_u, cegs_gu, relacoes, dia):
+    """Categoria publicada de cada unidade geradora = a categoria da usina na Geração por
+    Usina, a mesma que entra no numerador do fator de capacidade:
+    1. identificadores da Geração por Usina com o mesmo CEG (todos os CEGs que já publicaram);
+    2. o mesmo pelo CEG sem versão;
+    3. conjunto de usinas com relacionamento vigente no dia que contém o CEG;
+    4. o rótulo da própria unidade;
+    5. turbina a vapor de ciclo combinado sem par: a categoria das demais unidades do CEG.
+    Sem isso, a unidade "Resíduo Ciclo Combinado" de uma usina a gás ia para "outros" no
+    retrato e para o gás no denominador do fator de capacidade (Termorio, GNA II)."""
+    cat_id = {ido: og.categoria(r_.get("tipo"), r_.get("comb"), r_.get("mod")) for ido, r_ in cad_u.items()
+              if og.natureza_modalidade(r_.get("mod")) == "verificada"}
+    por_ceg, por_base = defaultdict(Counter), defaultdict(Counter)
+    for ceg, ids in cegs_gu.items():
+        for i in ids:
+            if i in cat_id:
+                por_ceg[ceg][cat_id[i]] += 1
+                por_base[og.ceg_base(ceg)][cat_id[i]] += 1
+    conj_de = {}
+    for r_ in relacoes:
+        ini, fim = r_.get("dat_iniciorelacionamento"), r_.get("dat_fimrelacionamento")
+        if ini and ini <= dia and (not fim or dia <= fim) and r_.get("id_ons_conjunto") in cat_id:
+            conj_de[(r_.get("ceg") or "").strip()] = r_.get("id_ons_conjunto")
+    irmas = defaultdict(Counter)
+    for u in unidades.values():
+        if u.get("categoria_propria") not in (None, "nao_mapeada") and u.get("potencia_mw"):
+            irmas[(u.get("ceg") or "").strip()][u["categoria_propria"]] += u["potencia_mw"]
+    out = {}
+    for cod, u in unidades.items():
+        ceg = (u.get("ceg") or "").strip()
+        if ceg and por_ceg.get(ceg):
+            out[cod] = (por_ceg[ceg].most_common(1)[0][0], "geracao_por_usina")
+        elif ceg and por_base.get(og.ceg_base(ceg)):
+            out[cod] = (por_base[og.ceg_base(ceg)].most_common(1)[0][0], "geracao_por_usina_ceg_base")
+        elif ceg in conj_de:
+            out[cod] = (cat_id[conj_de[ceg]], "conjunto")
+        elif u.get("categoria_propria") not in (None, "nao_mapeada"):
+            out[cod] = (u["categoria_propria"], "rotulo_da_unidade")
+        elif og.norm(u.get("combustivel")) == og.COMBUSTIVEL_CICLO_COMBINADO and irmas.get(ceg):
+            out[cod] = (irmas[ceg].most_common(1)[0][0], "demais_unidades_do_ceg")
+        else:
+            out[cod] = ("nao_mapeada", "nao_identificado")
     return out
 
 
@@ -1955,7 +2493,32 @@ def unidades_no_mes(par, mes, por_ceg, por_base):
     return None
 
 
-def bloco_capacidade(con, D_u, hoje, ctx, ok):
+def mmgd_mensal(mensal_tr, matriz):
+    """Potência de MMGD cadastrada na ANEEL ao fim de cada mês (acumulado do cadastro atual
+    pela data de conexão, módulo Transição) ao lado da energia de MMGD estimada pelo ONS na
+    Geração por Usina no mesmo mês. Dois produtos de natureza diferente, lado a lado, nunca
+    somados à capacidade do ONS nem divididos um pelo outro: a estimativa do ONS usa
+    previsão meteorológica e potência própria, não a deste cadastro."""
+    if not mensal_tr or not matriz:
+        return None
+    ms = matriz["mensal_sin"]
+    ger = {m: (v, d_ == n_) for m, v, d_, n_ in zip(ms["meses"], ms["solar_mmgd"], ms["dias_completos"], ms["dias_no_mes"])}
+    cad = {x.get("m"): x for x in mensal_tr if x.get("m")}
+    meses = [m for m in sorted(cad) if m in ger and m > INICIO_MMGD[:7] and ger[m][0] is not None]
+    if not meses:
+        return None
+    return {"meses": meses,
+            "potencia_cadastrada_mw": [c.r(cad[m].get("acumulado_mw"), 1) for m in meses],
+            "cadastro_provisorio": [bool(cad[m].get("provisorio")) for m in meses],
+            "geracao_estimada_ons_mwmed": [ger[m][0] for m in meses],
+            "mes_completo_na_geracao": [ger[m][1] for m in meses],
+            "regra": ("Potência: soma da potência das unidades do cadastro atual da ANEEL com conexão até o fim do mês (unidades "
+                      "retiradas do cadastro não aparecem). Geração: categoria Solar MMGD da Geração por Usina (estimativa do ONS) "
+                      "nos dias completos do mês, a partir do primeiro mês inteiro depois de 29/04/2023. Nada é somado à "
+                      "capacidade do ONS, e a razão entre os dois não é publicada como fator de capacidade.")}
+
+
+def bloco_capacidade(con, D_u, hoje, ctx, ok, matriz=None):
     unidades = unidades_capacidade(con)
     if not unidades:
         return None
@@ -1963,6 +2526,9 @@ def bloco_capacidade(con, D_u, hoje, ctx, ok):
     data_retrato = ev._dia_brasilia(v_cap["capturado_em"]) if v_cap else hoje.isoformat()
     relacoes = list(base.registros_como_estavam_em(con, _ds("conjunto")).values())
     cad_u = D_u["cadastro"]
+    cegs_gu = ceg_para_ids(D_u.get("historico_cadastro"), cad_u)
+    for cod, (cat, origem) in categorias_das_unidades(unidades, cad_u, cegs_gu, relacoes, data_retrato).items():
+        unidades[cod]["categoria"], unidades[cod]["origem_categoria"] = cat, origem
     par, por_ceg, por_base = pareamento(cad_u, unidades, relacoes)
     # retrato atual por categoria
     retrato = defaultdict(lambda: {"mw": 0.0, "unidades": 0, "usinas": set()})
@@ -1977,15 +2543,6 @@ def bloco_capacidade(con, D_u, hoje, ctx, ok):
     dias_mes = Counter(d[:7] for d in ok)
     meses = [m for m in sorted(dias_mes) if dias_mes[m] == og.dias_do_mes(m)]
     ult12 = meses[-12:]
-    # potência operacional média do mês por categoria (todas as unidades do retrato)
-    pot_cat = defaultdict(float)
-    for u in unidades.values():
-        if not u.get("potencia_mw") or not u.get("entrada_operacao"):
-            continue
-        for m in meses:
-            if u["entrada_operacao"] > f"{m}-31" or (u.get("desativacao") and u["desativacao"] < f"{m}-01"):
-                continue
-            pot_cat[(m, u["categoria"])] += og.potencia_operacional_media([u], m)
     # fator de capacidade por grupo de pareamento e mês (só pares com geração e potência).
     # Identificadores que levam às mesmas unidades formam um grupo: Itaipu 50 Hz e 60 Hz,
     # Belo Monte e Pimental, Simplício e Anta têm o mesmo CEG na Geração por Usina; a
@@ -2025,6 +2582,7 @@ def bloco_capacidade(con, D_u, hoje, ctx, ok):
     fc12 = defaultdict(lambda: [0.0, 0.0, 0, 0.0])
     nomes_grupo, cat_grupo = {}, {}
     usadas = defaultdict(set)
+    cat_usada = {}
     dup_evitadas = 0
     for (m, k) in sorted(grupos, key=lambda x: (x[0], not x[1].startswith(("ceg:", "base:")), x[1])):
         gm = grupos[(m, k)]
@@ -2035,6 +2593,8 @@ def bloco_capacidade(con, D_u, hoje, ctx, ok):
         usadas[m].update(u["_cod"] for u in us)
         pot = og.potencia_operacional_media(us, m) if us else 0.0
         cat = gm["cat"].most_common(1)[0][0]
+        for u in us:
+            cat_usada[(m, u["_cod"])] = cat
         nome = " + ".join(sorted(set(n for n in gm["nomes"] if n)))
         nomes_grupo[k], cat_grupo[k] = nome, cat
         if pot <= 0 or gm["h"] <= 0:
@@ -2055,6 +2615,18 @@ def bloco_capacidade(con, D_u, hoje, ctx, ok):
             a[3] += pot
         if m >= (meses[-24] if len(meses) >= 24 else meses[0]):
             linhas_usina.append([m, k, "+".join(sorted(gm["ids"])), nome, cat, c.r(gm["mwh"], 3), int(gm["h"]), c.r(pot, 3), c.r(fc, 2), p["casamento"]])
+    # potência operacional média do mês por categoria (todas as unidades do retrato). A
+    # unidade usada por um grupo de pareamento no mês entra na categoria do grupo; as demais,
+    # na categoria da usina (categorias_das_unidades): potência mostrada e denominador do
+    # fator de capacidade usam a mesma classificação
+    pot_cat = defaultdict(float)
+    for u in unidades.values():
+        if not u.get("potencia_mw") or not u.get("entrada_operacao"):
+            continue
+        for m in meses:
+            if u["entrada_operacao"] > f"{m}-31" or (u.get("desativacao") and u["desativacao"] < f"{m}-01"):
+                continue
+            pot_cat[(m, cat_usada.get((m, u["_cod"]), u["categoria"]))] += og.potencia_operacional_media([u], m)
     # fator de capacidade do ONS (eólica e solar) para conferência
     fc_ons = defaultdict(lambda: [0.0, 0.0])
     ds_fc = _ds("fc")
@@ -2088,8 +2660,14 @@ def bloco_capacidade(con, D_u, hoje, ctx, ok):
                 fcs.append((100 * mw_ / ch_, k_, nomes_grupo.get(k_), pot_soma / n))
         fcs.sort()
         bins = Counter(min(int(f_ // 10), 10) for f_, *_ in fcs)
+        pot_h = sum(pot_cat.get((m, cat), 0.0) * 24 * og.dias_do_mes(m) for m in ult12)
+        h12 = sum(24 * og.dias_do_mes(m) for m in ult12)
         doze.append({"categoria": cat, "rotulo": ROTULO_CAT[cat],
                      "potencia_atual_mw": c.r(retrato.get(cat, {}).get("mw"), 1),
+                     # média dos 12 meses da potência em operação (todas as unidades da categoria): o
+                     # denominador do fator de capacidade (só grupos pareados, horas com dado) não passa dela
+                     "potencia_media_12m_mw": c.r(pot_h / h12, 1) if h12 else None,
+                     "capacidade_hora_media_mw": c.r(cap_h / h12, 1) if h12 else None,
                      "geracao_pareada_mwh": c.r(mwh_p, 1), "capacidade_hora_mwh": c.r(cap_h, 1),
                      "fator_capacidade_pct": c.r(_div(100 * mwh_p, cap_h), 2),
                      "cobertura_pct": c.r(_div(100 * mwh_p, tod), 2),
@@ -2115,11 +2693,20 @@ def bloco_capacidade(con, D_u, hoje, ctx, ok):
         siga = {"data_referencia": ci.get("data_referencia"), "total_mw": (ci.get("total") or {}).get("mw_fiscalizado"),
                 "por_categoria_mw": {k: c.r(v, 1) for k, v in siga_cat.items()}, "fontes_em_outros": nao_map,
                 "fonte": "ANEEL, SIGA (capacidade fiscalizada em operação), como publicado em expansao.json"}
+    if siga is not None:
+        siga["serie_temporal"] = None
+        siga["lacuna_temporal"] = (
+            "O SIGA publicado é um retrato do dia (o portal da ANEEL não publica retratos anteriores). A reconstituição "
+            "pela data de entrada em operação da usina foi avaliada e não publicada: o SIGA tem uma data por usina, e a "
+            "reconstituição atribuiria a potência atual inteira à data da primeira unidade (usinas motorizadas ao longo de "
+            "anos apareceriam completas desde o início), além de não enxergar usinas desativadas. A comparação com o ONS "
+            "fica restrita à data do retrato; o exemplo conferido está no documento do módulo.")
     mmgd = None
     tr = (golds.get("transicao.json") or {}).get("mmgd") or {}
     if (tr.get("resumo") or {}).get("potencia_mw") is not None:
         mmgd = {"potencia_mw": tr["resumo"]["potencia_mw"], "data_cadastro": tr.get("data_cadastro"),
                 "fonte": "ANEEL, relação de empreendimentos de MMGD, como publicado em transicao.json"}
+        mmgd["mensal"] = mmgd_mensal(tr.get("mensal") or [], matriz)
     return {
         "retrato": {"data": data_retrato, "total_mw": c.r(total_mw, 1),
                     "por_categoria": [{"categoria": cat, "rotulo": ROTULO_CAT[cat], "mw": c.r(retrato[cat]["mw"], 1),
@@ -2255,10 +2842,12 @@ def escreve_csvs(ctx, D_u, cat_dia, horas, rotulos, cache, bal, matriz, termica,
          [f"eng_{r}_mwh" for r in RAZOES] + ["meias_horas", "meias_horas_limitadas"], lin_u)
     if cap:
         us = cap["_unidades"]
-        _csv(ctx, nome(CSV["capacidade_unidades"]), ["cod_equipamento", "usina", "ceg", "tipo", "combustivel", "categoria", "modalidade",
-                                                     "subsistema", "uf", "potencia_mw", "entrada_teste", "entrada_operacao", "desativacao"],
-             [[cod, u.get("usina"), u.get("ceg"), u.get("tipo"), u.get("combustivel"), u.get("categoria"), u.get("modalidade"),
-               u.get("sm"), u.get("uf"), u.get("potencia_mw"), u.get("entrada_teste"), u.get("entrada_operacao"), u.get("desativacao")]
+        _csv(ctx, nome(CSV["capacidade_unidades"]), ["cod_equipamento", "usina", "ceg", "tipo", "combustivel", "categoria",
+                                                     "origem_categoria", "modalidade", "subsistema", "uf", "potencia_mw", "entrada_teste",
+                                                     "entrada_operacao", "desativacao"],
+             [[cod, u.get("usina"), u.get("ceg"), u.get("tipo"), u.get("combustivel"), u.get("categoria"), u.get("origem_categoria"),
+               u.get("modalidade"), u.get("sm"), u.get("uf"), u.get("potencia_mw"), u.get("entrada_teste"), u.get("entrada_operacao"),
+               u.get("desativacao")]
               for cod, u in sorted(us.items())])
         _csv(ctx, nome(CSV["capacidade_usina"]), ["mes", "grupo", "identificadores", "nome", "categoria", "geracao_mwh", "horas_com_valor",
                                                   "potencia_operacional_mw", "fator_capacidade_pct", "casamento"],
@@ -2726,3 +3315,18 @@ def fontes_publicadas(con):
                     "ultima_captura": max((v["capturado_em"] for v in vs.values()), default=None),
                     "publicacao_mais_recente": max((v["publicado_em"] or "" for v in vs.values()), default="") or None})
     return out
+
+
+if __name__ == "__main__":
+    # Releitura do bronze sem rede (depois de subir VERSAO_IMPORTACAO), um conjunto por vez:
+    #   python3 pipeline/energia/modulos/geracao_detalhe.py --reimportar termica coff_eolica coff_solar
+    if len(sys.argv) > 2 and sys.argv[1] == "--reimportar":
+        con_ = base.conecta_familia(FAMILIA)
+        st_ = {"falhas": [], "importacoes": {}}
+        for k_ in sys.argv[2:]:
+            t0_ = time.time()
+            importa_pendentes(con_, k_, {}, st_)
+            print(f"[{k_}] {len(st_['importacoes'])} arquivos importados até agora, {time.time() - t0_:.0f} s", flush=True)
+        con_.commit()
+        con_.close()
+        print(json.dumps({"falhas": st_["falhas"], "arquivos": len(st_["importacoes"])}, ensure_ascii=False))

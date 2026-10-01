@@ -141,6 +141,7 @@
   {"fonte": "Biblioteca e CEDOC da ANEEL (www2.aneel.gov.br/cedoc, biblioteca.aneel.gov.br, antigo.aneel.gov.br, sei.aneel.gov.br, git.aneel.gov.br)", "verificado_em": "2026-09-30", "resposta": "HTTP 403 com página 'Just a moment...' (desafio de JavaScript e cookies do Cloudflare)", "conduta": "não contornado; usada a cópia pública id_ do Internet Archive quando existe, conferida por sha256"},
   {"fonte": "Diário Oficial da União (www.in.gov.br, pesquisa.in.gov.br)", "verificado_em": "2026-09-30", "resposta": "conexão TLS aceita e encerrada sem resposta HTTP (HTTP/2 PROTOCOL_ERROR; em HTTP/1.1, 'Empty reply from server')", "conduta": "data de publicação no DOU lida na linha de referência do extrato oficial da ANEEL"},
   {"fonte": "CCEE (www.ccee.org.br, dadosabertos.ccee.org.br), inclusive o InfoPLD (S20)", "verificado_em": "2026-09-30", "resposta": "HTTP 403 'Acesso bloqueado'", "conduta": "não é fonte do ato; não usada"},
-  {"fonte": "Planalto (www.planalto.gov.br)", "verificado_em": "2026-09-30", "resposta": "conexão encerrada sem resposta", "conduta": "texto das leis lido no portal de Legislação Federal do Senado"}
+  {"fonte": "Planalto (www.planalto.gov.br)", "verificado_em": "2026-09-30", "resposta": "conexão encerrada sem resposta", "conduta": "texto das leis lido no portal de Legislação Federal do Senado"},
+  {"fonte": "leis.org (endereço que a página oficial da Agenda Regulatória publica para a Portaria nº 7.157/2026 e para o menu 'Atos Normativos')", "verificado_em": "2026-10-01", "resposta": "HTTP 403 com página 'Just a moment...' (desafio de navegador do Cloudflare); a coleta registra a tentativa a cada execução (recurso portaria_revisao_agenda)", "conduta": "não contornado; a revisão da Agenda fica declarada como não lida"}
  ]
 }

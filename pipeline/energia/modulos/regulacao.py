@@ -98,6 +98,10 @@ TOL_TEXTO = "R$ 0,011/MWh (dois arredondamentos a centavos)"
 # Janela da gold para consultas (o CSV traz o histórico inteiro desde set/2017)
 JANELA_CONSULTAS_DIAS = 200
 # Atividade da Agenda que trata dos limites do PLD (texto da própria atividade)
+# Vocabulário de resultado para o controle independente das abertas (varredura direta das linhas):
+# as mesmas famílias de redação que decidem uma consulta, escritas aqui à parte
+VOCABULARIO_RESULTADO = re.compile(r"consolidad[oa]s?\s+(?:após|com\s+os\s+aprimoramentos)|após\s+(?:a\s+)?(?:avaliação|análise|"
+                                   r"consolidação|realização)\s+d[ao]s?\s+(?:contribuições|Consulta|Audiência)|declar\w+\s+extint", re.I)
 REGRA_LIMITES_AGENDA = re.compile(r"PLD\s*m[íi]nimo|PLDmin|PLD_?max|limites?\s+m[áa]ximos?|limites?\s+m[íi]nimos?|"
                                   r"limites?\s+do\s+(?:PLD|Preço de Liquidação)", re.I)
 
@@ -141,10 +145,10 @@ REGISTRO = {
         _u(CSV_ATOS): "ano; ato; data_publicacao (DOU, vazia quando não conferida); data_deliberacao (reunião da Diretoria, pelas atas; vazia para despacho de superintendência); reuniao; vigencia_inicio; vigencia_fim; pld_min; pld_max_horario; pld_max_estrutural (R$/MWh; vazio = o ato não fixa aquele limite); dispositivo; nivel_conferencia (texto_do_ato ou documento_oficial_do_processo); documento (id do registro de documentos); url_oficial; copia_publica; sha256 (do PDF conferido); pagina (do trecho no PDF); trecho_confere (1 = todas as passagens do trecho estão no PDF; vazio = conferência não executada); altera_ou_revoga.",
         _u(CSV_VIG): "ano; inicio; fim; pld_min; ato_pld_min; pld_max_horario; ato_pld_max_horario; pld_max_estrutural; ato_pld_max_estrutural. Limites efetivos em cada trecho de vigência, campo a campo (vale o ato em vigor que informa o campo e tem a publicação mais recente). R$/MWh nominais.",
         _u(CSV_CONF): "conferencia (trecho_no_pdf, deliberacao_na_ata, valor_na_ata, regra_ipca, piso_teo, publicacao_no_extrato); ano; ato; campo; valor_ato; valor_esperado; diferenca; tolerancia; resultado (aprovado, ressalva, reprovado, nao_executada); detalhe. Valores em R$/MWh quando numéricos.",
-        _u(CSV_BAND): "ato (resolução, como a fonte escreve); patamar (Amarela, Vermelha P1, Vermelha P2, Escassez Hídrica); vigencia_inicio; vigencia_fim (vazio = valor sem término na fonte); vigencia_fim_origem (valor_seguinte = véspera do valor seguinte do mesmo patamar; ultimo_acionamento = patamar extinto, fim no último dia do último mês com acionamento no recurso Acionamento, grão mensal); ultimo_acionamento (AAAA-MM); ultimo_acionamento_rs_mwh (valor do mês no recurso Acionamento); rs_mwh (adicional em R$/MWh). A bandeira verde não tem adicional e não consta do recurso Adicional.",
-        _u(CSV_PROC): "conjunto (PRODIST ou PRORET); modulo; titulo; versao_na_pagina e ato_na_pagina (lidos do nome do arquivo que a página oficial publica como versão vigente); ano_ato; conferencia (confirmada_por_ato_integrado, sem_conferencia_externa ou pagina_possivelmente_desatualizada); ato_vigente (vazio quando há ato posterior que aprova nova versão: a versão vigente não é conhecida); atos_posteriores (ato, data e fonte: ata da Diretoria ou anexo de Resolução Normativa lida); url_vigente; url_versoes; observacao (nota da própria página); verificado_em.",
-        _u(CSV_LT): "id; data_publicacao; vigencia_inicio; vigencia_calculada (1 = pela LC nº 95/1998, art. 8º, § 1º); orgao; ato; tipo_ato; dispositivo; titulo; resumo (editorial, conferido no texto); efeito_declarado (literal do ato); impacto_estimado (sempre vazio); temas; paineis; documento; nivel_conferencia; trecho_confere; origem (curadoria ou conjunto_de_dados).",
-        _u(CSV_CONS): "id (modalidade, NumAtoAdministrativo e ano da abertura; estável); modalidade (tipo do aviso na ata); numero (o da ata ou, quando suspeito, o único outro número citado pelo mesmo processo); numero_na_ata (NumAtoAdministrativo da abertura); ano; numero_citado (vezes em que outra linha do mesmo processo cita 'nº N/AAAA'); numero_em_conflito (1 = o mesmo número e ano aparecem em outro processo); numero_suspeito (1 = acima do total anual publicado pela ANEEL em ano completo, ou não citado pelo próprio processo, que cita outro); motivo_numero_suspeito; processos; data_deliberacao; reuniao; relator; tema (assunto da pauta); fase_atual; inicio; fim (janela da fase atual; vazio = a ata não data a fase); janela_origem (datas_explicitas ou inicio_e_duracao); fim_calculado (1 = fim calculado de início e duração, contando o dia do início); duracao_dias (declarada na ata); sessao (data de sessão de audiência); situacao (derivada da data de referência); data_referencia; resultado_data; resultado_ato; resultado_julgamento; vinculo_resultado (numero_citado ou processo); decisao_abertura (primeira frase da decisão).",
+        _u(CSV_BAND): "ato (resolução, como a fonte escreve); patamar (Amarela, Vermelha P1, Vermelha P2, Escassez Hídrica); vigencia_inicio; vigencia_fim (AAAA-MM-DD, só quando o fim tem grão diário; vazio = sem fim ou fim com grão mensal); vigencia_fim_mes (AAAA-MM do fim); vigencia_fim_grao (dia ou mes; vazio = valor sem término na fonte); vigencia_fim_origem (valor_seguinte = véspera do valor seguinte do mesmo patamar; ultimo_acionamento = patamar extinto, último mês com acionamento no recurso Acionamento; acionamento_diverge = o recurso Acionamento traz outro valor antes do valor seguinte do recurso Adicional, fim no último mês coerente); fim_incerto (1 = mais de um mês entre o último mês coerente e o primeiro divergente); fim_pelo_recurso_adicional (o que a véspera do valor seguinte daria); meses_acionados_conferidos; meses_divergentes (AAAA-MM=valor observado no Acionamento); ultimo_acionamento (AAAA-MM); ultimo_acionamento_rs_mwh (valor do mês no recurso Acionamento); rs_mwh (adicional em R$/MWh). A bandeira verde não tem adicional e não consta do recurso Adicional.",
+        _u(CSV_PROC): "conjunto (PRODIST ou PRORET); modulo; titulo; versao_na_pagina e ato_na_pagina (lidos do nome do arquivo que a página oficial publica como versão vigente: resolução normativa 'aren' ou despacho 'adsp'; vazio = página sem arquivo ou nome fora dos padrões); ano_ato; conferencia (confirmada_por_ato_integrado, sem_conferencia_externa ou pagina_possivelmente_desatualizada); ato_vigente (vazio quando há ato posterior que aprova nova versão: a versão vigente não é conhecida); conferencia_versao (confere ou diverge = a versão que o próprio ato da página aprova; ato_lido_nao_cita_o_item; vazio = o ato não escreve a versão); versao_no_ato; confirmacoes e atos_posteriores (ato, data e fonte: ata da Diretoria ou texto de Resolução Normativa lida; '(número suspeito)' = número fora da faixa do tipo nas atas); ressalvas; url_vigente; url_versoes; observacao (nota da própria página); verificado_em.",
+        _u(CSV_LT): "id; data_publicacao; conferencia_publicacao (aprovado = data confirmada nos metadados abertos do Senado ou escrita no PDF do ato; ressalva = o PDF não imprime a data; nao_executada); vigencia_inicio; vigencia_grao (dia ou mes: eventos do recurso Acionamento têm só o mês de competência); vigencia_calculada (1 = pela LC nº 95/1998, art. 8º, § 1º); orgao; ato; tipo_ato; dispositivo; titulo; resumo (editorial, conferido no texto); efeito_declarado (literal do ato); impacto_estimado (sempre vazio); temas; paineis; documento; nivel_conferencia; trecho_confere; origem (curadoria ou conjunto_de_dados).",
+        _u(CSV_CONS): "id (modalidade, NumAtoAdministrativo e ano da abertura; estável); modalidade (tipo do aviso na ata); numero (o da ata ou, quando suspeito, o único outro número citado pelo mesmo processo); numero_na_ata (NumAtoAdministrativo da abertura); ano; numero_citado (vezes em que outra linha do mesmo processo cita 'nº N/AAAA'); numero_em_conflito (1 = o mesmo número e ano aparecem em outro processo); numero_suspeito (1 = acima do total anual publicado pela ANEEL em ano completo, ou não citado pelo próprio processo, que cita outro); motivo_numero_suspeito; processos; data_deliberacao; reuniao; relator; tema (assunto da pauta); fase_atual; data_fase_atual (deliberação da fase atual); inicio; fim (janela da fase atual; vazio = a ata não data a fase); janela_origem (datas_explicitas ou inicio_e_duracao); fim_calculado (1 = fim calculado de início e duração, contando o dia do início); duracao_dias (declarada na ata); sessao (data de sessão de audiência); situacao (derivada da data de referência); data_referencia; resultado_data; resultado_ato (vazio quando o número é suspeito); resultado_ato_na_ata (como a ata registra); resultado_ato_suspeito (1 = número fora da faixa do tipo nas atas); motivo_ato_suspeito; resultado_julgamento; vinculo_resultado (numero_citado, processo ou processo_e_objeto); forma_resultado (resultado, encerramento, apos_contribuicoes, consolidacao, resultado_sem_numero, objeto_aprovado_no_processo); decisao_abertura (primeira frase da decisão).",
         _u(CSV_AGENDA): "codigo; atividade; ano_previsto (para edição da norma, como no Anexo I da Portaria nº 7.030/2025); paineis_relacionados (regra por palavra-chave do texto); consultas_citando_codigo; versao_da_agenda.",
     },
 }
@@ -212,8 +216,12 @@ def _processados(con):
 
 
 # Versão do processamento de cada dataset: mudar o número reprocessa a vintage vigente do
-# bronze. Atas v2: entram também as decisões que aprovam versões do PRODIST e do PRORET.
-VERSAO_PROC = {DS_ATAS: "2", DS_BAND: "1", DS_PAG: "1", DS_PART: "1", DS_IPCA: "1", DS_CURADORIA: "1"}
+# bronze. Atas v2: entram também as decisões que aprovam versões do PRODIST e do PRORET; v3:
+# entram as linhas que citam consulta só na decisão ("consolidada com os aprimoramentos
+# decorrentes da Consulta Pública nº 30/2023") e a numeração dos atos deliberados por tipo e ano
+# (conferência de plausibilidade do número do ato). Páginas v2: nome de arquivo com "v" sem
+# sublinhado, sufixo de letra e prefixo "adsp" (despacho).
+VERSAO_PROC = {DS_ATAS: "3", DS_BAND: "1", DS_PAG: "2", DS_PART: "1", DS_IPCA: "1", DS_CURADORIA: "1"}
 
 
 def _ja(con, ds, vid):
@@ -229,6 +237,10 @@ def _marca(con, ds, vid):
 
 
 # ======================================================================= coleta
+
+SUFIXO_METADADOS = "#metadados"
+REC_REVISAO_AGENDA = "portaria_revisao_agenda"
+
 
 def _coleta_documentos(con, status):
     """Cada documento do registro vira um recurso do dataset DS_DOCS. PDF da ANEEL: baixado
@@ -265,6 +277,12 @@ def _coleta_documentos(con, status):
                 st["falhas"].append(f"{rec}: {res['detalhe']}")
             else:
                 st["novos" if res["status"] == "nova" else "iguais"] += 1
+            # metadados abertos do Senado (XML): a data da publicação original no DOU, conferida na gold
+            if doc.get("metadados"):
+                res = ckan.baixar_recurso(con, orgao="SENADO", dataset=DS_DOCS, recurso=rec + SUFIXO_METADADOS,
+                                          url=doc["metadados"], ext="xml", publicado_em=None, max_idade_dias=30)
+                if res["status"] == "falha":
+                    st["falhas"].append(f"{rec}{SUFIXO_METADADOS}: {res['detalhe']}")
     con.commit()
     status[DS_DOCS] = st
 
@@ -299,11 +317,17 @@ def _coleta_curadoria(con, status):
 
 def _processa_atas(con, v):
     """Só as linhas que interessam ao módulo vão para o silver, como registros textuais
-    (a chave junta data, reunião, ordem, número do ato e processo)."""
+    (a chave junta data, reunião, ordem, número do ato e processo). Do arquivo inteiro fica
+    também a numeração dos atos deliberados por tipo e ano (registro 'numeracao|<tipo>|<ano>'),
+    agregada no grão que a conferência de plausibilidade do número do ato usa."""
     linhas, n, rel = [], 0, 0
+    numeros = {}
     for row in ckan.le_csv_bronze(v["arquivo"]):
         n += 1
         a = ar.linha_ata(row)
+        na = ar._int(a["num_ato"])
+        if a["tipo_ato"] and na and a["resultado"] in ar.DELIBERADO:
+            numeros.setdefault((a["tipo_ato"], a["data"][:4]), []).append(na)
         if not ar.ata_relevante(a):
             continue
         rel += 1
@@ -311,9 +335,10 @@ def _processa_atas(con, v):
         for campo in ("data", "reuniao", "ordem", "processo", "relator", "classificacao", "assunto", "decisao",
                       "num_ato", "tipo_ato", "resultado", "gerado_em"):
             linhas.append((ch, campo, a[campo] if a[campo] != "" else None))
+    for (tipo, ano), ns in numeros.items():
+        linhas.append((f"{PREFIXO_NUMERACAO}{tipo}|{ano}", "numeros", ",".join(str(x) for x in sorted(ns))))
     novas, revs = base.grava_registros(con, DS_ATAS, v["vintage_id"], linhas)
-    # contagem de aberturas por ano, sobre o arquivo inteiro (para a cobertura)
-    return {"linhas": n, "relevantes": rel, "novas": novas, "revisoes": revs}
+    return {"linhas": n, "relevantes": rel, "novas": novas, "revisoes": revs, "numeracao": len(numeros)}
 
 
 def _processa_participacao(con, v):
@@ -363,6 +388,29 @@ def _processa_pagina(con, rec, v):
         reg = [("agenda", k, rev[k]) for k in ("aprovada_por", "atualizada_por", "trecho")]
         return {"revisao": rev, "registros": base.grava_registros(con, DS_PAG, v["vintage_id"], reg)}
     return {"guardada": True}
+
+
+def _url_revisao_agenda(con):
+    """Endereço que a página oficial da Agenda publica para a portaria de revisão (bronze)."""
+    vs = [v for v in base.vintages_do_dataset(con, DS_PAG) if v["recurso"] == "agenda"]
+    if not vs:
+        return None
+    corpo = _bytes_bronze(max(vs, key=lambda v: v["capturado_em"])["arquivo"]) or b""
+    return ar.link_revisao_agenda(corpo)
+
+
+def _resposta_http(tentativa):
+    """'HTTP 403' a partir do detalhe da tentativa de coleta; o detalhe inteiro se não houver código."""
+    d = (tentativa or {}).get("detalhe") or ""
+    m = re.search(r"HTTP Error (\d{3})", d)
+    return f"HTTP {m.group(1)}" if m else (d[:120] or "sem resposta registrada")
+
+
+def _tentativas(con, ds, recurso):
+    """Última tentativa de coleta de um recurso: {tentado_em, ok, detalhe} ou None."""
+    r = con.execute("SELECT tentado_em, ok, detalhe FROM coletas WHERE dataset=? AND recurso=? ORDER BY rowid DESC LIMIT 1",
+                    (ds, recurso)).fetchone()
+    return {"tentado_em": r[0], "ok": bool(r[1]), "detalhe": r[2]} if r else None
 
 
 def _processa_ipca(con, v):
@@ -418,6 +466,14 @@ def coletar(con, ctx):
                 base.registra_coleta(con, DS_PAG, rec, False, f"processamento: {e}")
                 st_pag[f"{rec}:processamento"] = f"falha: {e}"
         con.commit()
+    # texto da revisão da Agenda: a página oficial aponta a portaria para leis.org; tentativa
+    # registrada a cada coleta (desafio do Cloudflare não é contornado)
+    url_rev = _url_revisao_agenda(con)
+    if url_rev:
+        res = ckan.baixar_recurso(con, orgao="ANEEL", dataset=DS_PAG, recurso=REC_REVISAO_AGENDA, url=url_rev, ext="html",
+                                  publicado_em=None, max_idade_dias=6)
+        st_pag[REC_REVISAO_AGENDA] = res["status"] if res["status"] != "falha" else f"falha: {res['detalhe']}"
+        con.commit()
     status[DS_PAG] = st_pag
 
     res = ckan.baixar_recurso(con, orgao="IBGE", dataset=DS_IPCA, recurso="ipca_numero_indice", url=URL_SIDRA,
@@ -457,11 +513,26 @@ def _texto_documento(con, doc):
     return {"vintage": v, "textos": [ar.texto_html(corpo)], "paginado": None, "status": "ok"}
 
 
+PREFIXO_NUMERACAO = "numeracao|"
+
+
 def _atas(con):
     regs = base.registros_como_estavam_em(con, DS_ATAS)
     campos = ("data", "reuniao", "ordem", "processo", "relator", "classificacao", "assunto", "decisao", "num_ato",
               "tipo_ato", "resultado", "gerado_em")
-    return [{k: r.get(k, "") or "" for k in campos} for r in regs.values()]
+    return [{k: r.get(k, "") or "" for k in campos} for ch, r in regs.items() if not ch.startswith(PREFIXO_NUMERACAO)]
+
+
+def _numeracao(con, atas):
+    """{(tipo, ano): [números]} dos atos deliberados no arquivo inteiro das atas (registro gravado
+    no processamento); sem ele (silver anterior à versão 3), a numeração das linhas do silver."""
+    regs = base.registros_como_estavam_em(con, DS_ATAS)
+    out = {}
+    for ch, r in regs.items():
+        if ch.startswith(PREFIXO_NUMERACAO) and r.get("numeros"):
+            tipo, ano = ch[len(PREFIXO_NUMERACAO):].rsplit("|", 1)
+            out[(tipo, int(ano))] = [int(x) for x in r["numeros"].split(",") if x]
+    return out or ar.numeracao_das_atas(atas)
 
 
 def _serie(con, ds, serie):
@@ -707,6 +778,29 @@ def _bloco_limites(con, ctx, hoje, docs, textos, atas, ipca):
             "pendencias": conf.get("pendencias", []), "bloqueios": conf.get("bloqueios", []), "metodo": conf.get("metodo")}
 
 
+def _pratica_dos_atos(bl):
+    """Como os atos anuais aplicam a regra dos tetos, medido pelas conferências desta execução:
+    encadeamento do teto publicado no ano anterior pela variação do IPCA de novembro (regra_ipca)
+    contra a aplicação literal do art. 23, § 1º (art23_literal, base de setembro de 2019)."""
+    det = bl["conferencias_detalhe"]
+    ipca = [x for x in det if x["conferencia"] == "regra_ipca" and x["diferenca"] is not None]
+    lit = [x for x in det if x["conferencia"] == "art23_literal" and x["diferenca"] is not None]
+    aprov = sum(1 for x in ipca if x["resultado"] == "aprovado")
+    def sinal(v, casas=2):
+        return ("−" if v < 0 else "") + rg.numero_br(abs(v), casas)
+    texto = (f"Os atos anuais encadeiam o teto publicado no ano anterior pela variação do IPCA de novembro: {aprov} de {len(ipca)} "
+             "tetos reproduzidos dentro da tolerância de R$ 0,011/MWh, que cobre dois arredondamentos a centavos"
+             + (f"; maior resíduo de R$ {rg.numero_br(max(abs(x['diferenca']) for x in ipca), 4)}/MWh" if ipca else "") + ".")
+    if lit:
+        dmin, dmax = min(x["diferenca"] for x in lit), max(x["diferenca"] for x in lit)
+        texto += (f" A aplicação literal do art. 23, § 1º, a partir dos valores de setembro de 2019, não reproduz os valores "
+                  f"publicados: diferenças de R$ {sinal(dmin)} a R$ {sinal(dmax)}/MWh entre "
+                  f"{min(x['ano'] for x in lit)} e {max(x['ano'] for x in lit)} (conferência art23_literal).")
+    return {"texto": texto, "regra_ipca_aprovadas": aprov, "regra_ipca_total": len(ipca),
+            "art23_literal_diferenca_min": min((x["diferenca"] for x in lit), default=None),
+            "art23_literal_diferenca_max": max((x["diferenca"] for x in lit), default=None)}
+
+
 def _evidencias_limites(bl, textos, docs, snap_docs):
     """'Comprove este número' dos três limites vigentes na data de referência."""
     out = {}
@@ -792,19 +886,55 @@ def _bloco_bandeiras(con, ctx):
                  "detalhe": f"o dicionário do recurso Acionamento escreve a vigência do patamar de {d[0]} a {d[1]}; "
                             f"último mês com acionamento no recurso: {ua}"}
                 if d else {"resultado": "nao_executada", "detalhe": "dicionário do recurso Acionamento sem texto legível neste ambiente"})
-    _escreve_csv(ctx, CSV_BAND, ["ato", "patamar", "vigencia_inicio", "vigencia_fim", "vigencia_fim_origem", "ultimo_acionamento",
-                                 "ultimo_acionamento_rs_mwh", "rs_mwh"],
-                 [[x["ato"], x["patamar"], x["vigencia_inicio"], x["vigencia_fim"], x["vigencia_fim_origem"],
+        elif x["vigencia_fim_origem"] == "acionamento_diverge":
+            ca = x["conferencia_acionamento"]
+            div = ca["meses_divergentes"]
+            x["conferencia_fim"] = {
+                "resultado": "ressalva",
+                "detalhe": (f"o recurso Acionamento registra {x['patamar']} a R$ {rg.numero_br(div[0]['rs_mwh'])}/MWh "
+                            f"{_faixa_meses([d['competencia'] for d in div])}, sem resolução correspondente no recurso Adicional; "
+                            f"o valor de R$ {rg.numero_br(x['rs_mwh'])}/MWh aparece até {ca['ultimo_mes_coerente'] or 'nenhum mês'}"
+                            f"{' (fim incerto: mais de um mês sem acionamento até o primeiro divergente)' if x['fim_incerto'] else ''}; "
+                            f"a véspera do valor seguinte do recurso Adicional daria {x['fim_pelo_recurso_adicional']}, "
+                            "o que o Acionamento contradiz")}
+    trechos = ar.acionamentos_sem_resolucao(vig, acion)
+    _escreve_csv(ctx, CSV_BAND, ["ato", "patamar", "vigencia_inicio", "vigencia_fim", "vigencia_fim_mes", "vigencia_fim_grao",
+                                 "vigencia_fim_origem", "fim_incerto", "fim_pelo_recurso_adicional", "meses_acionados_conferidos",
+                                 "meses_divergentes", "ultimo_acionamento", "ultimo_acionamento_rs_mwh", "rs_mwh"],
+                 [[x["ato"], x["patamar"], x["vigencia_inicio"], x["vigencia_fim"], x["vigencia_fim_mes"], x["vigencia_fim_grao"],
+                   x["vigencia_fim_origem"], int(x["fim_incerto"]), x["fim_pelo_recurso_adicional"],
+                   (x["conferencia_acionamento"] or {}).get("meses_conferidos"),
+                   "|".join(f"{d['competencia']}={d['rs_mwh']}" for d in (x["conferencia_acionamento"] or {}).get("meses_divergentes", []))
+                   or None,
                    (x["ultimo_acionamento"] or {}).get("competencia"), (x["ultimo_acionamento"] or {}).get("rs_mwh"), x["rs_mwh"]]
                   for x in vig])
     gerado = max((x["gerado_em"] for x in linhas if x.get("gerado_em")), default=None)
     gerado_acion = max((x["gerado_em"] for x in acion if x.get("gerado_em")), default=None)
-    return {"vigencias": [{k: x[k] for k in ("ato", "patamar", "vigencia_inicio", "vigencia_fim", "vigencia_fim_origem",
-                                             "ultimo_acionamento", "resolucao_seguinte_sem_patamar", "conferencia_fim", "rs_mwh")}
+    confs = [x["conferencia_acionamento"] for x in vig if x.get("conferencia_acionamento")]
+    return {"vigencias": [{k: x[k] for k in ("ato", "patamar", "vigencia_inicio", "vigencia_fim", "vigencia_fim_mes",
+                                             "vigencia_fim_grao", "vigencia_fim_origem", "fim_incerto", "fim_pelo_recurso_adicional",
+                                             "ultimo_acionamento", "resolucao_seguinte_sem_patamar", "conferencia_fim",
+                                             "conferencia_acionamento", "rs_mwh")}
                           for x in vig],
+            "acionamentos_sem_resolucao": trechos,
+            "conferencia_acionamento": {
+                "meses_conferidos": sum(x["meses_conferidos"] for x in confs),
+                "meses_coerentes": sum(x["meses_coerentes"] for x in confs),
+                "meses_divergentes": sum(len(x["meses_divergentes"]) for x in confs),
+                "meses_parciais": sum(1 for x in confs if x["mes_parcial"]),
+                "meses_sem_vigencia": sum(t["meses"] for t in trechos if t["motivo"] == "sem_vigencia"),
+                "regra": ("cada mês em que o patamar foi acionado (recurso Acionamento) dentro de uma vigência do recurso Adicional "
+                          "tem de trazer o mesmo valor; mês com outro valor encerra a vigência no último mês coerente "
+                          "(grão mensal) e vira evento 'valor observado no Acionamento sem resolução no recurso Adicional'")},
             "gerado_pela_fonte_em": gerado, "acionamento_gerado_pela_fonte_em": gerado_acion,
             "acionamento_meses": len(acion),
             "acionamento_periodo": {"inicio": acion[0]["competencia"], "fim": acion[-1]["competencia"]} if acion else None}
+
+
+def _faixa_meses(meses):
+    """['2015-09', ..., '2016-01'] → 'de 2015-09 a 2016-01'; um mês só → 'em 2017-11'."""
+    meses = sorted(set(meses))
+    return f"em {meses[0]}" if len(meses) == 1 else f"de {meses[0]} a {meses[-1]}"
 
 
 _TITULO_REN = re.compile(r"Resolução Normativa nº ([\d.]+), de (\d{1,2})º? de (\w+) de (\d{4})")
@@ -818,16 +948,33 @@ def _ren_do_documento(doc):
     return ar._int(m.group(1)), int(m.group(4)), date(int(m.group(4)), ar.MESES[m.group(3).lower()], int(m.group(2))).isoformat()
 
 
-def _bloco_procedimentos(con, ctx, atas, textos, docs):
+def _marca_ato(e, numeracao, assunto=None):
+    """Confere o número do ato de uma evidência vinda das atas (`ar.confere_numero_ato`). Ato
+    suspeito não é exibido como certo: `ato` fica vazio e o registro da fonte vai para
+    `ato_na_fonte`, com o motivo."""
+    susp, motivo = ar.confere_numero_ato(e.get("tipo_ato"), e.get("numero"), e.get("ano"), numeracao, assunto)
+    e["ato_na_fonte"] = e.get("ato")
+    e["ato_suspeito"] = bool(susp)
+    e["motivo_ato_suspeito"] = motivo if susp else None
+    if susp:
+        e["ato"] = None
+    return e
+
+
+def _bloco_procedimentos(con, ctx, atas, textos, docs, numeracao):
     """Versão vigente segundo as páginas oficiais, conferida com os atos integrados.
 
-    A página publica o arquivo da "versão vigente" e o nome do arquivo traz o ato
-    ('aren2021956_Prodist_modulo_11_v2.pdf' = REN nº 956/2021). Esse ato é conferido com duas
-    fontes que o módulo já integra: as decisões das atas da Diretoria que aprovam versões de
-    módulos (`ar.aprovacoes_de_procedimentos`) e os anexos das Resoluções Normativas guardadas
-    no bronze (`ar.anexos_de_procedimentos`). Ato posterior ao da página que aprova nova versão
-    do mesmo módulo deixa o item como 'página oficial possivelmente desatualizada', sem
-    afirmar o ato da página como vigente."""
+    A página publica o arquivo da "versão vigente" e o nome do arquivo traz o ato e a versão
+    ('aren2021956_Prodist_modulo_11_v2.pdf' = REN nº 956/2021, versão 2; 'adsp20253606' =
+    Despacho nº 3.606/2025), lidos por `ar.versao_e_ato_do_arquivo` a cada construção. Esse ato
+    é conferido com três fontes que o módulo já integra: as decisões das atas da Diretoria que
+    aprovam versões de módulos (`ar.aprovacoes_de_procedimentos`), os anexos das Resoluções
+    Normativas guardadas no bronze (`ar.anexos_de_procedimentos`) e os incisos dessas resoluções
+    que aprovam versões por enumeração ("Submódulo 2.1, versão 2.5"; `ar.versoes_aprovadas_no_ato`).
+    Ato posterior ao da página que aprova nova versão do mesmo módulo deixa o item como 'página
+    oficial possivelmente desatualizada', sem afirmar o ato da página como vigente. Quando o
+    próprio ato da página escreve a versão, ela é conferida com a da página (conferencia_versao:
+    confere ou diverge, com ressalva); ato lido que não cita o item também vira ressalva."""
     regs = base.registros_como_estavam_em(con, DS_PAG)
     vs = {v["recurso"]: v for v in base.vintages_do_dataset(con, DS_PAG)}
     itens = []
@@ -835,16 +982,18 @@ def _bloco_procedimentos(con, ctx, atas, textos, docs):
         if "|" not in ch:
             continue
         conj, mod = ch.split("|", 1)
-        tna = _tipo_numero_ano(r.get("ato") or "")
-        itens.append({"conjunto": conj, "modulo": mod, "titulo": r.get("titulo"), "versao_na_pagina": r.get("versao"),
-                      "ato_na_pagina": r.get("ato"), "ano_ato": tna[2] if tna else None, "numero_ato": tna[1] if tna else None,
-                      "url_vigente": r.get("url_vigente"), "url_versoes": r.get("url_versoes"), "observacao": r.get("observacao")})
+        va = ar.versao_e_ato_do_arquivo(r.get("url_vigente")) or {}
+        itens.append({"conjunto": conj, "modulo": mod, "titulo": r.get("titulo"), "versao_na_pagina": va.get("versao"),
+                      "ato_na_pagina": va.get("ato"), "tipo_ato_na_pagina": va.get("tipo_ato"), "ano_ato": va.get("ano_ato"),
+                      "numero_ato": va.get("numero_ato"), "url_vigente": r.get("url_vigente"), "url_versoes": r.get("url_versoes"),
+                      "observacao": r.get("observacao")})
 
-    # evidências: atas (decisões que aprovam versões) e anexos das REN guardadas no bronze
+    # evidências: atas (decisões que aprovam versões) e as REN guardadas no bronze (anexos e incisos)
     evid = {}
     for e in ar.aprovacoes_de_procedimentos(atas):
-        evid.setdefault((e["conjunto"], ar.canonico_procedimento(e["modulo"])), []).append(e)
+        evid.setdefault((e["conjunto"], ar.canonico_procedimento(e["modulo"])), []).append(_marca_ato(e, numeracao))
     titulos = {(i["conjunto"], ar.canonico_procedimento(i["modulo"])): i["titulo"] for i in itens}
+    citados_por_ato, lidos = {}, set()
     for did, d in docs.items():
         ren = _ren_do_documento(d) if d.get("formato") == "pdf" else None
         if not ren:
@@ -854,50 +1003,139 @@ def _bloco_procedimentos(con, ctx, atas, textos, docs):
             t = textos[did] = _texto_documento(con, d)
         if t.get("status") != "ok":
             continue
+        lidos.add((ren[0], ren[1]))
+        fonte = f"texto do ato ({did}, sha256 {(t.get('vintage') or {}).get('sha256', '')[:12]})"
+        ato_txt = f"Resolução Normativa nº {ar.numero_ato(ren[0])}/{ren[1]}"
+        achados = []
         for conj in ("PRODIST", "PRORET"):
             tit = {k[1]: v for k, v in titulos.items() if k[0] == conj}
-            for an in ar.anexos_de_procedimentos(t["textos"][0], tit):
-                evid.setdefault((conj, ar.canonico_procedimento(an["modulo"])), []).append({
-                    "conjunto": conj, "modulo": an["modulo"], "ato": f"Resolução Normativa nº {ar.numero_ato(ren[0])}/{ren[1]}",
-                    "numero": ren[0], "ano": ren[1], "tipo_ato": "Resolução Normativa", "data": ren[2],
-                    "fonte": f"texto do ato ({did}, sha256 {(t.get('vintage') or {}).get('sha256', '')[:12]})", "trecho": an["trecho"]})
+            achados += [(conj, an["modulo"], None, an["trecho"]) for an in ar.anexos_de_procedimentos(t["textos"][0], tit)]
+        achados += [(x["conjunto"], x["modulo"], x["versao"], x["trecho"]) for x in ar.versoes_aprovadas_no_ato(t["textos"][0])]
+        for conj, modulo, versao, trecho in achados:
+            canon = ar.canonico_procedimento(modulo)
+            citados_por_ato.setdefault((ren[0], ren[1]), set()).add((conj, canon))
+            evid.setdefault((conj, canon), []).append({
+                "conjunto": conj, "modulo": modulo, "ato": ato_txt, "ato_na_fonte": ato_txt, "ato_suspeito": False,
+                "motivo_ato_suspeito": None, "numero": ren[0], "ano": ren[1], "tipo_ato": "Resolução Normativa", "data": ren[2],
+                "fonte": fonte, "trecho": trecho, "versao_aprovada": versao})
     for i in itens:
         data_pag = None
         if i["numero_ato"]:
-            ata = _ata_do_ato(atas, "Resolução Normativa", i["numero_ato"], i["ano_ato"])
+            ata = _ata_do_ato(atas, i["tipo_ato_na_pagina"], i["numero_ato"], i["ano_ato"])
             data_pag = ata["data"] if ata else next((r[2] for r in (_ren_do_documento(d) for d in docs.values()) if r
-                                                     and (r[0], r[1]) == (i["numero_ato"], i["ano_ato"])), None)
+                                                     and (r[0], r[1]) == (i["numero_ato"], i["ano_ato"])
+                                                     and i["tipo_ato_na_pagina"] == "Resolução Normativa"), None)
         cf = ar.confere_versao({"numero_ato": i["numero_ato"], "ano_ato": i["ano_ato"], "ato": i["ato_na_pagina"]},
                                evid.get((i["conjunto"], ar.canonico_procedimento(i["modulo"])), []), data_pag)
-        lim = lambda xs: [{**{k: e[k] for k in ("ato", "data", "fonte", "trecho")}, "versao_aprovada": e.get("versao_aprovada")}  # noqa: E731
+        lim = lambda xs: [{**{k: e.get(k) for k in ("ato", "ato_na_fonte", "ato_suspeito", "motivo_ato_suspeito", "data", "fonte",  # noqa: E731
+                                                     "trecho")}, "versao_aprovada": e.get("versao_aprovada")}
                           for e in sorted(xs, key=lambda e: e["data"])]
+        conf_versao = ar.confere_numero_da_versao(i["versao_na_pagina"], cf["confirmacoes"])
+        ressalvas = []
+        versoes_ato = sorted({e["versao_aprovada"] for e in cf["confirmacoes"] if e.get("versao_aprovada")})
+        if conf_versao == "diverge":
+            ressalvas.append(f"{i['ato_na_pagina']} aprova a versão {', '.join(versoes_ato)} do {i['modulo']}; a página publica a "
+                             f"versão {i['versao_na_pagina']} atribuída ao mesmo ato")
+        chave_ato = (i["numero_ato"], i["ano_ato"])
+        if (i["tipo_ato_na_pagina"] == "Resolução Normativa" and chave_ato in lidos and chave_ato in citados_por_ato
+                and (i["conjunto"], ar.canonico_procedimento(i["modulo"])) not in citados_por_ato[chave_ato]):
+            conf_versao = "ato_lido_nao_cita_o_item"
+            ressalvas.append(f"{i['ato_na_pagina']}, lida no bronze, aprova versões de outros itens do {i['conjunto']} e não cita o "
+                             f"{i['modulo']}; a atribuição da página não é confirmada pelo texto do ato")
+        for e in cf["confirmacoes"] + cf["atos_posteriores"]:
+            if e.get("ato_suspeito"):
+                ressalvas.append(f"número de ato suspeito nas atas: {e['motivo_ato_suspeito']}")
+        if not i["url_vigente"]:
+            ressalvas.append("a página não publica arquivo de versão vigente para o item")
+        elif not i["versao_na_pagina"]:
+            ressalvas.append("nome do arquivo da versão vigente fora dos padrões conhecidos: versão e ato não lidos")
         i.update({"data_ato_na_pagina": data_pag, "conferencia": cf["situacao"], "ato_vigente": cf["ato_vigente"],
-                  "atos_posteriores": lim(cf["atos_posteriores"]), "confirmacoes": lim(cf["confirmacoes"])})
+                  "conferencia_versao": conf_versao, "versao_no_ato": ", ".join(versoes_ato) or None,
+                  "atos_posteriores": lim(cf["atos_posteriores"]), "confirmacoes": lim(cf["confirmacoes"]), "ressalvas": ressalvas})
 
     def chave(i):
         nums = [int(x) if x.isdigit() else 0 for x in re.findall(r"\d+", i["modulo"])]
         return (i["conjunto"], nums, i["modulo"])
     itens.sort(key=chave)
     verif = {k: (vs.get(k) or {}).get("capturado_em") for k in ("prodist", "proret")}
+    rot_ato = lambda e: e["ato"] or f"{e['ato_na_fonte']} (número suspeito)"  # noqa: E731
     _escreve_csv(ctx, CSV_PROC, ["conjunto", "modulo", "titulo", "versao_na_pagina", "ato_na_pagina", "ano_ato", "conferencia",
-                                 "ato_vigente", "atos_posteriores", "url_vigente", "url_versoes", "observacao", "verificado_em"],
+                                 "ato_vigente", "conferencia_versao", "versao_no_ato", "confirmacoes", "atos_posteriores", "ressalvas",
+                                 "url_vigente", "url_versoes", "observacao", "verificado_em"],
                  [[i["conjunto"], i["modulo"], i["titulo"], i["versao_na_pagina"], i["ato_na_pagina"], i["ano_ato"], i["conferencia"],
-                   i["ato_vigente"], " | ".join(f"{e['ato']} ({e['data']}, {e['fonte']})" for e in i["atos_posteriores"]) or None,
+                   i["ato_vigente"], i["conferencia_versao"], i["versao_no_ato"],
+                   " | ".join(f"{rot_ato(e)} ({e['data']}, {e['fonte']})" for e in i["confirmacoes"]) or None,
+                   " | ".join(f"{rot_ato(e)} ({e['data']}, {e['fonte']})" for e in i["atos_posteriores"]) or None,
+                   " | ".join(i["ressalvas"]) or None,
                    i["url_vigente"], i["url_versoes"], i["observacao"], verif.get(i["conjunto"].lower())] for i in itens])
     contagem = {k: sum(1 for i in itens if i["conferencia"] == k)
                 for k in ("confirmada_por_ato_integrado", "sem_conferencia_externa", "pagina_possivelmente_desatualizada")}
-    return {"itens": itens, "verificado_em": verif, "paginas": {"PRODIST": PAGINAS["prodist"], "PRORET": PAGINAS["proret"]},
-            "contagem_conferencia": contagem,
-            "regra_conferencia": ("A versão e o ato vêm do nome do arquivo que a página oficial publica como versão vigente. O ato é "
-                                  "conferido com as decisões das atas da Diretoria que aprovam versões de módulos e com os anexos das "
-                                  "Resoluções Normativas lidas no bronze: ato posterior que aprova nova versão do mesmo módulo marca o "
+    contagem_versao = {k: sum(1 for i in itens if i["conferencia_versao"] == k)
+                       for k in ("confere", "diverge", "ato_lido_nao_cita_o_item")}
+    contagem_versao["sem_versao_no_ato"] = len(itens) - sum(contagem_versao.values())
+    # o tipo do ato da página serve à conferência; a gold publica o ato por extenso (ato_na_pagina)
+    publicados = [{k: v for k, v in i.items() if k != "tipo_ato_na_pagina"} for i in itens]
+    return {"itens": publicados, "verificado_em": verif, "paginas": {"PRODIST": PAGINAS["prodist"], "PRORET": PAGINAS["proret"]},
+            "contagem_conferencia": contagem, "contagem_versao": contagem_versao,
+            "atos_lidos": sorted(f"Resolução Normativa nº {ar.numero_ato(n)}/{a}" for n, a in lidos),
+            "regra_conferencia": ("A versão e o ato vêm do nome do arquivo que a página oficial publica como versão vigente "
+                                  "(resolução normativa 'aren' ou despacho 'adsp'). O ato é conferido com as decisões das atas da "
+                                  "Diretoria que aprovam versões de módulos e com as Resoluções Normativas lidas no bronze (anexos e "
+                                  "incisos 'Submódulo X, versão Y'): ato posterior que aprova nova versão do mesmo módulo marca o "
                                   "item como página oficial possivelmente desatualizada (ato_vigente vazio); o mesmo ato da página "
-                                  "confirma; sem ato integrado sobre o módulo, fica sem conferência externa.")}
+                                  "confirma; sem ato integrado sobre o módulo, fica sem conferência externa. Quando o ato da página "
+                                  "escreve a versão, ela é conferida com a da página (conferencia_versao); número de ato fora da "
+                                  "faixa do tipo nas atas fica marcado como suspeito e não é exibido como ato.")}
 
 
 # ======================================================================= P045: linha do tempo
 
-def _bloco_linha_do_tempo(ctx, docs, textos, atas, bandeiras):
+def _metadados_senado(con, doc_id):
+    """Publicação original lida nos metadados abertos do Senado guardados no bronze."""
+    vs = [v for v in base.vintages_do_dataset(con, DS_DOCS) if v["recurso"] == doc_id + SUFIXO_METADADOS]
+    if not vs:
+        return None, None
+    v = max(vs, key=lambda x: x["capturado_em"])
+    corpo = _bytes_bronze(v["arquivo"])
+    return (ar.publicacao_original_senado(corpo) if corpo else None), v
+
+
+def _conferencia_publicacao(con, e, d, t):
+    """Data de publicação do evento conferida por caminho independente da curadoria:
+    * lei e medida provisória: 'Publicação Original' nos metadados abertos do Senado (XML guardado
+      no bronze): igualdade de data, aprovado ou reprovado;
+    * ato da ANEEL: a data escrita no próprio PDF ("publicado no D.O. de 02.08.2022", "original
+      publicado no DOU de 20/12/2021"): aprovado quando escrita; ressalva quando o PDF não a
+      imprime (o texto compilado pode não trazer a publicação original)."""
+    if not e["data_publicacao"]:
+        return None
+    dp = date.fromisoformat(e["data_publicacao"])
+    if d.get("metadados"):
+        pub, v = _metadados_senado(con, d["id"])
+        if not pub:
+            return {"resultado": "nao_executada", "detalhe": "metadados abertos do Senado não guardados no bronze ou sem publicação "
+                                                              "original", "fonte": d["metadados"]}
+        ok = pub["data"] == e["data_publicacao"]
+        return {"resultado": "aprovado" if ok else "reprovado", "fonte": d["metadados"],
+                "detalhe": f"metadados abertos do Senado (sha256 {v['sha256'][:12]}): {pub['dispositivo']}"
+                           + ("" if ok else f"; a curadoria registra {e['data_publicacao']}")}
+    if t.get("status") != "ok":
+        return {"resultado": "nao_executada", "detalhe": f"texto do documento indisponível ({t.get('status', 'sem registro')})",
+                "fonte": d.get("url_oficial")}
+    formas = (f"{dp.day:02d}.{dp.month:02d}.{dp.year}", f"{dp.day:02d}/{dp.month:02d}/{dp.year}")
+    achou = next((f for f in formas if any(f in x for x in t["textos"])), None)
+    return {"resultado": "aprovado" if achou else "ressalva", "fonte": d.get("url_oficial"),
+            "detalhe": (f"data '{achou}' escrita no texto do ato (sha256 {(t.get('vintage') or {}).get('sha256', '')[:12]})" if achou
+                        else "o texto do ato guardado não imprime a data de publicação; data da curadoria sem segunda conferência")}
+
+
+def _slug(s):
+    import unicodedata
+    t = unicodedata.normalize("NFKD", s or "").encode("ascii", "ignore").decode().lower()
+    return re.sub(r"[^a-z0-9]+", "-", t).strip("-")
+
+
+def _bloco_linha_do_tempo(con, ctx, docs, textos, atas, bandeiras):
     lt = rg.linha_do_tempo()
     eventos = []
     for e in lt["eventos"]:
@@ -912,7 +1150,8 @@ def _bloco_linha_do_tempo(ctx, docs, textos, atas, bandeiras):
         tna = _tipo_numero_ano(e["ato"])
         ata = _ata_do_ato(atas, tna[0], tna[1], tna[2]) if tna and e["orgao"] == "ANEEL" else None
         d = docs.get(e["documento"], {})
-        eventos.append({**e, "origem": "curadoria", "trecho_confere": confere, "conferencia_detalhe": detalhe,
+        eventos.append({**e, "vigencia_grao": "dia", "origem": "curadoria", "trecho_confere": confere,
+                        "conferencia_detalhe": detalhe, "conferencia_publicacao": _conferencia_publicacao(con, e, d, t),
                         "url_oficial": d.get("url_oficial"), "copia_publica": d.get("copia_publica"),
                         "sha256": (t.get("vintage") or {}).get("sha256") if d.get("formato") == "pdf" else None,
                         "deliberacao": {"data": ata["data"], "reuniao": ata["reuniao"]} if ata else None})
@@ -928,7 +1167,7 @@ def _bloco_linha_do_tempo(ctx, docs, textos, atas, bandeiras):
                                                  else "Novos valores dos adicionais das bandeiras tarifárias"),
             "orgao": "ANEEL" if ato and ato.startswith("REH") else "CREG" if ato and "CREG" in ato else "ANEEL",
             "ato": ato, "tipo_ato": "Resolução Homologatória" if ato and ato.startswith("REH") else "Resolução",
-            "data_ato": None, "data_publicacao": None, "vigencia_inicio": ini,
+            "data_ato": None, "data_publicacao": None, "vigencia_inicio": ini, "vigencia_grao": "dia",
             "vigencia_regra": "data de vigência informada pelo conjunto de dados da ANEEL (DatVigencia)", "vigencia_calculada": False,
             "dispositivo": "não lido: o texto do ato não foi acessado; valores do recurso 'Bandeira Tarifária - Adicional'",
             "resumo": f"Adicionais por patamar a partir de {c.data_br(ini)}: {valores}.",
@@ -938,14 +1177,45 @@ def _bloco_linha_do_tempo(ctx, docs, textos, atas, bandeiras):
             "nivel_conferencia": "registro_em_conjunto_de_dados_oficial", "observacoes": [
                 "Evento derivado do conjunto de dados, sem leitura do ato; a data de publicação não é informada pela fonte."],
             "origem": "conjunto_de_dados", "trecho_confere": None, "conferencia_detalhe": "valores do recurso CSV guardado no bronze",
-            "url_oficial": URL_BAND, "copia_publica": None, "sha256": None, "deliberacao": None})
+            "conferencia_publicacao": None, "url_oficial": URL_BAND, "copia_publica": None, "sha256": None, "deliberacao": None})
+    # valores que o recurso Acionamento registra sem resolução correspondente no recurso Adicional
+    # (o Adicional é incompleto): evento próprio, com grão mensal e sem ato identificado
+    for tr in bandeiras.get("acionamentos_sem_resolucao", []):
+        ini_mes = tr["inicio"] + "-01"
+        vig = [x for x in bandeiras["vigencias"] if x["patamar"] == tr["patamar"] and x["vigencia_inicio"] <= ini_mes
+               and (x["fim_pelo_recurso_adicional"] or "9999") >= ini_mes]
+        contexto = (f"o recurso Adicional fixava R$ {rg.numero_br(vig[0]['rs_mwh'])}/MWh pela {vig[0]['ato']} (vigência desde "
+                    f"{c.data_br(vig[0]['vigencia_inicio'])})" if vig and tr["motivo"] == "valor_diferente"
+                    else "nenhuma resolução do recurso Adicional cobre esses meses")
+        periodo = tr["inicio"] if tr["meses"] == 1 else f"{tr['inicio']} a {tr['fim']}"
+        periodo_txt = _faixa_meses({tr["inicio"], tr["fim"]})
+        eventos.append({
+            "id": f"bandeiras-acionamento-{tr['inicio']}-{_slug(tr['patamar'])}",
+            "titulo": "Valor observado no Acionamento sem resolução no recurso Adicional",
+            "orgao": "ANEEL", "ato": None, "tipo_ato": "Registro mensal de acionamento", "data_ato": None, "data_publicacao": None,
+            "vigencia_inicio": ini_mes, "vigencia_grao": "mes",
+            "vigencia_regra": "mês de competência do recurso 'Bandeira Tarifária - Acionamento' (DatCompetencia); o dia não é informado",
+            "vigencia_calculada": False,
+            "dispositivo": "não identificado: nenhuma resolução do recurso 'Bandeira Tarifária - Adicional' fixa este valor para o patamar no período",
+            "resumo": (f"{tr['patamar']} acionada a R$ {rg.numero_br(tr['rs_mwh'])}/MWh {periodo_txt} ({tr['meses']} "
+                       f"{'mês' if tr['meses'] == 1 else 'meses'}) segundo o recurso Acionamento; {contexto}."),
+            "efeito_declarado": None, "impacto_estimado": None, "temas": ["tarifa", "bandeiras"],
+            "paineis": [{"rotulo": "Conta de luz", "href": "/setor-eletrico/conta-de-luz"}],
+            "documento": None, "trecho": f"{periodo};{tr['patamar']};{rg.numero_br(tr['rs_mwh'])}",
+            "nivel_conferencia": "registro_em_conjunto_de_dados_oficial", "observacoes": [
+                "Valor observado no recurso Acionamento sem resolução correspondente no recurso Adicional; o ato que o fixou não foi "
+                "identificado nem lido, e a data exata da mudança não é informada (grão mensal)."],
+            "origem": "conjunto_de_dados", "trecho_confere": None,
+            "conferencia_detalhe": "meses do recurso Acionamento guardado no bronze, conferidos com as vigências do recurso Adicional",
+            "conferencia_publicacao": None, "url_oficial": URL_BAND, "copia_publica": None, "sha256": None, "deliberacao": None})
     eventos.sort(key=lambda e: (e["vigencia_inicio"], e["id"]), reverse=True)
     temas = sorted({t for e in eventos for t in e["temas"]})
     paineis = sorted({(p["rotulo"], p["href"]) for e in eventos for p in e["paineis"]})
-    _escreve_csv(ctx, CSV_LT, ["id", "data_publicacao", "vigencia_inicio", "vigencia_calculada", "orgao", "ato", "tipo_ato",
-                               "dispositivo", "titulo", "resumo", "efeito_declarado", "impacto_estimado", "temas", "paineis",
-                               "documento", "nivel_conferencia", "trecho_confere", "origem"],
-                 [[e["id"], e["data_publicacao"], e["vigencia_inicio"], int(bool(e["vigencia_calculada"])), e["orgao"], e["ato"],
+    _escreve_csv(ctx, CSV_LT, ["id", "data_publicacao", "conferencia_publicacao", "vigencia_inicio", "vigencia_grao",
+                               "vigencia_calculada", "orgao", "ato", "tipo_ato", "dispositivo", "titulo", "resumo", "efeito_declarado",
+                               "impacto_estimado", "temas", "paineis", "documento", "nivel_conferencia", "trecho_confere", "origem"],
+                 [[e["id"], e["data_publicacao"], (e["conferencia_publicacao"] or {}).get("resultado"), e["vigencia_inicio"],
+                   e["vigencia_grao"], int(bool(e["vigencia_calculada"])), e["orgao"], e["ato"],
                    e["tipo_ato"], e["dispositivo"], e["titulo"], e["resumo"], e["efeito_declarado"], None, "|".join(e["temas"]),
                    "|".join(p["href"] for p in e["paineis"]), e["documento"], e["nivel_conferencia"],
                    None if e["trecho_confere"] is None else int(e["trecho_confere"]), e["origem"]] for e in eventos])
@@ -988,8 +1258,25 @@ def _totais_completos(con):
     return out
 
 
-def _bloco_consultas(con, ctx, hoje, atas, agenda_codigos):
+def _resultado_publicado(res, numeracao):
+    """Resultado da consulta como a gold publica: o ato com número fora da faixa do tipo nas atas
+    (`ar.confere_numero_ato`) não é exibido como certo (ato vazio, registro da fonte em
+    ato_na_ata, motivo em motivo_ato_suspeito)."""
+    if not res:
+        return None
+    susp, motivo = ar.confere_numero_ato(res.get("tipo_ato"), res.get("numero_ato"), int(res["data"][:4]), numeracao,
+                                         res.get("assunto"))
+    return {"data": res["data"], "reuniao": res["reuniao"], "ato": None if susp else res["ato"], "ato_na_ata": res["ato"],
+            "ato_suspeito": bool(susp), "motivo_ato_suspeito": motivo if susp else None,
+            "resultado_julgamento": res["resultado_julgamento"], "decidido": res["decidido"],
+            # primeira frase da decisão, cortada em 450 caracteres na gold (peso da página)
+            "decisao": ar.limpa_decisao(res["decisao"].replace(" […]", ""), 450) if len(res["decisao"]) > 450 else res["decisao"],
+            "vinculo": res["vinculo"], "forma": res["forma"]}
+
+
+def _bloco_consultas(con, ctx, hoje, atas, agenda_codigos, numeracao=None):
     cons = ar.consultas_das_atas(atas, _totais_completos(con))
+    numeracao = numeracao if numeracao is not None else ar.numeracao_das_atas(atas)
     por_chave = {ar.chave_ata(a): a for a in atas}
     data_ult = max((a["data"] for a in atas), default=None)
     gerado = max((a["gerado_em"] for a in atas if a.get("gerado_em")), default=None)
@@ -1018,29 +1305,34 @@ def _bloco_consultas(con, ctx, hoje, atas, agenda_codigos):
             "janela_origem": j["janela_origem"] if j else None, "fim_calculado": bool(j and j["fim_calculado"]),
             "duracao_dias": f["duracao_dias"] if f else None, "sessao": f["sessao"] if f else None,
             "situacao": sit, "situacao_rotulo": ar.SITUACOES[sit],
-            "resultado": ({k: res[k] for k in ("data", "reuniao", "ato", "resultado_julgamento", "decidido", "decisao", "vinculo")}
-                          if res else None),
+            "resultado": _resultado_publicado(res, numeracao),
             "agenda_codigos": cods,
         }
         todos.append(item)
+        # recente: janela terminada, resultado ou fase deliberada (a abertura ou a fase atual, que
+        # pode ser uma 2ª fase recente de consulta antiga) dentro da janela da gold
+        ult_fase = max(x["data_deliberacao"] for x in cn["fases"])
         recente = (item["fim"] or "") >= lim or (res and res["data"] >= lim) or \
-            (sit not in ("encerrada_aguardando", "decidida") and cn["abertura"]["data"] >= lim)
+            (sit not in ("encerrada_aguardando", "decidida") and ult_fase >= lim)
         if recente:
             itens.append(item)
     itens.sort(key=lambda i: (ORDEM_SITUACAO[i["situacao"]], i["fim"] or "9999", i["deliberacao_abertura"]["data"]))
     todos.sort(key=lambda i: (i["deliberacao_abertura"]["data"], i["id"]), reverse=True)
     _escreve_csv(ctx, CSV_CONS, ["id", "modalidade", "numero", "numero_na_ata", "ano", "numero_citado", "numero_em_conflito",
                                  "numero_suspeito", "motivo_numero_suspeito", "processos", "data_deliberacao", "reuniao", "relator",
-                                 "tema", "fase_atual", "inicio", "fim", "janela_origem", "fim_calculado", "duracao_dias", "sessao",
-                                 "situacao", "data_referencia", "resultado_data", "resultado_ato", "resultado_julgamento",
-                                 "vinculo_resultado", "decisao_abertura"],
+                                 "tema", "fase_atual", "data_fase_atual", "inicio", "fim", "janela_origem", "fim_calculado",
+                                 "duracao_dias", "sessao", "situacao", "data_referencia", "resultado_data", "resultado_ato",
+                                 "resultado_ato_na_ata", "resultado_ato_suspeito", "motivo_ato_suspeito", "resultado_julgamento",
+                                 "vinculo_resultado", "forma_resultado", "decisao_abertura"],
                  [[i["id"], i["modalidade"], i["numero"], i["numero_na_ata"], i["ano"], i["numero_citado"], int(i["numero_em_conflito"]),
                    int(i["numero_suspeito"]), i["motivo_numero_suspeito"], "|".join(i["processos"]), i["deliberacao_abertura"]["data"],
-                   i["deliberacao_abertura"]["reuniao"], i["relator"], i["tema"], i["fase_atual"], i["inicio"], i["fim"],
+                   i["deliberacao_abertura"]["reuniao"], i["relator"], i["tema"], i["fase_atual"],
+                   max(x["data_deliberacao"] for x in i["fases"]), i["inicio"], i["fim"],
                    i["janela_origem"], int(i["fim_calculado"]), i["duracao_dias"], i["sessao"], i["situacao"], hoje,
-                   (i["resultado"] or {}).get("data"), (i["resultado"] or {}).get("ato"),
+                   (i["resultado"] or {}).get("data"), (i["resultado"] or {}).get("ato"), (i["resultado"] or {}).get("ato_na_ata"),
+                   None if not i["resultado"] else int(i["resultado"]["ato_suspeito"]), (i["resultado"] or {}).get("motivo_ato_suspeito"),
                    (i["resultado"] or {}).get("resultado_julgamento"), (i["resultado"] or {}).get("vinculo"),
-                   i["deliberacao_abertura"]["decisao"]] for i in todos])
+                   (i["resultado"] or {}).get("forma"), i["deliberacao_abertura"]["decisao"]] for i in todos])
     # cobertura: aberturas nas atas × total anual publicado pela ANEEL, por modalidade
     totais, totais_ap = _serie(con, DS_PART, "consultas"), _serie(con, DS_PART, "audiencias")
     ger_part = base.registros_como_estavam_em(con, DS_PART)
@@ -1059,8 +1351,18 @@ def _bloco_consultas(con, ctx, hoje, atas, agenda_codigos):
         xs = [100 * x[campo_n] / x[campo_t] for x in cobertura if de <= x["ano"] <= ate and x.get(campo_t)]
         return {"de": de, "ate": ate, "min_pct": round(min(xs), 1), "max_pct": round(max(xs), 1)} if xs else None
     contagem = {s: sum(1 for i in todos if i["situacao"] == s) for s in ar.SITUACOES}
-    return {"data_referencia": hoje, "atas_ate": data_ult, "atas_geradas_em": gerado, "janela_dias": JANELA_CONSULTAS_DIAS,
+    pendentes = ar.decisoes_sem_resultado_formal(atas, hoje)
+    data_delib = max((a["data"] for a in atas if a["resultado"] in ar.DELIBERADO), default=None)
+    return {"data_referencia": hoje, "atas_ate": data_ult, "atas_deliberadas_ate": data_delib, "atas_geradas_em": gerado,
+            "janela_dias": JANELA_CONSULTAS_DIAS,
             "itens": itens, "total_historico": len(todos), "contagem_por_situacao": contagem, "cobertura": cobertura,
+            "contagem_por_forma_resultado": {f: sum(1 for i in todos if (i["resultado"] or {}).get("forma") == f)
+                                             for f in ("resultado", "encerramento", "apos_contribuicoes", "consolidacao",
+                                                       "resultado_sem_numero", "objeto_aprovado_no_processo")},
+            "atos_suspeitos": sum(1 for i in todos if (i["resultado"] or {}).get("ato_suspeito")),
+            "decisoes_sem_resultado_formal": pendentes,
+            "abertas_se_confirmadas": sum(1 for x in pendentes if x["situacao_se_confirmada"] == "aberta"),
+            "a_abrir_se_confirmadas": sum(1 for x in pendentes if x["situacao_se_confirmada"] == "a_abrir"),
             "cobertura_faixa": {"consultas": faixa("nas_atas", "total_anual_aneel"),
                                 "audiencias": faixa("audiencias_nas_atas", "audiencias_total_anual_aneel")},
             "numeros_suspeitos": sum(1 for i in todos if i["numero_suspeito"]),
@@ -1080,8 +1382,10 @@ def _bloco_agenda(con, ctx, docs, textos, cons_todos):
     doc = docs.get("prt20257030", {})
     t = textos.get("prt20257030") or {}
     regs = base.registros_como_estavam_em(con, DS_PAG).get("agenda") or {}
+    tentativa = _tentativas(con, DS_PAG, REC_REVISAO_AGENDA)
     revisao = {"aprovada_por": regs.get("aprovada_por"), "atualizada_por": regs.get("atualizada_por"), "trecho": regs.get("trecho"),
-               "pagina": PAGINAS["agenda"]}
+               "pagina": PAGINAS["agenda"], "url_texto": _url_revisao_agenda(con),
+               "texto_lido": False, "tentativa": tentativa}
     if t.get("status") != "ok" or not t.get("layout"):
         return {"disponivel": False, "motivo": f"texto da Portaria nº 7.030/2025 indisponível ({t.get('status', 'sem registro')})",
                 "itens": [], "revisao": revisao}
@@ -1128,6 +1432,7 @@ def construir(con, ctx):
              {e["documento"] for e in rg.linha_do_tempo()["eventos"]} | {"prt20257030"}
     textos = {d: _texto_documento(con, docs[d]) for d in usados if d in docs}
     atas = _atas(con)
+    numeracao = _numeracao(con, atas)
     ipca = _serie(con, DS_IPCA, "ipca.indice")
 
     bl = _bloco_limites(con, ctx, hoje, docs, textos, atas, ipca)
@@ -1142,8 +1447,8 @@ def construir(con, ctx):
     snap_cur = c.snapshot_de(con, DS_CURADORIA)
     evid = _evidencias_limites(bl, textos, docs, snap_docs)
     band = _bloco_bandeiras(con, ctx)
-    proc = _bloco_procedimentos(con, ctx, atas, textos, docs)
-    lt = _bloco_linha_do_tempo(ctx, docs, textos, atas, band)
+    proc = _bloco_procedimentos(con, ctx, atas, textos, docs, numeracao)
+    lt = _bloco_linha_do_tempo(con, ctx, docs, textos, atas, band)
 
     agenda_codigos = set()
     t_ag = textos.get("prt20257030") or {}
@@ -1153,7 +1458,7 @@ def construir(con, ctx):
         except ValueError:
             agenda_codigos = set()
     if atas:
-        cons = _bloco_consultas(con, ctx, hoje, atas, agenda_codigos)
+        cons = _bloco_consultas(con, ctx, hoje, atas, agenda_codigos, numeracao)
     else:
         cons = {"disponivel": False, "motivo": "atas da Diretoria ainda não integradas ao silver", "itens": [], "_todos": [],
                 "data_referencia": hoje, "cobertura": [], "contagem_por_situacao": {}, "situacoes": ar.SITUACOES}
@@ -1201,13 +1506,23 @@ def construir(con, ctx):
             cobertura={"inicio": min((x["vigencia_inicio"] for x in band["vigencias"]), default=None) or "",
                        "fim": max((x["vigencia_inicio"] for x in band["vigencias"]), default=None) or ""},
             capturado_em=c.ultima_captura(snap_band), snapshot=snap_band,
-            transformacoes=["fim de vigência = véspera do valor seguinte do mesmo patamar",
+            transformacoes=["fim de vigência = véspera do valor seguinte do mesmo patamar (grão diário)",
                             "patamar extinto (ausente da resolução seguinte do recurso Adicional e sem acionamento depois): fim no "
-                            "último dia do último mês com acionamento no recurso 'Bandeira Tarifária - Acionamento', conferido com a "
-                            "vigência escrita no dicionário desse recurso"],
+                            "último mês com acionamento no recurso 'Bandeira Tarifária - Acionamento' (grão mensal, dia vazio), "
+                            "conferido com a vigência escrita no dicionário desse recurso",
+                            "conferência mês a mês com o recurso Acionamento: mês acionado com outro valor encerra a vigência no último "
+                            "mês coerente (grão mensal, 'acionamento_diverge') e vira evento 'valor observado no Acionamento sem "
+                            "resolução no recurso Adicional' na linha do tempo"],
             limitacoes=["A fonte informa a data de vigência, não a de publicação do ato; o texto das resoluções não foi lido.",
-                        "Valores sem fim (" + (", ".join(x["patamar"] for x in band["vigencias"] if x["vigencia_fim"] is None) or "nenhum")
+                        "Valores sem fim (" + (", ".join(f"{x['patamar']} de {c.data_br(x['vigencia_inicio'])}" for x in band["vigencias"]
+                                                         if x["vigencia_fim_grao"] is None) or "nenhum")
                         + "): não há valor posterior no recurso Adicional e o patamar não foi extinto.",
+                        f"O recurso Adicional é incompleto: {band['conferencia_acionamento']['meses_divergentes']} meses acionados com "
+                        f"valor diferente do vigente pelo Adicional e {band['conferencia_acionamento']['meses_sem_vigencia']} meses sem "
+                        "resolução vigente no Adicional ("
+                        + "; ".join(f"{t['patamar']} R$ {rg.numero_br(t['rs_mwh'])}/MWh {_faixa_meses({t['inicio'], t['fim']})}"
+                                    for t in band["acionamentos_sem_resolucao"]) + "); nesses casos o fim da vigência anterior tem "
+                        "grão mensal e o ato que fixou o valor observado não foi identificado.",
                         "O fim de patamar extinto tem grão mensal: o recurso Acionamento é mensal e não informa o dia"
                         + "".join(f" ({x['patamar']}: R$ {rg.numero_br(x['ultimo_acionamento']['rs_mwh'])}/MWh em "
                                   f"{x['ultimo_acionamento']['competencia']}, contra adicional de R$ {rg.numero_br(x['rs_mwh'])}/MWh)"
@@ -1232,6 +1547,10 @@ def construir(con, ctx):
                         f"{proc['contagem_conferencia']['pagina_possivelmente_desatualizada']} itens têm ato posterior ao da página que "
                         "aprova nova versão do mesmo módulo: a página oficial pode estar desatualizada e o número da versão vigente "
                         "não é conhecido (ato_vigente vazio).",
+                        f"{proc['contagem_versao']['diverge']} itens com versão diferente da que o próprio ato da página aprova e "
+                        f"{proc['contagem_versao']['ato_lido_nao_cita_o_item']} com ato lido que não cita o item (ressalvas por item).",
+                        "Número de ato fora da faixa do tipo nas atas (ex.: 'Portaria nº 1.160/2026' para a REN nº 1.160/2026) fica "
+                        "marcado como suspeito e não é exibido como ato.",
                         "Itens sem conferência externa: nenhuma ata nem ato integrado trata do módulo depois do ato da página; isso "
                         "não prova que a versão está atualizada (atos decididos fora das reuniões públicas não aparecem)."],
             download=_u(CSV_PROC)),
@@ -1244,8 +1563,11 @@ def construir(con, ctx):
             cobertura={"inicio": min(e["vigencia_inicio"] for e in lt["eventos"]), "fim": max(e["vigencia_inicio"] for e in lt["eventos"])},
             capturado_em=cap_docs, snapshot=snap_docs,
             transformacoes=["resumo editorial conferido no texto; efeito declarado e regra de vigência são literais do ato",
+                            "data de publicação conferida por caminho independente: 'Publicação Original' nos metadados abertos do "
+                            "Senado (leis e medida provisória) ou data escrita no próprio PDF do ato da ANEEL",
                             "vigência calculada, quando marcada, pela LC nº 95/1998, art. 8º, § 1º",
-                            "eventos de bandeiras derivados do conjunto de dados da ANEEL, sem leitura do ato"],
+                            "eventos de bandeiras derivados do conjunto de dados da ANEEL, sem leitura do ato; valores observados no "
+                            "recurso Acionamento sem resolução no recurso Adicional entram como evento próprio, com grão mensal"],
             limitacoes=lim_comuns + [
                 "Impacto estimado não é calculado: coincidência entre data de norma e movimento de gráfico não é evidência de causa.",
                 "Portaria MME nº 301/2019 citada por documento da ANEEL (texto da portaria não acessado).",
@@ -1267,7 +1589,14 @@ def construir(con, ctx):
                             "processo e pelo total anual publicado; número suspeito marcado e substituído no rótulo pelo número que o "
                             "processo cita, quando único",
                             "resultado ligado pela citação explícita de todas as consultas da oração do resultado, preferindo a do "
-                            "mesmo processo, ou, na falta de número, pelo processo"],
+                            "mesmo processo, ou, na falta de número, pelo processo",
+                            "decisão do mesmo processo que consolida o documento da consulta sem a palavra 'Resultado' (edital "
+                            "'consolidado após avaliação das contribuições', 'consolidada com os aprimoramentos decorrentes', extinção "
+                            "do processo) também decide a consulta; a primeira deliberada vale",
+                            "decisão sem número do mesmo processo que aprova o módulo do PRODIST ou do PRORET citado no tema decide a "
+                            "consulta (vínculo 'processo_e_objeto')",
+                            "número do ato do resultado conferido com a numeração do tipo nas atas; fora da faixa, o ato fica vazio e "
+                            "marcado como suspeito"],
             limitacoes=["Só entram consultas cuja abertura foi deliberada em reunião pública registrada nas atas; a cobertura anual "
                         "frente ao total publicado pela ANEEL está em 'cobertura'"
                         + (f": consultas públicas de {rg.numero_br(cons['cobertura_faixa']['consultas']['min_pct'], 1)}% a "
@@ -1282,6 +1611,15 @@ def construir(con, ctx):
                         "Fim calculado (início e duração escritos na ata): conta o dia do início, a convenção mais frequente nas atas que "
                         "escrevem as duas datas e a duração (convencao_contagem_prazo); pela outra convenção o prazo terminaria um dia depois.",
                         "Prorrogação ou reabertura decidida fora da reunião pública não aparece; o aviso publicado pode ter datas diferentes das da decisão.",
+                        f"{cons.get('atos_suspeitos', 0)} resultados têm número de ato fora da faixa do tipo nas atas (ato_suspeito): o ato "
+                        "não é exibido como certo.",
+                        ("Decisões da pauta mais recente com resultado formal vazio (sem número de aviso) não entram na contagem: "
+                         + "; ".join(f"processo {'/'.join(x['processos'])}, {c.data_br(x['inicio'])} a {c.data_br(x['fim'])} "
+                                     f"({'abriria' if x['situacao_se_confirmada'] == 'a_abrir' else 'estaria aberta' if x['situacao_se_confirmada'] == 'aberta' else 'encerrada'} na data de referência)"
+                                     for x in cons.get("decisoes_sem_resultado_formal", []) if x["inicio"])
+                         + "; a contagem de abertas pode estar subestimada até a ata registrar a deliberação.")
+                        if cons.get("decisoes_sem_resultado_formal") else
+                        "Nenhuma decisão de abertura com resultado formal vazio nas atas integradas.",
                         "A situação vale para a data de referência e depende das atas publicadas até a última reunião registrada.",
                         "Tomadas de subsídios não são deliberadas em reunião e ficam de fora."],
             download=_u(CSV_CONS)),
@@ -1295,7 +1633,11 @@ def construir(con, ctx):
             transformacoes=["tabela do Anexo I lida do PDF com leiaute preservado; código, atividade e ano previsto"],
             limitacoes=lim_comuns + [
                 "A primeira revisão (Portaria nº 7.157, de 8 de setembro de 2026) consta da página oficial e da ata de 08/09/2026, "
-                "mas o texto não pôde ser lido: anos previstos e atividades podem ter mudado.",
+                "mas o texto não pôde ser lido: anos previstos e atividades podem ter mudado. A página oficial aponta a portaria "
+                "para leis.org"
+                + (f", que respondeu {_resposta_http((agenda.get('revisao') or {}).get('tentativa'))} na tentativa de "
+                   f"{c.data_br(agenda['revisao']['tentativa']['tentado_em'][:10])} (desafio de navegador do Cloudflare, não contornado)."
+                   if (agenda.get("revisao") or {}).get("tentativa") else "; a tentativa de leitura ainda não foi registrada."),
                 "Cronograma referencial de etapas (portalrelatorios.aneel.gov.br) não respondeu; o eixo temático não é extraído.",
                 "Ano previsto é previsão da agência, reprogramável; não é compromisso nem data de decisão."],
             download=_u(CSV_AGENDA)),
@@ -1312,8 +1654,12 @@ def construir(con, ctx):
     #     caracteres, ou dd/mm/aaaa, e o ano presente no texto;
     # (2) a duração que a própria decisão declara bate com a janela (diferença de até 1 dia,
     #     pelas duas convenções de contagem que as atas usam);
-    # (3) nenhuma linha posterior das atas, no mesmo processo, leva resultado ou encerramento à
-    #     Diretoria (varredura direta das linhas, sem a ligação por número).
+    # (3) nenhuma linha posterior das atas, no mesmo processo, leva resultado, encerramento ou
+    #     decisão que consolida o documento da consulta à Diretoria (varredura direta das linhas pelo
+    #     vocabulário de resultado, sem a ligação por número), nem aprova o módulo de procedimento
+    #     que o tema da consulta cita;
+    # (4) decisões da última pauta ainda sem resultado formal registrado não entram na contagem e
+    #     ficam declaradas com a situação que teriam se a ata confirmar a deliberação.
     escritas, coerentes, com_duracao, incoerentes, posteriores = 0, 0, 0, [], []
     for i in abertas:
         f = next((x for x in i["fases"] if x["inicio"] == i["inicio"] and x["fim"] == i["fim"]), None)
@@ -1329,9 +1675,14 @@ def construir(con, ctx):
             else:
                 incoerentes.append(f"{i['rotulo']}: {n} dias na janela, {f['duracao_dias']} declarados")
         procs = {re.sub(r"\D", "", p) for p in i["processos"]}
+        modulos_tema = ar.procedimentos_citados(i["tema"])
         for a in atas:
             if (a["data"] > (f or {}).get("data_deliberacao", "9999") and procs & set(ar.processos(a["processo"]))
-                    and re.match(r"\s*(Resultados?|Encerramento|Fechamento)\b", a["assunto"])):
+                    and a["tipo_ato"] not in ar.TIPOS_ABERTURA and a["tipo_ato"] not in ar.TIPOS_FASE
+                    and (re.match(r"\s*(Resultados?|Encerramento|Fechamento)\b", a["assunto"])
+                         or VOCABULARIO_RESULTADO.search(a["assunto"] + " " + a["decisao"])
+                         or modulos_tema & {(e["conjunto"], ar.canonico_procedimento(e["modulo"]))
+                                            for e in ar.aprovacoes_de_procedimentos([a])})):
                 posteriores.append(f"{i['rotulo']}: {a['data']} {a['assunto'][:60]}")
     testes_abertas = [
         ev.teste("Datas da janela escritas no texto integral da decisão (releitura independente)",
@@ -1344,8 +1695,21 @@ def construir(con, ctx):
                  + (f"; divergências da fonte: {'; '.join(incoerentes)}" if incoerentes else "")),
         ev.teste("Sem resultado posterior no mesmo processo",
                  "aprovado" if not posteriores else "reprovado",
-                 "nenhuma linha posterior das atas, no mesmo processo, leva resultado ou encerramento à Diretoria"
-                 if not posteriores else "; ".join(posteriores)[:300])]
+                 "nenhuma linha posterior das atas, no mesmo processo, leva resultado, encerramento ou decisão que consolida o "
+                 "documento da consulta à Diretoria, nem aprova o módulo de procedimento que o tema cita"
+                 if not posteriores else "; ".join(posteriores)[:300]),
+        ev.teste("Decisões ainda sem resultado formal nas atas",
+                 "aprovado" if not cons.get("decisoes_sem_resultado_formal") else "ressalva",
+                 "nenhuma proposta de abertura com decisão escrita e resultado vazio"
+                 if not cons.get("decisoes_sem_resultado_formal") else
+                 (f"{len(cons['decisoes_sem_resultado_formal'])} proposta(s) de abertura da reunião de "
+                  f"{', '.join(sorted({c.data_br(x['data']) for x in cons['decisoes_sem_resultado_formal']}))} com a decisão escrita "
+                  "e o resultado formal vazio (sem número de aviso) ficam fora da contagem; se a ata confirmar a deliberação, a "
+                  f"contagem de abertas seria {len(abertas) + cons.get('abertas_se_confirmadas', 0)}"
+                  + (f", mais {cons['a_abrir_se_confirmadas']} a abrir" if cons.get("a_abrir_se_confirmadas") else "")
+                  + " na data de referência: "
+                  + "; ".join(f"processo {'/'.join(x['processos'])}, {c.data_br(x['inicio'])} a {c.data_br(x['fim'])}"
+                              for x in cons["decisoes_sem_resultado_formal"] if x["inicio"])))]
     if v_atas and cons.get("disponivel", True) and atas:
         evid_cons = ev.construir(
             indicador="Consultas e audiências públicas recebendo contribuições", valor_exibido=str(len(abertas)),
@@ -1378,7 +1742,8 @@ def construir(con, ctx):
         "limites_pld": {k: v for k, v in bl.items() if k != "reprovadas"},
         "limites_em_revisao": [{"codigo": i["codigo"], "atividade": i["atividade"], "ano_previsto": i["ano_previsto"]} for i in em_revisao],
         "regras_limites": next(({"ato": e["ato"], "dispositivo": e["dispositivo"], "resumo": e["resumo"], "trecho": e["trecho"],
-                                 "vigencia_inicio": e["vigencia_inicio"], "documento": e["documento"], "url_oficial": e["url_oficial"]}
+                                 "vigencia_inicio": e["vigencia_inicio"], "documento": e["documento"], "url_oficial": e["url_oficial"],
+                                 "pratica_dos_atos": _pratica_dos_atos(bl)}
                                 for e in lt["eventos"] if e["id"] == "ren-1032-2022"), None),
         "bandeiras": band,
         "procedimentos": proc,
@@ -1432,9 +1797,21 @@ def _valida_gold(g, hoje):
     for x in g.get("bandeiras", {}).get("vigencias", []):
         if x["vigencia_fim"] and x["vigencia_fim"] < x["vigencia_inicio"]:
             p.append(f"bandeira {x['patamar']} {x['vigencia_inicio']}: fim antes do início")
+        if x["vigencia_fim_mes"] and x["vigencia_fim_mes"] < x["vigencia_inicio"][:7]:
+            p.append(f"bandeira {x['patamar']} {x['vigencia_inicio']}: mês do fim antes do início")
+        # validação declarada na métrica regulacao_adicional_bandeira: adicional positivo (vazio é ausência)
+        if x["rs_mwh"] is not None and not x["rs_mwh"] > 0:
+            p.append(f"bandeira {x['patamar']} {x['vigencia_inicio']}: adicional {x['rs_mwh']} não positivo")
+        if (x["vigencia_fim_grao"] == "dia") != bool(x["vigencia_fim"]):
+            p.append(f"bandeira {x['patamar']} {x['vigencia_inicio']}: grão do fim incoerente com a data")
     ids = [e["id"] for e in g["linha_do_tempo"]["eventos"]]
     if len(ids) != len(set(ids)):
         p.append("ids repetidos na linha do tempo")
     if any(e["impacto_estimado"] is not None for e in g["linha_do_tempo"]["eventos"]):
         p.append("impacto_estimado preenchido")
+    for e in g["linha_do_tempo"]["eventos"]:
+        if (e.get("conferencia_publicacao") or {}).get("resultado") == "reprovado":
+            p.append(f"{e['id']}: data de publicação diverge da fonte independente ({e['conferencia_publicacao']['detalhe'][:120]})")
+        if e.get("vigencia_grao") not in ("dia", "mes"):
+            p.append(f"{e['id']}: grão de vigência desconhecido")
     return p

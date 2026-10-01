@@ -65,6 +65,7 @@ export const VIEW_SECTIONS = [
   // Observatório Brasileiro do Setor Elétrico (páginas Next, domínio energia)
   "energia:mapa",
   "energia:visao-geral",
+  "energia:territorio",
   "energia:pld",
   "energia:pld-previsoes",
   "energia:pld-modelos",
@@ -155,6 +156,7 @@ export const SECTION_LABELS: Record<ViewSection, string> = {
   "obs:sobre": "Observatório · Sobre",
   "energia:mapa": "Setor Elétrico · Mapa do Observatório",
   "energia:visao-geral": "Setor Elétrico · Visão geral",
+  "energia:territorio": "Setor Elétrico · Minha região",
   "energia:pld": "Setor Elétrico · PLD",
   "energia:pld-previsoes": "Setor Elétrico · Histórico de previsões",
   "energia:pld-modelos": "Setor Elétrico · Modelos do PLD",

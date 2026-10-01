@@ -586,19 +586,29 @@ def le_siget_linhas(linhas):
 def le_siget_equipamentos(linhas):
     """Módulos de equipamento de subestação → {módulo: registro}. Só a potência de
     transformação (MdaPotAtvMdlEqp, MVA) de transformadores de potência entra na soma
-    de MVA; reatores e capacitores (Mvar) são outra grandeza e ficam fora."""
+    de MVA; reatores e capacitores (Mvar) são outra grandeza e ficam fora.
+
+    Transformador reserva (DscFinMdlEqp = 'Reserva') fica em `mva_reserva`, fora de
+    `mva`: é a unidade de prontidão que substitui outra em falha e não acrescenta
+    capacidade de transformação. No arquivo de 29/09/2026 são 309 módulos reserva com
+    46.177,5 MVA (o contrato 006/2024 tem 1.800 MVA principais e 300 de reserva, e o
+    lote 3 do leilão 001/2024 informa 1.800)."""
     out = {}
     for r in linhas:
         mdl = texto(r.get("IdeMdl"))
         if not mdl:
             continue
         tipo = texto(r.get("DscTipEqp"))
-        mva = numero(r.get("MdaPotAtvMdlEqp"))
-        atual = out.get(mdl)
-        reg = {"tipo": tipo, "mva": mva if tipo == "Transformador de Potência" else None,
-               "uf": uf_valida(r.get("SigUFSubestacao")), "subestacao": texto(r.get("NomSubestacao"))}
-        if atual and atual.get("mva") is not None and reg["mva"] is not None:
-            reg["mva"] = atual["mva"] + reg["mva"]  # módulo com mais de um transformador
+        fin = texto(r.get("DscFinMdlEqp"))
+        mva = numero(r.get("MdaPotAtvMdlEqp")) if tipo == "Transformador de Potência" else None
+        reg = out.get(mdl) or {"mva": None, "mva_reserva": None}
+        # módulo com mais de uma linha (mais de um transformador): soma por finalidade;
+        # linha de outro equipamento no mesmo módulo não apaga a potência já lida
+        campo = "mva_reserva" if fin == "Reserva" else "mva"
+        if mva is not None:
+            reg[campo] = mva if reg[campo] is None else reg[campo] + mva
+        reg.update({"tipo": tipo, "finalidade": fin, "uf": uf_valida(r.get("SigUFSubestacao")),
+                    "subestacao": texto(r.get("NomSubestacao"))})
         out[mdl] = reg
     return out
 
@@ -996,3 +1006,86 @@ def potencias_outorgadas_historicas(pf_usina):
             if n is not None and kw:
                 out.setdefault(n, set()).add(kw)
     return {n: sorted(v) for n, v in out.items()}
+
+
+# Potência das unidades de uma usina numa fotografia contra a outorga da mesma usina na
+# mesma fotografia. A soma das unidades não pode passar da outorga por uma ordem de
+# grandeza: no Parquet histórico de 30/09/2026 há 17 pares (fotografia, usina) com a
+# soma 10 a 1.000 vezes a outorga (Belvedere 1 em 17/06/2021, 14 unidades de 3.214.280 kW
+# para 45.000 kW outorgados; Fótons de São Mauro 01 a 04 em abril de 2023, 550.000 kW
+# para 50.000; Vapor 1 em 16/04/2023, 333 unidades para as 33 das demais fotografias).
+# Nas fotografias vizinhas a mesma usina volta à potência da outorga: é erro de
+# digitação da fonte naquela fotografia, não ampliação. Razões entre 1,5 e 10 também
+# existem (181 pares), mas sem essa assinatura: ampliação com outorga parcial, unidade
+# substituída, cadastro em revisão. Ficam como estão e são contadas à parte.
+FATOR_ATIPICO = 10.0
+FATOR_ATENCAO = 1.5
+
+
+def potencia_unidades_por_fotografia(pf_ug):
+    """Table pyarrow (DatRalie, IdeNucleoCEG, SigTipoGeracao, kw, n, kw_sem_previsao):
+    soma da potência unitária, contagem e potência sem previsão SFG por usina e
+    fotografia, agregadas em lotes e recombinadas."""
+    pa, pc, _ = _pa()
+    chaves = ["DatRalie", "IdeNucleoCEG", "SigTipoGeracao"]
+    parciais = []
+    for t in _lotes(pf_ug, chaves + ["MdaPotenciaUnitaria", "DatPrevisaoOpComercialSFG"]):
+        t = t.append_column("sem_prev", pc.if_else(pc.is_null(t["DatPrevisaoOpComercialSFG"]),
+                                                    t["MdaPotenciaUnitaria"], pa.scalar(0.0)))
+        parciais.append(t.group_by(chaves).aggregate(
+            [("MdaPotenciaUnitaria", "sum"), ("MdaPotenciaUnitaria", "count"), ("sem_prev", "sum")]))
+    return _reagrega(parciais, chaves, [("MdaPotenciaUnitaria_sum", "sum", "kw"), ("MdaPotenciaUnitaria_count", "sum", "n"),
+                                        ("sem_prev_sum", "sum", "kw_sem_previsao")])
+
+
+def unidades_atipicas(pf_ug, pf_usina, fator=FATOR_ATIPICO, atencao=FATOR_ATENCAO):
+    """Pares (fotografia, usina) em que a soma da potência das unidades é pelo menos
+    `fator` vezes a potência outorgada da usina na mesma fotografia, com a fotografia
+    anterior e a seguinte da mesma usina (conferência no próprio arquivo), e a contagem
+    dos pares entre `atencao` e `fator` vezes (mantidos)."""
+    pa, pc, _ = _pa()
+    g = potencia_unidades_por_fotografia(pf_ug)
+    if g is None:
+        return {"casos": [], "entre_atencao_e_fator": {"pares": 0, "usinas": 0, "exemplos": []}}
+    us = pf_usina.read(columns=["DatRalie", "IdeNucleoCEG", "NomEmpreendimento", "MdaPotenciaOutorgadaKw"])
+    j = g.join(us, keys=["DatRalie", "IdeNucleoCEG"], join_type="left outer")
+    del us
+    razao = pc.divide(j["kw"], j["MdaPotenciaOutorgadaKw"])
+    com_outorga = pc.greater(pc.fill_null(j["MdaPotenciaOutorgadaKw"], 0.0), 0.0)
+    fora = j.filter(pc.and_(com_outorga, pc.greater_equal(razao, fator)))
+    meio = j.filter(pc.and_(com_outorga, pc.and_(pc.greater_equal(razao, atencao), pc.less(razao, fator))))
+    nucleos = pa.array(sorted(set(fora["IdeNucleoCEG"].to_pylist())), pa.int64())
+    serie = {}
+    for r in j.filter(pc.is_in(j["IdeNucleoCEG"], value_set=nucleos)).to_pylist():
+        serie.setdefault(r["IdeNucleoCEG"], []).append((r["DatRalie"].isoformat(), r["n"], r["kw"]))
+    del j, g
+    casos = []
+    for r in sorted(fora.to_pylist(), key=lambda x: (x["DatRalie"], x["IdeNucleoCEG"])):
+        d, n = r["DatRalie"].isoformat(), r["IdeNucleoCEG"]
+        pts = sorted(serie.get(n, []))
+        i = [p[0] for p in pts].index(d)
+        viz = lambda k: {"ralie": pts[k][0], "ugs": pts[k][1], "kw_ugs": pts[k][2]} if 0 <= k < len(pts) else None
+        casos.append({"ralie": d, "nucleo": n, "nome": texto(r["NomEmpreendimento"]), "tipo": r["SigTipoGeracao"],
+                      "ugs": r["n"], "kw_ugs": r["kw"], "kw_sem_previsao": r["kw_sem_previsao"],
+                      "kw_outorgado": r["MdaPotenciaOutorgadaKw"], "razao": r["kw"] / r["MdaPotenciaOutorgadaKw"],
+                      "anterior": viz(i - 1), "seguinte": viz(i + 1)})
+    m = meio.to_pylist()
+    por_usina = {}
+    for r in m:
+        x = por_usina.setdefault(r["IdeNucleoCEG"], {"nucleo": r["IdeNucleoCEG"], "nome": texto(r["NomEmpreendimento"]),
+                                                     "tipo": r["SigTipoGeracao"], "pares": 0, "razao_max": 0.0})
+        x["pares"] += 1
+        x["razao_max"] = max(x["razao_max"], r["kw"] / r["MdaPotenciaOutorgadaKw"])
+    exemplos = sorted(por_usina.values(), key=lambda x: -x["razao_max"])[:8]
+    return {"casos": casos, "entre_atencao_e_fator": {"pares": len(m), "usinas": len(por_usina), "exemplos": exemplos}}
+
+
+def exclui_pares(tabela, pares):
+    """Linhas de `tabela` (com DatRalie e IdeNucleoCEG) fora dos pares {(data ISO, núcleo)}."""
+    pa, _, _ = _pa()
+    if not pares or tabela.num_rows == 0:
+        return tabela
+    ks = sorted(pares)
+    fora = pa.table({"DatRalie": pa.array([date.fromisoformat(d) for d, _ in ks], pa.date32()),
+                     "IdeNucleoCEG": pa.array([n for _, n in ks], pa.int64())})
+    return tabela.join(fora, keys=["DatRalie", "IdeNucleoCEG"], join_type="left anti").combine_chunks()

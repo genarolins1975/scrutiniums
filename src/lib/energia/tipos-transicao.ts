@@ -80,10 +80,16 @@ export type EvidenciaTransicao = {
 
 export type FonteMmgd = "solar" | "termica" | "hidraulica" | "eolica" | "outra" | "nao_informada";
 
+/**
+ * Potência ausente não vira zero: kW e MW publicados são a soma das potências informadas;
+ * `unidades_sem_potencia` > 0 marca soma parcial, e potência null marca agregado em que
+ * nenhuma unidade tem potência informada.
+ */
 export type MmgdResumo = {
   unidades: number;
-  potencia_mw: number;
-  potencia_kw: number;
+  potencia_mw: number | null;
+  potencia_kw: number | null;
+  unidades_sem_potencia: number;
   municipios_com_mmgd: number;
   municipios_no_cadastro_ibge: number;
   /** Soma de QtdUCRecebeCredito: unidades consumidoras que recebem créditos. */
@@ -107,29 +113,50 @@ export type MmgdFonte = {
   fonte: FonteMmgd;
   rotulo: string;
   unidades: number;
-  potencia_mw: number;
+  potencia_mw: number | null;
+  unidades_sem_potencia: number;
   participacao_potencia_pct: number | null;
 };
 
-export type MmgdFonteDetalhe = { tipo: string; descricao: string; unidades: number; potencia_kw: number };
+export type MmgdFonteDetalhe = {
+  tipo: string;
+  descricao: string;
+  unidades: number;
+  potencia_kw: number | null;
+  unidades_sem_potencia: number;
+};
 
-/** Um item por ano, da primeira conexão ao ano do cadastro; ano sem conexão vem com zero explícito. */
+/**
+ * Cobertura declarada pela ANEEL: a partir de dez/2008. Ausente = ponto dentro da
+ * cobertura (sem conexão = zero explícito). "fora" (antes de dez/2008) e "parcial" (ano de
+ * 2008, coberto só em dezembro): sem registro = unidades e potência null (não zero);
+ * registro existente publicado como está.
+ */
+export type CoberturaDeclarada = "fora" | "parcial";
+
+/** Um item por ano, da primeira conexão ao ano do cadastro. */
 export type MmgdAno = {
   ano: number;
-  unidades: number;
-  potencia_mw: number;
-  por_fonte: Partial<Record<FonteMmgd, { unidades: number; potencia_mw: number }>>;
+  unidades: number | null;
+  potencia_mw: number | null;
+  /** Só quando há unidade sem potência informada no ano (soma parcial). */
+  unidades_sem_potencia?: number;
+  cobertura_declarada?: CoberturaDeclarada;
+  por_fonte: Partial<Record<FonteMmgd, { unidades: number; potencia_mw: number | null }>>;
+  /** Estoque do cadastro vigente com conexão até o fim do ano (inclui registros anteriores à cobertura). */
   acumulado_unidades: number;
   acumulado_mw: number;
   /** Ano da data do cadastro (ou posterior): incompleto, fora de comparação. */
   parcial: boolean;
 };
 
-/** Um item por mês, da primeira conexão ao mês do cadastro; mês sem conexão vem com zero explícito. */
+/** Um item por mês, da primeira conexão ao mês do cadastro. */
 export type MmgdMes = {
   m: string;
-  unidades: number;
-  potencia_mw: number;
+  unidades: number | null;
+  potencia_mw: number | null;
+  unidades_sem_potencia?: number;
+  cobertura_declarada?: "fora";
   acumulado_unidades: number;
   acumulado_mw: number;
   /** Mês posterior a `corte_provisorio`: conexões do mês ainda podem entrar em capturas seguintes. */
@@ -140,18 +167,29 @@ export type MmgdUf = {
   uf: string;
   nome: string;
   unidades: number;
-  potencia_mw: number;
+  potencia_mw: number | null;
+  unidades_sem_potencia: number;
   participacao_potencia_pct: number | null;
   populacao: number | null;
   w_por_habitante: number | null;
   unidades_por_mil_habitantes: number | null;
-  potencia_mw_ano_referencia: number;
+  potencia_mw_ano_referencia: number | null;
   crescimento_estoque_ano_referencia_pct: number | null;
   ucs_recebem_credito: number;
 };
 
-/** Por UF, do primeiro ano com conexão na UF ao ano do cadastro, com zero explícito. */
-export type MmgdUfAno = { uf: string; ano: number; unidades: number; potencia_mw: number };
+/** Por UF, do primeiro ano com conexão na UF ao ano do cadastro (mesma regra de cobertura de MmgdAno). */
+export type MmgdUfAno = {
+  uf: string;
+  ano: number;
+  unidades: number | null;
+  potencia_mw: number | null;
+  unidades_sem_potencia?: number;
+  cobertura_declarada?: CoberturaDeclarada;
+};
+
+/** Classes das unidades fora da área da distribuidora pelo CEP publicado (5 dígitos). */
+export type ClasseForaDaArea = "provavel_municipio_errado" | "provavel_distribuidora_errada" | "indeterminada";
 
 export type MmgdDistribuidora = {
   /** Chave canônica (14 dígitos). */
@@ -160,45 +198,63 @@ export type MmgdDistribuidora = {
   nome: string | null;
   siglas_publicadas: string[];
   unidades: number;
-  potencia_mw: number;
+  potencia_mw: number | null;
+  unidades_sem_potencia: number;
   unidades_ano_referencia: number;
-  potencia_mw_ano_referencia: number;
+  potencia_mw_ano_referencia: number | null;
   municipios: number;
   uf_principal: string;
   unidades_fora_uf_principal: number;
   /** UFs com conjunto elétrico do CNPJ na base de continuidade da ANEEL; null sem referência. */
   ufs_area_conjuntos: string[] | null;
-  /** Unidades e potência em UF fora dessa área (provável código de município errado na origem). */
+  /** Unidades e potência em UF fora dessa área (algum campo errado na origem: município ou CNPJ). */
   unidades_fora_da_area: number | null;
   potencia_mw_fora_da_area: number | null;
   /** UFs com unidades da distribuidora fora da área dos seus conjuntos; null sem referência. */
   ufs_fora_da_area: string[] | null;
+  /** Classes pelo CEP das unidades fora da área; null sem unidade fora ou sem as classes. */
+  classes_fora_da_area: {
+    provavel_municipio_errado: { unidades: number; potencia_mw: number };
+    /** `ufs`: UFs dos municípios onde ficam (CEP, código e UF publicada na UF do município). */
+    provavel_distribuidora_errada: { unidades: number; potencia_mw: number; ufs: string[] };
+    indeterminada: { unidades: number; potencia_mw: number };
+  } | null;
+  /** Aviso de que unidades da classe de provável distribuidora errada inflam o total deste CNPJ; null sem elas. */
+  aviso_total: string | null;
   ufs: { uf: string; unidades: number }[];
 };
 
 export type MmgdPerfilLinha = {
   categoria: string;
   unidades: number;
-  potencia_mw: number;
+  potencia_mw: number | null;
+  unidades_sem_potencia: number;
   participacao_unidades_pct: number;
   unidades_ano_referencia: number;
-  potencia_mw_ano_referencia: number;
+  potencia_mw_ano_referencia: number | null;
 };
 
+/** Município dos destaques: rankings só com potência completa (sem unidade sem potência). */
 export type MmgdMunicipioCurto = {
   ibge: string;
   nome: string | null;
   uf: string | null;
   unidades: number;
-  potencia_kw: number;
+  potencia_kw: number | null;
   populacao: number | null;
   w_por_habitante: number | null;
-  potencia_kw_ano_referencia: number;
+  potencia_kw_ano_referencia: number | null;
   crescimento_estoque_pct: number | null;
   /** Unidades do município cuja distribuidora (CNPJ) não tem conjunto elétrico na UF; null = conferência indisponível. */
   unidades_distribuidora_fora_da_uf: number | null;
   potencia_kw_distribuidora_fora_da_uf: number | null;
   sinal_distribuidora_fora_da_uf: boolean | null;
+  /**
+   * Dessas, as que o CEP põe numa UF da área da distribuidora: provavelmente ficam em outro
+   * município e são as únicas que inflam a razão por habitante; null = classes indisponíveis.
+   */
+  unidades_provavel_municipio_errado: number | null;
+  potencia_kw_provavel_municipio_errado: number | null;
 };
 
 export type ControleForaDaArea =
@@ -213,6 +269,36 @@ export type ControleForaDaArea =
       distribuidoras_sem_referencia: number;
       unidades_sem_referencia: number;
       distribuidoras_com_area: number;
+      classes_pelo_cep:
+        | { disponivel: false; motivo: string }
+        | {
+            disponivel: true;
+            classes: {
+              classe: ClasseForaDaArea;
+              rotulo: string;
+              unidades: number;
+              potencia_kw: number;
+              municipios: number;
+              distribuidoras: number;
+            }[];
+            indeterminadas_por_motivo: {
+              motivo: "sem_cep" | "cep_de_preenchimento" | "cep_sem_referencia" | "cep_em_terceira_uf" | "sinais_divergentes";
+              unidades: number;
+              potencia_kw: number;
+            }[];
+            /** UF do CEP pelas unidades não sinalizadas do próprio cadastro (a tabela dos Correios exige captcha). */
+            referencia_uf_do_cep: {
+              regra: string;
+              participacao_minima: number;
+              unidades_de_referencia: number;
+              prefixos_5: number;
+              prefixos_5_ambiguos: number;
+              prefixos_3: number;
+              prefixos_3_ambiguos: number;
+              unidades_classificadas_pelo_prefixo_3: number;
+            };
+            orientacao: string;
+          };
       maiores_municipios: { ibge: string; unidades: number; potencia_kw: number }[];
       por_distribuidora: { cnpj: string; unidades: number; potencia_kw: number; ufs_fora: string[] }[];
       referencia: {
@@ -246,6 +332,15 @@ export type MmgdControles = {
     regra: string;
     resultado: "aprovada" | "reprovada";
   };
+  /** Regra de cobertura das séries por data (cobertura declarada a partir de dez/2008). */
+  cobertura_das_series: {
+    inicio_declarado: string;
+    regra: string;
+    unidades_anteriores: number;
+    anos_com_registro_anterior: { ano: number; unidades: number; potencia_mw: number | null }[];
+    pontos_nulos_anual: number;
+    pontos_nulos_mensal: number;
+  };
   data_conexao_minima: string | null;
   data_conexao_maxima: string | null;
   /** AnmPeriodoReferencia publicado no arquivo (ex.: "09/2026"). */
@@ -258,6 +353,8 @@ export type MmgdControles = {
   potencia_zero: number;
   potencia_ausente: number;
   potencia_negativa: number;
+  /** Unidades sem potência nos agregados (= potência ausente + negativa no arquivo). */
+  unidades_sem_potencia_nos_agregados: number;
   fonte_nao_informada: number;
   municipio_codigo_6_digitos_completado: number;
   municipio_fora_cadastro_ibge: number;
@@ -326,11 +423,15 @@ export type BlocoMmgd = {
   distribuicao_municipal: {
     quantis_w_por_habitante: { p10: number | null; p25: number | null; p50: number | null; p75: number | null; p90: number | null };
     municipios_com_populacao: number;
+    /** Municípios com unidade sem potência: fora dos rankings e dos quantis. */
+    municipios_com_potencia_parcial: number;
     municipios_sem_mmgd: number;
     municipios_no_cadastro_ibge: number;
   };
   controles: MmgdControles;
   revisoes: MmgdRevisoes;
+  /** Trechos da ANEEL citados nas limitações (modalidades de compensação). */
+  documentos: DocumentoFonte[];
   proveniencia: { cadastro: Proveniencia; por_habitante: Proveniencia };
 };
 
@@ -341,13 +442,17 @@ export type MunicipiosMmgdArquivo = {
   ano_referencia: number;
   ano_populacao: number | null;
   campos: [
-    "ibge", "nome", "uf", "unidades", "potencia_kw", "populacao", "w_por_habitante", "unidades_por_mil_habitantes",
-    "unidades_ano_referencia", "potencia_kw_ano_referencia", "potencia_kw_estoque_ano_anterior", "crescimento_estoque_pct",
-    "fonte_principal", "unidades_distribuidora_fora_da_uf", "potencia_kw_distribuidora_fora_da_uf",
+    "ibge", "nome", "uf", "unidades", "potencia_kw", "unidades_sem_potencia", "populacao", "w_por_habitante",
+    "unidades_por_mil_habitantes", "unidades_ano_referencia", "potencia_kw_ano_referencia",
+    "potencia_kw_estoque_ano_anterior", "crescimento_estoque_pct", "fonte_principal",
+    "unidades_distribuidora_fora_da_uf", "potencia_kw_distribuidora_fora_da_uf",
+    "unidades_provavel_municipio_errado", "potencia_kw_provavel_municipio_errado",
+    "unidades_provavel_distribuidora_errada", "potencia_kw_provavel_distribuidora_errada",
   ];
   linhas: [
-    string, string | null, string | null, number, number, number | null, number | null, number | null,
-    number, number, number, number | null, FonteMmgd | null, number | null, number | null,
+    string, string | null, string | null, number, number | null, number, number | null, number | null,
+    number | null, number, number | null, number | null, number | null, FonteMmgd | null,
+    number | null, number | null, number | null, number | null, number | null, number | null,
   ][];
 };
 
@@ -438,6 +543,23 @@ export type BlocoOnsMmgd = {
   anual: OnsMmgdAno[];
   conferencia_quebra_2023: ConferenciaQuebra2023;
   documentos: DocumentoFonte[];
+  /** Domínio executado a cada publicação: mês ou ano fora de 0 a 100% vira stub; dia fora vira ressalva. */
+  validacoes: {
+    participacao_dominio: {
+      regra: string;
+      meses_verificados: number;
+      anos_verificados: number;
+      violacoes: number;
+      resultado: "aprovada";
+    };
+    dias_fora_do_dominio: {
+      regra: string;
+      dias: number;
+      exemplos: { d: string; submercado: string; mmgd_mwh: number | null; carga_global_mwh: number | null }[];
+      resultado: "aprovada" | "ressalva";
+      tratamento: string;
+    };
+  };
   proveniencia: { estimativa: Proveniencia; razao: Proveniencia };
   /** Último mês completo no SIN; null quando nenhum mês está completo. */
   evidencia: EvidenciaTransicao | null;
@@ -561,6 +683,7 @@ export type RegrasTransicao = {
   participacoes: string;
   series_com_zero: string;
   distribuidora_fora_da_uf: string;
+  potencia_ausente: string;
 };
 
 export type GoldTransicao = Cabecalho & {

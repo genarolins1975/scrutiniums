@@ -143,7 +143,11 @@ COLUNAS = {
                  ("previsao_em_bloco", "sim = data atribuída a 100 usinas ou mais na mesma fotografia (convencional)"),
                  ("teste_realizado", None)],
     "trajetorias": [("nucleo_ceg", None), ("ceg", None), ("nome", None), ("tipo", None), ("uf", None), ("primeira_fotografia", None),
-                    ("ultima_fotografia", None), ("kw_outorgado_primeira", None), ("previsao_primeira", None),
+                    ("ultima_fotografia", None), ("kw_outorgado_primeira", None),
+                    ("kw_em_implantacao_primeira", "soma das unidades da primeira fotografia, limitada à outorga; peso das coortes"),
+                    ("operava_antes_da_primeira", "sim = entrada em operação no SIGA ou liberação comercial anterior à primeira fotografia (ampliação)"),
+                    ("primeira_fotografia_atipica", "sim = unidades da primeira fotografia somam 10 vezes a outorga ou mais (erro da fonte)"),
+                    ("previsao_primeira", None),
                     ("outorgado_primeira", None), ("previsao_ultima", None), ("outorgado_ultima", None), ("mudancas_previsao", None),
                     ("ugs_primeira", None), ("ugs_primeira_liberadas", None), ("kw_primeira_liberado", None), ("ultima_liberacao", None),
                     ("desfecho", None), ("data_encerramento", "vazio = sem ato datado"),
@@ -157,7 +161,9 @@ COLUNAS = {
                    ("kw_antes_do_prazo", None),
                    ("mediana_desvio_dias_ponderada", "liberação menos data outorgada vigente, ponderada por kW; desvio em relação a um prazo, não atraso com data-base")],
     "encerramentos": [("publicacao", "vazio = ato sem data de publicação na fonte"), ("encerramento", "revogacao ou extincao"),
-                      ("nucleo_ceg", "vazio = ato sem chave de usina na fonte"), ("ceg", None), ("nome", None), ("tipo", None),
+                      ("nucleo_ceg", "vazio = ato sem chave de usina na fonte"), ("ceg", None), ("nome", None),
+                      ("tipo", "SigTipoGeracao do ato (a outorga encerrada)"),
+                      ("tipo_no_cadastro", "tipo atual no SIGA; vazio = usina fora do SIGA; difere do ato na conversão de regime"),
                       ("uf", None), ("mw_no_ato", "MdaPotenciaInstaladaMW como publicado"),
                       ("mw_usado", "potência somada; vazio = fora da soma"),
                       ("conferencia_potencia", "conferida, corrigida_kw, fora_da_soma ou sem_potencia"),
@@ -171,15 +177,18 @@ COLUNAS = {
                 ("rap_vencedor_rs", "vazio em lote sem vencedor"), ("desagio_pct", None), ("vencedor", None),
                 ("contratado", "não = SEM LANCE, SEM INSCRITO APTO ou NÃO LEILOADO; reais nominais da data do leilão")],
     "obras": [("empreendimento", None), ("empreendimento_ons", None), ("contrato", "IdeCcd"), ("nome", None), ("situacao", None),
-              ("oper_ato_legal", None), ("oper_efetiva", None), ("atraso_dias", "efetiva menos ato legal"),
+              ("oper_ato_legal", "prazo vigente do ato legal (DatOprComEpd)"), ("oper_efetiva", None),
+              ("desvio_prazo_vigente_dias", "efetiva menos prazo vigente do ato legal; não é atraso com data-base"),
               ("prazo_legal_vencido", None), ("km_lt", "km de circuito de linhas novas atribuídas a este empreendimento"),
-              ("mva_tr", "MVA de transformadores novos atribuídos a este empreendimento"),
+              ("mva_tr", "MVA de transformadores novos de finalidade principal atribuídos a este empreendimento"),
+              ("mva_tr_reserva", "MVA de transformadores reserva (não soma capacidade)"),
               ("modulos_em_outro_empreendimento", "módulos também listados aqui, contados no empreendimento da obra mais antiga"),
               ("ufs", None), ("obras", None), ("obras_resolucao", None)],
     "contratos": [("contrato", "IdeCcd"), ("numero", "NumCnaCcd"), ("assinatura", "DatAsnCcd"), ("fim", "DatFimCcd"),
                   ("cnpj", "14 dígitos"), ("agente", None), ("empreendimentos", "vazio = contrato sem empreendimento cadastrado no SIGET"),
                   ("km_lt_novas", "km de circuito do objeto original (linhas com o mesmo fim do contrato); vazio = sem empreendimento"),
-                  ("mva_tr_novos", None), ("empreendimentos_com_prazo_proprio", "reforços incorporados com outra data de fim, fora das somas")],
+                  ("mva_tr_novos", "transformadores de finalidade principal"), ("mva_tr_reserva", "transformadores reserva"),
+                  ("empreendimentos_com_prazo_proprio", "reforços incorporados com outra data de fim, fora das somas")],
     "pde": [("figura", None), ("titulo", None), ("referencia", "ano ou mês"), ("serie", None), ("valor", None),
             ("unidade", "PDE 2035, CENÁRIO")],
 }
@@ -260,11 +269,15 @@ INTEGRADOR_VERSAO = "1"
 # lote contratado, 0 km com linha descrita (ou 0 MVA com MVA descrito) vira ausência.
 # Versão 3 das obras do SIGET: data de fim do contrato em cada linha. (A versão 2 ficou
 # marcada sem efeito: reintegrar a mesma vintage não reescrevia as linhas, o que
-# _limpa_integracao_antiga corrige.)
+# _limpa_integracao_antiga corrige.) Versão 2 dos equipamentos do SIGET: transformador
+# reserva (DscFinMdlEqp = 'Reserva') em campo próprio, fora do MVA de transformação.
+# Versão 1 do relatório do PDE: tabela do Anexo I-3 (parcela paraguaia de Itaipu e
+# composição das categorias) lida do PDF.
 VERSAO_INTEGRADOR_RECURSO = {
     "atos-outorgas-aneel.csv": "3",
     "resultado-leiloes-transmissao.csv": "4",
     "siget-contrato-empreendimento-obra-modulo.csv": "3",
+    "siget-contrato-moduloequipamento-subestacao.csv": "2",
 }
 DS_INTEGRACAO = "_integracao_expansao"
 MESES_JANELA = 12
@@ -643,7 +656,37 @@ def _integra(con, ds, rec, v):
         base.grava_registros(con, ds, v["vintage_id"], [("meta:pde2035", "atualizacao", _fmt(pde["_atualizacao"])),
                                                         ("meta:pde2035", "arquivos", _fmt(pde["_arquivos"]))])
         return {"observacoes": base.grava_observacoes(con, ds, v["vintage_id"], linhas)}
-    return None  # recurso guardado no bronze sem integração (página e relatório do PDE)
+    if rec == "pde2035_relatorio_final_aprovado.pdf":
+        txt = _texto_pdf(v)
+        if txt is None:
+            raise RuntimeError("pdftotext ausente: o Anexo I-3 do relatório fica para um ambiente com poppler")
+        anexo = epe_pde.extrai_anexo_i3(txt)
+        linhas = [(f"pde2035.anexo_i3.{k}", ano, mw) for k, anos in anexo["linhas"].items()
+                  for ano, mw in anos.items() if mw is not None]
+        base.grava_registros(con, ds, v["vintage_id"], [("meta:pde2035_anexo_i3", "pagina", str(anexo["pagina"])),
+                                                        ("meta:pde2035_anexo_i3", "notas", _fmt(anexo["notas"])),
+                                                        ("meta:pde2035_anexo_i3", "extracao", "pdftotext -layout")])
+        return {"pagina": anexo["pagina"], "observacoes": base.grava_observacoes(con, ds, v["vintage_id"], linhas)}
+    return None  # recurso guardado no bronze sem integração (página do PDE)
+
+
+def _texto_pdf(v):
+    """Texto do PDF da vintage pelo pdftotext -layout (páginas separadas por \\f); None
+    sem a ferramenta. O PDF passa por um arquivo temporário: o bronze guarda o .gz."""
+    import shutil
+    import subprocess
+    import tempfile
+    exe = shutil.which("pdftotext")
+    if not exe:
+        return None
+    fd, tmp = tempfile.mkstemp(suffix=".pdf")
+    os.close(fd)
+    try:
+        with open(tmp, "wb") as g:
+            g.write(_bytes_bronze(v))
+        return subprocess.run([exe, "-layout", tmp, "-"], capture_output=True, text=True, timeout=120, check=True).stdout
+    finally:
+        os.remove(tmp)
 
 
 def coletar(con, ctx):
@@ -741,9 +784,11 @@ ROTULO_ESTAGIO = {
 ORDEM_ORIGEM = ("Hídrica", "Fóssil", "Eólica", "Solar", "Biomassa", "Nuclear")
 
 
-def _bloco_capacidade(siga, agreg, lib_linhas, data_siga):
+def _bloco_capacidade(siga, agreg, lib_linhas, data_siga, data_lib=None):
     """Capacidade instalada em operação (SIGA, fase Operação), por tipo, origem, fonte e
-    UF, com reconciliação contra os agregados publicados pela própria ANEEL."""
+    UF, com reconciliação contra os agregados publicados pela própria ANEEL. `data_lib`
+    é a última liberação presente no arquivo de liberações: depois dela e até a data do
+    SIGA não há liberação publicada para descontar (lacuna declarada)."""
     op = {k: u for k, u in siga.items() if u.get("fase") == "Operação"}
     tot_f = sum(u.get("kw_fiscalizado") or 0 for u in op.values())
     tot_o = sum(u.get("kw_outorgado") or 0 for u in op.values())
@@ -785,8 +830,20 @@ def _bloco_capacidade(siga, agreg, lib_linhas, data_siga):
 
     # reconciliação: agregado oficial mais recente por tipo (empreendimentos em operação)
     # e por UF (capacidade instalada por UF) contra o SIGA, com as liberações comerciais
-    # entre o fim do mês do agregado e a data do SIGA como diferença esperada
+    # entre o fim do mês do agregado e a data do SIGA como diferença esperada; o arquivo de
+    # liberações termina antes da data do SIGA, e o que entrou nesse intervalo fica no
+    # resíduo (lacuna publicada)
     rec_tipo, rec_uf = [], []
+    fim_lib = min(x for x in (data_siga, data_lib) if x) if (data_siga or data_lib) else None
+
+    def janela(ref_mes):
+        if not ref_mes:
+            return None
+        ini = (date.fromisoformat(_fim_do_mes(ref_mes)) + timedelta(days=1)).isoformat()
+        lac = None
+        if data_lib and data_siga and data_lib < data_siga:
+            lac = {"inicio": (date.fromisoformat(data_lib) + timedelta(days=1)).isoformat(), "fim": data_siga}
+        return {"liberacoes_descontadas": {"inicio": ini, "fim": fim_lib}, "sem_liberacoes_publicadas": lac}
 
     def liberado_entre(ref_mes, campo):
         """kW liberado para operação comercial depois do fim do mês do agregado e até a
@@ -794,7 +851,7 @@ def _bloco_capacidade(siga, agreg, lib_linhas, data_siga):
         fim_ref = _fim_do_mes(ref_mes)
         out = defaultdict(float)
         for x in lib_linhas:
-            if fim_ref < (x["realizado"] or "") <= data_siga:
+            if fim_ref < (x["realizado"] or "") <= fim_lib:
                 out[x[campo]] += x["kw"] or 0
         return out
 
@@ -831,6 +888,7 @@ def _bloco_capacidade(siga, agreg, lib_linhas, data_siga):
         "por_tipo": por_tipo, "por_origem": por_origem, "por_fonte": por_fonte, "por_uf": por_uf,
         "multiestaduais": {"usinas": len(multi), "mw_fiscalizado": _r(_mw(sum(u.get("kw_fiscalizado") or 0 for u in multi)))},
         "reconciliacao": {"referencia_tipo": ref, "por_tipo": rec_tipo, "referencia_uf": ref_uf, "por_uf": rec_uf,
+                          "janela_tipo": janela(ref), "janela_uf": janela(ref_uf),
                           "tolerancia_residuo_pct": TOLERANCIA_RESIDUO_PCT,
                           "justificativa_tolerancia": JUSTIFICATIVA_TOLERANCIA,
                           "fora_da_tolerancia": {
@@ -1062,12 +1120,24 @@ def _bloco_encerramentos(encerramentos, siga, ralie_kw_hist, data_siga):
     n_atos_usina = defaultdict(int)
     for k, x in atos:
         n_atos_usina[usina(k, x)] += 1
-    # tipo: o do ato (rótulo da fonte), uma vez por usina
-    por_tipo = defaultdict(dict)
+    # tipo: o do ato (a outorga que foi encerrada), uma vez por usina; o tipo do cadastro
+    # atual no SIGA sai ao lado. Os dois divergem quando a concessão ou autorização de uma
+    # PCH ou UHE foi extinta e a usina segue em operação como CGH sob registro (conversão
+    # de regime): Monjolinho (1486) é 'UHE' no ato e CGH de 600 kW no SIGA, e a conferência
+    # de potência usa o cadastro (limite legal da CGH).
+    def tipo_cad(x):
+        s_ = siga.get(str(x["nucleo"])) if x.get("nucleo") is not None else None
+        return (s_ or {}).get("tipo")
+
+    por_tipo, por_tipo_cad = defaultdict(dict), defaultdict(dict)
+    divergentes = defaultdict(int)
     for k, x in atos:
         u = usina(k, x)
-        t = x.get("tipo_geracao")
-        por_tipo[t][u] = _maxn(por_tipo[t].get(u), conf[k]["mw_usado"])
+        por_tipo[x.get("tipo_geracao")][u] = _maxn(por_tipo[x.get("tipo_geracao")].get(u), conf[k]["mw_usado"])
+        tc = tipo_cad(x) or "(fora do SIGA)"
+        por_tipo_cad[tc][u] = _maxn(por_tipo_cad[tc].get(u), conf[k]["mw_usado"])
+        if tipo_cad(x) and x.get("tipo_geracao") and tipo_cad(x) != x.get("tipo_geracao"):
+            divergentes[(x.get("tipo_geracao"), tipo_cad(x), (siga.get(str(x["nucleo"])) or {}).get("outorga"))] += 1
     # usinas com outorga encerrada que seguem em operação no SIGA
     op_us = {u for u in por_usina if fase_de(u) == "Operação"}
     por_outorga = defaultdict(lambda: {"usinas": 0, "mw_fiscalizado": 0.0})
@@ -1082,7 +1152,8 @@ def _bloco_encerramentos(encerramentos, siga, ralie_kw_hist, data_siga):
         sc_ano[(x.get("publicacao") or "")[:4] or None]["atos"] += 1
         sc_ano[(x.get("publicacao") or "")[:4] or None]["mw"] += conf[k]["mw_usado"] or 0
     lista_conf = [{"chave": k, "publicacao": x.get("publicacao"), "nome": x.get("nome"), "nucleo": x.get("nucleo"),
-                   "tipo": x.get("tipo_geracao"), "mw_no_ato": x.get("mw"), "mw_usado": _r(conf[k]["mw_usado"], 6),
+                   "tipo": x.get("tipo_geracao"), "tipo_no_cadastro": tipo_cad(x),
+                   "mw_no_ato": x.get("mw"), "mw_usado": _r(conf[k]["mw_usado"], 6),
                    "kw_cadastro": conf[k]["ref_kw"], "cadastro": conf[k]["ref_origem"], "motivo": conf[k]["motivo"]}
                   for k, x in atos if conf[k]["situacao"] in ("corrigida_kw", "fora_da_soma")]
 
@@ -1091,7 +1162,7 @@ def _bloco_encerramentos(encerramentos, siga, ralie_kw_hist, data_siga):
     for k, x in atos:
         s_ = siga.get(str(x["nucleo"])) if x.get("nucleo") is not None else None
         linhas.append([x.get("publicacao"), x.get("encerramento"), x.get("nucleo"), x.get("ceg"), x.get("nome"),
-                       x.get("tipo_geracao"), x.get("uf"), x.get("mw"), conf[k]["mw_usado"], conf[k]["situacao"],
+                       x.get("tipo_geracao"), tipo_cad(x), x.get("uf"), x.get("mw"), conf[k]["mw_usado"], conf[k]["situacao"],
                        conf[k]["motivo"], "sim" if repetido[k] else "não", (s_ or {}).get("fase"), (s_ or {}).get("outorga"),
                        x.get("assunto"), x.get("ato"), x.get("numero"), x.get("agente")])
     _csv(os.path.basename(DOWNLOADS["encerramentos"]), _cabecalho("encerramentos"), linhas)
@@ -1103,6 +1174,15 @@ def _bloco_encerramentos(encerramentos, siga, ralie_kw_hist, data_siga):
         "por_ano": enc_ano,
         "por_tipo": [{"tipo": t, "usinas": len(us), "mw_usinas": _r(sum(m or 0 for m in us.values()))}
                      for t, us in sorted(por_tipo.items(), key=lambda kv: -sum(m or 0 for m in kv[1].values()))],
+        "por_tipo_no_cadastro": [{"tipo": t, "usinas": len(us), "mw_usinas": _r(sum(m or 0 for m in us.values()))}
+                                 for t, us in sorted(por_tipo_cad.items(), key=lambda kv: -sum(m or 0 for m in kv[1].values()))],
+        "regra_tipo": ("por_tipo usa o tipo do ato (a outorga encerrada); por_tipo_no_cadastro, o tipo atual da usina no SIGA. "
+                       "Divergem quando a concessão ou autorização de uma PCH ou UHE foi extinta e a usina segue em operação "
+                       "como CGH sob registro (conversão de regime). A conferência de potência usa o tipo do cadastro."),
+        "tipo_do_ato_diferente_do_cadastro": {
+            "atos": sum(divergentes.values()),
+            "pares": [{"tipo_no_ato": a, "tipo_no_cadastro": b, "outorga_no_siga": o, "atos": n}
+                      for (a, b, o), n in sorted(divergentes.items(), key=lambda kv: -kv[1])]},
         "sem_data_publicacao": {"atos": sem_data["atos"], "usinas": len(sem_data["usinas"]),
                                 "mw_usinas": _r(sum(m or 0 for m in sem_data["usinas"].values()))},
         "total": {"atos": len(atos), "usinas": total_usinas, "mw_usinas": _r(sum(m or 0 for m in por_usina.values())),
@@ -1167,7 +1247,7 @@ def _atraso_realizado(lib_linhas, desde="2014"):
         com = [(a, k) for a, k in pares if a is not None]
         kw = sum(k for _, k in pares)
         out.append({"ano": ano, "tipo": tipo, "linhas": len(pares), "kw": kw,
-                    "kw_com_data_outorgada": sum(k for _, k in com),
+                    "linhas_com_data_outorgada": len(com), "kw_com_data_outorgada": sum(k for _, k in com),
                     "kw_com_atraso": sum(k for a, k in com if a > 0),
                     "kw_antecipado": sum(k for a, k in com if a < 0),
                     "mediana_dias": ax.mediana_ponderada(com)})
@@ -1189,7 +1269,7 @@ def datas_em_bloco_atual(ralie_ug, minimo=None):
     return {d for d, ns in usinas.items() if len(ns) >= minimo}
 
 
-def _bloco_cronograma(con, ralie_us, ralie_ug, lib_linhas, lib_idx, data_ralie, data_lib, pf_ug, mensais):
+def _bloco_cronograma(con, ralie_us, ralie_ug, lib_linhas, lib_idx, data_ralie, data_lib, pf_ug, mensais, pares_atipicos=()):
     """P041: previsões atuais (com data-base = fotografia do RALIE), confiabilidade das
     previsões passadas, revisões entre fotografias e atraso realizado."""
     base_d = date.fromisoformat(data_ralie)
@@ -1287,6 +1367,10 @@ def _bloco_cronograma(con, ralie_us, ralie_ug, lib_linhas, lib_idx, data_ralie, 
     # ---- histórico da fonte (Parquet): confiabilidade e revisões
     lib_tab = ax.tabela_liberacoes(lib_idx)
     ugm = ax.ug_mensal(pf_ug, mensais)
+    n_antes = ugm.num_rows
+    # unidades de usina com potência fora de escala na fotografia (erro da fonte) não pesam
+    ugm = ax.exclui_pares(ugm, {p for p in pares_atipicos if p[0] in set(mensais)})
+    ugs_atipicas_excluidas = n_antes - ugm.num_rows
     conf = ax.confiabilidade_previsoes(ugm, lib_tab, mensais, data_lib, horizonte_dias=365, folga_dias=15)
     blocos_hist = ax.datas_em_bloco(ugm, mensais)
     desl = ax.deslizamento_previsoes(ugm, mensais, meses=MESES_JANELA,
@@ -1341,7 +1425,15 @@ def _bloco_cronograma(con, ralie_us, ralie_ug, lib_linhas, lib_idx, data_ralie, 
     _csv(os.path.basename(DOWNLOADS["liberacoes"]), _cabecalho("liberacoes"),
          [[x["ano"], x["tipo"], x["linhas"], x["kw"], x["kw_com_data_outorgada"], x["kw_com_atraso"],
            x["kw_antecipado"], x["mediana_dias"]] for x in atr])
+    # o denominador dos percentuais (potência com data outorgada) sai em campo próprio,
+    # com as linhas sem data outorgada contadas à parte: os percentuais se reconstroem
+    # a partir da gold
     desvio_ano = [{"ano": x["ano"], "unidades_ou_grupos": x["linhas"], "mw_liberado": _r(_mw(x["kw"])),
+                   "unidades_ou_grupos_com_data_outorgada": x["linhas_com_data_outorgada"],
+                   "mw_com_data_outorgada": _r(_mw(x["kw_com_data_outorgada"])),
+                   "unidades_ou_grupos_sem_data_outorgada": x["linhas"] - x["linhas_com_data_outorgada"],
+                   "mw_sem_data_outorgada": _r(_mw(x["kw"] - x["kw_com_data_outorgada"])),
+                   "mw_depois_do_prazo": _r(_mw(x["kw_com_atraso"])), "mw_antes_do_prazo": _r(_mw(x["kw_antecipado"])),
                    "pct_mw_depois_do_prazo": _pct(x["kw_com_atraso"], x["kw_com_data_outorgada"]),
                    "pct_mw_antes_do_prazo": _pct(x["kw_antecipado"], x["kw_com_data_outorgada"]),
                    "mediana_desvio_dias_ponderada": x["mediana_dias"], "ano_parcial": x["ano"] == data_lib[:4]}
@@ -1354,7 +1446,8 @@ def _bloco_cronograma(con, ralie_us, ralie_ug, lib_linhas, lib_idx, data_ralie, 
            GROUP BY chave HAVING COUNT(DISTINCT valor) > 1)""", (DS_RALIE,)).fetchone()[0]
     return {
         "data_ralie": data_ralie,
-        "historico_fonte": {"primeira_fotografia": None, "fotografias": None, "fotografias_mensais": len(mensais)},
+        "historico_fonte": {"primeira_fotografia": None, "fotografias": None, "fotografias_mensais": len(mensais),
+                            "ugs_atipicas_excluidas_das_fotografias_mensais": ugs_atipicas_excluidas},
         "historico_proprio": {"primeira_captura": caps[0][0] if caps else None, "capturas": len(caps),
                               "ugs_com_previsao_revisada": revisadas},
         "previsoes_atuais": atual,
@@ -1379,14 +1472,25 @@ def _bloco_cronograma(con, ralie_us, ralie_ug, lib_linhas, lib_idx, data_ralie, 
 
 DESFECHOS = {
     "em_implantacao": "Segue em implantação (consta na fotografia mais recente do RALIE)",
-    "operacao": "Entrou em operação (fase Operação no SIGA ou todas as unidades da primeira fotografia liberadas)",
+    "operacao": ("Entrou em operação: todas as unidades da primeira fotografia liberadas para operação comercial, ou fase "
+                 "Operação no SIGA para usina que não operava antes da primeira fotografia (em ampliação de usina que já "
+                 "operava, a fase do SIGA reflete a parte antiga e só a liberação das unidades da ampliação conta)"),
     "outorga_encerrada": "Outorga revogada ou extinta (ato da ANEEL publicado após a primeira aparição, ou ato de encerramento sem data de publicação na fonte)",
     "sem_desfecho": "Saiu do acompanhamento sem operação nem ato de encerramento identificados",
 }
+REGRA_PESO_COORTES = ("Peso de cada usina: potência das unidades em implantação na primeira fotografia (soma de "
+                      "MdaPotenciaUnitaria), limitada à potência outorgada da usina na mesma fotografia; sem unidades "
+                      "listadas, a potência outorgada. Em ampliação, a outorga da usina inclui a parte que já operava, e "
+                      "as unidades listadas são só as da ampliação; o limite pela outorga neutraliza unidade com potência "
+                      "fora de escala (Belvedere 1 em 17/06/2021).")
 
 
-def _desfechos(trajs, prim_ugs, lib_idx, siga, encerramentos, ultima_ralie):
-    """Classifica cada usina que já passou pelo RALIE (regra em DESFECHOS, nesta ordem)."""
+def _desfechos(trajs, prim_ugs, lib_idx, siga, encerramentos, ultima_ralie, lib_primeira=None, pares_atipicos=()):
+    """Classifica cada usina que já passou pelo RALIE (regra em DESFECHOS, nesta ordem) e
+    calcula o peso da usina nas coortes (REGRA_PESO_COORTES). `lib_primeira`: {núcleo:
+    primeira liberação comercial de qualquer unidade}; `pares_atipicos`: {(fotografia,
+    núcleo)} com unidades fora de escala (ax.unidades_atipicas)."""
+    lib_primeira = lib_primeira or {}
     enc_por = defaultdict(list)
     # ato de encerramento sem data de publicação na fonte (3 em 30/09/2026): a outorga foi
     # encerrada, só não se sabe quando; conta como encerramento com data desconhecida, e
@@ -1405,32 +1509,46 @@ def _desfechos(trajs, prim_ugs, lib_idx, siga, encerramentos, ultima_ralie):
         lib = [lib_idx.get((n, u)) for u, _ in ugs]
         liberadas = [d for d in lib if d]
         kw_lib = sum((k or 0) for (u, k), d in zip(ugs, lib) if d)
-        fase = (siga.get(str(n)) or {}).get("fase")
+        s_ = siga.get(str(n)) or {}
+        fase = s_.get("fase")
+        # usina que já operava antes da primeira fotografia (ampliação ou operação parcial):
+        # entrada em operação no SIGA ou liberação comercial anterior
+        eo = s_.get("entrada_operacao")
+        operava_antes = bool((eo and eo < t["primeira"]) or (lib_primeira.get(n) and lib_primeira[n] < t["primeira"]))
         enc = sorted(d for d in enc_por.get(n, []) if d >= t["primeira"])
         if t["ultima"] == ultima_ralie:
             desf = "em_implantacao"
-        elif fase == "Operação" or (ugs and len(liberadas) == len(ugs)):
+        elif (ugs and len(liberadas) == len(ugs)) or (fase == "Operação" and not operava_antes):
             desf = "operacao"
         elif enc or n in enc_sem_data:
             desf = "outorga_encerrada"
         else:
             desf = "sem_desfecho"
+        kw_ug, kw_o = t.get("kw_ug_primeira"), t.get("kw_primeira")
+        peso = min(kw_ug, kw_o) if kw_ug and kw_o else (kw_ug or kw_o or 0.0)
         out[n] = {**t, "ugs_primeira": len(ugs), "ugs_primeira_liberadas": len(liberadas), "kw_primeira_liberado": kw_lib,
                   "ultima_liberacao": max(liberadas) if liberadas else None, "desfecho": desf,
                   "data_encerramento": enc[0] if enc else None,
-                  "encerramento_sem_data": desf == "outorga_encerrada" and not enc, "fase_siga": fase}
+                  "encerramento_sem_data": desf == "outorga_encerrada" and not enc, "fase_siga": fase,
+                  "operava_antes": operava_antes, "kw_peso": peso,
+                  "peso_limitado_pela_outorga": bool(kw_ug and kw_o and kw_ug > kw_o),
+                  "peso_sem_unidades": not kw_ug,
+                  "primeira_atipica": (t.get("ug_primeira"), n) in pares_atipicos}
     return out
 
 
 def _bloco_coortes(desf, primeira_global):
-    """Desfecho por coorte: estoque da primeira fotografia e entradas por ano."""
-    g = defaultdict(lambda: defaultdict(lambda: {"usinas": 0, "kw": 0.0}))
+    """Desfecho por coorte: estoque da primeira fotografia e entradas por ano, ponderado
+    pela potência em implantação na primeira fotografia (REGRA_PESO_COORTES); a
+    potência outorgada da usina sai ao lado, como contexto."""
+    g = defaultdict(lambda: defaultdict(lambda: {"usinas": 0, "kw": 0.0, "kw_o": 0.0, "ampliacoes": 0}))
     for x in desf.values():
         coorte = "estoque_inicial" if x["primeira"] == primeira_global else x["primeira"][:4]
-        g[coorte][x["desfecho"]]["usinas"] += 1
-        g[coorte][x["desfecho"]]["kw"] += x.get("kw_primeira") or 0
-        g[coorte]["_total"]["usinas"] += 1
-        g[coorte]["_total"]["kw"] += x.get("kw_primeira") or 0
+        for d in (x["desfecho"], "_total"):
+            g[coorte][d]["usinas"] += 1
+            g[coorte][d]["kw"] += x.get("kw_peso") or 0
+            g[coorte][d]["kw_o"] += x.get("kw_primeira") or 0
+            g[coorte][d]["ampliacoes"] += bool(x.get("operava_antes"))
     out = []
     for coorte in sorted(g, key=lambda k: "0" if k == "estoque_inicial" else k):
         tot = g[coorte]["_total"]
@@ -1438,8 +1556,10 @@ def _bloco_coortes(desf, primeira_global):
             "coorte": coorte,
             "rotulo": f"Estoque na primeira fotografia ({c.data_br(primeira_global)})" if coorte == "estoque_inicial"
             else f"Entraram no RALIE em {coorte}",
-            "usinas": tot["usinas"], "mw_outorgado": _r(_mw(tot["kw"])),
-            "desfechos": {d: {"usinas": g[coorte][d]["usinas"], "mw_outorgado": _r(_mw(g[coorte][d]["kw"])),
+            "usinas": tot["usinas"], "mw_em_implantacao": _r(_mw(tot["kw"])), "mw_outorgado": _r(_mw(tot["kw_o"])),
+            "usinas_que_ja_operavam": tot["ampliacoes"],
+            "desfechos": {d: {"usinas": g[coorte][d]["usinas"], "mw_em_implantacao": _r(_mw(g[coorte][d]["kw"])),
+                              "mw_outorgado": _r(_mw(g[coorte][d]["kw_o"])), "usinas_que_ja_operavam": g[coorte][d]["ampliacoes"],
                               "pct_mw": _pct(g[coorte][d]["kw"], tot["kw"])} for d in DESFECHOS},
         })
     return out
@@ -1517,6 +1637,12 @@ def _bloco_leiloes(lotes, publicado_em):
             "regra_zero": "Em lote contratado, 0 km só conta como zero quando a descrição do empreendimento não cita linha (LT ou extensão em km), e 0 MVA só quando não cita MVA; nos demais casos o campo não foi preenchido pela fonte e fica fora da soma do ano (lotes_km_nao_informado, lotes_mva_nao_informado).",
             "lotes_km_nao_informado": sum(x["lotes_km_nao_informado"] for x in anos),
             "lotes_mva_nao_informado": sum(x["lotes_mva_nao_informado"] for x in anos),
+            "nota_mva": ("MdaSubEstacoesMVA como publicado. A fonte não segue uma convenção única para o transformador "
+                         "reserva: lotes antigos somam a unidade reserva ('(6+1) x 250 MVA' = 1.750 MVA no 004/2000, lote 1; "
+                         "'(3+1) x 224 MVA' = 896 MVA no 011/1999) e lotes recentes informam só o MVA principal (001/2024, "
+                         "lote 3: 1.800 MVA, contra 1.800 principais e 300 de reserva no contrato do SIGET). A série de MVA "
+                         "leiloado mistura as duas convenções e não se compara diretamente com o MVA novo do SIGET, que "
+                         "exclui a reserva."),
             "ultimo_leilao": {"leilao": ult.get("leilao"), "data": ult.get("data")},
             "desagio_inconsistente": inconsist[:20], "desagio_inconsistente_total": len(inconsist)}
 
@@ -1586,6 +1712,18 @@ def _bloco_rede_epe(vig_rede):
     return out
 
 
+REGRA_MVA_RESERVA = ("MVA de transformação nova = transformadores de potência de finalidade principal (DscFinMdlEqp); "
+                     "o transformador reserva, unidade de prontidão que substitui outra em falha, não acrescenta capacidade "
+                     "e fica em mva_tr_reserva. Os leilões não seguem uma convenção única: lotes recentes informam só o "
+                     "MVA principal (001/2024, lote 3: 1.800 MVA; o contrato SIGET correspondente tem 1.800 principais e "
+                     "300 de reserva) e lotes antigos incluem a reserva ('(6+1) x 250 MVA' = 1.750 MVA no 004/2000, lote 1).")
+DEFINICAO_DESVIO_SIGET = ("Data efetiva de operação comercial do empreendimento (DatEfeOprComEpd) menos a data fixada pelo "
+                          "ato legal (DatOprComEpd), que é o prazo vigente: quando o prazo foi revisto por ato posterior, a "
+                          "medida é contra o prazo revisto, e o arquivo aberto não traz o prazo original. Em boa parte dos "
+                          "empreendimentos as duas datas coincidem (empreendimentos_data_efetiva_igual_ao_prazo), sinal de "
+                          "prazo ajustado à entrada. É desvio em relação ao prazo vigente, não atraso com data-base.")
+
+
 def _bloco_obras(epds, lts, eqps, resol, data_siget):
     """Obras de transmissão do SIGET por empreendimento: extensão de linhas novas (km de
     circuito), transformação nova (MVA), prazo do ato legal e data efetiva. Só módulos
@@ -1610,13 +1748,13 @@ def _bloco_obras(epds, lts, eqps, resol, data_siget):
     for x in resol.values():
         obras_resol.update(x.get("obras") or [])
     emp = []
-    por_sit = defaultdict(lambda: {"empreendimentos": 0, "obras": 0, "km": 0.0, "mva": 0.0})
+    por_sit = defaultdict(lambda: {"empreendimentos": 0, "obras": 0, "km": 0.0, "mva": 0.0, "mva_res": 0.0})
     uf_and = defaultdict(lambda: {"km": 0.0, "mva": 0.0, "empreendimentos": set()})
-    entrada = defaultdict(lambda: {"km": 0.0, "mva": 0.0, "modulos_lt": 0, "modulos_tr": 0})
+    entrada = defaultdict(lambda: {"km": 0.0, "mva": 0.0, "mva_res": 0.0, "modulos_lt": 0, "modulos_tr": 0})
     atraso_ano = defaultdict(list)
     for eid, e in epds.items():
         sit = e.get("situacao_empreendimento") or "(vazio)"
-        km = mva = 0.0
+        km = mva = mva_res = 0.0
         ufs = set()
         vistos_lt, vistos_tr = set(), set()
         n_obras, n_resol, outras, em_outro = set(), 0, 0, set()
@@ -1641,13 +1779,18 @@ def _bloco_obras(epds, lts, eqps, resol, data_siget):
                 if oper_obra and (lt.get("km") or 0) > 0:
                     entrada[oper_obra[:4]]["km"] += lt["km"]
                     entrada[oper_obra[:4]]["modulos_lt"] += 1
-            elif tipo_mdl == "ME" and mdl in eqps and eqps[mdl].get("mva") and mdl not in vistos_tr:
+            elif tipo_mdl == "ME" and mdl in eqps and (eqps[mdl].get("mva") or eqps[mdl].get("mva_reserva")) \
+                    and mdl not in vistos_tr:
+                # transformador reserva (finalidade 'Reserva' no SIGET) não acrescenta
+                # capacidade de transformação: fica em campo próprio
                 vistos_tr.add(mdl)
-                mva += eqps[mdl]["mva"]
+                mva += eqps[mdl].get("mva") or 0
+                mva_res += eqps[mdl].get("mva_reserva") or 0
                 if eqps[mdl].get("uf"):
                     ufs.add(eqps[mdl]["uf"])
                 if oper_obra:
-                    entrada[oper_obra[:4]]["mva"] += eqps[mdl]["mva"]
+                    entrada[oper_obra[:4]]["mva"] += eqps[mdl].get("mva") or 0
+                    entrada[oper_obra[:4]]["mva_res"] += eqps[mdl].get("mva_reserva") or 0
                     entrada[oper_obra[:4]]["modulos_tr"] += 1
         legal = e.get("oper_ato_legal")
         efetiva = e.get("oper_efetiva_empreendimento")
@@ -1661,22 +1804,24 @@ def _bloco_obras(epds, lts, eqps, resol, data_siget):
         p["obras"] += len(n_obras)
         p["km"] += km
         p["mva"] += mva
+        p["mva_res"] += mva_res
         if sit == "Em andamento":
             for uf in ufs:
                 uf_and[uf]["km"] += sum((lts[m].get("km") or 0) for m in vistos_lt
                                         if uf in (lts[m].get("uf_origem"), lts[m].get("uf_destino")))
-                uf_and[uf]["mva"] += sum(eqps[m]["mva"] for m in vistos_tr if eqps[m].get("uf") == uf)
+                uf_and[uf]["mva"] += sum(eqps[m].get("mva") or 0 for m in vistos_tr if eqps[m].get("uf") == uf)
                 uf_and[uf]["empreendimentos"].add(eid)
         emp.append({"id": eid, "ons": e.get("empreendimento_ons"), "contrato": e.get("contrato"),
                     "nome": e.get("nome_empreendimento"), "situacao": sit,
                     "oper_ato_legal": legal, "oper_efetiva": efetiva, "atraso_dias": atraso, "prazo_legal_vencido": vencido,
-                    "dias_desde_prazo_legal": dias_vencido, "km_lt": km, "mva_tr": mva, "ufs": sorted(ufs),
+                    "dias_desde_prazo_legal": dias_vencido, "km_lt": km, "mva_tr": mva, "mva_tr_reserva": mva_res,
+                    "ufs": sorted(ufs),
                     "obras": len(n_obras), "obras_outras": outras, "obras_resolucao": n_resol,
                     "modulos_em_outro_empreendimento": len(em_outro)})
     andamento = [x for x in emp if x["situacao"] == "Em andamento"]
     venc = [x for x in andamento if x["prazo_legal_vencido"]]
     linhas = [[x["id"], x["ons"], x["contrato"], x["nome"], x["situacao"], x["oper_ato_legal"], x["oper_efetiva"],
-               x["atraso_dias"], "sim" if x["prazo_legal_vencido"] else "não", x["km_lt"], x["mva_tr"],
+               x["atraso_dias"], "sim" if x["prazo_legal_vencido"] else "não", x["km_lt"], x["mva_tr"], x["mva_tr_reserva"],
                x["modulos_em_outro_empreendimento"], "|".join(x["ufs"]), x["obras"], x["obras_resolucao"]]
               for x in sorted(emp, key=lambda z: (z["situacao"], z["oper_ato_legal"] or ""))]
     _csv(os.path.basename(DOWNLOADS["obras"]), _cabecalho("obras"), linhas)
@@ -1692,11 +1837,13 @@ def _bloco_obras(epds, lts, eqps, resol, data_siget):
             "modulos_lt": sum(1 for t, _ in compart if t == "LT"), "modulos_tr": sum(1 for t, _ in compart if t == "ME"),
             "km_lt": _r(sum(lts[m].get("km") or 0 for t, m in compart if t == "LT" and m in lts)),
             "mva_tr": _r(sum((eqps[m].get("mva") or 0) for t, m in compart if t == "ME" and m in eqps))},
+        "regra_mva_reserva": REGRA_MVA_RESERVA,
         "por_situacao": [{"situacao": s, "empreendimentos": x["empreendimentos"], "obras": x["obras"],
-                          "km_lt_novas": _r(x["km"]), "mva_tr_novos": _r(x["mva"])}
+                          "km_lt_novas": _r(x["km"]), "mva_tr_novos": _r(x["mva"]), "mva_tr_reserva": _r(x["mva_res"])}
                          for s, x in sorted(por_sit.items(), key=lambda kv: -kv[1]["empreendimentos"])],
         "em_andamento": {"empreendimentos": len(andamento), "km_lt_novas": _r(sum(x["km_lt"] for x in andamento)),
                          "mva_tr_novos": _r(sum(x["mva_tr"] for x in andamento)),
+                         "mva_tr_reserva": _r(sum(x["mva_tr_reserva"] for x in andamento)),
                          "com_prazo_legal_vencido": len(venc), "km_prazo_vencido": _r(sum(x["km_lt"] for x in venc)),
                          "mva_prazo_vencido": _r(sum(x["mva_tr"] for x in venc)),
                          "mediana_dias_desde_prazo_legal": c.quantil([x["dias_desde_prazo_legal"] for x in venc], 0.5)},
@@ -1704,11 +1851,19 @@ def _bloco_obras(epds, lts, eqps, resol, data_siget):
                                  "mva_tr": _r(x["mva"])} for uf, x in sorted(uf_and.items(), key=lambda kv: -kv[1]["km"])],
         "maiores_prazos_vencidos": [{k: x[k] for k in ("id", "ons", "nome", "oper_ato_legal", "dias_desde_prazo_legal",
                                                          "km_lt", "mva_tr", "ufs")} for x in maiores_venc],
-        "atraso_realizado_por_ano": [{"ano": a, "empreendimentos": len(v), "pct_com_atraso": _pct(sum(1 for d in v if d > 0), len(v)),
-                                      "mediana_dias": c.quantil(v, 0.5), "p75_dias": c.quantil(v, 0.75)}
-                                     for a, v in sorted(atraso_ano.items()) if a >= "2010"],
+        # data efetiva menos o prazo do ato legal VIGENTE (DatOprComEpd): o arquivo aberto
+        # não traz o prazo original do contrato, e o vigente coincide com a data efetiva
+        # em boa parte dos empreendimentos (prazo revisto). Não é atraso com data-base.
+        "desvio_prazo_vigente_por_ano": {
+            "definicao": DEFINICAO_DESVIO_SIGET,
+            "por_ano": [{"ano": a, "empreendimentos": len(v),
+                         "pct_depois_do_prazo_vigente": _pct(sum(1 for d in v if d > 0), len(v)),
+                         "empreendimentos_data_efetiva_igual_ao_prazo": sum(1 for d in v if d == 0),
+                         "pct_data_efetiva_igual_ao_prazo": _pct(sum(1 for d in v if d == 0), len(v)),
+                         "mediana_desvio_dias": c.quantil(v, 0.5), "p75_desvio_dias": c.quantil(v, 0.75)}
+                        for a, v in sorted(atraso_ano.items()) if a >= "2010"]},
         "entrada_por_ano": [{"ano": a, "km_lt_novas": _r(x["km"]), "mva_tr_novos": _r(x["mva"]),
-                             "modulos_lt": x["modulos_lt"], "modulos_tr": x["modulos_tr"]}
+                             "mva_tr_reserva": _r(x["mva_res"]), "modulos_lt": x["modulos_lt"], "modulos_tr": x["modulos_tr"]}
                             for a, x in sorted(entrada.items()) if a >= "2005"],
         "_emp": emp,
     }
@@ -1754,16 +1909,19 @@ def _bloco_contratos(contratos, epds, lts, eqps, ultimo_leilao_data, data_siget)
             por_ccd[c_]["epds"].add(eid)
             if tipo_obra == "Instalação" and tipo_mdl == "LT" and mdl in lts:
                 por_ccd[c_]["lt"].add(mdl)
-            elif tipo_obra == "Instalação" and tipo_mdl == "ME" and mdl in eqps and eqps[mdl].get("mva"):
+            elif tipo_obra == "Instalação" and tipo_mdl == "ME" and mdl in eqps and \
+                    (eqps[mdl].get("mva") or eqps[mdl].get("mva_reserva")):
                 por_ccd[c_]["me"].add(mdl)
-    linhas, por_ano = [], defaultdict(lambda: {"contratos": 0, "sem_empreendimento": 0, "epds": 0, "km": 0.0, "mva": 0.0})
+    linhas, por_ano = [], defaultdict(lambda: {"contratos": 0, "sem_empreendimento": 0, "epds": 0, "km": 0.0, "mva": 0.0,
+                                               "mva_res": 0.0})
     for k, c_ in sorted(contratos.items(), key=lambda kv: (kv[1].get("assinatura") or "", kv[0])):
         x = por_ccd.get(k)
         tem = bool(x and x["epds"])
         km = sum(lts[m].get("km") or 0 for m in x["lt"]) if tem else None
-        mva = sum(eqps[m]["mva"] for m in x["me"]) if tem else None
+        mva = sum(eqps[m].get("mva") or 0 for m in x["me"]) if tem else None
+        mva_res = sum(eqps[m].get("mva_reserva") or 0 for m in x["me"]) if tem else None
         linhas.append([k, c_.get("numero"), c_.get("assinatura"), c_.get("fim"), c_.get("cnpj"), c_.get("agente"),
-                       len(x["epds"]) if tem else None, km, mva, len(x["proprio"] - x["epds"]) if x else 0])
+                       len(x["epds"]) if tem else None, km, mva, mva_res, len(x["proprio"] - x["epds"]) if x else 0])
         a = (c_.get("assinatura") or "")[:4]
         if not a:
             continue
@@ -1773,6 +1931,7 @@ def _bloco_contratos(contratos, epds, lts, eqps, ultimo_leilao_data, data_siget)
             g["epds"] += len(x["epds"])
             g["km"] += km
             g["mva"] += mva
+            g["mva_res"] += mva_res
         else:
             g["sem_empreendimento"] += 1
     _csv(os.path.basename(DOWNLOADS["contratos"]), _cabecalho("contratos"), linhas)
@@ -1786,17 +1945,19 @@ def _bloco_contratos(contratos, epds, lts, eqps, ultimo_leilao_data, data_siget)
         "data_referencia": data_siget,
         "regra": ("Data de assinatura publicada pela fonte (DatAsnCcd). km e MVA: módulos de linha e transformadores de "
                   "obras de Instalação dos empreendimentos do objeto original do contrato (linhas com a mesma data de fim "
-                  "do contrato); reforço incorporado depois, com prazo próprio, fica fora. Contrato sem empreendimento "
+                  "do contrato); transformador reserva em campo próprio (mva_tr_reserva); reforço incorporado depois, "
+                  "com prazo próprio, fica fora. Contrato sem empreendimento "
                   "cadastrado no SIGET tem km e MVA ausentes, não zero. Um contrato pode vir de leilão, de relicitação ou de "
                   "outra origem: o SIGET não informa o leilão nem a RAP de lance."),
         "nota_zero": "O recurso lista todos os contratos de concessão de transmissão cadastrados no SIGET: ano do período sem contrato assinado aparece com 0 contratos (zero observado, não ausência).",
         "por_ano": [{"ano": a, "contratos": g["contratos"], "contratos_sem_empreendimento": g["sem_empreendimento"],
                      "empreendimentos": g["epds"], "km_lt_novas": _r(g["km"]), "mva_tr_novos": _r(g["mva"]),
-                     "ano_parcial": a == (data_siget or "")[:4]} for a, g in sorted(por_ano.items())],
+                     "mva_tr_reserva": _r(g["mva_res"]), "ano_parcial": a == (data_siget or "")[:4]}
+                    for a, g in sorted(por_ano.items())],
         "depois_do_ultimo_leilao_do_arquivo": {
             "ultimo_leilao": ultimo_leilao_data,
             "contratos": [{"contrato": z[0], "numero": z[1], "assinatura": z[2], "agente": z[5], "empreendimentos": z[6],
-                           "km_lt_novas": _r(z[7]), "mva_tr_novos": _r(z[8])} for z in depois]},
+                           "km_lt_novas": _r(z[7]), "mva_tr_novos": _r(z[8]), "mva_tr_reserva": _r(z[9])} for z in depois]},
     }
 
 
@@ -1807,17 +1968,31 @@ KM_CIRCUITO = ("km de circuito: soma de NumEtnLinTms (extensão da linha, em km)
                "no SIGET cada circuito é um módulo, então linha de circuito duplo ou bipolo conta cada circuito")
 
 
-# categorias da Figura 3-25 do PDE 2035 e a correspondência verificada com o SIGA/RALIE
+# categorias da Figura 3-25 do PDE 2035 e a correspondência verificada com o SIGA/RALIE.
+# "anexo": linhas do Anexo I-3 do relatório (p. 526) que compõem a categoria no SIN;
+# "fora_do_siga": linha do Anexo somada à figura que o SIGA não cadastra. A conferência
+# figura × Anexo roda a cada gold (conferencia_anexo_i3).
 CAMADAS_PDE = [
     {"categoria": "UHE (GW)", "rotulo": "Hidrelétricas (UHE)", "siga": lambda u: u.get("tipo") == "UHE",
-     "correspondencia": "direta"},
-    {"categoria": "PCH (GW)", "rotulo": "Pequenas centrais hidrelétricas (PCH)", "siga": lambda u: u.get("tipo") == "PCH",
-     "correspondencia": "direta", "nota": "As centrais geradoras hidrelétricas (CGH) do SIGA não entram: a figura do PDE não informa se as inclui."},
-    {"categoria": "Eólica (GW)", "rotulo": "Eólicas", "siga": lambda u: u.get("tipo") == "EOL", "correspondencia": "direta"},
+     "siga_tipos": ["UHE"], "correspondencia": "parcial", "anexo": ["hidreletrica"], "fora_do_siga": "itaipu_50hz",
+     "rotulo_anexo": "Hidrelétrica do SIN, sem Itaipu 50 Hz",
+     "nota": ("A UHE da Figura 3-25 soma a hidrelétrica do SIN e Itaipu 50 Hz, as máquinas de Itaipu pertencentes ao "
+              "Paraguai (Anexo I-3, p. 526, nota 6), que o SIGA não cadastra: o SIGA só tem Itaipu (Parte Brasileira), "
+              "7.000 MW. O valor comparável é a linha Hidrelétrica do Anexo I-3 (dez/2026 e dez/2035); o anexo começa "
+              "em 2026, então dez/2025 não tem a parcela separada.")},
+    {"categoria": "PCH (GW)", "rotulo": "Pequenas centrais hidrelétricas e centrais geradoras hidrelétricas (PCH e CGH)",
+     "siga": lambda u: u.get("tipo") in ("PCH", "CGH"), "siga_tipos": ["PCH", "CGH"], "correspondencia": "direta",
+     "anexo": ["pch_e_cgh"], "rotulo_anexo": "PCH E CGH",
+     "nota": "A categoria PCH da figura é a linha 'PCH E CGH' do Anexo I-3 (p. 526), com os mesmos valores: o SIGA entra com PCH e CGH."},
+    {"categoria": "Eólica (GW)", "rotulo": "Eólicas", "siga": lambda u: u.get("tipo") == "EOL", "siga_tipos": ["EOL"],
+     "correspondencia": "direta", "anexo": ["eolica"], "rotulo_anexo": "Eólica"},
     {"categoria": "Solar fotovoltaica (GW)", "rotulo": "Solar centralizada", "siga": lambda u: u.get("tipo") == "UFV",
-     "correspondencia": "direta", "nota": "Geração centralizada; a MMGD é categoria separada no PDE e não está no SIGA."},
+     "siga_tipos": ["UFV"], "correspondencia": "direta", "anexo": ["fotovoltaica_centralizada"], "rotulo_anexo": "Fotovoltaica centralizada",
+     "nota": "Geração centralizada; a MMGD é categoria separada no PDE e não está no SIGA."},
     {"categoria": "Biomassa (GW)", "rotulo": "Biomassa", "siga": lambda u: u.get("tipo") == "UTE" and u.get("origem") == "Biomassa",
-     "correspondencia": "direta"},
+     "siga_tipos": ["UTE de origem Biomassa"], "correspondencia": "direta", "anexo": ["biomassa_biogas_rsu", "biocombustivel"],
+     "rotulo_anexo": "Biomassa + Biogás + RSU e Biocombustível",
+     "nota": "A figura soma biomassa, biogás, resíduos sólidos urbanos e biocombustível (linhas do Anexo I-3, p. 526); a origem Biomassa do SIGA tem as mesmas fontes (agroindustriais, floresta, RSU, resíduos animais e biocombustíveis líquidos)."},
     {"categoria": "UTE (GW)", "rotulo": "Termelétricas (PDE)", "siga": None, "correspondencia": "sem correspondência verificada",
      "nota": "A figura não detalha quais térmicas compõem a categoria (fósseis, nuclear, sistemas isolados, usinas sem contrato retiradas do Caso Base); o SIGA não é comparado."},
     {"categoria": "MMGD (GW)", "rotulo": "Micro e minigeração distribuída", "siga": None,
@@ -1825,6 +2000,16 @@ CAMADAS_PDE = [
     {"categoria": "Baterias (GW)", "rotulo": "Baterias", "siga": None, "correspondencia": "fora do universo do SIGA e do RALIE"},
     {"categoria": "RD (GW)", "rotulo": "Resposta da demanda", "siga": None, "correspondencia": "não é geração"},
 ]
+LINHAS_ANEXO_ROTULO = epe_pde.LINHAS_ANEXO_I3
+LINHAS_FORA_DO_SIGA = {"itaipu_50hz": "Itaipu 50 Hz (máquinas de Itaipu pertencentes ao Paraguai)"}
+REGRA_CAMADAS = ("Camadas lado a lado, sem diferença calculada. O Anexo I-3 do relatório (nota 1, p. 526) não considera a "
+                 "autoprodução de uso exclusivo (não injetada), que o PDE representa como abatimento de carga; o SIGA "
+                 "cadastra também essas usinas. O realizado do SIGA é a potência fiscalizada em operação na data do "
+                 "arquivo; a carteira do RALIE é a potência das unidades em implantação na fotografia mais recente.")
+# Tolerância da conferência figura × Anexo I-3: as figuras publicam GW com três casas
+# (1 MW) e o anexo MW inteiros; a UHE de 2026 na Figura 3-6 (109,422 GW) e a soma do
+# anexo (102.423 + 7.000 MW) diferem em 1 MW de arredondamento.
+TOLERANCIA_ANEXO_MW = 1.0
 
 HIPOTESES_PDE2035 = [
     {"texto": "Data-base das premissas: janeiro de 2025.", "pagina": 92},
@@ -1834,7 +2019,9 @@ HIPOTESES_PDE2035 = [
     {"texto": "Cerca de 14.300 MW de retrofit de termelétricas descontratadas oferecidos ao modelo de decisão de investimentos de forma escalonada.", "pagina": 72},
     {"texto": "Crescimento médio da carga global do SIN (sem abatimento da MMGD) de cerca de 3,2% ao ano no horizonte.", "pagina": 74},
     {"texto": "Micro e minigeração distribuída projetada para cerca de 78 GW em 2035 no Cenário de Referência.", "pagina": 73},
-    {"texto": "Cenário de Referência considera a Lei nº 14.182/2021 (8.000 MW de termelétricas a gás com inflexibilidade de pelo menos 70%, contratação de centrais hidrelétricas de até 50 MW até 2.000 MW e prorrogação do PROINFA) e a Lei nº 14.299/2022 (manutenção do Complexo Jorge Lacerda).", "pagina": 93},
+    {"texto": "Cenário de Referência considera a Lei nº 14.182/2021 (8.000 MW de termelétricas a gás com inflexibilidade de pelo menos 70%, contratação de centrais hidrelétricas de até 50 MW até 2.000 MW e prorrogação do PROINFA) e a Lei nº 14.299/2022 (manutenção do Complexo Jorge Lacerda).", "pagina": 93,
+     "ressalva": "Legislação vigente na data-base (janeiro de 2025). Depois dela, segundo o próprio relatório, entrou em vigor a Medida Provisória nº 1.304/2025 e, a partir dela, foi sancionada a Lei nº 15.269/2025, que alteraram esses artigos (nota 17).",
+     "pagina_ressalva": 92},
     {"texto": "Angra 3 com início de operação comercial em 2033, adotado após consulta ao MME.", "pagina": 93},
     {"texto": "Expansão indicativa escolhida pelo menor custo total que atende aos critérios de suprimento de energia e potência.", "pagina": 93},
 ]
@@ -1869,17 +2056,56 @@ def _bloco_cenarios(con, pde_obs, siga, ralie_us, ralie_ug, html_pagina, vint_pd
     kw_ug = defaultdict(float)
     for k, x in ralie_ug.items():
         kw_ug[k.split(":")[0]] += x.get("kw") or 0
+    # Anexo I-3 do relatório (MW por ano, SIN): {linha: {ano: MW}}
+    anexo = {s_.split(".", 2)[2]: dict(pts) for s_, pts in pde_obs.items() if s_.startswith("pde2035.anexo_i3.")}
+    meta_anexo = _meta(con, DS_PDE, "pde2035_anexo_i3") or {}
+    pag_anexo = int(meta_anexo["pagina"]) if str(meta_anexo.get("pagina") or "").isdigit() else None
+
+    def anexo_gw(linhas_, ano):
+        vals = [anexo.get(k, {}).get(ano) for k in linhas_]
+        return c.r(sum(vals) / 1000, 3) if vals and all(v is not None for v in vals) else None
+
     camadas = []
     for cam in CAMADAS_PDE:
         linha = {"categoria": cam["categoria"].replace(" (GW)", ""), "rotulo": cam["rotulo"],
                  "pde_dez2025_gw": p25.get(cam["categoria"]), "pde_dez2035_gw": p35.get(cam["categoria"]),
                  "correspondencia": cam["correspondencia"], "nota": cam.get("nota"),
+                 "siga_tipos": cam.get("siga_tipos"),
+                 # categoria como no Anexo I-3 (SIN), sem a parcela que o SIGA não cadastra
+                 "pde_anexo_i3": None,
                  "realizado_siga_gw": None, "carteira_ralie_gw": None}
+        if cam.get("anexo") and anexo:
+            fora = cam.get("fora_do_siga")
+            linha["pde_anexo_i3"] = {
+                "rotulo": cam["rotulo_anexo"], "pagina": pag_anexo,
+                "dez2026_gw": anexo_gw(cam["anexo"], "2026"), "dez2035_gw": anexo_gw(cam["anexo"], "2035"),
+                "parcela_fora_do_siga": {"rotulo": LINHAS_FORA_DO_SIGA.get(fora), "dez2026_gw": anexo_gw([fora], "2026"),
+                                         "dez2035_gw": anexo_gw([fora], "2035")} if fora else None}
         if cam["siga"] is not None:
             linha["realizado_siga_gw"] = c.r(sum(u.get("kw_fiscalizado") or 0 for u in siga.values()
                                                  if u.get("fase") == "Operação" and cam["siga"](u)) / 1e6, 3)
             linha["carteira_ralie_gw"] = c.r(sum(kw_ug.get(n, 0.0) for n, u in ralie_us.items() if cam["siga"](u)) / 1e6, 3)
         camadas.append(linha)
+    # conferência figura × Anexo I-3 (valores brutos da planilha, em MW)
+    conf_anexo = []
+    if anexo:
+        bruto = {k.split(".", 2)[2]: dict(p) for k, p in pde_obs.items() if k.startswith("pde2035.fig_3_25.")}
+        b36 = {k.split(".", 2)[2]: dict(p) for k, p in pde_obs.items() if k.startswith("pde2035.fig_3_6.")}
+        pares = [("Figura 3-25", "dez/2035", bruto, cam["categoria"], "2035-12", cam["anexo"] + ([cam["fora_do_siga"]] if cam.get("fora_do_siga") else []))
+                 for cam in CAMADAS_PDE if cam.get("anexo")]
+        pares += [("Figura 3-6", "2026", b36, "UHE", "2026", ["hidreletrica", "itaipu_50hz"]),
+                  ("Figura 3-6", "2026", b36, "PCH", "2026", ["pch_e_cgh"])]
+        for fig, ref_txt, serie_fig, col, ref, linhas_ in pares:
+            v_fig = (serie_fig.get(col) or {}).get(ref)
+            ano = ref[:4]
+            v_an = [anexo.get(k, {}).get(ano) for k in linhas_]
+            if v_fig is None or any(v is None for v in v_an):
+                continue
+            dif = v_fig * 1000 - sum(v_an)
+            conf_anexo.append({"figura": fig, "coluna": col, "referencia": ref_txt, "figura_mw": c.r(v_fig * 1000, 1),
+                               "linhas_anexo": [LINHAS_ANEXO_ROTULO.get(k, k) for k in linhas_], "anexo_mw": c.r(sum(v_an), 1),
+                               "diferenca_mw": c.r(dif, 1), "tolerancia_mw": TOLERANCIA_ANEXO_MW,
+                               "resultado": "aprovada" if abs(dif) <= TOLERANCIA_ANEXO_MW else "divergente"})
     soma25 = sum(v for k, v in p25.items() if k != "ref" and v is not None)
     soma35 = sum(v for k, v in p35.items() if k != "ref" and v is not None)
     soma36 = None
@@ -1894,9 +2120,12 @@ def _bloco_cenarios(con, pde_obs, siga, ralie_us, ralie_ug, html_pagina, vint_pd
         "aprovacao": aprov, "data_base_premissas": "janeiro de 2025", "horizonte": "2026 a 2035",
         "cenario": "Cenário de Referência (expansão indicativa) e Caso Base (existente e contratado)",
         "universo": "Figura 3-25: matriz elétrica nacional, incluindo MMGD, baterias e resposta da demanda; Figura 3-6: SIN, existente e contratado; Figuras 4-19, 4-24 e 4-27: expansão da Rede Básica.",
-        "hipoteses": HIPOTESES_PDE2035,
+        "hipoteses": [{**h, "ressalva": h.get("ressalva"), "pagina_ressalva": h.get("pagina_ressalva")} for h in HIPOTESES_PDE2035],
         "relatorio": URL_PDE_RELATORIO, "caderno_de_dados": URL_PDE_DADOS,
-        "figuras": figs, "camadas": camadas,
+        "figuras": figs, "camadas": camadas, "camadas_regra": REGRA_CAMADAS,
+        "anexo_i3": {"pagina": pag_anexo, "extracao": meta_anexo.get("extracao"),
+                     "titulo": "Anexo I-3 - Geração Centralizada: Evolução da Capacidade Instalada por Fonte de Geração para a Expansão de Referência",
+                     "notas": meta_anexo.get("notas"), "conferencia_figuras": conf_anexo} if anexo else None,
         "conferencia_relatorio": [
             {"descricao": "Soma das categorias da Figura 3-25 em dez/2025 contra o total rotulado no relatório (249 GW, p. 97)",
              "calculado_gw": c.r(soma25, 2), "relatorio_gw": 249, "diferenca_gw": c.r(soma25 - 249, 2), "tolerancia_gw": 0.5,
@@ -1946,22 +2175,35 @@ def _agregados(con):
     return {"cap_uf": cap, "cap_uf_refs": sorted(cap), "emp_op": emp, "emp_op_refs": sorted(emp)}
 
 
-def _historico_mensal(con, mensais):
-    """Série mensal do RALIE (última fotografia de cada mês) a partir do silver."""
+def _historico_mensal(con, mensais, atipicos=()):
+    """Série mensal do RALIE (última fotografia de cada mês) a partir do silver. As
+    unidades das usinas com potência fora de escala na fotografia (ax.unidades_atipicas)
+    saem dos campos por unidade, com a potência excluída e o número de usinas publicados:
+    o silver guarda o que a fonte publicou; a série não carrega o erro."""
     ug = _series(con, DS_RALIE, "ug.")
     us = _series(con, DS_RALIE, "usina.")
     ugd = {s: dict(p) for s, p in ug.items()}
     usd = {s: dict(p) for s, p in us.items()}
+    exc = defaultdict(lambda: defaultdict(lambda: {"kw": 0.0, "n": 0, "kw_sem_previsao": 0.0, "usinas": 0}))
+    for x in atipicos:
+        e = exc[x["ralie"]][x["tipo"] or "?"]
+        e["kw"] += x["kw_ugs"] or 0
+        e["n"] += x["ugs"] or 0
+        e["kw_sem_previsao"] += x["kw_sem_previsao"] or 0
+        e["usinas"] += 1
     out = []
     for d in mensais:
         def soma(prefixo, dic):
             return sum(v.get(d, 0.0) for s, v in dic.items() if s.startswith(prefixo))
+        ex = exc.get(d, {})
         linha = {"ralie": d,
                  "usinas": int(soma("usina.n.tipo.", usd)),
                  "mw_outorgado": _r(_mw(soma("usina.kw_outorgado.tipo.", usd))),
-                 "ugs": int(soma("ug.n.", ugd)),
-                 "mw_ugs": _r(_mw(soma("ug.kw.", ugd))),
-                 "mw_ugs_sem_previsao": _r(_mw(soma("ug.kw_sem_previsao.", ugd)))}
+                 "ugs": int(soma("ug.n.", ugd) - sum(e["n"] for e in ex.values())),
+                 "mw_ugs": _r(_mw(soma("ug.kw.", ugd) - sum(e["kw"] for e in ex.values()))),
+                 "mw_ugs_sem_previsao": _r(_mw(soma("ug.kw_sem_previsao.", ugd) - sum(e["kw_sem_previsao"] for e in ex.values()))),
+                 "usinas_atipicas_excluidas": sum(e["usinas"] for e in ex.values()),
+                 "mw_ugs_atipicas_excluidas": _r(_mw(sum(e["kw"] for e in ex.values())))}
         for dim, vals in (("obra", ("Não Iniciada", "Em andamento", "Paralisada")),
                           ("viabilidade", ("Alta", "Média", "Baixa")),
                           ("cronograma", ("Normal", "Atrasado", "Adiantado"))):
@@ -1972,10 +2214,51 @@ def _historico_mensal(con, mensais):
         por_tipo = {}
         for s, v in ugd.items():
             if s.startswith("ug.kw.") and d in v:
-                por_tipo[s.split(".")[-1]] = _r(_mw(v[d]))
+                t = s.split(".")[-1]
+                por_tipo[t] = _r(_mw(v[d] - (ex[t]["kw"] if t in ex else 0.0)))
         linha["mw_ugs_por_tipo"] = por_tipo
         out.append(linha)
     return out
+
+
+REGRA_ATIPICAS = (f"Usina cuja soma da potência das unidades na fotografia é {ax.FATOR_ATIPICO:g} vezes a potência outorgada "
+                  "dela na mesma fotografia ou mais: erro de ordem de grandeza da fonte, conferido no próprio Parquet (nas "
+                  "fotografias vizinhas a mesma usina volta à potência da outorga). As unidades dela naquela fotografia "
+                  "saem da série mensal, da confiabilidade, do deslizamento e das datas em bloco; o silver guarda o valor "
+                  f"publicado. Razões entre {ax.FATOR_ATENCAO:g} e {ax.FATOR_ATIPICO:g} vezes ficam como estão (ampliação "
+                  "com outorga parcial, unidade substituída, cadastro em revisão) e são contadas à parte.")
+
+
+def _bloco_atipicas(atipicas, mensais):
+    """Casos de unidades fora de escala no Parquet histórico, com as fotografias vizinhas."""
+    mens = set(mensais)
+
+    def viz(v):
+        return None if not v else {"ralie": v["ralie"], "ugs": v["ugs"], "mw_ugs": _r(_mw(v["kw_ugs"]), 3)}
+    casos = [{"ralie": x["ralie"], "fotografia_mensal": x["ralie"] in mens, "nucleo": x["nucleo"], "nome": x["nome"],
+              "tipo": x["tipo"], "ugs": x["ugs"], "mw_ugs": _r(_mw(x["kw_ugs"]), 3), "mw_outorgado": _r(_mw(x["kw_outorgado"]), 3),
+              "razao": _r(x["razao"], 2), "anterior": viz(x["anterior"]), "seguinte": viz(x["seguinte"])}
+             for x in atipicas["casos"]]
+    meio = atipicas["entre_atencao_e_fator"]
+    return {"regra": REGRA_ATIPICAS, "fator": ax.FATOR_ATIPICO, "casos": casos,
+            "pares": len(casos), "usinas": len({x["nucleo"] for x in casos}),
+            "mw_ugs_publicado_nos_casos": _r(_mw(sum(x["kw_ugs"] or 0 for x in atipicas["casos"]))),
+            "mantidos_entre_atencao_e_fator": {"fator_minimo": ax.FATOR_ATENCAO, "pares": meio["pares"], "usinas": meio["usinas"],
+                                               "maiores": [{"nucleo": e["nucleo"], "nome": e["nome"], "tipo": e["tipo"],
+                                                            "pares": e["pares"], "razao_max": _r(e["razao_max"], 2)}
+                                                           for e in meio["exemplos"]]}}
+
+
+def _ressalva_atipicas(atipicas, mensais):
+    mens = set(mensais)
+    datas = {}
+    for x in atipicas["casos"]:
+        datas.setdefault(x["nome"], []).append(c.data_br(x["ralie"]))
+    nomes = [f"{n} ({', '.join(ds)})" for n, ds in datas.items()]
+    n_mens = sum(1 for x in atipicas["casos"] if x["ralie"] in mens)
+    return (f"{_contagem(len(atipicas['casos']), 'par', 'pares')} (fotografia, usina) do Parquet histórico do RALIE com a soma das "
+            f"unidades {ax.FATOR_ATIPICO:g} vezes a outorga ou mais, conferidos no arquivo e excluídos das análises por unidade "
+            f"({n_mens} em fotografia mensal): " + "; ".join(nomes) + ". Ver estagios.unidades_atipicas.")
 
 
 # Tolerância das conferências entre recursos da mesma fonte: o resumo anual de liberações
@@ -2109,9 +2392,14 @@ def construir(con, ctx):
     datas_hist = ax.datas_ralie(pf_us)
     mensais = ax.ultimo_por_mes(datas_hist)
     ralie_kw_hist = ax.potencias_outorgadas_historicas(pf_us)
+    # unidades com potência fora de escala no Parquet histórico (soma das unidades 10 vezes
+    # a outorga da usina ou mais, na mesma fotografia): conferidas no próprio arquivo contra
+    # as fotografias vizinhas da usina, excluídas das séries e análises por unidade
+    atipicas = ax.unidades_atipicas(pf_ug, pf_us)
+    pares_atipicos = {(x["ralie"], x["nucleo"]) for x in atipicas["casos"]}
 
     conferencias = _conferencias(con, ralie_ug, pf_ug, data_ralie, lib_linhas)
-    capacidade = _bloco_capacidade(siga, agreg, lib_linhas, data_siga)
+    capacidade = _bloco_capacidade(siga, agreg, lib_linhas, data_siga, data_lib)
     fora = capacidade["reconciliacao"]["fora_da_tolerancia"]
     rec_ref = capacidade["reconciliacao"]
     if fora["tipos"]:
@@ -2134,15 +2422,28 @@ def construir(con, ctx):
             "divergente por fator 1.000 sem confirmação (fora da soma): ver estagios.encerramentos.potencia_conferida.")
     # data de corte das liberações para a janela de confiabilidade: data de geração do
     # arquivo publicada pela ANEEL (last_modified do recurso)
-    cronograma = _bloco_cronograma(con, ralie_us, ralie_ug, lib_linhas, lib_idx, data_ralie, data_lib_arquivo, pf_ug, mensais)
+    cronograma = _bloco_cronograma(con, ralie_us, ralie_ug, lib_linhas, lib_idx, data_ralie, data_lib_arquivo, pf_ug, mensais,
+                                   pares_atipicos)
     cronograma["historico_fonte"].update({"primeira_fotografia": datas_hist[0], "fotografias": len(datas_hist),
                                           "ultima_fotografia": datas_hist[-1]})
     trajs = ax.trajetorias_usinas(pf_ug, pf_us)
     prim = ax.ugs_da_primeira_aparicao(pf_ug)
     del pf_ug
-    desf = _desfechos(trajs, prim, lib_idx, siga, encerramentos, datas_hist[-1])
+    lib_primeira = {}
+    for x in lib_linhas:
+        if x["realizado"] and (x["nucleo"] not in lib_primeira or x["realizado"] < lib_primeira[x["nucleo"]]):
+            lib_primeira[x["nucleo"]] = x["realizado"]
+    desf = _desfechos(trajs, prim, lib_idx, siga, encerramentos, datas_hist[-1], lib_primeira, pares_atipicos)
     estagios["coortes"] = _bloco_coortes(desf, datas_hist[0])
     estagios["desfechos_definicao"] = DESFECHOS
+    estagios["coortes_peso"] = {
+        "regra": REGRA_PESO_COORTES,
+        "usinas_com_peso_limitado_pela_outorga": sum(1 for x in desf.values() if x["peso_limitado_pela_outorga"]),
+        "usinas_sem_unidades_na_primeira_fotografia": sum(1 for x in desf.values() if x["peso_sem_unidades"]),
+        "usinas_que_ja_operavam": sum(1 for x in desf.values() if x["operava_antes"]),
+        "usinas_que_ja_operavam_em_operacao_no_siga_sem_liberacao": sum(
+            1 for x in desf.values() if x["operava_antes"] and x["fase_siga"] == "Operação" and x["desfecho"] != "operacao"
+            and x["desfecho"] != "em_implantacao")}
     # sem desfecho: a usina saiu do RALIE sem operação nem ato; onde ela está no SIGA
     # (ausente do arquivo aberto = provável encerramento ainda sem ato vinculado ao CEG)
     sd = defaultdict(lambda: {"usinas": 0, "kw": 0.0})
@@ -2153,7 +2454,10 @@ def construir(con, ctx):
             sd[k]["kw"] += x.get("kw_primeira") or 0
     estagios["sem_desfecho_no_siga"] = [{"situacao_siga": k, "usinas": v["usinas"], "mw_outorgado": _r(_mw(v["kw"]))}
                                         for k, v in sorted(sd.items(), key=lambda kv: -kv[1]["usinas"])]
-    estagios["historico_mensal"] = _historico_mensal(con, mensais)
+    estagios["historico_mensal"] = _historico_mensal(con, mensais, atipicas["casos"])
+    estagios["unidades_atipicas"] = _bloco_atipicas(atipicas, mensais)
+    if atipicas["casos"]:
+        ressalvas.append(_ressalva_atipicas(atipicas, mensais))
     leiloes = _bloco_leiloes(lotes, (vig[DS_LEILOES].get("resultado-leiloes-transmissao.csv") or {}).get("publicado_em"))
     contratos_siget = _estado(con, DS_SIGET, "ccd:")
     data_siget = ((vig[DS_SIGET].get("siget-contrato-empreendimento-obra-modulo.csv") or {}).get("publicado_em") or "")[:10] \
@@ -2188,7 +2492,10 @@ def construir(con, ctx):
                  # traçado da EPE dentro da UF (existente e planejado): ausência sem a camada
                  "km_rede_existente_epe": _r((epe_ex or {}).get(uf, 0.0)) if epe_ex is not None else None,
                  "km_rede_planejada_epe": _r((epe_pl or {}).get(uf, 0.0)) if epe_pl is not None else None}
-                for uf in sorted(set(ger_uf) | set(rede_uf))]
+                # UFs com geração no RALIE, obra no SIGET ou rede da EPE: a UF que só tem rede
+                # da EPE (AC e DF em 01/10/2026) entra com zero observado no RALIE e no SIGET
+                # (os dois arquivos listam todo o universo deles)
+                for uf in sorted((set(ger_uf) | set(rede_uf) | set(epe_ex or {}) | set(epe_pl or {})) - {None})]
     lib_ano = defaultdict(float)
     for x in lib_linhas:
         if x["realizado"]:
@@ -2275,7 +2582,7 @@ REGRAS = {
     "deslizamento": "Variação da previsão da mesma unidade entre a fotografia mensal S e a do mesmo mês do ano seguinte, ponderada pela potência (positivo = adiada); publicada também sem as unidades em data em bloco, porque a data convencional anda cerca de um ano a cada ano junto com a fotografia.",
     "data_em_bloco": REGRA_DATA_EM_BLOCO,
     "desvio_prazo_vigente": "Data de liberação comercial realizada menos a data outorgada da unidade no arquivo de liberações (prazo vigente na publicação, sem data-base), mediana ponderada por kW. Não é atraso: em autorizações recentes a data outorgada é um prazo limite.",
-    "transmissao": "km de circuito de linhas novas e MVA de transformação nova (módulos de obras do tipo Instalação no SIGET) e investimento e RAP dos leilões ficam em campos separados; nunca são somados entre si. No SIGET cada circuito é um módulo: linha de circuito duplo ou bipolo conta a extensão de cada circuito.",
+    "transmissao": "km de circuito de linhas novas e MVA de transformação nova (módulos de obras do tipo Instalação no SIGET; transformador reserva à parte) e investimento e RAP dos leilões ficam em campos separados; nunca são somados entre si. No SIGET cada circuito é um módulo: linha de circuito duplo ou bipolo conta a extensão de cada circuito. A diferença entre a data efetiva e o prazo do ato legal é desvio em relação ao prazo vigente, não atraso.",
     "cenario": "PDE 2035 é CENÁRIO de uma edição específica (data-base janeiro de 2025), mostrado em camada separada do realizado (SIGA) e da carteira (RALIE).",
 }
 
@@ -2338,7 +2645,8 @@ def _escreve_csvs(siga, ralie_us, ralie_ug, ralie_lei, desf, cenarios, data_rali
     for n in sorted(desf):
         x = desf[n]
         tr.append([n, x.get("ceg"), x.get("nome"), x.get("tipo"), x.get("uf"), x.get("primeira"),
-                   x.get("ultima"), x.get("kw_primeira"), x.get("prev_primeira"), x.get("outorgado_primeira"),
+                   x.get("ultima"), x.get("kw_primeira"), x.get("kw_peso"), "sim" if x.get("operava_antes") else "não",
+                   "sim" if x.get("primeira_atipica") else "não", x.get("prev_primeira"), x.get("outorgado_primeira"),
                    x.get("prev_ultima"), x.get("outorgado_ultima"), x.get("mudancas_previsao"), x.get("ugs_primeira"),
                    x.get("ugs_primeira_liberadas"), x.get("kw_primeira_liberado"), x.get("ultima_liberacao"),
                    x.get("desfecho"), x.get("data_encerramento"), "sim" if x.get("encerramento_sem_data") else "não"])
@@ -2390,6 +2698,7 @@ def _proveniencias(con, g, vig):
         "A previsão é da fiscalização da ANEEL (SFG) e muda a cada fotografia; datas atribuídas em bloco a milhares de unidades sem licença de instalação ou sem acesso contratado indicam previsão convencional, não cronograma de obra.",
         "Outorga não é capacidade que certamente entrará; MW outorgado não é energia firme.",
         "O dicionário do recurso de unidades geradoras (versão 1.0, 16/06/2026) tem descrições deslocadas uma linha (ex.: DatLiberOpTesteRealizado descrito como descida do rotor); a leitura segue o nome do campo: DatUGInicioOpComerOutorgado é a data outorgada de operação comercial e DatPrevisaoOpComercialSFG a previsão da fiscalização.",
+        f"O Parquet histórico de unidades tem {g['estagios']['unidades_atipicas']['pares']} pares (fotografia, usina) com a soma das unidades {ax.FATOR_ATIPICO:g} vezes a outorga ou mais (erro de ordem de grandeza da fonte, conferido contra as fotografias vizinhas): excluídos das análises por unidade e listados em estagios.unidades_atipicas.",
     ]
     return {
         "capacidade": _prov(con, DS_SIGA, FONTE_SIGA, indicador="Capacidade instalada em operação por tipo, origem e UF",
@@ -2439,8 +2748,9 @@ def _proveniencias(con, g, vig):
                          transformacoes=["primeira e última fotografia de cada usina (Parquet histórico)",
                                          "vínculo por núcleo do CEG com SIGA, liberações comerciais e atos de encerramento",
                                          "classificação em ordem: em implantação; operação; outorga encerrada; sem desfecho"],
-                         formula="pct(desfecho) = 100 × Σ kW outorgado na primeira fotografia das usinas com o desfecho ÷ Σ kW da coorte",
+                         formula="pct(desfecho) = 100 × Σ peso das usinas com o desfecho ÷ Σ peso da coorte; peso = potência das unidades da primeira fotografia, limitada à outorga",
                          limitacoes=lim_ralie + ["Usinas em operação parcial que seguem no RALIE contam como em implantação.",
+                                                 "Em ampliação de usina que já operava antes da primeira fotografia, a fase Operação do SIGA reflete a parte antiga: só a liberação comercial de todas as unidades da ampliação conta como operação, e o peso é a potência dessas unidades, não a outorga total.",
                                                  "Sem desfecho não significa abandono: pode ser mudança de CEG, saída do acompanhamento, ato fora do conjunto de atos ou "
                                                  f"ato de revogação publicado sem núcleo nem código do CEG ({g['estagios']['encerramentos']['sem_chave_de_usina']['atos']} atos, "
                                                  f"{_milhar(g['estagios']['encerramentos']['sem_chave_de_usina']['mw_usado'] or 0, 1)} MW em 30/09/2026, quase todos de 2025 e 2026), que não se liga a nenhuma usina do RALIE."],
@@ -2465,6 +2775,7 @@ def _proveniencias(con, g, vig):
                                   limitacoes=["Não é atraso: a data outorgada é a vigente na publicação do arquivo, sem data-base; se o cronograma foi alterado por ato posterior, o desvio é medido contra a data alterada. O que atrasou em relação a uma previsão datada está na confiabilidade das previsões.",
                                               "Em autorizações recentes (sobretudo solares) a data outorgada é um prazo limite anos à frente; liberação muito antes dela aparece como atraso negativo grande, que é antecipação em relação ao prazo, não em relação a uma previsão.",
                                               "Antes de 2014 o arquivo detalhado não cobre toda a potência liberada no ano (nota da ANEEL).",
+                                              "Os percentuais usam como denominador a potência com data outorgada (mw_com_data_outorgada); as linhas sem data outorgada (DatUGInicioOpComerOutorgado vazia) saem à parte, em unidades_ou_grupos_sem_data_outorgada e mw_sem_data_outorgada.",
                                               "O ano corrente é parcial."],
                                   download=DOWNLOADS["liberacoes"]),
         "leiloes": _prov(con, DS_LEILOES, FONTE_LEILOES, indicador="Leilões de transmissão por ano", natureza="CALCULADO",
@@ -2477,17 +2788,20 @@ def _proveniencias(con, g, vig):
                          limitacoes=[f"O arquivo publicado termina no leilão {g['transmissao']['leiloes']['ultimo_leilao']['leilao']} ({c.data_br(g['transmissao']['leiloes']['ultimo_leilao']['data'])}); ano sem linha aparece como ausência, não como ano sem leilão. Os contratos de concessão assinados depois disso estão em contratos_assinados (SIGET), sem RAP nem deságio.",
                                      f"{g['transmissao']['leiloes']['lotes_sem_vencedor']} lotes sem vencedor ficam fora de lotes contratados, km, MVA, investimento e RAP; o investimento e a RAP do edital deles saem à parte, como ofertados.",
                                      "Reais nominais da data de cada leilão, sem correção monetária: anos não são comparáveis em valor real.",
-                                     "Investimento é o previsto no edital, não o realizado.", "km, MVA e reais são grandezas diferentes e nunca somadas."],
+                                     "Investimento é o previsto no edital, não o realizado.", "km, MVA e reais são grandezas diferentes e nunca somadas.",
+                                     "O MVA dos lotes não segue uma convenção única para o transformador reserva: lotes antigos o incluem ('(6+1) x 250 MVA' = 1.750 MVA no 004/2000) e recentes informam só o principal (001/2024); a série de MVA leiloado mistura as duas convenções e não se compara diretamente com o MVA novo do SIGET, que exclui a reserva."],
                          download=DOWNLOADS["leiloes"]),
         "obras": _prov(con, DS_SIGET, FONTE_SIGET, indicador="Empreendimentos de transmissão (SIGET)", natureza="CALCULADO",
                        unidade="km de circuito, MVA, empreendimentos e dias", frequencia="diária segundo o dicionário; capturado no máximo uma vez por semana",
                        periodo={"inicio": ref["siget"], "fim": ref["siget"]}, cobertura={"inicio": "2005", "fim": ref["siget"]},
-                       transformacoes=["km dos módulos de linha e MVA dos transformadores de potência com obra do tipo Instalação",
-                                       "prazo legal vencido = em andamento ou planejado com data de operação do ato legal anterior à data do arquivo",
-                                       "atraso realizado = data efetiva − data do ato legal"],
+                       transformacoes=["km dos módulos de linha e MVA dos transformadores de potência de finalidade principal com obra do tipo Instalação",
+                                       "prazo legal vencido = em andamento ou planejado com data de operação do ato legal (vigente) anterior à data do arquivo",
+                                       "desvio em relação ao prazo vigente = data efetiva − data do ato legal"],
                        formula="km novos(empreendimento) = Σ NumEtnLinTms dos módulos LT distintos com obra de Instalação",
                        limitacoes=["km de circuito: no SIGET cada circuito é um módulo de linha com a extensão da linha, então circuito duplo e bipolo contam cada circuito.",
-                                   "As datas de previsão informadas pelas transmissoras não estão no arquivo aberto do SIGET: o atraso em andamento é medido contra o ato legal, não contra a previsão.",
+                                   "As datas de previsão informadas pelas transmissoras não estão no arquivo aberto do SIGET: o prazo vencido das obras em andamento é medido contra o prazo vigente do ato legal, não contra a previsão.",
+                                   "O prazo do ato legal publicado (DatOprComEpd) é o vigente, já revisto quando houve ato posterior; o prazo original do contrato não está no arquivo. Por isso a diferença entre a data efetiva e esse prazo é desvio em relação ao prazo vigente, não atraso: as duas datas coincidem em boa parte dos empreendimentos (desvio_prazo_vigente_por_ano).",
+                                   "Transformador reserva (finalidade 'Reserva' no SIGET) não soma no MVA de transformação nova e sai em mva_tr_reserva.",
                                    "Linha interestadual aparece nas duas UFs na tabela por UF: a soma das UFs supera o total nacional.",
                                    "Reatores e capacitores (Mvar) não entram no MVA de transformação.",
                                    "Um módulo listado em mais de um empreendimento conta uma vez, no empreendimento da obra mais antiga.",
@@ -2541,9 +2855,14 @@ def _proveniencias(con, g, vig):
         "cenarios": _prov(con, DS_PDE, FONTE_PDE, indicador="PDE 2035: capacidade, expansão indicativa, transmissão e geração",
                           natureza="CENARIO", unidade="GW, MW, km, MVA, R$ bilhões e TWh (por figura)", frequencia="por edição",
                           periodo={"inicio": "2025", "fim": "2035"}, cobertura={"inicio": "2025", "fim": "2035"},
-                          transformacoes=["leitura das abas das figuras do caderno de dados, conferidas por título e rótulos de coluna"],
+                          transformacoes=["leitura das abas das figuras do caderno de dados, conferidas por título e rótulos de coluna",
+                                          "leitura da tabela do Anexo I-3 do relatório (PDF, pdftotext -layout), conferida pelas identidades da própria tabela e contra as figuras 3-6 e 3-25"],
                           limitacoes=["Cenário de planejamento de uma edição (data-base janeiro de 2025), não previsão nem realizado.",
-                                      "Categorias do PDE não correspondem uma a uma às do SIGA; só as correspondências diretas são mostradas lado a lado, sem diferença calculada.",
+                                      "Categorias do PDE não correspondem uma a uma às do SIGA; as correspondências diretas e parciais são mostradas lado a lado, sem diferença calculada.",
+                                      "A UHE das figuras inclui Itaipu 50 Hz, as máquinas de Itaipu pertencentes ao Paraguai (7,0 GW; 7,7 GW a partir de 2032, Anexo I-3, p. 526), que o SIGA não cadastra: a comparação com o SIGA usa a linha Hidrelétrica do Anexo I-3, sem essa parcela.",
+                                      "A categoria PCH das figuras é 'PCH E CGH' no Anexo I-3: o realizado do SIGA soma PCH e CGH.",
+                                      "O Anexo I-3 não considera a autoprodução de uso exclusivo (não injetada); o SIGA cadastra também essas usinas.",
+                                      "As hipóteses legais são as vigentes na data-base: a MP nº 1.304/2025 e a Lei nº 15.269/2025 alteraram depois artigos da Lei nº 14.182/2021 (nota 17, p. 92).",
                                       "Valores monetários em reais conforme publicados pela EPE."],
                           download=DOWNLOADS["pde"]),
     }
@@ -2564,6 +2883,21 @@ def _linhas_e_chaves(vintage):
 
 REPRODUCAO = ("python3 pipeline/energia/executar_modulo.py expansao --sem-coleta refaz a gold a partir do silver "
               "data/energia/silver/aneel_geracao.db e do bronze (arquivos com sha256); sem --sem-coleta, coleta antes.")
+
+
+def _texto_reconciliacao(rec):
+    """Descrição da reconciliação por tipo com a janela real das liberações descontadas."""
+    jan = rec.get("janela_tipo") or {}
+    desc = jan.get("liberacoes_descontadas") or {}
+    txt = f"SIGA menos o agregado oficial por tipo de {rec['referencia_tipo']}"
+    if desc.get("inicio") and desc.get("fim"):
+        txt += (f" menos as liberações comerciais publicadas de {c.data_br(desc['inicio'])} a {c.data_br(desc['fim'])} "
+                "(última data do arquivo de liberações)")
+    lac = jan.get("sem_liberacoes_publicadas")
+    if lac:
+        txt += (f"; de {c.data_br(lac['inicio'])} a {c.data_br(lac['fim'])} (data do SIGA) não há liberação publicada para "
+                "descontar, e o que entrou nesses dias fica no resíduo")
+    return txt
 
 
 def _evidencias(g, vig, siga, ralie_ug, desf, conf_bruta, emp_siget, lotes, pde_obs):
@@ -2612,7 +2946,7 @@ def _evidencias(g, vig, siga, ralie_ug, desf, conf_bruta, emp_siget, lotes, pde_
                          f"{len(rec['por_tipo']) - len(fora)} de {len(rec['por_tipo'])} tipos com resíduo dentro de {TOLERANCIA_RESIDUO_PCT:g}%"
                          + (f"; fora: {', '.join(fora)}" if fora else ""))],
         reconciliacao=ev.reconciliacao(
-            f"SIGA menos o agregado oficial por tipo de {rec['referencia_tipo']} menos as liberações comerciais entre o fim desse mês e a data do SIGA",
+            _texto_reconciliacao(rec),
             "aprovado" if not fora else "ressalva", f"{TOLERANCIA_RESIDUO_PCT:g}% do agregado de cada tipo (MW)"),
         download=[usinas_csv, {"rotulo": "Capacidade em operação por UF, tipo e origem (CSV)", "url": DOWNLOADS["capacidade_uf"]}],
         reproducao=REPRODUCAO)
@@ -2669,23 +3003,26 @@ def _evidencias(g, vig, siga, ralie_ug, desf, conf_bruta, emp_siget, lotes, pde_
     # ---- desfecho da coorte inicial do RALIE
     prim = ref["ralie_historico_desde"]
     coorte = [x for x in desf.values() if x["primeira"] == prim]
-    kw_coorte = sum(x.get("kw_primeira") or 0 for x in coorte)
-    kw_op_coorte = sum(x.get("kw_primeira") or 0 for x in coorte if x["desfecho"] == "operacao")
+    kw_coorte = sum(x.get("kw_peso") or 0 for x in coorte)
+    kw_op_coorte = sum(x.get("kw_peso") or 0 for x in coorte if x["desfecho"] == "operacao")
     if kw_coorte:
         pct = 100 * kw_op_coorte / kw_coorte
-        soma_desf = sum(sum(x.get("kw_primeira") or 0 for x in coorte if x["desfecho"] == d) for d in DESFECHOS)
+        soma_desf = sum(sum(x.get("kw_peso") or 0 for x in coorte if x["desfecho"] == d) for d in DESFECHOS)
+        ampl = [x for x in coorte if x.get("operava_antes")]
         out["coorte_inicial_operacao"] = ev.construir(
-            indicador="Potência da primeira fotografia do RALIE que entrou em operação",
-            valor_exibido=f"{_milhar(pct, 1)}%", valor_calculo=pct, unidade="% do MW outorgado",
+            indicador="Potência em implantação na primeira fotografia do RALIE que entrou em operação",
+            valor_exibido=f"{_milhar(pct, 1)}%", valor_calculo=pct, unidade="% do MW em implantação",
             periodo={"inicio": prim, "fim": ref["ralie"]}, entidade="usinas presentes na primeira fotografia do RALIE",
-            universo=f"{_milhar(len(coorte))} usinas, {_milhar(kw_coorte / 1000)} MW outorgados em {c.data_br(prim)}",
+            universo=f"{_milhar(len(coorte))} usinas, {_milhar(kw_coorte / 1000)} MW em implantação em {c.data_br(prim)}",
             fonte={**ev.fonte_de_vintage("ANEEL", FONTE_RALIE["dataset"], URL_RALIE, v_ug),
                    "arquivos": [ev.arquivo_de_vintage(v) for v in (v_us, v_ug, v_lib, v_atos, v_siga) if v]},
             consulta="usinas do Parquet histórico cuja primeira DatRalie é a primeira fotografia publicada; desfecho pelo núcleo do CEG no SIGA, nas liberações comerciais e nos atos de encerramento",
             manifesto={"rotulo": "Trajetória e desfecho das usinas do RALIE (CSV)", "url": DOWNLOADS["trajetorias"]},
-            formula="100 × Σ kW outorgado na primeira fotografia das usinas com desfecho operação ÷ Σ kW outorgado da coorte",
-            numerador={"descricao": "kW outorgado das usinas da coorte que entraram em operação", "valor": kw_op_coorte},
-            denominador={"descricao": "kW outorgado de toda a coorte na primeira fotografia", "valor": kw_coorte},
+            formula="100 × Σ peso das usinas da coorte com desfecho operação ÷ Σ peso da coorte; peso = potência das unidades da primeira fotografia, limitada à outorga",
+            numerador={"descricao": "kW em implantação na primeira fotografia das usinas da coorte que entraram em operação", "valor": kw_op_coorte},
+            denominador={"descricao": "kW em implantação de toda a coorte na primeira fotografia", "valor": kw_coorte},
+            pesos=REGRA_PESO_COORTES,
+            exclusoes=[f"{len(ampl)} usinas que já operavam antes da primeira fotografia (ampliação): a fase Operação do SIGA não conta como desfecho; só a liberação das unidades da ampliação"],
             cobertura="todas as usinas da primeira fotografia (17/06/2021 ou a primeira publicada)",
             tratamento_ausencia="usina sem operação nem ato de encerramento fica em 'sem desfecho', nunca em operação",
             revisoes=prov["coortes"]["revisoes_conhecidas"],

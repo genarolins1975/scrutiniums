@@ -125,7 +125,7 @@ dia;familia;dataset;capturas_novas;recapturas_sem_mudanca;falhas;referencias_rev
 2026-09-29;energia;ear_subsistema_di;27;0;0;0;1
 2026-09-29;energia;ena_subsistema_di;27;0;0;0;1
 2026-09-29;energia;intercambio_nacional_ho;6;0;0;0;1
-2026-09-30;aneel_distribuicao;aneel_componentes_tarifarias_b1;16;0;0;12;0
+2026-09-30;aneel_distribuicao;aneel_componentes_tarifarias_b1;16;0;0;0;0
 2026-09-30;aneel_distribuicao;aneel_continuidade_limites;2;0;0;0;0
 2026-09-30;aneel_distribuicao;aneel_indqual_municipio;2;0;0;0;0
 2026-09-30;aneel_distribuicao;aneel_mmgd_municipio;1;0;0;0;0
@@ -239,7 +239,7 @@ dia;familia;dataset;capturas_novas;recapturas_sem_mudanca;falhas;referencias_rev
 2026-10-01;aneel_geracao;epe_webmap_rede;2;0;0;0;0
 2026-10-01;aneel_mmgd;aneel_mmgd_ref_conjuntos_limite;1;0;0;0;0
 2026-10-01;aneel_mmgd;aneel_mmgd_ref_conjuntos_municipio;1;0;0;0;0
-2026-10-01;aneel_mmgd;mcti_fator_emissao;0;1;0;0;0
+2026-10-01;aneel_mmgd;mcti_fator_emissao;0;2;0;0;0
 2026-10-01;aneel_mmgd;ons_carga_verificada_mmgd;4;0;0;0;0
 2026-10-01;aneel_qualidade;aneel_atendimento_telefonico;2;0;0;0;0
 2026-10-01;aneel_qualidade;aneel_ranking_continuidade;4;1;0;0;0
@@ -273,14 +273,17 @@ dia;familia;dataset;capturas_novas;recapturas_sem_mudanca;falhas;referencias_rev
 2026-10-01;ons_carga;ons_carga_diaria_conferencia;27;0;0;0;0
 2026-10-01;ons_carga;ons_carga_verificada_ho;4;0;0;0;0
 2026-10-01;ons_carga;openmeteo_temperatura;15;0;6;0;0
-2026-10-01;ons_cmo;normas_pld;4;3;0;0;0
+2026-10-01;ons_cmo;normas_pld;4;5;0;0;0
 2026-10-01;ons_cmo;ons_cmo_balanco_conferencia;2;0;0;0;0
 2026-10-01;ons_cmo;ons_cmo_semanal_a02;0;37;0;0;0
 2026-10-01;ons_cmo;ons_cmo_semihorario;0;7;0;0;0
-2026-10-01;ons_geracao;ons_geracao_termica_motivo;0;66;0;0;0
+2026-10-01;ons_geracao;ons_coff_eolica;0;60;0;0;0
+2026-10-01;ons_geracao;ons_coff_fotovoltaica;0;30;0;0;0
+2026-10-01;ons_geracao;ons_geracao_termica_motivo;0;132;0;0;0
 2026-10-01;ons_geracao;ons_geracao_usina;0;22;0;0;0
+2026-10-01;ons_hidrologia;clima_previsao;1;0;0;0;0
 2026-10-01;ons_hidrologia;nasa_power_imerg;873;0;0;0;0
-2026-10-01;ons_hidrologia;ons_pmo_relatorio_mlt;12;0;0;4;0
+2026-10-01;ons_hidrologia;ons_pmo_relatorio_mlt;12;0;0;0;0
 2026-10-01;ons_rede;ons_rede_atls;1;0;0;0;0
 2026-10-01;ons_rede;ons_rede_balanco;6;0;0;0;0
 2026-10-01;ons_rede;ons_rede_documentos;3;0;0;0;0
@@ -293,4 +296,7 @@ dia;familia;dataset;capturas_novas;recapturas_sem_mudanca;falhas;referencias_rev
 2026-10-01;publicacao;catalogo_ckan_aneel;2;0;0;0;0
 2026-10-01;publicacao;catalogo_ckan_ccee;1;1;0;0;0
 2026-10-01;publicacao;catalogo_ckan_ons;2;0;0;0;0
-2026-10-01;regulacao;aneel_bandeiras_adicional;2;0;0;0;0
+2026-10-01;regulacao;aneel_bandeiras_adicional;3;0;0;0;1
+2026-10-01;regulacao;aneel_paginas_regulatorias;0;0;1;0;0
+2026-10-01;regulacao;regulacao_documentos;7;0;0;0;0
+2026-10-01;territorio;territorio_ons_areas_carga;68;0;0;0;0

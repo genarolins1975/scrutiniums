@@ -31,7 +31,6 @@ O que o módulo publica, com a fonte oficial que de fato responde deste ambiente
 Fora de escopo, por não haver fonte pública adequada: contratos individuais, preços de PPA e
 curvas a termo. O PLD não é preço contratual do mercado livre e não é usado aqui como tal.
 """
-import gzip
 import json
 import os
 import shutil
@@ -80,8 +79,6 @@ URL_SAMP = "https://dadosabertos.aneel.gov.br/dataset/samp"
 URL_BAND = "https://dadosabertos.aneel.gov.br/dataset/bandeiras-tarifarias"
 URL_AGENTES = "https://dadosabertos.aneel.gov.br/dataset/agentes-do-setor-eletrico"
 LICENCA_ANEEL = "Open Data Commons Open Database License (ODbL)"
-RECURSO_CB = "Bandeira Tarifária - Conta Bandeira"
-RECURSO_AGENTES = "agentes-setor-eletrico"
 ANO_INICIAL_SAMP = 2019
 
 URL_MME = ("https://www.gov.br/mme/pt-br/assuntos/secretarias/secretaria-nacional-energia-eletrica/publicacoes/"
@@ -100,6 +97,7 @@ CSV_AGENTES = "mercado_agentes_aneel.csv"
 CSV_CCEE = "mercado_ccee_mensal.csv"
 CSV_DESLIG = "mercado_ccee_desligamentos.csv"
 CSV_DISTRIB_ANO = "mercado_distribuidoras_ano.csv"
+JSON_DETALHE = "mercado_detalhe.json"   # tabelas longas lidas sob demanda (contrato, seção 5.1)
 
 
 def _url(nome):
@@ -150,6 +148,7 @@ REGISTRO = {
         _url(CSV_CONSUMO_UF): "mes; uf; subsistema; classe; tipo; consumo_mwh; unidades_consumidoras. Fonte: EPE, tabela CONSUMO E NUMCONS SAM UF (até o penúltimo mês publicado). Vazio = ausência.",
         _url(CSV_NACIONAL): "mes; cativo_mwh; livre_mwh; total_mwh (soma das linhas da EPE); livre_pct (100 × livre ÷ total); cativo_uc; livre_uc; total_planilha_mwh e livre_planilha_mwh (total nacional da planilha formatada da EPE, para conferência); diferenca_total_mwh (tabela longa − planilha); preliminar (1 = ano marcado como preliminar pela EPE); samp_livre_uc e samp_livre_mwh (soma das distribuidoras no SAMP da ANEEL: só consumidores livres faturados por distribuidora); samp_distribuidoras (quantas distribuidoras publicaram o mês). Vazio = ausência.",
         _url(CSV_DISTRIB): "cnpj (14 dígitos, da fonte); sigla; mes; livre_mwh (energia TUSD faturada a consumidores livres, MWh, tipos de mercado da competência); livre_mwh_incentivada, livre_mwh_autoproducao, livre_mwh_erc, livre_mwh_convencional, livre_mwh_outro (abertura pela característica do consumidor no SAMP); livre_uc e as mesmas aberturas em unidades consumidoras; livre_mwh_refat (refaturamento de meses anteriores apresentado neste mês, sem atribuição de competência); cativo_mwh (energia TE faturada ao cativo, inclui consumidores com micro e minigeração após a compensação); cativo_uc; cativo_mwh_refat. Fonte: ANEEL, SAMP, arquivos anuais em Parquet. Vazio = a distribuidora não publicou a linha no mês.",
+        _url(JSON_DETALHE): "JSON lido sob demanda pela página: mcp_submercado_mensal (mes; submercado; be_positivo_mwh e be_negativo_mwh, balanço energético em MWh; resultado_venda_rs e resultado_compra_rs, R$), acr_conta_bandeira_mensal (mes; distribuidoras; ess_eer, ressarcimento_coner, resultado_mcp, ccear_d, receita_faturada_bandeiras, repasse_conta_bandeira em R$ somados no Brasil), risco_hidrologico_acr_mensal (mes; distribuidoras; rh_itaipu, rh_repactuadas, rh_ccgf, previsao_rh, premio_risco, rh_ccgf_repactuadas_liquido, rh_bruto em R$), desligamentos_anual (ano; tipo; classe; desligamentos). R$ e MWh inteiros; null = ausência.",
         _url(CSV_DISTRIB_ANO): "ano (último ano civil com os 12 meses publicados por quase todas as distribuidoras); cnpj; sigla; nome; meses (meses do ano com linha no SAMP); completo (1 = 12 meses); livre_mwh e cativo_mwh (soma do ano, MWh); livre_pct_faturada (100 × livre ÷ (livre + cativo), só com 12 meses); livre_uc_dez e livre_uc_dez_anterior (unidades consumidoras livres em dezembro do ano e do ano anterior); variacao_livre_uc; livre_uc_incentivada_dez, livre_uc_convencional_dez, livre_uc_autoproducao_dez; cativo_uc_dez. Fonte: ANEEL, SAMP. Vazio = ausência.",
         _url(CSV_CB): "cnpj (vazio quando a fonte não identifica a distribuidora); sigla; mes (competência); campos em R$ como publicados: receita_faturada, repasse_conta_bandeira, resultado_mcp, ccear_d, rh_ccgf_repactuadas_liquido, rh_itaipu, rh_repactuadas, rh_ccgf, previsao_rh, premio_risco, ess_eer, ressarcimento_coner; linhas (quantas linhas da fonte foram somadas na mesma distribuidora e competência). Fonte: ANEEL, Bandeiras Tarifárias, recurso Conta Bandeira; os custos são os apurados e informados pela CCEE. Vazio = ausência.",
         _url(CSV_ESS): "edicao (mês de referência do boletim, AAAA-MM); mes (competência, AAAA-MM); tipo (id do encargo); rotulo; nivel (tipo, parcela ou total); valor_mil_rs (mil R$ como publicados); traco (1 = a tabela publicou '-', lido como zero porque a soma do mês fecha); vigente (1 = edição mais recente para o mês). Fonte: MME, Boletim Mensal de Monitoramento do Sistema Elétrico (dados da CCEE).",
@@ -1982,8 +1981,9 @@ def _txt_rd(x):
 
 
 def paineis(g):
-    """Estado de cada painel com a verificação do critério de aceite do Anexo A, calculado a
-    partir da própria gold (sem estado escrito à mão)."""
+    """Estado dos dados de cada painel com a verificação do critério de aceite do Anexo A,
+    calculado a partir da própria gold (sem estado escrito à mão). É o estado da camada de dados:
+    o painel só é entregue com a página, a inspeção visual e os testes de interface."""
     lr, am_, mg, en = g["livre_regulado"], g["agentes_migracao"], g["mre_gsf"], g["encargos"]
     rec_plan = lr["reconciliacao"]["epe_planilha"]
     ident = lr.get("ccee_identidade_classes") or []
@@ -2005,8 +2005,8 @@ def paineis(g):
                 {"nome": "Agente (CNPJ), perfil (código do perfil na CCEE) e unidade consumidora contados em séries separadas",
                  "resultado": "aprovado" if agentes_ok else "ressalva", "detalhe": "agentes por classe, perfis por classe e status, parcelas de carga e unidades consumidoras (EPE e SAMP)"},
                 {"nome": "Entrada e saída de agente pelo CNPJ; desligamento pela lista oficial da CCEE (voluntário ou compulsório, com sucessão)",
-                 "resultado": "aprovado" if am_["associados_fluxos"] and am_["desligamentos_anual"] else "ressalva",
-                 "detalhe": f"{len(am_['associados_fluxos'])} meses de lista de associados; {len(am_['desligamentos_anual'])} combinações de ano, tipo e classe de desligamento"},
+                 "resultado": "aprovado" if am_["associados_fluxos"] and am_["desligamentos_por_ano"] else "ressalva",
+                 "detalhe": f"{len(am_['associados_fluxos'])} meses de lista de associados; desligamentos de {am_['desligamentos_por_ano'][0]['ano'] if am_['desligamentos_por_ano'] else '?'} a {am_['desligamentos_por_ano'][-1]['ano'] if am_['desligamentos_por_ano'] else '?'} por tipo"},
                 {"nome": "Migração definida como parcela de carga com data de migração no mês de referência",
                  "resultado": "aprovado" if am_["parcelas_mensal"] else "ressalva", "detalhe": f"{len(am_['parcelas_mensal'])} meses"}]}
     g_im = [x for x in mg["reconciliacao_infomercado"] if x["medida"] == "gsf_pct"]
@@ -2071,7 +2071,7 @@ def paineis(g):
     ]
     out = []
     for pid, titulo, pergunta, resp, cr, prov, lim in defs:
-        out.append({"id": pid, "titulo": titulo, "pergunta": pergunta, "resposta": resp, "estado": estado(cr, resp),
+        out.append({"id": pid, "titulo": titulo, "pergunta": pergunta, "resposta": resp, "estado_dados": estado(cr, resp),
                     "criterio_aceite": cr["criterio"], "verificacoes": cr["verificacoes"], "proveniencia": prov, "limitacoes": lim})
     return out
 
@@ -2134,7 +2134,6 @@ def bloqueios(con, hoje):
 ANOS_UF_NA_GOLD = 10
 DISTRIBUIDORAS_NA_GOLD = 30
 EPE_MENSAL_DESDE = "2015-01"   # antes disso, a gold traz a série anual; o CSV nacional tem todos os meses desde 2004
-MESES_CONTA_BANDEIRA_NA_GOLD = 60
 
 
 def _inteiro(v):
@@ -2152,7 +2151,8 @@ def _compacta(g):
     """Mantém a gold perto de 400 KB (contrato, seção 1): energia em MWh e dinheiro em R$ inteiros
     nas séries de gráfico (o cálculo e a evidência usam o valor completo; os CSV têm as casas
     da fonte), sem duplicar a mesma série em duas seções, e com as tabelas longas recortadas no
-    que a página mostra, apontando para o CSV completo."""
+    que a página mostra, apontando para o CSV completo. Devolve as tabelas que saem da gold para
+    o JSON de leitura sob demanda."""
     lr, am_, mg, en = g["livre_regulado"], g["agentes_migracao"], g["mre_gsf"], g["encargos"]
     ucs = {x["mes"]: x["variacao_liquida"] for x in am_.pop("ucs_epe_mensal")}
     for l in lr["epe_mensal"]:
@@ -2185,8 +2185,6 @@ def _compacta(g):
     _arredonda_lista(am_["samp_ucs_livres_mensal"], sufixos_inteiros=("_incentivada", "_convencional", "_autoproducao", "_erc", "_outro"))
     _arredonda_lista(am_["parcelas_mensal"], sufixos_inteiros=("_mwh",))
     rh = mg["risco_hidrologico_acr"]
-    rh["mensal_na_gold"] = f"últimos {MESES_CONTA_BANDEIRA_NA_GOLD} meses; a série anual cobre desde 2015 e o CSV tem todas as competências"
-    rh["mensal"] = rh["mensal"][-MESES_CONTA_BANDEIRA_NA_GOLD:]
     _arredonda_lista(rh["mensal"], sufixos_inteiros=("rh_itaipu", "rh_repactuadas", "rh_ccgf", "previsao_rh", "premio_risco",
                                                      "rh_ccgf_repactuadas_liquido", "rh_bruto"))
     _arredonda_lista(rh["anual"], sufixos_inteiros=("rh_itaipu", "rh_repactuadas", "rh_ccgf", "previsao_rh", "premio_risco",
@@ -2208,13 +2206,28 @@ def _compacta(g):
                 a[k] = (a[k] or 0.0) + x[k]
     en["acr_conta_bandeira_anual"] = [anual[a] for a in sorted(anual)]
     _arredonda_lista(en["acr_conta_bandeira_anual"], sufixos_inteiros=campos_cb)
-    en["acr_conta_bandeira_mensal"] = cb[-MESES_CONTA_BANDEIRA_NA_GOLD:]
     _arredonda_lista(en["acr_conta_bandeira_mensal"], sufixos_inteiros=campos_cb)
     for l in en["ess_mensal"]:
         for col in DETALHE_OSA:
             l.pop(COLUNAS_ESS[col], None)
     for x in g["ccee_conjuntos"]:
         x.pop("colunas_esperadas", None)
+    # tabelas que a página mostra só no modo Analisar: vão para um JSON lido sob demanda, e a gold
+    # guarda o resumo (séries anuais) e o endereço
+    det = {"mcp_submercado_mensal": en.pop("mcp_submercado_mensal"),
+           "acr_conta_bandeira_mensal": en.pop("acr_conta_bandeira_mensal"),
+           "risco_hidrologico_acr_mensal": rh.pop("mensal"),
+           "desligamentos_anual": am_.pop("desligamentos_anual")}
+    tot = {}
+    for x in det["desligamentos_anual"]:
+        k = (x["ano"], x["tipo"])
+        tot[k] = tot.get(k, 0) + x["desligamentos"]
+    am_["desligamentos_por_ano"] = [{"ano": a, "tipo": t, "desligamentos": n} for (a, t), n in sorted(tot.items())]
+    url = _url(JSON_DETALHE)
+    en["detalhe"] = {"url": url, "tabelas": ["mcp_submercado_mensal", "acr_conta_bandeira_mensal"]}
+    rh["detalhe"] = {"url": url, "tabelas": ["risco_hidrologico_acr_mensal"]}
+    am_["detalhe"] = {"url": url, "tabelas": ["desligamentos_anual"]}
+    return det
 
 
 def construir(con, ctx):
@@ -2246,9 +2259,10 @@ def construir(con, ctx):
     if crit:
         return c.stub(GOLD, "validação física falhou: " + "; ".join(crit[:5]))
     g["ressalvas_validacao"] = ress
-    _compacta(g)
+    detalhe = _compacta(g)
 
     # ---------------- proveniência
+    rh_m = detalhe["risco_hidrologico_acr_mensal"]
     snap_epe = _snap(con, DS_EPE, DS_EPE_PLAN)
     snap_samp = c.snapshot_de(con, DS_SAMP)
     snap_cb = c.snapshot_de(con, DS_CB)
@@ -2328,8 +2342,8 @@ def construir(con, ctx):
         "risco_hidrologico_acr": c.proveniencia(
             indicador="Custo do risco hidrológico alocado às distribuidoras", natureza="OBSERVADO",
             fonte=_fonte("ANEEL", "Bandeiras Tarifárias", "Bandeira Tarifária - Conta Bandeira (CSV)", URL_BAND, URL_BAND, LICENCA_ANEEL),
-            unidade="R$ nominais", frequencia="mensal (competência)", periodo={"inicio": mre["risco_hidrologico_acr"]["mensal"][0]["mes"], "fim": mre["risco_hidrologico_acr"]["mensal"][-1]["mes"]} if mre["risco_hidrologico_acr"]["mensal"] else per_epe,
-            cobertura={"inicio": "2015-01", "fim": mre["risco_hidrologico_acr"]["mensal"][-1]["mes"]} if mre["risco_hidrologico_acr"]["mensal"] else per_epe,
+            unidade="R$ nominais", frequencia="mensal (competência)", periodo={"inicio": rh_m[0]["mes"], "fim": rh_m[-1]["mes"]} if rh_m else per_epe,
+            cobertura={"inicio": rh_m[0]["mes"], "fim": rh_m[-1]["mes"]} if rh_m else per_epe,
             capturado_em=c.ultima_captura(snap_cb), snapshot=snap_cb, download=_url(CSV_CB),
             transformacoes=["soma nacional por competência de todas as linhas (inclusive sem CNPJ)", "linhas repetidas da mesma distribuidora e competência são somadas e contadas"],
             limitacoes=["Valores apurados pela CCEE e publicados pela ANEEL; a ANEEL não informa a data de cada atualização.",
@@ -2359,6 +2373,9 @@ def construir(con, ctx):
     g["pendencias"] = pendencias(con)
     g["acesso_ccee"] = acesso_ccee(con)
     _csvs(livre, agentes, mre, enc, con)
+    base.escreve_gold(JSON_DETALHE, {"dominio": base.DOMINIO, "gold": GOLD, "gerado_em": g["gerado_em"],
+                                     "descricao": "Tabelas longas do módulo Mercado lidas sob demanda pela página (os mesmos valores da construção da gold; R$ e MWh inteiros).",
+                                     **detalhe}, destino=base.SERIES)
     base.escreve_csv(CSV_DISTRIB_ANO, ["ano", "cnpj", "sigla", "nome", "meses", "completo", "livre_mwh", "cativo_mwh", "livre_pct_faturada",
                                        "livre_uc_dez", "livre_uc_dez_anterior", "variacao_livre_uc", "livre_uc_incentivada_dez",
                                        "livre_uc_convencional_dez", "livre_uc_autoproducao_dez", "cativo_uc_dez"],

@@ -69,11 +69,18 @@ SEM_DATA = "sem_data"
 ANO_MINIMO_VALIDO = 2000
 INICIO_COBERTURA_DECLARADA = "2008-12"
 
-# Colunas lidas do Parquet (as de dado pessoal ficam de fora de propósito).
+# Colunas lidas do Parquet (as de dado pessoal ficam de fora de propósito). CodCEP entra
+# só pelos 5 primeiros dígitos, a parte que a ANEEL publica sem tarja também para pessoa
+# física ("69919***"): serve para conferir em que UF fica a unidade sinalizada fora da
+# área da distribuidora (ver `uf_do_cep`). O prefixo nunca é guardado por unidade, só
+# agregado por distribuidora × município, e não é publicado.
 COLUNAS = ["DatGeracaoConjuntoDados", "AnmPeriodoReferencia", "NumCNPJDistribuidora", "SigAgente", "NomAgente", "DscClasseConsumo",
            "DscSubGrupoTarifario", "CodUFibge", "SigUF", "CodMunicipioIbge", "SigTipoConsumidor",
            "CodEmpreendimento", "DthAtualizaCadastralEmpreend", "DscModalidadeHabilitado", "QtdUCRecebeCredito",
-           "SigTipoGeracao", "DscFonteGeracao", "DscPorte", "MdaPotenciaInstaladaKW"]
+           "SigTipoGeracao", "DscFonteGeracao", "DscPorte", "MdaPotenciaInstaladaKW", "CodCEP"]
+# Valor de chave ausente nas referências compostas do agregado com CEP (o separador "|" não
+# admite vazio legível).
+SEM_VALOR = "-"
 # Chave da duplicidade candidata: tudo que se observa do empreendimento, menos o código.
 CHAVE_DUPLICIDADE = ["NumCNPJDistribuidora", "CodMunicipioIbge", "CodCEP", "DthAtualizaCadastralEmpreend",
                      "MdaPotenciaInstaladaKW", "DscClasseConsumo", "NumCPFCNPJ", "DscModalidadeHabilitado"]
@@ -130,11 +137,28 @@ def codigo_municipio(bruto, ibge_por_prefixo6=None, ibge_validos=None):
     return None, "invalido"
 
 
+def cep5(bruto):
+    """Os 5 primeiros dígitos do CEP publicado (a parte sem tarja), ou None."""
+    s = _txt(bruto)
+    if s is None:
+        return None
+    s = s.replace("-", "")[:5]
+    return s if len(s) == 5 and s.isdigit() else None
+
+
+def uf_do_codigo(codigo):
+    """UF embutida no código do empreendimento ("GD.AL.001.430.059" → "AL"), ou None."""
+    if codigo and len(codigo) > 5 and codigo[2] == "." and codigo[3:5].isalpha():
+        return codigo[3:5].upper()
+    return None
+
+
 def normaliza(raw, ibge_por_prefixo6=None, ibge_validos=None):
     """Registro normalizado (dict) a partir de uma linha do Parquet ou do CSV oficial."""
     mun, sit_mun = codigo_municipio(raw.get("CodMunicipioIbge"), ibge_por_prefixo6, ibge_validos)
     uf_mun = UF_POR_CODIGO.get(mun[:2]) if mun else None
     uf_pub = _txt(raw.get("SigUF"))
+    codigo = _txt(raw.get("CodEmpreendimento"))
     dconx = _data(raw.get("DthAtualizaCadastralEmpreend"))
     if dconx is not None and dconx.year < ANO_MINIMO_VALIDO:
         periodo_ok = False
@@ -144,7 +168,9 @@ def normaliza(raw, ibge_por_prefixo6=None, ibge_validos=None):
     tipo = tipo.upper() if tipo else None
     grupo = GRUPO_FONTE.get(tipo, "outra") if tipo else "nao_informada"
     return {
-        "codigo": _txt(raw.get("CodEmpreendimento")),
+        "codigo": codigo,
+        "uf_codigo": uf_do_codigo(codigo),
+        "cep5": cep5(raw.get("CodCEP")),
         "cnpj": entidades.cnpj(raw.get("NumCNPJDistribuidora")),
         "sigla": _txt(raw.get("SigAgente")),
         "nome_dist": _txt(raw.get("NomAgente")),
@@ -168,25 +194,37 @@ def normaliza(raw, ibge_por_prefixo6=None, ibge_validos=None):
     }
 
 
+def _novo():
+    """[unidades, soma dos kW informados, unidades sem potência informada]."""
+    return [0, 0.0, 0]
+
+
 class Agregador:
     """Soma unidades (contagem de empreendimentos) e potência (kW) nos grãos publicados.
 
-    Um empreendimento conta uma vez, pelo código; a potência ausente não vira zero (a
-    unidade conta, a potência dela fica fora da soma e o caso é contado no controle)."""
+    Um empreendimento conta uma vez, pelo código. Potência ausente (ou negativa, que a
+    grandeza não admite) não vira zero: a unidade conta, a potência dela fica fora da soma e
+    cada agregado guarda quantas unidades entraram sem potência (terceiro elemento), para a
+    gold publicar a potência nula quando nenhuma unidade tem potência e parcial rotulada
+    quando só parte tem."""
 
     def __init__(self):
-        self.mun_ano_fonte = defaultdict(lambda: [0, 0.0])
-        self.uf_mes_fonte = defaultdict(lambda: [0, 0.0])
-        self.dist_uf_ano = defaultdict(lambda: [0, 0.0])
+        self.mun_ano_fonte = defaultdict(_novo)
+        self.uf_mes_fonte = defaultdict(_novo)
+        self.dist_uf_ano = defaultdict(_novo)
         self.dist_mun = defaultdict(set)
         # distribuidora (CNPJ) × município: base para conferir, na gold, unidades cuja
         # distribuidora não tem conjunto elétrico na UF do município publicado
-        self.dist_municipio = defaultdict(lambda: [0, 0.0])
-        self.classe_ano = defaultdict(lambda: [0, 0.0])
-        self.modalidade_ano = defaultdict(lambda: [0, 0.0])
-        self.porte_ano = defaultdict(lambda: [0, 0.0])
-        self.tipo_consumidor_ano = defaultdict(lambda: [0, 0.0])
-        self.fonte_detalhe_ano = defaultdict(lambda: [0, 0.0])
+        self.dist_municipio = defaultdict(_novo)
+        # distribuidora × município × prefixo do CEP × UF do código do empreendimento × UF
+        # publicada: os sinais que separam, entre as unidades fora da área da distribuidora,
+        # município provavelmente errado de distribuidora provavelmente errada
+        self.dist_mun_cep = defaultdict(_novo)
+        self.classe_ano = defaultdict(_novo)
+        self.modalidade_ano = defaultdict(_novo)
+        self.porte_ano = defaultdict(_novo)
+        self.tipo_consumidor_ano = defaultdict(_novo)
+        self.fonte_detalhe_ano = defaultdict(_novo)
         self.ucs_credito_uf_ano = defaultdict(float)
         self.nomes_dist = defaultdict(Counter)
         self.datas_conjunto = Counter()
@@ -201,6 +239,8 @@ class Agregador:
         a[0] += 1
         if kw is not None:
             a[1] += kw
+        else:
+            a[2] += 1
 
     def adiciona(self, r):
         c = self.c
@@ -250,6 +290,8 @@ class Agregador:
         if r["mun"]:
             self.dist_mun[cnpj].add(r["mun"])
         self._soma(self.dist_municipio, (cnpj, mun), kw)
+        self._soma(self.dist_mun_cep, (cnpj, mun, r["cep5"] or SEM_VALOR, r["uf_codigo"] or SEM_VALOR,
+                                       r["uf_publicada"] or SEM_VALOR), kw)
         self._soma(self.classe_ano, (r["classe"] or "nao_informada", ano), kw)
         self._soma(self.modalidade_ano, (r["modalidade"] or "nao_informada", ano), kw)
         self._soma(self.porte_ano, (r["porte"] or "nao_informado", ano), kw)
@@ -266,10 +308,15 @@ class Agregador:
         `entidade|período[|fonte]`: poucas séries e muitas referências, para o controle de
         revisão funcionar por combinação sem estourar o limite de parâmetros do SQLite."""
         def dois(serie, d, chave_ref):
-            for k, (q, kw) in d.items():
+            # kw.<serie> é a soma das potências informadas; qtd_sem_kw.<serie> só existe
+            # quando alguma unidade da combinação veio sem potência (a importação grava zero
+            # quando a combinação deixa de ter unidade sem potência numa captura nova)
+            for k, (q, kw, sem) in d.items():
                 ref = chave_ref(k)
                 yield f"qtd.{serie}", ref, float(q)
                 yield f"kw.{serie}", ref, round(kw, 4)
+                if sem:
+                    yield f"qtd_sem_kw.{serie}", ref, float(sem)
         yield from dois("mun_ano_fonte", self.mun_ano_fonte, lambda k: "|".join(k))
         yield from dois("uf_mes_fonte", self.uf_mes_fonte, lambda k: "|".join(k))
         yield from dois("dist_uf_ano", self.dist_uf_ano, lambda k: "|".join(k))
@@ -279,6 +326,7 @@ class Agregador:
         yield from dois("tipo_consumidor_ano", self.tipo_consumidor_ano, lambda k: "|".join(k))
         yield from dois("fonte_detalhe_ano", self.fonte_detalhe_ano, lambda k: "|".join(k))
         yield from dois("dist_mun", self.dist_municipio, lambda k: "|".join(k))
+        yield from dois("dist_mun_cep", self.dist_mun_cep, lambda k: "|".join(k))
         for (uf, ano), v in self.ucs_credito_uf_ano.items():
             yield "ucs_credito.uf_ano", f"{uf}|{ano}", float(v)
         for cnpj, muns in self.dist_mun.items():
@@ -440,7 +488,8 @@ def concordancia_datas(caminho_relacao, caminho_tecnico_fv):
 # ---------------------------------------------------------------------------
 # A relação de MMGD traz unidades com o município de outra área de concessão (ex.: 185
 # unidades da Neoenergia PE em São Caetano de Odivelas, PA; 289 da COELBA em Goiás), o que
-# indica código de município errado na origem. Para sinalizar sem corrigir, a área de cada
+# indica um campo errado na origem: o município ou o CNPJ da distribuidora (qual deles é
+# conferido pelo CEP, mais abaixo). Para sinalizar sem corrigir, a área de cada
 # distribuidora vem de dois conjuntos oficiais da ANEEL, ligados pelo identificador do
 # conjunto elétrico (nunca por nome): "indicadores-continuidade-coletivos-limite" (CNPJ da
 # distribuidora × conjunto × ano) e "indqual-municipio" (conjunto × município IBGE). Vale
@@ -487,3 +536,100 @@ def area_distribuidoras(limites, municipios):
             for uf in ufs:
                 area[cn][uf] += 1
     return {cn: dict(c) for cn, c in area.items()}
+
+
+# ---------------------------------------------------------------------------
+# Unidades fora da área da distribuidora: qual campo provavelmente está errado
+# ---------------------------------------------------------------------------
+# Uma unidade cadastrada em município de UF onde a distribuidora (CNPJ) não tem conjunto
+# elétrico tem um campo errado na origem, mas o arquivo não diz qual: pode ser o código do
+# município (a unidade está na área da distribuidora, em outro município) ou o CNPJ da
+# distribuidora (a unidade está no município publicado, ligada a outra distribuidora). No
+# cadastro de 29/09/2026 os dois casos são frequentes (contagens na seção 3.1 do documento
+# do módulo), então nenhuma causa única vale para todas. O CEP publicado separa os casos.
+#
+# UF do CEP: a tabela oficial de faixas de CEP por UF dos Correios só é consultável com
+# verificação humana (captcha), que não é contornada. A referência vem do próprio cadastro:
+# a UF (pelo código IBGE do município) das unidades NÃO sinalizadas com o mesmo prefixo de
+# 5 dígitos, quando uma UF reúne pelo menos 90% delas. Prefixo sem unidade não sinalizada,
+# ou sem UF que chegue a 90%, usa o prefixo de 3 dígitos pela mesma regra (as faixas de CEP
+# por UF são definidas nesse nível). As unidades sinalizadas ficam fora da referência,
+# para que um grupo delas não confirme o próprio município.
+PARTICIPACAO_MINIMA_UF_CEP = 0.9
+CLASSES_FORA = ("provavel_municipio_errado", "provavel_distribuidora_errada", "indeterminada")
+ROTULO_CLASSE_FORA = {
+    "provavel_municipio_errado": "Provável código de município errado: o CEP publicado fica numa UF da área da distribuidora",
+    "provavel_distribuidora_errada": ("Provável distribuidora (CNPJ) errada: CEP, código do empreendimento e UF publicada ficam "
+                                      "na UF do município"),
+    "indeterminada": "Indeterminada: CEP ausente, de preenchimento, sem referência, numa terceira UF ou sinais divergentes",
+}
+MOTIVOS_INDETERMINADA = ("sem_cep", "cep_de_preenchimento", "cep_sem_referencia", "cep_em_terceira_uf", "sinais_divergentes")
+
+
+def cep_de_preenchimento(p):
+    """Prefixo com os cinco dígitos iguais (00000, 77777...): no cadastro funciona como
+    preenchimento (ex.: 2.644 unidades do Distrito Federal com CEP 77777 em 29/09/2026,
+    fora da faixa do DF), não como localização."""
+    return bool(p) and len(set(p)) == 1
+
+
+def uf_municipio(mun):
+    return UF_POR_CODIGO.get(mun[:2]) if mun and mun[:1].isdigit() else None
+
+
+def sinalizada(cnpj, uf, area):
+    """Unidade em UF onde o CNPJ não tem conjunto elétrico (CNPJ sem referência não é sinalizado)."""
+    return cnpj in area and uf is not None and uf not in area[cnpj]
+
+
+def referencia_uf_cep(dist_mun_cep, area, minima=PARTICIPACAO_MINIMA_UF_CEP):
+    """({prefixo5: uf|None}, {prefixo3: uf|None}, resumo) pelas unidades não sinalizadas.
+
+    dist_mun_cep: {(cnpj, mun, cep5, uf_codigo, uf_publicada): (unidades, ...)}. None no
+    dicionário = prefixo ambíguo (nenhuma UF chega à participação mínima)."""
+    c5, c3 = defaultdict(Counter), defaultdict(Counter)
+    usadas = 0
+    for (cn, mun, p, _uc, _up), v in dist_mun_cep.items():
+        uf = uf_municipio(mun)
+        if p == SEM_VALOR or uf is None or cep_de_preenchimento(p) or sinalizada(cn, uf, area):
+            continue
+        c5[p][uf] += v[0]
+        c3[p[:3]][uf] += v[0]
+        usadas += v[0]
+
+    def resolve(cont):
+        out = {}
+        for p, c in cont.items():
+            uf, n = c.most_common(1)[0]
+            out[p] = uf if n >= minima * sum(c.values()) else None
+        return out
+    r5, r3 = resolve(c5), resolve(c3)
+    resumo = {"unidades_de_referencia": usadas, "prefixos_5": len(r5), "prefixos_5_ambiguos": sum(1 for u in r5.values() if u is None),
+              "prefixos_3": len(r3), "prefixos_3_ambiguos": sum(1 for u in r3.values() if u is None)}
+    return r5, r3, resumo
+
+
+def classe_fora_da_area(cnpj, mun, p, uf_cod, uf_pub, area, ref5, ref3):
+    """(classe, motivo|None, uf_do_cep|None) de uma combinação sinalizada fora da área.
+
+    - provavel_municipio_errado: a UF do CEP está na área do CNPJ (a unidade deve estar na
+      área da distribuidora, com o código de município de outro lugar);
+    - provavel_distribuidora_errada: UF do CEP, UF do código do empreendimento e UF
+      publicada iguais à UF do município (a unidade deve estar no município publicado; o
+      CNPJ é que aponta outra distribuidora);
+    - indeterminada, com o motivo."""
+    uf = uf_municipio(mun)
+    if p == SEM_VALOR:
+        return "indeterminada", "sem_cep", None
+    if cep_de_preenchimento(p):
+        return "indeterminada", "cep_de_preenchimento", None
+    uf_cep = ref5.get(p) or ref3.get(p[:3])
+    if uf_cep is None:
+        return "indeterminada", "cep_sem_referencia", None
+    if uf_cep in area.get(cnpj, ()):
+        return "provavel_municipio_errado", None, uf_cep
+    if uf_cep == uf:
+        if uf_cod == uf and uf_pub == uf:
+            return "provavel_distribuidora_errada", None, uf_cep
+        return "indeterminada", "sinais_divergentes", uf_cep
+    return "indeterminada", "cep_em_terceira_uf", uf_cep

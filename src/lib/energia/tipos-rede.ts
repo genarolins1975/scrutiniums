@@ -16,7 +16,7 @@
  * seguem os tipos abaixo.
  */
 import type { Evidencia } from "./evidencia";
-import type { Cabecalho, Download, Proveniencia, Submercado } from "./tipos";
+import type { Cabecalho, Download, Natureza, Proveniencia, Submercado } from "./tipos";
 
 export type FronteiraRede = "N_NE" | "N_SE" | "NE_SE" | "S_SE";
 export type PaisRede = "ARGENTINA" | "URUGUAI" | "PARAGUAI";
@@ -95,8 +95,16 @@ export type EsquemaFonteRede = {
   balanco: EsquemaBalanco[];
 };
 
-export type DiaIncompleto = { dia: string; horas: number };
-export type CoberturaFonte = { dias_incompletos: number; lista: DiaIncompleto[] };
+/** Dia sem as 24 horas em alguma série da fonte: mínimo e máximo de horas entre as séries e as horas de cada uma. */
+export type DiaIncompleto = { dia: string; horas: number; horas_max: number; por_serie: Record<string, number> };
+export type CoberturaFonte = {
+  dias_incompletos: number;
+  /** Dias em que nenhuma série tem hora publicada (horas_max = 0). */
+  dias_sem_nenhum_dado: number;
+  /** Dias em que só parte das séries ou das horas falta. */
+  dias_parciais: number;
+  lista: DiaIncompleto[];
+};
 export type CoberturaRede = {
   inicio: string;
   fim: string;
@@ -167,14 +175,20 @@ export type CirculacaoRede = {
     meses: string[];
     por_sm: Record<Submercado, Colunas<"exportacao_bruta_mwh" | "importacao_bruta_mwh" | "horas" | "horas_transito">>;
   };
-  /** Últimos 7 dias completos, hora a hora: fluxo, programado, exterior e PLD na mesma hora. */
-  janela_horaria: {
-    horas: string[];
-    fluxo: Record<FronteiraRede, (number | null)[]>;
-    programado: Record<FronteiraRede, (number | null)[]>;
-    exterior: Record<PaisSul, (number | null)[]>;
-    pld: Record<Submercado, (number | null)[]>;
-  };
+  /** Referência ao JSON da janela horária (lido sob demanda; tipo JanelaHorariaRede). */
+  janela_horaria: { url: string; inicio: string; fim: string; horas: number; dias: number };
+};
+
+/**
+ * public/energia/series/rede_janela_horaria.json: últimos 7 dias completos, hora a hora, com
+ * fluxo, programado, exterior e PLD na mesma hora (mapa e cursor; carregado sob demanda).
+ */
+export type JanelaHorariaRede = Cabecalho & {
+  horas: string[];
+  fluxo: Record<FronteiraRede, (number | null)[]>;
+  programado: Record<FronteiraRede, (number | null)[]>;
+  exterior: Record<PaisSul, (number | null)[]>;
+  pld: Record<Submercado, (number | null)[]>;
 };
 
 /* ---------- P029: balanço e exterior ---------- */
@@ -192,7 +206,13 @@ export type IdentidadeBalanco = {
   /** Horas que fecham, mas com diferença entre 0,01 MWmed e a tolerância (sensibilidade da tolerância). */
   horas_entre_0_01_e_tolerancia: number;
   horas_residuo: number;
+  /** Horas com resíduo por ano ("2022": 24...). */
+  horas_residuo_por_ano: Record<string, number>;
   horas_acima: Record<Faixa, number>;
+  /** Horas com resíduo igual a menos o intercâmbio internacional da mesma hora (padrão verificável, não causa). */
+  horas_residuo_igual_menos_exterior: number;
+  /** Dias dessas horas (até 20). */
+  dias_residuo_igual_menos_exterior: string[];
   maior_residuo_mwmed: number | null;
   maior_residuo_em: string | null;
   /** Até 12 sequências contíguas mais longas de horas com resíduo. */
@@ -202,34 +222,87 @@ export type IdentidadeBalanco = {
   ultima_hora_residuo: string | null;
 };
 
+/**
+ * Duas somas por mês, cada uma sobre as suas horas, para que a linha feche:
+ * geracao − carga − intercambio = residuo_balanco (horas_completas) e
+ * intercambio_perimetro − fronteiras_exterior = residuo_perimetro (horas_perimetro).
+ */
 export type CamposBalancoMes =
   | "geracao_mwh"
   | "carga_mwh"
   | "intercambio_mwh"
-  | "fronteiras_exterior_mwh"
   | "residuo_balanco_mwh"
+  | "intercambio_perimetro_mwh"
+  | "fronteiras_exterior_mwh"
   | "residuo_perimetro_mwh"
+  | "horas"
   | "horas_completas"
   | "horas_residuo_balanco"
+  | "horas_perimetro"
   | "horas_residuo_perimetro";
+
+/** Geração solar e carga do mês com a MMGD estimada pelo ONS: em nenhum dia, em parte (abril de 2023) ou em todos. */
+export type RegimeMmgd = "sem" | "parcial" | "com";
+
+export type ConferenciaDegrauMmgd = {
+  sm: SubsistemaOuSin;
+  dia_anterior: string;
+  dia: string;
+  solar_mwh_dia_anterior: number | null;
+  solar_mwh_dia: number | null;
+  horas_dia_anterior: number;
+  horas_dia: number;
+  solar_12h_dia_anterior_mwmed: number | null;
+  solar_12h_dia_mwmed: number | null;
+  razao_solar_dia: number | null;
+  horas_balanco_fecha_dia_anterior: number;
+  horas_balanco_fecha_dia: number;
+  arquivo: string;
+  sha256: string;
+  capturado_em: string;
+};
+
+/** Quebra metodológica do balanço (inclusão da MMGD estimada em 29/04/2023), declarada e conferida no arquivo. */
+export type QuebraBalanco = {
+  id: string;
+  dia: string;
+  componentes: string[];
+  natureza_componente: Natureza;
+  descricao: string;
+  declaracao: {
+    conjunto: string;
+    url: string;
+    trecho: string;
+    /** Trecho conferido literalmente na descrição do conjunto (null = descrição não capturada). */
+    confere: boolean | null;
+    capturado_em: string | null;
+    observacao: string;
+  };
+  /** null quando o arquivo do ano não está no bronze; { erro } quando a leitura falhou. */
+  conferencia_arquivo: ConferenciaDegrauMmgd | { erro: string } | null;
+  degrau_observado_no_dia: boolean;
+  efeito: string;
+};
 
 export type BalancoRede = {
   tolerancia_mwmed: number;
   faixas_mwmed: number[];
   identidades: IdentidadeBalanco[];
-  mensal: { meses: string[]; por_sm: Record<SubsistemaOuSin, Colunas<CamposBalancoMes>> };
+  quebras: QuebraBalanco[];
+  mensal: { meses: string[]; mmgd_estimada: RegimeMmgd[]; por_sm: Record<SubsistemaOuSin, Colunas<CamposBalancoMes>> };
 };
 
 export type ExteriorPais = Colunas<
   "exportacao_mwh" | "importacao_mwh" | "horas" | "horas_com_fluxo" | "programado_liquido_mwh"
 > & { ultima_hora: string | null; ultima_hora_com_fluxo: string | null };
 
+/** País sem nenhuma hora publicada na janela (Paraguai desde 21/02/2024): horas = 0 e somas null, nunca zero. */
 export type ResumoExterior12m = {
   meses: [string, string] | null;
-  exportacao_mwh: number;
-  importacao_mwh: number;
-  horas_com_fluxo: number;
   horas: number;
+  exportacao_mwh: number | null;
+  importacao_mwh: number | null;
+  horas_com_fluxo: number | null;
 };
 
 export type ExteriorRede = {
@@ -338,7 +411,7 @@ export type RestricoesRede = {
 
 /* ---------- P031: programado versus verificado ---------- */
 
-export type DistribuicaoDesvio = {
+export type DistribuicaoBase = {
   horas: number;
   inicio: string;
   fim: string;
@@ -353,6 +426,29 @@ export type DistribuicaoDesvio = {
   programado_abs_mediano_mwmed: number;
 };
 
+export type DistribuicaoDesvio = DistribuicaoBase & {
+  /** A mesma distribuição sem os dias rotulados (programa repetido); nos países é igual à completa. */
+  sem_dias_rotulados: DistribuicaoBase | null;
+  dias_rotulados: number;
+};
+
+export type SequenciaProgramaRepetido = {
+  par: FronteiraRede;
+  inicio: string;
+  fim: string;
+  horas: number;
+  valor_mwmed: number;
+};
+
+export type DiaProgramaRepetido = {
+  dia: string;
+  sequencias: SequenciaProgramaRepetido[];
+  por_par: Record<
+    FronteiraRede,
+    { programado_mwh: number | null; verificado_mwh: number | null; desvio_abs_mwh: number | null; horas_materiais: number | null }
+  >;
+};
+
 export type MaiorDesvio = {
   hora: string;
   par: ParProgramado;
@@ -360,6 +456,8 @@ export type MaiorDesvio = {
   verificado_mwmed: number;
   desvio_mwmed: number;
   inversao: boolean;
+  /** Hora de dia rotulado por programa repetido numa fronteira entre subsistemas. */
+  dia_rotulado: boolean;
 };
 
 export type ProgramadoRede = {
@@ -368,6 +466,13 @@ export type ProgramadoRede = {
   limiar_material_mwmed: number;
   justificativa_limiar: string | null;
   limiares_sensibilidade_mwmed: number[];
+  programa_repetido: {
+    regra: string;
+    minimo_horas: number;
+    dias: DiaProgramaRepetido[];
+    /** Maior sequência de valor programado repetido fora dos dias rotulados, por fronteira (horas). */
+    maior_sequencia_fora_dos_dias_rotulados: Record<FronteiraRede, number | null>;
+  };
   distribuicao: Partial<Record<ParProgramado, DistribuicaoDesvio>>;
   diario: {
     dias: string[];
@@ -375,12 +480,15 @@ export type ProgramadoRede = {
   };
   mensal: {
     meses: string[];
+    /** Dias rotulados (programa repetido) em cada mês. */
+    dias_rotulados: number[];
     por_par: Record<
       ParProgramado,
       Colunas<"horas" | "programado_mwh" | "verificado_mwh" | "desvio_abs_mwh" | "horas_materiais" | "horas_inversao">
     >;
   };
   maiores_desvios: MaiorDesvio[];
+  maiores_desvios_fora_dos_dias_rotulados: MaiorDesvio[];
   versao_programa: {
     identificada_pela_fonte: boolean;
     texto: string;
@@ -388,6 +496,9 @@ export type ProgramadoRede = {
       dias: number;
       primeiro_dia: string | null;
       ultimo_dia: string | null;
+      /** Dias do PDO com programado no conjunto internacional (os mais recentes ainda não têm). */
+      dias_comparados: number;
+      dias_sem_programado_no_conjunto: string[];
       horas: number;
       horas_conferem: number;
       horas_com_programa_ou_pdo: number;
@@ -457,10 +568,13 @@ export type AchadosRede = {
   dicionarios: Record<string, DicionarioOns>;
 };
 
-export type ProvenienciaRede = Record<
-  "fluxo" | "subsistemas" | "pld_na_hora" | "balanco" | "exterior" | "atls" | "interrupcoes" | "programado",
-  Proveniencia
->;
+/** Natureza por componente de um agregado que mistura medição com estimativa ou previsão (seção 11.3). */
+export type NaturezaComponente = { componente: string; natureza: Natureza; desde: string | null };
+
+export type ProvenienciaRede = Record<"fluxo" | "subsistemas" | "pld_na_hora" | "exterior" | "atls" | "interrupcoes", Proveniencia> & {
+  balanco: Proveniencia & { natureza_componentes: NaturezaComponente[] };
+  programado: Proveniencia & { natureza_componentes: NaturezaComponente[] };
+};
 
 /**
  * Evidências por chave: `contra_saldo_30d.<fronteira>`, `a05_perimetro_sul`,

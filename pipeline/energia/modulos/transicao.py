@@ -100,8 +100,10 @@ MAX_IDADE_AREA = 90   # conjuntos elétricos mudam pouco; só sinalizam, não en
 # Versão do que a importação da relação de MMGD extrai do arquivo. Uma vintage importada
 # com versão anterior é importada de novo (os valores que não mudaram não geram linha
 # nova no silver; séries novas entram com a mesma vintage). 2: distribuidora × município,
-# datas de conexão mínima e máxima e período de referência do arquivo.
-VERSAO_IMPORTACAO_MMGD = "2"
+# datas de conexão mínima e máxima e período de referência do arquivo. 3: agregado
+# distribuidora × município × prefixo do CEP × UF do código × UF publicada (classes das
+# unidades fora da área) e contagem de unidades sem potência por agregado (qtd_sem_kw.*).
+VERSAO_IMPORTACAO_MMGD = "3"
 # Versão da leitura das planilhas do MCTI (revisões declaradas, descartes e problemas de
 # leitura). 2: valores diários da publicação anterior e rótulo contraditório de 2020.
 VERSAO_LEITURA_MCTI = "2"
@@ -127,6 +129,18 @@ DOC_ONS_BALANCO = {
     "consultado_em": "2026-09-30",
     "trecho": ("A partir de 29/04/2023, o valor estimado da micro e minigeração distribuída (MMGD) também passou a "
                "incorporar os dados de geração e carga apresentados nesta página."),
+}
+DOC_ONS_DICIONARIO = {
+    "orgao": "ONS",
+    "titulo": "Dicionário de dados da Carga Verificada, versão 1.1 de 30/10/2023 (DicionarioDados_Carga_Verificada.pdf)",
+    "url": ons.URL_DICIONARIO,
+    "consultado_em": "2026-10-01",
+    "trecho": ("Dados de carga verificada na periodicidade semi-horária por área de carga e suas componentes de parcela supervisionada "
+               "pelo ONS, parcela proveniente dos dados de medição (geração tipo I, IIA, IIB, IIC e intercâmbios), parcela proveniente "
+               "do sistema de medição para faturamento da CCEE (geração tipo III), parcela atendida por micro e mini geração "
+               "distribuída (MMGD), parcela atendida por redução de demanda, e os valores das consistências feitas para os modelos "
+               "de previsão, quando ocorrerem. [...] Valor da Carga atendida por MMGD em MWmed integralizada no final do intervalo "
+               "da semi-hora (val_cargammgd)."),
 }
 DOC_ONS_PMO = {
     "orgao": "ONS",
@@ -204,27 +218,38 @@ REGISTRO = {
         "/energia/series/transicao_mmgd_municipio_ano_fonte.csv": (
             "codigo_ibge; municipio; uf; ano_conexao (AAAA, ou sem_data quando a data publicada é sentinela); fonte (solar, "
             "termica, hidraulica, eolica, outra, nao_informada); unidades = empreendimentos no cadastro vigente; potencia_kw = "
-            "potência instalada cadastrada em kW (capacidade, não energia). Combinação ausente = nenhum empreendimento no cadastro."),
+            "soma da potência instalada cadastrada em kW das unidades com potência informada (capacidade, não energia), vazio "
+            "quando nenhuma unidade da linha tem potência; unidades_sem_potencia = unidades da linha sem potência informada (maior "
+            "que zero = soma parcial). Combinação ausente = nenhum empreendimento no cadastro. Registros com data anterior a "
+            "dez/2008 (início da cobertura declarada pela ANEEL) aparecem como publicados."),
         "/energia/series/transicao_mmgd_municipios.csv": (
-            "codigo_ibge; municipio; uf; unidades e potencia_kw no cadastro vigente; populacao_estimada e ano_populacao (IBGE, "
+            "codigo_ibge; municipio; uf; unidades e potencia_kw no cadastro vigente; unidades_sem_potencia (potência parcial "
+            "quando maior que zero; potencia_kw vazio quando todas); populacao_estimada e ano_populacao (IBGE, "
             "SIDRA 6579); w_por_habitante = potencia_kw × 1000 ÷ população; unidades_por_mil_habitantes; ano_referencia (último "
             "ano completo antes da data do cadastro); unidades_ano_referencia e potencia_kw_ano_referencia = conectadas no ano; "
             "potencia_kw_estoque_ano_anterior = conectadas até 31/12 do ano anterior; crescimento_estoque_pct = potência do ano "
             "÷ estoque anterior × 100 (vazio quando o estoque anterior é zero); unidades_distribuidora_fora_da_uf e "
             "potencia_kw_distribuidora_fora_da_uf = unidades do município cuja distribuidora (CNPJ) não tem conjunto elétrico na UF "
-            "do município (base de continuidade da ANEEL), provável código de município errado na origem, sinalizadas e não "
-            "corrigidas (já incluídas em unidades e potencia_kw; vazio = conferência indisponível). Vazio = ausência (sem população publicada)."),
+            "do município (base de continuidade da ANEEL): algum campo está errado na origem, sinalizadas e não corrigidas (já "
+            "incluídas em unidades e potencia_kw; vazio = conferência indisponível). Dessas, unidades_provavel_municipio_errado e "
+            "potencia_kw_provavel_municipio_errado = CEP publicado numa UF da área da distribuidora (provavelmente ficam em outro "
+            "município: são as únicas a descontar para refazer o W/hab do município); unidades_provavel_distribuidora_errada e "
+            "potencia_kw_provavel_distribuidora_errada = CEP, código do empreendimento e UF publicada na UF do município "
+            "(provavelmente ficam no município; o erro provável é o CNPJ, que infla o total da distribuidora); o restante é "
+            "indeterminado. Vazio = ausência (sem população publicada ou conferência indisponível)."),
         "/energia/series/transicao_mmgd_uf_mes_fonte.csv": (
-            "uf (pelo código IBGE do município); mes_conexao (AAAA-MM ou sem_data); fonte; unidades; potencia_kw. Os últimos "
-            "meses são provisórios: registros chegam à ANEEL depois da conexão."),
+            "uf (pelo código IBGE do município); mes_conexao (AAAA-MM ou sem_data); fonte; unidades; potencia_kw (soma das "
+            "potências informadas; vazio quando nenhuma); unidades_sem_potencia. Os últimos meses são provisórios: registros chegam "
+            "à ANEEL depois da conexão. Meses anteriores a dez/2008 estão fora da cobertura declarada pela ANEEL."),
         "/energia/series/transicao_mmgd_distribuidoras.csv": (
             "cnpj (14 dígitos, chave da distribuidora); sigla e nome como publicados (a sigla pode mudar para o mesmo CNPJ); uf "
-            "do município da unidade; ano_conexao; unidades; potencia_kw; uf_na_area_da_distribuidora = sim quando o CNPJ tem "
-            "conjunto elétrico nessa UF na base de continuidade da ANEEL, nao quando não tem (provável código de município "
-            "errado na origem), vazio quando não há referência."),
+            "do município da unidade; ano_conexao; unidades; potencia_kw (soma das potências informadas; vazio quando nenhuma); "
+            "unidades_sem_potencia; uf_na_area_da_distribuidora = sim quando o CNPJ tem conjunto elétrico nessa UF na base de "
+            "continuidade da ANEEL, nao quando não tem (algum campo errado na origem: o município ou o CNPJ; as classes pelo CEP "
+            "estão na gold e no CSV municipal), vazio quando não há referência."),
         "/energia/series/transicao_mmgd_perfil.csv": (
             "dimensao (classe, modalidade, porte, tipo_consumidor, fonte_detalhe); categoria como publicada pela ANEEL; "
-            "ano_conexao; unidades; potencia_kw."),
+            "ano_conexao; unidades; potencia_kw (soma das potências informadas; vazio quando nenhuma); unidades_sem_potencia."),
         "/energia/series/transicao_ons_mmgd_diario.csv": (
             "data (dia de referência do ONS); submercado (SE, S, NE, N); mmgd_mwh = soma das meias horas × 0,5 h da parcela da "
             "carga atendida por MMGD estimada pelo ONS; mmgd_mwmed = mmgd_mwh ÷ horas; horas = horas cobertas; carga_global_mwh; "
@@ -297,7 +322,12 @@ def _zeros_para_sumidos(con, linhas):
     e sumiu na nova tem hoje zero empreendimentos (zero real, não ausência). Sem esta linha,
     a leitura vigente repetiria o valor antigo."""
     novas = {(s, r) for s, r, _ in linhas}
-    series = sorted({s for s, _, _ in linhas if not s.startswith("controle.")})
+    # séries do silver que não aparecem na captura nova também entram: qtd_sem_kw.<serie>
+    # só é gravada quando há unidade sem potência, então pode sumir inteira de uma captura
+    # para a outra, e sem o zero a leitura vigente repetiria a contagem antiga
+    existentes = {s for (s,) in con.execute("SELECT DISTINCT serie FROM observacoes WHERE dataset=?", (DS_MMGD,))}
+    series = sorted({s for s, _, _ in linhas} | existentes)
+    series = [s for s in series if not s.startswith("controle.")]
     extras = []
     for s in series:
         for ref, v in base.serie_vigente(con, DS_MMGD, s):
@@ -324,6 +354,14 @@ def _importa_mmgd(con, vintage, vint_fv):
         linhas = list(ag.observacoes())
         linhas += _zeros_para_sumidos(con, linhas)
         linhas += [(f"controle.{k}", data_conj, float(v)) for k, v in ctrl.items() if v is not None]
+        # contagens do agregador só existem quando passam de zero: controle que o silver já
+        # tinha e que a captura nova não traz vale zero (sem isso, uma captura com a mesma
+        # data de geração herdaria a contagem antiga). Os controles do recurso técnico (fv_)
+        # ficam de fora: sem a captura dele, a ausência é "sem captura", não zero.
+        ja = {s for s, _, _ in linhas if s.startswith("controle.")}
+        linhas += [(s, data_conj, 0.0) for (s,) in con.execute(
+            "SELECT DISTINCT serie FROM observacoes WHERE dataset=? AND serie LIKE 'controle.%'", (DS_MMGD,))
+            if s not in ja and not s.startswith("controle.fv_")]
         novas, revs = base.grava_observacoes(con, DS_MMGD, vintage["vintage_id"], linhas)
         dist = []
         for cnpj, nomes in ag.nomes_dist.items():
@@ -458,8 +496,13 @@ def _meses(inicio, fim):
             a, m = a + 1, 1
 
 
-def _coleta_ons(con, hoje, baixar=http_get, pausa=PAUSA_S):
-    agora = datetime.now(timezone.utc)
+def _coleta_ons(con, hoje=None, baixar=http_get, pausa=PAUSA_S, agora=None):
+    """Pedidos mensais por submercado. `hoje` é a data civil de Brasília: o ONS publica por
+    dia de referência em Brasília, e com a data UTC, entre 21h e 24h de Brasília, a coleta
+    pediria o mês seguinte (vintages vazias) e tiraria um mês recente do lote de 20 h."""
+    agora = agora or datetime.now(timezone.utc)
+    if hoje is None:
+        hoje = date.fromisoformat(_data_brasilia(agora.strftime("%Y-%m-%dT%H:%M:%SZ")))
     meses = list(_meses(ons.PRIMEIRO_MES, hoje.strftime("%Y-%m")))
     recentes = set(meses[-ONS_MESES_RECENTES:])
     st = {"pedidos": 0, "novas": 0, "identicas": 0, "puladas": 0, "falhas": [], "observacoes_novas": 0, "revisoes": 0}
@@ -784,7 +827,8 @@ def _coleta_ibge(con, baixar=http_get):
 
 
 def coletar(con, ctx):
-    hoje = ctx.get("hoje") or c.agora_date()
+    # data civil de Brasília (o runner roda em UTC; ver _coleta_ons)
+    hoje = ctx.get("hoje") or c.hoje_brasilia()
     status = {"modulo": "transicao"}
     # IBGE antes da MMGD: o cadastro de municípios completa códigos de 6 dígitos
     for nome, f in (("ibge", lambda: _coleta_ibge(con)), ("mmgd", lambda: _coleta_mmgd(con)),
@@ -816,11 +860,33 @@ def _serie_ref(con, ds, serie, partes):
 
 
 def _par(con, serie, partes):
-    """{chave: (unidades, kW)} juntando qtd.<serie> e kw.<serie>; combinação com zero
-    unidades (sumiu do cadastro) não entra."""
+    """{chave: (unidades, kW informados, unidades sem potência)} juntando qtd.<serie>,
+    kw.<serie> e qtd_sem_kw.<serie>; combinação com zero unidades (sumiu do cadastro) não
+    entra. kW é a soma das potências informadas: com unidades sem potência, a soma é parcial
+    e a publicação usa `_kw_pub` (nula quando nenhuma unidade tem potência)."""
     q = _serie_ref(con, DS_MMGD, f"qtd.{serie}", partes)
     k = _serie_ref(con, DS_MMGD, f"kw.{serie}", partes)
-    return {ch: (int(round(n)), k.get(ch, 0.0)) for ch, n in q.items() if n > 0}
+    s = _serie_ref(con, DS_MMGD, f"qtd_sem_kw.{serie}", partes)
+    return {ch: (int(round(n)), k.get(ch, 0.0), int(round(s.get(ch, 0.0)))) for ch, n in q.items() if n > 0}
+
+
+def _soma3(valores):
+    """[unidades, kW informados, unidades sem potência] somados."""
+    t = [0, 0.0, 0]
+    for q, k, s in valores:
+        t[0] += q
+        t[1] += k
+        t[2] += s
+    return t
+
+
+def _kw_pub(kw, unidades, sem, casas=2, mw=False):
+    """Potência publicada de um agregado: nula quando nenhuma unidade tem potência
+    informada (ausência não vira zero); com parte das unidades sem potência, a soma das
+    informadas, que a publicação acompanha de `unidades_sem_potencia` (parcial rotulada)."""
+    if unidades and sem >= unidades:
+        return None
+    return _mw(kw) if mw else c.r(kw, casas)
 
 
 def _controles(con):
@@ -894,6 +960,62 @@ REPRODUCAO = "python3 pipeline/energia/executar_modulo.py transicao --sem-coleta
 # Gold: MMGD
 # ---------------------------------------------------------------------------
 
+class ValidacaoCritica(Exception):
+    """Violação crítica de domínio ou identidade: a gold vira stub com o motivo e a
+    sentinela mantém a última publicação válida (contrato, seção 5.2)."""
+
+
+# Cobertura declarada pela ANEEL para a relação de MMGD ("a partir de dezembro de 2008",
+# metadado "Cobertura temporal" do conjunto no CKAN, conferido em 01/10/2026). Antes dela,
+# a ausência de registro no cadastro não prova que não houve conexão: período fora da
+# cobertura e zero são estados distintos.
+INICIO_COB_DECL = "2008-12-01"
+MES_COB_DECL = INICIO_COB_DECL[:7]
+
+
+def _cobertura_mes(mes):
+    return "total" if mes >= MES_COB_DECL else "fora"
+
+
+def _cobertura_ano(ano):
+    a0, m0 = int(MES_COB_DECL[:4]), int(MES_COB_DECL[5:7])
+    if ano > a0 or (ano == a0 and m0 == 1):
+        return "total"
+    return "parcial" if ano == a0 else "fora"
+
+
+def _ponto_serie(q, kw, sem, cobertura):
+    """Campos de um ponto das séries por data: unidades, potencia_mw e, só quando se
+    aplicam (para a gold caber no tamanho do contrato), unidades_sem_potencia (soma parcial)
+    e cobertura_declarada ("fora" ou "parcial"; ausente = dentro da cobertura). Dentro da
+    cobertura declarada, período sem conexão é zero explícito; fora dela (ou em parte fora),
+    período sem registro fica nulo, e registro existente é publicado como está, rotulado."""
+    if cobertura != "total" and not q:
+        out = {"unidades": None, "potencia_mw": None}
+    else:
+        out = {"unidades": q, "potencia_mw": _kw_pub(kw, q, sem, mw=True)}
+        if sem:
+            out["unidades_sem_potencia"] = sem
+    if cobertura != "total":
+        out["cobertura_declarada"] = cobertura
+    return out
+
+
+# Definição das modalidades em que o crédito da energia gerada compensa o consumo de
+# outras unidades (texto da ANEEL), citada na limitação territorial do cadastro.
+DOC_ANEEL_MODALIDADES = {
+    "orgao": "ANEEL",
+    "titulo": "Geração distribuída: modalidades de participação no Sistema de Compensação de Energia Elétrica (SCEE)",
+    "url": "https://www.gov.br/aneel/pt-br/assuntos/geracao-distribuida",
+    "consultado_em": "2026-10-01",
+    "trecho": ('Autoconsumo remoto: "quando a energia pode ser gerada em um local e compensada em outro, desde que em unidades '
+               'consumidoras do mesmo titular". Geração compartilhada: "diversos interessados podem se unir por meio de consórcio, '
+               'cooperativa, condomínio civil voluntário ou edilício ou qualquer outra forma de associação civil, instituída para esse '
+               'fim para instalar uma ou mais centrais de MMGD e utilizar a energia gerada para compensação do consumo de todos os '
+               'participantes".'),
+}
+
+
 def _bloco_mmgd(con, hoje):
     ctrl, data_conj = _controles(con)
     mun = _par(con, "mun_ano_fonte", 3)
@@ -905,6 +1027,7 @@ def _bloco_mmgd(con, hoje):
     fdet = _par(con, "fonte_detalhe_ano", 3)
     ucs = _serie_ref(con, DS_MMGD, "ucs_credito.uf_ano", 2)
     dmun = _par(con, "dist_mun", 2)  # vazio se a vintage foi importada antes da versão 2
+    dmc = _par(con, "dist_mun_cep", 5)  # vazio se a vintage foi importada antes da versão 3
     conj = base.registros_como_estavam_em(con, DS_CONTROLE).get("conjunto") or {}
     muns_dist = dict(base.serie_vigente(con, DS_MMGD, "municipios.dist"))
     nomes_dist = base.registros_como_estavam_em(con, DS_DIST)
@@ -916,14 +1039,14 @@ def _bloco_mmgd(con, hoje):
     ano_ref = ano_conj - 1  # último ano completo antes da data do cadastro
 
     # ---- validações físicas e identidades de agregação (seção 5.2 do contrato)
-    tot_q = sum(q for q, _ in mun.values())
-    tot_kw = sum(k for _, k in mun.values())
+    tot_q, tot_kw, tot_sem = _soma3(mun.values())
     ident = {
-        "uf_mes_fonte": sum(q for q, _ in ufm.values()),
-        "dist_uf_ano": sum(q for q, _ in dist.values()),
-        **{f"{d}_ano": sum(q for q, _ in v.values()) for d, v in perfis.items()},
-        "fonte_detalhe_ano": sum(q for q, _ in fdet.values()),
-        **({"dist_mun": sum(q for q, _ in dmun.values())} if dmun else {}),
+        "uf_mes_fonte": sum(q for q, _, _ in ufm.values()),
+        "dist_uf_ano": sum(q for q, _, _ in dist.values()),
+        **{f"{d}_ano": sum(q for q, _, _ in v.values()) for d, v in perfis.items()},
+        "fonte_detalhe_ano": sum(q for q, _, _ in fdet.values()),
+        **({"dist_mun": sum(q for q, _, _ in dmun.values())} if dmun else {}),
+        **({"dist_mun_cep": sum(q for q, _, _ in dmc.values())} if dmc else {}),
     }
     linhas = int(ctrl.get("linhas") or 0)
     criticos = []
@@ -934,70 +1057,84 @@ def _bloco_mmgd(con, hoje):
     for k, v in ident.items():
         if v != tot_q:
             criticos.append(f"agregado {k} soma {v} unidades, diferente de {tot_q}")
-    if any(k < 0 for _, k in mun.values()):
+    if any(k < 0 for _, k, _ in mun.values()):
         criticos.append("potência negativa em agregado municipal")
+    # unidades sem potência nos agregados = registros com potência ausente ou negativa (a
+    # negativa fica fora da soma, como a ausente)
+    sem_arquivo = int(ctrl.get("potencia_ausente") or 0) + int(ctrl.get("potencia_negativa") or 0)
+    if tot_sem != sem_arquivo:
+        criticos.append(f"agregados contam {tot_sem} unidades sem potência, e o arquivo tem {sem_arquivo}")
     if criticos:
         return None, "validação crítica: " + "; ".join(criticos)
-    kw_ident = abs(sum(k for _, k in ufm.values()) - tot_kw)
+    kw_ident = abs(sum(k for _, k, _ in ufm.values()) - tot_kw)
 
     # ---- totais e fontes
-    por_fonte = defaultdict(lambda: [0, 0.0])
-    for (m, ano, f), (q, k) in mun.items():
-        por_fonte[f][0] += q
-        por_fonte[f][1] += k
-    fontes = [{"fonte": f, "rotulo": mmgd.ROTULO_FONTE[f], "unidades": por_fonte[f][0], "potencia_mw": _mw(por_fonte[f][1]),
-               "participacao_potencia_pct": _pct(por_fonte[f][1], tot_kw)}
-              for f in mmgd.ORDEM_FONTES if f in por_fonte]
+    por_fonte = defaultdict(lambda: [0, 0.0, 0])
+    for (m, ano, f), v in mun.items():
+        for i in range(3):
+            por_fonte[f][i] += v[i]
+    fontes = []
+    for f in mmgd.ORDEM_FONTES:
+        if f not in por_fonte:
+            continue
+        q, k, s = por_fonte[f]
+        pmw = _kw_pub(k, q, s, mw=True)
+        fontes.append({"fonte": f, "rotulo": mmgd.ROTULO_FONTE[f], "unidades": q, "potencia_mw": pmw, "unidades_sem_potencia": s,
+                       "participacao_potencia_pct": _pct(k, tot_kw) if pmw is not None else None})
     municipios_com = {m for (m, _, _) in mun if m != "sem_municipio"}
     pop_br = pops.get("1")
     tot_ucs = sum(ucs.values())
 
     # ---- séries anual e mensal (Brasil)
-    anual = defaultdict(lambda: {"q": 0, "kw": 0.0, "f": defaultdict(lambda: [0, 0.0])})
-    for (m, ano, f), (q, k) in mun.items():
+    anual = defaultdict(lambda: {"q": 0, "kw": 0.0, "s": 0, "f": defaultdict(lambda: [0, 0.0, 0])})
+    for (m, ano, f), (q, k, s) in mun.items():
         a = anual[ano]
         a["q"] += q
         a["kw"] += k
+        a["s"] += s
         a["f"][f][0] += q
         a["f"][f][1] += k
+        a["f"][f][2] += s
     # Anos e meses sem nenhuma conexão no cadastro entre a primeira data válida e a data do
-    # cadastro entram com zero explícito: é zero real (o arquivo é o cadastro completo), e
-    # um gráfico não pode ligar os pontos por cima de um ano sem conexão.
+    # cadastro entram com zero explícito dentro da cobertura declarada (o arquivo é o
+    # cadastro completo), e um gráfico não pode ligar os pontos por cima deles. Antes da
+    # cobertura declarada, o período sem registro fica nulo e rotulado (_ponto_serie).
     anos_validos = sorted(int(x) for x in anual if x != mmgd.SEM_DATA)
     serie_anual, acq, ackw = [], 0, 0.0
     for ano_i in (range(anos_validos[0], max(ano_conj, anos_validos[-1]) + 1) if anos_validos else ()):
         a = anual.get(str(ano_i))
-        q, k = (a["q"], a["kw"]) if a else (0, 0.0)
+        q, k, s = (a["q"], a["kw"], a["s"]) if a else (0, 0.0, 0)
         acq += q
         ackw += k
         serie_anual.append({
-            "ano": ano_i, "unidades": q, "potencia_mw": _mw(k),
-            "por_fonte": {f: {"unidades": v[0], "potencia_mw": _mw(v[1])} for f, v in sorted(a["f"].items())} if a else {},
+            "ano": ano_i, **_ponto_serie(q, k, s, _cobertura_ano(ano_i)),
+            "por_fonte": ({f: {"unidades": v[0], "potencia_mw": _kw_pub(v[1], v[0], v[2], mw=True)} for f, v in sorted(a["f"].items())}
+                          if a else {}),
             "acumulado_unidades": acq, "acumulado_mw": _mw(ackw),
             "parcial": ano_i >= ano_conj,
         })
     sem_data = anual.get(mmgd.SEM_DATA)
-    mensal_br = defaultdict(lambda: [0, 0.0])
-    for (uf, mes, f), (q, k) in ufm.items():
-        mensal_br[mes][0] += q
-        mensal_br[mes][1] += k
+    mensal_br = defaultdict(lambda: [0, 0.0, 0])
+    for (uf, mes, f), v in ufm.items():
+        for i in range(3):
+            mensal_br[mes][i] += v[i]
     corte_prov = _mes_menos(data_conj[:7], MESES_PROVISORIOS)
     meses_validos = sorted(x for x in mensal_br if x != mmgd.SEM_DATA)
     serie_mensal, acq_m, ackw_m = [], 0, 0.0
     estoque_fim_mes = {}
     for mes in (_meses(meses_validos[0], max(data_conj[:7], meses_validos[-1])) if meses_validos else ()):
-        q, k = mensal_br[mes] if mes in mensal_br else (0, 0.0)
+        q, k, s = mensal_br[mes] if mes in mensal_br else (0, 0.0, 0)
         acq_m += q
         ackw_m += k
         estoque_fim_mes[mes] = ackw_m
-        serie_mensal.append({"m": mes, "unidades": q, "potencia_mw": _mw(k), "acumulado_unidades": acq_m,
-                             "acumulado_mw": _mw(ackw_m), "provisorio": mes > corte_prov})
+        serie_mensal.append({"m": mes, **_ponto_serie(q, k, s, _cobertura_mes(mes)),
+                             "acumulado_unidades": acq_m, "acumulado_mw": _mw(ackw_m), "provisorio": mes > corte_prov})
     # identidade de estoque: conexões com data (anual por município; mensal por UF) + sem
     # data = total cadastrado (o estoque da série não alcança o total sem os registros com
     # data sentinela, e é isso que a regra explica)
     sem_q = sem_data["q"] if sem_data else 0
     sem_kw = sem_data["kw"] if sem_data else 0.0
-    sem_ufm = mensal_br.get(mmgd.SEM_DATA, [0, 0.0])
+    sem_ufm = mensal_br.get(mmgd.SEM_DATA, [0, 0.0, 0])
     ident_estoque = {
         "unidades_total": tot_q, "unidades_sem_data": sem_q,
         "unidades_com_data_serie_anual": acq, "unidades_com_data_serie_mensal": acq_m,
@@ -1013,6 +1150,17 @@ def _bloco_mmgd(con, hoje):
     if ident_estoque["resultado"] != "aprovada":
         return None, (f"validação crítica: estoque por data + sem data difere do total ({ident_estoque['diferenca_unidades']} "
                       f"unidades, {ident_estoque['diferenca_kw']} kW)")
+    anteriores = [x for x in serie_anual if x.get("cobertura_declarada") and x["unidades"]]
+    cobertura_series = {
+        "inicio_declarado": INICIO_COB_DECL,
+        "regra": ("A ANEEL declara a cobertura da relação a partir de dezembro de 2008. Dentro dela, período sem conexão no cadastro "
+                  "é zero explícito; antes dela (e no ano de 2008, coberto só em dezembro), período sem registro fica nulo, e "
+                  "registro existente é publicado como está, com o rótulo de cobertura."),
+        "unidades_anteriores": int(ctrl.get("anterior_cobertura_declarada") or 0),
+        "anos_com_registro_anterior": [{"ano": x["ano"], "unidades": x["unidades"], "potencia_mw": x["potencia_mw"]} for x in anteriores],
+        "pontos_nulos_anual": sum(1 for x in serie_anual if x["unidades"] is None),
+        "pontos_nulos_mensal": sum(1 for x in serie_mensal if x["unidades"] is None),
+    }
 
     # ---- UFs
     ufs, uf_anual = _tabela_ufs(ufm, ucs, pops, ano_ref, ano_conj, tot_kw)
@@ -1020,43 +1168,52 @@ def _bloco_mmgd(con, hoje):
     # ---- unidades com município fora da área da distribuidora (sinalizadas, não corrigidas)
     area, area_info = _area_distribuidoras(con)
     fora = _fora_da_area(dmun, area) if (dmun and area) else None
+    classes = _classes_fora_da_area(dmc, area) if (fora is not None and dmc) else None
+    if classes is not None and classes["unidades"] != fora["unidades"]:
+        return None, (f"validação crítica: classes das unidades fora da área somam {classes['unidades']} unidades, "
+                      f"e a sinalização tem {fora['unidades']}")
 
     # ---- distribuidoras (chave: CNPJ)
-    distribuidoras = _tabela_distribuidoras(dist, nomes_dist, muns_dist, ano_ref, area, fora)
+    distribuidoras = _tabela_distribuidoras(dist, nomes_dist, muns_dist, ano_ref, area, fora, classes)
 
     # ---- perfis
     def perfil(d):
-        tot = defaultdict(lambda: [0, 0.0])
-        ref = defaultdict(lambda: [0, 0.0])
-        for (cat, ano), (q, k) in d.items():
-            tot[cat][0] += q
-            tot[cat][1] += k
-            if ano == str(ano_ref):
-                ref[cat][0] += q
-                ref[cat][1] += k
-        return [{"categoria": cat, "unidades": v[0], "potencia_mw": _mw(v[1]),
+        tot = defaultdict(lambda: [0, 0.0, 0])
+        ref = defaultdict(lambda: [0, 0.0, 0])
+        for (cat, ano), v in d.items():
+            for i in range(3):
+                tot[cat][i] += v[i]
+                if ano == str(ano_ref):
+                    ref[cat][i] += v[i]
+        return [{"categoria": cat, "unidades": v[0], "potencia_mw": _kw_pub(v[1], v[0], v[2], mw=True), "unidades_sem_potencia": v[2],
                  "participacao_unidades_pct": _pct(v[0], tot_q),
-                 "unidades_ano_referencia": ref[cat][0], "potencia_mw_ano_referencia": _mw(ref[cat][1])}
+                 "unidades_ano_referencia": ref[cat][0],
+                 "potencia_mw_ano_referencia": _kw_pub(ref[cat][1], ref[cat][0], ref[cat][2], mw=True)}
                 for cat, v in sorted(tot.items(), key=lambda x: -x[1][1])]
-    fdet_tot = defaultdict(lambda: [0, 0.0])
-    for (tipo, desc, ano), (q, k) in fdet.items():
-        fdet_tot[(tipo, desc)][0] += q
-        fdet_tot[(tipo, desc)][1] += k
-    fontes_detalhe = [{"tipo": t, "descricao": dsc, "unidades": v[0], "potencia_kw": c.r(v[1], 2)}
+    perfis_pub = {d: perfil(v) for d, v in perfis.items()}
+    fdet_tot = defaultdict(lambda: [0, 0.0, 0])
+    for (tipo, desc, ano), v in fdet.items():
+        for i in range(3):
+            fdet_tot[(tipo, desc)][i] += v[i]
+    fontes_detalhe = [{"tipo": t, "descricao": dsc, "unidades": v[0], "potencia_kw": _kw_pub(v[1], v[0], v[2]), "unidades_sem_potencia": v[2]}
                       for (t, dsc), v in sorted(fdet_tot.items(), key=lambda x: -x[1][1])]
 
     # ---- municípios
-    m_tot = defaultdict(lambda: {"q": 0, "kw": 0.0, "ref_q": 0, "ref_kw": 0.0, "ant_kw": 0.0, "f": defaultdict(float)})
-    for (m, ano, f), (q, k) in mun.items():
+    m_tot = defaultdict(lambda: {"q": 0, "kw": 0.0, "s": 0, "ref_q": 0, "ref_kw": 0.0, "ref_s": 0, "ant_kw": 0.0, "ant_s": 0,
+                                 "f": defaultdict(float)})
+    for (m, ano, f), (q, k, s) in mun.items():
         x = m_tot[m]
         x["q"] += q
         x["kw"] += k
+        x["s"] += s
         x["f"][f] += k
         if ano == str(ano_ref):
             x["ref_q"] += q
             x["ref_kw"] += k
+            x["ref_s"] += s
         elif ano != mmgd.SEM_DATA and int(ano) < ano_ref:
             x["ant_kw"] += k
+            x["ant_s"] += s
     todos = sorted(set(cad_ibge) | {m for m in m_tot if m != "sem_municipio"})
     municipios = []
     for m in todos:
@@ -1065,33 +1222,53 @@ def _bloco_mmgd(con, hoje):
         pop = pops.get(m)
         q = x["q"] if x else 0
         kw = x["kw"] if x else 0.0
+        s = x["s"] if x else 0
+        kw_pub = _kw_pub(kw, q, s)
+        ref_kw = _kw_pub(x["ref_kw"], x["ref_q"], x["ref_s"]) if x else 0.0
+        # estoque anterior com unidade sem potência: crescimento ausente (denominador incompleto)
+        ant_kw = (None if x["ant_s"] else c.r(x["ant_kw"], 2)) if x else 0.0
         fq, fkw = fora["por_mun"].get(m, (0, 0.0)) if fora is not None else (None, None)
+        cm = classes["por_mun"].get(m) if classes is not None else None
         municipios.append({
             "ibge": m, "nome": info.get("nome"), "uf": info.get("uf") or mmgd.UF_POR_CODIGO.get(m[:2]),
-            "unidades": q, "potencia_kw": c.r(kw, 2), "populacao": int(pop) if pop else None,
-            "w_por_habitante": c.r(kw * 1000 / pop, 1) if pop else None,
+            "unidades": q, "potencia_kw": kw_pub, "unidades_sem_potencia": s, "populacao": int(pop) if pop else None,
+            "w_por_habitante": c.r(kw * 1000 / pop, 1) if pop and kw_pub is not None else None,
             "unidades_por_mil_habitantes": c.r(q * 1000 / pop, 2) if pop else None,
             "unidades_ano_referencia": x["ref_q"] if x else 0,
-            "potencia_kw_ano_referencia": c.r(x["ref_kw"], 2) if x else 0.0,
-            "potencia_kw_estoque_ano_anterior": c.r(x["ant_kw"], 2) if x else 0.0,
-            "crescimento_estoque_pct": c.r(100 * x["ref_kw"] / x["ant_kw"], 1) if x and x["ant_kw"] else None,
+            "potencia_kw_ano_referencia": ref_kw,
+            "potencia_kw_estoque_ano_anterior": ant_kw,
+            # crescimento só com numerador e denominador completos (sem unidade sem potência)
+            "crescimento_estoque_pct": (c.r(100 * x["ref_kw"] / x["ant_kw"], 1)
+                                        if x and x["ant_kw"] and not x["ant_s"] and not x["ref_s"] else None),
             "fonte_principal": max(x["f"], key=x["f"].get) if x and x["f"] else None,
             # unidades cuja distribuidora (CNPJ) não tem conjunto elétrico na UF deste município
             "unidades_distribuidora_fora_da_uf": fq,
             "potencia_kw_distribuidora_fora_da_uf": c.r(fkw, 2) if fkw is not None else None,
             "sinal_distribuidora_fora_da_uf": (fq > 0) if fq is not None else None,
+            # dessas, as que o CEP põe na área da distribuidora (provavelmente não estão neste
+            # município) e as que CEP, código e UF publicada põem neste município (o erro
+            # provável é o CNPJ); null = classes indisponíveis
+            "unidades_provavel_municipio_errado": (cm["provavel_municipio_errado"][0] if cm else 0) if classes is not None else None,
+            "potencia_kw_provavel_municipio_errado": (c.r(cm["provavel_municipio_errado"][1], 2) if cm else 0.0) if classes is not None else None,
+            "unidades_provavel_distribuidora_errada": (cm["provavel_distribuidora_errada"][0] if cm else 0) if classes is not None else None,
+            "potencia_kw_provavel_distribuidora_errada": ((c.r(cm["provavel_distribuidora_errada"][1], 2) if cm else 0.0)
+                                                          if classes is not None else None),
             "no_cadastro_ibge": m in cad_ibge,
         })
     com_pop = [x for x in municipios if x["populacao"]]
-    maior_pot = sorted((x for x in municipios if x["unidades"]), key=lambda x: -x["potencia_kw"])[:15]
-    grandes = [x for x in com_pop if x["populacao"] >= POP_MINIMA_RANKING]
-    maior_whab = sorted(grandes, key=lambda x: -(x["w_por_habitante"] or 0))[:15]
-    menor_whab = sorted(grandes, key=lambda x: (x["w_por_habitante"] or 0))[:15]
+    # rankings e quantis só com potência completa: município com unidade sem potência tem soma
+    # parcial (rotulada no CSV) e não compete
+    completos = [x for x in municipios if not x["unidades_sem_potencia"]]
+    maior_pot = sorted((x for x in completos if x["unidades"]), key=lambda x: -x["potencia_kw"])[:15]
+    grandes = [x for x in completos if x["populacao"] and x["populacao"] >= POP_MINIMA_RANKING and x["w_por_habitante"] is not None]
+    maior_whab = sorted(grandes, key=lambda x: -x["w_por_habitante"])[:15]
+    menor_whab = sorted(grandes, key=lambda x: x["w_por_habitante"])[:15]
     maior_cresc = sorted((x for x in grandes if x["crescimento_estoque_pct"] is not None),
                          key=lambda x: -x["crescimento_estoque_pct"])[:15]
-    whab = [x["w_por_habitante"] for x in com_pop]
+    whab = [x["w_por_habitante"] for x in com_pop if x["w_por_habitante"] is not None and not x["unidades_sem_potencia"]]
     distrib = {"quantis_w_por_habitante": {f"p{int(q * 100)}": c.r(c.quantil(whab, q), 1) for q in (0.1, 0.25, 0.5, 0.75, 0.9)},
                "municipios_com_populacao": len(com_pop),
+               "municipios_com_potencia_parcial": sum(1 for x in municipios if x["unidades_sem_potencia"]),
                "municipios_sem_mmgd": sum(1 for x in municipios if x["no_cadastro_ibge"] and not x["unidades"]),
                "municipios_no_cadastro_ibge": len(cad_ibge)}
 
@@ -1105,6 +1282,7 @@ def _bloco_mmgd(con, hoje):
         "codigos_repetidos": int(ctrl.get("codigos_repetidos") or 0),
         "identidade_agregacao": {"unidades": tot_q, "diferenca_kw_municipio_uf": c.r(kw_ident, 4), "resultado": "aprovada"},
         "identidade_estoque": ident_estoque,
+        "cobertura_das_series": cobertura_series,
         "data_conexao_minima": conj.get("data_conexao_minima"),
         "data_conexao_maxima": conj.get("data_conexao_maxima"),
         "periodo_referencia_publicado": conj.get("periodo_referencia"),
@@ -1116,6 +1294,7 @@ def _bloco_mmgd(con, hoje):
         "potencia_zero": int(ctrl.get("potencia_zero") or 0),
         "potencia_ausente": int(ctrl.get("potencia_ausente") or 0),
         "potencia_negativa": int(ctrl.get("potencia_negativa") or 0),
+        "unidades_sem_potencia_nos_agregados": tot_sem,
         "fonte_nao_informada": int(ctrl.get("fonte_nao_informada") or 0),
         "municipio_codigo_6_digitos_completado": int(ctrl.get("municipio_completado_6") or 0),
         "municipio_fora_cadastro_ibge": int(ctrl.get("municipio_fora_ibge") or 0),
@@ -1131,7 +1310,7 @@ def _bloco_mmgd(con, hoje):
             "participacao_unidades_pct": c.r(100 * dup_linhas / tot_q, 2) if tot_q else None,
             "tratamento": "medida e publicada, não removida: CPF e CEP de pessoa física vêm tarjados e unidades iguais do mesmo titular podem ser legítimas",
         },
-        "distribuidora_fora_da_uf": _controle_fora_da_area(fora, area, area_info, dmun, tot_q),
+        "distribuidora_fora_da_uf": _controle_fora_da_area(fora, area, area_info, dmun, tot_q, classes, dmc),
         "data_de_conexao": {
             "ufv_na_relacao": int(ctrl["fv_ufv_na_relacao"]) if "fv_ufv_na_relacao" in ctrl else None,
             "pareados_por_codigo": int(fv_par) if fv_par is not None else None,
@@ -1151,29 +1330,47 @@ def _bloco_mmgd(con, hoje):
          f"{MESES_PROVISORIOS} meses anteriores à data do cadastro ficam marcados como provisórios, e a queda das conexões nesses meses "
          "não tem causa atribuída. A ANEEL declara, para outro período, a suspensão da atualização de 23/09/2025 a 13/11/2025 na troca "
          "de sistema e a inserção mais lenta nos meses seguintes."),
-        "O local é o município da unidade consumidora com geração; na modalidade de autoconsumo remoto o crédito é usado em outras unidades, possivelmente em outro município.",
+        _texto_local_do_credito(perfis_pub.get("modalidade") or []),
         "Potência por habitante relaciona o território, não a renda de quem instalou: nada aqui permite inferir renda ou perfil de um beneficiário individual.",
         "Duplicidade candidata (mesmos atributos observáveis e códigos distintos) é medida e não removida; a proporção está nos controles.",
+        ("A ANEEL declara a cobertura do cadastro a partir de dezembro de 2008. "
+         + ("O registro com data anterior é publicado como está, rotulado" if cobertura_series["unidades_anteriores"] == 1 else
+            f"Os {_br(cobertura_series['unidades_anteriores'])} registros com data anterior são publicados como estão, rotulados")
+         + " como fora da cobertura; anos e meses anteriores sem registro ficam nulos (não zero), porque fora da cobertura a falta de "
+         "registro não prova que não houve conexão."),
     ]
+    if tot_sem:
+        lim.append(f"{_br(tot_sem)} unidades estão sem potência informada: contam nas unidades e ficam fora da soma de kW; todo "
+                   "agregado com essas unidades traz unidades_sem_potencia (potência parcial), e o que só tem unidades sem potência "
+                   "fica com a potência nula.")
     if fora is not None:
-        n_mun_fora = sum(1 for v in fora["por_mun"].values() if v[0])
-        lim.append(
-            f"{_br(fora['unidades'])} unidades ({_br(fora['potencia_kw'] / 1000, 1)} MW) estão cadastradas em {_br(n_mun_fora)} municípios de UF onde "
-            "a distribuidora informada (CNPJ) não tem nenhum conjunto elétrico na base de continuidade da ANEEL; é provável erro de "
-            "código de município na origem (há municípios homônimos em outras UFs). Não são corrigidas nem removidas: cada "
-            "município traz a contagem e a potência dessas unidades, e o município fica sinalizado no mapa e no CSV.")
+        lim.append(_texto_fora_da_area(fora, classes))
     else:
         lim.append("A conferência da área de atuação da distribuidora (CNPJ × UF dos conjuntos elétricos) não está disponível nesta "
-                   "publicação; unidades com código de município de outra área de concessão não estão sinalizadas.")
+                   "publicação; unidades com código de município ou CNPJ de outra área de concessão não estão sinalizadas.")
     prov = c.proveniencia(
         indicador="Micro e minigeração distribuída: unidades e potência instalada cadastradas", natureza="OBSERVADO",
         fonte=FONTE_ANEEL, unidade="unidades e kW (MW nas tabelas)", frequencia="cadastro publicado pela ANEEL (diário no portal; mensal pelo dicionário)",
         periodo={"inicio": f"{serie_anual[0]['ano']}-01-01" if serie_anual else data_conj, "fim": data_conj},
         cobertura={"inicio": INICIO_COB_DECL, "fim": data_conj}, capturado_em=c.ultima_captura(snap), snapshot=snap,
         transformacoes=["agregação por município (código IBGE) × ano de conexão × fonte", "agregação por UF × mês × fonte, por distribuidora (CNPJ) × UF × ano e por classe, modalidade, porte e tipo de consumidor",
-                        "código de município de 6 dígitos completado pelo cadastro IBGE quando o prefixo é único", "datas sentinela (ano < 2000) tratadas como sem data"],
+                        "código de município de 6 dígitos completado pelo cadastro IBGE quando o prefixo é único", "datas sentinela (ano < 2000) tratadas como sem data",
+                        "unidades fora da área da distribuidora separadas em classes pelo prefixo do CEP publicado (5 dígitos), pela UF do código do empreendimento e pela UF publicada; nada corrigido"],
         limitacoes=lim, download="/energia/series/transicao_mmgd_municipio_ano_fonte.csv",
         notas_fonte=(ckan.meta_local(DS_MMGD).get("notas") or None))
+    lim_hab = lim[:1] + lim[-1:]
+    if classes is not None:
+        lim_hab.append(
+            "Em município com unidades da classe de provável município errado (CEP numa UF da área da distribuidora), a potência por "
+            "habitante inclui unidades que provavelmente ficam em outro município e pode estar inflada; a contagem e os kW dessa classe "
+            "estão no CSV municipal para refazer a razão sem elas. Unidades da classe de provável distribuidora errada (CEP, código e "
+            "UF publicada na UF do município) provavelmente ficam no município publicado: não inflam a razão municipal, e sim o total "
+            "da distribuidora informada.")
+    elif fora is not None:
+        lim_hab.append("Em município sinalizado, a potência por habitante inclui as unidades de distribuidora sem conjunto na UF; sem as "
+                       "classes por CEP nesta publicação, não se sabe quantas delas ficam de fato em outro município.")
+    lim_hab += [f"População estimada pelo IBGE para {ano_pop} (data de referência 1º de julho), não o Censo.",
+                f"Rankings por habitante só entre municípios com pelo menos {_br(POP_MINIMA_RANKING)} habitantes estimados: com denominador pequeno, uma única minigeração domina a razão."]
     prov_hab = c.proveniencia(
         indicador="Potência de MMGD por habitante e unidades por mil habitantes", natureza="CALCULADO",
         fonte={**FONTE_ANEEL, "recurso": FONTE_ANEEL["recurso"] + "; população: " + FONTE_IBGE["dataset"]},
@@ -1182,24 +1379,20 @@ def _bloco_mmgd(con, hoje):
         capturado_em=c.ultima_captura(snap), snapshot=snap,
         transformacoes=["potência cadastrada no território ÷ população residente estimada pelo IBGE"],
         formula="W/hab = Σ kW instalados × 1000 ÷ população estimada; unidades/mil hab = Σ unidades × 1000 ÷ população estimada",
-        limitacoes=lim[:1] + lim[-1:] + [
-                              "Em município sinalizado, a potência por habitante inclui as unidades de distribuidora sem conjunto na UF e pode "
-                              "estar inflada; a contagem e os kW dessas unidades estão no CSV municipal para refazer a razão sem elas.",
-                              f"População estimada pelo IBGE para {ano_pop} (data de referência 1º de julho), não o Censo.",
-                              f"Rankings por habitante só entre municípios com pelo menos {_br(POP_MINIMA_RANKING)} habitantes estimados: com denominador pequeno, uma única minigeração domina a razão."],
-        download="/energia/series/transicao_mmgd_municipios.csv")
+        limitacoes=lim_hab, download="/energia/series/transicao_mmgd_municipios.csv")
     return {
         "data_cadastro": data_conj,
         "ano_referencia": ano_ref,
         "ano_populacao": int(ano_pop) if ano_pop else None,
         "resumo": {
-            "unidades": tot_q, "potencia_mw": _mw(tot_kw), "potencia_kw": c.r(tot_kw, 2),
+            "unidades": tot_q, "potencia_mw": _kw_pub(tot_kw, tot_q, tot_sem, mw=True), "potencia_kw": _kw_pub(tot_kw, tot_q, tot_sem),
+            "unidades_sem_potencia": tot_sem,
             "municipios_com_mmgd": len(municipios_com), "municipios_no_cadastro_ibge": len(cad_ibge),
             "ucs_recebem_credito": int(tot_ucs),
             "participacao_solar_potencia_pct": next((f["participacao_potencia_pct"] for f in fontes if f["fonte"] == "solar"), None),
             "populacao_brasil": int(pop_br) if pop_br else None,
-            "w_por_habitante_brasil": c.r(tot_kw * 1000 / pop_br, 1) if pop_br else None,
-            "unidades_sem_data": sem_data["q"] if sem_data else 0,
+            "w_por_habitante_brasil": c.r(tot_kw * 1000 / pop_br, 1) if pop_br and tot_sem < tot_q else None,
+            "unidades_sem_data": sem_q,
             "ultima_data_conexao": conj.get("data_conexao_maxima"),
             "potencia_mw_ano_referencia": next((a["potencia_mw"] for a in serie_anual if a["ano"] == ano_ref), None),
             "unidades_ano_referencia": next((a["unidades"] for a in serie_anual if a["ano"] == ano_ref), None),
@@ -1209,7 +1402,7 @@ def _bloco_mmgd(con, hoje):
         "anual": serie_anual, "mensal": serie_mensal, "corte_provisorio": corte_prov,
         "ufs": ufs, "uf_anual": uf_anual,
         "distribuidoras": distribuidoras,
-        "perfis": {d: perfil(v) for d, v in perfis.items()},
+        "perfis": perfis_pub,
         "municipios_destaque": {
             "maior_potencia": [_mun_curto(x) for x in maior_pot],
             "maior_w_por_habitante": [_mun_curto(x) for x in maior_whab],
@@ -1219,6 +1412,7 @@ def _bloco_mmgd(con, hoje):
         },
         "distribuicao_municipal": distrib,
         "controles": controles, "revisoes": revisoes,
+        "documentos": [DOC_ANEEL_MODALIDADES],
         "proveniencia": {"cadastro": prov, "por_habitante": prov_hab},
         "_municipios": municipios, "_mun_ano_fonte": mun, "_ufm": ufm, "_dist": dist, "_perfis": perfis, "_fdet": fdet,
         "_estoque_fim_mes": estoque_fim_mes, "_snap": snap, "_snap_ibge": snap_ibge, "_nomes_dist": nomes_dist, "_cad": cad_ibge,
@@ -1226,70 +1420,131 @@ def _bloco_mmgd(con, hoje):
     }, None
 
 
-INICIO_COB_DECL = "2008-12-01"
+def _texto_local_do_credito(modalidades):
+    """Limitação territorial do crédito, com as modalidades em que a energia compensa o
+    consumo de outras unidades (contagem e potência do cadastro vigente; nomes das
+    categorias como a ANEEL publica em DscModalidadeHabilitado)."""
+    por = {x["categoria"]: x for x in modalidades}
+    partes = []
+    for cat, rotulo, como in (("Auto consumo remoto", "no autoconsumo remoto", "em outras unidades do mesmo titular"),
+                              ("Compartilhada", "na geração compartilhada",
+                               "no consumo dos participantes de consórcio, cooperativa, condomínio ou associação")):
+        x = por.get(cat)
+        if x:
+            mw = f", {_br(x['potencia_mw'], 1)} MW" if x["potencia_mw"] is not None else ""
+            partes.append(f"{rotulo} ({_br(x['unidades'])} unidades{mw}), a energia é compensada {como}")
+    base_txt = "O local é o município da unidade com geração"
+    if not partes:
+        return base_txt + "; nas modalidades de autoconsumo remoto e de geração compartilhada, o crédito é usado em outras unidades, possivelmente em outro município."
+    fecho = "Nos dois casos" if len(partes) == 2 else "Nesse caso"
+    return (base_txt + "; " + "; ".join(partes) + f". {fecho}, o crédito pode ser usado em outro município (definições na página "
+            "de geração distribuída da ANEEL).")
+
+
+def _texto_fora_da_area(fora, classes):
+    """Limitação das unidades fora da área da distribuidora, sem causa única: as classes
+    pelo CEP dizem qual campo provavelmente está errado."""
+    n_mun = sum(1 for v in fora["por_mun"].values() if v[0])
+    t = (f"{_br(fora['unidades'])} unidades ({_br(fora['potencia_kw'] / 1000, 1)} MW) estão cadastradas em {_br(n_mun)} municípios de UF onde "
+         "a distribuidora informada (CNPJ) não tem nenhum conjunto elétrico na base de continuidade da ANEEL: algum campo está errado na "
+         "origem, e o arquivo não diz qual.")
+    if classes is None:
+        return t + (" Sem as classes por CEP nesta publicação, não se separa município errado de distribuidora errada. Nada é corrigido "
+                    "nem removido: cada município traz a contagem e a potência dessas unidades.")
+    a = classes["classes"]["provavel_municipio_errado"]
+    b = classes["classes"]["provavel_distribuidora_errada"]
+    i = classes["classes"]["indeterminada"]
+    return t + (f" Pelo CEP publicado (5 dígitos), {_br(a[0])} unidades ({_br(a[1] / 1000, 1)} MW) ficam numa UF da área da distribuidora: "
+                f"provável código de município errado. Outras {_br(b[0])} ({_br(b[1] / 1000, 1)} MW) têm CEP, código do empreendimento e UF "
+                f"publicada na UF do município: provável CNPJ de distribuidora errado, e elas inflam o total da distribuidora informada, "
+                f"não o do município. {_br(i[0])} ficam indeterminadas (CEP ausente, de preenchimento, numa terceira UF ou sinais "
+                "divergentes). Nada é corrigido nem removido: cada município e cada distribuidora trazem a contagem e a potência de cada classe.")
 
 
 def _tabela_ufs(ufm, ucs, pops, ano_ref, ano_conj, tot_kw):
     """(ufs, uf_anual) a partir do agregado UF × mês × fonte: estoque, razões por habitante
     (população da UF pelo código IBGE) e crescimento no ano de referência; uf_anual com
-    zero explícito do primeiro ano com conexão na UF até o ano do cadastro."""
-    uf_tot = defaultdict(lambda: [0, 0.0])
-    uf_ano = defaultdict(lambda: [0, 0.0])
-    for (uf, mes, f), (q, k) in ufm.items():
-        uf_tot[uf][0] += q
-        uf_tot[uf][1] += k
+    zero explícito do primeiro ano com conexão na UF até o ano do cadastro, dentro da
+    cobertura declarada (antes dela, ano sem registro fica nulo e rotulado)."""
+    uf_tot = defaultdict(lambda: [0, 0.0, 0])
+    uf_ano = defaultdict(lambda: [0, 0.0, 0])
+    for (uf, mes, f), v in ufm.items():
         ano = mes[:4] if mes != mmgd.SEM_DATA else mmgd.SEM_DATA
-        uf_ano[(uf, ano)][0] += q
-        uf_ano[(uf, ano)][1] += k
+        for i in range(3):
+            uf_tot[uf][i] += v[i]
+            uf_ano[(uf, ano)][i] += v[i]
     cod_uf = {v: k for k, v in mmgd.UF_POR_CODIGO.items()}
     ufs = []
     for uf in sorted(uf_tot, key=lambda u: -uf_tot[u][1]):
-        q, k = uf_tot[uf]
+        q, k, s = uf_tot[uf]
         pop = pops.get(cod_uf.get(uf, ""))
-        estoque_ant = sum(v[1] for (u, a), v in uf_ano.items() if u == uf and a != mmgd.SEM_DATA and int(a) < ano_ref)
-        k_ref = uf_ano.get((uf, str(ano_ref)), [0, 0.0])[1]
+        k_pub = _kw_pub(k, q, s, mw=True)
+        ant = [v for (u, a), v in uf_ano.items() if u == uf and a != mmgd.SEM_DATA and int(a) < ano_ref]
+        estoque_ant = sum(v[1] for v in ant)
+        ant_sem = sum(v[2] for v in ant)
+        rq, rk, rs = uf_ano.get((uf, str(ano_ref)), [0, 0.0, 0])
+        k_ref = _kw_pub(rk, rq, rs, mw=True)
         ufs.append({
-            "uf": uf, "nome": mmgd.NOME_UF.get(uf, uf), "unidades": q, "potencia_mw": _mw(k),
-            "participacao_potencia_pct": _pct(k, tot_kw),
+            "uf": uf, "nome": mmgd.NOME_UF.get(uf, uf), "unidades": q, "potencia_mw": k_pub, "unidades_sem_potencia": s,
+            "participacao_potencia_pct": _pct(k, tot_kw) if k_pub is not None else None,
             "populacao": int(pop) if pop else None,
-            "w_por_habitante": c.r(k * 1000 / pop, 1) if pop else None,
+            "w_por_habitante": c.r(k * 1000 / pop, 1) if pop and k_pub is not None else None,
             "unidades_por_mil_habitantes": c.r(q * 1000 / pop, 2) if pop else None,
-            "potencia_mw_ano_referencia": _mw(k_ref),
-            "crescimento_estoque_ano_referencia_pct": c.r(100 * k_ref / estoque_ant, 1) if estoque_ant else None,
+            "potencia_mw_ano_referencia": k_ref,
+            # crescimento só com numerador e denominador completos (sem unidade sem potência)
+            "crescimento_estoque_ano_referencia_pct": (c.r(100 * rk / estoque_ant, 1)
+                                                       if estoque_ant and not ant_sem and not rs else None),
             "ucs_recebem_credito": int(sum(v for (u, _), v in ucs.items() if u == uf)),
         })
     uf_anual = []
     for u in sorted(uf_tot):
         anos_u = sorted(int(a) for (x, a) in uf_ano if x == u and a != mmgd.SEM_DATA)
         for a in (range(anos_u[0], max(ano_conj, anos_u[-1]) + 1) if anos_u else ()):
-            v = uf_ano.get((u, str(a)), [0, 0.0])
-            uf_anual.append({"uf": u, "ano": a, "unidades": v[0], "potencia_mw": _mw(v[1])})
+            q, k, s = uf_ano.get((u, str(a)), [0, 0.0, 0])
+            uf_anual.append({"uf": u, "ano": a, **_ponto_serie(q, k, s, _cobertura_ano(a))})
     return ufs, uf_anual
 
 
-def _tabela_distribuidoras(dist, nomes_dist, muns_dist, ano_ref, area, fora):
+def _tabela_distribuidoras(dist, nomes_dist, muns_dist, ano_ref, area, fora, classes=None):
     """Uma linha por distribuidora (chave: CNPJ) a partir do agregado CNPJ × UF × ano, com a
-    distribuição por UF e, quando há referência de área, as unidades fora dela."""
-    d_tot = defaultdict(lambda: {"q": 0, "kw": 0.0, "ufs": Counter(), "ref": [0, 0.0]})
-    for (cnpj, uf, ano), (q, k) in dist.items():
+    distribuição por UF e, quando há referência de área, as unidades fora dela, separadas
+    nas classes pelo CEP quando disponíveis."""
+    d_tot = defaultdict(lambda: {"q": 0, "kw": 0.0, "s": 0, "ufs": Counter(), "ref": [0, 0.0, 0]})
+    for (cnpj, uf, ano), (q, k, s) in dist.items():
         d = d_tot[cnpj]
         d["q"] += q
         d["kw"] += k
+        d["s"] += s
         d["ufs"][uf] += q
         if ano == str(ano_ref):
             d["ref"][0] += q
             d["ref"][1] += k
+            d["ref"][2] += s
     out = []
     for cnpj, d in sorted(d_tot.items(), key=lambda x: -x[1]["kw"]):
         nm = nomes_dist.get(cnpj, {})
         uf_princ, n_princ = d["ufs"].most_common(1)[0]
         com_ref = fora is not None and cnpj in area
         fora_d = fora["por_dist"].get(cnpj, {}) if com_ref else {}
+        cd = classes["por_dist"].get(cnpj) if (com_ref and classes is not None) else None
+        cls_d, aviso = None, None
+        if cd:
+            a = cd["classes"]["provavel_municipio_errado"]
+            b = cd["classes"]["provavel_distribuidora_errada"]
+            i = cd["classes"]["indeterminada"]
+            ufs_b = sorted(cd["ufs_provavel_distribuidora_errada"])
+            cls_d = {"provavel_municipio_errado": {"unidades": a[0], "potencia_mw": _mw(a[1])},
+                     "provavel_distribuidora_errada": {"unidades": b[0], "potencia_mw": _mw(b[1]), "ufs": ufs_b},
+                     "indeterminada": {"unidades": i[0], "potencia_mw": _mw(i[1])}}
+            if b[0]:
+                aviso = (f"O total inclui {_br(b[0])} unidades ({_br(b[1] / 1000, 3)} MW) cadastradas com este CNPJ em "
+                         f"{', '.join(ufs_b)}, onde ele não tem conjunto elétrico, com CEP, código do empreendimento e UF publicada na "
+                         "UF do município: provavelmente são de outra distribuidora e inflam o total desta.")
         out.append({
             "cnpj": cnpj, "sigla": nm.get("sigla"), "nome": nm.get("nome"),
             "siglas_publicadas": [s for s in (nm.get("siglas_publicadas") or "").split("; ") if s],
-            "unidades": d["q"], "potencia_mw": _mw(d["kw"]),
-            "unidades_ano_referencia": d["ref"][0], "potencia_mw_ano_referencia": _mw(d["ref"][1]),
+            "unidades": d["q"], "potencia_mw": _kw_pub(d["kw"], d["q"], d["s"], mw=True), "unidades_sem_potencia": d["s"],
+            "unidades_ano_referencia": d["ref"][0], "potencia_mw_ano_referencia": _kw_pub(d["ref"][1], d["ref"][0], d["ref"][2], mw=True),
             "municipios": int(muns_dist.get(cnpj, 0)),
             "uf_principal": uf_princ,
             "unidades_fora_uf_principal": d["q"] - n_princ,
@@ -1297,6 +1552,9 @@ def _tabela_distribuidoras(dist, nomes_dist, muns_dist, ano_ref, area, fora):
             "unidades_fora_da_area": sum(v[0] for v in fora_d.values()) if com_ref else None,
             "potencia_mw_fora_da_area": _mw(sum(v[1] for v in fora_d.values())) if com_ref else None,
             "ufs_fora_da_area": sorted(fora_d) if com_ref else None,
+            # classes pelo CEP das unidades fora da área; null sem unidade fora ou sem as classes
+            "classes_fora_da_area": cls_d,
+            "aviso_total": aviso,
             "ufs": [{"uf": u, "unidades": n} for u, n in d["ufs"].most_common()],
         })
     return out
@@ -1309,15 +1567,17 @@ def _fora_da_area(dmun, area):
 
     Devolve {"por_mun": {mun: (unidades, kW)}, "por_dist": {cnpj: {uf: (unidades, kW)}},
     "sem_referencia": {cnpj: unidades}, "unidades", "potencia_kw"}. CNPJ sem conjunto na base
-    fica em sem_referencia: não é sinalizado (falta a referência, não a área)."""
+    fica em sem_referencia: não é sinalizado (falta a referência, não a área). kW = soma das
+    potências informadas."""
     por_mun = defaultdict(lambda: [0, 0.0])
     por_dist = defaultdict(lambda: defaultdict(lambda: [0, 0.0]))
     sem_ref = Counter()
-    for (cnpj, m), (q, k) in dmun.items():
+    for (cnpj, m), v in dmun.items():
+        q, k = v[0], v[1]
         if cnpj not in area:
             sem_ref[cnpj] += q
             continue
-        uf = mmgd.UF_POR_CODIGO.get(m[:2]) if m != "sem_municipio" else None
+        uf = mmgd.uf_municipio(m)
         if uf is None or uf in area[cnpj]:
             continue
         por_mun[m][0] += q
@@ -1330,14 +1590,69 @@ def _fora_da_area(dmun, area):
             "unidades": sum(v[0] for v in por_mun.values()), "potencia_kw": sum(v[1] for v in por_mun.values())}
 
 
+def _classes_fora_da_area(dmc, area):
+    """Classes das unidades fora da área da distribuidora pelo CEP publicado (regras em
+    fontes/aneel_transicao.py, `classe_fora_da_area`), a partir do agregado distribuidora ×
+    município × prefixo do CEP × UF do código × UF publicada.
+
+    Devolve {"classes": {classe: [unidades, kW]}, "motivos": {motivo: [unidades, kW]},
+    "por_mun": {mun: {classe: [unidades, kW]}}, "por_dist": {cnpj: {"classes", "ufs_*"}},
+    "referencia": resumo da referência de UF por prefixo, "unidades"}."""
+    ref5, ref3, resumo = mmgd.referencia_uf_cep(dmc, area)
+    novo = lambda: {k: [0, 0.0] for k in mmgd.CLASSES_FORA}  # noqa: E731
+    classes, motivos = novo(), {k: [0, 0.0] for k in mmgd.MOTIVOS_INDETERMINADA}
+    por_mun = defaultdict(novo)
+    por_dist = defaultdict(lambda: {"classes": novo(), "ufs_provavel_distribuidora_errada": set(),
+                                    "ufs_provavel_municipio_errado": set()})
+    via3 = 0
+    for (cn, m, p, uc, up), (q, k, _s) in dmc.items():
+        uf = mmgd.uf_municipio(m)
+        if not mmgd.sinalizada(cn, uf, area):
+            continue
+        classe, motivo, uf_cep = mmgd.classe_fora_da_area(cn, m, p, uc, up, area, ref5, ref3)
+        if uf_cep is not None and not ref5.get(p):
+            via3 += q
+        for alvo in (classes[classe], por_mun[m][classe], por_dist[cn]["classes"][classe]):
+            alvo[0] += q
+            alvo[1] += k
+        if motivo:
+            motivos[motivo][0] += q
+            motivos[motivo][1] += k
+        if classe == "provavel_distribuidora_errada":
+            por_dist[cn]["ufs_provavel_distribuidora_errada"].add(uf)
+        elif classe == "provavel_municipio_errado":
+            por_dist[cn]["ufs_provavel_municipio_errado"].add(uf)
+    return {"classes": classes, "motivos": motivos, "por_mun": dict(por_mun), "por_dist": dict(por_dist),
+            "referencia": {**resumo, "unidades_classificadas_pelo_prefixo_3": via3},
+            "unidades": sum(v[0] for v in classes.values())}
+
+
 def _mun_curto(x):
+    """Município nos destaques (rankings só têm potência completa). Da sinalização fora da
+    área, vai a classe que afeta a razão por habitante (provável município errado)."""
     return {k: x[k] for k in ("ibge", "nome", "uf", "unidades", "potencia_kw", "populacao", "w_por_habitante",
                               "potencia_kw_ano_referencia", "crescimento_estoque_pct", "unidades_distribuidora_fora_da_uf",
-                              "potencia_kw_distribuidora_fora_da_uf", "sinal_distribuidora_fora_da_uf")}
+                              "potencia_kw_distribuidora_fora_da_uf", "sinal_distribuidora_fora_da_uf",
+                              "unidades_provavel_municipio_errado", "potencia_kw_provavel_municipio_errado")}
 
 
-def _controle_fora_da_area(fora, area, area_info, dmun, tot_q):
-    """Bloco de controle da área de atuação: magnitude, alcance e referência usada."""
+CAMPOS_MUNICIPIO = ("ibge", "nome", "uf", "unidades", "potencia_kw", "unidades_sem_potencia", "populacao", "w_por_habitante",
+                    "unidades_por_mil_habitantes", "unidades_ano_referencia", "potencia_kw_ano_referencia",
+                    "potencia_kw_estoque_ano_anterior", "crescimento_estoque_pct", "fonte_principal",
+                    "unidades_distribuidora_fora_da_uf", "potencia_kw_distribuidora_fora_da_uf",
+                    "unidades_provavel_municipio_errado", "potencia_kw_provavel_municipio_errado",
+                    "unidades_provavel_distribuidora_errada", "potencia_kw_provavel_distribuidora_errada")
+
+
+REGRA_UF_CEP = ("UF do CEP = UF (pelo código IBGE do município) que reúne pelo menos 90% das unidades não sinalizadas do cadastro com o "
+                "mesmo prefixo de 5 dígitos; prefixo sem unidade não sinalizada, ou sem UF que chegue a 90%, usa o de 3 dígitos pela "
+                "mesma regra; prefixo com os "
+                "cinco dígitos iguais (ex.: 77777) é preenchimento. A tabela oficial de faixas de CEP por UF dos Correios só é "
+                "consultável com verificação humana, que não é contornada.")
+
+
+def _controle_fora_da_area(fora, area, area_info, dmun, tot_q, classes=None, dmc=None):
+    """Bloco de controle da área de atuação: magnitude, alcance, classes pelo CEP e referência usada."""
     if fora is None:
         motivo = ("cadastro importado sem o agregado distribuidora × município" if not dmun
                   else "conjuntos elétricos da ANEEL ausentes no silver")
@@ -1346,6 +1661,25 @@ def _controle_fora_da_area(fora, area, area_info, dmun, tot_q):
     por_dist = sorted(((cn, sum(v[0] for v in ufs.values()), sum(v[1] for v in ufs.values()), sorted(ufs))
                        for cn, ufs in fora["por_dist"].items()), key=lambda x: -x[1])
     caps = [x for snap in area_info["snapshots"] for x in snap.get("capturas", [])]
+    if classes is not None:
+        bloco_classes = {
+            "disponivel": True,
+            "classes": [{"classe": k, "rotulo": mmgd.ROTULO_CLASSE_FORA[k], "unidades": v[0], "potencia_kw": c.r(v[1], 2),
+                         "municipios": sum(1 for x in classes["por_mun"].values() if x[k][0]),
+                         "distribuidoras": sum(1 for x in classes["por_dist"].values() if x["classes"][k][0])}
+                        for k, v in classes["classes"].items()],
+            "indeterminadas_por_motivo": [{"motivo": k, "unidades": v[0], "potencia_kw": c.r(v[1], 2)}
+                                          for k, v in classes["motivos"].items()],
+            "referencia_uf_do_cep": {"regra": REGRA_UF_CEP, "participacao_minima": mmgd.PARTICIPACAO_MINIMA_UF_CEP,
+                                     **classes["referencia"]},
+            "orientacao": ("Para refazer a potência por habitante de um município sem as unidades que provavelmente estão em outro "
+                           "município, desconte só a classe de provável município errado (colunas do CSV municipal). A classe de "
+                           "provável distribuidora errada fica no município publicado e infla o total da distribuidora informada."),
+        }
+    else:
+        bloco_classes = {"disponivel": False,
+                         "motivo": ("cadastro importado sem o agregado distribuidora × município × CEP" if not dmc
+                                    else "classes indisponíveis")}
     return {
         "disponivel": True,
         "unidades": fora["unidades"], "potencia_kw": c.r(fora["potencia_kw"], 2),
@@ -1355,7 +1689,9 @@ def _controle_fora_da_area(fora, area, area_info, dmun, tot_q):
         "distribuidoras_sem_referencia": len(fora["sem_referencia"]),
         "unidades_sem_referencia": sum(fora["sem_referencia"].values()),
         "distribuidoras_com_area": len(area),
+        "classes_pelo_cep": bloco_classes,
         "maiores_municipios": [{"ibge": m, "unidades": v[0], "potencia_kw": c.r(v[1], 2)} for m, v in maiores],
+        # as classes de cada distribuidora estão na tabela de distribuidoras (classes_fora_da_area)
         "por_distribuidora": [{"cnpj": cn, "unidades": q, "potencia_kw": c.r(k, 2), "ufs_fora": ufs} for cn, q, k, ufs in por_dist],
         "referencia": {
             "regra": ("UF atendida = UF de algum município de algum conjunto elétrico do CNPJ, em qualquer ano da base "
@@ -1365,7 +1701,8 @@ def _controle_fora_da_area(fora, area, area_info, dmun, tot_q):
                           "publicado_em": x.get("publicado_em")} for x in caps],
             "urls": [URL_LIM, URL_MUN],
         },
-        "tratamento": "sinalizadas, não corrigidas nem removidas: o código de município é o publicado pela ANEEL",
+        "tratamento": ("sinalizadas e separadas em classes pelo CEP, não corrigidas nem removidas: o código de município e o CNPJ "
+                       "são os publicados pela ANEEL"),
     }
 
 
@@ -1452,8 +1789,11 @@ def _evidencias_mmgd(con, tot_q, tot_kw, data_conj, serie_anual, controles, revi
         universo="empreendimentos de micro e minigeração distribuída no cadastro vigente da ANEEL (todas as distribuidoras que enviaram dados)",
         fonte=fonte, chaves_origem=["CodEmpreendimento (um registro por empreendimento)", f"DatGeracaoConjuntoDados = {data_conj}"],
         consulta="SELECT COUNT(*), SUM(MdaPotenciaInstaladaKW) FROM empreendimento-geracao-distribuida.parquet",
-        cobertura=f"estoque cadastrado em {c.data_br(data_conj)}; conexões desde {serie_anual[0]['ano'] if serie_anual else 'o início'}",
-        tratamento_ausencia="registro com data sentinela (ano 1900) conta no estoque, sem ano de conexão; potência ausente não vira zero",
+        cobertura=(f"estoque cadastrado em {c.data_br(data_conj)}; conexões desde {serie_anual[0]['ano'] if serie_anual else 'o início'}; "
+                   f"cobertura declarada pela ANEEL a partir de {c.data_br(INICIO_COB_DECL)}"),
+        tratamento_ausencia=("registro com data sentinela (ano 1900) conta no estoque, sem ano de conexão; potência ausente não vira zero: "
+                             "a unidade conta, fica fora da soma de kW e o agregado traz unidades_sem_potencia "
+                             f"({_br(controles['unidades_sem_potencia_nos_agregados'])} nesta publicação)"),
         revisoes=_texto_revisoes_mmgd(revisoes), testes=testes, reconciliacao=rec,
         download=[{"rotulo": "MMGD por município, ano e fonte (CSV)", "url": "/energia/series/transicao_mmgd_municipio_ano_fonte.csv"},
                   {"rotulo": "MMGD por município, com população (CSV)", "url": "/energia/series/transicao_mmgd_municipios.csv"}],
@@ -1500,7 +1840,7 @@ def _bloco_ons(con, con_p, estoque_fim_mes, corte_provisorio=None):
     def completo(sm, d):
         return series[("horas_mmgd", sm)].get(d, 0) >= 24 and series[("horas_global", sm)].get(d, 0) >= 24
 
-    diario = []
+    diario, dias_fora = [], []
     for d in dias:
         for sm in ons.AREAS:
             e = series[("mmgd_mwh", sm)].get(d)
@@ -1511,9 +1851,9 @@ def _bloco_ons(con, con_p, estoque_fim_mes, corte_provisorio=None):
             hg = series[("horas_global", sm)].get(d)
             diario.append([d, sm, c.r(e, 1), c.r(e / h, 1), h, c.r(g, 1) if g is not None else None,
                            c.r(g / hg, 1) if g is not None and hg else None, c.r(series[("semmmgd_mwh", sm)].get(d), 1)])
-    base.escreve_csv("transicao_ons_mmgd_diario.csv",
-                     ["data", "submercado", "mmgd_mwh", "mmgd_mwmed", "horas", "carga_global_mwh", "carga_global_mwmed", "carga_sem_mmgd_mwh"],
-                     diario)
+            # domínio diário (não crítico): MMGD negativa ou maior que a carga global do dia
+            if e < 0 or (g is not None and e > g):
+                dias_fora.append({"d": d, "submercado": sm, "mmgd_mwh": c.r(e, 1), "carga_global_mwh": c.r(g, 1)})
     por_mes = defaultdict(lambda: defaultdict(lambda: [0.0, 0.0, 0.0, 0.0, 0]))
     dias_sin = defaultdict(list)
     for d in dias:
@@ -1538,7 +1878,7 @@ def _bloco_ons(con, con_p, estoque_fim_mes, corte_provisorio=None):
             y[3] += series[("horas_global", "SE")][d]
             y[4] += 1
             dias_sin[m].append(d)
-    mensal, csv_m = [], []
+    mensal, csv_m, part_mes = [], [], []
     for m in sorted(por_mes):
         a, mm = int(m[:4]), int(m[5:7])
         dias_mes = (date(a + (mm == 12), mm % 12 + 1, 1) - date(a, mm, 1)).days
@@ -1551,6 +1891,8 @@ def _bloco_ons(con, con_p, estoque_fim_mes, corte_provisorio=None):
             linha[sm] = c.r(x[0] / x[1], 1)
             csv_m.append([m, sm, c.r(x[0] / x[1], 1), c.r(x[2] / x[3], 1) if x[3] else None,
                           c.r(100 * x[0] / x[2], 2) if x[2] else None, x[4], dias_mes])
+            if x[2]:
+                part_mes.append((m, sm, 100 * x[0] / x[2]))
         y = por_mes[m].get("SIN")
         linha["dias_completos_sin"] = y[4] if y else 0
         linha["completo"] = bool(y) and y[4] == dias_mes
@@ -1573,9 +1915,7 @@ def _bloco_ons(con, con_p, estoque_fim_mes, corte_provisorio=None):
                                                         if cap_mw and linha.get("SIN") is not None and linha["completo"]
                                                         and cadastro_estavel else None)
         mensal.append(linha)
-    base.escreve_csv("transicao_ons_mmgd_mensal.csv",
-                     ["mes", "submercado", "mmgd_mwmed", "carga_global_mwmed", "participacao_mmgd_pct", "dias_completos", "dias_no_mes"], csv_m)
-    anual = []
+    anual, part_ano = [], []
     for ano in sorted({m["m"][:4] for m in mensal}):
         ms = [m for m in mensal if m["m"][:4] == ano]
         ys = [por_mes[m["m"]].get("SIN") for m in ms]
@@ -1587,15 +1927,46 @@ def _bloco_ons(con, con_p, estoque_fim_mes, corte_provisorio=None):
         anual.append({"ano": int(ano), "mmgd_sin_mwmed": c.r(e / h, 0) if h else None, "mmgd_sin_twh": c.r(e / 1e6, 2),
                       "participacao_carga_global_pct": c.r(100 * e / g, 2) if g else None,
                       "dias_completos": dias_c, "completo": dias_c == dias_ano})
+        if g:
+            part_ano.append((ano, 100 * e / g))
+    # ---- domínio da participação (contrato, seção 5.2), antes de escrever qualquer arquivo:
+    # mês ou ano com participação fora de 0 a 100% (submercado ou SIN) é crítico e derruba a
+    # publicação (stub); dia com MMGD negativa ou maior que a carga global vira ressalva.
+    fora_mes = [(m, sm, v) for m, sm, v in part_mes if not 0 <= v <= 100]
+    fora_ano = [(a, v) for a, v in part_ano if not 0 <= v <= 100]
+    if fora_mes or fora_ano:
+        ex = [f"{m} {sm} {_br(v, 2)}%" for m, sm, v in fora_mes[:3]] + [f"{a} SIN {_br(v, 2)}%" for a, v in fora_ano[:3]]
+        raise ValidacaoCritica(f"validação crítica: participação da MMGD estimada na carga global fora de 0 a 100% em "
+                               f"{len(fora_mes)} meses e {len(fora_ano)} anos (ex.: {'; '.join(ex)})")
+    validacoes = {
+        "participacao_dominio": {
+            "regra": "0 ≤ participação ≤ 100% em cada mês (submercado e SIN) e em cada ano (SIN); violação derruba a publicação",
+            "meses_verificados": len(part_mes), "anos_verificados": len(part_ano), "violacoes": 0, "resultado": "aprovada"},
+        "dias_fora_do_dominio": {
+            "regra": "dia por submercado com MMGD estimada negativa ou maior que a carga global do dia",
+            "dias": len(dias_fora), "exemplos": dias_fora[:10],
+            "resultado": "ressalva" if dias_fora else "aprovada",
+            "tratamento": "ressalva na proveniência; os dias ficam na série como o ONS publica"},
+    }
+    base.escreve_csv("transicao_ons_mmgd_diario.csv",
+                     ["data", "submercado", "mmgd_mwh", "mmgd_mwmed", "horas", "carga_global_mwh", "carga_global_mwmed", "carga_sem_mmgd_mwh"],
+                     diario)
+    base.escreve_csv("transicao_ons_mmgd_mensal.csv",
+                     ["mes", "submercado", "mmgd_mwmed", "carga_global_mwmed", "participacao_mmgd_pct", "dias_completos", "dias_no_mes"], csv_m)
     ultimo = next((m for m in reversed(mensal) if m["completo"]), None)
     conf = _conferencia_quebra(con, con_p, series)
     lim = [
-        "É uma estimativa do ONS (modelo com dados meteorológicos), não medição: a MMGD não é supervisionada pelo ONS.",
+        ("É uma estimativa do ONS, não medição: a página do Balanço de Energia chama o valor de \"valor estimado da micro e "
+         "minigeração distribuída\", e o dicionário da carga verificada separa a parcela atendida por MMGD da parcela supervisionada "
+         "pelo ONS e da medida pelo sistema de faturamento da CCEE. Esses documentos não descrevem o método da estimativa."),
         "Cobre o Sistema Interligado Nacional; o cadastro da ANEEL cobre o Brasil inteiro, inclusive sistemas isolados.",
         "Estimativa de energia (MWmed) e cadastro de capacidade (MW) são grandezas diferentes: aparecem lado a lado e nunca são somadas.",
         "O ONS revisa o histórico (há registros de 2023 atualizados em 2026); os meses antigos são recoletados a cada 30 dias.",
         "Antes de 15/02/2019 a API publica a parcela de MMGD vazia, e há dias sem valor em 2019: é ausência, não zero.",
     ]
+    if dias_fora:
+        lim.append(f"Ressalva de domínio: {_br(len(dias_fora))} dias por submercado têm MMGD estimada negativa ou maior que a carga "
+                   "global do dia; ficam na série como o ONS publica (lista em validacoes.dias_fora_do_dominio).")
     prov = c.proveniencia(
         indicador="Parcela da carga atendida por MMGD estimada pelo ONS", natureza="ESTIMADO", fonte=FONTE_ONS,
         unidade="MWmed (média do período) e % da carga global", frequencia="semi-horária na fonte; diária e mensal aqui",
@@ -1622,13 +1993,14 @@ def _bloco_ons(con, con_p, estoque_fim_mes, corte_provisorio=None):
         "ultimo_mes_completo": ultimo,
         "mensal": mensal, "anual": anual,
         "conferencia_quebra_2023": conf,
-        "documentos": [DOC_ONS_BALANCO, DOC_ONS_PMO],
+        "documentos": [DOC_ONS_BALANCO, DOC_ONS_PMO, DOC_ONS_DICIONARIO],
+        "validacoes": validacoes,
         "proveniencia": {"estimativa": prov, "razao": prov_razao},
-        "evidencia": _evidencia_ons(con, snap, ultimo, por_mes, series),
+        "evidencia": _evidencia_ons(con, snap, ultimo, por_mes, series, validacoes),
     }
 
 
-def _evidencia_ons(con, snap, ultimo, por_mes, series):
+def _evidencia_ons(con, snap, ultimo, por_mes, series, validacoes=None):
     """Evidência do último mês completo da MMGD estimada no SIN: quatro arquivos (um por
     submercado) da API de carga verificada, com sha256 e captura de cada um."""
     if not ultimo:
@@ -1656,7 +2028,12 @@ def _evidencia_ons(con, snap, ultimo, por_mes, series):
         revisoes=snap.get("revisoes"),
         testes=[_teste("campo vazio é ausência", True, "respostas com valor vazio ('\"val_cargammgd\": ,') são lidas como null, nunca zero"),
                 _teste("valores não negativos", all(v >= 0 for (s, _), d in series.items() if s == "mmgd_mwh" for v in d.values()),
-                       "o dicionário do ONS não admite MMGD negativa")],
+                       "o dicionário do ONS não admite MMGD negativa")]
+        + ([_teste("participação entre 0 e 100%", validacoes["participacao_dominio"]["resultado"] == "aprovada",
+                   f"{_br(validacoes['participacao_dominio']['meses_verificados'])} participações mensais (submercado e SIN) e "
+                   f"{_br(validacoes['participacao_dominio']['anos_verificados'])} anuais dentro de 0 a 100%; "
+                   f"{_br(validacoes['dias_fora_do_dominio']['dias'])} dias por submercado com MMGD negativa ou acima da carga global")]
+           if validacoes else []),
         reconciliacao=ev.reconciliacao(
             f"Identidade publicada pelo próprio ONS, dia a dia por submercado: carga global = carga sem MMGD + MMGD. {txt_id}.",
             "aprovado" if ok_id else "ressalva", "0,1 MWh por dia (arredondamento dos valores de 48 meias horas)"),
@@ -2174,12 +2551,14 @@ def _evidencia_fator_mensal(con, snap, ult, medio_m, titulos):
 def _escreve_csvs_mmgd(b):
     cad = b["_cad"]
     nome = lambda m: (cad.get(m) or {}).get("nome")  # noqa: E731
+    # potencia_kw = soma das potências informadas; vazio quando nenhuma unidade da linha tem
+    # potência; unidades_sem_potencia > 0 marca a soma parcial
     base.escreve_csv("transicao_mmgd_municipio_ano_fonte.csv",
-                     ["codigo_ibge", "municipio", "uf", "ano_conexao", "fonte", "unidades", "potencia_kw"],
-                     [[m, nome(m), (cad.get(m) or {}).get("uf") or mmgd.UF_POR_CODIGO.get(m[:2]), a, f, q, c.r(k, 2)]
-                      for (m, a, f), (q, k) in sorted(b["_mun_ano_fonte"].items())])
-    base.escreve_csv("transicao_mmgd_uf_mes_fonte.csv", ["uf", "mes_conexao", "fonte", "unidades", "potencia_kw"],
-                     [[u, mes, f, q, c.r(k, 2)] for (u, mes, f), (q, k) in sorted(b["_ufm"].items())])
+                     ["codigo_ibge", "municipio", "uf", "ano_conexao", "fonte", "unidades", "potencia_kw", "unidades_sem_potencia"],
+                     [[m, nome(m), (cad.get(m) or {}).get("uf") or mmgd.UF_POR_CODIGO.get(m[:2]), a, f, q, _kw_pub(k, q, s), s]
+                      for (m, a, f), (q, k, s) in sorted(b["_mun_ano_fonte"].items())])
+    base.escreve_csv("transicao_mmgd_uf_mes_fonte.csv", ["uf", "mes_conexao", "fonte", "unidades", "potencia_kw", "unidades_sem_potencia"],
+                     [[u, mes, f, q, _kw_pub(k, q, s), s] for (u, mes, f), (q, k, s) in sorted(b["_ufm"].items())])
     nd = b["_nomes_dist"]
     area = b.get("_area")
 
@@ -2188,22 +2567,25 @@ def _escreve_csvs_mmgd(b):
             return None
         return "sim" if u in area[cn] else "nao"
     base.escreve_csv("transicao_mmgd_distribuidoras.csv",
-                     ["cnpj", "sigla", "nome", "uf", "ano_conexao", "unidades", "potencia_kw", "uf_na_area_da_distribuidora"],
-                     [[cn, (nd.get(cn) or {}).get("sigla"), (nd.get(cn) or {}).get("nome"), u, a, q, c.r(k, 2), na_area(cn, u)]
-                      for (cn, u, a), (q, k) in sorted(b["_dist"].items())])
+                     ["cnpj", "sigla", "nome", "uf", "ano_conexao", "unidades", "potencia_kw", "unidades_sem_potencia",
+                      "uf_na_area_da_distribuidora"],
+                     [[cn, (nd.get(cn) or {}).get("sigla"), (nd.get(cn) or {}).get("nome"), u, a, q, _kw_pub(k, q, s), s, na_area(cn, u)]
+                      for (cn, u, a), (q, k, s) in sorted(b["_dist"].items())])
     perf = []
     for d, v in b["_perfis"].items():
-        perf += [[d, cat, a, q, c.r(k, 2)] for (cat, a), (q, k) in sorted(v.items())]
-    perf += [["fonte_detalhe", f"{t} | {dsc}", a, q, c.r(k, 2)] for (t, dsc, a), (q, k) in sorted(b["_fdet"].items())]
-    base.escreve_csv("transicao_mmgd_perfil.csv", ["dimensao", "categoria", "ano_conexao", "unidades", "potencia_kw"], perf)
-    campos = ["ibge", "nome", "uf", "unidades", "potencia_kw", "populacao", "w_por_habitante", "unidades_por_mil_habitantes",
-              "unidades_ano_referencia", "potencia_kw_ano_referencia", "potencia_kw_estoque_ano_anterior", "crescimento_estoque_pct",
-              "fonte_principal", "unidades_distribuidora_fora_da_uf", "potencia_kw_distribuidora_fora_da_uf"]
+        perf += [[d, cat, a, q, _kw_pub(k, q, s), s] for (cat, a), (q, k, s) in sorted(v.items())]
+    perf += [["fonte_detalhe", f"{t} | {dsc}", a, q, _kw_pub(k, q, s), s] for (t, dsc, a), (q, k, s) in sorted(b["_fdet"].items())]
+    base.escreve_csv("transicao_mmgd_perfil.csv", ["dimensao", "categoria", "ano_conexao", "unidades", "potencia_kw", "unidades_sem_potencia"],
+                     perf)
+    campos = list(CAMPOS_MUNICIPIO)
     base.escreve_csv("transicao_mmgd_municipios.csv",
-                     ["codigo_ibge", "municipio", "uf", "unidades", "potencia_kw", "populacao_estimada", "w_por_habitante",
-                      "unidades_por_mil_habitantes", "unidades_ano_referencia", "potencia_kw_ano_referencia",
+                     ["codigo_ibge", "municipio", "uf", "unidades", "potencia_kw", "unidades_sem_potencia", "populacao_estimada",
+                      "w_por_habitante", "unidades_por_mil_habitantes", "unidades_ano_referencia", "potencia_kw_ano_referencia",
                       "potencia_kw_estoque_ano_anterior", "crescimento_estoque_pct", "fonte_principal",
-                      "unidades_distribuidora_fora_da_uf", "potencia_kw_distribuidora_fora_da_uf", "ano_referencia", "ano_populacao"],
+                      "unidades_distribuidora_fora_da_uf", "potencia_kw_distribuidora_fora_da_uf",
+                      "unidades_provavel_municipio_errado", "potencia_kw_provavel_municipio_errado",
+                      "unidades_provavel_distribuidora_errada", "potencia_kw_provavel_distribuidora_errada",
+                      "ano_referencia", "ano_populacao"],
                      [[x[k] for k in campos] + [b["ano_referencia"], b["ano_populacao"]] for x in b["_municipios"]])
     # JSON compacto (sem indentação): é carregado sob demanda pelo mapa e tem ~5.570 linhas
     carga = {"gerado_em": base.agora_utc(), "data_cadastro": b["data_cadastro"], "ano_referencia": b["ano_referencia"],
@@ -2217,15 +2599,20 @@ def _escreve_csvs_mmgd(b):
 
 
 def construir(con, ctx):
-    hoje = ctx.get("hoje") or c.agora_date()
+    hoje = ctx.get("hoje") or c.hoje_brasilia()
     try:
         b, motivo = _bloco_mmgd(con, hoje)
     except Exception as e:
         return c.stub(GOLD, f"falha ao montar o bloco de MMGD: {e}")
     if b is None:
         return c.stub(GOLD, motivo)
+    # o bloco do ONS valida o domínio antes de escrever arquivos; violação crítica vira stub
+    # antes de qualquer CSV mudar, para que downloads e gold anterior continuem coerentes
+    try:
+        ons_b = _bloco_ons(con, ctx.get("con_principal"), b["_estoque_fim_mes"], b["corte_provisorio"])
+    except ValidacaoCritica as e:
+        return c.stub(GOLD, str(e))
     _escreve_csvs_mmgd(b)
-    ons_b = _bloco_ons(con, ctx.get("con_principal"), b["_estoque_fim_mes"], b["corte_provisorio"])
     emis = _bloco_emissoes(con)
     publico = {k: v for k, v in b.items() if not k.startswith("_")}
     pendencias = []
@@ -2256,8 +2643,15 @@ def construir(con, ctx):
             "ano_referencia": "Comparações de crescimento usam o último ano completo antes da data do cadastro; o ano corrente é parcial e não entra em ranking.",
             "por_habitante": f"Por habitante usa a população estimada pelo IBGE; rankings só com população de pelo menos {_br(POP_MINIMA_RANKING)}.",
             "participacoes": "Participações em % com duas casas; abaixo de 0,01% (e diferente de zero), com dois algarismos significativos.",
-            "series_com_zero": "Séries anual e mensal do cadastro trazem todos os anos e meses entre a primeira conexão e a data do cadastro; sem conexão = zero explícito.",
-            "distribuidora_fora_da_uf": "Unidades em UF onde a distribuidora (CNPJ) não tem conjunto elétrico ficam no município publicado, sinalizadas e contadas, sem correção.",
+            "series_com_zero": ("Séries anual e mensal do cadastro trazem todos os anos e meses entre a primeira conexão e a data do cadastro. "
+                                "Dentro da cobertura declarada pela ANEEL (a partir de dez/2008), sem conexão = zero explícito; antes dela, "
+                                "período sem registro fica nulo e registro existente é publicado, os dois rotulados como fora da cobertura "
+                                "(ou em parte, no ano de 2008)."),
+            "distribuidora_fora_da_uf": ("Unidades em UF onde a distribuidora (CNPJ) não tem conjunto elétrico ficam no município publicado, "
+                                         "sinalizadas e contadas, sem correção, em duas classes pelo CEP publicado: provável município errado "
+                                         "(CEP na área da distribuidora) e provável distribuidora errada (CEP, código e UF na UF do município), "
+                                         "além das indeterminadas."),
+            "potencia_ausente": "Potência ausente não vira zero: a unidade conta, a soma de kW é das potências informadas, unidades_sem_potencia marca a soma parcial e potência nula marca agregado sem nenhuma potência.",
             "fator_medio_nao_marginal": "Fator médio (inventários) e fatores de margem (MDL) são séries separadas e não se substituem.",
             "co2_nao_co2e": "Os fatores do MCTI são de CO2, em tCO2/MWh; não são CO2 equivalente.",
             "sem_intensidade_local": "Não há intensidade de emissão municipal nem horária: o fator oficial é nacional (SIN) e mensal.",

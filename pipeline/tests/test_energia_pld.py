@@ -939,7 +939,9 @@ class ConstrucaoDaGold(unittest.TestCase):
         with mock.patch.object(base, "SERIES", os.path.join(self.tmp, "series_cmo")):
             g = cmo.construir(self.cp)
         self.assertTrue(g["disponivel"])
-        nat = {x["natureza_fonte"] for x in metricas.todas() if "cmo_se" in x["fontes"]}
+        # medidas calculadas sobre o CMO semanal neste módulo (regras de outros módulos que só citam
+        # o conjunto entre muitas fontes, como a de atualidade da Visão geral, não entram)
+        nat = {x["natureza_fonte"] for x in metricas.todas() if "cmo_se" in x["fontes"] and x["arquivo"].endswith("/pld.py")}
         self.assertEqual(nat, {"ESTIMADO"})
         self.assertEqual(g["proveniencia"]["cmo"]["natureza"], "ESTIMADO")
 

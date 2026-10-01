@@ -20,6 +20,7 @@ F_A02 = "ons_cmo_semanal_a02"
 F_BAL = "balanco_energia_subsistema_ho"
 F_INT = "intercambio_nacional_ho"
 F_IPCA = "ibge_ipca_1737"
+F_API = "ons_carga_verificada_ho"
 F_LIM = "regulatorio:limites_pld"
 
 _AUS_PLD = "Hora sem PLD publicado não entra no cálculo nem vira zero; o número de horas usadas acompanha cada valor."
@@ -122,7 +123,8 @@ METRICAS = [
        unidade="horas", grao_geografico="sistema (quatro submercados)", grao_temporal="ano",
        fontes=[F_PLD, F_LIM], formula="k_h = nº de submercados com |PLD − mínimo| ≤ 0,005 na hora h", regra_agregacao="contagem",
        natureza_fonte="OBSERVADO", natureza_transformacao="CALCULADO", dimensoes=["ano", "quantidade de submercados no piso"],
-       regras_comparabilidade=["Horas empatadas no piso têm diferença de preço zero por construção dos limites."],
+       regras_comparabilidade=["Horas empatadas no piso têm diferença de preço zero por construção dos limites.",
+                               "Ano parcial marcado (parcial = true); não compete com ano completo sem aviso."],
        regra_cobertura="Horas com os quatro submercados.", politica_ausencia=_AUS_PLD, validacoes=["soma das classes igual às horas do ano"],
        limitacoes=["Depende dos atos integrados pelo módulo Regulação."]),
     _m(id="pld_media_mensal_temporal", titulo="PLD médio mensal (média temporal)",
@@ -134,23 +136,57 @@ METRICAS = [
        regras_comparabilidade=["Não é preço ponderado pelo consumo.", "Mês parcial não compete com mês completo sem aviso."],
        regra_cobertura="Todas as horas publicadas do mês.", politica_ausencia=_AUS_PLD, validacoes=["horas por mês publicadas"],
        limitacoes=["Valores nominais."]),
-    _m(id="pld_media_mensal_ponderada_carga", titulo="PLD médio mensal ponderado pela carga",
-       pergunta="Qual foi o PLD médio do mês pesando cada hora pela carga do subsistema?",
-       definicao=("Soma do PLD vezes a carga verificada do subsistema na mesma hora, dividida pela soma da carga, nas horas com carga "
-                  "publicada e positiva."),
-       unidade="R$/MWh", grao_geografico="submercado (peso: subsistema de mesmo nome)", grao_temporal="mês",
-       fontes=[F_PLD, F_BAL], numerador="Σ PLD_h × carga_h (carga_h > 0)", denominador="Σ carga_h (carga_h > 0)",
+    _m(id="pld_media_mensal_ponderada_carga", titulo="PLD médio mensal ponderado pela carga do balanço do ONS",
+       pergunta="Qual foi o PLD médio do mês pesando cada hora pela carga do subsistema no balanço do ONS?",
+       definicao=("Soma do PLD vezes a carga do subsistema no Balanço de Energia nos Subsistemas do ONS na mesma hora, dividida pela soma "
+                  "da carga, nas horas com carga publicada e positiva. O perímetro dessa carga muda dentro da série: até 02/2021, carga "
+                  "atendida por usinas despachadas ou programadas pelo ONS (P1); de 03/2021 a 04/2023, mais a previsão de geração de usinas "
+                  "não despachadas (P2); desde 29/04/2023, mais a MMGD estimada pelo ONS com base em dados meteorológicos previstos (P3; "
+                  "no dado horário do balanço, desde 01/05/2023)."),
+       unidade="R$/MWh", grao_geografico="submercado (peso: subsistema de mesmo nome)", grao_temporal="mês (perímetro do peso marcado)",
+       fontes=[F_PLD, F_BAL, F_API], numerador="Σ PLD_h × carga_h (carga_h > 0)", denominador="Σ carga_h (carga_h > 0)",
        formula="Σ PLD_h × carga_h ÷ Σ carga_h nas horas com carga_h > 0",
-       regra_agregacao="média ponderada pela energia (MWmed numa hora = MWh)", natureza_fonte="OBSERVADO", natureza_transformacao="CALCULADO",
-       dimensoes=["submercado", "mês"],
-       regras_comparabilidade=["Só é comparada com a média temporal quando as duas usam as mesmas horas (campo mesmas_horas)."],
+       regra_agregacao="média ponderada pela energia (MWmed numa hora = MWh)", natureza_fonte="ESTIMADO", natureza_transformacao="CALCULADO",
+       dimensoes=["submercado", "mês", "perímetro da carga"],
+       regras_comparabilidade=["Só é comparada com a média temporal quando as duas usam as mesmas horas (campo mesmas_horas).",
+                               ("Só é comparável entre meses do mesmo perímetro da carga (perimetro_carga): as mudanças de 03/2021 e de "
+                                "29/04/2023 mudam o peso, e a MMGD estimada desloca o peso para as horas de sol. Para comparar meses de "
+                                "perímetros diferentes, use pld_media_mensal_ponderada_carga_sem_mmgd.")],
        regra_cobertura="Horas com PLD e carga positiva.",
        politica_ausencia=("Hora sem carga fica fora da ponderada; hora com carga ≤ 0 (valor fisicamente impossível) também sai do peso e é "
                           "listada como ressalva; mesmas_horas indica a diferença de cobertura."),
        validacoes=["controle físico: carga > 0 em toda hora usada como peso", "numerador e denominador publicados na evidência",
                    "magnitude e alcance das revisões da carga por mês, com o efeito na ponderada",
+                   "perímetro da carga conferido mês a mês contra a API de carga verificada (erro absoluto médio e coeficiente da MMGD)",
                    "reconciliação por releitura dos arquivos originais da CCEE e do ONS"],
        limitacoes=["Carga do subsistema do ONS, não consumo contabilizado na CCEE; correspondência subsistema e submercado pelo nome.",
+                   ("Natureza da fonte ESTIMADO: publicada como carga verificada, a carga do balanço tem componentes estimados desde 03/2021 "
+                    "(previsão de geração de usinas não despachadas) e desde 29/04/2023 (MMGD estimada com dados meteorológicos previstos)."),
+                   ("A escolha do peso muda o resultado: nos meses recentes, a diferença entre a ponderada pelo balanço (com MMGD) e a "
+                    "ponderada sem MMGD é maior que a distância entre a ponderada e a média temporal (valores de cada construção em "
+                    "historico.ponderacao.sensibilidade_peso)."),
+                   "A carga é revista pelo ONS depois de publicada; a ponderada dos meses recentes pode mudar."]),
+    _m(id="pld_media_mensal_ponderada_carga_sem_mmgd", titulo="PLD médio mensal ponderado pela carga sem MMGD",
+       pergunta="Qual foi o PLD médio do mês pesando cada hora pela carga medida do subsistema, sem a MMGD estimada?",
+       definicao=("Soma do PLD vezes a carga global líquida de MMGD do subsistema na mesma hora (carga global menos MMGD da API de carga "
+                  "verificada do ONS: parcela supervisionada mais a não supervisionada da medição para faturamento da CCEE), dividida pela "
+                  "soma dessa carga, nas horas com o valor publicado e positivo. Perímetro homogêneo em toda a série."),
+       unidade="R$/MWh", grao_geografico="submercado (peso: área de carga de mesmo nome na API)", grao_temporal="mês",
+       fontes=[F_PLD, F_API], numerador="Σ PLD_h × (global_h − MMGD_h) (global_h − MMGD_h > 0)",
+       denominador="Σ (global_h − MMGD_h) (global_h − MMGD_h > 0)",
+       formula="Σ PLD_h × (global_h − MMGD_h) ÷ Σ (global_h − MMGD_h) nas horas com global_h − MMGD_h > 0",
+       regra_agregacao="média ponderada pela energia (MWmed numa hora = MWh; hora = soma das duas meias horas da API)",
+       natureza_fonte="OBSERVADO", natureza_transformacao="CALCULADO", dimensoes=["submercado", "mês"],
+       regras_comparabilidade=["Só é comparada com a média temporal quando as duas usam as mesmas horas (campo mesmas_horas_sem_mmgd).",
+                               "Mesmo perímetro em todos os meses: é a ponderada para comparar meses antes e depois de 2023."],
+       regra_cobertura="Horas com PLD e com as duas meias horas de carga global e de MMGD publicadas na API.",
+       politica_ausencia=("Hora sem as duas meias horas fica fora da ponderada; hora com carga líquida ≤ 0 também sai do peso e é listada "
+                          "(horas_retiradas_sem_mmgd); mesmas_horas_sem_mmgd indica a diferença de cobertura."),
+       validacoes=["controle físico: carga líquida > 0 em toda hora usada como peso", "numerador e denominador publicados na evidência",
+                   "reconciliação por releitura do arquivo da CCEE e da resposta da API do ONS"],
+       limitacoes=["Carga do sistema medida pelo ONS, não consumo contabilizado na CCEE; correspondência área de carga e submercado pelo nome.",
+                   "A MMGD (estimada pelo ONS) fica fora do peso: a média descreve o preço pesado pela carga atendida pelo sistema medido.",
+                   "Lida do silver do módulo Carga; a cobertura acompanha a coleta daquele módulo.",
                    "A carga é revista pelo ONS depois de publicada; a ponderada dos meses recentes pode mudar."]),
     _m(id="pld_media_mensal_real", titulo="PLD médio mensal em moeda constante",
        pergunta="Quanto valeria o PLD médio de cada mês em reais de hoje?",
@@ -196,7 +232,9 @@ METRICAS = [
        fontes=[F_PLD], formula="amplitude_h = max_s PLD_h(s) − min_s PLD_h(s)", regra_agregacao="média, quantis e máximo das horas",
        natureza_fonte="OBSERVADO", natureza_transformacao="CALCULADO", dimensoes=["período", "hora"],
        regras_comparabilidade=["Sempre na mesma hora e na mesma publicação da CCEE."], regra_cobertura="Horas com os quatro submercados.",
-       politica_ausencia=_AUS_PLD, validacoes=["amplitude ≥ 0"], limitacoes=[_NAO_CAUSAL]),
+       politica_ausencia=_AUS_PLD, validacoes=["amplitude ≥ 0", "horas acima de R$ 1,00/MWh iguais às de pld.json nas mesmas janelas"],
+       limitacoes=[_NAO_CAUSAL, ("horas_com_separacao usa R$ 0,01/MWh; horas_acima_1 (R$ 1,00/MWh) é o limiar de pld.json. As duas contagens "
+                                 "medem coisas diferentes e não devem aparecer lado a lado sem o limiar.")]),
     _m(id="pld_separacao_par", titulo="Frequência de separação de preços por par",
        pergunta="Com que frequência dois submercados tiveram preços diferentes?",
        definicao="Fração das horas em que |PLD_A − PLD_B| > R$ 0,01/MWh; com contagens acima de R$ 1 e R$ 10 como sensibilidade.",

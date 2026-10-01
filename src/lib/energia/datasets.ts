@@ -1,4 +1,5 @@
-import { gold, lerGold } from "./gold";
+import { lerGold } from "./gold";
+import type { CatalogoDados, ManifestoGold } from "./tipos-dados";
 
 /**
  * Datasets integrados: slug público → identificador interno do pipeline, golds
@@ -23,13 +24,19 @@ const DATASETS_ESTATICOS: DatasetIntegrado[] = [
   { slug: "ons-cmo-semanal", interno: "cmo_se", catalogoId: "ons:cmo-semanal", paginas: [{ rotulo: "PLD (formação)", href: "/setor-eletrico/pld#cmo" }, { rotulo: "Visão geral", href: "/setor-eletrico/visao-geral" }], downloads: ["/energia/series/cmo_semanal.csv"] },
 ];
 
+/** Catálogo publicado (catalogo.json), lido no build. */
+export function catalogoDados(): CatalogoDados | null {
+  const c = lerGold<CatalogoDados>("catalogo.json");
+  return c && c.disponivel ? c : null;
+}
+
 /**
  * Conjuntos integrados pelos módulos temáticos: vêm do catálogo publicado
  * (catalogo.json), que os recebe do REGISTRO de cada módulo do pipeline. A mesma
  * declaração alimenta o catálogo, a página Dados e esta lista; não há cópia à mão.
  */
 function integradosDeModulos(): DatasetIntegrado[] {
-  const cat = gold.catalogo();
+  const cat = catalogoDados();
   const fixos = new Set(DATASETS_ESTATICOS.map((d) => d.slug));
   return (cat?.entradas ?? [])
     .filter((e) => e.slug && e.interno && !fixos.has(e.slug) && e.estado !== "CATALOGADO")
@@ -69,3 +76,34 @@ export const COLUNAS_ARQUIVO: Record<string, string> = {
   ...COLUNAS_ESTATICAS,
   ...Object.fromEntries(Object.entries(lerGold<ArquivosGold>("arquivos.json")?.arquivos ?? {}).map(([url, a]) => [url, a.colunas])),
 };
+
+/* ---------------------------------------------------------------- versão exata no GitHub (P069) */
+
+export const REPOSITORIO = "https://github.com/genarolins1975/scrutiniums";
+
+/**
+ * Commit do código que gerou o build: VERCEL_GIT_COMMIT_SHA na Vercel, GITHUB_SHA num
+ * build do GitHub Actions. Fora desses ambientes não há commit conhecido (null): a
+ * página aponta o histórico do arquivo, e o sha256 do manifesto identifica a versão.
+ */
+export function commitDoBuild(env: Record<string, string | undefined> = process.env): string | null {
+  const sha = env.VERCEL_GIT_COMMIT_SHA || env.GITHUB_SHA || "";
+  return /^[0-9a-f]{7,40}$/.test(sha) ? sha : null;
+}
+
+/**
+ * Link permanente para um arquivo publicado (/energia/...) na versão exata do build;
+ * sem commit conhecido, o histórico do arquivo no ramo principal (exata = false). Nunca
+ * um link temporário: o conteúdo do commit não muda.
+ */
+export function urlVersaoGithub(caminho: string, commit: string | null = commitDoBuild()): { url: string; exata: boolean } {
+  const c = caminho.startsWith("/") ? caminho : `/${caminho}`;
+  if (commit) return { url: `${REPOSITORIO}/blob/${commit}/public${c}`, exata: true };
+  return { url: `${REPOSITORIO}/commits/main/public${c}`, exata: false };
+}
+
+/** Manifesto da publicação (sha256 de cada arquivo e id da publicação). */
+export function manifestoPublicacao(): ManifestoGold | null {
+  const m = lerGold<ManifestoGold>("manifesto.json");
+  return m && m.disponivel ? m : null;
+}

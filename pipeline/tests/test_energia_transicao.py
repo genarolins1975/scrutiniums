@@ -18,7 +18,7 @@ import sys
 import tempfile
 import unittest
 from collections import Counter
-from datetime import date
+from datetime import date, datetime, timezone
 from unittest import mock
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -102,7 +102,7 @@ class LeituraMMGD(unittest.TestCase):
     def test_distribuidora_multiestadual_separa_as_ufs(self):
         """CERES no CSV completo: MG 4 unidades e 32,91 kW; RJ 190 unidades e 2.806,09 kW."""
         por_uf = {}
-        for (cn, uf, _), (q, kw) in self.ag_pq.dist_uf_ano.items():
+        for (cn, uf, _), (q, kw, _s) in self.ag_pq.dist_uf_ano.items():
             if cn == CNPJ_CERES:
                 a = por_uf.setdefault(uf, [0, 0.0])
                 a[0] += q
@@ -131,7 +131,7 @@ class LeituraMMGD(unittest.TestCase):
         sentinela = [r for r in self.pq if r["DthAtualizaCadastralEmpreend"] and r["DthAtualizaCadastralEmpreend"].year == 1900]
         self.assertEqual(len(sentinela), 4)
         self.assertEqual(self.ag_pq.controles()["data_invalida"], 4)
-        sem = sum(q for (_, ano, _), (q, _) in self.ag_pq.mun_ano_fonte.items() if ano == mmgd.SEM_DATA)
+        sem = sum(q for (_, ano, _), (q, _, _) in self.ag_pq.mun_ano_fonte.items() if ano == mmgd.SEM_DATA)
         self.assertEqual(sem, 4)
         anos = {ano for (_, ano, _) in self.ag_pq.mun_ano_fonte}
         self.assertNotIn("1900", anos)
@@ -157,14 +157,28 @@ class LeituraMMGD(unittest.TestCase):
 
     def test_potencia_ausente_nao_vira_zero(self):
         """Caso de robustez derivado de uma linha real com a potência removida: a unidade
-        conta, a potência não entra na soma e o caso é contado."""
+        conta, a potência não entra na soma, o agregado guarda quantas unidades entraram sem
+        potência (série qtd_sem_kw.*) e a publicação é nula, nunca 0,0 kW (defeito apontado
+        na verificação de 01/10/2026: o agregado publicava 0,0 kW e o teste consagrava o zero)."""
         raw = dict(self.pq[0])
         raw["MdaPotenciaInstaladaKW"] = None
         ag = mmgd.agrega([raw])
-        (q, kw), = ag.mun_ano_fonte.values()
-        self.assertEqual((q, kw), (1, 0.0))
+        (q, kw, sem), = ag.mun_ano_fonte.values()
+        self.assertEqual((q, sem), (1, 1))
         self.assertEqual(ag.controles()["potencia_ausente"], 1)
         self.assertNotIn("potencia_zero", ag.controles())
+        obs = {(s, r): v for s, r, v in ag.observacoes()}
+        self.assertEqual([v for (s, _), v in obs.items() if s == "qtd_sem_kw.mun_ano_fonte"], [1.0])
+        self.assertIsNone(transicao._kw_pub(kw, q, sem))           # nenhuma unidade com potência: nula
+        self.assertIsNone(transicao._kw_pub(kw, q, sem, mw=True))
+        # uma segunda unidade igual, com a potência publicada: soma parcial, rotulada pela contagem
+        raw2 = dict(self.pq[0])
+        raw2["CodEmpreendimento"] = raw2["CodEmpreendimento"] + "-2"
+        (q2, kw2, sem2), = mmgd.agrega([raw, raw2]).mun_ano_fonte.values()
+        self.assertEqual((q2, sem2), (2, 1))
+        self.assertAlmostEqual(transicao._kw_pub(kw2, q2, sem2), self.pq[0]["MdaPotenciaInstaladaKW"], delta=0.005)
+        # sem unidade sem potência, a série qtd_sem_kw não é gravada
+        self.assertFalse(any(s.startswith("qtd_sem_kw.") for s, _, _ in self.ag_pq.observacoes()))
 
     def test_valor_extremo_de_minigeracao_e_mantido(self):
         extremos = [r for r in self.pq if r["MdaPotenciaInstaladaKW"] == 5000.0]
@@ -792,7 +806,7 @@ class AreaDistribuidora(unittest.TestCase):
         cls.area = mmgd.area_distribuidoras(mmgd.conjuntos_limite(_csv_gz("aneel_conjuntos_limite_recorte.csv.gz")),
                                             mmgd.conjuntos_municipio(_csv_gz("aneel_indqual_municipio_recorte.csv.gz")))
         ag = mmgd.agrega(mmgd.linhas_parquet(os.path.join(DADOS, "mmgd_municipios_area_recorte.parquet")))
-        cls.dmun = {k: (q, kw) for k, (q, kw) in ag.dist_municipio.items()}
+        cls.dmun = {k: (v[0], v[1]) for k, v in ag.dist_municipio.items()}
 
     def test_area_pela_base_de_conjuntos(self):
         """UFs com conjunto de cada CNPJ (iguais às da base completa de 01/10/2026)."""
@@ -852,7 +866,10 @@ class AreaDistribuidoraNaGold(_Ambiente):
         self.assertEqual((ctl["unidades"], ctl["municipios_sinalizados"]), (345, 2))
         neo = next(d for d in b["distribuidoras"] if d["cnpj"] == CNPJ_NEO_PE)
         self.assertEqual((neo["ufs_fora_da_area"], neo["unidades_fora_da_area"]), (["GO", "PA"], 186))
-        self.assertTrue(any("município" in t and "sinalizado" in t for t in b["proveniencia"]["cadastro"]["limitacoes"]))
+        # sem causa única (verificação de 01/10/2026): o texto diz que algum campo está errado e não afirma o município
+        lims = b["proveniencia"]["cadastro"]["limitacoes"]
+        self.assertTrue(any("algum campo está errado" in t for t in lims))
+        self.assertFalse(any("provável erro de código de município" in t for t in lims))
         self.assertTrue(any("inflada" in t for t in b["proveniencia"]["por_habitante"]["limitacoes"]))
         transicao._escreve_csvs_mmgd(b)
         with open(os.path.join(base.SERIES, "transicao_mmgd_municipios.csv"), encoding="utf-8") as f:
@@ -880,7 +897,7 @@ class EntidadeGrande(_Ambiente):
 
     def test_cemig_d(self):
         dist = transicao._par(self.con, "dist_uf_ano", 3)
-        self.assertAlmostEqual(sum(k for _, k in dist.values()), 5840077.77, delta=0.005)
+        self.assertAlmostEqual(sum(v[1] for v in dist.values()), 5840077.77, delta=0.005)
         (d,) = transicao._tabela_distribuidoras(dist, {}, {}, 2025, {}, None)
         self.assertEqual(d["cnpj"], "06981180000116")
         self.assertEqual(d["unidades"], 426729)
@@ -889,13 +906,13 @@ class EntidadeGrande(_Ambiente):
 
     def test_sao_paulo(self):
         ufm = transicao._par(self.con, "uf_mes_fonte", 3)
-        self.assertAlmostEqual(sum(k for _, k in ufm.values()), 7610299.55, delta=0.005)
+        self.assertAlmostEqual(sum(v[1] for v in ufm.values()), 7610299.55, delta=0.005)
         ufs, uf_anual = transicao._tabela_ufs(ufm, {}, {}, 2025, 2026, 7610299.55)
         self.assertEqual([(u["uf"], u["unidades"], u["potencia_mw"]) for u in ufs], [("SP", 787146, 7610.3)])
         anos = [x["ano"] for x in uf_anual]
         self.assertEqual(anos, list(range(anos[0], 2027)))  # sem buraco até o ano do cadastro
-        self.assertEqual(sum(x["unidades"] for x in uf_anual) + sum(
-            q for (_, mes, _), (q, _) in ufm.items() if mes == mmgd.SEM_DATA), 787146)
+        self.assertEqual(sum(x["unidades"] or 0 for x in uf_anual) + sum(
+            v[0] for (_, mes, _), v in ufm.items() if mes == mmgd.SEM_DATA), 787146)
 
 
 def _con_balanco():
@@ -1055,6 +1072,344 @@ class PublicacaoAtual(unittest.TestCase):
         self.assertEqual((cemig["unidades"], cemig["potencia_mw"]), (426729, 5840.078))
         sp = next(u for u in self.g["mmgd"]["ufs"] if u["uf"] == "SP")
         self.assertEqual((sp["unidades"], sp["potencia_mw"]), (787146, 7610.3))
+
+    def test_correcoes_da_verificacao_de_01_10_2026(self):
+        """Classes fora da área (o verificador, com as faixas de CEP por UF, achou 1.900 com CEP
+        na área da distribuidora e 2.507 com CEP na UF do município, das quais 2 têm código ou
+        UF publicada divergente), cobertura das séries, geração compartilhada e domínio do ONS."""
+        if self.g["mmgd"]["data_cadastro"] != "2026-09-29":
+            self.skipTest("valores conferidos para o cadastro de 29/09/2026")
+        m = self.g["mmgd"]
+        cls = {x["classe"]: x for x in m["controles"]["distribuidora_fora_da_uf"]["classes_pelo_cep"]["classes"]}
+        self.assertEqual((cls["provavel_municipio_errado"]["unidades"], cls["provavel_distribuidora_errada"]["unidades"],
+                          cls["indeterminada"]["unidades"]), (1900, 2505, 92))
+        mot = {x["motivo"]: x["unidades"] for x in m["controles"]["distribuidora_fora_da_uf"]["classes_pelo_cep"]["indeterminadas_por_motivo"]}
+        self.assertEqual((mot["sinais_divergentes"], mot["cep_de_preenchimento"]), (2, 74))
+        eqpi = next(d for d in m["distribuidoras"] if d["cnpj"] == CNPJ_EQ_PI)
+        self.assertEqual(eqpi["classes_fora_da_area"]["provavel_distribuidora_errada"]["unidades"], 1310)
+        self.assertIn("inflam o total desta", eqpi["aviso_total"])
+        coelba = next(d for d in m["distribuidoras"] if d["cnpj"] == CNPJ_COELBA)
+        self.assertEqual(coelba["classes_fora_da_area"]["provavel_municipio_errado"]["unidades"], 801)
+        anual = {a["ano"]: a for a in m["anual"]}
+        self.assertEqual([anual[a]["unidades"] for a in range(2004, 2010)], [1, None, None, None, None, 23])
+        self.assertEqual(sum(1 for x in m["mensal"] if x["unidades"] is None), 53)
+        self.assertTrue(any("geração compartilhada (22.670 unidades, 3.324,1 MW)" in t for t in m["proveniencia"]["cadastro"]["limitacoes"]))
+        o = self.g["ons_mmgd"]
+        self.assertEqual(o["validacoes"]["participacao_dominio"]["resultado"], "aprovada")
+        self.assertNotIn("meteorol", " ".join(o["proveniencia"]["estimativa"]["limitacoes"]))
+        with open(os.path.join(self.series, "transicao_mmgd_municipios.csv"), encoding="utf-8") as f:
+            mc = next(x for x in csv.DictReader(f, delimiter=";") if x["codigo_ibge"] == MACEIO)
+        # Maceió no cadastro inteiro: 252 da Equatorial PI, 20 da Equatorial PA, 5 da Equatorial MA e 1 da 05965546000109,
+        # todas com CEP 57xxx, código GD.AL e SigUF AL; 1 da Equatorial PI com CEP do Piauí
+        self.assertEqual((mc["unidades_provavel_distribuidora_errada"], mc["unidades_provavel_municipio_errado"]), ("278", "1"))
+
+# ---------------------------------------------------------------------------
+# Defeitos apontados pela verificação de 01/10/2026 (um teste ou mais por defeito)
+# ---------------------------------------------------------------------------
+
+CNPJ_EQ_PI = "06840748000189"
+CNPJ_EQ_AL = "12272084000100"
+MACEIO = "2704302"
+
+
+def _importa_recorte(con, caminho, capturado="2026-09-30T22:22:34Z"):
+    arq, sha, n = base.salva_bronze_arquivo("aneel", transicao.DS_MMGD, transicao.RECURSO_PARQUET, caminho, "parquet", capturado)
+    base.registra_vintage(con, transicao.DS_MMGD, transicao.RECURSO_PARQUET, "https://x", capturado, None, sha, n, "teste", arq)
+    return transicao._importa_mmgd(con, base.ultima_vintage(con, transicao.DS_MMGD, transicao.RECURSO_PARQUET), None)
+
+
+def _importa_conjuntos(con, limite, municipio):
+    for ds, rec, nome in ((transicao.DS_AREA_LIM, transicao.RECURSO_LIM, limite), (transicao.DS_AREA_MUN, transicao.RECURSO_MUN, municipio)):
+        with open(os.path.join(DADOS, nome), "rb") as f:
+            corpo = gzip.decompress(f.read())
+        a, sh = base.salva_bronze("aneel", ds, rec, corpo, "csv", "2026-10-01T00:18:12Z")
+        base.registra_vintage(con, ds, rec, "https://x", "2026-10-01T00:18:12Z", None, sh, len(corpo), "teste", a)
+        transicao._processa_area(con, ds, base.ultima_vintage(con, ds, rec))
+
+
+class ClassesForaDaArea(unittest.TestCase):
+    """Defeito (médio, P063): as 4.497 unidades fora da área recebiam uma causa única
+    (código de município errado). Recorte real: as 253 unidades da Equatorial PI (CNPJ
+    06840748000189, área só no PI) cadastradas em Maceió (2704302), com as unidades não
+    sinalizadas do cadastro que têm os mesmos prefixos de CEP (até 2 por prefixo; referência
+    da UF do CEP) e um conjunto elétrico por UF de cada CNPJ. CEP reduzido aos 5 dígitos que
+    a ANEEL publica sem tarja. Valores esperados por soma Decimal sobre o Parquet oficial
+    completo de 29/09/2026 (sha256 8d53e3da…), agrupando pelos 2 primeiros dígitos do CEP,
+    pela UF do código e por SigUF: 252 unidades com CEP 57xxx, código GD.AL e SigUF AL
+    (2.880,97 kW) e 1 com CEP 64xxx, do Piauí (6,0 kW). O verificador chegou às mesmas 253
+    e 252 por script próprio."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.area = mmgd.area_distribuidoras(mmgd.conjuntos_limite(_csv_gz("aneel_conjuntos_limite_maceio_recorte.csv.gz")),
+                                            mmgd.conjuntos_municipio(_csv_gz("aneel_indqual_municipio_maceio_recorte.csv.gz")))
+        ag = mmgd.agrega(mmgd.linhas_parquet(os.path.join(DADOS, "mmgd_maceio_eqpi_recorte.parquet")))
+        cls.dmc = {k: tuple(v) for k, v in ag.dist_mun_cep.items()}
+        cls.dmun = {k: tuple(v) for k, v in ag.dist_municipio.items()}
+
+    def test_classes_da_equatorial_pi_em_maceio(self):
+        self.assertEqual(sorted(self.area[CNPJ_EQ_PI]), ["PI"])
+        fora = transicao._fora_da_area(self.dmun, self.area)
+        self.assertEqual(fora["por_mun"][MACEIO][0], 253)
+        cls = transicao._classes_fora_da_area(self.dmc, self.area)
+        self.assertEqual(cls["unidades"], 253)
+        b = cls["classes"]["provavel_distribuidora_errada"]
+        a = cls["classes"]["provavel_municipio_errado"]
+        self.assertEqual((b[0], a[0], cls["classes"]["indeterminada"][0]), (252, 1, 0))
+        self.assertAlmostEqual(b[1], 2880.97, delta=0.005)
+        self.assertAlmostEqual(a[1], 6.0, delta=0.005)
+        self.assertEqual(cls["por_dist"][CNPJ_EQ_PI]["ufs_provavel_distribuidora_errada"], {"AL"})
+        self.assertEqual(cls["por_dist"][CNPJ_EQ_PI]["ufs_provavel_municipio_errado"], {"AL"})
+
+    def test_sinalizadas_nao_confirmam_o_proprio_municipio(self):
+        """Sem as unidades não sinalizadas (a referência), o CEP das 253 não tem UF de
+        referência: ficam indeterminadas, e não 'na UF do município' por se confirmarem."""
+        so_eqpi = {k: v for k, v in self.dmc.items() if k[0] == CNPJ_EQ_PI and k[1] == MACEIO}
+        cls = transicao._classes_fora_da_area(so_eqpi, self.area)
+        self.assertEqual(cls["classes"]["provavel_distribuidora_errada"][0], 0)
+        self.assertEqual(cls["motivos"]["cep_sem_referencia"][0], 253)
+
+    def test_cep_de_preenchimento_e_sinais_divergentes(self):
+        """CEP 77777: 2.644 unidades do DF no cadastro de 29/09/2026 (fora da faixa do DF);
+        prefixo com os cinco dígitos iguais não localiza a unidade."""
+        ref5, ref3 = {"57035": "AL"}, {"570": "AL"}
+        self.assertEqual(mmgd.classe_fora_da_area(CNPJ_EQ_PI, MACEIO, "77777", "AL", "AL", self.area, ref5, ref3)[:2],
+                         ("indeterminada", "cep_de_preenchimento"))
+        self.assertEqual(mmgd.classe_fora_da_area(CNPJ_EQ_PI, MACEIO, "-", "AL", "AL", self.area, ref5, ref3)[:2],
+                         ("indeterminada", "sem_cep"))
+        # CEP na UF do município, mas a UF publicada diverge: não basta para a segunda classe
+        self.assertEqual(mmgd.classe_fora_da_area(CNPJ_EQ_PI, MACEIO, "57035", "AL", "PI", self.area, ref5, ref3)[:2],
+                         ("indeterminada", "sinais_divergentes"))
+        self.assertEqual(mmgd.classe_fora_da_area(CNPJ_EQ_PI, MACEIO, "57035", "AL", "AL", self.area, ref5, ref3)[0],
+                         "provavel_distribuidora_errada")
+        # prefixo de 5 dígitos ambíguo usa o de 3 dígitos
+        self.assertEqual(mmgd.classe_fora_da_area(CNPJ_EQ_PI, MACEIO, "57099", "AL", "AL", self.area, {"57099": None}, ref3)[0],
+                         "provavel_distribuidora_errada")
+        self.assertTrue(mmgd.cep_de_preenchimento("00000"))
+        self.assertFalse(mmgd.cep_de_preenchimento("57035"))
+        self.assertEqual((mmgd.cep5("69919***"), mmgd.cep5("57035-150"), mmgd.cep5(None), mmgd.cep5("12")), ("69919", "57035", None, None))
+        self.assertEqual((mmgd.uf_do_codigo("GD.AL.001.430.059"), mmgd.uf_do_codigo("X")), ("AL", None))
+
+
+class ClassesForaDaAreaNaGold(_Ambiente):
+    def test_gold_publica_as_classes_sem_causa_unica(self):
+        _importa_recorte(self.con, os.path.join(DADOS, "mmgd_maceio_eqpi_recorte.parquet"))
+        _importa_conjuntos(self.con, "aneel_conjuntos_limite_maceio_recorte.csv.gz", "aneel_indqual_municipio_maceio_recorte.csv.gz")
+        b, motivo = transicao._bloco_mmgd(self.con, date(2026, 10, 1))
+        self.assertIsNone(motivo)
+        mc = next(x for x in b["_municipios"] if x["ibge"] == MACEIO)
+        self.assertEqual((mc["unidades_distribuidora_fora_da_uf"], mc["unidades_provavel_distribuidora_errada"],
+                          mc["unidades_provavel_municipio_errado"]), (253, 252, 1))
+        self.assertAlmostEqual(mc["potencia_kw_provavel_distribuidora_errada"], 2880.97, delta=0.005)
+        eq = next(d for d in b["distribuidoras"] if d["cnpj"] == CNPJ_EQ_PI)
+        self.assertEqual(eq["classes_fora_da_area"]["provavel_distribuidora_errada"]["unidades"], 252)
+        self.assertIn("inflam o total desta", eq["aviso_total"])
+        self.assertIsNone(next(d for d in b["distribuidoras"] if d["cnpj"] == CNPJ_EQ_AL)["aviso_total"])
+        ctl = b["controles"]["distribuidora_fora_da_uf"]["classes_pelo_cep"]
+        self.assertTrue(ctl["disponivel"])
+        self.assertEqual({x["classe"]: x["unidades"] for x in ctl["classes"]},
+                         {"provavel_municipio_errado": 1, "provavel_distribuidora_errada": 252, "indeterminada": 0})
+        lims = b["proveniencia"]["cadastro"]["limitacoes"]
+        self.assertFalse(any("provável erro de código de município" in t for t in lims))
+        self.assertTrue(any("provável CNPJ de distribuidora errado" in t for t in lims))
+        hab = b["proveniencia"]["por_habitante"]["limitacoes"]
+        self.assertTrue(any("não inflam a razão municipal" in t for t in hab))
+        # a orientação de refazer a razão só aparece junto da classe de provável município errado
+        refazer = [t for t in hab if "refazer" in t]
+        self.assertEqual(len(refazer), 1)
+        self.assertIn("classe de provável município errado", refazer[0])
+        # CSV municipal com as classes; a orientação de refazer o W/hab vale só para a primeira
+        transicao._escreve_csvs_mmgd(b)
+        with open(os.path.join(base.SERIES, "transicao_mmgd_municipios.csv"), encoding="utf-8") as f:
+            linha = next(x for x in csv.DictReader(f, delimiter=";") if x["codigo_ibge"] == MACEIO)
+        self.assertEqual((linha["unidades_provavel_municipio_errado"], linha["unidades_provavel_distribuidora_errada"]), ("1", "252"))
+        desc = transicao.REGISTRO["arquivos"]["/energia/series/transicao_mmgd_municipios.csv"]
+        self.assertIn("são as únicas a descontar para refazer o W/hab", desc)
+        self.assertNotIn("provável código de município errado na origem", desc)
+
+
+class ColetaONSDataDeBrasilia(_Ambiente):
+    """Defeito (baixo, P063): a coleta usava a data UTC. Às 00:18:21Z de 01/10/2026 (21:18
+    de 30/09 em Brasília) pediu outubro inteiro e gravou quatro vintages vazias ("[ ]")."""
+
+    def test_captura_as_00h18_utc_nao_pede_o_mes_seguinte(self):
+        pedidos = []
+
+        def baixar(url, timeout=None, **_):
+            pedidos.append(url)
+            return b"[ ]", {}
+        agora = datetime(2026, 10, 1, 0, 18, 21, tzinfo=timezone.utc)
+        st = transicao._coleta_ons(self.con, None, baixar=baixar, pausa=0, agora=agora)
+        self.assertTrue(st["ok"])
+        self.assertFalse([u for u in pedidos if "2026-10-01" in u])
+        ultimo = [u for u in pedidos if "dat_inicio=2026-09-01" in u]
+        self.assertEqual(len(ultimo), 4)
+        self.assertTrue(all("dat_fim=2026-09-30" in u for u in ultimo))
+        self.assertEqual(len(pedidos), 4 * len(list(transicao._meses(ons.PRIMEIRO_MES, "2026-09"))))
+        # o lote de 20 h (meses recentes) é jul, ago e set: uma segunda coleta 1 h depois só pula
+        pedidos.clear()
+        transicao._coleta_ons(self.con, None, baixar=baixar, pausa=0, agora=datetime(2026, 10, 1, 1, 18, tzinfo=timezone.utc))
+        self.assertEqual(pedidos, [])
+
+    def test_coletar_e_construir_usam_a_data_de_brasilia(self):
+        import inspect
+        for f in (transicao.coletar, transicao.construir):
+            fonte = inspect.getsource(f)
+            self.assertIn("c.hoje_brasilia()", fonte)
+            self.assertNotIn("agora_date", fonte)
+
+
+def _obs_ons_dia(corpo, dia_novo=None, fator_mmgd=None, area=None):
+    regs = ons.parse(corpo)
+    if dia_novo or fator_mmgd:
+        regs = [dict(r) for r in regs]
+        for r in regs:
+            if dia_novo:
+                r["dat_referencia"] = dia_novo
+                r["din_referenciautc"] = dia_novo + r["din_referenciautc"][10:]
+            if fator_mmgd and (area is None or r["cod_areacarga"] == area):
+                r["val_cargammgd"] = r["val_cargaglobal"] * fator_mmgd
+    return list(ons.observacoes(ons.agrega_diario(regs)))
+
+
+class DominioParticipacaoONS(_Ambiente):
+    """Defeito (baixo, P063): a validação "participação entre 0 e 100%" estava declarada na
+    métrica e não era executada. Casos de robustez derivados das respostas reais da API de
+    01/09/2026 (a MMGD de um dia trocada por um múltiplo da carga global do mesmo intervalo)."""
+
+    def _grava(self, linhas_por_area):
+        for area, obs in linhas_por_area.items():
+            recurso = f"carga_verificada_{area}_2026-09"
+            vid, _ = base.registra_vintage(self.con, transicao.DS_ONS, recurso, "https://x", "2026-09-30T00:00:00Z", None,
+                                           "0" * 63 + area[0].lower().replace("s", "1").replace("n", "2"), 0, "teste", None)
+            base.grava_observacoes(self.con, transicao.DS_ONS, vid, obs)
+
+    def test_mes_fora_do_dominio_derruba_a_publicacao(self):
+        self._grava({a: _obs_ons_dia(_ons(a, "2026-09-01"), fator_mmgd=1.2 if a == "NE" else None) for a in ons.AREAS.values()})
+        with self.assertRaises(transicao.ValidacaoCritica) as ctx:
+            transicao._bloco_ons(self.con, None, {})
+        self.assertIn("fora de 0 a 100%", str(ctx.exception))
+        self.assertFalse(os.path.exists(os.path.join(base.SERIES, "transicao_ons_mmgd_mensal.csv")))  # nada escrito
+
+    def test_dia_fora_do_dominio_vira_ressalva(self):
+        linhas = {}
+        for a in ons.AREAS.values():
+            corpo = _ons(a, "2026-09-01")
+            linhas[a] = _obs_ons_dia(corpo) + _obs_ons_dia(corpo, dia_novo="2026-09-02", fator_mmgd=1.01 if a == "S" else None)
+        self._grava(linhas)
+        b = transicao._bloco_ons(self.con, None, {})
+        v = b["validacoes"]
+        self.assertEqual((v["participacao_dominio"]["resultado"], v["dias_fora_do_dominio"]["dias"]), ("aprovada", 1))
+        self.assertEqual(v["dias_fora_do_dominio"]["exemplos"][0]["d"], "2026-09-02")
+        self.assertTrue(any("Ressalva de domínio" in t for t in b["proveniencia"]["estimativa"]["limitacoes"]))
+        self.assertGreater(v["participacao_dominio"]["meses_verificados"], 0)
+
+    def test_construir_vira_stub_com_o_motivo(self):
+        self._grava({a: _obs_ons_dia(_ons(a, "2026-09-01"), fator_mmgd=1.2 if a == "NE" else None) for a in ons.AREAS.values()})
+        _importa_recorte(self.con, PARQUET)
+        g = transicao.construir(self.con, {"hoje": date(2026, 10, 1), "con_principal": None})
+        self.assertFalse(g["disponivel"])
+        self.assertIn("participação", g["motivo"])
+
+
+class PotenciaAusenteNaGold(_Ambiente):
+    """Defeito (baixo, P063): potência ausente virava 0,0 kW no agregado. Robustez derivada da
+    amostra real: as unidades de Uberlândia (3170206) com a potência removida."""
+
+    def test_municipio_sem_potencia_publica_nulo_e_a_contagem(self):
+        import pyarrow.compute as pc
+        import pyarrow.parquet as pq
+        t = pq.read_table(PARQUET)
+        uber = pc.equal(t["CodMunicipioIbge"], 3170206)
+        n_uber = int(pc.sum(pc.cast(uber, "int64")).as_py())
+        kw = pc.if_else(uber, pa_null_double(), t["MdaPotenciaInstaladaKW"])
+        caminho = os.path.join(self.tmp.name, "sem_kw.parquet")
+        pq.write_table(t.set_column(t.schema.get_field_index("MdaPotenciaInstaladaKW"), "MdaPotenciaInstaladaKW", kw), caminho)
+        _importa_recorte(self.con, caminho)
+        b, motivo = transicao._bloco_mmgd(self.con, date(2026, 9, 30))
+        self.assertIsNone(motivo)
+        self.assertEqual(b["controles"]["potencia_ausente"], n_uber)
+        self.assertEqual(b["resumo"]["unidades_sem_potencia"], n_uber)
+        x = next(m for m in b["_municipios"] if m["ibge"] == "3170206")
+        self.assertEqual((x["unidades"], x["unidades_sem_potencia"], x["potencia_kw"]), (n_uber, n_uber, None))
+        self.assertNotIn("3170206", [m["ibge"] for m in b["municipios_destaque"]["maior_potencia"]])
+        mg = next(u for u in b["ufs"] if u["uf"] == "MG")
+        self.assertEqual(mg["unidades_sem_potencia"], n_uber)
+        self.assertIsNotNone(mg["potencia_mw"])  # parcial, rotulada pela contagem
+        self.assertTrue(any("sem potência informada" in t for t in b["proveniencia"]["cadastro"]["limitacoes"]))
+        transicao._escreve_csvs_mmgd(b)
+        with open(os.path.join(base.SERIES, "transicao_mmgd_municipio_ano_fonte.csv"), encoding="utf-8") as f:
+            linhas = [r for r in csv.DictReader(f, delimiter=";") if r["codigo_ibge"] == "3170206"]
+        self.assertTrue(linhas)
+        self.assertTrue(all(r["potencia_kw"] == "" and r["unidades_sem_potencia"] == r["unidades"] for r in linhas))
+        # nova captura com a potência de volta: a contagem de unidades sem potência vira zero explícito
+        _importa_recorte(self.con, PARQUET, "2026-10-06T15:00:00Z")
+        b2, _ = transicao._bloco_mmgd(self.con, date(2026, 10, 7))
+        self.assertEqual(b2["resumo"]["unidades_sem_potencia"], 0)
+        self.assertIsNotNone(next(m for m in b2["_municipios"] if m["ibge"] == "3170206")["potencia_kw"])
+
+
+def pa_null_double():
+    import pyarrow as pa
+    return pa.scalar(None, type=pa.float64())
+
+
+class CoberturaDeclaradaNasSeries(_Ambiente):
+    """Defeito (baixo, P063): 2005 a 2008 e 53 meses de jul/2004 a nov/2008 saíam como zero
+    real, fora da cobertura declarada (a partir de dez/2008). Recorte real: as 5 unidades do
+    cadastro de 29/09/2026 com conexão antes de jul/2009 (CERCI em 26/06/2004; ERO, ELETROCAR
+    e CERVAM em junho de 2009)."""
+
+    def test_antes_de_dez_2008_nulo_rotulado_e_registro_de_2004_mantido(self):
+        _importa_recorte(self.con, os.path.join(DADOS, "mmgd_inicio_cobertura_recorte.parquet"))
+        b, motivo = transicao._bloco_mmgd(self.con, date(2026, 9, 30))
+        self.assertIsNone(motivo)
+        anual = {a["ano"]: a for a in b["anual"]}
+        self.assertEqual((anual[2004]["unidades"], anual[2004]["cobertura_declarada"]), (1, "fora"))
+        for ano in (2005, 2006, 2007):
+            self.assertEqual((anual[ano]["unidades"], anual[ano]["potencia_mw"], anual[ano]["cobertura_declarada"]), (None, None, "fora"))
+        self.assertEqual((anual[2008]["unidades"], anual[2008]["cobertura_declarada"]), (None, "parcial"))
+        self.assertEqual(anual[2009]["unidades"], 4)
+        self.assertNotIn("cobertura_declarada", anual[2009])
+        self.assertEqual(anual[2010]["unidades"], 0)  # dentro da cobertura: zero explícito
+        mensal = {m["m"]: m for m in b["mensal"]}
+        self.assertEqual((mensal["2004-06"]["unidades"], mensal["2004-06"]["cobertura_declarada"]), (1, "fora"))
+        nulos = [m for m in b["mensal"] if m["unidades"] is None]
+        self.assertEqual(len(nulos), 53)
+        self.assertTrue(all(m.get("cobertura_declarada") == "fora" and m["m"] < "2008-12" for m in nulos))
+        self.assertEqual((mensal["2008-12"]["unidades"], mensal["2008-12"].get("cobertura_declarada")), (0, None))
+        self.assertEqual(mensal["2008-11"]["acumulado_unidades"], 1)  # o estoque do cadastro continua
+        rj = [x for x in b["uf_anual"] if x["uf"] == "RJ" and x["ano"] < 2009]
+        self.assertEqual([(x["ano"], x["unidades"]) for x in rj], [(2004, 1), (2005, None), (2006, None), (2007, None), (2008, None)])
+        self.assertEqual(b["controles"]["cobertura_das_series"]["pontos_nulos_mensal"], 53)
+        self.assertEqual(b["controles"]["identidade_estoque"]["resultado"], "aprovada")
+
+
+class TextosComFonte(unittest.TestCase):
+    """Defeitos (baixo, P063): geração compartilhada fora da limitação territorial e método da
+    estimativa do ONS afirmado sem fonte."""
+
+    def test_limitacao_territorial_inclui_a_geracao_compartilhada(self):
+        """Contagens do cadastro de 29/09/2026 (perfil de modalidade da gold, iguais à soma
+        independente do Parquet feita pelo verificador: 22.670 unidades e 3.324.061,75 kW)."""
+        t = transicao._texto_local_do_credito([
+            {"categoria": "Auto consumo remoto", "unidades": 1105104, "potencia_mw": 13851.335},
+            {"categoria": "Compartilhada", "unidades": 22670, "potencia_mw": 3324.062}])
+        self.assertIn("geração compartilhada (22.670 unidades, 3.324,1 MW)", t)
+        self.assertIn("autoconsumo remoto (1.105.104 unidades, 13.851,3 MW)", t)
+        self.assertIn("Nos dois casos", t)
+        self.assertIn("compartilhada", transicao.DOC_ANEEL_MODALIDADES["trecho"])
+        from pipeline.energia.metricas import transicao as mt
+        pot = next(m for m in mt.METRICAS if m["id"] == "mmgd_potencia_instalada")
+        self.assertTrue(any("compartilhada" in x for x in pot["limitacoes"]))
+
+    def test_estimativa_do_ons_sem_metodo_sem_fonte(self):
+        import inspect
+        fonte = inspect.getsource(transicao._bloco_ons)
+        self.assertNotIn("meteorol", fonte)
+        self.assertIn("Carga atendida por MMGD", transicao.DOC_ONS_DICIONARIO["trecho"])
+        self.assertTrue(transicao.DOC_ONS_DICIONARIO["url"].endswith("DicionarioDados_Carga_Verificada.pdf"))
+        self.assertIn("valor estimado da micro e minigeração distribuída", transicao.DOC_ONS_BALANCO["trecho"])
 
 
 if __name__ == "__main__":

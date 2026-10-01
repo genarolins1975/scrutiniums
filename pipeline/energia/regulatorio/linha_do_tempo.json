@@ -1,5 +1,5 @@
 {
- "conferido_em": "2026-09-30",
+ "conferido_em": "2026-10-01",
  "nota": "Marcos que mudam a leitura dos painéis do observatório. 'resumo' é texto editorial do observatório, conferido no documento citado; 'efeito_declarado' é o que o próprio ato declara (ementa ou dispositivo, citado literalmente); 'impacto_estimado' fica sempre vazio aqui: o observatório não estima o efeito das normas nesta linha do tempo, e a coincidência entre uma data desta lista e um movimento em gráfico não é evidência de causa. 'trecho', 'efeito_declarado' e 'vigencia_regra' são literais do documento; 'trecho' é composto de passagens literais do documento, separadas por ' […] '. Vigência marcada como calculada segue a Lei Complementar nº 95/1998, art. 8º, § 1º (inclui o dia da publicação e o último dia do prazo; vigora no dia seguinte).",
  "eventos": [
   {
@@ -49,7 +49,7 @@
    "vigencia_regra": "Art. 34. Esta Resolução entra em vigor em 1º de setembro de 2022.",
    "vigencia_calculada": false,
    "dispositivo": "arts. 22 a 24 (limites do PLD) e art. 34 (vigência)",
-   "resumo": "Consolida as regras de formação do PLD e dos seus limites. O teto horário vale hora a hora; o teto estrutural vale para a média diária dos preços horários, que a CCEE ajusta de forma uniforme quando a média passa do teto; o piso é o maior valor entre a TEO e a TEO de Itaipu; os tetos são corrigidos todo ano pelo IPCA a partir dos valores de setembro de 2019. A regra dos limites vinha da REN nº 858/2019, revogada na consolidação.",
+   "resumo": "Consolida as regras de formação do PLD e dos seus limites. O teto horário vale hora a hora; o teto estrutural vale para a média diária dos preços horários, que a CCEE ajusta de forma uniforme quando a média passa do teto; o piso é o maior valor entre a TEO e a TEO de Itaipu; o art. 23, § 1º, manda atualizar os tetos todo ano pelo IPCA a partir dos valores de setembro de 2019, mas os atos anuais encadeiam o teto publicado no ano anterior pela variação do IPCA de novembro; a aplicação literal do artigo não reproduz os valores publicados (conferências regra_ipca e art23_literal). A regra dos limites vinha da REN nº 858/2019, revogada na consolidação.",
    "efeito_declarado": "Consolida os atos regulatórios relativos à elaboração do Programa Mensal da Operação Energética – PMO, e para a formação do Custo Marginal da Operação – CMO e do Preço de Liquidação de Diferenças – PLD",
    "impacto_estimado": null,
    "temas": [
@@ -106,7 +106,7 @@
    "ato": "Resolução Normativa ANEEL nº 1.000, de 7 de dezembro de 2021",
    "tipo_ato": "Resolução Normativa",
    "data_ato": "2021-12-07",
-   "data_publicacao": null,
+   "data_publicacao": "2021-12-20",
    "vigencia_inicio": "2022-01-03",
    "vigencia_regra": "Art. 679. Esta Resolução entra em vigor em 3 de janeiro de 2022.",
    "vigencia_calculada": false,
@@ -133,10 +133,10 @@
     }
    ],
    "documento": "ren20211000",
-   "trecho": "Art. 1º Esta Resolução Normativa estabelece as Regras de Prestação do Serviço Público de Distribuição de Energia Elétrica, nas quais estão dispostos os direitos e deveres do consumidor e demais usuários do serviço. […] Art. 679. Esta Resolução entra em vigor em 3 de janeiro de 2022.",
+   "trecho": "Art. 1º Esta Resolução Normativa estabelece as Regras de Prestação do Serviço Público de Distribuição de Energia Elétrica, nas quais estão dispostos os direitos e deveres do consumidor e demais usuários do serviço. […] Art. 679. Esta Resolução entra em vigor em 3 de janeiro de 2022. […] (*) Republicado em razão de incorreções no original publicado no DOU de 20/12/2021, edição 238, seção 1, página 206.",
    "nivel_conferencia": "texto_do_ato",
    "observacoes": [
-    "Documento lido é o texto compilado de dezembro de 2023; ele registra republicação no D.O. de 21.01.2022 e retificações até 04.07.2023, mas não a data da publicação original, por isso a data de publicação fica vazia. A numeração do artigo de vigência é a do texto compilado."
+    "Documento lido é o texto compilado de dezembro de 2023. A publicação original foi no DOU de 20/12/2021, edição 238, seção 1, página 206, como o próprio texto registra na nota '(*) Republicado em razão de incorreções no original publicado no DOU de 20/12/2021, edição 238, seção 1, página 206.' (passagem incluída no trecho e conferida no PDF). O texto foi republicado no D.O. de 21.01.2022, seção 1, p. 74, e retificado no D.O. de 21.02.2022, 25.03.2022, 04.05.2022, 11.07.2022, 27.10.2022 e 04.07.2023. A numeração do artigo de vigência é a do texto compilado."
    ]
   },
   {

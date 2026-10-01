@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 
 from pipeline.energia import base, catalogo, metricas, modulos, validacoes  # noqa: E402
 from pipeline.energia.fontes import ccee, ons  # noqa: E402
-from pipeline.energia.gold import carga, cmo, geracao, hidrologia, modelos, pld, rede, sintese  # noqa: E402
+from pipeline.energia.gold import carga, cmo, geracao, hidrologia, modelos, pld, rede  # noqa: E402
 from pipeline.energia.gold import comum as c  # noqa: E402
 
 
@@ -78,9 +78,8 @@ def main(argv):
                      ("rede.json", rede.construir), ("cmo.json", cmo.construir)):
         print(f"[energia] gold {nome}", flush=True)
         g[nome] = publicar(nome, construir_validado(nome, fn), regressoes, falhas)
-    g["sintese.json"] = publicar("sintese.json",
-                                 construir("sintese.json", sintese.construir, g["hidrologia.json"], g["carga.json"],
-                                           g["geracao.json"], g["pld.json"], g["cmo.json"]), regressoes, falhas)
+    # sintese.json (Visão geral) é construída pelo módulo visao (pipeline/energia/modulos/visao.py,
+    # ordem 98), depois de todos os módulos temáticos cujas golds ela lê
     # previsões e modelos: violação de governança derruba a publicação (a anterior fica)
     anterior = (base.le_gold("previsoes.json") or {}).get("arquivo")
     try:

@@ -1,0 +1,41 @@
+      Plano Decenal de Expansão de Energia 2035                                                                Anexos
+
+
+        Anexo I-3 - Geração Centralizada: Evolução da Capacidade Instalada por Fonte de Geração para a Expansão de Referência
+
+                                                      2026        2027       2028        2029        2030         2031          2032         2033         2034         2035
+                              Fonte (1)
+                                                                                                                MW
+              Renováveis                             185.859    187.186     189.329    192.846      197.131      200.010      204.789      208.869      213.072      218.601
+                Hidrelétrica (2)                     102.423    102.423     102.423    102.471      103.877      103.877      104.577      104.577      104.695      105.345
+                Outras renováveis:                   83.436      84.763     86.906      90.375      93.254        96.133      100.212      104.292      108.377      113.256
+                    PCH E CGH                         7.605      7.774       7.781       8.197       8.791        9.385        9.979        10.574       11.168       11.762
+                    Eólica                           35.182      35.182     36.882      39.350      41.050        42.750       44.450       46.150       47.850       49.550
+                    Fotovoltaica centralizada        22.884      23.287     23.587      23.587      23.587        23.587       24.787       25.987       27.193       29.193
+                    Biomassa (3) + Biogás + RSU      17.245      17.300     17.300      17.885      18.470        19.055       19.640       20.225       20.810       21.395
+                    Biocombustível                     520       1.220       1.356       1.356       1.356        1.356        1.356        1.356         1.356        1.356
+              Não renováveis (4)                     25.038      26.304     28.447      32.356      33.199        36.190       37.661       41.066       43.066       44.778
+                Nuclear                               1.990      1.990       1.990       1.990       1.990        1.990        1.990        3.395         3.395        3.395
+                Gás natural (5)                      18.131      20.498     23.059      27.169      28.012        31.003       32.474       34.474       36.474       38.474
+                Carvão                                2.880      2.160       1.785       1.785       1.785        1.785        1.785        1.785         1.785        1.785
+                Óleo combustível                      1.586      1.205       1.205       1.004       1.004        1.004        1.004        1.004         1.004        1.004
+                Óleo diesel                            451        451         408         408         408          408          408          408          408           120
+              Bateria                                   -           -         631         631        1.631        2.631        3.631        4.631         5.631        6.631
+              Resposta da demanda                      300        600         900        1.200       1.500        1.800        2.100        2.400         2.800        3.200
+         Total do SIN                                211.197    214.090     219.307    227.033      233.461      240.631      248.181      256.966      264.569      273.210
+         Itaipu 50 Hz (6)                             7.000      7.000       7.000       7.000       7.000        7.000        7.700        7.700         7.700        7.700
+         Total Considerado                           218.197    221.090     226.307    234.033      240.461      247.631      255.881      264.666      272.269      280.910
+
+      Fonte: Elaboração EPE.
+      Nota:
+(1)   A evolução não considera a autoprodução de uso exclusivo (não injetada) que, para os estudos energéticos, é representada como abatimento de carga.
+(2)   Os valores da tabela indicam a potência instalada em dezembro de cada ano, considerando a motorização das hidrelétricas.
+(3)   Inclui usinas a biomassa com CVU > O e CVU = 0 (bagaço de cana). Para as usinas a bagaço de cana, os empreendimentos são contabilizados com a potência instalada total.
+(4)   Usinas termelétricas são retiradas do Plano de Expansão de Referência nas datas de término de seus contratos.
+(5)   Em gás natural, é incluído também o montante de gás de processo.
+(6)   Máquinas da UHE Itaipu pertencentes ao Paraguai, cujo excedente de geração em relação à carga da ANDE é exportado para o mercado brasileiro.
+
+
+
+                                                                                                                 526
+

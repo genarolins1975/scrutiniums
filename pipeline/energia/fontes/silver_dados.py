@@ -397,8 +397,11 @@ def _ref_anterior(ref, formato, passo):
 
 def revisoes(con, dataset, limite_eventos=LIMITE_EVENTOS_REVISAO):
     """Revisões da fonte com magnitude e alcance. Uma revisão é a troca de valor de uma
-    mesma (série, referência) entre duas capturas consecutivas; valores iguais em
-    capturas seguidas (restauração de vintage importada fora de ordem) não contam.
+    mesma (série, referência) entre duas capturas consecutivas DO MESMO RECURSO (arquivo);
+    valores iguais em capturas seguidas (restauração de vintage importada fora de ordem)
+    não contam. A mesma (série, referência) em arquivos diferentes com valores diferentes
+    (arquivos anuais que se sobrepõem, por exemplo) não é revisão: é conflito entre
+    recursos, contado à parte com exemplos.
 
     Devolve contagens exatas e os maiores eventos (por mudança relativa e absoluta);
     `por_captura` dá o calendário de revisões (dia da captura que trouxe o valor novo)."""
@@ -407,7 +410,7 @@ def revisoes(con, dataset, limite_eventos=LIMITE_EVENTOS_REVISAO):
            SELECT o.serie, o.ref, o.valor, v.capturado_em, v.recurso
            FROM rev JOIN observacoes o ON o.dataset=? AND o.serie=rev.serie AND o.ref=rev.ref
            JOIN vintages v ON v.vintage_id=o.vintage_id
-           ORDER BY o.serie, o.ref, v.capturado_em, o.rowid""",
+           ORDER BY o.serie, o.ref, v.recurso, v.capturado_em, o.rowid""",
         (dataset, dataset),
     )
     n_eventos = 0
@@ -418,9 +421,25 @@ def revisoes(con, dataset, limite_eventos=LIMITE_EVENTOS_REVISAO):
     de_zero = 0
     por_captura = Counter()
     eventos = []
+    conflitos, exemplos_conflito = 0, []
     atual_chave, ant = None, None
+    atual_sr, ultimos = None, {}
+
+    def fecha_conflito():
+        nonlocal conflitos
+        if len(ultimos) > 1 and max(ultimos.values()) - min(ultimos.values()) > 1e-9:
+            conflitos += 1
+            if len(exemplos_conflito) < 5:
+                exemplos_conflito.append({"serie": atual_sr[0], "ref": atual_sr[1],
+                                          "valores": {r: v for r, v in sorted(ultimos.items())}})
+
     for serie, ref, valor, cap, rec in cur:
-        chave = (serie, ref)
+        if (serie, ref) != atual_sr:
+            if atual_sr is not None:
+                fecha_conflito()
+            atual_sr, ultimos = (serie, ref), {}
+        ultimos[rec] = valor
+        chave = (serie, ref, rec)
         if chave != atual_chave:
             atual_chave, ant = chave, (valor, cap)
             continue
@@ -429,7 +448,7 @@ def revisoes(con, dataset, limite_eventos=LIMITE_EVENTOS_REVISAO):
         if abs(valor - v0) <= 1e-9:
             continue
         n_eventos += 1
-        chaves.add(chave)
+        chaves.add((serie, ref))
         series.add(serie)
         ref_min = ref if ref_min is None or ref < ref_min else ref_min
         ref_max = ref if ref_max is None or ref > ref_max else ref_max
@@ -448,12 +467,15 @@ def revisoes(con, dataset, limite_eventos=LIMITE_EVENTOS_REVISAO):
         if len(eventos) > 4 * limite_eventos:  # poda periódica: memória limitada
             eventos.sort(key=lambda e: -(e["relativa"] if e["relativa"] is not None else float("inf")))
             eventos = eventos[:limite_eventos]
+    if atual_sr is not None:
+        fecha_conflito()
     eventos.sort(key=lambda e: (-(e["relativa"] if e["relativa"] is not None else float("inf")), e["serie"], e["ref"]))
     return {
         "eventos": n_eventos, "referencias_revisadas": len(chaves), "series_afetadas": len(series),
         "ref_min": ref_min, "ref_max": ref_max, "maior_abs": maior_abs, "maior_rel": maior_rel,
         "a_partir_de_zero": de_zero, "por_captura": dict(sorted(por_captura.items())),
         "maiores": eventos[:limite_eventos], "truncado": n_eventos > limite_eventos,
+        "conflitos_entre_recursos": conflitos, "exemplos_conflito": exemplos_conflito,
     }
 
 

@@ -14,7 +14,13 @@ Fontes (seção "Fontes verificadas" em docs/observatorios/energia/modulos/carga
   líquida de MMGD com definições compatíveis; coletada aqui, por mês e submercado;
 - NASA POWER (MERRA-2 e GEOS-IT): temperatura diária nas capitais, ponderada pela
   população (IBGE: centroides das capitais e SIDRA 6579), para a decomposição do P027;
-- Senado Federal (metadados de legislação): leis dos feriados nacionais.
+- Senado Federal (metadados de legislação): leis dos feriados nacionais (norma e ementa
+  conferidas; o texto não pôde ser relido, e a gold diz isso lei a lei);
+- ONS, Balanço de Energia nos Subsistemas e arquivo atual da Carga de Energia Diária: só
+  validação (conferência C1 de valor atípico e estado de cada dia ausente, em
+  gold/carga.py) e arquivo ainda obtenível para a evidência;
+- Open-Meteo (ERA5 e IFS): coletado e NÃO utilizado (cota diária do serviço; 15 de 27
+  capitais), até a sensibilidade ao produto de temperatura cobrir as 27 capitais.
 
 Por que dois produtos de carga do ONS convivem aqui sem se misturar: a curva horária é o
 mesmo produto da carga diária (a média das 24 horas é o valor diário) e inclui a MMGD

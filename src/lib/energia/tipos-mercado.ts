@@ -18,6 +18,9 @@ import type { Evidencia, ResultadoTeste } from "./evidencia";
 
 /* ---------------------------------------------------------------- comuns */
 
+/** Endereço do JSON com as tabelas longas lidas sob demanda (public/energia/series/mercado_detalhe.json). */
+export type DetalheSobDemanda = { url: string; tabelas: string[] };
+
 export type Mes = string; // "AAAA-MM"
 export type Ano = string; // "AAAA"
 export type SubmercadoMercado = "SE" | "S" | "NE" | "N";
@@ -352,7 +355,9 @@ export type AgentesMigracao = {
   perfis: Perfis;
   parcelas_mensal: ParcelasMensal[];
   parcelas_uf_ultimo_mes: { mes: Mes | null; linhas: { uf: string; parcelas: number }[] };
-  desligamentos_anual: { ano: Ano; tipo: string; classe: string; desligamentos: number }[];
+  /** Desligamentos por ano e tipo; a abertura por classe está em mercado_detalhe.json. */
+  desligamentos_por_ano: { ano: Ano; tipo: string; desligamentos: number }[];
+  detalhe: DetalheSobDemanda;
   ucs_livres_por_classe_ultimo_mes: { mes: Mes | null; linhas: { classe: ClasseEpe; livre_uc: number | null }[] };
   samp_ucs_livres_mensal: SampUcsLivresMensal[];
   agentes_aneel: {
@@ -411,10 +416,9 @@ export type MreGsf = {
   identidade_gf: { mes: Mes; diferenca_mwmed: number }[];
   reconciliacao_infomercado: ConferenciaInfoMercado[];
   risco_hidrologico_acr: {
-    /** Últimos 60 meses (ver mensal_na_gold); a série anual cobre desde 2015. */
-    mensal: ({ mes: Mes; distribuidoras: number } & RiscoHidrologicoLinha)[];
     anual: ({ ano: Ano; meses: number } & RiscoHidrologicoLinha)[];
-    mensal_na_gold: string;
+    /** A série mensal está em mercado_detalhe.json (risco_hidrologico_acr_mensal). */
+    detalhe: DetalheSobDemanda;
   };
 };
 
@@ -492,14 +496,6 @@ export type Encargos = {
     penalidades_alivio_ess: number | null;
   }[];
   liquidacao_mensal: LiquidacaoMensal[];
-  mcp_submercado_mensal: {
-    mes: Mes;
-    submercado: SubmercadoMercado;
-    be_positivo_mwh: number | null;
-    be_negativo_mwh: number | null;
-    resultado_venda_rs: number | null;
-    resultado_compra_rs: number | null;
-  }[];
   mme: {
     edicoes: {
       edicao: Mes;
@@ -522,10 +518,10 @@ export type Encargos = {
     }[];
     reconciliacao_ccee: ConferenciaMmeCcee[];
   };
-  /** Últimos 60 meses; a série anual cobre todas as competências. */
-  acr_conta_bandeira_mensal: ({ mes: Mes; distribuidoras: number } & ContaBandeiraAcr)[];
+  /** Soma nacional por ano de competência; a série mensal está em mercado_detalhe.json. */
   acr_conta_bandeira_anual: ({ ano: Ano; meses: number } & ContaBandeiraAcr)[];
   reconciliacao_infomercado: ConferenciaInfoMercado[];
+  detalhe: DetalheSobDemanda;
 };
 
 /* ---------------------------------------------------------------- painéis, fontes e acesso */
@@ -546,7 +542,8 @@ export type PainelMercado = {
   pergunta: string;
   /** Resposta curta gerada por regra fixa a partir dos KPIs; null quando falta o dado. */
   resposta: string | null;
-  estado: EstadoPainel;
+  /** Estado da camada de dados; a entrega do painel depende também da página e da inspeção visual. */
+  estado_dados: EstadoPainel;
   criterio_aceite: string;
   verificacoes: VerificacaoPainel[];
   /** Chaves de `proveniencia` que sustentam o painel. */
@@ -634,4 +631,25 @@ export type MercadoGold = Cabecalho & {
   bloqueios: BloqueioMercado[];
   pendencias: PendenciaMercado[];
   acesso_ccee: AcessoCcee;
+};
+
+/* ---------------------------------------------------------------- leitura sob demanda */
+
+/** public/energia/series/mercado_detalhe.json: tabelas que a página mostra no modo Analisar. */
+export type MercadoDetalhe = {
+  dominio: "energia";
+  gold: "mercado.json";
+  gerado_em: string;
+  descricao: string;
+  mcp_submercado_mensal: {
+    mes: Mes;
+    submercado: SubmercadoMercado;
+    be_positivo_mwh: number | null;
+    be_negativo_mwh: number | null;
+    resultado_venda_rs: number | null;
+    resultado_compra_rs: number | null;
+  }[];
+  acr_conta_bandeira_mensal: ({ mes: Mes; distribuidoras: number } & ContaBandeiraAcr)[];
+  risco_hidrologico_acr_mensal: ({ mes: Mes; distribuidoras: number } & RiscoHidrologicoLinha)[];
+  desligamentos_anual: { ano: Ano; tipo: string; classe: string; desligamentos: number }[];
 };
