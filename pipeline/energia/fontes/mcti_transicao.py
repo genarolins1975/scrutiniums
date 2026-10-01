@@ -311,7 +311,7 @@ def parse_despacho(planilha):
             if v is not None:
                 anteriores_d[(mes, dia)] = v
     if anteriores_d:
-        _revisoes_diarias(out, linhas, j, k, dextras, anteriores_d)
+        _revisoes_diarias(out, linhas, j, k, dmeses, anteriores_d)
     return out
 
 
@@ -326,7 +326,7 @@ def _rotulo_bloco_direita(linhas, ini, fim, coluna_minima):
     return None, None
 
 
-def _revisoes_diarias(out, linhas, j, k, dextras, anteriores):
+def _revisoes_diarias(out, linhas, j, k, dmeses, anteriores):
     """Valores diários de outra publicação, à direita do bloco diário principal.
 
     A planilha declara uma publicação anterior (rótulo "anterior" no topo) e, nas de 2023 e
@@ -339,8 +339,10 @@ def _revisoes_diarias(out, linhas, j, k, dextras, anteriores):
     corrigido. Se não, nada é lido como revisão e o bloco fica registrado como problema.
     Dia inexistente no calendário no bloco anterior é descartado, nunca lido como revisão."""
     ano = out["ano"]
-    primeira = min(_ordem_col(c) for c, _ in dextras)
-    celula, rotulo = _rotulo_bloco_direita(linhas, j + 2, k, primeira)
+    # rótulo à direita da última coluna de mês do bloco principal (o da direita pode começar
+    # na coluna seguinte, como em 2020, ou deixar colunas vazias, como em 2022)
+    depois = max(_ordem_col(c) for c, _ in dmeses) + 1
+    celula, rotulo = _rotulo_bloco_direita(linhas, j + 2, k, depois)
     datas = sorted(f"{ano}-{m:02d}-{d:02d}" for m, d in anteriores)
     resumo = (f"{len(anteriores)} valores diários à direita do bloco principal ({datas[0][5:]} a {datas[-1][5:]})")
     if rotulo and "atual" in _sem_acento(rotulo):

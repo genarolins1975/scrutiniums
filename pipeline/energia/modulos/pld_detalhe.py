@@ -766,10 +766,11 @@ def limites_vigentes(atos, dia):
     return out
 
 
-def situacao_hora(valor, lim, tol=TOL):
+def situacao_hora(valor, lim, tol=TOL_HORA):
     """Posição do PLD da hora em relação aos limites vigentes: 'piso', 'teto_horario',
     'entre', 'abaixo_do_piso' ou 'acima_do_teto' (controles: não deveriam ocorrer) ou
-    'sem_limite' quando algum limite do dia não está disponível."""
+    'sem_limite' quando algum limite do dia não está disponível. Na hora, "no limite" é
+    igualdade ao centavo (TOL_HORA); `tol=TOL_SENS` dá a contagem de sensibilidade."""
     if valor is None:
         return None
     mn, mh = lim.get("pld_min"), lim.get("pld_max_horario")
@@ -846,12 +847,134 @@ def sequencias_zero(pontos, minimo=4, passo_dias=7):
 
 
 def media_ponderada(pares):
-    """[(preço, peso)] → Σ preço × peso ÷ Σ peso; None sem peso positivo."""
+    """[(preço, peso)] → Σ preço × peso ÷ Σ peso; None sem peso positivo. Quem chama passa
+    só pesos fisicamente válidos (pesos_validos): aqui não se descarta nada em silêncio."""
     pares = [(p, w) for p, w in pares if p is not None and w is not None]
     soma_w = sum(w for _, w in pares)
     if not pares or soma_w <= 0:
         return None
     return sum(p * w for p, w in pares) / soma_w
+
+
+def pesos_validos(itens):
+    """Controle físico do peso da média ponderada: [(chave, preço, carga)] → (válidos,
+    retirados). A carga de um subsistema numa hora é energia consumida e não pode ser zero
+    nem negativa; o ONS já publicou carga negativa (Nordeste, 26/09/2026, captura de
+    29/09/2026, revista no dia seguinte). Hora com carga ≤ 0 sai do peso e é listada:
+    vira ressalva visível, nunca correção silenciosa. Carga ausente (None) não entra em
+    nenhuma das listas: é ausência, contada à parte por quem chama."""
+    validos, retirados = [], []
+    for k, p, w in itens:
+        if p is None or w is None:
+            continue
+        (validos if w > 0 else retirados).append((k, p, w))
+    return validos, retirados
+
+
+def magnitude_revisoes(historicos):
+    """{ref: [(capturado_em, valor), ...]} (ordem de captura) → magnitude e alcance das
+    revisões: horas revisadas, maior e média variação absoluta entre o primeiro e o último
+    valor, maior variação relativa (sobre o módulo do primeiro valor, quando não é zero) e
+    horas em que o sinal mudou. Só entram refs com mais de um valor distinto."""
+    difs, rels, troca_sinal, caps = [], [], 0, set()
+    for ref, hist in historicos.items():
+        valores = [v for _, v in hist]
+        if len(set(valores)) < 2:
+            continue
+        a, b = valores[0], valores[-1]
+        difs.append((ref, b - a))
+        if a != 0:
+            rels.append(abs(b - a) / abs(a))
+        troca_sinal += (a > 0) != (b > 0)
+        caps.update(cap for cap, _ in hist)
+    if not difs:
+        return {"horas_revisadas": 0}
+    maior = max(difs, key=lambda x: abs(x[1]))
+    return {"horas_revisadas": len(difs), "max_abs": abs(maior[1]), "quando_max": maior[0],
+            "media_abs": sum(abs(x) for _, x in difs) / len(difs), "max_rel": max(rels) if rels else None,
+            "horas_com_troca_de_sinal": troca_sinal, "capturas": sorted(caps)}
+
+
+# Leitores independentes dos arquivos originais (fichas de evidência). Não usam os parsers
+# que alimentam o silver (fontes/ccee.py, fontes/ons.py, fontes/ons_pld.py): servem para
+# refazer o número a partir do arquivo publicado pela fonte, por outro código.
+
+SUBMERCADO_CCEE = {"SUDESTE": "SE", "SUL": "S", "NORDESTE": "NE", "NORTE": "N"}
+
+
+def _linhas_csv(texto_ou_linhas):
+    if isinstance(texto_ou_linhas, str):
+        return csv.reader(io.StringIO(texto_ou_linhas), delimiter=";")
+    return texto_ou_linhas
+
+
+def releitura_pld(linhas):
+    """Linhas do CSV PLD_HORARIO da CCEE (cabeçalho na primeira) → {sm: {hora: valor}}."""
+    it = iter(_linhas_csv(linhas))
+    cab = [x.strip().strip('"').lstrip("\ufeff").upper() for x in next(it)]
+    i = {k: cab.index(k) for k in ("MES_REFERENCIA", "SUBMERCADO", "DIA", "HORA", "PLD_HORA")}
+    out = defaultdict(dict)
+    for row in it:
+        if len(row) < len(cab):
+            continue
+        g = [x.strip().strip('"') for x in row]
+        sm = SUBMERCADO_CCEE.get(g[i["SUBMERCADO"]].upper())
+        if not sm or not g[i["PLD_HORA"]]:
+            continue
+        mes = g[i["MES_REFERENCIA"]]
+        out[sm][f"{mes[:4]}-{mes[4:6]}-{int(g[i['DIA']]):02d}T{int(g[i['HORA']]):02d}:00"] = float(g[i["PLD_HORA"]])
+    return dict(out)
+
+
+def releitura_ons(linhas, campo, sm, inicio, fim):
+    """Linhas de um CSV do ONS com id_subsistema;...;din_instante;...;<campo> → {instante
+    'AAAA-MM-DDTHH:MM': valor} do subsistema `sm` entre `inicio` e `fim` (inclusive)."""
+    it = iter(_linhas_csv(linhas))
+    cab = [x.strip().lstrip("\ufeff") for x in next(it)]
+    i_sm, i_t, i_v = cab.index("id_subsistema"), cab.index("din_instante"), cab.index(campo)
+    out = {}
+    for row in it:
+        if len(row) <= max(i_sm, i_t, i_v) or row[i_sm].strip() != sm:
+            continue
+        t = row[i_t].strip()[:16].replace(" ", "T")
+        if inicio <= t <= fim and row[i_v].strip():
+            out[t] = float(row[i_v])
+    return out
+
+
+def momento_do_calculo(ids_conferidos):
+    """Momento de cálculo e versão dos produtos do ONS, montados só com passagens dos
+    Procedimentos de Rede conferidas no documento baixado (ids de normas_pld.TRECHOS).
+    Sem as passagens, o campo fica None e o motivo é publicado."""
+    ids = set(ids_conferidos)
+    dec = dessem = versao = None
+    if {"pr43_cmo_semanal", "pr43_prazo_sexta", "pr24_cmo_semanal"} <= ids:
+        dec = ("Calculado pelo ONS na elaboração do PMO e de cada revisão semanal: o modelo de curto prazo (DECOMP) calcula o "
+               "CMO médio semanal por subsistema e patamar de carga para cada semana operativa; os resultados são esperados até "
+               "as 12h00 de sexta-feira e, sem eles, valem os resultados válidos mais recentes (Procedimentos de Rede, Submódulo "
+               "2.4, item 2.4.3.1; Submódulo 4.3, itens 1.4.1 e 1.5.2).")
+    if {"pr24_execucao_d1", "pr24_48_intervalos", "pr24_cmo_semi_horario"} <= ids:
+        dessem = ("Calculado pelo ONS na véspera (D-1) para o dia D: o modelo de curtíssimo prazo é executado diariamente em D-1, "
+                  "com horizonte até o fim da semana operativa, e o dia D é detalhado em 48 intervalos semi-horários (Procedimentos "
+                  "de Rede, Submódulo 2.4, itens 2.5.1.1 a 2.5.1.3)")
+        if {"pr45_prazo_16h", "pr45_envio_ccee"} <= ids:
+            dessem += ("; os resultados devem estar prontos até as 16h00 de D-1 e o deck e os resultados são encaminhados à CCEE "
+                       "(Submódulo 4.5, itens 2.3.3 e 2.4.1)")
+        dessem += "."
+    if "pr43_versoes_modelos" in ids:
+        versao = ("As versões dos modelos usados pelo ONS são as validadas com os agentes e homologadas pela ANEEL por ato "
+                  "específico (Procedimentos de Rede, Submódulo 4.3, item 1.7.1.3); o conjunto de dados não identifica a versão "
+                  "nem o deck de cada valor.")
+    return {"decomp_semanal": dec, "dessem_semi_horario": dessem, "versao": versao}
+
+
+def pagina_do_trecho(texto_paginas, trecho):
+    """Número da página (1 em diante) do texto extraído por página onde todas as partes do
+    trecho aparecem; None quando nenhuma página contém o trecho inteiro."""
+    for i, pag in enumerate(texto_paginas, start=1):
+        if normas_pld.confere(trecho, normas_pld.normaliza(pag)):
+            return i
+    return None
 
 
 def deflaciona(valor, indice_mes, indice_base):
