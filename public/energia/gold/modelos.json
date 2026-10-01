@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "modelos.json",
- "gerado_em": "2026-10-01T02:22:00Z",
+ "gerado_em": "2026-10-01T06:57:05Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d95d8f8b4f9e",
+ "versao_codigo": "eec0a3121e05+alterado",
  "disponivel": true,
  "fonte": {
   "artefato": "PLD_PREVISOES_EXPLICADAS v1-previa-r4",
@@ -29,14 +29,34 @@
    "Limitação encontrada na revisão documentada nos relatórios da pesquisa",
    "Revisão do documento de origem aceita",
    "Liberação registrada pelo responsável pela plataforma, com data"
-  ]
+  ],
+  "escopo": "Proposta de leitura, não ratificada: a retenção alcançaria os resultados do artefato de pesquisa PLD_PREVISOES_EXPLICADAS v1-previa-r4 (métricas, coberturas e comparações calculadas fora do repositório), e não a validação reproduzível do observatório. Esta leitura foi escrita pelo implementador do módulo em 30/09/2026, sem decisão do responsável pela plataforma; até essa decisão, a regra vale para todos os números de desempenho (validacao_observatorio.decisao_publicacao). A retenção também bloqueia número em rodada interna dos candidatos (C2-P e C2-H) no arquivo de emissões."
+ },
+ "validacao_observatorio": {
+  "descricao": "Teste retrospectivo e métricas calculados pelo pipeline do observatório com código deste repositório (pipeline/energia/previsoes/) e dados públicos do silver com vintages. É a evidência do painel P016 e é reexecutável por qualquer pessoa; não são os resultados retidos da pesquisa, não aprovam nem promovem modelo.",
+  "codigo": "pipeline/energia/previsoes/",
+  "configuracao_sha256": "cf421e3e43c1df68f553f375e7fde983a5eec702ec68f2df3293dc5cee93d8e0",
+  "configuracao_congelada_em": "2026-09-30",
+  "desenho_fixado_antes_do_teste": "Definições das variáveis, grade de λ, janelas, divisão entre desenvolvimento (entregas até 01/01/2025) e teste (entregas desde 01/01/2025) e regra de seleção foram escritas antes da primeira execução do teste. A separação é de procedimento: o mesmo autor escreveu o código e viu os resultados ao depurá-lo; nenhuma escolha foi refeita depois de ver o período de teste, e o sha256 da configuração permite conferir mudanças futuras.",
+  "publicar": false,
+  "decisao_publicacao": {
+   "estado": "PENDENTE",
+   "decidido_por": null,
+   "decidido_em": null,
+   "escopo_decidido": null,
+   "pergunta": "A regra de publicacao_resultados (números de desempenho só no portal depois da liberação formal) alcança a validação reproduzível do observatório (teste retrospectivo de B0, S0, C2-P e C2-H calculado no repositório) ou só os resultados do artefato de pesquisa?",
+   "registro": "Em 30/09/2026 o implementador do módulo acrescentou publicacao_resultados.escopo e publicar = true sem decisão do responsável; em 01/10/2026, depois da verificação adversarial, publicar voltou a false até a decisão. Liberação: estado LIBERADA, decidido_por, decidido_em e escopo_decidido preenchidos pelo responsável, e publicar = true; o pipeline só publica com os quatro campos."
+  },
+  "fundamento_publicacao": "Especificação do observatório, painel P016 (publicar MAE, viés, escores probabilísticos, cobertura, largura e referências, separando teste retrospectivo e prospectivo), sujeita à regra de publicacao_resultados. Sem decisão registrada do responsável, o pipeline calcula e valida tudo, guarda os resultados fora do portal (data/energia/previsoes/validacao_interna) e a gold omite os números."
  },
  "definicoes": {
-  "alvo": "PLD médio do período de entrega, por submercado, em R$/MWh nominais",
-  "entregas": "Semanas completas de sábado 00h a sábado 00h (W1 é a próxima semana completa, até W4) e meses civis que ainda não começaram (M1 a M3). São 7 horizontes × 4 submercados = 28 previsões por rodada.",
+  "alvo": "PLD médio temporal do período de entrega, por submercado, em R$/MWh nominais: média aritmética simples de todas as horas do PLD horário da CCEE na entrega (não é média ponderada pela carga).",
+  "entregas": "Semanas de sábado 00h (incluído) ao sábado seguinte 00h (excluído), hora de Brasília: W1 é a primeira semana que começa depois do dia de origem (com origem no sábado, a semana em curso não conta), W2 a W4 as seguintes. Meses civis do dia 1º 00h ao dia 1º do mês seguinte 00h (excluído): M1 é o primeiro mês que começa depois do dia de origem, M2 e M3 os seguintes. São 7 horizontes × 4 submercados = 28 células por modelo e rodada.",
   "cenario_de_elegibilidade": "Regra de defasagem LAT1D: um dado só entra como informação se o seu período terminou até 1 dia antes do horário de corte (hipótese fixada pela pesquisa antes dos testes).",
-  "corte_operacional": "07h00 de Brasília (10h00 UTC) do dia de origem; prazo de emissão 08h00 de Brasília",
-  "quantis": "Um quantil é o valor que, segundo o modelo, o preço tem uma probabilidade dada de não superar: o quantil de 10% (P10) é o valor que o preço tem 10% de chance de não superar. A pesquisa usa os níveis de 5, 10, 25, 50, 75, 90 e 95%. A faixa entre P10 e P90 pretende conter o preço em 80% dos casos (cobertura nominal); se contém de fato só se sabe com a calibração, verificada nos testes."
+  "corte_operacional": "Corte às 07h00 de Brasília (America/Sao_Paulo; 10h00 UTC enquanto não houver horário de verão) do dia de origem; prazo de emissão às 08h00. A emissão usa o dado como estava no corte (vintages capturadas até ali); coleta posterior ao corte não entra.",
+  "quantis": "Um quantil é o valor que, segundo o modelo, o preço tem uma probabilidade dada de não superar: o quantil de 10% (P10) é o valor que o preço tem 10% de chance de não superar. A pesquisa usa os níveis de 5, 10, 25, 50, 75, 90 e 95%. A faixa entre P10 e P90 pretende conter o preço em 80% dos casos (cobertura nominal); se contém de fato só se sabe com a calibração, verificada nos testes.",
+  "realizado": "Média de todas as horas da entrega no PLD horário vigente; só existe quando as 168 horas da semana (ou 24 × dias do mês) estão publicadas. Entrega incompleta não tem realizado.",
+  "conhecido_no_corte": "A CCEE publica o PLD de cada dia na véspera: no corte das 07h o PLD das horas restantes do próprio dia de origem já é conhecido e é mostrado como dado publicado, nunca como previsão. Nenhuma entrega começa antes do dia seguinte à origem; a emissão confere a fração da entrega já capturada no corte (fracao_conhecida) e, se um dia houver horas publicadas, prevê só a parte desconhecida e combina as duas explicitamente."
  },
  "modelos": [
   {
@@ -81,7 +101,35 @@
    ],
    "auditoria": "Revisão feita por um revisor automatizado (agente de IA) que trabalhou sem o histórico de quem conduziu a pesquisa e aceitou as quatro primeiras etapas de validação. Não é auditoria institucional.",
    "resumo": "Repete o último valor completo: a previsão de cada período é a média do período mais recente já encerrado no corte. Serve de régua: um candidato só vale a pena se errar menos que isso.",
-   "limitacao_principal": "Não usa informação de chuva, reservatórios ou vazões: só o preço passado."
+   "limitacao_principal": "Não usa informação de chuva, reservatórios ou vazões: só o preço passado.",
+   "implementacao": {
+    "codigo": "pipeline/energia/previsoes/variaveis.py (b0) e modelos_pld.py",
+    "versao": "B0-v1",
+    "mesma_definicao_da_pesquisa": true,
+    "restricao_preco": "previsão limitada à faixa [piso, teto estrutural] médios dos atos da ANEEL publicados até a origem"
+   },
+   "referencia_experimental": {
+    "autorizada": true,
+    "fundamento": "Especificação do observatório, seção 12.4: B0 pode ser referência experimental claramente identificada quando seu cálculo e sua disponibilidade temporal estiverem validados. Publicá-lo não quita as obrigações dos outros modelos nem o reclassifica como previsão operacional aprovada.",
+    "rotulo": "B0: referência experimental de persistência, não é previsão aprovada",
+    "verificada_em": "2026-09-30",
+    "condicoes": [
+     {
+      "id": "calculo",
+      "descricao": "B0 recalculado por caminho independente confere com o valor emitido",
+      "verificada": true,
+      "evidencia": "Em cada emissão, emissao.b0_direto relê o PLD com como_estava_em e refaz a média hora a hora (tolerância 1e-6 R$/MWh; divergência vira célula sem número). Teste pipeline/tests/test_energia_previsoes.py confere o B0 contra médias calculadas por outro programa (awk) sobre o arquivo original da CCEE."
+     },
+     {
+      "id": "disponibilidade_temporal",
+      "descricao": "Todo dado usado foi capturado até o corte e é elegível sob LAT1D",
+      "verificada": true,
+      "evidencia": "A emissão lê o silver com como_estava_em(corte) e só usa períodos terminados até o corte menos 1 dia; cada registro guarda o capturado_em do dado usado e a governança recusa captura posterior ao corte. Nas capturas diretas observadas (achado A09) o PLD de cada dia chegou antes de o dia começar."
+     }
+    ],
+    "faixas": "Sem faixa de incerteza enquanto o segmento não estiver CALIBRADO no período de teste (regra de calibração da governança).",
+    "nao_equivale_a": "aprovação, promoção a produção ou previsão principal"
+   }
   },
   {
    "id": "c1",
@@ -125,13 +173,15 @@
    ],
    "auditoria": "Revisão feita por um revisor automatizado (agente de IA) que trabalhou sem o histórico de quem conduziu a pesquisa e aceitou as quatro primeiras etapas de validação. Não é auditoria institucional.",
    "resumo": "Combina referências simples com pesos fixos. Quais referências e quais pesos estão no arquivo de configuração da pesquisa, ainda não publicado.",
-   "limitacao_principal": "Nos testes da pesquisa, as faixas de incerteza cobriram menos do que prometiam, e no horizonte mensal há poucos casos para comparar modelos."
+   "limitacao_principal": "Nos testes da pesquisa, as faixas de incerteza cobriram menos do que prometiam, e no horizonte mensal há poucos casos para comparar modelos.",
+   "implementacao": null,
+   "motivo_sem_implementacao": "A composição do C1 (referências e pesos) está no arquivo de configuração da pesquisa (projeto_pld/config/etapa2b_E2B-C123-v1.json), que não está no repositório nem foi publicado. Sem configuração publicável não há como reimplementar nem auditar o C1; ele segue só como registro da pesquisa."
   },
   {
    "id": "c2-p",
    "codigo": "C2-P",
    "nome": "Correção por preços",
-   "versao": "C2-P",
+   "versao": "C2-P-obs1",
    "estado": "PESQUISA",
    "papel": "Candidato",
    "objetivo": "Corrigir a persistência com informações recentes de preço.",
@@ -187,13 +237,27 @@
    ],
    "auditoria": "Revisão feita por um revisor automatizado (agente de IA) que trabalhou sem o histórico de quem conduziu a pesquisa e aceitou as quatro primeiras etapas de validação; a limitação encontrada na revisão segue pendente de documentação. Não é auditoria institucional.",
    "resumo": "Parte da persistência (B0) e a corrige com informações recentes de preço.",
-   "limitacao_principal": "As faixas de incerteza não estão calibradas: a faixa do 10º ao 90º percentil não pode ser apresentada como uma faixa de 80%."
+   "limitacao_principal": "As faixas de incerteza não estão calibradas: a faixa do 10º ao 90º percentil não pode ser apresentada como uma faixa de 80%.",
+   "versao_pesquisa": "C2-P (experimento E2B-C123-v1, código da pesquisa 1b6ba3d)",
+   "implementacao": {
+    "codigo": "pipeline/energia/previsoes/modelos_pld.py e variaveis.py",
+    "versao": "C2-P-obs1",
+    "mesma_definicao_da_pesquisa": false,
+    "diferencas": [
+     "Reimplementação do observatório a partir da fórmula registrada; a configuração exata da pesquisa não está no repositório.",
+     "Média móvel recente definida como a média das horas dos 4 últimos períodos semanais (W) ou 3 mensais (M) elegíveis.",
+     "Mesmo período do ano anterior: semana que começa 364 dias antes da entrega; mês igual do ano anterior.",
+     "λ escolhido por validação interna no próprio passado (últimas 25% das entregas do treino), critério erro quadrático, grade ZERO, 3, 1, 0,3, 0,1, 0,03, 0,01, 0,001.",
+     "Ajuste semanal (domingo); mínimo de 52 entregas semanais ou 24 meses no treino.",
+     "Previsão e quantis limitados à faixa [piso, teto estrutural] dos atos da ANEEL publicados até a origem."
+    ]
+   }
   },
   {
    "id": "c2-h",
    "codigo": "C2-H",
    "nome": "Correção com hidrologia",
-   "versao": "C2-H",
+   "versao": "C2-H-obs1",
    "estado": "PESQUISA",
    "papel": "Candidato",
    "objetivo": "Corrigir a persistência com informações de preço e de hidrologia.",
@@ -240,7 +304,74 @@
    ],
    "auditoria": "Revisão feita por um revisor automatizado (agente de IA) que trabalhou sem o histórico de quem conduziu a pesquisa e aceitou as quatro primeiras etapas de validação; a limitação encontrada na revisão segue pendente de documentação. Não é auditoria institucional.",
    "resumo": "Parte da persistência (B0) e a corrige com informações de preço e de hidrologia.",
-   "limitacao_principal": "As faixas de incerteza não estão calibradas, e o período usado nos testes já tinha sido examinado antes da definição do modelo (resultado exploratório)."
+   "limitacao_principal": "As faixas de incerteza não estão calibradas, e o período usado nos testes já tinha sido examinado antes da definição do modelo (resultado exploratório).",
+   "versao_pesquisa": "C2-H (experimento E2B-C123-v1, código da pesquisa 1b6ba3d)",
+   "implementacao": {
+    "codigo": "pipeline/energia/previsoes/modelos_pld.py e variaveis.py",
+    "versao": "C2-H-obs1",
+    "mesma_definicao_da_pesquisa": false,
+    "diferencas": [
+     "Reimplementação do observatório a partir da fórmula registrada; a configuração exata da pesquisa não está no repositório.",
+     "Média móvel recente definida como a média das horas dos 4 últimos períodos semanais (W) ou 3 mensais (M) elegíveis.",
+     "Mesmo período do ano anterior: semana que começa 364 dias antes da entrega; mês igual do ano anterior.",
+     "λ escolhido por validação interna no próprio passado (últimas 25% das entregas do treino), critério erro quadrático, grade ZERO, 3, 1, 0,3, 0,1, 0,03, 0,01, 0,001.",
+     "Ajuste semanal (domingo); mínimo de 52 entregas semanais ou 24 meses no treino.",
+     "Previsão e quantis limitados à faixa [piso, teto estrutural] dos atos da ANEEL publicados até a origem.",
+     "ENA: série ENA bruta em % da MLT do ONS (ena_bruta_regiao_percentualmlt); EAR: ear_verif_subsistema_percentual."
+    ]
+   }
+  },
+  {
+   "id": "s0",
+   "codigo": "S0",
+   "nome": "Sazonal",
+   "versao": "S0-v1",
+   "estado": "PESQUISA",
+   "papel": "Referência sazonal (benchmark exigido pela seção 12.3); não é candidato",
+   "objetivo": "Prever o PLD médio de cada entrega repetindo a média do mesmo período um ano antes.",
+   "metodologia": "Semana: média das horas da semana que começa 364 dias antes da entrega (também um sábado). Mês: média das horas do mesmo mês do ano anterior. Limitada à faixa [piso, teto estrutural] dos atos publicados até a origem.",
+   "formula": "S0 = média do PLD horário do mesmo período um ano antes da entrega",
+   "features": [
+    "PLD horário do submercado (CCEE)"
+   ],
+   "usa_hidrologia": false,
+   "dados_treinamento": "Não tem parâmetros; usa o PLD horário do silver com vintages.",
+   "janela": "Origens desde 01/01/2022 (antes disso falta o ano anterior)",
+   "benchmarks": [],
+   "limitacoes": [
+    "Ignora a situação hidrológica e o nível de preço recentes: erra muito quando o regime de preço muda de um ano para o outro.",
+    "O teste retrospectivo é reconstrução sob a hipótese LAT1D (achado A09)."
+   ],
+   "falhas_conhecidas": [],
+   "promovido_em": null,
+   "versao_codigo": null,
+   "snapshot": null,
+   "evidencias": [],
+   "auditoria": "Implementado pelo observatório; sem revisão independente.",
+   "implementacao": {
+    "codigo": "pipeline/energia/previsoes/variaveis.py (sazonal)",
+    "versao": "S0-v1"
+   },
+   "resumo": "Repete o mesmo período do ano anterior. Serve de segunda régua, ao lado da persistência.",
+   "limitacao_principal": "Não acompanha mudança de regime de preço entre um ano e outro."
+  }
+ ],
+ "pendencias": [
+  {
+   "id": "G4",
+   "titulo": "Última etapa de validação da pesquisa",
+   "estado": "NAO_CONCLUIVEL_NO_REPOSITORIO",
+   "descricao": "A G4 é a entrega final da pesquisa externa (artefato v1-previa-r4, código 1b6ba3d). O código e os arquivos da pesquisa não estão no repositório; a etapa não pode ser concluída aqui.",
+   "encaminhamento": "O observatório reimplementou B0, C2-P e C2-H e o teste retrospectivo no repositório (validação reproduzível, publicada em previsoes_desempenho.json). Cabe ao responsável decidir se a G4 é substituída por essa validação ou se a pesquisa ainda deve entregá-la.",
+   "responsavel": "responsável pela plataforma"
+  },
+  {
+   "id": "G23-R1",
+   "titulo": "C2 pode amplificar o sinal de preço; previsões mensais negativas",
+   "estado": "DOCUMENTADA_COM_EVIDENCIA",
+   "descricao": "Na reimplementação, a validação do observatório calcula, por segmento, a fração das origens de ajuste em que o coeficiente da variável média dos 7 dias − B0 passou de 1 (coeficientes por origem em previsoes_ajustes_c2.csv) e quantas previsões brutas ficaram abaixo do piso ou acima do teto antes da restrição de preço (na gold quando a publicação dos resultados for liberada; até lá, nos resultados retidos). A restrição à faixa [piso, teto estrutural] impede previsão negativa; não corrige a amplificação.",
+   "encaminhamento": "Decisão revisável: aceitar a restrição de preço como tratamento ou exigir coeficiente limitado a [0, 1].",
+   "responsavel": "revisor independente e responsável pela plataforma"
   }
  ],
  "em_producao": []

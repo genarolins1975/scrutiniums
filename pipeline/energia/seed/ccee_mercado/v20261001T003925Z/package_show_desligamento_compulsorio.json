@@ -1,0 +1,117 @@
+{
+ "result": {
+  "author": "Gerência Jurídica de Penalidade e Desligamento - GJPD",
+  "author_email": "",
+  "creator_user_id": "2a2ea38a-463e-4151-ac0c-7c3e98318678",
+  "extras": [
+   {
+    "key": "Frequência de Atualização",
+    "value": "Mensal"
+   },
+   {
+    "key": "Referência de Publicação",
+    "value": "Primeira semana do mês"
+   },
+   {
+    "key": "Termo Legal",
+    "value": "O acesso a este site e/ou a utilização de conteúdos, dados e bases de dados nele disponibilizados se sujeita ao aceite dos termos e condições da licença aberta Creative Commons Attribution 4.0 International (CC-BY-4.0), bem como aos Termos de Uso do site e do aplicativo mobile (App) da CCEE (Link - https://www.ccee.org.br/en/web/guest/termos-de-uso). Ao utilizar esses recursos, você concorda em cumprir todos os requisitos dessa licença, que permitem que os reutilizadores distribuam, modifiquem, adaptem e desenvolvam o material sobre os dados, desde que seja atribuído o crédito apropriado ao criador (CCEE) e que sejam informadas as alterações. O Material Licenciado é disponibilizado no \"estado em que se encontra\" e \"como disponível\" apenas para fins informativos, sendo possível a interrupção da disponibilidade do conjunto de dados a qualquer momento e por qualquer motivo, sendo a sua utilização de livre iniciativa, não sendo atribuível qualquer tipo de responsabilização à CCEE por seu uso."
+   }
+  ],
+  "groups": [],
+  "id": "adb9a358-2020-41f4-83be-772311438f3d",
+  "isopen": true,
+  "license_id": "CC-BY-4.0",
+  "license_title": "Creative Commons Attribution 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "maintainer": "Gerência Jurídica de Penalidade e Desligamento - GJPD",
+  "maintainer_email": "",
+  "metadata_created": "2026-01-09T21:27:22.127105",
+  "metadata_modified": "2026-06-12T20:40:33.062326",
+  "name": "desligamento_compulsorio",
+  "notes": "Disponibilizar informações históricas referentes aos agentes desligados compulsoriamente da CCEE\r\n",
+  "num_resources": 1,
+  "num_tags": 5,
+  "organization": {
+   "approval_status": "approved",
+   "created": "2026-01-08T22:32:20.194250",
+   "description": "A análise das contrapartes é uma etapa importante para a segurança de mercado. Para auxiliar nesta avaliação, a Câmara de Comercialização disponibiliza um boletim que permite a identificação dos agentes envolvidos em procedimentos de desligamento e o status em que se encontram.\nRessaltamos que é responsabilidade exclusiva dos agentes e demais interessados a obtenção de outros dados para realização de análises para tomada de decisões, definição de estratégias de atuação, assunção de compromissos e obrigações.",
+   "id": "a09d6e8f-6c0f-414b-b6ce-e5337d936f74",
+   "image_url": "",
+   "is_organization": true,
+   "name": "desligamento",
+   "state": "active",
+   "title": "Desligamento",
+   "type": "organization"
+  },
+  "owner_org": "a09d6e8f-6c0f-414b-b6ce-e5337d936f74",
+  "private": false,
+  "relationships_as_object": [],
+  "relationships_as_subject": [],
+  "resources": [
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2026-01-09T21:28:27.444504",
+    "datastore_active": true,
+    "description": "O desligamento compulsorio está previsto na Convenção de Comercialização, tendo por objetivo a não permanência, no quadro associativo da CCEE, de agentes que tenham outorga revogada pela ANEEL, bem como aqueles que deixem de cumprir requisitos essenciais para se manter nele. Após identificadas as hipóteses que ensejam desligamento compulsório, a CCEE instaura os procedimentos em cumprimento à regulação vigente, cabendo ao Conselho de Administração deliberar o desligamento. O boletim tem por objetivo dar visibilidade ao mercado quanto aos agentes desligados de forma compulsória e as informações são atualizadas mensalmente.\r\n",
+    "format": "CSV",
+    "hash": "",
+    "id": "9ff45aac-1640-4aea-8327-eabfb2d27707",
+    "last_modified": "2026-05-08T17:36:39.170000",
+    "metadata_modified": "2026-06-09T04:31:22.544391",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "desligamento_compulsorio_2026",
+    "package_id": "adb9a358-2020-41f4-83be-772311438f3d",
+    "position": 0,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/eiLxWBXqRCi7wWULDEQ4ww/content",
+    "url_type": ""
+   }
+  ],
+  "state": "active",
+  "tags": [
+   {
+    "display_name": "compulsório",
+    "id": "91113a2d-ad55-472d-81e5-774e77c753fa",
+    "name": "compulsório",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "desligamento",
+    "id": "60597785-9bf2-4a90-9161-53ee36510977",
+    "name": "desligamento",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "perda de requisito",
+    "id": "2aec60b6-0f66-4523-9b57-9b4b83b5578b",
+    "name": "perda de requisito",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "revogação de outorga",
+    "id": "a119ec01-f6b0-4ae3-b96c-fdb64a71da67",
+    "name": "revogação de outorga",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "transferência de outorga",
+    "id": "ab8f0073-08a9-4176-875b-82ba3d4707e1",
+    "name": "transferência de outorga",
+    "state": "active",
+    "vocabulary_id": null
+   }
+  ],
+  "title": "DESLIGAMENTO_COMPULSORIO",
+  "type": "dataset",
+  "url": "",
+  "version": ""
+ }
+}

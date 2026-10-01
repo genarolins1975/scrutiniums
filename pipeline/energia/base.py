@@ -94,7 +94,7 @@ def conecta(caminho=None):
     caminho = caminho or DB_PATH
     if caminho != ":memory:":
         os.makedirs(os.path.dirname(caminho), exist_ok=True)
-    con = sqlite3.connect(caminho)
+    con = sqlite3.connect(caminho, timeout=60)
     con.execute("PRAGMA journal_mode=WAL") if caminho != ":memory:" else None
     con.executescript(
         """
@@ -112,9 +112,133 @@ def conecta(caminho=None):
         CREATE TABLE IF NOT EXISTS coletas(
             dataset TEXT, recurso TEXT, tentado_em TEXT, ok INTEGER, detalhe TEXT
         );
+        CREATE TABLE IF NOT EXISTS registros(
+            dataset TEXT NOT NULL, chave TEXT NOT NULL, campo TEXT NOT NULL,
+            valor TEXT, vintage_id TEXT NOT NULL,
+            PRIMARY KEY(dataset, chave, campo, vintage_id)
+        );
+        CREATE INDEX IF NOT EXISTS idx_reg ON registros(dataset, chave, campo);
         """
     )
     return con
+
+
+def conecta_familia(familia):
+    """Silver de uma família de fontes (data/energia/silver/<familia>.db), com o mesmo
+    esquema do silver principal. Separar por família evita disputa de escrita entre
+    coletores e mantém cada banco num tamanho que o cache do Actions e a cópia durável
+    comportam. O silver principal (energia.db) continua com ONS e CCEE originais."""
+    if not familia or not all(ch.isalnum() or ch == "_" for ch in familia):
+        raise ValueError(f"família inválida: {familia!r}")
+    return conecta(os.path.join(SILVER, f"{familia}.db"))
+
+
+def salva_bronze_arquivo(orgao, dataset, recurso, caminho_origem, ext, capturado_em, sha=None):
+    """Versão em fluxo de salva_bronze para arquivos grandes já baixados em disco:
+    comprime em blocos, sem carregar o arquivo inteiro na memória. Mesmo conteúdo,
+    mesmo nome: não regrava. Retorna (caminho relativo, sha256, bytes)."""
+    if sha is None:
+        h = hashlib.sha256()
+        with open(caminho_origem, "rb") as f:
+            for bloco in iter(lambda: f.read(1 << 20), b""):
+                h.update(bloco)
+        sha = h.hexdigest()
+    nbytes = os.path.getsize(caminho_origem)
+    pasta = os.path.join(BRONZE, orgao, dataset, recurso)
+    os.makedirs(pasta, exist_ok=True)
+    existentes = [n for n in os.listdir(pasta) if sha[:12] in n]
+    if existentes:
+        return os.path.relpath(os.path.join(pasta, existentes[0]), RAIZ), sha, nbytes
+    carimbo = capturado_em.replace(":", "").replace("-", "")
+    destino = os.path.join(pasta, f"{carimbo}.{sha[:12]}.{ext}.gz")
+    tmp = destino + ".part"
+    with open(caminho_origem, "rb") as src, gzip.open(tmp, "wb", compresslevel=6) as dst:
+        for bloco in iter(lambda: src.read(1 << 20), b""):
+            dst.write(bloco)
+    os.replace(tmp, destino)
+    return os.path.relpath(destino, RAIZ), sha, nbytes
+
+
+def abre_bronze(caminho_relativo):
+    """Abre (binário) um arquivo do bronze, gzip ou não, pelo caminho relativo à raiz."""
+    caminho = caminho_relativo if os.path.isabs(caminho_relativo) else os.path.join(RAIZ, caminho_relativo)
+    return gzip.open(caminho, "rb") if caminho.endswith(".gz") else open(caminho, "rb")
+
+
+def ultima_vintage(con, dataset, recurso):
+    """Vintage mais recente (por captura) de um recurso, ou None."""
+    row = con.execute(
+        """SELECT vintage_id, recurso, url, capturado_em, publicado_em, sha256, bytes, origem, arquivo
+           FROM vintages WHERE dataset=? AND recurso=? ORDER BY capturado_em DESC LIMIT 1""",
+        (dataset, recurso),
+    ).fetchone()
+    if not row:
+        return None
+    cols = ["vintage_id", "recurso", "url", "capturado_em", "publicado_em", "sha256", "bytes", "origem", "arquivo"]
+    return dict(zip(cols, row))
+
+
+def grava_registros(con, dataset, vintage_id, linhas):
+    """Registros textuais (cadastros, cronogramas, atos) com a mesma semântica de revisão
+    das observações: linhas (chave, campo, valor_texto); só grava valor novo ou alterado
+    em relação ao conhecido na captura desta vintage. Valor None não gera linha, mas um
+    campo que deixa de vir preenchido após ter valor é registrado como '' (apagado pela
+    fonte), para que o histórico mostre a remoção. Retorna (novas, revisoes)."""
+    unicas = {}
+    for ch, campo, v in linhas:
+        unicas[(str(ch), str(campo))] = None if v is None else str(v)
+    cap = con.execute("SELECT capturado_em FROM vintages WHERE vintage_id=?", (vintage_id,)).fetchone()
+    ate = cap[0] if cap else None
+    filtro, extra = ("AND v.capturado_em <= ?", (ate,)) if ate else ("", ())
+    conhecidos = {}
+    for ch, campo, valor in con.execute(
+        f"""SELECT r.chave, r.campo, r.valor FROM registros r JOIN vintages v ON v.vintage_id=r.vintage_id
+            WHERE r.dataset=? {filtro} ORDER BY v.capturado_em, r.rowid""",
+        (dataset, *extra),
+    ):
+        conhecidos[(ch, campo)] = valor
+    novas, revisoes, lote = 0, 0, []
+    for (ch, campo), v in unicas.items():
+        ant = conhecidos.get((ch, campo))
+        if v is None:
+            if ant not in (None, ""):
+                lote.append((dataset, ch, campo, "", vintage_id))
+                revisoes += 1
+            continue
+        if ant is None:
+            novas += 1
+        elif ant == v:
+            continue
+        else:
+            revisoes += 1
+        lote.append((dataset, ch, campo, v, vintage_id))
+    con.executemany("INSERT OR IGNORE INTO registros VALUES(?,?,?,?,?)", lote)
+    return novas, revisoes
+
+
+def registros_como_estavam_em(con, dataset, instante=None):
+    """{chave: {campo: valor}} como estava no instante (UTC ISO); None = vigente.
+    Campo apagado pela fonte ('') não aparece."""
+    filtro, extra = "", ()
+    if instante is not None:
+        filtro, extra = "AND v.capturado_em <= ?", (instante_utc(instante),)
+    out = {}
+    for ch, campo, valor in con.execute(
+        f"""SELECT r.chave, r.campo, r.valor FROM registros r JOIN vintages v ON v.vintage_id=r.vintage_id
+            WHERE r.dataset=? {filtro} ORDER BY v.capturado_em, r.rowid""",
+        (dataset, *extra),
+    ):
+        out.setdefault(ch, {})[campo] = valor
+    return {ch: {k: v for k, v in campos.items() if v != ""} for ch, campos in out.items()}
+
+
+def historico_registro(con, dataset, chave, campo):
+    """[(capturado_em, valor)] de um campo de um registro, em ordem de captura."""
+    return con.execute(
+        """SELECT v.capturado_em, r.valor FROM registros r JOIN vintages v ON v.vintage_id=r.vintage_id
+           WHERE r.dataset=? AND r.chave=? AND r.campo=? ORDER BY v.capturado_em""",
+        (dataset, chave, campo),
+    ).fetchall()
 
 
 def registra_vintage(con, dataset, recurso, url, capturado_em, publicado_em, sha256, nbytes,

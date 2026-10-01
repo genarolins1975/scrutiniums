@@ -1,0 +1,52 @@
+                                                                                                                          Data: 04-05-2026 - Página 1
+
+DADOS DE INTERCÂMBIOS ENTRE SUBSISTEMAS
+
+Descrição do Dado: Dados de intercâmbio entre subsistemas em base horária, em MWmed. As grandezas representam a soma das medidas de
+fluxo de potência ativa nas linhas de transmissão de fronteira entre os subsistemas.
+
+Observações: (1) A relação de linhas de transmissão de fronteira pode ser encontrada no produto "Relatório Quadrimestral de Limites de Intercâmbio
+para o Modelo Newave", disponível Portal SINtegre - ONS. (2) O intercâmbio do subsistema Sul com os países vizinhos não consta nesta consulta e
+pode ser obtido nos dados de intercâmbio do SIN.
+
+ Descrição                         Código                        Tipo de Dado          Formato       Permite        Permite          Permite
+                                                                                                     valor          valor            valor
+                                                                                                     nulo           zerado           negativo
+ Data/hora (início do período de   din_instante                  DATETIME              YYYY-MM-DD    Não            ---              ---
+ agregação)                                                                            HH:MM:SS
+
+ Código do Subsistema de Origem    id_subsistema_origem          TEXTO                 3 POSIÇÕES    Não            ---              ---
+
+
+ Nome do Subsistema de Origem      nom_subsistema_origem         TEXTO                 20 POSIÇÕES   Não            ---              ---
+
+
+ Código do Subsistema de Destino   id_subsistema_destino         TEXTO                 3 POSIÇÕES    Não            ---              ---
+
+
+ Nome do Subsistema de Destino     nom_subsistema_destino        TEXTO                 20 POSIÇÕES   Não            ---              ---
+                                                                                                         Data: 04-05-2026 - Página 2
+
+Descrição                            Código                     Tipo de Dado   Formato   Permite   Permite          Permite
+                                                                                         valor     valor            valor
+                                                                                         nulo      zerado           negativo
+Intercâmbio verificado em base       val_intercambiomwmed       FLOAT                    Não       Sim              Sim
+horária, representando a soma
+das medidas de fluxo de potência
+ativa nas linhas de transmissão de
+fronteira entre os subsistemas em
+MWmed
+
+Intercâmbio programado em base       val_intercambioprogmwmed   FLOAT                    Não       Sim              Sim
+horária em MWmed
+                                                                                                                   Data: 04-05-2026 - Página 3
+
+Evoluções do Conjunto de Dados:
+26-08-2022      Versão 1.0        Criação do Dicionário de dados
+
+13-09-2022      Versão 1.1        Evolução do Dicionário de Dados para incorporar informações que apoiem o processo de validação e checagem
+                                  de qualidade de dados. Informações sobre os dados com conteúdo nulas ou vazio; dados numéricos negativos
+                                  e de numéricos de valor zero.
+
+04-05-2026      Versão 1.2        Inclusão de novo campo chamado ‘val_intercambioprogmwmed’
+

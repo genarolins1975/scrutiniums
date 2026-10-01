@@ -81,6 +81,22 @@ export function carimbo(iso: string | null | undefined): string {
   }) + " (Brasília)";
 }
 
+/**
+ * Unidades de contagem que concordam com o número: "1 dia", "2 dias". Usada pelos
+ * componentes que escrevem "valor unidade" (barras, mapa de calor, histograma), para
+ * não sair "1 dias". Unidade que não é contagem (MWmed, R$/MWh, %) passa inalterada.
+ */
+const SINGULAR: Record<string, string> = {
+  dias: "dia", horas: "hora", meses: "mês", semanas: "semana", anos: "ano", usinas: "usina",
+  distribuidoras: "distribuidora", conjuntos: "conjunto", "municípios": "município", consultas: "consulta",
+  atos: "ato", eventos: "evento", unidades: "unidade", "famílias": "família", empresas: "empresa",
+  "interrupções": "interrupção", "reclamações": "reclamação", agentes: "agente", projetos: "projeto",
+};
+
+export function unidadeConcordante(v: number, unidade: string): string {
+  return Math.abs(v) === 1 && SINGULAR[unidade] ? SINGULAR[unidade] : unidade;
+}
+
 export function plural(n: number, um: string, varios: string): string {
   return `${n.toLocaleString(L)} ${n === 1 ? um : varios}`;
 }

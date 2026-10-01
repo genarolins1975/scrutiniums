@@ -1,0 +1,14 @@
+# RELATORIO-PMO-19_09_26 a 25_09_26.pdf (sha256 cc81f0b7a2da9b77a58ddeba2aedc9d631a3f5a4535274178b656d48906bce70), pdftotext -layout, página 10
+               PMO SETEMBRO 2026| SEMANA OPERATIVA DE 19/09 A 25/09/2026
+       Os valores da MLT (Média de Longo Termo) das energias naturais afluentes para os meses de
+       setembro/2026 e outubro/2026 são apresentados na tabela a seguir.
+                          Tabela 3 – MLT da ENA nos meses de setembro/2026 e outubro/2026
+
+                                                            MLT das ENAs (MWmed)
+                                              Subsistema                     setembro                  outubro
+                                                  SE/CO                        19.564                   23.616
+                                                      S                        11.681                   13.727
+                                                    NE                          2.905                    3.152
+                                                     N                          2.248                    2.358
+
+3.2.   Limites de Intercâmbio entre Subsistemas

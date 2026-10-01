@@ -1,234 +1,410 @@
 import type { Metadata } from "next";
+import { AguaArmazenamento } from "@/components/energia/AguaArmazenamento";
+import {
+  AguaAnalise,
+  AguaAuditoria,
+  AguaAviso,
+  AguaDatas,
+  AguaFontes,
+  AguaIndisponivel,
+  AguaNavegacao,
+  AguaParteAusente,
+  AguaRegras,
+  AguaSeguir,
+} from "@/components/energia/AguaPagina";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo, Bloco } from "@/components/energia/CabecalhoModulo";
+import { ComproveNumero } from "@/components/energia/ComproveNumero";
+import { Numero } from "@/components/energia/Numero";
+import { RedirecionaAncoraAntiga } from "@/components/energia/RedirecionaAncoraAntiga";
+import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
-import { Indisponivel } from "@/components/evidencia/Indisponivel";
-import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { Termo } from "@/components/evidencia/Termo";
 import { Unidade } from "@/components/evidencia/Unidade";
-import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
-import { TabelaDados } from "@/components/energia/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { gold, integra } from "@/lib/energia/gold";
-import { dataBR, mesAno, pct, rotuloRegra, sinal } from "@/lib/energia/formato";
-import { ROTULO_FAIXA_USUAL, sin } from "@/lib/energia/leituras";
+import {
+  ANCORAS_AFLUENCIA,
+  COLUNAS_CAPTURAS,
+  COLUNAS_EVENTOS,
+  COLUNAS_FIM_DE_ANO,
+  COLUNAS_QUEBRA_REE,
+  COLUNAS_RESERVATORIOS_POR_ANO,
+  COLUNAS_RESUMO,
+  COLUNAS_REVISOES_CAPTURAS,
+  anoInicial,
+  entidadesEar,
+  linhasCapturas,
+  linhasEventos,
+  linhasFimDeAno,
+  linhasQuebraRee,
+  linhasReservatoriosPorAno,
+  linhasResumo,
+  linhasRevisoesCapturas,
+  perguntaPainel,
+  respostaCapacidade,
+  rotaPainel,
+  serieMensalEar,
+  serieRegioes,
+  situacaoAtualidade,
+  textoMesParcial,
+  textoMudancaArmazenamento,
+  textoQuebraRee,
+  textoReconciliacaoEar,
+  textoResumo,
+  textoRevisoesCapturas,
+} from "@/lib/energia/agua";
+import { carimbo, dataBR } from "@/lib/energia/formato";
+import { gold, integra, lerGold } from "@/lib/energia/gold";
+import type { AguaDetalheGold } from "@/lib/energia/tipos-agua";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
-  title: "Água e clima: reservatórios e afluências",
+  title: "Água e clima: energia armazenada nos reservatórios",
   description:
-    "Energia armazenada (EAR) e energia natural afluente (ENA) por subsistema, comparadas ao padrão histórico de cada data, com dados do ONS e regra publicada.",
+    "Energia armazenada (EAR) do SIN, dos subsistemas, dos REE e das bacias do ONS, em MWmês e em % da capacidade, contra a faixa do mesmo dia nos anos anteriores, com as mudanças de capacidade e a reconciliação entre os recortes.",
   alternates: { canonical: "/setor-eletrico/agua-e-clima" },
 };
 
-const SERIES_SM = [
-  { id: "SE", rotulo: "Sudeste/Centro-Oeste", sigla: "SE/CO", cor: "var(--serie-sm-se)" },
-  { id: "S", rotulo: "Sul", sigla: "S", cor: "var(--serie-sm-s)" },
-  { id: "NE", rotulo: "Nordeste", sigla: "NE", cor: "var(--serie-sm-ne)" },
-  { id: "N", rotulo: "Norte", sigla: "N", cor: "var(--serie-sm-n)" },
-];
+const FONTE = "ONS, EAR Diário por Subsistema, por REE e por Bacia (captura mais recente de cada ano)";
+const URLS_P017 = ["agua_subsistemas_diario", "agua_ear_recortes_diario", "agua_ear_recortes_mensal", "agua_capacidade_eventos"];
 
 export default function AguaPage() {
-  const h = gold.hidrologia();
-  if (!integra(h)) {
-    return (
-      <>
-        <CabecalhoEnergia atual="agua-e-clima" />
-        <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 py-14">
-          <Indisponivel titulo="Hidrologia indisponível" motivo={h?.motivo ?? "Os dados processados de hidrologia não foram gerados nesta publicação."} />
-        </main>
-      </>
-    );
-  }
-  const s = sin(h.subsistemas)!;
-  const se = h.subsistemas.find((x) => x.sm === "SE")!;
-  const bandas = new Map(h.bandas_ear.map((b) => [b.md as string, b as Record<string, number | null>]));
-  const ultAno = h.serie_ear.slice(-365).map((p) => {
-    const md = p.d.slice(5, 10) === "02-29" ? "02-28" : p.d.slice(5, 10);
-    const b = bandas.get(md);
-    return { d: p.d, SIN: p.SIN ?? null, p10: b?.SIN_p10 ?? null, p50: b?.SIN_p50 ?? null, p90: b?.SIN_p90 ?? null };
-  });
-  const ena = h.serie_ena.map((p) => ({ ...p, ref100: 100 }));
+  const g = lerGold<AguaDetalheGold>("agua_detalhe.json");
+  if (!integra(g)) return <AguaIndisponivel motivo={(g as { motivo?: string } | null)?.motivo} />;
+  // resumo de operação (hidrologia.json): só para a conferência do modo Auditar; os números
+  // desta página vêm todos de agua_detalhe.json
+  const hid = gold.hidrologia();
+  const h = integra(hid) ? hid : null;
+
+  const a = g.armazenamento;
+  const ev = g.evidencias;
+  const prov = g.proveniencia;
+  const entidades = entidadesEar(a);
+  const atual = situacaoAtualidade(g.dias_referencia.ear, g.gerado_em, 3, "o ONS publica a EAR do dia anterior");
+  const versao = g.dias_referencia.ear;
+  const downloads = g.downloads.filter((d) => URLS_P017.some((u) => d.url.includes(u)));
+  const rec = g.reconciliacao_ear;
+  const quebra = a.quebras_perimetro_ree[0] ?? null;
+  // ano inicial da contagem de capacidade e base da faixa do SIN: lidos da gold, não escritos aqui
+  const desdeCap = anoInicial(a.capacidade.inicio);
+  const baseSin = a.subsistemas.find((s) => s.sm === "SIN")?.periodo_base ?? null;
+
   return (
     <>
       <CabecalhoEnergia atual="agua-e-clima" />
       <MarcaVisita secao="energia:agua-e-clima" />
+      <RedirecionaAncoraAntiga ancoras={ANCORAS_AFLUENCIA} destino={rotaPainel("p018")} />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
         <CabecalhoModulo
           rotulo="Água e clima"
           titulo="Quanta energia está guardada nos reservatórios, e quanta água está chegando?"
-          referencia={<>EAR e ENA do ONS até {dataBR(h.dia_referencia_ear)} · padrão histórico com anos completos desde 2001</>}
+          referencia={
+            <>
+              ONS (EAR, ENA e dados hidráulicos), NASA POWER (chuva e temperatura estimadas) e ECMWF pelo Open-Meteo (previsão); processado em{" "}
+              {carimbo(g.gerado_em)}.
+            </>
+          }
         >
-          A <Termo slug="ear">EAR</Termo> mede a energia associada à água guardada nos reservatórios; a <Termo slug="ena">ENA</Termo> mede, em
-          energia, as vazões naturais que chegam a eles. As duas séries são publicadas pelo ONS; como entram na formação do preço é matéria dos
-          modelos oficiais, cuja conferência documental está pendente nesta fase.
+          A <Termo slug="ear">EAR</Termo> é a energia que a água guardada nos reservatórios produziria nas usinas, em <Unidade u="MWmês" />; a{" "}
+          <Termo slug="ena">ENA</Termo> é a energia das vazões naturais que chegam a eles, comparada com a <Termo slug="mlt">MLT</Termo>. As quatro páginas
+          respondem, nesta ordem: quanto está guardado, se a água que chega está acima do normal, como chuva e temperatura se relacionam com a água e com a
+          demanda, e por que o armazenamento mudou, reservatório por reservatório.
         </CabecalhoModulo>
+        <div className="pb-4">
+          <AguaDatas
+            itens={[
+              {
+                rotulo: "EAR",
+                dia: g.dias_referencia.ear,
+                natureza: "OBSERVADO",
+              },
+              {
+                rotulo: "ENA",
+                dia: g.dias_referencia.ena,
+                natureza: "OBSERVADO",
+              },
+              {
+                rotulo: "Reservatórios",
+                dia: g.dias_referencia.reservatorios,
+                natureza: "OBSERVADO",
+              },
+              {
+                rotulo: "Chuva por satélite",
+                dia: g.dias_referencia.precipitacao,
+                natureza: "ESTIMADO",
+              },
+              {
+                rotulo: "Temperatura de reanálise",
+                dia: g.dias_referencia.temperatura,
+                natureza: "ESTIMADO",
+              },
+            ]}
+          />
+        </div>
+        <AguaNavegacao atual="p017" />
         <ModoProfundidade>
           <Bloco id="ear">
             <PainelEvidencia
-              id="ear-sin"
-              pergunta={`O SIN guarda ${pct(s.ear.valor)} da energia armazenável máxima, ${ROTULO_FAIXA_USUAL[s.ear.faixa ?? "dentro"]}`}
-              subtitulo="EAR do SIN · % da EAR máxima · últimos 12 meses e faixa histórica da data"
+              id="p017"
+              pergunta={perguntaPainel("p017")}
+              subtitulo="EAR do SIN, dos subsistemas, dos REE e das bacias · MWmês e % da EAR máxima · faixa do mesmo dia nos anos da base"
               natureza="CALCULADO"
-              porQueImporta={<>Mostra quanto da capacidade de armazenamento do sistema interligado está ocupado, em energia, segundo a definição do ONS.</>}
-              oQueMudou={<>Em 7 dias, {sinal(s.ear.variacao_7d_pp)} <Unidade u="p.p." />; em 30 dias, {sinal(s.ear.variacao_30d_pp)} p.p. Desvio frente à mediana da data: {sinal(s.ear.desvio_mediana_pp)} p.p.</>}
-              comoInterpretar={<>A área sombreada é a faixa do 10º ao 90º percentil do mesmo dia do calendário nos anos completos desde 2001; a linha tracejada é a mediana.</>}
-              naoConcluir={<>O agregado do SIN é dominado pelo Sudeste/Centro-Oeste, que concentra a maior capacidade. Um SIN confortável pode esconder um subsistema apertado.</>}
-              proveniencia={h.proveniencia.ear_sin}
-              complementares={[{ rotulo: "Sobre a faixa histórica", p: h.proveniencia.padrao }]}
-            >
-              <GraficoLinhas
-                titulo="EAR do SIN nos últimos 12 meses com a faixa histórica da data"
-                dados={ultAno}
-                chaveX="d"
-                series={[
-                  { id: "SIN", rotulo: "EAR do SIN", cor: "var(--cor-energia)", espessura: 2.5 },
-                  { id: "p50", rotulo: "Mediana histórica", cor: "var(--serie-referencia)", tracejada: true },
-                ]}
-                banda={{ inferior: "p10", superior: "p90", rotulo: "10º a 90º percentil" }}
-                unidade="%"
-              />
-            </PainelEvidencia>
-          </Bloco>
-
-          <Bloco id="padrao">
-            <PainelEvidencia
-              id="ear-subsistemas"
-              pergunta={h.desvio_principal ? `O maior desvio frente à mediana da data está no ${h.desvio_principal.nome}` : "Como cada subsistema se compara ao padrão da data"}
-              subtitulo="EAR por subsistema · % da EAR máxima · últimos 3 anos"
-              porQueImporta={<>Cada subsistema tem reservatórios, chuvas e capacidade próprios. A comparação com a própria história da data separa sazonalidade de anomalia.</>}
-              oQueMudou={<>{h.subsistemas.filter((x) => x.sm !== "SIN").map((x) => `${x.nome}: ${pct(x.ear.valor)} (${sinal(x.ear.variacao_30d_pp)} p.p. em 30 dias)`).join("; ")}.</>}
-              comoInterpretar={<>A tabela abaixo mostra o valor do dia, a mediana, o 10º e o 90º percentil da data e a posição percentual. &quot;Fora da faixa usual&quot; significa abaixo do 10º ou acima do 90º percentil.</>}
-              naoConcluir={<>O percentil mede posição histórica, não risco de desabastecimento. A capacidade máxima de cada subsistema mudou ao longo das décadas.</>}
-              proveniencia={h.proveniencia.ear}
+              porQueImporta={
+                <>
+                  A EAR diz quanta energia o sistema tem guardada em água. Em MWmês ela mostra o tamanho do estoque; em % da EAR máxima, quão cheio está cada
+                  recorte. Comparar com o mesmo dia de anos anteriores separa a estação do ano de uma situação fora do comum.
+                </>
+              }
+              oQueMudou={
+                <>
+                  {atual.texto} {textoMudancaArmazenamento(entidades)}
+                </>
+              }
+              comoInterpretar={
+                <>
+                  A área sombreada vai do 10º ao 90º percentil do mesmo dia do calendário nos anos completos da base: fora dela, a EAR está entre os 10% de anos
+                  mais baixos ou mais altos da data. O SIN é a soma das energias dividida pela soma das capacidades, nunca a média dos percentuais. Com menos de
+                  5 anos na base não há faixa, e recorte sem armazenamento (só usinas a fio d&apos;água) aparece como não se aplica.
+                </>
+              }
+              naoConcluir={
+                <>
+                  A posição na faixa não mede risco de desabastecimento nem diz qual será o preço. A EAR máxima mudou ao longo da base, então a faixa em %
+                  compara capacidades diferentes (a faixa em MWmês está na tabela). Um SIN dentro da faixa pode esconder um subsistema ou uma bacia apertada. A
+                  variação da EAR não se explica só pela ENA: a conta por reservatório está no painel de reservatórios.
+                </>
+              }
+              proveniencia={prov.ear_sin!}
               complementares={[
-                { rotulo: "Sobre a mediana, os percentis e a posição", p: h.proveniencia.padrao },
-                { rotulo: "Sobre a EAR do SIN", p: h.proveniencia.ear_sin },
+                ...(prov.ear_ree ? [{ rotulo: "EAR por REE", p: prov.ear_ree }] : []),
+                ...(prov.ear_bacia ? [{ rotulo: "EAR por bacia", p: prov.ear_bacia }] : []),
+                ...(prov.capacidade ? [{ rotulo: "Mudanças de capacidade", p: prov.capacidade }] : []),
               ]}
             >
-              <GraficoLinhas titulo="EAR por subsistema nos últimos 3 anos" dados={h.serie_ear} chaveX="d" series={SERIES_SM} unidade="%" />
-              <div className="tabela-scroll mt-5" tabIndex={0} role="region" aria-label="EAR por subsistema contra o padrão histórico da data (tabela rolável)">
-                <table className="w-full min-w-[40rem] border-collapse text-sm tabular-nums">
-                  <caption className="sr-only">EAR por subsistema contra o padrão histórico da data</caption>
-                  <thead>
-                    <tr className="text-left text-xs text-mineral">
-                      {[
-                        ["Subsistema", null],
-                        ["EAR", "OBSERVADO"],
-                        ["Mediana da data", "CALCULADO"],
-                        ["10º a 90º percentil", "CALCULADO"],
-                        ["Percentil", "CALCULADO"],
-                        ["Leitura", null],
-                      ].map(([c, n]) => (
-                        <th key={c} scope="col" className="border-b border-linha px-2 py-2 font-medium">
-                          <span className="flex flex-wrap items-center gap-1.5">
-                            {c}
-                            {n && <SeloNatureza natureza={n as "OBSERVADO" | "CALCULADO"} compacto />}
-                          </span>
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {h.subsistemas.map((x) => (
-                      <tr key={x.sm} className="border-b border-linha">
-                        <th scope="row" className="px-2 py-2 text-left font-normal text-carvao">
-                          {x.nome} {x.sm === "SIN" && <SeloNatureza natureza="CALCULADO" />}
-                        </th>
-                        <td className="px-2 py-2">{pct(x.ear.valor)}</td>
-                        <td className="px-2 py-2">{pct(x.ear.mediana_historica)}</td>
-                        <td className="px-2 py-2">{pct(x.ear.p10)} a {pct(x.ear.p90)}</td>
-                        <td className="px-2 py-2">{x.ear.percentil_na_data?.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) ?? "–"}</td>
-                        <td className="px-2 py-2">{x.ear.faixa ? ROTULO_FAIXA_USUAL[x.ear.faixa] : "–"}</td>
-                      </tr>
+              <div className="space-y-6">
+                {atual.defasada && <AguaAviso tipo="alerta">{atual.texto}</AguaAviso>}
+                <div id="padrao" className="scroll-mt-28">
+                  <AguaArmazenamento
+                    entidades={entidades}
+                    diaria={serieRegioes(a.serie_diaria_mwmes)}
+                    mensal={serieMensalEar(a.serie_mensal_mwmes)}
+                    textoMensal={textoMesParcial(a.serie_mensal_mwmes)}
+                    fonte={FONTE}
+                    versao={versao}
+                    destaques={
+                      <div className="grid gap-4 sm:grid-cols-3">
+                        <Numero
+                          rotulo="EAR do SIN"
+                          natureza="CALCULADO"
+                          evidencia={ev.ear_sin}
+                          formato="pct"
+                          casas={1}
+                          unidade="da EAR máxima"
+                          tamanho="medio"
+                          cor="var(--cor-energia)"
+                          endereco={`${rotaPainel("p017")}#p017`}
+                        />
+                        <Numero
+                          rotulo="Energia armazenada no SIN"
+                          natureza="CALCULADO"
+                          evidencia={ev.ear_sin_mwmes}
+                          formato="num"
+                          casas={0}
+                          unidade="MWmês"
+                          tamanho="medio"
+                          cor="var(--cor-energia)"
+                          endereco={`${rotaPainel("p017")}#p017`}
+                        />
+                        <Numero
+                          rotulo={`Mudanças da EAR máxima${desdeCap ? ` desde ${desdeCap}` : ""}`}
+                          natureza="CALCULADO"
+                          evidencia={ev.capacidade}
+                          formato="num"
+                          casas={0}
+                          unidade="mudanças"
+                          tamanho="medio"
+                          cor="var(--serie-referencia)"
+                          nota={
+                            a.capacidade.eventos_fechados === a.capacidade.n_eventos
+                              ? "Todas atribuídas a reservatórios, com o resíduo publicado."
+                              : `${a.capacidade.eventos_fechados} de ${a.capacidade.n_eventos} atribuídas a reservatórios dentro da tolerância; o resíduo de cada uma está publicado.`
+                          }
+                          endereco={`${rotaPainel("p017")}#capacidade`}
+                        />
+                      </div>
+                    }
+                  />
+                </div>
+
+                <AguaAnalise id="capacidade" titulo={`Mudanças da capacidade de armazenamento${desdeCap ? ` desde ${desdeCap}` : ""}`}>
+                  <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta="p017-capacidade">
+                    {respostaCapacidade(a.capacidade, a.dia)}
+                  </p>
+                  {ev.capacidade && <ComproveNumero evidencia={ev.capacidade} />}
+                  <TabelaInterativa
+                    titulo="Dias em que a EAR máxima de um subsistema mudou, com os reservatórios que explicam a mudança"
+                    colunas={COLUNAS_EVENTOS}
+                    linhas={linhasEventos(a.capacidade.eventos)}
+                    chaveLinha="id"
+                    colunaRotulo="data"
+                    fonte="ONS, EAR Diário por Reservatório e por Subsistema"
+                    versao={versao}
+                    nomeArquivo="agua-capacidade-eventos"
+                    chaveUrl="cap"
+                    ordemInicial={{ coluna: "data", direcao: "desc" }}
+                    nota="Tolerância do resíduo: 10 MWmês até 2017 (valores inteiros na fonte) e 0,05 MWmês desde 2018. A lista completa de reservatórios de cada evento está no CSV."
+                  />
+                  <TabelaInterativa
+                    titulo="EAR máxima no último dia de cada ano, por subsistema e SIN"
+                    colunas={COLUNAS_FIM_DE_ANO}
+                    linhas={linhasFimDeAno(a.capacidade)}
+                    chaveLinha="id"
+                    colunaRotulo="ano"
+                    fonte="ONS, EAR Diário por Subsistema"
+                    versao={versao}
+                    nomeArquivo="agua-ear-maxima-fim-de-ano"
+                    ordemInicial={{ coluna: "ano", direcao: "desc" }}
+                    nota="O último ano é parcial: o dia usado é o último publicado."
+                  />
+                </AguaAnalise>
+
+                {quebra && (
+                  <AguaAnalise id="perimetro-ree" titulo="A reconfiguração dos REE no fim de 2017">
+                    <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-texto="quebra-ree">
+                      {textoQuebraRee(quebra)}
+                    </p>
+                    <TabelaInterativa
+                      titulo={`EAR máxima de cada REE antes e depois de ${dataBR(quebra.data)}`}
+                      colunas={COLUNAS_QUEBRA_REE}
+                      linhas={linhasQuebraRee(quebra)}
+                      chaveLinha="id"
+                      colunaRotulo="nome"
+                      fonte="ONS, EAR Diário por REE"
+                      versao={quebra.data}
+                      nomeArquivo="agua-ree-reconfiguracao"
+                    />
+                  </AguaAnalise>
+                )}
+
+                <AguaAuditoria id="reconciliacao" titulo="O mesmo SIN por caminhos diferentes, e as capturas usadas">
+                  <ul className="list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-carvao-muted" data-textos="reconciliacao">
+                    {textoReconciliacaoEar(rec).map((t) => (
+                      <li key={t}>{t}</li>
                     ))}
-                  </tbody>
-                </table>
+                  </ul>
+                  {ev.ear_sin_mwmes && <ComproveNumero evidencia={ev.ear_sin_mwmes} rotulo="Comprove a soma do SIN" />}
+                  <TabelaInterativa
+                    titulo="Anos e subsistemas em que a soma dos reservatórios difere do subsistema além da tolerância"
+                    colunas={COLUNAS_RESERVATORIOS_POR_ANO}
+                    linhas={linhasReservatoriosPorAno(rec)}
+                    chaveLinha="id"
+                    colunaRotulo="ano"
+                    fonte="ONS, EAR Diário por Reservatório e por Subsistema"
+                    versao={versao}
+                    nomeArquivo="agua-reconciliacao-reservatorios"
+                    semLinhas="Nenhum ano fora da tolerância."
+                    nota="Causa não identificada; o dado do ONS não é corrigido. A diferença aparece também como ressalva da publicação."
+                  />
+                  <p className="text-sm text-carvao-muted">{textoRevisoesCapturas(rec.revisoes_entre_capturas_30d)}</p>
+                  <TabelaInterativa
+                    titulo="Revisões do ONS nos últimos 30 dias entre a captura anterior e a recaptura"
+                    colunas={COLUNAS_REVISOES_CAPTURAS}
+                    linhas={linhasRevisoesCapturas(rec.revisoes_entre_capturas_30d)}
+                    chaveLinha="id"
+                    colunaRotulo="sm"
+                    fonte="ONS, EAR Diário por Subsistema (duas capturas)"
+                    versao={versao}
+                    nomeArquivo="agua-ear-revisoes-capturas"
+                    semLinhas="Nenhuma revisão entre as capturas."
+                  />
+                  <TabelaInterativa
+                    titulo="Captura usada em cada ano"
+                    colunas={COLUNAS_CAPTURAS}
+                    linhas={linhasCapturas(rec.captura_por_ano)}
+                    chaveLinha="id"
+                    colunaRotulo="ano"
+                    fonte="ONS, EAR Diário por Subsistema"
+                    versao={versao}
+                    nomeArquivo="agua-ear-capturas"
+                  />
+                  {g.ressalvas.length > 0 && (
+                    <div>
+                      <p className="rotulo text-mineral">Ressalvas desta publicação</p>
+                      <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-carvao-muted">
+                        {g.ressalvas.map((r) => (
+                          <li key={r}>{r}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </AguaAuditoria>
+
+                <AguaAuditoria id="regras-p017" titulo="Regras, fontes e arquivos">
+                  <AguaRegras regras={g.regras} chaves={["ear_agregada", "ear_absoluta", "faixa_sazonal", "nao_se_aplica", "capacidade", "captura"]} />
+                  <AguaFontes provs={[prov.ear_sin, prov.ear_ree, prov.ear_bacia, prov.capacidade]} />
+                </AguaAuditoria>
+
+                <AguaSeguir
+                  ancora="p017"
+                  proximo={{
+                    href: `${rotaPainel("p018")}#p018`,
+                    pergunta: perguntaPainel("p018"),
+                  }}
+                  downloads={downloads}
+                />
               </div>
             </PainelEvidencia>
           </Bloco>
 
-          <Bloco id="ena">
-            <PainelEvidencia
-              id="ena-sm"
-              pergunta={`Quanta água está chegando? No Sudeste/Centro-Oeste, ${pct(se.ena.pct_mlt_30d, 1)} da média de longo termo em 30 dias`}
-              subtitulo="ENA bruta por subsistema · % da MLT · últimos 18 meses"
-              porQueImporta={<>A ENA expressa em energia as vazões naturais que chegam aos reservatórios; o ONS a indica como insumo de estudos energéticos e da projeção do custo marginal de operação. Acima de 100% da <Termo slug="mlt">MLT</Termo>, a ENA está acima da média de longo termo usada pelo ONS como referência.</>}
-              oQueMudou={<>ENA de 30 dias: {h.subsistemas.map((x) => `${x.nome} ${pct(x.ena.pct_mlt_30d, 1)}${x.ena.faixa_30d && x.ena.faixa_30d !== "dentro" ? ` (${x.ena.faixa_30d} da faixa usual)` : ""}`).join("; ")}.</>}
-              comoInterpretar={<>A série diária oscila muito; o acumulado de 30 dias, calculado como soma da ENA sobre soma da MLT, suaviza. A faixa usual compara com a mesma janela nos anos desde 2001.</>}
-              naoConcluir={<>A ENA mede afluência natural, não armazenamento: este painel não calcula quanto dela vira EAR (a documentação do ONS sobre o balanço hídrico dos reservatórios não foi conferida nesta fase). O período de referência da MLT não é informado pelo ONS.</>}
-              proveniencia={h.proveniencia.ena30}
-              complementares={[{ rotulo: "Sobre a ENA diária (gráfico)", p: h.proveniencia.ena }]}
-            >
-              <GraficoLinhas
-                titulo="ENA bruta por subsistema em % da MLT, últimos 18 meses"
-                dados={ena}
-                chaveX="d"
-                series={[...SERIES_SM, { id: "ref100", rotulo: "100% da MLT", cor: "var(--serie-referencia)", tracejada: true, espessura: 1 }]}
-                unidade="% MLT"
-                casas={0}
-              />
-              <TabelaDados
-                titulo="ENA de 30 dias por subsistema"
-                colunas={["Subsistema", "ENA 30 dias (% MLT)", "10º percentil", "90º percentil", "Percentil"]}
-                linhas={h.subsistemas.map((x) => [x.nome, x.ena.pct_mlt_30d, x.ena.p10_30d, x.ena.p90_30d, x.ena.percentil_30d_mesma_janela])}
-                casas={[null, 1, 1, 1, 1]}
-              />
-            </PainelEvidencia>
-          </Bloco>
-
-          <Bloco nivel="analisar">
-            <PainelEvidencia
-              id="ear-longo"
-              pergunta="Como a EAR se comportou nas últimas décadas?"
-              subtitulo="EAR média mensal por subsistema e SIN · % da EAR máxima · desde 2000"
-              natureza="CALCULADO"
-              porQueImporta={<>O histórico longo mostra ciclos de anos secos e úmidos que uma janela curta não revela.</>}
-              oQueMudou={<>{(() => {
-                const u = h.mensal_ear.at(-1);
-                if (!u) return "Série mensal sem dado.";
-                const parcial = h.dia_referencia_ear.slice(0, 7) === u.m;
-                return `Último mês da série: ${mesAno(`${u.m}-01`)}${parcial ? `, parcial, com dados até ${dataBR(h.dia_referencia_ear)}` : ""}; EAR média do SIN de ${pct(u.SIN)} da EAR máxima.`;
-              })()}</>}
-              comoInterpretar={<>Médias mensais dos valores diários publicados pelo ONS; o SIN é calculado pela soma das EAR sobre a soma das máximas.</>}
-              naoConcluir={<>A EAR máxima mudou ao longo do período: percentuais de décadas diferentes não medem o mesmo volume.</>}
-              proveniencia={h.proveniencia.ear_mensal ?? h.proveniencia.ear}
-            >
-              <GraficoLinhas
-                titulo="EAR média mensal desde 2000"
-                dados={h.mensal_ear}
-                chaveX="m"
-                formatoX="mes"
-                series={[...SERIES_SM, { id: "SIN", rotulo: "SIN", cor: "var(--cor-energia)", espessura: 2.5 }]}
-                unidade="%"
-              />
-            </PainelEvidencia>
-          </Bloco>
-
-          <Bloco nivel="auditar">
-            <div className="border border-linha bg-superficie p-6">
-              <h2 className="font-serif text-xl text-carvao">Regras, fonte e downloads</h2>
-              <dl className="mt-4 grid gap-4 md:grid-cols-2">
-                {Object.entries(h.regras).map(([k, v]) => (
-                  <div key={k}>
-                    <dt className="rotulo text-mineral">{rotuloRegra(k)}</dt>
-                    <dd className="mt-1 text-sm text-carvao">{v}</dd>
-                  </div>
-                ))}
-              </dl>
-              {h.fonte_notas.ear && (
-                <blockquote className="mt-5 border-l-2 border-linha pl-4 text-sm text-carvao-muted">
-                  <p className="rotulo mb-1 text-mineral">Descrição do ONS (EAR)</p>
-                  {h.fonte_notas.ear.split("\n")[2] ?? h.fonte_notas.ear}
-                </blockquote>
-              )}
-              <ul className="mt-5 space-y-1 text-sm">
-                {h.downloads.map((d) => (
-                  <li key={d.url}><a href={d.url} download className="text-energia-dark underline underline-offset-4">{d.rotulo}</a></li>
-                ))}
-              </ul>
-            </div>
+          <Bloco id="resumo-operacao" nivel="auditar">
+            {h ? (
+              <PainelEvidencia
+                id="conferencia-resumo"
+                nivel="auditar"
+                pergunta="Por que a Visão geral e o PLD podem mostrar outro número de EAR e de ENA?"
+                subtitulo="Resumo de operação (hidrologia.json) e esta página, cada um com o seu dia · % da EAR máxima e % da MLT"
+                natureza="CALCULADO"
+                porQueImporta={
+                  <>Quem chega da Visão geral ou do PLD encontra aqui a mesma grandeza; esta conferência mostra de onde vem cada número e o dia de cada um.</>
+                }
+                oQueMudou={<>{textoResumo(h, g.dias_referencia.ear, g.dias_referencia.ena, baseSin)}</>}
+                comoInterpretar={
+                  <>Cada linha traz o valor do resumo e o desta página com o dia de cada um. Nenhuma diferença é calculada: dias diferentes não se subtraem.</>
+                }
+                naoConcluir={
+                  <>
+                    Uma diferença entre as duas publicações não indica erro de cálculo: a captura e o dia de referência podem ser outros, e o ONS revisa os dias
+                    recentes.
+                  </>
+                }
+                proveniencia={h.proveniencia.ena30}
+                complementares={[
+                  { rotulo: "EAR do SIN no resumo", p: h.proveniencia.ear_sin },
+                  {
+                    rotulo: "Faixa histórica do resumo",
+                    p: h.proveniencia.padrao,
+                  },
+                  {
+                    rotulo: "EAR mensal do resumo",
+                    p: h.proveniencia.ear_mensal ?? h.proveniencia.ear,
+                  },
+                ]}
+              >
+                <TabelaInterativa
+                  titulo="EAR e ENA de 30 dias no resumo de operação e nesta página"
+                  colunas={COLUNAS_RESUMO}
+                  linhas={linhasResumo(h, a, g.afluencia)}
+                  chaveLinha="id"
+                  colunaRotulo="regiao"
+                  fonte="hidrologia.json (silver principal) e agua_detalhe.json (captura mais recente de cada ano), ONS"
+                  versao={versao}
+                  nomeArquivo="agua-conferencia-resumo"
+                />
+              </PainelEvidencia>
+            ) : (
+              <AguaParteAusente titulo="Conferência com o resumo de operação" motivo={textoResumo(null, g.dias_referencia.ear, g.dias_referencia.ena, baseSin)} />
+            )}
           </Bloco>
         </ModoProfundidade>
       </main>

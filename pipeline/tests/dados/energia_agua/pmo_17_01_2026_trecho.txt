@@ -1,0 +1,14 @@
+# RELATORIO-PMO-17_01 a 23_01.pdf (sha256 9d7c2acadcc7f4e0969955055ceeb06999ba66bc3e22b8e2c2abe7676d541cf2), pdftotext -layout, página 10
+                     PMO JANEIRO 2026| SEMANA OPERATIVA DE 17/01 A 23/01/2026
+       Os valores da MLT (Média de Longo Termo) das energias naturais afluentes para os meses de
+       janeiro/2026 e fevereiro/2026 são apresentados na tabela a seguir.
+
+                           Tabela 3 – MLT da ENA nos meses de janeiro/2026 e fevereiro/2026
+                                                            MLT das ENAs (MWmed)
+                                              Subsistema                      janeiro               fevereiro
+                                                   SE/CO                      65.813                  70.844
+                                                       S                       7.573                   8.249
+                                                     NE                       13.415                  14.185
+                                                      N                       15.785                  22.743
+
+3.2.   Limites de Intercâmbio entre Subsistemas

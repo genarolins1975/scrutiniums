@@ -1,0 +1,62 @@
+Plano Decenal de Expansão de Energia 2035                                          Geração Centralizada de Energia Elétrica
+
+
+Tabela 3-3 – Patamares de custos para modernização e repotenciação de usinas
+hidrelétricas.
+
+                                   CAPEX Referência                          O&M
+                   Faixa
+                                       (R$/kW)                            (R$/kW.ano)
+                      1                    2.000                                30
+                      2                    3.500                                30
+                      3                    5.000                                30
+
+
+
+
+Tabela 3-4 – Estimativas de custos referentes a resposta da demanda para os setores
+industriais com e sem geração própria
+
+                                              Custo fixo                Custo variável
+                          Setor
+                                             (R$/kW.ano)                 (R$/MWh)
+                    Sem Geração
+                                                209,82                       716,80
+                      Própria
+                    Com Geração
+                                                182,15                       716,80
+                      Própria
+
+
+As estimativas de custo de Modernização e Repotenciação de UHEs foram atualizadas com base
+nos dados nacionais mais recentes, além de informações de instituições internacionais, dados
+públicos e projetos de viabilidade, sendo mantidos os 3 patamares de custos para as usinas
+hidrelétricas relacionadas ao invés de custos individualizados.
+Além disso, também é considerada a opção de retrofit de usinas termelétricas existentes em fim
+de contrato, para a qual considera-se 40% do valor de investimento de uma planta nova como
+referência para o CAPEX e o custo de O&M fixo similar ao adotado para usinas termelétricas a gás
+natural e carvão.
+
+
+3.5        Cenário de referência
+3.5.1 Política energética e principais premissas para o cenário de
+      referência
+Nesta seção será descrito o conjunto de premissas e políticas energéticas incluídas na
+simulação da expansão no modelo MDI para o Cenário de Referência do PDE 2035. O referido
+cenário visa atender a diretriz anual do MME de considerar as políticas vigentes até a data de
+publicação das diretrizes.
+Portanto, em relação à legislação vigente adotada no momento de elaboração do estudo, o
+cenário de referência do PDE 2035 considera a Lei n° 14.182 17, de 12 de julho de 2021, e a Lei
+14.299, de 5 de janeiro de 2022.
+
+
+
+17
+  O presente estudo tem janeiro de 2025 como data-base das suas premissas. Nesta ocasião os artigos citados da Lei 14.182/2021
+estavam vigentes. Durante o ano de 2025 entrou em vigor a Medida Provisória (MP)1.304/2025, e a partir desta é sancionada a Lei
+15.269/2025.
+
+
+
+                                                                                                                           92
+

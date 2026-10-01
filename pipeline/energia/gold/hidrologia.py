@@ -220,8 +220,12 @@ def construir(con):
         cobertura={"inicio": dias_ena[0], "fim": dia_ena}, capturado_em=c.ultima_captura(snap_ena), snapshot=snap_ena,
         transformacoes=[], download="/energia/series/ena_diario.csv",
         limitacoes=lim_comum + [
-            "O conjunto não informa o período de referência da MLT.",
-            "O dicionário de dados do ONS descreve a unidade das colunas terminadas em _mwmed como MWmês; a Scrutiniums trata o valor como MWmed, conforme o nome da coluna, e privilegia o percentual da MLT.",
+            "O conjunto não informa o período histórico nem a versão da MLT. A MLT implícita (ENA ÷ percentual) muda com a "
+            "entrada de usinas e com recálculos do ONS, e em vários meses difere da MLT publicada no Relatório Executivo do "
+            "PMO; a comparação mês a mês e as datas das mudanças estão em agua_detalhe.json (afluencia.mlt).",
+            "O dicionário de dados do ONS descreve a unidade das colunas terminadas em _mwmed como MWmês; o valor é MWmed "
+            "(média do dia): a soma das ENA por reservatório, cujo dicionário diz MWmed, reproduz a ENA do subsistema, e o "
+            "PMO publica a MLT em MWmed (conferência em agua_detalhe.json).",
         ],
         notas_fonte=meta_ena.get("notas"),
     )

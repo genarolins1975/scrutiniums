@@ -43,6 +43,29 @@
   --serie-sm-n: #2a78d6;
   --serie-referencia: #8a8578;
 
+  /* Escalas de mapas e matrizes do domínio Energia (docs/observatorios/COMPONENTES_ENERGIA.md).
+     Sequencial em luminosidade monotônica no acento teal; divergente com centro neutro
+     para diferenças em relação a uma referência (acima e abaixo, sem juízo de valor:
+     a legenda sempre diz o que cada lado significa). Nunca usadas como cor de texto. */
+  --escala-seq-1: #d3e4e6;
+  --escala-seq-2: #9cc3c9;
+  --escala-seq-3: #5e98a3;
+  --escala-seq-4: #2b6f7c;
+  --escala-seq-5: #0a4a56;
+  --escala-div-neg-2: #8c3b2e;
+  --escala-div-neg-1: #d08a6c;
+  --escala-div-centro: #e4e1da;
+  --escala-div-pos-1: #7fb0b8;
+  --escala-div-pos-2: #0e6170;
+  --mapa-nao-se-aplica: #d8d2c6;
+  --cor-selecao: color-mix(in srgb, var(--cor-energia) 12%, transparent);
+  /* Comparação de até quatro entidades (distribuidoras, empresas, usinas): mesmos tons
+     validados das séries de submercado, com semântica própria dada pelo rótulo. */
+  --serie-comp-1: #4a3aa7;
+  --serie-comp-2: #d95926;
+  --serie-comp-3: #199e70;
+  --serie-comp-4: #2a78d6;
+
   /* Paleta categórica dos gráficos: bronze só como destaque */
   --serie-1: #1a1d21;
   --serie-2: #878986;

@@ -66,6 +66,10 @@ jobs:
         # interessa pegar erro de sintaxe/import antes do agendamento das 6h
         run: python3 -m compileall -q pipeline
 
+      - name: Dependências do pipeline de energia
+        # pyarrow: leitura dos Parquet da ANEEL nos módulos de energia
+        run: pip install -r pipeline/energia/requirements.txt
+
       - name: Testes Python (pipeline e camada de pesquisa)
         # stdlib, sem rede: regra nominal, relatório automático, pacote de fatos,
         # validador e casos sentinela, conferidos contra a gold publicada; nada

@@ -1,49 +1,49 @@
 {
  "dominio": "energia",
  "gold": "meta.json",
- "gerado_em": "2026-10-01T02:22:04Z",
+ "gerado_em": "2026-09-30T02:20:46Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d95d8f8b4f9e",
+ "versao_codigo": "196905461ac0",
  "disponivel": true,
  "golds": {
   "pld.json": {
    "disponivel": true,
-   "gerado_em": "2026-10-01T02:21:45Z"
+   "gerado_em": "2026-09-30T02:20:25Z"
   },
   "hidrologia.json": {
    "disponivel": true,
-   "gerado_em": "2026-10-01T02:21:46Z"
+   "gerado_em": "2026-09-30T02:20:26Z"
   },
   "carga.json": {
    "disponivel": true,
-   "gerado_em": "2026-10-01T02:21:46Z"
+   "gerado_em": "2026-09-30T02:20:27Z"
   },
   "geracao.json": {
    "disponivel": true,
-   "gerado_em": "2026-10-01T02:21:53Z"
+   "gerado_em": "2026-09-30T02:20:34Z"
   },
   "rede.json": {
    "disponivel": true,
-   "gerado_em": "2026-10-01T02:22:00Z"
+   "gerado_em": "2026-09-30T02:20:41Z"
   },
   "cmo.json": {
    "disponivel": true,
-   "gerado_em": "2026-10-01T02:22:00Z"
+   "gerado_em": "2026-09-30T02:20:41Z"
   },
   "sintese.json": {
    "disponivel": true,
-   "gerado_em": "2026-10-01T02:22:00Z"
+   "gerado_em": "2026-09-30T02:20:41Z"
   }
  },
  "fontes": {
   "ear_subsistema_di": {
-   "ultima_captura": "2026-10-01T02:21:01Z",
-   "snapshot": "ear_subsistema_di@2026-10-01T02:21:01Z",
-   "snapshot_sha256": "f85737586729795d5e6944d932bb10ca55efc2a53fa47085d0dec555f827ee38",
+   "ultima_captura": "2026-09-30T02:19:44Z",
+   "snapshot": "ear_subsistema_di@2026-09-30T02:19:44Z",
+   "snapshot_sha256": "c6dc295f61297e7370b531966e5fcb135aea08d8aa2a108a51f35d8979ea502f",
    "ultima_tentativa": {
-    "tentado_em": "2026-10-01T02:21:02Z",
+    "tentado_em": "2026-09-30T02:19:44Z",
     "ok": true,
-    "detalhe": "53288 bytes, 12 novas, 102 revisões"
+    "detalhe": "53094 bytes, 12 novas, 44 revisões"
    },
    "capturas": [
     {
@@ -230,9 +230,9 @@
     },
     {
      "recurso": "EAR_DIARIO_SUBSISTEMA_2026",
-     "sha256": "a73378b022b704f088db7b1fc23701a126fdceb9ef75bc24666f4a94a48489c5",
-     "capturado_em": "2026-10-01T02:21:01Z",
-     "publicado_em": "2026-09-30T22:01:34.039356",
+     "sha256": "7e8b3626102765ba34cf30452404a0a49be09f77013d6414708b2987285d4fbd",
+     "capturado_em": "2026-09-30T02:19:44Z",
+     "publicado_em": "2026-09-29T22:01:32.453930",
      "origem": "coleta_direta"
     }
    ],
@@ -459,27 +459,19 @@
      "capturado_em": "2026-09-30T02:19:44Z",
      "publicado_em": "2026-09-29T22:01:32.453930",
      "origem": "coleta_direta",
-     "vigente": false
-    },
-    {
-     "recurso": "EAR_DIARIO_SUBSISTEMA_2026",
-     "sha256": "a73378b022b704f088db7b1fc23701a126fdceb9ef75bc24666f4a94a48489c5",
-     "capturado_em": "2026-10-01T02:21:01Z",
-     "publicado_em": "2026-09-30T22:01:34.039356",
-     "origem": "coleta_direta",
      "vigente": true
     }
    ],
-   "recapturas_sem_mudanca": 2
+   "recapturas_sem_mudanca": 1
   },
   "ena_subsistema_di": {
-   "ultima_captura": "2026-10-01T02:21:03Z",
-   "snapshot": "ena_subsistema_di@2026-10-01T02:21:03Z",
-   "snapshot_sha256": "0a585a5d3f0813ff79d80a31f4d1e9c5f1e357817fe0de46fb6ab57a368ea791",
+   "ultima_captura": "2026-09-30T02:19:46Z",
+   "snapshot": "ena_subsistema_di@2026-09-30T02:19:46Z",
+   "snapshot_sha256": "62e12b18c00dcadf9d0d23ab981f15c2c9cc9f5d088f5801b68767c6cc8be6d8",
    "ultima_tentativa": {
-    "tentado_em": "2026-10-01T02:21:04Z",
+    "tentado_em": "2026-09-30T02:19:47Z",
     "ok": true,
-    "detalhe": "68582 bytes, 16 novas, 380 revisões"
+    "detalhe": "68277 bytes, 16 novas, 360 revisões"
    },
    "capturas": [
     {
@@ -666,9 +658,9 @@
     },
     {
      "recurso": "ENA_DIARIO_SUBSISTEMA_2026",
-     "sha256": "e0bcbdd3f2bbd5d5411ff27b1ffd9831f04e479b6ae9da2f5eca1ade1090390a",
-     "capturado_em": "2026-10-01T02:21:03Z",
-     "publicado_em": "2026-09-30T22:01:53.199816",
+     "sha256": "5b5f01ef45f5ac15ddfdd6e9647eab5a5cd9c924ba6ef4148c46ccb69e1b5bd0",
+     "capturado_em": "2026-09-30T02:19:46Z",
+     "publicado_em": "2026-09-29T22:01:54.077751",
      "origem": "coleta_direta"
     }
    ],
@@ -895,27 +887,19 @@
      "capturado_em": "2026-09-30T02:19:46Z",
      "publicado_em": "2026-09-29T22:01:54.077751",
      "origem": "coleta_direta",
-     "vigente": false
-    },
-    {
-     "recurso": "ENA_DIARIO_SUBSISTEMA_2026",
-     "sha256": "e0bcbdd3f2bbd5d5411ff27b1ffd9831f04e479b6ae9da2f5eca1ade1090390a",
-     "capturado_em": "2026-10-01T02:21:03Z",
-     "publicado_em": "2026-09-30T22:01:53.199816",
-     "origem": "coleta_direta",
      "vigente": true
     }
    ],
-   "recapturas_sem_mudanca": 2
+   "recapturas_sem_mudanca": 1
   },
   "carga_energia_di": {
-   "ultima_captura": "2026-10-01T02:21:04Z",
-   "snapshot": "carga_energia_di@2026-10-01T02:21:04Z",
-   "snapshot_sha256": "c53fe6778431987437c45dc615a666dbb1e337b4dfb6baf2b9c58d07fe1109a7",
+   "ultima_captura": "2026-09-30T02:19:48Z",
+   "snapshot": "carga_energia_di@2026-09-30T02:19:48Z",
+   "snapshot_sha256": "b6e8471dc064c63a4db34e9e6e3009a019460c71bff839104a1415ea0dbaefb3",
    "ultima_tentativa": {
-    "tentado_em": "2026-10-01T02:21:05Z",
+    "tentado_em": "2026-09-30T02:19:48Z",
     "ok": true,
-    "detalhe": "44560 bytes, 4 novas, 27 revisões"
+    "detalhe": "44407 bytes, 8 novas, 33 revisões"
    },
    "capturas": [
     {
@@ -1102,9 +1086,9 @@
     },
     {
      "recurso": "CARGA_ENERGIA_2026",
-     "sha256": "45c8cd14bce46c53efcd6de1567773ebb98213241a842cc206c00f1259d88705",
-     "capturado_em": "2026-10-01T02:21:04Z",
-     "publicado_em": "2026-09-30T22:00:54.014182",
+     "sha256": "cdb81418d9810b3d0b6226d261090b1d3fa0b9d9dc9c566e2785ef30dd625d15",
+     "capturado_em": "2026-09-30T02:19:48Z",
+     "publicado_em": "2026-09-29T22:00:43.436290",
      "origem": "coleta_direta"
     }
    ],
@@ -1331,27 +1315,19 @@
      "capturado_em": "2026-09-30T02:19:48Z",
      "publicado_em": "2026-09-29T22:00:43.436290",
      "origem": "coleta_direta",
-     "vigente": false
-    },
-    {
-     "recurso": "CARGA_ENERGIA_2026",
-     "sha256": "45c8cd14bce46c53efcd6de1567773ebb98213241a842cc206c00f1259d88705",
-     "capturado_em": "2026-10-01T02:21:04Z",
-     "publicado_em": "2026-09-30T22:00:54.014182",
-     "origem": "coleta_direta",
      "vigente": true
     }
    ],
-   "recapturas_sem_mudanca": 2
+   "recapturas_sem_mudanca": 1
   },
   "balanco_energia_subsistema_ho": {
-   "ultima_captura": "2026-10-01T02:21:13Z",
-   "snapshot": "balanco_energia_subsistema_ho@2026-10-01T02:21:13Z",
-   "snapshot_sha256": "c29d7c2abb99fb25c4d30a62eb89f8d35b0d5372ad40d0d4c60f57cf494f111e",
+   "ultima_captura": "2026-09-30T02:19:57Z",
+   "snapshot": "balanco_energia_subsistema_ho@2026-09-30T02:19:57Z",
+   "snapshot_sha256": "8774bc4794fad38b820ea212ddf4bf343761f449d90dfef8d2a31d64fb0993ba",
    "ultima_tentativa": {
-    "tentado_em": "2026-10-01T02:21:19Z",
+    "tentado_em": "2026-09-30T02:20:04Z",
     "ok": true,
-    "detalhe": "3431683 bytes, 720 novas, 1781 revisões"
+    "detalhe": "3419126 bytes, 1440 novas, 2620 revisões"
    },
    "capturas": [
     {
@@ -1391,9 +1367,9 @@
     },
     {
      "recurso": "BALANCO_ENERGIA_SUBSISTEMA_2026",
-     "sha256": "ec06ddee2215b456dc9ad256029c8fc60d17d52d4d5aff9419a4cec694e2452c",
-     "capturado_em": "2026-10-01T02:21:13Z",
-     "publicado_em": "2026-09-30T22:00:43.389808",
+     "sha256": "81f6ecfcb8995376afc77ccc2fdc79452ce4006b18e922b77dfce8dfecb07ad7",
+     "capturado_em": "2026-09-30T02:19:57Z",
+     "publicado_em": "2026-09-29T22:00:42.467156",
      "origem": "coleta_direta"
     }
    ],
@@ -1452,27 +1428,19 @@
      "capturado_em": "2026-09-30T02:19:57Z",
      "publicado_em": "2026-09-29T22:00:42.467156",
      "origem": "coleta_direta",
-     "vigente": false
-    },
-    {
-     "recurso": "BALANCO_ENERGIA_SUBSISTEMA_2026",
-     "sha256": "ec06ddee2215b456dc9ad256029c8fc60d17d52d4d5aff9419a4cec694e2452c",
-     "capturado_em": "2026-10-01T02:21:13Z",
-     "publicado_em": "2026-09-30T22:00:43.389808",
-     "origem": "coleta_direta",
      "vigente": true
     }
    ],
-   "recapturas_sem_mudanca": 2
+   "recapturas_sem_mudanca": 1
   },
   "intercambio_nacional_ho": {
-   "ultima_captura": "2026-10-01T02:21:23Z",
-   "snapshot": "intercambio_nacional_ho@2026-10-01T02:21:23Z",
-   "snapshot_sha256": "51fbc1898fd83f1d92731b28c6453e06b61c9de873716400e275d616f162e4fc",
+   "ultima_captura": "2026-09-30T02:20:08Z",
+   "snapshot": "intercambio_nacional_ho@2026-09-30T02:20:08Z",
+   "snapshot_sha256": "cc661040c697757661b1c94d38a802ccc10c0d9b8c1403082731a53f2994d931",
    "ultima_tentativa": {
-    "tentado_em": "2026-10-01T02:21:24Z",
+    "tentado_em": "2026-09-30T02:20:08Z",
     "ok": true,
-    "detalhe": "1554928 bytes, 192 novas, 0 revisões"
+    "detalhe": "1549213 bytes, 192 novas, 0 revisões"
    },
    "capturas": [
     {
@@ -1512,9 +1480,9 @@
     },
     {
      "recurso": "INTERCAMBIO_NACIONAL_2026",
-     "sha256": "913ae3bdfd4e70c3f7c93c0c45b5c43e6f200df2344e64efccf62d0add7be209",
-     "capturado_em": "2026-10-01T02:21:23Z",
-     "publicado_em": "2026-09-30T22:04:30.703908",
+     "sha256": "c753c4d85a653b9eb80b7a3fd9e1d49d6c9adbd6f4a60fa8d07cf7e3ff309e05",
+     "capturado_em": "2026-09-30T02:20:08Z",
+     "publicado_em": "2026-09-29T22:04:31.640235",
      "origem": "coleta_direta"
     }
    ],
@@ -1573,25 +1541,17 @@
      "capturado_em": "2026-09-30T02:20:08Z",
      "publicado_em": "2026-09-29T22:04:31.640235",
      "origem": "coleta_direta",
-     "vigente": false
-    },
-    {
-     "recurso": "INTERCAMBIO_NACIONAL_2026",
-     "sha256": "913ae3bdfd4e70c3f7c93c0c45b5c43e6f200df2344e64efccf62d0add7be209",
-     "capturado_em": "2026-10-01T02:21:23Z",
-     "publicado_em": "2026-09-30T22:04:30.703908",
-     "origem": "coleta_direta",
      "vigente": true
     }
    ],
-   "recapturas_sem_mudanca": 2
+   "recapturas_sem_mudanca": 1
   },
   "cmo_se": {
    "ultima_captura": "2026-09-29T02:43:32Z",
    "snapshot": "cmo_se@2026-09-29T02:43:32Z",
    "snapshot_sha256": "0c92735cc77edc05022e65b2053fce1cae98f7dd59de17d26ca100638586baab",
    "ultima_tentativa": {
-    "tentado_em": "2026-10-01T02:21:25Z",
+    "tentado_em": "2026-09-30T02:20:09Z",
     "ok": true,
     "detalhe": "7740 bytes, 0 novas, 0 revisões"
    },
@@ -1929,16 +1889,16 @@
      "vigente": true
     }
    ],
-   "recapturas_sem_mudanca": 4
+   "recapturas_sem_mudanca": 2
   },
   "ccee_pld_horario": {
-   "ultima_captura": "2026-10-01T02:21:31Z",
-   "snapshot": "ccee_pld_horario@2026-10-01T02:21:31Z",
-   "snapshot_sha256": "1b15c26a4f2221facdee2d5f60fcdbb2810cccf308489033df22bed5a8c0f42c",
+   "ultima_captura": "2026-09-30T02:20:14Z",
+   "snapshot": "ccee_pld_horario@2026-09-30T02:20:14Z",
+   "snapshot_sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2",
    "ultima_tentativa": {
-    "tentado_em": "2026-10-01T02:21:32Z",
+    "tentado_em": "2026-09-30T02:20:15Z",
     "ok": true,
-    "detalhe": "776543 bytes"
+    "detalhe": "773930 bytes"
    },
    "capturas": [
     {
@@ -1978,8 +1938,8 @@
     },
     {
      "recurso": "pld_horario_2026",
-     "sha256": "bdcd13f2c04a9986a51740f32388e2a77ff766a1f3a331e1ed51e3528165980b",
-     "capturado_em": "2026-10-01T02:21:31Z",
+     "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
+     "capturado_em": "2026-09-30T02:20:14Z",
      "publicado_em": "2026-06-09T16:37:15.091000",
      "origem": "coleta_direta"
     }
@@ -2047,22 +2007,14 @@
      "capturado_em": "2026-09-30T02:20:14Z",
      "publicado_em": "2026-06-09T16:37:15.091000",
      "origem": "coleta_direta",
-     "vigente": false
-    },
-    {
-     "recurso": "pld_horario_2026",
-     "sha256": "bdcd13f2c04a9986a51740f32388e2a77ff766a1f3a331e1ed51e3528165980b",
-     "capturado_em": "2026-10-01T02:21:31Z",
-     "publicado_em": "2026-06-09T16:37:15.091000",
-     "origem": "coleta_direta",
      "vigente": true
     }
    ],
-   "recapturas_sem_mudanca": 15
+   "recapturas_sem_mudanca": 10
   }
  },
  "regressoes": [],
  "builders_falhos": [],
- "duracao_s": 64.3,
+ "duracao_s": 63.6,
  "coleta_executada": true
 }

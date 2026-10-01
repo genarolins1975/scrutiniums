@@ -27,7 +27,10 @@ concurrency:
 jobs:
   pipeline:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # 150 min: a primeira coleta dos módulos da ANEEL (SAMP, DEC/FEC, tarifas, SIGA,
+    # MMGD) baixa algumas centenas de MB; nas execuções seguintes a política de
+    # recoleta do coletor CKAN pula recursos inalterados e o tempo volta a minutos.
+    timeout-minutes: 150
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,6 +39,14 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
+      - name: Dependências do pipeline de energia
+        # pdftotext (poppler-utils): conferência de trechos dos atos da ANEEL (Regulação) e
+        # da tabela de MLT do PMO (Água e clima); sem ele essas conferências ficam como
+        # "não executada" e a gold continua publicada
+        run: |
+          sudo apt-get install -y -qq poppler-utils >/dev/null
+          pip install -r pipeline/energia/requirements.txt
 
       - name: Restaurar estado (bronze e silver com vintages)
         id: restaurar
@@ -56,6 +67,11 @@ jobs:
           mkdir -p data/energia/silver
           gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "energia-silver.db.gz" --dir /tmp
           gunzip -c /tmp/energia-silver.db.gz > data/energia/silver/energia.db
+          # silvers das famílias dos módulos temáticos (ANEEL, IBGE, CVM...): opcional,
+          # ausente na primeira execução depois da criação dos módulos
+          if gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "energia-silver-familias.tar.gz" --dir /tmp; then
+            tar -xzf /tmp/energia-silver-familias.tar.gz -C data/energia/silver
+          fi
           echo "restaurado=sim" >> "$GITHUB_OUTPUT"
 
       - name: Alertar perda do histórico de vintages
@@ -72,6 +88,15 @@ jobs:
             gh issue comment "$EXISTENTE" --repo "$GITHUB_REPOSITORY" --body "$CORPO"
           else
             gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body "$CORPO"
+          fi
+
+      - name: Malhas oficiais do IBGE (mensal ou ausentes)
+        # a malha municipal muda raramente; regenera no dia 1 de cada mês ou quando os
+        # arquivos publicados não existem. Falha da API do IBGE mantém a malha publicada.
+        continue-on-error: true
+        run: |
+          if [ "$(date -u +%d)" = "01" ] || [ ! -f public/energia/geo/municipios.json ]; then
+            python3 -m pipeline.energia.geo
           fi
 
       - name: Executar pipeline de energia
@@ -101,10 +126,17 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gzip -c data/energia/silver/energia.db > /tmp/energia-silver.db.gz
+          FAMILIAS=$(cd data/energia/silver && ls *.db 2>/dev/null | grep -v '^energia.db$' || true)
+          if [ -n "$FAMILIAS" ]; then
+            tar -czf /tmp/energia-silver-familias.tar.gz -C data/energia/silver $FAMILIAS
+          fi
           gh release view energia-estado --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || \
             gh release create energia-estado --repo "$GITHUB_REPOSITORY" --title "Estado do pipeline de energia" \
               --notes "Cópia durável do silver com vintages (uso interno do pipeline). Não é dado publicado." --prerelease
           gh release upload energia-estado /tmp/energia-silver.db.gz --repo "$GITHUB_REPOSITORY" --clobber
+          if [ -f /tmp/energia-silver-familias.tar.gz ]; then
+            gh release upload energia-estado /tmp/energia-silver-familias.tar.gz --repo "$GITHUB_REPOSITORY" --clobber
+          fi
 
       - name: Alertar regressão
         if: steps.pipeline.outputs.regressoes != ''

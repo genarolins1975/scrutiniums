@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { INDICADORES } from "@/lib/dadosPublicos";
 import { ABAS_OBSERVATORIO } from "@/lib/data/observatorioAbas";
-import { MODULOS_ENERGIA } from "@/lib/energia/navegacao";
+import { DESTINOS_NAVEGACAO, MODULOS_ENERGIA } from "@/lib/energia/navegacao";
 import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
 import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
 
@@ -61,7 +61,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     modelosEnergia = [];
   }
 
-  return [
+  const entradas: MetadataRoute.Sitemap = [
     rota("", 1.0, "weekly"),
     rota("/observatorio", 1.0, "daily"),
     ...ABAS_OBSERVATORIO.map((a) => rota(`/observatorio${a.caminho}`, 0.9, "daily")),
@@ -76,6 +76,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     rota("/glossario", 0.8, "monthly"),
     // Observatório Brasileiro do Setor Elétrico (domínio energia)
     ...MODULOS_ENERGIA.map((m) => rota(m.href, m.integrado ? 0.9 : 0.5, m.integrado ? "daily" : "monthly")),
+    // destinos publicados da navegação em seis grupos que não são módulos da lista antiga
+    // (conta de luz, perdas, qualidade, inclusão, transição etc.)
+    ...DESTINOS_NAVEGACAO.filter((d) => d.publicado && !MODULOS_ENERGIA.some((m) => m.href === d.href) && !d.href.includes("#")).map((d) =>
+      rota(d.href, 0.8, "weekly"),
+    ),
     rota("/setor-eletrico/metodologia", 0.7, "monthly"),
     rota("/setor-eletrico/pld/modelos", 0.6, "weekly"),
     ...modelosEnergia.map((m) => rota(`/setor-eletrico/pld/modelos/${m}`, 0.5, "weekly")),
@@ -87,4 +92,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     rota("/privacidade", 0.2, "yearly"),
     rota("/termos", 0.2, "yearly"),
   ];
+  // uma URL por entrada: destinos da navegação nova repetem rotas listadas acima
+  const vistas = new Set<string>();
+  return entradas.filter((e) => (vistas.has(e.url) ? false : (vistas.add(e.url), true)));
 }

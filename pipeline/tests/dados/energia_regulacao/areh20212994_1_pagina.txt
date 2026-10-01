@@ -1,0 +1,46 @@
+devido aos custos de operação e manutenção, a TSA depende somente dos custos de operação e
+manutenção (O&M).
+
+40.             A TSA para o exercício 2022 foi calculada aplicando-se o percentual de 10,25%13 sobre o
+valor homologado por meio da REH nº 2.828, de 2020, de R$ 7,63 /MVArh. Esse percentual corresponde
+à variação do índice Nacional de Preço ao Consumidor Amplo (IPCA) acumulado no período de outubro
+de 2020 a setembro de 2021.
+
+41.             Dessa forma, o valor da TSA, com vigência de 1º de janeiro a 31 de dezembro de 2022,
+deverá ser de R$ 8,41 / MVArh (oito reais e quarenta e um centavos por MegaVAr-hora).
+
+Conclusão
+
+42.             É cristalina a competência da ANEEL para estabelecer os valores da TEO, TEOItaipu, da TSA e
+dos limites do PLD. Na Tabela a seguir encontram-se os valores estabelecidos por meio da REH nº 2.828,
+de 2020, para 2020, e aqueles que constam deste voto, para 2022, bem como as suas variações
+percentuais.
+
+                                                   Valor em            Valor em
+                          Rubrica                                                   Variação (%)
+                                                    202114               2022
+                 TEO (R$/MWh) [1]                    12,74               14,04         10,20
+                 TEOItaipu (R$/MWh) [2]              49,77               55,70         11,91
+                 PLDmin (R$/MWh)15                   49,77               55,70         11,91
+                 PLDmax_estrutural                  583,88              640,5016       9,70
+                 (R$/MWh)
+                 PLDmax_horário (R$/MWh)           1.197,87            1.314,0217      9,70
+                 TSA (R$/MVArh)                       7,63                8,41         10,22
+
+
+
+III – DIREITO
+
+
+
+
+13
+   Conforme variação do índice de setembro de 2020 ao índice de setembro de 2021.
+14
+   Nos termos da REH nº 2.828, de 2020.
+15
+   Maior valor entre [1] e [2].
+16
+   A preços de novembro/2021.
+17
+   A preços de novembro/2021.

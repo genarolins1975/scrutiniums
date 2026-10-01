@@ -1,0 +1,197 @@
+name: Rodada diária da previsão do PLD
+
+# Compromisso operacional (seção 12.1 da especificação do observatório): corte às 07h00 e
+# publicação até 08h00 de Brasília (America/Sao_Paulo), todos os dias.
+#
+# A pré-carga é a coleta noturna das 20h40 (atualizar-energia.yml). Esta rodada NÃO reusa
+# aquela execução como se fosse a das 07h: ela restaura o silver com vintages, confere se o
+# que a previsão precisa já foi capturado, tenta coletar o que falta ANTES do corte, espera
+# o corte e emite com o dado como estava às 07h00 (como_estava_em). Coleta feita depois do
+# corte não entra na rodada daquele dia.
+#
+# Horários em UTC (Brasília = UTC−3, sem horário de verão desde 2019; se ele voltar, estes
+# crons precisam mudar; a emissão calcula corte e prazo pelo fuso e registra o atraso de
+# qualquer forma). O agendador do GitHub atrasa execuções em horários de pico (o workflow
+# do Observatório chegou a começar horas depois do cron em 2026), por isso há cinco
+# gatilhos em minutos quebrados: o primeiro que rodar faz a rodada; os seguintes veem que
+# ela já existe e saem. Se todos atrasarem além das 08h00, a rodada sai marcada como
+# atrasada, nunca com horário maquiado.
+#
+# Cada gatilho vira uma execução criada na hora do cron, com o commit do main daquele
+# instante (GITHUB_SHA). O gatilho das 06h43 fica na fila do grupo de concorrência enquanto
+# o das 05h47 espera o corte, e foi criado antes do push da rodada: se fizesse checkout do
+# commit do evento, não veria a rodada, emitiria outra para a mesma origem e falharia no
+# push por conflito no mesmo emissoes/AAAA-MM.jsonl. Por isso o checkout é do main atual
+# (ref: main, resolvido quando a execução começa) e a checagem se repete logo antes de emitir,
+# depois de atualizar o main. Isso ainda não foi comprovado por execução agendada real.
+#
+# Rotina definida aqui não é rotina comprovada: a gold (previsoes_desempenho.json, bloco
+# `rotina`) só a declara comprovada com execuções agendadas reais registradas no arquivo.
+on:
+  schedule:
+    - cron: "47 8 * * *"  # 05h47 em Brasília: verificação cedo (espera até o corte)
+    - cron: "17 9 * * *"  # 06h17
+    - cron: "43 9 * * *"  # 06h43
+    - cron: "13 10 * * *" # 07h13: emissão imediata se as anteriores não rodaram
+    - cron: "37 10 * * *" # 07h37: última chance dentro do prazo
+  workflow_dispatch:
+    inputs:
+      origem:
+        description: "Dia de origem AAAA-MM-DD (padrão: hoje em Brasília). Rodada fora do horário é registrada como manual e atrasada."
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: previsao-pld
+  cancel-in-progress: false
+
+jobs:
+  rodada:
+    runs-on: ubuntu-latest
+    # espera máxima até o corte (~75 min a partir do primeiro gatilho) + coleta + gold + testes
+    timeout-minutes: 120
+    env:
+      MODO: ${{ github.event_name == 'schedule' && 'agendada' || 'manual' }}
+      ORIGEM: ${{ inputs.origem }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - name: Checkout do main atual (não do commit em que o gatilho foi criado)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Dependências do pipeline de energia
+        run: pip install -r pipeline/energia/requirements.txt
+
+      - name: Rodada do dia já registrada?
+        id: feita
+        run: |
+          ARG=""; [ -n "$ORIGEM" ] && ARG="--origem $ORIGEM"
+          if python3 -m pipeline.energia.previsoes.emissao ja-emitida $ARG; then
+            echo "sim=1" >> "$GITHUB_OUTPUT"; echo "Rodada já registrada; nada a fazer."
+          else
+            echo "sim=0" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Restaurar estado (bronze e silver com vintages)
+        id: restaurar
+        if: steps.feita.outputs.sim == '0'
+        uses: actions/cache/restore@v4
+        with:
+          path: data/energia
+          key: energia-estado-previsao-${{ github.run_id }}
+          restore-keys: |
+            energia-estado-
+
+      - name: Restaurar silver da cópia durável (cache ausente)
+        if: steps.feita.outputs.sim == '0' && steps.restaurar.outputs.cache-matched-key == ''
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p data/energia/silver
+          gh release download energia-estado --repo "$GITHUB_REPOSITORY" --pattern "energia-silver.db.gz" --dir /tmp
+          gunzip -c /tmp/energia-silver.db.gz > data/energia/silver/energia.db
+
+      - name: Verificação e retentativa antes do corte
+        id: verificar
+        if: steps.feita.outputs.sim == '0'
+        run: |
+          ARG=""; [ -n "$ORIGEM" ] && ARG="--origem $ORIGEM"
+          COLETOU=0
+          for tentativa in 1 2 3 4; do
+            if python3 -m pipeline.energia.previsoes.emissao verificar $ARG; then
+              echo "Dado necessário já capturado (tentativa $tentativa)."; break
+            fi
+            # passou do corte: coletar agora não muda a rodada (o dado entraria depois das 07h)
+            AGORA_LOCAL=$(TZ=America/Sao_Paulo date +%H%M)
+            if [ -z "$ORIGEM" ] && [ "$AGORA_LOCAL" -ge 0655 ]; then
+              echo "::warning::faltam dados e o corte está próximo ou passou; a rodada sai com as células sem número e o motivo"; break
+            fi
+            python3 -m pipeline.energia.previsoes.emissao coletar || true
+            COLETOU=1
+            [ "$tentativa" -lt 4 ] && sleep 300
+          done
+          echo "coletou=$COLETOU" >> "$GITHUB_OUTPUT"
+
+      - name: Esperar o corte das 07h00 de Brasília
+        if: steps.feita.outputs.sim == '0' && inputs.origem == ''
+        run: python3 -m pipeline.energia.previsoes.emissao aguardar-corte
+
+      - name: Emitir a rodada (dado como estava no corte)
+        id: emitir
+        if: steps.feita.outputs.sim == '0'
+        run: |
+          ARG=""; [ -n "$ORIGEM" ] && ARG="--origem $ORIGEM"
+          # outra execução pode ter registrado a rodada enquanto esta esperava o corte:
+          # atualiza o main e confere de novo antes de emitir
+          git pull --ff-only origin main
+          if python3 -m pipeline.energia.previsoes.emissao ja-emitida $ARG; then
+            echo "pular=1" >> "$GITHUB_OUTPUT"
+            echo "Rodada registrada por outra execução durante a espera; nada a fazer."
+            exit 0
+          fi
+          python3 -m pipeline.energia.previsoes.emissao emitir --modo "$MODO" --run-url "$RUN_URL" $ARG
+
+      - name: Registrar falha da rodada
+        if: failure() && steps.feita.outputs.sim == '0' && steps.emitir.outcome != 'success'
+        run: |
+          ARG=""; [ -n "$ORIGEM" ] && ARG="--origem $ORIGEM"
+          python3 -m pipeline.energia.previsoes.emissao falha --modo "$MODO" --run-url "$RUN_URL" \
+            --mensagem "falha no workflow antes da emissão (${{ github.run_id }})" $ARG || true
+
+      - name: Gold das previsões (arquivo, desempenho e fichas)
+        id: gold
+        if: always() && steps.feita.outputs.sim == '0' && steps.emitir.outputs.pular != '1'
+        continue-on-error: true
+        run: |
+          python3 -m pipeline.energia.gold.modelos
+          python3 pipeline/energia/executar_modulo.py previsoes --sem-coleta
+
+      - name: Testes do módulo antes de publicar a gold
+        id: testes
+        if: always() && steps.feita.outputs.sim == '0' && steps.emitir.outputs.pular != '1' && steps.gold.outcome == 'success'
+        continue-on-error: true
+        run: python3 -m unittest pipeline.tests.test_energia_previsoes
+
+      - name: Guardar estado (vintages coletadas antes do corte)
+        if: always() && steps.feita.outputs.sim == '0' && steps.verificar.outputs.coletou == '1'
+        uses: actions/cache/save@v4
+        with:
+          path: data/energia
+          key: energia-estado-previsao-${{ github.run_id }}
+
+      - name: Commit do arquivo de emissões (e da gold, se os testes passaram)
+        if: always() && steps.feita.outputs.sim == '0' && steps.emitir.outputs.pular != '1'
+        run: |
+          git config user.name "pipeline-observatorio[bot]"
+          git config user.email "pipeline@scrutiniums.com"
+          # o registro da rodada (inclusive falha) é fato e sempre entra no arquivo versionado
+          git add pipeline/energia/previsoes/emissoes
+          if [ "${{ steps.testes.outcome }}" = "success" ]; then
+            # -A e pathspec entre aspas: também registra a retirada dos CSV do teste
+            # retrospectivo quando a publicação dos números está retida
+            git add -A -- public/energia/gold/previsoes.json public/energia/gold/modelos.json \
+                    public/energia/gold/previsoes_desempenho.json 'public/energia/series/previsoes_*'
+          else
+            echo "::warning::gold das previsões não publicada (construção ou testes falharam); só o arquivo de emissões entra"
+          fi
+          if git diff --cached --quiet; then
+            echo "Nada a registrar."
+            exit 0
+          fi
+          git commit -m "Previsão do PLD: rodada de $(TZ=America/Sao_Paulo date +%d/%m/%Y) ($MODO)"
+          for tentativa in 1 2 3 4 5; do
+            git pull --rebase origin main && git push && exit 0
+            sleep $((tentativa * 5))
+          done
+          echo "::error::não foi possível registrar a rodada após 5 tentativas"
+          exit 1

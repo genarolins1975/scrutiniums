@@ -1,0 +1,153 @@
+{
+ "result": {
+  "author": "Gerência de Administração dos Agentes & Contratos - GAAC",
+  "author_email": "",
+  "creator_user_id": "08bb46ea-324c-47b2-84b7-76a0ebb05a3f",
+  "extras": [
+   {
+    "key": "Frequência de Atualização",
+    "value": "Mensal"
+   },
+   {
+    "key": "Referência de Publicação",
+    "value": "No terceiro dia útil"
+   },
+   {
+    "key": "Termo Legal",
+    "value": "O acesso a este site e/ou a utilização de conteúdos, dados e bases de dados nele disponibilizados se sujeita ao aceite dos termos e condições da licença aberta Creative Commons Attribution 4.0 International (CC-BY-4.0), bem como aos Termos de Uso do site e do aplicativo mobile (App) da CCEE (Link - https://www.ccee.org.br/en/web/guest/termos-de-uso). Ao utilizar esses recursos, você concorda em cumprir todos os requisitos dessa licença, que permitem que os reutilizadores distribuam, modifiquem, adaptem e desenvolvam o material sobre os dados, desde que seja atribuído o crédito apropriado ao criador (CCEE) e que sejam informadas as alterações. O Material Licenciado é disponibilizado no \"estado em que se encontra\" e \"como disponível\" apenas para fins informativos, sendo possível a interrupção da disponibilidade do conjunto de dados a qualquer momento e por qualquer motivo, sendo a sua utilização de livre iniciativa, não sendo atribuível qualquer tipo de responsabilização à CCEE por seu uso."
+   }
+  ],
+  "groups": [],
+  "id": "003e17ba-e294-4c14-995a-ed2fe022082c",
+  "isopen": true,
+  "license_id": "CC-BY-4.0",
+  "license_title": "Creative Commons Attribution 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "maintainer": "Gerência de Administração dos Agentes & Contratos - GAAC",
+  "maintainer_email": "",
+  "metadata_created": "2025-11-05T18:21:05.184869",
+  "metadata_modified": "2026-09-03T21:28:00.457242",
+  "name": "lista_agente_associado",
+  "notes": "Listagem dos agentes associados da CCEE e suas características e atuações no mercado de energia.",
+  "num_resources": 2,
+  "num_tags": 7,
+  "organization": {
+   "approval_status": "approved",
+   "created": "2025-10-27T20:28:56.787435",
+   "description": "Os associados da CCEE são empresas que atuam no setor de energia elétrica. Tecnicamente, são chamados de agentes de mercado e divididos em três categorias: geração, distribuição e comercialização. \n\nOs consumidores livres e os consumidores especiais, categorias relacionadas à demanda, integram o quadro associativo como comercialização. Vale lembrar que os consumidores cativos e as empresas de transmissão não são associados.",
+   "id": "7958c9ed-d606-4668-b2a2-e8263cd900ac",
+   "image_url": "",
+   "is_organization": true,
+   "name": "agentes_de_mercado",
+   "state": "active",
+   "title": "Agentes de Mercado",
+   "type": "organization"
+  },
+  "owner_org": "7958c9ed-d606-4668-b2a2-e8263cd900ac",
+  "private": false,
+  "relationships_as_object": [],
+  "relationships_as_subject": [],
+  "resources": [
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2025-11-05T18:23:20.425280",
+    "datastore_active": true,
+    "description": "Listar as principais características dos agentes de mercado do setor elétrico associados da CCEE:\n\na) CNPJ: Corresponde ao CNPJ do agente conforme informações do cartão CNPJ da empresa na receita federal.\n\nb) SIGLA_AGENTE: Corresponde a sigla adotada pela CCEE para identificar o agente em seus sistemas.   \n\nc) RAZAO_SOCIAL: Corresponde à razão social registrada para o agente conforme informações do cartão CNPJ da empresa na receita federal.\n\nd) CLASSE_AGENTE: Corresponde a classe principal de atividade no mercado de energia escolhida pela empresa. Domínios possíveis: Autoprodutor, Consumidor Especial, Consumidor Livre, Distribuidor, Gerador, Comercializador, Exportador e Produtor Independente.\n\ne) SITUACAO_COMERCIALIZADOR: Corresponde a situação da classe do comercializador na CCEE e suas respectivas manutenções anuais conforme normas vigentes.\n\nf) SITUACAO_VAREJISTA: Corresponde a situação da habilitação do varejista na CCEE e suas respectivas manutenções anuais conforme normas vigentes.\n\ng) CATEGORIA_AGENTE: Corresponde à categoria principal de atuação do agente na CCEE.\n\nh) INDICADOR_VAREJISTA: Corresponde ao indicador de atuação varejista por meio dos valores \"Sim\" ou \"Não\".\n\ni) ESTADO: Corresponde a UF do Estado do agente conforme informações do cartão CNPJ da empresa na receita federal.",
+    "format": "CSV",
+    "hash": "",
+    "id": "ea4823e3-7d83-40c0-b238-f06a948cb0ef",
+    "last_modified": "2025-12-03T18:07:47.508000",
+    "metadata_modified": "2025-12-03T21:07:47.608432",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "lista_agente_associado_2025",
+    "package_id": "003e17ba-e294-4c14-995a-ed2fe022082c",
+    "position": 0,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/-DRopKiOSV2ZmyHaoQlqew/content",
+    "url_type": ""
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2026-01-06T21:08:01.436261",
+    "datastore_active": true,
+    "description": "Listar as principais características dos agentes de mercado do setor elétrico associados da CCEE:\n\na) CNPJ: Corresponde ao CNPJ do agente conforme informações do cartão CNPJ da empresa na receita federal.\n\nb) SIGLA_AGENTE: Corresponde a sigla adotada pela CCEE para identificar o agente em seus sistemas.   \n\nc) RAZAO_SOCIAL: Corresponde à razão social registrada para o agente conforme informações do cartão CNPJ da empresa na receita federal.\n\nd) CLASSE_AGENTE: Corresponde a classe principal de atividade no mercado de energia escolhida pela empresa. Domínios possíveis: Autoprodutor, Consumidor Especial, Consumidor Livre, Distribuidor, Gerador, Comercializador, Exportador e Produtor Independente.\n\ne) SITUACAO_COMERCIALIZADOR: Corresponde a situação da classe do comercializador na CCEE e suas respectivas manutenções anuais conforme normas vigentes.\n\nf) SITUACAO_VAREJISTA: Corresponde a situação da habilitação do varejista na CCEE e suas respectivas manutenções anuais conforme normas vigentes.\n\ng) CATEGORIA_AGENTE: Corresponde à categoria principal de atuação do agente na CCEE.\n\nh) INDICADOR_VAREJISTA: Corresponde ao indicador de atuação varejista por meio dos valores \"Sim\" ou \"Não\".\n\ni) ESTADO: Corresponde a UF do Estado do agente conforme informações do cartão CNPJ da empresa na receita federal.",
+    "format": "CSV",
+    "hash": "",
+    "id": "2ab64875-9c28-4ccf-931b-0111116bf4e6",
+    "last_modified": "2026-09-03T18:27:55.264000",
+    "metadata_modified": "2026-09-03T21:28:00.466006",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "lista_agente_associado_2026",
+    "package_id": "003e17ba-e294-4c14-995a-ed2fe022082c",
+    "position": 1,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/eL_F62pBQY-dK5_hbI09sw/content",
+    "url_type": ""
+   }
+  ],
+  "state": "active",
+  "tags": [
+   {
+    "display_name": "agentes",
+    "id": "1d10bd30-2654-4cb3-9586-38af491f1581",
+    "name": "agentes",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "associados",
+    "id": "b758597b-9e06-4e37-8317-df811a5c764d",
+    "name": "associados",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "comercializador",
+    "id": "ccbe4b78-0365-4935-9a98-bffb00ffd6ee",
+    "name": "comercializador",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "consumidor",
+    "id": "2798aadb-1702-40f2-ad9f-43b0c92cdce4",
+    "name": "consumidor",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "distribuidor",
+    "id": "415e57ad-b6d6-4ad5-bb76-ffd8bc30c005",
+    "name": "distribuidor",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "gerador",
+    "id": "9ab3004d-0efd-4565-b74a-55ad2ed64503",
+    "name": "gerador",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "varejista",
+    "id": "8091beb9-f261-484e-9c6c-c97899dbb7e8",
+    "name": "varejista",
+    "state": "active",
+    "vocabulary_id": null
+   }
+  ],
+  "title": "LISTA_AGENTE_ASSOCIADO",
+  "type": "dataset",
+  "url": "",
+  "version": ""
+ }
+}

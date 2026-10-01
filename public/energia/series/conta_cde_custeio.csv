@@ -1,0 +1,374 @@
+ano;tipo;fonte;grupo;valor_rs
+2013;Despesa;CAFT CCEE;outras_despesas;0.0
+2013;Despesa;CCC;ccc_luz_para_todos;4042786917.52
+2013;Despesa;Carvão Mineral;outras_despesas;1003799951.32
+2013;Despesa;Indenização das Concessões;outras_despesas;0.0
+2013;Despesa;Programa Luz para Todos - PLPT;ccc_luz_para_todos;2027363302.07
+2013;Despesa;Restos a Pagar;outras_despesas;0.0
+2013;Despesa;Subsídio Baixa Renda;tarifa_social;2200000000.0
+2013;Despesa;Subsídio Consumidor Fonte Incentivada;descontos_tarifarios;789249461.11
+2013;Despesa;Subsídio Distribuidora;descontos_tarifarios;42089266.56
+2013;Despesa;Subsídio Fonte Incentivada (Transmissoras);descontos_tarifarios;0.0
+2013;Despesa;Subsídio Geração Fonte Incentivada;descontos_tarifarios;153826649.96
+2013;Despesa;Subsídio Irrigação e Aquicultura;descontos_tarifarios;546364464.94
+2013;Despesa;Subsídio Rural;descontos_tarifarios;2303968648.69
+2013;Despesa;Subsídio Água-esgoto-saneamento;descontos_tarifarios;625509363.42
+2013;Despesa;Subvenção Cooperativa;outras_despesas;0.0
+2013;Despesa;Subvenção RTE;outras_despesas;386350085.28
+2013;Despesa;Verba MME;outras_despesas;0.0
+2013;Receita;Multas;outras_receitas;177213399.75
+2013;Receita;Outras Disponibilidades;outras_receitas;0.0
+2013;Receita;Quotas CDE Energia;quotas_tarifa;0.0
+2013;Receita;Quotas CDE Uso;quotas_tarifa;1024002755.5
+2013;Receita;RGR;outras_receitas;0.0
+2013;Receita;Recursos da União;outras_receitas;8460000000.0
+2013;Receita;Saldo Anterior;outras_receitas;3786126753.52
+2013;Receita;Uso de Bem Público - UBP;outras_receitas;673965202.1
+2014;Despesa;CAFT CCEE;outras_despesas;0.0
+2014;Despesa;CCC;ccc_luz_para_todos;4657985405.74
+2014;Despesa;Carvão Mineral;outras_despesas;1123275000.0
+2014;Despesa;Indenização das Concessões;outras_despesas;3178945000.0
+2014;Despesa;Programa Luz para Todos - PLPT;ccc_luz_para_todos;875000000.0
+2014;Despesa;Restos a Pagar;outras_despesas;1627327266.2
+2014;Despesa;Subsídio Baixa Renda;tarifa_social;2099000000.0
+2014;Despesa;Subsídio Consumidor Fonte Incentivada;descontos_tarifarios;685791448.95
+2014;Despesa;Subsídio Distribuidora;descontos_tarifarios;376451025.89
+2014;Despesa;Subsídio Fonte Incentivada (Transmissoras);descontos_tarifarios;0.0
+2014;Despesa;Subsídio Geração Fonte Incentivada;descontos_tarifarios;157141020.8
+2014;Despesa;Subsídio Irrigação e Aquicultura;descontos_tarifarios;518982323.8
+2014;Despesa;Subsídio Rural;descontos_tarifarios;1874678739.42
+2014;Despesa;Subsídio Água-esgoto-saneamento;descontos_tarifarios;479150704.21
+2014;Despesa;Subvenção Cooperativa;outras_despesas;0.0
+2014;Despesa;Subvenção RTE;outras_despesas;389432076.9
+2014;Despesa;Verba MME;outras_despesas;30737220.49
+2014;Receita;Multas;outras_receitas;218484739.45
+2014;Receita;Outras Disponibilidades;outras_receitas;1498000000.0
+2014;Receita;Quotas CDE Energia;quotas_tarifa;0.0
+2014;Receita;Quotas CDE Uso;quotas_tarifa;1699691758.06
+2014;Receita;RGR;outras_receitas;2294732589.78
+2014;Receita;Recursos da União;outras_receitas;11804676302.98
+2014;Receita;Saldo Anterior;outras_receitas;0.0
+2014;Receita;Uso de Bem Público - UBP;outras_receitas;558311842.13
+2015;Despesa;CAFT CCEE;outras_despesas;0.0
+2015;Despesa;CCC;ccc_luz_para_todos;7223192998.28
+2015;Despesa;Carvão Mineral;outras_despesas;1216000000.0
+2015;Despesa;Indenização das Concessões;outras_despesas;4897802145.2
+2015;Despesa;Programa Luz para Todos - PLPT;ccc_luz_para_todos;875000000.0
+2015;Despesa;Restos a Pagar;outras_despesas;3000232845.02
+2015;Despesa;Subsídio Baixa Renda;tarifa_social;2165877533.0
+2015;Despesa;Subsídio Consumidor Fonte Incentivada;descontos_tarifarios;912058426.16
+2015;Despesa;Subsídio Distribuidora;descontos_tarifarios;542170307.02
+2015;Despesa;Subsídio Fonte Incentivada (Transmissoras);descontos_tarifarios;0.0
+2015;Despesa;Subsídio Geração Fonte Incentivada;descontos_tarifarios;211995248.46
+2015;Despesa;Subsídio Irrigação e Aquicultura;descontos_tarifarios;475273482.36
+2015;Despesa;Subsídio Rural;descontos_tarifarios;2671888464.77
+2015;Despesa;Subsídio Água-esgoto-saneamento;descontos_tarifarios;640521586.15
+2015;Despesa;Subvenção Cooperativa;outras_despesas;0.0
+2015;Despesa;Subvenção RTE;outras_despesas;389432076.9
+2015;Despesa;Verba MME;outras_despesas;24150000.0
+2015;Receita;Multas;outras_receitas;126628885.0
+2015;Receita;Outras Disponibilidades;outras_receitas;68513000.0
+2015;Receita;Quotas CDE Energia;quotas_tarifa;3136932806.29
+2015;Receita;Quotas CDE Uso;quotas_tarifa;18920116268.73
+2015;Receita;RGR;outras_receitas;1973678496.4
+2015;Receita;Recursos da União;outras_receitas;0.0
+2015;Receita;Saldo Anterior;outras_receitas;435000000.0
+2015;Receita;Uso de Bem Público - UBP;outras_receitas;584725656.93
+2016;Despesa;CAFT CCEE;outras_despesas;0.0
+2016;Despesa;CCC;ccc_luz_para_todos;6338933288.99
+2016;Despesa;Carvão Mineral;outras_despesas;1005404297.19
+2016;Despesa;Indenização das Concessões;outras_despesas;1241727848.8
+2016;Despesa;Programa Luz para Todos - PLPT;ccc_luz_para_todos;972529015.25
+2016;Despesa;Restos a Pagar;outras_despesas;0.0
+2016;Despesa;Subsídio Baixa Renda;tarifa_social;2238551048.88
+2016;Despesa;Subsídio Consumidor Fonte Incentivada;descontos_tarifarios;1100491319.97
+2016;Despesa;Subsídio Distribuidora;descontos_tarifarios;661267015.62
+2016;Despesa;Subsídio Fonte Incentivada (Transmissoras);descontos_tarifarios;0.0
+2016;Despesa;Subsídio Geração Fonte Incentivada;descontos_tarifarios;243767259.76
+2016;Despesa;Subsídio Irrigação e Aquicultura;descontos_tarifarios;678247926.47
+2016;Despesa;Subsídio Rural;descontos_tarifarios;2747025190.45
+2016;Despesa;Subsídio Água-esgoto-saneamento;descontos_tarifarios;725332825.34
+2016;Despesa;Subvenção Cooperativa;outras_despesas;0.0
+2016;Despesa;Subvenção RTE;outras_despesas;310387782.74
+2016;Despesa;Verba MME;outras_despesas;27246402.0
+2016;Receita;Multas;outras_receitas;179791447.56
+2016;Receita;Outras Disponibilidades;outras_receitas;108255000.0
+2016;Receita;Quotas CDE Energia;quotas_tarifa;3471738527.24
+2016;Receita;Quotas CDE Uso;quotas_tarifa;11852834420.6
+2016;Receita;RGR;outras_receitas;2002093400.0
+2016;Receita;Recursos da União;outras_receitas;0.0
+2016;Receita;Saldo Anterior;outras_receitas;63947934.58
+2016;Receita;Uso de Bem Público - UBP;outras_receitas;612250491.48
+2017;Despesa;CAFT CCEE;outras_despesas;15337592.4
+2017;Despesa;CCC;ccc_luz_para_todos;5055969140.31
+2017;Despesa;Carvão Mineral;outras_despesas;908602789.75
+2017;Despesa;Indenização das Concessões;outras_despesas;0.0
+2017;Despesa;Programa Luz para Todos - PLPT;ccc_luz_para_todos;1172108319.0
+2017;Despesa;Restos a Pagar;outras_despesas;0.0
+2017;Despesa;Subsídio Baixa Renda;tarifa_social;2498000000.0
+2017;Despesa;Subsídio Consumidor Fonte Incentivada;descontos_tarifarios;1649226855.34
+2017;Despesa;Subsídio Distribuidora;descontos_tarifarios;583131653.26
+2017;Despesa;Subsídio Fonte Incentivada (Transmissoras);descontos_tarifarios;288246517.67
+2017;Despesa;Subsídio Geração Fonte Incentivada;descontos_tarifarios;209384594.7
+2017;Despesa;Subsídio Irrigação e Aquicultura;descontos_tarifarios;693668778.19
+2017;Despesa;Subsídio Rural;descontos_tarifarios;2300115673.78
+2017;Despesa;Subsídio Água-esgoto-saneamento;descontos_tarifarios;615277686.71
+2017;Despesa;Subvenção Cooperativa;outras_despesas;0.0
+2017;Despesa;Subvenção RTE;outras_despesas;0.0
+2017;Despesa;Verba MME;outras_despesas;0.0
+2017;Receita;Multas;outras_receitas;175529617.94
+2017;Receita;Outras Disponibilidades;outras_receitas;183792481.19
+2017;Receita;Quotas CDE Energia;quotas_tarifa;3689977134.89
+2017;Receita;Quotas CDE Uso;quotas_tarifa;9347933637.68
+2017;Receita;RGR;outras_receitas;1210414858.95
+2017;Receita;Recursos da União;outras_receitas;0.0
+2017;Receita;Saldo Anterior;outras_receitas;713619952.17
+2017;Receita;Uso de Bem Público - UBP;outras_receitas;667801918.29
+2018;Despesa;CAFT CCEE;outras_despesas;8806773.56
+2018;Despesa;CCC;ccc_luz_para_todos;5849000000.0
+2018;Despesa;Carvão Mineral;outras_despesas;850000000.0
+2018;Despesa;Indenização das Concessões;outras_despesas;0.0
+2018;Despesa;Programa Luz para Todos - PLPT;ccc_luz_para_todos;941240000.0
+2018;Despesa;Restos a Pagar;outras_despesas;1061000000.0
+2018;Despesa;Subsídio Baixa Renda;tarifa_social;2440000000.0
+2018;Despesa;Subsídio Consumidor Fonte Incentivada;descontos_tarifarios;3052164712.48
+2018;Despesa;Subsídio Distribuidora;descontos_tarifarios;628306803.09
+2018;Despesa;Subsídio Fonte Incentivada (Transmissoras);descontos_tarifarios;362000000.0
+2018;Despesa;Subsídio Geração Fonte Incentivada;descontos_tarifarios;303378782.96
+2018;Despesa;Subsídio Irrigação e Aquicultura;descontos_tarifarios;762354089.13
+2018;Despesa;Subsídio Rural;descontos_tarifarios;2878428062.26
+2018;Despesa;Subsídio Água-esgoto-saneamento;descontos_tarifarios;737367550.07
+2018;Despesa;Subvenção Cooperativa;outras_despesas;179000000.0
+2018;Despesa;Subvenção RTE;outras_despesas;0.0
+2018;Despesa;Verba MME;outras_despesas;0.0
+2018;Receita;Multas;outras_receitas;213576279.0
+2018;Receita;Outras Disponibilidades;outras_receitas;734000000.0
+2018;Receita;Quotas CDE Energia;quotas_tarifa;3796000000.0
+2018;Receita;Quotas CDE Uso;quotas_tarifa;14159819668.63
+2018;Receita;RGR;outras_receitas;478000000.0
+2018;Receita;Recursos da União;outras_receitas;0.0
+2018;Receita;Saldo Anterior;outras_receitas;0.0
+2018;Receita;Uso de Bem Público - UBP;outras_receitas;671650825.93
+2019;Despesa;CAFT CCEE;outras_despesas;11053864.57
+2019;Despesa;CCC;ccc_luz_para_todos;6309685260.0
+2019;Despesa;Carvão Mineral;outras_despesas;690124639.0
+2019;Despesa;Indenização das Concessões;outras_despesas;0.0
+2019;Despesa;Programa Luz para Todos - PLPT;ccc_luz_para_todos;1078048511.64
+2019;Despesa;Restos a Pagar;outras_despesas;0.0
+2019;Despesa;Subsídio Baixa Renda;tarifa_social;2380000000.0
+2019;Despesa;Subsídio Consumidor Fonte Incentivada;descontos_tarifarios;2266251639.23
+2019;Despesa;Subsídio Distribuidora;descontos_tarifarios;686265942.6
+2019;Despesa;Subsídio Fonte Incentivada (Transmissoras);descontos_tarifarios;913728399.2
+2019;Despesa;Subsídio Geração Fonte Incentivada;descontos_tarifarios;352448065.77
+2019;Despesa;Subsídio Irrigação e Aquicultura;descontos_tarifarios;923689550.77
+2019;Despesa;Subsídio Rural;descontos_tarifarios;3424905428.07
+2019;Despesa;Subsídio Água-esgoto-saneamento;descontos_tarifarios;874926161.28
+2019;Despesa;Subvenção Cooperativa;outras_despesas;297174949.12
+2019;Despesa;Subvenção RTE;outras_despesas;0.0
+2019;Despesa;Verba MME;outras_despesas;0.0
+2019;Receita;Multas;outras_receitas;181179999.96
+2019;Receita;Outras Disponibilidades;outras_receitas;760199988.61
+2019;Receita;Quotas CDE Energia;quotas_tarifa;949158432.45
+2019;Receita;Quotas CDE Uso;quotas_tarifa;16237699023.33
+2019;Receita;RGR;outras_receitas;1239524966.94
+2019;Receita;Recursos da União;outras_receitas;0.0
+2019;Receita;Saldo Anterior;outras_receitas;107600000.0
+2019;Receita;Uso de Bem Público - UBP;outras_receitas;732939999.96
+2020;Despesa;CAFT CCEE;outras_despesas;24847536.31
+2020;Despesa;CCC;ccc_luz_para_todos;7489291324.92
+2020;Despesa;Carvão Mineral;outras_despesas;665828580.0
+2020;Despesa;Indenização das Concessões;outras_despesas;0.0
+2020;Despesa;Programa Luz para Todos - PLPT;ccc_luz_para_todos;1141503055.39
+2020;Despesa;Restos a Pagar;outras_despesas;235600692.29
+2020;Despesa;Subsídio Baixa Renda;tarifa_social;2660733395.22
+2020;Despesa;Subsídio Consumidor Fonte Incentivada;descontos_tarifarios;3724815845.36
+2020;Despesa;Subsídio Distribuidora;descontos_tarifarios;434820433.05
+2020;Despesa;Subsídio Fonte Incentivada (Transmissoras);descontos_tarifarios;855197724.6
+2020;Despesa;Subsídio Geração Fonte Incentivada;descontos_tarifarios;419046650.86
+2020;Despesa;Subsídio Irrigação e Aquicultura;descontos_tarifarios;1013443122.95
+2020;Despesa;Subsídio Rural;descontos_tarifarios;2285653396.02
+2020;Despesa;Subsídio Água-esgoto-saneamento;descontos_tarifarios;616069024.55
+2020;Despesa;Subvenção Cooperativa;outras_despesas;345572719.22
+2020;Despesa;Subvenção RTE;outras_despesas;0.0
+2020;Despesa;Verba MME;outras_despesas;0.0
+2020;Receita;Multas;outras_receitas;142679461.0
+2020;Receita;Outras Disponibilidades;outras_receitas;47873900.51
+2020;Receita;P&D;outras_receitas;0.0
+2020;Receita;Quotas CDE Energia;quotas_tarifa;0.0
+2020;Receita;Quotas CDE Uso;quotas_tarifa;20104566739.2
+2020;Receita;RGR;outras_receitas;843300876.02
+2020;Receita;Recursos da União;outras_receitas;0.0
+2020;Receita;Saldo Anterior;outras_receitas;0.0
+2020;Receita;Uso de Bem Público - UBP;outras_receitas;774002524.0
+2021;Despesa;CAFT CCEE;outras_despesas;17819246.0
+2021;Despesa;CCC;ccc_luz_para_todos;8481030312.94
+2021;Despesa;Carvão Mineral;outras_despesas;749908430.0
+2021;Despesa;Indenização das Concessões;outras_despesas;0.0
+2021;Despesa;Programa Luz para Todos - PLPT;ccc_luz_para_todos;1296718128.0
+2021;Despesa;Restos a Pagar;outras_despesas;113395851.01
+2021;Despesa;Subsídio Baixa Renda;tarifa_social;3656060610.06
+2021;Despesa;Subsídio Consumidor Fonte Incentivada;descontos_tarifarios;4151877600.64
+2021;Despesa;Subsídio Distribuidora;descontos_tarifarios;323576065.26
+2021;Despesa;Subsídio Fonte Incentivada (Transmissoras);descontos_tarifarios;1042335174.0
+2021;Despesa;Subsídio Geração Fonte Incentivada;descontos_tarifarios;479848637.29
+2021;Despesa;Subsídio Irrigação e Aquicultura;descontos_tarifarios;1134139247.77
+2021;Despesa;Subsídio Rural;descontos_tarifarios;1612577878.36
+2021;Despesa;Subsídio Água-esgoto-saneamento;descontos_tarifarios;473330661.55
+2021;Despesa;Subvenção Cooperativa;outras_despesas;384104898.47
+2021;Despesa;Subvenção RTE;outras_despesas;0.0
+2021;Despesa;Verba MME;outras_despesas;0.0
+2021;Receita;Multas;outras_receitas;143553505.0
+2021;Receita;Outras Disponibilidades;outras_receitas;81042755.46
+2021;Receita;P&D;outras_receitas;2222905004.93
+2021;Receita;Quotas CDE Energia;quotas_tarifa;0.0
+2021;Receita;Quotas CDE Uso;quotas_tarifa;19581206178.97
+2021;Receita;RGR;outras_receitas;257144296.98
+2021;Receita;Recursos da União;outras_receitas;0.0
+2021;Receita;Saldo Anterior;outras_receitas;564000000.0
+2021;Receita;Uso de Bem Público - UBP;outras_receitas;1066871000.0
+2022;Despesa;CAFT CCEE;outras_despesas;7345963.41
+2022;Despesa;CCC;ccc_luz_para_todos;11963721064.38
+2022;Despesa;Carvão Mineral;outras_despesas;898449438.0
+2022;Despesa;Indenização das Concessões;outras_despesas;0.0
+2022;Despesa;Programa Luz para Todos - PLPT;ccc_luz_para_todos;1139771153.3
+2022;Despesa;Restos a Pagar;outras_despesas;1084109517.56
+2022;Despesa;Subsídio Baixa Renda;tarifa_social;5430106376.99
+2022;Despesa;Subsídio Consumidor Fonte Incentivada;descontos_tarifarios;5521345167.65
+2022;Despesa;Subsídio Distribuidora;descontos_tarifarios;317431683.84
+2022;Despesa;Subsídio Fonte Incentivada (Transmissoras);descontos_tarifarios;1755371742.45
+2022;Despesa;Subsídio Geração Fonte Incentivada;descontos_tarifarios;646092345.83
+2022;Despesa;Subsídio Irrigação e Aquicultura;descontos_tarifarios;1307534454.11
+2022;Despesa;Subsídio Rural;descontos_tarifarios;1237514231.76
+2022;Despesa;Subsídio Água-esgoto-saneamento;descontos_tarifarios;292795505.54
+2022;Despesa;Subvenção Cooperativa;outras_despesas;494128547.91
+2022;Despesa;Subvenção RTE;outras_despesas;0.0
+2022;Despesa;Verba MME;outras_despesas;0.0
+2022;Receita;Multas;outras_receitas;146607405.0
+2022;Receita;Outras Disponibilidades;outras_receitas;40037973.8
+2022;Receita;P&D;outras_receitas;422487775.1
+2022;Receita;Quotas CDE Energia;quotas_tarifa;0.0
+2022;Receita;Quotas CDE Uso;quotas_tarifa;30218832792.93
+2022;Receita;RGR;outras_receitas;0.0
+2022;Receita;Recursos da União;outras_receitas;0.0
+2022;Receita;Saldo Anterior;outras_receitas;0.0
+2022;Receita;Uso de Bem Público - UBP;outras_receitas;1267751245.9
+2023;Despesa;CAFT CCEE;outras_despesas;8891768.09
+2023;Despesa;CCC;ccc_luz_para_todos;12000121475.78
+2023;Despesa;CDE Eletrobras - Lei 14.182;outras_despesas;620015707.5
+2023;Despesa;Carvão Mineral;outras_despesas;1126081384.0
+2023;Despesa;Indenização das Concessões;outras_despesas;
+2023;Despesa;Programa Luz para Todos - PLPT;ccc_luz_para_todos;1623978398.06
+2023;Despesa;Restos a Pagar;outras_despesas;1006619145.5
+2023;Despesa;Subsídio Baixa Renda;tarifa_social;5601243565.79
+2023;Despesa;Subsídio Consumidor Fonte Incentivada;descontos_tarifarios;6680478096.82
+2023;Despesa;Subsídio Distribuidora;descontos_tarifarios;230118352.73
+2023;Despesa;Subsídio Fonte Incentivada (Transmissoras);descontos_tarifarios;2435722804.68
+2023;Despesa;Subsídio GD - Lei 14.300;descontos_tarifarios;701910769.68
+2023;Despesa;Subsídio Geração Fonte Incentivada;descontos_tarifarios;709247210.7
+2023;Despesa;Subsídio Irrigação e Aquicultura;descontos_tarifarios;1222721420.25
+2023;Despesa;Subsídio Rural;descontos_tarifarios;344969214.14
+2023;Despesa;Subsídio Água-esgoto-saneamento;descontos_tarifarios;97250444.12
+2023;Despesa;Subvenção Cooperativa;outras_despesas;576330820.32
+2023;Despesa;Subvenção RTE;outras_despesas;
+2023;Despesa;Verba MME;outras_despesas;
+2023;Receita;Aporte Eletrobras - Lei 14.182;outras_receitas;620015707.5
+2023;Receita;Multas;outras_receitas;263698608.0
+2023;Receita;Outras Disponibilidades;outras_receitas;13231986.36
+2023;Receita;P&D;outras_receitas;661104112.56
+2023;Receita;Quotas CDE - GD;quotas_tarifa;701910769.68
+2023;Receita;Quotas CDE Energia;quotas_tarifa;0.0
+2023;Receita;Quotas CDE Uso;quotas_tarifa;28870457844.55
+2023;Receita;RGR;outras_receitas;0.0
+2023;Receita;Recursos da União;outras_receitas;0.0
+2023;Receita;Saldo Anterior;outras_receitas;2279648159.4
+2023;Receita;Uso de Bem Público - UBP;outras_receitas;1575633390.12
+2024;Despesa;CAFT CCEE;outras_despesas;8795930.54
+2024;Despesa;CCC;ccc_luz_para_todos;10742443779.69
+2024;Despesa;CDE Eletrobras - Lei 14.182;outras_despesas;1299495068.92
+2024;Despesa;Carvão Mineral;outras_despesas;1216688534.39
+2024;Despesa;Indenização das Concessões;outras_despesas;
+2024;Despesa;Programa Luz para Todos - PLPT;ccc_luz_para_todos;2502978103.34
+2024;Despesa;Restos a Pagar;outras_despesas;139119478.02
+2024;Despesa;Subsídio Baixa Renda;tarifa_social;6184866817.05
+2024;Despesa;Subsídio Consumidor Fonte Incentivada;descontos_tarifarios;8284558476.81
+2024;Despesa;Subsídio Distribuidora;descontos_tarifarios;188547422.6
+2024;Despesa;Subsídio Fonte Incentivada (Transmissoras);descontos_tarifarios;2468619386.78
+2024;Despesa;Subsídio GD - Lei 14.300;descontos_tarifarios;1680713903.04
+2024;Despesa;Subsídio Geração Fonte Incentivada;descontos_tarifarios;742664397.57
+2024;Despesa;Subsídio Irrigação e Aquicultura;descontos_tarifarios;1066766500.9
+2024;Despesa;Subsídio Rural;descontos_tarifarios;-42259444.47
+2024;Despesa;Subsídio Água-esgoto-saneamento;descontos_tarifarios;-3950612.06
+2024;Despesa;Subvenção Cooperativa;outras_despesas;687617488.52
+2024;Despesa;Subvenção RTE;outras_despesas;
+2024;Despesa;Verba MME;outras_despesas;
+2024;Receita;Aporte Eletrobras - Lei 14.182;outras_receitas;1299495068.92
+2024;Receita;Multas;outras_receitas;330121538.6
+2024;Receita;Outras Disponibilidades;outras_receitas;57922022.8
+2024;Receita;P&D;outras_receitas;472074351.9
+2024;Receita;Quotas CDE - GD;quotas_tarifa;1680713903.04
+2024;Receita;Quotas CDE Energia;quotas_tarifa;0.0
+2024;Receita;Quotas CDE Uso;quotas_tarifa;30872932893.24
+2024;Receita;RGR;outras_receitas;0.0
+2024;Receita;Recursos da União;outras_receitas;0.0
+2024;Receita;Saldo Anterior;outras_receitas;520072700.25
+2024;Receita;Uso de Bem Público - UBP;outras_receitas;1934332752.89
+2025;Despesa;CAFT CCEE;outras_despesas;10011739.98
+2025;Despesa;CCC;ccc_luz_para_todos;12563305670.96
+2025;Despesa;CDE Eletrobras - Lei 14.182;outras_despesas;
+2025;Despesa;Carvão Mineral;outras_despesas;1214680117.84
+2025;Despesa;Indenização das Concessões;outras_despesas;
+2025;Despesa;Programa Luz para Todos - PLPT;ccc_luz_para_todos;3917920321.13
+2025;Despesa;Restos a Pagar;outras_despesas;2384128821.19
+2025;Despesa;Subsídio Baixa Renda;tarifa_social;7829849963.25
+2025;Despesa;Subsídio Consumidor Fonte Incentivada;descontos_tarifarios;11301582128.78
+2025;Despesa;Subsídio Distribuidora;descontos_tarifarios;122137647.75
+2025;Despesa;Subsídio Fonte Incentivada (Transmissoras);descontos_tarifarios;3232878340.02
+2025;Despesa;Subsídio GD - Lei 14.300;descontos_tarifarios;3657919419.49
+2025;Despesa;Subsídio Geração Fonte Incentivada;descontos_tarifarios;780943802.7
+2025;Despesa;Subsídio Irrigação e Aquicultura;descontos_tarifarios;1515935230.18
+2025;Despesa;Subsídio Rural;descontos_tarifarios;899558.04
+2025;Despesa;Subsídio Água-esgoto-saneamento;descontos_tarifarios;-1253566.34
+2025;Despesa;Subvenção Cooperativa;outras_despesas;696242775.34
+2025;Despesa;Subvenção RTE;outras_despesas;
+2025;Despesa;Verba MME;outras_despesas;
+2025;Receita;Aporte Eletrobras - Lei 14.182;outras_receitas;0.0
+2025;Receita;Multas;outras_receitas;517017093.0
+2025;Receita;Outras Disponibilidades;outras_receitas;80857721.51
+2025;Receita;P&D;outras_receitas;495208039.15
+2025;Receita;Quotas CDE - GD;quotas_tarifa;2972389916.5
+2025;Receita;Quotas CDE Energia;quotas_tarifa;0.0
+2025;Receita;Quotas CDE Uso;quotas_tarifa;41408044567.94
+2025;Receita;RGR;outras_receitas;0.0
+2025;Receita;Recursos da União;outras_receitas;0.0
+2025;Receita;Saldo Anterior;outras_receitas;1771876675.12
+2025;Receita;Uso de Bem Público - UBP;outras_receitas;1981787957.09
+2026;Despesa;CAFT CCEE;outras_despesas;11523691.37
+2026;Despesa;CCC;ccc_luz_para_todos;11453367561.98
+2026;Despesa;CDE Eletrobras - Lei 14.182;outras_despesas;
+2026;Despesa;Carvão Mineral;outras_despesas;185597230.66
+2026;Despesa;Indenização das Concessões;outras_despesas;
+2026;Despesa;Programa Luz para Todos - PLPT;ccc_luz_para_todos;2602875379.46
+2026;Despesa;Restos a Pagar;outras_despesas;771151252.29
+2026;Despesa;Subsídio Baixa Renda;tarifa_social;10436980841.81
+2026;Despesa;Subsídio Consumidor Fonte Incentivada;descontos_tarifarios;13392128759.14
+2026;Despesa;Subsídio Distribuidora;descontos_tarifarios;356434.72
+2026;Despesa;Subsídio Fonte Incentivada (Transmissoras);descontos_tarifarios;3732689935.75
+2026;Despesa;Subsídio GD - Lei 14.300;descontos_tarifarios;6861259245.9
+2026;Despesa;Subsídio Geração Fonte Incentivada;descontos_tarifarios;948267874.03
+2026;Despesa;Subsídio Irrigação e Aquicultura;descontos_tarifarios;1548516386.6
+2026;Despesa;Subsídio Rural;descontos_tarifarios;16641.08
+2026;Despesa;Subsídio Água-esgoto-saneamento;descontos_tarifarios;0.0
+2026;Despesa;Subvenção Cooperativa;outras_despesas;715319648.05
+2026;Despesa;Subvenção RTE;outras_despesas;
+2026;Despesa;Verba MME;outras_despesas;
+2026;Receita;Aporte Eletrobras - Lei 14.182;outras_receitas;0.0
+2026;Receita;Multas;outras_receitas;433722060.0
+2026;Receita;Outras Disponibilidades;outras_receitas;39059460.41
+2026;Receita;P&D;outras_receitas;0.0
+2026;Receita;Quotas CDE - GD;quotas_tarifa;2950000000.0
+2026;Receita;Quotas CDE Energia;quotas_tarifa;0.0
+2026;Receita;Quotas CDE Uso;quotas_tarifa;47793043602.87
+2026;Receita;RGR;outras_receitas;0.0
+2026;Receita;Recursos da União;outras_receitas;0.0
+2026;Receita;Saldo Anterior;outras_receitas;0.0
+2026;Receita;Uso de Bem Público - UBP;outras_receitas;1444225759.56

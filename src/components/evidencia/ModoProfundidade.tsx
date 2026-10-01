@@ -42,15 +42,29 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
   const rolarPendente = useRef(false);
   const botoes = useRef<(HTMLButtonElement | null)[]>([]);
 
-  const gravaUrl = useCallback((m: Modo) => {
+  // escolha do visitante entra no histórico (voltar desfaz a troca de modo); ajustes
+  // automáticos (modo elevado por âncora) só substituem a entrada atual
+  const gravaUrl = useCallback((m: Modo, novaEntrada = false) => {
     try {
       const url = new URL(window.location.href);
       if (m === "entender") url.searchParams.delete("modo");
       else url.searchParams.set("modo", m);
-      window.history.replaceState(null, "", url.toString());
+      if (url.toString() === window.location.href) return;
+      if (novaEntrada) window.history.pushState(window.history.state, "", url.toString());
+      else window.history.replaceState(window.history.state, "", url.toString());
     } catch {
       // URL inalterada não impede a troca de modo
     }
+  }, []);
+
+  // voltar e avançar do navegador restauram o modo gravado na URL
+  useEffect(() => {
+    function aoNavegar() {
+      const q = new URLSearchParams(window.location.search).get("modo");
+      setModo(q === "analisar" || q === "auditar" ? q : "entender");
+    }
+    window.addEventListener("popstate", aoNavegar);
+    return () => window.removeEventListener("popstate", aoNavegar);
   }, []);
 
   // modo inicial: o da URL, elevado se o #alvo estiver num nível mais profundo
@@ -103,7 +117,7 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
 
   function escolher(m: Modo) {
     setModo(m);
-    gravaUrl(m);
+    gravaUrl(m, true);
   }
 
   // padrão de radiogroup: setas movem a seleção e o foco

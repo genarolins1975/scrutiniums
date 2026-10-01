@@ -1,16 +1,17 @@
 {
  "dominio": "energia",
  "gold": "carga.json",
- "gerado_em": "2026-10-01T02:21:46Z",
+ "gerado_em": "2026-10-01T06:24:01Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d95d8f8b4f9e",
+ "versao_codigo": "f5cba38ad40f+alterado",
  "disponivel": true,
- "dia_referencia": "2026-09-29",
+ "dia_referencia": "2026-09-28",
  "unidade": "MWmed",
  "regras": {
   "carga_sin": "Carga do SIN = soma das cargas diárias dos quatro subsistemas.",
   "comparacao_anual": "Média dos últimos 7 ou 30 dias contra os mesmos dias do ano anterior, apenas quando os dois períodos estão no mesmo regime metodológico declarado pelo ONS.",
-  "extremo_12m": "Maior carga diária dos últimos 365 dias."
+  "extremo_12m": "Maior carga diária dos últimos 365 dias.",
+  "validacao_fisica": "Valor diário só é publicado se for positivo (domínio do dicionário do ONS), estiver na faixa plausível do subsistema e não saltar mais de 40% sobre a mediana da semana anterior; atípico é conferido nos componentes do balanço de energia do ONS (outro conjunto) antes de ser publicado ou posto em quarentena; dia ausente fica vazio."
  },
  "regimes": [
   {
@@ -26,7 +27,8 @@
   {
    "inicio": "2023-04-29",
    "fim": null,
-   "descricao": "Inclui também a estimativa da micro e minigeração distribuída (MMGD), com base em dados meteorológicos previstos."
+   "descricao": "Inclui também a estimativa da micro e minigeração distribuída (MMGD), com base em dados meteorológicos previstos. Data declarada pelo ONS: 29/04/2023; nos dados, a MMGD aparece na carga em 01/05/2023 (29 e 30/04/2023 são transição).",
+   "observado_nos_dados": "2023-05-01"
   }
  ],
  "subsistemas": [
@@ -34,26 +36,26 @@
    "sm": "SE",
    "nome": "Sudeste/Centro-Oeste",
    "natureza": "OBSERVADO",
-   "dia": 51119.0,
+   "dia": 49000.0,
    "ult7": {
-    "media": 46143.0,
-    "media_ano_anterior": 40963.0,
-    "variacao_pct": 12.6,
+    "media": 45653.0,
+    "media_ano_anterior": 41465.0,
+    "variacao_pct": 10.1,
     "mesmo_regime": true,
-    "inicio": "2026-09-23",
-    "fim": "2026-09-29",
-    "inicio_anterior": "2025-09-23",
-    "fim_anterior": "2025-09-29"
+    "inicio": "2026-09-22",
+    "fim": "2026-09-28",
+    "inicio_anterior": "2025-09-22",
+    "fim_anterior": "2025-09-28"
    },
    "ult30": {
-    "media": 44410.0,
-    "media_ano_anterior": 42558.0,
-    "variacao_pct": 4.4,
+    "media": 44118.0,
+    "media_ano_anterior": 42478.0,
+    "variacao_pct": 3.9,
     "mesmo_regime": true,
-    "inicio": "2026-08-31",
-    "fim": "2026-09-29",
-    "inicio_anterior": "2025-08-31",
-    "fim_anterior": "2025-09-29"
+    "inicio": "2026-08-30",
+    "fim": "2026-09-28",
+    "inicio_anterior": "2025-08-30",
+    "fim_anterior": "2025-09-28"
    },
    "max_12m": {
     "valor": 52592.0,
@@ -64,26 +66,26 @@
    "sm": "S",
    "nome": "Sul",
    "natureza": "OBSERVADO",
-   "dia": 14862.0,
+   "dia": 14909.0,
    "ult7": {
-    "media": 13648.0,
-    "media_ano_anterior": 12017.0,
-    "variacao_pct": 13.6,
+    "media": 13508.0,
+    "media_ano_anterior": 11976.0,
+    "variacao_pct": 12.8,
     "mesmo_regime": true,
-    "inicio": "2026-09-23",
-    "fim": "2026-09-29",
-    "inicio_anterior": "2025-09-23",
-    "fim_anterior": "2025-09-29"
+    "inicio": "2026-09-22",
+    "fim": "2026-09-28",
+    "inicio_anterior": "2025-09-22",
+    "fim_anterior": "2025-09-28"
    },
    "ult30": {
-    "media": 13178.0,
-    "media_ano_anterior": 12451.0,
-    "variacao_pct": 5.8,
+    "media": 13068.0,
+    "media_ano_anterior": 12377.0,
+    "variacao_pct": 5.6,
     "mesmo_regime": true,
-    "inicio": "2026-08-31",
-    "fim": "2026-09-29",
-    "inicio_anterior": "2025-08-31",
-    "fim_anterior": "2025-09-29"
+    "inicio": "2026-08-30",
+    "fim": "2026-09-28",
+    "inicio_anterior": "2025-08-30",
+    "fim_anterior": "2025-09-28"
    },
    "max_12m": {
     "valor": 19117.0,
@@ -94,59 +96,59 @@
    "sm": "NE",
    "nome": "Nordeste",
    "natureza": "OBSERVADO",
-   "dia": 15326.0,
+   "dia": 15064.0,
    "ult7": {
-    "media": 14787.0,
-    "media_ano_anterior": 13199.0,
-    "variacao_pct": 12.0,
+    "media": 14709.0,
+    "media_ano_anterior": 13311.0,
+    "variacao_pct": 10.5,
     "mesmo_regime": true,
-    "inicio": "2026-09-23",
-    "fim": "2026-09-29",
-    "inicio_anterior": "2025-09-23",
-    "fim_anterior": "2025-09-29"
+    "inicio": "2026-09-22",
+    "fim": "2026-09-28",
+    "inicio_anterior": "2025-09-22",
+    "fim_anterior": "2025-09-28"
    },
    "ult30": {
-    "media": 14394.0,
-    "media_ano_anterior": 12988.0,
-    "variacao_pct": 10.8,
+    "media": 14307.0,
+    "media_ano_anterior": 12968.0,
+    "variacao_pct": 10.3,
     "mesmo_regime": true,
-    "inicio": "2026-08-31",
-    "fim": "2026-09-29",
-    "inicio_anterior": "2025-08-31",
-    "fim_anterior": "2025-09-29"
+    "inicio": "2026-08-30",
+    "fim": "2026-09-28",
+    "inicio_anterior": "2025-08-30",
+    "fim_anterior": "2025-09-28"
    },
    "max_12m": {
-    "valor": 15326.0,
-    "dia": "2026-09-29"
+    "valor": 15310.0,
+    "dia": "2026-09-24"
    }
   },
   {
    "sm": "N",
    "nome": "Norte",
    "natureza": "OBSERVADO",
-   "dia": 10001.0,
+   "dia": 9923.0,
    "ult7": {
-    "media": 9870.0,
-    "media_ano_anterior": 8986.0,
-    "variacao_pct": 9.8,
+    "media": 9901.0,
+    "media_ano_anterior": 9032.0,
+    "variacao_pct": 9.6,
     "mesmo_regime": true,
-    "inicio": "2026-09-23",
-    "fim": "2026-09-29",
-    "inicio_anterior": "2025-09-23",
-    "fim_anterior": "2025-09-29"
+    "inicio": "2026-09-22",
+    "fim": "2026-09-28",
+    "inicio_anterior": "2025-09-22",
+    "fim_anterior": "2025-09-28"
    },
    "ult30": {
-    "media": 9860.0,
-    "media_ano_anterior": 8899.0,
-    "variacao_pct": 10.8,
+    "media": 9836.0,
+    "media_ano_anterior": 8885.0,
+    "variacao_pct": 10.7,
     "mesmo_regime": true,
-    "inicio": "2026-08-31",
-    "fim": "2026-09-29",
-    "inicio_anterior": "2025-08-31",
-    "fim_anterior": "2025-09-29"
+    "inicio": "2026-08-30",
+    "fim": "2026-09-28",
+    "inicio_anterior": "2025-08-30",
+    "fim_anterior": "2025-09-28"
    },
    "max_12m": {
-    "valor": 10364.0,
+    "valor": 10361.0,
     "dia": "2026-09-24"
    }
   },
@@ -154,26 +156,26 @@
    "sm": "SIN",
    "nome": "Sistema Interligado Nacional",
    "natureza": "CALCULADO",
-   "dia": 91308.0,
+   "dia": 88896.0,
    "ult7": {
-    "media": 84448.0,
-    "media_ano_anterior": 75165.0,
-    "variacao_pct": 12.4,
+    "media": 83771.0,
+    "media_ano_anterior": 75784.0,
+    "variacao_pct": 10.5,
     "mesmo_regime": true,
-    "inicio": "2026-09-23",
-    "fim": "2026-09-29",
-    "inicio_anterior": "2025-09-23",
-    "fim_anterior": "2025-09-29"
+    "inicio": "2026-09-22",
+    "fim": "2026-09-28",
+    "inicio_anterior": "2025-09-22",
+    "fim_anterior": "2025-09-28"
    },
    "ult30": {
-    "media": 81841.0,
-    "media_ano_anterior": 76896.0,
-    "variacao_pct": 6.4,
+    "media": 81330.0,
+    "media_ano_anterior": 76708.0,
+    "variacao_pct": 6.0,
     "mesmo_regime": true,
-    "inicio": "2026-08-31",
-    "fim": "2026-09-29",
-    "inicio_anterior": "2025-08-31",
-    "fim_anterior": "2025-09-29"
+    "inicio": "2026-08-30",
+    "fim": "2026-09-28",
+    "inicio_anterior": "2025-08-30",
+    "fim_anterior": "2025-09-28"
    },
    "max_12m": {
     "valor": 92081.0,
@@ -182,6 +184,14 @@
   }
  ],
  "serie": [
+  {
+   "d": "2023-09-29",
+   "SE": 44036.0,
+   "S": 12897.0,
+   "NE": 13147.0,
+   "N": 7933.0,
+   "SIN": 78014.0
+  },
   {
    "d": "2023-09-30",
    "SE": 41134.0,
@@ -8880,75 +8890,67 @@
   },
   {
    "d": "2026-09-21",
-   "SE": 46560.0,
+   "SE": 46553.0,
    "S": 13645.0,
-   "NE": 14227.0,
-   "N": 10070.0,
-   "SIN": 84502.0
+   "NE": 14225.0,
+   "N": 10068.0,
+   "SIN": 84491.0
   },
   {
    "d": "2026-09-22",
    "SE": 47682.0,
    "S": 13898.0,
    "NE": 14901.0,
-   "N": 10223.0,
-   "SIN": 86703.0
+   "N": 10218.0,
+   "SIN": 86698.0
   },
   {
    "d": "2026-09-23",
    "SE": 46069.0,
    "S": 13990.0,
-   "NE": 15305.0,
-   "N": 10258.0,
-   "SIN": 85622.0
+   "NE": 15304.0,
+   "N": 10257.0,
+   "SIN": 85620.0
   },
   {
    "d": "2026-09-24",
-   "SE": 44701.0,
+   "SE": 44698.0,
    "S": 13872.0,
-   "NE": 15318.0,
-   "N": 10364.0,
-   "SIN": 84255.0
+   "NE": 15310.0,
+   "N": 10361.0,
+   "SIN": 84241.0
   },
   {
    "d": "2026-09-25",
-   "SE": 45980.0,
+   "SE": 45979.0,
    "S": 13788.0,
-   "NE": 15177.0,
+   "NE": 15114.0,
    "N": 9794.0,
-   "SIN": 84739.0
+   "SIN": 84675.0
   },
   {
    "d": "2026-09-26",
-   "SE": 44158.0,
-   "S": 12521.0,
-   "NE": 14006.0,
+   "SE": 44162.0,
+   "S": 12520.0,
+   "NE": 13985.0,
    "N": 9401.0,
-   "SIN": 80087.0
+   "SIN": 80068.0
   },
   {
    "d": "2026-09-27",
-   "SE": 41976.0,
-   "S": 11585.0,
-   "NE": 13302.0,
+   "SE": 41981.0,
+   "S": 11580.0,
+   "NE": 13288.0,
    "N": 9350.0,
-   "SIN": 76213.0
+   "SIN": 76200.0
   },
   {
    "d": "2026-09-28",
    "SE": 49000.0,
-   "S": 14916.0,
-   "NE": 15076.0,
+   "S": 14909.0,
+   "NE": 15064.0,
    "N": 9923.0,
-   "SIN": 88914.0
-  },
-  {
-   "d": "2026-09-29",
-   "SE": 51119.0,
-   "S": 14862.0,
-   "NE": 15326.0,
-   "N": 10001.0,
-   "SIN": 91308.0
+   "SIN": 88896.0
   }
  ],
  "mensal": [
@@ -10961,12 +10963,12 @@
   },
   {
    "m": "2018-08",
-   "dias": 31,
+   "dias": 30,
    "SE": 34465.0,
    "S": 10694.0,
-   "NE": 9977.0,
+   "NE": 10177.0,
    "N": 5279.0,
-   "SIN": 60415.0
+   "SIN": 60764.0
   },
   {
    "m": "2018-09",
@@ -11834,14 +11836,340 @@
   },
   {
    "m": "2026-09",
-   "dias": 29,
-   "SE": 44281.0,
-   "S": 13138.0,
-   "NE": 14389.0,
-   "N": 9853.0,
-   "SIN": 81661.0
+   "dias": 28,
+   "SE": 44037.0,
+   "S": 13076.0,
+   "NE": 14351.0,
+   "N": 9847.0,
+   "SIN": 81312.0
   }
  ],
+ "validacao": {
+  "regras": [
+   {
+    "id": "F1",
+    "tipo": "dominio",
+    "critica": true,
+    "descricao": "Carga diária precisa ser positiva: o dicionário de dados do ONS (Carga de Energia Diária, versão 1.2) não admite valor nulo, zero nem negativo em val_cargaenergiamwmed."
+   },
+   {
+    "id": "F2",
+    "tipo": "faixa_plausivel",
+    "critica": false,
+    "descricao": "Entre 50% do menor e 150% do maior valor aceito do mesmo subsistema nos 1.095 dias anteriores (exige 365 dias de histórico)."
+   },
+   {
+    "id": "F3",
+    "tipo": "salto",
+    "critica": false,
+    "descricao": "Desvio de até 40% em relação à mediana dos 7 dias anteriores aceitos do mesmo subsistema (exige 5 dias)."
+   },
+   {
+    "id": "C1",
+    "tipo": "conferencia",
+    "critica": false,
+    "descricao": "Valor que viola F2 ou F3 é conferido no Balanço de Energia nos Subsistemas do ONS (outro conjunto): confirmado só se nenhum componente de geração (hidráulica, térmica, eólica, solar) tem lacuna no dia (média abaixo de 25% do menor dia vizinho, quando o vizinho tem pelo menos 100 MWmed e 5% da carga) e se a carga do balanço é igual ao valor (até 0,5% ou 5 MWmed); sem confirmação ou sem balanço, quarentena. A curva horária não confere: é o mesmo produto em outro grão."
+   },
+   {
+    "id": "A1",
+    "tipo": "registros_esperados",
+    "critica": false,
+    "descricao": "Todo dia do calendário entre o primeiro e o último dia publicado é esperado em cada subsistema; dia ausente é registrado com o estado conferido no arquivo atual da fonte e publicado como célula vazia, nunca zero nem interpolado."
+   }
+  ],
+  "quarentena": [
+   {
+    "sm": "NE",
+    "dia": "2018-08-25",
+    "valor": 3969.773875,
+    "regras": [
+     "F2",
+     "F3"
+    ],
+    "situacao": "quarentena",
+    "curva_horaria_media": 3969.774,
+    "conferencia": "lacuna de dado de geração no balanço do ONS (eólica 219,7 MWmed no dia contra 6.686,7 e 6.305,7 nos dias vizinhos): o valor não é carga real",
+    "balanco": {
+     "dia": {
+      "hidraulica": 1507.1,
+      "termica": 2921.9,
+      "eolica": 219.7,
+      "solar": 11.9,
+      "carga": 3969.8,
+      "intercambio": 690.7
+     },
+     "anterior": {
+      "hidraulica": 1792.9,
+      "termica": 2857.2,
+      "eolica": 6686.7,
+      "solar": 238.8,
+      "carga": 10451.2,
+      "intercambio": 1124.3
+     },
+     "seguinte": {
+      "hidraulica": 1570.1,
+      "termica": 2538.4,
+      "eolica": 6305.7,
+      "solar": 238.0,
+      "carga": 9196.7,
+      "intercambio": 1455.3
+     },
+     "lacunas": [
+      {
+       "componente": "eolica",
+       "valor_dia": 219.7,
+       "vizinhos": [
+        6686.7,
+        6305.7
+       ]
+      }
+     ],
+     "geracao_menos_intercambio": 3969.8
+    }
+   }
+  ],
+  "atipicos_conferidos": [
+   {
+    "sm": "S",
+    "dia": "2015-01-06",
+    "valor": 12307.82897049,
+    "regras": [
+     "F3"
+    ],
+    "situacao": "atipico_conferido",
+    "curva_horaria_media": 12307.829,
+    "conferencia": "componentes de geração do balanço do ONS sem lacuna no dia; geração menos intercâmbio = 12.307,8 MWmed, igual ao valor",
+    "balanco": {
+     "dia": {
+      "hidraulica": 13219.4,
+      "termica": 1542.7,
+      "eolica": 303.5,
+      "solar": 0.0,
+      "carga": 12307.8,
+      "intercambio": 2757.9
+     },
+     "anterior": {
+      "hidraulica": 12466.6,
+      "termica": 1728.0,
+      "eolica": 353.1,
+      "solar": 0.0,
+      "carga": 10872.0,
+      "intercambio": 3675.7
+     },
+     "seguinte": {
+      "hidraulica": 13511.7,
+      "termica": 1464.0,
+      "eolica": 110.2,
+      "solar": 0.0,
+      "carga": 12697.0,
+      "intercambio": 2389.0
+     },
+     "lacunas": [],
+     "geracao_menos_intercambio": 12307.8
+    }
+   },
+   {
+    "sm": "S",
+    "dia": "2015-01-07",
+    "valor": 12696.97940387,
+    "regras": [
+     "F3"
+    ],
+    "situacao": "atipico_conferido",
+    "curva_horaria_media": 12696.979,
+    "conferencia": "componentes de geração do balanço do ONS sem lacuna no dia; geração menos intercâmbio = 12.697,0 MWmed, igual ao valor",
+    "balanco": {
+     "dia": {
+      "hidraulica": 13511.7,
+      "termica": 1464.0,
+      "eolica": 110.2,
+      "solar": 0.0,
+      "carga": 12697.0,
+      "intercambio": 2389.0
+     },
+     "anterior": {
+      "hidraulica": 13219.4,
+      "termica": 1542.7,
+      "eolica": 303.5,
+      "solar": 0.0,
+      "carga": 12307.8,
+      "intercambio": 2757.9
+     },
+     "seguinte": {
+      "hidraulica": 13732.4,
+      "termica": 1418.4,
+      "eolica": 54.9,
+      "solar": 0.0,
+      "carga": 12378.0,
+      "intercambio": 2827.7
+     },
+     "lacunas": [],
+     "geracao_menos_intercambio": 12697.0
+    }
+   },
+   {
+    "sm": "S",
+    "dia": "2015-01-08",
+    "valor": 12378.04140136,
+    "regras": [
+     "F3"
+    ],
+    "situacao": "atipico_conferido",
+    "curva_horaria_media": 12378.041,
+    "conferencia": "componentes de geração do balanço do ONS sem lacuna no dia; geração menos intercâmbio = 12.378,0 MWmed, igual ao valor",
+    "balanco": {
+     "dia": {
+      "hidraulica": 13732.4,
+      "termica": 1418.4,
+      "eolica": 54.9,
+      "solar": 0.0,
+      "carga": 12378.0,
+      "intercambio": 2827.7
+     },
+     "anterior": {
+      "hidraulica": 13511.7,
+      "termica": 1464.0,
+      "eolica": 110.2,
+      "solar": 0.0,
+      "carga": 12697.0,
+      "intercambio": 2389.0
+     },
+     "seguinte": {
+      "hidraulica": 13789.9,
+      "termica": 1581.3,
+      "eolica": 120.7,
+      "solar": 0.0,
+      "carga": 12301.8,
+      "intercambio": 3190.2
+     },
+     "lacunas": [],
+     "geracao_menos_intercambio": 12378.0
+    }
+   }
+  ],
+  "historico_fora_do_dominio": [
+   {
+    "sm": "NE",
+    "dia": "2026-09-26",
+    "valor": -668.879,
+    "capturado_em": "2026-09-29T02:42:48Z",
+    "vintage": "carga_energia_di:CARGA_ENERGIA_2026:de70b50fcf85e2f3",
+    "recurso": "CARGA_ENERGIA_2026",
+    "revisado_para": 13984.69575,
+    "revisado_em": "2026-09-30T02:19:48Z",
+    "situacao": "revisado_pela_fonte"
+   }
+  ],
+  "valores_verificados": 39060,
+  "registros_esperados": {
+   "SE": {
+    "inicio": "2000-01-01",
+    "fim": "2026-09-28",
+    "esperados": 9768,
+    "presentes": 9765,
+    "ausentes": 3,
+    "quarentena": 0
+   },
+   "S": {
+    "inicio": "2000-01-01",
+    "fim": "2026-09-28",
+    "esperados": 9768,
+    "presentes": 9765,
+    "ausentes": 3,
+    "quarentena": 0
+   },
+   "NE": {
+    "inicio": "2000-01-01",
+    "fim": "2026-09-28",
+    "esperados": 9768,
+    "presentes": 9765,
+    "ausentes": 3,
+    "quarentena": 1
+   },
+   "N": {
+    "inicio": "2000-01-01",
+    "fim": "2026-09-28",
+    "esperados": 9768,
+    "presentes": 9765,
+    "ausentes": 3,
+    "quarentena": 0
+   }
+  },
+  "ausentes": [
+   {
+    "sm": "SE",
+    "dia": "2013-12-01",
+    "estado": "celula_vazia_na_fonte",
+    "valor_arquivo_atual": null
+   },
+   {
+    "sm": "S",
+    "dia": "2013-12-01",
+    "estado": "celula_vazia_na_fonte",
+    "valor_arquivo_atual": null
+   },
+   {
+    "sm": "NE",
+    "dia": "2013-12-01",
+    "estado": "celula_vazia_na_fonte",
+    "valor_arquivo_atual": null
+   },
+   {
+    "sm": "N",
+    "dia": "2013-12-01",
+    "estado": "celula_vazia_na_fonte",
+    "valor_arquivo_atual": null
+   },
+   {
+    "sm": "SE",
+    "dia": "2014-02-01",
+    "estado": "celula_vazia_na_fonte",
+    "valor_arquivo_atual": null
+   },
+   {
+    "sm": "S",
+    "dia": "2014-02-01",
+    "estado": "celula_vazia_na_fonte",
+    "valor_arquivo_atual": null
+   },
+   {
+    "sm": "NE",
+    "dia": "2014-02-01",
+    "estado": "celula_vazia_na_fonte",
+    "valor_arquivo_atual": null
+   },
+   {
+    "sm": "N",
+    "dia": "2014-02-01",
+    "estado": "celula_vazia_na_fonte",
+    "valor_arquivo_atual": null
+   },
+   {
+    "sm": "SE",
+    "dia": "2015-04-09",
+    "estado": "celula_vazia_na_fonte",
+    "valor_arquivo_atual": null
+   },
+   {
+    "sm": "S",
+    "dia": "2015-04-09",
+    "estado": "celula_vazia_na_fonte",
+    "valor_arquivo_atual": null
+   },
+   {
+    "sm": "NE",
+    "dia": "2015-04-09",
+    "estado": "celula_vazia_na_fonte",
+    "valor_arquivo_atual": null
+   },
+   {
+    "sm": "N",
+    "dia": "2015-04-09",
+    "estado": "celula_vazia_na_fonte",
+    "valor_arquivo_atual": null
+   }
+  ]
+ },
  "proveniencia": {
   "carga": {
    "indicador": "Carga de energia diária por subsistema",
@@ -11858,139 +12186,188 @@
    "frequencia": "diária",
    "periodo_referencia": {
     "inicio": "2000-01-01",
-    "fim": "2026-09-29"
+    "fim": "2026-09-28"
    },
-   "publicado_pela_fonte_em": "2026-09-30T22:00:54.014182",
-   "capturado_em": "2026-10-01T02:21:04Z",
-   "validado_em": "2026-10-01T02:21:46Z",
+   "publicado_pela_fonte_em": "2026-09-29T22:00:43.436290",
+   "capturado_em": "2026-09-30T02:19:48Z",
+   "validado_em": "2026-10-01T06:24:01Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
-    "fim": "2026-09-29"
+    "fim": "2026-09-28"
    },
-   "transformacoes": [],
+   "transformacoes": [
+    "validação física antes da publicação (domínio, faixa plausível, salto) com conferência no balanço de energia do ONS e quarentena",
+    "uma linha por dia do calendário: dia ausente na fonte ou em quarentena fica vazio"
+   ],
    "formula": null,
    "snapshot": {
-    "id": "carga_energia_di@2026-10-01T02:21:04Z",
-    "sha256": "c53fe6778431987437c45dc615a666dbb1e337b4dfb6baf2b9c58d07fe1109a7"
+    "id": "carga_energia_di@2026-09-30T02:19:48Z",
+    "sha256": "b6e8471dc064c63a4db34e9e6e3009a019460c71bff839104a1415ea0dbaefb3"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d95d8f8b4f9e",
+   "versao_codigo": "f5cba38ad40f+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T02:21:46Z",
-    "total": 41,
-    "vintages_comparadas": 29,
+    "detectado_em": "2026-10-01T06:24:01Z",
+    "total": 33,
+    "vintages_comparadas": 28,
     "arquivos": 27,
-    "recapturas_sem_mudanca": 2,
-    "ultimo_download_ok": "2026-10-01T02:21:05Z",
+    "recapturas_sem_mudanca": 1,
+    "ultimo_download_ok": "2026-09-30T02:19:48Z",
     "exemplos": [
      {
-      "serie": "carga_mwmed.NE",
-      "ref": "2026-09-28",
-      "valores": 2
-     },
-     {
-      "serie": "carga_mwmed.S",
-      "ref": "2026-09-28",
+      "serie": "carga_mwmed.N",
+      "ref": "2026-09-26",
       "valores": 2
      },
      {
       "serie": "carga_mwmed.NE",
-      "ref": "2026-09-27",
+      "ref": "2026-09-26",
       "valores": 2
      },
      {
       "serie": "carga_mwmed.S",
-      "ref": "2026-09-27",
+      "ref": "2026-09-26",
       "valores": 2
      },
      {
       "serie": "carga_mwmed.SE",
-      "ref": "2026-09-27",
+      "ref": "2026-09-26",
       "valores": 2
      },
      {
       "serie": "carga_mwmed.N",
-      "ref": "2026-09-26",
-      "valores": 3
-     },
-     {
-      "serie": "carga_mwmed.NE",
-      "ref": "2026-09-26",
-      "valores": 3
-     },
-     {
-      "serie": "carga_mwmed.S",
-      "ref": "2026-09-26",
-      "valores": 3
-     },
-     {
-      "serie": "carga_mwmed.SE",
-      "ref": "2026-09-26",
-      "valores": 3
-     },
-     {
-      "serie": "carga_mwmed.N",
       "ref": "2026-09-25",
-      "valores": 3
+      "valores": 2
      },
      {
       "serie": "carga_mwmed.NE",
       "ref": "2026-09-25",
-      "valores": 3
+      "valores": 2
      },
      {
       "serie": "carga_mwmed.S",
       "ref": "2026-09-25",
-      "valores": 3
+      "valores": 2
      },
      {
       "serie": "carga_mwmed.SE",
       "ref": "2026-09-25",
-      "valores": 3
-     },
-     {
-      "serie": "carga_mwmed.N",
-      "ref": "2026-09-24",
       "valores": 2
      },
      {
       "serie": "carga_mwmed.NE",
       "ref": "2026-09-24",
-      "valores": 3
+      "valores": 2
      },
      {
       "serie": "carga_mwmed.S",
       "ref": "2026-09-24",
-      "valores": 3
+      "valores": 2
      },
      {
       "serie": "carga_mwmed.SE",
       "ref": "2026-09-24",
-      "valores": 3
-     },
-     {
-      "serie": "carga_mwmed.N",
-      "ref": "2026-09-23",
       "valores": 2
      },
      {
       "serie": "carga_mwmed.NE",
       "ref": "2026-09-23",
-      "valores": 3
+      "valores": 2
      },
      {
       "serie": "carga_mwmed.S",
       "ref": "2026-09-23",
-      "valores": 3
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-23",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-22",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.S",
+      "ref": "2026-09-22",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-22",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.N",
+      "ref": "2026-09-21",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-21",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-21",
+      "valores": 2
      }
     ]
    },
    "limitacoes": [
-    "O ONS mudou o conteúdo da série em 01/03/2021 e em 29/04/2023 (inclusão da estimativa de MMGD); comparações que atravessam essas datas não são homogêneas e não são exibidas como variação.",
-    "Dados em processo de consistência recorrente do ONS, sujeitos a revisão após a publicação."
+    "O ONS mudou o conteúdo da série em 01/03/2021 (previsão de usinas não despachadas) e na inclusão da estimativa de MMGD, declarada para 29/04/2023 e observada nos dados em 01/05/2023; comparações que atravessam essas datas (ou tocam 29 e 30/04/2023, transição) não são homogêneas e não são exibidas como variação.",
+    "Dados em processo de consistência recorrente do ONS, sujeitos a revisão após a publicação.",
+    "Observado com componentes da fonte que não são medição: previsão de usinas não despachadas desde 01/03/2021 (PREVISTO) e estimativa de MMGD desde 01/05/2023 nos dados (ESTIMADO; data declarada 29/04/2023).",
+    "A captura de 28/09/2026, 23:42 (Brasília) trouxe a carga do Nordeste de 26/09/2026 igual a −668,879 MWmed, fora do domínio do dicionário do ONS; o valor não entra na publicação, e a fonte o revisou para 13.984,7 MWmed na captura de 29/09/2026, 23:19 (Brasília).",
+    "Em quarentena: carga do Nordeste em 25/08/2018 (3.969,774 MWmed), regras F2, F3; lacuna de dado de geração no balanço do ONS (eólica 219,7 MWmed no dia contra 6.686,7 e 6.305,7 nos dias vizinhos): o valor não é carga real. O dia fica sem valor para o subsistema e para o SIN.",
+    "3 valores atípicos (regras F2 ou F3) foram publicados porque o balanço de energia do ONS (outro conjunto) os confirma, sem lacuna de geração: S em 06/01/2015; S em 07/01/2015; S em 08/01/2015.",
+    "12 valores diários ausentes na fonte em 3 dias (01/12/2013, 01/02/2014, 09/04/2015; estado conferido no arquivo atual: celula vazia na fonte); ficam vazios, nunca zero nem interpolados."
    ],
    "download": "/energia/series/carga_diaria.csv",
-   "notas_fonte": "Dados de carga por subsistema em base diária, medida em MWmed. \r\n\r\nAté fevereiro/2021, os dados representam a carga atendida por usinas despachadas e/ou programadas pelo ONS, com base em dados recebidos pelo Sistema de Supervisão e Controle do ONS. Entre março/2021 e abril/23, os dados representam a carga atendida por usinas despachadas e/ou programadas pelo ONS, com base em dados recebidos pelo Sistema de Supervisão e Controle do ONS, mais a previsão de geração de usinas não despachadas pelo ONS. A partir de 29/04/2023, além dos dados anteriormente considerados, passou a ser incorporado o valor estimado da micro e minigeração distribuída (MMGD), com base em dados meteorológicos previstos."
+   "notas_fonte": null,
+   "natureza_por_regime": [
+    {
+     "regime": 1,
+     "inicio": "2000-01-01",
+     "fim": "2021-02-28",
+     "natureza": "OBSERVADO",
+     "componentes": []
+    },
+    {
+     "regime": 2,
+     "inicio": "2021-03-01",
+     "fim": "2023-04-28",
+     "natureza": "OBSERVADO",
+     "componentes": [
+      {
+       "natureza": "PREVISTO",
+       "desde": "2021-03-01",
+       "descricao": "previsão de geração das usinas não despachadas pelo ONS, somada pela fonte (não é medição)"
+      }
+     ]
+    },
+    {
+     "regime": 3,
+     "inicio": "2023-04-29",
+     "fim": null,
+     "natureza": "OBSERVADO",
+     "componentes": [
+      {
+       "natureza": "PREVISTO",
+       "desde": "2021-03-01",
+       "descricao": "previsão de geração das usinas não despachadas pelo ONS, somada pela fonte (não é medição)"
+      },
+      {
+       "natureza": "ESTIMADO",
+       "desde": "2023-04-29",
+       "observado_nos_dados_desde": "2023-05-01",
+       "descricao": "estimativa da MMGD com base em dados meteorológicos previstos, somada pela fonte e não publicada separada (declarada pelo ONS a partir de 29/04/2023; observada nos dados a partir de 01/05/2023)"
+      }
+     ]
+    }
+   ]
   },
   "sin": {
    "indicador": "Carga do SIN e variação anual",
@@ -12007,144 +12384,190 @@
    "frequencia": "diária",
    "periodo_referencia": {
     "inicio": "2000-01-01",
-    "fim": "2026-09-29"
+    "fim": "2026-09-28"
    },
-   "publicado_pela_fonte_em": "2026-09-30T22:00:54.014182",
-   "capturado_em": "2026-10-01T02:21:04Z",
-   "validado_em": "2026-10-01T02:21:46Z",
+   "publicado_pela_fonte_em": "2026-09-29T22:00:43.436290",
+   "capturado_em": "2026-09-30T02:19:48Z",
+   "validado_em": "2026-10-01T06:24:01Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
-    "fim": "2026-09-29"
+    "fim": "2026-09-28"
    },
    "transformacoes": [
-    "soma dos quatro subsistemas",
+    "soma dos quatro subsistemas (só em dia com os quatro aceitos pela validação física)",
     "médias móveis de 7 e 30 dias",
     "comparação com os mesmos dias do ano anterior"
    ],
    "formula": "variação = média(últimos n dias) ÷ média(mesmos n dias do ano anterior) − 1",
    "snapshot": {
-    "id": "carga_energia_di@2026-10-01T02:21:04Z",
-    "sha256": "c53fe6778431987437c45dc615a666dbb1e337b4dfb6baf2b9c58d07fe1109a7"
+    "id": "carga_energia_di@2026-09-30T02:19:48Z",
+    "sha256": "b6e8471dc064c63a4db34e9e6e3009a019460c71bff839104a1415ea0dbaefb3"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d95d8f8b4f9e",
+   "versao_codigo": "f5cba38ad40f+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T02:21:46Z",
-    "total": 41,
-    "vintages_comparadas": 29,
+    "detectado_em": "2026-10-01T06:24:01Z",
+    "total": 33,
+    "vintages_comparadas": 28,
     "arquivos": 27,
-    "recapturas_sem_mudanca": 2,
-    "ultimo_download_ok": "2026-10-01T02:21:05Z",
+    "recapturas_sem_mudanca": 1,
+    "ultimo_download_ok": "2026-09-30T02:19:48Z",
     "exemplos": [
      {
-      "serie": "carga_mwmed.NE",
-      "ref": "2026-09-28",
-      "valores": 2
-     },
-     {
-      "serie": "carga_mwmed.S",
-      "ref": "2026-09-28",
+      "serie": "carga_mwmed.N",
+      "ref": "2026-09-26",
       "valores": 2
      },
      {
       "serie": "carga_mwmed.NE",
-      "ref": "2026-09-27",
+      "ref": "2026-09-26",
       "valores": 2
      },
      {
       "serie": "carga_mwmed.S",
-      "ref": "2026-09-27",
+      "ref": "2026-09-26",
       "valores": 2
      },
      {
       "serie": "carga_mwmed.SE",
-      "ref": "2026-09-27",
+      "ref": "2026-09-26",
       "valores": 2
      },
      {
       "serie": "carga_mwmed.N",
-      "ref": "2026-09-26",
-      "valores": 3
-     },
-     {
-      "serie": "carga_mwmed.NE",
-      "ref": "2026-09-26",
-      "valores": 3
-     },
-     {
-      "serie": "carga_mwmed.S",
-      "ref": "2026-09-26",
-      "valores": 3
-     },
-     {
-      "serie": "carga_mwmed.SE",
-      "ref": "2026-09-26",
-      "valores": 3
-     },
-     {
-      "serie": "carga_mwmed.N",
       "ref": "2026-09-25",
-      "valores": 3
+      "valores": 2
      },
      {
       "serie": "carga_mwmed.NE",
       "ref": "2026-09-25",
-      "valores": 3
+      "valores": 2
      },
      {
       "serie": "carga_mwmed.S",
       "ref": "2026-09-25",
-      "valores": 3
+      "valores": 2
      },
      {
       "serie": "carga_mwmed.SE",
       "ref": "2026-09-25",
-      "valores": 3
-     },
-     {
-      "serie": "carga_mwmed.N",
-      "ref": "2026-09-24",
       "valores": 2
      },
      {
       "serie": "carga_mwmed.NE",
       "ref": "2026-09-24",
-      "valores": 3
+      "valores": 2
      },
      {
       "serie": "carga_mwmed.S",
       "ref": "2026-09-24",
-      "valores": 3
+      "valores": 2
      },
      {
       "serie": "carga_mwmed.SE",
       "ref": "2026-09-24",
-      "valores": 3
-     },
-     {
-      "serie": "carga_mwmed.N",
-      "ref": "2026-09-23",
       "valores": 2
      },
      {
       "serie": "carga_mwmed.NE",
       "ref": "2026-09-23",
-      "valores": 3
+      "valores": 2
      },
      {
       "serie": "carga_mwmed.S",
       "ref": "2026-09-23",
-      "valores": 3
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-23",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-22",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.S",
+      "ref": "2026-09-22",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-22",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.N",
+      "ref": "2026-09-21",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-21",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-21",
+      "valores": 2
      }
     ]
    },
    "limitacoes": [
-    "O ONS mudou o conteúdo da série em 01/03/2021 e em 29/04/2023 (inclusão da estimativa de MMGD); comparações que atravessam essas datas não são homogêneas e não são exibidas como variação.",
+    "O ONS mudou o conteúdo da série em 01/03/2021 (previsão de usinas não despachadas) e na inclusão da estimativa de MMGD, declarada para 29/04/2023 e observada nos dados em 01/05/2023; comparações que atravessam essas datas (ou tocam 29 e 30/04/2023, transição) não são homogêneas e não são exibidas como variação.",
     "Dados em processo de consistência recorrente do ONS, sujeitos a revisão após a publicação.",
-    "Temperatura, dias úteis e feriados afetam a carga e não são ajustados."
+    "Observado com componentes da fonte que não são medição: previsão de usinas não despachadas desde 01/03/2021 (PREVISTO) e estimativa de MMGD desde 01/05/2023 nos dados (ESTIMADO; data declarada 29/04/2023).",
+    "A captura de 28/09/2026, 23:42 (Brasília) trouxe a carga do Nordeste de 26/09/2026 igual a −668,879 MWmed, fora do domínio do dicionário do ONS; o valor não entra na publicação, e a fonte o revisou para 13.984,7 MWmed na captura de 29/09/2026, 23:19 (Brasília).",
+    "Em quarentena: carga do Nordeste em 25/08/2018 (3.969,774 MWmed), regras F2, F3; lacuna de dado de geração no balanço do ONS (eólica 219,7 MWmed no dia contra 6.686,7 e 6.305,7 nos dias vizinhos): o valor não é carga real. O dia fica sem valor para o subsistema e para o SIN.",
+    "3 valores atípicos (regras F2 ou F3) foram publicados porque o balanço de energia do ONS (outro conjunto) os confirma, sem lacuna de geração: S em 06/01/2015; S em 07/01/2015; S em 08/01/2015.",
+    "12 valores diários ausentes na fonte em 3 dias (01/12/2013, 01/02/2014, 09/04/2015; estado conferido no arquivo atual: celula vazia na fonte); ficam vazios, nunca zero nem interpolados.",
+    "Temperatura, dias úteis e feriados afetam a carga e não são ajustados aqui; comparações com os mesmos dias da semana e a decomposição por clima e calendário estão em carga_detalhe.json."
    ],
    "download": null,
-   "notas_fonte": null
+   "notas_fonte": null,
+   "natureza_por_regime": [
+    {
+     "regime": 1,
+     "inicio": "2000-01-01",
+     "fim": "2021-02-28",
+     "natureza": "OBSERVADO",
+     "componentes": []
+    },
+    {
+     "regime": 2,
+     "inicio": "2021-03-01",
+     "fim": "2023-04-28",
+     "natureza": "OBSERVADO",
+     "componentes": [
+      {
+       "natureza": "PREVISTO",
+       "desde": "2021-03-01",
+       "descricao": "previsão de geração das usinas não despachadas pelo ONS, somada pela fonte (não é medição)"
+      }
+     ]
+    },
+    {
+     "regime": 3,
+     "inicio": "2023-04-29",
+     "fim": null,
+     "natureza": "OBSERVADO",
+     "componentes": [
+      {
+       "natureza": "PREVISTO",
+       "desde": "2021-03-01",
+       "descricao": "previsão de geração das usinas não despachadas pelo ONS, somada pela fonte (não é medição)"
+      },
+      {
+       "natureza": "ESTIMADO",
+       "desde": "2023-04-29",
+       "observado_nos_dados_desde": "2023-05-01",
+       "descricao": "estimativa da MMGD com base em dados meteorológicos previstos, somada pela fonte e não publicada separada (declarada pelo ONS a partir de 29/04/2023; observada nos dados a partir de 01/05/2023)"
+      }
+     ]
+    }
+   ]
   },
   "mensal": {
    "indicador": "Carga média mensal do SIN e dos subsistemas",
@@ -12163,144 +12586,190 @@
     "inicio": "2000-01",
     "fim": "2026-09"
    },
-   "publicado_pela_fonte_em": "2026-09-30T22:00:54.014182",
-   "capturado_em": "2026-10-01T02:21:04Z",
-   "validado_em": "2026-10-01T02:21:46Z",
+   "publicado_pela_fonte_em": "2026-09-29T22:00:43.436290",
+   "capturado_em": "2026-09-30T02:19:48Z",
+   "validado_em": "2026-10-01T06:24:01Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
-    "fim": "2026-09-29"
+    "fim": "2026-09-28"
    },
    "transformacoes": [
-    "média aritmética dos valores diários do mês",
+    "média aritmética dos valores diários aceitos do mês",
     "SIN: soma dos quatro subsistemas em cada dia"
    ],
-   "formula": "carga_mensal(s, m) = média de carga(s, d) para os dias d do mês m com dado; o mês corrente é parcial",
+   "formula": "carga_mensal(s, m) = média de carga(s, d) para os dias d do mês m com dado aceito; o mês corrente é parcial",
    "snapshot": {
-    "id": "carga_energia_di@2026-10-01T02:21:04Z",
-    "sha256": "c53fe6778431987437c45dc615a666dbb1e337b4dfb6baf2b9c58d07fe1109a7"
+    "id": "carga_energia_di@2026-09-30T02:19:48Z",
+    "sha256": "b6e8471dc064c63a4db34e9e6e3009a019460c71bff839104a1415ea0dbaefb3"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d95d8f8b4f9e",
+   "versao_codigo": "f5cba38ad40f+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T02:21:46Z",
-    "total": 41,
-    "vintages_comparadas": 29,
+    "detectado_em": "2026-10-01T06:24:01Z",
+    "total": 33,
+    "vintages_comparadas": 28,
     "arquivos": 27,
-    "recapturas_sem_mudanca": 2,
-    "ultimo_download_ok": "2026-10-01T02:21:05Z",
+    "recapturas_sem_mudanca": 1,
+    "ultimo_download_ok": "2026-09-30T02:19:48Z",
     "exemplos": [
      {
-      "serie": "carga_mwmed.NE",
-      "ref": "2026-09-28",
-      "valores": 2
-     },
-     {
-      "serie": "carga_mwmed.S",
-      "ref": "2026-09-28",
+      "serie": "carga_mwmed.N",
+      "ref": "2026-09-26",
       "valores": 2
      },
      {
       "serie": "carga_mwmed.NE",
-      "ref": "2026-09-27",
+      "ref": "2026-09-26",
       "valores": 2
      },
      {
       "serie": "carga_mwmed.S",
-      "ref": "2026-09-27",
+      "ref": "2026-09-26",
       "valores": 2
      },
      {
       "serie": "carga_mwmed.SE",
-      "ref": "2026-09-27",
+      "ref": "2026-09-26",
       "valores": 2
      },
      {
       "serie": "carga_mwmed.N",
-      "ref": "2026-09-26",
-      "valores": 3
-     },
-     {
-      "serie": "carga_mwmed.NE",
-      "ref": "2026-09-26",
-      "valores": 3
-     },
-     {
-      "serie": "carga_mwmed.S",
-      "ref": "2026-09-26",
-      "valores": 3
-     },
-     {
-      "serie": "carga_mwmed.SE",
-      "ref": "2026-09-26",
-      "valores": 3
-     },
-     {
-      "serie": "carga_mwmed.N",
       "ref": "2026-09-25",
-      "valores": 3
+      "valores": 2
      },
      {
       "serie": "carga_mwmed.NE",
       "ref": "2026-09-25",
-      "valores": 3
+      "valores": 2
      },
      {
       "serie": "carga_mwmed.S",
       "ref": "2026-09-25",
-      "valores": 3
+      "valores": 2
      },
      {
       "serie": "carga_mwmed.SE",
       "ref": "2026-09-25",
-      "valores": 3
-     },
-     {
-      "serie": "carga_mwmed.N",
-      "ref": "2026-09-24",
       "valores": 2
      },
      {
       "serie": "carga_mwmed.NE",
       "ref": "2026-09-24",
-      "valores": 3
+      "valores": 2
      },
      {
       "serie": "carga_mwmed.S",
       "ref": "2026-09-24",
-      "valores": 3
+      "valores": 2
      },
      {
       "serie": "carga_mwmed.SE",
       "ref": "2026-09-24",
-      "valores": 3
-     },
-     {
-      "serie": "carga_mwmed.N",
-      "ref": "2026-09-23",
       "valores": 2
      },
      {
       "serie": "carga_mwmed.NE",
       "ref": "2026-09-23",
-      "valores": 3
+      "valores": 2
      },
      {
       "serie": "carga_mwmed.S",
       "ref": "2026-09-23",
-      "valores": 3
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-23",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-22",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.S",
+      "ref": "2026-09-22",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-22",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.N",
+      "ref": "2026-09-21",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.NE",
+      "ref": "2026-09-21",
+      "valores": 2
+     },
+     {
+      "serie": "carga_mwmed.SE",
+      "ref": "2026-09-21",
+      "valores": 2
      }
     ]
    },
    "limitacoes": [
-    "O ONS mudou o conteúdo da série em 01/03/2021 e em 29/04/2023 (inclusão da estimativa de MMGD); comparações que atravessam essas datas não são homogêneas e não são exibidas como variação.",
+    "O ONS mudou o conteúdo da série em 01/03/2021 (previsão de usinas não despachadas) e na inclusão da estimativa de MMGD, declarada para 29/04/2023 e observada nos dados em 01/05/2023; comparações que atravessam essas datas (ou tocam 29 e 30/04/2023, transição) não são homogêneas e não são exibidas como variação.",
     "Dados em processo de consistência recorrente do ONS, sujeitos a revisão após a publicação.",
+    "Observado com componentes da fonte que não são medição: previsão de usinas não despachadas desde 01/03/2021 (PREVISTO) e estimativa de MMGD desde 01/05/2023 nos dados (ESTIMADO; data declarada 29/04/2023).",
+    "A captura de 28/09/2026, 23:42 (Brasília) trouxe a carga do Nordeste de 26/09/2026 igual a −668,879 MWmed, fora do domínio do dicionário do ONS; o valor não entra na publicação, e a fonte o revisou para 13.984,7 MWmed na captura de 29/09/2026, 23:19 (Brasília).",
+    "Em quarentena: carga do Nordeste em 25/08/2018 (3.969,774 MWmed), regras F2, F3; lacuna de dado de geração no balanço do ONS (eólica 219,7 MWmed no dia contra 6.686,7 e 6.305,7 nos dias vizinhos): o valor não é carga real. O dia fica sem valor para o subsistema e para o SIN.",
+    "3 valores atípicos (regras F2 ou F3) foram publicados porque o balanço de energia do ONS (outro conjunto) os confirma, sem lacuna de geração: S em 06/01/2015; S em 07/01/2015; S em 08/01/2015.",
+    "12 valores diários ausentes na fonte em 3 dias (01/12/2013, 01/02/2014, 09/04/2015; estado conferido no arquivo atual: celula vazia na fonte); ficam vazios, nunca zero nem interpolados.",
     "Médias de meses em regimes metodológicos diferentes não são comparáveis diretamente."
    ],
    "download": null,
-   "notas_fonte": null
+   "notas_fonte": null,
+   "natureza_por_regime": [
+    {
+     "regime": 1,
+     "inicio": "2000-01-01",
+     "fim": "2021-02-28",
+     "natureza": "OBSERVADO",
+     "componentes": []
+    },
+    {
+     "regime": 2,
+     "inicio": "2021-03-01",
+     "fim": "2023-04-28",
+     "natureza": "OBSERVADO",
+     "componentes": [
+      {
+       "natureza": "PREVISTO",
+       "desde": "2021-03-01",
+       "descricao": "previsão de geração das usinas não despachadas pelo ONS, somada pela fonte (não é medição)"
+      }
+     ]
+    },
+    {
+     "regime": 3,
+     "inicio": "2023-04-29",
+     "fim": null,
+     "natureza": "OBSERVADO",
+     "componentes": [
+      {
+       "natureza": "PREVISTO",
+       "desde": "2021-03-01",
+       "descricao": "previsão de geração das usinas não despachadas pelo ONS, somada pela fonte (não é medição)"
+      },
+      {
+       "natureza": "ESTIMADO",
+       "desde": "2023-04-29",
+       "observado_nos_dados_desde": "2023-05-01",
+       "descricao": "estimativa da MMGD com base em dados meteorológicos previstos, somada pela fonte e não publicada separada (declarada pelo ONS a partir de 29/04/2023; observada nos dados a partir de 01/05/2023)"
+      }
+     ]
+    }
+   ]
   }
  },
- "fonte_notas": "Dados de carga por subsistema em base diária, medida em MWmed. \r\n\r\nAté fevereiro/2021, os dados representam a carga atendida por usinas despachadas e/ou programadas pelo ONS, com base em dados recebidos pelo Sistema de Supervisão e Controle do ONS. Entre março/2021 e abril/23, os dados representam a carga atendida por usinas despachadas e/ou programadas pelo ONS, com base em dados recebidos pelo Sistema de Supervisão e Controle do ONS, mais a previsão de geração de usinas não despachadas pelo ONS. A partir de 29/04/2023, além dos dados anteriormente considerados, passou a ser incorporado o valor estimado da micro e minigeração distribuída (MMGD), com base em dados meteorológicos previstos.",
+ "fonte_notas": null,
  "downloads": [
   {
    "rotulo": "Carga diária por subsistema e SIN (CSV)",

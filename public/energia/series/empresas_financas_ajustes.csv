@@ -1,0 +1,112 @@
+tipo;cnpj;escopo;documento;dt_refer;ordem;demonstracao;periodo;escala_marcada;fator;referencia;detalhe
+escopo_nao_apresentado;00357038000116;consolidado;DFP;2023-12-31;penultimo;todas;2022-12-31;MIL;;;ativo total igual a zero na coluna
+escala_corrigida;01543032000104;individual;DFP;2019-12-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;01543032000104;individual;DFP;2020-12-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;01543032000104;individual;ITR;2021-06-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;01543032000104;individual;ITR;2021-09-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;01543032000104;individual;DFP;2021-12-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;01543032000104;individual;ITR;2022-03-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;01543032000104;individual;ITR;2022-06-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;01543032000104;individual;ITR;2022-09-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;01543032000104;individual;ITR;2023-03-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;01543032000104;individual;ITR;2023-06-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;01543032000104;individual;ITR;2023-09-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;01543032000104;individual;ITR;2024-03-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;01543032000104;individual;ITR;2024-06-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+fluxos_nao_preenchidos;02291077000193;individual;DFP;2013-12-31;ultimo;DFC;2013-01-01/2013-12-31;MIL;;;DFC com saldos de caixa iguais a zero e caixa de R$ 809 mil no balanço do mesmo documento
+fluxos_nao_preenchidos;02291077000193;individual;DFP;2014-12-31;penultimo;DFC;2013-01-01/2013-12-31;MIL;;;saldo inicial de caixa 0 contra saldo final do exercício anterior de R$ 472 mil
+escopo_nao_apresentado;02302101000142;consolidado;DFP;2010-12-31;penultimo;todas;2009-12-31;MIL;;;ativo total igual a zero na coluna
+escopo_nao_apresentado;02998301000181;consolidado;DFP;2015-12-31;penultimo;todas;2014-12-31;MIL;;;ativo total igual a zero na coluna
+escopo_nao_apresentado;02998301000181;consolidado;DFP;2023-12-31;ultimo;todas;2023-12-31;MIL;;;ativo total igual a zero na coluna
+escopo_nao_apresentado;02998301000181;consolidado;ITR;2024-03-31;ultimo;todas;2024-03-31;MIL;;;ativo total igual a zero na coluna
+escopo_nao_apresentado;02998301000181;consolidado;ITR;2024-06-30;ultimo;todas;2024-06-30;MIL;;;ativo total igual a zero na coluna
+escopo_nao_apresentado;02998301000181;consolidado;ITR;2024-09-30;ultimo;todas;2024-09-30;MIL;;;ativo total igual a zero na coluna
+escopo_nao_apresentado;02998301000181;consolidado;DFP;2024-12-31;penultimo;todas;2023-12-31;MIL;;;ativo total igual a zero na coluna
+escopo_nao_apresentado;02998301000181;consolidado;DFP;2024-12-31;ultimo;todas;2024-12-31;MIL;;;ativo total igual a zero na coluna
+escopo_nao_apresentado;02998301000181;consolidado;DFP;2025-12-31;penultimo;todas;2024-12-31;MIL;;;ativo total igual a zero na coluna
+escopo_nao_apresentado;02998301000181;consolidado;DFP;2025-12-31;ultimo;todas;2025-12-31;MIL;;;ativo total igual a zero na coluna
+escala_corrigida;03076274000152;individual;DFP;2010-12-31;todas;todas;;UNIDADE;1000;DFP 2011-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;04739720000124;individual;DFP;2019-12-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escopo_nao_apresentado;06981176000158;consolidado;DFP;2016-12-31;penultimo;todas;2015-12-31;MIL;;;ativo total igual a zero na coluna
+escopo_nao_apresentado;07823262000103;consolidado;DFP;2022-12-31;penultimo;todas;2021-12-31;MIL;;;ativo total igual a zero na coluna
+escopo_nao_apresentado;08439659000150;consolidado;DFP;2011-12-31;penultimo;todas;2010-12-31;MIL;;;ativo total igual a zero na coluna
+escopo_nao_apresentado;08560444000193;consolidado;DFP;2022-12-31;penultimo;todas;2021-12-31;MIL;;;ativo total igual a zero na coluna
+escopo_nao_apresentado;08560444000193;consolidado;DFP;2022-12-31;ultimo;todas;2022-12-31;MIL;;;ativo total igual a zero na coluna
+escopo_nao_apresentado;08560444000193;consolidado;DFP;2023-12-31;penultimo;todas;2022-12-31;MIL;;;ativo total igual a zero na coluna
+escopo_nao_apresentado;08560444000193;consolidado;DFP;2023-12-31;ultimo;todas;2023-12-31;MIL;;;ativo total igual a zero na coluna
+fluxos_nao_preenchidos;08560444000193;individual;DFP;2025-12-31;ultimo;DFC;2025-01-01/2025-12-31;MIL;;;saldo inicial de caixa 0 contra saldo final do exercício anterior de R$ 203.811 mil
+fluxos_nao_preenchidos;08560444000193;individual;DFP;2025-12-31;ultimo;DRE;2025-01-01/2025-12-31;MIL;;;saldo inicial de caixa 0 contra saldo final do exercício anterior de R$ 203.811 mil
+demonstracao_zerada;08560444000193;individual;ITR;2026-03-31;ultimo;todas;2026-03-31;MIL;;;ativo total igual a zero na coluna
+demonstracao_zerada;08560444000193;individual;ITR;2026-06-30;ultimo;todas;2026-06-30;MIL;;;ativo total igual a zero na coluna
+demonstracao_zerada;08773191000136;consolidado;DFP;2015-12-31;penultimo;todas;2014-12-31;MIL;;;ativo total igual a zero na coluna
+fluxos_nao_preenchidos;08773191000136;consolidado;DFP;2016-12-31;penultimo;DFC;2015-01-01/2015-12-31;MIL;;;DFC com saldos de caixa iguais a zero e caixa de R$ 152.182 mil no balanço do mesmo documento
+escala_corrigida;08773191000136;consolidado;ITR;2021-03-31;todas;todas;;UNIDADE;1000;DFP 2023-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+demonstracao_zerada;08773191000136;individual;DFP;2015-12-31;penultimo;todas;2014-12-31;MIL;;;ativo total igual a zero na coluna
+escala_corrigida;08773191000136;individual;ITR;2021-03-31;todas;todas;;UNIDADE;1000;DFP 2023-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;08935054000150;consolidado;DFP;2016-12-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;08935054000150;consolidado;ITR;2024-06-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;08935054000150;consolidado;ITR;2024-09-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;08935054000150;consolidado;ITR;2025-03-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;08935054000150;consolidado;ITR;2025-06-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;08935054000150;consolidado;ITR;2025-09-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;08935054000150;individual;DFP;2016-12-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;08935054000150;individual;ITR;2024-06-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;08935054000150;individual;ITR;2024-09-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;08935054000150;individual;ITR;2025-03-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;08935054000150;individual;ITR;2025-06-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;08935054000150;individual;ITR;2025-09-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;09149503000106;consolidado;ITR;2023-06-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;09149503000106;consolidado;ITR;2023-09-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;09149503000106;consolidado;ITR;2024-03-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;09149503000106;consolidado;ITR;2024-06-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;09149503000106;consolidado;ITR;2024-09-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;09149503000106;consolidado;ITR;2025-03-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;09149503000106;consolidado;ITR;2025-06-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;09149503000106;consolidado;ITR;2025-09-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;09149503000106;consolidado;ITR;2026-03-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;09149503000106;consolidado;ITR;2026-06-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;09149503000106;individual;ITR;2023-06-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;09149503000106;individual;ITR;2023-09-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;09149503000106;individual;ITR;2024-03-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;09149503000106;individual;ITR;2024-06-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;09149503000106;individual;ITR;2024-09-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;09149503000106;individual;ITR;2025-03-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;09149503000106;individual;ITR;2025-06-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;09149503000106;individual;ITR;2025-09-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;09149503000106;individual;ITR;2026-03-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;09149503000106;individual;ITR;2026-06-30;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+fluxos_nao_preenchidos;10338320000100;individual;DFP;2010-12-31;penultimo;DFC;2009-01-01/2009-12-31;MIL;;;DFC com saldos de caixa iguais a zero e caixa de R$ 28.014 mil no balanço do mesmo documento
+escala_corrigida;10502676000137;individual;DFP;2018-12-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;10502676000137;individual;DFP;2019-12-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;10502676000137;individual;DFP;2020-12-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;10502676000137;individual;DFP;2021-12-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;10502676000137;individual;DFP;2022-12-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;10835932000108;individual;DFP;2019-12-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+fluxos_nao_preenchidos;20514555000169;individual;DFP;2022-12-31;penultimo;DFC;2021-01-01/2021-12-31;MIL;;;saldo inicial de caixa 0 contra saldo final do exercício anterior de R$ 7.337 mil
+fluxos_nao_preenchidos;20514555000169;individual;DFP;2022-12-31;ultimo;DFC;2022-01-01/2022-12-31;MIL;;;DFC com saldos de caixa iguais a zero e caixa de R$ 10.708 mil no balanço do mesmo documento
+escala_corrigida;21254073000180;individual;DFP;2014-12-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;21254073000180;individual;DFP;2015-12-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;21254073000180;individual;DFP;2016-12-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+fluxos_nao_preenchidos;26845702000160;individual;DFP;2017-12-31;penultimo;DFC;2016-01-01/2016-12-31;MIL;;;DFC com saldos de caixa iguais a zero e caixa de R$ 1 mil no balanço do mesmo documento
+demonstracao_zerada;27967244000102;individual;DFP;2017-12-31;penultimo;todas;2016-12-31;MIL;;;ativo total igual a zero na coluna
+escopo_nao_apresentado;28201130000101;consolidado;DFP;2018-12-31;penultimo;todas;2017-12-31;MIL;;;ativo total igual a zero na coluna
+escala_corrigida;28925264000175;individual;DFP;2019-12-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+demonstracao_zerada;31001230000107;consolidado;DFP;2018-12-31;penultimo;todas;2017-12-31;MIL;;;ativo total igual a zero na coluna
+escala_corrigida;31001230000107;consolidado;DFP;2019-12-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+demonstracao_zerada;31001230000107;individual;DFP;2018-12-31;penultimo;todas;2017-12-31;MIL;;;ativo total igual a zero na coluna
+escala_corrigida;31001230000107;individual;DFP;2019-12-31;todas;todas;;UNIDADE;1000;DFP 2025-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escopo_nao_apresentado;33541368000116;consolidado;DFP;2014-12-31;penultimo;todas;2013-12-31;MIL;;;ativo total igual a zero na coluna
+coluna_nao_preenchida;33541368000116;consolidado;ITR;2021-03-31;ultimo;saldo;2021-03-31;MIL;;;valores 0 ou ±1 na unidade do documento; o outro escopo da mesma coluna chega a 29.546.317 unidades
+coluna_nao_preenchida;33541368000116;consolidado;ITR;2021-06-30;ultimo;DRE;2021-04-01/2021-06-30;MIL;;;valores 0 ou ±1 na unidade do documento; o outro escopo da mesma coluna chega a 1.774.479 unidades
+coluna_nao_preenchida;33541368000116;consolidado;ITR;2021-06-30;ultimo;saldo;2021-06-30;MIL;;;valores 0 ou ±1 na unidade do documento; o outro escopo da mesma coluna chega a 28.552.507 unidades
+escopo_nao_apresentado;33541368000116;consolidado;DFP;2024-12-31;penultimo;todas;2023-12-31;MIL;;;ativo total igual a zero na coluna
+escopo_nao_apresentado;37663076000107;consolidado;DFP;2021-12-31;penultimo;todas;2020-12-31;MIL;;;ativo total igual a zero na coluna
+demonstracao_zerada;37663076000107;individual;DFP;2020-12-31;penultimo;todas;2019-12-31;UNIDADE;;;ativo total igual a zero na coluna
+escopo_nao_apresentado;38199406000118;individual;DFP;2020-12-31;penultimo;todas;2019-12-31;MIL;;;ativo total igual a zero na coluna
+fluxos_nao_preenchidos;39881421000104;consolidado;DFP;2021-12-31;penultimo;DFC;2020-01-01/2020-12-31;MIL;;;DFC com saldos de caixa iguais a zero e caixa de R$ 1 mil no balanço do mesmo documento
+escala_corrigida;40480481000102;consolidado;ITR;2022-12-31;todas;todas;;MIL;0.001;DFP 2024-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+escala_corrigida;40480481000102;individual;ITR;2022-12-31;todas;todas;;MIL;0.001;DFP 2024-12-31 (MIL);o mesmo VL_CONTA aparece com a outra marca de escala em documento ligado a este
+demonstracao_zerada;42500384000151;consolidado;DFP;2021-12-31;penultimo;todas;2020-12-31;MIL;;;ativo total igual a zero na coluna
+demonstracao_zerada;42500384000151;individual;DFP;2021-12-31;penultimo;todas;2020-12-31;MIL;;;ativo total igual a zero na coluna
+demonstracao_zerada;59115685000164;consolidado;DFP;2025-12-31;penultimo;todas;2024-12-31;MIL;;;ativo total igual a zero na coluna
+demonstracao_zerada;59115685000164;individual;DFP;2025-12-31;penultimo;todas;2024-12-31;MIL;;;ativo total igual a zero na coluna

@@ -1,0 +1,9 @@
+{
+ "titulo": "Carga de Energia Diária",
+ "nome": "carga-energia",
+ "licenca": "Creative Commons Atribuição",
+ "modificado": "2026-09-30T22:00:57.513821",
+ "notas": "Dados de carga por subsistema em base diária, medida em MWmed. \r\n\r\nAté fevereiro/2021, os dados representam a carga atendida por usinas despachadas e/ou programadas pelo ONS, com base em dados recebidos pelo Sistema de Supervisão e Controle do ONS. Entre março/2021 e abril/23, os dados representam a carga atendida por usinas despachadas e/ou programadas pelo ONS, com base em dados recebidos pelo Sistema de Supervisão e Controle do ONS, mais a previsão de geração de usinas não despachadas pelo ONS. A partir de 29/04/2023, além dos dados anteriormente considerados, passou a ser incorporado o valor estimado da micro e minigeração distribuída (MMGD), com base em dados meteorológicos previstos.\r\n\r\n------------------------------------------------------------------------------------------------------------------------------------------------\r\n\r\nOs dados disponibilizados fazem parte de um processo de consistência recorrente e, portanto, podem ser atualizados após a sua publicação",
+ "url": "https://dados.ons.org.br/dataset/carga-energia",
+ "capturado_em": "2026-10-01T06:40:24Z"
+}

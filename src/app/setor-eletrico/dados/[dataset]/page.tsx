@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { gold } from "@/lib/energia/gold";
 import { carimbo, dataBR } from "@/lib/energia/formato";
-import { COLUNAS_ARQUIVO, DATASETS_INTEGRADOS, datasetPorSlug } from "@/lib/energia/datasets";
+import { COLUNAS_ARQUIVO, DATASETS_INTEGRADOS, datasetPorSlug, urlDoConjunto } from "@/lib/energia/datasets";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 
 export const dynamic = "force-static";
@@ -56,11 +56,11 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
         </header>
         <dl className="grid gap-px border border-linha bg-linha md:grid-cols-2">
           {[
-            ["Página oficial do conjunto", <a key="u" href={e.url} target="_blank" rel="noopener noreferrer" className="break-all text-energia-dark underline underline-offset-4">{e.url} ↗</a>],
-            ["Licença", e.licenca ?? "não informada"],
+            ["Página oficial do conjunto", <a key="u" href={urlDoConjunto(e) ?? undefined} target="_blank" rel="noopener noreferrer" className="break-all text-energia-dark underline underline-offset-4">{urlDoConjunto(e)} ↗</a>],
+            ["Licença", e.licenca ?? (cat?.portais[e.orgao] as { licenca?: string | null } | undefined)?.licenca ?? "não informada"],
             ["Última modificação de metadados na fonte", dataFonte(e.modificado_na_fonte)],
-            ["Formatos publicados", e.formatos.join(", ") || "não informado"],
-            ["Usado nas páginas", d.paginas.map((p) => p.rotulo).join(", ") + (e.modelos.length ? ` · modelos ${e.modelos.join(", ")}` : "")],
+            ["Formatos publicados", (e.formatos ?? []).join(", ") || "não informado"],
+            ["Usado nas páginas", d.paginas.map((p) => p.rotulo).join(", ") + ((e.modelos ?? []).length ? ` · modelos ${(e.modelos ?? []).join(", ")}` : "")],
             ["Última captura", f?.ultima_captura ? carimbo(f.ultima_captura) : "sem captura"],
             ["Snapshot", f?.snapshot ?? "–"],
             ["sha256 do snapshot", <span key="s" className="break-all font-mono text-xs">{f?.snapshot_sha256 ?? "–"}</span>],

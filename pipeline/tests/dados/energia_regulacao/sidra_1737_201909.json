@@ -1,0 +1,28 @@
+[
+  {
+    "NC": "Nível Territorial (Código)",
+    "NN": "Nível Territorial",
+    "MC": "Unidade de Medida (Código)",
+    "MN": "Unidade de Medida",
+    "V": "Valor",
+    "D1C": "Brasil (Código)",
+    "D1N": "Brasil",
+    "D2C": "Variável (Código)",
+    "D2N": "Variável",
+    "D3C": "Mês (Código)",
+    "D3N": "Mês"
+  },
+  {
+    "NC": "1",
+    "NN": "Brasil",
+    "MC": "30",
+    "MN": "Número-índice",
+    "V": "5227.8400000000000",
+    "D1C": "1",
+    "D1N": "Brasil",
+    "D2C": "2266",
+    "D2N": "IPCA - Número-índice (base: dezembro de 1993 = 100)",
+    "D3C": "201909",
+    "D3N": "setembro 2019"
+  }
+]

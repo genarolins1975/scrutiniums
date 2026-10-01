@@ -17,9 +17,9 @@ import traceback
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from pipeline.energia import base, catalogo, validacoes  # noqa: E402
+from pipeline.energia import base, catalogo, metricas, modulos, validacoes  # noqa: E402
 from pipeline.energia.fontes import ccee, ons  # noqa: E402
-from pipeline.energia.gold import carga, cmo, geracao, hidrologia, modelos, pld, rede, sintese  # noqa: E402
+from pipeline.energia.gold import carga, cmo, geracao, hidrologia, modelos, pld, rede  # noqa: E402
 from pipeline.energia.gold import comum as c  # noqa: E402
 
 
@@ -78,9 +78,8 @@ def main(argv):
                      ("rede.json", rede.construir), ("cmo.json", cmo.construir)):
         print(f"[energia] gold {nome}", flush=True)
         g[nome] = publicar(nome, construir_validado(nome, fn), regressoes, falhas)
-    g["sintese.json"] = publicar("sintese.json",
-                                 construir("sintese.json", sintese.construir, g["hidrologia.json"], g["carga.json"],
-                                           g["geracao.json"], g["pld.json"], g["cmo.json"]), regressoes, falhas)
+    # sintese.json (Visão geral) é construída pelo módulo visao (pipeline/energia/modulos/visao.py,
+    # ordem 98), depois de todos os módulos temáticos cujas golds ela lê
     # previsões e modelos: violação de governança derruba a publicação (a anterior fica)
     anterior = (base.le_gold("previsoes.json") or {}).get("arquivo")
     try:
@@ -90,6 +89,51 @@ def main(argv):
     except Exception as e:
         traceback.print_exc()
         regressoes.append({"gold": "previsoes.json", "motivo": f"governança: {e}"[:300]})
+    # módulos temáticos (pipeline/energia/modulos): coleta própria por família de fontes e
+    # uma gold cada, com a mesma sentinela de regressão das golds de operação
+    status_modulos = {}
+    fontes_modulos = {}
+    ctx = {"hoje": c.hoje_brasilia(), "golds": g, "con_principal": con, "sem_rede": sem_coleta}
+    for mod in modulos.descobrir():
+        reg = mod.REGISTRO
+        nome = reg["gold"]
+        con_f = base.conecta_familia(reg["familia"])
+        try:
+            if not sem_coleta and callable(getattr(mod, "coletar", None)):
+                print(f"[energia] coletando módulo {reg['id']}…", flush=True)
+                try:
+                    status_modulos[reg["id"]] = mod.coletar(con_f, ctx)
+                except Exception as e:  # coletor não pode derrubar os demais módulos
+                    traceback.print_exc()
+                    status_modulos[reg["id"]] = {"ok": False, "erro": str(e)[:300]}
+                con_f.commit()
+            print(f"[energia] gold {nome}", flush=True)
+            g[nome] = publicar(nome, construir(nome, mod.construir, con_f, ctx), regressoes, falhas)
+            for d in reg["datasets"]:
+                ds = d.get("dataset_silver")
+                if not ds:
+                    continue
+                snap = c.snapshot_de(con_f, ds)
+                fontes_modulos[ds] = {"modulo": reg["id"], "familia": reg["familia"],
+                                      "ultima_captura": c.ultima_captura(snap), "snapshot": snap.get("id"),
+                                      "snapshot_sha256": snap.get("sha256"), "ultima_tentativa": base.ultima_coleta(con_f, ds),
+                                      "capturas": snap.get("capturas", []),
+                                      "recapturas_sem_mudanca": (snap.get("revisoes") or {}).get("recapturas_sem_mudanca")}
+        finally:
+            con_f.close()
+    status_coleta["modulos"] = status_modulos
+    # dicionário dos arquivos baixáveis dos módulos (REGISTRO["arquivos"]: url → colunas)
+    arquivos = {}
+    for mod in modulos.descobrir():
+        for url, desc in (mod.REGISTRO.get("arquivos") or {}).items():
+            arquivos[url] = {"colunas": desc, "modulo": mod.REGISTRO["id"], "gold": mod.REGISTRO["gold"]}
+    base.escreve_gold("arquivos.json", {**c.cabecalho("arquivos.json"), "arquivos": arquivos})
+    # catálogo único de métricas: a definição publicada é a mesma que o pipeline usa
+    try:
+        base.escreve_gold("metricas.json", {**c.cabecalho("metricas.json"), "metricas": metricas.todas()})
+    except Exception as e:
+        traceback.print_exc()
+        regressoes.append({"gold": "metricas.json", "motivo": f"catálogo de métricas inválido: {e}"[:300]})
     # catálogo: sem rede, reaproveita o bruto em cache local
     if brutos_catalogo is None:
         pasta = os.path.join(base.DADOS, "meta")
@@ -104,6 +148,7 @@ def main(argv):
                       "snapshot_sha256": snap.get("sha256"), "ultima_tentativa": base.ultima_coleta(con, ds),
                       "capturas": snap.get("capturas", []), "historico": snap.get("historico", []),
                       "recapturas_sem_mudanca": (snap.get("revisoes") or {}).get("recapturas_sem_mudanca")}
+    fontes.update(fontes_modulos)
     meta = {
         **c.cabecalho("meta.json"),
         "golds": {k: {"disponivel": _integro(v), "gerado_em": (v or {}).get("gerado_em")} for k, v in g.items()},
@@ -112,6 +157,7 @@ def main(argv):
         "builders_falhos": falhas,
         "duracao_s": round(time.time() - t0, 1),
         "coleta_executada": not sem_coleta,
+        "status_coleta_modulos": status_modulos,
     }
     base.escreve_gold("meta.json", meta)
     con.close()

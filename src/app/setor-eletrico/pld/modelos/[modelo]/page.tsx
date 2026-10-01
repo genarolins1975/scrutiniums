@@ -2,124 +2,354 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
+import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
+import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { EstadoModelo } from "@/components/energia/EstadoModelo";
-import { gold } from "@/lib/energia/gold";
-import { dataBR } from "@/lib/energia/formato";
+import { PrevisoesCoeficientes } from "@/components/energia/PrevisoesCoeficientes";
+import {
+  PrevisoesAuditoria,
+  PrevisoesAviso,
+  PrevisoesFichaLinha,
+  PrevisoesLeitura,
+  PrevisoesRecorte,
+  PrevisoesResposta,
+  PrevisoesSeguir,
+} from "@/components/energia/PrevisoesPagina";
+import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
+import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { carimbo, dataBR } from "@/lib/energia/formato";
+import { integra, lerGold } from "@/lib/energia/gold";
+import {
+  GOLD_PREVISOES,
+  ROTA_MODELOS,
+  VARIAVEL_D7,
+  colunasCoeficientes,
+  emissaoDoModelo,
+  enderecoPainel,
+  linhasCoeficientes,
+  linhasReexecucao,
+  minusculaInicial,
+  perguntaPainel,
+  respostaFicha,
+  rotaModelo,
+  rotuloEstadoModelo,
+  slugModelo,
+  textoReexecucao,
+  textoTolerancia,
+} from "@/lib/energia/previsoes";
+import type { Ficha, PrevisoesDesempenhoGold } from "@/lib/energia/tipos-previsoes";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
 
+const gold = () => lerGold<PrevisoesDesempenhoGold>(GOLD_PREVISOES);
+
 export function generateStaticParams() {
-  return (gold.modelos()?.modelos ?? []).map((m) => ({ modelo: m.id }));
+  const g = gold();
+  return integra(g) ? g.fichas.map((f) => ({ modelo: slugModelo(f.codigo) })) : [];
 }
 
 export function generateMetadata({ params }: { params: { modelo: string } }): Metadata {
-  const m = gold.modelos()?.modelos.find((x) => x.id === params.modelo);
-  if (!m) return {};
+  const g = gold();
+  const f = integra(g) ? g.fichas.find((x) => slugModelo(x.codigo) === params.modelo) : undefined;
+  if (!f) return {};
   return {
-    title: `Model card ${m.codigo}: ${m.nome}`,
-    description: `Objetivo, estado (${m.estado.toLowerCase()}), fórmula, dados, janela, limitações e falhas conhecidas do modelo ${m.codigo} de previsão do PLD.`,
-    alternates: { canonical: `/setor-eletrico/pld/modelos/${m.id}` },
+    title: `Ficha do modelo ${f.codigo}: ${f.nome}`,
+    description: `Estado (${rotuloEstadoModelo(f.estado)}), entradas, fórmula, transformações, configuração, corte, hipóteses, aprovação, limitações e reexecução do modelo ${f.codigo} de previsão do PLD.`,
+    alternates: { canonical: rotaModelo(f.codigo) },
   };
 }
 
-function L({ k, children }: { k: string; children: React.ReactNode }) {
-  return (
-    <div className="border-t border-linha py-4 md:grid md:grid-cols-[13rem_1fr] md:gap-6">
-      <dt className="rotulo text-mineral">{k}</dt>
-      <dd className="mt-1 text-sm leading-relaxed text-carvao md:mt-0">{children}</dd>
-    </div>
-  );
+const ROTULO_RESULTADO: Record<string, string> = { aprovado: "aprovado", ressalva: "com ressalva", reprovado: "reprovado" };
+
+/** Valor de configuração em texto legível (lista, objeto por frequência ou número). */
+function textoConfig(v: unknown): string {
+  if (Array.isArray(v)) return v.map((x) => (typeof x === "number" ? x.toLocaleString("pt-BR") : String(x))).join("; ");
+  if (v && typeof v === "object") return Object.entries(v as Record<string, unknown>).map(([k, x]) => `${k}: ${textoConfig(x)}`).join("; ");
+  if (typeof v === "number") return v.toLocaleString("pt-BR");
+  return String(v);
 }
 
-export default function ModelCard({ params }: { params: { modelo: string } }) {
-  const reg = gold.modelos();
-  const m = reg?.modelos.find((x) => x.id === params.modelo);
-  if (!reg || !m) notFound();
-  const retido = !reg.publicacao_resultados.liberada;
+export default function FichaModelo({ params }: { params: { modelo: string } }) {
+  const g = gold();
+  if (!integra(g)) notFound();
+  const f: Ficha | undefined = g.fichas.find((x) => slugModelo(x.codigo) === params.modelo);
+  if (!f) notFound();
+
+  const versao = g.gerado_em.slice(0, 10);
+  const fonte = "Observatório, registro de modelos de previsão do PLD (pipeline/energia/previsoes)";
+  const coef = linhasCoeficientes([f]);
+  const variaveis = f.coeficientes_ultimo_ajuste?.variaveis ?? [];
+  const reexec = f.aprovacao.referencia_experimental ? linhasReexecucao(g) : [];
+  const ehB0 = f.aprovacao.referencia_experimental;
+  const ancora = `ficha-${slugModelo(f.codigo)}`;
+  const downloads = g.downloads.filter((d) => (coef.length ? /previsoes_ajustes_c2|previsoes_emissoes/ : /previsoes_emissoes/).test(d.url));
+  const proveniencia = ehB0 && "proveniencia" in g.previsao_atual && g.previsao_atual.proveniencia ? g.previsao_atual.proveniencia : g.proveniencia;
+  const impl = f.implementacao as { codigo?: string; versao?: string; mesma_definicao_da_pesquisa?: boolean; diferencas?: string[]; restricao_preco?: string } | null;
+
   return (
     <>
-      <CabecalhoEnergia atual="pld" />
+      <CabecalhoEnergia atual="pld-modelos" />
       <MarcaVisita secao="energia:pld-modelos" />
-      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
-        <nav aria-label="Trilha" className="pt-8 text-sm text-mineral">
-          <Link href="/setor-eletrico/pld" className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center underline underline-offset-4">PLD</Link> ·{" "}
-          <Link href="/setor-eletrico/pld/modelos" className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center underline underline-offset-4">Modelos</Link> · {m.codigo}
+      <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-4 pb-16 sm:px-6">
+        <nav aria-label="Trilha" className="pt-6 text-sm text-mineral">
+          <Link href="/setor-eletrico/pld" className="inline-flex min-h-[44px] items-center underline underline-offset-4">
+            PLD
+          </Link>{" "}
+          ·{" "}
+          <Link href={ROTA_MODELOS} className="inline-flex min-h-[44px] items-center underline underline-offset-4">
+            Registro de modelos
+          </Link>{" "}
+          · {f.codigo}
         </nav>
-        <header className="pb-6 pt-4">
-          <p className="rotulo text-mineral">Cartão do modelo · versão {m.versao}</p>
-          <h1 className="mt-2 font-serif text-[clamp(2rem,4.4vw,3rem)] leading-tight text-carvao">{m.codigo} · {m.nome}</h1>
-          <p className="mt-3"><EstadoModelo estado={m.estado} comTexto /></p>
-        </header>
-        <section aria-labelledby="essencial-h" className="mb-8 grid gap-px border border-linha bg-linha md:grid-cols-3">
-          <h2 id="essencial-h" className="sr-only">O essencial</h2>
-          <div className="bg-superficie p-5">
-            <p className="rotulo text-mineral">O que faz</p>
-            <p className="mt-2 text-sm leading-relaxed text-carvao">{m.resumo ?? m.objetivo}</p>
-          </div>
-          <div className="bg-superficie p-5">
-            <p className="rotulo text-mineral">Pode ser usado como previsão oficial?</p>
-            <p className="mt-2 text-sm leading-relaxed text-carvao">
-              {m.estado === "PRODUCAO"
-                ? "Sim: está em produção."
-                : "Não. Está em pesquisa: ainda não passou pelas etapas de validação, e modelo fora de produção não gera previsão oficial."}
-            </p>
-          </div>
-          <div className="bg-superficie p-5">
-            <p className="rotulo text-mineral">Principal limitação</p>
-            <p className="mt-2 text-sm leading-relaxed text-carvao">{m.limitacao_principal ?? m.limitacoes[0]}</p>
-          </div>
-        </section>
-        <h2 className="font-serif text-xl text-carvao">Ficha técnica</h2>
-        <dl>
-          <L k="Objetivo">{m.objetivo}</L>
-          <L k="Papel">{m.papel}</L>
-          <L k="Alvo e unidade">{reg.definicoes.alvo}</L>
-          <L k="Frequência e horizonte">{reg.definicoes.entregas}</L>
-          <L k="Submercados">Sudeste/Centro-Oeste, Sul, Nordeste e Norte</L>
-          <L k="Metodologia">{m.metodologia}</L>
-          <L k="Fórmula">{m.formula ? <code className="block whitespace-pre-wrap break-words bg-papel px-2 py-1.5 font-mono text-xs">{m.formula}</code> : "Não publicada: a composição exata está no arquivo de configuração da pesquisa, identificado nas evidências."}</L>
-          <L k="Variáveis de entrada">
-            <ul className="list-disc space-y-1 pl-5">{m.features.map((f) => <li key={f}>{f}</li>)}</ul>
-          </L>
-          <L k="Dados de treinamento">{m.dados_treinamento}</L>
-          <L k="Janela histórica">{m.janela}</L>
-          <L k="Horário de corte e elegibilidade">{reg.definicoes.cenario_de_elegibilidade.replace(/\.$/, "")}. Corte operacional: {reg.definicoes.corte_operacional}.</L>
-          <L k="Quantis">{reg.definicoes.quantis}</L>
-          <L k="Referências de comparação">{m.benchmarks.length ? m.benchmarks.join(", ") : "É a referência simples contra a qual os demais são comparados."}</L>
-          <L k="Teste retrospectivo, métricas e calibração">
-            {retido ? (
-              <span className="text-carvao-muted">Retidos até a liberação: {reg.publicacao_resultados.motivo} Os arquivos de resultado estão identificados nas evidências abaixo, com sha256.</span>
-            ) : (
-              "Ver arquivos de evidência."
-            )}
-          </L>
-          <L k="Limitações">
-            <ul className="list-disc space-y-1 pl-5">{m.limitacoes.map((x) => <li key={x}>{x}</li>)}</ul>
-          </L>
-          <L k="Falhas conhecidas">
-            {m.falhas_conhecidas.length ? <ul className="list-disc space-y-1 pl-5">{m.falhas_conhecidas.map((x) => <li key={x}>{x}</li>)}</ul> : "Nenhuma registrada."}
-          </L>
-          <L k="Data de promoção">{m.promovido_em ? dataBR(m.promovido_em) : "Não promovido."}</L>
-          <L k="Versão do código">{m.versao_codigo ? <span className="font-mono text-xs">{m.versao_codigo}</span> : "não informada"}</L>
-          <L k="Snapshot">{m.snapshot ?? "não informado"}</L>
-          <L k="Evidências">
-            <p className="mb-2 text-xs text-carvao-muted">
-              Arquivos internos da pesquisa, ainda não publicados. O caminho e o sha256 permitem conferir, quando forem publicados, que são exatamente
-              os arquivos citados aqui.
-            </p>
-            <ul className="space-y-2">
-              {m.evidencias.map((e) => (
-                <li key={e.arquivo + e.descricao}>
-                  {e.descricao}
-                  <span className="block break-all font-mono text-[0.7rem] text-mineral">{e.arquivo} · sha256 {e.sha256}</span>
-                </li>
-              ))}
-            </ul>
-          </L>
-          <L k="Auditoria">{m.auditoria}</L>
-        </dl>
+        <CabecalhoModulo
+          rotulo={`Ficha do modelo · versão ${f.versao}`}
+          titulo={`${f.codigo} · ${f.nome}`}
+          referencia={<>Registro de modelos na execução de {carimbo(g.gerado_em)}; configuração sha256 {g.dados.configuracao_sha256.slice(0, 12)}.</>}
+        >
+          <span className="inline-flex flex-wrap items-center gap-2">
+            <EstadoModelo estado={f.estado} comTexto />
+          </span>{" "}
+          {f.aprovacao.leitura.trim()}
+        </CabecalhoModulo>
+        <ModoProfundidade>
+          <Bloco id="ficha">
+            <PainelEvidencia
+              id={ancora}
+              pergunta={`Como o ${f.codigo} calcula a previsão do PLD?`}
+              subtitulo={`${f.nome}, versão ${f.versao} · ${f.papel ?? "sem papel registrado"}`}
+              natureza="PREVISTO"
+              porQueImporta={
+                <>
+                  A ficha é a receita do número: sem ela, ninguém confere a previsão arquivada nem entende por que ela muda. Também diz o que o modelo não pode fazer.
+                </>
+              }
+              oQueMudou={
+                <>
+                  {f.coeficientes_ultimo_ajuste?.segmentos[0]
+                    ? `Pesos reajustados em ${dataBR(f.coeficientes_ultimo_ajuste.segmentos[0].origem_ajuste)}. `
+                    : "Sem pesos ajustados: o modelo não tem coeficientes. "}
+                  Estado {rotuloEstadoModelo(f.aprovacao.estado)}
+                  {f.aprovacao.promovido_em ? `, promovido em ${dataBR(f.aprovacao.promovido_em)}` : ", nunca promovido"}.
+                </>
+              }
+              comoInterpretar={<>{f.formula ?? f.motivo_sem_implementacao ?? "Sem fórmula publicada."}</>}
+              naoConcluir={
+                <>
+                  A ficha não diz se o modelo acerta: o desempenho está no painel de desempenho. {f.limitacoes?.[0] ?? ""}
+                </>
+              }
+              proveniencia={proveniencia}
+            >
+              <div className="space-y-6">
+                <PrevisoesResposta id="p014">{respostaFicha(f, g)}</PrevisoesResposta>
+                <PrevisoesRecorte
+                  periodo={
+                    f.coeficientes_ultimo_ajuste?.segmentos[0]
+                      ? `Versão ${f.versao}; último ajuste em ${dataBR(f.coeficientes_ultimo_ajuste.segmentos[0].origem_ajuste)}`
+                      : `Versão ${f.versao}`
+                  }
+                  universo="Sete horizontes (W1 a W4 e M1 a M3) e quatro submercados; um ajuste por horizonte e submercado nos candidatos"
+                  unidade={coef.length ? "Coeficientes na unidade de cada variável; previsões em R$/MWh" : "R$/MWh nominais"}
+                />
+                {!f.implementado_no_repositorio && (
+                  <PrevisoesAviso tipo="alerta">
+                    Sem implementação no repositório: {minusculaInicial(f.motivo_sem_implementacao ?? "motivo não registrado")}
+                    {f.pesos_c1_motivo && f.pesos_c1_motivo !== f.motivo_sem_implementacao ? ` ${f.pesos_c1_motivo}` : ""}
+                  </PrevisoesAviso>
+                )}
+
+                {reexec.length > 0 && (
+                  <section aria-labelledby="ficha-reexec" className="space-y-2" data-reexecucao="">
+                    <h3 id="ficha-reexec" className="font-serif text-lg text-carvao">
+                      Números arquivados na rodada mais recente, com a prova de cada um
+                    </h3>
+                    <div className="tabela-scroll" tabIndex={0} role="region" aria-label="Números arquivados e reexecução (rolável)">
+                      <table className="w-full min-w-[36rem] border-collapse text-sm">
+                        <caption className="sr-only">Números arquivados do {f.codigo} e resultado da reexecução</caption>
+                        <thead>
+                          <tr className="text-left text-xs text-mineral">
+                            {["Submercado", "Frequência", "Valor arquivado", "Reexecução", "Detalhe"].map((c) => (
+                              <th key={c} scope="col" className="border-b border-linha px-2 py-2 font-medium">
+                                {c}
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {reexec.map((r) => (
+                            <tr key={r.id}>
+                              <th scope="row" className="border-b border-linha px-2 py-1 text-left font-normal text-carvao">
+                                {r.sm}
+                              </th>
+                              <td className="border-b border-linha px-2 py-1">{r.frequencia}</td>
+                              <td className="border-b border-linha px-2 py-1 tabular-nums">
+                                {g.evidencias[r.id] ? <ComproveNumero variante="valor" evidencia={g.evidencias[r.id]} endereco={`${rotaModelo(f.codigo)}#${ancora}`} /> : "sem prova"}
+                              </td>
+                              <td className="border-b border-linha px-2 py-1">{ROTULO_RESULTADO[r.resultado] ?? r.resultado}</td>
+                              <td className="border-b border-linha px-2 py-1 text-xs text-carvao-muted">{r.detalhe}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
+                )}
+
+                {coef.length > 0 && (
+                  <section aria-labelledby="ficha-coef" className="space-y-2">
+                    <h3 id="ficha-coef" className="font-serif text-lg text-carvao">
+                      Pesos do último ajuste por segmento
+                    </h3>
+                    <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">{f.coeficientes_ultimo_ajuste?.leitura}</p>
+                    <PrevisoesCoeficientes
+                      modelo={f.codigo}
+                      linhas={coef}
+                      colunas={colunasCoeficientes([f])}
+                      variaveis={variaveis}
+                      variavelPadrao={variaveis.some((v) => v.id === VARIAVEL_D7) ? VARIAVEL_D7 : (variaveis[0]?.id ?? "")}
+                      fonte={fonte}
+                      versao={versao}
+                    />
+                  </section>
+                )}
+
+                <dl>
+                  <PrevisoesFichaLinha rotulo="Estado e aprovação">
+                    {rotuloEstadoModelo(f.estado)}; {f.aprovacao.leitura.trim()} {f.aprovacao.promovido_em ? `Promovido em ${dataBR(f.aprovacao.promovido_em)}.` : "Nunca promovido."}
+                  </PrevisoesFichaLinha>
+                  <PrevisoesFichaLinha rotulo="Número no arquivo">{emissaoDoModelo(f, g)}</PrevisoesFichaLinha>
+                  <PrevisoesFichaLinha rotulo="Alvo">{g.definicoes.alvo}</PrevisoesFichaLinha>
+                  <PrevisoesFichaLinha rotulo="Entregas">{g.definicoes.entregas}</PrevisoesFichaLinha>
+                  <PrevisoesFichaLinha rotulo="Entradas">
+                    {f.entradas ? (
+                      <ul className="list-disc space-y-0.5 pl-5">
+                        {f.entradas.map((x) => (
+                          <li key={x}>{x}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      "não publicadas"
+                    )}
+                  </PrevisoesFichaLinha>
+                  <PrevisoesFichaLinha rotulo="Fórmula">
+                    {f.formula ? <code className="block whitespace-pre-wrap break-words bg-papel px-2 py-1.5 font-mono text-xs">{f.formula}</code> : "não publicada"}
+                  </PrevisoesFichaLinha>
+                  <PrevisoesFichaLinha rotulo="Transformações">
+                    {f.transformacoes ? (
+                      <ol className="list-decimal space-y-0.5 pl-5">
+                        {f.transformacoes.map((x) => (
+                          <li key={x}>{x}</li>
+                        ))}
+                      </ol>
+                    ) : (
+                      "não publicadas"
+                    )}
+                  </PrevisoesFichaLinha>
+                  <PrevisoesFichaLinha rotulo="Corte">{f.corte}</PrevisoesFichaLinha>
+                  <PrevisoesFichaLinha rotulo="Hipóteses">
+                    <ul className="list-disc space-y-0.5 pl-5">
+                      {f.hipoteses.map((x) => (
+                        <li key={x}>{x}</li>
+                      ))}
+                    </ul>
+                  </PrevisoesFichaLinha>
+                  <PrevisoesFichaLinha rotulo="Faixa de incerteza">{g.governanca.referencia_experimental.faixas}</PrevisoesFichaLinha>
+                  <PrevisoesFichaLinha rotulo="Limitações">
+                    {f.limitacoes?.length ? (
+                      <ul className="list-disc space-y-0.5 pl-5">
+                        {f.limitacoes.map((x) => (
+                          <li key={x}>{x}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      "nenhuma registrada"
+                    )}
+                  </PrevisoesFichaLinha>
+                  <PrevisoesFichaLinha rotulo="Falhas conhecidas">
+                    {f.falhas_conhecidas?.length ? (
+                      <ul className="list-disc space-y-0.5 pl-5">
+                        {f.falhas_conhecidas.map((x) => (
+                          <li key={x}>{x}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      "nenhuma registrada"
+                    )}
+                  </PrevisoesFichaLinha>
+                  <PrevisoesFichaLinha rotulo="Reexecução">{textoReexecucao(f)}</PrevisoesFichaLinha>
+                </dl>
+
+                <PrevisoesLeitura
+                  comoLer={
+                    <>
+                      A fórmula e as transformações dizem, em ordem, como o dado vira previsão; o corte diz o que estava disponível. {coef.length ? "No gráfico, escolha uma variável para ver o peso dela em cada segmento; a tabela tem todas as variáveis e os mesmos números." : ""}
+                    </>
+                  }
+                  naoPermite={
+                    <>
+                      Não permite dizer se o {f.codigo} supera as referências: isso depende do teste fora da amostra e do acompanhamento prospectivo, no painel de desempenho.
+                    </>
+                  }
+                />
+
+                <PrevisoesAuditoria id="implementacao" titulo="Implementação, configuração e reprodução">
+                  <dl>
+                    {impl && (
+                      <PrevisoesFichaLinha rotulo="Código">
+                        {impl.codigo ?? "não informado"}
+                        {impl.mesma_definicao_da_pesquisa === false ? "; reimplementação do observatório, não a definição exata da pesquisa" : ""}
+                        {impl.restricao_preco ? `; ${impl.restricao_preco}` : ""}
+                      </PrevisoesFichaLinha>
+                    )}
+                    {impl?.diferencas?.length ? (
+                      <PrevisoesFichaLinha rotulo="Diferenças da pesquisa">
+                        <ul className="list-disc space-y-0.5 pl-5">
+                          {impl.diferencas.map((x) => (
+                            <li key={x}>{x}</li>
+                          ))}
+                        </ul>
+                      </PrevisoesFichaLinha>
+                    ) : null}
+                    {f.configuracao ? (
+                      <PrevisoesFichaLinha rotulo="Configuração">
+                        <span className="block">
+                          sha256 <span className="font-mono text-xs">{f.configuracao.sha256}</span>
+                        </span>
+                        <ul className="mt-1 space-y-0.5 text-xs text-carvao-muted">
+                          {Object.entries(f.configuracao)
+                            .filter(([k]) => k !== "sha256")
+                            .map(([k, x]) => (
+                              <li key={k}>
+                                <span className="font-mono">{k}</span>: {textoConfig(x)}
+                              </li>
+                            ))}
+                        </ul>
+                      </PrevisoesFichaLinha>
+                    ) : (
+                      <PrevisoesFichaLinha rotulo="Configuração">não publicada</PrevisoesFichaLinha>
+                    )}
+                    {f.reproducao && (
+                      <PrevisoesFichaLinha rotulo="Reprodução">
+                        <code className="block whitespace-pre-wrap break-words font-mono text-xs">{f.reproducao.comando}</code>
+                        <code className="mt-1 block whitespace-pre-wrap break-words font-mono text-xs">{f.reproducao.teste}</code>
+                        <span className="mt-1 block">Tolerância: {textoTolerancia(f.reproducao.tolerancia)}</span>
+                      </PrevisoesFichaLinha>
+                    )}
+                  </dl>
+                </PrevisoesAuditoria>
+
+                <PrevisoesSeguir ancora={ancora} proximo={{ href: enderecoPainel("p016"), pergunta: perguntaPainel("p016") }} downloads={downloads} />
+              </div>
+            </PainelEvidencia>
+          </Bloco>
+        </ModoProfundidade>
+        <p className="mt-8 text-sm">
+          <Link href={`${ROTA_MODELOS}#p014`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
+            Voltar às fichas lado a lado
+          </Link>
+        </p>
       </main>
     </>
   );

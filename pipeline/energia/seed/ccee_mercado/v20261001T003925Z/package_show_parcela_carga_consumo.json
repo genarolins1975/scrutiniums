@@ -1,0 +1,141 @@
+{
+ "result": {
+  "author": "CCEE-GAIM",
+  "author_email": "",
+  "creator_user_id": "b881b710-e6a0-4aed-9162-d254420c1096",
+  "extras": [
+   {
+    "key": "Frequência de Atualização",
+    "value": "Mensal"
+   },
+   {
+    "key": "Referência de Publicação",
+    "value": "MS+22du"
+   },
+   {
+    "key": "Termo Legal",
+    "value": "O acesso a este site e/ou a utilização de conteúdos, dados e bases de dados nele disponibilizados se sujeita ao aceite dos termos e condições da licença aberta Creative Commons Attribution 4.0 International (CC-BY-4.0), bem como aos Termos de Uso do site e do aplicativo mobile (App) da CCEE (Link - https://www.ccee.org.br/en/web/guest/termos-de-uso). Ao utilizar esses recursos, você concorda em cumprir todos os requisitos dessa licença, que permitem que os reutilizadores distribuam, modifiquem, adaptem e desenvolvam o material sobre os dados, desde que seja atribuído o crédito apropriado ao criador (CCEE) e que sejam informadas as alterações. O Material Licenciado é disponibilizado no \"estado em que se encontra\" e \"como disponível\" apenas para fins informativos, sendo possível a interrupção da disponibilidade do conjunto de dados a qualquer momento e por qualquer motivo, sendo a sua utilização de livre iniciativa, não sendo atribuível qualquer tipo de responsabilização à CCEE por seu uso."
+   }
+  ],
+  "groups": [],
+  "id": "e69e37f3-f441-4ca6-8eb0-14eb8c5ce2c2",
+  "isopen": true,
+  "license_id": "CC-BY-4.0",
+  "license_title": "Creative Commons Attribution 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "maintainer": "CCEE-GAIM",
+  "maintainer_email": "",
+  "metadata_created": "2024-05-29T21:46:24.628759",
+  "metadata_modified": "2026-09-01T22:26:05.087514",
+  "name": "parcela_carga_consumo",
+  "notes": "Dados de consumo de parcelas de carga.",
+  "num_resources": 3,
+  "num_tags": 2,
+  "organization": {
+   "approval_status": "approved",
+   "created": "2023-03-02T11:15:44.108398",
+   "description": "O Infomercado é uma organização que agrupa os principais conjuntos de dados referentes ao resultado da contabilização do mercado de energia brasileiro.\r\n\r\nAs partes interessadas poderão acessar conjuntos de dados relacionados aos seguintes assuntos: geração; consumo; MRE; contratos; PLD; e demais temas do Mercado de Curto Prazo - MCP.\r\n\r\nOs conjuntos de dados do informercado, seus recursos e APIs são atualizados periodicamente nesse portal de dados, para o mês de referência relativo à finalização da liquidação do MCP (não são considerados eventos de recontabilização).\r\n\r\nPara consulta ao acervo de dados públicos, a parte interessada poderá consultar o portal da CCEE > dados e análises.",
+   "id": "e898a06e-6d25-486f-ba0e-209f66c975ce",
+   "image_url": "https://www.ccee.org.br/documents/20121/1583681/icon_pda-infomercado.svg/029872ce-13b0-9153-3d63-0501ca687dff?t=1724955920662",
+   "is_organization": true,
+   "name": "infomercado",
+   "state": "active",
+   "title": "Infomercado",
+   "type": "organization"
+  },
+  "owner_org": "e898a06e-6d25-486f-ba0e-209f66c975ce",
+  "private": false,
+  "relationships_as_object": [],
+  "relationships_as_subject": [],
+  "resources": [
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2024-05-29T21:46:55.717663",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar as parcelas de consumo cadastradas na CCEE e o ramo de atividade e CNAE associado.\r\n\r\n**Campos contidos nesse conjunto de dados:**\r\n\r\n* **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.  \r\n* **COD_PERF_AGENTE** : Corresponde ao código numérico inteiro utilizado pela CCEE para identificar o perfil do agente em seus sistemas.  \r\n* **SIGLA_PERFIL_AGENTE** : Corresponde a sigla adotada pela CCEE para identificar o perfil de agente em seus sistemas.  \r\n* **NOME_EMPRESARIAL** : Corresponde a razão social cadastrada pelo agente na CCEE.  \r\n* **COD_PARCELA_CARGA** : Corresponde ao código numérico inteiro utilizado pela CCEE para identificar a parcela de carga.  \r\n* **SIGLA_PARCELA_CARGA** : Corresponde a sigla adotada pela CCEE para identificar a parcela de carga.  \r\n* **CNPJ_CARGA** : Corresponde ao CNPJ cadastrado pelo agente nos sistemas da CCEE.  \r\n* **CIDADE** : Corresponde a cidade da parcela de carga.  \r\n* **ESTADO_UF** : Corresponde a Unidade Federativa (UF) da parcela de carga.  \r\n* **RAMO_ATIVIDADE** : Corresponde ao ramo de atividade no qual a empresa o segmento de uma empresa foi definido.  \r\n* **SUBMERCADO** : Representa os quatro (4) submercados de atuação no SIN - Sistema Interligado Nacional correspondentes a Norte (N), Nordeste (NE), Sul (S) e Sudeste (SE).  \r\n* **DATA_MIGRACAO** : Corresponde a data de migração do consumidor  \r\n* **COD_PERF_AGENTE_CONECTADO** : Corresponde ao código numérico inteiro utilizado pela CCEE para identificar a o perfil do agente conectado.  \r\n* **SIGLA_PERFIL_AGENTE_CONECTADO** : Corresponde a sigla adotada pela CCEE para identificar o agente conectado.  \r\n* **CAPACIDADE_CARGA** : Corresponde a capacidade instalada da carga.  \r\n* **CONSUMO_ACL** : Corresponde ao consumo no ambiente de comercialização livre (ACL) da parcela de carga. (RC_AL c,j) [MWh]  \r\n* **CONSUMO_CATIVO_PARC_LIVRE** : Corresponde ao consumo de energia ajustado da parcela cativa da carga parcialmente livre (RC_CAT c,j) [MWh]  \r\n* **CONSUMO_TOTAL** : Corresponde ao consumo de energia ajustado de uma parcela de carga (RC c,j) [MWh]  ",
+    "format": "CSV",
+    "hash": "",
+    "id": "b854f7bc-94a3-423a-96b7-2d4756ec77d1",
+    "last_modified": "2025-03-05T19:12:43.865000",
+    "metadata_modified": "2025-11-21T00:43:07.689798",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "parcela_carga_consumo_2024",
+    "package_id": "e69e37f3-f441-4ca6-8eb0-14eb8c5ce2c2",
+    "position": 0,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/rcdTfjrsRQSMc2TXpXXu4Q/content",
+    "url_type": ""
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2025-03-05T22:18:00.175052",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar as parcelas de consumo cadastradas na CCEE e o ramo de atividade e CNAE associado.\r\n\r\n**Campos contidos nesse conjunto de dados:**\r\n\r\n* **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.  \r\n* **COD_PERF_AGENTE** : Corresponde ao código numérico inteiro utilizado pela CCEE para identificar o perfil do agente em seus sistemas.  \r\n* **SIGLA_PERFIL_AGENTE** : Corresponde a sigla adotada pela CCEE para identificar o perfil de agente em seus sistemas.  \r\n* **NOME_EMPRESARIAL** : Corresponde a razão social cadastrada pelo agente na CCEE.  \r\n* **COD_PARCELA_CARGA** : Corresponde ao código numérico inteiro utilizado pela CCEE para identificar a parcela de carga.  \r\n* **SIGLA_PARCELA_CARGA** : Corresponde a sigla adotada pela CCEE para identificar a parcela de carga.  \r\n* **CNPJ_CARGA** : Corresponde ao CNPJ cadastrado pelo agente nos sistemas da CCEE.  \r\n* **CIDADE** : Corresponde a cidade da parcela de carga.  \r\n* **ESTADO_UF** : Corresponde a Unidade Federativa (UF) da parcela de carga.  \r\n* **RAMO_ATIVIDADE** : Corresponde ao ramo de atividade no qual a empresa o segmento de uma empresa foi definido.  \r\n* **SUBMERCADO** : Representa os quatro (4) submercados de atuação no SIN - Sistema Interligado Nacional correspondentes a Norte (N), Nordeste (NE), Sul (S) e Sudeste (SE).  \r\n* **DATA_MIGRACAO** : Corresponde a data de migração do consumidor  \r\n* **COD_PERF_AGENTE_CONECTADO** : Corresponde ao código numérico inteiro utilizado pela CCEE para identificar a o perfil do agente conectado.  \r\n* **SIGLA_PERFIL_AGENTE_CONECTADO** : Corresponde a sigla adotada pela CCEE para identificar o agente conectado.  \r\n* **CAPACIDADE_CARGA** : Corresponde a capacidade instalada da carga.  \r\n* **CONSUMO_ACL** : Corresponde ao consumo no ambiente de comercialização livre (ACL) da parcela de carga. (RC_AL c,j) [MWh]  \r\n* **CONSUMO_CATIVO_PARC_LIVRE** : Corresponde ao consumo de energia ajustado da parcela cativa da carga parcialmente livre (RC_CAT c,j) [MWh]  \r\n* **CONSUMO_TOTAL** : Corresponde ao consumo de energia ajustado de uma parcela de carga (RC c,j) [MWh]  ",
+    "force": true,
+    "format": "CSV",
+    "hash": "",
+    "id": "c88d04a6-fe42-413b-b7bf-86e390494fb0",
+    "last_modified": "2026-02-02T18:23:08.865000",
+    "metadata_modified": "2026-04-29T21:08:36.208309",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "parcela_carga_consumo_2025",
+    "package_id": "e69e37f3-f441-4ca6-8eb0-14eb8c5ce2c2",
+    "position": 1,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/6d0w6oW7SsW_pIhFih27DA/content",
+    "url_type": ""
+   },
+   {
+    "cache_last_updated": null,
+    "cache_url": null,
+    "created": "2026-03-05T20:08:19.471617",
+    "datastore_active": true,
+    "description": "**Objetivo**: Detalhar as parcelas de consumo cadastradas na CCEE e o ramo de atividade e CNAE associado.\r\n\r\n**Campos contidos nesse conjunto de dados:**\r\n\r\n* **MES_REFERENCIA** : Representa o mês e o ano de referência na qual os dados foram utilizados.  \r\n* **COD_PERF_AGENTE** : Corresponde ao código numérico inteiro utilizado pela CCEE para identificar o perfil do agente em seus sistemas.  \r\n* **SIGLA_PERFIL_AGENTE** : Corresponde a sigla adotada pela CCEE para identificar o perfil de agente em seus sistemas.  \r\n* **NOME_EMPRESARIAL** : Corresponde a razão social cadastrada pelo agente na CCEE.  \r\n* **COD_PARCELA_CARGA** : Corresponde ao código numérico inteiro utilizado pela CCEE para identificar a parcela de carga.  \r\n* **SIGLA_PARCELA_CARGA** : Corresponde a sigla adotada pela CCEE para identificar a parcela de carga.  \r\n* **CNPJ_CARGA** : Corresponde ao CNPJ cadastrado pelo agente nos sistemas da CCEE.  \r\n* **CIDADE** : Corresponde a cidade da parcela de carga.  \r\n* **ESTADO_UF** : Corresponde a Unidade Federativa (UF) da parcela de carga.  \r\n* **RAMO_ATIVIDADE** : Corresponde ao ramo de atividade no qual a empresa o segmento de uma empresa foi definido.  \r\n* **SUBMERCADO** : Representa os quatro (4) submercados de atuação no SIN - Sistema Interligado Nacional correspondentes a Norte (N), Nordeste (NE), Sul (S) e Sudeste (SE).  \r\n* **DATA_MIGRACAO** : Corresponde a data de migração do consumidor  \r\n* **COD_PERF_AGENTE_CONECTADO** : Corresponde ao código numérico inteiro utilizado pela CCEE para identificar a o perfil do agente conectado.  \r\n* **SIGLA_PERFIL_AGENTE_CONECTADO** : Corresponde a sigla adotada pela CCEE para identificar o agente conectado.  \r\n* **CAPACIDADE_CARGA** : Corresponde a capacidade instalada da carga.  \r\n* **CONSUMO_ACL** : Corresponde ao consumo no ambiente de comercialização livre (ACL) da parcela de carga. (RC_AL c,j) [MWh]  \r\n* **CONSUMO_CATIVO_PARC_LIVRE** : Corresponde ao consumo de energia ajustado da parcela cativa da carga parcialmente livre (RC_CAT c,j) [MWh]  \r\n* **CONSUMO_TOTAL** : Corresponde ao consumo de energia ajustado de uma parcela de carga (RC c,j) [MWh]  ",
+    "format": "CSV",
+    "hash": "",
+    "id": "cf753cb8-3a01-4ff0-abda-020be5908c41",
+    "last_modified": "2026-06-02T17:52:41.976000",
+    "metadata_modified": "2026-06-09T04:31:39.692237",
+    "mimetype": null,
+    "mimetype_inner": null,
+    "name": "parcela_carga_consumo_2026",
+    "package_id": "e69e37f3-f441-4ca6-8eb0-14eb8c5ce2c2",
+    "position": 2,
+    "resource_type": null,
+    "size": null,
+    "state": "active",
+    "url": "https://pda-download.ccee.org.br/A-eDJJEFScyztBMo9HUgEw/content",
+    "url_type": ""
+   }
+  ],
+  "state": "active",
+  "tags": [
+   {
+    "display_name": "consumo",
+    "id": "cdf18cbb-5072-4d0e-9184-150957ce92a8",
+    "name": "consumo",
+    "state": "active",
+    "vocabulary_id": null
+   },
+   {
+    "display_name": "dados individuais",
+    "id": "d217946a-fb75-4e55-8768-c7f722710554",
+    "name": "dados individuais",
+    "state": "active",
+    "vocabulary_id": null
+   }
+  ],
+  "title": "PARCELA_CARGA_CONSUMO",
+  "type": "dataset",
+  "url": "",
+  "version": ""
+ }
+}

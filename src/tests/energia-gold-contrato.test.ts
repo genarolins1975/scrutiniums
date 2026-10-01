@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- varredura genérica da gold publicada */
 import { describe, expect, it } from "vitest";
+import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
+import { DATASETS_INTEGRADOS, commitDoBuild, urlVersaoGithub } from "@/lib/energia/datasets";
+import type { CatalogoDados, ManifestoGold, PublicacaoGold } from "@/lib/energia/tipos-dados";
 
 /**
  * Contrato da gold do domínio Energia (docs/observatorios/MODELO_AUDITABILIDADE.md):
@@ -12,7 +14,19 @@ import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
 const DIR = join(process.cwd(), "public", "energia", "gold");
 const ler = (n: string) => JSON.parse(readFileSync(join(DIR, n), "utf-8"));
 const GOLDS = ["pld.json", "hidrologia.json", "carga.json", "geracao.json", "rede.json", "cmo.json", "sintese.json", "modelos.json", "previsoes.json", "catalogo.json", "meta.json"];
+/** Toda gold publicada (operação, módulos temáticos e controle), sem lista fixa: uma gold nova entra no contrato sozinha. */
+const TODAS = readdirSync(DIR).filter((n) => n.endsWith(".json") && !n.startsWith("_")).sort();
 const NATUREZAS = ["OBSERVADO", "CALCULADO", "ESTIMADO", "PREVISTO", "CENARIO"];
+const ESTADOS = ["CATALOGADO", "RECURSO VERIFICADO", "INTEGRADO", "VALIDADO", "PUBLICADO"];
+const LINK = /^\/energia\/(series|gold|geo)\/[\w./-]+\.(csv|json|parquet|topojson|geojson|xlsx)$/;
+
+function links(o: any, out: Set<string> = new Set()): Set<string> {
+  if (typeof o === "string") {
+    if (LINK.test(o)) out.add(o);
+  } else if (Array.isArray(o)) o.forEach((x) => links(x, out));
+  else if (o && typeof o === "object") Object.values(o).forEach((v) => links(v, out));
+  return out;
+}
 
 function proveniencias(o: any, out: any[] = []): any[] {
   if (Array.isArray(o)) o.forEach((x) => proveniencias(x, out));
@@ -33,6 +47,36 @@ describe("gold de energia: presença e integridade", () => {
     }
   });
 
+  it("toda gold publicada (inclusive as dos módulos) tem o cabeçalho do domínio", () => {
+    expect(TODAS.length).toBeGreaterThan(GOLDS.length);
+    for (const g of TODAS) {
+      const j = ler(g);
+      expect(j.dominio, g).toBe("energia");
+      expect(typeof j.disponivel, g).toBe("boolean");
+      expect(j.gerado_em, g).toMatch(/Z$/);
+      if (!j.disponivel) expect(j.motivo, g).toBeTruthy();
+    }
+  });
+
+  it("a gold de cada módulo do dicionário de arquivos existe e está íntegra", () => {
+    const arq = ler("arquivos.json").arquivos as Record<string, { gold: string; colunas: string }>;
+    const golds = new Set(Object.values(arq).map((a) => a.gold));
+    for (const g of Array.from(golds)) {
+      expect(existsSync(join(DIR, g)), g).toBe(true);
+      expect(ler(g).disponivel, g).toBe(true);
+    }
+    for (const [url, a] of Object.entries(arq)) {
+      expect(existsSync(join(process.cwd(), "public", url)), url).toBe(true);
+      expect(a.colunas.length, url).toBeGreaterThan(20);
+    }
+  });
+
+  it("todo caminho /energia/... citado numa gold existe em public/", () => {
+    for (const g of TODAS) {
+      for (const u of Array.from(links(ler(g)))) expect(existsSync(join(process.cwd(), "public", u)), `${g}: ${u}`).toBe(true);
+    }
+  });
+
   it("meta.json não registra builder falho nem regressão retida", () => {
     const m = ler("meta.json");
     expect(m.builders_falhos).toEqual([]);
@@ -41,7 +85,8 @@ describe("gold de energia: presença e integridade", () => {
 });
 
 describe("proveniência: todo indicador leva ao dado primário", () => {
-  const todas = GOLDS.flatMap((g) => proveniencias(ler(g)).map((p) => ({ g, p })));
+  // todas as golds publicadas, não só as de operação: o contrato vale para os módulos
+  const todas = TODAS.flatMap((g) => proveniencias(ler(g)).map((p) => ({ g, p })));
 
   it("há proveniência em cada gold de indicador", () => {
     for (const g of ["pld.json", "hidrologia.json", "carga.json", "geracao.json", "rede.json", "cmo.json"]) {
@@ -150,13 +195,67 @@ describe("classificação só com regra publicada", () => {
 });
 
 describe("catálogo coerente com o pipeline", () => {
-  it("cada dataset integrado na interface existe no catálogo com o mesmo slug e estado de uso", () => {
-    const cat = ler("catalogo.json");
+  // Os estados antigos (UTILIZADO EM INDICADOR, UTILIZADO EM MODELO) viraram dois eixos:
+  // estado na escada catalogado → publicado, com evidência, e papel de uso declarado.
+  it("cada dataset integrado na interface existe no catálogo com o mesmo slug, validado e com papel de uso", () => {
+    const cat = ler("catalogo.json") as CatalogoDados;
     for (const d of DATASETS_INTEGRADOS) {
-      const e = cat.entradas.find((x: any) => x.id === d.catalogoId);
+      const e = cat.entradas.find((x) => x.id === d.catalogoId)!;
       expect(e, d.catalogoId).toBeTruthy();
       expect(e.slug).toBe(d.slug);
-      expect(["UTILIZADO EM INDICADOR", "UTILIZADO EM MODELO"]).toContain(e.estado);
+      expect(["VALIDADO", "PUBLICADO"], d.catalogoId).toContain(e.estado);
+      expect(e.papeis?.length, d.catalogoId).toBeGreaterThan(0);
+    }
+  });
+
+  it("estado de cada entrada na escada, sem salto: publicado exige validado, validado exige integrado", () => {
+    const cat = ler("catalogo.json") as CatalogoDados;
+    expect(cat.estados).toEqual(ESTADOS);
+    let soma = 0;
+    for (const e of cat.entradas) {
+      expect(ESTADOS, e.id).toContain(e.estado);
+      soma += 1;
+      const i = ESTADOS.indexOf(e.estado);
+      if (i >= 2) {
+        expect(e.etapas, e.id).toBeTruthy();
+        for (const etapa of ["catalogado", "recurso_verificado", "integrado", "validado", "publicado"].slice(0, i + 1)) {
+          expect((e.etapas as any)[etapa]?.ok, `${e.id} ${etapa}`).toBe(true);
+        }
+        expect(e.integracoes?.length, e.id).toBeGreaterThan(0);
+      }
+      if (e.estado === "PUBLICADO") expect(e.usado_em.length, e.id).toBeGreaterThan(0);
+    }
+    expect(soma).toBe(cat.total);
+    expect(ESTADOS.reduce((t, k) => t + (cat.contagem as any)[k], 0)).toBe(cat.total);
+  });
+
+  it("conjunto declarado por módulo que não chegou a INTEGRADO aparece com ressalva que explica", () => {
+    const cat = ler("catalogo.json") as CatalogoDados;
+    for (const e of cat.entradas) {
+      if (e.integracoes?.length && ["CATALOGADO", "RECURSO VERIFICADO"].includes(e.estado)) {
+        expect(e.ressalvas?.length, e.id).toBeGreaterThan(0);
+        expect(DATASETS_INTEGRADOS.map((d) => d.catalogoId), e.id).not.toContain(e.id);
+      }
+    }
+  });
+
+  it("PLD, EAR e ENA são publicados em indicador; os modelos que os usam aparecem com o estado do registro", () => {
+    const cat = ler("catalogo.json") as CatalogoDados;
+    for (const id of ["ccee:pld_horario", "ons:ear-diario-por-subsistema", "ons:ena-diario-por-subsistema"]) {
+      const e = cat.entradas.find((x) => x.id === id)!;
+      expect(e.papeis, id).toContain("indicador");
+      expect(e.papeis, id).not.toContain("modelo");
+      for (const m of e.modelos ?? []) expect(Object.keys(cat.modelos), `${id} ${m}`).toContain(m);
+    }
+  });
+
+  it("CCEE recurso a recurso: resumo por portal fecha com as entradas", () => {
+    const cat = ler("catalogo.json") as CatalogoDados;
+    const ccee = cat.entradas.filter((e) => e.orgao === "CCEE" && e.recursos_resumo);
+    expect(ccee.length).toBeGreaterThan(0);
+    expect(ccee.reduce((t, e) => t + e.recursos_resumo!.total, 0)).toBe(cat.recursos.CCEE.total);
+    for (const e of cat.entradas.filter((x) => x.recursos)) {
+      expect(e.recursos!.filter((r) => !r.removido).length, e.id).toBe(e.recursos_resumo!.total);
     }
   });
 
@@ -171,6 +270,109 @@ describe("catálogo coerente com o pipeline", () => {
     for (const m of manual.entradas) {
       const e = cat.entradas.find((x: any) => x.id === m.id);
       expect(e.metadados_verificados, m.id).toBe(false);
+    }
+  });
+});
+
+describe("publicação: saúde, revisões, manifesto e reprodução (módulo dados)", () => {
+  const g = ler("publicacao.json") as PublicacaoGold;
+  const m = ler("manifesto.json") as ManifestoGold;
+
+  it("publicacao.json íntegra, dentro do limite de tamanho e com conjuntos únicos", () => {
+    expect(g.disponivel).toBe(true);
+    expect(readFileSync(join(DIR, "publicacao.json")).length).toBeLessThanOrEqual(400 * 1024);
+    expect(readFileSync(join(DIR, "catalogo.json")).length).toBeLessThanOrEqual(400 * 1024);
+    const ids = g.conjuntos.map((c) => c.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(g.resumo.integracoes).toBe(g.conjuntos.length);
+  });
+
+  // Consistência interna da gold (não é conferência independente): a falha simulada no silver e o
+  // período relido no original do bronze estão em pipeline/tests/test_energia_dados.py e na ficha
+  // conjuntos_atrasados.
+  it("consistência da atualidade: atrasado tem prazo vencido, em dia não, e nenhum período passa de hoje", () => {
+    const hoje = g.referencia.hoje;
+    for (const c of g.conjuntos) {
+      const a = c.atualidade;
+      expect(["EM DIA", "ATRASADO", "SEM SLA", "SEM DADO"], c.id).toContain(a.situacao);
+      if (a.situacao === "ATRASADO") expect(a.prazo_proximo! < hoje, c.id).toBe(true);
+      if (a.situacao === "EM DIA") expect(a.prazo_proximo! >= hoje, c.id).toBe(true);
+      if (a.ultimo_periodo && a.ultimo_periodo.length >= 10) expect(a.ultimo_periodo.slice(0, 10) <= hoje, c.id).toBe(true);
+      if (a.situacao === "SEM SLA" || a.situacao === "SEM DADO") expect(a.motivo_sem_sla, c.id).toBeTruthy();
+      // período corrente parcial não alonga o prazo: o prazo nunca passa do fim do período
+      // corrente mais a tolerância da cadência
+      if (a.periodo_parcial && (a.caso === "A" || a.caso === "C") && a.cadencia && a.fim_ultimo_periodo && a.prazo_proximo) {
+        const limite = new Date(a.fim_ultimo_periodo + "T00:00:00Z");
+        limite.setUTCDate(limite.getUTCDate() + g.regras.sla[a.cadencia].tolerancia_dias);
+        expect(a.prazo_proximo <= limite.toISOString().slice(0, 10), c.id).toBe(true);
+      }
+    }
+  });
+
+  it("revisão publicada com magnitude e alcance, não só contagem", () => {
+    const revisados = g.conjuntos.filter((c) => (c.revisoes?.referencias ?? 0) > 0);
+    for (const c of revisados) {
+      const r = c.revisoes!;
+      // pares (série, referência) nunca são menos que as referências distintas
+      expect(r.observacoes ?? 0, c.id).toBeGreaterThanOrEqual(r.referencias ?? 0);
+      expect(r.ref_min && r.ref_max, c.id).toBeTruthy();
+      expect(r.maior_abs, c.id).toBeTruthy();
+      expect(Math.abs(r.maior_abs!.para - r.maior_abs!.de - r.maior_abs!.diferenca)).toBeLessThan(1e-4);
+      expect(r.maior_abs!.capturado_de < r.maior_abs!.capturado_para, c.id).toBe(true);
+    }
+    expect(g.resumo.com_revisao).toBe(revisados.length);
+  });
+
+  it("validação e natureza são eixos separados e o veredito agrega checagens registradas", () => {
+    const v = g.resumo.validacao;
+    expect(v.aprovado + v.ressalva + v.reprovado + v.nao_aplicavel).toBe(v.checagens);
+    for (const nat of Object.keys(g.eixos.matriz)) expect([...NATUREZAS, "SEM_VINCULO"]).toContain(nat);
+    for (const c of g.conjuntos) {
+      if (c.estado === "VALIDADO" || c.estado === "PUBLICADO") expect(c.etapas.validado.reprovadas ?? 0, c.id).toBe(0);
+    }
+  });
+
+  it("manifesto: id da publicação refeito pela regra publicada, sha256 e arquivos existentes", () => {
+    const canon = JSON.stringify([...m.arquivos].sort((a, b) => (a.caminho < b.caminho ? -1 : 1)).map((i) => [i.caminho, i.bytes, i.sha256]));
+    expect(createHash("sha256").update(canon, "utf8").digest("hex")).toBe(m.id_publicacao);
+    expect(new Set(m.arquivos.map((i) => i.caminho)).size).toBe(m.arquivos.length);
+    for (const i of m.arquivos) {
+      expect(i.sha256, i.caminho).toMatch(/^[0-9a-f]{64}$/);
+      expect(existsSync(join(process.cwd(), "public", i.caminho)), i.caminho).toBe(true);
+    }
+    for (const p of g.arquivos.parquet) if (p.csv) expect(p.equivalente, p.parquet).toBe(true);
+  });
+
+  it("link de versão no GitHub: commit do build quando conhecido, histórico do arquivo quando não", () => {
+    expect(commitDoBuild({ VERCEL_GIT_COMMIT_SHA: "0123456789abcdef0123456789abcdef01234567" })).toBe("0123456789abcdef0123456789abcdef01234567");
+    expect(commitDoBuild({ VERCEL_GIT_COMMIT_SHA: "" })).toBeNull();
+    expect(commitDoBuild({ GITHUB_SHA: "texto qualquer" })).toBeNull();
+    expect(urlVersaoGithub("/energia/gold/pld.json", "abc1234")).toEqual({
+      url: "https://github.com/genarolins1975/scrutiniums/blob/abc1234/public/energia/gold/pld.json",
+      exata: true,
+    });
+    expect(urlVersaoGithub("/energia/gold/pld.json", null).exata).toBe(false);
+    expect(g.reproducao.url_versao_modelo).toContain("{commit}");
+  });
+
+  it("afirmação sobre limites de intercâmbio não diz que estão integrados enquanto o achado A06 estiver bloqueado", () => {
+    const a = g.afirmacoes.find((x) => x.id === "limites_intercambio")!;
+    expect(a).toBeTruthy();
+    if (/bloquead/i.test(a.achado?.status ?? "")) {
+      expect(a.texto).toMatch(/não foram integrados/);
+      expect(a.texto).not.toMatch(/^Limites de intercâmbio entre subsistemas: integrado/);
+    }
+  });
+
+  it("avaliação dos painéis: sem arquivo, sem nota", () => {
+    expect(g.avaliacao.existe).toBe(existsSync(join(DIR, "avaliacao.json")));
+    if (!g.avaliacao.existe) expect(g.avaliacao.arquivo).toBeNull();
+  });
+
+  it("toda medida do módulo dados está no catálogo de métricas", () => {
+    const ids = (ler("metricas.json").metricas as { id: string }[]).map((x) => x.id);
+    for (const id of ["dados_estado_catalogo", "dados_situacao_atualidade", "dados_revisoes_alcance", "dados_id_publicacao"]) {
+      expect(ids, id).toContain(id);
     }
   });
 });

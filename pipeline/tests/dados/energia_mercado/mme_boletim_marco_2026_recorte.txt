@@ -1,0 +1,35 @@
+                  MENSAL
+                                 Resposta da demanda               Segurança Energética               Importação de Energia               Reserva Operativa
+
+                                                                                                 Mil R$
+        Encargos¹                  jan/26    fev/26      mar/26     abr/26     mai/26      jun/26     jul/26    ago/26        set/26     out/26     nov/26       dez/26
+  Restriçao de Operação            63.245   116.286      260.872
+   RO - Constrained-On              9.416    55.595       55.947
+   RO - Constrained-Off            46.089    44.589       79.180
+  RO - Unit Commitment              7.741    16.102      125.745
+    Suporte de Reativo             21.087    15.515       22.304
+  SR não vinculado a RD            21.087    15.515       22.024
+    SR vinculado a RD                  -        -           280
+ Deslocamento Hidráulico           14.634    23.771       42.039
+  Resposta da demanda               5.859       9            81
+  Segurança Energética                 -        -         16.446
+ Outros Serviços Ancilares             -        -             -
+  Importação de Energia                -       59          3.031
+    Reserva Operativa                  -        -             -
+          Total                   104.825   155.640      344.773      0          0           0          0          0            0           0          0           0
+
+RO – Restrição Operativa.
+¹ As definições de todos os encargos estão descritas no Glossário do Boletim.
+
+
+
+
+                                                                                                                                                                       37
+DDOS/SNEE/MME                                             Boletim Mensal de Monitoramento do Sistema Elétrico Brasileiro – Março de 2026
+
+
+
+
+DESEMPENHO DO SISTEMA ELÉTRICO BRASILEIRO
+
+
