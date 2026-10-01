@@ -136,6 +136,7 @@ export function CargaPerfil({
       psm: campo(tiposUrl.opcao(SUBSISTEMAS), "SE" as Regiao),
       anos: campo(tiposUrl.lista(tiposUrl.opcao(anos), { max: LIMITE_COMPARACAO }), padraoAnos),
       med: campo(tiposUrl.opcao(MEDIDAS_PERFIL), "liquida" as MedidaPerfil),
+      hp: campo(tiposUrl.opcao(["recentes", "todos"] as const), "recentes"),
     }),
     [anos.join(","), padraoAnos.join(",")], // eslint-disable-line react-hooks/exhaustive-deps
   );
@@ -151,7 +152,11 @@ export function CargaPerfil({
   const recente = useMemo(() => paraTabela(linhasRecente(p)), [p]);
   const mmgd = useMemo(() => linhasMmgdMensal(p), [p]);
   const mmgdTabela = useMemo(() => paraTabela(mmgd), [mmgd]);
-  const matriz = useMemo(() => matrizHoraPico(p, sm), [p, sm]);
+  // o mapa de calor abre nos anos da carga verificada (o HTML do servidor fica leve: cada célula é um alvo
+  // de foco com rótulo); "todos os anos" monta o histórico desde 2000 no navegador, com os dados já na página
+  const desdeApi = p.hora_pico_api_sin_por_ano[0]?.ano;
+  const todosAnos = v.hp === "todos" || desdeApi === undefined;
+  const matriz = useMemo(() => matrizHoraPico(p, sm, todosAnos ? undefined : desdeApi), [p, sm, todosAnos, desdeApi]);
   const anoApi = p.hora_pico_api_sin_por_ano[p.hora_pico_api_sin_por_ano.length - 1];
   const horasApi = useMemo(() => (anoApi ? linhasHoraPicoApi(p, anoApi.ano) : []), [p, anoApi]);
   const anosEscolhidos = (v.anos as string[]).filter((a) => anos.includes(a));
@@ -325,6 +330,17 @@ export function CargaPerfil({
 
       <div className="space-y-4">
         <h3 className="font-serif text-lg text-carvao">Em que hora cai o pico do dia</h3>
+        {desdeApi !== undefined && (
+          <CargaEscolha
+            legenda="Anos no mapa"
+            opcoes={[
+              { id: "recentes", rotulo: `Desde ${desdeApi}` },
+              { id: "todos", rotulo: `Todos, desde ${(p.hora_pico_por_ano[sm] ?? [])[0]?.ano ?? desdeApi}` },
+            ]}
+            valor={todosAnos ? "todos" : "recentes"}
+            onEscolher={(x) => definir({ hp: x })}
+          />
+        )}
         <MapaCalor
           titulo={`Dias com o pico da curva de carga ${DO_REGIAO[sm]} em cada hora, por ano`}
           linhas={matriz.anos.map((a) => ({ id: a.id, rotulo: a.rotulo, curto: a.id }))}

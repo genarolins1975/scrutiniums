@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "territorio.json",
- "gerado_em": "2026-10-01T06:44:55Z",
+ "gerado_em": "2026-10-01T06:45:15Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "f5cba38ad40f+alterado",
+ "versao_codigo": "30599423bcec+alterado",
  "disponivel": true,
  "pergunta": "O que acontece na minha região?",
  "data_referencia": "2026-10-01",
@@ -13463,9 +13463,9 @@
     "inicio": "2026",
     "fim": "2026"
    },
-   "publicado_pela_fonte_em": null,
-   "capturado_em": "2026-10-01T06:06:09Z",
-   "validado_em": "2026-10-01T06:44:57Z",
+   "publicado_pela_fonte_em": "2026-09-09T11:06:11Z",
+   "capturado_em": "2026-09-30T22:32:46Z",
+   "validado_em": "2026-10-01T06:45:17Z",
    "cobertura_historica": {
     "inicio": "2026",
     "fim": "2026"
@@ -13483,8 +13483,16 @@
     "sha256": "3b6c0620cfe153cdeb18d6a2b04efe47f74592be04005b3f357a9c04c2411667"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
-   "revisoes_conhecidas": "Detecção de revisões nos módulos de origem.",
+   "versao_codigo": "30599423bcec+alterado",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-10-01T06:06:07Z",
+    "total": 0,
+    "vintages_comparadas": 2,
+    "arquivos": 2,
+    "recapturas_sem_mudanca": 0,
+    "ultimo_download_ok": "2026-09-30T22:32:46Z",
+    "exemplos": []
+   },
    "limitacoes": [
     "Não há polígono oficial de área de concessão acessível: a área de cada distribuidora é desenhada pelos municípios inteiros que a relação oficial da ANEEL liga a ela, e município atendido por mais de uma distribuidora aparece em todas, com marca própria. Os limites internos de um município compartilhado não são conhecidos.",
     "Não há tabela oficial município → submercado. O submercado do município é o da sua UF, provado pela soma da carga das áreas de carga do ONS; localidades atendidas por sistema isolado (fora do SIN) são indicadas pelo PASI da EPE, sem dizer se o município inteiro está fora do SIN.",
@@ -13512,7 +13520,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-10-01T06:27:03Z",
-   "validado_em": "2026-10-01T06:44:57Z",
+   "validado_em": "2026-10-01T06:45:17Z",
    "cobertura_historica": {
     "inicio": "2026-09-13",
     "fim": "2026-09-16"
@@ -13528,9 +13536,9 @@
     "sha256": "dba6db2f6ae1365bb18449783fe6a33caf44b1e6dd5eb010564452ccf8f1c1de"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "30599423bcec+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T06:44:57Z",
+    "detectado_em": "2026-10-01T06:45:17Z",
     "total": 0,
     "vintages_comparadas": 68,
     "arquivos": 68,
@@ -13565,7 +13573,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-15T05:01:12Z",
    "capturado_em": "2026-09-30T22:26:40Z",
-   "validado_em": "2026-10-01T06:44:57Z",
+   "validado_em": "2026-10-01T06:45:17Z",
    "cobertura_historica": {
     "inicio": "2003-01",
     "fim": "2026-08"
@@ -13583,7 +13591,7 @@
     "sha256": "1f8e4d44f6170bc91bcf2fa0b6047953394d8e8cf47bf9dfa3b3ed6f40ab63eb"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "30599423bcec+alterado",
    "revisoes_conhecidas": {
     "detectado_em": "2026-10-01T06:06:06Z",
     "total": 0,
@@ -13621,7 +13629,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-05T05:27:08Z",
    "capturado_em": "2026-09-30T22:45:43Z",
-   "validado_em": "2026-10-01T06:44:57Z",
+   "validado_em": "2026-10-01T06:45:18Z",
    "cobertura_historica": {
     "inicio": "2000-01",
     "fim": "2026-06"
@@ -13638,7 +13646,7 @@
     "sha256": "f38b101a901fcb2bd3eea73da25d0cc26b2a2e2c5f6a63fb5be395fd90585e94"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "30599423bcec+alterado",
    "revisoes_conhecidas": {
     "detectado_em": "2026-10-01T05:52:43Z",
     "total": 0,
@@ -13676,7 +13684,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T10:01:51Z",
    "capturado_em": "2026-09-30T22:48:27Z",
-   "validado_em": "2026-10-01T06:44:57Z",
+   "validado_em": "2026-10-01T06:45:18Z",
    "cobertura_historica": {
     "inicio": "2010-02-03",
     "fim": "2026-09-30"
@@ -13694,7 +13702,7 @@
     "sha256": "8e5b18bfe3afbfa1d418e2f204b755c346efd6cad51a023a86c4045a809ddfb2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "30599423bcec+alterado",
    "revisoes_conhecidas": {
     "detectado_em": "2026-09-30T23:56:54Z",
     "total": 0,
@@ -13732,7 +13740,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-29T12:07:03Z",
    "capturado_em": "2026-09-30T22:22:34Z",
-   "validado_em": "2026-10-01T06:44:57Z",
+   "validado_em": "2026-10-01T06:45:18Z",
    "cobertura_historica": {
     "inicio": "2008-12-01",
     "fim": "2026-09-29"
@@ -13750,7 +13758,7 @@
     "sha256": "289f0a9661b05aa08afa8c8edad455ae2e0faad38aef28d8257d037bc30459ef"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "30599423bcec+alterado",
    "revisoes_conhecidas": {
     "detectado_em": "2026-10-01T06:38:29Z",
     "total": 0,
@@ -13788,7 +13796,7 @@
    },
    "publicado_pela_fonte_em": "2026-07-24T17:39:16Z",
    "capturado_em": "2026-10-01T00:09:07Z",
-   "validado_em": "2026-10-01T06:44:57Z",
+   "validado_em": "2026-10-01T06:45:18Z",
    "cobertura_historica": {
     "inicio": "2025-05",
     "fim": "2026-05"
@@ -13805,7 +13813,7 @@
     "sha256": "965e05f285472ac12f491672f3fc181811bdc49f25721cf9dbc4579a99a7357a"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "30599423bcec+alterado",
    "revisoes_conhecidas": {
     "detectado_em": "2026-10-01T00:28:43Z",
     "total": 0,
@@ -13843,7 +13851,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-20T11:02:02Z",
    "capturado_em": "2026-09-30T22:56:07Z",
-   "validado_em": "2026-10-01T06:44:57Z",
+   "validado_em": "2026-10-01T06:45:18Z",
    "cobertura_historica": {
     "inicio": "2004-04",
     "fim": "2026-08"
@@ -13861,7 +13869,7 @@
     "sha256": "580454fe44d8f9db78d16969644ea773a054b05a06a810bc4b8d262fd656cfc2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "30599423bcec+alterado",
    "revisoes_conhecidas": {
     "detectado_em": "2026-10-01T00:28:44Z",
     "total": 0,
@@ -13899,7 +13907,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T22:55:50Z",
-   "validado_em": "2026-10-01T06:44:57Z",
+   "validado_em": "2026-10-01T06:45:18Z",
    "cobertura_historica": {
     "inicio": "2023",
     "fim": "2025"
@@ -13913,7 +13921,7 @@
     "sha256": "71593bf860920b20cc005b33368fad673ad87d24f560d78fe93551118b337d26"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "30599423bcec+alterado",
    "revisoes_conhecidas": {
     "detectado_em": "2026-10-01T00:28:44Z",
     "total": 0,
@@ -13951,7 +13959,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T10:40:44Z",
    "capturado_em": "2026-09-30T22:18:54Z",
-   "validado_em": "2026-10-01T06:44:57Z",
+   "validado_em": "2026-10-01T06:45:18Z",
    "cobertura_historica": {
     "inicio": "2026-09-30",
     "fim": "2026-09-30"
@@ -13969,7 +13977,7 @@
     "sha256": "d169541d7cbb805f08bd74db3b8283fee946f08b5d217f89e1ab396df6362d35"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "30599423bcec+alterado",
    "revisoes_conhecidas": {
     "detectado_em": "2026-10-01T06:43:37Z",
     "total": 0,
@@ -14007,7 +14015,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T02:20:14Z",
-   "validado_em": "2026-10-01T06:44:57Z",
+   "validado_em": "2026-10-01T06:45:18Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-30"
@@ -14022,7 +14030,7 @@
     "sha256": "673208f9cf5a05808a0ce01d2c51f991d73c224bb2330b6dfc282ed68b92b8f2"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "30599423bcec+alterado",
    "revisoes_conhecidas": {
     "detectado_em": "2026-09-30T02:20:24Z",
     "total": 0,
@@ -14060,7 +14068,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:01:34Z",
    "capturado_em": "2026-09-30T23:51:52Z",
-   "validado_em": "2026-10-01T06:44:57Z",
+   "validado_em": "2026-10-01T06:45:18Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-29"
@@ -14076,7 +14084,7 @@
     "sha256": "e5b1fb4f07691137a40fbf529edab8af94a99a7e6a2268e4c229c5182c591aff"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "f5cba38ad40f+alterado",
+   "versao_codigo": "30599423bcec+alterado",
    "revisoes_conhecidas": {
     "detectado_em": "2026-10-01T06:42:34Z",
     "total": 0,
@@ -14133,8 +14141,8 @@
    "tratamento_ausencia": "município sem vínculo ou só com vínculo sem confirmação não entra na contagem",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "f5cba38ad40f+alterado",
-    "publicacao": "2026-10-01T06:44:58Z"
+    "codigo": "30599423bcec+alterado",
+    "publicacao": "2026-10-01T06:45:18Z"
    },
    "revisoes": "Revisões da relação ficam no silver do módulo Perdas.",
    "testes": [
@@ -14156,7 +14164,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py territorio --sem-coleta",
-   "citacao": "SCRUTINIUMS. Municípios atendidos por mais de uma distribuidora: 440 municípios, Brasil, 2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, IndQual Município e limites de continuidade (relação conjunto × município, via módulo Perdas) (recurso perdas_municipios.json, capturado em 01/10/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Municípios atendidos por mais de uma distribuidora: 440 municípios, Brasil, 2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, IndQual Município e limites de continuidade (relação conjunto × município, via módulo Perdas) (recurso perdas_municipios.json, capturado em 01/10/2026). Versão energia-0.1.0, código 30599423bcec+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "municipios_com_submercado": {
    "indicador": "Municípios com submercado provado pela carga das áreas do ONS",
@@ -14726,8 +14734,8 @@
    "tratamento_ausencia": "dia com área sem resposta não conta como conferido",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "f5cba38ad40f+alterado",
-    "publicacao": "2026-10-01T06:44:58Z"
+    "codigo": "30599423bcec+alterado",
+    "publicacao": "2026-10-01T06:45:18Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -14754,7 +14762,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py territorio --sem-coleta",
-   "citacao": "SCRUTINIUMS. Municípios com submercado provado pela carga das áreas do ONS: 5.482 municípios, Brasil, 13/09/2026 a 16/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Verificada (API por área de carga) (recurso cargaverificada (34 áreas por dia)). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Municípios com submercado provado pela carga das áreas do ONS: 5.482 municípios, Brasil, 13/09/2026 a 16/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Verificada (API por área de carga) (recurso cargaverificada (34 áreas por dia)). Versão energia-0.1.0, código 30599423bcec+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "usinas_municipio_reconhecido": {
    "indicador": "Usinas com todos os municípios declarados reconhecidos no cadastro do IBGE",
@@ -14792,8 +14800,8 @@
    "tratamento_ausencia": "nome sem igualdade exata nem grafia antiga documentada fica sem vínculo e listado",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "f5cba38ad40f+alterado",
-    "publicacao": "2026-10-01T06:44:58Z"
+    "codigo": "30599423bcec+alterado",
+    "publicacao": "2026-10-01T06:45:18Z"
    },
    "revisoes": "Revisões do SIGA ficam no silver do módulo Expansão.",
    "testes": [
@@ -14811,7 +14819,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py territorio --sem-coleta",
-   "citacao": "SCRUTINIUMS. Usinas com todos os municípios declarados reconhecidos no cadastro do IBGE: 25.030 de 25.042, Brasil, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SIGA: Sistema de Informações de Geração da ANEEL (via módulo Expansão) (recurso expansao_usinas_siga.csv, capturado em 01/10/2026). Versão energia-0.1.0, código f5cba38ad40f+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Usinas com todos os municípios declarados reconhecidos no cadastro do IBGE: 25.030 de 25.042, Brasil, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SIGA: Sistema de Informações de Geração da ANEEL (via módulo Expansão) (recurso expansao_usinas_siga.csv, capturado em 01/10/2026). Versão energia-0.1.0, código 30599423bcec+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "downloads": [
@@ -14855,5 +14863,5 @@
   "capturado_em": "2026-09-30T22:09:00Z",
   "sha256": "74f39434f082caa8f42ecf7c3e49202d3ac5b46bc07e040357dfc6b79eeff400"
  },
- "processamento_s": 3.0
+ "processamento_s": 3.5
 }

@@ -1524,6 +1524,9 @@ def _proveniencias(con, ins, snap, ano_q, mes_cde, lpt_anos, areas):
     O = lambda k: (ins.get(k) or {}).get("obj") or {}  # noqa: E731
     out = {}
     pm = ins["perdas_municipios"]
+    # a relação vem da captura do módulo Perdas (IndQual Município e limites): a data de
+    # captura e de publicação do índice são as dela, não a da geração do arquivo intermediário
+    prel = _prov_de(O("perdas_gold"), "proveniencia.territorio") or {}
     out["indice"] = c.proveniencia(
         indicador="Índice territorial: distribuidoras, conjuntos e submercado de cada município", natureza="CALCULADO",
         fonte={"orgao": "ANEEL, ONS, IBGE e EPE (via módulos do observatório)", "dataset": "relação conjunto × município (ANEEL), carga por área (ONS), malha municipal (IBGE), PASI (EPE)",
@@ -1533,15 +1536,16 @@ def _proveniencias(con, ins, snap, ano_q, mes_cde, lpt_anos, areas):
         unidade="municípios e referências", frequencia="a cada execução, sobre as golds publicadas",
         periodo={"inicio": str(O("perdas_municipios").get("ano_relacao")), "fim": str(O("perdas_municipios").get("ano_relacao"))},
         cobertura={"inicio": str(O("perdas_municipios").get("ano_relacao")), "fim": str(O("perdas_municipios").get("ano_relacao"))},
-        capturado_em=base.instante_utc(pm["gerado_em"]) if pm.get("gerado_em") else None, snapshot=snap,
-        limitacoes=LIMITACOES[:3],
+        capturado_em=prel.get("capturado_em") or (base.instante_utc(pm["gerado_em"]) if pm.get("gerado_em") else None),
+        snapshot=snap, limitacoes=LIMITACOES[:3],
         transformacoes=["município IBGE da malha publicada (5.571) como universo",
                         "distribuidoras e estado do vínculo lidos de perdas_municipios.json (módulo Perdas), sem reclassificação",
                         "conjuntos de qualidade_municipios.csv (módulo Qualidade) e valores do ano de referência de qualidade_conjuntos_anual_2020_2029.csv",
                         "submercado pela UF, com a pertença das áreas de carga provada pela soma da carga verificada do ONS",
                         "código IBGE de 6 dígitos (Tarifa Social, Luz para Todos) completado pelo único código de 7 dígitos com o mesmo prefixo"],
         formula="vínculo(m, d) = vínculo publicado pelo módulo Perdas; submercado(m) = submercado provado da UF de m",
-        publicado_em=None, revisoes="Detecção de revisões nos módulos de origem.", download=U["mun_csv"], publicacao_informada=False)
+        publicado_em=prel.get("publicado_pela_fonte_em"), revisoes=prel.get("revisoes_conhecidas"), download=U["mun_csv"],
+        publicacao_informada=prel.get("publicado_pela_fonte_em") is not None)
     out["areas_carga"] = c.proveniencia(
         indicador="Pertença das áreas de carga ao submercado (fechamento da carga verificada)", natureza="CALCULADO",
         fonte={"orgao": "ONS", "dataset": "Carga de Energia Verificada", "recurso": "API cargaverificada por cod_areacarga (34 áreas, 2 dias)",
