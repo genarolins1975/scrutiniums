@@ -1,0 +1,2 @@
+ITEM [moderada]: # Conjuntura do crédito, jul/2026 | A nota cobre saldo, concessões, taxas, spread, inadimplência e endividamento/comprometimento das famílias, mas o pacote também traz o fato credito_pib (saldo da carteira em relação ao PIB, nível e variações no mês e em 12 meses, data_ref 2026-07), disponível e não citado; a leitura da conjuntura do crédito ficaria mais completa com essa métrica. | Incluir um parágrafo de Evidência com credito_pib.nivel e suas variações, citando data de referência jul/2026 e fonte BCB/SGS 20622, ou justificar a omissão.
+DECISÃO: aprovar

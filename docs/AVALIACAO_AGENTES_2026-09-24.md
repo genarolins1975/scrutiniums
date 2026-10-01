@@ -684,3 +684,42 @@ O validador constitucional acrescentou um critério de refutação que pressupun
 3. Dar gradação ao validador constitucional (falha grave e observação), com a mesma regra dos outros revisores: só grave devolve.
 4. Instruir o consolidador a não levar para o texto a divergência entre analista e replicador. Ela é insumo do crítico, não conteúdo da nota.
 5. O próximo ciclo depende da divulgação de ago/2026 pelo BCB. O calendário continua não consultado.
+
+---
+
+## 10. Mudanças de regra antes do ciclo de ago/2026 (24/09/2026)
+
+**Decisão (E).** O dono do projeto aprovou as recomendações 2 a 4 da seção 9. Foram implementadas antes do próximo ciclo, sem olhar o resultado dele:
+
+1. **Orçamentos separados** (constituição art. 6.5; `config.json`, `max_rodadas_revisao` e `max_bloqueios_mecanicos`, ambos 3). Bloqueio do validador mecânico não consome rodada lida pelos revisores. No ciclo jul/2026, as duas rodadas perdidas em falso positivo teriam deixado a nota com duas rodadas de revisão ainda disponíveis.
+2. **Gradação no validador constitucional.** Cada critério C1 a C5 é ok, falha grave ou observação; só falha grave devolve, derivado por código. O formato antigo "falha:" continua contando como grave.
+3. **Consolidador.** A leitura do replicador é insumo: diante de divergência, a inferência é reexaminada contra os fatos e estreitada; a nota nunca cita outra leitura como argumento. Isso substitui a regra anterior, que mandava declarar na nota que "a leitura não é unânime", origem do defeito grave apontado pelos três revisores no ciclo jul/2026.
+
+**Testes (E).** Rejeição após três rodadas lidas; bloqueio mecânico que não consome rodada (dois bloqueios e uma devolução terminam aprovados, o que antes seria rejeição); três bloqueios mecânicos rejeitam; observação do validador constitucional não devolve. Suíte da pesquisa: 73 testes.
+
+**Rodada 4 da bateria semântica (E).** As mudanças alteraram os prompts dos três revisores (constituição e papel do validador constitucional), então a bateria foi medida de novo, com os mesmos 18 casos e a mesma nota base (`rodadas/2026-09-24-r4/resultado.json`).
+
+| Medida | Rodada 3 | Rodada 4 |
+|---|---|---|
+| Recall do painel (14 erros) | 100% | 100% |
+| Recall do painel atribuído | 100% | 100% |
+| Rejeição indevida do painel (4 controles) | 1 | 0 |
+| Recall individual: validador, independente, terceiro | 100%, 78,6%, 78,6% | 100%, 78,6%, 92,9% |
+| Rejeição indevida individual | 0, 0, 1 | 0, 0, 0 |
+| Concordância par a par | 0,78 a 0,83 | 0,83 a 0,94 |
+
+**Defeito corrigido (E).** `sentinela_semantica.ultimo_resultado` ordenava pelo caminho do arquivo. Como "-" vem antes de "/", a primeira rodada do dia era lida como a mais recente, e o critério de degrau usava a rodada 1. Agora ordena pelo nome da rodada; teste novo.
+
+**Situação do degrau (E).** `python3 -m pesquisa.metricas notas/` em 24/09/2026: degrau 1, com um único motivo restante, "0 de 3 ciclos aprovados e auditados sem erro factual". A bateria mecânica (100% em 36 casos, zero falso bloqueio) e a bateria semântica (rodada 4) cumprem o critério.
+
+**Inferência (I).**
+
+- É a primeira configuração que passa na bateria semântica. A cobertura de seleção e generalização continua concentrada: o revisor independente aprovou SS09, SS10 e SS11, e o terceiro revisor aprovou SS10. O painel pega esses erros porque o validador constitucional os pega.
+- A regra de unanimidade faz disso uma rede, não um ponto único. Mas um validador constitucional mais leniente nessas categorias deixaria passar erro de seleção. É o risco a vigiar nas próximas rodadas.
+- Com a gradação, a assimetria de horizontes no título, que devolveu a versão da rodada 2 do ciclo jul/2026, tende a virar observação. Não medi isso sobre aquela nota; fica como hipótese a verificar no próximo ciclo real.
+
+**Recomendação (R).**
+
+1. Rodar o ciclo de ago/2026 assim que a gold publicada avançar a data base. O calendário do BCB não foi consultado.
+2. Manter a bateria como está até lá: mexer nos casos agora mudaria a régua entre medida e ciclo.
+3. Seguem pendentes, em ordem: chave de outro fornecedor para o terceiro revisor; segunda nota base com mais casos de seleção e generalização; casos de omissão aplicados à fonte da nota, para que a tabela de fontes acompanhe o corte.

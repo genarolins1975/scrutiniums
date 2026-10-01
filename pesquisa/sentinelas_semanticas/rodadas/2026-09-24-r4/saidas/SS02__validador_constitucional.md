@@ -1,0 +1,6 @@
+C1: ok
+C2: ok
+C3: observação: no parágrafo de juros, a nota traz a diferença no mês por segmento (PF −1,97 p.p.; PJ +0,24 p.p.), mas deixa de fora a diferença em doze meses por segmento, que tem sinais opostos (PF +1,00 p.p.; PJ −0,62 p.p.), e não traz o spread por segmento; no parágrafo das famílias, cita a alta de 1,68 p.p. em doze meses do comprometimento, mas não a variação do endividamento (+0,93 p.p. em doze meses; −0,08 p.p. no mês). Nenhuma dessas omissões inverte a leitura de um fato citado; incluí-las deixaria a leitura mais simétrica.
+C4: ok
+C5: falha grave: "com alta de 9,5% em doze meses em termos reais e de 4,8% descontada a inflação medida pelo IPCA". Pelo pacote, 9,5% é a variação nominal (saldo_total.var_12m_pct) e a real é 4,8% (saldo_total.var_12m_real_pct). Chamar o valor nominal de "real" troca a definição do fato (erro factual de definição, art. 10.1), deixa o leitor achando que a carteira cresceu 9,5% acima da inflação e ainda faz a frase se contradizer. Resolveria trocar "em termos reais" por "em termos nominais". Observação: "alta de 13,4% sobre o mesmo mês do ano anterior" não diz que a variação é nominal, embora o pacote traga também a real (+8,6%); para ficar coerente com o primeiro parágrafo, convém dizer "nominal".
+DECISÃO: devolver

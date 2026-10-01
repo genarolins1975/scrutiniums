@@ -1,0 +1,2 @@
+ITEM moderada: "A carteira de crédito no mês mostra padrão misto de comportamento entre segmentos." | A frase resume a direção (alta em pessoas físicas, queda em pessoas jurídicas) sem citar os valores dos fatos correspondentes do pacote (saldo_pf.var_mes_pct: +0,8%; saldo_pj.var_mes_pct: −0,7%), que só aparecem na tabela de fontes, não na prosa. A leitura está certa, mas ficaria mais completa com os números disponíveis na evidência. | Citar na própria frase os dois valores de variação no mês por segmento, com sinal e horizonte ("no mês").
+DECISÃO: aprovar
