@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-10-01T00:44:22Z",
+ "gerado_em": "2026-10-01T06:06:09Z",
  "evidencias": {
   "05965546000109": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -40,8 +40,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -74,7 +74,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 11,500%, CEA (CNPJ 05.965.546/0001-09), 02/2019 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 11,500%, CEA (CNPJ 05.965.546/0001-09), 02/2019 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "50105865000190": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -115,8 +115,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -149,7 +149,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 11,880%, CEDRI (CNPJ 50.105.865/0001-90), 02/2022 a 05/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 11,880%, CEDRI (CNPJ 50.105.865/0001-90), 02/2022 a 05/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "08467115000100": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -190,8 +190,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -224,7 +224,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 8,030%, CEEE-D (CNPJ 08.467.115/0001-00), 03/2022 a 01/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 8,030%, CEEE-D (CNPJ 08.467.115/0001-00), 03/2022 a 01/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "83878892000155": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -265,8 +265,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -299,7 +299,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 5,430%, CELESC (CNPJ 83.878.892/0001-55), 01/2006 a 09/2006. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 5,430%, CELESC (CNPJ 83.878.892/0001-55), 01/2006 a 09/2006. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "08336783000190": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -340,8 +340,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -374,7 +374,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 6,110%, CELESC-DIS (CNPJ 08.336.783/0001-90), 01/2015 a 07/2015. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 6,110%, CELESC-DIS (CNPJ 08.336.783/0001-90), 01/2015 a 07/2015. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "87776043000141": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -415,8 +415,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -449,7 +449,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 1,000%, CELETRO (CNPJ 87.776.043/0001-41), 02/2021 a 08/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 1,000%, CELETRO (CNPJ 87.776.043/0001-41), 02/2021 a 08/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "06981180000116": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -490,8 +490,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -524,7 +524,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 8,014%, CEMIG-D (CNPJ 06.981.180/0001-16), 06/2023 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 8,014%, CEMIG-D (CNPJ 06.981.180/0001-16), 06/2023 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "52777034000190": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -565,8 +565,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -599,7 +599,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 5,890%, CEMIRIM (CNPJ 52.777.034/0001-90), 04/2019 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 5,890%, CEMIRIM (CNPJ 52.777.034/0001-90), 04/2019 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "28610236000169": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -640,8 +640,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -674,7 +674,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 8,000%, CERAL ARARUAMA (CNPJ 28.610.236/0001-69), 02/2020 a 09/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 8,000%, CERAL ARARUAMA (CNPJ 28.610.236/0001-69), 02/2020 a 09/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "86433042000131": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -715,8 +715,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -749,7 +749,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 10,090%, CERBRANORTE (CNPJ 86.433.042/0001-31), 02/2017 a 07/2017. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 10,090%, CERBRANORTE (CNPJ 86.433.042/0001-31), 02/2017 a 07/2017. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "13107842000199": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -790,8 +790,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -824,7 +824,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 10,214%, CERCOS (CNPJ 13.107.842/0001-99), 01/2025 a 11/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 10,214%, CERCOS (CNPJ 13.107.842/0001-99), 01/2025 a 11/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "82574864000181": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -865,8 +865,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -899,7 +899,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 14,810%, CEREJ (CNPJ 82.574.864/0001-81), 09/2023 a 08/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 14,810%, CEREJ (CNPJ 82.574.864/0001-81), 09/2023 a 08/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "31465487000101": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -940,8 +940,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -974,7 +974,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,090%, CERES (CNPJ 31.465.487/0001-01), 06/2019 a 03/2022. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,090%, CERES (CNPJ 31.465.487/0001-01), 06/2019 a 03/2022. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "97505838000179": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -1015,8 +1015,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -1049,7 +1049,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 4,000%, CERFOX (CNPJ 97.505.838/0001-79), 10/2023 a 02/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 4,000%, CERFOX (CNPJ 97.505.838/0001-79), 10/2023 a 02/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "50235449000107": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -1090,8 +1090,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -1124,7 +1124,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 10,380%, CERIM (CNPJ 50.235.449/0001-07), 09/2018 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 10,380%, CERIM (CNPJ 50.235.449/0001-07), 09/2018 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "97081434000103": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -1165,8 +1165,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -1199,7 +1199,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 10,000%, CERMISSÕES (CNPJ 97.081.434/0001-03), 06/2010 a 03/2011. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 10,000%, CERMISSÕES (CNPJ 97.081.434/0001-03), 06/2010 a 03/2011. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "85318640000105": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -1240,8 +1240,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -1274,7 +1274,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,380%, CERPALO (CNPJ 85.318.640/0001-05), 01/2023 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,380%, CERPALO (CNPJ 85.318.640/0001-05), 01/2023 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "86512670000102": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -1315,8 +1315,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -1349,7 +1349,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,590%, CERSUL (CNPJ 86.512.670/0001-02), 01/2024 a 11/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,590%, CERSUL (CNPJ 86.512.670/0001-02), 01/2024 a 11/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "97839922000129": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -1390,8 +1390,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -1424,7 +1424,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 6,420%, CERTAJA (CNPJ 97.839.922/0001-29), 09/2019 a 02/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 6,420%, CERTAJA (CNPJ 97.839.922/0001-29), 09/2019 a 02/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "55188502000180": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -1465,8 +1465,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -1499,7 +1499,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 10,000%, CERVAM (CNPJ 55.188.502/0001-80), 03/2024 a 08/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 10,000%, CERVAM (CNPJ 55.188.502/0001-80), 03/2024 a 08/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "01377555000110": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -1540,8 +1540,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -1574,7 +1574,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 9,040%, CHESP (CNPJ 01.377.555/0001-10), 01/2022 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 9,040%, CHESP (CNPJ 01.377.555/0001-10), 01/2022 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "95824322000161": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -1615,8 +1615,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -1649,7 +1649,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 20,360%, COOPERLUZ (CNPJ 95.824.322/0001-61), 08/2023 a 06/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 20,360%, COOPERLUZ (CNPJ 95.824.322/0001-61), 08/2023 a 06/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "87462750000163": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -1690,8 +1690,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -1724,7 +1724,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,500%, COOPERSUL (CNPJ 87.462.750/0001-63), 12/2023 a 10/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,500%, COOPERSUL (CNPJ 87.462.750/0001-63), 12/2023 a 10/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "53859112000169": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -1765,8 +1765,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -1799,7 +1799,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 6,850%, CPFL JAGUARI (CNPJ 53.859.112/0001-69), 03/2021 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 6,850%, CPFL JAGUARI (CNPJ 53.859.112/0001-69), 03/2021 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "33050196000188": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -1840,8 +1840,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -1874,7 +1874,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 5,231%, CPFL-PAULISTA (CNPJ 33.050.196/0001-88), 04/2023 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 5,231%, CPFL-PAULISTA (CNPJ 33.050.196/0001-88), 04/2023 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "04172213000151": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -1915,8 +1915,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -1949,7 +1949,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 4,750%, CPFL-PIRATINING (CNPJ 04.172.213/0001-51), 10/2019 a 09/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 4,750%, CPFL-PIRATINING (CNPJ 04.172.213/0001-51), 10/2019 a 09/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "83855973000130": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -1990,8 +1990,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -2024,7 +2024,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,280%, DCELT (CNPJ 83.855.973/0001-30), 12/2023 a 11/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,280%, DCELT (CNPJ 83.855.973/0001-30), 12/2023 a 11/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "95289500000100": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -2065,8 +2065,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -2099,7 +2099,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 4,990%, DEMEI (CNPJ 95.289.500/0001-00), 01/2023 a 06/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 4,990%, DEMEI (CNPJ 95.289.500/0001-00), 01/2023 a 06/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "23664303000104": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -2140,8 +2140,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -2174,7 +2174,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 4,430%, DMED (CNPJ 23.664.303/0001-04), 04/2021 a 10/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 4,430%, DMED (CNPJ 23.664.303/0001-04), 04/2021 a 10/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "86531175000140": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -2215,8 +2215,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -2249,7 +2249,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 3,750%, EFLUL (CNPJ 86.531.175/0001-40), 01/2024 a 05/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 3,750%, EFLUL (CNPJ 86.531.175/0001-40), 01/2024 a 05/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "02328280000197": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -2290,8 +2290,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -2324,7 +2324,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 5,778%, ELEKTRO (CNPJ 02.328.280/0001-97), 01/2025 a 03/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 5,778%, ELEKTRO (CNPJ 02.328.280/0001-97), 01/2025 a 03/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "88446034000155": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -2365,8 +2365,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -2399,7 +2399,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 6,600%, ELETROCAR (CNPJ 88.446.034/0001-55), 06/2025 a 03/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 6,600%, ELETROCAR (CNPJ 88.446.034/0001-55), 06/2025 a 03/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "61695227000193": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -2440,8 +2440,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -2474,7 +2474,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 5,052%, ELETROPAULO (CNPJ 61.695.227/0001-93), 08/2025 a 03/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 5,052%, ELETROPAULO (CNPJ 61.695.227/0001-93), 08/2025 a 03/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "27485069000109": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -2515,8 +2515,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -2549,7 +2549,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 9,084%, ELFSM (CNPJ 27.485.069/0001-09), 10/2022 a 03/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 9,084%, ELFSM (CNPJ 27.485.069/0001-09), 10/2022 a 03/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "07047251000170": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -2590,8 +2590,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -2624,7 +2624,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 9,220%, ENEL CE (CNPJ 07.047.251/0001-70), 01/2023 a 02/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 9,220%, ENEL CE (CNPJ 07.047.251/0001-70), 01/2023 a 02/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "33050071000158": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -2665,8 +2665,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -2699,7 +2699,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 8,001%, ENEL RJ (CNPJ 33.050.071/0001-58), 01/2023 a 01/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 8,001%, ENEL RJ (CNPJ 33.050.071/0001-58), 01/2023 a 01/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "12272084000100": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -2740,8 +2740,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -2774,7 +2774,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 10,340%, EQUATORIAL AL (CNPJ 12.272.084/0001-00), 01/2019 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 10,340%, EQUATORIAL AL (CNPJ 12.272.084/0001-00), 01/2019 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "01543032000104": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -2815,8 +2815,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -2849,7 +2849,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 9,460%, EQUATORIAL GO (CNPJ 01.543.032/0001-04), 01/2022 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 9,460%, EQUATORIAL GO (CNPJ 01.543.032/0001-04), 01/2022 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "06272793000184": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -2890,8 +2890,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -2924,7 +2924,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 10,814%, EQUATORIAL MA (CNPJ 06.272.793/0001-84), 08/2021 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 10,814%, EQUATORIAL MA (CNPJ 06.272.793/0001-84), 08/2021 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "04895728000180": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -2965,8 +2965,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -2999,7 +2999,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 11,648%, EQUATORIAL PA (CNPJ 04.895.728/0001-80), 01/2022 a 07/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 11,648%, EQUATORIAL PA (CNPJ 04.895.728/0001-80), 01/2022 a 07/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "06840748000189": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -3040,8 +3040,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -3074,7 +3074,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 12,170%, EQUATORIAL PI (CNPJ 06.840.748/0001-89), 12/2018 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 12,170%, EQUATORIAL PI (CNPJ 06.840.748/0001-89), 12/2018 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "05914650000166": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -3115,8 +3115,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -3149,7 +3149,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 11,150%, ERO (CNPJ 05.914.650/0001-66), 09/2015 a 12/2017. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 11,150%, ERO (CNPJ 05.914.650/0001-66), 09/2015 a 12/2017. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "91982348000187": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -3190,8 +3190,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -3224,7 +3224,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 4,320%, HIDROPAN (CNPJ 91.982.348/0001-87), 01/2025 a 03/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 4,320%, HIDROPAN (CNPJ 91.982.348/0001-87), 01/2025 a 03/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "60444437000146": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -3265,8 +3265,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -3299,7 +3299,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,090%, LIGHT SESA (CNPJ 60.444.437/0001-46), 02/2020 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,090%, LIGHT SESA (CNPJ 60.444.437/0001-46), 02/2020 a 12/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "02016439000138": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -3340,8 +3340,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -3374,7 +3374,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 8,660%, RGE (CNPJ 02.016.439/0001-38), 01/2010 a 10/2011. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 8,660%, RGE (CNPJ 02.016.439/0001-38), 01/2010 a 10/2011. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "13255658000196": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -3415,8 +3415,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -3449,7 +3449,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 11,470%, SULGIPE (CNPJ 13.255.658/0001-96), 04/2024 a 09/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 11,470%, SULGIPE (CNPJ 13.255.658/0001-96), 04/2024 a 09/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "89889604000144": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -3490,8 +3490,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -3524,7 +3524,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 8,490%, UHENPAL (CNPJ 89.889.604/0001-44), 01/2023 a 11/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 8,490%, UHENPAL (CNPJ 89.889.604/0001-44), 01/2023 a 11/2023. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "02341467000120": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -3565,8 +3565,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -3599,7 +3599,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,770%, ÂMBAR AMAZONAS (CNPJ 02.341.467/0001-20), 11/2021 a 06/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,770%, ÂMBAR AMAZONAS (CNPJ 02.341.467/0001-20), 11/2021 a 06/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "02341470000144": {
    "indicador": "Percentual técnico regulatório implícito no SAMP (trecho mais recente)",
@@ -3640,8 +3640,8 @@
    "tratamento_ausencia": "Mês sem a técnica medida ou sem a injetada publicada interrompe o trecho; nada é completado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -3674,7 +3674,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,620%, ÂMBAR ENERGIA RR (CNPJ 02.341.470/0001-44), 05/2023 a 03/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Percentual técnico regulatório implícito no SAMP (trecho mais recente): 7,620%, ÂMBAR ENERGIA RR (CNPJ 02.341.470/0001-44), 05/2023 a 03/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  }
 }

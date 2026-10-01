@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "perdas.json",
- "gerado_em": "2026-10-01T00:44:22Z",
+ "gerado_em": "2026-10-01T06:06:09Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "d5dc4fd86561+alterado",
+ "versao_codigo": "d329b83c69a5+alterado",
  "disponivel": true,
  "referencia": {
   "ano": 2025,
@@ -12,7 +12,7 @@
   "ultima_competencia_parcial": "2026-08",
   "mes_fim_acumulado": 7,
   "aviso_parcial": "2026 tem dados até ago/2026 e não entra em comparações com anos completos; o acumulado de janeiro a julho é comparado com o mesmo período de 2025.",
-  "tarifa_consultada_em": "2026-09-30"
+  "tarifa_consultada_em": "2026-10-01"
  },
  "definicoes": {
   "perdas_totais": "Energia injetada na rede da distribuidora que não chega a ser entregue como consumo medido: diferença calculada pela ANEEL no SAMP Balanço (valor medido).",
@@ -14970,7 +14970,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-15T05:01:12Z",
    "capturado_em": "2026-09-30T22:26:40Z",
-   "validado_em": "2026-10-01T00:44:22Z",
+   "validado_em": "2026-10-01T06:06:09Z",
    "cobertura_historica": {
     "inicio": "2003-01",
     "fim": "2026-08"
@@ -14985,9 +14985,9 @@
     "sha256": "1f8e4d44f6170bc91bcf2fa0b6047953394d8e8cf47bf9dfa3b3ed6f40ab63eb"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "d329b83c69a5+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:44:20Z",
+    "detectado_em": "2026-10-01T06:06:06Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -14997,7 +14997,7 @@
    },
    "limitacoes": [
     "Perdas técnicas publicadas no SAMP são estimativas regulatórias (percentual fixado no processo tarifário aplicado à energia injetada publicada), não medição; a parcela não técnica publicada depende dessa estimativa.",
-    "A partir de 2024 (leiaute da REN 1.003/2022) a fonte deixou de publicar a separação técnica e não técnica para cerca de metade das distribuidoras, e a energia injetada publicada deixou de fechar o balanço com a perda calculada pela própria fonte; o denominador desses meses é a energia implícita no cálculo da fonte (fornecida + irregular + perdas), e a série tem quebra em 2024. A fonte não explica a diferença e o módulo não atribui causa a ela.",
+    "A partir de 2024 (leiaute da REN 1.003/2022) a fonte deixou de publicar a separação técnica e não técnica para parte das concessionárias (com a separação publicada nos 12 meses: 48 de 50 em 2023, 32 de 51 em 2024 e 18 de 51 em 2025), e a energia injetada publicada deixou de fechar o balanço com a perda calculada pela própria fonte; o denominador desses meses é a energia implícita no cálculo da fonte (fornecida + irregular + perdas), e a série tem quebra em 2024. A fonte não explica a diferença e o módulo não atribui causa a ela.",
     "Valores mensais oscilam com o calendário de leitura dos medidores; só o ano civil completo é comparado.",
     "Perdas medidas (base adotada pela ANEEL em 2025) diferem das faturadas: o faturado inclui o custo de disponibilidade e a compensação da MMGD.",
     "Agente-ano com balanço que não fecha (resíduo acima de 5% da injetada no leiaute antigo, fornecida maior que a injetada) fica fora de agregados e comparações, com alerta."
@@ -15024,7 +15024,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-15T05:01:12Z",
    "capturado_em": "2026-09-30T22:26:40Z",
-   "validado_em": "2026-10-01T00:44:22Z",
+   "validado_em": "2026-10-01T06:06:09Z",
    "cobertura_historica": {
     "inicio": "2003-01",
     "fim": "2026-08"
@@ -15039,9 +15039,9 @@
     "sha256": "1f8e4d44f6170bc91bcf2fa0b6047953394d8e8cf47bf9dfa3b3ed6f40ab63eb"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "d329b83c69a5+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:44:20Z",
+    "detectado_em": "2026-10-01T06:06:06Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -15053,7 +15053,7 @@
     "A técnica é o percentual regulatório aplicado pela fonte à injetada publicada (estimativa, não medição); a não técnica publicada é a perda total menos essa estimativa e herda a estimativa.",
     "As linhas publicadas nem sempre obedecem a total = técnica + não técnica: a identidade é conferida mês a mês e o agente-ano que não fecha (acima de 2 kWh por mês e de 0,1% da perda total) sai dos agregados de técnica e não técnica.",
     "Técnica medida e faturada são linhas diferentes da fonte (diferem em 13% dos meses em que as duas existem); só a medida é usada, e o mês sem ela fica sem técnica.",
-    "O universo com separação publicada muda muito de um ano para outro (a fonte deixou de publicá-la para cerca de metade das distribuidoras em 2024): a variação anual só se lê nas mesmas distribuidoras (comparação com o ano anterior e série de universo fixo)."
+    "O universo com separação publicada muda muito de um ano para outro (parte das concessionárias (com a separação publicada nos 12 meses: 48 de 50 em 2023, 32 de 51 em 2024 e 18 de 51 em 2025)): a variação anual só se lê nas mesmas distribuidoras (comparação com o ano anterior e série de universo fixo)."
    ],
    "download": "/energia/series/perdas_distribuidoras.csv",
    "notas_fonte": null
@@ -15077,7 +15077,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-15T05:01:12Z",
    "capturado_em": "2026-09-30T22:26:40Z",
-   "validado_em": "2026-10-01T00:44:22Z",
+   "validado_em": "2026-10-01T06:06:09Z",
    "cobertura_historica": {
     "inicio": "2003-01",
     "fim": "2026-08"
@@ -15095,9 +15095,9 @@
     "sha256": "1f8e4d44f6170bc91bcf2fa0b6047953394d8e8cf47bf9dfa3b3ed6f40ab63eb"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "d329b83c69a5+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:44:20Z",
+    "detectado_em": "2026-10-01T06:06:06Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -15107,7 +15107,7 @@
    },
    "limitacoes": [
     "Perdas técnicas publicadas no SAMP são estimativas regulatórias (percentual fixado no processo tarifário aplicado à energia injetada publicada), não medição; a parcela não técnica publicada depende dessa estimativa.",
-    "A partir de 2024 (leiaute da REN 1.003/2022) a fonte deixou de publicar a separação técnica e não técnica para cerca de metade das distribuidoras, e a energia injetada publicada deixou de fechar o balanço com a perda calculada pela própria fonte; o denominador desses meses é a energia implícita no cálculo da fonte (fornecida + irregular + perdas), e a série tem quebra em 2024. A fonte não explica a diferença e o módulo não atribui causa a ela.",
+    "A partir de 2024 (leiaute da REN 1.003/2022) a fonte deixou de publicar a separação técnica e não técnica para parte das concessionárias (com a separação publicada nos 12 meses: 48 de 50 em 2023, 32 de 51 em 2024 e 18 de 51 em 2025), e a energia injetada publicada deixou de fechar o balanço com a perda calculada pela própria fonte; o denominador desses meses é a energia implícita no cálculo da fonte (fornecida + irregular + perdas), e a série tem quebra em 2024. A fonte não explica a diferença e o módulo não atribui causa a ela.",
     "Valores mensais oscilam com o calendário de leitura dos medidores; só o ano civil completo é comparado.",
     "Perdas medidas (base adotada pela ANEEL em 2025) diferem das faturadas: o faturado inclui o custo de disponibilidade e a compensação da MMGD.",
     "Agente-ano com balanço que não fecha (resíduo acima de 5% da injetada no leiaute antigo, fornecida maior que a injetada) fica fora de agregados e comparações, com alerta.",
@@ -15136,7 +15136,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-15T05:01:12Z",
    "capturado_em": "2026-09-30T22:26:40Z",
-   "validado_em": "2026-10-01T00:44:22Z",
+   "validado_em": "2026-10-01T06:06:09Z",
    "cobertura_historica": {
     "inicio": "2003-01",
     "fim": "2026-08"
@@ -15150,9 +15150,9 @@
     "sha256": "1f8e4d44f6170bc91bcf2fa0b6047953394d8e8cf47bf9dfa3b3ed6f40ab63eb"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "d329b83c69a5+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:44:20Z",
+    "detectado_em": "2026-10-01T06:06:06Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -15187,7 +15187,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-15T05:01:12Z",
    "capturado_em": "2026-09-30T22:26:40Z",
-   "validado_em": "2026-10-01T00:44:22Z",
+   "validado_em": "2026-10-01T06:06:09Z",
    "cobertura_historica": {
     "inicio": "2003-01",
     "fim": "2026-03"
@@ -15199,9 +15199,9 @@
     "sha256": "1f8e4d44f6170bc91bcf2fa0b6047953394d8e8cf47bf9dfa3b3ed6f40ab63eb"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "d329b83c69a5+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:44:20Z",
+    "detectado_em": "2026-10-01T06:06:06Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -15234,14 +15234,14 @@
    "frequencia": "por processo tarifário",
    "periodo_referencia": {
     "inicio": "2012-02-03",
-    "fim": "2026-09-30"
+    "fim": "2026-10-01"
    },
    "publicado_pela_fonte_em": "2026-09-27T05:32:55Z",
    "capturado_em": "2026-09-30T22:31:18Z",
-   "validado_em": "2026-10-01T00:44:22Z",
+   "validado_em": "2026-10-01T06:06:09Z",
    "cobertura_historica": {
     "inicio": "2012-02-03",
-    "fim": "2026-09-30"
+    "fim": "2026-10-01"
    },
    "transformacoes": [
     "filtro: subgrupo B1, modalidade convencional, subclasse residencial, sem detalhe, base econômica",
@@ -15253,9 +15253,9 @@
     "sha256": "383dddecd3d2fe676d91488c3cf8caddd19ae57b08a22d7816f2a043cdd96da3"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "d329b83c69a5+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:44:20Z",
+    "detectado_em": "2026-10-01T06:06:07Z",
     "total": 12,
     "vintages_comparadas": 16,
     "arquivos": 16,
@@ -15352,7 +15352,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-09T11:06:11Z",
    "capturado_em": "2026-09-30T22:32:46Z",
-   "validado_em": "2026-10-01T00:44:22Z",
+   "validado_em": "2026-10-01T06:06:09Z",
    "cobertura_historica": {
     "inicio": "2026",
     "fim": "2026"
@@ -15364,9 +15364,9 @@
     "sha256": "807880726cd25465c1117a1cbabdd4d95267b7631f60b360fd9f7fe33f6020e8"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "d329b83c69a5+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:44:21Z",
+    "detectado_em": "2026-10-01T06:06:07Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -15401,7 +15401,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-09-30T22:34:16Z",
-   "validado_em": "2026-10-01T00:44:22Z",
+   "validado_em": "2026-10-01T06:06:09Z",
    "cobertura_historica": {
     "inicio": "2022-08-01",
     "fim": "2022-08-01"
@@ -15413,9 +15413,9 @@
     "sha256": "710ac364472539b1cd632a4d42caea8ed7d63ecf3d25b18716e2f0d04893d65b"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "d5dc4fd86561+alterado",
+   "versao_codigo": "d329b83c69a5+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T00:44:21Z",
+    "detectado_em": "2026-10-01T06:06:07Z",
     "total": 0,
     "vintages_comparadas": 3,
     "arquivos": 3,
@@ -15475,8 +15475,8 @@
    "tratamento_ausencia": "Mês sem a linha na fonte deixa a soma anual ausente; nada é completado nem vira zero.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -15518,7 +15518,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Taxa de perdas totais na distribuição: 14,7%, Concessionárias de distribuição (Brasil), 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Taxa de perdas totais na distribuição: 14,7%, Concessionárias de distribuição (Brasil), 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "perdas_nacional": {
    "indicador": "Perdas totais de energia na distribuição",
@@ -15556,8 +15556,8 @@
    "tratamento_ausencia": "Mês sem a linha na fonte deixa a soma anual ausente; nada é completado nem vira zero.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -15599,7 +15599,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Perdas totais de energia na distribuição: 90,4 TWh, Concessionárias de distribuição (Brasil), 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Perdas totais de energia na distribuição: 90,4 TWh, Concessionárias de distribuição (Brasil), 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "pnt_bt_nacional": {
    "indicador": "Perdas não técnicas sobre o mercado de baixa tensão",
@@ -15639,12 +15639,12 @@
    },
    "pesos": null,
    "exclusoes": [],
-   "cobertura": "18 de 51 concessionárias válidas, 32,1% do mercado BT delas; a fonte deixou de publicar a separação para cerca de metade das distribuidoras a partir de 2024",
+   "cobertura": "18 de 51 concessionárias válidas, 32,1% do mercado BT delas; a fonte deixou de publicar a separação para parte das concessionárias (com a separação publicada nos 12 meses: 48 de 50 em 2023, 32 de 51 em 2024 e 18 de 51 em 2025) a partir de 2024",
    "tratamento_ausencia": "Mês sem a linha na fonte deixa a soma anual ausente; nada é completado nem vira zero. Distribuidora sem a técnica ou a não técnica em algum mês fica fora do numerador e do denominador.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -15691,7 +15691,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Perdas não técnicas sobre o mercado de baixa tensão: 15,0%, 18 concessionárias com separação técnica e não técnica publicada (não é a perda não técnica de todas as 51 concessionárias válidas), 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Perdas não técnicas sobre o mercado de baixa tensão: 15,0%, 18 concessionárias com separação técnica e não técnica publicada (não é a perda não técnica de todas as 51 concessionárias válidas), 01/2025 a 12/2025. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "injetada_2024": {
    "indicador": "Energia injetada de referência das concessionárias",
@@ -15729,8 +15729,8 @@
    "tratamento_ausencia": "Mês sem a linha na fonte deixa a soma anual ausente; nada é completado nem vira zero.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -15776,7 +15776,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Energia injetada de referência das concessionárias: 605,2 TWh, Concessionárias de distribuição (Brasil), 01/2024 a 12/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Energia injetada de referência das concessionárias: 605,2 TWh, Concessionárias de distribuição (Brasil), 01/2024 a 12/2024. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "acumulado": {
    "indicador": "Taxa de perdas totais acumulada em 2026",
@@ -15820,8 +15820,8 @@
    "tratamento_ausencia": "Mês sem a linha na fonte deixa a soma anual ausente; nada é completado nem vira zero. Ano aberto: só compara com o mesmo período do ano anterior.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -15859,7 +15859,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Taxa de perdas totais acumulada em 2026: 14,8%, Concessionárias de distribuição (Brasil), 01/2026 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Taxa de perdas totais acumulada em 2026: 14,8%, Concessionárias de distribuição (Brasil), 01/2026 a 07/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "associacao": {
    "indicador": "Associação entre renda média da área e taxa de perdas totais (ρ de Spearman)",
@@ -15948,8 +15948,8 @@
    "tratamento_ausencia": "Concessionária sem renda na área ou fora da comparação no ano não entra; nada é imputado.",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "d5dc4fd86561+alterado",
-    "publicacao": "2026-10-01T00:44:22Z"
+    "codigo": "d329b83c69a5+alterado",
+    "publicacao": "2026-10-01T06:06:09Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -15982,7 +15982,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py perdas --sem-coleta (silver data/energia/silver/aneel_distribuicao.db); o CSV mensal perdas_mensal.csv permite refazer cada soma a partir dos valores em kWh da fonte.",
-   "citacao": "SCRUTINIUMS. Associação entre renda média da área e taxa de perdas totais (ρ de Spearman): −0,606 ρ de Spearman (adimensional, de −1 a 1), Concessionárias de distribuição (Brasil), 01/2022 a 12/2022. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d5dc4fd86561+alterado, publicada em 30/09/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Associação entre renda média da área e taxa de perdas totais (ρ de Spearman): −0,606 ρ de Spearman (adimensional, de −1 a 1), Concessionárias de distribuição (Brasil), 01/2022 a 12/2022. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ANEEL, SAMP Balanço (recurso samp-balanco.parquet, capturado em 30/09/2026). Versão energia-0.1.0, código d329b83c69a5+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "downloads": [

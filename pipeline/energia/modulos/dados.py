@@ -999,6 +999,78 @@ def _fonte_catalogo(con):
     return [v for v in (base.ultima_vintage(con, ck.CATALOGOS[o]["dataset"], "package_search") for o in ("ONS", "ANEEL", "CCEE")) if v]
 
 
+def proveniencias(con, lista, cat, hoje, agora):
+    snap_ons = c.snapshot_de(con, ck.CATALOGOS["ONS"]["dataset"])
+    snap_sil = _snapshot_silvers(lista)
+    caps = [x["capturas"]["ultima"] for x in lista if x["capturas"]["ultima"]]
+    ini = min((x["capturas"]["primeira"] for x in lista if x["capturas"]["primeira"]), default=None)
+    fonte_portais = {"orgao": "ONS, ANEEL e CCEE", "dataset": "Listagem de conjuntos dos portais de dados abertos (API CKAN package_search)",
+                     "recurso": "package_search?rows=1000", "url_dataset": ck.CATALOGOS["ONS"]["url"],
+                     "url_primaria": ck.CATALOGOS["ANEEL"]["url"],
+                     "urls": [ck.CATALOGOS[o]["url"] for o in ("ONS", "ANEEL", "CCEE")],
+                     "licenca": f"{c.LICENCA_ONS}; ANEEL: Open Data Commons Open Database License (ODbL); {c.LICENCA_CCEE}"}
+    fonte_silver = {"orgao": "Scrutiniums (pipeline do observatório)", "dataset": "Silvers e golds do domínio Energia",
+                    "recurso": "data/energia/silver/*.db e public/energia/gold/*.json",
+                    "url_dataset": "https://github.com/genarolins1975/scrutiniums/tree/main/pipeline/energia",
+                    "url_primaria": "https://github.com/genarolins1975/scrutiniums/tree/main/public/energia", "licenca": LICENCA_PROPRIA}
+    snap_cat = snap_ons if snap_ons.get("id") else snap_sil
+    return {
+        "catalogo": c.proveniencia(
+            indicador="Estado de cada conjunto no catálogo (catalogado, recurso verificado, integrado, validado, publicado)",
+            natureza="CALCULADO", fonte=fonte_portais, unidade="conjuntos", frequencia="a cada execução do pipeline",
+            periodo={"inicio": hoje.isoformat(), "fim": hoje.isoformat()}, cobertura={"inicio": hoje.isoformat(), "fim": hoje.isoformat()},
+            capturado_em=snap_cat.get("capturas", [{}])[-1].get("capturado_em") if snap_cat.get("capturas") else max(caps, default=agora),
+            snapshot=snap_cat,
+            formula="estado = última etapa alcançada em sequência; cada etapa exige a evidência descrita em criterios_estado",
+            transformacoes=["listagem CKAN versionada com sha256", "verificação parcial de recursos (Range 64 KB)",
+                            "estado recurso a recurso pelas capturas registradas nos silvers",
+                            "etapas por integração calculadas dos silvers e do relatório de validação"],
+            limitacoes=["O portal da CCEE recusa (HTTP 403, página 'Acesso bloqueado') pedidos feitos com curl e respondeu ao cliente do "
+                        "pipeline, com o User-Agent do projeto; quando recusa também o pipeline, o catálogo da CCEE volta aos package_show "
+                        "versionados no repositório, que cobrem só os conjuntos guardados lá.",
+                        "Recurso verificado lê só os primeiros 64 KB de um arquivo por conjunto; não atesta o arquivo inteiro.",
+                        "Entradas manuais (EPE, MME, ANA, INMET, B3, ANP, IBGE) têm metadados não verificados na fonte."],
+            download=U["catalogo"], validado_em=agora),
+        "saude": c.proveniencia(
+            indicador="Atualidade, completude, capturas e falhas por conjunto integrado", natureza="CALCULADO",
+            fonte=fonte_silver, unidade="por conjunto", frequencia="a cada execução do pipeline",
+            periodo={"inicio": ini[:10] if ini else hoje.isoformat(), "fim": hoje.isoformat()},
+            cobertura={"inicio": ini[:10] if ini else hoje.isoformat(), "fim": hoje.isoformat()},
+            capturado_em=max(caps, default=agora), snapshot=snap_sil, publicado_em=None, revisoes={"total": 0, "detectado_em": agora, "exemplos": []},
+            formula=("situação = EM DIA se hoje ≤ fim do período seguinte ao último disponível + tolerância da cadência declarada "
+                     "(diária 2, semanal 7, quinzenal 15, mensal 60, trimestral 90, anual 365 dias); completude interna = referências "
+                     "presentes ÷ esperadas entre a primeira e a última de cada série, no passo modal"),
+            transformacoes=["leitura somente leitura dos silvers", "agregação por conjunto"],
+            limitacoes=["A frequência só é usada quando declarada em metadado legível da fonte; sem ela o SLA não é aplicado.",
+                        "Os silvers deste ambiente foram reconstruídos em 29 e 30/09/2026: o histórico de capturas e revisões começa aí.",
+                        "Completude interna não acusa série que começa depois ou termina antes; só lacunas entre a primeira e a última referência."],
+            download=U["conjuntos"], validado_em=agora),
+        "revisoes": c.proveniencia(
+            indicador="Revisões da fonte entre capturas: alcance e magnitude", natureza="CALCULADO", fonte=fonte_silver,
+            unidade="unidade de cada série (diferença absoluta) e % (diferença relativa)", frequencia="a cada execução do pipeline",
+            periodo={"inicio": ini[:10] if ini else hoje.isoformat(), "fim": hoje.isoformat()},
+            cobertura={"inicio": ini[:10] if ini else hoje.isoformat(), "fim": hoje.isoformat()},
+            capturado_em=max(caps, default=agora), snapshot=snap_sil, publicado_em=None,
+            revisoes={"total": sum(((x["revisoes"] or {}).get("referencias") or 0) for x in lista), "detectado_em": agora, "exemplos": []},
+            formula="revisão = troca de valor de uma mesma (série, referência) entre capturas consecutivas; relativa = |novo − anterior| ÷ |anterior|",
+            transformacoes=["comparação das vintages no silver (append only)"],
+            limitacoes=["Só há revisão detectável a partir da segunda captura de um mesmo arquivo.",
+                        "A diferença absoluta está na unidade da série e só se compara dentro da mesma série.",
+                        "Mudança a partir de zero não tem diferença relativa e é contada à parte."],
+            download=U["revisoes"], validado_em=agora),
+        "validacao": c.proveniencia(
+            indicador="Resultado das validações automáticas da publicação", natureza="CALCULADO", fonte=fonte_silver,
+            unidade="checagens", frequencia="a cada execução do pipeline", periodo={"inicio": hoje.isoformat(), "fim": hoje.isoformat()},
+            cobertura={"inicio": hoje.isoformat(), "fim": hoje.isoformat()}, capturado_em=max(caps, default=agora), snapshot=snap_sil,
+            publicado_em=None, revisoes={"total": 0, "detectado_em": agora, "exemplos": []},
+            formula="veredito = pior resultado entre as checagens aplicáveis (reprovado > ressalva > aprovado)",
+            transformacoes=["pipeline/energia/validacoes.py sobre todas as golds, CSV e conjuntos"],
+            limitacoes=["A chave única dos CSV é inferida pelo nome e pelo tipo das colunas; ressalva de chave pede conferência humana.",
+                        "Identidades de agregação são as declaradas em validacoes.IDENTIDADES; arquivo sem identidade declarada não é testado nesse eixo."],
+            download=U["validacoes"], validado_em=agora),
+    }
+
+
 def _evidencia_kpis(con, lista, cat, agora, hoje, todas=(), golds_res=None):
     """Fichas 'Comprove este número' dos números principais da página. Cada teste
     confere o número por um caminho diferente do que o calculou (relatório de

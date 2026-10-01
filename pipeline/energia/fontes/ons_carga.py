@@ -5,7 +5,7 @@ Dois produtos do ONS que parecem a mesma coisa e não são (conferido em 30/09/2
 1. Curva de Carga Horária (dados.ons.org.br/dataset/curva-carga, arquivos
    CURVA_CARGA_AAAA.csv no S3 `curva-carga-ho`). Uma coluna de valor,
    `val_cargaenergiahomwmed` (MWmed na hora; dicionário v1.2 de 06/04/2026: não admite
-   nulo nem negativo, admite zero). A média das 24 horas de um dia é exatamente a Carga de
+   nulo nem negativo, admite zero; aqui zero é ausência, ver `le_curva`). A média das 24 horas de um dia é exatamente a Carga de
    Energia Diária (`carga_energia_di`) do mesmo dia: é o mesmo produto em outro grão, com
    as mesmas mudanças de conteúdo de 01/03/2021 e 29/04/2023 (inclusão da estimativa de
    MMGD "com base em dados meteorológicos previstos", segundo as notas do CKAN). O
@@ -96,9 +96,18 @@ def hora_curva(din_instante):
     return s[:10] + "T" + s[11:13] + ":00"
 
 
-def le_curva(linhas):
+def le_curva(linhas, descartados=None):
     """Linhas do CSV (dicts) → {(sm, hora): valor}. Valor vazio ou não numérico é
-    ausência; linha repetida (mesmo subsistema e hora) fica com a última ocorrência."""
+    ausência; linha repetida (mesmo subsistema e hora) fica com a última ocorrência.
+
+    Valor zero ou negativo também é ausência, e vai para `descartados` (lista de
+    (sm, hora, texto original)) quando ela é passada. O dicionário admite zero, mas a
+    carga de um subsistema inteiro numa hora não é zero: no início do horário de verão,
+    a hora das 00h não existe no relógio local, e o ONS marca essa hora com célula vazia
+    no SE, no NE e no N e com "0E-8" no Sul (CURVA_CARGA_2018.csv, 04/11/2018 00h; único
+    zero nos 27 arquivos, conferido em 01/10/2026). Lido como carga, o zero dava ao Sul
+    um dia de 24 horas com média 4,2% abaixo da Carga de Energia Diária do mesmo dia
+    (7.968,2 contra 8.314,6 MWmed, que é a soma das 23 horas reais dividida por 23)."""
     out = {}
     for r in linhas:
         sm = (r.get("id_subsistema") or "").strip().upper()
@@ -107,9 +116,14 @@ def le_curva(linhas):
         if sm not in SMS or not h or not v:
             continue
         try:
-            out[(sm, h)] = float(v.replace(",", "."))
+            x = float(v.replace(",", "."))
         except ValueError:
             continue
+        if not x > 0:
+            if descartados is not None:
+                descartados.append((sm, h, v))
+            continue
+        out[(sm, h)] = x
     return out
 
 

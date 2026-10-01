@@ -181,9 +181,21 @@ def le_bronze(arquivo):
     return gzip.decompress(corpo) if corpo[:2] == b"\x1f\x8b" else corpo
 
 
-def _importada(con, vid):
-    return con.execute("SELECT 1 FROM registros WHERE dataset=? AND chave=? AND campo='importada'",
-                       (DS_CONTROLE, vid)).fetchone() is not None
+def _importada(con, vid, campo="importada"):
+    return con.execute("SELECT 1 FROM registros WHERE dataset=? AND chave=? AND campo=?",
+                       (DS_CONTROLE, vid, campo)).fetchone() is not None
+
+
+# Versão da leitura da curva horária: sobe quando o parser muda o que vai para o silver.
+# A versão 2 trata zero como ausência (a hora inexistente do início do horário de verão
+# de 04/11/2018 vinha como "0E-8" no Sul; ver ons_carga.le_curva). Vintage importada por
+# versão anterior é reimportada do bronze, onde o arquivo original fica com sha256; as
+# observações que a versão anterior gravou para ela são apagadas antes, porque o silver
+# não tem como registrar "deixou de existir" (grava_observacoes ignora ausência). Os
+# campos de controle da versão nova levam o sufixo da versão: um registro com o mesmo
+# campo na mesma vintage de controle não seria regravado.
+VERSAO_LEITURA_CURVA = 2
+_SUFIXO_CURVA = f"_v{VERSAO_LEITURA_CURVA}"
 
 
 def _registra_controle(con, vid):

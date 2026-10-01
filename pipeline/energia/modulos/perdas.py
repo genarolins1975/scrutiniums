@@ -95,7 +95,7 @@ REGISTRO = {
          "licenca": LICENCA_ANEEL, "paginas": PAGINA,
          "downloads": [_url(CSV_ANUAL), _url(CSV_MENSAL), _url(CSV_NACIONAL), _url(CSV_PT), _url(CSV_ACUM)],
          "quebras": [
-             {"data": "2024-01-01", "origem": "PLATAFORMA", "descricao": "Leiaute da REN ANEEL 1.003/2022: linhas por nível de tensão com total próprio; a energia injetada publicada deixa de fechar o balanço com a perda calculada pela própria fonte (a fonte não explica a diferença); perdas técnicas e não técnicas deixam de ser publicadas para cerca de metade das distribuidoras."},
+             {"data": "2024-01-01", "origem": "PLATAFORMA", "descricao": "Leiaute da REN ANEEL 1.003/2022: linhas por nível de tensão com total próprio; a energia injetada publicada deixa de fechar o balanço com a perda calculada pela própria fonte (a fonte não explica a diferença); perdas técnicas e não técnicas deixam de ser publicadas para parte das distribuidoras (contagem por ano na série nacional)."},
              {"data": "2025-01-01", "origem": "FONTE", "descricao": "A ANEEL passa a calcular energia requerida e perdas não técnicas sobre o mercado medido em vez do faturado (Despacho 1.220/2025-STR)."},
          ]},
         {"orgao": "ANEEL", "nome": "componentes-tarifarias", "slug": "aneel-componentes-tarifarias", "dataset_silver": DS_TARIFA,
@@ -1357,7 +1357,7 @@ def construir(con, ctx):
     per = {"inicio": min(k for m in mensal.values() for k in m), "fim": ultima_comp}
     lim_samp = [
         "Perdas técnicas publicadas no SAMP são estimativas regulatórias (percentual fixado no processo tarifário aplicado à energia injetada publicada), não medição; a parcela não técnica publicada depende dessa estimativa.",
-        "A partir de 2024 (leiaute da REN 1.003/2022) a fonte deixou de publicar a separação técnica e não técnica para cerca de metade das distribuidoras, e a energia injetada publicada deixou de fechar o balanço com a perda calculada pela própria fonte; o denominador desses meses é a energia implícita no cálculo da fonte (fornecida + irregular + perdas), e a série tem quebra em 2024. A fonte não explica a diferença e o módulo não atribui causa a ela.",
+        f"A partir de 2024 (leiaute da REN 1.003/2022) a fonte deixou de publicar a separação técnica e não técnica para {_contagem_separacao(nacional, ano_ref)}, e a energia injetada publicada deixou de fechar o balanço com a perda calculada pela própria fonte; o denominador desses meses é a energia implícita no cálculo da fonte (fornecida + irregular + perdas), e a série tem quebra em 2024. A fonte não explica a diferença e o módulo não atribui causa a ela.",
         "Valores mensais oscilam com o calendário de leitura dos medidores; só o ano civil completo é comparado.",
         "Perdas medidas (base adotada pela ANEEL em 2025) diferem das faturadas: o faturado inclui o custo de disponibilidade e a compensação da MMGD.",
         "Agente-ano com balanço que não fecha (resíduo acima de 5% da injetada no leiaute antigo, fornecida maior que a injetada) fica fora de agregados e comparações, com alerta.",
@@ -1366,7 +1366,7 @@ def construir(con, ctx):
         "A técnica é o percentual regulatório aplicado pela fonte à injetada publicada (estimativa, não medição); a não técnica publicada é a perda total menos essa estimativa e herda a estimativa.",
         "As linhas publicadas nem sempre obedecem a total = técnica + não técnica: a identidade é conferida mês a mês e o agente-ano que não fecha (acima de 2 kWh por mês e de 0,1% da perda total) sai dos agregados de técnica e não técnica.",
         "Técnica medida e faturada são linhas diferentes da fonte (diferem em 13% dos meses em que as duas existem); só a medida é usada, e o mês sem ela fica sem técnica.",
-        "O universo com separação publicada muda muito de um ano para outro (a fonte deixou de publicá-la para cerca de metade das distribuidoras em 2024): a variação anual só se lê nas mesmas distribuidoras (comparação com o ano anterior e série de universo fixo).",
+        f"O universo com separação publicada muda muito de um ano para outro ({_contagem_separacao(nacional, ano_ref)}): a variação anual só se lê nas mesmas distribuidoras (comparação com o ano anterior e série de universo fixo).",
     ]
     faixa_tarifa = sorted(p["inicio"] for procs in processos.values() for p in procs) or [None]
     refs_pt = [r for r in csv_pt if r[9] == "referencia"]
@@ -1547,7 +1547,7 @@ def construir(con, ctx):
         denominador={"descricao": "Σ mercado de baixa tensão medido (MWh)", "valor": _mwh3(ex["mercado_bt_kwh"])},
         cobertura=(f"{nac_ref['n_com_pnt_bt']} de {nac_ref['n_distribuidoras']} concessionárias válidas, "
                    f"{_pct_br(nac_ref['cobertura_bt_pct'], 1) or 'sem dado'} do mercado BT delas; a fonte deixou de publicar a "
-                   f"separação para cerca de metade das distribuidoras a partir de 2024"),
+                   f"separação para {_contagem_separacao(nacional, ano_ref)} a partir de 2024"),
         tratamento_ausencia=ausencia + " Distribuidora sem a técnica ou a não técnica em algum mês fica fora do numerador e do denominador.",
         revisoes=snap_samp.get("revisoes"), testes=testes_build + [teste_universo], download=dl_nac, reproducao=reproducao)
     rel2024 = next((x for x in nacional if x["ano"] == 2024 and x["universo"] == "concessionarias"), None)
@@ -1835,6 +1835,19 @@ def construir(con, ctx):
                    "evidencias_tecnica": _url(JSON_EVID_TECNICA)},
     }
     return _sem_privados(gold)
+
+
+def _contagem_separacao(nacional, ano_ref):
+    """Concessionárias válidas com a separação técnica publicada nos 12 meses, por ano, de
+    2023 até o ano de referência, lidas da própria série nacional (ex.: "48 de 50 em 2023,
+    32 de 51 em 2024 e 18 de 51 em 2025"). Ano sem linha completa fica de fora."""
+    partes = [f"{x['n_com_tecnica']} de {x['n_distribuidoras']} em {x['ano']}" for x in nacional
+              if x["universo"] == "concessionarias" and not x.get("parcial") and 2023 <= x["ano"] <= ano_ref
+              and x.get("n_distribuidoras")]
+    if not partes:
+        return "parte das distribuidoras (contagem por ano na série nacional)"
+    texto = partes[0] if len(partes) == 1 else ", ".join(partes[:-1]) + " e " + partes[-1]
+    return f"parte das concessionárias (com a separação publicada nos 12 meses: {texto})"
 
 
 def _colunas_comparacao(x):

@@ -11,8 +11,8 @@ _TECNICA_ESTIMADA = ("A parcela técnica publicada no SAMP é o percentual regul
                      "injetada publicada (estimativa), não medição.")
 _QUEBRA_2024 = ("Quebra em 2024: leiaute da REN 1.003/2022; a injetada publicada deixa de fechar o balanço com a perda da "
                 "própria fonte (o denominador passa a ser a energia implícita no cálculo da fonte; a causa da diferença não "
-                "é atribuída) e a separação técnica e não técnica passa a ser publicada para cerca de metade das "
-                "distribuidoras.")
+                "é atribuída) e a separação técnica e não técnica passa a ser publicada só para parte das "
+                "distribuidoras (contagem por ano na série nacional da gold).")
 _UNIVERSO = ("Universo variável: o conjunto de distribuidoras somadas muda de um ano para outro (ano incompleto, alerta, "
              "início e fim de série, separação não publicada). A variação anual só se lê nas mesmas distribuidoras dos dois "
              "anos, sem mudança de escala entre eles (bloco mesmas_ano_anterior), e a tendência recente na série de universo fixo.")
@@ -127,7 +127,7 @@ METRICAS = [
                                    "Pode ser negativa quando a estimativa técnica supera a perda total medida (pequenas distribuidoras).",
                                    _QUEBRA_2024, _UNIVERSO,
                                    "Série nacional de 2023 a 2025: 46, 31 e 18 concessionárias; a queda aparente da taxa é composição. Nas mesmas 16 concessionárias: 14,35%, 14,30% e 15,01% (conferência de 30/09/2026)."],
-        "regra_cobertura": "Mercado BT por nível de tensão existe a partir de 2010; separação publicada para cerca de metade das distribuidoras a partir de 2024.",
+        "regra_cobertura": "Mercado BT por nível de tensão existe a partir de 2010; separação publicada só para parte das distribuidoras a partir de 2024 (contagem por ano na série nacional da gold).",
         "politica_ausencia": _AUSENCIA_ANUAL,
         "validacoes": [_DECOMPOSICAO],
         "limitacoes": ["Não resumir a furto: a definição da fonte inclui erros de medição e faturamento.",
