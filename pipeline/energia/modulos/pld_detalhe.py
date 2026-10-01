@@ -1029,6 +1029,39 @@ def carrega_limites(ctx=None):
     return None, None, f"arquivo de limites do módulo Regulação ainda não publicado ({erro})"
 
 
+NIVEIS_CONFERENCIA = {
+    "texto_do_ato": "valores lidos no texto do próprio ato",
+    "documento_oficial_do_processo": ("texto integral do ato não acessado; valores lidos em voto ou nota técnica da ANEEL do "
+                                      "mesmo processo"),
+}
+
+
+def enriquece_atos(atos, conferencia=None, documentos=None):
+    """Acrescenta a cada ato o nível de conferência registrado pelo módulo Regulação
+    (limites_pld_conferencia.json) e o documento em que os valores foram lidos
+    (documentos.json): sem isso a gold não distingue o ato lido no texto do ato de um
+    valor tirado do voto ou da nota técnica. Ato sem registro de conferência fica com
+    nível None (não conferido por este caminho)."""
+    if conferencia is None or documentos is None:
+        try:
+            from pipeline.energia import regulatorio
+            conferencia = regulatorio.conferencia_limites() if conferencia is None else conferencia
+            documentos = regulatorio.documentos() if documentos is None else documentos
+        except Exception:  # módulo Regulação sem os arquivos de conferência: declarado por ato
+            conferencia, documentos = conferencia or {}, documentos or {}
+    por_ato = {(x.get("ano"), x.get("ato")): x for x in (conferencia or {}).get("atos", [])}
+    out = []
+    for a in atos:
+        cf = por_ato.get((a.get("ano"), a.get("ato")), {})
+        doc = (documentos or {}).get(cf.get("documento_valores")) or {}
+        nivel = cf.get("nivel")
+        out.append({**a, "nivel_conferencia": nivel, "nivel_descricao": NIVEIS_CONFERENCIA.get(nivel),
+                    "documento_valores": cf.get("documento_valores"), "documento_titulo": doc.get("titulo"),
+                    "documento_url": doc.get("url_oficial"), "documento_copia": doc.get("copia_publica"),
+                    "documento_sha256": doc.get("sha256"), "dou": cf.get("dou")})
+    return out
+
+
 # ---------------------------------------------------------------------------
 # Construção da gold
 # ---------------------------------------------------------------------------
