@@ -752,6 +752,19 @@ describe("revisão de interface: nada de data, contagem ou afirmação sobre os 
     }
   });
 
+  it("zoom das séries longas vai para a URL (histórico mensal e parcela mensal da MMGD, como a série diária)", () => {
+    const fonte = (f: string) => readFileSync(join(raiz, f), "utf-8");
+    expect(fonte("src/components/energia/CargaHistorico.tsx")).toMatch(/onIntervalo=\{\(i\) => definir\(\{ hde:/);
+    expect(fonte("src/components/energia/CargaPerfil.tsx")).toMatch(/onIntervalo=\{\(i\) => definir\(\{ mde:/);
+    expect(fonte("src/components/energia/CargaNivel.tsx")).toMatch(/onIntervalo=\{\(i\) => definir\(\{ de:/);
+    // nenhum gráfico com zoom fica sem o intervalo controlado
+    for (const f of ["src/components/energia/CargaNivel.tsx", "src/components/energia/CargaPerfil.tsx", "src/components/energia/CargaClima.tsx", "src/components/energia/CargaHistorico.tsx", "src/app/setor-eletrico/carga/page.tsx", "src/app/setor-eletrico/carga/perfil-horario/page.tsx", "src/app/setor-eletrico/carga/clima-e-calendario/page.tsx"]) {
+      for (const b of fonte(f).split("<GraficoLinhas").slice(1).map((x) => x.slice(0, x.indexOf("/>")))) {
+        if (/\n\s*zoom\n/.test(b)) expect(b, f).toContain("onIntervalo=");
+      }
+    }
+  });
+
   it("toda tabela equivalente guarda busca, filtros, ordem e página na URL, com prefixo único por página", () => {
     const fonte = (f: string) => readFileSync(join(raiz, f), "utf-8");
     const paginas = {
@@ -765,7 +778,7 @@ describe("revisão de interface: nada de data, contagem ou afirmação sobre os 
       expect(chaves.filter((c) => c === null).length, `${id}: tabela sem chaveUrl`).toBe(0);
       expect(new Set(chaves).size, `${id}: prefixo repetido`).toBe(chaves.length);
       // prefixo de tabela não colide com os parâmetros do recorte da página
-      for (const c of chaves) expect(["sm", "jan", "cmp", "de", "ate", "sms", "mes", "cls", "psm", "anos", "med", "hp", "var", "modo"]).not.toContain(c);
+      for (const c of chaves) expect(["sm", "jan", "cmp", "de", "ate", "sms", "hde", "hate", "mes", "cls", "psm", "anos", "med", "hp", "mde", "mate", "var", "modo"]).not.toContain(c);
     }
   });
 });
