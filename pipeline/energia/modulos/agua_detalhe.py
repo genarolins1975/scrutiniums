@@ -1455,13 +1455,17 @@ def _armazenamento(con, con_p, d):
 
 # ================================================================ construção: P018 afluência
 
-def _ena_subsistemas(con_p):
+def _ena_subsistemas(con_p, con=None):
     out = {}
+    nomes = [f"{p}.{sm}" for p in ("ena_bruta_mwmed", "ena_bruta_pct_mlt", "ena_arm_mwmed", "ena_arm_pct_mlt") for sm in SMS]
+    s_, escolha, dados = series_mais_recentes(
+        [(FONTE_PRINCIPAL, con_p, DS_ENA_SM), (FONTE_RECAPTURA, con, DS_ENA_SM_CONF)], "ENA_DIARIO_SUBSISTEMA_", nomes)
+    out["_escolha"], out["_dados"] = escolha, dados
     for sm in SMS:
-        mw = _serie(con_p, DS_ENA_SM, f"ena_bruta_mwmed.{sm}")
-        p = _serie(con_p, DS_ENA_SM, f"ena_bruta_pct_mlt.{sm}")
-        arm = _serie(con_p, DS_ENA_SM, f"ena_arm_mwmed.{sm}")
-        ap = _serie(con_p, DS_ENA_SM, f"ena_arm_pct_mlt.{sm}")
+        mw = s_[f"ena_bruta_mwmed.{sm}"]
+        p = s_[f"ena_bruta_pct_mlt.{sm}"]
+        arm = s_[f"ena_arm_mwmed.{sm}"]
+        ap = s_[f"ena_arm_pct_mlt.{sm}"]
         out[sm] = {"mw": mw, "pct": p, "arm": arm, "arm_pct": ap,
                    "mlt": {k: mw[k] / (p[k] / 100.0) for k in mw if p.get(k)},
                    "mlt_arm": {k: arm[k] / (ap[k] / 100.0) for k in arm if ap.get(k)}}

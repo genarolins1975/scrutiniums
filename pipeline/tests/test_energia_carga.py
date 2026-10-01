@@ -6,19 +6,33 @@ Sem rede. Amostras reais recortadas em pipeline/tests/dados/energia_carga/:
 - carga_diaria_vintages_silver.csv: carga diária do ONS como gravada no silver principal
   nas capturas de 29/09/2026 02:42 UTC e 30/09/2026 02:19 UTC (o arquivo bruto de 29/09
   não está no bronze deste ambiente; o silver guarda o valor de cada captura);
-- curva_carga_2026_20260920.csv e curva_carga_2015_sul_0101_0106.csv: linhas do
-  CURVA_CARGA_2026.csv e do CURVA_CARGA_2015.csv capturados em 30/09/2026;
+- curva_carga_2026_20260920.csv, curva_carga_2015_sul_0101_0106.csv e
+  curva_carga_2018_1104.csv: linhas do CURVA_CARGA_2026.csv, do CURVA_CARGA_2015.csv e do
+  CURVA_CARGA_2018.csv capturados em 30/09/2026 (o de 2018 com a hora inexistente do
+  início do horário de verão, 04/11/2018 00h: vazia no SE, NE e N e "0E-8" no Sul);
+- balanco_2018_ne_0824_0826.csv e balanco_2015_sul_0105_0109.csv: linhas do
+  BALANCO_ENERGIA_SUBSISTEMA_2018.csv (Nordeste, 24 a 26/08/2018) e do de 2015 (Sul, 05 a
+  09/01/2015), capturados em 01/10/2026 00:36 UTC;
+- carga_energia_2013_recorte.csv: linhas do CARGA_ENERGIA_2013.csv capturado em
+  01/10/2026 00:37 UTC (01/12/2013 com as quatro células vazias; a linha extra do Sul em
+  02/02/2013 00:00:01, vazia, ao lado da linha com valor);
 - api_seco_20260920.json e api_seco_fev2019_trecho.json: respostas da API de carga
   verificada (texto bruto, com os campos vazios que a API emite);
+  api_s_ne_n_20260920_campos.json: os 144 registros do S, NE e N de 20/09/2026 das
+  respostas capturadas em 30/09/2026 23:36 UTC, só com os campos usados aqui;
 - power_sp_recorte.json, sidra_6579_uf.json, ibge_centroide_3550308.json e
   senado_lei_14759_2023.json: respostas da NASA POWER, do IBGE e do Senado;
 - modelo_sin_2023_2024.csv: carga diária do SIN aceita e temperatura ponderada do SIN.
 
-Os valores esperados vêm de caminho independente do código testado: a Carga de Energia
-Diária publicada pelo ONS (outro arquivo, outro produto) para a média da curva; o arquivo
-transicao_ons_mmgd_diario.csv do módulo Transição (mesma API, outro código) para a carga
-verificada; a gold carga.json do commit d95d8f8b4 para o +10,5% do achado A07; datas de
-Páscoa do calendário gregoriano publicadas em qualquer tabela eclesiástica."""
+Os valores esperados vêm de caminho independente do código testado: o arquivo da Carga
+de Energia Diária publicado pelo ONS para a média da curva (é o mesmo produto em outro
+grão, então a conferência prova a agregação, não o valor); os componentes do Balanço de
+Energia nos Subsistemas (outro conjunto do ONS) para a conferência de valor atípico; a
+carga líquida publicada pelo ONS na API (val_cargaglobalsmmgd, não a subtração feita
+aqui) para o perfil e a série recente; o arquivo transicao_ons_mmgd_diario.csv do módulo
+Transição (mesma API, outro código) para a carga verificada; a gold carga.json do commit
+d95d8f8b4 para o +10,5% do achado A07; datas de Páscoa do calendário gregoriano
+publicadas em qualquer tabela eclesiástica."""
 import csv
 import json
 import math
