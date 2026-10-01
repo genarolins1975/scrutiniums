@@ -3,7 +3,7 @@
 import { useDeferredValue, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { campo, tiposUrl, type Esquema } from "@/lib/energia/estadoUrl";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
-import { carimbo, num, plural } from "@/lib/energia/formato";
+import { carimbo, dataBR, num, plural } from "@/lib/energia/formato";
 import {
   CHAVE_SEM_DADO,
   MIME_CSV,
@@ -118,6 +118,13 @@ function SemDado({ sobreFundoAtivo }: { sobreFundoAtivo: boolean }) {
       {TEXTO_SEM_DADO}
     </span>
   );
+}
+
+/** Versão dos dados para leitura: data ISO vira dd/mm/aaaa (ou mm/aaaa); instante vira data e hora de Brasília; o resto fica como veio. */
+function versaoLegivel(v: string): string {
+  if (/^\d{4}-\d{2}(-\d{2})?$/.test(v)) return dataBR(v);
+  if (/^\d{4}-\d{2}-\d{2}T/.test(v)) return carimbo(v);
+  return v;
 }
 
 export function TabelaInterativa({
@@ -523,7 +530,7 @@ export function TabelaInterativa({
 
       <footer className="mt-3 border-t border-linha pt-2 text-xs leading-relaxed text-mineral">
         <p>
-          Fonte: {fonte}. Versão dos dados: {versao}. “{TEXTO_SEM_DADO}” indica ausência na fonte, nunca zero; nos arquivos baixados a ausência é célula vazia.
+          Fonte: {fonte}. Versão dos dados: {versaoLegivel(versao)}. “{TEXTO_SEM_DADO}” indica ausência na fonte, nunca zero; nos arquivos baixados a ausência é célula vazia.
         </p>
         {nota && <div className="mt-1">{nota}</div>}
       </footer>

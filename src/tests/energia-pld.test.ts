@@ -556,7 +556,8 @@ describe("páginas renderizadas no servidor", () => {
   it("painéis numéricos com prova, tabelas equivalentes e exportação", () => {
     for (const id of ["p009", "p010", "p011", "p012"] as const) {
       const h = html[id];
-      expect((h.match(/Comprove este número/g) ?? []).length, id).toBeGreaterThanOrEqual(2);
+      // o diálogo da ficha só existe no cliente (portal); no HTML do servidor cada ficha é o seu gatilho
+      expect((h.match(/data-comprove=""/g) ?? []).length, id).toBeGreaterThanOrEqual(1);
       expect((h.match(/<table/g) ?? []).length, id).toBeGreaterThanOrEqual(5);
       expect(h, id).toContain("Baixar CSV");
       expect(h, id).toContain("Tabela equivalente");

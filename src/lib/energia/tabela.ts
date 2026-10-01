@@ -81,6 +81,8 @@ export function textoCelula(v: string | number | null, c: ColunaTabela): string 
   if (v === null) return TEXTO_SEM_DADO;
   if (typeof v === "number") return num(v, c.casas ?? 1);
   if (c.tipo === "data") return textoData(v);
+  // célula de texto que é só uma data ISO (mês, dia ou instante) sai no formato do site; o arquivo baixado segue ISO
+  if (c.tipo === "texto" && /^\d{4}-\d{2}(-\d{2}(T\d{2}:\d{2}(:\d{2})?Z?)?)?$/.test(v)) return textoData(v);
   return v;
 }
 

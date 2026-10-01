@@ -467,7 +467,8 @@ describe("TabelaInterativa no servidor", () => {
     expect(h).toMatch(/role="status"[^>]*><span[^>]*>5<\/span> de 5 linhas<\/p>/);
     expect(texto(h)).toContain("Baixar CSV");
     expect(texto(h)).toContain("Baixar XLSX");
-    expect(texto(h)).toContain("Fonte: ANEEL, SAMP. Versão dos dados: 2026-09-30.");
+    // na tela a versão sai no formato do site; no arquivo exportado segue ISO (ver o teste dos metadados)
+    expect(texto(h)).toContain("Fonte: ANEEL, SAMP. Versão dos dados: 30/09/2026.");
   });
 
   it("linha selecionável: botão com aria-pressed; só a selecionada fica pressionada e marcada", () => {

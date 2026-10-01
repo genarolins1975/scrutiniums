@@ -73,6 +73,7 @@ export function ComproveNumero({ evidencia: ev, variante = "link", rotulo = "Com
         type="button"
         onClick={abrir}
         aria-haspopup="dialog"
+        data-comprove=""
         className={
           variante === "valor"
             ? "inline-flex min-h-[44px] min-w-[44px] items-center tabular-nums text-carvao underline decoration-energia decoration-dotted underline-offset-4 hover:text-energia-dark"

@@ -500,7 +500,8 @@ describe("páginas renderizadas no servidor", () => {
       for (const parte of ["Período", "Universo", "Unidade", "Como interpretar", "O que não é possível concluir", "Próxima pergunta", "Copiar link deste painel", "Baixar"]) {
         expect(h, `${p.id}: ${parte}`).toContain(parte);
       }
-      expect((h.match(/Comprove este número/g) ?? []).length, p.id).toBeGreaterThanOrEqual(2);
+      // o diálogo da ficha só existe no cliente (portal); no HTML do servidor cada ficha é o seu gatilho
+      expect((h.match(/data-comprove=""/g) ?? []).length, p.id).toBeGreaterThanOrEqual(1);
       expect((h.match(/<table/g) ?? []).length, p.id).toBeGreaterThanOrEqual(3);
       expect(h, p.id).toContain('role="radiogroup" aria-label="Nível de profundidade"');
       expect(h, p.id).toContain(`href="${rotaPainel(proximoPainel(p.id))}"`);

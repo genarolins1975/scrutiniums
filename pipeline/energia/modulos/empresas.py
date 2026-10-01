@@ -2036,7 +2036,7 @@ def _indice_distribuidoras(golds, agentes, cvm_cad, cadeia, nomes, donos):
             snapshot=p0.get("snapshot") or {"id": None, "sha256": None},
             publicado_em=p0.get("publicado_pela_fonte_em"),
             formula=formula or (f"cópia do valor publicado em {nome_gold}" if nat != "OBSERVADO" else None),
-            transformacoes=[f"cópia pelo CNPJ de {nome_gold} (gerada em {geradas.get(nome_gold)}), sem recálculo"],
+            transformacoes=[f"cópia pelo CNPJ de {nome_gold} (gerada em {c.carimbo_br(geradas.get(nome_gold)) if geradas.get(nome_gold) else 'data não registrada'}), sem recálculo"],
             limitacoes=[lim_copia],
             download=p0.get("download"))
     return {"bloco": bloco, "itens": itens, "cnpjs": set(cnpjs), "proveniencia": prov}

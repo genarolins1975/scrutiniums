@@ -35,6 +35,7 @@ Dentro do ciclo completo, três painéis têm limitação declarada na própria 
 | Dados e metodologia novos (P067 a P070) | `publicacao.json`, catálogo e manifesto prontos; interface nova interrompida | páginas de produção com ajustes mínimos |
 | Avaliação dos painéis (P071) | não iniciada | |
 | Revisão adversarial das interfaces de PLD e Previsões | não autorizada nesta sessão (permissão negada) | pendente de autorização |
+| Datas cruas no texto (AAAA-MM-DD) | 120 ocorrências em 23 páginas, em textos gerados pelos módulos (Regulação, Finanças, Território, Carga, PLD) e rótulos de planilha da fonte; formatação, não dado errado. O teste `energia-reauditoria` ("páginas pré-renderizadas…") acusa isso quando há build local; o CI não constrói e não o executa | correção nos geradores de cada módulo |
 
 ## Decisões pendentes com o responsável
 
