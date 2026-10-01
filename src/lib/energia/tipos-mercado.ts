@@ -72,6 +72,7 @@ export type DefinicoesMercado = {
   eer: string;
   competencia_pagamento_reprocessamento: string;
   pld: string;
+  exportacao: string;
 };
 
 /* ---------------------------------------------------------------- P032: livre e regulado */
@@ -96,7 +97,16 @@ export type KpiParticipacaoLivre = {
 export type KpisLivreRegulado = {
   participacao_livre_12m?: KpiParticipacaoLivre;
   consumo_livre_12m?: { valor_mwh: number; total_mwh: number; periodo: Periodo };
-  participacao_acl_ccee_12m?: { valor_pct: number; periodo: Periodo; evidencia: Evidencia };
+  /** ACL sem a exportação (classe Exportador); com_exportacao_pct é a mesma razão somando a exportação ao ACL. */
+  participacao_acl_ccee_12m?: {
+    valor_pct: number;
+    com_exportacao_pct: number | null;
+    exportacao_mwh: number;
+    periodo: Periodo;
+    /** Variação do ACL no último mês contra o mesmo mês do ano anterior (como o InfoMercado publica). */
+    variacao_acl_ultimo_mes: { mes: Mes; sem_exportacao_pct: number; com_exportacao_pct: number } | null;
+    evidencia: Evidencia;
+  };
 };
 
 export type EpeMensal = {
@@ -148,11 +158,18 @@ export type EpeUfAnual = { uf: string; ano: Ano; livre_pct: number | null; total
 
 export type CceeMensal = {
   mes: Mes;
-  /** ACR = classe Distribuidor; ACL = demais classes (CONSUMO_CLASSE_AGENTE). */
+  /** ACR = classe Distribuidor; ACL = demais classes exceto Exportador (CONSUMO_CLASSE_AGENTE); null quando o mês só tem o conjunto de ambiente. */
   acr_mwmed: number;
-  acl_mwmed: number;
-  total_mwmed: number;
+  acl_mwmed: number | null;
+  /** Classe Exportador (energia vendida a outros países), fora do ACL. */
+  exportacao_mwmed: number | null;
+  /** ACR + ACL, sem a exportação: o "consumo contabilizado" do InfoMercado. */
+  total_mwmed: number | null;
+  total_com_exportacao_mwmed: number;
+  /** Participação do ACL sem a exportação. */
   acl_pct: number | null;
+  /** Participação do ACL com a exportação somada (como no conjunto de ambiente). */
+  acl_com_exportacao_pct: number | null;
   /** "classes" (conta pelas classes de agente) ou "ambiente" (mês sem classes, conjunto de ambiente). */
   origem: "classes" | "ambiente";
   /** Valores como publicados em CONSUMO_MENSAL_AMBIENTE_COMERCIALIZACAO (sem a Varejista desde fev/2026). */
@@ -161,7 +178,8 @@ export type CceeMensal = {
   varejista_mwmed: number | null;
   horas: number;
   acr_mwh: number;
-  acl_mwh: number;
+  acl_mwh: number | null;
+  exportacao_mwh: number | null;
 };
 
 export type CceeClasse = {
@@ -183,7 +201,8 @@ export type IdentidadeClasses = {
 
 export type ComparacaoUniversos = {
   mes: Mes;
-  ccee_acl_mwh: number;
+  /** ACL da CCEE sem a exportação. */
+  ccee_acl_mwh: number | null;
   ccee_acl_pct: number | null;
   epe_livre_mwh: number | null;
   epe_livre_pct: number | null;
@@ -221,6 +240,20 @@ export type ReconciliacaoMmeConsumo = {
   resultado: ResultadoTeste | null;
 };
 
+/** Participação anual do ACL: consolidação do boletim do MME × EPE dados abertos (divergência publicada). */
+export type ConsolidacaoConsumoMme = {
+  ano: Ano;
+  mme_acl_pct: number;
+  mme_consumo_gwh: number | null;
+  epe_livre_pct: number | null;
+  epe_total_gwh: number | null;
+  epe_completo: boolean;
+  diferenca_pp: number | null;
+  diferenca_total_gwh: number | null;
+  tolerancia: string;
+  resultado: ResultadoTeste | null;
+};
+
 export type DistribuidoraSamp = {
   cnpj: string;
   sigla: string | null;
@@ -236,19 +269,24 @@ export type DistribuidoraSamp = {
   livre_uc_convencional_dez: number | null;
   livre_uc_autoproducao_dez: number | null;
   cativo_uc_dez: number | null;
+  /** Meses do ano com linhas Regular iguais às do mês anterior ("AAAA-MM (opção)"): sinal de mês copiado na fonte. */
+  meses_repetidos: string[];
   completo: boolean;
 };
 
 export type SampNacionalMensal = {
   mes: Mes;
   distribuidoras: number;
-  /** Publicado por pelo menos 95% da mediana de distribuidoras dos 12 meses anteriores. */
+  /** Pelo menos 95% da mediana de distribuidoras dos 12 meses anteriores e nenhuma distribuidora sem as linhas LIVRE que tinha no mês anterior. */
   completo: boolean;
+  /** Completo, sem linhas Regular repetidas do mês anterior e sem variação abrupta de distribuidora: só esses meses são comparados com a EPE. */
+  comparavel: boolean;
+  motivo_incompleto: string | null;
+  /** Distribuidoras sem LIVRE, repetições e variações abruptas do mês, em texto. */
+  ocorrencias: string[];
   livre_mwh: number | null;
   livre_uc: number | null;
   cativo_mwh: number | null;
-  cativo_uc: number | null;
-  livre_mwh_refat: number | null;
   epe_livre_uc: number | null;
   samp_sobre_epe_uc_pct: number | null;
 };
@@ -275,7 +313,13 @@ export type LivreRegulado = {
   ccee_identidade_classes: IdentidadeClasses[];
   comparacao_universos: ComparacaoUniversos[];
   carga_contexto: CargaContexto[];
-  reconciliacao: { epe_planilha: ReconciliacaoPlanilha; mme: ReconciliacaoMmeConsumo[] };
+  reconciliacao: {
+    epe_planilha: ReconciliacaoPlanilha;
+    mme: ReconciliacaoMmeConsumo[];
+    mme_consolidacao_anual: ConsolidacaoConsumoMme[];
+    /** Consumo contabilizado, exportação e variação do ACL sem exportação × InfoMercado. */
+    infomercado: ConferenciaInfoMercado[];
+  };
   distribuidoras: {
     ano: Ano | null;
     total: number;
@@ -285,7 +329,10 @@ export type LivreRegulado = {
     csv: string;
     linhas: DistribuidoraSamp[];
   };
+  /** A partir deste mês; a série desde 2019 está em mercado_detalhe.json (samp_nacional_mensal). */
+  samp_nacional_mensal_desde: Mes;
   samp_nacional_mensal: SampNacionalMensal[];
+  detalhe: DetalheSobDemanda;
 };
 
 /* ---------------------------------------------------------------- P033: agentes e migração */
@@ -293,7 +340,15 @@ export type LivreRegulado = {
 export type KpisAgentes = {
   agentes_contabilizados?: { valor: number; mes: Mes; evidencia: Evidencia };
   ucs_livres?: { valor: number; mes: Mes; variacao_12m: number | null; evidencia: Evidencia };
-  parcelas_carga?: { valor: number; mes: Mes; migracoes_no_mes: number | null; evidencia: Evidencia };
+  /** Parcelas do ACL: sem as parcelas dos perfis Distribuidor (ACR), excluídas em distribuidoras_excluidas. */
+  parcelas_carga?: {
+    valor: number;
+    mes: Mes;
+    migracoes_no_mes: number | null;
+    consumo_acl_mwh: number | null;
+    distribuidoras_excluidas: number | null;
+    evidencia: Evidencia;
+  };
 };
 
 export type FluxoClasse = { entradas: number; saidas: number };
@@ -318,8 +373,13 @@ export type PerfisClasse = {
 };
 
 export type Perfis = {
-  /** Data da posição do cadastro (publicação do recurso). */
-  posicao: string | null;
+  /** Data de modificação do recurso informada pelo portal (last_modified do CKAN); não é a data da posição. */
+  data_modificacao_portal: string | null;
+  /** O arquivo não traz a data da posição: sempre null. */
+  data_referencia: null;
+  nota_data: string;
+  /** Captura do arquivo (não substitui a data do dado). */
+  capturado_em: string | null;
   /** Agentes por classe não se somam: um agente pode ter perfis em mais de uma classe. */
   por_classe: PerfisClasse[];
   perfis_por_agente_ativo: Partial<Record<"1" | "2" | "3_ou_mais", number>>;
@@ -327,20 +387,38 @@ export type Perfis = {
   perfis_ativos: number | null;
 };
 
+/** Parcelas de carga do ACL no mês (perfis fora da classe Distribuidor); as das distribuidoras ficam à parte. */
 export type ParcelasMensal = {
   mes: Mes;
   parcelas: number | null;
   perfis_com_parcela: number | null;
   cnpj_carga: number | null;
   migracoes_no_mes: number | null;
+  /** Σ CONSUMO_ACL das parcelas do ACL, com a exportação (como CONSUMO_TOTAL_ACL a partir de fevereiro de 2026). */
   consumo_acl_mwh: number | null;
-  consumo_total_mwh: number | null;
-  por_submercado: Partial<Record<SubmercadoMercado, number>>;
+  exportacao_mwh: number | null;
+  parcelas_distribuidoras: number | null;
+  consumo_distribuidoras_mwh: number | null;
+  /** Parcelas conferidas com o consumo por classe (5 MW médios); false marca o mês. */
+  conferencia_ok: boolean | null;
 };
+
+export type ConferenciaParcelas = {
+  ok: boolean | null;
+  classes_acl_mwmed: number | null;
+  parcelas_acl_mwmed: number | null;
+  residuo_acl_mwmed: number | null;
+  classe_distribuidor_mwmed: number | null;
+  parcelas_distribuidor_mwmed: number | null;
+  residuo_distribuidor_mwmed: number | null;
+};
+
+export type ParcelasPorClasse = Record<string, { parcelas: number | null; consumo_mwh: number | null }>;
 
 export type SampUcsLivresMensal = {
   mes: Mes;
   completo: boolean;
+  comparavel: boolean;
   livre_uc_incentivada: number | null;
   livre_uc_convencional: number | null;
   livre_uc_autoproducao: number | null;
@@ -354,12 +432,19 @@ export type AgentesMigracao = {
   associados_fluxos: FluxoAssociados[];
   perfis: Perfis;
   parcelas_mensal: ParcelasMensal[];
+  parcelas_ultimo_mes?: {
+    mes: Mes;
+    por_classe_perfil: ParcelasPorClasse;
+    por_submercado: Partial<Record<SubmercadoMercado, number>>;
+    conferencia: ConferenciaParcelas;
+  };
   parcelas_uf_ultimo_mes: { mes: Mes | null; linhas: { uf: string; parcelas: number }[] };
-  /** Desligamentos por ano e tipo; a abertura por classe está em mercado_detalhe.json. */
-  desligamentos_por_ano: { ano: Ano; tipo: string; desligamentos: number }[];
+  /** Desligamentos por ano e tipo; o ano corrente é parcial (completo false, meses cobertos até a última data). A abertura por classe está em mercado_detalhe.json. */
+  desligamentos_por_ano: { ano: Ano; tipo: string; desligamentos: number; completo: boolean; meses: number; ultima_data: string }[];
   detalhe: DetalheSobDemanda;
   ucs_livres_por_classe_ultimo_mes: { mes: Mes | null; linhas: { classe: ClasseEpe; livre_uc: number | null }[] };
-  samp_ucs_livres_mensal: SampUcsLivresMensal[];
+  /** Composição das unidades livres do SAMP no último mês comparável; a série está em mercado_detalhe.json. */
+  samp_ucs_livres_ultimo_mes: SampUcsLivresMensal | null;
   agentes_aneel: {
     gerado_em: string | null;
     cadastrados: number;
@@ -404,7 +489,15 @@ export type RiscoHidrologicoLinha = {
 export type MreGsf = {
   kpis: {
     gsf_ultimo_mes?: { valor_pct: number; mes: Mes; evidencia: Evidencia };
-    gsf_12m?: { valor_pct: number; periodo: Periodo; evidencia: Evidencia };
+    gsf_12m?: {
+      valor_pct: number;
+      periodo: Periodo;
+      /** Número de 12 meses do InfoMercado (desde 2026) e o resultado da conferência (ressalva = divergência publicada). */
+      infomercado_12m: { numero: string; publicado_pct: number; pagina: string | null; resultado: ResultadoTeste } | null;
+      /** Definições alternativas testadas para investigar a divergência. */
+      alternativas: { media_simples_pct: number; razao_gf_sazonalizada_pct: number; acumulado_ano_pct: number } | null;
+      evidencia: Evidencia;
+    };
     risco_hidrologico_acr_12m?: { valor_rs: number; periodo: Periodo; evidencia: Evidencia };
   };
   mensal: GsfMensal[];
@@ -446,11 +539,12 @@ export type EssMensal = {
   resposta_demanda_submercados: number;
 };
 
-export type SituacaoLiquidacao = "liquidada" | "liquidacao_nao_informada" | "identidade_nao_fecha" | "sem_valor";
+export type SituacaoLiquidacao = "liquidada" | "liquidacao_nao_informada" | "identidade_nao_fecha" | "sem_valor" | "mes_ausente_na_fonte";
 
 export type LiquidacaoMensal = {
   mes: Mes;
   a_liquidar: number | null;
+  /** null em "liquidacao_nao_informada" (o zero publicado fica no CSV, rotulado) e em "mes_ausente_na_fonte". */
   liquidado: number | null;
   inadimplencia: number | null;
   /** Só nos meses "liquidada" (a liquidar = liquidado + inadimplência). */
@@ -468,6 +562,38 @@ export type ConferenciaMmeCcee = {
   diferenca_mil_rs: number | null;
   tolerancia_mil_rs: number;
   resultado: ResultadoTeste | null;
+};
+
+export type SequenciaRepetida = { inicio: Mes; fim: Mes; meses: number; valor: number; situacao?: string };
+
+export type PagamentoMensal = {
+  mes: Mes;
+  /** null em "zero_nao_confirmado" (sequência de zeros com ESS positivo) e quando a fonte não publicou. */
+  pagamento_ess: number | null;
+  situacao_pagamento_ess: "publicado" | "zero_nao_confirmado" | "sem_valor" | "mes_ausente_na_fonte";
+  pagamento_seguranca_energetica: number | null;
+  recursos_alivio_ess: number | null;
+  penalidades_alivio_ess: number | null;
+  sobra_excedente_financeiro: number | null;
+  fator_ajuste_ess: number | null;
+};
+
+export type ConsolidacaoEssMme = {
+  ano: Ano;
+  ano_base: Ano;
+  mme_bilhoes_rs: number;
+  mme_variacao_pct: number | null;
+  ccee_rs: number | null;
+  ccee_com_resposta_demanda_rs: number | null;
+  ccee_variacao_pct: number | null;
+  ccee_variacao_com_resposta_demanda_pct: number | null;
+  tolerancia: string;
+  resultado: ResultadoTeste;
+  recurso: string | null;
+  pagina: string | null;
+  capturado_em: string | null;
+  sha256: string | null;
+  url: string;
 };
 
 export type ContaBandeiraAcr = {
@@ -488,14 +614,12 @@ export type Encargos = {
   };
   ess_mensal: EssMensal[];
   eer_mensal: { mes: Mes; encargo_energia_reserva: number | null; saldo_efetivo_coner: number | null; pagamento_liquido_er: number | null }[];
-  pagamento_mensal: {
-    mes: Mes;
-    pagamento_ess: number | null;
-    pagamento_seguranca_energetica: number | null;
-    recursos_alivio_ess: number | null;
-    penalidades_alivio_ess: number | null;
-  }[];
+  pagamento_mensal: PagamentoMensal[];
+  /** Controle de sequências repetidas (seção 11.7) nas séries de pagamento. */
+  controles_pagamento: { minimo_meses: number; series: Record<string, SequenciaRepetida[]> };
+  /** Grade completa de meses: mês ausente do arquivo aparece como "mes_ausente_na_fonte". */
   liquidacao_mensal: LiquidacaoMensal[];
+  lacunas_liquidacao: Mes[];
   mme: {
     edicoes: {
       edicao: Mes;
@@ -516,7 +640,14 @@ export type Encargos = {
       diferenca_mil_rs: number | null;
       nota?: string;
     }[];
-    reconciliacao_ccee: ConferenciaMmeCcee[];
+    /** A lista completa está em mercado_detalhe.json (mme_reconciliacao_ccee). */
+    reconciliacao_ccee_resumo: {
+      tipos: { conferidos: number; aprovados: number };
+      resposta_demanda: { conferidos: number; aprovados: number };
+      tolerancia: string;
+      fora_da_tolerancia: ConferenciaMmeCcee[];
+    };
+    consolidacao_anual: ConsolidacaoEssMme[];
   };
   /** Soma nacional por ano de competência; a série mensal está em mercado_detalhe.json. */
   acr_conta_bandeira_anual: ({ ano: Ano; meses: number } & ContaBandeiraAcr)[];
@@ -526,7 +657,8 @@ export type Encargos = {
 
 /* ---------------------------------------------------------------- painéis, fontes e acesso */
 
-export type EstadoPainel = "concluido_com_limitacao" | "parcial" | "bloqueado";
+/** "pendente_decisao_acesso": depende de número da CCEE enquanto o acesso não for decidido pelo responsável. */
+export type EstadoPainel = "concluido_com_limitacao" | "parcial" | "bloqueado" | "pendente_decisao_acesso";
 
 export type VerificacaoPainel = {
   nome: string;
@@ -544,6 +676,9 @@ export type PainelMercado = {
   resposta: string | null;
   /** Estado da camada de dados; a entrega do painel depende também da página e da inspeção visual. */
   estado_dados: EstadoPainel;
+  /** O que as verificações do critério de aceite dão, sem a pendência de acesso. */
+  estado_criterio: Exclude<EstadoPainel, "pendente_decisao_acesso">;
+  depende_da_ccee: boolean;
   criterio_aceite: string;
   verificacoes: VerificacaoPainel[];
   /** Chaves de `proveniencia` que sustentam o painel. */
@@ -561,6 +696,7 @@ export type BloqueioMercado = {
     sha256: string | null;
     pdfs_encontrados: number | null;
     observacao: string;
+    pastas?: { ano: Ano; url: string; capturado_em: string | null; sha256: string | null; pdfs_encontrados: number | null; redireciona_login: boolean | null }[];
   };
   alternativas: string[];
   efeito: string;
@@ -612,6 +748,9 @@ export type FonteMercado = {
 export type AcessoCcee = {
   cliente: string;
   observacao: string;
+  decisao: { situacao: "pendente" | "autorizada" | "negada"; pergunta: string; registrada_em: string; efeito: string; coleta_neste_ambiente: string };
+  /** Capturas feitas no portal da CCEE (vintages no silver), por conjunto. */
+  capturas: { dataset: string; vintages: number; primeira_captura: string; ultima_captura: string; origem: string }[];
   conjuntos: { dataset: string; ultima_tentativa: string | null; tentativas_ok: number; tentativas: number }[];
 };
 
@@ -651,5 +790,17 @@ export type MercadoDetalhe = {
   }[];
   acr_conta_bandeira_mensal: ({ mes: Mes; distribuidoras: number } & ContaBandeiraAcr)[];
   risco_hidrologico_acr_mensal: ({ mes: Mes; distribuidoras: number } & RiscoHidrologicoLinha)[];
-  desligamentos_anual: { ano: Ano; tipo: string; classe: string; desligamentos: number }[];
+  desligamentos_anual: { ano: Ano; tipo: string; classe: string; desligamentos: number; completo: boolean }[];
+  parcelas_mensal_detalhe: {
+    mes: Mes;
+    consumo_total_mwh: number | null;
+    consumo_acl_sem_exportacao_mwh: number | null;
+    parcelas_sem_cadastro: number | null;
+    por_classe_perfil: ParcelasPorClasse;
+    por_submercado: Partial<Record<SubmercadoMercado, number>>;
+    conferencia: ConferenciaParcelas;
+  }[];
+  samp_nacional_mensal: SampNacionalMensal[];
+  samp_ucs_livres_mensal: SampUcsLivresMensal[];
+  mme_reconciliacao_ccee: ConferenciaMmeCcee[];
 };

@@ -160,6 +160,7 @@ export function RedeBalanco({
         ]}
         unidade="MWh"
         casas={0}
+        zeroNoEixo
         marcos={marcos}
         zoom
         intervalo={intervalo}
@@ -168,8 +169,10 @@ export function RedeBalanco({
       />
       <p className="text-sm text-carvao-muted">
         Cada soma mensal usa só as horas da sua identidade: o balanço interno nas horas com geração, carga e intercâmbio; o perímetro nas horas com o intercâmbio e todas as
-        fronteiras e o exterior. A marca de {marcos.map((m) => m.rotulo).join("; ")} separa geração e carga que não se comparam diretamente; o resíduo e o intercâmbio não mudam com
-        ela.
+        fronteiras e o exterior. O zero do eixo é a referência: num mês em que a identidade fecha em todas as horas, a soma só se afasta do zero pela tolerância de cada hora.{" "}
+        {marcos.length
+          ? `A marca no gráfico (${marcos.map((m) => m.rotulo).join("; ")}) separa meses de geração e carga que não se comparam diretamente; o resíduo e o intercâmbio não mudam com ela.`
+          : ""}
       </p>
       <TabelaInterativa
         titulo={`Tabela equivalente: balanço mensal ${sm === "SIN" ? "do SIN" : `do ${NOME_SM[sm]}`}`}
@@ -206,7 +209,8 @@ export function RedeBalanco({
         <RedeEscolha legenda="País" opcoes={OPCOES_PAIS} valor={pais} onEscolher={(x) => definir({ pais: x })} />
         {semHoraNoPais ? (
           <p className="border-l-2 border-mineral pl-3 text-sm text-carvao-muted">
-            {NOME_PAIS[pais]}: nenhuma hora publicada de {mesAno(exterior.meses[0])} a {mesAno(exterior.meses.at(-1) ?? exterior.meses[0])}.
+            {NOME_PAIS[pais]}: nenhuma hora publicada
+            {exterior.meses.length ? ` de ${mesAno(exterior.meses[0])} a ${mesAno(exterior.meses.at(-1)!)}` : " nesta publicação"} (ausência, não zero).
           </p>
         ) : (
           <GraficoLinhas
@@ -237,7 +241,7 @@ export function RedeBalanco({
           nomeArquivo={`rede-exterior-${pais.toLowerCase()}`}
           chaveUrl="ex"
           ordemInicial={{ coluna: "m", direcao: "desc" }}
-          nota="Mês sem nenhuma hora publicada fica vazio. O saldo programado só existe no arquivo de 2026."
+          nota="Mês sem nenhuma hora publicada fica vazio. O saldo programado só existe nos meses em que o ONS publica o programado; antes, a coluna fica vazia."
         />
       </div>
 
@@ -272,7 +276,7 @@ export function RedeBalanco({
             <TabelaInterativa
               titulo="Tabela equivalente: horas com resíduo por mês"
               colunas={[
-                { id: "m", rotulo: "Mês", tipo: "texto" },
+                { id: "m", rotulo: "Mês", tipo: "data" },
                 ...escolhidas.map((r) => ({ id: r, rotulo: NOME_SM[r], tipo: "numero" as const, unidade: "horas", casas: 0 })),
               ]}
               linhas={paraTabela(residuos)}

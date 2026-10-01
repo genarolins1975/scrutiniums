@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Comparador } from "@/components/energia/Comparador";
 import { CursorSincronizado } from "@/components/energia/CursorSincronizado";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
@@ -26,6 +26,7 @@ import {
   codigoUf,
   colunasMunicipios,
   colunasUfs,
+  contagem,
   dadosBarrasUf,
   dadosHistoricoUfs,
   historicoMunicipiosCsv,
@@ -427,6 +428,9 @@ export function TransicaoMunicipios({
   const [csv, setCsv] = useState<string | null>(null);
   const [erroCsv, setErroCsv] = useState<string | null>(null);
   const [aviso, setAviso] = useState("");
+  // o botão some quando o mapa abre: o foco vai para o bloco carregado, não se perde no corpo da página
+  const [pediuMapa, setPediuMapa] = useState(false);
+  const blocoMapa = useRef<HTMLDivElement>(null);
   // o link com municípios escolhidos abre o mapa: a seleção não fica escondida atrás do botão
   const ativo = v.mun || v.muns.length > 0;
 
@@ -442,6 +446,12 @@ export function TransicaoMunicipios({
       vivo = false;
     };
   }, [ativo, dados, jsonUrl]);
+
+  useEffect(() => {
+    if (!pediuMapa || !dados) return;
+    blocoMapa.current?.focus();
+    setPediuMapa(false);
+  }, [pediuMapa, dados]);
 
   const escolhidos = useMemo(() => (dados ? v.muns.filter((id) => dados.mun.some((m) => m.id === id)) : v.muns), [dados, v.muns]);
   const ultimo = escolhidos.at(-1) ?? null;
@@ -500,7 +510,10 @@ export function TransicaoMunicipios({
         </p>
         <button
           type="button"
-          onClick={() => definir({ mun: true })}
+          onClick={() => {
+            setPediuMapa(true);
+            definir({ mun: true });
+          }}
           className="rotulo inline-flex min-h-[44px] items-center border border-energia bg-superficie px-4 text-carvao hover:bg-energia-fundo"
         >
           Carregar o mapa por município
@@ -518,7 +531,7 @@ export function TransicaoMunicipios({
   }
   const med = MEDIDA_MUN[v.mmed];
   return (
-    <div className="space-y-5">
+    <div ref={blocoMapa} tabIndex={-1} aria-label="Mapa, tabela e histórico por município" className="space-y-5">
       <TransicaoOpcoes rotulo="Medida do mapa municipal" nome="transicao-mmgd-mmed" opcoes={OPCOES_MUN} valor={v.mmed} onMudar={(mmed) => definir({ mmed })} />
       <MapaCoropletico
         titulo={`${med.rotulo} por município${v.mmed === "cresc" ? ` (${anoReferencia})` : ""}`}
@@ -532,7 +545,7 @@ export function TransicaoMunicipios({
         selecionado={ultimo}
         onSelecionar={alternar}
         contornos
-        nota={`${v.mmed === "fora" ? "Cortes fixos em 1, 10, 50 e 100 unidades; zero fica na primeira classe. Unidades cuja distribuidora (CNPJ) não tem conjunto elétrico na UF: algum campo está errado na origem, e nada é corrigido." : "Classes por quantis. O município é o da unidade geradora; no autoconsumo remoto e na geração compartilhada o crédito pode ser usado em outro município."}${montado.semGeometria ? ` ${montado.semGeometria} municípios sem polígono na malha ficam só na tabela.` : ""} Clique para incluir o município na comparação (até quatro).`}
+        nota={`${v.mmed === "fora" ? "Cortes fixos em 1, 10, 50 e 100 unidades; zero fica na primeira classe. Unidades cuja distribuidora (CNPJ) não tem conjunto elétrico na UF: algum campo está errado na origem, e nada é corrigido." : "Classes por quantis. O município é o da unidade geradora; no autoconsumo remoto e na geração compartilhada o crédito pode ser usado em outro município."}${montado.semGeometria ? ` ${contagem(montado.semGeometria, "município sem polígono na malha fica", "municípios sem polígono na malha ficam")} só na tabela.` : ""} Clique para incluir o município na comparação (até quatro).`}
       />
       {aviso && (
         <p role="status" className="text-sm text-carvao">

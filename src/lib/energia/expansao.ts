@@ -158,6 +158,23 @@ export const NOME_TIPO: Readonly<Record<string, string>> = {
   UTN: "Usina termonuclear",
   CGU: "Central geradora undi-elétrica",
 };
+/** Tipo de geração em frase ("71,7 GW em usinas solares fotovoltaicas"). */
+export const TIPO_EM_FRASE: Readonly<Record<string, string>> = {
+  UHE: "hidrelétricas",
+  PCH: "pequenas centrais hidrelétricas",
+  CGH: "centrais geradoras hidrelétricas",
+  EOL: "usinas eólicas",
+  UFV: "usinas solares fotovoltaicas",
+  UTE: "termelétricas",
+  UTN: "termonuclear",
+  CGU: "centrais undi-elétricas",
+};
+/** Número por extenso nas frases curtas (até dez), como no texto editorial; acima disso, algarismos. */
+export function porExtenso(n: number, genero: "f" | "m" = "f"): string {
+  const f = ["zero", "uma", "duas", "três", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez"];
+  const m = ["zero", "um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez"];
+  return Number.isInteger(n) && n >= 0 && n <= 10 ? (genero === "f" ? f : m)[n] : num(n, 0);
+}
 /** Cor de série por tipo de geração: as fontes mantêm a mesma identidade visual do observatório. */
 export const COR_TIPO: Readonly<Record<string, string>> = {
   UHE: "var(--serie-hidraulica)",
@@ -229,6 +246,48 @@ export const DOWNLOADS_PAINEL: Record<PainelExpansao, readonly string[]> = {
   ],
   p043: ["/energia/series/expansao_pde2035.csv", "/energia/series/expansao_capacidade_uf_fonte.csv"],
 };
+
+/* ================================================================ síntese */
+
+/** Carteira do RALIE por tipo de geração (MW das unidades em implantação), da maior para a menor. */
+export function linhasRalieTipo(g: Pick<ExpansaoGold, "estagios">) {
+  return [...g.estagios.ralie.por_tipo]
+    .sort((a, b) => b.mw_ugs_em_implantacao - a.mw_ugs_em_implantacao)
+    .map((t) => ({ id: t.tipo, tipo: `${NOME_TIPO[t.tipo] ?? t.tipo} (${t.tipo})`, usinas: t.usinas, mw: t.mw_ugs_em_implantacao, mw_outorgado: t.mw_outorgado }));
+}
+
+/**
+ * Resposta da página de síntese ("Quanta capacidade está chegando, e de que fontes?").
+ * Regra: total das unidades em implantação no RALIE e os três tipos com mais potência,
+ * com o número de tipos restantes; depois, o que a fiscalização prevê para os dois
+ * primeiros anos e o lembrete de que carteira não é entrada certa, sustentado pelo
+ * desfecho da coorte de 2021 quando a gold o publica.
+ */
+export function respostaSintese(g: Pick<ExpansaoGold, "estagios" | "cronograma" | "referencias">): string {
+  const r = g.estagios.ralie;
+  const tipos = linhasRalieTipo(g);
+  const top = tipos.slice(0, 3);
+  const resto = tipos.length - top.length;
+  const partes = [
+    `Na fotografia do RALIE de ${dataTexto(r.data_ralie)}, ${inteiro(r.usinas)} usinas estão em implantação, com ${mwTexto(r.mw_ugs_em_implantacao)} em unidades geradoras: ${listaTexto(
+      top.map((t) => `${mwTexto(t.mw)} em ${TIPO_EM_FRASE[t.id] ?? t.id}`),
+    )}${resto > 0 ? `, e o restante em ${resto === 1 ? "outro tipo" : `outros ${porExtenso(resto, "m")} tipos`}` : ""}.`,
+  ];
+  const pa = g.cronograma.previsoes_atuais;
+  const anoFoto = pa.data_ralie.slice(0, 4);
+  const anos = [...pa.por_ano].sort((a, b) => a.ano.localeCompare(b.ano)).slice(0, 2);
+  if (anos.length) {
+    partes.push(`A fiscalização prevê ${listaTexto(anos.map((a) => `${mwTexto(a.mw)} ${a.ano === anoFoto ? `no restante de ${a.ano}` : `em ${a.ano}`}`))}.`);
+  }
+  const c0 = coorteInicial(g);
+  if (c0) {
+    const enc = c0.desfechos.outorga_encerrada.pct_mw;
+    partes.push(
+      `${temValor(enc) && enc > 0 ? "Carteira não é entrada certa: da" : "Da"} potência que estava em implantação em ${dataTexto(g.referencias.ralie_historico_desde)}, ${pctTexto(c0.desfechos.operacao.pct_mw)} entrou em operação e ${pctTexto(enc)} teve a outorga encerrada.`,
+    );
+  }
+  return partes.join(" ");
+}
 
 /* ================================================================ P040: carteira */
 
@@ -915,7 +974,7 @@ export function respostaTransmissao(g: Pick<ExpansaoGold, "transmissao" | "estag
   ];
   if (top.length) {
     partes.push(
-      `Nas ${top.length === 1 ? "UF" : `${top.length} UF`} com mais geração em implantação, ${listaTexto(top.map((u) => `${NOME_UF[u.uf] ?? u.uf} tem ${mwTexto(u.mw_ugs_em_implantacao)} de geração e ${kmTexto(u.km_lt_em_andamento_toca_uf)} de linhas em obra que tocam a UF`))}.`,
+      `${top.length === 1 ? "Na UF" : `Nas ${porExtenso(top.length)} UF`} com mais geração em implantação, ${listaTexto(top.map((u) => `${NOME_UF[u.uf] ?? u.uf} tem ${mwTexto(u.mw_ugs_em_implantacao)} de geração e ${kmTexto(u.km_lt_em_andamento_toca_uf)} de linhas em obra que tocam a UF`))}.`,
     );
   }
   partes.push("MW, km e MVA não se somam nem se dividem: a capacidade de escoar a geração depende da topologia e dos limites da rede, que esses totais não descrevem.");
@@ -1205,18 +1264,22 @@ export function filtraRede<T extends readonly [string, string | null, number | n
  */
 export function respostaCenarios(g: Pick<ExpansaoGold, "cenarios" | "evidencias">): string {
   const c = g.cenarios;
-  const c2025 = c.conferencia_relatorio.find((x) => x.descricao.includes("3-25") && x.descricao.includes("dez/2025"));
-  const c2035 = c.conferencia_relatorio.find((x) => x.descricao.includes("3-25") && x.descricao.includes("dez/2035"));
+  // as referências da Figura 3-25 (ponto de partida e fim do horizonte) vêm da própria figura
+  const refs = (c.figuras.fig_3_25?.linhas ?? []).map((l) => l.ref).sort();
+  const ini = refs[0];
+  const fim = refs.at(-1);
+  const conf = (ref: string | undefined) =>
+    ref ? c.conferencia_relatorio.find((x) => x.descricao.includes("3-25") && x.descricao.includes(`${mesTexto(ref)}`)) : undefined;
   const ev = g.evidencias.pde_capacidade_2035;
-  const total2035 = ev?.valor_calculo ?? c2035?.calculado_gw ?? null;
+  const totalFim = ev?.valor_calculo ?? conf(fim)?.calculado_gw ?? null;
   const partes = [
-    `O ${c.edicao} (${c.orgao}${c.aprovacao ? `; aprovado pela ${c.aprovacao.texto}` : ""}) é um cenário com data-base em ${c.data_base_premissas}, não uma previsão: no Cenário de Referência, a capacidade instalada nacional, contando micro e minigeração distribuída, baterias e resposta da demanda, vai de ${gwTexto(c2025?.calculado_gw)} em dezembro de 2025 a ${gwTexto(total2035)} em dezembro de 2035.`,
+    `O ${c.edicao} (${c.orgao}${c.aprovacao ? `; aprovado pela ${c.aprovacao.texto}` : ""}) é um cenário com data-base em ${c.data_base_premissas}, não uma previsão: no Cenário de Referência, a capacidade instalada nacional, contando micro e minigeração distribuída, baterias e resposta da demanda, vai de ${gwTexto(conf(ini)?.calculado_gw)} em ${mesTexto(ini)} a ${gwTexto(totalFim)} em ${mesTexto(fim)}.`,
   ];
   const diretas = c.camadas.filter((x) => x.correspondencia === "direta" && temValor(x.pde_dez2035_gw));
   const maior = [...diretas].sort((a, b) => (b.pde_dez2035_gw ?? 0) - (a.pde_dez2035_gw ?? 0))[0];
   if (maior) {
     partes.push(
-      `Entre as categorias com correspondência direta no cadastro da ANEEL, a maior em 2035 é a de ${maior.rotulo.toLocaleLowerCase("pt-BR")}, com ${gwTexto(maior.pde_dez2035_gw)} no cenário, ${gwTexto(maior.realizado_siga_gw)} em operação no SIGA e ${gwTexto(maior.carteira_ralie_gw)} em implantação no RALIE hoje.`,
+      `Entre as categorias com correspondência direta no cadastro da ANEEL, a maior em ${mesTexto(fim)} é a de ${maior.rotulo.toLocaleLowerCase("pt-BR")}, com ${gwTexto(maior.pde_dez2035_gw)} no cenário, ${gwTexto(maior.realizado_siga_gw)} em operação no SIGA e ${gwTexto(maior.carteira_ralie_gw)} em implantação no RALIE hoje.`,
     );
   }
   return partes.join(" ");

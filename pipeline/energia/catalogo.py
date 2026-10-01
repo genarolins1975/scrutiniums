@@ -156,8 +156,11 @@ TEMAS = [
     ("empresas", ["agentes", "societ", "cde", "subsid", "beneficiar"]),
     ("mercado", ["sumario", "compra_venda", "contabiliza", "mre", "gsf", "encargo"]),
 ]
-# Tamanho da descrição no catálogo publicado (a íntegra fica em dados_catalogo.csv).
-MAX_DESCRICAO = 120
+# Tamanho da descrição no catálogo publicado (a íntegra fica em dados_catalogo.csv). Era 120;
+# em 01/10/2026 o catálogo chegou a 409.809 bytes, acima do limite de 400 KiB das golds, com
+# 415 entradas: 80 caracteres liberam cerca de 4 KB até a divisão por portal (pedido 5 do
+# documento do módulo dados).
+MAX_DESCRICAO = 80
 ORDEM_RECURSO = ["CATALOGADO", "RECURSO VERIFICADO", "INTEGRADO", "VALIDADO", "PUBLICADO"]
 
 

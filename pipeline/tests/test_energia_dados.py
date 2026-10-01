@@ -729,6 +729,39 @@ class TestAfirmacoes(unittest.TestCase):
         self.assertTrue(a["texto"].startswith("Limites de intercâmbio entre subsistemas: integrado, validado e publicado"))
 
 
+class TestConfereAfirmacoes(unittest.TestCase):
+    """A conferência relê o catálogo GRAVADO: estado diferente do registrado na afirmação, conjunto só
+    catalogado ou texto que diz 'publicado' para conjunto não publicado reprovam a afirmação."""
+
+    def afirm(self, estado, texto):
+        return [{"id": "cvu_usina", "conjuntos": [{"id": "ons:cvu-usitermica", "estado": estado}], "ausentes_no_catalogo": [],
+                 "texto": texto}]
+
+    def test_estado_igual_e_texto_coerente_e_conferida(self):
+        ok, prob = dados.confere_afirmacoes(self.afirm("PUBLICADO", "CVU por usina térmica: integrado, validado e publicado (ons:cvu-usitermica)."),
+                                            [{"id": "ons:cvu-usitermica", "estado": "PUBLICADO"}])
+        self.assertEqual((ok, prob), (["cvu_usina"], []))
+
+    def test_catalogo_gravado_com_outro_estado_reprova(self):
+        # a afirmação foi gerada com PUBLICADO e o catálogo gravado diz VALIDADO (gold consumidora reprovada depois)
+        ok, prob = dados.confere_afirmacoes(self.afirm("PUBLICADO", "CVU por usina térmica: integrado, validado e publicado (ons:cvu-usitermica)."),
+                                            [{"id": "ons:cvu-usitermica", "estado": "VALIDADO"}])
+        self.assertEqual(ok, [])
+        self.assertTrue(any("VALIDADO no catálogo" in p for p in prob))
+        self.assertTrue(any("o texto diz publicado" in p for p in prob))
+
+    def test_conjunto_so_catalogado_nao_sustenta_afirmacao(self):
+        ok, prob = dados.confere_afirmacoes(self.afirm("CATALOGADO", "CVU por usina térmica: ons:cvu-usitermica está catalogado."),
+                                            [{"id": "ons:cvu-usitermica", "estado": "CATALOGADO"}])
+        self.assertEqual(ok, [])
+        self.assertTrue(any("só catalogado" in p for p in prob))
+
+    def test_conjunto_ausente_do_catalogo_reprova(self):
+        ok, prob = dados.confere_afirmacoes(self.afirm("PUBLICADO", "x"), [])
+        self.assertEqual(ok, [])
+        self.assertTrue(any("não está no catálogo gravado" in p for p in prob))
+
+
 # ---------------------------------------------------------------- métricas
 
 
@@ -758,10 +791,26 @@ class TestGoldPublicada(unittest.TestCase):
 
     def test_proveniencias_e_evidencias_completas(self):
         provs = val.proveniencias(self.g)
-        self.assertEqual(len(provs), 4)
+        # catálogo, saúde, revisões, validação e reprodução (P069)
+        self.assertEqual(len(provs), 5)
         self.assertEqual([p["indicador"] for p in provs if val.problemas_proveniencia(p)], [])
         for nome, e in self.g["evidencias"].items():
             self.assertEqual(ev.validar(e), [], nome)
+
+    def test_fichas_de_p069_e_p070_fecham_com_o_resumo_e_os_arquivos(self):
+        e = self.g["evidencias"]
+        # Parquet equivalentes: o mesmo número do resumo e da lista arquivos.parquet
+        pq_ = [p for p in self.g["arquivos"]["parquet"] if p.get("csv")]
+        self.assertEqual(e["parquet_equivalentes"]["valor_calculo"], self.g["resumo"]["parquet"]["equivalentes"])
+        self.assertEqual(e["parquet_equivalentes"]["valor_calculo"], sum(1 for p in pq_ if p.get("equivalente")))
+        # checagens reprovadas: recontadas no CSV publicado por outro leitor (csv.DictReader)
+        with open(os.path.join(SERIES, "dados_validacoes.csv"), encoding="utf-8") as f:
+            res = [r["resultado"] for r in csv.DictReader(f, delimiter=";")]
+        self.assertEqual(e["checagens_reprovadas"]["valor_calculo"], res.count("reprovado"))
+        self.assertEqual(self.g["resumo"]["validacao"]["checagens"], len(res))
+        # afirmações conferidas: refeito sobre o catálogo gravado
+        ok, _ = dados.confere_afirmacoes(self.g["afirmacoes"], self.cat["entradas"])
+        self.assertEqual(e["afirmacoes_conferidas"]["valor_calculo"], len(ok))
 
     def test_estado_de_cada_conjunto_e_o_das_etapas(self):
         for x in self.g["conjuntos"]:
@@ -784,6 +833,13 @@ class TestGoldPublicada(unittest.TestCase):
             if r.get("eventos"):
                 self.assertGreaterEqual(r["observacoes"], r["referencias"], x["id"])
                 self.assertGreaterEqual(r["eventos"], r["observacoes"], x["id"])
+
+    def test_conjunto_que_parou_antes_de_integrado_explica_por_que(self):
+        # a explicação precisa estar em ressalvas (vai para a entrada do catálogo); a checagem de
+        # conteúdo em validacao.itens não vai
+        for x in self.g["conjuntos"]:
+            if x["estado"] in ("CATALOGADO", "RECURSO VERIFICADO"):
+                self.assertTrue(x["ressalvas"], x["id"])
 
     def test_caso_c_so_com_rotina_do_portal(self):
         with open(os.path.join(SERIES, "dados_conjuntos.csv"), encoding="utf-8") as f:

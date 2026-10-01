@@ -964,6 +964,11 @@ def _silver_agua():
         vintage("ena_subsistema_di", "ENA_DIARIO_SUBSISTEMA_2026", "2026-09-29T02:42:43Z", l1)
         l2 = linhas + [(k, "2026-09-27", REVISAO_N[k][1]) for k in ("ena_arm_mwmed.N", "ena_arm_pct_mlt.N")]
         vintage("ena_subsistema_di", "ENA_DIARIO_SUBSISTEMA_2026", "2026-09-30T02:19:46Z", l2)
+    # carga de 22 a 28/09/2026 do arquivo Carga_Energia 2026 capturado em 01/10 (revisado pelo ONS
+    # depois da captura usada nas golds): o determinante de carga tem de acusar a diferença
+    vintage("carga_energia_di", "CARGA_ENERGIA_2026", "2026-10-01T00:38:00Z",
+            [(f"carga_mwmed.{x['id_subsistema'].strip()}", x["din_instante"][:10], float(x["val_cargaenergiamwmed"]))
+             for x in _csv("carga_energia_2026_22a28set.csv")])
     # arquivos do PLD horário da CCEE (só a vintage: as horas do piso e do teto vêm do CSV do módulo PLD)
     for ano, cap in ((2025, "2026-09-27T21:10:00Z"), (2026, "2026-09-30T02:20:15Z")):
         rec = f"pld_horario_{ano}"
@@ -1071,6 +1076,34 @@ class ConstrucaoComSilver(unittest.TestCase):
         self.assertIsNone(self.fr["termica"]["evidencia"])
         self.assertTrue(any("sha256" in x for x in self.fr["termica"]["evidencia_problemas"]))
         self.assertTrue(any(x["nome"] == "evidência da frase termica" and x["resultado"] == "ressalva" for x in self.g["validacao"]))
+
+    def test_evidencia_dos_determinantes(self):
+        pa = {p["id"]: p for p in self.g["multiplos"]["paineis"]}
+        # água: mesmo número da frase de reservatórios, refeito das somas em MWmês
+        e = pa["agua"]["evidencia"]
+        self.assertEqual(pa["agua"]["valor_atual"]["valor_exibido"], "61,6% da EAR máxima")
+        self.assertEqual(e["valor_exibido"], "61,6% da EAR máxima")
+        self.assertAlmostEqual(e["valor_calculo"], 61.6473, places=4)
+        self.assertEqual((e["numerador"]["valor"], e["denominador"]["valor"]), (180052.264, 292068.192))
+        self.assertEqual(e["reconciliacao"]["resultado"], "aprovado")
+        # relido na gold (61,6) e célula do dia no recorte (61,65), iguais na casa exibida
+        self.assertEqual([t["resultado"] for t in e["testes"]], ["aprovado", "aprovado"])
+        # carga: o arquivo de 01/10 soma 88.914,2006 MWmed em 28/09 (N 9.922,720 + NE 15.075,621 +
+        # S 14.915,921 + SE 48.999,938), contra 88.896 da gold (captura de 30/09, com NE 15.064,236 e
+        # S 14.909,434): a reconciliação reprova e a validação registra a ressalva, sem esconder o
+        # número publicado
+        e = pa["carga"]["evidencia"]
+        self.assertEqual(e["valor_exibido"], "88.896 MWmed")
+        self.assertAlmostEqual(e["valor_calculo"], 88914.2006, places=3)
+        self.assertEqual(e["reconciliacao"]["resultado"], "reprovado")
+        self.assertTrue(any(x["nome"] == "evidência do determinante carga: conferências" and x["resultado"] == "ressalva" for x in self.g["validacao"]))
+        # preço: há a vintage do arquivo, mas não as horas no silver do teste: reconciliação pendente
+        e = pa["preco"]["evidencia"]
+        self.assertEqual(e["valor_exibido"], "R$ 135,25/MWh")
+        self.assertEqual(e["reconciliacao"]["resultado"], "ressalva")
+        # rede: sem arquivo no silver não há evidência, e a falta vira ressalva (nunca "aprovado" sem conferência)
+        self.assertIsNone(pa["rede"]["evidencia"])
+        self.assertTrue(any(x["nome"] == "evidência do determinante rede" for x in self.g["validacao"]))
 
     def test_atualidade_avalia_os_conjuntos_que_a_pagina_publica(self):
         o = self.obs["atualidade_fontes"]

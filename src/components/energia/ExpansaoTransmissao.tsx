@@ -97,7 +97,7 @@ export function ExpansaoGeracaoRedeUf({ linhas, datas, fonte }: { linhas: LinhaG
           selecionadas={escolhidas}
           onMudar={(ids) => definir({ cmp: ids })}
           dicaBusca="Nome ou sigla da UF"
-          vazio="Nenhuma UF escolhida. A comparação desenha um painel por unidade (MW, km e MVA), cada um com a sua escala."
+          vazio="Nenhuma UF escolhida. A comparação desenha um painel por grandeza (MW, km de circuito, MVA e km de traçado), cada um com a sua escala."
         >
           {() => null}
         </Comparador>

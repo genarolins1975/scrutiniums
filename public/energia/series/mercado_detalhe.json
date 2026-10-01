@@ -1,7 +1,7 @@
 {
  "dominio": "energia",
  "gold": "mercado.json",
- "gerado_em": "2026-10-01T07:42:57Z",
+ "gerado_em": "2026-10-01T07:54:38Z",
  "descricao": "Tabelas longas do módulo Mercado lidas sob demanda pela página (os mesmos valores da construção da gold; R$ e MWh inteiros).",
  "parcelas_mensal_detalhe": [
   {

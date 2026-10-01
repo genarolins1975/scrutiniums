@@ -3,10 +3,12 @@ agua_detalhe.json;EAR do SIN;CALCULADO;reconciliacao_aprovada;aprovado;3;0;0
 agua_detalhe.json;Energia armazenada no SIN;;reconciliacao_aprovada;aprovado;1;0;0
 agua_detalhe.json;Mudanças da capacidade de armazenamento (EAR máxima) desde 2000;CALCULADO;controles_aprovados;;1;0;0
 agua_detalhe.json;ENA bruta de 30 dias do SIN;;controles_aprovados;;2;0;0
+agua_detalhe.json;ENA armazenável de 30 dias do SIN;;controles_aprovados;;2;0;0
 agua_detalhe.json;Diferença entre a MLT do conjunto aberto e a MLT do PMO (Sudeste/Centro-Oeste);;ressalva;;0;2;0
 agua_detalhe.json;Anomalia da temperatura do SIN em 30 dias;;ressalva;;1;1;0
 agua_detalhe.json;Chuva de 30 dias na bacia PARANAIBA;;ressalva;;0;1;0
 agua_detalhe.json;Resíduo do balanço de 30 dias em SERRA DA MESA;;controles_aprovados;;1;0;0
+agua_detalhe.json;Reservatórios que fecham o balanço por construção;;ressalva;;0;2;0
 carga_detalhe.json;Variação da carga do SIN em 7 dias contra os mesmos dias do ano anterior (reprodução do diagnóstico);;reconciliacao_aprovada;aprovado;3;0;0
 carga_detalhe.json;Variação da carga do SIN nos últimos 7 dias contra os mesmos dias da semana 52 semanas antes;;controles_aprovados;;2;0;0
 carga_detalhe.json;Parcela da carga global do SIN atendida por MMGD (estimativa do ONS), último mês completo;;reconciliacao_aprovada;aprovado;2;0;0
@@ -123,6 +125,11 @@ sintese.json;Visão geral, frase 'carga';;reconciliacao_aprovada;aprovado;2;0;0
 sintese.json;Visão geral, frase 'termica';;reconciliacao_aprovada;aprovado;2;0;0
 sintese.json;Visão geral, frase 'pld';;reconciliacao_aprovada;aprovado;2;0;0
 sintese.json;Visão geral, frase 'rede';;reconciliacao_aprovada;aprovado;2;0;0
+sintese.json;Visão geral, determinante 'preco': preço, valor atual (Sudeste/Centro-Oeste);;reconciliacao_aprovada;aprovado;2;0;0
+sintese.json;Visão geral, determinante 'agua': água, valor atual (SIN);;reconciliacao_aprovada;aprovado;2;0;0
+sintese.json;Visão geral, determinante 'geracao': geração, valor atual (SIN, 7 dias);;reconciliacao_aprovada;aprovado;2;0;0
+sintese.json;Visão geral, determinante 'carga': carga, valor atual (SIN);;reconciliacao_aprovada;aprovado;2;0;0
+sintese.json;Visão geral, determinante 'rede': rede, valor atual (Nordeste → Sudeste/Centro-Oeste);;reconciliacao_aprovada;aprovado;2;0;0
 sintese.json;Tarifa residencial B1 mediana entre distribuidoras;;ressalva;ressalva;2;1;0
 sintese.json;DEC do Brasil (apurado, ponderado por unidades consumidoras, todas as distribuidoras, inclusive permissionárias);;ressalva;aprovado;4;1;0
 sintese.json;FEC do Brasil (apurado, ponderado por unidades consumidoras, todas as distribuidoras, inclusive permissionárias);;ressalva;aprovado;4;1;0

@@ -22,6 +22,8 @@ import {
   respostaConsultas,
   situacaoSeConfirmada,
   temaCurto,
+  textoJanela,
+  textoReuniao,
 } from "@/lib/energia/regulacao";
 import { faseAtual, hojeBrasilia, type Consultas, type SituacaoConsulta } from "@/lib/energia/tipos-regulacao";
 
@@ -45,12 +47,15 @@ export function RegulacaoConsultas({
   dataServidor,
   fonte,
   versao,
+  inicioHistorico = null,
 }: {
   consultas: Pick<Consultas, "itens" | "janela_dias" | "decisoes_sem_resultado_formal" | "atas_deliberadas_ate" | "atas_ate" | "atas_geradas_em" | "data_referencia">;
   /** Data do build (nunca anterior à data de referência da gold); o navegador troca pela de hoje. */
   dataServidor: string;
   fonte: string;
   versao: string;
+  /** Ano de início do histórico no CSV, lido da proveniência da gold (null sem a data). */
+  inicioHistorico?: string | null;
 }) {
   const [hoje, setHoje] = useState(dataServidor);
   useEffect(() => {
@@ -128,7 +133,7 @@ export function RegulacaoConsultas({
         </fieldset>
         <div className="flex flex-wrap items-center gap-x-4">
           <p className="text-sm text-carvao-muted" aria-live="polite" data-estado-filtro="">
-            Mostrando {visiveis.length} de {naData.length} consultas com atividade nos últimos {consultas.janela_dias ?? 200} dias
+            Mostrando {visiveis.length} de {naData.length} consultas {textoJanela(consultas.janela_dias)}
             {filtroPadrao ? " (padrão: todas as ainda não decididas)" : ""}.
           </p>
           <button
@@ -178,8 +183,8 @@ export function RegulacaoConsultas({
           <p className="text-carvao">{temaCurto(selecionada.tema)}</p>
           <p className="text-carvao-muted">
             Processo {selecionada.processos.join(", ")}
-            {selecionada.relator ? `; relator ${selecionada.relator}` : ""}. Abertura deliberada em {dataBR(selecionada.deliberacao_abertura.data)} (reunião{" "}
-            {selecionada.deliberacao_abertura.reuniao}).
+            {selecionada.relator ? `; relator ${selecionada.relator}` : ""}. Abertura deliberada em {dataBR(selecionada.deliberacao_abertura.data)}, na reunião{" "}
+            {textoReuniao(selecionada.deliberacao_abertura.reuniao)}.
           </p>
           {selecionada.numero_suspeito && (
             <p className="text-carvao-muted">
@@ -221,7 +226,7 @@ export function RegulacaoConsultas({
           {selecionada.resultado ? (
             <p className="text-carvao-muted">
               Resultado {selecionada.resultado.decidido ? "deliberado" : `levado à reunião sem decisão (${selecionada.resultado.resultado_julgamento || "sem registro do julgamento"})`} em{" "}
-              {dataBR(selecionada.resultado.data)}, reunião {selecionada.resultado.reuniao}
+              {dataBR(selecionada.resultado.data)}, reunião {textoReuniao(selecionada.resultado.reuniao)}
               {selecionada.resultado.ato
                 ? `: ${selecionada.resultado.ato}`
                 : selecionada.resultado.ato_suspeito
@@ -261,7 +266,7 @@ export function RegulacaoConsultas({
         selecionado={selecionada?.id ?? null}
         onSelecionar={selecionar}
         semLinhas="Nenhuma consulta no recorte atual."
-        nota="Mesmas linhas, na mesma ordem, do gráfico. Data vazia quer dizer que a ata não a escreve; a situação dessas consultas não é derivável e nunca aparece como aberta. O histórico completo, desde 2017, está no CSV do painel."
+        nota={`Mesmas linhas, na mesma ordem, do gráfico. Data vazia quer dizer que a ata não a escreve; a situação dessas consultas não é derivável e nunca aparece como aberta. O histórico completo${inicioHistorico ? `, desde ${inicioHistorico},` : ""} está no CSV do painel.`}
       />
 
       {(consultas.decisoes_sem_resultado_formal ?? []).length > 0 && (
@@ -274,7 +279,7 @@ export function RegulacaoConsultas({
               const s = situacaoSeConfirmada(d, hoje);
               return (
                 <li key={`${d.data}:${d.processos.join(",")}`} className="border-l-2 border-linha pl-3">
-                  <span className="text-carvao">{temaCurto(d.assunto)}</span> Pauta de {dataBR(d.data)} (reunião {d.reuniao}), processo {d.processos.join(", ")}.{" "}
+                  <span className="text-carvao">{temaCurto(d.assunto)}</span> Pauta de {dataBR(d.data)}, reunião {textoReuniao(d.reuniao)}, processo {d.processos.join(", ")}.{" "}
                   {d.inicio && d.fim ? `Período escrito na decisão: ${dataBR(d.inicio)} a ${dataBR(d.fim)}.` : "Sem período escrito na decisão."}{" "}
                   {s ? `Se a ata confirmar, em ${dataBR(hoje)} estaria: ${ROTULO_CURTO_SITUACAO[s].toLowerCase()}.` : ""}
                 </li>

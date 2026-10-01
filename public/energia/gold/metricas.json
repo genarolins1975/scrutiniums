@@ -1,15 +1,15 @@
 {
  "dominio": "energia",
  "gold": "metricas.json",
- "gerado_em": "2026-10-01T07:45:23Z",
+ "gerado_em": "2026-10-01T08:15:47Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "fa4767ccfa9a+alterado",
+ "versao_codigo": "00dc290a9fdd+alterado",
  "disponivel": true,
  "metricas": [
   {
    "gold": "agua_detalhe.json",
    "paginas": [
-    "/setor-eletrico/agua-e-clima"
+    "/setor-eletrico/agua-e-clima/chuva-e-temperatura"
    ],
    "versao_formula": "1.0",
    "id": "agua_associacao_chuva_ena",
@@ -48,7 +48,7 @@
   {
    "gold": "agua_detalhe.json",
    "paginas": [
-    "/setor-eletrico/agua-e-clima"
+    "/setor-eletrico/agua-e-clima/reservatorios"
    ],
    "versao_formula": "1.0",
    "id": "agua_balanco_reservatorio",
@@ -88,7 +88,7 @@
   {
    "gold": "agua_detalhe.json",
    "paginas": [
-    "/setor-eletrico/agua-e-clima"
+    "/setor-eletrico/agua-e-clima/reservatorios"
    ],
    "versao_formula": "1.0",
    "id": "agua_decomposicao_delta_ear",
@@ -295,7 +295,7 @@
   {
    "gold": "agua_detalhe.json",
    "paginas": [
-    "/setor-eletrico/agua-e-clima"
+    "/setor-eletrico/agua-e-clima/afluencia"
    ],
    "versao_formula": "1.0",
    "id": "agua_ena_30d_pct_mlt",
@@ -340,7 +340,7 @@
   {
    "gold": "agua_detalhe.json",
    "paginas": [
-    "/setor-eletrico/agua-e-clima"
+    "/setor-eletrico/agua-e-clima/afluencia"
    ],
    "versao_formula": "1.0",
    "id": "agua_mlt_versao",
@@ -385,7 +385,7 @@
   {
    "gold": "agua_detalhe.json",
    "paginas": [
-    "/setor-eletrico/agua-e-clima"
+    "/setor-eletrico/agua-e-clima/chuva-e-temperatura"
    ],
    "versao_formula": "1.0",
    "id": "agua_precipitacao_anomalia",
@@ -425,7 +425,7 @@
   {
    "gold": "agua_detalhe.json",
    "paginas": [
-    "/setor-eletrico/agua-e-clima"
+    "/setor-eletrico/agua-e-clima/chuva-e-temperatura"
    ],
    "versao_formula": "1.0",
    "id": "agua_precipitacao_bacia",
@@ -469,7 +469,7 @@
   {
    "gold": "agua_detalhe.json",
    "paginas": [
-    "/setor-eletrico/agua-e-clima"
+    "/setor-eletrico/agua-e-clima/chuva-e-temperatura"
    ],
    "versao_formula": "1.0",
    "id": "agua_previsao_chuva_bacia",
@@ -512,7 +512,7 @@
   {
    "gold": "agua_detalhe.json",
    "paginas": [
-    "/setor-eletrico/agua-e-clima"
+    "/setor-eletrico/agua-e-clima/chuva-e-temperatura"
    ],
    "versao_formula": "1.0",
    "id": "agua_previsao_temperatura",
@@ -554,7 +554,7 @@
   {
    "gold": "agua_detalhe.json",
    "paginas": [
-    "/setor-eletrico/agua-e-clima"
+    "/setor-eletrico/agua-e-clima/chuva-e-temperatura"
    ],
    "versao_formula": "1.0",
    "id": "agua_temperatura_anomalia",
@@ -592,7 +592,7 @@
   {
    "gold": "agua_detalhe.json",
    "paginas": [
-    "/setor-eletrico/agua-e-clima"
+    "/setor-eletrico/agua-e-clima/chuva-e-temperatura"
    ],
    "versao_formula": "1.0",
    "id": "agua_temperatura_subsistema",
@@ -1354,6 +1354,48 @@
     "/setor-eletrico/conta-de-luz"
    ],
    "arquivo": "pipeline/energia/metricas/conta.py"
+  },
+  {
+   "gold": "publicacao.json",
+   "paginas": [
+    "/setor-eletrico/metodologia"
+   ],
+   "versao_formula": "1.0",
+   "natureza_fonte": "CALCULADO",
+   "natureza_transformacao": "CALCULADO",
+   "id": "dados_afirmacoes_conferidas",
+   "titulo": "Afirmações de integração conferidas com o catálogo",
+   "pergunta": "Cada fonte que a Metodologia diz integrada corresponde a um recurso realmente verificado?",
+   "definicao": "Contagem das afirmações de integração exibidas na Metodologia em que todo conjunto citado está no catálogo gravado com o mesmo estado, chegou pelo menos a RECURSO VERIFICADO, e o texto só diz 'publicado' quando todos estão PUBLICADO.",
+   "unidade": "afirmações",
+   "grao_geografico": "não se aplica",
+   "grao_temporal": "por publicação",
+   "fontes": [
+    "catalogo_ckan_ons",
+    "catalogo_ckan_aneel",
+    "catalogo_ckan_ccee",
+    "catalogo_ccee_seed",
+    "silvers_declarados"
+   ],
+   "formula": "n = #{afirmações : ∀ conjunto citado, estado_catálogo = estado_afirmação ≥ RECURSO VERIFICADO}",
+   "regra_agregacao": "contagem",
+   "dimensoes": [
+    "afirmação"
+   ],
+   "regras_comparabilidade": [
+    "O texto de cada afirmação é gerado do estado do catálogo da mesma publicação; entre publicações, muda quando um conjunto sobe ou desce na escada."
+   ],
+   "regra_cobertura": "As afirmações de publicacao.json (afirmacoes), lidas pela página Metodologia.",
+   "politica_ausencia": "Conjunto citado ausente do catálogo reprova a afirmação.",
+   "validacoes": [
+    "estado de cada conjunto relido no catalogo.json gravado (ficha afirmacoes_conferidas)",
+    "afirmação sobre limites de intercâmbio gerada do achado A06 de rede_detalhe.json"
+   ],
+   "limitacoes": [
+    "A conferência atesta o estado do conjunto no catálogo, não a qualidade de cada número que ele alimenta (ver as fichas 'Comprove este número' de cada página).",
+    "Medida sobre a própria plataforma, recalculada a cada execução do pipeline; não descreve o setor elétrico."
+   ],
+   "arquivo": "pipeline/energia/metricas/dados.py"
   },
   {
    "gold": "publicacao.json",

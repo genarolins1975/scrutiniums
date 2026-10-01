@@ -6,13 +6,14 @@ import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { TransicaoOpcoes } from "@/components/energia/TransicaoOpcoes";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
-import { COLUNAS_ONS_MENSAL, ESQUEMA_ONS, dadosOnsMensal, linhasOnsMensal, type MedidaOns } from "@/lib/energia/transicao";
+import { COLUNAS_ONS_MENSAL, ESQUEMA_ONS, SERIES_ONS, dadosOnsMensal, linhasOnsMensal, type MedidaOns, type SerieOns } from "@/lib/energia/transicao";
 import type { OnsMmgdMes } from "@/lib/energia/tipos-transicao";
 
 /**
  * Estimativa de MMGD do ONS (energia, MWmed, só SIN): a série mensal com a medida
- * (MWmed ou participação na carga global) e o intervalo na URL (ons.med, ons.de e
- * ons.ate), e a tabela equivalente, com os mesmos meses. Cada mês fica numa só das
+ * (MWmed ou participação na carga global), o intervalo e as séries ocultas pela
+ * legenda na URL (ons.med, ons.de, ons.ate e ons.ocultas), e a tabela equivalente,
+ * com os mesmos meses. Cada mês fica numa só das
  * séries do SIN (completo ou incompleto), sem emenda entre elas.
  *
  * Os números vêm prontos da gold (pipeline/energia/modulos/transicao.py): a
@@ -61,6 +62,8 @@ export function TransicaoOnsMensal({ mensal, fonte, versao }: { mensal: OnsMmgdM
         intervalo={intervalo}
         onIntervalo={(i) => definir({ de: i?.inicio ?? "", ate: i?.fim ?? "" })}
         legendaInterativa={v.med === "mwmed"}
+        ocultas={v.ocultas}
+        onOcultas={(ids) => definir({ ocultas: ids.filter((id): id is SerieOns => (SERIES_ONS as readonly string[]).includes(id)) })}
         altura={300}
       />
       <TabelaInterativa
@@ -81,13 +84,20 @@ export function TransicaoOnsMensal({ mensal, fonte, versao }: { mensal: OnsMmgdM
   );
 }
 
-/** Achado A11: solar e carga do Balanço de Energia do SIN e MMGD estimada, dia a dia, em torno de 29/04/2023. */
+/**
+ * Achado A11: solar e carga do Balanço de Energia do SIN e MMGD estimada, dia a dia,
+ * em torno da incorporação declarada pelo ONS. A MMGD vem da captura indicada: o ONS
+ * revisa o histórico, então a série leva a data da captura no rótulo.
+ */
 export function TransicaoConferencia2023({
   dias,
   marco,
+  captura,
 }: {
   dias: { d: string; solar: number | null; carga: number | null; mmgd: number | null }[];
   marco: { x: string; rotulo: string } | null;
+  /** Data e hora da captura da carga verificada, já formatadas (horário de Brasília). */
+  captura: string;
 }) {
   const marcos = marco ? [marco] : [];
   return (
@@ -100,7 +110,7 @@ export function TransicaoConferencia2023({
           formatoX="data"
           series={[
             { id: "solar", rotulo: "Solar no balanço do SIN", sigla: "Solar", cor: "var(--serie-solar)" },
-            { id: "mmgd", rotulo: "MMGD estimada (carga verificada, como publicada hoje)", sigla: "MMGD", cor: "var(--cor-carvao)", tracejada: true },
+            { id: "mmgd", rotulo: `MMGD estimada (carga verificada, captura de ${captura})`, sigla: "MMGD", cor: "var(--cor-carvao)", tracejada: true },
           ]}
           unidade="MWmed"
           casas={0}

@@ -821,6 +821,36 @@ class TestGoldPublicada(unittest.TestCase):
         for k, e in self.g["evidencias"].items():
             self.assertEqual(evidencia.validar(e), [], k)
 
+    def test_numeros_de_destaque_das_paginas_tem_ficha_refeita_por_outro_caminho(self):
+        # a revisão de interface achou dois números de destaque sem ficha (ENA armazenável do SIN
+        # e reservatórios que fecham por construção); as fichas são conferidas contra os CSV
+        ev = self.g["evidencias"]
+        e = ev["fecham_por_construcao"]
+        with open(os.path.join(base.SERIES, "agua_reservatorios.csv"), encoding="utf-8") as f:
+            linhas = [r for r in csv.DictReader(f, delimiter=";") if r["balanco_calculado"] == "1"]
+        fecham = [r for r in linhas if float(r["serie_dias_residuo_dentro_tolerancia_pct"]) >= 95]
+        self.assertEqual(e["valor_calculo"], len(fecham))
+        self.assertEqual(e["denominador"]["valor"], len(linhas))
+        self.assertEqual(e["valor_calculo"], self.g["reservatorios"]["n_fecham_por_construcao"])
+        a = ev["ena_arm_30d_sin"]
+        with open(os.path.join(base.SERIES, "agua_subsistemas_diario.csv"), encoding="utf-8") as f:
+            sub = [r for r in csv.DictReader(f, delimiter=";")
+                   if a["periodo"]["inicio"] <= r["data"] <= a["periodo"]["fim"] and r["recorte"] != "SIN"]
+        self.assertEqual(len(sub), 120)
+        razao = 100 * sum(float(r["ena_arm_mwmed"]) for r in sub) / sum(float(r["mlt_arm_implicita_mwmed"]) for r in sub)
+        self.assertAlmostEqual(razao, a["valor_calculo"], delta=0.001)
+        sin = next(s for s in self.g["afluencia"]["subsistemas"] if s["sm"] == "SIN")
+        self.assertAlmostEqual(sin["pct_mlt_arm_30d"], a["valor_calculo"], delta=0.05)
+
+    def test_periodo_da_conferencia_com_estacoes_vem_dos_meses_comparados(self):
+        v = self.g["clima"]["validacao_estacoes"]
+        self.assertRegex(v["periodo"]["inicio"], r"^\d{4}-\d{2}$")
+        self.assertLessEqual(v["periodo"]["inicio"], v["periodo"]["fim"])
+        # o texto da separação e o nome do teste da ficha citam o mesmo período
+        self.assertIn(m._periodo_meses(v["periodo"]), self.g["clima"]["separacao"]["observacao"])
+        nomes = [t["nome"] for t in self.g["evidencias"]["precipitacao_maior_bacia_30d"]["testes"]]
+        self.assertIn(f"Conferência com estações ({m._periodo_meses(v['periodo'])})", nomes)
+
     def test_csv_de_temperatura_equivale_a_gold(self):
         caminho = os.path.join(base.SERIES, "clima_diario.csv")
         t = next(x for x in self.g["clima"]["temperatura"] if x["recorte"] == "SIN")

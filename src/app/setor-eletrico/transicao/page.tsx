@@ -10,6 +10,7 @@ import { carimbo } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
   GRANDEZAS,
+  LIGACAO_GERACAO,
   PERGUNTA_ONS,
   data,
   mes,
@@ -90,7 +91,7 @@ function Cartao({
 /** Painéis de outros módulos que continuam a mesma narrativa, com a pergunta de cada um. */
 const LIGACOES = [
   { href: "/setor-eletrico/carga/perfil-horario#p026", rotulo: "Carga: MMGD e perfil horário", texto: "Qual parcela da carga é estimada e quando ocorre o pico? A mesma estimativa de MMGD do ONS, hora a hora." },
-  { href: "/setor-eletrico/geracao#matriz", rotulo: "Geração: matriz efetiva", texto: "Com que fontes o sistema está atendendo a carga? A composição da geração do SIN, a mesma base do fator médio de emissão." },
+  { href: LIGACAO_GERACAO.href, rotulo: "Geração: matriz efetiva", texto: `${LIGACAO_GERACAO.pergunta} A composição da geração do SIN por fonte, segundo o ONS; o fator médio do MCTI também se refere à geração no SIN.` },
   { href: "/setor-eletrico/expansao", rotulo: "Expansão", texto: "O que está sendo construído e quando pode entrar? A geração centralizada que se soma à distribuída." },
 ];
 
@@ -191,7 +192,7 @@ export default function TransicaoPage() {
               }
               limite="que o valor seja medido (é estimativa da fonte), nem nada fora do SIN; e não se soma à capacidade cadastrada."
               href={`${rotaPainel("ons")}#ons`}
-              ligacao="Abrir a estimativa do ONS e a conferência da quebra de 2023"
+              ligacao="Abrir a estimativa do ONS e a conferência de quando ela entrou no Balanço de Energia"
             />
           ) : (
             <p className="border border-dashed border-mineral bg-papel px-4 py-3 text-sm text-carvao">

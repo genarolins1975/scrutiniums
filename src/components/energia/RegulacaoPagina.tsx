@@ -14,9 +14,10 @@ import { PAINEIS_REGULACAO, ROTA_REGULACAO, rotaPainel, type IdPainelRegulacao }
  * modos Analisar e Auditar.
  *
  * Por que um painel por página: os três juntos trazem atos com trechos literais,
- * 82 procedimentos, 26 eventos e 44 consultas com fases e resultados, além das
- * tabelas equivalentes e das fichas de prova; numa página só passariam da meta de
- * cerca de 600 KB de HTML (contrato, seção 5.1).
+ * todos os procedimentos do PRODIST e do PRORET, os eventos da linha do tempo e as
+ * consultas com fases e resultados, além das tabelas equivalentes e das fichas de
+ * prova; numa página só passariam da meta de cerca de 600 KB de HTML (contrato,
+ * seção 5.1). As contagens de cada publicação estão no documento do módulo.
  */
 
 /** Navegação entre os três painéis; o atual leva aria-current. */

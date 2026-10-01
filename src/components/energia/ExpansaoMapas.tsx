@@ -81,11 +81,14 @@ function MapaBase({
   ufSelecionada,
   foco,
   onClique,
+  dica,
   children,
 }: {
   geo: CamadaGeo;
   titulo: string;
   descricao: string;
+  /** O que o clique faz neste mapa (dito ao lado dos botões de zoom). */
+  dica: string;
   ufSelecionada: string | null;
   /** Ponto que o "Aproximar" centraliza (a seleção atual). */
   foco: Ponto | null;
@@ -158,7 +161,7 @@ function MapaBase({
         <button type="button" onClick={() => setZoom(zoomInicial(base))} disabled={zoom.escala <= 1} className="min-h-[44px] border border-linha bg-superficie px-3 text-carvao hover:border-energia disabled:text-mineral">
           Restaurar
         </button>
-        <span className="text-xs text-carvao-muted">{zoom.escala > 1 ? `Aproximação de ${inteiro(zoom.escala)} vezes; arraste para mover.` : "Clique ou toque numa marca para ver a usina ou a linha."}</span>
+        <span className="text-xs text-carvao-muted">{zoom.escala > 1 ? `Aproximação de ${inteiro(zoom.escala)} vezes; arraste para mover. ${dica}` : dica}</span>
       </div>
       <div className="relative border border-linha bg-papel">
         <svg
@@ -325,6 +328,7 @@ export function ExpansaoMapaUsinas({ url, tamanho, dataSiga, fonte }: { url: str
         ufSelecionada={v.uf || null}
         foco={sel ? [sel.x, sel.y] : null}
         onClique={clique}
+        dica="Clique ou toque numa marca para ver a usina; fora das marcas, a UF fica destacada."
       >
         {() => (
           <g pointerEvents="none">
@@ -488,6 +492,7 @@ export function ExpansaoMapaRede({ url, tamanho, captura, fonte }: { url: string
         ufSelecionada={v.uf || null}
         foco={null}
         onClique={clique}
+        dica="Clique ou toque numa UF para destacá-la; escolha uma linha na tabela para destacá-la no mapa."
       >
         {() => (
           <g fill="none" pointerEvents="none">

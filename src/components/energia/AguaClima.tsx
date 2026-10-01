@@ -44,7 +44,7 @@ import {
   valoresMapaChuva,
 } from "@/lib/energia/agua";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
-import { carimbo, dataBR, mesAno, num } from "@/lib/energia/formato";
+import { carimbo, dataBR, mesAno, num, plural } from "@/lib/energia/formato";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
 import type { Regiao } from "@/lib/energia/tipos";
 import type { AguaPrecipitacaoBacia, AguaPrevisao, AguaTemperatura } from "@/lib/energia/tipos-agua";
@@ -115,6 +115,11 @@ export function AguaClima({
   const prev = useMemo(() => (previsao && bacia ? seriePrevisao(previsao, bacia.bacia) : []), [previsao, bacia]);
   const selecionar = (id: string | null) => id && definir({ bac: id === baciaPadrao ? "" : id });
   const assoc = bacia ? textoAssociacao(bacia) : null;
+  // base, janelas e períodos dos títulos saem da gold (tamanho das séries publicadas), nunca de número escrito aqui
+  const baseTxt = periodoBase(base);
+  const baseAssoc = periodoBase(precipitacao.find((b) => b.associacao_ena?.periodo)?.associacao_ena?.periodo ?? base);
+  const mesesHistorico = plural(historico.length, "mês completo", "meses completos");
+  const mesesMultiplos = plural(multiplos.length, "mês completo", "meses completos");
 
   return (
     <div className="space-y-6">
@@ -169,7 +174,7 @@ export function AguaClima({
         selecionado={bacia?.bacia ?? null}
         onSelecionar={selecionar}
         periodo={rotuloPeriodoMapa(per, dia30)}
-        nota="Anomalia = chuva do período ÷ média dos mesmos dias (ou do mesmo mês) em 2001 a 2025 − 1. No período seco, médias pequenas geram percentuais grandes: confira os milímetros na tabela."
+        nota={`Anomalia = chuva do período ÷ média dos mesmos dias (ou do mesmo mês) em ${baseTxt} − 1. No período seco, médias pequenas geram percentuais grandes: confira os milímetros na tabela.`}
       />
       <TabelaInterativa
         titulo={`Tabela equivalente ao mapa: chuva por bacia, ${rotuloPeriodoMapa(per, dia30)}`}
@@ -183,13 +188,13 @@ export function AguaClima({
         selecionado={bacia?.bacia ?? null}
         onSelecionar={selecionar}
         chaveUrl="chu"
-        nota="Percentil e cobertura só na janela de 30 dias. A correlação com a ENA é associação descritiva (2001 a 2025), não causa."
+        nota={`Percentil e cobertura só na janela de 30 dias. A correlação com a ENA é associação descritiva (${baseAssoc}), não causa.`}
       />
 
       {bacia && (
         <div className="space-y-3">
           <GraficoLinhas
-            titulo={`${nomes[bacia.bacia]}: chuva em cada um dos últimos 12 meses completos e a média do mesmo mês`}
+            titulo={`${nomes[bacia.bacia]}: chuva em cada um dos últimos ${mesesHistorico} e a média do mesmo mês`}
             dados={historico}
             chaveX="m"
             formatoX="mes"
@@ -224,7 +229,7 @@ export function AguaClima({
         </Comparador>
         {escolhidas.length > 0 && (
           <PequenosMultiplos
-            titulo="Chuva mensal estimada e média do mês, últimos 12 meses completos"
+            titulo={`Chuva mensal estimada e média do mês, últimos ${mesesMultiplos}`}
             dados={multiplos}
             chaveX="m"
             formatoX="mes"
@@ -249,7 +254,7 @@ export function AguaClima({
         {temp && (
           <>
             <GraficoLinhas
-              titulo={`Temperatura média diária ${DO_REGIAO[temp.recorte]} nos últimos 45 dias, com a faixa do mesmo dia`}
+              titulo={`Temperatura média diária ${DO_REGIAO[temp.recorte]} nos últimos ${plural(tDiaria.length, "dia", "dias")}, com a faixa do mesmo dia`}
               dados={tDiaria}
               chaveX="d"
               series={[
@@ -261,7 +266,7 @@ export function AguaClima({
               casas={1}
             />
             <GraficoBarras
-              titulo={`Anomalia da temperatura média mensal ${DO_REGIAO[temp.recorte]}, últimos 24 meses completos`}
+              titulo={`Anomalia da temperatura média mensal ${DO_REGIAO[temp.recorte]}, últimos ${plural(tMensal.length, "mês completo", "meses completos")}`}
               dados={tMensal.map((x) => ({ m: x.m, rotulo: mesAno(x.m), anomalia: x.anomalia }))}
               chaveCategoria="m"
               chaveRotulo="rotulo"
@@ -321,7 +326,7 @@ export function AguaClima({
               linhas={linhasPrevisaoChuva(previsao)}
               chaveLinha="id"
               colunaRotulo="rotulo"
-              fonte="ECMWF IFS 0,25° pela API de rodadas individuais do Open-Meteo (previsão); NASA POWER IMERG (média)"
+              fonte={`${previsao.modelo} (previsão); NASA POWER IMERG (média)`}
               versao={previsao.emitida_em}
               nomeArquivo="agua-previsao-chuva"
               selecionado={bacia?.bacia ?? null}
@@ -333,7 +338,7 @@ export function AguaClima({
               linhas={linhasPrevisaoTemperatura(previsao)}
               chaveLinha="id"
               colunaRotulo="rotulo"
-              fonte="ECMWF IFS 0,25° pela API de rodadas individuais do Open-Meteo (previsão); NASA POWER MERRA-2 (média)"
+              fonte={`${previsao.modelo} (previsão); NASA POWER MERRA-2 (média)`}
               versao={previsao.emitida_em}
               nomeArquivo="agua-previsao-temperatura"
             />

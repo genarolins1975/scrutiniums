@@ -10,7 +10,7 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import type { Evidencia } from "@/lib/energia/evidencia";
-import { dataBR, mesAno } from "@/lib/energia/formato";
+import { dataBR, mesAno, num, plural } from "@/lib/energia/formato";
 import {
   COLUNAS_ATLS,
   COLUNAS_INTERRUPCOES_ANO,
@@ -21,6 +21,8 @@ import {
   REGIOES_BALANCO,
   fluxoEscolhido,
   fluxosAtivos,
+  inicioArquivoAtls,
+  listaTexto,
   linhasAtls,
   linhasInterrupcoesAno,
   linhasPerturbacoes,
@@ -59,8 +61,14 @@ export function RedeRestricoes({
   fonteInterrupcoes,
   versao,
   destaques,
+  titulosDocumentos,
+  criterioCorte,
 }: {
   restricoes: Pick<RestricoesRede, "atls" | "interrupcoes">;
+  /** Título de cada documento do ONS pelo identificador que a gold usa em documento_definicao. */
+  titulosDocumentos: Record<string, string>;
+  /** Critério de corte citado na descrição do conjunto de interrupções (trecho conferido na gold), ou null. */
+  criterioCorte?: string | null;
   /** Fichas de prova das horas de 12 meses por fluxo (chave atls_12m.<fluxo>). */
   evidencias: Record<string, Evidencia>;
   fonteAtls: string;
@@ -85,6 +93,8 @@ export function RedeRestricoes({
   const selecionar = (id: string | null) => definir({ fl: id ?? "" });
   const ev = escolhido ? evidencias[`atls_12m.${escolhido.fluxo}`] : undefined;
   const ultimo = r.atls.ultimo_mes;
+  const inicioArquivo = inicioArquivoAtls(r.atls);
+  const parciais = anual.filter((l) => l.parcial === "sim").map((l) => l.id);
 
   return (
     <div className="space-y-6">
@@ -156,18 +166,27 @@ export function RedeRestricoes({
               periodo={escolhido.ultimos_12_meses ? `${mesAno(escolhido.ultimos_12_meses.inicio)} a ${mesAno(escolhido.ultimos_12_meses.fim)}` : undefined}
               tamanho="medio"
               motivoAusencia="Sem mês publicado na janela."
-              nota={escolhido.ativo ? undefined : `Fluxo encerrado: último mês publicado ${escolhido.fim ? mesAno(escolhido.fim) : "sem dado"}; a janela é a dos seus 12 últimos meses.`}
+              nota={
+                [
+                  escolhido.ativo ? "" : `Fluxo encerrado: último mês publicado ${escolhido.fim ? mesAno(escolhido.fim) : "sem dado"}; a janela é a dos seus 12 últimos meses.`,
+                  ev ? "" : "Sem ficha de prova nesta publicação (a gold prova só os fluxos publicados no último mês); o valor é a soma das linhas mensais do arquivo do ATLS para download.",
+                ]
+                  .filter(Boolean)
+                  .join(" ") || undefined
+              }
             />
             <div className="space-y-2 text-sm text-carvao-muted">
               <p>
                 <span className="text-carvao">{escolhido.fluxo}</span>
-                {escolhido.definicao ? `: ${escolhido.definicao} (definição conferida em ${escolhido.documento_definicao ?? "documento do ONS"}).` : ": sem definição em documento público conferido; a sigla é publicada como o ONS a escreve."}
+                {escolhido.definicao
+                  ? `: ${escolhido.definicao} (definição conferida em ${(escolhido.documento_definicao && titulosDocumentos[escolhido.documento_definicao]) || "documento público do ONS"}).`
+                  : ": sem definição em documento público conferido; a sigla é publicada como o ONS a escreve."}
               </p>
               <p>
                 No arquivo de {escolhido.inicio ? mesAno(escolhido.inicio) : "sem início"} a {escolhido.fim ? mesAno(escolhido.fim) : "sem fim"}: {escolhido.meses_com_violacao} de{" "}
                 {escolhido.meses} meses com alguma hora acima do limite.
                 {escolhido.conferencias.meses_denominador_diferente_do_calendario.length
-                  ? ` Em ${escolhido.conferencias.meses_denominador_diferente_do_calendario.length} meses o período de observação implícito difere do calendário em uma hora (registrado, sem causa atribuída).`
+                  ? ` Em ${plural(escolhido.conferencias.meses_denominador_diferente_do_calendario.length, "mês", "meses")} (${listaTexto(escolhido.conferencias.meses_denominador_diferente_do_calendario.map(mesAno))}) o período de observação implícito no ATLS publicado difere das horas do calendário (registrado, sem causa atribuída).`
                   : ""}
               </p>
             </div>
@@ -202,12 +221,13 @@ export function RedeRestricoes({
           />
         ) : (
           <p className="border-l-2 border-mineral pl-3 text-sm text-carvao-muted">
-            {noHistorico.join(", ")}: sem mês publicado desde o início da série da gold; o histórico completo, desde 2017, está no arquivo do ATLS para download.
+            {noHistorico.join(", ")}: sem mês publicado desde o início da série mensal desta página; o histórico completo
+            {inicioArquivo ? `, desde ${mesAno(inicioArquivo)},` : ""} está no arquivo do ATLS para download.
           </p>
         )}
         <TabelaInterativa
           titulo={`Tabela equivalente: horas acima do limite por mês (${noHistorico.join(", ")})`}
-          colunas={[{ id: "m", rotulo: "Mês", tipo: "texto" }, ...noHistorico.map((f) => ({ id: f, rotulo: f, tipo: "numero" as const, unidade: "h", casas: 1 }))]}
+          colunas={[{ id: "m", rotulo: "Mês", tipo: "data" as const }, ...noHistorico.map((f) => ({ id: f, rotulo: f, tipo: "numero" as const, unidade: "h", casas: 1 }))]}
           linhas={paraTabela(serie)}
           chaveLinha="id"
           colunaRotulo="m"
@@ -234,7 +254,7 @@ export function RedeRestricoes({
           casas={1}
         />
         <p className="text-sm text-carvao-muted">
-          {anual.some((l) => l.parcial === "sim") ? `${anual.filter((l) => l.parcial === "sim").map((l) => l.id).join(", ")} é parcial e não se compara com anos completos. ` : ""}
+          {parciais.length ? `${listaTexto(parciais)} ${parciais.length === 1 ? "é parcial e não se compara" : "são parciais e não se comparam"} com anos completos. ` : ""}
           Um corte de carga registrado não prova limite de intercâmbio, e este painel não atribui causa aos registros.
         </p>
         <TabelaInterativa
@@ -276,7 +296,7 @@ export function RedeRestricoes({
           nomeArquivo="rede-perturbacoes-recentes"
           chaveUrl="pr"
           ordemInicial={{ coluna: "inicio", direcao: "desc" }}
-          nota={`${r.interrupcoes.registros_abaixo_de_100mw.toLocaleString("pt-BR")} dos ${r.interrupcoes.registros.toLocaleString("pt-BR")} registros têm carga interrompida abaixo de 100 MW, embora a descrição do conjunto cite cortes maiores que 100 MW por 10 minutos ou mais; os registros são publicados como vieram.`}
+          nota={`${num(r.interrupcoes.registros_abaixo_de_100mw, 0)} dos ${num(r.interrupcoes.registros, 0)} registros têm carga interrompida abaixo de 100 MW${criterioCorte ? `, embora a descrição do conjunto diga “${criterioCorte}”` : ""}; os registros são publicados como vieram.`}
         />
       </div>
 

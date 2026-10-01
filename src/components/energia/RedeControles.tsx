@@ -39,6 +39,8 @@ export function RedeEscolha<T extends string>({
             >
               <input type="radio" name={nome} value={o.id} checked={ativo} onChange={() => onEscolher(o.id)} className="sr-only" />
               {o.rotulo}
+              {/* o detalhe (nome por extenso, o que a opção mostra) também chega ao leitor de tela e ao toque, não só ao passar o mouse */}
+              {o.detalhe && o.detalhe !== o.rotulo && <span className="sr-only">: {o.detalhe}</span>}
             </label>
           );
         })}

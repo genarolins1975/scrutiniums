@@ -38,7 +38,9 @@ import {
   linhasReservatorios,
   linhasResumo,
   linhasTemperatura,
+  modeloCurto,
   nomeProprio,
+  periodoValidacao,
   periodosMapa,
   recortePadrao,
   reservatorioDaParcela,
@@ -63,11 +65,16 @@ import {
   textoAnomaliaPct,
   textoAssociacao,
   textoFechamento,
+  textoForaDosPontos,
+  textoMltNaoConcluir,
   textoMudancaAfluencia,
   textoMudancaArmazenamento,
+  textoPesoSubsistemas,
   textoQuebraRee,
   textoReconciliacaoEar,
+  textoReeNovos,
   textoResumo,
+  textoValidacao,
   textosMlt,
   valoresMapaChuva,
 } from "@/lib/energia/agua";
@@ -147,9 +154,10 @@ describe("contrato da gold agua_detalhe.json e dos arquivos sob demanda", () => 
     expect(G.proveniencia.precipitacao?.natureza).toBe("ESTIMADO");
   });
 
-  it("as oito fichas 'Comprove este número' passam na verificação da interface", () => {
+  it("as dez fichas 'Comprove este número' passam na verificação da interface (todo número de destaque das páginas tem a sua)", () => {
     const evs = Object.entries(G.evidencias) as [string, Evidencia][];
-    expect(evs.length).toBe(8);
+    expect(evs.length).toBe(10);
+    expect(Object.keys(G.evidencias)).toEqual(expect.arrayContaining(["ena_arm_30d_sin", "fecham_por_construcao"]));
     for (const [k, e] of evs) expect(problemasEvidencia(e), k).toEqual([]);
   });
 
@@ -346,6 +354,27 @@ describe("P018: gráfico, tabela e exportação usam as mesmas linhas", () => {
     for (const sm of ["SIN", "SE", "S", "NE", "N"] as const) expect(u[sm]).toBeCloseTo(ents.find((e) => e.id === sm)!.pct_mlt_30d!, 1);
   });
 
+  it("ENA armazenável de 30 dias do SIN: a ficha é a razão de somas refeita com as linhas dos quatro subsistemas no CSV (outro caminho)", () => {
+    const e = G.evidencias.ena_arm_30d_sin!;
+    const ini = e.periodo.inicio;
+    const fim = e.periodo.fim;
+    let ena = 0;
+    let mlt = 0;
+    let dias = 0;
+    for (const r of csv("agua_subsistemas_diario.csv")) {
+      if (r.data < ini || r.data > fim || r.recorte === "SIN") continue;
+      expect(r.ena_arm_mwmed, `${r.data} ${r.recorte}`).not.toBe("");
+      ena += Number(r.ena_arm_mwmed);
+      mlt += Number(r.mlt_arm_implicita_mwmed);
+      dias++;
+    }
+    expect(dias).toBe(30 * 4);
+    // quatro casas no CSV em 120 parcelas: a razão fica a menos de 0,001 p.p. da ficha
+    expect(Math.abs((100 * ena) / mlt - e.valor_calculo!)).toBeLessThan(0.001);
+    const sin = entidadesEna(G.afluencia).find((x) => x.id === "SIN")!;
+    expect(sin.pct_mlt_arm_30d).toBeCloseTo(e.valor_calculo!, 1);
+  });
+
   it("MLT: uma linha por mês e subsistema do PMO, citando o relatório", () => {
     const l = linhasPmo(G.afluencia.mlt);
     expect(l.length).toBe(G.afluencia.mlt.pmo.comparacao.length);
@@ -463,6 +492,17 @@ describe("P020: decomposição, balanço, tabela e séries usam as mesmas linhas
     const l = linhasMultiplosVolume(s);
     expect(l.length).toBe(45);
     for (const x of s) serieReservatorio(x).forEach((p, i) => expect(l[i][x.id]).toBe(p.vol));
+  });
+
+  it("fechamento por construção: a ficha e o número da gold são a contagem refeita no CSV de reservatórios (outro arquivo)", () => {
+    const linhas = csv("agua_reservatorios.csv").filter((r) => r.balanco_calculado === "1");
+    const fecham = linhas.filter((r) => Number(r.serie_dias_residuo_dentro_tolerancia_pct) >= 95);
+    expect(linhas.length).toBe(R.n_com_balanco);
+    expect(fecham.length).toBe(R.n_fecham_por_construcao);
+    const e = G.evidencias.fecham_por_construcao!;
+    expect(e.valor_calculo).toBe(fecham.length);
+    expect(e.denominador?.valor).toBe(linhas.length);
+    expect(e.periodo).toEqual(R.periodo_fecham_por_construcao);
   });
 
   it("reservatório padrão é o da ficha de prova (maior volume útil com balanço)", () => {
@@ -601,12 +641,59 @@ describe("textos derivados dos números (mudar o número muda o texto)", () => {
       textoFechamento(R),
       textoMudancaArmazenamento(ents),
       textoResumo(H, G.dias_referencia.ear, G.dias_referencia.ena),
+      textoResumo(H, G.dias_referencia.ear, G.dias_referencia.ena, "1991-2020"),
+      textoMltNaoConcluir(G.afluencia.mlt),
+      textoValidacao(C.validacao_estacoes),
+      textoReeNovos(G.afluencia.ree_novos_por_data),
+      textoPesoSubsistemas(ents) ?? "",
+      textoForaDosPontos(ents.filter((e) => e.tipo === "bacia")) ?? "",
+      ...Object.values(G.evidencias).flatMap((e) => [e!.indicador, ...e!.testes.map((t) => `${t.nome}: ${t.detalhe}`)]),
+      ...Object.values(G.proveniencia).flatMap((p) => p!.limitacoes),
+      ...Object.values(C.separacao),
     ];
     for (const t of textos) {
       expect(t, t).not.toMatch(PONTUACAO_PROIBIDA);
       expect(t, t).not.toMatch(/causou|causad[oa] pel|explicad[oa] pela (ENA|chuva)|por causa d/i);
       expect(t, t).not.toMatch(/undefined|NaN|null/);
     }
+  });
+
+  it("textos que citam período, base, contagem ou modelo leem a gold: mudar o dado muda o texto", () => {
+    // MLT: "a mesma" só com todas as usinas iguais
+    const m = clone(G.afluencia.mlt);
+    m.ano_corrente_igual_ao_anterior = [{ mes: "2026-01", usinas_comparadas: 10, usinas_iguais: 10 }];
+    expect(textosMlt(m, "2026")[0]).toContain("é a mesma do ano anterior");
+    m.ano_corrente_igual_ao_anterior = [{ mes: "2026-01", usinas_comparadas: 100, usinas_iguais: 96 }];
+    expect(textosMlt(m, "2026")[0]).toContain("repete a do ano anterior em quase todas as usinas");
+    m.ano_corrente_igual_ao_anterior = [{ mes: "2026-01", usinas_comparadas: 100, usinas_iguais: 50 }];
+    expect(textosMlt(m, "2026")[0]).toContain("difere da do ano anterior");
+    // PMO: contagem de meses conferidos e divergentes
+    const pmoTexto = textoMltNaoConcluir(G.afluencia.mlt);
+    const meses = new Set(G.afluencia.mlt.pmo.comparacao.map((c) => c.mes)).size;
+    expect(pmoTexto).toContain(`${meses} meses conferidos`);
+    m.pmo.meses_divergentes = [];
+    expect(textoMltNaoConcluir(m)).toContain("coincidiu");
+    // resumo de operação: a base de cada publicação, lida de cada uma
+    const baseSin = G.armazenamento.subsistemas.find((x) => x.sm === "SIN")!.periodo_base!;
+    expect(textoResumo(H, G.dias_referencia.ear, G.dias_referencia.ena, baseSin)).toContain(baseSin.replace("-", " a "));
+    expect(textoResumo(H, G.dias_referencia.ear, G.dias_referencia.ena, "1991-2020")).toContain("bases diferentes");
+    // conferência com estações: o período é o publicado
+    expect(textoValidacao(C.validacao_estacoes)).toContain(periodoValidacao(C.validacao_estacoes)!);
+    const v = clone(C.validacao_estacoes);
+    v.periodo = { inicio: "2019-03", fim: "2019-03" };
+    expect(textoValidacao(v)).toContain("mar/2019");
+    // REE novos e recortes sem armazenamento: nomes e datas da gold
+    expect(textoReeNovos(G.afluencia.ree_novos_por_data)).toContain(G.afluencia.ree_novos_por_data[0].data.split("-").reverse().join("/"));
+    const ents = entidadesEar(G.armazenamento);
+    const fora = textoForaDosPontos(ents.filter((e) => e.tipo === "bacia"))!;
+    for (const e of ents.filter((x) => x.tipo === "bacia" && x.sem_armazenamento)) expect(fora).toContain(e.rotulo);
+    expect(textoForaDosPontos(ents.filter((e) => e.tipo === "subsistema"))).toBeNull();
+    // peso dos subsistemas: 1 p.p. em MWmês = EAR máxima ÷ 100
+    const se = ents.find((e) => e.id === "SE")!;
+    expect(textoPesoSubsistemas(ents)).toContain(`${Math.round(se.ear_max_mwmes! / 100).toLocaleString("pt-BR")} MWmês`);
+    // modelo da previsão: o publicado na gold
+    expect(modeloCurto(C.previsao!.modelo)).toBe("ECMWF IFS 0,25°");
+    expect(modeloCurto("GFS 0,25°, rodada de 00Z")).toBe("GFS 0,25°");
   });
 
   it("nomes do ONS ficam legíveis sem perder a chave original", () => {
@@ -673,7 +760,8 @@ describe("páginas renderizadas no servidor", () => {
     expect(h).toContain('id="ena"');
     expect(h).toContain('data-textos="mlt"');
     expect(h).toContain("RELATORIO-PMO-");
-    expect((h.match(/Comprove este número|comprove este número/g) ?? []).length).toBeGreaterThanOrEqual(2);
+    // ENA bruta, ENA armazenável (os dois números de destaque) e a diferença da MLT
+    expect((h.match(/Comprove este número|comprove este número/g) ?? []).length).toBeGreaterThanOrEqual(3);
   });
 
   it("P019: estimativa, observação, previsão e cenário separados; mapa com tabela equivalente; previsão rotulada", () => {
@@ -692,7 +780,9 @@ describe("páginas renderizadas no servidor", () => {
     expect(h).toContain("não fecha balanço");
     expect(h).toContain("Resíduo do balanço");
     expect(h).toContain('data-series="espera"');
-    expect(h).toContain("Carregando as séries diárias de 45 dias");
+    expect(h).toContain(`Carregando as séries diárias de ${R.series_45d.dias} dias`);
+    // os dois números de destaque têm ficha de prova
+    expect((h.match(/Comprove este número/g) ?? []).length).toBeGreaterThanOrEqual(2);
   });
 
   it("HTML de cada página abaixo de 520 KB e props dos componentes cliente abaixo de cerca de 250 KB (meta de cerca de 600 KB; contrato, seção 5.1)", () => {
@@ -730,6 +820,17 @@ describe("componentes do módulo", () => {
       const t = readFileSync(f, "utf-8");
       expect(t, f).not.toMatch(/#[0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?\b/);
       expect(t, f).not.toMatch(/["'`(\s]#[0-9a-fA-F]{3}["'`;\s)]/);
+    }
+  });
+
+  it("nenhum período, base ou janela fixado no código das páginas e componentes (vêm da gold)", () => {
+    const fixos = [/2001 a 2025/, /2020 e 2021/, /desde 2000/i, /\b45 dias\b/, /\b120 dias\b/, /\b18 meses\b/, /\b24 meses\b/, /\b12 meses completos\b/, /a cada (7|14) dias/, /30\/12\/2017/, /em 2026/];
+    for (const f of [...componentes.map((c) => join(dir, c)), ...paginas]) {
+      // comentários explicam o porquê e podem citar o valor atual; o texto exibido não
+      const codigo = readFileSync(f, "utf-8")
+        .replace(/\/\*[\s\S]*?\*\//g, "")
+        .replace(/^\s*\/\/.*$/gm, "");
+      for (const r of fixos) expect(codigo, `${f}: ${r}`).not.toMatch(r);
     }
   });
 

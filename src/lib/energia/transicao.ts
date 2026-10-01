@@ -46,7 +46,7 @@ import type {
 } from "./tipos-transicao";
 import type { Leitor } from "./estadoUrl";
 import { campo, tiposUrl } from "./estadoUrl";
-import { carimbo, dataBR, mesAno, num, pct } from "./formato";
+import { carimbo, dataBR, mesAno, num, pct, plural } from "./formato";
 import { LIMITE_COMPARACAO, type ColunaTabela } from "./tabela";
 
 /* ================================================================ comum */
@@ -80,6 +80,16 @@ export function numTexto(v: number | null | undefined, casas = 1): string {
 
 export function pctTexto(v: number | null | undefined, casas = 1): string {
   return temValor(v) ? pct(v, casas) : SEM_DADO;
+}
+
+/**
+ * Contagem com o substantivo concordando com o número publicado ("1 registro", "46
+ * registros"): a contagem vem da gold e pode mudar a cada publicação, então a
+ * concordância não pode ficar escrita à mão. É o `plural` de formato.ts com a
+ * ausência dita em palavras ("sem dado"), para uso dentro de frase.
+ */
+export function contagem(v: number | null | undefined, um: string, varios: string): string {
+  return temValor(v) ? plural(v, um, varios) : SEM_DADO;
 }
 
 /** Fator de emissão com as 4 casas publicadas pelo MCTI ("0,0461"); ausência → "sem dado". */
@@ -187,6 +197,14 @@ export function rotaPainel(id: PainelTransicao): string {
 export function perguntaPainel(id: PainelTransicao): string {
   return PAINEIS_TRANSICAO.find((x) => x.id === id)!.pergunta;
 }
+
+/**
+ * Painel de outro módulo que continua a narrativa das emissões: a matriz efetiva da
+ * Geração (P021), com a pergunta do Anexo A. Sem âncora: o P021 é a própria página
+ * /setor-eletrico/geracao, e uma âncora interna dela pode mudar quando aquele módulo
+ * reorganizar os blocos.
+ */
+export const LIGACAO_GERACAO = { href: "/setor-eletrico/geracao", pergunta: "Quais fontes atenderam a carga?" } as const;
 
 export const FONTE_ANEEL = "ANEEL, Relação de empreendimentos de Mini e Micro Geração Distribuída; IBGE, Estimativas de população (SIDRA 6579)";
 export const FONTE_ANEEL_CADASTRO = "ANEEL, Relação de empreendimentos de Mini e Micro Geração Distribuída";
@@ -727,6 +745,25 @@ export function colunasMunicipios(anoReferencia: number, anoPopulacao: number | 
   ];
 }
 
+/**
+ * Nome e UF de municípios pelo código IBGE, lidos do JSON municipal publicado (no
+ * servidor, para listas curtas do modo Auditar cuja gold só traz o código). O vínculo é
+ * só pelo código; código sem linha no arquivo fica sem nome, e a tabela mostra o código.
+ */
+export function nomesMunicipios(arq: Pick<MunicipiosMmgdArquivo, "campos" | "linhas">, ids: readonly string[]): Map<string, string> {
+  const alvo = new Set(ids);
+  const i = Object.fromEntries((arq.campos as readonly string[]).map((c, k) => [c, k])) as Record<string, number>;
+  const out = new Map<string, string>();
+  for (const l of arq.linhas) {
+    const id = String(l[i.ibge]);
+    if (!alvo.has(id)) continue;
+    const nome = l[i.nome];
+    const uf = l[i.uf];
+    if (typeof nome === "string" && nome) out.set(id, typeof uf === "string" && uf ? `${nome} (${uf})` : nome);
+  }
+  return out;
+}
+
 export function valorMunicipio(m: MunicipioMmgd, med: MedidaMun): number | null {
   if (med === "whab") return m.w_por_habitante;
   if (med === "kw") return m.potencia_kw;
@@ -920,10 +957,20 @@ export function textoModalidadesRemotas(perfis: BlocoMmgd["perfis"]): string {
 export const MEDIDAS_ONS = ["mwmed", "part"] as const;
 export type MedidaOns = (typeof MEDIDAS_ONS)[number];
 
+/** Séries do gráfico mensal do ONS que a legenda pode ocultar (ids de `dadosOnsMensal`). */
+export const SERIES_ONS = ["sin", "sin_incompleto", "SE", "S", "NE", "N"] as const;
+export type SerieOns = (typeof SERIES_ONS)[number];
+
+/**
+ * Estado da página da energia estimada na URL: medida, intervalo e as séries ocultas
+ * pela legenda (ons.ocultas), para que o link compartilhado abra o mesmo recorte e o
+ * voltar do navegador desfaça a troca. Id desconhecido volta ao padrão (nada oculto).
+ */
 export const ESQUEMA_ONS = {
   med: campo(tiposUrl.opcao(MEDIDAS_ONS), "mwmed", { param: "ons.med" }),
   de: campo(tiposUrl.mes(), "", { param: "ons.de" }),
   ate: campo(tiposUrl.mes(), "", { param: "ons.ate" }),
+  ocultas: campo(tiposUrl.lista(tiposUrl.opcao(SERIES_ONS), { max: SERIES_ONS.length }), [] as SerieOns[], { param: "ons.ocultas" }),
 };
 
 /**
@@ -954,6 +1001,8 @@ export function linhasOnsMensal(mensal: readonly OnsMmgdMes[]) {
     dias_no_mes: x.dias_no_mes,
     situacao: x.completo ? "mês completo" : "mês incompleto",
     capacidade_aneel_mw: x.capacidade_aneel_mw,
+    // estoque de meses depois do corte do cadastro ainda pode crescer: o número vem rotulado
+    capacidade_situacao: x.capacidade_aneel_mw === null ? null : x.capacidade_aneel_provisoria ? "provisória (cadastro recente)" : "consolidada",
     razao_estimativa_ons_capacidade_pct: x.razao_estimativa_ons_capacidade_pct,
   }));
 }
@@ -970,7 +1019,8 @@ export const COLUNAS_ONS_MENSAL: ColunaTabela[] = [
   { id: "dias_completos_sin", rotulo: "Dias completos no SIN", tipo: "numero", casas: 0 },
   { id: "dias_no_mes", rotulo: "Dias no mês", tipo: "numero", casas: 0 },
   { id: "situacao", rotulo: "Situação", tipo: "texto", categorica: true },
-  { id: "capacidade_aneel_mw", rotulo: "Capacidade cadastrada ANEEL (Brasil, média do mês)", tipo: "numero", unidade: "MW", casas: 0 },
+  { id: "capacidade_aneel_mw", rotulo: "Capacidade cadastrada ANEEL (Brasil, média do estoque no início e no fim do mês)", tipo: "numero", unidade: "MW", casas: 0 },
+  { id: "capacidade_situacao", rotulo: "Situação da capacidade", tipo: "texto", categorica: true },
   { id: "razao_estimativa_ons_capacidade_pct", rotulo: "Razão estimativa ÷ capacidade (não é fator de capacidade)", tipo: "percentual", casas: 1 },
 ];
 
@@ -1027,6 +1077,32 @@ export function mudancaOns(o: Pick<BlocoOnsMmgd, "mensal">, corteProvisorio: str
 }
 
 /* ---------- conferência da quebra de 2023 (achado A11) ---------- */
+
+/**
+ * Primeiro dia com o critério novo do Balanço de Energia: o primeiro dia dos pares
+ * publicados pelo pipeline (cada dia a partir da incorporação declarada pelo ONS).
+ * Nunca escrito à mão; sem pares, null.
+ */
+export function dataIncorporacao(c: Pick<ConferenciaQuebra2023, "pares_mesmo_dia_da_semana">): string | null {
+  return c.pares_mesmo_dia_da_semana[0]?.d ?? null;
+}
+
+/**
+ * Os dois trechos da janela publicada, antes e a partir da incorporação, como o
+ * pipeline os usa nas médias da solar (`solar_media_7d_antes` e `solar_media_depois`):
+ * primeiro e último dia de cada trecho e quantos dias ele tem. O rótulo da tabela diz
+ * de que dias é cada média, em vez de "depois" sem data.
+ */
+export function trechosConferencia(c: Pick<ConferenciaQuebra2023, "dias" | "pares_mesmo_dia_da_semana">): {
+  antes: { inicio: string; fim: string; dias: number } | null;
+  depois: { inicio: string; fim: string; dias: number } | null;
+} {
+  const marco = dataIncorporacao(c);
+  if (!marco) return { antes: null, depois: null };
+  const trecho = (ds: string[]) => (ds.length ? { inicio: ds[0], fim: ds[ds.length - 1], dias: ds.length } : null);
+  const ordem = c.dias.map((x) => x.d).sort();
+  return { antes: trecho(ordem.filter((d) => d < marco)), depois: trecho(ordem.filter((d) => d >= marco)) };
+}
 
 export function dadosConferencia(c: Pick<ConferenciaQuebra2023, "dias">) {
   return c.dias.map((d) => ({
@@ -1143,7 +1219,7 @@ export function referenciaAnual(e: Pick<BlocoEmissoes, "ultimo_ano">): { valor: 
   return u ? [{ valor: u.valor, rotulo: `${u.ano}: ${fator(u.valor)} tCO2/MWh` }] : [];
 }
 
-/** Anos com os 12 meses do fator médio publicados (os que podem ser comparados mês a mês sem lacuna). */
+/** Anos com pelo menos um mês do fator médio publicado; no ano corrente, os meses ainda não publicados ficam em branco na comparação. */
 export function anosDoFatorMensal(e: Pick<BlocoEmissoes, "medio_mensal">): string[] {
   return Array.from(new Set(e.medio_mensal.map((x) => x.m.slice(0, 4)))).sort();
 }

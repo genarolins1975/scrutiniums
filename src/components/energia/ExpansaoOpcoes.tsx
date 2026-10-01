@@ -65,8 +65,8 @@ export function ExpansaoMarcas<T extends string>({
     onMudar(opcoes.map((o) => o.id).filter((x) => (x === id ? !tem : valor.includes(x))));
   };
   return (
-    <fieldset className="flex flex-wrap items-center gap-2">
-      <legend className="rotulo float-left mr-2 text-mineral">{rotulo}</legend>
+    <div role="group" aria-label={rotulo} className="flex flex-wrap items-center gap-2">
+      <span className="rotulo text-mineral">{rotulo}</span>
       {opcoes.map((o) => {
         const marcado = valor.includes(o.id);
         const unico = marcado && valor.length === 1;
@@ -90,6 +90,6 @@ export function ExpansaoMarcas<T extends string>({
           </label>
         );
       })}
-    </fieldset>
+    </div>
   );
 }

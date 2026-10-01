@@ -245,7 +245,8 @@ export type ConjuntoIntegrado = {
     falhas: number;
     ultimo_ok?: string;
     ultima_falha?: { recurso: string; tentado_em: string; detalhe: string } | null;
-    falhas_consecutivas: number;
+    /** Ausente = nenhuma falha seguida. */
+    falhas_consecutivas?: number;
   };
   revisoes: Revisoes | null;
   bronze: {
@@ -268,7 +269,9 @@ export type GoldValidada = {
   gerado_em: string | null;
   bytes: number;
   veredito: Veredito;
-  /** Tipo de checagem → resultado. */
+  /** Checagens aprovadas (contagem); ausente nas publicações anteriores a 01/10/2026 08h UTC. */
+  aprovadas?: number;
+  /** Tipo de checagem → resultado, só das NÃO aprovadas (ressalva, reprovado, não aplicável); as aprovadas estão em `aprovadas`. */
   checagens: Record<string, ResultadoChecagem>;
   problemas: ItemValidacao[];
 };
@@ -356,7 +359,8 @@ export type Portal = {
 };
 
 export type PublicacaoGold = Cabecalho & {
-  referencia: { hoje: string; fuso: string; executado_em: string };
+  /** janela_calendario_dias: o calendário cobre de hoje − janela até hoje (ausente nas publicações anteriores a 01/10/2026 08h UTC). */
+  referencia: { hoje: string; fuso: string; executado_em: string; janela_calendario_dias?: number };
   regras: {
     estados: Record<EstadoDados, string>;
     criterios_estado: Record<EstadoDados, string>;
@@ -435,8 +439,14 @@ export type PublicacaoGold = Cabecalho & {
     recursos_removidos: { orgao: string; conjunto: string; recurso: string | null; publicado_em: string | null }[];
   };
   afirmacoes: Afirmacao[];
-  proveniencia: { catalogo: Proveniencia; saude: Proveniencia; revisoes: Proveniencia; validacao: Proveniencia };
-  evidencias: Partial<Record<"conjuntos_publicados" | "conjuntos_atrasados" | "maior_revisao_relativa", Evidencia>>;
+  proveniencia: { catalogo: Proveniencia; saude: Proveniencia; revisoes: Proveniencia; validacao: Proveniencia; reproducao?: Proveniencia };
+  /** Fichas "Comprove este número": P067 (publicados), P068 (atrasados, maior revisão), P069 (Parquet) e P070 (afirmações, reprovadas). */
+  evidencias: Partial<
+    Record<
+      "conjuntos_publicados" | "conjuntos_atrasados" | "maior_revisao_relativa" | "parquet_equivalentes" | "afirmacoes_conferidas" | "checagens_reprovadas",
+      Evidencia
+    >
+  >;
 };
 
 /* ---------------------------------------------------------------- catálogo (catalogo.json) */

@@ -1979,7 +1979,18 @@ def _indice_distribuidoras(golds, agentes, cvm_cad, cadeia, nomes, donos):
     data_tarifa = (golds.get("conta.json") or {}).get("data_referencia")
     inicio_idx = min([f"{a}-01-01" for a in anos_p[:1] + anos_q[:1]] + ([data_tarifa] if data_tarifa else []), default=None)
     fim_idx = max([f"{a}-12-31" for a in anos_p[-1:] + anos_q[-1:]] + ([data_tarifa] if data_tarifa else []), default=None)
-    snap_golds = {"id": "golds:" + ",".join(f"{n}@{g}" for n, g in geradas.items() if g), "sha256": None}
+    # snapshot do índice: as três golds de origem como foram lidas (sha256 do JSON canônico, com
+    # chaves ordenadas, independente da formatação do arquivo); captura = a mais recente entre as
+    # capturas declaradas pelas proveniências de origem usadas (o índice não tem captura própria)
+    lidas = [n for n in ("perdas.json", "qualidade.json", "conta.json") if golds.get(n)]
+    sha_golds = hashlib.sha256(json.dumps([golds[n] for n in lidas], sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest() if lidas else None
+    snap_golds = {"id": "golds:" + ",".join(f"{n}@{g}" for n, g in geradas.items() if g), "sha256": sha_golds}
+    capturas_origem = [x.get("capturado_em") for x in (
+        ((golds.get("perdas.json") or {}).get("proveniencia") or {}).get("taxas"),
+        ((golds.get("qualidade.json") or {}).get("proveniencia") or {}).get("distribuidoras"),
+        ((golds.get("conta.json") or {}).get("tarifas") or {}).get("proveniencia"),
+    ) if isinstance(x, dict) and x.get("capturado_em")]
+    captura_idx = max(capturas_origem) if capturas_origem else None
     lim_copia = "Valor copiado da gold de origem pelo CNPJ, sem recálculo; valem a definição e as limitações do módulo de origem (proveniência completa na gold de origem)."
     prov = {"distribuidoras": c.proveniencia(
         indicador="Índice de distribuidoras: identidade, sigla, classificação, UFs e controle", natureza="OBSERVADO",
@@ -1990,9 +2001,9 @@ def _indice_distribuidoras(golds, agentes, cvm_cad, cadeia, nomes, donos):
         # período do dado: anos de referência de perdas e continuidade e data das tarifas vigentes
         # (a data de geração de cada gold fica só em golds_origem)
         periodo={"inicio": inicio_idx or "", "fim": fim_idx or ""},
-        cobertura={"inicio": inicio_idx or "", "fim": fim_idx or ""}, capturado_em=None,
+        cobertura={"inicio": inicio_idx or "", "fim": fim_idx or ""}, capturado_em=captura_idx,
         snapshot=snap_golds,
-        notas_fonte="Sem captura própria: CNPJ, siglas e classificação vêm das golds perdas.json, qualidade.json e conta.json na geração indicada em golds_origem; os números de perdas, continuidade e tarifa têm proveniência própria (distribuidoras_perdas, distribuidoras_pnt, distribuidoras_qualidade, distribuidoras_tarifa), com a natureza herdada da gold de origem.",
+        notas_fonte="Sem captura própria: CNPJ, siglas e classificação vêm das golds perdas.json, qualidade.json e conta.json na geração indicada em golds_origem; o sha256 do snapshot é o do JSON canônico (chaves ordenadas) dessas três golds como foram lidas, e a data de captura é a mais recente entre as capturas declaradas pelas proveniências de origem (taxas de Perdas, distribuidoras de Qualidade, tarifas de Conta de luz). Os números de perdas, continuidade e tarifa têm proveniência própria (distribuidoras_perdas, distribuidoras_pnt, distribuidoras_qualidade, distribuidoras_tarifa), com a natureza herdada da gold de origem.",
         limitacoes=["UFs vêm da relação conjunto elétrico × município da ANEEL (módulo Perdas); distribuidoras sem conjuntos vigentes ficam sem UF.",
                     "A sigla de exibição segue a prioridade tarifas, continuidade, SAMP, cadastro de agentes; todas as siglas publicadas ficam em 'siglas'."],
         download=_url(CSV_DISTRIBUIDORAS))}

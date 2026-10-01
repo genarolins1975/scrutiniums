@@ -52,7 +52,7 @@ export function RedeIndisponivel({ motivo }: { motivo?: string | null }) {
           titulo="Rede indisponível nesta publicação"
           motivo={
             motivo ??
-            "A gold de detalhe da rede (public/energia/gold/rede_detalhe.json) não foi gerada ou não passou na validação; a última publicação válida é mantida quando existe."
+            "Os dados de detalhe da rede não foram gerados ou não passaram na validação desta publicação; a última publicação válida é mantida quando existe."
           }
         />
         <p className="mt-6 text-sm">
@@ -198,7 +198,7 @@ export function RedeDicionarios({ dicionarios }: { dicionarios: DicionarioOns[] 
         <li key={d.conjunto} className="space-y-1 [overflow-wrap:anywhere]">
           <p>
             <span className="text-carvao">{d.conjunto}</span>: dicionário
-            {d.versoes.length ? ` versão ${d.versoes[d.versoes.length - 1].versao} (${d.versoes[d.versoes.length - 1].data})` : ""}
+            {d.versoes.length ? ` versão ${d.versoes[d.versoes.length - 1].versao} (${d.versoes[d.versoes.length - 1].data.replaceAll("-", "/")})` : ""}
             {d.capturado_em ? `, capturado em ${carimbo(d.capturado_em)}` : ""}
             {d.menciona_sinal === true ? "; define o sinal do valor" : d.menciona_sinal === false ? "; não define o sinal do valor" : ""}.{" "}
             {d.url && (

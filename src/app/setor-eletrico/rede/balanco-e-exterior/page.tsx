@@ -9,30 +9,39 @@ import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { carimbo, dataBR, num, rotuloRegra } from "@/lib/energia/formato";
+import { carimbo, dataBR, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
   COLUNAS_COBERTURA,
   colunasIdentidades,
+  datasLegiveis,
   frasesA05,
   linhasCobertura,
   linhasIdentidades,
   paraTabela,
   perguntaPainel,
+  provenienciaLegivel,
   rotaPainel,
+  semCaminhosInternos,
   situacaoAtualidade,
   textoCobertura,
   textoConferenciaSilver,
+  textoIdentidadesItaipu,
+  ROTULO_REGRA,
 } from "@/lib/energia/rede";
 import type { ConferenciaDegrauMmgd, GoldRedeDetalhe } from "@/lib/energia/tipos-rede";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Rede: balanço de energia, resíduos e intercâmbio com outros países",
-  description:
-    "Identidades do balanço de energia do ONS conferidas hora a hora (geração, carga, intercâmbio, fronteiras e exterior), resíduos sinalizados sem causa atribuída, quebra da MMGD estimada em 29/04/2023, exportação e importação com Argentina, Uruguai e Paraguai e geração de Itaipu.",
-  alternates: { canonical: "/setor-eletrico/rede/balanco-e-exterior" },
-};
+/** Descrição com a data da quebra lida da gold (nenhuma data escrita à mão). */
+export function generateMetadata(): Metadata {
+  const g = lerGold<GoldRedeDetalhe>("rede_detalhe.json");
+  const q = integra(g) ? g.balanco.quebras.find((x) => x.id === "mmgd_2023") : undefined;
+  return {
+    title: "Rede: balanço de energia, resíduos e intercâmbio com outros países",
+    description: `Identidades do balanço de energia do ONS conferidas hora a hora (geração, carga, intercâmbio, fronteiras e exterior), resíduos sinalizados sem causa atribuída,${q ? ` quebra da MMGD estimada em ${dataBR(q.dia)},` : ""} exportação e importação com Argentina, Uruguai e Paraguai e geração de Itaipu.`,
+    alternates: { canonical: "/setor-eletrico/rede/balanco-e-exterior" },
+  };
+}
 
 const FONTE = "ONS, Balanço de Energia nos Subsistemas e intercâmbios (releitura do módulo Rede)";
 
@@ -102,8 +111,8 @@ export default function RedeBalancoPage() {
                   MMGD desde {dataBR(q?.dia)}, nem se comparam geração e carga mensais dos dois lados dessa data.
                 </>
               }
-              proveniencia={g.proveniencia.balanco}
-              complementares={[{ rotulo: "Intercâmbio internacional por país", p: g.proveniencia.exterior }]}
+              proveniencia={provenienciaLegivel(g.proveniencia.balanco)}
+              complementares={[{ rotulo: "Intercâmbio internacional por país", p: provenienciaLegivel(g.proveniencia.exterior) }]}
             >
               <div className="space-y-6">
                 {atual.defasada && <RedeAviso tipo="alerta">{atual.texto}</RedeAviso>}
@@ -126,7 +135,7 @@ export default function RedeBalancoPage() {
                         endereco={`${rotaPainel("p029")}#p029`}
                       />
                       <Numero
-                        rotulo="Horas em que o intercâmbio do Sul no balanço não inclui o exterior publicado"
+                        rotulo="Horas em que o intercâmbio do Sul no balanço difere da fronteira com o Sudeste/Centro-Oeste somada ao exterior publicado"
                         natureza="CALCULADO"
                         evidencia={ev.a05_perimetro_sul ?? null}
                         casas={0}
@@ -154,13 +163,13 @@ export default function RedeBalancoPage() {
                     ))}
                   </ul>
                   <p className="text-sm text-carvao-muted">
-                    {a.exterior} {a.perdas}
+                    {datasLegiveis(a.exterior)} {datasLegiveis(a.perdas)}
                   </p>
                 </RedeAnalise>
 
                 {q && (
                   <RedeAuditoria id="quebra-mmgd" titulo={`Quebra metodológica de ${dataBR(q.dia)}: MMGD estimada no balanço`}>
-                    <p className="text-sm text-carvao-muted">{q.descricao}</p>
+                    <p className="text-sm text-carvao-muted">{semCaminhosInternos(q.descricao)}</p>
                     <p className="text-sm text-carvao-muted [overflow-wrap:anywhere]">
                       Declaração do ONS ({q.declaracao.conjunto}, <a href={q.declaracao.url} className="text-energia-dark underline underline-offset-4">descrição do conjunto</a>
                       {q.declaracao.capturado_em ? `, capturada em ${carimbo(q.declaracao.capturado_em)}` : ""}): &ldquo;{q.declaracao.trecho}&rdquo; (
@@ -173,20 +182,20 @@ export default function RedeBalancoPage() {
                         {num(q.conferencia_arquivo.solar_12h_dia_anterior_mwmed, 3)} MWmed em {dataBR(q.conferencia_arquivo.dia_anterior)} para{" "}
                         {num(q.conferencia_arquivo.solar_12h_dia_mwmed, 3)} MWmed em {dataBR(q.conferencia_arquivo.dia)}; a energia solar do dia, de{" "}
                         {num(q.conferencia_arquivo.solar_mwh_dia_anterior, 0)} para {num(q.conferencia_arquivo.solar_mwh_dia, 0)} MWh. O balanço fecha em{" "}
-                        {q.conferencia_arquivo.horas_balanco_fecha_dia_anterior} e {q.conferencia_arquivo.horas_balanco_fecha_dia} das 24 horas dos dois dias. Regra de detecção do degrau: {q.regra_degrau}.{" "}
-                        {q.efeito}
+                        {q.conferencia_arquivo.horas_balanco_fecha_dia_anterior} e {q.conferencia_arquivo.horas_balanco_fecha_dia} das 24 horas dos dois dias. Regra de detecção do degrau: {semCaminhosInternos(q.regra_degrau)}.{" "}
+                        {semCaminhosInternos(q.efeito)}
                       </p>
                     ) : (
                       <p className="text-sm text-carvao-muted">
                         Conferência no arquivo original não executada nesta publicação
-                        {q.conferencia_arquivo && "erro" in q.conferencia_arquivo ? ` (${q.conferencia_arquivo.erro})` : ""}. {q.efeito}
+                        {q.conferencia_arquivo && "erro" in q.conferencia_arquivo ? ` (${q.conferencia_arquivo.erro})` : ""}. {semCaminhosInternos(q.efeito)}
                       </p>
                     )}
                   </RedeAuditoria>
                 )}
 
                 <RedeAuditoria id="identidades" titulo="As onze identidades conferidas">
-                  <RedeRegras regras={(["balanco", "tolerancia_balanco"] as const).map((k) => ({ rotulo: rotuloRegra(k), texto: g.regras[k] }))} />
+                  <RedeRegras regras={(["balanco", "tolerancia_balanco"] as const).map((k) => ({ rotulo: ROTULO_REGRA[k], texto: g.regras[k] }))} />
                   <TabelaInterativa
                     titulo="Todas as identidades, todas as regiões"
                     colunas={colunasIdentidades(b)}
@@ -216,11 +225,7 @@ export default function RedeBalancoPage() {
                   />
                   <p className="text-sm text-carvao-muted">{textoCobertura("Balanço", g.cobertura.balanco, g.cobertura)}</p>
                   <p className="text-sm text-carvao-muted">{textoConferenciaSilver("Intercâmbio do balanço", g.conferencia_silver_principal?.ons_rede_balanco)}</p>
-                  <p className="text-sm text-carvao-muted">
-                    Itaipu: total igual a 60 Hz mais 50 Hz em {num((g.exterior.itaipu_identidades.linhas ?? 0) - (g.exterior.itaipu_identidades.total_diferente_de_60_mais_50 ?? 0), 0)}{" "}
-                    de {num(g.exterior.itaipu_identidades.linhas, 0)} horas; parcela do Brasil igual às duas frequências destinadas ao Brasil em{" "}
-                    {num((g.exterior.itaipu_identidades.linhas ?? 0) - (g.exterior.itaipu_identidades.brasil_diferente_de_60_mais_50_brasil ?? 0), 0)} horas.
-                  </p>
+                  <p className="text-sm text-carvao-muted">{textoIdentidadesItaipu(g.exterior.itaipu_identidades)}</p>
                 </RedeAuditoria>
 
                 <RedeAuditoria id="dicionarios" titulo="Dicionários de dados do ONS: sinal e definições">

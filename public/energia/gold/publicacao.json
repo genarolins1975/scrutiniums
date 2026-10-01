@@ -1,14 +1,15 @@
 {
  "dominio": "energia",
  "gold": "publicacao.json",
- "gerado_em": "2026-10-01T07:42:54Z",
+ "gerado_em": "2026-10-01T08:14:04Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "fa4767ccfa9a+alterado",
+ "versao_codigo": "00dc290a9fdd+alterado",
  "disponivel": true,
  "referencia": {
   "hoje": "2026-10-01",
   "fuso": "America/Sao_Paulo (UTC−3)",
-  "executado_em": "2026-10-01T07:42:54Z"
+  "executado_em": "2026-10-01T08:14:04Z",
+  "janela_calendario_dias": 120
  },
  "regras": {
   "estados": {
@@ -83,8 +84,7 @@
  "resumo": {
   "integracoes": 151,
   "por_estado": {
-   "PUBLICADO": 138,
-   "VALIDADO": 6,
+   "PUBLICADO": 144,
    "RECURSO VERIFICADO": 7
   },
   "por_situacao": {
@@ -101,9 +101,9 @@
   "captura_atras_da_fonte": 12,
   "descontinuados": 1,
   "validacao": {
-   "aprovado": 2135,
-   "ressalva": 39,
-   "reprovado": 4,
+   "aprovado": 2139,
+   "ressalva": 36,
+   "reprovado": 3,
    "nao_aplicavel": 213,
    "checagens": 2391
   },
@@ -111,9 +111,8 @@
    "total": 29,
    "integras": 29,
    "por_veredito": {
-    "aprovado": 17,
-    "ressalva": 11,
-    "reprovado": 1
+    "aprovado": 19,
+    "ressalva": 10
    }
   },
   "csv": {
@@ -127,14 +126,14 @@
   "parquet": {
    "arquivos": 25,
    "equivalentes": 25,
-   "bytes": 21276771
+   "bytes": 21276772
   },
-  "duracao_s": 93.3,
+  "duracao_s": 101.3,
   "tempos_s": {
-   "golds": 0.7,
-   "csv": 19.2,
-   "parquet": 10.0,
-   "silvers": 60.2
+   "golds": 0.8,
+   "csv": 22.4,
+   "parquet": 10.4,
+   "silvers": 64.3
   }
  },
  "conjuntos": [
@@ -216,8 +215,7 @@
    "coleta": {
     "tentativas": 16,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:31:18Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:31:18Z"
    },
    "revisoes": {
     "registros": {
@@ -335,8 +333,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:32:22Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:32:22Z"
    },
    "revisoes": null,
    "bronze": {
@@ -418,8 +415,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:32:46Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:32:46Z"
    },
    "revisoes": null,
    "bronze": {
@@ -499,8 +495,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:34:07Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:34:07Z"
    },
    "revisoes": null,
    "bronze": {
@@ -546,16 +541,10 @@
     },
     "publicado": {
      "ok": true,
-     "golds": [
-      "perdas.json",
-      "territorio.json"
-     ],
      "citado_por": [
+      "empresas.json",
       "perdas.json",
       "territorio.json"
-     ],
-     "problemas": [
-      "empresas.json reprovada em proveniencia"
      ]
     }
    },
@@ -600,8 +589,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:26:40Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:26:40Z"
    },
    "revisoes": null,
    "bronze": {
@@ -677,8 +665,7 @@
    "coleta": {
     "tentativas": 3,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:34:16Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:34:16Z"
    },
    "revisoes": null,
    "bronze": {
@@ -770,8 +757,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:21:26Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:21:26Z"
    },
    "revisoes": null,
    "bronze": {
@@ -861,8 +847,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:22:50Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:22:50Z"
    },
    "revisoes": null,
    "bronze": {
@@ -955,8 +940,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:21:32Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:21:32Z"
    },
    "revisoes": null,
    "bronze": {
@@ -1047,8 +1031,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:21:15Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:21:15Z"
    },
    "revisoes": null,
    "bronze": {
@@ -1135,8 +1118,7 @@
    "coleta": {
     "tentativas": 5,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:20:54Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:20:54Z"
    },
    "revisoes": null,
    "bronze": {
@@ -1182,16 +1164,10 @@
     },
     "publicado": {
      "ok": true,
-     "golds": [
-      "expansao.json",
-      "territorio.json"
-     ],
      "citado_por": [
+      "empresas.json",
       "expansao.json",
       "territorio.json"
-     ],
-     "problemas": [
-      "empresas.json reprovada em proveniencia"
      ]
     }
    },
@@ -1228,8 +1204,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:18:55Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:18:55Z"
    },
    "revisoes": null,
    "bronze": {
@@ -1273,14 +1248,9 @@
     },
     "publicado": {
      "ok": true,
-     "golds": [
-      "expansao.json"
-     ],
      "citado_por": [
+      "empresas.json",
       "expansao.json"
-     ],
-     "problemas": [
-      "empresas.json reprovada em proveniencia"
      ]
     }
    },
@@ -1316,8 +1286,7 @@
    "coleta": {
     "tentativas": 5,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:45:14Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:45:14Z"
    },
    "revisoes": null,
    "bronze": {
@@ -1401,8 +1370,7 @@
    "coleta": {
     "tentativas": 3,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:23:00Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:23:00Z"
    },
    "revisoes": null,
    "bronze": {
@@ -1471,8 +1439,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:46:47Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:46:47Z"
    },
    "revisoes": null,
    "bronze": {
@@ -1559,8 +1526,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:22:40Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:22:40Z"
    },
    "revisoes": null,
    "bronze": {
@@ -1637,8 +1603,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:18:13Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:18:13Z"
    },
    "revisoes": null,
    "bronze": {
@@ -1715,8 +1680,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:18:20Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:18:20Z"
    },
    "revisoes": null,
    "bronze": {
@@ -1801,8 +1765,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:20:29Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:20:29Z"
    },
    "revisoes": null,
    "bronze": {
@@ -1883,8 +1846,7 @@
    "coleta": {
     "tentativas": 45,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T06:26:19Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T06:26:19Z"
    },
    "revisoes": null,
    "bronze": {
@@ -1967,8 +1929,7 @@
    "coleta": {
     "tentativas": 376,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:18:22Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:18:22Z"
    },
    "revisoes": null,
    "bronze": {
@@ -2057,8 +2018,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:54:23Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:54:23Z"
    },
    "revisoes": null,
    "bronze": {
@@ -2148,8 +2108,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:06:50Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:06:50Z"
    },
    "revisoes": null,
    "bronze": {
@@ -2195,16 +2154,10 @@
     },
     "publicado": {
      "ok": true,
-     "golds": [
-      "qualidade.json",
-      "territorio.json"
-     ],
      "citado_por": [
+      "empresas.json",
       "qualidade.json",
       "territorio.json"
-     ],
-     "problemas": [
-      "empresas.json reprovada em proveniencia"
      ]
     }
    },
@@ -2250,8 +2203,7 @@
    "coleta": {
     "tentativas": 10,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:45:44Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:45:44Z"
    },
    "revisoes": null,
    "bronze": {
@@ -2325,8 +2277,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:54:38Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:54:38Z"
    },
    "revisoes": null,
    "bronze": {
@@ -2417,8 +2368,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:26:51Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:26:51Z"
    },
    "revisoes": null,
    "bronze": {
@@ -2500,8 +2450,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:54:47Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:54:47Z"
    },
    "revisoes": null,
    "bronze": {
@@ -2591,8 +2540,7 @@
    "coleta": {
     "tentativas": 5,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:29:39Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:29:39Z"
    },
    "revisoes": {
     "registros": {
@@ -2701,8 +2649,7 @@
    "coleta": {
     "tentativas": 5,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:53:53Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:53:53Z"
    },
    "revisoes": null,
    "bronze": {
@@ -2775,8 +2722,7 @@
    "coleta": {
     "tentativas": 10,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:06:59Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:06:59Z"
    },
    "revisoes": null,
    "bronze": {
@@ -2845,8 +2791,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:06:51Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:06:51Z"
    },
    "revisoes": null,
    "bronze": {
@@ -2939,8 +2884,7 @@
    "coleta": {
     "tentativas": 14,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:09:14Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:09:14Z"
    },
    "revisoes": null,
    "bronze": {
@@ -3054,8 +2998,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:41:44Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:41:44Z"
    },
    "revisoes": null,
    "bronze": {
@@ -3146,8 +3089,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:30:56Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:30:56Z"
    },
    "revisoes": null,
    "bronze": {
@@ -3238,8 +3180,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:41:34Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:41:34Z"
    },
    "revisoes": null,
    "bronze": {
@@ -3323,8 +3264,7 @@
    "coleta": {
     "tentativas": 4,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:55:50Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:55:50Z"
    },
    "revisoes": null,
    "bronze": {
@@ -3416,8 +3356,7 @@
    "coleta": {
     "tentativas": 3,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:41:50Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:41:50Z"
    },
    "revisoes": null,
    "bronze": {
@@ -3501,8 +3440,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:54:19Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:54:19Z"
    },
    "revisoes": null,
    "bronze": {
@@ -3574,8 +3512,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:54:21Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:54:21Z"
    },
    "revisoes": null,
    "bronze": {
@@ -3650,8 +3587,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:54:37Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:54:37Z"
    },
    "revisoes": null,
    "bronze": {
@@ -3733,8 +3669,7 @@
    "coleta": {
     "tentativas": 5,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:54:18Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:54:18Z"
    },
    "revisoes": null,
    "bronze": {
@@ -3822,8 +3757,7 @@
    "coleta": {
     "tentativas": 3,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:56:07Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:56:07Z"
    },
    "revisoes": null,
    "bronze": {
@@ -3926,8 +3860,7 @@
    "coleta": {
     "tentativas": 4,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:52:09Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:52:09Z"
    },
    "revisoes": null,
    "bronze": {
@@ -4033,8 +3966,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:53:08Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:53:08Z"
    },
    "revisoes": null,
    "bronze": {
@@ -4118,8 +4050,7 @@
    "coleta": {
     "tentativas": 16,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:51:44Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:51:44Z"
    },
    "revisoes": null,
    "bronze": {
@@ -4222,8 +4153,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:52:53Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:52:53Z"
    },
    "revisoes": null,
    "bronze": {
@@ -4269,16 +4199,10 @@
     },
     "publicado": {
      "ok": true,
-     "golds": [
-      "conta.json",
-      "territorio.json"
-     ],
      "citado_por": [
       "conta.json",
+      "empresas.json",
       "territorio.json"
-     ],
-     "problemas": [
-      "empresas.json reprovada em proveniencia"
      ]
     }
    },
@@ -4317,8 +4241,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:48:27Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:48:27Z"
    },
    "revisoes": null,
    "bronze": {
@@ -4411,8 +4334,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:53:10Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:53:10Z"
    },
    "revisoes": null,
    "bronze": {
@@ -4432,7 +4354,7 @@
    "golds": [
     "empresas.json"
    ],
-   "estado": "VALIDADO",
+   "estado": "PUBLICADO",
    "etapas": {
     "catalogado": {
      "ok": true,
@@ -4454,11 +4376,7 @@
      "aprovadas": 4
     },
     "publicado": {
-     "ok": false,
-     "golds": [],
-     "problemas": [
-      "empresas.json reprovada em proveniencia"
-     ]
+     "ok": true
     }
    },
    "ressalvas": [],
@@ -4494,8 +4412,7 @@
    "coleta": {
     "tentativas": 3,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T07:02:50Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T07:02:50Z"
    },
    "revisoes": {
     "registros": {
@@ -4529,7 +4446,7 @@
    "golds": [
     "empresas.json"
    ],
-   "estado": "VALIDADO",
+   "estado": "PUBLICADO",
    "etapas": {
     "catalogado": {
      "ok": true,
@@ -4551,16 +4468,13 @@
      "aprovadas": 4
     },
     "publicado": {
-     "ok": false,
-     "golds": [],
-     "problemas": [
-      "empresas.json reprovada em proveniencia"
+     "ok": true,
+     "citado_por": [
+      "empresas.json"
      ]
     }
    },
-   "ressalvas": [
-    "O módulo declara uso em indicador, mas o estado calculado é VALIDADO."
-   ],
+   "ressalvas": [],
    "uso": {
     "papeis": [
      "indicador"
@@ -4593,8 +4507,7 @@
    "coleta": {
     "tentativas": 3,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T07:02:36Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T07:02:36Z"
    },
    "revisoes": {
     "registros": {
@@ -4629,7 +4542,7 @@
    "golds": [
     "empresas.json"
    ],
-   "estado": "VALIDADO",
+   "estado": "PUBLICADO",
    "etapas": {
     "catalogado": {
      "ok": true,
@@ -4651,16 +4564,13 @@
      "aprovadas": 3
     },
     "publicado": {
-     "ok": false,
-     "golds": [],
-     "problemas": [
-      "empresas.json reprovada em proveniencia"
+     "ok": true,
+     "citado_por": [
+      "empresas.json"
      ]
     }
    },
-   "ressalvas": [
-    "O módulo declara uso em indicador, mas o estado calculado é VALIDADO."
-   ],
+   "ressalvas": [],
    "uso": {
     "papeis": [
      "indicador"
@@ -4692,8 +4602,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:39:55Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:39:55Z"
    },
    "revisoes": null,
    "bronze": {
@@ -4738,16 +4647,10 @@
     },
     "publicado": {
      "ok": true,
-     "golds": [
-      "expansao.json",
-      "territorio.json"
-     ],
      "citado_por": [
+      "empresas.json",
       "expansao.json",
       "territorio.json"
-     ],
-     "problemas": [
-      "empresas.json reprovada em proveniencia"
      ]
     }
    },
@@ -4787,8 +4690,7 @@
    "coleta": {
     "tentativas": 3,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T07:06:04Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T07:06:04Z"
    },
    "revisoes": null,
    "bronze": {
@@ -4832,14 +4734,9 @@
     },
     "publicado": {
      "ok": true,
-     "golds": [
-      "expansao.json"
-     ],
      "citado_por": [
+      "empresas.json",
       "expansao.json"
-     ],
-     "problemas": [
-      "empresas.json reprovada em proveniencia"
      ]
     }
    },
@@ -4878,8 +4775,7 @@
    "coleta": {
     "tentativas": 8,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T07:06:06Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T07:06:06Z"
    },
    "revisoes": null,
    "bronze": {
@@ -4900,7 +4796,7 @@
    "golds": [
     "empresas.json"
    ],
-   "estado": "VALIDADO",
+   "estado": "PUBLICADO",
    "etapas": {
     "catalogado": {
      "ok": true,
@@ -4923,16 +4819,10 @@
      "aprovadas": 4
     },
     "publicado": {
-     "ok": false,
-     "golds": [],
-     "problemas": [
-      "empresas.json reprovada em proveniencia"
-     ]
+     "ok": true
     }
    },
-   "ressalvas": [
-    "O módulo declara uso em indicador, mas o estado calculado é VALIDADO."
-   ],
+   "ressalvas": [],
    "uso": {
     "papeis": [
      "indicador"
@@ -4967,8 +4857,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T07:02:56Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T07:02:56Z"
    },
    "revisoes": null,
    "bronze": {
@@ -4988,7 +4877,7 @@
    "golds": [
     "empresas.json"
    ],
-   "estado": "VALIDADO",
+   "estado": "PUBLICADO",
    "etapas": {
     "catalogado": {
      "ok": true,
@@ -5012,16 +4901,13 @@
      "aprovadas": 4
     },
     "publicado": {
-     "ok": false,
-     "golds": [],
-     "problemas": [
-      "empresas.json reprovada em proveniencia"
+     "ok": true,
+     "citado_por": [
+      "empresas.json"
      ]
     }
    },
-   "ressalvas": [
-    "O módulo declara uso em indicador, mas o estado calculado é VALIDADO."
-   ],
+   "ressalvas": [],
    "uso": {
     "papeis": [
      "indicador"
@@ -5065,8 +4951,7 @@
    "coleta": {
     "tentativas": 17,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:40:58Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:40:58Z"
    },
    "revisoes": null,
    "bronze": {
@@ -5086,7 +4971,7 @@
    "golds": [
     "empresas.json"
    ],
-   "estado": "VALIDADO",
+   "estado": "PUBLICADO",
    "etapas": {
     "catalogado": {
      "ok": true,
@@ -5110,16 +4995,10 @@
      "aprovadas": 4
     },
     "publicado": {
-     "ok": false,
-     "golds": [],
-     "problemas": [
-      "empresas.json reprovada em proveniencia"
-     ]
+     "ok": true
     }
    },
-   "ressalvas": [
-    "O módulo declara uso em indicador, mas o estado calculado é VALIDADO."
-   ],
+   "ressalvas": [],
    "uso": {
     "papeis": [
      "indicador"
@@ -5158,8 +5037,7 @@
    "coleta": {
     "tentativas": 6,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:41:27Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:41:27Z"
    },
    "revisoes": null,
    "bronze": {
@@ -5267,8 +5145,7 @@
    "coleta": {
     "tentativas": 8,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T02:20:04Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T02:20:04Z"
    },
    "revisoes": {
     "eventos": 2620,
@@ -5417,8 +5294,7 @@
    "coleta": {
     "tentativas": 29,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T02:19:48Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T02:19:48Z"
    },
    "revisoes": {
     "eventos": 33,
@@ -5591,8 +5467,7 @@
    "coleta": {
     "tentativas": 12,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T02:20:15Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T02:20:15Z"
    },
    "revisoes": null,
    "bronze": {
@@ -5707,8 +5582,7 @@
    "coleta": {
     "tentativas": 24,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T02:20:09Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T02:20:09Z"
    },
    "revisoes": null,
    "bronze": {
@@ -5828,8 +5702,7 @@
    "coleta": {
     "tentativas": 29,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T02:19:44Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T02:19:44Z"
    },
    "revisoes": {
     "eventos": 44,
@@ -5982,8 +5855,7 @@
    "coleta": {
     "tentativas": 29,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T02:19:47Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T02:19:47Z"
    },
    "revisoes": {
     "eventos": 360,
@@ -6131,8 +6003,7 @@
    "coleta": {
     "tentativas": 8,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T02:20:08Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T02:20:08Z"
    },
    "revisoes": null,
    "bronze": {
@@ -6220,8 +6091,7 @@
    "coleta": {
     "tentativas": 3,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T06:01:42Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T06:01:42Z"
    },
    "revisoes": {
     "registros": {
@@ -6326,8 +6196,7 @@
    "coleta": {
     "tentativas": 3,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T06:01:29Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T06:01:29Z"
    },
    "revisoes": null,
    "bronze": {
@@ -6417,8 +6286,7 @@
    "coleta": {
     "tentativas": 9,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:34:30Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:34:30Z"
    },
    "revisoes": null,
    "bronze": {
@@ -6509,8 +6377,7 @@
    "coleta": {
     "tentativas": 4,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:45:39Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:45:39Z"
    },
    "revisoes": null,
    "bronze": {
@@ -6698,8 +6565,7 @@
    "coleta": {
     "tentativas": 4,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:45:29Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:45:29Z"
    },
    "revisoes": null,
    "bronze": {
@@ -6788,8 +6654,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:45:55Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:45:55Z"
    },
    "revisoes": null,
    "bronze": {
@@ -6881,8 +6746,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:45:53Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:45:53Z"
    },
    "revisoes": null,
    "bronze": {
@@ -7070,8 +6934,7 @@
    "coleta": {
     "tentativas": 4,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:47:10Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:47:10Z"
    },
    "revisoes": null,
    "bronze": {
@@ -7162,8 +7025,7 @@
    "coleta": {
     "tentativas": 4,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:46:51Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:46:51Z"
    },
    "revisoes": null,
    "bronze": {
@@ -7254,8 +7116,7 @@
    "coleta": {
     "tentativas": 4,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:46:45Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:46:45Z"
    },
    "revisoes": null,
    "bronze": {
@@ -7331,8 +7192,7 @@
    "coleta": {
     "tentativas": 5,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T06:08:32Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T06:08:32Z"
    },
    "revisoes": null,
    "bronze": {
@@ -7423,8 +7283,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:45:46Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:45:46Z"
    },
    "revisoes": {
     "registros": {
@@ -7629,8 +7488,7 @@
    "coleta": {
     "tentativas": 4,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:46:55Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:46:55Z"
    },
    "revisoes": null,
    "bronze": {
@@ -7721,8 +7579,7 @@
    "coleta": {
     "tentativas": 3,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:46:35Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:46:35Z"
    },
    "revisoes": null,
    "bronze": {
@@ -7813,8 +7670,7 @@
    "coleta": {
     "tentativas": 3,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T05:53:11Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T05:53:11Z"
    },
    "revisoes": null,
    "bronze": {
@@ -7905,8 +7761,7 @@
    "coleta": {
     "tentativas": 4,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:47:05Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:47:05Z"
    },
    "revisoes": null,
    "bronze": {
@@ -7997,8 +7852,7 @@
    "coleta": {
     "tentativas": 4,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:47:15Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:47:15Z"
    },
    "revisoes": null,
    "bronze": {
@@ -8089,8 +7943,7 @@
    "coleta": {
     "tentativas": 4,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:47:20Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:47:20Z"
    },
    "revisoes": null,
    "bronze": {
@@ -8173,8 +8026,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:33:34Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:33:34Z"
    },
    "revisoes": null,
    "bronze": {
@@ -8257,8 +8109,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:33:32Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:33:32Z"
    },
    "revisoes": null,
    "bronze": {
@@ -8342,8 +8193,7 @@
    "coleta": {
     "tentativas": 5,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T07:37:35Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T07:37:35Z"
    },
    "revisoes": null,
    "bronze": {
@@ -8427,8 +8277,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:32:19Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:32:19Z"
    },
    "revisoes": null,
    "bronze": {
@@ -8510,8 +8359,7 @@
    "coleta": {
     "tentativas": 32,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:33:21Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:33:21Z"
    },
    "revisoes": null,
    "bronze": {
@@ -8597,8 +8445,7 @@
    "coleta": {
     "tentativas": 27,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:37:06Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:37:06Z"
    },
    "revisoes": null,
    "bronze": {
@@ -8685,8 +8532,7 @@
    "coleta": {
     "tentativas": 27,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:38:04Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:38:04Z"
    },
    "revisoes": null,
    "bronze": {
@@ -8769,8 +8615,7 @@
    "coleta": {
     "tentativas": 376,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:04:34Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:04:34Z"
    },
    "revisoes": null,
    "bronze": {
@@ -8859,8 +8704,7 @@
    "coleta": {
     "tentativas": 27,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:31:22Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:31:22Z"
    },
    "revisoes": null,
    "bronze": {
@@ -9013,8 +8857,7 @@
    "coleta": {
     "tentativas": 5,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:33:00Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:33:00Z"
    },
    "revisoes": null,
    "bronze": {
@@ -9103,8 +8946,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T22:06:47Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T22:06:47Z"
    },
    "revisoes": null,
    "bronze": {
@@ -9179,8 +9021,7 @@
    "coleta": {
     "tentativas": 11,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T06:40:23Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T06:40:23Z"
    },
    "revisoes": null,
    "bronze": {
@@ -9225,7 +9066,9 @@
      "ok": false
     }
    },
-   "ressalvas": [],
+   "ressalvas": [
+    "Capturado com sha256, sem conteúdo no silver, sem documento guardado e sem gold que cite o snapshot: não chega a INTEGRADO."
+   ],
    "uso": {
     "papeis": [
      "contexto"
@@ -9254,8 +9097,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:17:43Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:17:43Z"
    },
    "revisoes": null,
    "bronze": {
@@ -9354,8 +9196,7 @@
    "coleta": {
     "tentativas": 87,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:17:18Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:17:18Z"
    },
    "revisoes": null,
    "bronze": {
@@ -9444,8 +9285,7 @@
    "coleta": {
     "tentativas": 17,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:16:47Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:16:47Z"
    },
    "revisoes": null,
    "bronze": {
@@ -9532,8 +9372,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T06:52:42Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T06:52:42Z"
    },
    "revisoes": null,
    "bronze": {
@@ -9613,8 +9452,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:41:04Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:41:04Z"
    },
    "revisoes": null,
    "bronze": {
@@ -9704,8 +9542,7 @@
    "coleta": {
     "tentativas": 180,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T06:38:12Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T06:38:12Z"
    },
    "revisoes": {
     "registros": {
@@ -9811,8 +9648,7 @@
    "coleta": {
     "tentativas": 6,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:53:37Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:53:37Z"
    },
    "revisoes": null,
    "bronze": {
@@ -9902,8 +9738,7 @@
    "coleta": {
     "tentativas": 90,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T06:38:29Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T06:38:29Z"
    },
    "revisoes": {
     "registros": {
@@ -10011,8 +9846,7 @@
    "coleta": {
     "tentativas": 6,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:53:48Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:53:48Z"
    },
    "revisoes": null,
    "bronze": {
@@ -10103,8 +9937,7 @@
    "coleta": {
     "tentativas": 44,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:41:03Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:41:03Z"
    },
    "revisoes": {
     "registros": {
@@ -10214,8 +10047,7 @@
    "coleta": {
     "tentativas": 114,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:55:18Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:55:18Z"
    },
    "revisoes": {
     "registros": {
@@ -10329,8 +10161,7 @@
    "coleta": {
     "tentativas": 264,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T06:36:57Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T06:36:57Z"
    },
    "revisoes": {
     "registros": {
@@ -10442,8 +10273,7 @@
    "coleta": {
     "tentativas": 174,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:01:25Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:01:25Z"
    },
    "revisoes": {
     "registros": {
@@ -10544,8 +10374,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:41:06Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:41:06Z"
    },
    "revisoes": null,
    "bronze": {
@@ -10622,8 +10451,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:41:07Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:41:07Z"
    },
    "revisoes": null,
    "bronze": {
@@ -10707,8 +10535,7 @@
    },
    "coleta": {
     "tentativas": 0,
-    "falhas": 0,
-    "falhas_consecutivas": 0
+    "falhas": 0
    },
    "revisoes": null,
    "bronze": {
@@ -10794,8 +10621,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:44:28Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:44:28Z"
    },
    "revisoes": null,
    "bronze": {
@@ -10872,8 +10698,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:44:25Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:44:25Z"
    },
    "revisoes": null,
    "bronze": {
@@ -10950,8 +10775,7 @@
    "coleta": {
     "tentativas": 1170,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:38:58Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:38:58Z"
    },
    "revisoes": null,
    "bronze": {
@@ -11028,8 +10852,7 @@
    "coleta": {
     "tentativas": 194,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:53:47Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:53:47Z"
    },
    "revisoes": null,
    "bronze": {
@@ -11106,8 +10929,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:43:45Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:43:45Z"
    },
    "revisoes": null,
    "bronze": {
@@ -11190,8 +11012,7 @@
    "coleta": {
     "tentativas": 34,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:44:49Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:44:49Z"
    },
    "revisoes": null,
    "bronze": {
@@ -11281,8 +11102,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:43:04Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:43:04Z"
    },
    "revisoes": null,
    "bronze": {
@@ -11371,8 +11191,7 @@
    "coleta": {
     "tentativas": 27,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:39:23Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:39:23Z"
    },
    "revisoes": null,
    "bronze": {
@@ -11461,8 +11280,7 @@
    "coleta": {
     "tentativas": 11,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:38:37Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:38:37Z"
    },
    "revisoes": null,
    "bronze": {
@@ -11552,8 +11370,7 @@
    "coleta": {
     "tentativas": 27,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:41:49Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:41:49Z"
    },
    "revisoes": null,
    "bronze": {
@@ -11642,8 +11459,7 @@
    "coleta": {
     "tentativas": 27,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:40:21Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:40:21Z"
    },
    "revisoes": null,
    "bronze": {
@@ -11732,8 +11548,7 @@
    "coleta": {
     "tentativas": 11,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:38:51Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:38:51Z"
    },
    "revisoes": null,
    "bronze": {
@@ -11822,8 +11637,7 @@
    "coleta": {
     "tentativas": 27,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:42:42Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:42:42Z"
    },
    "revisoes": null,
    "bronze": {
@@ -11903,8 +11717,7 @@
    "coleta": {
     "tentativas": 12,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:28:32Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:28:32Z"
    },
    "revisoes": {
     "conflitos_entre_recursos": {
@@ -12013,8 +11826,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:43:44Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:43:44Z"
    },
    "revisoes": null,
    "bronze": {
@@ -12091,8 +11903,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:43:37Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:43:37Z"
    },
    "revisoes": null,
    "bronze": {
@@ -12182,8 +11993,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:03:49Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:03:49Z"
    },
    "revisoes": null,
    "bronze": {
@@ -12273,8 +12083,7 @@
    "coleta": {
     "tentativas": 6,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:03:47Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:03:47Z"
    },
    "revisoes": null,
    "bronze": {
@@ -12343,8 +12152,7 @@
    "coleta": {
     "tentativas": 3,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:04:22Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:04:22Z"
    },
    "revisoes": null,
    "bronze": {
@@ -12434,8 +12242,7 @@
    "coleta": {
     "tentativas": 6,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:03:41Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:03:41Z"
    },
    "revisoes": null,
    "bronze": {
@@ -12526,8 +12333,7 @@
    "coleta": {
     "tentativas": 6,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:03:37Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:03:37Z"
    },
    "revisoes": null,
    "bronze": {
@@ -12608,8 +12414,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:03:50Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:03:50Z"
    },
    "revisoes": null,
    "bronze": {
@@ -12696,8 +12501,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:03:48Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:03:48Z"
    },
    "revisoes": null,
    "bronze": {
@@ -12777,8 +12581,7 @@
    "coleta": {
     "tentativas": 47,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T00:04:15Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T00:04:15Z"
    },
    "revisoes": null,
    "bronze": {
@@ -12847,8 +12650,7 @@
    "coleta": {
     "tentativas": 4,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:49:09Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:49:09Z"
    },
    "revisoes": null,
    "bronze": {
@@ -12919,8 +12721,7 @@
    },
    "coleta": {
     "tentativas": 0,
-    "falhas": 0,
-    "falhas_consecutivas": 0
+    "falhas": 0
    },
    "revisoes": null,
    "bronze": {
@@ -12990,8 +12791,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T05:56:54Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T05:56:54Z"
    },
    "revisoes": {
     "registros": {
@@ -13073,8 +12873,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T05:56:56Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T05:56:56Z"
    },
    "revisoes": null,
    "bronze": {
@@ -13144,8 +12943,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T05:56:47Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T05:56:47Z"
    },
    "revisoes": {
     "registros": {
@@ -13246,8 +13044,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:08:14Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:08:14Z"
    },
    "revisoes": null,
    "bronze": {
@@ -13334,8 +13131,7 @@
    "coleta": {
     "tentativas": 5,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T06:34:59Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T06:34:59Z"
    },
    "revisoes": {
     "registros": {
@@ -13498,8 +13294,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:08:04Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:08:04Z"
    },
    "revisoes": null,
    "bronze": {
@@ -13588,8 +13383,7 @@
    "coleta": {
     "tentativas": 1,
     "falhas": 0,
-    "ultimo_ok": "2026-09-30T23:08:25Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-09-30T23:08:25Z"
    },
    "revisoes": null,
    "bronze": {
@@ -13667,8 +13461,7 @@
      "recurso": "prt20257030",
      "tentado_em": "2026-09-30T23:07:21Z",
      "detalhe": "download: Falha ao baixar https://web.archive.org/web/20260115144238id_/https://www2.aneel.gov.br/cedoc/prt20257030.pdf:"
-    },
-    "falhas_consecutivas": 0
+    }
    },
    "revisoes": null,
    "bronze": {
@@ -13737,8 +13530,7 @@
    "coleta": {
     "tentativas": 2,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T07:36:20Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T07:36:20Z"
    },
    "revisoes": null,
    "bronze": {
@@ -13784,7 +13576,9 @@
      "ok": false
     }
    },
-   "ressalvas": [],
+   "ressalvas": [
+    "Capturado com sha256, sem conteúdo no silver, sem documento guardado e sem gold que cite o snapshot: não chega a INTEGRADO."
+   ],
    "uso": {
     "papeis": [
      "conferencia"
@@ -13804,8 +13598,7 @@
    "coleta": {
     "tentativas": 27,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T07:37:02Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T07:37:02Z"
    },
    "revisoes": null,
    "bronze": {
@@ -13895,8 +13688,7 @@
    "coleta": {
     "tentativas": 68,
     "falhas": 0,
-    "ultimo_ok": "2026-10-01T06:27:03Z",
-    "falhas_consecutivas": 0
+    "ultimo_ok": "2026-10-01T06:27:03Z"
    },
    "revisoes": null,
    "bronze": {
@@ -13909,34 +13701,24 @@
   {
    "gold": "agua_detalhe.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T07:07:11Z",
-   "bytes": 387086,
+   "gerado_em": "2026-10-01T07:51:56Z",
+   "bytes": 395228,
    "veredito": "aprovado",
-   "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
-    "proveniencia": "aprovado",
-    "downloads": "aprovado",
-    "datas_futuras": "aprovado",
-    "drift_esquema": "aprovado",
-    "tamanho": "aprovado"
-   },
+   "aprovadas": 7,
+   "checagens": {},
    "problemas": []
   },
   {
    "gold": "arquivos.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T07:42:20Z",
-   "bytes": 125146,
+   "gerado_em": "2026-10-01T08:13:02Z",
+   "bytes": 125458,
    "veredito": "aprovado",
+   "aprovadas": 4,
    "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
     "proveniencia": "nao_aplicavel",
     "downloads": "nao_aplicavel",
-    "datas_futuras": "nao_aplicavel",
-    "drift_esquema": "aprovado",
-    "tamanho": "aprovado"
+    "datas_futuras": "nao_aplicavel"
    },
    "problemas": []
   },
@@ -13946,15 +13728,8 @@
    "gerado_em": "2026-10-01T06:24:01Z",
    "bytes": 203601,
    "veredito": "aprovado",
-   "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
-    "proveniencia": "aprovado",
-    "downloads": "aprovado",
-    "datas_futuras": "aprovado",
-    "drift_esquema": "aprovado",
-    "tamanho": "aprovado"
-   },
+   "aprovadas": 7,
+   "checagens": {},
    "problemas": []
   },
   {
@@ -13963,13 +13738,8 @@
    "gerado_em": "2026-10-01T07:11:57Z",
    "bytes": 436969,
    "veredito": "ressalva",
+   "aprovadas": 6,
    "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
-    "proveniencia": "aprovado",
-    "downloads": "aprovado",
-    "datas_futuras": "aprovado",
-    "drift_esquema": "aprovado",
     "tamanho": "ressalva"
    },
    "problemas": [
@@ -13983,17 +13753,13 @@
   {
    "gold": "catalogo.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T07:03:15Z",
-   "bytes": 406434,
+   "gerado_em": "2026-10-01T08:10:33Z",
+   "bytes": 406374,
    "veredito": "aprovado",
+   "aprovadas": 5,
    "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
     "proveniencia": "nao_aplicavel",
-    "downloads": "aprovado",
-    "datas_futuras": "nao_aplicavel",
-    "drift_esquema": "aprovado",
-    "tamanho": "aprovado"
+    "datas_futuras": "nao_aplicavel"
    },
    "problemas": []
   },
@@ -14003,15 +13769,8 @@
    "gerado_em": "2026-10-01T00:24:35Z",
    "bytes": 18115,
    "veredito": "aprovado",
-   "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
-    "proveniencia": "aprovado",
-    "downloads": "aprovado",
-    "datas_futuras": "aprovado",
-    "drift_esquema": "aprovado",
-    "tamanho": "aprovado"
-   },
+   "aprovadas": 7,
+   "checagens": {},
    "problemas": []
   },
   {
@@ -14020,54 +13779,29 @@
    "gerado_em": "2026-09-30T23:56:57Z",
    "bytes": 399085,
    "veredito": "aprovado",
-   "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
-    "proveniencia": "aprovado",
-    "downloads": "aprovado",
-    "datas_futuras": "aprovado",
-    "drift_esquema": "aprovado",
-    "tamanho": "aprovado"
-   },
+   "aprovadas": 7,
+   "checagens": {},
    "problemas": []
   },
   {
    "gold": "empresas.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T07:18:43Z",
-   "bytes": 400927,
-   "veredito": "reprovado",
-   "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
-    "proveniencia": "reprovado",
-    "downloads": "aprovado",
-    "datas_futuras": "aprovado",
-    "drift_esquema": "aprovado",
-    "tamanho": "aprovado"
-   },
-   "problemas": [
-    {
-     "tipo": "proveniencia",
-     "resultado": "reprovado",
-     "detalhe": "11 de 12 proveniências completas"
-    }
-   ]
+   "gerado_em": "2026-10-01T08:13:02Z",
+   "bytes": 401278,
+   "veredito": "aprovado",
+   "aprovadas": 7,
+   "checagens": {},
+   "problemas": []
   },
   {
    "gold": "expansao.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T06:58:49Z",
-   "bytes": 386864,
+   "gerado_em": "2026-10-01T07:56:37Z",
+   "bytes": 386903,
    "veredito": "ressalva",
+   "aprovadas": 6,
    "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
-    "proveniencia": "aprovado",
-    "downloads": "aprovado",
-    "datas_futuras": "ressalva",
-    "drift_esquema": "aprovado",
-    "tamanho": "aprovado"
+    "datas_futuras": "ressalva"
    },
    "problemas": [
     {
@@ -14083,15 +13817,8 @@
    "gerado_em": "2026-10-01T00:28:08Z",
    "bytes": 295749,
    "veredito": "aprovado",
-   "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
-    "proveniencia": "aprovado",
-    "downloads": "aprovado",
-    "datas_futuras": "aprovado",
-    "drift_esquema": "aprovado",
-    "tamanho": "aprovado"
-   },
+   "aprovadas": 7,
+   "checagens": {},
    "problemas": []
   },
   {
@@ -14100,13 +13827,8 @@
    "gerado_em": "2026-10-01T07:08:35Z",
    "bytes": 492188,
    "veredito": "ressalva",
+   "aprovadas": 6,
    "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
-    "proveniencia": "aprovado",
-    "downloads": "aprovado",
-    "datas_futuras": "aprovado",
-    "drift_esquema": "aprovado",
     "tamanho": "ressalva"
    },
    "problemas": [
@@ -14123,15 +13845,8 @@
    "gerado_em": "2026-09-30T02:20:26Z",
    "bytes": 359749,
    "veredito": "aprovado",
-   "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
-    "proveniencia": "aprovado",
-    "downloads": "aprovado",
-    "datas_futuras": "aprovado",
-    "drift_esquema": "aprovado",
-    "tamanho": "aprovado"
-   },
+   "aprovadas": 7,
+   "checagens": {},
    "problemas": []
   },
   {
@@ -14140,13 +13855,8 @@
    "gerado_em": "2026-10-01T00:28:44Z",
    "bytes": 475944,
    "veredito": "ressalva",
+   "aprovadas": 6,
    "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
-    "proveniencia": "aprovado",
-    "downloads": "aprovado",
-    "datas_futuras": "aprovado",
-    "drift_esquema": "aprovado",
     "tamanho": "ressalva"
    },
    "problemas": [
@@ -14160,24 +13870,14 @@
   {
    "gold": "mercado.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T07:42:13Z",
-   "bytes": 434097,
+   "gerado_em": "2026-10-01T07:54:38Z",
+   "bytes": 433814,
    "veredito": "ressalva",
+   "aprovadas": 6,
    "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
-    "proveniencia": "aprovado",
-    "downloads": "aprovado",
-    "datas_futuras": "aprovado",
-    "drift_esquema": "ressalva",
     "tamanho": "ressalva"
    },
    "problemas": [
-    {
-     "tipo": "drift_esquema",
-     "resultado": "ressalva",
-     "detalhe": "14 campos removidos, 6 com tipo alterado e 89 novos em relação ao último commit"
-    },
     {
      "tipo": "tamanho",
      "resultado": "ressalva",
@@ -14191,37 +13891,32 @@
    "gerado_em": "2026-09-30T02:20:46Z",
    "bytes": 72659,
    "veredito": "aprovado",
+   "aprovadas": 4,
    "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
     "proveniencia": "nao_aplicavel",
     "downloads": "nao_aplicavel",
-    "datas_futuras": "nao_aplicavel",
-    "drift_esquema": "aprovado",
-    "tamanho": "aprovado"
+    "datas_futuras": "nao_aplicavel"
    },
    "problemas": []
   },
   {
    "gold": "metricas.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T07:42:20Z",
-   "bytes": 610255,
+   "gerado_em": "2026-10-01T08:13:02Z",
+   "bytes": 619352,
    "veredito": "ressalva",
+   "aprovadas": 3,
    "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
     "proveniencia": "nao_aplicavel",
     "downloads": "nao_aplicavel",
     "datas_futuras": "nao_aplicavel",
-    "drift_esquema": "aprovado",
     "tamanho": "ressalva"
    },
    "problemas": [
     {
      "tipo": "tamanho",
      "resultado": "ressalva",
-     "detalhe": "596 KB"
+     "detalhe": "605 KB"
     }
    ]
   },
@@ -14231,14 +13926,11 @@
    "gerado_em": "2026-10-01T06:57:05Z",
    "bytes": 28528,
    "veredito": "aprovado",
+   "aprovadas": 4,
    "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
     "proveniencia": "nao_aplicavel",
     "downloads": "nao_aplicavel",
-    "datas_futuras": "nao_aplicavel",
-    "drift_esquema": "aprovado",
-    "tamanho": "aprovado"
+    "datas_futuras": "nao_aplicavel"
    },
    "problemas": []
   },
@@ -14248,13 +13940,8 @@
    "gerado_em": "2026-10-01T06:06:09Z",
    "bytes": 423909,
    "veredito": "ressalva",
+   "aprovadas": 6,
    "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
-    "proveniencia": "aprovado",
-    "downloads": "aprovado",
-    "datas_futuras": "aprovado",
-    "drift_esquema": "aprovado",
     "tamanho": "ressalva"
    },
    "problemas": [
@@ -14271,15 +13958,8 @@
    "gerado_em": "2026-09-30T02:20:25Z",
    "bytes": 308327,
    "veredito": "aprovado",
-   "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
-    "proveniencia": "aprovado",
-    "downloads": "aprovado",
-    "datas_futuras": "aprovado",
-    "drift_esquema": "aprovado",
-    "tamanho": "aprovado"
-   },
+   "aprovadas": 7,
+   "checagens": {},
    "problemas": []
   },
   {
@@ -14288,15 +13968,8 @@
    "gerado_em": "2026-10-01T06:54:27Z",
    "bytes": 384926,
    "veredito": "aprovado",
-   "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
-    "proveniencia": "aprovado",
-    "downloads": "aprovado",
-    "datas_futuras": "aprovado",
-    "drift_esquema": "aprovado",
-    "tamanho": "aprovado"
-   },
+   "aprovadas": 7,
+   "checagens": {},
    "problemas": []
   },
   {
@@ -14305,14 +13978,10 @@
    "gerado_em": "2026-10-01T06:57:05Z",
    "bytes": 41943,
    "veredito": "ressalva",
+   "aprovadas": 5,
    "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
     "proveniencia": "ressalva",
-    "downloads": "aprovado",
-    "datas_futuras": "nao_aplicavel",
-    "drift_esquema": "aprovado",
-    "tamanho": "aprovado"
+    "datas_futuras": "nao_aplicavel"
    },
    "problemas": [
     {
@@ -14328,15 +13997,8 @@
    "gerado_em": "2026-10-01T07:40:20Z",
    "bytes": 179948,
    "veredito": "aprovado",
-   "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
-    "proveniencia": "aprovado",
-    "downloads": "aprovado",
-    "datas_futuras": "aprovado",
-    "drift_esquema": "aprovado",
-    "tamanho": "aprovado"
-   },
+   "aprovadas": 7,
+   "checagens": {},
    "problemas": []
   },
   {
@@ -14345,15 +14007,8 @@
    "gerado_em": "2026-10-01T05:53:21Z",
    "bytes": 389239,
    "veredito": "aprovado",
-   "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
-    "proveniencia": "aprovado",
-    "downloads": "aprovado",
-    "datas_futuras": "aprovado",
-    "drift_esquema": "aprovado",
-    "tamanho": "aprovado"
-   },
+   "aprovadas": 7,
+   "checagens": {},
    "problemas": []
   },
   {
@@ -14362,15 +14017,8 @@
    "gerado_em": "2026-09-30T02:20:41Z",
    "bytes": 73667,
    "veredito": "aprovado",
-   "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
-    "proveniencia": "aprovado",
-    "downloads": "aprovado",
-    "datas_futuras": "aprovado",
-    "drift_esquema": "aprovado",
-    "tamanho": "aprovado"
-   },
+   "aprovadas": 7,
+   "checagens": {},
    "problemas": []
   },
   {
@@ -14379,15 +14027,8 @@
    "gerado_em": "2026-10-01T06:50:05Z",
    "bytes": 395346,
    "veredito": "aprovado",
-   "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
-    "proveniencia": "aprovado",
-    "downloads": "aprovado",
-    "datas_futuras": "aprovado",
-    "drift_esquema": "aprovado",
-    "tamanho": "aprovado"
-   },
+   "aprovadas": 7,
+   "checagens": {},
    "problemas": []
   },
   {
@@ -14396,67 +14037,38 @@
    "gerado_em": "2026-10-01T06:42:16Z",
    "bytes": 407280,
    "veredito": "aprovado",
-   "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
-    "proveniencia": "aprovado",
-    "downloads": "aprovado",
-    "datas_futuras": "aprovado",
-    "drift_esquema": "aprovado",
-    "tamanho": "aprovado"
-   },
+   "aprovadas": 7,
+   "checagens": {},
    "problemas": []
   },
   {
    "gold": "sintese.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T07:41:52Z",
-   "bytes": 338099,
+   "gerado_em": "2026-10-01T08:04:11Z",
+   "bytes": 358675,
    "veredito": "ressalva",
+   "aprovadas": 5,
    "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
     "proveniencia": "ressalva",
-    "downloads": "aprovado",
-    "datas_futuras": "nao_aplicavel",
-    "drift_esquema": "ressalva",
-    "tamanho": "aprovado"
+    "datas_futuras": "nao_aplicavel"
    },
    "problemas": [
     {
      "tipo": "proveniencia",
      "resultado": "ressalva",
      "detalhe": "Nenhuma proveniência no formato do contrato (natureza, fonte, limitações) foi encontrada."
-    },
-    {
-     "tipo": "drift_esquema",
-     "resultado": "ressalva",
-     "detalhe": "15 campos removidos, 0 com tipo alterado e 69 novos em relação ao último commit"
     }
    ]
   },
   {
    "gold": "territorio.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T07:38:19Z",
-   "bytes": 397495,
-   "veredito": "ressalva",
-   "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
-    "proveniencia": "aprovado",
-    "downloads": "aprovado",
-    "datas_futuras": "aprovado",
-    "drift_esquema": "ressalva",
-    "tamanho": "aprovado"
-   },
-   "problemas": [
-    {
-     "tipo": "drift_esquema",
-     "resultado": "ressalva",
-     "detalhe": "39 campos removidos, 0 com tipo alterado e 281 novos em relação ao último commit"
-    }
-   ]
+   "gerado_em": "2026-10-01T07:48:27Z",
+   "bytes": 398297,
+   "veredito": "aprovado",
+   "aprovadas": 7,
+   "checagens": {},
+   "problemas": []
   },
   {
    "gold": "transicao.json",
@@ -14464,13 +14076,8 @@
    "gerado_em": "2026-10-01T06:38:31Z",
    "bytes": 434279,
    "veredito": "ressalva",
+   "aprovadas": 6,
    "checagens": {
-    "json": "aprovado",
-    "esquema": "aprovado",
-    "proveniencia": "aprovado",
-    "downloads": "aprovado",
-    "datas_futuras": "aprovado",
-    "drift_esquema": "aprovado",
     "tamanho": "ressalva"
    },
    "problemas": [
@@ -14556,7 +14163,7 @@
      {
       "tipo": "esquema",
       "resultado": "reprovado",
-      "detalhe": "10 linhas com número de colunas diferente do cabeçalho"
+      "detalhe": "18 linhas com número de colunas diferente do cabeçalho"
      }
     ]
    },
@@ -14667,16 +14274,16 @@
     "csv": "/energia/series/dados_recursos_ons.csv",
     "parquet": "/energia/series/dados_recursos_ons.parquet",
     "status": "inalterado",
-    "bytes_csv": 3850325,
-    "bytes_parquet": 620520,
+    "bytes_csv": 3850425,
+    "bytes_parquet": 620521,
     "linhas": 13823,
     "equivalente": true,
-    "csv_sha256": "12a46989ad8126c2a19742387475a3febc51d322328b4a476f349ccbdc5d3d1d"
+    "csv_sha256": "266a94d3615277fd024d21426da96476c2806e7720206810da396844af16a492"
    },
    {
     "csv": "/energia/series/empresas_ativos.csv",
     "parquet": "/energia/series/empresas_ativos.parquet",
-    "status": "gerado",
+    "status": "inalterado",
     "bytes_csv": 4739738,
     "bytes_parquet": 672812,
     "linhas": 25644,
@@ -14686,7 +14293,7 @@
    {
     "csv": "/energia/series/empresas_financas_anual.csv",
     "parquet": "/energia/series/empresas_financas_anual.parquet",
-    "status": "gerado",
+    "status": "inalterado",
     "bytes_csv": 2345394,
     "bytes_parquet": 182852,
     "linhas": 23734,
@@ -14696,7 +14303,7 @@
    {
     "csv": "/energia/series/empresas_financas_trimestral.csv",
     "parquet": "/energia/series/empresas_financas_trimestral.parquet",
-    "status": "gerado",
+    "status": "inalterado",
     "bytes_csv": 4008839,
     "bytes_parquet": 243301,
     "linhas": 40128,
@@ -14806,7 +14413,7 @@
    {
     "csv": "/energia/series/territorio_usinas.csv",
     "parquet": "/energia/series/territorio_usinas.parquet",
-    "status": "gerado",
+    "status": "inalterado",
     "bytes_csv": 3802789,
     "bytes_parquet": 777653,
     "linhas": 25042,
@@ -15551,7 +15158,7 @@
   {
    "familia": "sintese",
    "dataset": "_visao_alertas",
-   "vintages": 1,
+   "vintages": 5,
    "observacoes": false,
    "registros": true
   }
@@ -15588,9 +15195,9 @@
     "ressalva": 1
    },
    "SEM_VINCULO": {
-    "reconciliacao_aprovada": 52,
-    "controles_aprovados": 29,
-    "ressalva": 54
+    "reconciliacao_aprovada": 57,
+    "controles_aprovados": 30,
+    "ressalva": 55
    }
   },
   "por_gold": {
@@ -15603,10 +15210,10 @@
     },
     "situacoes": {
      "reconciliacao_aprovada": 2,
-     "controles_aprovados": 3,
-     "ressalva": 3
+     "controles_aprovados": 4,
+     "ressalva": 4
     },
-    "fichas": 8,
+    "fichas": 10,
     "proveniencias": 12
    },
    "carga.json": {
@@ -15830,11 +15437,11 @@
    "sintese.json": {
     "naturezas": {},
     "situacoes": {
-     "reconciliacao_aprovada": 10,
+     "reconciliacao_aprovada": 15,
      "ressalva": 5,
      "controles_aprovados": 6
     },
-    "fichas": 21,
+    "fichas": 26,
     "proveniencias": 0
    },
    "territorio.json": {
@@ -15865,8 +15472,8 @@
     "proveniencias": 6
    }
   },
-  "fichas": 147,
-  "fichas_sem_natureza_vinculada": 135,
+  "fichas": 154,
+  "fichas_sem_natureza_vinculada": 142,
   "regra_vinculo": "A natureza de uma ficha é a declarada na própria ficha (campo natureza), a da proveniência de mesma chave em evidencias e proveniencia, a da proveniência de mesmo indicador na mesma gold, ou a da única proveniência no mesmo objeto que contém a ficha. A proveniência de um objeto acima na árvore da gold não é herdada: ela pode ser de outra série (a proveniência de topo de uma gold de previsão não diz a natureza de um valor observado). Sem vínculo, SEM_VINCULO: a situação da validação é publicada sem a natureza, e a natureza na ficha é pedido ao integrador.",
   "limitacao_natureza": "A seção 11.3 separa 'estimado pela fonte' de 'estimado pelo observatório'. O contrato de proveniência compartilhado (pipeline/energia/gold/comum.py, NATUREZAS) tem uma só categoria ESTIMADO, e nenhuma proveniência diz qual dos dois é: o eixo publica ESTIMADO sem a separação, e a mudança está pedida ao integrador (pedido 8 do documento do módulo)."
  },
@@ -15938,8 +15545,8 @@
    "CATALOGADO": 22,
    "RECURSO VERIFICADO": 267,
    "INTEGRADO": 0,
-   "VALIDADO": 5,
-   "PUBLICADO": 121
+   "VALIDADO": 0,
+   "PUBLICADO": 126
   },
   "descontinuados": 12,
   "portais": {
@@ -15979,8 +15586,7 @@
     "por_estado": {
      "CATALOGADO": 488,
      "RECURSO VERIFICADO": 29,
-     "VALIDADO": 4,
-     "PUBLICADO": 110
+     "PUBLICADO": 114
     },
     "total": 631,
     "removidos": 0,
@@ -16846,7 +16452,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-10-01T05:56:47Z",
-   "validado_em": "2026-10-01T07:42:54Z",
+   "validado_em": "2026-10-01T08:14:04Z",
    "cobertura_historica": {
     "inicio": "2026-10-01",
     "fim": "2026-10-01"
@@ -16863,9 +16469,9 @@
     "sha256": "f92208a1736658fc743037acca6970f11c01e34c212798de8481ba05e369e214"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "fa4767ccfa9a+alterado",
+   "versao_codigo": "00dc290a9fdd+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:44:27Z",
+    "detectado_em": "2026-10-01T08:15:45Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 1,
@@ -16900,7 +16506,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-10-01T07:37:35Z",
-   "validado_em": "2026-10-01T07:42:54Z",
+   "validado_em": "2026-10-01T08:14:04Z",
    "cobertura_historica": {
     "inicio": "2026-09-27",
     "fim": "2026-10-01"
@@ -16915,10 +16521,10 @@
     "sha256": "919777c092024f80b4f047c5acbab3b810405ab248b4197f839e4759b0846b1f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "fa4767ccfa9a+alterado",
+   "versao_codigo": "00dc290a9fdd+alterado",
    "revisoes_conhecidas": {
     "total": 0,
-    "detectado_em": "2026-10-01T07:42:54Z",
+    "detectado_em": "2026-10-01T08:14:04Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -16948,7 +16554,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-10-01T07:37:35Z",
-   "validado_em": "2026-10-01T07:42:54Z",
+   "validado_em": "2026-10-01T08:14:04Z",
    "cobertura_historica": {
     "inicio": "2026-09-27",
     "fim": "2026-10-01"
@@ -16962,10 +16568,10 @@
     "sha256": "919777c092024f80b4f047c5acbab3b810405ab248b4197f839e4759b0846b1f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "fa4767ccfa9a+alterado",
+   "versao_codigo": "00dc290a9fdd+alterado",
    "revisoes_conhecidas": {
     "total": 3057,
-    "detectado_em": "2026-10-01T07:42:54Z",
+    "detectado_em": "2026-10-01T08:14:04Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -16995,7 +16601,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-10-01T07:37:35Z",
-   "validado_em": "2026-10-01T07:42:54Z",
+   "validado_em": "2026-10-01T08:14:04Z",
    "cobertura_historica": {
     "inicio": "2026-10-01",
     "fim": "2026-10-01"
@@ -17009,10 +16615,10 @@
     "sha256": "919777c092024f80b4f047c5acbab3b810405ab248b4197f839e4759b0846b1f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "fa4767ccfa9a+alterado",
+   "versao_codigo": "00dc290a9fdd+alterado",
    "revisoes_conhecidas": {
     "total": 0,
-    "detectado_em": "2026-10-01T07:42:54Z",
+    "detectado_em": "2026-10-01T08:14:04Z",
     "exemplos": []
    },
    "limitacoes": [
@@ -17021,13 +16627,62 @@
    ],
    "download": "/energia/series/dados_validacoes.csv",
    "notas_fonte": null
+  },
+  "reproducao": {
+   "indicador": "Manifesto, Parquet equivalentes e dicionário dos arquivos publicados",
+   "natureza": "CALCULADO",
+   "fonte": {
+    "orgao": "Scrutiniums (pipeline do observatório)",
+    "dataset": "Arquivos publicados em public/energia",
+    "recurso": "public/energia/gold, public/energia/series e public/energia/geo",
+    "url_dataset": "https://github.com/genarolins1975/scrutiniums/tree/main/public/energia",
+    "url_primaria": "https://github.com/genarolins1975/scrutiniums/tree/main/pipeline/energia/fontes/publicacao_dados.py",
+    "licenca": "Sem licença declarada no repositório para os metadados do pipeline; os dados de origem seguem a licença de cada fonte, registrada no catálogo."
+   },
+   "unidade": "arquivos",
+   "frequencia": "a cada execução do pipeline",
+   "periodo_referencia": {
+    "inicio": "2026-10-01",
+    "fim": "2026-10-01"
+   },
+   "publicado_pela_fonte_em": null,
+   "capturado_em": "2026-10-01T08:14:04Z",
+   "validado_em": "2026-10-01T08:14:04Z",
+   "cobertura_historica": {
+    "inicio": "2026-10-01",
+    "fim": "2026-10-01"
+   },
+   "transformacoes": [
+    "sha256 e tamanho de cada arquivo publicado",
+    "Parquet (zstd) de todo CSV com 2 MiB ou mais, gerado em fluxo",
+    "releitura do Parquet em lotes e comparação célula a célula com o CSV"
+   ],
+   "formula": "id da publicação = sha256 da lista [caminho, bytes, sha256] em ordem de caminho; Parquet equivalente ⇔ mesmas colunas e linhas e cada célula igual à do CSV (número comparado como decimal)",
+   "snapshot": {
+    "id": "series_publicadas@2026-10-01T08:14:04Z",
+    "sha256": "e5316a31427a08523c146376d3897a6899c034dfd772d216e0899836b7f0ea04"
+   },
+   "versao_pipeline": "energia-0.1.0",
+   "versao_codigo": "00dc290a9fdd+alterado",
+   "revisoes_conhecidas": {
+    "total": 0,
+    "detectado_em": "2026-10-01T08:14:04Z",
+    "exemplos": []
+   },
+   "limitacoes": [
+    "O manifesto gravado pelo módulo dados fica incompleto (completo = false) até o orquestrador regravá-lo no fim da execução: os arquivos reescritos depois dele aparecem em fora_do_manifesto.",
+    "O link para a versão exata depende do commit do build; sem ele, a página aponta o histórico do arquivo no ramo principal, e o sha256 do manifesto identifica a versão.",
+    "O silver com as vintages não vai para o git: reconstruir uma gold exige a cópia durável da release energia-estado."
+   ],
+   "download": "/energia/gold/manifesto.json",
+   "notas_fonte": null
   }
  },
  "evidencias": {
   "conjuntos_publicados": {
    "indicador": "Conjuntos publicados no catálogo",
-   "valor_exibido": "121",
-   "valor_calculo": 121.0,
+   "valor_exibido": "126",
+   "valor_calculo": 126.0,
    "unidade": "conjuntos",
    "periodo": {
     "inicio": "2026-10-01",
@@ -17083,20 +16738,20 @@
    "tratamento_ausencia": "conjunto sem evidência de uma etapa para na etapa anterior",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "fa4767ccfa9a+alterado",
-    "publicacao": "2026-10-01T07:42:54Z"
+    "codigo": "00dc290a9fdd+alterado",
+    "publicacao": "2026-10-01T08:14:04Z"
    },
    "revisoes": "Detecção de revisões não disponível para este número.",
    "testes": [
     {
      "nome": "sem checagem reprovada no relatório",
      "resultado": "aprovado",
-     "detalhe": "121 de 121 publicados sem checagem reprovada nos seus conjuntos (dados_validacoes.csv)"
+     "detalhe": "126 de 126 publicados sem checagem reprovada nos seus conjuntos (dados_validacoes.csv)"
     },
     {
      "nome": "consumido por gold íntegra",
      "resultado": "aprovado",
-     "detalhe": "121 de 121 publicados com gold consumidora íntegra na varredura das golds"
+     "detalhe": "126 de 126 publicados com gold consumidora íntegra na varredura das golds"
     }
    ],
    "reconciliacao": null,
@@ -17111,7 +16766,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py dados --sem-coleta",
-   "citacao": "SCRUTINIUMS. Conjuntos publicados no catálogo: 121 conjuntos, catálogo do observatório, 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, ANEEL e CCEE, Listagem de conjuntos (API CKAN package_search) (recurso package_search). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Conjuntos publicados no catálogo: 126 conjuntos, catálogo do observatório, 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, ANEEL e CCEE, Listagem de conjuntos (API CKAN package_search) (recurso package_search). Versão energia-0.1.0, código 00dc290a9fdd+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "conjuntos_atrasados": {
    "indicador": "Conjuntos com atualização atrasada",
@@ -17151,8 +16806,8 @@
    "tratamento_ausencia": "sem frequência declarada: SEM SLA; sem período nem data de publicação da fonte: SEM DADO",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "fa4767ccfa9a+alterado",
-    "publicacao": "2026-10-01T07:42:54Z"
+    "codigo": "00dc290a9fdd+alterado",
+    "publicacao": "2026-10-01T08:14:04Z"
    },
    "revisoes": "Detecção de revisões não disponível para este número.",
    "testes": [
@@ -17180,7 +16835,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py dados --sem-coleta",
-   "citacao": "SCRUTINIUMS. Conjuntos com atualização atrasada: 1 conjuntos, conjuntos integrados, 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: Scrutiniums (pipeline do observatório), Silvers do domínio Energia (recurso vintages vigentes de todos os conjuntos integrados; o sha256 é o da lista ordenada conjunto:recurso:sha256 de cada vintage vigente (o mesmo snapshot da proveniência 'saude'), capturado em 01/10/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Conjuntos com atualização atrasada: 1 conjuntos, conjuntos integrados, 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: Scrutiniums (pipeline do observatório), Silvers do domínio Energia (recurso vintages vigentes de todos os conjuntos integrados; o sha256 é o da lista ordenada conjunto:recurso:sha256 de cada vintage vigente (o mesmo snapshot da proveniência 'saude'), capturado em 01/10/2026). Versão energia-0.1.0, código 00dc290a9fdd+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "maior_revisao_relativa": {
    "indicador": "Maior revisão relativa detectada (Balanço de Energia nos Subsistemas)",
@@ -17242,8 +16897,8 @@
    "tratamento_ausencia": "referência ausente numa captura não conta como revisão (ausência não é zero)",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "fa4767ccfa9a+alterado",
-    "publicacao": "2026-10-01T07:42:54Z"
+    "codigo": "00dc290a9fdd+alterado",
+    "publicacao": "2026-10-01T08:14:04Z"
    },
    "revisoes": "2620 observações (pares série e referência) revisadas pela fonte entre capturas do mesmo arquivo, em 336 referências distintas.",
    "testes": [
@@ -17261,7 +16916,262 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py dados --sem-coleta",
-   "citacao": "SCRUTINIUMS. Maior revisão relativa detectada (Balanço de Energia nos Subsistemas): 20656,6%, série carga.NE de balanco_energia_subsistema_ho, 26/09/2026 08:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Balanço de Energia nos Subsistemas (recurso BALANCO_ENERGIA_SUBSISTEMA_2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Maior revisão relativa detectada (Balanço de Energia nos Subsistemas): 20656,6%, série carga.NE de balanco_energia_subsistema_ho, 26/09/2026 08:00. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Balanço de Energia nos Subsistemas (recurso BALANCO_ENERGIA_SUBSISTEMA_2026). Versão energia-0.1.0, código 00dc290a9fdd+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "parquet_equivalentes": {
+   "indicador": "Arquivos Parquet equivalentes ao CSV de origem",
+   "valor_exibido": "25",
+   "valor_calculo": 25.0,
+   "unidade": "arquivos",
+   "periodo": {
+    "inicio": "2026-10-01",
+    "fim": "2026-10-01"
+   },
+   "entidade": "séries publicadas em public/energia/series",
+   "universo": "25 CSV com 2 MiB ou mais, cada um com o Parquet ao lado",
+   "filtros": [],
+   "fonte": {
+    "orgao": "Scrutiniums (pipeline do observatório)",
+    "conjunto": "Séries publicadas (CSV e Parquet)",
+    "recurso": "25 CSV de origem; o sha256 é o da lista ordenada caminho:sha256 recalculada na conferência (o de cada CSV está em arquivos.parquet de publicacao.json e no manifesto)",
+    "url": "https://github.com/genarolins1975/scrutiniums/tree/main/public/energia/series",
+    "arquivo": "public/energia/series/*.csv",
+    "sha256": "56adb29c993aef850de5e8a946ffe7ce3db87e7b805084bf75a20a42cd7a96c0",
+    "capturado_em": "2026-10-01T08:14:04Z",
+    "publicado_em": null
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "arquivos.parquet de publicacao.json com equivalente = true",
+   "manifesto": null,
+   "formula": "equivalente ⇔ mesmas colunas e linhas, texto igual, inteiro igual como texto, número igual como decimal (Decimal da representação mais curta do float64 = Decimal do texto do CSV) e vazio = nulo",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "todo CSV de public/energia/series com 2 MiB ou mais",
+   "tratamento_ausencia": "célula vazia do CSV é nulo no Parquet, nunca zero; coluna com número que o float64 não guarda exatamente fica como texto",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "00dc290a9fdd+alterado",
+    "publicacao": "2026-10-01T08:14:04Z"
+   },
+   "revisoes": "Detecção de revisões não disponível para este número.",
+   "testes": [
+    {
+     "nome": "Parquet relido em lotes e comparado célula a célula com o CSV",
+     "resultado": "aprovado",
+     "detalhe": "25 de 25 Parquet sem nenhuma célula divergente (dados_validacoes.csv, tipo equivalencia)"
+    },
+    {
+     "nome": "sha256 do CSV gravado nos metadados do Parquet igual ao do CSV publicado",
+     "resultado": "aprovado",
+     "detalhe": "25 de 25 Parquet citam o sha256 recalculado agora do CSV publicado"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Manifesto da publicação (JSON)",
+     "url": "/energia/gold/manifesto.json"
+    },
+    {
+     "rotulo": "Validações (CSV)",
+     "url": "/energia/series/dados_validacoes.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py dados --sem-coleta",
+   "citacao": "SCRUTINIUMS. Arquivos Parquet equivalentes ao CSV de origem: 25 arquivos, séries publicadas em public/energia/series, 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: Scrutiniums (pipeline do observatório), Séries publicadas (CSV e Parquet) (recurso 25 CSV de origem; o sha256 é o da lista ordenada caminho:sha256 recalculada na conferência (o de cada CSV está em arquivos.parquet de publicacao.json e no manifesto), capturado em 01/10/2026). Versão energia-0.1.0, código 00dc290a9fdd+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "afirmacoes_conferidas": {
+   "indicador": "Afirmações de integração da Metodologia conferidas com o catálogo",
+   "valor_exibido": "8",
+   "valor_calculo": 8.0,
+   "unidade": "afirmações",
+   "periodo": {
+    "inicio": "2026-10-01",
+    "fim": "2026-10-01"
+   },
+   "entidade": "página Metodologia",
+   "universo": "8 afirmações sobre fontes integradas, citando 26 conjuntos do catálogo",
+   "filtros": [],
+   "fonte": {
+    "orgao": "Scrutiniums (pipeline do observatório)",
+    "conjunto": "Catálogo do observatório (catalogo.json)",
+    "recurso": "catalogo.json gravado nesta publicação",
+    "url": "https://github.com/genarolins1975/scrutiniums/blob/main/public/energia/gold/catalogo.json",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": null,
+    "publicado_em": null,
+    "arquivos": [
+     {
+      "recurso": "/energia/gold/catalogo.json",
+      "arquivo": "public/energia/gold/catalogo.json",
+      "sha256": "0bff0add655b7fa0777b75bbba80d0ca1758e9d874a01838a70e49b78b8ad4e5",
+      "capturado_em": "2026-10-01T08:14:04Z",
+      "publicado_em": null
+     }
+    ]
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "ccee:agente_qtd_contabilizacao",
+    "ccee:consumo_classe_agente",
+    "ccee:consumo_mensal_ambiente_comercializacao",
+    "ccee:desligamento_compulsorio",
+    "ccee:desligamento_voluntario",
+    "ccee:encargo_ess_ancilar",
+    "ccee:encargo_pgto_mensal",
+    "ccee:garantia_fisica_sazo_mre_submercado",
+    "ccee:geracao_submercado",
+    "ccee:infomercado-mensal",
+    "ccee:lista_agente_associado",
+    "ccee:lista_perfil_v1",
+    "ccee:mre_mensal",
+    "ccee:parcela_carga_consumo",
+    "ccee:pld_horario",
+    "ccee:rd_encargos_contab_mensal",
+    "ccee:reserva_encargo",
+    "ccee:sumario_mensal_compra_venda_submercado",
+    "ccee:sumario_mensal_liquidacao",
+    "ons:cmo-semanal",
+    "ons:cmo-semi-horario",
+    "ons:cvu-usitermica",
+    "ons:documentos-limites-intercambio",
+    "ons:geracao-termica-despacho-2",
+    "ons:geracao-usina-2",
+    "ons:intercambio-nacional"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "conferida ⇔ todo conjunto citado está no catálogo gravado com o mesmo estado, chegou pelo menos a RECURSO VERIFICADO, e o texto só diz 'publicado' quando todos estão PUBLICADO",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "as afirmações de integração que a página Metodologia exibe (publicacao.json, afirmacoes)",
+   "tratamento_ausencia": "conjunto citado que não está no catálogo reprova a afirmação; nunca é contado como verificado",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "00dc290a9fdd+alterado",
+    "publicacao": "2026-10-01T08:14:04Z"
+   },
+   "revisoes": "Detecção de revisões não disponível para este número.",
+   "testes": [
+    {
+     "nome": "estado de cada conjunto citado relido no catalogo.json gravado",
+     "resultado": "aprovado",
+     "detalhe": "8 de 8 afirmações sem divergência"
+    },
+    {
+     "nome": "afirmação sobre limites de intercâmbio segue o achado A06 da gold da Rede",
+     "resultado": "aprovado",
+     "detalhe": "texto gerado do achado A06 de rede_detalhe.json: os limites operativos não foram integrados"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Catálogo (CSV)",
+     "url": "/energia/series/dados_catalogo.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py dados --sem-coleta",
+   "citacao": "SCRUTINIUMS. Afirmações de integração da Metodologia conferidas com o catálogo: 8 afirmações, página Metodologia, 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: Scrutiniums (pipeline do observatório), Catálogo do observatório (catalogo.json) (recurso catalogo.json gravado nesta publicação). Versão energia-0.1.0, código 00dc290a9fdd+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "checagens_reprovadas": {
+   "indicador": "Checagens automáticas reprovadas nesta publicação",
+   "valor_exibido": "3",
+   "valor_calculo": 3.0,
+   "unidade": "checagens",
+   "periodo": {
+    "inicio": "2026-10-01",
+    "fim": "2026-10-01"
+   },
+   "entidade": "publicação do observatório",
+   "universo": "2391 checagens sobre todas as golds, todos os CSV, as identidades declaradas, os Parquet e os conjuntos integrados",
+   "filtros": [],
+   "fonte": {
+    "orgao": "Scrutiniums (pipeline do observatório)",
+    "conjunto": "Validador genérico (pipeline/energia/validacoes.py)",
+    "recurso": "alvos reprovados (sha256 recalculado na validação) e silvers do domínio",
+    "url": "https://github.com/genarolins1975/scrutiniums/blob/main/pipeline/energia/validacoes.py",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": null,
+    "publicado_em": null,
+    "arquivos": [
+     {
+      "recurso": "/energia/series/empresas_financas_ajustes.csv",
+      "arquivo": "public/energia/series/empresas_financas_ajustes.csv",
+      "sha256": "25518c16ec119b7afc8e697be910a5ca5541f000131e8d8d50a3d1ca82deea17",
+      "capturado_em": "2026-10-01T08:14:04Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "/energia/series/mercado_nacional_mensal.csv",
+      "arquivo": "public/energia/series/mercado_nacional_mensal.csv",
+      "sha256": "eb6fcba7b021f6d4d145b4b1d76d81d2331282195784067af7be923986b2c2a0",
+      "capturado_em": "2026-10-01T08:14:04Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "/energia/series/sintese_regras_diario.csv",
+      "arquivo": "public/energia/series/sintese_regras_diario.csv",
+      "sha256": "7b975056e280af8cce712c6b599169edd36fdd2bb77837246bbfd80e0cf4ddd1",
+      "capturado_em": "2026-10-01T08:14:04Z",
+      "publicado_em": null
+     },
+     {
+      "recurso": "silvers do domínio Energia (vintages vigentes)",
+      "arquivo": "data/energia/silver/*.db",
+      "sha256": "919777c092024f80b4f047c5acbab3b810405ab248b4197f839e4759b0846b1f",
+      "capturado_em": "2026-10-01T07:37:35Z",
+      "publicado_em": null
+     }
+    ]
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [
+    "csv:empresas_financas_ajustes.csv:colunas",
+    "csv:mercado_nacional_mensal.csv:colunas",
+    "csv:sintese_regras_diario.csv:colunas"
+   ],
+   "chaves_total": null,
+   "consulta": null,
+   "manifesto": null,
+   "formula": "contagem de checagens com resultado reprovado; o veredito de um alvo é o pior resultado das suas checagens",
+   "numerador": null,
+   "denominador": null,
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "golds de public/energia/gold, CSV de public/energia/series, identidades de agregação declaradas, Parquet e conjuntos",
+   "tratamento_ausencia": "checagem sem aplicação ao alvo é não aplicável, nunca aprovada",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "00dc290a9fdd+alterado",
+    "publicacao": "2026-10-01T08:14:04Z"
+   },
+   "revisoes": "Detecção de revisões não disponível para este número.",
+   "testes": [
+    {
+     "nome": "recontagem no dados_validacoes.csv publicado",
+     "resultado": "aprovado",
+     "detalhe": "3 reprovadas em 2391 linhas do arquivo gravado"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Validações (CSV)",
+     "url": "/energia/series/dados_validacoes.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py dados --sem-coleta",
+   "citacao": "SCRUTINIUMS. Checagens automáticas reprovadas nesta publicação: 3 checagens, publicação do observatório, 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: Scrutiniums (pipeline do observatório), Validador genérico (pipeline/energia/validacoes.py) (recurso alvos reprovados (sha256 recalculado na validação) e silvers do domínio). Versão energia-0.1.0, código 00dc290a9fdd+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  }
 }

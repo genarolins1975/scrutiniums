@@ -471,6 +471,8 @@ export type AguaClima = {
     correlacao_geral: number | null;
     pares: number;
     vies_geral_pct: number | null;
+    /** Primeiro e último mês realmente comparados (AAAA-MM); null sem par bacia e mês. */
+    periodo: { inicio: string; fim: string } | null;
   };
   cobertura_precipitacao: { bacia: string; pontos: number; passos_grau: number[]; poligonos: string[] }[];
   cobertura_temperatura: {
@@ -615,10 +617,12 @@ export type AguaEvidenciaChave =
   | "ear_sin_mwmes"
   | "capacidade"
   | "ena_30d_sin"
+  | "ena_arm_30d_sin"
   | "mlt_pmo_vs_aberto"
   | "temperatura_sin_30d"
   | "precipitacao_maior_bacia_30d"
-  | "balanco_maior_reservatorio";
+  | "balanco_maior_reservatorio"
+  | "fecham_por_construcao";
 
 export type AguaDetalheGold = Cabecalho & {
   dias_referencia: {

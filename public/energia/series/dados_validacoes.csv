@@ -4,15 +4,15 @@ gold:agua_detalhe.json:cabecalho;agua_detalhe.json;esquema;aprovado;Cabeçalho c
 gold:agua_detalhe.json:proveniencia;agua_detalhe.json;proveniencia;aprovado;12 proveniências completas;toda proveniência com natureza válida, fonte (órgão, URL https, licença), período, snapshot com sha256, captura e limitações, CALCULADO com fórmula;12;0;
 gold:agua_detalhe.json:links;agua_detalhe.json;downloads;aprovado;16 arquivos citados existem;todo caminho /energia/series, /energia/gold ou /energia/geo citado existe em public/;16;0;
 gold:agua_detalhe.json:datas_futuras;agua_detalhe.json;datas_futuras;aprovado;Nenhum período observado ou calculado além da data da validação;fim do período de referência até hoje (Brasília), salvo PREVISTO, CENARIO ou regra de horizonte da fonte;12;0;
-gold:agua_detalhe.json:drift;agua_detalhe.json;drift_esquema;aprovado;0 campos removidos, 0 com tipo alterado e 0 novos em relação ao último commit;campos e tipos até 3 níveis iguais aos da publicação anterior (campo removido pode quebrar a página que o lê);1288;0;
-gold:agua_detalhe.json:tamanho;agua_detalhe.json;tamanho;aprovado;378 KB;até 400 KB (contrato dos módulos);1;0;
+gold:agua_detalhe.json:drift;agua_detalhe.json;drift_esquema;aprovado;0 campos removidos, 0 com tipo alterado e 96 novos em relação ao último commit;campos e tipos até 3 níveis iguais aos da publicação anterior (campo removido pode quebrar a página que o lê);1288;0;
+gold:agua_detalhe.json:tamanho;agua_detalhe.json;tamanho;aprovado;386 KB;até 400 KB (contrato dos módulos);1;0;
 gold:arquivos.json:json;arquivos.json;json;aprovado;JSON válido, sem NaN ou Infinity;JSON válido, sem NaN ou Infinity;1;0;
 gold:arquivos.json:cabecalho;arquivos.json;esquema;aprovado;Cabeçalho completo e publicação íntegra;dominio = energia, disponivel booleano e verdadeiro, gerado_em em UTC;1;0;
 gold:arquivos.json:proveniencia;arquivos.json;proveniencia;nao_aplicavel;Gold de controle (catálogo, metadados, manifesto): não publica indicador.;toda proveniência com natureza, fonte, período, snapshot, captura e limitações;;0;
 gold:arquivos.json:links;arquivos.json;downloads;nao_aplicavel;A gold não cita arquivos de download;todo caminho /energia/series, /energia/gold ou /energia/geo citado existe em public/;0;0;
 gold:arquivos.json:datas_futuras;arquivos.json;datas_futuras;nao_aplicavel;Nenhum período observado ou calculado além da data da validação;fim do período de referência até hoje (Brasília), salvo PREVISTO, CENARIO ou regra de horizonte da fonte;0;0;
-gold:arquivos.json:drift;arquivos.json;drift_esquema;aprovado;0 campos removidos, 0 com tipo alterado e 4 novos em relação ao último commit;campos e tipos até 3 níveis iguais aos da publicação anterior (campo removido pode quebrar a página que o lê);815;0;
-gold:arquivos.json:tamanho;arquivos.json;tamanho;aprovado;122 KB;até 400 KB (contrato dos módulos);1;0;
+gold:arquivos.json:drift;arquivos.json;drift_esquema;aprovado;0 campos removidos, 0 com tipo alterado e 0 novos em relação ao último commit;campos e tipos até 3 níveis iguais aos da publicação anterior (campo removido pode quebrar a página que o lê);819;0;
+gold:arquivos.json:tamanho;arquivos.json;tamanho;aprovado;123 KB;até 400 KB (contrato dos módulos);1;0;
 gold:carga.json:json;carga.json;json;aprovado;JSON válido, sem NaN ou Infinity;JSON válido, sem NaN ou Infinity;1;0;
 gold:carga.json:cabecalho;carga.json;esquema;aprovado;Cabeçalho completo e publicação íntegra;dominio = energia, disponivel booleano e verdadeiro, gerado_em em UTC;1;0;
 gold:carga.json:proveniencia;carga.json;proveniencia;aprovado;3 proveniências completas;toda proveniência com natureza válida, fonte (órgão, URL https, licença), período, snapshot com sha256, captura e limitações, CALCULADO com fórmula;3;0;
@@ -30,7 +30,7 @@ gold:carga_detalhe.json:tamanho;carga_detalhe.json;tamanho;ressalva;427 KB;até 
 gold:catalogo.json:json;catalogo.json;json;aprovado;JSON válido, sem NaN ou Infinity;JSON válido, sem NaN ou Infinity;1;0;
 gold:catalogo.json:cabecalho;catalogo.json;esquema;aprovado;Cabeçalho completo e publicação íntegra;dominio = energia, disponivel booleano e verdadeiro, gerado_em em UTC;1;0;
 gold:catalogo.json:proveniencia;catalogo.json;proveniencia;nao_aplicavel;Gold de controle (catálogo, metadados, manifesto): não publica indicador.;toda proveniência com natureza, fonte, período, snapshot, captura e limitações;;0;
-gold:catalogo.json:links;catalogo.json;downloads;aprovado;153 arquivos citados existem;todo caminho /energia/series, /energia/gold ou /energia/geo citado existe em public/;153;0;
+gold:catalogo.json:links;catalogo.json;downloads;aprovado;158 arquivos citados existem;todo caminho /energia/series, /energia/gold ou /energia/geo citado existe em public/;158;0;
 gold:catalogo.json:datas_futuras;catalogo.json;datas_futuras;nao_aplicavel;Nenhum período observado ou calculado além da data da validação;fim do período de referência até hoje (Brasília), salvo PREVISTO, CENARIO ou regra de horizonte da fonte;0;0;
 gold:catalogo.json:drift;catalogo.json;drift_esquema;aprovado;0 campos removidos, 0 com tipo alterado e 0 novos em relação ao último commit;campos e tipos até 3 níveis iguais aos da publicação anterior (campo removido pode quebrar a página que o lê);124;0;
 gold:catalogo.json:tamanho;catalogo.json;tamanho;aprovado;397 KB;até 400 KB (contrato dos módulos);1;0;
@@ -50,7 +50,7 @@ gold:conta.json:drift;conta.json;drift_esquema;aprovado;0 campos removidos, 0 co
 gold:conta.json:tamanho;conta.json;tamanho;aprovado;390 KB;até 400 KB (contrato dos módulos);1;0;
 gold:empresas.json:json;empresas.json;json;aprovado;JSON válido, sem NaN ou Infinity;JSON válido, sem NaN ou Infinity;1;0;
 gold:empresas.json:cabecalho;empresas.json;esquema;aprovado;Cabeçalho completo e publicação íntegra;dominio = energia, disponivel booleano e verdadeiro, gerado_em em UTC;1;0;
-gold:empresas.json:proveniencia;empresas.json;proveniencia;reprovado;11 de 12 proveniências completas;toda proveniência com natureza válida, fonte (órgão, URL https, licença), período, snapshot com sha256, captura e limitações, CALCULADO com fórmula;12;1;[{"indicador":"Índice de distribuidoras: identidade, sigla, classificação, UFs e controle","faltam":["snapshot.sha256","capturado_em"]}]
+gold:empresas.json:proveniencia;empresas.json;proveniencia;aprovado;12 proveniências completas;toda proveniência com natureza válida, fonte (órgão, URL https, licença), período, snapshot com sha256, captura e limitações, CALCULADO com fórmula;12;0;
 gold:empresas.json:links;empresas.json;downloads;aprovado;21 arquivos citados existem;todo caminho /energia/series, /energia/gold ou /energia/geo citado existe em public/;21;0;
 gold:empresas.json:datas_futuras;empresas.json;datas_futuras;aprovado;Nenhum período observado ou calculado além da data da validação;fim do período de referência até hoje (Brasília), salvo PREVISTO, CENARIO ou regra de horizonte da fonte;12;0;
 gold:empresas.json:drift;empresas.json;drift_esquema;aprovado;0 campos removidos, 0 com tipo alterado e 0 novos em relação ao último commit;campos e tipos até 3 níveis iguais aos da publicação anterior (campo removido pode quebrar a página que o lê);867;0;
@@ -95,7 +95,7 @@ gold:mercado.json:cabecalho;mercado.json;esquema;aprovado;Cabeçalho completo e 
 gold:mercado.json:proveniencia;mercado.json;proveniencia;aprovado;8 proveniências completas;toda proveniência com natureza válida, fonte (órgão, URL https, licença), período, snapshot com sha256, captura e limitações, CALCULADO com fórmula;8;0;
 gold:mercado.json:links;mercado.json;downloads;aprovado;8 arquivos citados existem;todo caminho /energia/series, /energia/gold ou /energia/geo citado existe em public/;8;0;
 gold:mercado.json:datas_futuras;mercado.json;datas_futuras;aprovado;Nenhum período observado ou calculado além da data da validação;fim do período de referência até hoje (Brasília), salvo PREVISTO, CENARIO ou regra de horizonte da fonte;8;0;
-gold:mercado.json:drift;mercado.json;drift_esquema;ressalva;14 campos removidos, 6 com tipo alterado e 89 novos em relação ao último commit;campos e tipos até 3 níveis iguais aos da publicação anterior (campo removido pode quebrar a página que o lê);745;20;[{"removido":"agentes_migracao.parcelas_mensal[].consumo_total_mwh"},{"removido":"agentes_migracao.parcelas_mensal[].por_submercado"},{"removido":"agentes_migracao.perfis.posicao"},{"tipo_alterado":"agentes_migracao.kpis.parcelas_carga.migracoes_no_mes","antes":"float","depois":"int"},{"tipo_alterado":"agentes_migracao.kpis.parcelas_carga.valor","antes":"float","depois":"int"}]
+gold:mercado.json:drift;mercado.json;drift_esquema;aprovado;0 campos removidos, 0 com tipo alterado e 0 novos em relação ao último commit;campos e tipos até 3 níveis iguais aos da publicação anterior (campo removido pode quebrar a página que o lê);824;0;
 gold:mercado.json:tamanho;mercado.json;tamanho;ressalva;424 KB;até 400 KB (contrato dos módulos);1;1;
 gold:meta.json:json;meta.json;json;aprovado;JSON válido, sem NaN ou Infinity;JSON válido, sem NaN ou Infinity;1;0;
 gold:meta.json:cabecalho;meta.json;esquema;aprovado;Cabeçalho completo e publicação íntegra;dominio = energia, disponivel booleano e verdadeiro, gerado_em em UTC;1;0;
@@ -110,7 +110,7 @@ gold:metricas.json:proveniencia;metricas.json;proveniencia;nao_aplicavel;Gold de
 gold:metricas.json:links;metricas.json;downloads;nao_aplicavel;A gold não cita arquivos de download;todo caminho /energia/series, /energia/gold ou /energia/geo citado existe em public/;0;0;
 gold:metricas.json:datas_futuras;metricas.json;datas_futuras;nao_aplicavel;Nenhum período observado ou calculado além da data da validação;fim do período de referência até hoje (Brasília), salvo PREVISTO, CENARIO ou regra de horizonte da fonte;0;0;
 gold:metricas.json:drift;metricas.json;drift_esquema;aprovado;0 campos removidos, 0 com tipo alterado e 0 novos em relação ao último commit;campos e tipos até 3 níveis iguais aos da publicação anterior (campo removido pode quebrar a página que o lê);29;0;
-gold:metricas.json:tamanho;metricas.json;tamanho;ressalva;596 KB;até 400 KB (contrato dos módulos);1;1;
+gold:metricas.json:tamanho;metricas.json;tamanho;ressalva;605 KB;até 400 KB (contrato dos módulos);1;1;
 gold:modelos.json:json;modelos.json;json;aprovado;JSON válido, sem NaN ou Infinity;JSON válido, sem NaN ou Infinity;1;0;
 gold:modelos.json:cabecalho;modelos.json;esquema;aprovado;Cabeçalho completo e publicação íntegra;dominio = energia, disponivel booleano e verdadeiro, gerado_em em UTC;1;0;
 gold:modelos.json:proveniencia;modelos.json;proveniencia;nao_aplicavel;Gold de controle (catálogo, metadados, manifesto): não publica indicador.;toda proveniência com natureza, fonte, período, snapshot, captura e limitações;;0;
@@ -186,15 +186,15 @@ gold:sintese.json:cabecalho;sintese.json;esquema;aprovado;Cabeçalho completo e 
 gold:sintese.json:proveniencia;sintese.json;proveniencia;ressalva;Nenhuma proveniência no formato do contrato (natureza, fonte, limitações) foi encontrada.;toda proveniência com natureza, fonte, período, snapshot, captura e limitações;0;0;
 gold:sintese.json:links;sintese.json;downloads;aprovado;21 arquivos citados existem;todo caminho /energia/series, /energia/gold ou /energia/geo citado existe em public/;21;0;
 gold:sintese.json:datas_futuras;sintese.json;datas_futuras;nao_aplicavel;Nenhum período observado ou calculado além da data da validação;fim do período de referência até hoje (Brasília), salvo PREVISTO, CENARIO ou regra de horizonte da fonte;0;0;
-gold:sintese.json:drift;sintese.json;drift_esquema;ressalva;15 campos removidos, 0 com tipo alterado e 69 novos em relação ao último commit;campos e tipos até 3 níveis iguais aos da publicação anterior (campo removido pode quebrar a página que o lê);288;15;[{"removido":"destaques.itens[].desde"},{"removido":"destaques.itens[].dias"},{"removido":"destaques.itens[].estado"}]
-gold:sintese.json:tamanho;sintese.json;tamanho;aprovado;330 KB;até 400 KB (contrato dos módulos);1;0;
+gold:sintese.json:drift;sintese.json;drift_esquema;aprovado;0 campos removidos, 0 com tipo alterado e 1 novos em relação ao último commit;campos e tipos até 3 níveis iguais aos da publicação anterior (campo removido pode quebrar a página que o lê);342;0;
+gold:sintese.json:tamanho;sintese.json;tamanho;aprovado;350 KB;até 400 KB (contrato dos módulos);1;0;
 gold:territorio.json:json;territorio.json;json;aprovado;JSON válido, sem NaN ou Infinity;JSON válido, sem NaN ou Infinity;1;0;
 gold:territorio.json:cabecalho;territorio.json;esquema;aprovado;Cabeçalho completo e publicação íntegra;dominio = energia, disponivel booleano e verdadeiro, gerado_em em UTC;1;0;
 gold:territorio.json:proveniencia;territorio.json;proveniencia;aprovado;17 proveniências completas;toda proveniência com natureza válida, fonte (órgão, URL https, licença), período, snapshot com sha256, captura e limitações, CALCULADO com fórmula;17;0;
 gold:territorio.json:links;territorio.json;downloads;aprovado;30 arquivos citados existem;todo caminho /energia/series, /energia/gold ou /energia/geo citado existe em public/;30;0;
 gold:territorio.json:datas_futuras;territorio.json;datas_futuras;aprovado;Nenhum período observado ou calculado além da data da validação;fim do período de referência até hoje (Brasília), salvo PREVISTO, CENARIO ou regra de horizonte da fonte;17;0;
-gold:territorio.json:drift;territorio.json;drift_esquema;ressalva;39 campos removidos, 0 com tipo alterado e 281 novos em relação ao último commit;campos e tipos até 3 níveis iguais aos da publicação anterior (campo removido pode quebrar a página que o lê);901;39;[{"removido":"proveniencia.pld"},{"removido":"proveniencia.pld.capturado_em"},{"removido":"proveniencia.pld.cobertura_historica"}]
-gold:territorio.json:tamanho;territorio.json;tamanho;aprovado;388 KB;até 400 KB (contrato dos módulos);1;0;
+gold:territorio.json:drift;territorio.json;drift_esquema;aprovado;0 campos removidos, 0 com tipo alterado e 0 novos em relação ao último commit;campos e tipos até 3 níveis iguais aos da publicação anterior (campo removido pode quebrar a página que o lê);1174;0;
+gold:territorio.json:tamanho;territorio.json;tamanho;aprovado;389 KB;até 400 KB (contrato dos módulos);1;0;
 gold:transicao.json:json;transicao.json;json;aprovado;JSON válido, sem NaN ou Infinity;JSON válido, sem NaN ou Infinity;1;0;
 gold:transicao.json:cabecalho;transicao.json;esquema;aprovado;Cabeçalho completo e publicação íntegra;dominio = energia, disponivel booleano e verdadeiro, gerado_em em UTC;1;0;
 gold:transicao.json:proveniencia;transicao.json;proveniencia;aprovado;6 proveniências completas;toda proveniência com natureza válida, fonte (órgão, URL https, licença), período, snapshot com sha256, captura e limitações, CALCULADO com fórmula;6;0;
@@ -282,14 +282,14 @@ csv:agua_reservatorios_diario.csv:chave;agua_reservatorios_diario.csv;chaves_uni
 csv:agua_reservatorios_diario.csv:datas_futuras;agua_reservatorios_diario.csv;datas_futuras;aprovado;Nenhuma data além do dia seguinte;colunas data, dia, mês, competência, semana operativa ou ano até o dia seguinte à validação (ou a folga de publicação registrada para o arquivo);1;0;
 csv:agua_reservatorios_diario.csv:dicionario;agua_reservatorios_diario.csv;dicionario;aprovado;Dicionário de colunas publicado;todo arquivo para download tem colunas, unidades e regra de ausência descritas;1;0;
 csv:agua_reservatorios_diario.csv:tamanho;agua_reservatorios_diario.csv;tamanho;aprovado;3.85 MB;até 5 MB por arquivo (contrato dos módulos);1;0;
-csv:agua_subsistemas_diario.csv:legivel;agua_subsistemas_diario.csv;esquema;aprovado;10 colunas, 8665 linhas;UTF-8, ',', cabeçalho com nomes únicos e não vazios;8665;0;
+csv:agua_subsistemas_diario.csv:legivel;agua_subsistemas_diario.csv;esquema;aprovado;13 colunas, 8665 linhas;UTF-8, ',', cabeçalho com nomes únicos e não vazios;8665;0;
 csv:agua_subsistemas_diario.csv:colunas;agua_subsistemas_diario.csv;esquema;aprovado;Todas as linhas têm o número de colunas do cabeçalho;toda linha com o mesmo número de colunas do cabeçalho;8665;0;
-csv:agua_subsistemas_diario.csv:ausencia;agua_subsistemas_diario.csv;ausencia;aprovado;Ausência sempre como campo vazio;ausência é campo vazio, nunca 'nan', 'None', 'null' ou 'NA';86650;0;
+csv:agua_subsistemas_diario.csv:ausencia;agua_subsistemas_diario.csv;ausencia;aprovado;Ausência sempre como campo vazio;ausência é campo vazio, nunca 'nan', 'None', 'null' ou 'NA';112645;0;
 csv:agua_subsistemas_diario.csv:duplicadas;agua_subsistemas_diario.csv;chaves_unicas;aprovado;Nenhuma linha repetida;nenhuma linha idêntica a outra;8665;0;
 csv:agua_subsistemas_diario.csv:chave;agua_subsistemas_diario.csv;chaves_unicas;aprovado;Chave inferida única: data, recorte, captura_ear, captura_ena;colunas de identificação (pelo nome) e não numéricas formam chave única, a inferência pode errar quando a coluna de identificação tem nome fora do padrão;8665;0;
 csv:agua_subsistemas_diario.csv:datas_futuras;agua_subsistemas_diario.csv;datas_futuras;aprovado;Nenhuma data além do dia seguinte;colunas data, dia, mês, competência, semana operativa ou ano até o dia seguinte à validação (ou a folga de publicação registrada para o arquivo);1;0;
 csv:agua_subsistemas_diario.csv:dicionario;agua_subsistemas_diario.csv;dicionario;aprovado;Dicionário de colunas publicado;todo arquivo para download tem colunas, unidades e regra de ausência descritas;1;0;
-csv:agua_subsistemas_diario.csv:tamanho;agua_subsistemas_diario.csv;tamanho;aprovado;1.28 MB;até 5 MB por arquivo (contrato dos módulos);1;0;
+csv:agua_subsistemas_diario.csv:tamanho;agua_subsistemas_diario.csv;tamanho;aprovado;1.52 MB;até 5 MB por arquivo (contrato dos módulos);1;0;
 csv:agua_temperatura_uf_diario.csv:legivel;agua_temperatura_uf_diario.csv;esquema;aprovado;7 colunas, 76329 linhas;UTF-8, ',', cabeçalho com nomes únicos e não vazios;76329;0;
 csv:agua_temperatura_uf_diario.csv:colunas;agua_temperatura_uf_diario.csv;esquema;aprovado;Todas as linhas têm o número de colunas do cabeçalho;toda linha com o mesmo número de colunas do cabeçalho;76329;0;
 csv:agua_temperatura_uf_diario.csv:ausencia;agua_temperatura_uf_diario.csv;ausencia;aprovado;Ausência sempre como campo vazio;ausência é campo vazio, nunca 'nan', 'None', 'null' ou 'NA';534303;0;
@@ -987,10 +987,10 @@ csv:mercado_encargos_mme.csv:datas_futuras;mercado_encargos_mme.csv;datas_futura
 csv:mercado_encargos_mme.csv:dicionario;mercado_encargos_mme.csv;dicionario;aprovado;Dicionário de colunas publicado;todo arquivo para download tem colunas, unidades e regra de ausência descritas;1;0;
 csv:mercado_encargos_mme.csv:tamanho;mercado_encargos_mme.csv;tamanho;aprovado;0.02 MB;até 5 MB por arquivo (contrato dos módulos);1;0;
 csv:mercado_nacional_mensal.csv:legivel;mercado_nacional_mensal.csv;esquema;aprovado;17 colunas, 272 linhas;UTF-8, ',', cabeçalho com nomes únicos e não vazios;272;0;
-csv:mercado_nacional_mensal.csv:colunas;mercado_nacional_mensal.csv;esquema;reprovado;10 linhas com número de colunas diferente do cabeçalho;toda linha com o mesmo número de colunas do cabeçalho;272;10;[{"linha":187,"colunas":18},{"linha":201,"colunas":19},{"linha":206,"colunas":20},{"linha":207,"colunas":18},{"linha":231,"colunas":18}]
+csv:mercado_nacional_mensal.csv:colunas;mercado_nacional_mensal.csv;esquema;reprovado;18 linhas com número de colunas diferente do cabeçalho;toda linha com o mesmo número de colunas do cabeçalho;272;18;[{"linha":187,"colunas":19},{"linha":189,"colunas":18},{"linha":201,"colunas":19},{"linha":205,"colunas":18},{"linha":206,"colunas":20}]
 csv:mercado_nacional_mensal.csv:ausencia;mercado_nacional_mensal.csv;ausencia;aprovado;Ausência sempre como campo vazio;ausência é campo vazio, nunca 'nan', 'None', 'null' ou 'NA';4624;0;
 csv:mercado_nacional_mensal.csv:duplicadas;mercado_nacional_mensal.csv;chaves_unicas;aprovado;Nenhuma linha repetida;nenhuma linha idêntica a outra;272;0;
-csv:mercado_nacional_mensal.csv:chave;mercado_nacional_mensal.csv;chaves_unicas;aprovado;Chave inferida única: mes, samp_ocorrencias;colunas de identificação (pelo nome) e não numéricas formam chave única, a inferência pode errar quando a coluna de identificação tem nome fora do padrão;262;0;
+csv:mercado_nacional_mensal.csv:chave;mercado_nacional_mensal.csv;chaves_unicas;aprovado;Chave inferida única: mes, samp_ocorrencias;colunas de identificação (pelo nome) e não numéricas formam chave única, a inferência pode errar quando a coluna de identificação tem nome fora do padrão;254;0;
 csv:mercado_nacional_mensal.csv:datas_futuras;mercado_nacional_mensal.csv;datas_futuras;aprovado;Nenhuma data além do dia seguinte;colunas data, dia, mês, competência, semana operativa ou ano até o dia seguinte à validação (ou a folga de publicação registrada para o arquivo);1;0;
 csv:mercado_nacional_mensal.csv:dicionario;mercado_nacional_mensal.csv;dicionario;aprovado;Dicionário de colunas publicado;todo arquivo para download tem colunas, unidades e regra de ausência descritas;1;0;
 csv:mercado_nacional_mensal.csv:tamanho;mercado_nacional_mensal.csv;tamanho;aprovado;0.03 MB;até 5 MB por arquivo (contrato dos módulos);1;0;
@@ -1442,11 +1442,11 @@ csv:regulacao_procedimentos_vigentes.csv:chave;regulacao_procedimentos_vigentes.
 csv:regulacao_procedimentos_vigentes.csv:datas_futuras;regulacao_procedimentos_vigentes.csv;datas_futuras;nao_aplicavel;Sem coluna de tempo reconhecida;colunas data, dia, mês, competência, semana operativa ou ano até o dia seguinte à validação (ou a folga de publicação registrada para o arquivo);0;0;
 csv:regulacao_procedimentos_vigentes.csv:dicionario;regulacao_procedimentos_vigentes.csv;dicionario;aprovado;Dicionário de colunas publicado;todo arquivo para download tem colunas, unidades e regra de ausência descritas;1;0;
 csv:regulacao_procedimentos_vigentes.csv:tamanho;regulacao_procedimentos_vigentes.csv;tamanho;aprovado;0.04 MB;até 5 MB por arquivo (contrato dos módulos);1;0;
-csv:sintese_episodios.csv:legivel;sintese_episodios.csv;esquema;aprovado;8 colunas, 69 linhas;UTF-8, ',', cabeçalho com nomes únicos e não vazios;69;0;
-csv:sintese_episodios.csv:colunas;sintese_episodios.csv;esquema;aprovado;Todas as linhas têm o número de colunas do cabeçalho;toda linha com o mesmo número de colunas do cabeçalho;69;0;
-csv:sintese_episodios.csv:ausencia;sintese_episodios.csv;ausencia;aprovado;Ausência sempre como campo vazio;ausência é campo vazio, nunca 'nan', 'None', 'null' ou 'NA';552;0;
-csv:sintese_episodios.csv:duplicadas;sintese_episodios.csv;chaves_unicas;aprovado;Nenhuma linha repetida;nenhuma linha idêntica a outra;69;0;
-csv:sintese_episodios.csv:chave;sintese_episodios.csv;chaves_unicas;aprovado;Chave inferida única: regra, inicio, confirmado_em, fim, normalizado_em;colunas de identificação (pelo nome) e não numéricas formam chave única, a inferência pode errar quando a coluna de identificação tem nome fora do padrão;69;0;
+csv:sintese_episodios.csv:legivel;sintese_episodios.csv;esquema;aprovado;8 colunas, 78 linhas;UTF-8, ',', cabeçalho com nomes únicos e não vazios;78;0;
+csv:sintese_episodios.csv:colunas;sintese_episodios.csv;esquema;aprovado;Todas as linhas têm o número de colunas do cabeçalho;toda linha com o mesmo número de colunas do cabeçalho;78;0;
+csv:sintese_episodios.csv:ausencia;sintese_episodios.csv;ausencia;aprovado;Ausência sempre como campo vazio;ausência é campo vazio, nunca 'nan', 'None', 'null' ou 'NA';624;0;
+csv:sintese_episodios.csv:duplicadas;sintese_episodios.csv;chaves_unicas;aprovado;Nenhuma linha repetida;nenhuma linha idêntica a outra;78;0;
+csv:sintese_episodios.csv:chave;sintese_episodios.csv;chaves_unicas;aprovado;Chave inferida única: regra, inicio, confirmado_em, fim, normalizado_em;colunas de identificação (pelo nome) e não numéricas formam chave única, a inferência pode errar quando a coluna de identificação tem nome fora do padrão;78;0;
 csv:sintese_episodios.csv:datas_futuras;sintese_episodios.csv;datas_futuras;nao_aplicavel;Sem coluna de tempo reconhecida;colunas data, dia, mês, competência, semana operativa ou ano até o dia seguinte à validação (ou a folga de publicação registrada para o arquivo);0;0;
 csv:sintese_episodios.csv:dicionario;sintese_episodios.csv;dicionario;aprovado;Dicionário de colunas publicado;todo arquivo para download tem colunas, unidades e regra de ausência descritas;1;0;
 csv:sintese_episodios.csv:tamanho;sintese_episodios.csv;tamanho;aprovado;0.00 MB;até 5 MB por arquivo (contrato dos módulos);1;0;
@@ -1465,7 +1465,7 @@ csv:sintese_regras_diario.csv:duplicadas;sintese_regras_diario.csv;chaves_unicas
 csv:sintese_regras_diario.csv:chave;sintese_regras_diario.csv;chaves_unicas;aprovado;Chave inferida única: data, regra, estado, detalhe;colunas de identificação (pelo nome) e não numéricas formam chave única, a inferência pode errar quando a coluna de identificação tem nome fora do padrão;17882;0;
 csv:sintese_regras_diario.csv:datas_futuras;sintese_regras_diario.csv;datas_futuras;aprovado;Nenhuma data além do dia seguinte;colunas data, dia, mês, competência, semana operativa ou ano até o dia seguinte à validação (ou a folga de publicação registrada para o arquivo);1;0;
 csv:sintese_regras_diario.csv:dicionario;sintese_regras_diario.csv;dicionario;aprovado;Dicionário de colunas publicado;todo arquivo para download tem colunas, unidades e regra de ausência descritas;1;0;
-csv:sintese_regras_diario.csv:tamanho;sintese_regras_diario.csv;tamanho;aprovado;1.11 MB;até 5 MB por arquivo (contrato dos módulos);1;0;
+csv:sintese_regras_diario.csv:tamanho;sintese_regras_diario.csv;tamanho;aprovado;1.13 MB;até 5 MB por arquivo (contrato dos módulos);1;0;
 csv:sintese_revisoes.csv:legivel;sintese_revisoes.csv;esquema;aprovado;13 colunas, 3057 linhas;UTF-8, ',', cabeçalho com nomes únicos e não vazios;3057;0;
 csv:sintese_revisoes.csv:colunas;sintese_revisoes.csv;esquema;aprovado;Todas as linhas têm o número de colunas do cabeçalho;toda linha com o mesmo número de colunas do cabeçalho;3057;0;
 csv:sintese_revisoes.csv:ausencia;sintese_revisoes.csv;ausencia;aprovado;Ausência sempre como campo vazio;ausência é campo vazio, nunca 'nan', 'None', 'null' ou 'NA';39741;0;

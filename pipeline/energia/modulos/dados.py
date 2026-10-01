@@ -20,8 +20,10 @@ golds presentes), e calcula:
 2. P068: por conjunto, último período disponível, captura, tentativa e falha (a falha
    nunca renova a data do dado), frequência declarada pela fonte e SLA de atualidade
    derivado dela, completude interna das séries e cobertura do último período, e
-   revisões com magnitude e alcance (referências, séries, período afetado, maior
-   mudança absoluta e relativa); calendário de capturas, falhas e revisões.
+   revisões com magnitude e alcance (observações e referências revisadas, séries,
+   período afetado, maior mudança absoluta e relativa), sempre entre capturas do mesmo
+   arquivo; mudanças de cadastro idem; diferenças entre arquivos do mesmo conjunto
+   como conflito, à parte; calendário de capturas, falhas e revisões.
 3. P069: Parquet ao lado dos CSV grandes (mesmo conteúdo, conferido célula a célula),
    manifesto com sha256 de cada arquivo publicado e id da publicação, dicionário de
    colunas e instruções de reprodução pelo histórico do git.
@@ -35,6 +37,7 @@ recusa o pedido), verificação parcial de recursos e metadados de frequência d
 fora dos portais (SIDRA, CVM, MME).
 """
 import calendar
+import hashlib
 import json
 import os
 import re
@@ -618,6 +621,16 @@ def atualidade(an, freq, hoje, descontinuado):
     return out
 
 
+def _poucos_arquivos(valores, n=4):
+    """Exemplo de conflito com até n arquivos: o primeiro e os n − 1 mais recentes em ordem
+    de nome (código reutilizado em 20 arquivos anuais do CVU vira um exemplo legível); a
+    contagem completa está em conflitos_entre_recursos."""
+    itens = sorted(valores.items())
+    if len(itens) <= n:
+        return dict(itens)
+    return dict([itens[0]] + itens[-(n - 1):])
+
+
 def _resumo_revisao(an):
     rv = (an or {}).get("revisoes")
     rr = (an or {}).get("revisoes_registros")
@@ -652,8 +665,10 @@ def _resumo_revisao(an):
         if rr.get("metadado_do_arquivo"):
             reg["metadado_do_arquivo"] = rr["metadado_do_arquivo"]
         if rr.get("conflitos_entre_recursos"):
+            ex = rr["exemplos_conflito"][:1]
+            ex = [{**e, "valores": _poucos_arquivos(e["valores"])} for e in ex]
             reg["conflitos_entre_recursos"] = {"campos": rr["conflitos_entre_recursos"], "chaves": rr["chaves_em_conflito"],
-                                               "por_campo": rr["campos_em_conflito"], "exemplos": rr["exemplos_conflito"][:1]}
+                                               "por_campo": rr["campos_em_conflito"], "exemplos": ex}
         out["registros"] = reg
     if conflitos:
         # mesma (série, referência) em arquivos diferentes com valores diferentes: não é
@@ -781,6 +796,15 @@ def conjuntos(grupos, analises, golds_res, brutos, seeds, metadados, hoje, agora
         declarados = sorted({x.get("estado_declarado") for x in grupo if x.get("estado_declarado")})
         if any(d.startswith("UTILIZADO EM INDICADOR") for d in declarados) and estado != "PUBLICADO":
             ressalvas.append(f"O módulo declara uso em indicador, mas o estado calculado é {estado}.")
+        elif estado in ("CATALOGADO", "RECURSO VERIFICADO"):
+            # o catálogo leva esta frase para a entrada do portal: conjunto declarado por um
+            # módulo que parou antes de INTEGRADO precisa dizer por quê (a checagem de
+            # conteúdo fica em validacao.itens, que não vai para o catálogo)
+            ressalvas.append(
+                "Declarado no REGISTRO do módulo, mas sem captura com sha256 no silver: o pipeline não acessou o arquivo."
+                if estado == "CATALOGADO" else
+                "Capturado com sha256, sem conteúdo no silver, sem documento guardado e sem gold que cite o snapshot: não chega a "
+                "INTEGRADO.")
         if freq.get("ultimo_periodo_fonte") and gp and gp.get("ref_max_ate_hoje"):
             fonte_ult = freq["ultimo_periodo_fonte"]
             nosso = gp["ref_max_ate_hoje"].replace("-", "")[:len(fonte_ult)]
@@ -884,7 +908,7 @@ def publico(x):
     # o nome do campo de onde a frequência foi lida fica em dados_conjuntos.csv
     out["frequencia"] = _enxuto({k: v for k, v in x["frequencia"].items()
                                  if not (k == "sem_sla" and v is False) and not (k == "campo" and x["frequencia"].get("origem") == "portal")})
-    # a origem da cadência é a do caso (A a D), descrito em regras.sla_texto
+    # a origem da cadência é a do caso (A a E), descrito em regras.sla_texto
     # tolerância em dias: regras.sla[cadencia]; período anterior: o da série antes do último
     out["atualidade"] = _enxuto({k: v for k, v in x["atualidade"].items() if k not in ("origem_cadencia", "tolerancia_dias")})
     out["dado"] = _enxuto({k: v for k, v in (x["dado"] or {}).items()
@@ -896,7 +920,8 @@ def publico(x):
     uf = co.get("ultima_falha")
     out["coleta"] = _enxuto({"tentativas": co["tentativas"], "falhas": co["falhas"], "ultimo_ok": co.get("ultimo_ok"),
                              "ultima_falha": ({**uf, "detalhe": str(uf.get("detalhe") or "")[:120]} if uf else None),
-                             "falhas_consecutivas": co["falhas_consecutivas"]})
+                             # ausente = nenhuma falha seguida (o CSV traz o zero explícito)
+                             "falhas_consecutivas": co["falhas_consecutivas"] or None})
     out["revisoes"] = x["revisoes"]
     out["bronze"] = (_enxuto({"presentes": br.get("presentes"), "ausentes": br.get("ausentes") or None,
                               "sha256_conferidos": br.get("sha256_conferidos"), "sha256_divergentes": br.get("sha256_divergentes") or None,
@@ -1653,6 +1678,209 @@ def _evidencia_kpis(con, lista, cat, agora, hoje, todas=(), golds_res=None):
     return fichas, len(reprov)
 
 
+def _arquivo_publico(caminho_publico, lido_em):
+    """Item de fonte.arquivos para um arquivo publicado em public/ (sha256 recalculado agora)."""
+    p = os.path.join(base.RAIZ, "public", str(caminho_publico).lstrip("/"))
+    if not os.path.exists(p):
+        return None
+    return {"recurso": caminho_publico, "arquivo": os.path.relpath(p, base.RAIZ), "sha256": pub.sha256_arquivo(p),
+            "capturado_em": lido_em, "publicado_em": None}
+
+
+def _alvo_publico(alvo):
+    """Caminho público do alvo de uma checagem (gold ou CSV); None para conjuntos e identidades."""
+    a = str(alvo or "")
+    if a.endswith(".json"):
+        return f"/energia/gold/{a}"
+    if a.endswith(".csv") or a.endswith(".parquet"):
+        return f"/energia/series/{a}"
+    return None
+
+
+def le_resultados_validacoes(caminho):
+    """Coluna 'resultado' de dados_validacoes.csv, relida do arquivo publicado (outro caminho
+    que não a lista em memória que o gerou). Texto livre já vem sem ';' (_limpa)."""
+    with open(caminho, encoding="utf-8") as f:
+        cab = f.readline().rstrip("\n").split(";")
+        i = cab.index("resultado")
+        return [linha.rstrip("\n").split(";")[i] for linha in f if linha.strip()]
+
+
+ORDEM_ESTADO = {e: i for i, e in enumerate(catalogo.ESTADOS)}
+
+
+def confere_afirmacoes(afirm, entradas_disco):
+    """Confere cada afirmação de integração contra o catálogo GRAVADO em disco: cada conjunto
+    citado existe, tem o mesmo estado que a afirmação registrou e chegou pelo menos a RECURSO
+    VERIFICADO; texto que diz 'publicado(s)' para todos exige que todos estejam PUBLICADO.
+    Devolve (conferidas, problemas)."""
+    estados = {e["id"]: e["estado"] for e in entradas_disco}
+    ok, problemas = [], []
+    for a in afirm:
+        prob = []
+        if a.get("ausentes_no_catalogo"):
+            prob.append(f"{a['id']}: ausentes no catálogo {a['ausentes_no_catalogo']}")
+        if not a.get("conjuntos"):
+            prob.append(f"{a['id']}: nenhum conjunto citado")
+        for cj in a.get("conjuntos") or []:
+            est = estados.get(cj["id"])
+            if est is None:
+                prob.append(f"{a['id']}: {cj['id']} não está no catálogo gravado")
+            elif est != cj["estado"]:
+                prob.append(f"{a['id']}: {cj['id']} está {est} no catálogo e {cj['estado']} na afirmação")
+            elif ORDEM_ESTADO[est] < ORDEM_ESTADO["RECURSO VERIFICADO"]:
+                prob.append(f"{a['id']}: {cj['id']} só catalogado (nenhum arquivo acessado)")
+        texto = a.get("texto") or ""
+        if re.search(r"integrad[oa]s?, validad[oa]s? e publicad[oa]s?", texto):
+            nao_pub = [cj["id"] for cj in a.get("conjuntos") or [] if estados.get(cj["id"]) != "PUBLICADO"]
+            if nao_pub:
+                prob.append(f"{a['id']}: o texto diz publicado, mas {nao_pub} não estão PUBLICADO")
+        (problemas.extend(prob) if prob else ok.append(a["id"]))
+    return ok, problemas
+
+
+def _evidencia_publicacao(lista, afirm, parquets, chk_parquet, todas, agora, hoje):
+    """Fichas dos números principais de P069 (Parquet equivalentes) e P070 (afirmações de
+    integração conferidas e checagens reprovadas). Rodam DEPOIS de gravar o catálogo e os
+    CSV: os testes releem os arquivos gravados, não as listas em memória que os geraram."""
+    fichas = {}
+    versao = {"pipeline": base.VERSAO_PIPELINE, "codigo": base.versao_codigo(), "publicacao": agora}
+    periodo = {"inicio": hoje.isoformat(), "fim": hoje.isoformat()}
+    reproduz = "python3 pipeline/energia/executar_modulo.py dados --sem-coleta"
+
+    # P069: Parquet equivalentes ao CSV
+    pqs = [p for p in parquets if p.get("csv") and not str(p.get("status", "")).startswith("removido")]
+    if pqs:
+        equiv = [p for p in pqs if p.get("equivalente")]
+        aprov = {k["alvo"] for k in chk_parquet if k["resultado"] == "aprovado"}
+        meta_ok, meta_dif, pares = 0, [], []
+        for p in pqs:
+            a = _arquivo_publico(p["csv"], agora)
+            if a:
+                pares.append(f"{p['csv']}:{a['sha256']}")
+            md = pub.metadados_parquet(os.path.join(base.RAIZ, "public", p["parquet"].lstrip("/")))
+            if a and md and md.get("csv_sha256") == a["sha256"]:
+                meta_ok += 1
+            else:
+                meta_dif.append(p["parquet"])
+        # um item só, como o snapshot dos silvers: sha256 da lista ordenada caminho:sha256 dos CSV de
+        # origem (o sha256 de cada CSV está em arquivos.parquet desta gold e no manifesto)
+        lista_sha = hashlib.sha256("\n".join(sorted(pares)).encode("utf-8")).hexdigest()
+        fichas["parquet_equivalentes"] = ev.construir(
+            indicador="Arquivos Parquet equivalentes ao CSV de origem", valor_exibido=f"{len(equiv)}", valor_calculo=float(len(equiv)),
+            unidade="arquivos", periodo=periodo, entidade="séries publicadas em public/energia/series",
+            universo=f"{len(pqs)} CSV com {LIMIAR_PARQUET // (1 << 20)} MiB ou mais, cada um com o Parquet ao lado",
+            fonte={"orgao": "Scrutiniums (pipeline do observatório)", "conjunto": "Séries publicadas (CSV e Parquet)",
+                   "recurso": (f"{len(pares)} CSV de origem; o sha256 é o da lista ordenada caminho:sha256 recalculada na "
+                               "conferência (o de cada CSV está em arquivos.parquet de publicacao.json e no manifesto)"),
+                   "url": pub.REPOSITORIO + "/tree/main/public/energia/series", "arquivo": "public/energia/series/*.csv",
+                   "sha256": lista_sha, "capturado_em": agora, "publicado_em": None},
+            consulta="arquivos.parquet de publicacao.json com equivalente = true",
+            formula=("equivalente ⇔ mesmas colunas e linhas, texto igual, inteiro igual como texto, número igual como decimal "
+                     "(Decimal da representação mais curta do float64 = Decimal do texto do CSV) e vazio = nulo"),
+            cobertura=f"todo CSV de public/energia/series com {LIMIAR_PARQUET // (1 << 20)} MiB ou mais",
+            tratamento_ausencia="célula vazia do CSV é nulo no Parquet, nunca zero; coluna com número que o float64 não guarda exatamente fica como texto",
+            testes=[ev.teste("Parquet relido em lotes e comparado célula a célula com o CSV",
+                             "aprovado" if len(aprov) == len(pqs) else "reprovado",
+                             f"{len(aprov)} de {len(pqs)} Parquet sem nenhuma célula divergente (dados_validacoes.csv, tipo equivalencia)"),
+                    ev.teste("sha256 do CSV gravado nos metadados do Parquet igual ao do CSV publicado",
+                             "aprovado" if not meta_dif else "reprovado",
+                             (f"{meta_ok} de {len(pqs)} Parquet citam o sha256 recalculado agora do CSV publicado" if not meta_dif else
+                              f"metadados divergentes ou ausentes: {meta_dif[:5]}"))],
+            download=[{"rotulo": "Manifesto da publicação (JSON)", "url": f"/energia/gold/{MANIFESTO}"},
+                      {"rotulo": "Validações (CSV)", "url": U["validacoes"]}],
+            reproducao=reproduz, versao=versao)
+
+    # P070: afirmações de integração conferidas com o catálogo gravado
+    cat_disco = base.le_gold("catalogo.json") or {}
+    if afirm and cat_disco.get("entradas"):
+        ok, problemas = confere_afirmacoes(afirm, cat_disco["entradas"])
+        cat_arq = _arquivo_publico("/energia/gold/catalogo.json", agora)
+        citados = sorted({cj["id"] for a in afirm for cj in a.get("conjuntos") or []})
+        fichas["afirmacoes_conferidas"] = ev.construir(
+            indicador="Afirmações de integração da Metodologia conferidas com o catálogo", valor_exibido=f"{len(ok)}",
+            valor_calculo=float(len(ok)), unidade="afirmações", periodo=periodo, entidade="página Metodologia",
+            universo=f"{len(afirm)} afirmações sobre fontes integradas, citando {len(citados)} conjuntos do catálogo",
+            fonte={"orgao": "Scrutiniums (pipeline do observatório)", "conjunto": "Catálogo do observatório (catalogo.json)",
+                   "recurso": "catalogo.json gravado nesta publicação",
+                   "url": pub.REPOSITORIO + "/blob/main/public/energia/gold/catalogo.json", "arquivo": None, "sha256": None,
+                   "capturado_em": None, "publicado_em": None, "arquivos": [cat_arq] if cat_arq else []},
+            chaves_origem=citados,
+            formula=("conferida ⇔ todo conjunto citado está no catálogo gravado com o mesmo estado, chegou pelo menos a RECURSO "
+                     "VERIFICADO, e o texto só diz 'publicado' quando todos estão PUBLICADO"),
+            cobertura="as afirmações de integração que a página Metodologia exibe (publicacao.json, afirmacoes)",
+            tratamento_ausencia="conjunto citado que não está no catálogo reprova a afirmação; nunca é contado como verificado",
+            testes=[ev.teste("estado de cada conjunto citado relido no catalogo.json gravado",
+                             "aprovado" if not problemas else "reprovado",
+                             f"{len(ok)} de {len(afirm)} afirmações sem divergência" + (f"; {problemas[:5]}" if problemas else "")),
+                    ev.teste("afirmação sobre limites de intercâmbio segue o achado A06 da gold da Rede",
+                             "aprovado" if any(a["id"] == "limites_intercambio" and (a.get("achado") or {}).get("id") == "A06"
+                                               and "não foram integrados" in a.get("texto", "") for a in afirm) else "ressalva",
+                             "texto gerado do achado A06 de rede_detalhe.json: os limites operativos não foram integrados")],
+            download=[{"rotulo": "Catálogo (CSV)", "url": U["catalogo"]}],
+            reproducao=reproduz, versao=versao)
+
+    # P070: checagens reprovadas, recontadas no CSV publicado
+    if todas:
+        reprov = [k for k in todas if k["resultado"] == "reprovado"]
+        try:
+            relidos = le_resultados_validacoes(os.path.join(base.SERIES, CSV["validacoes"]))
+        except (OSError, ValueError):
+            relidos = None
+        arquivos = [a for a in (_arquivo_publico(c_, agora) for c_ in sorted({_alvo_publico(k["alvo"]) for k in reprov} - {None})) if a]
+        snap = _snapshot_silvers(lista)
+        arquivos.append({"recurso": "silvers do domínio Energia (vintages vigentes)", "arquivo": "data/energia/silver/*.db",
+                         "sha256": snap["sha256"], "capturado_em": max((x["capturas"]["ultima"] for x in lista if x["capturas"]["ultima"]),
+                                                                      default=agora), "publicado_em": None})
+        fichas["checagens_reprovadas"] = ev.construir(
+            indicador="Checagens automáticas reprovadas nesta publicação", valor_exibido=f"{len(reprov)}",
+            valor_calculo=float(len(reprov)), unidade="checagens", periodo=periodo, entidade="publicação do observatório",
+            universo=(f"{len(todas)} checagens sobre todas as golds, todos os CSV, as identidades declaradas, os Parquet e os "
+                      f"conjuntos integrados"),
+            fonte={"orgao": "Scrutiniums (pipeline do observatório)", "conjunto": "Validador genérico (pipeline/energia/validacoes.py)",
+                   "recurso": "alvos reprovados (sha256 recalculado na validação) e silvers do domínio",
+                   "url": pub.REPOSITORIO + "/blob/main/pipeline/energia/validacoes.py", "arquivo": None, "sha256": None,
+                   "capturado_em": None, "publicado_em": None, "arquivos": arquivos},
+            chaves_origem=[k["id"] for k in reprov],
+            formula="contagem de checagens com resultado reprovado; o veredito de um alvo é o pior resultado das suas checagens",
+            cobertura="golds de public/energia/gold, CSV de public/energia/series, identidades de agregação declaradas, Parquet e conjuntos",
+            tratamento_ausencia="checagem sem aplicação ao alvo é não aplicável, nunca aprovada",
+            testes=[ev.teste("recontagem no dados_validacoes.csv publicado",
+                             "aprovado" if relidos is not None and relidos.count("reprovado") == len(reprov) and len(relidos) == len(todas)
+                             else "reprovado",
+                             (f"{relidos.count('reprovado')} reprovadas em {len(relidos)} linhas do arquivo gravado"
+                              if relidos is not None else "arquivo de validações ilegível"))],
+            download=[{"rotulo": "Validações (CSV)", "url": U["validacoes"]}],
+            reproducao=reproduz, versao=versao)
+    return fichas
+
+
+def proveniencia_reproducao(parquets, agora, hoje):
+    """Proveniência do painel de download e reprodução (P069): manifesto, Parquet e dicionário."""
+    lista_pq = sorted((p["csv"], p.get("csv_sha256") or "") for p in parquets if p.get("csv"))
+    sha = hashlib.sha256(json.dumps(lista_pq, separators=(",", ":")).encode("utf-8")).hexdigest()
+    return c.proveniencia(
+        indicador="Manifesto, Parquet equivalentes e dicionário dos arquivos publicados", natureza="CALCULADO",
+        fonte={"orgao": "Scrutiniums (pipeline do observatório)", "dataset": "Arquivos publicados em public/energia",
+               "recurso": "public/energia/gold, public/energia/series e public/energia/geo",
+               "url_dataset": pub.REPOSITORIO + "/tree/main/public/energia",
+               "url_primaria": pub.REPOSITORIO + "/tree/main/pipeline/energia/fontes/publicacao_dados.py", "licenca": LICENCA_PROPRIA},
+        unidade="arquivos", frequencia="a cada execução do pipeline", periodo={"inicio": hoje.isoformat(), "fim": hoje.isoformat()},
+        cobertura={"inicio": hoje.isoformat(), "fim": hoje.isoformat()}, capturado_em=agora,
+        snapshot={"id": f"series_publicadas@{agora}", "sha256": sha}, publicado_em=None,
+        revisoes={"total": 0, "detectado_em": agora, "exemplos": []},
+        formula=("id da publicação = sha256 da lista [caminho, bytes, sha256] em ordem de caminho; Parquet equivalente ⇔ mesmas "
+                 "colunas e linhas e cada célula igual à do CSV (número comparado como decimal)"),
+        transformacoes=["sha256 e tamanho de cada arquivo publicado", "Parquet (zstd) de todo CSV com 2 MiB ou mais, gerado em fluxo",
+                        "releitura do Parquet em lotes e comparação célula a célula com o CSV"],
+        limitacoes=["O manifesto gravado pelo módulo dados fica incompleto (completo = false) até o orquestrador regravá-lo no fim da "
+                    "execução: os arquivos reescritos depois dele aparecem em fora_do_manifesto.",
+                    "O link para a versão exata depende do commit do build; sem ele, a página aponta o histórico do arquivo no ramo "
+                    "principal, e o sha256 do manifesto identifica a versão.",
+                    "O silver com as vintages não vai para o git: reconstruir uma gold exige a cópia durável da release energia-estado."],
+        download=f"/energia/gold/{MANIFESTO}", validado_em=agora)
+
+
 # ---------------------------------------------------------------- gold
 
 
@@ -1698,7 +1926,9 @@ def construir(con, ctx):
     eix, eixos_linhas = eixos(golds_res)
 
     g.update({
-        "referencia": {"hoje": hoje.isoformat(), "fuso": "America/Sao_Paulo (UTC−3)", "executado_em": agora},
+        "referencia": {"hoje": hoje.isoformat(), "fuso": "America/Sao_Paulo (UTC−3)", "executado_em": agora,
+                       # janela do calendário (dias antes de hoje); o histórico de capturas começa em proveniencia.saude.cobertura_historica
+                       "janela_calendario_dias": JANELA_CALENDARIO_DIAS},
         "regras": {
             "estados": catalogo.DEFINICOES_ESTADO, "criterios_estado": catalogo.CRITERIOS_ESTADO,
             "uso": ("Uso é eixo separado do estado: indicador, modelo (com o estado do modelo no registro), conferência, contexto ou "
@@ -1779,9 +2009,11 @@ def construir(con, ctx):
         },
         "conjuntos": [publico(x) for x in lista],
         # datasets citados por cada gold: ver conjuntos[].etapas.publicado.citado_por
+        # checagens: só as não aprovadas (tipo → resultado); as aprovadas entram como contagem, para caber no limite da gold
         "golds": [{"gold": n, "disponivel": r["disponivel"], "gerado_em": r["gerado_em"], "bytes": r["bytes"],
                    "veredito": r["veredito"],
-                   "checagens": {k["tipo"]: k["resultado"] for k in r["checagens"]},
+                   "aprovadas": sum(1 for k in r["checagens"] if k["resultado"] == "aprovado"),
+                   "checagens": {k["tipo"]: k["resultado"] for k in r["checagens"] if k["resultado"] != "aprovado"},
                    "problemas": [{"tipo": k["tipo"], "resultado": k["resultado"], "detalhe": k["detalhe"]}
                                  for k in r["checagens"] if k["resultado"] in ("reprovado", "ressalva")][:5]}
                   for n, r in sorted(golds_res.items())],
@@ -1854,6 +2086,9 @@ def construir(con, ctx):
     g["evidencias"] = fichas
     escreve_csvs(lista, todas, cal_linhas, cat, eixos_linhas, descricoes=_descricoes(brutos, seeds))
     base.escreve_gold("catalogo.json", cat)
+    # fichas de P069 e P070: depois de gravar catálogo e CSV, para que os testes releiam os arquivos gravados
+    g["evidencias"].update(_evidencia_publicacao(lista, g["afirmacoes"], parquets, chk_parquet, todas, agora, hoje))
+    g["proveniencia"]["reproducao"] = proveniencia_reproducao(parquets, agora, hoje)
     g["resumo"]["duracao_s"] = round(time.time() - t0, 1)
     g["resumo"]["tempos_s"] = tempos
     corpo = pub.serializa_gold(g)

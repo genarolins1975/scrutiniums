@@ -22,6 +22,7 @@ import {
   CURTO_REGIAO,
   NOME_REGIAO,
   SUBSISTEMAS,
+  anoInicial,
   entidadesEna,
   linhasCapturas,
   linhasMltAnos,
@@ -37,6 +38,7 @@ import {
   serieRegioes,
   situacaoAtualidade,
   textoConferenciaBacias,
+  textoMltNaoConcluir,
   textoMudancaAfluencia,
   textoRevisoesCapturas,
   textosMlt,
@@ -69,6 +71,8 @@ export default function AfluenciaPage() {
   const sin = entidades.find((e) => e.id === "SIN");
   const conf = f.conferencia_bacias_sin;
   const mltSe = f.mlt.pmo.comparacao.filter((c) => c.sm === "SE");
+  const implicita = serieMltImplicita(f.mlt);
+  const desdeImplicita = anoInicial(implicita[0]?.x);
 
   return (
     <>
@@ -115,9 +119,8 @@ export default function AfluenciaPage() {
               }
               naoConcluir={
                 <>
-                  Afluência alta não quer dizer reservatório cheio: o armazenamento depende também de quanto se gera, verte e transfere (painel de reservatórios). A MLT do
-                  conjunto aberto não é a mesma dos relatórios do PMO em 2026, e versões antigas da MLT diferem da atual: o percentual não é comparável entre publicações e
-                  períodos longos sem esse cuidado.
+                  Afluência alta não quer dizer reservatório cheio: o armazenamento depende também de quanto se gera, verte e transfere (painel de reservatórios).{" "}
+                  {textoMltNaoConcluir(f.mlt)}
                 </>
               }
               proveniencia={prov.ena_30d!}
@@ -132,6 +135,8 @@ export default function AfluenciaPage() {
                 <AguaAfluencia
                   entidades={entidades}
                   serie={serieRegioes(f.serie_30d_semanal)}
+                  passoDias={f.serie_30d_semanal.passo_dias}
+                  reeNovos={f.ree_novos_por_data}
                   fonte={FONTE}
                   versao={versao}
                   destaques={
@@ -150,6 +155,7 @@ export default function AfluenciaPage() {
                       <Numero
                         rotulo="ENA armazenável de 30 dias do SIN, mesma regra"
                         natureza="CALCULADO"
+                        evidencia={ev.ena_arm_30d_sin}
                         valor={sin?.pct_mlt_arm_30d ?? null}
                         formato="pct"
                         casas={1}
@@ -158,7 +164,8 @@ export default function AfluenciaPage() {
                         motivoAusencia="Sem ENA armazenável de 30 dias completa nesta publicação."
                         tamanho="medio"
                         cor="var(--serie-referencia)"
-                        nota="Mesma razão de somas, com a ENA e a MLT armazenáveis publicadas pelo ONS para os subsistemas; a prova da regra é a da ENA bruta ao lado."
+                        nota="Mesma razão de somas, com a ENA e a MLT armazenáveis publicadas pelo ONS para os subsistemas."
+                        endereco={`${rotaPainel("p018")}#p018`}
                       />
                     </div>
                   }
@@ -214,14 +221,13 @@ export default function AfluenciaPage() {
                     nota="Comparação por igualdade com a MLT vigente na mesma data 1 e 2 anos antes; a lista por usina está no CSV de mudanças da MLT."
                   />
                   <GraficoLinhas
-                    titulo="MLT implícita de cada subsistema no dia 15 de janeiro e de julho, desde 2000"
-                    dados={serieMltImplicita(f.mlt)}
+                    titulo={`MLT implícita de cada subsistema no dia 15 de janeiro e de julho${desdeImplicita ? `, desde ${desdeImplicita}` : ""}`}
+                    dados={implicita}
                     chaveX="x"
                     formatoX="mes"
                     series={SUBSISTEMAS.map((sm) => ({ id: sm, rotulo: NOME_REGIAO[sm], sigla: CURTO_REGIAO[sm], cor: COR_REGIAO[sm] }))}
                     unidade="MWmed"
                     casas={0}
-                    zoom
                   />
                   <p className="text-sm text-carvao-muted">
                     MLT implícita = ENA ÷ (% da MLT ÷ 100), lida dos próprios arquivos. Ela cresce com a entrada de usinas e muda quando o ONS troca a versão da referência; janeiro

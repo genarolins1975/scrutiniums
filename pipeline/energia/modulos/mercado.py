@@ -149,7 +149,7 @@ REGISTRO = {
     "arquivos": {
         _url(CSV_CONSUMO): "mes (AAAA-MM); regiao (geográfica); subsistema (SE, S, NE, N ou ISOL = sistemas isolados); classe (Residencial, Industrial, Comercial, Rural, Outros); tipo (cativo ou livre); consumo_mwh (consumo de energia elétrica na rede, MWh, como publicado pela EPE); unidades_consumidoras (número de UCs no mês). Fonte: EPE, dados abertos do consumo mensal (tabela CONSUMO E NUMCONS SAM). Vazio = a fonte não publicou o valor; zero é zero.",
         _url(CSV_CONSUMO_UF): "mes; uf; subsistema; classe; tipo; consumo_mwh; unidades_consumidoras. Fonte: EPE, tabela CONSUMO E NUMCONS SAM UF (até o penúltimo mês publicado). Vazio = ausência.",
-        _url(CSV_NACIONAL): "mes; cativo_mwh; livre_mwh; total_mwh (soma das linhas da EPE); livre_pct (100 × livre ÷ total); cativo_uc; livre_uc; total_planilha_mwh e livre_planilha_mwh (total nacional da planilha formatada da EPE, para conferência); diferenca_total_mwh (tabela longa − planilha); preliminar (1 = ano marcado como preliminar pela EPE); samp_livre_uc e samp_livre_mwh (soma das distribuidoras no SAMP da ANEEL: só consumidores livres faturados por distribuidora); samp_distribuidoras (quantas distribuidoras publicaram o mês); samp_completo (1 = publicado por pelo menos 95% da mediana de distribuidoras e nenhuma distribuidora sem as linhas LIVRE que tinha no mês anterior); samp_comparavel (1 = completo e sem linhas Regular repetidas do mês anterior; só esses meses entram na comparação com a EPE); samp_ocorrencias (distribuidoras sem LIVRE e repetições do mês). Vazio = ausência.",
+        _url(CSV_NACIONAL): "mes; cativo_mwh; livre_mwh; total_mwh (soma das linhas da EPE); livre_pct (100 × livre ÷ total); cativo_uc; livre_uc; total_planilha_mwh e livre_planilha_mwh (total nacional da planilha formatada da EPE, para conferência); diferenca_total_mwh (tabela longa − planilha); preliminar (1 = ano marcado como preliminar pela EPE); samp_livre_uc e samp_livre_mwh (soma das distribuidoras no SAMP da ANEEL: só consumidores livres faturados por distribuidora); samp_distribuidoras (quantas distribuidoras publicaram o mês); samp_completo (1 = publicado por pelo menos 95% da mediana de distribuidoras e nenhuma distribuidora sem as linhas LIVRE que tinha no mês anterior); samp_comparavel (1 = completo e sem linhas Regular repetidas do mês anterior; só esses meses entram na comparação com a EPE); samp_ocorrencias (distribuidoras sem LIVRE, linhas Regular repetidas do mês anterior e variações abruptas de unidades livres no mês). Vazio = ausência.",
         _url(CSV_DISTRIB): "cnpj (14 dígitos, da fonte); sigla; mes; livre_mwh (energia TUSD faturada a consumidores livres, MWh, tipos de mercado da competência); livre_mwh_incentivada, livre_mwh_autoproducao, livre_mwh_erc, livre_mwh_convencional, livre_mwh_outro (abertura pela característica do consumidor no SAMP); livre_uc e as mesmas aberturas em unidades consumidoras; livre_mwh_refat (refaturamento de meses anteriores apresentado neste mês, sem atribuição de competência); cativo_mwh (energia TE faturada ao cativo, inclui consumidores com micro e minigeração após a compensação); cativo_uc; cativo_mwh_refat. Fonte: ANEEL, SAMP, arquivos anuais em Parquet. Vazio = a distribuidora não publicou a linha no mês.",
         _url(JSON_DETALHE): "JSON lido sob demanda pela página: mcp_submercado_mensal (mes; submercado; be_positivo_mwh e be_negativo_mwh, balanço energético em MWh; resultado_venda_rs e resultado_compra_rs, R$), acr_conta_bandeira_mensal (mes; distribuidoras; ess_eer, ressarcimento_coner, resultado_mcp, ccear_d, receita_faturada_bandeiras, repasse_conta_bandeira em R$ somados no Brasil), risco_hidrologico_acr_mensal (mes; distribuidoras; rh_itaipu, rh_repactuadas, rh_ccgf, previsao_rh, premio_risco, rh_ccgf_repactuadas_liquido, rh_bruto em R$), desligamentos_anual (ano; tipo; classe; desligamentos; completo, false no ano corrente, que é parcial). R$ e MWh inteiros; null = ausência.",
         _url(CSV_DISTRIB_ANO): "ano (último ano civil com os 12 meses publicados por quase todas as distribuidoras); cnpj; sigla; nome; meses (meses do ano com linha no SAMP); completo (1 = 12 meses); livre_mwh e cativo_mwh (soma do ano, MWh); livre_pct_faturada (100 × livre ÷ (livre + cativo), só com 12 meses); livre_uc_dez e livre_uc_dez_anterior (unidades consumidoras livres em dezembro do ano e do ano anterior); variacao_livre_uc; livre_uc_incentivada_dez, livre_uc_convencional_dez, livre_uc_autoproducao_dez; cativo_uc_dez; meses_repetidos (meses do ano em que as linhas Regular da distribuidora repetem exatamente as do mês anterior, com a opção: sinal de mês copiado na fonte). Fonte: ANEEL, SAMP. Vazio = ausência.",
@@ -1378,6 +1378,22 @@ def fluxos_cnpj(meses_por_cnpj, classe_por_cnpj=None):
     return out
 
 
+def cobertura_desligamentos(datas, hoje):
+    """{ano: {ultima_data, completo, meses}} a partir das datas de desligamento ('AAAA-MM-DD').
+    O arquivo é o histórico até a publicação: ano anterior ao corrente é completo (12 meses); o
+    ano corrente é parcial, coberto até o mês da última data publicada."""
+    ultima = {}
+    for d in datas:
+        ultima[d[:4]] = max(ultima.get(d[:4], ""), d)
+    return {a: {"ultima_data": d, "completo": int(a) < hoje.year, "meses": 12 if int(a) < hoje.year else int(d[5:7])}
+            for a, d in ultima.items()}
+
+
+def pagina_exige_login(html):
+    """A página do portal gov.br (Plone) devolveu o formulário de login em vez do conteúdo."""
+    return "credentials_cookie_auth/require_login" in html
+
+
 CLASSES_COM_PARCELA = ("Consumidor Livre", "Consumidor Especial", "Autoprodutor", CLASSE_EXPORTADOR)
 
 
@@ -1500,15 +1516,9 @@ def secao_agentes(con, livre, ev, hoje):
                 k = (mes[:4], partes[1], partes[2])
                 deslig[k] = deslig.get(k, 0) + v
     desl_anual = [{"ano": a, "tipo": t, "classe": cl, "desligamentos": _inteiro(n)} for (a, t, cl), n in sorted(deslig.items())]
-    # cobertura de cada ano: o arquivo é o histórico até a publicação; o ano corrente é parcial
-    ultima_data = {}
-    for nome in ("desligamento_voluntario", "desligamento_compulsorio"):
-        for ch in base.registros_como_estavam_em(con, cm.dataset(nome)):
-            if ch.startswith("desligamento|"):
-                dia = ch.split("|")[2]
-                ultima_data[dia[:4]] = max(ultima_data.get(dia[:4], ""), dia)
-    desl_cobertura = {a: {"ultima_data": d, "completo": int(a) < hoje.year,
-                          "meses": 12 if int(a) < hoje.year else int(d[5:7])} for a, d in ultima_data.items()}
+    datas = [ch.split("|")[2] for nome in ("desligamento_voluntario", "desligamento_compulsorio")
+             for ch in base.registros_como_estavam_em(con, cm.dataset(nome)) if ch.startswith("desligamento|")]
+    desl_cobertura = cobertura_desligamentos(datas, hoje)
 
     ucs = agg["nac"].get(("livre", "uc"), {})
     ucs_cat = agg["nac"].get(("cativo", "uc"), {})
@@ -2343,7 +2353,9 @@ def _csvs(livre, agentes, mre, enc, con):
                     s_.get("livre_uc"), c.r(s_.get("livre_mwh"), 3), s_.get("distribuidoras"),
                     None if not s_ else (1 if s_["completo"] else 0), None if not s_ else (1 if s_["comparavel"] else 0),
                     None if not s_ else "; ".join([f"{x['sigla']} sem LIVRE" for x in s_["distribuidoras_sem_livre"]]
-                                                   + [f"{x['sigla']} {x['opcao']} Regular repetido" for x in s_["repeticoes"]]) or None])
+                                                   + [f"{x['sigla']} {x['opcao']} Regular repetido" for x in s_["repeticoes"]]
+                                                   + [f"{x['sigla']} livre de {int(x['livre_uc_mes_anterior'])} para {int(x['livre_uc'])} UC"
+                                                      for x in s_["variacoes_abruptas"]]) or None])
     base.escreve_csv(CSV_NACIONAL, ["mes", "cativo_mwh", "livre_mwh", "total_mwh", "livre_pct", "cativo_uc", "livre_uc", "total_planilha_mwh",
                                     "livre_planilha_mwh", "diferenca_total_mwh", "preliminar", "samp_livre_uc", "samp_livre_mwh",
                                     "samp_distribuidoras", "samp_completo", "samp_comparavel", "samp_ocorrencias"], nac)
@@ -2743,7 +2755,7 @@ def bloqueios(con, hoje):
             html = f.read().decode("utf-8", errors="replace")
         pastas.append({"ano": str(ano), "url": v["url"], "capturado_em": v["capturado_em"], "sha256": v["sha256"],
                        "pdfs_encontrados": len(mm.links_boletins(html, v["url"])),
-                       "redireciona_login": "credentials_cookie_auth/require_login" in html})
+                       "redireciona_login": pagina_exige_login(html)})
     ult = pastas[-1] if pastas else {}
     restritas = [p["ano"] for p in pastas if p["redireciona_login"]]
     consol = base.ultima_vintage(con, DS_MME, f"consolidacao-{hoje.year - 1}")

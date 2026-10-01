@@ -17,6 +17,8 @@ import {
   FILTRO_LINHA_TEMPO_PADRAO,
   PAINEIS_REGULACAO,
   abreviarAto,
+  anoInicioHistorico,
+  avisoToleranciaIpca,
   consultasNaData,
   contagemAgendaPorPainel,
   contagemPaineisAfetados,
@@ -31,10 +33,12 @@ import {
   filtrarLinhaTempo,
   linhasAgenda,
   linhasBandeiras,
+  linhasHistoricoSituacao,
   linhasConsultas,
   linhasLimites,
   linhasLinhaTempo,
   linhasProcedimentos,
+  nomeAgenda,
   oQueMudouLimites,
   ordenarConsultas,
   perguntaPainel,
@@ -49,8 +53,11 @@ import {
   rotuloCurtoEvento,
   situacaoSeConfirmada,
   temaCurto,
+  textoConferenciaAcionamento,
   textoCoberturaFaixa,
   textoDefasagemEvento,
+  textoJanela,
+  textoReuniao,
 } from "@/lib/energia/regulacao";
 import { matrizExportacao } from "@/lib/energia/tabela";
 import { faseAtual, hojeBrasilia, situacaoConsulta, type FaseConsulta, type GoldRegulacao } from "@/lib/energia/tipos-regulacao";
@@ -308,6 +315,54 @@ describe("lógica pura da interface (sem depender da gold)", () => {
     expect(dominioFaixas([])).toBeNull();
   });
 
+  it("ausência dita, nunca número de reserva: janela, histórico por situação e reunião sem identificação", () => {
+    expect(textoJanela(200)).toBe("com atividade nos últimos 200 dias");
+    expect(textoJanela(1)).toBe("com atividade nos últimos 1 dia");
+    expect(textoJanela(undefined)).not.toMatch(/\d/);
+    const semJanela = respostaConsultas({ itens: [], janela_dias: undefined, decisoes_sem_resultado_formal: [], atas_deliberadas_ate: "2026-09-22" }, "2026-10-01");
+    expect(semJanela).toContain("a publicação não informa a janela");
+    expect(semJanela).not.toMatch(/últimos \d+ dias/);
+    // situação sem contagem na gold: sem valor no gráfico e na tabela, não zero; zero publicado continua zero
+    const h = linhasHistoricoSituacao({ contagem_por_situacao: { aberta: 3, a_abrir: 0 } });
+    expect(h.find((l) => l.id === "aberta")?.n).toBe(3);
+    expect(h.find((l) => l.id === "a_abrir")?.n).toBe(0);
+    expect(h.find((l) => l.id === "decidida")?.n).toBeNull();
+    expect(textoReuniao("41/2025 - RPO")).toBe("41/2025 (RPO)");
+    expect(textoReuniao("17/2026 - RPC")).toBe("17/2026 (RPC)");
+    expect(textoReuniao(null)).toBe("sem identificação na ata");
+  });
+
+  it("concordância nos textos derivados: artigo do ato e plural das contagens", () => {
+    const vig = { ano: 2024, inicio: "2024-01-01", fim: "2024-12-31", pld_min: 61.07, pld_max_estrutural: 716.8, pld_max_horario: 1470.57 };
+    const ato = (nome: string, pub: string) =>
+      ({ ano: 2024, ato: nome, data_publicacao: pub, vigencia_inicio: "2024-01-01", vigencia_fim: "2024-12-31" }) as unknown as GoldRegulacao["limites_pld"]["atos"][number];
+    const g = (nome: string) =>
+      ({
+        limites_pld: {
+          atos: [ato(nome, "2023-12-22")],
+          vigencias: [{ ...vig, ato_pld_min: nome, ato_pld_max_estrutural: nome, ato_pld_max_horario: nome }],
+        },
+      }) as unknown as Pick<GoldRegulacao, "limites_pld">;
+    expect(oQueMudouLimites(g("Resolução Homologatória ANEEL nº 3.304/2023"))).toMatch(/^O ato mais recente é a Resolução Homologatória/);
+    expect(oQueMudouLimites(g("Despacho ANEEL nº 3.850/2025"))).toMatch(/^O ato mais recente é o Despacho/);
+    expect(textoConferenciaAcionamento({ meses_conferidos: 1, meses_coerentes: 1, meses_divergentes: 0, meses_parciais: 1, meses_sem_vigencia: 0, regra: "" })).toBe(
+      "1 mês acionado conferido: 1 coerente, 0 com outro valor, 1 parcial e 0 sem resolução no recurso de adicionais.",
+    );
+    const umaPendente = respostaConsultas(
+      {
+        itens: [],
+        janela_dias: 200,
+        atas_deliberadas_ate: "2026-09-22",
+        decisoes_sem_resultado_formal: [{ inicio: "2026-09-30", fim: "2026-11-14" }] as unknown as GoldRegulacao["consultas"]["decisoes_sem_resultado_formal"],
+      },
+      "2026-10-01",
+    );
+    expect(umaPendente).toContain("Outra decisão de abertura da última pauta ainda não tem resultado formal na ata e fica fora da contagem: se confirmada, 1 estaria aberta.");
+    expect(textoConferenciaAcionamento({ meses_conferidos: 72, meses_coerentes: 65, meses_divergentes: 6, meses_parciais: 2, meses_sem_vigencia: 2, regra: "" })).toContain(
+      "65 coerentes, 6 com outro valor, 2 parciais",
+    );
+  });
+
   it("painéis e rotas: um por página, próxima pergunta em ciclo", () => {
     expect(PAINEIS_REGULACAO.map((p) => p.rota)).toEqual(["/setor-eletrico/regulacao", "/setor-eletrico/regulacao/linha-do-tempo", "/setor-eletrico/regulacao/consultas-e-agenda"]);
     expect(proximoPainel("p044").id).toBe("p045");
@@ -457,6 +512,15 @@ describe.skipIf(!disponivel)("interface: linhas do gráfico, da tabela e da expo
 });
 
 describe.skipIf(!disponivel)("textos derivados dos números", () => {
+  it("P044: aviso da conferência pelo IPCA com a tolerância e o ato lidos da gold, não do código", () => {
+    const t = avisoToleranciaIpca(gold)!;
+    const tol = gold.limites_pld.conferencias_detalhe.find((c) => c.conferencia === "regra_ipca")!.tolerancia;
+    expect(tol).toBe("R$ 0,011/MWh (dois arredondamentos a centavos)");
+    expect(t).toContain(`aceita diferença de até ${tol}`);
+    expect(t).toContain("art. 23, § 1º, da REN nº 1.032/2022, aparece só como conferência informativa");
+    expect(avisoToleranciaIpca({ ...gold, limites_pld: { ...gold.limites_pld, conferencias_detalhe: [] } })).toBeNull();
+  });
+
   it("P044: limites de 2026 com ato, publicação e vigência em campos distintos", () => {
     const t = respostaLimites(gold, 2026);
     expect(t).toContain("R$ 57,31/MWh");
@@ -487,6 +551,9 @@ describe.skipIf(!disponivel)("textos derivados dos números", () => {
       respostaConsultas(gold.consultas, "2026-11-20"),
       respostaAgenda(gold.agenda, gold.limites_em_revisao),
       textoCoberturaFaixa(gold.consultas),
+      avisoToleranciaIpca(gold) ?? "",
+      textoConferenciaAcionamento(gold.bandeiras.conferencia_acionamento),
+      nomeAgenda(gold.agenda),
       ...faixasConsultas(consultasNaData(gold.consultas.itens, d)).map((f) => f.leitura),
       ...faixasLinhaTempo(gold.linha_do_tempo.eventos).map((f) => f.leitura),
     ];
@@ -604,10 +671,43 @@ describe.skipIf(!disponivel)("páginas renderizadas no servidor", () => {
     // o padrão mostra todas as não decididas: o gráfico tem uma faixa por consulta não decidida
     expect(conferidas).toBe(consultasNaData(gold.consultas.itens, data).filter((c) => c.situacao_na_data !== "decidida").length);
     expect(h).toContain('id="agenda"');
-    expect(h).toContain("Atividades da Agenda Regulatória 2026-2027");
+    // o biênio vem dos anos previstos na portaria (Portaria nº 7.030/2025, art. 1º: "biênio 2026-2027"), não do código
+    expect(nomeAgenda(gold.agenda)).toBe("Agenda Regulatória de 2026 e 2027");
+    expect(h).toContain(`Atividades da ${nomeAgenda(gold.agenda)}`);
+    expect(h).toContain(`Consultas e audiências desde ${anoInicioHistorico(gold)}, por situação`);
     expect(h).toContain("Decisões de abertura ainda sem resultado formal na ata");
     expect(h).toContain("https://www.gov.br/aneel/pt-br/acesso-a-informacao/participacao-social/consultas-publicas");
     expect((h.match(/<table/g) ?? []).length).toBeGreaterThanOrEqual(5);
+  });
+
+  it("todo link interno aponta para página existente, e toda âncora para um id que existe", () => {
+    const rotaDe: Record<string, keyof typeof html> = Object.fromEntries(PAINEIS_REGULACAO.map((p) => [p.rota, p.id]));
+    const existePagina = (rota: string) => {
+      const dir = join(raiz, "src/app", rota);
+      if (existsSync(join(dir, "page.tsx"))) return true;
+      // rota dinâmica (ex.: /setor-eletrico/aprenda/[conceito]): a pasta-mãe tem um segmento entre colchetes com page.tsx
+      const mae = join(dir, "..");
+      return existsSync(mae) && readdirSync(mae).some((d) => d.startsWith("[") && existsSync(join(mae, d, "page.tsx")));
+    };
+    for (const [id, h] of Object.entries(html)) {
+      const ids = new Set(Array.from(conteudo(h).matchAll(/\sid="([^"]+)"/g)).map((m) => m[1]));
+      for (const m of Array.from(conteudo(h).matchAll(/href="([^"]+)"/g))) {
+        const href = m[1].replace(/&amp;/g, "&");
+        if (/^https?:/.test(href)) continue;
+        const [caminho, ancora] = href.split("#");
+        const rota = caminho.split("?")[0];
+        if (!rota) {
+          if (ancora) expect(ids.has(ancora), `${id}: ${href}`).toBe(true);
+          continue;
+        }
+        if (rota.startsWith("/energia/")) {
+          expect(existsSync(join(raiz, "public", rota)), `${id}: ${href}`).toBe(true);
+          continue;
+        }
+        expect(existePagina(rota), `${id}: ${href}`).toBe(true);
+        if (ancora && rotaDe[rota]) expect(html[rotaDe[rota]], `${id}: ${href}`).toContain(`id="${ancora}"`);
+      }
+    }
   });
 
   it("HTML de cada página abaixo de 520 KB antes das props (meta de cerca de 600 KB com elas; contrato, seção 5.1)", () => {
@@ -633,6 +733,16 @@ describe("componentes do módulo", () => {
     ...readdirSync(dir).filter((x) => x.startsWith("Regulacao")).map((f) => join(dir, f)),
     ...["", "/linha-do-tempo", "/consultas-e-agenda"].map((r) => join(raiz, `src/app/setor-eletrico/regulacao${r}/page.tsx`)),
   ];
+
+  it("toda tabela das páginas guarda busca, filtros e ordem na URL (chaveUrl única por página)", () => {
+    for (const f of arquivos) {
+      const t = readFileSync(f, "utf-8");
+      const blocos = t.split("<TabelaInterativa").slice(1).map((b) => b.slice(0, b.indexOf("/>")));
+      const chaves = blocos.map((b) => /chaveUrl="([^"]+)"/.exec(b)?.[1] ?? null);
+      expect(chaves.filter((c) => c === null).length, f).toBe(0);
+      expect(new Set(chaves).size, f).toBe(chaves.length);
+    }
+  });
 
   it("sem hexadecimal solto", () => {
     for (const f of arquivos) {

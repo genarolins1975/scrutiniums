@@ -56,7 +56,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Cronograma da expansão: previsões com data-base, revisões e o que atrasou",
   description:
-    "Previsões de operação comercial da fiscalização da ANEEL (RALIE) com a data da fotografia, datas convencionais em bloco, confiabilidade das previsões contra a liberação comercial real desde 2021, revisões em 12 meses e desvio em relação ao prazo outorgado vigente.",
+    "Previsões de operação comercial da fiscalização da ANEEL (RALIE) com a data da fotografia, datas convencionais em bloco, confiabilidade das previsões contra a liberação comercial real desde a primeira fotografia publicada, revisões em 12 meses e desvio em relação ao prazo outorgado vigente.",
   alternates: { canonical: "/setor-eletrico/expansao/cronograma" },
 };
 

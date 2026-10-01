@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "sintese.json",
- "gerado_em": "2026-10-01T07:45:23Z",
+ "gerado_em": "2026-10-01T08:04:11Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "fa4767ccfa9a+alterado",
+ "versao_codigo": "ac7599ce6c86+alterado",
  "disponivel": true,
  "modulo": "visao",
  "paineis": [
@@ -14,7 +14,7 @@
  ],
  "data_processamento": "2026-10-01",
  "fuso_processamento": "America/Sao_Paulo (data civil de Brasília; comum.hoje_brasilia)",
- "processado_em": "2026-10-01T07:45:08Z",
+ "processado_em": "2026-10-01T08:03:58Z",
  "frases": [
   {
    "id": "reservatorios",
@@ -347,8 +347,8 @@
     "tratamento_ausencia": "Sem o valor na gold de origem, a frase não é emitida (ausência declarada); sem todas as referências no silver, a reconciliação fica pendente.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "fa4767ccfa9a+alterado",
-     "publicacao": "2026-10-01T07:45:23Z"
+     "codigo": "ac7599ce6c86+alterado",
+     "publicacao": "2026-10-01T08:04:11Z"
     },
     "revisoes": "Nenhuma referência das séries usadas nesta frase foi revisada entre as capturas integradas; o conjunto tem 44 observações revisadas no total, em todas as séries.",
     "testes": [
@@ -379,7 +379,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py visao --sem-coleta (lê as golds publicadas e o silver principal)",
-    "citacao": "SCRUTINIUMS. Visão geral, frase 'reservatorios': 61,6% da energia armazenável máxima, SIN, 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, EAR Diário por Subsistema (recurso EAR_DIARIO_SUBSISTEMA_2001; EAR_DIARIO_SUBSISTEMA_2002; EAR_DIARIO_SUBSISTEMA_2003; EAR_DIARIO_SUBSISTEMA_2004; EAR_DIARIO_SUBSISTEMA_2005; EAR_DIARIO_SUBSISTEMA_2006; EAR_DIARIO_SUBSISTEMA_2007; EAR_DIARIO_SUBSISTEMA_2008; EAR_DIARIO_SUBSISTEMA_2009; EAR_DIARIO_SUBSISTEMA_2010; EAR_DIARIO_SUBSISTEMA_2011; EAR_DIARIO_SUBSISTEMA_2012; EAR_DIARIO_SUBSISTEMA_2013; EAR_DIARIO_SUBSISTEMA_2014; EAR_DIARIO_SUBSISTEMA_2015; EAR_DIARIO_SUBSISTEMA_2016; EAR_DIARIO_SUBSISTEMA_2017; EAR_DIARIO_SUBSISTEMA_2018; EAR_DIARIO_SUBSISTEMA_2019; EAR_DIARIO_SUBSISTEMA_2020; EAR_DIARIO_SUBSISTEMA_2021; EAR_DIARIO_SUBSISTEMA_2022; EAR_DIARIO_SUBSISTEMA_2023; EAR_DIARIO_SUBSISTEMA_2024; EAR_DIARIO_SUBSISTEMA_2025; EAR_DIARIO_SUBSISTEMA_2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Visão geral, frase 'reservatorios': 61,6% da energia armazenável máxima, SIN, 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, EAR Diário por Subsistema (recurso EAR_DIARIO_SUBSISTEMA_2001; EAR_DIARIO_SUBSISTEMA_2002; EAR_DIARIO_SUBSISTEMA_2003; EAR_DIARIO_SUBSISTEMA_2004; EAR_DIARIO_SUBSISTEMA_2005; EAR_DIARIO_SUBSISTEMA_2006; EAR_DIARIO_SUBSISTEMA_2007; EAR_DIARIO_SUBSISTEMA_2008; EAR_DIARIO_SUBSISTEMA_2009; EAR_DIARIO_SUBSISTEMA_2010; EAR_DIARIO_SUBSISTEMA_2011; EAR_DIARIO_SUBSISTEMA_2012; EAR_DIARIO_SUBSISTEMA_2013; EAR_DIARIO_SUBSISTEMA_2014; EAR_DIARIO_SUBSISTEMA_2015; EAR_DIARIO_SUBSISTEMA_2016; EAR_DIARIO_SUBSISTEMA_2017; EAR_DIARIO_SUBSISTEMA_2018; EAR_DIARIO_SUBSISTEMA_2019; EAR_DIARIO_SUBSISTEMA_2020; EAR_DIARIO_SUBSISTEMA_2021; EAR_DIARIO_SUBSISTEMA_2022; EAR_DIARIO_SUBSISTEMA_2023; EAR_DIARIO_SUBSISTEMA_2024; EAR_DIARIO_SUBSISTEMA_2025; EAR_DIARIO_SUBSISTEMA_2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    }
   },
   {
@@ -481,7 +481,7 @@
       "capturado_para": "2026-09-30T02:19:46Z"
      },
      "total_no_conjunto": 360,
-     "texto": "29 referências diárias das séries usadas nesta frase foram revisadas pela fonte entre capturas (176 pares de série e referência); maior variação de 6,24% sobre o valor anterior, em ena_bruta_pct_mlt.N de 2026-09-27; o valor exibido é o da captura mais recente."
+     "texto": "29 referências diárias das séries usadas nesta frase foram revisadas pela fonte entre capturas (176 pares de série e referência); maior variação de 6,24% sobre o valor anterior, em ena_bruta_pct_mlt.N de 27/09/2026; o valor exibido é o da captura mais recente."
     }
    },
    "versoes": {
@@ -538,10 +538,10 @@
     "tratamento_ausencia": "Sem o valor na gold de origem, a frase não é emitida (ausência declarada); sem todas as referências no silver, a reconciliação fica pendente.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "fa4767ccfa9a+alterado",
-     "publicacao": "2026-10-01T07:45:23Z"
+     "codigo": "ac7599ce6c86+alterado",
+     "publicacao": "2026-10-01T08:04:11Z"
     },
-    "revisoes": "29 referências diárias das séries usadas nesta frase foram revisadas pela fonte entre capturas (176 pares de série e referência); maior variação de 6,24% sobre o valor anterior, em ena_bruta_pct_mlt.N de 2026-09-27; o valor exibido é o da captura mais recente.",
+    "revisoes": "29 referências diárias das séries usadas nesta frase foram revisadas pela fonte entre capturas (176 pares de série e referência); maior variação de 6,24% sobre o valor anterior, em ena_bruta_pct_mlt.N de 27/09/2026; o valor exibido é o da captura mais recente.",
     "testes": [
      {
       "nome": "frase refeita a partir dos valores publicados",
@@ -570,7 +570,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py visao --sem-coleta (lê as golds publicadas e o silver principal)",
-    "citacao": "SCRUTINIUMS. Visão geral, frase 'afluencias': 168,6% da média de longo termo, SIN, 30/08/2026 a 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, ENA Diário por Subsistema (recurso ENA_DIARIO_SUBSISTEMA_2026, capturado em 29/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Visão geral, frase 'afluencias': 168,6% da média de longo termo, SIN, 30/08/2026 a 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, ENA Diário por Subsistema (recurso ENA_DIARIO_SUBSISTEMA_2026, capturado em 29/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    }
   },
   {
@@ -679,7 +679,7 @@
       "capturado_para": "2026-09-30T02:19:48Z"
      },
      "total_no_conjunto": 33,
-     "texto": "5 referências diárias das séries usadas nesta frase foram revisadas pela fonte entre capturas (17 pares de série e referência); maior variação de 2.190,77% sobre o valor anterior, em carga_mwmed.NE de 2026-09-26; o valor exibido é o da captura mais recente."
+     "texto": "5 referências diárias das séries usadas nesta frase foram revisadas pela fonte entre capturas (17 pares de série e referência); maior variação de 2.190,77% sobre o valor anterior, em carga_mwmed.NE de 26/09/2026; o valor exibido é o da captura mais recente."
     }
    },
    "versoes": {
@@ -752,10 +752,10 @@
     "tratamento_ausencia": "Sem o valor na gold de origem, a frase não é emitida (ausência declarada); sem todas as referências no silver, a reconciliação fica pendente.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "fa4767ccfa9a+alterado",
-     "publicacao": "2026-10-01T07:45:23Z"
+     "codigo": "ac7599ce6c86+alterado",
+     "publicacao": "2026-10-01T08:04:11Z"
     },
-    "revisoes": "5 referências diárias das séries usadas nesta frase foram revisadas pela fonte entre capturas (17 pares de série e referência); maior variação de 2.190,77% sobre o valor anterior, em carga_mwmed.NE de 2026-09-26; o valor exibido é o da captura mais recente.",
+    "revisoes": "5 referências diárias das séries usadas nesta frase foram revisadas pela fonte entre capturas (17 pares de série e referência); maior variação de 2.190,77% sobre o valor anterior, em carga_mwmed.NE de 26/09/2026; o valor exibido é o da captura mais recente.",
     "testes": [
      {
       "nome": "frase refeita a partir dos valores publicados",
@@ -780,7 +780,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py visao --sem-coleta (lê as golds publicadas e o silver principal)",
-    "citacao": "SCRUTINIUMS. Visão geral, frase 'carga': 10,5% acima dos mesmos dias de 2025, SIN, 22/09/2026 a 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Diária (recurso CARGA_ENERGIA_2025; CARGA_ENERGIA_2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Visão geral, frase 'carga': 10,5% acima dos mesmos dias de 2025, SIN, 22/09/2026 a 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Diária (recurso CARGA_ENERGIA_2025; CARGA_ENERGIA_2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    }
   },
   {
@@ -898,7 +898,7 @@
       "capturado_para": "2026-09-30T02:19:57Z"
      },
      "total_no_conjunto": 2620,
-     "texto": "120 referências horárias das séries usadas nesta frase foram revisadas pela fonte entre capturas (296 pares de série e referência); maior variação de 3.297,18% sobre o valor anterior, em eolica.SIN de 2026-09-26T05:00; o valor exibido é o da captura mais recente."
+     "texto": "120 referências horárias das séries usadas nesta frase foram revisadas pela fonte entre capturas (296 pares de série e referência); maior variação de 3.297,18% sobre o valor anterior, em eolica.SIN de 26/09/2026 às 05:00; o valor exibido é o da captura mais recente."
     }
    },
    "versoes": {
@@ -957,10 +957,10 @@
     "tratamento_ausencia": "Sem o valor na gold de origem, a frase não é emitida (ausência declarada); sem todas as referências no silver, a reconciliação fica pendente.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "fa4767ccfa9a+alterado",
-     "publicacao": "2026-10-01T07:45:23Z"
+     "codigo": "ac7599ce6c86+alterado",
+     "publicacao": "2026-10-01T08:04:11Z"
     },
-    "revisoes": "120 referências horárias das séries usadas nesta frase foram revisadas pela fonte entre capturas (296 pares de série e referência); maior variação de 3.297,18% sobre o valor anterior, em eolica.SIN de 2026-09-26T05:00; o valor exibido é o da captura mais recente.",
+    "revisoes": "120 referências horárias das séries usadas nesta frase foram revisadas pela fonte entre capturas (296 pares de série e referência); maior variação de 3.297,18% sobre o valor anterior, em eolica.SIN de 26/09/2026 às 05:00; o valor exibido é o da captura mais recente.",
     "testes": [
      {
       "nome": "frase refeita a partir dos valores publicados",
@@ -985,7 +985,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py visao --sem-coleta (lê as golds publicadas e o silver principal)",
-    "citacao": "SCRUTINIUMS. Visão geral, frase 'termica': 10,6% da geração do balanço do ONS nos 7 dias até 28/09/2026, SIN, 22/09/2026 a 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Balanço de Energia nos Subsistemas (recurso BALANCO_ENERGIA_SUBSISTEMA_2026, capturado em 29/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Visão geral, frase 'termica': 10,6% da geração do balanço do ONS nos 7 dias até 28/09/2026, SIN, 22/09/2026 a 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Balanço de Energia nos Subsistemas (recurso BALANCO_ENERGIA_SUBSISTEMA_2026, capturado em 29/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    }
   },
   {
@@ -1134,8 +1134,8 @@
     "tratamento_ausencia": "Sem o valor na gold de origem, a frase não é emitida (ausência declarada); sem todas as referências no silver, a reconciliação fica pendente.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "fa4767ccfa9a+alterado",
-     "publicacao": "2026-10-01T07:45:23Z"
+     "codigo": "ac7599ce6c86+alterado",
+     "publicacao": "2026-10-01T08:04:11Z"
     },
     "revisoes": "Nenhuma referência das séries usadas nesta frase foi revisada entre as capturas integradas; o conjunto tem 0 observações revisadas no total, em todas as séries.",
     "testes": [
@@ -1166,7 +1166,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py visao --sem-coleta (lê as golds publicadas e o silver principal)",
-    "citacao": "SCRUTINIUMS. Visão geral, frase 'pld': R$ 135,25/MWh, Sudeste/Centro-Oeste, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Visão geral, frase 'pld': R$ 135,25/MWh, Sudeste/Centro-Oeste, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    }
   },
   {
@@ -1302,8 +1302,8 @@
     "tratamento_ausencia": "Sem o valor na gold de origem, a frase não é emitida (ausência declarada); sem todas as referências no silver, a reconciliação fica pendente.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "fa4767ccfa9a+alterado",
-     "publicacao": "2026-10-01T07:45:23Z"
+     "codigo": "ac7599ce6c86+alterado",
+     "publicacao": "2026-10-01T08:04:11Z"
     },
     "revisoes": "Nenhuma referência das séries usadas nesta frase foi revisada entre as capturas integradas; o conjunto tem 0 observações revisadas no total, em todas as séries.",
     "testes": [
@@ -1330,7 +1330,7 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py visao --sem-coleta (lê as golds publicadas e o silver principal)",
-    "citacao": "SCRUTINIUMS. Visão geral, frase 'rede': Nordeste → Sudeste/Centro-Oeste, com 4.842 MWmed, SIN, 30/08/2026 a 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbios Entre Subsistemas (recurso INTERCAMBIO_NACIONAL_2026, capturado em 29/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Visão geral, frase 'rede': Nordeste → Sudeste/Centro-Oeste, com 4.842 MWmed, SIN, 30/08/2026 a 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbios Entre Subsistemas (recurso INTERCAMBIO_NACIONAL_2026, capturado em 29/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    }
   }
  ],
@@ -1548,7 +1548,8 @@
     "valor_atual": {
      "rotulo": "Sudeste/Centro-Oeste",
      "valor": 135.25,
-     "caminho": "pld.json#cartoes[SE].media_dia"
+     "caminho": "pld.json#cartoes[SE].media_dia",
+     "valor_exibido": "R$ 135,25/MWh"
     },
     "nota": "Média simples das 24 horas de cada dia, em valores nominais; não é a tarifa do consumidor.",
     "download": [
@@ -1564,7 +1565,79 @@
     "defasagem_dias": 1,
     "texto_defasagem": "Referência 30/09/2026, 1 dia antes da data de processamento (01/10/2026).",
     "ultimo_dia_com_dado": "2026-09-30",
-    "dias_com_dado": 90
+    "dias_com_dado": 90,
+    "evidencia": {
+     "indicador": "Visão geral, determinante 'preco': preço, valor atual (Sudeste/Centro-Oeste)",
+     "valor_exibido": "R$ 135,25/MWh",
+     "valor_calculo": 135.2458333333333,
+     "unidade": "R$/MWh",
+     "periodo": {
+      "inicio": "2026-09-30",
+      "fim": "2026-09-30"
+     },
+     "entidade": "Sudeste/Centro-Oeste",
+     "universo": "PLD médio diário por submercado",
+     "filtros": [],
+     "fonte": {
+      "orgao": "CCEE",
+      "conjunto": "PLD_HORARIO",
+      "recurso": "pld_horario_2026",
+      "url": "https://pda-download.ccee.org.br/6A5wq97KTCWv_bvs3CqsQQ/content",
+      "arquivo": "data/energia/bronze/ccee/ccee_pld_horario/pld_horario_2026/20260930T022014Z.b8fc75397dac.csv.gz",
+      "sha256": "b8fc75397dac72dc1cbc930607f1f1c3266505f53e053ac35815a5851be9cdb8",
+      "capturado_em": "2026-09-30T02:20:14Z",
+      "publicado_em": "2026-06-09T16:37:15.091000"
+     },
+     "extracao_pdf": null,
+     "chaves_origem": [
+      "ccee_pld_horario/pld.SE/2026-09-30T00:00 a 2026-09-30T23:00 (24 horas)"
+     ],
+     "chaves_total": null,
+     "consulta": "silver energia.db: observacoes do dataset ccee_pld_horario em 2026-09-30 a 2026-09-30 (valor da captura mais recente)",
+     "manifesto": null,
+     "formula": "PLD médio do dia = (1/24) × Σ PLD horário do Sudeste/Centro-Oeste",
+     "numerador": null,
+     "denominador": null,
+     "pesos": null,
+     "exclusoes": [],
+     "cobertura": "Cobertura da série de origem: 2021-01-01 a 2026-09-30.",
+     "tratamento_ausencia": "Sem o valor na gold de origem, o painel mostra 'sem dado'; sem todas as observações do dia no silver, a reconciliação fica pendente.",
+     "versao": {
+      "pipeline": "energia-0.1.0",
+      "codigo": "ac7599ce6c86+alterado",
+      "publicacao": "2026-10-01T08:04:11Z"
+     },
+     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
+     "testes": [
+      {
+       "nome": "valor relido na gold de origem pelo caminho publicado",
+       "resultado": "aprovado",
+       "detalhe": "pld.json#cartoes[SE].media_dia: lido 135.25, publicado 135.25"
+      },
+      {
+       "nome": "célula do dia no recorte alinhado (P005)",
+       "resultado": "aprovado",
+       "detalhe": "preco_SE em 2026-09-30: 135.25; valor atual 135.25; tolerância 0.005 R$/MWh (meia unidade da casa exibida)"
+      }
+     ],
+     "reconciliacao": {
+      "descricao": "Valor refeito do silver principal (observações vigentes, sem passar pela gold de origem): 135.2458; exibido 135.25",
+      "resultado": "aprovado",
+      "tolerancia": "R$ 0,005/MWh (meio centavo)"
+     },
+     "download": [
+      {
+       "rotulo": "PLD horário, quatro submercados (CSV)",
+       "url": "/energia/series/pld_horario.csv"
+      },
+      {
+       "rotulo": "PLD médio diário, quatro submercados (CSV)",
+       "url": "/energia/series/pld_diario.csv"
+      }
+     ],
+     "reproducao": "python3 pipeline/energia/executar_modulo.py visao --sem-coleta (lê as golds publicadas e o silver principal)",
+     "citacao": "SCRUTINIUMS. Visão geral, determinante 'preco': preço, valor atual (Sudeste/Centro-Oeste): R$ 135,25/MWh, Sudeste/Centro-Oeste, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    }
    },
    {
     "id": "agua",
@@ -1596,7 +1669,8 @@
     "valor_atual": {
      "rotulo": "SIN",
      "valor": 61.6,
-     "caminho": "hidrologia.json#subsistemas[SIN].ear.valor"
+     "caminho": "hidrologia.json#subsistemas[SIN].ear.valor",
+     "valor_exibido": "61,6% da EAR máxima"
     },
     "nota": "Razão das somas da energia armazenada e da capacidade dos quatro subsistemas.",
     "download": [
@@ -1612,7 +1686,92 @@
     "defasagem_dias": 3,
     "texto_defasagem": "Referência 28/09/2026, 3 dias antes da data de processamento (01/10/2026).",
     "ultimo_dia_com_dado": "2026-09-28",
-    "dias_com_dado": 88
+    "dias_com_dado": 88,
+    "evidencia": {
+     "indicador": "Visão geral, determinante 'agua': água, valor atual (SIN)",
+     "valor_exibido": "61,6% da EAR máxima",
+     "valor_calculo": 61.64733748206308,
+     "unidade": "% da EAR máxima",
+     "periodo": {
+      "inicio": "2026-09-28",
+      "fim": "2026-09-28"
+     },
+     "entidade": "SIN",
+     "universo": "EAR do SIN, % da EAR máxima",
+     "filtros": [],
+     "fonte": {
+      "orgao": "ONS",
+      "conjunto": "EAR Diário por Subsistema",
+      "recurso": "EAR_DIARIO_SUBSISTEMA_2026",
+      "url": "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/ear_subsistema_di/EAR_DIARIO_SUBSISTEMA_2026.csv",
+      "arquivo": "data/energia/bronze/ons/ear_subsistema_di/EAR_DIARIO_SUBSISTEMA_2026/20260930T021944Z.7e8b36261027.csv.gz",
+      "sha256": "7e8b3626102765ba34cf30452404a0a49be09f77013d6414708b2987285d4fbd",
+      "capturado_em": "2026-09-30T02:19:44Z",
+      "publicado_em": "2026-09-29T22:01:32.453930"
+     },
+     "extracao_pdf": null,
+     "chaves_origem": [
+      "ear_subsistema_di/ear_mwmes.SE/2026-09-28",
+      "ear_subsistema_di/ear_mwmes.S/2026-09-28",
+      "ear_subsistema_di/ear_mwmes.NE/2026-09-28",
+      "ear_subsistema_di/ear_mwmes.N/2026-09-28",
+      "ear_subsistema_di/ear_max_mwmes.SE/2026-09-28",
+      "ear_subsistema_di/ear_max_mwmes.S/2026-09-28",
+      "ear_subsistema_di/ear_max_mwmes.NE/2026-09-28",
+      "ear_subsistema_di/ear_max_mwmes.N/2026-09-28"
+     ],
+     "chaves_total": null,
+     "consulta": "silver energia.db: observacoes do dataset ear_subsistema_di em 2026-09-28 a 2026-09-28 (valor da captura mais recente)",
+     "manifesto": null,
+     "formula": "EAR_SIN = 100 × Σ EAR verificada ÷ Σ EAR máxima (quatro subsistemas, mesmo dia)",
+     "numerador": {
+      "descricao": "EAR verificada dos quatro subsistemas em 2026-09-28 (Σ MWmês)",
+      "valor": 180052.264
+     },
+     "denominador": {
+      "descricao": "EAR máxima dos quatro subsistemas em 2026-09-28 (Σ MWmês)",
+      "valor": 292068.192
+     },
+     "pesos": null,
+     "exclusoes": [],
+     "cobertura": "Cobertura da série de origem: 2000-01-01 a 2026-09-28.",
+     "tratamento_ausencia": "Sem o valor na gold de origem, o painel mostra 'sem dado'; sem todas as observações do dia no silver, a reconciliação fica pendente.",
+     "versao": {
+      "pipeline": "energia-0.1.0",
+      "codigo": "ac7599ce6c86+alterado",
+      "publicacao": "2026-10-01T08:04:11Z"
+     },
+     "revisoes": "44 observações revisadas pela fonte entre as capturas integradas. Mais recentes: ear_mwmes.N em 2026-09-27; ear_mwmes.NE em 2026-09-27; ear_mwmes.SE em 2026-09-27; ear_pct.N em 2026-09-27; ear_pct.NE em 2026-09-27. Verificação em 2026-09-30.",
+     "testes": [
+      {
+       "nome": "valor relido na gold de origem pelo caminho publicado",
+       "resultado": "aprovado",
+       "detalhe": "hidrologia.json#subsistemas[SIN].ear.valor: lido 61.6, publicado 61.6"
+      },
+      {
+       "nome": "célula do dia no recorte alinhado (P005)",
+       "resultado": "aprovado",
+       "detalhe": "agua_SIN em 2026-09-28: 61.65; valor atual 61.6; tolerância 0.05 % da EAR máxima (meia unidade da casa exibida)"
+      }
+     ],
+     "reconciliacao": {
+      "descricao": "Valor refeito do silver principal (observações vigentes, sem passar pela gold de origem): 61.6473; exibido 61.6",
+      "resultado": "aprovado",
+      "tolerancia": "0,05 p.p. (meia unidade da casa exibida)"
+     },
+     "download": [
+      {
+       "rotulo": "EAR diária por subsistema e SIN (CSV)",
+       "url": "/energia/series/ear_diario.csv"
+      },
+      {
+       "rotulo": "ENA diária por subsistema e SIN (CSV)",
+       "url": "/energia/series/ena_diario.csv"
+      }
+     ],
+     "reproducao": "python3 pipeline/energia/executar_modulo.py visao --sem-coleta (lê as golds publicadas e o silver principal)",
+     "citacao": "SCRUTINIUMS. Visão geral, determinante 'agua': água, valor atual (SIN): 61,6% da EAR máxima, SIN, 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, EAR Diário por Subsistema (recurso EAR_DIARIO_SUBSISTEMA_2026, capturado em 29/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    }
    },
    {
     "id": "geracao",
@@ -1644,7 +1803,8 @@
     "valor_atual": {
      "rotulo": "SIN, 7 dias",
      "valor": 10.6,
-     "caminho": "geracao.json#termica_contexto.participacao_7d"
+     "caminho": "geracao.json#termica_contexto.participacao_7d",
+     "valor_exibido": "10,6% da geração verificada"
     },
     "nota": "Participação na soma da geração verificada hidráulica, térmica, eólica e solar do balanço do ONS (a solar inclui a MMGD estimada desde 29/04/2023).",
     "download": [
@@ -1656,7 +1816,84 @@
     "defasagem_dias": 3,
     "texto_defasagem": "Referência 28/09/2026, 3 dias antes da data de processamento (01/10/2026).",
     "ultimo_dia_com_dado": "2026-09-28",
-    "dias_com_dado": 88
+    "dias_com_dado": 88,
+    "evidencia": {
+     "indicador": "Visão geral, determinante 'geracao': geração, valor atual (SIN, 7 dias)",
+     "valor_exibido": "10,6% da geração verificada",
+     "valor_calculo": 10.632156046878418,
+     "unidade": "% da geração verificada",
+     "periodo": {
+      "inicio": "2026-09-22",
+      "fim": "2026-09-28"
+     },
+     "entidade": "SIN, 7 dias",
+     "universo": "Participação térmica em janelas móveis de 7 dias (SIN)",
+     "filtros": [],
+     "fonte": {
+      "orgao": "ONS",
+      "conjunto": "Balanço de Energia nos Subsistemas",
+      "recurso": "BALANCO_ENERGIA_SUBSISTEMA_2026",
+      "url": "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/balanco_energia_subsistema_ho/BALANCO_ENERGIA_SUBSISTEMA_2026.csv",
+      "arquivo": "data/energia/bronze/ons/balanco_energia_subsistema_ho/BALANCO_ENERGIA_SUBSISTEMA_2026/20260930T021957Z.81f6ecfcb899.csv.gz",
+      "sha256": "81f6ecfcb8995376afc77ccc2fdc79452ce4006b18e922b77dfce8dfecb07ad7",
+      "capturado_em": "2026-09-30T02:19:57Z",
+      "publicado_em": "2026-09-29T22:00:42.467156"
+     },
+     "extracao_pdf": null,
+     "chaves_origem": [
+      "balanco_energia_subsistema_ho/hidraulica.SIN/2026-09-22T00:00 a 2026-09-28T23:00",
+      "balanco_energia_subsistema_ho/termica.SIN/2026-09-22T00:00 a 2026-09-28T23:00",
+      "balanco_energia_subsistema_ho/eolica.SIN/2026-09-22T00:00 a 2026-09-28T23:00",
+      "balanco_energia_subsistema_ho/solar.SIN/2026-09-22T00:00 a 2026-09-28T23:00"
+     ],
+     "chaves_total": null,
+     "consulta": "silver energia.db: observacoes do dataset balanco_energia_subsistema_ho em 2026-09-22 a 2026-09-28 (valor da captura mais recente)",
+     "manifesto": null,
+     "formula": "participação = 100 × Σ térmica ÷ Σ (hidráulica + térmica + eólica + solar), médias diárias das 24 horas, 7 dias",
+     "numerador": {
+      "descricao": "geração térmica do SIN no balanço de 2026-09-22 a 2026-09-28 (Σ das médias diárias, MWmed)",
+      "valor": 62336.175
+     },
+     "denominador": {
+      "descricao": "geração hidráulica, térmica, eólica e solar do SIN no balanço, mesmos dias (Σ das médias diárias, MWmed)",
+      "valor": 586298.534
+     },
+     "pesos": null,
+     "exclusoes": [],
+     "cobertura": "Cobertura da série de origem: 2021-01-01 a 2026-09-28.",
+     "tratamento_ausencia": "Sem o valor na gold de origem, o painel mostra 'sem dado'; sem todas as observações do dia no silver, a reconciliação fica pendente.",
+     "versao": {
+      "pipeline": "energia-0.1.0",
+      "codigo": "ac7599ce6c86+alterado",
+      "publicacao": "2026-10-01T08:04:11Z"
+     },
+     "revisoes": "2.620 observações revisadas pela fonte entre as capturas integradas. Mais recentes: carga.N em 2026-09-26T23:00; carga.NE em 2026-09-26T23:00; carga.S em 2026-09-26T23:00; carga.SE em 2026-09-26T23:00; carga.SIN em 2026-09-26T23:00. Verificação em 2026-10-01.",
+     "testes": [
+      {
+       "nome": "valor relido na gold de origem pelo caminho publicado",
+       "resultado": "aprovado",
+       "detalhe": "geracao.json#termica_contexto.participacao_7d: lido 10.6, publicado 10.6"
+      },
+      {
+       "nome": "célula do dia no recorte alinhado (P005)",
+       "resultado": "aprovado",
+       "detalhe": "geracao_termica_7d em 2026-09-28: 10.63; valor atual 10.6; tolerância 0.05 % da geração verificada (meia unidade da casa exibida)"
+      }
+     ],
+     "reconciliacao": {
+      "descricao": "Valor refeito do silver principal (observações vigentes, sem passar pela gold de origem): 10.6322; exibido 10.6",
+      "resultado": "aprovado",
+      "tolerancia": "0,05 p.p. (meia unidade da casa exibida)"
+     },
+     "download": [
+      {
+       "rotulo": "Geração diária por fonte e subsistema (CSV)",
+       "url": "/energia/series/geracao_diaria.csv"
+      }
+     ],
+     "reproducao": "python3 pipeline/energia/executar_modulo.py visao --sem-coleta (lê as golds publicadas e o silver principal)",
+     "citacao": "SCRUTINIUMS. Visão geral, determinante 'geracao': geração, valor atual (SIN, 7 dias): 10,6% da geração verificada, SIN, 7 dias, 22/09/2026 a 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Balanço de Energia nos Subsistemas (recurso BALANCO_ENERGIA_SUBSISTEMA_2026, capturado em 29/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    }
    },
    {
     "id": "carga",
@@ -1687,7 +1924,8 @@
     "valor_atual": {
      "rotulo": "SIN",
      "valor": 88896.0,
-     "caminho": "carga.json#subsistemas[SIN].dia"
+     "caminho": "carga.json#subsistemas[SIN].dia",
+     "valor_exibido": "88.896 MWmed"
     },
     "nota": "Inclui a estimativa de micro e minigeração distribuída do ONS desde 29/04/2023; temperatura e calendário não são ajustados.",
     "download": [
@@ -1699,7 +1937,78 @@
     "defasagem_dias": 3,
     "texto_defasagem": "Referência 28/09/2026, 3 dias antes da data de processamento (01/10/2026).",
     "ultimo_dia_com_dado": "2026-09-28",
-    "dias_com_dado": 88
+    "dias_com_dado": 88,
+    "evidencia": {
+     "indicador": "Visão geral, determinante 'carga': carga, valor atual (SIN)",
+     "valor_exibido": "88.896 MWmed",
+     "valor_calculo": 88896.32900000001,
+     "unidade": "MWmed",
+     "periodo": {
+      "inicio": "2026-09-28",
+      "fim": "2026-09-28"
+     },
+     "entidade": "SIN",
+     "universo": "Carga do SIN e variação anual",
+     "filtros": [],
+     "fonte": {
+      "orgao": "ONS",
+      "conjunto": "Carga de Energia Diária",
+      "recurso": "CARGA_ENERGIA_2026",
+      "url": "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/carga_energia_di/CARGA_ENERGIA_2026.csv",
+      "arquivo": "data/energia/bronze/ons/carga_energia_di/CARGA_ENERGIA_2026/20260930T021948Z.cdb81418d981.csv.gz",
+      "sha256": "cdb81418d9810b3d0b6226d261090b1d3fa0b9d9dc9c566e2785ef30dd625d15",
+      "capturado_em": "2026-09-30T02:19:48Z",
+      "publicado_em": "2026-09-29T22:00:43.436290"
+     },
+     "extracao_pdf": null,
+     "chaves_origem": [
+      "carga_energia_di/carga_mwmed.SE/2026-09-28",
+      "carga_energia_di/carga_mwmed.S/2026-09-28",
+      "carga_energia_di/carga_mwmed.NE/2026-09-28",
+      "carga_energia_di/carga_mwmed.N/2026-09-28"
+     ],
+     "chaves_total": null,
+     "consulta": "silver energia.db: observacoes do dataset carga_energia_di em 2026-09-28 a 2026-09-28 (valor da captura mais recente)",
+     "manifesto": null,
+     "formula": "carga do SIN no dia = Σ carga de energia diária dos quatro subsistemas (MWmed)",
+     "numerador": null,
+     "denominador": null,
+     "pesos": null,
+     "exclusoes": [],
+     "cobertura": "Cobertura da série de origem: 2000-01-01 a 2026-09-28.",
+     "tratamento_ausencia": "Sem o valor na gold de origem, o painel mostra 'sem dado'; sem todas as observações do dia no silver, a reconciliação fica pendente.",
+     "versao": {
+      "pipeline": "energia-0.1.0",
+      "codigo": "ac7599ce6c86+alterado",
+      "publicacao": "2026-10-01T08:04:11Z"
+     },
+     "revisoes": "33 observações revisadas pela fonte entre as capturas integradas. Mais recentes: carga_mwmed.N em 2026-09-26; carga_mwmed.NE em 2026-09-26; carga_mwmed.S em 2026-09-26; carga_mwmed.SE em 2026-09-26; carga_mwmed.N em 2026-09-25. Verificação em 2026-10-01.",
+     "testes": [
+      {
+       "nome": "valor relido na gold de origem pelo caminho publicado",
+       "resultado": "aprovado",
+       "detalhe": "carga.json#subsistemas[SIN].dia: lido 88896.0, publicado 88896.0"
+      },
+      {
+       "nome": "célula do dia no recorte alinhado (P005)",
+       "resultado": "aprovado",
+       "detalhe": "carga_SIN em 2026-09-28: 88896.0; valor atual 88896.0; tolerância 0.5 MWmed (meia unidade da casa exibida)"
+      }
+     ],
+     "reconciliacao": {
+      "descricao": "Valor refeito do silver principal (observações vigentes, sem passar pela gold de origem): 88896.329; exibido 88896.0; parcelas SE 48999.938, S 14909.434, NE 15064.236, N 9922.72",
+      "resultado": "aprovado",
+      "tolerancia": "0,5 MWmed (meia unidade exibida)"
+     },
+     "download": [
+      {
+       "rotulo": "Carga diária por subsistema e SIN (CSV)",
+       "url": "/energia/series/carga_diaria.csv"
+      }
+     ],
+     "reproducao": "python3 pipeline/energia/executar_modulo.py visao --sem-coleta (lê as golds publicadas e o silver principal)",
+     "citacao": "SCRUTINIUMS. Visão geral, determinante 'carga': carga, valor atual (SIN): 88.896 MWmed, SIN, 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Diária (recurso CARGA_ENERGIA_2026, capturado em 29/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    }
    },
    {
     "id": "rede",
@@ -1741,7 +2050,8 @@
     "valor_atual": {
      "rotulo": "Nordeste → Sudeste/Centro-Oeste",
      "valor": 5184.0,
-     "caminho": "rede.json#fronteiras[NE_SE].fluxo_dia"
+     "caminho": "rede.json#fronteiras[NE_SE].fluxo_dia",
+     "valor_exibido": "5.184 MWmed"
     },
     "nota": "Fluxo médio verificado, positivo da primeira para a segunda ponta de cada fronteira. Este painel não compara o fluxo com limites de intercâmbio: fluxo alto não indica congestionamento.",
     "download": [
@@ -1753,7 +2063,75 @@
     "defasagem_dias": 3,
     "texto_defasagem": "Referência 28/09/2026, 3 dias antes da data de processamento (01/10/2026).",
     "ultimo_dia_com_dado": "2026-09-28",
-    "dias_com_dado": 88
+    "dias_com_dado": 88,
+    "evidencia": {
+     "indicador": "Visão geral, determinante 'rede': rede, valor atual (Nordeste → Sudeste/Centro-Oeste)",
+     "valor_exibido": "5.184 MWmed",
+     "valor_calculo": 5184.3845833333335,
+     "unidade": "MWmed",
+     "periodo": {
+      "inicio": "2026-09-28",
+      "fim": "2026-09-28"
+     },
+     "entidade": "Nordeste → Sudeste/Centro-Oeste",
+     "universo": "Intercâmbio verificado entre subsistemas",
+     "filtros": [],
+     "fonte": {
+      "orgao": "ONS",
+      "conjunto": "Intercâmbios Entre Subsistemas",
+      "recurso": "INTERCAMBIO_NACIONAL_2026",
+      "url": "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/intercambio_nacional_ho/INTERCAMBIO_NACIONAL_2026.csv",
+      "arquivo": "data/energia/bronze/ons/intercambio_nacional_ho/INTERCAMBIO_NACIONAL_2026/20260930T022008Z.c753c4d85a65.csv.gz",
+      "sha256": "c753c4d85a653b9eb80b7a3fd9e1d49d6c9adbd6f4a60fa8d07cf7e3ff309e05",
+      "capturado_em": "2026-09-30T02:20:08Z",
+      "publicado_em": "2026-09-29T22:04:31.640235"
+     },
+     "extracao_pdf": null,
+     "chaves_origem": [
+      "intercambio_nacional_ho/fluxo.NE_SE/2026-09-28T00:00 a 2026-09-28T23:00 (24 horas)"
+     ],
+     "chaves_total": null,
+     "consulta": "silver energia.db: observacoes do dataset intercambio_nacional_ho em 2026-09-28 a 2026-09-28 (valor da captura mais recente)",
+     "manifesto": null,
+     "formula": "fluxo médio do dia = (1/24) × Σ intercâmbio verificado horário (positivo da primeira para a segunda ponta da fronteira)",
+     "numerador": null,
+     "denominador": null,
+     "pesos": null,
+     "exclusoes": [],
+     "cobertura": "Cobertura da série de origem: 2021-01-01 a 2026-09-28.",
+     "tratamento_ausencia": "Sem o valor na gold de origem, o painel mostra 'sem dado'; sem todas as observações do dia no silver, a reconciliação fica pendente.",
+     "versao": {
+      "pipeline": "energia-0.1.0",
+      "codigo": "ac7599ce6c86+alterado",
+      "publicacao": "2026-10-01T08:04:11Z"
+     },
+     "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-09-30.",
+     "testes": [
+      {
+       "nome": "valor relido na gold de origem pelo caminho publicado",
+       "resultado": "aprovado",
+       "detalhe": "rede.json#fronteiras[NE_SE].fluxo_dia: lido 5184.0, publicado 5184.0"
+      },
+      {
+       "nome": "célula do dia no recorte alinhado (P005)",
+       "resultado": "aprovado",
+       "detalhe": "rede_NE_SE em 2026-09-28: 5184.0; valor atual 5184.0; tolerância 0.5 MWmed (meia unidade da casa exibida)"
+      }
+     ],
+     "reconciliacao": {
+      "descricao": "Valor refeito do silver principal (observações vigentes, sem passar pela gold de origem): 5184.3846; exibido 5184.0",
+      "resultado": "aprovado",
+      "tolerancia": "0,5 MWmed (meia unidade exibida)"
+     },
+     "download": [
+      {
+       "rotulo": "Intercâmbio diário por fronteira (CSV)",
+       "url": "/energia/series/intercambio_diario.csv"
+      }
+     ],
+     "reproducao": "python3 pipeline/energia/executar_modulo.py visao --sem-coleta (lê as golds publicadas e o silver principal)",
+     "citacao": "SCRUTINIUMS. Visão geral, determinante 'rede': rede, valor atual (Nordeste → Sudeste/Centro-Oeste): 5.184 MWmed, Nordeste → Sudeste/Centro-Oeste, 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Intercâmbios Entre Subsistemas (recurso INTERCAMBIO_NACIONAL_2026, capturado em 29/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    }
    }
   ],
   "dados": [
@@ -4447,8 +4825,8 @@
     "tratamento_ausencia": "Dia sem dado ou sem base completa não é avaliado e interrompe a contagem de duração; nulo não vira zero.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "fa4767ccfa9a+alterado",
-     "publicacao": "2026-10-01T07:45:23Z"
+     "codigo": "ac7599ce6c86+alterado",
+     "publicacao": "2026-10-01T08:04:11Z"
     },
     "revisoes": "Reavaliado a cada processamento com os dados vigentes; ver a regra revisao_material.",
     "testes": [
@@ -4475,11 +4853,11 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py visao --sem-coleta (lê as golds publicadas e o silver principal)",
-    "citacao": "SCRUTINIUMS. Regra 'ear_faixa' do o que observar: 61,6%, SIN, 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, EAR Diário por Subsistema (recurso EAR_DIARIO_SUBSISTEMA_2001; EAR_DIARIO_SUBSISTEMA_2002; EAR_DIARIO_SUBSISTEMA_2003; EAR_DIARIO_SUBSISTEMA_2004; EAR_DIARIO_SUBSISTEMA_2005; EAR_DIARIO_SUBSISTEMA_2006; EAR_DIARIO_SUBSISTEMA_2007; EAR_DIARIO_SUBSISTEMA_2008; EAR_DIARIO_SUBSISTEMA_2009; EAR_DIARIO_SUBSISTEMA_2010; EAR_DIARIO_SUBSISTEMA_2011; EAR_DIARIO_SUBSISTEMA_2012; EAR_DIARIO_SUBSISTEMA_2013; EAR_DIARIO_SUBSISTEMA_2014; EAR_DIARIO_SUBSISTEMA_2015; EAR_DIARIO_SUBSISTEMA_2016; EAR_DIARIO_SUBSISTEMA_2017; EAR_DIARIO_SUBSISTEMA_2018; EAR_DIARIO_SUBSISTEMA_2019; EAR_DIARIO_SUBSISTEMA_2020; EAR_DIARIO_SUBSISTEMA_2021; EAR_DIARIO_SUBSISTEMA_2022; EAR_DIARIO_SUBSISTEMA_2023; EAR_DIARIO_SUBSISTEMA_2024; EAR_DIARIO_SUBSISTEMA_2025; EAR_DIARIO_SUBSISTEMA_2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Regra 'ear_faixa' do o que observar: 61,6%, SIN, 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, EAR Diário por Subsistema (recurso EAR_DIARIO_SUBSISTEMA_2001; EAR_DIARIO_SUBSISTEMA_2002; EAR_DIARIO_SUBSISTEMA_2003; EAR_DIARIO_SUBSISTEMA_2004; EAR_DIARIO_SUBSISTEMA_2005; EAR_DIARIO_SUBSISTEMA_2006; EAR_DIARIO_SUBSISTEMA_2007; EAR_DIARIO_SUBSISTEMA_2008; EAR_DIARIO_SUBSISTEMA_2009; EAR_DIARIO_SUBSISTEMA_2010; EAR_DIARIO_SUBSISTEMA_2011; EAR_DIARIO_SUBSISTEMA_2012; EAR_DIARIO_SUBSISTEMA_2013; EAR_DIARIO_SUBSISTEMA_2014; EAR_DIARIO_SUBSISTEMA_2015; EAR_DIARIO_SUBSISTEMA_2016; EAR_DIARIO_SUBSISTEMA_2017; EAR_DIARIO_SUBSISTEMA_2018; EAR_DIARIO_SUBSISTEMA_2019; EAR_DIARIO_SUBSISTEMA_2020; EAR_DIARIO_SUBSISTEMA_2021; EAR_DIARIO_SUBSISTEMA_2022; EAR_DIARIO_SUBSISTEMA_2023; EAR_DIARIO_SUBSISTEMA_2024; EAR_DIARIO_SUBSISTEMA_2025; EAR_DIARIO_SUBSISTEMA_2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    },
    "registro_emissoes": {
     "inicio": "2026-10-01T06:40:11Z",
-    "publicacoes_registradas": 3,
+    "publicacoes_registradas": 5,
     "mudancas_de_estado": 1,
     "emitidos": 0,
     "referencias_em_alerta": 0,
@@ -4891,8 +5269,8 @@
     "tratamento_ausencia": "Dia sem dado ou sem base completa não é avaliado e interrompe a contagem de duração; nulo não vira zero.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "fa4767ccfa9a+alterado",
-     "publicacao": "2026-10-01T07:45:23Z"
+     "codigo": "ac7599ce6c86+alterado",
+     "publicacao": "2026-10-01T08:04:11Z"
     },
     "revisoes": "Reavaliado a cada processamento com os dados vigentes; ver a regra revisao_material.",
     "testes": [
@@ -4919,11 +5297,11 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py visao --sem-coleta (lê as golds publicadas e o silver principal)",
-    "citacao": "SCRUTINIUMS. Regra 'ena_faixa' do o que observar: 168,6%, SIN, 30/08/2026 a 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, ENA Diário por Subsistema (recurso ENA_DIARIO_SUBSISTEMA_2001; ENA_DIARIO_SUBSISTEMA_2002; ENA_DIARIO_SUBSISTEMA_2003; ENA_DIARIO_SUBSISTEMA_2004; ENA_DIARIO_SUBSISTEMA_2005; ENA_DIARIO_SUBSISTEMA_2006; ENA_DIARIO_SUBSISTEMA_2007; ENA_DIARIO_SUBSISTEMA_2008; ENA_DIARIO_SUBSISTEMA_2009; ENA_DIARIO_SUBSISTEMA_2010; ENA_DIARIO_SUBSISTEMA_2011; ENA_DIARIO_SUBSISTEMA_2012; ENA_DIARIO_SUBSISTEMA_2013; ENA_DIARIO_SUBSISTEMA_2014; ENA_DIARIO_SUBSISTEMA_2015; ENA_DIARIO_SUBSISTEMA_2016; ENA_DIARIO_SUBSISTEMA_2017; ENA_DIARIO_SUBSISTEMA_2018; ENA_DIARIO_SUBSISTEMA_2019; ENA_DIARIO_SUBSISTEMA_2020; ENA_DIARIO_SUBSISTEMA_2021; ENA_DIARIO_SUBSISTEMA_2022; ENA_DIARIO_SUBSISTEMA_2023; ENA_DIARIO_SUBSISTEMA_2024; ENA_DIARIO_SUBSISTEMA_2025; ENA_DIARIO_SUBSISTEMA_2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Regra 'ena_faixa' do o que observar: 168,6%, SIN, 30/08/2026 a 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, ENA Diário por Subsistema (recurso ENA_DIARIO_SUBSISTEMA_2001; ENA_DIARIO_SUBSISTEMA_2002; ENA_DIARIO_SUBSISTEMA_2003; ENA_DIARIO_SUBSISTEMA_2004; ENA_DIARIO_SUBSISTEMA_2005; ENA_DIARIO_SUBSISTEMA_2006; ENA_DIARIO_SUBSISTEMA_2007; ENA_DIARIO_SUBSISTEMA_2008; ENA_DIARIO_SUBSISTEMA_2009; ENA_DIARIO_SUBSISTEMA_2010; ENA_DIARIO_SUBSISTEMA_2011; ENA_DIARIO_SUBSISTEMA_2012; ENA_DIARIO_SUBSISTEMA_2013; ENA_DIARIO_SUBSISTEMA_2014; ENA_DIARIO_SUBSISTEMA_2015; ENA_DIARIO_SUBSISTEMA_2016; ENA_DIARIO_SUBSISTEMA_2017; ENA_DIARIO_SUBSISTEMA_2018; ENA_DIARIO_SUBSISTEMA_2019; ENA_DIARIO_SUBSISTEMA_2020; ENA_DIARIO_SUBSISTEMA_2021; ENA_DIARIO_SUBSISTEMA_2022; ENA_DIARIO_SUBSISTEMA_2023; ENA_DIARIO_SUBSISTEMA_2024; ENA_DIARIO_SUBSISTEMA_2025; ENA_DIARIO_SUBSISTEMA_2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    },
    "registro_emissoes": {
     "inicio": "2026-10-01T06:40:11Z",
-    "publicacoes_registradas": 3,
+    "publicacoes_registradas": 5,
     "mudancas_de_estado": 2,
     "emitidos": 0,
     "referencias_em_alerta": 0,
@@ -5131,8 +5509,8 @@
     "tratamento_ausencia": "Dia sem dado ou sem base completa não é avaliado e interrompe a contagem de duração; nulo não vira zero.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "fa4767ccfa9a+alterado",
-     "publicacao": "2026-10-01T07:45:23Z"
+     "codigo": "ac7599ce6c86+alterado",
+     "publicacao": "2026-10-01T08:04:11Z"
     },
     "revisoes": "Reavaliado a cada processamento com os dados vigentes; ver a regra revisao_material.",
     "testes": [
@@ -5155,11 +5533,11 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py visao --sem-coleta (lê as golds publicadas e o silver principal)",
-    "citacao": "SCRUTINIUMS. Regra 'termica' do o que observar: 10,6%, SIN, 22/09/2026 a 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Balanço de Energia nos Subsistemas (recurso BALANCO_ENERGIA_SUBSISTEMA_2026, capturado em 29/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Regra 'termica' do o que observar: 10,6%, SIN, 22/09/2026 a 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Balanço de Energia nos Subsistemas (recurso BALANCO_ENERGIA_SUBSISTEMA_2026, capturado em 29/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    },
    "registro_emissoes": {
     "inicio": "2026-10-01T06:40:11Z",
-    "publicacoes_registradas": 3,
+    "publicacoes_registradas": 5,
     "mudancas_de_estado": 1,
     "emitidos": 0,
     "referencias_em_alerta": 0,
@@ -5357,8 +5735,8 @@
     "tratamento_ausencia": "Dia sem dado ou sem base completa não é avaliado e interrompe a contagem de duração; nulo não vira zero.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "fa4767ccfa9a+alterado",
-     "publicacao": "2026-10-01T07:45:23Z"
+     "codigo": "ac7599ce6c86+alterado",
+     "publicacao": "2026-10-01T08:04:11Z"
     },
     "revisoes": "Reavaliado a cada processamento com os dados vigentes; ver a regra revisao_material.",
     "testes": [
@@ -5385,11 +5763,11 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py visao --sem-coleta (lê as golds publicadas e o silver principal)",
-    "citacao": "SCRUTINIUMS. Regra 'carga_extrema' do o que observar: 88.896 MWmed, SIN, 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Diária (recurso CARGA_ENERGIA_2026, capturado em 29/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Regra 'carga_extrema' do o que observar: 88.896 MWmed, SIN, 28/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Carga de Energia Diária (recurso CARGA_ENERGIA_2026, capturado em 29/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    },
    "registro_emissoes": {
     "inicio": "2026-10-01T06:40:11Z",
-    "publicacoes_registradas": 3,
+    "publicacoes_registradas": 5,
     "mudancas_de_estado": 1,
     "emitidos": 0,
     "referencias_em_alerta": 0,
@@ -5584,8 +5962,8 @@
     "tratamento_ausencia": "Dia sem dado ou sem base completa não é avaliado e interrompe a contagem de duração; nulo não vira zero.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "fa4767ccfa9a+alterado",
-     "publicacao": "2026-10-01T07:45:23Z"
+     "codigo": "ac7599ce6c86+alterado",
+     "publicacao": "2026-10-01T08:04:11Z"
     },
     "revisoes": "Reavaliado a cada processamento com os dados vigentes; ver a regra revisao_material.",
     "testes": [
@@ -5608,11 +5986,11 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py visao --sem-coleta (lê as golds publicadas e o silver principal)",
-    "citacao": "SCRUTINIUMS. Regra 'descolamento' do o que observar: 10,32 R$/MWh, quatro submercados, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Regra 'descolamento' do o que observar: 10,32 R$/MWh, quatro submercados, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    },
    "registro_emissoes": {
     "inicio": "2026-10-01T06:40:11Z",
-    "publicacoes_registradas": 3,
+    "publicacoes_registradas": 5,
     "mudancas_de_estado": 1,
     "emitidos": 0,
     "referencias_em_alerta": 0,
@@ -5822,8 +6200,8 @@
     "tratamento_ausencia": "Dia sem dado ou sem base completa não é avaliado e interrompe a contagem de duração; nulo não vira zero.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "fa4767ccfa9a+alterado",
-     "publicacao": "2026-10-01T07:45:23Z"
+     "codigo": "ac7599ce6c86+alterado",
+     "publicacao": "2026-10-01T08:04:11Z"
     },
     "revisoes": "Reavaliado a cada processamento com os dados vigentes; ver a regra revisao_material.",
     "testes": [
@@ -5854,11 +6232,11 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py visao --sem-coleta (lê as golds publicadas e o silver principal)",
-    "citacao": "SCRUTINIUMS. Regra 'pld_piso' do o que observar: 14 horas, quatro submercados, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Regra 'pld_piso' do o que observar: 14 horas, quatro submercados, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    },
    "registro_emissoes": {
     "inicio": "2026-10-01T06:40:11Z",
-    "publicacoes_registradas": 3,
+    "publicacoes_registradas": 5,
     "mudancas_de_estado": 1,
     "emitidos": 0,
     "referencias_em_alerta": 0,
@@ -6073,8 +6451,8 @@
     "tratamento_ausencia": "Dia sem dado ou sem base completa não é avaliado e interrompe a contagem de duração; nulo não vira zero.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "fa4767ccfa9a+alterado",
-     "publicacao": "2026-10-01T07:45:23Z"
+     "codigo": "ac7599ce6c86+alterado",
+     "publicacao": "2026-10-01T08:04:11Z"
     },
     "revisoes": "Reavaliado a cada processamento com os dados vigentes; ver a regra revisao_material.",
     "testes": [
@@ -6105,11 +6483,11 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py visao --sem-coleta (lê as golds publicadas e o silver principal)",
-    "citacao": "SCRUTINIUMS. Regra 'pld_teto' do o que observar: 0 horas, quatro submercados, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Regra 'pld_teto' do o que observar: 0 horas, quatro submercados, 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE, PLD_HORARIO (recurso pld_horario_2026, capturado em 29/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    },
    "registro_emissoes": {
     "inicio": "2026-10-01T06:40:11Z",
-    "publicacoes_registradas": 3,
+    "publicacoes_registradas": 5,
     "mudancas_de_estado": 1,
     "emitidos": 0,
     "referencias_em_alerta": 0,
@@ -6325,8 +6703,8 @@
     "tratamento_ausencia": "Dia sem dado ou sem base completa não é avaliado e interrompe a contagem de duração; nulo não vira zero.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "fa4767ccfa9a+alterado",
-     "publicacao": "2026-10-01T07:45:23Z"
+     "codigo": "ac7599ce6c86+alterado",
+     "publicacao": "2026-10-01T08:04:11Z"
     },
     "revisoes": "Reavaliado a cada processamento com os dados vigentes; ver a regra revisao_material.",
     "testes": [
@@ -6353,11 +6731,11 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py visao --sem-coleta (lê as golds publicadas e o silver principal)",
-    "citacao": "SCRUTINIUMS. Regra 'restricao_eolica' do o que observar: 21,4%, SIN, 23/09/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Restrição de operação por constrained-off de usinas eólicas (recurso RESTRICAO_COFF_EOLICA_2026_09, capturado em 30/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Regra 'restricao_eolica' do o que observar: 21,4%, SIN, 23/09/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Restrição de operação por constrained-off de usinas eólicas (recurso RESTRICAO_COFF_EOLICA_2026_09, capturado em 30/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    },
    "registro_emissoes": {
     "inicio": "2026-10-01T06:40:11Z",
-    "publicacoes_registradas": 3,
+    "publicacoes_registradas": 5,
     "mudancas_de_estado": 1,
     "emitidos": 0,
     "referencias_em_alerta": 0,
@@ -6551,8 +6929,8 @@
     "tratamento_ausencia": "Dia sem dado ou sem base completa não é avaliado e interrompe a contagem de duração; nulo não vira zero.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "fa4767ccfa9a+alterado",
-     "publicacao": "2026-10-01T07:45:23Z"
+     "codigo": "ac7599ce6c86+alterado",
+     "publicacao": "2026-10-01T08:04:11Z"
     },
     "revisoes": "Reavaliado a cada processamento com os dados vigentes; ver a regra revisao_material.",
     "testes": [
@@ -6579,11 +6957,11 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py visao --sem-coleta (lê as golds publicadas e o silver principal)",
-    "citacao": "SCRUTINIUMS. Regra 'restricao_solar' do o que observar: 27,7%, SIN, 23/09/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Restrição de operação por constrained-off de usinas fotovoltaicas (recurso RESTRICAO_COFF_FOTOVOLTAICA_2026_09, capturado em 30/09/2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Regra 'restricao_solar' do o que observar: 27,7%, SIN, 23/09/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Restrição de operação por constrained-off de usinas fotovoltaicas (recurso RESTRICAO_COFF_FOTOVOLTAICA_2026_09, capturado em 30/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    },
    "registro_emissoes": {
     "inicio": "2026-10-01T06:40:11Z",
-    "publicacoes_registradas": 3,
+    "publicacoes_registradas": 5,
     "mudancas_de_estado": 2,
     "emitidos": 0,
     "referencias_em_alerta": 0,
@@ -7613,8 +7991,8 @@
     "tratamento_ausencia": "Dia sem dado ou sem base completa não é avaliado e interrompe a contagem de duração; nulo não vira zero.",
     "versao": {
      "pipeline": "energia-0.1.0",
-     "codigo": "fa4767ccfa9a+alterado",
-     "publicacao": "2026-10-01T07:45:23Z"
+     "codigo": "ac7599ce6c86+alterado",
+     "publicacao": "2026-10-01T08:04:11Z"
     },
     "revisoes": "Reavaliado a cada processamento com os dados vigentes; ver a regra revisao_material.",
     "testes": [
@@ -7646,13 +8024,13 @@
      }
     ],
     "reproducao": "python3 pipeline/energia/executar_modulo.py visao --sem-coleta (lê as golds publicadas e o silver principal)",
-    "citacao": "SCRUTINIUMS. Regra 'revisao_material' do o que observar: 58 revisões, conjuntos da Visão geral, 28/09/2026 a 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE e ONS, conjuntos de operação da Visão geral (capturas com revisão material) (recurso EAR_DIARIO_SUBSISTEMA_2000; EAR_DIARIO_SUBSISTEMA_2001; EAR_DIARIO_SUBSISTEMA_2002; EAR_DIARIO_SUBSISTEMA_2003; EAR_DIARIO_SUBSISTEMA_2004; EAR_DIARIO_SUBSISTEMA_2005; EAR_DIARIO_SUBSISTEMA_2006; EAR_DIARIO_SUBSISTEMA_2007; EAR_DIARIO_SUBSISTEMA_2008; EAR_DIARIO_SUBSISTEMA_2009; EAR_DIARIO_SUBSISTEMA_2010; EAR_DIARIO_SUBSISTEMA_2011; EAR_DIARIO_SUBSISTEMA_2012; EAR_DIARIO_SUBSISTEMA_2013; EAR_DIARIO_SUBSISTEMA_2014; EAR_DIARIO_SUBSISTEMA_2015; EAR_DIARIO_SUBSISTEMA_2016; EAR_DIARIO_SUBSISTEMA_2017; EAR_DIARIO_SUBSISTEMA_2018; EAR_DIARIO_SUBSISTEMA_2019; EAR_DIARIO_SUBSISTEMA_2020; EAR_DIARIO_SUBSISTEMA_2021; EAR_DIARIO_SUBSISTEMA_2022; EAR_DIARIO_SUBSISTEMA_2023; EAR_DIARIO_SUBSISTEMA_2024; EAR_DIARIO_SUBSISTEMA_2025; EAR_DIARIO_SUBSISTEMA_2026; EAR_DIARIO_SUBSISTEMA_2026; ENA_DIARIO_SUBSISTEMA_2000; ENA_DIARIO_SUBSISTEMA_2001; ENA_DIARIO_SUBSISTEMA_2002; ENA_DIARIO_SUBSISTEMA_2003; ENA_DIARIO_SUBSISTEMA_2004; ENA_DIARIO_SUBSISTEMA_2005; ENA_DIARIO_SUBSISTEMA_2006; ENA_DIARIO_SUBSISTEMA_2007; ENA_DIARIO_SUBSISTEMA_2008; ENA_DIARIO_SUBSISTEMA_2009; ENA_DIARIO_SUBSISTEMA_2010; ENA_DIARIO_SUBSISTEMA_2011; ENA_DIARIO_SUBSISTEMA_2012; ENA_DIARIO_SUBSISTEMA_2013; ENA_DIARIO_SUBSISTEMA_2014; ENA_DIARIO_SUBSISTEMA_2015; ENA_DIARIO_SUBSISTEMA_2016; ENA_DIARIO_SUBSISTEMA_2017; ENA_DIARIO_SUBSISTEMA_2018; ENA_DIARIO_SUBSISTEMA_2019; ENA_DIARIO_SUBSISTEMA_2020; ENA_DIARIO_SUBSISTEMA_2021; ENA_DIARIO_SUBSISTEMA_2022; ENA_DIARIO_SUBSISTEMA_2023; ENA_DIARIO_SUBSISTEMA_2024; ENA_DIARIO_SUBSISTEMA_2025; ENA_DIARIO_SUBSISTEMA_2026; ENA_DIARIO_SUBSISTEMA_2026; CARGA_ENERGIA_2000; CARGA_ENERGIA_2001; CARGA_ENERGIA_2002; CARGA_ENERGIA_2003; CARGA_ENERGIA_2004; CARGA_ENERGIA_2005; CARGA_ENERGIA_2006; CARGA_ENERGIA_2007; CARGA_ENERGIA_2008; CARGA_ENERGIA_2009; CARGA_ENERGIA_2010; CARGA_ENERGIA_2011; CARGA_ENERGIA_2012; CARGA_ENERGIA_2013; CARGA_ENERGIA_2014; CARGA_ENERGIA_2015; CARGA_ENERGIA_2016; CARGA_ENERGIA_2017; CARGA_ENERGIA_2018; CARGA_ENERGIA_2019; CARGA_ENERGIA_2020; CARGA_ENERGIA_2021; CARGA_ENERGIA_2022; CARGA_ENERGIA_2023; CARGA_ENERGIA_2024; CARGA_ENERGIA_2025; CARGA_ENERGIA_2026; CARGA_ENERGIA_2026; BALANCO_ENERGIA_SUBSISTEMA_2021; BALANCO_ENERGIA_SUBSISTEMA_2022; BALANCO_ENERGIA_SUBSISTEMA_2023; BALANCO_ENERGIA_SUBSISTEMA_2024; BALANCO_ENERGIA_SUBSISTEMA_2025; BALANCO_ENERGIA_SUBSISTEMA_2026; BALANCO_ENERGIA_SUBSISTEMA_2026; INTERCAMBIO_NACIONAL_2021; INTERCAMBIO_NACIONAL_2022; INTERCAMBIO_NACIONAL_2023; INTERCAMBIO_NACIONAL_2024; INTERCAMBIO_NACIONAL_2025; INTERCAMBIO_NACIONAL_2026; INTERCAMBIO_NACIONAL_2026; pld_horario_2026; pld_horario_2026; CMO_SEMANAL_2005; CMO_SEMANAL_2006; CMO_SEMANAL_2007; CMO_SEMANAL_2008; CMO_SEMANAL_2009; CMO_SEMANAL_2010; CMO_SEMANAL_2011; CMO_SEMANAL_2012; CMO_SEMANAL_2013; CMO_SEMANAL_2014; CMO_SEMANAL_2015; CMO_SEMANAL_2016; CMO_SEMANAL_2017; CMO_SEMANAL_2018; CMO_SEMANAL_2019; CMO_SEMANAL_2020; CMO_SEMANAL_2021; CMO_SEMANAL_2022; CMO_SEMANAL_2023; CMO_SEMANAL_2024; CMO_SEMANAL_2025; CMO_SEMANAL_2026). Versão energia-0.1.0, código fa4767ccfa9a+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+    "citacao": "SCRUTINIUMS. Regra 'revisao_material' do o que observar: 58 revisões, conjuntos da Visão geral, 28/09/2026 a 01/10/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: CCEE e ONS, conjuntos de operação da Visão geral (capturas com revisão material) (recurso EAR_DIARIO_SUBSISTEMA_2000; EAR_DIARIO_SUBSISTEMA_2001; EAR_DIARIO_SUBSISTEMA_2002; EAR_DIARIO_SUBSISTEMA_2003; EAR_DIARIO_SUBSISTEMA_2004; EAR_DIARIO_SUBSISTEMA_2005; EAR_DIARIO_SUBSISTEMA_2006; EAR_DIARIO_SUBSISTEMA_2007; EAR_DIARIO_SUBSISTEMA_2008; EAR_DIARIO_SUBSISTEMA_2009; EAR_DIARIO_SUBSISTEMA_2010; EAR_DIARIO_SUBSISTEMA_2011; EAR_DIARIO_SUBSISTEMA_2012; EAR_DIARIO_SUBSISTEMA_2013; EAR_DIARIO_SUBSISTEMA_2014; EAR_DIARIO_SUBSISTEMA_2015; EAR_DIARIO_SUBSISTEMA_2016; EAR_DIARIO_SUBSISTEMA_2017; EAR_DIARIO_SUBSISTEMA_2018; EAR_DIARIO_SUBSISTEMA_2019; EAR_DIARIO_SUBSISTEMA_2020; EAR_DIARIO_SUBSISTEMA_2021; EAR_DIARIO_SUBSISTEMA_2022; EAR_DIARIO_SUBSISTEMA_2023; EAR_DIARIO_SUBSISTEMA_2024; EAR_DIARIO_SUBSISTEMA_2025; EAR_DIARIO_SUBSISTEMA_2026; EAR_DIARIO_SUBSISTEMA_2026; ENA_DIARIO_SUBSISTEMA_2000; ENA_DIARIO_SUBSISTEMA_2001; ENA_DIARIO_SUBSISTEMA_2002; ENA_DIARIO_SUBSISTEMA_2003; ENA_DIARIO_SUBSISTEMA_2004; ENA_DIARIO_SUBSISTEMA_2005; ENA_DIARIO_SUBSISTEMA_2006; ENA_DIARIO_SUBSISTEMA_2007; ENA_DIARIO_SUBSISTEMA_2008; ENA_DIARIO_SUBSISTEMA_2009; ENA_DIARIO_SUBSISTEMA_2010; ENA_DIARIO_SUBSISTEMA_2011; ENA_DIARIO_SUBSISTEMA_2012; ENA_DIARIO_SUBSISTEMA_2013; ENA_DIARIO_SUBSISTEMA_2014; ENA_DIARIO_SUBSISTEMA_2015; ENA_DIARIO_SUBSISTEMA_2016; ENA_DIARIO_SUBSISTEMA_2017; ENA_DIARIO_SUBSISTEMA_2018; ENA_DIARIO_SUBSISTEMA_2019; ENA_DIARIO_SUBSISTEMA_2020; ENA_DIARIO_SUBSISTEMA_2021; ENA_DIARIO_SUBSISTEMA_2022; ENA_DIARIO_SUBSISTEMA_2023; ENA_DIARIO_SUBSISTEMA_2024; ENA_DIARIO_SUBSISTEMA_2025; ENA_DIARIO_SUBSISTEMA_2026; ENA_DIARIO_SUBSISTEMA_2026; CARGA_ENERGIA_2000; CARGA_ENERGIA_2001; CARGA_ENERGIA_2002; CARGA_ENERGIA_2003; CARGA_ENERGIA_2004; CARGA_ENERGIA_2005; CARGA_ENERGIA_2006; CARGA_ENERGIA_2007; CARGA_ENERGIA_2008; CARGA_ENERGIA_2009; CARGA_ENERGIA_2010; CARGA_ENERGIA_2011; CARGA_ENERGIA_2012; CARGA_ENERGIA_2013; CARGA_ENERGIA_2014; CARGA_ENERGIA_2015; CARGA_ENERGIA_2016; CARGA_ENERGIA_2017; CARGA_ENERGIA_2018; CARGA_ENERGIA_2019; CARGA_ENERGIA_2020; CARGA_ENERGIA_2021; CARGA_ENERGIA_2022; CARGA_ENERGIA_2023; CARGA_ENERGIA_2024; CARGA_ENERGIA_2025; CARGA_ENERGIA_2026; CARGA_ENERGIA_2026; BALANCO_ENERGIA_SUBSISTEMA_2021; BALANCO_ENERGIA_SUBSISTEMA_2022; BALANCO_ENERGIA_SUBSISTEMA_2023; BALANCO_ENERGIA_SUBSISTEMA_2024; BALANCO_ENERGIA_SUBSISTEMA_2025; BALANCO_ENERGIA_SUBSISTEMA_2026; BALANCO_ENERGIA_SUBSISTEMA_2026; INTERCAMBIO_NACIONAL_2021; INTERCAMBIO_NACIONAL_2022; INTERCAMBIO_NACIONAL_2023; INTERCAMBIO_NACIONAL_2024; INTERCAMBIO_NACIONAL_2025; INTERCAMBIO_NACIONAL_2026; INTERCAMBIO_NACIONAL_2026; pld_horario_2026; pld_horario_2026; CMO_SEMANAL_2005; CMO_SEMANAL_2006; CMO_SEMANAL_2007; CMO_SEMANAL_2008; CMO_SEMANAL_2009; CMO_SEMANAL_2010; CMO_SEMANAL_2011; CMO_SEMANAL_2012; CMO_SEMANAL_2013; CMO_SEMANAL_2014; CMO_SEMANAL_2015; CMO_SEMANAL_2016; CMO_SEMANAL_2017; CMO_SEMANAL_2018; CMO_SEMANAL_2019; CMO_SEMANAL_2020; CMO_SEMANAL_2021; CMO_SEMANAL_2022; CMO_SEMANAL_2023; CMO_SEMANAL_2024; CMO_SEMANAL_2025; CMO_SEMANAL_2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
    },
    "registro_emissoes": {
     "inicio": "2026-10-01T06:40:11Z",
-    "publicacoes_registradas": 3,
+    "publicacoes_registradas": 5,
     "mudancas_de_estado": 1,
-    "emitidos": 3,
+    "emitidos": 5,
     "referencias_em_alerta": 1,
     "nao_confirmados_apos_revisao": 0,
     "exemplos_nao_confirmados": [],
@@ -7701,7 +8079,7 @@
    "evidencia_numero": null,
    "registro_emissoes": {
     "inicio": "2026-10-01T06:40:11Z",
-    "publicacoes_registradas": 3,
+    "publicacoes_registradas": 5,
     "mudancas_de_estado": 1,
     "emitidos": 0,
     "referencias_em_alerta": 0,
@@ -7755,9 +8133,9 @@
    "evidencia_numero": null,
    "registro_emissoes": {
     "inicio": "2026-10-01T06:40:11Z",
-    "publicacoes_registradas": 3,
+    "publicacoes_registradas": 5,
     "mudancas_de_estado": 1,
-    "emitidos": 3,
+    "emitidos": 5,
     "referencias_em_alerta": 1,
     "nao_confirmados_apos_revisao": null,
     "exemplos_nao_confirmados": [],
@@ -7794,9 +8172,9 @@
    "evidencia_numero": null,
    "registro_emissoes": {
     "inicio": "2026-10-01T06:40:11Z",
-    "publicacoes_registradas": 3,
+    "publicacoes_registradas": 5,
     "mudancas_de_estado": 1,
-    "emitidos": 3,
+    "emitidos": 5,
     "referencias_em_alerta": 1,
     "nao_confirmados_apos_revisao": null,
     "exemplos_nao_confirmados": [],
@@ -8011,8 +8389,8 @@
    "origem": "contexto da execução, igual ao arquivo publicado (mesmo gerado_em)",
    "igual_ao_publicado": true,
    "arquivo_publicado_gerado_em": "2026-10-01T06:24:01Z",
-   "lida_em": "2026-10-01T07:45:08Z",
-   "idade_horas": 1.4
+   "lida_em": "2026-10-01T08:03:58Z",
+   "idade_horas": 1.7
   },
   {
    "gold": "cmo.json",
@@ -8022,8 +8400,8 @@
    "origem": "contexto da execução, igual ao arquivo publicado (mesmo gerado_em)",
    "igual_ao_publicado": true,
    "arquivo_publicado_gerado_em": "2026-10-01T00:24:35Z",
-   "lida_em": "2026-10-01T07:45:08Z",
-   "idade_horas": 7.3
+   "lida_em": "2026-10-01T08:03:58Z",
+   "idade_horas": 7.7
   },
   {
    "gold": "conta.json",
@@ -8033,8 +8411,8 @@
    "origem": "contexto da execução, igual ao arquivo publicado (mesmo gerado_em)",
    "igual_ao_publicado": true,
    "arquivo_publicado_gerado_em": "2026-09-30T23:56:57Z",
-   "lida_em": "2026-10-01T07:45:08Z",
-   "idade_horas": 7.8
+   "lida_em": "2026-10-01T08:03:58Z",
+   "idade_horas": 8.1
   },
   {
    "gold": "geracao.json",
@@ -8044,8 +8422,8 @@
    "origem": "contexto da execução, igual ao arquivo publicado (mesmo gerado_em)",
    "igual_ao_publicado": true,
    "arquivo_publicado_gerado_em": "2026-10-01T00:28:08Z",
-   "lida_em": "2026-10-01T07:45:08Z",
-   "idade_horas": 7.3
+   "lida_em": "2026-10-01T08:03:58Z",
+   "idade_horas": 7.6
   },
   {
    "gold": "geracao_detalhe.json",
@@ -8055,8 +8433,8 @@
    "origem": "contexto da execução, igual ao arquivo publicado (mesmo gerado_em)",
    "igual_ao_publicado": true,
    "arquivo_publicado_gerado_em": "2026-10-01T07:08:35Z",
-   "lida_em": "2026-10-01T07:45:08Z",
-   "idade_horas": 0.6
+   "lida_em": "2026-10-01T08:03:58Z",
+   "idade_horas": 0.9
   },
   {
    "gold": "hidrologia.json",
@@ -8066,8 +8444,8 @@
    "origem": "contexto da execução, igual ao arquivo publicado (mesmo gerado_em)",
    "igual_ao_publicado": true,
    "arquivo_publicado_gerado_em": "2026-09-30T02:20:26Z",
-   "lida_em": "2026-10-01T07:45:08Z",
-   "idade_horas": 29.4
+   "lida_em": "2026-10-01T08:03:58Z",
+   "idade_horas": 29.7
   },
   {
    "gold": "inclusao.json",
@@ -8077,8 +8455,8 @@
    "origem": "contexto da execução, igual ao arquivo publicado (mesmo gerado_em)",
    "igual_ao_publicado": true,
    "arquivo_publicado_gerado_em": "2026-10-01T00:28:44Z",
-   "lida_em": "2026-10-01T07:45:08Z",
-   "idade_horas": 7.3
+   "lida_em": "2026-10-01T08:03:58Z",
+   "idade_horas": 7.6
   },
   {
    "gold": "perdas.json",
@@ -8088,8 +8466,8 @@
    "origem": "contexto da execução, igual ao arquivo publicado (mesmo gerado_em)",
    "igual_ao_publicado": true,
    "arquivo_publicado_gerado_em": "2026-10-01T06:06:09Z",
-   "lida_em": "2026-10-01T07:45:08Z",
-   "idade_horas": 1.6
+   "lida_em": "2026-10-01T08:03:58Z",
+   "idade_horas": 2.0
   },
   {
    "gold": "pld.json",
@@ -8099,8 +8477,8 @@
    "origem": "contexto da execução, igual ao arquivo publicado (mesmo gerado_em)",
    "igual_ao_publicado": true,
    "arquivo_publicado_gerado_em": "2026-09-30T02:20:25Z",
-   "lida_em": "2026-10-01T07:45:08Z",
-   "idade_horas": 29.4
+   "lida_em": "2026-10-01T08:03:58Z",
+   "idade_horas": 29.7
   },
   {
    "gold": "pld_detalhe.json",
@@ -8110,19 +8488,19 @@
    "origem": "contexto da execução, igual ao arquivo publicado (mesmo gerado_em)",
    "igual_ao_publicado": true,
    "arquivo_publicado_gerado_em": "2026-10-01T06:54:27Z",
-   "lida_em": "2026-10-01T07:45:08Z",
-   "idade_horas": 0.8
+   "lida_em": "2026-10-01T08:03:58Z",
+   "idade_horas": 1.2
   },
   {
    "gold": "publicacao.json",
    "disponivel": true,
-   "gerado_em": "2026-10-01T07:42:54Z",
-   "versao_codigo": "fa4767ccfa9a+alterado",
+   "gerado_em": "2026-10-01T07:51:38Z",
+   "versao_codigo": "ac7599ce6c86+alterado",
    "origem": "contexto da execução, igual ao arquivo publicado (mesmo gerado_em)",
    "igual_ao_publicado": true,
-   "arquivo_publicado_gerado_em": "2026-10-01T07:42:54Z",
-   "lida_em": "2026-10-01T07:45:08Z",
-   "idade_horas": 0.0
+   "arquivo_publicado_gerado_em": "2026-10-01T07:51:38Z",
+   "lida_em": "2026-10-01T08:03:58Z",
+   "idade_horas": 0.2
   },
   {
    "gold": "qualidade.json",
@@ -8132,8 +8510,8 @@
    "origem": "contexto da execução, igual ao arquivo publicado (mesmo gerado_em)",
    "igual_ao_publicado": true,
    "arquivo_publicado_gerado_em": "2026-10-01T05:53:21Z",
-   "lida_em": "2026-10-01T07:45:08Z",
-   "idade_horas": 1.9
+   "lida_em": "2026-10-01T08:03:58Z",
+   "idade_horas": 2.2
   },
   {
    "gold": "rede.json",
@@ -8143,8 +8521,8 @@
    "origem": "contexto da execução, igual ao arquivo publicado (mesmo gerado_em)",
    "igual_ao_publicado": true,
    "arquivo_publicado_gerado_em": "2026-09-30T02:20:41Z",
-   "lida_em": "2026-10-01T07:45:08Z",
-   "idade_horas": 29.4
+   "lida_em": "2026-10-01T08:03:58Z",
+   "idade_horas": 29.7
   },
   {
    "gold": "regulacao.json",
@@ -8154,8 +8532,8 @@
    "origem": "contexto da execução, igual ao arquivo publicado (mesmo gerado_em)",
    "igual_ao_publicado": true,
    "arquivo_publicado_gerado_em": "2026-10-01T06:42:16Z",
-   "lida_em": "2026-10-01T07:45:08Z",
-   "idade_horas": 1.0
+   "lida_em": "2026-10-01T08:03:58Z",
+   "idade_horas": 1.4
   }
  ],
  "historico_regras": {

@@ -1561,6 +1561,117 @@ def _evidencia_frase(f, golds, con_p):
         reproducao=REPRODUCAO)
 
 
+def valor_exibido_painel(p):
+    """Valor atual do determinante como a página o escreve (mesma regra de src/lib/energia/visao.ts,
+    valorAtualTexto): R$ antes do número, percentual colado à unidade, demais com espaço."""
+    va, u, casas = p["valor_atual"]["valor"], p["unidade"], p["casas"]
+    if va is None:
+        return None
+    if u == "R$/MWh":
+        return f"R$ {s.nbr(va, casas)}/MWh"
+    if u.startswith("%"):
+        return f"{s.nbr(va, casas)}{u}"
+    return f"{s.nbr(va, casas)} {u}"
+
+
+def calculo_painel(p, golds, con_p):
+    """Valor atual de cada determinante (P005) refeito do silver principal, por um caminho que
+    não passa pela gold de origem. Preço, água e geração usam a mesma conta das frases (o número
+    é o mesmo); carga e rede somam ou fazem a média das observações vigentes do dia. None sem
+    silver ou sem todas as observações do dia."""
+    va = p["valor_atual"]
+    if con_p is None or va["valor"] is None:
+        return None
+    dia = p["data_referencia"]
+    if p["id"] == "preco":
+        return calculo_frase("pld", {"valores": {"dia": {"valor": dia}, "media_se": {"valor": va["valor"]}}}, golds, con_p)
+    if p["id"] == "agua":
+        return calculo_frase("reservatorios", {"valores": {"dia": {"valor": dia}, "ear_pct": {"valor": va["valor"]}}}, golds, con_p)
+    if p["id"] == "geracao":
+        return calculo_frase("termica", {"valores": {"dia": {"valor": dia}, "participacao_7d": {"valor": va["valor"]}}}, golds, con_p)
+    if p["id"] == "carga":
+        por = {sm: _serie_janela(con_p, "carga_energia_di", f"carga_mwmed.{sm}", dia, dia).get(dia) for sm in s.SMS}
+        if any(x is None for x in por.values()):
+            return None
+        return {"valor": sum(por.values()), "exibido": va["valor"], "casas": 0, "tolerancia": "0,5 MWmed (meia unidade exibida)",
+                "numerador": None, "denominador": None, "parcelas": {sm: c.r(x, 3) for sm, x in por.items()},
+                "chaves": [f"carga_energia_di/carga_mwmed.{sm}/{dia}" for sm in s.SMS],
+                "formula": "carga do SIN no dia = Σ carga de energia diária dos quatro subsistemas (MWmed)"}
+    if p["id"] == "rede":
+        cam = va.get("caminho") or ""
+        if "[" not in cam:
+            return None
+        par = cam.split("[", 1)[1].split("]", 1)[0]
+        h = _serie_janela(con_p, "intercambio_nacional_ho", f"fluxo.{par}", dia, dia)
+        if len(h) != 24:
+            return None
+        return {"valor": sum(h.values()) / 24, "exibido": va["valor"], "casas": 0, "tolerancia": "0,5 MWmed (meia unidade exibida)",
+                "numerador": None, "denominador": None,
+                "chaves": [f"intercambio_nacional_ho/fluxo.{par}/{dia}T00:00 a {dia}T23:00 (24 horas)"],
+                "formula": "fluxo médio do dia = (1/24) × Σ intercâmbio verificado horário (positivo da primeira para a segunda ponta da fronteira)"}
+    return None
+
+
+def _evidencia_painel(p, golds, con_p, dados):
+    """'Comprove este número' do valor atual de um determinante (P005): o número refeito do silver,
+    o valor relido na gold de origem pelo caminho publicado e a célula do dia no recorte alinhado."""
+    g = golds[p["gold"]]
+    prov = g["proveniencia"][p["proveniencia"].split("#proveniencia.", 1)[1]]
+    va = p["valor_atual"]
+    dia = p["data_referencia"]
+    ds = CONJUNTOS_PAINEL[p["id"]]
+    anos = [dia[:4]]
+    if p["id"] == "geracao":
+        anos = sorted({(s.d(dia) - timedelta(days=6)).isoformat()[:4], dia[:4]})
+    vs = _vintages(con_p, ds, anos)
+    fonte = _fonte_evidencia(prov["fonte"]["orgao"], prov["fonte"]["dataset"], prov["fonte"]["url_dataset"], vs)
+    calc = calculo_painel(p, golds, con_p)
+    achou, lido = _resolve_caminho(golds, va["caminho"]) if va.get("caminho") else (False, None)
+    igual = achou and isinstance(lido, (int, float)) and lido == va["valor"]
+    testes = [ev.teste("valor relido na gold de origem pelo caminho publicado", "aprovado" if igual else "reprovado",
+                       f"{va['caminho']}: lido {lido if achou else 'nada'}, publicado {va['valor']}")]
+    # a célula do dia no recorte alinhado vem da série da gold de origem, com mais casas que o cartão:
+    # as duas têm de coincidir na casa exibida (meia unidade)
+    linha = next((x for x in dados if x["d"] == dia), None)
+    col = {"preco": "preco_SE", "agua": "agua_SIN", "geracao": "geracao_termica_7d", "carga": "carga_SIN"}.get(p["id"])
+    if p["id"] == "rede" and va.get("caminho") and "[" in va["caminho"]:
+        col = "rede_" + va["caminho"].split("[", 1)[1].split("]", 1)[0]
+    cel = (linha or {}).get(col) if col else None
+    meia = 0.5 * 10 ** (-p["casas"])
+    if cel is None:
+        testes.append(ev.teste("célula do dia no recorte alinhado (P005)", "ressalva", f"{col} sem valor em {dia} no recorte"))
+    else:
+        perto = abs(cel - va["valor"]) <= meia + 1e-9
+        testes.append(ev.teste("célula do dia no recorte alinhado (P005)", "aprovado" if perto else "reprovado",
+                               f"{col} em {dia}: {cel}; valor atual {va['valor']}; tolerância {meia} {p['unidade']} (meia unidade da casa exibida)"))
+    if calc:
+        iguais = c.r(calc["valor"], calc["casas"]) == c.r(calc["exibido"], calc["casas"])
+        parc = calc.get("parcelas")
+        rec = ev.reconciliacao(
+            f"Valor refeito do silver principal (observações vigentes, sem passar pela gold de origem): {c.r(calc['valor'], 4)}; exibido {calc['exibido']}"
+            + (f"; parcelas {', '.join(f'{sm} {x}' for sm, x in parc.items())}" if parc else ""),
+            "aprovado" if iguais else "reprovado", calc["tolerancia"])
+        valor_calculo, num, den, chaves, formula = calc["valor"], calc["numerador"], calc["denominador"], calc["chaves"], calc["formula"]
+    else:
+        rec = ev.reconciliacao("Silver principal sem todas as observações do dia nesta execução: o valor não foi refeito por outro caminho (pendência).",
+                               "ressalva", "não se aplica (sem conferência)")
+        valor_calculo, num, den, chaves = va["valor"], None, None, []
+        formula = prov.get("formula") or p["nota"]
+    periodo = {"inicio": (s.d(dia) - timedelta(days=6)).isoformat() if p["id"] == "geracao" else dia, "fim": dia}
+    return ev.construir(
+        numerador=num, denominador=den,
+        indicador=f"Visão geral, determinante '{p['id']}': {p['titulo'].lower()}, valor atual ({va['rotulo']})",
+        valor_exibido=valor_exibido_painel(p), valor_calculo=valor_calculo, unidade=p["unidade"], periodo=periodo,
+        entidade=va["rotulo"] or "SIN", universo=prov["indicador"], fonte=fonte, chaves_origem=chaves,
+        consulta=f"silver energia.db: observacoes do dataset {ds} em {periodo['inicio']} a {periodo['fim']} (valor da captura mais recente)",
+        formula=formula,
+        cobertura=f"Cobertura da série de origem: {prov['cobertura_historica']['inicio']} a {prov['cobertura_historica']['fim']}.",
+        tratamento_ausencia="Sem o valor na gold de origem, o painel mostra 'sem dado'; sem todas as observações do dia no silver, a reconciliação fica pendente.",
+        revisoes=prov.get("revisoes_conhecidas"), testes=testes, reconciliacao=rec,
+        download=[{"rotulo": d["rotulo"], "url": d["url"]} for d in p.get("download") or []] or [{"rotulo": "Gold de origem", "url": f"/energia/gold/{p['gold']}"}],
+        reproducao=REPRODUCAO)
+
+
 def _le_regras_publicadas():
     """{(data, regra): linha} e sha256 do CSV de estados diários como foi escrito em disco
     (leitura independente do que a avaliação montou em memória)."""
@@ -1953,6 +2064,13 @@ def construir(con, ctx):
         except ev.EvidenciaInvalida as e:
             f["evidencia"] = None
             f["evidencia_problemas"] = e.problemas
+    for p in (mult or {}).get("paineis", []):
+        p["valor_atual"]["valor_exibido"] = valor_exibido_painel(p)
+        try:
+            p["evidencia"] = _evidencia_painel(p, golds, con_p, mult["dados"])
+        except ev.EvidenciaInvalida as e:
+            p["evidencia"] = None
+            p["evidencia_problemas"] = e.problemas
     csv_regras, sha_regras = _le_regras_publicadas()
     ctxe = {"con_p": con_p, "entradas": entradas, "sha_csv": sha_csv, "insumos": insumos, "csv_regras": csv_regras,
             "lim_vig": lim_vig, "revs": revs, "golds": golds}
@@ -2003,6 +2121,15 @@ def construir(con, ctx):
                 ([ev_["reconciliacao"]] if (ev_.get("reconciliacao") or {}).get("resultado") not in (None, "aprovado") else [])
         if ruins:
             validacao.append({"nome": f"evidência da regra {o['id']}: conferências", "resultado": "ressalva",
+                              "detalhe": "; ".join(f"{t.get('nome') or t.get('descricao')}: {t['resultado']}" for t in ruins)[:400]})
+    for p in (mult or {}).get("paineis", []):
+        if p.get("evidencia_problemas"):
+            validacao.append({"nome": f"evidência do determinante {p['id']}", "resultado": "ressalva", "detalhe": "; ".join(p["evidencia_problemas"])[:400]})
+        ev_ = p.get("evidencia") or {}
+        ruins = [t for t in ev_.get("testes") or [] if t["resultado"] != "aprovado"] + \
+                ([ev_["reconciliacao"]] if (ev_.get("reconciliacao") or {}).get("resultado") not in (None, "aprovado") else [])
+        if ruins:
+            validacao.append({"nome": f"evidência do determinante {p['id']}: conferências", "resultado": "ressalva",
                               "detalhe": "; ".join(f"{t.get('nome') or t.get('descricao')}: {t['resultado']}" for t in ruins)[:400]})
     for f in fr:
         if f.get("evidencia_problemas"):

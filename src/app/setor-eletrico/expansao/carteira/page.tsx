@@ -22,7 +22,6 @@ import { Numero } from "@/components/energia/Numero";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
-import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
@@ -66,7 +65,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Carteira de projetos de geração: outorgado, em construção, em operação e encerrado",
   description:
-    "Usinas do SIGA por estágio (outorgado sem obra, em construção, em operação), carteira do RALIE por situação da obra e viabilidade, desfecho das usinas acompanhadas desde 2021 e outorgas revogadas ou extintas, por tipo e UF, com mapa e tabelas.",
+    "Usinas do SIGA por estágio (outorgado sem obra, em construção, em operação), carteira do RALIE por situação da obra e viabilidade, desfecho das usinas acompanhadas desde a primeira fotografia do RALIE e outorgas revogadas ou extintas, por tipo e UF, com mapa e tabelas.",
   alternates: { canonical: "/setor-eletrico/expansao/carteira" },
 };
 
@@ -102,7 +101,7 @@ export default function CarteiraPage() {
           }
         >
           O que está outorgado, o que está em obra, o que já opera e o que teve a outorga encerrada. Outorga não é obra, e obra não é entrada certa: por isso o desfecho das usinas
-          acompanhadas desde 2021 aparece ao lado da carteira.
+          acompanhadas pelo RALIE desde {dataTexto(g.referencias.ralie_historico_desde)} aparece ao lado da carteira.
         </CabecalhoModulo>
         <ExpansaoNavegacao atual="p040" />
         <ModoProfundidade>
@@ -114,7 +113,7 @@ export default function CarteiraPage() {
               porQueImporta={
                 <>
                   A carteira mostra o que pode vir a operar e onde. Lida como capacidade certa, ela superestima a expansão: parte das outorgas é revogada antes da obra, e potência
-                  instalada em MW não é energia entregue nem <Termo slug="garantia-fisica">garantia física</Termo>.
+                  instalada em MW não é energia entregue nem garantia física.
                 </>
               }
               oQueMudou={mudancaCarteira(g)}
@@ -161,7 +160,7 @@ export default function CarteiraPage() {
                   <Numero rotulo="Outorgado com construção não iniciada" natureza="CALCULADO" evidencia={ev.outorgado_sem_obra ?? null} casas={1} tamanho="medio" endereco="/setor-eletrico/expansao/carteira#p040" motivoAusencia="Sem a soma do SIGA nesta publicação." />
                   <Numero rotulo="Unidades em implantação no RALIE" natureza="CALCULADO" evidencia={ev.ralie_em_implantacao ?? null} casas={1} tamanho="medio" endereco="/setor-eletrico/expansao/carteira#p040" motivoAusencia="Sem a fotografia do RALIE nesta publicação." />
                   <Numero
-                    rotulo="Da potência em implantação em 2021, entrou em operação"
+                    rotulo={`Da potência em implantação em ${dataTexto(g.referencias.ralie_historico_desde)}, entrou em operação`}
                     natureza="CALCULADO"
                     evidencia={ev.coorte_inicial_operacao ?? null}
                     formato="pct"
@@ -187,7 +186,7 @@ export default function CarteiraPage() {
                 />
                 <ExpansaoNota>
                   A mesma medida nas três fases (potência outorgada) para que as etapas se comparem; a potência fiscalizada, que só existe para o que opera, está na tabela do gráfico. A
-                  fase não é um funil com entrada garantida: desde 2015, {inteiro(enc.total.atos)} atos revogaram ou extinguiram outorgas de {inteiro(enc.total.usinas)} usinas (
+                  fase não é um funil com entrada garantida: desde {enc.desde}, {inteiro(enc.total.atos)} atos revogaram ou extinguiram outorgas de {inteiro(enc.total.usinas)} usinas (
                   {mwTexto(enc.total.mw_usinas)}).
                 </ExpansaoNota>
 
@@ -306,7 +305,7 @@ export default function CarteiraPage() {
                   />
                 </ExpansaoAnalise>
 
-                <ExpansaoAnalise titulo="Como a carteira mudou desde 2021" id="historico">
+                <ExpansaoAnalise titulo={`Como a carteira mudou desde ${mesTexto(g.referencias.ralie_historico_desde)}`} id="historico">
                   <GraficoLinhas
                     titulo={`Carteira do RALIE na última fotografia de cada mês, ${mesTexto(hist[0]?.ralie)} a ${mesTexto(hist.at(-1)?.ralie)} (MW)`}
                     dados={hist}

@@ -8,17 +8,17 @@ import type { DocumentoFonte } from "@/lib/energia/tipos-transicao";
 
 /**
  * Peças de servidor das páginas Transição e ambiente (a síntese em
- * /setor-eletrico/transicao e um painel por página em /mmgd e /emissoes):
+ * /setor-eletrico/transicao e os painéis em /mmgd, /energia-estimada e /emissoes):
  * navegação entre as páginas, recorte (período, universo e unidade), rodapé com
  * downloads, link compartilhável e próxima pergunta, blocos dos modos Analisar e
  * Auditar, tabela simples de servidor e citação de documento da fonte.
  *
- * Por que um painel por página: o mapa, as séries, as tabelas e as fichas de prova
- * dos dois painéis, juntos, passariam da meta de cerca de 600 KB de HTML por página
- * (contrato, seção 5.1).
+ * Por que várias páginas: o mapa, as séries, as tabelas e as fichas de prova do
+ * P063 (cadastro e estimativa do ONS) e do P064, juntos, passariam da meta de cerca
+ * de 600 KB de HTML por página (contrato, seção 5.1).
  */
 
-/** Navegação entre a síntese e os dois painéis; o atual leva aria-current. */
+/** Navegação entre a síntese e as páginas dos painéis; a atual leva aria-current. */
 export function TransicaoNavegacao({ atual }: { atual: PainelTransicao | "sintese" }) {
   const itens = [{ href: ROTA_TRANSICAO, rotulo: "Síntese", id: "sintese" as const }, ...PAINEIS_TRANSICAO.map((p) => ({ href: rotaPainel(p.id), rotulo: p.rotulo, id: p.id }))];
   return (

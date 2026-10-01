@@ -13,6 +13,10 @@ temperatura de reanálise são ESTIMADAS.
 
 GOLD = "agua_detalhe.json"
 PAGINA = ["/setor-eletrico/agua-e-clima"]
+# cada métrica aponta para a página do painel que a exibe (um painel por página desde a fase de interface)
+P_AFLUENCIA = ["/setor-eletrico/agua-e-clima/afluencia"]
+P_CLIMA = ["/setor-eletrico/agua-e-clima/chuva-e-temperatura"]
+P_RESERVATORIOS = ["/setor-eletrico/agua-e-clima/reservatorios"]
 F_EAR_SM = "ear_subsistema_di"
 F_ENA_SM = "ena_subsistema_di"
 F_EAR_REE = "ons_ear_ree_di"
@@ -101,7 +105,7 @@ METRICAS = [
        validacoes=["n por data publicado", "faixa = abaixo, dentro ou acima pelos percentis 10 e 90",
                    "quebra de perímetro dos REE detectada pela conservação da soma das EAR máximas na repartição"],
        limitacoes=["Anos com capacidades diferentes têm o mesmo peso.", "Faixa não é previsão."]),
-    _m(id="agua_ena_30d_pct_mlt", titulo="ENA de 30 dias em % da MLT",
+    _m(id="agua_ena_30d_pct_mlt", paginas=P_AFLUENCIA, titulo="ENA de 30 dias em % da MLT",
        pergunta="A água que chegou nos últimos 30 dias está acima do normal?",
        definicao="Soma da ENA bruta diária dos 30 dias dividida pela soma da MLT vigente em cada dia, por subsistema, SIN, REE e bacia.",
        unidade="% da MLT", grao_geografico="subsistema, SIN, REE, bacia", grao_temporal="janela móvel de 30 dias",
@@ -114,7 +118,7 @@ METRICAS = [
        regra_cobertura="Janela com os 30 dias publicados.", politica_ausencia="Janela com dia ausente não é calculada.",
        validacoes=["média simples dos percentuais diários calculada só para contraste no teste", "percentil frente à mesma janela dos anos da base"],
        limitacoes=["Janela de 30 dias suaviza eventos curtos.", _LIM_ONS]),
-    _m(id="agua_mlt_versao", titulo="Versão da MLT do conjunto aberto",
+    _m(id="agua_mlt_versao", paginas=P_AFLUENCIA, titulo="Versão da MLT do conjunto aberto",
        pergunta="Qual MLT o ONS usa no percentual diário da ENA e ela é a mesma do PMO?",
        definicao="Comparação, mês a mês, da MLT implícita no conjunto diário de ENA com a MLT publicada na tabela \"MLT das ENAs (MWmed)\" do Relatório Executivo do PMO; e datas em que a MLT de usinas existentes mudou no conjunto por reservatório.",
        unidade="% de diferença e MWmed", grao_geografico="subsistema e usina", grao_temporal="mês e evento",
@@ -128,7 +132,7 @@ METRICAS = [
                    "comparação entre anos pela MLT vigente no último dia do mês (o dia 15 pode cair numa versão provisória)",
                    "cita o relatório do PMO do próprio mês e lista todos os que publicam o mês"],
        limitacoes=["O ONS não publica o período histórico da MLT; a versão é inferida das mudanças observadas, comparadas por igualdade com versões anteriores."]),
-    _m(id="agua_precipitacao_bacia", titulo="Precipitação média na bacia",
+    _m(id="agua_precipitacao_bacia", paginas=P_CLIMA, titulo="Precipitação média na bacia",
        pergunta="Quanto choveu na área de cada bacia hidroenergética?",
        definicao="Média ponderada pela área da precipitação diária IMERG (NASA POWER) em pontos de grade dentro do polígono da bacia do ONS.",
        unidade="mm/dia (mm no mês e em 30 dias)", grao_geografico="bacia hidroenergética do ONS", grao_temporal="dia UTC, mês e 30 dias",
@@ -140,7 +144,7 @@ METRICAS = [
        validacoes=["não negativa", "conferência mensal com estações do ONS em 2020 e 2021 (viés e correlação publicados)"],
        limitacoes=["Estimativa por satélite, não medição.", "Amostragem em grade de 1° (adensada em bacias pequenas), não integral da área.",
                    "A bacia SANTA MARIA VIT não tem polígono no shapefile do ONS e fica sem chuva."]),
-    _m(id="agua_precipitacao_anomalia", titulo="Anomalia de precipitação",
+    _m(id="agua_precipitacao_anomalia", paginas=P_CLIMA, titulo="Anomalia de precipitação",
        pergunta="Choveu mais ou menos que o usual para o mês e para os últimos 30 dias?",
        definicao="Precipitação do mês (ou dos 30 dias) dividida pela média do mesmo mês (ou mesma janela) em 2001 a 2025, menos 1, em %; percentil na mesma distribuição.",
        unidade="%", grao_geografico="bacia", grao_temporal="mês e 30 dias",
@@ -150,7 +154,7 @@ METRICAS = [
        regras_comparabilidade=["Em meses secos a média é pequena e a anomalia percentual fica grande; ler junto com os milímetros."],
        regra_cobertura="Mês completo e base com os anos disponíveis (anos_base).", politica_ausencia="Sem média, sem anomalia.",
        validacoes=["p10 e p90 da base publicados"], limitacoes=["Anomalia não explica a ENA sozinha.", _NAO_CAUSAL]),
-    _m(id="agua_associacao_chuva_ena", titulo="Associação entre chuva e ENA por bacia",
+    _m(id="agua_associacao_chuva_ena", paginas=P_CLIMA, titulo="Associação entre chuva e ENA por bacia",
        pergunta="Meses de chuva acima do normal coincidem com ENA acima da MLT?",
        definicao="Correlação de Pearson entre a anomalia mensal de chuva da bacia e a ENA mensal em % da MLT (razão de somas no mês), no mesmo mês e com a ENA do mês seguinte.",
        unidade="coeficiente (−1 a 1)", grao_geografico="bacia", grao_temporal="mês (2001 a 2025)",
@@ -159,7 +163,7 @@ METRICAS = [
        dimensoes=["bacia", "defasagem"], regras_comparabilidade=["n de pares publicado; bacias com série de ENA mais curta têm menos pares."],
        regra_cobertura="Ao menos 10 pares.", politica_ausencia="Menos de 10 pares: sem coeficiente.",
        validacoes=["n de pares"], limitacoes=[_NAO_CAUSAL, "A ENA depende também de chuvas de meses anteriores, solo e regulação a montante."]),
-    _m(id="agua_temperatura_subsistema", titulo="Temperatura do ar por subsistema",
+    _m(id="agua_temperatura_subsistema", paginas=P_CLIMA, titulo="Temperatura do ar por subsistema",
        pergunta="Qual foi a temperatura nas áreas onde está a população de cada subsistema?",
        definicao="Temperatura a 2 m (média, máxima e mínima do dia) da reanálise MERRA-2/GEOS-IT (NASA POWER) nas células mais populosas de cada UF, ponderadas pela população; subsistema e SIN ponderados pela população das UF.",
        unidade="°C", grao_geografico="UF, subsistema, SIN", grao_temporal="dia (hora solar local)",
@@ -173,7 +177,7 @@ METRICAS = [
        validacoes=["intervalo físico", "soma das áreas de carga do ONS por subsistema reproduz a carga do subsistema (mapeamento)"],
        limitacoes=["Reanálise, não estação; INMET inacessível em 30/09/2026 impediu a conferência com observação.",
                    "Células escolhidas cobrem cerca de metade da população de cada UF."]),
-    _m(id="agua_temperatura_anomalia", titulo="Anomalia de temperatura",
+    _m(id="agua_temperatura_anomalia", paginas=P_CLIMA, titulo="Anomalia de temperatura",
        pergunta="Os últimos 30 dias foram mais quentes ou mais frios que o usual?",
        definicao="Média dos 30 dias menos a média da mesma janela em 2001 a 2025; mensal: média do mês menos a média do mesmo mês na base.",
        unidade="°C", grao_geografico="subsistema e SIN", grao_temporal="30 dias e mês",
@@ -181,7 +185,7 @@ METRICAS = [
        natureza_fonte="ESTIMADO", natureza_transformacao="CALCULADO", dimensoes=["recorte", "período"],
        regras_comparabilidade=["Base 2001 a 2025."], regra_cobertura="Janela com os 30 dias.", politica_ausencia="Janela incompleta não é calculada.",
        validacoes=["percentil e p10/p90 publicados"], limitacoes=["Reanálise.", _NAO_CAUSAL]),
-    _m(id="agua_balanco_reservatorio", titulo="Balanço hídrico de 30 dias por reservatório",
+    _m(id="agua_balanco_reservatorio", paginas=P_RESERVATORIOS, titulo="Balanço hídrico de 30 dias por reservatório",
        pergunta="As entradas e saídas de água explicam a variação do volume do reservatório?",
        definicao="Variação do volume útil (hm³) comparada com a afluência menos a defluência acumuladas na janela; turbinamento, vertimento, outras estruturas e transferência publicados como componentes; resíduo explícito.",
        unidade="hm³", grao_geografico="reservatório", grao_temporal="janela de 30 dias (e dia no CSV)",
@@ -196,7 +200,7 @@ METRICAS = [
                    "convenção da defluência detectada por reservatório nos dias com outras estruturas acima de 1 m³/s: defluência não discriminada = defluência − turbinada − vertida (− outras, quando a defluência as inclui); convenção indeterminada = nulo"],
        limitacoes=["A afluência do ONS é calculada pelo balanço na maioria dos reservatórios: fechar não prova a medição.",
                    "Convenção de sinal da transferência não documentada: resíduo com e sem transferência."]),
-    _m(id="agua_previsao_chuva_bacia", titulo="Previsão de chuva por bacia",
+    _m(id="agua_previsao_chuva_bacia", paginas=P_CLIMA, titulo="Previsão de chuva por bacia",
        pergunta="Quanto o modelo de previsão espera de chuva em cada bacia nos próximos dias?",
        definicao="Precipitação diária prevista pela rodada de 00Z mais recente do ECMWF IFS 0,25° (Open-Meteo, API de rodadas individuais) nos mesmos pontos de grade da estimativa observada, média ponderada pela área; soma de 7 dias e do horizonte, ao lado da média 2001 a 2025 dos mesmos dias pelo IMERG.",
        unidade="mm/dia (mm em 7 dias e no horizonte)", grao_geografico="bacia hidroenergética do ONS", grao_temporal="dia UTC, rodada",
@@ -208,7 +212,7 @@ METRICAS = [
        politica_ausencia="Rodada indisponível ou lote com falha: nada é agregado e a pendência é publicada.",
        validacoes=["não negativa", "número de pontos devolvidos = pedidos", "emissão = rodada pedida"],
        limitacoes=["Previsão, não observação; substituída a cada rodada.", "Sem avaliação de acerto neste módulo."]),
-    _m(id="agua_previsao_temperatura", titulo="Previsão de temperatura por subsistema",
+    _m(id="agua_previsao_temperatura", paginas=P_CLIMA, titulo="Previsão de temperatura por subsistema",
        pergunta="Que temperatura o modelo de previsão espera nas áreas onde está a população de cada subsistema?",
        definicao="Temperatura média e máxima diárias previstas pela rodada de 00Z mais recente do ECMWF IFS 0,25° nas mesmas células populosas da estimativa observada, ponderadas pela população (Censo 2022).",
        unidade="°C", grao_geografico="subsistema e SIN", grao_temporal="dia UTC, rodada",
@@ -219,7 +223,7 @@ METRICAS = [
        regra_cobertura="Mesma rodada da previsão de chuva.", politica_ausencia="Sem rodada válida, sem previsão (pendência publicada).",
        validacoes=["intervalo físico", "mesmas células e pesos da temperatura observada"],
        limitacoes=["Previsão, não observação.", "Sem avaliação de acerto neste módulo."]),
-    _m(id="agua_decomposicao_delta_ear", titulo="Variação da EAR por reservatório",
+    _m(id="agua_decomposicao_delta_ear", paginas=P_RESERVATORIOS, titulo="Variação da EAR por reservatório",
        pergunta="Quais reservatórios explicam a variação do armazenamento do subsistema?",
        definicao="Variação de 30 dias da EAR de cada reservatório na parte própria (no subsistema da usina) e a jusante (no subsistema a jusante); a soma reproduz a variação do subsistema.",
        unidade="MWmês", grao_geografico="subsistema e reservatório", grao_temporal="janela de 30 dias",

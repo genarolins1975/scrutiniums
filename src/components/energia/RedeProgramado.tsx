@@ -10,15 +10,16 @@ import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import type { Evidencia } from "@/lib/energia/evidencia";
-import { dataBR, mesAno, num } from "@/lib/energia/formato";
+import { dataBR, num } from "@/lib/energia/formato";
 import {
   COLUNAS_MAIORES_DESVIOS,
   COLUNAS_PROGRAMA_REPETIDO,
   COLUNAS_PROGRAMADO_DIARIO,
-  COLUNAS_PROGRAMADO_MENSAL,
   COR_PAR,
   LIMIAR_NULO_MWMED,
   PARES_PROGRAMADO,
+  avisoMesIncompleto,
+  colunasProgramadoMensal,
   curtoPar,
   colunasDistribuicao,
   ehFronteira,
@@ -88,8 +89,8 @@ export function RedeProgramado({
   const maiores = useMemo(() => linhasMaioresDesvios(base === "sem" ? p.maiores_desvios_fora_dos_dias_rotulados : p.maiores_desvios), [p, base]);
   const repetido = useMemo(() => linhasProgramaRepetido(p), [p]);
   const selecionar = (id: string | null) => id && (PARES_PROGRAMADO as readonly string[]).includes(id) && definir({ par: id as ParProgramado });
-  const ultimoMes = p.mensal.meses.at(-1);
-  const horasUltimo = ultimoMes ? p.mensal.por_par[par]?.horas.at(-1) : null;
+  // aviso só quando as horas comparadas do último mês ficam abaixo das do calendário
+  const avisoUltimoMes = avisoMesIncompleto(p.mensal.meses.at(-1), p.mensal.por_par[par]?.horas.at(-1));
 
   return (
     <div className="space-y-6">
@@ -106,7 +107,7 @@ export function RedeProgramado({
         <div className="min-w-0">
           <dt className="rotulo text-mineral">Período</dt>
           <dd className="mt-0.5">
-            {dataBR(p.inicio)} a {dataBR(p.fim)}, hora a hora (o programado só existe no arquivo de 2026); série diária dos últimos {p.diario.dias.length} dias
+            {dataBR(p.inicio)} a {dataBR(p.fim)}, hora a hora (a fonte não publica programado antes de {dataBR(p.inicio)}); série diária dos últimos {p.diario.dias.length} dias
           </dd>
         </div>
         <div className="min-w-0">
@@ -128,7 +129,8 @@ export function RedeProgramado({
           rotulo={`Desvio absoluto médio entre verificado e programado, ${nomePar(par)} (todos os dias)`}
           natureza="CALCULADO"
           evidencia={evidencias[`desvio_medio.${par}`] ?? null}
-          casas={1}
+          // mesmas casas do valor exibido na ficha de prova (a gold publica o desvio médio inteiro); a resposta acima traz uma casa
+          casas={0}
           tamanho="medio"
           cor={COR_PAR[par]}
           motivoAusencia="Sem horas com programado e verificado nesta publicação."
@@ -213,7 +215,7 @@ export function RedeProgramado({
           versao={versao}
           nomeArquivo={`rede-maiores-desvios-${base}`}
           chaveUrl="md"
-          nota="Cada linha diz se a hora é de dia rotulado por programa repetido. Troque a base para ver a lista sem esses dias."
+          nota="Cada linha diz se a hora é de dia rotulado por programa repetido; nos países a regra não rotula dias (não se aplica). Troque a base para ver a lista sem esses dias."
         />
       </div>
 
@@ -243,7 +245,7 @@ export function RedeProgramado({
             />
             <TabelaInterativa
               titulo="Tabela equivalente: horas materiais por mês"
-              colunas={[{ id: "m", rotulo: "Mês", tipo: "texto" }, ...escolhidos.map((x) => ({ id: x, rotulo: nomePar(x), tipo: "numero" as const, unidade: "horas", casas: 0 }))]}
+              colunas={[{ id: "m", rotulo: "Mês", tipo: "data" as const }, ...escolhidos.map((x) => ({ id: x, rotulo: nomePar(x), tipo: "numero" as const, unidade: "horas", casas: 0 }))]}
               linhas={paraTabela(materiais)}
               chaveLinha="id"
               colunaRotulo="m"
@@ -255,14 +257,10 @@ export function RedeProgramado({
             />
           </>
         )}
-        {ultimoMes && horasUltimo !== null && horasUltimo !== undefined && (
-          <p className="text-sm text-carvao-muted">
-            {mesAno(ultimoMes)} tem {num(horasUltimo, 0)} horas comparadas, menos que um mês completo: as contagens desse mês não se comparam diretamente com as dos outros.
-          </p>
-        )}
+        {avisoUltimoMes && <p className="text-sm text-carvao-muted">{avisoUltimoMes}</p>}
         <TabelaInterativa
           titulo={`Tabela por mês: ${nomePar(par)}`}
-          colunas={COLUNAS_PROGRAMADO_MENSAL}
+          colunas={colunasProgramadoMensal(par)}
           linhas={paraTabela(mensal)}
           chaveLinha="id"
           colunaRotulo="m"

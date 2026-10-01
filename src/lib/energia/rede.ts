@@ -202,8 +202,37 @@ export function datasLegiveis(texto: string): string {
  * tem esses caminhos: o parêntese sai e o resto do texto fica como veio.
  */
 export function semCaminhosInternos(texto: string): string {
-  return texto.replace(/\s*\([^()]*\b[a-z0-9]+_[a-z0-9_.]+\b[^()]*\)/g, "");
+  return (
+    texto
+      // trecho final de parêntese que remete a um bloco da gold ("; lista por país em cobertura.exterior")
+      .replace(/;\s*[^;()]*\bem (?:cobertura|circulacao|balanco|exterior|restricoes|programado|achados|regras)\.[a-z0-9_.]+(?=\))/g, "")
+      .replace(/\s*\([^()]*\b[a-z0-9]+_[a-z0-9_.]+\b[^()]*\)/g, "")
+  );
 }
+
+/**
+ * Proveniência com as limitações sem caminhos internos da gold (o parêntese com
+ * "programado.programa_repetido" não diz nada ao leitor). O resto vem como publicado.
+ */
+export function provenienciaLegivel<T extends { limitacoes: string[] }>(p: T): T {
+  // a gold publicada traz uma lista dentro da lista em proveniencia.exterior.limitacoes; achatada, cada limitação vira
+  // um item próprio (sem achatar, o React cola as duas frases num item só)
+  const itens = (p.limitacoes as unknown[]).flat(2).filter((x): x is string => typeof x === "string" && x.trim() !== "");
+  return { ...p, limitacoes: itens.map(semCaminhosInternos) };
+}
+
+/** Rótulos das regras publicadas na gold (chaves de RegrasRede). */
+export const ROTULO_REGRA: Record<string, string> = {
+  orientacao: "Orientação e sinal",
+  energia: "Energia",
+  bruto_liquido: "Bruto e líquido",
+  nulo: "Fluxo nulo",
+  pld: "PLD na mesma hora",
+  balanco: "Identidades do balanço",
+  tolerancia_balanco: "Tolerância do balanço",
+  limites: "Limites de intercâmbio",
+  materialidade: "Materialidade do desvio",
+};
 
 /** Booleanos e listas viram texto para a tabela (sim/não; itens separados por vírgula). */
 export function paraTabela<T extends object>(linhas: readonly T[]): LinhaTabela[] {
@@ -570,7 +599,7 @@ export function linhasMensalFronteira(c: Pick<CirculacaoRede, "mensal">, par: Fr
 }
 
 export const COLUNAS_MENSAL_FRONTEIRA: ColunaTabela[] = [
-  { id: "m", rotulo: "Mês", tipo: "texto" },
+  { id: "m", rotulo: "Mês", tipo: "data" },
   { id: "canonico_mwh", rotulo: "No sentido da fronteira", tipo: "numero", unidade: "MWh", casas: 0 },
   { id: "inverso_mwh", rotulo: "No sentido contrário", tipo: "numero", unidade: "MWh", casas: 0 },
   { id: "liquido_mwh", rotulo: "Saldo", tipo: "numero", unidade: "MWh", casas: 0 },
@@ -581,6 +610,14 @@ export const COLUNAS_MENSAL_FRONTEIRA: ColunaTabela[] = [
   { id: "horas_inverso", rotulo: "Horas no sentido contrário", tipo: "numero", casas: 0 },
   { id: "horas_precos_separados", rotulo: "Horas com PLDs diferentes", tipo: "numero", casas: 0 },
 ];
+
+/** Colunas da tabela equivalente aos saldos das fronteiras escolhidas (dia ou mês e uma coluna por fronteira). */
+export function colunasSaldoFronteiras(chave: "d" | "m", pares: readonly FronteiraRede[]): ColunaTabela[] {
+  return [
+    { id: chave, rotulo: chave === "d" ? "Dia" : "Mês", tipo: "data" },
+    ...pares.map((p): ColunaTabela => ({ id: p, rotulo: `Saldo ${curtoFronteira(p)} (positivo no sentido do nome)`, tipo: "numero", unidade: "MWh", casas: 0 })),
+  ];
+}
 
 /** Saldo mensal das fronteiras escolhidas. */
 export function linhasSaldoMensal(c: Pick<CirculacaoRede, "mensal">, pares: readonly FronteiraRede[]): ({ id: string; m: string } & Partial<Record<FronteiraRede, number | null>>)[] {
@@ -741,7 +778,7 @@ export function serieJanela(j: JanelaHorariaRede, par: FronteiraRede): LinhaJane
 export function colunasJanela(par: FronteiraRede): ColunaTabela[] {
   const [a, b] = PONTAS[par];
   return [
-    { id: "h", rotulo: "Hora (início, Brasília)", tipo: "texto" },
+    { id: "h", rotulo: "Hora (início, Brasília)", tipo: "data" },
     { id: "fluxo", rotulo: `Fluxo verificado, positivo ${sentidoPositivo(par)}`, tipo: "numero", unidade: "MWmed", casas: 1 },
     { id: "programado", rotulo: "Programado, mesmo sinal", tipo: "numero", unidade: "MWmed", casas: 1 },
     { id: "pld_de", rotulo: `PLD ${NO[a]}`, tipo: "numero", unidade: "R$/MWh", casas: 2 },
@@ -784,6 +821,17 @@ export function linhasEsquemaNacional(e: Pick<EsquemaFonteRede, "intercambio_nac
   }));
 }
 
+/** Quais arquivos anuais usam orientação fixa com sinal e quais orientam a linha pelo sentido da hora, lido do esquema publicado. */
+export function textoOrientacaoArquivos(e: Pick<EsquemaFonteRede, "intercambio_nacional">): string {
+  const ano = (r: string) => r.replace(/\D/g, "");
+  const fixa = e.intercambio_nacional.filter((x) => x.orientacao_fixa).map((x) => ano(x.recurso));
+  const hora = e.intercambio_nacional.filter((x) => !x.orientacao_fixa).map((x) => ano(x.recurso));
+  const partes: string[] = [];
+  if (fixa.length) partes.push(`${fixa.length === 1 ? "o arquivo de" : "os arquivos de"} ${listaTexto(fixa)} ${fixa.length === 1 ? "usa" : "usam"} orientação fixa com valor com sinal`);
+  if (hora.length) partes.push(`${hora.length === 1 ? "o de" : "os de"} ${listaTexto(hora)} ${hora.length === 1 ? "orienta" : "orientam"} cada linha pelo sentido do fluxo da hora`);
+  return partes.length ? `${cap(partes.join("; "))}.` : "Nenhum arquivo do conjunto foi lido nesta publicação.";
+}
+
 export const COLUNAS_ESQUEMA_NACIONAL: ColunaTabela[] = [
   { id: "recurso", rotulo: "Arquivo do ONS", tipo: "texto" },
   { id: "linhas", rotulo: "Linhas", tipo: "numero", casas: 0 },
@@ -792,8 +840,8 @@ export const COLUNAS_ESQUEMA_NACIONAL: ColunaTabela[] = [
   { id: "tem_programado", rotulo: "Traz programado", tipo: "texto", categorica: true },
   { id: "verificado_negativo", rotulo: "Verificado negativo", tipo: "numero", casas: 0 },
   { id: "verificado_zero", rotulo: "Verificado zero", tipo: "numero", casas: 0 },
-  { id: "primeira", rotulo: "Primeira hora", tipo: "texto" },
-  { id: "ultima", rotulo: "Última hora", tipo: "texto" },
+  { id: "primeira", rotulo: "Primeira hora", tipo: "data" },
+  { id: "ultima", rotulo: "Última hora", tipo: "data" },
   { id: "conflitos", rotulo: "Horas com duas linhas da mesma fronteira", tipo: "numero", casas: 0 },
 ];
 
@@ -944,9 +992,9 @@ export function colunasIdentidades(b: Pick<BalancoRede, "tolerancia_mwmed" | "fa
     { id: "acima_100", rotulo: `Acima de ${f100} MWmed`, tipo: "numero", casas: 0 },
     { id: "igual_menos_exterior", rotulo: "Resíduo igual a menos o exterior da hora", tipo: "numero", casas: 0 },
     { id: "maior_residuo_mwmed", rotulo: "Maior resíduo", tipo: "numero", unidade: "MWmed", casas: 1 },
-    { id: "maior_residuo_em", rotulo: "Hora do maior resíduo", tipo: "texto" },
-    { id: "primeira_hora_residuo", rotulo: "Primeira hora com resíduo", tipo: "texto" },
-    { id: "ultima_hora_residuo", rotulo: "Última hora com resíduo", tipo: "texto" },
+    { id: "maior_residuo_em", rotulo: "Hora do maior resíduo", tipo: "data" },
+    { id: "primeira_hora_residuo", rotulo: "Primeira hora com resíduo", tipo: "data" },
+    { id: "ultima_hora_residuo", rotulo: "Última hora com resíduo", tipo: "data" },
     { id: "sequencias", rotulo: "Sequências de horas com resíduo", tipo: "numero", casas: 0 },
     { id: "por_ano", rotulo: "Horas com resíduo por ano", tipo: "texto" },
   ];
@@ -1032,7 +1080,7 @@ export function linhasBalancoMensal(b: Pick<BalancoRede, "mensal">, sm: Subsiste
 }
 
 export const COLUNAS_BALANCO_MENSAL: ColunaTabela[] = [
-  { id: "m", rotulo: "Mês", tipo: "texto" },
+  { id: "m", rotulo: "Mês", tipo: "data" },
   { id: "mmgd", rotulo: "Geração solar e carga", tipo: "texto", categorica: true },
   { id: "geracao_mwh", rotulo: "Geração", tipo: "numero", unidade: "MWh", casas: 0 },
   { id: "carga_mwh", rotulo: "Carga", tipo: "numero", unidade: "MWh", casas: 0 },
@@ -1087,12 +1135,12 @@ export function linhasExteriorMensal(e: Pick<ExteriorRede, "meses" | "por_pais">
 }
 
 export const COLUNAS_EXTERIOR_MENSAL: ColunaTabela[] = [
-  { id: "m", rotulo: "Mês", tipo: "texto" },
+  { id: "m", rotulo: "Mês", tipo: "data" },
   { id: "exportacao_mwh", rotulo: "Exportação do Brasil", tipo: "numero", unidade: "MWh", casas: 0 },
   { id: "importacao_mwh", rotulo: "Importação do Brasil", tipo: "numero", unidade: "MWh", casas: 0 },
   { id: "horas", rotulo: "Horas publicadas", tipo: "numero", casas: 0 },
   { id: "horas_com_fluxo", rotulo: `Horas com fluxo acima de ${num(LIMIAR_NULO_MWMED, 0)} MWmed`, tipo: "numero", casas: 0 },
-  { id: "programado_liquido_mwh", rotulo: "Saldo programado (desde 2026)", tipo: "numero", unidade: "MWh", casas: 0 },
+  { id: "programado_liquido_mwh", rotulo: "Saldo programado (vazio antes do programa publicado)", tipo: "numero", unidade: "MWh", casas: 0 },
 ];
 
 export type LinhaExterior12m = {
@@ -1126,13 +1174,13 @@ export function linhasExterior12m(e: Pick<ExteriorRede, "resumo_12m" | "por_pais
 
 export const COLUNAS_EXTERIOR_12M: ColunaTabela[] = [
   { id: "pais", rotulo: "País", tipo: "texto" },
-  { id: "inicio", rotulo: "Primeiro mês", tipo: "texto" },
-  { id: "fim", rotulo: "Último mês", tipo: "texto" },
+  { id: "inicio", rotulo: "Primeiro mês", tipo: "data" },
+  { id: "fim", rotulo: "Último mês", tipo: "data" },
   { id: "horas", rotulo: "Horas publicadas", tipo: "numero", casas: 0 },
   { id: "exportacao_mwh", rotulo: "Exportação do Brasil", tipo: "numero", unidade: "MWh", casas: 0 },
   { id: "importacao_mwh", rotulo: "Importação do Brasil", tipo: "numero", unidade: "MWh", casas: 0 },
   { id: "horas_com_fluxo", rotulo: "Horas com fluxo", tipo: "numero", casas: 0 },
-  { id: "ultima_hora", rotulo: "Última hora publicada", tipo: "texto" },
+  { id: "ultima_hora", rotulo: "Última hora publicada", tipo: "data" },
 ];
 
 /** Exportação e importação de 12 meses por país; país sem hora na janela é dito ausente, nunca zero. */
@@ -1160,8 +1208,20 @@ export function linhasItaipu(e: Pick<ExteriorRede, "meses" | "itaipu">): LinhaIt
   }));
 }
 
+/**
+ * Conferência das parcelas de Itaipu (total = 60 Hz + 50 Hz; Brasil = as duas
+ * frequências destinadas ao Brasil). Contagem ausente é dita não conferida, nunca
+ * vira zero diferença.
+ */
+export function textoIdentidadesItaipu(x: Pick<ExteriorRede, "itaipu_identidades">["itaipu_identidades"]): string {
+  const n = x.linhas;
+  if (n === null || n === undefined) return "Itaipu: identidades das parcelas não conferidas nesta publicação.";
+  const parte = (dif: number | null, texto: string) => (dif === null || dif === undefined ? `${texto}: não conferido` : `${texto} em ${num(n - dif, 0)} de ${num(n, 0)} horas`);
+  return `Itaipu: ${parte(x.total_diferente_de_60_mais_50, "total igual a 60 Hz mais 50 Hz")}; ${parte(x.brasil_diferente_de_60_mais_50_brasil, "parcela do Brasil igual às duas frequências destinadas ao Brasil")}.`;
+}
+
 export const COLUNAS_ITAIPU: ColunaTabela[] = [
-  { id: "m", rotulo: "Mês", tipo: "texto" },
+  { id: "m", rotulo: "Mês", tipo: "data" },
   { id: "total_mwh", rotulo: "Geração total", tipo: "numero", unidade: "MWh", casas: 0 },
   { id: "brasil_mwh", rotulo: "Destinada ao Brasil", tipo: "numero", unidade: "MWh", casas: 0 },
   { id: "nao_brasil_mwh", rotulo: "Não destinada ao Brasil (diferença)", tipo: "numero", unidade: "MWh", casas: 0 },
@@ -1223,12 +1283,12 @@ export const COLUNAS_ATLS: ColunaTabela[] = [
   { id: "fluxo", rotulo: "Fluxo (sigla do ONS)", tipo: "texto" },
   { id: "definicao", rotulo: "Definição conferida", tipo: "texto" },
   { id: "publicado_no_ultimo_mes", rotulo: "Publicado no último mês", tipo: "texto", categorica: true },
-  { id: "inicio_12m", rotulo: "Início dos 12 meses", tipo: "texto" },
-  { id: "fim_12m", rotulo: "Fim dos 12 meses", tipo: "texto" },
+  { id: "inicio_12m", rotulo: "Início dos 12 meses", tipo: "data" },
+  { id: "fim_12m", rotulo: "Fim dos 12 meses", tipo: "data" },
   { id: "horas_12m", rotulo: "Horas acima do limite em 12 meses", tipo: "numero", unidade: "h", casas: 1 },
   { id: "meses_12m", rotulo: "Meses com violação em 12 meses", tipo: "numero", casas: 0 },
-  { id: "inicio", rotulo: "Primeiro mês no arquivo", tipo: "texto" },
-  { id: "fim", rotulo: "Último mês no arquivo", tipo: "texto" },
+  { id: "inicio", rotulo: "Primeiro mês no arquivo", tipo: "data" },
+  { id: "fim", rotulo: "Último mês no arquivo", tipo: "data" },
   { id: "meses", rotulo: "Meses publicados", tipo: "numero", casas: 0 },
   { id: "meses_com_violacao", rotulo: "Meses com violação", tipo: "numero", casas: 0 },
   { id: "horas_violacao_total", rotulo: "Horas acima do limite no histórico", tipo: "numero", unidade: "h", casas: 1 },
@@ -1242,6 +1302,14 @@ export function serieAtls(fluxos: readonly FluxoAtls[]): ({ id: string; m: strin
   const meses = Array.from(new Set(fluxos.flatMap((f) => f.serie.meses))).sort();
   const porFluxo = new Map(fluxos.map((f) => [f.fluxo, new Map(f.serie.meses.map((m, i) => [m, f.serie.horas_violacao[i] ?? null]))]));
   return meses.map((m) => ({ id: m, m, ...Object.fromEntries(fluxos.map((f) => [f.fluxo, porFluxo.get(f.fluxo)?.get(m) ?? null])) }));
+}
+
+/**
+ * Primeiro mês do arquivo do ATLS (o mais antigo entre os fluxos). A gold traz a série
+ * mensal só desde o ano inicial do módulo; o histórico inteiro fica no CSV para download.
+ */
+export function inicioArquivoAtls(atls: Pick<RestricoesRede["atls"], "fluxos">): string | null {
+  return atls.fluxos.map((f) => f.inicio).filter((x): x is string => !!x).sort()[0] ?? null;
 }
 
 /** Resposta do P030: horas acima do limite nos fluxos publicados e cortes de carga em 12 meses. */
@@ -1323,7 +1391,8 @@ export function linhasPerturbacoes(lista: readonly Perturbacao[]): LinhaPerturba
   return lista.map((p) => ({
     id: `${p.cod_perturbacao}|${p.inicio}`,
     cod_perturbacao: p.cod_perturbacao,
-    inicio: p.inicio,
+    // o arquivo do ONS separa data e hora com espaço; com "T" a célula sai como 10/11/2009 22:13 e o arquivo baixado guarda os segundos
+    inicio: p.inicio.replace(" ", "T"),
     registros: p.registros,
     ens_mwh: p.ens_mwh,
     carga_interrompida_mw_soma: p.carga_interrompida_mw_soma,
@@ -1335,7 +1404,7 @@ export function linhasPerturbacoes(lista: readonly Perturbacao[]): LinhaPerturba
 
 export const COLUNAS_PERTURBACOES: ColunaTabela[] = [
   { id: "cod_perturbacao", rotulo: "Perturbação (código do ONS)", tipo: "texto" },
-  { id: "inicio", rotulo: "Início", tipo: "texto" },
+  { id: "inicio", rotulo: "Início", tipo: "data" },
   { id: "registros", rotulo: "Registros", tipo: "numero", casas: 0 },
   { id: "ens_mwh", rotulo: "Energia não suprida", tipo: "numero", unidade: "MWh", casas: 1 },
   { id: "carga_interrompida_mw_soma", rotulo: "Carga interrompida (soma dos registros)", tipo: "numero", unidade: "MW", casas: 1 },
@@ -1359,6 +1428,9 @@ export const COLUNAS_BUSCA: ColunaTabela[] = [
 /* ====================================================================== */
 
 export type BaseDesvio = "com" | "sem";
+
+/** Estado distinto de "não" e de ausência: a regra não vale para a entidade (seção 11.6). */
+export const NAO_SE_APLICA = "não se aplica";
 
 /** A distribuição pedida: com todos os dias ou sem os dias rotulados por programa repetido. */
 export function distribuicaoDe(p: Pick<ProgramadoRede, "distribuicao">, par: ParProgramado, base: BaseDesvio): DistribuicaoBase | null {
@@ -1481,7 +1553,8 @@ export function linhasProgramadoDiario(p: Pick<ProgramadoRede, "diario" | "progr
     desvio_abs_mwh: s.desvio_abs_mwh[i] ?? null,
     horas_materiais: s.horas_materiais[i] ?? null,
     horas_inversao: s.horas_inversao[i] ?? null,
-    dia_rotulado: ehFronteira(par) && rotulados.has(d) ? "sim" : "não",
+    // a regra do programa repetido só rotula dias das fronteiras; nos países ela não se aplica (regra publicada na gold)
+    dia_rotulado: ehFronteira(par) ? (rotulados.has(d) ? "sim" : "não") : NAO_SE_APLICA,
   }));
 }
 
@@ -1518,12 +1591,13 @@ export function linhasProgramadoMensal(p: Pick<ProgramadoRede, "mensal">, par: P
     desvio_abs_mwh: s.desvio_abs_mwh[i] ?? null,
     horas_materiais: s.horas_materiais[i] ?? null,
     horas_inversao: s.horas_inversao[i] ?? null,
-    dias_rotulados: ehFronteira(par) ? (p.mensal.dias_rotulados[i] ?? null) : 0,
+    // nos países a regra não rotula dias: a coluna sai da tabela (colunasProgramadoMensal), em vez de mostrar zero
+    dias_rotulados: ehFronteira(par) ? (p.mensal.dias_rotulados[i] ?? null) : null,
   }));
 }
 
 export const COLUNAS_PROGRAMADO_MENSAL: ColunaTabela[] = [
-  { id: "m", rotulo: "Mês", tipo: "texto" },
+  { id: "m", rotulo: "Mês", tipo: "data" },
   { id: "horas", rotulo: "Horas comparadas", tipo: "numero", casas: 0 },
   { id: "programado_mwh", rotulo: "Programado (saldo do mês)", tipo: "numero", unidade: "MWh", casas: 0 },
   { id: "verificado_mwh", rotulo: "Verificado (saldo do mês)", tipo: "numero", unidade: "MWh", casas: 0 },
@@ -1532,6 +1606,29 @@ export const COLUNAS_PROGRAMADO_MENSAL: ColunaTabela[] = [
   { id: "horas_inversao", rotulo: "Horas com sentido oposto", tipo: "numero", casas: 0 },
   { id: "dias_rotulados", rotulo: "Dias rotulados no mês", tipo: "numero", casas: 0 },
 ];
+
+/** Nos países a coluna de dias rotulados não se aplica (a regra só rotula dias das fronteiras) e sai da tabela. */
+export function colunasProgramadoMensal(par: ParProgramado): ColunaTabela[] {
+  return ehFronteira(par) ? COLUNAS_PROGRAMADO_MENSAL : COLUNAS_PROGRAMADO_MENSAL.filter((c) => c.id !== "dias_rotulados");
+}
+
+/** Horas do mês no calendário (AAAA-MM), sem horário de verão: o Brasil não o adota desde 2019. */
+export function horasDoMes(m: string): number {
+  const [a, mm] = m.split("-").map(Number);
+  return new Date(Date.UTC(a, mm, 0)).getUTCDate() * 24;
+}
+
+/**
+ * Aviso de mês incompleto na série mensal do programado: só quando as horas comparadas
+ * do último mês ficam abaixo das horas do calendário (o texto nunca afirma parcial sem
+ * conferir). Sem horas, não há aviso.
+ */
+export function avisoMesIncompleto(m: string | undefined, horasComparadas: number | null | undefined): string | null {
+  if (!m || horasComparadas === null || horasComparadas === undefined) return null;
+  const cal = horasDoMes(m);
+  if (horasComparadas >= cal) return null;
+  return `${mesAno(m)} tem ${num(horasComparadas, 0)} de ${num(cal, 0)} horas comparadas: as contagens desse mês não se comparam diretamente com as dos meses completos.`;
+}
 
 /** Horas materiais por mês dos pares escolhidos (até quatro). */
 export function linhasMateriaisMensal(p: Pick<ProgramadoRede, "mensal">, pares: readonly ParProgramado[]): ({ id: string; m: string } & Partial<Record<ParProgramado, number | null>>)[] {
@@ -1558,12 +1655,12 @@ export function linhasMaioresDesvios(lista: readonly MaiorDesvio[]): LinhaMaiorD
     verificado_mwmed: x.verificado_mwmed,
     desvio_mwmed: x.desvio_mwmed,
     inversao: x.inversao ? "sim" : "não",
-    dia_rotulado: x.dia_rotulado ? "sim" : "não",
+    dia_rotulado: ehFronteira(x.par) ? (x.dia_rotulado ? "sim" : "não") : NAO_SE_APLICA,
   }));
 }
 
 export const COLUNAS_MAIORES_DESVIOS: ColunaTabela[] = [
-  { id: "hora", rotulo: "Hora (início, Brasília)", tipo: "texto" },
+  { id: "hora", rotulo: "Hora (início, Brasília)", tipo: "data" },
   { id: "par", rotulo: "Fronteira ou país", tipo: "texto", categorica: true },
   { id: "programado_mwmed", rotulo: "Programado", tipo: "numero", unidade: "MWmed", casas: 1 },
   { id: "verificado_mwmed", rotulo: "Verificado", tipo: "numero", unidade: "MWmed", casas: 1 },

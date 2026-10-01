@@ -17,6 +17,7 @@ import {
   ROTULO_TIPO_RECORTE,
   SUBSISTEMAS,
   TIPOS_RECORTE,
+  anoInicial,
   doRecorte,
   itensPontosArmazenamento,
   linhasArmazenamento,
@@ -26,20 +27,24 @@ import {
   recortePadrao,
   respostaArmazenamento,
   serieSemanal,
+  textoForaDosPontos,
+  textoPasso,
+  textoPesoSubsistemas,
   type EntidadeEar,
   type PontoMensalEar,
   type PontoRegioes,
   type TipoRecorte,
 } from "@/lib/energia/agua";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
-import { dataBR } from "@/lib/energia/formato";
+import { dataBR, plural } from "@/lib/energia/formato";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
 import type { Regiao } from "@/lib/energia/tipos";
 
 /**
  * P017, armazenamento: tipo de recorte (?rec=), recorte escolhido (?ent=), recortes
- * comparados nos pequenos múltiplos (?cmp=, até quatro) e o intervalo do histórico
- * mensal (?de=, ?ate=) ficam na URL; voltar e avançar refazem o recorte. A resposta, os
+ * comparados nos pequenos múltiplos (?cmp=, até quatro), o intervalo do histórico
+ * mensal (?de=, ?ate=) e o da série diária em MWmês (?dde=, ?date=) ficam na URL;
+ * voltar e avançar refazem o recorte e o zoom. A resposta, os
  * pontos pareados, a tabela equivalente e a exportação usam as mesmas linhas
  * (linhasArmazenamento e itensPontosArmazenamento sobre a mesma lista), e a resposta é
  * refeita pela mesma regra quando o recorte muda. O padrão (subsistemas, SIN, os quatro
@@ -51,6 +56,8 @@ const ESQUEMA = {
   cmp: campo(tiposUrl.lista(tiposUrl.texto({ max: 60 }), { max: LIMITE_COMPARACAO }), [...SUBSISTEMAS] as string[]),
   de: campo(tiposUrl.mes(), ""),
   ate: campo(tiposUrl.mes(), ""),
+  dde: campo(tiposUrl.data(), ""),
+  date: campo(tiposUrl.data(), ""),
 };
 
 const OPCOES_TIPO = TIPOS_RECORTE.map((t) => ({ id: t, rotulo: ROTULO_TIPO_RECORTE[t] }));
@@ -71,9 +78,9 @@ export function AguaArmazenamento({
   destaques,
 }: {
   entidades: EntidadeEar[];
-  /** EAR diária por subsistema e SIN nos últimos 120 dias (MWmês). */
+  /** EAR diária por subsistema e SIN nos últimos dias publicados na gold (MWmês). */
   diaria: PontoRegioes[];
-  /** EAR no último dia de cada mês desde 2000 (MWmês), com a EAR máxima do SIN. */
+  /** EAR no último dia de cada mês desde o início da série (MWmês), com a EAR máxima do SIN. */
   mensal: PontoMensalEar[];
   textoMensal: string;
   fonte: string;
@@ -95,7 +102,14 @@ export function AguaArmazenamento({
   );
   const multiplos = useMemo(() => linhasMultiplos(escolhidas), [escolhidas]);
   const intervalo = v.de && v.ate ? { inicio: v.de, fim: v.ate } : null;
+  const intervaloDiario = v.dde && v.date ? { inicio: v.dde, fim: v.date } : null;
   const cor = e && e.tipo === "subsistema" ? COR_REGIAO[e.id as Regiao] : "var(--cor-energia)";
+  // períodos e passos dos títulos saem das séries publicadas, nunca de número escrito aqui
+  const passoMultiplos = escolhidas.find((x) => x.semanal)?.semanal?.passo_dias ?? null;
+  const diasDiaria = plural(diaria.length, "dia", "dias");
+  const anoMensal = anoInicial(mensal[0]?.m);
+  const fora = textoForaDosPontos(doTipo);
+  const peso = textoPesoSubsistemas(entidades);
   const selecionar = (id: string | null) => id && definir({ ent: id === padrao ? "" : id });
 
   return (
@@ -135,7 +149,7 @@ export function AguaArmazenamento({
 
       {e && !e.sem_armazenamento && semanal.length > 0 ? (
         <GraficoLinhas
-          titulo={`EAR ${doRecorte(e.tipo, e.nome)} no último ano, a cada 14 dias, com a faixa do 10º ao 90º percentil da mesma data`}
+          titulo={`EAR ${doRecorte(e.tipo, e.nome)} no último ano, ${e.semanal ? textoPasso(e.semanal.passo_dias) : ""}, com a faixa do 10º ao 90º percentil da mesma data`}
           dados={semanal}
           chaveX="d"
           series={[{ id: "v", rotulo: e.rotulo, cor, espessura: 2.5 }]}
@@ -164,6 +178,11 @@ export function AguaArmazenamento({
         onSelecionar={selecionar}
         ordemInicial={{ por: "valor", direcao: "desc" }}
       />
+      {fora && (
+        <p className="text-sm text-carvao-muted" data-texto="fora-dos-pontos">
+          {fora}
+        </p>
+      )}
       <TabelaInterativa
         titulo={`Tabela equivalente: ${ROTULO_TIPO_RECORTE[tipo]}, EAR do dia, faixa da data e variação`}
         colunas={COLUNAS_ARMAZENAMENTO}
@@ -193,7 +212,7 @@ export function AguaArmazenamento({
         </Comparador>
         {escolhidas.length > 0 && (
           <PequenosMultiplos
-            titulo="EAR no último ano (% da EAR máxima), a cada 14 dias, com o 10º e o 90º percentil da data"
+            titulo={`EAR no último ano (% da EAR máxima)${passoMultiplos ? `, ${textoPasso(passoMultiplos)}` : ""}, com o 10º e o 90º percentil da data`}
             dados={multiplos}
             chaveX="d"
             unidade="%"
@@ -218,27 +237,26 @@ export function AguaArmazenamento({
       </div>
 
       <div data-nivel="analisar" className="space-y-4 border-t border-linha pt-5">
-        <h3 className="font-serif text-lg text-carvao">Energia armazenada nos últimos 120 dias, em MWmês</h3>
+        <h3 className="font-serif text-lg text-carvao">Energia armazenada nos últimos {diasDiaria}, em MWmês</h3>
         <GraficoLinhas
-          titulo="EAR diária por subsistema nos últimos 120 dias"
+          titulo={`EAR diária por subsistema nos últimos ${diasDiaria}`}
           dados={diaria}
           chaveX="d"
           series={SUBSISTEMAS.map((sm) => ({ id: sm, rotulo: NOME_REGIAO[sm], sigla: CURTO_REGIAO[sm], cor: COR_REGIAO[sm] }))}
           unidade="MWmês"
           casas={0}
           zoom
+          intervalo={intervaloDiario}
+          onIntervalo={(i) => definir({ dde: i?.inicio ?? "", date: i?.fim ?? "" })}
           legendaInterativa
         />
-        <p className="text-sm text-carvao-muted">
-          Em energia, o Sudeste/Centro-Oeste concentra a maior parte do armazenamento do SIN: uma queda pequena em % ali é mais energia que uma queda grande no Norte. O SIN
-          (soma dos quatro) está na tabela equivalente do gráfico e no número de destaque.
-        </p>
+        {peso && <p className="text-sm text-carvao-muted">{peso}</p>}
       </div>
 
       <div data-nivel="analisar" className="space-y-4 border-t border-linha pt-5">
-        <h3 className="font-serif text-lg text-carvao">Desde 2000: energia armazenada e capacidade no fim de cada mês</h3>
+        <h3 className="font-serif text-lg text-carvao">{anoMensal ? `Desde ${anoMensal}: e` : "E"}nergia armazenada e capacidade no fim de cada mês</h3>
         <GraficoLinhas
-          titulo="EAR do SIN e EAR máxima do SIN no último dia de cada mês, desde 2000"
+          titulo={`EAR do SIN e EAR máxima do SIN no último dia de cada mês${anoMensal ? `, desde ${anoMensal}` : ""}`}
           dados={mensal}
           chaveX="m"
           formatoX="mes"

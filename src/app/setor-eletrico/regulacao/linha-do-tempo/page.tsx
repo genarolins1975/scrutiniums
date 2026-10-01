@@ -20,10 +20,12 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import {
+  FILTRO_LINHA_TEMPO_PADRAO,
   ROTULO_NIVEL_EVENTO,
   contagemPaineisAfetados,
   defasagemDias,
   downloadsDoPainel,
+  filtrarLinhaTempo,
   origemEvento,
   perguntaPainel,
   proximoPainel,
@@ -55,7 +57,9 @@ export default function LinhaDoTempoPage() {
   if (!integra(g)) return <RegulacaoIndisponivel motivo={(g as { motivo?: string } | null)?.motivo} />;
 
   const T = g.linha_do_tempo;
-  const eventos = T.eventos;
+  // a mesma ordem do recorte padrão do componente (vigência mais recente primeiro), para que
+  // "o evento mais recente" da resposta e do "O que mudou" não dependa da ordem do arquivo
+  const eventos = filtrarLinhaTempo(T.eventos, FILTRO_LINHA_TEMPO_PADRAO).eventos;
   const vigencias = eventos.map((e) => e.vigencia_inicio).sort();
   const atos = eventos.filter((e) => origemEvento(e) === "ato").length;
   const quem = contagemPaineisAfetados(eventos);
@@ -206,6 +210,7 @@ export default function LinhaDoTempoPage() {
                     fonte="Senado Federal (metadados abertos) e ANEEL (texto dos atos)"
                     versao={versao}
                     nomeArquivo="regulacao-conferencia-publicacao"
+                    chaveUrl="pub"
                   />
                   <ul className="space-y-1 text-sm text-carvao-muted">
                     {Object.entries(

@@ -19,6 +19,7 @@ import {
   slugPainel,
   textoDefasagemEvento,
   textoPublicacao,
+  textoReuniao,
   type OrigemEvento,
 } from "@/lib/energia/regulacao";
 import type { EventoRegulatorio, PainelLink } from "@/lib/energia/tipos-regulacao";
@@ -217,7 +218,7 @@ export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { event
                   <h4 id={`evento-${e.id}-titulo`} className="mt-0.5 font-serif text-lg leading-snug text-carvao">
                     {e.titulo}
                   </h4>
-                  <dl className="mt-1.5 grid grid-cols-[auto_1fr] gap-x-4 gap-y-0.5 text-sm">
+                  <dl className="mt-1.5 grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-0.5 text-sm [&_dd]:[overflow-wrap:anywhere]">
                     <dt className="text-carvao-muted">Ato</dt>
                     <dd className="text-carvao">{e.ato ?? `${e.tipo_ato} (número não informado pela fonte)`}</dd>
                     <dt className="text-carvao-muted">Publicação</dt>
@@ -282,7 +283,7 @@ export function RegulacaoLinhaTempo({ eventos, paineis, fonte, versao }: { event
                       )}
                       {e.deliberacao && (
                         <p>
-                          Deliberado na reunião {e.deliberacao.reuniao} da Diretoria da ANEEL, em {dataBR(e.deliberacao.data)}.
+                          Deliberado na reunião {textoReuniao(e.deliberacao.reuniao)} da Diretoria da ANEEL, em {dataBR(e.deliberacao.data)}.
                         </p>
                       )}
                       {e.observacoes.map((o) => (

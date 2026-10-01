@@ -31,6 +31,8 @@ import {
   linhasValidacao,
   notaAnomaliaTemperatura,
   notaChuvaBacia,
+  periodoBase,
+  periodoValidacao,
   perguntaPainel,
   rotaPainel,
   rotuloRecorte,
@@ -47,7 +49,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Água e clima: chuva, temperatura e previsão",
   description:
-    "Chuva estimada por satélite em cada bacia do ONS e temperatura de reanálise por subsistema, contra a média de 2001 a 2025, com mapa por bacia, cobertura da grade, conferência com estações e a previsão de uma rodada do ECMWF separada da estimativa.",
+    "Chuva estimada por satélite em cada bacia do ONS e temperatura de reanálise por subsistema, contra a média climatológica dos mesmos dias, com mapa por bacia, cobertura da grade, conferência com estações e a previsão de uma rodada do ECMWF separada da estimativa.",
   alternates: { canonical: "/setor-eletrico/agua-e-clima/chuva-e-temperatura" },
 };
 
@@ -67,6 +69,9 @@ export default function ClimaPage() {
   const bPadrao = c?.precipitacao_bacias.find((b) => b.bacia === baciaPadrao) ?? null;
   const tSin = c?.temperatura.find((t) => t.recorte === "SIN") ?? null;
   const pendPrev = g.pendencias.filter((p) => /previs/i.test(p));
+  // base climatológica e período da conferência com estações: lidos da gold, não escritos aqui
+  const baseTxt = c ? periodoBase(c.base_climatologica) : null;
+  const perVal = c ? periodoValidacao(c.validacao_estacoes) : null;
   const separacao: { rotulo: string; natureza: Natureza; texto: string }[] = c
     ? [
         { rotulo: "Observação", natureza: "OBSERVADO", texto: c.separacao.observacao },
@@ -91,9 +96,9 @@ export default function ClimaPage() {
             </>
           }
         >
-          A chuva nas bacias alimenta a afluência dos reservatórios, e a temperatura pesa na demanda por energia. Esta página mostra a chuva estimada por satélite
+          A chuva nas bacias alimenta a afluência dos reservatórios, e a temperatura acompanha a demanda por energia. Esta página mostra a chuva estimada por satélite
           (<Termo slug="imerg">IMERG</Termo>) em cada bacia do ONS e a temperatura estimada por reanálise (<Termo slug="merra-2">MERRA-2</Termo>) em cada subsistema,
-          contra a média dos mesmos dias em 2001 a 2025, e separa estimativa, observação, previsão e cenário.
+          contra a média dos mesmos dias{baseTxt ? ` em ${baseTxt}` : ""}, e separa estimativa, observação, previsão e cenário.
         </CabecalhoModulo>
         <AguaNavegacao atual="p019" />
         <ModoProfundidade>
@@ -101,12 +106,13 @@ export default function ClimaPage() {
             <PainelEvidencia
               id="p019"
               pergunta={perguntaPainel("p019")}
-              subtitulo="Chuva por bacia (mm e anomalia em %) e temperatura por subsistema (°C) · estimativas contra 2001 a 2025 · previsão em bloco separado"
+              subtitulo={`Chuva por bacia (mm e anomalia em %) e temperatura por subsistema (°C) · estimativas contra ${baseTxt ?? "a climatologia publicada"} · previsão em bloco separado`}
               natureza="ESTIMADO"
               porQueImporta={
                 <>
-                  Chuva nas cabeceiras vira vazão nos rios e, semanas depois, afluência aos reservatórios; temperatura alta aumenta o uso de ar-condicionado e a carga. Ver as
-                  duas por bacia e por subsistema, com a mesma base histórica, ajuda a entender a água que chega e a demanda que vem.
+                  Chuva nas cabeceiras vira vazão nos rios e afluência aos reservatórios, com atraso que depende da bacia e do solo; a temperatura costuma andar junto com a
+                  demanda por energia, associação que o painel de carga mede. Ver as duas por bacia e por subsistema, com a mesma base histórica, situa a
+                  água que chega e o clima em que a demanda acontece.
                 </>
               }
               oQueMudou={
@@ -116,7 +122,7 @@ export default function ClimaPage() {
               }
               comoInterpretar={
                 <>
-                  A anomalia de chuva é a chuva do período dividida pela média dos mesmos dias em 2001 a 2025, menos um; a de temperatura é a diferença em °C. No período seco,
+                  A anomalia de chuva é a chuva do período dividida pela média dos mesmos dias{baseTxt ? ` em ${baseTxt}` : ""}, menos um; a de temperatura é a diferença em °C. No período seco,
                   médias de poucos milímetros produzem percentuais grandes: o mapa usa classes fixas e a tabela traz os milímetros. A correlação entre chuva e ENA é associação
                   descritiva.
                 </>
@@ -196,11 +202,12 @@ export default function ClimaPage() {
                       }
                     />
                     <p className="text-sm text-carvao-muted">
-                      A temperatura é o insumo da decomposição da carga por clima e calendário:{" "}
+                      A relação entre temperatura e carga é medida no painel de carga, com a sua própria série de temperatura (NASA POWER nas capitais, ponderadas pela
+                      população; outra seleção de células, então os graus não são os desta página):{" "}
                       <Link href="/setor-eletrico/carga/clima-e-calendario#p027" className="text-energia-dark underline underline-offset-4">
                         quanto da variação da carga é compatível com clima e calendário
                       </Link>
-                      ; a chuva, da afluência:{" "}
+                      . A chuva se compara com a afluência:{" "}
                       <Link href={`${rotaPainel("p018")}#p018`} className="text-energia-dark underline underline-offset-4">
                         a água que chega está acima do normal?
                       </Link>
@@ -244,13 +251,13 @@ export default function ClimaPage() {
                       {textoValidacao(c.validacao_estacoes)}
                     </p>
                     <TabelaInterativa
-                      titulo="IMERG contra estações por bacia, 2020 e 2021"
+                      titulo={`IMERG contra estações por bacia${perVal ? `, ${perVal}` : ""}`}
                       colunas={COLUNAS_VALIDACAO}
                       linhas={linhasValidacao(c.validacao_estacoes)}
                       chaveLinha="id"
                       colunaRotulo="rotulo"
-                      fonte="ONS, Precipitação Diária Observada (2020 e 2021); NASA POWER (IMERG)"
-                      versao="2021-12-31"
+                      fonte={`ONS, Precipitação Diária Observada${perVal ? ` (${perVal})` : ""}; NASA POWER (IMERG)`}
+                      versao={c.validacao_estacoes.periodo?.fim ?? g.gerado_em}
                       nomeArquivo="agua-validacao-imerg-estacoes"
                     />
                   </AguaAnalise>

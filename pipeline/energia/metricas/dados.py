@@ -288,4 +288,21 @@ METRICAS = [
        regra_cobertura="Entradas de catalogo.json.", politica_ausencia="Não se aplica (contagem).",
        validacoes=["publicados sem checagem reprovada no relatório e com gold consumidora íntegra (ficha conjuntos_publicados)"],
        limitacoes=[_PLATAFORMA]),
+    _m(id="dados_afirmacoes_conferidas", titulo="Afirmações de integração conferidas com o catálogo", paginas=PAGINA_MET,
+       pergunta="Cada fonte que a Metodologia diz integrada corresponde a um recurso realmente verificado?",
+       definicao=("Contagem das afirmações de integração exibidas na Metodologia em que todo conjunto citado está no catálogo "
+                  "gravado com o mesmo estado, chegou pelo menos a RECURSO VERIFICADO, e o texto só diz 'publicado' quando todos "
+                  "estão PUBLICADO."),
+       unidade="afirmações", grao_geografico="não se aplica", grao_temporal="por publicação",
+       fontes=[F_ONS, F_ANEEL, F_CCEE, F_SEED, F_SILVERS],
+       formula="n = #{afirmações : ∀ conjunto citado, estado_catálogo = estado_afirmação ≥ RECURSO VERIFICADO}",
+       regra_agregacao="contagem", dimensoes=["afirmação"],
+       regras_comparabilidade=["O texto de cada afirmação é gerado do estado do catálogo da mesma publicação; entre publicações, "
+                               "muda quando um conjunto sobe ou desce na escada."],
+       regra_cobertura="As afirmações de publicacao.json (afirmacoes), lidas pela página Metodologia.",
+       politica_ausencia="Conjunto citado ausente do catálogo reprova a afirmação.",
+       validacoes=["estado de cada conjunto relido no catalogo.json gravado (ficha afirmacoes_conferidas)",
+                   "afirmação sobre limites de intercâmbio gerada do achado A06 de rede_detalhe.json"],
+       limitacoes=["A conferência atesta o estado do conjunto no catálogo, não a qualidade de cada número que ele alimenta "
+                   "(ver as fichas 'Comprove este número' de cada página).", _PLATAFORMA]),
 ]

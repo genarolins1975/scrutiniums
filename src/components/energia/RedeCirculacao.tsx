@@ -28,6 +28,7 @@ import {
   PONTAS,
   NOME_SM,
   colunasJanela,
+  colunasSaldoFronteiras,
   curtoFronteira,
   diaEscolhido,
   diasDaJanela,
@@ -454,7 +455,9 @@ export function RedeCirculacao({
       </div>
 
       <div data-nivel="analisar" className="space-y-4 border-t border-linha pt-5">
-        <h3 className="font-serif text-lg text-carvao">Saldo das fronteiras: 30 dias e meses desde {mesAno(c.mensal.meses[0] ?? "2021-01")}</h3>
+        <h3 className="font-serif text-lg text-carvao">
+          Saldo das fronteiras: 30 dias{c.mensal.meses.length ? ` e meses desde ${mesAno(c.mensal.meses[0])}` : " (sem série mensal nesta publicação)"}
+        </h3>
         <Comparador
           rotulo={`Fronteiras nos gráficos (até ${LIMITE_COMPARACAO})`}
           entidades={FRONTEIRAS.map((p) => ({ id: p, rotulo: nomeFronteira(p), sinonimos: [curtoFronteira(p)] }))}
@@ -477,6 +480,18 @@ export function RedeCirculacao({
               casas={0}
               zeroNoEixo
             />
+            <TabelaInterativa
+              titulo="Tabela equivalente: saldo diário das fronteiras escolhidas"
+              colunas={colunasSaldoFronteiras("d", escolhidas)}
+              linhas={paraTabela(saldoDiario)}
+              chaveLinha="id"
+              colunaRotulo="d"
+              fonte={fonte}
+              versao={versao}
+              nomeArquivo={`rede-saldo-diario-${escolhidas.join("-")}`}
+              chaveUrl="sdia"
+              ordemInicial={{ coluna: "d", direcao: "desc" }}
+            />
             <GraficoLinhas
               titulo="Saldo mensal das fronteiras escolhidas (positivo no sentido do nome)"
               dados={saldoMensal}
@@ -489,6 +504,19 @@ export function RedeCirculacao({
               zoom
               intervalo={intervalo}
               onIntervalo={(i) => definir({ de: i?.inicio ?? "", ate: i?.fim ?? "" })}
+            />
+            <TabelaInterativa
+              titulo="Tabela equivalente: saldo mensal das fronteiras escolhidas"
+              colunas={colunasSaldoFronteiras("m", escolhidas)}
+              linhas={paraTabela(saldoMensal)}
+              chaveLinha="id"
+              colunaRotulo="m"
+              fonte={fonte}
+              versao={versao}
+              nomeArquivo={`rede-saldo-mensal-${escolhidas.join("-")}`}
+              chaveUrl="smes"
+              ordemInicial={{ coluna: "m", direcao: "desc" }}
+              nota="Mês com menos horas que o calendário (último mês parcial ou dias sem as 24 horas) está marcado na tabela por fronteira abaixo."
             />
           </>
         )}
@@ -510,7 +538,7 @@ export function RedeCirculacao({
         />
         {ultimoMes && ultimoMes.mes_completo !== "sim" && (
           <p className="text-sm text-carvao-muted">
-            {mesAno(ultimoMes.m)} é parcial ({ultimoMes.mes_completo.replace(/^não /, "")}): não compare o seu total com o de meses completos.
+            {mesAno(ultimoMes.m)} é parcial, com {ultimoMes.mes_completo.replace(/^não \((.*)\)$/, "$1")}: não compare o seu total com o de meses completos.
           </p>
         )}
         <TabelaInterativa

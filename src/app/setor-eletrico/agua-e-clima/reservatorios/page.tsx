@@ -110,6 +110,7 @@ export default function ReservatoriosPage() {
                     decomposicao={r.decomposicao_ear}
                     janela={{ inicio: r.inicio, fim: r.fim, periodo_fecham_por_construcao: r.periodo_fecham_por_construcao }}
                     urlSeries={r.series_45d.arquivo}
+                    diasSeries={r.series_45d.dias}
                     fonte={FONTE}
                     versao={r.fim}
                     destaques={
@@ -129,6 +130,7 @@ export default function ReservatoriosPage() {
                         <Numero
                           rotulo="Reservatórios que fecham o balanço por construção"
                           natureza="CALCULADO"
+                          evidencia={ev.fecham_por_construcao}
                           valor={r.n_fecham_por_construcao}
                           formato="num"
                           casas={0}
@@ -137,6 +139,7 @@ export default function ReservatoriosPage() {
                           tamanho="medio"
                           cor="var(--serie-referencia)"
                           nota="Nesses, a afluência publicada sai do próprio balanço: o fechamento não é prova independente."
+                          endereco={`${rotaPainel("p020")}#p020`}
                         />
                       </div>
                     }

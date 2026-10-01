@@ -54,6 +54,16 @@ from pipeline.energia.gold import comum as c  # noqa: E402
 GOLD = "agua_detalhe.json"
 FAMILIA = "ons_hidrologia"
 PAGINA = [{"rotulo": "Água e clima", "href": "/setor-eletrico/agua-e-clima"}]
+# um painel por página: cada conjunto aponta para as páginas que o usam (catálogo de dados)
+_P017 = {"rotulo": "Água e clima: armazenamento", "href": "/setor-eletrico/agua-e-clima"}
+_P018 = {"rotulo": "Água e clima: afluência", "href": "/setor-eletrico/agua-e-clima/afluencia"}
+_P019 = {"rotulo": "Água e clima: chuva e temperatura", "href": "/setor-eletrico/agua-e-clima/chuva-e-temperatura"}
+_P020 = {"rotulo": "Água e clima: reservatórios e balanço", "href": "/setor-eletrico/agua-e-clima/reservatorios"}
+PAGINAS_DS = {
+    "ear_ree": [_P017], "ear_bacia": [_P017], "ena_ree": [_P018], "ena_bacia": [_P018],
+    "ear_res": [_P017, _P020], "ena_res": [_P018], "hidro_res": [_P020], "cadastro": [_P020],
+    "precip_est": [_P019], "bacias_shp": [_P019],
+}
 REPRODUCAO = "python3 pipeline/energia/executar_modulo.py agua --sem-coleta"
 
 # silver da família ons_hidrologia
@@ -99,6 +109,8 @@ DIARIO_RECORTES = "2022-01-01"  # CSV diário de REE e bacias (o mensal cobre de
 HIDRO_DESDE = "2025-01-01"      # dados hidráulicos diários no silver (janela publicada)
 ANO_MIN_HIDRO = 2025
 BASE_CLIMA = (2001, 2025)       # climatologia: anos completos 2001 a 2025
+# o período por extenso nos textos publicados sai da constante (mudar a base muda o texto)
+BASE_CLIMA_TXT = f"{BASE_CLIMA[0]} a {BASE_CLIMA[1]}"
 JANELA = 30
 DIAS_EAR_DIARIA = 120           # EAR diária por subsistema na gold
 DIAS_SERIES_RES = 45            # séries diárias dos reservatórios (agua_reservatorios_45d.json)
@@ -197,34 +209,34 @@ REGISTRO = {
     "datasets": [
         *[{"orgao": o, "nome": n, "slug": f"ons-{n}", "dataset_silver": ds, "titulo": t,
            "estado": "UTILIZADO EM INDICADOR", "url": f"https://dados.ons.org.br/dataset/{n}", "licenca": c.LICENCA_ONS,
-           "paginas": PAGINA, "downloads": DOWNLOADS_DS.get(k, []), "quebras": QUEBRAS_DS.get(k, [])}
+           "paginas": PAGINAS_DS.get(k, PAGINA), "downloads": DOWNLOADS_DS.get(k, []), "quebras": QUEBRAS_DS.get(k, [])}
           for o, n, ds, t, k in DS_REGISTRO],
         {"orgao": "NASA", "nome": "power-daily-imerg", "slug": "nasa-power-imerg", "dataset_silver": DS_POWER_PR,
          "titulo": "NASA POWER: precipitação diária IMERG (GPM) por ponto", "estado": "UTILIZADO EM INDICADOR",
-         "url": URL_POWER, "licenca": LICENCA_POWER, "paginas": PAGINA,
+         "url": URL_POWER, "licenca": LICENCA_POWER, "paginas": [_P019],
          "downloads": ["/energia/series/agua_precipitacao_bacias_diario.csv"], "quebras": []},
         {"orgao": "NASA", "nome": "power-daily-merra2", "slug": "nasa-power-merra2", "dataset_silver": DS_POWER_T,
          "titulo": "NASA POWER: temperatura diária MERRA-2/GEOS-IT por ponto", "estado": "UTILIZADO EM INDICADOR",
-         "url": URL_POWER, "licenca": LICENCA_POWER, "paginas": PAGINA,
+         "url": URL_POWER, "licenca": LICENCA_POWER, "paginas": [_P019],
          "downloads": ["/energia/series/clima_diario.csv"], "quebras": []},
         {"orgao": "IBGE", "nome": "localidades-2022", "slug": "ibge-localidades-2022", "dataset_silver": DS_IBGE_LOC,
          "titulo": "IBGE: Localidades do Brasil 2022 (sedes municipais)", "estado": "UTILIZADO EM INDICADOR",
-         "url": URL_LOC, "licenca": LICENCA_IBGE, "paginas": PAGINA, "downloads": [], "quebras": []},
+         "url": URL_LOC, "licenca": LICENCA_IBGE, "paginas": [_P019], "downloads": [], "quebras": []},
         {"orgao": "IBGE", "nome": "sidra-4709", "slug": "ibge-sidra-4709", "dataset_silver": DS_IBGE_POP,
          "titulo": "IBGE: população residente, Censo 2022 (SIDRA 4709)", "estado": "UTILIZADO EM INDICADOR",
-         "url": URL_POP_MUN, "licenca": LICENCA_IBGE, "paginas": PAGINA, "downloads": [], "quebras": []},
+         "url": URL_POP_MUN, "licenca": LICENCA_IBGE, "paginas": [_P019], "downloads": [], "quebras": []},
         {"orgao": "ONS", "nome": "relatorio-executivo-pmo", "slug": "ons-relatorio-pmo-mlt", "dataset_silver": DS_PMO,
          "titulo": "ONS: Relatório Executivo do PMO (tabela MLT das ENAs, PDF)", "estado": "UTILIZADO EM INDICADOR",
          "url": "https://www.ons.org.br/paginas/energia-no-futuro/programacao-da-operacao", "licenca": c.LICENCA_ONS + "; documento do acervo digital do ONS",
-         "paginas": PAGINA, "downloads": ["/energia/series/agua_mlt_mudancas.csv"], "quebras": []},
+         "paginas": [_P018], "downloads": ["/energia/series/agua_mlt_mudancas.csv"], "quebras": []},
         {"orgao": "Open-Meteo", "nome": "forecast-ecmwf-ifs025", "slug": "openmeteo-previsao-ecmwf", "dataset_silver": DS_PREV,
          "titulo": "Open-Meteo: previsão diária do ECMWF IFS 0,25° (chuva e temperatura) por ponto",
-         "estado": "UTILIZADO EM INDICADOR", "url": cl.OPENMETEO_DOC, "licenca": LICENCA_OPENMETEO, "paginas": PAGINA,
+         "estado": "UTILIZADO EM INDICADOR", "url": cl.OPENMETEO_DOC, "licenca": LICENCA_OPENMETEO, "paginas": [_P019],
          "downloads": ["/energia/series/agua_previsao.csv"], "quebras": []},
         {"orgao": "ONS", "nome": "carga-energia-verificada", "slug": "ons-carga-verificada-areas", "dataset_silver": DS_AREAS,
          "titulo": "ONS: carga verificada por área geoelétrica (conferência estado → subsistema)",
          "estado": "UTILIZADO EM INDICADOR", "url": "https://dados.ons.org.br/dataset/carga-energia-verificada",
-         "licenca": c.LICENCA_ONS, "paginas": PAGINA, "downloads": [], "quebras": []},
+         "licenca": c.LICENCA_ONS, "paginas": [_P019], "downloads": [], "quebras": []},
     ],
     "arquivos": {
         "/energia/series/clima_diario.csv": (
@@ -260,8 +272,11 @@ REGISTRO = {
             "EAR e ENA diárias por subsistema e SIN (ONS), desde 2022, com a captura usada. Colunas: data; recorte (SE, S, NE, "
             "N, SIN); ear_mwmes; ear_max_mwmes; ear_pct (publicado nos subsistemas; no SIN, Σ EAR ÷ Σ EAR máxima × 100); "
             "ena_bruta_mwmed (MWmed; SIN = soma); ena_bruta_pct_mlt (publicado nos subsistemas; no SIN, Σ ENA ÷ Σ MLT × 100); "
-            "mlt_implicita_mwmed (ENA ÷ % MLT × 100; SIN = soma); captura_ear e captura_ena (fonte e instante da captura "
-            "do arquivo anual usado: a mais recente entre o silver principal e a recaptura do módulo). Ausência = vazio."),
+            "mlt_implicita_mwmed (ENA ÷ % MLT × 100; SIN = soma); ena_arm_mwmed (ENA armazenável, MWmed; SIN = soma); "
+            "ena_arm_pct_mlt (publicado nos subsistemas; no SIN, Σ ENA armazenável ÷ Σ MLT armazenável × 100); "
+            "mlt_arm_implicita_mwmed (ENA armazenável ÷ % MLT armazenável × 100; SIN = soma); captura_ear e captura_ena "
+            "(fonte e instante da captura do arquivo anual usado: a mais recente entre o silver principal e a recaptura do "
+            "módulo). Ausência = vazio."),
         "/energia/series/agua_ear_recortes_diario.csv": (
             "EAR e ENA diárias por REE e por bacia (ONS), desde 2022. Colunas: data; recorte (ree ou bacia); nome; ear_mwmes; "
             "ear_max_mwmes; ear_pct (publicado pelo ONS; vazio quando a EAR máxima é zero, porque o percentual não se aplica, "
@@ -2129,6 +2144,11 @@ def _afluencia(con, con_p, d):
 
 # ================================================================ construção: P019 clima
 
+def _periodo_meses(p):
+    """{"inicio": "2020-01", "fim": "2021-12"} → "jan/2020 a dez/2021" (texto da página e da ficha)."""
+    return c.mes_br(p["inicio"]) if p["inicio"] == p["fim"] else f"{c.mes_br(p['inicio'])} a {c.mes_br(p['fim'])}"
+
+
 def _mensal_de_diario(serie, soma=True):
     """{AAAA-MM: valor} só para meses completos (todos os dias com dado)."""
     por = defaultdict(list)
@@ -2281,12 +2301,14 @@ def _clima(con, d):
     est = _series_glob(con, DS_PRECIP_EST, "precip_estacoes_mm_mes.*")
     nest = _series_glob(con, DS_PRECIP_EST, "n_estacoes.*")
     todas_x, todas_y = [], []
+    meses_val = set()   # meses realmente comparados: o período da conferência sai dos dados, não do texto
     for s_nome, vals in sorted(est.items()):
         b = s_nome.split(".", 1)[1]
         mens = _mensal_de_diario(pr.get(f"precip_mm.{b}", {}))
         pares = [(mens[m], v, nest.get(f"n_estacoes.{b}", {}).get(m)) for m, v in sorted(vals.items()) if m in mens]
         if not pares:
             continue
+        meses_val.update(m for m in vals if m in mens)
         xs, ys = [p[0] for p in pares], [p[1] for p in pares]
         todas_x += xs
         todas_y += ys
@@ -2297,7 +2319,9 @@ def _clima(con, d):
                     "correlacao": c.r(r_, 2)})
     rg, ng = _pearson(todas_x, todas_y)
     d["_validacao"] = {"bacias": val, "correlacao_geral": c.r(rg, 2), "pares": ng,
-                       "vies_geral_pct": c.r(100.0 * (sum(todas_x) / sum(todas_y) - 1), 1) if todas_y and sum(todas_y) > 0 else None}
+                       "vies_geral_pct": c.r(100.0 * (sum(todas_x) / sum(todas_y) - 1), 1) if todas_y and sum(todas_y) > 0 else None,
+                       # primeiro e último mês comparados (AAAA-MM); a página e a ficha citam este período
+                       "periodo": {"inicio": min(meses_val), "fim": max(meses_val)} if meses_val else None}
     # cobertura espacial
     pts = _vigentes(con, DS_PONTOS_PR)
     por_b = defaultdict(lambda: {"pontos": 0, "passos": set(), "poligonos": set(), "peso": 0.0})
@@ -2335,7 +2359,9 @@ def _clima(con, d):
         "corte_imerg_final": corte_final, "corte_merra2": corte_merra,
         "base_climatologica": f"{a0}-{a1}",
         "separacao": {
-            "observacao": "Precipitação medida em estações (ONS, 2020 e 2021) usada só para conferir a estimativa por satélite.",
+            "observacao": "Precipitação medida em estações (ONS"
+                          + (f", {_periodo_meses(d['_validacao']['periodo'])}" if d["_validacao"]["periodo"] else ", sem mês comparado nesta execução")
+                          + ") usada só para conferir a estimativa por satélite.",
             "estimativa": "Precipitação IMERG (satélite calibrado por pluviômetros; versão Late nos últimos meses, sem calibração) e temperatura MERRA-2/GEOS-IT (reanálise).",
             "previsao": "Previsão do modelo ECMWF IFS 0,25° (rodada identificada pela inicialização), nos mesmos pontos e com as mesmas regras de agregação; substituída a cada rodada.",
             "cenario": "Não integrado: nenhum cenário climático (projeção de longo prazo) é publicado nesta página.",
@@ -2410,7 +2436,7 @@ def _previsao(con, d):
         "capturada_em": v["capturado_em"], "idade_horas": c.r(idade_h, 1),
         "d0": dias[0], "n_dias": len(dias), "dia_utc": True,
         "bacias": bac, "temperatura": temp,
-        "comparabilidade": ("A climatologia ao lado (2001 a 2025, mesmos dias do calendário) vem da estimativa por satélite "
+        "comparabilidade": (f"A climatologia ao lado ({BASE_CLIMA_TXT}, mesmos dias do calendário) vem da estimativa por satélite "
                             "(IMERG) e da reanálise (MERRA-2), não do modelo de previsão: a diferença indica ordem de grandeza, "
                             "não uma anomalia homogênea. Temperatura prevista é média do dia UTC; a observada, do dia em hora "
                             "solar local."),
@@ -2882,11 +2908,15 @@ def _csvs(d):
         ks = sorted(k for k in set(dias_) | set(ena["SIN"]["mw"]) if k >= DIARIO_RECORTES)
         for k in ks:
             for rec in TODOS:
+                # armazenável: o SIN não tem percentual publicado; é a razão das somas do mesmo dia
+                arm, marm = ena[rec].get("arm", {}).get(k), ena[rec].get("mlt_arm", {}).get(k)
+                parm = ena[rec].get("arm_pct", {}).get(k) if rec != "SIN" else (100.0 * arm / marm if arm is not None and marm else None)
                 linhas.append([k, rec, mw[rec].get(k), mx[rec].get(k), pct[rec].get(k), ena[rec]["mw"].get(k),
-                               ena[rec].get("pct", {}).get(k), ena[rec]["mlt"].get(k),
+                               ena[rec].get("pct", {}).get(k), ena[rec]["mlt"].get(k), arm, parm, marm,
                                rot(ce.get(k[:4])), rot(cn.get(k[:4]))])
         _escreve(d, "agua_subsistemas_diario.csv", ["data", "recorte", "ear_mwmes", "ear_max_mwmes", "ear_pct",
                                                     "ena_bruta_mwmed", "ena_bruta_pct_mlt", "mlt_implicita_mwmed",
+                                                    "ena_arm_mwmed", "ena_arm_pct_mlt", "mlt_arm_implicita_mwmed",
                                                     "captura_ear", "captura_ena"], linhas)
         downloads.append({"rotulo": "EAR e ENA diárias por subsistema e SIN, desde 2022, com a captura usada (CSV)",
                           "url": "/energia/series/agua_subsistemas_diario.csv"})
@@ -3052,7 +3082,7 @@ REGRAS = {
     "mlt": "A MLT não é fixa: muda quando usinas entram ou saem e quando o ONS troca a versão da referência. Mudança dentro do mês, em usina existente, é comparada por igualdade com a MLT vigente na mesma data 1 e 2 anos antes: retorno a uma versão anterior ou versão nova. Comparação entre anos pela MLT do último dia do mês.",
     "precipitacao": "Precipitação da bacia = média ponderada pela área (cos(lat) × passo²) dos pontos de grade dentro do polígono do ONS; dia publicado só com ao menos 80% do peso com dado. Mês só com todos os dias.",
     "temperatura": "Temperatura da UF = média das células MERRA-2 mais populosas (até metade da população do estado, no máximo 6), ponderada pela população das sedes; subsistema e SIN = média das UFs ponderada pela população (Censo 2022); dia publicado com ao menos 90% da população coberta.",
-    "anomalia": "Anomalia = valor ÷ média do mesmo mês (ou mesma janela) em 2001 a 2025 − 1, em %, para a chuva; diferença em °C para a temperatura.",
+    "anomalia": f"Anomalia = valor ÷ média do mesmo mês (ou mesma janela) em {BASE_CLIMA_TXT} − 1, em %, para a chuva; diferença em °C para a temperatura.",
     "balanco_reservatorio": "ΔV observado (hm³) = (volume útil % do fim − do início) ÷ 100 × volume útil total do cadastro; fluxos em hm³ = vazão (m³/s) × 86.400 s ÷ 10⁶; resíduo = ΔV observado − (afluência − defluência). Transferência publicada à parte, com resíduo alternativo. Fração de dias dentro do arredondamento na janela e na série disponível. Defluência não discriminada segundo a convenção do reservatório (defluência com ou sem as outras estruturas, detectada nos dados); convenção indeterminada = nulo.",
     "previsao": "PREVISÃO da rodada de 00Z do ECMWF IFS 0,25° (Open-Meteo, rodadas individuais), nos mesmos pontos e com as mesmas regras de agregação da estimativa; só dias completos com valor em todos os recortes; não publicada com mais de 48 horas.",
     "decomposicao_ear": "Variação da EAR do subsistema em 30 dias = soma das variações por reservatório (parte própria no subsistema da usina; parte a jusante no subsistema a jusante). A ENA, a geração hidráulica e a chuva aparecem como contexto e não fecham balanço com a EAR.",
@@ -3176,7 +3206,7 @@ def _proveniencias_e_evidencias(con, con_p, d, downloads):
         "ena_30d_bacia": _prov("ENA de 30 dias em % da MLT por bacia", "CALCULADO",
                                _fonte_ons("ena_bacia", "ENA Diário por Bacia", "ENA_DIARIO_BACIAS_2000 a 2026 (CSV)"), "% da MLT",
                                "diária (janela de 30 dias)", {"inicio": _dmenos(fim_bac, 29), "fim": fim_bac} if fim_bac else None,
-                               snap_ena_bac, [LIM_ONS, "As bacias OUTRAS - SUL e OUTRAS- SUDESTE só existem no arquivo de 2000 e ficam sem valor recente.",
+                               snap_ena_bac, [LIM_ONS, "As afluências que o ONS agrupa em outras do Sul e outras do Sudeste (nomes no arquivo com hífen) só existem no arquivo de 2000 e ficam sem valor recente.",
                                               "Bacias com poucos anos na base (menos de 5) ficam sem faixa e sem percentil."],
                                formula="ENA30 = Σ ENA(d) ÷ Σ MLT(d) × 100; MLT(d) = ENA(d) ÷ %MLT(d) × 100",
                                transformacoes=["MLT implícita diária", "soma de 30 dias do numerador e do denominador"],
@@ -3349,6 +3379,35 @@ def _evidencias(con, con_p, d, downloads):
                    "url": "/energia/series/agua_subsistemas_diario.csv"},
                   {"rotulo": "Mudanças da MLT por usina (CSV)", "url": "/energia/series/agua_mlt_mudancas.csv"}],
         reproducao=REPRODUCAO)
+    # ENA armazenável de 30 dias do SIN: mesma razão de somas, com as colunas armazenáveis
+    # publicadas pelo ONS (número de destaque próprio na página, por isso ficha própria)
+    sin_e = d["_ena_sm"]["SIN"]
+    va, num_a, den_a = _ena_janela(sin_e, fim, chave_mw="arm", chave_mlt="mlt_arm")
+    ks_a = _dias_janela(fim)
+    if va is not None:
+        diarios_a = [100.0 * sin_e["arm"][k] / sin_e["mlt_arm"][k] for k in ks_a if sin_e["mlt_arm"].get(k)]
+        # armazenável é a parte da afluência que os reservatórios podem guardar: nunca acima da bruta
+        acima = [k for k in ks_a if sin_e["arm"][k] > sin_e["mw"][k] + 0.01]
+        out["ena_arm_30d_sin"] = ev.construir(
+            indicador="ENA armazenável de 30 dias do SIN", valor_exibido=f"{va:.1f}% da MLT armazenável".replace(".", ","),
+            valor_calculo=va, unidade="% da MLT armazenável", periodo={"inicio": _dmenos(fim, 29), "fim": fim},
+            entidade="Sistema Interligado Nacional", universo="4 subsistemas × 30 dias",
+            fonte=_fonte_arquivos("ONS", "ENA Diário por Subsistema", "https://dados.ons.org.br/dataset/ena-diario-por-subsistema",
+                                  [ve] if ve_ant is None or ve_ant["vintage_id"] == (ve or {}).get("vintage_id") else [ve_ant, ve]),
+            consulta=f"ena_arm_mwmed.<s> e ena_arm_pct_mlt.<s> em {ds_n}, d de {_dmenos(fim, 29)} a {fim} (captura mais recente de cada ano)",
+            formula="Σ ENAarm(d) ÷ Σ MLTarm(d) × 100, MLTarm(d) = ENAarm(d) ÷ %MLTarm(d) × 100",
+            numerador={"descricao": "soma das ENA armazenáveis diárias dos 4 subsistemas (MWmed·dia)", "valor": num_a},
+            denominador={"descricao": "soma das MLT armazenáveis implícitas diárias (MWmed·dia)", "valor": den_a},
+            pesos="MLT armazenável de cada dia e subsistema (razão de somas)", cobertura="30 de 30 dias, 4 de 4 subsistemas",
+            tratamento_ausencia="janela com dia ausente não é calculada", revisoes=c.snapshot_de(con_n, ds_n).get("revisoes"),
+            testes=[ev.teste("Razão de somas, não média de percentuais", "aprovado",
+                             f"média simples dos % diários do SIN daria {_br(sum(diarios_a) / len(diarios_a))}%" if diarios_a else "sem dia com MLT armazenável"),
+                    ev.teste("ENA armazenável não passa da ENA bruta em nenhum dia da janela",
+                             "aprovado" if not acima else "ressalva",
+                             "nenhum dia acima" if not acima else f"{len(acima)} dias acima: {', '.join(c.data_br(k) for k in acima[:5])}")],
+            download=[{"rotulo": "EAR e ENA diárias por subsistema e SIN, com a captura usada (CSV)",
+                       "url": "/energia/series/agua_subsistemas_diario.csv"}],
+            reproducao=REPRODUCAO)
     # versão da MLT: conjunto aberto × relatório do PMO (PDF)
     comp_pmo, pmo = d.get("_pmo_mlt", ([], {}))
     ult = max((x["mes"] for x in comp_pmo if x["dif_fim_pct"] is not None), default=None)
@@ -3393,7 +3452,7 @@ def _evidencias(con, con_p, d, downloads):
                 universo=f"{cli['totais']['celulas_temperatura']} células MERRA-2", fonte=_fonte_arquivos(
                     "NASA", "POWER Daily API (T2M), agregado pela Scrutiniums", cl.POWER, [vt]),
                 consulta=f"t2m_c.SIN em {DS_CLIMA_T}; manifesto do agregado lista as células e o sha256 de cada arquivo",
-                formula="média dos 30 dias − média da mesma janela em 2001 a 2025",
+                formula=f"média dos 30 dias − média da mesma janela em {BASE_CLIMA_TXT}",
                 cobertura=f"{t['anos_base']} anos na base", tratamento_ausencia="dia com menos de 90% da população coberta fica sem valor",
                 revisoes=c.snapshot_de(con, DS_CLIMA_T).get("revisoes"),
                 testes=[ev.teste("Intervalo físico", "aprovado", "média de 30 dias entre −5 e 40 °C"),
@@ -3416,7 +3475,7 @@ def _evidencias(con, con_p, d, downloads):
                 cobertura=f"cobertura média {_br(b['cobertura_media_pct'], 1)}% do peso da bacia",
                 tratamento_ausencia="dia com menos de 80% do peso com dado fica sem valor; janela incompleta não soma",
                 revisoes=c.snapshot_de(con, DS_CLIMA_PR).get("revisoes"),
-                testes=[ev.teste("Conferência com estações (2020 e 2021)", "ressalva",
+                testes=[ev.teste("Conferência com estações" + (f" ({_periodo_meses(val['periodo'])})" if val.get("periodo") else ""), "ressalva",
                                  f"correlação mensal {_br(val['correlacao_geral'])} em {val['pares']} pares bacia-mês; viés {_br(val['vies_geral_pct'], 1)}%")],
                 download=[{"rotulo": "Precipitação diária por bacia (CSV)", "url": "/energia/series/agua_precipitacao_bacias_diario.csv"}],
                 reproducao=REPRODUCAO)
@@ -3439,4 +3498,38 @@ def _evidencias(con, con_p, d, downloads):
                                  f"{_br(x['dias_residuo_dentro_tolerancia_pct'], 1)}% de {x['dias_residuo_avaliados']} dias com |resíduo| ≤ {_br(x['tolerancia_dia_hm3'], 3)} hm³")],
                 download=[{"rotulo": "Balanço por reservatório (CSV)", "url": "/energia/series/agua_reservatorios.csv"}],
                 reproducao=REPRODUCAO)
+        # quantos reservatórios fecham o balanço por construção (número de destaque do P020)
+        calc = [r for r in d["_res_lista"] if r["balanco_calculado"]]
+        per = res.get("periodo_fecham_por_construcao")
+        if calc and per:
+            fecha = [r for r in calc if (r["serie_dias_residuo_dentro_tolerancia_pct"] or 0) >= 95]
+            nao = sorted((r for r in calc if r not in fecha), key=lambda r: r["serie_dias_residuo_dentro_tolerancia_pct"] or 0)
+            vs = [base.ultima_vintage(con, DS_HIDRO, f"DADOS_HIDROLOGICOS_RES_{ano}") for ano in range(int(per["inicio"][:4]), int(per["fim"][:4]) + 1)]
+            vs = [v_ for v_ in vs if v_]
+            if vs:
+                out["fecham_por_construcao"] = ev.construir(
+                    indicador="Reservatórios que fecham o balanço por construção", valor_exibido=f"{len(fecha)} de {len(calc)}",
+                    valor_calculo=float(len(fecha)), unidade="reservatórios", periodo=dict(per),
+                    entidade="reservatórios dos dados hidráulicos do ONS com balanço calculado",
+                    universo=f"{len(calc)} reservatórios com balanço, de {len(d['_res_lista'])} nos dados hidráulicos",
+                    fonte=_fonte_arquivos("ONS", "Dados Hidráulicos por Reservatório", URLS["hidro_res"], vs),
+                    consulta=(f"vol_util_pct, q_afluente e q_defluente de cada reservatório em {DS_HIDRO}, "
+                              f"{per['inicio']} a {per['fim']}; volume útil total do cadastro em {DS_CAD}"),
+                    formula=("fecha por construção ⇔ dias com |ΔV(d) − (afluência(d) − defluência(d)) × 0,0864| dentro da "
+                             "tolerância ÷ dias avaliados ≥ 95%; tolerância diária = 0,01% do volume útil + 0,002 hm³"),
+                    numerador={"descricao": "reservatórios com ao menos 95% dos dias dentro do arredondamento", "valor": float(len(fecha))},
+                    denominador={"descricao": "reservatórios com balanço calculado", "valor": float(len(calc))},
+                    cobertura=(f"{len(calc)} de {len(d['_res_lista'])} reservatórios com balanço; "
+                               f"na janela de 30 dias, {res['n_fecham_na_janela']} fecham"),
+                    tratamento_ausencia="reservatório sem volume útil no cadastro ou sem volume em % fica fora (motivo no CSV); dia sem dado não é avaliado",
+                    revisoes=c.snapshot_de(con, DS_HIDRO).get("revisoes"),
+                    testes=[ev.teste("Reservatórios que não fecham por construção", "ressalva" if nao else "aprovado",
+                                     "; ".join(f"{r['nome']} {_br(r['serie_dias_residuo_dentro_tolerancia_pct'], 1)}% de "
+                                               f"{r['serie_dias_residuo_avaliados']} dias" for r in nao) or "nenhum"),
+                            ev.teste("Fechamento não é prova de medição", "ressalva",
+                                     "a afluência publicada é calculada pelo próprio balanço nesses reservatórios: o resíduo perto "
+                                     "de zero confirma a conta, não a vazão")],
+                    download=[{"rotulo": "Balanço por reservatório, com a fração de dias de cada um (CSV)", "url": "/energia/series/agua_reservatorios.csv"},
+                              {"rotulo": "Dados hidráulicos diários por reservatório (CSV)", "url": "/energia/series/agua_reservatorios_diario.csv"}],
+                    reproducao=REPRODUCAO)
     return out

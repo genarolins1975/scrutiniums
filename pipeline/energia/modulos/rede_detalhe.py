@@ -2365,8 +2365,10 @@ def _proveniencias(gold, snaps, snap_pld, pld, dia_ref):
                     (f"{gold['cobertura']['exterior']['dias_incompletos']} dia(s) sem as 24 horas de Argentina e Uruguai no "
                      f"conjunto internacional ({gold['cobertura']['exterior']['dias_sem_nenhum_dado']} sem nenhum dado e "
                      f"{gold['cobertura']['exterior']['dias_parciais']} com só parte; lista por país em cobertura.exterior): "
-                     "horas ausentes não são preenchidas.",
-                    "País sem nenhuma hora publicada na janela de 12 meses (o Paraguai desde 21/02/2024) fica com exportação e "
+                     "horas ausentes não são preenchidas."),
+                    # cada limitação é um item próprio: a vírgula dentro do mesmo parêntese fazia uma tupla, e a
+                    # gold publicava uma lista dentro da lista (a página colava as duas frases num item só)
+                    ("País sem nenhuma hora publicada na janela de 12 meses (o Paraguai desde 21/02/2024) fica com exportação e "
                      "importação nulas no resumo, não zero.")] + lim_comum[:1],
         download="/energia/series/rede_exterior_mensal.csv", notas_fonte=_notas(DS_II))
     p["atls"] = c.proveniencia(

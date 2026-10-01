@@ -519,3 +519,104 @@ describe("verbetes do módulo conferidos nos trechos que a gold confere no arqui
     expect(inter.vejaNoPortal[0].href).toBe(R.ROTA_REDE);
   });
 });
+
+/* ---------------------------------------------------------------- revisão da interface (01/10/2026) */
+
+describe("revisão da interface: defeitos corrigidos ficam cobertos", () => {
+  const paginas = { p028: PaginaCirculacao, p029: PaginaBalanco, p030: PaginaRestricoes, p031: PaginaProgramado } as const;
+  const html = Object.fromEntries(Object.entries(paginas).map(([k, P]) => [k, renderToStaticMarkup(createElement(P))])) as Record<keyof typeof paginas, string>;
+  /** Texto visível do conteúdo principal, sem marcação. */
+  const visivel = (h: string) =>
+    h
+      .slice(h.indexOf("<main"), h.indexOf("</main>"))
+      .replace(/<[^>]+>/g, " ")
+      .replace(/&quot;/g, '"')
+      .replace(/&amp;/g, "&")
+      .replace(/\s+/g, " ");
+
+  it("nenhuma data ISO no texto visível: tabelas e frases usam DD/MM/AAAA (identificadores de versão e de snapshot à parte)", () => {
+    for (const [id, h] of Object.entries(html)) {
+      const t = visivel(h)
+        .replace(/Versão dos dados: \S+/g, "")
+        .replace(/@\d{4}-\d{2}-\d{2}T[\d:]+Z/g, "");
+      expect(t.match(/\b20\d\d-\d\d(-\d\d)?([T ]\d\d:\d\d)?\b/g), id).toBeNull();
+    }
+  });
+
+  it("P028: os saldos das fronteiras comparadas têm tabela equivalente com as mesmas linhas do gráfico", () => {
+    const t = ler("src/components/energia/RedeCirculacao.tsx");
+    for (const v of ["saldoDiario", "saldoMensal"]) {
+      expect(t).toMatch(new RegExp(`dados=\\{${v}\\}`));
+      expect(t).toContain(`linhas={paraTabela(${v})}`);
+    }
+    const pares = ["N_SE", "S_SE"] as const;
+    const linhas = R.linhasSaldoMensal(G.circulacao, pares);
+    const cols = R.colunasSaldoFronteiras("m", pares);
+    const m = matrizExportacao(cols, R.paraTabela(linhas));
+    expect(m.linhas.length).toBe(G.circulacao.mensal.meses.length);
+    const k = G.circulacao.mensal.meses.length - 1;
+    expect(m.linhas[k][2]).toBe(G.circulacao.mensal.por_par.S_SE.liquido_mwh[k]);
+    expect(html.p028).toContain("Tabela equivalente: saldo mensal das fronteiras escolhidas");
+  });
+
+  it("P029: identidades de Itaipu nunca transformam contagem ausente em zero diferença", () => {
+    expect(R.textoIdentidadesItaipu({ linhas: null, total_diferente_de_60_mais_50: null, brasil_diferente_de_60_mais_50_brasil: null })).toMatch(/não conferidas/);
+    const parcial = R.textoIdentidadesItaipu({ linhas: 100, total_diferente_de_60_mais_50: 2, brasil_diferente_de_60_mais_50_brasil: null });
+    expect(parcial).toContain("98 de 100 horas");
+    expect(parcial).toContain("não conferido");
+    expect(html.p029).toContain(R.textoIdentidadesItaipu(G.exterior.itaipu_identidades));
+  });
+
+  it("P030: início do arquivo do ATLS lido da gold confere com o primeiro mês do CSV; nenhum ano escrito à mão", () => {
+    const meses = csv("rede_atls.csv").map((l) => l.mes).sort();
+    expect(R.inicioArquivoAtls(G.restricoes.atls)).toBe(meses[0]);
+    const t = ler("src/components/energia/RedeRestricoes.tsx");
+    expect(t).not.toMatch(/desde 20\d\d/);
+    expect(t).not.toMatch(/em uma hora/);
+    // a perturbação sai com data e hora brasileiras na célula e com os segundos no arquivo baixado
+    const p = R.linhasPerturbacoes(G.restricoes.interrupcoes.perturbacoes_recentes)[0];
+    const bruto = G.restricoes.interrupcoes.perturbacoes_recentes[0].inicio;
+    expect(p.inicio).toBe(bruto.replace(" ", "T"));
+    expect(visivel(html.p030)).toContain(`${dataBR(bruto)} ${bruto.slice(11, 16)}`);
+  });
+
+  it("P031: nos países a regra do programa repetido não se aplica (nem zero nem 'não')", () => {
+    expect(new Set(R.linhasProgramadoDiario(G.programado, "ARGENTINA").map((l) => l.dia_rotulado))).toEqual(new Set([R.NAO_SE_APLICA]));
+    expect(R.linhasProgramadoMensal(G.programado, "URUGUAI").every((l) => l.dias_rotulados === null)).toBe(true);
+    expect(R.colunasProgramadoMensal("URUGUAI").some((c) => c.id === "dias_rotulados")).toBe(false);
+    expect(R.colunasProgramadoMensal("N_NE").some((c) => c.id === "dias_rotulados")).toBe(true);
+    expect(R.linhasProgramadoDiario(G.programado, "N_NE").some((l) => l.dia_rotulado === "sim")).toBe(G.programado.programa_repetido.dias.some((d) => G.programado.diario.dias.includes(d.dia)));
+  });
+
+  it("P031: o aviso de mês incompleto só aparece quando as horas comparadas ficam abaixo do calendário (conferido no CSV horário)", () => {
+    expect(R.horasDoMes("2024-02")).toBe(696);
+    expect(R.horasDoMes("2026-02")).toBe(672);
+    expect(R.avisoMesIncompleto("2026-08", 744)).toBeNull();
+    const m = G.programado.mensal.meses.at(-1)!;
+    const horasCsv = HORARIO_2026.filter((l) => l.data_hora.startsWith(m) && n(l.fluxo_N_NE) !== null && n(l.prog_N_NE) !== null).length;
+    expect(G.programado.mensal.por_par.N_NE!.horas.at(-1)).toBe(horasCsv);
+    const aviso = R.avisoMesIncompleto(m, horasCsv);
+    if (horasCsv < R.horasDoMes(m)) expect(aviso).toContain(`${num(horasCsv, 0)} de ${num(R.horasDoMes(m), 0)} horas comparadas`);
+    else expect(aviso).toBeNull();
+  });
+
+  it("limitações da proveniência: uma por item, sem lista aninhada nem caminho interno da gold", () => {
+    const aninhada = { limitacoes: ["Primeira.", ["Segunda (9 sem dado; lista por país em cobertura.exterior): ausência.", "Terceira."]] as unknown as string[] };
+    expect(R.provenienciaLegivel(aninhada).limitacoes).toEqual(["Primeira.", "Segunda (9 sem dado): ausência.", "Terceira."]);
+    for (const k of Object.keys(G.proveniencia) as (keyof typeof G.proveniencia)[]) {
+      const l = R.provenienciaLegivel(G.proveniencia[k]).limitacoes;
+      for (const x of l) {
+        expect(typeof x, k).toBe("string");
+        expect(x, k).not.toMatch(/\b[a-z]+_[a-z0-9_]+\.[a-z0-9_.]+\b|\bcobertura\.[a-z]/);
+      }
+    }
+    expect(visivel(html.p029)).not.toContain("não são preenchidas.País");
+  });
+
+  it("metadados das páginas sem data escrita à mão: lidos da gold", () => {
+    for (const a of ["src/app/setor-eletrico/rede/page.tsx", "src/app/setor-eletrico/rede/balanco-e-exterior/page.tsx", "src/app/setor-eletrico/rede/programado/page.tsx"]) {
+      const t = ler(a);
+      expect(t, a).not.toMatch(/\d{2}\/\d{2}\/20\d\d|desde 20\d\d/);
+    }
+  });
+});

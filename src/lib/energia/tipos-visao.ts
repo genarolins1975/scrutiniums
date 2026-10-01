@@ -207,7 +207,11 @@ export type PainelDeterminante = {
   natureza: Natureza;
   frequencia: string;
   href: string;
-  valor_atual: { rotulo: string | null; valor: number | null; caminho: string | null };
+  /** valor_exibido: texto como a página escreve o número (o mesmo da evidência). */
+  valor_atual: { rotulo: string | null; valor: number | null; caminho: string | null; valor_exibido: string | null };
+  /** "Comprove este número" do valor atual: refeito do silver principal, relido na gold de origem e na célula do dia. */
+  evidencia: Evidencia | null;
+  evidencia_problemas?: string[];
   nota: string;
   download: Download[];
   defasagem_dias: number | null;

@@ -31,6 +31,7 @@ import {
   dadosConferencia,
   dadosRazaoCapacidade,
   data,
+  dataIncorporacao,
   inteiro,
   linhasOnsAnual,
   linhasPares,
@@ -41,12 +42,13 @@ import {
   perguntaPainel,
   respostaOns,
   rotaPainel,
+  trechosConferencia,
 } from "@/lib/energia/transicao";
 import type { GoldTransicao } from "@/lib/energia/tipos-transicao";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
-  title: "Energia da MMGD estimada pelo ONS e a quebra de 2023",
+  title: "Energia da MMGD estimada pelo ONS e a entrada no Balanço de Energia",
   description:
     "Quanta energia a micro e minigeração distribuída entrega ao SIN segundo a estimativa do ONS (MWmed e participação na carga global, por submercado e mês), a razão rotulada com a capacidade cadastrada e a conferência da incorporação da MMGD ao Balanço de Energia (achado A11).",
   alternates: { canonical: "/setor-eletrico/transicao/energia-estimada" },
@@ -66,7 +68,10 @@ export default function EnergiaEstimadaPage() {
   const o = g.ons_mmgd;
   const downloads = (urls: string[]) => g.downloads.filter((d) => urls.includes(d.url));
   // primeiro dia depois da incorporação declarada pelo ONS, como a conferência publicada o traz (nunca escrito à mão)
-  const dataA11 = o?.conferencia_quebra_2023.pares_mesmo_dia_da_semana[0]?.d ?? null;
+  const dataA11 = o ? dataIncorporacao(o.conferencia_quebra_2023) : null;
+  // dias de cada média da solar na tabela de resumo (a gold publica as médias; os dias saem da janela publicada)
+  const trechos = o ? trechosConferencia(o.conferencia_quebra_2023) : { antes: null, depois: null };
+  const rotuloTrecho = (t: { inicio: string; fim: string; dias: number } | null) => (t ? `de ${data(t.inicio)} a ${data(t.fim)}, ${t.dias} dias` : "dias sem dado");
 
   return (
     <>
@@ -214,7 +219,7 @@ export default function EnergiaEstimadaPage() {
             ) : (
               <Indisponivel
                 titulo="Estimativa de MMGD do ONS ausente nesta publicação"
-                motivo={`O bloco do ONS não foi montado nesta execução (${g.pendencias.join(" ") || "sem motivo registrado"}). O cadastro da ANEEL acima não depende dele; nenhum valor de energia é estimado no lugar.`}
+                motivo={`O bloco do ONS não foi montado nesta execução (${g.pendencias.join(" ") || "sem motivo registrado"}). O cadastro da ANEEL, na página da MMGD no território, não depende dele; nenhum valor de energia é estimado no lugar.`}
               />
             )}
           </Bloco>
@@ -253,7 +258,6 @@ export default function EnergiaEstimadaPage() {
                   </>
                 }
                 proveniencia={o.proveniencia.estimativa}
-                complementares={[{ rotulo: "MMGD estimada pelo ONS", p: o.proveniencia.estimativa }]}
               >
                 <div className="space-y-6">
                   <p className="max-w-prose2 text-base leading-relaxed text-carvao" data-resposta="a11">
@@ -272,6 +276,7 @@ export default function EnergiaEstimadaPage() {
                   <TransicaoConferencia2023
                     dias={dadosConferencia(o.conferencia_quebra_2023)}
                     marco={dataA11 ? { x: dataA11, rotulo: "MMGD incorporada ao balanço (ONS)" } : null}
+                    captura={o.proveniencia.estimativa.capturado_em ? carimbo(o.proveniencia.estimativa.capturado_em) : "sem dado"}
                   />
                   <TransicaoTabela
                     titulo="Resumo da conferência"
@@ -279,9 +284,9 @@ export default function EnergiaEstimadaPage() {
                     numericas={[1]}
                     linhas={[
                       ["Degrau da solar de um dia para o outro", numTexto(o.conferencia_quebra_2023.degrau_solar_mwmed, 0)],
-                      ["MMGD estimada no primeiro dia", numTexto(o.conferencia_quebra_2023.mmgd_ons_no_dia_mwmed, 0)],
-                      ["Média da solar nos 7 dias anteriores", numTexto(o.conferencia_quebra_2023.solar_media_7d_antes, 0)],
-                      ["Média da solar depois", numTexto(o.conferencia_quebra_2023.solar_media_depois, 0)],
+                      [`MMGD estimada em ${data(dataA11)}`, numTexto(o.conferencia_quebra_2023.mmgd_ons_no_dia_mwmed, 0)],
+                      [`Média da solar antes da incorporação (${rotuloTrecho(trechos.antes)})`, numTexto(o.conferencia_quebra_2023.solar_media_7d_antes, 0)],
+                      [`Média da solar a partir da incorporação (${rotuloTrecho(trechos.depois)})`, numTexto(o.conferencia_quebra_2023.solar_media_depois, 0)],
                       [`Mediana das diferenças na solar (${o.conferencia_quebra_2023.pares_na_mediana} pares)`, numTexto(o.conferencia_quebra_2023.mediana_diferenca_solar_mwmed, 0)],
                       [`Mediana das diferenças na carga (${o.conferencia_quebra_2023.pares_na_mediana} pares)`, numTexto(o.conferencia_quebra_2023.mediana_diferenca_carga_mwmed, 0)],
                       ["Mediana da MMGD estimada nos mesmos dias", numTexto(o.conferencia_quebra_2023.mediana_mmgd_ons_mwmed, 0)],
@@ -296,12 +301,13 @@ export default function EnergiaEstimadaPage() {
                     fonte="ONS, Balanço de Energia nos Subsistemas e Carga de Energia Verificada"
                     versao={o.conferencia_quebra_2023.janela.fim}
                     nomeArquivo="transicao-conferencia-quebra-2023"
+                    chaveUrl="ons.pares"
                     ordemInicial={{ coluna: "d", direcao: "asc" }}
                     nota="Médias de 24 horas de cada dia. Pares com feriado nacional ficam fora da mediana."
                   />
                   <TransicaoSeguir
                     ancora="a11"
-                    href={rotaPainel("p064")}
+                    href={`${rotaPainel("p064")}#p064`}
                     pergunta={perguntaPainel("p064")}
                     downloads={downloads(["/energia/series/transicao_ons_mmgd_diario.csv"])}
                   />

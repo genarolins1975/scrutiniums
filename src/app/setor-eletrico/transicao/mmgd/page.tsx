@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { Bloco, CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { GraficoBarras } from "@/components/energia/GraficoBarras";
@@ -30,6 +32,7 @@ import {
   PERGUNTA_ONS,
   cnpjFormatado,
   colunasDistribuidoras,
+  contagem,
   dadosMensal,
   data,
   inteiro,
@@ -40,6 +43,7 @@ import {
   linhasUfs,
   mes,
   mudancaMmgd,
+  nomesMunicipios,
   numTexto,
   participacaoTexto,
   pctTexto,
@@ -50,7 +54,7 @@ import {
   textoModalidadesRemotas,
   ufAnualCompacto,
 } from "@/lib/energia/transicao";
-import type { GoldTransicao } from "@/lib/energia/tipos-transicao";
+import type { GoldTransicao, MunicipiosMmgdArquivo } from "@/lib/energia/tipos-transicao";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -59,6 +63,21 @@ export const metadata: Metadata = {
     "Micro e minigeração distribuída no cadastro da ANEEL por UF, município, distribuidora, fonte e perfil, com potência por habitante (IBGE), histórico de conexões, perfis e controles do cadastro. Capacidade instalada, não energia gerada.",
   alternates: { canonical: "/setor-eletrico/transicao/mmgd" },
 };
+
+/**
+ * Nomes dos municípios das listas do modo Auditar que a gold publica só com o código
+ * IBGE, lidos no build do JSON municipal publicado (o mesmo que o mapa baixa sob
+ * demanda): fica no servidor e só os nomes dessas linhas entram no HTML. Arquivo
+ * ausente ou ilegível: a tabela mostra o código, sem nome inventado.
+ */
+function nomesNoServidor(url: string, ids: string[]): Map<string, string> {
+  try {
+    const arq = JSON.parse(readFileSync(join(process.cwd(), "public", url), "utf-8")) as MunicipiosMmgdArquivo;
+    return nomesMunicipios(arq, ids);
+  } catch {
+    return new Map();
+  }
+}
 
 /**
  * P063, MMGD e distribuição territorial: o cadastro da ANEEL (capacidade, não
@@ -84,6 +103,7 @@ export default function MmgdPage() {
   const siglaDe = new Map(m.distribuidoras.map((d) => [d.cnpj, d.sigla ?? cnpjFormatado(d.cnpj)]));
   const dq = m.distribuicao_municipal.quantis_w_por_habitante;
   const modalidades = textoModalidadesRemotas(m.perfis);
+  const nomesFora = fora.disponivel ? nomesNoServidor(g.mapa_municipios, fora.maiores_municipios.map((x) => x.ibge)) : new Map<string, string>();
 
   return (
     <>
@@ -222,7 +242,7 @@ export default function MmgdPage() {
                   chaveUrl="mmgd.ano"
                   ordemInicial={{ coluna: "ano", direcao: "desc" }}
                   dicaBusca="Ano"
-                  nota={`${cobertura.regra} O estoque inclui ${inteiro(cobertura.unidades_anteriores)} registro anterior à cobertura e exclui ${inteiro(r.unidades_sem_data)} unidades sem data de conexão (no total do cadastro).`}
+                  nota={`${cobertura.regra} O estoque inclui ${contagem(cobertura.unidades_anteriores, "registro anterior", "registros anteriores")} à cobertura e exclui ${contagem(r.unidades_sem_data, "unidade", "unidades")} sem data de conexão (no total do cadastro).`}
                 />
 
                 <TransicaoAnalise titulo="Mês a mês: conexões e estoque">
@@ -263,8 +283,7 @@ export default function MmgdPage() {
                 <TransicaoAnalise titulo="Municípios: destaques e mapa">
                   <p className="max-w-prose2 text-sm text-carvao-muted">
                     Entre os {inteiro(m.distribuicao_municipal.municipios_com_populacao)} municípios com população estimada, a potência por habitante vai de {numTexto(dq.p10, 1)} W/hab
-                    (10% dos municípios abaixo) a {numTexto(dq.p90, 1)} W/hab (10% acima), com mediana de {numTexto(dq.p50, 1)}. {inteiro(m.distribuicao_municipal.municipios_sem_mmgd)}{" "}
-                    municípios não têm nenhuma unidade. Rankings só com população de pelo menos {inteiro(m.municipios_destaque.populacao_minima_ranking)} habitantes e potência
+                    (10% dos municípios abaixo) a {numTexto(dq.p90, 1)} W/hab (10% acima), com mediana de {numTexto(dq.p50, 1)}. {contagem(m.distribuicao_municipal.municipios_sem_mmgd, "município não tem", "municípios não têm")} nenhuma unidade. Rankings só com população de pelo menos {inteiro(m.municipios_destaque.populacao_minima_ranking)} habitantes e potência
                     completa.
                   </p>
                   <TransicaoDestaques listas={listasDestaque(m.municipios_destaque)} anoReferencia={m.ano_referencia} populacaoMinima={m.municipios_destaque.populacao_minima_ranking} />
@@ -320,8 +339,8 @@ export default function MmgdPage() {
                         ctl.duplicidade_candidata.tratamento,
                       ],
                       ["Potência ausente, negativa e zero", `${inteiro(ctl.potencia_ausente)} ausentes; ${inteiro(ctl.potencia_negativa)} negativas; ${inteiro(ctl.potencia_zero)} iguais a zero; ${inteiro(ctl.unidades_sem_potencia_nos_agregados)} sem potência nos agregados`, g.regras.potencia_ausente],
-                      ["Datas sentinela (ano 1900)", `${inteiro(ctl.datas_sentinela)} unidades; ${numTexto(ctl.potencia_sem_data_kw, 2)} kW`, "no estoque, sem ano de conexão"],
-                      ["Antes da cobertura declarada", `${inteiro(cobertura.unidades_anteriores)} registro; ${inteiro(cobertura.pontos_nulos_anual)} anos e ${inteiro(cobertura.pontos_nulos_mensal)} meses nulos`, "rotulados fora da cobertura"],
+                      ["Datas de conexão sentinela (inválidas)", `${contagem(ctl.datas_sentinela, "unidade", "unidades")}; ${numTexto(ctl.potencia_sem_data_kw, 2)} kW`, "no estoque, sem ano de conexão"],
+                      ["Antes da cobertura declarada", `${contagem(cobertura.unidades_anteriores, "registro", "registros")}; ${contagem(cobertura.pontos_nulos_anual, "ano nulo", "anos nulos")} e ${contagem(cobertura.pontos_nulos_mensal, "mês nulo", "meses nulos")}`, "rotulados fora da cobertura"],
                       ["Código de município de 6 dígitos completado", inteiro(ctl.municipio_codigo_6_digitos_completado), "só quando o prefixo é único no IBGE"],
                       ["UF publicada ausente ou divergente do município", `${inteiro(ctl.uf_publicada_ausente)} ausente; ${inteiro(ctl.uf_publicada_diverge_do_municipio)} divergentes`, "UF pelo código IBGE"],
                       ["Fonte não informada", inteiro(ctl.fonte_nao_informada), "categoria própria"],
@@ -335,7 +354,7 @@ export default function MmgdPage() {
                     <>
                       <p className="max-w-prose2 text-sm text-carvao-muted">
                         {inteiro(fora.unidades)} unidades ({numTexto(fora.potencia_kw / 1000, 1)} MW, {participacaoTexto(fora.participacao_unidades_pct)} do cadastro) em{" "}
-                        {inteiro(fora.municipios_sinalizados)} municípios, de {inteiro(fora.distribuidoras_com_unidades_fora)} distribuidoras. {g.regras.distribuidora_fora_da_uf}{" "}
+                        {contagem(fora.municipios_sinalizados, "município", "municípios")}, de {contagem(fora.distribuidoras_com_unidades_fora, "distribuidora", "distribuidoras")}. {g.regras.distribuidora_fora_da_uf}{" "}
                         Tratamento: {fora.tratamento}. Referência: {fora.referencia.regra}.
                       </p>
                       {fora.classes_pelo_cep.disponivel ? (
@@ -367,10 +386,10 @@ export default function MmgdPage() {
                           linhas={fora.por_distribuidora.slice(0, 10).map((x) => [siglaDe.get(x.cnpj) ?? cnpjFormatado(x.cnpj), inteiro(x.unidades), numTexto(x.potencia_kw, 2), x.ufs_fora.join(", ")])}
                         />
                         <TransicaoTabela
-                          titulo="Municípios com mais unidades sinalizadas (código IBGE)"
-                          colunas={["Código IBGE", "Unidades", "Potência (kW)"]}
-                          numericas={[1, 2]}
-                          linhas={fora.maiores_municipios.map((x) => [x.ibge, inteiro(x.unidades), numTexto(x.potencia_kw, 2)])}
+                          titulo="Municípios com mais unidades sinalizadas"
+                          colunas={["Município", "Código IBGE", "Unidades", "Potência (kW)"]}
+                          numericas={[2, 3]}
+                          linhas={fora.maiores_municipios.map((x) => [nomesFora.get(x.ibge) ?? "nome indisponível", x.ibge, inteiro(x.unidades), numTexto(x.potencia_kw, 2)])}
                         />
                       </div>
                     </>

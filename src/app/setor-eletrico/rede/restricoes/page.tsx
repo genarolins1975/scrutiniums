@@ -9,9 +9,9 @@ import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { carimbo, dataBR, mesAno, num, rotuloRegra } from "@/lib/energia/formato";
+import { carimbo, dataBR, mesAno, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
-import { COLUNAS_BUSCA, linhasBuscaLimites, mesesEntre, perguntaPainel, rotaPainel, situacaoAtualidade } from "@/lib/energia/rede";
+import { COLUNAS_BUSCA, ROTULO_REGRA, linhasBuscaLimites, mesesEntre, perguntaPainel, provenienciaLegivel, rotaPainel, situacaoAtualidade } from "@/lib/energia/rede";
 import type { GoldRedeDetalhe } from "@/lib/energia/tipos-rede";
 
 export const dynamic = "force-static";
@@ -92,8 +92,8 @@ export default function RedeRestricoesPage() {
                   regiões. O ATLS não diz o valor do limite nem a folga; um corte de carga não prova limite de intercâmbio.
                 </>
               }
-              proveniencia={g.proveniencia.atls}
-              complementares={[{ rotulo: "Interrupções de carga e energia não suprida", p: g.proveniencia.interrupcoes }]}
+              proveniencia={provenienciaLegivel(g.proveniencia.atls)}
+              complementares={[{ rotulo: "Interrupções de carga e energia não suprida", p: provenienciaLegivel(g.proveniencia.interrupcoes) }]}
             >
               <div className="space-y-6">
                 {atual.defasada && <RedeAviso tipo="alerta">{atual.texto}</RedeAviso>}
@@ -117,6 +117,8 @@ export default function RedeRestricoesPage() {
                 <RedeRestricoes
                   restricoes={{ atls: r.atls, interrupcoes: r.interrupcoes }}
                   evidencias={evAtls}
+                  titulosDocumentos={Object.fromEntries(Object.entries(r.documentos).map(([k, d]) => [k, d.titulo]))}
+                  criterioCorte={g.achados.dicionarios.ons_rede_interrupcao_carga?.trechos.find((t) => t.id === "criterio" && t.confere)?.texto ?? null}
                   fonteAtls="ONS, Indicadores de confiabilidade da rede básica: ATLS"
                   fonteInterrupcoes="ONS, Interrupção de Carga"
                   versao={versao}
@@ -146,8 +148,8 @@ export default function RedeRestricoesPage() {
 
                 <RedeAuditoria id="dicionarios-restricoes" titulo="Dicionários de dados: ATLS, interrupções e intercâmbio">
                   <p className="text-sm text-carvao-muted">
-                    O dicionário do ATLS diz que o valor vem em percentual, mas o arquivo traz fração de 0 a 1 (maior valor lido {num(r.atls.maior_valor_lido, 3)}, menor{" "}
-                    {num(r.atls.menor_valor_lido, 3)}); a gold publica as horas, que não dependem dessa leitura.
+                    Unidade do ATLS lida no arquivo: {r.atls.unidade_publicada} (maior valor lido {num(r.atls.maior_valor_lido, 3)}, menor {num(r.atls.menor_valor_lido, 3)}). O
+                    painel usa as horas acima do limite, que não dependem dessa leitura.
                   </p>
                   <RedeDicionarios
                     dicionarios={[g.achados.dicionarios.ons_rede_atls, g.achados.dicionarios.ons_rede_interrupcao_carga, g.achados.dicionarios.ons_rede_intercambio_nacional].filter(Boolean)}
@@ -163,7 +165,7 @@ export default function RedeRestricoesPage() {
 
                 <RedeAuditoria id="metodologia-a06" titulo="Correção pedida na página de metodologia">
                   <p className="text-sm text-carvao-muted">{a6.correcao_metodologia}</p>
-                  <RedeRegras regras={[{ rotulo: rotuloRegra("limites"), texto: g.regras.limites }]} />
+                  <RedeRegras regras={[{ rotulo: ROTULO_REGRA.limites, texto: g.regras.limites }]} />
                 </RedeAuditoria>
 
                 <RedeSeguir ancora="p030" proximo={{ href: `${rotaPainel("p031")}#p031`, pergunta: perguntaPainel("p031") }} downloads={downloads} />

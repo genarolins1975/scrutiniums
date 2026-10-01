@@ -28,6 +28,7 @@ import {
   COLUNAS_FATOR_ANUAL,
   COLUNAS_FATOR_MENSAL,
   FONTE_MCTI,
+  LIGACAO_GERACAO,
   anosDoFatorMensal,
   dadosFatorAnual,
   dadosFatorMensal,
@@ -57,8 +58,6 @@ export const metadata: Metadata = {
     "Fator médio de emissão de CO2 do SIN publicado pelo MCTI, mensal e anual, com a quebra de base declarada pela fonte, comparação de anos mês a mês, os fatores do MDL em séries separadas e as revisões e divergências registradas na leitura das planilhas.",
   alternates: { canonical: "/setor-eletrico/transicao/emissoes" },
 };
-
-const GERACAO = { href: "/setor-eletrico/geracao#matriz", pergunta: "Com que fontes o sistema está atendendo a carga?" };
 
 /**
  * P064, emissões: o fator médio oficial do MCTI (inventários), mensal e anual, sem
@@ -136,7 +135,7 @@ export default function EmissoesPage() {
               comoInterpretar={
                 <>
                   Fator médio = emissões de CO2 da geração despachada no SIN ÷ energia gerada no SIN, calculado e publicado pelo MCTI; a plataforma não recalcula nada. O anual é
-                  publicado pela fonte e fica perto da média dos meses (controle no modo Auditar). {g.regras.fator_medio_nao_marginal}
+                  publicado pela fonte e fica perto da média dos meses (controle na coluna &ldquo;Anual × meses&rdquo; da tabela anual). {g.regras.fator_medio_nao_marginal}
                 </>
               }
               naoConcluir={
@@ -232,7 +231,7 @@ export default function EmissoesPage() {
                   chaveUrl="em.tab"
                   ordemInicial={{ coluna: "ano", direcao: "desc" }}
                   dicaBusca="Ano"
-                  nota="Valores como o MCTI publica, com 4 casas. As colunas do MDL servem só a projetos de MDL e não substituem o fator médio. O controle compara o anual publicado com a média simples dos 12 meses (tolerância de 0,0001 tCO2/MWh, o arredondamento da quarta casa)."
+                  nota={`Valores como o MCTI publica, com 4 casas. As colunas do MDL servem só a projetos de MDL e não substituem o fator médio. O controle compara o anual publicado com a média simples dos 12 meses${e.evidencia?.reconciliacao?.tolerancia ? ` (tolerância de ${e.evidencia.reconciliacao.tolerancia})` : ""}.`}
                 />
 
                 <TransicaoAnalise titulo="Mês a mês: compare até quatro anos">
@@ -351,8 +350,8 @@ export default function EmissoesPage() {
                   </ul>
                   <p className="max-w-prose2 text-sm text-carvao-muted">
                     Consistência interna: {e.consistencia_diaria_mensal.descricao}; {inteiro(e.consistencia_diaria_mensal.meses_comparados)} meses, maior diferença de{" "}
-                    {fator(e.consistencia_diaria_mensal.maior_diferenca_absoluta)} tCO2/MWh em {mes(e.consistencia_diaria_mensal.mes_da_maior_diferenca)} (o mensal oficial é ponderado pela
-                    geração horária, a média simples não).
+                    {fator(e.consistencia_diaria_mensal.maior_diferenca_absoluta)} tCO2/MWh em {mes(e.consistencia_diaria_mensal.mes_da_maior_diferenca)}. É um controle de leitura das
+                    planilhas, não um recálculo do MCTI: a diferença fica registrada sem ajuste e sem causa atribuída, e nenhum dos dois valores é alterado.
                   </p>
                 </TransicaoAuditoria>
 
@@ -405,8 +404,8 @@ export default function EmissoesPage() {
 
                 <TransicaoSeguir
                   ancora="p064"
-                  href={GERACAO.href}
-                  pergunta={GERACAO.pergunta}
+                  href={LIGACAO_GERACAO.href}
+                  pergunta={LIGACAO_GERACAO.pergunta}
                   downloads={downloads(["/energia/series/transicao_mcti_fatores.csv", "/energia/series/transicao_mcti_om_diario.csv"])}
                 />
               </div>

@@ -39,6 +39,7 @@ import {
   SERIES_PROCEDIMENTOS,
   anosLimites,
   atosDoAno,
+  avisoToleranciaIpca,
   contagemProcedimentos,
   downloadsDoPainel,
   linhasAtos,
@@ -55,6 +56,8 @@ import {
   respostaP044,
   respostaProcedimentos,
   rotaPainel,
+  textoConferenciaAcionamento,
+  textoReuniao,
   vigenteEm,
 } from "@/lib/energia/regulacao";
 import type { ColunaTabela } from "@/lib/energia/tabela";
@@ -69,6 +72,8 @@ export const metadata: Metadata = {
 };
 
 const FONTE_LIMITES = "ANEEL, atos de limites do PLD (texto do ato ou documento oficial do processo)";
+/** Painel do PLD que cruza estes limites com o preço observado (horas no piso e nos tetos). */
+const ROTA_PLD_LIMITES = "/setor-eletrico/pld/limites";
 
 const COLUNAS_ACIONAMENTO: ColunaTabela[] = [
   { id: "patamar", rotulo: "Patamar", tipo: "texto", categorica: true },
@@ -85,7 +90,7 @@ function CartaoAto({ a }: { a: AtoLimite }) {
   return (
     <article className="min-w-0 border border-linha bg-superficie p-4 text-sm" data-ato={a.ato}>
       <h4 className="font-serif text-base text-carvao">{a.ato}</h4>
-      <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-4 gap-y-0.5">
+      <dl className="mt-2 grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-0.5 [&_dd]:[overflow-wrap:anywhere]">
         <dt className="text-carvao-muted">Fixou</dt>
         <dd className="text-carvao">
           {fixou.length ? fixou.map((c) => `${ARTIGO_LIMITE[c].replace(/^o /, "")} ${reais(a[c], 2)}/MWh`).join("; ") : "nenhum dos três limites"}
@@ -114,7 +119,7 @@ function CartaoAto({ a }: { a: AtoLimite }) {
           <>
             <dt className="text-carvao-muted">Deliberação</dt>
             <dd className="text-carvao">
-              reunião {a.deliberacao.reuniao} da Diretoria, em {dataBR(a.deliberacao.data)}
+              reunião {textoReuniao(a.deliberacao.reuniao)} da Diretoria, em {dataBR(a.deliberacao.data)}
               {a.deliberacao.processo ? `, processo ${a.deliberacao.processo}` : ""}
             </dd>
           </>
@@ -182,6 +187,7 @@ export default function RegulacaoPage() {
   const proximo = proximoPainel("p044");
   const versao = g.data_referencia;
   const ipca = paresRegraIpca(g);
+  const avisoIpca = avisoToleranciaIpca(g);
   const semPublicacao = Array.from(new Set(L.atos.filter((a) => !a.data_publicacao).map((a) => a.ano)));
 
   return (
@@ -282,7 +288,11 @@ export default function RegulacaoPage() {
                   }
                   naoPermite={
                     <>
-                      Não permite dizer quantas horas o PLD ficou no piso ou no teto (isso está na página do PLD) nem comparar anos em termos reais.
+                      Não permite dizer quantas horas o PLD ficou no piso ou no teto (isso está em{" "}
+                      <a href={ROTA_PLD_LIMITES} className="text-energia-dark underline underline-offset-4">
+                        limites, piso e tetos do PLD
+                      </a>
+                      ) nem comparar anos em termos reais.
                       {semPublicacao.length
                         ? ` A publicação no DOU de ${semPublicacao.join(", ")} não foi conferida, porque o extrato do ato não está acessível: a coluna fica vazia, nunca com a data de captura.`
                         : ""}
@@ -342,9 +352,7 @@ export default function RegulacaoPage() {
                   <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
                     Quanto cada patamar de <Termo slug="bandeira-tarifaria">bandeira</Termo> acrescenta à tarifa, por resolução, em R$/MWh. O fim de cada valor é a véspera do
                     valor seguinte do mesmo patamar, salvo quando o recurso de acionamento mensal mostra outro valor antes (fim conhecido só pelo mês) ou o patamar foi
-                    extinto. {band.conferencia_acionamento.meses_conferidos} meses acionados conferidos: {band.conferencia_acionamento.meses_coerentes} coerentes,{" "}
-                    {band.conferencia_acionamento.meses_divergentes} com outro valor, {band.conferencia_acionamento.meses_parciais} parcial e{" "}
-                    {band.conferencia_acionamento.meses_sem_vigencia} sem resolução no recurso de adicionais.
+                    extinto. {textoConferenciaAcionamento(band.conferencia_acionamento)}
                   </p>
                   <GraficoBarras
                     titulo="Adicional de cada patamar por resolução"
@@ -419,6 +427,7 @@ export default function RegulacaoPage() {
                     fonte={FONTE_LIMITES}
                     versao={L.conferido_em}
                     nomeArquivo="regulacao-limites-pld-atos"
+                    chaveUrl="atos"
                   />
                 </RegulacaoAuditoria>
 
@@ -432,6 +441,7 @@ export default function RegulacaoPage() {
                     fonte="Conferências do observatório sobre os atos da ANEEL e o IPCA do IBGE"
                     versao={L.conferido_em}
                     nomeArquivo="regulacao-conferencias-contagem"
+                    chaveUrl="cconf"
                   />
                   {ipca.length > 0 && (
                     <GraficoPontos
@@ -444,10 +454,7 @@ export default function RegulacaoPage() {
                       unidadeDiferenca="R$/MWh"
                     />
                   )}
-                  <RegulacaoAviso>
-                    A tolerância de R$ 0,011/MWh cobre dois arredondamentos a centavos (o valor anterior publicado e o atual); a aplicação literal do art. 23, § 1º, da REN nº
-                    1.032/2022 aparece só como conferência informativa, porque não reproduz os valores publicados.
-                  </RegulacaoAviso>
+                  {avisoIpca && <RegulacaoAviso>{avisoIpca}</RegulacaoAviso>}
                   <TabelaInterativa
                     titulo="Conferências numéricas, uma por ato, ano e campo"
                     colunas={COLUNAS_CONFERENCIAS_DETALHE}
@@ -480,6 +487,7 @@ export default function RegulacaoPage() {
                     fonte="ANEEL, Bandeiras Tarifárias (recurso Acionamento)"
                     versao={band.acionamento_gerado_pela_fonte_em ?? versao}
                     nomeArquivo="regulacao-bandeiras-acionamento-sem-resolucao"
+                    chaveUrl="acion"
                     semLinhas="Todos os meses acionados têm resolução correspondente."
                     nota={band.conferencia_acionamento.regra}
                   />

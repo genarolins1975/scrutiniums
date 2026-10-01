@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "agua_detalhe.json",
- "gerado_em": "2026-10-01T07:07:11Z",
+ "gerado_em": "2026-10-01T07:51:56Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "eec0a3121e05+alterado",
+ "versao_codigo": "ac7599ce6c86+alterado",
  "disponivel": true,
  "dias_referencia": {
   "ear": "2026-09-29",
@@ -15559,7 +15559,11 @@
    ],
    "correlacao_geral": 0.95,
    "pares": 402,
-   "vies_geral_pct": 8.9
+   "vies_geral_pct": 8.9,
+   "periodo": {
+    "inicio": "2020-01",
+    "fim": "2021-10"
+   }
   },
   "cobertura_precipitacao": [
    {
@@ -16022,7 +16026,7 @@
   "corte_merra2": "2026-08-02",
   "base_climatologica": "2001-2025",
   "separacao": {
-   "observacao": "Precipitação medida em estações (ONS, 2020 e 2021) usada só para conferir a estimativa por satélite.",
+   "observacao": "Precipitação medida em estações (ONS, jan/2020 a out/2021) usada só para conferir a estimativa por satélite.",
    "estimativa": "Precipitação IMERG (satélite calibrado por pluviômetros; versão Late nos últimos meses, sem calibração) e temperatura MERRA-2/GEOS-IT (reanálise).",
    "previsao": "Previsão do modelo ECMWF IFS 0,25° (rodada identificada pela inicialização), nos mesmos pontos e com as mesmas regras de agregação; substituída a cada rodada.",
    "cenario": "Não integrado: nenhum cenário climático (projeção de longo prazo) é publicado nesta página."
@@ -16032,7 +16036,7 @@
    "modelo": "ECMWF IFS 0,25° (dados abertos do ECMWF), rodada de 00Z pela API de rodadas individuais do Open-Meteo",
    "emitida_em": "2026-09-30T00:00Z",
    "capturada_em": "2026-10-01T06:32:43Z",
-   "idade_horas": 31.1,
+   "idade_horas": 31.9,
    "d0": "2026-10-01",
    "n_dias": 14,
    "dia_utc": true,
@@ -18837,7 +18841,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:01:34Z",
    "capturado_em": "2026-09-30T23:51:52Z",
-   "validado_em": "2026-10-01T07:07:09Z",
+   "validado_em": "2026-10-01T07:51:50Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-29"
@@ -18852,9 +18856,9 @@
     "sha256": "e5b1fb4f07691137a40fbf529edab8af94a99a7e6a2268e4c229c5182c591aff"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "ac7599ce6c86+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:07:03Z",
+    "detectado_em": "2026-10-01T07:51:43Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -18889,7 +18893,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:01:46Z",
    "capturado_em": "2026-09-30T23:41:49Z",
-   "validado_em": "2026-10-01T07:07:09Z",
+   "validado_em": "2026-10-01T07:51:50Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-29"
@@ -18901,9 +18905,9 @@
     "sha256": "bb0d326fc782c236026ee077eafda083c734ee88ff543101d19bc7ad6e3fadac"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "ac7599ce6c86+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:07:06Z",
+    "detectado_em": "2026-10-01T07:51:46Z",
     "total": 0,
     "vintages_comparadas": 27,
     "arquivos": 27,
@@ -18937,7 +18941,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:01:22Z",
    "capturado_em": "2026-09-30T23:38:37Z",
-   "validado_em": "2026-10-01T07:07:09Z",
+   "validado_em": "2026-10-01T07:51:50Z",
    "cobertura_historica": {
     "inicio": "2016-01-01",
     "fim": "2026-09-29"
@@ -18949,9 +18953,9 @@
     "sha256": "3cc8dee572c771c2476b8e4376f13899b9848c2324734afb8e4633f60c40de88"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "ac7599ce6c86+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:07:04Z",
+    "detectado_em": "2026-10-01T07:51:43Z",
     "total": 0,
     "vintages_comparadas": 11,
     "arquivos": 11,
@@ -18986,7 +18990,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:01:18Z",
    "capturado_em": "2026-09-30T23:39:23Z",
-   "validado_em": "2026-10-01T07:07:09Z",
+   "validado_em": "2026-10-01T07:51:50Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-29"
@@ -18998,9 +19002,9 @@
     "sha256": "2c3cd70f57fe6a06c34197c6a36f79f11bcaff2cbc6372274cb156e919a664f6"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "ac7599ce6c86+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:07:05Z",
+    "detectado_em": "2026-10-01T07:51:45Z",
     "total": 0,
     "vintages_comparadas": 27,
     "arquivos": 27,
@@ -19034,7 +19038,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:01:53Z",
    "capturado_em": "2026-09-30T23:51:54Z",
-   "validado_em": "2026-10-01T07:07:09Z",
+   "validado_em": "2026-10-01T07:51:50Z",
    "cobertura_historica": {
     "inicio": "2001-01-01",
     "fim": "2025-12-31"
@@ -19050,9 +19054,9 @@
     "sha256": "e6bfe8004cef1fa350d7ef55d7fdbe0d291cf1377483cb017fe9d8439df838b0"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "ac7599ce6c86+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:07:03Z",
+    "detectado_em": "2026-10-01T07:51:43Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -19087,7 +19091,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:01:43Z",
    "capturado_em": "2026-09-30T23:38:51Z",
-   "validado_em": "2026-10-01T07:07:09Z",
+   "validado_em": "2026-10-01T07:51:51Z",
    "cobertura_historica": {
     "inicio": "2016-01-01",
     "fim": "2025-12-31"
@@ -19102,9 +19106,9 @@
     "sha256": "4009086badb1a217fe8d15bca8ac7bbaf0cff47bebff08ec5a0493c000e8fd9e"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "ac7599ce6c86+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:07:05Z",
+    "detectado_em": "2026-10-01T07:51:45Z",
     "total": 0,
     "vintages_comparadas": 11,
     "arquivos": 11,
@@ -19139,7 +19143,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:01:41Z",
    "capturado_em": "2026-09-30T23:40:21Z",
-   "validado_em": "2026-10-01T07:07:09Z",
+   "validado_em": "2026-10-01T07:51:51Z",
    "cobertura_historica": {
     "inicio": "2001-01-01",
     "fim": "2025-12-31"
@@ -19154,9 +19158,9 @@
     "sha256": "afc1987edbab3bdbb4a6f551e7ea97b7d014e165f062f72ffde63e22338dad75"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "ac7599ce6c86+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:07:06Z",
+    "detectado_em": "2026-10-01T07:51:46Z",
     "total": 0,
     "vintages_comparadas": 27,
     "arquivos": 27,
@@ -19166,7 +19170,7 @@
    },
    "limitacoes": [
     "O ONS informa que os dados fazem parte de um processo de consistência recorrente e podem ser atualizados após a publicação; revisões entram como novas vintages.",
-    "As bacias OUTRAS - SUL e OUTRAS- SUDESTE só existem no arquivo de 2000 e ficam sem valor recente.",
+    "As afluências que o ONS agrupa em outras do Sul e outras do Sudeste (nomes no arquivo com hífen) só existem no arquivo de 2000 e ficam sem valor recente.",
     "Bacias com poucos anos na base (menos de 5) ficam sem faixa e sem percentil."
    ],
    "download": "/energia/series/agua_ear_recortes_diario.csv",
@@ -19191,7 +19195,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T22:02:12Z",
    "capturado_em": "2026-09-30T23:42:42Z",
-   "validado_em": "2026-10-01T07:07:09Z",
+   "validado_em": "2026-10-01T07:51:51Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-29"
@@ -19203,9 +19207,9 @@
     "sha256": "e457464f4417a22c42a141461c44df3cc3b96d648a85cfab986e68b085f06ce3"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "ac7599ce6c86+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:07:06Z",
+    "detectado_em": "2026-10-01T07:51:47Z",
     "total": 0,
     "vintages_comparadas": 27,
     "arquivos": 27,
@@ -19239,7 +19243,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-30T20:01:20Z",
    "capturado_em": "2026-09-30T23:43:03Z",
-   "validado_em": "2026-10-01T07:07:09Z",
+   "validado_em": "2026-10-01T07:51:51Z",
    "cobertura_historica": {
     "inicio": "2026-08-31",
     "fim": "2026-09-29"
@@ -19251,9 +19255,9 @@
     "sha256": "17848365fbb990c31fdf6b79bb3b32ff59fbdc6873ec86a20e6b68ee9f61354e"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "ac7599ce6c86+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:07:08Z",
+    "detectado_em": "2026-10-01T07:51:50Z",
     "total": 0,
     "vintages_comparadas": 2,
     "arquivos": 2,
@@ -19289,7 +19293,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-10-01T00:39:13Z",
-   "validado_em": "2026-10-01T07:07:09Z",
+   "validado_em": "2026-10-01T07:51:51Z",
    "cobertura_historica": {
     "inicio": "2001-01-01",
     "fim": "2026-09-14"
@@ -19301,9 +19305,9 @@
     "sha256": "ff6127db5e1d5ee749c07c132a3104ed786728a4b023a6f88f63eb222ade6057"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "ac7599ce6c86+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:07:08Z",
+    "detectado_em": "2026-10-01T07:51:50Z",
     "total": 0,
     "vintages_comparadas": 22,
     "arquivos": 22,
@@ -19338,7 +19342,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-10-01T00:21:30Z",
-   "validado_em": "2026-10-01T07:07:09Z",
+   "validado_em": "2026-10-01T07:51:51Z",
    "cobertura_historica": {
     "inicio": "2001-01-01",
     "fim": "2026-09-27"
@@ -19350,9 +19354,9 @@
     "sha256": "09dd6a40f04a10299c00a05189fdfc68dac2be44df4f53db69d4acd8c3597a58"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "ac7599ce6c86+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:07:09Z",
+    "detectado_em": "2026-10-01T07:51:50Z",
     "total": 0,
     "vintages_comparadas": 1,
     "arquivos": 1,
@@ -19387,7 +19391,7 @@
    },
    "publicado_pela_fonte_em": null,
    "capturado_em": "2026-10-01T06:32:43Z",
-   "validado_em": "2026-10-01T07:07:09Z",
+   "validado_em": "2026-10-01T07:51:51Z",
    "cobertura_historica": {
     "inicio": "2026-10-01",
     "fim": "2026-10-14"
@@ -19401,9 +19405,9 @@
     "sha256": "a60923ff2c015a7eda52576b7858792f378449e4d58829d452921eb2a38d5aea"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "eec0a3121e05+alterado",
+   "versao_codigo": "ac7599ce6c86+alterado",
    "revisoes_conhecidas": {
-    "detectado_em": "2026-10-01T07:07:09Z",
+    "detectado_em": "2026-10-01T07:51:51Z",
     "total": 0,
     "vintages_comparadas": 1,
     "arquivos": 1,
@@ -19472,8 +19476,8 @@
    "tratamento_ausencia": "dia sem algum subsistema não tem SIN",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "eec0a3121e05+alterado",
-    "publicacao": "2026-10-01T07:07:09Z"
+    "codigo": "ac7599ce6c86+alterado",
+    "publicacao": "2026-10-01T07:51:51Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -19505,7 +19509,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py agua --sem-coleta",
-   "citacao": "SCRUTINIUMS. EAR do SIN: 61,5%, Sistema Interligado Nacional, 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, EAR Diário por Subsistema (recurso EAR_DIARIO_SUBSISTEMA_2026, capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. EAR do SIN: 61,5%, Sistema Interligado Nacional, 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, EAR Diário por Subsistema (recurso EAR_DIARIO_SUBSISTEMA_2026, capturado em 30/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "ear_sin_mwmes": {
    "indicador": "Energia armazenada no SIN",
@@ -19548,8 +19552,8 @@
    "tratamento_ausencia": "dia sem algum subsistema não tem SIN",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "eec0a3121e05+alterado",
-    "publicacao": "2026-10-01T07:07:09Z"
+    "codigo": "ac7599ce6c86+alterado",
+    "publicacao": "2026-10-01T07:51:51Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -19575,7 +19579,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py agua --sem-coleta",
-   "citacao": "SCRUTINIUMS. Energia armazenada no SIN: 179.724 MWmês, Sistema Interligado Nacional, 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, EAR Diário por Subsistema (recurso EAR_DIARIO_SUBSISTEMA_2026, capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Energia armazenada no SIN: 179.724 MWmês, Sistema Interligado Nacional, 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, EAR Diário por Subsistema (recurso EAR_DIARIO_SUBSISTEMA_2026, capturado em 30/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "capacidade": {
    "indicador": "Mudanças da capacidade de armazenamento (EAR máxima) desde 2000",
@@ -19629,8 +19633,8 @@
    "tratamento_ausencia": "reservatório ausente do arquivo não contribui para a EAR máxima (entrada e saída explícitas)",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "eec0a3121e05+alterado",
-    "publicacao": "2026-10-01T07:07:09Z"
+    "codigo": "ac7599ce6c86+alterado",
+    "publicacao": "2026-10-01T07:51:51Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -19648,7 +19652,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py agua --sem-coleta",
-   "citacao": "SCRUTINIUMS. Mudanças da capacidade de armazenamento (EAR máxima) desde 2000: 63 mudanças, subsistemas do SIN, 01/01/2000 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, EAR Diário por Reservatório (recurso não identificado). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Mudanças da capacidade de armazenamento (EAR máxima) desde 2000: 63 mudanças, subsistemas do SIN, 01/01/2000 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, EAR Diário por Reservatório (recurso não identificado). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "ena_30d_sin": {
    "indicador": "ENA bruta de 30 dias do SIN",
@@ -19692,8 +19696,8 @@
    "tratamento_ausencia": "janela com dia ausente não é calculada",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "eec0a3121e05+alterado",
-    "publicacao": "2026-10-01T07:07:09Z"
+    "codigo": "ac7599ce6c86+alterado",
+    "publicacao": "2026-10-01T07:51:51Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -19720,7 +19724,75 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py agua --sem-coleta",
-   "citacao": "SCRUTINIUMS. ENA bruta de 30 dias do SIN: 172,3% da MLT, Sistema Interligado Nacional, 31/08/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, ENA Diário por Subsistema (recurso ENA_DIARIO_SUBSISTEMA_2026, capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. ENA bruta de 30 dias do SIN: 172,3% da MLT, Sistema Interligado Nacional, 31/08/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, ENA Diário por Subsistema (recurso ENA_DIARIO_SUBSISTEMA_2026, capturado em 30/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "ena_arm_30d_sin": {
+   "indicador": "ENA armazenável de 30 dias do SIN",
+   "valor_exibido": "109,2% da MLT armazenável",
+   "valor_calculo": 109.22904629779586,
+   "unidade": "% da MLT armazenável",
+   "periodo": {
+    "inicio": "2026-08-31",
+    "fim": "2026-09-29"
+   },
+   "entidade": "Sistema Interligado Nacional",
+   "universo": "4 subsistemas × 30 dias",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ONS",
+    "conjunto": "ENA Diário por Subsistema",
+    "recurso": "ENA_DIARIO_SUBSISTEMA_2026",
+    "url": "https://dados.ons.org.br/dataset/ena-diario-por-subsistema",
+    "arquivo": "data/energia/bronze/ons/ons_ena_subsistema_conferencia/ENA_DIARIO_SUBSISTEMA_2026/20260930T235154Z.e0bcbdd3f2bb.csv.gz",
+    "sha256": "e0bcbdd3f2bbd5d5411ff27b1ffd9831f04e479b6ae9da2f5eca1ade1090390a",
+    "capturado_em": "2026-09-30T23:51:54Z",
+    "publicado_em": "2026-09-30T22:01:53Z"
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "ena_arm_mwmed.<s> e ena_arm_pct_mlt.<s> em ons_ena_subsistema_conferencia, d de 2026-08-31 a 2026-09-29 (captura mais recente de cada ano)",
+   "manifesto": null,
+   "formula": "Σ ENAarm(d) ÷ Σ MLTarm(d) × 100, MLTarm(d) = ENAarm(d) ÷ %MLTarm(d) × 100",
+   "numerador": {
+    "descricao": "soma das ENA armazenáveis diárias dos 4 subsistemas (MWmed·dia)",
+    "valor": 1197694.864
+   },
+   "denominador": {
+    "descricao": "soma das MLT armazenáveis implícitas diárias (MWmed·dia)",
+    "valor": 1096498.5089539946
+   },
+   "pesos": "MLT armazenável de cada dia e subsistema (razão de somas)",
+   "exclusoes": [],
+   "cobertura": "30 de 30 dias, 4 de 4 subsistemas",
+   "tratamento_ausencia": "janela com dia ausente não é calculada",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "ac7599ce6c86+alterado",
+    "publicacao": "2026-10-01T07:51:51Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "Razão de somas, não média de percentuais",
+     "resultado": "aprovado",
+     "detalhe": "média simples dos % diários do SIN daria 109,23%"
+    },
+    {
+     "nome": "ENA armazenável não passa da ENA bruta em nenhum dia da janela",
+     "resultado": "aprovado",
+     "detalhe": "nenhum dia acima"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "EAR e ENA diárias por subsistema e SIN, com a captura usada (CSV)",
+     "url": "/energia/series/agua_subsistemas_diario.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py agua --sem-coleta",
+   "citacao": "SCRUTINIUMS. ENA armazenável de 30 dias do SIN: 109,2% da MLT armazenável, Sistema Interligado Nacional, 31/08/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, ENA Diário por Subsistema (recurso ENA_DIARIO_SUBSISTEMA_2026, capturado em 30/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "mlt_pmo_vs_aberto": {
    "indicador": "Diferença entre a MLT do conjunto aberto e a MLT do PMO (Sudeste/Centro-Oeste)",
@@ -19769,8 +19841,8 @@
    "tratamento_ausencia": "mês sem relatório do PMO coletado não é comparado",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "eec0a3121e05+alterado",
-    "publicacao": "2026-10-01T07:07:09Z"
+    "codigo": "ac7599ce6c86+alterado",
+    "publicacao": "2026-10-01T07:51:51Z"
    },
    "revisoes": "Detecção de revisões não disponível para este número.",
    "testes": [
@@ -19793,7 +19865,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py agua --sem-coleta",
-   "citacao": "SCRUTINIUMS. Diferença entre a MLT do conjunto aberto e a MLT do PMO (Sudeste/Centro-Oeste): +0,56%, Sudeste/Centro-Oeste, 01/09/2026 a 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Relatório Executivo do PMO (tabela MLT das ENAs) (recurso RELATORIO-PMO-19_09_26 a 25_09_26, capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Diferença entre a MLT do conjunto aberto e a MLT do PMO (Sudeste/Centro-Oeste): +0,56%, Sudeste/Centro-Oeste, 01/09/2026 a 30/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Relatório Executivo do PMO (tabela MLT das ENAs) (recurso RELATORIO-PMO-19_09_26 a 25_09_26, capturado em 30/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "temperatura_sin_30d": {
    "indicador": "Anomalia da temperatura do SIN em 30 dias",
@@ -19831,8 +19903,8 @@
    "tratamento_ausencia": "dia com menos de 90% da população coberta fica sem valor",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "eec0a3121e05+alterado",
-    "publicacao": "2026-10-01T07:07:10Z"
+    "codigo": "ac7599ce6c86+alterado",
+    "publicacao": "2026-10-01T07:51:51Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -19859,7 +19931,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py agua --sem-coleta",
-   "citacao": "SCRUTINIUMS. Anomalia da temperatura do SIN em 30 dias: +0,1 °C, SIN (27 UF, ponderadas pela população), 29/08/2026 a 27/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: NASA, POWER Daily API (T2M), agregado pela Scrutiniums (recurso temperatura, capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Anomalia da temperatura do SIN em 30 dias: +0,1 °C, SIN (27 UF, ponderadas pela população), 29/08/2026 a 27/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: NASA, POWER Daily API (T2M), agregado pela Scrutiniums (recurso temperatura, capturado em 30/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "precipitacao_maior_bacia_30d": {
    "indicador": "Chuva de 30 dias na bacia PARANAIBA",
@@ -19897,13 +19969,13 @@
    "tratamento_ausencia": "dia com menos de 80% do peso com dado fica sem valor; janela incompleta não soma",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "eec0a3121e05+alterado",
-    "publicacao": "2026-10-01T07:07:10Z"
+    "codigo": "ac7599ce6c86+alterado",
+    "publicacao": "2026-10-01T07:51:52Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
     {
-     "nome": "Conferência com estações (2020 e 2021)",
+     "nome": "Conferência com estações (jan/2020 a out/2021)",
      "resultado": "ressalva",
      "detalhe": "correlação mensal 0,95 em 402 pares bacia-mês; viés 8,9%"
     }
@@ -19916,7 +19988,7 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py agua --sem-coleta",
-   "citacao": "SCRUTINIUMS. Chuva de 30 dias na bacia PARANAIBA: 70 mm, bacia PARANAIBA (maior EAR máxima), 16/08/2026 a 14/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: NASA, POWER Daily API (IMERG_PRECTOT), agregado pela Scrutiniums (recurso bacia_PARANAIBA, capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Chuva de 30 dias na bacia PARANAIBA: 70 mm, bacia PARANAIBA (maior EAR máxima), 16/08/2026 a 14/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: NASA, POWER Daily API (IMERG_PRECTOT), agregado pela Scrutiniums (recurso bacia_PARANAIBA, capturado em 30/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   },
   "balanco_maior_reservatorio": {
    "indicador": "Resíduo do balanço de 30 dias em SERRA DA MESA",
@@ -19958,8 +20030,8 @@
    "tratamento_ausencia": "dia sem vazão ou volume impede o balanço (sem preenchimento)",
    "versao": {
     "pipeline": "energia-0.1.0",
-    "codigo": "eec0a3121e05+alterado",
-    "publicacao": "2026-10-01T07:07:11Z"
+    "codigo": "ac7599ce6c86+alterado",
+    "publicacao": "2026-10-01T07:51:54Z"
    },
    "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
    "testes": [
@@ -19977,7 +20049,95 @@
     }
    ],
    "reproducao": "python3 pipeline/energia/executar_modulo.py agua --sem-coleta",
-   "citacao": "SCRUTINIUMS. Resíduo do balanço de 30 dias em SERRA DA MESA: −1,95 hm³, reservatório SERRA DA MESA (TOSMES), 31/08/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Dados Hidráulicos por Reservatório (recurso DADOS_HIDROLOGICOS_RES_2026, capturado em 30/09/2026). Versão energia-0.1.0, código eec0a3121e05+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+   "citacao": "SCRUTINIUMS. Resíduo do balanço de 30 dias em SERRA DA MESA: −1,95 hm³, reservatório SERRA DA MESA (TOSMES), 31/08/2026 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Dados Hidráulicos por Reservatório (recurso DADOS_HIDROLOGICOS_RES_2026, capturado em 30/09/2026). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
+  },
+  "fecham_por_construcao": {
+   "indicador": "Reservatórios que fecham o balanço por construção",
+   "valor_exibido": "124 de 153",
+   "valor_calculo": 124.0,
+   "unidade": "reservatórios",
+   "periodo": {
+    "inicio": "2025-01-02",
+    "fim": "2026-09-29"
+   },
+   "entidade": "reservatórios dos dados hidráulicos do ONS com balanço calculado",
+   "universo": "153 reservatórios com balanço, de 177 nos dados hidráulicos",
+   "filtros": [],
+   "fonte": {
+    "orgao": "ONS",
+    "conjunto": "Dados Hidráulicos por Reservatório",
+    "recurso": null,
+    "url": "https://dados.ons.org.br/dataset/dados-hidrologicos-res",
+    "arquivo": null,
+    "sha256": null,
+    "capturado_em": null,
+    "publicado_em": null,
+    "arquivos": [
+     {
+      "recurso": "DADOS_HIDROLOGICOS_RES_2025",
+      "arquivo": "data/energia/bronze/ons/ons_dados_hidrologicos_di/DADOS_HIDROLOGICOS_RES_2025/20260930T234302Z.1e447c8def25.parquet.gz",
+      "sha256": "1e447c8def2585ad8f2163b523f9a3008498d20cdaf460c354075a795b6aa357",
+      "capturado_em": "2026-09-30T23:43:02Z",
+      "publicado_em": "2026-01-31T20:04:08Z"
+     },
+     {
+      "recurso": "DADOS_HIDROLOGICOS_RES_2026",
+      "arquivo": "data/energia/bronze/ons/ons_dados_hidrologicos_di/DADOS_HIDROLOGICOS_RES_2026/20260930T234303Z.946ffea30967.parquet.gz",
+      "sha256": "946ffea30967ac51cf40a974454ac9c4ae2e0d4b608eee6f91b06436630e00ab",
+      "capturado_em": "2026-09-30T23:43:03Z",
+      "publicado_em": "2026-09-30T20:01:20Z"
+     }
+    ]
+   },
+   "extracao_pdf": null,
+   "chaves_origem": [],
+   "chaves_total": null,
+   "consulta": "vol_util_pct, q_afluente e q_defluente de cada reservatório em ons_dados_hidrologicos_di, 2025-01-02 a 2026-09-29; volume útil total do cadastro em ons_reservatorio_cadastro",
+   "manifesto": null,
+   "formula": "fecha por construção ⇔ dias com |ΔV(d) − (afluência(d) − defluência(d)) × 0,0864| dentro da tolerância ÷ dias avaliados ≥ 95%; tolerância diária = 0,01% do volume útil + 0,002 hm³",
+   "numerador": {
+    "descricao": "reservatórios com ao menos 95% dos dias dentro do arredondamento",
+    "valor": 124.0
+   },
+   "denominador": {
+    "descricao": "reservatórios com balanço calculado",
+    "valor": 153.0
+   },
+   "pesos": null,
+   "exclusoes": [],
+   "cobertura": "153 de 177 reservatórios com balanço; na janela de 30 dias, 126 fecham",
+   "tratamento_ausencia": "reservatório sem volume útil no cadastro ou sem volume em % fica fora (motivo no CSV); dia sem dado não é avaliado",
+   "versao": {
+    "pipeline": "energia-0.1.0",
+    "codigo": "ac7599ce6c86+alterado",
+    "publicacao": "2026-10-01T07:51:56Z"
+   },
+   "revisoes": "Nenhuma revisão detectada entre as capturas integradas. Verificação em 2026-10-01.",
+   "testes": [
+    {
+     "nome": "Reservatórios que não fecham por construção",
+     "resultado": "ressalva",
+     "detalhe": "BELO MONTE 0,0% de 636 dias; PIMENTAL 0,0% de 636 dias; ANTA 0,0% de 636 dias; SANTA CECILIA 0,0% de 636 dias; PEREIRA PASSOS 0,0% de 636 dias; APOLONIO SALES 0,0% de 636 dias; XINGO 0,2% de 636 dias; I. SOLTEIRA 0,3% de 636 dias; TRÊS IRMÃOS 0,3% de 636 dias; BAIXO IGUACU 2,0% de 636 dias; PEDRA DO CAVALO 2,8% de 636 dias; LUIZ GONZAGA 3,9% de 636 dias; JAGUARI 4,9% de 636 dias; PASSO SAO JOAO 5,8% de 636 dias; SALTO PILAO 6,4% de 636 dias; CANASTRA 9,1% de 636 dias; HENRY BORDEN 13,8% de 636 dias; CANDONGA 14,2% de 636 dias; SOBRADINHO 18,2% de 636 dias; PORTO PRIMAVERA 26,9% de 636 dias; D. FRANCISCA 39,2% de 636 dias; SANTO ANTONIO 44,3% de 636 dias; ITAIPU 47,8% de 636 dias; FUNDÃO 56,9% de 636 dias; N. AVANHANDAVA 70,0% de 636 dias; JURUENA 73,6% de 636 dias; MONTE CLARO 78,1% de 636 dias; S.DO FACÃO 82,9% de 636 dias; CASTRO ALVES 89,0% de 636 dias"
+    },
+    {
+     "nome": "Fechamento não é prova de medição",
+     "resultado": "ressalva",
+     "detalhe": "a afluência publicada é calculada pelo próprio balanço nesses reservatórios: o resíduo perto de zero confirma a conta, não a vazão"
+    }
+   ],
+   "reconciliacao": null,
+   "download": [
+    {
+     "rotulo": "Balanço por reservatório, com a fração de dias de cada um (CSV)",
+     "url": "/energia/series/agua_reservatorios.csv"
+    },
+    {
+     "rotulo": "Dados hidráulicos diários por reservatório (CSV)",
+     "url": "/energia/series/agua_reservatorios_diario.csv"
+    }
+   ],
+   "reproducao": "python3 pipeline/energia/executar_modulo.py agua --sem-coleta",
+   "citacao": "SCRUTINIUMS. Reservatórios que fecham o balanço por construção: 124 de 153, reservatórios dos dados hidráulicos do ONS com balanço calculado, 02/01/2025 a 29/09/2026. Observatório Brasileiro do Setor Elétrico, 2026. Dados primários: ONS, Dados Hidráulicos por Reservatório (recurso não identificado). Versão energia-0.1.0, código ac7599ce6c86+alterado, publicada em 01/10/2026. Disponível em: https://scrutiniums.com/setor-eletrico."
   }
  },
  "downloads": [

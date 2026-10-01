@@ -9,16 +9,20 @@ import { Termo } from "@/components/evidencia/Termo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { carimbo, dataBR, num } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
-import { curtoFronteira, ehFronteira, perguntaPainel, rotaPainel, situacaoAtualidade, textoConferenciaPdo } from "@/lib/energia/rede";
+import { curtoFronteira, ehFronteira, perguntaPainel, provenienciaLegivel, rotaPainel, situacaoAtualidade, textoConferenciaPdo } from "@/lib/energia/rede";
 import type { GoldRedeDetalhe } from "@/lib/energia/tipos-rede";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Rede: quanto o fluxo se afastou do programa",
-  description:
-    "Intercâmbio verificado contra o programado (ONS) nas quatro fronteiras entre subsistemas e com Argentina e Uruguai, desde 01/01/2026: distribuição dos desvios, horas materiais, sentido oposto ao programa, maiores desvios e dias de programa repetido, com o programa do exterior conferido no PDO das conversoras.",
-  alternates: { canonical: "/setor-eletrico/rede/programado" },
-};
+/** Descrição com o início do programado lido da gold (nenhuma data escrita à mão). */
+export function generateMetadata(): Metadata {
+  const g = lerGold<GoldRedeDetalhe>("rede_detalhe.json");
+  const desde = integra(g) && g.programado.inicio ? `, desde ${dataBR(g.programado.inicio)}` : "";
+  return {
+    title: "Rede: quanto o fluxo se afastou do programa",
+    description: `Intercâmbio verificado contra o programado (ONS) nas quatro fronteiras entre subsistemas e com Argentina e Uruguai${desde}: distribuição dos desvios, horas materiais, sentido oposto ao programa, maiores desvios e dias de programa repetido, com o programa do exterior conferido no PDO das conversoras.`,
+    alternates: { canonical: "/setor-eletrico/rede/programado" },
+  };
+}
 
 const FONTE = "ONS, intercâmbios entre subsistemas e com outros países, verificado e programado (releitura do módulo Rede)";
 
@@ -86,7 +90,7 @@ export default function RedeProgramadoPage() {
                   se sabe qual revisão do programa das fronteiras foi publicada, e o histórico começa em {dataBR(p.inicio)}.
                 </>
               }
-              proveniencia={g.proveniencia.programado}
+              proveniencia={provenienciaLegivel(g.proveniencia.programado)}
             >
               <div className="space-y-6">
                 {atual.defasada && <RedeAviso tipo="alerta">{atual.texto}</RedeAviso>}

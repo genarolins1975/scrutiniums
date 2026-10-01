@@ -87,6 +87,10 @@ export function RedeMapaFluxos({
       return `${NOME_SM[o]} para ${NOME_SM[d]}: ${f.rotuloValor}`;
     })
     .join("; ");
+  // o exterior entra na descrição para leitor de tela: no SVG as conversoras ficam só no desenho
+  const textoExterior = (exterior ?? [])
+    .map((e) => `Sul e ${NOME_PAIS[e.pais]}: ${e.rotuloValor}${e.valor !== null && e.valor !== 0 ? ` (${e.valor > 0 ? "exportação" : "importação"})` : ""}`)
+    .join("; ");
   const textoPrecos = precos ? (["N", "NE", "SE", "S"] as Submercado[]).map((s) => `${NOME_SM[s]} ${reais(precos[s] ?? null)}`).join(", ") : "";
 
   return (
@@ -158,7 +162,7 @@ export function RedeMapaFluxos({
         viewBox="0 0 560 530"
         className="mx-auto hidden w-full max-w-2xl sm:block"
         role="group"
-        aria-label={`${titulo}, ${periodo}: ${descricao}.${textoPrecos ? ` ${rotuloPrecos ?? "PLD"}: ${textoPrecos}.` : ""}`}
+        aria-label={`${titulo}, ${periodo}: ${descricao}.${textoExterior ? ` ${textoExterior}.` : ""}${textoPrecos ? ` ${rotuloPrecos ?? "PLD"}: ${textoPrecos}.` : ""}`}
       >
         <defs>
           <marker id="rede-seta" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="3" markerHeight="3" orient="auto-start-reverse">

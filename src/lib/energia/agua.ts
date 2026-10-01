@@ -790,8 +790,11 @@ export function textosMlt(mlt: AguaMlt, anoCorrente: string): string[] {
   if (iguais.length) {
     const tot = iguais.reduce((s, x) => s + x.usinas_comparadas, 0);
     const ig = iguais.reduce((s, x) => s + x.usinas_iguais, 0);
+    // a frase segue a contagem: "a mesma" só com todas iguais; 95% ou mais é "repete em quase todas"
+    const juizo = ig === tot ? "é a mesma do ano anterior" : ig >= 0.95 * tot ? "repete a do ano anterior em quase todas as usinas" : "difere da do ano anterior";
+    const ano = iguais[0].mes.slice(0, 4) || anoCorrente;
     t.push(
-      `No conjunto aberto do ONS, a MLT de ${anoCorrente} é a mesma do ano anterior: no último dia de cada mês encerrado (${mesAno(iguais[0].mes)} a ${mesAno(iguais[iguais.length - 1].mes)}), ${num(ig, 0)} de ${num(tot, 0)} comparações por usina deram valores iguais.`,
+      `No conjunto aberto do ONS, a MLT de ${ano} ${juizo}: no último dia de cada mês encerrado (${mesAno(iguais[0].mes)} a ${mesAno(iguais[iguais.length - 1].mes)}), ${num(ig, 0)} de ${num(tot, 0)} comparações por usina deram valores iguais.`,
     );
   }
   for (const p of mlt.periodos_provisorios) {
@@ -1114,11 +1117,16 @@ export function rotuloRodada(emitidaEm: string): string {
   return `${dataBR(emitidaEm.slice(0, 10))} ${emitidaEm.slice(11, 13)}h UTC`;
 }
 
+/** Nome curto do modelo publicado na gold ("ECMWF IFS 0,25° (dados abertos ...), rodada ..." → "ECMWF IFS 0,25°"). */
+export function modeloCurto(modelo: string): string {
+  return modelo.split(/ \(|, /)[0].trim() || modelo;
+}
+
 export function respostaPrevisao(pv: AguaPrevisao, bacia: string): string {
   const b = pv.bacias.find((x) => x.bacia === bacia);
   const fim7 = somarDias(pv.d0, 6);
   const fimN = somarDias(pv.d0, pv.n_dias - 1);
-  const cab = `Previsão, não observação: rodada de ${rotuloRodada(pv.emitida_em)} do ECMWF IFS 0,25°`;
+  const cab = `Previsão, não observação: rodada de ${rotuloRodada(pv.emitida_em)} do ${modeloCurto(pv.modelo)}`;
   if (!b || b.mm_7d === null) return `${cab}; sem previsão completa para a bacia do ${nomeProprio(bacia)}.`;
   return `${cab}, ${num(b.mm_7d, 1)} mm de chuva na bacia do ${nomeProprio(bacia)} de ${dataBR(pv.d0)} a ${dataBR(fim7)} e ${num(b.mm_total, 1)} mm até ${dataBR(fimN)}. A média IMERG dos mesmos dias em ${b.anos_climatologia} anos é de ${num(b.imerg_media_7d_mm, 1)} mm e ${num(b.imerg_media_total_mm, 1)} mm: outro produto, só ordem de grandeza.`;
 }
@@ -1470,6 +1478,7 @@ type ResumoHidrologia = {
   dia_referencia_ear: string;
   dia_referencia_ena: string;
   subsistemas: { sm: Regiao; ear: { valor: number | null; dia: string }; ena: { dia: string; pct_mlt_30d: number | null } }[];
+  proveniencia?: { padrao?: { periodo_referencia?: { inicio: string; fim: string } | null } };
 };
 
 export const COLUNAS_RESUMO: ColunaTabela[] = [
@@ -1507,15 +1516,25 @@ export function linhasResumo(h: ResumoHidrologia | null, a: AguaArmazenamento, f
 
 const ate = (ear: string, ena: string) => (ear === ena ? dataBR(ear) : `${dataBR(ear)} na EAR e ${dataBR(ena)} na ENA`);
 
-export function textoResumo(h: ResumoHidrologia | null, diaEar: string, diaEna: string): string {
+export function textoResumo(h: ResumoHidrologia | null, diaEar: string, diaEna: string, baseAgua: string | null = null): string {
   if (!h) return "O resumo de operação (hidrologia.json), usado pela Visão geral e pelo PLD, não está disponível nesta publicação; os números desta página não dependem dele.";
   const mesmo = h.dia_referencia_ear === diaEar && h.dia_referencia_ena === diaEna;
+  // base da faixa de cada publicação, lida de cada uma (o resumo publica o período de referência da faixa)
+  const pr = h.proveniencia?.padrao?.periodo_referencia;
+  const baseResumo = pr ? periodoBase(`${pr.inicio.slice(0, 4)}-${pr.fim.slice(0, 4)}`) : null;
+  const baseAqui = baseAgua ? periodoBase(baseAgua) : null;
+  const regra =
+    baseResumo && baseAqui
+      ? baseResumo === baseAqui
+        ? `As duas publicações usam a mesma regra: SIN como razão de somas e faixa do mesmo dia do calendário em ${baseAqui}.`
+        : `As duas publicações calculam o SIN como razão de somas, mas a faixa do mesmo dia do calendário usa bases diferentes: ${baseResumo} no resumo e ${baseAqui} nesta página.`
+      : "As duas publicações calculam o SIN como razão de somas; a base da faixa de uma delas não está publicada, e as faixas não são comparadas aqui.";
   return [
     `O resumo de operação usado pela Visão geral e pelo PLD (hidrologia.json, processado em ${dataBR(diaBrasilia(h.gerado_em))}) lê só a captura do silver principal e vai até ${ate(h.dia_referencia_ear, h.dia_referencia_ena)}; esta página usa, em cada ano, a captura mais recente do arquivo do ONS e vai até ${ate(diaEar, diaEna)}.`,
     mesmo
       ? "Os dias coincidem: diferença no mesmo dia vem de revisão do ONS entre as capturas, publicada na tabela de revisões."
       : "Os números diferem porque os dias diferem; no mesmo dia, diferença vem de revisão do ONS entre as capturas, publicada na tabela de revisões.",
-    "As duas publicações usam a mesma regra: SIN como razão de somas e faixa do mesmo dia do calendário em 2001 a 2025.",
+    regra,
   ].join(" ");
 }
 
@@ -1571,14 +1590,75 @@ export function textoCobertura(c: Pick<AguaClima, "totais" | "base_climatologica
   return `${num(c.totais.pontos_precipitacao, 0)} pontos de grade de chuva dentro dos contornos das bacias do ONS e ${num(c.totais.celulas_temperatura, 0)} células de temperatura escolhidas pela população. Climatologia de ${periodoBase(c.base_climatologica)}; IMERG Final até ${dataBR(c.corte_imerg_final)} e Late depois; MERRA-2 até ${dataBR(c.corte_merra2)} e GEOS-IT depois.`;
 }
 
-/** Conferência do IMERG com as estações publicadas pelo ONS (2020 e 2021). */
+/** "jan/2020 a out/2021": primeiro e último mês comparados com estações (publicados na gold). */
+export function periodoValidacao(v: AguaClima["validacao_estacoes"]): string | null {
+  const p = v.periodo;
+  if (!p) return null;
+  return p.inicio === p.fim ? mesAno(p.inicio) : `${mesAno(p.inicio)} a ${mesAno(p.fim)}`;
+}
+
+/** Conferência do IMERG com as estações que o ONS publicou (o período é o dos meses comparados). */
 export function textoValidacao(v: AguaClima["validacao_estacoes"]): string {
   if (!v.pares) return "Sem pares bacia e mês para conferir o IMERG com estações nesta publicação.";
-  return `Conferência do IMERG com as estações que o ONS publicou em 2020 e 2021: correlação mensal de ${num(v.correlacao_geral, 2)} em ${num(v.pares, 0)} pares bacia e mês, viés geral de ${sinal(v.vies_geral_pct, 1)}% (positivo: o satélite estima mais chuva que as estações). A temperatura não foi conferida com estação: o INMET não respondeu nas tentativas de coleta.`;
+  const per = periodoValidacao(v);
+  return `Conferência do IMERG com as estações que o ONS publicou${per ? ` (meses comparados: ${per})` : ""}: correlação mensal de ${num(v.correlacao_geral, 2)} em ${num(v.pares, 0)} pares bacia e mês, viés geral de ${sinal(v.vies_geral_pct, 1)}% (positivo: o satélite estima mais chuva que as estações). A temperatura não foi conferida com estação: o INMET não respondeu nas tentativas de coleta.`;
 }
 
 /** Reservatórios dos dados hidráulicos sem correspondência no cadastro (sem volume útil, sem balanço). */
 export function textoSemCadastro(nomes: readonly string[]): string {
   if (!nomes.length) return "Todos os reservatórios dos dados hidráulicos têm correspondência no cadastro do ONS.";
   return `${plural(nomes.length, "reservatório dos dados hidráulicos não tem", "reservatórios dos dados hidráulicos não têm")} correspondência no cadastro do ONS e, sem volume útil, ficam sem balanço: ${listaTexto([...nomes])}.`;
+}
+
+/* ---------- textos que dependem do tamanho, do período e da composição das séries publicadas ---------- */
+
+/** "a cada 14 dias" ou "por dia", a partir do passo publicado na gold. */
+export function textoPasso(passo: number): string {
+  return passo === 1 ? "por dia" : `a cada ${passo} dias`;
+}
+
+/** Ano do primeiro ponto de uma série ("2000-01" ou "2000-01-01" → "2000"); null sem ponto. */
+export function anoInicial(x: string | null | undefined): string | null {
+  return x ? x.slice(0, 4) : null;
+}
+
+/**
+ * O peso de cada subsistema no SIN, para ler o gráfico em MWmês: quanto vale 1 p.p. de EAR
+ * no maior e no menor subsistema (EAR máxima ÷ 100) e a participação do maior na
+ * capacidade do SIN, tudo da gold do dia.
+ */
+export function textoPesoSubsistemas(lista: readonly EntidadeEar[]): string | null {
+  const subs = lista
+    .filter((e) => e.tipo === "subsistema" && e.id !== "SIN" && e.ear_max_mwmes !== null && e.ear_max_mwmes > 0)
+    .sort((a, b) => (b.ear_max_mwmes ?? 0) - (a.ear_max_mwmes ?? 0));
+  if (subs.length < 2) return null;
+  const maior = subs[0];
+  const menor = subs[subs.length - 1];
+  const part = maior.participacao_capacidade_sin_pct;
+  return `Em energia, os subsistemas não pesam o mesmo: em ${dataBR(maior.dia)}, o ${maior.rotulo}${part !== null ? ` tinha ${pct(part, 1)} da EAR máxima do SIN, e` : ""} 1 p.p. de EAR ali equivale a ${mwmes(maior.ear_max_mwmes! / 100)} MWmês, contra ${mwmes(menor.ear_max_mwmes! / 100)} MWmês no ${menor.rotulo}. O SIN (soma dos quatro) está na tabela equivalente do gráfico e no número de destaque.`;
+}
+
+/** Recortes que ficam fora dos pontos pareados por não terem armazenamento (na tabela, com "não se aplica"). */
+export function textoForaDosPontos(lista: readonly EntidadeEar[]): string | null {
+  const fora = lista.filter((e) => e.sem_armazenamento);
+  if (!fora.length) return null;
+  return `Fora do gráfico, por não terem armazenamento (EAR máxima zero: percentual e faixa não se aplicam): ${listaTexto(fora.map((e) => e.rotulo))}. ${fora.length === 1 ? "Ele está" : "Estão"} na tabela equivalente, com a EAR em MWmês.`;
+}
+
+/** O que a comparação com o PMO impede de concluir, com a contagem de meses conferidos. */
+export function textoMltNaoConcluir(mlt: AguaMlt): string {
+  const meses = Array.from(new Set(mlt.pmo.comparacao.map((c) => c.mes))).sort();
+  const div = mlt.pmo.meses_divergentes;
+  const fim = "e versões antigas da MLT diferem da atual: o percentual não é comparável entre publicações e períodos longos sem esse cuidado.";
+  if (!meses.length) return `A MLT dos relatórios do PMO não foi conferida nesta publicação, ${fim}`;
+  const per = `${mesAno(meses[0])} a ${mesAno(meses[meses.length - 1])}`;
+  if (!div.length) return `A MLT do conjunto aberto coincidiu com a dos relatórios do PMO nos ${meses.length} meses conferidos (${per}), ${fim}`;
+  const quantos = div.length === meses.length ? `em todos os ${meses.length} meses conferidos` : `em ${plural(div.length, "mês", "meses")} dos ${meses.length} conferidos`;
+  return `A MLT do conjunto aberto difere da dos relatórios do PMO ${quantos} (${per}, comparada no fim do mês), ${fim}`;
+}
+
+/** "; Iguaçu, Manaus/Amapá e Paranapanema só existem desde 30/12/2017" (REE novos publicados na gold). */
+export function textoReeNovos(novos: readonly { data: string; novos: string[] }[]): string {
+  if (!novos.length) return "";
+  return `; ${listaTexto(novos.map((x) => `${listaTexto(x.novos.map(nomeProprio))} só ${x.novos.length === 1 ? "existe" : "existem"} desde ${dataBR(x.data)}`))}`;
 }

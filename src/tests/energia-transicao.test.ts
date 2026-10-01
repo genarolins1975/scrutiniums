@@ -36,6 +36,8 @@ import {
   COLUNAS_ONS_MENSAL,
   ESQUEMA_EMISSOES,
   ESQUEMA_MMGD,
+  ESQUEMA_ONS,
+  LIGACAO_GERACAO,
   MEDIDAS_UF,
   MEDIDA_UF,
   PERGUNTA_A11,
@@ -43,6 +45,7 @@ import {
   colunasDistribuidoras,
   colunasMunicipios,
   colunasUfs,
+  contagem,
   dadosBarrasUf,
   dadosConferencia,
   dadosFatorAnual,
@@ -64,6 +67,7 @@ import {
   mudancaMmgd,
   mudancaOns,
   municipiosDoJson,
+  nomesMunicipios,
   participacaoTexto,
   perguntaPainel,
   primeiroAnoCoberto,
@@ -73,6 +77,7 @@ import {
   respostaMmgd,
   respostaOns,
   textoModalidadesRemotas,
+  trechosConferencia,
   valoresMapaUf,
 } from "@/lib/energia/transicao";
 import type { GoldTransicao, MunicipiosMmgdArquivo } from "@/lib/energia/tipos-transicao";
@@ -402,6 +407,22 @@ describe("P063: estimativa do ONS e achado A11", () => {
     expect(d.find((x) => x.d === "2023-04-29")!.solar).toBe(4377);
     expect(o.conferencia_quebra_2023.degrau_na_carga).toBe(false);
   });
+
+  it("conferência de 2023: cada média da solar é dos dias que o rótulo diz (média refeita dos dias publicados)", () => {
+    const c = o.conferencia_quebra_2023;
+    const t = trechosConferencia(c);
+    expect(t.antes).toEqual({ inicio: "2023-04-22", fim: "2023-04-28", dias: 7 });
+    expect(t.depois).toEqual({ inicio: "2023-04-29", fim: "2023-05-06", dias: 8 });
+    // caminho independente: média simples dos dias publicados em cada trecho, arredondada como a gold
+    const media = (ini: string, fim: string) => {
+      const xs = c.dias.filter((x) => x.d >= ini && x.d <= fim).map((x) => x.solar_balanco_sin_mwmed as number);
+      return Math.round(xs.reduce((a, b) => a + b, 0) / xs.length);
+    };
+    expect(media(t.antes!.inicio, t.antes!.fim)).toBe(c.solar_media_7d_antes);
+    expect(media(t.depois!.inicio, t.depois!.fim)).toBe(c.solar_media_depois);
+    // sem pares publicados, não há marco: nada de trecho inventado
+    expect(trechosConferencia({ ...c, pares_mesmo_dia_da_semana: [] })).toEqual({ antes: null, depois: null });
+  });
 });
 
 describe("P064: fator médio, MDL e exportação", () => {
@@ -454,6 +475,11 @@ describe("estado na URL", () => {
     expect(e.anos).toEqual(["2024", "2025"]);
     expect(e.de).toBe("2020-01");
     expect(e.ate).toBe("");
+    // séries ocultas pela legenda do ONS: só ids do gráfico; id desconhecido é descartado
+    const on = lerEstado(ESQUEMA_ONS, "?ons.ocultas=SE,xx,N&ons.med=part");
+    expect(on.ocultas).toEqual(["SE", "N"]);
+    expect(on.med).toBe("part");
+    expect(lerEstado(ESQUEMA_ONS, "").ocultas).toEqual([]);
   });
 });
 
@@ -639,6 +665,55 @@ describe("páginas renderizadas no servidor", () => {
         expect(arquivo || pagina || verbete, `${k}: ${href}`).toBe(true);
       }
     }
+  });
+
+  it("toda âncora interna existe no destino: nas páginas do módulo, no HTML renderizado; nas de outros módulos, como id no código da página", () => {
+    const rotas: Record<string, string> = {
+      "/setor-eletrico/transicao": html.sintese,
+      "/setor-eletrico/transicao/mmgd": html.p063,
+      "/setor-eletrico/transicao/energia-estimada": html.ons,
+      "/setor-eletrico/transicao/emissoes": html.p064,
+    };
+    let conferidas = 0;
+    for (const [k, h] of Object.entries(html)) {
+      for (const [, caminho, ancora] of Array.from(principal(h).matchAll(/href="(\/[^"#?]*)(?:\?[^"#]*)?#([^"]+)"/g))) {
+        const destino = rotas[caminho];
+        const existe = destino !== undefined ? destino.includes(`id="${ancora}"`) : ler(`src/app${caminho}/page.tsx`).includes(`id="${ancora}"`);
+        expect(existe, `${k}: ${caminho}#${ancora}`).toBe(true);
+        conferidas++;
+      }
+    }
+    expect(conferidas).toBeGreaterThan(5);
+    // a ligação com a Geração aponta para a própria página do P021, sem âncora que mude com aquele módulo
+    expect(html.p064).toContain(`href="${LIGACAO_GERACAO.href}"`);
+    expect(html.sintese).toContain(`href="${LIGACAO_GERACAO.href}"`);
+  });
+
+  it("textos do modo Auditar: contagem concorda com o número, nomes de município pelo código IBGE, sem método atribuído sem fonte", () => {
+    expect(contagem(1, "registro", "registros")).toBe("1 registro");
+    expect(contagem(46, "unidade", "unidades")).toBe("46 unidades");
+    expect(contagem(4497, "unidade", "unidades")).toBe("4.497 unidades");
+    expect(contagem(null, "unidade", "unidades")).toBe("sem dado");
+    // nomes pelo código IBGE, conferidos contra o CSV municipal publicado (caminho independente do JSON)
+    const porCodigo = new Map(csv("transicao_mmgd_municipios.csv").map((r) => [r.codigo_ibge, `${r.municipio} (${r.uf})`]));
+    const ids = G.mmgd.controles.distribuidora_fora_da_uf.maiores_municipios.map((x) => x.ibge);
+    const arq = JSON.parse(ler("public/energia/series/transicao_municipios.json")) as MunicipiosMmgdArquivo;
+    const nomes = nomesMunicipios(arq, ids);
+    expect(nomes.size).toBe(ids.length);
+    for (const id of ids) {
+      expect(nomes.get(id), id).toBe(porCodigo.get(id));
+      expect(html.p063, id).toContain(porCodigo.get(id)!.replace("'", "&#x27;"));
+    }
+    expect(nomes.get("1507102")).toBe("São Caetano de Odivelas (PA)");
+    expect(nomesMunicipios(arq, ["9999999"]).size).toBe(0);
+    expect(html.p063).toContain("1 registro anterior à cobertura");
+    expect(html.p063).not.toContain("ano 1900");
+    // o pipeline registra a diferença diária × mensal da margem de operação sem fonte para a causa
+    expect(html.p064).not.toMatch(/ponderado pela\s+geração horária/);
+    expect(html.p064).toContain(`tolerância de ${G.emissoes!.evidencia!.reconciliacao!.tolerancia}`);
+    // as médias da solar dizem de que dias são
+    expect(html.ons).toContain("de 22/04/2023 a 28/04/2023, 7 dias");
+    expect(html.ons).toContain("de 29/04/2023 a 06/05/2023, 8 dias");
   });
 
   it("o destino está publicado na navegação, com a página atual marcada", () => {

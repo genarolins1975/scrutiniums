@@ -31,7 +31,7 @@ import {
   serieReservatorio,
 } from "@/lib/energia/agua";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
-import { dataBR } from "@/lib/energia/formato";
+import { dataBR, plural } from "@/lib/energia/formato";
 import { LIMITE_COMPARACAO } from "@/lib/energia/tabela";
 import type { Submercado } from "@/lib/energia/tipos";
 import type { AguaDecomposicaoEar, AguaReservatorio, AguaReservatorios45d } from "@/lib/energia/tipos-agua";
@@ -41,8 +41,9 @@ import type { AguaDecomposicaoEar, AguaReservatorio, AguaReservatorios45d } from
  * escolhido (?res=) e reservatórios comparados (?cmp=, até quatro) ficam na URL. A
  * barra de uma parcela da decomposição, a linha da tabela e a lista escolhem o mesmo
  * reservatório, ligado pelo código da usina (nunca pelo nome). A resposta, as barras
- * e as tabelas usam as mesmas linhas da gold. As séries diárias de 45 dias vêm de
- * agua_reservatorios_45d.json, buscado só quando a seção chega perto da tela.
+ * e as tabelas usam as mesmas linhas da gold. As séries diárias (45 dias na publicação
+ * atual; o número exibido vem da gold) vêm de agua_reservatorios_45d.json, buscado só
+ * quando a seção chega perto da tela.
  */
 const ESQUEMA = {
   sm: campo(tiposUrl.opcao(SUBSISTEMAS), "SE"),
@@ -57,6 +58,7 @@ export function AguaReservatorios({
   decomposicao,
   janela,
   urlSeries,
+  diasSeries,
   fonte,
   versao,
   destaques,
@@ -65,6 +67,8 @@ export function AguaReservatorios({
   decomposicao: AguaDecomposicaoEar[];
   janela: { inicio: string; fim: string; periodo_fecham_por_construcao: { inicio: string; fim: string } | null };
   urlSeries: string;
+  /** Dias de cada série diária do arquivo sob demanda (gold: reservatorios.series_45d.dias). */
+  diasSeries: number;
   fonte: string;
   versao: string;
   destaques?: ReactNode;
@@ -127,6 +131,7 @@ export function AguaReservatorios({
   );
   const multiplos = useMemo(() => linhasMultiplosVolume(seriesComp), [seriesComp]);
   const nomeRes = res ? nomeProprio(res.nome) : "";
+  const dias = plural(diasSeries, "dia", "dias");
 
   const estadoSeries =
     series.estado === "erro" ? (
@@ -142,7 +147,7 @@ export function AguaReservatorios({
       </div>
     ) : series.estado !== "pronto" ? (
       <p role="status" className="border border-dashed border-linha bg-superficie px-5 py-4 text-sm text-carvao-muted">
-        Carregando as séries diárias de 45 dias (arquivo à parte, para não pesar na abertura da página).
+        Carregando as séries diárias de {dias} (arquivo à parte, para não pesar na abertura da página).
       </p>
     ) : null;
 
@@ -244,7 +249,7 @@ export function AguaReservatorios({
       )}
 
       <div ref={alvo} className="space-y-4 border-t border-linha pt-5" data-series={series.estado}>
-        <h3 className="font-serif text-lg text-carvao">{nomeRes ? `${nomeRes}: volume e vazões dia a dia nos últimos 45 dias` : "Volume e vazões dia a dia"}</h3>
+        <h3 className="font-serif text-lg text-carvao">{nomeRes ? `${nomeRes}: volume e vazões dia a dia nos últimos ${dias}` : "Volume e vazões dia a dia"}</h3>
         {estadoSeries}
         {series.estado === "pronto" &&
           (serieSel.length ? (
@@ -291,13 +296,13 @@ export function AguaReservatorios({
           selecionadas={escolhidos}
           onMudar={(ids) => definir({ cmp: ids })}
           dicaBusca="Serra da Mesa, Furnas, Sobradinho"
-          vazio="Nenhum reservatório escolhido. Escolha até quatro para ver o volume útil dos últimos 45 dias na mesma escala."
+          vazio={`Nenhum reservatório escolhido. Escolha até ${LIMITE_COMPARACAO} para ver o volume útil dos últimos ${dias} na mesma escala.`}
         >
           {() => null}
         </Comparador>
         {escolhidos.length > 0 && series.estado === "pronto" && (
           <PequenosMultiplos
-            titulo="Volume útil nos últimos 45 dias (% do volume útil de cada reservatório)"
+            titulo={`Volume útil nos últimos ${dias} (% do volume útil de cada reservatório)`}
             dados={multiplos}
             chaveX="d"
             unidade="%"

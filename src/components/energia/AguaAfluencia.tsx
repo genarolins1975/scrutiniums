@@ -22,6 +22,8 @@ import {
   recorteEscolhido,
   recortePadraoEna,
   respostaAfluencia,
+  textoPasso,
+  textoReeNovos,
   type EntidadeEna,
   type PontoRegioes,
   type TipoRecorte,
@@ -48,22 +50,29 @@ const ESQUEMA = {
 
 const OPCOES_TIPO = TIPOS_RECORTE.map((t) => ({ id: t, rotulo: ROTULO_TIPO_RECORTE[t] }));
 
-const UNIVERSO: Record<TipoRecorte, string> = {
-  subsistema: "Subsistemas do SIN; o SIN soma as ENA e as MLT dos quatro, dia a dia",
-  ree: "Reservatórios equivalentes de energia do ONS (perímetro atual; três REE só existem desde 30/12/2017)",
-  bacia: "Bacias hidroenergéticas do ONS, inclusive as afluências agrupadas em “outras” do Sul e do Sudeste",
-};
+// o universo dos REE cita os REE novos publicados na gold (datas e nomes não ficam escritos aqui)
+const universo = (tipo: TipoRecorte, reeNovos: readonly { data: string; novos: string[] }[]): string =>
+  tipo === "subsistema"
+    ? "Subsistemas do SIN; o SIN soma as ENA e as MLT dos quatro, dia a dia"
+    : tipo === "ree"
+      ? `Reservatórios equivalentes de energia do ONS (perímetro atual${textoReeNovos(reeNovos)})`
+      : "Bacias hidroenergéticas do ONS, inclusive as afluências agrupadas em “outras” do Sul e do Sudeste";
 
 export function AguaAfluencia({
   entidades,
   serie,
+  passoDias,
+  reeNovos,
   fonte,
   versao,
   destaques,
 }: {
   entidades: EntidadeEna[];
-  /** ENA de 30 dias (% da MLT) a cada 7 dias nos últimos 18 meses, por região. */
+  /** ENA de 30 dias (% da MLT) em pontos regulares (passoDias) nos últimos meses publicados, por região. */
   serie: PontoRegioes[];
+  passoDias: number;
+  /** REE que aparecem depois do início do conjunto (gold: afluencia.ree_novos_por_data). */
+  reeNovos: { data: string; novos: string[] }[];
   fonte: string;
   versao: string;
   destaques?: ReactNode;
@@ -107,7 +116,7 @@ export function AguaAfluencia({
         </div>
         <div>
           <dt className="rotulo text-mineral">Universo</dt>
-          <dd className="mt-0.5">{UNIVERSO[tipo]}</dd>
+          <dd className="mt-0.5">{universo(tipo, reeNovos)}</dd>
         </div>
         <div>
           <dt className="rotulo text-mineral">Unidade</dt>
@@ -148,7 +157,7 @@ export function AguaAfluencia({
 
       <div className="space-y-4 border-t border-linha pt-5">
         <h3 className="font-serif text-lg text-carvao">
-          A ENA de 30 dias nos últimos 18 meses{inicio && fim ? `, de ${mesAno(inicio.slice(0, 7))} a ${mesAno(fim.slice(0, 7))}` : ""}
+          A ENA de 30 dias{inicio && fim ? ` de ${mesAno(inicio.slice(0, 7))} a ${mesAno(fim.slice(0, 7))}` : ""}
         </h3>
         <Comparador
           rotulo={`Regiões no gráfico (até ${LIMITE_COMPARACAO})`}
@@ -162,7 +171,7 @@ export function AguaAfluencia({
         </Comparador>
         {regioes.length > 0 && (
           <GraficoLinhas
-            titulo="ENA bruta de 30 dias em % da MLT, a cada 7 dias"
+            titulo={`ENA bruta de 30 dias em % da MLT, ${textoPasso(passoDias)}`}
             dados={dados}
             chaveX="d"
             series={[

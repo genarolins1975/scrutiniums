@@ -28,10 +28,12 @@ import {
   COLUNAS_AGENDA,
   PAGINAS_PARTICIPACAO,
   ROTULO_FORMA_RESULTADO,
+  anoInicioHistorico,
   contagemAgendaPorPainel,
   downloadsDoPainel,
   linhasAgenda,
   linhasHistoricoSituacao,
+  nomeAgenda,
   paresCobertura,
   perguntaPainel,
   proximoPainel,
@@ -45,7 +47,7 @@ export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Regulação: consultas públicas abertas e Agenda Regulatória da ANEEL",
   description:
-    "Consultas e audiências públicas da ANEEL com o período de contribuições lido nas atas da Diretoria, a situação recalculada na data de leitura (nenhuma consulta vencida aparece como aberta), o resultado e o ato, e as atividades da Agenda Regulatória 2026-2027.",
+    "Consultas e audiências públicas da ANEEL com o período de contribuições lido nas atas da Diretoria, a situação recalculada na data de leitura (nenhuma consulta vencida aparece como aberta), o resultado e o ato, e as atividades da Agenda Regulatória vigente da ANEEL.",
   alternates: { canonical: rotaPainel("p046") },
 };
 
@@ -66,7 +68,12 @@ export default function ConsultasEAgendaPage() {
   const formas = Object.entries(C.contagem_por_forma_resultado ?? {}) as [FormaResultado, number][];
   const cobCp = paresCobertura(C, "consultas");
   const cobAp = paresCobertura(C, "audiencias");
-  const inicioJanela = somarDias(C.data_referencia, -(C.janela_dias ?? 200)) ?? C.data_referencia;
+  // sem a janela na gold, o período diz que ela não foi informada: nenhum número de reserva
+  const inicioJanela = typeof C.janela_dias === "number" ? somarDias(C.data_referencia, -C.janela_dias) : null;
+  const agenda = nomeAgenda(A);
+  const anoHistorico = anoInicioHistorico(g);
+  const totalHistorico = typeof C.total_historico === "number" ? num(C.total_historico, 0) : null;
+  const semResultadoFormal = (C.decisoes_sem_resultado_formal ?? []).length;
   const testes = g.evidencias.consultas_abertas?.testes ?? [];
   const anosSoAudiencia = C.cobertura.filter((x) => !x.parcial && x.nas_atas === 0 && x.total_anual_aneel > 0 && x.audiencias_nas_atas > 0).map((x) => x.ano);
 
@@ -80,7 +87,7 @@ export default function ConsultasEAgendaPage() {
           titulo="Consultas públicas e agenda da ANEEL"
           referencia={
             <>
-              ANEEL, atas da Diretoria (arquivo gerado em {dataBR(C.atas_geradas_em ?? null)}) e Agenda Regulatória 2026-2027; data de referência {dataBR(C.data_referencia)};
+              ANEEL, atas da Diretoria (arquivo gerado em {dataBR(C.atas_geradas_em ?? null)}) e {agenda}; data de referência {dataBR(C.data_referencia)};
               processado em {carimbo(g.gerado_em)}.
             </>
           }
@@ -104,8 +111,10 @@ export default function ConsultasEAgendaPage() {
               }
               oQueMudou={
                 <>
-                  Esta publicação traz os resultados deliberados até a reunião de {dataBR(C.atas_deliberadas_ate ?? null)} e a pauta de {dataBR(C.atas_ate ?? null)}, com{" "}
-                  {(C.decisoes_sem_resultado_formal ?? []).length} decisões de abertura ainda sem resultado formal, contadas à parte.
+                  Esta publicação traz os resultados deliberados até a reunião de {dataBR(C.atas_deliberadas_ate ?? null)} e a pauta de {dataBR(C.atas_ate ?? null)}
+                  {semResultadoFormal === 0
+                    ? ", sem decisão de abertura pendente de resultado formal."
+                    : `, com ${semResultadoFormal} ${semResultadoFormal === 1 ? "decisão de abertura ainda sem resultado formal, contada" : "decisões de abertura ainda sem resultado formal, contadas"} à parte.`}
                 </>
               }
               comoInterpretar={
@@ -121,14 +130,16 @@ export default function ConsultasEAgendaPage() {
                 </>
               }
               proveniencia={g.proveniencia.consultas}
-              complementares={[{ rotulo: "Agenda Regulatória 2026-2027", p: g.proveniencia.agenda }]}
+              complementares={[{ rotulo: agenda, p: g.proveniencia.agenda }]}
             >
               <div className="space-y-6">
                 <RegulacaoRecorte
                   periodo={
                     <>
-                      consultas com janela encerrada, resultado ou fase deliberada de {dataBR(inicioJanela)} a {dataBR(C.data_referencia)} ({C.janela_dias ?? 200} dias);
-                      histórico de {num(C.total_historico ?? 0, 0)} consultas desde {dataBR(g.proveniencia.consultas.cobertura_historica.inicio)} no CSV
+                      {inicioJanela
+                        ? `consultas com janela encerrada, resultado ou fase deliberada de ${dataBR(inicioJanela)} a ${dataBR(C.data_referencia)} (${C.janela_dias} dias)`
+                        : `consultas com atividade recente até ${dataBR(C.data_referencia)} (a publicação não informa a janela)`}
+                      {`; histórico ${totalHistorico ? `de ${totalHistorico} consultas` : "completo (contagem não informada)"} desde ${dataBR(g.proveniencia.consultas.cobertura_historica.inicio)} no CSV`}
                     </>
                   }
                   universo="Avisos de consulta e de audiência pública com abertura deliberada em reunião pública da Diretoria da ANEEL"
@@ -160,7 +171,7 @@ export default function ConsultasEAgendaPage() {
                   </div>
                 </div>
 
-                <RegulacaoConsultas consultas={C} dataServidor={dataServidor} fonte={fonte} versao={C.data_referencia} />
+                <RegulacaoConsultas consultas={C} dataServidor={dataServidor} fonte={fonte} versao={C.data_referencia} inicioHistorico={anoHistorico} />
 
                 <RegulacaoLeitura
                   comoLer={
@@ -203,7 +214,7 @@ export default function ConsultasEAgendaPage() {
                         {agendaPainel.semPainel === 1 ? "atividade não se liga" : "atividades não se ligam"} a nenhum painel. Regra: {A.regra_paineis}.
                       </p>
                       <TabelaInterativa
-                        titulo="Atividades da Agenda Regulatória 2026-2027"
+                        titulo={`Atividades da ${agenda}`}
                         colunas={COLUNAS_AGENDA}
                         linhas={linhasAgenda(A.itens, g.limites_em_revisao)}
                         chaveLinha="id"
@@ -240,9 +251,9 @@ export default function ConsultasEAgendaPage() {
                   )}
                 </RegulacaoAnalise>
 
-                <RegulacaoAnalise id="historico" titulo={`Situação das ${num(C.total_historico ?? 0, 0)} consultas do histórico em ${dataBR(C.data_referencia)}`}>
+                <RegulacaoAnalise id="historico" titulo={`Situação ${totalHistorico ? `das ${totalHistorico} consultas` : "das consultas"} do histórico em ${dataBR(C.data_referencia)}`}>
                   <GraficoBarras
-                    titulo="Consultas e audiências desde 2017, por situação"
+                    titulo={`Consultas e audiências ${anoHistorico ? `desde ${anoHistorico}` : "do histórico"}, por situação`}
                     dados={linhasHistoricoSituacao(C)}
                     chaveCategoria="id"
                     chaveRotulo="situacao"
@@ -301,8 +312,10 @@ export default function ConsultasEAgendaPage() {
                     ))}
                   </ul>
                   <p className="text-sm leading-relaxed text-carvao-muted">
-                    {num(C.numeros_suspeitos ?? 0, 0)} consultas do histórico têm o número da ata marcado como suspeito (o rótulo usa o número que o próprio processo cita,
-                    quando único) e {num(C.atos_suspeitos ?? 0, 0)} resultados têm número de ato fora da faixa do tipo, exibidos sem ato.
+                    {typeof C.numeros_suspeitos === "number" ? num(C.numeros_suspeitos, 0) : "Um número não informado de"} consultas do histórico têm o número da ata marcado
+                    como suspeito (o rótulo usa o número que o próprio processo cita, quando único) e{" "}
+                    {typeof C.atos_suspeitos === "number" ? num(C.atos_suspeitos, 0) : "um número não informado de"} resultados têm número de ato fora da faixa do tipo,
+                    exibidos sem ato.
                     {C.convencao_contagem_prazo
                       ? ` Das ${C.convencao_contagem_prazo.casos} decisões que escrevem as duas datas e a duração, ${C.convencao_contagem_prazo.inclusiva} contam o dia do início, ${C.convencao_contagem_prazo.exclusiva} não contam e ${C.convencao_contagem_prazo.outra} divergem por mais de um dia; o fim calculado usa a primeira convenção.`
                       : ""}

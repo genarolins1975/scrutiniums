@@ -112,9 +112,23 @@ export const ARTIGO_LIMITE: Record<CampoLimite, string> = {
   pld_max_horario: "o teto horário",
 };
 
+/** Artigo que concorda com o tipo do ato: "a" (Resolução, Portaria, Lei...) ou "o" (Despacho, Decreto...). */
+export function artigoAto(ato: string): "a" | "o" {
+  return /^(Resolução|Retificação|Portaria|Lei|Medida|Nota|REH|REN|REA|RES)\b/i.test(ato) ? "a" : "o";
+}
+
 /** "pela Resolução ..." ou "pelo Despacho ...": concordância com o tipo do ato. */
 export function porAto(ato: string): string {
-  return /^(Resolução|Retificação|Portaria|Lei|Medida|Nota|REH|REN|REA|RES)\b/i.test(ato) ? `pela ${ato}` : `pelo ${ato}`;
+  return artigoAto(ato) === "a" ? `pela ${ato}` : `pelo ${ato}`;
+}
+
+/**
+ * Reunião da Diretoria como a ata a identifica ("41/2025 - RPO") escrita sem o hífen de
+ * separação ("41/2025 (RPO)"): o identificador não muda, só a pontuação em volta da sigla.
+ */
+export function textoReuniao(r: string | null | undefined): string {
+  if (!r) return "sem identificação na ata";
+  return r.trim().replace(/^(\S+)\s+[-–—]\s+(\S+)$/, "$1 ($2)");
 }
 
 export const COR_LIMITE: Record<CampoLimite, string> = {
@@ -272,7 +286,25 @@ export function oQueMudouLimites(g: Pick<GoldRegulacao, "limites_pld">): string 
   const comp = anterior
     ? ` Em ${anterior.rotulo}, piso, teto estrutural e teto horário eram ${fmt(anterior.pld_min)}, ${fmt(anterior.pld_max_estrutural)} e ${fmt(anterior.pld_max_horario)}/MWh; em ${atual.rotulo}, ${fmt(atual.pld_min)}, ${fmt(atual.pld_max_estrutural)} e ${fmt(atual.pld_max_horario)}/MWh (nominais).`
     : "";
-  return `O ato mais recente é o ${ultimo.ato}, ${textoPublicacao(ultimo.data_publicacao)}, para a vigência de ${dataBR(ultimo.vigencia_inicio)} a ${dataBR(ultimo.vigencia_fim)}.${comp}`;
+  return `O ato mais recente é ${artigoAto(ultimo.ato)} ${ultimo.ato}, ${textoPublicacao(ultimo.data_publicacao)}, para a vigência de ${dataBR(ultimo.vigencia_inicio)} a ${dataBR(ultimo.vigencia_fim)}.${comp}`;
+}
+
+/**
+ * Aviso do modo Auditar sobre a conferência pelo IPCA: a tolerância e o ato da regra
+ * vêm da gold (conferencias_detalhe e regras_limites), nunca escritos à mão. Null
+ * quando a gold não traz nenhuma das duas conferências.
+ */
+export function avisoToleranciaIpca(g: Pick<GoldRegulacao, "limites_pld" | "regras_limites">): string | null {
+  const det = g.limites_pld.conferencias_detalhe;
+  const tol = Array.from(new Set(det.filter((c) => c.conferencia === "regra_ipca" && c.tolerancia).map((c) => c.tolerancia)));
+  const literal = det.some((c) => c.conferencia === "art23_literal");
+  const partes: string[] = [];
+  if (tol.length) partes.push(`A conferência pelo IPCA aceita diferença de até ${tol.join(" ou ")} entre o teto publicado e o teto refeito.`);
+  if (literal)
+    partes.push(
+      `A aplicação literal do art. 23, § 1º${g.regras_limites ? `, da ${abreviarAto(g.regras_limites.ato)}` : ""}, aparece só como conferência informativa, porque não reproduz os valores publicados.`,
+    );
+  return partes.length ? partes.join(" ") : null;
 }
 
 /** Linhas da tabela completa dos atos (modo Auditar). */
@@ -405,6 +437,15 @@ export function textoFimBandeira(v: Pick<VigenciaBandeira, "vigencia_fim" | "vig
   if (v.vigencia_fim_grao === "dia" && v.vigencia_fim) return dataBR(v.vigencia_fim);
   if (v.vigencia_fim_grao === "mes" && v.vigencia_fim_mes) return `${dataBR(v.vigencia_fim_mes)} (só o mês é conhecido)`;
   return "sem fim (vigente ou sem valor posterior na fonte)";
+}
+
+/** Contagem da conferência mês a mês dos adicionais com o recurso Acionamento, com a concordância de cada parte. */
+export function textoConferenciaAcionamento(c: GoldRegulacao["bandeiras"]["conferencia_acionamento"]): string {
+  return (
+    `${c.meses_conferidos} ${pl(c.meses_conferidos, "mês acionado conferido", "meses acionados conferidos")}: ` +
+    `${c.meses_coerentes} ${pl(c.meses_coerentes, "coerente", "coerentes")}, ${c.meses_divergentes} com outro valor, ` +
+    `${c.meses_parciais} ${pl(c.meses_parciais, "parcial", "parciais")} e ${c.meses_sem_vigencia} sem resolução no recurso de adicionais.`
+  );
 }
 
 /** Uma linha por (ato, patamar), ordenada por patamar e início: gráfico de barras, tabela e exportação. */
@@ -645,10 +686,11 @@ export function respostaLinhaTempo(eventos: readonly EventoRegulatorio[], total:
   const partes = [
     `${eventos.length === total ? `Os ${total} eventos` : `${eventos.length} de ${total} eventos`} da linha do tempo começam a valer entre ${dataBR(datas[0])} e ${dataBR(datas[datas.length - 1])}: ` +
       `${atos} ${pl(atos, "ato ou lei lido", "atos e leis lidos")} no texto e ${reg} ${pl(reg, "registro", "registros")} do conjunto de dados de bandeiras.`,
-    `O ${base === "publicacao" ? "de publicação mais recente" : "de vigência mais recente"} é "${recente.titulo}" (${recente.ato ?? recente.tipo_ato}; ${textoPublicacao(recente.data_publicacao)}, vigência a partir de ${dataBR(recente.vigencia_inicio)}).`,
+    `O evento ${base === "publicacao" ? "de publicação mais recente" : "de vigência mais recente"} é "${recente.titulo}" (${recente.ato ?? recente.tipo_ato}; ${textoPublicacao(recente.data_publicacao)}, vigência a partir de ${dataBR(recente.vigencia_inicio)}).`,
     `${depois} ${pl(depois, "evento começou", "eventos começaram")} a valer depois da data de publicação, e ${semPub} ${pl(semPub, "não tem", "não têm")} data de publicação na fonte.`,
   ];
-  if (quem.length) partes.push(`Painéis mais afetados: ${quem.map((q) => `${q.rotulo} (${q.n})`).join(", ")}.`);
+  // contagem de eventos que a curadoria liga a cada painel, não tamanho de efeito
+  if (quem.length) partes.push(`Painéis indicados em mais eventos: ${quem.map((q) => `${q.rotulo} (${q.n})`).join(", ")}.`);
   return partes.join(" ");
 }
 
@@ -894,6 +936,29 @@ export function situacaoSeConfirmada(d: Pick<DecisaoSemResultadoFormal, "inicio"
   return "encerrada_aguardando";
 }
 
+/**
+ * Recorte das consultas da gold em texto ("com atividade nos últimos 200 dias"). Sem a
+ * janela na gold, a ausência é dita: nenhum número de reserva entra no lugar.
+ */
+export function textoJanela(dias: number | null | undefined): string {
+  return typeof dias === "number" ? `com atividade nos últimos ${dias} ${pl(dias, "dia", "dias")}` : "com atividade recente (a publicação não informa a janela)";
+}
+
+/** Ano de início do histórico de consultas, lido da proveniência da gold; null sem a data. */
+export function anoInicioHistorico(g: Pick<GoldRegulacao, "proveniencia">): string | null {
+  return g.proveniencia.consultas.cobertura_historica?.inicio?.slice(0, 4) ?? null;
+}
+
+/**
+ * Nome da agenda com o biênio lido dos anos previstos na própria portaria ("Agenda
+ * Regulatória de 2026 e 2027"), nunca escrito à mão; sem anos, o nome genérico.
+ */
+export function nomeAgenda(a: Pick<GoldRegulacao["agenda"], "por_ano" | "itens">): string {
+  const anos = Array.from(new Set([...Object.keys(a.por_ano ?? {}), ...a.itens.map((i) => String(i.ano_previsto))])).sort();
+  if (!anos.length) return "Agenda Regulatória da ANEEL";
+  return `Agenda Regulatória de ${anos.length === 1 ? anos[0] : `${anos.slice(0, -1).join(", ")} e ${anos[anos.length - 1]}`}`;
+}
+
 /** Dias entre a geração do arquivo das atas pela fonte e a data de leitura; a fonte se declara semanal. */
 export function defasagemAtas(c: Pick<Consultas, "atas_geradas_em" | "atas_deliberadas_ate">, data: string): { dias: number | null; defasada: boolean } {
   const ger = c.atas_geradas_em ?? c.atas_deliberadas_ate ?? null;
@@ -930,14 +995,16 @@ export function respostaConsultas(c: Pick<Consultas, "itens" | "janela_dias" | "
     `${n.encerrada_aguardando} ${pl(n.encerrada_aguardando, "teve", "tiveram")} as contribuições encerradas sem resultado deliberado em reunião registrada até ${dataBR(c.atas_deliberadas_ate ?? null)}` +
       (n.resultado_em_pauta ? `, ${n.resultado_em_pauta} ${pl(n.resultado_em_pauta, "tem", "têm")} resultado levado à reunião sem decisão` : "") +
       (semData ? ` e ${semData} ${pl(semData, "não tem", "não têm")} datas na ata, por isso a situação não é derivável` : "") +
-      `, entre as ${itens.length} consultas com atividade nos últimos ${c.janela_dias ?? "200"} dias.`,
+      `, entre as ${itens.length} consultas ${textoJanela(c.janela_dias)}.`,
   );
   const pend = (c.decisoes_sem_resultado_formal ?? []).map((d) => situacaoSeConfirmada(d, data));
   const ab = pend.filter((s) => s === "aberta").length;
   const aa = pend.filter((s) => s === "a_abrir").length;
   if (ab || aa) {
     partes.push(
-      `Outras ${pend.length} decisões de abertura da última pauta ainda não têm resultado formal na ata e ficam fora da contagem: se confirmadas, ` +
+      (pend.length === 1
+        ? "Outra decisão de abertura da última pauta ainda não tem resultado formal na ata e fica fora da contagem: se confirmada, "
+        : `Outras ${pend.length} decisões de abertura da última pauta ainda não têm resultado formal na ata e ficam fora da contagem: se confirmadas, `) +
         [ab ? `${ab} ${pl(ab, "estaria aberta", "estariam abertas")}` : "", aa ? `${aa} ${pl(aa, "estaria", "estariam")} a abrir` : ""].filter(Boolean).join(" e ") +
         ".",
     );
@@ -1009,7 +1076,9 @@ export function faixasConsultas(itens: readonly ConsultaNaData[]): FaixaTempo[] 
     const semJanela = !c.inicio || !c.fim;
     const ausencia = semJanela
       ? c.situacao_na_data === "prazo_nao_datado"
-        ? `a ata informa só a duração (${c.duracao_dias ?? f?.duracao_dias ?? "sem"} dias), sem datas`
+        ? (c.duracao_dias ?? f?.duracao_dias) != null
+          ? `a ata informa só a duração (${c.duracao_dias ?? f?.duracao_dias} dias), sem datas`
+          : "a ata informa só que há prazo, sem datas nem duração"
         : c.sessao
           ? `só a sessão de ${dataBR(c.sessao)} na ata, sem período de contribuições`
           : "a ata não informa período, duração nem sessão"
@@ -1078,8 +1147,10 @@ export function respostaAgenda(a: GoldRegulacao["agenda"], limites: GoldRegulaca
   if (!a.disponivel) return `A Agenda Regulatória não está disponível nesta publicação: ${a.motivo ?? "motivo não informado"}.`;
   const anos = Object.entries(a.por_ano ?? {}).sort(([x], [y]) => x.localeCompare(y));
   const comConsulta = a.itens.filter((i) => i.consultas.length).length;
+  const portaria = a.portaria ?? "portaria da Agenda Regulatória";
+  // a vírgula fecha o aposto da data ("Portaria ..., de 2 de dezembro de 2025, prevê"); sem aposto, não há vírgula
   return (
-    `A ${a.portaria ?? "portaria da Agenda Regulatória"}, prevê ${a.itens.length} atividades para o biênio` +
+    `A ${portaria}${portaria.includes(",") ? "," : ""} prevê ${a.itens.length} atividades para o biênio` +
     (anos.length ? ` (${anos.map(([ano, n]) => `${n} em ${ano}`).join(" e ")})` : "") +
     `; ${limites.length} ${pl(limites.length, "trata", "tratam")} dos limites do PLD (${limites.map((l) => `${l.codigo}, prevista para ${l.ano_previsto}`).join("; ")}) e ` +
     `${comConsulta} ${pl(comConsulta, "tem", "têm")} consulta que cita o código. O ano é previsão da própria ANEEL, reprogramável` +
@@ -1090,7 +1161,8 @@ export function respostaAgenda(a: GoldRegulacao["agenda"], limites: GoldRegulaca
 /* ---------------------------------------------------------------- P046: histórico e cobertura */
 
 export function linhasHistoricoSituacao(c: Pick<Consultas, "contagem_por_situacao">): LinhaTabela[] {
-  return ORDEM_SITUACAO.map((s) => ({ id: s, situacao: ROTULO_CURTO_SITUACAO[s], n: c.contagem_por_situacao[s] ?? 0 }));
+  // situação sem contagem na gold fica sem valor (barra "sem dado"), nunca zero
+  return ORDEM_SITUACAO.map((s) => ({ id: s, situacao: ROTULO_CURTO_SITUACAO[s], n: c.contagem_por_situacao[s] ?? null }));
 }
 
 export function paresCobertura(c: Pick<Consultas, "cobertura">, modalidade: "consultas" | "audiencias"): { id: string; rotulo: string; valor: number | null; referencia: number | null; detalhe?: string }[] {

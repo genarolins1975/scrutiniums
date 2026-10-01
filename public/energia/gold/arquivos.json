@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "arquivos.json",
- "gerado_em": "2026-10-01T07:45:23Z",
+ "gerado_em": "2026-10-01T08:15:47Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "fa4767ccfa9a+alterado",
+ "versao_codigo": "00dc290a9fdd+alterado",
  "disponivel": true,
  "arquivos": {
   "/energia/series/regulacao_limites_pld_atos.csv": {
@@ -127,7 +127,7 @@
    "gold": "agua_detalhe.json"
   },
   "/energia/series/agua_subsistemas_diario.csv": {
-   "colunas": "EAR e ENA diárias por subsistema e SIN (ONS), desde 2022, com a captura usada. Colunas: data; recorte (SE, S, NE, N, SIN); ear_mwmes; ear_max_mwmes; ear_pct (publicado nos subsistemas; no SIN, Σ EAR ÷ Σ EAR máxima × 100); ena_bruta_mwmed (MWmed; SIN = soma); ena_bruta_pct_mlt (publicado nos subsistemas; no SIN, Σ ENA ÷ Σ MLT × 100); mlt_implicita_mwmed (ENA ÷ % MLT × 100; SIN = soma); captura_ear e captura_ena (fonte e instante da captura do arquivo anual usado: a mais recente entre o silver principal e a recaptura do módulo). Ausência = vazio.",
+   "colunas": "EAR e ENA diárias por subsistema e SIN (ONS), desde 2022, com a captura usada. Colunas: data; recorte (SE, S, NE, N, SIN); ear_mwmes; ear_max_mwmes; ear_pct (publicado nos subsistemas; no SIN, Σ EAR ÷ Σ EAR máxima × 100); ena_bruta_mwmed (MWmed; SIN = soma); ena_bruta_pct_mlt (publicado nos subsistemas; no SIN, Σ ENA ÷ Σ MLT × 100); mlt_implicita_mwmed (ENA ÷ % MLT × 100; SIN = soma); ena_arm_mwmed (ENA armazenável, MWmed; SIN = soma); ena_arm_pct_mlt (publicado nos subsistemas; no SIN, Σ ENA armazenável ÷ Σ MLT armazenável × 100); mlt_arm_implicita_mwmed (ENA armazenável ÷ % MLT armazenável × 100; SIN = soma); captura_ear e captura_ena (fonte e instante da captura do arquivo anual usado: a mais recente entre o silver principal e a recaptura do módulo). Ausência = vazio.",
    "modulo": "agua",
    "gold": "agua_detalhe.json"
   },
@@ -507,7 +507,7 @@
    "gold": "mercado.json"
   },
   "/energia/series/mercado_nacional_mensal.csv": {
-   "colunas": "mes; cativo_mwh; livre_mwh; total_mwh (soma das linhas da EPE); livre_pct (100 × livre ÷ total); cativo_uc; livre_uc; total_planilha_mwh e livre_planilha_mwh (total nacional da planilha formatada da EPE, para conferência); diferenca_total_mwh (tabela longa − planilha); preliminar (1 = ano marcado como preliminar pela EPE); samp_livre_uc e samp_livre_mwh (soma das distribuidoras no SAMP da ANEEL: só consumidores livres faturados por distribuidora); samp_distribuidoras (quantas distribuidoras publicaram o mês); samp_completo (1 = publicado por pelo menos 95% da mediana de distribuidoras e nenhuma distribuidora sem as linhas LIVRE que tinha no mês anterior); samp_comparavel (1 = completo e sem linhas Regular repetidas do mês anterior; só esses meses entram na comparação com a EPE); samp_ocorrencias (distribuidoras sem LIVRE e repetições do mês). Vazio = ausência.",
+   "colunas": "mes; cativo_mwh; livre_mwh; total_mwh (soma das linhas da EPE); livre_pct (100 × livre ÷ total); cativo_uc; livre_uc; total_planilha_mwh e livre_planilha_mwh (total nacional da planilha formatada da EPE, para conferência); diferenca_total_mwh (tabela longa − planilha); preliminar (1 = ano marcado como preliminar pela EPE); samp_livre_uc e samp_livre_mwh (soma das distribuidoras no SAMP da ANEEL: só consumidores livres faturados por distribuidora); samp_distribuidoras (quantas distribuidoras publicaram o mês); samp_completo (1 = publicado por pelo menos 95% da mediana de distribuidoras e nenhuma distribuidora sem as linhas LIVRE que tinha no mês anterior); samp_comparavel (1 = completo e sem linhas Regular repetidas do mês anterior; só esses meses entram na comparação com a EPE); samp_ocorrencias (distribuidoras sem LIVRE, linhas Regular repetidas do mês anterior e variações abruptas de unidades livres no mês). Vazio = ausência.",
    "modulo": "mercado",
    "gold": "mercado.json"
   },

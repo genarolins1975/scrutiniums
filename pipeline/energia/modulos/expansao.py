@@ -2568,7 +2568,7 @@ def construir(con, ctx):
         ("unidades", "Unidades geradoras do RALIE com previsão (CSV)"),
         ("trajetorias", "Trajetória e desfecho das usinas do RALIE desde 2021 (CSV)"),
         ("confiabilidade", "Confiabilidade das previsões por fotografia (CSV)"),
-        ("liberacoes", "Liberações comerciais e atraso por ano e tipo (CSV)"),
+        ("liberacoes", "Liberações comerciais e desvio em relação ao prazo outorgado vigente, por ano e tipo (CSV)"),
         ("encerramentos", "Atos de revogação e extinção de outorga (CSV)"),
         ("leiloes", "Leilões de transmissão por lote (CSV)"),
         ("obras", "Empreendimentos de transmissão do SIGET (CSV)"),

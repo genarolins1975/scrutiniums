@@ -32,6 +32,7 @@ import {
   COLUNAS_RESERVATORIOS_POR_ANO,
   COLUNAS_RESUMO,
   COLUNAS_REVISOES_CAPTURAS,
+  anoInicial,
   entidadesEar,
   linhasCapturas,
   linhasEventos,
@@ -85,6 +86,9 @@ export default function AguaPage() {
   const downloads = g.downloads.filter((d) => URLS_P017.some((u) => d.url.includes(u)));
   const rec = g.reconciliacao_ear;
   const quebra = a.quebras_perimetro_ree[0] ?? null;
+  // ano inicial da contagem de capacidade e base da faixa do SIN: lidos da gold, não escritos aqui
+  const desdeCap = anoInicial(a.capacidade.inicio);
+  const baseSin = a.subsistemas.find((s) => s.sm === "SIN")?.periodo_base ?? null;
 
   return (
     <>
@@ -213,7 +217,7 @@ export default function AguaPage() {
                           endereco={`${rotaPainel("p017")}#p017`}
                         />
                         <Numero
-                          rotulo="Mudanças da EAR máxima desde 2000"
+                          rotulo={`Mudanças da EAR máxima${desdeCap ? ` desde ${desdeCap}` : ""}`}
                           natureza="CALCULADO"
                           evidencia={ev.capacidade}
                           formato="num"
@@ -221,7 +225,11 @@ export default function AguaPage() {
                           unidade="mudanças"
                           tamanho="medio"
                           cor="var(--serie-referencia)"
-                          nota="Todas atribuídas a reservatórios, com o resíduo publicado."
+                          nota={
+                            a.capacidade.eventos_fechados === a.capacidade.n_eventos
+                              ? "Todas atribuídas a reservatórios, com o resíduo publicado."
+                              : `${a.capacidade.eventos_fechados} de ${a.capacidade.n_eventos} atribuídas a reservatórios dentro da tolerância; o resíduo de cada uma está publicado.`
+                          }
                           endereco={`${rotaPainel("p017")}#capacidade`}
                         />
                       </div>
@@ -229,7 +237,7 @@ export default function AguaPage() {
                   />
                 </div>
 
-                <AguaAnalise id="capacidade" titulo="Mudanças da capacidade de armazenamento desde 2000">
+                <AguaAnalise id="capacidade" titulo={`Mudanças da capacidade de armazenamento${desdeCap ? ` desde ${desdeCap}` : ""}`}>
                   <p className="max-w-prose2 text-sm leading-relaxed text-carvao" data-resposta="p017-capacidade">
                     {respostaCapacidade(a.capacidade, a.dia)}
                   </p>
@@ -360,7 +368,7 @@ export default function AguaPage() {
                 porQueImporta={
                   <>Quem chega da Visão geral ou do PLD encontra aqui a mesma grandeza; esta conferência mostra de onde vem cada número e o dia de cada um.</>
                 }
-                oQueMudou={<>{textoResumo(h, g.dias_referencia.ear, g.dias_referencia.ena)}</>}
+                oQueMudou={<>{textoResumo(h, g.dias_referencia.ear, g.dias_referencia.ena, baseSin)}</>}
                 comoInterpretar={
                   <>Cada linha traz o valor do resumo e o desta página com o dia de cada um. Nenhuma diferença é calculada: dias diferentes não se subtraem.</>
                 }
@@ -395,7 +403,7 @@ export default function AguaPage() {
                 />
               </PainelEvidencia>
             ) : (
-              <AguaParteAusente titulo="Conferência com o resumo de operação" motivo={textoResumo(null, g.dias_referencia.ear, g.dias_referencia.ena)} />
+              <AguaParteAusente titulo="Conferência com o resumo de operação" motivo={textoResumo(null, g.dias_referencia.ear, g.dias_referencia.ena, baseSin)} />
             )}
           </Bloco>
         </ModoProfundidade>

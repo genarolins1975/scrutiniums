@@ -1,11 +1,11 @@
 {
  "dominio": "energia",
  "gold": "manifesto.json",
- "gerado_em": "2026-10-01T07:44:29Z",
+ "gerado_em": "2026-10-01T08:15:47Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "fa4767ccfa9a+alterado",
+ "versao_codigo": "00dc290a9fdd+alterado",
  "disponivel": true,
- "id_publicacao": "48edaa54476b984f512b52024aab2347fed0fd5968959b6ffc3dc8bf6cbaef80",
+ "id_publicacao": "7bc227bd52534c3f29de3d7271ab96b6703b04410730df22c12649dbc1386772",
  "regra_id": "sha256 da lista JSON [caminho, bytes, sha256] de todos os arquivos listados, em ordem de caminho (separadores sem espaço, UTF-8): o mesmo conjunto de bytes tem o mesmo id.",
  "completo": false,
  "fora_do_manifesto": [
@@ -29,7 +29,7 @@
  "repositorio": "https://github.com/genarolins1975/scrutiniums",
  "totais": {
   "arquivos": 265,
-  "bytes": 205729948,
+  "bytes": 206033711,
   "geometrias": 2,
   "golds": 26,
   "series": 212,
@@ -51,9 +51,9 @@
   {
    "caminho": "/energia/gold/agua_detalhe.json",
    "tipo": "gold",
-   "bytes": 387086,
-   "sha256": "8e938e765ed3e79a4017f204e14960a560796d05fef9f346838334e2782ff7e8",
-   "gerado_em": "2026-10-01T07:07:11Z",
+   "bytes": 395228,
+   "sha256": "66f4c6499003da083e2bae5c8b914bb06fc2dddcc366c29506c22f48540559dd",
+   "gerado_em": "2026-10-01T07:51:56Z",
    "disponivel": true
   },
   {
@@ -91,17 +91,17 @@
   {
    "caminho": "/energia/gold/empresas.json",
    "tipo": "gold",
-   "bytes": 400927,
-   "sha256": "d0350d9912ad20e0a6050842fb897c05d288aa9d332c89a4fc35b93e17184a6a",
-   "gerado_em": "2026-10-01T07:18:43Z",
+   "bytes": 401278,
+   "sha256": "7d7e0cb1d6a479816ac1724c7f9d914585a58f1ab4be1f9baa105a0d895a561b",
+   "gerado_em": "2026-10-01T08:13:02Z",
    "disponivel": true
   },
   {
    "caminho": "/energia/gold/expansao.json",
    "tipo": "gold",
-   "bytes": 386864,
-   "sha256": "069df7e8bd49c8d8dfbd2d449ba514f67a1e2a51e4452f7397e9c22e88a6c824",
-   "gerado_em": "2026-10-01T06:58:49Z",
+   "bytes": 386903,
+   "sha256": "3e054f3282588f73191f93fa699bad3dcd204d2c3235811d2ac241268bb79df4",
+   "gerado_em": "2026-10-01T07:56:37Z",
    "disponivel": true
   },
   {
@@ -139,9 +139,9 @@
   {
    "caminho": "/energia/gold/mercado.json",
    "tipo": "gold",
-   "bytes": 433808,
-   "sha256": "c3073af5afffaf89a7e4c98b72537ec03b6e6cdac3d57b4ec2291afad28f02a0",
-   "gerado_em": "2026-10-01T07:42:57Z",
+   "bytes": 433814,
+   "sha256": "c6700061a201a9e725ae125641d8b82f453e2bdcb266bf3f32a6b759276ff3e6",
+   "gerado_em": "2026-10-01T07:54:38Z",
    "disponivel": true
   },
   {
@@ -195,8 +195,8 @@
   {
    "caminho": "/energia/gold/publicacao.json",
    "tipo": "gold",
-   "bytes": 399882,
-   "sha256": "9e1deaa3027875bb0a0e8c5e325ca222b36eafc6f500eecb9c66a1940a1b5067"
+   "bytes": 402680,
+   "sha256": "48b43ca8229c7a4fddcddc6250923bb1c8fa2c26fcd207c70e252c6df70e88d1"
   },
   {
    "caminho": "/energia/gold/qualidade.json",
@@ -233,17 +233,17 @@
   {
    "caminho": "/energia/gold/sintese.json",
    "tipo": "gold",
-   "bytes": 338099,
-   "sha256": "75c8e7985b515cb5f9b8b10c868f751c1404211f0d498d6206aa926e9ede51a5",
-   "gerado_em": "2026-10-01T07:41:52Z",
+   "bytes": 358675,
+   "sha256": "98fcb9438181912d91bef3c1cc96c75404645256441b7e8d9d8eaf5698ba1260",
+   "gerado_em": "2026-10-01T08:04:11Z",
    "disponivel": true
   },
   {
    "caminho": "/energia/gold/territorio.json",
    "tipo": "gold",
-   "bytes": 397495,
-   "sha256": "945f194961c9e9dc7ace87147eef04391daa8839b89b6096e163f1b228872918",
-   "gerado_em": "2026-10-01T07:38:19Z",
+   "bytes": 398297,
+   "sha256": "9c86783b23f3b874b0ab2210f639070ce3b9806eb0d5998a7ce0659f0034e0db",
+   "gerado_em": "2026-10-01T07:48:27Z",
    "disponivel": true
   },
   {
@@ -513,8 +513,8 @@
   {
    "caminho": "/energia/series/agua_subsistemas_diario.csv",
    "tipo": "serie",
-   "bytes": 1345353,
-   "sha256": "c23f5d1cec3266d0bb25653dcb3b75d613ef2f34ad86b8a11869c815f0ab5a5a",
+   "bytes": 1593349,
+   "sha256": "c97dbf486fd5ad136b7e29ac54398778b8f5d0fbe0a2fda3fd96e2909e154eac",
    "colunas": [
     "data",
     "recorte",
@@ -524,6 +524,9 @@
     "ena_bruta_mwmed",
     "ena_bruta_pct_mlt",
     "mlt_implicita_mwmed",
+    "ena_arm_mwmed",
+    "ena_arm_pct_mlt",
+    "mlt_arm_implicita_mwmed",
     "captura_ear",
     "captura_ena"
    ],
@@ -1148,8 +1151,8 @@
   {
    "caminho": "/energia/series/dados_catalogo.csv",
    "tipo": "serie",
-   "bytes": 270285,
-   "sha256": "a20287e0839ab77a7b511d59c5dca76c0537e724dad94d26add8e0742b05e7df",
+   "bytes": 270197,
+   "sha256": "7d57de94e44008acb8f7d2952239fbc36e86fb39713869a7301f1ce3c353027c",
    "colunas": [
     "id",
     "orgao",
@@ -1179,8 +1182,8 @@
   {
    "caminho": "/energia/series/dados_conjuntos.csv",
    "tipo": "serie",
-   "bytes": 56786,
-   "sha256": "3c3a617f5266c3394584ea48440407c52904464d6697cdddc636ed328f5327c0",
+   "bytes": 56792,
+   "sha256": "c5671bd7e60af663db694ab6b9aa81fdd4178415a6002a05c3a1c456a129508b",
    "colunas": [
     "id",
     "familia",
@@ -1240,8 +1243,8 @@
   {
    "caminho": "/energia/series/dados_eixos.csv",
    "tipo": "serie",
-   "bytes": 15877,
-   "sha256": "4c6ccd8277a7505893119ed5cd5ab1f806b9a48d8e104b43a7f1e257039d8066",
+   "bytes": 16671,
+   "sha256": "469bd118c2eb957ed7a20ed8a14886ecc42bbf8b738cbc8051c25b7d793338f6",
    "colunas": [
     "gold",
     "indicador",
@@ -1252,15 +1255,15 @@
     "testes_ressalva",
     "testes_reprovados"
    ],
-   "linhas": 147,
+   "linhas": 154,
    "dicionario": true,
    "parquet": null
   },
   {
    "caminho": "/energia/series/dados_recursos_aneel.csv",
    "tipo": "serie",
-   "bytes": 227396,
-   "sha256": "0fcfd872f44f823540eeced3134627d11693596478f1195d852a5a72f1b3c1be",
+   "bytes": 227400,
+   "sha256": "e81da1b8fa961ff6f90b3383e219b1e9845d9b521994d3e7c6cb51db20621df2",
    "colunas": [
     "orgao",
     "conjunto",
@@ -1337,8 +1340,8 @@
   {
    "caminho": "/energia/series/dados_recursos_ons.parquet",
    "tipo": "parquet",
-   "bytes": 620520,
-   "sha256": "608dd80084ec9e5f607e6e58458ee7205c4dadffc5fb2be992c9cd0b5a0d9c2c"
+   "bytes": 620521,
+   "sha256": "677e01fc94c6220109c72a14ff7f490f712033f203724c86d1766e913cd38084"
   },
   {
    "caminho": "/energia/series/dados_revisoes.csv",
@@ -1365,8 +1368,8 @@
   {
    "caminho": "/energia/series/dados_validacoes.csv",
    "tipo": "serie",
-   "bytes": 571218,
-   "sha256": "ac70f515f8f8a419fb57fb07aadeed942d715f3a7ab700846b853ad8b206055d",
+   "bytes": 570437,
+   "sha256": "f151a88b4e927f8d9ca3beffd82376a0c443944190f13fe2a4539afb6f127cd5",
    "colunas": [
     "id",
     "alvo",
@@ -1454,7 +1457,7 @@
    "caminho": "/energia/series/empresas_ativos.json",
    "tipo": "serie",
    "bytes": 2837265,
-   "sha256": "3a3cb584dcda0ca63a3ae7af04658fa146e248d968099cd74d245abaf1eccdda"
+   "sha256": "c922ba37b7f23f024a912f5a5e02ed1c0d1c806c3119583999f0a5e790c21483"
   },
   {
    "caminho": "/energia/series/empresas_ativos.parquet",
@@ -1466,7 +1469,7 @@
    "caminho": "/energia/series/empresas_cadeia.json",
    "tipo": "serie",
    "bytes": 1149660,
-   "sha256": "7b2c9636276fd1c776c8487c26f09bd0d45e15ffb4c47e595907801a53d8b210"
+   "sha256": "ddf985bf94d61e0af4332d930bcd195b3038ae6cc97a172cd49933ed45cecd5c"
   },
   {
    "caminho": "/energia/series/empresas_cadeia_societaria.csv",
@@ -1553,13 +1556,13 @@
    "caminho": "/energia/series/empresas_evidencias.json",
    "tipo": "serie",
    "bytes": 426084,
-   "sha256": "69f971062a7bbb1046a8bf16c6cd6baf089ac65a9e32f036af7fed670ac98d6a"
+   "sha256": "6b2b2fef1989a51f480bb6a4fb78155d950b19d10e7aab5064f1cd5cda75f25d"
   },
   {
    "caminho": "/energia/series/empresas_financas.json",
    "tipo": "serie",
    "bytes": 2874472,
-   "sha256": "04d27220853e53a36c8059bf2b47a52f4dd874a71c11d39e6bc722a7a38588c0"
+   "sha256": "924fad16ecf761cb838b1c0e35ea36d292bfdb61d3ed9638665101380662a27b"
   },
   {
    "caminho": "/energia/series/empresas_financas_ajustes.csv",
@@ -2833,7 +2836,7 @@
    "caminho": "/energia/series/mercado_detalhe.json",
    "tipo": "serie",
    "bytes": 212899,
-   "sha256": "0bcbad79bbc141b0f092dee980410bf1909eccabc59c0934692f32b0ee1b98d1"
+   "sha256": "20ac887d3e22fcb41fff27f7e564a0ea5979be62609943eb5a668a9ab8cba6bc"
   },
   {
    "caminho": "/energia/series/mercado_distribuidoras_ano.csv",
@@ -2915,8 +2918,8 @@
   {
    "caminho": "/energia/series/mercado_nacional_mensal.csv",
    "tipo": "serie",
-   "bytes": 34435,
-   "sha256": "ca5bccf44ee22c51f6d4d9494f09a61dfd288fb64ebb9e0fbe83a86a2fed6283",
+   "bytes": 35521,
+   "sha256": "eb6fcba7b021f6d4d145b4b1d76d81d2331282195784067af7be923986b2c2a0",
    "colunas": [
     "mes",
     "cativo_mwh",
@@ -4518,8 +4521,8 @@
   {
    "caminho": "/energia/series/sintese_episodios.csv",
    "tipo": "serie",
-   "bytes": 4450,
-   "sha256": "88a16fa95f639480b77fa7fb2bb9bddb7edb633d4061fd4ef70456124c4bb5e2",
+   "bytes": 5029,
+   "sha256": "f2719de5da38175757ff1b00b00fade3a4c8b7fa54c049ca23b847b7948178f4",
    "colunas": [
     "regra",
     "inicio",
@@ -4530,7 +4533,7 @@
     "duracao_dias",
     "em_curso"
    ],
-   "linhas": 69,
+   "linhas": 78,
    "dicionario": true,
    "parquet": null
   },
@@ -4563,8 +4566,8 @@
   {
    "caminho": "/energia/series/sintese_regras_diario.csv",
    "tipo": "serie",
-   "bytes": 1165614,
-   "sha256": "7cbe614f627e9970864696ed98d358f82a4c1947b31199dd69932ec6067fac38",
+   "bytes": 1187066,
+   "sha256": "7b975056e280af8cce712c6b599169edd36fdd2bb77837246bbfd80e0cf4ddd1",
    "colunas": [
     "data",
     "regra",
@@ -4758,7 +4761,7 @@
    "caminho": "/energia/series/territorio_municipios.json",
    "tipo": "serie",
    "bytes": 1128329,
-   "sha256": "83ca69fc4a6144942922dd74220a2a8d4a16fe9b49b1ed5099c4db2fba284ec7"
+   "sha256": "bedcb0af0943a084bd530a26a197eb81ea1f0cf0c668bbf0ecfda3300f5d48b9"
   },
   {
    "caminho": "/energia/series/territorio_usinas.csv",
@@ -4792,7 +4795,7 @@
    "caminho": "/energia/series/territorio_usinas.json",
    "tipo": "serie",
    "bytes": 3084980,
-   "sha256": "5574e49f089d226a38694003b059b10819a8fb179201ec4f2706294c3d5be67b"
+   "sha256": "84834b31c849eda492afddcc2de34887d9c5bb483bb976fabf9ea747d40b47ca"
   },
   {
    "caminho": "/energia/series/territorio_usinas.parquet",

@@ -5,14 +5,14 @@ import { CursorSincronizado } from "@/components/energia/CursorSincronizado";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
 import { Numero } from "@/components/energia/Numero";
 import { RedeCirculacao } from "@/components/energia/RedeCirculacao";
-import { RedeAuditoria, RedeAviso, RedeIndisponivel, RedeNavegacao, RedeRegras, RedeSeguir } from "@/components/energia/RedePagina";
+import { RedeAuditoria, RedeAviso, RedeIndisponivel, RedeNavegacao, RedeRecorte, RedeRegras, RedeSeguir } from "@/components/energia/RedePagina";
 import { TabelaInterativa } from "@/components/energia/TabelaInterativa";
 import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Termo } from "@/components/evidencia/Termo";
 import { Unidade } from "@/components/evidencia/Unidade";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
-import { carimbo, dataBR, horaLocal, num, rotuloRegra } from "@/lib/energia/formato";
+import { carimbo, dataBR, horaLocal, mesAno, num } from "@/lib/energia/formato";
 import { gold, integra, lerGold } from "@/lib/energia/gold";
 import {
   COLUNAS_COBERTURA,
@@ -21,6 +21,7 @@ import {
   COR_PAR,
   FRONTEIRAS,
   PERGUNTA_MODULO_REDE,
+  ROTULO_REGRA,
   curtoFronteira,
   linhasCobertura,
   linhasEsquemaNacional,
@@ -28,22 +29,28 @@ import {
   nomeFronteira,
   paraTabela,
   perguntaPainel,
+  provenienciaLegivel,
   rotaPainel,
   situacaoAtualidade,
   textoCobertura,
   textoConferenciaSilver,
+  textoOrientacaoArquivos,
 } from "@/lib/energia/rede";
 import { textoAmplitude, textoFluxos30d } from "@/lib/energia/resumos";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { GoldRedeDetalhe } from "@/lib/energia/tipos-rede";
 
 export const dynamic = "force-static";
-export const metadata: Metadata = {
-  title: "Rede: como a energia circula entre as regiões",
-  description:
-    "Energia em cada sentido e saldo de cada fronteira entre subsistemas (ONS), por dia e por hora, com o programa e o PLD da mesma hora (CCEE), exportação e importação brutas por subsistema e histórico mensal desde 2021.",
-  alternates: { canonical: "/setor-eletrico/rede" },
-};
+/** Descrição com o início do histórico lido da gold (nenhuma data escrita à mão). */
+export function generateMetadata(): Metadata {
+  const g = lerGold<GoldRedeDetalhe>("rede_detalhe.json");
+  const desde = integra(g) && g.circulacao.mensal.meses.length ? ` desde ${mesAno(g.circulacao.mensal.meses[0])}` : "";
+  return {
+    title: "Rede: como a energia circula entre as regiões",
+    description: `Energia em cada sentido e saldo de cada fronteira entre subsistemas (ONS), por dia e por hora, com o programa e o PLD da mesma hora (CCEE), exportação e importação brutas por subsistema e histórico mensal${desde}.`,
+    alternates: { canonical: "/setor-eletrico/rede" },
+  };
+}
 
 const FONTE = "ONS, Intercâmbios Entre Subsistemas (releitura do módulo Rede)";
 /** Anos cujos arquivos de fronteira trazem o programado, lidos do esquema da fonte publicado na gold. */
@@ -124,10 +131,10 @@ export default function RedePage() {
                   não aparecem.
                 </>
               }
-              proveniencia={g.proveniencia.fluxo}
+              proveniencia={provenienciaLegivel(g.proveniencia.fluxo)}
               complementares={[
-                { rotulo: "Exportação e importação por subsistema", p: g.proveniencia.subsistemas },
-                { rotulo: "PLD nas duas pontas na mesma hora", p: g.proveniencia.pld_na_hora },
+                { rotulo: "Exportação e importação por subsistema", p: provenienciaLegivel(g.proveniencia.subsistemas) },
+                { rotulo: "PLD nas duas pontas na mesma hora", p: provenienciaLegivel(g.proveniencia.pld_na_hora) },
               ]}
             >
               <div className="space-y-6">
@@ -161,14 +168,14 @@ export default function RedePage() {
 
                 <RedeAuditoria id="p028-regras" titulo="Regras de leitura publicadas com os dados">
                   <RedeRegras
-                    regras={(["orientacao", "energia", "bruto_liquido", "nulo", "pld", "limites"] as const).map((k) => ({ rotulo: rotuloRegra(k), texto: g.regras[k] }))}
+                    regras={(["orientacao", "energia", "bruto_liquido", "nulo", "pld", "limites"] as const).map((k) => ({ rotulo: ROTULO_REGRA[k], texto: g.regras[k] }))}
                   />
                 </RedeAuditoria>
 
                 <RedeAuditoria id="p028-fonte" titulo="Como cada arquivo anual do ONS publica as fronteiras">
                   <p className="text-sm text-carvao-muted">
-                    Os arquivos até 2025 usam orientação fixa com valor com sinal; o de 2026 orienta cada linha pelo sentido do fluxo da hora. O módulo converte cada linha para a
-                    orientação do nome da fronteira, verificado e programado com o mesmo sinal. O dicionário do conjunto não descreve a mudança.
+                    {textoOrientacaoArquivos(g.esquema_fonte)} O módulo converte cada linha para a orientação do nome da fronteira, verificado e programado com o mesmo
+                    sinal. O dicionário do conjunto não descreve a mudança.
                   </p>
                   <TabelaInterativa
                     titulo="Arquivos do conjunto Intercâmbios Entre Subsistemas"
@@ -242,6 +249,11 @@ export default function RedePage() {
                     Série da rotina diária de operação do observatório (outro coletor), com referência até {dataBR(r.dia_referencia)} para o fluxo e até{" "}
                     {dataBR(r.ultimo_dia_pld)} para o PLD; o painel acima usa a releitura do módulo, até {dataBR(g.referencia.dia)}.
                   </RedeAviso>
+                  <RedeRecorte
+                    periodo={ultimoAno.length ? `${dataBR(ultimoAno[0].d)} a ${dataBR(ultimoAno[ultimoAno.length - 1].d)}, por dia` : "sem dias publicados"}
+                    universo="As quatro fronteiras entre subsistemas (fluxo) e os quatro submercados (PLD)"
+                    unidade="MWmed (fluxo médio do dia); R$/MWh (diferença entre PLDs médios do dia)"
+                  />
                   <CursorSincronizado>
                     <GraficoLinhas
                       titulo="Fluxo médio diário por fronteira (positivo no sentido do nome)"

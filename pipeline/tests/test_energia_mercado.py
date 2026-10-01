@@ -21,7 +21,19 @@ Recortes em pipeline/tests/dados/energia_mercado/ (tirados dos arquivos oficiais
   Mercado Mensal que apontam a edição corrente;
 - mme_boletim_junho_2026_recorte.txt e mme_boletim_marco_2026_recorte.txt: texto das tabelas de
   consumo por ambiente e por classe e de encargos de serviços do sistema das edições de junho e de
-  março de 2026 do Boletim Mensal de Monitoramento do Sistema Elétrico (MME).
+  março de 2026 do Boletim Mensal de Monitoramento do Sistema Elétrico (MME);
+- mme_consolidacao_2025_recorte.txt: trechos (com as quebras de página) do PDF público
+  "Consolidação 2025" do boletim do MME (sumário, quadro do mercado consumidor e encargos);
+- parcela_carga_consumo_recorte.csv: linhas reais de julho de 2026 do conjunto PARCELA_CARGA_CONSUMO
+  (todas as 139 parcelas de perfis Distribuidor, todas as 18 de Exportador e 10 de cada classe de
+  consumidor) e cinco de fevereiro de 2025 com o ramo de atividade vazio em perfil que não é de
+  distribuidora, só com as colunas lidas; lista_perfil_recorte.csv: a classe de cada perfil
+  envolvido, do cadastro LISTA_PERFIL_V1;
+- samp_2026_elektro_recorte.parquet: todas as linhas de energia e de consumidores (CATIVO e LIVRE)
+  da ELEKTRO em junho e julho de 2026 no samp-2026.parquet (julho veio sem linhas LIVRE e com as
+  linhas CATIVO Regular iguais às de junho);
+- arquivos anuais inteiros de 2023 (consumo por classe) e 2025 (liquidação, pagamento, ESS,
+  geração e MRE) e o de 2026 do pagamento.
 
 Os números esperados vêm de publicações independentes dos arquivos lidos pelo módulo (planilha
 formatada da EPE, InfoMercado em PDF, boletim do MME) ou de releitura por código próprio (pyarrow
@@ -236,15 +248,31 @@ class CceeConsumoPorAmbiente(unittest.TestCase):
         self.assertIsNone(jan["varejista_mwmed"])
         self.assertLessEqual(abs(jan["diferenca_mwmed"]), 1.0)
 
-    def test_acl_pelas_classes_inclui_a_varejista(self):
+    def test_acl_pelas_classes_inclui_a_varejista_e_separa_a_exportacao(self):
         x = self.por["2026-07"]
         self.assertEqual(x["origem"], "classes")
-        self.assertAlmostEqual(x["acl_mwmed"] - x["acl_publicado_mwmed"], x["varejista_mwmed"], delta=5.0)
+        # o conjunto de ambiente conta a exportação no ACL e, desde fevereiro de 2026, não conta a
+        # Varejista: ACL do observatório + exportação − publicado = Varejista
+        self.assertAlmostEqual(x["acl_mwmed"] + x["exportacao_mwmed"] - x["acl_publicado_mwmed"], x["varejista_mwmed"], delta=5.0)
         self.assertEqual(x["acr_mwmed"], x["acr_publicado_mwmed"])
         self.assertEqual(x["horas"], 744)
-        # InfoMercado Nº 229 (julho de 2026): 'Consumo/Geração' 71.272 MW médios; a soma das classes
-        # fica 0,15% abaixo (diferença não explicada pela fonte, publicada como ressalva)
-        self.assertLess(abs(x["total_mwmed"] - 71272) / 71272, 0.002)
+        # InfoMercado Nº 229 (julho de 2026), seção 5: 'O consumo contabilizou 70.238 MW médios'
+        # (sem a exportação de 929,07 MW médios). Σ classes sem a Exportador = 70.235,7. O
+        # 'Consumo/Geração' (71.272) é o lado da geração e não é o número do consumo.
+        self.assertAlmostEqual(x["total_mwmed"], 70235.7, delta=0.05)
+        self.assertLessEqual(abs(x["total_mwmed"] - 70238), mod.TOL_CONSUMO_INFOMERCADO_MWMED)
+        self.assertAlmostEqual(x["exportacao_mwmed"], 929.07, delta=0.05)
+        self.assertAlmostEqual(x["total_com_exportacao_mwmed"], 71164.8, delta=0.05)
+
+    def test_variacao_do_acl_sem_exportacao_bate_com_o_infomercado(self):
+        """InfoMercado Nº 229: 'o ACL avançou 3,1% sem considerar os efeitos da exportação' e,
+        considerando a exportação, 'o ACL avança 0,7%' (julho de 2026 contra julho de 2025)."""
+        cls_ = {**_obs("consumo_classe_agente_2025.csv"), **_obs("consumo_classe_agente_2026.csv")}
+        amb = _obs("consumo_mensal_ambiente_comercializacao_2026.csv")
+        linhas, _, _ = mod.ccee_consumo(amb, cls_)
+        v = mod.variacao_acl_12m(linhas, "2026-07")
+        self.assertAlmostEqual(v["sem_exportacao_pct"], 3.1, delta=0.05)
+        self.assertAlmostEqual(v["com_exportacao_pct"], 0.7, delta=0.05)
 
     def test_classe_fora_do_dominio_recusa_o_arquivo(self):
         linhas = _csv("consumo_classe_agente_2026.csv")
@@ -556,6 +584,312 @@ class CatalogoDeMetricas(unittest.TestCase):
         for d in mod.REGISTRO["datasets"]:
             for url in d["downloads"]:
                 self.assertIn(url, mod.REGISTRO["arquivos"], url)
+
+
+# ======================================================================= correções do verificador (01/10/2026)
+
+class ExportacaoForaDoAcl(unittest.TestCase):
+    """O ACL da CCEE é calculado sem a classe Exportador (energia vendida a outros países), como o
+    InfoMercado apresenta o consumo; o total com exportação fica ao lado."""
+
+    def test_junho_de_2023_sem_e_com_exportacao(self):
+        linhas, _, _ = mod.ccee_consumo({}, _obs("consumo_classe_agente_2023.csv"))
+        jun = {x["mes"]: x for x in linhas}["2023-06"]
+        # junho de 2023: 1.480,2 MW médios exportados; ACL 24.927,3 de 64.937,3 sem exportação
+        self.assertAlmostEqual(jun["exportacao_mwmed"], 1480.2, delta=0.05)
+        self.assertAlmostEqual(jun["acl_pct"], 38.39, delta=0.005)
+        self.assertAlmostEqual(jun["acl_com_exportacao_pct"], 39.76, delta=0.005)
+
+    def test_consumo_contabilizado_e_exportacao_do_infomercado(self):
+        v = cm.infomercado_valores(_texto("infomercado_229_recorte.txt"))
+        self.assertEqual(v["valores"]["consumo_contabilizado_mwmed"], 70238.0)
+        self.assertEqual(v["paginas"]["consumo_contabilizado_mwmed"], 4)
+        self.assertEqual(v["valores"]["exportacao_mwmed"], 929.07)
+        self.assertEqual(v["valores"]["consumo_geracao_mwmed"], 71272.0)  # lado da geração, não é o consumo
+        cls_ = _obs("consumo_classe_agente_2026.csv")
+        cons = {s_.split("|")[0]: val for (s_, m), val in cls_.items() if m == "2026-07" and s_.endswith("|CONSUMO")}
+        sem_exp = sum(val for k, val in cons.items() if k != "Exportador")
+        self.assertAlmostEqual(sem_exp, 70235.7, delta=0.05)
+        self.assertLessEqual(abs(sem_exp - v["valores"]["consumo_contabilizado_mwmed"]), mod.TOL_CONSUMO_INFOMERCADO_MWMED)
+        self.assertLessEqual(abs(cons["Exportador"] - v["valores"]["exportacao_mwmed"]), 0.005)
+        # a comparação antiga (todas as classes contra 'Consumo/Geração') não fecha: 107 MW médios
+        self.assertGreater(abs(sum(cons.values()) - v["valores"]["consumo_geracao_mwmed"]), 100)
+
+
+class ParcelasSemDistribuidoras(unittest.TestCase):
+    """As parcelas dos perfis Distribuidor (uma por área de concessão) são o consumo do ACR e não
+    entram nas parcelas nem no consumo do ACL. Conferência independente: o conjunto
+    CONSUMO_CLASSE_AGENTE publica o consumo de cada classe."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.classes = {r["COD_PERF_AGENTE"].strip(): r["CLASSE_PERFIL_AGENTE"].strip() for r in _csv("lista_perfil_recorte.csv")}
+        cls.cont = {}
+        cls.obs = {(s_, m): v for s_, m, v in cm.leitor_parcelas(_csv("parcela_carga_consumo_recorte.csv"), cls.classes, cls.cont)}
+
+    def test_distribuidoras_em_serie_propria_igual_a_classe_distribuidor(self):
+        o = self.obs
+        self.assertEqual(o[("distribuidor|parcelas", "2026-07")], 139)
+        # 139 parcelas de distribuidoras = 29.353.995 MWh = 39.454,3 MW médios × 744 h, o consumo da
+        # classe Distribuidor (ACR) publicado em CONSUMO_CLASSE_AGENTE
+        self.assertAlmostEqual(o[("distribuidor|consumo_acl_mwh", "2026-07")], 29353995, delta=1)
+        acr = _obs("consumo_classe_agente_2026.csv")[("Distribuidor|CONSUMO", "2026-07")]
+        self.assertAlmostEqual(o[("distribuidor|consumo_acl_mwh", "2026-07")] / 744, acr, delta=0.05)
+        # nenhuma parcela de distribuidora entra no ACL: contagem do ACL = 18 exportadores + 30 consumidores
+        self.assertEqual(o[("acl|parcelas", "2026-07")], 48)
+        self.assertEqual(o[("classe|Exportador|parcelas", "2026-07")], 18)
+        exp = _obs("consumo_classe_agente_2026.csv")[("Exportador|CONSUMO", "2026-07")]
+        self.assertAlmostEqual(o[("classe|Exportador|consumo_acl_mwh", "2026-07")] / 744, exp, delta=0.01)
+        self.assertNotIn(("classe|Distribuidor|parcelas", "2026-07"), {k for k in o if k[0].startswith("acl|")})
+
+    def test_ramo_vazio_nao_identifica_distribuidora(self):
+        """Fevereiro de 2025: parcelas de consumidores especiais com RAMO_ATIVIDADE vazio ficam no ACL."""
+        self.assertEqual(self.obs[("acl|parcelas", "2025-02")], 5)
+        self.assertNotIn(("distribuidor|parcelas", "2025-02"), self.obs)
+        self.assertEqual(self.cont["ramo_vazio_fora_de_distribuidor"], 5)
+        self.assertNotIn("distribuidor_com_ramo", self.cont)
+
+    def test_sem_cadastro_de_perfis_nada_e_lido(self):
+        with self.assertRaises(cm.EsquemaDivergente):
+            cm.leitor_parcelas(_csv("parcela_carga_consumo_recorte.csv"), {})
+
+    def test_conferencia_mensal_com_o_consumo_por_classe(self):
+        """Julho de 2026 completo (valores do conjunto inteiro, lidos do silver em 01/10/2026): ACL
+        = 21.787.337 MWh nas parcelas contra Consumidor Livre + Especial + Autoprodutor +
+        Exportador = 29.281,9 MW médios (resíduo de 2,15 MW médios); distribuidoras = classe
+        Distribuidor. A função marca o mês fora da tolerância."""
+        cls_ = _obs("consumo_classe_agente_2026.csv")
+        parc = {("acl|parcelas", "2026-07"): 46751.0, ("acl|consumo_acl_mwh", "2026-07"): 21787337.0,
+                ("distribuidor|parcelas", "2026-07"): 139.0, ("distribuidor|consumo_acl_mwh", "2026-07"): 29353995.0}
+        x = mod.parcelas_de(parc, cls_)[0]
+        self.assertTrue(x["conferencia"]["ok"])
+        self.assertAlmostEqual(x["conferencia"]["residuo_acl_mwmed"], 2.15, delta=0.01)
+        self.assertEqual(x["parcelas"], 46751)
+        self.assertEqual(x["consumo_acl_mwh"], 21787337.0)
+        # com as distribuidoras somadas ao ACL (o defeito da versão 1), a conferência reprova
+        ruim = dict(parc)
+        ruim[("acl|consumo_acl_mwh", "2026-07")] += 29353995.0
+        self.assertFalse(mod.parcelas_de(ruim, cls_)[0]["conferencia"]["ok"])
+
+    @unittest.skipUnless(os.path.isdir(os.path.join(os.path.dirname(DADOS), "..", "..", "..", "data", "energia", "bronze", "ccee",
+                                                    "ccee_parcela_carga_consumo")), "bronze da CCEE ausente")
+    def test_arquivo_inteiro_de_2026_no_bronze(self):
+        """Releitura do arquivo inteiro (só quando o bronze está na máquina): julho de 2026 com
+        46.751 parcelas do ACL e 21.787.337 MWh, sem as 139 das distribuidoras."""
+        import glob
+        raiz = os.path.abspath(os.path.join(os.path.dirname(DADOS), "..", "..", ".."))
+        arqs = glob.glob(os.path.join(raiz, "data/energia/bronze/ccee/ccee_parcela_carga_consumo/parcela_carga_consumo_2026/*.csv.gz"))
+        perf = glob.glob(os.path.join(raiz, "data/energia/bronze/ccee/ccee_lista_perfil_v1/*/*.csv.gz"))
+        if not arqs or not perf:
+            self.skipTest("bronze ausente")
+        from pipeline.energia.fontes import ckan
+        classes = {r["COD_PERF_AGENTE"].strip(): r["CLASSE_PERFIL_AGENTE"].strip() for r in ckan.le_csv_bronze(sorted(perf)[-1], separador=";")}
+        linhas = (r for r in ckan.le_csv_bronze(sorted(arqs)[-1], separador=";") if r["MES_REFERENCIA"].strip() == "202607")
+        o = {(s_, m): v for s_, m, v in cm.leitor_parcelas(linhas, classes)}
+        self.assertEqual(o[("acl|parcelas", "2026-07")], 46751)
+        self.assertAlmostEqual(o[("acl|consumo_acl_mwh", "2026-07")], 21787337, delta=1)
+        self.assertEqual(o[("distribuidor|parcelas", "2026-07")], 139)
+
+
+class SampCompletudePorMedida(unittest.TestCase):
+    """Julho de 2026 no SAMP: a ELEKTRO publica as linhas CATIVO (iguais às de junho) e nenhuma
+    linha LIVRE, depois de 4.302 unidades livres e 891.884 MWh em junho. A contagem de
+    distribuidoras não pega isso; a completude por medida pega."""
+
+    @classmethod
+    def setUpClass(cls):
+        agg, cls.cad = am.agrega_samp(am.lotes_parquet(_caminho("samp_2026_elektro_recorte.parquet")))
+        cls.por = agg
+        cls.comp = mod.completude_samp(agg, cls.cad)
+
+    def test_elektro_junho_tem_livre_e_julho_nao(self):
+        jun = self.por[("02328280000197", "2026-06")]
+        self.assertEqual(jun["livre_uc"], 4302.0)
+        self.assertAlmostEqual(jun["livre_mwh"], 891884.283, delta=0.001)
+        self.assertIsNone(self.por[("02328280000197", "2026-07")].get("livre_uc"))
+
+    def test_mes_sem_livre_e_incompleto_e_repeticao_detectada(self):
+        jul = self.comp["2026-07"]
+        self.assertFalse(jul["completo"])
+        self.assertFalse(jul["comparavel"])
+        self.assertEqual([(x["sigla"], x["livre_uc_mes_anterior"]) for x in jul["sem_livre"]], [("ELEKTRO", 4302.0)])
+        rep = [(x["sigla"], x["opcao"], x["uc"]) for x in jul["repeticoes"]]
+        self.assertEqual(rep, [("ELEKTRO", "cativo", 2762345.0)])
+        self.assertAlmostEqual(jul["repeticoes"][0]["mwh"], 626546.731, delta=0.001)
+
+    def test_variacao_abrupta_tira_o_mes_da_comparacao(self):
+        por = {("A", "2026-06"): {"livre_uc": 1212.0, "livre_mwh": 10.0}, ("A", "2026-07"): {"livre_uc": 9.0, "livre_mwh": 1.0}}
+        c_ = mod.completude_samp(por, {"A": {"sigla": "EQUATORIAL MA"}})["2026-07"]
+        self.assertTrue(c_["completo"])
+        self.assertFalse(c_["comparavel"])
+        self.assertEqual(c_["variacoes_abruptas"][0]["livre_uc"], 9.0)
+
+
+class LiquidacaoGradeDeMeses(unittest.TestCase):
+    def test_abril_de_2025_aparece_como_ausente(self):
+        lq = _obs("sumario_mensal_liquidacao_2025.csv")
+        presentes = {m for (_, m) in lq}
+        self.assertNotIn("2025-04", presentes)
+        grade = mod.grade_meses(sorted(presentes))
+        self.assertIn("2025-04", grade)
+        linhas = {m: mod.linha_liquidacao(m, *(lq.get((k, m)) for k in ("VALOR_TOTAL_LIQ_PRE", "VALOR_TOTAL_LIQ_POS", "VALOR_INAD")),
+                                          presente=m in presentes) for m in grade}
+        abr = linhas["2025-04"]
+        self.assertEqual(abr["situacao"], "mes_ausente_na_fonte")
+        self.assertTrue(all(abr[k] is None for k in ("a_liquidar", "liquidado", "inadimplencia", "inadimplencia_pct")))
+
+    def test_liquidacao_nao_informada_fica_nula(self):
+        lq = _obs("sumario_mensal_liquidacao_2025.csv")
+        mai = mod.linha_liquidacao("2025-05", *(lq.get((k, "2025-05")) for k in ("VALOR_TOTAL_LIQ_PRE", "VALOR_TOTAL_LIQ_POS", "VALOR_INAD")))
+        self.assertEqual(mai["situacao"], "liquidacao_nao_informada")
+        self.assertIsNone(mai["liquidado"])
+        self.assertIsNone(mai["inadimplencia"])
+        self.assertGreater(mai["a_liquidar"], 0)
+
+
+class PagamentoSequenciaDeZeros(unittest.TestCase):
+    """PAGAMENTO_ENCARGO_ESS = 0 de fevereiro de 2025 a julho de 2026 (18 meses) com ESS de
+    competência positivo; o InfoMercado de julho de 2026 implica R$ 2,55 milhões pagos."""
+
+    @classmethod
+    def setUpClass(cls):
+        pg = {**_obs("encargo_pgto_mensal_2024.csv"), **_obs("encargo_pgto_mensal_2025.csv"), **_obs("encargo_pgto_mensal_2026.csv")}
+        ess = mod.ess_mensal_de({**_obs("encargo_ess_ancilar_2024.csv"), **_obs("encargo_ess_ancilar_2025.csv"), **_obs("encargo_ess_ancilar_2026.csv")})
+        cls.linhas, cls.ctrl = mod.pagamento_mensal_de(pg, {x["mes"]: x["total"] for x in ess})
+        cls.por = {x["mes"]: x for x in cls.linhas}
+
+    def test_sequencia_marcada_e_nula(self):
+        t = self.ctrl["series"]["pagamento_ess"]
+        self.assertEqual([(x["inicio"], x["fim"], x["meses"], x["situacao"]) for x in t], [("2025-02", "2026-07", 18, "zero_nao_confirmado")])
+        self.assertIsNone(self.por["2026-07"]["pagamento_ess"])
+        self.assertEqual(self.por["2025-12"]["situacao_pagamento_ess"], "zero_nao_confirmado")
+        # antes da sequência, o valor publicado continua (janeiro de 2025: R$ 168.276.229,22)
+        self.assertEqual(self.por["2025-01"]["pagamento_ess"], 168276229.22)
+        self.assertEqual(self.por["2025-01"]["situacao_pagamento_ess"], "publicado")
+        self.assertEqual(self.por["2024-08"]["pagamento_ess"], 361544346.13)  # confere com o InfoMercado Nº 206
+
+    def test_sequencia_curta_nao_e_marcada(self):
+        self.assertEqual(mod.sequencias_repetidas({"2026-01": 0.0, "2026-02": 0.0, "2026-03": 0.0}), [])
+        self.assertEqual(len(mod.sequencias_repetidas({f"2026-{i:02d}": 0.0 for i in range(1, 7)})), 1)
+
+
+class GsfDozeMesesInfoMercado(unittest.TestCase):
+    def test_numero_de_doze_meses_extraido_e_divergente(self):
+        v = cm.infomercado_valores(_texto("infomercado_229_recorte.txt"))
+        self.assertEqual(v["valores"]["gsf_12m_pct"], 92.55)
+        self.assertEqual(v["paginas"]["gsf_12m_pct"], 3)
+        ger = {**_obs("geracao_submercado_2025.csv"), **_obs("geracao_submercado_2026.csv")}
+        mre = {**_obs("mre_mensal_2025.csv"), **_obs("mre_mensal_2026.csv")}
+        c_ = mod.gsf_12m_candidatos(ger, mre, "2026-07")
+        # ago/2025 a jul/2026: razão de energias 80,428%; média simples 81,65%; acumulado de 2026 92,478%
+        self.assertAlmostEqual(c_["razao_energias_pct"], 80.428, delta=0.001)
+        self.assertAlmostEqual(c_["media_simples_pct"], 81.65, delta=0.005)
+        self.assertAlmostEqual(c_["acumulado_ano_pct"], 92.478, delta=0.001)
+        for k in ("razao_energias_pct", "media_simples_pct", "razao_gf_sazonalizada_pct", "acumulado_ano_pct"):
+            self.assertGreater(abs(c_[k] - 92.55), 0.006, k)  # nenhuma definição reproduz o número publicado
+
+    def test_texto_do_painel_declara_a_divergencia(self):
+        mg = {"kpis": {"gsf_ultimo_mes": {"valor_pct": 76.825, "mes": "2026-07"},
+                       "gsf_12m": {"valor_pct": 80.428, "periodo": {"inicio": "2025-08", "fim": "2026-07"},
+                                   "infomercado_12m": {"numero": "229", "publicado_pct": 92.55, "resultado": "ressalva"}}}}
+        t = mod.resposta_p034(mg)
+        self.assertIn("92,55%", t)
+        self.assertIn("não reproduz", t)
+
+
+class ConsolidacaoAnualMme(unittest.TestCase):
+    def test_extracao_e_conferencia_do_ess_anual(self):
+        r = mm.consolidacao_anual(_texto("mme_consolidacao_2025_recorte.txt"), 2025)
+        self.assertEqual(r["valores"]["consumo_sem_perdas_gwh"], 562243.0)
+        self.assertEqual((r["valores"]["acr_pct"], r["valores"]["acl_pct"]), (54.4, 45.6))
+        self.assertEqual((r["valores"]["ess_bilhoes_rs"], r["valores"]["ess_variacao_pct"]), (1.2, -53.0))
+        self.assertEqual(r["paginas"]["acl_pct"], 13)
+        ess = mod.ess_mensal_de({**_obs("encargo_ess_ancilar_2024.csv"), **_obs("encargo_ess_ancilar_2025.csv")})
+        rec = mod.reconcilia_consolidacao_ess({"2025": r["valores"]}, ess)[0]
+        # soma dos meses de 2025 no conjunto da CCEE: R$ 1.192,2 milhões, 53,6% abaixo de 2024
+        self.assertAlmostEqual(rec["ccee_rs"] / 1e6, 1192.2, delta=0.05)
+        self.assertAlmostEqual(rec["ccee_variacao_pct"], -53.6, delta=0.05)
+        self.assertEqual(rec["resultado"], "aprovado")
+
+    def test_participacao_anual_divergente_vira_ressalva(self):
+        r = mm.consolidacao_anual(_texto("mme_consolidacao_2025_recorte.txt"), 2025)
+        # EPE dados abertos, 2025 (silver de 01/10/2026): 44,82% de 567.232 GWh
+        rec = mod.reconcilia_consolidacao_consumo({"2025": r["valores"]},
+                                                  [{"ano": "2025", "livre_pct": 44.82, "total_mwh": 567232000.0, "completo": True}])[0]
+        self.assertEqual(rec["resultado"], "ressalva")
+        self.assertAlmostEqual(rec["diferenca_pp"], -0.78, delta=0.001)
+
+    def test_pasta_restrita_por_login(self):
+        trecho = ('<a href="https://www.gov.br/mme/@@multilingual-selector/notg/pt-br?post_path=/acl_users/credentials_cookie_auth/'
+                  'require_login&amp;came_from=https%3A//www.gov.br/mme/pt-br/assuntos/secretarias/secretaria-nacional-energia-eletrica/'
+                  'publicacoes/boletim-de-monitoramento-do-sistema-eletrico/2025">')
+        self.assertTrue(mod.pagina_exige_login(trecho))
+        self.assertEqual(mm.links_boletins(trecho, "x"), [])
+        self.assertFalse(mod.pagina_exige_login(_texto("mme_boletim_junho_2026_recorte.txt")))
+
+
+class DatasECobertura(unittest.TestCase):
+    def test_desligamentos_ano_corrente_parcial(self):
+        from datetime import date
+        _, regs = cm.leitor_desligamentos(_csv("desligamento_voluntario_recorte.csv", ","))
+        datas = [ch.split("|")[2] for ch, campo, _ in regs if campo == "agente"]
+        cob = mod.cobertura_desligamentos(datas + ["2025-12-01"], date(2026, 10, 1))
+        self.assertFalse(cob["2026"]["completo"])
+        self.assertEqual(cob["2026"]["meses"], 9)
+        self.assertEqual(cob["2026"]["ultima_data"], "2026-09-01")
+        self.assertTrue(cob["2025"]["completo"])
+
+    def test_posicao_do_cadastro_nunca_usa_a_captura(self):
+        """Sem data de modificação informada pelo portal, a referência é 'sem_data', não a captura."""
+        from pipeline.energia import base
+        tmp = tempfile.mkdtemp()
+        try:
+            arq = os.path.join(tmp, "perfis.csv")
+            cab = ";".join(cm.CONJUNTOS["lista_perfil_v1"]["colunas"])
+            linha = ";".join(["1", "AG", "AGENTE", "04423567000121", "10", "AG P", "Consumidor Livre", "ATIVO", "", "SE", "", ""])
+            with open(arq, "w", encoding="utf-8") as f:
+                f.write(cab + "\n" + linha + "\n")
+            con = base.conecta(":memory:")
+            vid, _ = base.registra_vintage(con, "ccee_lista_perfil_v1", "lista_perfil_v1_2026", "x", "2026-10-01T00:45:51Z", None,
+                                           "0" * 64, 10, "teste", arq)
+            cm.processa_vintage(con, "lista_perfil_v1", {"vintage_id": vid, "recurso": "lista_perfil_v1_2026", "arquivo": arq,
+                                                          "publicado_em": None, "capturado_em": "2026-10-01T00:45:51Z"})
+            refs = {r for (r,) in con.execute("SELECT DISTINCT ref FROM observacoes WHERE dataset='ccee_lista_perfil_v1'")}
+            self.assertEqual(refs, {cm.REF_SEM_DATA})
+        finally:
+            shutil.rmtree(tmp)
+        t = mod.resposta_p033({"kpis": {}, "perfis": {"perfis_ativos": 10, "agentes_ativos": 5, "data_modificacao_portal": None}})
+        self.assertIn("sem data informada pelo portal", t)
+        t = mod.resposta_p033({"kpis": {}, "perfis": {"perfis_ativos": 10, "agentes_ativos": 5, "data_modificacao_portal": "2026-09-01"}})
+        self.assertIn("data de modificação de 01/09/2026 informada pelo portal", t)
+
+
+class AcessoCceePendente(unittest.TestCase):
+    def test_sem_autorizacao_nenhuma_requisicao(self):
+        from pipeline.energia import base
+
+        def proibido(*a, **k):
+            raise AssertionError("requisição à CCEE sem autorização")
+        con = base.conecta(":memory:")
+        st = cm.coleta(con, baixar_meta=proibido, baixador=proibido, autorizada=False)
+        self.assertEqual(st["coleta"], "suspensa")
+        st = cm.coleta_infomercado(con, baixador=proibido, baixar_pagina=proibido, autorizada=False)
+        self.assertEqual(st["coleta"], "suspensa")
+        self.assertFalse(cm.coleta_autorizada({}))
+        self.assertTrue(cm.coleta_autorizada({"ENERGIA_CCEE_COLETA": "1"}))
+
+    def test_paineis_que_dependem_da_ccee_ficam_pendentes(self):
+        import json
+        with open(os.path.join(os.path.dirname(DADOS), "..", "..", "..", "public", "energia", "gold", "mercado.json"), encoding="utf-8") as f:
+            g = json.load(f)
+        self.assertEqual(g["acesso_ccee"]["decisao"]["situacao"], "pendente")
+        for p in g["paineis"]:
+            self.assertTrue(p["depende_da_ccee"], p["id"])
+            self.assertEqual(p["estado_dados"], "pendente_decisao_acesso", p["id"])
+        self.assertEqual(len(cm.CONJUNTOS), 17)
+        with open(os.path.join(os.path.dirname(DADOS), "..", "..", "..", "docs", "observatorios", "energia", "modulos", "mercado.md"), encoding="utf-8") as f:
+            doc = f.read()
+        self.assertTrue("17 conjuntos" in doc and "19 conjuntos" not in doc, "o documento deve dizer 17 conjuntos abertos da CCEE")
 
 
 if __name__ == "__main__":
