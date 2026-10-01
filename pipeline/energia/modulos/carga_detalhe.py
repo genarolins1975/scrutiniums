@@ -208,17 +208,50 @@ def _registra_controle(con, vid):
 
 
 def importa_curva(con, vint):
-    """Grava no silver os agregados de uma vintage da curva de carga (idempotente)."""
+    """Grava no silver os agregados de uma vintage da curva de carga (idempotente na
+    versão atual da leitura; ver VERSAO_LEITURA_CURVA)."""
     vid = vint["vintage_id"]
-    if _importada(con, vid):
+    marca = "importada" + _SUFIXO_CURVA
+    if _importada(con, vid, marca):
         return None
-    horario = ons.le_curva(ckan.le_csv_bronze(vint["arquivo"], separador=";"))
+    descartados = []
+    horario = ons.le_curva(ckan.le_csv_bronze(vint["arquivo"], separador=";"), descartados)
+    if _importada(con, vid):  # lida por versão anterior: refaz a partir do bronze
+        con.execute("DELETE FROM observacoes WHERE dataset=? AND vintage_id=?", (DS_CURVA, vid))
     novas, revs = base.grava_observacoes(con, DS_CURVA, vid, ons.agrega_curva(horario))
     cvid = _registra_controle(con, vid)
-    base.grava_registros(con, DS_CONTROLE, cvid, [(vid, "importada", "1"), (vid, "linhas", len(horario)),
-                                                  (vid, "novas", novas), (vid, "revisoes", revs)])
+    base.grava_registros(con, DS_CONTROLE, cvid, [
+        (vid, "importada", "1"), (vid, marca, "1"), (vid, "linhas" + _SUFIXO_CURVA, len(horario)),
+        (vid, "novas" + _SUFIXO_CURVA, novas), (vid, "revisoes" + _SUFIXO_CURVA, revs),
+        (vid, "nao_positivos_descartados" + _SUFIXO_CURVA, len(descartados)),
+        (vid, "nao_positivos_lista" + _SUFIXO_CURVA, "; ".join(f"{sm} {h} {txt}" for sm, h, txt in descartados[:50]) or None)])
     con.commit()
     return novas, revs
+
+
+def importa_pendentes_curva(con, status=None):
+    """Importa, em ordem de captura, toda vintage da curva que ainda não foi lida pela
+    versão atual (as recém-baixadas e as lidas por versão anterior do parser). Não usa
+    rede: lê o bronze."""
+    for v in sorted(base.vintages_do_dataset(con, DS_CURVA), key=lambda x: x["capturado_em"]):
+        try:
+            importa_curva(con, v)
+        except Exception as e:  # arquivo corrompido não derruba os demais
+            if status is not None:
+                status.setdefault("falhas", []).append(f"curva {v['recurso']}: {e}"[:300])
+
+
+def descartes_curva(con):
+    """[(sm, hora, texto)] de valores não positivos descartados na leitura vigente da curva."""
+    out = []
+    for vid, campos in base.registros_como_estavam_em(con, DS_CONTROLE).items():
+        txt = campos.get("nao_positivos_lista" + _SUFIXO_CURVA)
+        if txt and vid.startswith(DS_CURVA + ":"):
+            for item in txt.split("; "):
+                partes = item.split(" ")
+                if len(partes) == 3:
+                    out.append(tuple(partes))
+    return sorted(out, key=lambda x: (x[1], x[0]))
 
 
 def coleta_curva(con, status):
@@ -226,14 +259,10 @@ def coleta_curva(con, status):
         nome = (r.get("url") or "").rsplit("/", 1)[-1]
         return (r.get("format") or "").upper() == "CSV" and nome.startswith("CURVA_CARGA_") and nome[12:16].isdigit()
 
-    st, _meta, vints = ckan.coleta_pacote(con, orgao="ONS", nome=ons.PACOTE_CURVA, dataset=DS_CURVA,
-                                          filtro_recurso=filtro, ext_de=lambda r: "csv", max_idade_dias=30)
+    st, _meta, _vints = ckan.coleta_pacote(con, orgao="ONS", nome=ons.PACOTE_CURVA, dataset=DS_CURVA,
+                                           filtro_recurso=filtro, ext_de=lambda r: "csv", max_idade_dias=30)
     status["curva"] = st
-    for rec in sorted(vints):
-        try:
-            importa_curva(con, vints[rec])
-        except Exception as e:  # arquivo corrompido não derruba os demais
-            status.setdefault("falhas", []).append(f"curva {rec}: {e}"[:300])
+    importa_pendentes_curva(con, status)
 
 
 def _meses(inicio, fim):
