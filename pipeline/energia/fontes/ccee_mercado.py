@@ -506,7 +506,9 @@ def _num_br(txt):
 
 def infomercado_valores(texto):
     """Valores do sumário executivo de uma edição do InfoMercado mensal (texto do pdftotext).
-    Retorna {"numero", "mes", "valores": {medida: valor}}; medida ausente fica de fora."""
+    Retorna {"numero", "mes", "valores": {medida: valor}, "paginas": {medida: página}};
+    medida ausente fica de fora. A página (1 = primeira) vem das quebras de página (\\f) que o
+    pdftotext preserva, para a evidência apontar onde o número está no documento."""
     cab = re.search(r"Nº\s*(\d+)\s*[–-]\s*Contabilização de ([a-zç]+) de (\d{4})", texto)
     if not cab:
         raise ValueError("cabeçalho 'Nº … – Contabilização de <mês> de <ano>' não encontrado")

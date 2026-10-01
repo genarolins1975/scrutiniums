@@ -292,3 +292,15 @@ def mes_br(anomes):
 
 def agora_date():
     return datetime.utcnow().date()
+
+
+def hoje_brasilia():
+    """Data civil corrente em Brasília: é a data de referência que os módulos usam para
+    vigências, situação de consultas e ano parcial (o runner do Actions roda em UTC e,
+    entre 21h e 24h de Brasília, a data UTC já é o dia seguinte)."""
+    try:
+        from zoneinfo import ZoneInfo
+        return datetime.now(ZoneInfo("America/Sao_Paulo")).date()
+    except Exception:  # sem base de fusos: Brasília sem horário de verão desde 2019
+        from datetime import timezone
+        return (datetime.now(timezone.utc) - timedelta(hours=3)).date()

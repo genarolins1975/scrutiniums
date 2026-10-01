@@ -40,7 +40,7 @@ def main(argv):
     for nome in os.listdir(base.GOLD):
         if nome.endswith(".json"):
             golds[nome] = base.le_gold(nome)
-    ctx = {"hoje": c.agora_date(), "golds": golds, "con_principal": con_p, "sem_rede": sem_coleta}
+    ctx = {"hoje": c.hoje_brasilia(), "golds": golds, "con_principal": con_p, "sem_rede": sem_coleta}
     con = base.conecta_familia(reg["familia"])
     if not sem_coleta and callable(getattr(mod, "coletar", None)):
         status = mod.coletar(con, ctx)

@@ -41,7 +41,12 @@ jobs:
           python-version: "3.12"
 
       - name: Dependências do pipeline de energia
-        run: pip install -r pipeline/energia/requirements.txt
+        # pdftotext (poppler-utils): conferência de trechos dos atos da ANEEL (Regulação) e
+        # da tabela de MLT do PMO (Água e clima); sem ele essas conferências ficam como
+        # "não executada" e a gold continua publicada
+        run: |
+          sudo apt-get install -y -qq poppler-utils >/dev/null
+          pip install -r pipeline/energia/requirements.txt
 
       - name: Restaurar estado (bronze e silver com vintages)
         id: restaurar
@@ -83,6 +88,15 @@ jobs:
             gh issue comment "$EXISTENTE" --repo "$GITHUB_REPOSITORY" --body "$CORPO"
           else
             gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body "$CORPO"
+          fi
+
+      - name: Malhas oficiais do IBGE (mensal ou ausentes)
+        # a malha municipal muda raramente; regenera no dia 1 de cada mês ou quando os
+        # arquivos publicados não existem. Falha da API do IBGE mantém a malha publicada.
+        continue-on-error: true
+        run: |
+          if [ "$(date -u +%d)" = "01" ] || [ ! -f public/energia/geo/municipios.json ]; then
+            python3 -m pipeline.energia.geo
           fi
 
       - name: Executar pipeline de energia

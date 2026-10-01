@@ -114,8 +114,8 @@ REGISTRO = {
          "estado": "UTILIZADO EM INDICADOR", "url": "https://www2.aneel.gov.br/cedoc/",
          "licenca": LIC_ATOS, "paginas": PAG_PLD, "downloads": [_u(CSV_ATOS), _u(CSV_VIG), _u(CSV_CONF), _u(CSV_LT)],
          "quebras": [
-             {"data": "2021-01-01", "descricao": "PLD passa a ser horário e o teto horário passa a valer ao lado do teto estrutural (Portaria MME nº 301/2019)."},
-             {"data": "2025-01-01", "descricao": "Os limites passam a ser fixados por despacho da superintendência (delegação da Portaria nº 6.828/2023), não mais por resolução homologatória da Diretoria."},
+             {"data": "2021-01-01", "origem": "FONTE", "descricao": "PLD passa a ser horário e o teto horário passa a valer ao lado do teto estrutural (Portaria MME nº 301/2019)."},
+             {"data": "2025-01-01", "origem": "FONTE", "descricao": "Os limites passam a ser fixados por despacho da superintendência (delegação da Portaria nº 6.828/2023), não mais por resolução homologatória da Diretoria."},
          ]},
         {"orgao": "Senado Federal", "nome": "legislacao-federal", "slug": "senado-legislacao-federal", "dataset_silver": DS_DOCS,
          "titulo": "Legislação Federal (texto da publicação original das leis citadas)", "estado": "UTILIZADO EM INDICADOR",

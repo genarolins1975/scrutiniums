@@ -95,8 +95,8 @@ REGISTRO = {
          "licenca": LICENCA_ANEEL, "paginas": PAGINA,
          "downloads": [_url(CSV_ANUAL), _url(CSV_MENSAL), _url(CSV_NACIONAL), _url(CSV_PT), _url(CSV_ACUM)],
          "quebras": [
-             {"data": "2024-01-01", "descricao": "Leiaute da REN ANEEL 1.003/2022: linhas por nível de tensão com total próprio; a energia injetada publicada deixa de fechar o balanço com a perda calculada pela própria fonte (a fonte não explica a diferença); perdas técnicas e não técnicas deixam de ser publicadas para cerca de metade das distribuidoras."},
-             {"data": "2025-01-01", "descricao": "A ANEEL passa a calcular energia requerida e perdas não técnicas sobre o mercado medido em vez do faturado (Despacho 1.220/2025-STR)."},
+             {"data": "2024-01-01", "origem": "PLATAFORMA", "descricao": "Leiaute da REN ANEEL 1.003/2022: linhas por nível de tensão com total próprio; a energia injetada publicada deixa de fechar o balanço com a perda calculada pela própria fonte (a fonte não explica a diferença); perdas técnicas e não técnicas deixam de ser publicadas para cerca de metade das distribuidoras."},
+             {"data": "2025-01-01", "origem": "FONTE", "descricao": "A ANEEL passa a calcular energia requerida e perdas não técnicas sobre o mercado medido em vez do faturado (Despacho 1.220/2025-STR)."},
          ]},
         {"orgao": "ANEEL", "nome": "componentes-tarifarias", "slug": "aneel-componentes-tarifarias", "dataset_silver": DS_TARIFA,
          "titulo": "Componentes tarifárias da TE e da TUSD", "estado": "UTILIZADO EM INDICADOR", "url": URL_TARIFA,

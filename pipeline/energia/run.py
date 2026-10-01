@@ -94,7 +94,7 @@ def main(argv):
     # uma gold cada, com a mesma sentinela de regressão das golds de operação
     status_modulos = {}
     fontes_modulos = {}
-    ctx = {"hoje": c.agora_date(), "golds": g, "con_principal": con, "sem_rede": sem_coleta}
+    ctx = {"hoje": c.hoje_brasilia(), "golds": g, "con_principal": con, "sem_rede": sem_coleta}
     for mod in modulos.descobrir():
         reg = mod.REGISTRO
         nome = reg["gold"]

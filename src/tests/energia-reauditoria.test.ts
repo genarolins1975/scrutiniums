@@ -241,7 +241,10 @@ describe("verificação final: regressões", () => {
     const g = JSON.parse(ler("public/energia/gold/geracao.json"));
     expect(g.degrau_solar.depois).toBe("2023-04-29");
     expect(g.degrau_solar.solar_sin_depois / g.degrau_solar.solar_sin_antes).toBeGreaterThan(1.5);
-    expect(g.regras.regime).toContain("não conferida em documento do ONS");
+    // A11 fechado com documentação primária do ONS (descrição do conjunto Carga de Energia e
+    // grupo "Pequenas Usinas (MMGD)" no conjunto Geração por Usina): o texto cita as duas fontes
+    expect(g.regras.regime).toContain("Carga de Energia");
+    expect(g.regras.regime).toContain("Pequenas Usinas (MMGD)");
     for (const f of [
       "src/app/setor-eletrico/geracao/page.tsx",
       "pipeline/energia/gold/geracao.py",

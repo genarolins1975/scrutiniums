@@ -36,11 +36,13 @@ import pkgutil
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
 CAMPOS_OBRIGATORIOS = ("id", "gold", "familia", "ordem", "datasets")
+QUEBRAS_SEM_ORIGEM = []
 
 
 def descobrir():
     """Lista de módulos (objetos module) com REGISTRO válido, ordenados por ordem e id."""
     mods = []
+    QUEBRAS_SEM_ORIGEM.clear()
     for info in pkgutil.iter_modules([AQUI]):
         if info.name.startswith("_"):
             continue
@@ -53,6 +55,14 @@ def descobrir():
             raise ValueError(f"módulo {info.name}: REGISTRO sem {faltam}")
         if not callable(getattr(m, "construir", None)):
             raise ValueError(f"módulo {info.name}: sem construir(con, ctx)")
+        # toda quebra datada deve dizer a origem: FONTE (declarada em ato ou documento da
+        # fonte) ou PLATAFORMA (identificada pela Scrutiniums no próprio dado). Aqui só se
+        # registra o problema (a descoberta não derruba os demais módulos); o teste de
+        # contrato do catálogo reprova a publicação.
+        for d in reg["datasets"]:
+            for q in d.get("quebras", []):
+                if isinstance(q, dict) and q.get("origem") not in ("FONTE", "PLATAFORMA"):
+                    QUEBRAS_SEM_ORIGEM.append(f"{info.name}: {d.get('nome')} {q.get('data')}")
         mods.append(m)
     ids = [m.REGISTRO["id"] for m in mods]
     golds = [m.REGISTRO["gold"] for m in mods]
@@ -70,5 +80,8 @@ def datasets_integrados():
             atual = out.get(chave)
             golds = sorted(set((atual or {}).get("golds", []) + [m.REGISTRO["gold"]]))
             paginas = (atual or {}).get("paginas", []) + [p for p in d.get("paginas", []) if p not in (atual or {}).get("paginas", [])]
-            out[chave] = {**d, "golds": golds, "paginas": paginas, "familia": m.REGISTRO["familia"]}
+            quebras = [q for q in d.get("quebras", []) if isinstance(q, dict)]
+            notas = [q for q in d.get("quebras", []) if isinstance(q, str)] + list(d.get("notas", []))
+            out[chave] = {**d, "quebras": quebras, "notas": notas, "golds": golds, "paginas": paginas,
+                          "familia": m.REGISTRO["familia"]}
     return out
