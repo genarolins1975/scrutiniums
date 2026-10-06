@@ -96,7 +96,7 @@ export default function PldPage() {
   const cPld = conceito("pld");
 
   const estados: Record<string, NoComEstado["estado"]> = {
-    afluencias: estadoEna(hid) ? { texto: estadoEna(hid)!, natureza: "CALCULADO", historico: { rotulo: "Histórico da ENA", href: "/setor-eletrico/agua-e-clima#ena" } } : null,
+    afluencias: estadoEna(hid) ? { texto: estadoEna(hid)!, natureza: "CALCULADO", historico: { rotulo: "Histórico da ENA", href: "/setor-eletrico/agua-e-clima/afluencia#p018" } } : null,
     reservatorios: estadoEar(hid) ? { texto: estadoEar(hid)!, natureza: "CALCULADO", historico: { rotulo: "Histórico da EAR", href: "/setor-eletrico/agua-e-clima#ear" } } : null,
     carga: estadoCarga(carga) ? { texto: estadoCarga(carga)!, natureza: "CALCULADO", historico: { rotulo: "Histórico da carga", href: "/setor-eletrico/carga" } } : null,
     renovaveis: estadoRenovaveis(ger) ? { texto: estadoRenovaveis(ger)!, natureza: "CALCULADO", historico: { rotulo: "Matriz por janela", href: "/setor-eletrico/geracao" } } : null,

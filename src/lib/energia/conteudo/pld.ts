@@ -56,7 +56,7 @@ export const NOS_FORMACAO: NoFormacao[] = [
       conferencia: "PENDENTE",
       fonte: "Documentação do ONS sobre balanço hídrico dos reservatórios (não acessada nesta fase)",
     },
-    modulo: { rotulo: "Água e clima", href: "/setor-eletrico/agua-e-clima#ena" },
+    modulo: { rotulo: "Água e clima", href: "/setor-eletrico/agua-e-clima/afluencia#p018" },
     conceito: "ena",
   },
   {

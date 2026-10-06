@@ -2,10 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
-import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
+import { AprendaProva } from "@/components/energia/AprendaProva";
 import { CONCEITOS, conceito } from "@/lib/energia/conteudo/conceitos";
-import { exemploDe } from "@/lib/energia/conteudo/exemplos";
+import { EXEMPLO_SINTETICO, UNIDADE, contrastesDe } from "@/lib/energia/conteudo/complementos";
+import { provaDoVerbete } from "@/lib/energia/conteudo/provas";
+import { hrefPasso, passosComVerbete } from "@/lib/energia/conteudo/trilhas";
 import { dataBR } from "@/lib/energia/formato";
+import { AVISO_SINTETICO, ROTULO_SINTETICO } from "@/lib/energia/sintetico";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 
 export const dynamic = "force-static";
@@ -28,9 +31,9 @@ export function generateMetadata({ params }: { params: { conceito: string } }): 
   };
 }
 
-function Campo({ rotulo, children }: { rotulo: string; children: React.ReactNode }) {
+function Campo({ rotulo, id, children }: { rotulo: string; id?: string; children: React.ReactNode }) {
   return (
-    <section className="border-t border-linha py-6 md:grid md:grid-cols-[12rem_1fr] md:gap-8">
+    <section id={id} className="scroll-mt-4 border-t border-linha py-6 md:grid md:grid-cols-[12rem_1fr] md:gap-8">
       <h2 className="rotulo text-mineral">{rotulo}</h2>
       <div className="mt-2 leading-relaxed text-carvao md:mt-0">{children}</div>
     </section>
@@ -40,7 +43,12 @@ function Campo({ rotulo, children }: { rotulo: string; children: React.ReactNode
 export default function ConceitoPage({ params }: { params: { conceito: string } }) {
   const c = conceito(params.conceito);
   if (!c) notFound();
-  const ex = c.estado === "CONFERIDO" ? exemploDe(c.slug) : null;
+  const conferido = c.estado === "CONFERIDO";
+  const prova = conferido ? provaDoVerbete(c.slug) : null;
+  const sintetico = conferido && !prova ? EXEMPLO_SINTETICO[c.slug] : undefined;
+  const contrastes = conferido ? contrastesDe(c.slug) : [];
+  const nasTrilhas = conferido ? passosComVerbete(c.slug) : [];
+  const unidade = conferido ? UNIDADE[c.slug] : undefined;
   return (
     <>
       <CabecalhoEnergia atual="aprenda" />
@@ -60,7 +68,10 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
           </h1>
           <p className="mt-3 flex flex-wrap items-center gap-3 text-xs text-mineral">
             {c.estado === "CONFERIDO" ? (
-              <span className="rotulo text-sucesso">● conferido na fonte primária em {dataBR(c.conferidoEm)}</span>
+              <>
+                <span className="rotulo text-sucesso">● conferido na fonte primária em {dataBR(c.conferidoEm)}</span>
+                {c.revisadoEm && c.revisadoEm !== c.conferidoEm && <span className="rotulo">revisado em {dataBR(c.revisadoEm)}</span>}
+              </>
             ) : (
               <span className="rotulo text-aviso">○ verbete em preparação</span>
             )}
@@ -87,25 +98,42 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
             </Campo>
             <Campo rotulo="Por que importa">{c.porQueImporta}</Campo>
             <Campo rotulo="Como é medido">{c.comoEMedido}</Campo>
-            <Campo rotulo="Exemplo real">
-              {ex ? (
-                <p>
-                  {ex.partes.map((pt, i) => (
-                    <span key={i}>
-                      {pt.texto}
-                      {pt.natureza && (
-                        <span className="mx-1 align-middle">
-                          <SeloNatureza natureza={pt.natureza} />
-                        </span>
-                      )}
-                    </span>
-                  ))}{" "}
-                  <Link href={ex.href} className="text-sm text-energia-dark underline underline-offset-4">ver no portal</Link>
-                </p>
+            {unidade && <Campo rotulo="Unidade">{unidade}</Campo>}
+            <Campo rotulo="Exemplo real" id="exemplo">
+              {prova ? (
+                <AprendaProva prova={prova} volta={`verbete:${c.slug}`} />
+              ) : sintetico ? (
+                <div data-sintetico="true" className="border-2 border-dashed border-mineral bg-papel">
+                  <p className="border-b border-dashed border-mineral px-4 py-2 text-sm">
+                    <span className="rotulo mr-3 text-carvao">{ROTULO_SINTETICO}</span>
+                    <span className="text-carvao-muted">{AVISO_SINTETICO}</span>
+                  </p>
+                  <p className="p-4">{sintetico}</p>
+                </div>
               ) : (
                 <p className="text-carvao-muted">Exemplo com dado integrado ainda não disponível para este conceito.</p>
               )}
             </Campo>
+            {contrastes.length > 0 && (
+              <Campo rotulo="Não confundir com" id="nao-confundir">
+                <ul className="space-y-4">
+                  {contrastes.map((x) => (
+                    <li key={x.com}>
+                      <p className="font-medium">
+                        {x.href ? (
+                          <Link href={x.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
+                            {x.rotulo}
+                          </Link>
+                        ) : (
+                          x.rotulo
+                        )}
+                      </p>
+                      <p className="text-sm leading-relaxed">{x.texto}</p>
+                    </li>
+                  ))}
+                </ul>
+              </Campo>
+            )}
           </>
         )}
         <Campo rotulo="Relações">
@@ -122,6 +150,19 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
             })}
           </ul>
         </Campo>
+        {nasTrilhas.length > 0 && (
+          <Campo rotulo="Nas trilhas">
+            <ul className="space-y-1">
+              {nasTrilhas.map(({ trilha: t, passo, ordem }) => (
+                <li key={`${t.id}-${passo.id}`}>
+                  <Link href={hrefPasso(t.id, passo.id)} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
+                    {t.titulo}, passo {ordem}: {passo.titulo.toLowerCase()}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Campo>
+        )}
         {c.fontes.length > 0 && (
           <Campo rotulo="Fonte oficial">
             <ul className="space-y-4">
@@ -138,6 +179,12 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
                 </li>
               ))}
             </ul>
+            {conferido && (
+              <p className="mt-4 text-xs text-mineral">
+                Documentos acessados e texto conferido em {dataBR(c.conferidoEm)}
+                {c.revisadoEm && c.revisadoEm !== c.conferidoEm ? `; texto revisado em ${dataBR(c.revisadoEm)}` : ""}.
+              </p>
+            )}
           </Campo>
         )}
         {c.limitacoes && c.limitacoes.length > 0 && (

@@ -269,11 +269,13 @@
   },
   "P065": {
    "inicial": "parcial",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Páginas /setor-eletrico/aprenda e /setor-eletrico/aprenda/<verbete> publicadas em 06/10/2026 (branch claude/kind-mayer-v9tpwi): 48 verbetes, 45 conferidos com definição, unidade quando é grandeza, exemplo real ligado ao painel (24 com a ficha de prova do painel, 20 lidos da gold, 1 sintético rotulado), não confundir com (34 pares), fonte primária com trecho literal e data de conferência e de revisão. Das oito pendências do inventário, MRE (InfoMercado Nº 229) e ACR, ACL, garantia física e ESS (Decreto nº 5.163/2004, captura versionada com sha256) foram conferidos. axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-aprenda.test.ts. Revisão adversarial da interface pendente. Limitação declarada: GSF, REE e constrained-off seguem em preparação, sem definição publicada, com as fontes consultadas registradas (o GSF depende das Regras de Comercialização da CCEE)."
   },
   "P066": {
    "inicial": "parcial",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Páginas /setor-eletrico/aprenda/trilhas, /trilhas/agua-operacao-preco e /trilhas/custo-tarifa-orcamento publicadas em 06/10/2026: passos com verbetes conferidos, número real com a ficha de prova e link ao painel, ligações tipificadas com o traço do mapa do setor, exemplo sintético interativo com rótulo permanente que não lê nem alimenta indicadores, e botão de volta do painel ao passo ou ao verbete (conferido em navegador em 390 e 1440 px). axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-aprenda.test.ts. Revisão adversarial da interface pendente. Limitação declarada: a liquidação sintética simplifica as Regras de Comercialização da CCEE, não conferidas; o peso no orçamento vem da POF 2017-2018."
   },
   "P067": {
    "inicial": "parcial",

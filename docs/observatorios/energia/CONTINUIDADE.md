@@ -118,11 +118,21 @@ Para retomar a Fase 2:
 * Verificação: build sem erro; vitest 2.532 aprovados com a única falha pré-existente (datas cruas em páginas de outros módulos); inspeção em 360, 390, 768 e 1440 px nos modos Entender e Auditar sem violação axe e sem rolagem horizontal; testes em `src/tests/energia-geracao.test.ts` (13).
 * Estado: P023 e P024 concluídos com limitação declarada; revisão adversarial da interface pendente.
 
+### Entregue: Aprenda (P065, P066)
+
+* Glossário: 48 verbetes, 45 conferidos. Das oito pendências do inventário, MRE (InfoMercado Nº 229, no Mercado) e ACR, ACL, garantia física e ESS (Decreto nº 5.163/2004, texto compilado do Planalto acessado em 06/10/2026) foram conferidos, com captura versionada em `pipeline/energia/seed/documentos_aprenda/v20261006T212851Z/` (sha256 no manifesto e trechos literais conferidos em teste). GSF, REE e constrained-off seguem em preparação, com o que foi consultado sem definição registrado no verbete. MCP e CVU revisados (integração do Mercado e do CVU da Geração).
+* Cada verbete conferido ganhou unidade (quando é grandeza), exemplo real ligado ao painel (24 com a ficha de prova do painel, 20 lidos da gold, 1 sintético rotulado), "não confundir com" (34 pares, só entre conferidos), "nas trilhas" e as datas de conferência e revisão. Arquivos: `complementos.ts`, `evidencias-verbetes.ts`, `provas.ts`, `exemplos.ts` em `src/lib/energia/conteudo/`; cartão `AprendaProva.tsx`.
+* Trilhas: `/setor-eletrico/aprenda/trilhas`, `/agua-operacao-preco` (seis passos) e `/custo-tarifa-orcamento` (cinco passos), com `trilhas.ts`, ligações tipificadas pelo traço do mapa do setor e `AprendaSimulacao.tsx` (liquidação ao preço da hora e conta com peso no orçamento, valores hipotéticos com rótulo permanente, sem URL, gold ou telemetria).
+* Volta ao contexto: links do Aprenda levam `?volta=`; `RetornoContexto.tsx`, no cabeçalho de todas as páginas do observatório, mostra o botão de volta ao passo ou ao verbete e limpa a URL (`src/lib/energia/retorno.ts`, rótulos em `rotulos-retorno.ts`). Telemetria `energia:aprenda:trilhas`.
+* Achado e corrigido: a âncora `#ena` da Água e clima não existe mais; seis links (exemplo e verbetes ENA e MLT, página e conteúdo do PLD, catálogo) passam a `/agua-e-clima/afluencia#p018`.
+* Verificação: build sem erro; HTML de 174 KB (Aprenda), 107 KB (índice das trilhas), 183 e 176 KB (trilhas) e até 133 KB por verbete; 72 combinações de página, largura (360, 390, 768, 1440 px) e modo sem violação axe e sem rolagem horizontal; simulador e volta conferidos em navegador; `src/tests/energia-aprenda.test.ts` (20 testes, inclusive rota e âncora de todo link do Aprenda no build). Vitest com a única falha pré-existente (datas cruas em Água e clima, chuva e temperatura); testes Python com a única falha pré-existente do bronze parcial local da Carga.
+* Estado: P065 e P066 concluídos com limitação declarada; revisão adversarial da interface pendente. Método em `modulos/aprenda.md`.
+
 ### Próximos passos da Fase 2
 
-1. Aprenda (P065, P066), Dados e metodologia (P067 a P070), avaliação (P071).
-2. Revisão adversarial das interfaces publicadas sem revisão (inclui a Visão geral, o Mercado e a Geração P023 e P024), quando autorizada.
+1. Dados e metodologia (P067 a P070), avaliação (P071).
+2. Revisão adversarial das interfaces publicadas sem revisão (inclui a Visão geral, o Mercado, a Geração P023 e P024 e o Aprenda), quando autorizada.
 3. Porte da home e do seletor com painéis vivos e da gramática visual (ver acima).
 4. Datas cruas nos textos dos módulos (22 páginas) e páginas acima de 600 KB (Geração P021 com 1 MB e P022 com 623 KB, Território, Qualidade).
-5. Mercado: verbetes ACL, ACR, GSF, ESS e garantia física com as Regras de Comercialização da CCEE; planilhas "InfoMercado Dados Gerais" para estender as séries da CCEE antes de 2023.
+5. Mercado: verbete GSF com as Regras de Comercialização da CCEE (fora do escopo autorizado de coleta); planilhas "InfoMercado Dados Gerais" para estender as séries da CCEE antes de 2023. Aprenda: REE e constrained-off com os Procedimentos de Rede e a regulamentação da ANEEL.
 

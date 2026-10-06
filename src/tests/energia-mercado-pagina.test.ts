@@ -192,16 +192,22 @@ describe("mercado: navegação e glossário", () => {
     expect(h).not.toContain("ModuloEmIntegracao");
   });
 
-  it("MRE conferido com o glossário do InfoMercado; os demais verbetes do mercado seguem pendentes e sem definição", () => {
+  it("MRE conferido com o glossário do InfoMercado; ACR, ACL, garantia física e ESS no Decreto nº 5.163/2004; GSF segue pendente e sem definição", () => {
     const mre = conceito("mre")!;
     expect(mre.estado).toBe("CONFERIDO");
     expect(mre.conferidoEm).toBe("2026-10-06");
     expect(mre.fontes[0].trecho).toContain("Mecanismo de compartilhamento dos riscos hidrológicos");
-    for (const s of ["acl", "acr", "gsf", "ess"]) {
+    for (const s of ["acl", "acr", "garantia-fisica", "ess"]) {
       const c = conceito(s)!;
-      expect(c.estado, s).toBe("PENDENTE");
-      expect(c.emUmaFrase, s).toBeUndefined();
-      expect(c.vejaNoPortal.every((v) => !v.rotulo.includes("em integração")), s).toBe(true);
+      expect(c.estado, s).toBe("CONFERIDO");
+      expect(c.conferidoEm, s).toBe("2026-10-06");
+      expect(c.fontes[0].documento, s).toContain("Decreto nº 5.163");
+      expect(c.fontes[0].url, s).toBe("https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2004/decreto/d5163.htm");
     }
+    const gsf = conceito("gsf")!;
+    expect(gsf.estado).toBe("PENDENTE");
+    expect(gsf.emUmaFrase).toBeUndefined();
+    expect(gsf.fontePlanejada).toContain("Regras de Comercialização da CCEE");
+    for (const s of ["acl", "acr", "gsf", "ess"]) expect(conceito(s)!.vejaNoPortal.every((v) => !v.rotulo.includes("em integração")), s).toBe(true);
   });
 });

@@ -4,6 +4,8 @@ import { SwitcherObservatorio } from "@/components/layout/SwitcherObservatorio";
 import { DetalhesFechaveis } from "@/components/layout/DetalhesFechaveis";
 import { AcessoConta } from "@/components/energia/AcessoConta";
 import { AtivoVisivel } from "@/components/energia/AtivoVisivel";
+import { RetornoContexto } from "@/components/energia/RetornoContexto";
+import { rotulosRetorno } from "@/lib/energia/conteudo/rotulos-retorno";
 import { listaPorExtenso, menuNavegacao, type DestinoNavegacao, type ItemMenu } from "@/lib/energia/navegacao";
 
 /**
@@ -26,6 +28,9 @@ import { listaPorExtenso, menuNavegacao, type DestinoNavegacao, type ItemMenu } 
  * Destino sem página (publicado: false) nunca vira link: aparece como texto
  * "em preparação" no grupo, para o tema social não sumir do menu nem prometer
  * uma página que não existe. O destino atual leva aria-current="page".
+ *
+ * Quem chega de um verbete ou de uma trilha do Aprenda (?volta=) ganha o botão fixo de
+ * volta ao contexto (RetornoContexto), que só existe no cliente.
  */
 export function CabecalhoEnergia({ atual }: { atual: string }) {
   const { itens, grupoAtual } = menuNavegacao(atual);
@@ -161,6 +166,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
         </div>
       </nav>
       <AtivoVisivel alvo="modulos-energia" />
+      <RetornoContexto rotulos={rotulosRetorno()} />
     </header>
   );
 }

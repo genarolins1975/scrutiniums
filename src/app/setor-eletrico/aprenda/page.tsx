@@ -4,12 +4,13 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { CONCEITOS, GRUPOS } from "@/lib/energia/conteudo/conceitos";
+import { TRILHAS_APRENDA } from "@/lib/energia/conteudo/trilhas";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
   title: "Aprenda: base de conhecimento do setor elétrico",
   description:
-    "PLD, CMO, EAR, ENA, submercado, carga, intercâmbio, NEWAVE, DECOMP, DESSEM e outros conceitos, cada um com fonte oficial, como é medido, exemplo real e limitações.",
+    "PLD, CMO, EAR, ENA, tarifa, perdas, DEC e FEC, Tarifa Social, fator de emissão e outros conceitos, cada um com fonte oficial e data de conferência, unidade, exemplo real com a ficha de prova, o que não confundir e trilhas que ligam os conceitos aos números.",
   alternates: { canonical: "/setor-eletrico/aprenda" },
 };
 
@@ -21,10 +22,28 @@ export default function AprendaPage() {
       <MarcaVisita secao="energia:aprenda" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
         <CabecalhoModulo rotulo="Aprenda" titulo="Como funciona o sistema elétrico brasileiro, conceito a conceito">
-          Cada verbete diz, em uma frase, o que é; por que importa; como é medido; um exemplo real do sistema; as relações com outros conceitos; a
-          fonte oficial; e o que não se pode concluir. {conferidos} de {CONCEITOS.length} verbetes estão conferidos na fonte primária; os demais
-          aparecem como em preparação, sem definição, até a conferência.
+          Cada verbete diz, em uma frase, o que é; por que importa; como é medido e em que unidade; um exemplo real do sistema, ligado ao painel onde o
+          número aparece; com o que não confundir; as relações com outros conceitos; a fonte oficial com a data de conferência; e o que não se pode
+          concluir. {conferidos} de {CONCEITOS.length} verbetes estão conferidos na fonte primária; os demais aparecem como em preparação, sem
+          definição, com o que já foi consultado e o que falta.
         </CabecalhoModulo>
+        <section aria-labelledby="trilhas" className="border-t border-linha py-8">
+          <h2 id="trilhas" className="rotulo text-mineral">
+            Trilhas: dos conceitos aos números
+          </h2>
+          <ul className="mt-4 grid gap-3 md:grid-cols-2">
+            {TRILHAS_APRENDA.map((t) => (
+              <li key={t.id}>
+                <Link href={`/setor-eletrico/aprenda/trilhas/${t.id}`} className="flex h-full flex-col border border-energia bg-superficie p-5 transition-colors hover:bg-papel">
+                  <span className="font-serif text-xl text-carvao">{t.titulo}</span>
+                  <span className="mt-1 text-sm leading-relaxed text-carvao-muted">
+                    {t.pergunta} {t.passos.length} passos, com o número de cada um no observatório e um exemplo sintético.
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
         {GRUPOS.map((g) => (
           <section key={g} aria-labelledby={`g-${g}`} className="border-t border-linha py-8">
             <h2 id={`g-${g}`} className="rotulo text-mineral">{g}</h2>

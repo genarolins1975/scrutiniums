@@ -5,10 +5,10 @@ Gerada por `scripts/energia_matriz.py` a partir do Anexo A da especificação e 
 | Estado | Painéis |
 | --- | ---: |
 | Concluído | 2 |
-| Concluído com limitação declarada | 7 |
+| Concluído com limitação declarada | 9 |
 | Parcial | 1 |
 | Bloqueado (externo, com evidência) | 0 |
-| Pendente | 61 |
+| Pendente | 59 |
 | **Total** | **71** |
 
 
@@ -165,8 +165,8 @@ Gerada por `scripts/energia_matriz.py` a partir do Anexo A da especificação e 
 
 | ID | Painel | Pergunta | Prioridade | Rota | Fontes integradas | Estado inicial | Estado | Critério de aceite | Evidência |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| P065 | Glossário completo | O que significam os conceitos? | P1 |  | D0, S5, S8, S9, S2 | parcial | Pendente | Definição clara, exemplo, não confundir com, fonte primária e data de revisão. |  |
-| P066 | Trilhas e exemplos | Como ligar conceitos aos números? | P1 |  | D0, S2, S5, S8 | parcial | Pendente | Usuário chega do conceito à evidência e retorna ao contexto. |  |
+| P065 | Glossário completo | O que significam os conceitos? | P1 |  | D0, S5, S8, S9, S2 | parcial | Concluído com limitação declarada | Definição clara, exemplo, não confundir com, fonte primária e data de revisão. | Páginas /setor-eletrico/aprenda e /setor-eletrico/aprenda/<verbete> publicadas em 06/10/2026 (branch claude/kind-mayer-v9tpwi): 48 verbetes, 45 conferidos com definição, unidade quando é grandeza, exemplo real ligado ao painel (24 com a ficha de prova do painel, 20 lidos da gold, 1 sintético rotulado), não confundir com (34 pares), fonte primária com trecho literal e data de conferência e de revisão. Das oito pendências do inventário, MRE (InfoMercado Nº 229) e ACR, ACL, garantia física e ESS (Decreto nº 5.163/2004, captura versionada com sha256) foram conferidos. axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-aprenda.test.ts. Revisão adversarial da interface pendente. Limitação declarada: GSF, REE e constrained-off seguem em preparação, sem definição publicada, com as fontes consultadas registradas (o GSF depende das Regras de Comercialização da CCEE). |
+| P066 | Trilhas e exemplos | Como ligar conceitos aos números? | P1 |  | D0, S2, S5, S8 | parcial | Concluído com limitação declarada | Usuário chega do conceito à evidência e retorna ao contexto. | Páginas /setor-eletrico/aprenda/trilhas, /trilhas/agua-operacao-preco e /trilhas/custo-tarifa-orcamento publicadas em 06/10/2026: passos com verbetes conferidos, número real com a ficha de prova e link ao painel, ligações tipificadas com o traço do mapa do setor, exemplo sintético interativo com rótulo permanente que não lê nem alimenta indicadores, e botão de volta do painel ao passo ou ao verbete (conferido em navegador em 390 e 1440 px). axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-aprenda.test.ts. Revisão adversarial da interface pendente. Limitação declarada: a liquidação sintética simplifica as Regras de Comercialização da CCEE, não conferidas; o peso no orçamento vem da POF 2017-2018. |
 
 ## Dados
 
