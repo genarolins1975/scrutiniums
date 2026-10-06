@@ -27,6 +27,18 @@ import type {
 } from "./tipos-visao";
 
 export const ROTA_VISAO = "/setor-eletrico/visao-geral";
+/** A própria gold, lida no navegador sob demanda (fichas de prova e tabelas de auditoria), nunca nas props. */
+export const URL_GOLD_VISAO = "/energia/gold/sintese.json";
+
+/**
+ * Datas ISO soltas num texto do pipeline (AAAA-MM-DD ou AAAA-MM) na forma da página
+ * (dd/mm/aaaa ou mês/ano); identificadores com "@" ou "_" coladas ficam como estão.
+ */
+export function datasLegiveis(texto: string): string {
+  return texto.replace(/(^|[^\w@_-])(20\d\d)-(\d\d)(?:-(\d\d))?(?![\w@_-])/g, (_, antes: string, a: string, m: string, d?: string) =>
+    `${antes}${d ? `${d}/${m}/${a}` : mesAno(`${a}-${m}`)}`,
+  );
+}
 
 /* ---------------------------------------------------------------- painéis */
 
@@ -185,7 +197,7 @@ export function linhasFrases(frases: readonly FraseVisao[]): LinhaTabela[] {
     defasagem: f.qualidade.defasagem_dias,
     atualidade: f.qualidade.atualidade?.situacao ?? null,
     natureza: f.natureza,
-    componentes: f.qualidade.componentes_natureza.map((c) => `${c.natureza} desde ${c.desde}`).join("; ") || null,
+    componentes: f.qualidade.componentes_natureza.map((c) => `${c.natureza} desde ${dataBR(c.desde)}`).join("; ") || null,
     revisadas: f.qualidade.revisoes.referencias_revisadas_na_janela,
     gold: f.versoes.gold,
   }));
@@ -407,6 +419,19 @@ export function linhasMultiplos(linhas: readonly LinhaMultiplos[]): LinhaTabela[
 
 /** Ordem dos painéis na página e âncoras antigas (página inicial anterior) de cada um. */
 export const ORDEM_DETERMINANTES: readonly IdPainelMultiplo[] = ["preco", "agua", "geracao", "carga", "rede"];
+
+/**
+ * Âncoras antigas da página inicial (mapa.ts, ANCORAS_VISAO_GERAL) que caem em cada
+ * cartão dos determinantes: a seção e o painel de evidência de antes. "sistema" e
+ * "observar" são blocos da própria página; os demais ficam nos cartões.
+ */
+export const ANCORAS_DETERMINANTES: Readonly<Record<IdPainelMultiplo, { id: string; painel: string }>> = {
+  preco: { id: "preco", painel: "preco-painel" },
+  agua: { id: "agua", painel: "agua-painel" },
+  geracao: { id: "geracao", painel: "geracao-painel" },
+  carga: { id: "consumo", painel: "carga-painel" },
+  rede: { id: "rede", painel: "rede-painel" },
+};
 
 /* ---------------------------------------------------------------- P006: energia e sociedade */
 

@@ -4,7 +4,7 @@ import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { dataBR, num, plural } from "@/lib/energia/formato";
 import type { Natureza } from "@/lib/energia/tipos";
 import type { DestaquesVisao, DestaqueVisao, FraseVisao } from "@/lib/energia/tipos-visao";
-import { ROTA_VISAO, ROTULO_FRASE, textoAtualidadeFrase, textoComponentesFrase } from "@/lib/energia/visao";
+import { ROTA_VISAO, ROTULO_FRASE, URL_GOLD_VISAO, textoAtualidadeFrase, textoComponentesFrase } from "@/lib/energia/visao";
 
 /**
  * "O sistema em 60 segundos" (P004): as frases da síntese, cada uma montada no pipeline
@@ -19,7 +19,7 @@ import { ROTA_VISAO, ROTULO_FRASE, textoAtualidadeFrase, textoComponentesFrase }
 export function VisaoFrases({ frases }: { frases: FraseVisao[] }) {
   return (
     <ol className="divide-y divide-linha border-y border-linha" aria-label="Fatos do sistema, um por indicador">
-      {frases.map((f) => {
+      {frases.map((f, i) => {
         const componentes = textoComponentesFrase(f);
         return (
           <li key={f.id} id={`frase-${f.id}`} className="scroll-mt-28 py-4">
@@ -50,7 +50,7 @@ export function VisaoFrases({ frases }: { frases: FraseVisao[] }) {
             </div>
             <p className="mt-1">
               {f.evidencia ? (
-                <ComproveNumero evidencia={f.evidencia} endereco={`${ROTA_VISAO}#frase-${f.id}`} />
+                <ComproveNumero sobDemanda={{ url: URL_GOLD_VISAO, caminho: `frases[${i}].evidencia`, indicador: f.evidencia.indicador, valorExibido: f.evidencia.valor_exibido }} endereco={`${ROTA_VISAO}#frase-${f.id}`} />
               ) : (
                 <span className="text-xs text-aviso">
                   Evidência deste número não publicada nesta execução{f.evidencia_problemas?.length ? `: ${f.evidencia_problemas.join("; ")}` : "."}
@@ -64,7 +64,7 @@ export function VisaoFrases({ frases }: { frases: FraseVisao[] }) {
   );
 }
 
-function Destaque({ d }: { d: DestaqueVisao }) {
+function Destaque({ d, i }: { d: DestaqueVisao; i: number }) {
   return (
     <article className="space-y-2 border-t border-linha pt-3 first:border-t-0 first:pt-0">
       <h4 className="font-medium text-carvao">
@@ -99,7 +99,7 @@ function Destaque({ d }: { d: DestaqueVisao }) {
       <p className="text-xs leading-relaxed text-carvao-muted">
         <span className="text-carvao">Não implica:</span> {d.nao_implica}
       </p>
-      {d.evidencia && <ComproveNumero evidencia={d.evidencia} endereco={`${ROTA_VISAO}#destaques`} />}
+      {d.evidencia && <ComproveNumero sobDemanda={{ url: URL_GOLD_VISAO, caminho: `destaques.itens[${i}].evidencia`, indicador: d.evidencia.indicador, valorExibido: d.evidencia.valor_exibido }} endereco={`${ROTA_VISAO}#destaques`} />}
     </article>
   );
 }
@@ -113,7 +113,7 @@ export function VisaoDestaques({ destaques, fatosEHipoteses, titulos }: { destaq
       </h3>
       <div className="mt-3 space-y-3">
         {destaques.itens.length ? (
-          destaques.itens.map((d) => <Destaque key={d.regra} d={d} />)
+          destaques.itens.map((d, i) => <Destaque key={d.regra} d={d} i={i} />)
         ) : (
           <p className="text-sm leading-relaxed text-carvao">{destaques.vazio ?? "Nenhum destaque nesta publicação."}</p>
         )}

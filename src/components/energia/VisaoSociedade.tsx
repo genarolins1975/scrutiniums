@@ -4,7 +4,7 @@ import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { dataBR, mesAno, plural } from "@/lib/energia/formato";
 import type { Natureza } from "@/lib/energia/tipos";
 import type { ItemSociedade, SociedadeVisao } from "@/lib/energia/tipos-visao";
-import { ROTA_VISAO, diasEntre, dominioTempo, faixasTempo, periodoCurto, textoComplemento, valorSociedade } from "@/lib/energia/visao";
+import { ROTA_VISAO, URL_GOLD_VISAO, diasEntre, dominioTempo, faixasTempo, periodoCurto, textoComplemento, valorSociedade } from "@/lib/energia/visao";
 
 /**
  * Energia e sociedade (P006): tarifa residencial de referência, continuidade (DEC e FEC),
@@ -23,7 +23,7 @@ const COR_ITEM: Record<string, string> = {
   beneficios: "var(--serie-comp-4)",
 };
 
-function Cartao({ it }: { it: ItemSociedade }) {
+function Cartao({ it, i }: { it: ItemSociedade; i: number }) {
   const atrasado = it.atualidade?.situacao === "ATRASADO";
   return (
     <article id={`sociedade-${it.id}`} aria-labelledby={`sociedade-${it.id}-titulo`} className="relative flex min-w-0 flex-col border border-linha bg-superficie p-4">
@@ -57,9 +57,14 @@ function Cartao({ it }: { it: ItemSociedade }) {
         Cobertura: {it.cobertura}
       </p>
       <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1 pt-2">
-        <ComproveNumero evidencia={it.evidencia} endereco={`${ROTA_VISAO}#sociedade-${it.id}`} />
-        {(it.evidencias_complementares ?? []).map((c) => (
-          <ComproveNumero key={c.caminho} evidencia={c.evidencia} rotulo={`Comprove: ${c.evidencia.valor_exibido}`} endereco={`${ROTA_VISAO}#sociedade-${it.id}`} />
+        <ComproveNumero sobDemanda={{ url: URL_GOLD_VISAO, caminho: `sociedade.itens[${i}].evidencia`, indicador: it.evidencia.indicador, valorExibido: it.evidencia.valor_exibido }} endereco={`${ROTA_VISAO}#sociedade-${it.id}`} />
+        {(it.evidencias_complementares ?? []).map((c, k) => (
+          <ComproveNumero
+            key={c.caminho}
+            sobDemanda={{ url: URL_GOLD_VISAO, caminho: `sociedade.itens[${i}].evidencias_complementares[${k}].evidencia`, indicador: c.evidencia.indicador, valorExibido: c.evidencia.valor_exibido }}
+            rotulo={`Comprove: ${c.evidencia.valor_exibido}`}
+            endereco={`${ROTA_VISAO}#sociedade-${it.id}`}
+          />
         ))}
         <Link href={it.href} className="inline-flex min-h-[44px] items-center text-sm text-energia-dark underline underline-offset-4">
           Ver no módulo
@@ -72,8 +77,8 @@ function Cartao({ it }: { it: ItemSociedade }) {
 export function VisaoSociedadeCartoes({ s }: { s: SociedadeVisao }) {
   return (
     <div className="grid gap-4 sm:grid-cols-2">
-      {s.itens.map((it) => (
-        <Cartao key={it.id} it={it} />
+      {s.itens.map((it, i) => (
+        <Cartao key={it.id} it={it} i={i} />
       ))}
     </div>
   );

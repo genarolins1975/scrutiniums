@@ -12,6 +12,7 @@ import type { MultiplosVisao, PainelDeterminante } from "@/lib/energia/tipos-vis
 import {
   JANELAS_P005,
   ROTA_VISAO,
+  URL_GOLD_VISAO,
   bandaDeterminante,
   colunasMultiplos,
   dadosDeterminante,
@@ -43,10 +44,11 @@ const ESQUEMA = {
   fr: campo(tiposUrl.lista(tiposUrl.texto({ max: 24 }), { max: 4 }), [] as string[], { param: "p005.fr" }),
 };
 
-export type AncorasDeterminante = { secao: string; painel: string };
+export type AncorasDeterminante = { id: string; painel: string };
 
 function Cartao({
   p,
+  i,
   m,
   linhas,
   ancoras,
@@ -54,6 +56,7 @@ function Cartao({
   onOcultas,
 }: {
   p: PainelDeterminante;
+  i: number;
   m: MultiplosVisao;
   linhas: MultiplosVisao["dados"];
   ancoras?: AncorasDeterminante;
@@ -65,7 +68,7 @@ function Cartao({
   const series = seriesDeterminante(p);
   const multi = p.colunas.length > 1;
   return (
-    <section id={ancoras?.secao} aria-labelledby={`p005-${p.id}-titulo`} className="scroll-mt-28 min-w-0 border border-linha bg-superficie p-4">
+    <section id={ancoras?.id} aria-labelledby={`p005-${p.id}-titulo`} className="scroll-mt-28 min-w-0 border border-linha bg-superficie p-4">
       <div id={ancoras?.painel} className="scroll-mt-28">
         <h4 id={`p005-${p.id}-titulo`} className="font-serif text-lg text-carvao">
           {p.titulo}
@@ -84,7 +87,7 @@ function Cartao({
         <p className="mt-0.5 text-xs text-mineral">{p.texto_defasagem}</p>
         <div className="mt-1">
           {p.evidencia ? (
-            <ComproveNumero evidencia={p.evidencia} endereco={`${ROTA_VISAO}#${ancoras?.secao ?? "determinantes"}`} />
+            <ComproveNumero sobDemanda={{ url: URL_GOLD_VISAO, caminho: `multiplos.paineis[${i}].evidencia`, indicador: p.evidencia.indicador, valorExibido: p.evidencia.valor_exibido }} endereco={`${ROTA_VISAO}#${ancoras?.id ?? "determinantes"}`} />
           ) : (
             <span className="text-xs text-aviso">Evidência do valor atual não publicada nesta execução{p.evidencia_problemas?.length ? `: ${p.evidencia_problemas.join("; ")}` : "."}</span>
           )}
@@ -151,10 +154,11 @@ export function VisaoDeterminantes({ m, ancoras, fonte }: { m: MultiplosVisao; a
       </p>
       <CursorSincronizado>
         <div className="grid gap-4 lg:grid-cols-2">
-          {m.paineis.map((p) => (
+          {m.paineis.map((p, i) => (
             <Cartao
               key={p.id}
               p={p}
+              i={i}
               m={m}
               linhas={linhas}
               ancoras={ancoras[p.id]}

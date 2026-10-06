@@ -4,7 +4,7 @@ import { ComproveNumero } from "@/components/energia/ComproveNumero";
 import { VisaoFaixaEstados } from "@/components/energia/VisaoFaixaEstados";
 import { carimbo, dataBR, num, plural } from "@/lib/energia/formato";
 import type { RegraObservar } from "@/lib/energia/tipos-visao";
-import { ROTA_VISAO, comUnidade, somaDias, textoLinhaEstado, textoValorRegra, trechosEstado } from "@/lib/energia/visao";
+import { ROTA_VISAO, URL_GOLD_VISAO, comUnidade, datasLegiveis, somaDias, textoLinhaEstado, textoValorRegra, trechosEstado } from "@/lib/energia/visao";
 
 /**
  * Conteúdo de cada regra do "O que observar" (P007), montado no servidor e entregue ao
@@ -15,14 +15,15 @@ import { ROTA_VISAO, comUnidade, somaDias, textoLinhaEstado, textoValorRegra, tr
  * frequência de disparo no histórico e o registro das publicações).
  */
 
-export function VisaoRegraResumo({ o }: { o: RegraObservar }) {
+/** `caminho` é o lugar da regra na gold ("observar[3]"), para a ficha de prova ser lida sob demanda. */
+export function VisaoRegraResumo({ o, caminho }: { o: RegraObservar; caminho?: string }) {
   const valor = textoValorRegra(o);
   const le = o.linha_estado;
   const trechos = trechosEstado(le);
   const fim = le?.inicio && le.estados ? somaDias(le.inicio, le.estados.length - 1) : null;
   return (
     <div className="space-y-1.5">
-      <p className="text-sm leading-relaxed text-carvao-muted">{o.evidencia}</p>
+      <p className="text-sm leading-relaxed text-carvao-muted">{datasLegiveis(o.evidencia)}</p>
       {valor && (
         <p className="text-xs text-carvao-muted">
           <span className="text-carvao">Valor avaliado:</span> {valor}
@@ -30,7 +31,11 @@ export function VisaoRegraResumo({ o }: { o: RegraObservar }) {
         </p>
       )}
       {o.evidencia_numero ? (
-        <ComproveNumero evidencia={o.evidencia_numero} endereco={`${ROTA_VISAO}#regra-${o.id}`} />
+        caminho ? (
+          <ComproveNumero sobDemanda={{ url: URL_GOLD_VISAO, caminho: `${caminho}.evidencia_numero`, indicador: o.evidencia_numero.indicador, valorExibido: o.evidencia_numero.valor_exibido }} endereco={`${ROTA_VISAO}#regra-${o.id}`} />
+        ) : (
+          <ComproveNumero evidencia={o.evidencia_numero} endereco={`${ROTA_VISAO}#regra-${o.id}`} />
+        )
       ) : o.evidencia_problemas?.length ? (
         <p className="text-xs text-aviso">Evidência do número não publicada: {o.evidencia_problemas.join("; ")}</p>
       ) : null}

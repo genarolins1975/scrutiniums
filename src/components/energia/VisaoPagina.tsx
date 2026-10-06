@@ -3,7 +3,7 @@ import Link from "next/link";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { VisaoLinkPainel } from "@/components/energia/VisaoLinkPainel";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
-import { PAINEIS_VISAO, type IdPainelVisao } from "@/lib/energia/visao";
+import { PAINEIS_VISAO, datasLegiveis, type IdPainelVisao } from "@/lib/energia/visao";
 import type { ControleVisao } from "@/lib/energia/tipos-visao";
 
 /**
@@ -136,7 +136,7 @@ export function VisaoControles({ controles }: { controles: ControleVisao[] }) {
     <ul className="space-y-1.5 text-sm text-carvao-muted">
       {controles.map((c) => (
         <li key={c.nome} className="leading-relaxed [overflow-wrap:anywhere]">
-          <span className={c.resultado === "aprovado" ? "text-carvao" : "text-aviso"}>{rot[c.resultado] ?? c.resultado}</span>: {c.nome}. {c.detalhe}
+          <span className={c.resultado === "aprovado" ? "text-carvao" : "text-aviso"}>{rot[c.resultado] ?? c.resultado}</span>: {c.nome}. {datasLegiveis(c.detalhe)}
         </li>
       ))}
     </ul>

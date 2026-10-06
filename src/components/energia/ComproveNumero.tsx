@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState, type ReactNode, type RefObject } from "react";
 import { createPortal } from "react-dom";
 import { carimbo } from "@/lib/energia/formato";
+import { carregaJson, lerCaminho } from "@/lib/energia/carregaJson";
 import {
   MENSAGEM_COPIA,
   ROTULO_RESULTADO,
@@ -39,10 +40,17 @@ import {
  * primeira abertura, para não repetir no HTML de cada KPI uma ficha que quase
  * ninguém abre (os dados já seguem nas props); o servidor entrega o botão e a
  * moldura do diálogo com título. Sem animação.
+ *
+ * Em páginas com dezenas de fichas, as props de cada evidência pesariam centenas de
+ * KB no HTML e no fluxo RSC (seção 5.1 do contrato): `sobDemanda` troca a prop pela
+ * URL de um JSON publicado e pelo caminho da evidência dentro dele; a ficha é lida
+ * na primeira abertura (uma leitura por URL, compartilhada entre as fichas).
  */
 
 export type ComproveNumeroProps = {
-  evidencia: Evidencia;
+  evidencia?: Evidencia;
+  /** Evidência lida sob demanda ao abrir: JSON publicado, caminho dentro dele e o que o botão anuncia. */
+  sobDemanda?: { url: string; caminho: string; indicador: string; valorExibido: string };
   /** "link": texto discreto "Comprove este número"; "valor": o próprio número exibido vira o gatilho (células e agregados). */
   variante?: "link" | "valor";
   rotulo?: string;
@@ -50,11 +58,16 @@ export type ComproveNumeroProps = {
   endereco?: string;
 };
 
-export function ComproveNumero({ evidencia: ev, variante = "link", rotulo = "Comprove este número", endereco }: ComproveNumeroProps) {
+export function ComproveNumero({ evidencia, sobDemanda, variante = "link", rotulo = "Comprove este número", endereco }: ComproveNumeroProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const gatilho = useRef<HTMLButtonElement>(null);
   const [montado, setMontado] = useState(false);
   const [acesso, setAcesso] = useState<Date | null>(null);
+  const [carregada, setCarregada] = useState<Evidencia | null>(null);
+  const [erro, setErro] = useState<string | null>(null);
+  const ev = evidencia ?? carregada;
+  const indicador = ev?.indicador ?? sobDemanda?.indicador ?? "";
+  const valorExibido = ev?.valor_exibido ?? sobDemanda?.valorExibido ?? "";
   // o diálogo vai para o fim do <body> e só existe no cliente: o botão pode ficar dentro de um
   // parágrafo (variante "valor") sem que o <dialog> feche o <p> e quebre a hidratação
   const [alvo, setAlvo] = useState<HTMLElement | null>(null);
@@ -64,6 +77,15 @@ export function ComproveNumero({ evidencia: ev, variante = "link", rotulo = "Com
     setMontado(true);
     setAcesso(new Date());
     ref.current?.showModal();
+    if (!ev && sobDemanda && !erro) {
+      carregaJson<unknown>(sobDemanda.url)
+        .then((j) => {
+          const e = lerCaminho(j, sobDemanda.caminho);
+          if (e && typeof e === "object") setCarregada(e as Evidencia);
+          else setErro(`Evidência não encontrada em ${sobDemanda.caminho} de ${sobDemanda.url}.`);
+        })
+        .catch((x: unknown) => setErro(x instanceof Error ? x.message : String(x)));
+    }
   };
 
   return (
@@ -82,19 +104,19 @@ export function ComproveNumero({ evidencia: ev, variante = "link", rotulo = "Com
       >
         {variante === "valor" ? (
           <>
-            {ev.valor_exibido}
-            <span className="sr-only">: comprove este número ({ev.indicador})</span>
+            {valorExibido}
+            <span className="sr-only">: comprove este número ({indicador})</span>
           </>
         ) : (
           <>
             {rotulo}
-            <span className="sr-only">: {ev.indicador}, {ev.valor_exibido}</span>
+            <span className="sr-only">: {indicador}, {valorExibido}</span>
           </>
         )}
       </button>
       {alvo &&
         createPortal(
-          <DialogoEvidencia evidencia={ev} dialogo={ref} gatilho={gatilho} montado={montado} acesso={acesso} endereco={endereco} />,
+          <DialogoEvidencia evidencia={ev} titulo={indicador} valor={valorExibido} erro={erro} dialogo={ref} gatilho={gatilho} montado={montado} acesso={acesso} endereco={endereco} />,
           alvo,
         )}
     </>
@@ -104,13 +126,20 @@ export function ComproveNumero({ evidencia: ev, variante = "link", rotulo = "Com
 /** O diálogo da ficha, fechado por padrão; o conteúdo só é montado na primeira abertura. */
 export function DialogoEvidencia({
   evidencia: ev,
+  titulo,
+  valor,
+  erro,
   dialogo,
   gatilho,
   montado,
   acesso,
   endereco,
 }: {
-  evidencia: Evidencia;
+  evidencia: Evidencia | null;
+  /** Título e valor anunciados enquanto a evidência sob demanda ainda não chegou. */
+  titulo?: string;
+  valor?: string;
+  erro?: string | null;
   dialogo: RefObject<HTMLDialogElement>;
   gatilho: RefObject<HTMLButtonElement>;
   montado: boolean;
@@ -134,18 +163,26 @@ export function DialogoEvidencia({
           <div className="min-w-0">
             <p className="rotulo text-mineral">Comprove este número</p>
             <h2 id={tituloId} className="mt-2 font-serif text-xl leading-snug text-carvao">
-              {ev.indicador}
+              {ev?.indicador ?? titulo}
             </h2>
             <p className="mt-1 text-sm text-carvao-muted [overflow-wrap:anywhere]">
-              <span className="font-medium tabular-nums text-carvao">{ev.valor_exibido}</span> · {textoPeriodo(ev.periodo)} · {ev.entidade}
+              <span className="font-medium tabular-nums text-carvao">{ev?.valor_exibido ?? valor}</span>
+              {ev ? ` · ${textoPeriodo(ev.periodo)} · ${ev.entidade}` : ""}
             </p>
           </div>
           <button type="button" onClick={fechar} className="rotulo min-h-[44px] min-w-[44px] shrink-0 text-mineral hover:text-carvao" aria-label="Fechar">
             ✕
           </button>
         </header>
-        <div className="flex-1 overflow-y-auto px-5 sm:px-6" tabIndex={0} role="region" aria-label={`Evidência: ${ev.indicador}`}>
-          {montado && <ConteudoEvidencia evidencia={ev} acesso={acesso} endereco={endereco} />}
+        <div className="flex-1 overflow-y-auto px-5 sm:px-6" tabIndex={0} role="region" aria-label={`Evidência: ${ev?.indicador ?? titulo ?? ""}`}>
+          {montado &&
+            (ev ? (
+              <ConteudoEvidencia evidencia={ev} acesso={acesso} endereco={endereco} />
+            ) : (
+              <p role="status" aria-live="polite" className={`py-6 text-sm ${erro ? "text-aviso" : "text-carvao-muted"}`}>
+                {erro ? `A ficha de prova não pôde ser lida: ${erro}` : "Lendo a ficha de prova na gold publicada…"}
+              </p>
+            ))}
         </div>
         <footer className="flex flex-wrap gap-3 border-t border-linha px-5 py-3 sm:px-6">
           <button type="button" onClick={fechar} className="rotulo inline-flex min-h-[44px] items-center border border-linha px-4 text-carvao hover:border-carvao">

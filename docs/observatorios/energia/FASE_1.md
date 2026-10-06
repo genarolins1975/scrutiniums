@@ -12,7 +12,8 @@ Entra na Fase 1 a página que (1) tem gold publicada com proveniência, (2) comp
 | --- | --- | --- |
 | Ciclo completo (dados, verificação adversarial, correção, interface e revisão) | P017 a P020, P025 a P027, P044 a P046, P047 a P050, P051 a P054, P055 a P058, P059 a P062 | 26 |
 | Publicado na Fase 1, revisão adversarial da interface pendente | P001, P002, P003, P008 a P016, P021, P022, P028 a P031, P036 a P039, P040 a P043, P063, P064 | 28 |
-| Fase 2 (dados prontos ou em andamento; página de produção anterior mantida) | P004 a P007, P023, P024, P032 a P035, P065, P066, P067 a P070, P071 | 17 |
+| Publicado na Fase 2 em 06/10/2026, revisão adversarial da interface pendente | P004 a P007 | 4 |
+| Fase 2 (dados prontos ou em andamento; página de produção anterior mantida) | P023, P024, P032 a P035, P065, P066, P067 a P070, P071 | 13 |
 
 Dentro do ciclo completo, três painéis têm limitação declarada na própria página: P050 (efeito médio dos reajustes: documentos da ANEEL atrás de desafio anti-robô), P057 (referência regulatória das perdas não técnicas) e P058 (custo total das perdas).
 
@@ -28,7 +29,7 @@ Dentro do ciclo completo, três painéis têm limitação declarada na própria 
 
 | Item | Situação | Onde está o trabalho |
 | --- | --- | --- |
-| Visão geral nova (P004 a P007) | gold `sintese.json` pronta; página nova interrompida no meio | página de produção mantida; versão parcial guardada no branch de trabalho |
+| Visão geral nova (P004 a P007) | **publicada em 06/10/2026**: página ligada à gold `sintese.json` com os componentes `Visao*`; fichas de prova e tabelas de auditoria lidas da gold sob demanda (530 KB de HTML) | `src/app/setor-eletrico/visao-geral/page.tsx`; método em `modulos/visao.md`; estado em `CONTINUIDADE.md` |
 | Geração P023 e P024 | dados prontos em `geracao_detalhe.json`; páginas não criadas | painéis aparecem como "em preparação" |
 | Mercado (P032 a P035) | gold pronta; página nova não feita; **decisão de acesso à CCEE pendente com o responsável** | página "em integração" mantida |
 | Aprenda (P065, P066) | verbetes dos módulos publicados; módulo próprio não executado | página de produção mantida |
@@ -41,6 +42,11 @@ Dentro do ciclo completo, três painéis têm limitação declarada na própria 
 
 1. **Coleta da CCEE (Mercado).** O portal de dados abertos da CCEE responde 403 "Acesso bloqueado" ao `curl` e 200 ao cliente do pipeline (User-Agent do projeto, sem disfarce de navegador), o mesmo cliente que já coleta o PLD horário em produção. Usar esse cliente para os 17 conjuntos do Mercado é decisão do responsável. Enquanto não houver decisão, o módulo não faz requisição à CCEE e os painéis P032 a P035 ficam "pendente de decisão de acesso".
 2. **Revisões adversariais pendentes** (PLD, Previsões e as interfaces publicadas sem revisão): autorizar a retomada dos fluxos de revisão.
+
+### Decisões tomadas em 06/10/2026
+
+* **Coleta da CCEE autorizada** pelo responsável: os 17 conjuntos do Mercado podem ser coletados com o cliente do pipeline (User-Agent do projeto, sem disfarce de navegador), o mesmo que coleta o PLD horário. A implementação do módulo Mercado (P032 a P035) passa a ser a próxima etapa da Fase 2; nenhuma requisição foi feita ainda.
+* **Base da Fase 2**: a `main` (Fase 1 em produção). O redesenho visual feito em setembro sobre a base anterior (commits até `1592f9efe` no branch `claude/kind-mayer-v9tpwi`, agora reiniciado a partir da `main`) não foi mesclado; o que dele não existe na `main` (home e seletor com painéis vivos, gramática visual, testes) é porte pendente, registrado em `CONTINUIDADE.md`.
 
 ## Riscos da primeira atualização automática
 

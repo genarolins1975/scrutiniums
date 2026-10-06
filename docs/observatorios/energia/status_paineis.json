@@ -1,5 +1,5 @@
 {
- "atualizado_em": "2026-09-30",
+ "atualizado_em": "2026-10-06",
  "paineis": {
   "P001": {
    "inicial": "parcial",
@@ -15,19 +15,23 @@
   },
   "P004": {
    "inicial": "parcial",
-   "estado": "pendente"
+   "estado": "concluido",
+   "evidencia": "Página /setor-eletrico/visao-geral ligada à gold sintese.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi): resposta curta, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; 530 KB de HTML; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-visao.test.ts. Revisão adversarial da interface pendente."
   },
   "P005": {
    "inicial": "parcial",
-   "estado": "pendente"
+   "estado": "concluido",
+   "evidencia": "Página /setor-eletrico/visao-geral ligada à gold sintese.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi): resposta curta, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; 530 KB de HTML; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-visao.test.ts. Revisão adversarial da interface pendente."
   },
   "P006": {
    "inicial": "inexistente",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Página /setor-eletrico/visao-geral ligada à gold sintese.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi): resposta curta, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; 530 KB de HTML; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-visao.test.ts. Revisão adversarial da interface pendente. Limitação declarada na página: Tarifa Social com referência mai/2025 e conjunto SCS atrasado no painel de saúde dos dados."
   },
   "P007": {
    "inicial": "parcial",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Página /setor-eletrico/visao-geral ligada à gold sintese.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi): resposta curta, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; 530 KB de HTML; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-visao.test.ts. Revisão adversarial da interface pendente. Limitação declarada na página: registro das publicações iniciado em 01/10/2026 e revisões avaliáveis desde 27/09/2026."
   },
   "P008": {
    "inicial": "parcial",

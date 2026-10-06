@@ -86,3 +86,26 @@ Para retomar a Fase 2:
 1. Ler `FASE_1.md` (o que ficou de fora e as duas decisões pendentes com o responsável: coleta da CCEE e revisão das interfaces de PLD e Previsões).
 2. Fluxos de módulos: o script está em `~/.claude/projects/.../workflows/scripts/modulos-energia-wf_d8ec3241-4c4.js` da sessão original; numa sessão nova, refazer a partir dos documentos de cada módulo em `modulos/*.md`, que registram fontes, método, estado e pedidos ao integrador.
 3. Pendências conhecidas: P023 e P024 (Geração), Mercado (P032 a P035), Visão geral (P004 a P007), Aprenda (P065, P066), interface nova de Dados e Metodologia (P067 a P070), avaliação (P071), 120 datas cruas em textos de módulos, páginas acima de 600 KB sem compressão (Geração, Território, Qualidade).
+
+## 06/10/2026: Fase 2, Visão geral nova em produção
+
+* Branch de trabalho: `claude/kind-mayer-v9tpwi`, reiniciado a partir da `main` (`2065ba07f`, Fase 1 em produção). O conteúdo anterior desse branch (redesenho visual de setembro sobre a base pré Fase 1, último commit `1592f9efe`, tag local `redesenho-visual-2026-09` na sessão) ficou fora: conflitava em 13 arquivos com a Fase 1 e foi superado por ela. Porte pendente do que não existe na `main`: home e seletor de observatórios com painéis vivos de dado real (`PainelObservatorio`, `MiniaturaEnergia`, `MiniaturaCredito`, `src/lib/amostras.ts`), `docs/observatorios/DESIGN_VISUAL_GRAMMAR_ENERGIA.md` e os testes compatíveis.
+* Decisões do responsável nesta data: base da Fase 2 é a `main`; prioridade inicial é a Visão geral (P004 a P007); coleta da CCEE autorizada com o cliente do pipeline (ver `FASE_1.md`, "Decisões tomadas em 06/10/2026").
+
+### Entregue: Visão geral (P004 a P007)
+
+* `src/app/setor-eletrico/visao-geral/page.tsx` reescrita sobre `sintese.json` (`SinteseVisaoGold`) com os componentes já existentes (`VisaoPagina`, `VisaoFrases`, `VisaoDeterminantes`, `VisaoSociedade`, `VisaoObservar`, `VisaoRegras`, `VisaoFaixaEstados`, `VisaoLinkPainel`). Quatro painéis numa página, cada um com a anatomia da seção 7.2; modos Entender, Analisar e Auditar; âncoras antigas da página inicial preservadas (`ANCORAS_DETERMINANTES` em `src/lib/energia/visao.ts`).
+* Peso (seção 5.1 do contrato): 964 KB na primeira versão, 530 KB publicados. O que mudou: `ComproveNumero` ganhou `sobDemanda` (URL de JSON publicado e caminho da evidência; a ficha é lida na primeira abertura, uma leitura por URL compartilhada); `VisaoTabelasSobDemanda` lê da gold as tabelas de auditoria do P004 e de análise do P007 quando o bloco aparece; `VisaoObservar` lê o detalhe de cada regra ao abrir. Leitura compartilhada em `src/lib/energia/carregaJson.ts` (`carregaJson`, `lerCaminho`).
+* Datas do pipeline em texto (controles, evidência das regras, componentes das frases) passam por `datasLegiveis`; a página não tem data crua.
+* Verificação: `next build` sem erro; vitest 2.470 aprovados com a única falha pré-existente e documentada (datas cruas em 22 páginas de outros módulos); testes Python aprovados; inspeção em 360, 390, 768 e 1440 px sem violação axe e sem rolagem horizontal; ficha de prova, detalhe de regra, tabelas sob demanda e estado na URL conferidos em navegador.
+* Testes: `src/tests/energia-visao.test.ts` (contrato da gold, equivalência célula a célula com as golds de origem por outro caminho, textos derivados dos números, âncoras, renderização, peso, datas); `energia-mapa` e `energia-reauditoria` ajustados à nova ligação (as âncoras dos cartões vêm de `visao.ts`; a proveniência de cada número está na gold da síntese).
+* Documentação: `FASE_1.md` (estado dos painéis e decisões), `status_paineis.json` e `MATRIZ_PAINEIS.md` (P004 e P005 concluídos; P006 e P007 concluídos com limitação declarada), `modulos/visao.md` (estado da interface).
+
+### Próximos passos da Fase 2
+
+1. Mercado (P032 a P035): implementar a coleta dos conjuntos da CCEE com o cliente do pipeline (autorizada), construir a página nova e sair da página "em integração".
+2. Geração P023 e P024 (dados em `geracao_detalhe.json`), Aprenda (P065, P066), Dados e metodologia (P067 a P070), avaliação (P071).
+3. Revisão adversarial das interfaces publicadas sem revisão (inclui a Visão geral nova), quando autorizada.
+4. Porte da home e do seletor com painéis vivos e da gramática visual (ver acima).
+5. Datas cruas nos textos dos módulos (22 páginas) e páginas acima de 600 KB (Geração, Território, Qualidade).
+

@@ -15,9 +15,14 @@ describe("proveniência por painel", () => {
   it("painéis da Visão geral e da Rede trazem a proveniência de cada número que citam", () => {
     const visao = ler("src/app/setor-eletrico/visao-geral/page.tsx");
     const rede = ler("src/app/setor-eletrico/rede/page.tsx");
-    expect(visao).toContain("p: hid.proveniencia.ena30");
-    expect(visao).toContain("ger.proveniencia.termica_7d");
-    expect(visao).toContain("p: pld.proveniencia.diario");
+    // a Visão geral lê só sintese.json: cada frase leva versões (gold, snapshot, sha256), o caminho de
+    // cada valor na gold de origem e a evidência "Comprove este número" (ver energia-visao.test.ts)
+    expect(visao).toContain('lerGold<SinteseVisaoGold>("sintese.json")');
+    expect(visao).toContain("<VisaoFrases frases={g.frases} />");
+    const tabelas = ler("src/components/energia/VisaoTabelasSobDemanda.tsx");
+    expect(visao).toContain('<VisaoTabelasSobDemanda conjunto="sistema-auditoria"');
+    expect(tabelas).toContain("linhasVersoes(g.frases)");
+    expect(tabelas).toContain("linhasValoresFrases(g.frases)");
     expect(rede).toContain("p: pld.proveniencia.diario");
     expect(ler("src/components/energia/PldPeriodos.tsx")).toContain('<SeloNatureza natureza="CALCULADO" />');
   });

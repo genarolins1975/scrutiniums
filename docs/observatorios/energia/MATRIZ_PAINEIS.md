@@ -4,11 +4,11 @@ Gerada por `scripts/energia_matriz.py` a partir do Anexo A da especificação e 
 
 | Estado | Painéis |
 | --- | ---: |
-| Concluído | 0 |
-| Concluído com limitação declarada | 0 |
+| Concluído | 2 |
+| Concluído com limitação declarada | 2 |
 | Parcial | 0 |
 | Bloqueado (externo, com evidência) | 0 |
-| Pendente | 71 |
+| Pendente | 67 |
 | **Total** | **71** |
 
 
@@ -24,10 +24,10 @@ Gerada por `scripts/energia_matriz.py` a partir do Anexo A da especificação e 
 
 | ID | Painel | Pergunta | Prioridade | Rota | Fontes integradas | Estado inicial | Estado | Critério de aceite | Evidência |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| P004 | O sistema em 60 segundos | O que mudou e merece atenção? | P0 |  | D0, S1, S21 | parcial | Pendente | Todas as frases reproduzíveis a partir dos números exibidos e de suas versões. |  |
-| P005 | Preço, água, geração, carga e rede | Como estão os principais determinantes? | P0 |  | S1, S3, S21 | parcial | Pendente | Mesmos números dos módulos de origem; eixos, universo e datas consistentes. |  |
-| P006 | Energia e sociedade | Como custo e qualidade chegam ao consumidor? | P1 |  | S5, S6, S8, S9, S10 | inexistente | Pendente | Não apresentar séries anuais como situação do dia; cobertura explícita. |  |
-| P007 | O que observar | Quais alterações são relevantes? | P1 |  | D0, S4, S20 | parcial | Pendente | Alerta não implica causalidade; frequência de falsos alarmes monitorada. |  |
+| P004 | O sistema em 60 segundos | O que mudou e merece atenção? | P0 |  | D0, S1, S21 | parcial | Concluído | Todas as frases reproduzíveis a partir dos números exibidos e de suas versões. | Página /setor-eletrico/visao-geral ligada à gold sintese.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi): resposta curta, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; 530 KB de HTML; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-visao.test.ts. Revisão adversarial da interface pendente. |
+| P005 | Preço, água, geração, carga e rede | Como estão os principais determinantes? | P0 |  | S1, S3, S21 | parcial | Concluído | Mesmos números dos módulos de origem; eixos, universo e datas consistentes. | Página /setor-eletrico/visao-geral ligada à gold sintese.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi): resposta curta, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; 530 KB de HTML; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-visao.test.ts. Revisão adversarial da interface pendente. |
+| P006 | Energia e sociedade | Como custo e qualidade chegam ao consumidor? | P1 |  | S5, S6, S8, S9, S10 | inexistente | Concluído com limitação declarada | Não apresentar séries anuais como situação do dia; cobertura explícita. | Página /setor-eletrico/visao-geral ligada à gold sintese.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi): resposta curta, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; 530 KB de HTML; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-visao.test.ts. Revisão adversarial da interface pendente. Limitação declarada na página: Tarifa Social com referência mai/2025 e conjunto SCS atrasado no painel de saúde dos dados. |
+| P007 | O que observar | Quais alterações são relevantes? | P1 |  | D0, S4, S20 | parcial | Concluído com limitação declarada | Alerta não implica causalidade; frequência de falsos alarmes monitorada. | Página /setor-eletrico/visao-geral ligada à gold sintese.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi): resposta curta, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; 530 KB de HTML; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-visao.test.ts. Revisão adversarial da interface pendente. Limitação declarada na página: registro das publicações iniciado em 01/10/2026 e revisões avaliáveis desde 27/09/2026. |
 
 ## PLD
 

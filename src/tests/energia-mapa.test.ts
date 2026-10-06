@@ -51,9 +51,10 @@ function paginaDaRota(href: string): string | null {
 /** Código da página e dos componentes que ela importa diretamente: onde uma âncora pode ser declarada. */
 function codigoDaPagina(arquivo: string): string {
   const t = ler(arquivo);
-  const extras = Array.from(t.matchAll(/from "@\/components\/(energia|evidencia)\/([A-Za-z]+)"/g))
-    .map((m) => `src/components/${m[1]}/${m[2]}.tsx`)
-    .filter((f) => existsSync(join(raiz, f)));
+  const extras = [
+    ...Array.from(t.matchAll(/from "@\/components\/(energia|evidencia)\/([A-Za-z]+)"/g)).map((m) => `src/components/${m[1]}/${m[2]}.tsx`),
+    ...Array.from(t.matchAll(/from "@\/lib\/energia\/([a-z-]+)"/g)).map((m) => `src/lib/energia/${m[1]}.ts`),
+  ].filter((f) => existsSync(join(raiz, f)));
   return [t, ...extras.map(ler)].join("\n");
 }
 
@@ -171,7 +172,15 @@ describe("página inicial: mapa didático (P001)", () => {
 
   it("links antigos com âncora da visão geral seguem para a nova página, e a home não reusa essas âncoras", () => {
     const visao = ler("src/app/setor-eletrico/visao-geral/page.tsx");
-    for (const a of ANCORAS_VISAO_GERAL) expect(visao, a).toMatch(new RegExp(`id="${a}"|id: "${a}"|id=\\{\`${a}`));
+    const lib = ler("src/lib/energia/visao.ts");
+    // sistema e observar são blocos da página; as demais âncoras caem nos cartões dos determinantes,
+    // cujos ids vêm de ANCORAS_DETERMINANTES (a página passa o mapa inteiro ao componente)
+    expect(visao).toContain("ancoras={ANCORAS_DETERMINANTES}");
+    for (const a of ANCORAS_VISAO_GERAL) {
+      const naPagina = new RegExp(`id="${a}"|id: "${a}"|id=\\{\`${a}`).test(visao);
+      const nosCartoes = new RegExp(`(id|painel): "${a}"`).test(lib);
+      expect(naPagina || nosCartoes, a).toBe(true);
+    }
     const home = ler(HOME);
     expect(home).toContain("<RedirecionaAncoraAntiga ancoras={ANCORAS_VISAO_GERAL}");
     for (const a of ANCORAS_VISAO_GERAL) expect(home, a).not.toContain(`id="${a}"`);
