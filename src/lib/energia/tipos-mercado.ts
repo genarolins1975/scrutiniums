@@ -657,7 +657,7 @@ export type Encargos = {
 
 /* ---------------------------------------------------------------- painéis, fontes e acesso */
 
-/** "pendente_decisao_acesso": depende de número da CCEE enquanto o acesso não for decidido pelo responsável. */
+/** "pendente_decisao_acesso": depende de número da CCEE enquanto o acesso não estiver decidido (autorizado em 06/10/2026). */
 export type EstadoPainel = "concluido_com_limitacao" | "parcial" | "bloqueado" | "pendente_decisao_acesso";
 
 export type VerificacaoPainel = {
@@ -748,7 +748,16 @@ export type FonteMercado = {
 export type AcessoCcee = {
   cliente: string;
   observacao: string;
-  decisao: { situacao: "pendente" | "autorizada" | "negada"; pergunta: string; registrada_em: string; efeito: string; coleta_neste_ambiente: string };
+  decisao: {
+    situacao: "pendente" | "autorizada" | "negada";
+    pergunta: string;
+    registrada_em: string;
+    /** Data da decisão do responsável (ausente enquanto pendente). */
+    decidida_em?: string;
+    resposta?: string;
+    efeito: string;
+    coleta_neste_ambiente: string;
+  };
   /** Capturas feitas no portal da CCEE (vintages no silver), por conjunto. */
   capturas: { dataset: string; vintages: number; primeira_captura: string; ultima_captura: string; origem: string }[];
   conjuntos: { dataset: string; ultima_tentativa: string | null; tentativas_ok: number; tentativas: number }[];

@@ -131,19 +131,23 @@
   },
   "P032": {
    "inicial": "placeholder",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Página /setor-eletrico/mercado ligadas à gold mercado.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi), com a coleta da CCEE autorizada e refeita no mesmo dia (dados até ago/2026): resposta curta da gold, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; modos Entender, Analisar e Auditar; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-mercado-pagina.test.ts e energia-mercado.test.ts. Revisão adversarial da interface pendente. 456 KB de HTML. Limitação declarada: três universos com perímetros diferentes (EPE, CCEE e SAMP), nenhum igualado à carga do ONS; conjuntos da CCEE desde 2023; divergência anual EPE × consolidação do MME publicada como ressalva."
   },
   "P033": {
    "inicial": "placeholder",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Página /setor-eletrico/mercado/agentes ligadas à gold mercado.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi), com a coleta da CCEE autorizada e refeita no mesmo dia (dados até ago/2026): resposta curta da gold, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; modos Entender, Analisar e Auditar; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-mercado-pagina.test.ts e energia-mercado.test.ts. Revisão adversarial da interface pendente. 400 KB de HTML. Limitação declarada: cadastro de perfis sem data de posição; lista de associados mês a mês desde out/2025; ano corrente dos desligamentos parcial."
   },
   "P034": {
    "inicial": "placeholder",
-   "estado": "pendente"
+   "estado": "parcial",
+   "evidencia": "Página /setor-eletrico/mercado/mre-e-gsf ligadas à gold mercado.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi), com a coleta da CCEE autorizada e refeita no mesmo dia (dados até ago/2026): resposta curta da gold, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; modos Entender, Analisar e Auditar; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-mercado-pagina.test.ts e energia-mercado.test.ts. Revisão adversarial da interface pendente. 308 KB de HTML. Parcial: GSF mensal reconciliado com o InfoMercado; o 'ajuste médio do MRE nos últimos doze meses' do InfoMercado (92,55% no Nº 229) não é reproduzido por nenhuma definição testada, divergência publicada na página."
   },
   "P035": {
    "inicial": "placeholder",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Página /setor-eletrico/mercado/encargos ligadas à gold mercado.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi), com a coleta da CCEE autorizada e refeita no mesmo dia (dados até ago/2026): resposta curta da gold, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; modos Entender, Analisar e Auditar; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-mercado-pagina.test.ts e energia-mercado.test.ts. Revisão adversarial da interface pendente. 427 KB de HTML. Limitação declarada: pagamento de ESS de fev/2025 a ago/2026 publicado como zero e não confirmado (nulo rotulado); liquidação de abr/2025 ausente da fonte; resposta da demanda fora do conjunto aberto de encargos."
   },
   "P036": {
    "inicial": "placeholder",

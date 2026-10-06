@@ -35,7 +35,7 @@ export const MODULOS_ENERGIA: ModuloEnergia[] = [
   { slug: "geracao", href: "/setor-eletrico/geracao", rotulo: "Geração", resumo: "Com que fontes o sistema está atendendo a carga.", integrado: true, secao: "energia:geracao" },
   { slug: "carga", href: "/setor-eletrico/carga", rotulo: "Carga", resumo: "Quanto o sistema está consumindo e como isso se compara.", integrado: true, secao: "energia:carga" },
   { slug: "rede", href: "/setor-eletrico/rede", rotulo: "Rede", resumo: "Fluxos entre regiões e diferenças de preço.", integrado: true, secao: "energia:rede" },
-  { slug: "mercado", href: "/setor-eletrico/mercado", rotulo: "Mercado", resumo: "Ambientes de contratação, agentes e mecanismos de mercado.", integrado: false, secao: "energia:mercado" },
+  { slug: "mercado", href: "/setor-eletrico/mercado", rotulo: "Mercado", resumo: "Livre e regulado, agentes e migração, MRE e GSF, encargos e liquidação, com a CCEE, a EPE e a ANEEL.", integrado: true, secao: "energia:mercado" },
   { slug: "empresas", href: "/setor-eletrico/empresas", rotulo: "Empresas", resumo: "Grupos econômicos, companhias, usinas, linhas e concessões.", integrado: true, secao: "energia:empresas" },
   { slug: "expansao", href: "/setor-eletrico/expansao", rotulo: "Expansão", resumo: "Leilões, projetos, capacidade futura e planejamento.", integrado: true, secao: "energia:expansao" },
   { slug: "regulacao", href: "/setor-eletrico/regulacao", rotulo: "Regulação", resumo: "ANEEL, CCEE, ONS e MME com linha do tempo e documentos primários.", integrado: true, secao: "energia:regulacao" },

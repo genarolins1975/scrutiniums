@@ -1,34 +1,34 @@
 {
  "dominio": "energia",
  "gold": "mercado.json",
- "gerado_em": "2026-10-01T07:54:38Z",
+ "gerado_em": "2026-10-06T20:02:46Z",
  "descricao": "Tabelas longas do módulo Mercado lidas sob demanda pela página (os mesmos valores da construção da gold; R$ e MWh inteiros).",
  "parcelas_mensal_detalhe": [
   {
    "mes": "2024-04",
    "consumo_total_mwh": 8018009,
    "consumo_acl_sem_exportacao_mwh": 8018009,
-   "parcelas_sem_cadastro": 286,
+   "parcelas_sem_cadastro": 298,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 65,
      "consumo_mwh": 542924
     },
     "Consumidor Especial": {
-     "parcelas": 9280,
-     "consumo_mwh": 804434
+     "parcelas": 9271,
+     "consumo_mwh": 804096
     },
     "Consumidor Livre": {
-     "parcelas": 5596,
-     "consumo_mwh": 6642015
+     "parcelas": 5593,
+     "consumo_mwh": 6641738
     },
     "Exportador": {
      "parcelas": 4,
      "consumo_mwh": 0
     },
     "sem_cadastro": {
-     "parcelas": 286,
-     "consumo_mwh": 28637
+     "parcelas": 298,
+     "consumo_mwh": 29251
     }
    },
    "por_submercado": {
@@ -51,27 +51,27 @@
    "mes": "2024-05",
    "consumo_total_mwh": 19799324,
    "consumo_acl_sem_exportacao_mwh": 19742618,
-   "parcelas_sem_cadastro": 762,
+   "parcelas_sem_cadastro": 781,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 167,
      "consumo_mwh": 1694634
     },
     "Consumidor Especial": {
-     "parcelas": 22998,
-     "consumo_mwh": 1966375
+     "parcelas": 22983,
+     "consumo_mwh": 1965579
     },
     "Consumidor Livre": {
-     "parcelas": 13848,
-     "consumo_mwh": 16004599
+     "parcelas": 13844,
+     "consumo_mwh": 16004242
     },
     "Exportador": {
      "parcelas": 7,
      "consumo_mwh": 56222
     },
     "sem_cadastro": {
-     "parcelas": 762,
-     "consumo_mwh": 77010
+     "parcelas": 781,
+     "consumo_mwh": 78164
     }
    },
    "por_submercado": {
@@ -94,27 +94,27 @@
    "mes": "2024-06",
    "consumo_total_mwh": 19613923,
    "consumo_acl_sem_exportacao_mwh": 19217823,
-   "parcelas_sem_cadastro": 811,
+   "parcelas_sem_cadastro": 830,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 167,
      "consumo_mwh": 1678429
     },
     "Consumidor Especial": {
-     "parcelas": 23410,
-     "consumo_mwh": 1850951
+     "parcelas": 23395,
+     "consumo_mwh": 1850148
     },
     "Consumidor Livre": {
-     "parcelas": 13876,
-     "consumo_mwh": 15597470
+     "parcelas": 13872,
+     "consumo_mwh": 15597085
     },
     "Exportador": {
      "parcelas": 7,
      "consumo_mwh": 395683
     },
     "sem_cadastro": {
-     "parcelas": 811,
-     "consumo_mwh": 90973
+     "parcelas": 830,
+     "consumo_mwh": 92161
     }
    },
    "por_submercado": {
@@ -137,27 +137,27 @@
    "mes": "2024-07",
    "consumo_total_mwh": 21079439,
    "consumo_acl_sem_exportacao_mwh": 20163093,
-   "parcelas_sem_cadastro": 662,
+   "parcelas_sem_cadastro": 680,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 167,
      "consumo_mwh": 1740876
     },
     "Consumidor Especial": {
-     "parcelas": 24233,
-     "consumo_mwh": 1941658
+     "parcelas": 24219,
+     "consumo_mwh": 1940871
     },
     "Consumidor Livre": {
-     "parcelas": 13900,
-     "consumo_mwh": 16393656
+     "parcelas": 13896,
+     "consumo_mwh": 16393348
     },
     "Exportador": {
      "parcelas": 8,
      "consumo_mwh": 915933
     },
     "sem_cadastro": {
-     "parcelas": 662,
-     "consumo_mwh": 86904
+     "parcelas": 680,
+     "consumo_mwh": 87998
     }
    },
    "por_submercado": {
@@ -180,27 +180,27 @@
    "mes": "2024-08",
    "consumo_total_mwh": 21147759,
    "consumo_acl_sem_exportacao_mwh": 20425019,
-   "parcelas_sem_cadastro": 683,
+   "parcelas_sem_cadastro": 699,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 171,
      "consumo_mwh": 1741863
     },
     "Consumidor Especial": {
-     "parcelas": 24606,
-     "consumo_mwh": 2010463
+     "parcelas": 24593,
+     "consumo_mwh": 2009821
     },
     "Consumidor Livre": {
-     "parcelas": 13954,
-     "consumo_mwh": 16577140
+     "parcelas": 13951,
+     "consumo_mwh": 16576908
     },
     "Exportador": {
      "parcelas": 8,
      "consumo_mwh": 722316
     },
     "sem_cadastro": {
-     "parcelas": 683,
-     "consumo_mwh": 95553
+     "parcelas": 699,
+     "consumo_mwh": 96427
     }
    },
    "por_submercado": {
@@ -223,27 +223,27 @@
    "mes": "2024-09",
    "consumo_total_mwh": 20062342,
    "consumo_acl_sem_exportacao_mwh": 20041187,
-   "parcelas_sem_cadastro": 692,
+   "parcelas_sem_cadastro": 708,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 175,
      "consumo_mwh": 1712828
     },
     "Consumidor Especial": {
-     "parcelas": 25088,
-     "consumo_mwh": 2074053
+     "parcelas": 25075,
+     "consumo_mwh": 2073347
     },
     "Consumidor Livre": {
-     "parcelas": 14000,
-     "consumo_mwh": 16160558
+     "parcelas": 13997,
+     "consumo_mwh": 16160354
     },
     "Exportador": {
      "parcelas": 8,
      "consumo_mwh": 20762
     },
     "sem_cadastro": {
-     "parcelas": 692,
-     "consumo_mwh": 93748
+     "parcelas": 708,
+     "consumo_mwh": 94658
     }
    },
    "por_submercado": {
@@ -266,27 +266,27 @@
    "mes": "2024-10",
    "consumo_total_mwh": 20793959,
    "consumo_acl_sem_exportacao_mwh": 20790718,
-   "parcelas_sem_cadastro": 718,
+   "parcelas_sem_cadastro": 734,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 177,
      "consumo_mwh": 1727361
     },
     "Consumidor Especial": {
-     "parcelas": 25456,
-     "consumo_mwh": 2240741
+     "parcelas": 25443,
+     "consumo_mwh": 2240001
     },
     "Consumidor Livre": {
-     "parcelas": 14062,
-     "consumo_mwh": 16728017
+     "parcelas": 14059,
+     "consumo_mwh": 16727801
     },
     "Exportador": {
      "parcelas": 8,
      "consumo_mwh": 2714
     },
     "sem_cadastro": {
-     "parcelas": 718,
-     "consumo_mwh": 94600
+     "parcelas": 734,
+     "consumo_mwh": 95556
     }
    },
    "por_submercado": {
@@ -309,27 +309,27 @@
    "mes": "2024-11",
    "consumo_total_mwh": 20239742,
    "consumo_acl_sem_exportacao_mwh": 20126393,
-   "parcelas_sem_cadastro": 676,
+   "parcelas_sem_cadastro": 692,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 181,
      "consumo_mwh": 1684888
     },
     "Consumidor Especial": {
-     "parcelas": 25978,
-     "consumo_mwh": 2212214
+     "parcelas": 25965,
+     "consumo_mwh": 2211521
     },
     "Consumidor Livre": {
-     "parcelas": 14095,
-     "consumo_mwh": 16151422
+     "parcelas": 14092,
+     "consumo_mwh": 16151201
     },
     "Exportador": {
      "parcelas": 8,
      "consumo_mwh": 112510
     },
     "sem_cadastro": {
-     "parcelas": 676,
-     "consumo_mwh": 77869
+     "parcelas": 692,
+     "consumo_mwh": 78784
     }
    },
    "por_submercado": {
@@ -352,27 +352,27 @@
    "mes": "2024-12",
    "consumo_total_mwh": 19730807,
    "consumo_acl_sem_exportacao_mwh": 19730151,
-   "parcelas_sem_cadastro": 832,
+   "parcelas_sem_cadastro": 849,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 183,
      "consumo_mwh": 1735576
     },
     "Consumidor Especial": {
-     "parcelas": 26480,
-     "consumo_mwh": 2229617
+     "parcelas": 26466,
+     "consumo_mwh": 2228881
     },
     "Consumidor Livre": {
-     "parcelas": 14151,
-     "consumo_mwh": 15695298
+     "parcelas": 14148,
+     "consumo_mwh": 15695102
     },
     "Exportador": {
      "parcelas": 8,
      "consumo_mwh": 0
     },
     "sem_cadastro": {
-     "parcelas": 832,
-     "consumo_mwh": 69660
+     "parcelas": 849,
+     "consumo_mwh": 70592
     }
    },
    "por_submercado": {
@@ -395,27 +395,27 @@
    "mes": "2025-01",
    "consumo_total_mwh": 20927707,
    "consumo_acl_sem_exportacao_mwh": 20620981,
-   "parcelas_sem_cadastro": 803,
+   "parcelas_sem_cadastro": 820,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 198,
      "consumo_mwh": 1805919
     },
     "Consumidor Especial": {
-     "parcelas": 26965,
-     "consumo_mwh": 2418396
+     "parcelas": 26951,
+     "consumo_mwh": 2417520
     },
     "Consumidor Livre": {
-     "parcelas": 14141,
-     "consumo_mwh": 16329181
+     "parcelas": 14138,
+     "consumo_mwh": 16328953
     },
     "Exportador": {
      "parcelas": 11,
      "consumo_mwh": 306116
     },
     "sem_cadastro": {
-     "parcelas": 803,
-     "consumo_mwh": 67486
+     "parcelas": 820,
+     "consumo_mwh": 68589
     }
    },
    "por_submercado": {
@@ -438,27 +438,27 @@
    "mes": "2025-02",
    "consumo_total_mwh": 20234314,
    "consumo_acl_sem_exportacao_mwh": 19656292,
-   "parcelas_sem_cadastro": 810,
+   "parcelas_sem_cadastro": 827,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 201,
      "consumo_mwh": 1686999
     },
     "Consumidor Especial": {
-     "parcelas": 27291,
-     "consumo_mwh": 2373790
+     "parcelas": 27277,
+     "consumo_mwh": 2372932
     },
     "Consumidor Livre": {
-     "parcelas": 14150,
-     "consumo_mwh": 15531068
+     "parcelas": 14147,
+     "consumo_mwh": 15530681
     },
     "Exportador": {
      "parcelas": 12,
      "consumo_mwh": 577476
     },
     "sem_cadastro": {
-     "parcelas": 810,
-     "consumo_mwh": 64435
+     "parcelas": 827,
+     "consumo_mwh": 65681
     }
    },
    "por_submercado": {
@@ -481,27 +481,27 @@
    "mes": "2025-03",
    "consumo_total_mwh": 21504482,
    "consumo_acl_sem_exportacao_mwh": 21412204,
-   "parcelas_sem_cadastro": 818,
+   "parcelas_sem_cadastro": 835,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 208,
      "consumo_mwh": 1863474
     },
     "Consumidor Especial": {
-     "parcelas": 27587,
-     "consumo_mwh": 2564723
+     "parcelas": 27573,
+     "consumo_mwh": 2563888
     },
     "Consumidor Livre": {
-     "parcelas": 14150,
-     "consumo_mwh": 16917824
+     "parcelas": 14147,
+     "consumo_mwh": 16917357
     },
     "Exportador": {
      "parcelas": 12,
      "consumo_mwh": 91910
     },
     "sem_cadastro": {
-     "parcelas": 818,
-     "consumo_mwh": 66184
+     "parcelas": 835,
+     "consumo_mwh": 67485
     }
    },
    "por_submercado": {
@@ -524,27 +524,27 @@
    "mes": "2025-04",
    "consumo_total_mwh": 20270883,
    "consumo_acl_sem_exportacao_mwh": 20264834,
-   "parcelas_sem_cadastro": 798,
+   "parcelas_sem_cadastro": 815,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 214,
      "consumo_mwh": 1749099
     },
     "Consumidor Especial": {
-     "parcelas": 27971,
-     "consumo_mwh": 2374742
+     "parcelas": 27957,
+     "consumo_mwh": 2373950
     },
     "Consumidor Livre": {
-     "parcelas": 14190,
-     "consumo_mwh": 16084221
+     "parcelas": 14187,
+     "consumo_mwh": 16083933
     },
     "Exportador": {
      "parcelas": 12,
      "consumo_mwh": 5412
     },
     "sem_cadastro": {
-     "parcelas": 798,
-     "consumo_mwh": 56773
+     "parcelas": 815,
+     "consumo_mwh": 57853
     }
    },
    "por_submercado": {
@@ -567,27 +567,27 @@
    "mes": "2025-05",
    "consumo_total_mwh": 20860744,
    "consumo_acl_sem_exportacao_mwh": 20826249,
-   "parcelas_sem_cadastro": 788,
+   "parcelas_sem_cadastro": 805,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 216,
      "consumo_mwh": 1847174
     },
     "Consumidor Especial": {
-     "parcelas": 28308,
-     "consumo_mwh": 2375132
+     "parcelas": 28294,
+     "consumo_mwh": 2374321
     },
     "Consumidor Livre": {
-     "parcelas": 14198,
-     "consumo_mwh": 16543309
+     "parcelas": 14195,
+     "consumo_mwh": 16543075
     },
     "Exportador": {
      "parcelas": 12,
      "consumo_mwh": 34173
     },
     "sem_cadastro": {
-     "parcelas": 788,
-     "consumo_mwh": 60634
+     "parcelas": 805,
+     "consumo_mwh": 61680
     }
    },
    "por_submercado": {
@@ -610,27 +610,27 @@
    "mes": "2025-06",
    "consumo_total_mwh": 20379054,
    "consumo_acl_sem_exportacao_mwh": 19757700,
-   "parcelas_sem_cadastro": 781,
+   "parcelas_sem_cadastro": 798,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 217,
      "consumo_mwh": 1792984
     },
     "Consumidor Especial": {
-     "parcelas": 28673,
-     "consumo_mwh": 2201431
+     "parcelas": 28659,
+     "consumo_mwh": 2200661
     },
     "Consumidor Livre": {
-     "parcelas": 14216,
-     "consumo_mwh": 15703278
+     "parcelas": 14213,
+     "consumo_mwh": 15703026
     },
     "Exportador": {
      "parcelas": 13,
      "consumo_mwh": 621093
     },
     "sem_cadastro": {
-     "parcelas": 781,
-     "consumo_mwh": 60007
+     "parcelas": 798,
+     "consumo_mwh": 61029
     }
    },
    "por_submercado": {
@@ -653,27 +653,27 @@
    "mes": "2025-07",
    "consumo_total_mwh": 21821273,
    "consumo_acl_sem_exportacao_mwh": 20590478,
-   "parcelas_sem_cadastro": 772,
+   "parcelas_sem_cadastro": 789,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 218,
      "consumo_mwh": 1867297
     },
     "Consumidor Especial": {
-     "parcelas": 28975,
-     "consumo_mwh": 2312851
+     "parcelas": 28961,
+     "consumo_mwh": 2312045
     },
     "Consumidor Livre": {
-     "parcelas": 14211,
-     "consumo_mwh": 16331597
+     "parcelas": 14208,
+     "consumo_mwh": 16331342
     },
     "Exportador": {
      "parcelas": 13,
      "consumo_mwh": 1230524
     },
     "sem_cadastro": {
-     "parcelas": 772,
-     "consumo_mwh": 78734
+     "parcelas": 789,
+     "consumo_mwh": 79794
     }
    },
    "por_submercado": {
@@ -696,27 +696,27 @@
    "mes": "2025-08",
    "consumo_total_mwh": 20971673,
    "consumo_acl_sem_exportacao_mwh": 20622613,
-   "parcelas_sem_cadastro": 750,
+   "parcelas_sem_cadastro": 767,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 218,
      "consumo_mwh": 1872859
     },
     "Consumidor Especial": {
-     "parcelas": 29229,
-     "consumo_mwh": 2366798
+     "parcelas": 29215,
+     "consumo_mwh": 2366012
     },
     "Consumidor Livre": {
-     "parcelas": 14214,
-     "consumo_mwh": 16294452
+     "parcelas": 14211,
+     "consumo_mwh": 16294283
     },
     "Exportador": {
      "parcelas": 13,
      "consumo_mwh": 348801
     },
     "sem_cadastro": {
-     "parcelas": 750,
-     "consumo_mwh": 88503
+     "parcelas": 767,
+     "consumo_mwh": 89459
     }
    },
    "por_submercado": {
@@ -739,27 +739,27 @@
    "mes": "2025-09",
    "consumo_total_mwh": 20324383,
    "consumo_acl_sem_exportacao_mwh": 20287076,
-   "parcelas_sem_cadastro": 743,
+   "parcelas_sem_cadastro": 760,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 218,
      "consumo_mwh": 1813296
     },
     "Consumidor Especial": {
-     "parcelas": 29469,
-     "consumo_mwh": 2420377
+     "parcelas": 29455,
+     "consumo_mwh": 2419546
     },
     "Consumidor Livre": {
-     "parcelas": 14237,
-     "consumo_mwh": 15965657
+     "parcelas": 14234,
+     "consumo_mwh": 15965520
     },
     "Exportador": {
      "parcelas": 13,
      "consumo_mwh": 36978
     },
     "sem_cadastro": {
-     "parcelas": 743,
-     "consumo_mwh": 87746
+     "parcelas": 760,
+     "consumo_mwh": 88714
     }
    },
    "por_submercado": {
@@ -782,27 +782,27 @@
    "mes": "2025-10",
    "consumo_total_mwh": 21122509,
    "consumo_acl_sem_exportacao_mwh": 21122084,
-   "parcelas_sem_cadastro": 272,
+   "parcelas_sem_cadastro": 289,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 224,
      "consumo_mwh": 1854167
     },
     "Consumidor Especial": {
-     "parcelas": 29638,
-     "consumo_mwh": 2569095
+     "parcelas": 29624,
+     "consumo_mwh": 2568398
     },
     "Consumidor Livre": {
-     "parcelas": 14242,
-     "consumo_mwh": 16669733
+     "parcelas": 14239,
+     "consumo_mwh": 16669554
     },
     "Exportador": {
      "parcelas": 13,
      "consumo_mwh": 0
     },
     "sem_cadastro": {
-     "parcelas": 272,
-     "consumo_mwh": 29090
+     "parcelas": 289,
+     "consumo_mwh": 29964
     }
    },
    "por_submercado": {
@@ -825,27 +825,27 @@
    "mes": "2025-11",
    "consumo_total_mwh": 20291440,
    "consumo_acl_sem_exportacao_mwh": 20290866,
-   "parcelas_sem_cadastro": 267,
+   "parcelas_sem_cadastro": 284,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 228,
      "consumo_mwh": 1810222
     },
     "Consumidor Especial": {
-     "parcelas": 29792,
-     "consumo_mwh": 2501067
+     "parcelas": 29778,
+     "consumo_mwh": 2500393
     },
     "Consumidor Livre": {
-     "parcelas": 14249,
-     "consumo_mwh": 15953826
+     "parcelas": 14246,
+     "consumo_mwh": 15953671
     },
     "Exportador": {
      "parcelas": 13,
      "consumo_mwh": 0
     },
     "sem_cadastro": {
-     "parcelas": 267,
-     "consumo_mwh": 25752
+     "parcelas": 284,
+     "consumo_mwh": 26580
     }
    },
    "por_submercado": {
@@ -868,27 +868,27 @@
    "mes": "2025-12",
    "consumo_total_mwh": 19944316,
    "consumo_acl_sem_exportacao_mwh": 19914790,
-   "parcelas_sem_cadastro": 259,
+   "parcelas_sem_cadastro": 276,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 229,
      "consumo_mwh": 1828653
     },
     "Consumidor Especial": {
-     "parcelas": 30014,
-     "consumo_mwh": 2589535
+     "parcelas": 30000,
+     "consumo_mwh": 2588867
     },
     "Consumidor Livre": {
-     "parcelas": 14287,
-     "consumo_mwh": 15472371
+     "parcelas": 14284,
+     "consumo_mwh": 15472221
     },
     "Exportador": {
      "parcelas": 14,
      "consumo_mwh": 29031
     },
     "sem_cadastro": {
-     "parcelas": 259,
-     "consumo_mwh": 24232
+     "parcelas": 276,
+     "consumo_mwh": 25049
     }
    },
    "por_submercado": {
@@ -911,27 +911,27 @@
    "mes": "2026-01",
    "consumo_total_mwh": 20885505,
    "consumo_acl_sem_exportacao_mwh": 20772953,
-   "parcelas_sem_cadastro": 184,
+   "parcelas_sem_cadastro": 201,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 243,
      "consumo_mwh": 1805586
     },
     "Consumidor Especial": {
-     "parcelas": 30545,
-     "consumo_mwh": 2668353
+     "parcelas": 30531,
+     "consumo_mwh": 2667652
     },
     "Consumidor Livre": {
-     "parcelas": 14299,
-     "consumo_mwh": 16281601
+     "parcelas": 14296,
+     "consumo_mwh": 16281433
     },
     "Exportador": {
      "parcelas": 15,
      "consumo_mwh": 112101
     },
     "sem_cadastro": {
-     "parcelas": 184,
-     "consumo_mwh": 17413
+     "parcelas": 201,
+     "consumo_mwh": 18281
     }
    },
    "por_submercado": {
@@ -954,27 +954,27 @@
    "mes": "2026-02",
    "consumo_total_mwh": 19845974,
    "consumo_acl_sem_exportacao_mwh": 19730384,
-   "parcelas_sem_cadastro": 130,
+   "parcelas_sem_cadastro": 147,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 246,
      "consumo_mwh": 1705160
     },
     "Consumidor Especial": {
-     "parcelas": 30758,
-     "consumo_mwh": 2536062
+     "parcelas": 30744,
+     "consumo_mwh": 2535419
     },
     "Consumidor Livre": {
-     "parcelas": 14307,
-     "consumo_mwh": 15477017
+     "parcelas": 14304,
+     "consumo_mwh": 15476679
     },
     "Exportador": {
      "parcelas": 15,
      "consumo_mwh": 115161
     },
     "sem_cadastro": {
-     "parcelas": 130,
-     "consumo_mwh": 12145
+     "parcelas": 147,
+     "consumo_mwh": 13126
     }
    },
    "por_submercado": {
@@ -997,27 +997,27 @@
    "mes": "2026-03",
    "consumo_total_mwh": 21939537,
    "consumo_acl_sem_exportacao_mwh": 21930261,
-   "parcelas_sem_cadastro": 79,
+   "parcelas_sem_cadastro": 96,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 331,
      "consumo_mwh": 1935885
     },
     "Consumidor Especial": {
-     "parcelas": 30894,
-     "consumo_mwh": 2840886
+     "parcelas": 30880,
+     "consumo_mwh": 2840146
     },
     "Consumidor Livre": {
-     "parcelas": 14256,
-     "consumo_mwh": 17143912
+     "parcelas": 14253,
+     "consumo_mwh": 17143541
     },
     "Exportador": {
      "parcelas": 15,
      "consumo_mwh": 8790
     },
     "sem_cadastro": {
-     "parcelas": 79,
-     "consumo_mwh": 9578
+     "parcelas": 96,
+     "consumo_mwh": 10689
     }
    },
    "por_submercado": {
@@ -1040,27 +1040,27 @@
    "mes": "2026-04",
    "consumo_total_mwh": 21021242,
    "consumo_acl_sem_exportacao_mwh": 20947499,
-   "parcelas_sem_cadastro": 65,
+   "parcelas_sem_cadastro": 81,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 332,
      "consumo_mwh": 1836905
     },
     "Consumidor Especial": {
-     "parcelas": 31192,
-     "consumo_mwh": 2680888
+     "parcelas": 31179,
+     "consumo_mwh": 2680339
     },
     "Consumidor Livre": {
-     "parcelas": 14220,
-     "consumo_mwh": 16421929
+     "parcelas": 14217,
+     "consumo_mwh": 16421734
     },
     "Exportador": {
      "parcelas": 15,
      "consumo_mwh": 73046
     },
     "sem_cadastro": {
-     "parcelas": 65,
-     "consumo_mwh": 7777
+     "parcelas": 81,
+     "consumo_mwh": 8521
     }
    },
    "por_submercado": {
@@ -1083,27 +1083,27 @@
    "mes": "2026-05",
    "consumo_total_mwh": 21670854,
    "consumo_acl_sem_exportacao_mwh": 21109479,
-   "parcelas_sem_cadastro": 48,
+   "parcelas_sem_cadastro": 64,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 334,
      "consumo_mwh": 1900829
     },
     "Consumidor Especial": {
-     "parcelas": 31399,
-     "consumo_mwh": 2588271
+     "parcelas": 31386,
+     "consumo_mwh": 2587768
     },
     "Consumidor Livre": {
-     "parcelas": 14211,
-     "consumo_mwh": 16615422
+     "parcelas": 14208,
+     "consumo_mwh": 16615252
     },
     "Exportador": {
      "parcelas": 15,
      "consumo_mwh": 560990
     },
     "sem_cadastro": {
-     "parcelas": 48,
-     "consumo_mwh": 4956
+     "parcelas": 64,
+     "consumo_mwh": 5630
     }
    },
    "por_submercado": {
@@ -1126,27 +1126,27 @@
    "mes": "2026-06",
    "consumo_total_mwh": 21066721,
    "consumo_acl_sem_exportacao_mwh": 20205791,
-   "parcelas_sem_cadastro": 14,
+   "parcelas_sem_cadastro": 30,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 337,
      "consumo_mwh": 1877500
     },
     "Consumidor Especial": {
-     "parcelas": 32031,
-     "consumo_mwh": 2446419
+     "parcelas": 32018,
+     "consumo_mwh": 2445906
     },
     "Consumidor Livre": {
-     "parcelas": 14217,
-     "consumo_mwh": 15880419
+     "parcelas": 14214,
+     "consumo_mwh": 15880129
     },
     "Exportador": {
      "parcelas": 18,
      "consumo_mwh": 860593
     },
     "sem_cadastro": {
-     "parcelas": 14,
-     "consumo_mwh": 1452
+     "parcelas": 30,
+     "consumo_mwh": 2256
     }
    },
    "por_submercado": {
@@ -1169,23 +1169,27 @@
    "mes": "2026-07",
    "consumo_total_mwh": 21787647,
    "consumo_acl_sem_exportacao_mwh": 21096108,
-   "parcelas_sem_cadastro": 0,
+   "parcelas_sem_cadastro": 14,
    "por_classe_perfil": {
     "Autoprodutor": {
      "parcelas": 338,
      "consumo_mwh": 1954289
     },
     "Consumidor Especial": {
-     "parcelas": 32171,
-     "consumo_mwh": 2602460
+     "parcelas": 32160,
+     "consumo_mwh": 2601940
     },
     "Consumidor Livre": {
-     "parcelas": 14224,
-     "consumo_mwh": 16539359
+     "parcelas": 14221,
+     "consumo_mwh": 16539225
     },
     "Exportador": {
      "parcelas": 18,
      "consumo_mwh": 691229
+    },
+    "sem_cadastro": {
+     "parcelas": 14,
+     "consumo_mwh": 653
     }
    },
    "por_submercado": {
@@ -1202,6 +1206,45 @@
     "classe_distribuidor_mwmed": 39454.3,
     "parcelas_distribuidor_mwmed": 39454.3,
     "residuo_distribuidor_mwmed": -0.0
+   }
+  },
+  {
+   "mes": "2026-08",
+   "consumo_total_mwh": 21837164,
+   "consumo_acl_sem_exportacao_mwh": 21359523,
+   "parcelas_sem_cadastro": 0,
+   "por_classe_perfil": {
+    "Autoprodutor": {
+     "parcelas": 337,
+     "consumo_mwh": 1942614
+    },
+    "Consumidor Especial": {
+     "parcelas": 32442,
+     "consumo_mwh": 2712139
+    },
+    "Consumidor Livre": {
+     "parcelas": 14224,
+     "consumo_mwh": 16704771
+    },
+    "Exportador": {
+     "parcelas": 19,
+     "consumo_mwh": 477306
+    }
+   },
+   "por_submercado": {
+    "SE": 25686,
+    "S": 12019,
+    "NE": 6929,
+    "N": 2388
+   },
+   "conferencia": {
+    "ok": true,
+    "classes_acl_mwmed": 29350.3,
+    "parcelas_acl_mwmed": 29350.6,
+    "residuo_acl_mwmed": 0.26,
+    "classe_distribuidor_mwmed": 41376.3,
+    "parcelas_distribuidor_mwmed": 41376.3,
+    "residuo_distribuidor_mwmed": 0.0
    }
   }
  ],
@@ -5414,6 +5457,38 @@
    "be_negativo_mwh": -8562681,
    "resultado_venda_rs": 1093466027,
    "resultado_compra_rs": -1197078984
+  },
+  {
+   "mes": "2026-08",
+   "submercado": "SE",
+   "be_positivo_mwh": 22686713,
+   "be_negativo_mwh": -28672364,
+   "resultado_venda_rs": 2971957414,
+   "resultado_compra_rs": -3798001396
+  },
+  {
+   "mes": "2026-08",
+   "submercado": "S",
+   "be_positivo_mwh": 10795405,
+   "be_negativo_mwh": -10431024,
+   "resultado_venda_rs": 1471873216,
+   "resultado_compra_rs": -1403780459
+  },
+  {
+   "mes": "2026-08",
+   "submercado": "NE",
+   "be_positivo_mwh": 21535152,
+   "be_negativo_mwh": -13978833,
+   "resultado_venda_rs": 2803579586,
+   "resultado_compra_rs": -1867193946
+  },
+  {
+   "mes": "2026-08",
+   "submercado": "N",
+   "be_positivo_mwh": 7208452,
+   "be_negativo_mwh": -9143500,
+   "resultado_venda_rs": 1011815409,
+   "resultado_compra_rs": -1217895968
   }
  ],
  "acr_conta_bandeira_mensal": [

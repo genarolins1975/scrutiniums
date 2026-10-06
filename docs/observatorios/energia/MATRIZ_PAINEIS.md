@@ -5,10 +5,10 @@ Gerada por `scripts/energia_matriz.py` a partir do Anexo A da especificação e 
 | Estado | Painéis |
 | --- | ---: |
 | Concluído | 2 |
-| Concluído com limitação declarada | 2 |
-| Parcial | 0 |
+| Concluído com limitação declarada | 5 |
+| Parcial | 1 |
 | Bloqueado (externo, com evidência) | 0 |
-| Pendente | 67 |
+| Pendente | 63 |
 | **Total** | **71** |
 
 
@@ -87,10 +87,10 @@ Gerada por `scripts/energia_matriz.py` a partir do Anexo A da especificação e 
 
 | ID | Painel | Pergunta | Prioridade | Rota | Fontes integradas | Estado inicial | Estado | Critério de aceite | Evidência |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| P032 | Livre e regulado | Como se distribui o consumo? | P1 |  | S2 | placeholder | Pendente | ACL+ACR reconcilia com o universo escolhido, sem igualar automaticamente à carga do ONS. |  |
-| P033 | Agentes e migração | Quem participa e como a composição mudou? | P1 |  | S2, S22 | placeholder | Pendente | Sem chamar novos perfis de novas empresas; cancelamentos e migrações definidos. |  |
-| P034 | MRE e GSF | Como foi o ajuste da garantia física? | P1 |  | S2 | placeholder | Pendente | GSF reconciliado à publicação oficial; garantia física e geração não misturadas. |  |
-| P035 | Encargos e contabilização | Quais custos públicos aparecem na liquidação? | P1 |  | S2, S6 | placeholder | Pendente | Nenhuma série inventada de PPA ou curva a termo; preços privados permanecem fora do escopo aberto. |  |
+| P032 | Livre e regulado | Como se distribui o consumo? | P1 |  | S2 | placeholder | Concluído com limitação declarada | ACL+ACR reconcilia com o universo escolhido, sem igualar automaticamente à carga do ONS. | Página /setor-eletrico/mercado ligadas à gold mercado.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi), com a coleta da CCEE autorizada e refeita no mesmo dia (dados até ago/2026): resposta curta da gold, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; modos Entender, Analisar e Auditar; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-mercado-pagina.test.ts e energia-mercado.test.ts. Revisão adversarial da interface pendente. 456 KB de HTML. Limitação declarada: três universos com perímetros diferentes (EPE, CCEE e SAMP), nenhum igualado à carga do ONS; conjuntos da CCEE desde 2023; divergência anual EPE × consolidação do MME publicada como ressalva. |
+| P033 | Agentes e migração | Quem participa e como a composição mudou? | P1 |  | S2, S22 | placeholder | Concluído com limitação declarada | Sem chamar novos perfis de novas empresas; cancelamentos e migrações definidos. | Página /setor-eletrico/mercado/agentes ligadas à gold mercado.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi), com a coleta da CCEE autorizada e refeita no mesmo dia (dados até ago/2026): resposta curta da gold, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; modos Entender, Analisar e Auditar; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-mercado-pagina.test.ts e energia-mercado.test.ts. Revisão adversarial da interface pendente. 400 KB de HTML. Limitação declarada: cadastro de perfis sem data de posição; lista de associados mês a mês desde out/2025; ano corrente dos desligamentos parcial. |
+| P034 | MRE e GSF | Como foi o ajuste da garantia física? | P1 |  | S2 | placeholder | Parcial | GSF reconciliado à publicação oficial; garantia física e geração não misturadas. | Página /setor-eletrico/mercado/mre-e-gsf ligadas à gold mercado.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi), com a coleta da CCEE autorizada e refeita no mesmo dia (dados até ago/2026): resposta curta da gold, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; modos Entender, Analisar e Auditar; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-mercado-pagina.test.ts e energia-mercado.test.ts. Revisão adversarial da interface pendente. 308 KB de HTML. Parcial: GSF mensal reconciliado com o InfoMercado; o 'ajuste médio do MRE nos últimos doze meses' do InfoMercado (92,55% no Nº 229) não é reproduzido por nenhuma definição testada, divergência publicada na página. |
+| P035 | Encargos e contabilização | Quais custos públicos aparecem na liquidação? | P1 |  | S2, S6 | placeholder | Concluído com limitação declarada | Nenhuma série inventada de PPA ou curva a termo; preços privados permanecem fora do escopo aberto. | Página /setor-eletrico/mercado/encargos ligadas à gold mercado.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi), com a coleta da CCEE autorizada e refeita no mesmo dia (dados até ago/2026): resposta curta da gold, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; modos Entender, Analisar e Auditar; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-mercado-pagina.test.ts e energia-mercado.test.ts. Revisão adversarial da interface pendente. 427 KB de HTML. Limitação declarada: pagamento de ESS de fev/2025 a ago/2026 publicado como zero e não confirmado (nulo rotulado); liquidação de abr/2025 ausente da fonte; resposta da demanda fora do conjunto aberto de encargos. |
 
 ## Empresas
 

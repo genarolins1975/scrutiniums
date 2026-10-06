@@ -21,9 +21,10 @@ O que o módulo publica:
   completa de meses) e resultado do MCP (CCEE); encargos do boletim do MME e a consolidação
   anual.
 
-Acesso à CCEE: a decisão sobre coletar a CCEE com o cliente do pipeline quando o curl recebe
-403 está pendente (ver fontes/ccee_mercado.py e `acesso_ccee`); até lá, nenhuma requisição
-nova sai deste módulo e os painéis que dependem da CCEE ficam 'pendente_decisao_acesso'.
+Acesso à CCEE: a coleta com o cliente do pipeline quando o curl recebe 403 foi autorizada pelo
+responsável em 06/10/2026 (fontes/ccee_mercado.py, DECISAO_ACESSO, publicada em `acesso_ccee`).
+A requisição só sai onde ENERGIA_CCEE_COLETA=1; sem a variável, o módulo relê o bronze. Se a
+decisão voltar a pendente, os painéis que dependem da CCEE ficam 'pendente_decisao_acesso'.
 
 Fora de escopo, por não haver fonte pública adequada: contratos individuais, preços de PPA e
 curvas a termo. O PLD não é preço contratual do mercado livre e não é usado aqui como tal.
@@ -2547,14 +2548,15 @@ def _txt_rd(x):
     return f"{x['mes']}: R$ {_br(x['publicado'], 2)} milhões no InfoMercado, {ccee}"
 
 
-def paineis(g, pendencia_ccee=True):
+def paineis(g, pendencia_ccee=False):
     """Estado dos dados de cada painel com a verificação do critério de aceite do Anexo A,
     calculado a partir da própria gold (sem estado escrito à mão). É o estado da camada de dados:
     o painel só é entregue com a página, a inspeção visual e os testes de interface.
 
-    `pendencia_ccee`: enquanto o responsável não decidir sobre o acesso à CCEE (ver
-    `acesso_ccee`), todo painel que depende de número da CCEE fica 'pendente_decisao_acesso',
-    qualquer que seja o resultado das verificações (que segue em `estado_criterio`)."""
+    `pendencia_ccee`: se a decisão sobre o acesso à CCEE estiver pendente (ver `acesso_ccee`;
+    autorizada em 06/10/2026), todo painel que depende de número da CCEE fica
+    'pendente_decisao_acesso', qualquer que seja o resultado das verificações (que segue em
+    `estado_criterio`)."""
     lr, am_, mg, en = g["livre_regulado"], g["agentes_migracao"], g["mre_gsf"], g["encargos"]
     rec_plan = lr["reconciliacao"]["epe_planilha"]
     ident = lr.get("ccee_identidade_classes") or []
@@ -2690,7 +2692,7 @@ def paineis(g, pendencia_ccee=True):
         depende = bool(ccee_prov & set(prov))
         est, crit = estado(cr, resp, depende)
         if depende and pendencia_ccee:
-            lim = [cm.PENDENCIA_ACESSO] + lim
+            lim = ["Decisão sobre o acesso à CCEE pendente: " + cm.NOTA_ACESSO] + lim
         out.append({"id": pid, "titulo": titulo, "pergunta": pergunta, "resposta": resp, "estado_dados": est, "estado_criterio": crit,
                     "depende_da_ccee": depende, "criterio_aceite": cr["criterio"], "verificacoes": cr["verificacoes"],
                     "proveniencia": prov, "limitacoes": lim})
@@ -2698,14 +2700,14 @@ def paineis(g, pendencia_ccee=True):
 
 
 def acesso_ccee(con, autorizada=None):
-    """Condição de acesso ao portal da CCEE e a decisão pendente sobre ela.
+    """Condição de acesso ao portal da CCEE e a decisão do responsável sobre ela.
 
     O curl recebe HTTP 403 ('Acesso bloqueado') do firewall da origem; o cliente HTTP do
-    pipeline (urllib, User-Agent do projeto, o mesmo da coleta do PLD no GitHub Actions)
-    recebeu as respostas em 01/10/2026. A orientação para este ambiente é não contornar o
-    bloqueio, e usar um cliente que passa pelo firewall não é decisão do coletor: a gold lista
-    as capturas feitas assim (vintages com origem e data) e marca a decisão como pendente. Sem
-    a variável ENERGIA_CCEE_COLETA=1, o módulo não faz nenhuma requisição à CCEE."""
+    pipeline (urllib, User-Agent do projeto, o mesmo da coleta do PLD no GitHub Actions) recebe
+    as respostas. Usar esse cliente não é decisão do coletor: ficou pendente de 01/10/2026 e foi
+    autorizado pelo responsável em 06/10/2026 (cm.DECISAO_ACESSO). A gold lista as capturas
+    (vintages com origem e data) e a decisão. Sem a variável ENERGIA_CCEE_COLETA=1, o módulo
+    não faz nenhuma requisição à CCEE."""
     linhas = con.execute("""SELECT dataset, MAX(tentado_em), SUM(ok), COUNT(*) FROM coletas
                             WHERE dataset LIKE 'ccee_%' GROUP BY dataset ORDER BY dataset""").fetchall()
     caps = con.execute("""SELECT dataset, COUNT(*), MIN(capturado_em), MAX(capturado_em), GROUP_CONCAT(DISTINCT origem)
@@ -2714,11 +2716,8 @@ def acesso_ccee(con, autorizada=None):
     return {"cliente": "pipeline.common.http_get e http_download (urllib da biblioteca padrão, User-Agent do projeto)",
             "observacao": "Em 01/10/2026 (05h45 UTC), o curl recebeu HTTP 403 ('Acesso bloqueado') em dadosabertos.ccee.org.br; o cliente do pipeline recebeu HTTP 200 na mesma API (package_show). Nenhum cabeçalho foi trocado para se passar por navegador.",
             "decisao": {
-                "situacao": "pendente",
-                "pergunta": "A coleta dos conjuntos abertos e do InfoMercado da CCEE pelo cliente HTTP do pipeline (sem disfarce de navegador), quando o curl recebe 403 'Acesso bloqueado' do firewall da origem, é aceitável? Se sim, a partir deste ambiente ou só no GitHub Actions?",
-                "registrada_em": "2026-10-01",
-                "efeito": "Enquanto a decisão estiver pendente, os painéis P032 a P035 ficam 'pendente_decisao_acesso' (os números da CCEE seguem publicados com esta ressalva, a partir das capturas de 01/10/2026) e nenhuma requisição nova é feita à CCEE a partir deste ambiente. Se a decisão for negativa, os números da CCEE saem da gold ou passam a vir só da coleta no GitHub Actions.",
-                "coleta_neste_ambiente": "autorizada (ENERGIA_CCEE_COLETA=1)" if autorizada else "suspensa (variável ENERGIA_CCEE_COLETA ausente): só o bronze já capturado é relido"},
+                **cm.DECISAO_ACESSO,
+                "coleta_neste_ambiente": "habilitada (ENERGIA_CCEE_COLETA=1)" if autorizada else "não habilitada (variável ENERGIA_CCEE_COLETA ausente): só o bronze já capturado é relido"},
             "capturas": [{"dataset": d, "vintages": n, "primeira_captura": a, "ultima_captura": b, "origem": o} for d, n, a, b, o in caps],
             "conjuntos": [{"dataset": d, "ultima_tentativa": t, "tentativas_ok": int(ok or 0), "tentativas": n} for d, t, ok, n in linhas]}
 
@@ -3020,7 +3019,7 @@ def construir(con, ctx):
     lim_liq = [f"Meses ausentes do conjunto SUMARIO_MENSAL_LIQUIDACAO: {', '.join(lacunas)} (aparecem na série como ausentes)." if lacunas else None,
                f"Meses com liquidado e inadimplência publicados como zero e valor a liquidar positivo ('liquidação não informada', nulos na gold): {', '.join(nao_inf)}." if nao_inf else None]
     fonte_ccee = lambda conj, rec: _fonte("CCEE", conj, rec, f"{cm.PORTAL}/dataset/{conj.split(' ')[0].lower()}", f"{cm.PORTAL}/dataset/{conj.split(' ')[0].lower()}", cm.LICENCA)  # noqa: E731
-    lim_ccee = [cm.PENDENCIA_ACESSO,
+    lim_ccee = [cm.NOTA_ACESSO,
                 "Os conjuntos abertos da CCEE começam em 2023 (a maioria em maio de 2023); antes disso a série não existe neste formato.",
                 "Dados da contabilização podem ser recontabilizados pela CCEE; revisões entre capturas ficam registradas."]
     g["proveniencia"] = {

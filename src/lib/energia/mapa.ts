@@ -355,9 +355,10 @@ export const CARTOES: Record<string, CartaoDestino> = {
   mercado: {
     utilidade: "Entender como a energia é contratada nos ambientes livre e regulado, quem são os agentes e o que custam o compartilhamento do risco hidrológico e os encargos.",
     encontra: [
-      { texto: "Mercado livre e regulado no consumo", href: "/setor-eletrico/mercado" },
-      { texto: "Agentes e migração para o mercado livre", href: "/setor-eletrico/mercado" },
-      { texto: "MRE e GSF; encargos e liquidação", href: "/setor-eletrico/mercado" },
+      { texto: "Mercado livre e regulado no consumo, em três universos com perímetros diferentes", href: "/setor-eletrico/mercado#livre-regulado" },
+      { texto: "Agentes, parcelas de carga, migrações e desligamentos", href: "/setor-eletrico/mercado/agentes#agentes" },
+      { texto: "GSF do MRE e risco hidrológico do consumidor cativo", href: "/setor-eletrico/mercado/mre-e-gsf#mre-gsf" },
+      { texto: "Encargos, liquidação e inadimplência", href: "/setor-eletrico/mercado/encargos#encargos" },
     ],
     recorte: "Brasil, região, subsistema, UF e distribuidora, conforme a fonte; mensal.",
     conceito: { slug: "mcp", rotulo: "o que é o mercado de curto prazo" },

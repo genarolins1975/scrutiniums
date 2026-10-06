@@ -12,8 +12,8 @@ Entra na Fase 1 a página que (1) tem gold publicada com proveniência, (2) comp
 | --- | --- | --- |
 | Ciclo completo (dados, verificação adversarial, correção, interface e revisão) | P017 a P020, P025 a P027, P044 a P046, P047 a P050, P051 a P054, P055 a P058, P059 a P062 | 26 |
 | Publicado na Fase 1, revisão adversarial da interface pendente | P001, P002, P003, P008 a P016, P021, P022, P028 a P031, P036 a P039, P040 a P043, P063, P064 | 28 |
-| Publicado na Fase 2 em 06/10/2026, revisão adversarial da interface pendente | P004 a P007 | 4 |
-| Fase 2 (dados prontos ou em andamento; página de produção anterior mantida) | P023, P024, P032 a P035, P065, P066, P067 a P070, P071 | 13 |
+| Publicado na Fase 2 em 06/10/2026, revisão adversarial da interface pendente | P004 a P007, P032 a P035 | 8 |
+| Fase 2 (dados prontos ou em andamento; página de produção anterior mantida) | P023, P024, P065, P066, P067 a P070, P071 | 9 |
 
 Dentro do ciclo completo, três painéis têm limitação declarada na própria página: P050 (efeito médio dos reajustes: documentos da ANEEL atrás de desafio anti-robô), P057 (referência regulatória das perdas não técnicas) e P058 (custo total das perdas).
 
@@ -31,7 +31,7 @@ Dentro do ciclo completo, três painéis têm limitação declarada na própria 
 | --- | --- | --- |
 | Visão geral nova (P004 a P007) | **publicada em 06/10/2026**: página ligada à gold `sintese.json` com os componentes `Visao*`; fichas de prova e tabelas de auditoria lidas da gold sob demanda (530 KB de HTML) | `src/app/setor-eletrico/visao-geral/page.tsx`; método em `modulos/visao.md`; estado em `CONTINUIDADE.md` |
 | Geração P023 e P024 | dados prontos em `geracao_detalhe.json`; páginas não criadas | painéis aparecem como "em preparação" |
-| Mercado (P032 a P035) | gold pronta; página nova não feita; **decisão de acesso à CCEE pendente com o responsável** | página "em integração" mantida |
+| Mercado (P032 a P035) | **publicado em 06/10/2026**: coleta da CCEE autorizada e refeita no mesmo dia (dados até agosto de 2026), quatro páginas ligadas à gold `mercado.json`; P032, P033 e P035 concluídos com limitação, P034 parcial (número de 12 meses do InfoMercado não reproduzido) | `src/app/setor-eletrico/mercado/`; método e interface em `modulos/mercado.md`; estado em `CONTINUIDADE.md` |
 | Aprenda (P065, P066) | verbetes dos módulos publicados; módulo próprio não executado | página de produção mantida |
 | Dados e metodologia novos (P067 a P070) | `publicacao.json`, catálogo e manifesto prontos; interface nova interrompida | páginas de produção com ajustes mínimos |
 | Avaliação dos painéis (P071) | não iniciada | |
@@ -40,14 +40,13 @@ Dentro do ciclo completo, três painéis têm limitação declarada na própria 
 
 ## Decisões pendentes com o responsável
 
-1. **Coleta da CCEE (Mercado).** O portal de dados abertos da CCEE responde 403 "Acesso bloqueado" ao `curl` e 200 ao cliente do pipeline (User-Agent do projeto, sem disfarce de navegador), o mesmo cliente que já coleta o PLD horário em produção. Usar esse cliente para os 17 conjuntos do Mercado é decisão do responsável. Enquanto não houver decisão, o módulo não faz requisição à CCEE e os painéis P032 a P035 ficam "pendente de decisão de acesso".
-2. **Revisões adversariais pendentes** (PLD, Previsões e as interfaces publicadas sem revisão): autorizar a retomada dos fluxos de revisão.
+1. **Revisões adversariais pendentes** (PLD, Previsões e as interfaces publicadas sem revisão): autorizar a retomada dos fluxos de revisão.
 
 ### Decisões tomadas em 06/10/2026
 
-* **Coleta da CCEE autorizada** pelo responsável: os 17 conjuntos do Mercado podem ser coletados com o cliente do pipeline (User-Agent do projeto, sem disfarce de navegador), o mesmo que coleta o PLD horário. A implementação do módulo Mercado (P032 a P035) passa a ser a próxima etapa da Fase 2; nenhuma requisição foi feita ainda.
+* **Coleta da CCEE autorizada** pelo responsável: os 17 conjuntos do Mercado podem ser coletados com o cliente do pipeline (User-Agent do projeto, sem disfarce de navegador), o mesmo que coleta o PLD horário, a partir do ambiente de desenvolvimento e do GitHub Actions. Registrada em `pipeline/energia/fontes/ccee_mercado.py` (`DECISAO_ACESSO`) e no workflow (`ENERGIA_CCEE_COLETA: "1"`); coleta feita em 06/10/2026 entre 16h58 e 17h01 de Brasília, os 17 conjuntos e três edições do InfoMercado com HTTP 200.
 * **Base da Fase 2**: a `main` (Fase 1 em produção). O redesenho visual feito em setembro sobre a base anterior (commits até `1592f9efe` no branch `claude/kind-mayer-v9tpwi`, agora reiniciado a partir da `main`) não foi mesclado; o que dele não existe na `main` (home e seletor com painéis vivos, gramática visual, testes) é porte pendente, registrado em `CONTINUIDADE.md`.
 
 ## Riscos da primeira atualização automática
 
-O workflow `atualizar-energia.yml` passa a rodar todos os módulos. Na primeira execução não há cópia durável dos silvers das famílias novas (`energia-silver-familias.tar.gz`), então a coleta parte do zero (Geração baixa cerca de 850 MB de Parquet). Módulo que falha publica stub e a sentinela mantém a última gold válida no repositório; nenhuma página fica sem dado por falha de coleta. Sem a decisão sobre a CCEE e sem o bronze local, o Mercado no Actions não tem os números da CCEE; a página do Mercado na Fase 1 não mostra números.
+O workflow `atualizar-energia.yml` passa a rodar todos os módulos. Na primeira execução não há cópia durável dos silvers das famílias novas (`energia-silver-familias.tar.gz`), então a coleta parte do zero (Geração baixa cerca de 850 MB de Parquet). Módulo que falha publica stub e a sentinela mantém a última gold válida no repositório; nenhuma página fica sem dado por falha de coleta. Com a coleta da CCEE autorizada, o Mercado no Actions coleta os 17 conjuntos a cada execução (só o que mudou). Quando o silver vem da cópia durável sem o bronze, a releitura de um arquivo do bronze passou a usar a cópia recapturada com o mesmo sha256 (`base.abre_bronze`, 06/10/2026); antes, essa situação derrubava a construção do Mercado e a sentinela mantinha a gold anterior.

@@ -101,11 +101,20 @@ Para retomar a Fase 2:
 * Testes: `src/tests/energia-visao.test.ts` (contrato da gold, equivalência célula a célula com as golds de origem por outro caminho, textos derivados dos números, âncoras, renderização, peso, datas); `energia-mapa` e `energia-reauditoria` ajustados à nova ligação (as âncoras dos cartões vêm de `visao.ts`; a proveniência de cada número está na gold da síntese).
 * Documentação: `FASE_1.md` (estado dos painéis e decisões), `status_paineis.json` e `MATRIZ_PAINEIS.md` (P004 e P005 concluídos; P006 e P007 concluídos com limitação declarada), `modulos/visao.md` (estado da interface).
 
+### Entregue: Mercado (P032 a P035)
+
+* Autorização da coleta da CCEE registrada no código (`ccee_mercado.DECISAO_ACESSO`, situação `autorizada`, decidida em 06/10/2026), no workflow (`ENERGIA_CCEE_COLETA: "1"` no passo do pipeline) e nos testes (`AcessoCcee` em Python; bloco de acesso em `energia-mercado.test.ts`). A trava pela variável continua: sem ela, nenhuma requisição à CCEE.
+* Coleta de 06/10/2026 (16h58 a 17h01 de Brasília) com o cliente do pipeline: 17 conjuntos e InfoMercado Nº 206, 208 e 229, todos HTTP 200. Consumo, agentes, GSF e encargos da CCEE passaram de julho para agosto de 2026. Os KPIs mudaram com a janela (ACL de 12 meses: 42,51% até jul/2026, 42,43% até ago/2026; GSF do mês: 76,8% em jul, 78,9% em ago); os testes TS com números fixos passaram a conferir a janela de julho pela série mensal e a janela vigente pela razão de somas.
+* Falha encontrada e corrigida na reconstrução: o silver restaurado da cópia durável aponta para arquivos do bronze que não estão na máquina; a página da pasta de 2023 do boletim do MME, recapturada igual, ficou com outro nome. `base.abre_bronze` passou a abrir a cópia de mesmo sha256 da mesma pasta (teste em `test_energia.py`). O mesmo cenário acontece no Actions quando o cache falta.
+* Interface: quatro páginas (`/setor-eletrico/mercado`, `/agentes`, `/mre-e-gsf`, `/encargos`) com `MercadoPainel.tsx`, `MercadoTabelasSobDemanda.tsx` e `src/lib/energia/mercado.ts`; navegação, mapa e cartões da home marcam o Mercado como integrado; verbete MRE conferido com o glossário do InfoMercado Nº 229; ACL, ACR, GSF, ESS e garantia física seguem pendentes de fonte primária.
+* Verificação: `next build` sem erro; HTML pré-renderizado de 456, 400, 308 e 427 KB; inspeção em 360, 390, 768 e 1440 px, nos modos Entender e Auditar, sem violação axe, sem rolagem horizontal e sem link quebrado (único erro de console: `favicon.ico` do site, 404, anterior); tabelas sob demanda conferidas no navegador; testes em `energia-mercado-pagina.test.ts` (15) e `energia-mercado.test.ts` (14).
+* Estado: P032, P033 e P035 concluídos com limitação; P034 parcial (o "ajuste médio do MRE nos últimos doze meses" do InfoMercado não é reproduzido por nenhuma definição testada). Revisão adversarial da interface pendente.
+
 ### Próximos passos da Fase 2
 
-1. Mercado (P032 a P035): implementar a coleta dos conjuntos da CCEE com o cliente do pipeline (autorizada), construir a página nova e sair da página "em integração".
-2. Geração P023 e P024 (dados em `geracao_detalhe.json`), Aprenda (P065, P066), Dados e metodologia (P067 a P070), avaliação (P071).
-3. Revisão adversarial das interfaces publicadas sem revisão (inclui a Visão geral nova), quando autorizada.
-4. Porte da home e do seletor com painéis vivos e da gramática visual (ver acima).
-5. Datas cruas nos textos dos módulos (22 páginas) e páginas acima de 600 KB (Geração, Território, Qualidade).
+1. Geração P023 e P024 (dados em `geracao_detalhe.json`), Aprenda (P065, P066), Dados e metodologia (P067 a P070), avaliação (P071).
+2. Revisão adversarial das interfaces publicadas sem revisão (inclui a Visão geral e o Mercado), quando autorizada.
+3. Porte da home e do seletor com painéis vivos e da gramática visual (ver acima).
+4. Datas cruas nos textos dos módulos (22 páginas) e páginas acima de 600 KB (Geração, Território, Qualidade).
+5. Mercado: verbetes ACL, ACR, GSF, ESS e garantia física com as Regras de Comercialização da CCEE; planilhas "InfoMercado Dados Gerais" para estender as séries da CCEE antes de 2023.
 

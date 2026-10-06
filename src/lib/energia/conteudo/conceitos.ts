@@ -491,7 +491,7 @@ const CONCEITOS_BASE: Conceito[] = [
     relacoes: ["acr", "pld"],
     fontes: [],
     fontePlanejada: "Lei nº 10.848/2004, Decreto nº 5.163/2004 e documentação da CCEE.",
-    vejaNoPortal: [{ rotulo: "Mercado (em integração)", href: "/setor-eletrico/mercado" }],
+    vejaNoPortal: [{ rotulo: "Mercado: livre e regulado", href: "/setor-eletrico/mercado" }],
   },
   {
     slug: "acr",
@@ -502,7 +502,7 @@ const CONCEITOS_BASE: Conceito[] = [
     relacoes: ["acl"],
     fontes: [],
     fontePlanejada: "Lei nº 10.848/2004, Decreto nº 5.163/2004 e documentação da CCEE.",
-    vejaNoPortal: [{ rotulo: "Mercado (em integração)", href: "/setor-eletrico/mercado" }],
+    vejaNoPortal: [{ rotulo: "Mercado: livre e regulado", href: "/setor-eletrico/mercado" }],
   },
   {
     slug: "mre",
@@ -513,7 +513,7 @@ const CONCEITOS_BASE: Conceito[] = [
     relacoes: ["gsf", "garantia-fisica"],
     fontes: [],
     fontePlanejada: "Regras de Comercialização da CCEE.",
-    vejaNoPortal: [{ rotulo: "Mercado (em integração)", href: "/setor-eletrico/mercado" }],
+    vejaNoPortal: [{ rotulo: "Mercado: MRE e GSF", href: "/setor-eletrico/mercado/mre-e-gsf" }],
   },
   {
     slug: "gsf",
@@ -524,7 +524,7 @@ const CONCEITOS_BASE: Conceito[] = [
     relacoes: ["mre", "garantia-fisica"],
     fontes: [],
     fontePlanejada: "Regras de Comercialização da CCEE.",
-    vejaNoPortal: [{ rotulo: "Mercado (em integração)", href: "/setor-eletrico/mercado" }],
+    vejaNoPortal: [{ rotulo: "Mercado: MRE e GSF", href: "/setor-eletrico/mercado/mre-e-gsf" }],
   },
   {
     slug: "ess",
@@ -535,7 +535,7 @@ const CONCEITOS_BASE: Conceito[] = [
     relacoes: ["pld"],
     fontes: [],
     fontePlanejada: "Regras de Comercialização da CCEE e regulamentação da ANEEL.",
-    vejaNoPortal: [{ rotulo: "Mercado (em integração)", href: "/setor-eletrico/mercado" }],
+    vejaNoPortal: [{ rotulo: "Mercado: encargos e liquidação", href: "/setor-eletrico/mercado/encargos" }],
   },
   {
     slug: "garantia-fisica",
@@ -545,7 +545,7 @@ const CONCEITOS_BASE: Conceito[] = [
     relacoes: ["mre", "gsf"],
     fontes: [],
     fontePlanejada: "Decreto nº 5.163/2004 e portarias do MME.",
-    vejaNoPortal: [{ rotulo: "Mercado (em integração)", href: "/setor-eletrico/mercado" }],
+    vejaNoPortal: [{ rotulo: "Mercado: MRE e GSF", href: "/setor-eletrico/mercado/mre-e-gsf" }],
   },
 ];
 

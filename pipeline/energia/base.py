@@ -160,9 +160,27 @@ def salva_bronze_arquivo(orgao, dataset, recurso, caminho_origem, ext, capturado
 
 
 def abre_bronze(caminho_relativo):
-    """Abre (binário) um arquivo do bronze, gzip ou não, pelo caminho relativo à raiz."""
+    """Abre (binário) um arquivo do bronze, gzip ou não, pelo caminho relativo à raiz.
+
+    Se o arquivo registrado na vintage não existe (silver restaurado da cópia durável sem o
+    bronze, e o recurso recapturado com o mesmo conteúdo noutro instante), abre a cópia da
+    mesma pasta com o mesmo sha256 no nome: o conteúdo é idêntico por construção."""
     caminho = caminho_relativo if os.path.isabs(caminho_relativo) else os.path.join(RAIZ, caminho_relativo)
+    if not os.path.exists(caminho):
+        caminho = _bronze_mesmo_conteudo(caminho) or caminho
     return gzip.open(caminho, "rb") if caminho.endswith(".gz") else open(caminho, "rb")
+
+
+def _bronze_mesmo_conteudo(caminho):
+    """Outro arquivo da mesma pasta do bronze com o mesmo prefixo de sha256 no nome
+    (<carimbo>.<sha12>.<ext>[.gz]), ou None."""
+    pasta, nome = os.path.split(caminho)
+    partes = nome.split(".")
+    if len(partes) < 3 or len(partes[1]) != 12 or not os.path.isdir(pasta):
+        return None
+    marca = f".{partes[1]}."
+    iguais = sorted(n for n in os.listdir(pasta) if marca in n and n.endswith(nome[nome.index(marca) + len(marca):]))
+    return os.path.join(pasta, iguais[0]) if iguais else None
 
 
 def ultima_vintage(con, dataset, recurso):
