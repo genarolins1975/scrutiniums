@@ -219,10 +219,26 @@ export function opcoesFiltro(linhas: readonly LinhaTabela[], c: ColunaTabela, ba
 /* ---------- ordenação e consulta ---------- */
 
 /** Cópia ordenada, estável, com ausência sempre no fim. Sem ordem (ou coluna desconhecida), mantém a ordem original. */
+const MESES_CURTOS = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+
+/**
+ * Chave de ordenação da célula: o valor da coluna, com o mês escrito como na página
+ * ("set/2025", "set/2025 (parcial)") trocado por AAAA-MM, para a ordem ser a do calendário
+ * e não a alfabética ("ago" antes de "set" do ano anterior). Só a ordem muda: a célula, a
+ * busca e o arquivo baixado seguem com o texto publicado.
+ */
+export function chaveOrdenacao(l: LinhaTabela, c: ColunaTabela): string | number | null {
+  const v = valorColuna(l, c);
+  if (typeof v !== "string") return v;
+  const m = /^([a-zç]{3})\/(\d{4})(.*)$/.exec(v);
+  const k = m ? MESES_CURTOS.indexOf(m[1]) : -1;
+  return m && k >= 0 ? `${m[2]}-${String(k + 1).padStart(2, "0")}${m[3]}` : v;
+}
+
 export function ordenarLinhas(linhas: readonly LinhaTabela[], colunas: readonly ColunaTabela[], ordem: Ordem): LinhaTabela[] {
   const c = ordem ? colunas.find((x) => x.id === ordem.coluna) : undefined;
   if (!ordem || !c) return linhas.slice();
-  return ordenarComNulos(linhas, (l) => valorColuna(l, c), ordem.direcao);
+  return ordenarComNulos(linhas, (l) => chaveOrdenacao(l, c), ordem.direcao);
 }
 
 /** Recorte completo: ordena e filtra. É a fonte única da tela e dos arquivos. */

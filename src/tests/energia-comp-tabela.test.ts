@@ -84,6 +84,16 @@ describe("ordenação", () => {
     expect(valorColuna(l[5], colunas[2])).toBeNull();
   });
 
+  it("mês escrito como na página ordena pelo calendário, não pelo alfabeto; o texto exibido não muda", () => {
+    const col: ColunaTabela[] = [{ id: "mes", rotulo: "Mês", tipo: "texto" }];
+    const meses: LinhaTabela[] = ["set/2025", "ago/2026", "out/2025", "dez/2024", "mar/2026 (parcial)"].map((m) => ({ id: m, mes: m }));
+    expect(ordenarLinhas(meses, col, { coluna: "mes", direcao: "desc" }).map((l) => l.mes)).toEqual(["ago/2026", "mar/2026 (parcial)", "out/2025", "set/2025", "dez/2024"]);
+    expect(ordenarLinhas(meses, col, { coluna: "mes", direcao: "asc" }).map((l) => l.mes)).toEqual(["dez/2024", "set/2025", "out/2025", "mar/2026 (parcial)", "ago/2026"]);
+    // texto comum segue a collation pt-BR
+    const nomes: LinhaTabela[] = ["setor", "agosto"].map((m) => ({ id: m, mes: m }));
+    expect(ordenarLinhas(nomes, col, { coluna: "mes", direcao: "asc" }).map((l) => l.mes)).toEqual(["agosto", "setor"]);
+  });
+
   it("sem ordem ou com coluna desconhecida, mantém a ordem recebida (cópia, não a mesma lista)", () => {
     const r = ordenarLinhas(linhas, colunas, { coluna: "nao-existe", direcao: "asc" });
     expect(ids(r)).toEqual(["a", "b", "c", "d", "e"]);

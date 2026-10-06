@@ -1,4 +1,4 @@
-import { mesAno, num } from "./formato";
+import { mesAno, mesAnoCurto, num } from "./formato";
 import { datasLegiveis } from "./visao";
 import type { Proveniencia } from "./tipos";
 import type { ColunaTabela, LinhaTabela } from "./tabela";
@@ -96,9 +96,7 @@ export function reaisCurto(v: number | null | undefined): string {
 }
 
 /** Mês curto para o eixo das barras ("mai/23"): o rótulo longo não cabe em 40 categorias. */
-export function mesCurto(anomes: string): string {
-  return mesAno(anomes).replace(/\/\d{2}(\d{2})$/, "/$1");
-}
+export const mesCurto = mesAnoCurto;
 
 const milhoes = (v: number | null | undefined) => (v === null || v === undefined ? null : v / 1e6);
 const bilhoes = (v: number | null | undefined) => (v === null || v === undefined ? null : v / 1e9);

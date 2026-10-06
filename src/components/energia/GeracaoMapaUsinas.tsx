@@ -11,8 +11,9 @@ import type { RazaoRestricao } from "@/lib/energia/tipos-geracao";
  * malha oficial de UF do IBGE (public/energia/geo/uf.json, Albers cônica equivalente).
  * As coordenadas são as que o ONS publica no conjunto de fator de capacidade (subestação
  * coletora; sem ela, o ponto de conexão), projetadas na mesma grade da malha
- * (projetaPonto em src/lib/energia/geracao.ts, conferida no teste: cada ponto cai na UF
- * que o ONS informa).
+ * (projetaPonto em src/lib/energia/geracao.ts, conferida no teste: cada ponto cai numa UF
+ * da malha; os poucos fora da UF informada pelo ONS, subestação coletora de conjunto em UF vizinha,
+ * são contados e declarados na nota do mapa).
  *
  * Cor e forma dizem a razão com mais energia não gerada (círculo energética, quadrado
  * confiabilidade, losango elétrica, triângulo parecer de acesso): a cor nunca é o único

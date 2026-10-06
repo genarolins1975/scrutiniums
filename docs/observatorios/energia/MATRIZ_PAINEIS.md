@@ -5,10 +5,10 @@ Gerada por `scripts/energia_matriz.py` a partir do Anexo A da especificação e 
 | Estado | Painéis |
 | --- | ---: |
 | Concluído | 2 |
-| Concluído com limitação declarada | 5 |
+| Concluído com limitação declarada | 7 |
 | Parcial | 1 |
 | Bloqueado (externo, com evidência) | 0 |
-| Pendente | 63 |
+| Pendente | 61 |
 | **Total** | **71** |
 
 
@@ -63,8 +63,8 @@ Gerada por `scripts/energia_matriz.py` a partir do Anexo A da especificação e 
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | P021 | Matriz efetiva | Quais fontes atenderam a carga? | P0 |  | S21, S14 | parcial | Pendente | Energia e participação reconciliadas; categorias desconhecidas permanecem explícitas. |  |
 | P022 | Despacho térmico | Quanto gerou e por que foi acionado? | P1 |  | S21, D0 | parcial | Pendente | Combustível e motivo são dimensões separadas; soma consistente com universo divulgado. |  |
-| P023 | Renováveis restringidas | Quanta geração foi restringida? | P1 |  | S4, S21 | inexistente | Pendente | Denominador da taxa documentado; corte não confundido com indisponibilidade ou falta de vento. |  |
-| P024 | Capacidade e utilização | Quanto está instalado e quanto produz? | P1 |  | S14, S21, S22 | inexistente | Pendente | Sem dupla contagem MMGD; não usar capacidade final para todo o histórico sem ressalva. |  |
+| P023 | Renováveis restringidas | Quanta geração foi restringida? | P1 |  | S4, S21 | inexistente | Concluído com limitação declarada | Denominador da taxa documentado; corte não confundido com indisponibilidade ou falta de vento. | Página /setor-eletrico/geracao/restricoes ligada à gold geracao_detalhe.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi): resposta curta, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; modos Entender, Analisar e Auditar; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-geracao.test.ts. Revisão adversarial da interface pendente. 502 KB de HTML. Limitação declarada: energia não gerada estimada sobre a referência do ONS (natureza ESTIMADO); universo Tipo I, II-B e II-C; série fotovoltaica desde 04/2024; detalhamento por usina só nos 3 meses mais recentes; 2 de 100 marcas com a subestação coletora em UF vizinha à informada. |
+| P024 | Capacidade e utilização | Quanto está instalado e quanto produz? | P1 |  | S14, S21, S22 | inexistente | Concluído com limitação declarada | Sem dupla contagem MMGD; não usar capacidade final para todo o histórico sem ressalva. | Página /setor-eletrico/geracao/capacidade ligada à gold geracao_detalhe.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi): resposta curta, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; modos Entender, Analisar e Auditar; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-geracao.test.ts. Revisão adversarial da interface pendente. 409 KB de HTML. Limitação declarada: o conjunto de capacidade do ONS não tem histórico (potência do ato atual; usinas que saíram do despacho não aparecem); série da ANEEL trimestral e sem combustível; SIGA por usina só como retrato do dia; 228 usina-meses acima de 100%. |
 
 ## Carga
 

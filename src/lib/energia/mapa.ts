@@ -303,8 +303,9 @@ export const CARTOES: Record<string, CartaoDestino> = {
     utilidade: "Ver quanto cada fonte entregou, por que as térmicas foram acionadas e quanta energia eólica e solar deixou de ser gerada por restrição.",
     encontra: [
       { texto: "Matriz efetiva por fonte, com e sem a micro e minigeração estimada", href: "/setor-eletrico/geracao" },
-      { texto: "Despacho térmico pelos motivos declarados pelo ONS", href: "/setor-eletrico/geracao" },
-      { texto: "Cortes de geração eólica e solar pelas razões oficiais", href: "/setor-eletrico/geracao" },
+      { texto: "Despacho térmico pelos motivos declarados pelo ONS", href: "/setor-eletrico/geracao/termica#p022" },
+      { texto: "Cortes de geração eólica e solar pelas razões oficiais, com o mapa das usinas", href: "/setor-eletrico/geracao/restricoes#p023" },
+      { texto: "Potência instalada e fator de capacidade por fonte e por usina", href: "/setor-eletrico/geracao/capacidade#p024" },
     ],
     recorte: "Sistema interligado e subsistemas; usina para térmicas e cortes; horário, diário e mensal.",
     conceito: { slug: "geracao-centralizada", rotulo: "o que é geração verificada" },

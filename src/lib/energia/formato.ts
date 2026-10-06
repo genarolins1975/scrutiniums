@@ -61,6 +61,11 @@ export function mesAno(anomes: string): string {
   return `${MESES[Number(anomes.slice(5, 7)) - 1]}/${anomes.slice(0, 4)}`;
 }
 
+/** Mês curto para eixos com muitas categorias: "2023-05" → "mai/23". */
+export function mesAnoCurto(anomes: string): string {
+  return `${MESES[Number(anomes.slice(5, 7)) - 1]}/${anomes.slice(2, 4)}`;
+}
+
 /** "AAAA-MM-DDTHH:MM" local → "27/09/2026 às 16h". */
 export function horaLocal(ref: string): string {
   return `${dataBR(ref)} às ${ref.slice(11, 13)}h`;

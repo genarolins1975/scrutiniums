@@ -95,11 +95,13 @@
   },
   "P023": {
    "inicial": "inexistente",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Página /setor-eletrico/geracao/restricoes ligada à gold geracao_detalhe.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi): resposta curta, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; modos Entender, Analisar e Auditar; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-geracao.test.ts. Revisão adversarial da interface pendente. 502 KB de HTML. Limitação declarada: energia não gerada estimada sobre a referência do ONS (natureza ESTIMADO); universo Tipo I, II-B e II-C; série fotovoltaica desde 04/2024; detalhamento por usina só nos 3 meses mais recentes; 2 de 100 marcas com a subestação coletora em UF vizinha à informada."
   },
   "P024": {
    "inicial": "inexistente",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Página /setor-eletrico/geracao/capacidade ligada à gold geracao_detalhe.json em 06/10/2026 (branch claude/kind-mayer-v9tpwi): resposta curta, recorte, visual com referência, tabela equivalente, Comprove este número, download, link e próxima pergunta; modos Entender, Analisar e Auditar; axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px; testes em src/tests/energia-geracao.test.ts. Revisão adversarial da interface pendente. 409 KB de HTML. Limitação declarada: o conjunto de capacidade do ONS não tem histórico (potência do ato atual; usinas que saíram do despacho não aparecem); série da ANEEL trimestral e sem combustível; SIGA por usina só como retrato do dia; 228 usina-meses acima de 100%."
   },
   "P025": {
    "inicial": "parcial",

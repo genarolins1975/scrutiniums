@@ -110,11 +110,19 @@ Para retomar a Fase 2:
 * Verificação: `next build` sem erro; HTML pré-renderizado de 456, 400, 308 e 427 KB; inspeção em 360, 390, 768 e 1440 px, nos modos Entender e Auditar, sem violação axe, sem rolagem horizontal e sem link quebrado (único erro de console: `favicon.ico` do site, 404, anterior); tabelas sob demanda conferidas no navegador; testes em `energia-mercado-pagina.test.ts` (15) e `energia-mercado.test.ts` (14).
 * Estado: P032, P033 e P035 concluídos com limitação; P034 parcial (o "ajuste médio do MRE nos últimos doze meses" do InfoMercado não é reproduzido por nenhuma definição testada). Revisão adversarial da interface pendente.
 
+### Entregue: Geração P023 e P024
+
+* `/setor-eletrico/geracao/restricoes` (P023) e `/setor-eletrico/geracao/capacidade` (P024) sobre `geracao_detalhe.json` (gold de 01/10/2026: meses até 08/2026, dias até 29/09/2026; coleta da Geração não refeita nesta etapa). Componentes cliente `GeracaoRestricoes.tsx` (painel e análise da fonte escolhida, mapa das usinas com a malha lida sob demanda, histórico da usina lido do CSV ao pedir) e `GeracaoCapacidade.tsx` (distribuição por usina e ANEEL × ONS); o resto é servidor. Navegação da Geração sem "em preparação"; cartão da home com os quatro painéis.
+* Peso: 502 KB (P023, depois de passar a análise para a fonte escolhida e enxugar as props; a primeira versão tinha 388 KB só de marcação) e 409 KB (P024).
+* Achados: 2 de 100 marcas do mapa com a subestação coletora em UF vizinha à informada pelo ONS (declarado na nota do mapa); maior corte simultâneo das eólicas de 28.196,7 MW, 83% da potência eólica despachada, conferido pelo pipeline contra a soma das referências e sem conferência independente nesta etapa (bronze ausente); ordenação de meses por alfabeto corrigida na tabela interativa para todos os módulos; concordância "de a" no aviso de defasagem corrigida.
+* Verificação: build sem erro; vitest 2.532 aprovados com a única falha pré-existente (datas cruas em páginas de outros módulos); inspeção em 360, 390, 768 e 1440 px nos modos Entender e Auditar sem violação axe e sem rolagem horizontal; testes em `src/tests/energia-geracao.test.ts` (13).
+* Estado: P023 e P024 concluídos com limitação declarada; revisão adversarial da interface pendente.
+
 ### Próximos passos da Fase 2
 
-1. Geração P023 e P024 (dados em `geracao_detalhe.json`), Aprenda (P065, P066), Dados e metodologia (P067 a P070), avaliação (P071).
-2. Revisão adversarial das interfaces publicadas sem revisão (inclui a Visão geral e o Mercado), quando autorizada.
+1. Aprenda (P065, P066), Dados e metodologia (P067 a P070), avaliação (P071).
+2. Revisão adversarial das interfaces publicadas sem revisão (inclui a Visão geral, o Mercado e a Geração P023 e P024), quando autorizada.
 3. Porte da home e do seletor com painéis vivos e da gramática visual (ver acima).
-4. Datas cruas nos textos dos módulos (22 páginas) e páginas acima de 600 KB (Geração, Território, Qualidade).
+4. Datas cruas nos textos dos módulos (22 páginas) e páginas acima de 600 KB (Geração P021 com 1 MB e P022 com 623 KB, Território, Qualidade).
 5. Mercado: verbetes ACL, ACR, GSF, ESS e garantia física com as Regras de Comercialização da CCEE; planilhas "InfoMercado Dados Gerais" para estender as séries da CCEE antes de 2023.
 

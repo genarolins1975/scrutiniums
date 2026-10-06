@@ -66,8 +66,8 @@ export const PERGUNTA_MODULO_GERACAO = "De onde vem a eletricidade e quais fonte
 export const PAINEIS_GERACAO: { id: PainelGeracao; rotulo: string; caminho: string; pergunta: string; publicado: boolean }[] = [
   { id: "p021", rotulo: "Matriz efetiva", caminho: "", pergunta: "Quais fontes atenderam a carga?", publicado: true },
   { id: "p022", rotulo: "Despacho térmico", caminho: "/termica", pergunta: "Quanto as térmicas geraram e por que foram acionadas?", publicado: true },
-  { id: "p023", rotulo: "Renováveis restringidas", caminho: "/restricoes", pergunta: "Quanta geração eólica e solar foi restringida?", publicado: false },
-  { id: "p024", rotulo: "Capacidade e utilização", caminho: "/capacidade", pergunta: "Quanto está instalado e quanto produz?", publicado: false },
+  { id: "p023", rotulo: "Renováveis restringidas", caminho: "/restricoes", pergunta: "Quanta geração eólica e solar foi restringida?", publicado: true },
+  { id: "p024", rotulo: "Capacidade e utilização", caminho: "/capacidade", pergunta: "Quanto está instalado e quanto produz?", publicado: true },
 ];
 
 export function painelPublicado(id: PainelGeracao): boolean {
@@ -144,6 +144,12 @@ export function situacaoAtualidade(diaReferencia: string, geradoEm: string, folg
  * Atualidade de série mensal: o último mês completo fica um mês antes do mês do
  * processamento; com dois ou mais meses de distância, a fonte está defasada.
  */
+/** "de" + artigo contraído: "de a térmica" → "da térmica", "de as restrições" → "das restrições". */
+export function deContraido(nome: string): string {
+  const m = /^(o|a|os|as) (.*)$/.exec(nome);
+  return m ? `d${m[1]} ${m[2]}` : `de ${nome}`;
+}
+
 export function situacaoMensal(ultimoMes: string | null, geradoEm: string, nome: string): { defasada: boolean; texto: string } {
   const proc = diaDeBrasilia(geradoEm);
   if (!ultimoMes) return { defasada: true, texto: `${inicial(nome)}: nenhum mês completo publicado.` };
@@ -151,7 +157,7 @@ export function situacaoMensal(ultimoMes: string | null, geradoEm: string, nome:
   if (d >= 2) {
     return {
       defasada: true,
-      texto: `Fonte defasada: o último mês completo de ${nome} é ${mesAno(ultimoMes)}, ${plural(d, "mês", "meses")} antes do processamento (${dataBR(proc)}). Os números são os da última publicação válida.`,
+      texto: `Fonte defasada: o último mês completo ${deContraido(nome)} é ${mesAno(ultimoMes)}, ${plural(d, "mês", "meses")} antes do processamento (${dataBR(proc)}). Os números são os da última publicação válida.`,
     };
   }
   return { defasada: false, texto: `${inicial(nome)}: último mês completo ${mesAno(ultimoMes)}, processado em ${dataBR(proc)}.` };
@@ -1182,7 +1188,7 @@ export function instanteBR(ref: string | null): string {
  * denominador, razões oficiais, maior corte simultâneo (potência, não energia) e o que a
  * restrição não é.
  */
-export function respostaRestricao(r: Restricao): string {
+export function respostaRestricao(r: Pick<Restricao, "fonte" | "primeiro_mes" | "ultimos_12m">): string {
   const u = r.ultimos_12m;
   const nome = FRASE_FONTE_RESTRICAO[r.fonte];
   if (!u) return `Sem 12 meses completos de restrição publicados para ${nome}; a série começa em ${mesAno(r.primeiro_mes)}.`;
@@ -1210,7 +1216,7 @@ export type LinhaRestricaoMes = {
 } & Partial<Record<RazaoRestricao, number | null>>;
 
 /** Série mensal do SIN: energia não gerada por razão (GWh), taxa (%) e maior corte simultâneo (MW). */
-export function linhasRestricaoMensal(r: Restricao): { linhas: LinhaRestricaoMes[]; razoes: RazaoRestricao[] } {
+export function linhasRestricaoMensal(r: Pick<Restricao, "mensal_sin">): { linhas: LinhaRestricaoMes[]; razoes: RazaoRestricao[] } {
   const ms = r.mensal_sin;
   const linhas = ms.meses.map((m, i) => {
     const l: LinhaRestricaoMes = {
@@ -1246,7 +1252,7 @@ export function colunasRestricaoMensal(razoes: readonly RazaoRestricao[]): Colun
   ];
 }
 
-export function linhasRazoes12m(r: Restricao) {
+export function linhasRazoes12m(r: Pick<Restricao, "ultimos_12m">) {
   return (r.ultimos_12m?.por_razao ?? []).map((x) => ({
     id: x.razao,
     razao: CURTO_RAZAO[x.razao],
@@ -1267,7 +1273,7 @@ export const COLUNAS_RAZOES_12M: ColunaTabela[] = [
   { id: "pct", rotulo: "Parcela da energia não gerada", tipo: "percentual", casas: 2 },
 ];
 
-export function linhasSubsistemas12m(r: Restricao) {
+export function linhasSubsistemas12m(r: Pick<Restricao, "ultimos_12m">) {
   return (r.ultimos_12m?.por_subsistema ?? []).map((x) => ({ id: x.sm, sm: NOME_REGIAO[x.sm], nao_gerada_gwh: gwh(x.energia_nao_gerada_mwh), verificada_gwh: gwh(x.geracao_verificada_mwh), taxa_pct: x.taxa_pct }));
 }
 
@@ -1428,7 +1434,7 @@ export function colunasUsinaMes(razoes: readonly RazaoRestricao[]): ColunaTabela
 
 /* ---------- diário recente, causas e detalhamento ---------- */
 
-export function linhasRestricaoDiaria(r: Restricao): ({ id: string; d: string; verificada_mwh: number | null; potencia_mw: number | null } & Partial<Record<RazaoRestricao, number | null>>)[] {
+export function linhasRestricaoDiaria(r: Pick<Restricao, "diario_recente">): ({ id: string; d: string; verificada_mwh: number | null; potencia_mw: number | null } & Partial<Record<RazaoRestricao, number | null>>)[] {
   const dr = r.diario_recente;
   return dr.dias.map((d, i) => {
     const l: { id: string; d: string; verificada_mwh: number | null; potencia_mw: number | null } & Partial<Record<RazaoRestricao, number | null>> = {
@@ -1451,7 +1457,7 @@ export function colunasRestricaoDiaria(razoes: readonly RazaoRestricao[]): Colun
   ];
 }
 
-export function linhasDescricoes(r: Restricao) {
+export function linhasDescricoes(r: Pick<Restricao, "descricoes_ultimo_mes">) {
   return (r.descricoes_ultimo_mes?.itens ?? []).map((x, i) => ({ id: `${i}`, descricao: x.descricao, gwh: gwh(x.mwh) }));
 }
 

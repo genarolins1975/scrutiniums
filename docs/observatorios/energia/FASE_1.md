@@ -12,8 +12,8 @@ Entra na Fase 1 a página que (1) tem gold publicada com proveniência, (2) comp
 | --- | --- | --- |
 | Ciclo completo (dados, verificação adversarial, correção, interface e revisão) | P017 a P020, P025 a P027, P044 a P046, P047 a P050, P051 a P054, P055 a P058, P059 a P062 | 26 |
 | Publicado na Fase 1, revisão adversarial da interface pendente | P001, P002, P003, P008 a P016, P021, P022, P028 a P031, P036 a P039, P040 a P043, P063, P064 | 28 |
-| Publicado na Fase 2 em 06/10/2026, revisão adversarial da interface pendente | P004 a P007, P032 a P035 | 8 |
-| Fase 2 (dados prontos ou em andamento; página de produção anterior mantida) | P023, P024, P065, P066, P067 a P070, P071 | 9 |
+| Publicado na Fase 2 em 06/10/2026, revisão adversarial da interface pendente | P004 a P007, P023, P024, P032 a P035 | 10 |
+| Fase 2 (dados prontos ou em andamento; página de produção anterior mantida) | P065, P066, P067 a P070, P071 | 7 |
 
 Dentro do ciclo completo, três painéis têm limitação declarada na própria página: P050 (efeito médio dos reajustes: documentos da ANEEL atrás de desafio anti-robô), P057 (referência regulatória das perdas não técnicas) e P058 (custo total das perdas).
 
@@ -30,7 +30,7 @@ Dentro do ciclo completo, três painéis têm limitação declarada na própria 
 | Item | Situação | Onde está o trabalho |
 | --- | --- | --- |
 | Visão geral nova (P004 a P007) | **publicada em 06/10/2026**: página ligada à gold `sintese.json` com os componentes `Visao*`; fichas de prova e tabelas de auditoria lidas da gold sob demanda (530 KB de HTML) | `src/app/setor-eletrico/visao-geral/page.tsx`; método em `modulos/visao.md`; estado em `CONTINUIDADE.md` |
-| Geração P023 e P024 | dados prontos em `geracao_detalhe.json`; páginas não criadas | painéis aparecem como "em preparação" |
+| Geração P023 e P024 | **publicados em 06/10/2026**: páginas `/geracao/restricoes` (mapa das usinas, razões oficiais, energia separada de potência) e `/geracao/capacidade` (fator de capacidade com a potência de cada mês, distribuição por usina, ANEEL e MMGD ao lado sem soma), sobre a gold `geracao_detalhe.json` de 01/10/2026; ambos concluídos com limitação | `src/app/setor-eletrico/geracao/`; interface em `modulos/geracao.md`, seção 7; estado em `CONTINUIDADE.md` |
 | Mercado (P032 a P035) | **publicado em 06/10/2026**: coleta da CCEE autorizada e refeita no mesmo dia (dados até agosto de 2026), quatro páginas ligadas à gold `mercado.json`; P032, P033 e P035 concluídos com limitação, P034 parcial (número de 12 meses do InfoMercado não reproduzido) | `src/app/setor-eletrico/mercado/`; método e interface em `modulos/mercado.md`; estado em `CONTINUIDADE.md` |
 | Aprenda (P065, P066) | verbetes dos módulos publicados; módulo próprio não executado | página de produção mantida |
 | Dados e metodologia novos (P067 a P070) | `publicacao.json`, catálogo e manifesto prontos; interface nova interrompida | páginas de produção com ajustes mínimos |
