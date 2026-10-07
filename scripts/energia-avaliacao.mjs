@@ -113,6 +113,7 @@ function medirPagina() {
     anomalias: {
       datas_cruas: amostra(/\b\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}(:\d{2})?)?\b/g),
       nan_undefined: amostra(/\bNaN\b|\bundefined\b|\[object Object\]|\bInfinity\b/g),
+      unidade_duplicada: amostra(/[^\n]{0,30}(%\s*%|R\$\s*R\$)[^\n]{0,30}/g),
       marcador_de_obra: amostra(/\b(em breve|página em construção|em desenvolvimento|TODO|lorem ipsum|a definir)\b/gi),
       travessao: contar(/[—–]/g),
       hoje: amostra(/[^.\n]{0,60}\bhoje\b[^.\n]{0,40}/gi, 6),

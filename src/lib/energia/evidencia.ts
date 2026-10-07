@@ -410,11 +410,12 @@ export function valorDestaque(v: number | null | undefined, formato: FormatoNume
 }
 
 /** Unidade ao lado do número grande sem repetir o que o formato já escreve:
- * "R$/MWh" com formato reais vira "/MWh"; "%" com formato pct some. */
+ * "R$/MWh" com formato reais vira "/MWh"; "%" com formato pct some; "% da energia injetada"
+ * com formato pct vira "da energia injetada" (o número já termina em %). */
 export function unidadeDestaque(unidade: string | null | undefined, formato: FormatoNumero = "num"): string {
   const u = (unidade ?? "").trim();
   if (formato === "reais") return u.replace(/^R\$\s*/, "");
-  if ((formato === "pct" || formato === "variacao_pct") && u === "%") return "";
+  if (formato === "pct" || formato === "variacao_pct") return u.replace(/^%\s*/, "");
   return u;
 }
 

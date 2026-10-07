@@ -20,6 +20,16 @@ export default {
     "Roteiro por script confere que o contraste está escrito, que os links levam aos dados e que os arquivos baixam; não mede se uma pessoa sem vocabulário entende o texto.",
   async executar(j) {
     const p = j.p;
+    // a página vem do servidor com blocos de níveis mais profundos visíveis e só os esconde depois de hidratar:
+    // espera a rede assentar antes de ler visibilidade ou de clicar
+    const assentar = async () => {
+      await p.waitForLoadState("networkidle", { timeout: 8000 }).catch(() => {});
+      await j.esperar(400);
+    };
+    const ir = async (url) => {
+      await p.goto(url);
+      await assentar();
+    };
     let n = 0; // interações do leitor até o ponto atual
     const clicar = (l, o) => (n++, j.clicar(l, o));
     const agir = (f) => (n++, j.agir(f));
@@ -28,7 +38,7 @@ export default {
     let nomeTarifa = "";
 
     await j.passo("Abre a página inicial do Observatório e localiza a busca", async () => {
-      await p.goto(j.BASE + "/setor-eletrico");
+      await ir(j.BASE + "/setor-eletrico");
       const busca = p.getByRole("searchbox", { name: /Busque por pergunta, conceito, página ou distribuidora/ });
       await busca.waitFor({ state: "visible", timeout: 8000 });
       const h1 = N(await p.locator("h1").first().innerText());
@@ -59,6 +69,7 @@ export default {
     await j.passo("Abre o conceito PLD pelo resultado da busca", async () => {
       await clicar(p.locator('ul.divide-y li a[href="/setor-eletrico/aprenda/pld"]').first());
       await p.waitForURL(/\/setor-eletrico\/aprenda\/pld(\?|#|$)/, { timeout: 10000 });
+      await assentar();
       await p.locator("h1").first().waitFor({ state: "visible" });
       const h1 = N(await p.locator("h1").first().innerText());
       j.afirmar(/PLD/.test(h1), `título do verbete inesperado: ${h1}`);
@@ -86,7 +97,8 @@ export default {
       const exemplo = N((await p.locator("main").innerText()).match(/EXEMPLO REAL\s*([^\n]+)/i)?.[1] ?? "");
       j.afirmar(/\d{2}\/\d{2}\/\d{4}/.test(exemplo) && /R\$\s?[\d.,]+/.test(exemplo), `exemplo real sem data e valor: "${exemplo}"`);
       await clicar(p.getByRole("link", { name: /ver no painel/i }).first());
-      await p.waitForURL(/\/setor-eletrico\/pld\?volta=verbete%3Apld/, { timeout: 10000 });
+      await p.waitForURL(/\/setor-eletrico\/pld(\?|#|$)/, { timeout: 10000 });
+      await assentar();
       await p.locator("h1").first().waitFor({ state: "visible" });
       const h1 = N(await p.locator("h1").first().innerText());
       j.afirmar(h1 === "PLD", `h1 da página de dados inesperado: ${h1}`);
@@ -114,12 +126,14 @@ export default {
     await j.passo('Volta ao verbete pelo botão "Voltar ao verbete PLD"', async () => {
       await clicar(p.getByRole("link", { name: /Voltar ao verbete PLD/ }).first());
       await p.waitForURL(/\/setor-eletrico\/aprenda\/pld#exemplo/, { timeout: 10000 });
+      await assentar();
       return `URL ${j.url()}`;
     });
 
     await j.passo('Segue o link "TE e TUSD" de "Não confundir com" até o verbete da tarifa', async () => {
       await clicar(p.locator('main a[href="/setor-eletrico/aprenda/tarifa-te-tusd"]').filter({ hasText: /TE e TUSD \(Tarifa/ }).first());
       await p.waitForURL(/\/setor-eletrico\/aprenda\/tarifa-te-tusd/, { timeout: 10000 });
+      await assentar();
       await p.locator("h1").first().waitFor({ state: "visible" });
       const texto = N(await p.locator("main").innerText());
       const h1 = N(await p.locator("h1").first().innerText());
@@ -133,7 +147,8 @@ export default {
 
     await j.passo('Segue "Ver no painel: Conta de luz: tarifa" até a página de dados da tarifa', async () => {
       await clicar(p.getByRole("link", { name: /Ver no painel: Conta de luz/ }).first());
-      await p.waitForURL(/\/setor-eletrico\/conta-de-luz\?volta=verbete%3Atarifa-te-tusd/, { timeout: 10000 });
+      await p.waitForURL(/\/setor-eletrico\/conta-de-luz(\?|#|$)/, { timeout: 10000 });
+      await assentar();
       await p.locator("h1").first().waitFor({ state: "visible" });
       const h1 = N(await p.locator("h1").first().innerText());
       j.afirmar(/Quanto custa a energia ao consumidor/.test(h1), `h1 inesperado: ${h1}`);

@@ -108,8 +108,8 @@ DIMENSOES = [
                {"valor": None, "motivo": "10 menos 4 vezes a fração de conjuntos sem SLA (cadência não monitorável)"}]},
     {"id": "desempenho", "nome": "Desempenho e manutenção", "peso": 5, "fonte_da_nota": "medicao",
      "evidencia": "Medição, volume de dados, simplicidade e documentação",
-     "regras": ["Parte do teto aplicável (10 sem teto). HTML acima de 600 KB tira 2,0 e acima de 1 MB tira 4,0; JavaScript acima de 1 MB tira 1,0; carga em laboratório acima de 5 s tira 1,0; mais de 8.000 nós no DOM tira 1,0 e mais de 15.000 tira 2,0.",
-                "Módulo sem teste automatizado tira 2,0; módulo sem documento em docs/observatorios/energia/modulos tira 1,0."],
+     "regras": ["Parte do teto aplicável (10 sem teto). HTML acima de 600 KB tira 2,0 e acima de 1 MB tira 4,0; JavaScript acima de 1 MB tira 1,0; mais de 8.000 nós no DOM tira 1,0 e mais de 15.000 tira 2,0.",
+                "Módulo sem teste automatizado tira 2,0; módulo sem documento em docs/observatorios/energia/modulos tira 1,0. O tempo de carga em laboratório fica registrado como evidência e não pontua: depende da carga da máquina que mede."],
      "tetos": [{"valor": 9.0, "motivo": "desempenho medido só em laboratório, sem dado de campo (LCP, INP, CLS) de usuários reais"}]},
 ]
 PESOS = {d["id"]: d["peso"] for d in DIMENSOES}
@@ -555,6 +555,11 @@ def d_completude(ctx):
     comp = [m for m in ms if m.get("marcadores")]
     mx = lambda f: maximo(comp, f)
     n = Nota()
+    for chave, sev, texto in (("datas_cruas", "medio", "data em formato cru no texto"), ("nan_undefined", "alto", "valor de reserva (NaN, undefined) no texto"),
+                              ("marcador_de_obra", "medio", "marcador de obra no texto"), ("unidade_duplicada", "medio", "unidade repetida no texto")):
+        achados = sorted({x for m in comp if m.get("anomalias") for x in m["anomalias"].get(chave, [])})
+        if achados:
+            n.defeito(chave, sev, f"{texto}: " + " | ".join(a.strip()[:70] for a in achados[:2]))
     if ctx["tipo"] == "painel":
         paineis = max(1, mx(lambda m: m["marcadores"]["paineis"]) or 1)
         tit = [p for m in comp for p in m.get("paineis", [])]
@@ -575,7 +580,7 @@ def d_completude(ctx):
         n.evid(f"{len(set(ctx['paineis_ids']))} painéis na página; títulos em forma de pergunta: {interr}")
     else:
         anom = [m["anomalias"] for m in comp if m.get("anomalias")]
-        limpo = not any(a["datas_cruas"] or a["nan_undefined"] or a["marcador_de_obra"] for a in anom)
+        limpo = not any(a["datas_cruas"] or a["nan_undefined"] or a["marcador_de_obra"] or a.get("unidade_duplicada") for a in anom)
         itens = {
             "h1": 1.0 if all(len(m.get("h1", [])) == 1 for m in comp) and mx(lambda m: m["marcadores"].get("lead", 0)) >= 60 else 0.0,
             "fonte": 1.0 if mx(lambda m: m["marcadores"]["fonte"] + m["marcadores"]["referencia"] + m["marcadores"].get("conferido", 0) + m["marcadores"].get("externo", 0)) else 0.0,
@@ -766,8 +771,6 @@ def d_desempenho(ctx):
         n.defeito("html_600kb", "baixo", f"HTML de {kb(html)}, acima da meta de 600 KB")
     if js > 1024 * 1024:
         n.deduz(1.0, f"JavaScript de {kb(js)}, acima de 1 MB")
-    if carga > 5000:
-        n.deduz(1.0, f"carga em laboratório de {pt(carga / 1000, 1)} s, acima de 5 s")
     if dom > 15000:
         n.deduz(2.0, f"{pt(dom, 0)} nós no DOM, acima de 15.000")
     elif dom > 8000:

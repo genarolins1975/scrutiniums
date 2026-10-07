@@ -516,6 +516,21 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                   )}
                 </EmpresasAnalise>
 
+                {origens.length > 0 && (
+                  <div className="mt-6 border-t border-linha pt-4" data-origens="true">
+                    <p className="rotulo text-mineral">Ver nos módulos de origem, com a {d.sigla} já escolhida</p>
+                    <ul className="mt-1 flex flex-wrap gap-x-5 text-sm">
+                      {origens.map((o) => (
+                        <li key={o.href}>
+                          <Link href={o.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
+                            {o.rotulo}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
                 <EmpresasAuditoria titulo="Identidade e origem de cada número">
                   <p className="text-sm text-carvao-muted">
                     Identidade: CNPJ {cnpjFormatado(d.cnpj)}; slug estável {d.slug}
@@ -533,17 +548,6 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                       </li>
                     ))}
                   </ul>
-                  {origens.length > 0 && (
-                    <ul className="flex flex-wrap gap-x-5 text-sm">
-                      {origens.map((o) => (
-                        <li key={o.href}>
-                          <Link href={o.href} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao">
-                            {o.rotulo}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
                   {companhia && (
                     <p className="text-sm text-carvao-muted">
                       CVM: código {companhia.cd_cvm ?? "sem registro"}, situação {companhia.situacao ?? "sem registro"}, setor {companhia.setor ?? "sem registro"}; {inteiro(companhia.valores_reapresentados)}{" "}

@@ -14,6 +14,16 @@ export default {
     "Roteiro por script confere que exemplo, gráfico, tabela, unidade, fonte e caminho de volta existem e batem entre si; não avalia se o material serve didaticamente nem se o gráfico fica legível projetado.",
   async executar(j) {
     const p = j.p;
+    // a página vem do servidor com blocos de níveis mais profundos visíveis e só os esconde depois de hidratar:
+    // espera a rede assentar antes de ler visibilidade ou de clicar
+    const assentar = async () => {
+      await p.waitForLoadState("networkidle", { timeout: 8000 }).catch(() => {});
+      await j.esperar(400);
+    };
+    const ir = async (url) => {
+      await p.goto(url);
+      await assentar();
+    };
     let n = 0;
     const clicar = (l, o) => (n++, j.clicar(l, o));
     const agir = (f) => (n++, j.agir(f));
@@ -30,7 +40,7 @@ export default {
       );
 
     await j.passo("Abre a página Aprenda e localiza os verbetes de água e de preço", async () => {
-      await p.goto(j.BASE + "/setor-eletrico/aprenda");
+      await ir(j.BASE + "/setor-eletrico/aprenda");
       await p.getByRole("heading", { level: 1 }).first().waitFor({ state: "visible", timeout: 10000 });
       const h1 = N(await p.getByRole("heading", { level: 1 }).first().innerText());
       const texto = N(await p.locator("main").innerText());
@@ -47,6 +57,7 @@ export default {
     await j.passo("Abre o verbete EAR e lê a definição, o exemplo real com data e número e a natureza do dado", async () => {
       await clicar(p.locator('main a[href="/setor-eletrico/aprenda/ear"]').first());
       await p.waitForURL(/\/setor-eletrico\/aprenda\/ear/, { timeout: 10000 });
+      await assentar();
       await p.getByRole("heading", { level: 1 }).first().waitFor({ state: "visible" });
       const texto = N(await p.locator("main").innerText());
       const frase = texto.match(/EM UMA FRASE\s*([^\n]+)/i)?.[1] ?? "";
@@ -64,6 +75,7 @@ export default {
     await j.passo('Segue "ver no painel" do exemplo da EAR e confere gráfico, tabela, unidade e botão de retorno', async () => {
       await clicar(p.getByRole("link", { name: /ver no painel/i }).first());
       await p.waitForURL(/\/setor-eletrico\/agua-e-clima/, { timeout: 10000 });
+      await assentar();
       const voltar = p.getByRole("link", { name: /Voltar ao verbete EAR/ });
       await voltar.first().waitFor({ state: "visible", timeout: 10000 });
       await p.getByRole("heading", { name: "Quanta energia está armazenada?", level: 2 }).waitFor({ state: "attached", timeout: 10000 });
@@ -73,6 +85,7 @@ export default {
       const resumo = painel.locator("summary:visible", { hasText: /Dados do gráfico em tabela/i }).first();
       await resumo.scrollIntoViewIfNeeded();
       await clicar(resumo);
+      await resumo.locator("xpath=..").locator("tbody tr").first().waitFor({ state: "visible", timeout: 8000 }).catch(() => {});
       const linhasTabela = await resumo.locator("xpath=..").locator("tbody tr").count();
       j.afirmar(linhasTabela > 0, "a tabela equivalente do gráfico está vazia");
       const texto = N(await painel.innerText());
@@ -95,12 +108,13 @@ export default {
       const pct = se[cab.indexOf("EAR (%)")];
       const mesmoNumero = dia === ear.data && pct.replace(/0$/, "") === ear.valor;
       const apareceNaPagina = painel.includes(`${ear.valor}%`);
-      return `Verbete: ${ear.data}, ${ear.valor}%. Painel (padrão): ${dia}, Sudeste/Centro-Oeste ${pct}% e SIN ${sin[3]}% em ${sin[1]}. O número do exemplo ${mesmoNumero ? "é o mesmo do painel" : `não é o mostrado no painel (data do painel ${dia}, diferença de ${(parseFloat(pct.replace(",", ".")) - parseFloat(ear.valor.replace(",", "."))).toFixed(2).replace(".", ",")} p.p.)`}; "${ear.valor}%" aparece em algum texto da página: ${apareceNaPagina ? "sim" : "não"}`;
+      return `Verbete: ${ear.data}, ${ear.valor}%. Painel (padrão): ${dia}, Sudeste/Centro-Oeste ${pct}% e SIN ${sin[3]}% em ${sin[1]}. O número do exemplo ${mesmoNumero ? "é o mesmo do painel" : `não é o mostrado no painel (data do painel ${dia}, diferença de ${(parseFloat(pct.replace(",", ".")) - parseFloat(ear.valor.replace(",", "."))).toFixed(2).replace(".", ",").replace("-", "−")} p.p.)`}; "${ear.valor}%" aparece em algum texto da página: ${apareceNaPagina ? "sim" : "não"}`;
     });
 
     await j.passo('Volta ao verbete pelo botão "Voltar ao verbete EAR"', async () => {
       await clicar(p.getByRole("link", { name: /Voltar ao verbete EAR/ }).first());
       await p.waitForURL(/\/setor-eletrico\/aprenda\/ear#exemplo/, { timeout: 10000 });
+      await assentar();
       const h1 = N(await p.getByRole("heading", { level: 1 }).first().innerText());
       j.afirmar(/EAR/.test(h1), `h1 inesperado: ${h1}`);
       return `URL ${j.url()}; h1 "${h1}"`;
@@ -109,6 +123,7 @@ export default {
     await j.passo('Segue "Nas trilhas" do verbete EAR até o passo 2 da trilha Água, operação e preço', async () => {
       await clicar(p.getByRole("link", { name: /Água, operação e preço, passo 2/ }).first());
       await p.waitForURL(/\/setor-eletrico\/aprenda\/trilhas\/agua-operacao-preco/, { timeout: 10000 });
+      await assentar();
       const passo = p.locator("#passo-armazenamento");
       await passo.waitFor({ state: "attached", timeout: 10000 });
       const t = N(await passo.innerText());
@@ -133,6 +148,7 @@ export default {
     await j.passo('Segue "ver no painel" do passo 5 até o PLD e confere que o painel mostra os mesmos números', async () => {
       await clicar(p.locator("#passo-pld").getByRole("link", { name: /ver no painel/i }).first());
       await p.waitForURL(/\/setor-eletrico\/pld/, { timeout: 10000 });
+      await assentar();
       const voltar = p.getByRole("link", { name: /Voltar à trilha Água, operação e preço, passo 5/ });
       await voltar.first().waitFor({ state: "visible", timeout: 10000 });
       const hoje = p.locator("section#hoje");
@@ -142,7 +158,23 @@ export default {
       j.afirmar(se, "o painel não traz o cartão do Sudeste/Centro-Oeste com média e faixa horária");
       j.afirmar(se[1] === preco.media && se[3] === preco.min && se[4] === preco.max, `o painel (${se[1]}, ${se[3]} a ${se[4]}) difere da trilha (${preco.media}, ${preco.min} a ${preco.max})`);
       j.afirmar(se[2] === preco.data, `data do painel ${se[2]} difere da da trilha ${preco.data}`);
-      return `Botão de retorno: "${N(await voltar.first().innerText()).replace(/\s+/g, " ")}"; cartão Sudeste/Centro-Oeste: média R$ ${se[1]} em ${se[2]}, faixa horária R$ ${se[3]} a R$ ${se[4]}, iguais ao texto da trilha`;
+      // posição em que a página aterrissa: o que o botão fixo de retorno cobre e se o gráfico já está à vista
+      const aterrissagem = await p.evaluate(() => {
+        const link = [...document.querySelectorAll("a")].find((a) => /Voltar à trilha/.test(a.textContent ?? ""));
+        const fixo = link?.closest("[class*=fixed]") ?? link;
+        const r = fixo.getBoundingClientRect();
+        const cobertas = [...document.querySelectorAll("section#hoje button")]
+          .filter((b) => /^(DIA \d|7 DIAS|30 DIAS|12 MESES|HISTÓRICO)/i.test((b.textContent ?? "").trim()))
+          .filter((b) => {
+            const q = b.getBoundingClientRect();
+            return q.width > 0 && q.bottom > 0 && q.top < innerHeight && !(q.right < r.left || q.left > r.right || q.bottom < r.top || q.top > r.bottom);
+          })
+          .map((b) => (b.textContent ?? "").trim());
+        const g = document.querySelector("section#hoje svg[role=img]")?.getBoundingClientRect();
+        return { cobertas, graficoNaTela: !!g && g.top < innerHeight && g.bottom > 0, rolagem: Math.round(scrollY) };
+      });
+      await j.captura("painel_pld");
+      return `Botão de retorno: "${N(await voltar.first().innerText()).replace(/\s+/g, " ")}"; cartão Sudeste/Centro-Oeste: média R$ ${se[1]} em ${se[2]}, faixa horária R$ ${se[3]} a R$ ${se[4]}, iguais ao texto da trilha. Ao chegar (rolagem ${aterrissagem.rolagem} px): gráfico horário ${aterrissagem.graficoNaTela ? "já está" : "não está"} à vista; abas de período cobertas pelo botão fixo: ${aterrissagem.cobertas.length ? aterrissagem.cobertas.join(", ") : "nenhuma"}`;
     });
 
     await j.passo("Confere o gráfico do PLD: nome acessível, unidade e a tabela equivalente com o pico do exemplo", async () => {
@@ -153,6 +185,7 @@ export default {
       await resumo.scrollIntoViewIfNeeded();
       await clicar(resumo);
       const detalhe = resumo.locator("xpath=..");
+      await detalhe.locator("tbody tr").first().waitFor({ state: "visible", timeout: 8000 }).catch(() => {});
       const legenda = N(await detalhe.locator("caption").first().innerText().catch(() => ""));
       const cab = await detalhe.locator("thead th").evaluateAll((es) => es.map((e) => e.innerText.trim()));
       const linhas = await detalhe.locator("tbody tr").evaluateAll((rs) => rs.map((r) => [...r.querySelectorAll("td,th")].map((c) => c.innerText.trim())));
@@ -181,6 +214,7 @@ export default {
     await j.passo('Volta à trilha pelo botão "Voltar à trilha Água, operação e preço, passo 5"', async () => {
       await clicar(p.getByRole("link", { name: /Voltar à trilha Água, operação e preço, passo 5/ }).first());
       await p.waitForURL(/\/setor-eletrico\/aprenda\/trilhas\/agua-operacao-preco#passo-pld/, { timeout: 10000 });
+      await assentar();
       await j.esperar(600);
       const visivel = await p.locator("#passo-pld").evaluate((e) => {
         const r = e.getBoundingClientRect();
@@ -193,6 +227,7 @@ export default {
     await j.passo("Abre o verbete PLD pela trilha e confere que o exemplo real é o mesmo número", async () => {
       await clicar(p.locator("#passo-pld").getByRole("link", { name: /^PLD$/ }).first());
       await p.waitForURL(/\/setor-eletrico\/aprenda\/pld/, { timeout: 10000 });
+      await assentar();
       await p.getByRole("heading", { level: 1 }).first().waitFor({ state: "visible" });
       const t = N(await p.locator("main").innerText());
       const m = t.match(new RegExp(`Em (\\d{2}/\\d{2}/\\d{4}), o PLD horário do Sudeste/Centro-Oeste variou de R\\$ ${D} a R\\$ ${D}/MWh[\\s\\S]*?a média simples das 24 horas foi R\\$ ${D}/MWh`));

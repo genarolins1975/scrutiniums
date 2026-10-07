@@ -16,6 +16,16 @@ export default {
     "Roteiro por script confere que período, fonte e versão estão escritos e coerentes entre o número e a ficha; não avalia se um analista confiaria na evidência nem reproduz o cálculo da ficha.",
   async executar(j) {
     const p = j.p;
+    // a página vem do servidor com blocos de níveis mais profundos visíveis e só os esconde depois de hidratar:
+    // espera a rede assentar antes de ler visibilidade ou de clicar
+    const assentar = async () => {
+      await p.waitForLoadState("networkidle", { timeout: 8000 }).catch(() => {});
+      await j.esperar(400);
+    };
+    const ir = async (url) => {
+      await p.goto(url);
+      await assentar();
+    };
     let n = 0;
     const clicar = (l, o) => (n++, j.clicar(l, o));
     const agir = (f) => (n++, j.agir(f));
@@ -25,6 +35,7 @@ export default {
     const lerTabela = async () => {
       const tabela = p.locator("table:visible", { hasText: "Dias completos" }).first();
       await tabela.waitFor({ state: "visible", timeout: 15000 });
+      await tabela.locator("tbody tr").first().waitFor({ state: "visible", timeout: 8000 });
       const cab = await tabela.locator("thead th").evaluateAll((es) => es.map((e) => e.innerText.replace(/\s+/g, " ").replace(/[↕▲▼]/g, "").trim()));
       const linhas = await tabela.locator("tbody tr").evaluateAll((rs) => rs.map((r) => [...r.querySelectorAll("td,th")].map((c) => c.innerText.trim())));
       return (mes) => {
@@ -35,7 +46,7 @@ export default {
     };
 
     await j.passo("Abre o histórico do PLD e lê até quando vão os dados", async () => {
-      await p.goto(j.BASE + "/setor-eletrico/pld/historico");
+      await ir(j.BASE + "/setor-eletrico/pld/historico");
       await p.getByRole("heading", { level: 1 }).first().waitFor({ state: "visible", timeout: 10000 });
       const h1 = N(await p.getByRole("heading", { level: 1 }).first().innerText());
       j.afirmar(/Histórico e distribuição/.test(h1), `h1 inesperado: ${h1}`);

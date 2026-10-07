@@ -292,6 +292,9 @@ describe("número de destaque", () => {
     expect(valorDestaque(-12.34, "pct", 1)).toBe("−12,3%");
     expect(unidadeDestaque("R$/MWh", "reais")).toBe("/MWh");
     expect(unidadeDestaque("%", "pct")).toBe("");
+    expect(unidadeDestaque("% da energia injetada", "pct")).toBe("da energia injetada");
+    expect(unidadeDestaque("% da EAR máxima", "variacao_pct")).toBe("da EAR máxima");
+    expect(unidadeDestaque("% da energia injetada")).toBe("% da energia injetada");
     expect(unidadeDestaque("MWmed")).toBe("MWmed");
   });
 

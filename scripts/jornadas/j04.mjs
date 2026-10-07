@@ -48,6 +48,16 @@ export default {
     "Roteiro por script reproduz a média temporal, a mediana e o percentil a partir dos arquivos oferecidos na página; as médias ponderadas pela carga não foram reproduzidas porque dependem da carga horária do ONS, que a página não oferece como arquivo.",
   async executar(j) {
     const p = j.p;
+    // a página vem do servidor com blocos de níveis mais profundos visíveis e só os esconde depois de hidratar:
+    // espera a rede assentar antes de ler visibilidade ou de clicar
+    const assentar = async () => {
+      await p.waitForLoadState("networkidle", { timeout: 8000 }).catch(() => {});
+      await j.esperar(400);
+    };
+    const ir = async (url) => {
+      await p.goto(url);
+      await assentar();
+    };
     let n = 0;
     const clicar = (l, o) => (n++, j.clicar(l, o));
     const agir = (f) => (n++, j.agir(f));
@@ -68,12 +78,13 @@ export default {
     };
 
     await j.passo("Abre o histórico do PLD, localiza a tabela mensal e lê o KPI de ago/2026", async () => {
-      await p.goto(j.BASE + "/setor-eletrico/pld/historico");
+      await ir(j.BASE + "/setor-eletrico/pld/historico");
       await p.getByRole("heading", { level: 1 }).first().waitFor({ state: "visible", timeout: 10000 });
       tabela = p.locator("table:visible", { hasText: "Dias completos" }).first();
       raiz = tabela.locator("xpath=ancestor::*[.//input[@type='search']][1]");
       await raiz.locator("input[type=search]").scrollIntoViewIfNeeded();
       await tabela.waitFor({ state: "visible", timeout: 15000 });
+      await tabela.locator("tbody tr").first().waitFor({ state: "visible", timeout: 8000 });
       const kpi = N(await p.getByRole("group", { name: /^Média temporal de ago\/2026/i }).first().innerText());
       est.kpiAgo = kpi.match(new RegExp(`R\\$ ${D}/MWh`))?.[1];
       j.afirmar(est.kpiAgo, `KPI sem valor: ${kpi}`);
@@ -180,7 +191,7 @@ export default {
       const media = horas.reduce((s, l) => s + parseFloat(l[1]), 0) / horas.length;
       const dif = Math.abs(media - num(est.kpiAgo));
       j.afirmar(dif < 0.005, `média recalculada ${media} difere do KPI ${est.kpiAgo} em ${dif}`);
-      return `KPI exibido R$ ${est.kpiAgo}/MWh; linha 2026-08 do CSV exportado ${linhaAgo[iCol]} (diferença 0); recalculado sobre ${horas.length} horas de pld_horario.csv (coluna SE) ${media.toFixed(4)}; diferença para o KPI ${(media - num(est.kpiAgo)).toFixed(4).replace(".", ",")} R$/MWh, só de arredondamento`;
+      return `KPI exibido R$ ${est.kpiAgo}/MWh; linha 2026-08 do CSV exportado ${linhaAgo[iCol]} (diferença 0); recalculado sobre ${horas.length} horas de pld_horario.csv (coluna SE) ${media.toFixed(4)}; diferença para o KPI ${(media - num(est.kpiAgo)).toFixed(4).replace(".", ",").replace("-", "−")} R$/MWh, só de arredondamento`;
     });
 
     await j.passo("Reproduz a mediana e o percentil da média diária de 30/09/2026 a partir da série diária", async () => {

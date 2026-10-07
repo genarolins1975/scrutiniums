@@ -15,13 +15,23 @@ export default {
     "Roteiro por script confere os números e a consistência entre páginas; não mede se o consumidor reconhece sua distribuidora pelo nome nem se entende DEC e FEC.",
   async executar(j) {
     const p = j.p;
+    // a página vem do servidor com blocos de níveis mais profundos visíveis e só os esconde depois de hidratar:
+    // espera a rede assentar antes de ler visibilidade ou de clicar
+    const assentar = async () => {
+      await p.waitForLoadState("networkidle", { timeout: 8000 }).catch(() => {});
+      await j.esperar(400);
+    };
+    const ir = async (url) => {
+      await p.goto(url);
+      await assentar();
+    };
     let n = 0;
     const clicar = (l, o) => (n++, j.clicar(l, o));
     const agir = (f) => (n++, j.agir(f));
     const ficha = {};
 
     await j.passo("Abre a página inicial e digita CEMIG na busca", async () => {
-      await p.goto(j.BASE + "/setor-eletrico");
+      await ir(j.BASE + "/setor-eletrico");
       const busca = p.getByRole("searchbox", { name: /Busque por pergunta/ });
       await busca.waitFor({ state: "visible", timeout: 8000 });
       await agir(async () => {
@@ -41,6 +51,7 @@ export default {
     await j.passo("Abre a ficha da CEMIG-D e lê perdas, DEC, FEC e tarifa", async () => {
       await clicar(p.locator('ul.divide-y li a[href="/setor-eletrico/empresas/cemig-d"]').first());
       await p.waitForURL(/\/setor-eletrico\/empresas\/cemig-d/, { timeout: 10000 });
+      await assentar();
       await p.getByRole("heading", { level: 1 }).first().waitFor({ state: "visible" });
       const texto = N(await p.locator("main").innerText());
       const re = {
@@ -86,6 +97,7 @@ export default {
       if (!visivelEntender) {
         await clicar(p.getByRole("radiogroup", { name: "Nível de profundidade" }).getByRole("radio", { name: "Auditar" }));
         await p.waitForURL(/modo=auditar/, { timeout: 8000 });
+        await assentar();
         await link.waitFor({ state: "visible", timeout: 8000 });
       }
       const rotulos = await p.locator(`a[href="${hrefPerdas}"], a[href="${hrefQual}"]`).evaluateAll((es) => es.map((e) => e.innerText.trim()));
@@ -95,6 +107,7 @@ export default {
     await j.passo("Abre Perdas pelo link da ficha e confere a distribuidora e o número", async () => {
       await clicar(p.getByRole("link", { name: /Perdas, com o mapa por conjunto e município/ }).first());
       await p.waitForURL(new RegExp(`/setor-eletrico/perdas\\?d=${CNPJ}`), { timeout: 10000 });
+      await assentar();
       const bloco = p.getByText(/CEMIG-D \(concessionária, MG\): em 2025, perdas totais de/);
       await bloco.first().waitFor({ state: "attached", timeout: 15000 });
       await bloco.first().scrollIntoViewIfNeeded();
@@ -129,9 +142,11 @@ export default {
     await j.passo("Volta à ficha e abre Qualidade pelo link da ficha", async () => {
       await agir(async () => p.goBack());
       await p.waitForURL(/\/setor-eletrico\/empresas\/cemig-d/, { timeout: 10000 });
+      await assentar();
       await p.getByRole("heading", { level: 1 }).first().waitFor({ state: "visible" });
       await clicar(p.getByRole("link", { name: /Qualidade do serviço, com os conjuntos elétricos/ }).first());
       await p.waitForURL(new RegExp(`/setor-eletrico/qualidade\\?dist=${CNPJ}`), { timeout: 10000 });
+      await assentar();
       const frase = p.getByText(/CEMIG-D: DEC acima do limite em \d+ de \d+ anos/).first();
       await frase.waitFor({ state: "attached", timeout: 15000 });
       const t = N(await frase.innerText());
@@ -146,6 +161,7 @@ export default {
       await grupo.scrollIntoViewIfNeeded();
       await clicar(grupo.getByText("FEC", { exact: true }));
       await p.waitForURL(/ind=fec/, { timeout: 8000 });
+      await assentar();
       const frase = p.getByText(/CEMIG-D: FEC acima do limite em \d+ de \d+ anos/).first();
       await frase.waitFor({ state: "attached", timeout: 8000 });
       const t = N(await frase.innerText());
@@ -174,11 +190,12 @@ export default {
     });
 
     await j.passo("Reabre a ficha e segue o link para o comparador de distribuidoras", async () => {
-      await p.goto(j.BASE + "/setor-eletrico/empresas/cemig-d");
+      await ir(j.BASE + "/setor-eletrico/empresas/cemig-d");
       const link = p.getByRole("link", { name: /Como a CEMIG-D se compara com outras distribuidoras/ });
       await link.scrollIntoViewIfNeeded();
       await clicar(link);
       await p.waitForURL(/\/setor-eletrico\/empresas\/distribuidoras\?dist\.cmp=cemig-d/, { timeout: 10000 });
+      await assentar();
       const texto = p.getByText(/Escolha até 4 para ver lado a lado/);
       await texto.first().waitFor({ state: "attached", timeout: 15000 });
       await texto.first().scrollIntoViewIfNeeded();
