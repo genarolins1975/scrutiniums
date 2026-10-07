@@ -173,9 +173,14 @@ export function RegulacaoLeitura({ comoLer, naoPermite }: { comoLer: ReactNode; 
 }
 
 /** Link externo para documento oficial ou cópia pública; abre em nova aba com aviso para leitor de tela. */
-export function RegulacaoLinkExterno({ href, children }: { href: string; children: ReactNode }) {
+export function RegulacaoLinkExterno({ href, children, bloco = false }: { href: string; children: ReactNode; bloco?: boolean }) {
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="text-energia-dark underline underline-offset-4 [overflow-wrap:anywhere] hover:text-carvao">
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`text-energia-dark underline underline-offset-4 [overflow-wrap:anywhere] hover:text-carvao${bloco ? " inline-flex min-h-[44px] items-center" : ""}`}
+    >
       {children}
       <span className="sr-only"> (abre em nova aba)</span>
     </a>

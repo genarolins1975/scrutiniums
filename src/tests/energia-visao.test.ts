@@ -259,6 +259,8 @@ describe("leitura sob demanda da gold e datas legíveis", () => {
     expect(datasLegiveis("de 2025-04-13 a 2026-09-28; meta 33.3%")).toBe("de 13/04/2025 a 28/09/2026; meta 33.3%");
     expect(datasLegiveis("último período 2025-06, 367 dias")).toBe("último período jun/2025, 367 dias");
     expect(datasLegiveis("snapshot ear_subsistema_di@2026-09-30T02:19:44Z")).toBe("snapshot ear_subsistema_di@2026-09-30T02:19:44Z");
+    expect(datasLegiveis("PREVISÃO emitida em 2026-09-30T00:00Z (inicialização do modelo)")).toBe("PREVISÃO emitida em 30/09/2026 00:00 UTC (inicialização do modelo)");
+    expect(datasLegiveis("das 2026-09-30T02:20 às 2026-10-01T06:40:15")).toBe("das 30/09/2026 02:20 às 01/10/2026 06:40");
     expect(datasLegiveis("arquivo ear_2026-09-30.csv")).toBe("arquivo ear_2026-09-30.csv");
     expect(datasLegiveis("sem data aqui")).toBe("sem data aqui");
   });

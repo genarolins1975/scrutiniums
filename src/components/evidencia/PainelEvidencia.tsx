@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type { Natureza, Proveniencia } from "@/lib/energia/tipos";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { SobreEsteDado } from "@/components/evidencia/SobreEsteDado";
+import { provenienciaLegivel } from "@/lib/energia/mercado";
 
 /**
  * Regra editorial da plataforma incorporada ao design system: toda
@@ -32,9 +33,10 @@ export function PainelEvidencia({
   children,
   nivel,
   extraFonte,
-  complementares = [],
+  complementares: complementaresBrutos = [],
   nivelTitulo = 2,
-  ...r
+  proveniencia: provenienciaBruta,
+  ...restante
 }: RegraEditorial & {
   id: string;
   natureza?: Natureza;
@@ -46,6 +48,9 @@ export function PainelEvidencia({
   /** 2 em páginas de módulo (logo abaixo do h1); 3 dentro de seções que já têm h2. */
   nivelTitulo?: 2 | 3;
 }) {
+  // datas ISO soltas nos textos que o pipeline escreve saem na forma da página (dd/mm/aaaa)
+  const r = { ...restante, proveniencia: provenienciaLegivel(provenienciaBruta) };
+  const complementares = complementaresBrutos.map((c) => ({ ...c, p: provenienciaLegivel(c.p) }));
   const nat = natureza ?? r.proveniencia.natureza;
   // um selo por natureza presente no painel (principal e complementares), sem repetir
   const selos = Array.from(new Set<Natureza>([nat, ...complementares.map((c) => c.p.natureza)]));

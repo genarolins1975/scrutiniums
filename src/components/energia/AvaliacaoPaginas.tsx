@@ -7,7 +7,7 @@ import { useEstadoUrl } from "@/components/energia/useEstadoUrl";
 import { carregaJson } from "@/lib/energia/carregaJson";
 import { campo, tiposUrl } from "@/lib/energia/estadoUrl";
 import { num } from "@/lib/energia/formato";
-import { COLUNAS_PAGINAS, ORDEM_DIMENSOES, ROTULO_CURTO, ROTULO_SEVERIDADE, ROTULO_TIPO, URL_AVALIACAO, dimensaoPorId, metaDaDimensao, textoDeducao, textoNota, textoTeto } from "@/lib/energia/avaliacao";
+import { COLUNAS_PAGINAS, ORDEM_DIMENSOES, ROTULO_SEVERIDADE, ROTULO_TIPO, URL_AVALIACAO, dimensaoPorId, metaDaDimensao, textoDeducao, textoNota, textoTeto } from "@/lib/energia/avaliacao";
 import type { LinhaTabela } from "@/lib/energia/tabela";
 import type { AvaliacaoGold, IdDimensao, PaginaAvaliada } from "@/lib/energia/tipos-avaliacao";
 
@@ -180,6 +180,3 @@ export function AvaliacaoPaginas({ linhas, versao }: { linhas: LinhaTabela[]; ve
     </div>
   );
 }
-
-/** Rótulos curtos exportados para os testes de página. */
-export const DIMENSOES_DA_FICHA = ORDEM_DIMENSOES.map((i) => ROTULO_CURTO[i]);

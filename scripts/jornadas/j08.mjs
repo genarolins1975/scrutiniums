@@ -30,10 +30,29 @@ function fotoNoNavegador() {
     .map((b) => norm(b.getAttribute("aria-label") || b.innerText).slice(0, 40))
     .filter((t) => /^(Média|Ponderada)/.test(t));
   f.abertos = [...main.querySelectorAll("details[open] > summary")].map((s) => semMarcas(s.innerText).slice(0, 50)).filter((t) => /dados d|em tabela/i.test(t));
+  const mapa = [...main.querySelectorAll("svg[role=img]")].find((x) => x.querySelectorAll("path").length > 20);
+  f.zoomMapa = mapa ? mapa.getAttribute("viewBox") : null;
   const ficha = document.querySelector('aside[aria-label="Ficha da escolha"]');
   f.ficha = ficha ? norm(ficha.innerText).slice(0, 80) : null;
   return f;
 }
+
+const NOME = {
+  modo: "modo de profundidade",
+  opcoes: "opções marcadas (submercado, moeda, camada)",
+  seletores: "seletores de ano e indicador",
+  faixa: "intervalo do gráfico",
+  buscas: "busca na tabela",
+  ordenacao: "ordenação (aria-sort)",
+  contagens: "contagem de linhas",
+  chips: "chips de filtro e de comparação",
+  selecionados: "seleção e séries ligadas",
+  desligados: "séries desligadas",
+  abertos: "seção Dados do gráfico em tabela aberta",
+  zoomMapa: "zoom do mapa",
+  ficha: "ficha da escolha",
+};
+const nome = (k) => NOME[k] || k;
 
 export default {
   id: "J8",
@@ -50,7 +69,7 @@ export default {
     const resultados = {}; // por página: o que voltou e o que não voltou
 
     /** abre o endereço num contexto novo, tira a foto e compara com a foto de origem */
-    const abrirComoDestinatario = async (nome, endereco, fotoA, ancoraId) => {
+    const abrirComoDestinatario = async (pagina, endereco, fotoA, ancoraId) => {
       const ctx2 = await j.ctx.browser().newContext({ viewport: { width: 1440, height: 900 }, locale: "pt-BR" });
       const p2 = await ctx2.newPage();
       try {
@@ -65,14 +84,17 @@ export default {
         const chaves = Object.keys(fotoA);
         const iguais = [];
         const diferentes = [];
+        const vazias = [];
         for (const k of chaves) {
           const a = JSON.stringify(fotoA[k]);
           const b = JSON.stringify(fotoB[k]);
-          if (a === b) iguais.push(k);
-          else diferentes.push({ faceta: k, origem: fotoA[k], link: fotoB[k] });
+          if (a === b) {
+            iguais.push(k);
+            if (vazio(fotoA[k])) vazias.push(k);
+          } else diferentes.push({ faceta: k, origem: fotoA[k], link: fotoB[k] });
         }
-        resultados[nome] = { iguais, diferentes, pos, urlFinal: new URL(p2.url()).pathname + new URL(p2.url()).search };
-        return { fotoB, pos, iguais, diferentes, urlFinal: resultados[nome].urlFinal };
+        resultados[pagina] = { iguais, diferentes, vazias, pos, urlFinal: new URL(p2.url()).pathname + new URL(p2.url()).search };
+        return { fotoB, pos, iguais, diferentes, vazias, urlFinal: resultados[pagina].urlFinal };
       } finally {
         await ctx2.close();
       }
@@ -94,12 +116,15 @@ export default {
       return { msg, link, noCampo };
     };
 
-    const descreve = (r) =>
-      `voltaram iguais: ${r.iguais.join(", ") || "nenhuma"}; diferentes: ${
-        r.diferentes.length
-          ? r.diferentes.map((d) => `${d.faceta} (origem ${JSON.stringify(d.origem)}, link ${JSON.stringify(d.link)})`).join("; ")
-          : "nenhuma"
-      }`.slice(0, 380);
+    const vazio = (v) => v === null || (Array.isArray(v) && v.length === 0);
+    const descreve = (r) => {
+      const voltou = r.iguais.filter((k) => !r.vazias.includes(k)).map(nome);
+      const nao = r.diferentes.map((d) => {
+        const cortar = (v) => JSON.stringify(v).slice(0, 55);
+        return `${nome(d.faceta)} (origem ${cortar(d.origem)}; link ${cortar(d.link)})`;
+      });
+      return `voltaram: ${voltou.join(", ") || "nenhuma"}; não voltaram: ${nao.join("; ") || "nenhuma"}`;
+    };
 
     // ---------- Página 1: Histórico e distribuição ----------
     let fotoH;
@@ -155,7 +180,7 @@ export default {
       const r = await abrirComoDestinatario("historico", linkH, fotoH, ancora);
       const exigidos = ["modo", "opcoes", "faixa", "buscas", "ordenacao", "contagens", "chips"];
       const faltou = r.diferentes.filter((d) => exigidos.includes(d.faceta));
-      j.afirmar(faltou.length === 0, `o link não restaurou: ${faltou.map((d) => `${d.faceta} (origem ${JSON.stringify(d.origem)}, link ${JSON.stringify(d.link)})`).join("; ")}`);
+      j.afirmar(faltou.length === 0, `o link não restaurou: ${faltou.map((d) => `${nome(d.faceta)} (origem ${JSON.stringify(d.origem)}, link ${JSON.stringify(d.link)})`).join("; ")}`);
       j.afirmar(r.pos.existe && r.pos.topo >= 0 && r.pos.topo < 450, `o painel âncora ${ancora} não ficou à vista: topo ${r.pos.topo} px, rolagem ${r.pos.rolagem} px`);
       return `âncora #${ancora} (${r.pos.titulo}) a ${r.pos.topo} px do topo da janela, rolagem ${r.pos.rolagem} px; ${descreve(r)}`;
     });
@@ -163,7 +188,7 @@ export default {
     // ---------- Página 2: Perdas ----------
     let fotoP;
     let linkP;
-    await j.passo("Em Perdas, monta o recorte: Analisar, ano 2024, indicador técnicas, filtro de UF, distribuidora e comparação", async () => {
+    await j.passo("Em Perdas, monta o recorte: Analisar, ano 2024, indicador técnicas, zoom no mapa, filtro de UF, ordem, distribuidora e comparação", async () => {
       await p.goto(j.BASE + `${ORIGEM}/perdas`, { waitUntil: "networkidle" });
       await j.esperar(900);
       await j.clicar(p.getByRole("radio", { name: /analisar/i }));
@@ -173,6 +198,10 @@ export default {
       await j.agir(() => per.selectOption({ label: "2024" }));
       await j.esperar(400);
       await j.agir(() => p.locator("#perdas-medida").selectOption({ value: "tecnica" }));
+      await j.esperar(600);
+      const aproximar = p.getByRole("button", { name: "Aproximar", exact: true }).first();
+      await aproximar.scrollIntoViewIfNeeded();
+      await j.clicar(aproximar);
       await j.esperar(600);
       const resumoUF = p.locator("main summary").filter({ hasText: /^\s*UF\b/ }).first();
       await resumoUF.scrollIntoViewIfNeeded();
@@ -222,7 +251,7 @@ export default {
       const r = await abrirComoDestinatario("perdas", linkP, fotoP, ancora);
       const exigidos = ["modo", "seletores", "ordenacao", "contagens", "chips", "selecionados"];
       const faltou = r.diferentes.filter((d) => exigidos.includes(d.faceta));
-      j.afirmar(faltou.length === 0, `o link não restaurou: ${faltou.map((d) => `${d.faceta} (origem ${JSON.stringify(d.origem)}, link ${JSON.stringify(d.link)})`).join("; ")}`);
+      j.afirmar(faltou.length === 0, `o link não restaurou: ${faltou.map((d) => `${nome(d.faceta)} (origem ${JSON.stringify(d.origem)}, link ${JSON.stringify(d.link)})`).join("; ")}`);
       return `âncora #${ancora}: elemento ${r.pos.existe ? "existe" : "não existe"} no destino, topo ${r.pos.topo === null ? "sem elemento" : r.pos.topo + " px"}, rolagem ${r.pos.rolagem} px; ${descreve(r)}`;
     });
 
@@ -237,7 +266,7 @@ export default {
     // ---------- Página 3: Minha região ----------
     let fotoT;
     let linkT;
-    await j.passo("Em Minha região, monta o recorte: Analisar, UF BA, filtro de submercado e ordem na tabela", async () => {
+    await j.passo("Em Minha região, monta o recorte: Analisar, UF BA, zoom no mapa, filtro de submercado e ordem na tabela", async () => {
       await p.goto(j.BASE + `${ORIGEM}/territorio`, { waitUntil: "networkidle" });
       await j.esperar(900);
       await j.clicar(p.getByRole("radio", { name: /analisar/i }));
@@ -246,13 +275,17 @@ export default {
       await botao.scrollIntoViewIfNeeded();
       await j.clicar(botao);
       await j.esperar(700);
+      const mais = p.getByRole("button", { name: /aproximar o mapa/i }).first();
+      await mais.scrollIntoViewIfNeeded();
+      await j.clicar(mais);
+      await j.esperar(700);
       const resumo = p.locator("main summary").filter({ hasText: /submercado \(cor no mapa\)/i }).first();
       await resumo.scrollIntoViewIfNeeded();
       await j.clicar(resumo);
       await j.clicar(resumo.locator("xpath=..").locator("label").filter({ hasText: /^\s*Nordeste/ }).first());
       await j.esperar(600);
       await j.clicar(resumo);
-      const th = p.getByRole("button", { name: /^Municípios\s*[↕▲▼]/ }).first();
+      const th = p.getByRole("button", { name: "Municípios", exact: true }).locator("visible=true").first();
       await th.scrollIntoViewIfNeeded();
       await j.clicar(th);
       await j.esperar(500);
@@ -273,13 +306,13 @@ export default {
       const r = await abrirComoDestinatario("territorio", linkT, fotoT, ancora);
       const exigidos = ["modo", "opcoes", "ordenacao", "contagens", "chips", "ficha"];
       const faltou = r.diferentes.filter((d) => exigidos.includes(d.faceta));
-      j.afirmar(faltou.length === 0, `o link não restaurou: ${faltou.map((d) => `${d.faceta} (origem ${JSON.stringify(d.origem)}, link ${JSON.stringify(d.link)})`).join("; ")}`);
+      j.afirmar(faltou.length === 0, `o link não restaurou: ${faltou.map((d) => `${nome(d.faceta)} (origem ${JSON.stringify(d.origem)}, link ${JSON.stringify(d.link)})`).join("; ")}`);
       return `âncora #${ancora}: elemento ${r.pos.existe ? "existe" : "não existe"}, topo ${r.pos.topo === null ? "sem elemento" : r.pos.topo + " px"}, rolagem ${r.pos.rolagem} px; ${descreve(r)}`;
     });
 
     await j.passo("Resume o que o link não restaurou nas três páginas", async () => {
-      const faltas = Object.entries(resultados).map(([pg, r]) => `${pg}: ${r.diferentes.map((d) => d.faceta).join(", ") || "nada"}`);
-      return faltas.join(" | ");
+      const faltas = Object.entries(resultados).map(([pg, r]) => `${pg}: ${r.diferentes.map((d) => nome(d.faceta)).join(", ") || "nada"}`);
+      return `não voltaram em ${faltas.join(" | ")}`;
     });
   },
 };

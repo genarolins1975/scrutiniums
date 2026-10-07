@@ -322,7 +322,7 @@ export default function RegulacaoPage() {
                           <q>{regra.trecho}</q>
                         </p>
                       </details>
-                      {regra.url_oficial && <RegulacaoLinkExterno href={regra.url_oficial}>Texto da resolução no endereço oficial da ANEEL</RegulacaoLinkExterno>}
+                      {regra.url_oficial && <RegulacaoLinkExterno href={regra.url_oficial} bloco>Texto da resolução no endereço oficial da ANEEL</RegulacaoLinkExterno>}
                     </div>
                   ) : (
                     <RegulacaoAviso>A resolução que regula os limites não foi lida nesta publicação; a regra fica sem descrição em vez de escrita de memória.</RegulacaoAviso>

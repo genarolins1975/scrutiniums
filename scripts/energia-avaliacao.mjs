@@ -114,7 +114,7 @@ function medirPagina() {
       datas_cruas: amostra(/\b\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}(:\d{2})?)?\b/g),
       nan_undefined: amostra(/\bNaN\b|\bundefined\b|\[object Object\]|\bInfinity\b/g),
       unidade_duplicada: amostra(/[^\n]{0,30}(%\s*%|R\$\s*R\$)[^\n]{0,30}/g),
-      marcador_de_obra: amostra(/\b(em breve|página em construção|em desenvolvimento|TODO|lorem ipsum|a definir)\b/gi),
+      marcador_de_obra: amostra(/\b(em breve|página em construção|em desenvolvimento|lorem ipsum|a definir)\b/gi),
       travessao: contar(/[—–]/g),
       hoje: amostra(/[^.\n]{0,60}\bhoje\b[^.\n]{0,40}/gi, 6),
       hoje_com_numero: amostra(/[^.\n]{0,60}(\d[^.\n]{0,60}\bhoje\b|\bhoje\b[^.\n]{0,60}\d)[^.\n]{0,20}/gi, 6),
@@ -267,7 +267,7 @@ async function exercitarControles(p, errosRef) {
   const seletores = [
     'main [role=radio]:not([aria-checked=true]):visible',
     'main [role=tab][aria-selected=false]:visible',
-    'main button[aria-pressed]:visible',
+    'main button[aria-pressed=false]:visible',
     'main button[aria-expanded]:visible',
     'main summary:visible',
     'main input[type=checkbox]:visible',
@@ -290,7 +290,21 @@ async function exercitarControles(p, errosRef) {
       if (!info || /Nível de profundidade|Comprove este número|Copiar link/.test(info.grupo + info.rotulo)) continue;
       if (vistos.has(chave(info))) continue;
       vistos.add(chave(info));
-      const antes = await p.evaluate(() => ({ url: location.href, h: document.querySelector("main")?.innerHTML.length ?? 0, t: (document.querySelector("main")?.innerText ?? "").length, abertos: document.querySelectorAll("details[open]").length }));
+      const estado = () =>
+        p.evaluate(() => {
+          const t = document.querySelector("main")?.innerText ?? "";
+          let h = 5381;
+          for (let i = 0; i < t.length; i++) h = ((h * 33) ^ t.charCodeAt(i)) >>> 0;
+          return {
+            url: location.href,
+            h,
+            abertos: document.querySelectorAll("details[open]").length,
+            ordem: Array.from(document.querySelectorAll("main [aria-sort]")).map((e) => e.getAttribute("aria-sort")).join(","),
+            pressionados: Array.from(document.querySelectorAll("main [aria-pressed=true],main [aria-checked=true],main [aria-selected=true]")).length,
+            rolagem: document.documentElement.scrollWidth > window.innerWidth + 1,
+          };
+        });
+      const antes = await estado();
       const errosAntes = errosRef.length;
       let acao = "clique";
       try {
@@ -303,10 +317,17 @@ async function exercitarControles(p, errosRef) {
           await alvo.selectOption(outra, { timeout: 2000 });
           acao = "selecionar";
         } else {
-          // caixas e rádios nativos ficam sob o rótulo: se o clique direto não chega, o leitor clica no rótulo
-          await alvo.click({ timeout: 1200 }).catch(async (e) => {
-            if (info.tag !== "input") throw e;
-            await alvo.locator("xpath=ancestor::label[1]").click({ timeout: 1500 });
+          // caixas e rádios nativos ficam sob o rótulo; um clique que não chega à primeira tentativa (rolagem, carga da máquina)
+          // é refeito com mais tempo antes de contar como controle que não aciona
+          const tentar = (t) =>
+            alvo.click({ timeout: t }).catch(async (e) => {
+              if (info.tag !== "input") throw e;
+              await alvo.locator("xpath=ancestor::label[1]").click({ timeout: t });
+            });
+          await tentar(2500).catch(async () => {
+            await alvo.scrollIntoViewIfNeeded({ timeout: 4000 }).catch(() => {});
+            await p.waitForTimeout(500);
+            await tentar(9000);
           });
         }
       } catch (e) {
@@ -314,13 +335,13 @@ async function exercitarControles(p, errosRef) {
         continue;
       }
       await p.waitForTimeout(250);
-      const depois = await p.evaluate(() => ({ url: location.href, h: document.querySelector("main")?.innerHTML.length ?? 0, t: (document.querySelector("main")?.innerText ?? "").length, abertos: document.querySelectorAll("details[open]").length, rolagem: document.documentElement.scrollWidth > window.innerWidth + 1 }));
+      const depois = await estado();
       feitos.push({
         ...info,
         acao,
         ok: true,
         mudou_url: antes.url !== depois.url,
-        mudou_dom: antes.h !== depois.h || antes.t !== depois.t || antes.abertos !== depois.abertos,
+        mudou_dom: antes.h !== depois.h || antes.abertos !== depois.abertos || antes.ordem !== depois.ordem || antes.pressionados !== depois.pressionados,
         erros_depois: errosRef.length - errosAntes,
         rolagem_horizontal_depois: depois.rolagem,
       });

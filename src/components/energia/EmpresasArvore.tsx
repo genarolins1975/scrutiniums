@@ -59,7 +59,7 @@ export function EmpresasArvore({ a, ir, href }: { a: ArvoreSocietaria; ir?: (cnp
         <div>
           <p className="rotulo text-mineral">Sócios diretos declarados</p>
           {a.socios.length ? (
-            <ul className="mt-1 max-h-80 space-y-1 overflow-y-auto">
+            <ul className="mt-1 max-h-80 space-y-1 overflow-y-auto" tabIndex={0} aria-label="Sócios diretos declarados (lista rolável)">
               {a.socios.map((s, i) => (
                 <li key={`${s.cnpj ?? "s"}-${i}`} className="flex flex-wrap items-baseline gap-x-2">
                   {s.cnpj ? no(s.cnpj, s.nome) : <span className="text-carvao-muted">{s.nome ?? "sem nome publicado"}</span>}
@@ -77,7 +77,7 @@ export function EmpresasArvore({ a, ir, href }: { a: ArvoreSocietaria; ir?: (cnp
         <div>
           <p className="rotulo text-mineral">Empresas em que é sócia controladora</p>
           {a.controladas.length ? (
-            <ul className="mt-1 max-h-80 space-y-1 overflow-y-auto">
+            <ul className="mt-1 max-h-80 space-y-1 overflow-y-auto" tabIndex={0} aria-label="Empresas controladas (lista rolável)">
               {a.controladas.map((c) => (
                 <li key={c.cnpj} className="flex flex-wrap items-baseline gap-x-2">
                   {no(c.cnpj, c.nome)}
