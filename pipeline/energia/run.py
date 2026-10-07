@@ -21,6 +21,7 @@ from pipeline.energia import base, catalogo, metricas, modulos, validacoes  # no
 from pipeline.energia.fontes import ccee, ons  # noqa: E402
 from pipeline.energia.gold import carga, cmo, geracao, hidrologia, modelos, pld, rede  # noqa: E402
 from pipeline.energia.gold import comum as c  # noqa: E402
+from pipeline.energia.modulos import dados as modulo_dados  # noqa: E402
 
 
 def _integro(g):
@@ -160,6 +161,9 @@ def main(argv):
         "status_coleta_modulos": status_modulos,
     }
     base.escreve_gold("meta.json", meta)
+    # manifesto final: só agora arquivos.json, metricas.json, catalogo.json e meta.json estão no
+    # estado em que serão publicados, e o sha256 de cada um entra no manifesto
+    modulo_dados.escreve_manifesto(final=True)
     con.close()
     if regressoes:
         print("REGRESSOES_ENERGIA=" + json.dumps(regressoes, ensure_ascii=False))

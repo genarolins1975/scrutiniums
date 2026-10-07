@@ -459,7 +459,9 @@ export const CARTOES: Record<string, CartaoDestino> = {
   dados: {
     utilidade: "Encontrar o conjunto de origem de um número, ver o estado de cada fonte e baixar os arquivos para reproduzir.",
     encontra: [
-      { texto: "Catálogo de conjuntos com o estado de cada um", href: "/setor-eletrico/dados" },
+      { texto: "Catálogo de conjuntos com a escada de estados, do catalogado ao publicado", href: "/setor-eletrico/dados#catalogo" },
+      { texto: "Saúde das fontes: o que atrasou, falhou ou foi revisado", href: "/setor-eletrico/dados/saude#saude" },
+      { texto: "Download e reprodução: sha256 de cada arquivo e conferência do que você baixou", href: "/setor-eletrico/dados/reproducao#reproducao" },
       { texto: "Ficha de cada conjunto com capturas e sha256", href: "/setor-eletrico/dados/ccee-pld-horario" },
     ],
     recorte: "Conjunto, arquivo e captura.",
@@ -467,6 +469,7 @@ export const CARTOES: Record<string, CartaoDestino> = {
   metodologia: {
     utilidade: "Ver como cada número é produzido, que natureza ele tem e o que não se pode concluir a partir dele.",
     encontra: [
+      { texto: "Regras por indicador: definição, unidade, recortes, cálculo e limites", href: "/setor-eletrico/metodologia#regras" },
       { texto: "Natureza de cada dado: observado, calculado, estimado, previsto e cenário", href: "/setor-eletrico/metodologia#natureza" },
       { texto: "Unidades e como lê-las", href: "/setor-eletrico/metodologia#unidades" },
       { texto: "Linhagem: do arquivo da fonte à página", href: "/setor-eletrico/metodologia#linhagem" },

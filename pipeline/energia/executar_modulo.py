@@ -19,6 +19,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 
 from pipeline.energia import base, metricas, modulos  # noqa: E402
 from pipeline.energia.gold import comum as c  # noqa: E402
+from pipeline.energia.modulos import dados as modulo_dados  # noqa: E402
 
 
 def main(argv):
@@ -62,6 +63,8 @@ def main(argv):
         for url, desc in (m.REGISTRO.get("arquivos") or {}).items():
             arquivos[url] = {"colunas": desc, "modulo": m.REGISTRO["id"], "gold": m.REGISTRO["gold"]}
     base.escreve_gold("arquivos.json", {**c.cabecalho("arquivos.json"), "arquivos": arquivos})
+    # o manifesto acompanha os arquivos publicados: depois de reescrever uma gold, o sha256 dela muda
+    modulo_dados.escreve_manifesto(final=True)
     con.close()
     con_p.close()
     tam = os.path.getsize(os.path.join(base.GOLD, reg["gold"])) if os.path.exists(os.path.join(base.GOLD, reg["gold"])) else 0

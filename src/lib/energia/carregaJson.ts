@@ -33,3 +33,19 @@ export function lerCaminho(obj: unknown, caminho: string): unknown {
   }
   return v;
 }
+
+const cacheTexto = new Map<string, Promise<string>>();
+
+/** Texto de um arquivo publicado em /energia/ (CSV), lido uma vez por URL; falha não fica em cache. */
+export function carregaTexto(url: string): Promise<string> {
+  let p = cacheTexto.get(url);
+  if (!p) {
+    p = fetch(url).then((r) => {
+      if (!r.ok) throw new Error(`HTTP ${r.status} ao ler ${url}`);
+      return r.text();
+    });
+    p.catch(() => cacheTexto.delete(url));
+    cacheTexto.set(url, p);
+  }
+  return p;
+}

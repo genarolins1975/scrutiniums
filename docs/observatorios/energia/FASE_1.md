@@ -12,8 +12,8 @@ Entra na Fase 1 a página que (1) tem gold publicada com proveniência, (2) comp
 | --- | --- | --- |
 | Ciclo completo (dados, verificação adversarial, correção, interface e revisão) | P017 a P020, P025 a P027, P044 a P046, P047 a P050, P051 a P054, P055 a P058, P059 a P062 | 26 |
 | Publicado na Fase 1, revisão adversarial da interface pendente | P001, P002, P003, P008 a P016, P021, P022, P028 a P031, P036 a P039, P040 a P043, P063, P064 | 28 |
-| Publicado na Fase 2 em 06/10/2026, revisão adversarial da interface pendente | P004 a P007, P023, P024, P032 a P035, P065, P066 | 12 |
-| Fase 2 (dados prontos ou em andamento; página de produção anterior mantida) | P067 a P070, P071 | 5 |
+| Publicado na Fase 2 entre 06 e 07/10/2026, revisão adversarial da interface pendente | P004 a P007, P023, P024, P032 a P035, P065 a P070 | 16 |
+| Fase 2 (dados prontos ou em andamento; página de produção anterior mantida) | P071 | 1 |
 
 Dentro do ciclo completo, três painéis têm limitação declarada na própria página: P050 (efeito médio dos reajustes: documentos da ANEEL atrás de desafio anti-robô), P057 (referência regulatória das perdas não técnicas) e P058 (custo total das perdas).
 
@@ -33,6 +33,7 @@ Dentro do ciclo completo, três painéis têm limitação declarada na própria 
 | Geração P023 e P024 | **publicados em 06/10/2026**: páginas `/geracao/restricoes` (mapa das usinas, razões oficiais, energia separada de potência) e `/geracao/capacidade` (fator de capacidade com a potência de cada mês, distribuição por usina, ANEEL e MMGD ao lado sem soma), sobre a gold `geracao_detalhe.json` de 01/10/2026; ambos concluídos com limitação | `src/app/setor-eletrico/geracao/`; interface em `modulos/geracao.md`, seção 7; estado em `CONTINUIDADE.md` |
 | Mercado (P032 a P035) | **publicado em 06/10/2026**: coleta da CCEE autorizada e refeita no mesmo dia (dados até agosto de 2026), quatro páginas ligadas à gold `mercado.json`; P032, P033 e P035 concluídos com limitação, P034 parcial (número de 12 meses do InfoMercado não reproduzido) | `src/app/setor-eletrico/mercado/`; método e interface em `modulos/mercado.md`; estado em `CONTINUIDADE.md` |
 | Aprenda (P065, P066) | **publicados em 06/10/2026**: 48 verbetes (45 conferidos; ACR, ACL, garantia física e ESS conferidos no Decreto nº 5.163/2004) com unidade, exemplo ligado ao painel, "não confundir com" e datas; duas trilhas (água → operação → preço e custo → tarifa → orçamento) com relações tipificadas, número real por passo, exemplo sintético rotulado e volta do painel ao contexto; ambos concluídos com limitação (GSF, REE e constrained-off em preparação) | `src/app/setor-eletrico/aprenda/`; método em `modulos/aprenda.md`; estado em `CONTINUIDADE.md` |
+| Dados e metodologia (P067 a P070) | **publicados em 07/10/2026**: catálogo com a escada do catalogado ao publicado e o recurso a recurso da CCEE; saúde das fontes com calendário e revisões; manifesto com sha256 de cada arquivo e conferência no navegador; regras por indicador (276) e afirmações conferidas com o catálogo. Sobre as golds de 01/10/2026; os quatro concluídos com limitação | `src/app/setor-eletrico/dados/` e `metodologia/`; método e interface em `modulos/dados.md`, seção 7; estado em `CONTINUIDADE.md` |
 | Dados e metodologia novos (P067 a P070) | `publicacao.json`, catálogo e manifesto prontos; interface nova interrompida | páginas de produção com ajustes mínimos |
 | Avaliação dos painéis (P071) | não iniciada | |
 | Revisão adversarial das interfaces de PLD e Previsões | não autorizada nesta sessão (permissão negada) | pendente de autorização |

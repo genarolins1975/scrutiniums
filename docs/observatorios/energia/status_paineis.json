@@ -279,19 +279,23 @@
   },
   "P067": {
    "inicial": "parcial",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Página /setor-eletrico/dados ligada às golds catalogo.json e publicacao.json (gold de 01/10/2026) em 07/10/2026 (branch claude/kind-mayer-v9tpwi): escada catalogado, recurso verificado, integrado, validado e publicado com a contagem e o critério de cada etapa; tabela de 415 conjuntos com as cinco etapas em colunas, uso declarado à parte e filtros na URL; ficha do conjunto com a evidência de cada etapa e de cada integração; os 6 conjuntos em uso abaixo de publicado listados com a ressalva do catálogo; 12 descontinuados com critério e evidência; recurso a recurso da CCEE (733 arquivos) lido do CSV publicado. Revisão adversarial da interface pendente. axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px nos modos Entender e Auditar; testes em src/tests/energia-dados-interface.test.ts. Limitação declarada: estados e contagens valem para a execução de 01/10/2026 (Mercado de 06/10, Geração P023 e P024 e Aprenda ainda fora do catálogo); recurso verificado lê só 64 KB de um arquivo por conjunto."
   },
   "P068": {
    "inicial": "parcial",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Página /setor-eletrico/dados/saude ligada à gold publicacao.json (referência 01/10/2026) em 07/10/2026: situação dos 151 conjuntos integrados por cadência declarada e SLA, calendário de 120 dias com cinco medidas na URL, tabela com atraso, último período, completude, coleta e revisões, revisões com as duas capturas, falhas com último período e última captura lado a lado, regras A a E. O teste confere que o prazo parte do fim do último período (ou da publicação da fonte nos casos D e E), nunca da captura. Revisão adversarial da interface pendente. axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px nos modos Entender e Auditar; testes em src/tests/energia-dados-interface.test.ts. Limitação declarada: a primeira captura registrada é de 27/09/2026 (antes, medidas de captura aparecem como sem dado); a situação vale para 01/10/2026."
   },
   "P069": {
    "inicial": "parcial",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Página /setor-eletrico/dados/reproducao ligada ao manifesto.json em 07/10/2026: 269 arquivos com sha256, tamanho, linhas, colunas, dicionário e Parquet equivalente; ficha do arquivo com download, versão permanente no GitHub, dicionário e colunas; conferência de um arquivo baixado por sha256 no navegador (igual, outra versão ou desconhecido), conferida em navegador; conferência do manifesto contra os arquivos entregues na construção (269 de 269); 25 Parquet com equivalência conferida; passos de reprodução. Defeito corrigido: o manifesto de 01/10/2026 estava incompleto e 9 arquivos tinham outro sha256; run.py e executar_modulo.py passam a gravar o manifesto final e ele foi regravado. Revisão adversarial da interface pendente. axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px nos modos Entender e Auditar; testes em src/tests/energia-dados-interface.test.ts. Limitação declarada: o pacote por consulta (CSV e XLSX) é o da tabela de cada painel; o silver com as vintages não é publicado no repositório; Parquet só nos CSV acima de 2 MB."
   },
   "P070": {
    "inicial": "parcial",
-   "estado": "pendente"
+   "estado": "concluido_com_limitacao",
+   "evidencia": "Página /setor-eletrico/metodologia ligada às golds metricas.json e publicacao.json em 07/10/2026: regras dos 276 indicadores em 18 módulos (definição, fórmula, unidade, recortes, agregação, cobertura, ausência, validações, limitações e código), lidas sob demanda e todas completas segundo o teste; 8 afirmações sobre fontes integradas conferidas com o catálogo (a de limites de intercâmbio com a afirmação anterior e a correção); matriz natureza e validação; regras do pipeline; limitações gerais atualizadas (saíram três afirmações que deixaram de ser verdade). Revisão adversarial da interface pendente. axe sem violações e sem rolagem horizontal em 360, 390, 768 e 1440 px nos modos Entender e Auditar; testes em src/tests/energia-dados-interface.test.ts. Limitação declarada: 142 de 154 fichas de evidência sem natureza vinculada e natureza estimada sem separar fonte de observatório (pedidos 4 e 8 do documento do módulo)."
   },
   "P071": {
    "inicial": "inexistente",
