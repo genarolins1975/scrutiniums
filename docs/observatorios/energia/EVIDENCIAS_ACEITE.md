@@ -1,12 +1,12 @@
 # Evidências de aceite
 
-Gerado por `scripts/energia_avaliacao.py` (rodada 2026-10-07-r3). Mapeia cada item da definição final de pronto (seção 17 da especificação) para a evidência que existe e para o estado real do item. Item marcado como atendido em parte ou não verificado não é cumprimento integral.
+Gerado por `scripts/energia_avaliacao.py` (rodada 2026-10-07-r4). Mapeia cada item da definição final de pronto (seção 17 da especificação) para a evidência que existe e para o estado real do item. Item marcado como atendido em parte ou não verificado não é cumprimento integral.
 
 Resumo: 2 atendido, 13 atendido em parte, 1 não atendido, 4 não verificado nesta rodada, de 20 itens.
 
 | Item da seção 17 | Estado | Evidência e limite |
 | --- | --- | --- |
-| A home é o mapa didático do observatório, com propósito, perguntas, utilidade e conexão de todos os destinos. | atendido em parte | Página inicial medida: nota ponderada 9,0; J1 cumprida (11 de 11 passos). Os painéis vivos da home (task 19 da Fase 2) ainda não foram portados. |
+| A home é o mapa didático do observatório, com propósito, perguntas, utilidade e conexão de todos os destinos. | atendido em parte | Página inicial medida: nota ponderada 8,9; J1 cumprida (11 de 11 passos). Os painéis vivos da home (task 19 da Fase 2) ainda não foram portados. |
 | Todos os módulos obrigatórios existem e têm conteúdo real e útil. | atendido em parte | 19 entregas publicadas e medidas com resposta 200 em 94 rotas; a utilidade do conteúdo é lida pela revisão didática de cada página, não por contagem de módulos. |
 | Todos os painéis obrigatórios foram concluídos, incluindo os itens de execução posterior do Anexo A. | não atendido | 16 de 71 painéis concluídos (2 sem limitação, 14 com limitação declarada), segundo status_paineis.json; o denominador é fixo em 71. |
 | Mercado, Empresas, Expansão e Regulação deixaram de ser módulos vazios. | atendido em parte | As quatro páginas publicam conteúdo lido das golds; o contrato de painel da seção 7.2 foi adotado só no Mercado (P032 a P035). Ver nota de Completude de cada página. |
@@ -23,8 +23,8 @@ Resumo: 2 atendido, 13 atendido em parte, 1 não atendido, 4 não verificado nes
 | O módulo de previsão cumpre as etapas aplicáveis de validação e publicação, sem contorná-las. | não verificado nesta rodada | Não foi objeto desta avaliação; J10 cumprida (14 de 14 passos) verificou a inspeção do arquivo de emissões. |
 | Backtest, prospectivo, observado, estimado e cenário estão corretamente separados. | não verificado nesta rodada | Não foi objeto desta avaliação. |
 | Avaliação por página e evidências estão registradas, sem notas inventadas. | atendido | 94 páginas com nota por dimensão, evidência, deduções e tetos em avaliacao.json; dimensão sem teste ou revisão fica como não avaliada (0 ocorrências). |
-| Não há regressão conhecida nas áreas afetadas do Scrutiniums. | atendido em parte | Vitest: 2645 testes em 138 arquivos, 1 falhas (energia-reauditoria: auditoria final: regressões páginas pré-renderizadas não exibem undefined nem NaN (quando o build existe)). Python: 1359 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis). |
-| Build e verificações exigidas passaram. | atendido em parte | tsc: sem erro; next lint: sem aviso nem erro; next build de 07/10/2026 concluído sem erro. Vitest: 2645 testes em 138 arquivos, 1 falhas (energia-reauditoria: auditoria final: regressões páginas pré-renderizadas não exibem undefined nem NaN (quando o build existe)). Python: 1359 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis). |
+| Não há regressão conhecida nas áreas afetadas do Scrutiniums. | atendido em parte | Vitest: 2664 testes em 139 arquivos, 1 falhas (energia-reauditoria: auditoria final: regressões páginas pré-renderizadas não exibem undefined nem NaN (quando o build existe)). Python: 1359 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis). |
+| Build e verificações exigidas passaram. | atendido em parte | tsc: sem erro; next lint: sem aviso nem erro; next build de 07/10/2026 concluído sem erro. Vitest: 2664 testes em 139 arquivos, 1 falhas (energia-reauditoria: auditoria final: regressões páginas pré-renderizadas não exibem undefined nem NaN (quando o build existe)). Python: 1359 testes, 1 falhas (test_energia_carga: test_arquivos_das_evidencias_existem_ou_sao_declarados_indisponiveis). |
 | Qualquer limitação externa remanescente está descrita sem ser apresentada como cumprimento integral. | atendido | Limites da avaliação em avaliacao.json e em AVALIACAO_PAGINAS.md; limitações de cada painel em status_paineis.json e em DECISOES_E_LIMITACOES.md. |
 
 ## Onde está a evidência

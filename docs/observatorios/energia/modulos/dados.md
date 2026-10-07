@@ -146,7 +146,7 @@ Quatro páginas com a anatomia da seção 7.2 (resposta curta, recorte, números
 
 * **Escada** (`DadosEscada`): as cinco etapas com a contagem cumulativa (cada etapa exige as anteriores), quantos pararam nela, a definição e o critério verificado, tudo lido do catálogo. Em 01/10/2026: 415 conjuntos de 18 órgãos; 393 com recurso verificado ou além; 126 integrados, validados e publicados; 12 descontinuados. Nenhum conjunto parou em integrado ou em validado, e a página diz isso em vez de esconder a linha.
 * **Nenhum salto escondido**: a tabela traz as cinco etapas em colunas (sim, não ou falhou), o uso declarado como eixo à parte e a ressalva declarada. Seis conjuntos declaram uso em indicador e não passaram de recurso verificado (IBGE: localidades, SIDRA 4709 e malha municipal; NASA POWER: IMERG e MERRA-2; ONS: contornos das bacias); a página os lista, com a ressalva do próprio catálogo, antes da tabela. O teste exige a ressalva escrita em todo conjunto em uso abaixo de publicado.
-* **Ficha do conjunto** (linha escolhida na URL, `?c=`): a entrada completa é lida de `catalogo.json` e a evidência de cada integração de `publicacao.json`, só ao escolher a linha (o HTML não carrega 415 fichas). Mostra a evidência de cada etapa, ressalvas, descontinuação, página oficial, licença, frequência, uso, arquivos, páginas que usam o conjunto, mudanças metodológicas e, nos conjuntos da CCEE integrados, o estado de cada arquivo.
+* **Ficha do conjunto** (linha escolhida na URL, `?c=`): a entrada completa é lida de `catalogo.json` e a evidência de cada integração de `publicacao.json`, só ao escolher a linha (o HTML não carrega 415 fichas). A ficha tem duas camadas. A de leitor traz o título como a fonte o publica (o identificador da CCEE não é reescrito, porque a citação tem de bater com a fonte), uma abertura com o órgão e a frequência declarada, a descrição da fonte sem frase cortada, o cartão Situação dos dados (com a causa do atraso no horário de Brasília), página oficial, licença em forma curta com a observação de coleta à parte, formatos, páginas que usam o conjunto, data de referência, última captura e as mudanças metodológicas. A técnica, fechada por padrão, traz atualidade e coleta, snapshot e sha256, última tentativa de coleta direta e a lista de capturas; sem capturas publicadas, a ficha diz isso em vez de mostrar tabela vazia. Os arquivos para baixar e as páginas que usam o conjunto ficam em listas separadas.
 * **Recurso a recurso**: gráfico da composição de cada portal por estado do arquivo (ONS 13.823, ANEEL 631, CCEE 733) e a tabela dos 733 arquivos da CCEE, lida do CSV publicado quando o bloco aparece na tela (`AoAparecer`). Conferido: a contagem por estado do CSV é a do catálogo.
 * **Descontinuados**: os 12, cada um com o critério e a evidência. Um segue publicado como histórico (Tarifa Social, beneficiários antigos, usado só como histórico).
 * O HTML do catálogo tem 564 KB (415 linhas na tabela, filtros e a lista de 132 fichas).
@@ -206,33 +206,45 @@ Pergunta do painel: como demonstrar que a qualidade evoluiu. A resposta é uma r
 
 ### 8.2 Rodadas e resultado
 
-Fonte: `public/energia/gold/avaliacao.json`; três rodadas em 07/10/2026 (`2026-10-07-r1`, `r2` e `r3`); dados de referência das golds de 01/10/2026. A r3 é a rodada atual, medida depois da rodada de correção do código.
+Fonte: `public/energia/gold/avaliacao.json`; quatro rodadas em 07/10/2026 (`2026-10-07-r1` a `r4`); dados de referência das golds de 01/10/2026. A r4 é a rodada atual, medida depois da segunda rodada de correção do código.
 
 | Rodada | Páginas | Dimensões com nota | Nota ponderada média | Atendem a meta | Defeitos crítico / alto / médio / baixo | Jornadas cumpridas |
 | --- | --- | --- | --- | --- | --- | --- |
 | r1 (base, sem revisão visual e didática) | 89 | 8 de 10 | 8,4 | 0 | 0 / 12 / 85 / 12 | 8 de 10 |
 | r2 (primeira com as dez dimensões) | 94 | 10 de 10 | 8,0 | 0 | 0 / 9 / 72 / 12 | 10 de 10 |
 | r3 (depois da rodada de correção) | 94 | 10 de 10 | 8,2 | 0 | 0 / 4 / 34 / 12 | 10 de 10 |
+| r4 (depois da segunda rodada de correção) | 94 | 10 de 10 | 8,3 | 0 | 0 / 4 / 33 / 12 | 10 de 10 |
 
 Média das páginas por dimensão (rubrica 1.0; n.av.: dimensão não avaliada na rodada):
 
-| Dimensão | r1 | r2 | r3 | Meta |
-| --- | --- | --- | --- | --- |
-| Didatismo | n.av. | 6,8 | 7,0 | 9,5 |
-| Qualidade visual | n.av. | 6,9 | 7,2 | 9,5 |
-| Navegação e usabilidade | 9,1 | 9,2 | 9,2 | 9,0 |
-| Interatividade | 9,5 | 9,4 | 9,9 | 9,0 |
-| Acessibilidade | 7,6 | 7,7 | 9,0 | 9,0 |
-| Completude | 8,4 | 8,5 | 8,6 | 9,0 |
-| Correção técnica e metodológica | 7,8 | 7,8 | 7,9 | 9,0 |
-| Rastreabilidade | 9,0 | 9,0 | 9,3 | 9,0 |
-| Atualidade e confiabilidade operacional | 7,8 | 7,9 | 7,9 | 9,0 |
-| Desempenho e manutenção | 8,7 | 8,7 | 8,7 | 9,0 |
+| Dimensão | r1 | r2 | r3 | r4 | Meta |
+| --- | --- | --- | --- | --- | --- |
+| Didatismo | n.av. | 6,8 | 7,0 | 6,9 | 9,5 |
+| Qualidade visual | n.av. | 6,9 | 7,2 | 7,4 | 9,5 |
+| Navegação e usabilidade | 9,1 | 9,2 | 9,2 | 9,2 | 9,0 |
+| Interatividade | 9,5 | 9,4 | 9,9 | 9,9 | 9,0 |
+| Acessibilidade | 7,6 | 7,7 | 9,0 | 9,0 | 9,0 |
+| Completude | 8,4 | 8,5 | 8,6 | 8,7 | 9,0 |
+| Correção técnica e metodológica | 7,8 | 7,8 | 7,9 | 7,9 | 9,0 |
+| Rastreabilidade | 9,0 | 9,0 | 9,3 | 9,3 | 9,0 |
+| Atualidade e confiabilidade operacional | 7,8 | 7,9 | 7,9 | 7,9 | 9,0 |
+| Desempenho e manutenção | 8,7 | 8,7 | 8,7 | 8,7 | 9,0 |
 
 * **O que evoluiu e o que não evoluiu.** Defeitos abertos de 94 (r2) para 50 (r3): 54 corrigidos entre as rodadas. Rolagem horizontal da página: de 23 páginas para nenhuma (360 e 390 px em Entender, 390 px em Auditar). Alvos de toque abaixo de 24 px: de 67 páginas para nenhuma. Violações axe: nenhuma nas duas rodadas. Acessibilidade subiu de 7,7 para 9,0, que é o teto da rubrica sem leitor de tela real. Didatismo (6,8 para 7,0) e qualidade visual (6,9 para 7,2) mexeram pouco: nenhuma das 94 páginas atinge 9,5 e a pior nota de didatismo subiu de 4,0 para 5,0.
 * **Defeitos altos que sobram (4):** conjunto atrasado da ANEEL, SCS, 367 dias além do prazo (6 páginas); nenhuma ficha de evidência com teste registrado nas páginas do PLD (5); painel numérico sem Comprove este número nas fichas de modelos e na linha do tempo da Regulação (5); uma página sem fonte declarada.
-* **Medidas mudaram entre rodadas.** A comparação de uma dimensão só vale se o instrumento mediu o mesmo. As mudanças do instrumento e da regra estão em `avaliacao/ajustes_do_metodo.json` e na página, e são cinco: o título em forma de pergunta passou a ser medido; link no meio de frase passou pela exceção do WCAG 2.5.8 em mais tipos de bloco; tentativas de clique no botão de copiar link e na ficha de prova; rótulos Fontes e datas de referência reconhecidos; vocabulário de engenharia no texto do leitor registrado como evidência. Parte do ganho de acessibilidade vem do código (caixas e opções de 24 px, termo do glossário de 24 px) e parte da exceção de link em frase; dos 924 alvos pequenos da r2, 793 eram caixas e opções de 13 a 16 px e 119 eram termos do glossário de 23 px, e os dois grupos foram corrigidos no código.
+* **Medidas mudaram entre rodadas.** A comparação de uma dimensão só vale se o instrumento mediu o mesmo. As mudanças do instrumento e da regra estão em `avaliacao/ajustes_do_metodo.json` e na página, e, até a r3, são cinco (a r4 acrescenta três, ver adiante): o título em forma de pergunta passou a ser medido; link no meio de frase passou pela exceção do WCAG 2.5.8 em mais tipos de bloco; tentativas de clique no botão de copiar link e na ficha de prova; rótulos Fontes e datas de referência reconhecidos; vocabulário de engenharia no texto do leitor registrado como evidência. Parte do ganho de acessibilidade vem do código (caixas e opções de 24 px, termo do glossário de 24 px) e parte da exceção de link em frase; dos 924 alvos pequenos da r2, 793 eram caixas e opções de 13 a 16 px e 119 eram termos do glossário de 23 px, e os dois grupos foram corrigidos no código.
 * **Módulos de menor nota ponderada na r3:** Dados (7,7), Carga (7,9), Perdas (8,1), Rede, PLD, Inclusão energética e Regulação (8,2). Maiores: página inicial (9,0), Qualidade (8,7), Território e Mercado (8,6).
+
+#### Rodada 4: o que mudou, o que não mudou e por quê
+
+Evidência: `public/energia/gold/avaliacao.json` (rodada `2026-10-07-r4`), nove revisores em contexto limpo sobre as 94 páginas, inspeção de 07/10/2026.
+
+* **Resultado.** Nota ponderada média 8,3 (r3: 8,2), nenhuma página na meta, 49 defeitos abertos (r3: 50), dez jornadas cumpridas. Didatismo 6,9 (r3: 7,0) e qualidade visual 7,4 (r3: 7,2). Pior nota de didatismo 4,5 (r3: 5,0), nas fichas C2-H e C2-P do PLD e no verbete GSF; 11 das 94 páginas ficaram abaixo de 6,0 e 14 chegaram a 8,0 ou mais, nenhuma acima de 8,5. Menores médias por módulo: Carga e Dados e metodologia (8,0); maiores: página inicial (8,9) e Qualidade (8,8).
+* **A r4 não moveu o didatismo.** A diferença de 0,1 ponto para baixo é menor que a variação esperada entre revisores que são outras instâncias de agente, e não se interpreta como piora. As correções entregues (tabelas longas recolhidas em Entender, botão para mostrar todas as categorias dos rankings, ficha do conjunto de dados em duas camadas, alerta de perda negativa, vocabulário das bases) não atingiram o que os nove revisores mais repetiram.
+* **O que os revisores da r4 mais repetiram** (evidência: campo `defeitos` de `revisao_visual.json`): texto de bastidor da coleta na tela do leitor em Entender (HTTP 403, cf-mitigated, caminhos de arquivo, "achado A05", gold, pipeline, sha256, nomes de campo), em quase todos os grupos de páginas; siglas sem expansão no primeiro uso (SAMP, SIGA, SIGET, CDE, PLD, DEC, FEC, TE, TUSD, HHI e outras); resposta à pergunta do título enterrada depois de contagens ou de blocos técnicos; barra de abas do módulo cortada à esquerda em 390 px (citada por oito dos nove revisores); rótulos de gráfico truncados e gráficos sem título ou unidade; e números que parecem divergir entre páginas (151 contra 126 conjuntos, 14,7% contra 14,75% de perdas, três horários de processamento).
+* **Medição do efeito da captura.** Nas rodadas 1 a 3 a captura entregue aos revisores vinha depois do teste de teclado, que deixava tabelas largas roladas até o fim, e os revisores relatavam números truncados e colunas cobertas que o leitor não vê ao chegar na página. A mesma versão do site foi revisada duas vezes, com a captura antiga e com a captura limpa (`--limpas 1`): didatismo 6,91 contra 6,90 e qualidade visual 7,40 contra 7,44. O efeito do método ficou abaixo de 0,1 ponto; a rodada registra a revisão sobre a captura limpa.
+* **Corrigido depois da medição, sem medir** (`avaliacao/posteriores.json`): citação da ficha do conjunto sem campo vazio e com a data de captura em Brasília, artigo do órgão ("pelo IBGE", "pela ANEEL") e frequência pelas cadências normalizadas, lista de arquivos separada das páginas, esmaecimento da borda da barra de abas, Saúde com "integrações" em vez de "conjuntos integrados" e explicação da diferença para os 126 conjuntos do catálogo, resposta do catálogo sem gold e pipeline.
+* **Limites.** Os revisores são agentes de IA; não há calibração entre rodadas nem teste com pessoas. Em 390 px o pacote entregue traz três trechos por página, e gráficos e mapas nem sempre aparecem neles: os revisores declararam quando não avaliaram um gráfico em celular.
 
 #### Correção de um erro da r2
 
@@ -243,6 +255,8 @@ A r2 foi publicada contando como ausente o título em forma de pergunta em todos
 Nove revisores em contexto limpo (agentes de IA, sem acesso ao código e sem ver as notas anteriores) leram o texto de cada uma das 94 páginas e abriram as capturas em 1440 e 390 px, com o mesmo roteiro da r2. Na r3: didatismo de 5,0 a 8,5 (média 7,0), qualidade visual de 6,0 a 8,5 (média 7,2). As notas e as observações estão em `revisao_visual.json`, com o sha256 de cada captura aberta; os problemas entre páginas ficam na página, sem edição. Isto é revisão por agente: **não é teste com pessoas e não substitui um**. Os revisores da r3 são outras instâncias, e a diferença de rigor entre instâncias não foi calibrada, de modo que décimos entre r2 e r3 não são uma evolução comprovada.
 
 Problemas que mais se repetiram na r3 (por revisor): tabelas com a primeira coluna estreita quebrando palavras no meio (corrigido depois da medição, ver 8.4); jargão de engenharia e siglas sem expansão no Entender; resposta curta que chega tarde e Entender com tabelas e parágrafos longos; gráficos que mostram só uma ponta de rankings longos, o que contradiz a manchete (reajustes: 87 de 102 acima do IPCA, mas as barras visíveis são as 11 menores); verbete GSF vazio e títulos duplicados (DESSEM DESSEM); fichas de conjuntos de dados com descrição em parede de texto e uma tabela de capturas que diz estar vazia enquanto a ficha informa registros integrados; datas de processamento e contagens que divergem entre páginas.
+
+Na r4 o método mudou em três pontos, listados em `avaliacao/ajustes_do_metodo.json`: a captura entregue aos revisores passou a ser feita por modo próprio, sem teste de teclado antes (efeito medido abaixo de 0,1 ponto, ver 8.2); as jornadas J3, J4 e J7 abrem a tabela recolhida de Entender antes de ler ou filtrar, e J9 abre os detalhes técnicos da ficha; o exercício de controles alcança os botões novos. Os revisores da r4 são outras instâncias de agente; as notas médias são comparáveis entre páginas, não entre rodadas além de ordem de grandeza.
 
 ### 8.4 Limitações
 

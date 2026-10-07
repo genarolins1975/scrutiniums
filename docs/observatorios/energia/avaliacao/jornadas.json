@@ -1,6 +1,6 @@
 {
  "base": "http://localhost:3100",
- "gerado_em": "2026-10-07T14:24:10.136Z",
+ "gerado_em": "2026-10-07T16:01:56.320Z",
  "navegador": "Chromium headless (Playwright); roteiro por script, sem pessoas",
  "jornadas": [
   {
@@ -13,7 +13,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 8,
-   "duracao_ms": 6415,
+   "duracao_ms": 6354,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico",
@@ -91,7 +91,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 12,
-   "duracao_ms": 11232,
+   "duracao_ms": 11389,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico",
@@ -168,8 +168,8 @@
    "resultado": "cumprida",
    "passos_ok": 8,
    "passos_total": 8,
-   "cliques": 4,
-   "duracao_ms": 3763,
+   "cliques": 5,
+   "duracao_ms": 4308,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/historico"
@@ -227,8 +227,8 @@
    "resultado": "cumprida",
    "passos_ok": 10,
    "passos_total": 10,
-   "cliques": 11,
-   "duracao_ms": 5500,
+   "cliques": 12,
+   "duracao_ms": 6013,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/historico"
@@ -297,7 +297,7 @@
    "passos_ok": 12,
    "passos_total": 12,
    "cliques": 10,
-   "duracao_ms": 6379,
+   "duracao_ms": 6387,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/agua-e-clima",
@@ -381,7 +381,7 @@
    "passos_ok": 19,
    "passos_total": 19,
    "cliques": 21,
-   "duracao_ms": 24707,
+   "duracao_ms": 24712,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -416,7 +416,7 @@
     {
      "descricao": "Toca em BA na tabela de UFs para comparar e lê a ficha da Bahia",
      "resultado": "ok",
-     "observado": "URL /setor-eletrico/territorio?modo=analisar&sel=uf:BA; alvo 33 por 44 px; a ficha da Bahia ficou a -1766 px do topo da janela logo após o toque (acima da tela); Nordeste; 417 municípios; 22.031,2 MW em 677 usinas; PLD 30/09/2026: R$ 124,93/MWh"
+     "observado": "URL /setor-eletrico/territorio?modo=analisar&sel=uf:BA; alvo 96 por 44 px; a ficha da Bahia ficou a -1766 px do topo da janela logo após o toque (acima da tela); Nordeste; 417 municípios; 22.031,2 MW em 677 usinas; PLD 30/09/2026: R$ 124,93/MWh"
     },
     {
      "descricao": "Compara as duas fichas: municípios, capacidade e submercado de cada UF",
@@ -476,7 +476,7 @@
     {
      "descricao": "Confere o conjunto: alvos tocados com pelo menos 24 px e nenhuma rolagem horizontal nas páginas medidas",
      "resultado": "ok",
-     "observado": "16 alvos tocados, o menor foi BA (botão da tabela de UFs) com 33 por 44 px; páginas medidas territorio e perdas sem rolagem horizontal"
+     "observado": "16 alvos tocados, o menor foi ANALISAR (nível de profundidade) com 110 por 44 px; páginas medidas territorio e perdas sem rolagem horizontal"
     },
     {
      "descricao": "Confere a legibilidade: nenhum bloco de texto espremido (menos de 120 px de largura) nas páginas visitadas",
@@ -495,8 +495,8 @@
    "resultado": "cumprida",
    "passos_ok": 18,
    "passos_total": 18,
-   "cliques": 165,
-   "duracao_ms": 34128,
+   "cliques": 168,
+   "duracao_ms": 35557,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -537,7 +537,7 @@
     {
      "descricao": "Segue com Tab até a tabela equivalente e escolhe BA com Espaço",
      "resultado": "ok",
-     "observado": "24 Tabs do campo de busca até o botão BA (mais 19 até o campo, 43 no total desde o topo); Espaço escolheu: URL /setor-eletrico/territorio?sel=uf:BA, aria-pressed=true"
+     "observado": "25 Tabs do campo de busca até o botão BA (mais 19 até o campo, 44 no total desde o topo); Espaço escolheu: URL /setor-eletrico/territorio?sel=uf:BA, aria-pressed=true"
     },
     {
      "descricao": "Repete a escolha da Bahia com clique e compara URL e ficha com a do teclado",
@@ -552,7 +552,7 @@
     {
      "descricao": "Segue até o filtro de submercado da tabela, abre com Enter, marca uma caixa com Espaço e fecha com Esc",
      "resultado": "ok",
-     "observado": "5 Tabs do campo do mapa até o filtro; Enter abriu, Tab foi à caixa \"Nordeste 8 linhas\", Espaço marcou: URL ganhou ter.uf.f.submercado=Nordeste, contagem \"8 de 27 linhas\", chip \"Remover filtro Submercado (cor no mapa): Nordeste\"; Esc fechou e o foco voltou ao título do filtro; clique deu o mesmo parâmetro e a mesma contagem"
+     "observado": "2 Tabs do campo do mapa até o filtro; Enter abriu, Tab foi à caixa \"Nordeste 8 linhas\", Espaço marcou: URL ganhou ter.uf.f.submercado=Nordeste, contagem \"8 de 27 linhas\", chip \"Remover filtro Submercado (cor no mapa): Nordeste\"; Esc fechou e o foco voltou ao título do filtro; clique deu o mesmo parâmetro e a mesma contagem"
     },
     {
      "descricao": "Abre Perdas e percorre com Tab até o campo de busca do mapa, conferindo foco visível e ordem",
@@ -592,7 +592,7 @@
     {
      "descricao": "Resume a jornada: nenhuma parada sem indicador de foco e nenhuma perda de foco",
      "resultado": "ok",
-     "observado": "131 paradas de foco medidas em 4 páginas; indicadores: contorno 2px 123, sombra 7, anel no gráfico 1; nenhuma sem indicador, nenhuma no corpo da página"
+     "observado": "133 paradas de foco medidas em 4 páginas; indicadores: contorno 2px 125, sombra 7, anel no gráfico 1; nenhuma sem indicador, nenhuma no corpo da página"
     }
    ],
    "limite": "Teclado simulado pelo Playwright no Chromium; não cobre leitor de tela nem outros navegadores. Roteiro por script, sem pessoas."
@@ -607,7 +607,7 @@
    "passos_ok": 11,
    "passos_total": 11,
    "cliques": 37,
-   "duracao_ms": 35603,
+   "duracao_ms": 35268,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/perdas",
@@ -682,8 +682,8 @@
    "resultado": "cumprida",
    "passos_ok": 13,
    "passos_total": 13,
-   "cliques": 25,
-   "duracao_ms": 25690,
+   "cliques": 27,
+   "duracao_ms": 25411,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/dados",
@@ -748,12 +748,12 @@
     {
      "descricao": "Abre a ficha completa do conjunto atrasado pelo link do painel e lê os campos de captura",
      "resultado": "ok",
-     "observado": "/setor-eletrico/dados/aneel-scs; título \"SCS - Sistema de Controle de Subvenções e Programas Sociais\"; última captura \"30/09/2026, 19:30 (Brasília) DATA DE REFERÊNCIA último período disponível 06/2025\"; última tentativa de coleta direta \"não registrada nesta publicação\"; menciona atraso: sim"
+     "observado": "/setor-eletrico/dados/aneel-scs; título \"SCS - Sistema de Controle de Subvenções e Programas Sociais\"; última captura \"30/09/2026, 19:30 (Brasília)\"; última tentativa de coleta direta \"undefined\"; menciona atraso: sim"
     },
     {
      "descricao": "Abre a ficha completa de um conjunto sem dado e confere que a ausência vem escrita, nunca como zero",
      "resultado": "ok",
-     "observado": "/setor-eletrico/dados/ibge-pof-6715; última captura 30/09/2026, ; atualidade \"sem dado para medir\"; campos sem valor: Snapshot \"sem snapshot\"; Última modificação na fonte \"não informada\"; Formatos \"não informado\"; a ficha traz \"campo vazio significa ausência, nunca zero\""
+     "observado": "/setor-eletrico/dados/ibge-pof-6715; última captura 30/09/2026, ; atualidade \"sem dado para medir\"; campos sem valor: Última modificação na fonte \"não informada\"; Formatos \"não informado\"; a ficha traz \"campo vazio significa ausência, nunca zero\""
     },
     {
      "descricao": "Confere se a ficha completa do conjunto atrasado diz que ele está atrasado e concorda com a saúde sobre a última captura",
@@ -773,7 +773,7 @@
    "passos_ok": 14,
    "passos_total": 14,
    "cliques": 12,
-   "duracao_ms": 13494,
+   "duracao_ms": 13612,
    "erros_console": [],
    "paginas_visitadas": [
     "/setor-eletrico/pld/modelos",

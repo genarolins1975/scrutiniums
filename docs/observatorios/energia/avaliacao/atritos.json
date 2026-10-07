@@ -27,7 +27,8 @@
     "atritos": [
       "A linha de destaques mostra ago/2026, enquanto o texto de abertura e a média diária falam de set/2026 e 30/09. A média temporal, base da variação de set contra ago, não tem período escrito nem ficha Comprove, ao contrário das duas ponderadas.",
       "Em set/2026 a tabela diz Mês parcial: não (30 dias), mas as ponderadas usam 672 das 720 horas. O aviso está no texto de abertura, longe dos destaques, e fala de mês em curso.",
-      "A ficha de prova tem dez seções e avisa que o código foi publicado com alterações fora do commit, o que pode impedir a reprodução pelo primeiro passo (git checkout)."
+      "A ficha de prova tem dez seções e avisa que o código foi publicado com alterações fora do commit, o que pode impedir a reprodução pelo primeiro passo (git checkout).",
+      "A tabela mensal do histórico vem recolhida em Entender: o leitor abre o botão Ver a tabela completa antes de conferir os números, um clique a mais que na rodada 3 (5 contra 4)."
     ],
     "defeitos": [
       {
@@ -44,7 +45,8 @@
   "J4": {
     "atritos": [
       "O arquivo exportado difere da tela: mês 2026-08 contra 08/2026, decimal com ponto contra vírgula, separador ponto e vírgula com BOM. Compará-los exige conversão.",
-      "O filtro Mês parcial só tem a opção não, e não filtra nada nesta base."
+      "O filtro Mês parcial só tem a opção não, e não filtra nada nesta base.",
+      "A tabela mensal vem recolhida em Entender; o botão Ver a tabela completa soma um clique à jornada (12 contra 11 na rodada 3). Em Analisar a tabela já abre inteira."
     ],
     "defeitos": [
       {
@@ -86,9 +88,10 @@
   },
   "J7": {
     "atritos": [
-      "Distância em Tabs: 19 até o campo em Minha região (5 com o atalho de pular), 30 em Perdas, mais 24 do campo até a tabela, e 24 até o seletor em Diferenças regionais.",
+      "Distância em Tabs: 19 até o campo em Minha região (5 com o atalho de pular), 30 em Perdas, mais 25 do campo até a tabela (24 na rodada 3: a barra da tabela acrescentou uma parada), e 24 até o seletor em Diferenças regionais.",
       "O mapa não tem elemento focável: a saída por teclado é o campo e a tabela, como o aviso diz. Depois de escolher, o foco fica no campo e a ficha muda sem região de leitura automática (não verificado com leitor de tela).",
-      "Visto na exploração, fora do roteiro: Enter ou Espaço numa célula da matriz de pares não muda nada visível, e nada avisa que a célula não é selecionável."
+      "Visto na exploração, fora do roteiro: Enter ou Espaço numa célula da matriz de pares não muda nada visível, e nada avisa que a célula não é selecionável.",
+      "Em Minha região a tabela equivalente vem recolhida em Entender: o teclado chega ao botão Ver a tabela completa, abre com Enter e só então alcança o filtro de submercado. Escolhida uma região, ou aplicada uma busca ou um filtro, a tabela abre sozinha."
     ],
     "defeitos": []
   },
@@ -113,7 +116,8 @@
   },
   "J9": {
     "atritos": [
-      "Em Restrições de geração, a linha Parecer de acesso mostra dois sem dado ao lado de Total 0,0 e Parcela 0,00, e a página não diz se é zero medido ou soma de ausências. Nas tabelas de saúde e de catálogo o nome do conjunto não tem link para a ficha."
+      "Em Restrições de geração, a linha Parecer de acesso mostra dois sem dado ao lado de Total 0,0 e Parcela 0,00, e a página não diz se é zero medido ou soma de ausências. Nas tabelas de saúde e de catálogo o nome do conjunto não tem link para a ficha.",
+      "A Saúde contava 151 conjuntos integrados e o catálogo, 126 publicados, sem dizer que a Saúde conta integrações e que um conjunto pode ter mais de uma. A frase foi corrigida depois da medição, ainda não medida."
     ],
     "defeitos": [
       {

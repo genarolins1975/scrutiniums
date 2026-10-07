@@ -5,5 +5,10 @@
   "o botão Copiar link e a ficha Comprove têm até três tentativas, porque o primeiro toque pode chegar antes de o componente estar ativo; o resultado registra quando o clique do navegador expirou e só o clique por script funcionou (a página de CEMIG-D, a única em que isso ocorreu, foi medida de novo com o instrumento final e substituiu a medição anterior da rodada)",
   "o rodapé do observatório e a linha de referência dos módulos passam a usar os rótulos Fontes e datas de referência, que o instrumento reconhece como declaração de fonte e de data",
   "vocabulário de engenharia no texto do leitor em Entender passou a ser registrado como evidência de didatismo, sem dedução de nota"
+ ],
+ "2026-10-07-r4": [
+  "as capturas de leitura entregues aos revisores passam a ser feitas por modo próprio do instrumento (--limpas 1): a página carrega, é rolada como um leitor a rolaria, as tabelas voltam ao início e só então vêm a primeira dobra, a página inteira e o texto, sem teste de teclado nem clique antes. Nas rodadas 1 a 3 a captura vinha depois do teste de teclado, que deixava tabelas largas roladas até o fim. A mesma versão do site foi revisada duas vezes pelos nove revisores, com a captura antiga e com a limpa: didatismo 6,91 contra 6,90 e qualidade visual 7,40 contra 7,44, de modo que o efeito da mudança de captura ficou abaixo de 0,1 ponto e a comparação com a rodada 3 não depende dela. A rodada registra a revisão sobre a captura limpa",
+  "as jornadas J3, J4 e J7 abrem a tabela recolhida de Entender pelo botão Ver a tabela completa antes de ler ou filtrar (no teclado, J7 alcança o botão com Tab e o abre com Enter), e J9 abre os detalhes técnicos da ficha do conjunto; o clique entra na contagem de interações",
+  "o exercício de controles, sem mudança de código, passa a alcançar os botões novos de recolher a tabela e de mostrar todas as categorias do gráfico, que não existiam na rodada 3"
  ]
 }
