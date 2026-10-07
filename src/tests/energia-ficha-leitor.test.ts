@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
 import {
   descricaoLegivel,
+  fraseFrequencia,
   instantesLegiveis,
   listaEmPortugues,
   orgaosDasFontes,
   partirLicenca,
+  pelo,
   situacaoDoConjunto,
 } from "@/lib/energia/dados";
 
@@ -26,8 +28,9 @@ describe("descricaoLegivel", () => {
     expect(r).toEqual({ texto: "Séries mensais de consumo por classe.", cortada: true });
   });
 
-  it("corte logo no começo não deixa fragmento: nada é mostrado, o corte é declarado", () => {
-    expect(descricaoLegivel("Dados de geração utilizados na contabilização do MCP - Mercado de Curto Prazo…")).toEqual({ texto: null, cortada: true });
+  it("corte antes de qualquer frase inteira: o começo aparece como está, com as reticências, e o corte é declarado", () => {
+    const t = "Dados de geração utilizados na contabilização do MCP - Mercado de Curto Prazo…";
+    expect(descricaoLegivel(t)).toEqual({ texto: t, cortada: true });
   });
 });
 
@@ -96,5 +99,20 @@ describe("orgaosDasFontes e listaEmPortugues", () => {
     expect(listaEmPortugues(["ANEEL"])).toBe("ANEEL");
     expect(listaEmPortugues(["ANEEL", "CCEE"])).toBe("ANEEL e CCEE");
     expect(listaEmPortugues(["ANEEL", "CCEE", "ONS"])).toBe("ANEEL, CCEE e ONS");
+  });
+});
+
+describe("frequência e artigo do órgão na abertura da ficha", () => {
+  it("a frequência vem das cadências normalizadas, nunca do texto livre da fonte", () => {
+    expect(fraseFrequencia(["diaria"])).toBe("A fonte declara atualização diária.");
+    expect(fraseFrequencia(["mensal", "diaria"])).toBe("A fonte declara atualização mensal e diária.");
+    expect(fraseFrequencia([])).toBeNull();
+    expect(fraseFrequencia(null)).toBeNull();
+    expect(fraseFrequencia(["sem"])).toBeNull();
+  });
+
+  it("pelo ou pela conforme o gênero do órgão", () => {
+    expect(["IBGE", "ONS", "Senado Federal", "MME"].map(pelo)).toEqual(["pelo", "pelo", "pelo", "pelo"]);
+    expect(["ANEEL", "CCEE", "EPE", "CVM", "NASA", "Câmara dos Deputados", "ANA"].map(pelo)).toEqual(Array(7).fill("pela"));
   });
 });

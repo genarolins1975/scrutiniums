@@ -5,7 +5,7 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { gold } from "@/lib/energia/gold";
 import { carimbo, dataBR } from "@/lib/energia/formato";
 import { COLUNAS_ARQUIVO, DATASETS_INTEGRADOS, datasetPorSlug, urlDoConjunto } from "@/lib/energia/datasets";
-import { descricaoLegivel, linhasIntegracao, partirLicenca, refLegivel, situacaoDoConjunto } from "@/lib/energia/dados";
+import { descricaoLegivel, fraseFrequencia, linhasIntegracao, partirLicenca, pelo, refLegivel, situacaoDoConjunto } from "@/lib/energia/dados";
 import { publicacaoDados } from "@/lib/energia/dados-servidor";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 
@@ -53,7 +53,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
   const desc = descricaoLegivel(e.descricao);
   const licencaBruta = e.licenca ?? (cat?.portais[e.orgao] as { licenca?: string | null } | undefined)?.licenca ?? "não informada";
   const licenca = partirLicenca(licencaBruta);
-  const frequencia = integr.map((c) => c.frequencia?.declarada).find((x): x is string => !!x) ?? null;
+  const frequencia = fraseFrequencia(integr.flatMap((c) => c.frequencia?.cadencias ?? []).filter((c, i, a) => a.indexOf(c) === i));
   const capturas = f?.historico?.length ? f.historico : (f?.capturas ?? []).map((x) => ({ ...x, vigente: true }));
   return (
     <>
@@ -65,10 +65,9 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
         </nav>
         <header className="pb-6 pt-4">
           <p className="rotulo text-mineral">{e.orgao} · {e.estado}</p>
-          <h1 className="mt-2 font-serif text-[clamp(1.8rem,4vw,2.6rem)] leading-tight text-carvao [overflow-wrap:anywhere]">{e.titulo}</h1>
+          <h1 className="mt-2 font-serif text-[clamp(1.8rem,4vw,2.6rem)] leading-tight text-carvao [overflow-wrap:break-word]">{e.titulo.split("_").map((parte, i, todas) => (i < todas.length - 1 ? <span key={i}>{parte}_<wbr /></span> : parte))}</h1>
           <p className="mt-3 max-w-prose2 text-base leading-relaxed text-carvao">
-            Conjunto de dados abertos publicado pela {e.orgao}
-            {frequencia ? `, com atualização ${frequencia.toLowerCase()}` : ""}. O observatório o usa em: {d.paginas.map((p) => p.rotulo).join(", ")}.
+            Conjunto de dados abertos publicado {pelo(e.orgao)} {e.orgao}.{frequencia ? ` ${frequencia}` : ""} O observatório o usa em: {d.paginas.map((p) => p.rotulo).join(", ")}.
           </p>
           {desc.texto && <p className="mt-3 max-w-prose2 whitespace-pre-line text-sm leading-relaxed text-carvao-muted">{desc.texto}</p>}
           {desc.cortada && (
@@ -187,7 +186,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
 
         <section className="mt-8 grid grid-cols-[minmax(0,1fr)] gap-6 md:grid-cols-2">
           <div className="min-w-0 border border-linha bg-superficie p-6 [overflow-wrap:anywhere]">
-            <h2 className="font-serif text-xl text-carvao">Downloads e páginas</h2>
+            <h2 className="font-serif text-xl text-carvao">Arquivos para baixar</h2>
             <ul className="mt-3 space-y-1 text-sm">
               {d.downloads.map((u) => (
                 <li key={u}>
@@ -200,8 +199,11 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
                   )}
                 </li>
               ))}
+            </ul>
+            <h3 className="mt-4 text-sm font-medium text-carvao">Páginas do observatório que usam este conjunto</h3>
+            <ul className="mt-1 space-y-1 text-sm">
               {d.paginas.map((p) => (
-                <li key={p.href}><Link href={p.href} className="text-carvao underline underline-offset-4">{p.rotulo}</Link></li>
+                <li key={p.href}><Link href={p.href} className="inline-flex min-h-[44px] items-center text-carvao underline underline-offset-4">{p.rotulo}</Link></li>
               ))}
             </ul>
             <p className="mt-3 text-xs text-mineral">CSV com separador ponto e vírgula e ponto decimal; campo vazio significa ausência, nunca zero.</p>
@@ -210,7 +212,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
             <h2 className="font-serif text-xl text-carvao">Como citar</h2>
             <p className="mt-3 text-sm leading-relaxed text-carvao">
               {e.orgao}. <em>{e.titulo}</em>. Dados abertos, {/^licen/i.test(licenca.curta) ? "" : "licença "}{licenca.curta === "não informada" ? "informada na fonte" : licenca.curta.replace(/\.$/, "")}. Integrado e processado por Scrutiniums,
-              Observatório Brasileiro do Setor Elétrico, captura de {ultimaCaptura ? dataBR(ultimaCaptura.slice(0, 10)) : "data não informada"}, {f?.snapshot ? <>, snapshot {f.snapshot}</> : null}. Disponível em: https://scrutiniums.com/setor-eletrico/dados/{d.slug}. Acesso em: [data do seu acesso].
+              Observatório Brasileiro do Setor Elétrico, captura de {ultimaCaptura ? carimbo(ultimaCaptura).slice(0, 10) : "data não informada"}{f?.snapshot ? <>, snapshot {f.snapshot}</> : null}. Disponível em: https://scrutiniums.com/setor-eletrico/dados/{d.slug}. Acesso em: [data do seu acesso].
             </p>
           </div>
         </section>

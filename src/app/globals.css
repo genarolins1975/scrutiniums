@@ -206,3 +206,11 @@ body {
 .dominio-energia .font-serif { font-variant-numeric: lining-nums; }
 /* hashes, ids e URLs longos nunca empurram a página para o lado no celular */
 .dominio-energia { overflow-wrap: break-word; }
+
+/* Lista de módulos que rola na horizontal: a borda com itens fora da vista esmaece (AtivoVisivel liga --fade-esq e --fade-dir) */
+#modulos-energia {
+  --fade-esq: 0;
+  --fade-dir: 0;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 calc(var(--fade-esq) * 1.25rem), #000 calc(100% - var(--fade-dir) * 1.25rem), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 calc(var(--fade-esq) * 1.25rem), #000 calc(100% - var(--fade-dir) * 1.25rem), transparent 100%);
+}

@@ -916,8 +916,8 @@ export function listaEmPortugues(itens: string[]): string {
 /* ---------------------------------------------------------------- ficha do conjunto, em linguagem de leitor */
 
 /**
- * Descrição da fonte sem o corte do catálogo compacto: a frase interrompida em reticências não é mostrada.
- * Devolve só o que foi escrito por inteiro (até o último ponto final) e diz se houve corte.
+ * Descrição da fonte sem o corte do catálogo compacto: havendo frase inteira antes do corte, a frase interrompida
+ * não é mostrada; sem ela, o começo vem como está, com as reticências. Diz se houve corte.
  */
 export function descricaoLegivel(d: string | null | undefined): { texto: string | null; cortada: boolean } {
   const t = (d ?? "").trim();
@@ -925,7 +925,8 @@ export function descricaoLegivel(d: string | null | undefined): { texto: string 
   if (!t.endsWith("…")) return { texto: t, cortada: false };
   const base = t.slice(0, -1);
   const i = Math.max(base.lastIndexOf(". "), base.lastIndexOf(".\n"), base.endsWith(".") ? base.length - 1 : -1);
-  return i > 20 ? { texto: base.slice(0, i + 1), cortada: true } : { texto: null, cortada: true };
+  // sem uma frase inteira antes do corte, o começo da descrição ainda diz o que o conjunto contém
+  return i > 20 ? { texto: base.slice(0, i + 1), cortada: true } : { texto: t, cortada: true };
 }
 
 /** Licença em duas partes: o que vale para o leitor e a observação de coleta que o catálogo anexa ao texto. */
@@ -937,6 +938,22 @@ export function partirLicenca(l: string): { curta: string; nota: string | null }
     if (i > 0) return { curta: l.slice(0, i), nota: l.slice(i + 2) };
   }
   return { curta: l, nota: null };
+}
+
+/**
+ * Frequência que a fonte declara, escrita a partir das cadências já normalizadas pelo pipeline (e não do
+ * texto livre da fonte, que traz erros de grafia como "Diariamento"). Sem cadência declarada, nada é dito.
+ */
+export function fraseFrequencia(cadencias: readonly string[] | null | undefined): string | null {
+  const r = (cadencias ?? []).filter((c): c is Cadencia => c in ROTULO_CADENCIA && c !== "sem").map((c) => ROTULO_CADENCIA[c].toLowerCase());
+  return r.length ? `A fonte declara atualização ${listaEmPortugues(r)}.` : null;
+}
+
+const ORGAOS_MASCULINOS = new Set(["IBGE", "ONS", "INMET", "CEPEL", "MME", "MCTI", "MDS", "Senado Federal", "Open-Meteo"]);
+
+/** "pelo" ou "pela" antes do nome do órgão ("pelo IBGE", "pela ANEEL"). */
+export function pelo(orgao: string): "pelo" | "pela" {
+  return ORGAOS_MASCULINOS.has(orgao) ? "pelo" : "pela";
 }
 
 /** Instantes ISO em UTC escritos pelo pipeline dentro de frases ficam no horário de Brasília, como o resto da página. */
