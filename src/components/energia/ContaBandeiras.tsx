@@ -19,7 +19,7 @@ export function ContaBandeiras({ acionamento }: { acionamento: Bandeiras["aciona
   const ordem = ["Verde", "Amarela", "Vermelha P1", "Vermelha P2", "Escassez Hídrica"];
   const legenda = [...ordem.filter((b) => presentes.includes(b)), ...presentes.filter((b) => !ordem.includes(b))];
   return (
-    <div>
+    <div className="min-w-0">
       <ul className="mb-3 flex flex-wrap gap-x-4 gap-y-2 text-xs text-carvao-muted" aria-label="Legenda das bandeiras">
         {legenda.map((b) => (
           <li key={b} className="inline-flex items-center gap-1.5">

@@ -169,7 +169,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
           titulo={`${d.sigla}: ${d.nome ?? "razão social sem registro"}`}
           referencia={
             <>
-              Perdas de {p?.ano ?? "sem dado"} (gold de Perdas), continuidade de {q?.ano ?? "sem dado"} (gold de Qualidade), tarifas da gold de Conta de luz; cadeia de controle declarada à ANEEL de{" "}
+              Perdas de {p?.ano ?? "sem dado"} (base publicada de Perdas), continuidade de {q?.ano ?? "sem dado"} (base publicada de Qualidade), tarifas da base publicada de Conta de luz; cadeia de controle declarada à ANEEL de{" "}
               {g.datas.polimero_janela[0] ?? "sem dado"} a {g.datas.polimero_janela.at(-1) ?? "sem dado"}. Processado em {carimbo(g.gerado_em)}.
             </>
           }
@@ -208,9 +208,9 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
               }
               proveniencia={g.proveniencia.distribuidoras}
               complementares={[
-                ...(g.proveniencia.distribuidoras_perdas ? [{ rotulo: "Perdas totais (gold de Perdas)", p: g.proveniencia.distribuidoras_perdas }] : []),
-                ...(g.proveniencia.distribuidoras_qualidade ? [{ rotulo: "DEC e FEC (gold de Qualidade)", p: g.proveniencia.distribuidoras_qualidade }] : []),
-                ...(g.proveniencia.distribuidoras_tarifa ? [{ rotulo: "Tarifa B1 (gold de Conta de luz)", p: g.proveniencia.distribuidoras_tarifa }] : []),
+                ...(g.proveniencia.distribuidoras_perdas ? [{ rotulo: "Perdas totais (base publicada de Perdas)", p: g.proveniencia.distribuidoras_perdas }] : []),
+                ...(g.proveniencia.distribuidoras_qualidade ? [{ rotulo: "DEC e FEC (base publicada de Qualidade)", p: g.proveniencia.distribuidoras_qualidade }] : []),
+                ...(g.proveniencia.distribuidoras_tarifa ? [{ rotulo: "Tarifa B1 (base publicada de Conta de luz)", p: g.proveniencia.distribuidoras_tarifa }] : []),
               ]}
             >
               <div className="space-y-6">
@@ -268,7 +268,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                   </div>
                 </div>
                 <p className="text-xs text-carvao-muted">
-                  DEC, FEC e tarifa são cópias das golds de Qualidade e de Conta de luz, que não publicam ficha de prova por distribuidora; a proveniência de cada um está nos selos abaixo, e o
+                  DEC, FEC e tarifa são cópias das bases publicadas de Qualidade e de Conta de luz, que não publicam ficha de prova por distribuidora; a proveniência de cada um está nos selos abaixo, e o
                   número pode ser conferido na página de origem com a mesma distribuidora escolhida.
                 </p>
 
@@ -352,7 +352,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                 )}
                 {!evol.perdas.length && !evol.qualidade.length && !evol.tarifa.length && (
                   <EmpresasAviso rotulo="Sem evolução própria">
-                    <p>Nenhuma das golds de origem publica série histórica para este CNPJ nesta publicação.</p>
+                    <p>Nenhuma das bases publicadas de origem publica série histórica para este CNPJ nesta publicação.</p>
                   </EmpresasAviso>
                 )}
 
@@ -469,7 +469,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                       linhas={perdasSerie.map((x) => ({ ...x, id: x.ano }))}
                       chaveLinha="id"
                       colunaRotulo="ano"
-                      fonte="ANEEL, SAMP (gold de Perdas)"
+                      fonte="ANEEL, SAMP (base publicada de Perdas)"
                       versao={g.distribuidoras.golds_origem["perdas.json"].gerado_em?.slice(0, 10) ?? ""}
                       nomeArquivo={`empresas-${d.slug}-perdas`}
                       ordemInicial={{ coluna: "ano", direcao: "desc" }}
@@ -482,7 +482,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                       linhas={evol.qualidade.map((x) => ({ ...x, id: x.ano }))}
                       chaveLinha="id"
                       colunaRotulo="ano"
-                      fonte="ANEEL, indicadores de continuidade (gold de Qualidade)"
+                      fonte="ANEEL, indicadores de continuidade (base publicada de Qualidade)"
                       versao={g.distribuidoras.golds_origem["qualidade.json"].gerado_em?.slice(0, 10) ?? ""}
                       nomeArquivo={`empresas-${d.slug}-continuidade`}
                       ordemInicial={{ coluna: "ano", direcao: "desc" }}
@@ -495,7 +495,7 @@ export default function FichaDistribuidora({ params }: { params: { entidade: str
                       linhas={evol.tarifa.map((x) => ({ ...x, id: `${x.inicio}|${x.ato}` }))}
                       chaveLinha="id"
                       colunaRotulo="inicio"
-                      fonte="ANEEL, tarifas de aplicação (gold de Conta de luz)"
+                      fonte="ANEEL, tarifas de aplicação (base publicada de Conta de luz)"
                       versao={g.distribuidoras.golds_origem["conta.json"].gerado_em?.slice(0, 10) ?? ""}
                       nomeArquivo={`empresas-${d.slug}-tarifa-b1`}
                       ordemInicial={{ coluna: "inicio", direcao: "desc" }}

@@ -59,6 +59,7 @@ import {
   respostaCarteira,
 } from "@/lib/energia/expansao";
 import type { ExpansaoGold } from "@/lib/energia/tipos-expansao";
+import { datasLegiveis } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -377,9 +378,9 @@ export default function CarteiraPage() {
 
                 <ExpansaoAuditoria titulo="Regras, conferências e ressalvas" id="auditoria-carteira">
                   <ul className="list-disc space-y-1 pl-5 text-sm text-carvao-muted">
-                    <li>{g.regras.estagio}</li>
-                    <li>{g.regras.encerramentos}</li>
-                    <li>{g.regras.potencia}</li>
+                    <li>{datasLegiveis(g.regras.estagio)}</li>
+                    <li>{datasLegiveis(g.regras.encerramentos)}</li>
+                    <li>{datasLegiveis(g.regras.potencia)}</li>
                   </ul>
                   <ExpansaoTabelaSimples
                     titulo={`Reconciliação do SIGA com o agregado oficial "empreendimentos em operação" (${mesTexto(rec.referencia_tipo)}), por tipo`}

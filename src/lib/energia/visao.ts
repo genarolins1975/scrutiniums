@@ -38,10 +38,18 @@ export const URL_GOLD_VISAO = "/energia/gold/sintese.json";
 export function datasLegiveis(texto: string): string {
   return texto
     .replace(
-      /(^|[^\w@_-])(20\d\d)-(\d\d)-(\d\d)T(\d\d):(\d\d)(?::\d\d(?:\.\d+)?)?(Z?)(?![\w@_-])/g,
+      /(^|[^\w@_-])(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d)(?::\d\d(?:\.\d+)?)?(Z?)(?![\w@_-])/g,
       (_, antes: string, a: string, m: string, d: string, h: string, mi: string, z: string) => `${antes}${d}/${m}/${a} ${h}:${mi}${z ? " UTC" : ""}`,
     )
-    .replace(/(^|[^\w@_-])(20\d\d)-(\d\d)(?:-(\d\d))?(?![\w@_-])/g, (_, antes: string, a: string, m: string, d?: string) => `${antes}${d ? `${d}/${m}/${a}` : mesAno(`${a}-${m}`)}`);
+    .replace(/(^|[^\w@_-])(\d{4})-(\d\d)(?:-(\d\d))?(?![\w@_-])/g, (_, antes: string, a: string, m: string, d?: string) => `${antes}${d ? `${d}/${m}/${a}` : mesAno(`${a}-${m}`)}`);
+}
+
+/**
+ * Identificador de snapshot ("ccee_pld_horario@2026-09-30T02:20:14Z") com a captura escrita como na página:
+ * "ccee_pld_horario (captura de 30/09/2026 02:20 UTC)". Sem "@" e data, devolve o texto como veio.
+ */
+export function snapshotLegivel(id: string): string {
+  return id.replace(/@(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::\d{2}(?:\.\d+)?)?Z?/g, (_, a: string, m: string, d: string, h: string, mi: string) => ` (captura de ${d}/${m}/${a} ${h}:${mi} UTC)`);
 }
 
 /* ---------------------------------------------------------------- painéis */
@@ -213,7 +221,7 @@ export const COLUNAS_VALORES_FRASES: ColunaTabela[] = [
   { id: "numero", rotulo: "Número", tipo: "numero", casas: 4 },
   { id: "texto", rotulo: "Texto ou data", tipo: "texto" },
   { id: "unidade", rotulo: "Unidade", tipo: "texto" },
-  { id: "caminho", rotulo: "Caminho na gold de origem", tipo: "texto" },
+  { id: "caminho", rotulo: "Caminho na base publicada de origem", tipo: "texto" },
 ];
 
 /** Cada valor usado numa frase, com o caminho na gold de origem (reprodução da frase). */

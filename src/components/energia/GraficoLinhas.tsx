@@ -11,6 +11,7 @@ import {
   intervaloDosIndices,
   mesmaEscala,
   periodosProntos,
+  rotulosDoEixoX,
   type FormatoX,
   type IntervaloX,
 } from "@/lib/energia/series-temporais";
@@ -299,6 +300,8 @@ export function GraficoLinhas({
   const nx = Math.min(largura < ESTREITO ? 4 : 7, n);
   const xt = n <= 1 ? [0] : Array.from({ length: nx }, (_, k) => Math.round((k / Math.max(nx - 1, 1)) * (n - 1)));
 
+  const rotulosX = rotulosDoEixoX(xt.map((i) => String(vis[i]?.[chaveX] ?? "")), formatoX);
+
   /* ---------- interação ---------- */
   const podeArrastar = zoom && largura >= ESTREITO && n > 2;
 
@@ -578,16 +581,23 @@ export function GraficoLinhas({
             </text>
           </g>
         ))}
-        {xt.map((i) => (
+        {xt.map((i, k) => (
           <text key={i} x={x(i)} y={h - 8} textAnchor="middle" fontSize="11" fill="var(--cor-mineral)">
-            {fmtX(String(vis[i]?.[chaveX] ?? ""), formatoX)}
+            {rotulosX[k]}
           </text>
         ))}
         {bandaPath && <path d={bandaPath} fill={banda?.cor ?? "color-mix(in srgb, var(--serie-referencia) 22%, transparent)"} stroke="none" />}
         {marcosVisiveis.map(({ m, i, linha }) => (
           <g key={m.x}>
             <line x1={x(i)} x2={x(i)} y1={T} y2={h - B} stroke="var(--cor-mineral)" strokeWidth="1" strokeDasharray="3 3" />
-            <text x={x(i) + 4} y={T + 10 + linha * 13} fontSize="10" fill="var(--cor-mineral)">
+            {/* rótulo que não cabe à direita do marco passa para a esquerda: com 10 px a letra mede cerca de 5,4 px */}
+            <text
+              x={x(i) + (x(i) + 4 + m.rotulo.length * 5.4 > w - 4 ? -4 : 4)}
+              textAnchor={x(i) + 4 + m.rotulo.length * 5.4 > w - 4 ? "end" : "start"}
+              y={T + 10 + linha * 13}
+              fontSize="10"
+              fill="var(--cor-mineral)"
+            >
               {m.rotulo}
             </text>
           </g>

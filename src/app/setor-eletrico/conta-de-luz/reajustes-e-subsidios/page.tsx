@@ -330,7 +330,7 @@ export default function ContaReajustesPage() {
                     universo="Consumidores cativos do SIN; não se aplica a sistemas isolados"
                     unidade="R$/MWh publicado (÷ 1000 = R$/kWh)"
                   />
-                  <div className="grid gap-4 lg:grid-cols-[minmax(0,3fr)_minmax(0,1fr)]">
+                  <div className="grid grid-cols-[minmax(0,1fr)] gap-4 lg:grid-cols-[minmax(0,3fr)_minmax(0,1fr)]">
                     <ContaBandeiras acionamento={band.acionamento} />
                     <div>
                       <Numero

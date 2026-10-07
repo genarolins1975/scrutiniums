@@ -31,6 +31,7 @@ import {
   textoUniverso,
 } from "@/lib/energia/territorio";
 import type { GoldTerritorio } from "@/lib/energia/tipos-territorio";
+import { datasLegiveis } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -219,7 +220,7 @@ export default function TerritorioPage() {
 
                 <TerritorioAnalise titulo="Distribuidoras sem município na relação vigente" id="territorio-sem-area">
                   <p className="max-w-prose2 text-sm text-carvao-muted">
-                    {inteiro(semArea.length)} CNPJs aparecem nas golds de origem, mas nenhum município da relação de {g.referencias.relacao_distribuidoras_ano ?? "sem data"} os
+                    {inteiro(semArea.length)} CNPJs aparecem nas bases publicadas de origem, mas nenhum município da relação de {g.referencias.relacao_distribuidoras_ano ?? "sem data"} os
                     liga a eles: ficam fora do mapa e das fichas, com o motivo de cada indicador.
                   </p>
                   <TerritorioTabela
@@ -295,12 +296,12 @@ export default function TerritorioPage() {
                   <TerritorioTabela
                     titulo={`${inteiro(g.controles.length)} controles (os críticos derrubam a publicação)`}
                     colunas={["Controle", "Resultado", "Crítico", "Detalhe"]}
-                    linhas={g.controles.map((c) => [c.nome, c.resultado, c.critico ? "sim" : "não", c.detalhe])}
+                    linhas={g.controles.map((c) => [c.nome, c.resultado, c.critico ? "sim" : "não", datasLegiveis(c.detalhe)])}
                   />
                   {g.ressalvas.length > 0 && (
                     <ul className="max-w-prose2 list-disc space-y-1 pl-5 text-sm text-carvao-muted">
                       {g.ressalvas.map((x) => (
-                        <li key={x}>{x}</li>
+                        <li key={x}>{datasLegiveis(x)}</li>
                       ))}
                     </ul>
                   )}

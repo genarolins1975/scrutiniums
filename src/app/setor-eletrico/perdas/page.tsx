@@ -63,7 +63,7 @@ export default function PerdasPage() {
   const ev = g.evidencias;
   const nac = linhaNacional(g, ref);
   const acumConc = g.acumulado?.agregados.find((a) => a.universo === "concessionarias") ?? null;
-  const versao = `SAMP até ${mesAno(g.referencia.ultima_competencia)}, gold de ${dataBR(g.gerado_em)}`;
+  const versao = `SAMP até ${mesAno(g.referencia.ultima_competencia)}, publicado em ${dataBR(g.gerado_em)}`;
   const bloqueioGeometria = g.bloqueios.find((b) => b.item.includes("P055")) ?? null;
   const bloqueioRegulatorio = g.bloqueios.find((b) => b.item.includes("P057")) ?? null;
   // o item do bloqueio entra no meio da frase: sem o ID do painel e com inicial minúscula

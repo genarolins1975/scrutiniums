@@ -65,6 +65,7 @@ import {
   type IdTabela,
 } from "@/lib/energia/qualidade";
 import type { QualidadeGold } from "@/lib/energia/tipos-qualidade";
+import { datasLegiveis } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -1024,7 +1025,7 @@ export default function QualidadePage() {
                   <QualidadeTabela tabela="eventos" titulo="Eventos em situação de emergência com maior CHI" linhas={n("eventos")} chaveUrl="tevt" />
                   {evt.datas_invalidas.length > 0 && (
                     <p className="text-sm text-carvao-muted">
-                      Datas mantidas como publicadas, sem duração: {evt.datas_invalidas.map((d) => `${d.sigla ?? "distribuidora não identificada"}, evento ${d.codigo} (${d.motivo})`).join("; ")}.
+                      Datas mantidas como publicadas, sem duração: {evt.datas_invalidas.map((d) => datasLegiveis(`${d.sigla ?? "distribuidora não identificada"}, evento ${d.codigo} (${d.motivo})`)).join("; ")}.
                     </p>
                   )}
                 </Analise>

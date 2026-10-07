@@ -62,6 +62,7 @@ import {
 } from "@/lib/energia/regulacao";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { AtoLimite, GoldRegulacao } from "@/lib/energia/tipos-regulacao";
+import { snapshotLegivel } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -149,8 +150,8 @@ function CartaoAto({ a }: { a: AtoLimite }) {
             <p key={o}>{o}</p>
           ))}
           <p className="flex flex-wrap gap-x-4">
-            {a.url_oficial && <RegulacaoLinkExterno href={a.url_oficial}>Endereço oficial (ANEEL)</RegulacaoLinkExterno>}
-            {a.copia_publica && <RegulacaoLinkExterno href={a.copia_publica}>Cópia pública lida, conferida por sha256</RegulacaoLinkExterno>}
+            {a.url_oficial && <RegulacaoLinkExterno bloco href={a.url_oficial}>Endereço oficial (ANEEL)</RegulacaoLinkExterno>}
+            {a.copia_publica && <RegulacaoLinkExterno bloco href={a.copia_publica}>Cópia pública lida, conferida por sha256</RegulacaoLinkExterno>}
           </p>
           {a.sha256 && <p className="[overflow-wrap:anywhere]">sha256 {a.sha256}</p>}
         </div>
@@ -502,7 +503,7 @@ export default function RegulacaoPage() {
                     ))}
                   </ul>
                   <p className="text-sm text-carvao-muted [overflow-wrap:anywhere]">
-                    Curadoria versionada {g.curadoria.snapshot.id ?? "sem identificador"} (sha256 {g.curadoria.snapshot.sha256 ?? "não informado"}):{" "}
+                    Curadoria versionada {g.curadoria.snapshot.id ? snapshotLegivel(g.curadoria.snapshot.id) : "sem identificador"} (sha256 {g.curadoria.snapshot.sha256 ?? "não informado"}):{" "}
                     {g.curadoria.arquivos.map((a) => `${a.arquivo} (sha256 ${a.sha256.slice(0, 12)}…, registrado em ${carimbo(a.registrado_em)})`).join("; ")}.
                   </p>
                   <ul className="list-disc space-y-1 pl-5 text-sm text-carvao-muted">

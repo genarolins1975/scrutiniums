@@ -245,15 +245,15 @@ export default {
       const texto = normaliza(await p.locator("main").innerText());
       const cab = texto.match(/Data de referência da publicação: (\d\d\/\d\d\/\d{4})\. Gold processada em ([^()]+) \(Brasília\)\. Última captura registrada: ([^()]+) \(Brasília\)/);
       j.afirmar(cab, "não achei a linha de datas do cabeçalho");
-      const rodape = normaliza(await p.getByText(/Dados processados em/).first().innerText()).match(/Dados processados em ([^()]+) \(Brasília\)/);
-      j.afirmar(rodape, "não achei a data de processamento do rodapé");
+      const rodape = normaliza(await p.getByText(/Catálogo e manifesto publicados em/).first().innerText()).match(/Catálogo e manifesto publicados em ([^()]+) \(Brasília\)/);
+      j.afirmar(rodape, "não achei a data de publicação do rodapé");
       const [, ref, gold, ultima] = cab;
       const capturaLinha = guardado.atrasado.captura;
       j.afirmar(minutos(capturaLinha) <= minutos(ultima), `a captura da linha (${capturaLinha}) é posterior à última captura registrada (${ultima})`);
       j.afirmar(minutos(ultima) <= minutos(gold), `a última captura (${ultima}) é posterior ao processamento da gold (${gold})`);
+      j.afirmar(minutos(rodape[1]) === minutos(gold), `o rodapé diz "${rodape[1]}" e o cabeçalho diz "${gold}": as duas datas deviam ser a mesma publicação`);
       const defasagem = dias(ref) - dias("01/" + guardado.atrasado.periodo.replace(/^(\d\d)\/(\d{4})$/, "$1/$2"));
-      const rodapeAntes = minutos(rodape[1]) < minutos(ultima);
-      return `referência ${ref}; gold processada ${gold}; última captura registrada ${ultima}; captura do conjunto atrasado ${capturaLinha} (antes da gold, na ordem esperada); o último período dele é ${guardado.atrasado.periodo}, ${defasagem} dias antes da referência (contados do dia 1º do mês); o rodapé da mesma página diz "Dados processados em ${rodape[1]}", ${rodapeAntes ? "anterior à última captura registrada no cabeçalho" : "posterior à última captura"}`;
+      return `referência ${ref}; gold processada ${gold}; última captura registrada ${ultima}; captura do conjunto atrasado ${capturaLinha} (antes da gold, na ordem esperada); o último período dele é ${guardado.atrasado.periodo}, ${defasagem} dias antes da referência (contados do dia 1º do mês); o rodapé da mesma página diz "Catálogo e manifesto publicados em ${rodape[1]}", a mesma data do cabeçalho`;
     });
 
     // ---------- Ausência em tabelas de módulos ----------
@@ -374,7 +374,7 @@ export default {
         j.afirmar(m, `campo ${nome} não achado`);
         lidos[nome] = m[1].trim();
         j.afirmar(!/^0([.,]0+)?$/.test(lidos[nome]), `o campo ${nome} mostra ${lidos[nome]}, um zero no lugar de ausência`);
-        j.afirmar(/^(–|sem captura|não informad[oa]|não declarad[oa])$/i.test(lidos[nome]), `o campo ${nome} mostra "${lidos[nome]}", não uma marca explícita de ausência`);
+        j.afirmar(/^(–|sem captura|sem snapshot|não informad[oa]|não declarad[oa])$/i.test(lidos[nome]), `o campo ${nome} mostra "${lidos[nome]}", não uma marca explícita de ausência`);
       }
       j.afirmar(/campo vazio significa ausência, nunca zero/.test(t), "a ficha não traz a regra do campo vazio");
       return `${j.url()}; última captura ${cap[1].slice(0, 12)}; atualidade "sem dado para medir"; campos sem valor: ${Object.entries(lidos).map(([k, v]) => `${k} "${v}"`).join("; ")}; a ficha traz "campo vazio significa ausência, nunca zero"`;

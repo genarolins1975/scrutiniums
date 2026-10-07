@@ -37,6 +37,21 @@ export function formatarX(v: string, f: FormatoX | undefined, longo = false): st
   return v;
 }
 
+/**
+ * Rótulos do eixo X de uma lista de valores. No formato "data", o rótulo curto é mês/ano, que se
+ * repete quando o intervalo exibido cabe em poucas semanas ("set/26" seis vezes). Nesse caso o eixo
+ * passa para dia/mês e, se ainda repetir (anos diferentes), para dia/mês/ano.
+ */
+export function rotulosDoEixoX(valores: readonly string[], f: FormatoX | undefined): string[] {
+  const curto = valores.map((v) => formatarX(v, f));
+  if (f !== "data") return curto;
+  const unico = (l: string[]) => new Set(l).size === l.length;
+  if (unico(curto)) return curto;
+  const diaMes = valores.map((v) => (v ? `${v.slice(8, 10)}/${v.slice(5, 7)}` : ""));
+  if (unico(diaMes)) return diaMes;
+  return valores.map((v) => formatarX(v, f, true));
+}
+
 /* ---------- intervalo (zoom) ---------- */
 
 /** Intervalo fechado de valores de X (inclusive nas duas pontas). */

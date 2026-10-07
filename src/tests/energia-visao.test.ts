@@ -15,6 +15,7 @@ import {
   casasUnidade,
   colunasMultiplos,
   datasLegiveis,
+  snapshotLegivel,
   comUnidade,
   contagemEstados,
   dadosDeterminante,
@@ -263,6 +264,12 @@ describe("leitura sob demanda da gold e datas legíveis", () => {
     expect(datasLegiveis("das 2026-09-30T02:20 às 2026-10-01T06:40:15")).toBe("das 30/09/2026 02:20 às 01/10/2026 06:40");
     expect(datasLegiveis("arquivo ear_2026-09-30.csv")).toBe("arquivo ear_2026-09-30.csv");
     expect(datasLegiveis("sem data aqui")).toBe("sem data aqui");
+  });
+  it("data fora do século corrente e id de snapshot legível", () => {
+    expect(datasLegiveis("o SIGA marca usina sem data com 1900-01-03 e fim (3036-03-13)")).toBe("o SIGA marca usina sem data com 03/01/1900 e fim (13/03/3036)");
+    expect(snapshotLegivel("ccee_pld_horario@2026-09-30T02:20:14Z")).toBe("ccee_pld_horario (captura de 30/09/2026 02:20 UTC)");
+    expect(snapshotLegivel("corte@2026-09-30T10:00:00Z:b673ea95d1c4")).toBe("corte (captura de 30/09/2026 10:00 UTC):b673ea95d1c4");
+    expect(snapshotLegivel("sem_data")).toBe("sem_data");
   });
 });
 

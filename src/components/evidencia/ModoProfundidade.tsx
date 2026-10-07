@@ -133,7 +133,7 @@ export function ModoProfundidade({ children }: { children: ReactNode }) {
   const ativoIdx = Math.max(0, MODOS.findIndex((m) => m.id === modo));
   return (
     <div data-modo={modo} className="modo-profundidade">
-      <div className="sticky top-0 z-30 -mx-6 border-b border-linha bg-papel/95 px-6 py-2 backdrop-blur supports-[backdrop-filter]:bg-papel/80 sm:py-3">
+      <div className="sticky top-0 z-30 border-b border-linha bg-papel/95 py-2 backdrop-blur supports-[backdrop-filter]:bg-papel/80 sm:py-3">
         <div role="radiogroup" aria-label="Nível de profundidade" className="flex items-center gap-1.5 sm:gap-2">
           <span className="rotulo mr-2 hidden text-mineral sm:inline">Profundidade</span>
           {MODOS.map((m, i) => {

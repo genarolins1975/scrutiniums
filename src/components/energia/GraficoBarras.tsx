@@ -296,7 +296,10 @@ export function GraficoBarras({
   }
 
   const cursorEfetivo = Math.min(cursor, n - 1);
-  const passoRotulo = vertical ? Math.max(1, Math.ceil(36 / ((plot.x1 - plot.x0) / n))) : 1;
+  // largura do maior rótulo curto (até 9 caracteres: "set/26", "2026-S1"): o passo é o menor que o mostra inteiro;
+  // rótulos mais longos seguem encurtados com reticências, mas com mais espaço por rótulo
+  const larguraRotulo = vertical ? Math.min(Math.max(0, ...nomes.map((t) => t.length)), 9) * PX_CARACTERE + 4 : 0;
+  const passoRotulo = vertical ? Math.max(1, Math.ceil(Math.max(36, larguraRotulo) / ((plot.x1 - plot.x0) / n))) : 1;
 
   // ---------- desenho das categorias ----------
   const categorias = dados.map((_, i) => {
@@ -673,6 +676,11 @@ export function GraficoBarras({
               {dica}
             </div>
           </div>
+          {h > alturaMaxima && (
+            <p className="mt-1 text-xs text-mineral" data-aviso-rolagem="true">
+              Mostrando as primeiras {Math.floor(alturaMaxima / (h / n))} de {n.toLocaleString("pt-BR")} categorias: role dentro do gráfico para ver as demais, ou abra os dados em tabela.
+            </p>
+          )}
         </>
       )}
       {/* leitura para leitor de tela do que o ponteiro ou o toque ativou e da seleção; o foco já lê o rótulo da barra */}

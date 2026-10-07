@@ -9,7 +9,7 @@ import { ModoProfundidade } from "@/components/evidencia/ModoProfundidade";
 import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { NOME_REGIAO, REGIOES, ROTULO_GRUPO, perguntaPainel, rotaPainel } from "@/lib/energia/carga";
-import { carimbo, dataBR, mesAno, num } from "@/lib/energia/formato";
+import { carimbo, dataBR, mesAno, num, normaLegivel } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import type { ColunaTabela } from "@/lib/energia/tabela";
 import type { CargaDetalheGold } from "@/lib/energia/tipos-carga";
@@ -256,7 +256,7 @@ export default function ClimaCalendarioPage() {
                     colunas={COLUNAS_LEIS}
                     linhas={g.calendario.leis.map((l) => ({
                       id: l.id,
-                      norma: l.norma,
+                      norma: normaLegivel(l.norma),
                       estabelece: l.estabelece,
                       ementa: l.conferida_ementa ? "sim" : "não",
                       texto: l.conferida_texto ? "sim" : "não",

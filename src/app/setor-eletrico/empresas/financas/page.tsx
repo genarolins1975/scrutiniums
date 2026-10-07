@@ -39,6 +39,7 @@ import { evidenciasReceita, seriesFinanceirasDe } from "@/lib/energia/empresas-a
 import { carimbo } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
+import { datasLegiveis } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -194,7 +195,7 @@ export default function PaginaP038() {
                   />
                   <p className="text-sm text-carvao-muted">
                     {f.exclusoes.regra_nao_preenchida} Total: {inteiro(f.exclusoes.colunas_nao_preenchidas.colunas)} colunas e {inteiro(f.exclusoes.colunas_nao_preenchidas.valores)} valores.
-                    {f.exclusoes.colunas_nao_preenchidas.exercicio_ou_trimestre.length ? ` No período corrente: ${f.exclusoes.colunas_nao_preenchidas.exercicio_ou_trimestre.join("; ")}.` : ""}
+                    {f.exclusoes.colunas_nao_preenchidas.exercicio_ou_trimestre.length ? ` No período corrente: ${datasLegiveis(f.exclusoes.colunas_nao_preenchidas.exercicio_ou_trimestre.join("; "))}.` : ""}
                   </p>
                   <p className="text-sm text-carvao-muted">
                     {f.exclusoes.escala.regra} {inteiro(f.exclusoes.escala.documentos_corrigidos)} documentos de {inteiro(f.exclusoes.escala.companhias)} companhias, {inteiro(f.exclusoes.escala.valores_corrigidos)}{" "}

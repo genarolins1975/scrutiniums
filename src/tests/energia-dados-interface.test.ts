@@ -7,6 +7,8 @@ import { renderToStaticMarkup } from "react-dom/server";
 import DadosPage from "@/app/setor-eletrico/dados/page";
 import SaudePage from "@/app/setor-eletrico/dados/saude/page";
 import ReproducaoPage from "@/app/setor-eletrico/dados/reproducao/page";
+import { RodapeEnergia } from "@/components/energia/RodapeEnergia";
+import { listaEmPortugues, orgaosDasFontes } from "@/lib/energia/dados";
 import MetodologiaPage from "@/app/setor-eletrico/metodologia/page";
 import { NAO_SE_APLICA } from "@/lib/energia/escalas";
 import { catalogoDados, commitDoBuild, urlVersaoGithub } from "@/lib/energia/datasets";
@@ -471,5 +473,30 @@ describe("páginas P067 a P070", () => {
 describe("integração com o commit do build", () => {
   it("sem variável de ambiente, o build não conhece o commit e a página aponta o histórico do arquivo", () => {
     expect(commitDoBuild({})).toBeNull();
+  });
+});
+
+describe("fontes citadas no rodapé do observatório", () => {
+  it("os órgãos vêm das integrações publicadas, do que tem mais conjuntos para o que tem menos", () => {
+    const pub = { conjuntos: [{ orgao: "ONS" }, { orgao: "ANEEL" }, { orgao: "ANEEL" }, { orgao: "CCEE" }, { orgao: "ONS" }, { orgao: "ANEEL" }] } as Parameters<typeof orgaosDasFontes>[0];
+    expect(orgaosDasFontes(pub)).toEqual([
+      { orgao: "ANEEL", conjuntos: 3 },
+      { orgao: "ONS", conjuntos: 2 },
+      { orgao: "CCEE", conjuntos: 1 },
+    ]);
+    expect(orgaosDasFontes(null)).toEqual([]);
+  });
+  it("lista em português", () => {
+    expect(listaEmPortugues([])).toBe("");
+    expect(listaEmPortugues(["ONS"])).toBe("ONS");
+    expect(listaEmPortugues(["ONS", "CCEE"])).toBe("ONS e CCEE");
+    expect(listaEmPortugues(["ONS", "CCEE", "ANEEL"])).toBe("ONS, CCEE e ANEEL");
+  });
+  it("o rodapé cita todos os órgãos da publicação e a data da publicação, não a do meta.json antigo", () => {
+    const html = renderToStaticMarkup(createElement(RodapeEnergia));
+    const pub = JSON.parse(readFileSync(join(process.cwd(), "public/energia/gold/publicacao.json"), "utf-8")) as { conjuntos: { orgao: string }[]; gerado_em: string };
+    Array.from(new Set(pub.conjuntos.map((c) => c.orgao))).forEach((o) => expect(html, o).toContain(o));
+    expect(html).toContain("Catálogo e manifesto publicados em");
+    expect(html).not.toContain("Dados processados em");
   });
 });

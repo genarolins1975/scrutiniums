@@ -14,7 +14,7 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { LINKEDIN_URL } from "@/lib/contato";
 import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
 import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
-import { dataBR } from "@/lib/energia/formato";
+import { dataBR, carimbo } from "@/lib/energia/formato";
 import { integra, lerGold } from "@/lib/energia/gold";
 import { indiceBusca, linhasAtualidade, opcoesDistribuidora, periodoLegivel, type PublicacaoAtualidade } from "@/lib/energia/home";
 import {
@@ -35,6 +35,8 @@ import { DESTINOS_NAVEGACAO, GRUPOS_NAVEGACAO, destino, type DestinoNavegacao } 
 import type { EmpresasGold } from "@/lib/energia/tipos-empresas";
 import type { PerdasGold } from "@/lib/energia/tipos-perdas";
 import type { Natureza } from "@/lib/energia/tipos";
+import { listaEmPortugues, orgaosDasFontes } from "@/lib/energia/dados";
+import { publicacaoDados } from "@/lib/energia/dados-servidor";
 
 export const dynamic = "force-static";
 
@@ -256,6 +258,7 @@ export default function MapaDoObservatorio() {
   const fichas = new Set(DATASETS_INTEGRADOS.map((d) => d.slug));
   const atualidade = linhasAtualidade(pub && pub.disponivel !== false ? pub : null, fichas);
   const hojePub = pub?.referencia?.hoje ?? null;
+  const pubFontes = publicacaoDados();
 
   // exemplo real da seção F: um número publicado, com as suas datas e a ficha de prova
   const ev = integra(perdas) ? perdas.evidencias.taxa_nacional : null;
@@ -278,6 +281,12 @@ export default function MapaDoObservatorio() {
             O observatório liga a operação do sistema elétrico, os preços, as empresas e o que chega à vida das pessoas, com dados públicos que você pode conferir número a
             número: de que fonte vem, a que período se refere e como foi calculado.
           </p>
+          {pubFontes && (
+            <p className="mt-3 max-w-prose2 text-xs leading-relaxed text-mineral">
+              <span className="font-medium text-carvao-muted">Fontes e datas de referência: </span>
+              {listaEmPortugues(orgaosDasFontes(pubFontes).map((o) => o.orgao))}; catálogo publicado em {carimbo(pubFontes.gerado_em)}. Cada painel mostra a data de referência dos próprios dados.
+            </p>
+          )}
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
             <a href="#perguntas" className="rotulo inline-flex min-h-[44px] items-center bg-carvao px-6 text-marfim hover:bg-carvao-soft">
               Explorar por pergunta <span aria-hidden="true" className="ml-2">↓</span>
@@ -513,7 +522,7 @@ export default function MapaDoObservatorio() {
                   </div>
                 </>
               ) : (
-                <p className="text-mineral">Exemplo indisponível nesta publicação: a gold de Perdas não foi processada.</p>
+                <p className="text-mineral">Exemplo indisponível nesta publicação: a base publicada de Perdas não foi processada.</p>
               )}
             </Cartao>
 

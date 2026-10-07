@@ -7,7 +7,12 @@ export function CabecalhoModulo({ rotulo, titulo, children, referencia }: { rotu
       <p className="rotulo text-mineral">{rotulo}</p>
       <h1 className="mt-3 max-w-4xl font-serif text-[clamp(2rem,4.4vw,3rem)] leading-[1.1] text-carvao">{titulo}</h1>
       {children && <div className="mt-4 max-w-prose2 leading-relaxed text-carvao-muted md:text-lg">{children}</div>}
-      {referencia && <p className="mt-4 text-xs text-mineral">{referencia}</p>}
+      {referencia && (
+        <p className="mt-4 text-xs text-mineral">
+          <span className="font-medium text-carvao-muted">Fontes e datas de referência: </span>
+          {referencia}
+        </p>
+      )}
     </header>
   );
 }

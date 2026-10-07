@@ -629,7 +629,7 @@ describe("páginas renderizadas no servidor", () => {
     expect(html.p038).toContain("Bloqueio documentado");
     expect(html.p038).toContain("Decisão de método");
     expect(html.p038).toContain("Valores do gráfico (tabela equivalente)");
-    expect(html.p039).toContain("Árvore societária declarada à ANEEL");
+    expect(html.p039).toContain("árvore societária declarada à ANEEL");
     expect(html.p039).toContain("Fronteira explícita");
     expect(html.p039).toContain("Guia do CADE");
   });

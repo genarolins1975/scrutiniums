@@ -38,7 +38,7 @@ export default function PerdasRegulatorioPage() {
 
   const rotulos = Object.fromEntries(g.distribuidoras.map((d) => [d.cnpj, rotuloDistribuidora(d)]));
   const ids = g.distribuidoras.map((d) => d.cnpj);
-  const versao = `SAMP até ${mesAno(g.referencia.ultima_competencia)}, gold de ${dataBR(g.gerado_em)}`;
+  const versao = `SAMP até ${mesAno(g.referencia.ultima_competencia)}, publicado em ${dataBR(g.gerado_em)}`;
   const regulatorio = linhasRegulatorio(g.distribuidoras);
   const bloqueioRegulatorio = g.bloqueios.find((b) => b.item.includes("P057")) ?? null;
   const segmentos = segmentosPorDistribuidora(g.distribuidoras);

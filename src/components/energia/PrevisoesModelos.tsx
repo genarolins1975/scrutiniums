@@ -80,7 +80,7 @@ export function PrevisoesModelos({
     <div className="space-y-8">
       <section aria-labelledby="fichas-comparar-titulo" className="space-y-3">
         <h3 id="fichas-comparar-titulo" className="font-serif text-lg text-carvao">
-          Fichas lado a lado
+          Como as fichas dos modelos se comparam lado a lado?
         </h3>
         <Comparador
           rotulo="Modelos para comparar (até 4)"

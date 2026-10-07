@@ -153,7 +153,7 @@ export function VisaoObservar({
                               if (r) return <VisaoRegraDetalhe o={r} />;
                               return (
                                 <p role="status" aria-live="polite" className={`text-sm ${erroGold ? "text-aviso" : "text-carvao-muted"}`}>
-                                  {erroGold ? `O detalhe da regra não pôde ser lido da gold publicada: ${erroGold}` : gold ? "Regra ausente da gold publicada." : "Lendo o detalhe da regra na gold publicada…"}
+                                  {erroGold ? `O detalhe da regra não pôde ser lido da base publicada: ${erroGold}` : gold ? "Regra ausente da base publicada." : "Lendo o detalhe da regra na base publicada…"}
                                 </p>
                               );
                             })()

@@ -256,7 +256,7 @@ export function ContaSimulador({ simulador: s, evidencia, dataReferencia }: Cont
         </p>
       )}
 
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-5 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
         <div role="group" aria-label="Resultado da simulação" className="border border-linha bg-papel p-5">
           <p className="rotulo text-mineral">Estimativa mensal, {sigla}</p>
           {r.disponivel ? (

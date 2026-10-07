@@ -242,7 +242,7 @@ export function PerdasExplorador({ distribuidoras, periodos, anoRef, nacional, a
       {/* distribuidora escolhida: nome, resposta, prova e histórico */}
       <section aria-labelledby="perdas-selecao-titulo" className="border border-linha bg-papel px-4 py-4 md:px-6" data-selecao={sel?.cnpj ?? ""}>
         <h3 id="perdas-selecao-titulo" className="rotulo text-mineral">
-          Distribuidora escolhida
+          Qual é a situação da distribuidora escolhida?
         </h3>
         {!sel ? (
           <p className="mt-2 text-sm text-carvao-muted">Nenhuma. Escolha uma área no mapa, uma linha da tabela ou busque pelo nome; a escolha vai para o endereço da página e segue para os outros painéis de perdas.</p>

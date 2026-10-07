@@ -180,7 +180,7 @@ export function DialogoEvidencia({
               <ConteudoEvidencia evidencia={ev} acesso={acesso} endereco={endereco} />
             ) : (
               <p role="status" aria-live="polite" className={`py-6 text-sm ${erro ? "text-aviso" : "text-carvao-muted"}`}>
-                {erro ? `A ficha de prova não pôde ser lida: ${erro}` : "Lendo a ficha de prova na gold publicada…"}
+                {erro ? `A ficha de prova não pôde ser lida: ${erro}` : "Lendo a ficha de prova na base publicada…"}
               </p>
             ))}
         </div>

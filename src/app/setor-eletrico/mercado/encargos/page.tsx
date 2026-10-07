@@ -61,7 +61,7 @@ export default function MercadoEncargosPage() {
   const prov = provenienciasLegiveis(g);
   const e = g.encargos;
   const k = e.kpis;
-  const versao = `CCEE até ${g.referencias.ccee_ultimo_mes_consumo ? mesAno(g.referencias.ccee_ultimo_mes_consumo) : "sem mês"}, gold de ${dataBR(g.gerado_em)}`;
+  const versao = `CCEE até ${g.referencias.ccee_ultimo_mes_consumo ? mesAno(g.referencias.ccee_ultimo_mes_consumo) : "sem mês"}, publicado em ${dataBR(g.gerado_em)}`;
   const lacunas = lacunasLiquidacao(g);
   const zeros = e.controles_pagamento.series.pagamento_ess ?? [];
   const resumoMme = e.mme.reconciliacao_ccee_resumo;
@@ -130,7 +130,7 @@ export default function MercadoEncargosPage() {
                   </>
                 }
               >
-                {p?.resposta ?? "Sem resposta nesta atualização: os encargos não puderam ser somados com a gold publicada."}
+                {p?.resposta ?? "Sem resposta nesta atualização: os encargos não puderam ser somados com a base publicada."}
               </MercadoResposta>
               <div className="mb-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
                 <Numero

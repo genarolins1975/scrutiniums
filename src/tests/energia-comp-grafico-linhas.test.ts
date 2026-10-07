@@ -10,6 +10,7 @@ import {
   intervaloDosIndices,
   mesmaEscala,
   periodosProntos,
+  rotulosDoEixoX,
 } from "@/lib/energia/series-temporais";
 import { somarDias, somarMeses } from "@/lib/energia/calendario";
 
@@ -282,5 +283,22 @@ describe("cursor sincronizado", () => {
 
   it("sem provedor, nenhum cursor externo", () => {
     expect(html(base)).not.toContain("data-cursor");
+  });
+});
+
+
+describe("rótulos do eixo X", () => {
+  it("em poucas semanas, o formato data passa para dia e mês em vez de repetir o mês", () => {
+    const dias = ["2026-09-01", "2026-09-08", "2026-09-15", "2026-09-22", "2026-09-30"];
+    expect(rotulosDoEixoX(dias, "data")).toEqual(["01/09", "08/09", "15/09", "22/09", "30/09"]);
+  });
+  it("em meses diferentes, mantém mês e ano; em anos diferentes com o mesmo dia e mês, escreve o ano", () => {
+    expect(rotulosDoEixoX(["2026-01-15", "2026-04-15", "2026-09-15"], "data")).toEqual(["jan/26", "abr/26", "set/26"]);
+    expect(rotulosDoEixoX(["2025-09-30", "2026-09-30"], "data")).toEqual(["set/25", "set/26"]);
+    expect(rotulosDoEixoX(["2025-09-01", "2025-09-20", "2026-09-01", "2026-09-20"], "data")).toEqual(["01/09/2025", "20/09/2025", "01/09/2026", "20/09/2026"]);
+  });
+  it("outros formatos seguem como estavam", () => {
+    expect(rotulosDoEixoX(["2026-08", "2026-09"], "mes")).toEqual(["ago/26", "set/26"]);
+    expect(rotulosDoEixoX(["x", "y"], undefined)).toEqual(["x", "y"]);
   });
 });

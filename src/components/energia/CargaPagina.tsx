@@ -6,6 +6,7 @@ import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { PAINEIS_CARGA, ROTA_CARGA, rotaPainel, type PainelCarga } from "@/lib/energia/carga";
 import { carimbo } from "@/lib/energia/formato";
 import type { FonteCarga } from "@/lib/energia/tipos-carga";
+import { datasLegiveis } from "@/lib/energia/visao";
 
 /**
  * Peças de servidor das páginas da Carga (um painel por página: /setor-eletrico/carga
@@ -158,7 +159,7 @@ export function CargaFontes({ fontes }: { fontes: FonteCarga[] }) {
           </span>
           : {f.recurso}. Grão: {f.grao}
           {f.unidade ? `; unidade: ${f.unidade}` : ""}
-          {f.periodo ? `; período: ${f.periodo.inicio ?? "sem início"} a ${f.periodo.fim ?? "sem fim"}` : ""}
+          {f.periodo ? `; período: ${datasLegiveis(f.periodo.inicio ?? "sem início")} a ${datasLegiveis(f.periodo.fim ?? "sem fim")}` : ""}
           {f.ultima_captura ? `; última captura: ${carimbo(f.ultima_captura)}` : ""}. Licença: {f.licenca}.{" "}
           <a href={f.url} className="text-energia-dark underline underline-offset-4" rel="noopener noreferrer">
             Endereço da fonte

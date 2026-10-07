@@ -72,10 +72,10 @@ export function MercadoTabelasSobDemanda({ conjunto, versao, downloads }: { conj
         <div className="space-y-2 text-sm text-carvao-muted" role="status" aria-live="polite">
           <p>
             {erro
-              ? `As tabelas não puderam ser lidas da gold publicada: ${erro}`
+              ? `As tabelas não puderam ser lidas da base publicada: ${erro}`
               : pedido
-                ? "Lendo as tabelas na gold publicada…"
-                : "As tabelas desta seção são lidas da gold publicada quando a seção aparece na tela."}
+                ? "Lendo as tabelas na base publicada…"
+                : "As tabelas desta seção são lidas da base publicada quando a seção aparece na tela."}
           </p>
           {!pedido && (
             <button type="button" onClick={() => setPedido(true)} className="rotulo inline-flex min-h-[44px] items-center border border-linha px-3 text-carvao hover:border-energia">

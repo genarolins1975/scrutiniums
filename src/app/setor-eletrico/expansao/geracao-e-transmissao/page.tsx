@@ -63,6 +63,7 @@ import {
   respostaTransmissao,
 } from "@/lib/energia/expansao";
 import type { ExpansaoGold } from "@/lib/energia/tipos-expansao";
+import { datasLegiveis } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -385,7 +386,7 @@ export default function GeracaoTransmissaoPage() {
                         nota={`${ca.regra} ${ca.nota_zero}`}
                       />
                       <TabelaInterativa
-                        titulo={`Contratos assinados depois do último leilão do arquivo aberto (${ca.depois_do_ultimo_leilao_do_arquivo.ultimo_leilao ?? "sem dado"})`}
+                        titulo={`Contratos assinados depois do último leilão do arquivo aberto (${datasLegiveis(ca.depois_do_ultimo_leilao_do_arquivo.ultimo_leilao ?? "sem dado")})`}
                         colunas={COLUNAS_CONTRATOS_RECENTES}
                         linhas={linhasContratosRecentes(g)}
                         chaveLinha="id"

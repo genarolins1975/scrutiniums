@@ -71,7 +71,7 @@ function medirPagina() {
       const t = s.innerText || "";
       return {
         id: s.id,
-        titulo: (s.querySelector("h2,h3")?.textContent || "").trim().slice(0, 140),
+        titulo: ((s.querySelector("h2,h3,h4") || {}).innerText || "").replace(/\s+/g, " ").trim().slice(0, 140),
         quatro_blocos: ["Por que isso importa", "O que mudou", "Como interpretar", "O que não é possível concluir"].every((r) => t.includes(r)),
         fonte: /Fontes?: /.test(t),
         baixar: !!s.querySelector("a[download]"),
@@ -82,8 +82,13 @@ function medirPagina() {
     .filter((el) => visivel(el) && !el.closest(".sr-only") && !el.classList.contains("sr-only"))
     .map((el) => {
       const r = el.getBoundingClientRect();
-      const emLinha = el.tagName === "A" && getComputedStyle(el).display === "inline" && el.closest("p, li, td, dd");
-      return { w: r.width, h: r.height, emLinha: !!emLinha };
+      // link no meio de uma frase (WCAG 2.5.8, exceção "em linha"): inline e com texto solto no mesmo bloco, em p, li, td, dd ou em div e footer com texto corrido
+      let hospedeiro = el.parentElement;
+      while (hospedeiro && hospedeiro.parentElement && getComputedStyle(hospedeiro).display === "inline") hospedeiro = hospedeiro.parentElement;
+      const comTextoAoRedor = !!hospedeiro && Array.from(hospedeiro.childNodes).some((n) => n.nodeType === 3 && (n.textContent || "").trim().length > 0);
+      const emLinha = el.tagName === "A" && getComputedStyle(el).display === "inline" && (el.closest("p, li, td, dd") || comTextoAoRedor);
+      const nome = (el.textContent || el.getAttribute("aria-label") || "").trim().replace(/\s+/g, " ").slice(0, 40);
+      return { w: r.width, h: r.height, emLinha: !!emLinha, ex: `${el.tagName.toLowerCase()} "${nome}" ${Math.round(r.width)}x${Math.round(r.height)}` };
     });
   const grandes = Array.from(document.querySelectorAll("body *"))
     .filter((el) => {
@@ -119,6 +124,8 @@ function medirPagina() {
       unidade_duplicada: amostra(/[^\n]{0,30}(%\s*%|R\$\s*R\$)[^\n]{0,30}/g),
       marcador_de_obra: amostra(/\b(em breve|página em construção|em desenvolvimento|lorem ipsum|a definir)\b/gi),
       travessao: contar(/[—–]/g),
+      // vocabulário de engenharia no texto do leitor (medido em Entender; em Auditar é esperado). Só informa: não entra na nota.
+      jargao_interno: amostra(/\bgolds?\b|\bsilver\b|\bbronze\b|\bpipeline\b|\bvintages?\b|\bworkflow\b|\bcommit\b|\bcurl\b|cf-mitigated|\bHTTP \d{3}\b|\bachados? A\d{2}\b|\b[a-z]+_[a-z]+(?:_[a-z0-9]+)*\b/gi, 8),
       hoje: amostra(/[^.\n]{0,60}\bhoje\b[^.\n]{0,40}/gi, 6),
       hoje_com_numero: amostra(/[^.\n]{0,60}(\d[^.\n]{0,60}\bhoje\b|\bhoje\b[^.\n]{0,60}\d)[^.\n]{0,20}/gi, 6),
     },
@@ -131,8 +138,8 @@ function medirPagina() {
       baixar: principal.querySelectorAll("a[download]").length,
       copiar_link: Array.from(principal.querySelectorAll("button")).filter((b) => /copiar link/i.test(b.textContent || "")).length,
       proxima: contar(/Próxima pergunta/g),
-      fonte: contar(/\bFontes?: /g),
-      referencia: contar(/(Data de referência|Referência até|referência até|Gold processada)/g),
+      fonte: contar(/\bFontes?( e datas? de referência)?: /g),
+      referencia: contar(/(Data de referência|Referência até|referência até|Gold processada|datas? de referência:)/g),
       tabelas: principal.querySelectorAll("table").length,
       figuras: principal.querySelectorAll("svg[role=img], img, canvas, figure").length,
       glossario: principal.querySelectorAll('a[href*="/setor-eletrico/aprenda/"]').length,
@@ -154,6 +161,7 @@ function medirPagina() {
       total: alvos.length,
       menores_24: alvos.filter((a) => !a.emLinha && (a.w < 24 || a.h < 24)).length,
       menores_44: alvos.filter((a) => !a.emLinha && (a.w < 44 || a.h < 44)).length,
+      exemplos_menores_24: alvos.filter((a) => !a.emLinha && (a.w < 24 || a.h < 24)).slice(0, 5).map((a) => a.ex),
     },
     hrefs,
     ids: Array.from(idsPagina),
@@ -234,9 +242,13 @@ async function testarComprove(p) {
   const n = await botoes.count();
   if (!n) return { botoes: 0 };
   const alvo = botoes.first();
-  await alvo.scrollIntoViewIfNeeded().catch(() => {});
-  await alvo.click({ timeout: 3000 }).catch(() => {});
-  await p.waitForTimeout(700);
+  // até três tentativas: o primeiro toque pode chegar antes da hidratação do componente
+  for (let t = 0; t < 3; t++) {
+    await alvo.scrollIntoViewIfNeeded().catch(() => {});
+    await alvo.click({ timeout: 3000 }).catch(() => {});
+    await p.waitForTimeout(t === 0 ? 700 : 900);
+    if (await p.evaluate(() => !!document.querySelector("dialog[open]"))) break;
+  }
   const ficha = await p.evaluate(() => {
     const d = document.querySelector("dialog[open]");
     if (!d) return { aberta: false };
@@ -252,15 +264,29 @@ async function testarComprove(p) {
 async function testarCopiarLink(p) {
   const b = p.locator('main button:has-text("Copiar link")').first();
   if (!(await b.count())) return { botoes: 0 };
-  await b.scrollIntoViewIfNeeded().catch(() => {});
-  await b.click({ timeout: 3000 }).catch(() => {});
-  await p.waitForTimeout(300);
-  const r = await p.evaluate(() => {
-    const st = Array.from(document.querySelectorAll('main [role=status]')).map((e) => (e.textContent || "").trim()).filter(Boolean);
-    const campo = Array.from(document.querySelectorAll('main input[readonly]')).find((e) => e.value && e.getBoundingClientRect().width > 40);
-    return { mensagem: st.find((t) => /copiad|copie|endereço|link/i.test(t)) ?? null, campo_manual: !!campo, url: campo?.value ?? null };
-  });
-  return { botoes: 1, ...r, ok: !!(r.mensagem || r.campo_manual) };
+  let r = { mensagem: null, campo_manual: false, url: null };
+  let erroClique = null;
+  let cliquePorScript = false;
+  // até três tentativas: o primeiro toque pode chegar antes da hidratação do componente
+  for (let t = 0; t < 3; t++) {
+    await b.scrollIntoViewIfNeeded().catch(() => {});
+    await b.click({ timeout: 3000 }).catch((e) => {
+      erroClique = String(e).split("\n")[0].slice(0, 140);
+    });
+    await p.waitForTimeout(t === 0 ? 300 : 700);
+    r = await p.evaluate(() => {
+      const st = Array.from(document.querySelectorAll('main [role=status]')).map((e) => (e.textContent || "").trim()).filter(Boolean);
+      const campo = Array.from(document.querySelectorAll('main input[readonly]')).find((e) => e.value && e.getBoundingClientRect().width > 40);
+      return { mensagem: st.find((x) => /copiad|copie|endereço|link/i.test(x)) ?? null, campo_manual: !!campo, url: campo?.value ?? null };
+    });
+    if (r.mensagem || r.campo_manual) break;
+    if (erroClique && t === 1) {
+      // o toque do navegador não chegou (elemento encoberto na hora do clique): o clique por script confere ao menos o que o botão faz
+      await b.evaluate((el) => el.click()).catch(() => {});
+      cliquePorScript = true;
+    }
+  }
+  return { botoes: 1, ...r, ok: !!(r.mensagem || r.campo_manual), ...(erroClique ? { erro_clique: erroClique } : {}), ...(cliquePorScript ? { clique_por_script: true } : {}) };
 }
 
 async function exercitarControles(p, errosRef) {
@@ -488,7 +514,7 @@ async function medirRota(rota, navegador) {
           lang: pg.lang, titulo: pg.titulo, h1: pg.h1, h2: pg.h2, h3: pg.h3, marcos: pg.marcos,
           texto_principal_caracteres: pg.texto_principal_caracteres, dom_nos: pg.dom_nos, altura: pg.altura,
           rolagem_horizontal: pg.scroll_width > pg.inner_width + 1, transbordo: pg.transbordo,
-          anomalias: pg.anomalias, marcadores: pg.marcadores, paineis: pg.paineis, alvos: pg.alvos, axe,
+          anomalias: pg.anomalias, marcadores: pg.marcadores, paineis: pg.paineis, titulos_pergunta: pg.titulos_pergunta, alvos: pg.alvos, axe,
         });
         if (w === 1440 || w === 390) {
           const teclado = await medirTeclado(p);

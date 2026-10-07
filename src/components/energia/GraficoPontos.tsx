@@ -444,6 +444,11 @@ export function GraficoPontos({
           {dica}
         </div>
       </div>
+      {h > alturaMaxima && (
+        <p className="mt-1 text-xs text-mineral" data-aviso-rolagem="true">
+          Mostrando as primeiras {Math.floor(alturaMaxima / hc)} de {n.toLocaleString("pt-BR")} entidades: role dentro do gráfico para ver as demais, ou abra os dados em tabela.
+        </p>
+      )}
       <p className="sr-only" aria-live="polite">
         {anuncio}
       </p>

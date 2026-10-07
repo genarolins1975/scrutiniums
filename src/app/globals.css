@@ -158,6 +158,22 @@ body {
   display: none;
 }
 
+/* Caixas e botões de opção com pelo menos 24 px (WCAG 2.5.8): o rótulo já tinha 44 px, mas o controle em si media 13 a 16 px. */
+.dominio-energia input[type="checkbox"],
+.dominio-energia input[type="radio"] {
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+}
+
+/* No celular, o campo de seleção ocupa a largura do contêiner: com a opção mais longa ele alargava a página
+   (rolagem horizontal em Previsões e na página inicial). Percentual no select deixa de contar no mínimo do contêiner. */
+@media (max-width: 40rem) {
+  .dominio-energia select {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
 /* Dica de verbete (Termo): visível no hover e no foco do teclado. */
 /* display:none fora do hover/foco: posicionada e invisível, a dica ainda ocupava
    largura e criava rolagem horizontal perto da borda direita. */

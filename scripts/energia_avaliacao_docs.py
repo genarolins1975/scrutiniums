@@ -69,6 +69,13 @@ def escreve_paginas(a, caminho):
         L += tabela(["Rodada", "Data", "Páginas", "Dimensões com nota", "Nota ponderada média das dimensões avaliadas", "Atendem a meta", "Defeitos crítico/alto/médio/baixo", "Jornadas cumpridas"], linhas) + [""]
         linhas = [[x["id"]] + [pt(x["medias_por_dimensao"].get(i)) for i in ids_] for x in a["rodadas"]]
         L += tabela(["Rodada"] + [NOMES[i] for i in ids_], linhas) + [""]
+        notas = []
+        for x in a["rodadas"]:
+            if x.get("reprocessada"):
+                notas.append(f"- Rodada {x['id']} recalculada: {x['reprocessada']}")
+            notas += [f"- Rodada {x['id']}: {t}" for t in x.get("ajustes_do_metodo", [])]
+        if notas:
+            L += ["O que mudou no método entre as rodadas:", ""] + notas + [""]
         L += ["Defeitos corrigidos desde a rodada anterior:", ""] + [f"- ({c['severidade']}) {c['descricao']}" for c in a["corrigidos"]] + [""]
     L += ["## Por entrega (média das páginas de cada módulo)", ""]
     ids = [d["id"] for d in a["rubrica"]["dimensoes"]]

@@ -71,8 +71,8 @@ function Cartao({
     <section id={ancoras?.id} aria-labelledby={`p005-${p.id}-titulo`} className="scroll-mt-28 min-w-0 border border-linha bg-superficie p-4">
       <div id={ancoras?.painel} className="scroll-mt-28">
         <h4 id={`p005-${p.id}-titulo`} className="font-serif text-lg text-carvao">
-          {p.titulo}
-          <span className="ml-2 font-sans text-sm text-mineral">{p.pergunta}</span>
+          {p.titulo}{" "}
+          <span className="ml-1 font-sans text-sm text-mineral">{p.pergunta}</span>
         </h4>
         <p className="mt-1 text-sm text-carvao">
           <span className="font-serif text-xl tabular-nums" data-valor-atual={p.id}>
@@ -180,7 +180,7 @@ export function VisaoDeterminantes({ m, ancoras, fonte }: { m: MultiplosVisao; a
           nomeArquivo="visao-geral-determinantes"
           chaveUrl="p005.t"
           ordemInicial={{ coluna: "d", direcao: "desc" }}
-          nota="Célula vazia é dia sem valor na gold de origem (nunca zero). Mesmas linhas dos cinco gráficos, na janela escolhida."
+          nota="Célula vazia é dia sem valor na base publicada de origem (nunca zero). Mesmas linhas dos cinco gráficos, na janela escolhida."
         />
       </div>
     </div>

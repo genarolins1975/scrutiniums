@@ -675,7 +675,7 @@ describe.skipIf(!disponivel)("páginas renderizadas no servidor", () => {
     expect(nomeAgenda(gold.agenda)).toBe("Agenda Regulatória de 2026 e 2027");
     expect(h).toContain(`Atividades da ${nomeAgenda(gold.agenda)}`);
     expect(h).toContain(`Consultas e audiências desde ${anoInicioHistorico(gold)}, por situação`);
-    expect(h).toContain("Decisões de abertura ainda sem resultado formal na ata");
+    expect(h).toContain("decisões de abertura ainda não têm resultado formal na ata");
     expect(h).toContain("https://www.gov.br/aneel/pt-br/acesso-a-informacao/participacao-social/consultas-publicas");
     expect((h.match(/<table/g) ?? []).length).toBeGreaterThanOrEqual(5);
   });

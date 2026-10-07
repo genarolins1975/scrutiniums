@@ -63,7 +63,7 @@ export default function MercadoMreGsfPage() {
   const prov = provenienciasLegiveis(g);
   const m = g.mre_gsf;
   const k = m.kpis;
-  const versao = `CCEE até ${g.referencias.ccee_ultimo_mes_gsf ? mesAno(g.referencias.ccee_ultimo_mes_gsf) : "sem mês"}, gold de ${dataBR(g.gerado_em)}`;
+  const versao = `CCEE até ${g.referencias.ccee_ultimo_mes_gsf ? mesAno(g.referencias.ccee_ultimo_mes_gsf) : "sem mês"}, publicado em ${dataBR(g.gerado_em)}`;
   const anual = m.anual;
   const vDiv = p?.verificacoes.find((v) => v.nome.startsWith("GSF de 12 meses"));
   const alt = k.gsf_12m?.alternativas;
@@ -131,7 +131,7 @@ export default function MercadoMreGsfPage() {
                   </>
                 }
               >
-                {p?.resposta ?? "Sem resposta nesta atualização: o GSF não pôde ser calculado com a gold publicada."}
+                {p?.resposta ?? "Sem resposta nesta atualização: o GSF não pôde ser calculado com a base publicada."}
               </MercadoResposta>
               <div className="mb-5 grid gap-4 sm:grid-cols-3">
                 <Numero

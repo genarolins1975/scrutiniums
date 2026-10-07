@@ -57,7 +57,7 @@ export default function PerdasComposicaoPage() {
   const nac = linhaNacional(g, ref);
   const rotulos = Object.fromEntries(g.distribuidoras.map((d) => [d.cnpj, rotuloDistribuidora(d)]));
   const ids = g.distribuidoras.map((d) => d.cnpj);
-  const versao = `SAMP até ${mesAno(g.referencia.ultima_competencia)}, gold de ${dataBR(g.gerado_em)}`;
+  const versao = `SAMP até ${mesAno(g.referencia.ultima_competencia)}, publicado em ${dataBR(g.gerado_em)}`;
   const composicao = linhasComposicao(g.distribuidoras);
   const uf = g.universo_fixo;
   const inicioSerie = anosSerieNacional(g.nacional)?.inicio ?? ref;

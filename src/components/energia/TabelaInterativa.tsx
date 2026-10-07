@@ -148,6 +148,9 @@ export function TabelaInterativa({
 }: TabelaInterativaProps) {
   const uid = useId();
   const buscaRef = useRef<HTMLInputElement>(null);
+  // a tabela só avisa da rolagem quando de fato é mais larga que a área visível
+  const rolagemRef = useRef<HTMLDivElement>(null);
+  const [maisColunas, setMaisColunas] = useState(false);
   const filtrosRef = useRef<HTMLDivElement>(null);
 
   // o esquema só depende de ids, categorias e ordenabilidade: colunas recriadas a cada render não o recriam
@@ -201,6 +204,19 @@ export function TabelaInterativa({
   const [filtroAberto, setFiltroAberto] = useState<string | null>(null);
 
   // seleção vinda de fora (mapa, gráfico): leva à página da linha; paginar depois não devolve a ela
+  useEffect(() => {
+    const el = rolagemRef.current;
+    if (!el) return;
+    const medir = () => setMaisColunas(el.scrollWidth > el.clientWidth + 2);
+    medir();
+    if (typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(medir);
+    ro.observe(el);
+    const tabela = el.querySelector("table");
+    if (tabela) ro.observe(tabela);
+    return () => ro.disconnect();
+  }, [filtradas.length, colunas.length]);
+
   const atual = useRef({ filtradas, tamanho, pagina: pag.pagina });
   atual.current = { filtradas, tamanho, pagina: pag.pagina };
   useEffect(() => {
@@ -375,7 +391,12 @@ export function TabelaInterativa({
         </p>
       )}
 
-      <div className="tabela-scroll mt-2 max-w-full overflow-x-auto border-t border-linha" role="region" tabIndex={0} aria-label={`${titulo} (tabela rolável)`}>
+      {maisColunas && (
+        <p className="mt-2 text-xs text-mineral" data-dica-rolagem="true">
+          A tabela é mais larga que a tela: role para o lado para ver todas as colunas.
+        </p>
+      )}
+      <div ref={rolagemRef} className="tabela-scroll mt-2 max-w-full overflow-x-auto border-t border-linha" role="region" tabIndex={0} aria-label={`${titulo} (tabela rolável)`}>
         <table id={`${uid}-tabela`} className="w-full border-collapse text-sm tabular-nums">
           <caption className="sr-only">
             {`${titulo}. ${num(filtradas.length, 0)} de ${plural(linhas.length, "linha", "linhas")}`}

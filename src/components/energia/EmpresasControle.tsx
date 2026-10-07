@@ -91,7 +91,7 @@ export function EmpresasControle({ linhasGrupos, barras, entidades, padrao, arvo
 
       <section aria-labelledby="arvore-titulo" className="space-y-3 border border-linha bg-superficie p-4">
         <h4 id="arvore-titulo" className="font-serif text-base text-carvao">
-          Árvore societária declarada à ANEEL
+          Qual é a árvore societária declarada à ANEEL?
         </h4>
         <BuscaEntidade
           opcoes={opcoes}

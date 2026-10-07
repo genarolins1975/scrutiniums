@@ -70,7 +70,7 @@ export default function MercadoPage() {
   const kAcl = k.participacao_acl_ccee_12m;
   const kGsf = g.mre_gsf.kpis.gsf_ultimo_mes;
   const kEss = g.encargos.kpis.ess_12m;
-  const versao = `EPE até ${mesAno(lr.epe_ultimo_mes)}, CCEE até ${g.referencias.ccee_ultimo_mes_consumo ? mesAno(g.referencias.ccee_ultimo_mes_consumo) : "sem mês"}, gold de ${dataBR(g.gerado_em)}`;
+  const versao = `EPE até ${mesAno(lr.epe_ultimo_mes)}, CCEE até ${g.referencias.ccee_ultimo_mes_consumo ? mesAno(g.referencias.ccee_ultimo_mes_consumo) : "sem mês"}, publicado em ${dataBR(g.gerado_em)}`;
   const anoClasse = anoClasseCompleto(g);
   const uf = barrasUf(g);
   const preliminares = lr.epe_anos_preliminares;
@@ -214,7 +214,7 @@ export default function MercadoPage() {
                   </>
                 }
               >
-                {p?.resposta ?? "Sem resposta nesta atualização: a participação de 12 meses não pôde ser calculada com a gold publicada."}
+                {p?.resposta ?? "Sem resposta nesta atualização: a participação de 12 meses não pôde ser calculada com a base publicada."}
               </MercadoResposta>
               <MercadoRecorte
                 periodo={

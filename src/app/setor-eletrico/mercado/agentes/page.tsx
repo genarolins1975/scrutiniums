@@ -61,7 +61,7 @@ export default function MercadoAgentesPage() {
   const prov = provenienciasLegiveis(g);
   const am = g.agentes_migracao;
   const k = am.kpis;
-  const versao = `CCEE até ${g.referencias.ccee_ultimo_mes_consumo ? mesAno(g.referencias.ccee_ultimo_mes_consumo) : "sem mês"}, gold de ${dataBR(g.gerado_em)}`;
+  const versao = `CCEE até ${g.referencias.ccee_ultimo_mes_consumo ? mesAno(g.referencias.ccee_ultimo_mes_consumo) : "sem mês"}, publicado em ${dataBR(g.gerado_em)}`;
   const classes = barrasAgentesClasse(g);
   const fluxos = serieFluxosAssociados(g);
   const desl = barrasDesligamentos(g);
@@ -136,7 +136,7 @@ export default function MercadoAgentesPage() {
                   </>
                 }
               >
-                {p?.resposta ?? "Sem resposta nesta atualização: faltam as contagens na gold publicada."}
+                {p?.resposta ?? "Sem resposta nesta atualização: faltam as contagens na base publicada."}
               </MercadoResposta>
               <div className="mb-5 grid gap-4 sm:grid-cols-3">
                 <Numero

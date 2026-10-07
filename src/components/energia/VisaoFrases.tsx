@@ -109,7 +109,7 @@ export function VisaoDestaques({ destaques, fatosEHipoteses, titulos }: { destaq
   return (
     <section id="destaques" aria-labelledby="destaques-titulo" className="scroll-mt-28 border border-linha bg-papel p-4 md:p-5">
       <h3 id="destaques-titulo" className="font-serif text-lg text-carvao">
-        Destaques: alertas sobre o sistema confirmados nos últimos {plural(destaques.novidade_dias, "dia", "dias")}
+        Quais alertas sobre o sistema foram confirmados nos últimos {plural(destaques.novidade_dias, "dia", "dias")}?
       </h3>
       <div className="mt-3 space-y-3">
         {destaques.itens.length ? (

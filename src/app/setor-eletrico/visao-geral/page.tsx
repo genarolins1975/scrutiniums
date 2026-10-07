@@ -136,7 +136,7 @@ export default function VisaoGeralEnergia() {
   const dominio = dominioEstados(g.observar);
   const regras = g.observar.filter((o) => o.tipo !== "evento");
   const emAlerta = regras.filter((o) => o.ativo);
-  const fonteTabelas = `Scrutiniums, gold sintese.json gerada em ${carimbo(g.gerado_em)} a partir das golds de origem`;
+  const fonteTabelas = `Scrutiniums, gold sintese.json gerada em ${carimbo(g.gerado_em)} a partir das bases publicadas de origem`;
   const dlPor = (parte: string) => g.downloads.filter((d) => d.url.includes(parte));
   const freq = textoFrequenciaConjunta(g);
   const revisoesOperacao = g.revisoes.operacao ?? [];
@@ -159,7 +159,7 @@ export default function VisaoGeralEnergia() {
           }
         >
           O <Termo slug="sin">Sistema Interligado Nacional</Termo> em poucos minutos, em quatro painéis: os fatos de hoje com a evidência de cada número, os cinco determinantes lado a lado, o que chega ao consumidor
-          em custo e qualidade, e as regras que dizem o que observar. Tudo lido das golds dos módulos de origem; o que não está integrado aparece como ausência, nunca como estimativa.
+          em custo e qualidade, e as regras que dizem o que observar. Tudo lido das bases publicadas dos módulos de origem; o que não está integrado aparece como ausência, nunca como estimativa.
         </CabecalhoModulo>
         <VisaoNavegacao />
 
@@ -188,7 +188,7 @@ export default function VisaoGeralEnergia() {
                 <VisaoDestaques destaques={g.destaques} fatosEHipoteses={g.fatos_e_hipoteses} titulos={titulosRegras} />
               </div>
               <ComoLer
-                comoLer="Cada frase é um fato de um indicador, montado por um modelo fixo a partir de números da gold de origem; o trecho sublinhado leva ao painel que publica o número e o botão de prova refaz o cálculo por outro caminho. A caixa de destaques só mostra regras sobre o sistema confirmadas há poucos dias; vazia é o normal."
+                comoLer="Cada frase é um fato de um indicador, montado por um modelo fixo a partir de números da base publicada de origem; o trecho sublinhado leva ao painel que publica o número e o botão de prova refaz o cálculo por outro caminho. A caixa de destaques só mostra regras sobre o sistema confirmadas há poucos dias; vazia é o normal."
                 naoConcluir="As frases descrevem o estado de cada indicador na sua data, não a relação entre eles: reservatório, afluência, carga, térmicas, preço e rede não são apresentados como explicação uns dos outros. Hipóteses, quando aparecem, estão rotuladas e não foram testadas nesta página."
               />
               <VisaoAnalise titulo="As frases como tabela: referência, defasagem, atualidade e revisões" id="sistema-tabela">
@@ -207,7 +207,7 @@ export default function VisaoGeralEnergia() {
               </VisaoAnalise>
               <VisaoAuditoria titulo="Reprodução das frases: valores, caminhos e versões" id="sistema-auditoria">
                 <p className="text-sm leading-relaxed text-carvao-muted">
-                  Cada frase é refeita a cada publicação a partir do par modelo e valores; se a frase refeita diferir da publicada, a gold vira stub e a última publicação válida é mantida. Os valores abaixo são os da gold de origem, com o caminho de cada um.
+                  Cada frase é refeita a cada publicação a partir do par modelo e valores; se a frase refeita diferir da publicada, a gold vira stub e a última publicação válida é mantida. Os valores abaixo são os da base publicada de origem, com o caminho de cada um.
                 </p>
                 <VisaoTabelasSobDemanda conjunto="sistema-auditoria" fonte={fonteTabelas} versao={g.data_processamento} downloads={dlPor("sintese_revisoes")} />
                 <p className="text-sm leading-relaxed text-carvao-muted">
@@ -242,7 +242,7 @@ export default function VisaoGeralEnergia() {
                   <VisaoAviso tipo="alerta">{m.aviso_datas}</VisaoAviso>
                   <VisaoDeterminantes m={m} ancoras={ANCORAS_DETERMINANTES} fonte={fonteTabelas} />
                   <ComoLer
-                    comoLer="Cinco gráficos pequenos sobre o mesmo calendário, cada um com a sua referência de comparação: faixa histórica do dia para a água, quartis para o preço e a participação térmica, o mesmo dia da semana do ano anterior para a carga, o zero para o sentido do fluxo. Os valores são copiados das golds de origem, célula a célula, sem recálculo."
+                    comoLer="Cinco gráficos pequenos sobre o mesmo calendário, cada um com a sua referência de comparação: faixa histórica do dia para a água, quartis para o preço e a participação térmica, o mesmo dia da semana do ano anterior para a carga, o zero para o sentido do fluxo. Os valores são copiados das bases publicadas de origem, célula a célula, sem recálculo."
                     naoConcluir="Alinhar os painéis pelo calendário não afirma que um determina o outro. Fluxo alto na rede não indica congestionamento: os limites de intercâmbio não estão integrados. Dia em branco é dia sem valor na origem, nunca zero."
                   />
                   <p className="text-xs leading-relaxed text-carvao-muted">Regra do painel: {m.regra}</p>

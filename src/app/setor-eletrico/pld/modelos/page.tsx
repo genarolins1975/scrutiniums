@@ -59,6 +59,7 @@ import {
   textoReexecucao,
 } from "@/lib/energia/previsoes";
 import type { PrevisoesDesempenhoGold } from "@/lib/energia/tipos-previsoes";
+import { snapshotLegivel } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -188,7 +189,7 @@ export default function ModelosPage() {
                 {reexec.length > 0 && (
                   <section aria-labelledby="reexec-titulo" className="space-y-2" data-reexecucao="">
                     <h3 id="reexec-titulo" className="font-serif text-lg text-carvao">
-                      Previsões arquivadas do B0 refeitas com o dado do corte
+                      O que mudaria nas previsões arquivadas do B0 se fossem refeitas com o dado do corte?
                     </h3>
                     <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
                       Cada valor abaixo é o número arquivado na rodada mais recente; a prova de cada um mostra as horas somadas, os arquivos da CCEE capturados até o corte
@@ -265,7 +266,7 @@ export default function ModelosPage() {
                     </PrevisoesFichaLinha>
                     {Object.entries(g.dados.snapshots).map(([k, s]) => (
                       <PrevisoesFichaLinha key={k} rotulo={`Dado ${k}`}>
-                        {s.id ?? "sem identificador"}; última captura {carimbo(s.ultima_captura)}; {s.revisoes ?? 0} revisões detectadas
+                        {s.id ? snapshotLegivel(s.id) : "sem identificador"}; última captura {carimbo(s.ultima_captura)}; {s.revisoes ?? 0} revisões detectadas
                       </PrevisoesFichaLinha>
                     ))}
                     {(["ear", "ena"] as const).map((k) => (

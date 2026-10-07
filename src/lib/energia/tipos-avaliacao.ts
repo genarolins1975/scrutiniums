@@ -125,6 +125,10 @@ export type RodadaRegistro = {
   defeitos_por_severidade: Record<Severidade, number>;
   medias_por_dimensao: Record<string, number | null>;
   jornadas_cumpridas: number;
+  /** Quando a rodada foi recalculada com outra regra, o texto que diz o motivo; ausente quando vale o cálculo original. */
+  reprocessada?: string | null;
+  /** O que mudou no instrumento ou na regra desde a rodada anterior e pode explicar diferença que não vem do site. */
+  ajustes_do_metodo?: string[];
 };
 
 export type AvaliacaoGold = Cabecalho & {
@@ -144,6 +148,7 @@ export type AvaliacaoGold = Cabecalho & {
     referencia_dos_dados: string | null;
     /** Correções que entraram no código depois da medição desta rodada e ainda não foram medidas. */
     corrigido_depois_da_medicao: string[];
+    ajustes_do_metodo?: string[];
   };
   metodo: { resumo: string; scripts: string[]; entradas: string };
   rubrica: {

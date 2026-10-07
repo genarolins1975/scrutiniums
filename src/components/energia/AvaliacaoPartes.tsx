@@ -114,6 +114,17 @@ export function AvaliacaoEvolucao({ a }: { a: AvaliacaoGold }) {
           </tbody>
         </table>
       </div>
+      {a.rodadas.some((r) => r.reprocessada || (r.ajustes_do_metodo ?? []).length > 0) && (
+        <div data-ajustes-do-metodo="true">
+          <p className="rotulo text-mineral">O que mudou no método entre as rodadas</p>
+          <ul className="mt-1 list-disc space-y-1 pl-5 text-sm leading-relaxed text-carvao-muted">
+            {a.rodadas.flatMap((r) => [
+              ...(r.reprocessada ? [<li key={`${r.id}-rep`}>{`Rodada ${r.id} recalculada: ${r.reprocessada}`}</li>] : []),
+              ...(r.ajustes_do_metodo ?? []).map((t) => <li key={`${r.id}-${t}`}>{`Rodada ${r.id}: ${t}`}</li>),
+            ])}
+          </ul>
+        </div>
+      )}
       {a.corrigidos.length > 0 ? (
         <div>
           <p className="rotulo text-mineral">Defeitos corrigidos desde a rodada anterior</p>

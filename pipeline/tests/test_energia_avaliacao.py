@@ -201,6 +201,15 @@ class Dimensoes(unittest.TestCase):
         self.assertEqual(r["itens"]["proxima"], 0.0)
         self.assertEqual(r["itens"]["comprove"], 0.0)
 
+    def test_titulo_em_pergunta_nao_medido_nao_vira_item_ausente(self):
+        r = ea.d_completude(contexto(perguntas="não medido", fracao_pergunta=0.0))
+        self.assertNotIn("pergunta", r["itens"])
+        self.assertFalse(any("pergunta como título" in d["descricao"] for d in r["defeitos"]))
+        self.assertTrue(any("fora do cálculo" in e for e in r["evidencias"]))
+        medido = ea.d_completude(contexto(perguntas="0 de 1", fracao_pergunta=0.0))
+        self.assertEqual(medido["itens"]["pergunta"], 0.0)
+        self.assertTrue(any("pergunta como título" in d["descricao"] for d in medido["defeitos"]))
+
     def test_completude_editorial_usa_outra_lista(self):
         c = contexto(tipo="verbete")
         r = ea.d_completude(c)
@@ -333,6 +342,25 @@ class Rotas(unittest.TestCase):
                 if pg.startswith(f"{ea.PREFIXO}/dados") or pg.startswith(f"{ea.PREFIXO}/metodologia"):
                     continue
                 self.assertIn(m["gold"], ea.golds_da_rota(pg), f"{m['id']} em {pg}")
+
+
+class RegistroDeRodada(unittest.TestCase):
+    def saida(self, ajustes=None):
+        return {"rodada": {"id": "x-r9", "data_inspecao": "2026-10-07", "ajustes_do_metodo": ajustes or []}, "versao_codigo": "abc",
+                "resumo": {"paginas": 2, "nota_ponderada_media": 8.0, "atendem_meta": 0, "defeitos": {"por_severidade": {"critico": 0, "alto": 0, "medio": 1, "baixo": 0}},
+                           "por_dimensao": {"didatismo": {"media": 7.0}}, "jornadas": {"cumpridas": 10}},
+                "defeitos": [{"chave": "k", "severidade": "medio", "dimensao": "didatismo", "descricao": "d", "n_paginas": 1}]}
+
+    def test_rodada_reprocessada_guarda_o_motivo_e_a_original_nao(self):
+        com = ea.registro_rodada(self.saida(), "o item não medido saiu do cálculo")
+        sem = ea.registro_rodada(self.saida())
+        self.assertEqual(com["reprocessada"], "o item não medido saiu do cálculo")
+        self.assertIsNone(sem["reprocessada"])
+
+    def test_ajustes_do_metodo_seguem_para_o_registro(self):
+        r = ea.registro_rodada(self.saida(["o instrumento passou a medir X"]))
+        self.assertEqual(r["ajustes_do_metodo"], ["o instrumento passou a medir X"])
+        self.assertEqual(ea.registro_rodada(self.saida())["ajustes_do_metodo"], [])
 
 
 @unittest.skipUnless(os.path.exists(GOLD), "avaliacao.json ainda não gerado")

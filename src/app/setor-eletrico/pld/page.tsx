@@ -27,6 +27,7 @@ import { estadoCarga, estadoEar, estadoEna, estadoPld, estadoRenovaveis, estadoT
 import type { PldGold } from "@/lib/energia/tipos";
 import type { PldDetalheGold, RegimeLimites } from "@/lib/energia/tipos-pld";
 import { NOME_SM, documentosCitados, ligacoesFormacao, perguntaPainel, proximoPainel, resumoLigacoes, respostaP008, rotaPainel } from "@/lib/energia/pld";
+import { snapshotLegivel, datasLegiveis } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
 
@@ -337,7 +338,7 @@ export default function PldPage() {
                     <section aria-labelledby="exemplo-liquidacao-titulo" className="space-y-3 border border-dashed border-mineral bg-papel p-4 md:p-5">
                       <p className="rotulo text-mineral">Exemplo sintético, não é contabilização real</p>
                       <h4 id="exemplo-liquidacao-titulo" className="font-serif text-lg text-carvao">
-                        Como a diferença entre contratado e verificado é valorada ao PLD
+                        Como a diferença entre contratado e verificado é valorada ao PLD?
                       </h4>
                       <p className="text-sm leading-relaxed text-carvao">{exemplo.aviso}</p>
                       <p className="text-sm text-carvao-muted">
@@ -491,7 +492,7 @@ export default function PldPage() {
                     <ul className="space-y-2 text-sm text-carvao-muted">
                       {conceitoDet.bloqueios.map((b) => (
                         <li key={b.fonte} className="leading-relaxed [overflow-wrap:anywhere]">
-                          <span className="text-carvao">{b.fonte}</span>: {b.evidencia.replace(/\.$/, "")}. {b.consequencia}
+                          <span className="text-carvao">{b.fonte}</span>: {datasLegiveis(b.evidencia.replace(/\.$/, ""))}. {datasLegiveis(b.consequencia)}
                         </li>
                       ))}
                     </ul>
@@ -610,7 +611,7 @@ export default function PldPage() {
                     ))}
                   </ul>
                   <p className="mt-4 text-xs text-mineral [overflow-wrap:anywhere]">
-                    Snapshot {pld.snapshot.id} · sha256 {pld.snapshot.sha256} · série de {horaLocal(pld.primeira_hora)} a {horaLocal(pld.ultima_hora)} (horário de Brasília)
+                    Versão dos dados {pld.snapshot.id ? snapshotLegivel(pld.snapshot.id) : "sem identificador"} · sha256 {pld.snapshot.sha256} · série de {horaLocal(pld.primeira_hora)} a {horaLocal(pld.ultima_hora)} (horário de Brasília)
                   </p>
                 </div>
               </>

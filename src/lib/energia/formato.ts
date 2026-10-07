@@ -158,3 +158,9 @@ export function rotuloRegra(chave: string): string {
   const t = chave.replaceAll("_", " ");
   return t.charAt(0).toUpperCase() + t.slice(1);
 }
+
+/** Identificador de lei do Senado ("LEI-10607-2002-12-19") como o leitor escreve: "Lei 10.607, de 19/12/2002". */
+export function normaLegivel(id: string): string {
+  const m = /^LEI-(\d+)-(\d{4})-(\d{2})-(\d{2})$/.exec(id);
+  return m ? `Lei ${Number(m[1]).toLocaleString("pt-BR")}, de ${m[4]}/${m[3]}/${m[2]}` : id;
+}

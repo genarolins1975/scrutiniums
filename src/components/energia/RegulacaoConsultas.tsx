@@ -272,7 +272,7 @@ export function RegulacaoConsultas({
       {(consultas.decisoes_sem_resultado_formal ?? []).length > 0 && (
         <section aria-labelledby="sem-resultado-formal-titulo" className="space-y-2" data-decisoes-sem-resultado="">
           <h4 id="sem-resultado-formal-titulo" className="font-serif text-base text-carvao">
-            Decisões de abertura ainda sem resultado formal na ata (fora da contagem)
+            Quais decisões de abertura ainda não têm resultado formal na ata (fora da contagem)?
           </h4>
           <ul className="space-y-2 text-sm text-carvao-muted">
             {(consultas.decisoes_sem_resultado_formal ?? []).map((d) => {

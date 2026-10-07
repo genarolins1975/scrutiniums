@@ -893,3 +893,21 @@ export function respostaRegras(r: ResumoMetricas): string {
 /** Link para o arquivo de código que implementa a regra, na versão do ramo principal. */
 export const urlCodigoMetrica = (arquivo: string) => `https://github.com/genarolins1975/scrutiniums/blob/main/${arquivo}`;
 
+
+
+/**
+ * Órgãos das fontes que o rodapé do observatório cita, lidos das integrações de publicacao.json
+ * (um órgão por conjunto integrado, do que tem mais conjuntos para o que tem menos, empate pelo nome).
+ * O texto fixo anterior citava só CCEE e ONS e contradizia as páginas de ANEEL, CVM, IBGE e EPE.
+ */
+export function orgaosDasFontes(pub: Pick<PublicacaoGold, "conjuntos"> | null): { orgao: string; conjuntos: number }[] {
+  const n = new Map<string, number>();
+  for (const c of pub?.conjuntos ?? []) n.set(c.orgao, (n.get(c.orgao) ?? 0) + 1);
+  return Array.from(n, ([orgao, conjuntos]) => ({ orgao, conjuntos })).sort((a, b) => b.conjuntos - a.conjuntos || a.orgao.localeCompare(b.orgao, "pt-BR"));
+}
+
+/** Lista em português: "A, B e C". */
+export function listaEmPortugues(itens: string[]): string {
+  if (itens.length <= 1) return itens.join("");
+  return `${itens.slice(0, -1).join(", ")} e ${itens[itens.length - 1]}`;
+}

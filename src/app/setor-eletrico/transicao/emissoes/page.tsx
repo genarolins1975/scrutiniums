@@ -50,6 +50,7 @@ import {
   rotaPainel,
 } from "@/lib/energia/transicao";
 import type { GoldTransicao } from "@/lib/energia/tipos-transicao";
+import { datasLegiveis } from "@/lib/energia/visao";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -339,7 +340,7 @@ export default function EmissoesPage() {
                     titulo="Valores descartados na leitura"
                     colunas={["Data na planilha", "Valor", "Motivo", "Planilha"]}
                     numericas={[1]}
-                    linhas={e.descartes.map((x) => [x.data, fator(x.valor), x.motivo, x.arquivo])}
+                    linhas={e.descartes.map((x) => [datasLegiveis(x.data), fator(x.valor), x.motivo, x.arquivo])}
                   />
                   <ul className="list-disc space-y-1 pl-5 text-sm text-carvao-muted">
                     {e.problemas_de_leitura.map((x) => (

@@ -23,7 +23,7 @@ export function PerdasAuditoria({ g }: { g: PerdasGold }) {
           Como esses números foram conferidos?
         </h2>
         <div className="mt-4 grid gap-6 lg:grid-cols-2">
-          <div className="space-y-2 text-sm leading-relaxed text-carvao">
+          <div className="min-w-0 space-y-2 text-sm leading-relaxed text-carvao [overflow-wrap:anywhere]">
             <h3 className="rotulo text-mineral">Balanço e alertas</h3>
             <p>
               {numOu(qual.agentes_no_arquivo, 0)} agentes no arquivo, {numOu(qual.agentes_com_balanco_de_distribuicao, 0)} com balanço de distribuição e {numOu(qual.agentes_ano_completos, 0)} agentes-ano
@@ -45,7 +45,7 @@ export function PerdasAuditoria({ g }: { g: PerdasGold }) {
               </p>
             ))}
           </div>
-          <div className="space-y-2 text-sm leading-relaxed text-carvao">
+          <div className="min-w-0 space-y-2 text-sm leading-relaxed text-carvao [overflow-wrap:anywhere]">
             <h3 className="rotulo text-mineral">Conferência com o relatório da ANEEL</h3>
             <p>
               {rel.documento}. Relatório: taxa total {pctOu(rel.valores_relatorio.taxa_total_pct, 1)} (base {rel.valores_relatorio.base}), técnicas {numOu(rel.valores_relatorio.perdas_tecnicas_twh, 1)}{" "}

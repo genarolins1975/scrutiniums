@@ -457,8 +457,8 @@ Previsões: VINTAGE DA FONTE → VARIÁVEIS DE ENTRADA → VERSÃO DO MODELO →
         <S id="versao" titulo="Versão desta publicação">
           {meta ? (
             <p className="text-sm">
-              Dados processados em {carimbo(meta.gerado_em)} · versão do processamento {meta.versao_pipeline}
-              {meta.versao_codigo ? ` · código ${meta.versao_codigo}` : ""} · coleta executada nesta publicação: {meta.coleta_executada ? "sim" : "não (reconstrução a partir do estado salvo)"} ·
+              Último processamento completo do pipeline (meta.json): {carimbo(meta.gerado_em)} · versão do processamento {meta.versao_pipeline}
+              {meta.versao_codigo ? ` · código ${meta.versao_codigo}` : ""} · coleta executada nesse processamento: {meta.coleta_executada ? "sim" : "não (reconstrução a partir do estado salvo)"} ·
               falhas de construção: {meta.builders_falhos.length} · regressões retidas: {meta.regressoes.length}.
             </p>
           ) : (

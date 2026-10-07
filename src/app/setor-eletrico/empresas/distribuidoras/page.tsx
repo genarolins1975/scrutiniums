@@ -68,8 +68,8 @@ export default function PaginaP037() {
           titulo={painel("p037").pergunta}
           referencia={
             <>
-              Perdas de {anoPerdas ?? "sem dado"} e continuidade de {anoQualidade ?? "sem dado"}, copiadas da gold de Perdas, gerada em {carimbo(golds["perdas.json"].gerado_em)}, e da de Qualidade,
-              gerada em {carimbo(golds["qualidade.json"].gerado_em)}; tarifas da gold de Conta de luz, gerada em {carimbo(golds["conta.json"].gerado_em)}. Processado em {carimbo(g.gerado_em)}.
+              Perdas de {anoPerdas ?? "sem dado"} e continuidade de {anoQualidade ?? "sem dado"}, copiadas da base publicada de Perdas, gerada em {carimbo(golds["perdas.json"].gerado_em)}, e da de Qualidade,
+              gerada em {carimbo(golds["qualidade.json"].gerado_em)}; tarifas da base publicada de Conta de luz, gerada em {carimbo(golds["conta.json"].gerado_em)}. Processado em {carimbo(g.gerado_em)}.
             </>
           }
         >
@@ -93,7 +93,7 @@ export default function PaginaP037() {
               }
               oQueMudou={
                 <>
-                  As golds de origem foram geradas em {carimbo(golds["perdas.json"].gerado_em)} (Perdas), {carimbo(golds["qualidade.json"].gerado_em)} (Qualidade) e{" "}
+                  As bases publicadas de origem foram geradas em {carimbo(golds["perdas.json"].gerado_em)} (Perdas), {carimbo(golds["qualidade.json"].gerado_em)} (Qualidade) e{" "}
                   {carimbo(golds["conta.json"].gerado_em)} (Conta de luz). A evolução de cada distribuidora (perdas em {inteiro(d.resumo.com_evolucao.perdas)}, continuidade em{" "}
                   {inteiro(d.resumo.com_evolucao.qualidade)} e tarifa em {inteiro(d.resumo.com_evolucao.tarifa)}) está na ficha.
                 </>
@@ -107,10 +107,10 @@ export default function PaginaP037() {
               }
               proveniencia={g.proveniencia.distribuidoras}
               complementares={[
-                ...(g.proveniencia.distribuidoras_perdas ? [{ rotulo: "Perdas totais (gold de Perdas)", p: g.proveniencia.distribuidoras_perdas }] : []),
+                ...(g.proveniencia.distribuidoras_perdas ? [{ rotulo: "Perdas totais (base publicada de Perdas)", p: g.proveniencia.distribuidoras_perdas }] : []),
                 ...(g.proveniencia.distribuidoras_pnt ? [{ rotulo: "Perdas não técnicas (estimadas pela fonte)", p: g.proveniencia.distribuidoras_pnt }] : []),
-                ...(g.proveniencia.distribuidoras_qualidade ? [{ rotulo: "DEC e FEC (gold de Qualidade)", p: g.proveniencia.distribuidoras_qualidade }] : []),
-                ...(g.proveniencia.distribuidoras_tarifa ? [{ rotulo: "Tarifa B1 (gold de Conta de luz)", p: g.proveniencia.distribuidoras_tarifa }] : []),
+                ...(g.proveniencia.distribuidoras_qualidade ? [{ rotulo: "DEC e FEC (base publicada de Qualidade)", p: g.proveniencia.distribuidoras_qualidade }] : []),
+                ...(g.proveniencia.distribuidoras_tarifa ? [{ rotulo: "Tarifa B1 (base publicada de Conta de luz)", p: g.proveniencia.distribuidoras_tarifa }] : []),
               ]}
             >
               <div className="space-y-6">
@@ -151,7 +151,7 @@ export default function PaginaP037() {
                   )}
                   padrao={padraoComparacao(d.indice)}
                   referenciaPerdas={refPerdas}
-                  fonte="ANEEL, SAMP, indicadores de continuidade e tarifas de aplicação (pelas golds dos módulos de origem)"
+                  fonte="ANEEL, SAMP, indicadores de continuidade e tarifas de aplicação (pelas bases publicadas dos módulos de origem)"
                   versao={g.gerado_em.slice(0, 10)}
                 />
 
@@ -185,7 +185,7 @@ export default function PaginaP037() {
                               ({s.chave}; unidade {typeof s.unidade === "string" ? s.unidade : Object.values(s.unidade).join(", ")})
                             </>
                           ) : (
-                            "a gold de origem não publica a série nesta publicação"
+                            "a base publicada de origem não publica a série nesta publicação"
                           )}
                         </li>
                       );
@@ -197,7 +197,7 @@ export default function PaginaP037() {
                   <p className="text-sm text-carvao-muted">{d.regra_universo}</p>
                   <p className="text-sm text-carvao-muted">
                     {inteiro(d.resumo.conflitos_classificacao)} conflitos de classificação entre SAMP e continuidade; {inteiro(d.resumo.sem_uf)} distribuidoras sem conjunto elétrico vigente ficam sem UF
-                    (a área oficial vem da relação conjunto × município publicada pelo módulo Perdas, sem replicar taxas por município). Os números são cópia da gold de origem pelo CNPJ, sem
+                    (a área oficial vem da relação conjunto × município publicada pelo módulo Perdas, sem replicar taxas por município). Os números são cópia da base publicada de origem pelo CNPJ, sem
                     recálculo, com a natureza e a unidade de origem (selos acima).
                   </p>
                   <p className="text-sm text-carvao-muted">Colunas do índice, como na exportação: {COLUNAS_DISTRIBUIDORAS.map((x) => x.rotulo).join("; ")}.</p>

@@ -96,7 +96,7 @@ export function RegulacaoLimites({
 
       <section aria-labelledby="detalhe-ano-titulo" className="space-y-3 border-t border-linha pt-4" data-detalhe-ano={ano}>
         <h3 id="detalhe-ano-titulo" className="font-serif text-lg text-carvao">
-          Atos de {porId.get(ano)?.rotulo ?? ano}: o que cada um fixou, quando saiu e desde quando vale
+          O que cada ato de {porId.get(ano)?.rotulo ?? ano} fixou, quando saiu e desde quando vale?
         </h3>
         {detalhes[ano]}
       </section>

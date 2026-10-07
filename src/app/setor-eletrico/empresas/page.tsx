@@ -185,7 +185,7 @@ export default function EmpresasPage() {
                   endereco={ancoraPainel("p037")}
                 />
               ) : (
-                <Numero rotulo="Referência: perdas totais na distribuição, Brasil" natureza="CALCULADO" valor={null} motivoAusencia="A gold de Perdas não publica a taxa nacional do mesmo ano." tamanho="medio" />
+                <Numero rotulo="Referência: perdas totais na distribuição, Brasil" natureza="CALCULADO" valor={null} motivoAusencia="A base publicada de Perdas não publica a taxa nacional do mesmo ano." tamanho="medio" />
               )
             }
             recorte={

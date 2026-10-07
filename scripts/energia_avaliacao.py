@@ -359,6 +359,10 @@ def d_didatismo_visual(chave, ctx):
         n.evid("defeitos registrados pelo revisor: " + "; ".join(rev["defeitos"][:4]))
         if nota >= 9.5:
             n.teto(9.0, "defeito registrado pelo revisor impede nota a partir de 9,5")
+    if chave == "didatismo":
+        jargao = sorted({x.strip()[:40] for m in ctx["medicoes"] if m.get("modo") == "entender" and m.get("anomalias") for x in m["anomalias"].get("jargao_interno", [])})
+        if jargao:
+            n.evid("vocabulário de engenharia no texto do leitor em Entender (medido; informa, não deduz nota): " + "; ".join(jargao[:6]))
     if chave == "visual" and any(m.get("rolagem_horizontal") for m in ctx["medicoes"]):
         n.teto(6.0, "rolagem horizontal da página em alguma largura medida")
         n.defeito("rolagem_horizontal", "alto", "rolagem horizontal da página")
@@ -582,6 +586,11 @@ def d_completude(ctx):
         }
         lista = ITENS_PAINEL
         n.evid(f"{len(set(ctx['paineis_ids']))} painéis na página; títulos em forma de pergunta: {interr}")
+        if interr == "não medido":
+            # item sem medição não é item ausente: sai do cálculo e do defeito, e a evidência diz isso
+            itens.pop("pergunta")
+            lista = [x for x in ITENS_PAINEL if x[0] != "pergunta"]
+            n.evid("o título em forma de pergunta não foi medido nesta rodada e fica fora do cálculo da completude")
     else:
         anom = [m["anomalias"] for m in comp if m.get("anomalias")]
         limpo = not any(a["datas_cruas"] or a["nan_undefined"] or a["marcador_de_obra"] or a.get("unidade_duplicada") for a in anom)
@@ -1094,6 +1103,7 @@ def monta_saida(args):
     cumpridas = Counter(j["resultado"] for j in jorn)
     data = (insp.get("gerado_em") or "")[:10]
     rodada_id = args.rodada or (historico["rodadas"][-1]["id"] if historico["rodadas"] else f"{data}-r1")
+    ajustes = lj(os.path.join(ENT, "ajustes_do_metodo.json"), {})
     saida = {
         "dominio": "energia", "gold": "avaliacao.json", "gerado_em": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "versao_pipeline": "energia-0.1.0", "versao_codigo": versao_codigo(), "disponivel": True,
@@ -1102,7 +1112,8 @@ def monta_saida(args):
                    "navegador": insp.get("navegador"), "larguras": insp.get("larguras"), "modos": insp.get("modos"),
                    "rotas_medidas": len(insp["rotas"]), "rotas_construidas": universo.get("total"),
                    "familias": universo.get("familias"), "referencia_dos_dados": g["pub"]["referencia"].get("hoje"),
-                   "corrigido_depois_da_medicao": posteriores},
+                   "corrigido_depois_da_medicao": posteriores,
+                   "ajustes_do_metodo": ajustes.get(rodada_id, [])},
         "metodo": {
             "resumo": "Cada página foi aberta em Chromium nas larguras de 360, 390, 768 e 1440 px nos modos Entender e Auditar (390 e 1440 px em Auditar). Foram medidos resposta, console, rede, axe-core, rolagem, teclado, alvos de toque, controles, ficha de prova, link copiável, links e âncoras, peso e anatomia. Dez jornadas de usuário foram executadas por roteiro. Revisores em contexto limpo leram o texto e abriram as capturas para dar nota de didatismo e de qualidade visual. A correção, a rastreabilidade e a atualidade usam as validações publicadas nas golds e os testes do repositório.",
             "scripts": ["scripts/energia-avaliacao.mjs", "scripts/energia-jornadas.mjs", "scripts/energia_avaliacao.py"],
@@ -1259,8 +1270,8 @@ def versao_codigo():
         return "desconhecida"
 
 
-def registro_rodada(saida):
-    return {"id": saida["rodada"]["id"], "data": saida["rodada"]["data_inspecao"], "versao_codigo": saida["versao_codigo"],
+def registro_rodada(saida, reprocessada=None):
+    return {"id": saida["rodada"]["id"], "reprocessada": reprocessada, "ajustes_do_metodo": saida["rodada"].get("ajustes_do_metodo", []), "data": saida["rodada"]["data_inspecao"], "versao_codigo": saida["versao_codigo"],
             "paginas": saida["resumo"]["paginas"], "nota_ponderada_media": saida["resumo"]["nota_ponderada_media"],
             "atendem_meta": saida["resumo"]["atendem_meta"], "defeitos": [{"chave": d["chave"], "severidade": d["severidade"], "dimensao": d["dimensao"], "descricao": d["descricao"], "n_paginas": d["n_paginas"]} for d in saida["defeitos"]],
             "defeitos_por_severidade": saida["resumo"]["defeitos"]["por_severidade"],
@@ -1290,6 +1301,7 @@ def main():
     ap.add_argument("--registrar-rodada", action="store_true")
     ap.add_argument("--sem-publicacao", action="store_true", help="não atualiza publicacao.json nem o manifesto")
     ap.add_argument("--sem-revisao", action="store_true", help="ignora a revisão visual e didática (rodada de base)")
+    ap.add_argument("--reprocessada", default=None, help="texto que declara por que a rodada foi recalculada com outra regra")
     args = ap.parse_args()
     os.makedirs(ENT, exist_ok=True)
     if args.relatorio:
@@ -1302,7 +1314,7 @@ def main():
     saida, paginas = monta_saida(args)
     if args.registrar_rodada:
         h = lj(os.path.join(ENT, "rodadas.json"), {"rodadas": []})
-        h["rodadas"] = [r for r in h["rodadas"] if r["id"] != saida["rodada"]["id"]] + [registro_rodada(saida)]
+        h["rodadas"] = [r for r in h["rodadas"] if r["id"] != saida["rodada"]["id"]] + [registro_rodada(saida, args.reprocessada)]
         escreve_json(os.path.join(ENT, "rodadas.json"), h)
         saida["rodadas"] = h["rodadas"]
     escreve_json(SAIDA_JSON, saida, compacto=True)
