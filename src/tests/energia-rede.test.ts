@@ -350,6 +350,11 @@ describe("respostas escritas por regra a partir dos números", () => {
     const zerado = copia(G.balanco);
     for (const x of zerado.identidades) Object.assign(x, { horas_fecham: x.horas, horas_residuo: 0 });
     expect(R.respostaBalanco(zerado, "SIN", per)).not.toContain("A fonte não informa a causa");
+    // frase de leitor antes da contagem: a menor parcela de horas que fecha, arredondada para baixo
+    expect(R.respostaBalanco(zerado, "SIN", per)).toContain("fecham entre si em todas as horas conferidas");
+    const sin = G.balanco.identidades.filter((x) => x.id.endsWith(".SIN") && x.horas > 0);
+    const menor = Math.floor(Math.min(...sin.map((x) => x.horas_fecham / x.horas)) * 100);
+    expect(R.respostaBalanco(G.balanco, "SIN", per)).toContain(`em pelo menos ${menor}% das horas conferidas`);
   });
 
   it("restrições: contagem de fluxos e cortes de carga lidos da gold; nunca utilização", () => {

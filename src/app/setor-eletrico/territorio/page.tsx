@@ -102,7 +102,7 @@ export default function TerritorioPage() {
             </>
           }
         >
-          Escolha o município, a distribuidora, a UF ou o submercado e veja o que cada fonte oficial publica. Os números não mudam de recorte: o preço é do submercado, a tarifa e as perdas são
+          Os números não mudam de recorte: o preço é do submercado, a tarifa e as perdas são
           da distribuidora inteira, o DEC é do conjunto elétrico, e só o publicado por município aparece como do município.
         </CabecalhoModulo>
 
@@ -325,14 +325,14 @@ export default function TerritorioPage() {
                     colunas={["Conferência", "Usinas"]}
                     numericas={[1]}
                     linhas={[
-                      ["Todos os municípios declarados reconhecidos no IBGE", inteiro(u.todos_municipios_reconhecidos)],
+                      ["Todos os municípios reconhecidos no IBGE", inteiro(u.todos_municipios_reconhecidos)],
                       ["Reconhecidas pela tabela de grafias antigas (DTB)", inteiro(u.via_grafia_antiga)],
                       ["Parcialmente reconhecidas", inteiro(u.parcialmente_reconhecidos)],
                       ["Sem município reconhecido", inteiro(u.sem_municipio_reconhecido)],
-                      ["Declaradas em mais de um município (sem potência repartida)", inteiro(u.multimunicipio)],
+                      ["Em mais de um município (potência não repartida)", inteiro(u.multimunicipio)],
                       ["Com coordenada", inteiro(u.com_coordenada)],
                       [`Coordenada no município declarado (malha ${u.conferencia_coordenada.conferencia === "maxima" ? "de qualidade máxima" : "simplificada, aproximada"})`, inteiro(u.coordenada_no_municipio_declarado)],
-                      ["Coordenada fora do município declarado (a declaração prevalece)", inteiro(u.coordenada_fora_do_municipio_declarado)],
+                      ["Coordenada fora do município declarado", inteiro(u.coordenada_fora_do_municipio_declarado)],
                       ["Coordenada fora de qualquer município", inteiro(u.coordenada_fora_da_malha)],
                       [`Registros de até ${num(u.limite_registro_kw, 0)} kW em operação (coluna própria)`, inteiro(u.registros_ate_10kw)],
                     ]}

@@ -85,7 +85,10 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
             <p className="text-carvao">
               A definição deste conceito ainda não foi conferida na fonte primária e por isso não é publicada. A plataforma não escreve definições de memória.
             </p>
-            <p className="mt-3 text-sm text-carvao-muted">Fonte primária planejada: {c.fontePlanejada}</p>
+            <details className="mt-3 text-sm text-carvao-muted">
+              <summary className="inline-flex min-h-[44px] cursor-pointer items-center underline underline-offset-4">Como a definição será conferida</summary>
+              <p className="mt-1">Fonte primária planejada: {c.fontePlanejada}</p>
+            </details>
             {c.fontes.length > 0 && (
               <p className="mt-2 text-sm text-carvao-muted">
                 Conjunto de dados relacionado:{" "}

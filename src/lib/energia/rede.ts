@@ -1016,6 +1016,16 @@ export function respostaBalanco(b: Pick<BalancoRede, "identidades" | "tolerancia
   const soma = ids.find((x) => x.identidade === "soma_sin");
   const onde = sm === "SIN" ? "No SIN" : cap(NO[sm]);
   const frases: string[] = [];
+  // frase de leitor antes da contagem: a menor parcela de horas que fecha entre as identidades conferidas
+  const conferidas = [bal, per, soma].filter((x): x is IdentidadeBalanco => !!x && x.horas > 0);
+  if (conferidas.length) {
+    const menor = Math.min(...conferidas.map((x) => x.horas_fecham / x.horas));
+    frases.push(
+      menor === 1
+        ? `${sm === "SIN" ? "No SIN" : cap(NO[sm])}, os números do balanço de energia fecham entre si em todas as horas conferidas.`
+        : `${sm === "SIN" ? "No SIN" : cap(NO[sm])}, os números do balanço de energia fecham entre si em pelo menos ${num(Math.floor(menor * 100), 0)}% das horas conferidas; as horas em que não fecham estão listadas abaixo.`,
+    );
+  }
   const quem = sm === "SIN" ? "o intercâmbio internacional" : sm === "S" ? "a fronteira com o Sudeste/Centro-Oeste mais Argentina e Uruguai" : "a soma das fronteiras";
   const partes: string[] = [];
   if (per) partes.push(`o intercâmbio publicado no balanço fecha com ${quem} ${fecha(per).replace(/^fecha /, "")}`);
