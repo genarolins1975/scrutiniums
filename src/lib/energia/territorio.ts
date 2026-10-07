@@ -960,7 +960,7 @@ export function respostaTerritorio(g: Pick<GoldTerritorio, "resumo" | "referenci
   if (sem) restoDist.push(`${inteiro(sem)} sem vínculo`);
   const u = r.usinas;
   return (
-    `Escolha uma região para ver preço, tarifa, perdas, continuidade e usinas, cada um na área e na unidade da fonte. Hoje o observatório cobre: ` +
+    `Escolha uma região para ver preço, tarifa, perdas, continuidade e usinas, cada um na área e na unidade da fonte. Cobertura desta publicação: ` +
     `os ${inteiro(r.municipios)} municípios do IBGE estão ligados a ${inteiro(comArea)} distribuidoras pela relação oficial da ANEEL de ${g.referencias.relacao_distribuidoras_ano ?? "sem data"}: ` +
     `${partesDist.join(", ")}${restoDist.length ? `; ${lista(restoDist)}` : ""}. ` +
     `Pela UF, ${inteiro(provados)} municípios estão num submercado com a pertença provada pela carga do ONS, ` +

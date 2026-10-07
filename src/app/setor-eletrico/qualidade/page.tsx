@@ -229,7 +229,7 @@ export default function QualidadePage() {
       <CabecalhoEnergia atual="qualidade" />
       <MarcaVisita secao="energia:qualidade" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["DEC", "FEC"]}
+        <CabecalhoModulo siglas={["DIC", "FIC", "ANEEL", "IBGE", "ONS"]}
           rotulo="Qualidade do serviço"
           titulo="Com que frequência e por quanto tempo falta energia?"
           referencia={

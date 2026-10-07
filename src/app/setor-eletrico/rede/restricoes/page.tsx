@@ -43,7 +43,7 @@ export default function RedeRestricoesPage() {
       <CabecalhoEnergia atual="rede" />
       <MarcaVisita secao="energia:rede" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-4 sm:px-6">
-        <CabecalhoModulo siglas={["SIN"]}
+        <CabecalhoModulo siglas={["SIN", "ONS", "CCEE"]}
           rotulo="Rede · Restrições publicadas"
           titulo={perguntaPainel("p030")}
           referencia={

@@ -59,7 +59,7 @@ export default function DadosSaudePage() {
       <CabecalhoEnergia atual="dados" />
       <MarcaVisita secao="energia:dados:saude" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo
+        <CabecalhoModulo siglas={["TE", "SIGA", "DEC", "FEC", "CDE", "SIN"]}
           rotulo="Dados e metodologia"
           titulo="O que atrasou ou mudou?"
           referencia={<ReferenciaDados geradoEm={pub.gerado_em} referencia={dataBR(pub.referencia.hoje)} extra={<>Última captura registrada: {ultimaCaptura ? carimbo(ultimaCaptura) : "nenhuma"}.</>} />}

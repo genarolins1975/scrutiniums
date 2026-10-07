@@ -78,7 +78,7 @@ export default function EmissoesPage() {
       <>
         <CabecalhoEnergia atual="transicao" />
         <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-          <CabecalhoModulo siglas={["SIN", "MMGD"]} rotulo="Transição e ambiente" titulo="Intensidade de emissões da geração no SIN" />
+          <CabecalhoModulo siglas={["MCTI"]} rotulo="Transição e ambiente" titulo="Intensidade de emissões da geração no SIN" />
           <TransicaoNavegacao atual="p064" />
           <div className="py-6">
             <Indisponivel

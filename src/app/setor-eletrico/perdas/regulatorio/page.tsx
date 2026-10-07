@@ -51,7 +51,7 @@ export default function PerdasRegulatorioPage() {
       <CabecalhoEnergia atual="perdas" />
       <MarcaVisita secao="energia:perdas:regulatorio" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["SAMP"]}
+        <CabecalhoModulo siglas={["SAMP", "ANEEL", "IBGE"]}
           rotulo="Perdas de energia · realizado e regulatório"
           titulo="Quanto o realizado diverge da referência regulatória?"
           referencia={<ReferenciaPerdas g={g} />}

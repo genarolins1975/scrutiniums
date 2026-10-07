@@ -206,7 +206,7 @@ Pergunta do painel: como demonstrar que a qualidade evoluiu. A resposta é uma r
 
 ### 8.2 Rodadas e resultado
 
-Fonte: `public/energia/gold/avaliacao.json`; quatro rodadas em 07/10/2026 (`2026-10-07-r1` a `r4`); dados de referência das golds de 01/10/2026. A r4 é a rodada atual, medida depois da segunda rodada de correção do código.
+Fonte: `public/energia/gold/avaliacao.json`; cinco rodadas em 07/10/2026 (`2026-10-07-r1` a `r5`); dados de referência das golds de 01/10/2026. A r5 é a rodada atual, medida depois da terceira rodada de correção do código.
 
 | Rodada | Páginas | Dimensões com nota | Nota ponderada média | Atendem a meta | Defeitos crítico / alto / médio / baixo | Jornadas cumpridas |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -214,21 +214,22 @@ Fonte: `public/energia/gold/avaliacao.json`; quatro rodadas em 07/10/2026 (`2026
 | r2 (primeira com as dez dimensões) | 94 | 10 de 10 | 8,0 | 0 | 0 / 9 / 72 / 12 | 10 de 10 |
 | r3 (depois da rodada de correção) | 94 | 10 de 10 | 8,2 | 0 | 0 / 4 / 34 / 12 | 10 de 10 |
 | r4 (depois da segunda rodada de correção) | 94 | 10 de 10 | 8,3 | 0 | 0 / 4 / 33 / 12 | 10 de 10 |
+| r5 (depois da terceira rodada de correção) | 94 | 10 de 10 | 8,3 | 0 | 0 / 4 / 35 / 12 | 10 de 10 |
 
 Média das páginas por dimensão (rubrica 1.0; n.av.: dimensão não avaliada na rodada):
 
-| Dimensão | r1 | r2 | r3 | r4 | Meta |
-| --- | --- | --- | --- | --- | --- |
-| Didatismo | n.av. | 6,8 | 7,0 | 6,9 | 9,5 |
-| Qualidade visual | n.av. | 6,9 | 7,2 | 7,4 | 9,5 |
-| Navegação e usabilidade | 9,1 | 9,2 | 9,2 | 9,2 | 9,0 |
-| Interatividade | 9,5 | 9,4 | 9,9 | 9,9 | 9,0 |
-| Acessibilidade | 7,6 | 7,7 | 9,0 | 9,0 | 9,0 |
-| Completude | 8,4 | 8,5 | 8,6 | 8,7 | 9,0 |
-| Correção técnica e metodológica | 7,8 | 7,8 | 7,9 | 7,9 | 9,0 |
-| Rastreabilidade | 9,0 | 9,0 | 9,3 | 9,3 | 9,0 |
-| Atualidade e confiabilidade operacional | 7,8 | 7,9 | 7,9 | 7,9 | 9,0 |
-| Desempenho e manutenção | 8,7 | 8,7 | 8,7 | 8,7 | 9,0 |
+| Dimensão | r1 | r2 | r3 | r4 | r5 | Meta |
+| --- | --- | --- | --- | --- | --- | --- |
+| Didatismo | n.av. | 6,8 | 7,0 | 6,9 | 7,0 | 9,5 |
+| Qualidade visual | n.av. | 6,9 | 7,2 | 7,4 | 7,4 | 9,5 |
+| Navegação e usabilidade | 9,1 | 9,2 | 9,2 | 9,2 | 9,2 | 9,0 |
+| Interatividade | 9,5 | 9,4 | 9,9 | 9,9 | 9,9 | 9,0 |
+| Acessibilidade | 7,6 | 7,7 | 9,0 | 9,0 | 9,0 | 9,0 |
+| Completude | 8,4 | 8,5 | 8,6 | 8,7 | 8,7 | 9,0 |
+| Correção técnica e metodológica | 7,8 | 7,8 | 7,9 | 7,9 | 7,9 | 9,0 |
+| Rastreabilidade | 9,0 | 9,0 | 9,3 | 9,3 | 9,3 | 9,0 |
+| Atualidade e confiabilidade operacional | 7,8 | 7,9 | 7,9 | 7,9 | 7,9 | 9,0 |
+| Desempenho e manutenção | 8,7 | 8,7 | 8,7 | 8,7 | 8,7 | 9,0 |
 
 * **O que evoluiu e o que não evoluiu.** Defeitos abertos de 94 (r2) para 50 (r3): 54 corrigidos entre as rodadas. Rolagem horizontal da página: de 23 páginas para nenhuma (360 e 390 px em Entender, 390 px em Auditar). Alvos de toque abaixo de 24 px: de 67 páginas para nenhuma. Violações axe: nenhuma nas duas rodadas. Acessibilidade subiu de 7,7 para 9,0, que é o teto da rubrica sem leitor de tela real. Didatismo (6,8 para 7,0) e qualidade visual (6,9 para 7,2) mexeram pouco: nenhuma das 94 páginas atinge 9,5 e a pior nota de didatismo subiu de 4,0 para 5,0.
 * **Defeitos altos que sobram (4):** conjunto atrasado da ANEEL, SCS, 367 dias além do prazo (6 páginas); nenhuma ficha de evidência com teste registrado nas páginas do PLD (5); painel numérico sem Comprove este número nas fichas de modelos e na linha do tempo da Regulação (5); uma página sem fonte declarada.
@@ -246,6 +247,18 @@ Evidência: `public/energia/gold/avaliacao.json` (rodada `2026-10-07-r4`), nove 
 * **Corrigido depois da medição, sem medir** (`avaliacao/posteriores.json`): citação da ficha do conjunto sem campo vazio e com a data de captura em Brasília, artigo do órgão ("pelo IBGE", "pela ANEEL") e frequência pelas cadências normalizadas, lista de arquivos separada das páginas, esmaecimento da borda da barra de abas, Saúde com "integrações" em vez de "conjuntos integrados" e explicação da diferença para os 126 conjuntos do catálogo, resposta do catálogo sem gold e pipeline.
 * **Limites.** Os revisores são agentes de IA; não há calibração entre rodadas nem teste com pessoas. Em 390 px o pacote entregue traz três trechos por página, e gráficos e mapas nem sempre aparecem neles: os revisores declararam quando não avaliaram um gráfico em celular.
 
+#### Rodada 5: o que mudou, o que não mudou e por quê
+
+Evidência: `public/energia/gold/avaliacao.json` (rodada `2026-10-07-r5`), nove revisores em contexto limpo sobre as 94 páginas, capturas limpas, inspeção de 07/10/2026.
+
+* **Resultado.** Nota ponderada média 8,3 (r4: 8,3), nenhuma página na meta, 51 defeitos abertos (r4: 49), dez jornadas cumpridas, 94 rotas sem violação axe e sem rolagem horizontal. Didatismo 7,06 (r4: 6,90; r3: 7,01) e qualidade visual 7,45 (r4: 7,44), ambos contra metas de 9,5. Das 94 páginas, 42 subiram em didatismo, 31 ficaram iguais e 21 caíram; 6 ficaram abaixo de 6,0 e 17 chegaram a 8,0 ou mais, nenhuma acima de 8,5. A pior nota continua 5,0, em Balanço e exterior e no verbete GSF.
+* **O que a r5 mudou no código** (medido): frases de bloqueio de fonte (HTTP, Cloudflare, curl) e sha256, silver, vintage, pipeline e caminhos de arquivo saem do texto de Entender e ficam em Analisar e Auditar; "gold" e "pipeline" viram "base publicada" e "observatório" nas frases do leitor; "ficha de prova" virou "ficha Comprove"; a escada do catálogo ganhou definições em palavras do leitor; a ficha de modelo do PLD abre com o resumo e deixa a fórmula para Analisar; todo gráfico passou a ter título e unidade visíveis; cada página traz uma legenda com o nome por extenso das siglas que usa; as respostas do balanço e do Território ganharam uma frase de leitor antes dos números.
+* **Efeito medido sobre o texto de bastidor.** Contagem de marcadores (HTTP, Cloudflare, curl, achado, gold, pipeline, sha256, silver, vintage, caminho de arquivo, commit, ficha de prova) no texto de Entender das 94 páginas: 175 na r4 e 79 na r5 (queda de 55%). O que sobra está sobretudo em Metodologia, Reprodução, Saúde e no catálogo de Dados, cujo assunto é a própria coleta.
+* **O didatismo mal se mexeu.** A diferença de 0,16 ponto fica dentro da variação entre revisores que são outras instâncias de agente. A queda de 55% do bastidor, a legenda de siglas e os títulos nos gráficos não bastaram: os revisores continuam a achar a resposta curta tarde demais, os parágrafos de resposta com seis a quatorze números e as páginas longas demais para "o essencial em poucos minutos".
+* **Defeitos que a própria r5 introduziu, e a medição acusou.** A legenda de siglas listava siglas que a página não usa, porque a detecção lia o menu e o rodapé além do conteúdo; a frase de abertura do Território usava "hoje" ao lado de números sem data; o título visível de um gráfico repetia a unidade "%". Os três foram corrigidos depois da medição (`avaliacao/posteriores.json`) e a medição seguinte os mede.
+* **Corrigido depois da medição, sem medir.** Legenda de siglas pelo conteúdo principal e com mais siglas; ranking das fichas de distribuidora com o sentido da ordem e com ressalva para valor negativo (CERTHIL); sobreposição da tabela de patamares das bandeiras sobre o rodapé do painel; linha Motivo vazia da página do PLD.
+* **Limites.** Os revisores são agentes de IA, sem calibração entre rodadas e sem teste com pessoas. As capturas de 390 px trazem três trechos por página e não mostram todos os gráficos; os revisores declararam quando não avaliaram um gráfico em celular. O texto de 80 caracteres da descrição dos conjuntos de dados é o que o catálogo guarda: a descrição completa só existe na fonte, e a coleta do catálogo completo não faz parte do escopo autorizado.
+
 #### Correção de um erro da r2
 
 A r2 foi publicada contando como ausente o título em forma de pergunta em todos os painéis, e o resumo da r2 dizia que 45 painéis não tinham pergunta como título. Estava errado: o instrumento media o título, mas o campo não era copiado para o relatório, e a rubrica tratava "não medido" como zero. Medido de fato num levantamento feito antes da correção, 101 de 110 títulos de painel eram perguntas. Dos 9 que não eram (subpainéis de Perdas, PLD, Regulação, Empresas e Visão geral), 8 viraram pergunta; o nono é o cartão da etapa selecionada do diagrama de formação do PLD, que é uma definição e não um painel. A regra passou a tirar do cálculo o item não medido, e a r1 e a r2 foram recalculadas com ela (r1 de 8,3 para 8,4; r2 de 7,9 para 8,0; completude da r2 de 7,9 para 8,5). As duas rodadas aparecem na página e nos documentos com a marca de recalculada e o motivo.
@@ -256,7 +269,7 @@ Nove revisores em contexto limpo (agentes de IA, sem acesso ao código e sem ver
 
 Problemas que mais se repetiram na r3 (por revisor): tabelas com a primeira coluna estreita quebrando palavras no meio (corrigido depois da medição, ver 8.4); jargão de engenharia e siglas sem expansão no Entender; resposta curta que chega tarde e Entender com tabelas e parágrafos longos; gráficos que mostram só uma ponta de rankings longos, o que contradiz a manchete (reajustes: 87 de 102 acima do IPCA, mas as barras visíveis são as 11 menores); verbete GSF vazio e títulos duplicados (DESSEM DESSEM); fichas de conjuntos de dados com descrição em parede de texto e uma tabela de capturas que diz estar vazia enquanto a ficha informa registros integrados; datas de processamento e contagens que divergem entre páginas.
 
-Na r4 o método mudou em três pontos, listados em `avaliacao/ajustes_do_metodo.json`: a captura entregue aos revisores passou a ser feita por modo próprio, sem teste de teclado antes (efeito medido abaixo de 0,1 ponto, ver 8.2); as jornadas J3, J4 e J7 abrem a tabela recolhida de Entender antes de ler ou filtrar, e J9 abre os detalhes técnicos da ficha; o exercício de controles alcança os botões novos. Os revisores da r4 são outras instâncias de agente; as notas médias são comparáveis entre páginas, não entre rodadas além de ordem de grandeza.
+Na r5 o método não mudou além da leitura do rótulo Publicação processada e do vocabulário da jornada J9 (ver `ajustes_do_metodo.json`). Na r4 o método mudou em três pontos, listados em `avaliacao/ajustes_do_metodo.json`: a captura entregue aos revisores passou a ser feita por modo próprio, sem teste de teclado antes (efeito medido abaixo de 0,1 ponto, ver 8.2); as jornadas J3, J4 e J7 abrem a tabela recolhida de Entender antes de ler ou filtrar, e J9 abre os detalhes técnicos da ficha; o exercício de controles alcança os botões novos. Os revisores da r4 são outras instâncias de agente; as notas médias são comparáveis entre páginas, não entre rodadas além de ordem de grandeza.
 
 ### 8.4 Limitações
 

@@ -108,7 +108,7 @@ export default function GeracaoRestricoesPage() {
       <CabecalhoEnergia atual="geracao" />
       <MarcaVisita secao="energia:geracao" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-4 sm:px-6">
-        <CabecalhoModulo
+        <CabecalhoModulo siglas={["SIN", "MMGD", "ONS", "IBGE"]}
           rotulo="Geração · Renováveis restringidas"
           titulo={perguntaPainel("p023")}
           referencia={

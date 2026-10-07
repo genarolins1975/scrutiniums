@@ -90,7 +90,7 @@ export default function MetodologiaEnergia() {
       <CabecalhoEnergia atual="metodologia" />
       <MarcaVisita secao="energia:metodologia" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
-        <CabecalhoModulo siglas={["CMO", "PLD", "SIN"]}
+        <CabecalhoModulo siglas={["ENA", "REE", "MLT", "CVU", "PLD", "CMO"]}
           rotulo="Metodologia"
           titulo="Quais interpretações são permitidas?"
           referencia={pub ? <ReferenciaDados geradoEm={pub.gerado_em} referencia={dataBR(pub.referencia.hoje)} /> : undefined}

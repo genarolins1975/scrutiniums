@@ -81,7 +81,7 @@ export default function CronogramaPage() {
       <CabecalhoEnergia atual="expansao" />
       <MarcaVisita secao="energia:expansao-cronograma" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["RALIE"]}
+        <CabecalhoModulo siglas={["RALIE", "ANEEL"]}
           rotulo="Expansão"
           titulo="Cronograma e atrasos da geração"
           referencia={

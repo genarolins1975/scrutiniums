@@ -770,7 +770,13 @@ export function paresQualidade(d: Distribuidora, ix: readonly Distribuidora[]): 
 
 export function textoPares(sigla: string, medida: string, p: Pares | null): string {
   if (!p) return `Sem pares comparáveis para ${medida}: falta o grupo, o ano de referência ou o valor.`;
-  return `Entre as ${inteiro(p.total)} ${p.regra}, a ${sigla} ocupa a posição ${posicaoTexto(p.posicao, p.total)} em ordem crescente de ${medida}.`;
+  const meu = p.itens.find((x) => x.rotulo === sigla)?.valor;
+  const base = `Entre as ${inteiro(p.total)} ${p.regra}, a ${sigla} ocupa a posição ${posicaoTexto(p.posicao, p.total)} em ordem crescente de ${medida}`;
+  // a ordem é da menor para a maior: a 1ª tem o menor valor e a última, o maior (em perdas e em DEC, menor é melhor)
+  if (typeof meu === "number" && meu < 0)
+    return `${base}. O valor é negativo (a energia fornecida superou a injetada), e por isso a posição não indica a menor perda.`;
+  const sentido = p.posicao === p.total ? `: é o maior valor do grupo` : p.posicao === 1 ? `: é o menor valor do grupo` : "";
+  return `${base}${sentido}. Menor é melhor nessa medida.`;
 }
 
 /* ---------------------------------------------------------------- P037: evolução própria */

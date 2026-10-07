@@ -361,7 +361,7 @@ export function GraficoPontos({
     <div ref={raiz} className="relative w-full" data-grafico="pontos">
       <p className="mb-1 text-sm font-medium text-carvao" data-titulo-grafico="true">
         {titulo}
-        <span className="font-normal text-mineral">, em {unidade}</span>
+        {unidade.length > 1 && <span className="font-normal text-mineral">, em {unidade}</span>}
       </p>
       <div className="mb-2 flex flex-wrap items-center gap-x-5 gap-y-1">
         <fieldset className="flex flex-wrap items-center gap-x-4">

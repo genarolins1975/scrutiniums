@@ -87,7 +87,7 @@ export default function PerdasPage() {
       <CabecalhoEnergia atual="perdas" />
       <MarcaVisita secao="energia:perdas" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["SAMP", "MMGD", "REN"]}
+        <CabecalhoModulo siglas={["SAMP", "MMGD", "REN", "ANEEL", "IBGE"]}
           rotulo="Perdas de energia"
           titulo="Onde se perde energia, quanto e com que efeito econômico?"
           referencia={<ReferenciaPerdas g={g} />}

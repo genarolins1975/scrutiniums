@@ -42,6 +42,18 @@ export const SIGLAS: Record<string, string> = {
   ITR: "Informações Trimestrais, da CVM",
   PDO: "Programa Diário de Operação",
   MWmed: "megawatt médio",
+  ACL: "Ambiente de Contratação Livre",
+  ACR: "Ambiente de Contratação Regulada",
+  MRE: "Mecanismo de Realocação de Energia",
+  ESS: "Encargos de Serviços do Sistema",
+  MCP: "Mercado de Curto Prazo",
+  CVU: "Custo Variável Unitário",
+  RAP: "Receita Anual Permitida",
+  TSEE: "Tarifa Social de Energia Elétrica",
+  DIC: "Duração de Interrupção Individual por Unidade Consumidora",
+  FIC: "Frequência de Interrupção Individual por Unidade Consumidora",
+  MME: "Ministério de Minas e Energia",
+  MCTI: "Ministério da Ciência, Tecnologia e Inovação",
 };
 
 /** Padrão que reconhece cada sigla como palavra inteira no texto. */

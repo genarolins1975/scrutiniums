@@ -10,5 +10,10 @@
   "as capturas de leitura entregues aos revisores passam a ser feitas por modo próprio do instrumento (--limpas 1): a página carrega, é rolada como um leitor a rolaria, as tabelas voltam ao início e só então vêm a primeira dobra, a página inteira e o texto, sem teste de teclado nem clique antes. Nas rodadas 1 a 3 a captura vinha depois do teste de teclado, que deixava tabelas largas roladas até o fim. A mesma versão do site foi revisada duas vezes pelos nove revisores, com a captura antiga e com a limpa: didatismo 6,91 contra 6,90 e qualidade visual 7,40 contra 7,44, de modo que o efeito da mudança de captura ficou abaixo de 0,1 ponto e a comparação com a rodada 3 não depende dela. A rodada registra a revisão sobre a captura limpa",
   "as jornadas J3, J4 e J7 abrem a tabela recolhida de Entender pelo botão Ver a tabela completa antes de ler ou filtrar (no teclado, J7 alcança o botão com Tab e o abre com Enter), e J9 abre os detalhes técnicos da ficha do conjunto; o clique entra na contagem de interações",
   "o exercício de controles, sem mudança de código, passa a alcançar os botões novos de recolher a tabela e de mostrar todas as categorias do gráfico, que não existiam na rodada 3"
+ ],
+ "2026-10-07-r5": [
+  "as capturas entregues aos revisores são só as capturas limpas (modo --limpas 1, introduzido na r4): a página carrega, é rolada como um leitor a rolaria, as tabelas voltam ao início e só então vêm a primeira dobra, a página inteira e o texto; a medição roda em execução separada, com as mesmas rotas e larguras",
+  "o instrumento reconhece Publicação processada, ao lado de Gold processada, como declaração de data de referência, porque o rótulo da página de Dados passou a dizer Publicação processada em",
+  "a jornada J9 lê integrações de conjuntos (e não conjuntos integrados) na página de Saúde e Publicação processada em no cabeçalho do catálogo; nenhum passo novo, nenhuma jornada alterada além do vocabulário"
  ]
 }

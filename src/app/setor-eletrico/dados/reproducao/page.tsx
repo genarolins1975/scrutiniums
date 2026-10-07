@@ -63,7 +63,7 @@ export default function DadosReproducaoPage() {
       <CabecalhoEnergia atual="dados" />
       <MarcaVisita secao="energia:dados:reproducao" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo
+        <CabecalhoModulo siglas={["PLD", "ENA", "MLT", "SIN", "MWmed", "CMO"]}
           rotulo="Dados e metodologia"
           titulo="Consigo reproduzir este gráfico?"
           referencia={<ReferenciaDados geradoEm={m.gerado_em} referencia={dataBR(pub.referencia.hoje)} extra={<>Id da publicação {m.id_publicacao.slice(0, 12)}.</>} />}

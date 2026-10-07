@@ -82,7 +82,7 @@ export default function ConsultasEAgendaPage() {
       <CabecalhoEnergia atual="regulacao" />
       <MarcaVisita secao="energia:regulacao" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo
+        <CabecalhoModulo siglas={["MMGD", "PLD", "REN", "ANEEL"]}
           rotulo="Regulação"
           titulo="Consultas públicas e agenda da ANEEL"
           referencia={

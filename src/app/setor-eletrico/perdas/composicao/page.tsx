@@ -68,7 +68,7 @@ export default function PerdasComposicaoPage() {
       <CabecalhoEnergia atual="perdas" />
       <MarcaVisita secao="energia:perdas:composicao" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["SAMP"]}
+        <CabecalhoModulo siglas={["SAMP", "ANEEL", "IBGE"]}
           rotulo="Perdas de energia · técnicas e não técnicas"
           titulo="Qual parte das perdas é técnica e qual é não técnica?"
           referencia={<ReferenciaPerdas g={g} />}

@@ -52,7 +52,7 @@ export default function PldHistoricoPage() {
       <CabecalhoEnergia atual="pld" />
       <MarcaVisita secao="energia:pld" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <PldCabecalho siglas={["CMO", "MMGD"]}
+        <PldCabecalho siglas={["MWmed", "CCEE", "ONS", "IBGE"]}
           titulo="Histórico e distribuição"
           referencia={
             <>

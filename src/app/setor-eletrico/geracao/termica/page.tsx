@@ -76,7 +76,7 @@ export default function GeracaoTermicaPage() {
       <CabecalhoEnergia atual="geracao" />
       <MarcaVisita secao="energia:geracao" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-4 sm:px-6">
-        <CabecalhoModulo siglas={["MWmed", "CEG", "PLD", "CMO", "SIN"]}
+        <CabecalhoModulo siglas={["MWmed", "SIN", "CEG", "PLD", "CMO", "ONS"]}
           rotulo="Geração · Despacho térmico"
           titulo={perguntaPainel("p022")}
           referencia={

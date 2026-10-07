@@ -335,6 +335,25 @@ describe("P037: índice, comparador e ficha usam os mesmos números das golds de
     expect(textoPares("X", "DEC", null)).toContain("Sem pares");
   });
 
+  it("ranking: valor negativo não é lido como a menor perda; extremos e o sentido da ordem ditos em palavras", () => {
+    const pares = (valores: [string, number][], posicao: number) => ({
+      regra: "concessionárias com taxa de perdas em 2025",
+      ano: 2025,
+      total: valores.length,
+      posicao,
+      itens: valores.map(([rotulo, valor]) => ({ id: rotulo.toLowerCase(), rotulo, valor, referencia: null })),
+    });
+    const neg = textoPares("CERTHIL", "taxa de perdas", pares([["CERTHIL", -17.31], ["A", 3], ["B", 8]], 1));
+    expect(neg).toContain("O valor é negativo");
+    expect(neg).toContain("não indica a menor perda");
+    expect(neg).not.toContain("Menor é melhor");
+    const pior = textoPares("AMBAR", "taxa de perdas", pares([["A", 3], ["B", 8], ["AMBAR", 43.19]], 3));
+    expect(pior).toContain("é o maior valor do grupo");
+    expect(pior).toContain("Menor é melhor nessa medida.");
+    const meio = textoPares("B", "taxa de perdas", pares([["A", 3], ["B", 8], ["C", 9]], 2));
+    expect(meio).not.toContain("do grupo");
+  });
+
   it("referência nacional das barras só com o mesmo ano das perdas por distribuidora", () => {
     const ev = { valor_calculo: 14.7, universo: "51 concessionárias", periodo: { inicio: "2025-01" } };
     expect(referenciaPerdasNacional(ev, 2025)).toEqual({ valor: 14.7, rotulo: "Brasil, 51 concessionárias" });

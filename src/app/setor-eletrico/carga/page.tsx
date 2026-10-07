@@ -137,7 +137,7 @@ export default function CargaPage() {
       <CabecalhoEnergia atual="carga" />
       <MarcaVisita secao="energia:carga" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["MWmed", "MMGD", "SIN"]}
+        <CabecalhoModulo siglas={["MMGD", "SIN", "ONS"]}
           rotulo="Carga"
           titulo="Quanto o sistema está consumindo?"
           referencia={

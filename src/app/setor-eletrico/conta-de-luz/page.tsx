@@ -177,7 +177,7 @@ export default function ContaDeLuzPage() {
       <CabecalhoEnergia atual="conta-de-luz" />
       <MarcaVisita secao="energia:conta-de-luz" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["TE", "TUSD", "SAMP", "PLD", "CDE"]}
+        <CabecalhoModulo siglas={["PLD", "REN", "ANEEL", "ONS"]}
           rotulo="Conta de luz"
           titulo="Quanto custa a energia ao consumidor e o que compõe a conta?"
           referencia={

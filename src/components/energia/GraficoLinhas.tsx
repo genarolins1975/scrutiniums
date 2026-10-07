@@ -414,7 +414,7 @@ export function GraficoLinhas({
     <div ref={ref} className="relative w-full">
       <p className="mb-1 text-sm font-medium text-carvao" data-titulo-grafico="true">
         {titulo}
-        <span className="font-normal text-mineral">, em {unidade}</span>
+        {unidade.length > 1 && <span className="font-normal text-mineral">, em {unidade}</span>}
       </p>
       {zoom && N > 2 && (
         <div role="group" aria-label={`Intervalo do gráfico: ${titulo}`} className="mb-2 flex flex-wrap items-center gap-x-2 gap-y-1" data-controles="intervalo">

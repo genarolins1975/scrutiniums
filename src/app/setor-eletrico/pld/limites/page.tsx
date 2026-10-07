@@ -63,7 +63,7 @@ export default function PldLimitesPage() {
       <CabecalhoEnergia atual="pld" />
       <MarcaVisita secao="energia:pld" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <PldCabecalho siglas={["CMO"]}
+        <PldCabecalho siglas={["REH", "DOU", "ANEEL", "CCEE"]}
           titulo="Limites, piso e tetos"
           referencia={
             <>

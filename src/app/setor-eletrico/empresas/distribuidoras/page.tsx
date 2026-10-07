@@ -63,7 +63,7 @@ export default function PaginaP037() {
       <CabecalhoEnergia atual="empresas" />
       <MarcaVisita secao="energia:empresas-distribuidoras" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["SAMP", "DEC", "FEC"]}
+        <CabecalhoModulo siglas={["SAMP", "ANEEL"]}
           rotulo="Empresas"
           titulo={painel("p037").pergunta}
           referencia={

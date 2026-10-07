@@ -87,7 +87,7 @@ export default function PaginaP036() {
       <CabecalhoEnergia atual="empresas" />
       <MarcaVisita secao="energia:empresas-ativos" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo
+        <CabecalhoModulo siglas={["SIGA", "CEG", "ANEEL"]}
           rotulo="Empresas"
           titulo={painel("p036").pergunta}
           referencia={

@@ -67,7 +67,7 @@ export default function ClimaCalendarioPage() {
       <CabecalhoEnergia atual="carga" />
       <MarcaVisita secao="energia:carga" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["MMGD", "MWmed", "SIN"]}
+        <CabecalhoModulo siglas={["MWmed", "SIN", "MMGD", "ONS", "IBGE"]}
           rotulo="Carga"
           titulo="Clima e calendário"
           referencia={

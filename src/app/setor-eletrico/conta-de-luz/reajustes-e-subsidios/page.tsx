@@ -137,7 +137,7 @@ export default function ContaReajustesPage() {
           </ContaLinkFiltros>{" "}
           <span aria-hidden="true">›</span> Reajustes, bandeiras e subsídios
         </nav>
-        <CabecalhoModulo siglas={["REH", "PLD", "SIN", "TUSD"]}
+        <CabecalhoModulo siglas={["REH", "PLD", "SIN", "TUSD", "TE", "ANEEL"]}
           rotulo="Conta de luz"
           titulo="O que mudou e quem financia os benefícios?"
           referencia={
@@ -333,7 +333,8 @@ export default function ContaReajustesPage() {
                   />
                   <div className="grid grid-cols-[minmax(0,1fr)] gap-4 lg:grid-cols-[minmax(0,3fr)_minmax(0,1fr)]">
                     <ContaBandeiras acionamento={band.acionamento} />
-                    <div>
+                    {/* o cartão não ocupa 100% da altura da linha: a tabela de patamares vem depois dele e, com h-full, passava da linha e cobria o rodapé do painel */}
+                    <div className="min-w-0 [&>[role=group]]:h-auto">
                       <Numero
                         rotulo={`Adicional de ${band.vigente?.bandeira ? minuscula(band.vigente.bandeira) : "bandeira"} em ${band.vigente ? mesAno(`${band.vigente.mes}-01`) : "mês não publicado"}`}
                         natureza="OBSERVADO"

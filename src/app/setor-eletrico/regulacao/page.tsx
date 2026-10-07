@@ -196,7 +196,7 @@ export default function RegulacaoPage() {
       <CabecalhoEnergia atual="regulacao" />
       <MarcaVisita secao="energia:regulacao" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["PLD", "PRODIST", "DOU", "REH"]}
+        <CabecalhoModulo siglas={["PRODIST", "REH", "REN", "ANEEL", "CCEE", "IBGE"]}
           rotulo="Regulação"
           titulo="Que regras mudaram, quando e com qual efeito declarado?"
           referencia={

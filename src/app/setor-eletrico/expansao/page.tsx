@@ -83,7 +83,7 @@ export default function ExpansaoPage() {
       <CabecalhoEnergia atual="expansao" />
       <MarcaVisita secao="energia:expansao" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["SIGA", "RALIE", "PDE"]}
+        <CabecalhoModulo siglas={["SIGA", "RALIE", "PDE", "ANEEL", "EPE"]}
           rotulo="Expansão"
           titulo="Quanta capacidade está chegando, e de que fontes?"
           referencia={

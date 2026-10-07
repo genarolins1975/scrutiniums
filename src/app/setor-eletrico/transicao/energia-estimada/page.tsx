@@ -78,7 +78,7 @@ export default function EnergiaEstimadaPage() {
       <CabecalhoEnergia atual="transicao" />
       <MarcaVisita secao="energia:transicao-energia-estimada" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6">
-        <CabecalhoModulo siglas={["SIN", "MWmed"]}
+        <CabecalhoModulo siglas={["SIN", "MWmed", "ANEEL", "ONS", "CCEE"]}
           rotulo="Transição e ambiente"
           titulo="Energia da micro e minigeração distribuída no SIN"
           referencia={

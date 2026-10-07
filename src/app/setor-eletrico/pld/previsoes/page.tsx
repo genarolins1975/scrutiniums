@@ -107,7 +107,7 @@ export default function PrevisoesPage() {
           </Link>{" "}
           · Previsões e modelos · Previsão atual e arquivo
         </nav>
-        <CabecalhoModulo siglas={["PLD"]}
+        <CabecalhoModulo siglas={["SIN", "CCEE"]}
           rotulo="Previsões e modelos do PLD"
           titulo="O que se projeta para o PLD, e o que ficou registrado antes do resultado"
           referencia={

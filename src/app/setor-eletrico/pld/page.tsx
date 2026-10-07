@@ -1,3 +1,4 @@
+import { textoMotivo } from "@/lib/energia/previsoes";
 import { LegendaDeSiglas } from "@/components/energia/CabecalhoModulo";
 import { fraseDeRecusa, semCaminhosDeArquivo } from "@/lib/energia/bastidor";
 import type { Metadata } from "next";
@@ -173,7 +174,7 @@ export default function PldPage() {
               </a>
             ))}
           </nav>
-          <LegendaDeSiglas siglas={["REN", "SIN", "ENA"]} />
+          <LegendaDeSiglas siglas={["REN", "ENA", "EAR", "MWmed", "ANEEL", "ONS"]} />
         </header>
         <PldNavegacao atual="p008" />
 
@@ -729,8 +730,8 @@ export default function PldPage() {
                       ult ? (
                         <>
                           Rodada interna de {dataBR(ult.origem)}, com o modelo {ult.modelo} ({ult.estado_modelo === "PESQUISA" ? "em pesquisa" : ult.estado_modelo.toLowerCase()}):{" "}
-                          {ult.celulas} previsões tentadas, {ult.com_numero === 0 ? "nenhuma com número" : `${ult.com_numero} com número`}. Motivo:{" "}
-                          {ult.motivos.includes("SEM_PLD_CAPTURADO_ATE_O_CORTE") ? "nenhum PLD do período exigido havia sido capturado até o horário de corte" : ult.motivos.join(", ")}.
+                          {ult.celulas} previsões tentadas, {ult.com_numero === 0 ? "nenhuma com número" : `${ult.com_numero} com número`}.
+                          {ult.motivos.length > 0 ? ` Motivo: ${ult.motivos.map((m) => textoMotivo(m)).join("; ")}.` : ""}
                         </>
                       ) : (
                         "Nenhuma rodada registrada."
